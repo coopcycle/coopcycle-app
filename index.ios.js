@@ -10,12 +10,17 @@ import {
   StyleSheet,
   Text,
   View,
-  Dimensions
+  Dimensions,
+  Navigator,
+  TouchableOpacity,
 } from 'react-native';
 
 import MapView from 'react-native-maps';
 import Polyline from 'polyline';
 import _ from 'underscore';
+
+const MainPage = require('./MainPage');
+const LoginPage = require('./LoginPage');
 
 const FBSDK = require('react-native-fbsdk');
 const {
@@ -93,9 +98,9 @@ class coursiersapp extends Component {
     });
   }
 
-  getBooks() {
+  getRestaurants() {
     return new Promise((resolve, reject) => {;
-      fetch('http://coursiers.dev/books')
+      fetch('http://coursiers.dev/restaurants')
       .then((response) => {
         return response.json();
       }).then((json) => {
@@ -107,23 +112,17 @@ class coursiersapp extends Component {
     });
   }
 
-  addBook(name) {
-    var body = {
-      name: name
-    };
-    console.log(JSON.stringify(body));
+  addRestaurant(restaurant) {
+    console.log(JSON.stringify(restaurant));
 
-    var request = new Request('http://coursiers.dev/books', {
+    var request = new Request('http://coursiers.dev/restaurants', {
       method: 'POST',
-      body: JSON.stringify(body)
+      body: JSON.stringify(restaurant)
     });
     return fetch(request)
       .then((response) => {
         return response.json();
       })
-      // .then((responseJson) => {
-      //   return responseJson.movies;
-      // })
       .catch((err) => {
         console.log(err);
       });
@@ -133,17 +132,36 @@ class coursiersapp extends Component {
 
     console.log('componentDidMount');
 
-     animationTimeout = setTimeout(() => {
-      this.map.fitToSuppliedMarkers(['home', 'palaisGarnier', 'stGeorges'], false);
-    }, 1000);
+    // animationTimeout = setTimeout(() => {
+    //   this.map.fitToSuppliedMarkers(['home', 'palaisGarnier', 'stGeorges'], false);
+    // }, 1000);
 
-    // this.addBook("Les fleurs du mal").then((data) => {
-    //   console.log('Created book with name '+data.name);
+    // var restaurant = {
+    //   "@context": "http://schema.org",
+    //   "@type": "Restaurant",
+    //   name: "Restaurant L'Atlantide",
+    //   geo: 'POINT(48.883196 2.381802)'
+    // };
+
+    // this.addRestaurant(restaurant).then((data) => {
+    //   console.log('Created restaurant ', data);
     // })
 
-    this.getBooks().then((data) => {
-      console.log(data);
+    this.getRestaurants().then((data) => {
+      var restaurants = _.map(data['hydra:member'], (restaurant) => {
+        var matches = restaurant.geo.match(/POINT\(([0-9.]+) ([0-9.]+)\)/i);
+        var latitude = matches[1];
+        var longitude = matches[2];
+        restaurant.geo = {
+          latitude: latitude,
+          longitude: longitude
+        }
+
+        return restaurant;
+      });
     });
+
+
 
     /*
     navigator.geolocation.getCurrentPosition(
@@ -227,6 +245,7 @@ class coursiersapp extends Component {
     }
   }
 
+  /*
   render() {
     return (
       <View style={styles.container}>
@@ -274,6 +293,48 @@ class coursiersapp extends Component {
              />
           </MapView>
         </View>
+      </View>
+    );
+  }
+  */
+
+  render() {
+    return (
+      <Navigator
+          initialRoute={{id: 'MainPage', name: 'Index'}}
+          renderScene={this.renderScene.bind(this)}
+          configureScene={(route) => {
+            if (route.sceneConfig) {
+              return route.sceneConfig;
+            }
+            return Navigator.SceneConfigs.FloatFromRight;
+          }} />
+    );
+  }
+
+  renderScene(route, navigator) {
+    console.log(route);
+    var routeId = route.id;
+    if (routeId === 'MainPage') {
+      return (
+        <MainPage navigator={navigator} />
+      );
+    }
+    if (routeId === 'LoginPage') {
+      return (
+        <LoginPage navigator={navigator} />
+      );
+    }
+    return this.noRoute(navigator);
+  }
+
+  noRoute(navigator) {
+    return (
+      <View style={{flex: 1, alignItems: 'stretch', justifyContent: 'center'}}>
+        <TouchableOpacity style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}
+            onPress={() => navigator.pop()}>
+          <Text style={{color: 'red', fontWeight: 'bold'}}>请在 index.js 的 renderScene 中配置这个页面的路由</Text>
+        </TouchableOpacity>
       </View>
     );
   }
