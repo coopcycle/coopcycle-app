@@ -8,7 +8,27 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
+const FBSDK = require('react-native-fbsdk');
+const {
+  LoginButton,
+  AccessToken
+} = FBSDK;
+
 class LoginPage extends Component {
+  onLoginFinished(error, result) {
+    if (error) {
+      alert("Login failed with error: " + result.error);
+    } else if (result.isCancelled) {
+      alert("Login was cancelled");
+    } else {
+      console.log(result);
+      AccessToken.getCurrentAccessToken().then(
+        (data) => {
+          console.log(data.accessToken.toString())
+        }
+      )
+    }
+  }
   render() {
     return (
       <Navigator
@@ -23,18 +43,11 @@ class LoginPage extends Component {
   renderScene(route, navigator) {
     return (
       <View style={{flex: 1, alignItems: 'center', justifyContent:'center'}}>
-        <TouchableHighlight style={{backgroundColor: 'yellow', padding: 10}}
-            onPress={this.gotoPersonPage.bind(this)}>
-          <Text style={{backgroundColor: 'yellow', color: 'green'}}>YO LOGIN</Text>
-        </TouchableHighlight>
+        <LoginButton
+            onLoginFinished={this.onLoginFinished}
+            onLogoutFinished={() => console.log("User logged out")}/>
       </View>
     );
-  }
-  gotoPersonPage() {
-    this.props.navigator.push({
-      id: 'PersonPage',
-      name: '我的主页',
-    });
   }
 }
 
@@ -54,7 +67,7 @@ var NavigationBarRouteMapper = {
     return (
       <TouchableOpacity style={{flex: 1, justifyContent: 'center'}}>
         <Text style={{color: 'white', margin: 10, fontSize: 16}}>
-          主页
+          Coursiers
         </Text>
       </TouchableOpacity>
     );

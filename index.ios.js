@@ -21,6 +21,9 @@ import _ from 'underscore';
 
 const MainPage = require('./MainPage');
 const LoginPage = require('./LoginPage');
+const RestaurantsPage = require('./RestaurantsPage');
+const RestaurantPage = require('./RestaurantPage');
+const CartPage = require('./CartPage');
 
 const FBSDK = require('react-native-fbsdk');
 const {
@@ -230,21 +233,6 @@ class coursiersapp extends Component {
     });
   }
 
-  onLoginFinished(error, result) {
-    if (error) {
-      alert("Login failed with error: " + result.error);
-    } else if (result.isCancelled) {
-      alert("Login was cancelled");
-    } else {
-      console.log(result);
-      AccessToken.getCurrentAccessToken().then(
-        (data) => {
-          console.log(data.accessToken.toString())
-        }
-      )
-    }
-  }
-
   /*
   render() {
     return (
@@ -313,18 +301,33 @@ class coursiersapp extends Component {
   }
 
   renderScene(route, navigator) {
-    console.log(route);
     var routeId = route.id;
     if (routeId === 'MainPage') {
       return (
-        <MainPage navigator={navigator} />
+        <MainPage navigator={navigator} {...route.passProps} />
+      );
+    }
+    if (routeId === 'RestaurantsPage') {
+      return (
+        <RestaurantsPage navigator={navigator} {...route.passProps} />
+      );
+    }
+    if (routeId === 'RestaurantPage') {
+      return (
+        <RestaurantPage navigator={navigator} {...route.passProps} restaurant={route.restaurant} />
       );
     }
     if (routeId === 'LoginPage') {
       return (
-        <LoginPage navigator={navigator} />
+        <LoginPage navigator={navigator} {...route.passProps} />
       );
     }
+    if (routeId === 'CartPage') {
+      return (
+        <CartPage navigator={navigator} {...route.passProps} />
+      );
+    }
+
     return this.noRoute(navigator);
   }
 
@@ -333,7 +336,7 @@ class coursiersapp extends Component {
       <View style={{flex: 1, alignItems: 'stretch', justifyContent: 'center'}}>
         <TouchableOpacity style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}
             onPress={() => navigator.pop()}>
-          <Text style={{color: 'red', fontWeight: 'bold'}}>请在 index.js 的 renderScene 中配置这个页面的路由</Text>
+          <Text style={{color: 'red', fontWeight: 'bold'}}>NOT FOUND</Text>
         </TouchableOpacity>
       </View>
     );

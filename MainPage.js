@@ -115,13 +115,8 @@ class MainPage extends Component {
   renderScene(route, navigator) {
     return (
       <View style={styles.container}>
-        <View style={{flex: 1, justifyContent: 'center'}}>
-          <View style={{flex: 1, borderStyle: "solid", borderWidth: 1, borderColor: "black"}}>
-            <LoginButton
-              onLoginFinished={this.onLoginFinished}
-              onLogoutFinished={() => console.log("User logged out")}/>
-          </View>
-          <View style={{flex: 1, borderStyle: "solid", borderWidth: 1, borderColor: "black"}}>
+        <View style={{flex: 1}}>
+          <View style={{flex: 1, padding: 10}}>
             <Text>Distance : {this.state.distance} m</Text>
             <Slider
               minimumValue={0}
@@ -192,9 +187,9 @@ var NavigationBarRouteMapper = {
   LeftButton(route, navigator, index, navState) {
     return (
       <TouchableOpacity style={{flex: 1, justifyContent: 'center'}}
-          onPress={() => navigator.parentNavigator.pop()}>
+          onPress={() => navigator.parentNavigator.push({id: 'RestaurantsPage', name: 'Restaurants'})}>
         <Text style={{color: 'white', margin: 10,}}>
-          返回
+          Restaurants
         </Text>
       </TouchableOpacity>
     );
@@ -213,7 +208,7 @@ var NavigationBarRouteMapper = {
     return (
       <TouchableOpacity style={{flex: 1, justifyContent: 'center'}}>
         <Text style={{color: 'white', margin: 10, fontSize: 16}}>
-          主页
+          Coursiers
         </Text>
       </TouchableOpacity>
     );
@@ -223,6 +218,7 @@ var NavigationBarRouteMapper = {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingTop: 60,
     flexDirection: 'column',
     justifyContent: 'space-between',
     alignItems: 'stretch',
