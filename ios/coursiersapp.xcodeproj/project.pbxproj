@@ -25,11 +25,6 @@
 		564EC70629F14830BD6166FE /* libWorkers.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 22AA4E65F8A243C4AB94A35D /* libWorkers.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		EC4E6147F2F54F02B7113308 /* libRCTFBSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A7D7CFD6804D4B8B9BB817E7 /* libRCTFBSDK.a */; };
-		FA0C2DD51DA53E9E004C7BC1 /* mapstogpx20161005_135825.gpx in Resources */ = {isa = PBXBuildFile; fileRef = FA0C2DD41DA53E9E004C7BC1 /* mapstogpx20161005_135825.gpx */; };
-		FA0C2DD71DA54120004C7BC1 /* mapstogpx20161005_140905.gpx in Resources */ = {isa = PBXBuildFile; fileRef = FA0C2DD61DA54120004C7BC1 /* mapstogpx20161005_140905.gpx */; };
-		FA0C2DD91DA541DD004C7BC1 /* mapstogpx20161005_141230.gpx in Resources */ = {isa = PBXBuildFile; fileRef = FA0C2DD81DA541DD004C7BC1 /* mapstogpx20161005_141230.gpx */; };
-		FA0C2DDB1DA54420004C7BC1 /* Test.gpx in Resources */ = {isa = PBXBuildFile; fileRef = FA0C2DDA1DA54420004C7BC1 /* Test.gpx */; };
-		FA0C2DDD1DA5463F004C7BC1 /* mapstogpx20161005_143112.gpx in Resources */ = {isa = PBXBuildFile; fileRef = FA0C2DDC1DA5463F004C7BC1 /* mapstogpx20161005_143112.gpx */; };
 		FA0C2DDF1DA546F0004C7BC1 /* mapstogpx20161005_143351.gpx in Resources */ = {isa = PBXBuildFile; fileRef = FA0C2DDE1DA546F0004C7BC1 /* mapstogpx20161005_143351.gpx */; };
 		FA23E5A91D91838B00FE5134 /* libAirMaps.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FA23E59D1D9181BE00FE5134 /* libAirMaps.a */; };
 		FAFEFD731D9422C200C43A66 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAFEFD701D9422C200C43A66 /* FBSDKCoreKit.framework */; };
@@ -170,11 +165,6 @@
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		A7D7CFD6804D4B8B9BB817E7 /* libRCTFBSDK.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTFBSDK.a; sourceTree = "<group>"; };
-		FA0C2DD41DA53E9E004C7BC1 /* mapstogpx20161005_135825.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = mapstogpx20161005_135825.gpx; sourceTree = "<group>"; };
-		FA0C2DD61DA54120004C7BC1 /* mapstogpx20161005_140905.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = mapstogpx20161005_140905.gpx; sourceTree = "<group>"; };
-		FA0C2DD81DA541DD004C7BC1 /* mapstogpx20161005_141230.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = mapstogpx20161005_141230.gpx; sourceTree = "<group>"; };
-		FA0C2DDA1DA54420004C7BC1 /* Test.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Test.gpx; sourceTree = "<group>"; };
-		FA0C2DDC1DA5463F004C7BC1 /* mapstogpx20161005_143112.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = mapstogpx20161005_143112.gpx; sourceTree = "<group>"; };
 		FA0C2DDE1DA546F0004C7BC1 /* mapstogpx20161005_143351.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = mapstogpx20161005_143351.gpx; sourceTree = "<group>"; };
 		FAFEFD701D9422C200C43A66 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
 		FAFEFD711D9422C200C43A66 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
@@ -357,11 +347,6 @@
 			isa = PBXGroup;
 			children = (
 				FA0C2DDE1DA546F0004C7BC1 /* mapstogpx20161005_143351.gpx */,
-				FA0C2DDC1DA5463F004C7BC1 /* mapstogpx20161005_143112.gpx */,
-				FA0C2DDA1DA54420004C7BC1 /* Test.gpx */,
-				FA0C2DD81DA541DD004C7BC1 /* mapstogpx20161005_141230.gpx */,
-				FA0C2DD61DA54120004C7BC1 /* mapstogpx20161005_140905.gpx */,
-				FA0C2DD41DA53E9E004C7BC1 /* mapstogpx20161005_135825.gpx */,
 				FAFEFD5D1D941F9700C43A66 /* Frameworks */,
 				13B07FAE1A68108700A75B9A /* coursiersapp */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
@@ -653,13 +638,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				FA0C2DDD1DA5463F004C7BC1 /* mapstogpx20161005_143112.gpx in Resources */,
-				FA0C2DD91DA541DD004C7BC1 /* mapstogpx20161005_141230.gpx in Resources */,
 				FA0C2DDF1DA546F0004C7BC1 /* mapstogpx20161005_143351.gpx in Resources */,
-				FA0C2DD71DA54120004C7BC1 /* mapstogpx20161005_140905.gpx in Resources */,
-				FA0C2DDB1DA54420004C7BC1 /* Test.gpx in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
-				FA0C2DD51DA53E9E004C7BC1 /* mapstogpx20161005_135825.gpx in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
