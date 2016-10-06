@@ -197,9 +197,9 @@ var NavigationBarRouteMapper = {
   RightButton(route, navigator, index, navState) {
     return (
       <TouchableOpacity style={{flex: 1, justifyContent: 'center'}}
-          onPress={() => navigator.parentNavigator.push({id: 'LoginPage', name: 'Login'})}>
+          onPress={() => navigator.parentNavigator.push({id: 'CourierPage', name: 'Courier'})}>
         <Text style={{color: 'white', margin: 10,}}>
-          Configurer
+          Coursier
         </Text>
       </TouchableOpacity>
     );

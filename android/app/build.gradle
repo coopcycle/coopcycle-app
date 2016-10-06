@@ -126,6 +126,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-workers')
     compile project(':react-native-fbsdk')
     compile project(':react-native-maps')
     compile fileTree(dir: "libs", include: ["*.jar"])

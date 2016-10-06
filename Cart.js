@@ -23,7 +23,8 @@ class CartItem {
 }
 
 class Cart {
-  constructor() {
+  constructor(restaurant) {
+    this.restaurant = restaurant;
     this.items = [];
   }
   addOffer(offer) {
@@ -55,6 +56,21 @@ class Cart {
 
   get articlesCount() {
     return _.reduce(this.items, function(memo, item) { return memo + item.quantity; }, 0);
+  }
+  toJSON() {
+    let json = {
+      customer: '/customers/1',
+      restaurant: this.restaurant['@id'],
+      orderedItem: []
+    }
+    json.orderedItem = _.map(this.items, (item) => {
+      return {
+        quantity: item.quantity,
+        product: item.offer['@id']
+      }
+    });
+
+    return json;
   }
 }
 

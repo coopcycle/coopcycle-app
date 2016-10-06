@@ -23,10 +23,8 @@ class RestaurantPage extends Component {
       modalVisible: false,
       distance: 2000,
       loading: false,
-      dataSource: ds.cloneWithRows(_.map(this.props.restaurant.recipes, (recipe) => {
-        return {...recipe, price: 9.99};
-      })),
-      cart: new Cart()
+      dataSource: ds.cloneWithRows(this.props.restaurant.products),
+      cart: new Cart(props.restaurant)
     };
   }
   _addToCart(recipe) {

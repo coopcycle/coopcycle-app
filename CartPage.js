@@ -9,10 +9,12 @@ import {
   ListView,
   AsyncStorage,
   Alert,
+  ActivityIndicator,
 } from 'react-native';
 import _ from 'underscore';
 
 const Cart = require('./Cart');
+const GeoUtils = require('./GeoUtils');
 
 class CartPage extends Component {
   constructor(props) {
@@ -23,6 +25,7 @@ class CartPage extends Component {
     }});
     this.state = {
       cart: cart,
+      loading: false,
     };
   }
   _renderRow(item) {
@@ -68,6 +71,27 @@ class CartPage extends Component {
       </View>
     );
   }
+  _getCustomer(id) {
+    return fetch('http://coursiers.dev/customers/'+id)
+      .then((response) => {
+        return response.json();
+      });
+  }
+  _saveCart() {
+    let cart = this.state.cart;
+    var request = new Request('http://coursiers.dev/orders', {
+      method: 'POST',
+      body: JSON.stringify(cart.toJSON())
+    });
+    return fetch(request)
+      .then((response) => {
+        return response.json();
+      })
+      .catch((err) => {
+        console.log('ERROR')
+        console.log(err.message);
+      });
+  }
   render() {
     return (
       <Navigator
@@ -84,6 +108,13 @@ class CartPage extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.products}>
+          <View style={styles.loader}>
+            <ActivityIndicator
+              animating={this.state.loading}
+              size="large"
+              color="#0000ff"
+            />
+          </View>
           <ListView
             dataSource={dataSource}
             enableEmptySections
@@ -99,7 +130,32 @@ class CartPage extends Component {
           </View>
           <View style={styles.cartRight}>
             <TouchableOpacity style={styles.button}
-              onPress={() => {}}>
+              onPress={() => {
+                this.setState({loading: true});
+                let customer;
+                this._getCustomer(1)
+                  .then((c) => {
+                    customer = c;
+                    customer.deliveryAddress = _.map(customer.deliveryAddress, (deliveryAddress) => {
+                      deliveryAddress.geo = GeoUtils.parsePoint(deliveryAddress.geo);
+                      return deliveryAddress;
+                    })
+                  })
+                  .then(this._saveCart.bind(this))
+                  .then((order) => {
+                    this.setState({loading: false});
+                    navigator.parentNavigator.push({
+                      id: 'ChooseAddressPage',
+                      name: 'ChooseAddress',
+                      sceneConfig: Navigator.SceneConfigs.FloatFromRight,
+                      passProps: {
+                        restaurant: this.state.cart.restaurant,
+                        order: order,
+                        customer: customer,
+                      }
+                    });
+                  })
+              }}>
               <Text style={[styles.textBold, styles.textWhite, styles.textCenter]}>Payer {this.state.cart.total} €</Text>
             </TouchableOpacity>
           </View>
@@ -237,6 +293,10 @@ const styles = StyleSheet.create({
   separator: {
     height: StyleSheet.hairlineWidth,
     backgroundColor: '#8e8e8e',
+  },
+  loader: {
+    ...StyleSheet.absoluteFillObject,
+    justifyContent: 'center',
   },
 });
 

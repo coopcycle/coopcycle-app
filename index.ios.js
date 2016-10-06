@@ -18,12 +18,26 @@ import {
 import MapView from 'react-native-maps';
 import Polyline from 'polyline';
 import _ from 'underscore';
+import { Worker } from 'react-native-workers';
+
+/* start worker */
+const worker = new Worker("./Worker.js");
+
+/* post message to worker. String only ! */
+worker.postMessage("hello from application");
+
+/* get message from worker. String only ! */
+worker.onmessage = (message) => {
+  console.log(message);
+}
 
 const MainPage = require('./MainPage');
 const LoginPage = require('./LoginPage');
 const RestaurantsPage = require('./RestaurantsPage');
 const RestaurantPage = require('./RestaurantPage');
 const CartPage = require('./CartPage');
+const ChooseAddressPage = require('./ChooseAddressPage');
+const CourierPage = require('./CourierPage');
 
 const FBSDK = require('react-native-fbsdk');
 const {
@@ -325,6 +339,16 @@ class coursiersapp extends Component {
     if (routeId === 'CartPage') {
       return (
         <CartPage navigator={navigator} {...route.passProps} />
+      );
+    }
+    if (routeId === 'ChooseAddressPage') {
+      return (
+        <ChooseAddressPage navigator={navigator} {...route.passProps} />
+      );
+    }
+    if (routeId === 'CourierPage') {
+      return (
+        <CourierPage navigator={navigator} {...route.passProps} />
       );
     }
 

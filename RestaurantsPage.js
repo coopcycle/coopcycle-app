@@ -17,6 +17,8 @@ import MapView from 'react-native-maps';
 import Polyline from 'polyline';
 import _ from 'underscore';
 
+const GeoUtils = require('./GeoUtils');
+
 const HOME_COORDS = {
   latitude: 48.875973,
   longitude: 2.370039
@@ -54,14 +56,7 @@ class RestaurantsPage extends Component {
   updateRestaurants(distance) {
     this.getRestaurants(distance).then((data) => {
       var restaurants = _.map(data['hydra:member'], (restaurant) => {
-        var matches = restaurant.geo.match(/POINT\(([0-9.]+) ([0-9.]+)\)/i);
-        var latitude = matches[1];
-        var longitude = matches[2];
-        restaurant.geo = {
-          latitude: latitude,
-          longitude: longitude
-        }
-
+        restaurant.geo = GeoUtils.parsePoint(restaurant.geo)
         return restaurant;
       });
       this.setState({
