@@ -18,6 +18,7 @@ import Polyline from 'polyline';
 import _ from 'underscore';
 
 const GeoUtils = require('./GeoUtils');
+const Auth = require('./src/Auth');
 
 const HOME_COORDS = {
   latitude: 48.875973,
@@ -27,14 +28,17 @@ const HOME_COORDS = {
 class RestaurantsPage extends Component {
   constructor(props) {
     super(props);
+    let restaurants = [];
+    if (props.restaurants) {
+      restaurants = props.restaurants;
+    }
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
       modalVisible: false,
       distance: 2000,
       loading: false,
-      dataSource: ds.cloneWithRows([
-        // 'John', 'Joel', 'James', 'Jimmy', 'Jackson', 'Jillian', 'Julie', 'Devin'
-      ])
+      dataSource: ds.cloneWithRows(restaurants),
+      topLeftMessage: "Connexion"
     };
   }
   getRestaurants(distance) {
@@ -42,7 +46,7 @@ class RestaurantsPage extends Component {
       loading: true
     });
     return new Promise((resolve, reject) => {;
-      fetch('http://coursiers.dev/restaurants?coordinate='+HOME_COORDS.latitude+','+HOME_COORDS.longitude+'&distance='+distance)
+      fetch('http://coursiers.dev/api/restaurants?coordinate='+HOME_COORDS.latitude+','+HOME_COORDS.longitude+'&distance='+distance)
       .then((response) => {
         return response.json();
       }).then((json) => {
@@ -67,7 +71,12 @@ class RestaurantsPage extends Component {
   }
 
   componentDidMount() {
-    this.updateRestaurants(this.state.distance);
+    if (!this.props.restaurants) {
+      this.updateRestaurants(this.state.distance);
+    }
+    Auth.getUser().then((user) => {
+      console.log(user);
+    });
   }
 
   render() {
@@ -144,8 +153,17 @@ var NavigationBarRouteMapper = {
   LeftButton(route, navigator, index, navState) {
     return (
       <TouchableOpacity style={{flex: 1, justifyContent: 'center'}}
-          onPress={() => navigator.parentNavigator.pop()}>
-        <Text style={{color: 'white', margin: 10,}}>Retour</Text>
+          onPress={() => navigator.parentNavigator.push({
+          id: 'LoginPage',
+          name: 'Login',
+          sceneConfig: Navigator.SceneConfigs.FloatFromBottom,
+          passProps: {
+            onLoginSuccess: (user) => {
+              console.log(user);
+            }
+          }
+        })}>
+        <Text style={{color: 'white', margin: 10,}}>Connexion</Text>
       </TouchableOpacity>
     );
   },
