@@ -38,7 +38,7 @@ class RestaurantsPage extends Component {
       distance: 2000,
       loading: false,
       dataSource: ds.cloneWithRows(restaurants),
-      topLeftMessage: "Connexion"
+      navigationBarRouteMapper: this.getNavigationBarRouteMapper(false),
     };
   }
   getRestaurants(distance) {
@@ -56,7 +56,6 @@ class RestaurantsPage extends Component {
       });
     });
   }
-
   updateRestaurants(distance) {
     this.getRestaurants(distance).then((data) => {
       var restaurants = _.map(data['hydra:member'], (restaurant) => {
@@ -69,16 +68,84 @@ class RestaurantsPage extends Component {
       });
     });
   }
-
+  _onLoginSuccess(user) {
+    this.setState({navigationBarRouteMapper: this.getNavigationBarRouteMapper(true)});
+  }
+  _onLogout(user) {
+    this.setState({navigationBarRouteMapper: this.getNavigationBarRouteMapper(false)});
+  }
+  getNavigationBarRouteMapper(authenticated) {
+    let that = this;
+    if (authenticated) {
+      return {
+        LeftButton(route, navigator, index, navState) {
+          return (
+            <TouchableOpacity style={{flex: 1, justifyContent: 'center'}}
+              onPress={() => navigator.parentNavigator.push({
+                id: 'AccountPage',
+                name: 'Account',
+                sceneConfig: Navigator.SceneConfigs.FloatFromBottom,
+                passProps: {
+                  onLogout: that._onLogout.bind(that)
+                }
+              })}>
+              <Text style={{color: 'white', margin: 10}}>Mon compte</Text>
+            </TouchableOpacity>
+          );
+        },
+        RightButton(route, navigator, index, navState) {
+          return null;
+        },
+        Title(route, navigator, index, navState) {
+          return (
+            <TouchableOpacity style={{flex: 1, justifyContent: 'center'}}>
+              <Text style={{color: 'white', margin: 10, fontSize: 16}}>
+                Restaurants
+              </Text>
+            </TouchableOpacity>
+          );
+        }
+      }
+    } else {
+      return {
+        LeftButton(route, navigator, index, navState) {
+          return (
+            <TouchableOpacity style={{flex: 1, justifyContent: 'center'}}
+              onPress={() => navigator.parentNavigator.push({
+                id: 'LoginPage',
+                name: 'Login',
+                sceneConfig: Navigator.SceneConfigs.FloatFromBottom,
+                passProps: {
+                  onLoginSuccess: that._onLoginSuccess.bind(that)
+                }
+              })}>
+              <Text style={{color: 'white', margin: 10}}>Connexion</Text>
+            </TouchableOpacity>
+          );
+        },
+        RightButton(route, navigator, index, navState) {
+          return null;
+        },
+        Title(route, navigator, index, navState) {
+          return (
+            <TouchableOpacity style={{flex: 1, justifyContent: 'center'}}>
+              <Text style={{color: 'white', margin: 10, fontSize: 16}}>
+                Restaurants
+              </Text>
+            </TouchableOpacity>
+          );
+        }
+      }
+    }
+  }
   componentDidMount() {
     if (!this.props.restaurants) {
       this.updateRestaurants(this.state.distance);
     }
     Auth.getUser().then((user) => {
-      console.log(user);
-    });
+      this.setState({navigationBarRouteMapper: this.getNavigationBarRouteMapper(true)});
+    }).catch(() => {});
   }
-
   render() {
     return (
       <Navigator
@@ -86,7 +153,7 @@ class RestaurantsPage extends Component {
           navigator={this.props.navigator}
           navigationBar={
             <Navigator.NavigationBar style={{backgroundColor: '#246dd5'}}
-                routeMapper={NavigationBarRouteMapper} />
+                routeMapper={this.state.navigationBarRouteMapper} />
           } />
     );
   }
@@ -148,38 +215,6 @@ class RestaurantsPage extends Component {
     );
   }
 }
-
-var NavigationBarRouteMapper = {
-  LeftButton(route, navigator, index, navState) {
-    return (
-      <TouchableOpacity style={{flex: 1, justifyContent: 'center'}}
-          onPress={() => navigator.parentNavigator.push({
-          id: 'LoginPage',
-          name: 'Login',
-          sceneConfig: Navigator.SceneConfigs.FloatFromBottom,
-          passProps: {
-            onLoginSuccess: (user) => {
-              console.log(user);
-            }
-          }
-        })}>
-        <Text style={{color: 'white', margin: 10,}}>Connexion</Text>
-      </TouchableOpacity>
-    );
-  },
-  RightButton(route, navigator, index, navState) {
-    return null;
-  },
-  Title(route, navigator, index, navState) {
-    return (
-      <TouchableOpacity style={{flex: 1, justifyContent: 'center'}}>
-        <Text style={{color: 'white', margin: 10, fontSize: 16}}>
-          Restaurants
-        </Text>
-      </TouchableOpacity>
-    );
-  }
-};
 
 const styles = StyleSheet.create({
   container: {

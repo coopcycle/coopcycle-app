@@ -15,6 +15,8 @@ import _ from 'underscore';
 
 const Cart = require('./Cart');
 const GeoUtils = require('./GeoUtils');
+const OrdersAPI = require('./src/OrdersAPI');
+const Auth = require('./src/Auth');
 
 class CartPage extends Component {
   constructor(props) {
@@ -71,25 +73,29 @@ class CartPage extends Component {
       </View>
     );
   }
-  _getCustomer(id) {
-    return fetch('http://coursiers.dev/customers/'+id)
-      .then((response) => {
-        return response.json();
-      });
-  }
-  _saveCart() {
-    let cart = this.state.cart;
-    var request = new Request('http://coursiers.dev/orders', {
-      method: 'POST',
-      body: JSON.stringify(cart.toJSON())
+  _createOrder() {
+    this.setState({loading: true});
+    OrdersAPI.createOrder(this.state.cart).then((data) => {
+      console.log(data);
+      this.setState({loading: false});
     });
-    return fetch(request)
-      .then((response) => {
-        return response.json();
+  }
+  _onClickButton(navigator) {
+    Auth.getUser()
+      .then((user) => {
+        this._createOrder();
       })
-      .catch((err) => {
-        console.log('ERROR')
-        console.log(err.message);
+      .catch((error) => {
+        navigator.parentNavigator.push({
+          id: 'LoginPage',
+          name: 'Login',
+          sceneConfig: Navigator.SceneConfigs.FloatFromBottom,
+          passProps: {
+            onLoginSuccess: () => {
+              this._createOrder();
+            }
+          }
+        });
       });
   }
   render() {
@@ -130,32 +136,7 @@ class CartPage extends Component {
           </View>
           <View style={styles.cartRight}>
             <TouchableOpacity style={styles.button}
-              onPress={() => {
-                this.setState({loading: true});
-                let customer;
-                this._getCustomer(1)
-                  .then((c) => {
-                    customer = c;
-                    customer.deliveryAddress = _.map(customer.deliveryAddress, (deliveryAddress) => {
-                      deliveryAddress.geo = GeoUtils.parsePoint(deliveryAddress.geo);
-                      return deliveryAddress;
-                    })
-                  })
-                  .then(this._saveCart.bind(this))
-                  .then((order) => {
-                    this.setState({loading: false});
-                    navigator.parentNavigator.push({
-                      id: 'ChooseAddressPage',
-                      name: 'ChooseAddress',
-                      sceneConfig: Navigator.SceneConfigs.FloatFromRight,
-                      passProps: {
-                        restaurant: this.state.cart.restaurant,
-                        order: order,
-                        customer: customer,
-                      }
-                    });
-                  })
-              }}>
+              onPress={this._onClickButton.bind(this, navigator)}>
               <Text style={[styles.textBold, styles.textWhite, styles.textCenter]}>Payer {this.state.cart.total} €</Text>
             </TouchableOpacity>
           </View>

@@ -16,9 +16,12 @@ const {
   AccessToken
 } = FBSDK;
 
+const Auth = require('./src/Auth');
+
 import MapView from 'react-native-maps';
 import Polyline from 'polyline';
 import _ from 'underscore';
+
 
 const { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;

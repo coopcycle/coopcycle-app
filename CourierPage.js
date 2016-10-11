@@ -40,14 +40,17 @@ class CourierPage extends Component {
       customer: props.customer,
       polylineCoords: [],
       markers: [],
+      position: undefined,
     };
   }
   componentWillMount() {
+
     this.ws = new WebSocket('ws://coursiers.dev/realtime');
+
     this.ws.onopen = () => {
       // connection opened
-      console.log('connection onopen')
-      this.ws.send('something'); // send a message
+      console.log('Connected to realtime server...')
+      this.ws.send('Hello'); // send a message
     };
 
     this.ws.onmessage = (e) => {
@@ -55,17 +58,48 @@ class CourierPage extends Component {
       console.log(e.data);
       var data = JSON.parse(e.data);
       if (data.channel === 'orders') {
+
+        OrdersAPI.getOrderById(data.message.id).then((order) => {
+
+          let coordinates = {
+            latitude: order.restaurant.geo.latitude,
+            longitude: order.restaurant.geo.longitude,
+          };
+          let marker = {
+            key: 'order',
+            identifier: 'order',
+            coordinate: coordinates,
+            pinColor: 'green',
+            title: order.restaurant.name,
+            description: order.restaurant.streetAddress,
+          }
+
+          DirectionsAPI.getDirections({
+            origin: this.position,
+            destination: order.restaurant.geo,
+          }).then((data) => {
+            // console.log(data.routes[0].legs.length)
+            // console.log(data.routes[0].legs[0]);
+            // console.log(data.routes[0].legs[0].duration.text);
+            // console.log(data.routes[0].legs[1].duration.text);
+            let polylineCoords = DirectionsAPI.toPolylineCoordinates(data);
+            this.setState({
+              markers: [marker],
+              region: {
+                ...this.state.region,
+                coordinates,
+              },
+              polylineCoords: polylineCoords
+            });
+            this.map.fitToElements(true);
+          })
+        });
+
         // Alert.alert(
         //   'Nouvelle livraison',
         //   'Une nouvelle livraison est disponible',
         // );
-        this.setState({
-          courier: {
-            latitude: data.message.latitude,
-            longitude: data.message.longitude,
-          }
-        });
-        // this.map.fitToSuppliedMarkers(['courier'], true)
+
       }
     };
 
@@ -87,6 +121,11 @@ class CourierPage extends Component {
 
     this.watchID = navigator.geolocation.watchPosition((position) => {
       this._notifyCoordinates(position.coords);
+      // this.setState({region: {
+      //   ...this.state.region,
+      //   latitude: position.coords.latitude,
+      //   longitude: position.coords.longitude,
+      // }})
     });
 
     return;
@@ -140,6 +179,7 @@ class CourierPage extends Component {
       });
   }
   _notifyCoordinates(coordinates) {
+    this.position = coordinates;
     var request = new Request('http://coursiers.dev/couriers/1/coordinates', {
       method: 'POST',
       body: JSON.stringify({coordinates: coordinates})
@@ -167,22 +207,20 @@ class CourierPage extends Component {
           ref={ref => { this.map = ref; }}
           style={styles.map}
           initialRegion={this.state.region}
+          region={this.state.region}
           zoomEnabled
           showsUserLocation
           loadingEnabled
           loadingIndicatorColor={"#666666"}
           loadingBackgroundColor={"#eeeeee"}>
-          <MapView.Marker
-            identifier='courier'
-            coordinate={this.state.courier}
-            pinColor="green"
-            flat />
           {this.state.markers.map(marker => (
             <MapView.Marker
               identifier={marker.identifier}
               key={marker.key}
               coordinate={marker.coordinate}
-              pinColor={marker.pinColor} />
+              pinColor={marker.pinColor}
+              title={marker.title}
+              description={marker.description} />
           ))}
           <MapView.Polyline
             coordinates={this.state.polylineCoords}

@@ -59,7 +59,7 @@ class Cart {
   }
   toJSON() {
     let json = {
-      customer: '/customers/1',
+      // customer: '/customers/1',
       restaurant: this.restaurant['@id'],
       orderedItem: []
     }

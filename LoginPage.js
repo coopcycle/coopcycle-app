@@ -6,28 +6,37 @@ import {
   Navigator,
   TouchableHighlight,
   TouchableOpacity,
+  TextInput,
+  AsyncStorage,
 } from 'react-native';
 
 const FBSDK = require('react-native-fbsdk');
 const {
   LoginButton,
-  AccessToken
+  AccessToken,
+  GraphRequest,
+  GraphRequestManager,
 } = FBSDK;
 
+const Auth = require('./src/Auth');
+
 class LoginPage extends Component {
-  onLoginFinished(error, result) {
-    if (error) {
-      alert("Login failed with error: " + result.error);
-    } else if (result.isCancelled) {
-      alert("Login was cancelled");
-    } else {
-      console.log(result);
-      AccessToken.getCurrentAccessToken().then(
-        (data) => {
-          console.log(data.accessToken.toString())
+  state = {
+    email: undefined,
+    password: undefined,
+    message: undefined,
+  }
+  _onSubmit(navigator) {
+    Auth.login(this.state.email, this.state.password)
+      .then((user) => {
+        navigator.parentNavigator.pop();
+        this.props.onLoginSuccess(user);
+      })
+      .catch((err) => {
+        if (err.code === 401) {
+          this.setState({message: "Utilisateur et/ou mot de passe inexistant."})
         }
-      )
-    }
+      });
   }
   render() {
     return (
@@ -42,14 +51,65 @@ class LoginPage extends Component {
   }
   renderScene(route, navigator) {
     return (
-      <View style={{flex: 1, alignItems: 'center', justifyContent:'center'}}>
-        <LoginButton
-            onLoginFinished={this.onLoginFinished}
-            onLogoutFinished={() => console.log("User logged out")}/>
+      <View style={{flex: 1, flexDirection: "column", justifyContent: "center"}}>
+        <View style={styles.email}>
+          <TextInput
+            ref="email"
+            autoCorrect={false}
+            autoCapitalize="none"
+            onChangeText={(email) => this.setState({email})}
+            style={{height: 40}}
+            placeholder="Email"
+          />
+        </View>
+        <View style={styles.password}>
+          <TextInput
+            ref="password"
+            autoCorrect={false}
+            autoCapitalize="none"
+            secureTextEntry={true}
+            onChangeText={(password) => this.setState({password})}
+            style={{height: 40}}
+            placeholder="Mot de passe"
+          />
+        </View>
+        <View style={styles.button}>
+          <TouchableOpacity style={{flex: 1}} onPress={this._onSubmit.bind(this, navigator)}>
+            <Text style={{color: "white", fontWeight: "bold"}}>Valider</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.message}>
+          <Text>{this.state.message}</Text>
+        </View>
       </View>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  email: {
+    padding: 10,
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    borderStyle: 'solid',
+    borderColor: '#8e8e8e',
+  },
+  password: {
+    padding: 10,
+    borderBottomWidth: 1,
+    borderStyle: 'solid',
+    borderColor: '#8e8e8e',
+  },
+  button: {
+    alignItems: "center",
+    backgroundColor: "#246dd5",
+    padding: 20,
+  },
+  message: {
+    alignItems: "center",
+    padding: 20,
+  }
+});
 
 var NavigationBarRouteMapper = {
   LeftButton(route, navigator, index, navState) {
@@ -67,7 +127,7 @@ var NavigationBarRouteMapper = {
     return (
       <TouchableOpacity style={{flex: 1, justifyContent: 'center'}}>
         <Text style={{color: 'white', margin: 10, fontSize: 16}}>
-          Coursiers
+          Connexion
         </Text>
       </TouchableOpacity>
     );

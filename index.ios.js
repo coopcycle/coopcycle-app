@@ -38,6 +38,8 @@ const RestaurantPage = require('./RestaurantPage');
 const CartPage = require('./CartPage');
 const ChooseAddressPage = require('./ChooseAddressPage');
 const CourierPage = require('./CourierPage');
+const EnterAddressPage = require('./EnterAddressPage');
+const AccountPage = require('./AccountPage');
 
 const FBSDK = require('react-native-fbsdk');
 const {
@@ -303,14 +305,14 @@ class coursiersapp extends Component {
   render() {
     return (
       <Navigator
-          initialRoute={{id: 'MainPage', name: 'Index'}}
-          renderScene={this.renderScene.bind(this)}
-          configureScene={(route) => {
-            if (route.sceneConfig) {
-              return route.sceneConfig;
-            }
-            return Navigator.SceneConfigs.FloatFromRight;
-          }} />
+        initialRoute={{id: 'RestaurantsPage', name: 'Restaurants'}}
+        renderScene={this.renderScene.bind(this)}
+        configureScene={(route) => {
+          if (route.sceneConfig) {
+            return route.sceneConfig;
+          }
+          return Navigator.SceneConfigs.FloatFromRight;
+        }} />
     );
   }
 
@@ -328,7 +330,7 @@ class coursiersapp extends Component {
     }
     if (routeId === 'RestaurantPage') {
       return (
-        <RestaurantPage navigator={navigator} {...route.passProps} restaurant={route.restaurant} />
+        <RestaurantPage navigator={navigator} {...route.passProps} />
       );
     }
     if (routeId === 'LoginPage') {
@@ -349,6 +351,16 @@ class coursiersapp extends Component {
     if (routeId === 'CourierPage') {
       return (
         <CourierPage navigator={navigator} {...route.passProps} />
+      );
+    }
+    if (routeId === 'EnterAddressPage') {
+      return (
+        <EnterAddressPage navigator={navigator} {...route.passProps} />
+      );
+    }
+    if (routeId === 'AccountPage') {
+      return (
+        <AccountPage navigator={navigator} {...route.passProps} />
       );
     }
 
