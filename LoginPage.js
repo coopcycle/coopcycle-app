@@ -51,7 +51,7 @@ class LoginPage extends Component {
   }
   renderScene(route, navigator) {
     return (
-      <View style={{flex: 1, flexDirection: "column", justifyContent: "center"}}>
+      <View style={{flex: 1, flexDirection: "column", justifyContent: "center", padding: 10}}>
         <View style={styles.email}>
           <TextInput
             ref="email"
@@ -104,6 +104,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#246dd5",
     padding: 20,
+    marginTop: 20,
+    borderRadius: 4
   },
   message: {
     alignItems: "center",

@@ -18,18 +18,18 @@ import {
 import MapView from 'react-native-maps';
 import Polyline from 'polyline';
 import _ from 'underscore';
-import { Worker } from 'react-native-workers';
+// import { Worker } from 'react-native-workers';
 
 /* start worker */
-const worker = new Worker("./Worker.js");
+// const worker = new Worker("./Worker.js");
 
 /* post message to worker. String only ! */
-worker.postMessage("hello from application");
+// worker.postMessage("hello from application");
 
 /* get message from worker. String only ! */
-worker.onmessage = (message) => {
-  console.log(message);
-}
+// worker.onmessage = (message) => {
+//   console.log(message);
+// }
 
 const MainPage = require('./MainPage');
 const LoginPage = require('./LoginPage');
@@ -40,6 +40,7 @@ const ChooseAddressPage = require('./ChooseAddressPage');
 const CourierPage = require('./CourierPage');
 const EnterAddressPage = require('./EnterAddressPage');
 const AccountPage = require('./AccountPage');
+const Auth = require('./src/Auth');
 
 const FBSDK = require('react-native-fbsdk');
 const {
@@ -149,7 +150,9 @@ class coursiersapp extends Component {
 
   componentDidMount() {
 
-    console.log('componentDidMount');
+    Auth.getUser()
+      .then((user) => console.log(user))
+      .catch(() => {});
 
     // animationTimeout = setTimeout(() => {
     //   this.map.fitToSuppliedMarkers(['home', 'palaisGarnier', 'stGeorges'], false);

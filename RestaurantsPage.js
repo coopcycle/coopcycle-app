@@ -19,6 +19,7 @@ import _ from 'underscore';
 
 const GeoUtils = require('./GeoUtils');
 const Auth = require('./src/Auth');
+const AppConfig = require('./src/AppConfig');
 
 const HOME_COORDS = {
   latitude: 48.875973,
@@ -46,7 +47,7 @@ class RestaurantsPage extends Component {
       loading: true
     });
     return new Promise((resolve, reject) => {;
-      fetch('http://coursiers.dev/api/restaurants?coordinate='+HOME_COORDS.latitude+','+HOME_COORDS.longitude+'&distance='+distance)
+      fetch(AppConfig.API_BASEURL + '/api/restaurants?coordinate='+HOME_COORDS.latitude+','+HOME_COORDS.longitude+'&distance='+distance)
       .then((response) => {
         return response.json();
       }).then((json) => {
@@ -69,12 +70,12 @@ class RestaurantsPage extends Component {
     });
   }
   _onLoginSuccess(user) {
-    this.setState({navigationBarRouteMapper: this.getNavigationBarRouteMapper(true)});
+    this.setState({navigationBarRouteMapper: this.getNavigationBarRouteMapper(true, user)});
   }
-  _onLogout(user) {
+  _onLogout() {
     this.setState({navigationBarRouteMapper: this.getNavigationBarRouteMapper(false)});
   }
-  getNavigationBarRouteMapper(authenticated) {
+  getNavigationBarRouteMapper(authenticated, user) {
     let that = this;
     if (authenticated) {
       return {
@@ -94,6 +95,19 @@ class RestaurantsPage extends Component {
           );
         },
         RightButton(route, navigator, index, navState) {
+          if (_.contains(user.roles, 'ROLE_COURIER') || _.contains(user.roles, 'ROLE_ADMIN')) {
+            return (
+              <TouchableOpacity style={{flex: 1, justifyContent: 'center'}}
+                onPress={() => navigator.parentNavigator.push({
+                  id: 'CourierPage',
+                  name: 'Courier',
+                  sceneConfig: Navigator.SceneConfigs.FloatFromRight,
+                })}>
+                <Text style={{color: 'white', margin: 10}}>Commandes</Text>
+              </TouchableOpacity>
+            );
+          }
+
           return null;
         },
         Title(route, navigator, index, navState) {
@@ -142,9 +156,9 @@ class RestaurantsPage extends Component {
     if (!this.props.restaurants) {
       this.updateRestaurants(this.state.distance);
     }
-    Auth.getUser().then((user) => {
-      this.setState({navigationBarRouteMapper: this.getNavigationBarRouteMapper(true)});
-    }).catch(() => {});
+    Auth.getUser()
+      .then((user) => this._onLoginSuccess(user))
+      .catch(() => {});
   }
   render() {
     return (

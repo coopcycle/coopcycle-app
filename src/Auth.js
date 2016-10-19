@@ -3,6 +3,8 @@ import {
   AsyncStorage,
 } from 'react-native';
 
+const AppConfig = require('./AppConfig');
+
 class Auth {
   static getToken() {
     return new Promise((resolve, reject) => {
@@ -65,7 +67,7 @@ class Auth {
     var formData  = new FormData();
     formData.append("_username", username);
     formData.append("_password", password);
-    var request = new Request('http://coursiers.dev/api/login_check', {
+    var request = new Request(AppConfig.API_BASEURL + '/api/login_check', {
       method: 'POST',
       body: formData
     });

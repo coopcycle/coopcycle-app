@@ -7,6 +7,7 @@ import {
   TouchableHighlight,
   TouchableOpacity,
   Alert,
+  ActivityIndicator,
 } from 'react-native';
 
 import MapView from 'react-native-maps';
@@ -17,6 +18,7 @@ const DirectionsAPI = require('./src/DirectionsAPI');
 const OrdersAPI = require('./src/OrdersAPI');
 const ResourcesAPI = require('./src/ResourcesAPI');
 const GeoUtils = require('./GeoUtils');
+const Auth = require('./src/Auth');
 
 const LATITUDE_DELTA = 0.0722;
 const LONGITUDE_DELTA = 0.0221;
@@ -27,6 +29,13 @@ const COURIER_COORDS = {
 };
 
 class CourierPage extends Component {
+
+  ws = undefined;
+  isWebSocketOpen = false;
+  watchID = undefined;
+  user = undefined;
+  map = undefined;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -41,66 +50,123 @@ class CourierPage extends Component {
       polylineCoords: [],
       markers: [],
       position: undefined,
+      loading: false,
+      loadingMessage: 'Connexion au serveur…',
+      order: undefined,
     };
   }
-  componentWillMount() {
+  _drawPathToDestination(destination) {
+    let marker = {
+      key: 'order',
+      identifier: 'order',
+      coordinate: destination,
+      pinColor: 'green',
+      title: 'Foo',
+      description: 'Lorem ipsum',
+    }
+    DirectionsAPI.getDirections({
+      origin: this.position,
+      destination: destination,
+    }).then((data) => {
+      let polylineCoords = DirectionsAPI.toPolylineCoordinates(data);
+      this.setState({
+        loading: false,
+        markers: [marker],
+        region: {
+          ...this.state.region,
+          destination,
+        },
+        polylineCoords: polylineCoords
+      });
+      this.map.fitToElements(true);
+      this.updateRegion = false;
+    });
+  }
+  _onUpdatePosition(position) {
+      console.log('Position updated', position)
+      this._notifyCoordinates(position.coords);
+      if (this.updateRegion) {
+        this.setState({region: {
+          ...this.state.region,
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+        }});
+      }
+  }
+  _connectToWebSocket(user) {
 
-    this.ws = new WebSocket('ws://coursiers.dev/realtime');
+    this.user = user;
+    this.ws = new WebSocket('ws://coursiers-velo.xyz/realtime');
+
+    if (!this.state.loading) {
+      this.setState({
+        loading: true,
+      });
+    }
 
     this.ws.onopen = () => {
       // connection opened
-      console.log('Connected to realtime server...')
-      this.ws.send('Hello'); // send a message
+      console.log('Connected to realtime server !');
+      this.isWebSocketOpen = true;
+
+      console.log('Trying to get current position...');
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          this._onUpdatePosition(position);
+          console.log('Watching position...');
+          this.watchID = navigator.geolocation.watchPosition(this._onUpdatePosition.bind(this));
+          // console.log('getCurrentPosition', position);
+          // var initialPosition = JSON.stringify(position);
+          // this.setState({initialPosition});
+        },
+        (error) => console.log('ERROR : getCurrentPosition', JSON.stringify(error)),
+        {
+          enableHighAccuracy: true,
+          timeout: 20000, maximumAge:
+          1000
+        }
+      );
+
+      // console.log('Watching position...');
+      // this.watchID = navigator.geolocation.watchPosition((position) => {
+      //   console.log('watchPosition...')
+      //   this._notifyCoordinates(position.coords);
+      //   if (this.updateRegion) {
+      //     this.setState({region: {
+      //       ...this.state.region,
+      //       latitude: position.coords.latitude,
+      //       longitude: position.coords.longitude,
+      //     }});
+      //   }
+      // });
+
+      this.setState({
+        loadingMessage: 'En attente d\'une commande…'
+      });
     };
 
     this.ws.onmessage = (e) => {
+
       // a message was received
-      console.log(e.data);
-      var data = JSON.parse(e.data);
-      if (data.channel === 'orders') {
+      var order = JSON.parse(e.data);
 
-        OrdersAPI.getOrderById(data.message.id).then((order) => {
+      Alert.alert(
+        'Nouvelle commande',
+        'Une nouvelle commande est disponible',
+        [
+          {
+            text: 'Voir',
+            onPress: () => {
+              this.setState({loadingMessage: 'Chargement de la commande…'});
+              OrdersAPI.getOrderById(order.id).then((orderObj) => {
+                this._drawPathToDestination(order);
+                this.setState({order: orderObj});
+              });
+            }
+          },
+        ]
+      );
 
-          let coordinates = {
-            latitude: order.restaurant.geo.latitude,
-            longitude: order.restaurant.geo.longitude,
-          };
-          let marker = {
-            key: 'order',
-            identifier: 'order',
-            coordinate: coordinates,
-            pinColor: 'green',
-            title: order.restaurant.name,
-            description: order.restaurant.streetAddress,
-          }
-
-          DirectionsAPI.getDirections({
-            origin: this.position,
-            destination: order.restaurant.geo,
-          }).then((data) => {
-            // console.log(data.routes[0].legs.length)
-            // console.log(data.routes[0].legs[0]);
-            // console.log(data.routes[0].legs[0].duration.text);
-            // console.log(data.routes[0].legs[1].duration.text);
-            let polylineCoords = DirectionsAPI.toPolylineCoordinates(data);
-            this.setState({
-              markers: [marker],
-              region: {
-                ...this.state.region,
-                coordinates,
-              },
-              polylineCoords: polylineCoords
-            });
-            this.map.fitToElements(true);
-          })
-        });
-
-        // Alert.alert(
-        //   'Nouvelle livraison',
-        //   'Une nouvelle livraison est disponible',
-        // );
-
-      }
     };
 
     this.ws.onerror = (e) => {
@@ -109,85 +175,45 @@ class CourierPage extends Component {
     };
 
     this.ws.onclose = (e) => {
-      // connection closed
-      console.log(e.code, e.reason);
-    };
-  }
-  componentWillUnmount() {
-    console.log('Closing WebSocket');
-    this.ws.close();
-  }
-  componentDidMount() {
-
-    this.watchID = navigator.geolocation.watchPosition((position) => {
-      this._notifyCoordinates(position.coords);
-      // this.setState({region: {
-      //   ...this.state.region,
-      //   latitude: position.coords.latitude,
-      //   longitude: position.coords.longitude,
-      // }})
-    });
-
-    return;
-
-    let order;
-    OrdersAPI.getOrders()
-      .then((orders) => {
-        order = orders['hydra:member'][0];
-        return ResourcesAPI.getResource(order.restaurant);
-      })
-      .then((restaurant) => {
-        restaurant.geo = GeoUtils.parsePoint(restaurant.geo);
-        order.restaurant = restaurant
-        return ResourcesAPI.getResource(order.customer);
-      })
-      .then((customer) => {
-        customer.deliveryAddress = _.map(customer.deliveryAddress, (deliveryAddress) => {
-          deliveryAddress.geo = GeoUtils.parsePoint(deliveryAddress.geo);
-          return deliveryAddress;
-        });
-        order.customer = customer
-
-        let markers = [];
-        markers.push({
-          key: 'restaurant',
-          identifier: 'restaurant',
-          coordinate: order.restaurant.geo,
-          pinColor: 'blue',
-        });
-        markers.push({
-          key: 'customer',
-          identifier: 'customer',
-          coordinate: order.customer.deliveryAddress[0].geo,
-          pinColor: 'red',
-        });
-        this.setState({markers});
-        this.map.fitToSuppliedMarkers(['courier', 'restaurant', 'customer'], true);
-
-        DirectionsAPI.getDirections({
-          origin: COURIER_COORDS,
-          destination: order.customer.deliveryAddress[0].geo,
-          waypoints: order.restaurant.geo,
-        }).then((data) => {
-          // console.log(data.routes[0].legs.length)
-          // console.log(data.routes[0].legs[0]);
-          console.log(data.routes[0].legs[0].duration.text);
-          console.log(data.routes[0].legs[1].duration.text);
-          let polylineCoords = DirectionsAPI.toPolylineCoordinates(data);
-          this.setState({polylineCoords});
-        })
+      console.log('Connection closed !', e.code, e.message);
+      navigator.geolocation.clearWatch(this.watchID);
+      this.isWebSocketOpen = false;
+      this.setState({
+        loadingMessage: 'Connexion perdue ! Reconnexion…'
       });
+      setTimeout(() => {
+        this._connectToWebSocket(user);
+      }, 500);
+    };
   }
   _notifyCoordinates(coordinates) {
     this.position = coordinates;
-    var request = new Request('http://coursiers.dev/couriers/1/coordinates', {
-      method: 'POST',
-      body: JSON.stringify({coordinates: coordinates})
-    });
-    return fetch(request)
-      .then((response) => {
-        return response.json();
-      });
+    console.log(this.isWebSocketOpen);
+    if (this.isWebSocketOpen) {
+      this.ws.send(JSON.stringify({
+        type: "updateCoordinates",
+        coordinates: coordinates,
+        token: this.user.token,
+        user: {
+          id: this.user.id,
+        }
+      }));
+    }
+  }
+  componentDidMount() {
+    Auth.getUser()
+      .then((user) => setTimeout(() => this._connectToWebSocket(user), 2000))
+      .catch(() => {});
+  }
+  componentWillUnmount() {
+    if (this.ws) {
+      console.log('Closing WebSocket');
+      this.ws.onclose = function () {}; // disable onclose handler first
+      this.ws.close();
+    }
+    if (this.watchID) {
+      navigator.geolocation.clearWatch(this.watchID);
+    }
   }
   render() {
     return (
@@ -201,6 +227,28 @@ class CourierPage extends Component {
     );
   }
   renderScene(route, navigator) {
+    let loader = <View />;
+    let orderOverlay = <View />;
+    if (this.state.loading) {
+      loader = (
+        <View style={styles.loader}>
+          <ActivityIndicator
+            animating={true}
+            size="large"
+            color="#fff"
+          />
+          <Text style={{color: '#fff'}}>{this.state.loadingMessage}</Text>
+        </View>
+      );
+    }
+    if (this.state.order) {
+      orderOverlay = (
+        <View style={styles.orderOverlay}>
+          <Text style={{color: '#fff'}}>{this.state.order.restaurant.name}</Text>
+          <Text style={{color: '#fff'}}>{this.state.order.restaurant.streetAddress}</Text>
+        </View>
+      );
+    }
     return (
       <View style={{flex: 1, alignItems: 'center', justifyContent:'center'}}>
         <MapView
@@ -228,6 +276,8 @@ class CourierPage extends Component {
             strokeColor="#19B5FE"
            />
         </MapView>
+        {loader}
+        {orderOverlay}
       </View>
     );
   }
@@ -264,6 +314,18 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'stretch',
     backgroundColor: '#F5FCFF',
+  },
+  loader: {
+    ...StyleSheet.absoluteFillObject,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(52, 52, 52, 0.4)'
+  },
+  orderOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    backgroundColor: 'rgba(52, 52, 52, 0.3)'
   },
   map: {
     ...StyleSheet.absoluteFillObject,

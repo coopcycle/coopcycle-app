@@ -2,31 +2,44 @@ import _ from 'underscore';
 
 const GeoUtils = require('../GeoUtils');
 const Auth = require('./Auth');
+const AppConfig = require('./AppConfig');
 
 class OrdersAPI {
   static getOrders() {
-    return fetch('http://coursiers.dev/orders')
+    return fetch(AppConfig.API_BASEURL + '/orders')
       .then((response) => {
         return response.json();
       });
   }
   static getOrderById(id) {
-    return fetch('http://coursiers.dev/orders/' + id)
-      .then((response) => {
-        return response.json();
-      })
-      .then((order) => {
-        order.restaurant.geo = GeoUtils.parsePoint(order.restaurant.geo);
-        return new Promise((resolve, reject) => {
-          resolve(order);
+    return Auth.getUser()
+      .then((user) => {
+        var headers = new Headers();
+        headers.append("Authorization", "Bearer " + user.token);
+        var request = new Request(AppConfig.API_BASEURL + '/api/orders/' + id, {
+          method: 'GET',
+          headers: headers,
         });
-      });
+        return fetch(request)
+          .then((response) => {
+            return response.json();
+          })
+          .then((order) => {
+            order.restaurant.geo = GeoUtils.parsePoint(order.restaurant.geo);
+            return new Promise((resolve, reject) => {
+              resolve(order);
+            });
+          })
+          .catch((err) => {
+            console.log('ERROR', err);
+          });
+    });
   }
   static createOrder(cart) {
-    return Auth.getToken().then((token) => {
+    return Auth.getUser().then((user) => {
       var headers = new Headers();
-      headers.append("Authorization", "Bearer " + token);
-      var request = new Request('http://coursiers.dev/api/orders', {
+      headers.append("Authorization", "Bearer " + user.token);
+      var request = new Request(AppConfig.API_BASEURL + '/api/orders', {
         method: 'POST',
         body: JSON.stringify(cart.toJSON()),
         headers: headers,
