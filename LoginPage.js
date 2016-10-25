@@ -10,13 +10,13 @@ import {
   AsyncStorage,
 } from 'react-native';
 
-const FBSDK = require('react-native-fbsdk');
-const {
-  LoginButton,
-  AccessToken,
-  GraphRequest,
-  GraphRequestManager,
-} = FBSDK;
+// const FBSDK = require('react-native-fbsdk');
+// const {
+//   LoginButton,
+//   AccessToken,
+//   GraphRequest,
+//   GraphRequestManager,
+// } = FBSDK;
 
 const Auth = require('./src/Auth');
 
@@ -74,7 +74,7 @@ class LoginPage extends Component {
           />
         </View>
         <View style={styles.button}>
-          <TouchableOpacity style={{flex: 1}} onPress={this._onSubmit.bind(this, navigator)}>
+          <TouchableOpacity onPress={this._onSubmit.bind(this, navigator)}>
             <Text style={{color: "white", fontWeight: "bold"}}>Valider</Text>
           </TouchableOpacity>
         </View>

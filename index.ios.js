@@ -42,11 +42,11 @@ const EnterAddressPage = require('./EnterAddressPage');
 const AccountPage = require('./AccountPage');
 const Auth = require('./src/Auth');
 
-const FBSDK = require('react-native-fbsdk');
-const {
-  LoginButton,
-  AccessToken
-} = FBSDK;
+// const FBSDK = require('react-native-fbsdk');
+// const {
+//   LoginButton,
+//   AccessToken
+// } = FBSDK;
 
 const { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;

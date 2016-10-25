@@ -10,11 +10,11 @@ import {
   Slider,
 } from 'react-native';
 
-const FBSDK = require('react-native-fbsdk');
-const {
-  LoginButton,
-  AccessToken
-} = FBSDK;
+// const FBSDK = require('react-native-fbsdk');
+// const {
+//   LoginButton,
+//   AccessToken
+// } = FBSDK;
 
 const Auth = require('./src/Auth');
 
