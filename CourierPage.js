@@ -113,17 +113,15 @@ class CourierPage extends Component {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           this._onUpdatePosition(position);
-          console.log('Watching position...');
+
+          console.log('Start watching position...');
           this.watchID = navigator.geolocation.watchPosition(this._onUpdatePosition.bind(this));
-          // console.log('getCurrentPosition', position);
-          // var initialPosition = JSON.stringify(position);
-          // this.setState({initialPosition});
         },
         (error) => console.log('ERROR : getCurrentPosition', JSON.stringify(error)),
         {
           enableHighAccuracy: true,
-          timeout: 20000, maximumAge:
-          1000
+          timeout: 20000,
+          maximumAge: 1000
         }
       );
 
