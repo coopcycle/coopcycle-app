@@ -4,20 +4,56 @@ import {
 } from 'react-native';
 
 const AppConfig = require('./AppConfig');
+// let ResourcesAPI = require('./ResourcesAPI');
 
 class Auth {
-  static getToken() {
+  static getStatus() {
+    return this
+      .createAuthorizedRequest('GET', '/api/me/status')
+      .then((request) => {
+        return fetch(request)
+          .then((response) => {
+            return response.json();
+          })
+          .then((user) => {
+            return user.status;
+          })
+          .catch((err) => {
+            console.log('ERROR', err);
+          });
+      });
+  }
+  static getCurrentOrder() {
+    return this
+      .createAuthorizedRequest('GET', '/api/me/order')
+      .then((request) => {
+        return fetch(request)
+          .then((response) => {
+            return response.json();
+          })
+          .catch((err) => {
+            console.log('ERROR', err);
+          });
+      });
+  }
+  static createAuthorizedRequest(method, uri, data) {
     return new Promise((resolve, reject) => {
-      try {
-        AsyncStorage.getItem('@JsonWebToken').then((token, err) => {
-          if (token) {
-            return resolve(token);
-          }
-          reject();
-        });
-      } catch (error) {
-        reject();
-      }
+      this.getUser().then((user) => {
+
+        var headers = new Headers();
+        headers.append("Authorization", "Bearer " + user.token);
+        headers.append("Content-Type", "application/json");
+
+        let options = {
+          method: method,
+          headers: headers,
+        }
+        if (data) {
+          options.body = JSON.stringify(data)
+        }
+
+        resolve(new Request(AppConfig.API_BASEURL + uri, options));
+      });
     });
   }
   static removeUser() {
@@ -37,12 +73,17 @@ class Auth {
   static getUser() {
     return new Promise((resolve, reject) => {
       try {
-        AsyncStorage.getItem('@User').then((user, error) => {
-          if (user && !error) {
-            return resolve(JSON.parse(user));
-          }
-          reject(error);
-        });
+        AsyncStorage.getItem('@User')
+          .then((user, error) => {
+            if (user && !error) {
+              return resolve(JSON.parse(user));
+            }
+            reject(error);
+          }).
+          then((json) => {
+            console.log(json);
+            return json;
+          });
       } catch (error) {
         reject(error.message);
       }

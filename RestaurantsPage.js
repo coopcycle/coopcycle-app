@@ -60,7 +60,7 @@ class RestaurantsPage extends Component {
   updateRestaurants(distance) {
     this.getRestaurants(distance).then((data) => {
       var restaurants = _.map(data['hydra:member'], (restaurant) => {
-        restaurant.geo = GeoUtils.parsePoint(restaurant.geo)
+        // restaurant.geo = GeoUtils.parsePoint(restaurant.geo)
         return restaurant;
       });
       this.setState({

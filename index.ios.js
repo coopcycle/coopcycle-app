@@ -40,6 +40,7 @@ const ChooseAddressPage = require('./ChooseAddressPage');
 const CourierPage = require('./CourierPage');
 const EnterAddressPage = require('./EnterAddressPage');
 const AccountPage = require('./AccountPage');
+const BusyPage = require('./BusyPage');
 const Auth = require('./src/Auth');
 
 // const FBSDK = require('react-native-fbsdk');
@@ -364,6 +365,11 @@ class coursiersapp extends Component {
     if (routeId === 'AccountPage') {
       return (
         <AccountPage navigator={navigator} {...route.passProps} />
+      );
+    }
+    if (routeId === 'BusyPage') {
+      return (
+        <BusyPage navigator={navigator} {...route.passProps} />
       );
     }
 
