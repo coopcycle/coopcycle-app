@@ -132,6 +132,48 @@ class Auth {
         });
     });
   }
+  static checkToken() {
+    return new Promise((resolve, reject) => {
+      this.createAuthorizedRequest('GET', '/api/token/check')
+        .then((request) => {
+          fetch(request)
+            .then((response) => {
+              if (!response.ok) {
+                if (response.status === 401) {
+                  return response.json().then((json) => reject(json.message));
+                }
+                return reject('Internal server error');
+              }
+              return response.json().then(() => resolve());
+            })
+            .catch((err) => {
+              reject('Unexpected error');
+            });
+        })
+    });
+  }
+  static refreshToken() {
+    return new Promise((resolve, reject) => {
+      this.getUser().then((user) => {
+        var data = new FormData();
+        data.append('refresh_token', user.refresh_token);
+        var request = new Request(AppConfig.API_BASEURL + '/api/token/refresh', {
+          method: 'POST',
+          body: data,
+        });
+        fetch(request)
+          .then((response) => {
+            if (!response.ok) {
+              return reject('Could not refresh token');
+            }
+            return response.json();
+          })
+          .then((user) => {
+            return this.storeUser(user).then(() => resolve());
+          });
+      });
+    });
+  }
 }
 
 module.exports = Auth;

@@ -37,6 +37,16 @@ class coursiersapp extends Component {
     Auth.getUser()
       .then((user) => console.log(user))
       .catch(() => {});
+    Auth.checkToken()
+      .then(() => console.log('Token is valid'))
+      .catch((message) => {
+        if (message === 'Expired JWT Token') {
+          console.log('Token is expired, refreshing');
+          Auth.refreshToken().then(() => console.log('Token refreshed successfully'));
+        } else {
+          console.log('Could not check token', message);
+        }
+      });
   }
 
   render() {
