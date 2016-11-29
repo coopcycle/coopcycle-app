@@ -1,6 +1,5 @@
 import _ from 'underscore';
 
-const GeoUtils = require('./GeoUtils');
 const Auth = require('./Auth');
 const AppConfig = require('./AppConfig');
 const ResourcesAPI = require('./ResourcesAPI');

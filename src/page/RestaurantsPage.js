@@ -17,7 +17,6 @@ import MapView from 'react-native-maps';
 import Polyline from 'polyline';
 import _ from 'underscore';
 
-const GeoUtils = require('../GeoUtils');
 const Auth = require('../Auth');
 const AppConfig = require('../AppConfig');
 
@@ -60,7 +59,6 @@ class RestaurantsPage extends Component {
   updateRestaurants(distance) {
     this.getRestaurants(distance).then((data) => {
       var restaurants = _.map(data['hydra:member'], (restaurant) => {
-        // restaurant.geo = GeoUtils.parsePoint(restaurant.geo)
         return restaurant;
       });
       this.setState({

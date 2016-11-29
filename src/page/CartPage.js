@@ -14,7 +14,6 @@ import {
 import _ from 'underscore';
 
 const Cart = require('../Cart');
-const GeoUtils = require('../GeoUtils');
 const OrdersAPI = require('../OrdersAPI');
 const Auth = require('../Auth');
 

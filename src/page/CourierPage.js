@@ -17,7 +17,6 @@ import _ from 'underscore';
 const DirectionsAPI = require('../DirectionsAPI');
 const OrdersAPI = require('../OrdersAPI');
 const ResourcesAPI = require('../ResourcesAPI');
-const GeoUtils = require('../GeoUtils');
 const Auth = require('../Auth');
 const AppConfig = require('../AppConfig');
 
