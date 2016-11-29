@@ -18,7 +18,7 @@ import {
 //   GraphRequestManager,
 // } = FBSDK;
 
-const Auth = require('./src/Auth');
+const Auth = require('../Auth');
 
 class LoginPage extends Component {
   state = {

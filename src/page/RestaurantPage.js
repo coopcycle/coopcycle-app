@@ -13,7 +13,7 @@ import {
 
 import _ from 'underscore';
 
-const Cart = require('./Cart');
+const Cart = require('../Cart');
 
 class RestaurantPage extends Component {
   constructor(props) {

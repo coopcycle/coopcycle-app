@@ -19,16 +19,16 @@ import MapView from 'react-native-maps';
 import Polyline from 'polyline';
 import _ from 'underscore';
 
-const MainPage = require('./MainPage');
-const LoginPage = require('./LoginPage');
-const RestaurantsPage = require('./RestaurantsPage');
-const RestaurantPage = require('./RestaurantPage');
-const CartPage = require('./CartPage');
-const ChooseAddressPage = require('./ChooseAddressPage');
-const CourierPage = require('./CourierPage');
-const EnterAddressPage = require('./EnterAddressPage');
-const AccountPage = require('./AccountPage');
-const BusyPage = require('./BusyPage');
+const LoginPage = require('./src/page/LoginPage');
+const RestaurantsPage = require('./src/page/RestaurantsPage');
+const RestaurantPage = require('./src/page/RestaurantPage');
+const CartPage = require('./src/page/CartPage');
+const ChooseAddressPage = require('./src/page/ChooseAddressPage');
+const CourierPage = require('./src/page/CourierPage');
+const EnterAddressPage = require('./src/page/EnterAddressPage');
+const AccountPage = require('./src/page/AccountPage');
+const BusyPage = require('./src/page/BusyPage');
+
 const Auth = require('./src/Auth');
 
 class coursiersapp extends Component {
@@ -55,11 +55,6 @@ class coursiersapp extends Component {
 
   renderScene(route, navigator) {
     var routeId = route.id;
-    if (routeId === 'MainPage') {
-      return (
-        <MainPage navigator={navigator} {...route.passProps} />
-      );
-    }
     if (routeId === 'RestaurantsPage') {
       return (
         <RestaurantsPage navigator={navigator} {...route.passProps} />

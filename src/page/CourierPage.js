@@ -14,12 +14,12 @@ import MapView from 'react-native-maps';
 import Polyline from 'polyline';
 import _ from 'underscore';
 
-const DirectionsAPI = require('./src/DirectionsAPI');
-const OrdersAPI = require('./src/OrdersAPI');
-const ResourcesAPI = require('./src/ResourcesAPI');
-const GeoUtils = require('./GeoUtils');
-const Auth = require('./src/Auth');
-const AppConfig = require('./src/AppConfig');
+const DirectionsAPI = require('../DirectionsAPI');
+const OrdersAPI = require('../OrdersAPI');
+const ResourcesAPI = require('../ResourcesAPI');
+const GeoUtils = require('../GeoUtils');
+const Auth = require('../Auth');
+const AppConfig = require('../AppConfig');
 
 const LATITUDE_DELTA = 0.0722;
 const LONGITUDE_DELTA = 0.0221;

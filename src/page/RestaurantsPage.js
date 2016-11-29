@@ -17,9 +17,9 @@ import MapView from 'react-native-maps';
 import Polyline from 'polyline';
 import _ from 'underscore';
 
-const GeoUtils = require('./GeoUtils');
-const Auth = require('./src/Auth');
-const AppConfig = require('./src/AppConfig');
+const GeoUtils = require('../GeoUtils');
+const Auth = require('../Auth');
+const AppConfig = require('../AppConfig');
 
 const HOME_COORDS = {
   latitude: 48.875973,

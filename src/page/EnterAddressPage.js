@@ -15,8 +15,8 @@ const homePlace = {description: 'Home', geometry: { location: { lat: 48.8152937,
 const workPlace = {description: 'Work', geometry: { location: { lat: 48.8496818, lng: 2.2940881 } }};
 const GOOGLE_API_KEY = 'AIzaSyCAqNf8X0elLLXv5yeh0btsYpq47eCzIAw';
 
-const RestaurantsAPI = require('./src/RestaurantsAPI');
-const Auth = require('./src/Auth');
+const RestaurantsAPI = require('../RestaurantsAPI');
+const Auth = require('../Auth');
 
 class EnterAddressPage extends Component {
   state = {

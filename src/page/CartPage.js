@@ -13,10 +13,10 @@ import {
 } from 'react-native';
 import _ from 'underscore';
 
-const Cart = require('./Cart');
-const GeoUtils = require('./GeoUtils');
-const OrdersAPI = require('./src/OrdersAPI');
-const Auth = require('./src/Auth');
+const Cart = require('../Cart');
+const GeoUtils = require('../GeoUtils');
+const OrdersAPI = require('../OrdersAPI');
+const Auth = require('../Auth');
 
 class CartPage extends Component {
   constructor(props) {

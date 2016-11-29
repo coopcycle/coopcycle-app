@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-const Auth = require('./src/Auth');
+const Auth = require('../Auth');
 
 class AccountPage extends Component {
   state = {

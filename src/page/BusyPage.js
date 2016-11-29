@@ -10,7 +10,7 @@ import {
   AsyncStorage,
 } from 'react-native';
 
-const Auth = require('./src/Auth');
+const Auth = require('../Auth');
 
 class BusyPage extends Component {
   // state = {
