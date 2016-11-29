@@ -44,7 +44,7 @@
 		<true/>
 		<key>NSExceptionDomains</key>
 		<dict>
-			<key>coursiers2.dev</key>
+			<key>coopcycle.dev</key>
 			<dict>
 				<key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
 				<true/>
