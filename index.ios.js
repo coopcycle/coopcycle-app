@@ -18,18 +18,6 @@ import {
 import MapView from 'react-native-maps';
 import Polyline from 'polyline';
 import _ from 'underscore';
-// import { Worker } from 'react-native-workers';
-
-/* start worker */
-// const worker = new Worker("./Worker.js");
-
-/* post message to worker. String only ! */
-// worker.postMessage("hello from application");
-
-/* get message from worker. String only ! */
-// worker.onmessage = (message) => {
-//   console.log(message);
-// }
 
 const MainPage = require('./MainPage');
 const LoginPage = require('./LoginPage');
