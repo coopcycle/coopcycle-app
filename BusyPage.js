@@ -69,7 +69,7 @@ class BusyPage extends Component {
         <View style={{flexDirection: "row", justifyContent: "center"}}>
           <View style={styles.buttonGreen}>
             <TouchableOpacity onPress={() => {
-              this.props.onContinue(this.props.order);
+              this.props.onContinue();
               navigator.parentNavigator.pop();
             }}>
               <Text style={{color: 'white'}}>Oui</Text>
@@ -122,12 +122,7 @@ const styles = StyleSheet.create({
 
 var NavigationBarRouteMapper = {
   LeftButton(route, navigator, index, navState) {
-    return (
-      <TouchableOpacity style={{flex: 1, justifyContent: 'center'}}
-          onPress={() => navigator.parentNavigator.pop()}>
-        <Text style={{color: 'white', margin: 10,}}>Retour</Text>
-      </TouchableOpacity>
-    );
+    return null;
   },
   RightButton(route, navigator, index, navState) {
     return null;
@@ -136,7 +131,7 @@ var NavigationBarRouteMapper = {
     return (
       <TouchableOpacity style={{flex: 1, justifyContent: 'center'}}>
         <Text style={{color: 'white', margin: 10, fontSize: 16}}>
-          Connexion
+          Commande en cours
         </Text>
       </TouchableOpacity>
     );

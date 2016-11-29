@@ -35,6 +35,7 @@ class CourierPage extends Component {
   isWebSocketOpen = false;
   watchID = undefined;
   map = undefined;
+  position = undefined;
 
   constructor(props) {
     super(props);
@@ -95,7 +96,9 @@ class CourierPage extends Component {
     return new Promise((resolve, reject) => {
 
       this.user = user || this.user;
-      this.ws = new WebSocket(AppConfig.WEBSOCKET_BASEURL + '/realtime');
+      this.ws = new WebSocket(AppConfig.WEBSOCKET_BASEURL + '/realtime', '', {
+          Authorization: "Bearer " + user.token
+      });
 
       if (!this.state.loading) {
         this.setState({
@@ -219,7 +222,6 @@ class CourierPage extends Component {
       this.ws.send(JSON.stringify({
         type: "updateCoordinates",
         coordinates: coordinates,
-        token: this.user.token,
         user: {
           id: this.user.id,
         }
@@ -247,8 +249,8 @@ class CourierPage extends Component {
     });
     OrdersAPI.pickOrder(this.state.order).then((order) => {
       this.setState({
-        order: order,
         loading: false,
+        order: order,
       });
     });
   }
@@ -319,7 +321,7 @@ class CourierPage extends Component {
               sceneConfig: Navigator.SceneConfigs.FloatFromBottom,
               passProps: {
                 order: order,
-                onContinue: (order) => {
+                onContinue: () => {
                   console.log('Continue order #' + order['@id']);
                   Auth.getUser()
                     .then((user) => {
@@ -432,7 +434,16 @@ var NavigationBarRouteMapper = {
   LeftButton(route, navigator, index, navState) {
     return (
       <TouchableOpacity style={{flex: 1, justifyContent: 'center'}}
-          onPress={() => navigator.parentNavigator.pop()}>
+          onPress={() => {
+            Alert.alert(
+              'Êtes-vous sûr ?',
+              null,
+              [
+                {text: 'Annuler', onPress: () => {}},
+                {text: 'Quitter', onPress: () => navigator.parentNavigator.pop()},
+              ]
+            );
+          }}>
         <Text style={{color: 'white', margin: 10,}}>Retour</Text>
       </TouchableOpacity>
     );
