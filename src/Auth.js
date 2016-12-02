@@ -79,10 +79,6 @@ class Auth {
               return resolve(JSON.parse(user));
             }
             reject(error);
-          }).
-          then((json) => {
-            console.log(json);
-            return json;
           });
       } catch (error) {
         reject(error.message);
@@ -155,6 +151,7 @@ class Auth {
   static refreshToken() {
     return new Promise((resolve, reject) => {
       this.getUser().then((user) => {
+        return reject('Could not refresh token');
         var data = new FormData();
         data.append('refresh_token', user.refresh_token);
         var request = new Request(AppConfig.API_BASEURL + '/api/token/refresh', {
@@ -166,10 +163,9 @@ class Auth {
             if (!response.ok) {
               return reject('Could not refresh token');
             }
-            return response.json();
-          })
-          .then((user) => {
-            return this.storeUser(user).then(() => resolve());
+            return response.json()
+              .then((user) => this.storeUser(user))
+              .then(() => resolve());
           });
       });
     });

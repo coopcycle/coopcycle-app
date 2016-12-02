@@ -42,7 +42,11 @@ class coursiersapp extends Component {
       .catch((message) => {
         if (message === 'Expired JWT Token') {
           console.log('Token is expired, refreshing');
-          Auth.refreshToken().then(() => console.log('Token refreshed successfully'));
+          Auth.refreshToken()
+            .then(() => console.log('Token refreshed successfully'))
+            .catch((message) => {
+              console.log('Error while refreshing token', message);
+            });
         } else {
           console.log('Could not check token', message);
         }
