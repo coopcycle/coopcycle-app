@@ -270,7 +270,7 @@ class CourierPage extends Component {
   }
   _getNextStatus(order) {
     switch (order.status) {
-      case 'PLACED' :
+      case 'WAITING' :
         return {
           text: '✓ Accepter',
           onPress: this._acceptOrder
@@ -380,6 +380,7 @@ class CourierPage extends Component {
     }
 
     if (this.state.order) {
+      console.log(this.state.order);
       let nextStatus = this._getNextStatus(this.state.order);
       orderOverlay = (
         <View style={styles.orderOverlay}>

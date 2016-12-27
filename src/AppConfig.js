@@ -1,8 +1,8 @@
 class AppConfig {
-    // static API_DOMAIN = 'coursiers-velo.xyz';
+    static SSL = false;
     static API_DOMAIN = 'coopcycle.dev';
-    static API_BASEURL = 'http://' + AppConfig.API_DOMAIN;
-    static WEBSOCKET_BASEURL = 'ws://' + AppConfig.API_DOMAIN;
+    static API_BASEURL = (AppConfig.SSL ? 'https' : 'http') + '://' + AppConfig.API_DOMAIN;
+    static WEBSOCKET_BASEURL = (AppConfig.SSL ? 'wss' : 'ws') + '://' + AppConfig.API_DOMAIN;
 }
 
 module.exports = AppConfig;
