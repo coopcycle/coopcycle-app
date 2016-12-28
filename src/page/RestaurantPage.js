@@ -38,7 +38,8 @@ class RestaurantPage extends Component {
         style={styles.recipe}
         onPress={() => this._addToCart(recipe)}>
         <View style={styles.listViewItem}>
-          <Text>{recipe.name}</Text>
+          <Text style={{ flex: 3 }}>{recipe.name}</Text>
+          <Text style={{ flex: 1, textAlign: 'right', fontWeight: 'bold' }}>{recipe.price} €</Text>
         </View>
       </TouchableHighlight>
     );
@@ -46,12 +47,12 @@ class RestaurantPage extends Component {
   render() {
     return (
       <Navigator
-          renderScene={this.renderScene.bind(this)}
-          navigator={this.props.navigator}
-          navigationBar={
-            <Navigator.NavigationBar style={{backgroundColor: '#246dd5'}}
-                routeMapper={NavigationBarRouteMapper} />
-          } />
+        renderScene={this.renderScene.bind(this)}
+        navigator={this.props.navigator}
+        navigationBar={
+          <Navigator.NavigationBar style={{backgroundColor: '#246dd5'}}
+              routeMapper={NavigationBarRouteMapper} />
+        } />
     );
   }
   renderScene(route, navigator) {
@@ -185,6 +186,9 @@ const styles = StyleSheet.create({
   },
   listViewItem: {
     flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'stretch',
     paddingHorizontal: 10,
     paddingVertical: 20,
   },

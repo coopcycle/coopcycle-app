@@ -1,32 +1,37 @@
 import _ from 'underscore';
 import Polyline from 'polyline';
+import { API } from 'coopcycle-js';
 
-const GOOGLE_API_KEY = 'AIzaSyCAqNf8X0elLLXv5yeh0btsYpq47eCzIAw';
+const AppConfig = require('./AppConfig');
+const APIClient = API.createClient(AppConfig.API_BASEURL);
 
 class DirectionsAPI {
-  static getDirections(opts) {
+  static getRoute(opts) {
     var origin = opts.origin;
     var destination = opts.destination;
-    var url = 'https://maps.googleapis.com/maps/api/directions/json?mode=bicycling';
-        url += '&origin=' + origin.latitude + ',' + origin.longitude;
-        url += '&destination=' + destination.latitude + ',' + destination.longitude;
-        url += '&key=' + GOOGLE_API_KEY;
+    var uri = '/api/routing/route?';
+        uri += 'origin=' + origin.latitude + ',' + origin.longitude;
+        uri += '&destination=' + destination.latitude + ',' + destination.longitude;
 
-    if (opts.waypoints) {
-      url += '&waypoints=' + opts.waypoints.latitude + ',' + opts.waypoints.longitude;
-    }
+    // if (opts.waypoints) {
+    //   url += '&waypoints=' + opts.waypoints.latitude + ',' + opts.waypoints.longitude;
+    // }
 
-    return fetch(url)
-      .then((response) => {
-        return response.json();
-      });
+    // return fetch(url)
+    //   .then((response) => {
+    //     return response.json();
+    //   });
+
+    return APIClient.get(uri)
+      .then((data) => {
+        return DirectionsAPI.toPolylineCoordinates(data.routes[0].geometry);
+      })
   }
-  static toPolylineCoordinates(data) {
-    let points = data.routes[0].overview_polyline.points;
-    let steps = Polyline.decode(points);
+  static toPolylineCoordinates(polyline) {
+    let steps = Polyline.decode(polyline);
     let polylineCoords = [];
 
-    for (let i=0; i < steps.length; i++) {
+    for (let i = 0; i < steps.length; i++) {
       let tempLocation = {
         latitude : steps[i][0],
         longitude : steps[i][1]

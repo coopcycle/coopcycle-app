@@ -10,6 +10,8 @@ import {
   AsyncStorage,
 } from 'react-native';
 
+import { API } from 'coopcycle-js';
+
 // const FBSDK = require('react-native-fbsdk');
 // const {
 //   LoginButton,
@@ -18,7 +20,9 @@ import {
 //   GraphRequestManager,
 // } = FBSDK;
 
-const Auth = require('../Auth');
+const AppConfig = require('../AppConfig');
+const AppUser = require('../AppUser');
+const APIClient = null;
 
 class LoginPage extends Component {
   state = {
@@ -26,15 +30,23 @@ class LoginPage extends Component {
     password: undefined,
     message: undefined,
   }
+  componentDidMount() {
+    AppUser.load()
+      .then((user) => {
+        APIClient = API.createClient(AppConfig.API_BASEURL, user);
+      });
+  }
   _onSubmit(navigator) {
-    Auth.login(this.state.email, this.state.password)
+    APIClient.login(this.state.email, this.state.password)
       .then((user) => {
         navigator.parentNavigator.pop();
         this.props.onLoginSuccess(user);
       })
       .catch((err) => {
-        if (err.code === 401) {
-          this.setState({message: "Utilisateur et/ou mot de passe inexistant."})
+        if (err.hasOwnProperty('code') && err.code === 401) {
+          this.setState({message: "Utilisateur et/ou mot de passe inexistant."});
+        } else {
+          this.setState({message: "Veuillez réessayer plus tard"});
         }
       });
   }

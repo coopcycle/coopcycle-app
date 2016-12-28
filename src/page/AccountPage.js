@@ -8,20 +8,27 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-const Auth = require('../Auth');
+import { API } from 'coopcycle-js';
+
+const AppConfig = require('../AppConfig');
+const AppUser = require('../AppUser');
+const APIClient = null;
 
 class AccountPage extends Component {
   state = {
     username: undefined,
-    email: undefined
   }
   componentDidMount() {
-    Auth.getUser().then((user) => {
-      this.setState({
-        username: user.username,
-        email: user.email
+    AppUser.load()
+      .then((user) => {
+        this.setState({ username: user.username });
+
+        APIClient = API.createClient(AppConfig.API_BASEURL, user);
+        APIClient.request('GET', '/api/me')
+          .then((data) => {
+            console.log(data);
+          });
       });
-    });
   }
   render() {
     return (

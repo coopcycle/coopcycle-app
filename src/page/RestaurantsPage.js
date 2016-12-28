@@ -16,9 +16,13 @@ import {
 import MapView from 'react-native-maps';
 import Polyline from 'polyline';
 import _ from 'underscore';
+import { API } from 'coopcycle-js';
 
 const Auth = require('../Auth');
+
 const AppConfig = require('../AppConfig');
+const AppUser = require('../AppUser');
+const APIClient = null;
 
 const HOME_COORDS = {
   latitude: 48.875973,
@@ -45,16 +49,8 @@ class RestaurantsPage extends Component {
     this.setState({
       loading: true
     });
-    return new Promise((resolve, reject) => {;
-      fetch(AppConfig.API_BASEURL + '/api/restaurants?coordinate='+HOME_COORDS.latitude+','+HOME_COORDS.longitude+'&distance='+distance)
-      .then((response) => {
-        return response.json();
-      }).then((json) => {
-        resolve(json);
-      }).catch((err) => {
-        console.log(err);
-      });
-    });
+    return APIClient
+      .request('GET', '/api/restaurants?coordinate='+HOME_COORDS.latitude+','+HOME_COORDS.longitude+'&distance='+distance)
   }
   updateRestaurants(distance) {
     this.getRestaurants(distance).then((data) => {
@@ -93,13 +89,16 @@ class RestaurantsPage extends Component {
           );
         },
         RightButton(route, navigator, index, navState) {
-          if (_.contains(user.roles, 'ROLE_COURIER') || _.contains(user.roles, 'ROLE_ADMIN')) {
+          if (user.hasRole('ROLE_COURIER') || user.hasRole('ROLE_ADMIN')) {
             return (
               <TouchableOpacity style={{flex: 1, justifyContent: 'center'}}
                 onPress={() => navigator.parentNavigator.push({
                   id: 'CourierPage',
                   name: 'Courier',
                   sceneConfig: Navigator.SceneConfigs.FloatFromRight,
+                  passProps: {
+                    user: user
+                  }
                 })}>
                 <Text style={{color: 'white', margin: 10}}>Commandes</Text>
               </TouchableOpacity>
@@ -151,12 +150,25 @@ class RestaurantsPage extends Component {
     }
   }
   componentDidMount() {
-    if (!this.props.restaurants) {
-      this.updateRestaurants(this.state.distance);
-    }
-    Auth.getUser()
-      .then((user) => this._onLoginSuccess(user))
-      .catch(() => {});
+    AppUser.load()
+      .then((user) => {
+
+        APIClient = API.createClient(AppConfig.API_BASEURL, user);
+        this.updateRestaurants(this.state.distance);
+
+        if (user.hasCredentials()) {
+          this._onLoginSuccess(user);
+        }
+
+        // APIClient.getWithToken('/api/me/status')
+        //   .then((status) => {
+        //     console.log(status)
+        //   })
+        //   .catch((err) => {
+        //     console.log(err);
+        //   });
+
+      });
   }
   render() {
     return (

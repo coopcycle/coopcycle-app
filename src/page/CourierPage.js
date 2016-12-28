@@ -10,14 +10,13 @@ import {
   ActivityIndicator,
 } from 'react-native';
 
+import { API } from 'coopcycle-js';
+
 import MapView from 'react-native-maps';
 import Polyline from 'polyline';
 import _ from 'underscore';
 
 const DirectionsAPI = require('../DirectionsAPI');
-const OrdersAPI = require('../OrdersAPI');
-const ResourcesAPI = require('../ResourcesAPI');
-const Auth = require('../Auth');
 const AppConfig = require('../AppConfig');
 
 const LATITUDE_DELTA = 0.0722;
@@ -28,17 +27,22 @@ const COURIER_COORDS = {
   longitude: 2.331797
 };
 
+const AppUser = require('../AppUser');
+const APIClient = API.createClient(AppConfig.API_BASEURL);
+
 class CourierPage extends Component {
 
   ws = undefined;
-  isWebSocketOpen = false;
   watchID = undefined;
   map = undefined;
-  position = undefined;
 
   constructor(props) {
     super(props);
+
+    APIClient.setModel(props.user);
+
     this.state = {
+      status: null,
       region: {
         ...COURIER_COORDS,
         latitudeDelta: LATITUDE_DELTA,
@@ -50,7 +54,6 @@ class CourierPage extends Component {
       loading: false,
       loadingMessage: 'Connexion au serveur…',
       order: undefined,
-      user: undefined,
     };
   }
   _drawPathToDestination(destination) {
@@ -62,23 +65,20 @@ class CourierPage extends Component {
       title: 'Foo',
       description: 'Lorem ipsum',
     }
-    DirectionsAPI.getDirections({
+    return DirectionsAPI.getRoute({
       origin: this.position,
       destination: destination,
-    }).then((data) => {
-      let polylineCoords = DirectionsAPI.toPolylineCoordinates(data);
+    }).then((route) => {
       this.setState({
-        loading: false,
         markers: [marker],
-        region: {
-          ...this.state.region,
-          latitude: destination.latitude,
-          longitude: destination.longitude,
-        },
-        polylineCoords: polylineCoords
+        // region: {
+        //   ...this.state.region,
+        //   latitude: destination.latitude,
+        //   longitude: destination.longitude,
+        // },
+        polylineCoords: route
       });
       this.map.fitToElements(true);
-      console.log(Object.keys(this.map.state));
     });
   }
   _onUpdatePosition(position) {
@@ -91,12 +91,20 @@ class CourierPage extends Component {
         }});
       }
   }
-  _connectToWebSocket(user) {
+  _notifyCoordinates(coordinates) {
+    this.position = coordinates;
+    if (this.ws.readyState === WebSocket.OPEN) {
+      this.ws.send(JSON.stringify({
+        type: "updateCoordinates",
+        coordinates: coordinates,
+      }));
+    }
+  }
+  _connectToWebSocket() {
     return new Promise((resolve, reject) => {
 
-      this.user = user || this.user;
       this.ws = new WebSocket(AppConfig.WEBSOCKET_BASEURL + '/realtime', '', {
-          Authorization: "Bearer " + user.token
+          Authorization: "Bearer " + this.props.user.token
       });
 
       if (!this.state.loading) {
@@ -106,12 +114,8 @@ class CourierPage extends Component {
       }
 
       this.ws.onopen = () => {
-        // connection opened
 
-        // TODO Check authentication first, then launch tracking
-
-        console.log('Connected to realtime server !');
-        this.isWebSocketOpen = true;
+        console.log('Connected to dispatch service !');
 
         console.log('Trying to get current position...');
         navigator.geolocation.getCurrentPosition(
@@ -132,9 +136,11 @@ class CourierPage extends Component {
           }
         );
 
-        this.setState({
-          loadingMessage: 'En attente d\'une commande…'
-        });
+        if (this.state.status === 'AVAILABLE') {
+          this.setState({
+            loadingMessage: 'En attente d\'une commande…'
+          });
+        }
       };
 
       this.ws.onmessage = (e) => {
@@ -142,24 +148,7 @@ class CourierPage extends Component {
         // a message was received
         var message = JSON.parse(e.data);
 
-        if (message.type === 'error') {
-          var error = message.error;
-          if (error.name === 'TokenExpiredError') {
-            this._disconnectFromWebSocket();
-            this.props.navigator.push({
-              id: 'LoginPage',
-              name: 'Login',
-              sceneConfig: Navigator.SceneConfigs.FloatFromBottom,
-              passProps: {
-                onLoginSuccess: () => {
-                  Auth.getUser()
-                    .then((user) => setTimeout(() => this._connectToWebSocket(user), 500))
-                    .catch(() => {});
-                }
-              }
-            })
-          }
-        }
+        console.log('Message received!', message);
 
         if (message.type === 'order') {
           var order = message.order;
@@ -171,9 +160,11 @@ class CourierPage extends Component {
                 text: 'Voir',
                 onPress: () => {
                   this.setState({loadingMessage: 'Chargement de la commande…'});
-                  OrdersAPI.getOrderById(order.id).then((orderObj) => {
-                    this.setState({order: orderObj});
-                    this._drawPathToDestination(order);
+                  APIClient.get('/api/orders/' + order.id).then((orderObj) => {
+                    console.log(orderObj);
+                    this.setState({loadingMessage: "Calcul de l'itinéraire…"});
+                    this._drawPathToDestination(orderObj.restaurant.geo)
+                      .then(() => this.setState({order: orderObj, loading: false}));
                   });
                 }
               },
@@ -192,78 +183,63 @@ class CourierPage extends Component {
       this.ws.onclose = (e) => {
         console.log('Connection closed !', e.code, e.message);
         navigator.geolocation.clearWatch(this.watchID);
-        this.isWebSocketOpen = false;
         this.setState({
           loadingMessage: 'Connexion perdue ! Reconnexion…'
         });
         setTimeout(() => {
-          this._connectToWebSocket(user);
+          this._connectToWebSocket();
         }, 500);
       };
     });
   }
   _disconnectFromWebSocket() {
     if (this.watchID) {
-      console.log('Clearing geolocation')
+      console.log('Clearing geolocation');
       navigator.geolocation.clearWatch(this.watchID);
     }
     if (this.ws) {
       console.log('Closing WebSocket');
       this.ws.onclose = function () {}; // disable onclose handler first
       this.ws.close();
-      this.isWebSocketOpen = false;
-    }
-  }
-  _notifyCoordinates(coordinates) {
-    this.position = coordinates;
-    if (this.isWebSocketOpen) {
-      console.log(this.user.token);
-      this.ws.send(JSON.stringify({
-        type: "updateCoordinates",
-        coordinates: coordinates,
-        user: {
-          id: this.user.id,
-        }
-      }));
     }
   }
   _acceptOrder() {
-    this._disconnectFromWebSocket();
     this.setState({
       loading: true,
       loadingMessage: "Veuillez patienter…"
     });
-    OrdersAPI.acceptOrder(this.state.order).then((order) => {
-      this._connectToWebSocket();
-      this.setState({
-        order: order,
-        loading: false,
+    APIClient.put(this.state.order['@id'] + '/accept', {})
+      .then((order) => {
+        this.setState({
+          order: order,
+          loading: false,
+        });
       });
-    });
   }
   _pickOrder() {
     this.setState({
       loading: true,
       loadingMessage: "Veuillez patienter…"
     });
-    OrdersAPI.pickOrder(this.state.order).then((order) => {
-      this.setState({
-        loading: false,
-        order: order,
+    APIClient.put(this.state.order['@id'] + '/pick', {})
+      .then((order) => {
+        this._drawPathToDestination(order.deliveryAddress.geo)
+          .then(() => this.setState({order: order, loading: false}));
       });
-    });
   }
-   _deliverOrder() {
+  _deliverOrder() {
+    this._disconnectFromWebSocket();
     this.setState({
       loading: true,
       loadingMessage: "Veuillez patienter…"
     });
-    OrdersAPI.deliverOrder(this.state.order).then((order) => {
-      this.setState({
-        order: order,
-        loading: false,
+    APIClient.put(this.state.order['@id'] + '/deliver', {})
+      .then((order) => {
+        this.setState({
+          order: order,
+          loading: false,
+        });
       });
-    });
   }
   _onRegionChange(region) {
     this.setState({region});
@@ -291,7 +267,23 @@ class CourierPage extends Component {
       case 'DELIVERED' :
         return {
           text: '✓ Bien joué !',
-          onPress: () => {}
+          onPress: () => {
+            this.setState({
+              loading: true,
+              loadingMessage: "Vérification de votre état…"
+            });
+            APIClient.get('/api/me/status')
+              .then((data) => {
+                if (data.status === 'AVAILABLE') {
+                  this._connectToWebSocket();
+                  this.setState({
+                    markers: [],
+                    order: null,
+                    polylineCoords: [],
+                  });
+                }
+              });
+          }
         }
         break;
     }
@@ -301,42 +293,41 @@ class CourierPage extends Component {
       loading: true,
       loadingMessage: "Vérification de votre état…"
     });
-    Auth
-      .getStatus()
-      .then((status) => {
-        console.log('Status', status);
-        if (status === 'AVAILABLE') {
-          this.setState({loadingMessage: 'Connexion au serveur…'});
-          Auth.getUser()
-            .then((user) => setTimeout(() => this._connectToWebSocket(user), 1000))
-            .catch(() => {});
+    APIClient.get('/api/me/status')
+      .then((data) => {
+        if (data.status === 'AVAILABLE') {
+          this.setState({
+            status: data.status,
+            loadingMessage: 'Connexion au serveur…'
+          });
+          setTimeout(() => this._connectToWebSocket(), 1000);
         }
-        if (status === 'BUSY') {
+
+        if (data.status === 'DELIVERING') {
           this.setState({loadingMessage: 'Récupération de la commande…'});
-          Auth.getCurrentOrder().then((order) => {
-            this.props.navigator.push({
-              id: 'BusyPage',
-              name: 'Busy',
-              sceneConfig: Navigator.SceneConfigs.FloatFromBottom,
-              passProps: {
-                order: order,
-                onContinue: () => {
-                  console.log('Continue order #' + order['@id']);
-                  Auth.getUser()
-                    .then((user) => {
-                      this._connectToWebSocket(user).then(() => {
-                        this._drawPathToDestination(order.restaurant.geo);
+          APIClient.get('/api/orders/' + data.order.id)
+            .then((order) => {
+              this.props.navigator.push({
+                id: 'BusyPage',
+                name: 'Busy',
+                sceneConfig: Navigator.SceneConfigs.FloatFromBottom,
+                passProps: {
+                  order: order,
+                  onContinue: () => {
+                    console.log('Continue order ' + order['@id']);
+                    this.setState({loadingMessage: "Calcul de l'itinéraire…"});
+                    this._connectToWebSocket()
+                      .then(() => this._drawPathToDestination(order.restaurant.geo))
+                      .then(() => {
                         this.setState({
                           order: order,
                           loading: false
                         });
                       });
-                    })
-                    .catch(() => {});
+                  }
                 }
-              }
+              });
             });
-          });
         }
       });
   }
@@ -380,12 +371,13 @@ class CourierPage extends Component {
     }
 
     if (this.state.order) {
-      console.log(this.state.order);
       let nextStatus = this._getNextStatus(this.state.order);
+      let nextAddress = this.state.order.status === 'PICKED' ?
+        this.state.order.deliveryAddress.streetAddress : this.state.order.restaurant.streetAddress;
       orderOverlay = (
         <View style={styles.orderOverlay}>
           <Text style={{color: '#fff'}}>{this.state.order.restaurant.name}</Text>
-          <Text style={{color: '#fff'}}>{this.state.order.restaurant.streetAddress}</Text>
+          <Text style={{color: '#fff'}}>{nextAddress}</Text>
           <View style={styles.buttonBlue}>
             <TouchableOpacity onPress={nextStatus.onPress.bind(this)}>
               <Text style={{color: "white", fontWeight: "bold"}}>{nextStatus.text}</Text>

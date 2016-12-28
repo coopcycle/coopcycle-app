@@ -53,51 +53,6 @@ class OrdersAPI {
         });
     });
   }
-  static acceptOrder(order) {
-    return Auth.getUser().then((user) => {
-      var headers = new Headers();
-      headers.append("Authorization", "Bearer " + user.token);
-      headers.append("Content-Type", "application/json");
-      var request = new Request(AppConfig.API_BASEURL + order['@id'] + '/accept', {
-        method: 'PUT',
-        body: JSON.stringify({status: "ACCEPTED"}),
-        headers: headers,
-      });
-      return fetch(request)
-        .then((response) => {
-          return response.json();
-        })
-        .catch((err) => {
-          console.log('ERROR', err);
-        });
-    });
-  }
-  static pickOrder(order) {
-    return ResourcesAPI
-      .createAuthorizedRequest('PUT', order['@id'] + '/pick', {status: "PICKED"})
-      .then((request) => {
-        return fetch(request)
-          .then((response) => {
-            return response.json();
-          })
-          .catch((err) => {
-            console.log('ERROR', err);
-          });
-      });
-  }
-  static deliverOrder(order) {
-    return ResourcesAPI
-      .createAuthorizedRequest('PUT', order['@id'] + '/deliver', {status: "DELIVERED"})
-      .then((request) => {
-        return fetch(request)
-          .then((response) => {
-            return response.json();
-          })
-          .catch((err) => {
-            console.log('ERROR', err);
-          });
-      });
-  }
 }
 
 module.exports = OrdersAPI;

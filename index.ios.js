@@ -29,28 +29,34 @@ const EnterAddressPage = require('./src/page/EnterAddressPage');
 const AccountPage = require('./src/page/AccountPage');
 const BusyPage = require('./src/page/BusyPage');
 
-const Auth = require('./src/Auth');
+// const Auth = require('./src/Auth');
+
+const AppUser = require('./src/AppUser');
 
 class coursiersapp extends Component {
 
   componentDidMount() {
-    Auth.getUser()
-      .then((user) => console.log(user))
-      .catch(() => {});
-    Auth.checkToken()
-      .then(() => console.log('Token is valid'))
-      .catch((message) => {
-        if (message === 'Expired JWT Token') {
-          console.log('Token is expired, refreshing');
-          Auth.refreshToken()
-            .then(() => console.log('Token refreshed successfully'))
-            .catch((message) => {
-              console.log('Error while refreshing token', message);
-            });
-        } else {
-          console.log('Could not check token', message);
-        }
-      });
+    // AppUser.load()
+    //   .then((user) => {
+    //     console.log('USER', user.hasCredentials());
+    //   });
+    // Auth.getUser()
+    //   .then((user) => console.log(user))
+    //   .catch(() => {});
+    // Auth.checkToken()
+    //   .then(() => console.log('Token is valid'))
+    //   .catch((message) => {
+    //     if (message === 'Expired JWT Token') {
+    //       console.log('Token is expired, refreshing');
+    //       Auth.refreshToken()
+    //         .then(() => console.log('Token refreshed successfully'))
+    //         .catch((message) => {
+    //           console.log('Error while refreshing token', message);
+    //         });
+    //     } else {
+    //       console.log('Could not check token', message);
+    //     }
+    //   });
   }
 
   render() {
