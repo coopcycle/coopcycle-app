@@ -1,0 +1,1 @@
+../../../Stripe/Stripe/NSBundle+Stripe_AppName.h

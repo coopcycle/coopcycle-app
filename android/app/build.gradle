@@ -126,6 +126,7 @@ android {
 }
 
 dependencies {
+    compile project(':tipsi-stripe')
     compile project(':react-native-vector-icons')
     compile project(':react-native-maps')
     compile fileTree(dir: "libs", include: ["*.jar"])
