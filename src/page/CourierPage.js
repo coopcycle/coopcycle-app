@@ -28,7 +28,7 @@ const COURIER_COORDS = {
 };
 
 const AppUser = require('../AppUser');
-const APIClient = API.createClient(AppConfig.API_BASEURL);
+const APIClient = null;
 
 class CourierPage extends Component {
 
@@ -39,7 +39,7 @@ class CourierPage extends Component {
   constructor(props) {
     super(props);
 
-    APIClient.setModel(props.user);
+    APIClient = API.createClient(AppConfig.API_BASEURL, props.user)
 
     this.state = {
       status: null,

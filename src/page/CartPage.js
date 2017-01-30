@@ -2,15 +2,22 @@ import React, { Component } from 'react';
 import {
   StyleSheet,
   View,
-  Text,
   Navigator,
   TouchableHighlight,
+  Text,
   TouchableOpacity,
   ListView,
   AsyncStorage,
   Alert,
   ActivityIndicator,
 } from 'react-native';
+import {
+  Container, Header, Title, Content, Footer, FooterTab,
+  List, ListItem,
+  InputGroup, Input,
+  Icon, Picker, Button,
+} from 'native-base';
+import theme from '../theme/coopcycle';
 import _ from 'underscore';
 
 const Cart = require('../Cart');
@@ -31,46 +38,45 @@ class CartPage extends Component {
   }
   _renderRow(item) {
     return (
-      <View style={styles.cartRow}>
-        <View style={styles.cartRowLeft}>
-          <Text>{item.offer.name}</Text>
+      <ListItem>
+        <View style={styles.cartRow}>
+          <View style={styles.cartRowLeft}>
+            <Text>{item.offer.name}</Text>
+          </View>
+          <View style={styles.cartRowQuantity}>
+            <Button transparent onPress={() => {
+                item.decrement();
+                this.props.onCartUpdate(item.cart);
+                this.setState({
+                  cart: item.cart,
+                });
+              }}>
+              <Icon name="ios-remove" />
+            </Button>
+            <Text style={styles.cartQuantityText}>{item.quantity}</Text>
+            <Button transparent onPress={() => {
+                item.increment();
+                this.props.onCartUpdate(item.cart);
+                this.setState({
+                  cart: item.cart,
+                });
+              }}>
+              <Icon name="ios-add" />
+            </Button>
+          </View>
+          <View style={styles.cartRowRight}>
+            <Button bordered rounded danger style={ { alignSelf: "flex-end" } } onPress={() => {
+                let cart = this.state.cart;
+                cart.deleteItem(item);
+                this.props.onCartUpdate(cart);
+                this.setState({cart});
+              }}>
+              <Icon name="ios-close-outline" />
+            </Button>
+          </View>
         </View>
-        <View style={styles.cartRowQuantity}>
-          <TouchableHighlight style={styles.cartQuantityButton}
-            onPress={() => {
-              item.decrement();
-              this.props.onCartUpdate(item.cart);
-              this.setState({
-                cart: item.cart,
-              });
-            }}>
-            <Text style={styles.cartQuantityButtonText}>-</Text>
-          </TouchableHighlight>
-          <Text style={styles.cartQuantityText}>{item.quantity}</Text>
-          <TouchableHighlight style={styles.cartQuantityButton}
-            onPress={() => {
-              item.increment();
-              this.props.onCartUpdate(item.cart);
-              this.setState({
-                cart: item.cart,
-              });
-            }}>
-            <Text style={styles.cartQuantityButtonText}>+</Text>
-          </TouchableHighlight>
-        </View>
-        <View style={styles.cartRowRight}>
-          <TouchableHighlight style={styles.deleteButton}
-            onPress={() => {
-              let cart = this.state.cart;
-              cart.deleteItem(item);
-              this.props.onCartUpdate(cart);
-              this.setState({cart});
-            }}>
-            <Text style={{color: '#e74c3c'}}>Supprimer</Text>
-          </TouchableHighlight>
-        </View>
-      </View>
-    );
+      </ListItem>
+    )
   }
   _createOrder() {
     this.setState({loading: true});
@@ -100,113 +106,57 @@ class CartPage extends Component {
   render() {
     return (
       <Navigator
-          renderScene={this.renderScene.bind(this)}
-          navigator={this.props.navigator}
-          navigationBar={
-            <Navigator.NavigationBar style={{backgroundColor: '#246dd5'}}
-                routeMapper={NavigationBarRouteMapper} />
-          } />
+        renderScene={this.renderScene.bind(this)}
+        navigator={this.props.navigator} />
     );
   }
   renderScene(route, navigator) {
     let dataSource = this.dataSource.cloneWithRows(this.state.cart.items)
     return (
-      <View style={styles.container}>
-        <View style={styles.products}>
-          <View style={styles.loader}>
-            <ActivityIndicator
-              animating={this.state.loading}
-              size="large"
-              color="#0000ff"
-            />
+      <Container>
+        <Header>
+          <Button transparent onPress={() => navigator.parentNavigator.pop()}>
+          <Icon name="ios-arrow-back" />
+        </Button>
+          <Title>Panier</Title>
+        </Header>
+        <Content theme={theme}>
+          <List dataArray={ this.state.cart.items } renderRow={ this._renderRow.bind(this) } />
+        </Content>
+        <Footer>
+          <View style={styles.cart}>
+            <View style={styles.cartLeft}>
+              <Text>{this.state.cart.articlesCount} articles</Text>
+              <Text style={ { fontWeight: 'bold' } }>{this.state.cart.total} €</Text>
+            </View>
+            <View style={styles.cartRight}>
+              <Button success block style={ { alignSelf: 'flex-end' } } onPress={ this._onClickButton.bind(this, navigator) }>
+                Payer { this.state.cart.total } €
+              </Button>
+            </View>
           </View>
-          <ListView
-            dataSource={dataSource}
-            enableEmptySections
-            renderRow={this._renderRow.bind(this)}
-            renderSeparator={(sectionId, rowId) => <View key={rowId} style={styles.separator} />}
-            />
-        </View>
-        <View style={styles.separator} />
-        <View style={styles.cart}>
-          <View style={styles.cartLeft}>
-            <Text style={[]}>{this.state.cart.articlesCount} articles</Text>
-            <Text style={[]}>{this.state.cart.total} €</Text>
-          </View>
-          <View style={styles.cartRight}>
-            <TouchableOpacity style={styles.button}
-              onPress={this._onClickButton.bind(this, navigator)}>
-              <Text style={[styles.textBold, styles.textWhite, styles.textCenter]}>Payer {this.state.cart.total} €</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </View>
+        </Footer>
+      </Container>
     );
   }
 }
 
-var NavigationBarRouteMapper = {
-  LeftButton(route, navigator, index, navState) {
-    return (
-      <TouchableOpacity style={{flex: 1, justifyContent: 'center'}}
-          onPress={() => navigator.parentNavigator.pop()}>
-        <Text style={{color: 'white', margin: 10,}}>Retour</Text>
-      </TouchableOpacity>
-    );
-  },
-  RightButton(route, navigator, index, navState) {
-    return null;
-  },
-  Title(route, navigator, index, navState) {
-    return (
-      <TouchableOpacity style={{flex: 1, justifyContent: 'center'}}>
-        <Text style={{color: 'white', margin: 10, fontSize: 16}}>
-          Panier
-        </Text>
-      </TouchableOpacity>
-    );
-  }
-};
-
 const carButtonSize = 36;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    alignItems: 'stretch',
-    // backgroundColor: '#F5FCFF',
-    paddingTop: 60,
-  },
-  heading: {
-    paddingHorizontal: 10,
-    paddingVertical: 20,
-    backgroundColor: "#16a085",
-  },
-  products: {
-    flex: 8,
-  },
   cart: {
     flex: 1,
     flexDirection: "row",
     alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: 5,
+    paddingHorizontal: 10
   },
   cartLeft: {
     flex: 1,
-    padding: 10,
   },
   cartRight: {
-    flex: 2,
-  },
-  button: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: 'center',
-    borderRadius: 4,
-    padding: 5,
-    margin: 10,
-    backgroundColor: "#2ecc71",
   },
   textBold: {
     fontWeight: 'bold'
@@ -222,11 +172,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 10,
-    paddingVertical: 20,
   },
   cartRowLeft: {
-    flex: 1,
+    flex: 2,
+    paddingRight: 5
   },
   cartRowQuantity: {
     flex: 1,
@@ -238,7 +187,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
   },
   cartQuantityText: {
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
   },
   cartQuantityButton: {
     flex: 1,
@@ -262,21 +211,6 @@ const styles = StyleSheet.create({
     borderTopColor: "black",
     borderStyle: "solid",
     borderTopWidth: 2
-  },
-  header: {
-    flex: 1,
-    padding: 20,
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#FFF',
-  },
-  separator: {
-    height: StyleSheet.hairlineWidth,
-    backgroundColor: '#8e8e8e',
-  },
-  loader: {
-    ...StyleSheet.absoluteFillObject,
-    justifyContent: 'center',
   },
 });
 

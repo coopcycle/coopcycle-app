@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import {
   StyleSheet,
   View,
-  Text,
   Navigator,
   TouchableHighlight,
   TouchableOpacity,
@@ -10,7 +9,13 @@ import {
   AsyncStorage,
   Alert,
 } from 'react-native';
-
+import {
+  Container, Header, Title, Content, Footer, FooterTab,
+  List, ListItem,
+  InputGroup, Input,
+  Icon, Text, Picker, Button
+} from 'native-base';
+import theme from '../theme/coopcycle';
 import _ from 'underscore';
 
 const Cart = require('../Cart');
@@ -48,135 +53,65 @@ class RestaurantPage extends Component {
     return (
       <Navigator
         renderScene={this.renderScene.bind(this)}
-        navigator={this.props.navigator}
-        navigationBar={
-          <Navigator.NavigationBar style={{backgroundColor: '#246dd5'}}
-              routeMapper={NavigationBarRouteMapper} />
-        } />
+        navigator={this.props.navigator} />
     );
   }
   renderScene(route, navigator) {
     return (
-      <View style={styles.container}>
-        <View style={styles.products}>
-          <View style={styles.heading}>
-            <Text style={{color: "white", fontWeight: 'bold'}}>{this.props.restaurant.name}</Text>
-          </View>
+      <Container>
+        <Header>
+          <Button transparent onPress={() => navigator.parentNavigator.pop()}>
+          <Icon name="ios-arrow-back" />
+        </Button>
+          <Title>{ this.props.restaurant.name }</Title>
+        </Header>
+        <Content theme={theme}>
           <ListView
             dataSource={this.state.dataSource}
             enableEmptySections
             renderRow={this._renderRow.bind(this)}
             />
-        </View>
-        <View style={styles.separator}>
-        </View>
-        <View style={styles.cart}>
-          <View style={styles.cartLeft}>
-            <Text style={[]}>{this.state.cart.articlesCount} articles</Text>
-            <Text style={[]}>{this.state.cart.total} €</Text>
-          </View>
-          <View style={styles.cartRight}>
-            <TouchableOpacity style={styles.button}
-              onPress={() => navigator.parentNavigator.push({
-                id: 'CartPage',
-                name: 'Cart',
-                sceneConfig: Navigator.SceneConfigs.FloatFromBottom,
-                passProps: {
-                  cart: this.state.cart,
-                  onCartUpdate: (cart) => {
-                    this.setState({cart});
+        </Content>
+        <Footer>
+          <View style={styles.cart}>
+            <View style={styles.cartLeft}>
+              <Text>{this.state.cart.articlesCount} articles</Text>
+              <Text style={ { fontWeight: 'bold' } }>{this.state.cart.total} €</Text>
+            </View>
+            <View style={styles.cartRight}>
+              <Button block style={ { alignSelf: 'flex-end' } } onPress={() => navigator.parentNavigator.push({
+                  id: 'CartPage',
+                  name: 'Cart',
+                  sceneConfig: Navigator.SceneConfigs.FloatFromRight,
+                  passProps: {
+                    cart: this.state.cart,
+                    onCartUpdate: (cart) => {
+                      this.setState({cart});
+                    }
                   }
-                }
-              })}>
-              <Text style={[styles.textBold, styles.textWhite, styles.textCenter]}>Mon panier</Text>
-            </TouchableOpacity>
+                })}>Commander</Button>
+            </View>
           </View>
-        </View>
-      </View>
+        </Footer>
+      </Container>
     );
   }
 }
 
-var NavigationBarRouteMapper = {
-  LeftButton(route, navigator, index, navState) {
-    return (
-      <TouchableOpacity style={{flex: 1, justifyContent: 'center'}}
-          onPress={() => navigator.parentNavigator.pop()}>
-        <Text style={{color: 'white', margin: 10,}}>Retour</Text>
-      </TouchableOpacity>
-    );
-  },
-  RightButton(route, navigator, index, navState) {
-    // return (
-    //   <TouchableOpacity style={{flex: 1, justifyContent: 'center'}}>
-    //     <Text style={{color: 'white', margin: 10, fontSize: 16}}>
-    //       Panier
-    //     </Text>
-    //   </TouchableOpacity>
-    // );
-    return null;
-  },
-  Title(route, navigator, index, navState) {
-    return (
-      <TouchableOpacity style={{flex: 1, justifyContent: 'center'}}>
-        <Text style={{color: 'white', margin: 10, fontSize: 16}}>
-          Restaurant
-        </Text>
-      </TouchableOpacity>
-    );
-  }
-};
-
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    alignItems: 'stretch',
-    // backgroundColor: '#F5FCFF',
-    paddingTop: 60,
-  },
-  heading: {
-    paddingHorizontal: 10,
-    paddingVertical: 20,
-    backgroundColor: "#16a085",
-  },
-  products: {
-    flex: 8,
-    backgroundColor: "#f4f4f2"
-  },
   cart: {
     flex: 1,
     flexDirection: "row",
     alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: 5,
+    paddingHorizontal: 10
   },
   cartLeft: {
     flex: 1,
-    padding: 10,
   },
   cartRight: {
     flex: 2,
-  },
-  button: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: 'center',
-    borderRadius: 4,
-    padding: 5,
-    margin: 10,
-    backgroundColor: "#3498db",
-  },
-  buttonText: {
-
-  },
-  textBold: {
-    fontWeight: 'bold'
-  },
-  textWhite: {
-    color: "white",
-  },
-  textCenter: {
-    textAlign: 'center'
   },
   listView: {
     flex: 4,
@@ -200,17 +135,6 @@ const styles = StyleSheet.create({
     borderStyle: "solid",
     borderColor: "#e4e4e4",
     borderRadius: 4,
-  },
-  header: {
-    flex: 1,
-    padding: 20,
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#FFF',
-  },
-  separator: {
-    height: StyleSheet.hairlineWidth,
-    backgroundColor: '#8E8E8E',
   },
 });
 

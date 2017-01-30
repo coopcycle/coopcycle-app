@@ -12,13 +12,14 @@ import {
   ActivityIndicator,
   Modal,
 } from 'react-native';
-
-import MapView from 'react-native-maps';
-import Polyline from 'polyline';
+import {
+  Container,
+  Header,
+  Title, Content, Footer, FooterTab, Button, Icon } from 'native-base';
 import _ from 'underscore';
 import { API } from 'coopcycle-js';
 
-const Auth = require('../Auth');
+import theme from '../theme/coopcycle';
 
 const AppConfig = require('../AppConfig');
 const AppUser = require('../AppUser');
@@ -38,12 +39,24 @@ class RestaurantsPage extends Component {
     }
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
-      modalVisible: false,
       distance: 2000,
       loading: false,
       dataSource: ds.cloneWithRows(restaurants),
-      navigationBarRouteMapper: this.getNavigationBarRouteMapper(false),
+      user: null
     };
+  }
+  componentDidMount() {
+    AppUser.load()
+      .then((user) => {
+        APIClient = API.createClient(AppConfig.API_BASEURL, user);
+        if (!this.props.restaurants) {
+          this.updateRestaurants(this.state.distance);
+        }
+
+        if (user.hasCredentials()) {
+          this._onLoginSuccess(user);
+        }
+      });
   }
   getRestaurants(distance) {
     this.setState({
@@ -64,134 +77,75 @@ class RestaurantsPage extends Component {
     });
   }
   _onLoginSuccess(user) {
-    this.setState({navigationBarRouteMapper: this.getNavigationBarRouteMapper(true, user)});
+    this.setState({ user });
   }
   _onLogout() {
-    this.setState({navigationBarRouteMapper: this.getNavigationBarRouteMapper(false)});
-  }
-  getNavigationBarRouteMapper(authenticated, user) {
-    let that = this;
-    if (authenticated) {
-      return {
-        LeftButton(route, navigator, index, navState) {
-          return (
-            <TouchableOpacity style={{flex: 1, justifyContent: 'center'}}
-              onPress={() => navigator.parentNavigator.push({
-                id: 'AccountPage',
-                name: 'Account',
-                sceneConfig: Navigator.SceneConfigs.FloatFromBottom,
-                passProps: {
-                  onLogout: that._onLogout.bind(that)
-                }
-              })}>
-              <Text style={{color: 'white', margin: 10}}>Mon compte</Text>
-            </TouchableOpacity>
-          );
-        },
-        RightButton(route, navigator, index, navState) {
-          if (user.hasRole('ROLE_COURIER') || user.hasRole('ROLE_ADMIN')) {
-            return (
-              <TouchableOpacity style={{flex: 1, justifyContent: 'center'}}
-                onPress={() => navigator.parentNavigator.push({
-                  id: 'CourierPage',
-                  name: 'Courier',
-                  sceneConfig: Navigator.SceneConfigs.FloatFromRight,
-                  passProps: {
-                    user: user
-                  }
-                })}>
-                <Text style={{color: 'white', margin: 10}}>Commandes</Text>
-              </TouchableOpacity>
-            );
-          }
-
-          return null;
-        },
-        Title(route, navigator, index, navState) {
-          return (
-            <TouchableOpacity style={{flex: 1, justifyContent: 'center'}}>
-              <Text style={{color: 'white', margin: 10, fontSize: 16}}>
-                Restaurants
-              </Text>
-            </TouchableOpacity>
-          );
-        }
-      }
-    } else {
-      return {
-        LeftButton(route, navigator, index, navState) {
-          return (
-            <TouchableOpacity style={{flex: 1, justifyContent: 'center'}}
-              onPress={() => navigator.parentNavigator.push({
-                id: 'LoginPage',
-                name: 'Login',
-                sceneConfig: Navigator.SceneConfigs.FloatFromBottom,
-                passProps: {
-                  onLoginSuccess: that._onLoginSuccess.bind(that)
-                }
-              })}>
-              <Text style={{color: 'white', margin: 10}}>Connexion</Text>
-            </TouchableOpacity>
-          );
-        },
-        RightButton(route, navigator, index, navState) {
-          return null;
-        },
-        Title(route, navigator, index, navState) {
-          return (
-            <TouchableOpacity style={{flex: 1, justifyContent: 'center'}}>
-              <Text style={{color: 'white', margin: 10, fontSize: 16}}>
-                Restaurants
-              </Text>
-            </TouchableOpacity>
-          );
-        }
-      }
-    }
-  }
-  componentDidMount() {
-    AppUser.load()
-      .then((user) => {
-
-        APIClient = API.createClient(AppConfig.API_BASEURL, user);
-        this.updateRestaurants(this.state.distance);
-
-        if (user.hasCredentials()) {
-          this._onLoginSuccess(user);
-        }
-
-        // APIClient.getWithToken('/api/me/status')
-        //   .then((status) => {
-        //     console.log(status)
-        //   })
-        //   .catch((err) => {
-        //     console.log(err);
-        //   });
-
-      });
+    this.setState({ user: null });
   }
   render() {
     return (
       <Navigator
           renderScene={this.renderScene.bind(this)}
-          navigator={this.props.navigator}
-          navigationBar={
-            <Navigator.NavigationBar style={{backgroundColor: '#246dd5'}}
-                routeMapper={this.state.navigationBarRouteMapper} />
-          } />
+          navigator={this.props.navigator} />
     );
   }
   renderScene(route, navigator) {
+
+    let topLeftBtn;
+    let topRightBtn = (
+      <Button transparent> </Button>
+    );
+    if (this.state.user) {
+      topLeftBtn = (
+        <Button transparent onPress={() => navigator.parentNavigator.push({
+          id: 'AccountPage',
+          name: 'Account',
+          sceneConfig: Navigator.SceneConfigs.FloatFromBottom,
+          passProps: {
+            onLogout: this._onLogout.bind(this)
+          }
+        })}>
+          <Icon name="ios-menu" />
+        </Button>
+      )
+    } else {
+      topLeftBtn = (
+        <Button transparent onPress={() => navigator.parentNavigator.push({
+          id: 'LoginPage',
+          name: 'Login',
+          sceneConfig: Navigator.SceneConfigs.FloatFromBottom,
+          passProps: {
+            onLoginSuccess: this._onLoginSuccess.bind(this)
+          }
+        })}>
+          <Text>Connexion</Text>
+        </Button>
+      )
+    }
+
+    if (this.state.user && (this.state.user.hasRole('ROLE_COURIER') || this.state.user.hasRole('ROLE_ADMIN'))) {
+      topRightBtn = (
+        <Button transparent onPress={() => navigator.parentNavigator.push({
+          id: 'CourierPage',
+          name: 'Courier',
+          sceneConfig: Navigator.SceneConfigs.FloatFromRight,
+          passProps: {
+            user: this.state.user
+          }
+        })}>
+          <Icon name="ios-bicycle" />
+        </Button>
+      )
+    }
+
     return (
-      <View style={styles.container}>
-        <View style={styles.listView}>
-          <View style={styles.loader}>
-            <ActivityIndicator
-              animating={this.state.loading}
-              size="large"
-              color="#0000ff"
-            />
-          </View>
+      <Container>
+        <Header>
+          {topLeftBtn}
+          <Title>Restaurants</Title>
+          {topRightBtn}
+        </Header>
+        <Content theme={theme}>
           <ListView
             dataSource={this.state.dataSource}
             enableEmptySections
@@ -234,27 +188,20 @@ class RestaurantsPage extends Component {
               );
             }}
           />
-        </View>
-      </View>
+          <View style={styles.loader}>
+            <ActivityIndicator
+              animating={this.state.loading}
+              size="large"
+              color="#0000ff"
+            />
+          </View>
+        </Content>
+      </Container>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    alignItems: 'stretch',
-    backgroundColor: '#F5FCFF',
-    paddingTop: 60,
-  },
-  listView: {
-    flex: 4,
-    borderTopColor: "black",
-    borderStyle: "solid",
-    borderTopWidth: 2
-  },
   listViewItem: {
     flex: 1,
     paddingHorizontal: 10,
@@ -271,13 +218,6 @@ const styles = StyleSheet.create({
     height: StyleSheet.hairlineWidth,
     backgroundColor: '#8E8E8E',
   },
-  loader: {
-    ...StyleSheet.absoluteFillObject,
-    justifyContent: 'center',
-  },
-  map: {
-    ...StyleSheet.absoluteFillObject,
-  }
 });
 
 module.exports = RestaurantsPage;

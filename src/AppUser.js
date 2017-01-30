@@ -27,7 +27,7 @@ class AppUser {
           if (error) {
             return reject(error);
           }
-          resolve();
+          resolve(this);
         });
       } catch (error) {
         reject(error.message);

@@ -2,26 +2,26 @@ import React, { Component } from 'react';
 import {
   StyleSheet,
   View,
-  Text,
   Navigator,
   TouchableHighlight,
   TouchableOpacity,
 } from 'react-native';
-
+import { Container, Header, Title, Content, List, ListItem, InputGroup, Input, Icon, Text, Picker, Button } from 'native-base';
 import { API } from 'coopcycle-js';
 
+const Auth = require('../Auth');
 const AppConfig = require('../AppConfig');
 const AppUser = require('../AppUser');
 const APIClient = null;
 
 class AccountPage extends Component {
   state = {
-    username: undefined,
+    user: {},
   }
   componentDidMount() {
     AppUser.load()
       .then((user) => {
-        this.setState({ username: user.username });
+        this.setState({ user });
 
         APIClient = API.createClient(AppConfig.API_BASEURL, user);
         APIClient.request('GET', '/api/me')
@@ -34,11 +34,7 @@ class AccountPage extends Component {
     return (
       <Navigator
           renderScene={this.renderScene.bind(this)}
-          navigator={this.props.navigator}
-          navigationBar={
-            <Navigator.NavigationBar style={{backgroundColor: '#246dd5'}}
-                routeMapper={NavigationBarRouteMapper} />
-          } />
+          navigator={this.props.navigator} />
     );
   }
   _onClickButton(navigator) {
@@ -49,50 +45,24 @@ class AccountPage extends Component {
   }
   renderScene(route, navigator) {
     return (
-      <View style={{flex: 1, alignItems: 'center', justifyContent:'center'}}>
-        <View style={{padding: 10}}>
-          <Text>{this.state.email}</Text>
-        </View>
-        <View style={{padding: 10}}>
-          <Text>{this.state.username}</Text>
-        </View>
-        <TouchableOpacity style={styles.button} onPress={this._onClickButton.bind(this, navigator)}>
-          <Text style={{color: "white"}}>Déconnexion</Text>
-        </TouchableOpacity>
-      </View>
+      <Container>
+        <Header>
+          <Button transparent onPress={() => navigator.parentNavigator.pop()}>
+              <Icon name='ios-close' />
+          </Button>
+          <Title>Mon compte</Title>
+        </Header>
+        <Content style={{ paddingTop: 40 }}>
+          <View style={{ alignItems: 'center', padding: 10 }}>
+            <Text>{this.state.user.username}</Text>
+          </View>
+          <Button style={{ alignSelf: 'center', marginTop: 20, marginBottom: 20 }} onPress={ this._onClickButton.bind(this, navigator) }>
+            Déconnexion
+          </Button>
+        </Content>
+      </Container>
     );
   }
 }
-
-var NavigationBarRouteMapper = {
-  LeftButton(route, navigator, index, navState) {
-    return (
-      <TouchableOpacity style={{flex: 1, justifyContent: 'center'}}
-          onPress={() => navigator.parentNavigator.pop()}>
-        <Text style={{color: 'white', margin: 10,}}>Retour</Text>
-      </TouchableOpacity>
-    );
-  },
-  RightButton(route, navigator, index, navState) {
-    return null;
-  },
-  Title(route, navigator, index, navState) {
-    return (
-      <TouchableOpacity style={{flex: 1, justifyContent: 'center'}}>
-        <Text style={{color: 'white', margin: 10, fontSize: 16}}>
-          Mon compte
-        </Text>
-      </TouchableOpacity>
-    );
-  }
-};
-
-const styles = StyleSheet.create({
-  button: {
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    backgroundColor: "#246dd5",
-  }
-});
 
 module.exports = AccountPage;
