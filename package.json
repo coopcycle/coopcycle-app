@@ -8,11 +8,13 @@
   },
   "dependencies": {
     "coopcycle-js": "git+ssh://git@github.com/coopcycle/coopcycle-js.git",
+    "native-base": "^0.5.22",
     "polyline": "^0.2.0",
     "react": "^15.4.2",
     "react-native": "^0.40.0",
     "react-native-google-places-autocomplete": "^1.2.4",
     "react-native-maps": "^0.13.0",
+    "react-native-vector-icons": "^4.0.0",
     "underscore": "^1.8.3"
   },
   "devDependencies": {
