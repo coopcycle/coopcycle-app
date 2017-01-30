@@ -12,7 +12,8 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import {
-  Container, Header, Title, Content, Footer, FooterTab,
+  Container,
+  Header, Title, Content, Footer, FooterTab,
   List, ListItem,
   InputGroup, Input,
   Icon, Picker, Button,
@@ -20,9 +21,8 @@ import {
 import theme from '../theme/coopcycle';
 import _ from 'underscore';
 
+const AppUser = require('../AppUser');
 const Cart = require('../Cart');
-const OrdersAPI = require('../OrdersAPI');
-const Auth = require('../Auth');
 
 class CartPage extends Component {
   constructor(props) {
@@ -78,29 +78,33 @@ class CartPage extends Component {
       </ListItem>
     )
   }
-  _createOrder() {
-    this.setState({loading: true});
-    OrdersAPI.createOrder(this.state.cart).then((data) => {
-      console.log(data);
-      this.setState({loading: false});
+  _gotoNextPage(navigator) {
+    navigator.parentNavigator.push({
+      id: 'CartAddressPage',
+      name: 'CartAddress',
+      sceneConfig: Navigator.SceneConfigs.FloatFromRight,
+      passProps: {
+        cart: this.state.cart
+      }
     });
   }
   _onClickButton(navigator) {
-    Auth.getUser()
+    AppUser.load()
       .then((user) => {
-        this._createOrder();
-      })
-      .catch((error) => {
-        navigator.parentNavigator.push({
-          id: 'LoginPage',
-          name: 'Login',
-          sceneConfig: Navigator.SceneConfigs.FloatFromBottom,
-          passProps: {
-            onLoginSuccess: () => {
-              this._createOrder();
+        if (user.hasCredentials()) {
+          this._gotoNextPage(navigator);
+        } else {
+          navigator.parentNavigator.push({
+            id: 'LoginPage',
+            name: 'Login',
+            sceneConfig: Navigator.SceneConfigs.FloatFromBottom,
+            passProps: {
+              onLoginSuccess: () => {
+                this._gotoNextPage(navigator);
+              }
             }
-          }
-        });
+          });
+        }
       });
   }
   render() {
@@ -116,8 +120,8 @@ class CartPage extends Component {
       <Container>
         <Header>
           <Button transparent onPress={() => navigator.parentNavigator.pop()}>
-          <Icon name="ios-arrow-back" />
-        </Button>
+            <Icon name="ios-arrow-back" />
+          </Button>
           <Title>Panier</Title>
         </Header>
         <Content theme={theme}>

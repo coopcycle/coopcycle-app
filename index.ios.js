@@ -23,13 +23,12 @@ const LoginPage = require('./src/page/LoginPage');
 const RestaurantsPage = require('./src/page/RestaurantsPage');
 const RestaurantPage = require('./src/page/RestaurantPage');
 const CartPage = require('./src/page/CartPage');
-const ChooseAddressPage = require('./src/page/ChooseAddressPage');
+const CartAddressPage = require('./src/page/CartAddressPage');
 const CourierPage = require('./src/page/CourierPage');
 const EnterAddressPage = require('./src/page/EnterAddressPage');
 const AccountPage = require('./src/page/AccountPage');
 const BusyPage = require('./src/page/BusyPage');
-
-// const Auth = require('./src/Auth');
+const CreditCardPage = require('./src/page/CreditCardPage');
 
 const AppUser = require('./src/AppUser');
 
@@ -95,9 +94,9 @@ class coursiersapp extends Component {
         <CartPage navigator={navigator} {...route.passProps} />
       );
     }
-    if (routeId === 'ChooseAddressPage') {
+    if (routeId === 'CartAddressPage') {
       return (
-        <ChooseAddressPage navigator={navigator} {...route.passProps} />
+        <CartAddressPage navigator={navigator} {...route.passProps} />
       );
     }
     if (routeId === 'CourierPage') {
@@ -118,6 +117,11 @@ class coursiersapp extends Component {
     if (routeId === 'BusyPage') {
       return (
         <BusyPage navigator={navigator} {...route.passProps} />
+      );
+    }
+    if (routeId === 'CreditCardPage') {
+      return (
+        <CreditCardPage navigator={navigator} {...route.passProps} />
       );
     }
 

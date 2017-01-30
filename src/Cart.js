@@ -5,6 +5,7 @@ class CartItem {
     this.cart = cart;
     this.offer = offer;
     this.quantity = 1;
+    this.deliveryAddress = null;
   }
   decrement() {
     if (this.quantity > 0) {
@@ -69,6 +70,7 @@ class Cart {
         product: item.offer['@id']
       }
     });
+    json.deliveryAddress = '/api/delivery_addresses/' + this.deliveryAddress.id;
 
     return json;
   }
