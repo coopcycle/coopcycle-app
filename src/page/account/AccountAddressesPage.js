@@ -12,10 +12,10 @@ import _ from 'underscore';
 import Stripe, { PaymentCardTextField } from 'tipsi-stripe';
 
 import { API } from 'coopcycle-js';
-import theme from '../theme/coopcycle';
+import theme from '../../theme/coopcycle';
 
-const AppConfig = require('../AppConfig');
-const AppUser = require('../AppUser');
+const AppConfig = require('../../AppConfig');
+const AppUser = require('../../AppUser');
 const APIClient = null;
 
 class AccountAddressesPage extends Component {
