@@ -4,7 +4,6 @@ import {
 } from 'react-native';
 
 const AppConfig = require('./AppConfig');
-// let ResourcesAPI = require('./ResourcesAPI');
 
 class Auth {
   static getStatus() {
