@@ -108,7 +108,7 @@ class OrderTrackingPage extends Component {
           <Button transparent onPress={() => navigator.parentNavigator.pop()}>
             <Icon name="ios-arrow-back" />
           </Button>
-          <Title>Paiement</Title>
+          <Title>Commande</Title>
         </Header>
         <Content contentContainerStyle={ { flex: 1, justifyContent: 'center', alignItems: 'center' } }>
           <MapView

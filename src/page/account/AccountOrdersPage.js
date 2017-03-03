@@ -40,9 +40,16 @@ class AccountOrdersPage extends Component {
           });
       });
   }
-  _renderRow(order) {
+  _renderRow(navigator, order) {
     return (
-      <ListItem>
+      <ListItem onPress={() => navigator.parentNavigator.push({
+        id: 'OrderTrackingPage',
+        name: 'OrderTracking',
+        sceneConfig: Navigator.SceneConfigs.FloatFromRight,
+        passProps: {
+          order: order
+        }
+      })}>
         <Text>{ order.restaurant.name }</Text>
       </ListItem>
     );
@@ -80,15 +87,13 @@ class AccountOrdersPage extends Component {
           <Title>Commandes</Title>
         </Header>
         <Content>
-          <List dataArray={ this.state.orders } renderRow={ this._renderRow.bind(this) } />
+          <List dataArray={ this.state.orders } renderRow={ this._renderRow.bind(this, navigator) } />
         </Content>
         { loader }
       </Container>
     );
   }
 }
-
-// <List dataArray={ this.props.user.deliveryAddresses } renderRow={ this._renderRow.bind(this) } />
 
 const styles = StyleSheet.create({
   loader: {
