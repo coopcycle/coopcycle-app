@@ -2,18 +2,17 @@ import React, { Component } from 'react';
 import {
   StyleSheet,
   View,
-  Text,
   Navigator,
-  TouchableHighlight,
-  TouchableOpacity,
-  ListView,
-  AsyncStorage,
-  Alert,
-  ActivityIndicator,
 } from 'react-native';
+import {
+  Container,
+  Header,
+  Title, Content, Footer, FooterTab, Button, Icon, List, ListItem, Text, Radio } from 'native-base';
 import _ from 'underscore';
 import Stripe, { PaymentCardTextField } from 'tipsi-stripe';
+
 import { API } from 'coopcycle-js';
+import theme from '../theme/coopcycle';
 
 const AppConfig = require('../AppConfig');
 const AppUser = require('../AppUser');
@@ -28,9 +27,6 @@ Stripe.init({
 class CreditCardPage extends Component {
   constructor(props) {
     super(props);
-
-    console.log(props.cart);
-
     this.state = {
       valid: false,
       params: {}
@@ -42,61 +38,55 @@ class CreditCardPage extends Component {
         APIClient = API.createClient(AppConfig.API_BASEURL, user);
       });
   }
-  _onClick() {
+  _onClick(navigator) {
     if (this.state.valid) {
       Stripe.createTokenWithCard(this.state.params)
         .then((token) => {
-          console.log('Token created!', token.tokenId);
-
-          // { livemode: false,
-          // created: 1485727859,
-          // card:
-          //  { cardId: 'card_19hQsxGWzUDul81alL171eiG',
-          //    funding: 'credit',
-          //    country: 'US',
-          //    expMonth: 12,
-          //    brand: 'Visa',
-          //    last4: '4242',
-          //    expYear: 2018 },
-          // tokenId: 'tok_19hQsxGWzUDul81aFuSKd20P' }
-
           APIClient.request('POST', '/api/orders', this.props.cart.toJSON())
             .then((order) => {
-              console.log('Order created!', order);
-
               return APIClient.request('PUT', order['@id'] + '/pay', {
                 stripeToken: token.tokenId
               });
             })
             .then((order) => {
-              console.log('Order paid!', order);
+              navigator.parentNavigator.push({
+                id: 'OrderTrackingPage',
+                name: 'OrderTracking',
+                sceneConfig: Navigator.SceneConfigs.FloatFromRight,
+                passProps: {
+                  order: order
+                }
+              });
             });
-
         })
     }
-    // { number: '4242424242424242',
-    // expYear: 18,
-    // expMonth: 12,
-    // cvc: '1' }
   }
   render() {
     return (
       <Navigator
           renderScene={this.renderScene.bind(this)}
-          navigator={this.props.navigator}
-          navigationBar={
-            <Navigator.NavigationBar style={{backgroundColor: '#246dd5'}}
-                routeMapper={NavigationBarRouteMapper} />
-          } />
+          navigator={this.props.navigator} />
     );
   }
   renderScene(route, navigator) {
+    let btnText = 'Payer 0 €';
+    if (this.props.cart) {
+      btnText = 'Payer ' + this.props.cart.total + ' €';
+    }
     return (
-      <View style={styles.container}>
-        <PaymentCardTextField
+      <Container theme={theme}>
+        <Header>
+          <Button transparent onPress={() => navigator.parentNavigator.pop()}>
+            <Icon name="ios-arrow-back" />
+          </Button>
+          <Title>Paiement</Title>
+        </Header>
+        <Content padder contentContainerStyle={ { flex: 1, justifyContent: 'center', alignItems: 'center' } }>
+          <Text style={ styles.padder }>Veuillez entrer vos coordonnées bancaires</Text>
+          <PaymentCardTextField
             accessible
             accessibilityLabel="cardTextField"
-            style={styles.field}
+            style={ styles.field }
             onParamsChange={(valid, params) => {
               this.setState({
                 valid: valid,
@@ -104,60 +94,31 @@ class CreditCardPage extends Component {
               });
             }}
           />
-        <TouchableOpacity style={styles.button} onPress={this._onClick.bind(this)}>
-          <Text>Payer</Text>
-        </TouchableOpacity>
-      </View>
+
+        </Content>
+        <Footer>
+          <Button
+            style={{ alignSelf: "flex-end", marginRight: 10 }}
+            onPress={ this._onClick.bind(this, navigator) }>{ btnText }</Button>
+        </Footer>
+      </Container>
     );
   }
 }
-
-var NavigationBarRouteMapper = {
-  LeftButton(route, navigator, index, navState) {
-    return (
-      <TouchableOpacity style={{flex: 1, justifyContent: 'center'}}
-          onPress={() => navigator.parentNavigator.pop()}>
-        <Text style={{color: 'white', margin: 10,}}>Retour</Text>
-      </TouchableOpacity>
-    );
-  },
-  RightButton(route, navigator, index, navState) {
-    return null;
-  },
-  Title(route, navigator, index, navState) {
-    return (
-      <TouchableOpacity style={{flex: 1, justifyContent: 'center'}}>
-        <Text style={{color: 'white', margin: 10, fontSize: 16}}>
-          Panier
-        </Text>
-      </TouchableOpacity>
-    );
-  }
-};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
   },
-  header: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
+  padder: {
+    padding: 10
   },
   instruction: {
     textAlign: 'center',
     color: '#333333',
     marginBottom: 5,
-  },
-  button: {
-    alignItems: "center",
-    backgroundColor: "#246dd5",
-    padding: 20,
-    marginTop: 20,
-    borderRadius: 4
   },
   token: {
     height: 20,

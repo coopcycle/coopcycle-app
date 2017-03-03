@@ -95,6 +95,9 @@ class CartAddressPage extends Component {
           <Title>Livraison</Title>
         </Header>
         <Content theme={theme}>
+          <View style={ { alignItems: 'center', justifyContent: 'center', paddingVertical: 20 } }>
+            <Text>Choisissez une adresse de livraison</Text>
+          </View>
           <List dataArray={ this.state.deliveryAddresses } renderRow={ this._renderRow.bind(this, navigator) } />
           <View style={styles.loader}>
             <ActivityIndicator
