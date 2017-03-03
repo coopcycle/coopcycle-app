@@ -79,8 +79,9 @@ class RestaurantsPage extends Component {
   _onLoginSuccess(user) {
     this.setState({ user });
   }
-  _onLogout() {
+  _onLogout(navigator) {
     this.setState({ user: null });
+    navigator.parentNavigator.pop();
   }
   render() {
     return (
@@ -102,7 +103,7 @@ class RestaurantsPage extends Component {
           name: 'Account',
           sceneConfig: Navigator.SceneConfigs.FloatFromBottom,
           passProps: {
-            onLogout: this._onLogout.bind(this)
+            onLogout: this._onLogout.bind(this, navigator)
           }
         })}>
           <Icon name="ios-menu" />

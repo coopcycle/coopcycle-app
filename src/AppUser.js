@@ -11,6 +11,7 @@ class AppUser {
     this.token = token;
     this.roles = roles || [];
     this.refreshToken = refreshToken;
+    this.listeners = [];
   }
 
   save() {
@@ -45,6 +46,17 @@ class AppUser {
 
   hasCredentials() {
     return this.token !== null;
+  }
+
+  addRefreshTokenErrorListener(listener) {
+    this.listeners.push(listener);
+  }
+
+  onRefreshTokenError() {
+    console.log('onRefreshTokenError')
+    this.listeners.forEach((listener) => {
+      listener.apply(null, [this]);
+    });
   }
 
   static load() {

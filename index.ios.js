@@ -27,37 +27,14 @@ const CartAddressPage = require('./src/page/CartAddressPage');
 const CourierPage = require('./src/page/CourierPage');
 const EnterAddressPage = require('./src/page/EnterAddressPage');
 const AccountPage = require('./src/page/AccountPage');
+const AccountAddressesPage = require('./src/page/AccountAddressesPage');
+const AccountOrdersPage = require('./src/page/AccountOrdersPage');
 const BusyPage = require('./src/page/BusyPage');
 const CreditCardPage = require('./src/page/CreditCardPage');
 
 const AppUser = require('./src/AppUser');
 
 class coursiersapp extends Component {
-
-  componentDidMount() {
-    // AppUser.load()
-    //   .then((user) => {
-    //     console.log('USER', user.hasCredentials());
-    //   });
-    // Auth.getUser()
-    //   .then((user) => console.log(user))
-    //   .catch(() => {});
-    // Auth.checkToken()
-    //   .then(() => console.log('Token is valid'))
-    //   .catch((message) => {
-    //     if (message === 'Expired JWT Token') {
-    //       console.log('Token is expired, refreshing');
-    //       Auth.refreshToken()
-    //         .then(() => console.log('Token refreshed successfully'))
-    //         .catch((message) => {
-    //           console.log('Error while refreshing token', message);
-    //         });
-    //     } else {
-    //       console.log('Could not check token', message);
-    //     }
-    //   });
-  }
-
   render() {
     return (
       <Navigator
@@ -71,7 +48,6 @@ class coursiersapp extends Component {
         }} />
     );
   }
-
   renderScene(route, navigator) {
     var routeId = route.id;
     if (routeId === 'RestaurantsPage') {
@@ -122,6 +98,16 @@ class coursiersapp extends Component {
     if (routeId === 'CreditCardPage') {
       return (
         <CreditCardPage navigator={navigator} {...route.passProps} />
+      );
+    }
+    if (routeId === 'AccountOrdersPage') {
+      return (
+        <AccountOrdersPage navigator={navigator} {...route.passProps} />
+      );
+    }
+    if (routeId === 'AccountAddressesPage') {
+      return (
+        <AccountAddressesPage navigator={navigator} {...route.passProps} />
       );
     }
 
