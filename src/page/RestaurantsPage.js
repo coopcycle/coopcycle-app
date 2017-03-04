@@ -17,13 +17,8 @@ import {
   Header,
   Title, Content, Footer, FooterTab, Button, Icon } from 'native-base';
 import _ from 'underscore';
-import { API } from 'coopcycle-js';
 
 import theme from '../theme/coopcycle';
-
-const AppConfig = require('../AppConfig');
-const AppUser = require('../AppUser');
-const APIClient = null;
 
 const HOME_COORDS = {
   latitude: 48.875973,
@@ -33,37 +28,26 @@ const HOME_COORDS = {
 class RestaurantsPage extends Component {
   constructor(props) {
     super(props);
-    let restaurants = [];
-    if (props.restaurants) {
-      restaurants = props.restaurants;
-    }
+
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
       distance: 2000,
       loading: false,
-      dataSource: ds.cloneWithRows(restaurants),
-      user: null
+      dataSource: ds.cloneWithRows(props.restaurants || []),
+      user: props.user || null
     };
   }
   componentDidMount() {
-    AppUser.load()
-      .then((user) => {
-        APIClient = API.createClient(AppConfig.API_BASEURL, user);
-        if (!this.props.restaurants) {
-          this.updateRestaurants(this.state.distance);
-        }
-
-        if (user.hasCredentials()) {
-          this._onLoginSuccess(user);
-        }
-      });
+    if (!this.props.restaurants) {
+      this.updateRestaurants(this.state.distance);
+    }
   }
   getRestaurants(distance) {
     this.setState({
       loading: true
     });
-    return APIClient
-      .request('GET', '/api/restaurants?coordinate='+HOME_COORDS.latitude+','+HOME_COORDS.longitude+'&distance='+distance)
+    return this.props.client
+      .request('GET', '/api/restaurants?coordinate=' + [HOME_COORDS.latitude, HOME_COORDS.longitude] + '&distance=' + distance)
   }
   updateRestaurants(distance) {
     this.getRestaurants(distance).then((data) => {
@@ -86,8 +70,8 @@ class RestaurantsPage extends Component {
   render() {
     return (
       <Navigator
-          renderScene={this.renderScene.bind(this)}
-          navigator={this.props.navigator} />
+        renderScene={this.renderScene.bind(this)}
+        navigator={this.props.navigator} />
     );
   }
   renderScene(route, navigator) {
@@ -96,7 +80,7 @@ class RestaurantsPage extends Component {
     let topRightBtn = (
       <Button transparent> </Button>
     );
-    if (this.state.user) {
+    if (this.state.user.isAuthenticated()) {
       topLeftBtn = (
         <Button transparent onPress={() => navigator.parentNavigator.push({
           id: 'AccountPage',
@@ -124,15 +108,12 @@ class RestaurantsPage extends Component {
       )
     }
 
-    if (this.state.user && (this.state.user.hasRole('ROLE_COURIER') || this.state.user.hasRole('ROLE_ADMIN'))) {
+    if (this.state.user.isAuthenticated() && (this.state.user.hasRole('ROLE_COURIER') || this.state.user.hasRole('ROLE_ADMIN'))) {
       topRightBtn = (
         <Button transparent onPress={() => navigator.parentNavigator.push({
           id: 'CourierPage',
           name: 'Courier',
-          sceneConfig: Navigator.SceneConfigs.FloatFromRight,
-          passProps: {
-            user: this.state.user
-          }
+          sceneConfig: Navigator.SceneConfigs.FloatFromRight
         })}>
           <Icon name="ios-bicycle" />
         </Button>

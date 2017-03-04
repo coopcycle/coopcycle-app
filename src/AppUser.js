@@ -41,7 +41,7 @@ class AppUser {
   }
 
   isAuthenticated() {
-
+    return this.username && this.token;
   }
 
   hasCredentials() {

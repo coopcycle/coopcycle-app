@@ -10,43 +10,35 @@ import {
 import { Container, Header, Title, Content, List, ListItem, InputGroup, Input, Icon, Text, Picker, Button } from 'native-base';
 import theme from '../theme/coopcycle';
 
-import { API } from 'coopcycle-js';
-
 const Auth = require('../Auth');
-const AppConfig = require('../AppConfig');
-const AppUser = require('../AppUser');
-const APIClient = null;
 
 class AccountPage extends Component {
-  state = {
-    loading: true,
-    user: {},
+  constructor(props) {
+    super(props);
+    this.state = {
+      loading: false
+    };
   }
   componentDidMount() {
-    AppUser.load()
+    this.setState({ loading: true });
+    this.props.client.request('GET', '/api/me')
       .then((user) => {
-        this.setState({ user });
-        APIClient = API.createClient(AppConfig.API_BASEURL, user);
-        APIClient.request('GET', '/api/me')
-          .then((user) => {
-            this.setState({
-              loading: false,
-              user: user
-            })
-          })
-          .catch((err) => {
-            if (err === 'Invalid refresh token') {
-              this._logout();
-            }
-          });
+        this.setState({
+          loading: false,
+          user: user
+        })
       })
-
+      .catch((err) => {
+        if (err === 'Invalid refresh token') {
+          this._logout();
+        }
+      });
   }
   render() {
     return (
       <Navigator
-          renderScene={this.renderScene.bind(this)}
-          navigator={this.props.navigator} />
+        renderScene={this.renderScene.bind(this)}
+        navigator={this.props.navigator} />
     );
   }
   _logout() {

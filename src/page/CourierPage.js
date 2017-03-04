@@ -9,12 +9,7 @@ import {
   Alert,
   ActivityIndicator,
 } from 'react-native';
-
-import { API } from 'coopcycle-js';
-
 import MapView from 'react-native-maps';
-import Polyline from 'polyline';
-import _ from 'underscore';
 
 const DirectionsAPI = require('../DirectionsAPI');
 const AppConfig = require('../AppConfig');
@@ -27,9 +22,6 @@ const COURIER_COORDS = {
   longitude: 2.331797
 };
 
-const AppUser = require('../AppUser');
-const APIClient = null;
-
 class CourierPage extends Component {
 
   ws = undefined;
@@ -38,8 +30,6 @@ class CourierPage extends Component {
 
   constructor(props) {
     super(props);
-
-    APIClient = API.createClient(AppConfig.API_BASEURL, props.user)
 
     this.state = {
       status: null,
@@ -160,7 +150,7 @@ class CourierPage extends Component {
                 text: 'Voir',
                 onPress: () => {
                   this.setState({loadingMessage: 'Chargement de la commande…'});
-                  APIClient.get('/api/orders/' + order.id).then((orderObj) => {
+                  this.props.client.get('/api/orders/' + order.id).then((orderObj) => {
                     console.log(orderObj);
                     this.setState({loadingMessage: "Calcul de l'itinéraire…"});
                     this._drawPathToDestination(orderObj.restaurant.geo)
@@ -208,7 +198,7 @@ class CourierPage extends Component {
       loading: true,
       loadingMessage: "Veuillez patienter…"
     });
-    APIClient.put(this.state.order['@id'] + '/accept', {})
+    this.props.client.put(this.state.order['@id'] + '/accept', {})
       .then((order) => {
         this.setState({
           order: order,
@@ -221,7 +211,7 @@ class CourierPage extends Component {
       loading: true,
       loadingMessage: "Veuillez patienter…"
     });
-    APIClient.put(this.state.order['@id'] + '/pick', {})
+    this.props.client.put(this.state.order['@id'] + '/pick', {})
       .then((order) => {
         this._drawPathToDestination(order.deliveryAddress.geo)
           .then(() => this.setState({order: order, loading: false}));
@@ -233,7 +223,7 @@ class CourierPage extends Component {
       loading: true,
       loadingMessage: "Veuillez patienter…"
     });
-    APIClient.put(this.state.order['@id'] + '/deliver', {})
+    this.props.client.put(this.state.order['@id'] + '/deliver', {})
       .then((order) => {
         this.setState({
           order: order,
@@ -272,7 +262,7 @@ class CourierPage extends Component {
               loading: true,
               loadingMessage: "Vérification de votre état…"
             });
-            APIClient.get('/api/me/status')
+            this.props.client.get('/api/me/status')
               .then((data) => {
                 if (data.status === 'AVAILABLE') {
                   this._connectToWebSocket();
@@ -293,7 +283,7 @@ class CourierPage extends Component {
       loading: true,
       loadingMessage: "Vérification de votre état…"
     });
-    APIClient.get('/api/me/status')
+    this.props.client.get('/api/me/status')
       .then((data) => {
         if (data.status === 'AVAILABLE') {
           this.setState({
@@ -305,7 +295,7 @@ class CourierPage extends Component {
 
         if (data.status === 'DELIVERING') {
           this.setState({loadingMessage: 'Récupération de la commande…'});
-          APIClient.get('/api/orders/' + data.order.id)
+          this.props.client.get('/api/orders/' + data.order.id)
             .then((order) => {
               this.props.navigator.push({
                 id: 'BusyPage',

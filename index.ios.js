@@ -19,6 +19,8 @@ import MapView from 'react-native-maps';
 import Polyline from 'polyline';
 import _ from 'underscore';
 
+import { API } from 'coopcycle-js';
+
 const LoginPage = require('./src/page/LoginPage');
 const RestaurantsPage = require('./src/page/RestaurantsPage');
 const RestaurantPage = require('./src/page/RestaurantPage');
@@ -34,8 +36,25 @@ const CreditCardPage = require('./src/page/CreditCardPage');
 const OrderTrackingPage = require('./src/page/OrderTrackingPage');
 
 const AppUser = require('./src/AppUser');
+const AppConfig = require('./src/AppConfig');
 
 class coursiersapp extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      user: null,
+      client: null
+    }
+  }
+  componentWillMount() {
+    AppUser.load()
+      .then((user) => {
+        this.setState({
+          user: user,
+          client: API.createClient(AppConfig.API_BASEURL, user)
+        });
+      });
+  }
   render() {
     return (
       <Navigator
@@ -50,10 +69,15 @@ class coursiersapp extends Component {
     );
   }
   renderScene(route, navigator) {
+
+    if (!this.state.user) {
+      return this.loading();
+    }
+
     var routeId = route.id;
     if (routeId === 'RestaurantsPage') {
       return (
-        <RestaurantsPage navigator={navigator} {...route.passProps} />
+        <RestaurantsPage navigator={navigator} user={this.state.user} client={this.state.client} {...route.passProps} />
       );
     }
     if (routeId === 'RestaurantPage') {
@@ -78,7 +102,7 @@ class coursiersapp extends Component {
     }
     if (routeId === 'CourierPage') {
       return (
-        <CourierPage navigator={navigator} {...route.passProps} />
+        <CourierPage navigator={navigator} user={this.state.user} client={this.state.client} {...route.passProps} />
       );
     }
     if (routeId === 'EnterAddressPage') {
@@ -88,7 +112,7 @@ class coursiersapp extends Component {
     }
     if (routeId === 'AccountPage') {
       return (
-        <AccountPage navigator={navigator} {...route.passProps} />
+        <AccountPage navigator={navigator} user={this.state.user} client={this.state.client} {...route.passProps} />
       );
     }
     if (routeId === 'BusyPage') {
@@ -118,6 +142,14 @@ class coursiersapp extends Component {
     }
 
     return this.noRoute(navigator);
+  }
+
+  loading() {
+    return (
+      <View style={{flex: 1, alignItems: 'stretch', justifyContent: 'center'}}>
+          <Text>Chargement</Text>
+      </View>
+    );
   }
 
   noRoute(navigator) {
