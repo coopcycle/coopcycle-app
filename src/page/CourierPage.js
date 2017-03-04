@@ -9,7 +9,13 @@ import {
   Alert,
   ActivityIndicator,
 } from 'react-native';
+import {
+  Container,
+  Header,
+  Title, Content, Footer, FooterTab, Button, Icon
+} from 'native-base';
 import MapView from 'react-native-maps';
+import theme from '../theme/coopcycle';
 
 const DirectionsAPI = require('../DirectionsAPI');
 const AppConfig = require('../AppConfig');
@@ -335,11 +341,7 @@ class CourierPage extends Component {
     return (
       <Navigator
           renderScene={this.renderScene.bind(this)}
-          navigator={this.props.navigator}
-          navigationBar={
-            <Navigator.NavigationBar style={{backgroundColor: '#246dd5'}}
-                routeMapper={NavigationBarRouteMapper} />
-          } />
+          navigator={this.props.navigator} />
     );
   }
   renderScene(route, navigator) {
@@ -378,81 +380,54 @@ class CourierPage extends Component {
     }
 
     return (
-      <View style={{flex: 1, alignItems: 'center', justifyContent:'center'}}>
-        <MapView
-          ref={ref => { this.map = ref; }}
-          style={styles.map}
-          initialRegion={this.state.region}
-          region={this.state.region}
-          onRegionChange={this._onRegionChange.bind(this)}
-          zoomEnabled
-          showsUserLocation
-          loadingEnabled
-          loadingIndicatorColor={"#666666"}
-          loadingBackgroundColor={"#eeeeee"}>
-          {this.state.markers.map(marker => (
-            <MapView.Marker
-              identifier={marker.identifier}
-              key={marker.key}
-              coordinate={marker.coordinate}
-              pinColor={marker.pinColor}
-              title={marker.title}
-              description={marker.description} />
-          ))}
-          <MapView.Polyline
-            coordinates={this.state.polylineCoords}
-            strokeWidth={4}
-            strokeColor="#19B5FE"
-           />
-        </MapView>
-        {loader}
-        {orderOverlay}
-      </View>
+      <Container>
+        <Header>
+          <Button transparent onPress={() => {
+            Alert.alert('Êtes-vous sûr ?', null, [
+              { text: 'Annuler', onPress: () => {} },
+              { text: 'Quitter', onPress: () => navigator.parentNavigator.pop() },
+            ]);
+          }}>
+            <Text>Quitter</Text>
+          </Button>
+          <Title>Commandes</Title>
+        </Header>
+        <View style={{flex: 1, alignItems: 'center', justifyContent:'center'}}>
+          <MapView
+            ref={ref => { this.map = ref; }}
+            style={styles.map}
+            initialRegion={this.state.region}
+            region={this.state.region}
+            onRegionChange={this._onRegionChange.bind(this)}
+            zoomEnabled
+            showsUserLocation
+            loadingEnabled
+            loadingIndicatorColor={"#666666"}
+            loadingBackgroundColor={"#eeeeee"}>
+            {this.state.markers.map(marker => (
+              <MapView.Marker
+                identifier={marker.identifier}
+                key={marker.key}
+                coordinate={marker.coordinate}
+                pinColor={marker.pinColor}
+                title={marker.title}
+                description={marker.description} />
+            ))}
+            <MapView.Polyline
+              coordinates={this.state.polylineCoords}
+              strokeWidth={4}
+              strokeColor="#19B5FE"
+             />
+          </MapView>
+          {loader}
+          {orderOverlay}
+        </View>
+      </Container>
     );
   }
 }
 
-var NavigationBarRouteMapper = {
-  LeftButton(route, navigator, index, navState) {
-    return (
-      <TouchableOpacity style={{flex: 1, justifyContent: 'center'}}
-          onPress={() => {
-            Alert.alert(
-              'Êtes-vous sûr ?',
-              null,
-              [
-                {text: 'Annuler', onPress: () => {}},
-                {text: 'Quitter', onPress: () => navigator.parentNavigator.pop()},
-              ]
-            );
-          }}>
-        <Text style={{color: 'white', margin: 10,}}>Retour</Text>
-      </TouchableOpacity>
-    );
-  },
-  RightButton(route, navigator, index, navState) {
-    return null;
-  },
-  Title(route, navigator, index, navState) {
-    return (
-      <TouchableOpacity style={{flex: 1, justifyContent: 'center'}}>
-        <Text style={{color: 'white', margin: 10, fontSize: 16}}>
-          Coursiers
-        </Text>
-      </TouchableOpacity>
-    );
-  }
-};
-
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingTop: 60,
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    alignItems: 'stretch',
-    backgroundColor: '#F5FCFF',
-  },
   loader: {
     ...StyleSheet.absoluteFillObject,
     justifyContent: 'center',
