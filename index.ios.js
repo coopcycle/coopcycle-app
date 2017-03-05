@@ -87,7 +87,7 @@ class coursiersapp extends Component {
     }
     if (routeId === 'LoginPage') {
       return (
-        <LoginPage navigator={navigator} {...route.passProps} />
+        <LoginPage navigator={navigator} user={this.state.user} client={this.state.client} {...route.passProps} />
       );
     }
     if (routeId === 'CartPage') {

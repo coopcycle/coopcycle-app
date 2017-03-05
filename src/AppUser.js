@@ -36,6 +36,15 @@ class AppUser {
     });
   }
 
+  logout() {
+    Object.assign(this, {
+      username: null,
+      token: null,
+      roles: [],
+      refreshToken: null,
+    });
+  }
+
   hasRole(role) {
     return _.contains(this.roles, role);
   }

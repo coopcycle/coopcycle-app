@@ -8,35 +8,25 @@ import {
   TextInput,
   AsyncStorage,
 } from 'react-native';
-import { Container, Header, Title, Content, List, ListItem, InputGroup, Input, Icon, Text, Picker, Button } from 'native-base';
-import { API } from 'coopcycle-js';
-
-// const FBSDK = require('react-native-fbsdk');
-// const {
-//   LoginButton,
-//   AccessToken,
-//   GraphRequest,
-//   GraphRequestManager,
-// } = FBSDK;
-
-const AppConfig = require('../AppConfig');
-const AppUser = require('../AppUser');
-const APIClient = null;
+import {
+  Container, Header, Title, Content,
+  List, ListItem,
+  InputGroup, Input,
+  Icon, Text, Picker, Button
+} from 'native-base';
 
 class LoginPage extends Component {
-  state = {
-    email: undefined,
-    password: undefined,
-    message: undefined,
-  }
-  componentDidMount() {
-    AppUser.load()
-      .then((user) => {
-        APIClient = API.createClient(AppConfig.API_BASEURL, user);
-      });
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      email: undefined,
+      password: undefined,
+      message: undefined,
+    };
   }
   _onSubmit(navigator) {
-    APIClient.login(this.state.email, this.state.password)
+    this.props.client.login(this.state.email, this.state.password)
       .then((user) => {
         navigator.parentNavigator.pop();
         this.props.onLoginSuccess(user);
@@ -52,8 +42,8 @@ class LoginPage extends Component {
   render() {
     return (
       <Navigator
-          renderScene={this.renderScene.bind(this)}
-          navigator={this.props.navigator} />
+        renderScene={this.renderScene.bind(this)}
+        navigator={this.props.navigator} />
     );
   }
   renderScene(route, navigator) {
@@ -73,7 +63,7 @@ class LoginPage extends Component {
                 <Input ref="email"
                   autoCorrect={false}
                   autoCapitalize="none"
-                  onChangeText={(email) => this.setState({email})}
+                  onChangeText={(email) => this.setState({ email })}
                   style={{height: 40}}
                   placeholder="Email" />
               </InputGroup>
@@ -85,7 +75,7 @@ class LoginPage extends Component {
                   autoCorrect={false}
                   autoCapitalize="none"
                   secureTextEntry={true}
-                  onChangeText={(password) => this.setState({password})}
+                  onChangeText={(password) => this.setState({ password })}
                   style={{height: 40}}
                   placeholder="Mot de passe" />
               </InputGroup>

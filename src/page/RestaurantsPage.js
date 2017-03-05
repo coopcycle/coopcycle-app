@@ -64,7 +64,10 @@ class RestaurantsPage extends Component {
     this.setState({ user });
   }
   _onLogout(navigator) {
-    this.setState({ user: null });
+    const user = this.state.user;
+    user.logout();
+
+    this.setState({ user });
     navigator.parentNavigator.pop();
   }
   render() {
