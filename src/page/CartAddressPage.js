@@ -87,10 +87,9 @@ class CartAddressPage extends Component {
 
     return (
       <View>
-        <View style={ { alignItems: 'center', justifyContent: 'center', paddingVertical: 20 } }>
-          <Text>Choisissez une adresse de livraison</Text>
-        </View>
-        <List dataArray={ this.state.deliveryAddresses } renderRow={ this.renderRow.bind(this, navigator) } />
+        <List dataArray={ this.state.deliveryAddresses }
+          renderHeader={ this.renderListHeader.bind(this) }
+          renderRow={ this.renderRow.bind(this, navigator) } />
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', padding: 20 }}>
           <Button block onPress={() => {
             navigator.parentNavigator.push({
@@ -105,6 +104,17 @@ class CartAddressPage extends Component {
         </View>
       </View>
     );
+  }
+  renderListHeader() {
+    let headingText = 'Choisissez une adresse de livraison';
+    if (this.state.deliveryAddresses.length === 0) {
+      headingText = "Vous n'avez aucune adresse de livraison"
+    }
+    return (
+      <View style={{ flex: 1, alignItems: 'center', paddingVertical: 20 }}>
+        <Text>{ headingText }</Text>
+      </View>
+    )
   }
   renderRow(navigator, deliveryAddress) {
     return (
