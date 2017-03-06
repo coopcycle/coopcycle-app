@@ -17,48 +17,23 @@ import {
   Header,
   Title, Content, Footer, FooterTab, Button, Icon } from 'native-base';
 import _ from 'underscore';
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 
 import theme from '../theme/coopcycle';
+import RestaurantsAPI from '../RestaurantsAPI'
 
-const HOME_COORDS = {
-  latitude: 48.875973,
-  longitude: 2.370039
-};
+import AppConfig from '../AppConfig.json'
 
 class RestaurantsPage extends Component {
+  restaurantsAPI = null;
   constructor(props) {
     super(props);
-
-    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+    this.restaurantsAPI = new RestaurantsAPI(this.props.client)
     this.state = {
-      distance: 2000,
       loading: false,
-      dataSource: ds.cloneWithRows(props.restaurants || []),
+      restaurants: props.restaurants || [],
       user: props.user || null
     };
-  }
-  componentDidMount() {
-    if (!this.props.restaurants) {
-      this.updateRestaurants(this.state.distance);
-    }
-  }
-  getRestaurants(distance) {
-    this.setState({
-      loading: true
-    });
-    return this.props.client
-      .request('GET', '/api/restaurants?coordinate=' + [HOME_COORDS.latitude, HOME_COORDS.longitude] + '&distance=' + distance)
-  }
-  updateRestaurants(distance) {
-    this.getRestaurants(distance).then((data) => {
-      var restaurants = _.map(data['hydra:member'], (restaurant) => {
-        return restaurant;
-      });
-      this.setState({
-        loading: false,
-        dataSource: this.state.dataSource.cloneWithRows(restaurants)
-      });
-    });
   }
   _onLoginSuccess(user) {
     this.setState({ user });
@@ -75,6 +50,61 @@ class RestaurantsPage extends Component {
       <Navigator
         renderScene={this.renderScene.bind(this)}
         navigator={this.props.navigator} />
+    );
+  }
+  renderListHeader() {
+    return (<GooglePlacesAutocomplete
+      placeholder="Entrez votre adresse"
+      minLength={2} // minimum length of text to search
+      autoFocus={false}
+      listViewDisplayed='auto'    // true/false/undefined
+      fetchDetails={true}
+      onPress={(data, details = null) => { // 'details' is provided when fetchDetails = true
+        let location = details.geometry.location;
+        this.setState({
+          loading: true,
+          // dataSource: this.state.dataSource.cloneWithRows([])
+          restaurants: []
+        });
+        this.restaurantsAPI.nearby(location.lat, location.lng, 3000)
+          .then((data) => {
+            this.setState({
+              loading: false,
+              // dataSource: this.state.dataSource.cloneWithRows(data['hydra:member'])
+              restaurants: data['hydra:member']
+            });
+          });
+      }}
+      getDefaultValue={() => {
+        return ''; // text input default value
+      }}
+      query={{
+        // available options: https://developers.google.com/places/web-service/autocomplete
+        key: AppConfig.GOOGLE_API_KEY,
+        language: 'fr', // language of the results
+        types: 'geocode', // default: 'geocode'
+      }}
+      styles={{
+        description: {
+          fontWeight: 'bold',
+        },
+        predefinedPlacesDescription: {
+          color: '#1faadb',
+        },
+      }}
+      nearbyPlacesAPI="GoogleReverseGeocoding" // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
+      GoogleReverseGeocodingQuery={{
+        // available options for GoogleReverseGeocoding API : https://developers.google.com/maps/documentation/geocoding/intro
+        region: "fr"
+      }}
+      GooglePlacesSearchQuery={{
+        // available options for GooglePlacesSearch API : https://developers.google.com/places/web-service/search
+        rankby: 'distance',
+        types: 'food',
+      }}
+      // filter the reverse geocoding results by types - ['locality', 'administrative_area_level_3'] if you want to display only cities
+      filterReverseGeocodingByTypes={['locality', 'administrative_area_level_3']}
+      />
     );
   }
   renderScene(route, navigator) {
@@ -123,6 +153,12 @@ class RestaurantsPage extends Component {
       )
     }
 
+    let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+
+    // currentLocation={true} // Will add a 'Current location' button at the top of the predefined places list
+    // currentLocationLabel="Current location"
+    // predefinedPlaces={[homePlace, workPlace]}
+
     return (
       <Container>
         <Header>
@@ -132,7 +168,7 @@ class RestaurantsPage extends Component {
         </Header>
         <Content theme={theme}>
           <ListView
-            dataSource={this.state.dataSource}
+            dataSource={ ds.cloneWithRows(this.state.restaurants) }
             enableEmptySections
             renderRow={(restaurant) => {
               return (
@@ -155,23 +191,7 @@ class RestaurantsPage extends Component {
               );
             }}
             renderSeparator={(sectionId, rowId) => <View key={rowId} style={styles.separator} />}
-            renderHeader={() => {
-              return (
-                <View style={styles.header}>
-                  <Text style={{flex: 1}}>Distance : {this.state.distance} m</Text>
-                  <Slider
-                    style={{flex: 1}}
-                    minimumValue={0}
-                    maximumValue={2000}
-                    step={500}
-                    value={this.state.distance}
-                    onValueChange={(distance) => {
-                      this.updateRestaurants(distance);
-                      this.setState({distance: distance});
-                    }}/>
-                </View>
-              );
-            }}
+            renderHeader={ this.renderListHeader.bind(this) }
           />
           <View style={styles.loader}>
             <ActivityIndicator
@@ -187,17 +207,16 @@ class RestaurantsPage extends Component {
 }
 
 const styles = StyleSheet.create({
+  loader: {
+    flex: 1,
+    marginTop: 50,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
   listViewItem: {
     flex: 1,
     paddingHorizontal: 10,
     paddingVertical: 20,
-  },
-  header: {
-    flex: 1,
-    padding: 20,
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#FFF',
   },
   separator: {
     height: StyleSheet.hairlineWidth,
