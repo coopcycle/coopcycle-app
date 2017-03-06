@@ -7,24 +7,22 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		00C302E51ABCBA2D00DB3ED1 /* ReferenceProxy in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
-		00C302E71ABCBA2D00DB3ED1 /* ReferenceProxy in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
-		00C302E81ABCBA2D00DB3ED1 /* ReferenceProxy in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302C01ABCB91800DB3ED1 /* libRCTImage.a */; };
-		00C302E91ABCBA2D00DB3ED1 /* ReferenceProxy in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302DC1ABCB9D200DB3ED1 /* libRCTNetwork.a */; };
-		00C302EA1ABCBA2D00DB3ED1 /* ReferenceProxy in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302E41ABCB9EE00DB3ED1 /* libRCTVibration.a */; };
+		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
+		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
+		00C302E81ABCBA2D00DB3ED1 /* libRCTImage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302C01ABCB91800DB3ED1 /* libRCTImage.a */; };
+		00C302E91ABCBA2D00DB3ED1 /* libRCTNetwork.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302DC1ABCB9D200DB3ED1 /* libRCTNetwork.a */; };
+		00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302E41ABCB9EE00DB3ED1 /* libRCTVibration.a */; };
 		00E356F31AD99517003FC87E /* coursiersappTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* coursiersappTests.m */; };
 		070DF16CC4D64C38B5318254 /* Courier New.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 67661DA9F5B2428796803EF8 /* Courier New.ttf */; };
 		0BAB4C01E2114B748F600847 /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 41978319A066465DBAA0168D /* Entypo.ttf */; };
-		133E29F31AD74F7200F7D852 /* ReferenceProxy in Frameworks */ = {isa = PBXBuildFile; fileRef = 78C398B91ACF4ADC00677621 /* libRCTLinking.a */; };
-		139105C61AF99C1200B5F7CC /* ReferenceProxy in Frameworks */ = {isa = PBXBuildFile; fileRef = 139105C11AF99BAD00B5F7CC /* libRCTSettings.a */; };
-		139FDEF61B0652A700C62182 /* ReferenceProxy in Frameworks */ = {isa = PBXBuildFile; fileRef = 139FDEF41B06529B00C62182 /* libRCTWebSocket.a */; };
+		133E29F31AD74F7200F7D852 /* libRCTLinking.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 78C398B91ACF4ADC00677621 /* libRCTLinking.a */; };
+		139105C61AF99C1200B5F7CC /* libRCTSettings.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139105C11AF99BAD00B5F7CC /* libRCTSettings.a */; };
+		139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139FDEF41B06529B00C62182 /* libRCTWebSocket.a */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		140ED2AC1D01E1AD002B40FF /* ReferenceProxy in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
-		146834051AC3E58100842450 /* ReferenceProxy in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
-		19F0F1BE788D15483B9CBB23 /* libPods-coursiersapp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CD730CFAD5C2A5D30DB5637E /* libPods-coursiersapp.a */; };
+		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		1B3F9655ADC44E959A3D1AD8 /* Arial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DB2F769E8C544BCFAC88A615 /* Arial.ttf */; };
 		23F0E7AB95AA41D4A16F19F5 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 54C27FC994E74837825698A7 /* Zocial.ttf */; };
 		28CB804E21C348BFA78FBEBC /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 502D097F3A55493B8337F65D /* MaterialCommunityIcons.ttf */; };
@@ -32,16 +30,14 @@
 		2D803D04D043486FB390F788 /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CB6FE2C17B29440EB47045F6 /* EvilIcons.ttf */; };
 		3B2CDA59B3D3444AB2279018 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A0990C4212964850ABED527B /* MaterialIcons.ttf */; };
 		5684F1658CE141B9BCBFEA0B /* Microsoft Sans Serif.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D6C22C174C07407D9016A208 /* Microsoft Sans Serif.ttf */; };
-		5C67F1E8D3A34B48B670A25E /* libTPSStripe.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BDB96F1011B8480D8341B0C1 /* libTPSStripe.a */; };
-		5E9157361DD0AC6A00FF2AA8 /* ReferenceProxy in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
+		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		5F61FA186D974440A568E009 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F75CBBCBA2C4457BBDB7D362 /* FontAwesome.ttf */; };
 		60767C363AC3430F841BEEFC /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6493C72CAF7940219A6F404D /* Ionicons.ttf */; };
 		6CC8E6CC29414F8BA7B5BBEA /* Comic Sans MS.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2F7EA158DB1A486689EDB5D0 /* Comic Sans MS.ttf */; };
 		78BF0EE5D1BD451F8E90F23A /* Times New Roman.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D8A1C4D0AB1E4A6B8A937565 /* Times New Roman.ttf */; };
-		832341BD1AAA6AB300B99B32 /* ReferenceProxy in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
+		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		8EE784AB0347483D9DE57154 /* Andale Mono.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 11869C25471E4957A54A8D89 /* Andale Mono.ttf */; };
 		908749710C8B4B1894145207 /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E04AC051AF24498B870FC0E /* libRNVectorIcons.a */; };
-		90CE25AD10C705DB48B05D81 /* libPods-coursiersappTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D4E22EF19588D00898EB4BB7 /* libPods-coursiersappTests.a */; };
 		926EF639CCCA4C208A930F10 /* Roboto_medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E0F78EF3DD1043099A67DC9E /* Roboto_medium.ttf */; };
 		AD3AACB305584C54B845190C /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F6686579506B4FAABEE4BCFC /* Octicons.ttf */; };
 		AF80637AFAE74CA4AA006B6D /* SF-UI-Text-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2B67D90353974DCDAC8DD742 /* SF-UI-Text-Regular.otf */; };
@@ -63,6 +59,12 @@
 		FA59AAAB1E3EC41C00D3A617 /* SF-UI-Text-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = FA59AA9F1E3EC41C00D3A617 /* SF-UI-Text-Regular.otf */; };
 		FA59AAAC1E3EC41C00D3A617 /* Skia.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FA59AAA01E3EC41C00D3A617 /* Skia.ttf */; };
 		FA59AAAD1E3EC41C00D3A617 /* Times New Roman.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FA59AAA11E3EC41C00D3A617 /* Times New Roman.ttf */; };
+		FAAD1C111E6DE2DA00826DAC /* TPSCardField.m in Sources */ = {isa = PBXBuildFile; fileRef = FAAD1C0C1E6DE2DA00826DAC /* TPSCardField.m */; };
+		FAAD1C121E6DE2DA00826DAC /* TPSCardField.m in Sources */ = {isa = PBXBuildFile; fileRef = FAAD1C0C1E6DE2DA00826DAC /* TPSCardField.m */; };
+		FAAD1C131E6DE2DA00826DAC /* TPSCardFieldManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FAAD1C0E1E6DE2DA00826DAC /* TPSCardFieldManager.m */; };
+		FAAD1C141E6DE2DA00826DAC /* TPSCardFieldManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FAAD1C0E1E6DE2DA00826DAC /* TPSCardFieldManager.m */; };
+		FAAD1C151E6DE2DA00826DAC /* TPSStripeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FAAD1C101E6DE2DA00826DAC /* TPSStripeManager.m */; };
+		FAAD1C161E6DE2DA00826DAC /* TPSStripeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FAAD1C101E6DE2DA00826DAC /* TPSStripeManager.m */; };
 		FAEA2C201DBFFDE000C8A48E /* mapstogpx20161005_143351.gpx in Resources */ = {isa = PBXBuildFile; fileRef = FAEA2C1F1DBFFDE000C8A48E /* mapstogpx20161005_143351.gpx */; };
 /* End PBXBuildFile section */
 
@@ -242,19 +244,19 @@
 			remoteGlobalIDString = 58B5119B1A9E6C1200147676;
 			remoteInfo = RCTText;
 		};
-		FA185F181E3FB6E700EB1327 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 03819F3BD76640039EE0003F /* TPSStripe.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 3A3A7F1A1DC27B520030F9DC;
-			remoteInfo = TPSStripe;
-		};
 		FA59AA931E3EC3DA00D3A617 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = F08CD3260B8744508F9AAB42 /* RNVectorIcons.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 5DBEB1501B18CEA900B34395;
 			remoteInfo = RNVectorIcons;
+		};
+		FAAD1BFA1E6DE11500826DAC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D117FDAF5F824B0D96AC6593 /* TPSStripe.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3A3A7F1A1DC27B520030F9DC;
+			remoteInfo = TPSStripe;
 		};
 		FAF44A161DBFA48400CA21A6 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -283,7 +285,6 @@
 		00E356EE1AD99517003FC87E /* coursiersappTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = coursiersappTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* coursiersappTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = coursiersappTests.m; sourceTree = "<group>"; };
-		03819F3BD76640039EE0003F /* TPSStripe.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = TPSStripe.xcodeproj; path = "../node_modules/tipsi-stripe/ios/TPSStripe.xcodeproj"; sourceTree = "<group>"; };
 		11869C25471E4957A54A8D89 /* Andale Mono.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Andale Mono.ttf"; path = "../node_modules/native-base/Fonts/Andale Mono.ttf"; sourceTree = "<group>"; };
 		139105B61AF99BAD00B5F7CC /* RCTSettings.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTSettings.xcodeproj; path = "../node_modules/react-native/Libraries/Settings/RCTSettings.xcodeproj"; sourceTree = "<group>"; };
 		139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTWebSocket.xcodeproj; path = "../node_modules/react-native/Libraries/WebSocket/RCTWebSocket.xcodeproj"; sourceTree = "<group>"; };
@@ -313,9 +314,9 @@
 		9C2CF9748DC34A6F99CD6D66 /* Roboto.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Roboto.ttf; path = "../node_modules/native-base/Fonts/Roboto.ttf"; sourceTree = "<group>"; };
 		A0990C4212964850ABED527B /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		B58FFF54B5F64BC89D0BBE2E /* libAirMaps.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libAirMaps.a; sourceTree = "<group>"; };
-		BDB96F1011B8480D8341B0C1 /* libTPSStripe.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libTPSStripe.a; sourceTree = "<group>"; };
 		CB6FE2C17B29440EB47045F6 /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
 		CD730CFAD5C2A5D30DB5637E /* libPods-coursiersapp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-coursiersapp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D117FDAF5F824B0D96AC6593 /* TPSStripe.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = TPSStripe.xcodeproj; path = "../node_modules/tipsi-stripe/ios/TPSStripe.xcodeproj"; sourceTree = "<group>"; };
 		D4E22EF19588D00898EB4BB7 /* libPods-coursiersappTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-coursiersappTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6C22C174C07407D9016A208 /* Microsoft Sans Serif.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Microsoft Sans Serif.ttf"; path = "../node_modules/native-base/Fonts/Microsoft Sans Serif.ttf"; sourceTree = "<group>"; };
 		D8A1C4D0AB1E4A6B8A937565 /* Times New Roman.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Times New Roman.ttf"; path = "../node_modules/native-base/Fonts/Times New Roman.ttf"; sourceTree = "<group>"; };
@@ -339,6 +340,12 @@
 		FA59AA9F1E3EC41C00D3A617 /* SF-UI-Text-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-UI-Text-Regular.otf"; sourceTree = "<group>"; };
 		FA59AAA01E3EC41C00D3A617 /* Skia.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Skia.ttf; sourceTree = "<group>"; };
 		FA59AAA11E3EC41C00D3A617 /* Times New Roman.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Times New Roman.ttf"; sourceTree = "<group>"; };
+		FAAD1C0B1E6DE2DA00826DAC /* TPSCardField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPSCardField.h; sourceTree = "<group>"; };
+		FAAD1C0C1E6DE2DA00826DAC /* TPSCardField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPSCardField.m; sourceTree = "<group>"; };
+		FAAD1C0D1E6DE2DA00826DAC /* TPSCardFieldManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPSCardFieldManager.h; sourceTree = "<group>"; };
+		FAAD1C0E1E6DE2DA00826DAC /* TPSCardFieldManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPSCardFieldManager.m; sourceTree = "<group>"; };
+		FAAD1C0F1E6DE2DA00826DAC /* TPSStripeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPSStripeManager.h; sourceTree = "<group>"; };
+		FAAD1C101E6DE2DA00826DAC /* TPSStripeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPSStripeManager.m; sourceTree = "<group>"; };
 		FAEA2C1F1DBFFDE000C8A48E /* mapstogpx20161005_143351.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = mapstogpx20161005_143351.gpx; sourceTree = "<group>"; };
 		FAEBBEB4DF37C4ACF7979929 /* Pods-coursiersapp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-coursiersapp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-coursiersapp/Pods-coursiersapp.debug.xcconfig"; sourceTree = "<group>"; };
 		FAF44A191DBFA71F00CA21A6 /* AirMaps.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AirMaps.xcodeproj; path = "../node_modules/react-native-maps/ios/AirMaps.xcodeproj"; sourceTree = "<group>"; };
@@ -349,8 +356,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				140ED2AC1D01E1AD002B40FF /* ReferenceProxy in Frameworks */,
-				90CE25AD10C705DB48B05D81 /* libPods-coursiersappTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -358,21 +363,19 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5E9157361DD0AC6A00FF2AA8 /* ReferenceProxy in Frameworks */,
-				146834051AC3E58100842450 /* ReferenceProxy in Frameworks */,
-				00C302E51ABCBA2D00DB3ED1 /* ReferenceProxy in Frameworks */,
-				00C302E71ABCBA2D00DB3ED1 /* ReferenceProxy in Frameworks */,
-				00C302E81ABCBA2D00DB3ED1 /* ReferenceProxy in Frameworks */,
-				133E29F31AD74F7200F7D852 /* ReferenceProxy in Frameworks */,
-				00C302E91ABCBA2D00DB3ED1 /* ReferenceProxy in Frameworks */,
-				139105C61AF99C1200B5F7CC /* ReferenceProxy in Frameworks */,
-				832341BD1AAA6AB300B99B32 /* ReferenceProxy in Frameworks */,
-				00C302EA1ABCBA2D00DB3ED1 /* ReferenceProxy in Frameworks */,
-				139FDEF61B0652A700C62182 /* ReferenceProxy in Frameworks */,
+				5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */,
+				146834051AC3E58100842450 /* libReact.a in Frameworks */,
+				00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */,
+				00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */,
+				00C302E81ABCBA2D00DB3ED1 /* libRCTImage.a in Frameworks */,
+				133E29F31AD74F7200F7D852 /* libRCTLinking.a in Frameworks */,
+				00C302E91ABCBA2D00DB3ED1 /* libRCTNetwork.a in Frameworks */,
+				139105C61AF99C1200B5F7CC /* libRCTSettings.a in Frameworks */,
+				832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */,
+				00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */,
+				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
 				C794A2E77E5A482EAC1DDCF9 /* libAirMaps.a in Frameworks */,
 				908749710C8B4B1894145207 /* libRNVectorIcons.a in Frameworks */,
-				5C67F1E8D3A34B48B670A25E /* libTPSStripe.a in Frameworks */,
-				19F0F1BE788D15483B9CBB23 /* libPods-coursiersapp.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -568,7 +571,7 @@
 				00C302DF1ABCB9EE00DB3ED1 /* RCTVibration.xcodeproj */,
 				139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */,
 				F08CD3260B8744508F9AAB42 /* RNVectorIcons.xcodeproj */,
-				03819F3BD76640039EE0003F /* TPSStripe.xcodeproj */,
+				D117FDAF5F824B0D96AC6593 /* TPSStripe.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -585,6 +588,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				FAAD1C0A1E6DE2DA00826DAC /* TPSStripe */,
 				FA59AA951E3EC41C00D3A617 /* Fonts */,
 				FAEA2C1F1DBFFDE000C8A48E /* mapstogpx20161005_143351.gpx */,
 				13B07FAE1A68108700A75B9A /* coursiersapp */,
@@ -604,14 +608,6 @@
 			children = (
 				13B07F961A680F5B00A75B9A /* coursiersapp.app */,
 				00E356EE1AD99517003FC87E /* coursiersappTests.xctest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		FA185EFA1E3FB6E700EB1327 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				FA185F191E3FB6E700EB1327 /* libTPSStripe.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -642,6 +638,27 @@
 			);
 			name = Fonts;
 			path = "../node_modules/native-base/Fonts";
+			sourceTree = "<group>";
+		};
+		FAAD1BDC1E6DE11500826DAC /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FAAD1BFB1E6DE11500826DAC /* libTPSStripe.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		FAAD1C0A1E6DE2DA00826DAC /* TPSStripe */ = {
+			isa = PBXGroup;
+			children = (
+				FAAD1C0B1E6DE2DA00826DAC /* TPSCardField.h */,
+				FAAD1C0C1E6DE2DA00826DAC /* TPSCardField.m */,
+				FAAD1C0D1E6DE2DA00826DAC /* TPSCardFieldManager.h */,
+				FAAD1C0E1E6DE2DA00826DAC /* TPSCardFieldManager.m */,
+				FAAD1C0F1E6DE2DA00826DAC /* TPSStripeManager.h */,
+				FAAD1C101E6DE2DA00826DAC /* TPSStripeManager.m */,
+			);
+			path = TPSStripe;
 			sourceTree = "<group>";
 		};
 		FAF44A1A1DBFA71F00CA21A6 /* Products */ = {
@@ -708,7 +725,11 @@
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
 						CreatedOnToolsVersion = 6.2;
+						DevelopmentTeam = 66HUGQ2V5L;
 						TestTargetID = 13B07F861A680F5B00A75B9A;
+					};
+					13B07F861A680F5B00A75B9A = {
+						DevelopmentTeam = 66HUGQ2V5L;
 					};
 				};
 			};
@@ -777,8 +798,8 @@
 					ProjectRef = F08CD3260B8744508F9AAB42 /* RNVectorIcons.xcodeproj */;
 				},
 				{
-					ProductGroup = FA185EFA1E3FB6E700EB1327 /* Products */;
-					ProjectRef = 03819F3BD76640039EE0003F /* TPSStripe.xcodeproj */;
+					ProductGroup = FAAD1BDC1E6DE11500826DAC /* Products */;
+					ProjectRef = D117FDAF5F824B0D96AC6593 /* TPSStripe.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -958,18 +979,18 @@
 			remoteRef = 832341B41AAA6A8300B99B32 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		FA185F191E3FB6E700EB1327 /* libTPSStripe.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libTPSStripe.a;
-			remoteRef = FA185F181E3FB6E700EB1327 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		FA59AA941E3EC3DA00D3A617 /* libRNVectorIcons.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libRNVectorIcons.a;
 			remoteRef = FA59AA931E3EC3DA00D3A617 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FAAD1BFB1E6DE11500826DAC /* libTPSStripe.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libTPSStripe.a;
+			remoteRef = FAAD1BFA1E6DE11500826DAC /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		FAF44A171DBFA48400CA21A6 /* libReact.a */ = {
@@ -1154,6 +1175,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FAAD1C141E6DE2DA00826DAC /* TPSCardFieldManager.m in Sources */,
+				FAAD1C121E6DE2DA00826DAC /* TPSCardField.m in Sources */,
+				FAAD1C161E6DE2DA00826DAC /* TPSStripeManager.m in Sources */,
 				00E356F31AD99517003FC87E /* coursiersappTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1162,7 +1186,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FAAD1C131E6DE2DA00826DAC /* TPSCardFieldManager.m in Sources */,
+				FAAD1C111E6DE2DA00826DAC /* TPSCardField.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
+				FAAD1C151E6DE2DA00826DAC /* TPSStripeManager.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1195,6 +1222,7 @@
 			baseConfigurationReference = 37DACA24A64CF949D381087B /* Pods-coursiersappTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = 66HUGQ2V5L;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -1204,8 +1232,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1219,13 +1245,12 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = 66HUGQ2V5L;
 				INFOPLIST_FILE = coursiersappTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1240,6 +1265,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
+				DEVELOPMENT_TEAM = 66HUGQ2V5L;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
@@ -1249,6 +1275,7 @@
 					"$(SRCROOT)/../node_modules/tipsi-stripe/ios/TPSStripe",
 				);
 				INFOPLIST_FILE = coursiersapp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -1266,6 +1293,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 66HUGQ2V5L;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
@@ -1275,6 +1303,7 @@
 					"$(SRCROOT)/../node_modules/tipsi-stripe/ios/TPSStripe",
 				);
 				INFOPLIST_FILE = coursiersapp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
