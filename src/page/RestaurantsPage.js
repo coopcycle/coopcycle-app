@@ -2,22 +2,19 @@ import React, { Component } from 'react';
 import {
   StyleSheet,
   View,
-  Text,
   Navigator,
   TouchableHighlight,
   TouchableOpacity,
   Dimensions,
-  Slider,
-  ListView,
   ActivityIndicator,
-  Modal,
 } from 'react-native';
 import {
   Container,
   Header,
-  Title, Content, Footer, FooterTab, Button, Icon } from 'native-base';
+  Title, Content, Footer, FooterTab, Button, Text, Icon, List, ListItem, Thumbnail } from 'native-base';
 import _ from 'underscore';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import slugify from 'slugify';
 
 import theme from '../theme/coopcycle';
 import RestaurantsAPI from '../RestaurantsAPI'
@@ -53,6 +50,11 @@ class RestaurantsPage extends Component {
     );
   }
   renderListHeader() {
+
+    // currentLocation={true} // Will add a 'Current location' button at the top of the predefined places list
+    // currentLocationLabel="Current location"
+    // predefinedPlaces={[homePlace, workPlace]}
+
     return (<GooglePlacesAutocomplete
       placeholder="Entrez votre adresse"
       minLength={2} // minimum length of text to search
@@ -107,6 +109,32 @@ class RestaurantsPage extends Component {
       />
     );
   }
+  renderRow(navigator, restaurant) {
+
+    var cuisine = 'default';
+    if (restaurant.servesCuisine.length > 0) {
+      var randomCuisine = _.first(_.shuffle(restaurant.servesCuisine));
+      cuisine = randomCuisine.name;
+    }
+
+    return (
+      <ListItem onPress={() => {
+        navigator.parentNavigator.push({
+          id: 'RestaurantPage',
+          name: 'Restaurant',
+          sceneConfig: Navigator.SceneConfigs.FloatFromRight,
+          restaurant: restaurant,
+          passProps: {
+            restaurant: restaurant,
+          }
+        });
+      }}>
+        <Thumbnail square size={60} source={{uri: AppConfig.BASE_URL + '/img/cuisine/' + slugify(cuisine) +'.jpg'}} />
+        <Text>{ restaurant.name }</Text>
+        <Text note>{ restaurant.streetAddress }</Text>
+      </ListItem>
+    );
+  }
   renderScene(route, navigator) {
 
     let topLeftBtn;
@@ -153,12 +181,6 @@ class RestaurantsPage extends Component {
       )
     }
 
-    let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-
-    // currentLocation={true} // Will add a 'Current location' button at the top of the predefined places list
-    // currentLocationLabel="Current location"
-    // predefinedPlaces={[homePlace, workPlace]}
-
     return (
       <Container>
         <Header>
@@ -167,30 +189,10 @@ class RestaurantsPage extends Component {
           {topRightBtn}
         </Header>
         <Content theme={theme}>
-          <ListView
-            dataSource={ ds.cloneWithRows(this.state.restaurants) }
+          <List
             enableEmptySections
-            renderRow={(restaurant) => {
-              return (
-                <TouchableHighlight
-                  onPress={() => {
-                    navigator.parentNavigator.push({
-                      id: 'RestaurantPage',
-                      name: 'Restaurant',
-                      sceneConfig: Navigator.SceneConfigs.FloatFromRight,
-                      restaurant: restaurant,
-                      passProps: {
-                        restaurant: restaurant,
-                      }
-                    });
-                  }}>
-                  <View style={styles.listViewItem}>
-                    <Text>{restaurant.name}</Text>
-                  </View>
-                </TouchableHighlight>
-              );
-            }}
-            renderSeparator={(sectionId, rowId) => <View key={rowId} style={styles.separator} />}
+            dataArray={ this.state.restaurants }
+            renderRow={ this.renderRow.bind(this, navigator) }
             renderHeader={ this.renderListHeader.bind(this) }
           />
           <View style={styles.loader}>
