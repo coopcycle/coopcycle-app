@@ -47,6 +47,22 @@ class CartAddressPage extends Component {
         });
       });
   }
+  onAddressCreated(deliveryAddress) {
+    Object.assign(deliveryAddress, {
+      customer: this.state.user['@id'],
+    });
+    this.setState({ loading: true })
+    this.props.client.post('/api/delivery_addresses', deliveryAddress)
+      .then((data) => {
+        const deliveryAddresses = this.state.deliveryAddresses;
+        deliveryAddresses.push(data);
+
+        this.setState({
+          deliveryAddresses: deliveryAddresses,
+          loading: false,
+        });
+      });
+  }
   _gotoNextPage(navigator) {
     navigator.parentNavigator.push({
       id: 'CreditCardPage',
@@ -57,73 +73,40 @@ class CartAddressPage extends Component {
       }
     });
   }
-  renderAutocomplete() {
-    return (<GooglePlacesAutocomplete
-      placeholder="Entrez votre adresse"
-      minLength={2} // minimum length of text to search
-      autoFocus={false}
-      listViewDisplayed='auto'    // true/false/undefined
-      fetchDetails={true}
-      onPress={(data, details = null) => { // 'details' is provided when fetchDetails = true
-
-        console.log(data);
-
-        let location = details.geometry.location;
-
-        let deliveryAddress = {
-          customer: this.state.user['@id'],
-          name: data.description,
-          streetAddress: data.description,
-          geo: {
-            latitude: location.lat,
-            longitude: location.lng
-          }
-        }
-
-        this.setState({ loading: true })
-        this.props.client.post('/api/delivery_addresses', deliveryAddress)
-          .then((data) => {
-            console.log('ADDRESS CREATED', data);
-            this.setState({
-              deliveryAddresses: [data],
-              loading: false,
-            });
-          });
-
-      }}
-      getDefaultValue={() => {
-        return ''; // text input default value
-      }}
-      query={{
-        // available options: https://developers.google.com/places/web-service/autocomplete
-        key: AppConfig.GOOGLE_API_KEY,
-        language: 'fr', // language of the results
-        types: 'geocode', // default: 'geocode'
-      }}
-      styles={{
-        description: {
-          fontWeight: 'bold',
-        },
-        predefinedPlacesDescription: {
-          color: '#1faadb',
-        },
-      }}
-      nearbyPlacesAPI="GoogleReverseGeocoding" // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
-      GoogleReverseGeocodingQuery={{
-        // available options for GoogleReverseGeocoding API : https://developers.google.com/maps/documentation/geocoding/intro
-        region: "fr"
-      }}
-      GooglePlacesSearchQuery={{
-        // available options for GooglePlacesSearch API : https://developers.google.com/places/web-service/search
-        rankby: 'distance',
-        types: 'food',
-      }}
-      // filter the reverse geocoding results by types - ['locality', 'administrative_area_level_3'] if you want to display only cities
-      filterReverseGeocodingByTypes={['locality', 'administrative_area_level_3']}
-      />
+  render() {
+    return (
+      <Navigator
+          renderScene={this.renderScene.bind(this)}
+          navigator={this.props.navigator} />
     );
   }
-  _renderRow(navigator, deliveryAddress) {
+  renderList(navigator) {
+    if (this.state.loading) {
+      return ( <View /> )
+    }
+
+    return (
+      <View>
+        <View style={ { alignItems: 'center', justifyContent: 'center', paddingVertical: 20 } }>
+          <Text>Choisissez une adresse de livraison</Text>
+        </View>
+        <List dataArray={ this.state.deliveryAddresses } renderRow={ this.renderRow.bind(this, navigator) } />
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', padding: 20 }}>
+          <Button block onPress={() => {
+            navigator.parentNavigator.push({
+              id: 'NewAddressPage',
+              name: 'NewAddress',
+              sceneConfig: Navigator.SceneConfigs.FloatFromBottom,
+              passProps: {
+                onAddressCreated: this.onAddressCreated.bind(this)
+              }
+            });
+          }}>Ajouter une adresse</Button>
+        </View>
+      </View>
+    );
+  }
+  renderRow(navigator, deliveryAddress) {
     return (
       <ListItem button iconRight onPress={() => {
 
@@ -145,29 +128,7 @@ class CartAddressPage extends Component {
       </ListItem>
     )
   }
-  render() {
-    return (
-      <Navigator
-          renderScene={this.renderScene.bind(this)}
-          navigator={this.props.navigator} />
-    );
-  }
   renderScene(route, navigator) {
-
-    let top = ( <View /> )
-
-    if (this.state.loaded) {
-      if (this.state.deliveryAddresses.length > 0) {
-        top = (
-          <View style={ { alignItems: 'center', justifyContent: 'center', paddingVertical: 20 } }>
-            <Text>Choisissez une adresse de livraison</Text>
-          </View>
-        );
-      } else {
-        top = this.renderAutocomplete();
-      }
-    }
-
     return (
       <Container>
         <Header>
@@ -177,8 +138,7 @@ class CartAddressPage extends Component {
           <Title>Livraison</Title>
         </Header>
         <Content theme={theme}>
-          { top }
-          <List dataArray={ this.state.deliveryAddresses } renderRow={ this._renderRow.bind(this, navigator) } />
+          { this.renderList(navigator) }
           <View style={styles.loader}>
             <ActivityIndicator
               animating={this.state.loading}
@@ -193,21 +153,11 @@ class CartAddressPage extends Component {
 }
 
 const styles = StyleSheet.create({
-  listViewItem: {
+  loader: {
     flex: 1,
-    paddingHorizontal: 10,
-    paddingVertical: 20,
-  },
-  header: {
-    flex: 1,
-    padding: 20,
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#FFF',
-  },
-  separator: {
-    height: StyleSheet.hairlineWidth,
-    backgroundColor: '#8E8E8E',
+    marginTop: 50,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
 });
 
