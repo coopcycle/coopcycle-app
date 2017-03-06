@@ -27,7 +27,6 @@ const RestaurantPage = require('./src/page/RestaurantPage');
 const CartPage = require('./src/page/CartPage');
 const CartAddressPage = require('./src/page/CartAddressPage');
 const CourierPage = require('./src/page/CourierPage');
-const EnterAddressPage = require('./src/page/EnterAddressPage');
 const AccountPage = require('./src/page/AccountPage');
 const AccountAddressesPage = require('./src/page/account/AccountAddressesPage');
 const AccountOrdersPage = require('./src/page/account/AccountOrdersPage');
@@ -97,17 +96,12 @@ class coursiersapp extends Component {
     }
     if (routeId === 'CartAddressPage') {
       return (
-        <CartAddressPage navigator={navigator} {...route.passProps} />
+        <CartAddressPage navigator={navigator} user={this.state.user} client={this.state.client} {...route.passProps} />
       );
     }
     if (routeId === 'CourierPage') {
       return (
         <CourierPage navigator={navigator} user={this.state.user} client={this.state.client} {...route.passProps} />
-      );
-    }
-    if (routeId === 'EnterAddressPage') {
-      return (
-        <EnterAddressPage navigator={navigator} {...route.passProps} />
       );
     }
     if (routeId === 'AccountPage') {
