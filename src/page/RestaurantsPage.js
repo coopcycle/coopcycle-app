@@ -112,10 +112,12 @@ class RestaurantsPage extends Component {
   renderRow(navigator, restaurant) {
 
     var cuisine = 'default';
-    if (restaurant.servesCuisine.length > 0) {
-      var randomCuisine = _.first(_.shuffle(restaurant.servesCuisine));
-      cuisine = randomCuisine.name;
-    }
+    // if (restaurant.servesCuisine.length > 0) {
+    //   var randomCuisine = _.first(_.shuffle(restaurant.servesCuisine));
+    //   cuisine = randomCuisine.name;
+    // }
+
+    let imageURI = AppConfig.BASE_URL + '/img/cuisine/' + slugify(cuisine).toLowerCase() +'.jpg';
 
     return (
       <ListItem onPress={() => {
@@ -129,7 +131,7 @@ class RestaurantsPage extends Component {
           }
         });
       }}>
-        <Thumbnail square size={60} source={{uri: AppConfig.BASE_URL + '/img/cuisine/' + slugify(cuisine) +'.jpg'}} />
+        <Thumbnail square size={60} source={{ uri: imageURI }} />
         <Text>{ restaurant.name }</Text>
         <Text note>{ restaurant.streetAddress }</Text>
       </ListItem>

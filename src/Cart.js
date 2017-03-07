@@ -70,7 +70,7 @@ class Cart {
         product: item.offer['@id']
       }
     });
-    json.deliveryAddress = '/api/delivery_addresses/' + this.deliveryAddress.id;
+    json.deliveryAddress = this.deliveryAddress['@id'];
 
     return json;
   }

@@ -10,14 +10,8 @@ import {
   Header,
   Title, Content, Footer, FooterTab, Button, Icon, List, ListItem, Text, Radio } from 'native-base';
 import _ from 'underscore';
-import Stripe, { PaymentCardTextField } from 'tipsi-stripe';
 
-import { API } from 'coopcycle-js';
 import theme from '../../theme/coopcycle';
-
-const AppConfig = require('../../AppConfig');
-const AppUser = require('../../AppUser');
-const APIClient = null;
 
 class AccountOrdersPage extends Component {
   constructor(props) {
@@ -28,16 +22,12 @@ class AccountOrdersPage extends Component {
     };
   }
   componentDidMount() {
-    AppUser.load()
-      .then((user) => {
-        APIClient = API.createClient(AppConfig.API_BASEURL, user);
-        APIClient.request('GET', '/api/me/orders')
-          .then((data) => {
-            this.setState({
-              loading: false,
-              orders: data['hydra:member']
-            })
-          });
+    this.props.client.get('/api/me/orders')
+      .then((data) => {
+        this.setState({
+          loading: false,
+          orders: data['hydra:member']
+        })
       });
   }
   _renderRow(navigator, order) {

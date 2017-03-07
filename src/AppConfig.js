@@ -1,8 +1,7 @@
-class AppConfig {
-    static SSL = false;
-    static API_DOMAIN = 'coopcycle.dev';
-    static API_BASEURL = (AppConfig.SSL ? 'https' : 'http') + '://' + AppConfig.API_DOMAIN;
-    static WEBSOCKET_BASEURL = (AppConfig.SSL ? 'wss' : 'ws') + '://' + AppConfig.API_DOMAIN;
-}
+import AppConfig from './AppConfig.json'
 
-module.exports = AppConfig;
+module.exports = {
+    ...AppConfig,
+    API_BASEURL: AppConfig.BASE_URL,
+    WEBSOCKET_BASEURL: AppConfig.BASE_URL.replace('http', 'ws')
+};

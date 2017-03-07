@@ -122,12 +122,12 @@ class coursiersapp extends Component {
     }
     if (routeId === 'AccountOrdersPage') {
       return (
-        <AccountOrdersPage navigator={navigator} {...route.passProps} />
+        <AccountOrdersPage navigator={navigator} user={this.state.user} client={this.state.client} {...route.passProps} />
       );
     }
     if (routeId === 'AccountAddressesPage') {
       return (
-        <AccountAddressesPage navigator={navigator} {...route.passProps} />
+        <AccountAddressesPage navigator={navigator} user={this.state.user} client={this.state.client} {...route.passProps} />
       );
     }
     if (routeId === 'OrderTrackingPage') {
