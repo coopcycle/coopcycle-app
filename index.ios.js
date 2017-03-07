@@ -92,7 +92,7 @@ class coursiersapp extends Component {
     }
     if (routeId === 'CartPage') {
       return (
-        <CartPage navigator={navigator} {...route.passProps} />
+        <CartPage navigator={navigator} user={this.state.user} client={this.state.client} {...route.passProps} />
       );
     }
     if (routeId === 'CartAddressPage') {
@@ -112,12 +112,12 @@ class coursiersapp extends Component {
     }
     if (routeId === 'BusyPage') {
       return (
-        <BusyPage navigator={navigator} {...route.passProps} />
+        <BusyPage navigator={navigator} user={this.state.user} client={this.state.client} {...route.passProps} />
       );
     }
     if (routeId === 'CreditCardPage') {
       return (
-        <CreditCardPage navigator={navigator} {...route.passProps} />
+        <CreditCardPage navigator={navigator} user={this.state.user} client={this.state.client} {...route.passProps} />
       );
     }
     if (routeId === 'AccountOrdersPage') {
@@ -132,7 +132,7 @@ class coursiersapp extends Component {
     }
     if (routeId === 'OrderTrackingPage') {
       return (
-        <OrderTrackingPage navigator={navigator} {...route.passProps} />
+        <OrderTrackingPage navigator={navigator} user={this.state.user} client={this.state.client} {...route.passProps} />
       );
     }
     if (routeId === 'NewAddressPage') {

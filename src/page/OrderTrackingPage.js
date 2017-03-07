@@ -32,67 +32,39 @@ const COURIER_COORDS = {
   longitude: 2.331797
 };
 
-const AppUser = require('../AppUser');
-const APIClient = null;
-
 class OrderTrackingPage extends Component {
 
-  ws = undefined;
-  watchID = undefined;
   map = undefined;
 
   constructor(props) {
     super(props);
 
-    // APIClient = API.createClient(AppConfig.API_BASEURL, props.user)
-
     this.state = {
-      status: null,
       region: {
         ...COURIER_COORDS,
         latitudeDelta: LATITUDE_DELTA,
         longitudeDelta: LONGITUDE_DELTA,
       },
       polylineCoords: [],
-      markers: [],
+      markers: [{
+        key: 'restaurant',
+        identifier: 'restaurant',
+        coordinate: this.props.order.restaurant.geo,
+        pinColor: 'red',
+      }, {
+        key: 'deliveryAddress',
+        identifier: 'deliveryAddress',
+        coordinate: this.props.order.deliveryAddress.geo,
+        pinColor: 'green',
+      }],
       position: undefined,
       loading: false,
       loadingMessage: 'Connexion au serveur…',
-      order: undefined,
+      backButton: props.hasOwnProperty('backButton') ? props.backButton : true
     };
   }
-  _onRegionChange(region) {
-    this.setState({region});
-  }
   componentDidMount() {
-    AppUser.load()
-      .then((user) => {
-        let order = this.props.order;
-        // APIClient = API.createClient(AppConfig.API_BASEURL, user);
-        // APIClient.get(this.props.order['@id'])
-        //   .then((order) => {
-            let markers = [];
-            markers.push({
-              key: 'restaurant',
-              identifier: 'restaurant',
-              coordinate: order.restaurant.geo,
-              pinColor: 'red',
-              title: 'Foo',
-              description: 'Lorem ipsum'
-            });
-            markers.push({
-              key: 'deliveryAddress',
-              identifier: 'deliveryAddress',
-              coordinate: order.deliveryAddress.geo,
-              pinColor: 'green',
-              title: 'Foo',
-              description: 'Lorem ipsum'
-            });
-
-            this.setState({ markers });
-            this.map.fitToElements(true);
-      //     })
-      });
+    setTimeout(() => this.map.fitToElements(true), 1000);
   }
   render() {
     return (
@@ -102,13 +74,36 @@ class OrderTrackingPage extends Component {
     );
   }
   renderScene(route, navigator) {
+
+    var leftButton = ( <Button transparent><Text></Text></Button> );
+    var rightButton = ( <Button transparent><Text></Text></Button> );
+
+    if (this.state.backButton) {
+      var leftButton = (
+        <Button transparent onPress={() => navigator.parentNavigator.pop()}>
+          <Icon name="ios-arrow-back" />
+        </Button>
+      );
+    } else {
+      var rightButton = (
+        <Button transparent onPress={() => {
+          navigator.parentNavigator.resetTo({
+            id: 'RestaurantsPage',
+            name: 'Restaurants',
+            sceneConfig: Navigator.SceneConfigs.FloatFromRight
+          });
+        }}>
+          Restaurants
+        </Button>
+      );
+    }
+
     return (
       <Container theme={theme}>
         <Header>
-          <Button transparent onPress={() => navigator.parentNavigator.pop()}>
-            <Icon name="ios-arrow-back" />
-          </Button>
+          { leftButton }
           <Title>Commande</Title>
+          { rightButton }
         </Header>
         <Content contentContainerStyle={ { flex: 1, justifyContent: 'center', alignItems: 'center' } }>
           <MapView
@@ -116,7 +111,6 @@ class OrderTrackingPage extends Component {
             style={styles.map}
             initialRegion={this.state.region}
             region={this.state.region}
-            onRegionChange={this._onRegionChange.bind(this)}
             zoomEnabled
             showsUserLocation
             loadingEnabled

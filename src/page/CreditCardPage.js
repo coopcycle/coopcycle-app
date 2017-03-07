@@ -11,17 +11,11 @@ import {
 import _ from 'underscore';
 import Stripe, { PaymentCardTextField } from 'tipsi-stripe';
 
-import { API } from 'coopcycle-js';
+import AppConfig from '../AppConfig'
 import theme from '../theme/coopcycle';
 
-const AppConfig = require('../AppConfig');
-const AppUser = require('../AppUser');
-const APIClient = null;
-
-const CONF = require('../AppConfig.json');
-
 Stripe.init({
-  publishableKey: CONF.STRIPE_PUBLISHABLE_KEY,
+  publishableKey: AppConfig.STRIPE_PUBLISHABLE_KEY,
 });
 
 class CreditCardPage extends Component {
@@ -32,29 +26,24 @@ class CreditCardPage extends Component {
       params: {}
     };
   }
-  componentDidMount() {
-    AppUser.load()
-      .then((user) => {
-        APIClient = API.createClient(AppConfig.API_BASEURL, user);
-      });
-  }
   _onClick(navigator) {
     if (this.state.valid) {
       Stripe.createTokenWithCard(this.state.params)
         .then((token) => {
-          APIClient.request('POST', '/api/orders', this.props.cart.toJSON())
+          this.props.client.post('/api/orders', this.props.cart.toJSON())
             .then((order) => {
-              return APIClient.request('PUT', order['@id'] + '/pay', {
+              return this.props.client.put(order['@id'] + '/pay', {
                 stripeToken: token.tokenId
               });
             })
             .then((order) => {
-              navigator.parentNavigator.push({
+              navigator.parentNavigator.resetTo({
                 id: 'OrderTrackingPage',
                 name: 'OrderTracking',
                 sceneConfig: Navigator.SceneConfigs.FloatFromRight,
                 passProps: {
-                  order: order
+                  order: order,
+                  backButton: false
                 }
               });
             });
