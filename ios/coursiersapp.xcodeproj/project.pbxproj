@@ -47,6 +47,7 @@
 		5F61FA186D974440A568E009 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F75CBBCBA2C4457BBDB7D362 /* FontAwesome.ttf */; };
 		60767C363AC3430F841BEEFC /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6493C72CAF7940219A6F404D /* Ionicons.ttf */; };
 		6CC8E6CC29414F8BA7B5BBEA /* Comic Sans MS.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2F7EA158DB1A486689EDB5D0 /* Comic Sans MS.ttf */; };
+		76C8A916CD97B7175F7B9B77 /* libPods-coursiersapp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CD730CFAD5C2A5D30DB5637E /* libPods-coursiersapp.a */; };
 		78BF0EE5D1BD451F8E90F23A /* Times New Roman.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D8A1C4D0AB1E4A6B8A937565 /* Times New Roman.ttf */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		8EE784AB0347483D9DE57154 /* Andale Mono.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 11869C25471E4957A54A8D89 /* Andale Mono.ttf */; };
@@ -60,6 +61,7 @@
 		D21C89271CB44DC0B1FE1E58 /* Roboto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9C2CF9748DC34A6F99CD6D66 /* Roboto.ttf */; };
 		D7151F706B02426FBD102E6B /* Arial Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 41D5335876A04FB2B8228285 /* Arial Black.ttf */; };
 		E73EB6767BE54601AAE4D103 /* Skia.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E142D0DE26D64370A5A5C845 /* Skia.ttf */; };
+		FA3E59301E7A0408003B3008 /* libART.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FA3E592F1E7A0408003B3008 /* libART.a */; };
 		FA59AAA21E3EC41C00D3A617 /* Andale Mono.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FA59AA961E3EC41C00D3A617 /* Andale Mono.ttf */; };
 		FA59AAA31E3EC41C00D3A617 /* Arial Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FA59AA971E3EC41C00D3A617 /* Arial Black.ttf */; };
 		FA59AAA41E3EC41C00D3A617 /* Arial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FA59AA981E3EC41C00D3A617 /* Arial.ttf */; };
@@ -351,6 +353,7 @@
 		F08CD3260B8744508F9AAB42 /* RNVectorIcons.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNVectorIcons.xcodeproj; path = "../node_modules/react-native-vector-icons/RNVectorIcons.xcodeproj"; sourceTree = "<group>"; };
 		F6686579506B4FAABEE4BCFC /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
 		F75CBBCBA2C4457BBDB7D362 /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
+		FA3E592F1E7A0408003B3008 /* libART.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libART.a; path = "../node_modules/react-native/Libraries/ART/build/Debug-iphoneos/libART.a"; sourceTree = "<group>"; };
 		FA59AA961E3EC41C00D3A617 /* Andale Mono.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Andale Mono.ttf"; sourceTree = "<group>"; };
 		FA59AA971E3EC41C00D3A617 /* Arial Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Arial Black.ttf"; sourceTree = "<group>"; };
 		FA59AA981E3EC41C00D3A617 /* Arial.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Arial.ttf; sourceTree = "<group>"; };
@@ -404,6 +407,8 @@
 				C794A2E77E5A482EAC1DDCF9 /* libAirMaps.a in Frameworks */,
 				908749710C8B4B1894145207 /* libRNVectorIcons.a in Frameworks */,
 				FA5B746A1E6E258400FF123C /* libPods-coursiersapp.a in Frameworks */,
+				76C8A916CD97B7175F7B9B77 /* libPods-coursiersapp.a in Frameworks */,
+				FA3E59301E7A0408003B3008 /* libART.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -570,6 +575,7 @@
 		19317024BAF37116C6FD6A9E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				FA3E592F1E7A0408003B3008 /* libART.a */,
 				FA5B74691E6E258400FF123C /* libPods-coursiersapp.a */,
 				FA5B74671E6E257B00FF123C /* libPods-coursiersapp.a */,
 				FADA02391E6E236300CFD2C3 /* libPods-coursiersapp.a */,

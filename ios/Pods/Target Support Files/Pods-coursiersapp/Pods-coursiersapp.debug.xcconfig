@@ -1,8 +1,8 @@
 GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
-HEADER_SEARCH_PATHS = $(inherited) "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/Stripe"
-LIBRARY_SEARCH_PATHS = $(inherited) "$PODS_CONFIGURATION_BUILD_DIR/Stripe"
-OTHER_CFLAGS = $(inherited) -isystem "${PODS_ROOT}/Headers/Public" -isystem "${PODS_ROOT}/Headers/Public/Stripe"
-OTHER_LDFLAGS = $(inherited) -ObjC -l"Stripe" -framework "AddressBook" -framework "Foundation" -framework "PassKit" -framework "Security" -framework "WebKit"
+HEADER_SEARCH_PATHS = $(inherited) "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/React" "${PODS_ROOT}/Headers/Public/Stripe" "${PODS_ROOT}/Headers/Public/Yoga"
+LIBRARY_SEARCH_PATHS = $(inherited) "$PODS_CONFIGURATION_BUILD_DIR/React" "$PODS_CONFIGURATION_BUILD_DIR/Stripe" "$PODS_CONFIGURATION_BUILD_DIR/Yoga"
+OTHER_CFLAGS = $(inherited) -isystem "${PODS_ROOT}/Headers/Public" -isystem "${PODS_ROOT}/Headers/Public/React" -isystem "${PODS_ROOT}/Headers/Public/Stripe" -isystem "${PODS_ROOT}/Headers/Public/Yoga"
+OTHER_LDFLAGS = $(inherited) -ObjC -l"React" -l"Stripe" -l"Yoga" -l"stdc++" -framework "AddressBook" -framework "Foundation" -framework "JavaScriptCore" -framework "PassKit" -framework "Security" -framework "WebKit"
 PODS_BUILD_DIR = $BUILD_DIR
 PODS_CONFIGURATION_BUILD_DIR = $PODS_BUILD_DIR/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)
 PODS_ROOT = ${SRCROOT}/Pods
