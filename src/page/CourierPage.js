@@ -7,7 +7,9 @@ import {
   TouchableHighlight,
   TouchableOpacity,
   Alert,
+  Modal,
   ActivityIndicator,
+  Dimensions,
 } from 'react-native';
 import {
   Container,
@@ -16,17 +18,13 @@ import {
 } from 'native-base';
 import MapView from 'react-native-maps';
 import theme from '../theme/coopcycle';
+import Countdown from '../Countdown';
 
 const DirectionsAPI = require('../DirectionsAPI');
 const AppConfig = require('../AppConfig');
 
 const LATITUDE_DELTA = 0.0722;
 const LONGITUDE_DELTA = 0.0221;
-
-const COURIER_COORDS = {
-  latitude: 48.872178,
-  longitude: 2.331797
-};
 
 class CourierPage extends Component {
 
@@ -39,17 +37,16 @@ class CourierPage extends Component {
 
     this.state = {
       status: null,
-      region: {
-        ...COURIER_COORDS,
-        latitudeDelta: LATITUDE_DELTA,
-        longitudeDelta: LONGITUDE_DELTA,
-      },
+      region: null,
       polylineCoords: [],
       markers: [],
-      position: undefined,
+      position: null,
       loading: false,
       loadingMessage: 'Connexion au serveur…',
-      order: undefined,
+      order: null,
+      modalVisible: false,
+      watchID: null,
+      connected: false,
     };
   }
   _drawPathToDestination(destination) {
@@ -62,7 +59,7 @@ class CourierPage extends Component {
       description: 'Lorem ipsum',
     }
     return DirectionsAPI.getRoute({
-      origin: this.position,
+      origin: this.state.position,
       destination: destination,
     }).then((route) => {
       this.setState({
@@ -77,129 +74,21 @@ class CourierPage extends Component {
       this.map.fitToElements(true);
     });
   }
-  _onUpdatePosition(position) {
-      this._notifyCoordinates(position.coords);
-      if (!this.state.order) {
-        this.setState({region: {
-          ...this.state.region,
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
-        }});
-      }
-  }
-  _notifyCoordinates(coordinates) {
-    this.position = coordinates;
-    if (this.ws.readyState === WebSocket.OPEN) {
-      this.ws.send(JSON.stringify({
-        type: "updateCoordinates",
-        coordinates: coordinates,
-      }));
-    }
-  }
-  _connectToWebSocket() {
-    return new Promise((resolve, reject) => {
-
-      this.ws = new WebSocket(AppConfig.WEBSOCKET_BASEURL + '/realtime', '', {
-          Authorization: "Bearer " + this.props.user.token
-      });
-
-      if (!this.state.loading) {
-        this.setState({
-          loading: true,
-        });
-      }
-
-      this.ws.onopen = () => {
-
-        console.log('Connected to dispatch service !');
-
-        console.log('Trying to get current position...');
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-
-            resolve(position);
-
-            this._onUpdatePosition(position);
-
-            console.log('Start watching position...');
-            this.watchID = navigator.geolocation.watchPosition(this._onUpdatePosition.bind(this));
-          },
-          (error) => console.log('ERROR : getCurrentPosition', JSON.stringify(error)),
-          {
-            enableHighAccuracy: true,
-            timeout: 20000,
-            maximumAge: 1000
-          }
-        );
-
-        if (this.state.status === 'AVAILABLE') {
-          this.setState({
-            loadingMessage: 'En attente d\'une commande…'
-          });
-        }
-      };
-
-      this.ws.onmessage = (e) => {
-
-        // a message was received
-        var message = JSON.parse(e.data);
-
-        console.log('Message received!', message);
-
-        if (message.type === 'order') {
-          var order = message.order;
-          Alert.alert(
-            'Nouvelle commande',
-            'Une nouvelle commande est disponible',
-            [
-              {
-                text: 'Voir',
-                onPress: () => {
-                  this.setState({loadingMessage: 'Chargement de la commande…'});
-                  this.props.client.get('/api/orders/' + order.id).then((orderObj) => {
-                    console.log(orderObj);
-                    this.setState({loadingMessage: "Calcul de l'itinéraire…"});
-                    this._drawPathToDestination(orderObj.restaurant.geo)
-                      .then(() => this.setState({order: orderObj, loading: false}));
-                  });
-                }
-              },
-            ]
-          );
-        }
-
-      };
-
-      this.ws.onerror = (e) => {
-        // an error occurred
-        console.log('WS ERROR', e.message);
-        reject();
-      };
-
-      this.ws.onclose = (e) => {
-        console.log('Connection closed !', e.code, e.message);
-        navigator.geolocation.clearWatch(this.watchID);
-        this.setState({
-          loadingMessage: 'Connexion perdue ! Reconnexion…'
-        });
-        setTimeout(() => {
-          this._connectToWebSocket();
-        }, 500);
-      };
+  declineOrder() {
+    this.setState({
+      loading: true,
+      loadingMessage: "Veuillez patienter…"
     });
+    this.props.client.put(this.state.order['@id'] + '/decline', {})
+      .then((order) => {
+        this.setState({
+          loadingMessage: 'En attente d\'une commande…',
+          order: null
+        });
+        this.resetMap();
+      });
   }
-  _disconnectFromWebSocket() {
-    if (this.watchID) {
-      console.log('Clearing geolocation');
-      navigator.geolocation.clearWatch(this.watchID);
-    }
-    if (this.ws) {
-      console.log('Closing WebSocket');
-      this.ws.onclose = function () {}; // disable onclose handler first
-      this.ws.close();
-    }
-  }
-  _acceptOrder() {
+  acceptOrder() {
     this.setState({
       loading: true,
       loadingMessage: "Veuillez patienter…"
@@ -212,7 +101,7 @@ class CourierPage extends Component {
         });
       });
   }
-  _pickOrder() {
+  pickOrder() {
     this.setState({
       loading: true,
       loadingMessage: "Veuillez patienter…"
@@ -220,11 +109,10 @@ class CourierPage extends Component {
     this.props.client.put(this.state.order['@id'] + '/pick', {})
       .then((order) => {
         this._drawPathToDestination(order.deliveryAddress.geo)
-          .then(() => this.setState({order: order, loading: false}));
+          .then(() => this.setState({ order: order, loading: false }));
       });
   }
-  _deliverOrder() {
-    this._disconnectFromWebSocket();
+  deliverOrder() {
     this.setState({
       loading: true,
       loadingMessage: "Veuillez patienter…"
@@ -232,126 +120,222 @@ class CourierPage extends Component {
     this.props.client.put(this.state.order['@id'] + '/deliver', {})
       .then((order) => {
         this.setState({
-          order: order,
-          loading: false,
+          order: null,
+          loadingMessage: 'En attente d\'une commande…'
         });
+        this.resetMap();
       });
   }
   _onRegionChange(region) {
     this.setState({region});
   }
-  _getNextStatus(order) {
-    switch (order.status) {
-      case 'WAITING' :
-        return {
-          text: '✓ Accepter',
-          onPress: this._acceptOrder
-        }
-        break;
-      case 'ACCEPTED' :
-        return {
-          text: '✓ Commande réceptionnée',
-          onPress: this._pickOrder
-        }
-        break;
-      case 'PICKED' :
-        return {
-          text: '✓ Commande livrée',
-          onPress: this._deliverOrder
-        }
-        break;
-      case 'DELIVERED' :
-        return {
-          text: '✓ Bien joué !',
-          onPress: () => {
-            this.setState({
-              loading: true,
-              loadingMessage: "Vérification de votre état…"
-            });
-            this.props.client.get('/api/me/status')
-              .then((data) => {
-                if (data.status === 'AVAILABLE') {
-                  this._connectToWebSocket();
-                  this.setState({
-                    markers: [],
-                    order: null,
-                    polylineCoords: [],
-                  });
-                }
-              });
-          }
-        }
-        break;
-    }
+  getStatus() {
+    return this.props.client.get('/api/me/status').then((data) => {
+      console.log(data);
+      return data;
+    });
   }
-  componentDidMount() {
+  loadOrderById(id) {
     this.setState({
       loading: true,
-      loadingMessage: "Vérification de votre état…"
+      loadingMessage: 'Chargement de la commande…'
     });
-    this.props.client.get('/api/me/status')
-      .then((data) => {
-        if (data.status === 'AVAILABLE') {
-          this.setState({
-            status: data.status,
-            loadingMessage: 'Connexion au serveur…'
-          });
-          setTimeout(() => this._connectToWebSocket(), 1000);
-        }
+    this.props.client.get('/api/orders/' + id).then((order) => {
+      this.setState({ loadingMessage: "Calcul de l'itinéraire…" });
+      const destination = order.status === 'PICKED' ? order.deliveryAddress.geo : order.restaurant.geo;
+      this._drawPathToDestination(destination)
+        .then(() => this.setState({
+          loading: false,
+          order: order
+        }));
+    });
+  }
+  getCurrentPosition() {
+    this.setState({ loadingMessage: 'Calcul de votre position…' });
+    return new Promise((resolve, reject) => {
+      const options = {
+        enableHighAccuracy: true,
+        timeout: 20000,
+        maximumAge: 1000
+      }
+      navigator.geolocation.getCurrentPosition(
+        (position) => resolve(position),
+        (error) => reject(error),
+        options
+      );
+    });
+  }
+  watchPosition() {
+    return new Promise((resolve, reject) => {
+      this.setState({ loadingMessage: 'Suivi de votre position…' });
+      const watchID = navigator.geolocation.watchPosition((position) => this.onPositionUpdated(position.coords));
+      this.setState({ watchID });
+      resolve();
+    });
+  }
+  clearWatch() {
+    const { watchID } = this.state;
+    navigator.geolocation.clearWatch(watchID);
+    this.setState({ watchID: null })
+  }
+  onPositionUpdated(latLng) {
+    this.setState({ position: latLng });
+    if (this.ws.readyState === WebSocket.OPEN) {
+      this.ws.send(JSON.stringify({
+        type: "updateCoordinates",
+        coordinates: {
+          latitude: latLng.latitude,
+          longitude: latLng.longitude
+        },
+      }));
+    }
+  }
+  zoomTo(coords) {
+    let region = {
+      latitude: coords.latitude,
+      longitude: coords.longitude,
+      latitudeDelta: LATITUDE_DELTA,
+      longitudeDelta: LONGITUDE_DELTA,
+    }
+    this.map.animateToRegion(region);
+    // this.map.animateToCoordinate(coords, 1000)
+  }
+  resetMap() {
+    this.setState({
+      markers: [],
+      polylineCoords: []
+    });
+  }
+  connectToWebSocket() {
 
-        if (data.status === 'DELIVERING') {
-          this.setState({loadingMessage: 'Récupération de la commande…'});
-          this.props.client.get('/api/orders/' + data.order.id)
-            .then((order) => {
-              this.props.navigator.push({
-                id: 'BusyPage',
-                name: 'Busy',
-                sceneConfig: Navigator.SceneConfigs.FloatFromBottom,
-                passProps: {
-                  order: order,
-                  onContinue: () => {
-                    console.log('Continue order ' + order['@id']);
-                    this.setState({loadingMessage: "Calcul de l'itinéraire…"});
-                    this._connectToWebSocket()
-                      .then(() => this._drawPathToDestination(order.restaurant.geo))
-                      .then(() => {
-                        this.setState({
-                          order: order,
-                          loading: false
-                        });
-                      });
-                  }
-                }
-              });
-            });
-        }
+    this.setState({
+      loadingMessage: 'Connexion au serveur…'
+    });
+
+    return new Promise((resolve, reject) => {
+
+      this.ws = new WebSocket(AppConfig.WEBSOCKET_BASEURL + '/realtime', '', {
+          Authorization: "Bearer " + this.props.user.token
       });
+
+      this.ws.onopen = () => {
+        console.log('Connected to dispatch service !');
+        this.setState({
+          connected: true,
+          loadingMessage: 'En attente d\'une commande…'
+        });
+        resolve();
+      };
+
+      this.ws.onmessage = this.onWebSocketMessage.bind(this);
+
+      // When an error occurs, the WebSocket is closed
+      // So this is managed by the onclose handler below
+      this.ws.onerror = (e) => {
+        reject(e.message);
+      };
+
+      this.ws.onclose = this.onWebSocketClose.bind(this);
+    });
+  }
+  onWebSocketMessage(e) {
+
+    var message = JSON.parse(e.data);
+    console.log('Message received!', message);
+
+    if (message.type === 'order') {
+      this.loadOrderById(message.order.id);
+    }
+
+    if (message.type === 'accept-timeout') {
+      this.setState({
+        order: null
+      });
+      this.resetMap();
+    }
+  }
+  onWebSocketClose(e) {
+    console.log('Connection closed !', e.code, e.message);
+    this.setState({
+      connected: false,
+      loadingMessage: 'Connexion perdue ! Reconnexion…'
+    });
+    setTimeout(() => {
+      this.connectToWebSocket()
+        .catch((err) => {
+          console.log(err)
+        });
+    }, 1000);
+  }
+  componentDidMount() {
+    setTimeout(() => {
+
+      this.setState({
+        loading: true,
+        loadingMessage: "Authentification…"
+      });
+
+      this.getStatus()
+        .then((data) => {
+          this.getCurrentPosition()
+            .then((position) => this.zoomTo(position.coords))
+            .then(this.watchPosition.bind(this))
+            .then(this.connectToWebSocket.bind(this))
+            .then(() => {
+              if (data.status === 'DELIVERING') {
+                this.loadOrderById(data.order.id);
+              }
+            })
+            .catch((err) => {
+              console.log(err)
+            });
+        })
+        .catch((err) => {
+          console.log(err)
+        });
+
+    }, 2500);
   }
   componentWillUnmount() {
     if (this.ws) {
-      console.log('Closing WebSocket');
       this.ws.onclose = function () {}; // disable onclose handler first
       this.ws.close();
     }
-    if (this.watchID) {
-      navigator.geolocation.clearWatch(this.watchID);
-    }
+    this.clearWatch();
   }
   render() {
     return (
       <Navigator
-          renderScene={this.renderScene.bind(this)}
-          navigator={this.props.navigator} />
+        renderScene={this.renderScene.bind(this)}
+        navigator={this.props.navigator} />
     );
   }
   renderScene(route, navigator) {
 
+    const { height, width } = Dimensions.get('window');
+
+    const grey = '#95A5A6';
+    const green = '#2ECC71';
+
+    const halfScreenHeight = (height - 64) / 2;
+    const isModalVisible = this.state.order !== null;
+
     let loader = <View />;
-    let orderOverlay = <View />;
 
     if (this.state.loading) {
+
+      let loaderStyle = {
+        ...StyleSheet.absoluteFillObject,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(52, 52, 52, 0.4)'
+      };
+      if (isModalVisible) {
+        loaderStyle = { ...loaderStyle, height: halfScreenHeight };
+      }
+
       loader = (
-        <View style={styles.loader}>
+        <View style={loaderStyle}>
           <ActivityIndicator
             animating={true}
             size="large"
@@ -362,19 +346,87 @@ class CourierPage extends Component {
       );
     }
 
+    let connectedButton = (
+      <Button transparent>
+        <Icon name="ios-wifi" style={{ fontSize: 30, color: this.state.connected ? green : grey}} />
+      </Button>
+    )
+
+    let trackingButton;
+    if (this.state.watchID === null) {
+      trackingButton = (
+        <Button transparent>
+          <Icon name="ios-navigate-outline" style={{ fontSize: 30, color: '#95A5A6'}} />
+        </Button>
+      )
+    } else {
+      trackingButton = (
+        <Button transparent>
+          <Icon name="ios-navigate" style={{ fontSize: 30, color: green}} />
+        </Button>
+      )
+    }
+
+    let bottomView = ( <View /> )
     if (this.state.order) {
-      let nextStatus = this._getNextStatus(this.state.order);
+      bottomView = (
+        <View style={{ flex: 1 }}>
+          <View>
+            <Button>Refuser</Button>
+            <Button>Accepter</Button>
+          </View>
+        </View>
+      )
+    }
+
+    // FIXME Find a way to get header height dynamically?
+    let mapStyle = isModalVisible ? { height: halfScreenHeight } : { height: height }
+    let modalContent = ( <View /> )
+
+    if (this.state.order) {
+
       let nextAddress = this.state.order.status === 'PICKED' ?
         this.state.order.deliveryAddress.streetAddress : this.state.order.restaurant.streetAddress;
-      orderOverlay = (
-        <View style={styles.orderOverlay}>
-          <Text style={{color: '#fff'}}>{this.state.order.restaurant.name}</Text>
-          <Text style={{color: '#fff'}}>{nextAddress}</Text>
-          <View style={styles.buttonBlue}>
-            <TouchableOpacity onPress={nextStatus.onPress.bind(this)}>
-              <Text style={{color: "white", fontWeight: "bold"}}>{nextStatus.text}</Text>
-            </TouchableOpacity>
+
+      let countdown = ( <View /> )
+
+      let modalButtons = ( <View /> );
+      if (this.state.order.status === 'WAITING') {
+        modalButtons = (
+          <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-around' }}>
+            <Button danger disabled={this.state.loading} onPress={this.declineOrder.bind(this)}>Refuser</Button>
+            <Button success disabled={this.state.loading} onPress={this.acceptOrder.bind(this)}>Accepter</Button>
           </View>
+        );
+        countdown = (
+          <View style={{ flex: 1, alignItems: 'center' }}>
+            <Countdown duration={30} onComplete={() => console.log('TIMEOUT')} />
+          </View>
+        );
+      }
+      if (this.state.order.status === 'ACCEPTED') {
+        modalButtons = (
+          <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-around' }}>
+            <Button success disabled={this.state.loading} onPress={this.pickOrder.bind(this)}>Commande récupérée</Button>
+          </View>
+        );
+      }
+      if (this.state.order.status === 'PICKED') {
+        modalButtons = (
+          <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-around' }}>
+            <Button success disabled={this.state.loading} onPress={this.deliverOrder.bind(this)}>Commande livrée</Button>
+          </View>
+        );
+      }
+
+      modalContent = (
+        <View style={{ flex: 1, flexDirection: 'column' }}>
+          <View style={{ flex: 1, alignItems: 'center' }}>
+            <Text style={{ textAlign: 'center', fontWeight: 'bold', marginBottom: 10 }}>{ this.state.order.restaurant.name }</Text>
+            <Text>{ nextAddress }</Text>
+          </View>
+          { countdown }
+          { modalButtons }
         </View>
       );
     }
@@ -387,16 +439,15 @@ class CourierPage extends Component {
               { text: 'Annuler', onPress: () => {} },
               { text: 'Quitter', onPress: () => navigator.parentNavigator.pop() },
             ]);
-          }}>
-            <Text>Quitter</Text>
-          </Button>
+          }}>Quitter</Button>
           <Title>Commandes</Title>
+          { connectedButton }
+          { trackingButton }
         </Header>
-        <View style={{flex: 1, alignItems: 'center', justifyContent:'center'}}>
+        <View style={{flex: 1, flexDirection: 'column'}}>
           <MapView
             ref={ref => { this.map = ref; }}
-            style={styles.map}
-            initialRegion={this.state.region}
+            style={ mapStyle }
             region={this.state.region}
             onRegionChange={this._onRegionChange.bind(this)}
             zoomEnabled
@@ -419,8 +470,17 @@ class CourierPage extends Component {
               strokeColor="#19B5FE"
              />
           </MapView>
-          {loader}
-          {orderOverlay}
+          <Modal
+            animationType={ "slide" }
+            transparent={ true }
+            visible={ isModalVisible }>
+            <View style={ styles.modalWrapper }>
+              <View style={{ width: width, height: halfScreenHeight, backgroundColor: '#fff', padding: 20 }}>
+                { modalContent }
+              </View>
+            </View>
+          </Modal>
+          { loader }
         </View>
       </Container>
     );
@@ -433,12 +493,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'rgba(52, 52, 52, 0.4)'
-  },
-  orderOverlay: {
-    ...StyleSheet.absoluteFillObject,
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-    backgroundColor: 'rgba(52, 52, 52, 0.3)',
   },
   buttonBlue: {
     alignItems: "center",
@@ -460,6 +514,12 @@ const styles = StyleSheet.create({
   },
   map: {
     ...StyleSheet.absoluteFillObject,
+  },
+  modalWrapper: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'flex-end',
+    alignItems: 'center'
   }
 });
 

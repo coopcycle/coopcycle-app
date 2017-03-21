@@ -31,7 +31,6 @@ const AccountPage = require('./src/page/AccountPage');
 const AccountAddressesPage = require('./src/page/account/AccountAddressesPage');
 const AccountOrdersPage = require('./src/page/account/AccountOrdersPage');
 const NewAddressPage = require('./src/page/account/NewAddress');
-const BusyPage = require('./src/page/BusyPage');
 const CreditCardPage = require('./src/page/CreditCardPage');
 const OrderTrackingPage = require('./src/page/OrderTrackingPage');
 
@@ -108,11 +107,6 @@ class coursiersapp extends Component {
     if (routeId === 'AccountPage') {
       return (
         <AccountPage navigator={navigator} user={this.state.user} client={this.state.client} {...route.passProps} />
-      );
-    }
-    if (routeId === 'BusyPage') {
-      return (
-        <BusyPage navigator={navigator} user={this.state.user} client={this.state.client} {...route.passProps} />
       );
     }
     if (routeId === 'CreditCardPage') {
