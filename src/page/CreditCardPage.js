@@ -3,6 +3,7 @@ import {
   StyleSheet,
   View,
   Navigator,
+  ActivityIndicator,
 } from 'react-native';
 import {
   Container,
@@ -23,11 +24,13 @@ class CreditCardPage extends Component {
     super(props);
     this.state = {
       valid: false,
+      loading: false,
       params: {}
     };
   }
   _onClick(navigator) {
     if (this.state.valid) {
+      this.setState({ loading: true });
       Stripe.createTokenWithCard(this.state.params)
         .then((token) => {
           this.props.client.post('/api/orders', this.props.cart.toJSON())
@@ -37,6 +40,7 @@ class CreditCardPage extends Component {
               });
             })
             .then((order) => {
+              this.setState({ loading: false });
               navigator.parentNavigator.resetTo({
                 id: 'OrderTrackingPage',
                 name: 'OrderTracking',
@@ -62,6 +66,25 @@ class CreditCardPage extends Component {
     if (this.props.cart) {
       btnText = 'Payer ' + this.props.cart.total + ' €';
     }
+
+    let loader = (
+      <View />
+    )
+    let btnProps = {}
+    if (this.state.loading) {
+      loader = (
+        <View style={styles.loader}>
+          <ActivityIndicator
+            animating={true}
+            size="large"
+            color="#fff"
+          />
+          <Text style={{color: '#fff'}}>Chargement...</Text>
+        </View>
+      );
+      btnProps = { disabled: true }
+    }
+
     return (
       <Container theme={theme}>
         <Header>
@@ -83,42 +106,28 @@ class CreditCardPage extends Component {
               });
             }}
           />
-
         </Content>
         <Footer>
           <Button
             style={{ alignSelf: "flex-end", marginRight: 10 }}
-            onPress={ this._onClick.bind(this, navigator) }>{ btnText }</Button>
+            onPress={ this._onClick.bind(this, navigator) }
+            {...btnProps}>{ btnText }</Button>
         </Footer>
+        { loader }
       </Container>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
+  loader: {
+    ...StyleSheet.absoluteFillObject,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: 'rgba(52, 52, 52, 0.4)'
   },
   padder: {
     padding: 10
-  },
-  instruction: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-  token: {
-    height: 20,
-  },
-  params: {
-    alignItems: 'flex-start',
-    backgroundColor: '#fff',
-    borderRadius: 10,
-    padding: 10,
-    margin: 5,
-    width: 300,
   },
   field: {
     width: 300,

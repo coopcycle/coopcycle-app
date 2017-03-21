@@ -41,6 +41,7 @@ class AccountOrdersPage extends Component {
         }
       })}>
         <Text>{ order.restaurant.name }</Text>
+        <Text note>{ order.total } €</Text>
       </ListItem>
     );
   }
