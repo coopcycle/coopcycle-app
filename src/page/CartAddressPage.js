@@ -25,7 +25,7 @@ class CartAddressPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      deliveryAddresses: 2000,
+      deliveryAddresses: [],
       loading: false,
       loaded: false,
       user: props.user || null

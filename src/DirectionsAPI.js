@@ -1,6 +1,6 @@
 import _ from 'underscore';
 import Polyline from 'polyline';
-import { API } from 'coopcycle-js';
+import API from './API';
 
 const AppConfig = require('./AppConfig');
 const APIClient = API.createClient(AppConfig.API_BASEURL);

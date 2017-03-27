@@ -13,23 +13,15 @@ import {
 import _ from 'underscore';
 import Stripe, { PaymentCardTextField } from 'tipsi-stripe';
 
-import { API } from 'coopcycle-js';
 import theme from '../../theme/coopcycle';
 
 const AppConfig = require('../../AppConfig');
 const AppUser = require('../../AppUser');
-const APIClient = null;
 
 class AccountAddressesPage extends Component {
   constructor(props) {
     super(props);
     this.state = {};
-  }
-  componentDidMount() {
-    AppUser.load()
-      .then((user) => {
-        APIClient = API.createClient(AppConfig.API_BASEURL, user);
-      });
   }
   _renderRow(item) {
     return (

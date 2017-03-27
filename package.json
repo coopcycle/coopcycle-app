@@ -7,7 +7,6 @@
     "test": "jest"
   },
   "dependencies": {
-    "coopcycle-js": "git+ssh://git@github.com/coopcycle/coopcycle-js.git",
     "native-base": "^2.0",
     "polyline": "^0.2.0",
     "react": "^15.4.2",

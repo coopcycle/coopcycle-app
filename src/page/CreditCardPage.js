@@ -4,6 +4,7 @@ import {
   View,
   Navigator,
   ActivityIndicator,
+  Dimensions,
 } from 'react-native';
 import {
   Container,
@@ -64,6 +65,8 @@ class CreditCardPage extends Component {
     );
   }
   renderScene(route, navigator) {
+    const { height, width } = Dimensions.get('window');
+
     let btnText = 'Payer 0 €';
     if (this.props.cart) {
       btnText = 'Payer ' + this.props.cart.total + ' €';
@@ -88,7 +91,7 @@ class CreditCardPage extends Component {
     }
 
     const cardStyle =  {
-      // width: 300,
+      width: (width - 40),
       color: '#449aeb',
       borderColor: '#000',
       borderWidth: 1,
@@ -109,7 +112,7 @@ class CreditCardPage extends Component {
           <Right />
         </Header>
         <Content padder contentContainerStyle={ { flex: 1, justifyContent: 'center', alignItems: 'center' } }>
-          <Text style={ styles.padder }>Veuillez entrer vos coordonnées bancaires</Text>
+          <Text style={{ marginBottom: 10 }}>Veuillez entrer vos coordonnées bancaires</Text>
           <PaymentCardTextField
             accessible
             accessibilityLabel="cardTextField"

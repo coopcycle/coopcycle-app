@@ -3,10 +3,6 @@ import {
   StyleSheet,
   View,
   Navigator,
-  TouchableHighlight,
-  TouchableOpacity,
-  Alert,
-  ActivityIndicator,
 } from 'react-native';
 import {
   Container,
@@ -16,13 +12,10 @@ import {
 } from 'native-base';
 import theme from '../theme/coopcycle';
 
-import { API } from 'coopcycle-js';
-
 import MapView from 'react-native-maps';
 import Polyline from 'polyline';
 import _ from 'underscore';
 
-const DirectionsAPI = require('../DirectionsAPI');
 const AppConfig = require('../AppConfig');
 
 const LATITUDE_DELTA = 0.0722;
@@ -94,7 +87,7 @@ class OrderTrackingPage extends Component {
             sceneConfig: Navigator.SceneConfigs.FloatFromRight
           });
         }}>
-          Restaurants
+          <Text>Restaurants</Text>
         </Button>
       );
     }
