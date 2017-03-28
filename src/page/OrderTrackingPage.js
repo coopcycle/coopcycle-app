@@ -11,7 +11,8 @@ import {
 import {
   Container,
   Header,
-  Title, Content, Footer, FooterTab, Button, Icon, List, ListItem, Text, Radio
+  Left, Right, Body,
+  Title, Content, Footer, Button, Icon, List, ListItem, Text, Radio
 } from 'native-base';
 import theme from '../theme/coopcycle';
 
@@ -75,8 +76,8 @@ class OrderTrackingPage extends Component {
   }
   renderScene(route, navigator) {
 
-    var leftButton = ( <Button transparent><Text></Text></Button> );
-    var rightButton = ( <Button transparent><Text></Text></Button> );
+    var leftButton = ( <View /> );
+    var rightButton = ( <View /> );
 
     if (this.state.backButton) {
       var leftButton = (
@@ -101,9 +102,9 @@ class OrderTrackingPage extends Component {
     return (
       <Container theme={theme}>
         <Header>
-          { leftButton }
-          <Title>Commande</Title>
-          { rightButton }
+          <Left>{ leftButton }</Left>
+          <Body><Title>Commande</Title></Body>
+          <Right>{ rightButton }</Right>
         </Header>
         <Content contentContainerStyle={ { flex: 1, justifyContent: 'center', alignItems: 'center' } }>
           <MapView

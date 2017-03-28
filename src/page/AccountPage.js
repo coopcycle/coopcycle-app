@@ -7,7 +7,11 @@ import {
   TouchableOpacity,
   ActivityIndicator
 } from 'react-native';
-import { Container, Header, Title, Content, List, ListItem, InputGroup, Input, Icon, Text, Picker, Button } from 'native-base';
+import {
+  Container, Header, Title, Content,
+  Left, Right, Body,
+  List, ListItem, InputGroup, Input, Icon, Text, Picker, Button
+} from 'native-base';
 import theme from '../theme/coopcycle';
 
 const Auth = require('../Auth');
@@ -66,21 +70,29 @@ class AccountPage extends Component {
     return (
       <Container theme={theme}>
         <Header>
-          <Button transparent onPress={() => navigator.parentNavigator.pop()}>
+          <Left>
+            <Button transparent onPress={() => navigator.parentNavigator.pop()}>
               <Icon name='ios-close' />
-          </Button>
-          <Title>Mon compte</Title>
-          <Button transparent
-            style={{ alignSelf: 'flex-end', marginVertical: 20 }}
-            onPress={ this._logout.bind(this) }>
-            <Icon name="ios-exit" />
-          </Button>
+            </Button>
+          </Left>
+          <Body>
+            <Title>Mon compte</Title>
+          </Body>
+          <Right>
+            <Button transparent onPress={ this._logout.bind(this) }>
+              <Icon name="exit" />
+            </Button>
+          </Right>
         </Header>
-        <Content padder>
+        <Content>
           <List>
-            <ListItem button iconRight>
-              <Text>Coordonnées personnelles</Text>
-              <Icon name="ios-arrow-forward" />
+            <ListItem button>
+              <Body>
+                <Text>Coordonnées personnelles</Text>
+              </Body>
+              <Right>
+                <Icon name="arrow-forward" />
+              </Right>
             </ListItem>
             <ListItem button iconRight onPress={() => navigator.parentNavigator.push({
               id: 'AccountAddressesPage',
@@ -90,8 +102,12 @@ class AccountPage extends Component {
                 user: this.state.user
               }
             })}>
-              <Text>Adresses</Text>
-              <Icon name="ios-arrow-forward" />
+              <Body>
+                <Text>Adresses</Text>
+              </Body>
+              <Right>
+                <Icon name="arrow-forward" />
+              </Right>
             </ListItem>
             <ListItem button iconRight onPress={() => navigator.parentNavigator.push({
               id: 'AccountOrdersPage',
@@ -101,8 +117,12 @@ class AccountPage extends Component {
                 user: this.state.user
               }
             })}>
-              <Text>Commandes</Text>
-              <Icon name="ios-arrow-forward" />
+              <Body>
+                <Text>Commandes</Text>
+              </Body>
+              <Right>
+                <Icon name="arrow-forward" />
+              </Right>
             </ListItem>
           </List>
         </Content>

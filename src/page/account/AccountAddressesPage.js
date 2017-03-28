@@ -7,7 +7,9 @@ import {
 import {
   Container,
   Header,
-  Title, Content, Footer, FooterTab, Button, Icon, List, ListItem, Text, Radio } from 'native-base';
+  Left, Right, Body,
+  Title, Content, Footer, FooterTab, Button, Icon, List, ListItem, Text
+} from 'native-base';
 import _ from 'underscore';
 import Stripe, { PaymentCardTextField } from 'tipsi-stripe';
 
@@ -47,10 +49,15 @@ class AccountAddressesPage extends Component {
     return (
       <Container theme={ theme }>
         <Header>
-          <Button transparent onPress={() => navigator.parentNavigator.pop()}>
-            <Icon name="ios-arrow-back" />
-          </Button>
-          <Title>Adresses</Title>
+          <Left>
+            <Button transparent onPress={() => navigator.parentNavigator.pop()}>
+              <Icon name="ios-arrow-back" />
+            </Button>
+          </Left>
+          <Body>
+            <Title>Adresses</Title>
+          </Body>
+          <Right />
         </Header>
         <Content>
           <List dataArray={ this.props.user.deliveryAddresses } renderRow={ this._renderRow.bind(this) } />

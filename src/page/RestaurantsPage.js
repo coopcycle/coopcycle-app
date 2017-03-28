@@ -9,9 +9,10 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import {
-  Container,
-  Header,
-  Title, Content, Footer, FooterTab, Button, Text, Icon, List, ListItem, Thumbnail } from 'native-base';
+  Container, Header, Title, Content,
+  Left, Right, Body,
+  Button, Text, Icon, List, ListItem, Thumbnail
+} from 'native-base';
 import _ from 'underscore';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import slugify from 'slugify';
@@ -130,10 +131,14 @@ class RestaurantsPage extends Component {
             restaurant: restaurant,
           }
         });
-      }}>
-        <Thumbnail square size={60} source={{ uri: imageURI }} />
-        <Text>{ restaurant.name }</Text>
-        <Text note>{ restaurant.streetAddress }</Text>
+      }} thumbnail>
+        <Left>
+          <Thumbnail square size={60} source={{ uri: imageURI }} />
+        </Left>
+        <Body>
+          <Text>{ restaurant.name }</Text>
+          <Text note>{ restaurant.streetAddress }</Text>
+        </Body>
       </ListItem>
     );
   }
@@ -141,7 +146,7 @@ class RestaurantsPage extends Component {
 
     let topLeftBtn;
     let topRightBtn = (
-      <Button transparent> </Button>
+      <Button transparent />
     );
     if (this.state.user.isAuthenticated()) {
       topLeftBtn = (
@@ -186,9 +191,11 @@ class RestaurantsPage extends Component {
     return (
       <Container>
         <Header>
-          {topLeftBtn}
-          <Title>Restaurants</Title>
-          {topRightBtn}
+          <Left>{topLeftBtn}</Left>
+          <Body>
+            <Title>Restaurants</Title>
+          </Body>
+          <Right>{topRightBtn}</Right>
         </Header>
         <Content theme={theme}>
           <List

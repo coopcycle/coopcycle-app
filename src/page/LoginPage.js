@@ -12,6 +12,7 @@ import {
   Container, Header, Title, Content,
   List, ListItem,
   InputGroup, Input,
+  Left, Right, Body,
   Icon, Text, Picker, Button
 } from 'native-base';
 
@@ -50,10 +51,15 @@ class LoginPage extends Component {
     return (
       <Container>
         <Header>
-          <Button transparent onPress={() => navigator.parentNavigator.pop()}>
-              <Icon name='ios-close' />
-          </Button>
-          <Title>Restaurants</Title>
+          <Left>
+            <Button transparent onPress={() => navigator.parentNavigator.pop()}>
+              <Icon name='close' />
+            </Button>
+          </Left>
+          <Body>
+            <Title>Restaurants</Title>
+          </Body>
+          <Right />
         </Header>
         <Content style={{ paddingTop: 40 }}>
           <List>
@@ -82,7 +88,7 @@ class LoginPage extends Component {
             </ListItem>
           </List>
           <Button style={{ alignSelf: 'center', marginTop: 20, marginBottom: 20 }} onPress={this._onSubmit.bind(this, navigator)}>
-            Valider
+            <Text>Valider</Text>
           </Button>
           <View style={styles.message}>
             <Text>{this.state.message}</Text>

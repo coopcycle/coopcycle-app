@@ -7,8 +7,10 @@ import {
 } from 'react-native';
 import {
   Container,
-  Header,
-  Title, Content, Footer, FooterTab, Button, Icon, List, ListItem, Text, Radio } from 'native-base';
+  Header, Title, Content, Footer,
+  Left, Right, Body,
+  Button, Icon, List, ListItem, Text, Radio
+} from 'native-base';
 import _ from 'underscore';
 import Stripe, { PaymentCardTextField } from 'tipsi-stripe';
 
@@ -85,20 +87,33 @@ class CreditCardPage extends Component {
       btnProps = { disabled: true }
     }
 
+    const cardStyle =  {
+      // width: 300,
+      color: '#449aeb',
+      borderColor: '#000',
+      borderWidth: 1,
+      borderRadius: 5,
+    }
+
     return (
       <Container theme={theme}>
         <Header>
-          <Button transparent onPress={() => navigator.parentNavigator.pop()}>
-            <Icon name="ios-arrow-back" />
-          </Button>
-          <Title>Paiement</Title>
+          <Left>
+            <Button transparent onPress={() => navigator.parentNavigator.pop()}>
+              <Icon name="ios-arrow-back" />
+            </Button>
+          </Left>
+          <Body>
+            <Title>Paiement</Title>
+          </Body>
+          <Right />
         </Header>
         <Content padder contentContainerStyle={ { flex: 1, justifyContent: 'center', alignItems: 'center' } }>
           <Text style={ styles.padder }>Veuillez entrer vos coordonnées bancaires</Text>
           <PaymentCardTextField
             accessible
             accessibilityLabel="cardTextField"
-            style={ styles.field }
+            style={ cardStyle }
             onParamsChange={(valid, params) => {
               this.setState({
                 valid: valid,
@@ -108,10 +123,11 @@ class CreditCardPage extends Component {
           />
         </Content>
         <Footer>
-          <Button
-            style={{ alignSelf: "flex-end", marginRight: 10 }}
-            onPress={ this._onClick.bind(this, navigator) }
-            {...btnProps}>{ btnText }</Button>
+          <Right>
+            <Button
+              onPress={ this._onClick.bind(this, navigator) }
+              {...btnProps}><Text>{ btnText }</Text></Button>
+          </Right>
         </Footer>
         { loader }
       </Container>
@@ -128,13 +144,6 @@ const styles = StyleSheet.create({
   },
   padder: {
     padding: 10
-  },
-  field: {
-    width: 300,
-    color: '#449aeb',
-    borderColor: '#000',
-    borderWidth: 1,
-    borderRadius: 5,
   },
 })
 

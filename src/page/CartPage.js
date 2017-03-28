@@ -3,78 +3,53 @@ import {
   StyleSheet,
   View,
   Navigator,
-  TouchableHighlight,
-  Text,
-  TouchableOpacity,
-  ListView,
-  AsyncStorage,
-  Alert,
-  ActivityIndicator,
+  Modal,
 } from 'react-native';
 import {
   Container,
-  Header, Title, Content, Footer, FooterTab,
+  Header, Title, Content, Footer,
+  Left, Right, Body,
   List, ListItem,
   InputGroup, Input,
-  Icon, Picker, Button,
+  Icon, Picker, Button, Text,
 } from 'native-base';
+import { Col, Row, Grid } from 'react-native-easy-grid';
 import theme from '../theme/coopcycle';
 import _ from 'underscore';
 
 const AppUser = require('../AppUser');
-const Cart = require('../Cart');
 
 class CartPage extends Component {
   constructor(props) {
     super(props);
+
     const cart = props.cart;
-    this.dataSource = new ListView.DataSource({rowHasChanged: (r1, r2) => {
-      return r1 !== r2 && r1.quantity !== r2.quantity;
-    }});
     this.state = {
       cart: cart,
       loading: false,
+      modalVisible: false,
+      editing: null,
     };
   }
   _renderRow(item) {
     return (
-      <ListItem>
-        <View style={styles.cartRow}>
-          <View style={styles.cartRowLeft}>
-            <Text>{item.offer.name}</Text>
-          </View>
-          <View style={styles.cartRowQuantity}>
-            <Button transparent onPress={() => {
-                item.decrement();
-                this.props.onCartUpdate(item.cart);
-                this.setState({
-                  cart: item.cart,
-                });
-              }}>
-              <Icon name="ios-remove" />
-            </Button>
-            <Text style={styles.cartQuantityText}>{item.quantity}</Text>
-            <Button transparent onPress={() => {
-                item.increment();
-                this.props.onCartUpdate(item.cart);
-                this.setState({
-                  cart: item.cart,
-                });
-              }}>
-              <Icon name="ios-add" />
-            </Button>
-          </View>
-          <View style={styles.cartRowRight}>
-            <Button bordered rounded danger style={ { alignSelf: "flex-end" } } onPress={() => {
-                let cart = this.state.cart;
-                cart.deleteItem(item);
-                this.props.onCartUpdate(cart);
-                this.setState({cart});
-              }}>
-              <Icon name="ios-close-outline" />
-            </Button>
-          </View>
-        </View>
+      <ListItem key={ item.key } onPress={() => this.setState({ editing: item, modalVisible: true })}>
+        <Body>
+          <Text>{item.offer.name}</Text>
+          <Text note>{item.offer.price} € x {item.quantity}</Text>
+        </Body>
+        <Right>
+          <Button danger transparent onPress={() => {
+            let cart = this.state.cart;
+            cart.deleteItem(item);
+            this.props.onCartUpdate(cart);
+            this.setState({
+              cart: cart,
+            });
+          }}>
+            <Icon name="trash" />
+          </Button>
+        </Right>
       </ListItem>
     )
   }
@@ -114,18 +89,81 @@ class CartPage extends Component {
         navigator={this.props.navigator} />
     );
   }
+  renderModal() {
+    return (
+      <Modal
+        animationType={"slide"}
+        transparent={true}
+        visible={this.state.modalVisible}
+        onRequestClose={() => {alert("Modal has been closed.")}}>
+        <View style={ styles.modalWrapper }>
+          <Text style={{ textAlign: 'center' }}>{ this.state.editing ? this.state.editing.offer.name : '' }</Text>
+          <Grid>
+            <Row>
+              <Col style={{ alignItems: 'center', justifyContent: 'center' }}>
+                <Button bordered rounded onPress={() => {
+                    if (this.state.editing.quantity > 0) {
+                      this.state.editing.decrement();
+
+                      const cart = this.state.editing.cart.clone();
+                      this.props.onCartUpdate(cart);
+
+                      if (this.state.editing.quantity === 0) {
+                        this.setState({
+                          cart: cart,
+                          editing: null,
+                          modalVisible: false,
+                        });
+                      } else {
+                        this.setState({ cart });
+                      }
+                    }
+                  }}>
+                  <Icon name="remove" />
+                </Button>
+              </Col>
+              <Col style={{ alignItems: 'center', justifyContent: 'center' }}>
+                <Text>{ this.state.editing ? this.state.editing.quantity : '0' }</Text>
+              </Col>
+              <Col style={{ alignItems: 'center', justifyContent: 'center' }}>
+                <Button bordered rounded onPress={() => {
+                    this.state.editing.increment();
+
+                    const cart = this.state.editing.cart.clone();
+                    this.props.onCartUpdate(cart);
+                    this.setState({
+                      cart: cart,
+                    });
+                  }}>
+                  <Icon name="add" />
+                </Button>
+              </Col>
+            </Row>
+          </Grid>
+          <Button bordered block onPress={() => this.setState({ editing: null, modalVisible: false })}>
+            <Text>Valider</Text>
+          </Button>
+        </View>
+      </Modal>
+    );
+  }
   renderScene(route, navigator) {
-    let dataSource = this.dataSource.cloneWithRows(this.state.cart.items)
     return (
       <Container>
         <Header>
-          <Button transparent onPress={() => navigator.parentNavigator.pop()}>
-            <Icon name="ios-arrow-back" />
-          </Button>
-          <Title>Panier</Title>
+          <Left>
+            <Button transparent onPress={() => navigator.parentNavigator.pop()}>
+              <Icon name="arrow-back" />
+            </Button>
+          </Left>
+          <Body>
+            <Title>Panier</Title>
+          </Body>
+          <Right />
         </Header>
         <Content theme={theme}>
-          <List dataArray={ this.state.cart.items } renderRow={ this._renderRow.bind(this) } />
+          { this.renderModal() }
+          <List>{ this.state.cart.items.map(this._renderRow.bind(this)) }</List>
         </Content>
         <Footer>
           <View style={styles.cart}>
@@ -135,7 +173,7 @@ class CartPage extends Component {
             </View>
             <View style={styles.cartRight}>
               <Button success block style={ { alignSelf: 'flex-end' } } onPress={ this._onClickButton.bind(this, navigator) }>
-                Payer { this.state.cart.total } €
+                <Text>Payer { this.state.cart.total } €</Text>
               </Button>
             </View>
           </View>
@@ -144,8 +182,6 @@ class CartPage extends Component {
     );
   }
 }
-
-const carButtonSize = 36;
 
 const styles = StyleSheet.create({
   cart: {
@@ -171,51 +207,12 @@ const styles = StyleSheet.create({
   textCenter: {
     textAlign: 'center'
   },
-  cartRow: {
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  cartRowLeft: {
-    flex: 2,
-    paddingRight: 5
-  },
-  cartRowQuantity: {
-    flex: 1,
-    flexDirection: "row",
-    alignItems: 'center',
-  },
-  cartRowRight: {
-    flex: 1,
-    alignItems: 'flex-end',
-  },
-  cartQuantityText: {
-    paddingHorizontal: 10,
-  },
-  cartQuantityButton: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderStyle: 'solid',
-    borderColor: '#8e8e8e',
-    // backgroundColor: '#f4f4f2',
-    width: carButtonSize,
-    height: carButtonSize,
-    borderRadius: carButtonSize / 2,
-  },
-  cartQuantityButtonText: {
-    color: '#8e8e8e',
-    padding: 0,
-    margin: 0,
-  },
-  listView: {
-    flex: 4,
-    borderTopColor: "black",
-    borderStyle: "solid",
-    borderTopWidth: 2
-  },
+  modalWrapper: {
+    ...StyleSheet.absoluteFillObject,
+    marginTop: 64,
+    padding: 20,
+    backgroundColor: "#fff"
+  }
 });
 
 module.exports = CartPage;

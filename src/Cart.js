@@ -21,12 +21,15 @@ class CartItem {
   get total() {
     return this.offer.price * this.quantity;
   }
+  get key() {
+    return this.offer['@id'];
+  }
 }
 
 class Cart {
-  constructor(restaurant) {
+  constructor(restaurant, items) {
     this.restaurant = restaurant;
-    this.items = [];
+    this.items = items || [];
   }
   addOffer(offer) {
     let item = _.find(this.items, (item) => item.offer === offer);
@@ -54,9 +57,11 @@ class Cart {
   get total() {
     return _.reduce(this.items, function(memo, item) { return memo + item.total; }, 0).toFixed(2);
   }
-
   get articlesCount() {
     return _.reduce(this.items, function(memo, item) { return memo + item.quantity; }, 0);
+  }
+  clone() {
+    return new Cart(this.restaurant, this.items.slice());
   }
   toJSON() {
     let json = {

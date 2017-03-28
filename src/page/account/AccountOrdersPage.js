@@ -8,7 +8,9 @@ import {
 import {
   Container,
   Header,
-  Title, Content, Footer, FooterTab, Button, Icon, List, ListItem, Text, Radio } from 'native-base';
+  Left, Right, Body,
+  Title, Content, Footer, Button, Icon, List, ListItem, Text
+} from 'native-base';
 import _ from 'underscore';
 
 import theme from '../../theme/coopcycle';
@@ -40,8 +42,8 @@ class AccountOrdersPage extends Component {
           order: order
         }
       })}>
-        <Text>{ order.restaurant.name }</Text>
-        <Text note>{ order.total } €</Text>
+        <Body><Text>{ order.restaurant.name }</Text></Body>
+        <Right><Text>{ order.total } €</Text></Right>
       </ListItem>
     );
   }
@@ -72,10 +74,15 @@ class AccountOrdersPage extends Component {
     return (
       <Container theme={ theme }>
         <Header>
-          <Button transparent onPress={() => navigator.parentNavigator.pop()}>
-            <Icon name="ios-arrow-back" />
-          </Button>
-          <Title>Commandes</Title>
+          <Left>
+            <Button transparent onPress={() => navigator.parentNavigator.pop()}>
+              <Icon name="ios-arrow-back" />
+            </Button>
+          </Left>
+          <Body>
+            <Title>Commandes</Title>
+          </Body>
+          <Right />
         </Header>
         <Content>
           <List dataArray={ this.state.orders } renderRow={ this._renderRow.bind(this, navigator) } />

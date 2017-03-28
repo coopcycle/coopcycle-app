@@ -10,7 +10,8 @@ import {
   Alert,
 } from 'react-native';
 import {
-  Container, Header, Title, Content, Footer, FooterTab,
+  Container, Header, Title, Content, Footer,
+  Left, Right, Body,
   List, ListItem,
   InputGroup, Input,
   Icon, Text, Picker, Button
@@ -60,10 +61,15 @@ class RestaurantPage extends Component {
     return (
       <Container>
         <Header>
-          <Button transparent onPress={() => navigator.parentNavigator.pop()}>
-          <Icon name="ios-arrow-back" />
-        </Button>
-          <Title>{ this.props.restaurant.name }</Title>
+          <Left>
+            <Button transparent onPress={() => navigator.parentNavigator.pop()}>
+              <Icon name="ios-arrow-back" />
+            </Button>
+          </Left>
+          <Body>
+            <Title>{ this.props.restaurant.name }</Title>
+          </Body>
+          <Right />
         </Header>
         <Content theme={theme}>
           <ListView
@@ -89,7 +95,9 @@ class RestaurantPage extends Component {
                       this.setState({cart});
                     }
                   }
-                })}>Commander</Button>
+                })}>
+                <Text>Commander</Text>
+              </Button>
             </View>
           </View>
         </Footer>

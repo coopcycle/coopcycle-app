@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import {
   StyleSheet,
   View,
-  Text,
   Navigator,
   TouchableHighlight,
   TouchableOpacity,
@@ -14,8 +13,10 @@ import {
 import {
   Container,
   Header,
-  Title, Content, Footer, FooterTab, Button, Icon
+  Left, Right, Body,
+  Title, Content, Footer, FooterTab, Button, Icon, Text
 } from 'native-base';
+import { Col, Row, Grid } from 'react-native-easy-grid';
 import MapView from 'react-native-maps';
 import theme from '../theme/coopcycle';
 import Countdown from '../Countdown';
@@ -310,6 +311,37 @@ class CourierPage extends Component {
         navigator={this.props.navigator} />
     );
   }
+  renderTopRow() {
+    return (
+      <Row>
+        <MapView
+          ref={ref => { this.map = ref; }}
+          style={ styles.map }
+          region={this.state.region}
+          onRegionChange={this._onRegionChange.bind(this)}
+          zoomEnabled
+          showsUserLocation
+          loadingEnabled
+          loadingIndicatorColor={"#666666"}
+          loadingBackgroundColor={"#eeeeee"}>
+          {this.state.markers.map(marker => (
+            <MapView.Marker
+              identifier={marker.identifier}
+              key={marker.key}
+              coordinate={marker.coordinate}
+              pinColor={marker.pinColor}
+              title={marker.title}
+              description={marker.description} />
+          ))}
+          <MapView.Polyline
+            coordinates={this.state.polylineCoords}
+            strokeWidth={4}
+            strokeColor="#19B5FE"
+           />
+        </MapView>
+      </Row>
+    )
+  }
   renderScene(route, navigator) {
 
     const { height, width } = Dimensions.get('window');
@@ -348,7 +380,7 @@ class CourierPage extends Component {
 
     let connectedButton = (
       <Button transparent>
-        <Icon name="ios-wifi" style={{ fontSize: 30, color: this.state.connected ? green : grey}} />
+        <Icon name="wifi" style={{ fontSize: 30, color: this.state.connected ? green : grey}} />
       </Button>
     )
 
@@ -356,32 +388,18 @@ class CourierPage extends Component {
     if (this.state.watchID === null) {
       trackingButton = (
         <Button transparent>
-          <Icon name="ios-navigate-outline" style={{ fontSize: 30, color: '#95A5A6'}} />
+          <Icon name="navigate" style={{ fontSize: 30, color: '#95A5A6'}} />
         </Button>
       )
     } else {
       trackingButton = (
         <Button transparent>
-          <Icon name="ios-navigate" style={{ fontSize: 30, color: green}} />
+          <Icon name="navigate" style={{ fontSize: 30, color: green}} />
         </Button>
       )
     }
 
-    let bottomView = ( <View /> )
-    if (this.state.order) {
-      bottomView = (
-        <View style={{ flex: 1 }}>
-          <View>
-            <Button>Refuser</Button>
-            <Button>Accepter</Button>
-          </View>
-        </View>
-      )
-    }
-
-    // FIXME Find a way to get header height dynamically?
-    let mapStyle = isModalVisible ? { height: halfScreenHeight } : { height: height }
-    let modalContent = ( <View /> )
+    let bottomRow = ( <View /> )
 
     if (this.state.order) {
 
@@ -394,8 +412,12 @@ class CourierPage extends Component {
       if (this.state.order.status === 'WAITING') {
         modalButtons = (
           <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-around' }}>
-            <Button danger disabled={this.state.loading} onPress={this.declineOrder.bind(this)}>Refuser</Button>
-            <Button success disabled={this.state.loading} onPress={this.acceptOrder.bind(this)}>Accepter</Button>
+            <Button danger disabled={this.state.loading} onPress={this.declineOrder.bind(this)}>
+              <Text>Refuser</Text>
+            </Button>
+            <Button success disabled={this.state.loading} onPress={this.acceptOrder.bind(this)}>
+              <Text>Accepter</Text>
+            </Button>
           </View>
         );
         countdown = (
@@ -407,81 +429,62 @@ class CourierPage extends Component {
       if (this.state.order.status === 'ACCEPTED') {
         modalButtons = (
           <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-around' }}>
-            <Button success disabled={this.state.loading} onPress={this.pickOrder.bind(this)}>Commande récupérée</Button>
+            <Button success disabled={this.state.loading} onPress={this.pickOrder.bind(this)}>
+              <Text>Commande récupérée</Text>
+            </Button>
           </View>
         );
       }
       if (this.state.order.status === 'PICKED') {
         modalButtons = (
           <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-around' }}>
-            <Button success disabled={this.state.loading} onPress={this.deliverOrder.bind(this)}>Commande livrée</Button>
+            <Button success disabled={this.state.loading} onPress={this.deliverOrder.bind(this)}>
+              <Text>Commande livrée</Text>
+            </Button>
           </View>
         );
       }
 
-      modalContent = (
-        <View style={{ flex: 1, flexDirection: 'column' }}>
-          <View style={{ flex: 1, alignItems: 'center' }}>
-            <Text style={{ textAlign: 'center', fontWeight: 'bold', marginBottom: 10 }}>{ this.state.order.restaurant.name }</Text>
-            <Text>{ nextAddress }</Text>
+      bottomRow = (
+        <Row style={{ padding: 10 }}>
+          <View style={{ flex: 1, flexDirection: 'column' }}>
+            <View style={{ flex: 1, alignItems: 'center' }}>
+              <Text style={{ textAlign: 'center', fontWeight: 'bold', marginBottom: 10 }}>{ this.state.order.restaurant.name }</Text>
+              <Text>{ nextAddress }</Text>
+            </View>
+            { countdown }
+            { modalButtons }
           </View>
-          { countdown }
-          { modalButtons }
-        </View>
+        </Row>
       );
     }
 
     return (
       <Container>
         <Header>
-          <Button transparent onPress={() => {
-            Alert.alert('Êtes-vous sûr ?', null, [
-              { text: 'Annuler', onPress: () => {} },
-              { text: 'Quitter', onPress: () => navigator.parentNavigator.pop() },
-            ]);
-          }}>Quitter</Button>
-          <Title>Commandes</Title>
-          { connectedButton }
-          { trackingButton }
+          <Left>
+            <Button transparent onPress={() => {
+              Alert.alert('Êtes-vous sûr ?', null, [
+                { text: 'Annuler', onPress: () => {} },
+                { text: 'Quitter', onPress: () => navigator.parentNavigator.pop() },
+              ]);
+            }}>
+              <Text>Quitter</Text>
+            </Button>
+          </Left>
+          <Body>
+            <Title>Commandes</Title>
+          </Body>
+          <Right>
+            { connectedButton }
+            { trackingButton }
+          </Right>
         </Header>
-        <View style={{flex: 1, flexDirection: 'column'}}>
-          <MapView
-            ref={ref => { this.map = ref; }}
-            style={ mapStyle }
-            region={this.state.region}
-            onRegionChange={this._onRegionChange.bind(this)}
-            zoomEnabled
-            showsUserLocation
-            loadingEnabled
-            loadingIndicatorColor={"#666666"}
-            loadingBackgroundColor={"#eeeeee"}>
-            {this.state.markers.map(marker => (
-              <MapView.Marker
-                identifier={marker.identifier}
-                key={marker.key}
-                coordinate={marker.coordinate}
-                pinColor={marker.pinColor}
-                title={marker.title}
-                description={marker.description} />
-            ))}
-            <MapView.Polyline
-              coordinates={this.state.polylineCoords}
-              strokeWidth={4}
-              strokeColor="#19B5FE"
-             />
-          </MapView>
-          <Modal
-            animationType={ "slide" }
-            transparent={ true }
-            visible={ isModalVisible }>
-            <View style={ styles.modalWrapper }>
-              <View style={{ width: width, height: halfScreenHeight, backgroundColor: '#fff', padding: 20 }}>
-                { modalContent }
-              </View>
-            </View>
-          </Modal>
+        <Grid>
+          { this.renderTopRow() }
+          { bottomRow }
           { loader }
-        </View>
+        </Grid>
       </Container>
     );
   }
@@ -494,33 +497,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'rgba(52, 52, 52, 0.4)'
   },
-  buttonBlue: {
-    alignItems: "center",
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    marginTop: 10,
-    marginBottom: 10,
-    borderRadius: 4,
-    backgroundColor: "#246dd5",
-  },
-  buttonGreen: {
-    alignItems: "center",
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    marginTop: 10,
-    marginBottom: 10,
-    borderRadius: 4,
-    backgroundColor: "#2ecc71",
-  },
   map: {
     ...StyleSheet.absoluteFillObject,
   },
-  modalWrapper: {
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'flex-end',
-    alignItems: 'center'
-  }
 });
 
 module.exports = CourierPage;

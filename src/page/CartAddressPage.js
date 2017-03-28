@@ -12,8 +12,9 @@ import {
 import {
   Badge,
   Container,
-  Header,
-  Title, Content, Footer, FooterTab, Button, Icon, List, ListItem, Text, Radio } from 'native-base';
+  Header, Title, Content, Footer,
+  Left, Right, Body,
+  Button, Icon, List, ListItem, Text, Radio } from 'native-base';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import _ from 'underscore';
 
@@ -100,7 +101,9 @@ class CartAddressPage extends Component {
                 onAddressCreated: this.onAddressCreated.bind(this)
               }
             });
-          }}>Ajouter une adresse</Button>
+          }}>
+            <Text>Ajouter une adresse</Text>
+          </Button>
         </View>
       </View>
     );
@@ -118,7 +121,7 @@ class CartAddressPage extends Component {
   }
   renderRow(navigator, deliveryAddress) {
     return (
-      <ListItem button iconRight onPress={() => {
+      <ListItem button icon onPress={() => {
 
         const cart = this.props.cart;
         cart.deliveryAddress = deliveryAddress;
@@ -133,8 +136,12 @@ class CartAddressPage extends Component {
         });
 
       }}>
-        <Icon name="ios-arrow-dropright" style={{ color: '#0A69FE' }} />
-        <Text>{ deliveryAddress.streetAddress }</Text>
+        <Left>
+          <Icon name="ios-arrow-dropright" style={{ color: '#0A69FE' }} />
+        </Left>
+        <Body>
+          <Text>{ deliveryAddress.streetAddress }</Text>
+        </Body>
       </ListItem>
     )
   }
@@ -142,10 +149,15 @@ class CartAddressPage extends Component {
     return (
       <Container>
         <Header>
-          <Button transparent onPress={() => navigator.parentNavigator.pop()}>
-            <Icon name="ios-arrow-back" />
-          </Button>
-          <Title>Livraison</Title>
+          <Left>
+            <Button transparent onPress={() => navigator.parentNavigator.pop()}>
+              <Icon name="ios-arrow-back" />
+            </Button>
+          </Left>
+          <Body>
+            <Title>Livraison</Title>
+          </Body>
+          <Right />
         </Header>
         <Content theme={theme}>
           { this.renderList(navigator) }
