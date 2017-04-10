@@ -9,6 +9,7 @@ import {
   Modal,
   ActivityIndicator,
   Dimensions,
+  Platform,
 } from 'react-native';
 import {
   Container,
@@ -154,11 +155,20 @@ class CourierPage extends Component {
   getCurrentPosition() {
     this.setState({ loadingMessage: 'Calcul de votre position…' });
     return new Promise((resolve, reject) => {
-      const options = {
-        enableHighAccuracy: true,
-        timeout: 20000,
-        maximumAge: 1000
+
+      let options;
+      if (Platform.OS === 'ios') {
+        options = {
+          enableHighAccuracy: true,
+          timeout: 15000,
+          maximumAge: 5000
+        }
+      } else {
+        options = {
+          enableHighAccuracy: false
+        }
       }
+
       navigator.geolocation.getCurrentPosition(
         (position) => resolve(position),
         (error) => reject(error),
@@ -168,9 +178,14 @@ class CourierPage extends Component {
   }
   watchPosition() {
     return new Promise((resolve, reject) => {
-      this.setState({ loadingMessage: 'Suivi de votre position…' });
-      const watchID = navigator.geolocation.watchPosition((position) => this.onPositionUpdated(position.coords));
-      this.setState({ watchID });
+      const watchID = navigator.geolocation.watchPosition(
+        (position) => this.onPositionUpdated(position.coords),
+        (error) => console.log
+      );
+      this.setState({
+        loadingMessage: 'Suivi de votre position…',
+        watchID: watchID
+      });
       resolve();
     });
   }
@@ -180,16 +195,21 @@ class CourierPage extends Component {
     this.setState({ watchID: null })
   }
   onPositionUpdated(latLng) {
-    this.setState({ position: latLng });
-    if (this.ws.readyState === WebSocket.OPEN) {
-      this.ws.send(JSON.stringify({
+
+    latLng = latLng || this.state.position;
+
+    if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+      const message = JSON.stringify({
         type: "updateCoordinates",
         coordinates: {
           latitude: latLng.latitude,
           longitude: latLng.longitude
         },
-      }));
+      });
+      this.ws.send(message);
     }
+
+    this.setState({ position: latLng });
   }
   zoomTo(coords) {
     let region = {
@@ -221,6 +241,7 @@ class CourierPage extends Component {
 
       this.ws.onopen = () => {
         console.log('Connected to dispatch service !');
+        this.onPositionUpdated();
         this.setState({
           connected: true,
           loadingMessage: 'En attente d\'une commande…'
@@ -278,7 +299,13 @@ class CourierPage extends Component {
 
       this.getStatus()
         .then((data) => {
-          this.getCurrentPosition()
+          this
+            .getCurrentPosition()
+            .then((position) => {
+              this.onPositionUpdated(position.coords);
+
+              return position;
+            })
             .then((position) => this.zoomTo(position.coords))
             .then(this.watchPosition.bind(this))
             .then(this.connectToWebSocket.bind(this))
@@ -289,6 +316,11 @@ class CourierPage extends Component {
             })
             .catch((err) => {
               console.log(err)
+              if (err.message) {
+                if (err.message === 'Location request timed out') {
+                  // TODO Display error message
+                }
+              }
             });
         })
         .catch((err) => {
@@ -378,26 +410,18 @@ class CourierPage extends Component {
       );
     }
 
-    let connectedButton = (
+    const connectedButton = (
       <Button transparent>
-        <Icon name="wifi" style={{ fontSize: 30, color: this.state.connected ? green : grey}} />
+        <Icon name="wifi" style={{ fontSize: 30, color: this.state.connected ? green : grey }} />
       </Button>
     )
 
-    let trackingButton;
-    if (this.state.watchID === null) {
-      trackingButton = (
-        <Button transparent>
-          <Icon name="navigate" style={{ fontSize: 30, color: '#95A5A6'}} />
-        </Button>
-      )
-    } else {
-      trackingButton = (
-        <Button transparent>
-          <Icon name="navigate" style={{ fontSize: 30, color: green}} />
-        </Button>
-      )
-    }
+    const isTracking = this.state.watchID || this.state.position;
+    const trackingButton = (
+      <Button transparent>
+        <Icon name="navigate" style={{ fontSize: 30, color: isTracking ? green : grey }} />
+      </Button>
+    );
 
     let bottomRow = ( <View /> )
 
@@ -469,7 +493,7 @@ class CourierPage extends Component {
                 { text: 'Quitter', onPress: () => navigator.parentNavigator.pop() },
               ]);
             }}>
-              <Text>Quitter</Text>
+              <Icon name="exit" />
             </Button>
           </Left>
           <Body>
