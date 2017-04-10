@@ -71,7 +71,7 @@ class LoginPage extends Component {
                   autoCapitalize="none"
                   onChangeText={(email) => this.setState({ email })}
                   style={{height: 40}}
-                  placeholder="Email" />
+                  placeholder="Nom d'utilisateur" />
               </InputGroup>
             </ListItem>
             <ListItem>

@@ -171,7 +171,7 @@ class RestaurantsPage extends Component {
             onLoginSuccess: this._onLoginSuccess.bind(this)
           }
         })}>
-          <Text>Connexion</Text>
+          <Icon name="log-in" />
         </Button>
       )
     }
