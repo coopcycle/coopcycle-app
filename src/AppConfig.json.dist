@@ -1,5 +1,4 @@
 {
     "GOOGLE_API_KEY": "",
-    "STRIPE_PUBLISHABLE_KEY": "",
-    "BASE_URL": "http://coopcycle.dev"
+    "STRIPE_PUBLISHABLE_KEY": ""
 }

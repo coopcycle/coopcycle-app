@@ -118,7 +118,7 @@ class RestaurantsPage extends Component {
     //   cuisine = randomCuisine.name;
     // }
 
-    let imageURI = AppConfig.BASE_URL + '/img/cuisine/' + slugify(cuisine).toLowerCase() +'.jpg';
+    let imageURI = this.props.server + '/img/cuisine/' + slugify(cuisine).toLowerCase() +'.jpg';
 
     return (
       <ListItem onPress={() => {

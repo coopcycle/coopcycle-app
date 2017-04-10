@@ -15,7 +15,6 @@ import Stripe, { PaymentCardTextField } from 'tipsi-stripe';
 
 import theme from '../../theme/coopcycle';
 
-const AppConfig = require('../../AppConfig');
 const AppUser = require('../../AppUser');
 
 class AccountAddressesPage extends Component {
@@ -43,7 +42,7 @@ class AccountAddressesPage extends Component {
         <Header>
           <Left>
             <Button transparent onPress={() => navigator.parentNavigator.pop()}>
-              <Icon name="ios-arrow-back" />
+              <Icon name="arrow-back" />
             </Button>
           </Left>
           <Body>

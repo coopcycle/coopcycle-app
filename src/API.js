@@ -154,8 +154,82 @@ var refreshToken = function(baseURL, refreshToken) {
   });
 }
 
+const resolveBaseURL = function(server) {
+  return new Promise((resolve, reject) => {
+    if (!server.startsWith('http://') && !server.startsWith('https://')) {
+      try {
+        return fetch('https://' + server, { timeout: 3000 })
+          .then((response) => resolve('https://' + server))
+          .catch((err) => resolve('http://' + server));
+      } catch (e) {
+        resolve('http://' + server)
+      }
+    }
+    resolve(server);
+  });
+}
+
+const ERROR_NOT_COMPATIBLE = {
+  message: 'Not a CoopCycle server'
+}
+
+const checkServer = function(server) {
+  return new Promise((resolve, reject) => {
+    resolveBaseURL(server)
+      .then((baseURL) => {
+
+        console.log('Base URL is ' + baseURL)
+
+        const headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+
+        const req = new Request(baseURL + '/api', {
+          method: 'GET',
+          headers: headers,
+        });
+
+        fetch(req)
+          .then((response) => {
+            if (!response.ok) {
+              return reject(ERROR_NOT_COMPATIBLE);
+            }
+
+            response.json()
+              .then((data) => {
+
+                // {
+                //   "@context":"/api/contexts/Entrypoint",
+                //   "@id":"/api",
+                //   "@type":"Entrypoint",
+                //   "apiUser":"/api/me",
+                //   "restaurant":"/api/restaurants",
+                //   "deliveryAddress":"/api/delivery_addresses",
+                //   "order":"/api/orders",
+                //   "orderItem":"/api/order_items",
+                //   "product":"/api/products"
+                // }
+
+                if (data.hasOwnProperty('@context')
+                &&  data.hasOwnProperty('@id')
+                &&  data.hasOwnProperty('@type')) {
+                  resolve(baseURL);
+                } else {
+                  reject(ERROR_NOT_COMPATIBLE);
+                }
+
+              })
+              // Could not parse JSON
+              .catch((err) => reject(ERROR_NOT_COMPATIBLE));
+          })
+          .catch((err) => reject(err));
+
+      });
+  });
+}
+
 module.exports = {
   createClient: function(httpBaseURL, model) {
     return new Client(httpBaseURL, model);
-  }
+  },
+  checkServer: checkServer
 }

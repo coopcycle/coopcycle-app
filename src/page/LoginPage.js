@@ -16,6 +16,8 @@ import {
   Icon, Text, Picker, Button
 } from 'native-base';
 
+const Settings = require('../Settings');
+
 class LoginPage extends Component {
   constructor(props) {
     super(props);
@@ -39,6 +41,10 @@ class LoginPage extends Component {
           this.setState({message: "Veuillez réessayer plus tard"});
         }
       });
+  }
+  disconnect(navigator) {
+    navigator.parentNavigator.pop();
+    Settings.removeServer();
   }
   render() {
     return (
@@ -90,6 +96,12 @@ class LoginPage extends Component {
           <Button style={{ alignSelf: 'center', marginTop: 20, marginBottom: 20 }} onPress={this._onSubmit.bind(this, navigator)}>
             <Text>Valider</Text>
           </Button>
+          <View style={{ marginTop: 30 }}>
+            <Text style={{ textAlign: 'center' }}>Connecté à <Text style={{ fontWeight: 'bold' }}>{ this.props.server }</Text></Text>
+            <Button block transparent onPress={ this.disconnect.bind(this, navigator) }>
+              <Text>Choisir un autre serveur</Text>
+            </Button>
+          </View>
           <View style={styles.message}>
             <Text>{this.state.message}</Text>
           </View>

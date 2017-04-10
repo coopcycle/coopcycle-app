@@ -1,6 +1,5 @@
 /**
- * Sample React Native App
- * https://github.com/facebook/react-native
+ * CoopCycle App
  * @flow
  */
 
@@ -8,51 +7,132 @@ import React, { Component } from 'react';
 import {
   AppRegistry,
   StyleSheet,
-  Text,
   View,
   Dimensions,
   Navigator,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
 
 import MapView from 'react-native-maps';
 import Polyline from 'polyline';
 import _ from 'underscore';
 
-import { API } from 'coopcycle-js';
+import API from './src/API';
 
-const LoginPage = require('./src/page/LoginPage');
-const RestaurantsPage = require('./src/page/RestaurantsPage');
-const RestaurantPage = require('./src/page/RestaurantPage');
-const CartPage = require('./src/page/CartPage');
-const CartAddressPage = require('./src/page/CartAddressPage');
-const CourierPage = require('./src/page/CourierPage');
-const AccountPage = require('./src/page/AccountPage');
-const AccountAddressesPage = require('./src/page/account/AccountAddressesPage');
-const AccountOrdersPage = require('./src/page/account/AccountOrdersPage');
-const NewAddressPage = require('./src/page/account/NewAddress');
-const CreditCardPage = require('./src/page/CreditCardPage');
-const OrderTrackingPage = require('./src/page/OrderTrackingPage');
+import {
+  Container, Header, Title, Content,
+  Left, Right, Body,
+  Button, Text, Icon, List, ListItem, Thumbnail,
+  Form, Item, Input, Label,
+  Card, CardItem,
+  Toast
+} from 'native-base';
 
+const Routes = require('./src/page');
 const AppUser = require('./src/AppUser');
+const Settings = require('./src/Settings');
 const AppConfig = require('./src/AppConfig');
 
 class coursiersapp extends Component {
+
+  input = null;
+
   constructor(props) {
     super(props);
     this.state = {
+      client: null,
+      initialized: false,
+      loading: false,
+      settings: {},
+      server: null,
+      text: '',
       user: null,
-      client: null
+      error: '',
     }
   }
   componentWillMount() {
+
+    Settings.addListener('server:remove', this.disconnect.bind(this));
+
     AppUser.load()
       .then((user) => {
-        this.setState({
-          user: user,
-          client: API.createClient(AppConfig.API_BASEURL, user)
-        });
+        Settings.loadServer()
+          .then((baseURL) => {
+
+            let client = null;
+            if (baseURL) {
+              client = API.createClient(baseURL, user);
+            }
+
+            this.setState({
+              client: client,
+              initialized: true,
+              server: baseURL,
+              user: user,
+            });
+
+          });
       });
+  }
+  connect() {
+    const server = this.state.text;
+
+    this.setState({ loading: true });
+
+    API.checkServer(server)
+      .then((baseURL) => {
+        const user = this.state.user;
+
+        Settings.saveServer(baseURL)
+          .then(() => {
+            this.setState({
+              client: API.createClient(baseURL, user),
+              loading: false,
+              server: server
+            });
+          });
+      })
+      .catch((err) => {
+
+        setTimeout(() => {
+
+          let message = '';
+          if (err.message) {
+            if (err.message === 'Network request failed') {
+              message = 'Impossible de se connecter';
+            }
+            if (err.message === 'Not a CoopCycle server') {
+              message = 'Ce serveur n\'est pas compatible';
+            }
+
+            Toast.show({
+              text: message,
+              position: 'bottom',
+              type: 'danger',
+              duration: 3000
+            });
+
+          }
+
+          this.input._root.clear();
+          this.input._root.focus();
+
+          this.setState({ loading: false });
+
+        }, 500);
+
+      });
+  }
+  disconnect() {
+    const user = this.state.user;
+    user.logout()
+
+    this.setState({
+      client: null,
+      server: null,
+      user: user,
+    });
   }
   render() {
     return (
@@ -69,70 +149,23 @@ class coursiersapp extends Component {
   }
   renderScene(route, navigator) {
 
-    if (!this.state.user) {
+    if (!this.state.initialized) {
       return this.loading();
     }
 
-    var routeId = route.id;
-    if (routeId === 'RestaurantsPage') {
-      return (
-        <RestaurantsPage navigator={navigator} user={this.state.user} client={this.state.client} {...route.passProps} />
-      );
+    if (!this.state.server) {
+      return this.configureServer();
     }
-    if (routeId === 'RestaurantPage') {
-      return (
-        <RestaurantPage navigator={navigator} {...route.passProps} />
-      );
-    }
-    if (routeId === 'LoginPage') {
-      return (
-        <LoginPage navigator={navigator} user={this.state.user} client={this.state.client} {...route.passProps} />
-      );
-    }
-    if (routeId === 'CartPage') {
-      return (
-        <CartPage navigator={navigator} user={this.state.user} client={this.state.client} {...route.passProps} />
-      );
-    }
-    if (routeId === 'CartAddressPage') {
-      return (
-        <CartAddressPage navigator={navigator} user={this.state.user} client={this.state.client} {...route.passProps} />
-      );
-    }
-    if (routeId === 'CourierPage') {
-      return (
-        <CourierPage navigator={navigator} user={this.state.user} client={this.state.client} {...route.passProps} />
-      );
-    }
-    if (routeId === 'AccountPage') {
-      return (
-        <AccountPage navigator={navigator} user={this.state.user} client={this.state.client} {...route.passProps} />
-      );
-    }
-    if (routeId === 'CreditCardPage') {
-      return (
-        <CreditCardPage navigator={navigator} user={this.state.user} client={this.state.client} {...route.passProps} />
-      );
-    }
-    if (routeId === 'AccountOrdersPage') {
-      return (
-        <AccountOrdersPage navigator={navigator} user={this.state.user} client={this.state.client} {...route.passProps} />
-      );
-    }
-    if (routeId === 'AccountAddressesPage') {
-      return (
-        <AccountAddressesPage navigator={navigator} user={this.state.user} client={this.state.client} {...route.passProps} />
-      );
-    }
-    if (routeId === 'OrderTrackingPage') {
-      return (
-        <OrderTrackingPage navigator={navigator} user={this.state.user} client={this.state.client} {...route.passProps} />
-      );
-    }
-    if (routeId === 'NewAddressPage') {
-      return (
-        <NewAddressPage navigator={navigator} user={this.state.user} client={this.state.client} {...route.passProps} />
-      );
+
+    const routeId = route.id;
+    const user = this.state.user;
+    const client = this.state.client;
+    const server = this.state.server;
+
+    let RouteComponent = Routes[route.id];
+
+    if (Routes.hasOwnProperty(route.id)) {
+      return React.createElement(RouteComponent, { client, navigator, server, user, ...route.passProps });
     }
 
     return this.noRoute(navigator);
@@ -143,6 +176,52 @@ class coursiersapp extends Component {
       <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
           <Text>Chargement</Text>
       </View>
+    );
+  }
+
+  configureServer() {
+
+    let loader = (
+      <View />
+    )
+    if (this.state.loading) {
+      loader = (
+        <View style={styles.loader}>
+          <ActivityIndicator
+            animating={true}
+            size="large"
+            color="#fff"
+          />
+          <Text style={{color: '#fff'}}>Chargement...</Text>
+        </View>
+      );
+    };
+
+    return (
+      <Container>
+        <Header>
+          <Left />
+          <Body>
+            <Title>CoopCycle</Title>
+          </Body>
+          <Right />
+        </Header>
+        <Content>
+          <Form style={{ marginBottom: 20 }}>
+            <Item stackedLabel last>
+              <Label>Serveur</Label>
+              <Input ref={(ref) => { this.input = ref }} autoCapitalize={'none'} autoCorrect={false}
+                onChangeText={(text) => this.setState({ text })} />
+            </Item>
+          </Form>
+          <View style={{ paddingHorizontal: 10 }}>
+            <Button block onPress={this.connect.bind(this)}>
+              <Text>Valider</Text>
+            </Button>
+          </View>
+        </Content>
+        { loader }
+      </Container>
     );
   }
 
@@ -157,5 +236,14 @@ class coursiersapp extends Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  loader: {
+    ...StyleSheet.absoluteFillObject,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(52, 52, 52, 0.4)'
+  },
+});
 
 AppRegistry.registerComponent('coursiersapp', () => coursiersapp);

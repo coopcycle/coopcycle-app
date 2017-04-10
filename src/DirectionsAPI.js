@@ -1,12 +1,12 @@
-import _ from 'underscore';
 import Polyline from 'polyline';
-import API from './API';
-
-const AppConfig = require('./AppConfig');
-const APIClient = API.createClient(AppConfig.API_BASEURL);
 
 class DirectionsAPI {
-  static getRoute(opts) {
+
+  constructor(client) {
+    this.client = client;
+  }
+
+  getRoute(opts) {
     var origin = opts.origin;
     var destination = opts.destination;
     var uri = '/api/routing/route?';
@@ -17,16 +17,12 @@ class DirectionsAPI {
     //   url += '&waypoints=' + opts.waypoints.latitude + ',' + opts.waypoints.longitude;
     // }
 
-    // return fetch(url)
-    //   .then((response) => {
-    //     return response.json();
-    //   });
-
-    return APIClient.get(uri)
+    return this.client.get(uri)
       .then((data) => {
         return DirectionsAPI.toPolylineCoordinates(data.routes[0].geometry);
       })
   }
+
   static toPolylineCoordinates(polyline) {
     let steps = Polyline.decode(polyline);
     let polylineCoords = [];

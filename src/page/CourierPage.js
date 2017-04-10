@@ -20,10 +20,9 @@ import {
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import MapView from 'react-native-maps';
 import theme from '../theme/coopcycle';
-import Countdown from '../Countdown';
 
-const DirectionsAPI = require('../DirectionsAPI');
-const AppConfig = require('../AppConfig');
+import Countdown from '../Countdown';
+import DirectionsAPI from '../DirectionsAPI';
 
 const LATITUDE_DELTA = 0.0722;
 const LONGITUDE_DELTA = 0.0221;
@@ -33,10 +32,11 @@ class CourierPage extends Component {
   ws = undefined;
   watchID = undefined;
   map = undefined;
+  directionsAPI = null;
 
   constructor(props) {
     super(props);
-
+    this.directionsAPI = new DirectionsAPI(this.props.client)
     this.state = {
       status: null,
       region: null,
@@ -60,7 +60,7 @@ class CourierPage extends Component {
       title: 'Foo',
       description: 'Lorem ipsum',
     }
-    return DirectionsAPI.getRoute({
+    return this.directionsAPI.getRoute({
       origin: this.state.position,
       destination: destination,
     }).then((route) => {
@@ -235,7 +235,9 @@ class CourierPage extends Component {
 
     return new Promise((resolve, reject) => {
 
-      this.ws = new WebSocket(AppConfig.WEBSOCKET_BASEURL + '/realtime', '', {
+      const webSocketBaseURL = this.props.server.replace('http', 'ws');
+
+      this.ws = new WebSocket(webSocketBaseURL + '/realtime', '', {
           Authorization: "Bearer " + this.props.user.token
       });
 

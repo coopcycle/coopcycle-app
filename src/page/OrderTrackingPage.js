@@ -16,8 +16,6 @@ import MapView from 'react-native-maps';
 import Polyline from 'polyline';
 import _ from 'underscore';
 
-const AppConfig = require('../AppConfig');
-
 const LATITUDE_DELTA = 0.0722;
 const LONGITUDE_DELTA = 0.0221;
 

@@ -19,7 +19,6 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import _ from 'underscore';
 
 import theme from '../theme/coopcycle';
-import AppConfig from '../AppConfig.json'
 
 class CartAddressPage extends Component {
   constructor(props) {

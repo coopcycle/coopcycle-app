@@ -1,5 +1,3 @@
-import _ from 'underscore';
-
 class RestaurantsAPI {
 
   constructor(client) {

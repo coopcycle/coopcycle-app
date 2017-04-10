@@ -76,7 +76,7 @@ class AccountOrdersPage extends Component {
         <Header>
           <Left>
             <Button transparent onPress={() => navigator.parentNavigator.pop()}>
-              <Icon name="ios-arrow-back" />
+              <Icon name="arrow-back" />
             </Button>
           </Left>
           <Body>
