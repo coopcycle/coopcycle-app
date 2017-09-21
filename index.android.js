@@ -15,7 +15,7 @@ import {
 } from 'react-native';
 
 import MapView from 'react-native-maps';
-import Polyline from 'polyline';
+import Polyline from '@mapbox/polyline';
 import _ from 'underscore';
 
 import API from './src/API';

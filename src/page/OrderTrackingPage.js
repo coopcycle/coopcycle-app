@@ -13,7 +13,7 @@ import {
 import theme from '../theme/coopcycle';
 
 import MapView from 'react-native-maps';
-import Polyline from 'polyline';
+import Polyline from '@mapbox/polyline';
 import _ from 'underscore';
 
 const LATITUDE_DELTA = 0.0722;

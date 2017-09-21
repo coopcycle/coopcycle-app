@@ -1,4 +1,4 @@
-import Polyline from 'polyline';
+import Polyline from '@mapbox/polyline';
 
 class DirectionsAPI {
 
