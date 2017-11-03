@@ -36,7 +36,7 @@ const OrderTrackingPage = require('./src/page/OrderTrackingPage');
 const AppUser = require('./src/AppUser');
 const AppConfig = require('./src/AppConfig');
 
-class coursiersapp extends Component {
+class CoopCycle extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -157,5 +157,5 @@ class coursiersapp extends Component {
   }
 }
 
-AppRegistry.registerComponent('coursiersapp', () => coursiersapp);
+AppRegistry.registerComponent('CoopCycle', () => CoopCycle);
 

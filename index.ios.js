@@ -34,7 +34,7 @@ const AppUser = require('./src/AppUser');
 const Settings = require('./src/Settings');
 const AppConfig = require('./src/AppConfig');
 
-class coursiersapp extends Component {
+class CoopCycle extends Component {
 
   input = null;
 
@@ -246,4 +246,4 @@ const styles = StyleSheet.create({
   },
 });
 
-AppRegistry.registerComponent('coursiersapp', () => coursiersapp);
+AppRegistry.registerComponent('CoopCycle', () => CoopCycle);

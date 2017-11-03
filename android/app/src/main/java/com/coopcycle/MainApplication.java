@@ -1,4 +1,4 @@
-package com.coursiersapp;
+package com.coopcycle;
 
 import android.app.Application;
 

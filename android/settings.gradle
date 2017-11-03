@@ -1,4 +1,4 @@
-rootProject.name = 'coursiersapp'
+rootProject.name = 'CoopCycle'
 include ':tipsi-stripe'
 project(':tipsi-stripe').projectDir = new File(rootProject.projectDir, '../node_modules/tipsi-stripe/android')
 include ':react-native-vector-icons'
