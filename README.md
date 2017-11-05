@@ -15,3 +15,10 @@ Install dependencies with NPM, and link them with React Native CLI.
 $ npm install
 $ react-native link
 ```
+
+Running on iOS emulator
+-----------------------
+
+```
+react-native run-ios
+```
