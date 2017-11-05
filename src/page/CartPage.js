@@ -35,8 +35,8 @@ class CartPage extends Component {
     return (
       <ListItem key={ item.key } onPress={() => this.setState({ editing: item, modalVisible: true })}>
         <Body>
-          <Text>{item.offer.name}</Text>
-          <Text note>{item.offer.price} € x {item.quantity}</Text>
+          <Text>{item.menuItem.name}</Text>
+          <Text note>{item.menuItem.price} € x {item.quantity}</Text>
         </Body>
         <Right>
           <Button danger transparent onPress={() => {
@@ -97,7 +97,7 @@ class CartPage extends Component {
         visible={this.state.modalVisible}
         onRequestClose={() => {alert("Modal has been closed.")}}>
         <View style={ styles.modalWrapper }>
-          <Text style={{ textAlign: 'center' }}>{ this.state.editing ? this.state.editing.offer.name : '' }</Text>
+          <Text style={{ textAlign: 'center' }}>{ this.state.editing ? this.state.editing.menuItem.name : '' }</Text>
           <Grid>
             <Row>
               <Col style={{ alignItems: 'center', justifyContent: 'center' }}>
