@@ -1,11 +1,10 @@
 import _ from 'underscore';
 
 class CartItem {
-  constructor(cart, offer) {
+  constructor(cart, menuItem) {
     this.cart = cart;
-    this.offer = offer;
+    this.menuItem = menuItem;
     this.quantity = 1;
-    this.deliveryAddress = null;
   }
   decrement() {
     if (this.quantity > 0) {
@@ -18,11 +17,14 @@ class CartItem {
   increment() {
     this.quantity++;
   }
+  matches(menuItem) {
+    return this.menuItem['@id'] === menuItem['@id']
+  }
   get total() {
-    return this.offer.price * this.quantity;
+    return this.menuItem.offers.price * this.quantity;
   }
   get key() {
-    return this.offer['@id'];
+    return this.menuItem['@id'];
   }
 }
 
@@ -31,25 +33,14 @@ class Cart {
     this.restaurant = restaurant;
     this.items = items || [];
   }
-  addOffer(offer) {
-    let item = _.find(this.items, (item) => item.offer === offer);
+  addMenuItem(menuItem) {
+    let item = _.find(this.items, item => item.matches(menuItem))
     if (!item) {
-      item = new CartItem(this, offer);
-      this.items.push(item);
+      item = new CartItem(this, menuItem)
+      this.items.push(item)
     } else {
-      item.increment();
+      item.increment()
     }
-  }
-  groupByOffer() {
-    let groups = _.groupBy(this.items, (item) => {
-      return item.offer['@id'];
-    })
-    return _.map(groups, (items, id) => {
-      return {
-        offer: _.first(items).offer,
-        quantity: items.length
-      }
-    });
   }
   deleteItem(item) {
     this.items = _.without(this.items, item);

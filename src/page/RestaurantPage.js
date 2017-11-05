@@ -24,30 +24,35 @@ const Cart = require('../Cart');
 class RestaurantPage extends Component {
   constructor(props) {
     super(props);
-    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
       modalVisible: false,
       distance: 2000,
       loading: false,
-      dataSource: ds.cloneWithRows(this.props.restaurant.products),
       cart: new Cart(props.restaurant)
     };
   }
-  _addToCart(recipe) {
-    const cart = this.state.cart;
-    cart.addOffer(recipe);
-    this.setState({cart});
+  _addToCart(menuItem) {
+    const { cart } = this.state
+    cart.addMenuItem(menuItem)
+
+    this.setState({ cart })
   }
-  _renderRow(recipe) {
+  _renderMenuItem(menuItem) {
+    const isDivider = menuItem['@type'] === 'http://schema.org/MenuSection'
+    const props = isDivider ? { itemDivider: true } : {
+      button: true,
+      onPress: () => this._addToCart(menuItem)
+    }
+
     return (
-      <TouchableHighlight
-        style={styles.recipe}
-        onPress={() => this._addToCart(recipe)}>
-        <View style={styles.listViewItem}>
-          <Text style={{ flex: 3 }}>{recipe.name}</Text>
-          <Text style={{ flex: 1, textAlign: 'right', fontWeight: 'bold' }}>{recipe.price} €</Text>
-        </View>
-      </TouchableHighlight>
+      <ListItem key={ menuItem['@id'] } { ...props}>
+        <Body>
+          <Text>{ menuItem.name }</Text>
+        </Body>
+        { !isDivider && <Right>
+          <Text>{ menuItem.offers.price } €</Text>
+        </Right> }
+      </ListItem>
     );
   }
   render() {
@@ -58,6 +63,14 @@ class RestaurantPage extends Component {
     );
   }
   renderScene(route, navigator) {
+    let items = []
+    _.forEach(this.props.restaurant.hasMenu.hasMenuSection, menuSection => {
+      items.push(menuSection)
+      _.forEach(menuSection.hasMenuItem, menuItem => {
+        items.push(menuItem)
+      })
+    })
+
     return (
       <Container>
         <Header>
@@ -72,11 +85,9 @@ class RestaurantPage extends Component {
           <Right />
         </Header>
         <Content theme={theme}>
-          <ListView
-            dataSource={this.state.dataSource}
-            enableEmptySections
-            renderRow={this._renderRow.bind(this)}
-            />
+          <List>
+          { _.map(items, item => this._renderMenuItem(item)) }
+          </List>
         </Content>
         <Footer>
           <View style={styles.cart}>
