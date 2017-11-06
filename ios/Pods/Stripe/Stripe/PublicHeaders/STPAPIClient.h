@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <PassKit/PassKit.h>
 #import "STPBlocks.h"
+#import "STPFile.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -16,13 +17,12 @@ NS_ASSUME_NONNULL_BEGIN
 #define FAUXPAS_IGNORED_IN_FILE(...)
 FAUXPAS_IGNORED_IN_FILE(APIAvailability)
 
-static NSString *const STPSDKVersion = @"9.2.0";
+static NSString *const STPSDKVersion = @"10.1.0";
 
-@class STPBankAccount, STPBankAccountParams, STPCard, STPCardParams, STPToken, STPPaymentConfiguration;
+@class STPBankAccount, STPBankAccountParams, STPCard, STPCardParams, STPSourceParams, STPToken, STPPaymentConfiguration;
 
 /**
- A top-level class that imports the rest of the Stripe SDK. This class used to contain several methods to create Stripe tokens, but those are now deprecated in
- favor of STPAPIClient.
+ A top-level class that imports the rest of the Stripe SDK.
  */
 @interface Stripe : NSObject FAUXPAS_IGNORED_ON_LINE(UnprefixedClass);
 
@@ -37,12 +37,6 @@ static NSString *const STPSDKVersion = @"9.2.0";
 
 /// The current default publishable key.
 + (nullable NSString *)defaultPublishableKey;
-
-/**
- *  By default, Stripe collects some basic information about SDK usage.
- *  You can call this method to turn off analytics collection.
- */
-+ (void)disableAnalytics;
 
 @end
 
@@ -82,6 +76,50 @@ static NSString *const STPSDKVersion = @"9.2.0";
  *  @param completion  The callback to run with the returned Stripe token (and any errors that may have occurred).
  */
 - (void)createTokenWithBankAccount:(STPBankAccountParams *)bankAccount completion:(__nullable STPTokenCompletionBlock)completion;
+
+@end
+
+#pragma mark Personally Identifiable Information
+
+/**
+ *  STPAPIClient extensions to create Stripe tokens from a personal identification number.
+ */
+@interface STPAPIClient (PII)
+
+/**
+ *  Converts a personal identification number into a Stripe token using the Stripe API.
+ *
+ *  @param pii The user's personal identification number. Cannot be nil. @see https://stripe.com/docs/api#create_pii_token
+ *  @param completion  The callback to run with the returned Stripe token (and any errors that may have occurred).
+ */
+- (void)createTokenWithPersonalIDNumber:(NSString *)pii completion:(__nullable STPTokenCompletionBlock)completion;
+
+@end
+
+/**
+ *  STPAPIClient extensions to upload files.
+ */
+@interface STPAPIClient (Upload)
+
+
+/**
+ *  Uses the Stripe file upload API to upload an image. This can be used for 
+ *  identity veritfication and evidence disputes.
+ *
+ *  @param image The image to be uploaded. The maximum allowed file size is 4MB 
+ *         for identity documents and 8MB for evidence disputes. Cannot be nil. 
+ *         Your image will be automatically resized down if you pass in one that
+ *         is too large
+ *  @param purpose The purpose of this file. This can be either an identifing 
+ *         document or an evidence dispute.
+ *  @param completion The callback to run with the returned Stripe file 
+ *         (and any errors that may have occurred).
+ *
+ *  @see https://stripe.com/docs/file-upload
+ */
+- (void)uploadImage:(UIImage *)image
+            purpose:(STPFilePurpose)purpose
+         completion:(nullable STPFileCompletionBlock)completion;
 
 @end
 
@@ -131,70 +169,85 @@ static NSString *const STPSDKVersion = @"9.2.0";
  */
 + (PKPaymentRequest *)paymentRequestWithMerchantIdentifier:(NSString *)merchantIdentifier NS_AVAILABLE_IOS(8_0);
 
-+ (void)createTokenWithPayment:(PKPayment *)payment
-                    completion:(STPTokenCompletionBlock)handler __attribute__((deprecated("Use STPAPIClient instead.")));
+@end
+
+#pragma mark Sources
+
+/**
+ *  STPAPIClient extensions for working with Source objects
+ */
+@interface STPAPIClient (Sources)
+
+/**
+ *  Creates a Source object using the provided details.
+ *
+ *  @param params      The details of the source to create. Cannot be nil. @see https://stripe.com/docs/api#create_source
+ *  @param completion  The callback to run with the returned Source object, or an error.
+ */
+- (void)createSourceWithParams:(STPSourceParams *)params completion:(STPSourceCompletionBlock)completion;
+
+/**
+ *  Retrieves the Source object with the given ID. @see https://stripe.com/docs/api#retrieve_source
+ *
+ *  @param identifier  The identifier of the source to be retrieved. Cannot be nil.
+ *  @param secret      The client secret of the source. Cannot be nil.
+ *  @param completion  The callback to run with the returned Source object, or an error.
+ */
+- (void)retrieveSourceWithId:(NSString *)identifier clientSecret:(NSString *)secret completion:(STPSourceCompletionBlock)completion;
+
+/**
+ *  Starts polling the Source object with the given ID. For payment methods that require
+ *  additional customer action (e.g. authorizing a payment with their bank), polling
+ *  allows you to determine if the action was successful. Polling will stop and the
+ *  provided callback will be called once the source's status is no longer `pending`,
+ *  or if the given timeout is reached and the source is still `pending`. If polling
+ *  stops due to an error, the callback will be fired with the latest retrieved
+ *  source and the error.
+ *
+ *  Note that if a poll is already running for a source, subsequent calls to `startPolling`
+ *  with the same source ID will do nothing.
+ *
+ *  @param identifier  The identifier of the source to be retrieved. Cannot be nil.
+ *  @param secret      The client secret of the source. Cannot be nil.
+ *  @param timeout     The timeout for the polling operation, in seconds. Timeouts are capped at 5 minutes.
+ *  @param completion  The callback to run with the returned Source object, or an error.
+ */
+- (void)startPollingSourceWithId:(NSString *)identifier clientSecret:(NSString *)secret timeout:(NSTimeInterval)timeout completion:(STPSourceCompletionBlock)completion NS_EXTENSION_UNAVAILABLE("Source polling is not available in extensions");;
+
+/**
+ *  Stops polling the Source object with the given ID. Note that the completion block passed to
+ *  `startPolling` will not be fired when `stopPolling` is called.
+ *
+ *  @param identifier  The identifier of the source to be retrieved. Cannot be nil.
+ */
+- (void)stopPollingSourceWithId:(NSString *)identifier NS_EXTENSION_UNAVAILABLE("Source polling is not available in extensions");;
 
 @end
 
-#pragma mark - Deprecated Methods
+#pragma mark URL callbacks
+
+@interface Stripe (STPURLCallbackHandlerAdditions)
 
 /**
- *  A callback to be run with a token response from the Stripe API.
+ *  Call this method in your app delegate whenever you receive an URL in your
+ *  app delegate for a Stripe callback.
  *
- *  @param token The Stripe token from the response. Will be nil if an error occurs. @see STPToken
- *  @param error The error returned from the response, or nil in one occurs. @see StripeError.h for possible values.
- *  @deprecated This has been renamed to STPTokenCompletionBlock.
- */
-typedef void (^STPCompletionBlock)(STPToken * __nullable token, NSError * __nullable error) __attribute__((deprecated("STPCompletionBlock has been renamed to STPTokenCompletionBlock.")));
-
-// These methods are deprecated. You should instead use STPAPIClient to create tokens.
-// Example: [Stripe createTokenWithCard:card completion:completion];
-// becomes [[STPAPIClient sharedClient] createTokenWithCard:card completion:completion];
-@interface Stripe (Deprecated)
-
-/**
- *  Securely convert your user's credit card details into a Stripe token, which you can then safely store on your server and use to charge the user. The URL
- *connection will run on the main queue. Uses the value of [Stripe defaultPublishableKey] for authentication.
+ *  For convenience, you can pass all URL's you receive in your app delegate
+ *  to this method first, and check the return value
+ *  to easily determine whether it is a callback URL that Stripe will handle
+ *  or if your app should process it normally.
  *
- *  @param card    The user's card details. @see STPCard
- *  @param handler Code to run when the user's card has been turned into a Stripe token.
- *  @deprecated    Use STPAPIClient instead.
- */
-+ (void)createTokenWithCard:(STPCard *)card completion:(nullable STPCompletionBlock)handler __attribute__((deprecated));
-
-/**
- *  Securely convert your user's credit card details into a Stripe token, which you can then safely store on your server and use to charge the user. The URL
- *connection will run on the main queue.
+ *  If you are using a universal link URL, you will receive the callback in `application:continueUserActivity:restorationHandler:`
+ *  To learn more about universal links, see https://developer.apple.com/library/content/documentation/General/Conceptual/AppSearch/UniversalLinks.html
  *
- *  @param card           The user's card details. @see STPCard
- *  @param publishableKey The API key to use to authenticate with Stripe. Get this at https://stripe.com/account/apikeys .
- *  @param handler        Code to run when the user's card has been turned into a Stripe token.
- *  @deprecated           Use STPAPIClient instead.
- */
-+ (void)createTokenWithCard:(STPCard *)card publishableKey:(NSString *)publishableKey completion:(nullable STPCompletionBlock)handler __attribute__((deprecated));
-
-/**
- *  Securely convert your user's credit card details into a Stripe token, which you can then safely store on your server and use to charge the user. The URL
- *connection will run on the main queue. Uses the value of [Stripe defaultPublishableKey] for authentication.
+ *  If you are using a native scheme URL, you will receive the callback in `application:openURL:options:`
+ *  To learn more about native url schemes, see https://developer.apple.com/library/content/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/Inter-AppCommunication/Inter-AppCommunication.html#//apple_ref/doc/uid/TP40007072-CH6-SW10
  *
- *  @param bankAccount The user's bank account details. @see STPBankAccount
- *  @param handler     Code to run when the user's card has been turned into a Stripe token.
- *  @deprecated        Use STPAPIClient instead.
- */
-+ (void)createTokenWithBankAccount:(STPBankAccount *)bankAccount completion:(nullable STPCompletionBlock)handler __attribute__((deprecated));
-
-/**
- *  Securely convert your user's credit card details into a Stripe token, which you can then safely store on your server and use to charge the user. The URL
- *connection will run on the main queue. Uses the value of [Stripe defaultPublishableKey] for authentication.
+ *  @param url The URL that you received in your app delegate
  *
- *  @param bankAccount    The user's bank account details. @see STPBankAccount
- *  @param publishableKey The API key to use to authenticate with Stripe. Get this at https://stripe.com/account/apikeys .
- *  @param handler        Code to run when the user's card has been turned into a Stripe token.
- *  @deprecated           Use STPAPIClient instead.
+ *  @return YES if the URL is expected and will be handled by Stripe. NO otherwise.
  */
-+ (void)createTokenWithBankAccount:(STPBankAccount *)bankAccount
-                    publishableKey:(NSString *)publishableKey
-                        completion:(nullable STPCompletionBlock)handler __attribute__((deprecated));
++ (BOOL)handleStripeURLCallbackWithURL:(NSURL *)url;
 
 @end
 

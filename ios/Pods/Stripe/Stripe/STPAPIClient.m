@@ -9,15 +9,27 @@
 #import <UIKit/UIKit.h>
 #import <sys/utsname.h>
 
-#import "STPAPIClient.h"
+#import "NSBundle+Stripe_AppName.h"
 #import "STPAPIClient+ApplePay.h"
-#import "STPFormEncoder.h"
+#import "STPAPIClient.h"
+#import "STPAPIRequest.h"
+#import "STPAnalyticsClient.h"
 #import "STPBankAccount.h"
 #import "STPCard.h"
-#import "STPToken.h"
-#import "STPAPIPostRequest.h"
-#import "STPAnalyticsClient.h"
+#import "STPDispatchFunctions.h"
+#import "STPFormEncoder.h"
+#import "STPMultipartFormDataEncoder.h"
+#import "STPMultipartFormDataPart.h"
+#import "NSMutableURLRequest+Stripe.h"
 #import "STPPaymentConfiguration.h"
+#import "STPSource+Private.h"
+#import "STPSourceParams.h"
+#import "STPSourceParams+Private.h"
+#import "STPSourcePoller.h"
+#import "STPTelemetryClient.h"
+#import "STPToken.h"
+#import "StripeError.h"
+#import "UIImage+Stripe.h"
 
 #if __has_include("Fabric.h")
 #import "Fabric+FABKits.h"
@@ -33,7 +45,10 @@ FAUXPAS_IGNORED_IN_FILE(APIAvailability)
 
 static NSString *const apiURLBase = @"api.stripe.com/v1";
 static NSString *const tokenEndpoint = @"tokens";
+static NSString *const sourcesEndpoint = @"sources";
+static NSString *const fileUploadPath = @"https://uploads.stripe.com/v1/files";
 static NSString *const stripeAPIVersion = @"2015-10-12";
+
 
 @implementation Stripe
 
@@ -45,10 +60,6 @@ static NSString *const stripeAPIVersion = @"2015-10-12";
     return [STPPaymentConfiguration sharedConfiguration].publishableKey;
 }
 
-+ (void)disableAnalytics {
-    [STPAnalyticsClient disableAnalytics];
-}
-
 @end
 
 #if __has_include("Fabric.h")
@@ -58,12 +69,15 @@ static NSString *const stripeAPIVersion = @"2015-10-12";
 #endif
 @property (nonatomic, readwrite) NSURL *apiURL;
 @property (nonatomic, readwrite) NSURLSession *urlSession;
+@property (nonatomic, readwrite) NSMutableDictionary<NSString *,NSObject *>*sourcePollers;
+@property (nonatomic, readwrite) dispatch_queue_t sourcePollersQueue;
 @end
 
 @implementation STPAPIClient
 
 + (void)initialize {
     [STPAnalyticsClient initializeIfNeeded];
+    [STPTelemetryClient sharedInstance];
 #ifdef STP_STATIC_LIBRARY_BUILD
     [STPCategoryLoader loadCategories];
 #endif
@@ -100,7 +114,8 @@ static NSString *const stripeAPIVersion = @"2015-10-12";
                                                        @"Authorization": auth,
                                                        };
         _urlSession = [NSURLSession sessionWithConfiguration:sessionConfiguration];
-
+        _sourcePollers = [NSMutableDictionary dictionary];
+        _sourcePollersQueue = dispatch_queue_create("com.stripe.sourcepollers", DISPATCH_QUEUE_SERIAL);
     }
     return self;
 }
@@ -122,21 +137,23 @@ static NSString *const stripeAPIVersion = @"2015-10-12";
     return self.configuration.publishableKey;
 }
 
-- (void)createTokenWithData:(NSData *)data
-                 completion:(STPTokenCompletionBlock)completion {
-    NSCAssert(data != nil, @"'data' is required to create a token");
+- (void)createTokenWithParameters:(NSDictionary *)parameters
+                       completion:(STPTokenCompletionBlock)completion {
+    NSCAssert(parameters != nil, @"'parameters' is required to create a token");
     NSCAssert(completion != nil, @"'completion' is required to use the token that is created");
     NSDate *start = [NSDate date];
-    [[STPAnalyticsClient sharedClient] logTokenCreationAttemptWithConfiguration:self.configuration];
-    [STPAPIPostRequest<STPToken *> startWithAPIClient:self
-                                             endpoint:tokenEndpoint
-                                             postData:data
-                                           serializer:[STPToken new]
-                                           completion:^(STPToken *object, NSHTTPURLResponse *response, NSError *error) {
-                                               NSDate *end = [NSDate date];
-                                               [[STPAnalyticsClient sharedClient] logRUMWithToken:object configuration:self.configuration response:response start:start end:end];
-                                               completion(object, error);
-                                           }];
+    NSString *tokenType = [STPAnalyticsClient tokenTypeFromParameters:parameters];
+    [[STPAnalyticsClient sharedClient] logTokenCreationAttemptWithConfiguration:self.configuration
+                                                                      tokenType:tokenType];
+    [STPAPIRequest<STPToken *> postWithAPIClient:self
+                                        endpoint:tokenEndpoint
+                                      parameters:parameters
+                                      serializer:[STPToken new]
+                                      completion:^(STPToken *object, NSHTTPURLResponse *response, NSError *error) {
+                                          NSDate *end = [NSDate date];
+                                          [[STPAnalyticsClient sharedClient] logRUMWithToken:object configuration:self.configuration response:response start:start end:end];
+                                          completion(object, error);
+                                      }];
 }
 
 #pragma mark - private helpers
@@ -188,7 +205,7 @@ static NSString *const stripeAPIVersion = @"2015-10-12";
             details[@"vendor_identifier"] = vendorIdentifier;
         }
     }
-    return [[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:[details copy] options:0 error:NULL] encoding:NSUTF8StringEncoding];
+    return [[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:[details copy] options:(NSJSONWritingOptions)kNilOptions error:NULL] encoding:NSUTF8StringEncoding];
 }
 
 #pragma mark Fabric
@@ -228,8 +245,86 @@ static NSString *const stripeAPIVersion = @"2015-10-12";
 
 - (void)createTokenWithBankAccount:(STPBankAccountParams *)bankAccount
                         completion:(STPTokenCompletionBlock)completion {
-    NSData *data = [STPFormEncoder formEncodedDataForObject:bankAccount];
-    [self createTokenWithData:data completion:completion];
+    NSDictionary *params = [STPFormEncoder dictionaryForObject:bankAccount];
+    [self createTokenWithParameters:params completion:completion];
+}
+
+@end
+
+#pragma mark - Personally Identifiable Information
+@implementation STPAPIClient (PII)
+
+- (void)createTokenWithPersonalIDNumber:(NSString *)pii completion:(__nullable STPTokenCompletionBlock)completion {
+    NSDictionary *params = @{@"pii": @{ @"personal_id_number": pii }};
+    [self createTokenWithParameters:params completion:completion];
+}
+
+@end
+
+@implementation STPAPIClient (Upload)
+
+- (NSData *)dataForUploadedImage:(UIImage *)image
+                         purpose:(STPFilePurpose)purpose {
+
+    NSUInteger maxBytes;
+    switch (purpose) {
+        case STPFilePurposeIdentityDocument:
+            maxBytes = 4 * 1000000;
+            break;
+        case STPFilePurposeDisputeEvidence:
+            maxBytes = 8 * 1000000;
+            break;
+        case STPFilePurposeUnknown:
+            maxBytes = 0;
+            break;
+    }
+    return [image stp_jpegDataWithMaxFileSize:maxBytes];
+}
+
+- (void)uploadImage:(UIImage *)image
+            purpose:(STPFilePurpose)purpose
+         completion:(nullable STPFileCompletionBlock)completion {
+
+    STPMultipartFormDataPart *purposePart = [[STPMultipartFormDataPart alloc] init];
+    purposePart.name = @"purpose";
+    purposePart.data = [[STPFile stringFromPurpose:purpose] dataUsingEncoding:NSUTF8StringEncoding];
+
+    STPMultipartFormDataPart *imagePart = [[STPMultipartFormDataPart alloc] init];
+    imagePart.name = @"file";
+    imagePart.filename = @"image.jpg";
+    imagePart.contentType = @"image/jpeg";
+
+    imagePart.data = [self dataForUploadedImage:image
+                                        purpose:purpose];
+
+    NSString *boundary = [STPMultipartFormDataEncoder generateBoundary];
+    NSData *data = [STPMultipartFormDataEncoder multipartFormDataForParts:@[purposePart, imagePart] boundary:boundary];
+
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:fileUploadPath]];
+    [request setHTTPMethod:@"POST"];
+    [request stp_setMultipartFormData:data boundary:boundary];
+
+    [[_urlSession dataTaskWithRequest:request completionHandler:^(NSData * _Nullable body, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        NSDictionary *jsonDictionary = body ? [NSJSONSerialization JSONObjectWithData:body options:(NSJSONReadingOptions)kNilOptions error:NULL] : nil;
+        STPFile *file = [STPFile decodedObjectFromAPIResponse:jsonDictionary];
+
+        NSError *returnedError = [NSError stp_errorFromStripeResponse:jsonDictionary] ?: error;
+        if ((!file || ![response isKindOfClass:[NSHTTPURLResponse class]]) && !returnedError) {
+            returnedError = [NSError stp_genericFailedToParseResponseError];
+        }
+
+        if (!completion) {
+            return;
+        }
+
+        stpDispatchToMainThreadIfNecessary(^{
+            if (returnedError) {
+                completion(nil, returnedError);
+            } else {
+                completion(file, nil);
+            }
+        });
+    }] resume];
 }
 
 @end
@@ -238,8 +333,10 @@ static NSString *const stripeAPIVersion = @"2015-10-12";
 @implementation STPAPIClient (CreditCards)
 
 - (void)createTokenWithCard:(STPCard *)card completion:(STPTokenCompletionBlock)completion {
-    NSData *data = [STPFormEncoder formEncodedDataForObject:card];
-    [self createTokenWithData:data completion:completion];
+    NSMutableDictionary *params = [[STPFormEncoder dictionaryForObject:card] mutableCopy];
+    [[STPTelemetryClient sharedInstance] addTelemetryFieldsToParams:params];
+    [self createTokenWithParameters:params completion:completion];
+    [[STPTelemetryClient sharedInstance] sendTelemetryData];
 }
 
 @end
@@ -272,9 +369,6 @@ static NSString *const stripeAPIVersion = @"2015-10-12";
 }
 
 + (PKPaymentRequest *)paymentRequestWithMerchantIdentifier:(NSString *)merchantIdentifier {
-    if (![PKPaymentRequest class]) {
-        return nil;
-    }
     PKPaymentRequest *paymentRequest = [PKPaymentRequest new];
     [paymentRequest setMerchantIdentifier:merchantIdentifier];
     [paymentRequest setSupportedNetworks:[self supportedPKPaymentNetworks]];
@@ -284,40 +378,68 @@ static NSString *const stripeAPIVersion = @"2015-10-12";
     return paymentRequest;
 }
 
-+ (void)createTokenWithPayment:(PKPayment *)payment
-                    completion:(STPTokenCompletionBlock)handler {
-    [[STPAPIClient sharedClient] createTokenWithPayment:payment completion:handler];
-}
-
 @end
 
-@implementation Stripe (Deprecated)
+#pragma mark - Sources
 
-+ (id)alloc {
-    NSCAssert(NO, @"'Stripe' is a static class and cannot be instantiated.");
-    return nil;
+@implementation STPAPIClient (Sources)
+
+- (void)createSourceWithParams:(STPSourceParams *)sourceParams completion:(STPSourceCompletionBlock)completion {
+    NSCAssert(sourceParams != nil, @"'params' is required to create a source");
+    NSCAssert(completion != nil, @"'completion' is required to use the source that is created");
+    NSString *sourceType = [STPSource stringFromType:sourceParams.type];
+    [[STPAnalyticsClient sharedClient] logSourceCreationAttemptWithConfiguration:self.configuration
+                                                                      sourceType:sourceType];
+    sourceParams.redirectMerchantName = self.configuration.companyName ?: [NSBundle stp_applicationName];
+    NSDictionary *params = [STPFormEncoder dictionaryForObject:sourceParams];
+    [STPAPIRequest<STPSource *> postWithAPIClient:self
+                                         endpoint:sourcesEndpoint
+                                       parameters:params
+                                       serializer:[STPSource new]
+                                       completion:^(STPSource *object, __unused NSHTTPURLResponse *response, NSError *error) {
+                                           completion(object, error);
+                                       }];
 }
 
-#pragma mark Shorthand methods -
-
-+ (void)createTokenWithCard:(STPCard *)card completion:(STPCompletionBlock)handler {
-    [[STPAPIClient sharedClient] createTokenWithCard:card completion:handler];
+- (void)retrieveSourceWithId:(NSString *)identifier clientSecret:(NSString *)secret completion:(STPSourceCompletionBlock)completion {
+    NSCAssert(identifier != nil, @"'identifier' is required to create a source");
+    NSCAssert(secret != nil, @"'secret' is required to create a source");
+    NSCAssert(completion != nil, @"'completion' is required to use the source that is created");
+    [self retrieveSourceWithId:identifier clientSecret:secret responseCompletion:^(STPSource * object, __unused NSHTTPURLResponse *response, NSError *error) {
+        completion(object, error);
+    }];
 }
 
-+ (void)createTokenWithCard:(STPCard *)card publishableKey:(NSString *)publishableKey completion:(STPCompletionBlock)handler {
-    STPPaymentConfiguration *config = [STPPaymentConfiguration new];
-    config.publishableKey = publishableKey;
-    [[[STPAPIClient alloc] initWithConfiguration:config] createTokenWithCard:card completion:handler];
+- (NSURLSessionDataTask *)retrieveSourceWithId:(NSString *)identifier clientSecret:(NSString *)secret responseCompletion:(STPAPIResponseBlock)completion {
+    NSString *endpoint = [NSString stringWithFormat:@"%@/%@", sourcesEndpoint, identifier];
+    NSDictionary *parameters = @{@"client_secret": secret};
+    return [STPAPIRequest<STPSource *> getWithAPIClient:self
+                                               endpoint:endpoint
+                                             parameters:parameters
+                                             serializer:[STPSource new]
+                                             completion:completion];
 }
 
-+ (void)createTokenWithBankAccount:(STPBankAccount *)bankAccount completion:(STPCompletionBlock)handler {
-    [[STPAPIClient sharedClient] createTokenWithBankAccount:bankAccount completion:handler];
+- (void)startPollingSourceWithId:(NSString *)identifier clientSecret:(NSString *)secret timeout:(NSTimeInterval)timeout completion:(STPSourceCompletionBlock)completion {
+    [self stopPollingSourceWithId:identifier];
+    STPSourcePoller *poller = [[STPSourcePoller alloc] initWithAPIClient:self
+                                                            clientSecret:secret
+                                                                sourceID:identifier
+                                                                 timeout:timeout
+                                                              completion:completion];
+    dispatch_async(self.sourcePollersQueue, ^{
+        self.sourcePollers[identifier] = poller;
+    });
 }
 
-+ (void)createTokenWithBankAccount:(STPBankAccount *)bankAccount publishableKey:(NSString *)publishableKey completion:(STPCompletionBlock)handler {
-    STPPaymentConfiguration *config = [STPPaymentConfiguration new];
-    config.publishableKey = publishableKey;
-    [[[STPAPIClient alloc] initWithConfiguration:config] createTokenWithBankAccount:bankAccount completion:handler];
+- (void)stopPollingSourceWithId:(NSString *)identifier {
+    dispatch_async(self.sourcePollersQueue, ^{
+        STPSourcePoller *poller = (STPSourcePoller *)self.sourcePollers[identifier];
+        if (poller) {
+            [poller stopPolling];
+            self.sourcePollers[identifier] = nil;
+        }
+    });
 }
 
 @end

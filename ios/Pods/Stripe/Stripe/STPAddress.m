@@ -6,11 +6,26 @@
 //  Copyright © 2016 Stripe, Inc. All rights reserved.
 //
 
+#import "NSDictionary+Stripe.h"
 #import "STPAddress.h"
 #import "STPCardValidator.h"
-#import "STPPostalCodeValidator.h"
 #import "STPEmailAddressValidator.h"
 #import "STPPhoneNumberValidator.h"
+#import "STPPostalCodeValidator.h"
+
+#import <Contacts/Contacts.h>
+
+#define FAUXPAS_IGNORED_IN_FILE(...)
+FAUXPAS_IGNORED_IN_FILE(APIAvailability)
+
+NSString *stringIfHasContentsElseNil(NSString *string);
+
+@interface STPAddress ()
+
+@property (nonatomic, readwrite, nonnull, copy) NSDictionary *allResponseFields;
+@property (nonatomic, readwrite, nullable, copy) NSString *givenName;
+@property (nonatomic, readwrite, nullable, copy) NSString *familyName;
+@end
 
 @implementation STPAddress
 
@@ -92,12 +107,14 @@
         ABMultiValueAddValueAndLabel(phonesRef, (__bridge CFStringRef)self.phone,
                                      kABPersonPhoneMainLabel, NULL);
         ABRecordSetValue(record, kABPersonPhoneProperty, phonesRef, nil);
+        CFRelease(phonesRef);
     }
     if (self.email != nil) {
         ABMutableMultiValueRef emailsRef = ABMultiValueCreateMutable(kABMultiStringPropertyType);
         ABMultiValueAddValueAndLabel(emailsRef, (__bridge CFStringRef)self.email,
                                      kABHomeLabel, NULL);
         ABRecordSetValue(record, kABPersonEmailProperty, emailsRef, nil);
+        CFRelease(emailsRef);
     }
     ABMutableMultiValueRef addressRef = ABMultiValueCreateMutable(kABMultiDictionaryPropertyType);
     NSMutableDictionary *addressDict = [NSMutableDictionary dictionary];
@@ -108,10 +125,66 @@
     addressDict[(NSString *)kABPersonAddressCountryCodeKey] = self.country;
     ABMultiValueAddValueAndLabel(addressRef, (__bridge CFTypeRef)[addressDict copy], kABWorkLabel, NULL);
     ABRecordSetValue(record, kABPersonAddressProperty, addressRef, nil);
-    return record;
+    CFRelease(addressRef);
+    return CFAutorelease(record);
 }
 
 #pragma clang diagnostic pop
+
+- (NSString *)sanitizedPhoneStringFromCNPhoneNumber:(CNPhoneNumber *)phoneNumber {
+    NSString *phone = phoneNumber.stringValue;
+    if (phone) {
+        phone = [STPCardValidator sanitizedNumericStringForString:phone];
+    }
+
+    return stringIfHasContentsElseNil(phone);
+}
+
+- (instancetype)initWithCNContact:(CNContact *)contact {
+    self = [super init];
+    if (self) {
+
+        _givenName = stringIfHasContentsElseNil(contact.givenName);
+        _familyName = stringIfHasContentsElseNil(contact.familyName);
+        _name = stringIfHasContentsElseNil([CNContactFormatter stringFromContact:contact
+                                                                           style:CNContactFormatterStyleFullName]);
+        _email = stringIfHasContentsElseNil([contact.emailAddresses firstObject].value);
+        _phone = [self sanitizedPhoneStringFromCNPhoneNumber:contact.phoneNumbers.firstObject.value];
+
+
+        [self setAddressFromCNPostalAddress:contact.postalAddresses.firstObject.value];
+    }
+    return self;
+}
+
+- (instancetype)initWithPKContact:(PKContact *)contact {
+    self = [super init];
+    if (self) {
+        NSPersonNameComponents *nameComponents = contact.name;
+        if (nameComponents) {
+            _givenName = stringIfHasContentsElseNil(nameComponents.givenName);
+            _familyName = stringIfHasContentsElseNil(nameComponents.familyName);
+            _name = stringIfHasContentsElseNil([NSPersonNameComponentsFormatter localizedStringFromPersonNameComponents:nameComponents
+                                                                                                                  style:NSPersonNameComponentsFormatterStyleDefault
+                                                                                                                options:(NSPersonNameComponentsFormatterOptions)0]);
+        }
+        _email = stringIfHasContentsElseNil(contact.emailAddress);
+        _phone = [self sanitizedPhoneStringFromCNPhoneNumber:contact.phoneNumber];
+        [self setAddressFromCNPostalAddress:contact.postalAddress];
+
+    }
+    return self;
+}
+
+- (void)setAddressFromCNPostalAddress:(CNPostalAddress *)address {
+    if (address) {
+        _line1 = stringIfHasContentsElseNil(address.street);
+        _city = stringIfHasContentsElseNil(address.city);
+        _state = stringIfHasContentsElseNil(address.state);
+        _postalCode = stringIfHasContentsElseNil(address.postalCode);
+        _country = stringIfHasContentsElseNil(address.ISOCountryCode.uppercaseString);
+    }
+}
 
 - (PKContact *)PKContactValue {
     PKContact *contact = [PKContact new];
@@ -132,19 +205,29 @@
 }
 
 - (NSString *)firstName {
-    NSArray<NSString *>*components = [self.name componentsSeparatedByString:@" "];
-    return [components firstObject];
+    if (self.givenName) {
+        return self.givenName;
+    }
+    else {
+        NSArray<NSString *>*components = [self.name componentsSeparatedByString:@" "];
+        return [components firstObject];
+    }
 }
 
 - (NSString *)lastName {
-    NSArray<NSString *>*components = [self.name componentsSeparatedByString:@" "];
-    NSString *firstName = [components firstObject];
-    NSString *lastName = [self.name stringByReplacingOccurrencesOfString:firstName withString:@""];
-    lastName = [lastName stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-    if ([lastName length] == 0) {
-        lastName = nil;
+    if (self.familyName) {
+        return self.familyName;
     }
-    return lastName;
+    else {
+        NSArray<NSString *>*components = [self.name componentsSeparatedByString:@" "];
+        NSString *firstName = [components firstObject];
+        NSString *lastName = [self.name stringByReplacingOccurrencesOfString:firstName withString:@""];
+        lastName = [lastName stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        if ([lastName length] == 0) {
+            lastName = nil;
+        }
+        return lastName;
+    }
 }
 
 - (NSString *)street {
@@ -209,5 +292,37 @@
     }
 }
 
+#pragma mark STPAPIResponseDecodable
+
++ (NSArray *)requiredFields {
+    return @[];
+}
+
++ (instancetype)decodedObjectFromAPIResponse:(NSDictionary *)response {
+    NSDictionary *dict = [response stp_dictionaryByRemovingNullsValidatingRequiredFields:[self requiredFields]];
+    if (!dict) {
+        return nil;
+    }
+
+    STPAddress *address = [self new];
+    address.allResponseFields = dict;
+    address.city = dict[@"city"];
+    address.country = dict[@"country"];
+    address.line1 = dict[@"line1"];
+    address.line2 = dict[@"line2"];
+    address.postalCode = dict[@"postal_code"];
+    address.state = dict[@"state"];
+    return address;
+}
+
 @end
+
+NSString *stringIfHasContentsElseNil(NSString *string) {
+    if (string.length > 0) {
+        return string;
+    }
+    else {
+        return nil;
+    }
+}
 

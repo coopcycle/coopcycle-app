@@ -22,3 +22,12 @@ Running on iOS emulator
 ```
 react-native run-ios
 ```
+
+Troubleshooting
+---------------
+
+Clear React Native cache
+
+```
+rm -rf ~/.rncache
+```

@@ -1,0 +1,1 @@
+../../../Stripe/Stripe/STPCoreScrollViewController+Private.h

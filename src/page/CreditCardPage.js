@@ -2,9 +2,8 @@ import React, { Component } from 'react';
 import {
   StyleSheet,
   View,
-  Navigator,
   ActivityIndicator,
-  Dimensions,
+  Dimensions
 } from 'react-native';
 import {
   Container,
@@ -12,8 +11,8 @@ import {
   Left, Right, Body,
   Button, Icon, List, ListItem, Text, Radio
 } from 'native-base';
-import _ from 'underscore';
 import Stripe, { PaymentCardTextField } from 'tipsi-stripe';
+import { NavigationActions } from 'react-navigation'
 
 import AppConfig from '../AppConfig'
 import theme from '../theme/coopcycle';
@@ -31,46 +30,45 @@ class CreditCardPage extends Component {
       params: {}
     };
   }
-  _onClick(navigator) {
+  _onClick() {
+
+    const { cart, client } = this.props.navigation.state.params
+
     if (this.state.valid) {
       this.setState({ loading: true });
       Stripe.createTokenWithCard(this.state.params)
-        .then((token) => {
-          this.props.client.post('/api/orders', this.props.cart.toJSON())
-            .then((order) => {
-              return this.props.client.put(order['@id'] + '/pay', {
+        .then(token => {
+          client.post('/api/orders', cart.toJSON())
+            .then(order => {
+              return client.put(order['@id'] + '/pay', {
                 stripeToken: token.tokenId
               });
             })
-            .then((order) => {
+            .then(order => {
               this.setState({ loading: false });
-              navigator.parentNavigator.resetTo({
-                id: 'OrderTrackingPage',
-                name: 'OrderTracking',
-                sceneConfig: Navigator.SceneConfigs.FloatFromRight,
-                passProps: {
-                  order: order,
-                  backButton: false
-                }
-              });
-            });
+              const resetAction = NavigationActions.reset({
+                index: 0,
+                actions: [
+                  NavigationActions.navigate({
+                    routeName: 'OrderTracking',
+                    params: {
+                      order,
+                      client,
+                    }
+                  })
+                ]
+              })
+              this.props.navigation.dispatch(resetAction)
+            })
+            .catch(err => console.log(err));
         })
     }
   }
   render() {
-    return (
-      <Navigator
-          renderScene={this.renderScene.bind(this)}
-          navigator={this.props.navigator} />
-    );
-  }
-  renderScene(route, navigator) {
-    const { height, width } = Dimensions.get('window');
+    const { height, width } = Dimensions.get('window')
+    const { cart } = this.props.navigation.state.params
 
-    let btnText = 'Payer 0 €';
-    if (this.props.cart) {
-      btnText = 'Payer ' + this.props.cart.total + ' €';
-    }
+    const btnText = 'Payer ' + cart.total + ' €';
 
     let loader = (
       <View />
@@ -100,17 +98,6 @@ class CreditCardPage extends Component {
 
     return (
       <Container theme={theme}>
-        <Header>
-          <Left>
-            <Button transparent onPress={() => navigator.parentNavigator.pop()}>
-              <Icon name="ios-arrow-back" />
-            </Button>
-          </Left>
-          <Body>
-            <Title>Paiement</Title>
-          </Body>
-          <Right />
-        </Header>
         <Content padder contentContainerStyle={ { flex: 1, justifyContent: 'center', alignItems: 'center' } }>
           <Text style={{ marginBottom: 10 }}>Veuillez entrer vos coordonnées bancaires</Text>
           <PaymentCardTextField
@@ -128,7 +115,7 @@ class CreditCardPage extends Component {
         <Footer>
           <Right>
             <Button
-              onPress={ this._onClick.bind(this, navigator) }
+              onPress={ this._onClick.bind(this) }
               {...btnProps}><Text>{ btnText }</Text></Button>
           </Right>
         </Footer>

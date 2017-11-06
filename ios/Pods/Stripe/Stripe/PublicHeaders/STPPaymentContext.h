@@ -9,10 +9,11 @@
 
 #import <Foundation/Foundation.h>
 #import <PassKit/PassKit.h>
-#import "STPPaymentMethod.h"
-#import "STPBlocks.h"
+
 #import "STPAddress.h"
+#import "STPBlocks.h"
 #import "STPPaymentConfiguration.h"
+#import "STPPaymentMethod.h"
 #import "STPPaymentResult.h"
 #import "STPUserInformation.h"
 
@@ -26,7 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
  
  `STPPaymentContext` also provides a unified interface to multiple payment methods - for example, you can write a single integration to accept both credit card payments and Apple Pay.
  
- `STPPaymentContext` requires an "API Adapter" to communicate with your backend API to retrieve and modify a customer's payment methods - see https://stripe.com/docs/mobile/ios#prepare-your-api for how to implement this. You can also look at CheckoutViewController.swift in our example app to see `STPPaymentContext` in action.
+ `STPPaymentContext` requires an "API Adapter" to communicate with your backend API to retrieve and modify a customer's payment methods - see https://stripe.com/docs/mobile/ios/standard#prepare-your-api for how to implement this. You can also look at CheckoutViewController.swift in our example app to see `STPPaymentContext` in action.
  */
 @interface STPPaymentContext : NSObject
 
@@ -67,12 +68,12 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  If you've already collected some information from your user, you can set it here and it'll be automatically filled out when possible/appropriate in any UI that the payment context creates.
  */
-@property(nonatomic)STPUserInformation *prefilledInformation;
+@property(nonatomic, strong, nullable)STPUserInformation *prefilledInformation;
 
 /**
  *  The view controller that any additional UI will be presented on. If you have a "checkout view controller" in your app, that should be used as the host view controller.
  */
-@property(nonatomic, weak)UIViewController *hostViewController;
+@property(nonatomic, weak, nullable)UIViewController *hostViewController;
 
 /**
  *  This delegate will be notified when the payment context's contents change. @see STPPaymentContextDelegate
@@ -143,32 +144,67 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, assign) UIModalPresentationStyle modalPresentationStyle;
 
 /**
- *  If `paymentContext:didFailToLoadWithError:` is called on your delegate, you can in turn call this method to try loading again (if that hasn't been called, calling this will do nothing). If retrying in turn fails, `paymentContext:didFailToLoadWithError:` will be called again (and you can again call this to keep retrying, etc).
+ *  If `paymentContext:didFailToLoadWithError:` is called on your delegate, you
+ *  can in turn call this method to try loading again (if that hasn't been called, 
+ *  calling this will do nothing). If retrying in turn fails, `paymentContext:didFailToLoadWithError:` 
+ *  will be called again (and you can again call this to keep retrying, etc).
  */
 - (void)retryLoading;
 
 /**
- *  This creates, configures, and appropriately presents an `STPPaymentMethodsViewController` on top of the payment context's `hostViewController`. It'll be dismissed automatically when the user is done selecting their payment method.
+ *  This creates, configures, and appropriately presents an `STPPaymentMethodsViewController` 
+ *  on top of the payment context's `hostViewController`. It'll be dismissed automatically 
+ *  when the user is done selecting their payment method.
+ *  
+ *  @note This method will do nothing if it is called while STPPaymentContext is 
+ *        already showing a view controller or in the middle of requesting a payment.
  */
 - (void)presentPaymentMethodsViewController;
 
 /**
- *  This creates, configures, and appropriately pushes an `STPPaymentMethodsViewController` onto the navigation stack of the context's `hostViewController`. It'll be popped automatically when the user is done selecting their payment method.
+ *  This creates, configures, and appropriately pushes an `STPPaymentMethodsViewController` 
+ *  onto the navigation stack of the context's `hostViewController`. It'll be popped 
+ *  automatically when the user is done selecting their payment method.
+ *
+ *  @note This method will do nothing if it is called while STPPaymentContext is
+ *        already showing a view controller or in the middle of requesting a payment.
  */
 - (void)pushPaymentMethodsViewController;
 
 /**
- *  This creates, configures, and appropriately presents a view controller for collecting shipping address and shipping method on top of the payment context's `hostViewController`. It'll be dismissed automatically when the user is done entering their shipping info.
+ *  This creates, configures, and appropriately presents a view controller for 
+ *  collecting shipping address and shipping method on top of the payment context's 
+ *  `hostViewController`. It'll be dismissed automatically when the user is done 
+ *  entering their shipping info.
+ *
+ *  @note This method will do nothing if it is called while STPPaymentContext is
+ *        already showing a view controller or in the middle of requesting a payment.
  */
 - (void)presentShippingViewController;
 
 /**
- *  This creates, configures, and appropriately pushes a view controller for collecting shipping address and shipping method onto the navigation stack of the context's `hostViewController`. It'll be popped automatically when the user is done entering their shipping info.
+ *  This creates, configures, and appropriately pushes a view controller for 
+ *  collecting shipping address and shipping method onto the navigation stack of 
+ *  the context's `hostViewController`. It'll be popped automatically when the 
+ *  user is done entering their shipping info.
+ *
+ *  @note This method will do nothing if it is called while STPPaymentContext is
+ *        already showing a view controller, or in the middle of requesting a payment.
  */
 - (void)pushShippingViewController;
 
 /**
- *  Requests payment from the user. This may need to present some supplemental UI to the user, in which case it will be presented on the payment context's `hostViewController`. For instance, if they've selected Apple Pay as their payment method, calling this method will show the payment sheet. If the user has a card on file, this will use that without presenting any additional UI. After this is called, the `paymentContext:didCreatePaymentResult:completion:` and `paymentContext:didFinishWithStatus:error:` methods will be called on the context's `delegate`.
+ *  Requests payment from the user. This may need to present some supplemental UI
+ *  to the user, in which case it will be presented on the payment context's 
+ *  `hostViewController`. For instance, if they've selected Apple Pay as their 
+ *  payment method, calling this method will show the payment sheet. If the user
+ *  has a card on file, this will use that without presenting any additional UI.
+ *  After this is called, the `paymentContext:didCreatePaymentResult:completion:` 
+ *  and `paymentContext:didFinishWithStatus:error:` methods will be called on the
+ *  context's `delegate`.
+ *
+ *  @note This method will do nothing if it is called while STPPaymentContext is
+ *        already showing a view controller, or in the middle of requesting a payment.
  */
 - (void)requestPayment;
 
@@ -205,8 +241,6 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param paymentContext The context that succeeded
  *  @param paymentResult  Information associated with the payment that you can pass to your server. You should go to your backend API with this payment result and make a charge to complete the payment, passing `paymentResult.source.stripeID` as the `source` parameter to the create charge method and your customer's ID as the `customer` parameter (see stripe.com/docs/api#charge_create for more info). Once that's done call the `completion` block with any error that occurred (or none, if the charge succeeded). @see STPPaymentResult.h
  *  @param completion     Call this block when you're done creating a charge (or subscription, etc) on your backend. If it succeeded, call `completion(nil)`. If it failed with an error, call `completion(error)`.
- *
- *  @note If you are on Swift 3, you must declare the completion block as `@escaping` or Xcode will give you a protocol conformance error. https://bugs.swift.org/browse/SR-2597
  */
 - (void)paymentContext:(STPPaymentContext *)paymentContext
 didCreatePaymentResult:(STPPaymentResult *)paymentResult
@@ -238,7 +272,7 @@ didCreatePaymentResult:(STPPaymentResult *)paymentResult
  *  called.
  *
  *  @param paymentContext  The context that updated its shipping address
- *  @param shippingAddress The current shipping address
+ *  @param address The current shipping address
  *  @param completion      Call this block when you're done validating the shipping address and calculating available shipping methods.
  */
 - (void)paymentContext:(STPPaymentContext *)paymentContext

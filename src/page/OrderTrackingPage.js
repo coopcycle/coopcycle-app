@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import {
   StyleSheet,
   View,
-  Navigator,
 } from 'react-native';
 import {
   Container,
@@ -31,6 +30,8 @@ class OrderTrackingPage extends Component {
   constructor(props) {
     super(props);
 
+    const { order } = this.props.navigation.state.params
+
     this.state = {
       region: {
         ...COURIER_COORDS,
@@ -41,12 +42,12 @@ class OrderTrackingPage extends Component {
       markers: [{
         key: 'restaurant',
         identifier: 'restaurant',
-        coordinate: this.props.order.restaurant.geo,
+        coordinate: order.delivery.originAddress.geo,
         pinColor: 'red',
       }, {
         key: 'deliveryAddress',
         identifier: 'deliveryAddress',
-        coordinate: this.props.order.deliveryAddress.geo,
+        coordinate: order.delivery.deliveryAddress.geo,
         pinColor: 'green',
       }],
       position: undefined,
@@ -60,43 +61,7 @@ class OrderTrackingPage extends Component {
   }
   render() {
     return (
-      <Navigator
-          renderScene={this.renderScene.bind(this)}
-          navigator={this.props.navigator} />
-    );
-  }
-  renderScene(route, navigator) {
-
-    var leftButton = ( <View /> );
-    var rightButton = ( <View /> );
-
-    if (this.state.backButton) {
-      var leftButton = (
-        <Button transparent onPress={() => navigator.parentNavigator.pop()}>
-          <Icon name="ios-arrow-back" />
-        </Button>
-      );
-    } else {
-      var rightButton = (
-        <Button transparent onPress={() => {
-          navigator.parentNavigator.resetTo({
-            id: 'RestaurantsPage',
-            name: 'Restaurants',
-            sceneConfig: Navigator.SceneConfigs.FloatFromRight
-          });
-        }}>
-          <Text>Restaurants</Text>
-        </Button>
-      );
-    }
-
-    return (
       <Container theme={theme}>
-        <Header>
-          <Left>{ leftButton }</Left>
-          <Body><Title>Commande</Title></Body>
-          <Right>{ rightButton }</Right>
-        </Header>
         <Content contentContainerStyle={ { flex: 1, justifyContent: 'center', alignItems: 'center' } }>
           <MapView
             ref={ref => { this.map = ref; }}

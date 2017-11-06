@@ -1,12 +1,5 @@
 import React, { Component } from 'react';
-import {
-  StyleSheet,
-  View,
-  Navigator,
-  TouchableHighlight,
-  TouchableOpacity,
-  ActivityIndicator
-} from 'react-native';
+import { StyleSheet, View, ActivityIndicator } from 'react-native';
 import {
   Container, Header, Title, Content,
   Left, Right, Body,
@@ -17,15 +10,22 @@ import theme from '../theme/coopcycle';
 const Auth = require('../Auth');
 
 class AccountPage extends Component {
+
   constructor(props) {
     super(props);
     this.state = {
-      loading: false
+      loading: false,
+      user: null
     };
   }
+
   componentDidMount() {
-    this.setState({ loading: true });
-    this.props.client.request('GET', '/api/me')
+
+    const { client } = this.props.navigation.state.params
+
+    this.setState({ loading: true })
+
+    client.request('GET', '/api/me')
       .then((user) => {
         this.setState({
           loading: false,
@@ -38,19 +38,13 @@ class AccountPage extends Component {
         }
       });
   }
+
   render() {
-    return (
-      <Navigator
-        renderScene={this.renderScene.bind(this)}
-        navigator={this.props.navigator} />
-    );
-  }
-  _logout() {
-    Auth.removeUser().then(() => {
-      this.props.onLogout();
-    });
-  }
-  renderScene(route, navigator) {
+
+    const { navigate } = this.props.navigation
+    const { user } = this.state
+    const { client } = this.props.navigation.state.params
+
     let loader = (
       <View />
     )
@@ -68,22 +62,7 @@ class AccountPage extends Component {
     }
 
     return (
-      <Container theme={theme}>
-        <Header>
-          <Left>
-            <Button transparent onPress={() => navigator.parentNavigator.pop()}>
-              <Icon name='ios-close' />
-            </Button>
-          </Left>
-          <Body>
-            <Title>Mon compte</Title>
-          </Body>
-          <Right>
-            <Button transparent onPress={ this._logout.bind(this) }>
-              <Icon name="exit" />
-            </Button>
-          </Right>
-        </Header>
+      <Container theme={ theme }>
         <Content>
           <List>
             <ListItem button>
@@ -94,14 +73,7 @@ class AccountPage extends Component {
                 <Icon name="arrow-forward" />
               </Right>
             </ListItem>
-            <ListItem button iconRight onPress={() => navigator.parentNavigator.push({
-              id: 'AccountAddressesPage',
-              name: 'AccountAddresses',
-              sceneConfig: Navigator.SceneConfigs.FloatFromRight,
-              passProps: {
-                user: this.state.user
-              }
-            })}>
+            <ListItem button iconRight onPress={ () => navigate('AccountAddresses', { addresses: user.addresses }) }>
               <Body>
                 <Text>Adresses</Text>
               </Body>
@@ -109,14 +81,7 @@ class AccountPage extends Component {
                 <Icon name="arrow-forward" />
               </Right>
             </ListItem>
-            <ListItem button iconRight onPress={() => navigator.parentNavigator.push({
-              id: 'AccountOrdersPage',
-              name: 'AccountOrders',
-              sceneConfig: Navigator.SceneConfigs.FloatFromRight,
-              passProps: {
-                user: this.state.user
-              }
-            })}>
+            <ListItem button iconRight onPress={ () => navigate('AccountOrders', { client }) }>
               <Body>
                 <Text>Commandes</Text>
               </Body>

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {
   StyleSheet,
   View,
-  Navigator,
+
   ActivityIndicator,
 } from 'react-native';
 import {
@@ -24,7 +24,10 @@ class AccountOrdersPage extends Component {
     };
   }
   componentDidMount() {
-    this.props.client.get('/api/me/orders')
+
+    const { client } = this.props.navigation.state.params
+
+    client.get('/api/me/orders')
       .then((data) => {
         this.setState({
           loading: false,
@@ -32,29 +35,19 @@ class AccountOrdersPage extends Component {
         })
       });
   }
-  _renderRow(navigator, order) {
+  _renderRow(order) {
+
+    const { navigate } = this.props.navigation
+    const { client } = this.props.navigation.state.params
+
     return (
-      <ListItem onPress={() => navigator.parentNavigator.push({
-        id: 'OrderTrackingPage',
-        name: 'OrderTracking',
-        sceneConfig: Navigator.SceneConfigs.FloatFromRight,
-        passProps: {
-          order: order
-        }
-      })}>
+      <ListItem onPress={() => navigate('OrderTracking', { client, order }) }>
         <Body><Text>{ order.restaurant.name }</Text></Body>
         <Right><Text>{ order.total } €</Text></Right>
       </ListItem>
     );
   }
   render() {
-    return (
-      <Navigator
-          renderScene={this.renderScene.bind(this)}
-          navigator={this.props.navigator} />
-    );
-  }
-  renderScene(route, navigator) {
     let loader = (
       <View />
     )
@@ -73,19 +66,8 @@ class AccountOrdersPage extends Component {
 
     return (
       <Container theme={ theme }>
-        <Header>
-          <Left>
-            <Button transparent onPress={() => navigator.parentNavigator.pop()}>
-              <Icon name="arrow-back" />
-            </Button>
-          </Left>
-          <Body>
-            <Title>Commandes</Title>
-          </Body>
-          <Right />
-        </Header>
         <Content>
-          <List dataArray={ this.state.orders } renderRow={ this._renderRow.bind(this, navigator) } />
+          <List dataArray={ this.state.orders } renderRow={ this._renderRow.bind(this) } />
         </Content>
         { loader }
       </Container>

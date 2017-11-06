@@ -89,7 +89,7 @@
 }
 
 - (NSString *)defaultPlaceholder {
-    return @"1234567812345678";
+    return @"4242424242424242";
 }
 
 - (NSString *)numberWithoutLastDigits {
@@ -100,6 +100,16 @@
         [self.cardNumber substringToIndex:toIndex] :
         [self.defaultPlaceholder stp_safeSubstringToIndex:[self defaultPlaceholder].length - length];
 
+}
+
++ (NSSet<NSString *> *)keyPathsForValuesAffectingValid {
+    return [NSSet setWithArray:@[
+                                 NSStringFromSelector(@selector(cardNumber)),
+                                 NSStringFromSelector(@selector(expirationMonth)),
+                                 NSStringFromSelector(@selector(expirationYear)),
+                                 NSStringFromSelector(@selector(cvc)),
+                                 NSStringFromSelector(@selector(brand))
+                                 ]];
 }
 
 @end

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import {
   StyleSheet,
   View,
-  Navigator,
   TouchableHighlight,
   TouchableOpacity,
   Alert,
@@ -27,16 +26,40 @@ import DirectionsAPI from '../DirectionsAPI';
 const LATITUDE_DELTA = 0.0722;
 const LONGITUDE_DELTA = 0.0221;
 
+const COLOR_GREY = '#95A5A6'
+const COLOR_GREEN = '#2ECC71'
+
 class CourierPage extends Component {
 
   ws = undefined;
-  watchID = undefined;
   map = undefined;
   directionsAPI = null;
 
+  static navigationOptions = ({ navigation }) => {
+
+    const { params } = navigation.state;
+
+    return {
+      headerRight: (
+        <View style={{ flex: 1, flexDirection: 'row', alignItems: 'flex-end' }}>
+          <Button transparent>
+            <Icon name="wifi" style={{ color: params.connected ? COLOR_GREEN : COLOR_GREY }} />
+          </Button>
+          <Button transparent>
+            <Icon name="navigate" style={{ color: params.tracking ? COLOR_GREEN : COLOR_GREY }} />
+          </Button>
+        </View>
+      ),
+    }
+
+  }
+
   constructor(props) {
     super(props);
-    this.directionsAPI = new DirectionsAPI(this.props.client)
+
+    const { client } = this.props.navigation.state.params
+
+    this.directionsAPI = new DirectionsAPI(client)
     this.state = {
       status: null,
       region: null,
@@ -46,9 +69,8 @@ class CourierPage extends Component {
       loading: false,
       loadingMessage: 'Connexion au serveur…',
       order: null,
-      modalVisible: false,
+      delivery: null,
       watchID: null,
-      connected: false,
     };
   }
   _drawPathToDestination(destination) {
@@ -76,12 +98,15 @@ class CourierPage extends Component {
       this.map.fitToElements(true);
     });
   }
-  declineOrder() {
+  decline() {
+
+    const { client } = this.props.navigation.state.params
+
     this.setState({
       loading: true,
       loadingMessage: "Veuillez patienter…"
     });
-    this.props.client.put(this.state.order['@id'] + '/decline', {})
+    client.put(this.state.order['@id'] + '/decline', {})
       .then((order) => {
         this.setState({
           loadingMessage: 'En attente d\'une commande…',
@@ -90,38 +115,53 @@ class CourierPage extends Component {
         this.resetMap();
       });
   }
-  acceptOrder() {
+  accept() {
+
+    const { client } = this.props.navigation.state.params
+    const { delivery } = this.state
+
     this.setState({
       loading: true,
-      loadingMessage: "Veuillez patienter…"
-    });
-    this.props.client.put(this.state.order['@id'] + '/accept', {})
-      .then((order) => {
-        this.setState({
-          order: order,
-          loading: false,
-        });
-      });
+      loadingMessage: 'Veuillez patienter…'
+    })
+
+    client
+      .put(delivery['@id'] + '/accept', {})
+      .then(delivery => this.setState({ delivery, loading: false }))
   }
-  pickOrder() {
+  pick() {
+
+    const { client } = this.props.navigation.state.params
+    const { delivery } = this.state
+
     this.setState({
       loading: true,
       loadingMessage: "Veuillez patienter…"
-    });
-    this.props.client.put(this.state.order['@id'] + '/pick', {})
-      .then((order) => {
-        this._drawPathToDestination(order.deliveryAddress.geo)
-          .then(() => this.setState({ order: order, loading: false }));
-      });
+    })
+
+    client
+      .put(delivery['@id'] + '/pick', {})
+      .then((delivery) => {
+        this
+          ._drawPathToDestination(delivery.deliveryAddress.geo)
+          .then(() => this.setState({ delivery, loading: false }))
+      })
   }
-  deliverOrder() {
+  deliver() {
+
+    const { client } = this.props.navigation.state.params
+    const { delivery } = this.state
+
     this.setState({
       loading: true,
       loadingMessage: "Veuillez patienter…"
-    });
-    this.props.client.put(this.state.order['@id'] + '/deliver', {})
-      .then((order) => {
+    })
+
+    client
+      .put(delivery['@id'] + '/deliver', {})
+      .then(delivery => {
         this.setState({
+          delivery: null,
           order: null,
           loadingMessage: 'En attente d\'une commande…'
         });
@@ -132,25 +172,40 @@ class CourierPage extends Component {
     this.setState({region});
   }
   getStatus() {
-    return this.props.client.get('/api/me/status').then((data) => {
+    const { client } = this.props.navigation.state.params
+
+    return client.get('/api/me/status').then((data) => {
       console.log(data);
       return data;
     });
   }
-  loadOrderById(id) {
+  load(data) {
+
+    const { client } = this.props.navigation.state.params
+
     this.setState({
       loading: true,
       loadingMessage: 'Chargement de la commande…'
-    });
-    this.props.client.get('/api/orders/' + id).then((order) => {
-      this.setState({ loadingMessage: "Calcul de l'itinéraire…" });
-      const destination = order.status === 'PICKED' ? order.deliveryAddress.geo : order.restaurant.geo;
-      this._drawPathToDestination(destination)
-        .then(() => this.setState({
-          loading: false,
-          order: order
-        }));
-    });
+    })
+
+    const promises = [
+      client.get('/api/deliveries/' + data.id),
+      client.get('/api/orders/' + data.order.id)
+    ]
+
+    Promise.all(promises)
+      .then(values => {
+
+        this.setState({ loadingMessage: "Calcul de l'itinéraire…" })
+
+        const [ delivery, order ] = values
+        const address = delivery.status === 'PICKED' ? delivery.deliveryAddress : delivery.originAddress
+
+        this
+          ._drawPathToDestination(address.geo)
+          .then(() => this.setState({ delivery, order, loading: false }))
+      })
+      .catch(err => console.log(err))
   }
   getCurrentPosition() {
     this.setState({ loadingMessage: 'Calcul de votre position…' });
@@ -192,6 +247,8 @@ class CourierPage extends Component {
   clearWatch() {
     const { watchID } = this.state;
     navigator.geolocation.clearWatch(watchID);
+
+    this.props.navigation.setParams({ tracking: false })
     this.setState({ watchID: null })
   }
   onPositionUpdated(latLng) {
@@ -209,6 +266,7 @@ class CourierPage extends Component {
       this.ws.send(message);
     }
 
+    this.props.navigation.setParams({ tracking: true })
     this.setState({ position: latLng });
   }
   zoomTo(coords) {
@@ -235,17 +293,23 @@ class CourierPage extends Component {
 
     return new Promise((resolve, reject) => {
 
-      const webSocketBaseURL = this.props.server.replace('http', 'ws');
+      const { baseURL, user } = this.props.navigation.state.params
+
+      const webSocketBaseURL = baseURL.replace('http', 'ws');
 
       this.ws = new WebSocket(webSocketBaseURL + '/realtime', '', {
-          Authorization: "Bearer " + this.props.user.token
+        headers: {
+          Authorization: "Bearer " + user.token
+        }
       });
 
       this.ws.onopen = () => {
+
         console.log('Connected to dispatch service !');
+
         this.onPositionUpdated();
+        this.props.navigation.setParams({ connected: true })
         this.setState({
-          connected: true,
           loadingMessage: 'En attente d\'une commande…'
         });
         resolve();
@@ -267,8 +331,8 @@ class CourierPage extends Component {
     var message = JSON.parse(e.data);
     console.log('Message received!', message);
 
-    if (message.type === 'order') {
-      this.loadOrderById(message.order.id);
+    if (message.type === 'delivery') {
+      this.load(message.delivery);
     }
 
     if (message.type === 'accept-timeout') {
@@ -280,8 +344,8 @@ class CourierPage extends Component {
   }
   onWebSocketClose(e) {
     console.log('Connection closed !', e.code, e.message);
+    this.props.navigation.setParams({ connected: true });
     this.setState({
-      connected: false,
       loadingMessage: 'Connexion perdue ! Reconnexion…'
     });
     setTimeout(() => {
@@ -313,7 +377,7 @@ class CourierPage extends Component {
             .then(this.connectToWebSocket.bind(this))
             .then(() => {
               if (data.status === 'DELIVERING') {
-                this.loadOrderById(data.order.id);
+                this.load(data.delivery);
               }
             })
             .catch((err) => {
@@ -338,13 +402,7 @@ class CourierPage extends Component {
     }
     this.clearWatch();
   }
-  render() {
-    return (
-      <Navigator
-        renderScene={this.renderScene.bind(this)}
-        navigator={this.props.navigator} />
-    );
-  }
+
   renderTopRow() {
     return (
       <Row>
@@ -376,15 +434,77 @@ class CourierPage extends Component {
       </Row>
     )
   }
-  renderScene(route, navigator) {
+
+  renderBottomRow() {
+
+    const { delivery, order } = this.state
+
+    if (!delivery) {
+      return ( <View /> )
+    }
+
+    let nextAddress = delivery.status === 'PICKED' ?
+      delivery.deliveryAddress.streetAddress : delivery.originAddress.streetAddress;
+
+    let countdown = ( <View /> )
+    let buttons = ( <View /> )
+
+    if (delivery.status === 'WAITING') {
+      buttons = (
+        <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-around' }}>
+          <Button danger disabled={ this.state.loading } onPress={ () => this.decline() }>
+            <Text>Refuser</Text>
+          </Button>
+          <Button success disabled={ this.state.loading } onPress={ () => this.accept() }>
+            <Text>Accepter</Text>
+          </Button>
+        </View>
+      );
+      // countdown = (
+      //   <View style={{ flex: 1, alignItems: 'center' }}>
+      //     <Countdown duration={30} onComplete={() => console.log('TIMEOUT')} />
+      //   </View>
+      // );
+    }
+    if (delivery.status === 'DISPATCHED') {
+      buttons = (
+        <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-around' }}>
+          <Button success disabled={this.state.loading} onPress={ () => this.pick() }>
+            <Text>Commande récupérée</Text>
+          </Button>
+        </View>
+      );
+    }
+    if (delivery.status === 'PICKED') {
+      buttons = (
+        <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-around' }}>
+          <Button success disabled={this.state.loading} onPress={ () => this.deliver() }>
+            <Text>Commande livrée</Text>
+          </Button>
+        </View>
+      );
+    }
+
+    return (
+      <Row style={{ padding: 10 }}>
+        <View style={{ flex: 1, flexDirection: 'column' }}>
+          <View style={{ flex: 1, alignItems: 'center' }}>
+            <Text style={{ textAlign: 'center', fontWeight: 'bold', marginBottom: 10 }}>{ order.restaurant.name }</Text>
+            <Text>{ nextAddress }</Text>
+          </View>
+          { countdown }
+          { buttons }
+        </View>
+      </Row>
+    );
+  }
+
+  render() {
 
     const { height, width } = Dimensions.get('window');
-
-    const grey = '#95A5A6';
-    const green = '#2ECC71';
-
     const halfScreenHeight = (height - 64) / 2;
-    const isModalVisible = this.state.order !== null;
+
+    const { delivery, order } = this.state
 
     let loader = <View />;
 
@@ -396,12 +516,13 @@ class CourierPage extends Component {
         alignItems: 'center',
         backgroundColor: 'rgba(52, 52, 52, 0.4)'
       };
-      if (isModalVisible) {
+
+      if (delivery) {
         loaderStyle = { ...loaderStyle, height: halfScreenHeight };
       }
 
       loader = (
-        <View style={loaderStyle}>
+        <View style={ loaderStyle }>
           <ActivityIndicator
             animating={true}
             size="large"
@@ -412,103 +533,11 @@ class CourierPage extends Component {
       );
     }
 
-    const connectedButton = (
-      <Button transparent>
-        <Icon name="wifi" style={{ fontSize: 30, color: this.state.connected ? green : grey }} />
-      </Button>
-    )
-
-    const isTracking = this.state.watchID || this.state.position;
-    const trackingButton = (
-      <Button transparent>
-        <Icon name="navigate" style={{ fontSize: 30, color: isTracking ? green : grey }} />
-      </Button>
-    );
-
-    let bottomRow = ( <View /> )
-
-    if (this.state.order) {
-
-      let nextAddress = this.state.order.status === 'PICKED' ?
-        this.state.order.deliveryAddress.streetAddress : this.state.order.restaurant.streetAddress;
-
-      let countdown = ( <View /> )
-
-      let modalButtons = ( <View /> );
-      if (this.state.order.status === 'WAITING') {
-        modalButtons = (
-          <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-around' }}>
-            <Button danger disabled={this.state.loading} onPress={this.declineOrder.bind(this)}>
-              <Text>Refuser</Text>
-            </Button>
-            <Button success disabled={this.state.loading} onPress={this.acceptOrder.bind(this)}>
-              <Text>Accepter</Text>
-            </Button>
-          </View>
-        );
-        countdown = (
-          <View style={{ flex: 1, alignItems: 'center' }}>
-            <Countdown duration={30} onComplete={() => console.log('TIMEOUT')} />
-          </View>
-        );
-      }
-      if (this.state.order.status === 'ACCEPTED') {
-        modalButtons = (
-          <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-around' }}>
-            <Button success disabled={this.state.loading} onPress={this.pickOrder.bind(this)}>
-              <Text>Commande récupérée</Text>
-            </Button>
-          </View>
-        );
-      }
-      if (this.state.order.status === 'PICKED') {
-        modalButtons = (
-          <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-around' }}>
-            <Button success disabled={this.state.loading} onPress={this.deliverOrder.bind(this)}>
-              <Text>Commande livrée</Text>
-            </Button>
-          </View>
-        );
-      }
-
-      bottomRow = (
-        <Row style={{ padding: 10 }}>
-          <View style={{ flex: 1, flexDirection: 'column' }}>
-            <View style={{ flex: 1, alignItems: 'center' }}>
-              <Text style={{ textAlign: 'center', fontWeight: 'bold', marginBottom: 10 }}>{ this.state.order.restaurant.name }</Text>
-              <Text>{ nextAddress }</Text>
-            </View>
-            { countdown }
-            { modalButtons }
-          </View>
-        </Row>
-      );
-    }
-
     return (
       <Container>
-        <Header>
-          <Left>
-            <Button transparent onPress={() => {
-              Alert.alert('Êtes-vous sûr ?', null, [
-                { text: 'Annuler', onPress: () => {} },
-                { text: 'Quitter', onPress: () => navigator.parentNavigator.pop() },
-              ]);
-            }}>
-              <Icon name="exit" />
-            </Button>
-          </Left>
-          <Body>
-            <Title>Commandes</Title>
-          </Body>
-          <Right>
-            { connectedButton }
-            { trackingButton }
-          </Right>
-        </Header>
         <Grid>
           { this.renderTopRow() }
-          { bottomRow }
+          { this.renderBottomRow() }
           { loader }
         </Grid>
       </Container>

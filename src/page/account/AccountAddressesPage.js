@@ -1,14 +1,8 @@
 import React, { Component } from 'react';
-import {
-  StyleSheet,
-  View,
-  Navigator,
-} from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import {
   Container,
-  Header,
-  Left, Right, Body,
-  Title, Content, Footer, FooterTab, Button, Icon, List, ListItem, Text
+  Content, Button, Icon, List, ListItem, Text
 } from 'native-base';
 import _ from 'underscore';
 import Stripe, { PaymentCardTextField } from 'tipsi-stripe';
@@ -25,33 +19,18 @@ class AccountAddressesPage extends Component {
   _renderRow(item) {
     return (
       <ListItem>
-        <Text>{item.streetAddress}</Text>
+        <Text>{ item.streetAddress }</Text>
       </ListItem>
     );
   }
   render() {
-    return (
-      <Navigator
-          renderScene={this.renderScene.bind(this)}
-          navigator={this.props.navigator} />
-    );
-  }
-  renderScene(route, navigator) {
+
+    const { addresses } = this.props.navigation.state.params
+
     return (
       <Container theme={ theme }>
-        <Header>
-          <Left>
-            <Button transparent onPress={() => navigator.parentNavigator.pop()}>
-              <Icon name="arrow-back" />
-            </Button>
-          </Left>
-          <Body>
-            <Title>Adresses</Title>
-          </Body>
-          <Right />
-        </Header>
         <Content>
-          <List dataArray={ this.props.user.deliveryAddresses } renderRow={ this._renderRow.bind(this) } />
+          <List dataArray={ addresses } renderRow={ this._renderRow.bind(this) } />
         </Content>
       </Container>
     );

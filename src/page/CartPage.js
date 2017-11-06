@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import {
   StyleSheet,
   View,
-  Navigator,
   Modal,
 } from 'react-native';
 import {
@@ -14,8 +13,9 @@ import {
   Icon, Picker, Button, Text,
 } from 'native-base';
 import { Col, Row, Grid } from 'react-native-easy-grid';
+import { NavigationActions } from 'react-navigation'
+
 import theme from '../theme/coopcycle';
-import _ from 'underscore';
 
 const AppUser = require('../AppUser');
 
@@ -23,7 +23,8 @@ class CartPage extends Component {
   constructor(props) {
     super(props);
 
-    const cart = props.cart;
+    const { cart } = this.props.navigation.state.params
+
     this.state = {
       cart: cart,
       loading: false,
@@ -40,12 +41,15 @@ class CartPage extends Component {
         </Body>
         <Right>
           <Button danger transparent onPress={() => {
-            let cart = this.state.cart;
-            cart.deleteItem(item);
-            this.props.onCartUpdate(cart);
-            this.setState({
-              cart: cart,
-            });
+
+            const { cart } = this.state
+            const { onCartUpdate } = this.props.navigation.state.params
+
+            cart.deleteItem(item)
+
+            onCartUpdate(cart)
+            this.setState({ cart })
+
           }}>
             <Icon name="trash" />
           </Button>
@@ -53,49 +57,28 @@ class CartPage extends Component {
       </ListItem>
     )
   }
-  _gotoNextPage(navigator) {
-    navigator.parentNavigator.push({
-      id: 'CartAddressPage',
-      name: 'CartAddress',
-      sceneConfig: Navigator.SceneConfigs.FloatFromRight,
-      passProps: {
-        cart: this.state.cart
-      }
-    });
-  }
-  _onClickButton(navigator) {
+  _onClickButton() {
+
+    const { navigate } = this.props.navigation
+    const { client, deliveryAddress, user } = this.props.navigation.state.params
+    const { cart } = this.state
+
     AppUser.load()
       .then((user) => {
         if (user.hasCredentials()) {
-          this._gotoNextPage(navigator);
+          navigate('CartAddress', { cart, deliveryAddress, client, user })
         } else {
-          navigator.parentNavigator.push({
-            id: 'LoginPage',
-            name: 'Login',
-            sceneConfig: Navigator.SceneConfigs.FloatFromBottom,
-            passProps: {
-              onLoginSuccess: () => {
-                this._gotoNextPage(navigator);
-              }
-            }
-          });
+          // TODO navigate to login
         }
       });
   }
-  render() {
-    return (
-      <Navigator
-        renderScene={this.renderScene.bind(this)}
-        navigator={this.props.navigator} />
-    );
-  }
+
   renderModal() {
     return (
       <Modal
-        animationType={"slide"}
-        transparent={true}
-        visible={this.state.modalVisible}
-        onRequestClose={() => {alert("Modal has been closed.")}}>
+        animationType={ 'slide' }
+        transparent={ true }
+        visible={ this.state.modalVisible }>
         <View style={ styles.modalWrapper }>
           <Text style={{ textAlign: 'center' }}>{ this.state.editing ? this.state.editing.menuItem.name : '' }</Text>
           <Grid>
@@ -106,7 +89,9 @@ class CartPage extends Component {
                       this.state.editing.decrement();
 
                       const cart = this.state.editing.cart.clone();
-                      this.props.onCartUpdate(cart);
+
+                      const { onCartUpdate } = this.props.navigation.state.params
+                      onCartUpdate(cart)
 
                       if (this.state.editing.quantity === 0) {
                         this.setState({
@@ -130,7 +115,10 @@ class CartPage extends Component {
                     this.state.editing.increment();
 
                     const cart = this.state.editing.cart.clone();
-                    this.props.onCartUpdate(cart);
+
+                    const { onCartUpdate } = this.props.navigation.state.params
+                    onCartUpdate(cart)
+
                     this.setState({
                       cart: cart,
                     });
@@ -147,20 +135,11 @@ class CartPage extends Component {
       </Modal>
     );
   }
-  renderScene(route, navigator) {
+
+  render() {
+
     return (
       <Container>
-        <Header>
-          <Left>
-            <Button transparent onPress={() => navigator.parentNavigator.pop()}>
-              <Icon name="arrow-back" />
-            </Button>
-          </Left>
-          <Body>
-            <Title>Panier</Title>
-          </Body>
-          <Right />
-        </Header>
         <Content theme={theme}>
           { this.renderModal() }
           <List>{ this.state.cart.items.map(this._renderRow.bind(this)) }</List>
@@ -172,7 +151,7 @@ class CartPage extends Component {
               <Text style={ { fontWeight: 'bold' } }>{this.state.cart.total} €</Text>
             </View>
             <View style={styles.cartRight}>
-              <Button success block style={ { alignSelf: 'flex-end' } } onPress={ this._onClickButton.bind(this, navigator) }>
+              <Button success block style={ { alignSelf: 'flex-end' } } onPress={ this._onClickButton.bind(this) }>
                 <Text>Payer { this.state.cart.total } €</Text>
               </Button>
             </View>

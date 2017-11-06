@@ -1,4 +1,5 @@
 import _ from 'underscore';
+import moment from 'moment'
 
 class CartItem {
   constructor(cart, menuItem) {
@@ -26,12 +27,21 @@ class CartItem {
   get key() {
     return this.menuItem['@id'];
   }
+  toJSON() {
+    return {
+      menuItem: this.menuItem['@id'],
+      quantity: this.quantity
+    }
+  }
 }
 
 class Cart {
   constructor(restaurant, items) {
     this.restaurant = restaurant;
     this.items = items || [];
+  }
+  setDeliveryAddress(deliveryAddress) {
+    this.deliveryAddress = deliveryAddress
   }
   addMenuItem(menuItem) {
     let item = _.find(this.items, item => item.matches(menuItem))
@@ -55,20 +65,14 @@ class Cart {
     return new Cart(this.restaurant, this.items.slice());
   }
   toJSON() {
-    let json = {
-      // customer: '/customers/1',
+    return {
       restaurant: this.restaurant['@id'],
-      orderedItem: []
-    }
-    json.orderedItem = _.map(this.items, (item) => {
-      return {
-        quantity: item.quantity,
-        product: item.offer['@id']
+      orderedItem: _.map(this.items, item => item.toJSON()),
+      delivery: {
+        deliveryAddress: this.deliveryAddress['@id'],
+        date: moment().add(60, 'minutes').format('YYYY-MM-DD HH:mm:ss')
       }
-    });
-    json.deliveryAddress = this.deliveryAddress['@id'];
-
-    return json;
+    }
   }
 }
 

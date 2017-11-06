@@ -92,7 +92,18 @@ Client.prototype.fetch = function(req) {
             });
         }
 
-        response.json().then((data) => reject(data.message));
+        response.json().then((data) => {
+
+          let message = 'An error occured'
+          if (data.hasOwnProperty('@context') && data['@context'] === '/api/contexts/ConstraintViolationList') {
+            message = data['hydra:description']
+          }
+          if (data.hasOwnProperty('message')) {
+            message = data.message
+          }
+
+          reject(message)
+        });
       });
   });
 }
@@ -129,7 +140,7 @@ var login = function(baseURL, username, password) {
           return res.json().then((json) => resolve(json));
         }
 
-        return res.json().then((json) => reject(json.message));
+        return res.json().then((json) => reject(json));
       });
   });
 }

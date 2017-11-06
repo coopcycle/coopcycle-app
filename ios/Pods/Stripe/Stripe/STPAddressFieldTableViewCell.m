@@ -7,11 +7,12 @@
 //
 
 #import "STPAddressFieldTableViewCell.h"
-#import "STPPostalCodeValidator.h"
-#import "STPPhoneNumberValidator.h"
-#import "STPEmailAddressValidator.h"
+
 #import "STPCardValidator.h"
+#import "STPEmailAddressValidator.h"
 #import "STPLocalizationUtils.h"
+#import "STPPhoneNumberValidator.h"
+#import "STPPostalCodeValidator.h"
 
 @interface STPAddressFieldTableViewCell() <STPFormTextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource>
 
@@ -305,7 +306,11 @@
 
 - (void)setContents:(NSString *)contents {
     _contents = contents;
-    self.textField.text = contents;
+    if (self.type == STPAddressFieldTypeCountry) {
+        [self updateTextFieldsAndCaptions];
+    } else {
+        self.textField.text = contents;
+    }
     if ([self.textField isFirstResponder]) {
         self.textField.validText = [self potentiallyValidContents];
     } else {

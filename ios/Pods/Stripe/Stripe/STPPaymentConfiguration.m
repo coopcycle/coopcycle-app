@@ -7,15 +7,20 @@
 //
 
 #import "STPPaymentConfiguration.h"
-#import "STPPaymentConfiguration+Private.h"
+
 #import "NSBundle+Stripe_AppName.h"
-#import "Stripe.h"
 #import "STPAnalyticsClient.h"
+#import "STPPaymentConfiguration+Private.h"
+#import "STPTelemetryClient.h"
+#import "Stripe.h"
 
 @implementation STPPaymentConfiguration
 
+@synthesize ineligibleForSmsAutofill = _ineligibleForSmsAutofill;
+
 + (void)initialize {
     [STPAnalyticsClient initializeIfNeeded];
+    [STPTelemetryClient sharedInstance];
 }
 
 + (instancetype)sharedConfiguration {
@@ -53,15 +58,17 @@
     return copy;
 }
 
-@end
-
-@implementation STPPaymentConfiguration (Private)
-
 - (BOOL)applePayEnabled {
     return self.appleMerchantIdentifier &&
     (self.additionalPaymentMethods & STPPaymentMethodTypeApplePay) &&
     [Stripe deviceSupportsApplePay];
 }
+
+- (void)setIneligibleForSmsAutofill:(BOOL)ineligibleForSmsAutofill {
+    _ineligibleForSmsAutofill = ineligibleForSmsAutofill;
+    self.smsAutofillDisabled = (self.smsAutofillDisabled || ineligibleForSmsAutofill);
+}
+
 
 @end
 

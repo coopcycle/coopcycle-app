@@ -13,11 +13,19 @@
  */
 FOUNDATION_EXPORT NSString * __nonnull const StripeDomain;
 
+#define STP_ERROR_ENUM(_type, _name, _domain) \
+typedef enum _name: _type _name; \
+enum __attribute__((ns_error_domain(_domain))) _name: _type
+
+#if __has_attribute(ns_error_domain)
+STP_ERROR_ENUM(NSInteger, STPErrorCode, StripeDomain) {
+#else
 typedef NS_ENUM(NSInteger, STPErrorCode) {
+#endif
     STPConnectionError = 40,     // Trouble connecting to Stripe.
     STPInvalidRequestError = 50, // Your request had invalid parameters.
-    STPAPIError = 60,            // General-purpose API error (should be rare).
-    STPCardError = 70,           // Something was wrong with the given card (most common).
+    STPAPIError = 60,            // General-purpose API error.
+    STPCardError = 70,           // Something was wrong with the given card details.
     STPCancellationError = 80,   // The operation was cancelled.
     STPCheckoutUnknownError = 5000,   // Checkout failed
     STPCheckoutTooManyAttemptsError = 5001,   // Too many incorrect code attempts
@@ -36,25 +44,40 @@ FOUNDATION_EXPORT NSString * __nonnull const STPCardErrorCodeKey;
 // right UI element.
 FOUNDATION_EXPORT NSString * __nonnull const STPErrorParameterKey;
 
+// The error code returned by the Stripe API.
+// https://stripe.com/docs/api#errors-type
+FOUNDATION_EXPORT NSString * __nonnull const STPStripeErrorCodeKey;
+
+// The error type returned by the Stripe API.
+// https://stripe.com/docs/api#errors-code
+FOUNDATION_EXPORT NSString * __nonnull const STPStripeErrorTypeKey;
+
 #pragma mark STPCardErrorCodeKeys
 
+typedef NSString * STPCardErrorCode
+#ifdef NS_STRING_ENUM
+NS_STRING_ENUM
+#endif
+;
+
 // (Usually determined locally:)
-FOUNDATION_EXPORT NSString * __nonnull const STPInvalidNumber;
-FOUNDATION_EXPORT NSString * __nonnull const STPInvalidExpMonth;
-FOUNDATION_EXPORT NSString * __nonnull const STPInvalidExpYear;
-FOUNDATION_EXPORT NSString * __nonnull const STPInvalidCVC;
+FOUNDATION_EXPORT STPCardErrorCode __nonnull const STPInvalidNumber;
+FOUNDATION_EXPORT STPCardErrorCode __nonnull const STPInvalidExpMonth;
+FOUNDATION_EXPORT STPCardErrorCode __nonnull const STPInvalidExpYear;
+FOUNDATION_EXPORT STPCardErrorCode __nonnull const STPInvalidCVC;
 
 // (Usually sent from the server:)
-FOUNDATION_EXPORT NSString * __nonnull const STPIncorrectNumber;
-FOUNDATION_EXPORT NSString * __nonnull const STPExpiredCard;
-FOUNDATION_EXPORT NSString * __nonnull const STPCardDeclined;
-FOUNDATION_EXPORT NSString * __nonnull const STPProcessingError;
-FOUNDATION_EXPORT NSString * __nonnull const STPIncorrectCVC;
+FOUNDATION_EXPORT STPCardErrorCode __nonnull const STPIncorrectNumber;
+FOUNDATION_EXPORT STPCardErrorCode __nonnull const STPExpiredCard;
+FOUNDATION_EXPORT STPCardErrorCode __nonnull const STPCardDeclined;
+FOUNDATION_EXPORT STPCardErrorCode __nonnull const STPProcessingError;
+FOUNDATION_EXPORT STPCardErrorCode __nonnull const STPIncorrectCVC;
 
 
 @interface NSError(Stripe)
 
 + (nullable NSError *)stp_errorFromStripeResponse:(nullable NSDictionary *)jsonDictionary;
++ (nonnull NSError *)stp_genericConnectionError;
 + (nonnull NSError *)stp_genericFailedToParseResponseError;
 - (BOOL)stp_isUnknownCheckoutError;
 - (BOOL)stp_isURLSessionCancellationError;

@@ -2,136 +2,72 @@ import React, { Component } from 'react';
 import {
   StyleSheet,
   View,
-  Navigator,
-  TouchableHighlight,
-  TouchableOpacity,
-  Dimensions,
-  ActivityIndicator,
+  ActivityIndicator
 } from 'react-native';
 import {
   Container, Header, Title, Content,
   Left, Right, Body,
   Button, Text, Icon, List, ListItem, Thumbnail
 } from 'native-base';
-import _ from 'underscore';
-import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import slugify from 'slugify';
 
 import theme from '../theme/coopcycle';
 import RestaurantsAPI from '../RestaurantsAPI'
-
-import AppConfig from '../AppConfig.json'
+import AddressTypeahead from '../components/AddressTypeahead'
 
 class RestaurantsPage extends Component {
+
   restaurantsAPI = null;
+
   constructor(props) {
     super(props);
-    this.restaurantsAPI = new RestaurantsAPI(this.props.client)
+
+    const { baseURL, client, user } = this.props.navigation.state.params
+
+    this.restaurantsAPI = new RestaurantsAPI(client)
     this.state = {
       loading: false,
       restaurants: props.restaurants || [],
-      user: props.user || null
-    };
-  }
-  _onLoginSuccess(user) {
-    this.setState({ user });
-  }
-  _onLogout(navigator) {
-    const user = this.state.user;
-    user.logout();
-
-    this.setState({ user });
-    navigator.parentNavigator.pop();
-  }
-  render() {
-    return (
-      <Navigator
-        renderScene={this.renderScene.bind(this)}
-        navigator={this.props.navigator} />
-    );
+      user,
+      baseURL,
+      deliveryAddress: null
+    }
   }
   renderListHeader() {
-
-    // currentLocation={true} // Will add a 'Current location' button at the top of the predefined places list
-    // currentLocationLabel="Current location"
-    // predefinedPlaces={[homePlace, workPlace]}
-
-    return (<GooglePlacesAutocomplete
-      placeholder="Entrez votre adresse"
-      minLength={2} // minimum length of text to search
-      autoFocus={false}
-      listViewDisplayed='auto'    // true/false/undefined
-      fetchDetails={true}
-      onPress={(data, details = null) => { // 'details' is provided when fetchDetails = true
-        let location = details.geometry.location;
+    return (
+      <AddressTypeahead onPress={deliveryAddress => {
         this.setState({
           loading: true,
-          // dataSource: this.state.dataSource.cloneWithRows([])
           restaurants: []
         });
-        this.restaurantsAPI.nearby(location.lat, location.lng, 3000)
-          .then((data) => {
+        this.restaurantsAPI
+          .nearby(deliveryAddress.geo.latitude, deliveryAddress.geo.longitude, 3000)
+          .then(data => {
             this.setState({
+              deliveryAddress,
               loading: false,
-              // dataSource: this.state.dataSource.cloneWithRows(data['hydra:member'])
               restaurants: data['hydra:member']
             });
           });
-      }}
-      getDefaultValue={() => {
-        return ''; // text input default value
-      }}
-      query={{
-        // available options: https://developers.google.com/places/web-service/autocomplete
-        key: AppConfig.GOOGLE_API_KEY,
-        language: 'fr', // language of the results
-        types: 'geocode', // default: 'geocode'
-      }}
-      styles={{
-        description: {
-          fontWeight: 'bold',
-        },
-        predefinedPlacesDescription: {
-          color: '#1faadb',
-        },
-      }}
-      nearbyPlacesAPI="GoogleReverseGeocoding" // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
-      GoogleReverseGeocodingQuery={{
-        // available options for GoogleReverseGeocoding API : https://developers.google.com/maps/documentation/geocoding/intro
-        region: "fr"
-      }}
-      GooglePlacesSearchQuery={{
-        // available options for GooglePlacesSearch API : https://developers.google.com/places/web-service/search
-        rankby: 'distance',
-        types: 'food',
-      }}
-      // filter the reverse geocoding results by types - ['locality', 'administrative_area_level_3'] if you want to display only cities
-      filterReverseGeocodingByTypes={['locality', 'administrative_area_level_3']}
-      />
-    );
+      }} />
+    )
   }
-  renderRow(navigator, restaurant) {
+  renderRow(restaurant) {
 
-    var cuisine = 'default';
+    const { navigate } = this.props.navigation
+    const { client, user } = this.props.navigation.state.params
+    const { deliveryAddress } = this.state
+
+    let cuisine = 'default';
     // if (restaurant.servesCuisine.length > 0) {
     //   var randomCuisine = _.first(_.shuffle(restaurant.servesCuisine));
     //   cuisine = randomCuisine.name;
     // }
 
-    let imageURI = this.props.server + '/img/cuisine/' + slugify(cuisine).toLowerCase() +'.jpg';
+    let imageURI = this.state.baseURL + '/img/cuisine/' + slugify(cuisine).toLowerCase() +'.jpg';
 
     return (
-      <ListItem onPress={() => {
-        navigator.parentNavigator.push({
-          id: 'RestaurantPage',
-          name: 'Restaurant',
-          sceneConfig: Navigator.SceneConfigs.FloatFromRight,
-          restaurant: restaurant,
-          passProps: {
-            restaurant: restaurant,
-          }
-        });
-      }} thumbnail>
+      <ListItem thumbnail onPress={ () => navigate('Restaurant', { restaurant, deliveryAddress, client, user }) }>
         <Left>
           <Thumbnail square size={60} source={{ uri: imageURI }} />
         </Left>
@@ -142,66 +78,15 @@ class RestaurantsPage extends Component {
       </ListItem>
     );
   }
-  renderScene(route, navigator) {
-
-    let topLeftBtn;
-    let topRightBtn = (
-      <Button transparent />
-    );
-    if (this.state.user.isAuthenticated()) {
-      topLeftBtn = (
-        <Button transparent onPress={() => navigator.parentNavigator.push({
-          id: 'AccountPage',
-          name: 'Account',
-          sceneConfig: Navigator.SceneConfigs.FloatFromBottom,
-          passProps: {
-            onLogout: this._onLogout.bind(this, navigator)
-          }
-        })}>
-          <Icon name="ios-menu" />
-        </Button>
-      )
-    } else {
-      topLeftBtn = (
-        <Button transparent onPress={() => navigator.parentNavigator.push({
-          id: 'LoginPage',
-          name: 'Login',
-          sceneConfig: Navigator.SceneConfigs.FloatFromBottom,
-          passProps: {
-            onLoginSuccess: this._onLoginSuccess.bind(this)
-          }
-        })}>
-          <Icon name="log-in" />
-        </Button>
-      )
-    }
-
-    if (this.state.user.isAuthenticated() && (this.state.user.hasRole('ROLE_COURIER') || this.state.user.hasRole('ROLE_ADMIN'))) {
-      topRightBtn = (
-        <Button transparent onPress={() => navigator.parentNavigator.push({
-          id: 'CourierPage',
-          name: 'Courier',
-          sceneConfig: Navigator.SceneConfigs.FloatFromRight
-        })}>
-          <Icon name="ios-bicycle" />
-        </Button>
-      )
-    }
+  render() {
 
     return (
       <Container>
-        <Header>
-          <Left>{topLeftBtn}</Left>
-          <Body>
-            <Title>Restaurants</Title>
-          </Body>
-          <Right>{topRightBtn}</Right>
-        </Header>
         <Content theme={theme}>
           <List
             enableEmptySections
             dataArray={ this.state.restaurants }
-            renderRow={ this.renderRow.bind(this, navigator) }
+            renderRow={ this.renderRow.bind(this) }
             renderHeader={ this.renderListHeader.bind(this) }
           />
           <View style={styles.loader}>
@@ -221,6 +106,7 @@ const styles = StyleSheet.create({
   loader: {
     flex: 1,
     marginTop: 50,
+    // ...StyleSheet.absoluteFillObject,
     justifyContent: 'center',
     alignItems: 'center'
   },

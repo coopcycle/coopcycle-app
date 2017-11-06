@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import {
   StyleSheet,
   View,
-  Navigator,
   TouchableHighlight,
   TouchableOpacity,
   ListView,
@@ -10,7 +9,7 @@ import {
   Alert,
 } from 'react-native';
 import {
-  Container, Header, Title, Content, Footer,
+  Container, Header, Title, Content, Footer, H3, H4,
   Left, Right, Body,
   List, ListItem,
   InputGroup, Input,
@@ -22,21 +21,31 @@ import _ from 'underscore';
 const Cart = require('../Cart');
 
 class RestaurantPage extends Component {
+
   constructor(props) {
     super(props);
+
+    const { restaurant } = this.props.navigation.state.params
+
     this.state = {
       modalVisible: false,
       distance: 2000,
       loading: false,
-      cart: new Cart(props.restaurant)
+      cart: new Cart(restaurant, [])
     };
   }
+
+  componentDidMount() {
+    console.log('componentDidMount')
+  }
+
   _addToCart(menuItem) {
     const { cart } = this.state
     cart.addMenuItem(menuItem)
 
     this.setState({ cart })
   }
+
   _renderMenuItem(menuItem) {
     const isDivider = menuItem['@type'] === 'http://schema.org/MenuSection'
     const props = isDivider ? { itemDivider: true } : {
@@ -55,16 +64,15 @@ class RestaurantPage extends Component {
       </ListItem>
     );
   }
+
   render() {
-    return (
-      <Navigator
-        renderScene={this.renderScene.bind(this)}
-        navigator={this.props.navigator} />
-    );
-  }
-  renderScene(route, navigator) {
+
+    const { navigate } = this.props.navigation
+    const { restaurant, deliveryAddress, client, user } = this.props.navigation.state.params
+    const { cart } = this.state
+
     let items = []
-    _.forEach(this.props.restaurant.hasMenu.hasMenuSection, menuSection => {
+    _.forEach(restaurant.hasMenu.hasMenuSection, menuSection => {
       items.push(menuSection)
       _.forEach(menuSection.hasMenuItem, menuItem => {
         items.push(menuItem)
@@ -73,18 +81,9 @@ class RestaurantPage extends Component {
 
     return (
       <Container>
-        <Header>
-          <Left>
-            <Button transparent onPress={() => navigator.parentNavigator.pop()}>
-              <Icon name="ios-arrow-back" />
-            </Button>
-          </Left>
-          <Body>
-            <Title>{ this.props.restaurant.name }</Title>
-          </Body>
-          <Right />
-        </Header>
         <Content theme={theme}>
+          <H3 style={{ textAlign: 'center', marginVertical: 10 }}>{ restaurant.name }</H3>
+          <Text style={{ textAlign: 'center', marginBottom: 10 }}>Livraison : { deliveryAddress.streetAddress }</Text>
           <List>
           { _.map(items, item => this._renderMenuItem(item)) }
           </List>
@@ -92,21 +91,12 @@ class RestaurantPage extends Component {
         <Footer>
           <View style={styles.cart}>
             <View style={styles.cartLeft}>
-              <Text>{this.state.cart.articlesCount} articles</Text>
-              <Text style={ { fontWeight: 'bold' } }>{this.state.cart.total} €</Text>
+              <Text>{ cart.articlesCount } articles</Text>
+              <Text style={{ fontWeight: 'bold' }}>{ cart.total } €</Text>
             </View>
             <View style={styles.cartRight}>
-              <Button block style={ { alignSelf: 'flex-end' } } onPress={() => navigator.parentNavigator.push({
-                  id: 'CartPage',
-                  name: 'Cart',
-                  sceneConfig: Navigator.SceneConfigs.FloatFromRight,
-                  passProps: {
-                    cart: this.state.cart,
-                    onCartUpdate: (cart) => {
-                      this.setState({cart});
-                    }
-                  }
-                })}>
+              <Button block style={ { alignSelf: 'flex-end' } }
+                onPress={ () => navigate('Cart', { cart, client, deliveryAddress, user, onCartUpdate: cart => this.setState({ cart }) }) }>
                 <Text>Commander</Text>
               </Button>
             </View>
