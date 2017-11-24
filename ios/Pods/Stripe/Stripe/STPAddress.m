@@ -29,6 +29,26 @@ NSString *stringIfHasContentsElseNil(NSString *string);
 
 @implementation STPAddress
 
++ (NSDictionary *)shippingInfoForChargeWithAddress:(nullable STPAddress *)address
+                                    shippingMethod:(nullable PKShippingMethod *)method {
+    if (!address) {
+        return nil;
+    }
+    NSMutableDictionary *params = [NSMutableDictionary new];
+    params[@"name"] = address.name;
+    params[@"phone"] = address.phone;
+    params[@"carrier"] = method.label;
+    NSMutableDictionary *addressDict = [NSMutableDictionary new];
+    addressDict[@"line1"] = address.line1;
+    addressDict[@"line2"] = address.line2;
+    addressDict[@"city"] = address.city;
+    addressDict[@"state"] = address.state;
+    addressDict[@"postal_code"] = address.postalCode;
+    addressDict[@"country"] = address.country;
+    params[@"address"] = [addressDict copy];
+    return [params copy];
+}
+
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated"
 
@@ -63,23 +83,23 @@ NSString *stringIfHasContentsElseNil(NSString *string);
             if (ABMultiValueGetCount(addressValues) > 0) {
                 CFDictionaryRef dict = ABMultiValueCopyValueAtIndex(addressValues, 0);
                 NSString *street = CFDictionaryGetValue(dict, kABPersonAddressStreetKey);
-                if (street) {
+                if (street.length > 0) {
                     _line1 = street;
                 }
                 NSString *city = CFDictionaryGetValue(dict, kABPersonAddressCityKey);
-                if (city) {
+                if (city.length > 0) {
                     _city = city;
                 }
                 NSString *state = CFDictionaryGetValue(dict, kABPersonAddressStateKey);
-                if (state) {
+                if (state.length > 0) {
                     _state = state;
                 }
                 NSString *zip = CFDictionaryGetValue(dict, kABPersonAddressZIPKey);
-                if (zip) {
+                if (zip.length > 0) {
                     _postalCode = zip;
                 }
                 NSString *country = CFDictionaryGetValue(dict, kABPersonAddressCountryCodeKey);
-                if (country) {
+                if (country.length > 0) {
                     _country = [country uppercaseString];
                 }
                 if (dict != NULL) {
@@ -247,12 +267,25 @@ NSString *stringIfHasContentsElseNil(NSString *string);
         case STPBillingAddressFieldsNone:
             return YES;
         case STPBillingAddressFieldsZip:
-            return [STPPostalCodeValidator stringIsValidPostalCode:self.postalCode 
-                                                       countryCode:self.country];
+            return ([STPPostalCodeValidator validationStateForPostalCode:self.postalCode
+                                                             countryCode:self.country] == STPCardValidationStateValid);
         case STPBillingAddressFieldsFull:
             return [self hasValidPostalAddress];
     }
     return containsFields;
+}
+
+- (BOOL)containsContentForBillingAddressFields:(STPBillingAddressFields)desiredFields {
+    switch (desiredFields) {
+        case STPBillingAddressFieldsNone:
+            return NO;
+        case STPBillingAddressFieldsZip:
+            return self.postalCode.length > 0;
+        case STPBillingAddressFieldsFull:
+            return [self hasPartialPostalAddress];
+    }
+
+    return NO;
 }
 
 - (BOOL)containsRequiredShippingAddressFields:(PKAddressField)requiredFields {
@@ -272,13 +305,35 @@ NSString *stringIfHasContentsElseNil(NSString *string);
     return containsFields;
 }
 
+- (BOOL)containsContentForShippingAddressFields:(PKAddressField)desiredFields {
+    return (((desiredFields & PKAddressFieldName) && self.name.length > 0)
+            || ((desiredFields & PKAddressFieldEmail) && self.email.length > 0)
+            || ((desiredFields & PKAddressFieldPhone) && self.phone.length > 0)
+            || ((desiredFields & PKAddressFieldPostalAddress) && [self hasPartialPostalAddress]));
+}
+
 - (BOOL)hasValidPostalAddress {
     return (self.line1.length > 0 
             && self.city.length > 0 
             && self.country.length > 0 
             && (self.state.length > 0 || ![self.country isEqualToString:@"US"])  
-            && [STPPostalCodeValidator stringIsValidPostalCode:self.postalCode 
-                                                   countryCode:self.country]);
+            && ([STPPostalCodeValidator validationStateForPostalCode:self.postalCode
+                                                         countryCode:self.country] == STPCardValidationStateValid));
+}
+
+/**
+ Does this STPAddress contain any data in the postal address fields?
+
+ If they are all empty or nil, returns NO. Even a single character in a
+ single field will return YES.
+ */
+- (BOOL)hasPartialPostalAddress {
+    return (self.line1.length > 0
+            || self.line2.length > 0
+            || self.city.length > 0
+            || self.country.length > 0
+            || self.state.length > 0
+            || self.postalCode.length > 0);
 }
 
 + (PKAddressField)applePayAddressFieldsFromBillingAddressFields:(STPBillingAddressFields)billingAddressFields {

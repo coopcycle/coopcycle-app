@@ -16,6 +16,7 @@
 #import "STPAddCardViewController.h"
 #import "STPAspects.h"
 #import "STPCard.h"
+#import "STPCardIOProxy.h"
 #import "STPFormEncodable.h"
 #import "STPPaymentCardTextField.h"
 #import "STPPaymentCardTextField+Private.h"
@@ -30,6 +31,7 @@
 @interface STPAnalyticsClient()
 
 @property (nonatomic) NSSet *apiUsage;
+@property (nonatomic) NSSet *additionalInfoSet;
 @property (nonatomic, readwrite) NSURLSession *urlSession;
 
 @end
@@ -95,6 +97,13 @@
                                                            [client setApiUsage:[client.apiUsage setByAddingObject:NSStringFromClass([STPShippingAddressViewController class])]];
                                                        } error:nil];
 
+        [STPCustomerContext stp_aspect_hookSelector:@selector(initWithKeyProvider:)
+                                        withOptions:STPAspectPositionAfter
+                                         usingBlock:^{
+                                             STPAnalyticsClient *client = [self sharedClient];
+                                             [client setApiUsage:[client.apiUsage setByAddingObject:NSStringFromClass([STPCustomerContext class])]];
+                                         } error:nil];
+
     });
 }
 
@@ -104,10 +113,6 @@
 #else
     return NSClassFromString(@"XCTest") == nil;
 #endif
-}
-
-+ (NSNumber *)timestampWithDate:(NSDate *)date {
-    return @((NSInteger)([date timeIntervalSince1970]*1000));
 }
 
 + (NSString *)tokenTypeFromParameters:(NSDictionary *)parameters {
@@ -130,17 +135,23 @@
         NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
         _urlSession = [NSURLSession sessionWithConfiguration:config];
         _apiUsage = [NSSet set];
+        _additionalInfoSet = [NSSet set];
     }
     return self;
 }
 
-- (void)logRememberMeConversion:(STPAddCardRememberMeUsage)selected {
-    NSMutableDictionary *payload = [self.class commonPayload];
-    [payload addEntriesFromDictionary:@{
-                                        @"event": @"stripeios.remember_me",
-                                        @"selected": @(selected),
-                                        }];
-    [self logPayload:payload];
+- (void)addAdditionalInfo:(NSString *)info {
+    self.additionalInfoSet = [self.additionalInfoSet setByAddingObject:info];
+}
+
+- (void)clearAdditionalInfo {
+    self.additionalInfoSet = [NSSet set];
+}
+
+- (NSArray *)additionalInfo {
+    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:NSStringFromSelector(@selector(description)) ascending:YES];
+    NSArray *additionalInfo = [self.additionalInfoSet sortedArrayUsingDescriptors:@[sortDescriptor]];
+    return additionalInfo ?: @[];
 }
 
 - (NSArray *)productUsage {
@@ -179,6 +190,7 @@
     [payload addEntriesFromDictionary:@{
                                         @"event": @"stripeios.token_creation",
                                         @"token_type": tokenType ?: @"unknown",
+                                        @"additional_info": [self additionalInfo],
                                         }];
     [payload addEntriesFromDictionary:[self productUsageDictionary]];
     [payload addEntriesFromDictionary:configurationDictionary];
@@ -192,40 +204,10 @@
     [payload addEntriesFromDictionary:@{
                                         @"event": @"stripeios.source_creation",
                                         @"source_type": sourceType ?: @"unknown",
-                                        @"apple_pay_enabled": @([Stripe deviceSupportsApplePay]),
+                                        @"additional_info": [self additionalInfo],
                                         }];
     [payload addEntriesFromDictionary:[self productUsageDictionary]];
     [payload addEntriesFromDictionary:configurationDictionary];
-    [self logPayload:payload];
-}
-
-- (void)logRUMWithToken:(STPToken *)token
-          configuration:(STPPaymentConfiguration *)configuration
-               response:(NSHTTPURLResponse *)response
-                  start:(NSDate *)startTime
-                    end:(NSDate *)endTime {
-    NSString *tokenTypeString = @"unknown";
-    if (token.bankAccount) {
-        tokenTypeString = @"bank_account";
-    } else if (token.card) {
-        if (token.card.isApplePayCard) {
-            tokenTypeString = @"apple_pay";
-        } else {
-            tokenTypeString = @"card";
-        }
-    }
-    NSNumber *start = [[self class] timestampWithDate:startTime];
-    NSNumber *end = [[self class] timestampWithDate:endTime];
-    NSMutableDictionary *payload = [self.class commonPayload];
-    [payload addEntriesFromDictionary:@{
-                                        @"event": @"rum.stripeios",
-                                        @"tokenType": tokenTypeString,
-                                        @"url": response.URL.absoluteString ?: @"unknown",
-                                        @"status": @(response.statusCode),
-                                        @"publishable_key": configuration.publishableKey ?: @"unknown",
-                                        @"start": start,
-                                        @"end": end,
-                                        }];
     [self logPayload:payload];
 }
 
@@ -246,6 +228,7 @@
     payload[@"app_name"] = [NSBundle stp_applicationName];
     payload[@"app_version"] = [NSBundle stp_applicationVersion];
     payload[@"apple_pay_enabled"] = @([Stripe deviceSupportsApplePay]);
+    payload[@"ocr_type"] = [STPCardIOProxy isCardIOAvailable] ? @"card_io" : @"none";
     
     return payload;
 }
@@ -292,7 +275,6 @@
     }
     dictionary[@"company_name"] = configuration.companyName ?: @"unknown";
     dictionary[@"apple_merchant_identifier"] = configuration.appleMerchantIdentifier ?: @"unknown";
-    dictionary[@"sms_autofill_disabled"] = @(configuration.smsAutofillDisabled);
     return [dictionary copy];
 }
 

@@ -8,10 +8,18 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface NSDictionary (Stripe)
 
-- (nullable NSDictionary *)stp_dictionaryByRemovingNullsValidatingRequiredFields:(nonnull NSArray *)requiredFields;
+- (nullable NSDictionary *)stp_dictionaryByRemovingNullsValidatingRequiredFields:(NSArray *)requiredFields;
+
+- (NSDictionary *)stp_dictionaryByRemovingNulls;
+
+- (NSDictionary<NSString *, NSString *> *)stp_dictionaryByRemovingNonStrings;
 
 @end
+
+NS_ASSUME_NONNULL_END
 
 void linkNSDictionaryCategory(void);

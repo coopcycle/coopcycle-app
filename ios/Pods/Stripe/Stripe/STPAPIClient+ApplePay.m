@@ -7,19 +7,42 @@
 
 #import <AddressBook/AddressBook.h>
 
+#import "NSError+Stripe.h"
 #import "PKPayment+Stripe.h"
 #import "STPAPIClient+ApplePay.h"
 #import "STPAPIClient+Private.h"
 #import "STPAnalyticsClient.h"
+#import "STPSourceParams.h"
+#import "STPTelemetryClient.h"
+#import "STPToken.h"
 
 FAUXPAS_IGNORED_IN_FILE(APIAvailability)
 
 @implementation STPAPIClient (ApplePay)
 
 - (void)createTokenWithPayment:(PKPayment *)payment completion:(STPTokenCompletionBlock)completion {
-    NSDictionary *parameters = [[self class] parametersForPayment:payment];
-    [self createTokenWithParameters:parameters
+    NSMutableDictionary *params = [[[self class] parametersForPayment:payment] mutableCopy];
+    [[STPTelemetryClient sharedInstance] addTelemetryFieldsToParams:params];
+    [self createTokenWithParameters:params
                          completion:completion];
+    [[STPTelemetryClient sharedInstance] sendTelemetryData];
+}
+
+- (void)createSourceWithPayment:(PKPayment *)payment completion:(STPSourceCompletionBlock)completion {
+    NSCAssert(payment != nil, @"'payment' is required to create an apple pay source");
+    NSCAssert(completion != nil, @"'completion' is required to use the source that is created");
+    [self createTokenWithPayment:payment completion:^(STPToken * _Nullable token, NSError * _Nullable error) {
+        if (token.tokenId == nil
+            || error != nil) {
+            completion(nil, error ?: [NSError stp_genericConnectionError]);
+        }
+        else {
+            STPSourceParams *params = [STPSourceParams new];
+            params.type = STPSourceTypeCard;
+            params.token = token.tokenId;
+            [self createSourceWithParams:params completion:completion];
+        }
+    }];
 }
 
 #pragma clang diagnostic push
