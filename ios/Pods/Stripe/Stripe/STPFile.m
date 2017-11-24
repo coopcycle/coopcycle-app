@@ -7,6 +7,8 @@
 //
 
 #import "STPFile.h"
+#import "STPFile+Private.h"
+
 #import "NSDictionary+Stripe.h"
 
 @interface STPFile ()
@@ -20,13 +22,15 @@
 
 - (BOOL)isEqualToFile:(STPFile *)file;
 
+// See STPFile+Private.h
+
 @end
 
 @implementation STPFile
 
-#pragma mark - Helpers
+#pragma mark - STPFilePurpose
 
-+ (NSDictionary<NSString *,NSNumber *>*)stringToPurpose {
++ (NSDictionary<NSString *,NSNumber *> *)stringToPurposeMapping {
     return @{
              @"dispute_evidence": @(STPFilePurposeDisputeEvidence),
              @"identity_document": @(STPFilePurposeIdentityDocument),
@@ -35,16 +39,17 @@
 
 + (STPFilePurpose)purposeFromString:(NSString *)string {
     NSString *key = [string lowercaseString];
-    NSNumber *value = [self stringToPurpose][key];
-    if (value) {
-        return (STPFilePurpose)[value integerValue];
-    } else {
-        return STPFilePurposeUnknown;
+    NSNumber *purposeNumber = [self stringToPurposeMapping][key];
+
+    if (purposeNumber) {
+        return (STPFilePurpose)[purposeNumber integerValue];
     }
+
+    return STPFilePurposeUnknown;
 }
 
-+ (NSString *)stringFromPurpose:(STPFilePurpose)purpose {
-    return [[[self stringToPurpose] allKeysForObject:@(purpose)] firstObject];
++ (nullable NSString *)stringFromPurpose:(STPFilePurpose)purpose {
+    return [[[self stringToPurposeMapping] allKeysForObject:@(purpose)] firstObject];
 }
 
 #pragma mark - Equality

@@ -11,7 +11,8 @@
 
 #import "PKPaymentAuthorizationViewController+Stripe_Blocks.h"
 #import "STPAddCardViewController+Private.h"
-#import "STPCardTuple.h"
+#import "STPCustomer+SourceTuple.h"
+#import "STPCustomerContext.h"
 #import "STPDispatchFunctions.h"
 #import "STPPaymentConfiguration+Private.h"
 #import "STPPaymentContext+Private.h"
@@ -42,31 +43,46 @@ typedef NS_ENUM(NSUInteger, STPPaymentContextState) {
 
 @interface STPPaymentContext()<STPPaymentMethodsViewControllerDelegate, STPShippingAddressViewControllerDelegate>
 
-@property(nonatomic)STPPaymentConfiguration *configuration;
-@property(nonatomic)STPTheme *theme;
-@property(nonatomic)id<STPBackendAPIAdapter> apiAdapter;
-@property(nonatomic)STPAPIClient *apiClient;
-@property(nonatomic)STPPromise<STPPaymentMethodTuple *> *loadingPromise;
+@property (nonatomic) STPPaymentConfiguration *configuration;
+@property (nonatomic) STPTheme *theme;
+@property (nonatomic) id<STPBackendAPIAdapter> apiAdapter;
+@property (nonatomic) STPAPIClient *apiClient;
+@property (nonatomic) STPPromise<STPPaymentMethodTuple *> *loadingPromise;
 
 // these wrap hostViewController's promises because the hostVC is nil at init-time
-@property(nonatomic)STPVoidPromise *willAppearPromise;
-@property(nonatomic)STPVoidPromise *didAppearPromise;
+@property (nonatomic) STPVoidPromise *willAppearPromise;
+@property (nonatomic) STPVoidPromise *didAppearPromise;
 
-@property(nonatomic, weak)STPPaymentMethodsViewController *paymentMethodsViewController;
-@property(nonatomic)id<STPPaymentMethod> selectedPaymentMethod;
-@property(nonatomic)NSArray<id<STPPaymentMethod>> *paymentMethods;
-@property(nonatomic)STPAddress *shippingAddress;
-@property(nonatomic)PKShippingMethod *selectedShippingMethod;
-@property(nonatomic)NSArray<PKShippingMethod *> *shippingMethods;
+@property (nonatomic, weak) STPPaymentMethodsViewController *paymentMethodsViewController;
+@property (nonatomic) id<STPPaymentMethod> selectedPaymentMethod;
+@property (nonatomic) NSArray<id<STPPaymentMethod>> *paymentMethods;
+@property (nonatomic) STPAddress *shippingAddress;
+@property (nonatomic) PKShippingMethod *selectedShippingMethod;
+@property (nonatomic) NSArray<PKShippingMethod *> *shippingMethods;
 
-@property(nonatomic, assign) STPPaymentContextState state;
+@property (nonatomic, assign) STPPaymentContextState state;
 
-@property(nonatomic)STPPaymentContextAmountModel *paymentAmountModel;
+@property (nonatomic) STPPaymentContextAmountModel *paymentAmountModel;
+@property (nonatomic) BOOL shippingAddressNeedsVerification;
 
+// If hostViewController was set to a nav controller, the original VC on top of the stack
+@property (nonatomic, weak) UIViewController *originalTopViewController;
 
 @end
 
 @implementation STPPaymentContext
+
+- (instancetype)initWithCustomerContext:(STPCustomerContext *)customerContext {
+    return [self initWithAPIAdapter:customerContext];
+}
+
+- (instancetype)initWithCustomerContext:(STPCustomerContext *)customerContext
+                          configuration:(STPPaymentConfiguration *)configuration
+                                  theme:(STPTheme *)theme {
+    return [self initWithAPIAdapter:customerContext
+                      configuration:configuration
+                              theme:theme];
+}
 
 - (instancetype)initWithAPIAdapter:(id<STPBackendAPIAdapter>)apiAdapter {
     return [self initWithAPIAdapter:apiAdapter
@@ -86,6 +102,7 @@ typedef NS_ENUM(NSUInteger, STPPaymentContextState) {
         _didAppearPromise = [STPVoidPromise new];
         _apiClient = [[STPAPIClient alloc] initWithPublishableKey:configuration.publishableKey];
         _paymentCurrency = @"USD";
+        _paymentCountry = @"US";
         _paymentAmountModel = [[STPPaymentContextAmountModel alloc] initWithAmount:0];
         _modalPresentationStyle = UIModalPresentationFullScreen;
         _state = STPPaymentContextStateNone;
@@ -127,19 +144,13 @@ typedef NS_ENUM(NSUInteger, STPPaymentContextState) {
                 [self.loadingPromise fail:error];
                 return;
             }
-            STPCard *selectedCard;
-            NSMutableArray<STPCard *> *cards = [NSMutableArray array];
-            for (id<STPSourceProtocol> source in customer.sources) {
-                if ([source isKindOfClass:[STPCard class]]) {
-                    STPCard *card = (STPCard *)source;
-                    [cards addObject:card];
-                    if ([card.stripeID isEqualToString:customer.defaultSource.stripeID]) {
-                        selectedCard = card;
-                    }
-                }
+            if (!self.shippingAddress && customer.shippingAddress) {
+                self.shippingAddress = customer.shippingAddress;
+                self.shippingAddressNeedsVerification = YES;
             }
-            STPCardTuple *tuple = [STPCardTuple tupleWithSelectedCard:selectedCard cards:cards];
-            STPPaymentMethodTuple *paymentTuple = [STPPaymentMethodTuple tupleWithCardTuple:tuple applePayEnabled:self.configuration.applePayEnabled];
+
+            STPPaymentMethodTuple *paymentTuple = [customer filteredSourceTupleForUIWithConfiguration:self.configuration];
+
             [self.loadingPromise succeed:paymentTuple];
         });
     }];
@@ -152,6 +163,9 @@ typedef NS_ENUM(NSUInteger, STPPaymentContextState) {
 - (void)setHostViewController:(UIViewController *)hostViewController {
     NSCAssert(_hostViewController == nil, @"You cannot change the hostViewController on an STPPaymentContext after it's already been set.");
     _hostViewController = hostViewController;
+    if ([hostViewController isKindOfClass:[UINavigationController class]]) {
+        self.originalTopViewController = ((UINavigationController *)hostViewController).topViewController;
+    }
     [self artificiallyRetain:hostViewController];
     [self.willAppearPromise voidCompleteWith:hostViewController.stp_willAppearPromise];
     [self.didAppearPromise voidCompleteWith:hostViewController.stp_didAppearPromise];
@@ -175,6 +189,14 @@ typedef NS_ENUM(NSUInteger, STPPaymentContextState) {
         return [STPPaymentMethodTuple tupleWithPaymentMethods:self.paymentMethods
                                         selectedPaymentMethod:self.selectedPaymentMethod];
     }];
+}
+
+- (void)setPrefilledInformation:(STPUserInformation *)prefilledInformation {
+    _prefilledInformation = prefilledInformation;
+    if (prefilledInformation.shippingAddress && !self.shippingAddress) {
+        self.shippingAddress = prefilledInformation.shippingAddress;
+        self.shippingAddressNeedsVerification = YES;
+    }
 }
 
 - (void)setPaymentMethods:(NSArray<id<STPPaymentMethod>> *)paymentMethods {
@@ -240,6 +262,18 @@ typedef NS_ENUM(NSUInteger, STPPaymentContextState) {
     }
 }
 
+- (void)removePaymentMethod:(id<STPPaymentMethod>)paymentMethodToRemove {
+    // Remove payment method from cached representation
+    NSMutableArray *paymentMethods = [self.paymentMethods mutableCopy];
+    [paymentMethods removeObject:paymentMethodToRemove];
+    self.paymentMethods = paymentMethods;
+
+    // Elect new selected payment method if needed
+    if ([self.selectedPaymentMethod isEqual:paymentMethodToRemove]) {
+        self.selectedPaymentMethod = self.paymentMethods.firstObject;
+    }
+}
+
 #pragma mark - Payment Methods
 
 - (void)presentPaymentMethodsViewController {
@@ -256,6 +290,9 @@ typedef NS_ENUM(NSUInteger, STPPaymentContextState) {
             STPPaymentMethodsViewController *paymentMethodsViewController = [[STPPaymentMethodsViewController alloc] initWithPaymentContext:self];
             self.paymentMethodsViewController = paymentMethodsViewController;
             paymentMethodsViewController.prefilledInformation = self.prefilledInformation;
+            paymentMethodsViewController.paymentMethodsViewControllerFooterView = self.paymentMethodsViewControllerFooterView;
+            paymentMethodsViewController.addCardViewControllerFooterView = self.addCardViewControllerFooterView;
+
             UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:paymentMethodsViewController];
             navigationController.navigationBar.stp_theme = self.theme;
             navigationController.modalPresentationStyle = self.modalPresentationStyle;
@@ -282,6 +319,9 @@ typedef NS_ENUM(NSUInteger, STPPaymentContextState) {
             STPPaymentMethodsViewController *paymentMethodsViewController = [[STPPaymentMethodsViewController alloc] initWithPaymentContext:self];
             self.paymentMethodsViewController = paymentMethodsViewController;
             paymentMethodsViewController.prefilledInformation = self.prefilledInformation;
+            paymentMethodsViewController.paymentMethodsViewControllerFooterView = self.paymentMethodsViewControllerFooterView;
+            paymentMethodsViewController.addCardViewControllerFooterView = self.addCardViewControllerFooterView;
+            
             [navigationController pushViewController:paymentMethodsViewController animated:YES];
         }
     }];
@@ -333,7 +373,12 @@ typedef NS_ENUM(NSUInteger, STPPaymentContextState) {
         }];
     } else {
         // otherwise, we've been pushed onto the stack.
-        [viewController.navigationController stp_popToViewController:self.hostViewController animated:YES completion:^{
+        UIViewController *destinationViewController = self.hostViewController;
+        // If hostViewController is a nav controller, pop to the original VC on top of the stack.
+        if ([self.hostViewController isKindOfClass:[UINavigationController class]]) {
+            destinationViewController = self.originalTopViewController;
+        }
+        [viewController.navigationController stp_popToViewController:destinationViewController animated:YES completion:^{
             self.paymentMethodsViewController = nil;
             if (completion) {
                 completion();
@@ -420,8 +465,12 @@ typedef NS_ENUM(NSUInteger, STPPaymentContextState) {
                  didFinishWithAddress:(STPAddress *)address
                        shippingMethod:(PKShippingMethod *)method {
     self.shippingAddress = address;
+    self.shippingAddressNeedsVerification = NO;
     self.selectedShippingMethod = method;
     [self.delegate paymentContextDidChange:self];
+    if ([self.apiAdapter respondsToSelector:@selector(updateCustomerWithShippingAddress:completion:)]) {
+        [self.apiAdapter updateCustomerWithShippingAddress:self.shippingAddress completion:nil];
+    }
     [self appropriatelyDismissViewController:addressViewController completion:^{
         if (self.state == STPPaymentContextStateRequestingPayment) {
             self.state = STPPaymentContextStateNone;
@@ -443,7 +492,12 @@ typedef NS_ENUM(NSUInteger, STPPaymentContextState) {
         }];
     } else {
         // otherwise, we've been pushed onto the stack.
-        [viewController.navigationController stp_popToViewController:self.hostViewController animated:YES completion:^{
+        UIViewController *destinationViewController = self.hostViewController;
+        // If hostViewController is a nav controller, pop to the original VC on top of the stack.
+        if ([self.hostViewController isKindOfClass:[UINavigationController class]]) {
+            destinationViewController = self.originalTopViewController;
+        }
+        [viewController.navigationController stp_popToViewController:destinationViewController animated:YES completion:^{
             if (completion) {
                 completion();
             }
@@ -452,6 +506,14 @@ typedef NS_ENUM(NSUInteger, STPPaymentContextState) {
 }
 
 #pragma mark - Request Payment
+
+- (BOOL)requestPaymentShouldPresentShippingViewController {
+    BOOL shippingAddressRequired = self.configuration.requiredShippingAddressFields != STPBillingAddressFieldsNone;
+    BOOL shippingAddressIncomplete = ![self.shippingAddress containsRequiredShippingAddressFields:self.configuration.requiredShippingAddressFields];
+    BOOL shippingMethodRequired = ([self.delegate respondsToSelector:@selector(paymentContext:didUpdateShippingAddress:completion:)] && !self.selectedShippingMethod);
+    BOOL verificationRequired = self.configuration.verifyPrefilledShippingAddress && self.shippingAddressNeedsVerification;
+    return (shippingAddressRequired && (shippingAddressIncomplete || shippingMethodRequired || verificationRequired));
+}
 
 - (void)requestPayment {
     FAUXPAS_IGNORED_IN_METHOD(APIAvailability);
@@ -472,9 +534,7 @@ typedef NS_ENUM(NSUInteger, STPPaymentContextState) {
         if (!self.selectedPaymentMethod) {
             [self presentPaymentMethodsViewControllerWithNewState:STPPaymentContextStateRequestingPayment];
         }
-        else if (self.configuration.requiredShippingAddressFields != STPBillingAddressFieldsNone &&
-                 !self.shippingAddress)
-        {
+        else if ([self requestPaymentShouldPresentShippingViewController]) {
             [self presentShippingViewControllerWithNewState:STPPaymentContextStateRequestingPayment];
         }
         else if ([self.selectedPaymentMethod isKindOfClass:[STPCard class]]) {
@@ -513,7 +573,12 @@ typedef NS_ENUM(NSUInteger, STPPaymentContextState) {
             STPPaymentAuthorizationBlock paymentHandler = ^(PKPayment *payment) {
                 self.selectedShippingMethod = payment.shippingMethod;
                 self.shippingAddress = [[STPAddress alloc] initWithABRecord:payment.shippingAddress];
+                self.shippingAddressNeedsVerification = NO;
                 [self.delegate paymentContextDidChange:self];
+                if ([self.apiAdapter isKindOfClass:[STPCustomerContext class]]) {
+                    STPCustomerContext *customerContext = (STPCustomerContext *)self.apiAdapter;
+                    [customerContext updateCustomerWithShippingAddress:self.shippingAddress completion:nil];
+                }
             };
             STPApplePayTokenHandlerBlock applePayTokenHandler = ^(STPToken *token, STPErrorBlock tokenCompletion) {
                 [self.apiAdapter attachSourceToCustomer:token completion:^(NSError *tokenError) {
@@ -571,7 +636,7 @@ typedef NS_ENUM(NSUInteger, STPPaymentContextState) {
     if (!self.configuration.appleMerchantIdentifier || !self.paymentAmount) {
         return nil;
     }
-    PKPaymentRequest *paymentRequest = [Stripe paymentRequestWithMerchantIdentifier:self.configuration.appleMerchantIdentifier];
+    PKPaymentRequest *paymentRequest = [Stripe paymentRequestWithMerchantIdentifier:self.configuration.appleMerchantIdentifier country:self.paymentCountry currency:self.paymentCurrency];
 
     NSArray<PKPaymentSummaryItem *> *summaryItems = self.paymentSummaryItems;
     paymentRequest.paymentSummaryItems = summaryItems;

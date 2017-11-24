@@ -2,7 +2,7 @@ GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
 HEADER_SEARCH_PATHS = $(inherited) "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/Stripe"
 LIBRARY_SEARCH_PATHS = $(inherited) "$PODS_CONFIGURATION_BUILD_DIR/Stripe"
 OTHER_CFLAGS = $(inherited) -isystem "${PODS_ROOT}/Headers/Public" -isystem "${PODS_ROOT}/Headers/Public/Stripe"
-OTHER_LDFLAGS = $(inherited) -ObjC -l"Stripe" -framework "AddressBook" -framework "Foundation" -framework "PassKit" -framework "Security" -framework "WebKit" -weak_framework "Contacts"
+OTHER_LDFLAGS = $(inherited) -ObjC -l"Stripe" -framework "AddressBook" -framework "CoreLocation" -framework "Foundation" -framework "PassKit" -framework "Security" -framework "WebKit" -weak_framework "Contacts"
 PODS_BUILD_DIR = $BUILD_DIR
 PODS_CONFIGURATION_BUILD_DIR = $PODS_BUILD_DIR/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)
 PODS_PODFILE_DIR_PATH = ${SRCROOT}/.

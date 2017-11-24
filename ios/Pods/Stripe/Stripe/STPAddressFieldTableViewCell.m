@@ -16,13 +16,12 @@
 
 @interface STPAddressFieldTableViewCell() <STPFormTextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource>
 
-@property(nonatomic, weak) STPFormTextField *textField;
-@property(nonatomic) UIToolbar *inputAccessoryToolbar;
-@property(nonatomic) UIPickerView *countryPickerView;
-@property(nonatomic, strong) NSArray *countryCodes;
-@property(nonatomic, weak)id<STPAddressFieldTableViewCellDelegate>delegate;
-@property(nonatomic, strong) NSString *ourCountryCode;
-@property(nonatomic, assign) STPPostalCodeType postalCodeType;
+@property (nonatomic, weak) STPFormTextField *textField;
+@property (nonatomic) UIToolbar *inputAccessoryToolbar;
+@property (nonatomic) UIPickerView *countryPickerView;
+@property (nonatomic, strong) NSArray *countryCodes;
+@property (nonatomic, weak) id<STPAddressFieldTableViewCellDelegate>delegate;
+@property (nonatomic, strong) NSString *ourCountryCode;
 @end
 
 @implementation STPAddressFieldTableViewCell
@@ -231,7 +230,6 @@
     }
     
     self.ourCountryCode = countryCode;
-    _postalCodeType = [STPPostalCodeValidator postalCodeTypeForCountryCode:self.ourCountryCode];
     [self updateTextFieldsAndCaptions];
     [self setNeedsLayout];
 }
@@ -290,6 +288,9 @@
 
 - (void)textFieldDidEndEditing:(STPFormTextField *)textField {
     textField.validText = [self validContents];
+    if ([self.delegate respondsToSelector:@selector(addressFieldTableViewCellDidEndEditing:)]) {
+        [self.delegate addressFieldTableViewCellDidEndEditing:self];
+    }
 }
 
 - (void)formTextFieldDidBackspaceOnEmpty:(__unused STPFormTextField *)formTextField {
@@ -329,8 +330,8 @@
         case STPAddressFieldTypeLine2:
             return YES;
         case STPAddressFieldTypeZip:
-            return [STPPostalCodeValidator stringIsValidPostalCode:self.contents
-                                                              type:self.postalCodeType];
+            return ([STPPostalCodeValidator validationStateForPostalCode:self.contents
+                                                             countryCode:self.ourCountryCode] == STPCardValidationStateValid);
         case STPAddressFieldTypeEmail:
             return [STPEmailAddressValidator stringIsValidEmailAddress:self.contents];
         case STPAddressFieldTypePhone:
@@ -349,12 +350,10 @@
         case STPAddressFieldTypeLine2:
             return YES;
         case STPAddressFieldTypeZip: {
-            if (self.postalCodeType == STPCountryPostalCodeTypeNumericOnly) {
-                return [STPCardValidator stringIsNumeric:self.contents];
-            }
-            else {
-                return YES;
-            }
+            STPCardValidationState validationState = [STPPostalCodeValidator validationStateForPostalCode:self.contents
+                                                                                              countryCode:self.ourCountryCode];
+            return (validationState == STPCardValidationStateValid
+                    || validationState == STPCardValidationStateIncomplete);
         }
         case STPAddressFieldTypeEmail:
             return [STPEmailAddressValidator stringIsValidPartialEmailAddress:self.contents];

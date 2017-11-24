@@ -8,7 +8,7 @@
 
 #import "STPShippingMethodsViewController.h"
 
-#import "NSArray+Stripe_BoundSafe.h"
+#import "NSArray+Stripe.h"
 #import "STPColorUtils.h"
 #import "STPCoreTableViewController+Private.h"
 #import "STPImageLibrary+Private.h"
@@ -22,11 +22,11 @@
 static NSString *const STPShippingMethodCellReuseIdentifier = @"STPShippingMethodCellReuseIdentifier";
 
 @interface STPShippingMethodsViewController () <UITableViewDataSource, UITableViewDelegate>
-@property(nonatomic)NSArray<PKShippingMethod *>*shippingMethods;
-@property(nonatomic)PKShippingMethod *selectedShippingMethod;
-@property(nonatomic)NSString *currency;
-@property(nonatomic, weak)UIImageView *imageView;
-@property(nonatomic)UIBarButtonItem *doneItem;
+@property (nonatomic) NSArray<PKShippingMethod *>*shippingMethods;
+@property (nonatomic) PKShippingMethod *selectedShippingMethod;
+@property (nonatomic) NSString *currency;
+@property (nonatomic, weak) UIImageView *imageView;
+@property (nonatomic) UIBarButtonItem *doneItem;
 @end
 
 @implementation STPShippingMethodsViewController
@@ -86,6 +86,10 @@ static NSString *const STPShippingMethodCellReuseIdentifier = @"STPShippingMetho
 
 - (void)done:(__unused id)sender {
     [self.delegate shippingMethodsViewController:self didFinishWithShippingMethod:self.selectedShippingMethod];
+}
+
+- (BOOL)useSystemBackButton {
+    return YES;
 }
 
 #pragma mark - UITableView
