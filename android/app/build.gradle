@@ -111,6 +111,16 @@ android {
             googleMapsApiKey: googleMapsApiKey
         ]
     }
+    signingConfigs {
+        release {
+            if (project.hasProperty('COOPCYCLE_RELEASE_STORE_FILE')) {
+                storeFile file(COOPCYCLE_RELEASE_STORE_FILE)
+                storePassword COOPCYCLE_RELEASE_STORE_PASSWORD
+                keyAlias COOPCYCLE_RELEASE_KEY_ALIAS
+                keyPassword COOPCYCLE_RELEASE_KEY_PASSWORD
+            }
+        }
+    }
     splits {
         abi {
             reset()
@@ -123,6 +133,7 @@ android {
         release {
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            signingConfig signingConfigs.release
         }
     }
     // applicationVariants are e.g. debug, release
