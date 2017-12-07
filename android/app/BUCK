@@ -45,12 +45,12 @@ android_library(
 
 android_build_config(
     name = "build_config",
-    package = "com.coopcycle",
+    package = "fr.coopcycle",
 )
 
 android_resource(
     name = "res",
-    package = "com.coopcycle",
+    package = "fr.coopcycle",
     res = "src/main/res",
 )
 

@@ -1,4 +1,4 @@
-package com.coopcycle;
+package fr.coopcycle;
 
 import com.facebook.react.ReactActivity;
 
