@@ -9,16 +9,16 @@
   "dependencies": {
     "@mapbox/polyline": "^0.2.0",
     "moment": "^2.19.2",
-    "native-base": "^2.2.1",
-    "react": "^16.0.0",
-    "react-native": "^0.50.1",
+    "native-base": "^2.3.4",
+    "react": "16.0.0",
+    "react-native": "0.51.0",
     "react-native-cache-store": "^1.0.2",
     "react-native-google-places-autocomplete": "^1.3.6",
-    "react-native-maps": "^0.17.0",
-    "react-native-progress": "^3.2.0",
-    "react-navigation": "^1.0.0-beta.19",
+    "react-native-maps": "^0.18.3",
+    "react-native-progress": "^3.4.0",
+    "react-navigation": "^1.0.0-beta.21",
     "slugify": "^1.1.0",
-    "tipsi-stripe": "^4.1.0",
+    "tipsi-stripe": "4.2.0",
     "underscore": "^1.8.3"
   },
   "devDependencies": {
