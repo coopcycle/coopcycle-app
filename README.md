@@ -26,8 +26,15 @@ react-native run-ios
 Troubleshooting
 ---------------
 
-Clear React Native cache
+« Have you tried turning it off and on again? »
 
 ```
+watchman watch-del-all
+rm -rf node_modules
+rm -rf $TMPDIR/react-*
 rm -rf ~/.rncache
+rm yarn.lock
+yarn cache clean
+yarn install
+react-native link
 ```
