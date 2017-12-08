@@ -20,7 +20,7 @@ import { Col, Row, Grid } from 'react-native-easy-grid';
 import MapView from 'react-native-maps';
 import theme from '../theme/coopcycle';
 
-import Countdown from '../Countdown';
+// import Countdown from '../Countdown';
 import DirectionsAPI from '../DirectionsAPI';
 
 const LATITUDE_DELTA = 0.0722;
