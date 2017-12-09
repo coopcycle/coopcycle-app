@@ -30,48 +30,43 @@ class LoginPage extends Component {
     };
   }
 
-  onLoginFormSubmit(email, password) {
-
+  onLoginSuccess(user) {
     const { navigation } = this.props
     const { baseURL, client } = navigation.state.params
 
-    client.login(email, password)
-      .then((user) => {
-        const resetAction = NavigationActions.reset({
-          index: 0,
-          actions: [
-            NavigationActions.navigate({
-              routeName: 'Home',
-              params: {
-                baseURL,
-                client,
-                user
-              }
-            })
-          ]
+    const resetAction = NavigationActions.reset({
+      index: 0,
+      actions: [
+        NavigationActions.navigate({
+          routeName: 'Home',
+          params: {
+            baseURL,
+            client,
+            user
+          }
         })
-        navigation.dispatch(resetAction)
-      })
-      .catch((err) => {
-        console.log(err)
-        if (err.hasOwnProperty('code') && err.code === 401) {
-          this.setState({ message: "Utilisateur et/ou mot de passe inexistant." });
-        } else {
-          this.setState({ message: "Veuillez réessayer plus tard" });
-        }
-      });
+      ]
+    })
+    navigation.dispatch(resetAction)
+  }
+
+  onLoginFail(message) {
+    this.setState({ message });
   }
 
   render() {
 
-    const { params } = this.props.navigation.state
+    const { client, baseURL } = this.props.navigation.state.params
 
     return (
       <Container>
         <Content style={{ paddingTop: 40 }}>
-          <LoginForm onSubmit={ (email, password) => this.onLoginFormSubmit(email, password) } />
+          <LoginForm
+            client={ client }
+            onLoginSuccess={ this.onLoginSuccess.bind(this) }
+            onLoginFail={ this.onLoginFail.bind(this) } />
           <View style={{ marginTop: 30 }}>
-            <Text style={{ textAlign: 'center' }}>Connecté à <Text style={{ fontWeight: 'bold' }}>{ params.baseURL }</Text></Text>
+            <Text style={{ textAlign: 'center' }}>Connecté à <Text style={{ fontWeight: 'bold' }}>{ baseURL }</Text></Text>
             <Button block transparent onPress={ () => Settings.removeServer() }>
               <Text>Choisir un autre serveur</Text>
             </Button>

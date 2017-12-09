@@ -15,11 +15,17 @@ export default class LoginForm extends Component {
 
   onSubmit() {
     const { email, password } = this.state
-    const { onSubmit } = this.props
+    const { client, onLoginSuccess, onLoginFail } = this.props
 
-    if (onSubmit) {
-      onSubmit(email, password)
-    }
+    client.login(email, password)
+      .then(user => onLoginSuccess(user))
+      .catch(err => {
+        if (err.hasOwnProperty('code') && err.code === 401) {
+          onLoginFail('Utilisateur et/ou mot de passe inexistant.')
+        } else {
+          onLoginFail('Veuillez réessayer plus tard')
+        }
+      })
   }
 
   render() {
