@@ -27,6 +27,12 @@ class CartItem {
   get key() {
     return this.menuItem['@id'];
   }
+  get price() {
+    return this.menuItem.offers.price
+  }
+  get name() {
+    return this.menuItem.name
+  }
   toJSON() {
     return {
       menuItem: this.menuItem['@id'],
