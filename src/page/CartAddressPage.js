@@ -21,7 +21,8 @@ import theme from '../theme/coopcycle';
 
 class CartAddressPage extends Component {
 
-  map = null;
+  deliveryAddressForm = null
+  map = null
 
   constructor(props) {
     super(props);
@@ -43,11 +44,13 @@ class CartAddressPage extends Component {
 
   createAddress() {
 
-    const { deliveryAddress } = this.state
     const { navigate } = this.props.navigation
     const { cart, client, user } = this.props.navigation.state.params
 
     this.setState({ loading: true })
+
+    const { deliveryAddress } = this.state
+    Object.assign(deliveryAddress, this.deliveryAddressForm.createDeliveryAddress())
 
     client.post('/api/me/addresses', deliveryAddress)
       .then(data => {
@@ -83,7 +86,7 @@ class CartAddressPage extends Component {
         <Content theme={ theme }>
           <View style={{ height: 200 }}>
             <MapView
-              ref={ ref => { this.map = ref; } }
+              ref={ component => this.map = component }
               style={ styles.map }
               zoomEnabled
               loadingEnabled
@@ -100,7 +103,7 @@ class CartAddressPage extends Component {
               ))}
             </MapView>
           </View>
-          <DeliveryAddressForm deliveryAddress={ deliveryAddress } errors={ errors } />
+          <DeliveryAddressForm ref={ component => this.deliveryAddressForm = component } { ...deliveryAddress } errors={ errors } />
           <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', padding: 20 }}>
             <Button block onPress={ () => this.createAddress() }>
               <Text>Continuer</Text>

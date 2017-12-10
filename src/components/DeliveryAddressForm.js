@@ -6,10 +6,23 @@ import _ from 'underscore'
 export default class DeliveryAddressForm extends Component {
   constructor(props) {
     super(props)
+    this.state = {
+      streetAddress: props.streetAddress || '',
+      postalCode: props.postalCode || '',
+      addressLocality: props.addressLocality || ''
+    }
+  }
+  createDeliveryAddress() {
+    return this.state
   }
   render() {
 
     const errors = this.props.errors || []
+
+    const inputProps = {
+      autoCorrect: false,
+      autoCapitalize: 'none',
+    }
 
     const postalCodeProps = _.contains(errors, 'postalCode') ? { error: true } : {}
 
@@ -17,15 +30,24 @@ export default class DeliveryAddressForm extends Component {
       <Form>
         <Item stackedLabel>
           <Label>Adresse</Label>
-          <Input value={ this.props.deliveryAddress.streetAddress } />
+          <Input ref="streetAddress"
+            { ...inputProps }
+            onChangeText={ streetAddress => this.setState({ streetAddress }) }
+            value={ this.state.streetAddress } />
         </Item>
-        <Item stackedLabel { ...postalCodeProps}>
+        <Item stackedLabel { ...postalCodeProps }>
           <Label>Code postal</Label>
-          <Input value={ this.props.deliveryAddress.postalCode } />
+          <Input ref="postalCode"
+            { ...inputProps }
+            onChangeText={ postalCode => this.setState({ postalCode }) }
+            value={ this.state.postalCode } />
         </Item>
         <Item stackedLabel last>
           <Label>Ville</Label>
-          <Input value={ this.props.deliveryAddress.addressLocality } />
+          <Input ref="addressLocality"
+            { ...inputProps }
+            onChangeText={ addressLocality => this.setState({ addressLocality }) }
+            value={ this.state.addressLocality } />
         </Item>
       </Form>
     );
