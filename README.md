@@ -16,6 +16,13 @@ $ npm install
 $ react-native link
 ```
 
+For Android, create a `gradle.properties` file in `GRADLE_USER_HOME` (defaults to `~/.gradle`)
+[Learn more about configuring Gradle Build Environment](https://docs.gradle.org/current/userguide/build_environment.html)
+
+```
+googleMapsApiKey=YOUR_API_KEY
+```
+
 Running on iOS emulator
 -----------------------
 
