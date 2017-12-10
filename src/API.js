@@ -92,21 +92,12 @@ Client.prototype.fetch = function(req) {
             });
         }
 
-        response.json().then((data) => {
-
-          let message = 'An error occured'
-          if (data.hasOwnProperty('@context') && data['@context'] === '/api/contexts/ConstraintViolationList') {
-            message = data['hydra:description']
-          }
-          if (data.hasOwnProperty('message')) {
-            message = data.message
-          }
-
-          reject(message)
-        });
+        response.json().then(data => reject(data))
       });
   });
 }
+
+
 
 Client.prototype.login = function(username, password) {
   return login(this.httpBaseURL, username, password)
@@ -239,8 +230,19 @@ const checkServer = function(server) {
 }
 
 module.exports = {
-  createClient: function(httpBaseURL, model) {
-    return new Client(httpBaseURL, model);
+  checkServer,
+  createClient: (httpBaseURL, model) => {
+    return new Client(httpBaseURL, model)
   },
-  checkServer: checkServer
+  resolveErrorMessage: data => {
+    let message = 'An error occured'
+    if (data.hasOwnProperty('@context') && data['@context'] === '/api/contexts/ConstraintViolationList') {
+      message = data['hydra:description']
+    }
+    if (data.hasOwnProperty('message')) {
+      message = data.message
+    }
+
+    return message
+  }
 }
