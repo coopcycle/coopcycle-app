@@ -33,6 +33,7 @@ class CartAddressPage extends Component {
       deliveryAddress,
       loading: false,
       loaded: false,
+      errors: []
     };
   }
 
@@ -60,12 +61,16 @@ class CartAddressPage extends Component {
 
         navigate('CreditCard', { cart, deliveryAddress: data, client, user })
       })
-      .catch(err => console.log(err))
+      .catch(err => {
+        const { violations } = err
+        const errors = violations.map(violation => violation.propertyPath)
+        this.setState({ errors })
+      })
   }
 
   render() {
 
-    const { deliveryAddress } = this.state
+    const { deliveryAddress, errors } = this.state
     const markers = [{
       key: 'deliveryAddress',
       identifier: 'deliveryAddress',
@@ -95,7 +100,7 @@ class CartAddressPage extends Component {
               ))}
             </MapView>
           </View>
-          <DeliveryAddressForm deliveryAddress={ deliveryAddress } />
+          <DeliveryAddressForm deliveryAddress={ deliveryAddress } errors={ errors } />
           <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', padding: 20 }}>
             <Button block onPress={ () => this.createAddress() }>
               <Text>Continuer</Text>
