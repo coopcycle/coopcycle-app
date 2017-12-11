@@ -19,7 +19,7 @@ import {
   Button, Text, Icon, List, ListItem, Thumbnail,
   Form, Item, Input, Label,
   Card, CardItem,
-  Toast
+  Root, Toast
 } from 'native-base';
 
 import { NavigationActions, StackNavigator } from 'react-navigation'
@@ -310,30 +310,32 @@ export default class App extends Component {
       };
 
       return (
-        <Container>
-          <Header>
-            <Left />
-            <Body>
-              <Title>CoopCycle</Title>
-            </Body>
-            <Right />
-          </Header>
-          <Content>
-            <Form style={{ marginBottom: 20 }}>
-              <Item stackedLabel last>
-                <Label>Serveur</Label>
-                <Input ref={(ref) => { this.input = ref }} autoCapitalize={'none'} autoCorrect={false}
-                  onChangeText={(text) => this.setState({ text })} />
-              </Item>
-            </Form>
-            <View style={{ paddingHorizontal: 10 }}>
-              <Button block onPress={ this.connect.bind(this) }>
-                <Text>Valider</Text>
-              </Button>
-            </View>
-          </Content>
-          { loader }
-        </Container>
+        <Root>
+          <Container>
+            <Header>
+              <Left />
+              <Body>
+                <Title>CoopCycle</Title>
+              </Body>
+              <Right />
+            </Header>
+            <Content>
+              <Form style={{ marginBottom: 20 }}>
+                <Item stackedLabel last>
+                  <Label>Serveur</Label>
+                  <Input ref={(ref) => { this.input = ref }} autoCapitalize={'none'} autoCorrect={false}
+                    onChangeText={(text) => this.setState({ text })} />
+                </Item>
+              </Form>
+              <View style={{ paddingHorizontal: 10 }}>
+                <Button block onPress={ this.connect.bind(this) }>
+                  <Text>Valider</Text>
+                </Button>
+              </View>
+            </Content>
+            { loader }
+          </Container>
+        </Root>
       );
     }
 
