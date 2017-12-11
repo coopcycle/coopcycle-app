@@ -156,8 +156,22 @@ var refreshToken = function(baseURL, refreshToken) {
   });
 }
 
+const ERROR_NOT_COMPATIBLE = {
+  message: 'Not a CoopCycle server'
+}
+
+const ERROR_INVALID_HOSTNAME = {
+  message: 'Hostname is not valid'
+}
+
 const resolveBaseURL = function(server) {
   return new Promise((resolve, reject) => {
+
+    if (server.trim().length === 0) {
+      reject(ERROR_INVALID_HOSTNAME)
+      return
+    }
+
     if (!server.startsWith('http://') && !server.startsWith('https://')) {
       try {
         return fetch('https://' + server, { timeout: 3000 })
@@ -169,10 +183,6 @@ const resolveBaseURL = function(server) {
     }
     resolve(server);
   });
-}
-
-const ERROR_NOT_COMPATIBLE = {
-  message: 'Not a CoopCycle server'
 }
 
 const checkServer = function(server) {
@@ -225,7 +235,8 @@ const checkServer = function(server) {
           })
           .catch((err) => reject(err));
 
-      });
+      })
+      .catch(err => reject(err))
   });
 }
 

@@ -5,7 +5,6 @@ import {
   StyleSheet,
   View,
   Dimensions,
-  TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
 
@@ -26,6 +25,8 @@ import { NavigationActions, StackNavigator } from 'react-navigation'
 
 import API from './src/API'
 import Auth from './src/Auth'
+
+import theme from './src/theme/coopcycle'
 
 const Routes = require('./src/page');
 const AppUser = require('./src/AppUser');
@@ -184,7 +185,7 @@ export default class App extends Component {
         server: null,
         text: '',
         user: null,
-        error: '',
+        serverError: false,
       }
     }
 
@@ -227,7 +228,7 @@ export default class App extends Component {
     connect() {
       const server = this.state.text;
 
-      this.setState({ loading: true });
+      this.setState({ loading: true, serverError: false });
 
       API.checkServer(server)
         .then(baseURL => {
@@ -241,12 +242,18 @@ export default class App extends Component {
           setTimeout(() => {
 
             let message = 'Veuillez réessayer plus tard';
+            let serverError = false
             if (err.message) {
               if (err.message === 'Network request failed') {
                 message = 'Impossible de se connecter';
               }
               if (err.message === 'Not a CoopCycle server') {
                 message = 'Ce serveur n\'est pas compatible';
+                serverError = true
+              }
+              if (err.message === 'Hostname is not valid') {
+                message = 'Ce serveur n\'est pas valide'
+                serverError = true
               }
             }
 
@@ -260,7 +267,7 @@ export default class App extends Component {
             this.input._root.clear();
             this.input._root.focus();
 
-            this.setState({ loading: false });
+            this.setState({ loading: false, serverError });
 
           }, 500);
 
@@ -304,9 +311,11 @@ export default class App extends Component {
         );
       };
 
+      const itemProps = this.state.serverError ? { error: true } : {}
+
       return (
         <Root>
-          <Container>
+          <Container theme={ theme }>
             <Header>
               <Left />
               <Body>
@@ -315,10 +324,25 @@ export default class App extends Component {
               <Right />
             </Header>
             <Content>
-              <Form style={{ marginBottom: 20 }}>
-                <Item stackedLabel last>
-                  <Label>Serveur</Label>
-                  <Input ref={(ref) => { this.input = ref }} autoCapitalize={'none'} autoCorrect={false}
+              <View style={{ marginHorizontal: 10, marginTop: 20 }}>
+                <Card>
+                  <CardItem>
+                    <Body>
+                      <Text>
+                        Veuillez choisir un serveur pour commencer.
+                      </Text>
+                    </Body>
+                  </CardItem>
+                </Card>
+              </View>
+              <Form style={{ marginVertical: 30 }}>
+                <Item stackedLabel last { ...itemProps }>
+                  <Label>Adresse du serveur</Label>
+                  <Input
+                    ref={(ref) => { this.input = ref }}
+                    autoCapitalize={'none'}
+                    autoCorrect={false}
+                    placeholder={'demo.coopcycle.org'}
                     onChangeText={(text) => this.setState({ text })} />
                 </Item>
               </Form>
