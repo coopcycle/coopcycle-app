@@ -193,33 +193,35 @@ export default class App extends Component {
       Settings.addListener('server:remove', this.disconnect.bind(this));
 
       AppUser.load()
-        .then((user) => {
-          Settings.loadServer()
-            .then((baseURL) => {
+        .then(user => {
+          Settings
+            .loadServer()
+            .then(baseURL => this.initializeRouter(baseURL, user))
+        })
+    }
 
-              let client = null;
-              if (baseURL) {
-                client = API.createClient(baseURL, user);
-              }
+    initializeRouter(baseURL, user) {
+      let client = null;
+      if (baseURL) {
+        client = API.createClient(baseURL, user);
+      }
 
-              const navigatorConfig = {
-                initialRouteParams: {
-                  baseURL,
-                  client,
-                  user,
-                }
-              }
+      const navigatorConfig = {
+        initialRouteParams: {
+          baseURL,
+          client,
+          user,
+        }
+      }
 
-              Router = StackNavigator(routeConfigs, navigatorConfig)
+      Router = StackNavigator(routeConfigs, navigatorConfig)
 
-              this.setState({
-                client: client,
-                initialized: true,
-                server: baseURL,
-                user: user,
-              });
-            });
-        });
+      this.setState({
+        client: client,
+        initialized: true,
+        server: baseURL,
+        user: user,
+      })
     }
 
     connect() {
@@ -228,23 +230,17 @@ export default class App extends Component {
       this.setState({ loading: true });
 
       API.checkServer(server)
-        .then((baseURL) => {
+        .then(baseURL => {
           const user = this.state.user;
-
-          Settings.saveServer(baseURL)
-            .then(() => {
-              this.setState({
-                client: API.createClient(baseURL, user),
-                loading: false,
-                server: server
-              });
-            });
+          Settings
+            .saveServer(baseURL)
+            .then(() => this.initializeRouter(baseURL, user));
         })
         .catch((err) => {
 
           setTimeout(() => {
 
-            let message = '';
+            let message = 'Veuillez réessayer plus tard';
             if (err.message) {
               if (err.message === 'Network request failed') {
                 message = 'Impossible de se connecter';
@@ -252,15 +248,14 @@ export default class App extends Component {
               if (err.message === 'Not a CoopCycle server') {
                 message = 'Ce serveur n\'est pas compatible';
               }
-
-              Toast.show({
-                text: message,
-                position: 'bottom',
-                type: 'danger',
-                duration: 3000
-              });
-
             }
+
+            Toast.show({
+              text: message,
+              position: 'bottom',
+              type: 'danger',
+              duration: 3000
+            });
 
             this.input._root.clear();
             this.input._root.focus();
