@@ -388,7 +388,11 @@ export default class App extends Component {
         return this.renderConfigureServer();
       }
 
-      return <Router />
+      return (
+        <StyleProvider style={getTheme(material)}>
+          <Router />
+        </StyleProvider>
+      )
     }
 }
 
