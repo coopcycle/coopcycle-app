@@ -6,7 +6,10 @@ import {
   List, ListItem, InputGroup, Input, Icon, Text, Picker, Button
 } from 'native-base';
 
-const Auth = require('../Auth');
+import { NavigationActions } from 'react-navigation'
+
+import LoginForm from '../components/LoginForm'
+import Settings from '../Settings'
 
 class AccountPage extends Component {
 
@@ -14,42 +17,85 @@ class AccountPage extends Component {
     super(props);
     this.state = {
       loading: false,
-      user: null
+      message: ''
     };
   }
 
-  componentDidMount() {
+  logout() {
 
-    const { client } = this.props.navigation.state.params
+    const { baseURL, client, user, navigation } = this.props.screenProps
 
-    this.setState({ loading: true })
-
-    client.request('GET', '/api/me')
-      .then((user) => {
-        this.setState({
-          loading: false,
-          user: user
+    user.logout()
+      .then(() => {
+        const resetAction = NavigationActions.reset({
+          index: 0,
+          actions: [
+            NavigationActions.navigate({
+              routeName: 'Home',
+              params: {
+                baseURL,
+                client,
+                user: null
+              }
+            })
+          ]
         })
+        navigation.dispatch(resetAction)
       })
-      .catch((err) => {
-        if (err === 'Invalid refresh token') {
-          this._logout();
-        }
-      });
   }
 
-  render() {
+  onRequestStart() {
+    this.setState({
+      message: '',
+      loading: true
+    })
+  }
 
-    const { navigate } = this.props.navigation
-    const { user } = this.state
-    const { client } = this.props.navigation.state.params
+  onRequestEnd() {
+    this.setState({ loading: false })
+  }
 
-    let loader = (
-      <View />
+  onLoginSuccess(user) {
+
+    const { baseURL, client, navigation } = this.props.screenProps
+
+    const resetAction = NavigationActions.reset({
+      index: 0,
+      actions: [
+        NavigationActions.navigate({
+          routeName: 'Home',
+          params: {
+            baseURL,
+            client,
+            user
+          }
+        })
+      ]
+    })
+    navigation.dispatch(resetAction)
+  }
+
+  onLoginFail(message) {
+    this.setState({ message })
+  }
+
+  renderServer() {
+    const { baseURL } = this.props.screenProps
+
+    return (
+      <View style={{ marginBottom: 15 }}>
+        <Text style={{ textAlign: 'center' }}>Connecté à <Text style={{ fontWeight: 'bold' }}>{ baseURL }</Text></Text>
+        <Button block transparent onPress={ () => Settings.removeServer() }>
+          <Text>Choisir un autre serveur</Text>
+        </Button>
+      </View>
     )
+  }
+
+  renderLoader() {
     if (this.state.loading) {
-      loader = (
-        <View style={styles.loader}>
+      return (
+        <View style={ styles.loader }>
           <ActivityIndicator
             animating={true}
             size="large"
@@ -57,12 +103,50 @@ class AccountPage extends Component {
           />
           <Text style={{color: '#fff'}}>Chargement...</Text>
         </View>
-      );
+      )
     }
 
     return (
+      <View />
+    )
+  }
+
+  renderCourierListItem() {
+
+    const { baseURL, client, user } = this.props.screenProps
+    const { navigate } = this.props.screenProps.navigation
+
+    if (user && user.isAuthenticated() && (user.hasRole('ROLE_COURIER') || user.hasRole('ROLE_ADMIN'))) {
+      return (
+        <ListItem button iconRight onPress={ () => navigate('Courier', { baseURL, client, user, connected: false, tracking: false }) }>
+          <Body>
+            <Text>Dispatch</Text>
+          </Body>
+          <Right>
+            <Icon name="arrow-forward" />
+          </Right>
+        </ListItem>
+      )
+    }
+
+    return <View />
+  }
+
+  renderAuthenticated() {
+
+    const { baseURL, client, user } = this.props.screenProps
+    const { navigate } = this.props.screenProps.navigation
+
+    return (
       <Container>
-        <Content>
+        <Content style={ styles.content }>
+          { this.renderServer() }
+          <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', marginBottom: 15 }}>
+            <Icon name="person" />
+            <Text style={{ textAlign: 'center', fontWeight: 'bold', fontSize: 18 }}>
+              Bonjour { user.username }
+            </Text>
+          </View>
           <List>
             <ListItem button>
               <Body>
@@ -72,7 +156,7 @@ class AccountPage extends Component {
                 <Icon name="arrow-forward" />
               </Right>
             </ListItem>
-            <ListItem button iconRight onPress={ () => navigate('AccountAddresses', { addresses: user.addresses }) }>
+            <ListItem button iconRight onPress={ () => navigate('AccountAddresses', { client }) }>
               <Body>
                 <Text>Adresses</Text>
               </Body>
@@ -88,21 +172,64 @@ class AccountPage extends Component {
                 <Icon name="arrow-forward" />
               </Right>
             </ListItem>
+            { this.renderCourierListItem() }
           </List>
+          <View style={{ paddingHorizontal: 10, marginTop: 40 }}>
+            <Button block danger onPress={ () => this.logout() }>
+              <Text>Déconnexion</Text>
+            </Button>
+          </View>
         </Content>
-        { loader }
+        { this.renderLoader() }
       </Container>
-    );
+    )
+  }
+
+  render() {
+
+    const { navigate } = this.props.navigation
+    const { baseURL, client, user } = this.props.screenProps
+    const isAuthenticated = user && user.isAuthenticated()
+
+    if (isAuthenticated) {
+      return this.renderAuthenticated()
+    }
+
+    return (
+      <Container>
+        <Content style={ styles.content }>
+          { this.renderServer() }
+          <LoginForm
+            client={ client }
+            onRequestStart={ this.onRequestStart.bind(this) }
+            onRequestEnd={ this.onRequestEnd.bind(this) }
+            onLoginSuccess={ this.onLoginSuccess.bind(this) }
+            onLoginFail={ this.onLoginFail.bind(this) } />
+          <View style={ styles.message }>
+            <Text style={{ textAlign: 'center' }}>{this.state.message}</Text>
+          </View>
+        </Content>
+        { this.renderLoader() }
+      </Container>
+    )
   }
 }
 
 const styles = StyleSheet.create({
+  content: {
+    backgroundColor: '#fff',
+    paddingTop: 30
+  },
   loader: {
     ...StyleSheet.absoluteFillObject,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'rgba(52, 52, 52, 0.4)'
   },
+  message: {
+    alignItems: "center",
+    padding: 20
+  }
 });
 
 module.exports = AccountPage;

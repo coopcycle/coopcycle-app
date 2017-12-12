@@ -37,12 +37,26 @@ class AppUser {
   }
 
   logout() {
-    Object.assign(this, {
-      username: null,
-      token: null,
-      roles: [],
-      refreshToken: null,
-    });
+    return new Promise((resolve, reject) => {
+      try {
+        AsyncStorage.removeItem('@User')
+          .then(error => {
+            if (error) {
+              return reject(error);
+            }
+
+            Object.assign(this, {
+              username: null,
+              token: null,
+              roles: [],
+              refreshToken: null,
+            })
+            resolve()
+          })
+      } catch (error) {
+        reject(error.messagee)
+      }
+    })
   }
 
   hasRole(role) {

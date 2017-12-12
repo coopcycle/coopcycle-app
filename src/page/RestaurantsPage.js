@@ -21,7 +21,7 @@ class RestaurantsPage extends Component {
   constructor(props) {
     super(props);
 
-    const { baseURL, client, user } = this.props.navigation.state.params
+    const { baseURL, client, user } = this.props.screenProps
 
     this.restaurantsAPI = new RestaurantsAPI(client)
     this.state = {
@@ -53,8 +53,8 @@ class RestaurantsPage extends Component {
   }
   renderRow(restaurant) {
 
-    const { navigate } = this.props.navigation
-    const { client, user } = this.props.navigation.state.params
+    const { client, user } = this.props.screenProps
+    const { navigate } = this.props.screenProps.navigation
     const { deliveryAddress } = this.state
 
     let cuisine = 'default';

@@ -34,10 +34,6 @@ class RestaurantPage extends Component {
     };
   }
 
-  componentDidMount() {
-    console.log('componentDidMount')
-  }
-
   _addToCart(menuItem) {
     const { cart } = this.state
     cart.addMenuItem(menuItem)
@@ -78,6 +74,8 @@ class RestaurantPage extends Component {
       })
     })
 
+    const btnProps = cart.articlesCount === 0 ? { disabled: true } : {}
+
     return (
       <Container>
         <Content>
@@ -94,7 +92,8 @@ class RestaurantPage extends Component {
               <Text style={{ fontWeight: 'bold' }}>{ cart.total } €</Text>
             </View>
             <View style={styles.cartRight}>
-              <Button block style={ { alignSelf: 'flex-end' } }
+              <Button block style={{ alignSelf: 'flex-end' }}
+                { ...btnProps }
                 onPress={ () => navigate('Cart', { cart, client, deliveryAddress, user, onCartUpdate: cart => this.setState({ cart }) }) }>
                 <Text>Commander</Text>
               </Button>

@@ -22,10 +22,9 @@ import {
 import getTheme from './native-base-theme/components';
 import material from './native-base-theme/variables/material';
 
-import { NavigationActions, StackNavigator } from 'react-navigation'
+import { StackNavigator } from 'react-navigation'
 
 import API from './src/API'
-import Auth from './src/Auth'
 
 const Routes = require('./src/page');
 const AppUser = require('./src/AppUser');
@@ -52,83 +51,10 @@ const defaultNavigationOptions = {
 
 const routeConfigs = {
   Home: {
-    screen: Routes.RestaurantsPage,
-    navigationOptions: ({ navigation }) => {
-
-      const { navigate, state, setParams } = navigation
-      const { baseURL, client, user } = state.params
-
-      let headerLeft, headerRight
-
-      if (user && user.isAuthenticated()) {
-        headerLeft = (
-          <Button transparent onPress={ () => navigate('Account', { baseURL, client, user }) }>
-            <Icon name="ios-menu" style={{ color: '#fff' }} />
-          </Button>
-        )
-      } else {
-        headerLeft = (
-          <Button transparent onPress={ () => navigate('Login', { baseURL, client, user }) }>
-            <Icon name="log-in" style={{ color: '#fff' }} />
-          </Button>
-        )
-      }
-
-      if (user && user.isAuthenticated() && (user.hasRole('ROLE_COURIER') || user.hasRole('ROLE_ADMIN'))) {
-        headerRight = (
-          <Button transparent onPress={ () => navigate('Courier', { baseURL, client, user, connected: false, tracking: false }) }>
-            <Icon name="ios-bicycle" style={{ color: '#fff' }} />
-          </Button>
-        )
-      } else {
-        headerRight = (
-          <Button transparent />
-        )
-      }
-
-      return {
-        headerLeft,
-        headerRight,
-        title: 'Restaurants',
-      }
-    }
-  },
-  Account: {
-    screen: Routes.AccountPage,
-    navigationOptions: ({ navigation }) => {
-
-      const { navigate, state, setParams } = navigation
-      const { baseURL, client, user } = state.params
-
-      const logout = () => {
-
-        Auth.removeUser().then(() => {
-          const resetAction = NavigationActions.reset({
-            index: 0,
-            actions: [
-              NavigationActions.navigate({
-                routeName: 'Home',
-                params: {
-                  baseURL,
-                  client,
-                  user: null
-                }
-              })
-            ]
-          })
-          navigation.dispatch(resetAction)
-        })
-      }
-
-      return {
-        headerRight: (
-          <Button transparent onPress={ () => logout() }>
-            <Icon name="exit" style={{ color: '#fff' }} />
-          </Button>
-        ),
-        title: 'Mon compte',
-      }
-    }
+    screen: Routes.HomePage,
+    navigationOptions: ({ navigation }) => ({
+      title: 'CoopCycle',
+    })
   },
   AccountAddresses: {
     screen: Routes.AccountAddressesPage,
@@ -146,12 +72,6 @@ const routeConfigs = {
     screen: Routes.CourierPage,
     navigationOptions: ({ navigation }) => ({
       title: 'Livraisons',
-    })
-  },
-  Login: {
-    screen: Routes.LoginPage,
-    navigationOptions: ({ navigation }) => ({
-      title: 'Login',
     })
   },
   Restaurant: {
@@ -244,7 +164,7 @@ export default class App extends Component {
     }
 
     connect() {
-      const server = this.state.text;
+      const server = this.state.text.trim();
 
       this.setState({ loading: true, serverError: false });
 

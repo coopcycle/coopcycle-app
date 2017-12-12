@@ -10,17 +10,26 @@ export default class LoginForm extends Component {
     this.state = {
       email: undefined,
       password: undefined,
+      error: false
     }
   }
 
   onSubmit() {
     const { email, password } = this.state
-    const { client, onLoginSuccess, onLoginFail } = this.props
+    const { client, onRequestStart, onRequestEnd, onLoginSuccess, onLoginFail } = this.props
+
+    this.setState({ error: false })
+    onRequestStart()
 
     client.login(email, password)
-      .then(user => onLoginSuccess(user))
+      .then(user => {
+        onRequestEnd()
+        onLoginSuccess(user)
+      })
       .catch(err => {
+        onRequestEnd()
         if (err.hasOwnProperty('code') && err.code === 401) {
+          this.setState({ error: true })
           onLoginFail('Utilisateur et/ou mot de passe inexistant.')
         } else {
           onLoginFail('Veuillez réessayer plus tard')
@@ -29,10 +38,15 @@ export default class LoginForm extends Component {
   }
 
   render() {
+
+    const { error } = this.state
+
+    const itemProps = error ? { error: true } : {}
+
     return (
       <View>
         <Form>
-          <Item stackedLabel>
+          <Item stackedLabel { ...itemProps }>
             <Label>Nom d'utilisateur</Label>
             <Input ref="email"
               autoCorrect={false}
@@ -40,7 +54,7 @@ export default class LoginForm extends Component {
               onChangeText={ (email) => this.setState({ email }) }
               style={{ height: 40 }} />
           </Item>
-          <Item stackedLabel>
+          <Item stackedLabel { ...itemProps }>
             <Label>Mot de passe</Label>
             <Input ref="password"
               autoCorrect={false}
