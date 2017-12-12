@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import {
   AppRegistry,
@@ -18,8 +17,10 @@ import {
   Button, Text, Icon, List, ListItem, Thumbnail,
   Form, Item, Input, Label,
   Card, CardItem,
-  Root, Toast
+  Root, Toast, StyleProvider
 } from 'native-base';
+import getTheme from './native-base-theme/components';
+import material from './native-base-theme/variables/material';
 
 import { NavigationActions, StackNavigator } from 'react-navigation'
 
@@ -32,6 +33,22 @@ const Settings = require('./src/Settings');
 const AppConfig = require('./src/AppConfig');
 
 let Router
+
+const defaultNavigationOptions = {
+  headerStyle: {
+    backgroundColor: '#e4022d',
+  },
+  headerBackTitleStyle: {
+    color: '#fff',
+  },
+  headerTitleStyle: {
+    color: '#fff',
+    // fontWeight needs to be defined or it doesn't work
+    // @see https://github.com/react-community/react-navigation/issues/542#issuecomment-345289122
+    fontWeight: 'normal',
+    fontFamily: 'Raleway-Regular',
+  }
+}
 
 const routeConfigs = {
   Home: {
@@ -46,13 +63,13 @@ const routeConfigs = {
       if (user && user.isAuthenticated()) {
         headerLeft = (
           <Button transparent onPress={ () => navigate('Account', { baseURL, client, user }) }>
-            <Icon name="ios-menu" />
+            <Icon name="ios-menu" style={{ color: '#fff' }} />
           </Button>
         )
       } else {
         headerLeft = (
           <Button transparent onPress={ () => navigate('Login', { baseURL, client, user }) }>
-            <Icon name="log-in" />
+            <Icon name="log-in" style={{ color: '#fff' }} />
           </Button>
         )
       }
@@ -60,7 +77,7 @@ const routeConfigs = {
       if (user && user.isAuthenticated() && (user.hasRole('ROLE_COURIER') || user.hasRole('ROLE_ADMIN'))) {
         headerRight = (
           <Button transparent onPress={ () => navigate('Courier', { baseURL, client, user, connected: false, tracking: false }) }>
-            <Icon name="ios-bicycle" />
+            <Icon name="ios-bicycle" style={{ color: '#fff' }} />
           </Button>
         )
       } else {
@@ -106,7 +123,7 @@ const routeConfigs = {
       return {
         headerRight: (
           <Button transparent onPress={ () => logout() }>
-            <Icon name="exit" />
+            <Icon name="exit" style={{ color: '#fff' }} />
           </Button>
         ),
         title: 'Mon compte',
@@ -210,6 +227,9 @@ export default class App extends Component {
           baseURL,
           client,
           user,
+        },
+        navigationOptions: {
+          ...defaultNavigationOptions
         }
       }
 
@@ -313,45 +333,47 @@ export default class App extends Component {
 
       return (
         <Root>
-          <Container>
-            <Header>
-              <Left />
-              <Body>
-                <Title>CoopCycle</Title>
-              </Body>
-              <Right />
-            </Header>
-            <Content>
-              <View style={{ marginHorizontal: 10, marginTop: 20 }}>
-                <Card>
-                  <CardItem>
-                    <Body>
-                      <Text>
-                        Veuillez choisir un serveur pour commencer.
-                      </Text>
-                    </Body>
-                  </CardItem>
-                </Card>
-              </View>
-              <Form style={{ marginVertical: 30 }}>
-                <Item stackedLabel last { ...itemProps }>
-                  <Label>Adresse du serveur</Label>
-                  <Input
-                    ref={(ref) => { this.input = ref }}
-                    autoCapitalize={'none'}
-                    autoCorrect={false}
-                    placeholder={'demo.coopcycle.org'}
-                    onChangeText={(text) => this.setState({ text })} />
-                </Item>
-              </Form>
-              <View style={{ paddingHorizontal: 10 }}>
-                <Button block onPress={ this.connect.bind(this) }>
-                  <Text>Valider</Text>
-                </Button>
-              </View>
-            </Content>
-            { loader }
-          </Container>
+          <StyleProvider style={getTheme(material)}>
+            <Container>
+              <Header>
+                <Left />
+                <Body>
+                  <Title>CoopCycle</Title>
+                </Body>
+                <Right />
+              </Header>
+              <Content>
+                <View style={{ marginHorizontal: 10, marginTop: 20 }}>
+                  <Card>
+                    <CardItem>
+                      <Body>
+                        <Text>
+                          Veuillez choisir un serveur pour commencer.
+                        </Text>
+                      </Body>
+                    </CardItem>
+                  </Card>
+                </View>
+                <Form style={{ marginVertical: 30 }}>
+                  <Item stackedLabel last { ...itemProps }>
+                    <Label>Adresse du serveur</Label>
+                    <Input
+                      ref={(ref) => { this.input = ref }}
+                      autoCapitalize={'none'}
+                      autoCorrect={false}
+                      placeholder={'demo.coopcycle.org'}
+                      onChangeText={(text) => this.setState({ text })} />
+                  </Item>
+                </Form>
+                <View style={{ paddingHorizontal: 10 }}>
+                  <Button block onPress={ this.connect.bind(this) }>
+                    <Text>Valider</Text>
+                  </Button>
+                </View>
+              </Content>
+              { loader }
+            </Container>
+          </StyleProvider>
         </Root>
       );
     }
@@ -374,7 +396,6 @@ const styles = StyleSheet.create({
   loader: {
     flex: 1,
     marginTop: 50,
-    // ...StyleSheet.absoluteFillObject,
     justifyContent: 'center',
     alignItems: 'center'
   },
