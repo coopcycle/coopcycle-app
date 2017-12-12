@@ -361,7 +361,7 @@ export default class App extends Component {
                       ref={(ref) => { this.input = ref }}
                       autoCapitalize={'none'}
                       autoCorrect={false}
-                      placeholder={'demo.coopcycle.org'}
+                      placeholder={'Exemple : demo.coopcycle.org'}
                       onChangeText={(text) => this.setState({ text })} />
                   </Item>
                 </Form>
