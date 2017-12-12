@@ -15,7 +15,6 @@ import {
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import { NavigationActions } from 'react-navigation'
 
-import theme from '../theme/coopcycle';
 import LoginForm from '../components/LoginForm';
 
 const AppUser = require('../AppUser');
@@ -129,7 +128,7 @@ class CartPage extends Component {
         onRequestClose={() => this.setState({ modalVisible: false })}>
         <View style={ styles.modalWrapper }>
           <Container>
-            <Content theme={theme}>
+            <Content>
               <Grid>
                 <Row style={{ paddingVertical: 30 }}>
                   <Col>
@@ -185,7 +184,7 @@ class CartPage extends Component {
         onRequestClose={() => this.setState({ loginModalVisible: false })}>
         <View style={ styles.modalWrapper }>
           <Container>
-            <Content theme={theme}>
+            <Content>
               <LoginForm
                 client={ client }
                 onLoginSuccess={ this.onLoginSuccess.bind(this) }
@@ -201,7 +200,7 @@ class CartPage extends Component {
 
     return (
       <Container>
-        <Content theme={theme}>
+        <Content>
           { this.renderModal() }
           { this.renderLoginModal() }
           <List>{ this.state.cart.items.map(this._renderRow.bind(this)) }</List>

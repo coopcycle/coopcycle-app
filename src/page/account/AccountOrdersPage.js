@@ -13,8 +13,6 @@ import {
 } from 'native-base';
 import _ from 'underscore';
 
-import theme from '../../theme/coopcycle';
-
 class AccountOrdersPage extends Component {
   constructor(props) {
     super(props);
@@ -65,7 +63,7 @@ class AccountOrdersPage extends Component {
     }
 
     return (
-      <Container theme={ theme }>
+      <Container>
         <Content>
           <List dataArray={ this.state.orders } renderRow={ this._renderRow.bind(this) } />
         </Content>

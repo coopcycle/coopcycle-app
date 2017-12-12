@@ -10,7 +10,6 @@ import {
   Button, Text, Icon, List, ListItem, Thumbnail
 } from 'native-base';
 
-import theme from '../theme/coopcycle'
 import AppConfig from '../AppConfig.json'
 import API from '../API';
 

@@ -17,7 +17,6 @@ import MapView from 'react-native-maps'
 import _ from 'underscore';
 
 import DeliveryAddressForm from '../components/DeliveryAddressForm'
-import theme from '../theme/coopcycle';
 
 class CartAddressPage extends Component {
 
@@ -83,7 +82,7 @@ class CartAddressPage extends Component {
 
     return (
       <Container>
-        <Content theme={ theme }>
+        <Content>
           <View style={{ height: 200 }}>
             <MapView
               ref={ component => this.map = component }

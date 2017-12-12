@@ -11,7 +11,6 @@ import {
 } from 'native-base';
 import slugify from 'slugify';
 
-import theme from '../theme/coopcycle';
 import RestaurantsAPI from '../RestaurantsAPI'
 import AddressTypeahead from '../components/AddressTypeahead'
 
@@ -82,7 +81,7 @@ class RestaurantsPage extends Component {
 
     return (
       <Container>
-        <Content theme={theme}>
+        <Content>
           <List
             enableEmptySections
             dataArray={ this.state.restaurants }

@@ -5,7 +5,6 @@ import {
   Left, Right, Body,
   List, ListItem, InputGroup, Input, Icon, Text, Picker, Button
 } from 'native-base';
-import theme from '../theme/coopcycle';
 
 const Auth = require('../Auth');
 
@@ -62,7 +61,7 @@ class AccountPage extends Component {
     }
 
     return (
-      <Container theme={ theme }>
+      <Container>
         <Content>
           <List>
             <ListItem button>

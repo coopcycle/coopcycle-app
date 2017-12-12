@@ -15,7 +15,6 @@ import Stripe, { PaymentCardTextField } from 'tipsi-stripe';
 import { NavigationActions } from 'react-navigation'
 
 import AppConfig from '../AppConfig'
-import theme from '../theme/coopcycle';
 
 Stripe.init({
   publishableKey: AppConfig.STRIPE_PUBLISHABLE_KEY,
@@ -97,7 +96,7 @@ class CreditCardPage extends Component {
     }
 
     return (
-      <Container theme={theme}>
+      <Container>
         <Content padder contentContainerStyle={ { flex: 1, justifyContent: 'center', alignItems: 'center' } }>
           <Text style={{ marginBottom: 10 }}>Veuillez entrer vos coordonnées bancaires</Text>
           <PaymentCardTextField

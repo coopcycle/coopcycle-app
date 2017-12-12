@@ -26,8 +26,6 @@ import { NavigationActions, StackNavigator } from 'react-navigation'
 import API from './src/API'
 import Auth from './src/Auth'
 
-import theme from './src/theme/coopcycle'
-
 const Routes = require('./src/page');
 const AppUser = require('./src/AppUser');
 const Settings = require('./src/Settings');
@@ -315,7 +313,7 @@ export default class App extends Component {
 
       return (
         <Root>
-          <Container theme={ theme }>
+          <Container>
             <Header>
               <Left />
               <Body>

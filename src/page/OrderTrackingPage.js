@@ -9,7 +9,6 @@ import {
   Left, Right, Body,
   Title, Content, Footer, Button, Icon, List, ListItem, Text, Radio
 } from 'native-base';
-import theme from '../theme/coopcycle';
 
 import MapView from 'react-native-maps';
 import Polyline from '@mapbox/polyline';
@@ -61,7 +60,7 @@ class OrderTrackingPage extends Component {
   }
   render() {
     return (
-      <Container theme={theme}>
+      <Container>
         <Content contentContainerStyle={ { flex: 1, justifyContent: 'center', alignItems: 'center' } }>
           <MapView
             ref={ref => { this.map = ref; }}

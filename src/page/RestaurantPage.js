@@ -15,7 +15,6 @@ import {
   InputGroup, Input,
   Icon, Text, Picker, Button
 } from 'native-base';
-import theme from '../theme/coopcycle';
 import _ from 'underscore';
 
 const Cart = require('../Cart');
@@ -81,7 +80,7 @@ class RestaurantPage extends Component {
 
     return (
       <Container>
-        <Content theme={theme}>
+        <Content>
           <H3 style={{ textAlign: 'center', marginVertical: 10 }}>{ restaurant.name }</H3>
           <Text style={{ textAlign: 'center', marginBottom: 10 }}>Livraison : { deliveryAddress.streetAddress }</Text>
           <List>
