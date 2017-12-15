@@ -148,9 +148,9 @@ class AccountPage extends Component {
             </Text>
           </View>
           <List>
-            <ListItem button>
+            <ListItem button iconRight onPress={ () => navigate('AccountDetails', { client }) }>
               <Body>
-                <Text>Coordonnées personnelles</Text>
+                <Text>Informations personnelles</Text>
               </Body>
               <Right>
                 <Icon name="arrow-forward" />

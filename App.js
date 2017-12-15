@@ -68,6 +68,12 @@ const routeConfigs = {
       title: 'Mes commandes',
     })
   },
+  AccountDetails: {
+    screen: Routes.AccountDetailsPage,
+    navigationOptions: ({ navigation }) => ({
+      title: 'Mes informations personnelles',
+    })
+  },
   Courier: {
     screen: Routes.CourierPage,
     navigationOptions: ({ navigation }) => ({

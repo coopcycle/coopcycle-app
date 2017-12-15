@@ -10,6 +10,7 @@ module.exports = {
   AccountPage: require('./AccountPage'),
   AccountAddressesPage: require('./account/AccountAddressesPage'),
   AccountOrdersPage: require('./account/AccountOrdersPage'),
+  AccountDetailsPage: require('./account/AccountDetailsPage'),
   CreditCardPage: require('./CreditCardPage'),
   OrderTrackingPage: require('./OrderTrackingPage'),
 }
