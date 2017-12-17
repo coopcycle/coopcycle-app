@@ -52,9 +52,28 @@ const defaultNavigationOptions = {
 const routeConfigs = {
   Home: {
     screen: Routes.HomePage,
-    navigationOptions: ({ navigation }) => ({
-      title: 'CoopCycle',
-    })
+    navigationOptions: ({ navigation }) => {
+
+      const { navigate } = navigation
+      const { baseURL, client, user } = navigation.state.params
+
+      if (user && user.isAuthenticated() && (user.hasRole('ROLE_COURIER') || user.hasRole('ROLE_ADMIN'))) {
+        headerRight = (
+          <Button transparent onPress={ () => navigate('Courier', { baseURL, client, user, connected: false, tracking: false }) }>
+            <Icon name="ios-bicycle" style={{ color: '#fff' }} />
+          </Button>
+        )
+      } else {
+        headerRight = (
+          <Button transparent />
+        )
+      }
+
+      return {
+        title: 'CoopCycle',
+        headerRight
+      }
+    }
   },
   AccountAddresses: {
     screen: Routes.AccountAddressesPage,

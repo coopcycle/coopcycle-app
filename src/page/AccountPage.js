@@ -111,27 +111,6 @@ class AccountPage extends Component {
     )
   }
 
-  renderCourierListItem() {
-
-    const { baseURL, client, user } = this.props.screenProps
-    const { navigate } = this.props.screenProps.navigation
-
-    if (user && user.isAuthenticated() && (user.hasRole('ROLE_COURIER') || user.hasRole('ROLE_ADMIN'))) {
-      return (
-        <ListItem button iconRight onPress={ () => navigate('Courier', { baseURL, client, user, connected: false, tracking: false }) }>
-          <Body>
-            <Text>Dispatch</Text>
-          </Body>
-          <Right>
-            <Icon name="arrow-forward" />
-          </Right>
-        </ListItem>
-      )
-    }
-
-    return <View />
-  }
-
   renderAuthenticated() {
 
     const { baseURL, client, user } = this.props.screenProps
@@ -172,7 +151,6 @@ class AccountPage extends Component {
                 <Icon name="arrow-forward" />
               </Right>
             </ListItem>
-            { this.renderCourierListItem() }
           </List>
           <View style={{ paddingHorizontal: 10, marginTop: 40 }}>
             <Button block danger onPress={ () => this.logout() }>
