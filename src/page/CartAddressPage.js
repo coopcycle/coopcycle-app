@@ -64,9 +64,11 @@ class CartAddressPage extends Component {
         navigate('CreditCard', { cart, deliveryAddress: data, client, user })
       })
       .catch(err => {
-        const { violations } = err
-        const errors = violations.map(violation => violation.propertyPath)
-        this.setState({ errors })
+        if (err.hasOwnProperty('@type') && err['@type'] === 'ConstraintViolationList') {
+          const { violations } = err
+          const errors = violations.map(violation => violation.propertyPath)
+          this.setState({ errors })
+        }
       })
   }
 

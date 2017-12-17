@@ -7,50 +7,67 @@ import {
 import {
   Container, Header, Title, Content,
   Left, Right, Body,
-  Button, Text, Icon, List, ListItem, Thumbnail
+  Button, Text, Icon, List, ListItem, Thumbnail,
+  Card, CardItem
 } from 'native-base';
-import slugify from 'slugify';
+import { Col, Row, Grid } from 'react-native-easy-grid'
+import slugify from 'slugify'
+import _ from 'underscore'
+import moment from 'moment/min/moment-with-locales'
 
-import RestaurantsAPI from '../RestaurantsAPI'
-import AddressTypeahead from '../components/AddressTypeahead'
+import RestaurantSearch from '../components/RestaurantSearch'
+
+moment.locale('fr')
 
 class RestaurantsPage extends Component {
-
-  restaurantsAPI = null;
 
   constructor(props) {
     super(props);
 
     const { baseURL, client, user } = this.props.screenProps
 
-    this.restaurantsAPI = new RestaurantsAPI(client)
     this.state = {
       loading: false,
       restaurants: props.restaurants || [],
       user,
       baseURL,
-      deliveryAddress: null
+      deliveryAddress: null,
+      deliveryDate: null
     }
   }
-  renderListHeader() {
-    return (
-      <AddressTypeahead onPress={deliveryAddress => {
-        this.setState({
-          loading: true,
-          restaurants: []
-        });
-        this.restaurantsAPI
-          .nearby(deliveryAddress.geo.latitude, deliveryAddress.geo.longitude, 3000)
-          .then(data => {
-            this.setState({
-              deliveryAddress,
-              loading: false,
-              restaurants: data['hydra:member']
-            });
-          });
-      }} />
-    )
+
+  request(latitude, longitude, distance) {
+    const { client } = this.props.screenProps
+    return client.get('/api/restaurants?coordinate=' + [latitude, longitude] + '&distance=' + distance)
   }
+
+  onChange(deliveryAddress, deliveryDate) {
+    if (deliveryAddress) {
+
+      this.setState({ loading: true, restaurants: [] })
+
+      const { latitude, longitude } = deliveryAddress.geo
+      this.request(latitude, longitude, 3000)
+        .then(data => {
+
+          let restaurants = data['hydra:member']
+          if (deliveryDate) {
+            restaurants = _.filter(restaurants, restaurant => {
+              for (let i = 0; i < restaurant.availabilities.length; i++) {
+                if (moment(restaurant.availabilities[i]).isSame(deliveryDate, 'day')) {
+                  return true
+                }
+              }
+
+              return false
+            })
+          }
+
+          this.setState({ deliveryAddress, deliveryDate, restaurants, loading: false })
+        })
+    }
+  }
+
   renderRow(restaurant) {
 
     const { client, user } = this.props.screenProps
@@ -63,34 +80,74 @@ class RestaurantsPage extends Component {
     //   cuisine = randomCuisine.name;
     // }
 
-    let imageURI = this.state.baseURL + '/img/cuisine/' + slugify(cuisine).toLowerCase() +'.jpg';
+    let imageURI = this.state.baseURL + '/img/cuisine/' + slugify(cuisine).toLowerCase() +'.jpg'
+
+    const deliveryDate = moment(restaurant.availabilities[0])
 
     return (
-      <ListItem thumbnail onPress={ () => navigate('Restaurant', { restaurant, deliveryAddress, client, user }) }>
+      <ListItem thumbnail onPress={ () => navigate('Restaurant', { restaurant, deliveryAddress, deliveryDate, client, user }) }>
         <Left>
           <Thumbnail square size={60} source={{ uri: imageURI }} />
         </Left>
         <Body>
           <Text>{ restaurant.name }</Text>
-          <Text note>{ restaurant.streetAddress }</Text>
+          <Text note>{ restaurant.address.streetAddress }</Text>
+          <Text note style={{ fontWeight: 'bold' }}>{ 'À partir de ' + moment(restaurant.availabilities[0]).format('dddd LT') }</Text>
         </Body>
       </ListItem>
     );
   }
+
+  renderWarning() {
+
+    const { deliveryDate, restaurants } = this.state
+
+    if (deliveryDate && restaurants.length === 0) {
+      return (
+        <View style={{ paddingHorizontal: 10, marginTop: 30 }}>
+          <Card>
+            <CardItem>
+              <Body>
+                <Text>
+                  Désolé, nous n'avons pas trouvé de restaurant ouvert.
+                </Text>
+                <Text>
+                  Voulez-vous relancer la recherche sans inclure de date ?
+                </Text>
+                <Button block style={{ marginTop: 10 }} onPress={ () => this.restaurantSearch.resetDeliveryDate() }>
+                  <Text>Relancer la recherche</Text>
+                </Button>
+              </Body>
+            </CardItem>
+          </Card>
+        </View>
+      )
+    }
+
+    return (
+      <View />
+    )
+  }
+
   render() {
+
+    const { client } = this.props.screenProps
+    const { deliveryDate, restaurants } = this.state
 
     return (
       <Container>
         <Content>
+          <RestaurantSearch
+            ref={ component => this.restaurantSearch = component }
+            onChange={ this.onChange.bind(this) } />
           <List
             enableEmptySections
-            dataArray={ this.state.restaurants }
-            renderRow={ this.renderRow.bind(this) }
-            renderHeader={ this.renderListHeader.bind(this) }
-          />
+            dataArray={ restaurants }
+            renderRow={ this.renderRow.bind(this) } />
+          { this.renderWarning() }
           <View style={styles.loader}>
             <ActivityIndicator
-              animating={this.state.loading}
+              animating={ this.state.loading }
               size="large"
               color="#0000ff"
             />

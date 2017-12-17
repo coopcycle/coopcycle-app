@@ -1,13 +1,5 @@
 import React, { Component } from 'react';
-import {
-  StyleSheet,
-  View,
-  TouchableHighlight,
-  TouchableOpacity,
-  ListView,
-  AsyncStorage,
-  Alert,
-} from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import {
   Container, Header, Title, Content, Footer, H3, H4,
   Left, Right, Body,
@@ -15,22 +7,29 @@ import {
   InputGroup, Input,
   Icon, Text, Picker, Button
 } from 'native-base';
-import _ from 'underscore';
+import { Col, Row, Grid } from 'react-native-easy-grid'
+import moment from 'moment/min/moment-with-locales'
+import _ from 'underscore'
+
+moment.locale('fr')
 
 const Cart = require('../Cart');
+
+import CartFooter from '../components/CartFooter'
 
 class RestaurantPage extends Component {
 
   constructor(props) {
     super(props);
 
-    const { restaurant } = this.props.navigation.state.params
+    const { restaurant, deliveryAddress, deliveryDate } = this.props.navigation.state.params
+
+    const cart = new Cart(restaurant, [])
+    cart.setDeliveryDate(deliveryDate)
 
     this.state = {
       modalVisible: false,
-      distance: 2000,
-      loading: false,
-      cart: new Cart(restaurant, [])
+      cart
     };
   }
 
@@ -38,6 +37,7 @@ class RestaurantPage extends Component {
     const { cart } = this.state
     cart.addMenuItem(menuItem)
 
+    this.cartFooter.animate()
     this.setState({ cart })
   }
 
@@ -63,7 +63,7 @@ class RestaurantPage extends Component {
   render() {
 
     const { navigate } = this.props.navigation
-    const { restaurant, deliveryAddress, client, user } = this.props.navigation.state.params
+    const { restaurant, deliveryAddress, deliveryDate, client, user } = this.props.navigation.state.params
     const { cart } = this.state
 
     let items = []
@@ -74,8 +74,6 @@ class RestaurantPage extends Component {
       })
     })
 
-    const btnProps = cart.articlesCount === 0 ? { disabled: true } : {}
-
     return (
       <Container>
         <Content>
@@ -85,64 +83,17 @@ class RestaurantPage extends Component {
           { _.map(items, item => this._renderMenuItem(item)) }
           </List>
         </Content>
-        <Footer>
-          <View style={styles.cart}>
-            <View style={styles.cartLeft}>
-              <Text>{ cart.articlesCount } articles</Text>
-              <Text style={{ fontWeight: 'bold' }}>{ cart.total } €</Text>
-            </View>
-            <View style={styles.cartRight}>
-              <Button block style={{ alignSelf: 'flex-end' }}
-                { ...btnProps }
-                onPress={ () => navigate('Cart', { cart, client, deliveryAddress, user, onCartUpdate: cart => this.setState({ cart }) }) }>
-                <Text>Commander</Text>
-              </Button>
-            </View>
-          </View>
-        </Footer>
+        <CartFooter
+          ref={ component => this.cartFooter = component }
+          cart={ cart }
+          onSubmit={ () => navigate('Cart', { cart, client, deliveryAddress, deliveryDate, user, onCartUpdate: cart => this.setState({ cart }) }) }  />
       </Container>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  cart: {
-    flex: 1,
-    flexDirection: "row",
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingVertical: 5,
-    paddingHorizontal: 10
-  },
-  cartLeft: {
-    flex: 1,
-  },
-  cartRight: {
-    flex: 2,
-  },
-  listView: {
-    flex: 4,
-    borderTopColor: "black",
-    borderStyle: "solid",
-    borderTopWidth: 2
-  },
-  listViewItem: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'stretch',
-    paddingHorizontal: 10,
-    paddingVertical: 20,
-  },
-  recipe: {
-    backgroundColor: 'white',
-    marginHorizontal: 10,
-    marginTop: 10,
-    borderWidth: 1,
-    borderStyle: "solid",
-    borderColor: "#e4e4e4",
-    borderRadius: 4,
-  },
+
 });
 
 module.exports = RestaurantPage;

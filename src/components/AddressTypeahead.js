@@ -1,9 +1,23 @@
 import React, { Component } from 'react'
-import { View } from 'react-native'
+import { Dimensions, View } from 'react-native'
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import _ from 'underscore'
 
 import AppConfig from '../AppConfig.json'
+
+const customStyles = {
+  description: {
+    fontWeight: 'bold',
+  },
+  predefinedPlacesDescription: {
+    color: '#1faadb',
+  },
+  textInputContainer: {
+    backgroundColor: '#e4022d',
+    borderTopWidth: 0,
+    borderBottomWidth: 0,
+  },
+}
 
 export default class AddressTypeahead extends Component {
 
@@ -36,6 +50,15 @@ export default class AddressTypeahead extends Component {
   }
 
   render() {
+
+    const { height, width } = Dimensions.get('window')
+
+    const styles = {
+      ...customStyles,
+      // Make sure ListView takes 100% width
+      listView: { width }
+    }
+
     // currentLocation={true} // Will add a 'Current location' button at the top of the predefined places list
     // currentLocationLabel="Current location"
     // predefinedPlaces={[homePlace, workPlace]}
@@ -60,14 +83,7 @@ export default class AddressTypeahead extends Component {
           language: 'fr', // language of the results
           types: 'geocode', // default: 'geocode'
         }}
-        styles={{
-          description: {
-            fontWeight: 'bold',
-          },
-          predefinedPlacesDescription: {
-            color: '#1faadb',
-          },
-        }}
+        styles={ styles }
         nearbyPlacesAPI="GoogleReverseGeocoding" // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
         GoogleReverseGeocodingQuery={{
           // available options for GoogleReverseGeocoding API : https://developers.google.com/maps/documentation/geocoding/intro

@@ -49,6 +49,9 @@ class Cart {
   setDeliveryAddress(deliveryAddress) {
     this.deliveryAddress = deliveryAddress
   }
+  setDeliveryDate(deliveryDate) {
+    this.deliveryDate = deliveryDate
+  }
   addMenuItem(menuItem) {
     let item = _.find(this.items, item => item.matches(menuItem))
     if (!item) {
@@ -62,9 +65,20 @@ class Cart {
     this.items = _.without(this.items, item);
   }
   get total() {
-    return _.reduce(this.items, function(memo, item) { return memo + item.total; }, 0).toFixed(2);
+    // Do not sum delivery price until there is at least one item
+    if (this.items.length === 0) {
+      return 0
+    }
+
+    return (this.totalItems + this.totalDelivery).toFixed(2)
   }
-  get articlesCount() {
+  get totalItems() {
+    return _.reduce(this.items, function(memo, item) { return memo + item.total; }, 0)
+  }
+  get totalDelivery() {
+    return this.restaurant.flatDeliveryPrice
+  }
+  get length() {
     return _.reduce(this.items, function(memo, item) { return memo + item.quantity; }, 0);
   }
   clone() {
@@ -76,7 +90,7 @@ class Cart {
       orderedItem: _.map(this.items, item => item.toJSON()),
       delivery: {
         deliveryAddress: this.deliveryAddress['@id'],
-        date: moment().add(60, 'minutes').format('YYYY-MM-DD HH:mm:ss')
+        date: moment(this.deliveryDate).format('YYYY-MM-DD HH:mm:ss')
       }
     }
   }

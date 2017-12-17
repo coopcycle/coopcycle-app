@@ -6,7 +6,7 @@ import {
 } from 'react-native';
 import {
   Container,
-  Header, Title, Content, Footer,
+  Header, Title, Content,
   Left, Right, Body,
   List, ListItem,
   InputGroup, Input,
@@ -15,11 +15,13 @@ import {
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import { NavigationActions } from 'react-navigation'
 
-import LoginForm from '../components/LoginForm';
+import LoginForm from '../components/LoginForm'
+import CartFooter from '../components/CartFooter'
 
 const AppUser = require('../AppUser');
 
 class CartPage extends Component {
+
   constructor(props) {
     super(props);
 
@@ -33,6 +35,7 @@ class CartPage extends Component {
       editing: null,
     };
   }
+
   _renderRow(item) {
     return (
       <ListItem key={ item.key } onPress={() => this.setState({ editing: item, modalVisible: true })}>
@@ -58,7 +61,8 @@ class CartPage extends Component {
       </ListItem>
     )
   }
-  _onClickButton() {
+
+  onSubmit() {
 
     const { navigate } = this.props.navigation
     const { client, deliveryAddress, user } = this.props.navigation.state.params
@@ -187,6 +191,8 @@ class CartPage extends Component {
             <Content>
               <LoginForm
                 client={ client }
+                onRequestStart={ () => this.setState({ loading: true }) }
+                onRequestEnd={ () => this.setState({ loading: false }) }
                 onLoginSuccess={ this.onLoginSuccess.bind(this) }
                 onLoginFail={ this.onLoginFail.bind(this) } />
             </Content>
@@ -196,60 +202,73 @@ class CartPage extends Component {
     )
   }
 
+  renderTotal() {
+
+    const { cart } = this.state
+
+    return (
+      <List>
+        <ListItem itemHeader first>
+          <Text>Total</Text>
+        </ListItem>
+        <ListItem>
+          <Body>
+            <Text>Total articles</Text>
+          </Body>
+          <Right>
+            <Text style={{ fontWeight: 'bold' }}>{ cart.totalItems } €</Text>
+          </Right>
+        </ListItem>
+        <ListItem>
+          <Body>
+            <Text>Total livraison</Text>
+          </Body>
+          <Right>
+            <Text style={{ fontWeight: 'bold' }}>{ cart.totalDelivery } €</Text>
+          </Right>
+        </ListItem>
+        <ListItem>
+          <Body>
+            <Text>Total</Text>
+          </Body>
+          <Right>
+            <Text style={{ fontWeight: 'bold' }}>{ cart.total } €</Text>
+          </Right>
+        </ListItem>
+      </List>
+    )
+  }
+
   render() {
+
+    const { restaurant, deliveryAddress, client, user } = this.props.navigation.state.params
+    const { cart } = this.state
 
     return (
       <Container>
         <Content>
           { this.renderModal() }
           { this.renderLoginModal() }
-          <List>{ this.state.cart.items.map(this._renderRow.bind(this)) }</List>
+          <List style={{ marginBottom: 20 }}>
+            <ListItem itemHeader first>
+              <Text>Articles</Text>
+            </ListItem>
+            { cart.items.map(this._renderRow.bind(this)) }
+          </List>
+          { this.renderTotal() }
         </Content>
-        <Footer>
-          <View style={styles.cart}>
-            <View style={styles.cartLeft}>
-              <Text>{this.state.cart.articlesCount} articles</Text>
-              <Text style={ { fontWeight: 'bold' } }>{this.state.cart.total} €</Text>
-            </View>
-            <View style={styles.cartRight}>
-              <Button success block style={ { alignSelf: 'flex-end' } } onPress={ this._onClickButton.bind(this) }>
-                <Text>Payer { this.state.cart.total } €</Text>
-              </Button>
-            </View>
-          </View>
-        </Footer>
+        <CartFooter
+          ref={ component => this.cartFooter = component }
+          cart={ cart }
+          onSubmit={ this.onSubmit.bind(this) }  />
       </Container>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  cart: {
-    flex: 1,
-    flexDirection: "row",
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingVertical: 5,
-    paddingHorizontal: 10
-  },
-  cartLeft: {
-    flex: 1,
-  },
-  cartRight: {
-    flex: 1,
-  },
-  textBold: {
-    fontWeight: 'bold'
-  },
-  textWhite: {
-    color: "white",
-  },
-  textCenter: {
-    textAlign: 'center'
-  },
   modalWrapper: {
     ...StyleSheet.absoluteFillObject,
-    marginTop: 56,
     backgroundColor: '#fff'
   },
   modalDecrement: {
