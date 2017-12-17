@@ -16,6 +16,7 @@ moment.locale('fr')
 const Cart = require('../Cart');
 
 import CartFooter from '../components/CartFooter'
+import Menu from '../components/Menu'
 
 class RestaurantPage extends Component {
 
@@ -33,31 +34,12 @@ class RestaurantPage extends Component {
     };
   }
 
-  _addToCart(menuItem) {
+  onItemClick(menuItem) {
     const { cart } = this.state
     cart.addMenuItem(menuItem)
 
     this.cartFooter.animate()
     this.setState({ cart })
-  }
-
-  _renderMenuItem(menuItem) {
-    const isDivider = menuItem['@type'] === 'http://schema.org/MenuSection'
-    const props = isDivider ? { itemDivider: true } : {
-      button: true,
-      onPress: () => this._addToCart(menuItem)
-    }
-
-    return (
-      <ListItem key={ menuItem['@id'] } { ...props}>
-        <Body>
-          <Text>{ menuItem.name }</Text>
-        </Body>
-        { !isDivider && <Right>
-          <Text>{ menuItem.offers.price } €</Text>
-        </Right> }
-      </ListItem>
-    );
   }
 
   render() {
@@ -66,22 +48,13 @@ class RestaurantPage extends Component {
     const { restaurant, deliveryAddress, deliveryDate, client, user } = this.props.navigation.state.params
     const { cart } = this.state
 
-    let items = []
-    _.forEach(restaurant.hasMenu.hasMenuSection, menuSection => {
-      items.push(menuSection)
-      _.forEach(menuSection.hasMenuItem, menuItem => {
-        items.push(menuItem)
-      })
-    })
-
     return (
       <Container>
         <Content>
-          <H3 style={{ textAlign: 'center', marginVertical: 10 }}>{ restaurant.name }</H3>
-          <Text style={{ textAlign: 'center', marginBottom: 10 }}>Livraison : { deliveryAddress.streetAddress }</Text>
-          <List>
-          { _.map(items, item => this._renderMenuItem(item)) }
-          </List>
+          <View style={{ paddingHorizontal: 15, backgroundColor: '#fff', borderTopWidth: 1, borderTopColor: '#f1f1f1' }}>
+            <Text style={{ fontFamily: 'Raleway-Regular', textAlign: 'center', marginVertical: 10 }}>{ restaurant.name }</Text>
+          </View>
+          <Menu restaurant={ restaurant } onItemClick={ this.onItemClick.bind(this) } />
         </Content>
         <CartFooter
           ref={ component => this.cartFooter = component }
