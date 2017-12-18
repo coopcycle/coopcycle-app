@@ -4,6 +4,7 @@ import { Icon, Text, Thumbnail } from 'native-base';
 import { Col, Row, Grid } from 'react-native-easy-grid'
 import slugify from 'slugify'
 import moment from 'moment/min/moment-with-locales'
+import _ from 'underscore'
 
 moment.locale('fr')
 
@@ -26,7 +27,7 @@ export default class RestaurantList extends Component {
 
   renderItem(restaurant) {
 
-    const { baseURL } = this.props
+    const { baseURL, deliveryDay } = this.props
 
     let cuisine = 'default';
     // if (restaurant.servesCuisine.length > 0) {
@@ -35,10 +36,14 @@ export default class RestaurantList extends Component {
     // }
     const imageURI = baseURL + '/img/cuisine/' + slugify(cuisine).toLowerCase() +'.jpg'
 
-    const deliveryDate = moment(restaurant.availabilities[0])
+    let firstDeliveryDate = moment(restaurant.availabilities[0])
+
+    if (deliveryDay) {
+      firstDeliveryDate = _.find(restaurant.availabilities, availability => moment(availability).isSame(deliveryDay, 'day'))
+    }
 
     return (
-      <TouchableOpacity style={ styles.item } onPress={ () => this.props.onItemClick(restaurant, deliveryDate) }>
+      <TouchableOpacity style={ styles.item } onPress={ () => this.props.onItemClick(restaurant, firstDeliveryDate) }>
         <Grid>
           <Col size={ 1 }>
             <Thumbnail size={60} source={{ uri: imageURI }} />
@@ -47,7 +52,7 @@ export default class RestaurantList extends Component {
             <Text style={ styles.restaurantNameText }>{ restaurant.name }</Text>
             <Text note>{ restaurant.address.streetAddress }</Text>
             <Text note style={{ fontWeight: 'bold' }}>
-              { 'À partir de ' + moment(restaurant.availabilities[0]).format('dddd LT') }
+              { 'À partir de ' + moment(firstDeliveryDate).format('dddd LT') }
             </Text>
           </Col>
         </Grid>

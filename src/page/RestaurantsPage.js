@@ -32,7 +32,7 @@ class RestaurantsPage extends Component {
       restaurants: props.restaurants || [],
       user,
       deliveryAddress: null,
-      deliveryDate: null
+      deliveryDay: null
     }
   }
 
@@ -41,7 +41,7 @@ class RestaurantsPage extends Component {
     return client.get('/api/restaurants?coordinate=' + [latitude, longitude] + '&distance=' + distance)
   }
 
-  onChange(deliveryAddress, deliveryDate) {
+  onChange(deliveryAddress, deliveryDay) {
     if (deliveryAddress) {
 
       this.setState({ loading: true, restaurants: [] })
@@ -51,10 +51,10 @@ class RestaurantsPage extends Component {
         .then(data => {
 
           let restaurants = data['hydra:member']
-          if (deliveryDate) {
+          if (deliveryDay) {
             restaurants = _.filter(restaurants, restaurant => {
               for (let i = 0; i < restaurant.availabilities.length; i++) {
-                if (moment(restaurant.availabilities[i]).isSame(deliveryDate, 'day')) {
+                if (moment(restaurant.availabilities[i]).isSame(deliveryDay, 'day')) {
                   return true
                 }
               }
@@ -63,16 +63,16 @@ class RestaurantsPage extends Component {
             })
           }
 
-          this.setState({ deliveryAddress, deliveryDate, restaurants, loading: false })
+          this.setState({ deliveryAddress, deliveryDay, restaurants, loading: false })
         })
     }
   }
 
   renderWarning() {
 
-    const { deliveryDate, restaurants } = this.state
+    const { deliveryDay, restaurants, loading } = this.state
 
-    if (deliveryDate && restaurants.length === 0) {
+    if (!loading && deliveryDay && restaurants.length === 0) {
       return (
         <View style={{ paddingHorizontal: 10, marginTop: 30 }}>
           <Card>
@@ -103,7 +103,7 @@ class RestaurantsPage extends Component {
 
     const { baseURL, client, user } = this.props.screenProps
     const { navigate } = this.props.screenProps.navigation
-    const { deliveryAddress, restaurants } = this.state
+    const { deliveryAddress, deliveryDay, restaurants } = this.state
 
     return (
       <Container>
@@ -114,6 +114,7 @@ class RestaurantsPage extends Component {
           <RestaurantList
             baseURL={ baseURL }
             restaurants={ restaurants }
+            deliveryDay={ deliveryDay }
             onItemClick={ (restaurant, deliveryDate) => navigate('Restaurant', { restaurant, deliveryAddress, deliveryDate, client, user }) } />
           { this.renderWarning() }
           <View style={styles.loader}>
