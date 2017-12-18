@@ -6,6 +6,7 @@ module.exports = {
   RestaurantPage: require('./RestaurantPage'),
   CartPage: require('./CartPage'),
   CartAddressPage: require('./CartAddressPage'),
+  CourierPage: require('./CourierPage'),
   DispatchPage: require('./DispatchPage'),
   AccountPage: require('./AccountPage'),
   AccountAddressesPage: require('./account/AccountAddressesPage'),

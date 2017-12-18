@@ -59,7 +59,7 @@ const routeConfigs = {
 
       if (user && user.isAuthenticated() && (user.hasRole('ROLE_COURIER') || user.hasRole('ROLE_ADMIN'))) {
         headerRight = (
-          <Button transparent onPress={ () => navigate('Dispatch', { baseURL, client, user, connected: false, tracking: false }) }>
+          <Button transparent onPress={ () => navigate('Courier', { baseURL, client, user, connected: false, tracking: false }) }>
             <Icon name="ios-bicycle" style={{ color: '#fff' }} />
           </Button>
         )
@@ -91,6 +91,12 @@ const routeConfigs = {
     screen: Routes.AccountDetailsPage,
     navigationOptions: ({ navigation }) => ({
       title: 'Mes informations personnelles',
+    })
+  },
+  Courier: {
+    screen: Routes.CourierPage,
+    navigationOptions: ({ navigation }) => ({
+      title: 'Coursier',
     })
   },
   Dispatch: {
