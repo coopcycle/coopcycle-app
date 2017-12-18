@@ -6,11 +6,12 @@ import {
 } from 'react-native';
 import {
   Container,
-  Header, Title, Content,
+  Header, Footer, Title, Content,
   Left, Right, Body,
   List, ListItem,
   InputGroup, Input,
   Icon, Picker, Button, Text,
+  Card, CardItem
 } from 'native-base';
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import { NavigationActions } from 'react-navigation'
@@ -129,14 +130,33 @@ class CartPage extends Component {
         animationType={ 'slide' }
         transparent={ true }
         visible={ this.state.modalVisible }
-        onRequestClose={() => this.setState({ modalVisible: false })}>
+        onRequestClose={ () => this.setState({ modalVisible: false }) }>
         <View style={ styles.modalWrapper }>
           <Container>
+            <Header>
+              <Left>
+                <Button transparent onPress={ () => this.setState({ modalVisible: false }) }>
+                  <Icon name="close" style={{ color: '#fff' }} />
+                </Button>
+              </Left>
+              <Body>
+                <Title>{ this.state.editing ? this.state.editing.name : '' }</Title>
+              </Body>
+              <Right />
+            </Header>
             <Content>
               <Grid>
-                <Row style={{ paddingVertical: 30 }}>
+                <Row style={{ paddingVertical: 30, paddingHorizontal: 10 }}>
                   <Col>
-                    <Text style={{ textAlign: 'center' }}>{ this.state.editing ? this.state.editing.menuItem.name : '' }</Text>
+                    <Card>
+                      <CardItem>
+                        <Body>
+                          <Text style={{ textAlign: 'center' }}>
+                            Modifiez la quantité
+                          </Text>
+                        </Body>
+                      </CardItem>
+                    </Card>
                   </Col>
                 </Row>
                 <Row>
@@ -208,9 +228,6 @@ class CartPage extends Component {
 
     return (
       <List>
-        <ListItem itemHeader first>
-          <Text>Total</Text>
-        </ListItem>
         <ListItem>
           <Body>
             <Text>Total articles</Text>
@@ -246,15 +263,14 @@ class CartPage extends Component {
 
     return (
       <Container>
-        <Content>
+        <Content style={ styles.content }>
           { this.renderModal() }
           { this.renderLoginModal() }
+          <Title style={ styles.title }>Votre panier</Title>
           <List style={{ marginBottom: 20 }}>
-            <ListItem itemHeader first>
-              <Text>Articles</Text>
-            </ListItem>
             { cart.items.map(this._renderRow.bind(this)) }
           </List>
+          <Title style={ styles.title }>Total</Title>
           { this.renderTotal() }
         </Content>
         <CartFooter
@@ -267,6 +283,16 @@ class CartPage extends Component {
 }
 
 const styles = StyleSheet.create({
+  content: {
+    backgroundColor: '#fff'
+  },
+  title: {
+    textAlign: 'left',
+    color: '#d9d9d9',
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    fontSize: 16
+  },
   modalWrapper: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: '#fff'
