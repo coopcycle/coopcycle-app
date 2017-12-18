@@ -48,7 +48,7 @@ export default class RestaurantList extends Component {
           <Col size={ 1 }>
             <Thumbnail size={60} source={{ uri: imageURI }} />
           </Col>
-          <Col size={ 4 }>
+          <Col size={ 4 } style={{ paddingLeft: 10 }}>
             <Text style={ styles.restaurantNameText }>{ restaurant.name }</Text>
             <Text note>{ restaurant.address.streetAddress }</Text>
             <Text note style={{ fontWeight: 'bold' }}>

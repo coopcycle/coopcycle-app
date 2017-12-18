@@ -18,7 +18,8 @@ const styles = StyleSheet.create({
     paddingLeft: 15
   },
   cartSummaryText: {
-    color: '#fff'
+    color: '#fff',
+    fontSize: 14
   },
   cartSummarySeparator: {
     paddingHorizontal: 5
@@ -26,6 +27,13 @@ const styles = StyleSheet.create({
   cartSummaryTotal: {
     fontWeight: 'bold'
   },
+  buttonText: {
+    color: '#fff',
+    fontSize: 14,
+    textAlign: 'right',
+    paddingLeft: 0,
+    paddingRight: 0
+  }
 })
 
 export default class CartFooter extends Component {
@@ -63,7 +71,7 @@ export default class CartFooter extends Component {
     if (cart.totalItems < cart.restaurant.minimumCartAmount) {
       return (
         <Button transparent style={{ alignSelf: 'flex-end' }}>
-          <Text style={{ color: '#fff', textAlign: 'right' }}>
+          <Text style={ styles.buttonText }>
             { `Minimum ${cart.restaurant.minimumCartAmount} €` }
           </Text>
           <Icon style={{ color: '#fff' }} name="information-circle" />
@@ -75,7 +83,7 @@ export default class CartFooter extends Component {
       <Button transparent
         style={{ alignSelf: 'flex-end' }}
         onPress={ () => this.props.onSubmit() }>
-        <Text style={{ color: '#fff', textAlign: 'right' }}>Commander</Text>
+        <Text style={ styles.buttonText }>Commander</Text>
         <Icon style={{ color: '#fff' }} name="arrow-forward" />
       </Button>
     )
