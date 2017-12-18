@@ -28,7 +28,7 @@ const LONGITUDE_DELTA = 0.0221;
 const COLOR_GREY = '#95A5A6'
 const COLOR_GREEN = '#2ECC71'
 
-class CourierPage extends Component {
+class DispatchPage extends Component {
 
   ws = undefined;
   map = undefined;
@@ -556,4 +556,4 @@ const styles = StyleSheet.create({
   },
 });
 
-module.exports = CourierPage;
+module.exports = DispatchPage;

@@ -59,7 +59,7 @@ const routeConfigs = {
 
       if (user && user.isAuthenticated() && (user.hasRole('ROLE_COURIER') || user.hasRole('ROLE_ADMIN'))) {
         headerRight = (
-          <Button transparent onPress={ () => navigate('Courier', { baseURL, client, user, connected: false, tracking: false }) }>
+          <Button transparent onPress={ () => navigate('Dispatch', { baseURL, client, user, connected: false, tracking: false }) }>
             <Icon name="ios-bicycle" style={{ color: '#fff' }} />
           </Button>
         )
@@ -93,10 +93,10 @@ const routeConfigs = {
       title: 'Mes informations personnelles',
     })
   },
-  Courier: {
-    screen: Routes.CourierPage,
+  Dispatch: {
+    screen: Routes.DispatchPage,
     navigationOptions: ({ navigation }) => ({
-      title: 'Livraisons',
+      title: 'Dispatch',
     })
   },
   Restaurant: {
