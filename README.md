@@ -9,10 +9,10 @@ Install Node, Watchman & React Native CLI as described [here](https://facebook.g
 Installation
 ------------
 
-Install dependencies with NPM, and link them with React Native CLI.
+Install dependencies with Yarn, and link them with React Native CLI.
 
 ```
-$ npm install
+$ yarn install
 $ react-native link
 ```
 
