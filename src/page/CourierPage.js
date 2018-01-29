@@ -59,25 +59,19 @@ class CourierPage extends Component {
             </Text>
           </View>
           <List>
+            <ListItem button iconRight onPress={() => {
+              navigate('CourierTasks', { baseURL, client, user })
+            }}>
+              <Body>
+                <Text>Mes tâches</Text>
+              </Body>
+              <Right>
+                <Icon name="arrow-forward" />
+              </Right>
+            </ListItem>
             <ListItem button iconRight>
               <Body>
                 <Text>Mes statistiques</Text>
-              </Body>
-              <Right>
-                <Icon name="arrow-forward" />
-              </Right>
-            </ListItem>
-            <ListItem button iconRight>
-              <Body>
-                <Text>Mes courses</Text>
-              </Body>
-              <Right>
-                <Icon name="arrow-forward" />
-              </Right>
-            </ListItem>
-            <ListItem button iconRight onPress={ () => navigate('Dispatch', { baseURL, client, user, connected: false, tracking: false }) }>
-              <Body>
-                <Text>Dispatch automatique</Text>
               </Body>
               <Right>
                 <Icon name="arrow-forward" />

@@ -99,6 +99,24 @@ const routeConfigs = {
       title: 'Coursier',
     })
   },
+  CourierTasks: {
+    screen: Routes.CourierTasksPage,
+    navigationOptions: ({ navigation }) => ({
+      title: 'Tâches',
+    })
+  },
+  CourierTaskList: {
+    screen: Routes.CourierTaskListPage,
+    navigationOptions: ({ navigation }) => ({
+      title: 'Liste des tâches',
+    })
+  },
+  CourierTask: {
+    screen: Routes.CourierTaskPage,
+    navigationOptions: ({ navigation }) => ({
+      title: `Tâche #${navigation.state.params.task.id}`,
+    })
+  },
   Dispatch: {
     screen: Routes.DispatchPage,
     navigationOptions: ({ navigation }) => ({
