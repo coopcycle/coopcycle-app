@@ -6,16 +6,11 @@ class DirectionsAPI {
     this.client = client;
   }
 
-  getRoute(opts) {
-    var origin = opts.origin;
-    var destination = opts.destination;
-    var uri = '/api/routing/route?';
-        uri += 'origin=' + origin.latitude + ',' + origin.longitude;
-        uri += '&destination=' + destination.latitude + ',' + destination.longitude;
+  getRoute(coordinates) {
 
-    // if (opts.waypoints) {
-    //   url += '&waypoints=' + opts.waypoints.latitude + ',' + opts.waypoints.longitude;
-    // }
+    const values = coordinates.map(coordinate => [ coordinate.latitude, coordinate.longitude ].join(','))
+    const coordinatesToString = values.join(';')
+    var uri = `/api/routing/route/${coordinatesToString}`
 
     return this.client.get(uri)
       .then((data) => {
