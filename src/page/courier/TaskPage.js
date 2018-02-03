@@ -1,13 +1,15 @@
 import React, { Component } from 'react'
-import { StyleSheet, TouchableOpacity, View, Modal, ActivityIndicator } from 'react-native'
-import { Container, Content, Footer, Text, Button, Icon, Header, Title, Left, Body, Right, Form, Item, Input, Label } from 'native-base'
+import { Dimensions, StyleSheet, TouchableOpacity, View, Modal, ActivityIndicator } from 'react-native'
+import { Container, Content, Footer, FooterTab, Text, Button, Icon, Header, Title, Left, Body, Right, Form, Item, Input, Label } from 'native-base'
 import { Col, Row, Grid } from 'react-native-easy-grid'
 import MapView from 'react-native-maps'
+import Swipeout from 'react-native-swipeout'
 import moment from 'moment/min/moment-with-locales'
 
 moment.locale('fr')
 
 const COLOR_GREEN = '#2ECC71'
+const COLOR_RED = '#E74C3C'
 const COLOR_BLUE = '#3498DB'
 
 class TaskPage extends Component {
@@ -22,8 +24,11 @@ class TaskPage extends Component {
     this.state = {
       task,
       modalVisible: false,
+      modalContextValid: true,
+      swipeOutClose: false,
       loading: false,
       loadingMessage: 'Chargement…',
+      notes: ''
     }
   }
 
@@ -31,7 +36,7 @@ class TaskPage extends Component {
     setTimeout(() => this.map.fitToElements(false), 500)
   }
 
-  completeTask() {
+  markTaskDone() {
 
     const { client, onTaskChange } = this.props.navigation.state.params
     const { task } = this.state
@@ -40,7 +45,21 @@ class TaskPage extends Component {
     client
       .put(task['@id'] + '/done', {})
       .then(task => {
-        this.setState({ task, loading: false, modalVisible: false })
+        this.setState({ task, notes: '', loading: false, modalVisible: false })
+        onTaskChange(task)
+      })
+  }
+
+  markTaskFailed() {
+
+    const { client, onTaskChange } = this.props.navigation.state.params
+    const { task, notes } = this.state
+
+    this.setState({ loading: true })
+    client
+      .put(task['@id'] + '/failed', { reason: notes })
+      .then(task => {
+        this.setState({ task, notes: '', loading: false, modalVisible: false })
         onTaskChange(task)
       })
   }
@@ -81,6 +100,12 @@ class TaskPage extends Component {
   }
 
   renderModal() {
+
+    const { modalContextValid  } = this.state
+
+    const buttonIconName = modalContextValid ? 'checkmark' : 'warning'
+    const onPress = modalContextValid ? this.markTaskDone.bind(this) : this.markTaskFailed.bind(this)
+
     return (
       <Modal
         animationType={ 'slide' }
@@ -95,14 +120,8 @@ class TaskPage extends Component {
                   <Title style={{ fontSize: 14 }}>Annuler</Title>
                 </Button>
               </Left>
-              <Body>
-                <Title style={{ fontSize: 14, textAlign: 'right' }}>Terminer la tâche</Title>
-              </Body>
-              <Right>
-                <Button transparent onPress={ () => this.completeTask() }>
-                  <Icon name="md-checkmark" style={{ color: '#fff' }} />
-                </Button>
-              </Right>
+              <Body />
+              <Right />
             </Header>
             <Content>
               <Grid>
@@ -111,13 +130,21 @@ class TaskPage extends Component {
                     <Form>
                       <Item stackedLabel>
                         <Label>Notes</Label>
-                        <Input />
+                        <Input onChangeText={ text => this.setState({ notes: text }) } />
                       </Item>
                     </Form>
                   </Col>
                 </Row>
               </Grid>
             </Content>
+            <Footer style={{ alignItems: 'center', backgroundColor: modalContextValid ? COLOR_GREEN : COLOR_RED }}>
+              <TouchableOpacity style={ styles.buttonContainer } onPress={ onPress }>
+                <View style={ styles.buttonTextContainer }>
+                  <Icon name={ buttonIconName } style={{ color: '#fff', marginRight: 10 }} />
+                  <Text style={{ color: '#fff' }}>{ modalContextValid ? 'Valider' : 'Signaler un problème' }</Text>
+                </View>
+              </TouchableOpacity>
+            </Footer>
           </Container>
           { this.renderLoader() }
         </View>
@@ -148,6 +175,83 @@ class TaskPage extends Component {
     )
   }
 
+  renderSwipeoutLeftButton() {
+    return (
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <Icon name="checkmark" style={{ color: '#fff' }} />
+      </View>
+    )
+
+  }
+
+  renderSwipeoutRightButton() {
+    return (
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <Icon name="warning" style={{ color: '#fff' }} />
+      </View>
+    )
+  }
+
+  renderSwipeOutButton() {
+
+    const { height, width } = Dimensions.get('window')
+    const { swipeOutClose, task } = this.state
+
+    if (task.status === 'DONE') {
+      return (
+        <View style={ [ styles.buttonContainer, { backgroundColor: COLOR_GREEN } ] }>
+          <View style={ styles.buttonTextContainer }>
+            <Icon name="checkmark" style={{ color: '#fff', marginRight: 10 }} />
+            <Text style={{ color: '#fff' }}>Terminée</Text>
+          </View>
+        </View>
+      )
+    }
+
+    if (task.status === 'FAILED') {
+      return (
+        <View style={ [ styles.buttonContainer, { backgroundColor: COLOR_RED } ] }>
+          <View style={ styles.buttonTextContainer }>
+            <Icon name="warning" style={{ color: '#fff', marginRight: 10 }} />
+            <Text style={{ color: '#fff' }}>Échec</Text>
+          </View>
+        </View>
+      )
+    }
+
+    const swipeoutLeftButton = {
+      component: this.renderSwipeoutLeftButton(),
+      backgroundColor: COLOR_GREEN,
+      onPress: () => {
+        this.setState({
+          modalContextValid: true,
+          modalVisible: true,
+          swipeOutClose: true
+        })
+      }
+    }
+
+    const swipeoutRightButton = {
+      component: this.renderSwipeoutRightButton(),
+      backgroundColor: COLOR_RED,
+      onPress: () => {
+        this.setState({
+          modalContextValid: false,
+          modalVisible: true,
+          swipeOutClose: true
+        })
+      }
+    }
+
+    return (
+      <Swipeout left={[ swipeoutLeftButton ]} right={[ swipeoutRightButton ]} close={ swipeOutClose }>
+        <View style={{ padding: 18, width }}>
+          <Text style={{ textAlign: 'center', color: '#fff', fontFamily: 'Raleway-Regular' }}>Terminer</Text>
+        </View>
+      </Swipeout>
+    )
+  }
+
   render() {
 
     const { task } = this.state
@@ -164,9 +268,9 @@ class TaskPage extends Component {
     return (
       <Container style={{ backgroundColor: '#fff' }}>
         <Grid>
-          <Row size={ 9 }>
+          <Row size={ 8 }>
             <Col>
-              <Row>
+              <Row size={ 1 }>
                 <MapView
                   ref={ component => this.map = component }
                   style={ styles.map }
@@ -185,7 +289,7 @@ class TaskPage extends Component {
                   </MapView.Marker>
                 </MapView>
               </Row>
-              <Row>
+              <Row size={ 1 }>
                 <Col>
                   { this.renderTaskDetail('md-navigate', task.address.streetAddress) }
                   { this.renderTaskDetail('md-clock', taskTimeframe) }
@@ -193,10 +297,15 @@ class TaskPage extends Component {
               </Row>
             </Col>
           </Row>
-          <Row size={ 1 } style={{ backgroundColor: '#2ECC71' }}>
-            { this.renderButton() }
+          <Row size={ 4 } style={ styles.swipeOutHelpContainer }>
+            <View style={{ paddingVertical: 10, paddingHorizontal: 15 }}>
+              <Text style={ styles.swipeOutHelpText }>Glissez vers la droite pour terminer, ou vers la gauche en cas de problème.</Text>
+            </View>
           </Row>
         </Grid>
+        <Footer>
+          { this.renderSwipeOutButton() }
+        </Footer>
         { this.renderModal() }
       </Container>
     )
@@ -239,6 +348,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'row'
+  },
+  swipeOutHelpContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  swipeOutHelpText: {
+    fontSize: 14,
+    textAlign: 'center',
+    color: '#ccc'
   }
 });
 

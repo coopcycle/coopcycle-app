@@ -10,6 +10,8 @@ import { Col, Row, Grid } from 'react-native-easy-grid'
 import _ from 'lodash'
 import moment from 'moment/min/moment-with-locales'
 import MapView from 'react-native-maps'
+import WebSocketClient from '../../WebSocketClient'
+import GeolocationTracker from '../../GeolocationTracker'
 
 moment.locale('fr')
 
@@ -23,12 +25,17 @@ class TasksPage extends Component {
 
   map = null
   markers = []
+  webSocketClient = null
+  geolocationTracker = null
 
   static navigationOptions = ({ navigation }) => {
     const { params } = navigation.state
     return {
       headerRight: (
         <View style={{ flex: 1, flexDirection: 'row', alignItems: 'flex-end' }}>
+          <Button transparent>
+            <Icon name="wifi" style={{ color: params.connected ? COLOR_GREEN : COLOR_GREY }} />
+          </Button>
           <Button transparent>
             <Icon name="navigate" style={{ color: params.tracking ? COLOR_GREEN : COLOR_GREY }} />
           </Button>
@@ -42,75 +49,77 @@ class TasksPage extends Component {
     this.state = {
       tasks: [],
       task: null,
-      nextTask: null,
       loading: false,
       loadingMessage: 'Chargement…',
       currentPosition: null,
-      watchID: null,
       polyline: [],
       detailsModal: false,
     }
   }
 
   componentDidMount() {
-    this.setState({ loading: true })
-    this.getCurrentPosition()
-      .then(position => this.watchPosition(position))
-      .then(position => {
-        this.onPositionUpdated(position)
-        this.props.navigation.setParams({ tracking: true })
-        this.refreshTasks()
-      })
+
+    const { baseURL, user } = this.props.navigation.state.params
+
+    const socketURL = (baseURL.replace('http', 'ws')) + '/dispatch'
+
+    this.webSocketClient = new WebSocketClient(socketURL, user, {
+      onConnect: this.onWebSocketConnect.bind(this),
+      onDisconnect: this.onWebSocketDisconnect.bind(this),
+      onReconnect: this.onWebSocketReconnect.bind(this),
+    })
+
+    this.geolocationTracker = new GeolocationTracker({
+      onChange: this.onGeolocationChange.bind(this)
+    })
+
+    this.setState({ loading: true, loadingMessage: 'Connexion…' })
+
+    Promise.all([
+      this.geolocationTracker.start(),
+      this.webSocketClient.connect()
+    ]).then(() => {
+      this.setState({ loadingMessage: 'Chargement…' })
+      this.refreshTasks()
+    })
+
   }
 
   componentWillUnmount() {
-    const { watchID } = this.state
-    navigator.geolocation.clearWatch(watchID)
+    this.geolocationTracker.stop()
+    this.webSocketClient.disconnect()
   }
 
-  getCurrentPosition() {
-
-    this.setState({ loadingMessage: 'Calcul de votre position…' })
-
-    return new Promise((resolve, reject) => {
-
-      let options;
-      if (Platform.OS === 'ios') {
-        options = {
-          enableHighAccuracy: true,
-          timeout: 15000,
-          maximumAge: 5000
-        }
-      } else {
-        options = {
-          enableHighAccuracy: false
-        }
-      }
-
-      navigator.geolocation.getCurrentPosition(
-        position => resolve(position),
-        error => reject(error),
-        options
-      )
-    })
-
+  onWebSocketConnect() {
+    this.props.navigation.setParams({ connected: true })
   }
 
-  watchPosition(position) {
-    return new Promise((resolve, reject) => {
-      const watchID = navigator.geolocation.watchPosition(
-        position => this.onPositionUpdated(position),
-        error => reject(error)
-      )
-      this.setState({
-        watchID: watchID
-      })
-      resolve(position)
+  onWebSocketDisconnect() {
+    this.props.navigation.setParams({ connected: false })
+    this.setState({
+      loading: true,
+      loadingMessage: 'Connexion perdue, reconnexion…'
     })
   }
 
-  onPositionUpdated(position) {
+  onWebSocketReconnect() {
+    this.props.navigation.setParams({ connected: true })
+    this.setState({
+      loading: false
+    })
+  }
+
+  onGeolocationChange(position) {
+
+    this.props.navigation.setParams({ tracking: true })
     this.setState({ currentPosition: position.coords })
+
+    if (this.webSocketClient.isOpen()) {
+      this.webSocketClient.send({
+        type: 'position',
+        data: position.coords
+      })
+    }
   }
 
   onTaskChange(newTask) {
@@ -125,7 +134,6 @@ class TasksPage extends Component {
   refreshTasks() {
 
     const { client } = this.props.navigation.state.params
-    const { currentPosition } = this.state
 
     this.setState({ loading: true, loadingMessage: 'Chargement…' })
 
@@ -162,46 +170,28 @@ class TasksPage extends Component {
     )
   }
 
-  renderTask(task, nextTask) {
-
-    const { client } = this.props.navigation.state.params
-    const buttonProps = (task === nextTask) ? {} : { disabled: true }
-    const taskIcon = task.type === 'PICKUP' ? 'md-arrow-up' : 'md-arrow-down'
-
-    let style = [ styles.item ]
-    if (task === nextTask) {
-      style.push(styles.itemActive)
-    }
-
-    return (
-      <View style={ style }>
-        <Grid>
-          <Col size={ 1 } style={{ paddingHorizontal: 5, flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-            <Icon name={ taskIcon } />
-          </Col>
-          <Col size={ 10 } style={{ padding: 10 }}>
-            <Text>{ task.address.streetAddress }</Text>
-            <Text>{ moment(task.doneAfter).format('LT') } - { moment(task.doneBefore).format('LT') }</Text>
-          </Col>
-          <Col size={ 1 } style={{ paddingHorizontal: 5, flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-            <TouchableHighlight>
-              <Icon style={{ color: '#ccc' }} name="md-arrow-forward" />
-            </TouchableHighlight>
-          </Col>
-        </Grid>
-      </View>
-    )
-  }
-
   render() {
 
     const { tasks } = this.state
     const { navigate } = this.props.navigation
     const { client } = this.props.navigation.state.params
 
-    const nextTask = _.find(this.state.tasks, task => task.status === 'TODO')
-
     this.markers = this.markers.slice()
+
+    const pinColor = task => {
+
+      let pinColor = COLOR_BLUE
+
+      if (task.status === 'DONE') {
+        pinColor = COLOR_GREEN
+      }
+
+      if (task.status === 'FAILED') {
+        pinColor = COLOR_RED
+      }
+
+      return pinColor
+    }
 
     return (
       <Container>
@@ -221,7 +211,7 @@ class TasksPage extends Component {
                   identifier={ task['@id'] }
                   key={ task['@id'] }
                   coordinate={ task.address.geo }
-                  pinColor={ task.status === 'TODO' ? COLOR_BLUE : COLOR_GREEN }
+                  pinColor={ pinColor(task) }
                   flat={ true }>
                   <MapView.Callout onPress={ () => navigate('CourierTask', { client, task, onTaskChange: this.onTaskChange.bind(this) }) }>
                     <Text style={{ fontSize: 14 }}>{ task.address.streetAddress }</Text>

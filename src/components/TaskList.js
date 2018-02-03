@@ -25,7 +25,14 @@ export default class TaskList extends Component {
     const { onTaskClick } = this.props
 
     const taskTypeIcon = task.type === 'PICKUP' ? 'arrow-up' : 'arrow-down'
-    const taskStatusIcon = task.status === 'DONE' ? 'checkmark' : 'list'
+
+    let taskStatusIcon = 'list'
+    if (task.status === 'DONE') {
+      taskStatusIcon = 'checkmark'
+    }
+    if (task.status === 'FAILED') {
+      taskStatusIcon = 'warning'
+    }
 
     let style = [ styles.item ]
 
