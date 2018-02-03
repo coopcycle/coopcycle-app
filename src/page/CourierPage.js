@@ -21,29 +21,6 @@ class CourierPage extends Component {
     };
   }
 
-  logout() {
-
-    const { baseURL, client, user, navigation } = this.props.screenProps
-
-    user.logout()
-      .then(() => {
-        const resetAction = NavigationActions.reset({
-          index: 0,
-          actions: [
-            NavigationActions.navigate({
-              routeName: 'Home',
-              params: {
-                baseURL,
-                client,
-                user: null
-              }
-            })
-          ]
-        })
-        navigation.dispatch(resetAction)
-      })
-  }
-
   render() {
 
     const { baseURL, client, user } = this.props.navigation.state.params
@@ -78,11 +55,6 @@ class CourierPage extends Component {
               </Right>
             </ListItem>
           </List>
-          <View style={{ paddingHorizontal: 10, marginTop: 40 }}>
-            <Button block danger onPress={ () => this.logout() }>
-              <Text>Déconnexion</Text>
-            </Button>
-          </View>
         </Content>
       </Container>
     )
