@@ -32,10 +32,6 @@ class TaskPage extends Component {
     }
   }
 
-  componentDidMount() {
-    setTimeout(() => this.map.fitToElements(false), 500)
-  }
-
   markTaskDone() {
 
     const { client, onTaskChange } = this.props.navigation.state.params
@@ -62,6 +58,30 @@ class TaskPage extends Component {
         this.setState({ task, notes: '', loading: false, modalVisible: false })
         onTaskChange(task)
       })
+  }
+
+  onMapReady() {
+
+    const { geolocationTracker } = this.props.navigation.state.params
+    const { task } = this.state
+
+    const coordinates = [
+      geolocationTracker.getLatLng(),
+      {
+        latitude: task.address.geo.latitude,
+        longitude: task.address.geo.longitude,
+      }
+    ]
+
+    this.map.fitToCoordinates(coordinates, {
+      edgePadding: {
+        top: 100,
+        left: 100,
+        bottom: 100,
+        right: 100
+      },
+      animated: true
+    })
   }
 
   renderTaskDetail(iconName, text) {
@@ -279,7 +299,8 @@ class TaskPage extends Component {
                   loadingEnabled
                   loadingIndicatorColor={"#666666"}
                   loadingBackgroundColor={"#eeeeee"}
-                  initialRegion={ initialRegion }>
+                  initialRegion={ initialRegion }
+                  onMapReady={() => this.onMapReady()}>
                   <MapView.Marker
                     identifier={ task['@id'] }
                     key={ task['@id'] }

@@ -30,14 +30,14 @@ class TaskListPage extends Component {
 
     const { tasks } = this.state
     const { navigate } = this.props.navigation
-    const { client } = this.props.navigation.state.params
+    const { client, geolocationTracker } = this.props.navigation.state.params
 
     return (
       <Container>
         <Content>
           <TaskList
             tasks={ tasks }
-            onTaskClick={ task => navigate('CourierTask', { client, task, onTaskChange: this.onTaskChange.bind(this) }) } />
+            onTaskClick={ task => navigate('CourierTask', { client, task, geolocationTracker, onTaskChange: this.onTaskChange.bind(this) }) } />
         </Content>
       </Container>
     )
