@@ -52,6 +52,7 @@
 		E48D6D2D52BB4B6B9C422E7D /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5273B426CADD4B88A37CFE61 /* Ionicons.ttf */; };
 		E4A95D69133B4C1B8FD304BA /* Raleway-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CA8DA506BADD462E8A4B68B4 /* Raleway-Regular.ttf */; };
 		EBEA4DEB916A4B2EB2E0BF79 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 59DED19D05AC4D3589C7649F /* FontAwesome.ttf */; };
+		FA97ACD8202E05AF003E463B /* libKCKeepAwake.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FA97ACB1202E0590003E463B /* libKCKeepAwake.a */; };
 		FACC77F21FE0D09300B54C2A /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		FB362CCD67634DDBB76CC4A4 /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 48ED43D3AAD841AEBB45A21B /* Foundation.ttf */; };
 		FE1DCA95EC154D25BD3E68A1 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F85D37283EA740CC8E575803 /* Octicons.ttf */; };
@@ -275,6 +276,13 @@
 			remoteGlobalIDString = 358F4ED71D1E81A9004DF814;
 			remoteInfo = RCTBlob;
 		};
+		FA97ACB0202E0590003E463B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FA97ACAB202E0590003E463B /* KCKeepAwake.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = KCKeepAwake;
+		};
 		FACC77EB1FE0D05D00B54C2A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 2779A8F950EB4283BB776C80 /* TPSStripe.xcodeproj */;
@@ -396,6 +404,7 @@
 		CA8DA506BADD462E8A4B68B4 /* Raleway-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Raleway-Regular.ttf"; path = "../assets/fonts/Raleway-Regular.ttf"; sourceTree = "<group>"; };
 		DE7C26B381464CBDAC381F32 /* Roboto.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Roboto.ttf; path = "../node_modules/native-base/Fonts/Roboto.ttf"; sourceTree = "<group>"; };
 		F85D37283EA740CC8E575803 /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/native-base/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
+		FA97ACAB202E0590003E463B /* KCKeepAwake.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = KCKeepAwake.xcodeproj; path = "../node_modules/react-native-keep-awake/ios/KCKeepAwake.xcodeproj"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -411,6 +420,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA97ACD8202E05AF003E463B /* libKCKeepAwake.a in Frameworks */,
 				ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */,
 				FACC77F21FE0D09300B54C2A /* libRCTAnimation.a in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
@@ -609,6 +619,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				FA97ACAB202E0590003E463B /* KCKeepAwake.xcodeproj */,
 				5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */,
 				146833FF1AC3E56700842450 /* React.xcodeproj */,
 				00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */,
@@ -693,6 +704,14 @@
 				961D84324BE84213A85D9C7D /* OpenSans-Bold.ttf */,
 			);
 			name = Resources;
+			sourceTree = "<group>";
+		};
+		FA97ACAC202E0590003E463B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FA97ACB1202E0590003E463B /* libKCKeepAwake.a */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		FACC77CC1FE0D05C00B54C2A /* Recovered References */ = {
@@ -842,6 +861,10 @@
 				{
 					ProductGroup = FACC77ED1FE0D05D00B54C2A /* Products */;
 					ProjectRef = B3471D1D488F40BC8DD61F98 /* AirMaps.xcodeproj */;
+				},
+				{
+					ProductGroup = FA97ACAC202E0590003E463B /* Products */;
+					ProjectRef = FA97ACAB202E0590003E463B /* KCKeepAwake.xcodeproj */;
 				},
 				{
 					ProductGroup = 00C302A81ABCB8CE00DB3ED1 /* Products */;
@@ -1108,6 +1131,13 @@
 			fileType = archive.ar;
 			path = libRCTBlob.a;
 			remoteRef = ADBDB9261DFEBF0700ED6528 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FA97ACB1202E0590003E463B /* libKCKeepAwake.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libKCKeepAwake.a;
+			remoteRef = FA97ACB0202E0590003E463B /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		FACC77EC1FE0D05D00B54C2A /* libTPSStripe.a */ = {

@@ -13,6 +13,7 @@ Install dependencies with Yarn, and link them with React Native CLI.
 
 ```
 $ yarn install
+$ sudo gem install cocoapods
 $ react-native link
 ```
 
@@ -39,6 +40,7 @@ Troubleshooting
 watchman watch-del-all
 rm -rf node_modules
 rm -rf $TMPDIR/react-*
+rm -rf $TMPDIR/haste-map-react-native-packager-*
 rm -rf ~/.rncache
 rm yarn.lock
 yarn cache clean

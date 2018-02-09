@@ -10,7 +10,8 @@ import { Col, Row, Grid } from 'react-native-easy-grid'
 import _ from 'lodash'
 import moment from 'moment/min/moment-with-locales'
 import MapView from 'react-native-maps'
-import { NavigationActions } from 'react-navigation';
+import { NavigationActions } from 'react-navigation'
+import KeepAwake from 'react-native-keep-awake'
 import WebSocketClient from '../../WebSocketClient'
 import GeolocationTracker from '../../GeolocationTracker'
 
@@ -71,9 +72,14 @@ class TasksPage extends Component {
     }
   }
 
+  componentDidMount() {
+    KeepAwake.activate()
+  }
+
   componentWillUnmount() {
     this.geolocationTracker.stop()
     this.webSocketClient.disconnect()
+    KeepAwake.deactivate()
   }
 
   connect() {
