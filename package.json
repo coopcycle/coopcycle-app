@@ -18,7 +18,7 @@
     "react-native-maps": "0.20.0",
     "react-native-modal-selector": "^0.0.24",
     "react-native-swipeout": "^2.3.3",
-    "react-navigation": "^1.0.0-beta.26",
+    "react-navigation": "^1.0.0",
     "slugify": "^1.1.0",
     "tipsi-stripe": "4.4.0",
     "underscore": "^1.8.3"
