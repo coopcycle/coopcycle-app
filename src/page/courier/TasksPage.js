@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, ActivityIndicator, Image, FlatList, Modal, Platform, TouchableHighlight } from 'react-native'
+import { StyleSheet, View, ActivityIndicator, Image, FlatList, Modal, Platform, TouchableHighlight, Alert } from 'react-native'
 import {
   Container,
   Content, Button, Icon, List, ListItem, Text, Title,
@@ -10,6 +10,7 @@ import { Col, Row, Grid } from 'react-native-easy-grid'
 import _ from 'lodash'
 import moment from 'moment/min/moment-with-locales'
 import MapView from 'react-native-maps'
+import { NavigationActions } from 'react-navigation';
 import WebSocketClient from '../../WebSocketClient'
 import GeolocationTracker from '../../GeolocationTracker'
 
@@ -46,28 +47,6 @@ class TasksPage extends Component {
 
   constructor(props) {
     super(props)
-    this.state = {
-      tasks: [],
-      task: null,
-      loading: false,
-      loadingMessage: 'Chargement…',
-      currentPosition: null,
-      polyline: [],
-      detailsModal: false,
-    }
-  }
-
-  componentDidMount() {
-    this.setState({ loading: true, loadingMessage: 'Connexion…' })
-    this.connect()
-  }
-
-  componentWillUnmount() {
-    this.geolocationTracker.stop()
-    this.webSocketClient.disconnect()
-  }
-
-  connect() {
 
     const { baseURL, client, user } = this.props.navigation.state.params
 
@@ -81,15 +60,45 @@ class TasksPage extends Component {
       onChange: this.onGeolocationChange.bind(this)
     })
 
+    this.state = {
+      tasks: [],
+      task: null,
+      loading: false,
+      loadingMessage: 'Chargement…',
+      currentPosition: null,
+      polyline: [],
+      detailsModal: false,
+    }
+  }
+
+  componentWillUnmount() {
+    this.geolocationTracker.stop()
+    this.webSocketClient.disconnect()
+  }
+
+  connect() {
+
+    this.setState({ loading: true, loadingMessage: 'Connexion…' })
+
     Promise.all([
       this.geolocationTracker.start(),
       this.webSocketClient.connect()
     ]).then(() => {
-      this.setState({ loadingMessage: 'Chargement…' })
       this.refreshTasks()
     }).catch(e => {
-      // TODO Show error message
-      console.log('Connection impossible')
+      // TODO Distinguish error reason
+      Alert.alert(
+        'Connexion impossible',
+        'Veuillez réessayer plus tard',
+        [
+          {
+            text: 'OK', onPress: () => {
+              this.props.navigation.dispatch(NavigationActions.back())
+            }
+          },
+        ],
+        { cancelable: false }
+      )
     })
 
   }
@@ -143,12 +152,35 @@ class TasksPage extends Component {
 
     client.get('/api/me/tasks/' + moment().format('YYYY-MM-DD'))
       .then(data => {
+
         const tasks = data['hydra:member']
+
         this.setState({
           loading: false,
           tasks,
         })
-        setTimeout(() => this.map.fitToElements(false), 500)
+
+        const { currentPosition } = this.state
+
+        const coordinates = tasks.map(task => {
+          const { latitude, longitude } = task.address.geo
+          return {
+            latitude,
+            longitude
+          }
+        })
+        coordinates.push(currentPosition)
+
+        this.map.fitToCoordinates(coordinates, {
+          edgePadding: {
+            top: 100,
+            left: 100,
+            bottom: 100,
+            right: 100
+          },
+          animated: true
+        })
+
       })
   }
 
@@ -204,11 +236,13 @@ class TasksPage extends Component {
             <MapView
               ref={ component => this.map = component }
               style={ styles.map }
-              zoomEnabled
+              zoomEnabled={ true }
+              zoomControlEnabled={ true }
               showsUserLocation
               loadingEnabled
               loadingIndicatorColor={"#666666"}
-              loadingBackgroundColor={"#eeeeee"}>
+              loadingBackgroundColor={"#eeeeee"}
+              onMapReady={() => this.connect()}>
               { this.state.tasks.map(task => (
                 <MapView.Marker
                   ref={ component => this.markers.push(component) }
