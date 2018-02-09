@@ -9,6 +9,10 @@ class GeolocationTracker {
   options = {
     onChange: position => {}
   }
+  latLng: {
+    latitude: 0,
+    longitude: 0
+  }
 
   constructor(options) {
     this.options = options
@@ -22,12 +26,18 @@ class GeolocationTracker {
     }
   }
 
+  getLatLng() {
+    return this.latLng
+  }
+
   start() {
     return new Promise((resolve, reject) => {
       navigator.geolocation.getCurrentPosition(
         position => {
+          this.latLng = position.coords
           this.watchID = navigator.geolocation.watchPosition(
             position => {
+              this.latLng = position.coords
               this.options.onChange(position)
               resolve()
             },
