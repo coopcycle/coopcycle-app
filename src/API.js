@@ -4,7 +4,14 @@
 function Client(httpBaseURL, model) {
   this.httpBaseURL = httpBaseURL;
   this.model = model;
-  if (this.model) console.log(this.model.token)
+}
+
+Client.prototype.getBaseURL = function() {
+  return this.httpBaseURL
+}
+
+Client.prototype.getToken = function() {
+  return this.model.token
 }
 
 Client.prototype.createRequest = function(method, uri, data) {
@@ -97,7 +104,39 @@ Client.prototype.fetch = function(req) {
   });
 }
 
+Client.prototype.refreshToken = function() {
 
+  return new Promise((resolve, reject) => {
+    refreshToken(this.httpBaseURL, this.model.refreshToken)
+      .then(credentials => {
+
+        console.log('Storing new credentials in DB...')
+        this.model.token = credentials.token
+        this.model.refreshToken = credentials.refresh_token
+
+        return this.model.save()
+      })
+      .then(model => resolve(model.token))
+  })
+
+}
+
+
+Client.prototype.checkToken = function() {
+  const req = this.createAuthorizedRequest('GET', '/api/token/check')
+  return new Promise((resolve, reject) => {
+    fetch(req)
+      .then(response => {
+        if (response.status === 401) {
+          reject()
+          return
+        }
+        if (response.ok) {
+          resolve()
+        }
+      })
+  })
+}
 
 Client.prototype.login = function(username, password) {
   return login(this.httpBaseURL, username, password)

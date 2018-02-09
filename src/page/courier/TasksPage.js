@@ -58,12 +58,20 @@ class TasksPage extends Component {
   }
 
   componentDidMount() {
+    this.setState({ loading: true, loadingMessage: 'Connexion…' })
+    this.connect()
+  }
 
-    const { baseURL, user } = this.props.navigation.state.params
+  componentWillUnmount() {
+    this.geolocationTracker.stop()
+    this.webSocketClient.disconnect()
+  }
 
-    const socketURL = (baseURL.replace('http', 'ws')) + '/dispatch'
+  connect() {
 
-    this.webSocketClient = new WebSocketClient(socketURL, user, {
+    const { baseURL, client, user } = this.props.navigation.state.params
+
+    this.webSocketClient = new WebSocketClient(client, '/dispatch', {
       onConnect: this.onWebSocketConnect.bind(this),
       onDisconnect: this.onWebSocketDisconnect.bind(this),
       onReconnect: this.onWebSocketReconnect.bind(this),
@@ -73,21 +81,17 @@ class TasksPage extends Component {
       onChange: this.onGeolocationChange.bind(this)
     })
 
-    this.setState({ loading: true, loadingMessage: 'Connexion…' })
-
     Promise.all([
       this.geolocationTracker.start(),
       this.webSocketClient.connect()
     ]).then(() => {
       this.setState({ loadingMessage: 'Chargement…' })
       this.refreshTasks()
+    }).catch(e => {
+      // TODO Show error message
+      console.log('Connection impossible')
     })
 
-  }
-
-  componentWillUnmount() {
-    this.geolocationTracker.stop()
-    this.webSocketClient.disconnect()
   }
 
   onWebSocketConnect() {
