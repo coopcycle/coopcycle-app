@@ -314,6 +314,7 @@ class TaskPage extends Component {
                 <Col>
                   { this.renderTaskDetail('md-navigate', task.address.streetAddress) }
                   { this.renderTaskDetail('md-clock', taskTimeframe) }
+                  { task.comments && this.renderTaskDetail('md-chatbubbles', task.comments) }
                 </Col>
               </Row>
             </Col>
