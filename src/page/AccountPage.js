@@ -9,7 +9,7 @@ import {
 import { NavigationActions } from 'react-navigation'
 
 import LoginForm from '../components/LoginForm'
-import Settings from '../Settings'
+import { Settings, events } from '../Settings'
 
 class AccountPage extends Component {
 
@@ -24,6 +24,8 @@ class AccountPage extends Component {
   logout() {
 
     const { baseURL, client, user, navigation } = this.props.screenProps
+
+    events.emit('user:logout')
 
     user.logout()
       .then(() => {
@@ -58,6 +60,8 @@ class AccountPage extends Component {
   onLoginSuccess(user) {
 
     const { baseURL, client, navigation } = this.props.screenProps
+
+    events.emit('user:login', { baseURL, client, user })
 
     const resetAction = NavigationActions.reset({
       index: 0,
