@@ -1,8 +1,7 @@
-import { AsyncStorage } from 'react-native';
-import EventEmitter from 'EventEmitter';
-import _ from 'underscore';
+import { AsyncStorage } from 'react-native'
+import EventEmitter from 'EventEmitter'
 
-let events = new EventEmitter();
+let events = new EventEmitter()
 
 class Settings {
 
@@ -12,12 +11,12 @@ class Settings {
         AsyncStorage.setItem('@Server', server)
           .then((error) => {
             if (error) {
-              return reject(error);
+              return reject(error)
             }
-            resolve();
+            resolve()
           });
       } catch (error) {
-        reject(error.message);
+        reject(error.message)
       }
     });
   }
@@ -28,13 +27,13 @@ class Settings {
         AsyncStorage.getItem('@Server')
           .then((data, error) => {
             if (error) {
-              return reject(error);
+              return reject(error)
             }
 
-            return resolve(data);
+            return resolve(data)
           });
       } catch (error) {
-        reject(error.message);
+        reject(error.message)
       }
     });
   }
@@ -45,21 +44,25 @@ class Settings {
         AsyncStorage.removeItem('@Server')
           .then((error) => {
             if (error) {
-              return reject(error);
+              return reject(error)
             }
-            events.emit('server:remove');
-            resolve();
+            events.emit('server:remove')
+            resolve()
           });
       } catch (error) {
-        reject(error.message);
+        reject(error.message)
       }
     });
   }
 
   static addListener(event, handler) {
-    events.addListener(event, handler);
+    events.addListener(event, handler)
+  }
+
+  static removeListener(event, handler) {
+    events.removeListener(event, handler)
   }
 
 }
 
-module.exports = Settings;
+module.exports = { Settings, events }
