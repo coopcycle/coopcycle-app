@@ -17,15 +17,24 @@ $ sudo gem install cocoapods
 $ react-native link
 ```
 
-For Android, create a `gradle.properties` file in `GRADLE_USER_HOME` (defaults to `~/.gradle`)
+Running on Android emulator
+-----------------------
+
+NB: You may need to open the Android project in Android Studio before it builds.
+
+* Create a `gradle.properties` file in `GRADLE_USER_HOME` (defaults to `~/.gradle`)
 [Learn more about configuring Gradle Build Environment](https://docs.gradle.org/current/userguide/build_environment.html)
 
-```
-googleMapsApiKey=YOUR_API_KEY
-```
+    ```
+    googleMapsApiKey=YOUR_API_KEY
+    ```
+
+* Download `Android Studio`
 
 Running on iOS emulator
 -----------------------
+
+NB: You may need to open the iOS project in xCode before it builds.
 
 ```
 react-native run-ios
