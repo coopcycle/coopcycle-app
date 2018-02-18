@@ -1,19 +1,20 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, ActivityIndicator, Image, FlatList, Modal, Platform, TouchableHighlight, Alert } from 'react-native'
+import { StyleSheet, View, ActivityIndicator, Alert } from 'react-native'
 import {
   Container,
   Content, Button, Icon, List, ListItem, Text, Title,
   Card, CardItem, Thumbnail,
-  Header, Left, Body, Right
+  Header, Left, Right
 } from 'native-base'
-import { Col, Row, Grid } from 'react-native-easy-grid'
+import { Row, Grid } from 'react-native-easy-grid'
 import _ from 'lodash'
 import moment from 'moment/min/moment-with-locales'
 import MapView from 'react-native-maps'
 import { NavigationActions } from 'react-navigation'
 import KeepAwake from 'react-native-keep-awake'
-import WebSocketClient from '../../WebSocketClient'
 import GeolocationTracker from '../../GeolocationTracker'
+import { Settings } from '../../Settings'
+import { Registry } from '../../Registry'
 
 moment.locale('fr')
 
@@ -49,14 +50,6 @@ class TasksPage extends Component {
   constructor(props) {
     super(props)
 
-    const { baseURL, client, user } = this.props.navigation.state.params
-
-    this.webSocketClient = new WebSocketClient(client, '/dispatch', {
-      onConnect: this.onWebSocketConnect.bind(this),
-      onDisconnect: this.onWebSocketDisconnect.bind(this),
-      onReconnect: this.onWebSocketReconnect.bind(this),
-    })
-
     this.geolocationTracker = new GeolocationTracker({
       onChange: this.onGeolocationChange.bind(this)
     })
@@ -70,25 +63,44 @@ class TasksPage extends Component {
       polyline: [],
       detailsModal: false,
     }
+
+    this.onMapReady = this.onMapReady.bind(this)
   }
 
   componentDidMount() {
     KeepAwake.activate()
+
+    this.onConnectHandler = this.onWebSocketConnect.bind(this)
+    this.onDisconnectHandler = this.onWebSocketDisconnect.bind(this)
+    this.onReconnectHandler = this.onWebSocketReconnect.bind(this)
+    this.onMessageHandler = this.onWebSocketMessage.bind(this)
+
+    Settings.addListener('websocket:connect', this.onConnectHandler)
+    Settings.addListener('websocket:disconnect', this.onDisconnectHandler)
+    Settings.addListener('websocket:reconnect', this.onReconnectHandler)
+    Settings.addListener('websocket:message', this.onMessageHandler)
+
+    const ws = Registry.getWebSocketClient()
+    if (ws.isOpen()) {
+      this.props.navigation.setParams({ connected: true })
+    }
   }
 
   componentWillUnmount() {
+    Settings.removeListener('websocket:connect', this.onConnectHandler)
+    Settings.removeListener('websocket:disconnect', this.onDisconnectHandler)
+    Settings.removeListener('websocket:reconnect', this.onReconnectHandler)
+    Settings.removeListener('websocket:message', this.onMessageHandler)
     this.geolocationTracker.stop()
-    this.webSocketClient.disconnect()
     KeepAwake.deactivate()
   }
 
   connect() {
 
-    this.setState({ loading: true, loadingMessage: 'Connexion…' })
+    // this.setState({ loading: true, loadingMessage: 'Connexion…' })
 
     Promise.all([
-      this.geolocationTracker.start(),
-      this.webSocketClient.connect()
+      this.geolocationTracker.start()
     ]).then(() => {
       this.refreshTasks()
     }).catch(e => {
@@ -106,7 +118,6 @@ class TasksPage extends Component {
         { cancelable: false }
       )
     })
-
   }
 
   onWebSocketConnect() {
@@ -128,13 +139,28 @@ class TasksPage extends Component {
     })
   }
 
-  onGeolocationChange(position) {
+  onWebSocketMessage (event) {
+    let data = JSON.parse(event.data),
+      { tasks } = this.state,
+      newTasks = tasks.slice()
 
+    if (data.type === 'task:unassign') {
+      _.remove(newTasks, (task) => data.task['@id'] === task['@id'])
+      this.setState({ tasks: newTasks })
+    } else if (data.type === 'task:assign') {
+      let position = data.task.position
+      newTasks = Array.prototype.concat(newTasks.slice(0, position), [data.task], newTasks.slice(position + 1))
+      this.setState({ tasks: newTasks })
+    }
+  }
+
+  onGeolocationChange(position) {
+    const ws = Registry.getWebSocketClient()
     this.props.navigation.setParams({ tracking: true })
     this.setState({ currentPosition: position.coords })
 
-    if (this.webSocketClient.isOpen()) {
-      this.webSocketClient.send({
+    if (ws.isOpen()) {
+      ws.send({
         type: 'position',
         data: position.coords
       })
@@ -142,9 +168,9 @@ class TasksPage extends Component {
   }
 
   onTaskChange(newTask) {
-    const { tasks } = this.state
-    const newTasks = tasks.slice()
-    const taskIndex = _.findIndex(tasks, task => task['@id'] === newTask['@id'])
+    const { tasks } = this.state,
+      newTasks = tasks.slice(),
+      taskIndex = _.findIndex(tasks, task => task['@id'] === newTask['@id'])
     newTasks[taskIndex] = newTask
 
     this.setState({ tasks: newTasks })
@@ -152,42 +178,46 @@ class TasksPage extends Component {
 
   refreshTasks() {
 
-    const { client } = this.props.navigation.state.params
+  const { client } = this.props.navigation.state.params
 
-    this.setState({ loading: true, loadingMessage: 'Chargement…' })
+  this.setState({ loading: true, loadingMessage: 'Chargement…' })
 
-    client.get('/api/me/tasks/' + moment().format('YYYY-MM-DD'))
-      .then(data => {
+  client.get('/api/me/tasks/' + moment().format('YYYY-MM-DD'))
+    .then(data => {
 
-        const tasks = data['hydra:member']
+      const tasks = data['hydra:member']
 
-        this.setState({
-          loading: false,
-          tasks,
-        })
-
-        const { currentPosition } = this.state
-
-        const coordinates = tasks.map(task => {
-          const { latitude, longitude } = task.address.geo
-          return {
-            latitude,
-            longitude
-          }
-        })
-        coordinates.push(currentPosition)
-
-        this.map.fitToCoordinates(coordinates, {
-          edgePadding: {
-            top: 100,
-            left: 100,
-            bottom: 100,
-            right: 100
-          },
-          animated: true
-        })
-
+      this.setState({
+        loading: false,
+        tasks,
       })
+
+      const { currentPosition } = this.state
+
+      const coordinates = tasks.map(task => {
+        const { latitude, longitude } = task.address.geo
+        return {
+          latitude,
+          longitude
+        }
+      })
+      coordinates.push(currentPosition)
+
+      this.map.fitToCoordinates(coordinates, {
+        edgePadding: {
+          top: 100,
+          left: 100,
+          bottom: 100,
+          right: 100
+        },
+        animated: true
+      })
+
+    })
+  }
+
+  onMapReady () {
+    this.connect()
   }
 
   renderLoader() {
@@ -249,7 +279,7 @@ class TasksPage extends Component {
               loadingEnabled
               loadingIndicatorColor={"#666666"}
               loadingBackgroundColor={"#eeeeee"}
-              onMapReady={() => this.connect()}>
+              onMapReady={() => this.onMapReady()}>
               { this.state.tasks.map(task => (
                 <MapView.Marker
                   ref={ component => this.markers.push(component) }

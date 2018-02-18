@@ -1,15 +1,9 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import {
-  AppRegistry,
   StyleSheet,
   View,
-  Dimensions,
   ActivityIndicator,
-} from 'react-native';
-
-import MapView from 'react-native-maps';
-import Polyline from '@mapbox/polyline';
-import _ from 'underscore';
+} from 'react-native'
 
 import {
   Container, Header, Title, Content,
@@ -18,18 +12,20 @@ import {
   Form, Item, Input, Label,
   Card, CardItem,
   Root, Toast, StyleProvider
-} from 'native-base';
-import getTheme from './native-base-theme/components';
-import material from './native-base-theme/variables/material';
+} from 'native-base'
+import getTheme from './native-base-theme/components'
+import material from './native-base-theme/variables/material'
 
 import { StackNavigator } from 'react-navigation'
 
 import API from './src/API'
+import WebSocketClient from './src/WebSocketClient'
+import { Settings, events } from './src/Settings'
+import { Registry } from './src/Registry'
 
-const Routes = require('./src/page');
-const AppUser = require('./src/AppUser');
-const Settings = require('./src/Settings');
-const AppConfig = require('./src/AppConfig');
+const Routes = require('./src/page')
+const AppUser = require('./src/AppUser')
+
 
 let Router
 
@@ -157,212 +153,223 @@ const routeConfigs = {
 
 export default class App extends Component {
 
-    input = null;
+  input = null
 
-    constructor(props) {
-      super(props);
-      this.state = {
-        client: null,
-        initialized: false,
-        loading: false,
-        settings: {},
-        server: null,
-        text: '',
-        user: null,
-        serverError: false,
-      }
+  constructor(props) {
+    super(props)
+    this.state = {
+      client: null,
+      initialized: false,
+      loading: false,
+      settings: {},
+      server: null,
+      text: '',
+      user: null,
+      serverError: false,
     }
+  }
 
-    componentWillMount() {
+  componentWillMount() {
 
-      Settings.addListener('server:remove', this.disconnect.bind(this));
-
-      AppUser.load()
-        .then(user => {
-          Settings
-            .loadServer()
-            .then(baseURL => this.initializeRouter(baseURL, user))
-        })
-    }
-
-    initializeRouter(baseURL, user) {
-      let client = null;
-      if (baseURL) {
-        client = API.createClient(baseURL, user);
+    Settings.addListener('server:remove', this.disconnect.bind(this))
+    Settings.addListener('user:login', (event) => {
+      const { client, user } = event
+      if (user && user.isAuthenticated() && (user.hasRole('ROLE_COURIER') || user.hasRole('ROLE_ADMIN'))) {
+        Registry.initWebSocketClient(client)
       }
+    })
+    Settings.addListener('user:logout', () => Registry.clearWebSocketClient())
 
-      const navigatorConfig = {
-        initialRouteParams: {
-          baseURL,
-          client,
-          user,
-        },
-        navigationOptions: {
-          ...defaultNavigationOptions
-        }
-      }
-
-      Router = StackNavigator(routeConfigs, navigatorConfig)
-
-      this.setState({
-        client: client,
-        initialized: true,
-        server: baseURL,
-        user: user,
+    AppUser.load()
+      .then(user => {
+        Settings
+          .loadServer()
+          .then(baseURL => this.initializeRouter(baseURL, user))
       })
+  }
+
+  initializeRouter(baseURL, user) {
+    let client = null
+
+    if (baseURL) {
+      client = API.createClient(baseURL, user)
+      if (user && user.isAuthenticated() && (user.hasRole('ROLE_COURIER') || user.hasRole('ROLE_ADMIN'))) {
+        Registry.initWebSocketClient(client)
+      }
     }
 
-    connect() {
-      const server = this.state.text.trim();
+    const navigatorConfig = {
+      initialRouteParams: {
+        baseURL,
+        client,
+        user,
+      },
+      navigationOptions: {
+        ...defaultNavigationOptions
+      }
+    }
 
-      this.setState({ loading: true, serverError: false });
+    Router = StackNavigator(routeConfigs, navigatorConfig)
 
-      API.checkServer(server)
-        .then(baseURL => {
-          const user = this.state.user;
-          Settings
-            .saveServer(baseURL)
-            .then(() => this.initializeRouter(baseURL, user));
-        })
-        .catch((err) => {
+    this.setState({
+      client: client,
+      initialized: true,
+      server: baseURL,
+      user: user
+    })
+  }
 
-          setTimeout(() => {
+  connect() {
+    const server = this.state.text.trim()
 
-            let message = 'Veuillez réessayer plus tard';
-            let serverError = false
-            if (err.message) {
-              if (err.message === 'Network request failed') {
-                message = 'Impossible de se connecter';
-              }
-              if (err.message === 'Not a CoopCycle server') {
-                message = 'Ce serveur n\'est pas compatible';
-                serverError = true
-              }
-              if (err.message === 'Hostname is not valid') {
-                message = 'Ce serveur n\'est pas valide'
-                serverError = true
-              }
+    this.setState({ loading: true, serverError: false })
+
+    API.checkServer(server)
+      .then(baseURL => {
+        const user = this.state.user
+        Settings
+          .saveServer(baseURL)
+          .then(() => this.initializeRouter(baseURL, user))
+      })
+      .catch((err) => {
+
+        setTimeout(() => {
+
+          let message = 'Veuillez réessayer plus tard'
+          let serverError = false
+          if (err.message) {
+            if (err.message === 'Network request failed') {
+              message = 'Impossible de se connecter'
             }
+            if (err.message === 'Not a CoopCycle server') {
+              message = 'Ce serveur n\'est pas compatible'
+              serverError = true
+            }
+            if (err.message === 'Hostname is not valid') {
+              message = 'Ce serveur n\'est pas valide'
+              serverError = true
+            }
+          }
 
-            Toast.show({
-              text: message,
-              position: 'bottom',
-              type: 'danger',
-              duration: 3000
-            });
+          Toast.show({
+            text: message,
+            position: 'bottom',
+            type: 'danger',
+            duration: 3000
+          })
 
-            this.input._root.clear();
-            this.input._root.focus();
+          this.input._root.clear()
+          this.input._root.focus()
 
-            this.setState({ loading: false, serverError });
+          this.setState({ loading: false, serverError })
 
-          }, 500);
+        }, 500)
 
-        });
-    }
+      })
+  }
 
-    disconnect() {
-      const user = this.state.user;
-      user.logout()
+  disconnect() {
+    const user = this.state.user
+    user.logout()
 
-      this.setState({
-        client: null,
-        server: null,
-        user: user,
-      });
-    }
+    this.setState({
+      client: null,
+      server: null,
+      user: user,
+    })
+  }
 
-    renderLoading() {
-      return (
-        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-          <Text>Chargement</Text>
+  renderLoading() {
+    return (
+      <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+        <Text>Chargement</Text>
+      </View>
+    )
+  }
+
+  renderConfigureServer() {
+
+    let loader = (
+      <View />
+    )
+    if (this.state.loading) {
+      loader = (
+        <View style={styles.loader}>
+          <ActivityIndicator
+            animating={true}
+            size="large"
+            color="#fff"
+          />
+          <Text style={{color: '#fff'}}>Chargement...</Text>
         </View>
-      );
-    }
-
-    renderConfigureServer() {
-
-      let loader = (
-        <View />
       )
-      if (this.state.loading) {
-        loader = (
-          <View style={styles.loader}>
-            <ActivityIndicator
-              animating={true}
-              size="large"
-              color="#fff"
-            />
-            <Text style={{color: '#fff'}}>Chargement...</Text>
-          </View>
-        );
-      };
-
-      const itemProps = this.state.serverError ? { error: true } : {}
-
-      return (
-        <Root>
-          <StyleProvider style={getTheme(material)}>
-            <Container>
-              <Header>
-                <Left />
-                <Body>
-                  <Title>CoopCycle</Title>
-                </Body>
-                <Right />
-              </Header>
-              <Content>
-                <View style={{ marginHorizontal: 10, marginTop: 20 }}>
-                  <Card>
-                    <CardItem>
-                      <Body>
-                        <Text>
-                          Veuillez choisir un serveur pour commencer.
-                        </Text>
-                      </Body>
-                    </CardItem>
-                  </Card>
-                </View>
-                <Form style={{ marginVertical: 30 }}>
-                  <Item stackedLabel last { ...itemProps }>
-                    <Label>Adresse du serveur</Label>
-                    <Input
-                      ref={(ref) => { this.input = ref }}
-                      autoCapitalize={'none'}
-                      autoCorrect={false}
-                      placeholder={'Exemple : demo.coopcycle.org'}
-                      onChangeText={(text) => this.setState({ text })} />
-                  </Item>
-                </Form>
-                <View style={{ paddingHorizontal: 10 }}>
-                  <Button block onPress={ this.connect.bind(this) }>
-                    <Text>Valider</Text>
-                  </Button>
-                </View>
-              </Content>
-              { loader }
-            </Container>
-          </StyleProvider>
-        </Root>
-      );
     }
 
-    render() {
+    const itemProps = this.state.serverError ? { error: true } : {}
 
-      if (!this.state.initialized) {
-        return this.renderLoading();
-      }
-
-      if (!this.state.server) {
-        return this.renderConfigureServer();
-      }
-
-      return (
+    return (
+      <Root>
         <StyleProvider style={getTheme(material)}>
-          <Router />
+          <Container>
+            <Header>
+              <Left />
+              <Body>
+              <Title>CoopCycle</Title>
+              </Body>
+              <Right />
+            </Header>
+            <Content>
+              <View style={{ marginHorizontal: 10, marginTop: 20 }}>
+                <Card>
+                  <CardItem>
+                    <Body>
+                    <Text>
+                      Veuillez choisir un serveur pour commencer.
+                    </Text>
+                    </Body>
+                  </CardItem>
+                </Card>
+              </View>
+              <Form style={{ marginVertical: 30 }}>
+                <Item stackedLabel last { ...itemProps }>
+                  <Label>Adresse du serveur</Label>
+                  <Input
+                    ref={(ref) => { this.input = ref }}
+                    autoCapitalize={'none'}
+                    autoCorrect={false}
+                    placeholder={'Exemple : demo.coopcycle.org'}
+                    onChangeText={(text) => this.setState({ text })} />
+                </Item>
+              </Form>
+              <View style={{ paddingHorizontal: 10 }}>
+                <Button block onPress={ this.connect.bind(this) }>
+                  <Text>Valider</Text>
+                </Button>
+              </View>
+            </Content>
+            { loader }
+          </Container>
         </StyleProvider>
-      )
+      </Root>
+    )
+  }
+
+  render() {
+
+    if (!this.state.initialized) {
+      return this.renderLoading()
     }
+
+    if (!this.state.server) {
+      return this.renderConfigureServer()
+    }
+
+    return (
+      <StyleProvider style={getTheme(material)}>
+        <Router />
+      </StyleProvider>
+    )
+  }
 }
 
 const styles = StyleSheet.create({
@@ -372,4 +379,4 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
-});
+})
