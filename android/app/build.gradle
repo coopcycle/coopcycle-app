@@ -157,6 +157,9 @@ dependencies {
     compile(project(':react-native-i18n')) {
         exclude group: 'com.google.android.gms'
     }
+    compile(project(':react-native-push-notification')){
+      exclude group: 'com.google.android.gms'
+    }
     compile(project(':react-native-keep-awake')){
         exclude group: 'com.google.android.gms'
     }
