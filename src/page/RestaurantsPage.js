@@ -10,8 +10,6 @@ import {
   Button, Text, Icon, List, ListItem, Thumbnail,
   Card, CardItem
 } from 'native-base';
-import { Col, Row, Grid } from 'react-native-easy-grid'
-import slugify from 'slugify'
 import _ from 'underscore'
 import moment from 'moment/min/moment-with-locales'
 

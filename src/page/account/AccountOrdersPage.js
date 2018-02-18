@@ -11,7 +11,7 @@ import {
   Left, Right, Body,
   Title, Content, Footer, Button, Icon, List, ListItem, Text
 } from 'native-base';
-import _ from 'underscore';
+
 
 class AccountOrdersPage extends Component {
   constructor(props) {

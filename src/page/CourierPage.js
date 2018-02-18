@@ -1,15 +1,11 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, ActivityIndicator } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import {
   Container, Header, Title, Content,
   Left, Right, Body,
   List, ListItem, InputGroup, Input, Icon, Text, Picker, Button
 } from 'native-base';
 
-import { NavigationActions } from 'react-navigation'
-
-import LoginForm from '../components/LoginForm'
-import Settings from '../Settings'
 
 class CourierPage extends Component {
 

@@ -2,19 +2,15 @@ import React, { Component } from 'react';
 import {
   StyleSheet,
   View,
-  Dimensions,
   ActivityIndicator,
-  Modal,
 } from 'react-native';
 import {
   Badge,
   Container,
   Header, Title, Content, Footer,
-  Left, Right, Body,
+  Left, Right,
   Button, Icon, List, ListItem, Text, Radio } from 'native-base';
-import { Col, Row, Grid } from 'react-native-easy-grid';
 import MapView from 'react-native-maps'
-import _ from 'underscore';
 
 import DeliveryAddressForm from '../components/DeliveryAddressForm'
 

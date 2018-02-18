@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { View } from 'react-native'
 import { Container, Header, Content, Form, Item, Input, Label } from 'native-base'
 import _ from 'underscore'
 

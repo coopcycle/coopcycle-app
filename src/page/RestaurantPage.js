@@ -2,14 +2,12 @@ import React, { Component } from 'react';
 import { StyleSheet, View } from 'react-native';
 import {
   Container, Header, Title, Content, Footer, H3, H4,
-  Left, Right, Body,
+  Left, Right,
   List, ListItem,
   InputGroup, Input,
   Icon, Text, Picker, Button
 } from 'native-base';
-import { Col, Row, Grid } from 'react-native-easy-grid'
 import moment from 'moment/min/moment-with-locales'
-import _ from 'underscore'
 
 moment.locale('fr')
 

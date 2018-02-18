@@ -1,18 +1,15 @@
 import React, { Component } from 'react';
 import {
   StyleSheet,
-  View,
 } from 'react-native';
 import {
   Container,
   Header,
-  Left, Right, Body,
-  Title, Content, Footer, Button, Icon, List, ListItem, Text, Radio
+  Left, Right,
+  Title, Content, Footer, Button, Icon, List, ListItem, Radio
 } from 'native-base';
 
 import MapView from 'react-native-maps';
-import Polyline from '@mapbox/polyline';
-import _ from 'underscore';
 
 const LATITUDE_DELTA = 0.0722;
 const LONGITUDE_DELTA = 0.0221;
