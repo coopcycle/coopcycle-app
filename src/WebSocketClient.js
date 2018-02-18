@@ -6,7 +6,8 @@ class WebSocketClient {
   options = {
     onConnect: () => {},
     onDisconnect: () => {},
-    onReconnect: () => {}
+    onReconnect: () => {},
+    onMessage: (message) => {},
   }
 
   openCount = 0
@@ -14,6 +15,7 @@ class WebSocketClient {
 
   onCloseHandler = null
   onOpenHandler = null
+  onMessageHandler = null
 
   constructor(client, uri, options) {
     this.client = client
@@ -35,14 +37,15 @@ class WebSocketClient {
     console.log(`Connecting to socket ${socketURL}`)
 
     if (this.webSocket !== null) {
-      console.log(`Removing previous event listeners`)
       this.webSocket.removeEventListener('open', this.onOpenHandler)
       this.webSocket.removeEventListener('close', this.onCloseHandler)
+      this.webSocket.removeEventListener('message', this.onMessageHandler)
     }
 
     // This is needed for removeEventListener to work
     this.onOpenHandler = this.onOpen.bind(this, resolve)
     this.onCloseHandler = this.onClose.bind(this, resolve, reject)
+    this.onMessageHandler = this.onMessage.bind(this)
 
     this.webSocket = new WebSocket(socketURL, '', {
       headers: {
@@ -52,7 +55,7 @@ class WebSocketClient {
 
     this.webSocket.addEventListener('open', this.onOpenHandler)
     this.webSocket.addEventListener('close', this.onCloseHandler)
-
+    this.webSocket.addEventListener('message', this.onMessageHandler)
   }
 
   reconnect(resolve, reject) {
@@ -71,7 +74,12 @@ class WebSocketClient {
   disconnect() {
     this.webSocket.removeEventListener('open', this.onOpenHandler)
     this.webSocket.removeEventListener('close', this.onCloseHandler)
+    this.webSocket.removeEventListener('message', this.onMessageHandler)
     this.webSocket.close(1000)
+  }
+
+  onMessage (event) {
+    this.options.onMessage(event)
   }
 
   onOpen(resolve, event) {
