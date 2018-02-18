@@ -1,7 +1,6 @@
 module.exports = {
   HomePage: require('./HomePage'),
   HomeTab: require('./HomeTab'),
-  LoginPage: require('./LoginPage'),
   RestaurantsPage: require('./RestaurantsPage'),
   RestaurantPage: require('./RestaurantPage'),
   CartPage: require('./CartPage'),
