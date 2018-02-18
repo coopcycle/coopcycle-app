@@ -152,9 +152,21 @@ android {
 }
 
 dependencies {
-    compile project(':react-native-keep-awake')
-    compile project(':tipsi-stripe')
-    compile project(':react-native-maps')
+    compile(project(':react-native-keep-awake')){
+      exclude group: 'com.google.android.gms'
+    }
+    compile(project(':tipsi-stripe')){
+      exclude group: 'com.google.android.gms'
+    }
+    compile(project(':react-native-maps')){
+      exclude group: 'com.google.android.gms'
+    }
+    // compile gms independantly, in case of conflicting requirements from other dependencies
+    // see: https://medium.com/@suchydan/how-to-solve-google-play-services-version-collision-in-gradle-dependencies-ef086ae5c75f
+    compile "com.google.android.gms:play-services-base:11.8.0"
+    compile "com.google.android.gms:play-services-wallet:11.8.0"
+    compile "com.google.android.gms:play-services-identity:11.8.0"
+    compile "com.google.android.gms:play-services-gcm:11.8.0"
     compile fileTree(dir: "libs", include: ["*.jar"])
     compile "com.android.support:appcompat-v7:26.1.0"
     compile "com.facebook.react:react-native:+"  // From node_modules
