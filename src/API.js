@@ -59,8 +59,9 @@ function doFetch(req, resolve, reject) {
           this.refreshToken()
             .then(token => {
               console.log('Retrying request…')
-              req.headers.set('Authorization', `Bearer ${token}`)
-              doFetch.apply(this, [ req, resolve, reject ])
+              const newReq = req.clone()
+              newReq.headers.set('Authorization', `Bearer ${token}`)
+              doFetch.apply(this, [ newReq, resolve, reject ])
             })
             .catch(e => reject(e))
         } else {
