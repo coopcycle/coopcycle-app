@@ -1,16 +1,39 @@
 import React, { Component } from 'react'
+import { StyleSheet, View } from 'react-native'
+import { Container, Content, Icon, Text, Thumbnail } from 'native-base'
 import TaskList from '../../components/TaskList'
+import DateSelectHeader from '../../components/DateSelectHeader'
 import { Settings } from '../../Settings'
 import _ from 'lodash'
+import moment from 'moment/min/moment-with-locales'
+import { whiteColor } from '../../styles/common'
+
+moment.locale('fr')
 
 const taskComparator = (taskA, taskB) => taskA['@id'] === taskB['@id']
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: "column",
+    backgroundColor: whiteColor
+  },
+  wrapper: {
+    paddingHorizontal: 15,
+    backgroundColor: whiteColor
+  },
+  noTask: {
+    paddingVertical: 30,
+    textAlign: 'center'
+  }
+})
 
 class TaskListPage extends Component {
 
   constructor(props) {
     super(props)
 
-    const { tasks } = this.props.navigation.state.params
+    const { tasks, date } = this.props.navigation.state.params
 
     this.state = {
       tasks,
@@ -68,15 +91,33 @@ class TaskListPage extends Component {
 
     const { tasks, addedTasks } = this.state
     const { navigate } = this.props.navigation
-    const { client, geolocationTracker } = this.props.navigation.state.params
+    const { client, date, geolocationTracker } = this.props.navigation.state.params
 
     return (
-      <TaskList
-        ref="taskList"
-        tasks={ tasks }
-        tasksToHighlight={ addedTasks }
-        onTaskClick={ task => navigate('CourierTask', { client, task, geolocationTracker, onTaskChange: this.onTaskChange.bind(this) }) }
-      />
+      <Container style={ styles.container }>
+        <DateSelectHeader
+          toPastDate={() => {}}
+          toFutureDate={() => {}}
+          selectedDate={ date }
+        />
+        <Content>
+          <View style={ styles.wrapper }>
+          {
+            tasks.length > 0 &&
+            <TaskList
+              ref="taskList"
+              tasks={ tasks }
+              tasksToHighlight={ addedTasks }
+              onTaskClick={ task => navigate('CourierTask', { client, task, geolocationTracker, onTaskChange: this.onTaskChange.bind(this) }) }
+            />
+          }
+          {
+            tasks.length === 0 &&
+            <Text style={ styles.noTask }>Pas de tâches prévues aujourd'hui !</Text>
+          }
+          </View>
+        </Content>
+      </Container>
     )
   }
 }

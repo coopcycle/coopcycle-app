@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { Animated, FlatList, StyleSheet, TouchableOpacity, View } from 'react-native'
-import { Container, Content, Icon, Text, Thumbnail } from 'native-base'
+import { Animated, FlatList, StyleSheet, TouchableOpacity } from 'react-native'
+import { Icon, Text } from 'native-base'
 import { Col, Row, Grid } from 'react-native-easy-grid'
 import moment from 'moment/min/moment-with-locales'
 
@@ -9,24 +9,11 @@ import { whiteColor, lightGreyColor } from "../styles/common"
 moment.locale('fr')
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: "column",
-    backgroundColor: whiteColor
-  },
-  wrapper: {
-    paddingHorizontal: 15,
-    backgroundColor: whiteColor
-  },
   item: {
     paddingVertical: 10,
     borderBottomColor: lightGreyColor,
     borderBottomWidth: StyleSheet.hairlineWidth
   },
-  noTask: {
-    paddingVertical: 30,
-    textAlign: 'center'
-  }
 })
 
 export default class TaskList extends Component {
@@ -124,32 +111,15 @@ export default class TaskList extends Component {
 
   render() {
     let { tasks } = this.props
-    let currentDate = moment()
 
     return (
-      <Container style={ styles.container }>
-        <Content>
-          <View style={ styles.dateHeader }>
-            <Text style={ styles.dateHeaderText }>{currentDate.format('dddd Do MMM')}</Text>
-          </View>
-          <View style={ styles.wrapper }>
-          {
-            tasks.length > 0 &&
-            <FlatList
-              ref="flatList"
-              onScrollToIndexFailed={ e => console.log('onScrollToIndexFailed', e) }
-              data={tasks}
-              keyExtractor={(item, index) => item['@id']}
-              renderItem={({item}) => this.renderAnimatedItem(item)}
-            />
-          }
-          {
-            tasks.length === 0 &&
-            <Text style={ styles.noTask }>Pas de tâches prévues aujourd'hui !</Text>
-          }
-          </View>
-        </Content>
-      </Container>
+      <FlatList
+        ref="flatList"
+        onScrollToIndexFailed={ e => console.log('onScrollToIndexFailed', e) }
+        data={tasks}
+        keyExtractor={(item, index) => item['@id']}
+        renderItem={({item}) => this.renderAnimatedItem(item)}
+      />
     )
   }
 }

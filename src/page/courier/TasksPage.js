@@ -104,7 +104,7 @@ class TasksPage extends Component {
 
   connect() {
 
-    // this.setState({ loading: true, loadingMessage: 'Connexion…' })
+    this.setState({ loading: true, loadingMessage: 'En attente de la position…' })
 
     Promise.all([
       this.geolocationTracker.start()
@@ -112,7 +112,6 @@ class TasksPage extends Component {
       this.refreshTasks()
     }).catch(e => {
       // TODO Distinguish error reason
-      console.log(e)
       Alert.alert(
         'Connexion impossible',
         'Veuillez réessayer plus tard',
@@ -295,43 +294,42 @@ class TasksPage extends Component {
 
     return (
       <Container>
-        <Grid>
-          <DateSelectHeader
-            toPastDate={this.toPast}
-            toFutureDate={this.toFuture}
-            selectedDate={selectedDate}
-          />
-          <MapView
-            ref={ component => this.map = component }
-            style={ styles.map }
-            zoomEnabled={ true }
-            zoomControlEnabled={ true }
-            showsUserLocation
-            loadingEnabled
-            loadingIndicatorColor={"#666666"}
-            loadingBackgroundColor={"#eeeeee"}
-            onMapReady={() => this.onMapReady()}>
-            { this.state.tasks.map(task => (
-              <MapView.Marker
-                ref={ component => this.markers.push(component) }
-                identifier={ task['@id'] }
-                key={ task['@id'] }
-                coordinate={ task.address.geo }
-                pinColor={ pinColor(task) }
-                flat={ true }>
-                <MapView.Callout onPress={ () => navigate('CourierTask', { ...navigationParams, task }) }>
-                  <Text style={styles.mapCalloutText}>{ task.address.streetAddress }</Text>
-                </MapView.Callout>
-              </MapView.Marker>
-            ))}
-          </MapView>
-          <View style={ styles.taskListButton }>
-            <Button block onPress={ () => navigate('CourierTaskList', { ...navigationParams, tasks }) }>
-              <Icon name="list" />
-              <Text>Liste des tâches</Text>
-            </Button>
-          </View>
-        </Grid>
+        <DateSelectHeader
+          buttonsEnabled={ true }
+          toPastDate={this.toPast}
+          toFutureDate={this.toFuture}
+          selectedDate={selectedDate}
+        />
+        <MapView
+          ref={ component => this.map = component }
+          style={ styles.map }
+          zoomEnabled={ true }
+          zoomControlEnabled={ true }
+          showsUserLocation
+          loadingEnabled
+          loadingIndicatorColor={"#666666"}
+          loadingBackgroundColor={"#eeeeee"}
+          onMapReady={() => this.onMapReady()}>
+          { this.state.tasks.map(task => (
+            <MapView.Marker
+              ref={ component => this.markers.push(component) }
+              identifier={ task['@id'] }
+              key={ task['@id'] }
+              coordinate={ task.address.geo }
+              pinColor={ pinColor(task) }
+              flat={ true }>
+              <MapView.Callout onPress={ () => navigate('CourierTask', { ...navigationParams, task }) }>
+                <Text style={styles.mapCalloutText}>{ task.address.streetAddress }</Text>
+              </MapView.Callout>
+            </MapView.Marker>
+          ))}
+        </MapView>
+        <View style={ styles.taskListButton }>
+          <Button block onPress={ () => navigate('CourierTaskList', { ...navigationParams, tasks, date: selectedDate }) }>
+            <Icon name="list" />
+            <Text>Liste des tâches</Text>
+          </Button>
+        </View>
         { this.renderLoader() }
       </Container>
     )
@@ -339,18 +337,6 @@ class TasksPage extends Component {
 }
 
 const styles = StyleSheet.create({
-  selectHeaderStyle: {
-    position: 'absolute',
-    top: 0,
-    zIndex: 2
-  },
-  item: {
-    borderBottomColor: whiteColor,
-    borderBottomWidth: StyleSheet.hairlineWidth
-  },
-  itemActive: {
-    backgroundColor: lightGreyColor
-  },
   loader: {
     ...StyleSheet.absoluteFillObject,
     justifyContent: 'center',
@@ -369,14 +355,16 @@ const styles = StyleSheet.create({
     backgroundColor: whiteColor
   },
   taskListButton: {
-    padding: 15,
+    paddingHorizontal: 15,
+    paddingTop: 0,
+    paddingBottom: 15,
     alignItems: 'center',
     justifyContent: 'center',
     position: 'absolute',
     zIndex: 2,
     right: 0,
     left: 0,
-    bottom: 15
+    bottom: 0
   }
 });
 
