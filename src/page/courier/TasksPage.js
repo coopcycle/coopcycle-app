@@ -6,7 +6,6 @@ import {
   Card, CardItem, Thumbnail,
   Header, Left, Right
 } from 'native-base'
-import { Grid } from 'react-native-easy-grid'
 import _ from 'lodash'
 import moment from 'moment/min/moment-with-locales'
 import MapView from 'react-native-maps'
@@ -66,6 +65,7 @@ class TasksPage extends Component {
     this.onMapReady = this.onMapReady.bind(this)
     this.toPast = this.toPast.bind(this)
     this.toFuture = this.toFuture.bind(this)
+    this.toDate = this.toDate.bind(this)
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -241,6 +241,10 @@ class TasksPage extends Component {
     this.setState({selectedDate: newSelectedDate})
   }
 
+  toDate (date) {
+    this.setState({selectedDate: date})
+  }
+
   renderLoader() {
 
     const { loading, loadingMessage } = this.state
@@ -295,43 +299,42 @@ class TasksPage extends Component {
 
     return (
       <Container>
-        <Grid>
-          <DateSelectHeader
-            toPastDate={this.toPast}
-            toFutureDate={this.toFuture}
-            selectedDate={selectedDate}
-          />
-          <MapView
-            ref={ component => this.map = component }
-            style={ styles.map }
-            zoomEnabled={ true }
-            zoomControlEnabled={ true }
-            showsUserLocation
-            loadingEnabled
-            loadingIndicatorColor={"#666666"}
-            loadingBackgroundColor={"#eeeeee"}
-            onMapReady={() => this.onMapReady()}>
-            { this.state.tasks.map(task => (
-              <MapView.Marker
-                ref={ component => this.markers.push(component) }
-                identifier={ task['@id'] }
-                key={ task['@id'] }
-                coordinate={ task.address.geo }
-                pinColor={ pinColor(task) }
-                flat={ true }>
-                <MapView.Callout onPress={ () => navigate('CourierTask', { ...navigationParams, task }) }>
-                  <Text style={styles.mapCalloutText}>{ task.address.streetAddress }</Text>
-                </MapView.Callout>
-              </MapView.Marker>
-            ))}
-          </MapView>
-          <View style={ styles.taskListButton }>
-            <Button block onPress={ () => navigate('CourierTaskList', { ...navigationParams, tasks }) }>
-              <Icon name="list" />
-              <Text>Liste des tâches</Text>
-            </Button>
-          </View>
-        </Grid>
+        <DateSelectHeader
+          toPastDate={this.toPast}
+          toFutureDate={this.toFuture}
+          toDate={this.toDate}
+          selectedDate={selectedDate}
+        />
+        <MapView
+          ref={ component => this.map = component }
+          style={ styles.map }
+          zoomEnabled={ true }
+          zoomControlEnabled={ true }
+          showsUserLocation
+          loadingEnabled
+          loadingIndicatorColor={"#666666"}
+          loadingBackgroundColor={"#eeeeee"}
+          onMapReady={() => this.onMapReady()}>
+          { this.state.tasks.map(task => (
+            <MapView.Marker
+              ref={ component => this.markers.push(component) }
+              identifier={ task['@id'] }
+              key={ task['@id'] }
+              coordinate={ task.address.geo }
+              pinColor={ pinColor(task) }
+              flat={ true }>
+              <MapView.Callout onPress={ () => navigate('CourierTask', { ...navigationParams, task }) }>
+                <Text style={styles.mapCalloutText}>{ task.address.streetAddress }</Text>
+              </MapView.Callout>
+            </MapView.Marker>
+          ))}
+        </MapView>
+        <View style={ styles.taskListButton }>
+          <Button block onPress={ () => navigate('CourierTaskList', { ...navigationParams, tasks }) }>
+            <Icon name="list" />
+            <Text>Liste des tâches</Text>
+          </Button>
+        </View>
         { this.renderLoader() }
       </Container>
     )
