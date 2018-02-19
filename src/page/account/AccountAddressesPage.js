@@ -21,7 +21,7 @@ class AccountAddressesPage extends Component {
 
     this.setState({ loading: true })
 
-    client.request('GET', '/api/me')
+    client.get('/api/me')
       .then(user => {
         this.setState({
           loading: false,

@@ -48,10 +48,33 @@ Client.prototype.createAuthorizedRequest = function(method, uri, data) {
   return new Request(this.httpBaseURL + uri, options);
 }
 
+function doFetch(req, resolve, reject) {
+  fetch(req)
+    .then((response) => {
+      if (response.ok) {
+        response.json().then(data => resolve(data))
+      } else {
+        if (response.status === 401) {
+          console.log('Request is not authorized, refreshing token…')
+          this.refreshToken()
+            .then(token => {
+              console.log('Retrying request…')
+              req.headers.set('Authorization', `Bearer ${token}`)
+              doFetch.apply(this, [ req, resolve, reject ])
+            })
+            .catch(e => reject(e))
+        } else {
+          response.json().then(data => reject(data))
+        }
+      }
+    })
+    .catch(e => reject(e))
+}
+
 Client.prototype.request = function(method, uri, data) {
   console.log(method + ' ' + uri);
-  var req = this.model ? this.createAuthorizedRequest(method, uri, data) : this.createRequest(method, uri, data);
-  return this.fetch(req);
+  const req = this.model ? this.createAuthorizedRequest(method, uri, data) : this.createRequest(method, uri, data);
+  return new Promise((resolve, reject) => doFetch.apply(this, [ req, resolve, reject ]))
 }
 
 Client.prototype.get = function(uri, data) {
@@ -64,44 +87,6 @@ Client.prototype.post = function(uri, data) {
 
 Client.prototype.put = function(uri, data) {
   return this.request('PUT', uri, data);
-}
-
-Client.prototype.fetch = function(req) {
-  return new Promise((resolve, reject) => {
-    fetch(req)
-      .then((response) => {
-        console.log(response.status);
-        if (response.ok) {
-          return response.json().then((data) => resolve(data));
-        }
-        if (response.status === 401) {
-          console.log('Request is not authorized, refreshing token...');
-          return refreshToken(this.httpBaseURL, this.model.refreshToken)
-            .then((credentials) => {
-              console.log('Storing new credentials in DB...')
-              this.model.token = credentials.token;
-              this.model.refreshToken = credentials.refresh_token;
-
-              return this.model.save();
-            })
-            .then((model) => {
-              console.log('Model saved, retrying request');
-              req.headers.set('Authorization', 'Bearer ' + model.token);
-
-              return this.fetch(req);
-            })
-            .catch((err) => {
-              console.log('Refresh token is not valid ' + this.model.refreshToken);
-              this.model.onRefreshTokenError();
-
-              console.log('REJECT')
-              reject('Invalid refresh token');
-            });
-        }
-
-        response.json().then(data => reject(data))
-      });
-  });
 }
 
 Client.prototype.refreshToken = function() {
