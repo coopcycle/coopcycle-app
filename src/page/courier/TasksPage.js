@@ -266,6 +266,12 @@ class TasksPage extends Component {
       return pinColor
     }
 
+    const navigationParams = {
+      client,
+      geolocationTracker,
+      onTaskChange: this.onTaskChange.bind(this)
+    }
+
     return (
       <Container>
         <Grid>
@@ -288,7 +294,7 @@ class TasksPage extends Component {
                   coordinate={ task.address.geo }
                   pinColor={ pinColor(task) }
                   flat={ true }>
-                  <MapView.Callout onPress={ () => navigate('CourierTask', { client, task, geolocationTracker, onTaskChange: this.onTaskChange.bind(this) }) }>
+                  <MapView.Callout onPress={ () => navigate('CourierTask', { ...navigationParams, task }) }>
                     <Text style={{ fontSize: 14 }}>{ task.address.streetAddress }</Text>
                   </MapView.Callout>
                 </MapView.Marker>
@@ -297,7 +303,7 @@ class TasksPage extends Component {
           </Row>
           <Row size={ 1 }>
             <View style={{ padding: 10, flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-              <Button block onPress={ () => navigate('CourierTaskList', { client, tasks, geolocationTracker, onTaskChange: this.onTaskChange.bind(this) }) }>
+              <Button block onPress={ () => navigate('CourierTaskList', { ...navigationParams, tasks }) }>
                 <Icon name="list" />
                 <Text>Liste des tâches</Text>
               </Button>

@@ -43,6 +43,7 @@ class TaskPage extends Component {
       .then(task => {
         this.setState({ task, notes: '', loading: false, modalVisible: false })
         onTaskChange(task)
+        this.props.navigation.goBack()
       })
   }
 
@@ -57,6 +58,7 @@ class TaskPage extends Component {
       .then(task => {
         this.setState({ task, notes: '', loading: false, modalVisible: false })
         onTaskChange(task)
+        this.props.navigation.goBack()
       })
   }
 
