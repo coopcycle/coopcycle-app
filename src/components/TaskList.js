@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { Animated, FlatList, StyleSheet, TouchableOpacity, View } from 'react-native'
 import { Container, Content, Icon, Text, Thumbnail } from 'native-base';
 import { Col, Row, Grid } from 'react-native-easy-grid'
 import moment from 'moment/min/moment-with-locales'
@@ -40,6 +40,52 @@ const styles = StyleSheet.create({
 
 export default class TaskList extends Component {
 
+  constructor(props) {
+    super(props)
+    this.state = {
+      opacityAnim: new Animated.Value(1)
+    }
+  }
+
+  animate() {
+    Animated.sequence([
+      Animated.timing(this.state.opacityAnim, {
+        toValue: 0.4,
+        duration: 300,
+      }),
+      Animated.timing(this.state.opacityAnim, {
+        toValue: 1,
+        duration: 200,
+      }),
+      Animated.timing(this.state.opacityAnim, {
+        toValue: 0.4,
+        duration: 300,
+      }),
+      Animated.timing(this.state.opacityAnim, {
+        toValue: 1,
+        duration: 200,
+      }),
+    ]).start()
+  }
+
+  renderAnimatedItem(task) {
+
+    const { tasksToHighlight } = this.props
+    const { opacityAnim } = this.state
+
+    const isHighlighted = _.find(tasksToHighlight, t => t['@id'] === task['@id'])
+
+    if (isHighlighted) {
+      return (
+        <Animated.View style={{ opacity: opacityAnim }}>
+          { this.renderItem(task) }
+        </Animated.View>
+      )
+    }
+
+    return this.renderItem(task)
+  }
+
   renderItem(task) {
 
     const { onTaskClick } = this.props
@@ -79,6 +125,12 @@ export default class TaskList extends Component {
     )
   }
 
+  scrollToTask(task) {
+    const { tasks } = this.props
+    const taskIndex = _.findIndex(tasks, t => t['@id'] === task['@id'])
+    this.refs.flatList.scrollToIndex({ index: taskIndex, viewPosition: 0.5, viewOffset: 0 })
+  }
+
   render() {
     let { tasks } = this.props
     let currentDate = moment()
@@ -93,14 +145,16 @@ export default class TaskList extends Component {
           {
             tasks.length > 0 &&
             <FlatList
+              ref="flatList"
+              onScrollToIndexFailed={ e => console.log('onScrollToIndexFailed', e) }
               data={tasks}
               keyExtractor={(item, index) => item['@id']}
-              renderItem={({item}) => this.renderItem(item)}
+              renderItem={({item}) => this.renderAnimatedItem(item)}
             />
           }
           {
             tasks.length === 0 &&
-            <Text style={ styles.noTask }>Pas de tâches prévues aujourd'hui!</Text>
+            <Text style={ styles.noTask }>Pas de tâches prévues aujourd'hui !</Text>
           }
           </View>
         </Content>
