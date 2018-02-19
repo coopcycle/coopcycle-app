@@ -35,7 +35,10 @@ const defaultNavigationOptions = {
   },
   headerBackTitleStyle: {
     color: '#fff',
+    fontWeight: 'normal',
+    fontFamily: 'Raleway-Regular'
   },
+  headerTintColor: '#fff',
   headerTitleStyle: {
     color: '#fff',
     // fontWeight needs to be defined or it doesn't work

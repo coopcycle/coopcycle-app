@@ -28,7 +28,7 @@ class TasksPage extends Component {
 
   map = null
   markers = []
-  webSocketClient = null
+
   geolocationTracker = null
 
   static navigationOptions = ({ navigation }) => {
