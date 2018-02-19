@@ -19,9 +19,9 @@ import material from './native-base-theme/variables/material'
 import { StackNavigator } from 'react-navigation'
 
 import API from './src/API'
-import WebSocketClient from './src/WebSocketClient'
-import { Settings, events } from './src/Settings'
+import { Settings } from './src/Settings'
 import { Registry } from './src/Registry'
+import { primaryColor,  whiteColor, fontTitleName } from './src/styles/common'
 
 const Routes = require('./src/page')
 const AppUser = require('./src/AppUser')
@@ -31,20 +31,20 @@ let Router
 
 const defaultNavigationOptions = {
   headerStyle: {
-    backgroundColor: '#e4022d',
+    backgroundColor: primaryColor,
   },
   headerBackTitleStyle: {
-    color: '#fff',
+    color: whiteColor,
     fontWeight: 'normal',
-    fontFamily: 'Raleway-Regular'
+    fontFamily: fontTitleName
   },
-  headerTintColor: '#fff',
+  headerTintColor: whiteColor,
   headerTitleStyle: {
-    color: '#fff',
+    color: whiteColor,
     // fontWeight needs to be defined or it doesn't work
     // @see https://github.com/react-community/react-navigation/issues/542#issuecomment-345289122
     fontWeight: 'normal',
-    fontFamily: 'Raleway-Regular',
+    fontFamily: fontTitleName
   }
 }
 
