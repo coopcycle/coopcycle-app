@@ -175,6 +175,7 @@ export default class App extends Component {
   componentWillMount() {
 
     Settings.addListener('server:remove', this.disconnect.bind(this))
+    Settings.addListener('websocket:message', this.onWebSocketMessage.bind(this))
     Settings.addListener('user:login', (event) => {
       const { client, user } = event
       if (user && user.isAuthenticated() && (user.hasRole('ROLE_COURIER') || user.hasRole('ROLE_ADMIN'))) {
@@ -189,6 +190,16 @@ export default class App extends Component {
           .loadServer()
           .then(baseURL => this.initializeRouter(baseURL, user))
       })
+  }
+
+  onWebSocketMessage(event) {
+    const data = JSON.parse(event.data)
+    if (data.type === 'tasks:changed') {
+      Toast.show({
+        text: 'Vos tâches ont été mises à jour',
+        position: 'bottom'
+      })
+    }
   }
 
   initializeRouter(baseURL, user) {
@@ -368,9 +379,11 @@ export default class App extends Component {
     }
 
     return (
-      <StyleProvider style={getTheme(material)}>
-        <Router />
-      </StyleProvider>
+      <Root>
+        <StyleProvider style={getTheme(material)}>
+          <Router />
+        </StyleProvider>
+      </Root>
     )
   }
 }
