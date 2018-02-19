@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { Container, Content } from 'native-base'
 import TaskList from '../../components/TaskList'
 import { Settings } from '../../Settings'
 import _ from 'lodash'
@@ -58,13 +57,10 @@ class TaskListPage extends Component {
     const { client, geolocationTracker } = this.props.navigation.state.params
 
     return (
-      <Container>
-        <Content>
-          <TaskList
-            tasks={ tasks }
-            onTaskClick={ task => navigate('CourierTask', { client, task, geolocationTracker, onTaskChange: this.onTaskChange.bind(this) }) } />
-        </Content>
-      </Container>
+      <TaskList
+        tasks={ tasks }
+        onTaskClick={ task => navigate('CourierTask', { client, task, geolocationTracker, onTaskChange: this.onTaskChange.bind(this) }) }
+      />
     )
   }
 }

@@ -1,12 +1,17 @@
 import React, { Component } from 'react'
 import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native'
-import { Icon, Text, Thumbnail } from 'native-base';
+import { Container, Content, Icon, Text, Thumbnail } from 'native-base';
 import { Col, Row, Grid } from 'react-native-easy-grid'
 import moment from 'moment/min/moment-with-locales'
 
 moment.locale('fr')
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: "column",
+    backgroundColor: '#fff'
+  },
   wrapper: {
     paddingHorizontal: 15,
     backgroundColor: '#fff'
@@ -15,6 +20,10 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderBottomColor: '#ccc',
     borderBottomWidth: StyleSheet.hairlineWidth
+  },
+  noTask: {
+    paddingVertical: 30,
+    textAlign: 'center'
   }
 });
 
@@ -60,13 +69,27 @@ export default class TaskList extends Component {
   }
 
   render() {
+    let { tasks } = this.props
+
     return (
-      <View style={ styles.wrapper }>
-        <FlatList
-          data={ this.props.tasks }
-          keyExtractor={ (item, index) => item['@id'] }
-          renderItem={ ({ item }) => this.renderItem(item) } />
-      </View>
+      <Container style={ styles.container }>
+        <Content>
+          <View style={ styles.wrapper }>
+          {
+            tasks.length > 0 &&
+            <FlatList
+              data={tasks}
+              keyExtractor={(item, index) => item['@id']}
+              renderItem={({item}) => this.renderItem(item)}
+            />
+          }
+          {
+            tasks.length === 0 &&
+            <Text style={ styles.noTask }>Pas de tâches prévues aujourd'hui!</Text>
+          }
+          </View>
+        </Content>
+      </Container>
     )
   }
 }
