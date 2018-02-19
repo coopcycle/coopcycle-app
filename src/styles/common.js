@@ -6,6 +6,7 @@ let primaryColor = '#e4022d',
     lightGreyColor = '#ECF0F1',
     blueColor = '#3498DB',
     greenColor = '#2ECC71',
+    redColor = '#E74C3C',
     fontTitleName = 'Raleway-Regular'
 
 
@@ -15,6 +16,7 @@ export {
   greyColor,
   blueColor,
   greenColor,
+  redColor,
   lightGreyColor,
   fontTitleName
 }

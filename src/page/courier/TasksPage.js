@@ -13,7 +13,7 @@ import MapView from 'react-native-maps'
 import { NavigationActions } from 'react-navigation'
 import KeepAwake from 'react-native-keep-awake'
 
-import {greenColor, greyColor, lightGreyColor, whiteColor} from "../../styles/common"
+import { greenColor, blueColor, redColor, greyColor, lightGreyColor, whiteColor } from "../../styles/common"
 import GeolocationTracker from '../../GeolocationTracker'
 import { Settings } from '../../Settings'
 import { Registry } from '../../Registry'
@@ -250,14 +250,14 @@ class TasksPage extends Component {
 
     const pinColor = task => {
 
-      let pinColor = COLOR_BLUE
+      let pinColor = blueColor
 
       if (task.status === 'DONE') {
-        pinColor = COLOR_GREEN
+        pinColor = greenColor
       }
 
       if (task.status === 'FAILED') {
-        pinColor = COLOR_RED
+        pinColor = redColor
       }
 
       return pinColor
