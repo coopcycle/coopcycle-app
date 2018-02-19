@@ -272,7 +272,7 @@ class TasksPage extends Component {
     return (
       <Container>
         <Grid>
-          <Row size={ 9 }>
+          <Row>
             <MapView
               ref={ component => this.map = component }
               style={ styles.map }
@@ -292,7 +292,7 @@ class TasksPage extends Component {
                   pinColor={ pinColor(task) }
                   flat={ true }>
                   <MapView.Callout onPress={ () => navigate('CourierTask', { ...navigationParams, task }) }>
-                    <Text style={{ fontSize: 14 }}>{ task.address.streetAddress }</Text>
+                    <Text style={styles.mapCalloutText}>{ task.address.streetAddress }</Text>
                   </MapView.Callout>
                 </MapView.Marker>
               ))}
@@ -327,6 +327,9 @@ const styles = StyleSheet.create({
   },
   map: {
     ...StyleSheet.absoluteFillObject,
+  },
+  mapCalloutText: {
+    fontSize: 14
   },
   modal: {
     ...StyleSheet.absoluteFillObject,
