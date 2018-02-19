@@ -12,17 +12,14 @@ import moment from 'moment/min/moment-with-locales'
 import MapView from 'react-native-maps'
 import { NavigationActions } from 'react-navigation'
 import KeepAwake from 'react-native-keep-awake'
+
+import {greenColor, greyColor, lightGreyColor, whiteColor} from "../../styles/common"
 import GeolocationTracker from '../../GeolocationTracker'
 import { Settings } from '../../Settings'
 import { Registry } from '../../Registry'
 
 moment.locale('fr')
 
-const COLOR_GREY = '#95A5A6'
-const COLOR_LIGHTGREY = '#ECF0F1'
-const COLOR_GREEN = '#2ECC71'
-const COLOR_BLUE = '#3498DB'
-const COLOR_RED = '#E74C3C'
 
 class TasksPage extends Component {
 
@@ -37,10 +34,10 @@ class TasksPage extends Component {
       headerRight: (
         <View style={{ flex: 1, flexDirection: 'row', alignItems: 'flex-end' }}>
           <Button transparent>
-            <Icon name="wifi" style={{ color: params.connected ? COLOR_GREEN : COLOR_GREY }} />
+            <Icon name="wifi" style={{ color: params.connected ? greenColor : greyColor }} />
           </Button>
           <Button transparent>
-            <Icon name="navigate" style={{ color: params.tracking ? COLOR_GREEN : COLOR_GREY }} />
+            <Icon name="navigate" style={{ color: params.tracking ? greenColor : greyColor }} />
           </Button>
         </View>
       ),
@@ -316,11 +313,11 @@ class TasksPage extends Component {
 
 const styles = StyleSheet.create({
   item: {
-    borderBottomColor: '#f7f7f7',
+    borderBottomColor: whiteColor,
     borderBottomWidth: StyleSheet.hairlineWidth
   },
   itemActive: {
-    backgroundColor: COLOR_LIGHTGREY
+    backgroundColor: lightGreyColor
   },
   loader: {
     ...StyleSheet.absoluteFillObject,
@@ -333,7 +330,7 @@ const styles = StyleSheet.create({
   },
   modal: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: '#fff'
+    backgroundColor: whiteColor
   },
   taskListButton: {
     padding: 15,

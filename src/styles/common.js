@@ -2,12 +2,19 @@
 
 let primaryColor = '#e4022d',
     whiteColor = '#fff',
-    lightGrayColor = '#ccc',
+    greyColor = '#95A5A6',
+    lightGreyColor = '#ECF0F1',
+    blueColor = '#3498DB',
+    greenColor = '#2ECC71',
     fontTitleName = 'Raleway-Regular'
+
 
 export {
   primaryColor,
   whiteColor,
-  lightGrayColor,
+  greyColor,
+  blueColor,
+  greenColor,
+  lightGreyColor,
   fontTitleName
 }

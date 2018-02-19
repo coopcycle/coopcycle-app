@@ -4,7 +4,7 @@ import { Container, Content, Icon, Text, Thumbnail } from 'native-base';
 import { Col, Row, Grid } from 'react-native-easy-grid'
 import moment from 'moment/min/moment-with-locales'
 
-import { primaryColor, whiteColor, lightGrayColor } from "../styles/common"
+import { primaryColor, whiteColor, lightGreyColor } from "../styles/common"
 
 moment.locale('fr')
 
@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
   },
   item: {
     paddingVertical: 10,
-    borderBottomColor: lightGrayColor,
+    borderBottomColor: lightGreyColor,
     borderBottomWidth: StyleSheet.hairlineWidth
   },
   noTask: {
