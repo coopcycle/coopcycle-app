@@ -301,14 +301,12 @@ class TasksPage extends Component {
               ))}
             </MapView>
           </Row>
-          <Row size={ 1 }>
-            <View style={{ padding: 10, flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-              <Button block onPress={ () => navigate('CourierTaskList', { ...navigationParams, tasks }) }>
-                <Icon name="list" />
-                <Text>Liste des tâches</Text>
-              </Button>
-            </View>
-          </Row>
+          <View style={ styles.taskListButton }>
+            <Button block onPress={ () => navigate('CourierTaskList', { ...navigationParams, tasks }) }>
+              <Icon name="list" />
+              <Text>Liste des tâches</Text>
+            </Button>
+          </View>
         </Grid>
         { this.renderLoader() }
       </Container>
@@ -337,6 +335,16 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
     backgroundColor: '#fff'
   },
+  taskListButton: {
+    padding: 15,
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
+    zIndex: 2,
+    right: 0,
+    left: 0,
+    bottom: 15
+  }
 });
 
 module.exports = TasksPage;
