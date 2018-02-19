@@ -17,6 +17,7 @@
     "react-native-keep-awake": "^2.0.6",
     "react-native-maps": "0.20.0",
     "react-native-modal-selector": "^0.0.24",
+    "react-native-push-notification": "^3.0.2",
     "react-native-swipeout": "^2.3.3",
     "react-navigation": "^1.0.0",
     "slugify": "^1.1.0",

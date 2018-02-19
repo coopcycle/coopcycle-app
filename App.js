@@ -20,6 +20,7 @@ import { StackNavigator } from 'react-navigation'
 
 import API from './src/API'
 import WebSocketClient from './src/WebSocketClient'
+import { sendTasksAssignNotification, sendTasksUnassignkNotification } from './src/Notifications'
 import { Settings, events } from './src/Settings'
 import { Registry } from './src/Registry'
 
@@ -166,12 +167,20 @@ export default class App extends Component {
       text: '',
       user: null,
       serverError: false,
+      unassign_notifs: [],
+      assign_notifs: [],
+      unassign_notifs_flush_timeout: null,
+      assign_notifs_flush_timeout: null
     }
+
+    this.sendAssignNotifs = this.sendAssignNotifs.bind(this)
+    this.sendUnassignNotifs = this.sendUnassignNotifs.bind(this)
   }
 
   componentWillMount() {
 
     Settings.addListener('server:remove', this.disconnect.bind(this))
+    Settings.addListener('websocket:message', this.onWebSocketMessage.bind(this))
     Settings.addListener('user:login', (event) => {
       const { client, user } = event
       if (user && user.isAuthenticated() && (user.hasRole('ROLE_COURIER') || user.hasRole('ROLE_ADMIN'))) {
@@ -186,6 +195,46 @@ export default class App extends Component {
           .loadServer()
           .then(baseURL => this.initializeRouter(baseURL, user))
       })
+  }
+
+  onWebSocketMessage(event) {
+    // handle notification
+    let data = JSON.parse(event.data)
+
+    if (data.type === 'task:unassign') {
+      let { unassign_notifs, unassign_notifs_flush_timeout } = this.state,
+          new_timeout
+
+      if (unassign_notifs_flush_timeout) {
+        clearTimeout(unassign_notifs_flush_timeout)
+      }
+
+      unassign_notifs.push(data.task)
+      new_timeout = setTimeout(this.sendUnassignNotifs, 20*1000)
+      this.setState({ unassign_notifs: unassign_notifs.slice(), unassign_notifs_flush_timeout: new_timeout})
+
+    } else if (data.type === 'task:assign') {
+      let { assign_notifs, assign_notifs_flush_timeout } = this.state,
+        new_timeout
+
+      if (assign_notifs_flush_timeout) {
+        clearTimeout(assign_notifs_flush_timeout)
+      }
+
+      assign_notifs.push(data.task)
+      new_timeout = setTimeout(this.sendAssignNotifs, 20*1000)
+      this.setState({ assign_notifs: assign_notifs.slice(), assign_notifs_flush_timeout: new_timeout})
+    }
+  }
+
+  sendAssignNotifs () {
+    sendTasksAssignNotification(this.state.assign_notifs)
+    this.setState({ assign_notifs: [], assign_notifs_flush_timeout: null })
+  }
+
+  sendUnassignNotifs () {
+    sendTasksUnassignkNotification(this.state.unassign_notifs)
+    this.setState({ unassign_notifs: [], unassign_notifs_flush_timeout: null })
   }
 
   initializeRouter(baseURL, user) {
