@@ -7,14 +7,17 @@ let primaryColor = '#e4022d',
     blueColor = '#3498DB',
     greenColor = '#2ECC71',
     redColor = '#E74C3C',
-    fontTitleName = 'Raleway-Regular'
-
+    fontTitleName = 'Raleway-Regular',
+    dateSelectHeaderHeight = 40,
+    headerFontSize = 18
 
 export {
   primaryColor,
   whiteColor,
   greyColor,
   blueColor,
+  headerFontSize,
+  dateSelectHeaderHeight,
   greenColor,
   redColor,
   lightGreyColor,

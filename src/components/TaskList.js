@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 import { Animated, FlatList, StyleSheet, TouchableOpacity, View } from 'react-native'
-import { Container, Content, Icon, Text, Thumbnail } from 'native-base';
+import { Container, Content, Icon, Text, Thumbnail } from 'native-base'
 import { Col, Row, Grid } from 'react-native-easy-grid'
 import moment from 'moment/min/moment-with-locales'
 
-import { primaryColor, whiteColor, lightGreyColor } from "../styles/common"
+import { whiteColor, lightGreyColor } from "../styles/common"
 
 moment.locale('fr')
 
@@ -26,17 +26,8 @@ const styles = StyleSheet.create({
   noTask: {
     paddingVertical: 30,
     textAlign: 'center'
-  },
-  dateHeader: {
-    backgroundColor: primaryColor,
-    height: 40,
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  dateHeaderText: {
-    color: whiteColor
   }
-});
+})
 
 export default class TaskList extends Component {
 
@@ -133,14 +124,10 @@ export default class TaskList extends Component {
 
   render() {
     let { tasks } = this.props
-    let currentDate = moment()
 
     return (
       <Container style={ styles.container }>
         <Content>
-          <View style={ styles.dateHeader }>
-            <Text style={ styles.dateHeaderText }>{currentDate.format('dddd Do MMM')}</Text>
-          </View>
           <View style={ styles.wrapper }>
           {
             tasks.length > 0 &&

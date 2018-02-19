@@ -6,17 +6,17 @@ import {
   Card, CardItem, Thumbnail,
   Header, Left, Right
 } from 'native-base'
-import { Row, Grid } from 'react-native-easy-grid'
 import _ from 'lodash'
 import moment from 'moment/min/moment-with-locales'
 import MapView from 'react-native-maps'
 import { NavigationActions } from 'react-navigation'
 import KeepAwake from 'react-native-keep-awake'
 
-import { greenColor, blueColor, redColor, greyColor, lightGreyColor, whiteColor } from "../../styles/common"
+import { greenColor, blueColor, redColor, greyColor, lightGreyColor, whiteColor, dateSelectHeaderHeight } from "../../styles/common"
 import GeolocationTracker from '../../GeolocationTracker'
 import { Settings } from '../../Settings'
 import { Registry } from '../../Registry'
+import DateSelectHeader from "../../components/DateSelectHeader"
 
 moment.locale('fr')
 
@@ -59,9 +59,19 @@ class TasksPage extends Component {
       currentPosition: null,
       polyline: [],
       detailsModal: false,
+      selectedDate: moment()
     }
 
     this.onMapReady = this.onMapReady.bind(this)
+    this.toPast = this.toPast.bind(this)
+    this.toFuture = this.toFuture.bind(this)
+    this.toDate = this.toDate.bind(this)
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.selectedDate !== prevState.selectedDate) {
+      this.refreshTasks()
+    }
   }
 
   componentDidMount() {
@@ -102,6 +112,7 @@ class TasksPage extends Component {
       this.refreshTasks()
     }).catch(e => {
       // TODO Distinguish error reason
+      console.log(e)
       Alert.alert(
         'Connexion impossible',
         'Veuillez réessayer plus tard',
@@ -176,10 +187,11 @@ class TasksPage extends Component {
   refreshTasks() {
 
   const { client } = this.props.navigation.state.params
+  let { selectedDate } = this.state
 
   this.setState({ loading: true, loadingMessage: 'Chargement…' })
 
-  client.get('/api/me/tasks/' + moment().format('YYYY-MM-DD'))
+  client.get('/api/me/tasks/' + selectedDate.format('YYYY-MM-DD'))
     .then(data => {
 
       const tasks = data['hydra:member']
@@ -217,6 +229,22 @@ class TasksPage extends Component {
     this.connect()
   }
 
+  toPast () {
+    let { selectedDate } = this.state,
+        newSelectedDate = selectedDate.clone().subtract(1, 'days')
+    this.setState({selectedDate: newSelectedDate})
+  }
+
+  toFuture () {
+    let { selectedDate } = this.state,
+      newSelectedDate = selectedDate.clone().add(1, 'days')
+    this.setState({selectedDate: newSelectedDate})
+  }
+
+  toDate (date) {
+    this.setState({selectedDate: date})
+  }
+
   renderLoader() {
 
     const { loading, loadingMessage } = this.state
@@ -241,7 +269,7 @@ class TasksPage extends Component {
 
   render() {
 
-    const { tasks } = this.state
+    const { tasks, selectedDate } = this.state
     const { navigate } = this.props.navigation
     const { client } = this.props.navigation.state.params
     const geolocationTracker = this.geolocationTracker
@@ -271,40 +299,42 @@ class TasksPage extends Component {
 
     return (
       <Container>
-        <Grid>
-          <Row size={ 9 }>
-            <MapView
-              ref={ component => this.map = component }
-              style={ styles.map }
-              zoomEnabled={ true }
-              zoomControlEnabled={ true }
-              showsUserLocation
-              loadingEnabled
-              loadingIndicatorColor={"#666666"}
-              loadingBackgroundColor={"#eeeeee"}
-              onMapReady={() => this.onMapReady()}>
-              { this.state.tasks.map(task => (
-                <MapView.Marker
-                  ref={ component => this.markers.push(component) }
-                  identifier={ task['@id'] }
-                  key={ task['@id'] }
-                  coordinate={ task.address.geo }
-                  pinColor={ pinColor(task) }
-                  flat={ true }>
-                  <MapView.Callout onPress={ () => navigate('CourierTask', { ...navigationParams, task }) }>
-                    <Text style={{ fontSize: 14 }}>{ task.address.streetAddress }</Text>
-                  </MapView.Callout>
-                </MapView.Marker>
-              ))}
-            </MapView>
-          </Row>
-          <View style={ styles.taskListButton }>
-            <Button block onPress={ () => navigate('CourierTaskList', { ...navigationParams, tasks }) }>
-              <Icon name="list" />
-              <Text>Liste des tâches</Text>
-            </Button>
-          </View>
-        </Grid>
+        <DateSelectHeader
+          toPastDate={this.toPast}
+          toFutureDate={this.toFuture}
+          toDate={this.toDate}
+          selectedDate={selectedDate}
+        />
+        <MapView
+          ref={ component => this.map = component }
+          style={ styles.map }
+          zoomEnabled={ true }
+          zoomControlEnabled={ true }
+          showsUserLocation
+          loadingEnabled
+          loadingIndicatorColor={"#666666"}
+          loadingBackgroundColor={"#eeeeee"}
+          onMapReady={() => this.onMapReady()}>
+          { this.state.tasks.map(task => (
+            <MapView.Marker
+              ref={ component => this.markers.push(component) }
+              identifier={ task['@id'] }
+              key={ task['@id'] }
+              coordinate={ task.address.geo }
+              pinColor={ pinColor(task) }
+              flat={ true }>
+              <MapView.Callout onPress={ () => navigate('CourierTask', { ...navigationParams, task }) }>
+                <Text style={styles.mapCalloutText}>{ task.address.streetAddress }</Text>
+              </MapView.Callout>
+            </MapView.Marker>
+          ))}
+        </MapView>
+        <View style={ styles.taskListButton }>
+          <Button block onPress={ () => navigate('CourierTaskList', { ...navigationParams, tasks }) }>
+            <Icon name="list" />
+            <Text>Liste des tâches</Text>
+          </Button>
+        </View>
         { this.renderLoader() }
       </Container>
     )
@@ -312,6 +342,11 @@ class TasksPage extends Component {
 }
 
 const styles = StyleSheet.create({
+  selectHeaderStyle: {
+    position: 'absolute',
+    top: 0,
+    zIndex: 2
+  },
   item: {
     borderBottomColor: whiteColor,
     borderBottomWidth: StyleSheet.hairlineWidth
@@ -323,10 +358,15 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(52, 52, 52, 0.4)'
+    backgroundColor: 'rgba(52, 52, 52, 0.4)',
+    zIndex: 25
   },
   map: {
     ...StyleSheet.absoluteFillObject,
+    top: dateSelectHeaderHeight
+  },
+  mapCalloutText: {
+    fontSize: 14
   },
   modal: {
     ...StyleSheet.absoluteFillObject,
@@ -337,7 +377,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     position: 'absolute',
-    zIndex: 2,
+    zIndex: 10,
     right: 0,
     left: 0,
     bottom: 15
