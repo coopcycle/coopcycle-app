@@ -124,14 +124,10 @@ export default class TaskList extends Component {
 
   render() {
     let { tasks } = this.props
-    let currentDate = moment()
 
     return (
       <Container style={ styles.container }>
         <Content>
-          <View style={ styles.dateHeader }>
-            <Text style={ styles.dateHeaderText }>{currentDate.format('dddd Do MMM')}</Text>
-          </View>
           <View style={ styles.wrapper }>
           {
             tasks.length > 0 &&

@@ -65,20 +65,30 @@ class DateSelectHeader extends React.Component {
         }
       ).start()
     } else {
-      Animated.timing(
-        this.state.slideCalendarAnim,
-        {
-          toValue: this.initialCalendarTop,
-          duration: 300,
-        }
-      ).start()
+      this.closeCalendar()
     }
 
     this.setState({calendarToogled: !calendarToogled})
   }
 
+  closeCalendar () {
+    Animated.timing(
+      this.state.slideCalendarAnim,
+      {
+        toValue: this.initialCalendarTop,
+        duration: 300,
+      }
+    ).start()
+  }
+
+  onDateSelect(date) {
+    let { toDate } = this.props
+    this.closeCalendar()
+    toDate(date)
+  }
+
   render () {
-    let { toPastDate, toFutureDate, selectedDate, toDate } = this.props
+    let { toPastDate, toFutureDate, selectedDate } = this.props
 
     return (
       <Container style={styles.wrapper}>
@@ -92,7 +102,7 @@ class DateSelectHeader extends React.Component {
           <Dates
               range={false}
               date={selectedDate}
-              onDatesChange={({date}) => {toDate(date)}}
+              onDatesChange={({date}) => {this.onDateSelect(date)}}
               isDateBlocked={() => {false}}
             />
         </Animated.View>
