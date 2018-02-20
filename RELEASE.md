@@ -20,3 +20,17 @@ Generate a signed APK
 cd android/
 ./gradlew clean && ./gradlew assembleRelease
 ```
+
+Signed APK file can be found in `android/app/build/outputs/apk/release/app-release.apk`
+
+Testing the signed APK on emulator
+----------------------------------
+
+For further testing, you can install the signed APK on the emulator.
+
+If you have installed the debug APK, you have to uninstall it first.
+
+```
+cd $ANDROID_HOME/platform-tools
+./adb install app-release.apk
+```
