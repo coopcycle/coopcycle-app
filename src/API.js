@@ -50,11 +50,13 @@ Client.prototype.createAuthorizedRequest = function(method, uri, data) {
 
 function doFetch(req, resolve, reject) {
   fetch(req)
-    .then((response) => {
-      if (response.ok) {
-        response.json().then(data => resolve(data))
+    .then(res => {
+      if (res.ok) {
+        // Always clone response to make sure Body can be read again
+        // @see https://stackoverflow.com/questions/40497859/reread-a-response-body-from-javascripts-fetch
+        res.clone().json().then(data => resolve(data))
       } else {
-        if (response.status === 401) {
+        if (res.status === 401) {
           console.log('Request is not authorized, refreshing token…')
           this.refreshToken()
             .then(token => {
@@ -65,7 +67,7 @@ function doFetch(req, resolve, reject) {
             })
             .catch(e => reject(e))
         } else {
-          response.json().then(data => reject(data))
+          res.json().then(data => reject(data))
         }
       }
     })
