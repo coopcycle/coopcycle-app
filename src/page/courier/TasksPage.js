@@ -6,18 +6,18 @@ import {
   Card, CardItem, Thumbnail,
   Header, Left, Right
 } from 'native-base'
-import { Grid } from 'react-native-easy-grid'
-import _ from 'lodash'
 import moment from 'moment/min/moment-with-locales'
 import MapView from 'react-native-maps'
 import { NavigationActions } from 'react-navigation'
 import KeepAwake from 'react-native-keep-awake'
+import { connect } from 'react-redux'
 
-import { greenColor, blueColor, redColor, greyColor, lightGreyColor, whiteColor, dateSelectHeaderHeight } from "../../styles/common"
+import { greenColor, blueColor, redColor, greyColor, whiteColor, dateSelectHeaderHeight } from "../../styles/common"
 import GeolocationTracker from '../../GeolocationTracker'
 import { Settings } from '../../Settings'
 import { Registry } from '../../Registry'
 import DateSelectHeader from "../../components/DateSelectHeader"
+import {assignTask, loadTasksRequest, unassignTask} from "../../store/actions"
 
 moment.locale('fr')
 
@@ -29,16 +29,16 @@ class TasksPage extends Component {
 
   geolocationTracker = null
 
-  static navigationOptions = ({ navigation }) => {
-    const { params } = navigation.state
+  static navigationOptions = ({navigation}) => {
+    const {params} = navigation.state
     return {
       headerRight: (
-        <View style={{ flex: 1, flexDirection: 'row', alignItems: 'flex-end' }}>
+        <View style={{flex: 1, flexDirection: 'row', alignItems: 'flex-end'}}>
           <Button transparent>
-            <Icon name="wifi" style={{ color: params.connected ? greenColor : greyColor }} />
+            <Icon name="wifi" style={{color: params.connected ? greenColor : greyColor}}/>
           </Button>
           <Button transparent>
-            <Icon name="navigate" style={{ color: params.tracking ? greenColor : greyColor }} />
+            <Icon name="navigate" style={{color: params.tracking ? greenColor : greyColor}}/>
           </Button>
         </View>
       ),
@@ -53,26 +53,16 @@ class TasksPage extends Component {
     })
 
     this.state = {
-      tasks: [],
       task: null,
       loading: false,
       loadingMessage: 'Chargement…',
       currentPosition: null,
       polyline: [],
-      detailsModal: false,
-      selectedDate: moment()
+      detailsModal: false
     }
 
     this.onMapReady = this.onMapReady.bind(this)
-    this.toPast = this.toPast.bind(this)
-    this.toFuture = this.toFuture.bind(this)
-    this.toDate = this.toDate.bind(this)
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    if (this.state.selectedDate !== prevState.selectedDate) {
-      this.refreshTasks()
-    }
+    this.refreshTasks = this.refreshTasks.bind(this)
   }
 
   componentDidMount() {
@@ -90,7 +80,7 @@ class TasksPage extends Component {
 
     const ws = Registry.getWebSocketClient()
     if (ws.isOpen()) {
-      this.props.navigation.setParams({ connected: true })
+      this.props.navigation.setParams({connected: true})
     }
   }
 
@@ -103,6 +93,35 @@ class TasksPage extends Component {
     KeepAwake.deactivate()
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.tasks !== this.props.tasks) {
+        this.setState({
+          loading: false
+        })
+
+        const { currentPosition } = this.state
+
+        const coordinates = nextProps.tasks.map(task => {
+          const { latitude, longitude } = task.address.geo
+          return {
+            latitude,
+            longitude
+          }
+        })
+        coordinates.push(currentPosition)
+
+        this.map.fitToCoordinates(coordinates, {
+          edgePadding: {
+            top: 100,
+            left: 100,
+            bottom: 100,
+            right: 100
+          },
+          animated: true
+        })
+    }
+  }
+
   connect() {
 
     this.setState({ loading: true, loadingMessage: 'En attente de la position…' })
@@ -110,7 +129,8 @@ class TasksPage extends Component {
     Promise.all([
       this.geolocationTracker.start()
     ]).then(() => {
-      this.refreshTasks()
+      const { selectedDate } = this.props
+      this.refreshTasks(selectedDate)
     }).catch(e => {
       // TODO Distinguish error reason
       Alert.alert(
@@ -148,17 +168,12 @@ class TasksPage extends Component {
   }
 
   onWebSocketMessage (event) {
-    let data = JSON.parse(event.data),
-      { tasks } = this.state,
-      newTasks = tasks.slice()
-
+    let data = JSON.parse(event.data)
+    console.log('here')
     if (data.type === 'task:unassign') {
-      _.remove(newTasks, (task) => data.task['@id'] === task['@id'])
-      this.setState({ tasks: newTasks })
+      this.props.unassignTask(data.task)
     } else if (data.type === 'task:assign') {
-      let position = data.task.position
-      newTasks = Array.prototype.concat(newTasks.slice(0, position), [data.task], newTasks.slice(position + 1))
-      this.setState({ tasks: newTasks })
+      this.props.assignTask(data.task)
     }
   }
 
@@ -175,74 +190,15 @@ class TasksPage extends Component {
     }
   }
 
-  onTaskChange(newTask) {
-    const { tasks } = this.state,
-      newTasks = tasks.slice(),
-      taskIndex = _.findIndex(tasks, task => task['@id'] === newTask['@id'])
-    newTasks[taskIndex] = newTask
+  refreshTasks (selectedDate) {
+    this.setState({ loading: true, loadingMessage: 'Chargement…' })
+    const { client } = this.props.navigation.state.params
+    this.props.loadTasks(client, selectedDate)
 
-    this.setState({ tasks: newTasks })
-  }
-
-  refreshTasks() {
-
-  const { client } = this.props.navigation.state.params
-  let { selectedDate } = this.state
-
-  this.setState({ loading: true, loadingMessage: 'Chargement…' })
-
-  client.get('/api/me/tasks/' + selectedDate.format('YYYY-MM-DD'))
-    .then(data => {
-
-      const tasks = data['hydra:member']
-
-      this.setState({
-        loading: false,
-        tasks,
-      })
-
-      const { currentPosition } = this.state
-
-      const coordinates = tasks.map(task => {
-        const { latitude, longitude } = task.address.geo
-        return {
-          latitude,
-          longitude
-        }
-      })
-      coordinates.push(currentPosition)
-
-      this.map.fitToCoordinates(coordinates, {
-        edgePadding: {
-          top: 100,
-          left: 100,
-          bottom: 100,
-          right: 100
-        },
-        animated: true
-      })
-
-    })
   }
 
   onMapReady () {
     this.connect()
-  }
-
-  toPast () {
-    let { selectedDate } = this.state,
-        newSelectedDate = selectedDate.clone().subtract(1, 'days')
-    this.setState({selectedDate: newSelectedDate})
-  }
-
-  toFuture () {
-    let { selectedDate } = this.state,
-      newSelectedDate = selectedDate.clone().add(1, 'days')
-    this.setState({selectedDate: newSelectedDate})
-  }
-
-  toDate (selectedDate) {
-    this.setState({selectedDate})
   }
 
   renderLoader() {
@@ -259,7 +215,7 @@ class TasksPage extends Component {
           />
           <Text style={{ color: '#fff' }}>{ loadingMessage }</Text>
         </View>
-      );
+      )
     }
 
     return (
@@ -269,7 +225,7 @@ class TasksPage extends Component {
 
   render() {
 
-    const { tasks, selectedDate } = this.state
+    const { tasks, selectedDate } = this.props
     const { navigate } = this.props.navigation
     const { client } = this.props.navigation.state.params
     const geolocationTracker = this.geolocationTracker
@@ -293,30 +249,27 @@ class TasksPage extends Component {
 
     const navigationParams = {
       client,
-      geolocationTracker,
-      onTaskChange: this.onTaskChange.bind(this)
+      geolocationTracker
     }
 
     return (
       <Container>
         <DateSelectHeader
-          buttonsEnabled={ true }
-          toPastDate={this.toPast}
-          toFutureDate={this.toFuture}
-          toDate={this.toDate}
+          buttonsEnabled={true}
+          toDate={this.refreshTasks}
           selectedDate={selectedDate}
         />
         <MapView
           ref={ component => this.map = component }
-          style={ styles.map }
-          zoomEnabled={ true }
-          zoomControlEnabled={ true }
+          style={styles.map}
+          zoomEnabled={true}
+          zoomControlEnabled={true}
           showsUserLocation
           loadingEnabled
           loadingIndicatorColor={"#666666"}
           loadingBackgroundColor={"#eeeeee"}
           onMapReady={() => this.onMapReady()}>
-          { this.state.tasks.map(task => (
+          { tasks.map(task => (
             <MapView.Marker
               ref={ component => this.markers.push(component) }
               identifier={ task['@id'] }
@@ -331,7 +284,7 @@ class TasksPage extends Component {
           ))}
         </MapView>
         <View style={ styles.taskListButton }>
-          <Button block onPress={ () => navigate('CourierTaskList', { ...navigationParams, tasks, date: selectedDate }) }>
+          <Button block onPress={ () => navigate('CourierTaskList', { ...navigationParams, tasks }) }>
             <Icon name="list" />
             <Text>Liste des tâches</Text>
           </Button>
@@ -373,6 +326,21 @@ const styles = StyleSheet.create({
     left: 0,
     bottom: 0
   }
-});
+})
 
-module.exports = TasksPage;
+function mapStateToProps (state) {
+  return {
+    tasks: state.tasks,
+    selectedDate: state.selectedDate
+  }
+}
+
+function mapDispatchToProps (dispatch) {
+  return {
+    loadTasks: (client, selectedDate) => { dispatch(loadTasksRequest(client, selectedDate)) },
+    assignTask: (task) => { dispatch(assignTask(task)) },
+    unassignTask: (task) => { dispatch(unassignTask(task)) }
+  }
+}
+
+module.exports =  connect(mapStateToProps, mapDispatchToProps)(TasksPage)

@@ -1,12 +1,15 @@
 import React, { Component } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { Container, Content, Icon, Text, Thumbnail } from 'native-base'
+import { connect } from 'react-redux'
+import _ from 'lodash'
+import moment from 'moment/min/moment-with-locales'
+
 import TaskList from '../../components/TaskList'
 import DateSelectHeader from '../../components/DateSelectHeader'
 import { Settings } from '../../Settings'
-import _ from 'lodash'
-import moment from 'moment/min/moment-with-locales'
 import { whiteColor } from '../../styles/common'
+import {changedTasks} from "../../store/actions"
 
 moment.locale('fr')
 
@@ -33,10 +36,7 @@ class TaskListPage extends Component {
   constructor(props) {
     super(props)
 
-    const { tasks, date } = this.props.navigation.state.params
-
     this.state = {
-      tasks,
       addedTasks: []
     }
   }
@@ -50,13 +50,13 @@ class TaskListPage extends Component {
     Settings.removeListener('websocket:message', this.onMessageHandler)
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    const prevTasks = prevState.tasks
-    const { tasks } = this.state
+  componentWillReceiveProps(nextProps) {
+    const nextTasks = nextProps.tasks
+    const { tasks } = this.props
 
     // Tasks have been added
-    if (tasks.length > prevTasks.length) {
-      const addedTasks = _.differenceWith(tasks, prevTasks, taskComparator)
+    if (nextTasks.length > tasks.length) {
+      const addedTasks = _.differenceWith(nextTasks, tasks, taskComparator)
       const firstAddedTask = _.first(addedTasks)
 
       this.setState({ addedTasks })
@@ -72,33 +72,23 @@ class TaskListPage extends Component {
   onWebSocketMessage (event) {
     let data = JSON.parse(event.data)
     if (data.type === 'tasks:changed') {
-      this.setState({ tasks: data.tasks })
+      this.props.taskChanged(data.tasks)
     }
-  }
-
-  onTaskChange(newTask) {
-    const { onTaskChange } = this.props.navigation.state.params
-    const { tasks } = this.state
-    const newTasks = tasks.slice()
-    const taskIndex = _.findIndex(tasks, task => task['@id'] === newTask['@id'])
-    newTasks[taskIndex] = newTask
-
-    this.setState({ tasks: newTasks })
-    onTaskChange(newTask)
   }
 
   render() {
 
-    const { tasks, addedTasks } = this.state
+    const { tasks, selectedDate } = this.props
+    const { addedTasks } = this.state
     const { navigate } = this.props.navigation
-    const { client, date, geolocationTracker } = this.props.navigation.state.params
+    const { client, geolocationTracker } = this.props.navigation.state.params
 
     return (
       <Container style={ styles.container }>
         <DateSelectHeader
           toPastDate={() => {}}
           toFutureDate={() => {}}
-          selectedDate={ date }
+          selectedDate={ selectedDate }
         />
         <Content>
           <View style={ styles.wrapper }>
@@ -108,7 +98,7 @@ class TaskListPage extends Component {
               ref="taskList"
               tasks={ tasks }
               tasksToHighlight={ addedTasks }
-              onTaskClick={ task => navigate('CourierTask', { client, task, geolocationTracker, onTaskChange: this.onTaskChange.bind(this) }) }
+              onTaskClick={ task => navigate('CourierTask', { client, task, geolocationTracker }) }
             />
           }
           {
@@ -122,4 +112,20 @@ class TaskListPage extends Component {
   }
 }
 
-module.exports = TaskListPage;
+function mapStateToProps (state) {
+  return {
+    tasks: state.tasks,
+    selectedDate: state.selectedDate
+  }
+}
+
+function mapDispatchToProps (dispatch) {
+  return {
+    taskChanged: (tasks) => { dispatch(changedTasks(tasks))}
+    // loadTasks: (client, selectedDate) => { dispatch(loadTasksRequest(client, selectedDate)) },
+    // assignTask: (task) => { dispatch(assignTask(task)) },
+    // unassignTask: (task) => { dispatch(unassignTask(task)) }
+  }
+}
+
+module.exports = connect(mapStateToProps, mapDispatchToProps)(TaskListPage)

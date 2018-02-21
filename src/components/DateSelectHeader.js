@@ -73,6 +73,8 @@ class DateSelectHeader extends React.Component {
 
     this.onCalendarPress = this.onCalendarPress.bind(this)
     this.onDateSelect = this.onDateSelect.bind(this)
+    this.onFuturePress = this.onFuturePress.bind(this)
+    this.onPastPress = this.onPastPress.bind(this)
   }
 
   onCalendarPress () {
@@ -119,8 +121,18 @@ class DateSelectHeader extends React.Component {
     toDate(selectedDate)
   }
 
+  onFuturePress() {
+    const { toDate, selectedDate } = this.props
+    toDate(selectedDate.clone().add(1, 'days'))
+  }
+
+  onPastPress() {
+    const { toDate, selectedDate } = this.props
+    toDate(selectedDate.clone().subtract(1, 'days'))
+  }
+
   render () {
-    const { toPastDate, toFutureDate, selectedDate, buttonsEnabled } = this.props
+    const { selectedDate, buttonsEnabled } = this.props
 
     return (
       <View style={ styles.container }>
@@ -129,13 +141,13 @@ class DateSelectHeader extends React.Component {
             <Col size={ 1 }>
             </Col>
             <Col size={ 2 } style={ styles.button }>
-              { buttonsEnabled && this.renderButton('arrow-dropleft', toPastDate, styles.icon) }
+              { buttonsEnabled && this.renderButton('arrow-dropleft', this.onPastPress, styles.icon) }
             </Col>
             <Col size={ 8 } style={ styles.body }>
               <Text style={styles.dateHeaderText}>{selectedDate.format('dddd Do MMM')}</Text>
             </Col>
             <Col size={ 2 } style={ styles.button }>
-              { buttonsEnabled && this.renderButton('arrow-dropright', toFutureDate, styles.icon) }
+              { buttonsEnabled && this.renderButton('arrow-dropright', this.onFuturePress, styles.icon) }
             </Col>
             <Col size={ 1 }>
               { buttonsEnabled &&  this.renderButton('calendar', this.onCalendarPress, styles.calendarIcon) }

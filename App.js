@@ -17,11 +17,13 @@ import getTheme from './native-base-theme/components'
 import material from './native-base-theme/variables/material'
 
 import { StackNavigator } from 'react-navigation'
+import { Provider } from 'react-redux'
 
 import API from './src/API'
 import { Settings } from './src/Settings'
 import { Registry } from './src/Registry'
 import { primaryColor,  whiteColor, fontTitleName } from './src/styles/common'
+import store from "./src/store/store"
 
 const Routes = require('./src/page')
 const AppUser = require('./src/AppUser')
@@ -379,11 +381,13 @@ export default class App extends Component {
     }
 
     return (
-      <Root>
-        <StyleProvider style={getTheme(material)}>
-          <Router />
-        </StyleProvider>
-      </Root>
+      <Provider store={store}>
+        <Root>
+          <StyleProvider style={getTheme(material)}>
+            <Router />
+          </StyleProvider>
+        </Root>
+      </Provider>
     )
   }
 }
