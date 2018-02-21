@@ -66,6 +66,7 @@ class TasksPage extends Component {
     this.onMapReady = this.onMapReady.bind(this)
     this.toPast = this.toPast.bind(this)
     this.toFuture = this.toFuture.bind(this)
+    this.toDate = this.toDate.bind(this)
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -240,6 +241,10 @@ class TasksPage extends Component {
     this.setState({selectedDate: newSelectedDate})
   }
 
+  toDate (selectedDate) {
+    this.setState({selectedDate})
+  }
+
   renderLoader() {
 
     const { loading, loadingMessage } = this.state
@@ -298,6 +303,7 @@ class TasksPage extends Component {
           buttonsEnabled={ true }
           toPastDate={this.toPast}
           toFutureDate={this.toFuture}
+          toDate={this.toDate}
           selectedDate={selectedDate}
         />
         <MapView
@@ -341,7 +347,8 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(52, 52, 52, 0.4)'
+    backgroundColor: 'rgba(52, 52, 52, 0.4)',
+    zIndex: 20
   },
   map: {
     ...StyleSheet.absoluteFillObject,
