@@ -35,11 +35,11 @@ class TaskPage extends Component {
   markTaskDone() {
 
     const { client, onTaskChange } = this.props.navigation.state.params
-    const { task } = this.state
+    const { task, notes } = this.state
 
     this.setState({ loading: true })
     client
-      .put(task['@id'] + '/done', {})
+      .put(task['@id'] + '/done', { notes })
       .then(task => {
         this.setState({ task, notes: '', loading: false, modalVisible: false })
         onTaskChange(task)
@@ -54,7 +54,7 @@ class TaskPage extends Component {
 
     this.setState({ loading: true })
     client
-      .put(task['@id'] + '/failed', { reason: notes })
+      .put(task['@id'] + '/failed', { notes })
       .then(task => {
         this.setState({ task, notes: '', loading: false, modalVisible: false })
         onTaskChange(task)
