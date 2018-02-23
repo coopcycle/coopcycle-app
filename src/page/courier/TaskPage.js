@@ -6,11 +6,9 @@ import MapView from 'react-native-maps'
 import Swipeout from 'react-native-swipeout'
 import moment from 'moment/min/moment-with-locales'
 
-moment.locale('fr')
+import { greenColor, blueColor, redColor } from "../../styles/common"
 
-const COLOR_GREEN = '#2ECC71'
-const COLOR_RED = '#E74C3C'
-const COLOR_BLUE = '#3498DB'
+moment.locale('fr')
 
 class TaskPage extends Component {
 
@@ -159,7 +157,7 @@ class TaskPage extends Component {
                 </Row>
               </Grid>
             </Content>
-            <Footer style={{ alignItems: 'center', backgroundColor: modalContextValid ? COLOR_GREEN : COLOR_RED }}>
+            <Footer style={{ alignItems: 'center', backgroundColor: modalContextValid ? greenColor : redColor }}>
               <TouchableOpacity style={ styles.buttonContainer } onPress={ onPress }>
                 <View style={ styles.buttonTextContainer }>
                   <Icon name={ buttonIconName } style={{ color: '#fff', marginRight: 10 }} />
@@ -172,29 +170,6 @@ class TaskPage extends Component {
         </View>
       </Modal>
     );
-  }
-
-  renderButton() {
-
-    const { task } = this.state
-
-    let buttonProps = {}
-    let buttonText = 'Terminer'
-    if (task.status === 'DONE') {
-      buttonProps = { disabled: true }
-      buttonText = 'Terminée'
-    }
-
-    return (
-      <TouchableOpacity style={ styles.buttonContainer } { ...buttonProps } onPress={ () => this.setState({ modalVisible: true }) }>
-        <View style={ styles.buttonTextContainer }>
-          { task.status === 'DONE' && (
-            <Icon name="md-checkmark" style={{ color: '#fff', marginRight: 10 }} />
-          ) }
-          <Text style={{ color: '#fff' }}>{ buttonText }</Text>
-        </View>
-      </TouchableOpacity>
-    )
   }
 
   renderSwipeoutLeftButton() {
@@ -216,12 +191,12 @@ class TaskPage extends Component {
 
   renderSwipeOutButton() {
 
-    const { height, width } = Dimensions.get('window')
+    const { width } = Dimensions.get('window')
     const { swipeOutClose, task } = this.state
 
     if (task.status === 'DONE') {
       return (
-        <View style={ [ styles.buttonContainer, { backgroundColor: COLOR_GREEN } ] }>
+        <View style={ [ styles.buttonContainer, { backgroundColor: greenColor } ] }>
           <View style={ styles.buttonTextContainer }>
             <Icon name="checkmark" style={{ color: '#fff', marginRight: 10 }} />
             <Text style={{ color: '#fff' }}>Terminée</Text>
@@ -232,7 +207,7 @@ class TaskPage extends Component {
 
     if (task.status === 'FAILED') {
       return (
-        <View style={ [ styles.buttonContainer, { backgroundColor: COLOR_RED } ] }>
+        <View style={ [ styles.buttonContainer, { backgroundColor: redColor } ] }>
           <View style={ styles.buttonTextContainer }>
             <Icon name="warning" style={{ color: '#fff', marginRight: 10 }} />
             <Text style={{ color: '#fff' }}>Échec</Text>
@@ -243,7 +218,7 @@ class TaskPage extends Component {
 
     const swipeoutLeftButton = {
       component: this.renderSwipeoutLeftButton(),
-      backgroundColor: COLOR_GREEN,
+      backgroundColor: greenColor,
       onPress: () => {
         this.setState({
           modalContextValid: true,
@@ -255,7 +230,7 @@ class TaskPage extends Component {
 
     const swipeoutRightButton = {
       component: this.renderSwipeoutRightButton(),
-      backgroundColor: COLOR_RED,
+      backgroundColor: redColor,
       onPress: () => {
         this.setState({
           modalContextValid: false,
@@ -307,7 +282,7 @@ class TaskPage extends Component {
                     identifier={ task['@id'] }
                     key={ task['@id'] }
                     coordinate={ task.address.geo }
-                    pinColor={ task.type === 'PICKUP' ? COLOR_BLUE : COLOR_GREEN }
+                    pinColor={ task.type === 'PICKUP' ? blueColor : greenColor }
                     flat={ true }>
                   </MapView.Marker>
                 </MapView>
@@ -383,6 +358,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#ccc'
   }
-});
+})
 
-module.exports = TaskPage;
+module.exports = TaskPage
