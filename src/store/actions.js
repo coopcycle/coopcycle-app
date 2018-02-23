@@ -45,7 +45,7 @@ function loadTasksRequest (client, selectedDate) {
   }
 }
 
-function markTaskFailedRequest (client, task) {
+function markTaskFailedRequest (client, task, notes) {
 
   return function(dispatch) {
     dispatch(markTaskFailed(task))
@@ -53,22 +53,20 @@ function markTaskFailedRequest (client, task) {
     return client
       .put(task['@id'] + '/failed', { reason: notes })
       .then(task => {
-        markTaskFailedSuccess(task)
-        // this.props.navigation.goBack()
+        dispatch(markTaskFailedSuccess(task))
       })
   }
 }
 
-function markTaskDoneRequest (client, task) {
+function markTaskDoneRequest (client, task, notes) {
 
   return function(dispatch) {
     dispatch(markTaskDone(task))
 
     return client
-      .put(task['@id'] + '/done', {})
+      .put(task['@id'] + '/done', { reason: notes })
       .then(task => {
-        markTaskDoneSuccess(task)
-        // this.props.navigation.goBack()
+        dispatch(markTaskDoneSuccess(task))
       })
   }
 }

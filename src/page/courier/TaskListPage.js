@@ -9,7 +9,7 @@ import TaskList from '../../components/TaskList'
 import DateSelectHeader from '../../components/DateSelectHeader'
 import { Settings } from '../../Settings'
 import { whiteColor } from '../../styles/common'
-import {changedTasks, loadTasksRequest} from "../../store/actions"
+import { changedTasks, loadTasksRequest } from "../../store/actions"
 
 moment.locale('fr')
 
@@ -124,7 +124,7 @@ class TaskListPage extends Component {
 
   render() {
 
-    const { tasks, selectedDate } = this.props
+    const { tasks, selectedDate, markTaskFailedRequest, markTaskDoneRequest, taskLoadingMessage } = this.props
     const { addedTasks } = this.state
     const { navigate } = this.props.navigation
     const { client, geolocationTracker } = this.props.navigation.state.params
@@ -169,8 +169,10 @@ function mapStateToProps (state) {
 
 function mapDispatchToProps (dispatch) {
   return {
-    taskChanged: (tasks) => { dispatch(changedTasks(tasks))},
-    loadTasks: (client, selectedDate) => { dispatch(loadTasksRequest(client, selectedDate)) }
+    taskChanged: (tasks) => { dispatch(changedTasks(tasks)) },
+    loadTasks: (client, selectedDate) => { dispatch(loadTasksRequest(client, selectedDate)) },
+    markTaskFailedRequest: (client, task, notes) => { dispatch(markTaskFailedRequest(client, task, notes)) },
+    markTaskDoneRequest: (client, task, notes) => { dispatch(markTaskDoneRequest(client, task, notes)) }
   }
 }
 

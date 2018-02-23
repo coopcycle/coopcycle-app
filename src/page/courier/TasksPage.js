@@ -167,7 +167,7 @@ class TasksPage extends Component {
 
   onWebSocketMessage (event) {
     let data = JSON.parse(event.data)
-    console.log('here')
+
     if (data.type === 'task:unassign') {
       this.props.unassignTask(data.task)
     } else if (data.type === 'task:assign') {
