@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, View, ActivityIndicator } from 'react-native'
 import { Container, Content, Icon, Text, Thumbnail } from 'native-base'
 import { connect } from 'react-redux'
 import _ from 'lodash'
@@ -9,7 +9,7 @@ import TaskList from '../../components/TaskList'
 import DateSelectHeader from '../../components/DateSelectHeader'
 import { Settings } from '../../Settings'
 import { whiteColor } from '../../styles/common'
-import {changedTasks} from "../../store/actions"
+import {changedTasks, loadTasksRequest} from "../../store/actions"
 
 moment.locale('fr')
 
@@ -28,6 +28,13 @@ const styles = StyleSheet.create({
   noTask: {
     paddingVertical: 30,
     textAlign: 'center'
+  },
+  loader: {
+    ...StyleSheet.absoluteFillObject,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(52, 52, 52, 0.4)',
+    zIndex: 20
   }
 })
 
@@ -37,8 +44,12 @@ class TaskListPage extends Component {
     super(props)
 
     this.state = {
-      addedTasks: []
+      addedTasks: [],
+      loading: false,
+      loadingMessage: 'Chargement…'
     }
+
+    this.refreshTasks = this.refreshTasks.bind(this)
   }
 
   componentDidMount() {
@@ -54,19 +65,32 @@ class TaskListPage extends Component {
     const nextTasks = nextProps.tasks
     const { tasks } = this.props
 
-    // Tasks have been added
-    if (nextTasks.length > tasks.length) {
-      const addedTasks = _.differenceWith(nextTasks, tasks, taskComparator)
-      const firstAddedTask = _.first(addedTasks)
 
-      this.setState({ addedTasks })
+    if (nextTasks !== tasks) {
+      this.setState({
+        loading: false
+      })
 
-      setTimeout(() => {
-        this.refs.taskList.scrollToTask(firstAddedTask)
-        this.refs.taskList.animate()
-      }, 500)
+      // Tasks have been added
+      if (nextTasks.length > tasks.length) {
+        const addedTasks = _.differenceWith(nextTasks, tasks, taskComparator)
+        const firstAddedTask = _.first(addedTasks)
+
+        this.setState({ addedTasks })
+
+        setTimeout(() => {
+          this.refs.taskList.scrollToTask(firstAddedTask)
+          this.refs.taskList.animate()
+        }, 500)
+      }
     }
 
+  }
+
+  refreshTasks (selectedDate) {
+    this.setState({ loading: true, loadingMessage: 'Chargement…' })
+    const { client } = this.props.navigation.state.params
+    this.props.loadTasks(client, selectedDate)
   }
 
   onWebSocketMessage (event) {
@@ -74,6 +98,28 @@ class TaskListPage extends Component {
     if (data.type === 'tasks:changed') {
       this.props.taskChanged(data.tasks)
     }
+  }
+
+  renderLoader() {
+
+    const { taskLoadingMessage } = this.props
+
+    if (taskLoadingMessage) {
+      return (
+        <View style={ styles.loader }>
+          <ActivityIndicator
+            animating={ true }
+            size="large"
+            color="#fff"
+          />
+          <Text style={{ color: '#fff' }}>{ taskLoadingMessage }</Text>
+        </View>
+      )
+    }
+
+    return (
+      <View />
+    )
   }
 
   render() {
@@ -86,9 +132,9 @@ class TaskListPage extends Component {
     return (
       <Container style={ styles.container }>
         <DateSelectHeader
-          toPastDate={() => {}}
-          toFutureDate={() => {}}
-          selectedDate={ selectedDate }
+          buttonsEnabled={true}
+          toDate={this.refreshTasks}
+          selectedDate={selectedDate}
         />
         <Content>
           <View style={ styles.wrapper }>
@@ -107,6 +153,7 @@ class TaskListPage extends Component {
           }
           </View>
         </Content>
+        { this.renderLoader() }
       </Container>
     )
   }
@@ -115,16 +162,15 @@ class TaskListPage extends Component {
 function mapStateToProps (state) {
   return {
     tasks: state.tasks,
-    selectedDate: state.selectedDate
+    selectedDate: state.selectedDate,
+    taskLoadingMessage: state.taskLoadingMessage
   }
 }
 
 function mapDispatchToProps (dispatch) {
   return {
-    taskChanged: (tasks) => { dispatch(changedTasks(tasks))}
-    // loadTasks: (client, selectedDate) => { dispatch(loadTasksRequest(client, selectedDate)) },
-    // assignTask: (task) => { dispatch(assignTask(task)) },
-    // unassignTask: (task) => { dispatch(unassignTask(task)) }
+    taskChanged: (tasks) => { dispatch(changedTasks(tasks))},
+    loadTasks: (client, selectedDate) => { dispatch(loadTasksRequest(client, selectedDate)) }
   }
 }
 

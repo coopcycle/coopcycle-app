@@ -30,8 +30,17 @@ const selectedDate = (state = moment(), action) => {
   return state
 }
 
+const taskLoadingMessage = (state = null, action) => {
+  switch(action.type) {
+    case 'LOAD_TASKS':
+      return 'Chargement...'
+  }
+  return null
+}
+
 
 export default combineReducers({
   tasks,
-  selectedDate
+  selectedDate,
+  taskLoadingMessage
 })

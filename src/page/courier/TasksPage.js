@@ -95,9 +95,6 @@ class TasksPage extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.tasks !== this.props.tasks) {
-        this.setState({
-          loading: false
-        })
 
         const { currentPosition } = this.state
 
@@ -130,6 +127,7 @@ class TasksPage extends Component {
       this.geolocationTracker.start()
     ]).then(() => {
       const { selectedDate } = this.props
+      this.setState({ loading: false })
       this.refreshTasks(selectedDate)
     }).catch(e => {
       // TODO Distinguish error reason
@@ -191,7 +189,6 @@ class TasksPage extends Component {
   }
 
   refreshTasks (selectedDate) {
-    this.setState({ loading: true, loadingMessage: 'Chargement…' })
     const { client } = this.props.navigation.state.params
     this.props.loadTasks(client, selectedDate)
 
@@ -203,9 +200,10 @@ class TasksPage extends Component {
 
   renderLoader() {
 
+    const { taskLoadingMessage } = this.props
     const { loading, loadingMessage } = this.state
 
-    if (loading) {
+    if (taskLoadingMessage || loading) {
       return (
         <View style={ styles.loader }>
           <ActivityIndicator
@@ -213,7 +211,7 @@ class TasksPage extends Component {
             size="large"
             color="#fff"
           />
-          <Text style={{ color: '#fff' }}>{ loadingMessage }</Text>
+          <Text style={{ color: '#fff' }}>{ taskLoadingMessage || loadingMessage }</Text>
         </View>
       )
     }
@@ -331,7 +329,8 @@ const styles = StyleSheet.create({
 function mapStateToProps (state) {
   return {
     tasks: state.tasks,
-    selectedDate: state.selectedDate
+    selectedDate: state.selectedDate,
+    taskLoadingMessage: state.taskLoadingMessage
   }
 }
 
