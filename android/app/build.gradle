@@ -152,6 +152,13 @@ android {
 }
 
 dependencies {
+    compile project(':tipsi-stripe')
+    compile project(':react-native-maps')
+    compile project(':react-native-locale-detector')
+    compile project(':react-native-keep-awake')
+    compile project(':tipsi-stripe')
+    compile project(':react-native-maps')
+    compile project(':react-native-keep-awake')
     compile(project(':react-native-keep-awake')){
       exclude group: 'com.google.android.gms'
     }

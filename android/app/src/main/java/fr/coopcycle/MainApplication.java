@@ -3,6 +3,13 @@ package fr.coopcycle;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.gettipsi.stripe.StripeReactPackage;
+import com.airbnb.android.react.maps.MapsPackage;
+import com.i18n.reactnativei18n.ReactNativeI18n;
+import com.corbt.keepawake.KCKeepAwakePackage;
+import com.gettipsi.stripe.StripeReactPackage;
+import com.airbnb.android.react.maps.MapsPackage;
+import com.corbt.keepawake.KCKeepAwakePackage;
 import com.corbt.keepawake.KCKeepAwakePackage;
 import com.gettipsi.stripe.StripeReactPackage;
 import com.airbnb.android.react.maps.MapsPackage;
@@ -26,6 +33,13 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new StripeReactPackage(),
+            new MapsPackage(),
+            new ReactNativeI18n(),
+            new KCKeepAwakePackage(),
+            new StripeReactPackage(),
+            new MapsPackage(),
+            new KCKeepAwakePackage(),
             new KCKeepAwakePackage(),
             new StripeReactPackage(),
             new MapsPackage()
