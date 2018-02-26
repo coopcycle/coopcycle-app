@@ -10,8 +10,9 @@ import DateSelectHeader from '../../components/DateSelectHeader'
 import { Settings } from '../../Settings'
 import { whiteColor } from '../../styles/common'
 import { changedTasks, loadTasksRequest } from "../../store/actions"
+import AppConfig from '../../AppConfig'
 
-moment.locale('fr')
+moment.locale(AppConfig.LOCALE)
 
 const taskComparator = (taskA, taskB) => taskA['@id'] === taskB['@id']
 

@@ -3,8 +3,9 @@ import { Animated, StyleSheet, View } from 'react-native'
 import { Text, Button, Icon, Footer } from 'native-base'
 import { Col, Row, Grid } from 'react-native-easy-grid'
 import moment from 'moment/min/moment-with-locales'
+import AppConfig from '../AppConfig'
 
-moment.locale('fr')
+moment.locale(AppConfig.LOCALE)
 
 const styles = StyleSheet.create({
   column: {

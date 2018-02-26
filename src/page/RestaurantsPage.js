@@ -15,8 +15,9 @@ import moment from 'moment/min/moment-with-locales'
 
 import RestaurantSearch from '../components/RestaurantSearch'
 import RestaurantList from '../components/RestaurantList'
+import AppConfig from '../AppConfig'
 
-moment.locale('fr')
+moment.locale(AppConfig.LOCALE)
 
 class RestaurantsPage extends Component {
 

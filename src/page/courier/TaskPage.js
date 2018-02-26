@@ -6,11 +6,12 @@ import { Col, Row, Grid } from 'react-native-easy-grid'
 import MapView from 'react-native-maps'
 import Swipeout from 'react-native-swipeout'
 import moment from 'moment/min/moment-with-locales'
+import AppConfig from '../../AppConfig'
 
 import { greenColor, blueColor, redColor } from "../../styles/common"
 import {markTaskDoneRequest, markTaskFailedRequest} from "../../store/actions"
 
-moment.locale('fr')
+moment.locale(AppConfig.LOCALE)
 
 class TaskPage extends Component {
 

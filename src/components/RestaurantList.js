@@ -5,8 +5,9 @@ import { Col, Row, Grid } from 'react-native-easy-grid'
 import slugify from 'slugify'
 import moment from 'moment/min/moment-with-locales'
 import _ from 'underscore'
+import AppConfig from '../AppConfig'
 
-moment.locale('fr')
+moment.locale(AppConfig.LOCALE)
 
 const styles = StyleSheet.create({
   wrapper: {

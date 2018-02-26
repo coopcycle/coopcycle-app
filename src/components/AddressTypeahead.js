@@ -80,14 +80,14 @@ export default class AddressTypeahead extends Component {
         query={{
           // available options: https://developers.google.com/places/web-service/autocomplete
           key: AppConfig.GOOGLE_API_KEY,
-          language: 'fr', // language of the results
+          language: AppConfig.LOCALE, // language of the results
           types: 'geocode', // default: 'geocode'
         }}
         styles={ styles }
         nearbyPlacesAPI="GoogleReverseGeocoding" // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
         GoogleReverseGeocodingQuery={{
           // available options for GoogleReverseGeocoding API : https://developers.google.com/maps/documentation/geocoding/intro
-          region: "fr"
+          region: AppConfig.LOCALE
         }}
         GooglePlacesSearchQuery={{
           // available options for GooglePlacesSearch API : https://developers.google.com/places/web-service/search
