@@ -18,7 +18,7 @@ import {
 } from 'native-base';
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import MapView from 'react-native-maps';
-
+import { translate } from 'react-i18next'
 // import Countdown from '../Countdown';
 import DirectionsAPI from '../DirectionsAPI';
 
@@ -66,7 +66,7 @@ class DispatchPage extends Component {
       markers: [],
       position: null,
       loading: false,
-      loadingMessage: 'Connexion au serveur…',
+      loadingMessage: `${props.t('CONNECTING_SERVER')}…`,
       order: null,
       delivery: null,
       watchID: null,
@@ -103,12 +103,12 @@ class DispatchPage extends Component {
 
     this.setState({
       loading: true,
-      loadingMessage: "Veuillez patienter…"
+      loadingMessage: `${this.props.t('PLS_WAIT')}…`
     });
     client.put(this.state.order['@id'] + '/decline', {})
       .then((order) => {
         this.setState({
-          loadingMessage: 'En attente d\'une commande…',
+          loadingMessage: `${this.props.t('WAITING_FOR_ORDER')}…`,
           order: null
         });
         this.resetMap();
@@ -121,7 +121,7 @@ class DispatchPage extends Component {
 
     this.setState({
       loading: true,
-      loadingMessage: 'Veuillez patienter…'
+      loadingMessage: `${this.props.t('PLS_WAIT')}…`
     })
 
     client
@@ -135,7 +135,7 @@ class DispatchPage extends Component {
 
     this.setState({
       loading: true,
-      loadingMessage: "Veuillez patienter…"
+      loadingMessage: `${this.props.t('PLS_WAIT')}…`
     })
 
     client
@@ -153,7 +153,7 @@ class DispatchPage extends Component {
 
     this.setState({
       loading: true,
-      loadingMessage: "Veuillez patienter…"
+      loadingMessage: `${this.props.t('PLS_WAIT')}…`
     })
 
     client
@@ -162,7 +162,7 @@ class DispatchPage extends Component {
         this.setState({
           delivery: null,
           order: null,
-          loadingMessage: 'En attente d\'une commande…'
+          loadingMessage: `${this.props.t('WAITING_FOR_ORDER')}…`,
         });
         this.resetMap();
       });
@@ -184,7 +184,7 @@ class DispatchPage extends Component {
 
     this.setState({
       loading: true,
-      loadingMessage: 'Chargement de la commande…'
+      loadingMessage: `${this.props.t('LOADING_ORDER')}…`,
     })
 
     const promises = [
@@ -195,7 +195,7 @@ class DispatchPage extends Component {
     Promise.all(promises)
       .then(values => {
 
-        this.setState({ loadingMessage: "Calcul de l'itinéraire…" })
+        this.setState({ loadingMessage: `${this.props.t('CALCULATING_ROUTE')}…`, })
 
         const [ delivery, order ] = values
         const address = delivery.status === 'PICKED' ? delivery.deliveryAddress : delivery.originAddress
@@ -207,7 +207,7 @@ class DispatchPage extends Component {
       .catch(err => console.log(err))
   }
   getCurrentPosition() {
-    this.setState({ loadingMessage: 'Calcul de votre position…' });
+    this.setState({ loadingMessage: `${this.props.t('CALCULATING_YOUR_POS')}…`, });
     return new Promise((resolve, reject) => {
 
       let options;
@@ -237,7 +237,7 @@ class DispatchPage extends Component {
         (error) => console.log
       );
       this.setState({
-        loadingMessage: 'Suivi de votre position…',
+        loadingMessage: `${this.props.t('TRACKING_YOUR_POS')}…`,
         watchID: watchID
       });
       resolve();
@@ -287,7 +287,7 @@ class DispatchPage extends Component {
   connectToWebSocket() {
 
     this.setState({
-      loadingMessage: 'Connexion au serveur…'
+      loadingMessage: `${this.props.t('CONNECTING_SERVER')}…`,
     });
 
     return new Promise((resolve, reject) => {
@@ -309,7 +309,7 @@ class DispatchPage extends Component {
         this.onPositionUpdated();
         this.props.navigation.setParams({ connected: true })
         this.setState({
-          loadingMessage: 'En attente d\'une commande…'
+          loadingMessage: `${this.props.t('WAITING_FOR_ORDER')}…`,
         });
         resolve();
       };
@@ -345,7 +345,7 @@ class DispatchPage extends Component {
     console.log('Connection closed !', e.code, e.message);
     this.props.navigation.setParams({ connected: true });
     this.setState({
-      loadingMessage: 'Connexion perdue ! Reconnexion…'
+      loadingMessage: `${this.props.t('CONN_LOST')}…`,
     });
     setTimeout(() => {
       this.connectToWebSocket()
@@ -359,7 +359,7 @@ class DispatchPage extends Component {
 
       this.setState({
         loading: true,
-        loadingMessage: "Authentification…"
+        loadingMessage: `${this.props.t('AUTHENTICATING')}…`,
       });
 
       this.getStatus()
@@ -452,10 +452,10 @@ class DispatchPage extends Component {
       buttons = (
         <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-around' }}>
           <Button danger disabled={ this.state.loading } onPress={ () => this.decline() }>
-            <Text>Refuser</Text>
+            <Text>{this.props.t('REFUSE')}</Text>
           </Button>
           <Button success disabled={ this.state.loading } onPress={ () => this.accept() }>
-            <Text>Accepter</Text>
+            <Text>{this.props.t('ACCEPT')}</Text>
           </Button>
         </View>
       );
@@ -469,7 +469,7 @@ class DispatchPage extends Component {
       buttons = (
         <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-around' }}>
           <Button success disabled={this.state.loading} onPress={ () => this.pick() }>
-            <Text>Commande récupérée</Text>
+            <Text>{this.props.t('ORDER_COLLECTED')}</Text>
           </Button>
         </View>
       );
@@ -478,7 +478,7 @@ class DispatchPage extends Component {
       buttons = (
         <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-around' }}>
           <Button success disabled={this.state.loading} onPress={ () => this.deliver() }>
-            <Text>Commande livrée</Text>
+            <Text>{this.props.t('ORDER_DELIVERED')}</Text>
           </Button>
         </View>
       );
@@ -556,4 +556,4 @@ const styles = StyleSheet.create({
   },
 });
 
-module.exports = DispatchPage;
+module.exports = translate()(DispatchPage);

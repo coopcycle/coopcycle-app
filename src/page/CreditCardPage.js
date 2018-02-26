@@ -13,7 +13,7 @@ import {
 } from 'native-base';
 import Stripe, { PaymentCardTextField } from 'tipsi-stripe';
 import { NavigationActions } from 'react-navigation'
-
+import { translate } from 'react-i18next'
 import AppConfig from '../AppConfig'
 
 Stripe.init({
@@ -81,7 +81,7 @@ class CreditCardPage extends Component {
             size="large"
             color="#fff"
           />
-          <Text style={{color: '#fff'}}>Chargement...</Text>
+          <Text style={{color: '#fff'}}>{`${this.props.t('LOADING')}...`}</Text>
         </View>
       );
       btnProps = { disabled: true }
@@ -98,7 +98,7 @@ class CreditCardPage extends Component {
     return (
       <Container>
         <Content padder contentContainerStyle={ { flex: 1, justifyContent: 'center', alignItems: 'center' } }>
-          <Text style={{ marginBottom: 10 }}>Veuillez entrer vos coordonnées bancaires</Text>
+          <Text style={{ marginBottom: 10 }}>{this.props.t('ENTER_PAY_DETAILS')}</Text>
           <PaymentCardTextField
             accessible
             accessibilityLabel="cardTextField"
@@ -136,4 +136,4 @@ const styles = StyleSheet.create({
   },
 })
 
-module.exports = CreditCardPage;
+module.exports = translate()(CreditCardPage);

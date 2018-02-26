@@ -10,7 +10,7 @@ import {
   Left, Right, Body,
   Title, Content, Footer, Button, Icon, List, ListItem, Text
 } from 'native-base';
-
+import { translate } from 'react-i18next'
 
 class AccountOrdersPage extends Component {
   constructor(props) {
@@ -56,7 +56,7 @@ class AccountOrdersPage extends Component {
             size="large"
             color="#fff"
           />
-          <Text style={{color: '#fff'}}>Chargement...</Text>
+          <Text style={{color: '#fff'}}>{`${this.props.t('LOADING')}...`}</Text>
         </View>
       );
     }
@@ -81,4 +81,4 @@ const styles = StyleSheet.create({
   },
 });
 
-module.exports = AccountOrdersPage;
+module.exports = translate()(AccountOrdersPage);

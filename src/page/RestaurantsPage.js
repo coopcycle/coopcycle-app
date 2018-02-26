@@ -12,7 +12,7 @@ import {
 } from 'native-base';
 import _ from 'underscore'
 import moment from 'moment/min/moment-with-locales'
-
+import { translate } from 'react-i18next'
 import RestaurantSearch from '../components/RestaurantSearch'
 import RestaurantList from '../components/RestaurantList'
 import AppConfig from '../AppConfig'
@@ -78,13 +78,13 @@ class RestaurantsPage extends Component {
             <CardItem>
               <Body>
                 <Text>
-                  Désolé, nous n'avons pas trouvé de restaurant ouvert.
+                  {this.props.t('NO_RESTAURANTS')}
                 </Text>
                 <Text>
-                  Voulez-vous relancer la recherche sans inclure de date ?
+                  {`${this.props.t('SEARCH_WITHOUT_DATE')} ?`}
                 </Text>
                 <Button block style={{ marginTop: 10 }} onPress={ () => this.restaurantSearch.resetDeliveryDate() }>
-                  <Text>Relancer la recherche</Text>
+                  <Text>{this.props.t('SEARCH_AGAIN')}</Text>
                 </Button>
               </Body>
             </CardItem>
@@ -139,4 +139,4 @@ const styles = StyleSheet.create({
   },
 });
 
-module.exports = RestaurantsPage;
+module.exports = translate()(RestaurantsPage);

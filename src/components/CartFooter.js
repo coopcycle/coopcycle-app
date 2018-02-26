@@ -3,6 +3,7 @@ import { Animated, StyleSheet, View } from 'react-native'
 import { Text, Button, Icon, Footer } from 'native-base'
 import { Col, Row, Grid } from 'react-native-easy-grid'
 import moment from 'moment/min/moment-with-locales'
+import { translate } from 'react-i18next'
 import AppConfig from '../AppConfig'
 
 moment.locale(AppConfig.LOCALE)
@@ -84,7 +85,7 @@ export default class CartFooter extends Component {
       <Button transparent
         style={{ alignSelf: 'flex-end' }}
         onPress={ () => this.props.onSubmit() }>
-        <Text style={ styles.buttonText }>Commander</Text>
+        <Text style={ styles.buttonText }>{this.props.t('ORDER')}</Text>
         <Icon style={{ color: '#fff' }} name="arrow-forward" />
       </Button>
     )
@@ -112,8 +113,8 @@ export default class CartFooter extends Component {
 
     let index = 0;
     const data = [
-      { key: index++, label: "Aujourd'hui" },
-      { key: index++, label: "Demain" },
+      { key: index++, label: this.props.t('TODAY') },
+      { key: index++, label: this.props.t('TOMORROW') },
     ]
 
     return (

@@ -15,7 +15,7 @@ import {
 } from 'native-base';
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import { NavigationActions } from 'react-navigation'
-
+import { translate } from 'react-i18next'
 import LoginForm from '../components/LoginForm'
 import CartFooter from '../components/CartFooter'
 
@@ -152,7 +152,7 @@ class CartPage extends Component {
                       <CardItem>
                         <Body>
                           <Text style={{ textAlign: 'center' }}>
-                            Modifiez la quantité
+                            {this.props.t('CHANGE_QUANT')}
                           </Text>
                         </Body>
                       </CardItem>
@@ -184,7 +184,7 @@ class CartPage extends Component {
                   <Col>
                     <View style={{ paddingHorizontal: 10, marginTop: 20 }}>
                       <Button bordered block onPress={() => this.setState({ editing: null, modalVisible: false })}>
-                        <Text>Valider</Text>
+                        <Text>{this.props.t('SUBMIT')}</Text>
                       </Button>
                     </View>
                   </Col>
@@ -230,7 +230,7 @@ class CartPage extends Component {
       <List>
         <ListItem>
           <Body>
-            <Text>Total articles</Text>
+            <Text>{this.props.t('TOTAL_ITEMS')}</Text>
           </Body>
           <Right>
             <Text style={{ fontWeight: 'bold' }}>{ cart.totalItems } €</Text>
@@ -238,7 +238,7 @@ class CartPage extends Component {
         </ListItem>
         <ListItem>
           <Body>
-            <Text>Total livraison</Text>
+            <Text>{this.props.t('TOTAL_DELIVERY')}</Text>
           </Body>
           <Right>
             <Text style={{ fontWeight: 'bold' }}>{ cart.totalDelivery } €</Text>
@@ -246,7 +246,7 @@ class CartPage extends Component {
         </ListItem>
         <ListItem>
           <Body>
-            <Text>Total</Text>
+            <Text>{this.props.t('TOTAL')}</Text>
           </Body>
           <Right>
             <Text style={{ fontWeight: 'bold' }}>{ cart.total } €</Text>
@@ -266,11 +266,11 @@ class CartPage extends Component {
         <Content style={ styles.content }>
           { this.renderModal() }
           { this.renderLoginModal() }
-          <Title style={ styles.title }>Votre panier</Title>
+          <Title style={ styles.title }>{this.props.t('YOUR_CART')}</Title>
           <List style={{ marginBottom: 20 }}>
             { cart.items.map(this._renderRow.bind(this)) }
           </List>
-          <Title style={ styles.title }>Total</Title>
+          <Title style={ styles.title }>{this.props.t('TOTAL')}</Title>
           { this.renderTotal() }
         </Content>
         <CartFooter
@@ -311,4 +311,4 @@ const styles = StyleSheet.create({
   }
 });
 
-module.exports = CartPage;
+module.exports = translate()(CartPage);

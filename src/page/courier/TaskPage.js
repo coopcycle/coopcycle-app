@@ -6,6 +6,7 @@ import { Col, Row, Grid } from 'react-native-easy-grid'
 import MapView from 'react-native-maps'
 import Swipeout from 'react-native-swipeout'
 import moment from 'moment/min/moment-with-locales'
+import { translate } from 'react-i18next'
 import AppConfig from '../../AppConfig'
 
 import { greenColor, blueColor, redColor } from "../../styles/common"
@@ -137,7 +138,7 @@ class TaskPage extends Component {
             <Header>
               <Left>
                 <Button transparent onPress={ () => this.setState({ modalVisible: false }) }>
-                  <Title style={{ fontSize: 14 }}>Annuler</Title>
+                  <Title style={{ fontSize: 14 }}>{this.props.t('CANCEL')}</Title>
                 </Button>
               </Left>
               <Body />
@@ -149,7 +150,7 @@ class TaskPage extends Component {
                   <Col>
                     <Form>
                       <Item stackedLabel>
-                        <Label>Notes</Label>
+                        <Label>{this.props.t('NOTES')}</Label>
                         <Input onChangeText={ text => this.setState({ notes: text }) } />
                       </Item>
                     </Form>
@@ -200,7 +201,7 @@ class TaskPage extends Component {
         <View style={ [ styles.buttonContainer, { backgroundColor: greenColor } ] }>
           <View style={ styles.buttonTextContainer }>
             <Icon name="checkmark" style={{ color: '#fff', marginRight: 10 }} />
-            <Text style={{ color: '#fff' }}>Terminée</Text>
+            <Text style={{ color: '#fff' }}>{this.props.t('COMPLETED')}</Text>
           </View>
         </View>
       )
@@ -211,7 +212,7 @@ class TaskPage extends Component {
         <View style={ [ styles.buttonContainer, { backgroundColor: redColor } ] }>
           <View style={ styles.buttonTextContainer }>
             <Icon name="warning" style={{ color: '#fff', marginRight: 10 }} />
-            <Text style={{ color: '#fff' }}>Échec</Text>
+            <Text style={{ color: '#fff' }}>{this.props.t('FAILED')}</Text>
           </View>
         </View>
       )
@@ -244,7 +245,7 @@ class TaskPage extends Component {
     return (
       <Swipeout buttonWidth={ width * 0.4 } left={[ swipeoutLeftButton ]} right={[ swipeoutRightButton ]} close={ swipeOutClose }>
         <View style={{ padding: 28, width }}>
-          <Text style={{ fontSize: 20, textAlign: 'center', color: '#fff', fontFamily: 'Raleway-Regular' }}>Terminer</Text>
+          <Text style={{ fontSize: 20, textAlign: 'center', color: '#fff', fontFamily: 'Raleway-Regular' }}>{this.props.t('END')}</Text>
         </View>
       </Swipeout>
     )
@@ -300,7 +301,7 @@ class TaskPage extends Component {
           </Row>
           <Row size={ 4 } style={ styles.swipeOutHelpContainer }>
             <View style={{ paddingVertical: 10, paddingHorizontal: 15 }}>
-              <Text style={ styles.swipeOutHelpText }>Glissez vers la droite pour terminer, ou vers la gauche en cas de problème.</Text>
+              <Text style={styles.swipeOutHelpText}>{`${this.props.t('SWIPE_TO_END')}.`}</Text>
             </View>
           </Row>
         </Grid>
@@ -374,4 +375,4 @@ function mapDispatchToProps (dispatch) {
   }
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(TaskPage)
+module.exports = connect(mapStateToProps, mapDispatchToProps)(translate()(TaskPage))

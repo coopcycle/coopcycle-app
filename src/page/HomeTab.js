@@ -11,6 +11,7 @@ import {
   Text, Icon,
 } from 'native-base'
 import { Col, Row, Grid } from 'react-native-easy-grid';
+import { translate } from 'react-i18next'
 
 const styles = StyleSheet.create({
   restaurant: {
@@ -54,8 +55,8 @@ class HomeTab extends Component {
                 </View>
               </Col>
               <Col size={ 75 } style={{ padding: 20 }}>
-                <Text style={ styles.restaurantTitle }>Trouvez un restaurant</Text>
-                <Text style={ styles.restaurantText }>Cherchez à proximité, découvrez les menus, passez votre commande</Text>
+                <Text style={styles.restaurantTitle}>{this.props.t('FIND_RESTAURANT')}</Text>
+                <Text style={styles.restaurantText}>{this.props.t('SEARCH_NEARBY')}</Text>
               </Col>
             </Grid>
           </View>
@@ -65,15 +66,15 @@ class HomeTab extends Component {
               source={require('../assets/images/home-bg.png')} />
             <Grid style={{ paddingHorizontal: 20, marginTop: 20 }}>
               <Row style={ styles.disclaimerRow }>
-                <Text style={{ fontWeight: 'bold' }}>Bienvenue !</Text>
+                <Text style={{ fontWeight: 'bold' }}>{`${this.props.t('WELCOME')} !`}</Text>
               </Row>
               <Row style={ styles.disclaimerRow }>
-                <Text style={{ textAlign: 'center' }}>Nous sommes actuellement en phase de tests alpha de l'application mobile.</Text>
+                <Text style={{ textAlign: 'center' }}>{`${this.props.t('ALPHA_DISCLAIMER')}.`}</Text>
               </Row>
               <Row style={ styles.disclaimerRow }>
                 <Text style={{ textAlign: 'center' }}>
-                  Veillez à mettre à jour régulièrement l'application pour disposer de la toute dernière version et n'hésitez pas à envoyer un rapport d'erreur en cas de plantage.
-                  </Text>
+                  {this.props.t('UPDATE_REMINDER')}
+                </Text>
               </Row>
             </Grid>
           </View>
@@ -83,4 +84,4 @@ class HomeTab extends Component {
   }
 }
 
-module.exports = HomeTab
+module.exports = translate()(HomeTab)

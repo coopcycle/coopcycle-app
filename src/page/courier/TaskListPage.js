@@ -10,6 +10,7 @@ import DateSelectHeader from '../../components/DateSelectHeader'
 import { Settings } from '../../Settings'
 import { whiteColor } from '../../styles/common'
 import { changedTasks, loadTasksRequest } from "../../store/actions"
+import { translate } from 'react-i18next'
 import AppConfig from '../../AppConfig'
 
 moment.locale(AppConfig.LOCALE)
@@ -150,7 +151,7 @@ class TaskListPage extends Component {
           }
           {
             tasks.length === 0 &&
-            <Text style={ styles.noTask }>Pas de tâches prévues aujourd'hui !</Text>
+            <Text style={ styles.noTask }>{`${this.props.t('NO_TASKS')} !`}</Text>
           }
           </View>
         </Content>
@@ -177,4 +178,4 @@ function mapDispatchToProps (dispatch) {
   }
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(TaskListPage)
+module.exports = connect(mapStateToProps, mapDispatchToProps)(translate()(TaskListPage))

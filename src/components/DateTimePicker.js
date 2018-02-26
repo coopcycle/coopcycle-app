@@ -3,11 +3,12 @@ import { Text, Button, Icon, Header, Left, Right, Title, Body } from 'native-bas
 import { TextInput, View } from 'react-native'
 import ModalSelector from 'react-native-modal-selector'
 import moment from 'moment/min/moment-with-locales'
+import { translate } from 'react-i18next'
 import AppConfig from '../AppConfig'
 
 moment.locale(AppConfig.LOCALE)
 
-export default class DateTimePicker extends Component {
+class DateTimePicker extends Component {
 
   constructor(props) {
     super(props)
@@ -30,25 +31,27 @@ export default class DateTimePicker extends Component {
 
     let index = 0
     const data = [
-      { key: index++, label: "Aujourd'hui", deliveryDate: moment() },
-      { key: index++, label: "Demain", deliveryDate: moment().add(1, 'days') },
+      { key: index++, label: this.props.t('TODAY'), deliveryDate: moment() },
+      { key: index++, label: this.props.t('TOMORROW'), deliveryDate: moment().add(1, 'days') },
     ]
 
     return (
       <ModalSelector
         selectStyle={{ borderWidth: 0  }}
         selectTextStyle={{ color: '#fff' }}
-        cancelText={ 'Annuler' }
+        cancelText={ this.props.t('CANCEL') }
         animationType={ 'fade' }
         data={ data }
-        initValue={ 'Quand ?' }
+        initValue={ `${this.props.t('WHEN')} ?` }
         onChange={ this.onChange.bind(this) }>
         <TextInput
           style={{ borderWidth: 0, color: '#fff', width: 80, textAlign: 'center' }}
           editable={ false }
-          placeholder="Quand ?"
+          placeholder={ `${this.props.t('WHEN')} ?` }
           value={ this.state.textInputValue } />
       </ModalSelector>
     )
   }
 }
+
+export default translate()(DateTimePicker)

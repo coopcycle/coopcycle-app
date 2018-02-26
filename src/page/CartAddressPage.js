@@ -11,7 +11,7 @@ import {
   Left, Right,
   Button, Icon, List, ListItem, Text, Radio } from 'native-base';
 import MapView from 'react-native-maps'
-
+import { translate } from 'react-i18next'
 import DeliveryAddressForm from '../components/DeliveryAddressForm'
 
 class CartAddressPage extends Component {
@@ -103,7 +103,7 @@ class CartAddressPage extends Component {
           <DeliveryAddressForm ref={ component => this.deliveryAddressForm = component } { ...deliveryAddress } errors={ errors } />
           <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', padding: 20 }}>
             <Button block onPress={ () => this.createAddress() }>
-              <Text>Continuer</Text>
+              <Text>{this.props.t('CONTINUE')}</Text>
             </Button>
           </View>
           <View style={styles.loader}>
@@ -131,4 +131,4 @@ const styles = StyleSheet.create({
   },
 });
 
-module.exports = CartAddressPage;
+module.exports = translate()(CartAddressPage);

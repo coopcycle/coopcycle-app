@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import { Container, Header, Content, Form, Item, Input, Label } from 'native-base'
 import _ from 'underscore'
+import { translate } from 'react-i18next'
 
-export default class DeliveryAddressForm extends Component {
+class DeliveryAddressForm extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -28,21 +29,21 @@ export default class DeliveryAddressForm extends Component {
     return (
       <Form>
         <Item stackedLabel>
-          <Label>Adresse</Label>
+          <Label>{this.props.t('ADDRESS')}</Label>
           <Input ref="streetAddress"
             { ...inputProps }
             onChangeText={ streetAddress => this.setState({ streetAddress }) }
             value={ this.state.streetAddress } />
         </Item>
         <Item stackedLabel { ...postalCodeProps }>
-          <Label>Code postal</Label>
+          <Label>{this.props.t('POST_CODE')}</Label>
           <Input ref="postalCode"
             { ...inputProps }
             onChangeText={ postalCode => this.setState({ postalCode }) }
             value={ this.state.postalCode } />
         </Item>
         <Item stackedLabel last>
-          <Label>Ville</Label>
+          <Label>{this.props.t('CITY')}</Label>
           <Input ref="addressLocality"
             { ...inputProps }
             onChangeText={ addressLocality => this.setState({ addressLocality }) }
@@ -52,3 +53,5 @@ export default class DeliveryAddressForm extends Component {
     );
   }
 }
+
+export default translate()(DeliveryAddressForm)

@@ -11,6 +11,7 @@ import MapView from 'react-native-maps'
 import { NavigationActions } from 'react-navigation'
 import KeepAwake from 'react-native-keep-awake'
 import { connect } from 'react-redux'
+import { translate } from 'react-i18next'
 
 import { greenColor, blueColor, redColor, greyColor, whiteColor, dateSelectHeaderHeight } from "../../styles/common"
 import GeolocationTracker from '../../GeolocationTracker'
@@ -157,11 +158,11 @@ class TasksPage extends Component {
     }).catch(e => {
       // TODO Distinguish error reason
       Alert.alert(
-        'Connexion impossible',
-        'Veuillez réessayer plus tard',
+        this.props.t('PROBLEM_CONNECTION'),
+        this.props.t('TRY_LATER'),
         [
           {
-            text: 'OK', onPress: () => {
+            text: this.props.t('OK'), onPress: () => {
               this.props.navigation.dispatch(NavigationActions.back())
             }
           },
@@ -179,7 +180,7 @@ class TasksPage extends Component {
     this.props.navigation.setParams({ connected: false })
     this.setState({
       loading: true,
-      loadingMessage: 'Connexion perdue, reconnexion…'
+      loadingMessage: this.props.t('CONN_LOST'),
     })
   }
 
@@ -311,7 +312,7 @@ class TasksPage extends Component {
           <View style={ styles.taskListButton }>
             <Button block onPress={ () => navigate('CourierTaskList', { ...navigationParams, tasks }) }>
               <Icon name="list" />
-              <Text>Liste des tâches</Text>
+              <Text>{this.props.t('TASK_LIST')}</Text>
             </Button>
           </View>
           <View style={ styles.locateButton }>
@@ -395,4 +396,4 @@ function mapDispatchToProps (dispatch) {
   }
 }
 
-module.exports =  connect(mapStateToProps, mapDispatchToProps)(TasksPage)
+module.exports = connect(mapStateToProps, mapDispatchToProps)(translate()(TasksPage))
