@@ -9,13 +9,14 @@ import { Platform } from 'react-native'
 import i18n from 'i18next'
 import { reactI18nextModule } from 'react-i18next'
 import locale from 'react-native-locale-detector'
+import AppConfig from '../AppConfig'
 import en from './locales/en.json'
 import fr from './locales/fr.json'
 
 // https://www.i18next.com/misc/creating-own-plugins.html#languagedetector
 const languageDetector = {
   type: 'languageDetector',
-  detect: () => locale,
+  detect: () => locale || AppConfig.LOCALE,
   init: () => { },
   cacheUserLanguage: () => { }
 }
