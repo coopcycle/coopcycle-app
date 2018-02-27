@@ -26,8 +26,7 @@ let styles = StyleSheet.create({
   dateHeader: {
     backgroundColor: primaryColor,
     height: dateSelectHeaderHeight,
-    alignItems: 'center',
-    paddingHorizontal: 20
+    alignItems: 'center'
   },
   dateHeaderText: {
     color: whiteColor,
@@ -45,17 +44,6 @@ let styles = StyleSheet.create({
   button: {
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  calendarWidget: {
-    position: 'absolute',
-    right: 0,
-    left: 0,
-    zIndex: -1,
-    height: 300 // workaround for https://github.com/wix/react-native-calendars/issues/338
-  },
-  calendarIcon: {
-    color: whiteColor,
-    fontSize: 26
   }
 })
 
@@ -138,15 +126,13 @@ class DateSelectHeader extends React.Component {
       <View style={ styles.container }>
         <Grid>
           <Row style={ styles.dateHeader }>
-            <Col size={ 1 }>
-            </Col>
-            <Col size={ 2 } style={ styles.button }>
+            <Col size={ 4 } style={ styles.button }>
               { buttonsEnabled && this.renderButton('arrow-dropleft', this.onPastPress, styles.icon) }
             </Col>
             <Col size={ 8 } style={ styles.body } onPress={ this.onCalendarPress }>
               <Text style={styles.dateHeaderText}>{selectedDate.format('dddd Do MMM')}</Text>
             </Col>
-            <Col size={ 2 } style={ styles.button }>
+            <Col size={ 4 } style={ styles.button }>
               { buttonsEnabled && this.renderButton('arrow-dropright', this.onFuturePress, styles.icon) }
             </Col>
           </Row>
