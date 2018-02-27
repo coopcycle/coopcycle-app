@@ -143,14 +143,11 @@ class DateSelectHeader extends React.Component {
             <Col size={ 2 } style={ styles.button }>
               { buttonsEnabled && this.renderButton('arrow-dropleft', this.onPastPress, styles.icon) }
             </Col>
-            <Col size={ 8 } style={ styles.body }>
+            <Col size={ 8 } style={ styles.body } onPress={ this.onCalendarPress }>
               <Text style={styles.dateHeaderText}>{selectedDate.format('dddd Do MMM')}</Text>
             </Col>
             <Col size={ 2 } style={ styles.button }>
               { buttonsEnabled && this.renderButton('arrow-dropright', this.onFuturePress, styles.icon) }
-            </Col>
-            <Col size={ 1 }>
-              { buttonsEnabled &&  this.renderButton('calendar', this.onCalendarPress, styles.calendarIcon) }
             </Col>
           </Row>
         </Grid>
