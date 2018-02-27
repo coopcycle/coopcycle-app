@@ -217,7 +217,7 @@ class TaskPage extends Component {
     }
 
     const swipeoutLeftButton = {
-      component: this.renderSwipeoutLeftButton(),
+      component: TaskPage.renderSwipeoutLeftButton(),
       backgroundColor: greenColor,
       onPress: () => {
         this.setState({
@@ -229,7 +229,7 @@ class TaskPage extends Component {
     }
 
     const swipeoutRightButton = {
-      component: this.renderSwipeoutRightButton(),
+      component: TaskPage.renderSwipeoutRightButton(),
       backgroundColor: redColor,
       onPress: () => {
         this.setState({
