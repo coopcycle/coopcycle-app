@@ -93,6 +93,25 @@ class TasksPage extends Component {
     KeepAwake.deactivate()
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    const { tasksLoadingError, navigation } = this.props
+
+    if (tasksLoadingError && !prevProps.tasksLoadingError) {
+      Alert.alert(
+        'Impossible de charger les tâches',
+        'Veuillez réessayer plus tard',
+        [
+          {
+            text: 'OK', onPress: () => {
+              navigation.dispatch(NavigationActions.back())
+            }
+          },
+        ],
+        { cancelable: false }
+      )
+    }
+  }
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.tasks !== this.props.tasks) {
 
@@ -331,7 +350,8 @@ function mapStateToProps (state) {
   return {
     tasks: state.tasks,
     selectedDate: state.selectedDate,
-    taskLoadingMessage: state.taskLoadingMessage
+    taskLoadingMessage: state.taskLoadingMessage,
+    tasksLoadingError: state.tasksLoadingError
   }
 }
 

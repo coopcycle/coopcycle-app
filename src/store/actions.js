@@ -34,14 +34,18 @@ function loadTasksSuccess (tasks) {
   return { type: 'LOAD_TASKS_SUCCESS', tasks }
 }
 
+function loadTasksFailure (tasks) {
+  return { type: 'LOAD_TASKS_FAILURE', tasks }
+}
+
 function loadTasksRequest (client, selectedDate) {
 
   return function(dispatch) {
     dispatch(loadTasks(selectedDate))
 
-    return client.get('/api/me/tasks/' + selectedDate.format('YYYY-MM-DD')).then((rep) => {
-      dispatch(loadTasksSuccess(rep['hydra:member']))
-    })
+    return client.get('/api/me/tasks/' + selectedDate.format('YYYY-MM-DD'))
+      .then(res => dispatch(loadTasksSuccess(res['hydra:member'])))
+      .catch(e => dispatch(loadTasksFailure(e)))
   }
 }
 

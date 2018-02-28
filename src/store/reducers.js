@@ -51,9 +51,17 @@ const taskLoadingMessage = (state = null, action) => {
   return null
 }
 
+const tasksLoadingError = (state = false, action) => {
+  switch (action.type) {
+    case 'LOAD_TASKS_FAILURE':
+      return true
+  }
+  return state
+}
 
 export default combineReducers({
   tasks,
   selectedDate,
-  taskLoadingMessage
+  taskLoadingMessage,
+  tasksLoadingError
 })
