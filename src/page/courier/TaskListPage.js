@@ -1,12 +1,15 @@
 import React, { Component } from 'react'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, View, ActivityIndicator } from 'react-native'
 import { Container, Content, Icon, Text, Thumbnail } from 'native-base'
+import { connect } from 'react-redux'
+import _ from 'lodash'
+import moment from 'moment/min/moment-with-locales'
+
 import TaskList from '../../components/TaskList'
 import DateSelectHeader from '../../components/DateSelectHeader'
 import { Settings } from '../../Settings'
-import _ from 'lodash'
-import moment from 'moment/min/moment-with-locales'
 import { whiteColor } from '../../styles/common'
+import { changedTasks, loadTasksRequest } from "../../store/actions"
 
 moment.locale('fr')
 
@@ -25,6 +28,13 @@ const styles = StyleSheet.create({
   noTask: {
     paddingVertical: 30,
     textAlign: 'center'
+  },
+  loader: {
+    ...StyleSheet.absoluteFillObject,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(52, 52, 52, 0.4)',
+    zIndex: 20
   }
 })
 
@@ -33,12 +43,13 @@ class TaskListPage extends Component {
   constructor(props) {
     super(props)
 
-    const { tasks, date } = this.props.navigation.state.params
-
     this.state = {
-      tasks,
-      addedTasks: []
+      addedTasks: [],
+      loading: false,
+      loadingMessage: 'Chargement…'
     }
+
+    this.refreshTasks = this.refreshTasks.bind(this)
   }
 
   componentDidMount() {
@@ -50,55 +61,80 @@ class TaskListPage extends Component {
     Settings.removeListener('websocket:message', this.onMessageHandler)
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    const prevTasks = prevState.tasks
-    const { tasks } = this.state
+  componentWillReceiveProps(nextProps) {
+    const nextTasks = nextProps.tasks
+    const { tasks } = this.props
 
-    // Tasks have been added
-    if (tasks.length > prevTasks.length) {
-      const addedTasks = _.differenceWith(tasks, prevTasks, taskComparator)
-      const firstAddedTask = _.first(addedTasks)
 
-      this.setState({ addedTasks })
+    if (nextTasks !== tasks) {
+      this.setState({
+        loading: false
+      })
 
-      setTimeout(() => {
-        this.refs.taskList.scrollToTask(firstAddedTask)
-        this.refs.taskList.animate()
-      }, 500)
+      // Tasks have been added
+      if (nextTasks.length > tasks.length) {
+        const addedTasks = _.differenceWith(nextTasks, tasks, taskComparator)
+        const firstAddedTask = _.first(addedTasks)
+
+        this.setState({ addedTasks })
+
+        setTimeout(() => {
+          this.refs.taskList.scrollToTask(firstAddedTask)
+          this.refs.taskList.animate()
+        }, 500)
+      }
     }
 
+  }
+
+  refreshTasks (selectedDate) {
+    this.setState({ loading: true, loadingMessage: 'Chargement…' })
+    const { client } = this.props.navigation.state.params
+    this.props.loadTasks(client, selectedDate)
   }
 
   onWebSocketMessage (event) {
     let data = JSON.parse(event.data)
     if (data.type === 'tasks:changed') {
-      this.setState({ tasks: data.tasks })
+      this.props.taskChanged(data.tasks)
     }
   }
 
-  onTaskChange(newTask) {
-    const { onTaskChange } = this.props.navigation.state.params
-    const { tasks } = this.state
-    const newTasks = tasks.slice()
-    const taskIndex = _.findIndex(tasks, task => task['@id'] === newTask['@id'])
-    newTasks[taskIndex] = newTask
+  renderLoader() {
 
-    this.setState({ tasks: newTasks })
-    onTaskChange(newTask)
+    const { taskLoadingMessage } = this.props
+
+    if (taskLoadingMessage) {
+      return (
+        <View style={ styles.loader }>
+          <ActivityIndicator
+            animating={ true }
+            size="large"
+            color="#fff"
+          />
+          <Text style={{ color: '#fff' }}>{ taskLoadingMessage }</Text>
+        </View>
+      )
+    }
+
+    return (
+      <View />
+    )
   }
 
   render() {
 
-    const { tasks, addedTasks } = this.state
+    const { tasks, selectedDate, markTaskFailedRequest, markTaskDoneRequest, taskLoadingMessage } = this.props
+    const { addedTasks } = this.state
     const { navigate } = this.props.navigation
-    const { client, date, geolocationTracker } = this.props.navigation.state.params
+    const { client, geolocationTracker } = this.props.navigation.state.params
 
     return (
       <Container style={ styles.container }>
         <DateSelectHeader
-          toPastDate={() => {}}
-          toFutureDate={() => {}}
-          selectedDate={ date }
+          buttonsEnabled={true}
+          toDate={this.refreshTasks}
+          selectedDate={selectedDate}
         />
         <Content>
           <View style={ styles.wrapper }>
@@ -108,7 +144,7 @@ class TaskListPage extends Component {
               ref="taskList"
               tasks={ tasks }
               tasksToHighlight={ addedTasks }
-              onTaskClick={ task => navigate('CourierTask', { client, task, geolocationTracker, onTaskChange: this.onTaskChange.bind(this) }) }
+              onTaskClick={ task => navigate('CourierTask', { client, task, geolocationTracker }) }
             />
           }
           {
@@ -117,9 +153,27 @@ class TaskListPage extends Component {
           }
           </View>
         </Content>
+        { this.renderLoader() }
       </Container>
     )
   }
 }
 
-module.exports = TaskListPage;
+function mapStateToProps (state) {
+  return {
+    tasks: state.tasks,
+    selectedDate: state.selectedDate,
+    taskLoadingMessage: state.taskLoadingMessage
+  }
+}
+
+function mapDispatchToProps (dispatch) {
+  return {
+    taskChanged: (tasks) => { dispatch(changedTasks(tasks)) },
+    loadTasks: (client, selectedDate) => { dispatch(loadTasksRequest(client, selectedDate)) },
+    markTaskFailedRequest: (client, task, notes) => { dispatch(markTaskFailedRequest(client, task, notes)) },
+    markTaskDoneRequest: (client, task, notes) => { dispatch(markTaskDoneRequest(client, task, notes)) }
+  }
+}
+
+module.exports = connect(mapStateToProps, mapDispatchToProps)(TaskListPage)

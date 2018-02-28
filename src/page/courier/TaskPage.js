@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import { Dimensions, StyleSheet, TouchableOpacity, View, Modal, ActivityIndicator } from 'react-native'
 import { Container, Content, Footer, FooterTab, Text, Button, Icon, Header, Title, Left, Body, Right, Form, Item, Input, Label } from 'native-base'
 import { Col, Row, Grid } from 'react-native-easy-grid'
@@ -6,11 +7,10 @@ import MapView from 'react-native-maps'
 import Swipeout from 'react-native-swipeout'
 import moment from 'moment/min/moment-with-locales'
 
-moment.locale('fr')
+import { greenColor, blueColor, redColor } from "../../styles/common"
+import {markTaskDoneRequest, markTaskFailedRequest} from "../../store/actions"
 
-const COLOR_GREEN = '#2ECC71'
-const COLOR_RED = '#E74C3C'
-const COLOR_BLUE = '#3498DB'
+moment.locale('fr')
 
 class TaskPage extends Component {
 
@@ -19,53 +19,51 @@ class TaskPage extends Component {
   constructor(props) {
     super(props)
 
-    const { task } = this.props.navigation.state.params
-
     this.state = {
-      task,
       modalVisible: false,
       modalContextValid: true,
       swipeOutClose: false,
-      loading: false,
-      loadingMessage: 'Chargement…',
       notes: ''
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+
+    const { task } = this.props.navigation.state.params
+
+    // HACK : check if the task status has been updated - if yes go back to tasklist page
+    // I think the way to do it properly would be to integrate react-navigation in redux but it does seem a lot of work
+
+    let previousTaskStatus = _.find(this.props.tasks, (taskA) => taskA['@id'] === task['@id']).status,
+      currentTaskStatus = _.find(nextProps.tasks, (taskA) => taskA['@id'] === task['@id']).status
+    if (previousTaskStatus !== currentTaskStatus) {
+      this.props.navigation.goBack()
     }
   }
 
   markTaskDone() {
 
-    const { client, onTaskChange } = this.props.navigation.state.params
-    const { task, notes } = this.state
+    const { client, task } = this.props.navigation.state.params
+    const { markTaskDoneRequest } = this.props
+    const { notes } = this.state
 
-    this.setState({ loading: true })
-    client
-      .put(task['@id'] + '/done', { notes })
-      .then(task => {
-        this.setState({ task, notes: '', loading: false, modalVisible: false })
-        onTaskChange(task)
-        this.props.navigation.goBack()
-      })
+    markTaskDoneRequest(client, task, notes)
   }
 
   markTaskFailed() {
 
-    const { client, onTaskChange } = this.props.navigation.state.params
-    const { task, notes } = this.state
 
-    this.setState({ loading: true })
-    client
-      .put(task['@id'] + '/failed', { notes })
-      .then(task => {
-        this.setState({ task, notes: '', loading: false, modalVisible: false })
-        onTaskChange(task)
-        this.props.navigation.goBack()
-      })
+    const { client, task } = this.props.navigation.state.params
+    const { markTaskFailedRequest } = this.props
+    const { notes } = this.state
+
+    markTaskFailedRequest(client, task, notes)
+
   }
 
   onMapReady() {
 
-    const { geolocationTracker } = this.props.navigation.state.params
-    const { task } = this.state
+    const { geolocationTracker, task } = this.props.navigation.state.params
 
     const coordinates = [
       geolocationTracker.getLatLng(),
@@ -100,10 +98,9 @@ class TaskPage extends Component {
   }
 
   renderLoader() {
+    const { taskLoadingMessage } = this.props
 
-    const { loading, loadingMessage } = this.state
-
-    if (loading) {
+    if (taskLoadingMessage) {
       return (
         <View style={ styles.loader }>
           <ActivityIndicator
@@ -111,7 +108,7 @@ class TaskPage extends Component {
             size="large"
             color="#fff"
           />
-          <Text style={{ color: '#fff' }}>{ loadingMessage }</Text>
+          <Text style={{ color: '#fff' }}>{ taskLoadingMessage }</Text>
         </View>
       );
     }
@@ -159,7 +156,7 @@ class TaskPage extends Component {
                 </Row>
               </Grid>
             </Content>
-            <Footer style={{ alignItems: 'center', backgroundColor: modalContextValid ? COLOR_GREEN : COLOR_RED }}>
+            <Footer style={{ alignItems: 'center', backgroundColor: modalContextValid ? greenColor : redColor }}>
               <TouchableOpacity style={ styles.buttonContainer } onPress={ onPress }>
                 <View style={ styles.buttonTextContainer }>
                   <Icon name={ buttonIconName } style={{ color: '#fff', marginRight: 10 }} />
@@ -174,30 +171,7 @@ class TaskPage extends Component {
     );
   }
 
-  renderButton() {
-
-    const { task } = this.state
-
-    let buttonProps = {}
-    let buttonText = 'Terminer'
-    if (task.status === 'DONE') {
-      buttonProps = { disabled: true }
-      buttonText = 'Terminée'
-    }
-
-    return (
-      <TouchableOpacity style={ styles.buttonContainer } { ...buttonProps } onPress={ () => this.setState({ modalVisible: true }) }>
-        <View style={ styles.buttonTextContainer }>
-          { task.status === 'DONE' && (
-            <Icon name="md-checkmark" style={{ color: '#fff', marginRight: 10 }} />
-          ) }
-          <Text style={{ color: '#fff' }}>{ buttonText }</Text>
-        </View>
-      </TouchableOpacity>
-    )
-  }
-
-  renderSwipeoutLeftButton() {
+  static renderSwipeoutLeftButton() {
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <Icon name="checkmark" style={{ color: '#fff' }} />
@@ -206,7 +180,7 @@ class TaskPage extends Component {
 
   }
 
-  renderSwipeoutRightButton() {
+  static renderSwipeoutRightButton() {
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <Icon name="warning" style={{ color: '#fff' }} />
@@ -216,12 +190,13 @@ class TaskPage extends Component {
 
   renderSwipeOutButton() {
 
-    const { height, width } = Dimensions.get('window')
-    const { swipeOutClose, task } = this.state
+    const { width } = Dimensions.get('window')
+    const { task } = this.props.navigation.state.params
+    const { swipeOutClose } = this.state
 
     if (task.status === 'DONE') {
       return (
-        <View style={ [ styles.buttonContainer, { backgroundColor: COLOR_GREEN } ] }>
+        <View style={ [ styles.buttonContainer, { backgroundColor: greenColor } ] }>
           <View style={ styles.buttonTextContainer }>
             <Icon name="checkmark" style={{ color: '#fff', marginRight: 10 }} />
             <Text style={{ color: '#fff' }}>Terminée</Text>
@@ -232,7 +207,7 @@ class TaskPage extends Component {
 
     if (task.status === 'FAILED') {
       return (
-        <View style={ [ styles.buttonContainer, { backgroundColor: COLOR_RED } ] }>
+        <View style={ [ styles.buttonContainer, { backgroundColor: redColor } ] }>
           <View style={ styles.buttonTextContainer }>
             <Icon name="warning" style={{ color: '#fff', marginRight: 10 }} />
             <Text style={{ color: '#fff' }}>Échec</Text>
@@ -242,8 +217,8 @@ class TaskPage extends Component {
     }
 
     const swipeoutLeftButton = {
-      component: this.renderSwipeoutLeftButton(),
-      backgroundColor: COLOR_GREEN,
+      component: TaskPage.renderSwipeoutLeftButton(),
+      backgroundColor: greenColor,
       onPress: () => {
         this.setState({
           modalContextValid: true,
@@ -254,8 +229,8 @@ class TaskPage extends Component {
     }
 
     const swipeoutRightButton = {
-      component: this.renderSwipeoutRightButton(),
-      backgroundColor: COLOR_RED,
+      component: TaskPage.renderSwipeoutRightButton(),
+      backgroundColor: redColor,
       onPress: () => {
         this.setState({
           modalContextValid: false,
@@ -276,7 +251,7 @@ class TaskPage extends Component {
 
   render() {
 
-    const { task } = this.state
+    const { task } = this.props.navigation.state.params
 
     const initialRegion  = {
       latitude: task.address.geo.latitude,
@@ -307,7 +282,7 @@ class TaskPage extends Component {
                     identifier={ task['@id'] }
                     key={ task['@id'] }
                     coordinate={ task.address.geo }
-                    pinColor={ task.type === 'PICKUP' ? COLOR_BLUE : COLOR_GREEN }
+                    pinColor={ task.type === 'PICKUP' ? blueColor : greenColor }
                     flat={ true }>
                   </MapView.Marker>
                 </MapView>
@@ -383,6 +358,20 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#ccc'
   }
-});
+})
 
-module.exports = TaskPage;
+function mapStateToProps (state) {
+  return {
+    taskLoadingMessage: state.taskLoadingMessage,
+    tasks: state.tasks
+  }
+}
+
+function mapDispatchToProps (dispatch) {
+  return {
+    markTaskFailedRequest: (client, task, notes) => { dispatch(markTaskFailedRequest(client, task, notes)) },
+    markTaskDoneRequest: (client, task, notes) => { dispatch(markTaskDoneRequest(client, task, notes)) }
+  }
+}
+
+module.exports = connect(mapStateToProps, mapDispatchToProps)(TaskPage)
