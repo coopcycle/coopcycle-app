@@ -8,7 +8,6 @@
   },
   "dependencies": {
     "@mapbox/polyline": "^0.2.0",
-    "metro": "^0.26.0",
     "moment": "^2.19.2",
     "native-base": "2.3.8",
     "react": "16.2.0",
