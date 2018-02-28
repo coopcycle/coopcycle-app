@@ -44,6 +44,13 @@ let styles = StyleSheet.create({
   button: {
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  calendarWidget: {
+    position: 'absolute',
+    right: 0,
+    left: 0,
+    zIndex: -1,
+    height: 300 // workaround for https://github.com/wix/react-native-calendars/issues/338
   }
 })
 
@@ -56,35 +63,41 @@ class DateSelectHeader extends React.Component {
 
     this.state = {
       slideCalendarAnim: new Animated.Value(this.initialCalendarTop),
-      calendarToggled: false
+      showCalendar: false
     }
 
-    this.onCalendarPress = this.onCalendarPress.bind(this)
+    this.toggleCalendar = this.toggleCalendar.bind(this)
     this.onDateSelect = this.onDateSelect.bind(this)
     this.onFuturePress = this.onFuturePress.bind(this)
     this.onPastPress = this.onPastPress.bind(this)
   }
 
-  onCalendarPress () {
-    let { calendarToogled } = this.state
-
-    if (calendarToogled) {
-      this.closeCalendar()
-    } else {
-      Animated.timing(
-        this.state.slideCalendarAnim,
-        {
-          toValue: 40,
-          duration: 450,
-        }
-      ).start()
-      this.setState({calendarToogled: true})
-    }
-
+  toggleCalendar() {
+    const { showCalendar } = this.state
+    this.setState({ showCalendar: !showCalendar })
   }
 
-  closeCalendar () {
+  componentDidUpdate(prevProps, prevState) {
+    const { showCalendar } = prevState
+    if (this.state.showCalendar && !showCalendar) {
+      this.openCalendar()
+    }
+    if (!this.state.showCalendar && showCalendar) {
+      this.closeCalendar()
+    }
+  }
 
+  openCalendar() {
+    Animated.timing(
+      this.state.slideCalendarAnim,
+      {
+        toValue: 40,
+        duration: 450,
+      }
+    ).start()
+  }
+
+  closeCalendar() {
     Animated.timing(
       this.state.slideCalendarAnim,
       {
@@ -92,7 +105,6 @@ class DateSelectHeader extends React.Component {
         duration: 350,
       }
     ).start()
-    this.setState({calendarToogled: false})
   }
 
   renderButton(iconName, onPress, style) {
@@ -129,7 +141,7 @@ class DateSelectHeader extends React.Component {
             <Col size={ 4 } style={ styles.button }>
               { buttonsEnabled && this.renderButton('arrow-dropleft', this.onPastPress, styles.icon) }
             </Col>
-            <Col size={ 8 } style={ styles.body } onPress={ this.onCalendarPress }>
+            <Col size={ 8 } style={ styles.body } onPress={ this.toggleCalendar }>
               <Text style={styles.dateHeaderText}>{selectedDate.format('dddd Do MMM')}</Text>
             </Col>
             <Col size={ 4 } style={ styles.button }>
