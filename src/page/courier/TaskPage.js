@@ -260,7 +260,8 @@ class TaskPage extends Component {
       longitudeDelta: 0.0250,
     }
 
-    const taskTimeframe = moment(task.doneAfter).format('LT') + ' - ' + moment(task.doneBefore).format('LT')
+    const taskTimeframe = moment(task.doneAfter).format('LT') + ' - ' + moment(task.doneBefore).format('LT'),
+      address = task.address.name ? [task.address.name, task.address.streetAddress].join(' - ') : task.address.streetAddress
 
     return (
       <Container style={{ backgroundColor: '#fff' }}>
@@ -289,7 +290,7 @@ class TaskPage extends Component {
               </Row>
               <Row size={ 1 }>
                 <Col>
-                  { this.renderTaskDetail('md-navigate', task.address.streetAddress) }
+                  { this.renderTaskDetail('md-navigate', address) }
                   { this.renderTaskDetail('md-clock', taskTimeframe) }
                   { task.comments && this.renderTaskDetail('md-chatbubbles', task.comments) }
                 </Col>

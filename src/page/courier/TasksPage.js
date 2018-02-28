@@ -276,6 +276,7 @@ class TasksPage extends Component {
               pinColor={ pinColor(task) }
               flat={ true }>
               <MapView.Callout onPress={ () => navigate('CourierTask', { ...navigationParams, task }) }>
+                { task.address.name && (<Text style={styles.mapCalloutText}>{ task.address.name }</Text>) }
                 <Text style={styles.mapCalloutText}>{ task.address.streetAddress }</Text>
               </MapView.Callout>
             </MapView.Marker>
