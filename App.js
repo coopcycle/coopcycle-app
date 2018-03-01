@@ -16,7 +16,7 @@ import {
 import getTheme from './native-base-theme/components'
 import material from './native-base-theme/variables/material'
 
-import { StackNavigator } from 'react-navigation'
+import { NavigationActions, StackNavigator } from 'react-navigation'
 import { Provider } from 'react-redux'
 
 import API from './src/API'
@@ -48,6 +48,30 @@ const defaultNavigationOptions = {
     fontWeight: 'normal',
     fontFamily: fontTitleName
   }
+}
+
+const courierHeaderLeft = navigation => {
+
+  const { baseURL, client, user } = navigation.state.params
+  const resetAction = NavigationActions.reset({
+    index: 0,
+    actions: [
+      NavigationActions.navigate({
+        routeName: 'Home',
+        params: {
+          baseURL,
+          client,
+          user
+        }
+      })
+    ]
+  })
+
+  return (
+    <Button transparent onPress={ () => navigation.dispatch(resetAction) }>
+      <Icon name="home" style={{ color: '#fff' }} />
+    </Button>
+  )
 }
 
 const routeConfigs = {
@@ -98,6 +122,7 @@ const routeConfigs = {
     screen: Routes.CourierPage,
     navigationOptions: ({ navigation }) => ({
       title: 'Coursier',
+      headerLeft: courierHeaderLeft(navigation)
     })
   },
   CourierTasks: {
@@ -154,6 +179,14 @@ const routeConfigs = {
       title: 'Suivi de commande',
     })
   },
+}
+
+const initialRouteName = user => {
+  if (user && user.isAuthenticated() && user.hasRole('ROLE_COURIER')) {
+    return 'Courier'
+  }
+
+  return 'Home'
 }
 
 export default class App extends Component {
@@ -220,6 +253,7 @@ export default class App extends Component {
         client,
         user,
       },
+      initialRouteName: initialRouteName(user),
       navigationOptions: {
         ...defaultNavigationOptions
       }
