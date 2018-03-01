@@ -149,8 +149,9 @@ export default class TaskList extends Component {
             }
           </Col>
           <Col size={ 10 } style={ itemBodyStyle }>
+            <Text style={ textStyle }>Tâche #{ task.id }</Text>
             { task.address.name && (<Text style={ textStyle }>{ task.address.name }</Text>) }
-            <Text style={ textStyle }>{ task.address.streetAddress }</Text>
+            <Text numberOfLines={ 1 } style={ textStyle }>{ task.address.streetAddress }</Text>
             <Text style={ textStyle }>{ moment(task.doneAfter).format('LT') } - { moment(task.doneBefore).format('LT') }</Text>
           </Col>
           <Col size={ 1 } style={ styles.itemLeftRight }>
