@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
-import { Animated, FlatList, StyleSheet, TouchableOpacity } from 'react-native'
+import { Animated, FlatList, StyleSheet, TouchableOpacity, View } from 'react-native'
 import { Icon, Text } from 'native-base'
 import { Col, Row, Grid } from 'react-native-easy-grid'
 import moment from 'moment/min/moment-with-locales'
+import _ from 'lodash'
 
 import { whiteColor, lightGreyColor, redColor } from "../styles/common"
 
@@ -33,7 +34,7 @@ const styles = StyleSheet.create({
     color: redColor
   },
   icon: {
-    fontSize: 14
+    fontSize: 18
   },
   iconDanger: {
     color: redColor
@@ -88,25 +89,46 @@ export default class TaskList extends Component {
     return this.renderItem(task)
   }
 
+  renderTaskStatusIcon(task) {
+    let iconStyle = [ styles.icon ]
+    switch (task.status) {
+      case 'DONE':
+        return (
+          <Icon style={ iconStyle } name="checkmark" />
+        )
+      case 'FAILED':
+        iconStyle.push(styles.iconDanger)
+        return (
+          <Icon style={ iconStyle } name="warning" />
+        )
+      default:
+        return (
+          <View />
+        )
+    }
+  }
+
+  renderTaskItemLeft(task) {
+
+  }
+
   renderItem(task) {
 
     const { onTaskClick } = this.props
 
-    const taskTypeIcon = task.type === 'PICKUP' ? 'arrow-up' : 'arrow-down'
+    const taskTypeIcon = task.type === 'PICKUP' ? 'cube' : 'arrow-down'
+    const isCompleted = _.includes(['DONE', 'FAILED'], task.status)
 
-    let taskStatusIcon = 'list'
     let itemLeftStyle = [ styles.itemLeftRight ]
     let itemBodyStyle = [ styles.itemBody ]
     let textStyle = [ styles.text ]
     let iconStyle = [ styles.icon ]
 
     if (task.status === 'DONE') {
-      taskStatusIcon = 'checkmark'
       itemLeftStyle.push(styles.disabled)
       itemBodyStyle.push(styles.disabled)
     }
     if (task.status === 'FAILED') {
-      taskStatusIcon = 'warning'
       textStyle.push(styles.textDanger)
       iconStyle.push(styles.iconDanger)
       itemLeftStyle.push(styles.disabled)
@@ -120,9 +142,11 @@ export default class TaskList extends Component {
             <Row style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
               <Icon style={ iconStyle } name={ taskTypeIcon } />
             </Row>
+            { isCompleted &&
             <Row style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-              <Icon style={ iconStyle } name={ taskStatusIcon } />
+            { this.renderTaskStatusIcon(task) }
             </Row>
+            }
           </Col>
           <Col size={ 10 } style={ itemBodyStyle }>
             { task.address.name && (<Text style={ textStyle }>{ task.address.name }</Text>) }
