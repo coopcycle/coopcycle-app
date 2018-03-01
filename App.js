@@ -415,13 +415,13 @@ export default class App extends Component {
     }
 
     return (
-      <Provider store={store}>
-        <Root>
+      <Root>
+        <Provider store={store}>
           <StyleProvider style={getTheme(material)}>
             <Router />
           </StyleProvider>
-        </Root>
-      </Provider>
+        </Provider>
+      </Root>
     )
   }
 }
