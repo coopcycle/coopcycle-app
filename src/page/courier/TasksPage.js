@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, ActivityIndicator, Alert } from 'react-native'
+import { StyleSheet, View, ActivityIndicator, Alert, TouchableOpacity } from 'react-native'
 import {
   Container,
   Content, Button, Icon, List, ListItem, Text, Title,
@@ -136,6 +136,11 @@ class TasksPage extends Component {
           animated: true
         })
     }
+  }
+
+  center() {
+    const { currentPosition } = this.state
+    this.map.animateToCoordinate(currentPosition, 500)
   }
 
   connect() {
@@ -276,36 +281,45 @@ class TasksPage extends Component {
           toDate={this.refreshTasks}
           selectedDate={selectedDate}
         />
-        <MapView
-          ref={ component => this.map = component }
-          style={styles.map}
-          zoomEnabled={true}
-          zoomControlEnabled={true}
-          showsUserLocation
-          loadingEnabled
-          loadingIndicatorColor={"#666666"}
-          loadingBackgroundColor={"#eeeeee"}
-          onMapReady={() => this.onMapReady()}>
-          { tasks.map(task => (
-            <MapView.Marker
-              ref={ component => this.markers.push(component) }
-              identifier={ task['@id'] }
-              key={ task['@id'] }
-              coordinate={ task.address.geo }
-              pinColor={ pinColor(task) }
-              flat={ true }>
-              <MapView.Callout onPress={ () => navigate('CourierTask', { ...navigationParams, task }) }>
-                { task.address.name && (<Text style={styles.mapCalloutText}>{ task.address.name }</Text>) }
-                <Text style={styles.mapCalloutText}>{ task.address.streetAddress }</Text>
-              </MapView.Callout>
-            </MapView.Marker>
-          ))}
-        </MapView>
-        <View style={ styles.taskListButton }>
-          <Button block onPress={ () => navigate('CourierTaskList', { ...navigationParams, tasks }) }>
-            <Icon name="list" />
-            <Text>Liste des tâches</Text>
-          </Button>
+        <View style={ styles.container }>
+          <MapView
+            ref={ component => this.map = component }
+            style={styles.map}
+            zoomEnabled={true}
+            zoomControlEnabled={true}
+            showsUserLocation
+            loadingEnabled
+            loadingIndicatorColor={"#666666"}
+            loadingBackgroundColor={"#eeeeee"}
+            onMapReady={() => this.onMapReady()}>
+            { tasks.map(task => (
+              <MapView.Marker
+                ref={ component => this.markers.push(component) }
+                identifier={ task['@id'] }
+                key={ task['@id'] }
+                coordinate={ task.address.geo }
+                pinColor={ pinColor(task) }
+                flat={ true }>
+                <MapView.Callout onPress={ () => navigate('CourierTask', { ...navigationParams, task }) }>
+                  { task.address.name && (<Text style={styles.mapCalloutText}>{ task.address.name }</Text>) }
+                  <Text style={styles.mapCalloutText}>{ task.address.streetAddress }</Text>
+                </MapView.Callout>
+              </MapView.Marker>
+            ))}
+          </MapView>
+          <View style={ styles.taskListButton }>
+            <Button block onPress={ () => navigate('CourierTaskList', { ...navigationParams, tasks }) }>
+              <Icon name="list" />
+              <Text>Liste des tâches</Text>
+            </Button>
+          </View>
+          <View style={ styles.locateButton }>
+            <TouchableOpacity
+              onPress={ () => this.center() }
+              style={ styles.circle }>
+              <Icon name="locate" />
+            </TouchableOpacity>
+          </View>
         </View>
         { this.renderLoader() }
       </Container>
@@ -314,6 +328,10 @@ class TasksPage extends Component {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    ...StyleSheet.absoluteFillObject,
+    top: dateSelectHeaderHeight
+  },
   loader: {
     ...StyleSheet.absoluteFillObject,
     justifyContent: 'center',
@@ -323,7 +341,6 @@ const styles = StyleSheet.create({
   },
   map: {
     ...StyleSheet.absoluteFillObject,
-    top: dateSelectHeaderHeight
   },
   mapCalloutText: {
     fontSize: 14
@@ -343,7 +360,21 @@ const styles = StyleSheet.create({
     right: 0,
     left: 0,
     bottom: 0
-  }
+  },
+  locateButton: {
+    position: 'absolute',
+    zIndex: 2,
+    top: 0,
+    right: 0,
+  },
+  circle: {
+    flex: 1,
+    backgroundColor: 'rgba(255,255,255,0.7)',
+    paddingHorizontal: 8,
+    paddingVertical: 6,
+    marginRight: 20,
+    marginTop: 20,
+  },
 })
 
 function mapStateToProps (state) {
