@@ -1,0 +1,60 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correcty 1`] = `
+<View>
+  <Styled(Form)>
+    <Styled(Item)
+      stackedLabel={true}
+    >
+      <Styled(Label)>
+        Nom d'utilisateur
+      </Styled(Label)>
+      <Styled(Input)
+        autoCapitalize="none"
+        autoCorrect={false}
+        onChangeText={[Function]}
+        style={
+          Object {
+            "height": 40,
+          }
+        }
+      />
+    </Styled(Item)>
+    <Styled(Item)
+      stackedLabel={true}
+    >
+      <Styled(Label)>
+        Mot de passe
+      </Styled(Label)>
+      <Styled(Input)
+        autoCapitalize="none"
+        autoCorrect={false}
+        onChangeText={[Function]}
+        secureTextEntry={true}
+        style={
+          Object {
+            "height": 40,
+          }
+        }
+      />
+    </Styled(Item)>
+  </Styled(Form)>
+  <View
+    style={
+      Object {
+        "marginTop": 20,
+        "paddingHorizontal": 10,
+      }
+    }
+  >
+    <Styled(Button)
+      block={true}
+      onPress={[Function]}
+    >
+      <Styled(Text)>
+        Valider
+      </Styled(Text)>
+    </Styled(Button)>
+  </View>
+</View>
+`;
