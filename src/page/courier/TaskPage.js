@@ -241,9 +241,9 @@ class TaskPage extends Component {
     }
 
     return (
-      <Swipeout left={[ swipeoutLeftButton ]} right={[ swipeoutRightButton ]} close={ swipeOutClose }>
-        <View style={{ padding: 18, width }}>
-          <Text style={{ textAlign: 'center', color: '#fff', fontFamily: 'Raleway-Regular' }}>Terminer</Text>
+      <Swipeout buttonWidth={ width * 0.4 } left={[ swipeoutLeftButton ]} right={[ swipeoutRightButton ]} close={ swipeOutClose }>
+        <View style={{ padding: 28, width }}>
+          <Text style={{ fontSize: 20, textAlign: 'center', color: '#fff', fontFamily: 'Raleway-Regular' }}>Terminer</Text>
         </View>
       </Swipeout>
     )
@@ -303,9 +303,7 @@ class TaskPage extends Component {
             </View>
           </Row>
         </Grid>
-        <Footer>
-          { this.renderSwipeOutButton() }
-        </Footer>
+        { this.renderSwipeOutButton() }
         { this.renderModal() }
       </Container>
     )
