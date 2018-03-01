@@ -49,6 +49,9 @@ Client.prototype.createAuthorizedRequest = function(method, uri, data) {
 }
 
 function doFetch(req, resolve, reject) {
+  // Clone Request now in case it needs to be retried
+  // Once fetched, Request.body can't be copied
+  const clone = req.clone()
   fetch(req)
     .then(res => {
       if (res.ok) {
@@ -60,20 +63,8 @@ function doFetch(req, resolve, reject) {
           console.log('Request is not authorized, refreshing token…')
           this.refreshToken()
             .then(token => {
-              console.log('Retrying request…')
-              let newReq
-              // Request.clone() throws a TypeError if the Body has already been used
-              // Make sure requests with a Body can be retried properly
-              if (req.bodyUsed) {
-                console.log('Creating a new Request…')
-                const { body, method, url } = req
-                newReq = new Request(url, { body, method })
-              } else {
-                console.log('Cloning Request…')
-                newReq = req.clone()
-              }
-              newReq.headers.set('Authorization', `Bearer ${token}`)
-              doFetch.apply(this, [ newReq, resolve, reject ])
+              clone.headers.set('Authorization', `Bearer ${token}`)
+              doFetch.apply(this, [ clone, resolve, reject ])
             })
             .catch(e => reject(e))
         } else {
