@@ -61,7 +61,17 @@ function doFetch(req, resolve, reject) {
           this.refreshToken()
             .then(token => {
               console.log('Retrying request…')
-              const newReq = req.clone()
+              let newReq
+              // Request.clone() throws a TypeError if the Body has already been used
+              // Make sure requests with a Body can be retried properly
+              if (req.bodyUsed) {
+                console.log('Creating a new Request…')
+                const { body, method, url } = req
+                newReq = new Request(url, { body, method })
+              } else {
+                console.log('Cloning Request…')
+                newReq = req.clone()
+              }
               newReq.headers.set('Authorization', `Bearer ${token}`)
               doFetch.apply(this, [ newReq, resolve, reject ])
             })
