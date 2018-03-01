@@ -164,8 +164,9 @@ dependencies {
     compile(project(':tipsi-stripe')){
       exclude group: 'com.google.android.gms'
     }
-    compile(project(':react-native-maps')){
-      exclude group: 'com.google.android.gms'
+    implementation(project(':react-native-maps')){
+        exclude group: 'com.google.android.gms', module: 'play-services-base'
+        exclude group: 'com.google.android.gms', module: 'play-services-maps'
     }
     compile(project(':react-native-geolocation-service')) {
         exclude group: 'com.google.android.gms', module: 'play-services-location'
@@ -174,6 +175,7 @@ dependencies {
     // compile gms independantly, in case of conflicting requirements from other dependencies
     // see: https://medium.com/@suchydan/how-to-solve-google-play-services-version-collision-in-gradle-dependencies-ef086ae5c75f
     compile "com.google.android.gms:play-services-base:11.8.0"
+    implementation 'com.google.android.gms:play-services-maps:10.0.1'
     compile "com.google.android.gms:play-services-wallet:11.8.0"
     compile "com.google.android.gms:play-services-identity:11.8.0"
     compile "com.google.android.gms:play-services-gcm:11.8.0"

@@ -62,3 +62,6 @@ buck-out/
 # Pods/
 
 src/AppConfig.json
+
+# Bundle artifact
+*.jsbundle
