@@ -37,7 +37,7 @@ class RestaurantPage extends Component {
     const { cart } = this.state
     cart.addMenuItem(menuItem)
 
-    this.cartFooter.animate()
+    this.cartFooter.getWrappedInstance().animate()
     this.setState({ cart })
   }
 

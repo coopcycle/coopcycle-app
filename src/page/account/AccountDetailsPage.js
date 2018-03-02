@@ -83,4 +83,4 @@ const styles = StyleSheet.create({
   },
 });
 
-module.exports = AccountDetailsPage
+module.exports = translate()(AccountDetailsPage)

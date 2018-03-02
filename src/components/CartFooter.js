@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
   }
 })
 
-export default class CartFooter extends Component {
+class CartFooter extends Component {
 
   constructor(props) {
     super(props)
@@ -131,3 +131,5 @@ export default class CartFooter extends Component {
     )
   }
 }
+
+export default translate(['common'], { withRef: true })(CartFooter)
