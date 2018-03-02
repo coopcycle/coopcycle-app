@@ -48,7 +48,7 @@ class TaskListPage extends Component {
     this.state = {
       addedTasks: [],
       loading: false,
-      loadingMessage: 'Chargement…'
+      loadingMessage: `${this.props.t('LOADING')}...`
     }
 
     this.refreshTasks = this.refreshTasks.bind(this)
@@ -90,7 +90,7 @@ class TaskListPage extends Component {
   }
 
   refreshTasks (selectedDate) {
-    this.setState({ loading: true, loadingMessage: 'Chargement…' })
+    this.setState({ loading: true, loadingMessage: `${this.props.t('LOADING')}...` })
     const { client } = this.props.navigation.state.params
     this.props.loadTasks(client, selectedDate)
   }

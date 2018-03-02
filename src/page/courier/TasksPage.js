@@ -57,7 +57,7 @@ class TasksPage extends Component {
     this.state = {
       task: null,
       loading: false,
-      loadingMessage: 'Chargement…',
+      loadingMessage: `${this.props.t('LOADING')}...`,
       currentPosition: null,
       polyline: [],
       detailsModal: false
@@ -147,7 +147,7 @@ class TasksPage extends Component {
 
   connect() {
 
-    this.setState({ loading: true, loadingMessage: 'En attente de la position…' })
+    this.setState({ loading: true, loadingMessage: `${this.props.t('WAITING_FOR_POS')}...` })
 
     Promise.all([
       this.geolocationTracker.start()
