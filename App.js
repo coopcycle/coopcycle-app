@@ -209,6 +209,8 @@ class App extends Component {
     }
     this.onWebSocketMessage = this.onWebSocketMessage.bind(this)
     this.disconnect = this.disconnect.bind(this)
+    this.connect = this.connect.bind(this)
+    this.renderLoading = this.renderLoading.bind(this)
   }
 
   componentWillMount() {
@@ -273,7 +275,7 @@ class App extends Component {
     })
   }
 
-  connect = () => {
+  connect() {
     const server = this.state.text.trim()
 
     this.setState({ loading: true, serverError: false })
@@ -333,7 +335,7 @@ class App extends Component {
     })
   }
 
-  renderLoading = () => {
+  renderLoading() {
     return (
       <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
         <Text>{this.props.t('LOADING')}</Text>
