@@ -1,5 +1,6 @@
 {
     "GOOGLE_API_KEY": "",
-    "STRIPE_PUBLISHABLE_KEY": ""
-    "LOCALE": ""
+    "STRIPE_PUBLISHABLE_KEY": "",
+    "LOCALE": "",
+    "COUNTRY_NAME": ""
 }

@@ -207,11 +207,13 @@ class App extends Component {
       user: null,
       serverError: false,
     }
+    this.onWebSocketMessage = this.onWebSocketMessage.bind(this)
+    this.disconnect = this.disconnect.bind(this)
   }
 
   componentWillMount() {
 
-    Settings.addListener('server:remove', this.disconnect.bind(this))
+    Settings.addListener('server:remove', this.disconnect)
     Settings.addListener('websocket:message', this.onWebSocketMessage)
     Settings.addListener('user:login', (event) => {
       const { client, user } = event
@@ -229,7 +231,7 @@ class App extends Component {
       })
   }
 
-  onWebSocketMessage = (event) => {
+  onWebSocketMessage (event) {
     const data = JSON.parse(event.data)
     if (data.type === 'tasks:changed') {
       Toast.show({
