@@ -155,6 +155,7 @@ var login = function(baseURL, username, password) {
   return new Promise((resolve, reject) => {
     fetch(request)
       .then(function(res) {
+
         if (res.ok) {
           return res.json().then((json) => resolve(json));
         }

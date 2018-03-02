@@ -1,7 +1,11 @@
 import React from 'react'
 import LoginForm from '../src/components/LoginForm'
 import { shallow } from 'enzyme'
+import { createClient } from '../src/API'
 
+afterEach(() => {
+  fetch.resetMocks()
+})
 
 it('renders correcty', () => {
   const tree = shallow(<LoginForm  />)
@@ -25,8 +29,8 @@ it('submit', () => {
     onRequestEnd = jest.fn(),
     onLoginSuccess = jest.fn(),
     onLoginFail = jest.fn(),
-    login = jest.fn().mockReturnValueOnce(new Promise((resolve, reject) => { resolve() })),
-    client = { login: login },
+    // login = jest.fn().mockReturnValueOnce(new Promise((resolve, reject) => { resolve() })),
+    client = createClient(),
     tree = shallow(
       <LoginForm
         onRequestStart={onRequestStart}
@@ -41,9 +45,9 @@ it('submit', () => {
 
   usernameInput.props().onChangeText('Hello')
   passwordInput.props().onChangeText('secret')
+
+  fetch.mockResponse(JSON.stringify({token: '12345', refresh_token: 'xxxxx' }))
   submitButton.props().onPress()
 
-  expect(tree.state()).toEqual({ email: 'Hello', password: 'secret', error: false })
-  expect(login).toHaveBeenCalledTimes(1)
-  expect(login).toHaveBeenCalledWith('Hello', 'secret')
+  expect(fetch).toHaveBeenCalledTimes(1)
 })
