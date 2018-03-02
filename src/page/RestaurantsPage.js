@@ -15,9 +15,9 @@ import moment from 'moment/min/moment-with-locales'
 import { translate } from 'react-i18next'
 import RestaurantSearch from '../components/RestaurantSearch'
 import RestaurantList from '../components/RestaurantList'
-import AppConfig from '../AppConfig'
+import { localeDetector } from '../i18n'
 
-moment.locale(AppConfig.LOCALE)
+moment.locale(localeDetector())
 
 class RestaurantsPage extends Component {
 

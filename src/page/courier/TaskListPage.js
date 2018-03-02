@@ -11,9 +11,9 @@ import { Settings } from '../../Settings'
 import { whiteColor } from '../../styles/common'
 import { changedTasks, loadTasksRequest } from "../../store/actions"
 import { translate } from 'react-i18next'
-import AppConfig from '../../AppConfig'
+import { localeDetector } from '../../i18n'
 
-moment.locale(AppConfig.LOCALE)
+moment.locale(localeDetector())
 
 const taskComparator = (taskA, taskB) => taskA['@id'] === taskB['@id']
 

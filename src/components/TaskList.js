@@ -6,9 +6,9 @@ import moment from 'moment/min/moment-with-locales'
 import _ from 'lodash'
 
 import { whiteColor, lightGreyColor, redColor } from "../styles/common"
-import AppConfig from '../AppConfig'
+import { localeDetector } from '../i18n'
 
-moment.locale(AppConfig.LOCALE)
+moment.locale(localeDetector())
 
 const styles = StyleSheet.create({
   itemLeftRight: {

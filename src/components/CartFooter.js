@@ -4,9 +4,9 @@ import { Text, Button, Icon, Footer } from 'native-base'
 import { Col, Row, Grid } from 'react-native-easy-grid'
 import moment from 'moment/min/moment-with-locales'
 import { translate } from 'react-i18next'
-import AppConfig from '../AppConfig'
+import { localeDetector } from '../i18n'
 
-moment.locale(AppConfig.LOCALE)
+moment.locale(localeDetector())
 
 const styles = StyleSheet.create({
   column: {

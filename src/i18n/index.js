@@ -13,10 +13,12 @@ import AppConfig from '../AppConfig'
 import en from './locales/en.json'
 import fr from './locales/fr.json'
 
+export const localeDetector = () => locale || AppConfig.LOCALE
+
 // https://www.i18next.com/misc/creating-own-plugins.html#languagedetector
 const languageDetector = {
   type: 'languageDetector',
-  detect: () => locale || AppConfig.LOCALE,
+  detect: localeDetector,
   init: () => { },
   cacheUserLanguage: () => { }
 }

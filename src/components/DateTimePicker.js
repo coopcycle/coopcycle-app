@@ -4,9 +4,9 @@ import { TextInput, View } from 'react-native'
 import ModalSelector from 'react-native-modal-selector'
 import moment from 'moment/min/moment-with-locales'
 import { translate } from 'react-i18next'
-import AppConfig from '../AppConfig'
+import { localeDetector } from '../i18n'
 
-moment.locale(AppConfig.LOCALE)
+moment.locale(localeDetector())
 
 class DateTimePicker extends Component {
 

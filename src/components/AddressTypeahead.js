@@ -3,6 +3,7 @@ import { Dimensions, View } from 'react-native'
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import _ from 'underscore'
 import { translate } from 'react-i18next'
+import { localeDetector } from '../i18n'
 import AppConfig from '../AppConfig.json'
 
 const customStyles = {
@@ -80,7 +81,7 @@ class AddressTypeahead extends Component {
         query={{
           // available options: https://developers.google.com/places/web-service/autocomplete
           key: AppConfig.GOOGLE_API_KEY,
-          language: AppConfig.LOCALE, // language of the results
+          language: localeDetector(), // language of the results
           types: 'geocode', // default: 'geocode'
         }}
         styles={ styles }

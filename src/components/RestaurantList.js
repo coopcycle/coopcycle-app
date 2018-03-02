@@ -6,9 +6,9 @@ import slugify from 'slugify'
 import moment from 'moment/min/moment-with-locales'
 import _ from 'underscore'
 import { translate } from 'react-i18next'
-import AppConfig from '../AppConfig'
+import { localeDetector } from '../i18n'
 
-moment.locale(AppConfig.LOCALE)
+moment.locale(localeDetector())
 
 const styles = StyleSheet.create({
   wrapper: {

@@ -19,9 +19,9 @@ import { Settings } from '../../Settings'
 import { Registry } from '../../Registry'
 import DateSelectHeader from "../../components/DateSelectHeader"
 import {assignTask, loadTasksRequest, unassignTask} from "../../store/actions"
-import AppConfig from '../../AppConfig'
+import { localeDetector } from '../../i18n'
 
-moment.locale(AppConfig.LOCALE)
+moment.locale(localeDetector())
 
 
 class TasksPage extends Component {

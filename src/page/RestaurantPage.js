@@ -8,9 +8,9 @@ import {
   Icon, Text, Picker, Button
 } from 'native-base';
 import moment from 'moment/min/moment-with-locales'
-import AppConfig from '../AppConfig'
+import { localeDetector } from '../i18n'
 
-moment.locale(AppConfig.LOCALE)
+moment.locale(localeDetector())
 
 const Cart = require('../Cart');
 
