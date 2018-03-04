@@ -14,6 +14,8 @@ import {markTaskDoneRequest, markTaskFailedRequest} from "../../store/actions"
 
 moment.locale(localeDetector())
 
+const isCompleted = task => task.status !== 'TODO'
+
 class TaskPage extends Component {
 
   map = null
@@ -198,23 +200,27 @@ class TaskPage extends Component {
 
     if (task.status === 'DONE') {
       return (
-        <View style={ [ styles.buttonContainer, { backgroundColor: greenColor } ] }>
-          <View style={ styles.buttonTextContainer }>
-            <Icon name="checkmark" style={{ color: '#fff', marginRight: 10 }} />
-            <Text style={{ color: '#fff' }}>{this.props.t('COMPLETED')}</Text>
+        <Footer>
+          <View style={ [ styles.buttonContainer, { backgroundColor: greenColor } ] }>
+            <View style={ styles.buttonTextContainer }>
+              <Icon name="checkmark" style={{ color: '#fff', marginRight: 10 }} />
+              <Text style={{ color: '#fff' }}>{this.props.t('COMPLETED')}</Text>
+            </View>
           </View>
-        </View>
+        </Footer>
       )
     }
 
     if (task.status === 'FAILED') {
       return (
-        <View style={ [ styles.buttonContainer, { backgroundColor: redColor } ] }>
-          <View style={ styles.buttonTextContainer }>
-            <Icon name="warning" style={{ color: '#fff', marginRight: 10 }} />
-            <Text style={{ color: '#fff' }}>{this.props.t('FAILED')}</Text>
+        <Footer>
+          <View style={ [ styles.buttonContainer, { backgroundColor: redColor } ] }>
+            <View style={ styles.buttonTextContainer }>
+              <Icon name="warning" style={{ color: '#fff', marginRight: 10 }} />
+              <Text style={{ color: '#fff' }}>{this.props.t('FAILED')}</Text>
+            </View>
           </View>
-        </View>
+        </Footer>
       )
     }
 
@@ -299,11 +305,12 @@ class TaskPage extends Component {
               </Row>
             </Col>
           </Row>
-          <Row size={ 4 } style={ styles.swipeOutHelpContainer }>
+          { !isCompleted(task) && <Row size={ 4 } style={ styles.swipeOutHelpContainer }>
             <View style={{ paddingVertical: 10, paddingHorizontal: 15 }}>
               <Text style={styles.swipeOutHelpText}>{`${this.props.t('SWIPE_TO_END')}.`}</Text>
             </View>
           </Row>
+          }
         </Grid>
         { this.renderSwipeOutButton() }
         { this.renderModal() }
