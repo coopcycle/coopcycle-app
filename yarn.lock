@@ -2094,6 +2094,10 @@ hoek@4.x.x:
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/hoek/-/hoek-4.2.0.tgz#72d9d0754f7fe25ca2d01ad8f8f9a9449a89526d"
 
+hoist-non-react-statics@2.3.1, hoist-non-react-statics@^2.2.0, hoist-non-react-statics@^2.3.1:
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-2.3.1.tgz#343db84c6018c650778898240135a1420ee22ce0"
+
 hoist-non-react-statics@^1.0.5:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-1.2.0.tgz#aa448cf0986d55cc40773b17174b7dd066cb7cfb"
@@ -2123,6 +2127,12 @@ html-encoding-sniffer@^1.0.1:
   dependencies:
     whatwg-encoding "^1.0.1"
 
+html-parse-stringify2@2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/html-parse-stringify2/-/html-parse-stringify2-2.0.1.tgz#dc5670b7292ca158b7bc916c9a6735ac8872834a"
+  dependencies:
+    void-elements "^2.0.1"
+
 http-errors@~1.3.1:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/http-errors/-/http-errors-1.3.1.tgz#197e22cdebd4198585e8694ef6786197b91ed942"
@@ -2145,6 +2155,10 @@ http-signature@~1.2.0:
     assert-plus "^1.0.0"
     jsprim "^1.2.2"
     sshpk "^1.7.0"
+
+i18next@^10.4.1:
+  version "10.4.1"
+  resolved "https://registry.yarnpkg.com/i18next/-/i18next-10.4.1.tgz#90b0ac1683b0a5874a38588c6aaf1831360b460f"
 
 iconv-lite@0.4.11:
   version "0.4.11"
@@ -3717,6 +3731,14 @@ react-devtools-core@3.0.0:
     shell-quote "^1.6.1"
     ws "^2.0.3"
 
+react-i18next@^7.4.0:
+  version "7.4.0"
+  resolved "https://registry.yarnpkg.com/react-i18next/-/react-i18next-7.4.0.tgz#07a336e49fc8f2599d08136d73134e3dc4830b49"
+  dependencies:
+    hoist-non-react-statics "2.3.1"
+    html-parse-stringify2 "2.0.1"
+    prop-types "^15.6.0"
+
 react-native-cache-store@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/react-native-cache-store/-/react-native-cache-store-1.0.2.tgz#324558c9fab7cd98efc975ada00ce6e1533737e1"
@@ -3779,6 +3801,10 @@ react-native-keyboard-aware-scroll-view@0.4.2:
   dependencies:
     prop-types "^15.6.0"
     react-native-iphone-x-helper "^1.0.1"
+
+react-native-locale-detector@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/react-native-locale-detector/-/react-native-locale-detector-1.0.1.tgz#c002261ecb60619e5952257c8c7fa31c2c15ed30"
 
 react-native-maps@0.20.0:
   version "0.20.0"
@@ -4785,6 +4811,10 @@ vinyl@^0.5.0:
     clone "^1.0.0"
     clone-stats "^0.0.1"
     replace-ext "0.0.1"
+
+void-elements@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/void-elements/-/void-elements-2.0.1.tgz#c066afb582bb1cb4128d60ea92392e94d5e9dbec"
 
 walker@~1.0.5:
   version "1.0.7"

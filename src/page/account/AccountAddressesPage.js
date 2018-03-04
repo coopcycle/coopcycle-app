@@ -4,6 +4,7 @@ import {
   Container,
   Content, Button, Icon, List, ListItem, Text
 } from 'native-base';
+import { translate } from 'react-i18next'
 
 const AppUser = require('../../AppUser');
 
@@ -51,7 +52,7 @@ class AccountAddressesPage extends Component {
             size="large"
             color="#fff"
           />
-          <Text style={{color: '#fff'}}>Chargement...</Text>
+          <Text style={{color: '#fff'}}>{`${this.props.t('LOADING')}...`}</Text>
         </View>
       );
     }
@@ -76,4 +77,4 @@ const styles = StyleSheet.create({
   },
 });
 
-module.exports = AccountAddressesPage;
+module.exports = translate()(AccountAddressesPage);

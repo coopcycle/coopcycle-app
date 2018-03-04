@@ -5,8 +5,10 @@ import { Col, Row, Grid } from 'react-native-easy-grid'
 import slugify from 'slugify'
 import moment from 'moment/min/moment-with-locales'
 import _ from 'underscore'
+import { translate } from 'react-i18next'
+import { localeDetector } from '../i18n'
 
-moment.locale('fr')
+moment.locale(localeDetector())
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -23,7 +25,7 @@ const styles = StyleSheet.create({
   }
 });
 
-export default class RestaurantList extends Component {
+class RestaurantList extends Component {
 
   renderItem(restaurant) {
 
@@ -52,7 +54,7 @@ export default class RestaurantList extends Component {
             <Text style={ styles.restaurantNameText }>{ restaurant.name }</Text>
             <Text note>{ restaurant.address.streetAddress }</Text>
             <Text note style={{ fontWeight: 'bold' }}>
-              { 'À partir de ' + moment(firstDeliveryDate).format('dddd LT') }
+              { `${this.props.t('FROM')}  ${moment(firstDeliveryDate).format('dddd LT')}` }
             </Text>
           </Col>
         </Grid>
@@ -71,3 +73,5 @@ export default class RestaurantList extends Component {
     )
   }
 }
+
+export default translate()(RestaurantList)

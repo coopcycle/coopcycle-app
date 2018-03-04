@@ -1,7 +1,8 @@
 import { combineReducers } from 'redux'
 import moment from 'moment/min/moment-with-locales'
+import i18n, { localeDetector } from '../i18n'
 
-moment.locale('fr')
+moment.locale(localeDetector())
 
 const tasks = (state = [], action) => {
   const newState = state.slice()
@@ -42,11 +43,11 @@ const selectedDate = (state = moment(), action) => {
 const taskLoadingMessage = (state = null, action) => {
   switch(action.type) {
     case 'LOAD_TASKS':
-      return 'Chargement...'
+      return `${i18n.t('LOADING')}...`
     case 'MARK_TASK_DONE':
-      return 'Chargement...'
+      return `${i18n.t('LOADING')}...`
     case 'MARK_TASK_FAILED':
-      return 'Chargement...'
+      return `${i18n.t('LOADING')}...`
   }
   return null
 }

@@ -8,8 +8,9 @@ import {
   Icon, Text, Picker, Button
 } from 'native-base';
 import moment from 'moment/min/moment-with-locales'
+import { localeDetector } from '../i18n'
 
-moment.locale('fr')
+moment.locale(localeDetector())
 
 const Cart = require('../Cart');
 
@@ -36,7 +37,7 @@ class RestaurantPage extends Component {
     const { cart } = this.state
     cart.addMenuItem(menuItem)
 
-    this.cartFooter.animate()
+    this.cartFooter.getWrappedInstance().animate()
     this.setState({ cart })
   }
 

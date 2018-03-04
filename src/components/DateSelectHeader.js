@@ -4,19 +4,22 @@ import { Icon, Button } from 'native-base'
 import { Col, Row, Grid } from 'react-native-easy-grid'
 import { LocaleConfig, Calendar } from 'react-native-calendars'
 import moment from 'moment/min/moment-with-locales'
+import { localeDetector } from '../i18n'
 
 import { primaryColor, whiteColor, dateSelectHeaderHeight, headerFontSize } from "../styles/common"
 
-moment.locale('fr')
+const LOCALE = localeDetector()
 
-LocaleConfig.locales['fr'] = {
+moment.locale(LOCALE)
+
+LocaleConfig.locales[LOCALE] = {
   monthNames: moment.months(),
   monthNamesShort: moment.monthsShort(),
   dayNames: moment.weekdays(),
   dayNamesShort: moment.weekdaysMin()
 };
 
-LocaleConfig.defaultLocale = 'fr';
+LocaleConfig.defaultLocale = LOCALE;
 
 let styles = StyleSheet.create({
   container: {

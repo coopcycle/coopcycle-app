@@ -18,10 +18,12 @@ import material from './native-base-theme/variables/material'
 
 import { NavigationActions, StackNavigator } from 'react-navigation'
 import { Provider } from 'react-redux'
+import { translate, I18nextProvider } from 'react-i18next'
 
 import API from './src/API'
 import { Settings } from './src/Settings'
 import { Registry } from './src/Registry'
+import i18n from './src/i18n'
 import { primaryColor,  whiteColor, fontTitleName } from './src/styles/common'
 import store from "./src/store/store"
 
@@ -103,80 +105,80 @@ const routeConfigs = {
   AccountAddresses: {
     screen: Routes.AccountAddressesPage,
     navigationOptions: ({ navigation }) => ({
-      title: 'Mes adresses',
+      title: i18n.t('MY_ADDRESSES'),
     })
   },
   AccountOrders: {
     screen: Routes.AccountOrdersPage,
     navigationOptions: ({ navigation }) => ({
-      title: 'Mes commandes',
+      title: i18n.t('MY_ORDERS'),
     })
   },
   AccountDetails: {
     screen: Routes.AccountDetailsPage,
     navigationOptions: ({ navigation }) => ({
-      title: 'Mes informations personnelles',
+      title: i18n.t('MY_DETAILS'),
     })
   },
   Courier: {
     screen: Routes.CourierPage,
     navigationOptions: ({ navigation }) => ({
-      title: 'Coursier',
+      title: i18n.t('COURIER'),
       headerLeft: courierHeaderLeft(navigation)
     })
   },
   CourierTasks: {
     screen: Routes.CourierTasksPage,
     navigationOptions: ({ navigation }) => ({
-      title: 'Tâches',
+      title: i18n.t('TASKS'),
     })
   },
   CourierTaskList: {
     screen: Routes.CourierTaskListPage,
     navigationOptions: ({ navigation }) => ({
-      title: 'Liste des tâches',
+      title: i18n.t('TASK_LIST'),
     })
   },
   CourierTask: {
     screen: Routes.CourierTaskPage,
     navigationOptions: ({ navigation }) => ({
-      title: `Tâche #${navigation.state.params.task.id}`,
+      title: `${i18n.t('TASK')} #${navigation.state.params.task.id}`,
     })
   },
   Dispatch: {
     screen: Routes.DispatchPage,
     navigationOptions: ({ navigation }) => ({
-      title: 'Dispatch',
+      title: i18n.t('DISPATCH'),
     })
   },
   Restaurant: {
     screen: Routes.RestaurantPage,
     navigationOptions: ({ navigation }) => ({
-      title: 'Restaurant',
+      title: i18n.t('RESTAURANT'),
     })
   },
   Cart: {
     screen: Routes.CartPage,
     navigationOptions: ({ navigation }) => ({
-      title: 'Panier',
+      title: i18n.t('CART'),
     })
   },
   CartAddress: {
     screen: Routes.CartAddressPage,
     navigationOptions: ({ navigation }) => ({
-      title: 'Adresse de livraison',
+      title: i18n.t('DELIVERY_ADDR'),
     })
   },
   CreditCard: {
     screen: Routes.CreditCardPage,
     navigationOptions: ({ navigation }) => ({
-      title: 'Paiement',
+      title: i18n.t('PAYMENT'),
     })
   },
   OrderTracking: {
     screen: Routes.OrderTrackingPage,
     navigationOptions: ({ navigation }) => ({
-      title: 'Suivi de commande',
+      title: i18n.t('ORDER_TRACKING'),
     })
   },
 }
@@ -189,7 +191,7 @@ const initialRouteName = user => {
   return 'Home'
 }
 
-export default class App extends Component {
+class App extends Component {
 
   input = null
 
@@ -205,12 +207,16 @@ export default class App extends Component {
       user: null,
       serverError: false,
     }
+    this.onWebSocketMessage = this.onWebSocketMessage.bind(this)
+    this.disconnect = this.disconnect.bind(this)
+    this.connect = this.connect.bind(this)
+    this.renderLoading = this.renderLoading.bind(this)
   }
 
   componentWillMount() {
 
-    Settings.addListener('server:remove', this.disconnect.bind(this))
-    Settings.addListener('websocket:message', this.onWebSocketMessage.bind(this))
+    Settings.addListener('server:remove', this.disconnect)
+    Settings.addListener('websocket:message', this.onWebSocketMessage)
     Settings.addListener('user:login', (event) => {
       const { client, user } = event
       if (user && user.isAuthenticated() && (user.hasRole('ROLE_COURIER') || user.hasRole('ROLE_ADMIN'))) {
@@ -227,11 +233,11 @@ export default class App extends Component {
       })
   }
 
-  onWebSocketMessage(event) {
+  onWebSocketMessage (event) {
     const data = JSON.parse(event.data)
     if (data.type === 'tasks:changed') {
       Toast.show({
-        text: 'Vos tâches ont été mises à jour',
+        text: this.props.t('TASKS_UPDATED'),
         position: 'bottom'
       })
     }
@@ -285,18 +291,18 @@ export default class App extends Component {
 
         setTimeout(() => {
 
-          let message = 'Veuillez réessayer plus tard'
+          let message = this.props.t('TRY_LATER')
           let serverError = false
           if (err.message) {
             if (err.message === 'Network request failed') {
-              message = 'Impossible de se connecter'
+              message = this.props.t('NET_FAILED')
             }
             if (err.message === 'Not a CoopCycle server') {
-              message = 'Ce serveur n\'est pas compatible'
+              message = this.props.t('SERVER_INCOMPATIBLE')
               serverError = true
             }
             if (err.message === 'Hostname is not valid') {
-              message = 'Ce serveur n\'est pas valide'
+              message = this.props.t('SERVER_INVALID')
               serverError = true
             }
           }
@@ -332,7 +338,7 @@ export default class App extends Component {
   renderLoading() {
     return (
       <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-        <Text>Chargement</Text>
+        <Text>{this.props.t('LOADING')}</Text>
       </View>
     )
   }
@@ -350,7 +356,7 @@ export default class App extends Component {
             size="large"
             color="#fff"
           />
-          <Text style={{color: '#fff'}}>Chargement...</Text>
+          <Text style={{color: '#fff'}}>{`${this.props.t('LOADING')}...`}</Text>
         </View>
       )
     }
@@ -374,7 +380,7 @@ export default class App extends Component {
                   <CardItem>
                     <Body>
                     <Text>
-                      Veuillez choisir un serveur pour commencer.
+                      {`${this.props.t('CHOOSE_SERVER')}.`}
                     </Text>
                     </Body>
                   </CardItem>
@@ -382,18 +388,18 @@ export default class App extends Component {
               </View>
               <Form style={{ marginVertical: 30 }}>
                 <Item stackedLabel last { ...itemProps }>
-                  <Label>Adresse du serveur</Label>
+                  <Label>{this.props.t('SERVER_URL')}</Label>
                   <Input
                     ref={(ref) => { this.input = ref }}
                     autoCapitalize={'none'}
                     autoCorrect={false}
-                    placeholder={'Exemple : demo.coopcycle.org'}
+                    placeholder={`${this.props.t('EXAMPLE')} : demo.coopcycle.org`}
                     onChangeText={(text) => this.setState({ text })} />
                 </Item>
               </Form>
               <View style={{ paddingHorizontal: 10 }}>
-                <Button block onPress={ this.connect.bind(this) }>
-                  <Text>Valider</Text>
+                <Button block onPress={ this.connect }>
+                  <Text>{this.props.t('SUBMIT')}</Text>
                 </Button>
               </View>
             </Content>
@@ -417,9 +423,11 @@ export default class App extends Component {
     return (
       <Root>
         <Provider store={store}>
-          <StyleProvider style={getTheme(material)}>
-            <Router />
-          </StyleProvider>
+          <I18nextProvider i18n={i18n}>
+            <StyleProvider style={getTheme(material)}>
+              <Router />
+            </StyleProvider>
+          </I18nextProvider>
         </Provider>
       </Root>
     )
@@ -434,3 +442,5 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
 })
+
+export default translate()(App)

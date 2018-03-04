@@ -7,6 +7,7 @@ import {
 } from 'native-base';
 
 import { NavigationActions } from 'react-navigation'
+import { translate } from 'react-i18next'
 
 import LoginForm from '../components/LoginForm'
 import { Settings, events } from '../Settings'
@@ -88,9 +89,17 @@ class AccountPage extends Component {
 
     return (
       <View style={{ marginBottom: 15 }}>
-        <Text style={{ textAlign: 'center' }}>Connecté à <Text style={{ fontWeight: 'bold' }}>{ baseURL }</Text></Text>
+        <Text style={{ textAlign: 'center' }}>
+          {
+            [
+              this.props.t('CONNECTED_TO'),
+              ' ',
+              <Text key={3} style={{ fontWeight: 'bold' }}>{baseURL}</Text>
+            ]
+          }
+        </Text>
         <Button block transparent onPress={ () => Settings.removeServer() }>
-          <Text>Choisir un autre serveur</Text>
+          <Text>{this.props.t('CHANGE_SERVER')}</Text>
         </Button>
       </View>
     )
@@ -105,7 +114,7 @@ class AccountPage extends Component {
             size="large"
             color="#fff"
           />
-          <Text style={{color: '#fff'}}>Chargement...</Text>
+          <Text style={{color: '#fff'}}>{`${this.props.t('LOADING')}...`}</Text>
         </View>
       )
     }
@@ -127,13 +136,13 @@ class AccountPage extends Component {
           <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', marginBottom: 15 }}>
             <Icon name="person" />
             <Text style={{ textAlign: 'center', fontWeight: 'bold', fontSize: 18 }}>
-              Bonjour { user.username }
+              {`${this.props.t('HELLO')} ${ user.username }`}
             </Text>
           </View>
           <List>
             <ListItem button iconRight onPress={ () => navigate('AccountDetails', { client }) }>
               <Body>
-                <Text>Informations personnelles</Text>
+                <Text>{this.props.t('DETAILS')}</Text>
               </Body>
               <Right>
                 <Icon name="arrow-forward" />
@@ -141,7 +150,7 @@ class AccountPage extends Component {
             </ListItem>
             <ListItem button iconRight onPress={ () => navigate('AccountAddresses', { client }) }>
               <Body>
-                <Text>Adresses</Text>
+                <Text>{this.props.t('ADDRESSES')}</Text>
               </Body>
               <Right>
                 <Icon name="arrow-forward" />
@@ -149,7 +158,7 @@ class AccountPage extends Component {
             </ListItem>
             <ListItem button iconRight onPress={ () => navigate('AccountOrders', { client }) }>
               <Body>
-                <Text>Commandes</Text>
+                <Text>{this.props.t('ORDERS')}</Text>
               </Body>
               <Right>
                 <Icon name="arrow-forward" />
@@ -158,7 +167,7 @@ class AccountPage extends Component {
           </List>
           <View style={{ paddingHorizontal: 10, marginTop: 40 }}>
             <Button block danger onPress={ () => this.logout() }>
-              <Text>Déconnexion</Text>
+              <Text>{this.props.t('SIGN_OUT')}</Text>
             </Button>
           </View>
         </Content>
@@ -214,4 +223,4 @@ const styles = StyleSheet.create({
   }
 });
 
-module.exports = AccountPage;
+module.exports = translate()(AccountPage);

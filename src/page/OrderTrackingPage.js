@@ -8,7 +8,7 @@ import {
   Left, Right,
   Title, Content, Footer, Button, Icon, List, ListItem, Radio
 } from 'native-base';
-
+import { translate } from 'react-i18next';
 import MapView from 'react-native-maps';
 
 const LATITUDE_DELTA = 0.0722;
@@ -48,7 +48,7 @@ class OrderTrackingPage extends Component {
       }],
       position: undefined,
       loading: false,
-      loadingMessage: 'Connexion au serveur…',
+      loadingMessage: `${this.props.t('CONNECTING_SERVER')}…`,
       backButton: props.hasOwnProperty('backButton') ? props.backButton : true
     };
   }
@@ -134,4 +134,4 @@ const styles = StyleSheet.create({
   }
 });
 
-module.exports = OrderTrackingPage;
+module.exports = translate()(OrderTrackingPage);

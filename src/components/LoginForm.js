@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import { View } from 'react-native'
 import { Container, Form, Item, Input, InputGroup, Label, Button, Text } from 'native-base'
+import { translate } from 'react-i18next'
 
-export default class LoginForm extends Component {
+class LoginForm extends Component {
 
   constructor(props) {
     super(props)
@@ -30,9 +31,9 @@ export default class LoginForm extends Component {
         onRequestEnd()
         if (err.hasOwnProperty('code') && err.code === 401) {
           this.setState({ error: true })
-          onLoginFail('Utilisateur et/ou mot de passe inexistant.')
+          onLoginFail(this.props.t('INVALID_USER_PASS'))
         } else {
-          onLoginFail('Veuillez réessayer plus tard')
+          onLoginFail(this.props.t('TRY_LATER'))
         }
       })
   }
@@ -47,7 +48,7 @@ export default class LoginForm extends Component {
       <View>
         <Form>
           <Item stackedLabel { ...itemProps }>
-            <Label>Nom d'utilisateur</Label>
+            <Label>{this.props.t('USERNAME')}</Label>
             <Input ref="email"
               autoCorrect={false}
               autoCapitalize="none"
@@ -55,7 +56,7 @@ export default class LoginForm extends Component {
               style={{ height: 40 }} />
           </Item>
           <Item stackedLabel { ...itemProps }>
-            <Label>Mot de passe</Label>
+            <Label>{this.props.t('PASSWORD')}</Label>
             <Input ref="password"
               autoCorrect={false}
               autoCapitalize="none"
@@ -66,10 +67,12 @@ export default class LoginForm extends Component {
         </Form>
         <View style={{ paddingHorizontal: 10, marginTop: 20 }}>
           <Button block onPress={ () => this.onSubmit() }>
-            <Text>Valider</Text>
+            <Text>{this.props.t('SUBMIT')}</Text>
           </Button>
         </View>
       </View>
     )
   }
 }
+
+export default translate()(LoginForm)

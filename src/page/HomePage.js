@@ -3,7 +3,7 @@ import {
   Icon
 } from 'native-base';
 import { TabNavigator } from 'react-navigation'
-
+import { translate } from 'react-i18next'
 import AccountPage from './AccountPage'
 import HomeTab from './HomeTab'
 import RestaurantsPage from './RestaurantsPage'
@@ -35,7 +35,7 @@ class HomePage extends Component {
       Home: {
         screen: HomeTab,
         navigationOptions: ({ navigation }) => ({
-          tabBarLabel: 'Accueil',
+          tabBarLabel: this.props.t('HOME'),
           tabBarIcon: ({ tintColor }) => (
             <Icon name="home" style={{ color: tintColor }} />
           ),
@@ -44,7 +44,7 @@ class HomePage extends Component {
       Restaurants: {
         screen: RestaurantsPage,
         navigationOptions: ({ navigation }) => ({
-          tabBarLabel: 'Restaurants',
+          tabBarLabel: this.props.t('RESTAURANTS'),
           tabBarIcon: ({ tintColor }) => (
             <Icon name="restaurant" style={{ color: tintColor }} />
           ),
@@ -53,7 +53,7 @@ class HomePage extends Component {
       Account: {
         screen: AccountPage,
         navigationOptions: ({ navigation }) => ({
-          tabBarLabel: 'Mon compte',
+          tabBarLabel: this.props.t('MY_ACCOUNT'),
           tabBarIcon: ({ tintColor }) => (
             <Icon name="person" style={{ color: tintColor }} />
           ),
@@ -67,4 +67,4 @@ class HomePage extends Component {
   }
 }
 
-module.exports = HomePage;
+module.exports = translate()(HomePage);

@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import { Dimensions, View } from 'react-native'
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import _ from 'underscore'
-
+import { translate } from 'react-i18next'
+import { localeDetector } from '../i18n'
 import AppConfig from '../AppConfig.json'
 
 const customStyles = {
@@ -19,7 +20,7 @@ const customStyles = {
   },
 }
 
-export default class AddressTypeahead extends Component {
+class AddressTypeahead extends Component {
 
   constructor(props) {
     super(props)
@@ -64,7 +65,7 @@ export default class AddressTypeahead extends Component {
     // predefinedPlaces={[homePlace, workPlace]}
     return (
       <GooglePlacesAutocomplete
-        placeholder="Entrez votre adresse"
+        placeholder={ this.props.t('ENTER_ADDRESS') }
         minLength={ 2 } // minimum length of text to search
         autoFocus={ false }
         listViewDisplayed="auto" // true/false/undefined
@@ -80,14 +81,14 @@ export default class AddressTypeahead extends Component {
         query={{
           // available options: https://developers.google.com/places/web-service/autocomplete
           key: AppConfig.GOOGLE_API_KEY,
-          language: 'fr', // language of the results
+          language: localeDetector(), // language of the results
           types: 'geocode', // default: 'geocode'
         }}
         styles={ styles }
         nearbyPlacesAPI="GoogleReverseGeocoding" // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
         GoogleReverseGeocodingQuery={{
           // available options for GoogleReverseGeocoding API : https://developers.google.com/maps/documentation/geocoding/intro
-          region: "fr"
+          region: AppConfig.COUNTRY_NAME
         }}
         GooglePlacesSearchQuery={{
           // available options for GooglePlacesSearch API : https://developers.google.com/places/web-service/search
@@ -99,3 +100,5 @@ export default class AddressTypeahead extends Component {
     );
   }
 }
+
+export default translate()(AddressTypeahead)

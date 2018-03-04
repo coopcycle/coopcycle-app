@@ -5,7 +5,7 @@ import {
   Left, Right, Body,
   List, ListItem, InputGroup, Input, Icon, Text, Picker, Button
 } from 'native-base';
-
+import { translate } from 'react-i18next'
 
 class CourierPage extends Component {
 
@@ -28,7 +28,7 @@ class CourierPage extends Component {
           <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', marginBottom: 15 }}>
             <Icon name="ios-bicycle" />
             <Text style={{ textAlign: 'center', fontWeight: 'bold', fontSize: 18 }}>
-              Bonjour { user.username }
+              {`${this.props.t('HELLO')} ${ user.username }`}
             </Text>
           </View>
           <List>
@@ -36,7 +36,7 @@ class CourierPage extends Component {
               navigate('CourierTasks', { baseURL, client, user })
             }}>
               <Body>
-                <Text>Mes tâches</Text>
+                <Text>{this.props.t('MY_TASKS')}</Text>
               </Body>
               <Right>
                 <Icon name="arrow-forward" />
@@ -44,7 +44,7 @@ class CourierPage extends Component {
             </ListItem>
             <ListItem button iconRight>
               <Body>
-                <Text>Mes statistiques</Text>
+                <Text>{this.props.t('MY_STATS')}</Text>
               </Body>
               <Right>
                 <Icon name="arrow-forward" />
@@ -74,4 +74,4 @@ const styles = StyleSheet.create({
   }
 });
 
-module.exports = CourierPage;
+module.exports = translate()(CourierPage);

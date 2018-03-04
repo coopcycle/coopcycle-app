@@ -10,8 +10,10 @@ import DateSelectHeader from '../../components/DateSelectHeader'
 import { Settings } from '../../Settings'
 import { whiteColor } from '../../styles/common'
 import { changedTasks, loadTasksRequest } from "../../store/actions"
+import { translate } from 'react-i18next'
+import { localeDetector } from '../../i18n'
 
-moment.locale('fr')
+moment.locale(localeDetector())
 
 const taskComparator = (taskA, taskB) => taskA['@id'] === taskB['@id']
 
@@ -46,7 +48,7 @@ class TaskListPage extends Component {
     this.state = {
       addedTasks: [],
       loading: false,
-      loadingMessage: 'Chargement…'
+      loadingMessage: `${this.props.t('LOADING')}...`
     }
 
     this.refreshTasks = this.refreshTasks.bind(this)
@@ -88,7 +90,7 @@ class TaskListPage extends Component {
   }
 
   refreshTasks (selectedDate) {
-    this.setState({ loading: true, loadingMessage: 'Chargement…' })
+    this.setState({ loading: true, loadingMessage: `${this.props.t('LOADING')}...` })
     const { client } = this.props.navigation.state.params
     this.props.loadTasks(client, selectedDate)
   }
@@ -149,7 +151,7 @@ class TaskListPage extends Component {
           }
           {
             tasks.length === 0 &&
-            <Text style={ styles.noTask }>Pas de tâches prévues aujourd'hui !</Text>
+            <Text style={ styles.noTask }>{`${this.props.t('NO_TASKS')} !`}</Text>
           }
           </View>
         </Content>
@@ -176,4 +178,4 @@ function mapDispatchToProps (dispatch) {
   }
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(TaskListPage)
+module.exports = connect(mapStateToProps, mapDispatchToProps)(translate()(TaskListPage))

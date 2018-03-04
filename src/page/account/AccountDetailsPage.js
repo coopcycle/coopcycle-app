@@ -11,6 +11,7 @@ import {
   Title, Content, Footer, Button, Icon, Text,
   Label, Item, Input
 } from 'native-base';
+import { translate } from 'react-i18next'
 
 class AccountDetailsPage extends Component {
   constructor(props) {
@@ -48,7 +49,7 @@ class AccountDetailsPage extends Component {
             size="large"
             color="#fff"
           />
-          <Text style={{color: '#fff'}}>Chargement...</Text>
+          <Text style={{color: '#fff'}}>{`${this.props.t('LOADING')}...`}</Text>
         </View>
       );
     }
@@ -57,12 +58,12 @@ class AccountDetailsPage extends Component {
       <Container>
         <Content style={{ paddingHorizontal: 10, paddingTop: 20 }}>
           { username && (<Item stackedLabel disabled>
-            <Label>Nom d'utilisateur</Label>
+            <Label>{this.props.t('USERNAME')}</Label>
             <Input disabled placeholder={ username } />
             <Icon name="information-circle" />
           </Item> )}
           { email && (<Item stackedLabel disabled>
-            <Label>Email</Label>
+            <Label>{this.props.t('EMAIL')}</Label>
             <Input disabled placeholder={ email } />
             <Icon name="information-circle" />
           </Item> )}
@@ -82,4 +83,4 @@ const styles = StyleSheet.create({
   },
 });
 
-module.exports = AccountDetailsPage
+module.exports = translate()(AccountDetailsPage)
