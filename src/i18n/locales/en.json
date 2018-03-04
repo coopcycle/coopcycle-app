@@ -86,6 +86,8 @@
     "SWIPE_TO_END": "Swipe right to end task, or to the left if there is a problem",
     "WAITING_FOR_POS": "Waiting for location",
     "PROBLEM_CONNECTING": "Problem connecting",
-    "OK": "OK"
+    "OK": "OK",
+    "LAST_TASK_EVENT": "Last event {{fromNow}}",
+    "HISTORY": "History"
   }
 }

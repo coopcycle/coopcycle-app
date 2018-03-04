@@ -145,6 +145,12 @@ const routeConfigs = {
       title: `${i18n.t('TASK')} #${navigation.state.params.task.id}`,
     })
   },
+  CourierTaskHistory: {
+    screen: Routes.CourierTaskHistoryPage,
+    navigationOptions: ({ navigation }) => ({
+      title: i18n.t('HISTORY'),
+    })
+  },
   Dispatch: {
     screen: Routes.DispatchPage,
     navigationOptions: ({ navigation }) => ({

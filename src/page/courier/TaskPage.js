@@ -101,6 +101,31 @@ class TaskPage extends Component {
     )
   }
 
+  renderTaskHistory() {
+
+    const { navigate } = this.props.navigation
+    const { task } = this.props.navigation.state.params
+
+    const events = _.sortBy(task.events, [ event => moment(event.createdAt) ])
+    const lastEvent = _.last(events)
+
+    return (
+      <TouchableOpacity style={{ flex:  1 }} onPress={() => navigate('CourierTaskHistory', { task }) }>
+        <Row style={ styles.row }>
+          <Col size={ 4 } style={ styles.iconContainer }>
+            <Icon name="calendar" style={{ color: '#ccc' }} />
+          </Col>
+          <Col size={ 7 }>
+            <Text>{ this.props.t('LAST_TASK_EVENT', { fromNow: moment(lastEvent.createdAt).fromNow() }) }</Text>
+          </Col>
+          <Col size={ 1 }>
+            <Icon name="arrow-forward" style={{ color: '#ccc' }} />
+          </Col>
+        </Row>
+      </TouchableOpacity>
+    )
+  }
+
   renderLoader() {
     const { taskLoadingMessage } = this.props
 
@@ -300,6 +325,7 @@ class TaskPage extends Component {
                 <Col>
                   { this.renderTaskDetail('md-navigate', address) }
                   { this.renderTaskDetail('md-clock', taskTimeframe) }
+                  { this.renderTaskHistory() }
                   { task.comments && this.renderTaskDetail('md-chatbubbles', task.comments) }
                 </Col>
               </Row>

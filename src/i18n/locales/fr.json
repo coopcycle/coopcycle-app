@@ -86,6 +86,8 @@
     "SWIPE_TO_END": "Glissez vers la droite pour terminer, ou vers la gauche en cas de problème",
     "WAITING_FOR_POS": "En attente de la position",
     "PROBLEM_CONNECTING": "Connexion impossible",
-    "OK": "OK"
+    "OK": "OK",
+    "LAST_TASK_EVENT": "Dernier évènement {{fromNow}}",
+    "HISTORY": "Historique"
   }
 }
