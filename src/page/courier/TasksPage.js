@@ -288,6 +288,7 @@ class TasksPage extends Component {
             zoomEnabled={true}
             zoomControlEnabled={true}
             showsUserLocation
+            showsMyLocationButton={ false }
             loadingEnabled
             loadingIndicatorColor={"#666666"}
             loadingBackgroundColor={"#eeeeee"}
