@@ -55,7 +55,7 @@ function markTaskFailedRequest (client, task, notes) {
     dispatch(markTaskFailed(task))
 
     return client
-      .put(task['@id'] + '/failed', { reason: notes })
+      .put(task['@id'] + '/failed', { notes: notes })
       .then(task => {
         dispatch(markTaskFailedSuccess(task))
       })
@@ -68,7 +68,7 @@ function markTaskDoneRequest (client, task, notes) {
     dispatch(markTaskDone(task))
 
     return client
-      .put(task['@id'] + '/done', { reason: notes })
+      .put(task['@id'] + '/done', { notes: notes })
       .then(task => {
         dispatch(markTaskDoneSuccess(task))
       })
