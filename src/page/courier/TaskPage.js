@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Dimensions, StyleSheet, TouchableOpacity, View, Modal, ActivityIndicator } from 'react-native'
+import { Dimensions, FlatList, StyleSheet, TouchableOpacity, View, Modal, ActivityIndicator } from 'react-native'
 import { Container, Content, Footer, FooterTab, Text, Button, Icon, Header, Title, Left, Body, Right, Form, Item, Input, Label } from 'native-base'
 import { Col, Row, Grid } from 'react-native-easy-grid'
 import MapView from 'react-native-maps'
@@ -88,39 +88,77 @@ class TaskPage extends Component {
     })
   }
 
-  renderTaskDetail(iconName, text) {
-    return (
-      <Row style={ styles.row }>
-        <Col size={ 4 } style={ styles.iconContainer }>
-          <Icon name={ iconName } style={{ color: '#ccc' }} />
-        </Col>
-        <Col size={ 8 }>
-          <Text>{ text }</Text>
-        </Col>
-      </Row>
-    )
-  }
-
-  renderTaskHistory() {
+  renderTaskDetails() {
 
     const { navigate } = this.props.navigation
     const { task } = this.props.navigation.state.params
 
+    const timeframe = moment(task.doneAfter).format('LT') + ' - ' + moment(task.doneBefore).format('LT')
+    const address = task.address.name ? [ task.address.name, task.address.streetAddress ].join(' - ') : task.address.streetAddress
     const events = _.sortBy(task.events, [ event => moment(event.createdAt) ])
     const lastEvent = _.last(events)
 
+    const items = [
+      {
+        iconName: 'md-navigate',
+        text: address
+      },
+      {
+        iconName: 'md-clock',
+        text: timeframe
+      },
+      {
+        iconName: 'calendar',
+        text: this.props.t('LAST_TASK_EVENT', { fromNow: moment(lastEvent.createdAt).fromNow() }),
+        onPress: () => navigate('CourierTaskHistory', { task })
+      }
+    ]
+
+    if (task.comments) {
+      items.push({
+        iconName: 'chatbubbles',
+        text: task.comments
+      })
+    }
+
     return (
-      <TouchableOpacity style={{ flex:  1 }} onPress={() => navigate('CourierTaskHistory', { task }) }>
+      <FlatList
+        data={ items }
+        keyExtractor={ (item, index) => item.iconName }
+        renderItem={ ({ item }) => this.renderTaskDetail(item) }
+        ItemSeparatorComponent={ () => (
+          <View
+            style={{
+              height: StyleSheet.hairlineWidth,
+              backgroundColor: "#ccc",
+            }}
+          />
+        )} />
+    )
+  }
+
+  renderTaskDetail(item) {
+
+    const { iconName, text, onPress } = item
+
+    let touchableOpacityProps = {}
+    if (onPress) {
+      touchableOpacityProps = { onPress }
+    }
+
+    return (
+      <TouchableOpacity style={{ flex:  1 }} { ...touchableOpacityProps }>
         <Row style={ styles.row }>
           <Col size={ 4 } style={ styles.iconContainer }>
-            <Icon name="calendar" style={{ color: '#ccc' }} />
+            <Icon name={ iconName } style={{ color: '#ccc' }} />
           </Col>
-          <Col size={ 7 }>
-            <Text>{ this.props.t('LAST_TASK_EVENT', { fromNow: moment(lastEvent.createdAt).fromNow() }) }</Text>
+          <Col size={ onPress ? 7 : 8 }>
+            <Text style={ styles.taskDetailText }>{ text }</Text>
           </Col>
+          { onPress &&
           <Col size={ 1 }>
             <Icon name="arrow-forward" style={{ color: '#ccc' }} />
-          </Col>
+          </Col> }
         </Row>
       </TouchableOpacity>
     )
@@ -293,15 +331,12 @@ class TaskPage extends Component {
       longitudeDelta: 0.0250,
     }
 
-    const taskTimeframe = moment(task.doneAfter).format('LT') + ' - ' + moment(task.doneBefore).format('LT'),
-      address = task.address.name ? [task.address.name, task.address.streetAddress].join(' - ') : task.address.streetAddress
-
     return (
       <Container style={{ backgroundColor: '#fff' }}>
         <Grid>
           <Row size={ 8 }>
             <Col>
-              <Row size={ 1 }>
+              <Row size={ 2 }>
                 <MapView
                   ref={ component => this.map = component }
                   style={ styles.map }
@@ -321,12 +356,9 @@ class TaskPage extends Component {
                   </MapView.Marker>
                 </MapView>
               </Row>
-              <Row size={ 1 }>
+              <Row size={ 3 }>
                 <Col>
-                  { this.renderTaskDetail('md-navigate', address) }
-                  { this.renderTaskDetail('md-clock', taskTimeframe) }
-                  { this.renderTaskHistory() }
-                  { task.comments && this.renderTaskDetail('md-chatbubbles', task.comments) }
+                  { this.renderTaskDetails() }
                 </Col>
               </Row>
             </Col>
@@ -354,9 +386,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff'
   },
   row: {
-    padding: 10,
-    borderBottomColor: '#ccc',
-    borderBottomWidth: StyleSheet.hairlineWidth,
+    padding: 15,
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center'
@@ -385,12 +415,17 @@ const styles = StyleSheet.create({
   swipeOutHelpContainer: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    borderTopColor: '#ccc',
+    borderTopWidth: StyleSheet.hairlineWidth,
   },
   swipeOutHelpText: {
     fontSize: 14,
     textAlign: 'center',
     color: '#ccc'
+  },
+  taskDetailText: {
+    fontSize: 14,
   }
 })
 
