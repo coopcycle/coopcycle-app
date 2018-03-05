@@ -6,14 +6,14 @@
  * See https://react.i18next.com/components/i18next-instance.html
  */
 import { Platform } from 'react-native'
-import i18n from 'i18next'
+import i18next from 'i18next'
 import { reactI18nextModule } from 'react-i18next'
-import locale from 'react-native-locale-detector'
+import I18n from 'react-native-i18n'
 import AppConfig from '../AppConfig'
 import en from './locales/en.json'
 import fr from './locales/fr.json'
 
-export const localeDetector = () => locale || AppConfig.LOCALE
+export const localeDetector = () => I18n.locale || AppConfig.LOCALE
 
 // https://www.i18next.com/misc/creating-own-plugins.html#languagedetector
 const languageDetector = {
@@ -23,7 +23,7 @@ const languageDetector = {
   cacheUserLanguage: () => { }
 }
 
-i18n
+i18next
   .use(languageDetector)
   .use(reactI18nextModule)
   .init({
@@ -34,4 +34,4 @@ i18n
     debug: process.env.DEBUG
   })
 
-export default i18n
+export default i18next
