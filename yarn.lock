@@ -3797,10 +3797,6 @@ react-native-iphone-x-helper@^1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/react-native-iphone-x-helper/-/react-native-iphone-x-helper-1.0.2.tgz#7dbca530930f7c1ce8633cc8fd13ba94102992e1"
 
-react-native-keep-awake@^2.0.6:
-  version "2.0.6"
-  resolved "https://registry.yarnpkg.com/react-native-keep-awake/-/react-native-keep-awake-2.0.6.tgz#d8eaffe0a6377cc197469d9f06c7f317225403db"
-
 react-native-keyboard-aware-scroll-view@0.4.2:
   version "0.4.2"
   resolved "https://registry.yarnpkg.com/react-native-keyboard-aware-scroll-view/-/react-native-keyboard-aware-scroll-view-0.4.2.tgz#f8777e5ab14ac8416d86376f15a99dd59e87522f"
@@ -3820,6 +3816,10 @@ react-native-modal-selector@^0.0.24:
   resolved "https://registry.yarnpkg.com/react-native-modal-selector/-/react-native-modal-selector-0.0.24.tgz#d5aa886b6782a4a3566452399deb21a8da7ae2a1"
   dependencies:
     prop-types "^15.5.10"
+
+"react-native-pin-screen@git+https://git@github.com/coopcycle/react-native-pin-screen.git#1.0.1":
+  version "1.0.0"
+  resolved "git+https://git@github.com/coopcycle/react-native-pin-screen.git#a8139525e27413d8c7ab45f6277aef1424d7610f"
 
 react-native-safe-area-view@^0.6.0:
   version "0.6.0"
