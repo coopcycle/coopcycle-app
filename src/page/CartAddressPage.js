@@ -45,7 +45,7 @@ class CartAddressPage extends Component {
     this.setState({ loading: true })
 
     const { deliveryAddress } = this.state
-    Object.assign(deliveryAddress, this.deliveryAddressForm.createDeliveryAddress())
+    Object.assign(deliveryAddress, this.deliveryAddressForm.getWrappedInstance().createDeliveryAddress())
 
     client.post('/api/me/addresses', deliveryAddress)
       .then(data => {

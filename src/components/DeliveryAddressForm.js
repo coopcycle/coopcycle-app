@@ -54,4 +54,4 @@ class DeliveryAddressForm extends Component {
   }
 }
 
-export default translate()(DeliveryAddressForm)
+export default translate(['common'], { withRef: true })(DeliveryAddressForm)
