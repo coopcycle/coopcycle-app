@@ -1,6 +1,8 @@
 CoopCycle
 =========
 
+[![Build Status](https://travis-ci.org/coopcycle/coopcycle-app.svg?branch=master)](https://travis-ci.org/coopcycle/coopcycle-app)
+
 Prerequisites
 -------------
 
