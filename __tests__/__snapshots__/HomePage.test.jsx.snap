@@ -60,7 +60,7 @@ exports[`renders correcty 1`] = `
               }
             }
           >
-            Trouvez un restaurant
+            FIND_RESTAURANT
           </Styled(Text)>
           <Styled(Text)
             style={
@@ -70,7 +70,7 @@ exports[`renders correcty 1`] = `
               }
             }
           >
-            Cherchez à proximité, découvrez les menus, passez votre commande
+            SEARCH_NEARBY
           </Styled(Text)>
         </ColumnNB>
       </GridNB>
@@ -121,7 +121,7 @@ exports[`renders correcty 1`] = `
               }
             }
           >
-            Bienvenue !
+            WELCOME !
           </Styled(Text)>
         </RowNB>
         <RowNB
@@ -141,7 +141,7 @@ exports[`renders correcty 1`] = `
               }
             }
           >
-            Nous sommes actuellement en phase de tests alpha de l'application mobile.
+            ALPHA_DISCLAIMER.
           </Styled(Text)>
         </RowNB>
         <RowNB
@@ -161,7 +161,7 @@ exports[`renders correcty 1`] = `
               }
             }
           >
-            Veillez à mettre à jour régulièrement l'application pour disposer de la toute dernière version et n'hésitez pas à envoyer un rapport d'erreur en cas de plantage.
+            UPDATE_REMINDER
           </Styled(Text)>
         </RowNB>
       </GridNB>

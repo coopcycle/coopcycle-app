@@ -84,4 +84,6 @@ class HomeTab extends Component {
   }
 }
 
-module.exports = translate()(HomeTab)
+export { HomeTab }
+export default translate()(HomeTab)
+

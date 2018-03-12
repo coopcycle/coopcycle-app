@@ -1,5 +1,5 @@
 import React from 'react'
-import LoginForm from '../src/components/LoginForm'
+import { LoginForm } from '../src/components/LoginForm'
 import { shallow } from 'enzyme'
 import { createClient } from '../src/API'
 
@@ -8,12 +8,12 @@ afterEach(() => {
 })
 
 it('renders correcty', () => {
-  const tree = shallow(<LoginForm  />)
+  const tree = shallow(<LoginForm t={key => key} />)
   expect(tree).toMatchSnapshot()
 })
 
 it('update state when entering input', () => {
-  const tree = shallow(<LoginForm  />),
+  const tree = shallow(<LoginForm t={key => key}   />),
     usernameInput = tree.find('Styled(Input)').at(0),
     passwordInput = tree.find('Styled(Input)').at(1)
 
@@ -33,6 +33,7 @@ it('submit', () => {
     client = createClient(),
     tree = shallow(
       <LoginForm
+        t={key => key}
         onRequestStart={onRequestStart}
         onRequestEnd={onRequestEnd}
         onLoginSuccess={onLoginSuccess}

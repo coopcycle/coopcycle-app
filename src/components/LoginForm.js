@@ -75,4 +75,5 @@ class LoginForm extends Component {
   }
 }
 
+export { LoginForm }
 export default translate()(LoginForm)

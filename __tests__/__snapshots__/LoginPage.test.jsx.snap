@@ -7,7 +7,7 @@ exports[`renders correcty 1`] = `
       stackedLabel={true}
     >
       <Styled(Label)>
-        Nom d'utilisateur
+        USERNAME
       </Styled(Label)>
       <Styled(Input)
         autoCapitalize="none"
@@ -24,7 +24,7 @@ exports[`renders correcty 1`] = `
       stackedLabel={true}
     >
       <Styled(Label)>
-        Mot de passe
+        PASSWORD
       </Styled(Label)>
       <Styled(Input)
         autoCapitalize="none"
@@ -52,7 +52,7 @@ exports[`renders correcty 1`] = `
       onPress={[Function]}
     >
       <Styled(Text)>
-        Valider
+        SUBMIT
       </Styled(Text)>
     </Styled(Button)>
   </View>
