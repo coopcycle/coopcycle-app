@@ -1,0 +1,171 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correcty 1`] = `
+<Styled(Container)>
+  <Styled(Content)
+    style={
+      Object {
+        "backgroundColor": "#fff",
+      }
+    }
+  >
+    <View
+      style={
+        Object {
+          "backgroundColor": "#f5f5f5",
+        }
+      }
+    >
+      <GridNB>
+        <ColumnNB
+          size={25}
+        >
+          <View
+            style={
+              Object {
+                "alignItems": "center",
+                "bottom": 0,
+                "justifyContent": "center",
+                "left": 0,
+                "position": "absolute",
+                "right": 0,
+                "top": 0,
+              }
+            }
+          >
+            <Styled(Icon)
+              name="restaurant"
+              style={
+                Object {
+                  "color": "#e4022d",
+                }
+              }
+            />
+          </View>
+        </ColumnNB>
+        <ColumnNB
+          size={75}
+          style={
+            Object {
+              "padding": 20,
+            }
+          }
+        >
+          <Styled(Text)
+            style={
+              Object {
+                "fontSize": 18,
+                "fontWeight": "bold",
+                "marginBottom": 5,
+              }
+            }
+          >
+            Trouvez un restaurant
+          </Styled(Text)>
+          <Styled(Text)
+            style={
+              Object {
+                "color": "#8a8a8a",
+                "fontSize": 14,
+              }
+            }
+          >
+            Cherchez à proximité, découvrez les menus, passez votre commande
+          </Styled(Text)>
+        </ColumnNB>
+      </GridNB>
+    </View>
+    <View
+      style={
+        Object {
+          "alignItems": "center",
+          "justifyContent": "center",
+        }
+      }
+    >
+      <Image
+        source={
+          Object {
+            "testUri": "../../../src/assets/images/home-bg.png",
+          }
+        }
+        style={
+          Object {
+            "height": 209.49720670391062,
+            "width": 750,
+          }
+        }
+      />
+      <GridNB
+        style={
+          Object {
+            "marginTop": 20,
+            "paddingHorizontal": 20,
+          }
+        }
+      >
+        <RowNB
+          style={
+            Object {
+              "alignItems": "center",
+              "flex": 1,
+              "justifyContent": "center",
+              "marginBottom": 5,
+            }
+          }
+        >
+          <Styled(Text)
+            style={
+              Object {
+                "fontWeight": "bold",
+              }
+            }
+          >
+            Bienvenue !
+          </Styled(Text)>
+        </RowNB>
+        <RowNB
+          style={
+            Object {
+              "alignItems": "center",
+              "flex": 1,
+              "justifyContent": "center",
+              "marginBottom": 5,
+            }
+          }
+        >
+          <Styled(Text)
+            style={
+              Object {
+                "textAlign": "center",
+              }
+            }
+          >
+            Nous sommes actuellement en phase de tests alpha de l'application mobile.
+          </Styled(Text)>
+        </RowNB>
+        <RowNB
+          style={
+            Object {
+              "alignItems": "center",
+              "flex": 1,
+              "justifyContent": "center",
+              "marginBottom": 5,
+            }
+          }
+        >
+          <Styled(Text)
+            style={
+              Object {
+                "textAlign": "center",
+              }
+            }
+          >
+            Veillez à mettre à jour régulièrement l'application pour disposer de la toute dernière version et n'hésitez pas à envoyer un rapport d'erreur en cas de plantage.
+          </Styled(Text)>
+        </RowNB>
+      </GridNB>
+    </View>
+  </Styled(Content)>
+</Styled(Container)>
+`;

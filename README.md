@@ -52,6 +52,13 @@ NB: You may need to open the iOS project in xCode before it builds.
 react-native run-ios
 ```
 
+Testing
+---------------
+
+```
+yarn test
+```
+
 Troubleshooting
 ---------------
 
