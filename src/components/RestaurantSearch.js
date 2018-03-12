@@ -55,7 +55,7 @@ export default class RestaurantSearch extends Component {
   }
 
   resetDeliveryDate() {
-    this.dateTimePicker.reset()
+    this.dateTimePicker.getWrappedInstance().reset()
   }
 
   render() {

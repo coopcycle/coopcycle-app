@@ -274,7 +274,6 @@ class CartPage extends Component {
           { this.renderTotal() }
         </Content>
         <CartFooter
-          ref={ component => this.cartFooter = component }
           cart={ cart }
           onSubmit={ this.onSubmit.bind(this) }  />
       </Container>

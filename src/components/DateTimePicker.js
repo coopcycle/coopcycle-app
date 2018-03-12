@@ -54,4 +54,4 @@ class DateTimePicker extends Component {
   }
 }
 
-export default translate()(DateTimePicker)
+export default translate(['common'], { withRef: true })(DateTimePicker)

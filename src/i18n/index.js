@@ -5,7 +5,6 @@
  *
  * See https://react.i18next.com/components/i18next-instance.html
  */
-import { Platform } from 'react-native'
 import i18next from 'i18next'
 import { reactI18nextModule } from 'react-i18next'
 import I18n from 'react-native-i18n'
