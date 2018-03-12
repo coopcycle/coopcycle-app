@@ -1,9 +1,35 @@
-language: node_js
-
-node_js:
-  - "8"
-
+matrix:
+  include:
+  - language: node_js
+    node_js: 8
+    cache: yarn
+    env: LANE='node'
+  - language: android
+    env: LANE='android'
+    sudo: required
+    jdk: oraclejdk8
+    before_cache:
+    - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+    - rm -rf $HOME/.gradle/caches/*/plugin-resolution/
+    cache:
+      directories:
+      - "$HOME/.yarn-cache"
+      - "$HOME/.gradle/caches/"
+      - "$HOME/.gradle/wrapper/"
+    before_install:
+    - nvm install 8
+    android:
+      components:
+      - tools
+      - platform-tools
+      - tools
+      - build-tools-26.0.2
+      - android-26
+    script:
+    - npm install -g yarn
+    - yarn install
+    - cp src/AppConfig.json.dist src/AppConfig.json
+    - cd android && ./gradlew assembleDebug --stacktrace
 notifications:
   email: false
 
-cache: yarn

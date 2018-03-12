@@ -29,7 +29,6 @@ it('submit', () => {
     onRequestEnd = jest.fn(),
     onLoginSuccess = jest.fn(),
     onLoginFail = jest.fn(),
-    // login = jest.fn().mockReturnValueOnce(new Promise((resolve, reject) => { resolve() })),
     client = createClient(),
     tree = shallow(
       <LoginForm
