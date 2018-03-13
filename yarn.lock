@@ -4231,6 +4231,10 @@ react-native-modal-selector@^0.0.24:
   dependencies:
     prop-types "^15.5.10"
 
+"react-native-pin-screen@git+https://git@github.com/coopcycle/react-native-pin-screen.git#1.0.1":
+  version "1.0.0"
+  resolved "git+https://git@github.com/coopcycle/react-native-pin-screen.git#a8139525e27413d8c7ab45f6277aef1424d7610f"
+
 react-native-safe-area-view@^0.6.0:
   version "0.6.0"
   resolved "https://registry.yarnpkg.com/react-native-safe-area-view/-/react-native-safe-area-view-0.6.0.tgz#ce01eb27905a77780219537e0f53fe9c783a8b3d"

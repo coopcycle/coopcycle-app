@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, ActivityIndicator, Alert, TouchableOpacity } from 'react-native'
+import { StyleSheet, View, ActivityIndicator, Alert, TouchableOpacity, Platform } from 'react-native'
 import {
   Container,
   Content, Button, Icon, List, ListItem, Text, Title,
@@ -10,6 +10,7 @@ import moment from 'moment/min/moment-with-locales'
 import MapView from 'react-native-maps'
 import { NavigationActions } from 'react-navigation'
 import KeepAwake from 'react-native-keep-awake'
+import RNPinScreen from 'react-native-pin-screen'
 import { connect } from 'react-redux'
 import { translate } from 'react-i18next'
 
@@ -68,7 +69,11 @@ class TasksPage extends Component {
   }
 
   componentDidMount() {
-    KeepAwake.activate()
+    if (Platform.OS === 'ios') {
+      KeepAwake.activate()
+    } else {
+      RNPinScreen.pin()
+    }
 
     this.onConnectHandler = this.onWebSocketConnect.bind(this)
     this.onDisconnectHandler = this.onWebSocketDisconnect.bind(this)
@@ -92,7 +97,11 @@ class TasksPage extends Component {
     Settings.removeListener('websocket:reconnect', this.onReconnectHandler)
     Settings.removeListener('websocket:message', this.onMessageHandler)
     this.geolocationTracker.stop()
-    KeepAwake.deactivate()
+    if (Platform.OS === 'ios') {
+      KeepAwake.deactivate()
+    } else {
+      RNPinScreen.unpin()
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
