@@ -40,12 +40,14 @@ matrix:
     cache:
       - bundler
       - yarn
-    script:
+    before_install:
+    - gem install xcpretty
     - npm install -g yarn
     - yarn install
     - cp src/AppConfig.json.dist src/AppConfig.json
     - cd ios
-    - xcodebuild -workspace CoopCycle.xcworkspace -scheme CoopCycle -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO
+    script:
+    - xcodebuild -workspace CoopCycle.xcworkspace -scheme CoopCycle -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO | xcpretty && exit ${PIPESTATUS[0]}
 
 notifications:
   email: false
