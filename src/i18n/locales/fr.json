@@ -88,6 +88,8 @@
     "PROBLEM_CONNECTING": "Connexion impossible",
     "OK": "OK",
     "LAST_TASK_EVENT": "Dernier évènement {{fromNow}}",
-    "HISTORY": "Historique"
+    "HISTORY": "Historique",
+    "SETTINGS": "Réglages",
+    "SETTING_KEEP_AWAKE": "Désactiver la mise en veille"
   }
 }

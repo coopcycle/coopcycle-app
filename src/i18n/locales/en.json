@@ -88,6 +88,8 @@
     "PROBLEM_CONNECTING": "Problem connecting",
     "OK": "OK",
     "LAST_TASK_EVENT": "Last event {{fromNow}}",
-    "HISTORY": "History"
+    "HISTORY": "History",
+    "SETTINGS": "Settings",
+    "SETTING_KEEP_AWAKE": "Disable screen lock"
   }
 }

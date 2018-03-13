@@ -151,6 +151,12 @@ const routeConfigs = {
       title: i18n.t('HISTORY'),
     })
   },
+  CourierSettings: {
+    screen: Routes.CourierSettingsPage,
+    navigationOptions: ({ navigation }) => ({
+      title: i18n.t('SETTINGS'),
+    })
+  },
   Dispatch: {
     screen: Routes.DispatchPage,
     navigationOptions: ({ navigation }) => ({

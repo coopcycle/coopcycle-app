@@ -42,9 +42,11 @@ class CourierPage extends Component {
                 <Icon name="arrow-forward" />
               </Right>
             </ListItem>
-            <ListItem button iconRight>
+            <ListItem button iconRight button iconRight onPress={() => {
+              navigate('CourierSettings', { baseURL, client, user })
+            }}>
               <Body>
-                <Text>{this.props.t('MY_STATS')}</Text>
+                <Text>{this.props.t('SETTINGS')}</Text>
               </Body>
               <Right>
                 <Icon name="arrow-forward" />

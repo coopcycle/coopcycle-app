@@ -10,6 +10,7 @@ module.exports = {
   CourierTaskListPage: require('./courier/TaskListPage'),
   CourierTaskPage: require('./courier/TaskPage'),
   CourierTaskHistoryPage: require('./courier/TaskHistoryPage'),
+  CourierSettingsPage: require('./courier/SettingsPage'),
   DispatchPage: require('./DispatchPage'),
   AccountPage: require('./AccountPage'),
   AccountAddressesPage: require('./account/AccountAddressesPage'),

@@ -69,11 +69,16 @@ class TasksPage extends Component {
   }
 
   componentDidMount() {
-    if (Platform.OS === 'ios') {
-      KeepAwake.activate()
-    } else {
-      RNPinScreen.pin()
-    }
+
+    Settings.getKeepAwake().then(keepAwake => {
+      if (keepAwake) {
+        if (Platform.OS === 'ios') {
+          KeepAwake.activate()
+        } else {
+          RNPinScreen.pin()
+        }
+      }
+    })
 
     this.onConnectHandler = this.onWebSocketConnect.bind(this)
     this.onDisconnectHandler = this.onWebSocketDisconnect.bind(this)
@@ -92,11 +97,14 @@ class TasksPage extends Component {
   }
 
   componentWillUnmount() {
+
     Settings.removeListener('websocket:connect', this.onConnectHandler)
     Settings.removeListener('websocket:disconnect', this.onDisconnectHandler)
     Settings.removeListener('websocket:reconnect', this.onReconnectHandler)
     Settings.removeListener('websocket:message', this.onMessageHandler)
+
     this.geolocationTracker.stop()
+
     if (Platform.OS === 'ios') {
       KeepAwake.deactivate()
     } else {
