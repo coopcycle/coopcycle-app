@@ -121,6 +121,21 @@ class TaskPage extends Component {
       })
     }
 
+    if (task.tags.length > 0) {
+      items.push({
+        iconName: 'star',
+        component: (
+          <View>
+          { task.tags.map(tag => (
+            <Button style={{ backgroundColor: tag.color }} key={ tag.slug } small disabled>
+              <Text>{ tag.slug }</Text>
+            </Button>
+          )) }
+          </View>
+        )
+      })
+    }
+
     return (
       <FlatList
         data={ items }
@@ -139,12 +154,19 @@ class TaskPage extends Component {
 
   renderTaskDetail(item) {
 
-    const { iconName, text, onPress } = item
+    const { iconName, text, component, onPress } = item
 
     let touchableOpacityProps = {}
     if (onPress) {
       touchableOpacityProps = { onPress }
     }
+
+    const body = (
+      <Col size={ onPress ? 7 : 8 }>
+        { text && <Text style={ styles.taskDetailText }>{ text }</Text> }
+        { component && component }
+      </Col>
+    )
 
     return (
       <TouchableOpacity style={{ flex:  1 }} { ...touchableOpacityProps }>
@@ -152,9 +174,7 @@ class TaskPage extends Component {
           <Col size={ 4 } style={ styles.iconContainer }>
             <Icon name={ iconName } style={{ color: '#ccc' }} />
           </Col>
-          <Col size={ onPress ? 7 : 8 }>
-            <Text style={ styles.taskDetailText }>{ text }</Text>
-          </Col>
+          { body }
           { onPress &&
           <Col size={ 1 }>
             <Icon name="arrow-forward" style={{ color: '#ccc' }} />

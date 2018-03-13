@@ -13,6 +13,7 @@ import KeepAwake from 'react-native-keep-awake'
 import RNPinScreen from 'react-native-pin-screen'
 import { connect } from 'react-redux'
 import { translate } from 'react-i18next'
+import _ from 'lodash'
 
 import { greenColor, blueColor, redColor, greyColor, whiteColor, dateSelectHeaderHeight } from "../../styles/common"
 import GeolocationTracker from '../../GeolocationTracker'
@@ -274,6 +275,12 @@ class TasksPage extends Component {
     this.markers = this.markers.slice()
 
     const pinColor = task => {
+
+      if (task.tags.length > 0) {
+        const tag = _.first(task.tags)
+
+        return tag.color
+      }
 
       let pinColor = blueColor
 
