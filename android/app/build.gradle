@@ -93,6 +93,8 @@ def enableSeparateBuildPerCPUArchitecture = false
  */
 def enableProguardInReleaseBuilds = false
 
+def googleMapsApiKey = hasProperty('googleMapsApiKey') ? googleMapsApiKey : System.getenv('googleMapsApiKey')
+
 android {
     compileSdkVersion 26
     buildToolsVersion "26.0.2"
