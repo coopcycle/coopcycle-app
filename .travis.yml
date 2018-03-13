@@ -1,9 +1,9 @@
 matrix:
   include:
   - language: node_js
+    env: LANE='node'
     node_js: 8
     cache: yarn
-    env: LANE='node'
   - language: android
     env: LANE='android'
     sudo: required
@@ -30,6 +30,23 @@ matrix:
     - yarn install
     - cp src/AppConfig.json.dist src/AppConfig.json
     - cd android && ./gradlew assembleDebug --stacktrace
+  - language: objective-c
+    env: LANE='ios'
+    os: osx
+    osx_image: xcode9.1
+    node_js: 8
+    xcode_project: CoopCycle.xcodeproj
+    xcode_scheme: CoopCycleTests
+    cache:
+      - bundler
+      - yarn
+    script:
+    - npm install -g yarn
+    - yarn install
+    - cp src/AppConfig.json.dist src/AppConfig.json
+    - cd ios
+    - xcodebuild -workspace CoopCycle.xcworkspace -scheme CoopCycle -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO
+
 notifications:
   email: false
 
