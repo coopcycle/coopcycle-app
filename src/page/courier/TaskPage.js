@@ -106,11 +106,6 @@ class TaskPage extends Component {
       {
         iconName: 'md-clock',
         text: timeframe
-      },
-      {
-        iconName: 'calendar',
-        text: this.props.t('LAST_TASK_EVENT', { fromNow: moment(lastEvent.createdAt).fromNow() }),
-        onPress: () => navigate('CourierTaskHistory', { task })
       }
     ]
 
@@ -125,16 +120,22 @@ class TaskPage extends Component {
       items.push({
         iconName: 'star',
         component: (
-          <View>
+          <View style={{ flex: 1, flexDirection: 'row' }}>
           { task.tags.map(tag => (
-            <Button style={{ backgroundColor: tag.color }} key={ tag.slug } small disabled>
-              <Text>{ tag.slug }</Text>
+            <Button style={{ backgroundColor: tag.color, marginRight: 5 }} key={ tag.slug } small disabled>
+              <Text style={{ fontSize: 10 }}>{ tag.slug }</Text>
             </Button>
           )) }
           </View>
         )
       })
     }
+
+    items.push({
+      iconName: 'calendar',
+      text: this.props.t('LAST_TASK_EVENT', { fromNow: moment(lastEvent.createdAt).fromNow() }),
+      onPress: () => navigate('CourierTaskHistory', { task })
+    })
 
     return (
       <FlatList
@@ -171,7 +172,7 @@ class TaskPage extends Component {
     return (
       <TouchableOpacity style={{ flex:  1 }} { ...touchableOpacityProps }>
         <Row style={ styles.row }>
-          <Col size={ 4 } style={ styles.iconContainer }>
+          <Col size={ 2 } style={ styles.iconContainer }>
             <Icon name={ iconName } style={{ color: '#ccc' }} />
           </Col>
           { body }
@@ -406,7 +407,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff'
   },
   row: {
-    padding: 15,
+    padding: 10,
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center'
@@ -415,7 +416,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: 20
+    paddingHorizontal: 10
   },
   loader: {
     ...StyleSheet.absoluteFillObject,
@@ -440,12 +441,12 @@ const styles = StyleSheet.create({
     borderTopWidth: StyleSheet.hairlineWidth,
   },
   swipeOutHelpText: {
-    fontSize: 14,
+    fontSize: 12,
     textAlign: 'center',
     color: '#ccc'
   },
   taskDetailText: {
-    fontSize: 14,
+    fontSize: 12,
   }
 })
 
