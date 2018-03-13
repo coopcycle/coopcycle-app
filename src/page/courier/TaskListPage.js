@@ -7,7 +7,6 @@ import moment from 'moment/min/moment-with-locales'
 
 import TaskList from '../../components/TaskList'
 import DateSelectHeader from '../../components/DateSelectHeader'
-import { Settings } from '../../Settings'
 import { whiteColor } from '../../styles/common'
 import { changedTasks, loadTasksRequest } from "../../store/actions"
 import { translate } from 'react-i18next'
@@ -54,15 +53,6 @@ class TaskListPage extends Component {
     this.refreshTasks = this.refreshTasks.bind(this)
   }
 
-  componentDidMount() {
-    this.onMessageHandler = this.onWebSocketMessage.bind(this)
-    Settings.addListener('websocket:message', this.onMessageHandler)
-  }
-
-  componentWillUnmount() {
-    Settings.removeListener('websocket:message', this.onMessageHandler)
-  }
-
   componentWillReceiveProps(nextProps) {
     const nextTasks = nextProps.tasks
     const { tasks } = this.props
@@ -93,13 +83,6 @@ class TaskListPage extends Component {
     this.setState({ loading: true, loadingMessage: `${this.props.t('LOADING')}...` })
     const { client } = this.props.navigation.state.params
     this.props.loadTasks(client, selectedDate)
-  }
-
-  onWebSocketMessage (event) {
-    let data = JSON.parse(event.data)
-    if (data.type === 'tasks:changed') {
-      this.props.taskChanged(data.tasks)
-    }
   }
 
   renderLoader() {

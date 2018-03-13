@@ -20,7 +20,7 @@ import GeolocationTracker from '../../GeolocationTracker'
 import { Settings } from '../../Settings'
 import { Registry } from '../../Registry'
 import DateSelectHeader from "../../components/DateSelectHeader"
-import {assignTask, loadTasksRequest, unassignTask} from "../../store/actions"
+import { loadTasksRequest, changedTasks } from "../../store/actions"
 import { localeDetector } from '../../i18n'
 
 moment.locale(localeDetector())
@@ -211,11 +211,8 @@ class TasksPage extends Component {
 
   onWebSocketMessage (event) {
     let data = JSON.parse(event.data)
-
-    if (data.type === 'task:unassign') {
-      this.props.unassignTask(data.task)
-    } else if (data.type === 'task:assign') {
-      this.props.assignTask(data.task)
+    if (data.type === 'tasks:changed') {
+      this.props.taskChanged(data.tasks)
     }
   }
 
@@ -415,9 +412,8 @@ function mapStateToProps (state) {
 
 function mapDispatchToProps (dispatch) {
   return {
+    taskChanged: (tasks) => { dispatch(changedTasks(tasks)) },
     loadTasks: (client, selectedDate) => { dispatch(loadTasksRequest(client, selectedDate)) },
-    assignTask: (task) => { dispatch(assignTask(task)) },
-    unassignTask: (task) => { dispatch(unassignTask(task)) }
   }
 }
 
