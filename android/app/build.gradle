@@ -155,6 +155,9 @@ dependencies {
     compile(project(':react-native-i18n')) {
       exclude group: 'com.google.android.gms'
     }
+    compile(project(':react-native-keep-awake')){
+      exclude group: 'com.google.android.gms'
+    }
     compile project(':react-native-pin-screen')
     compile(project(':tipsi-stripe')){
       exclude group: 'com.google.android.gms'
