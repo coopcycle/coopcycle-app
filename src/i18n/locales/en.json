@@ -78,7 +78,7 @@
     "FROM": "From",
     "ORDER": "Order",
     "INVALID_USER_PASS": "Username and/or password incorrect",
-    "NO_TASKS": "Pas de tâches prévues aujourd'hui",
+    "NO_TASKS": "No tasks planned today",
     "NOTES": "Notes",
     "COMPLETED": "Completed",
     "FAILED": "Failed",
