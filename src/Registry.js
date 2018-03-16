@@ -1,4 +1,3 @@
-import { Settings, events } from './Settings'
 import WebSocketClient from './websocket/WebSocketClient'
 
 let webSocketClient
@@ -6,13 +5,8 @@ let webSocketClient
 class Registry {
 
   static initWebSocketClient(client) {
-    webSocketClient = new WebSocketClient(client, '/dispatch', {
-      onConnect: () => { events.emit('websocket:connect')},
-      onDisconnect: () => { events.emit('websocket:disconnect')},
-      onReconnect: () => { events.emit('websocket:reconnect')},
-      onMessage: event => { events.emit('websocket:message', event)},
-    })
-    webSocketClient.connect()
+    webSocketClient = new WebSocketClient(client, '/dispatch')
+    return webSocketClient.connect()
   }
 
   static getWebSocketClient() {
