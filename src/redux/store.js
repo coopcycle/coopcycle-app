@@ -1,9 +1,10 @@
 import { createStore, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
-import reducers from './reducers'
 import { composeWithDevTools } from 'redux-devtools-extension'
+import reducers from './reducers'
+import WsMiddleware from './middlewares/WebSocketMiddleware'
 
-const middlewares = [ thunk ]
+const middlewares = [ thunk, WsMiddleware() ]
 
 
 if (process.env.NODE_ENV === 'development') {
@@ -12,9 +13,7 @@ if (process.env.NODE_ENV === 'development') {
   middlewares.push(logger);
 }
 
-let store = createStore(
+export default createStore(
   reducers,
   composeWithDevTools(applyMiddleware(...middlewares))
 )
-
-export default store
