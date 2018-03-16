@@ -1,5 +1,5 @@
-import WebSocketClient from './WebSocketClient'
 import { Settings, events } from './Settings'
+import WebSocketClient from './websocket/WebSocketClient'
 
 let webSocketClient
 
