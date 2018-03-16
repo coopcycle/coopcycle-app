@@ -26,9 +26,11 @@
     "react-navigation": "^1.0.0",
     "react-redux": "^5.0.7",
     "redux": "^3.7.2",
+    "redux-actions": "^2.2.1",
     "redux-devtools-extension": "^2.13.2",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.2.0",
+    "reselect": "^3.0.1",
     "slugify": "^1.1.0",
     "tipsi-stripe": "4.4.0",
     "underscore": "^1.8.3"
