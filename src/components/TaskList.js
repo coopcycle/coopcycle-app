@@ -4,6 +4,7 @@ import { Icon, Text } from 'native-base'
 import { Col, Row, Grid } from 'react-native-easy-grid'
 import moment from 'moment/min/moment-with-locales'
 import _ from 'lodash'
+import { translate } from 'react-i18next'
 
 import { whiteColor, lightGreyColor, redColor } from "../styles/common"
 import { localeDetector } from '../i18n'
@@ -42,7 +43,7 @@ const styles = StyleSheet.create({
   }
 })
 
-export default class TaskList extends Component {
+class TaskList extends Component {
 
   constructor(props) {
     super(props)
@@ -150,7 +151,7 @@ export default class TaskList extends Component {
             }
           </Col>
           <Col size={ 10 } style={ itemBodyStyle }>
-            <Text style={ textStyle }>Tâche #{ task.id }</Text>
+            <Text style={ textStyle }>{this.props.t('TASK')} #{ task.id }</Text>
             { task.address.name && (<Text style={ textStyle }>{ task.address.name }</Text>) }
             <Text numberOfLines={ 1 } style={ textStyle }>{ task.address.streetAddress }</Text>
             <Text style={ textStyle }>{ moment(task.doneAfter).format('LT') } - { moment(task.doneBefore).format('LT') }</Text>
@@ -183,3 +184,5 @@ export default class TaskList extends Component {
     )
   }
 }
+
+export default translate(['common'], { withRef: true })(TaskList)

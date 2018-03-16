@@ -44,6 +44,8 @@ const styles = StyleSheet.create({
 
 class TaskListPage extends Component {
 
+  taskList = null
+
   constructor(props) {
     super(props)
 
@@ -68,8 +70,8 @@ class TaskListPage extends Component {
         this.setState({ addedTasks })
 
         setTimeout(() => {
-          this.refs.taskList.scrollToTask(firstAddedTask)
-          this.refs.taskList.animate()
+          this.taskList.getWrappedInstance().scrollToTask(firstAddedTask)
+          this.taskList.getWrappedInstance().animate()
         }, 500)
       }
     }
@@ -122,7 +124,7 @@ class TaskListPage extends Component {
           {
             tasks.length > 0 &&
             <TaskList
-              ref="taskList"
+              ref={ (e) => {this.taskList = e} }
               tasks={ tasks }
               tasksToHighlight={ addedTasks }
               onTaskClick={ task => navigate('CourierTask', { client, task, geolocationTracker }) }
