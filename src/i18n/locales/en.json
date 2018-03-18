@@ -15,6 +15,7 @@
     "PAYMENT": "Payment",
     "ORDER_TRACKING": "Order tracking",
     "TASKS_UPDATED": "Your tasks have been updated",
+    "FAILED_TASK_LOAD": "Could not load your tasks",
     "TRY_LATER": "Please try again later",
     "NET_FAILED": "Network request failed",
     "SERVER_INCOMPATIBLE": "Incompatible server",
