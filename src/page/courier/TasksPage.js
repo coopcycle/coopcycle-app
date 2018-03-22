@@ -118,8 +118,8 @@ class TasksPage extends Component {
 
     if (tasksLoadingError && !prevProps.tasksLoadingError) {
       Alert.alert(
-        'Impossible de charger les tâches',
-        'Veuillez réessayer plus tard',
+        this.props.t('FAILED_TASK_LOAD'),
+        this.props.t('TRY_LATER'),
         [
           {
             text: 'OK', onPress: () => {
