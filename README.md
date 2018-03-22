@@ -19,7 +19,8 @@ $ sudo gem install cocoapods
 $ react-native link
 ```
 
-* Get a Google Map API Key and copy it.
+* Get a Google Map API Key and copy it. You will need to have the [
+Google Maps SDK for iOS](https://console.developers.google.com/apis/api/maps-ios-backend.googleapis.com/overview?project=coopcycle-dev-1495029274413&duration=PT1H) and [Google Maps Android API](https://console.developers.google.com/apis/api/maps-android-backend.googleapis.com/overview?project=coopcycle-dev-1495029274413&duration=PT1H) services enabled.
 * Create a Stripe account and copy your tests credentials.
 * Create the file AppConfig.json in ./src and copy the following lines, replacing **** by the corresponding API key:
 
