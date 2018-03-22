@@ -104,11 +104,11 @@ class WebSocketClient {
     this.closeCount = 0
 
     this.options.onConnect(event)
+
     if (this.openCount > 1) {
       this.options.onReconnect(event)
-
-      JSONAsyncStorage.consume('@WsMsgQueue', (msg) => this.send(msg))
     }
+    JSONAsyncStorage.consume('@WsMsgQueue', (msg) => this.send(msg))
 
     resolve()
   }
@@ -130,7 +130,7 @@ class WebSocketClient {
   }
 
   isOpen() {
-    return this.webSocket.readyState === WebSocket.OPEN
+    return this.webSocket && this.webSocket.readyState === WebSocket.OPEN
   }
 
   send(data) {

@@ -23,7 +23,6 @@ moment.locale(localeDetector())
 const tasksEntityInitialState = {
   fetchError: null,                // Error object describing the error
   isFetching: false,               // Flag indicating active HTTP request
-  isStale: false,                  // Flag indicating state fragment should be re-fetched
   lastUpdated: moment(),           // Time at which tasks data was last updated
   triggerTasksNotification: false, // Flag indicating whether to trigger Toast alert
   items: {                         // Object of tasks, keyed by task id
@@ -74,7 +73,6 @@ export const tasksEntityReducer = (state = tasksEntityInitialState, action) => {
         ...state,
         fetchError: false,
         isFetching: false,
-        isStale: false,
         lastUpdated: moment(),
         items: action.payload.reduce((acc, task) => {
           acc[task.id] = task
@@ -114,7 +112,6 @@ const processWsMsg = (state, { type, ...data }) => {
     case 'tasks:changed':
       return {
         ...state,
-        isStale: false,
         lastUpdated: moment(),
         triggerTasksNotification: true,
         items: data.tasks.reduce((acc, task) => {
