@@ -1,5 +1,5 @@
 /*
- * App reducer, dealint with non-domain specific state
+ * App reducer, dealing with non-domain specific state
  */
 import { CONNECTED, DISCONNECTED, RECONNECTED } from '../middlewares/WebSocketMiddleware'
 

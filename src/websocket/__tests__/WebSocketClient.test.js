@@ -89,6 +89,8 @@ describe('WebSocketClient', () => {
     jest.unmock('AsyncStorage')
   })
 
+  beforeEach(() => jest.resetAllMocks())
+
 
   test('constructor', () => {
     const ws = new WebSocketClient(client, '/dispatch')
@@ -98,6 +100,9 @@ describe('WebSocketClient', () => {
   })
 
   test('connect', () => {
+    AsyncStorage.getItem.mockReturnValue(Promise.resolve(null))
+    AsyncStorage.setItem.mockReturnValue(Promise.resolve())
+
     const ws = new WebSocketClient(client, '/dispatch')
 
     const promise = ws.connect()
@@ -113,6 +118,9 @@ describe('WebSocketClient', () => {
   })
 
   test('send | online', () => {
+    AsyncStorage.getItem.mockReturnValue(Promise.resolve(null))
+    AsyncStorage.setItem.mockReturnValue(Promise.resolve())
+
     const ws = new WebSocketClient(client, '/dispatch')
     const msg = { foo: true }
 
@@ -128,7 +136,22 @@ describe('WebSocketClient', () => {
     return promise
   })
 
-  test('send | offline', () => {
+  test('send | offline | pre-connect', () => {
+    AsyncStorage.getItem.mockReturnValue(Promise.resolve(null))
+    AsyncStorage.setItem.mockReturnValue(Promise.resolve())
+
+    const ws = new WebSocketClient(client, '/dispatch')
+    const msg = { foo: true }
+
+    return ws.send(msg)
+      .then(() => {
+        expect(AsyncStorage.getItem).toHaveBeenCalledTimes(1)
+        expect(AsyncStorage.setItem).toHaveBeenCalledTimes(1)
+        expect(AsyncStorage.setItem).toHaveBeenCalledWith('@WsMsgQueue', JSON.stringify([msg]))
+      })
+  })
+
+  test('send | offline | post-connect', () => {
     AsyncStorage.getItem.mockReturnValue(Promise.resolve(null))
     AsyncStorage.setItem.mockReturnValue(Promise.resolve())
 
@@ -137,13 +160,14 @@ describe('WebSocketClient', () => {
 
     const promise = ws.connect()
       .then(() => {
+        // Simulate disconnection
         ws.webSocket.readyState = MockWebSocket.CLOSING
+
         return ws.send(msg)
       })
       .then(() => {
-        expect(ws.webSocket._last_msg).toBe('')
-        expect(AsyncStorage.getItem).toHaveBeenCalledTimes(1)
-        expect(AsyncStorage.setItem).toHaveBeenCalledTimes(1)
+        expect(AsyncStorage.getItem).toHaveBeenCalledTimes(2)
+        expect(AsyncStorage.setItem).toHaveBeenCalledTimes(2)
         expect(AsyncStorage.setItem).toHaveBeenCalledWith('@WsMsgQueue', JSON.stringify([msg]))
       })
 

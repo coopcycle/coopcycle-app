@@ -51,20 +51,40 @@ describe('JSONAsyncStorage', () => {
   })
 
   test('consume | array', () => {
-    AsyncStorage.getItem.mockReturnValue(Promise.resolve(JSON.stringify([1, 2])))
+    const data = [1, 2]
+    const consumer = jest.fn()
+    AsyncStorage.getItem.mockReturnValue(Promise.resolve(JSON.stringify(data)))
 
-    return JSONAsyncStorage.consume('foo', () => 0)
+    return JSONAsyncStorage.consume('foo', consumer)
       .then(() => {
         expect(AsyncStorage.setItem).toHaveBeenCalledWith('foo', JSON.stringify([]))
+        expect(consumer).toHaveBeenCalledTimes(data.length)
+        expect(consumer).toHaveBeenLastCalledWith(2, 1, data)
       })
   })
 
   test('consume | object', () => {
-    AsyncStorage.getItem.mockReturnValue(Promise.resolve(JSON.stringify({ 1: 1, 2: 2 })))
+    const data = { a: 1, b: 2 }
+    const consumer = jest.fn()
+    AsyncStorage.getItem.mockReturnValue(Promise.resolve(JSON.stringify(data)))
 
-    return JSONAsyncStorage.consume('foo', () => 0)
+    return JSONAsyncStorage.consume('foo', consumer)
       .then(() => {
         expect(AsyncStorage.setItem).toHaveBeenCalledWith('foo', JSON.stringify({}))
+        expect(consumer).toHaveBeenCalledTimes(Object.keys(data).length)
+        expect(consumer).toHaveBeenLastCalledWith(2, 1, [1, 2])
+      })
+  })
+
+  test('consume | empty', () => {
+    const data = null
+    const consumer = jest.fn()
+    AsyncStorage.getItem.mockReturnValue(Promise.resolve(JSON.stringify(data)))
+
+    return JSONAsyncStorage.consume('foo', consumer)
+      .then(() => {
+        expect(AsyncStorage.setItem).toHaveBeenCalledWith('foo', JSON.stringify(data))
+        expect(consumer).not.toHaveBeenCalled()
       })
   })
 })

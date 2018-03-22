@@ -87,19 +87,17 @@ describe('Redux | Tasks | Reducers', () => {
         ...tasksEntityReducer(undefined, {}),
         fetchError: true,
         isFetching: true,
-        isStale: true,
       }
       const newState = tasksEntityReducer(initialState, loadTasksSuccess(tasks))
 
-      const restOldState = omit(initialState, ['fetchError', 'isFetching', 'isStale', 'items', 'order', 'lastUpdated'])
-      const restNewState = omit(newState, ['fetchError', 'isFetching', 'isStale', 'items', 'order', 'lastUpdated'])
+      const restOldState = omit(initialState, ['fetchError', 'isFetching', 'items', 'order', 'lastUpdated'])
+      const restNewState = omit(newState, ['fetchError', 'isFetching', 'items', 'order', 'lastUpdated'])
       const { lastUpdated: lastUpdatedOld } = initialState
       const { lastUpdated: lastUpdatedNew } = newState
 
       expect(newState).toEqual(expect.objectContaining({
         fetchError: false,
         isFetching: false,
-        isStale: false,
         items: { 1: tasks[0], 2: tasks[1] },
         order: [1, 2]
       }))
@@ -160,20 +158,18 @@ describe('Redux | Tasks | Reducers', () => {
 
       const initialState = {
         ...tasksEntityReducer(undefined, {}),
-        isStale: true,
         triggerTasksNotification: false,
       }
 
       const newState = tasksEntityReducer(initialState, message(wsMsg))
 
-      const restOldState = omit(initialState, ['isStale', 'lastUpdated', 'triggerTasksNotification', 'items', 'order'])
-      const restNewState = omit(newState, ['isStale', 'lastUpdated', 'triggerTasksNotification', 'items', 'order'])
+      const restOldState = omit(initialState, ['lastUpdated', 'triggerTasksNotification', 'items', 'order'])
+      const restNewState = omit(newState, ['lastUpdated', 'triggerTasksNotification', 'items', 'order'])
       const { lastUpdated: lastUpdatedOld } = initialState
       const { lastUpdated: lastUpdatedNew } = newState
 
       expect(lastUpdatedOld).not.toEqual(lastUpdatedNew)
       expect(newState).toEqual(expect.objectContaining({
-        isStale: false,
         triggerTasksNotification: true,
         items: { 1: tasks[0], 2: tasks[1] },
         order: [1, 2]

@@ -36,7 +36,7 @@ const JSONAsyncStorage = {
             ? {}
             : json
       })
-      .then(() => Object.values(data).forEach(fn))
+      .then(() => data && Object.values(data).forEach(fn))
   },
 }
 
