@@ -11,7 +11,8 @@ import {
   dontTriggerTasksNotification,
 
   loadTasks, markTaskDone, markTaskFailed,
-} from '../actions'
+} from '../taskActions'
+
 
 describe('Redux | Tasks | Actions', () => {
   [

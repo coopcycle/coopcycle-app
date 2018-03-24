@@ -1,11 +1,13 @@
 /**
- * Tasks Redux Fragment
+ * Courier Redux Fragment
  *
  * Exports action types, action creators, reducers and selectors related to the
- * Tasks in the application
+ * Courier in the application
+ *
+ * Currently just courier tasks
  */
-import { createSelector } from 'reselect'
-import { tasksEntityReducer, tasksUiReducer } from './reducers'
+import { tasksEntityReducer } from './taskEntityReducer'
+import { tasksUiReducer } from './taskUiReducer'
 import {
   LOAD_TASKS_REQUEST, LOAD_TASKS_FAILURE, LOAD_TASKS_SUCCESS,
   MARK_TASK_DONE_REQUEST, MARK_TASK_DONE_FAILURE, MARK_TASK_DONE_SUCCESS,
@@ -16,27 +18,16 @@ import {
   markTaskDone, markTaskDoneRequest, markTaskDoneSuccess, markTaskDoneFailure,
   markTaskFailed, markTaskFailedRequest, markTaskFailedSuccess, markTaskFailedFailure,
   dontTriggerTasksNotification,
-} from './actions'
-
-
-/*
- * Selectors
- *
- * Selectors help decouple the shape of the state from the component code itself.
- * Here we use `reselect`, which allows us to memoize computed property values,
- * benefitting performance.
- */
-const selectTaskSelectedDate = state => state.ui.tasks.selectedDate
-const selectTriggerTasksNotification = state => state.entities.tasks.triggerTasksNotification
-const selectIsTasksLoading = state => state.entities.tasks.isFetching
-const selectIsTasksLoadingFailure = state => state.entities.tasks.fetchError
-const selectTasks = state => state.entities.tasks
-const selectTasksOrder = state => state.entities.tasks.order
-const selectTasksList = createSelector(
+} from './taskActions'
+import {
+  selectTaskSelectedDate,
+  selectTriggerTasksNotification,
+  selectIsTasksLoading,
+  selectIsTasksLoadingFailure,
   selectTasks,
   selectTasksOrder,
-  (tasks, ids) => ids.map(id => tasks[id])
-)
+  selectTasksList
+} from './taskSelectors'
 
 
 export {

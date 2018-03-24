@@ -25,7 +25,7 @@ import { Settings } from './src/Settings'
 import { Registry } from './src/Registry'
 import i18n from './src/i18n'
 import { primaryColor,  whiteColor, fontTitleName } from './src/styles/common'
-import { selectTriggerTasksNotification, dontTriggerTasksNotification } from './src/redux/Tasks'
+import { selectTriggerTasksNotification, dontTriggerTasksNotification } from './src/redux/Courier'
 import { init as wsInit } from './src/redux/middlewares/WebSocketMiddleware'
 import store, { observeStore } from "./src/redux/store"
 

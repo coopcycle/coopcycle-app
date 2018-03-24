@@ -23,7 +23,7 @@ import { Settings } from '../../Settings'
 import {
   loadTasks,
   selectTasksList, selectIsTasksLoading, selectIsTasksLoadingFailure, selectTaskSelectedDate,
-} from '../../redux/Tasks'
+} from '../../redux/Courier'
 import { selectIsWsOpen } from '../../redux/App'
 import { send } from '../../redux/middlewares/WebSocketMiddleware'
 
