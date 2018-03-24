@@ -199,10 +199,10 @@ class TasksPage extends Component {
 
   renderLoader() {
 
-    const { taskLoadingMessage, isWsOpen } = this.props
+    const { taskLoadingMessage } = this.props
     const { loading, loadingMessage } = this.state
 
-    if (taskLoadingMessage || !isWsOpen || loading) {
+    if (taskLoadingMessage || loading) {
       return (
         <View style={ styles.loader }>
           <ActivityIndicator
@@ -212,7 +212,6 @@ class TasksPage extends Component {
           />
           <Text style={{ color: '#fff' }}>{
             taskLoadingMessage ||
-            !isWsOpen && this.props.t('CONN_LOST') ||
             loading && loadingMessage
           }</Text>
         </View>
@@ -369,7 +368,6 @@ function mapStateToProps (state) {
     selectedDate: selectTaskSelectedDate(state),
     isLoadingTasks: selectIsTasksLoading(state),
     tasksLoadingError: selectIsTasksLoadingFailure(state),
-    isWsOpen: selectIsWsOpen(state),
   }
 }
 
