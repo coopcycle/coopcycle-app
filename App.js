@@ -25,7 +25,9 @@ import { Settings } from './src/Settings'
 import { Registry } from './src/Registry'
 import i18n from './src/i18n'
 import { primaryColor,  whiteColor, fontTitleName } from './src/styles/common'
-import store from "./src/store/store"
+import { selectTriggerTasksNotification, dontTriggerTasksNotification } from './src/redux/Courier'
+import { init as wsInit } from './src/redux/middlewares/WebSocketMiddleware'
+import store, { observeStore } from "./src/redux/store"
 
 const Routes = require('./src/page')
 const AppUser = require('./src/AppUser')
@@ -206,6 +208,7 @@ const initialRouteName = user => {
 class App extends Component {
 
   input = null
+  reduxStoreUnsubscribe = () => {}
 
   constructor(props) {
     super(props)
@@ -219,20 +222,34 @@ class App extends Component {
       user: null,
       serverError: false,
     }
-    this.onWebSocketMessage = this.onWebSocketMessage.bind(this)
+
+    this.reduxStoreUnsubscribe = observeStore(
+      store,
+      selectTriggerTasksNotification,
+      (triggerTasksNotification) => {
+        if (triggerTasksNotification) {
+          Toast.show({
+            text: this.props.t('TASKS_UPDATED'),
+            position: 'bottom'
+          })
+          store.dispatch(dontTriggerTasksNotification())
+        }
+      }
+    )
+
     this.disconnect = this.disconnect.bind(this)
     this.connect = this.connect.bind(this)
     this.renderLoading = this.renderLoading.bind(this)
   }
 
   componentWillMount() {
-
     Settings.addListener('server:remove', this.disconnect)
-    Settings.addListener('websocket:message', this.onWebSocketMessage)
     Settings.addListener('user:login', (event) => {
       const { client, user } = event
       if (user && user.isAuthenticated() && (user.hasRole('ROLE_COURIER') || user.hasRole('ROLE_ADMIN'))) {
         Registry.initWebSocketClient(client)
+          .then(() => store.dispatch(wsInit(Registry.getWebSocketClient())))
+          .catch(console.error)
       }
     })
     Settings.addListener('user:logout', () => Registry.clearWebSocketClient())
@@ -245,14 +262,8 @@ class App extends Component {
       })
   }
 
-  onWebSocketMessage (event) {
-    const data = JSON.parse(event.data)
-    if (data.type === 'tasks:changed') {
-      Toast.show({
-        text: this.props.t('TASKS_UPDATED'),
-        position: 'bottom'
-      })
-    }
+  componentWillUnmount() {
+    this.reduxStoreUnsubscribe()
   }
 
   initializeRouter(baseURL, user) {
@@ -262,6 +273,8 @@ class App extends Component {
       client = API.createClient(baseURL, user)
       if (user && user.isAuthenticated() && (user.hasRole('ROLE_COURIER') || user.hasRole('ROLE_ADMIN'))) {
         Registry.initWebSocketClient(client)
+          .then(() => store.dispatch(wsInit(Registry.getWebSocketClient())))
+          .catch(console.error)
       }
     }
 

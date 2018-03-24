@@ -1,3 +1,15 @@
+/*
+ * WebSocket client
+ *
+ * This client uses AsyncStorage to cache messages while the connection is closed
+ * Once the connection is open again, the messages are sent and the queue is emptied
+ */
+import JSONAsyncStorage from './storage'
+
+const defaults = {
+  reconnectTimeout: 1500
+}
+
 class WebSocketClient {
 
   client = null
@@ -17,10 +29,13 @@ class WebSocketClient {
   onOpenHandler = null
   onMessageHandler = null
 
-  constructor(client, uri, options) {
+  constructor(client, uri, opts = {}) {
+    const { reconnectTimeout, ...options } = { ...defaults, ...opts }
+
     this.client = client
     this.uri = uri
-    this.options = options
+    this.options = { ...this.options, ...options }
+    this.reconnectTimeout = reconnectTimeout
   }
 
   connect() {
@@ -66,7 +81,7 @@ class WebSocketClient {
       .then(() => this.createWebSocket(resolve, reject))
       .catch(() => {
         this.client.refreshToken()
-          .then(token => this.createWebSocket(resolve, reject))
+          .then(() => this.createWebSocket(resolve, reject))
       })
 
   }
@@ -78,7 +93,7 @@ class WebSocketClient {
     this.webSocket.close(1000)
   }
 
-  onMessage (event) {
+  onMessage(event) {
     this.options.onMessage(event)
   }
 
@@ -88,10 +103,12 @@ class WebSocketClient {
     this.openCount = this.openCount + 1
     this.closeCount = 0
 
-    this.options.onConnect()
+    this.options.onConnect(event)
+
     if (this.openCount > 1) {
-      this.options.onReconnect()
+      this.options.onReconnect(event)
     }
+    JSONAsyncStorage.consume('@WsMsgQueue', (msg) => this.send(msg))
 
     resolve()
   }
@@ -101,7 +118,7 @@ class WebSocketClient {
     console.log('Connection close', event)
     this.closeCount = this.closeCount + 1
 
-    this.options.onDisconnect()
+    this.options.onDisconnect(event)
 
     if (this.closeCount >= 5) {
       this.disconnect()
@@ -109,16 +126,18 @@ class WebSocketClient {
       return
     }
 
-    setTimeout(() => this.reconnect(resolve, reject), 1500)
+    setTimeout(() => this.reconnect(resolve, reject), this.reconnectTimeout)
   }
 
   isOpen() {
-    return this.webSocket.readyState === WebSocket.OPEN
+    return this.webSocket && this.webSocket.readyState === WebSocket.OPEN
   }
 
   send(data) {
     if (this.isOpen()) {
-      this.webSocket.send(JSON.stringify(data))
+      return this.webSocket.send(JSON.stringify(data))
+    } else {
+      return JSONAsyncStorage.update('@WsMsgQueue', [], (msgs) => msgs.concat(data))
     }
   }
 

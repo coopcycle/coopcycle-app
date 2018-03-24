@@ -17,11 +17,16 @@ import _ from 'lodash'
 
 import { greenColor, blueColor, redColor, greyColor, whiteColor, dateSelectHeaderHeight } from "../../styles/common"
 import GeolocationTracker from '../../GeolocationTracker'
-import { Settings } from '../../Settings'
-import { Registry } from '../../Registry'
 import DateSelectHeader from "../../components/DateSelectHeader"
-import { loadTasksRequest, changedTasks } from "../../store/actions"
 import { localeDetector } from '../../i18n'
+import { Settings } from '../../Settings'
+import {
+  loadTasks,
+  selectTasksList, selectIsTasksLoading, selectIsTasksLoadingFailure, selectTaskSelectedDate,
+} from '../../redux/Courier'
+import { selectIsWsOpen } from '../../redux/App'
+import { send } from '../../redux/middlewares/WebSocketMiddleware'
+
 
 moment.locale(localeDetector())
 
@@ -81,29 +86,12 @@ class TasksPage extends Component {
       }
     })
 
-    this.onConnectHandler = this.onWebSocketConnect.bind(this)
-    this.onDisconnectHandler = this.onWebSocketDisconnect.bind(this)
-    this.onReconnectHandler = this.onWebSocketReconnect.bind(this)
-    this.onMessageHandler = this.onWebSocketMessage.bind(this)
-
-    Settings.addListener('websocket:connect', this.onConnectHandler)
-    Settings.addListener('websocket:disconnect', this.onDisconnectHandler)
-    Settings.addListener('websocket:reconnect', this.onReconnectHandler)
-    Settings.addListener('websocket:message', this.onMessageHandler)
-
-    const ws = Registry.getWebSocketClient()
-    if (ws.isOpen()) {
+    if (this.props.isWsOpen) {
       this.props.navigation.setParams({connected: true})
     }
   }
 
   componentWillUnmount() {
-
-    Settings.removeListener('websocket:connect', this.onConnectHandler)
-    Settings.removeListener('websocket:disconnect', this.onDisconnectHandler)
-    Settings.removeListener('websocket:reconnect', this.onReconnectHandler)
-    Settings.removeListener('websocket:message', this.onMessageHandler)
-
     this.geolocationTracker.stop()
 
     if (Platform.OS === 'ios') {
@@ -133,6 +121,10 @@ class TasksPage extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    if (this.props.isWsOpen !== nextProps.isWsOpen) {
+      this.props.navigation.setParams({ connected: nextProps.isWsOpen })
+    }
+
     if (nextProps.tasks !== this.props.tasks) {
 
         const { currentPosition } = this.state
@@ -167,72 +159,38 @@ class TasksPage extends Component {
 
     this.setState({ loading: true, loadingMessage: `${this.props.t('WAITING_FOR_POS')}...` })
 
-    Promise.all([
-      this.geolocationTracker.start()
-    ]).then(() => {
-      const { selectedDate } = this.props
-      this.setState({ loading: false })
-      this.refreshTasks(selectedDate)
-    }).catch(e => {
-      // TODO Distinguish error reason
-      Alert.alert(
-        this.props.t('PROBLEM_CONNECTION'),
-        this.props.t('TRY_LATER'),
-        [
-          {
-            text: this.props.t('OK'), onPress: () => {
-              this.props.navigation.dispatch(NavigationActions.back())
-            }
-          },
-        ],
-        { cancelable: false }
-      )
-    })
-  }
-
-  onWebSocketConnect() {
-    this.props.navigation.setParams({ connected: true })
-  }
-
-  onWebSocketDisconnect() {
-    this.props.navigation.setParams({ connected: false })
-    this.setState({
-      loading: true,
-      loadingMessage: this.props.t('CONN_LOST'),
-    })
-  }
-
-  onWebSocketReconnect() {
-    this.props.navigation.setParams({ connected: true })
-    this.setState({
-      loading: false
-    })
-  }
-
-  onWebSocketMessage (event) {
-    let data = JSON.parse(event.data)
-    if (data.type === 'tasks:changed') {
-      this.props.taskChanged(data.tasks)
-    }
+    this.geolocationTracker.start()
+      .then(() => {
+        this.setState({ loading: false, loadingMessage: '' })
+        return this.refreshTasks(this.props.selectedDate)
+      })
+      .catch(e => {
+        console.log(e)
+        // TODO Distinguish error reason
+        Alert.alert(
+          this.props.t('PROBLEM_CONNECTING'),
+          this.props.t('TRY_LATER'),
+          [
+            {
+              text: this.props.t('OK'), onPress: () => {
+                this.props.navigation.dispatch(NavigationActions.back())
+              }
+            },
+          ],
+          { cancelable: false }
+        )
+      })
   }
 
   onGeolocationChange(position) {
-    const ws = Registry.getWebSocketClient()
     this.props.navigation.setParams({ tracking: true })
     this.setState({ currentPosition: position.coords })
-
-    if (ws.isOpen()) {
-      ws.send({
-        type: 'position',
-        data: position.coords
-      })
-    }
+    this.props.send({ type: 'position', data: position.coords })
   }
 
   refreshTasks (selectedDate) {
     const { client } = this.props.navigation.state.params
     this.props.loadTasks(client, selectedDate)
-
   }
 
   onMapReady () {
@@ -252,7 +210,10 @@ class TasksPage extends Component {
             size="large"
             color="#fff"
           />
-          <Text style={{ color: '#fff' }}>{ taskLoadingMessage || loadingMessage }</Text>
+          <Text style={{ color: '#fff' }}>{
+            taskLoadingMessage ||
+            loading && loadingMessage
+          }</Text>
         </View>
       )
     }
@@ -403,17 +364,17 @@ const styles = StyleSheet.create({
 
 function mapStateToProps (state) {
   return {
-    tasks: state.tasks,
-    selectedDate: state.selectedDate,
-    taskLoadingMessage: state.taskLoadingMessage,
-    tasksLoadingError: state.tasksLoadingError
+    tasks: selectTasksList(state),
+    selectedDate: selectTaskSelectedDate(state),
+    isLoadingTasks: selectIsTasksLoading(state),
+    tasksLoadingError: selectIsTasksLoadingFailure(state),
   }
 }
 
 function mapDispatchToProps (dispatch) {
   return {
-    taskChanged: (tasks) => { dispatch(changedTasks(tasks)) },
-    loadTasks: (client, selectedDate) => { dispatch(loadTasksRequest(client, selectedDate)) },
+    loadTasks: (client, selectedDate) => dispatch(loadTasks(client, selectedDate)),
+    send: (msg) => dispatch(send(msg)),
   }
 }
 

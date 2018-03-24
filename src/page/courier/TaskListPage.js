@@ -8,9 +8,12 @@ import moment from 'moment/min/moment-with-locales'
 import TaskList from '../../components/TaskList'
 import DateSelectHeader from '../../components/DateSelectHeader'
 import { whiteColor } from '../../styles/common'
-import { changedTasks, loadTasksRequest } from "../../store/actions"
 import { translate } from 'react-i18next'
 import { localeDetector } from '../../i18n'
+import {
+  loadTasks, markTaskDone, markTaskFailed,
+  selectTasksList, selectTaskSelectedDate, selectIsTasksLoading,
+} from '../../redux/Courier'
 
 moment.locale(localeDetector())
 
@@ -48,8 +51,6 @@ class TaskListPage extends Component {
 
     this.state = {
       addedTasks: [],
-      loading: false,
-      loadingMessage: `${this.props.t('LOADING')}...`
     }
 
     this.refreshTasks = this.refreshTasks.bind(this)
@@ -61,10 +62,6 @@ class TaskListPage extends Component {
 
 
     if (nextTasks !== tasks) {
-      this.setState({
-        loading: false
-      })
-
       // Tasks have been added
       if (nextTasks.length > tasks.length) {
         const addedTasks = _.differenceWith(nextTasks, tasks, taskComparator)
@@ -82,16 +79,15 @@ class TaskListPage extends Component {
   }
 
   refreshTasks (selectedDate) {
-    this.setState({ loading: true, loadingMessage: `${this.props.t('LOADING')}...` })
     const { client } = this.props.navigation.state.params
     this.props.loadTasks(client, selectedDate)
   }
 
   renderLoader() {
 
-    const { taskLoadingMessage } = this.props
+    const { isLoadingTasks } = this.props
 
-    if (taskLoadingMessage) {
+    if (isLoadingTasks) {
       return (
         <View style={ styles.loader }>
           <ActivityIndicator
@@ -99,7 +95,7 @@ class TaskListPage extends Component {
             size="large"
             color="#fff"
           />
-          <Text style={{ color: '#fff' }}>{ taskLoadingMessage }</Text>
+          <Text style={{ color: '#fff' }}>{this.props.t('LOADING')}</Text>
         </View>
       )
     }
@@ -111,7 +107,7 @@ class TaskListPage extends Component {
 
   render() {
 
-    const { tasks, selectedDate, markTaskFailedRequest, markTaskDoneRequest, taskLoadingMessage } = this.props
+    const { tasks, selectedDate } = this.props
     const { addedTasks } = this.state
     const { navigate } = this.props.navigation
     const { client, geolocationTracker } = this.props.navigation.state.params
@@ -148,18 +144,17 @@ class TaskListPage extends Component {
 
 function mapStateToProps (state) {
   return {
-    tasks: state.tasks,
-    selectedDate: state.selectedDate,
-    taskLoadingMessage: state.taskLoadingMessage
+    tasks: selectTasksList(state),
+    selectedDate: selectTaskSelectedDate(state),
+    isLoadingTasks: selectIsTasksLoading(state),
   }
 }
 
 function mapDispatchToProps (dispatch) {
   return {
-    taskChanged: (tasks) => { dispatch(changedTasks(tasks)) },
-    loadTasks: (client, selectedDate) => { dispatch(loadTasksRequest(client, selectedDate)) },
-    markTaskFailedRequest: (client, task, notes) => { dispatch(markTaskFailedRequest(client, task, notes)) },
-    markTaskDoneRequest: (client, task, notes) => { dispatch(markTaskDoneRequest(client, task, notes)) }
+    loadTasks: (client, selectedDate) => dispatch(loadTasks(client, selectedDate)),
+    markTaskFailed: (client, task, notes) => dispatch(markTaskFailed(client, task, notes)),
+    markTaskDone: (client, task, notes) => dispatch(markTaskDone(client, task, notes))
   }
 }
 

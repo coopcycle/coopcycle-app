@@ -10,7 +10,7 @@ import { translate } from 'react-i18next'
 import { localeDetector } from '../../i18n'
 
 import { greenColor, blueColor, redColor } from "../../styles/common"
-import {markTaskDoneRequest, markTaskFailedRequest} from "../../store/actions"
+import { selectIsTasksLoading, selectTasksList, markTaskDone, markTaskFailed } from "../../redux/Courier"
 
 moment.locale(localeDetector())
 
@@ -48,20 +48,19 @@ class TaskPage extends Component {
   markTaskDone() {
 
     const { client, task } = this.props.navigation.state.params
-    const { markTaskDoneRequest } = this.props
+    const { markTaskDone } = this.props
     const { notes } = this.state
 
-    markTaskDoneRequest(client, task, notes)
+    markTaskDone(client, task, notes)
   }
 
   markTaskFailed() {
 
-
     const { client, task } = this.props.navigation.state.params
-    const { markTaskFailedRequest } = this.props
+    const { markTaskFailed } = this.props
     const { notes } = this.state
 
-    markTaskFailedRequest(client, task, notes)
+    markTaskFailed(client, task, notes)
 
   }
 
@@ -186,9 +185,9 @@ class TaskPage extends Component {
   }
 
   renderLoader() {
-    const { taskLoadingMessage } = this.props
+    const { isLoadingTasks } = this.props
 
-    if (taskLoadingMessage) {
+    if (isLoadingTasks) {
       return (
         <View style={ styles.loader }>
           <ActivityIndicator
@@ -196,7 +195,7 @@ class TaskPage extends Component {
             size="large"
             color="#fff"
           />
-          <Text style={{ color: '#fff' }}>{ taskLoadingMessage }</Text>
+          <Text style={{ color: '#fff' }}>{ isLoadingTasks }</Text>
         </View>
       );
     }
@@ -452,15 +451,15 @@ const styles = StyleSheet.create({
 
 function mapStateToProps (state) {
   return {
-    taskLoadingMessage: state.taskLoadingMessage,
-    tasks: state.tasks
+    isLoadingTasks: selectIsTasksLoading(state),
+    tasks: selectTasksList(state),
   }
 }
 
 function mapDispatchToProps (dispatch) {
   return {
-    markTaskFailedRequest: (client, task, notes) => { dispatch(markTaskFailedRequest(client, task, notes)) },
-    markTaskDoneRequest: (client, task, notes) => { dispatch(markTaskDoneRequest(client, task, notes)) }
+    markTaskFailed: (client, task, notes) => dispatch(markTaskFailed(client, task, notes)),
+    markTaskDone: (client, task, notes) => dispatch(markTaskDone(client, task, notes)),
   }
 }
 
