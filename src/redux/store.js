@@ -17,3 +17,21 @@ export default createStore(
   reducers,
   composeWithDevTools(applyMiddleware(...middlewares))
 )
+
+
+export const observeStore = (store, selector, onChange) => {
+  let currentState = null
+
+  const handleChange = () => {
+    const nextState = selector(store.getState())
+
+    if (nextState !== currentState) {
+      currentState = nextState
+      onChange(currentState)
+    }
+  }
+
+  const unsubscribe = store.subscribe(handleChange)
+  handleChange()
+  return unsubscribe
+}
