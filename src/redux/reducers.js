@@ -16,16 +16,12 @@
  * Initial state-shapes are provided in each individual reducer file.
  */
 import { combineReducers } from 'redux'
-import { tasksEntityReducer, tasksUiReducer } from './Tasks'
+import { tasksEntityReducer, tasksUiReducer } from './Courier'
 import { appReducer } from './App'
 
 export default combineReducers({
   entities: combineReducers({
     tasks: tasksEntityReducer,
-    // account: accountEntityReducer,
-    // courier: courierEntityReducer,
-    // order: orderEntityReducer,
-    // restaurants: restaurantsEntityReducer,
   }),
   app: appReducer,
   ui: combineReducers({

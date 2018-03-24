@@ -1,6 +1,3 @@
-/*
- * Task related reducers
- */
 import { omit } from 'lodash'
 import moment from 'moment/min/moment-with-locales'
 import {
@@ -8,14 +5,13 @@ import {
   MARK_TASK_DONE_REQUEST, MARK_TASK_DONE_FAILURE, MARK_TASK_DONE_SUCCESS,
   MARK_TASK_FAILED_REQUEST, MARK_TASK_FAILED_FAILURE, MARK_TASK_FAILED_SUCCESS,
   DONT_TRIGGER_TASKS_NOTIFICATION,
-} from './actions'
+} from './taskActions'
 import { MESSAGE } from '../middlewares/WebSocketMiddleware'
 import { insertAt } from '../util'
 import { localeDetector } from '../../i18n'
 
 
 moment.locale(localeDetector())
-
 
 /*
  * Intital state shape for the task entity reducer
@@ -140,29 +136,6 @@ const processWsMsg = (state, { type, ...data }) => {
         order: state.order.filter(id => id != data.task['@id']),
       }
 
-    default:
-      return { ...state }
-  }
-}
-
-
-/*
- * Intital state shape for the task UI reducer
- * Data related to the presentation of task-related components
- * but not directly related to the entity itself goes here
- */
-const tasksUiInitialState = {
-  selectedDate: moment()  // Date selected by the user
-}
-
-
-export const tasksUiReducer = (state = tasksUiInitialState, action) => {
-  switch (action.type) {
-    case LOAD_TASKS_REQUEST:
-      return {
-        ...state,
-        selectedDate: action.payload || moment()
-      }
     default:
       return { ...state }
   }

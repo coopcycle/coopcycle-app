@@ -10,7 +10,7 @@ import { translate } from 'react-i18next'
 import { localeDetector } from '../../i18n'
 
 import { greenColor, blueColor, redColor } from "../../styles/common"
-import { selectIsTasksLoading, selectTasksList, markTaskDone, markTaskFailed } from "../../redux/Tasks"
+import { selectIsTasksLoading, selectTasksList, markTaskDone, markTaskFailed } from "../../redux/Courier"
 
 moment.locale(localeDetector())
 

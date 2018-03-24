@@ -13,7 +13,7 @@ import { localeDetector } from '../../i18n'
 import {
   loadTasks, markTaskDone, markTaskFailed,
   selectTasksList, selectTaskSelectedDate, selectIsTasksLoading,
-} from '../../redux/Tasks'
+} from '../../redux/Courier'
 
 moment.locale(localeDetector())
 
