@@ -27,7 +27,7 @@ import i18n from './src/i18n'
 import { primaryColor,  whiteColor, fontTitleName } from './src/styles/common'
 import { selectTriggerTasksNotification, dontTriggerTasksNotification } from './src/redux/Tasks'
 import { init as wsInit } from './src/redux/middlewares/WebSocketMiddleware'
-import store from "./src/redux/store"
+import store, { observeStore } from "./src/redux/store"
 
 const Routes = require('./src/page')
 const AppUser = require('./src/AppUser')
@@ -208,6 +208,7 @@ const initialRouteName = user => {
 class App extends Component {
 
   input = null
+  reduxStoreUnsubscribe = () => {}
 
   constructor(props) {
     super(props)
@@ -222,17 +223,19 @@ class App extends Component {
       serverError: false,
     }
 
-    store.subscribe(() => {
-      const state = store.getState()
-
-      if (selectTriggerTasksNotification(state)) {
-        Toast.show({
-          text: this.props.t('TASKS_UPDATED'),
-          position: 'bottom'
-        })
-        store.dispatch(dontTriggerTasksNotification())
+    this.reduxStoreUnsubscribe = observeStore(
+      store,
+      selectTriggerTasksNotification,
+      (triggerTasksNotification) => {
+        if (triggerTasksNotification) {
+          Toast.show({
+            text: this.props.t('TASKS_UPDATED'),
+            position: 'bottom'
+          })
+          store.dispatch(dontTriggerTasksNotification())
+        }
       }
-    })
+    )
 
     this.disconnect = this.disconnect.bind(this)
     this.connect = this.connect.bind(this)
@@ -257,6 +260,10 @@ class App extends Component {
           .loadServer()
           .then(baseURL => this.initializeRouter(baseURL, user))
       })
+  }
+
+  componentWillUnmount() {
+    this.reduxStoreUnsubscribe()
   }
 
   initializeRouter(baseURL, user) {
