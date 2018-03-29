@@ -15,7 +15,7 @@ import { connect } from 'react-redux'
 import { translate } from 'react-i18next'
 import _ from 'lodash'
 
-import { greenColor, blueColor, redColor, greyColor, whiteColor, dateSelectHeaderHeight } from "../../styles/common"
+import { greenColor, blueColor, redColor, greyColor, whiteColor, orangeColor, dateSelectHeaderHeight, websocketWarningHeight } from "../../styles/common"
 import GeolocationTracker from '../../GeolocationTracker'
 import DateSelectHeader from "../../components/DateSelectHeader"
 import { localeDetector } from '../../i18n'
@@ -43,9 +43,6 @@ class TasksPage extends Component {
     return {
       headerRight: (
         <View style={{flex: 1, flexDirection: 'row', alignItems: 'flex-end'}}>
-          <Button transparent>
-            <Icon name="wifi" style={{color: params.connected ? greenColor : greyColor}}/>
-          </Button>
           <Button transparent>
             <Icon name="navigate" style={{color: params.tracking ? greenColor : greyColor}}/>
           </Button>
@@ -225,7 +222,7 @@ class TasksPage extends Component {
 
   render() {
 
-    const { tasks, selectedDate } = this.props
+    const { tasks, selectedDate, isWsOpen } = this.props
     const { navigate } = this.props.navigation
     const { client } = this.props.navigation.state.params
     const geolocationTracker = this.geolocationTracker
@@ -265,6 +262,11 @@ class TasksPage extends Component {
           toDate={this.refreshTasks}
           selectedDate={selectedDate}
         />
+        { !isWsOpen &&
+          <View style={styles.websocketWarning}>
+            <Text style={styles.websocketWarningText}>{this.props.t('WS_NOT_CONNECTED_WARNING')}</Text>
+          </View>
+        }
         <View style={ styles.container }>
           <MapView
             ref={ component => this.map = component }
@@ -349,7 +351,7 @@ const styles = StyleSheet.create({
   locateButton: {
     position: 'absolute',
     zIndex: 2,
-    top: 0,
+    top: 22,
     right: 0,
   },
   circle: {
@@ -360,6 +362,16 @@ const styles = StyleSheet.create({
     marginRight: 20,
     marginTop: 20,
   },
+  websocketWarning: {
+    backgroundColor: orangeColor,
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: websocketWarningHeight,
+    zIndex: 2,
+  },
+  websocketWarningText: {
+    color: whiteColor
+  }
 })
 
 function mapStateToProps (state) {
@@ -368,6 +380,7 @@ function mapStateToProps (state) {
     selectedDate: selectTaskSelectedDate(state),
     isLoadingTasks: selectIsTasksLoading(state),
     tasksLoadingError: selectIsTasksLoadingFailure(state),
+    isWsOpen: selectIsWsOpen(state)
   }
 }
 

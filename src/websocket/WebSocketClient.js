@@ -7,7 +7,7 @@
 import JSONAsyncStorage from './storage'
 
 const defaults = {
-  reconnectTimeout: 1500
+  reconnectTimeout: 3000
 }
 
 class WebSocketClient {
