@@ -7,6 +7,7 @@ import com.corbt.keepawake.KCKeepAwakePackage;
 import com.gettipsi.stripe.StripeReactPackage;
 import com.coopcycle.pin.RNPinScreenPackage;
 import com.airbnb.android.react.maps.MapsPackage;
+import com.agontuk.RNFusedLocation.RNFusedLocationPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -31,7 +32,8 @@ public class MainApplication extends Application implements ReactApplication {
           new KCKeepAwakePackage(),
           new RNPinScreenPackage(),
           new StripeReactPackage(),
-          new MapsPackage()
+          new MapsPackage(),
+          new RNFusedLocationPackage()
       );
     }
 
