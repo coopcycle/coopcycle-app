@@ -106,34 +106,17 @@ export const tasksEntityReducer = (state = tasksEntityInitialState, action) => {
 const processWsMsg = (state, { type, ...data }) => {
   switch (type) {
     case 'tasks:changed':
+      // order tasks by position
+      let tasks = _.sortBy(data.tasks, (task) => task.position)
       return {
         ...state,
         lastUpdated: moment(),
         triggerTasksNotification: true,
-        items: data.tasks.reduce((acc, task) => {
+        items: tasks.reduce((acc, task) => {
           acc[task.id] = task
           return acc
         }, {}),
-        order: data.tasks.map((task) => task.id),
-      }
-
-    case 'task:assign':
-      return {
-        ...state,
-        lastUpdated: moment(),
-        items: {
-          ...state.items,
-          [data.task.id]: data.task,
-        },
-        order: insertAt(data.task.id, data.task.position, state.order)
-      }
-
-    case 'task:unassign':
-      return {
-        ...state,
-        lastUpdated: moment(),
-        items: omit(state.items, [data.task['@id']]),
-        order: state.order.filter(id => id != data.task['@id']),
+        order: tasks.map((task) => task.id),
       }
 
     default:

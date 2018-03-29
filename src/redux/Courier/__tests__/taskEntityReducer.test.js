@@ -133,7 +133,7 @@ describe('Redux | Tasks | Reducers', () => {
     })
 
     test(`${message} | tasks:changed`, () => {
-      const tasks = [{ id: 1 }, { id: 2 }]
+      const tasks = [{ id: 1, position: 1 }, { id: 2, position: 0 }]
       const wsMsg = { type: 'tasks:changed', tasks }
 
       const initialState = {
@@ -151,58 +151,8 @@ describe('Redux | Tasks | Reducers', () => {
       expect(lastUpdatedOld).not.toEqual(lastUpdatedNew)
       expect(newState).toEqual(expect.objectContaining({
         triggerTasksNotification: true,
-        items: { 1: tasks[0], 2: tasks[1] },
-        order: [1, 2]
-      }))
-      expect(restOldState).toEqual(restNewState)
-    })
-
-    test(`${message} | task:assign`, () => {
-      const task = { id: 3, position: 1 }
-      const wsMsg = { type: 'task:assign', task: { ...task, foo: 'bar' } }
-
-      const initialState = {
-        ...tasksEntityReducer(undefined, {}),
-        items: { 1: { id: 1 }, 2: { id: 2 } },
-        order: [1, 2]
-      }
-
-      const newState = tasksEntityReducer(initialState, message(wsMsg))
-
-      const restOldState = omit(initialState, ['lastUpdated', 'items', 'order'])
-      const restNewState = omit(newState, ['lastUpdated', 'items', 'order'])
-      const { lastUpdated: lastUpdatedOld } = initialState
-      const { lastUpdated: lastUpdatedNew } = newState
-
-      expect(lastUpdatedOld).not.toEqual(lastUpdatedNew)
-      expect(newState).toEqual(expect.objectContaining({
-        items: { 1: { id: 1 }, 2: { id: 2 }, 3: wsMsg.task },
-        order: [1, 3, 2],
-      }))
-      expect(restOldState).toEqual(restNewState)
-    })
-
-    test(`${message} | task:unassign`, () => {
-      const task = { '@id': 2 }
-      const wsMsg = { type: 'task:unassign', task }
-
-      const initialState = {
-        ...tasksEntityReducer(undefined, {}),
-        items: { 1: { id: 1 }, 2: { id: 2 } },
-        order: [1, 2]
-      }
-
-      const newState = tasksEntityReducer(initialState, message(wsMsg))
-
-      const restOldState = omit(initialState, ['lastUpdated', 'items', 'order'])
-      const restNewState = omit(newState, ['lastUpdated', 'items', 'order'])
-      const { lastUpdated: lastUpdatedOld } = initialState
-      const { lastUpdated: lastUpdatedNew } = newState
-
-      expect(lastUpdatedOld).not.toEqual(lastUpdatedNew)
-      expect(newState).toEqual(expect.objectContaining({
-        items: { 1: { id: 1 } },
-        order: [1],
+        items: { 1: tasks[1], 2: tasks[0] },
+        order: [2, 1]
       }))
       expect(restOldState).toEqual(restNewState)
     })
