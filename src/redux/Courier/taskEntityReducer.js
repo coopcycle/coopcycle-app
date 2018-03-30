@@ -81,7 +81,7 @@ export const tasksEntityReducer = (state = tasksEntityInitialState, action) => {
     case MARK_TASK_FAILED_SUCCESS:
       return {
         ...state,
-        lastUpdated: moment(),
+        isFetching: false,
         items: {
           ...state.items,
           [action.payload.id]: action.payload,
