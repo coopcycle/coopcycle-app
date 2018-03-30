@@ -104,14 +104,15 @@ describe('Redux | Tasks | Reducers', () => {
           const restOldState = omit(initialState, ['lastUpdated', 'items'])
           const restNewState = omit(newState, ['lastUpdated', 'items'])
           const { lastUpdated: lastUpdatedOld } = initialState
-          const { lastUpdated: lastUpdatedNew } = newState
+          const { lastUpdated: lastUpdatedNew, isFetching } = newState
 
           expect(newState).toEqual(expect.objectContaining({
             items: { 1: { ...task, foo: 'foo' } }
           }))
 
           expect(restOldState).toEqual(restNewState)
-          expect(lastUpdatedNew).not.toEqual(lastUpdatedOld)
+          expect(lastUpdatedNew).toEqual(lastUpdatedOld)
+          expect(isFetching).toBeFalsy()
         })
       })
 
@@ -151,7 +152,7 @@ describe('Redux | Tasks | Reducers', () => {
       expect(lastUpdatedOld).not.toEqual(lastUpdatedNew)
       expect(newState).toEqual(expect.objectContaining({
         triggerTasksNotification: true,
-        items: { 1: tasks[1], 2: tasks[0] },
+        items: { 1: tasks[0], 2: tasks[1] },
         order: [2, 1]
       }))
       expect(restOldState).toEqual(restNewState)

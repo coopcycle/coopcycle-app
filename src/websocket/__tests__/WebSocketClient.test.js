@@ -96,7 +96,7 @@ describe('WebSocketClient', () => {
     const ws = new WebSocketClient(client, '/dispatch')
 
     expect(ws).toBeInstanceOf(WebSocketClient)
-    expect(ws.reconnectTimeout).toBe(1500)
+    expect(ws.reconnectTimeout).toBe(3000)
   })
 
   test('connect', () => {
@@ -109,7 +109,7 @@ describe('WebSocketClient', () => {
       .then(() => {
         expect(ws.openCount).toBe(1)
         expect(ws.closeCount).toBe(0)
-        expect(ws.isOpen()).toBe(true)
+        expect(ws.isOpen()).toBeTruthy()
       })
 
     ws.webSocket._open()

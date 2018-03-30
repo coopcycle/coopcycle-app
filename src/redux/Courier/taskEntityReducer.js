@@ -7,7 +7,7 @@ import {
   DONT_TRIGGER_TASKS_NOTIFICATION,
 } from './taskActions'
 import { MESSAGE } from '../middlewares/WebSocketMiddleware'
-import { insertAt } from '../util'
+import _ from 'lodash'
 import { localeDetector } from '../../i18n'
 
 
