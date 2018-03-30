@@ -247,7 +247,7 @@ class TaskPage extends Component {
               <TouchableOpacity style={ styles.buttonContainer } onPress={ onPress }>
                 <View style={ styles.buttonTextContainer }>
                   <Icon name={ buttonIconName } style={{ color: '#fff', marginRight: 10 }} />
-                  <Text style={{ color: '#fff' }}>{ modalContextValid ? 'Valider' : 'Signaler un problème' }</Text>
+                  <Text style={{ color: '#fff' }}>{ modalContextValid ? this.props.t('VALIDATE') : this.props.t('MARK_FAILED') }</Text>
                 </View>
               </TouchableOpacity>
             </Footer>
