@@ -61,7 +61,7 @@ class TasksPage extends Component {
     this.state = {
       task: null,
       loading: false,
-      loadingMessage: `${this.props.t('LOADING')}...`,
+      loadingMessage: this.props.t('LOADING'),
       currentPosition: null,
       polyline: [],
       detailsModal: false
@@ -154,14 +154,15 @@ class TasksPage extends Component {
 
   connect() {
 
-    this.setState({ loading: true, loadingMessage: `${this.props.t('WAITING_FOR_POS')}...` })
+    this.setState({ loading: true, loadingMessage: this.props.t('WAITING_FOR_POS') })
 
     this.geolocationTracker.start()
       .then(() => {
-        this.setState({ loading: false, loadingMessage: '' })
+        this.setState({ loading: false, loadingMessage: this.props.t('LOADING') })
         return this.refreshTasks(this.props.selectedDate)
       })
       .catch(e => {
+        this.setState({ loading: false })
         console.log(e)
         // TODO Distinguish error reason
         Alert.alert(
@@ -196,10 +197,10 @@ class TasksPage extends Component {
 
   renderLoader() {
 
-    const { taskLoadingMessage } = this.props
+    const { isLoadingTasks } = this.props
     const { loading, loadingMessage } = this.state
 
-    if (taskLoadingMessage || loading) {
+    if (isLoadingTasks || loading) {
       return (
         <View style={ styles.loader }>
           <ActivityIndicator
@@ -208,8 +209,7 @@ class TasksPage extends Component {
             color="#fff"
           />
           <Text style={{ color: '#fff' }}>{
-            taskLoadingMessage ||
-            loading && loadingMessage
+            loadingMessage || this.props.t('LOADING')
           }</Text>
         </View>
       )
