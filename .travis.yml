@@ -31,6 +31,7 @@ matrix:
       - npm install -g yarn
       - yarn install
       - cp src/AppConfig.json.dist src/AppConfig.json
+      - cp google-services.json.dist android/app/google-services.json
     script:
       - cd android && ./gradlew assembleDebug --stacktrace
   - language: objective-c
