@@ -25,7 +25,7 @@
     "react-native-pin-screen": "git+https://git@github.com/coopcycle/react-native-pin-screen.git#1.0.1",
     "react-native-push-notification": "^3.0.2",
     "react-native-swipeout": "^2.3.3",
-    "react-navigation": "^1.0.0",
+    "react-navigation": "^1.5.1",
     "react-redux": "^5.0.7",
     "redux": "^3.7.2",
     "redux-actions": "^2.2.1",
