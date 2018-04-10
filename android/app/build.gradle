@@ -157,6 +157,9 @@ dependencies {
     compile(project(':react-native-i18n')) {
         exclude group: 'com.google.android.gms'
     }
+    compile(project(':react-native-push-notification')){
+      exclude group: 'com.google.android.gms'
+    }
     compile(project(':react-native-keep-awake')){
         exclude group: 'com.google.android.gms'
     }
@@ -171,6 +174,7 @@ dependencies {
     implementation(project(':react-native-geolocation-service')) {
         exclude group: 'com.google.android.gms', module: 'play-services-location'
     }
+    compile 'com.google.firebase:firebase-messaging:11.8.0'
     compile 'com.google.android.gms:play-services-location:11.8.0'
     // compile gms independantly, in case of conflicting requirements from other dependencies
     // see: https://medium.com/@suchydan/how-to-solve-google-play-services-version-collision-in-gradle-dependencies-ef086ae5c75f
@@ -211,3 +215,5 @@ configurations.all {
         }
     }
 }
+
+apply plugin: 'com.google.gms.google-services'

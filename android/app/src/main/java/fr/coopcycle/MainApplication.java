@@ -3,6 +3,7 @@ package fr.coopcycle;
 import android.app.Application;
 import com.facebook.react.ReactApplication;
 import com.AlexanderZaytsev.RNI18n.RNI18nPackage;
+import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
 import com.corbt.keepawake.KCKeepAwakePackage;
 import com.gettipsi.stripe.StripeReactPackage;
 import com.coopcycle.pin.RNPinScreenPackage;
@@ -33,7 +34,8 @@ public class MainApplication extends Application implements ReactApplication {
           new RNPinScreenPackage(),
           new StripeReactPackage(),
           new MapsPackage(),
-          new RNFusedLocationPackage()
+          new RNFusedLocationPackage(),
+          new ReactNativePushNotificationPackage()
       );
     }
 
