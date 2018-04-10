@@ -5,33 +5,34 @@ matrix:
     node_js: 8
     cache: yarn
     before_script:
-    - cp src/AppConfig.json.dist src/AppConfig.json
+      - cp src/AppConfig.json.dist src/AppConfig.json
   - language: android
     env: LANE='android'
     sudo: required
     jdk: oraclejdk8
     before_cache:
-    - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
-    - rm -rf $HOME/.gradle/caches/*/plugin-resolution/
+      - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+      - rm -rf $HOME/.gradle/caches/*/plugin-resolution/
     cache:
       directories:
-      - "$HOME/.yarn-cache"
-      - "$HOME/.gradle/caches/"
-      - "$HOME/.gradle/wrapper/"
-    before_install:
-    - nvm install 8
+        - "$HOME/.yarn-cache"
+        - "$HOME/.gradle/caches/"
+        - "$HOME/.gradle/wrapper/"
     android:
       components:
-      - tools
-      - platform-tools
-      - tools
-      - build-tools-27.0.3
-      - android-27
+        - tools
+        - platform-tools
+        - tools
+        - build-tools-27.0.3
+        - android-27
+    before_install:
+      - nvm install 8
+    before_script:
+      - npm install -g yarn
+      - yarn install
+      - cp src/AppConfig.json.dist src/AppConfig.json
     script:
-    - npm install -g yarn
-    - yarn install
-    - cp src/AppConfig.json.dist src/AppConfig.json
-    - cd android && ./gradlew assembleDebug --stacktrace
+      - cd android && ./gradlew assembleDebug --stacktrace
   - language: objective-c
     env: LANE='ios'
     os: osx
@@ -43,13 +44,13 @@ matrix:
       - bundler
       - yarn
     before_install:
-    - gem install xcpretty
-    - npm install -g yarn
-    - yarn install
-    - cp src/AppConfig.json.dist src/AppConfig.json
-    - cd ios
+      - gem install xcpretty
+      - npm install -g yarn
+      - yarn install
+      - cp src/AppConfig.json.dist src/AppConfig.json
+      - cd ios
     script:
-    - xcodebuild -workspace CoopCycle.xcworkspace -scheme CoopCycle -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO | xcpretty && exit ${PIPESTATUS[0]}
+      - xcodebuild -workspace CoopCycle.xcworkspace -scheme CoopCycle -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO | xcpretty && exit ${PIPESTATUS[0]}
 
 notifications:
   email: false
