@@ -96,8 +96,8 @@ def enableProguardInReleaseBuilds = false
 def googleMapsApiKey = hasProperty('googleMapsApiKey') ? googleMapsApiKey : System.getenv('googleMapsApiKey')
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion "26.0.2"
+    compileSdkVersion 27
+    buildToolsVersion "27.0.3"
 
     defaultConfig {
         applicationId "fr.coopcycle"
@@ -155,32 +155,32 @@ android {
 
 dependencies {
     compile(project(':react-native-i18n')) {
-      exclude group: 'com.google.android.gms'
+        exclude group: 'com.google.android.gms'
     }
     compile(project(':react-native-keep-awake')){
-      exclude group: 'com.google.android.gms'
+        exclude group: 'com.google.android.gms'
     }
     compile project(':react-native-pin-screen')
     compile(project(':tipsi-stripe')){
-      exclude group: 'com.google.android.gms'
+        exclude group: 'com.google.android.gms'
     }
     implementation(project(':react-native-maps')){
         exclude group: 'com.google.android.gms', module: 'play-services-base'
         exclude group: 'com.google.android.gms', module: 'play-services-maps'
     }
-    compile(project(':react-native-geolocation-service')) {
+    implementation(project(':react-native-geolocation-service')) {
         exclude group: 'com.google.android.gms', module: 'play-services-location'
     }
     compile 'com.google.android.gms:play-services-location:11.8.0'
     // compile gms independantly, in case of conflicting requirements from other dependencies
     // see: https://medium.com/@suchydan/how-to-solve-google-play-services-version-collision-in-gradle-dependencies-ef086ae5c75f
     compile "com.google.android.gms:play-services-base:11.8.0"
-    implementation 'com.google.android.gms:play-services-maps:10.0.1'
+    implementation 'com.google.android.gms:play-services-maps:11.8.0'
     compile "com.google.android.gms:play-services-wallet:11.8.0"
     compile "com.google.android.gms:play-services-identity:11.8.0"
     compile "com.google.android.gms:play-services-gcm:11.8.0"
     compile fileTree(dir: "libs", include: ["*.jar"])
-    compile "com.android.support:appcompat-v7:26.1.0"
+    compile "com.android.support:appcompat-v7:27.0.1"
     compile "com.facebook.react:react-native:+"  // From node_modules
 }
 

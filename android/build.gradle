@@ -22,6 +22,10 @@ allprojects {
         maven { url "https://jitpack.io" }
         mavenLocal()
         jcenter()
+        // Gradle 4.1 and higher include support for Google's Maven repo using
+        // the google() method. And you need to include this repo to download
+        // Android plugin 3.0.0 or higher.
+        google()
         maven {
             // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
             url "$rootDir/../node_modules/react-native/android"
@@ -33,8 +37,8 @@ subprojects {
     afterEvaluate {project ->
         if (project.hasProperty("android")) {
             android {
-                compileSdkVersion 26
-                buildToolsVersion "26.0.2"
+                compileSdkVersion 27
+                buildToolsVersion "27.0.3"
             }
         }
     }
