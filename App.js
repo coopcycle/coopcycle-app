@@ -249,7 +249,7 @@ class App extends Component {
       if (user && user.isAuthenticated() && (user.hasRole('ROLE_COURIER') || user.hasRole('ROLE_ADMIN'))) {
         Registry.initWebSocketClient(client)
           .then(() => store.dispatch(wsInit(Registry.getWebSocketClient())))
-          .catch(console.error)
+          .catch(e => console.log(e))
       }
     })
     Settings.addListener('user:logout', () => Registry.clearWebSocketClient())
@@ -274,7 +274,7 @@ class App extends Component {
       if (user && user.isAuthenticated() && (user.hasRole('ROLE_COURIER') || user.hasRole('ROLE_ADMIN'))) {
         Registry.initWebSocketClient(client)
           .then(() => store.dispatch(wsInit(Registry.getWebSocketClient())))
-          .catch(console.error)
+          .catch(e => console.log(e))
       }
     }
 
