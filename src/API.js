@@ -127,6 +127,21 @@ Client.prototype.checkToken = function() {
   })
 }
 
+Client.prototype.register = function (data) {
+  return register(this.httpBaseURL, data)
+    .then((credentials) => {
+
+      Object.assign(this.model, {
+        username: data.username,
+        token: credentials.token,
+        refreshToken: credentials.refresh_token,
+        roles: credentials.roles,
+      })
+
+      return this.model.save()
+    })
+}
+
 Client.prototype.login = function(username, password) {
   return login(this.httpBaseURL, username, password)
     .then((credentials) => {
@@ -140,6 +155,23 @@ Client.prototype.login = function(username, password) {
 
       return this.model.save();
     });
+}
+
+var register = function(baseURL, data) {
+  var formData = new FormData()
+  Object.keys(data)
+    .forEach(key => {
+      formData.append(`_${key}`, data[key])
+    })
+  var request = new Request(baseURL + '/api/register', {
+    method: 'POST',
+    body: formData
+  })
+
+  return fetch(request)
+    .then(res =>
+      res.json()
+        .then(json => res.ok ? json : Promise.reject(json)))
 }
 
 var login = function(baseURL, username, password) {
