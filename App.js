@@ -274,7 +274,7 @@ class App extends Component {
 
     if (baseURL) {
       client = API.createClient(baseURL, user)
-      if (user && user.isAuthenticated() && (user.hasRole('ROLE_COURIER') || user.hasRole('ROLE_ADMIN'))) {
+      if (user && user.isAuthenticated()) {
 
         Registry.initWebSocketClient(client)
           .then(() => store.dispatch(wsInit(Registry.getWebSocketClient())))
