@@ -94,6 +94,12 @@
     "LAST_TASK_EVENT": "Dernier évènement {{fromNow}}",
     "HISTORY": "Historique",
     "SETTINGS": "Réglages",
-    "SETTING_KEEP_AWAKE": "Désactiver la mise en veille"
+    "SETTING_KEEP_AWAKE": "Désactiver la mise en veille",
+    "OR_REGISTER": "Vous n'avez pas de compte? Registre",
+    "OR_LOGIN": "Vous avez déjà un compte? S'identifier",
+    "GIVEN_NAME": "Prénom",
+    "FAMILY_NAME": "Nom de Famille",
+    "PHONE_NUMBER": "Téléphone",
+    "CONFIRM_PASSWORD": "Confirmez le mot de passe"
   }
 }
