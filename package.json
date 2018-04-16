@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
-    "test": "jest"
+    "test": "jest",
+    "postinstall": "wget https://github.com/facebook/react-native/commit/4b6e9d3dfd213689c5b319a4efee8d4f606d6f9d.patch && patch $PWD/node_modules/react-native/Libraries/WebSocket/WebSocket.js 4b6e9d3dfd213689c5b319a4efee8d4f606d6f9d.patch && rm -f 4b6e9d3dfd213689c5b319a4efee8d4f606d6f9d.patch"
   },
   "dependencies": {
     "@mapbox/polyline": "^0.2.0",
