@@ -170,8 +170,10 @@ var register = function(baseURL, data) {
 
   return fetch(request)
     .then(res =>
-      res.json()
-        .then(json => res.ok ? json : Promise.reject(json)))
+      res.ok
+        ? res.json()
+        : Promise.reject({ status: res.status })
+    )
 }
 
 var login = function(baseURL, username, password) {
