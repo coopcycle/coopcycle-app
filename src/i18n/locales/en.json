@@ -105,7 +105,7 @@
     "INVALID_GIVEN_NAME": "Please enter a valid first name",
     "INVALID_FAMILY_NAME": "Please enter a valid last name",
     "INVALID_EMAIL": "Please enter a valid email",
-    "INVALID_PHONE_NUMBER": "Please enter a valid phone number",
+    "INVALID_PHONE_NUMBER": "Please enter a valid phone number, including country code",
     "INVALID_USERNAME": "Please enter a valid username",
     "INVALID_PASSWORD": "Please enter a valid password at least 8 characters",
     "INVALID_PASSWORD_CONFIRMATION": "Password confirmation does not match"

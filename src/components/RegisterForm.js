@@ -9,9 +9,14 @@ import i18n from '../i18n'
 
 const phoneUtil = PhoneNumberUtil.getInstance()
 
+// Custom validator for phone numbers
+// `parseAndKeepRawInput` throws exceptions if it receives an un-parseable input
+// (including a phone number without a country-code)
 validate.validators.phoneNumber = (value, options, key, attributes) => {
+  let number = ''
+
   try {
-    return phoneUtil.parseAndKeepRawInput(value).isValidNumber()
+    return phoneUtil.isValidNumber(phoneUtil.parseAndKeepRawInput(value))
       ? null
       : options.message
 
@@ -21,6 +26,9 @@ validate.validators.phoneNumber = (value, options, key, attributes) => {
   }
 }
 
+// Custom validator for matches
+// Checks whether the given value matches another value in the object under validation
+// Used for password confirmation checks
 validate.validators.matches = (value, options, key, attributes) =>
   value === attributes[options.key]
     ? null
@@ -94,6 +102,8 @@ class RegisterForm extends React.Component {
   }
 
   onSubmit() {
+    this.setState({ message: '' })
+
     const { error, ...data } = this.state
     const { client, onRequestStart, onRequestEnd, onRegisterSuccess, onRegisterFail } = this.props
 
