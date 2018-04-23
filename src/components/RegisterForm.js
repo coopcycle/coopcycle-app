@@ -2,20 +2,93 @@ import React from 'react'
 import { View } from 'react-native'
 import { Form, Item, Input, Label, Button, Text } from 'native-base'
 import { translate } from 'react-i18next'
+import validate from 'validate.js'
+import { PhoneNumberUtil } from 'google-libphonenumber'
+import i18n from '../i18n'
+
+
+const phoneUtil = PhoneNumberUtil.getInstance()
+
+validate.validators.phoneNumber = (value, options, key, attributes) => {
+  try {
+    return phoneUtil.parseAndKeepRawInput(value).isValidNumber()
+      ? null
+      : options.message
+
+  } catch (error) {
+    return options.message
+
+  }
+}
+
+validate.validators.matches = (value, options, key, attributes) =>
+  value === attributes[options.key]
+    ? null
+    : options.message
 
 
 class RegisterForm extends React.Component {
+  static schema = {
+    givenName: {
+      presence: { message: i18n.t('INVALID_GIVEN_NAME') },
+      length: {
+        minimum: 1,
+        message: i18n.t('INVALID_GIVEN_NAME'),
+      },
+    },
+    familyName: {
+      presence: { message: i18n.t('INVALID_GIVEN_NAME') },
+      length: {
+        minimum: 1,
+        message: i18n.t('INVALID_GIVEN_NAME'),
+      },
+    },
+    email: {
+      presence: { message: i18n.t('INVALID_GIVEN_NAME') },
+      email: {
+        message: i18n.t('INVALID_GIVEN_NAME'),
+      },
+    },
+    telephone: {
+      presence: { message: i18n.t('INVALID_PHONE_NUMBER') },
+      phoneNumber: {
+        message: i18n.t('INVALID_PHONE_NUMBER'),
+      },
+    },
+    username: {
+      presence: { message: i18n.t('INVALID_GIVEN_NAME') },
+      length: {
+        minimum: 2,
+        message: i18n.t('INVALID_GIVEN_NAME'),
+      },
+    },
+    password: {
+      presence: { message: i18n.t('INVALID_GIVEN_NAME') },
+      length: {
+        minimum: 8,
+        message: i18n.t('INVALID_GIVEN_NAME'),
+      },
+    },
+    passwordConfirmation: {
+      presence: { message: i18n.t('INVALID_PASSWORD_CONFIRMATION') },
+      matches: {
+        key: 'password',
+        message: i18n.t('INVALID_PASSWORD_CONFIRMATION'),
+      }
+    },
+  }
+
   constructor(props) {
     super(props)
 
     this.state = {
-      givenName: null,
-      familyName: null,
-      email: null,
-      telephone: null,
-      username: null,
-      password: null,
-      passwordConfirmation: null,
+      givenName: '',
+      familyName: '',
+      email: '',
+      telephone: '',
+      username: '',
+      password: '',
+      passwordConfirmation: '',
       error: false,
     }
   }
@@ -23,6 +96,14 @@ class RegisterForm extends React.Component {
   onSubmit() {
     const { error, ...data } = this.state
     const { client, onRequestStart, onRequestEnd, onRegisterSuccess, onRegisterFail } = this.props
+
+    const validationErrors = validate(data, RegisterForm.schema, { fullMessages: false })
+
+    if (validationErrors) {
+      this.setState({ error: true })
+      return onRegisterFail(Object.values(validationErrors)[0])
+    }
+
     onRequestStart()
     client.register(data)
       .then(user => {
@@ -31,9 +112,16 @@ class RegisterForm extends React.Component {
       })
       .catch(err => {
         onRequestEnd()
-        // TODO: What error codes can be expected? 400, 409, ...?
-        //       Better error handling once this is clarified
-        onRegisterFail(err.message)
+
+        if (err.status && err.status === 400) {
+          this.setState({ error: true });
+          onRegisterFail(this.props.t('EMAIL_ALREADY_REGISTERED'));
+
+        } else {
+          onRegisterFail(this.props.t('TRY_LATER'))
+
+        }
+
       })
   }
 
