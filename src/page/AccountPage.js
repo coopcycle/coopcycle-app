@@ -221,15 +221,22 @@ class AccountPage extends Component {
       <Container>
         <Content style={ styles.content }>
           { this.renderServer() }
+          {
+            this.state.message &&
+            (
+              <View style={styles.message}>
+                <Text style={{ textAlign: 'center' }}>{this.state.message}</Text>
+              </View>
+            )
+          }
           { this.renderForm() }
           <View style={{ paddingHorizontal: 10, marginTop: 20 }}>
-            <Button block onPress={() => this.setState({ formToDisplay: alternateForm })}>
+            <Button block onPress={() => this.setState({ formToDisplay: alternateForm, message: '' })}>
               <Text>{this.props.t(btnLabel)}</Text>
             </Button>
           </View>
-          <View style={ styles.message }>
-            <Text style={{ textAlign: 'center' }}>{this.state.message}</Text>
-          </View>
+          {/* This empty view is for increasing the page height so the button appears above the menu bar */}
+          <View style={styles.message} />
         </Content>
         { this.renderLoader() }
       </Container>
