@@ -1,4 +1,3 @@
-import { omit } from 'lodash'
 import moment from 'moment/min/moment-with-locales'
 import {
   LOAD_TASKS_REQUEST, LOAD_TASKS_FAILURE, LOAD_TASKS_SUCCESS,
@@ -37,14 +36,15 @@ const tasksEntityInitialState = {
     //       longitude: 0,
     //     }
     //   },
-    //   comments: ''
+    //   comments: '',
+    //   tags: [{ name, slug, ...}, ...]
     // }
   },
   order: [/* 1, 2, 3, ... */],     // Array of task ids, indicating order for e.g. lists
 }
 
 
-export const tasksEntityReducer = (state = tasksEntityInitialState, action) => {
+export const tasksEntityReducer = (state = tasksEntityInitialState, action = {}) => {
   switch (action.type) {
     case LOAD_TASKS_REQUEST:
     case MARK_TASK_DONE_REQUEST:
