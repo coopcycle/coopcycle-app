@@ -2,7 +2,8 @@
  * Task related reducers
  */
 import moment from 'moment/min/moment-with-locales'
-import { LOAD_TASKS_REQUEST } from './taskActions'
+import { LOAD_TASKS_REQUEST, ADD_TASK_FILTER, CLEAR_TASK_FILTER } from './taskActions'
+
 import { localeDetector } from '../../i18n'
 
 
@@ -15,17 +16,41 @@ moment.locale(localeDetector())
  * but not directly related to the entity itself goes here
  */
 const tasksUiInitialState = {
-  selectedDate: moment()  // Date selected by the user
+  selectedDate: moment(), // Date selected by the user
+  excludeFilters: [],     // Key-value pairs of active filters (e.g. status: 'done')
 }
 
 
-export const tasksUiReducer = (state = tasksUiInitialState, action) => {
+export const tasksUiReducer = (state = tasksUiInitialState, action = {}) => {
   switch (action.type) {
     case LOAD_TASKS_REQUEST:
       return {
         ...state,
         selectedDate: action.payload || moment()
       }
+
+    case ADD_TASK_FILTER:
+      return {
+        ...state,
+        excludeFilters: state.excludeFilters.concat(action.payload),
+      }
+
+    case CLEAR_TASK_FILTER:
+      // Empty payload clears all exclusion rules
+      if (!action.payload) {
+        return {
+          ...state,
+          excludeFilters: [],
+        }
+      }
+
+      // Filters with any matches to exclusion rules are removed from the payload
+      return {
+        ...state,
+        excludeFilters: state.excludeFilters.filter(filter =>
+          Object.keys(action.payload).some(k => action.payload[k] !== filter[k]))
+      }
+
     default:
       return { ...state }
   }
