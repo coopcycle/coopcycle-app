@@ -94,6 +94,10 @@
     "LAST_TASK_EVENT": "Dernier évènement {{fromNow}}",
     "HISTORY": "Historique",
     "SETTINGS": "Réglages",
-    "SETTING_KEEP_AWAKE": "Désactiver la mise en veille"
+    "SETTING_KEEP_AWAKE": "Désactiver la mise en veille",
+    "TASKS_FILTER": "Filtrer les tâches",
+    "HIDE_DONE_TASKS": "Masquer les tâches effectuées",
+    "HIDE_FAILED_TASKS": "Masquer les tâches ayant échoué",
+    "HIDE_TASKS_FAILED_WITH": "Masquer les tâches marquées avec"
   }
 }

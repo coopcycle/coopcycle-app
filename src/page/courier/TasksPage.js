@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, ActivityIndicator, Alert, TouchableOpacity, Platform } from 'react-native'
+import { StyleSheet, View, ActivityIndicator, Alert, TouchableOpacity, Platform, Modal } from 'react-native'
 import {
   Container,
   Content, Button, Icon, List, ListItem, Text, Title,
   Card, CardItem, Thumbnail,
-  Header, Left, Right
+  Header, Left, Right, Body, CheckBox
 } from 'native-base'
+import { Col, Row, Grid } from 'react-native-easy-grid';
 import moment from 'moment/min/moment-with-locales'
 import MapView from 'react-native-maps'
 import { NavigationActions } from 'react-navigation'
@@ -18,11 +19,14 @@ import _ from 'lodash'
 import { greenColor, blueColor, redColor, greyColor, whiteColor, orangeColor, dateSelectHeaderHeight, websocketWarningHeight } from "../../styles/common"
 import GeolocationTracker from '../../GeolocationTracker'
 import DateSelectHeader from "../../components/DateSelectHeader"
+import TaskFilterModal from '../../components/TaskFilterModal'
 import { localeDetector } from '../../i18n'
 import { Settings } from '../../Settings'
 import {
-  loadTasks,
-  selectTasksList, selectIsTasksLoading, selectIsTasksLoadingFailure, selectTaskSelectedDate,
+  loadTasks, filterTasks, clearTasksFilter, selectIsTagHidden,
+  selectFilteredTasks, selectIsTasksLoading, selectIsTasksLoadingFailure, selectTaskSelectedDate,
+  selectAreDoneTasksHidden, selectAreFailedTasksHidden,
+  selectTagNames,
 } from '../../redux/Courier'
 import { selectIsWsOpen } from '../../redux/App'
 import { send } from '../../redux/middlewares/WebSocketMiddleware'
@@ -43,6 +47,9 @@ class TasksPage extends Component {
     return {
       headerRight: (
         <View style={{flex: 1, flexDirection: 'row', alignItems: 'flex-end'}}>
+          <Button transparent onPress={() => navigation.state.params.toggleFilterModal()}>
+            <Icon name="funnel" />
+          </Button>
           <Button transparent>
             <Icon name="navigate" style={{color: params.tracking ? greenColor : greyColor}}/>
           </Button>
@@ -64,7 +71,7 @@ class TasksPage extends Component {
       loadingMessage: this.props.t('LOADING'),
       currentPosition: null,
       polyline: [],
-      detailsModal: false
+      filterModal: false,
     }
 
     this.onMapReady = this.onMapReady.bind(this)
@@ -86,6 +93,8 @@ class TasksPage extends Component {
     if (this.props.isWsOpen) {
       this.props.navigation.setParams({connected: true})
     }
+
+    this.props.navigation.setParams({ toggleFilterModal: this.toggleFilterModal })
   }
 
   componentWillUnmount() {
@@ -195,6 +204,31 @@ class TasksPage extends Component {
     this.connect()
   }
 
+  toggleFilterModal = () => {
+    this.setState(state => ({ filterModal: !state.filterModal }))
+  }
+
+  renderFilterModal() {
+    const {
+      areDoneTasksHidden, areFailedTasksHidden, isTagHidden,
+      toggleDisplayTag, toggleDisplayDone, toggleDisplayFailed, tags,
+    } = this.props
+
+    return (
+      <TaskFilterModal
+        isVisible={this.state.filterModal}
+        onRequestClose={() => this.setState({ filterModal: false })}
+        areDoneTasksHidden={areDoneTasksHidden}
+        areFailedTasksHidden={areFailedTasksHidden}
+        toggleDisplayDone={toggleDisplayDone}
+        toggleDisplayFailed={toggleDisplayFailed}
+        toggleDisplayTag={toggleDisplayTag}
+        isTagHidden={isTagHidden}
+        tags={tags}
+      />
+    )
+  }
+
   renderLoader() {
 
     const { isLoadingTasks } = this.props
@@ -257,6 +291,7 @@ class TasksPage extends Component {
 
     return (
       <Container>
+        {this.renderFilterModal()}
         <DateSelectHeader
           buttonsEnabled={true}
           toDate={this.refreshTasks}
@@ -376,11 +411,15 @@ const styles = StyleSheet.create({
 
 function mapStateToProps (state) {
   return {
-    tasks: selectTasksList(state),
+    tasks: selectFilteredTasks(state),
+    tags: selectTagNames(state),
     selectedDate: selectTaskSelectedDate(state),
     isLoadingTasks: selectIsTasksLoading(state),
     tasksLoadingError: selectIsTasksLoadingFailure(state),
-    isWsOpen: selectIsWsOpen(state)
+    isWsOpen: selectIsWsOpen(state),
+    areDoneTasksHidden: selectAreDoneTasksHidden(state),
+    areFailedTasksHidden: selectAreFailedTasksHidden(state),
+    isTagHidden: selectIsTagHidden(state),
   }
 }
 
@@ -388,6 +427,9 @@ function mapDispatchToProps (dispatch) {
   return {
     loadTasks: (client, selectedDate) => dispatch(loadTasks(client, selectedDate)),
     send: (msg) => dispatch(send(msg)),
+    toggleDisplayDone: (hidden) => dispatch(hidden ? clearTasksFilter({ status: 'done' }) : filterTasks({ status: 'done' })),
+    toggleDisplayFailed: (hidden) => dispatch(hidden ? clearTasksFilter({ status: 'failed' }) : filterTasks({ status: 'failed' })),
+    toggleDisplayTag: (tag, hidden) => dispatch(hidden ? clearTasksFilter({ tags: tag }) : filterTasks({ tags: tag })),
   }
 }
 

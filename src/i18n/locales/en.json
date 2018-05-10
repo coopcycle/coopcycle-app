@@ -94,6 +94,10 @@
     "LAST_TASK_EVENT": "Last event {{fromNow}}",
     "HISTORY": "History",
     "SETTINGS": "Settings",
-    "SETTING_KEEP_AWAKE": "Disable screen lock"
+    "SETTING_KEEP_AWAKE": "Disable screen lock",
+    "TASKS_FILTER": "Tasks Filter",
+    "HIDE_DONE_TASKS": "Hide done tasks",
+    "HIDE_FAILED_TASKS": "Hide failed tasks",
+    "HIDE_TASKS_FAILED_WITH": "Hide tasks tagged with"
   }
 }
