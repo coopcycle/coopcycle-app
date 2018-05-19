@@ -4,8 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
-    "test": "jest",
-    "postinstall": "wget https://github.com/facebook/react-native/commit/4b6e9d3dfd213689c5b319a4efee8d4f606d6f9d.patch && patch $PWD/node_modules/react-native/Libraries/WebSocket/WebSocket.js 4b6e9d3dfd213689c5b319a4efee8d4f606d6f9d.patch && rm -f 4b6e9d3dfd213689c5b319a4efee8d4f606d6f9d.patch"
+    "test": "jest"
   },
   "dependencies": {
     "@mapbox/polyline": "^0.2.0",
@@ -14,7 +13,7 @@
     "native-base": "^2.4.0",
     "react": "^16.3.1",
     "react-i18next": "^7.4.0",
-    "react-native": "0.55.2",
+    "react-native": "0.55.4",
     "react-native-cache-store": "^1.0.2",
     "react-native-calendars": "^1.17.1",
     "react-native-geolocation-service": "^1.0.3",
