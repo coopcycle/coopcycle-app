@@ -35,6 +35,13 @@ import store, { observeStore } from "./src/redux/store"
 const Routes = require('./src/page')
 const AppUser = require('./src/AppUser')
 
+import { YellowBox } from 'react-native';
+
+YellowBox.ignoreWarnings([
+  'Warning: isMounted(...) is deprecated in plain JavaScript React classes.',
+  'Module RCTImageLoader requires main queue setup'
+]);
+
 
 let Router
 
