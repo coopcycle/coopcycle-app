@@ -5,6 +5,7 @@ import { Col, Row, Grid } from 'react-native-easy-grid'
 import moment from 'moment/min/moment-with-locales'
 import { translate } from 'react-i18next'
 import { localeDetector } from '../i18n'
+import { formatPrice } from '../Cart'
 
 moment.locale(localeDetector())
 
@@ -100,7 +101,7 @@ class CartFooter extends Component {
       <View style={ styles.cartSummary }>
         <Animated.View style={{ opacity: opacityAnim }}>
           <Text style={[ styles.cartSummaryText, styles.cartSummaryTotal ]}>
-            { `${cart.total} € (${cart.length})` }
+            { `${formatPrice(cart.total)} € (${cart.length})` }
           </Text>
         </Animated.View>
         <Text style={[ styles.cartSummaryText, styles.cartSummarySeparator ]}>|</Text>

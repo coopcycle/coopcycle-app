@@ -70,7 +70,7 @@ class Cart {
       return 0
     }
 
-    return (this.totalItems + this.totalDelivery).toFixed(2)
+    return this.totalItems + this.totalDelivery
   }
   get totalItems() {
     return _.reduce(this.items, function(memo, item) { return memo + item.total; }, 0)
@@ -97,3 +97,6 @@ class Cart {
 }
 
 module.exports = Cart;
+module.exports.formatPrice = (price) => {
+  return (price / 100).toFixed(2)
+}

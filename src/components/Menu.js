@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { SectionList, StyleSheet, TouchableOpacity, View } from 'react-native'
 import { Icon, Text } from 'native-base';
 import { Col, Row, Grid } from 'react-native-easy-grid'
+import { formatPrice } from '../Cart'
 
 const styles = StyleSheet.create({
   sectionHeader: {
@@ -38,7 +39,7 @@ export default class Menu extends Component {
         <Grid>
           <Col size={ 4 }>
             <Text>{ item.name }</Text>
-            <Text style={{ color: '#828282', fontSize: 14 }}>{ item.offers.price } €</Text>
+            <Text style={{ color: '#828282', fontSize: 14 }}>{ formatPrice(item.offers.price) } €</Text>
           </Col>
           <Col size={ 1 } style={{ flex: 1, alignItems: 'flex-end', justifyContent: 'center' }}>
             <Icon name="md-add" style={{ color: '#747474', fontSize: 22 }} />

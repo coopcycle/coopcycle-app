@@ -18,6 +18,7 @@ import { NavigationActions } from 'react-navigation'
 import { translate } from 'react-i18next'
 import LoginForm from '../components/LoginForm'
 import CartFooter from '../components/CartFooter'
+import { formatPrice } from '../Cart'
 
 const AppUser = require('../AppUser');
 
@@ -233,7 +234,7 @@ class CartPage extends Component {
             <Text>{this.props.t('TOTAL_ITEMS')}</Text>
           </Body>
           <Right>
-            <Text style={{ fontWeight: 'bold' }}>{ cart.totalItems } €</Text>
+            <Text style={{ fontWeight: 'bold' }}>{ formatPrice(cart.totalItems) } €</Text>
           </Right>
         </ListItem>
         <ListItem>
@@ -241,7 +242,7 @@ class CartPage extends Component {
             <Text>{this.props.t('TOTAL_DELIVERY')}</Text>
           </Body>
           <Right>
-            <Text style={{ fontWeight: 'bold' }}>{ cart.totalDelivery } €</Text>
+            <Text style={{ fontWeight: 'bold' }}>{ formatPrice(cart.totalDelivery) } €</Text>
           </Right>
         </ListItem>
         <ListItem>
@@ -249,7 +250,7 @@ class CartPage extends Component {
             <Text>{this.props.t('TOTAL')}</Text>
           </Body>
           <Right>
-            <Text style={{ fontWeight: 'bold' }}>{ cart.total } €</Text>
+            <Text style={{ fontWeight: 'bold' }}>{ formatPrice(cart.total) } €</Text>
           </Right>
         </ListItem>
       </List>
