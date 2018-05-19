@@ -43,7 +43,7 @@ class CartPage extends Component {
       <ListItem key={ item.key } onPress={() => this.setState({ editing: item, modalVisible: true })}>
         <Body>
           <Text>{ item.name }</Text>
-          <Text note>{ item.price } € x { item.quantity }</Text>
+          <Text note>{ formatPrice(item.price) } € x { item.quantity }</Text>
         </Body>
         <Right>
           <Button danger transparent onPress={() => {

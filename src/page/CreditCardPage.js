@@ -15,6 +15,7 @@ import Stripe, { PaymentCardTextField } from 'tipsi-stripe';
 import { NavigationActions } from 'react-navigation'
 import { translate } from 'react-i18next'
 import AppConfig from '../AppConfig'
+import { formatPrice } from '../Cart'
 
 Stripe.init({
   publishableKey: AppConfig.STRIPE_PUBLISHABLE_KEY,
@@ -67,7 +68,7 @@ class CreditCardPage extends Component {
     const { height, width } = Dimensions.get('window')
     const { cart } = this.props.navigation.state.params
 
-    const btnText = 'Payer ' + cart.total + ' €';
+    const btnText = `Payer ${formatPrice(cart.total)} €`;
 
     let loader = (
       <View />
