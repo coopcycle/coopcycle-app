@@ -246,6 +246,7 @@ class App extends Component {
   }
 
   componentWillMount() {
+
     Settings.addListener('server:remove', this.disconnect)
     Settings.addListener('user:login', (event) => {
       const { client, user } = event
@@ -257,11 +258,26 @@ class App extends Component {
     })
     Settings.addListener('user:logout', () => Registry.clearWebSocketClient())
 
-    AppUser.load()
-      .then(user => {
-        Settings
-          .loadServer()
-          .then(baseURL => this.initializeRouter(baseURL, user))
+    Settings
+      .loadServer()
+      .then(baseURL => {
+        AppUser.load()
+          .then(user => {
+            if (user && user.isAuthenticated()) {
+              const client = API.createClient(baseURL, user)
+              // Make sure the token is still valid
+              // If not, disconnect user
+              client.checkToken()
+                .then(() => this.initializeRouter(baseURL, user))
+                .catch(e => {
+                  user
+                    .logout()
+                    .then(() => this.initializeRouter(baseURL, user))
+                })
+            } else {
+              this.initializeRouter(baseURL, user)
+            }
+          })
       })
   }
 
