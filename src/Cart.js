@@ -19,13 +19,13 @@ class CartItem {
     this.quantity++;
   }
   matches(menuItem) {
-    return this.menuItem['@id'] === menuItem['@id']
+    return this.menuItem['identifier'] === menuItem['identifier']
   }
   get total() {
     return this.menuItem.offers.price * this.quantity;
   }
   get key() {
-    return this.menuItem['@id'];
+    return this.menuItem['identifier'];
   }
   get price() {
     return this.menuItem.offers.price
@@ -35,7 +35,7 @@ class CartItem {
   }
   toJSON() {
     return {
-      menuItem: this.menuItem['@id'],
+      product: this.menuItem['identifier'],
       quantity: this.quantity
     }
   }
@@ -87,11 +87,9 @@ class Cart {
   toJSON() {
     return {
       restaurant: this.restaurant['@id'],
-      orderedItem: _.map(this.items, item => item.toJSON()),
-      delivery: {
-        deliveryAddress: this.deliveryAddress['@id'],
-        date: moment(this.deliveryDate).format('YYYY-MM-DD HH:mm:ss')
-      }
+      shippingAddress: this.deliveryAddress['@id'],
+      shippedAt: moment(this.deliveryDate).format('YYYY-MM-DD HH:mm:ss'),
+      items: _.map(this.items, item => item.toJSON())
     }
   }
 }
