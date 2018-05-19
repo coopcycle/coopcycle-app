@@ -75,7 +75,7 @@ class CartFooter extends Component {
       return (
         <Button transparent style={{ alignSelf: 'flex-end' }}>
           <Text style={ styles.buttonText }>
-            { `Minimum ${cart.restaurant.minimumCartAmount} €` }
+            { `Minimum ${formatPrice(cart.restaurant.minimumCartAmount)} €` }
           </Text>
           <Icon style={{ color: '#fff' }} name="information-circle" />
         </Button>
