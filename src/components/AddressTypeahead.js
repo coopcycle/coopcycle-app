@@ -4,7 +4,7 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import _ from 'underscore'
 import { translate } from 'react-i18next'
 import { localeDetector } from '../i18n'
-import AppConfig from '../AppConfig.json'
+import AppConfig from '../AppConfig'
 
 const customStyles = {
   description: {
