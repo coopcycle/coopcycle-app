@@ -38,12 +38,12 @@ class OrderTrackingPage extends Component {
       markers: [{
         key: 'restaurant',
         identifier: 'restaurant',
-        coordinate: order.delivery.originAddress.geo,
+        coordinate: order.restaurant.address.geo,
         pinColor: 'red',
       }, {
         key: 'deliveryAddress',
         identifier: 'deliveryAddress',
-        coordinate: order.delivery.deliveryAddress.geo,
+        coordinate: order.shippingAddress.geo,
         pinColor: 'green',
       }],
       position: undefined,

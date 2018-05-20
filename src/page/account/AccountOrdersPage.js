@@ -11,6 +11,7 @@ import {
   Title, Content, Footer, Button, Icon, List, ListItem, Text
 } from 'native-base';
 import { translate } from 'react-i18next'
+import { formatPrice } from '../../Cart'
 
 class AccountOrdersPage extends Component {
   constructor(props) {
@@ -40,7 +41,7 @@ class AccountOrdersPage extends Component {
     return (
       <ListItem onPress={() => navigate('OrderTracking', { client, order }) }>
         <Body><Text>{ order.restaurant.name }</Text></Body>
-        <Right><Text>{ order.total } €</Text></Right>
+        <Right><Text>{ formatPrice(order.total) } €</Text></Right>
       </ListItem>
     );
   }
