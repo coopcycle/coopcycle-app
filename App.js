@@ -39,7 +39,8 @@ import { YellowBox } from 'react-native';
 
 YellowBox.ignoreWarnings([
   'Warning: isMounted(...) is deprecated in plain JavaScript React classes.',
-  'Module RCTImageLoader requires main queue setup'
+  'Module RCTImageLoader requires main queue setup',
+  'Module RCTBackgroundGeolocation requires main queue setup'
 ]);
 
 
