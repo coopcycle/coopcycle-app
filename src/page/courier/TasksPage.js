@@ -12,7 +12,6 @@ import { connect } from 'react-redux'
 import { translate } from 'react-i18next'
 
 import { greenColor, redColor, greyColor, whiteColor, orangeColor, dateSelectHeaderHeight, websocketWarningHeight } from "../../styles/common"
-import GeolocationTracker from '../../GeolocationTracker'
 import DateSelectHeader from "../../components/DateSelectHeader"
 import TaskFilterModal from '../../components/TaskFilterModal'
 import { localeDetector } from '../../i18n'
@@ -23,9 +22,7 @@ import {
   selectAreDoneTasksHidden, selectAreFailedTasksHidden,
   selectTagNames,
 } from '../../redux/Courier'
-import { selectIsWsOpen } from '../../redux/App'
-import { send } from '../../redux/middlewares/WebSocketMiddleware'
-
+import BackgroundGeolocation from 'react-native-mauron85-background-geolocation'
 
 moment.locale(localeDetector())
 
@@ -34,8 +31,6 @@ class TasksPage extends Component {
 
   map = null
   markers = []
-
-  geolocationTracker = null
 
   static navigationOptions = ({navigation}) => {
     const {params} = navigation.state
@@ -56,15 +51,11 @@ class TasksPage extends Component {
   constructor(props) {
     super(props)
 
-    this.geolocationTracker = new GeolocationTracker({
-      onChange: this.onGeolocationChange.bind(this)
-    })
-
     this.state = {
       task: null,
       loading: false,
       loadingMessage: this.props.t('LOADING'),
-      currentPosition: null,
+      geolocation: null,
       polyline: [],
       filterModal: false,
     }
@@ -85,21 +76,19 @@ class TasksPage extends Component {
       }
     })
 
-    if (this.props.isWsOpen) {
-      this.props.navigation.setParams({connected: true})
-    }
-
     this.props.navigation.setParams({ toggleFilterModal: this.toggleFilterModal })
   }
 
   componentWillUnmount() {
-    this.geolocationTracker.stop()
+
+    BackgroundGeolocation.stop()
 
     if (Platform.OS === 'ios') {
       KeepAwake.deactivate()
     } else {
       RNPinScreen.unpin()
     }
+
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -122,13 +111,9 @@ class TasksPage extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.isWsOpen !== nextProps.isWsOpen) {
-      this.props.navigation.setParams({ connected: nextProps.isWsOpen })
-    }
-
     if (nextProps.tasks !== this.props.tasks) {
 
-        const { currentPosition } = this.state
+        const { geolocation } = this.state
 
         const coordinates = nextProps.tasks.map(task => {
           const { latitude, longitude } = task.address.geo
@@ -137,9 +122,9 @@ class TasksPage extends Component {
             longitude
           }
         })
-        coordinates.push(currentPosition)
+        coordinates.push(geolocation)
 
-        this.map.fitToCoordinates(coordinates, {
+        this.map.fitToCoordinates(_.filter(coordinates), {
           edgePadding: {
             top: 100,
             left: 100,
@@ -152,42 +137,12 @@ class TasksPage extends Component {
   }
 
   center() {
-    const { currentPosition } = this.state
-    this.map.animateToCoordinate(currentPosition, 500)
+    const { geolocation } = this.state
+    this.map.animateToCoordinate(geolocation, 500)
   }
 
-  connect() {
-
-    this.setState({ loading: true, loadingMessage: this.props.t('WAITING_FOR_POS') })
-
-    this.geolocationTracker.start()
-      .then(() => {
-        this.setState({ loading: false, loadingMessage: this.props.t('LOADING') })
-        return this.refreshTasks(this.props.selectedDate)
-      })
-      .catch(e => {
-        this.setState({ loading: false })
-        console.log(e)
-        // TODO Distinguish error reason
-        Alert.alert(
-          this.props.t('PROBLEM_CONNECTING'),
-          this.props.t('TRY_LATER'),
-          [
-            {
-              text: this.props.t('OK'), onPress: () => {
-                this.props.navigation.dispatch(NavigationActions.back())
-              }
-            },
-          ],
-          { cancelable: false }
-        )
-      })
-  }
-
-  onGeolocationChange(position) {
-    this.props.navigation.setParams({ tracking: true })
-    this.setState({ currentPosition: position.coords })
-    this.props.send({ type: 'position', data: position.coords })
+  onGeolocationChange(geolocation) {
+    this.setState({ geolocation })
   }
 
   refreshTasks (selectedDate) {
@@ -196,7 +151,86 @@ class TasksPage extends Component {
   }
 
   onMapReady () {
-    this.connect()
+
+    const { client } = this.props.navigation.state.params
+
+    BackgroundGeolocation.configure({
+      desiredAccuracy: BackgroundGeolocation.HIGH_ACCURACY,
+      stationaryRadius: 5,
+      distanceFilter: 10,
+      debug: false,
+      startOnBoot: false,
+      startForeground: false,
+      stopOnTerminate: true,
+      stopOnStillActivity: false,
+      locationProvider: BackgroundGeolocation.ACTIVITY_PROVIDER,
+      interval: 3000,
+      fastestInterval: 1000,
+      activitiesInterval: 5000,
+      maxLocations: 10,
+      url: client.getBaseURL() + '/api/me/location',
+      syncUrl: client.getBaseURL() + '/api/me/location',
+      syncThreshold: 10,
+      httpHeaders: {
+        'Authorization': `Bearer ${client.getToken()}`,
+        'Content-Type': "application/ld+json",
+      },
+      // customize post properties
+      postTemplate: {
+        latitude: '@latitude',
+        longitude: '@longitude',
+        time: '@time',
+      }
+    })
+
+    BackgroundGeolocation.on('start', () => {
+      this.props.navigation.setParams({ tracking: true })
+    })
+
+    BackgroundGeolocation.on('stop', () => {
+      this.props.navigation.setParams({ tracking: false })
+    })
+
+    BackgroundGeolocation.on('location', (location) => {
+
+      this.onGeolocationChange(location)
+
+      // handle your locations here
+      // to perform long running operation on iOS
+      // you need to create background task
+      // BackgroundGeolocation.startTask(taskKey => {
+      //   // execute long running task
+      //   // eg. ajax post location
+      //   // IMPORTANT: task has to be ended by endTask
+      //   BackgroundGeolocation.endTask(taskKey);
+      // });
+    })
+
+    BackgroundGeolocation.on('error', (error) => {
+      console.log('[ERROR] BackgroundGeolocation error:', error);
+    });
+
+    BackgroundGeolocation.on('authorization', (status) => {
+      console.log('[INFO] BackgroundGeolocation authorization status: ' + status);
+      if (status !== BackgroundGeolocation.AUTHORIZED) {
+        // we need to set delay or otherwise alert may not be shown
+        setTimeout(() =>
+          Alert.alert('App requires location tracking permission', 'Would you like to open app settings?', [
+            { text: 'Yes', onPress: () => BackgroundGeolocation.showAppSettings() },
+            { text: 'No', onPress: () => console.log('No Pressed'), style: 'cancel' }
+          ]), 1000);
+      }
+    });
+
+    BackgroundGeolocation.checkStatus(status => {
+      // you don't need to check status before start (this is just the example)
+      if (!status.isRunning) {
+        BackgroundGeolocation.start(); // triggers start on start event
+      }
+    });
+
+    // you can also just start without checking for status
+    // BackgroundGeolocation.start();
   }
 
   toggleFilterModal = () => {
@@ -251,10 +285,10 @@ class TasksPage extends Component {
 
   render() {
 
-    const { tasks, selectedDate, isWsOpen } = this.props
+    const { tasks, selectedDate } = this.props
     const { navigate } = this.props.navigation
     const { client } = this.props.navigation.state.params
-    const geolocationTracker = this.geolocationTracker
+    const { geolocation } = this.state
 
     this.markers = this.markers.slice()
 
@@ -273,10 +307,7 @@ class TasksPage extends Component {
       return pinColor
     }
 
-    const navigationParams = {
-      client,
-      geolocationTracker
-    }
+    const navigationParams = { client, geolocation }
 
     return (
       <Container>
@@ -286,11 +317,6 @@ class TasksPage extends Component {
           toDate={this.refreshTasks}
           selectedDate={selectedDate}
         />
-        { !isWsOpen &&
-          <View style={styles.websocketWarning}>
-            <Text style={styles.websocketWarningText}>{this.props.t('WS_NOT_CONNECTED_WARNING')}</Text>
-          </View>
-        }
         <View style={ styles.container }>
           <MapView
             ref={ component => this.map = component }
@@ -418,7 +444,6 @@ function mapStateToProps (state) {
     selectedDate: selectTaskSelectedDate(state),
     isLoadingTasks: selectIsTasksLoading(state),
     tasksLoadingError: selectIsTasksLoadingFailure(state),
-    isWsOpen: selectIsWsOpen(state),
     areDoneTasksHidden: selectAreDoneTasksHidden(state),
     areFailedTasksHidden: selectAreFailedTasksHidden(state),
     isTagHidden: selectIsTagHidden(state),
@@ -428,7 +453,6 @@ function mapStateToProps (state) {
 function mapDispatchToProps (dispatch) {
   return {
     loadTasks: (client, selectedDate) => dispatch(loadTasks(client, selectedDate)),
-    send: (msg) => dispatch(send(msg)),
     toggleDisplayDone: (hidden) => dispatch(hidden ? clearTasksFilter({ status: 'done' }) : filterTasks({ status: 'done' })),
     toggleDisplayFailed: (hidden) => dispatch(hidden ? clearTasksFilter({ status: 'failed' }) : filterTasks({ status: 'failed' })),
     toggleDisplayTag: (tag, hidden) => dispatch(hidden ? clearTasksFilter({ tags: tag }) : filterTasks({ tags: tag })),

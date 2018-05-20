@@ -67,17 +67,17 @@ class TaskPage extends Component {
 
   onMapReady() {
 
-    const { geolocationTracker, task } = this.props.navigation.state.params
+    const { geolocation, task } = this.props.navigation.state.params
 
     const coordinates = [
-      geolocationTracker.getLatLng(),
+      geolocation,
       {
         latitude: task.address.geo.latitude,
         longitude: task.address.geo.longitude,
       }
     ]
 
-    this.map.fitToCoordinates(coordinates, {
+    this.map.fitToCoordinates(_.filter(coordinates), {
       edgePadding: {
         top: 50,
         left: 50,
