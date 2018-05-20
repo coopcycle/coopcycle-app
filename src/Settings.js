@@ -1,5 +1,6 @@
 import { AsyncStorage } from 'react-native'
 import EventEmitter from 'EventEmitter'
+import AppConfig from './AppConfig'
 
 let events = new EventEmitter()
 
@@ -98,6 +99,53 @@ class Settings {
         reject(error.message)
       }
     });
+  }
+
+  static saveServerSettings(settings) {
+    return new Promise((resolve, reject) => {
+      try {
+        AsyncStorage.setItem('@Settings.server', JSON.stringify(settings))
+          .then((error) => {
+            if (error) {
+              return reject(error)
+            }
+            resolve()
+          })
+      } catch (error) {
+        reject(error.message)
+      }
+    })
+  }
+
+  static initAppConfig() {
+    return new Promise((resolve, reject) => {
+      try {
+        AsyncStorage.getItem('@Settings.server')
+          .then((data, error) => {
+            if (error) {
+              return reject(error)
+            }
+
+            if (!data) {
+              return reject('No server settings found')
+            }
+
+            return JSON.parse(data)
+          })
+          .then(settings => {
+            Object.assign(AppConfig, {
+              GOOGLE_API_KEY: settings['google_api_key'],
+              STRIPE_PUBLISHABLE_KEY: settings['stripe_publishable_key'],
+              LOCALE: settings['locale'],
+              COUNTRY_NAME: settings['country'],
+              GCM_SENDER_ID: '',
+            })
+            resolve()
+          })
+      } catch (error) {
+        reject(error.message)
+      }
+    })
   }
 
 }

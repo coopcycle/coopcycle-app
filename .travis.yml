@@ -4,8 +4,6 @@ matrix:
     env: LANE='node'
     node_js: 8
     cache: yarn
-    before_script:
-      - cp src/AppConfig.json.dist src/AppConfig.json
   - language: android
     env: LANE='android'
     sudo: required
@@ -30,7 +28,6 @@ matrix:
     before_script:
       - npm install -g yarn
       - yarn install
-      - cp src/AppConfig.json.dist src/AppConfig.json
       - cp google-services.json.dist android/app/google-services.json
     script:
       - cd android && ./gradlew assembleDebug --stacktrace
@@ -48,7 +45,6 @@ matrix:
       - gem install xcpretty
       - npm install -g yarn
       - yarn install
-      - cp src/AppConfig.json.dist src/AppConfig.json
       - cd ios
     script:
       - xcodebuild -workspace CoopCycle.xcworkspace -scheme CoopCycle -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO | xcpretty && exit ${PIPESTATUS[0]}

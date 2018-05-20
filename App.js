@@ -268,23 +268,28 @@ class App extends Component {
     Settings
       .loadServer()
       .then(baseURL => {
-        AppUser.load()
-          .then(user => {
-            if (user && user.isAuthenticated()) {
-              const client = API.createClient(baseURL, user)
-              // Make sure the token is still valid
-              // If not, disconnect user
-              client.checkToken()
-                .then(() => this.initializeRouter(baseURL, user))
-                .catch(e => {
-                  user
-                    .logout()
+        Settings.initAppConfig()
+          .then(() => {
+            AppUser.load()
+              .then(user => {
+                if (user && user.isAuthenticated()) {
+                  const client = API.createClient(baseURL, user)
+                  // Make sure the token is still valid
+                  // If not, disconnect user
+                  client.checkToken()
                     .then(() => this.initializeRouter(baseURL, user))
-                })
-            } else {
-              this.initializeRouter(baseURL, user)
-            }
+                    .catch(e => {
+                      user
+                        .logout()
+                        .then(() => this.initializeRouter(baseURL, user))
+                    })
+                } else {
+                  this.initializeRouter(baseURL, user)
+                }
+              })
           })
+          // No server settings: force user to set server again
+          .catch(e => Settings.removeServer())
       })
   }
 
@@ -378,9 +383,17 @@ class App extends Component {
 
     API.checkServer(server)
       .then(baseURL => {
+
         const user = this.state.user
+
+        // Retrieve instance settings
         Settings
           .saveServer(baseURL)
+          .then(() => {
+            const client = API.createClient(baseURL, user)
+            return client.get('/api/settings')
+              .then(settings => Settings.saveServerSettings(settings))
+          })
           .then(() => this.initializeRouter(baseURL, user))
       })
       .catch((err) => {
