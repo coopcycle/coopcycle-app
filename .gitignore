@@ -61,7 +61,6 @@ buck-out/
 #
 # Pods/
 
-src/AppConfig.json
 /android/app/google-services.json
 
 # Bundle artifact

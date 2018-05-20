@@ -17,10 +17,6 @@ import { translate } from 'react-i18next'
 import AppConfig from '../AppConfig'
 import { formatPrice } from '../Cart'
 
-Stripe.init({
-  publishableKey: AppConfig.STRIPE_PUBLISHABLE_KEY,
-});
-
 class CreditCardPage extends Component {
   constructor(props) {
     super(props);
@@ -29,6 +25,11 @@ class CreditCardPage extends Component {
       loading: false,
       params: {}
     };
+  }
+  componentDidMount() {
+    Stripe.init({
+      publishableKey: AppConfig.STRIPE_PUBLISHABLE_KEY,
+    });
   }
   _onClick() {
 
