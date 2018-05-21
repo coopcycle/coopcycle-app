@@ -8,6 +8,7 @@ import Swipeout from 'react-native-swipeout'
 import moment from 'moment/min/moment-with-locales'
 import { translate } from 'react-i18next'
 import { localeDetector } from '../../i18n'
+import { phonecall } from 'react-native-communications'
 
 import { greenColor, blueColor, redColor } from "../../styles/common"
 import { selectIsTasksLoading, selectTasksList, markTaskDone, markTaskFailed } from "../../redux/Courier"
@@ -127,6 +128,14 @@ class TaskPage extends Component {
           )) }
           </View>
         )
+      })
+    }
+
+    if (task.address.telephone) {
+      items.push({
+        iconName: 'call',
+        text: task.address.telephone,
+        onPress: () => phonecall(task.address.telephone, true)
       })
     }
 
