@@ -116,6 +116,13 @@ class TaskPage extends Component {
       })
     }
 
+    if (task.address.description) {
+      items.push({
+        iconName: 'information-circle',
+        text: task.address.description
+      })
+    }
+
     if (task.tags.length > 0) {
       items.push({
         iconName: 'star',
