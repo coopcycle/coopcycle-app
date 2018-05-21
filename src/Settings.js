@@ -130,9 +130,8 @@ class Settings {
               return reject('No server settings found')
             }
 
-            return JSON.parse(data)
-          })
-          .then(settings => {
+            const settings = JSON.parse(data)
+
             Object.assign(AppConfig, {
               GOOGLE_API_KEY: settings['google_api_key'],
               STRIPE_PUBLISHABLE_KEY: settings['stripe_publishable_key'],

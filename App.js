@@ -265,32 +265,38 @@ class App extends Component {
     })
     Settings.addListener('user:logout', () => Registry.clearWebSocketClient())
 
-    Settings
-      .loadServer()
-      .then(baseURL => {
-        Settings.initAppConfig()
-          .then(() => {
-            AppUser.load()
-              .then(user => {
-                if (user && user.isAuthenticated()) {
-                  const client = API.createClient(baseURL, user)
-                  // Make sure the token is still valid
-                  // If not, disconnect user
-                  client.checkToken()
-                    .then(() => this.initializeRouter(baseURL, user))
-                    .catch(e => {
-                      user
-                        .logout()
-                        .then(() => this.initializeRouter(baseURL, user))
-                    })
-                } else {
-                  this.initializeRouter(baseURL, user)
-                }
+    Promise.all([
+      Settings.loadServer(),
+      AppUser.load()
+    ]).then(values => {
+
+      const [ baseURL, user ] = values
+
+      Settings.initAppConfig()
+        .then(() => {
+          if (user && user.isAuthenticated()) {
+            const client = API.createClient(baseURL, user)
+            // Make sure the token is still valid
+            // If not, disconnect user
+            client.checkToken()
+              .then(() => this.initializeRouter(baseURL, user))
+              .catch(e => {
+                user
+                  .logout()
+                  .then(() => this.initializeRouter(baseURL, user))
               })
-          })
-          // No server settings: force user to set server again
-          .catch(e => Settings.removeServer())
-      })
+          } else {
+            this.initializeRouter(baseURL, user)
+          }
+        })
+        // No server settings: force user to set server again
+        .catch(e => {
+          this.setState({ user, initialized: true })
+          Settings.removeServer()
+        })
+
+    })
+
   }
 
   componentWillUnmount() {
