@@ -10,6 +10,7 @@ import { NavigationActions } from 'react-navigation'
 import { translate } from 'react-i18next'
 
 import LoginForm from '../components/LoginForm'
+import RegisterForm from '../components/RegisterForm'
 import { Settings, events } from '../Settings'
 
 class AccountPage extends Component {
@@ -18,7 +19,8 @@ class AccountPage extends Component {
     super(props);
     this.state = {
       loading: false,
-      message: ''
+      message: '',
+      formToDisplay: 'login',
     };
   }
 
@@ -176,11 +178,40 @@ class AccountPage extends Component {
     )
   }
 
+  renderForm() {
+    const { client } = this.props.screenProps
+    const { formToDisplay } = this.state
+
+    if (this.state.formToDisplay === 'login') {
+      return (
+        <LoginForm
+          client={client}
+          onRequestStart={this.onRequestStart.bind(this)}
+          onRequestEnd={this.onRequestEnd.bind(this)}
+          onLoginSuccess={this.onLoginSuccess.bind(this)}
+          onLoginFail={this.onLoginFail.bind(this)} />
+      )
+    }
+
+    if (this.state.formToDisplay === 'register') {
+      return (
+        <RegisterForm
+          client={client}
+          onRequestStart={this.onRequestStart.bind(this)}
+          onRequestEnd={this.onRequestEnd.bind(this)}
+          onRegisterSuccess={this.onLoginSuccess.bind(this)} // TODO: Using the same actions as for Login...is that OK?
+          onRegisterFail={this.onLoginFail.bind(this)} />    // TODO: Using the same actions as for Login...is that OK?
+      )
+    }
+  }
+
   render() {
 
     const { navigate } = this.props.navigation
     const { baseURL, client, user } = this.props.screenProps
     const isAuthenticated = user && user.isAuthenticated()
+    const alternateForm = this.state.formToDisplay === 'login' ? 'register' : 'login'
+    const btnLabel = this.state.formToDisplay === 'login' ? 'OR_REGISTER' : 'OR_LOGIN'
 
     if (isAuthenticated) {
       return this.renderAuthenticated()
@@ -190,15 +221,22 @@ class AccountPage extends Component {
       <Container>
         <Content style={ styles.content }>
           { this.renderServer() }
-          <LoginForm
-            client={ client }
-            onRequestStart={ this.onRequestStart.bind(this) }
-            onRequestEnd={ this.onRequestEnd.bind(this) }
-            onLoginSuccess={ this.onLoginSuccess.bind(this) }
-            onLoginFail={ this.onLoginFail.bind(this) } />
-          <View style={ styles.message }>
-            <Text style={{ textAlign: 'center' }}>{this.state.message}</Text>
+          {
+            this.state.message &&
+            (
+              <View style={styles.message}>
+                <Text style={{ textAlign: 'center' }}>{this.state.message}</Text>
+              </View>
+            )
+          }
+          { this.renderForm() }
+          <View style={{ paddingHorizontal: 10, marginTop: 20 }}>
+            <Button block onPress={() => this.setState({ formToDisplay: alternateForm, message: '' })}>
+              <Text>{this.props.t(btnLabel)}</Text>
+            </Button>
           </View>
+          {/* This empty view is for increasing the page height so the button appears above the menu bar */}
+          <View style={styles.message} />
         </Content>
         { this.renderLoader() }
       </Container>

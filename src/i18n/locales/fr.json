@@ -94,6 +94,20 @@
     "LAST_TASK_EVENT": "Dernier évènement {{fromNow}}",
     "HISTORY": "Historique",
     "SETTINGS": "Réglages",
-    "SETTING_KEEP_AWAKE": "Désactiver la mise en veille"
+    "SETTING_KEEP_AWAKE": "Désactiver la mise en veille",
+    "OR_REGISTER": "Vous n'avez pas de compte ? Registre",
+    "OR_LOGIN": "Vous avez déjà un compte ? S'identifier",
+    "GIVEN_NAME": "Prénom",
+    "FAMILY_NAME": "Nom de Famille",
+    "PHONE_NUMBER": "Téléphone",
+    "CONFIRM_PASSWORD": "Confirmez le mot de passe",
+    "EMAIL_ALREADY_REGISTERED": "Cet e-mail a déjà été enregistré",
+    "INVALID_GIVEN_NAME": "Veuillez entrer un prénom valide",
+    "INVALID_FAMILY_NAME": "Veuillez entrer un nom de famille valide",
+    "INVALID_EMAIL": "Veuillez entrer un email valide",
+    "INVALID_PHONE_NUMBER": "Veuillez entrer une numéro de téléphone valide, y compris le code du pays",
+    "INVALID_USERNAME": "Veuillez entrer un nom d'utilisateur valide",
+    "INVALID_PASSWORD": "Veuillez entrer un mot de passe valide d'au moins 8 caractères",
+    "INVALID_PASSWORD_CONFIRMATION": "La confirmation du mot de passe ne correspond pas"
   }
 }
