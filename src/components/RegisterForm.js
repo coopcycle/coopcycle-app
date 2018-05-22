@@ -45,16 +45,16 @@ class RegisterForm extends React.Component {
       },
     },
     familyName: {
-      presence: { message: i18n.t('INVALID_GIVEN_NAME') },
+      presence: { message: i18n.t('INVALID_FAMILY_NAME') },
       length: {
         minimum: 1,
-        message: i18n.t('INVALID_GIVEN_NAME'),
+        message: i18n.t('INVALID_FAMILY_NAME'),
       },
     },
     email: {
-      presence: { message: i18n.t('INVALID_GIVEN_NAME') },
+      presence: { message: i18n.t('INVALID_EMAIL') },
       email: {
-        message: i18n.t('INVALID_GIVEN_NAME'),
+        message: i18n.t('INVALID_EMAIL'),
       },
     },
     telephone: {
@@ -64,17 +64,17 @@ class RegisterForm extends React.Component {
       },
     },
     username: {
-      presence: { message: i18n.t('INVALID_GIVEN_NAME') },
+      presence: { message: i18n.t('INVALID_USERNAME') },
       length: {
         minimum: 2,
-        message: i18n.t('INVALID_GIVEN_NAME'),
+        message: i18n.t('INVALID_USERNAME'),
       },
     },
     password: {
-      presence: { message: i18n.t('INVALID_GIVEN_NAME') },
+      presence: { message: i18n.t('INVALID_PASSWORD') },
       length: {
         minimum: 8,
-        message: i18n.t('INVALID_GIVEN_NAME'),
+        message: i18n.t('INVALID_PASSWORD'),
       },
     },
     passwordConfirmation: {
@@ -143,7 +143,7 @@ class RegisterForm extends React.Component {
             <Label>{this.props.t('GIVEN_NAME')}</Label>
             <Input
               autoCorrect={false}
-              autoCapitalise="none"
+              autoCapitalize="none"
               onChangeText={givenName => this.setState({ givenName })}
               style={{ height: 40 }}
             />
@@ -152,7 +152,7 @@ class RegisterForm extends React.Component {
             <Label>{this.props.t('FAMILY_NAME')}</Label>
             <Input
               autoCorrect={false}
-              autoCapitalise="none"
+              autoCapitalize="none"
               onChangeText={familyName => this.setState({ familyName })}
               style={{ height: 40 }}
             />
@@ -161,7 +161,7 @@ class RegisterForm extends React.Component {
             <Label>{this.props.t('EMAIL')}</Label>
             <Input
               autoCorrect={false}
-              autoCapitalise="none"
+              autoCapitalize="none"
               keyboardType="email-address"
               onChangeText={email => this.setState({ email })}
               style={{ height: 40 }}
@@ -171,7 +171,7 @@ class RegisterForm extends React.Component {
             <Label>{this.props.t('PHONE_NUMBER')}</Label>
             <Input
               autoCorrect={false}
-              autoCapitalise="none"
+              autoCapitalize="none"
               keyboardType="phone-pad"
               onChangeText={telephone => this.setState({ telephone })}
               style={{ height: 40 }}
@@ -181,7 +181,7 @@ class RegisterForm extends React.Component {
             <Label>{this.props.t('USERNAME')}</Label>
             <Input
               autoCorrect={false}
-              autoCapitalise="none"
+              autoCapitalize="none"
               onChangeText={username => this.setState({ username })}
               style={{ height: 40 }}
             />
@@ -190,7 +190,7 @@ class RegisterForm extends React.Component {
             <Label>{this.props.t('PASSWORD')}</Label>
             <Input
               autoCorrect={false}
-              autoCapitalise="none"
+              autoCapitalize="none"
               secureTextEntry={true}
               onChangeText={password => this.setState({ password })}
               style={{ height: 40 }}
@@ -200,7 +200,7 @@ class RegisterForm extends React.Component {
             <Label>{this.props.t('CONFIRM_PASSWORD')}</Label>
             <Input
               autoCorrect={false}
-              autoCapitalise="none"
+              autoCapitalize="none"
               secureTextEntry={true}
               onChangeText={passwordConfirmation => this.setState({ passwordConfirmation })}
               style={{ height: 40 }}
