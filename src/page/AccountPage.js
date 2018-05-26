@@ -205,6 +205,16 @@ class AccountPage extends Component {
     }
   }
 
+  renderMessage() {
+    if (this.state.message) {
+      return (
+        <View style={styles.message}>
+          <Text style={{ textAlign: 'center' }}>{this.state.message}</Text>
+        </View>
+      )
+    }
+  }
+
   render() {
 
     const { navigate } = this.props.navigation
@@ -221,14 +231,7 @@ class AccountPage extends Component {
       <Container>
         <Content style={ styles.content }>
           { this.renderServer() }
-          {
-            this.state.message &&
-            (
-              <View style={styles.message}>
-                <Text style={{ textAlign: 'center' }}>{this.state.message}</Text>
-              </View>
-            )
-          }
+          { this.renderMessage() }
           { this.renderForm() }
           <View style={{ paddingHorizontal: 10, marginTop: 20 }}>
             <Button block onPress={() => this.setState({ formToDisplay: alternateForm, message: '' })}>
