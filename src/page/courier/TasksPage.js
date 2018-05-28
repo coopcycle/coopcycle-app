@@ -1,12 +1,8 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, ActivityIndicator, Alert, TouchableOpacity, Platform, Modal } from 'react-native'
+import { StyleSheet, View, ActivityIndicator, Alert, TouchableOpacity, Platform } from 'react-native'
 import {
-  Container,
-  Content, Button, Icon, List, ListItem, Text, Title,
-  Card, CardItem, Thumbnail,
-  Header, Left, Right, Body, CheckBox
+  Container, Button, Icon, Text
 } from 'native-base'
-import { Col, Row, Grid } from 'react-native-easy-grid';
 import moment from 'moment/min/moment-with-locales'
 import MapView from 'react-native-maps'
 import { NavigationActions } from 'react-navigation'
@@ -14,9 +10,8 @@ import KeepAwake from 'react-native-keep-awake'
 import RNPinScreen from 'react-native-pin-screen'
 import { connect } from 'react-redux'
 import { translate } from 'react-i18next'
-import _ from 'lodash'
 
-import { greenColor, blueColor, redColor, greyColor, whiteColor, orangeColor, dateSelectHeaderHeight, websocketWarningHeight } from "../../styles/common"
+import { greenColor, redColor, greyColor, whiteColor, orangeColor, dateSelectHeaderHeight, websocketWarningHeight } from "../../styles/common"
 import GeolocationTracker from '../../GeolocationTracker'
 import DateSelectHeader from "../../components/DateSelectHeader"
 import TaskFilterModal from '../../components/TaskFilterModal'
@@ -265,13 +260,7 @@ class TasksPage extends Component {
 
     const pinColor = task => {
 
-      if (task.tags.length > 0) {
-        const tag = _.first(task.tags)
-
-        return tag.color
-      }
-
-      let pinColor = blueColor
+      let pinColor = greyColor
 
       if (task.status === 'DONE') {
         pinColor = greenColor
@@ -325,6 +314,19 @@ class TasksPage extends Component {
                 <MapView.Callout onPress={ () => navigate('CourierTask', { ...navigationParams, task }) }>
                   { task.address.name && (<Text style={styles.mapCalloutText}>{ task.address.name }</Text>) }
                   <Text style={styles.mapCalloutText}>{ task.address.streetAddress }</Text>
+                  {
+                    task.tags.map((tag, index) => (
+                      <Text key={{index}} style={{
+                        backgroundColor: tag.color,
+                        textAlign: 'center',
+                        color: whiteColor,
+                        fontSize: 14,
+                        paddingHorizontal: 15,
+                        width: '60%'
+                      }}>
+                        {tag.name}
+                      </Text>))
+                  }
                 </MapView.Callout>
               </MapView.Marker>
             ))}
