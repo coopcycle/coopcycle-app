@@ -43,7 +43,7 @@ class TasksPage extends Component {
       headerRight: (
         <View style={{flex: 1, flexDirection: 'row', alignItems: 'flex-end'}}>
           <Button transparent onPress={() => navigation.state.params.toggleFilterModal()}>
-            <Icon name="funnel" />
+            <Icon name="settings" style={{color: whiteColor}} />
           </Button>
           <Button transparent>
             <Icon name="navigate" style={{color: params.tracking ? greenColor : greyColor}}/>
