@@ -18,6 +18,7 @@ import {
   markTaskDone, markTaskDoneRequest, markTaskDoneSuccess, markTaskDoneFailure,
   markTaskFailed, markTaskFailedRequest, markTaskFailedSuccess, markTaskFailedFailure,
   dontTriggerTasksNotification,
+  filterTasks, clearTasksFilter,
 } from './taskActions'
 import {
   selectTaskSelectedDate,
@@ -26,7 +27,13 @@ import {
   selectIsTasksLoadingFailure,
   selectTasks,
   selectTasksOrder,
-  selectTasksList
+  selectTasksList,
+  selectFilteredTasks,
+  selectAreDoneTasksHidden,
+  selectAreFailedTasksHidden,
+  selectTags,
+  selectTagNames,
+  selectIsTagHidden,
 } from './taskSelectors'
 
 
@@ -58,6 +65,8 @@ export {
   markTaskFailedSuccess,
   markTaskFailedFailure,
   dontTriggerTasksNotification,
+  filterTasks,
+  clearTasksFilter,
 
   selectIsTasksLoading,
   selectIsTasksLoadingFailure,
@@ -66,4 +75,10 @@ export {
   selectTasksList,
   selectTaskSelectedDate,
   selectTriggerTasksNotification,
+  selectFilteredTasks,
+  selectAreDoneTasksHidden,
+  selectAreFailedTasksHidden,
+  selectTags,
+  selectTagNames,
+  selectIsTagHidden,
 }

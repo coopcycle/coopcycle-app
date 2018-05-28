@@ -108,6 +108,10 @@
     "INVALID_PHONE_NUMBER": "Veuillez entrer une numéro de téléphone valide, y compris le code du pays",
     "INVALID_USERNAME": "Veuillez entrer un nom d'utilisateur valide",
     "INVALID_PASSWORD": "Veuillez entrer un mot de passe valide d'au moins 8 caractères",
-    "INVALID_PASSWORD_CONFIRMATION": "La confirmation du mot de passe ne correspond pas"
+    "INVALID_PASSWORD_CONFIRMATION": "La confirmation du mot de passe ne correspond pas",
+    "TASKS_FILTER": "Filtrer les tâches",
+    "HIDE_DONE_TASKS": "Masquer les tâches effectuées",
+    "HIDE_FAILED_TASKS": "Masquer les tâches ayant échoué",
+    "HIDE_TASKS_FAILED_WITH": "Masquer les tâches marquées avec"
   }
 }

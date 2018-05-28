@@ -13,6 +13,8 @@ export const MARK_TASK_FAILED_REQUEST = 'MARK_TASK_FAILED_REQUEST'
 export const MARK_TASK_FAILED_SUCCESS = 'MARK_TASK_FAILED_SUCCESS'
 export const MARK_TASK_FAILED_FAILURE = 'MARK_TASK_FAILED_FAILURE'
 export const DONT_TRIGGER_TASKS_NOTIFICATION = 'DONT_TRIGGER_TASKS_NOTIFICATION'
+export const ADD_TASK_FILTER = 'ADD_TASK_FILTER'
+export const CLEAR_TASK_FILTER = 'CLEAR_TASK_FILTER'
 
 /*
  * Action Creators
@@ -27,7 +29,8 @@ export const markTaskFailedRequest = createAction(MARK_TASK_FAILED_REQUEST)
 export const markTaskFailedSuccess = createAction(MARK_TASK_FAILED_SUCCESS)
 export const markTaskFailedFailure = createAction(MARK_TASK_FAILED_FAILURE)
 export const dontTriggerTasksNotification = createAction(DONT_TRIGGER_TASKS_NOTIFICATION)
-
+export const filterTasks = createAction(ADD_TASK_FILTER)
+export const clearTasksFilter = createAction(CLEAR_TASK_FILTER)
 
 /*
  * Thunk Creators

@@ -1,18 +1,23 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, ActivityIndicator } from 'react-native'
-import { Container, Content, Icon, Text, Thumbnail } from 'native-base'
+import { StyleSheet, View, ActivityIndicator, Modal } from 'react-native'
+import { Container, Content, Button, Icon, Text, Thumbnail, CheckBox, Header, Left, Right, Grid, Row, Col, Body, Title } from 'native-base'
+
 import { connect } from 'react-redux'
 import _ from 'lodash'
 import moment from 'moment/min/moment-with-locales'
 
 import TaskList from '../../components/TaskList'
 import DateSelectHeader from '../../components/DateSelectHeader'
+import TaskFilterModal from '../../components/TaskFilterModal'
 import { whiteColor } from '../../styles/common'
 import { translate } from 'react-i18next'
 import { localeDetector } from '../../i18n'
 import {
   loadTasks, markTaskDone, markTaskFailed,
   selectTasksList, selectTaskSelectedDate, selectIsTasksLoading,
+  filterTasks, clearTasksFilter,
+  selectIsTagHidden, selectFilteredTasks,
+  selectAreDoneTasksHidden, selectAreFailedTasksHidden, selectTagNames,
 } from '../../redux/Courier'
 
 moment.locale(localeDetector())
@@ -46,14 +51,32 @@ class TaskListPage extends Component {
 
   taskList = null
 
+  static navigationOptions = ({navigation}) => {
+    const { params } = navigation.state
+    return {
+      headerRight: (
+        <View style={{flex: 1, flexDirection: 'row', alignItems: 'flex-end'}}>
+          <Button transparent onPress={() => navigation.state.params.toggleFilterModal()}>
+            <Icon name="funnel" />
+          </Button>
+        </View>
+      ),
+    }
+  }
+
   constructor(props) {
     super(props)
 
     this.state = {
       addedTasks: [],
+      filterModal: false,
     }
 
     this.refreshTasks = this.refreshTasks.bind(this)
+  }
+
+  componentDidMount() {
+    this.props.navigation.setParams({ toggleFilterModal: this.toggleFilterModal })
   }
 
   componentWillReceiveProps(nextProps) {
@@ -81,6 +104,31 @@ class TaskListPage extends Component {
   refreshTasks (selectedDate) {
     const { client } = this.props.navigation.state.params
     this.props.loadTasks(client, selectedDate)
+  }
+
+  toggleFilterModal = () => {
+    this.setState(state => ({ filterModal: !state.filterModal }))
+  }
+
+  renderFilterModal() {
+    const {
+      areDoneTasksHidden, areFailedTasksHidden, isTagHidden,
+      toggleDisplayTag, toggleDisplayDone, toggleDisplayFailed, tags,
+    } = this.props
+
+    return (
+      <TaskFilterModal
+        isVisible={this.state.filterModal}
+        onRequestClose={() => this.setState({ filterModal: false })}
+        areDoneTasksHidden={areDoneTasksHidden}
+        areFailedTasksHidden={areFailedTasksHidden}
+        toggleDisplayDone={toggleDisplayDone}
+        toggleDisplayFailed={toggleDisplayFailed}
+        toggleDisplayTag={toggleDisplayTag}
+        isTagHidden={isTagHidden}
+        tags={tags}
+      />
+    )
   }
 
   renderLoader() {
@@ -114,6 +162,7 @@ class TaskListPage extends Component {
 
     return (
       <Container style={ styles.container }>
+        {this.renderFilterModal()}
         <DateSelectHeader
           buttonsEnabled={true}
           toDate={this.refreshTasks}
@@ -144,9 +193,13 @@ class TaskListPage extends Component {
 
 function mapStateToProps (state) {
   return {
-    tasks: selectTasksList(state),
+    tasks: selectFilteredTasks(state),
+    tags: selectTagNames(state),
     selectedDate: selectTaskSelectedDate(state),
     isLoadingTasks: selectIsTasksLoading(state),
+    areDoneTasksHidden: selectAreDoneTasksHidden(state),
+    areFailedTasksHidden: selectAreFailedTasksHidden(state),
+    isTagHidden: selectIsTagHidden(state),
   }
 }
 
@@ -154,7 +207,10 @@ function mapDispatchToProps (dispatch) {
   return {
     loadTasks: (client, selectedDate) => dispatch(loadTasks(client, selectedDate)),
     markTaskFailed: (client, task, notes) => dispatch(markTaskFailed(client, task, notes)),
-    markTaskDone: (client, task, notes) => dispatch(markTaskDone(client, task, notes))
+    markTaskDone: (client, task, notes) => dispatch(markTaskDone(client, task, notes)),
+    toggleDisplayDone: (hidden) => dispatch(hidden ? clearTasksFilter({ status: 'done' }) : filterTasks({ status: 'done' })),
+    toggleDisplayFailed: (hidden) => dispatch(hidden ? clearTasksFilter({ status: 'failed' }) : filterTasks({ status: 'failed' })),
+    toggleDisplayTag: (tag, hidden) => dispatch(hidden ? clearTasksFilter({ tags: tag }) : filterTasks({ tags: tag })),
   }
 }
 

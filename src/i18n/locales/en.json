@@ -108,6 +108,10 @@
     "INVALID_PHONE_NUMBER": "Please enter a valid phone number, including country code",
     "INVALID_USERNAME": "Please enter a valid username",
     "INVALID_PASSWORD": "Please enter a valid password at least 8 characters",
-    "INVALID_PASSWORD_CONFIRMATION": "Password confirmation does not match"
+    "INVALID_PASSWORD_CONFIRMATION": "Password confirmation does not match",
+    "TASKS_FILTER": "Tasks Filter",
+    "HIDE_DONE_TASKS": "Hide done tasks",
+    "HIDE_FAILED_TASKS": "Hide failed tasks",
+    "HIDE_TASKS_FAILED_WITH": "Hide tasks tagged with"
   }
 }
