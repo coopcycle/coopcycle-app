@@ -10,7 +10,7 @@ import { translate } from 'react-i18next'
 import { localeDetector } from '../../i18n'
 import { phonecall } from 'react-native-communications'
 
-import { greenColor, blueColor, redColor } from "../../styles/common"
+import { greenColor, greyColor, redColor } from "../../styles/common"
 import { selectIsTasksLoading, selectTasksList, markTaskDone, markTaskFailed } from "../../redux/Courier"
 
 moment.locale(localeDetector())
@@ -171,6 +171,16 @@ class TaskPage extends Component {
           />
         )} />
     )
+  }
+
+  pinColor(task) {
+    let color = greyColor
+
+    if (task.tags.length > 0) {
+      color = task.tags[0].color
+    }
+
+    return color
   }
 
   renderTaskDetail(item) {
@@ -392,7 +402,7 @@ class TaskPage extends Component {
                     identifier={ task['@id'] }
                     key={ task['@id'] }
                     coordinate={ task.address.geo }
-                    pinColor={ task.type === 'PICKUP' ? blueColor : greenColor }
+                    pinColor={ this.pinColor(task) }
                     flat={ true }>
                   </MapView.Marker>
                 </MapView>
