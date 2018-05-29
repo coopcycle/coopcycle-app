@@ -94,7 +94,9 @@ class TaskPage extends Component {
     const { task } = this.props.navigation.state.params
 
     const timeframe = moment(task.doneAfter).format('LT') + ' - ' + moment(task.doneBefore).format('LT')
-    const address = task.address.name ? [ task.address.name, task.address.streetAddress ].join(' - ') : task.address.streetAddress
+    let address = task.address.name ? [ task.address.name, task.address.streetAddress ].join(' - ') : task.address.streetAddress
+    const name = [ task.address.firstName, task.address.lastName ].filter(function (item) {return item}).join(' ')
+    address = name ? [ name, address ].join(' - ') : address
     const events = _.sortBy(task.events, [ event => moment(event.createdAt) ])
     const lastEvent = _.last(events)
 
@@ -116,10 +118,13 @@ class TaskPage extends Component {
       })
     }
 
-    if (task.address.description) {
+    if (task.address.description || task.address.floor) {
+      const floor = task.address.floor ? [ this.props.t('FLOOR'), task.address.floor ].join(' : ') : null
+      const description = [ floor, task.address.description ].filter(function (item) {return item}).join(' - ')
+
       items.push({
         iconName: 'information-circle',
-        text: task.address.description
+        text: description
       })
     }
 

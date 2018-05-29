@@ -137,6 +137,8 @@ class TaskList extends Component {
       itemBodyStyle.push(styles.disabled)
     }
 
+    const name = [ task.address.firstName, task.address.lastName ].filter(function (item) {return item}).join(' ')
+
     return (
       <TouchableOpacity onPress={ () => onTaskClick(task) } style={ styles.item }>
         <Grid>
@@ -152,6 +154,7 @@ class TaskList extends Component {
           </Col>
           <Col size={ 10 } style={ itemBodyStyle }>
             <Text style={ textStyle }>{this.props.t('TASK')} #{ task.id }</Text>
+            { name && (<Text style={ textStyle }>{ name }</Text>) }
             { task.address.name && (<Text style={ textStyle }>{ task.address.name }</Text>) }
             <Text numberOfLines={ 1 } style={ textStyle }>{ task.address.streetAddress }</Text>
             <Text style={ textStyle }>{ moment(task.doneAfter).format('LT') } - { moment(task.doneBefore).format('LT') }</Text>

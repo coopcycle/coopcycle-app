@@ -74,6 +74,7 @@
     "ADDRESS": "Adresse",
     "POST_CODE": "Code postal",
     "CITY": "Ville",
+    "FLOOR": "Étage",
     "USERNAME": "Nom d'utilisateur",
     "PASSWORD": "Mot de passe",
     "EMAIL": "E-mail",

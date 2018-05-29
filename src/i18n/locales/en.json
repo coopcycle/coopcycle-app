@@ -79,6 +79,7 @@
     "EMAIL": "E-mail",
     "FROM": "From",
     "ORDER": "Order",
+    "FLOOR": "Floor",
     "INVALID_USER_PASS": "Username and/or password incorrect",
     "NO_TASKS": "No tasks planned today",
     "NOTES": "Notes",
@@ -113,5 +114,6 @@
     "HIDE_DONE_TASKS": "Hide done tasks",
     "HIDE_FAILED_TASKS": "Hide failed tasks",
     "HIDE_TASKS_FAILED_WITH": "Hide tasks tagged with"
+
   }
 }
