@@ -24,6 +24,9 @@ import {
 } from '../../redux/Courier'
 import BackgroundGeolocation from 'react-native-mauron85-background-geolocation'
 
+import { withDefaults } from "../../maps"
+const MapViewWithDefaults = withDefaults(MapView)
+
 moment.locale(localeDetector())
 
 
@@ -318,16 +321,8 @@ class TasksPage extends Component {
           selectedDate={selectedDate}
         />
         <View style={ styles.container }>
-          <MapView
+          <MapViewWithDefaults
             ref={ component => this.map = component }
-            style={styles.map}
-            zoomEnabled={true}
-            zoomControlEnabled={true}
-            showsUserLocation
-            showsMyLocationButton={ false }
-            loadingEnabled
-            loadingIndicatorColor={"#666666"}
-            loadingBackgroundColor={"#eeeeee"}
             onMapReady={() => this.onMapReady()}>
             { tasks.map(task => (
               <MapView.Marker
@@ -356,7 +351,7 @@ class TasksPage extends Component {
                 </MapView.Callout>
               </MapView.Marker>
             ))}
-          </MapView>
+          </MapViewWithDefaults>
           <View style={ styles.taskListButton }>
             <Button block onPress={ () => navigate('CourierTaskList', { ...navigationParams, tasks }) }>
               <Icon name="list" />
