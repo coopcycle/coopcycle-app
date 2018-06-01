@@ -2,6 +2,7 @@ package fr.coopcycle;
 
 import android.app.Application;
 import com.facebook.react.ReactApplication;
+import com.marianhello.bgloc.react.BackgroundGeolocationPackage;
 import com.AlexanderZaytsev.RNI18n.RNI18nPackage;
 import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
 import com.corbt.keepawake.KCKeepAwakePackage;
@@ -29,6 +30,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+          new BackgroundGeolocationPackage(),
           new RNI18nPackage(),
           new KCKeepAwakePackage(),
           new RNPinScreenPackage(),

@@ -44,3 +44,10 @@ subprojects {
         }
     }
 }
+
+ext {
+    compileSdkVersion = 27
+    targetSdkVersion = 26
+    buildToolsVersion = "27.0.3"
+    gradle3EXPERIMENTAL = "yes"
+}

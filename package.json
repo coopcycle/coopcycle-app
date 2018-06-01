@@ -23,6 +23,7 @@
     "react-native-i18n": "^2.0.12",
     "react-native-keep-awake": "^2.0.6",
     "react-native-maps": "0.21.0",
+    "react-native-mauron85-background-geolocation": "^0.5.0-alpha.34",
     "react-native-modal-selector": "^0.0.24",
     "react-native-pin-screen": "git+https://git@github.com/coopcycle/react-native-pin-screen.git#1.0.1",
     "react-native-push-notification": "^3.0.2",
