@@ -8,11 +8,11 @@
 import i18next from 'i18next'
 import { reactI18nextModule } from 'react-i18next'
 import I18n from 'react-native-i18n'
-import AppConfig from '../AppConfig'
+import { Settings } from '../Settings'
 import en from './locales/en.json'
 import fr from './locales/fr.json'
 
-export const localeDetector = () => I18n.locale || AppConfig.LOCALE
+export const localeDetector = () => I18n.locale || Settings.get('locale')
 
 // https://www.i18next.com/misc/creating-own-plugins.html#languagedetector
 const languageDetector = {

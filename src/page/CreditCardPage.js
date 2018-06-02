@@ -14,7 +14,7 @@ import {
 import Stripe, { PaymentCardTextField } from 'tipsi-stripe';
 import { NavigationActions } from 'react-navigation'
 import { translate } from 'react-i18next'
-import AppConfig from '../AppConfig'
+import { Settings } from '../Settings'
 import { formatPrice } from '../Cart'
 
 class CreditCardPage extends Component {
@@ -28,7 +28,7 @@ class CreditCardPage extends Component {
   }
   componentDidMount() {
     Stripe.init({
-      publishableKey: AppConfig.STRIPE_PUBLISHABLE_KEY,
+      publishableKey: Settings.get('stripe_publishable_key'),
     });
   }
   _onClick() {

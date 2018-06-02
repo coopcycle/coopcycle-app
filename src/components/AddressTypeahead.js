@@ -4,7 +4,7 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import _ from 'underscore'
 import { translate } from 'react-i18next'
 import { localeDetector } from '../i18n'
-import AppConfig from '../AppConfig'
+import { Settings } from '../Settings'
 
 const customStyles = {
   description: {
@@ -80,7 +80,7 @@ class AddressTypeahead extends Component {
         }}
         query={{
           // available options: https://developers.google.com/places/web-service/autocomplete
-          key: AppConfig.GOOGLE_API_KEY,
+          key: Settings.get('google_api_key'),
           language: localeDetector(), // language of the results
           types: 'geocode', // default: 'geocode'
         }}
@@ -88,7 +88,7 @@ class AddressTypeahead extends Component {
         nearbyPlacesAPI="GoogleReverseGeocoding" // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
         GoogleReverseGeocodingQuery={{
           // available options for GoogleReverseGeocoding API : https://developers.google.com/maps/documentation/geocoding/intro
-          region: AppConfig.COUNTRY_NAME
+          region: Settings.get('country')
         }}
         GooglePlacesSearchQuery={{
           // available options for GooglePlacesSearch API : https://developers.google.com/places/web-service/search
