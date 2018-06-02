@@ -5,7 +5,7 @@ import { Col, Row, Grid } from 'react-native-easy-grid'
 import { translate } from 'react-i18next'
 import { localeDetector } from '../../i18n'
 
-import { Settings } from '../../Settings'
+import Preferences from '../../Preferences'
 
 class SettingsPage extends Component {
 
@@ -17,14 +17,13 @@ class SettingsPage extends Component {
   }
 
   componentDidMount() {
-    Settings.getKeepAwake().then(keepAwake => {
+    Preferences.getKeepAwake().then(keepAwake => {
       this.setState({ keepAwake })
     })
   }
 
   onKeepAwakeChange(value) {
-    console.log('onKeepAwakeChange', value)
-    Settings.setKeepAwake(value).then(() => {
+    Preferences.setKeepAwake(value).then(() => {
       this.setState({ keepAwake: value })
     })
   }

@@ -15,7 +15,7 @@ import { greenColor, redColor, greyColor, whiteColor, orangeColor, dateSelectHea
 import DateSelectHeader from "../../components/DateSelectHeader"
 import TaskFilterModal from '../../components/TaskFilterModal'
 import { localeDetector } from '../../i18n'
-import { Settings } from '../../Settings'
+import Preferences from '../../Preferences'
 import {
   loadTasks, filterTasks, clearTasksFilter, selectIsTagHidden,
   selectFilteredTasks, selectIsTasksLoading, selectIsTasksLoadingFailure, selectTaskSelectedDate,
@@ -66,7 +66,7 @@ class TasksPage extends Component {
 
   componentDidMount() {
 
-    Settings.getKeepAwake().then(keepAwake => {
+    Preferences.getKeepAwake().then(keepAwake => {
       if (keepAwake) {
         if (Platform.OS === 'ios') {
           KeepAwake.activate()

@@ -23,7 +23,6 @@ import { translate, I18nextProvider } from 'react-i18next'
 import PushNotification from 'react-native-push-notification'
 
 import API from './src/API'
-import AppConfig from './src/AppConfig'
 import { Settings } from './src/Settings'
 import { Registry } from './src/Registry'
 import i18n from './src/i18n'
@@ -253,7 +252,7 @@ class App extends Component {
     this.renderLoading = this.renderLoading.bind(this)
   }
 
-  componentWillMount() {
+  async componentDidMount() {
 
     Settings.addListener('server:remove', this.disconnect)
     Settings.addListener('user:login', (event) => {
@@ -266,37 +265,32 @@ class App extends Component {
     })
     Settings.addListener('user:logout', () => Registry.clearWebSocketClient())
 
-    Promise.all([
-      Settings.loadServer(),
-      AppUser.load()
-    ]).then(values => {
+    const baseURL = await Settings.loadServer()
 
-      const [ baseURL, user ] = values
+    if (baseURL) {
 
-      Settings.initAppConfig()
-        .then(() => {
-          if (user && user.isAuthenticated()) {
-            const client = API.createClient(baseURL, user)
-            // Make sure the token is still valid
-            // If not, disconnect user
-            client.checkToken()
-              .then(() => this.initializeRouter(baseURL, user))
-              .catch(e => {
-                user
-                  .logout()
-                  .then(() => this.initializeRouter(baseURL, user))
-              })
-          } else {
-            this.initializeRouter(baseURL, user)
-          }
-        })
-        // No server settings: force user to set server again
+      const user = await AppUser.load()
+      const settings = await Settings.synchronize(baseURL)
+
+      if (!user.isAuthenticated()) {
+        return this.initializeRouter(baseURL, user)
+      }
+
+      // Make sure the token is still valid
+      // If not, logout user
+      API.createClient(baseURL, user)
+        .checkToken()
+        .then(() => this.initializeRouter(baseURL, user))
         .catch(e => {
-          this.setState({ user, initialized: true })
-          Settings.removeServer()
+          user
+            .logout()
+            .then(() => this.initializeRouter(baseURL, user))
         })
 
-    })
+    } else {
+      // There is no server configured
+      this.setState({ initialized: true })
+    }
 
   }
 
@@ -337,7 +331,7 @@ class App extends Component {
 
           // ANDROID ONLY: GCM Sender ID (optional - not required for local notifications,
           // but is need to receive remote push notifications)
-          senderID: AppConfig.hasOwnProperty('GCM_SENDER_ID') ? AppConfig.GCM_SENDER_ID : "",
+          senderID: Settings.get('gcm_sender_id') || '',
 
           // IOS ONLY (optional): default: all - Permissions to register.
           permissions: {
@@ -376,9 +370,9 @@ class App extends Component {
     Router = StackNavigator(routeConfigs, navigatorConfig)
 
     this.setState({
-      client: client,
       initialized: true,
       server: baseURL,
+      client: client,
       user: user
     })
   }
@@ -393,15 +387,11 @@ class App extends Component {
 
         const user = this.state.user
 
-        // Retrieve instance settings
         Settings
           .saveServer(baseURL)
-          .then(() => {
-            const client = API.createClient(baseURL, user)
-            return client.get('/api/settings')
-              .then(settings => Settings.saveServerSettings(settings))
-          })
+          .then(() => Settings.synchronize(baseURL))
           .then(() => this.initializeRouter(baseURL, user))
+
       })
       .catch((err) => {
 
@@ -441,13 +431,12 @@ class App extends Component {
   }
 
   disconnect() {
-    const user = this.state.user
+    const { user } = this.state
     user.logout()
-
     this.setState({
+      user,
       client: null,
       server: null,
-      user: user,
     })
   }
 
