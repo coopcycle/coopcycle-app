@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Animated, FlatList, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native'
 import { Icon, Text } from 'native-base'
 import { Col, Row, Grid } from 'react-native-easy-grid'
 import moment from 'moment/min/moment-with-locales'
@@ -47,48 +47,6 @@ class TaskList extends Component {
 
   constructor(props) {
     super(props)
-    this.state = {
-      opacityAnim: new Animated.Value(1)
-    }
-  }
-
-  animate() {
-    Animated.sequence([
-      Animated.timing(this.state.opacityAnim, {
-        toValue: 0.4,
-        duration: 300,
-      }),
-      Animated.timing(this.state.opacityAnim, {
-        toValue: 1,
-        duration: 200,
-      }),
-      Animated.timing(this.state.opacityAnim, {
-        toValue: 0.4,
-        duration: 300,
-      }),
-      Animated.timing(this.state.opacityAnim, {
-        toValue: 1,
-        duration: 200,
-      }),
-    ]).start()
-  }
-
-  renderAnimatedItem(task) {
-
-    const { tasksToHighlight } = this.props
-    const { opacityAnim } = this.state
-
-    const isHighlighted = _.find(tasksToHighlight, t => t['@id'] === task['@id'])
-
-    if (isHighlighted) {
-      return (
-        <Animated.View style={{ opacity: opacityAnim }}>
-          { this.renderItem(task) }
-        </Animated.View>
-      )
-    }
-
-    return this.renderItem(task)
   }
 
   renderTaskStatusIcon(task) {
@@ -108,10 +66,6 @@ class TaskList extends Component {
           <View />
         )
     }
-  }
-
-  renderTaskItemLeft(task) {
-
   }
 
   renderItem(task) {
@@ -167,22 +121,15 @@ class TaskList extends Component {
     )
   }
 
-  scrollToTask(task) {
-    const { tasks } = this.props
-    const taskIndex = _.findIndex(tasks, t => t['@id'] === task['@id'])
-    this.refs.flatList.scrollToIndex({ index: taskIndex, viewPosition: 0.5, viewOffset: 0 })
-  }
-
   render() {
     let { tasks } = this.props
 
     return (
       <FlatList
         ref="flatList"
-        onScrollToIndexFailed={ e => console.log('onScrollToIndexFailed', e) }
         data={tasks}
         keyExtractor={(item, index) => item['@id']}
-        renderItem={({item}) => this.renderAnimatedItem(item)}
+        renderItem={({item}) => this.renderItem(item)}
       />
     )
   }

@@ -68,7 +68,6 @@ class TaskListPage extends Component {
     super(props)
 
     this.state = {
-      addedTasks: [],
       filterModal: false,
     }
 
@@ -77,28 +76,6 @@ class TaskListPage extends Component {
 
   componentDidMount() {
     this.props.navigation.setParams({ toggleFilterModal: this.toggleFilterModal })
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const nextTasks = nextProps.tasks
-    const { tasks } = this.props
-
-
-    if (nextTasks !== tasks) {
-      // Tasks have been added
-      if (nextTasks.length > tasks.length) {
-        const addedTasks = _.differenceWith(nextTasks, tasks, taskComparator)
-        const firstAddedTask = _.first(addedTasks)
-
-        this.setState({ addedTasks })
-
-        setTimeout(() => {
-          this.taskList.getWrappedInstance().scrollToTask(firstAddedTask)
-          this.taskList.getWrappedInstance().animate()
-        }, 500)
-      }
-    }
-
   }
 
   refreshTasks (selectedDate) {
@@ -156,7 +133,6 @@ class TaskListPage extends Component {
   render() {
 
     const { tasks, selectedDate } = this.props
-    const { addedTasks } = this.state
     const { navigate } = this.props.navigation
     const { client, geolocationTracker } = this.props.navigation.state.params
 
@@ -175,7 +151,6 @@ class TaskListPage extends Component {
             <TaskList
               ref={ (e) => {this.taskList = e} }
               tasks={ tasks }
-              tasksToHighlight={ addedTasks }
               onTaskClick={ task => navigate('CourierTask', { client, task, geolocationTracker }) }
             />
           }
