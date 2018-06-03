@@ -80,6 +80,8 @@ class TasksPage extends Component {
     })
 
     this.props.navigation.setParams({ toggleFilterModal: this.toggleFilterModal })
+
+    this.refreshTasks(this.props.selectedDate)
   }
 
   componentWillUnmount() {
