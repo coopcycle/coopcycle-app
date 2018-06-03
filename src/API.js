@@ -55,6 +55,9 @@ function doFetch(req, resolve, reject) {
   fetch(req)
     .then(res => {
       if (res.ok) {
+        if (res.status === 204) {
+          return resolve()
+        }
         // Always clone response to make sure Body can be read again
         // @see https://stackoverflow.com/questions/40497859/reread-a-response-body-from-javascripts-fetch
         res.clone().json().then(data => resolve(data))
