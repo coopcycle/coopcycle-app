@@ -10,6 +10,7 @@ import KeepAwake from 'react-native-keep-awake'
 import RNPinScreen from 'react-native-pin-screen'
 import { connect } from 'react-redux'
 import { translate } from 'react-i18next'
+import _ from 'lodash'
 
 import { greenColor, redColor, greyColor, whiteColor, orangeColor, dateSelectHeaderHeight, websocketWarningHeight } from "../../styles/common"
 import DateSelectHeader from "../../components/DateSelectHeader"
@@ -120,7 +121,7 @@ class TasksPage extends Component {
 
         const { geolocation } = this.state
 
-        const coordinates = nextProps.tasks.map(task => {
+        let coordinates = nextProps.tasks.map(task => {
           const { latitude, longitude } = task.address.geo
           return {
             latitude,
@@ -129,15 +130,19 @@ class TasksPage extends Component {
         })
         coordinates.push(geolocation)
 
-        this.map.fitToCoordinates(_.filter(coordinates), {
-          edgePadding: {
-            top: 100,
-            left: 100,
-            bottom: 100,
-            right: 100
-          },
-          animated: true
-        })
+        coordinates = _.filter(coordinates)
+
+        if (coordinates.length > 0) {
+          this.map.fitToCoordinates(_.filter(coordinates), {
+            edgePadding: {
+              top: 100,
+              left: 100,
+              bottom: 100,
+              right: 100
+            },
+            animated: true
+          })
+        }
     }
   }
 
@@ -158,35 +163,6 @@ class TasksPage extends Component {
   onMapReady () {
 
     const { client } = this.props.navigation.state.params
-
-    BackgroundGeolocation.configure({
-      desiredAccuracy: BackgroundGeolocation.HIGH_ACCURACY,
-      stationaryRadius: 5,
-      distanceFilter: 10,
-      debug: false,
-      startOnBoot: false,
-      startForeground: false,
-      stopOnTerminate: true,
-      stopOnStillActivity: false,
-      locationProvider: BackgroundGeolocation.ACTIVITY_PROVIDER,
-      interval: 3000,
-      fastestInterval: 1000,
-      activitiesInterval: 5000,
-      maxLocations: 10,
-      url: client.getBaseURL() + '/api/me/location',
-      syncUrl: client.getBaseURL() + '/api/me/location',
-      syncThreshold: 10,
-      httpHeaders: {
-        'Authorization': `Bearer ${client.getToken()}`,
-        'Content-Type': "application/ld+json",
-      },
-      // customize post properties
-      postTemplate: {
-        latitude: '@latitude',
-        longitude: '@longitude',
-        time: '@time',
-      }
-    })
 
     BackgroundGeolocation.on('start', () => {
       this.props.navigation.setParams({ tracking: true })

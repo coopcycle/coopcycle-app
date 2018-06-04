@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 import {
+  Alert,
+  Platform,
   StyleSheet,
   View,
-  ActivityIndicator,
-  PushNotificationIOS
+  ActivityIndicator
 } from 'react-native'
 
 import {
@@ -17,19 +18,20 @@ import {
 import getTheme from './native-base-theme/components'
 import material from './native-base-theme/variables/material'
 
+import moment from 'moment'
 import { NavigationActions, StackNavigator } from 'react-navigation'
 import { Provider } from 'react-redux'
 import { translate, I18nextProvider } from 'react-i18next'
-import PushNotification from 'react-native-push-notification'
+import BackgroundGeolocation from 'react-native-mauron85-background-geolocation'
 
 import API from './src/API'
 import { Settings } from './src/Settings'
 import { Registry } from './src/Registry'
 import i18n from './src/i18n'
 import { primaryColor,  whiteColor, fontTitleName } from './src/styles/common'
-import { selectTriggerTasksNotification, dontTriggerTasksNotification } from './src/redux/Courier'
-import { init as wsInit } from './src/redux/middlewares/WebSocketMiddleware'
-import store, { observeStore } from "./src/redux/store"
+import { loadTasks } from './src/redux/Courier'
+import store from "./src/redux/store"
+import PushNotification from "./src/notifications"
 
 const Routes = require('./src/page')
 const AppUser = require('./src/AppUser')
@@ -215,10 +217,15 @@ const initialRouteName = user => {
   return 'Home'
 }
 
+const getCurrentRoute = state => (
+  state.index !== undefined ? getCurrentRoute(state.routes[state.index]) : state.routeName
+);
+
 class App extends Component {
 
   input = null
-  reduxStoreUnsubscribe = () => {}
+  navigator = null
+  currentRouteName = 'Home'
 
   constructor(props) {
     super(props)
@@ -233,20 +240,6 @@ class App extends Component {
       serverError: false,
     }
 
-    this.reduxStoreUnsubscribe = observeStore(
-      store,
-      selectTriggerTasksNotification,
-      (triggerTasksNotification) => {
-        if (triggerTasksNotification) {
-          Toast.show({
-            text: this.props.t('TASKS_UPDATED'),
-            position: 'bottom'
-          })
-          store.dispatch(dontTriggerTasksNotification())
-        }
-      }
-    )
-
     this.disconnect = this.disconnect.bind(this)
     this.connect = this.connect.bind(this)
     this.renderLoading = this.renderLoading.bind(this)
@@ -255,15 +248,6 @@ class App extends Component {
   async componentDidMount() {
 
     Settings.addListener('server:remove', this.disconnect)
-    Settings.addListener('user:login', (event) => {
-      const { client, user } = event
-      if (user && user.isAuthenticated() && (user.hasRole('ROLE_COURIER') || user.hasRole('ROLE_ADMIN'))) {
-        Registry.initWebSocketClient(client)
-          .then(() => store.dispatch(wsInit(Registry.getWebSocketClient())))
-          .catch(e => console.log(e))
-      }
-    })
-    Settings.addListener('user:logout', () => Registry.clearWebSocketClient())
 
     const baseURL = await Settings.loadServer()
 
@@ -295,62 +279,94 @@ class App extends Component {
   }
 
   componentWillUnmount() {
-    this.reduxStoreUnsubscribe()
+    PushNotification.removeListeners()
   }
 
   initializeRouter(baseURL, user) {
     let client = null
 
+    console.log('PushNotification initializeRouter')
+
     if (baseURL) {
       client = API.createClient(baseURL, user)
       if (user && user.isAuthenticated()) {
 
-        Registry.initWebSocketClient(client)
-          .then(() => store.dispatch(wsInit(Registry.getWebSocketClient())))
-          .catch(e => console.log(e))
+        BackgroundGeolocation.configure({
+          desiredAccuracy: BackgroundGeolocation.HIGH_ACCURACY,
+          stationaryRadius: 5,
+          distanceFilter: 10,
+          debug: false,
+          startOnBoot: false,
+          startForeground: false,
+          stopOnTerminate: true,
+          stopOnStillActivity: false,
+          locationProvider: BackgroundGeolocation.RAW_PROVIDER,
+          interval: 3000,
+          fastestInterval: 1000,
+          activitiesInterval: 5000,
+          maxLocations: 10,
+          url: client.getBaseURL() + '/api/me/location',
+          syncUrl: client.getBaseURL() + '/api/me/location',
+          syncThreshold: 10,
+          httpHeaders: {
+            'Authorization': `Bearer ${client.getToken()}`,
+            'Content-Type': "application/ld+json",
+          },
+          postTemplate: {
+            latitude: '@latitude',
+            longitude: '@longitude',
+            time: '@time',
+          }
+        })
+
+        const onTasksChanged = date => {
+          if (this.currentRouteName !== 'CourierTaskList') {
+            const pushAction = NavigationActions.push({
+              routeName: 'CourierTaskList',
+              params: {
+                baseURL,
+                client,
+                user
+              }
+            })
+            this.navigator.dispatch(pushAction)
+          }
+          store.dispatch(loadTasks(client, moment(date)))
+        }
 
         PushNotification.configure({
-
-          // (optional) Called when Token is generated (iOS and Android)
-          onRegister: function(token) {
-            console.log(`Push notification token for ${token.os}: ${token.token}`)
-            client.post('/api/me/remote_push_tokens', { platform: token.os, token: token.token })
-              .then(remotePushToken => {
-                console.log('Remote push token stored', remotePushToken)
-              })
+          onRegister: token => {
+            client
+              .post('/api/me/remote_push_tokens', { platform: Platform.OS, token })
               .catch(e => console.log(e))
           },
-
-          // (required) Called when a remote or local notification is opened or received
-          onNotification: function(notification) {
-            // process the notification
-            // required on iOS only
-            // (see fetchCompletionHandler docs: https://facebook.github.io/react-native/docs/pushnotificationios.html)
-            notification.finish(PushNotificationIOS.FetchResult.NoData);
-          },
-
-          // ANDROID ONLY: GCM Sender ID (optional - not required for local notifications,
-          // but is need to receive remote push notifications)
-          senderID: Settings.get('gcm_sender_id') || '',
-
-          // IOS ONLY (optional): default: all - Permissions to register.
-          permissions: {
-            alert: true,
-            badge: true,
-            sound: true
-          },
-
-          // Should the initial notification be popped automatically
-          // default: true
-          popInitialNotification: true,
-
-          /**
-            * (optional) default: true
-            * - Specified if permissions (ios) and token (android and ios) will requested or not,
-            * - if not, you must call PushNotificationsHandler.requestPermissions() later
-            */
-          requestPermissions: true,
-        });
+          onNotification: notification => {
+            const { event } = notification.data
+            if (event && event.name === 'tasks:changed') {
+              if (notification.foreground) {
+                Alert.alert(
+                  'Tâches mises à jour',
+                  `Vos tâches du ${event.data.date} ont été mises à jour`,
+                  [
+                    {
+                      text: 'Annuler',
+                      onPress: () => {}
+                    },
+                    {
+                      text: 'Afficher',
+                      onPress: () => onTasksChanged(event.data.date)
+                    },
+                  ],
+                  {
+                    cancelable: true
+                  }
+                )
+              } else {
+                onTasksChanged(event.data.date)
+              }
+            }
+          }
+        })
 
       }
     }
@@ -438,6 +454,10 @@ class App extends Component {
       client: null,
       server: null,
     })
+  }
+
+  onNavigationStateChange(prevState, newState) {
+    this.currentRouteName = getCurrentRoute(this.navigator.state.nav)
   }
 
   renderLoading() {
@@ -530,7 +550,9 @@ class App extends Component {
         <Provider store={store}>
           <I18nextProvider i18n={i18n}>
             <StyleProvider style={getTheme(material)}>
-              <Router />
+              <Router
+                ref={ ref => { this.navigator = ref } }
+                onNavigationStateChange={ this.onNavigationStateChange.bind(this) } />
             </StyleProvider>
           </I18nextProvider>
         </Provider>
