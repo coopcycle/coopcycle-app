@@ -47,7 +47,7 @@ export const selectFilteredTasks = createSelector(
  */
 export const selectAreDoneTasksHidden = createSelector(
   selectTaskFilters,
-  (filters) => filters.some(f => f.status === 'done')
+  (filters) => filters.some(f => f.status === 'DONE')
 )
 
 /**
@@ -56,7 +56,7 @@ export const selectAreDoneTasksHidden = createSelector(
  */
 export const selectAreFailedTasksHidden = createSelector(
   selectTaskFilters,
-  (filters) => filters.some(f => f.status === 'failed')
+  (filters) => filters.some(f => f.status === 'FAILED')
 )
 
 /**

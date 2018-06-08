@@ -183,8 +183,8 @@ function mapDispatchToProps (dispatch) {
     loadTasks: (client, selectedDate) => dispatch(loadTasks(client, selectedDate)),
     markTaskFailed: (client, task, notes) => dispatch(markTaskFailed(client, task, notes)),
     markTaskDone: (client, task, notes) => dispatch(markTaskDone(client, task, notes)),
-    toggleDisplayDone: (hidden) => dispatch(hidden ? clearTasksFilter({ status: 'done' }) : filterTasks({ status: 'done' })),
-    toggleDisplayFailed: (hidden) => dispatch(hidden ? clearTasksFilter({ status: 'failed' }) : filterTasks({ status: 'failed' })),
+    toggleDisplayDone: (hidden) => dispatch(hidden ? clearTasksFilter({ status: 'DONE' }) : filterTasks({ status: 'DONE' })),
+    toggleDisplayFailed: (hidden) => dispatch(hidden ? clearTasksFilter({ status: 'FAILED' }) : filterTasks({ status: 'FAILED' })),
     toggleDisplayTag: (tag, hidden) => dispatch(hidden ? clearTasksFilter({ tags: tag }) : filterTasks({ tags: tag })),
   }
 }
