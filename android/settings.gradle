@@ -1,12 +1,12 @@
 rootProject.name = 'CoopCycle'
+include ':react-native-firebase'
+project(':react-native-firebase').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-firebase/android')
 include ':react-native-mauron85-background-geolocation-common'
 project(':react-native-mauron85-background-geolocation-common').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-mauron85-background-geolocation/android/common')
 include ':react-native-mauron85-background-geolocation'
 project(':react-native-mauron85-background-geolocation').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-mauron85-background-geolocation/android/lib')
 include ':react-native-i18n'
 project(':react-native-i18n').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-i18n/android')
-include ':react-native-push-notification'
-project(':react-native-push-notification').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-push-notification/android')
 include ':react-native-keep-awake'
 project(':react-native-keep-awake').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-keep-awake/android')
 include ':react-native-pin-screen'

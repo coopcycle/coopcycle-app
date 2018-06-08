@@ -30,7 +30,7 @@ matrix:
       - yarn install
       - cp google-services.json.dist android/app/google-services.json
     script:
-      - cd android && ./gradlew assembleDebug --stacktrace
+      - cd android && ./gradlew clean && ./gradlew assembleDebug --stacktrace
   - language: objective-c
     env: LANE='ios'
     os: osx

@@ -39,9 +39,10 @@ class TaskPage extends Component {
     // HACK : check if the task status has been updated - if yes go back to tasklist page
     // I think the way to do it properly would be to integrate react-navigation in redux but it does seem a lot of work
 
-    let previousTaskStatus = _.find(this.props.tasks, (taskA) => taskA['@id'] === task['@id']).status,
-      currentTaskStatus = _.find(nextProps.tasks, (taskA) => taskA['@id'] === task['@id']).status
-    if (previousTaskStatus !== currentTaskStatus) {
+    let previousTask = _.find(this.props.tasks, (taskA) => taskA['@id'] === task['@id']),
+      currentTask = _.find(nextProps.tasks, (taskA) => taskA['@id'] === task['@id'])
+
+    if (!currentTask || previousTask.status !== currentTask.status) {
       this.props.navigation.goBack()
     }
   }
