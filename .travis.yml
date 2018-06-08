@@ -20,9 +20,9 @@ matrix:
       components:
         - tools
         - platform-tools
-        - tools
         - build-tools-27.0.3
         - android-27
+        - extra-google-google_play_services
     before_install:
       - nvm install 8
     before_script:

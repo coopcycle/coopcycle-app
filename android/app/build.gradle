@@ -154,7 +154,9 @@ android {
 }
 
 dependencies {
-    implementation project(':react-native-firebase')
+    implementation(project(':react-native-firebase')) {
+        transitive = false
+    }
     implementation project(':react-native-mauron85-background-geolocation')
     implementation(project(':react-native-i18n')) {
         exclude group: 'com.google.android.gms'

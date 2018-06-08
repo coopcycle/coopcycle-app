@@ -19,14 +19,14 @@ buildscript {
 
 allprojects {
     repositories {
-        // Add jitpack repository (added by tipsi-stripe)
-        maven { url "https://jitpack.io" }
-        mavenLocal()
-        jcenter()
         // Gradle 4.1 and higher include support for Google's Maven repo using
         // the google() method. And you need to include this repo to download
         // Android plugin 3.0.0 or higher.
         google()
+        // Add jitpack repository (added by tipsi-stripe)
+        maven { url "https://jitpack.io" }
+        mavenLocal()
+        jcenter()
         maven {
             // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
             url "$rootDir/../node_modules/react-native/android"
