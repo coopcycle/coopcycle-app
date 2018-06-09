@@ -8,7 +8,7 @@
 import i18next from 'i18next'
 import { reactI18nextModule } from 'react-i18next'
 import I18n from 'react-native-i18n'
-import { Settings } from '../Settings'
+import Settings from '../Settings'
 import en from './locales/en.json'
 import fr from './locales/fr.json'
 

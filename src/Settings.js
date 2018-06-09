@@ -3,8 +3,6 @@ import EventEmitter from 'EventEmitter'
 import API from './API'
 import _ from 'lodash'
 
-let events = new EventEmitter()
-
 const loadServerSettingsHash = baseURL => {
   return new Promise((resolve, reject) => {
     try {
@@ -120,21 +118,12 @@ class Settings {
             if (error) {
               return reject(error)
             }
-            events.emit('server:remove')
             resolve()
           });
       } catch (error) {
         reject(error.message)
       }
     });
-  }
-
-  static addListener(event, handler) {
-    events.addListener(event, handler)
-  }
-
-  static removeListener(event, handler) {
-    events.removeListener(event, handler)
   }
 
   static synchronize(baseURL) {
@@ -179,4 +168,4 @@ class Settings {
 }
 
 export default Settings
-export { Settings, events, defaultSettings as defaults }
+export { defaultSettings as defaults }

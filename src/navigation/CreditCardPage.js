@@ -15,7 +15,7 @@ import Stripe, { PaymentCardTextField } from 'tipsi-stripe';
 import { NavigationActions } from 'react-navigation'
 import { connect } from 'react-redux'
 import { translate } from 'react-i18next'
-import { Settings } from '../Settings'
+import Settings from '../Settings'
 import { formatPrice } from '../Cart'
 
 class CreditCardPage extends Component {
