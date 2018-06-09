@@ -44,7 +44,7 @@ class RestaurantPage extends Component {
   render() {
 
     const { navigate } = this.props.navigation
-    const { restaurant, deliveryAddress, deliveryDate, client, user } = this.props.navigation.state.params
+    const { restaurant, deliveryAddress, deliveryDate } = this.props.navigation.state.params
     const { cart } = this.state
 
     return (
@@ -58,14 +58,10 @@ class RestaurantPage extends Component {
         <CartFooter
           ref={ component => this.cartFooter = component }
           cart={ cart }
-          onSubmit={ () => navigate('Cart', { cart, client, deliveryAddress, deliveryDate, user, onCartUpdate: cart => this.setState({ cart }) }) }  />
+          onSubmit={ () => navigate('Cart', { cart, deliveryAddress, deliveryDate, onCartUpdate: cart => this.setState({ cart }) }) }  />
       </Container>
     );
   }
 }
-
-const styles = StyleSheet.create({
-
-});
 
 module.exports = RestaurantPage;

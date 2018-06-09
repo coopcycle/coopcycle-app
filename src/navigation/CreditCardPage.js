@@ -13,8 +13,9 @@ import {
 } from 'native-base';
 import Stripe, { PaymentCardTextField } from 'tipsi-stripe';
 import { NavigationActions } from 'react-navigation'
+import { connect } from 'react-redux'
 import { translate } from 'react-i18next'
-import { Settings } from '../Settings'
+import Settings from '../Settings'
 import { formatPrice } from '../Cart'
 
 class CreditCardPage extends Component {
@@ -33,15 +34,15 @@ class CreditCardPage extends Component {
   }
   _onClick() {
 
-    const { cart, client } = this.props.navigation.state.params
+    const { cart } = this.props.navigation.state.params
 
     if (this.state.valid) {
       this.setState({ loading: true });
       Stripe.createTokenWithCard(this.state.params)
         .then(token => {
-          client.post('/api/orders', cart.toJSON())
+          this.props.httpClient.post('/api/orders', cart.toJSON())
             .then(order => {
-              return client.put(order['@id'] + '/pay', {
+              return this.props.httpClient.put(order['@id'] + '/pay', {
                 stripeToken: token.tokenId
               });
             })
@@ -52,10 +53,7 @@ class CreditCardPage extends Component {
                 actions: [
                   NavigationActions.navigate({
                     routeName: 'OrderTracking',
-                    params: {
-                      order,
-                      client,
-                    }
+                    params: { order }
                   })
                 ]
               })
@@ -138,4 +136,10 @@ const styles = StyleSheet.create({
   },
 })
 
-module.exports = translate()(CreditCardPage);
+function mapStateToProps(state) {
+  return {
+    httpClient: state.app.httpClient
+  }
+}
+
+module.exports = connect(mapStateToProps)(translate()(CreditCardPage))

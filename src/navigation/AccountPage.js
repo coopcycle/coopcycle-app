@@ -4,14 +4,14 @@ import {
   Container, Header, Title, Content,
   Left, Right, Body,
   List, ListItem, InputGroup, Input, Icon, Text, Picker, Button
-} from 'native-base';
-
-import { NavigationActions } from 'react-navigation'
+} from 'native-base'
+import { connect } from 'react-redux'
 import { translate } from 'react-i18next'
 
 import LoginForm from '../components/LoginForm'
 import RegisterForm from '../components/RegisterForm'
-import { Settings, events } from '../Settings'
+import Settings from '../Settings'
+import { login } from '../redux/App/actions'
 
 class AccountPage extends Component {
 
@@ -24,29 +24,27 @@ class AccountPage extends Component {
     };
   }
 
-  logout() {
+  async resetServer() {
 
-    const { baseURL, client, user, navigation } = this.props.screenProps
+    const { navigation } = this.props.screenProps
 
-    events.emit('user:logout')
+    await this.props.user.logout()
+    await Settings.removeServer()
 
-    user.logout()
-      .then(() => {
-        const resetAction = NavigationActions.reset({
-          index: 0,
-          actions: [
-            NavigationActions.navigate({
-              routeName: 'Home',
-              params: {
-                baseURL,
-                client,
-                user: null
-              }
-            })
-          ]
-        })
-        navigation.dispatch(resetAction)
-      })
+    navigation.navigate('ConfigureServer')
+  }
+
+  async logout() {
+
+    const { navigation } = this.props.screenProps
+
+    await this.props.user.logout()
+
+    navigation.navigate({
+      routeName: 'Home',
+      key: 'Home',
+      params: {}
+    })
   }
 
   onRequestStart() {
@@ -60,26 +58,17 @@ class AccountPage extends Component {
     this.setState({ loading: false })
   }
 
-  onLoginSuccess(user) {
+  async onLoginSuccess(user) {
 
-    const { baseURL, client, navigation } = this.props.screenProps
+    const { navigation } = this.props.screenProps
 
-    events.emit('user:login', { baseURL, client, user })
+    this.props.login(user)
 
-    const resetAction = NavigationActions.reset({
-      index: 0,
-      actions: [
-        NavigationActions.navigate({
-          routeName: 'Home',
-          params: {
-            baseURL,
-            client,
-            user
-          }
-        })
-      ]
+    navigation.navigate({
+      routeName: 'Home',
+      key: 'Home',
+      params: {}
     })
-    navigation.dispatch(resetAction)
   }
 
   onLoginFail(message) {
@@ -87,8 +76,6 @@ class AccountPage extends Component {
   }
 
   renderServer() {
-    const { baseURL } = this.props.screenProps
-
     return (
       <View style={{ marginBottom: 15 }}>
         <Text style={{ textAlign: 'center' }}>
@@ -96,11 +83,11 @@ class AccountPage extends Component {
             [
               this.props.t('CONNECTED_TO'),
               ' ',
-              <Text key={3} style={{ fontWeight: 'bold' }}>{baseURL}</Text>
+              <Text key={3} style={{ fontWeight: 'bold' }}>{ this.props.baseURL }</Text>
             ]
           }
         </Text>
-        <Button block transparent onPress={ () => Settings.removeServer() }>
+        <Button block transparent onPress={ this.resetServer.bind(this) }>
           <Text>{this.props.t('CHANGE_SERVER')}</Text>
         </Button>
       </View>
@@ -128,7 +115,6 @@ class AccountPage extends Component {
 
   renderAuthenticated() {
 
-    const { baseURL, client, user } = this.props.screenProps
     const { navigate } = this.props.screenProps.navigation
 
     return (
@@ -138,11 +124,11 @@ class AccountPage extends Component {
           <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', marginBottom: 15 }}>
             <Icon name="person" />
             <Text style={{ textAlign: 'center', fontWeight: 'bold', fontSize: 18 }}>
-              {`${this.props.t('HELLO')} ${ user.username }`}
+              {`${this.props.t('HELLO')} ${ this.props.user.username }`}
             </Text>
           </View>
           <List>
-            <ListItem button iconRight onPress={ () => navigate('AccountDetails', { client }) }>
+            <ListItem button iconRight onPress={ () => navigate('AccountDetails') }>
               <Body>
                 <Text>{this.props.t('DETAILS')}</Text>
               </Body>
@@ -150,7 +136,7 @@ class AccountPage extends Component {
                 <Icon name="arrow-forward" />
               </Right>
             </ListItem>
-            <ListItem button iconRight onPress={ () => navigate('AccountAddresses', { client }) }>
+            <ListItem button iconRight onPress={ () => navigate('AccountAddresses') }>
               <Body>
                 <Text>{this.props.t('ADDRESSES')}</Text>
               </Body>
@@ -158,7 +144,7 @@ class AccountPage extends Component {
                 <Icon name="arrow-forward" />
               </Right>
             </ListItem>
-            <ListItem button iconRight onPress={ () => navigate('AccountOrders', { client }) }>
+            <ListItem button iconRight onPress={ () => navigate('AccountOrders') }>
               <Body>
                 <Text>{this.props.t('ORDERS')}</Text>
               </Body>
@@ -179,13 +165,12 @@ class AccountPage extends Component {
   }
 
   renderForm() {
-    const { client } = this.props.screenProps
     const { formToDisplay } = this.state
 
     if (this.state.formToDisplay === 'login') {
       return (
         <LoginForm
-          client={client}
+          client={this.props.httpClient}
           onRequestStart={this.onRequestStart.bind(this)}
           onRequestEnd={this.onRequestEnd.bind(this)}
           onLoginSuccess={this.onLoginSuccess.bind(this)}
@@ -196,7 +181,7 @@ class AccountPage extends Component {
     if (this.state.formToDisplay === 'register') {
       return (
         <RegisterForm
-          client={client}
+          client={this.props.httpClient}
           onRequestStart={this.onRequestStart.bind(this)}
           onRequestEnd={this.onRequestEnd.bind(this)}
           onRegisterSuccess={this.onLoginSuccess.bind(this)} // TODO: Using the same actions as for Login...is that OK?
@@ -217,13 +202,10 @@ class AccountPage extends Component {
 
   render() {
 
-    const { navigate } = this.props.navigation
-    const { baseURL, client, user } = this.props.screenProps
-    const isAuthenticated = user && user.isAuthenticated()
     const alternateForm = this.state.formToDisplay === 'login' ? 'register' : 'login'
     const btnLabel = this.state.formToDisplay === 'login' ? 'OR_REGISTER' : 'OR_LOGIN'
 
-    if (isAuthenticated) {
+    if (this.props.user.isAuthenticated()) {
       return this.renderAuthenticated()
     }
 
@@ -264,4 +246,18 @@ const styles = StyleSheet.create({
   }
 });
 
-module.exports = translate()(AccountPage);
+function mapStateToProps(state) {
+  return {
+    baseURL: state.app.baseURL,
+    user: state.app.user,
+    httpClient: state.app.httpClient
+  }
+}
+
+function mapDispatchToProps (dispatch) {
+  return {
+    login: user => dispatch(login(user)),
+  }
+}
+
+module.exports = connect(mapStateToProps, mapDispatchToProps)(translate()(AccountPage))

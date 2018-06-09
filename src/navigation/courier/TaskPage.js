@@ -49,20 +49,20 @@ class TaskPage extends Component {
 
   markTaskDone() {
 
-    const { client, task } = this.props.navigation.state.params
+    const { task } = this.props.navigation.state.params
     const { markTaskDone } = this.props
     const { notes } = this.state
 
-    markTaskDone(client, task, notes)
+    markTaskDone(this.props.httpClient, task, notes)
   }
 
   markTaskFailed() {
 
-    const { client, task } = this.props.navigation.state.params
+    const { task } = this.props.navigation.state.params
     const { markTaskFailed } = this.props
     const { notes } = this.state
 
-    markTaskFailed(client, task, notes)
+    markTaskFailed(this.props.httpClient, task, notes)
 
   }
 
@@ -483,6 +483,7 @@ const styles = StyleSheet.create({
 
 function mapStateToProps (state) {
   return {
+    httpClient: state.app.httpClient,
     isLoadingTasks: selectIsTasksLoading(state),
     tasks: selectTasksList(state),
   }

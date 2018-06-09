@@ -11,6 +11,7 @@ import {
   Left, Right,
   Button, Icon, List, ListItem, Text, Radio } from 'native-base';
 import MapView from 'react-native-maps'
+import { connect } from 'react-redux'
 import { translate } from 'react-i18next'
 import DeliveryAddressForm from '../components/DeliveryAddressForm'
 
@@ -40,14 +41,14 @@ class CartAddressPage extends Component {
   createAddress() {
 
     const { navigate } = this.props.navigation
-    const { cart, client, user } = this.props.navigation.state.params
+    const { cart } = this.props.navigation.state.params
 
     this.setState({ loading: true })
 
     const { deliveryAddress } = this.state
     Object.assign(deliveryAddress, this.deliveryAddressForm.getWrappedInstance().createDeliveryAddress())
 
-    client.post('/api/me/addresses', deliveryAddress)
+    this.props.httpClient.post('/api/me/addresses', deliveryAddress)
       .then(data => {
 
         cart.setDeliveryAddress(data)
@@ -57,7 +58,7 @@ class CartAddressPage extends Component {
           loading: false,
         })
 
-        navigate('CreditCard', { cart, deliveryAddress: data, client, user })
+        navigate('CreditCard', { cart, deliveryAddress: data })
       })
       .catch(err => {
         if (err.hasOwnProperty('@type') && err['@type'] === 'ConstraintViolationList') {
@@ -131,4 +132,10 @@ const styles = StyleSheet.create({
   },
 });
 
-module.exports = translate()(CartAddressPage);
+function mapStateToProps(state) {
+  return {
+    httpClient: state.app.httpClient
+  }
+}
+
+module.exports = connect(mapStateToProps)(translate()(CartAddressPage))

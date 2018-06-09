@@ -1,6 +1,6 @@
-module.exports = {
-  HomePage: require('./HomePage'),
-  HomeTab: require('./HomeTab'),
+import Home from './HomeTab'
+
+export default {
   RestaurantsPage: require('./RestaurantsPage'),
   RestaurantPage: require('./RestaurantPage'),
   CartPage: require('./CartPage'),
@@ -11,11 +11,14 @@ module.exports = {
   CourierTaskPage: require('./courier/TaskPage'),
   CourierTaskHistoryPage: require('./courier/TaskHistoryPage'),
   CourierSettingsPage: require('./courier/SettingsPage'),
-  DispatchPage: require('./DispatchPage'),
   AccountPage: require('./AccountPage'),
   AccountAddressesPage: require('./account/AccountAddressesPage'),
   AccountOrdersPage: require('./account/AccountOrdersPage'),
   AccountDetailsPage: require('./account/AccountDetailsPage'),
   CreditCardPage: require('./CreditCardPage'),
   OrderTrackingPage: require('./OrderTrackingPage'),
+  Loading: require('./Loading'),
+  Home,
+  Courier: require('./CourierPage'),
+  ConfigureServer: require('./ConfigureServer')
 }

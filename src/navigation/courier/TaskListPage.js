@@ -79,8 +79,7 @@ class TaskListPage extends Component {
   }
 
   refreshTasks (selectedDate) {
-    const { client } = this.props.navigation.state.params
-    this.props.loadTasks(client, selectedDate)
+    this.props.loadTasks(this.props.httpClient, selectedDate)
   }
 
   toggleFilterModal = () => {
@@ -134,7 +133,6 @@ class TaskListPage extends Component {
 
     const { tasks, selectedDate } = this.props
     const { navigate } = this.props.navigation
-    const { client, geolocationTracker } = this.props.navigation.state.params
 
     return (
       <Container style={ styles.container }>
@@ -151,7 +149,7 @@ class TaskListPage extends Component {
             <TaskList
               ref={ (e) => {this.taskList = e} }
               tasks={ tasks }
-              onTaskClick={ task => navigate('CourierTask', { client, task, geolocationTracker }) }
+              onTaskClick={ task => navigate('CourierTask', { task }) }
             />
           }
           {
@@ -168,6 +166,7 @@ class TaskListPage extends Component {
 
 function mapStateToProps (state) {
   return {
+    httpClient: state.app.httpClient,
     tasks: selectFilteredTasks(state),
     tags: selectTagNames(state),
     selectedDate: selectTaskSelectedDate(state),

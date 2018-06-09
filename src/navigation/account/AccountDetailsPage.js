@@ -8,44 +8,36 @@ import {
   Container,
   Header,
   Left, Right, Body,
-  Title, Content, Footer, Button, Icon, List, ListItem, Text
+  Title, Content, Footer, Button, Icon, Text,
+  Label, Item, Input
 } from 'native-base';
+import { connect } from 'react-redux'
 import { translate } from 'react-i18next'
-import { formatPrice } from '../../Cart'
 
-class AccountOrdersPage extends Component {
+class AccountDetailsPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
       loading: true,
-      orders: []
+      email: null,
+      username: null
     };
   }
   componentDidMount() {
-
-    const { client } = this.props.navigation.state.params
-
-    client.get('/api/me/orders')
-      .then((data) => {
+    this.props.httpClient.get('/api/me')
+      .then(data => {
+        const { email, username } = data
         this.setState({
           loading: false,
-          orders: data['hydra:member']
+          email,
+          username,
         })
       });
   }
-  _renderRow(order) {
-
-    const { navigate } = this.props.navigation
-    const { client } = this.props.navigation.state.params
-
-    return (
-      <ListItem onPress={() => navigate('OrderTracking', { client, order }) }>
-        <Body><Text>{ order.restaurant.name }</Text></Body>
-        <Right><Text>{ formatPrice(order.total) } €</Text></Right>
-      </ListItem>
-    );
-  }
   render() {
+
+    const { email, username } = this.state
+
     let loader = (
       <View />
     )
@@ -64,8 +56,17 @@ class AccountOrdersPage extends Component {
 
     return (
       <Container>
-        <Content>
-          <List dataArray={ this.state.orders } renderRow={ this._renderRow.bind(this) } />
+        <Content style={{ paddingHorizontal: 10, paddingTop: 20 }}>
+          { username && (<Item stackedLabel disabled>
+            <Label>{this.props.t('USERNAME')}</Label>
+            <Input disabled placeholder={ username } />
+            <Icon name="information-circle" />
+          </Item> )}
+          { email && (<Item stackedLabel disabled>
+            <Label>{this.props.t('EMAIL')}</Label>
+            <Input disabled placeholder={ email } />
+            <Icon name="information-circle" />
+          </Item> )}
         </Content>
         { loader }
       </Container>
@@ -82,4 +83,10 @@ const styles = StyleSheet.create({
   },
 });
 
-module.exports = translate()(AccountOrdersPage);
+function mapStateToProps(state) {
+  return {
+    httpClient: state.app.httpClient
+  }
+}
+
+module.exports = connect(mapStateToProps)(translate()(AccountDetailsPage))

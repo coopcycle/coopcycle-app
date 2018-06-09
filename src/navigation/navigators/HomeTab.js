@@ -1,14 +1,43 @@
 import React, { Component } from 'react'
-import {
-  Icon
-} from 'native-base';
+import { Button, Icon } from 'native-base'
 import { TabNavigator } from 'react-navigation'
+import { connect } from 'react-redux'
 import { translate } from 'react-i18next'
-import AccountPage from './AccountPage'
-import HomeTab from './HomeTab'
-import RestaurantsPage from './RestaurantsPage'
+
+import AccountPage from '../AccountPage'
+import HomeTab from '../HomeTab'
+import RestaurantsPage from '../RestaurantsPage'
 
 class HomePage extends Component {
+
+  static navigationOptions = ({ navigation }) => {
+
+    const user = navigation.getParam('user')
+
+    if (user && user.isAuthenticated() && (user.hasRole('ROLE_COURIER') || user.hasRole('ROLE_ADMIN'))) {
+      headerRight = (
+        <Button transparent onPress={ () => navigation.navigate('Courier', { connected: false, tracking: false }) }>
+          <Icon name="ios-bicycle" style={{ color: '#fff' }} />
+        </Button>
+      )
+    } else {
+      headerRight = (
+        <Button transparent />
+      )
+    }
+
+    return {
+      title: 'CoopCycle',
+      headerRight
+    }
+  }
+
+  componentDidUpdate() {
+    const user = this.props.navigation.getParam('user')
+    if (!user) {
+      this.props.navigation.setParams({ user: this.props.user })
+    }
+  }
 
   render() {
 
@@ -67,4 +96,10 @@ class HomePage extends Component {
   }
 }
 
-module.exports = translate()(HomePage);
+function mapStateToProps(state) {
+  return {
+    user: state.app.user
+  }
+}
+
+module.exports = connect(mapStateToProps)(translate()(HomePage))

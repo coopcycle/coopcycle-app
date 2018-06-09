@@ -15,6 +15,7 @@ import {
 } from 'native-base';
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import { NavigationActions } from 'react-navigation'
+import { connect } from 'react-redux'
 import { translate } from 'react-i18next'
 import LoginForm from '../components/LoginForm'
 import CartFooter from '../components/CartFooter'
@@ -67,13 +68,13 @@ class CartPage extends Component {
   onSubmit() {
 
     const { navigate } = this.props.navigation
-    const { client, deliveryAddress, user } = this.props.navigation.state.params
+    const { deliveryAddress } = this.props.navigation.state.params
     const { cart } = this.state
 
     AppUser.load()
       .then((user) => {
         if (user.hasCredentials()) {
-          navigate('CartAddress', { cart, deliveryAddress, client, user })
+          navigate('CartAddress', { cart, deliveryAddress })
         } else {
           this.setState({ loginModalVisible: true })
         }
@@ -82,11 +83,11 @@ class CartPage extends Component {
 
   onLoginSuccess(user) {
     const { navigate } = this.props.navigation
-    const { client, deliveryAddress } = this.props.navigation.state.params
+    const { deliveryAddress } = this.props.navigation.state.params
     const { cart } = this.state
 
     this.setState({ loginModalVisible: false })
-    navigate('CartAddress', { cart, deliveryAddress, client, user })
+    navigate('CartAddress', { cart, deliveryAddress })
   }
 
   onLoginFail(message) {
@@ -199,8 +200,6 @@ class CartPage extends Component {
   }
 
   renderLoginModal() {
-    const { client } = this.props.navigation.state.params
-
     return (
       <Modal
         animationType={ 'slide' }
@@ -211,7 +210,7 @@ class CartPage extends Component {
           <Container>
             <Content>
               <LoginForm
-                client={ client }
+                client={ this.props.httpClient }
                 onRequestStart={ () => this.setState({ loading: true }) }
                 onRequestEnd={ () => this.setState({ loading: false }) }
                 onLoginSuccess={ this.onLoginSuccess.bind(this) }
@@ -259,7 +258,7 @@ class CartPage extends Component {
 
   render() {
 
-    const { restaurant, deliveryAddress, client, user } = this.props.navigation.state.params
+    const { restaurant, deliveryAddress } = this.props.navigation.state.params
     const { cart } = this.state
 
     return (
@@ -311,4 +310,10 @@ const styles = StyleSheet.create({
   }
 });
 
-module.exports = translate()(CartPage);
+function mapStateToProps(state) {
+  return {
+    httpClient: state.app.httpClient
+  }
+}
+
+module.exports = connect(mapStateToProps)(translate()(CartPage))

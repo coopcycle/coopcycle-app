@@ -5,6 +5,7 @@ import {
   Left, Right, Body,
   List, ListItem, InputGroup, Input, Icon, Text, Picker, Button
 } from 'native-base';
+import { connect } from 'react-redux'
 import { translate } from 'react-i18next'
 
 class CourierPage extends Component {
@@ -19,7 +20,6 @@ class CourierPage extends Component {
 
   render() {
 
-    const { baseURL, client, user } = this.props.navigation.state.params
     const { navigate } = this.props.navigation
 
     return (
@@ -28,13 +28,11 @@ class CourierPage extends Component {
           <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', marginBottom: 15 }}>
             <Icon name="ios-bicycle" />
             <Text style={{ textAlign: 'center', fontWeight: 'bold', fontSize: 18 }}>
-              {`${this.props.t('HELLO')} ${ user.username }`}
+              {`${this.props.t('HELLO')} ${ this.props.user.username }`}
             </Text>
           </View>
           <List>
-            <ListItem button iconRight onPress={() => {
-              navigate('CourierTasks', { baseURL, client, user })
-            }}>
+            <ListItem button iconRight onPress={ () => navigate('CourierTasks') }>
               <Body>
                 <Text>{this.props.t('MY_TASKS')}</Text>
               </Body>
@@ -42,9 +40,7 @@ class CourierPage extends Component {
                 <Icon name="arrow-forward" />
               </Right>
             </ListItem>
-            <ListItem button iconRight button iconRight onPress={() => {
-              navigate('CourierSettings', { baseURL, client, user })
-            }}>
+            <ListItem button iconRight button iconRight onPress={ () => navigate('CourierSettings') }>
               <Body>
                 <Text>{this.props.t('SETTINGS')}</Text>
               </Body>
@@ -76,4 +72,10 @@ const styles = StyleSheet.create({
   }
 });
 
-module.exports = translate()(CourierPage);
+function mapStateToProps(state) {
+  return {
+    user: state.app.user
+  }
+}
+
+module.exports = connect(mapStateToProps)(translate()(CourierPage))

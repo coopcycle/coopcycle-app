@@ -12,6 +12,7 @@ import {
 } from 'native-base';
 import _ from 'underscore'
 import moment from 'moment/min/moment-with-locales'
+import { connect } from 'react-redux'
 import { translate } from 'react-i18next'
 import RestaurantSearch from '../components/RestaurantSearch'
 import RestaurantList from '../components/RestaurantList'
@@ -24,20 +25,16 @@ class RestaurantsPage extends Component {
   constructor(props) {
     super(props);
 
-    const { client, user } = this.props.screenProps
-
     this.state = {
       loading: false,
       restaurants: props.restaurants || [],
-      user,
       deliveryAddress: null,
       deliveryDay: null
     }
   }
 
   request(latitude, longitude, distance) {
-    const { client } = this.props.screenProps
-    return client.get('/api/restaurants?coordinate=' + [latitude, longitude] + '&distance=' + distance)
+    return this.props.httpClient.get('/api/restaurants?coordinate=' + [latitude, longitude] + '&distance=' + distance)
   }
 
   onChange(deliveryAddress, deliveryDay) {
@@ -100,7 +97,6 @@ class RestaurantsPage extends Component {
 
   render() {
 
-    const { baseURL, client, user } = this.props.screenProps
     const { navigate } = this.props.screenProps.navigation
     const { deliveryAddress, deliveryDay, restaurants } = this.state
 
@@ -111,10 +107,10 @@ class RestaurantsPage extends Component {
             ref={ component => this.restaurantSearch = component }
             onChange={ this.onChange.bind(this) } />
           <RestaurantList
-            baseURL={ baseURL }
+            baseURL={ this.props.baseURL }
             restaurants={ restaurants }
             deliveryDay={ deliveryDay }
-            onItemClick={ (restaurant, deliveryDate) => navigate('Restaurant', { restaurant, deliveryAddress, deliveryDate, client, user }) } />
+            onItemClick={ (restaurant, deliveryDate) => navigate('Restaurant', { restaurant, deliveryAddress, deliveryDate }) } />
           { this.renderWarning() }
           <View style={styles.loader}>
             <ActivityIndicator
@@ -139,4 +135,11 @@ const styles = StyleSheet.create({
   },
 });
 
-module.exports = translate()(RestaurantsPage);
+function mapStateToProps(state) {
+  return {
+    baseURL: state.app.baseURL,
+    httpClient: state.app.httpClient
+  }
+}
+
+module.exports = connect(mapStateToProps)(translate()(RestaurantsPage))
