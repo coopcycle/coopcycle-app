@@ -172,9 +172,6 @@ dependencies {
         exclude group: 'com.google.android.gms', module: 'play-services-base'
         exclude group: 'com.google.android.gms', module: 'play-services-maps'
     }
-    implementation(project(':react-native-geolocation-service')) {
-        exclude group: 'com.google.android.gms', module: 'play-services-location'
-    }
 
     // compile gms independantly, in case of conflicting requirements from other dependencies
     // see: https://medium.com/@suchydan/how-to-solve-google-play-services-version-collision-in-gradle-dependencies-ef086ae5c75f
