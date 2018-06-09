@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
   }
 });
 
-class HomeTab extends Component {
+export class HomeTab extends Component {
   render() {
     const { height, width } = Dimensions.get('window')
     return (
@@ -84,6 +84,4 @@ class HomeTab extends Component {
   }
 }
 
-export { HomeTab }
 export default translate()(HomeTab)
-

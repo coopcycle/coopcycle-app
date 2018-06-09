@@ -37,7 +37,6 @@ class TasksPage extends Component {
   markers = []
 
   static navigationOptions = ({navigation}) => {
-    const {params} = navigation.state
     return {
       headerRight: (
         <View style={{flex: 1, flexDirection: 'row', alignItems: 'flex-end'}}>
@@ -45,7 +44,7 @@ class TasksPage extends Component {
             <Icon name="settings" style={{color: whiteColor}} />
           </Button>
           <Button transparent>
-            <Icon name="navigate" style={{color: params.tracking ? greenColor : greyColor}}/>
+            <Icon name="navigate" style={{color: navigation.getParam('tracking', false) ? greenColor : greyColor}}/>
           </Button>
         </View>
       ),
@@ -156,13 +155,10 @@ class TasksPage extends Component {
   }
 
   refreshTasks (selectedDate) {
-    const { client } = this.props.navigation.state.params
-    this.props.loadTasks(client, selectedDate)
+    this.props.loadTasks(this.props.httpClient, selectedDate)
   }
 
   onMapReady () {
-
-    const { client } = this.props.navigation.state.params
 
     BackgroundGeolocation.on('start', () => {
       this.props.navigation.setParams({ tracking: true })
@@ -268,7 +264,6 @@ class TasksPage extends Component {
 
     const { tasks, selectedDate } = this.props
     const { navigate } = this.props.navigation
-    const { client } = this.props.navigation.state.params
     const { geolocation } = this.state
 
     this.markers = this.markers.slice()
@@ -288,7 +283,7 @@ class TasksPage extends Component {
       return pinColor
     }
 
-    const navigationParams = { client, geolocation }
+    const navigationParams = { geolocation }
 
     return (
       <Container>
@@ -412,6 +407,7 @@ const styles = StyleSheet.create({
 
 function mapStateToProps (state) {
   return {
+    httpClient: state.app.httpClient,
     tasks: selectFilteredTasks(state),
     tags: selectTagNames(state),
     selectedDate: selectTaskSelectedDate(state),

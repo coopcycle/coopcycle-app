@@ -1,5 +1,5 @@
 import React from 'react'
-import { HomeTab } from '../src/page/HomeTab'
+import { HomeTab } from '../src/navigation/HomeTab'
 import { shallow } from 'enzyme'
 
 

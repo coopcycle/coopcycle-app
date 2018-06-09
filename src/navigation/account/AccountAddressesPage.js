@@ -4,6 +4,7 @@ import {
   Container,
   Content, Button, Icon, List, ListItem, Text
 } from 'native-base';
+import { connect } from 'react-redux'
 import { translate } from 'react-i18next'
 
 const AppUser = require('../../AppUser');
@@ -18,11 +19,9 @@ class AccountAddressesPage extends Component {
   }
   componentDidMount() {
 
-    const { client } = this.props.navigation.state.params
-
     this.setState({ loading: true })
 
-    client.get('/api/me')
+    this.props.httpClient.get('/api/me')
       .then(user => {
         this.setState({
           loading: false,
@@ -77,4 +76,10 @@ const styles = StyleSheet.create({
   },
 });
 
-module.exports = translate()(AccountAddressesPage);
+function mapStateToProps(state) {
+  return {
+    httpClient: state.app.httpClient
+  }
+}
+
+module.exports = connect(mapStateToProps)(translate()(AccountAddressesPage))
