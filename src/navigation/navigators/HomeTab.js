@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import { translate } from 'react-i18next'
 
 import AccountPage from '../AccountPage'
-import HomeTab from '../HomeTab'
+import Home from '../Home'
 import RestaurantsPage from '../RestaurantsPage'
 
 class HomePage extends Component {
@@ -62,7 +62,7 @@ class HomePage extends Component {
 
     const TabNav = TabNavigator({
       Home: {
-        screen: HomeTab,
+        screen: Home,
         navigationOptions: ({ navigation }) => ({
           tabBarLabel: this.props.t('HOME'),
           tabBarIcon: ({ tintColor }) => (

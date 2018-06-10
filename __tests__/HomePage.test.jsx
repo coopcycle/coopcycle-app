@@ -1,5 +1,5 @@
 import React from 'react'
-import { HomeTab } from '../src/navigation/HomeTab'
+import { Home } from '../src/navigation/Home'
 import { shallow } from 'enzyme'
 
 
@@ -7,6 +7,6 @@ import { shallow } from 'enzyme'
   Dummy test - "hello world" for testing
  */
 it('renders correcty', () => {
-  const tree = shallow(<HomeTab  t={key => key}/>)
+  const tree = shallow(<Home t={key => key}/>)
   expect(tree).toMatchSnapshot()
 })

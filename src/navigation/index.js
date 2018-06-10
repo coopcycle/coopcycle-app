@@ -1,4 +1,4 @@
-import Home from './HomeTab'
+import Home from './Home'
 
 export default {
   RestaurantsPage: require('./RestaurantsPage'),
