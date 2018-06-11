@@ -260,6 +260,23 @@ class TasksPage extends Component {
     )
   }
 
+  renderLocateButton() {
+
+    const { geolocation } = this.state
+
+    if (geolocation) {
+      return (
+        <View style={ styles.locateButton }>
+          <TouchableOpacity
+            onPress={ () => this.center() }
+            style={ styles.circle }>
+            <Icon name="locate" />
+          </TouchableOpacity>
+        </View>
+      )
+    }
+  }
+
   render() {
 
     const { tasks, selectedDate } = this.props
@@ -331,13 +348,7 @@ class TasksPage extends Component {
               <Text>{this.props.t('TASK_LIST')}</Text>
             </Button>
           </View>
-          <View style={ styles.locateButton }>
-            <TouchableOpacity
-              onPress={ () => this.center() }
-              style={ styles.circle }>
-              <Icon name="locate" />
-            </TouchableOpacity>
-          </View>
+          { this.renderLocateButton() }
         </View>
         { this.renderLoader() }
       </Container>
