@@ -20,6 +20,7 @@ import navigators from './navigation/navigators'
 import i18n from './i18n'
 import store from './redux/store'
 import { loadTasks } from './redux/Courier'
+import { setRemotePushToken } from './redux/App/actions'
 import PushNotification from './notifications'
 
 import { YellowBox } from 'react-native'
@@ -61,13 +62,7 @@ class App extends Component {
     }
 
     PushNotification.configure({
-      onRegister: token => {
-        const { app } = store.getState()
-        const { httpClient } = app
-        httpClient
-          .post('/api/me/remote_push_tokens', { platform: Platform.OS, token })
-          .catch(e => console.log(e))
-      },
+      onRegister: token => store.dispatch(setRemotePushToken(token)),
       onNotification: notification => {
         const { event } = notification.data
         if (event && event.name === 'tasks:changed') {
