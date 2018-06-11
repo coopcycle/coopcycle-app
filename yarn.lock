@@ -4981,6 +4981,10 @@ react-native-calendars@^1.17.1:
     prop-types "^15.5.10"
     xdate "^0.8.0"
 
+react-native-check-notification-enable@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/react-native-check-notification-enable/-/react-native-check-notification-enable-1.0.4.tgz#5773e04da6f88d859d6f0c70e3aa60460df83beb"
+
 react-native-communications@^2.2.1:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/react-native-communications/-/react-native-communications-2.2.1.tgz#7883b56b20a002eeb790c113f8616ea8692ca795"
@@ -5067,6 +5071,10 @@ react-native-modal-selector@^0.0.24:
   resolved "https://registry.yarnpkg.com/react-native-modal-selector/-/react-native-modal-selector-0.0.24.tgz#d5aa886b6782a4a3566452399deb21a8da7ae2a1"
   dependencies:
     prop-types "^15.5.10"
+
+react-native-open-settings@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/react-native-open-settings/-/react-native-open-settings-1.0.1.tgz#1c0ae3d25fd3fd6de94b6d538333d47245cc5a0c"
 
 "react-native-pin-screen@git+https://git@github.com/coopcycle/react-native-pin-screen.git#1.0.1":
   version "1.0.0"

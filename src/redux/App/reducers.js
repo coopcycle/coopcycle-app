@@ -2,15 +2,25 @@
  * App reducer, dealing with non-domain specific state
  */
 import { CONNECTED, DISCONNECTED, RECONNECTED } from '../middlewares/WebSocketMiddleware'
-import { SET_BASE_URL, SET_HTTP_CLIENT, SET_USER, SET_CURRENT_ROUTE, LOGIN, LOGOUT } from './actions'
-
+import {
+  SET_BASE_URL,
+  SET_HTTP_CLIENT,
+  SET_USER,
+  SET_CURRENT_ROUTE,
+  STORE_REMOTE_PUSH_TOKEN,
+  SAVE_REMOTE_PUSH_TOKEN,
+  LOGIN,
+  LOGOUT
+} from './actions'
 
 const initialState = {
   isWsOpen: false,
   baseURL: null,
   httpClient: null,
   user: null,
-  currentRoute: null
+  currentRoute: null,
+  remotePushTokenStored: false,
+  remotePushTokenSaved: false
 }
 
 export default (state = initialState, action = {}) => {
@@ -34,6 +44,17 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         currentRoute: action.payload,
+      }
+    case STORE_REMOTE_PUSH_TOKEN:
+      return {
+        ...state,
+        remotePushTokenStored: true,
+      }
+    case SAVE_REMOTE_PUSH_TOKEN:
+      return {
+        ...state,
+        remotePushTokenStored: false,
+        remotePushTokenSaved: true,
       }
     case CONNECTED:
     case RECONNECTED:
