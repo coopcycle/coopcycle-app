@@ -10,7 +10,7 @@ import {
   Button, Text, Icon, List, ListItem, Thumbnail,
   Card, CardItem
 } from 'native-base';
-import _ from 'underscore'
+import _ from 'lodash'
 import moment from 'moment/min/moment-with-locales'
 import { connect } from 'react-redux'
 import { translate } from 'react-i18next'

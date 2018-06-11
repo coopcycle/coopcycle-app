@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Container, Header, Content, Form, Item, Input, Label } from 'native-base'
-import _ from 'underscore'
+import _ from 'lodash'
 import { translate } from 'react-i18next'
 
 class DeliveryAddressForm extends Component {
@@ -24,7 +24,7 @@ class DeliveryAddressForm extends Component {
       autoCapitalize: 'none',
     }
 
-    const postalCodeProps = _.contains(errors, 'postalCode') ? { error: true } : {}
+    const postalCodeProps = _.includes(errors, 'postalCode') ? { error: true } : {}
 
     return (
       <Form>

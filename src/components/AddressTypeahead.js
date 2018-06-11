@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Dimensions, View } from 'react-native'
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-import _ from 'underscore'
+import _ from 'lodash'
 import { translate } from 'react-i18next'
 import { localeDetector } from '../i18n'
 import Settings from '../Settings'
@@ -28,10 +28,10 @@ class AddressTypeahead extends Component {
 
   createAddress(details) {
 
-    let streetNumber = _.find(details.address_components, component => _.contains(component.types, 'street_number'))
-    let route        = _.find(details.address_components, component => _.contains(component.types, 'route'))
-    let postalCode   = _.find(details.address_components, component => _.contains(component.types, 'postal_code'))
-    let locality     = _.find(details.address_components, component => _.contains(component.types, 'locality'))
+    let streetNumber = _.find(details.address_components, component => _.includes(component.types, 'street_number'))
+    let route        = _.find(details.address_components, component => _.includes(component.types, 'route'))
+    let postalCode   = _.find(details.address_components, component => _.includes(component.types, 'postal_code'))
+    let locality     = _.find(details.address_components, component => _.includes(component.types, 'locality'))
 
     streetNumber = streetNumber ? streetNumber.short_name : ''
     route        = route ? route.short_name : ''

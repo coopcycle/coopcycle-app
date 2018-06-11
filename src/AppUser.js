@@ -2,7 +2,7 @@ import {
   AsyncStorage,
 } from 'react-native';
 
-import _ from 'underscore';
+import _ from 'lodash';
 
 class AppUser {
 
@@ -59,7 +59,7 @@ class AppUser {
   }
 
   hasRole(role) {
-    return _.contains(this.roles, role);
+    return _.includes(this.roles, role);
   }
 
   isAuthenticated() {
