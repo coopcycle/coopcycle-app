@@ -115,36 +115,6 @@ class TasksPage extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.tasks !== this.props.tasks) {
-
-        const { geolocation } = this.state
-
-        let coordinates = nextProps.tasks.map(task => {
-          const { latitude, longitude } = task.address.geo
-          return {
-            latitude,
-            longitude
-          }
-        })
-        coordinates.push(geolocation)
-
-        coordinates = _.filter(coordinates)
-
-        if (coordinates.length > 0) {
-          this.map.fitToCoordinates(_.filter(coordinates), {
-            edgePadding: {
-              top: 100,
-              left: 100,
-              bottom: 100,
-              right: 100
-            },
-            animated: true
-          })
-        }
-    }
-  }
-
   center() {
     const { geolocation } = this.state
     this.map.animateToCoordinate(geolocation, 500)
