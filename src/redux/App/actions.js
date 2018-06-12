@@ -2,6 +2,7 @@ import { createAction } from 'redux-actions'
 import { AsyncStorage, Platform } from 'react-native'
 import BackgroundGeolocation from 'react-native-mauron85-background-geolocation'
 import API from '../../API'
+import AppUser from '../../AppUser'
 
 /*
  * Action Types
@@ -44,15 +45,16 @@ export function bootstrap(baseURL, user) {
 
 export function setBaseURL(baseURL) {
   return function (dispatch, getState) {
-    const { app } = getState()
-    const { user } = app
+    AppUser.load()
+      .then(user => {
+        const httpClient = API.createClient(baseURL, user)
 
-    const httpClient = API.createClient(baseURL, user)
+        dispatch(_setUser(user))
+        dispatch(_setHttpClient(httpClient))
+        dispatch(_setBaseURL(baseURL))
 
-    dispatch(_setHttpClient(httpClient))
-    dispatch(_setBaseURL(baseURL))
-
-    configureBackgroundGeolocation(httpClient, user)
+        configureBackgroundGeolocation(httpClient, user)
+      })
   }
 }
 
