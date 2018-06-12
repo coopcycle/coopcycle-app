@@ -80,8 +80,7 @@ class HomePage extends Component {
   }
 
   componentDidUpdate() {
-    const user = this.props.navigation.getParam('user')
-    if (!user) {
+    if (this.props.user !== this.props.navigation.getParam('user')) {
       this.props.navigation.setParams({ user: this.props.user })
     }
   }
