@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { View } from 'react'
 import { Button, Icon, Text } from 'native-base'
 import { StackNavigator } from 'react-navigation'
 import { connect } from 'react-redux'
