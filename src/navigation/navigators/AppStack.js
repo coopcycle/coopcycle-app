@@ -36,7 +36,7 @@ const courierHeaderLeft = navigation => {
   )
 }
 
-const Navigator = StackNavigator({
+const MainNavigator = StackNavigator({
   Home: {
     screen: HomeTab,
   },
@@ -101,6 +101,18 @@ const Navigator = StackNavigator({
       title: i18n.t('RESTAURANT'),
     })
   },
+  RestaurantList: {
+    screen: navigation.RestaurantList,
+    navigationOptions: ({ navigation }) => ({
+      title: i18n.t('RESTAURANTS'),
+    })
+  },
+  RestaurantDashboard: {
+    screen: navigation.RestaurantDashboard,
+    navigationOptions: ({ navigation }) => ({
+      title: navigation.state.params.restaurant.name
+    })
+  },
   Cart: {
     screen: navigation.CartPage,
     navigationOptions: ({ navigation }) => ({
@@ -133,11 +145,23 @@ const Navigator = StackNavigator({
   }
 })
 
+const ModalNavigator = StackNavigator({
+  Main: {
+    screen: MainNavigator,
+  },
+  RestaurantOrder: {
+    screen: navigation.RestaurantOrder,
+  },
+}, {
+  mode: 'modal',
+  headerMode: 'none',
+})
+
 // We need to expose the router static property and pass the navigation prop
 // @see https://reactnavigation.org/docs/en/common-mistakes.html
 class NavigatorWrapper extends Component {
 
-  static router = Navigator.router
+  static router = ModalNavigator.router
 
   render() {
 
@@ -146,7 +170,7 @@ class NavigatorWrapper extends Component {
     this.props.setCurrentRoute(routeName)
 
     return (
-      <Navigator navigation={ this.props.navigation } />
+      <ModalNavigator navigation={ this.props.navigation } />
     )
   }
 }

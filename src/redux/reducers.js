@@ -18,12 +18,14 @@
 import { combineReducers } from 'redux'
 import { tasksEntityReducer, tasksUiReducer } from './Courier'
 import { appReducer } from './App'
+import restaurantReducer from './Restaurant/reducers'
 
 export default combineReducers({
   entities: combineReducers({
     tasks: tasksEntityReducer,
   }),
   app: appReducer,
+  restaurant: restaurantReducer,
   ui: combineReducers({
     tasks: tasksUiReducer,
   })

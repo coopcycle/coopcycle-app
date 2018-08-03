@@ -113,7 +113,7 @@
     "TASKS_FILTER": "Tasks Filter",
     "HIDE_DONE_TASKS": "Hide done tasks",
     "HIDE_FAILED_TASKS": "Hide failed tasks",
-    "HIDE_TASKS_FAILED_WITH": "Hide tasks tagged with"
-
+    "HIDE_TASKS_FAILED_WITH": "Hide tasks tagged with",
+    "RESTAURANT_LIST_CLICK_BELOW": "Click on a restaurant in the list below"
   }
 }
