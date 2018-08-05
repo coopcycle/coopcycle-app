@@ -61,12 +61,24 @@ class HomePage extends Component {
 
     const user = navigation.getParam('user')
 
-    if (user && user.isAuthenticated() && (user.hasRole('ROLE_COURIER') || user.hasRole('ROLE_ADMIN'))) {
-      headerRight = (
-        <Button transparent onPress={ () => navigation.navigate('Courier', { connected: false, tracking: false }) }>
-          <Icon name="ios-bicycle" style={{ color: '#fff' }} />
-        </Button>
-      )
+    if (user && user.isAuthenticated()) {
+
+      if (user.hasRole('ROLE_COURIER')) {
+        headerRight = (
+          <Button transparent onPress={ () => navigation.navigate('Courier', { connected: false, tracking: false }) }>
+            <Icon name="ios-bicycle" style={{ color: '#fff' }} />
+          </Button>
+        )
+      }
+
+      if (user.hasRole('ROLE_RESTAURANT')) {
+        headerRight = (
+          <Button transparent onPress={ () => navigation.navigate('RestaurantList') }>
+            <Icon name="restaurant" style={{ color: '#fff' }} />
+          </Button>
+        )
+      }
+
     } else {
       headerRight = (
         <Button transparent />

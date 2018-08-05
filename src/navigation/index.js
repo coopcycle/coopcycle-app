@@ -3,6 +3,9 @@ import Home from './Home'
 export default {
   RestaurantsPage: require('./RestaurantsPage'),
   RestaurantPage: require('./RestaurantPage'),
+  RestaurantList: require('./restaurant/List'),
+  RestaurantDashboard: require('./restaurant/Dashboard'),
+  RestaurantOrder: require('./restaurant/Order'),
   CartPage: require('./CartPage'),
   CartAddressPage: require('./CartAddressPage'),
   CourierPage: require('./CourierPage'),
