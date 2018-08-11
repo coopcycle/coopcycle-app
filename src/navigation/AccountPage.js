@@ -20,27 +20,32 @@ class AccountPage extends Component {
     this.state = {
       loading: false,
       message: '',
+      isAuthenticated: this.props.user.isAuthenticated(),
       formToDisplay: 'login',
     };
   }
 
   async resetServer() {
 
-    const { navigation } = this.props.screenProps
+    const { navigate } = this.props.navigation
 
     await this.props.user.logout()
     await Settings.removeServer()
 
-    navigation.navigate('ConfigureServer')
+    this.setState({ isAuthenticated: this.props.user.isAuthenticated() })
+
+    navigate('ConfigureServer')
   }
 
   async logout() {
 
-    const { navigation } = this.props.screenProps
+    const { navigate } = this.props.navigation
 
     await this.props.user.logout()
 
-    navigation.navigate({
+    this.setState({ isAuthenticated: this.props.user.isAuthenticated() })
+
+    navigate({
       routeName: 'Home',
       key: 'Home',
       params: {}
@@ -60,11 +65,13 @@ class AccountPage extends Component {
 
   async onLoginSuccess(user) {
 
-    const { navigation } = this.props.screenProps
+    const { navigate } = this.props.navigation
 
     this.props.login(user)
 
-    navigation.navigate({
+    this.setState({ isAuthenticated: this.props.user.isAuthenticated() })
+
+    navigate({
       routeName: 'Home',
       key: 'Home',
       params: {}
@@ -115,7 +122,7 @@ class AccountPage extends Component {
 
   renderAuthenticated() {
 
-    const { navigate } = this.props.screenProps.navigation
+    const { navigate } = this.props.navigation
 
     return (
       <Container>
@@ -205,7 +212,7 @@ class AccountPage extends Component {
     const alternateForm = this.state.formToDisplay === 'login' ? 'register' : 'login'
     const btnLabel = this.state.formToDisplay === 'login' ? 'OR_REGISTER' : 'OR_LOGIN'
 
-    if (this.props.user.isAuthenticated()) {
+    if (this.state.isAuthenticated) {
       return this.renderAuthenticated()
     }
 

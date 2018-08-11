@@ -97,7 +97,7 @@ class RestaurantsPage extends Component {
 
   render() {
 
-    const { navigate } = this.props.screenProps.navigation
+    const { navigate } = this.props.navigation
     const { deliveryAddress, deliveryDay, restaurants } = this.state
 
     return (

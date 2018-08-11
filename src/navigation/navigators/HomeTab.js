@@ -8,6 +8,7 @@ import AccountPage from '../AccountPage'
 import Home from '../Home'
 import RestaurantsPage from '../RestaurantsPage'
 import i18n from '../../i18n'
+import store from '../../redux/store'
 
 const tabNavigatorConfig = {
   tabBarPosition: 'bottom',
@@ -25,7 +26,7 @@ const tabNavigatorConfig = {
   },
 }
 
-const TabNav = createBottomTabNavigator({
+const TabNavigator = createBottomTabNavigator({
   Home: {
     screen: Home,
     navigationOptions: ({ navigation }) => ({
@@ -55,63 +56,42 @@ const TabNav = createBottomTabNavigator({
   },
 }, tabNavigatorConfig)
 
-class HomePage extends Component {
+TabNavigator.navigationOptions = ({ navigation }) => {
 
-  static navigationOptions = ({ navigation }) => {
+  const state = store.getState()
+  const { user } = state.app
 
-    const user = navigation.getParam('user')
+  let headerRight
 
-    if (user && user.isAuthenticated()) {
+  if (user && user.isAuthenticated()) {
 
-      if (user.hasRole('ROLE_COURIER')) {
-        headerRight = (
-          <Button transparent onPress={ () => navigation.navigate('Courier', { connected: false, tracking: false }) }>
-            <Icon name="ios-bicycle" style={{ color: '#fff' }} />
-          </Button>
-        )
-      }
-
-      if (user.hasRole('ROLE_RESTAURANT')) {
-        headerRight = (
-          <Button transparent onPress={ () => navigation.navigate('RestaurantList') }>
-            <Icon name="restaurant" style={{ color: '#fff' }} />
-          </Button>
-        )
-      }
-
-    } else {
+    if (user.hasRole('ROLE_COURIER')) {
       headerRight = (
-        <Button transparent />
+        <Button transparent onPress={ () => navigation.navigate('Courier', { connected: false, tracking: false }) }>
+          <Icon name="ios-bicycle" style={{ color: '#fff' }} />
+        </Button>
       )
     }
 
-    return {
-      title: 'CoopCycle',
-      headerRight
+    if (user.hasRole('ROLE_RESTAURANT')) {
+      headerRight = (
+        <Button transparent onPress={ () => navigation.navigate('RestaurantList') }>
+          <Icon name="restaurant" style={{ color: '#fff' }} />
+        </Button>
+      )
     }
-  }
 
-  componentDidUpdate() {
-    if (this.props.user !== this.props.navigation.getParam('user')) {
-      this.props.navigation.setParams({ user: this.props.user })
-    }
-  }
-
-  render() {
-
-    // Need to pass navigation prop from StackNavigator to trigger actions
-    const screenProps = { ...this.props.navigation.state.params, navigation: this.props.navigation }
-
-    return (
-      <TabNav screenProps={ screenProps } />
+  } else {
+    headerRight = (
+      <Button transparent />
     )
   }
-}
 
-function mapStateToProps(state) {
   return {
-    user: state.app.user
+    title: 'CoopCycle',
+    headerRight
   }
+
 }
 
-module.exports = connect(mapStateToProps)(translate()(HomePage))
+export default TabNavigator
