@@ -20,7 +20,7 @@ import navigators from './navigation/navigators'
 import i18n from './i18n'
 import store from './redux/store'
 import { loadTasks } from './redux/Courier'
-import { setRemotePushToken } from './redux/App/actions'
+import { setRemotePushToken, setCurrentRoute } from './redux/App/actions'
 import PushNotification from './notifications'
 
 import { YellowBox } from 'react-native'
@@ -40,6 +40,28 @@ const RootNavigator = createSwitchNavigator(
     initialRouteName: 'Loading',
   }
 )
+
+/**
+ * @see https://reactnavigation.org/docs/en/screen-tracking.html
+ */
+function getActiveRouteName(navigationState) {
+  if (!navigationState) {
+    return null;
+  }
+  const route = navigationState.routes[navigationState.index]
+  if (route.routes) {
+    return getActiveRouteName(route)
+  }
+  return route.routeName
+}
+
+function onNavigationStateChange(prevState, currentState) {
+  const currentScreen = getActiveRouteName(currentState)
+  const prevScreen = getActiveRouteName(prevState)
+  if (prevScreen !== currentScreen) {
+    store.dispatch(setCurrentRoute(currentScreen))
+  }
+}
 
 class App extends Component {
 
@@ -102,7 +124,9 @@ class App extends Component {
         <Provider store={ store }>
           <I18nextProvider i18n={ i18n }>
             <StyleProvider style={ getTheme(material) }>
-              <RootNavigator ref={ ref => { this.navigator = ref } } />
+              <RootNavigator
+                ref={ ref => { this.navigator = ref } }
+                onNavigationStateChange={ onNavigationStateChange } />
             </StyleProvider>
           </I18nextProvider>
         </Provider>

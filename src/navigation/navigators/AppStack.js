@@ -1,12 +1,10 @@
 import React, { Component } from 'react'
 import { Button, Icon, Text } from 'native-base'
 import { createStackNavigator } from 'react-navigation'
-import { connect } from 'react-redux'
 
 import i18n from '../../i18n'
 import { primaryColor,  whiteColor, fontTitleName } from '../../styles/common'
 import navigation from '..'
-import { setCurrentRoute } from '../../redux/App/actions'
 import HomeTab from './HomeTab'
 
 const defaultNavigationOptions = {
@@ -145,7 +143,7 @@ const MainNavigator = createStackNavigator({
   }
 })
 
-const ModalNavigator = createStackNavigator({
+export default createStackNavigator({
   Main: {
     screen: MainNavigator,
   },
@@ -156,33 +154,3 @@ const ModalNavigator = createStackNavigator({
   mode: 'modal',
   headerMode: 'none',
 })
-
-// We need to expose the router static property and pass the navigation prop
-// @see https://reactnavigation.org/docs/en/common-mistakes.html
-class NavigatorWrapper extends Component {
-
-  static router = ModalNavigator.router
-
-  render() {
-
-    const { state } = this.props.navigation
-    const routeName = state.routes[state.index].routeName
-    this.props.setCurrentRoute(routeName)
-
-    return (
-      <ModalNavigator navigation={ this.props.navigation } />
-    )
-  }
-}
-
-function mapStateToProps(state) {
-  return {}
-}
-
-function mapDispatchToProps (dispatch) {
-  return {
-    setCurrentRoute: routeName => dispatch(setCurrentRoute(routeName)),
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(NavigatorWrapper)
