@@ -26,7 +26,7 @@ const defaultNavigationOptions = {
   },
 }
 
-const courierHeaderLeft = navigation => {
+const homeIconHeaderLeft = navigation => {
   return (
     <Button transparent onPress={ () => navigation.goBack() }>
       <Icon name="home" style={{ color: '#fff' }} />
@@ -60,7 +60,7 @@ const MainNavigator = createStackNavigator({
     screen: navigation.CourierPage,
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('COURIER'),
-      headerLeft: courierHeaderLeft(navigation)
+      headerLeft: homeIconHeaderLeft(navigation)
     })
   },
   CourierTasks: {
@@ -103,6 +103,7 @@ const MainNavigator = createStackNavigator({
     screen: navigation.RestaurantList,
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('RESTAURANTS'),
+      headerLeft: homeIconHeaderLeft(navigation),
     })
   },
   RestaurantDashboard: {

@@ -15,8 +15,13 @@ class Loading extends Component {
   }
 
   navigateToHome(user) {
-    if (user && user.isAuthenticated() && user.hasRole('ROLE_COURIER')) {
-      return this.props.navigation.navigate('Courier')
+    if (user && user.isAuthenticated()) {
+      if (user.hasRole('ROLE_COURIER')) {
+        return this.props.navigation.navigate('Courier')
+      }
+      if (user.hasRole('ROLE_RESTAURANT')) {
+        return this.props.navigation.navigate('RestaurantList')
+      }
     }
 
     this.props.navigation.navigate({
