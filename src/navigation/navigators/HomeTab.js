@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Button, Icon } from 'native-base'
-import { TabNavigator } from 'react-navigation'
+import { createBottomTabNavigator } from 'react-navigation'
 import { connect } from 'react-redux'
 import { translate } from 'react-i18next'
 
@@ -25,7 +25,7 @@ const tabNavigatorConfig = {
   },
 }
 
-const TabNav = TabNavigator({
+const TabNav = createBottomTabNavigator({
   Home: {
     screen: Home,
     navigationOptions: ({ navigation }) => ({

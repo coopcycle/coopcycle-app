@@ -11,7 +11,7 @@ import getTheme from '../native-base-theme/components'
 import material from '../native-base-theme/variables/material'
 
 import moment from 'moment'
-import { NavigationActions, StackNavigator, SwitchNavigator } from 'react-navigation'
+import { NavigationActions, createSwitchNavigator } from 'react-navigation'
 import { Provider } from 'react-redux'
 import { translate, I18nextProvider } from 'react-i18next'
 
@@ -30,7 +30,7 @@ YellowBox.ignoreWarnings([
   'Module RCTBackgroundGeolocation requires main queue setup'
 ])
 
-const RootNavigator = SwitchNavigator(
+const RootNavigator = createSwitchNavigator(
   {
     Loading: navigation.Loading,
     AppStack: navigators.AppStack,

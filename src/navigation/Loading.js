@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { ActivityIndicator, StyleSheet, View } from 'react-native'
-import { NavigationActions } from 'react-navigation'
 import { connect } from 'react-redux'
 import { translate } from 'react-i18next'
 

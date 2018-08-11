@@ -14,7 +14,6 @@ import {
   Card, CardItem
 } from 'native-base';
 import { Col, Row, Grid } from 'react-native-easy-grid';
-import { NavigationActions } from 'react-navigation'
 import { connect } from 'react-redux'
 import { translate } from 'react-i18next'
 import LoginForm from '../components/LoginForm'

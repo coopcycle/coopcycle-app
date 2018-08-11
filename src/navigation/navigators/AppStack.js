@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Button, Icon, Text } from 'native-base'
-import { StackNavigator } from 'react-navigation'
+import { createStackNavigator } from 'react-navigation'
 import { connect } from 'react-redux'
 
 import i18n from '../../i18n'
@@ -36,7 +36,7 @@ const courierHeaderLeft = navigation => {
   )
 }
 
-const MainNavigator = StackNavigator({
+const MainNavigator = createStackNavigator({
   Home: {
     screen: HomeTab,
   },
@@ -145,7 +145,7 @@ const MainNavigator = StackNavigator({
   }
 })
 
-const ModalNavigator = StackNavigator({
+const ModalNavigator = createStackNavigator({
   Main: {
     screen: MainNavigator,
   },
