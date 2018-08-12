@@ -15,6 +15,8 @@ export const ACCEPT_ORDER_REQUEST = 'ACCEPT_ORDER_REQUEST'
 export const ACCEPT_ORDER_SUCCESS = 'ACCEPT_ORDER_SUCCESS'
 export const ACCEPT_ORDER_FAILURE = 'ACCEPT_ORDER_FAILURE'
 
+export const CHANGE_DATE = 'CHANGE_DATE'
+
 /*
  * Action Creators
  */
@@ -29,6 +31,8 @@ export const loadOrdersFailure = createAction(LOAD_ORDERS_FAILURE)
 export const acceptOrderRequest = createAction(ACCEPT_ORDER_REQUEST)
 export const acceptOrderSuccess = createAction(ACCEPT_ORDER_SUCCESS)
 export const acceptOrderFailure = createAction(ACCEPT_ORDER_FAILURE)
+
+export const changeDate = createAction(CHANGE_DATE)
 
 /*
  * Thunk Creators
@@ -45,12 +49,12 @@ export function loadMyRestaurants(client) {
   }
 }
 
-export function loadOrders(client, restaurant) {
+export function loadOrders(client, restaurant, date) {
 
   return function (dispatch) {
     dispatch(loadOrdersRequest())
 
-    return client.get(restaurant['@id'] + '/orders')
+    return client.get(`${restaurant['@id']}/orders?date=${date}`)
       .then(res => dispatch(loadOrdersSuccess(res['hydra:member'])))
       .catch(e => dispatch(loadOrdersFailure(e)))
   }

@@ -8,13 +8,16 @@ import {
   LOAD_MY_RESTAURANTS_REQUEST,
   LOAD_MY_RESTAURANTS_SUCCESS,
   LOAD_MY_RESTAURANTS_FAILURE,
+  CHANGE_DATE,
 } from './actions'
+import moment from 'moment'
 
 const initialState = {
   fetchError: null,  // Error object describing the error
   isFetching: false, // Flag indicating active HTTP request
   orders: [],        // Array of orders
   myRestaurants: [], // Array of restaurants
+  date: moment()
 }
 
 export default (state = initialState, action = {}) => {
@@ -59,6 +62,12 @@ export default (state = initialState, action = {}) => {
         fetchError: false,
         isFetching: false,
         myRestaurants: action.payload
+      }
+
+    case CHANGE_DATE:
+      return {
+        ...state,
+        date: action.payload
       }
 
     default:

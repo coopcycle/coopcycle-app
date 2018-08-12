@@ -56,7 +56,7 @@ class OrderList extends Component {
             <Text>{ `${formatPrice(order.total)} €` }</Text>
           </Col>
           <Col size={ 4 } style={ styles.col }>
-            <Text>{ moment(order.shippedAt).format('ddd, hA') }</Text>
+            <Text>{ moment(order.shippedAt).format('LT') }</Text>
           </Col>
           <Col size={ 2 } style={ styles.col }>
             <Icon name={ iconName } />

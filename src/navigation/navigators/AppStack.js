@@ -151,6 +151,9 @@ export default createStackNavigator({
   RestaurantOrder: {
     screen: navigation.RestaurantOrder,
   },
+  RestaurantDate: {
+    screen: navigation.RestaurantDate,
+  }
 }, {
   mode: 'modal',
   headerMode: 'none',
