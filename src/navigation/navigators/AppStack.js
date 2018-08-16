@@ -6,6 +6,7 @@ import i18n from '../../i18n'
 import { primaryColor,  whiteColor, fontTitleName } from '../../styles/common'
 import navigation from '..'
 import HomeTab from './HomeTab'
+import RestaurantStatusButton from '../../components/RestaurantStatusButton'
 
 const defaultNavigationOptions = {
   headerStyle: {
@@ -31,6 +32,12 @@ const homeIconHeaderLeft = navigation => {
     <Button transparent onPress={ () => navigation.goBack() }>
       <Icon name="home" style={{ color: '#fff' }} />
     </Button>
+  )
+}
+
+const restaurantStatusHeaderRight = navigation => {
+  return (
+    <RestaurantStatusButton navigation={ navigation } />
   )
 }
 
@@ -109,7 +116,8 @@ const MainNavigator = createStackNavigator({
   RestaurantDashboard: {
     screen: navigation.RestaurantDashboard,
     navigationOptions: ({ navigation }) => ({
-      title: navigation.state.params.restaurant.name
+      title: navigation.state.params.restaurant.name,
+      headerRight: restaurantStatusHeaderRight(navigation),
     })
   },
   Cart: {
@@ -153,6 +161,9 @@ export default createStackNavigator({
   },
   RestaurantDate: {
     screen: navigation.RestaurantDate,
+  },
+  RestaurantStatus: {
+    screen: navigation.RestaurantStatus,
   }
 }, {
   mode: 'modal',

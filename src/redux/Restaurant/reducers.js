@@ -9,6 +9,7 @@ import {
   LOAD_MY_RESTAURANTS_SUCCESS,
   LOAD_MY_RESTAURANTS_FAILURE,
   CHANGE_DATE,
+  CHANGE_STATUS,
 } from './actions'
 import moment from 'moment'
 
@@ -17,7 +18,8 @@ const initialState = {
   isFetching: false, // Flag indicating active HTTP request
   orders: [],        // Array of orders
   myRestaurants: [], // Array of restaurants
-  date: moment()
+  date: moment(),
+  status: 'available'
 }
 
 export default (state = initialState, action = {}) => {
@@ -68,6 +70,12 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         date: action.payload
+      }
+
+    case CHANGE_STATUS:
+      return {
+        ...state,
+        status: action.payload
       }
 
     default:

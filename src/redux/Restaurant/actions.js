@@ -17,6 +17,8 @@ export const ACCEPT_ORDER_FAILURE = 'ACCEPT_ORDER_FAILURE'
 
 export const CHANGE_DATE = 'CHANGE_DATE'
 
+export const CHANGE_STATUS = 'CHANGE_STATUS'
+
 /*
  * Action Creators
  */
@@ -33,6 +35,8 @@ export const acceptOrderSuccess = createAction(ACCEPT_ORDER_SUCCESS)
 export const acceptOrderFailure = createAction(ACCEPT_ORDER_FAILURE)
 
 export const changeDate = createAction(CHANGE_DATE)
+
+export const changeStatus = createAction(CHANGE_STATUS)
 
 /*
  * Thunk Creators
