@@ -20,6 +20,7 @@ import navigators from './navigation/navigators'
 import i18n from './i18n'
 import store from './redux/store'
 import { loadTasks } from './redux/Courier'
+import { loadOrders } from './redux/Restaurant/actions'
 import { setRemotePushToken, setCurrentRoute } from './redux/App/actions'
 import PushNotification from './notifications'
 
@@ -83,10 +84,55 @@ class App extends Component {
       store.dispatch(loadTasks(httpClient, moment(date)))
     }
 
+    const onOrderCreated = (restaurant, date) => {
+
+      const { app } = store.getState()
+      const { httpClient, currentRoute } = app
+
+      if (currentRoute !== 'RestaurantDashboard') {
+        const pushAction = NavigationActions.navigate({
+          routeName: 'RestaurantDashboard',
+          params: {
+            restaurant
+          }
+        })
+        this.navigator.dispatch(pushAction)
+      } else {
+        store.dispatch(loadOrders(httpClient, restaurant, moment(date)))
+      }
+
+    }
+
     PushNotification.configure({
       onRegister: token => store.dispatch(setRemotePushToken(token)),
       onNotification: notification => {
         const { event } = notification.data
+
+        if (event && event.name === 'order:created') {
+          const { restaurant, date } = event.data
+          if (notification.foreground) {
+            Alert.alert(
+              'Nouvelle commande',
+              `Une nouvelle commande pour le ${event.data.date} a été créée`,
+              [
+                {
+                  text: 'Annuler',
+                  onPress: () => {}
+                },
+                {
+                  text: 'Afficher',
+                  onPress: () => onOrderCreated(restaurant, date)
+                },
+              ],
+              {
+                cancelable: true
+              }
+            )
+          } else {
+            onOrderCreated(restaurant, date)
+          }
+        }
+
         if (event && event.name === 'tasks:changed') {
           if (notification.foreground) {
             Alert.alert(
