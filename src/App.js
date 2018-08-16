@@ -73,7 +73,7 @@ class App extends Component {
       const { httpClient, currentRoute } = app
 
       if (currentRoute !== 'CourierTaskList') {
-        const pushAction = NavigationActions.push({
+        const pushAction = NavigationActions.navigate({
           routeName: 'CourierTaskList',
           params: {}
         })
