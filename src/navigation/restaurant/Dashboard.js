@@ -68,7 +68,7 @@ class DashboardPage extends Component {
 
 const styles = StyleSheet.create({
   datePicker: {
-    padding: 15
+    padding: 20
   },
   content: {
     backgroundColor: '#fff',

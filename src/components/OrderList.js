@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { SectionList, StyleSheet, TouchableOpacity, View } from 'react-native'
 import { Icon, Text, Thumbnail, Badge } from 'native-base';
 import { Col, Row, Grid } from 'react-native-easy-grid'
 import slugify from 'slugify'
@@ -32,23 +32,17 @@ const styles = StyleSheet.create({
   },
   restaurantNameText: {
     marginBottom: 5
+  },
+  sectionHeader: {
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    backgroundColor: '#efefef'
   }
 });
 
 class OrderList extends Component {
 
   renderItem(order) {
-
-    let iconName = 'help-circle'
-    switch (order.state) {
-      case 'new':
-        iconName = 'add-circle'
-        break
-      case 'accepted':
-        iconName = 'checkmark-circle'
-        break
-    }
-
     return (
       <TouchableOpacity style={ styles.item } onPress={ () => this.props.onItemClick(order) }>
         <Grid>
@@ -57,9 +51,6 @@ class OrderList extends Component {
           </Col>
           <Col size={ 4 } style={ styles.col }>
             <Text>{ moment(order.shippedAt).format('LT') }</Text>
-          </Col>
-          <Col size={ 2 } style={ styles.col }>
-            <Icon name={ iconName } />
           </Col>
           <Col size={ 1 } style={ styles.itemLeftRight }>
             <Icon style={{ color: '#ccc' }} name="ios-arrow-forward" />
@@ -70,10 +61,25 @@ class OrderList extends Component {
   }
 
   render() {
+
+    const ordersByState = _.groupBy(this.props.orders, 'state')
+
+    const newOrders = ordersByState.hasOwnProperty('new') ? ordersByState['new'] : []
+    const acceptedOrders = ordersByState.hasOwnProperty('accepted') ? ordersByState['accepted'] : []
+
     return (
-      <FlatList
+      <SectionList
         data={ this.props.orders }
         keyExtractor={ (item, index) => item['@id'] }
+        sections={[
+          { title: 'New orders', data: newOrders },
+          { title: 'Accepted orders', data: acceptedOrders },
+        ]}
+        renderSectionHeader={ ({ section: { title } } ) => (
+          <View style={ styles.sectionHeader }>
+            <Text style={{ fontWeight: 'bold' }}>{title}</Text>
+          </View>
+        )}
         renderItem={ ({ item }) => this.renderItem(item) } />
     )
   }
