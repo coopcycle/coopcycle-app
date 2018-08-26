@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { Button, Icon } from 'native-base'
+import { Icon } from 'native-base'
+import { View, TouchableOpacity } from 'react-native'
 import { createBottomTabNavigator } from 'react-navigation'
 import { connect } from 'react-redux'
 import { translate } from 'react-i18next'
@@ -7,6 +8,7 @@ import { translate } from 'react-i18next'
 import AccountPage from '../AccountPage'
 import Home from '../Home'
 import RestaurantsPage from '../RestaurantsPage'
+import HeaderButton from '../../components/HeaderButton'
 import i18n from '../../i18n'
 import store from '../../redux/store'
 
@@ -67,29 +69,30 @@ TabNavigator.navigationOptions = ({ navigation }) => {
 
     if (user.hasRole('ROLE_COURIER')) {
       headerRight = (
-        <Button transparent onPress={ () => navigation.navigate('Courier', { connected: false, tracking: false }) }>
-          <Icon name="ios-bicycle" style={{ color: '#fff' }} />
-        </Button>
+        <HeaderButton iconName="ios-bicycle"
+          onPress={ () => navigation.navigate('Courier', { connected: false, tracking: false }) } />
       )
     }
 
     if (user.hasRole('ROLE_RESTAURANT')) {
       headerRight = (
-        <Button transparent onPress={ () => navigation.navigate('RestaurantList') }>
-          <Icon name="restaurant" style={{ color: '#fff' }} />
-        </Button>
+        <HeaderButton iconName="restaurant"
+          onPress={ () => navigation.navigate('RestaurantList') } />
       )
     }
 
   } else {
     headerRight = (
-      <Button transparent />
+      <View />
     )
   }
 
   return {
     title: 'CoopCycle',
-    headerRight
+    headerRight,
+    headerRightContainerStyle: {
+      flex: 1
+    }
   }
 
 }

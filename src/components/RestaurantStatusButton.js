@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
-import { Button, Icon } from 'native-base'
+import HeaderButton from './HeaderButton'
 
-import { translate } from 'react-i18next'
 import { connect } from 'react-redux'
 
 class RestaurantStatusButton extends Component {
@@ -23,9 +22,8 @@ class RestaurantStatusButton extends Component {
     }
 
     return (
-      <Button transparent onPress={ () => navigate('RestaurantStatus') }>
-        <Icon name={ iconName } style={{ color: '#fff' }} />
-      </Button>
+      <HeaderButton iconName={ iconName }
+        onPress={ () => navigate('RestaurantStatus') } />
     )
   }
 }
@@ -36,4 +34,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps)(translate()(RestaurantStatusButton))
+export default connect(mapStateToProps)(RestaurantStatusButton)

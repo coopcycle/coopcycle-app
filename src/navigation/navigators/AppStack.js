@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
-import { Button, Icon, Text } from 'native-base'
+import { Icon, Text } from 'native-base'
 import { createStackNavigator } from 'react-navigation'
 
 import i18n from '../../i18n'
 import { primaryColor,  whiteColor, fontTitleName } from '../../styles/common'
 import navigation from '..'
 import HomeTab from './HomeTab'
+import HeaderButton from '../../components/HeaderButton'
 import RestaurantStatusButton from '../../components/RestaurantStatusButton'
 
 const defaultNavigationOptions = {
@@ -29,9 +30,7 @@ const defaultNavigationOptions = {
 
 const homeIconHeaderLeft = navigation => {
   return (
-    <Button transparent onPress={ () => navigation.goBack() }>
-      <Icon name="home" style={{ color: '#fff' }} />
-    </Button>
+    <HeaderButton iconName="home" onPress={ () => navigation.goBack() } />
   )
 }
 
