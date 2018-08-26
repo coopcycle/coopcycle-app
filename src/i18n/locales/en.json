@@ -114,6 +114,19 @@
     "HIDE_DONE_TASKS": "Hide done tasks",
     "HIDE_FAILED_TASKS": "Hide failed tasks",
     "HIDE_TASKS_FAILED_WITH": "Hide tasks tagged with",
-    "RESTAURANT_LIST_CLICK_BELOW": "Click on a restaurant in the list below"
+    "RESTAURANT_LIST_CLICK_BELOW": "Click on a restaurant in the list below",
+    "RESTAURANT_ORDER_LIST_NEW_ORDERS": "New orders ({{count}})",
+    "RESTAURANT_ORDER_LIST_ACCEPTED_ORDERS": "Accepted orders ({{count}})",
+    "RESTAURANT_ORDER_BUTTON_ACCEPT": "Accept",
+    "RESTAURANT_ORDER_BUTTON_REFUSE": "Refuse",
+    "RESTAURANT_ORDER_BUTTON_CANCEL": "Cancel",
+    "RESTAURANT_ORDER_BUTTON_DELAY": "Delay",
+    "RESTAURANT_ORDER_REFUSE_DISCLAIMER": "Please tell us why you want to decline this order so that we can inform the customer",
+    "RESTAURANT_ORDER_REFUSE_REASON_SOLD_OUT_HEADING": "I'm out of stock",
+    "RESTAURANT_ORDER_REFUSE_REASON_RUSH_HOUR_HEADING": "I'm in a rush",
+    "RESTAURANT_ORDER_REFUSE_REASON_CLOSING_HEADING": "I'm going to close",
+    "RESTAURANT_ORDER_REFUSE_REASON_ORDER_WILL_BE_REFUSED": "This order will be cancelled",
+    "RESTAURANT_ORDER_REFUSE_REASON_ORDER_CONTINUE_RECEIVING": "You will continue receiving new orders",
+    "RESTAURANT_ORDER_REFUSE_REASON_ORDER_STOP_RECEIVING": "You will not receive orders anymore"
   }
 }

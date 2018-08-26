@@ -114,6 +114,19 @@
     "HIDE_DONE_TASKS": "Masquer les tâches effectuées",
     "HIDE_FAILED_TASKS": "Masquer les tâches ayant échoué",
     "HIDE_TASKS_FAILED_WITH": "Masquer les tâches marquées avec",
-    "RESTAURANT_LIST_CLICK_BELOW": "Cliquez sur un restaurant dans la liste ci-dessous"
+    "RESTAURANT_LIST_CLICK_BELOW": "Cliquez sur un restaurant dans la liste ci-dessous",
+    "RESTAURANT_ORDER_LIST_NEW_ORDERS": "Nouvelles commandes ({{count}})",
+    "RESTAURANT_ORDER_LIST_ACCEPTED_ORDERS": "Commandes acceptées ({{count}})",
+    "RESTAURANT_ORDER_BUTTON_ACCEPT": "Accepter",
+    "RESTAURANT_ORDER_BUTTON_REFUSE": "Refuser",
+    "RESTAURANT_ORDER_BUTTON_CANCEL": "Annuler",
+    "RESTAURANT_ORDER_BUTTON_DELAY": "Retarder",
+    "RESTAURANT_ORDER_REFUSE_DISCLAIMER": "Veuillez nous indiquer pourquoi vous souhaitez refuser cette commande pour que nous puissions informer le client.",
+    "RESTAURANT_ORDER_REFUSE_REASON_SOLD_OUT_HEADING": "Je suis en rupture de stock",
+    "RESTAURANT_ORDER_REFUSE_REASON_RUSH_HOUR_HEADING": "Je suis en plein rush",
+    "RESTAURANT_ORDER_REFUSE_REASON_CLOSING_HEADING": "Je vais fermer",
+    "RESTAURANT_ORDER_REFUSE_REASON_ORDER_WILL_BE_REFUSED": "Cette commande sera annulée",
+    "RESTAURANT_ORDER_REFUSE_REASON_ORDER_CONTINUE_RECEIVING": "Vous continuerez à recevoir de nouvelles commandes",
+    "RESTAURANT_ORDER_REFUSE_REASON_ORDER_STOP_RECEIVING": "Vous ne recevrez plus de nouvelles commandes"
   }
 }
