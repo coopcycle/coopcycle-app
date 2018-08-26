@@ -5071,6 +5071,12 @@ react-lifecycles-compat@^3, react-lifecycles-compat@^3.0.4:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
 
+react-native-animatable@^1.2.4:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/react-native-animatable/-/react-native-animatable-1.3.0.tgz#b5c3940fc758cfd9b2fe54613a457c4b6962b46e"
+  dependencies:
+    prop-types "^15.5.10"
+
 react-native-cache-store@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/react-native-cache-store/-/react-native-cache-store-1.0.2.tgz#324558c9fab7cd98efc975ada00ce6e1533737e1"
@@ -5154,6 +5160,13 @@ react-native-keyboard-aware-scroll-view@0.4.2:
     prop-types "^15.6.0"
     react-native-iphone-x-helper "^1.0.1"
 
+react-native-map-link@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/react-native-map-link/-/react-native-map-link-2.1.0.tgz#83e46a5585f06214e5ab0d00cf636ffb6bc7d082"
+  dependencies:
+    prop-types "^15.6.1"
+    react-native-modal "^6.4.0"
+
 react-native-maps@0.21.0:
   version "0.21.0"
   resolved "https://registry.yarnpkg.com/react-native-maps/-/react-native-maps-0.21.0.tgz#005f58e93d7623ad59667e8002101970ddf235c2"
@@ -5170,6 +5183,13 @@ react-native-modal-selector@^0.0.28:
   resolved "https://registry.yarnpkg.com/react-native-modal-selector/-/react-native-modal-selector-0.0.28.tgz#0269cf1e590d60b47a43997260a2fcfbcbe1c466"
   dependencies:
     prop-types "^15.5.10"
+
+react-native-modal@^6.4.0:
+  version "6.5.0"
+  resolved "https://registry.yarnpkg.com/react-native-modal/-/react-native-modal-6.5.0.tgz#46220b2289a41597d344c1db17454611b426a758"
+  dependencies:
+    prop-types "^15.6.1"
+    react-native-animatable "^1.2.4"
 
 react-native-open-settings@^1.0.1:
   version "1.0.1"

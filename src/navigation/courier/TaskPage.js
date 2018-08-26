@@ -9,6 +9,7 @@ import moment from 'moment/min/moment-with-locales'
 import { translate } from 'react-i18next'
 import { localeDetector } from '../../i18n'
 import { phonecall } from 'react-native-communications'
+import { showLocation } from 'react-native-map-link'
 
 import { greenColor, greyColor, redColor } from "../../styles/common"
 import { selectIsTasksLoading, selectTasksList, markTaskDone, markTaskFailed } from "../../redux/Courier"
@@ -86,6 +87,19 @@ class TaskPage extends Component {
         right: 50
       },
       animated: true
+    })
+  }
+
+  onMapPress() {
+
+    const { task } = this.props.navigation.state.params
+
+    showLocation({
+      latitude: task.address.geo.latitude,
+      longitude: task.address.geo.longitude,
+      dialogTitle: this.props.t('OPEN_IN_MAPS_TITLE'),
+      dialogMessage: this.props.t('OPEN_IN_MAPS_MESSAGE'),
+      cancelText: this.props.t('CANCEL'),
     })
   }
 
@@ -398,7 +412,8 @@ class TaskPage extends Component {
                   loadingIndicatorColor={"#666666"}
                   loadingBackgroundColor={"#eeeeee"}
                   initialRegion={ initialRegion }
-                  onMapReady={() => this.onMapReady()}>
+                  onMapReady={() => this.onMapReady()}
+                  onPress={() => this.onMapPress()}>
                   <MapView.Marker
                     identifier={ task['@id'] }
                     key={ task['@id'] }
