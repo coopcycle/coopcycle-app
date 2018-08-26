@@ -4,8 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
-    "test": "jest",
-    "postinstall": "wget https://github.com/alexsegura/react-native-background-geolocation/commit/57da62e91bd087396e6e7a2f47ce5fa00ce1f6cb.patch && patch $PWD/node_modules/react-native-mauron85-background-geolocation/ios/RCTBackgroundGeolocation/RCTBackgroundGeolocation.m 57da62e91bd087396e6e7a2f47ce5fa00ce1f6cb.patch && rm -f 57da62e91bd087396e6e7a2f47ce5fa00ce1f6cb.patch"
+    "test": "jest"
   },
   "dependencies": {
     "@mapbox/polyline": "^1.0.0",
@@ -26,7 +25,7 @@
     "react-native-i18n": "^2.0.15",
     "react-native-keep-awake": "^2.0.6",
     "react-native-maps": "0.21.0",
-    "react-native-mauron85-background-geolocation": "^0.5.0-alpha.34",
+    "react-native-mauron85-background-geolocation": "^0.5.0-alpha.40",
     "react-native-modal-selector": "^0.0.28",
     "react-native-open-settings": "^1.0.1",
     "react-native-pin-screen": "git+https://git@github.com/coopcycle/react-native-pin-screen.git#1.0.1",

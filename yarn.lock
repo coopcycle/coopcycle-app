@@ -5165,9 +5165,9 @@ react-native-maps@0.21.0:
     babel-plugin-module-resolver "^2.3.0"
     babel-preset-react-native "1.9.0"
 
-react-native-mauron85-background-geolocation@^0.5.0-alpha.34:
-  version "0.5.0-alpha.34"
-  resolved "https://registry.yarnpkg.com/react-native-mauron85-background-geolocation/-/react-native-mauron85-background-geolocation-0.5.0-alpha.34.tgz#86a3336821c209b588f01eaccf883e3dc5dcb90c"
+react-native-mauron85-background-geolocation@^0.5.0-alpha.40:
+  version "0.5.0-alpha.40"
+  resolved "https://registry.yarnpkg.com/react-native-mauron85-background-geolocation/-/react-native-mauron85-background-geolocation-0.5.0-alpha.40.tgz#8dae88f7ed04a03b9b2a75f6e671237b27636980"
 
 react-native-modal-selector@^0.0.28:
   version "0.0.28"
