@@ -1,7 +1,6 @@
 import firebase from 'react-native-firebase'
 import { Alert, AppState } from 'react-native'
 
-import NotificationManager from 'react-native-check-notification-enable'
 import OpenSettings from 'react-native-open-settings'
 
 /**
@@ -55,21 +54,8 @@ class PushNotification {
     })
 
     // FIXME
-    // firebase.messaging().hasPermission() always resolves to true
     // firebase.messaging().requestPermission() always resolves to null
-    // We need to use alternative libraries to actually check if notifications are enabled,
-    // and direct to user to the app settings
-    // @see https://github.com/invertase/react-native-firebase/pull/1164
-    // @see https://github.com/invertase/react-native-firebase/blob/d101813b5fc67c9f2da5d664f711b5113781163b/android/src/main/java/io/invertase/firebase/messaging/RNFirebaseMessaging.java#L52
-
-    // firebase.messaging().hasPermission()
-    //   .then(enabled => {
-    //     if (enabled) {
-    //      // user has permissions
-    //     } else {
-    //       // user doesn't have permission
-    //     }
-    //   });
+    // We tell the user to open the app settings to enable notifications
 
     // firebase.messaging()
     //   .requestPermission()
@@ -80,7 +66,7 @@ class PushNotification {
     //     // User has rejected permissions
     //   })
 
-    NotificationManager.areNotificationsEnabled()
+    firebase.messaging().hasPermission()
       .then(enabled => {
 
         if (!enabled) {
@@ -98,11 +84,11 @@ class PushNotification {
                 onPress: () => {
 
                   appStateChangeListener = nextState => {
-                    // Use is coming back from app settings
+                    // User is coming back from app settings
                     // Check again if notifications have been enabled
                     if ('active' === nextState) {
                       AppState.removeEventListener('change', appStateChangeListener)
-                      NotificationManager.areNotificationsEnabled()
+                      firebase.messaging().hasPermission()
                         .then(enabled => {
                           firebase.messaging()
                             .getToken()

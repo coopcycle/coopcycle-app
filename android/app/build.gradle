@@ -173,7 +173,6 @@ dependencies {
         exclude group: 'com.google.android.gms', module: 'play-services-maps'
     }
 
-    implementation project(':react-native-check-notification-enable')
     implementation project(':react-native-open-settings')
 
     // compile gms independantly, in case of conflicting requirements from other dependencies
@@ -182,8 +181,8 @@ dependencies {
     implementation "com.google.android.gms:play-services-base:15.0.1"
 
     // Configure react-native-firebase
-    implementation 'com.google.firebase:firebase-core:16.0.0'
-    implementation 'com.google.firebase:firebase-messaging:17.0.0'
+    implementation 'com.google.firebase:firebase-core:16.0.3'
+    implementation 'com.google.firebase:firebase-messaging:17.3.0'
     implementation 'me.leolin:ShortcutBadger:1.1.21@aar'
 
     implementation 'com.google.android.gms:play-services-location:15.0.1'
