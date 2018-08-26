@@ -120,6 +120,12 @@ const MainNavigator = createStackNavigator({
       headerRight: restaurantStatusHeaderRight(navigation),
     })
   },
+  RestaurantOrder: {
+    screen: navigation.RestaurantOrder,
+    navigationOptions: ({ navigation }) => ({
+      title: `#${navigation.state.params.order.id}`,
+    })
+  },
   Cart: {
     screen: navigation.CartPage,
     navigationOptions: ({ navigation }) => ({
@@ -156,8 +162,8 @@ export default createStackNavigator({
   Main: {
     screen: MainNavigator,
   },
-  RestaurantOrder: {
-    screen: navigation.RestaurantOrder,
+  RestaurantOrderRefuse: {
+    screen: navigation.RestaurantOrderRefuse,
   },
   RestaurantDate: {
     screen: navigation.RestaurantDate,

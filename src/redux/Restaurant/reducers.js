@@ -5,6 +5,9 @@ import {
   ACCEPT_ORDER_REQUEST,
   ACCEPT_ORDER_SUCCESS,
   ACCEPT_ORDER_FAILURE,
+  REFUSE_ORDER_REQUEST,
+  REFUSE_ORDER_SUCCESS,
+  REFUSE_ORDER_FAILURE,
   LOAD_MY_RESTAURANTS_REQUEST,
   LOAD_MY_RESTAURANTS_SUCCESS,
   LOAD_MY_RESTAURANTS_FAILURE,
@@ -22,11 +25,26 @@ const initialState = {
   status: 'available'
 }
 
+const spliceOrders = (state, payload) => {
+
+  const orderIndex = _.findIndex(state.orders, order => order['@id'] === payload['@id'])
+
+  if (-1 !== orderIndex) {
+    const newOrders = state.orders.slice(0)
+    newOrders.splice(orderIndex, 1, Object.assign({}, payload))
+
+    return newOrders
+  }
+
+  return state.orders
+}
+
 export default (state = initialState, action = {}) => {
   switch (action.type) {
     case LOAD_ORDERS_REQUEST:
     case ACCEPT_ORDER_REQUEST:
     case LOAD_MY_RESTAURANTS_REQUEST:
+    case REFUSE_ORDER_REQUEST:
       return {
         ...state,
         fetchError: false,
@@ -36,6 +54,7 @@ export default (state = initialState, action = {}) => {
     case LOAD_ORDERS_FAILURE:
     case ACCEPT_ORDER_FAILURE:
     case LOAD_MY_RESTAURANTS_FAILURE:
+    case REFUSE_ORDER_FAILURE:
       return {
         ...state,
         fetchError: action.payload || action.error,
@@ -51,9 +70,17 @@ export default (state = initialState, action = {}) => {
       }
 
     case ACCEPT_ORDER_SUCCESS:
-      // TODO Modify orders
       return {
         ...state,
+        orders: spliceOrders(state, action.payload),
+        fetchError: false,
+        isFetching: false,
+      }
+
+    case REFUSE_ORDER_SUCCESS:
+      return {
+        ...state,
+        orders: spliceOrders(state, action.payload),
         fetchError: false,
         isFetching: false,
       }

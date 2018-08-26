@@ -12,10 +12,6 @@ import { formatPrice } from '../Cart'
 moment.locale(localeDetector())
 
 const styles = StyleSheet.create({
-  wrapper: {
-    paddingHorizontal: 15,
-    backgroundColor: '#fff'
-  },
   item: {
     paddingVertical: 15,
     paddingHorizontal: 20,
@@ -46,6 +42,9 @@ class OrderList extends Component {
     return (
       <TouchableOpacity style={ styles.item } onPress={ () => this.props.onItemClick(order) }>
         <Grid>
+          <Col size={ 2 } style={ styles.col }>
+            <Text>{ `#${order.id}` }</Text>
+          </Col>
           <Col size={ 4 } style={ styles.col }>
             <Text>{ `${formatPrice(order.total)} €` }</Text>
           </Col>
@@ -64,16 +63,25 @@ class OrderList extends Component {
 
     const ordersByState = _.groupBy(this.props.orders, 'state')
 
-    const newOrders = ordersByState.hasOwnProperty('new') ? ordersByState['new'] : []
-    const acceptedOrders = ordersByState.hasOwnProperty('accepted') ? ordersByState['accepted'] : []
+    let newOrders = ordersByState.hasOwnProperty('new') ? ordersByState['new'] : []
+    let acceptedOrders = ordersByState.hasOwnProperty('accepted') ? ordersByState['accepted'] : []
+
+    newOrders = _.sortBy(newOrders, [ order => moment(order.shippedAt) ])
+    acceptedOrders = _.sortBy(acceptedOrders, [ order => moment(order.shippedAt) ])
 
     return (
       <SectionList
         data={ this.props.orders }
         keyExtractor={ (item, index) => item['@id'] }
         sections={[
-          { title: 'New orders', data: newOrders },
-          { title: 'Accepted orders', data: acceptedOrders },
+          {
+            title: this.props.t('RESTAURANT_ORDER_LIST_NEW_ORDERS', { count: newOrders.length }),
+            data: newOrders
+          },
+          {
+            title: this.props.t('RESTAURANT_ORDER_LIST_ACCEPTED_ORDERS', { count: acceptedOrders.length }),
+            data: acceptedOrders
+          },
         ]}
         renderSectionHeader={ ({ section: { title } } ) => (
           <View style={ styles.sectionHeader }>

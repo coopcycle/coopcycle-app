@@ -15,6 +15,10 @@ export const ACCEPT_ORDER_REQUEST = 'ACCEPT_ORDER_REQUEST'
 export const ACCEPT_ORDER_SUCCESS = 'ACCEPT_ORDER_SUCCESS'
 export const ACCEPT_ORDER_FAILURE = 'ACCEPT_ORDER_FAILURE'
 
+export const REFUSE_ORDER_REQUEST = 'REFUSE_ORDER_REQUEST'
+export const REFUSE_ORDER_SUCCESS = 'REFUSE_ORDER_SUCCESS'
+export const REFUSE_ORDER_FAILURE = 'REFUSE_ORDER_FAILURE'
+
 export const CHANGE_DATE = 'CHANGE_DATE'
 
 export const CHANGE_STATUS = 'CHANGE_STATUS'
@@ -33,6 +37,10 @@ export const loadOrdersFailure = createAction(LOAD_ORDERS_FAILURE)
 export const acceptOrderRequest = createAction(ACCEPT_ORDER_REQUEST)
 export const acceptOrderSuccess = createAction(ACCEPT_ORDER_SUCCESS)
 export const acceptOrderFailure = createAction(ACCEPT_ORDER_FAILURE)
+
+export const refuseOrderRequest = createAction(REFUSE_ORDER_REQUEST)
+export const refuseOrderSuccess = createAction(REFUSE_ORDER_SUCCESS)
+export const refuseOrderFailure = createAction(REFUSE_ORDER_FAILURE)
 
 export const changeDate = createAction(CHANGE_DATE)
 
@@ -72,5 +80,16 @@ export function acceptOrder(client, order) {
     return client.put(order['@id'] + '/accept')
       .then(res => dispatch(acceptOrderSuccess(res)))
       .catch(e => dispatch(acceptOrderFailure(e)))
+  }
+}
+
+export function refuseOrder(client, order) {
+
+  return function (dispatch) {
+    dispatch(refuseOrderRequest())
+
+    return client.put(order['@id'] + '/refuse')
+      .then(res => dispatch(refuseOrderSuccess(res)))
+      .catch(e => dispatch(refuseOrderFailure(e)))
   }
 }
