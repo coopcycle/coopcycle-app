@@ -127,6 +127,8 @@
     "RESTAURANT_ORDER_REFUSE_REASON_CLOSING_HEADING": "I'm going to close",
     "RESTAURANT_ORDER_REFUSE_REASON_ORDER_WILL_BE_REFUSED": "This order will be cancelled",
     "RESTAURANT_ORDER_REFUSE_REASON_ORDER_CONTINUE_RECEIVING": "You will continue receiving new orders",
-    "RESTAURANT_ORDER_REFUSE_REASON_ORDER_STOP_RECEIVING": "You will not receive orders anymore"
+    "RESTAURANT_ORDER_REFUSE_REASON_ORDER_STOP_RECEIVING": "You will not receive orders anymore",
+    "OPEN_IN_MAPS_TITLE": "Show task on map",
+    "OPEN_IN_MAPS_MESSAGE": "Choose an app"
   }
 }
