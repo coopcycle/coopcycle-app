@@ -14,10 +14,4 @@ class HeaderButton extends Component {
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    status: state.restaurant.status
-  }
-}
-
 export default HeaderButton
