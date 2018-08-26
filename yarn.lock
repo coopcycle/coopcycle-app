@@ -5084,10 +5084,6 @@ react-native-calendars@^1.20.0:
     prop-types "^15.5.10"
     xdate "^0.8.0"
 
-react-native-check-notification-enable@^1.0.4:
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/react-native-check-notification-enable/-/react-native-check-notification-enable-1.0.4.tgz#5773e04da6f88d859d6f0c70e3aa60460df83beb"
-
 react-native-communications@^2.2.1:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/react-native-communications/-/react-native-communications-2.2.1.tgz#7883b56b20a002eeb790c113f8616ea8692ca795"
@@ -5121,9 +5117,9 @@ react-native-easy-grid@0.1.17:
   dependencies:
     lodash "^4.11.1"
 
-react-native-firebase@^4.2.0:
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/react-native-firebase/-/react-native-firebase-4.2.0.tgz#d44b1e5b5149d65936045c0398e0acc2ebb4c7e9"
+react-native-firebase@^4.3.8:
+  version "4.3.8"
+  resolved "https://registry.yarnpkg.com/react-native-firebase/-/react-native-firebase-4.3.8.tgz#a425b260aca0b97cde023dd2556fc18d16a3b7b3"
   dependencies:
     opencollective "^1.0.3"
     postinstall-build "^5.0.1"
