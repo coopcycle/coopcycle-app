@@ -83,12 +83,12 @@ export function acceptOrder(client, order) {
   }
 }
 
-export function refuseOrder(client, order) {
+export function refuseOrder(client, order, reason) {
 
   return function (dispatch) {
     dispatch(refuseOrderRequest())
 
-    return client.put(order['@id'] + '/refuse')
+    return client.put(order['@id'] + '/refuse', { reason })
       .then(res => dispatch(refuseOrderSuccess(res)))
       .catch(e => dispatch(refuseOrderFailure(e)))
   }
