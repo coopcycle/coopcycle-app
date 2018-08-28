@@ -164,6 +164,9 @@ export default createStackNavigator({
   RestaurantOrderRefuse: {
     screen: navigation.RestaurantOrderRefuse,
   },
+  RestaurantOrderDelay: {
+    screen: navigation.RestaurantOrderDelay,
+  },
   RestaurantDate: {
     screen: navigation.RestaurantDate,
   },
