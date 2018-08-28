@@ -129,6 +129,7 @@
     "RESTAURANT_ORDER_REFUSE_REASON_ORDER_CONTINUE_RECEIVING": "Vous continuerez à recevoir de nouvelles commandes",
     "RESTAURANT_ORDER_REFUSE_REASON_ORDER_STOP_RECEIVING": "Vous ne recevrez plus de nouvelles commandes",
     "OPEN_IN_MAPS_TITLE": "Afficher la tâche sur une carte",
-    "OPEN_IN_MAPS_MESSAGE": "Choisissez une application"
+    "OPEN_IN_MAPS_MESSAGE": "Choisissez une application",
+    "RESTAURANT_ORDER_PREPARATION_EXPECTED_AT": "À préparer pour {{date}}"
   }
 }

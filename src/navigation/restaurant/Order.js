@@ -9,12 +9,16 @@ import { connectStyle } from 'native-base';
 import { Col, Row, Grid } from 'react-native-easy-grid'
 import { connect } from 'react-redux'
 import { translate } from 'react-i18next'
+import moment from 'moment/min/moment-with-locales'
+
 import { formatPrice } from '../../Cart'
 import LoaderOverlay from '../../components/LoaderOverlay'
 import OrderSummary from '../../components/OrderSummary'
 import { acceptOrder } from '../../redux/Restaurant/actions'
-
+import { localeDetector } from '../../i18n'
 import material from '../../../native-base-theme/variables/material'
+
+moment.locale(localeDetector())
 
 class OrderScreen extends Component {
 
@@ -102,12 +106,22 @@ class OrderScreen extends Component {
 
     const { order } = this.props.navigation.state.params
 
+    const date = moment(order.preparationExpectedAt).format('LT')
+
     return (
       <Container>
         <Grid>
-          <Content padder>
-            <OrderSummary order={ order } />
-          </Content>
+          <Row size={ 1 } style={{ flex: 1, alignItems: 'center' }}>
+            <View style={ styles.dateContainer }>
+              <Icon name="md-clock" />
+              <Text>{ this.props.t('RESTAURANT_ORDER_PREPARATION_EXPECTED_AT', { date }) }</Text>
+            </View>
+          </Row>
+          <Row size={ 9 }>
+            <Content padder>
+              <OrderSummary order={ order } />
+            </Content>
+          </Row>
         </Grid>
         { this.renderButtons() }
         <LoaderOverlay loading={ this.props.loading } />
@@ -144,6 +158,13 @@ const styles = StyleSheet.create({
     color: '#333',
     fontWeight: 'bold'
   },
+  dateContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: material.contentPadding
+  }
 });
 
 function mapStateToProps(state) {
