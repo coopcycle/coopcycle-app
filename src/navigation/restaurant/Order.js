@@ -106,16 +106,27 @@ class OrderScreen extends Component {
 
     const { order } = this.props.navigation.state.params
 
-    const date = moment(order.preparationExpectedAt).format('LT')
+    const preparationExpectedAt = moment(order.preparationExpectedAt).format('LT')
+    const pickupExpectedAt = moment(order.pickupExpectedAt).format('LT')
 
     return (
       <Container>
         <Grid>
-          <Row size={ 1 } style={{ flex: 1, alignItems: 'center' }}>
-            <View style={ styles.dateContainer }>
-              <Icon name="md-clock" />
-              <Text>{ this.props.t('RESTAURANT_ORDER_PREPARATION_EXPECTED_AT', { date }) }</Text>
-            </View>
+          <Row size={ 3 }>
+            <Col>
+              <Row>
+                <View style={ styles.dateContainer }>
+                  <Icon name="md-clock" />
+                  <Text>{ this.props.t('RESTAURANT_ORDER_PREPARATION_EXPECTED_AT', { date: preparationExpectedAt }) }</Text>
+                </View>
+              </Row>
+              <Row>
+                <View style={ styles.dateContainer }>
+                  <Icon name="md-bicycle" />
+                  <Text>{ this.props.t('RESTAURANT_ORDER_PICKUP_EXPECTED_AT', { date: pickupExpectedAt }) }</Text>
+                </View>
+              </Row>
+            </Col>
           </Row>
           <Row size={ 9 }>
             <Content padder>
@@ -163,7 +174,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    padding: material.contentPadding
+    paddingHorizontal: material.contentPadding
   }
 });
 
