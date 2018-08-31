@@ -49,7 +49,7 @@ class OrderList extends Component {
             <Text>{ `${formatPrice(order.total)} €` }</Text>
           </Col>
           <Col size={ 4 } style={ styles.col }>
-            <Text>{ moment(order.shippedAt).format('LT') }</Text>
+            <Text>{ moment(order.preparationExpectedAt).format('LT') }</Text>
           </Col>
           <Col size={ 1 } style={ styles.itemLeftRight }>
             <Icon style={{ color: '#ccc' }} name="ios-arrow-forward" />
