@@ -10,8 +10,9 @@ import { translate } from 'react-i18next'
 import { connect } from 'react-redux'
 import material from '../../../native-base-theme/variables/material'
 
-import { refuseOrder } from '../../redux/Restaurant/actions'
+import { delayOrder } from '../../redux/Restaurant/actions'
 import LoaderOverlay from '../../components/LoaderOverlay'
+import Modal from './components/Modal'
 
 class BigButton extends Component {
   constructor(props) {
@@ -35,21 +36,19 @@ class BigButton extends Component {
 
     return (
       <TouchableOpacity style={ btnStyles } onPress={ this.props.onPress }>
-        <View>
+        <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+          <Icon style={{ color: iconColor, marginRight: 20 }} name="md-clock" />
           <Text style={ btnTextHeadingStyles }>
             { this.props.heading }
           </Text>
-          <Text note style={ btnTextNoteStyles }>
-            { this.props.text }
-          </Text>
         </View>
-        <Icon style={{ color: iconColor, alignSelf: 'center' }} name="ios-arrow-forward" />
+        <Icon style={{ color: iconColor }} name="ios-arrow-forward" />
       </TouchableOpacity>
     )
   }
 }
 
-class OrderRefuseScreen extends Component {
+class OrderDelayScreen extends Component {
 
   componentWillReceiveProps(newProps) {
     // Close the modal when loading has finished
@@ -58,55 +57,40 @@ class OrderRefuseScreen extends Component {
     }
   }
 
-  _refuseOrder(reason) {
+  _delayOrder(delay) {
     const { order } = this.props.navigation.state.params
-    this.props.refuseOrder(this.props.httpClient, order, reason)
+    this.props.delayOrder(this.props.httpClient, order, delay)
   }
 
   render() {
-
-    const { navigate } = this.props.navigation
-
     return (
-      <Container>
-        <Header>
-          <Left>
-            <Button transparent onPress={() => this.props.navigation.goBack()}>
-              <Icon name="close" />
-            </Button>
-          </Left>
-          <Body>
-            <Title>Refuser order</Title>
-          </Body>
-          <Right />
-        </Header>
+      <Modal
+        navigation={ this.props.navigation }
+        title={ this.props.t('RESTAURANT_ORDER_DELAY_MODAL_TITLE') }>
         <View style={{ padding: 20 }}>
           <Text note>
-            { this.props.t('RESTAURANT_ORDER_REFUSE_DISCLAIMER') }
+            { this.props.t('RESTAURANT_ORDER_DELAY_DISCLAIMER') }
           </Text>
         </View>
         <Grid style={{ backgroundColor: '#fff', paddingHorizontal: 20, paddingVertical: 20 }}>
           <Row style={{ marginBottom: 20 }}>
             <BigButton
-              heading={ this.props.t('RESTAURANT_ORDER_REFUSE_REASON_SOLD_OUT_HEADING') }
-              text={ `${this.props.t('RESTAURANT_ORDER_REFUSE_REASON_ORDER_WILL_BE_REFUSED')}\n${this.props.t('RESTAURANT_ORDER_REFUSE_REASON_ORDER_CONTINUE_RECEIVING')}` }
-              onPress={ () => this._refuseOrder('SOLD_OUT') } />
+              heading={ '10 minutes' }
+              onPress={ () => this._delayOrder(10) } />
           </Row>
           <Row style={{ marginBottom: 20 }}>
             <BigButton
-              heading={ this.props.t('RESTAURANT_ORDER_REFUSE_REASON_RUSH_HOUR_HEADING') }
-              text={ `${this.props.t('RESTAURANT_ORDER_REFUSE_REASON_ORDER_WILL_BE_REFUSED')}\n${this.props.t('RESTAURANT_ORDER_REFUSE_REASON_ORDER_CONTINUE_RECEIVING')}` }
-              onPress={ () => this._refuseOrder('RUSH_HOUR') } />
+              heading={ '20 minutes' }
+              onPress={ () => this._delayOrder(20) } />
           </Row>
           <Row>
             <BigButton danger
-              heading={ this.props.t('RESTAURANT_ORDER_REFUSE_REASON_CLOSING_HEADING') }
-              text={ `${this.props.t('RESTAURANT_ORDER_REFUSE_REASON_ORDER_WILL_BE_REFUSED')}\n${this.props.t('RESTAURANT_ORDER_REFUSE_REASON_ORDER_STOP_RECEIVING')}` }
-              onPress={ () => this._refuseOrder('CLOSING') } />
+              heading={ '30 minutes' }
+              onPress={ () => this._delayOrder(30) } />
           </Row>
         </Grid>
         <LoaderOverlay loading={ this.props.loading } />
-      </Container>
+      </Modal>
     )
   }
 }
@@ -119,7 +103,8 @@ const styles = StyleSheet.create({
     padding: 15,
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     backgroundColor: '#fff'
   },
   btnDanger: {
@@ -127,7 +112,6 @@ const styles = StyleSheet.create({
   },
   btnTextHeading: {
     fontWeight: 'bold',
-    marginBottom: 10
   },
   textDanger: {
     color: material.brandDanger,
@@ -144,8 +128,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    refuseOrder: (httpClient, order, reason) => dispatch(refuseOrder(httpClient, order, reason)),
+    delayOrder: (httpClient, order, delay) => dispatch(delayOrder(httpClient, order, delay)),
   }
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(translate()(OrderRefuseScreen))
+module.exports = connect(mapStateToProps, mapDispatchToProps)(translate()(OrderDelayScreen))

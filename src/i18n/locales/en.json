@@ -117,6 +117,7 @@
     "RESTAURANT_LIST_CLICK_BELOW": "Click on a restaurant in the list below",
     "RESTAURANT_ORDER_LIST_NEW_ORDERS": "New orders ({{count}})",
     "RESTAURANT_ORDER_LIST_ACCEPTED_ORDERS": "Accepted orders ({{count}})",
+    "RESTAURANT_ORDER_LIST_CANCELLED_ORDERS": "Cancelled orders ({{count}})",
     "RESTAURANT_ORDER_BUTTON_ACCEPT": "Accept",
     "RESTAURANT_ORDER_BUTTON_REFUSE": "Refuse",
     "RESTAURANT_ORDER_BUTTON_CANCEL": "Cancel",
@@ -129,6 +130,13 @@
     "RESTAURANT_ORDER_REFUSE_REASON_ORDER_CONTINUE_RECEIVING": "You will continue receiving new orders",
     "RESTAURANT_ORDER_REFUSE_REASON_ORDER_STOP_RECEIVING": "You will not receive orders anymore",
     "OPEN_IN_MAPS_TITLE": "Show task on map",
-    "OPEN_IN_MAPS_MESSAGE": "Choose an app"
+    "OPEN_IN_MAPS_MESSAGE": "Choose an app",
+    "RESTAURANT_ORDER_PREPARATION_EXPECTED_AT": "Should begin at {{date}}",
+    "RESTAURANT_ORDER_PICKUP_EXPECTED_AT": "Should be ready at {{date}}",
+    "RESTAURANT_ORDER_DELAY_MODAL_TITLE": "Delay order",
+    "RESTAURANT_ORDER_DELAY_DISCLAIMER": "How much delay would you like to apply?",
+    "RESTAURANT_ORDER_CANCEL_MODAL_TITLE": "Cancel",
+    "RESTAURANT_ORDER_CANCEL_DISCLAIMER": "Please tell us why you want to cancel this order",
+    "RESTAURANT_ORDER_CANCEL_REASON_CUSTOMER_HEADING": "Cancelled by customer"
   }
 }

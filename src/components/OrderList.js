@@ -49,7 +49,7 @@ class OrderList extends Component {
             <Text>{ `${formatPrice(order.total)} €` }</Text>
           </Col>
           <Col size={ 4 } style={ styles.col }>
-            <Text>{ moment(order.shippedAt).format('LT') }</Text>
+            <Text>{ moment(order.preparationExpectedAt).format('LT') }</Text>
           </Col>
           <Col size={ 1 } style={ styles.itemLeftRight }>
             <Icon style={{ color: '#ccc' }} name="ios-arrow-forward" />
@@ -66,8 +66,13 @@ class OrderList extends Component {
     let newOrders = ordersByState.hasOwnProperty('new') ? ordersByState['new'] : []
     let acceptedOrders = ordersByState.hasOwnProperty('accepted') ? ordersByState['accepted'] : []
 
+    let refusedOrders = ordersByState.hasOwnProperty('refused') ? ordersByState['refused'] : []
+    let cancelledOrders = ordersByState.hasOwnProperty('cancelled') ? ordersByState['cancelled'] : []
+    let allCancelledOrders = cancelledOrders.concat(refusedOrders)
+
     newOrders = _.sortBy(newOrders, [ order => moment(order.shippedAt) ])
     acceptedOrders = _.sortBy(acceptedOrders, [ order => moment(order.shippedAt) ])
+    allCancelledOrders = _.sortBy(allCancelledOrders, [ order => moment(order.shippedAt) ])
 
     return (
       <SectionList
@@ -81,6 +86,10 @@ class OrderList extends Component {
           {
             title: this.props.t('RESTAURANT_ORDER_LIST_ACCEPTED_ORDERS', { count: acceptedOrders.length }),
             data: acceptedOrders
+          },
+          {
+            title: this.props.t('RESTAURANT_ORDER_LIST_CANCELLED_ORDERS', { count: allCancelledOrders.length }),
+            data: allCancelledOrders
           },
         ]}
         renderSectionHeader={ ({ section: { title } } ) => (

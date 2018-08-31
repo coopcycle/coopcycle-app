@@ -10,8 +10,9 @@ import { translate } from 'react-i18next'
 import { connect } from 'react-redux'
 import material from '../../../native-base-theme/variables/material'
 
-import { refuseOrder } from '../../redux/Restaurant/actions'
+import { cancelOrder } from '../../redux/Restaurant/actions'
 import LoaderOverlay from '../../components/LoaderOverlay'
+import Modal from './components/Modal'
 
 class BigButton extends Component {
   constructor(props) {
@@ -49,7 +50,7 @@ class BigButton extends Component {
   }
 }
 
-class OrderRefuseScreen extends Component {
+class OrderCancelScreen extends Component {
 
   componentWillReceiveProps(newProps) {
     // Close the modal when loading has finished
@@ -58,9 +59,9 @@ class OrderRefuseScreen extends Component {
     }
   }
 
-  _refuseOrder(reason) {
+  _cancelOrder(reason) {
     const { order } = this.props.navigation.state.params
-    this.props.refuseOrder(this.props.httpClient, order, reason)
+    this.props.cancelOrder(this.props.httpClient, order, reason)
   }
 
   render() {
@@ -68,45 +69,36 @@ class OrderRefuseScreen extends Component {
     const { navigate } = this.props.navigation
 
     return (
-      <Container>
-        <Header>
-          <Left>
-            <Button transparent onPress={() => this.props.navigation.goBack()}>
-              <Icon name="close" />
-            </Button>
-          </Left>
-          <Body>
-            <Title>Refuser order</Title>
-          </Body>
-          <Right />
-        </Header>
+      <Modal
+        navigation={ this.props.navigation }
+        title={ this.props.t('RESTAURANT_ORDER_CANCEL_MODAL_TITLE') }>
         <View style={{ padding: 20 }}>
           <Text note>
-            { this.props.t('RESTAURANT_ORDER_REFUSE_DISCLAIMER') }
+            { this.props.t('RESTAURANT_ORDER_CANCEL_DISCLAIMER') }
           </Text>
         </View>
         <Grid style={{ backgroundColor: '#fff', paddingHorizontal: 20, paddingVertical: 20 }}>
           <Row style={{ marginBottom: 20 }}>
             <BigButton
-              heading={ this.props.t('RESTAURANT_ORDER_REFUSE_REASON_SOLD_OUT_HEADING') }
+              heading={ this.props.t('RESTAURANT_ORDER_CANCEL_REASON_CUSTOMER_HEADING') }
               text={ `${this.props.t('RESTAURANT_ORDER_REFUSE_REASON_ORDER_WILL_BE_REFUSED')}\n${this.props.t('RESTAURANT_ORDER_REFUSE_REASON_ORDER_CONTINUE_RECEIVING')}` }
-              onPress={ () => this._refuseOrder('SOLD_OUT') } />
+              onPress={ () => this._cancelOrder('CUSTOMER') } />
           </Row>
           <Row style={{ marginBottom: 20 }}>
             <BigButton
-              heading={ this.props.t('RESTAURANT_ORDER_REFUSE_REASON_RUSH_HOUR_HEADING') }
+              heading={ this.props.t('RESTAURANT_ORDER_REFUSE_REASON_SOLD_OUT_HEADING') }
               text={ `${this.props.t('RESTAURANT_ORDER_REFUSE_REASON_ORDER_WILL_BE_REFUSED')}\n${this.props.t('RESTAURANT_ORDER_REFUSE_REASON_ORDER_CONTINUE_RECEIVING')}` }
-              onPress={ () => this._refuseOrder('RUSH_HOUR') } />
+              onPress={ () => this._cancelOrder('SOLD_OUT') } />
           </Row>
           <Row>
-            <BigButton danger
-              heading={ this.props.t('RESTAURANT_ORDER_REFUSE_REASON_CLOSING_HEADING') }
-              text={ `${this.props.t('RESTAURANT_ORDER_REFUSE_REASON_ORDER_WILL_BE_REFUSED')}\n${this.props.t('RESTAURANT_ORDER_REFUSE_REASON_ORDER_STOP_RECEIVING')}` }
-              onPress={ () => this._refuseOrder('CLOSING') } />
+            <BigButton
+              heading={ this.props.t('RESTAURANT_ORDER_REFUSE_REASON_RUSH_HOUR_HEADING') }
+              text={ `${this.props.t('RESTAURANT_ORDER_REFUSE_REASON_ORDER_WILL_BE_REFUSED')}\n${this.props.t('RESTAURANT_ORDER_REFUSE_REASON_ORDER_CONTINUE_RECEIVING')}` }
+              onPress={ () => this._cancelOrder('RUSH_HOUR') } />
           </Row>
         </Grid>
         <LoaderOverlay loading={ this.props.loading } />
-      </Container>
+      </Modal>
     )
   }
 }
@@ -144,8 +136,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    refuseOrder: (httpClient, order, reason) => dispatch(refuseOrder(httpClient, order, reason)),
+    cancelOrder: (httpClient, order, reason) => dispatch(cancelOrder(httpClient, order, reason)),
   }
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(translate()(OrderRefuseScreen))
+module.exports = connect(mapStateToProps, mapDispatchToProps)(translate()(OrderCancelScreen))

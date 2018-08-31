@@ -9,12 +9,16 @@ import { connectStyle } from 'native-base';
 import { Col, Row, Grid } from 'react-native-easy-grid'
 import { connect } from 'react-redux'
 import { translate } from 'react-i18next'
+import moment from 'moment/min/moment-with-locales'
+
 import { formatPrice } from '../../Cart'
 import LoaderOverlay from '../../components/LoaderOverlay'
 import OrderSummary from '../../components/OrderSummary'
 import { acceptOrder } from '../../redux/Restaurant/actions'
-
+import { localeDetector } from '../../i18n'
 import material from '../../../native-base-theme/variables/material'
+
+moment.locale(localeDetector())
 
 class OrderScreen extends Component {
 
@@ -96,18 +100,49 @@ class OrderScreen extends Component {
     }
   }
 
-  render() {
+  renderHeading() {
 
-    const { navigate } = this.props.navigation
+    const { order } = this.props.navigation.state.params
+
+    if (order.state !== 'refused' && order.state !== 'cancelled') {
+
+      const preparationExpectedAt = moment(order.preparationExpectedAt).format('LT')
+      const pickupExpectedAt = moment(order.pickupExpectedAt).format('LT')
+
+      return (
+        <Row size={ 3 }>
+          <Col>
+            <Row>
+              <View style={ styles.dateContainer }>
+                <Icon name="md-clock" />
+                <Text>{ this.props.t('RESTAURANT_ORDER_PREPARATION_EXPECTED_AT', { date: preparationExpectedAt }) }</Text>
+              </View>
+            </Row>
+            <Row>
+              <View style={ styles.dateContainer }>
+                <Icon name="md-bicycle" />
+                <Text>{ this.props.t('RESTAURANT_ORDER_PICKUP_EXPECTED_AT', { date: pickupExpectedAt }) }</Text>
+              </View>
+            </Row>
+          </Col>
+        </Row>
+      )
+    }
+  }
+
+  render() {
 
     const { order } = this.props.navigation.state.params
 
     return (
       <Container>
         <Grid>
-          <Content padder>
-            <OrderSummary order={ order } />
-          </Content>
+          { this.renderHeading() }
+          <Row size={ 9 }>
+            <Content padder>
+              <OrderSummary order={ order } />
+            </Content>
+          </Row>
         </Grid>
         { this.renderButtons() }
         <LoaderOverlay loading={ this.props.loading } />
@@ -144,6 +179,13 @@ const styles = StyleSheet.create({
     color: '#333',
     fontWeight: 'bold'
   },
+  dateContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: material.contentPadding
+  }
 });
 
 function mapStateToProps(state) {

@@ -19,6 +19,14 @@ export const REFUSE_ORDER_REQUEST = 'REFUSE_ORDER_REQUEST'
 export const REFUSE_ORDER_SUCCESS = 'REFUSE_ORDER_SUCCESS'
 export const REFUSE_ORDER_FAILURE = 'REFUSE_ORDER_FAILURE'
 
+export const DELAY_ORDER_REQUEST = 'DELAY_ORDER_REQUEST'
+export const DELAY_ORDER_SUCCESS = 'DELAY_ORDER_SUCCESS'
+export const DELAY_ORDER_FAILURE = 'DELAY_ORDER_FAILURE'
+
+export const CANCEL_ORDER_REQUEST = 'CANCEL_ORDER_REQUEST'
+export const CANCEL_ORDER_SUCCESS = 'CANCEL_ORDER_SUCCESS'
+export const CANCEL_ORDER_FAILURE = 'CANCEL_ORDER_FAILURE'
+
 export const CHANGE_DATE = 'CHANGE_DATE'
 
 export const CHANGE_STATUS = 'CHANGE_STATUS'
@@ -41,6 +49,14 @@ export const acceptOrderFailure = createAction(ACCEPT_ORDER_FAILURE)
 export const refuseOrderRequest = createAction(REFUSE_ORDER_REQUEST)
 export const refuseOrderSuccess = createAction(REFUSE_ORDER_SUCCESS)
 export const refuseOrderFailure = createAction(REFUSE_ORDER_FAILURE)
+
+export const delayOrderRequest = createAction(DELAY_ORDER_REQUEST)
+export const delayOrderSuccess = createAction(DELAY_ORDER_SUCCESS)
+export const delayOrderFailure = createAction(DELAY_ORDER_FAILURE)
+
+export const cancelOrderRequest = createAction(CANCEL_ORDER_REQUEST)
+export const cancelOrderSuccess = createAction(CANCEL_ORDER_SUCCESS)
+export const cancelOrderFailure = createAction(CANCEL_ORDER_FAILURE)
 
 export const changeDate = createAction(CHANGE_DATE)
 
@@ -83,13 +99,35 @@ export function acceptOrder(client, order) {
   }
 }
 
-export function refuseOrder(client, order) {
+export function refuseOrder(client, order, reason) {
 
   return function (dispatch) {
     dispatch(refuseOrderRequest())
 
-    return client.put(order['@id'] + '/refuse')
+    return client.put(order['@id'] + '/refuse', { reason })
       .then(res => dispatch(refuseOrderSuccess(res)))
       .catch(e => dispatch(refuseOrderFailure(e)))
+  }
+}
+
+export function delayOrder(client, order, delay) {
+
+  return function (dispatch) {
+    dispatch(delayOrderRequest())
+
+    return client.put(order['@id'] + '/delay', { delay })
+      .then(res => dispatch(delayOrderSuccess(res)))
+      .catch(e => dispatch(delayOrderFailure(e)))
+  }
+}
+
+export function cancelOrder(client, order, reason) {
+
+  return function (dispatch) {
+    dispatch(cancelOrderRequest())
+
+    return client.put(order['@id'] + '/cancel', { reason })
+      .then(res => dispatch(cancelOrderSuccess(res)))
+      .catch(e => dispatch(cancelOrderFailure(e)))
   }
 }
