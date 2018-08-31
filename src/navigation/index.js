@@ -8,6 +8,7 @@ export default {
   RestaurantOrder: require('./restaurant/Order'),
   RestaurantOrderRefuse: require('./restaurant/OrderRefuse'),
   RestaurantOrderDelay: require('./restaurant/OrderDelay'),
+  RestaurantOrderCancel: require('./restaurant/OrderCancel'),
   RestaurantDate: require('./restaurant/Date'),
   RestaurantStatus: require('./restaurant/Status'),
   CartPage: require('./CartPage'),

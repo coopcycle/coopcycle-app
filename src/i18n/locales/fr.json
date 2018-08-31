@@ -133,6 +133,9 @@
     "RESTAURANT_ORDER_PREPARATION_EXPECTED_AT": "À commencer à partir de {{date}}",
     "RESTAURANT_ORDER_PICKUP_EXPECTED_AT": "À préparer pour {{date}}",
     "RESTAURANT_ORDER_DELAY_MODAL_TITLE": "Retarder la commande",
-    "RESTAURANT_ORDER_DELAY_DISCLAIMER": "De combien souhaitez-vous retarder la commande ?"
+    "RESTAURANT_ORDER_DELAY_DISCLAIMER": "De combien souhaitez-vous retarder la commande ?",
+    "RESTAURANT_ORDER_CANCEL_MODAL_TITLE": "Annuler",
+    "RESTAURANT_ORDER_CANCEL_DISCLAIMER": "Veuillez nous indiquer pourquoi vous souhaitez annuler la commande",
+    "RESTAURANT_ORDER_CANCEL_REASON_CUSTOMER_HEADING": "Annulée par le client"
   }
 }
