@@ -137,6 +137,9 @@
     "RESTAURANT_ORDER_DELAY_DISCLAIMER": "How much delay would you like to apply?",
     "RESTAURANT_ORDER_CANCEL_MODAL_TITLE": "Cancel",
     "RESTAURANT_ORDER_CANCEL_DISCLAIMER": "Please tell us why you want to cancel this order",
-    "RESTAURANT_ORDER_CANCEL_REASON_CUSTOMER_HEADING": "Cancelled by customer"
+    "RESTAURANT_ORDER_CANCEL_REASON_CUSTOMER_HEADING": "Cancelled by customer",
+    "RESTAURANT_SETTINGS_RUSH": "Switch to rush mode",
+    "RESTAURANT_SETTINGS_HEADING": "Settings for restaurant {{- name}}",
+    "RESTAURANT_ALERT_RUSH_MODE_ON": "Rush mode is activated"
   }
 }

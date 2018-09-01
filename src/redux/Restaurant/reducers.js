@@ -17,8 +17,11 @@ import {
   LOAD_MY_RESTAURANTS_REQUEST,
   LOAD_MY_RESTAURANTS_SUCCESS,
   LOAD_MY_RESTAURANTS_FAILURE,
+  CHANGE_STATUS_REQUEST,
+  CHANGE_STATUS_SUCCESS,
+  CHANGE_STATUS_FAILURE,
+  CHANGE_RESTAURANT,
   CHANGE_DATE,
-  CHANGE_STATUS,
 } from './actions'
 import moment from 'moment'
 
@@ -28,7 +31,8 @@ const initialState = {
   orders: [],        // Array of orders
   myRestaurants: [], // Array of restaurants
   date: moment(),
-  status: 'available'
+  status: 'available',
+  restaurant: null
 }
 
 const spliceOrders = (state, payload) => {
@@ -53,6 +57,7 @@ export default (state = initialState, action = {}) => {
     case REFUSE_ORDER_REQUEST:
     case DELAY_ORDER_REQUEST:
     case CANCEL_ORDER_REQUEST:
+    case CHANGE_STATUS_REQUEST:
       return {
         ...state,
         fetchError: false,
@@ -65,6 +70,7 @@ export default (state = initialState, action = {}) => {
     case REFUSE_ORDER_FAILURE:
     case DELAY_ORDER_FAILURE:
     case CANCEL_ORDER_FAILURE:
+    case CHANGE_STATUS_FAILURE:
       return {
         ...state,
         fetchError: action.payload || action.error,
@@ -119,16 +125,24 @@ export default (state = initialState, action = {}) => {
         myRestaurants: action.payload
       }
 
+    case CHANGE_STATUS_SUCCESS:
+      return {
+        ...state,
+        fetchError: false,
+        isFetching: false,
+        restaurant: action.payload
+      }
+
+    case CHANGE_RESTAURANT:
+      return {
+        ...state,
+        restaurant: action.payload
+      }
+
     case CHANGE_DATE:
       return {
         ...state,
         date: action.payload
-      }
-
-    case CHANGE_STATUS:
-      return {
-        ...state,
-        status: action.payload
       }
 
     default:

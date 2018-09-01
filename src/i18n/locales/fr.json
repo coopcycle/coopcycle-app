@@ -137,6 +137,9 @@
     "RESTAURANT_ORDER_DELAY_DISCLAIMER": "De combien souhaitez-vous retarder la commande ?",
     "RESTAURANT_ORDER_CANCEL_MODAL_TITLE": "Annuler",
     "RESTAURANT_ORDER_CANCEL_DISCLAIMER": "Veuillez nous indiquer pourquoi vous souhaitez annuler la commande",
-    "RESTAURANT_ORDER_CANCEL_REASON_CUSTOMER_HEADING": "Annulée par le client"
+    "RESTAURANT_ORDER_CANCEL_REASON_CUSTOMER_HEADING": "Annulée par le client",
+    "RESTAURANT_SETTINGS_RUSH": "Passer en mode rush",
+    "RESTAURANT_SETTINGS_HEADING": "Réglages du restaurant {{- name}}",
+    "RESTAURANT_ALERT_RUSH_MODE_ON": "Le mode rush est activé"
   }
 }
