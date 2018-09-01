@@ -54,11 +54,13 @@
 		<string>Raleway-Regular.ttf</string>
 		<string>OpenSans-Regular.ttf</string>
 		<string>OpenSans-Bold.ttf</string>
+		<string>Feather.ttf</string>
+		<string>MaterialCommunityIcons.ttf</string>
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>
-    <string>remote-notification</string>
-    <string>location</string>
+		<string>remote-notification</string>
+		<string>location</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
@@ -80,16 +82,16 @@
 	<string>App requires background tracking</string>
 	<key>NSMotionUsageDescription</key>
 	<string>App requires motion tracking</string>
-  <key>LSApplicationQueriesSchemes</key>
-  <array>
-    <string>comgooglemaps</string>
-    <string>citymapper</string>
-    <string>uber</string>
-    <string>lyft</string>
-    <string>transit</string>
-    <string>waze</string>
-    <string>yandexnavi</string>
-    <string>moovit</string>
-  </array>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>comgooglemaps</string>
+		<string>citymapper</string>
+		<string>uber</string>
+		<string>lyft</string>
+		<string>transit</string>
+		<string>waze</string>
+		<string>yandexnavi</string>
+		<string>moovit</string>
+	</array>
 </dict>
 </plist>

@@ -11,23 +11,21 @@ import { translate } from 'react-i18next'
 import moment from 'moment'
 import OrderList from '../../components/OrderList'
 import LoaderOverlay from '../../components/LoaderOverlay'
-import { loadOrders } from '../../redux/Restaurant/actions'
+import RushModeAlert from './components/RushModeAlert'
+import { changeRestaurant, loadOrders } from '../../redux/Restaurant/actions'
 
 class DashboardPage extends Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-    }
-  }
-
   componentDidMount() {
     const { restaurant } = this.props.navigation.state.params
+
+    this.props.changeRestaurant(restaurant)
     this.props.loadOrders(this.props.httpClient, restaurant, this.props.date.format('YYYY-MM-DD'))
   }
 
   componentDidUpdate(prevProps) {
-    const { restaurant } = this.props.navigation.state.params
+    const { restaurant } = this.props
+
     if (prevProps.date !== this.props.date) {
       this.props.loadOrders(this.props.httpClient, restaurant, this.props.date.format('YYYY-MM-DD'))
     }
@@ -36,11 +34,11 @@ class DashboardPage extends Component {
   render() {
 
     const { navigate } = this.props.navigation
-    const { restaurant } = this.props.navigation.state.params
-    const { orders, date } = this.props
+    const { orders, date, restaurant } = this.props
 
     return (
       <Container>
+        <RushModeAlert restaurant={ restaurant } />
         <Content style={ styles.content }>
           <View style={ styles.datePicker }>
             <Grid>
@@ -66,6 +64,8 @@ class DashboardPage extends Component {
   }
 }
 
+//
+
 const styles = StyleSheet.create({
   datePicker: {
     padding: 20
@@ -85,12 +85,14 @@ function mapStateToProps(state) {
     httpClient: state.app.httpClient,
     loading: state.restaurant.isFetching,
     orders: state.restaurant.orders,
-    date: state.restaurant.date
+    date: state.restaurant.date,
+    restaurant: state.restaurant.restaurant
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
+    changeRestaurant: restaurant => dispatch(changeRestaurant(restaurant)),
     loadOrders: (client, restaurant, date) => dispatch(loadOrders(client, restaurant, date)),
   }
 }

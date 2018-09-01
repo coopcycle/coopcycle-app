@@ -7,7 +7,6 @@ import { primaryColor,  whiteColor, fontTitleName } from '../../styles/common'
 import navigation from '..'
 import HomeTab from './HomeTab'
 import HeaderButton from '../../components/HeaderButton'
-import RestaurantStatusButton from '../../components/RestaurantStatusButton'
 
 const defaultNavigationOptions = {
   headerStyle: {
@@ -35,8 +34,9 @@ const homeIconHeaderLeft = navigation => {
 }
 
 const restaurantStatusHeaderRight = navigation => {
+  const { navigate } = navigation
   return (
-    <RestaurantStatusButton navigation={ navigation } />
+    <HeaderButton iconName="settings" onPress={ () => navigate('RestaurantSettings') } />
   )
 }
 
@@ -173,8 +173,8 @@ export default createStackNavigator({
   RestaurantDate: {
     screen: navigation.RestaurantDate,
   },
-  RestaurantStatus: {
-    screen: navigation.RestaurantStatus,
+  RestaurantSettings: {
+    screen: navigation.RestaurantSettings,
   }
 }, {
   mode: 'modal',

@@ -27,9 +27,12 @@ export const CANCEL_ORDER_REQUEST = 'CANCEL_ORDER_REQUEST'
 export const CANCEL_ORDER_SUCCESS = 'CANCEL_ORDER_SUCCESS'
 export const CANCEL_ORDER_FAILURE = 'CANCEL_ORDER_FAILURE'
 
-export const CHANGE_DATE = 'CHANGE_DATE'
+export const CHANGE_STATUS_REQUEST = 'CHANGE_STATUS_REQUEST'
+export const CHANGE_STATUS_SUCCESS = 'CHANGE_STATUS_SUCCESS'
+export const CHANGE_STATUS_FAILURE = 'CHANGE_STATUS_FAILURE'
 
-export const CHANGE_STATUS = 'CHANGE_STATUS'
+export const CHANGE_RESTAURANT = 'CHANGE_RESTAURANT'
+export const CHANGE_DATE = 'CHANGE_DATE'
 
 /*
  * Action Creators
@@ -58,9 +61,13 @@ export const cancelOrderRequest = createAction(CANCEL_ORDER_REQUEST)
 export const cancelOrderSuccess = createAction(CANCEL_ORDER_SUCCESS)
 export const cancelOrderFailure = createAction(CANCEL_ORDER_FAILURE)
 
-export const changeDate = createAction(CHANGE_DATE)
+export const changeStatusRequest = createAction(CHANGE_STATUS_REQUEST)
+export const changeStatusSuccess = createAction(CHANGE_STATUS_SUCCESS)
+export const changeStatusFailure = createAction(CHANGE_STATUS_FAILURE)
 
-export const changeStatus = createAction(CHANGE_STATUS)
+export const changeRestaurant = createAction(CHANGE_RESTAURANT)
+export const changeDate = createAction(CHANGE_DATE)
+// export const changeStatus = createAction(CHANGE_STATUS)
 
 /*
  * Thunk Creators
@@ -129,5 +136,16 @@ export function cancelOrder(client, order, reason) {
     return client.put(order['@id'] + '/cancel', { reason })
       .then(res => dispatch(cancelOrderSuccess(res)))
       .catch(e => dispatch(cancelOrderFailure(e)))
+  }
+}
+
+export function changeStatus(client, restaurant, state) {
+
+  return function (dispatch) {
+    dispatch(changeStatusRequest())
+
+    return client.put(restaurant['@id'], { state })
+      .then(res => dispatch(changeStatusSuccess(res)))
+      .catch(e => dispatch(changeStatusFailure(e)))
   }
 }

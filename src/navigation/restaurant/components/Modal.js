@@ -16,7 +16,7 @@ class Modal extends Component {
             </Button>
           </Left>
           <Body>
-            <Title>{ this.props.title }r</Title>
+            <Title>{ this.props.title }</Title>
           </Body>
           <Right />
         </Header>
