@@ -114,10 +114,16 @@ const MainNavigator = createStackNavigator({
   },
   RestaurantDashboard: {
     screen: navigation.RestaurantDashboard,
-    navigationOptions: ({ navigation }) => ({
-      title: navigation.state.params.restaurant.name,
-      headerRight: restaurantStatusHeaderRight(navigation),
-    })
+    navigationOptions: ({ navigation }) => {
+      let title = ''
+      if (navigation.state.params && navigation.state.params.restaurant) {
+        title = navigation.state.params.restaurant.name
+      }
+      return {
+        title,
+        headerRight: restaurantStatusHeaderRight(navigation),
+      }
+    }
   },
   RestaurantOrder: {
     screen: navigation.RestaurantOrder,

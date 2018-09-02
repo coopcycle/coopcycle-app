@@ -42,13 +42,11 @@ class SettingsScreen extends Component {
             { this.props.t('RESTAURANT_SETTINGS_HEADING', { name: this.props.restaurant.name }) }
           </Text>
         </View>
-        <Content>
+        <Content style={ styles.content }>
           <List>
-            <ListItem noIndent icon>
+            <ListItem icon first>
               <Left>
-                <Button style={{ backgroundColor: "#FF9501" }}>
-                  <Icon active name="flame" />
-                </Button>
+                <Icon active name="flame" />
               </Left>
               <Body>
                 <Text>{ this.props.t('RESTAURANT_SETTINGS_RUSH') }</Text>
@@ -57,6 +55,14 @@ class SettingsScreen extends Component {
                 <Switch
                   value={ this.state.restaurantState === 'rush' }
                   onValueChange={ this._onRushValueChange.bind(this) } />
+              </Right>
+            </ListItem>
+            <ListItem last>
+              <Left>
+                <Text>{ this.props.t('RESTAURANT_SETTINGS_CHANGE_RESTAURANT') }</Text>
+              </Left>
+              <Right>
+                <Icon name="arrow-forward" />
               </Right>
             </ListItem>
           </List>
@@ -68,7 +74,9 @@ class SettingsScreen extends Component {
 }
 
 const styles = StyleSheet.create({
-
+  content: {
+    paddingTop: 20
+  }
 })
 
 function mapStateToProps(state) {

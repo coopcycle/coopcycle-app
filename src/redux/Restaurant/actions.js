@@ -67,7 +67,6 @@ export const changeStatusFailure = createAction(CHANGE_STATUS_FAILURE)
 
 export const changeRestaurant = createAction(CHANGE_RESTAURANT)
 export const changeDate = createAction(CHANGE_DATE)
-// export const changeStatus = createAction(CHANGE_STATUS)
 
 /*
  * Thunk Creators

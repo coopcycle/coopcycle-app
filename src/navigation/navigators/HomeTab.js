@@ -77,7 +77,7 @@ TabNavigator.navigationOptions = ({ navigation }) => {
     if (user.hasRole('ROLE_RESTAURANT')) {
       headerRight = (
         <HeaderButton iconName="restaurant"
-          onPress={ () => navigation.navigate('RestaurantList') } />
+          onPress={ () => navigation.navigate('RestaurantDashboard') } />
       )
     }
 

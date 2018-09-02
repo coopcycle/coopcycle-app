@@ -7,11 +7,13 @@ import {
 } from 'native-base'
 import { connect } from 'react-redux'
 import { translate } from 'react-i18next'
+import _ from 'lodash'
 
 import LoginForm from '../components/LoginForm'
 import RegisterForm from '../components/RegisterForm'
 import Settings from '../Settings'
 import { login } from '../redux/App/actions'
+import { loadMyRestaurants } from '../redux/Restaurant/actions'
 
 class AccountPage extends Component {
 
@@ -23,6 +25,22 @@ class AccountPage extends Component {
       isAuthenticated: this.props.user.isAuthenticated(),
       formToDisplay: 'login',
     };
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { navigate } = this.props.navigation
+
+    if (this.props.restaurants !== prevProps.restaurants) {
+      this.setState({
+        isAuthenticated: this.props.user.isAuthenticated()
+      })
+      navigate({
+        routeName: 'Home',
+        key: 'Home',
+        params: {}
+      })
+
+    }
   }
 
   async resetServer() {
@@ -69,13 +87,18 @@ class AccountPage extends Component {
 
     this.props.login(user)
 
-    this.setState({ isAuthenticated: this.props.user.isAuthenticated() })
-
-    navigate({
-      routeName: 'Home',
-      key: 'Home',
-      params: {}
-    })
+    if (user.hasRole('ROLE_RESTAURANT')) {
+      this.props.loadMyRestaurants(this.props.httpClient)
+    } else {
+      this.setState({
+        isAuthenticated: this.props.user.isAuthenticated()
+      })
+      navigate({
+        routeName: 'Home',
+        key: 'Home',
+        params: {}
+      })
+    }
   }
 
   onLoginFail(message) {
@@ -102,7 +125,7 @@ class AccountPage extends Component {
   }
 
   renderLoader() {
-    if (this.state.loading) {
+    if (this.state.loading || this.props.isLoadingRestaurants) {
       return (
         <View style={ styles.loader }>
           <ActivityIndicator
@@ -257,13 +280,16 @@ function mapStateToProps(state) {
   return {
     baseURL: state.app.baseURL,
     user: state.app.user,
-    httpClient: state.app.httpClient
+    httpClient: state.app.httpClient,
+    isLoadingRestaurants: state.restaurant.isFetching,
+    restaurants: state.restaurant.myRestaurants,
   }
 }
 
 function mapDispatchToProps (dispatch) {
   return {
     login: user => dispatch(login(user)),
+    loadMyRestaurants: client => dispatch(loadMyRestaurants(client)),
   }
 }
 

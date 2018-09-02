@@ -12,22 +12,29 @@ import moment from 'moment'
 import OrderList from '../../components/OrderList'
 import LoaderOverlay from '../../components/LoaderOverlay'
 import RushModeAlert from './components/RushModeAlert'
-import { changeRestaurant, loadOrders } from '../../redux/Restaurant/actions'
+import { loadOrders } from '../../redux/Restaurant/actions'
 
 class DashboardPage extends Component {
 
   componentDidMount() {
-    const { restaurant } = this.props.navigation.state.params
 
-    this.props.changeRestaurant(restaurant)
-    this.props.loadOrders(this.props.httpClient, restaurant, this.props.date.format('YYYY-MM-DD'))
+    // This is needed to display the title
+    this.props.navigation.setParams({ restaurant: this.props.restaurant })
+
+    this.props.loadOrders(
+      this.props.httpClient,
+      this.props.restaurant,
+      this.props.date.format('YYYY-MM-DD')
+    )
   }
 
   componentDidUpdate(prevProps) {
-    const { restaurant } = this.props
-
     if (prevProps.date !== this.props.date) {
-      this.props.loadOrders(this.props.httpClient, restaurant, this.props.date.format('YYYY-MM-DD'))
+      this.props.loadOrders(
+        this.props.httpClient,
+        this.props.restaurant,
+        this.props.date.format('YYYY-MM-DD')
+      )
     }
   }
 
@@ -64,8 +71,6 @@ class DashboardPage extends Component {
   }
 }
 
-//
-
 const styles = StyleSheet.create({
   datePicker: {
     padding: 20
@@ -92,7 +97,6 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    changeRestaurant: restaurant => dispatch(changeRestaurant(restaurant)),
     loadOrders: (client, restaurant, date) => dispatch(loadOrders(client, restaurant, date)),
   }
 }

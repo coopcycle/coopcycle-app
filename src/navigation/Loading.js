@@ -2,11 +2,13 @@ import React, { Component } from 'react'
 import { ActivityIndicator, StyleSheet, View } from 'react-native'
 import { connect } from 'react-redux'
 import { translate } from 'react-i18next'
+import _ from 'lodash'
 
 import Settings from '../Settings'
 import API from '../API'
 import AppUser from '../AppUser'
 import { bootstrap } from '../redux/App/actions'
+import { loadMyRestaurants } from '../redux/Restaurant/actions'
 
 class Loading extends Component {
 
@@ -14,21 +16,27 @@ class Loading extends Component {
     super(props)
   }
 
-  navigateToHome(user) {
+  navigateToHome(httpClient, user) {
     if (user && user.isAuthenticated()) {
       if (user.hasRole('ROLE_COURIER')) {
         return this.props.navigation.navigate('Courier')
       }
       if (user.hasRole('ROLE_RESTAURANT')) {
-        return this.props.navigation.navigate('RestaurantList')
+        this.props.loadMyRestaurants(httpClient)
       }
+    } else {
+      this.props.navigation.navigate({
+        routeName: 'Home',
+        key: 'Home',
+        params: {}
+      })
     }
+  }
 
-    this.props.navigation.navigate({
-      routeName: 'Home',
-      key: 'Home',
-      params: {}
-    })
+  componentDidUpdate(prevProps) {
+    if (prevProps.restaurants !== this.props.restaurants) {
+      this.props.navigation.navigate('RestaurantDashboard')
+    }
   }
 
   async componentDidMount() {
@@ -43,7 +51,7 @@ class Loading extends Component {
       this.props.bootstrap(baseURL, user)
 
       if (!user.isAuthenticated()) {
-        return this.navigateToHome()
+        return this.navigateToHome(httpClient)
       }
 
       const httpClient = API.createClient(baseURL, user)
@@ -51,11 +59,11 @@ class Loading extends Component {
       // Make sure the token is still valid
       // If not, logout user
       httpClient.checkToken()
-        .then(() => this.navigateToHome(user))
+        .then(() => this.navigateToHome(httpClient, user))
         .catch(e => {
           user
             .logout()
-            .then(() => this.navigateToHome())
+            .then(() => this.navigateToHome(httpClient))
         })
 
     } else {
@@ -81,12 +89,15 @@ const styles = StyleSheet.create({
 })
 
 function mapStateToProps(state) {
-  return {}
+  return {
+    restaurants: state.restaurant.myRestaurants,
+  }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     bootstrap: (baseURL, user) => dispatch(bootstrap(baseURL, user)),
+    loadMyRestaurants: client => dispatch(loadMyRestaurants(client)),
   }
 }
 

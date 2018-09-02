@@ -23,7 +23,9 @@ import {
   CHANGE_RESTAURANT,
   CHANGE_DATE,
 } from './actions'
+
 import moment from 'moment'
+import _ from 'lodash'
 
 const initialState = {
   fetchError: null,  // Error object describing the error
@@ -122,7 +124,10 @@ export default (state = initialState, action = {}) => {
         ...state,
         fetchError: false,
         isFetching: false,
-        myRestaurants: action.payload
+        myRestaurants: action.payload,
+        // We select by default the first restaurant from the list
+        // Most of the time, users will own only one restaurant
+        restaurant: _.first(action.payload),
       }
 
     case CHANGE_STATUS_SUCCESS:
