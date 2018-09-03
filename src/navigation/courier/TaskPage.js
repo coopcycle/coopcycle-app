@@ -10,6 +10,7 @@ import { translate } from 'react-i18next'
 import { localeDetector } from '../../i18n'
 import { phonecall } from 'react-native-communications'
 import { showLocation } from 'react-native-map-link'
+import _ from 'lodash'
 
 import { greenColor, greyColor, redColor } from "../../styles/common"
 import { selectIsTasksLoading, selectTasksList, markTaskDone, markTaskFailed } from "../../redux/Courier"
