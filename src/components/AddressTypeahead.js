@@ -90,13 +90,8 @@ class AddressTypeahead extends Component {
           // available options for GoogleReverseGeocoding API : https://developers.google.com/maps/documentation/geocoding/intro
           region: Settings.get('country')
         }}
-        GooglePlacesSearchQuery={{
-          // available options for GooglePlacesSearch API : https://developers.google.com/places/web-service/search
-          rankby: 'distance',
-          types: 'food',
-        }}
         // filter the reverse geocoding results by types - ['locality', 'administrative_area_level_3'] if you want to display only cities
-        filterReverseGeocodingByTypes={['locality', 'administrative_area_level_3']} />
+        filterReverseGeocodingByTypes={['street_address']} />
     );
   }
 }
