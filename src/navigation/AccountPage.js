@@ -183,7 +183,7 @@ class AccountPage extends Component {
               </Right>
             </ListItem>
           </List>
-          <View style={{ paddingHorizontal: 10, marginTop: 40 }}>
+          <View style={{ paddingHorizontal: 10, marginTop: 40, marginBottom: 60 }}>
             <Button block danger onPress={ () => this.logout() }>
               <Text>{this.props.t('SIGN_OUT')}</Text>
             </Button>
