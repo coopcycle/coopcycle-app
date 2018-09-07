@@ -20,9 +20,14 @@ class Loading extends Component {
     if (user && user.isAuthenticated()) {
       if (user.hasRole('ROLE_COURIER')) {
         return this.props.navigation.navigate('Courier')
-      }
-      if (user.hasRole('ROLE_RESTAURANT')) {
+      } else if (user.hasRole('ROLE_RESTAURANT')) {
         this.props.loadMyRestaurants(httpClient)
+      } else {
+        this.props.navigation.navigate({
+          routeName: 'Home',
+          key: 'Home',
+          params: {}
+        })
       }
     } else {
       this.props.navigation.navigate({
