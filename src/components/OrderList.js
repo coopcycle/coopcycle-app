@@ -65,13 +65,14 @@ class OrderList extends Component {
 
     let newOrders = ordersByState.hasOwnProperty('new') ? ordersByState['new'] : []
     let acceptedOrders = ordersByState.hasOwnProperty('accepted') ? ordersByState['accepted'] : []
+    let fulfilledOrders = ordersByState.hasOwnProperty('fulfilled') ? ordersByState['fulfilled'] : []
 
     let refusedOrders = ordersByState.hasOwnProperty('refused') ? ordersByState['refused'] : []
     let cancelledOrders = ordersByState.hasOwnProperty('cancelled') ? ordersByState['cancelled'] : []
     let allCancelledOrders = cancelledOrders.concat(refusedOrders)
 
-    newOrders = _.sortBy(newOrders, [ order => moment(order.shippedAt) ])
-    acceptedOrders = _.sortBy(acceptedOrders, [ order => moment(order.shippedAt) ])
+    newOrders = _.sortBy(newOrders, [ order => moment(order.preparationExpectedAt) ])
+    acceptedOrders = _.sortBy(acceptedOrders, [ order => moment(order.preparationExpectedAt) ])
     allCancelledOrders = _.sortBy(allCancelledOrders, [ order => moment(order.shippedAt) ])
 
     return (
@@ -90,6 +91,10 @@ class OrderList extends Component {
           {
             title: this.props.t('RESTAURANT_ORDER_LIST_CANCELLED_ORDERS', { count: allCancelledOrders.length }),
             data: allCancelledOrders
+          },
+          {
+            title: this.props.t('RESTAURANT_ORDER_LIST_FULFILLED_ORDERS', { count: fulfilledOrders.length }),
+            data: fulfilledOrders
           },
         ]}
         renderSectionHeader={ ({ section: { title } } ) => (
