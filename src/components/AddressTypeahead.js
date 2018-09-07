@@ -68,15 +68,13 @@ class AddressTypeahead extends Component {
         placeholder={ this.props.t('ENTER_ADDRESS') }
         minLength={ 2 } // minimum length of text to search
         autoFocus={ false }
-        listViewDisplayed="auto" // true/false/undefined
+        // listViewDisplayed = auto does not hide the results when pressed
+        listViewDisplayed={ false }
         fetchDetails={ true }
         // 'details' is provided when fetchDetails = true
         onPress={(data, details = null) => {
           const address = this.createAddress(details)
           this.props.onPress(address);
-        }}
-        getDefaultValue={() => {
-          return ''; // text input default value
         }}
         query={{
           // available options: https://developers.google.com/places/web-service/autocomplete
