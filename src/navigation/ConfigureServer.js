@@ -12,6 +12,7 @@ import {
   Card, CardItem,
   Toast
 } from 'native-base'
+import { scale, verticalScale } from 'react-native-size-matters'
 import { connect } from 'react-redux'
 import { translate } from 'react-i18next'
 
@@ -120,7 +121,7 @@ class ConfigureServer extends Component {
           <Right />
         </Header>
         <Content>
-          <View style={{ marginHorizontal: 10, marginTop: 20 }}>
+          <View style={{ marginHorizontal: scale(10), marginTop: verticalScale(20) }}>
             <Card>
               <CardItem>
                 <Body>
@@ -131,7 +132,7 @@ class ConfigureServer extends Component {
               </CardItem>
             </Card>
           </View>
-          <Form style={{ marginVertical: 30 }}>
+          <Form style={{ marginVertical: verticalScale(30) }}>
             <Item stackedLabel last { ...itemProps }>
               <Label>{this.props.t('SERVER_URL')}</Label>
               <Input
@@ -142,7 +143,7 @@ class ConfigureServer extends Component {
                 onChangeText={(text) => this.setState({ text })} />
             </Item>
           </Form>
-          <View style={{ paddingHorizontal: 10 }}>
+          <View style={{ paddingHorizontal: scale(10) }}>
             <Button block onPress={ this.handleForm }>
               <Text>{this.props.t('SUBMIT')}</Text>
             </Button>

@@ -10,6 +10,7 @@ import {
   Left, Right, Body,
   Text, Icon,
 } from 'native-base'
+import { scale, verticalScale, moderateScale } from 'react-native-size-matters'
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import { translate } from 'react-i18next'
 
@@ -19,12 +20,12 @@ const styles = StyleSheet.create({
   },
   restaurantTitle: {
     fontWeight: 'bold',
-    fontSize: 18,
-    marginBottom: 5
+    fontSize: scale(18),
+    marginBottom: verticalScale(5)
   },
   restaurantText: {
     color: '#8a8a8a',
-    fontSize: 14
+    fontSize: scale(14)
   },
   content: {
     backgroundColor: '#fff'
@@ -37,7 +38,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent:'center',
-    marginBottom: 5,
+    marginBottom: verticalScale(5),
   }
 });
 
@@ -54,7 +55,7 @@ export class Home extends Component {
                   <Icon name="restaurant" style={{ color: '#e4022d' }} />
                 </View>
               </Col>
-              <Col size={ 75 } style={{ padding: 20 }}>
+              <Col size={ 75 } style={{ padding: moderateScale(20) }}>
                 <Text style={styles.restaurantTitle}>{this.props.t('FIND_RESTAURANT')}</Text>
                 <Text style={styles.restaurantText}>{this.props.t('SEARCH_NEARBY')}</Text>
               </Col>
@@ -62,9 +63,9 @@ export class Home extends Component {
           </View>
           <View style={ styles.wrapper }>
             <Image
-              style={{ width: width, height: (width / 3.58) }}
+              style={{ width: scale(width), height: verticalScale(width / 3.58) }}
               source={require('../assets/images/home-bg.png')} />
-            <Grid style={{ paddingHorizontal: 20, marginTop: 20 }}>
+            <Grid style={{ paddingHorizontal: scale(20), marginTop: verticalScale(20) }}>
               <Row style={ styles.disclaimerRow }>
                 <Text style={{ fontWeight: 'bold' }}>{`${this.props.t('WELCOME')} !`}</Text>
               </Row>

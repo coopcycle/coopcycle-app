@@ -29,6 +29,7 @@
     "react-native-modal-selector": "^0.0.28",
     "react-native-open-settings": "^1.0.1",
     "react-native-pin-screen": "git+https://git@github.com/coopcycle/react-native-pin-screen.git#1.0.1",
+    "react-native-size-matters": "^0.1.3",
     "react-native-swipeout": "^2.3.6",
     "react-navigation": "^2.12.1",
     "react-redux": "^5.0.7",

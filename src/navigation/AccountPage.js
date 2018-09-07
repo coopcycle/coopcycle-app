@@ -5,6 +5,7 @@ import {
   Left, Right, Body,
   List, ListItem, InputGroup, Input, Icon, Text, Picker, Button
 } from 'native-base'
+import { scale, verticalScale, moderateScale } from 'react-native-size-matters'
 import { connect } from 'react-redux'
 import { translate } from 'react-i18next'
 import _ from 'lodash'
@@ -107,7 +108,7 @@ class AccountPage extends Component {
 
   renderServer() {
     return (
-      <View style={{ marginBottom: 15 }}>
+      <View style={{ marginBottom: verticalScale(15) }}>
         <Text style={{ textAlign: 'center' }}>
           {
             this.props.baseURL
@@ -159,9 +160,9 @@ class AccountPage extends Component {
       <Container>
         <Content style={ styles.content }>
           { this.renderServer() }
-          <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', marginBottom: 15 }}>
+          <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', marginBottom: verticalScale(15) }}>
             <Icon name="person" />
-            <Text style={{ textAlign: 'center', fontWeight: 'bold', fontSize: 18 }}>
+            <Text style={{ textAlign: 'center', fontWeight: 'bold', fontSize: scale(18) }}>
               {`${this.props.t('HELLO')} ${ this.props.user.username }`}
             </Text>
           </View>
@@ -191,7 +192,7 @@ class AccountPage extends Component {
               </Right>
             </ListItem>
           </List>
-          <View style={{ paddingHorizontal: 10, marginTop: 40, marginBottom: 60 }}>
+          <View style={{ paddingHorizontal: moderateScale(10), marginTop: verticalScale(40), marginBottom: verticalScale(60) }}>
             <Button block danger onPress={ () => this.logout() }>
               <Text>{this.props.t('SIGN_OUT')}</Text>
             </Button>
@@ -253,7 +254,7 @@ class AccountPage extends Component {
           { this.renderServer() }
           { this.renderMessage() }
           { this.renderForm() }
-          <View style={{ paddingHorizontal: 10, marginTop: 20 }}>
+          <View style={{ paddingHorizontal: moderateScale(10), marginTop: verticalScale(20) }}>
             <Button block onPress={() => this.setState({ formToDisplay: alternateForm, message: '' })}>
               <Text>{this.props.t(btnLabel)}</Text>
             </Button>
@@ -270,7 +271,7 @@ class AccountPage extends Component {
 const styles = StyleSheet.create({
   content: {
     backgroundColor: '#fff',
-    paddingTop: 30
+    paddingTop: moderateScale(30)
   },
   loader: {
     ...StyleSheet.absoluteFillObject,
@@ -280,9 +281,10 @@ const styles = StyleSheet.create({
   },
   message: {
     alignItems: "center",
-    padding: 20
+    padding: moderateScale(20)
   }
 });
+
 
 function mapStateToProps(state) {
   return {

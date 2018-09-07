@@ -1,4 +1,5 @@
 // Source file for common CSS
+import { scale } from 'react-native-size-matters'
 
 let primaryColor = '#e4022d',
     whiteColor = '#fff',
@@ -9,9 +10,9 @@ let primaryColor = '#e4022d',
     redColor = '#E74C3C',
     orangeColor = '#d35400',
     fontTitleName = 'Raleway-Regular',
-    dateSelectHeaderHeight = 40,
-    websocketWarningHeight = 40,
-    headerFontSize = 18
+    dateSelectHeaderHeight = scale(40),
+    websocketWarningHeight = scale(40),
+    headerFontSize = scale(18)
 
 export {
   orangeColor,
