@@ -39,7 +39,7 @@ class ConfigureServer extends Component {
     this.setState({ loading: true, serverError: false })
 
     API.checkServer(server)
-      .then(baseURL => {
+      .then(baseURL =>
 
         Settings
           .saveServer(baseURL)
@@ -52,7 +52,7 @@ class ConfigureServer extends Component {
             params: { baseURL }
           }))
 
-      })
+      )
       .catch((err) => {
 
         setTimeout(() => {
