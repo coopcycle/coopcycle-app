@@ -3,9 +3,11 @@ import { Animated, StyleSheet, View } from 'react-native'
 import { Text, Button, Icon, Footer } from 'native-base'
 import { Col, Row, Grid } from 'react-native-easy-grid'
 import moment from 'moment/min/moment-with-locales'
+import { connect } from 'react-redux'
 import { translate } from 'react-i18next'
-import { localeDetector } from '../i18n'
-import { formatPrice } from '../Cart'
+
+import { localeDetector } from '../../../i18n'
+import { formatPrice } from '../../../Cart'
 
 moment.locale(localeDetector())
 
@@ -45,6 +47,12 @@ class CartFooter extends Component {
     super(props)
     this.state = {
       opacityAnim: new Animated.Value(1)
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.cart.total !== prevProps.cart.total) {
+      this.animate()
     }
   }
 
@@ -95,7 +103,7 @@ class CartFooter extends Component {
   renderSummary() {
 
     const { opacityAnim } = this.state
-    const { cart } = this.props
+    const { cart, date } = this.props
 
     return (
       <View style={ styles.cartSummary }>
@@ -105,7 +113,7 @@ class CartFooter extends Component {
           </Text>
         </Animated.View>
         <Text style={[ styles.cartSummaryText, styles.cartSummarySeparator ]}>|</Text>
-        <Text style={[ styles.cartSummaryText ]}>{ moment(cart.deliveryDate).format('ddd LT') }</Text>
+        <Text style={[ styles.cartSummaryText ]}>{ moment(date).format('ddd LT') }</Text>
       </View>
     )
   }
@@ -133,4 +141,11 @@ class CartFooter extends Component {
   }
 }
 
-export default translate(['common'], { withRef: true })(CartFooter)
+function mapStateToProps(state) {
+  return {
+    cart: state.checkout.cart,
+    date: state.checkout.date,
+  }
+}
+
+export default connect(mapStateToProps)(translate()(CartFooter))

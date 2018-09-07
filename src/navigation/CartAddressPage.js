@@ -1,9 +1,5 @@
 import React, { Component } from 'react';
-import {
-  StyleSheet,
-  View,
-  ActivityIndicator,
-} from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import {
   Badge,
   Container,
@@ -13,7 +9,10 @@ import {
 import MapView from 'react-native-maps'
 import { connect } from 'react-redux'
 import { translate } from 'react-i18next'
+
 import DeliveryAddressForm from '../components/DeliveryAddressForm'
+import LoaderOverlay from '../components/LoaderOverlay'
+import { setAddressResource } from '../redux/Checkout/actions'
 
 class CartAddressPage extends Component {
 
@@ -23,13 +22,8 @@ class CartAddressPage extends Component {
   constructor(props) {
     super(props);
 
-    const { deliveryAddress } = this.props.navigation.state.params
-
     this.state = {
-      deliveryAddresses: [],
-      deliveryAddress,
       loading: false,
-      loaded: false,
       errors: []
     };
   }
@@ -41,24 +35,20 @@ class CartAddressPage extends Component {
   createAddress() {
 
     const { navigate } = this.props.navigation
-    const { cart } = this.props.navigation.state.params
+
+    const { deliveryAddress } = this.props
+    Object.assign(deliveryAddress, this.deliveryAddressForm.getWrappedInstance().createDeliveryAddress())
 
     this.setState({ loading: true })
 
-    const { deliveryAddress } = this.state
-    Object.assign(deliveryAddress, this.deliveryAddressForm.getWrappedInstance().createDeliveryAddress())
-
-    this.props.httpClient.post('/api/me/addresses', deliveryAddress)
+    this.props.httpClient
+      .post('/api/me/addresses', deliveryAddress)
       .then(data => {
 
-        cart.setDeliveryAddress(data)
+        this.setState({ loading: false })
+        this.props.setAddress(data)
 
-        this.setState({
-          deliveryAddress: data,
-          loading: false,
-        })
-
-        navigate('CreditCard', { cart, deliveryAddress: data })
+        navigate('CreditCard')
       })
       .catch(err => {
         if (err.hasOwnProperty('@type') && err['@type'] === 'ConstraintViolationList') {
@@ -71,7 +61,8 @@ class CartAddressPage extends Component {
 
   render() {
 
-    const { deliveryAddress, errors } = this.state
+    const { errors } = this.state
+    const { deliveryAddress } = this.props
     const markers = [{
       key: 'deliveryAddress',
       identifier: 'deliveryAddress',
@@ -107,14 +98,8 @@ class CartAddressPage extends Component {
               <Text>{this.props.t('CONTINUE')}</Text>
             </Button>
           </View>
-          <View style={styles.loader}>
-            <ActivityIndicator
-              animating={this.state.loading}
-              size="large"
-              color="#0000ff"
-            />
-          </View>
         </Content>
+        <LoaderOverlay loading={ this.state.loading } />
       </Container>
     );
   }
@@ -134,8 +119,15 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
   return {
-    httpClient: state.app.httpClient
+    httpClient: state.app.httpClient,
+    deliveryAddress: state.checkout.address
   }
 }
 
-module.exports = connect(mapStateToProps)(translate()(CartAddressPage))
+function mapDispatchToProps(dispatch) {
+  return {
+    setAddress: address => dispatch(setAddressResource(address)),
+  }
+}
+
+module.exports = connect(mapStateToProps, mapDispatchToProps)(translate()(CartAddressPage))

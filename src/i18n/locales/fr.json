@@ -142,6 +142,10 @@
     "RESTAURANT_SETTINGS_RUSH": "Passer en mode rush",
     "RESTAURANT_SETTINGS_CHANGE_RESTAURANT": "Changer de restaurant",
     "RESTAURANT_SETTINGS_HEADING": "Réglages du restaurant {{- name}}",
-    "RESTAURANT_ALERT_RUSH_MODE_ON": "Le mode rush est activé"
+    "RESTAURANT_ALERT_RUSH_MODE_ON": "Le mode rush est activé",
+    "CHECKOUT_PRODUCT_OPTIONS_TITLE": "Choix des options",
+    "CHECKOUT_PRODUCT_OPTIONS_DISCLAIMER": "Choisissez les options pour le produit {{name}}",
+    "CHECKOUT_LOGIN_TITLE": "Authentification",
+    "CHECKOUT_LOGIN_DISCLAIMER": "Veuillez vous indentifier pour poursuivre"
   }
 }

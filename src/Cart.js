@@ -2,10 +2,14 @@ import _ from 'lodash';
 import moment from 'moment'
 
 class CartItem {
-  constructor(cart, menuItem) {
+  constructor(cart, menuItem, options = [], quantity = 1) {
     this.cart = cart;
     this.menuItem = menuItem;
-    this.quantity = 1;
+    this.options = options;
+    this.quantity = quantity;
+  }
+  getCart() {
+    return this.cart
   }
   decrement() {
     if (this.quantity > 0) {
@@ -33,11 +37,22 @@ class CartItem {
   get name() {
     return this.menuItem.name
   }
+  clone() {
+    return new CartItem(this.cart, this.menuItem, this.options, this.quantity);
+  }
   toJSON() {
-    return {
+    let payload = {
       product: this.menuItem['identifier'],
       quantity: this.quantity
     }
+    if (this.options.length > 0) {
+      payload = {
+        ...payload,
+        options: _.map(this.options, option => option.identifier)
+      }
+    }
+
+    return payload
   }
 }
 
@@ -52,10 +67,10 @@ class Cart {
   setDeliveryDate(deliveryDate) {
     this.deliveryDate = deliveryDate
   }
-  addMenuItem(menuItem) {
+  addMenuItem(menuItem, options = []) {
     let item = _.find(this.items, item => item.matches(menuItem))
     if (!item) {
-      item = new CartItem(this, menuItem)
+      item = new CartItem(this, menuItem, options)
       this.items.push(item)
     } else {
       item.increment()
@@ -82,15 +97,36 @@ class Cart {
     return _.reduce(this.items, function(memo, item) { return memo + item.quantity; }, 0);
   }
   clone() {
-    return new Cart(this.restaurant, this.items.slice());
+    return new Cart(this.restaurant, this.items.slice(0));
   }
   toJSON() {
-    return {
-      restaurant: this.restaurant['@id'],
-      shippingAddress: this.deliveryAddress['@id'],
-      shippedAt: moment(this.deliveryDate).format('YYYY-MM-DD HH:mm:ss'),
+
+    let payload = {
       items: _.map(this.items, item => item.toJSON())
     }
+
+    if (this.restaurant) {
+      payload = {
+        ...payload,
+        restaurant: this.restaurant['@id'],
+      }
+    }
+
+    if (this.deliveryAddress) {
+      payload = {
+        ...payload,
+        shippingAddress: this.deliveryAddress['@id'],
+      }
+    }
+
+    if (this.deliveryDate) {
+      payload = {
+        ...payload,
+        shippedAt: moment(this.deliveryDate).format('YYYY-MM-DD HH:mm:ss'),
+      }
+    }
+
+    return payload
   }
 }
 
