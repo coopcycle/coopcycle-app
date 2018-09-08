@@ -162,6 +162,7 @@ class Settings {
           return serverSettings
         })
         .then(settings => resolve(settings))
+        .catch(reject)
     })
   }
 

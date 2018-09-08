@@ -51,7 +51,12 @@ class Loading extends Component {
     if (baseURL) {
 
       const user = await AppUser.load()
-      const settings = await Settings.synchronize(baseURL)
+
+      try {
+        const settings = await Settings.synchronize(baseURL)
+      } catch (error) {
+        return this.navigateToHome(httpClient);
+      }
 
       this.props.bootstrap(baseURL, user)
 
