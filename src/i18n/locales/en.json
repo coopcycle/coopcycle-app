@@ -142,6 +142,11 @@
     "RESTAURANT_SETTINGS_RUSH": "Switch to rush mode",
     "RESTAURANT_SETTINGS_CHANGE_RESTAURANT": "Change restaurant",
     "RESTAURANT_SETTINGS_HEADING": "Settings for restaurant {{- name}}",
-    "RESTAURANT_ALERT_RUSH_MODE_ON": "Rush mode is activated"
+    "RESTAURANT_ALERT_RUSH_MODE_ON": "Rush mode is activated",
+    "CHECKOUT_PRODUCT_OPTIONS_TITLE": "Choose options",
+    "CHECKOUT_PRODUCT_OPTIONS_DISCLAIMER": "Please choose options for product {{name}}",
+    "CHECKOUT_LOGIN_TITLE": "Authentication",
+    "CHECKOUT_LOGIN_DISCLAIMER": "Please authenticate to continue",
+    "ADD_TO_CART": "Add to cart"
   }
 }

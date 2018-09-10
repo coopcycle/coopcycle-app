@@ -181,7 +181,16 @@ export default createStackNavigator({
   },
   RestaurantSettings: {
     screen: navigation.RestaurantSettings,
-  }
+  },
+  CheckoutProductOptions: {
+    screen: navigation.CheckoutProductOptions,
+  },
+  CheckoutEditItem: {
+    screen: navigation.CheckoutEditItem,
+  },
+  CheckoutLogin: {
+    screen: navigation.CheckoutLogin,
+  },
 }, {
   mode: 'modal',
   headerMode: 'none',

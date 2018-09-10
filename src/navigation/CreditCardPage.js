@@ -12,13 +12,17 @@ import {
   Button, Icon, List, ListItem, Text, Radio
 } from 'native-base';
 import Stripe, { PaymentCardTextField } from 'tipsi-stripe';
-import { NavigationActions } from 'react-navigation'
+import { StackActions, NavigationActions } from 'react-navigation'
 import { connect } from 'react-redux'
 import { translate } from 'react-i18next'
+
+import LoaderOverlay from '../components/LoaderOverlay'
+import { clear } from '../redux/Checkout/actions'
 import Settings from '../Settings'
 import { formatPrice } from '../Cart'
 
 class CreditCardPage extends Component {
+
   constructor(props) {
     super(props);
     this.state = {
@@ -27,34 +31,48 @@ class CreditCardPage extends Component {
       params: {}
     };
   }
+
   componentDidMount() {
     Stripe.init({
       publishableKey: Settings.get('stripe_publishable_key'),
     });
   }
+
   _onClick() {
 
-    const { cart } = this.props.navigation.state.params
+    const { cart } = this.props
 
     if (this.state.valid) {
+
       this.setState({ loading: true });
+
       Stripe.createTokenWithCard(this.state.params)
         .then(token => {
-          this.props.httpClient.post('/api/orders', cart.toJSON())
+
+          const newCart = cart.clone()
+          newCart.setDeliveryAddress(this.props.address)
+          newCart.setDeliveryDate(this.props.date)
+
+          this.props.httpClient
+            .post('/api/orders', newCart.toJSON())
             .then(order => {
-              return this.props.httpClient.put(order['@id'] + '/pay', {
-                stripeToken: token.tokenId
-              });
+              return this.props.httpClient
+                .put(order['@id'] + '/pay', {
+                  stripeToken: token.tokenId
+                });
             })
             .then(order => {
               this.setState({ loading: false });
-              const resetAction = NavigationActions.reset({
-                index: 0,
+
+              this.props.clear()
+
+              // @see https://reactnavigation.org/docs/en/stack-actions.html
+              const resetAction = StackActions.reset({
+                index: 2,
                 actions: [
-                  NavigationActions.navigate({
-                    routeName: 'OrderTracking',
-                    params: { order }
-                  })
+                  NavigationActions.navigate({ routeName: 'Home' }),
+                  NavigationActions.navigate({ routeName: 'AccountOrders' }),
+                  NavigationActions.navigate({ routeName: 'OrderTracking', params: { order } }),
                 ]
               })
               this.props.navigation.dispatch(resetAction)
@@ -63,29 +81,13 @@ class CreditCardPage extends Component {
         })
     }
   }
+
   render() {
     const { height, width } = Dimensions.get('window')
-    const { cart } = this.props.navigation.state.params
+    const { cart } = this.props
 
     const btnText = `Payer ${formatPrice(cart.total)} €`;
-
-    let loader = (
-      <View />
-    )
-    let btnProps = {}
-    if (this.state.loading) {
-      loader = (
-        <View style={styles.loader}>
-          <ActivityIndicator
-            animating={true}
-            size="large"
-            color="#fff"
-          />
-          <Text style={{color: '#fff'}}>{`${this.props.t('LOADING')}...`}</Text>
-        </View>
-      );
-      btnProps = { disabled: true }
-    }
+    const btnProps = this.state.loading ? { disabled: true } : {}
 
     const cardStyle =  {
       width: (width - 40),
@@ -118,7 +120,7 @@ class CreditCardPage extends Component {
               {...btnProps}><Text>{ btnText }</Text></Button>
           </Right>
         </Footer>
-        { loader }
+        <LoaderOverlay loading={ this.state.loading } />
       </Container>
     );
   }
@@ -138,8 +140,17 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
   return {
-    httpClient: state.app.httpClient
+    httpClient: state.app.httpClient,
+    cart: state.checkout.cart,
+    address: state.checkout.addressResource,
+    date: state.checkout.date,
   }
 }
 
-module.exports = connect(mapStateToProps)(translate()(CreditCardPage))
+function mapDispatchToProps(dispatch) {
+  return {
+    clear: () => dispatch(clear()),
+  }
+}
+
+module.exports = connect(mapStateToProps, mapDispatchToProps)(translate()(CreditCardPage))
