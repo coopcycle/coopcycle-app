@@ -22,7 +22,7 @@ class AccountPage extends Component {
     this.state = {
       loading: false,
       message: '',
-      isAuthenticated: this.props.user.isAuthenticated(),
+      isAuthenticated: this.props.user && this.props.user.isAuthenticated(),
       formToDisplay: 'login',
     };
   }
@@ -47,10 +47,10 @@ class AccountPage extends Component {
 
     const { navigate } = this.props.navigation
 
-    await this.props.user.logout()
+    await this.props.user && this.props.user.logout()
     await Settings.removeServer()
 
-    this.setState({ isAuthenticated: this.props.user.isAuthenticated() })
+    this.setState({ isAuthenticated: this.props.user && this.props.user.isAuthenticated() })
 
     navigate('ConfigureServer')
   }
@@ -110,15 +110,23 @@ class AccountPage extends Component {
       <View style={{ marginBottom: 15 }}>
         <Text style={{ textAlign: 'center' }}>
           {
-            [
-              this.props.t('CONNECTED_TO'),
-              ' ',
-              <Text key={3} style={{ fontWeight: 'bold' }}>{ this.props.baseURL }</Text>
-            ]
+            this.props.baseURL
+              ? [
+                this.props.t('CONNECTED_TO'),
+                ' ',
+                <Text key={3} style={{ fontWeight: 'bold' }}>{ this.props.baseURL }</Text>
+              ]
+              : null
           }
         </Text>
         <Button block transparent onPress={ this.resetServer.bind(this) }>
-          <Text>{this.props.t('CHANGE_SERVER')}</Text>
+          <Text>
+            {
+              this.props.baseURL
+                ? this.props.t('CHANGE_SERVER')
+                : this.props.t('CHOOSE_SERVER')
+            }
+          </Text>
         </Button>
       </View>
     )
