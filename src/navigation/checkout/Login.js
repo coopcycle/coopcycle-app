@@ -18,8 +18,20 @@ class Login extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      message: '',
       loading: false,
     }
+  }
+
+  onRequestStart() {
+    this.setState({
+      message: '',
+      loading: true
+    })
+  }
+
+  onRequestEnd() {
+    this.setState({ loading: false })
   }
 
   async onLoginSuccess(user) {
@@ -29,7 +41,17 @@ class Login extends Component {
   }
 
   onLoginFail(message) {
-    console.log('onLoginFail', message)
+    this.setState({ message })
+  }
+
+  renderMessage() {
+    if (this.state.message) {
+      return (
+        <View style={ styles.message }>
+          <Text style={{ textAlign: 'center' }}>{ this.state.message }</Text>
+        </View>
+      )
+    }
   }
 
   render() {
@@ -44,10 +66,11 @@ class Login extends Component {
           </Text>
         </View>
         <Content padder>
+          { this.renderMessage() }
           <LoginForm
             client={ this.props.httpClient }
-            onRequestStart={ () => this.setState({ loading: true }) }
-            onRequestEnd={ () => this.setState({ loading: false }) }
+            onRequestStart={ this.onRequestStart.bind(this) }
+            onRequestEnd={ this.onRequestEnd.bind(this) }
             onLoginSuccess={ this.onLoginSuccess.bind(this) }
             onLoginFail={ this.onLoginFail.bind(this) } />
         </Content>
@@ -58,7 +81,10 @@ class Login extends Component {
 }
 
 const styles = StyleSheet.create({
-
+  message: {
+    alignItems: 'center',
+    padding: 20
+  }
 })
 
 function mapStateToProps(state, ownProps) {
