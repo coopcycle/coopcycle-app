@@ -167,11 +167,13 @@ class TaskPage extends Component {
       })
     }
 
-    items.push({
-      iconName: 'calendar',
-      text: this.props.t('LAST_TASK_EVENT', { fromNow: moment(lastEvent.createdAt).fromNow() }),
-      onPress: () => navigate('CourierTaskHistory', { task })
-    })
+    if (lastEvent && lastEvent.createdAt) {
+      items.push({
+        iconName: 'calendar',
+        text: this.props.t('LAST_TASK_EVENT', { fromNow: moment(lastEvent.createdAt).fromNow() }),
+        onPress: () => navigate('CourierTaskHistory', { task })
+      })
+    }
 
     return (
       <FlatList
