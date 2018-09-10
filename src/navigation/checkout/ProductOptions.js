@@ -63,7 +63,7 @@ class ProductOptions extends Component {
         <Footer>
           <FooterTab>
             <Button full onPress={ () => this._onPressAddToCart() }>
-              <Text>Ajouter au panier</Text>
+              <Text>{ this.props.t('ADD_TO_CART') }</Text>
             </Button>
           </FooterTab>
         </Footer>

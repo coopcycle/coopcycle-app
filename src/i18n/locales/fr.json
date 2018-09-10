@@ -146,6 +146,7 @@
     "CHECKOUT_PRODUCT_OPTIONS_TITLE": "Choix des options",
     "CHECKOUT_PRODUCT_OPTIONS_DISCLAIMER": "Choisissez les options pour le produit {{name}}",
     "CHECKOUT_LOGIN_TITLE": "Authentification",
-    "CHECKOUT_LOGIN_DISCLAIMER": "Veuillez vous indentifier pour poursuivre"
+    "CHECKOUT_LOGIN_DISCLAIMER": "Veuillez vous indentifier pour poursuivre",
+    "ADD_TO_CART": "Ajouter au panier"
   }
 }

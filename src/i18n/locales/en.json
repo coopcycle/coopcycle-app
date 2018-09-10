@@ -146,6 +146,7 @@
     "CHECKOUT_PRODUCT_OPTIONS_TITLE": "Choose options",
     "CHECKOUT_PRODUCT_OPTIONS_DISCLAIMER": "Please choose options for product {{name}}",
     "CHECKOUT_LOGIN_TITLE": "Authentication",
-    "CHECKOUT_LOGIN_DISCLAIMER": "Please authenticate to continue"
+    "CHECKOUT_LOGIN_DISCLAIMER": "Please authenticate to continue",
+    "ADD_TO_CART": "Add to cart"
   }
 }
