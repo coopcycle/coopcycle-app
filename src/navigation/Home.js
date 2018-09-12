@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     fontSize: scale(14)
   },
   content: {
-    backgroundColor: '#fff'
+    backgroundColor: '#fff',
   },
   wrapper: {
     justifyContent: 'center',
@@ -63,7 +63,7 @@ export class Home extends Component {
           </View>
           <View style={ styles.wrapper }>
             <Image
-              style={{ width: scale(width), height: verticalScale(width / 3.58) }}
+              style={{ width: width, height: width / 3.58 }}
               source={require('../assets/images/home-bg.png')} />
             <Grid style={{ paddingHorizontal: scale(20), marginTop: verticalScale(20) }}>
               <Row style={ styles.disclaimerRow }>
@@ -73,9 +73,7 @@ export class Home extends Component {
                 <Text style={{ textAlign: 'center' }}>{`${this.props.t('ALPHA_DISCLAIMER')}.`}</Text>
               </Row>
               <Row style={ styles.disclaimerRow }>
-                <Text style={{ textAlign: 'center' }}>
-                  {this.props.t('UPDATE_REMINDER')}
-                </Text>
+                <Text style={{ textAlign: 'center' }}>{this.props.t('UPDATE_REMINDER')}</Text>
               </Row>
             </Grid>
           </View>

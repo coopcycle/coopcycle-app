@@ -8,7 +8,7 @@ import {
 
 import { Root, StyleProvider } from 'native-base'
 import getTheme from '../native-base-theme/components'
-import material from '../native-base-theme/variables/material'
+import theme from './theme'
 
 import moment from 'moment'
 import { NavigationActions, createSwitchNavigator } from 'react-navigation'
@@ -169,7 +169,7 @@ class App extends Component {
       <Root>
         <Provider store={ store }>
           <I18nextProvider i18n={ i18n }>
-            <StyleProvider style={ getTheme(material) }>
+            <StyleProvider style={ getTheme(theme) }>
               <RootNavigator
                 ref={ ref => { this.navigator = ref } }
                 onNavigationStateChange={ onNavigationStateChange } />
