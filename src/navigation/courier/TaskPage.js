@@ -113,8 +113,6 @@ class TaskPage extends Component {
     let address = task.address.name ? [ task.address.name, task.address.streetAddress ].join(' - ') : task.address.streetAddress
     const name = [ task.address.firstName, task.address.lastName ].filter(function (item) {return item}).join(' ')
     address = name ? [ name, address ].join(' - ') : address
-    const events = _.sortBy(task.events, [ event => moment(event.createdAt) ])
-    const lastEvent = _.last(events)
 
     const items = [
       {
@@ -167,11 +165,15 @@ class TaskPage extends Component {
       })
     }
 
-    items.push({
-      iconName: 'calendar',
-      text: this.props.t('LAST_TASK_EVENT', { fromNow: moment(lastEvent.createdAt).fromNow() }),
-      onPress: () => navigate('CourierTaskHistory', { task })
-    })
+    const events = _.sortBy(task.events, [ event => moment(event.createdAt) ])
+    if (events.length > 0) {
+      const lastEvent = _.last(events)
+      items.push({
+        iconName: 'calendar',
+        text: this.props.t('LAST_TASK_EVENT', { fromNow: moment(lastEvent.createdAt).fromNow() }),
+        onPress: () => navigate('CourierTaskHistory', { task })
+      })
+    }
 
     return (
       <FlatList
