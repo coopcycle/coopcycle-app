@@ -96,6 +96,10 @@ Client.prototype.put = function(uri, data) {
   return this.request('PUT', uri, data);
 }
 
+Client.prototype.delete = function(uri) {
+  return this.request('DELETE', uri);
+}
+
 Client.prototype.refreshToken = function() {
 
   return new Promise((resolve, reject) => {
