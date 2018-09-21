@@ -57,6 +57,14 @@ class SettingsScreen extends Component {
                   onValueChange={ this._onRushValueChange.bind(this) } />
               </Right>
             </ListItem>
+            <ListItem onPress={ () => this.props.navigation.navigate('RestaurantProducts') }>
+              <Left>
+                <Text>{ this.props.t('RESTAURANT_SETTINGS_MANAGE_PRODUCTS') }</Text>
+              </Left>
+              <Right>
+                <Icon name="arrow-forward" />
+              </Right>
+            </ListItem>
             <ListItem last>
               <Left>
                 <Text>{ this.props.t('RESTAURANT_SETTINGS_CHANGE_RESTAURANT') }</Text>

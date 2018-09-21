@@ -11,6 +11,7 @@ export default {
   RestaurantOrderCancel: require('./restaurant/OrderCancel'),
   RestaurantDate: require('./restaurant/Date'),
   RestaurantSettings: require('./restaurant/Settings'),
+  RestaurantProducts: require('./restaurant/Products'),
   CheckoutProductOptions: require('./checkout/ProductOptions'),
   CheckoutEditItem: require('./checkout/EditItem'),
   CheckoutLogin: require('./checkout/Login'),

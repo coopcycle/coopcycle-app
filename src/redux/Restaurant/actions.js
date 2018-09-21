@@ -34,6 +34,14 @@ export const CHANGE_STATUS_FAILURE = 'CHANGE_STATUS_FAILURE'
 export const CHANGE_RESTAURANT = 'CHANGE_RESTAURANT'
 export const CHANGE_DATE = 'CHANGE_DATE'
 
+export const LOAD_PRODUCTS_REQUEST = 'LOAD_PRODUCTS_REQUEST'
+export const LOAD_PRODUCTS_SUCCESS = 'LOAD_PRODUCTS_SUCCESS'
+export const LOAD_PRODUCTS_FAILURE = 'LOAD_PRODUCTS_FAILURE'
+
+export const CHANGE_PRODUCT_ENABLED_REQUEST = 'CHANGE_PRODUCT_ENABLED_REQUEST'
+export const CHANGE_PRODUCT_ENABLED_SUCCESS = 'CHANGE_PRODUCT_ENABLED_SUCCESS'
+export const CHANGE_PRODUCT_ENABLED_FAILURE = 'CHANGE_PRODUCT_ENABLED_FAILURE'
+
 /*
  * Action Creators
  */
@@ -67,6 +75,14 @@ export const changeStatusFailure = createAction(CHANGE_STATUS_FAILURE)
 
 export const changeRestaurant = createAction(CHANGE_RESTAURANT)
 export const changeDate = createAction(CHANGE_DATE)
+
+export const loadProductsRequest = createAction(LOAD_PRODUCTS_REQUEST)
+export const loadProductsSuccess = createAction(LOAD_PRODUCTS_SUCCESS)
+export const loadProductsFailure = createAction(LOAD_PRODUCTS_FAILURE)
+
+export const changeProductEnabledRequest = createAction(CHANGE_PRODUCT_ENABLED_REQUEST)
+export const changeProductEnabledSuccess = createAction(CHANGE_PRODUCT_ENABLED_SUCCESS)
+export const changeProductEnabledFailure = createAction(CHANGE_PRODUCT_ENABLED_FAILURE)
 
 /*
  * Thunk Creators
@@ -146,5 +162,27 @@ export function changeStatus(client, restaurant, state) {
     return client.put(restaurant['@id'], { state })
       .then(res => dispatch(changeStatusSuccess(res)))
       .catch(e => dispatch(changeStatusFailure(e)))
+  }
+}
+
+export function loadProducts(client, restaurant) {
+
+  return function (dispatch) {
+    dispatch(loadProductsRequest())
+
+    return client.get(`${restaurant['@id']}/products`)
+      .then(res => dispatch(loadProductsSuccess(res['hydra:member'])))
+      .catch(e => dispatch(loadProductsFailure(e)))
+  }
+}
+
+export function changeProductEnabled(client, product, enabled) {
+
+  return function (dispatch) {
+    dispatch(changeProductEnabledRequest())
+
+    return client.put(product['@id'], { enabled })
+      .then(res => dispatch(changeProductEnabledSuccess(res)))
+      .catch(e => dispatch(changeProductEnabledFailure(e)))
   }
 }
