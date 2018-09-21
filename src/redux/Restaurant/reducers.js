@@ -22,6 +22,12 @@ import {
   CHANGE_STATUS_FAILURE,
   CHANGE_RESTAURANT,
   CHANGE_DATE,
+  LOAD_PRODUCTS_REQUEST,
+  LOAD_PRODUCTS_FAILURE,
+  LOAD_PRODUCTS_SUCCESS,
+  CHANGE_PRODUCT_ENABLED_REQUEST,
+  CHANGE_PRODUCT_ENABLED_SUCCESS,
+  CHANGE_PRODUCT_ENABLED_FAILURE,
 } from './actions'
 
 import moment from 'moment'
@@ -34,7 +40,8 @@ const initialState = {
   myRestaurants: [], // Array of restaurants
   date: moment(),
   status: 'available',
-  restaurant: null
+  restaurant: null,
+  products: [],
 }
 
 const spliceOrders = (state, payload) => {
@@ -51,6 +58,20 @@ const spliceOrders = (state, payload) => {
   return state.orders
 }
 
+const spliceProducts = (state, payload) => {
+
+  const productIndex = _.findIndex(state.products, product => product['@id'] === payload['@id'])
+
+  if (-1 !== productIndex) {
+    const newProducts = state.products.slice(0)
+    newProducts.splice(productIndex, 1, Object.assign({}, payload))
+
+    return newProducts
+  }
+
+  return state.products
+}
+
 export default (state = initialState, action = {}) => {
   switch (action.type) {
     case LOAD_ORDERS_REQUEST:
@@ -60,6 +81,8 @@ export default (state = initialState, action = {}) => {
     case DELAY_ORDER_REQUEST:
     case CANCEL_ORDER_REQUEST:
     case CHANGE_STATUS_REQUEST:
+    case LOAD_PRODUCTS_REQUEST:
+    case CHANGE_PRODUCT_ENABLED_REQUEST:
       return {
         ...state,
         fetchError: false,
@@ -73,6 +96,8 @@ export default (state = initialState, action = {}) => {
     case DELAY_ORDER_FAILURE:
     case CANCEL_ORDER_FAILURE:
     case CHANGE_STATUS_FAILURE:
+    case LOAD_PRODUCTS_FAILURE:
+    case CHANGE_PRODUCT_ENABLED_FAILURE:
       return {
         ...state,
         fetchError: action.payload || action.error,
@@ -128,6 +153,22 @@ export default (state = initialState, action = {}) => {
         // We select by default the first restaurant from the list
         // Most of the time, users will own only one restaurant
         restaurant: _.first(action.payload),
+      }
+
+    case LOAD_PRODUCTS_SUCCESS:
+      return {
+        ...state,
+        fetchError: false,
+        isFetching: false,
+        products: action.payload,
+      }
+
+    case CHANGE_PRODUCT_ENABLED_SUCCESS:
+      return {
+        ...state,
+        fetchError: false,
+        isFetching: false,
+        products: spliceProducts(state, action.payload),
       }
 
     case CHANGE_STATUS_SUCCESS:

@@ -11,7 +11,7 @@ class Modal extends Component {
       <Container>
         <Header>
           <Left>
-            <Button transparent onPress={() => this.props.navigation.goBack()}>
+            <Button transparent onPress={ () => this.props.navigation.goBack(null) }>
               <Icon name="close" />
             </Button>
           </Left>

@@ -163,6 +163,26 @@ const MainNavigator = createStackNavigator({
   }
 })
 
+const RestaurantSettingsStack = createStackNavigator({
+  Home: {
+    screen: navigation.RestaurantSettings,
+    navigationOptions: ({ navigation }) => ({
+      header: null
+    })
+  },
+  RestaurantProducts: {
+    screen: navigation.RestaurantProducts,
+    navigationOptions: ({ navigation }) => ({
+      title: i18n.t('RESTAURANT_PRODUCTS'),
+    })
+  },
+}, {
+  initialRouteName: 'Home',
+  navigationOptions: {
+    ...defaultNavigationOptions
+  }
+})
+
 export default createStackNavigator({
   Main: {
     screen: MainNavigator,
@@ -180,7 +200,7 @@ export default createStackNavigator({
     screen: navigation.RestaurantDate,
   },
   RestaurantSettings: {
-    screen: navigation.RestaurantSettings,
+    screen: RestaurantSettingsStack,
   },
   CheckoutProductOptions: {
     screen: navigation.CheckoutProductOptions,
