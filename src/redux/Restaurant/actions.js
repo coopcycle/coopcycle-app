@@ -42,6 +42,14 @@ export const CHANGE_PRODUCT_ENABLED_REQUEST = 'CHANGE_PRODUCT_ENABLED_REQUEST'
 export const CHANGE_PRODUCT_ENABLED_SUCCESS = 'CHANGE_PRODUCT_ENABLED_SUCCESS'
 export const CHANGE_PRODUCT_ENABLED_FAILURE = 'CHANGE_PRODUCT_ENABLED_FAILURE'
 
+export const CLOSE_RESTAURANT_REQUEST = 'CLOSE_RESTAURANT_REQUEST'
+export const CLOSE_RESTAURANT_SUCCESS = 'CLOSE_RESTAURANT_SUCCESS'
+export const CLOSE_RESTAURANT_FAILURE = 'CLOSE_RESTAURANT_FAILURE'
+
+export const DELETE_OPENING_HOURS_SPECIFICATION_REQUEST = 'DELETE_OPENING_HOURS_SPECIFICATION_REQUEST'
+export const DELETE_OPENING_HOURS_SPECIFICATION_SUCCESS = 'DELETE_OPENING_HOURS_SPECIFICATION_SUCCESS'
+export const DELETE_OPENING_HOURS_SPECIFICATION_FAILURE = 'DELETE_OPENING_HOURS_SPECIFICATION_FAILURE'
+
 /*
  * Action Creators
  */
@@ -83,6 +91,14 @@ export const loadProductsFailure = createAction(LOAD_PRODUCTS_FAILURE)
 export const changeProductEnabledRequest = createAction(CHANGE_PRODUCT_ENABLED_REQUEST)
 export const changeProductEnabledSuccess = createAction(CHANGE_PRODUCT_ENABLED_SUCCESS)
 export const changeProductEnabledFailure = createAction(CHANGE_PRODUCT_ENABLED_FAILURE)
+
+export const closeRestaurantRequest = createAction(CLOSE_RESTAURANT_REQUEST)
+export const closeRestaurantSuccess = createAction(CLOSE_RESTAURANT_SUCCESS)
+export const closeRestaurantFailure = createAction(CLOSE_RESTAURANT_FAILURE)
+
+export const deleteOpeningHoursSpecificationRequest = createAction(DELETE_OPENING_HOURS_SPECIFICATION_REQUEST)
+export const deleteOpeningHoursSpecificationSuccess = createAction(DELETE_OPENING_HOURS_SPECIFICATION_SUCCESS)
+export const deleteOpeningHoursSpecificationFailure = createAction(DELETE_OPENING_HOURS_SPECIFICATION_FAILURE)
 
 /*
  * Thunk Creators
@@ -184,5 +200,27 @@ export function changeProductEnabled(client, product, enabled) {
     return client.put(product['@id'], { enabled })
       .then(res => dispatch(changeProductEnabledSuccess(res)))
       .catch(e => dispatch(changeProductEnabledFailure(e)))
+  }
+}
+
+export function closeRestaurant(client, restaurant) {
+
+  return function (dispatch) {
+    dispatch(closeRestaurantRequest())
+
+    return client.put(`${restaurant['@id']}/close`, {})
+      .then(res => dispatch(closeRestaurantSuccess(res)))
+      .catch(e => dispatch(closeRestaurantFailure(e)))
+  }
+}
+
+export function deleteOpeningHoursSpecification(client, openingHoursSpecification) {
+
+  return function (dispatch) {
+    dispatch(deleteOpeningHoursSpecificationRequest())
+
+    return client.delete(openingHoursSpecification['@id'])
+      .then(res => dispatch(deleteOpeningHoursSpecificationSuccess(openingHoursSpecification)))
+      .catch(e => dispatch(deleteOpeningHoursSpecificationFailure(e)))
   }
 }

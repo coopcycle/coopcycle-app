@@ -176,6 +176,12 @@ const RestaurantSettingsStack = createStackNavigator({
       title: i18n.t('RESTAURANT_PRODUCTS'),
     })
   },
+  RestaurantOpeningHours: {
+    screen: navigation.RestaurantOpeningHours,
+    navigationOptions: ({ navigation }) => ({
+      title: i18n.t('RESTAURANT_OPENING_HOURS'),
+    })
+  },
 }, {
   initialRouteName: 'Home',
   navigationOptions: {
