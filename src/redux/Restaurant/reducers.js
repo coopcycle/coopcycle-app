@@ -28,6 +28,12 @@ import {
   CHANGE_PRODUCT_ENABLED_REQUEST,
   CHANGE_PRODUCT_ENABLED_SUCCESS,
   CHANGE_PRODUCT_ENABLED_FAILURE,
+  CLOSE_RESTAURANT_REQUEST,
+  CLOSE_RESTAURANT_SUCCESS,
+  CLOSE_RESTAURANT_FAILURE,
+  DELETE_OPENING_HOURS_SPECIFICATION_REQUEST,
+  DELETE_OPENING_HOURS_SPECIFICATION_SUCCESS,
+  DELETE_OPENING_HOURS_SPECIFICATION_FAILURE,
 } from './actions'
 
 import moment from 'moment'
@@ -42,6 +48,7 @@ const initialState = {
   status: 'available',
   restaurant: null,
   products: [],
+  specialOpeningHoursSpecification: [],
 }
 
 const spliceOrders = (state, payload) => {
@@ -83,6 +90,8 @@ export default (state = initialState, action = {}) => {
     case CHANGE_STATUS_REQUEST:
     case LOAD_PRODUCTS_REQUEST:
     case CHANGE_PRODUCT_ENABLED_REQUEST:
+    case CLOSE_RESTAURANT_REQUEST:
+    case DELETE_OPENING_HOURS_SPECIFICATION_REQUEST:
       return {
         ...state,
         fetchError: false,
@@ -98,6 +107,8 @@ export default (state = initialState, action = {}) => {
     case CHANGE_STATUS_FAILURE:
     case LOAD_PRODUCTS_FAILURE:
     case CHANGE_PRODUCT_ENABLED_FAILURE:
+    case CLOSE_RESTAURANT_FAILURE:
+    case DELETE_OPENING_HOURS_SPECIFICATION_FAILURE:
       return {
         ...state,
         fetchError: action.payload || action.error,
@@ -145,6 +156,9 @@ export default (state = initialState, action = {}) => {
       }
 
     case LOAD_MY_RESTAURANTS_SUCCESS:
+
+      const restaurant = _.first(action.payload)
+
       return {
         ...state,
         fetchError: false,
@@ -152,7 +166,9 @@ export default (state = initialState, action = {}) => {
         myRestaurants: action.payload,
         // We select by default the first restaurant from the list
         // Most of the time, users will own only one restaurant
-        restaurant: _.first(action.payload),
+        restaurant,
+        specialOpeningHoursSpecification:
+          restaurant.hasOwnProperty('specialOpeningHoursSpecification') ? restaurant.specialOpeningHoursSpecification : [],
       }
 
     case LOAD_PRODUCTS_SUCCESS:
@@ -169,6 +185,30 @@ export default (state = initialState, action = {}) => {
         fetchError: false,
         isFetching: false,
         products: spliceProducts(state, action.payload),
+      }
+
+    case CLOSE_RESTAURANT_SUCCESS:
+      return {
+        ...state,
+        fetchError: false,
+        isFetching: false,
+        restaurant: action.payload,
+        specialOpeningHoursSpecification:
+          action.payload.hasOwnProperty('specialOpeningHoursSpecification') ? action.payload.specialOpeningHoursSpecification : [],
+      }
+
+    case DELETE_OPENING_HOURS_SPECIFICATION_SUCCESS:
+
+      const { specialOpeningHoursSpecification } = state
+
+      return {
+        ...state,
+        fetchError: false,
+        isFetching: false,
+        specialOpeningHoursSpecification: _.filter(
+          specialOpeningHoursSpecification,
+          openingHoursSpecification => openingHoursSpecification['@id'] !== action.payload['@id']
+        )
       }
 
     case CHANGE_STATUS_SUCCESS:

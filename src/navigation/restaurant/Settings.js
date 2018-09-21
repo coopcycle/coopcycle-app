@@ -57,18 +57,35 @@ class SettingsScreen extends Component {
                   onValueChange={ this._onRushValueChange.bind(this) } />
               </Right>
             </ListItem>
-            <ListItem onPress={ () => this.props.navigation.navigate('RestaurantProducts') }>
+            <ListItem icon onPress={ () => this.props.navigation.navigate('RestaurantProducts') }>
               <Left>
-                <Text>{ this.props.t('RESTAURANT_SETTINGS_MANAGE_PRODUCTS') }</Text>
+                <Icon active name="pricetag" />
               </Left>
+              <Body>
+                <Text>{ this.props.t('RESTAURANT_SETTINGS_MANAGE_PRODUCTS') }</Text>
+              </Body>
               <Right>
                 <Icon name="arrow-forward" />
               </Right>
             </ListItem>
-            <ListItem last>
+            <ListItem icon onPress={ () => this.props.navigation.navigate('RestaurantOpeningHours') }>
               <Left>
-                <Text>{ this.props.t('RESTAURANT_SETTINGS_CHANGE_RESTAURANT') }</Text>
+                <Icon active name="calendar" />
               </Left>
+              <Body>
+                <Text>{ this.props.t('RESTAURANT_SETTINGS_OPENING_HOURS') }</Text>
+              </Body>
+              <Right>
+                <Icon name="arrow-forward" />
+              </Right>
+            </ListItem>
+            <ListItem icon last>
+              <Left>
+                <Icon active name="sync" />
+              </Left>
+              <Body>
+                <Text>{ this.props.t('RESTAURANT_SETTINGS_CHANGE_RESTAURANT') }</Text>
+              </Body>
               <Right>
                 <Icon name="arrow-forward" />
               </Right>

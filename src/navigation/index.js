@@ -12,6 +12,7 @@ export default {
   RestaurantDate: require('./restaurant/Date'),
   RestaurantSettings: require('./restaurant/Settings'),
   RestaurantProducts: require('./restaurant/Products'),
+  RestaurantOpeningHours: require('./restaurant/OpeningHours'),
   CheckoutProductOptions: require('./checkout/ProductOptions'),
   CheckoutEditItem: require('./checkout/EditItem'),
   CheckoutLogin: require('./checkout/Login'),
