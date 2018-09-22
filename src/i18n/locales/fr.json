@@ -17,6 +17,7 @@
     "ORDER_TRACKING": "Suivi de commande",
     "TASKS_UPDATED": "Vos tâches ont été mises à jour",
     "FAILED_TASK_LOAD": "Impossible de charger les tâches",
+    "FAILED_TASK_COMPLETE": "Impossible de terminer cette tâche",
     "TRY_LATER": "Veuillez réessayer plus tard",
     "NET_FAILED": "Impossible de se connecter",
     "SERVER_INCOMPATIBLE": "Ce serveur n'est pas compatible",

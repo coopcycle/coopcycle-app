@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, TouchableOpacity } from 'react-native'
+import { StyleSheet, View, TouchableOpacity, Alert } from 'react-native'
 import {
   Container, Header, Title, Content,
   Left, Right, Body,
@@ -14,7 +14,7 @@ import _ from 'lodash'
 import LoaderOverlay from '../../components/LoaderOverlay'
 import Modal from '../restaurant/components/Modal'
 
-import { selectTasksList, selectIsTasksLoading, markTaskDone, markTaskFailed } from '../../redux/Courier'
+import { selectTasksList, selectIsTasksLoading, selectIsTaskCompleteFailure, markTaskDone, markTaskFailed } from '../../redux/Courier'
 import { greenColor, greyColor, redColor } from '../../styles/common'
 
 class CompleteTask extends Component {
@@ -30,7 +30,30 @@ class CompleteTask extends Component {
   // Check if the task status has been updated
   componentDidUpdate(prevProps, prevState) {
 
+    const { taskCompleteError } = this.props
     const { task } = this.props.navigation.state.params
+
+    if (taskCompleteError && !prevProps.taskCompleteError) {
+
+      let message = this.props.t('TRY_LATER')
+
+      if (taskCompleteError.hasOwnProperty('hydra:description')) {
+        message = taskCompleteError['hydra:description']
+      }
+
+      Alert.alert(
+        this.props.t('FAILED_TASK_COMPLETE'),
+        message,
+        [
+          {
+            text: 'OK', onPress: () => {
+              this.props.navigation.goBack()
+            }
+          },
+        ],
+        { cancelable: false }
+      )
+    }
 
     let previousTask = _.find(prevProps.tasks, t => t['@id'] === task['@id']),
       currentTask = _.find(this.props.tasks, t => t['@id'] === task['@id'])
@@ -109,6 +132,7 @@ function mapStateToProps (state) {
     httpClient: state.app.httpClient,
     loading: selectIsTasksLoading(state),
     tasks: selectTasksList(state),
+    taskCompleteError: selectIsTaskCompleteFailure(state),
   }
 }
 
