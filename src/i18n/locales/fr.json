@@ -94,6 +94,8 @@
     "PROBLEM_CONNECTING": "Connexion impossible",
     "OK": "OK",
     "LAST_TASK_EVENT": "Dernier évènement {{fromNow}}",
+    "PREVIOUS_TASK": "Tâche précédente",
+    "NEXT_TASK": "Tâche suivante",
     "HISTORY": "Historique",
     "SETTINGS": "Réglages",
     "SETTING_KEEP_AWAKE": "Désactiver la mise en veille",
