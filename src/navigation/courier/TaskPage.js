@@ -31,21 +31,25 @@ class TaskPage extends Component {
     }
   }
 
-  // Check if the task status has been updated
   componentDidUpdate(prevProps, prevState) {
 
     const { task } = this.props.navigation.state.params
+    const { task: prevTask } = prevProps.navigation.state.params
 
-    let previousTask = _.find(prevProps.tasks, t => t['@id'] === task['@id']),
-      currentTask = _.find(this.props.tasks, t => t['@id'] === task['@id'])
+    // We are navigating through linked tasks
+    if (task['@id'] !== prevTask['@id']) {
+      this.fitToCoordinates()
+    } else { // Task status has been updated
+      let previousTask = _.find(prevProps.tasks, t => t['@id'] === task['@id']),
+        currentTask = _.find(this.props.tasks, t => t['@id'] === task['@id'])
 
-    if (currentTask.status !== previousTask.status) {
-      this.props.navigation.setParams({ task: currentTask })
+      if (currentTask.status !== previousTask.status) {
+        this.props.navigation.setParams({ task: currentTask })
+      }
     }
   }
 
-  onMapReady() {
-
+  fitToCoordinates() {
     const { geolocation, task } = this.props.navigation.state.params
 
     const coordinates = [
@@ -291,13 +295,28 @@ class TaskPage extends Component {
 
   render() {
 
-    const { task } = this.props.navigation.state.params
+    const { geolocation, task } = this.props.navigation.state.params
+    const { navigate } = this.props.navigation
 
     const initialRegion  = {
       latitude: task.address.geo.latitude,
       longitude: task.address.geo.longitude,
       latitudeDelta: 0.0450,
       longitudeDelta: 0.0250,
+    }
+
+    const hasLinkedTasks = (task.previous || task.next)
+    const hasPreviousTask = Boolean(task.previous)
+    const hasNextTask = Boolean(task.next)
+
+    let previousTask
+    if (hasPreviousTask) {
+      previousTask = _.find(this.props.tasks, t => t['@id'] === task.previous)
+    }
+
+    let nextTask
+    if (hasNextTask) {
+      nextTask = _.find(this.props.tasks, t => t['@id'] === task.next)
     }
 
     return (
@@ -315,7 +334,7 @@ class TaskPage extends Component {
                   loadingIndicatorColor={"#666666"}
                   loadingBackgroundColor={"#eeeeee"}
                   initialRegion={ initialRegion }
-                  onMapReady={() => this.onMapReady()}
+                  onMapReady={() => this.fitToCoordinates()}
                   onPress={() => this.onMapPress()}>
                   <MapView.Marker
                     identifier={ task['@id'] }
@@ -333,12 +352,27 @@ class TaskPage extends Component {
               </Row>
             </Col>
           </Row>
+          { hasLinkedTasks && <Row size={ 4 } style={ styles.swipeOutHelpContainer }>
+            <Col>
+              { hasPreviousTask && <Button transparent
+                onPress={ () => navigate('CourierTask', { geolocation, task: previousTask }) }>
+                <Icon name="arrow-back" />
+                <Text>{ this.props.t('PREVIOUS_TASK') }</Text>
+              </Button> }
+            </Col>
+            <Col>
+              { hasNextTask && <Button transparent style={{ alignSelf: 'flex-end' }}
+                onPress={ () => navigate('CourierTask', { geolocation, task: nextTask }) }>
+                <Text>{ this.props.t('NEXT_TASK') }</Text>
+                <Icon name="arrow-forward" />
+              </Button> }
+            </Col>
+          </Row> }
           { !isCompleted(task) && <Row size={ 4 } style={ styles.swipeOutHelpContainer }>
             <View style={{ paddingVertical: 10, paddingHorizontal: 15 }}>
               <Text style={styles.swipeOutHelpText}>{`${this.props.t('SWIPE_TO_END')}.`}</Text>
             </View>
-          </Row>
-          }
+          </Row> }
         </Grid>
         { this.renderSwipeOutButton() }
       </Container>

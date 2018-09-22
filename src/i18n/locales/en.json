@@ -94,6 +94,8 @@
     "PROBLEM_CONNECTING": "Problem connecting",
     "OK": "OK",
     "LAST_TASK_EVENT": "Last event {{fromNow}}",
+    "PREVIOUS_TASK": "Previous task",
+    "NEXT_TASK": "Next task",
     "HISTORY": "History",
     "SETTINGS": "Settings",
     "SETTING_KEEP_AWAKE": "Disable screen lock",
