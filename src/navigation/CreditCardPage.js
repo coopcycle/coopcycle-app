@@ -64,8 +64,6 @@ class CreditCardPage extends Component {
             .then(order => {
               this.setState({ loading: false });
 
-              this.props.clear()
-
               // @see https://reactnavigation.org/docs/en/stack-actions.html
               const resetAction = StackActions.reset({
                 index: 2,
@@ -76,6 +74,9 @@ class CreditCardPage extends Component {
                 ]
               })
               this.props.navigation.dispatch(resetAction)
+
+              // Make sure to call clear AFTER navigation has been reset
+              this.props.clear()
             })
             .catch(err => console.log(err));
         })
