@@ -2,15 +2,13 @@ import React, { Component } from 'react'
 import { Icon } from 'native-base'
 import { View, TouchableOpacity } from 'react-native'
 import { createBottomTabNavigator } from 'react-navigation'
-import { connect } from 'react-redux'
 import { translate } from 'react-i18next'
 
 import AccountPage from '../AccountPage'
 import Home from '../Home'
 import RestaurantsPage from '../RestaurantsPage'
-import HeaderButton from '../../components/HeaderButton'
+import HeaderRightButton from '../../components/HeaderRightButton'
 import i18n from '../../i18n'
-import store from '../../redux/store'
 
 const tabNavigatorConfig = {
   tabBarPosition: 'bottom',
@@ -59,42 +57,15 @@ const TabNavigator = createBottomTabNavigator({
 }, tabNavigatorConfig)
 
 TabNavigator.navigationOptions = ({ navigation }) => {
-
-  const state = store.getState()
-  const { user } = state.app
-
-  let headerRight
-
-  if (user && user.isAuthenticated()) {
-
-    if (user.hasRole('ROLE_COURIER')) {
-      headerRight = (
-        <HeaderButton iconName="ios-bicycle"
-          onPress={ () => navigation.navigate('Courier', { connected: false, tracking: false }) } />
-      )
-    }
-
-    if (user.hasRole('ROLE_RESTAURANT')) {
-      headerRight = (
-        <HeaderButton iconName="restaurant"
-          onPress={ () => navigation.navigate('RestaurantDashboard') } />
-      )
-    }
-
-  } else {
-    headerRight = (
-      <View />
-    )
-  }
-
   return {
     title: 'CoopCycle',
-    headerRight,
+    headerRight: (
+      <HeaderRightButton navigation={ navigation } />
+    ),
     headerRightContainerStyle: {
       flex: 1
     }
   }
-
 }
 
 export default TabNavigator

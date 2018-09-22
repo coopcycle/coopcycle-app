@@ -80,6 +80,8 @@ const spliceProducts = (state, payload) => {
 }
 
 export default (state = initialState, action = {}) => {
+  let newState
+
   switch (action.type) {
     case LOAD_ORDERS_REQUEST:
     case ACCEPT_ORDER_REQUEST:
@@ -157,19 +159,27 @@ export default (state = initialState, action = {}) => {
 
     case LOAD_MY_RESTAURANTS_SUCCESS:
 
-      const restaurant = _.first(action.payload)
-
-      return {
+      newState = {
         ...state,
         fetchError: false,
         isFetching: false,
         myRestaurants: action.payload,
-        // We select by default the first restaurant from the list
-        // Most of the time, users will own only one restaurant
-        restaurant,
-        specialOpeningHoursSpecification:
-          restaurant.hasOwnProperty('specialOpeningHoursSpecification') ? restaurant.specialOpeningHoursSpecification : [],
       }
+
+      if (action.payload.length > 0) {
+        const restaurant = _.first(action.payload)
+
+        newState = {
+          ...newState,
+          // We select by default the first restaurant from the list
+          // Most of the time, users will own only one restaurant
+          restaurant,
+          specialOpeningHoursSpecification:
+            restaurant.hasOwnProperty('specialOpeningHoursSpecification') ? restaurant.specialOpeningHoursSpecification : [],
+        }
+      }
+
+      return newState
 
     case LOAD_PRODUCTS_SUCCESS:
       return {

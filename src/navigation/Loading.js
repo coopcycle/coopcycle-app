@@ -21,6 +21,7 @@ class Loading extends Component {
       if (user.hasRole('ROLE_COURIER')) {
         return this.props.navigation.navigate('Courier')
       } else if (user.hasRole('ROLE_RESTAURANT')) {
+        // We will call navigate() in componentDidUpdate, once restaurants are loaded
         this.props.loadMyRestaurants(httpClient)
       } else {
         this.props.navigation.navigate({
@@ -40,7 +41,15 @@ class Loading extends Component {
 
   componentDidUpdate(prevProps) {
     if (prevProps.restaurants !== this.props.restaurants) {
-      this.props.navigation.navigate('RestaurantDashboard')
+      if (this.props.restaurants.length > 0) {
+        this.props.navigation.navigate('RestaurantDashboard')
+      } else {
+        this.props.navigation.navigate({
+          routeName: 'Home',
+          key: 'Home',
+          params: {}
+        })
+      }
     }
   }
 
