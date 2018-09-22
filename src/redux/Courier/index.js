@@ -25,6 +25,7 @@ import {
   selectTriggerTasksNotification,
   selectIsTasksLoading,
   selectIsTasksLoadingFailure,
+  selectIsTaskCompleteFailure,
   selectTasks,
   selectTasksOrder,
   selectTasksList,
@@ -70,6 +71,7 @@ export {
 
   selectIsTasksLoading,
   selectIsTasksLoadingFailure,
+  selectIsTaskCompleteFailure,
   selectTasks,
   selectTasksOrder,
   selectTasksList,

@@ -16,7 +16,8 @@ moment.locale(localeDetector())
  * Intital state shape for the task entity reducer
  */
 const tasksEntityInitialState = {
-  fetchError: null,                // Error object describing the error
+  loadTasksFetchError: false,      // Error object describing the error
+  completeTaskFetchError: false,   // Error object describing the error
   isFetching: false,               // Flag indicating active HTTP request
   lastUpdated: moment(),           // Time at which tasks data was last updated
   triggerTasksNotification: false, // Flag indicating whether to trigger Toast alert
@@ -51,23 +52,30 @@ export const tasksEntityReducer = (state = tasksEntityInitialState, action = {})
     case MARK_TASK_FAILED_REQUEST:
       return {
         ...state,
-        fetchError: false,
+        loadTasksFetchError: false,
+        completeTaskFetchError: false,
         isFetching: true,
       }
 
     case LOAD_TASKS_FAILURE:
+      return {
+        ...state,
+        loadTasksFetchError: action.payload || action.error,
+        isFetching: false,
+      }
+
     case MARK_TASK_DONE_FAILURE:
     case MARK_TASK_FAILED_FAILURE:
       return {
         ...state,
-        fetchError: action.payload || action.error,
+        completeTaskFetchError: action.payload || action.error,
         isFetching: false,
       }
 
     case LOAD_TASKS_SUCCESS:
       return {
         ...state,
-        fetchError: false,
+        loadTasksFetchError: false,
         isFetching: false,
         lastUpdated: moment(),
         items: action.payload.reduce((acc, task) => {

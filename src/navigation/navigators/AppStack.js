@@ -193,6 +193,9 @@ export default createStackNavigator({
   Main: {
     screen: MainNavigator,
   },
+  CourierTaskComplete: {
+    screen: navigation.CourierTaskComplete,
+  },
   RestaurantOrderRefuse: {
     screen: navigation.RestaurantOrderRefuse,
   },

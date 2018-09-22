@@ -8,7 +8,7 @@ import {
   dontTriggerTasksNotification,
 } from '../taskActions'
 import {
-  selectIsTasksLoading, selectIsTasksLoadingFailure, selectTasks,
+  selectIsTasksLoading, selectIsTasksLoadingFailure, selectIsTaskCompleteFailure, selectTasks,
   selectTaskSelectedDate, selectTasksList, selectTasksOrder,
   selectTriggerTasksNotification,
   selectFilteredTasks,
@@ -43,8 +43,24 @@ describe('Redux | Tasks | Reducers', () => {
         })
       });
 
+    test(`${loadTasksFailure}`, () => {
+      const error = new Error('test error')
+      const prevState = {
+        ...initialState,
+        isFetching: true,
+      }
+      const newState = tasksEntityReducer(prevState, loadTasksFailure(error))
+      const fullState = { entities: { tasks: newState } }
+
+      const restOldState = omit(prevState, ['loadTasksFetchError', 'isFetching'])
+      const restNewState = omit(newState, ['loadTasksFetchError', 'isFetching'])
+
+      expect(restOldState).toEqual(restNewState)
+      expect(selectIsTasksLoading(fullState)).toEqual(false)
+      expect(selectIsTasksLoadingFailure(fullState)).toEqual(error)
+    });
+
     [
-      loadTasksFailure,
       markTaskDoneFailure,
       markTaskFailedFailure,
     ]
@@ -58,12 +74,12 @@ describe('Redux | Tasks | Reducers', () => {
           const newState = tasksEntityReducer(prevState, actionCreator(error))
           const fullState = { entities: { tasks: newState } }
 
-          const restOldState = omit(prevState, ['fetchError', 'isFetching'])
-          const restNewState = omit(newState, ['fetchError', 'isFetching'])
+          const restOldState = omit(prevState, ['completeTaskFetchError', 'isFetching'])
+          const restNewState = omit(newState, ['completeTaskFetchError', 'isFetching'])
 
           expect(restOldState).toEqual(restNewState)
           expect(selectIsTasksLoading(fullState)).toEqual(false)
-          expect(selectIsTasksLoadingFailure(fullState)).toEqual(error)
+          expect(selectIsTaskCompleteFailure(fullState)).toEqual(error)
         })
       })
 
@@ -71,14 +87,14 @@ describe('Redux | Tasks | Reducers', () => {
       const tasks = [{ id: 1 }, { id: 2 }]
       const prevState = {
         ...initialState,
-        fetchError: true,
+        loadTasksFetchError: true,
         isFetching: true,
       }
       const newState = tasksEntityReducer(prevState, loadTasksSuccess(tasks))
       const fullState = { entities: { tasks: newState } }
 
-      const restOldState = omit(prevState, ['fetchError', 'isFetching', 'items', 'order', 'lastUpdated'])
-      const restNewState = omit(newState, ['fetchError', 'isFetching', 'items', 'order', 'lastUpdated'])
+      const restOldState = omit(prevState, ['loadTasksFetchError', 'isFetching', 'items', 'order', 'lastUpdated'])
+      const restNewState = omit(newState, ['loadTasksFetchError', 'isFetching', 'items', 'order', 'lastUpdated'])
       const { lastUpdated: lastUpdatedOld } = prevState
       const { lastUpdated: lastUpdatedNew } = newState
 
