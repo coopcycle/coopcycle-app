@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Dimensions, FlatList, StyleSheet, TouchableOpacity, View, Modal, ActivityIndicator } from 'react-native'
-import { Container, Content, Footer, FooterTab, Text, Button, Icon, Header, Title, Left, Body, Right, Form, Item, Input, Label } from 'native-base'
+import { Dimensions, FlatList, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { Container, Content, Footer, Text, Button, Icon, Header, Title, Left, Body, Right } from 'native-base'
 import { Col, Row, Grid } from 'react-native-easy-grid'
 import MapView from 'react-native-maps'
 import Swipeout from 'react-native-swipeout'
@@ -13,7 +13,7 @@ import { showLocation } from 'react-native-map-link'
 import _ from 'lodash'
 
 import { greenColor, greyColor, redColor } from "../../styles/common"
-import { selectIsTasksLoading, selectTasksList, markTaskDone, markTaskFailed } from "../../redux/Courier"
+import { selectTasksList } from "../../redux/Courier"
 
 moment.locale(localeDetector())
 
@@ -27,45 +27,21 @@ class TaskPage extends Component {
     super(props)
 
     this.state = {
-      modalVisible: false,
-      modalContextValid: true,
       swipeOutClose: false,
-      notes: ''
     }
   }
 
-  componentWillReceiveProps(nextProps) {
+  // Check if the task status has been updated
+  componentDidUpdate(prevProps, prevState) {
 
     const { task } = this.props.navigation.state.params
 
-    // HACK : check if the task status has been updated - if yes go back to tasklist page
-    // I think the way to do it properly would be to integrate react-navigation in redux but it does seem a lot of work
+    let previousTask = _.find(prevProps.tasks, t => t['@id'] === task['@id']),
+      currentTask = _.find(this.props.tasks, t => t['@id'] === task['@id'])
 
-    let previousTask = _.find(this.props.tasks, (taskA) => taskA['@id'] === task['@id']),
-      currentTask = _.find(nextProps.tasks, (taskA) => taskA['@id'] === task['@id'])
-
-    if (!currentTask || previousTask.status !== currentTask.status) {
-      this.props.navigation.goBack()
+    if (currentTask.status !== previousTask.status) {
+      this.props.navigation.setParams({ task: currentTask })
     }
-  }
-
-  markTaskDone() {
-
-    const { task } = this.props.navigation.state.params
-    const { markTaskDone } = this.props
-    const { notes } = this.state
-
-    markTaskDone(this.props.httpClient, task, notes)
-  }
-
-  markTaskFailed() {
-
-    const { task } = this.props.navigation.state.params
-    const { markTaskFailed } = this.props
-    const { notes } = this.state
-
-    markTaskFailed(this.props.httpClient, task, notes)
-
   }
 
   onMapReady() {
@@ -233,80 +209,6 @@ class TaskPage extends Component {
     )
   }
 
-  renderLoader() {
-    const { isLoadingTasks } = this.props
-
-    if (isLoadingTasks) {
-      return (
-        <View style={ styles.loader }>
-          <ActivityIndicator
-            animating={ true }
-            size="large"
-            color="#fff"
-          />
-          <Text style={{ color: '#fff' }}>{ isLoadingTasks }</Text>
-        </View>
-      );
-    }
-
-    return (
-      <View />
-    )
-  }
-
-  renderModal() {
-
-    const { modalContextValid  } = this.state
-
-    const buttonIconName = modalContextValid ? 'checkmark' : 'warning'
-    const onPress = modalContextValid ? this.markTaskDone.bind(this) : this.markTaskFailed.bind(this)
-
-    return (
-      <Modal
-        animationType={ 'slide' }
-        transparent={ true }
-        visible={ this.state.modalVisible }
-        onRequestClose={ () => this.setState({ modalVisible: false }) }>
-        <View style={ styles.modalWrapper }>
-          <Container>
-            <Header>
-              <Left>
-                <Button transparent onPress={ () => this.setState({ modalVisible: false }) }>
-                  <Title style={{ fontSize: 14 }}>{this.props.t('CANCEL')}</Title>
-                </Button>
-              </Left>
-              <Body />
-              <Right />
-            </Header>
-            <Content>
-              <Grid>
-                <Row style={{ paddingVertical: 30, paddingHorizontal: 10 }}>
-                  <Col>
-                    <Form>
-                      <Item stackedLabel>
-                        <Label>{this.props.t('NOTES')}</Label>
-                        <Input onChangeText={ text => this.setState({ notes: text }) } />
-                      </Item>
-                    </Form>
-                  </Col>
-                </Row>
-              </Grid>
-            </Content>
-            <Footer style={{ alignItems: 'center', backgroundColor: modalContextValid ? greenColor : redColor }}>
-              <TouchableOpacity style={ styles.buttonContainer } onPress={ onPress }>
-                <View style={ styles.buttonTextContainer }>
-                  <Icon name={ buttonIconName } style={{ color: '#fff', marginRight: 10 }} />
-                  <Text style={{ color: '#fff' }}>{ modalContextValid ? this.props.t('VALIDATE') : this.props.t('MARK_FAILED') }</Text>
-                </View>
-              </TouchableOpacity>
-            </Footer>
-          </Container>
-          { this.renderLoader() }
-        </View>
-      </Modal>
-    );
-  }
-
   static renderSwipeoutLeftButton() {
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -360,9 +262,8 @@ class TaskPage extends Component {
       component: TaskPage.renderSwipeoutLeftButton(),
       backgroundColor: greenColor,
       onPress: () => {
+        this.props.navigation.navigate('CourierTaskComplete', { task, markTaskDone: true })
         this.setState({
-          modalContextValid: true,
-          modalVisible: true,
           swipeOutClose: true
         })
       }
@@ -372,9 +273,8 @@ class TaskPage extends Component {
       component: TaskPage.renderSwipeoutRightButton(),
       backgroundColor: redColor,
       onPress: () => {
+        this.props.navigation.navigate('CourierTaskComplete', { task, markTaskFailed: true })
         this.setState({
-          modalContextValid: false,
-          modalVisible: true,
           swipeOutClose: true
         })
       }
@@ -441,7 +341,6 @@ class TaskPage extends Component {
           }
         </Grid>
         { this.renderSwipeOutButton() }
-        { this.renderModal() }
       </Container>
     )
   }
@@ -450,10 +349,6 @@ class TaskPage extends Component {
 const styles = StyleSheet.create({
   map: {
     ...StyleSheet.absoluteFillObject,
-  },
-  modalWrapper: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: '#fff'
   },
   row: {
     padding: 10,
@@ -466,12 +361,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 10
-  },
-  loader: {
-    ...StyleSheet.absoluteFillObject,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(52, 52, 52, 0.4)'
   },
   buttonContainer: {
     ...StyleSheet.absoluteFillObject
@@ -501,17 +390,8 @@ const styles = StyleSheet.create({
 
 function mapStateToProps (state) {
   return {
-    httpClient: state.app.httpClient,
-    isLoadingTasks: selectIsTasksLoading(state),
     tasks: selectTasksList(state),
   }
 }
 
-function mapDispatchToProps (dispatch) {
-  return {
-    markTaskFailed: (client, task, notes) => dispatch(markTaskFailed(client, task, notes)),
-    markTaskDone: (client, task, notes) => dispatch(markTaskDone(client, task, notes)),
-  }
-}
-
-module.exports = connect(mapStateToProps, mapDispatchToProps)(translate()(TaskPage))
+module.exports = connect(mapStateToProps)(translate()(TaskPage))
