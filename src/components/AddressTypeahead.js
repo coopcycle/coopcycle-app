@@ -89,7 +89,7 @@ class AddressTypeahead extends Component {
           region: Settings.get('country')
         }}
         // filter the reverse geocoding results by types - ['locality', 'administrative_area_level_3'] if you want to display only cities
-        filterReverseGeocodingByTypes={['street_address']} />
+        filterReverseGeocodingByTypes={[ 'street_address', 'route', 'geocode' ]} />
     );
   }
 }
