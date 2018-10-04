@@ -15,6 +15,10 @@ import { NavigationActions, createSwitchNavigator } from 'react-navigation'
 import { Provider } from 'react-redux'
 import { translate, I18nextProvider } from 'react-i18next'
 
+import Sound from 'react-native-sound'
+// Make sure sound will play even when device is in silent mode
+Sound.setCategory('Playback')
+
 import navigation from './navigation'
 import navigators from './navigation/navigators'
 import i18n from './i18n'
@@ -111,17 +115,36 @@ class App extends Component {
         if (event && event.name === 'order:created') {
           const { restaurant, date } = event.data
           if (notification.foreground) {
+
+            // Load and play sound until the alert is closed
+            const bell = new Sound('misstickle__indian_bell_chime.wav', Sound.MAIN_BUNDLE, (error) => {
+              if (error) {
+                return
+              }
+              bell.setNumberOfLoops(-1)
+              bell.play((success) => {
+                if (!success) {
+                  bell.reset();
+                }
+              })
+            })
+
             Alert.alert(
               'Nouvelle commande',
               `Une nouvelle commande pour le ${event.data.date} a été créée`,
               [
                 {
                   text: 'Annuler',
-                  onPress: () => {}
+                  onPress: () => {
+                    bell.stop(() => {})
+                  }
                 },
                 {
                   text: 'Afficher',
-                  onPress: () => onOrderCreated(restaurant, date)
+                  onPress: () => {
+                    bell.stop(() => {})
+                    onOrderCreated(restaurant, date)
+                  }
                 },
               ],
               {
