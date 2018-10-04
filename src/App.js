@@ -98,7 +98,7 @@ class App extends Component {
         })
         this.navigator.dispatch(pushAction)
       } else {
-        store.dispatch(loadOrders(httpClient, restaurant, moment(date)))
+        store.dispatch(loadOrders(httpClient, restaurant, moment(date).format('YYYY-MM-DD')))
       }
 
     }
