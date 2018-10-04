@@ -8,7 +8,9 @@ import {
 import { Col, Row, Grid } from 'react-native-easy-grid'
 import { connect } from 'react-redux'
 import { translate } from 'react-i18next'
+import KeepAwake from 'react-native-keep-awake'
 import moment from 'moment'
+
 import OrderList from '../../components/OrderList'
 import LoaderOverlay from '../../components/LoaderOverlay'
 import RushModeAlert from './components/RushModeAlert'
@@ -18,6 +20,8 @@ class DashboardPage extends Component {
 
   componentDidMount() {
 
+    KeepAwake.activate()
+
     // This is needed to display the title
     this.props.navigation.setParams({ restaurant: this.props.restaurant })
 
@@ -26,6 +30,10 @@ class DashboardPage extends Component {
       this.props.restaurant,
       this.props.date.format('YYYY-MM-DD')
     )
+  }
+
+  componentWillUnmount() {
+    KeepAwake.deactivate()
   }
 
   componentDidUpdate(prevProps) {
