@@ -128,7 +128,7 @@ const MainNavigator = createStackNavigator({
   RestaurantOrder: {
     screen: navigation.RestaurantOrder,
     navigationOptions: ({ navigation }) => ({
-      title: `#${navigation.state.params.order.id}`,
+      title: i18n.t('RESTAURANT_ORDER_TITLE', { order: navigation.state.params.order }),
     })
   },
   Cart: {

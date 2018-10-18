@@ -142,6 +142,7 @@
     "RESTAURANT_OPENING_HOURS_DAY_RANGE": "From {{firstDay}} to {{lastDay}} from {{opens}} to {{closes}}",
     "OPEN_IN_MAPS_TITLE": "Show task on map",
     "OPEN_IN_MAPS_MESSAGE": "Choose an app",
+    "RESTAURANT_ORDER_TITLE": "Order {{order.number}} (#{{order.id}})",
     "RESTAURANT_ORDER_PREPARATION_EXPECTED_AT": "Should begin at {{date}}",
     "RESTAURANT_ORDER_PICKUP_EXPECTED_AT": "Should be ready at {{date}}",
     "RESTAURANT_ORDER_DELAY_MODAL_TITLE": "Delay order",
