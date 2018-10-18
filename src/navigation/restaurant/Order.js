@@ -110,7 +110,7 @@ class OrderScreen extends Component {
       const pickupExpectedAt = moment(order.pickupExpectedAt).format('LT')
 
       return (
-        <Row size={ 3 }>
+        <Row size={ 2 }>
           <Col>
             <Row>
               <View style={ styles.dateContainer }>
@@ -138,7 +138,7 @@ class OrderScreen extends Component {
       <Container>
         <Grid>
           { this.renderHeading() }
-          <Row size={ 9 }>
+          <Row size={ 10 }>
             <Content padder>
               <OrderSummary order={ order } />
             </Content>
