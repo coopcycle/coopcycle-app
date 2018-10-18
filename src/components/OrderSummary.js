@@ -45,12 +45,15 @@ class OrderSummary extends Component {
     return (
       <TouchableOpacity style={ styles.item }>
         <Grid>
-          <Col size={ 10 } style={ styles.col }>
+          <Col size={ 8 } style={ styles.col }>
             <Text>{ item.name }</Text>
             { this.renderAdjustments(item) }
           </Col>
           <Col size={ 2 } style={ [ styles.col, styles.colRight ] }>
             <Text>{ `× ${item.quantity}` }</Text>
+          </Col>
+          <Col size={ 2 } style={ [ styles.col, styles.colRight ] }>
+            <Text>{ `${formatPrice(item.total)} €` }</Text>
           </Col>
         </Grid>
       </TouchableOpacity>
@@ -58,11 +61,26 @@ class OrderSummary extends Component {
   }
 
   render() {
+
+    const { order } = this.props
+
     return (
-      <FlatList
-        data={ this.props.order.items }
-        keyExtractor={ (item, index) => `ITEM#${item['id']}` }
-        renderItem={ ({ item }) => this.renderItem(item) } />
+      <View>
+        <FlatList
+          data={ order.items }
+          keyExtractor={ (item, index) => `ITEM#${item['id']}` }
+          renderItem={ ({ item }) => this.renderItem(item) } />
+        <Grid>
+          <Row style={ styles.item }>
+            <Col size={ 10 } style={ styles.col }>
+              <Text style={{ fontWeight: 'bold' }}>{ this.props.t('TOTAL') }</Text>
+            </Col>
+            <Col size={ 2 } style={ [ styles.col, styles.colRight ] }>
+              <Text style={{ fontWeight: 'bold' }}>{ `${formatPrice(order.itemsTotal)} €` }</Text>
+            </Col>
+          </Row>
+        </Grid>
+      </View>
     )
   }
 }
