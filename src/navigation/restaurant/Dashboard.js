@@ -11,9 +11,9 @@ import { translate } from 'react-i18next'
 import KeepAwake from 'react-native-keep-awake'
 import moment from 'moment'
 
-import OrderList from '../../components/OrderList'
 import LoaderOverlay from '../../components/LoaderOverlay'
 import RushModeAlert from './components/RushModeAlert'
+import OrderList from './components/OrderList'
 import { loadOrders } from '../../redux/Restaurant/actions'
 
 class DashboardPage extends Component {

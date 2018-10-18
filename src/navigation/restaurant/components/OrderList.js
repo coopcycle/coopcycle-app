@@ -6,8 +6,8 @@ import slugify from 'slugify'
 import moment from 'moment/min/moment-with-locales'
 import _ from 'lodash'
 import { translate } from 'react-i18next'
-import { localeDetector } from '../i18n'
-import { formatPrice } from '../Cart'
+import { localeDetector } from '../../../i18n'
+import { formatPrice } from '../../../Cart'
 
 moment.locale(localeDetector())
 
