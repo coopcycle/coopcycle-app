@@ -3,13 +3,15 @@ import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import {
   Container, Header, Title, Content, Footer,
   Left, Right, Body,
-  Icon, Text, Button
+  Icon, Text, Button,
+  Card, CardItem,
 } from 'native-base';
 import { connectStyle } from 'native-base';
 import { Col, Row, Grid } from 'react-native-easy-grid'
 import { connect } from 'react-redux'
 import { translate } from 'react-i18next'
 import moment from 'moment/min/moment-with-locales'
+import { phonecall } from 'react-native-communications'
 
 import { formatPrice } from '../../Cart'
 import LoaderOverlay from '../../components/LoaderOverlay'
@@ -140,6 +142,17 @@ class OrderScreen extends Component {
           { this.renderHeading() }
           <Row size={ 10 }>
             <Content padder>
+              <Card>
+                <CardItem button onPress={ () => phonecall(order.customer.telephone, true) }>
+                  <Left>
+                    <Icon name="person" />
+                    <Text>{ order.customer.username }</Text>
+                  </Left>
+                  <Right>
+                    <Icon name="call" style={{ alignSelf: 'flex-end' }} />
+                  </Right>
+                </CardItem>
+              </Card>
               <OrderSummary order={ order } />
             </Content>
           </Row>
