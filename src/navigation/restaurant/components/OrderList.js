@@ -46,7 +46,7 @@ class OrderList extends Component {
             <Text>{ `#${order.id}` }</Text>
           </Col>
           <Col size={ 4 } style={ styles.col }>
-            <Text>{ `${formatPrice(order.total)} €` }</Text>
+            <Text>{ `${formatPrice(order.itemsTotal)} €` }</Text>
           </Col>
           <Col size={ 4 } style={ styles.col }>
             <Text>{ moment(order.preparationExpectedAt).format('LT') }</Text>
