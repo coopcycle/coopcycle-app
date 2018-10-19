@@ -12,6 +12,7 @@ import { connect } from 'react-redux'
 import { translate } from 'react-i18next'
 import moment from 'moment/min/moment-with-locales'
 import { phonecall } from 'react-native-communications'
+import { PhoneNumberUtil, PhoneNumberFormat } from 'google-libphonenumber'
 
 import { formatPrice } from '../../Cart'
 import LoaderOverlay from '../../components/LoaderOverlay'
@@ -21,6 +22,8 @@ import { localeDetector } from '../../i18n'
 import material from '../../../native-base-theme/variables/material'
 
 moment.locale(localeDetector())
+
+const phoneNumberUtil = PhoneNumberUtil.getInstance()
 
 class OrderScreen extends Component {
 
@@ -153,6 +156,7 @@ class OrderScreen extends Component {
   render() {
 
     const { order } = this.props.navigation.state.params
+    const phoneNumber = phoneNumberUtil.parse(order.customer.telephone)
 
     return (
       <Container>
@@ -161,17 +165,14 @@ class OrderScreen extends Component {
           <Row size={ 10 }>
             <Content padder>
               <View style={ styles.section }>
-                <Card>
-                  <CardItem button onPress={ () => phonecall(order.customer.telephone, true) }>
-                    <Left>
-                      <Icon name="person" />
-                      <Text>{ order.customer.username }</Text>
-                    </Left>
-                    <Right>
-                      <Icon name="call" style={{ alignSelf: 'flex-end' }} />
-                    </Right>
-                  </CardItem>
-                </Card>
+                <View style={{ flex: 1, flexDirection: 'row', alignItems: 'flex-end' }}>
+                  <Button iconLeft success
+                    onPress={ () => phonecall(order.customer.telephone, true) }
+                    style={{ marginLeft: 'auto', alignSelf: 'flex-end' }}>
+                    <Icon name="call" />
+                    <Text>{ phoneNumberUtil.format(phoneNumber, PhoneNumberFormat.NATIONAL) }</Text>
+                  </Button>
+                </View>
               </View>
               <View style={ styles.section }>
                 <OrderItems order={ order } />
