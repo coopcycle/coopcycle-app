@@ -154,12 +154,12 @@ android {
 }
 
 dependencies {
-    compile project(':react-native-sound')
+    implementation project(':react-native-sound')
     implementation(project(':react-native-firebase')) {
         transitive = false
     }
     implementation project(':react-native-mauron85-background-geolocation')
-    implementation(project(':react-native-i18n')) {
+    implementation(project(':react-native-languages')){
         exclude group: 'com.google.android.gms'
     }
     implementation(project(':react-native-keep-awake')){
