@@ -7,6 +7,10 @@ buildscript {
         // the google() method. And you need to include this repo to download
         // Android plugin 3.0.0 or higher.
         google()
+        maven {
+            url 'https://maven.google.com/'
+            name 'Google'
+        }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.1.2'
@@ -31,6 +35,10 @@ allprojects {
             // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
             url "$rootDir/../node_modules/react-native/android"
         }
+        maven {
+            url 'https://maven.google.com/'
+            name 'Google'
+        }
     }
 }
 
@@ -46,9 +54,11 @@ subprojects {
 }
 
 ext {
+    buildToolsVersion = "27.0.3"
+    minSdkVersion = 16
     compileSdkVersion = 27
     targetSdkVersion = 26
-    buildToolsVersion = "27.0.3"
+    supportLibVersion = "27.1.1"
     playServicesVersion = "15.0.1"
     gradle3EXPERIMENTAL = "yes"
 }
