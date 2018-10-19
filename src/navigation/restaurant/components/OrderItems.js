@@ -3,15 +3,21 @@ import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native'
 import { Icon, Text, Thumbnail, Badge } from 'native-base';
 import { Col, Row, Grid } from 'react-native-easy-grid'
 import { translate } from 'react-i18next'
-import { localeDetector } from '../i18n'
-import { formatPrice } from '../Cart'
+import { localeDetector } from '../../../i18n'
+import { formatPrice } from '../../../Cart'
 
 const styles = StyleSheet.create({
+  container: {
+    marginBottom: 20,
+  },
   item: {
     paddingVertical: 15,
     paddingHorizontal: 5,
     borderBottomColor: '#ddd',
     borderBottomWidth: StyleSheet.hairlineWidth
+  },
+  itemLast: {
+    borderBottomWidth: 0
   },
   adjustmentText: {
     fontSize: 14,
@@ -25,7 +31,7 @@ const styles = StyleSheet.create({
   },
 });
 
-class OrderSummary extends Component {
+class OrderItems extends Component {
 
   renderAdjustments(item) {
     if (item.adjustments.hasOwnProperty('menu_item_modifier')) {
@@ -65,13 +71,13 @@ class OrderSummary extends Component {
     const { order } = this.props
 
     return (
-      <View>
+      <View style={ styles.container }>
         <FlatList
           data={ order.items }
           keyExtractor={ (item, index) => `ITEM#${item['id']}` }
           renderItem={ ({ item }) => this.renderItem(item) } />
         <Grid>
-          <Row style={ styles.item }>
+          <Row style={ [ styles.item, styles.itemLast ] }>
             <Col size={ 10 } style={ styles.col }>
               <Text style={{ fontWeight: 'bold' }}>{ this.props.t('TOTAL') }</Text>
             </Col>
@@ -85,4 +91,4 @@ class OrderSummary extends Component {
   }
 }
 
-export default translate()(OrderSummary)
+export default translate()(OrderItems)

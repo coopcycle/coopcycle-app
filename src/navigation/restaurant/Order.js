@@ -15,7 +15,7 @@ import { phonecall } from 'react-native-communications'
 
 import { formatPrice } from '../../Cart'
 import LoaderOverlay from '../../components/LoaderOverlay'
-import OrderSummary from '../../components/OrderSummary'
+import OrderItems from './components/OrderItems'
 import { acceptOrder } from '../../redux/Restaurant/actions'
 import { localeDetector } from '../../i18n'
 import material from '../../../native-base-theme/variables/material'
@@ -132,6 +132,24 @@ class OrderScreen extends Component {
     }
   }
 
+  renderNotes() {
+
+    const { order } = this.props.navigation.state.params
+
+    if (order.notes) {
+      return (
+        <Card>
+          <CardItem>
+            <Left>
+              <Icon name="quote" />
+              <Text note>{ order.notes }</Text>
+            </Left>
+          </CardItem>
+        </Card>
+      )
+    }
+  }
+
   render() {
 
     const { order } = this.props.navigation.state.params
@@ -142,18 +160,23 @@ class OrderScreen extends Component {
           { this.renderHeading() }
           <Row size={ 10 }>
             <Content padder>
-              <Card>
-                <CardItem button onPress={ () => phonecall(order.customer.telephone, true) }>
-                  <Left>
-                    <Icon name="person" />
-                    <Text>{ order.customer.username }</Text>
-                  </Left>
-                  <Right>
-                    <Icon name="call" style={{ alignSelf: 'flex-end' }} />
-                  </Right>
-                </CardItem>
-              </Card>
-              <OrderSummary order={ order } />
+              <View style={ styles.section }>
+                <Card>
+                  <CardItem button onPress={ () => phonecall(order.customer.telephone, true) }>
+                    <Left>
+                      <Icon name="person" />
+                      <Text>{ order.customer.username }</Text>
+                    </Left>
+                    <Right>
+                      <Icon name="call" style={{ alignSelf: 'flex-end' }} />
+                    </Right>
+                  </CardItem>
+                </Card>
+              </View>
+              <View style={ styles.section }>
+                <OrderItems order={ order } />
+                { this.renderNotes() }
+              </View>
             </Content>
           </Row>
         </Grid>
@@ -165,6 +188,9 @@ class OrderScreen extends Component {
 }
 
 const styles = StyleSheet.create({
+  section: {
+    marginBottom: 20
+  },
   footerBtn: {
     flex: 1,
     alignItems: 'center',
