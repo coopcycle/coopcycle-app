@@ -1,5 +1,5 @@
 'use strict';
 
 module.exports = {
-  presets: ['@babel/preset-env', 'react-native'],
+  presets: ['module:metro-react-native-babel-preset'],
 };

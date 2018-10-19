@@ -83,7 +83,7 @@ exports[`renders correcty 1`] = `
         }
       }
     >
-      <Image
+      <Component
         source={
           Object {
             "testUri": "../../../src/assets/images/home-bg.png",

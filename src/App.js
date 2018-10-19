@@ -32,7 +32,9 @@ import { YellowBox } from 'react-native'
 YellowBox.ignoreWarnings([
   'Warning: isMounted(...) is deprecated in plain JavaScript React classes.',
   'Module RCTImageLoader requires main queue setup',
-  'Module RCTBackgroundGeolocation requires main queue setup'
+  'Module RCTBackgroundGeolocation requires main queue setup',
+  // @see https://github.com/invertase/react-native-firebase/issues/1446
+  'Require cycle:',
 ])
 
 const RootNavigator = createSwitchNavigator(
