@@ -96,13 +96,13 @@ def enableProguardInReleaseBuilds = false
 def googleMapsApiKey = hasProperty('googleMapsApiKey') ? googleMapsApiKey : System.getenv('googleMapsApiKey')
 
 android {
-    compileSdkVersion 27
-    buildToolsVersion "27.0.3"
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
         applicationId "fr.coopcycle"
-        minSdkVersion 16
-        targetSdkVersion 26
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 32
         versionName "0.9.9"
         ndk {
@@ -191,8 +191,9 @@ dependencies {
     implementation "com.google.android.gms:play-services-wallet:15.0.1"
     implementation "com.google.android.gms:play-services-identity:15.0.1"
     implementation "com.google.android.gms:play-services-gcm:15.0.1"
+
     implementation fileTree(dir: "libs", include: ["*.jar"])
-    implementation "com.android.support:appcompat-v7:27.1.1"
+    implementation "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
     implementation "com.facebook.react:react-native:+"  // From node_modules
 }
 
