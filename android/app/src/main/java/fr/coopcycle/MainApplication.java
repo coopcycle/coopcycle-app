@@ -2,12 +2,12 @@ package fr.coopcycle;
 
 import android.app.Application;
 import com.facebook.react.ReactApplication;
+import com.reactcommunity.rnlanguages.RNLanguagesPackage;
 import com.zmxv.RNSound.RNSoundPackage;
 import io.invertase.firebase.RNFirebasePackage;
 import io.invertase.firebase.messaging.RNFirebaseMessagingPackage;
 import io.invertase.firebase.notifications.RNFirebaseNotificationsPackage;
 import com.marianhello.bgloc.react.BackgroundGeolocationPackage;
-import com.AlexanderZaytsev.RNI18n.RNI18nPackage;
 import com.corbt.keepawake.KCKeepAwakePackage;
 import com.gettipsi.stripe.StripeReactPackage;
 import com.coopcycle.pin.RNPinScreenPackage;
@@ -33,12 +33,12 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-            new RNSoundPackage(),
+          new RNSoundPackage(),
           new RNFirebasePackage(),
           new RNFirebaseMessagingPackage(),
           new RNFirebaseNotificationsPackage(),
           new BackgroundGeolocationPackage(),
-          new RNI18nPackage(),
+          new RNLanguagesPackage(),
           new KCKeepAwakePackage(),
           new RNPinScreenPackage(),
           new StripeReactPackage(),
