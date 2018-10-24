@@ -1,4 +1,9 @@
+import React from 'react'
+import { View } from 'react-native'
+import { Icon } from 'native-base'
+
 import Home from './Home'
+import { primaryColor,  whiteColor, fontTitleName } from '../styles/common'
 
 export default {
   RestaurantsPage: require('./RestaurantsPage'),
@@ -36,4 +41,31 @@ export default {
   Home,
   Courier: require('./CourierPage'),
   ConfigureServer: require('./ConfigureServer')
+}
+
+export const defaultNavigationOptions = {
+  headerStyle: {
+    backgroundColor: primaryColor,
+  },
+  headerBackTitleStyle: {
+    color: whiteColor,
+    fontWeight: 'normal',
+    fontFamily: fontTitleName
+  },
+  headerTintColor: whiteColor,
+  headerTitleStyle: {
+    color: whiteColor,
+    // fontWeight needs to be defined or it doesn't work
+    // @see https://github.com/react-community/react-navigation/issues/542#issuecomment-345289122
+    fontWeight: 'normal',
+    fontFamily: fontTitleName
+  },
+}
+
+export const headerLeft = navigation => {
+  return (
+    <View style={{ paddingHorizontal: 10 }}>
+      <Icon style={{ color: '#fff' }} name="menu" onPress={ () => navigation.toggleDrawer() } />
+    </View>
+  )
 }

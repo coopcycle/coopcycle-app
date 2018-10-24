@@ -68,7 +68,7 @@ class CreditCardPage extends Component {
               const resetAction = StackActions.reset({
                 index: 2,
                 actions: [
-                  NavigationActions.navigate({ routeName: 'Home' }),
+                  NavigationActions.navigate({ routeName: 'AccountHome' }),
                   NavigationActions.navigate({ routeName: 'AccountOrders' }),
                   NavigationActions.navigate({ routeName: 'OrderTracking', params: { order } }),
                 ]

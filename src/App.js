@@ -2,8 +2,7 @@ import React, { Component } from 'react'
 import {
   Alert,
   Platform,
-  View,
-  ActivityIndicator
+  View
 } from 'react-native'
 
 import { Root, StyleProvider } from 'native-base'
@@ -40,8 +39,8 @@ YellowBox.ignoreWarnings([
 const RootNavigator = createSwitchNavigator(
   {
     Loading: navigation.Loading,
-    AppStack: navigators.AppStack,
-    ConfigureServer: navigation.ConfigureServer
+    ConfigureServer: navigation.ConfigureServer,
+    App: navigators.DrawerNavigator,
   },
   {
     initialRouteName: 'Loading',

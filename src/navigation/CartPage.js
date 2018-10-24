@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import {
   StyleSheet,
   View,
-  Modal,
 } from 'react-native';
 import {
   Container,
@@ -29,7 +28,6 @@ class CartPage extends Component {
 
     this.state = {
       loading: false,
-      loginModalVisible: false,
       modalVisible: false,
       editing: null,
     };
