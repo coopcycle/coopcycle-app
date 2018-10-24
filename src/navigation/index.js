@@ -25,6 +25,7 @@ export default {
   CourierTaskHistoryPage: require('./courier/TaskHistoryPage'),
   CourierSettingsPage: require('./courier/SettingsPage'),
   CourierTaskComplete: require('./courier/CompleteTask'),
+  CourierFilters: require('./courier/Filters'),
   AccountPage: require('./AccountPage'),
   AccountAddressesPage: require('./account/AccountAddressesPage'),
   AccountOrdersPage: require('./account/AccountOrdersPage'),

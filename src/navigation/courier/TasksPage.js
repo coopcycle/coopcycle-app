@@ -14,14 +14,14 @@ import _ from 'lodash'
 
 import { greenColor, redColor, greyColor, whiteColor, orangeColor, dateSelectHeaderHeight, websocketWarningHeight } from "../../styles/common"
 import DateSelectHeader from "../../components/DateSelectHeader"
-import TaskFilterModal from '../../components/TaskFilterModal'
 import { localeDetector } from '../../i18n'
 import Preferences from '../../Preferences'
 import {
-  loadTasks, filterTasks, clearTasksFilter, selectIsTagHidden,
-  selectFilteredTasks, selectIsTasksLoading, selectIsTasksLoadingFailure, selectTaskSelectedDate,
-  selectAreDoneTasksHidden, selectAreFailedTasksHidden,
-  selectTagNames,
+  loadTasks,
+  selectFilteredTasks,
+  selectIsTasksLoading,
+  selectIsTasksLoadingFailure,
+  selectTaskSelectedDate,
 } from '../../redux/Courier'
 import BackgroundGeolocation from 'react-native-mauron85-background-geolocation'
 
@@ -40,7 +40,7 @@ class TasksPage extends Component {
     return {
       headerRight: (
         <View style={{flex: 1, flexDirection: 'row', alignItems: 'flex-end'}}>
-          <Button transparent onPress={() => navigation.state.params.toggleFilterModal()}>
+          <Button transparent onPress={() => navigation.navigate('CourierFilters')}>
             <Icon name="settings" style={{color: whiteColor}} />
           </Button>
           <Button transparent>
@@ -60,7 +60,6 @@ class TasksPage extends Component {
       loadingMessage: this.props.t('LOADING'),
       geolocation: null,
       polyline: [],
-      filterModal: false,
     }
 
     this.onMapReady = this.onMapReady.bind(this)
@@ -78,8 +77,6 @@ class TasksPage extends Component {
         }
       }
     })
-
-    this.props.navigation.setParams({ toggleFilterModal: this.toggleFilterModal })
 
     this.refreshTasks(this.props.selectedDate)
   }
@@ -180,31 +177,6 @@ class TasksPage extends Component {
     // BackgroundGeolocation.start();
   }
 
-  toggleFilterModal = () => {
-    this.setState(state => ({ filterModal: !state.filterModal }))
-  }
-
-  renderFilterModal() {
-    const {
-      areDoneTasksHidden, areFailedTasksHidden, isTagHidden,
-      toggleDisplayTag, toggleDisplayDone, toggleDisplayFailed, tags,
-    } = this.props
-
-    return (
-      <TaskFilterModal
-        isVisible={this.state.filterModal}
-        onRequestClose={() => this.setState({ filterModal: false })}
-        areDoneTasksHidden={areDoneTasksHidden}
-        areFailedTasksHidden={areFailedTasksHidden}
-        toggleDisplayDone={toggleDisplayDone}
-        toggleDisplayFailed={toggleDisplayFailed}
-        toggleDisplayTag={toggleDisplayTag}
-        isTagHidden={isTagHidden}
-        tags={tags}
-      />
-    )
-  }
-
   renderLoader() {
 
     const { isLoadingTasks } = this.props
@@ -274,7 +246,6 @@ class TasksPage extends Component {
 
     return (
       <Container>
-        {this.renderFilterModal()}
         <DateSelectHeader
           buttonsEnabled={true}
           toDate={this.refreshTasks}
@@ -344,10 +315,6 @@ const styles = StyleSheet.create({
   mapCalloutText: {
     fontSize: 14
   },
-  modal: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: whiteColor
-  },
   taskListButton: {
     paddingHorizontal: 15,
     paddingTop: 0,
@@ -390,13 +357,9 @@ function mapStateToProps (state) {
   return {
     httpClient: state.app.httpClient,
     tasks: selectFilteredTasks(state),
-    tags: selectTagNames(state),
     selectedDate: selectTaskSelectedDate(state),
     isLoadingTasks: selectIsTasksLoading(state),
     tasksLoadingError: selectIsTasksLoadingFailure(state),
-    areDoneTasksHidden: selectAreDoneTasksHidden(state),
-    areFailedTasksHidden: selectAreFailedTasksHidden(state),
-    isTagHidden: selectIsTagHidden(state),
   }
 }
 
@@ -404,9 +367,6 @@ function mapDispatchToProps (dispatch) {
   return {
     loadTasks: (client, selectedDate) => dispatch(loadTasks(client, selectedDate)),
     send: (msg) => dispatch(send(msg)),
-    toggleDisplayDone: (hidden) => dispatch(hidden ? clearTasksFilter({ status: 'DONE' }) : filterTasks({ status: 'DONE' })),
-    toggleDisplayFailed: (hidden) => dispatch(hidden ? clearTasksFilter({ status: 'FAILED' }) : filterTasks({ status: 'FAILED' })),
-    toggleDisplayTag: (tag, hidden) => dispatch(hidden ? clearTasksFilter({ tags: tag }) : filterTasks({ tags: tag })),
   }
 }
 
