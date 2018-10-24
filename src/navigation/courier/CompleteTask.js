@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
 import { StyleSheet, View, TouchableOpacity, Alert } from 'react-native'
 import {
-  Container, Header, Title, Content,
-  Left, Right, Body,
+  Container, Content,
   Icon, Text, Button, Footer,
   Form, Item, Input, Label
 } from 'native-base'
@@ -12,7 +11,6 @@ import { connect } from 'react-redux'
 import _ from 'lodash'
 
 import LoaderOverlay from '../../components/LoaderOverlay'
-import Modal from '../restaurant/components/Modal'
 
 import { selectTasksList, selectIsTasksLoading, selectIsTaskCompleteFailure, markTaskDone, markTaskFailed } from '../../redux/Courier'
 import { greenColor, greyColor, redColor } from '../../styles/common'
@@ -90,9 +88,7 @@ class CompleteTask extends Component {
     const onPress = markTaskDone ? this.markTaskDone.bind(this) : this.markTaskFailed.bind(this)
 
     return (
-      <Modal
-        navigation={ this.props.navigation }
-        title={ `${this.props.t('TASK')} #${task.id}` }>
+      <Container>
         <Content padder>
           <Form>
             <Item stackedLabel>
@@ -110,7 +106,7 @@ class CompleteTask extends Component {
           </TouchableOpacity>
         </Footer>
         <LoaderOverlay loading={ this.props.loading } />
-      </Modal>
+      </Container>
     )
   }
 }

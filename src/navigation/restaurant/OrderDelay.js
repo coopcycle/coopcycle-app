@@ -12,7 +12,6 @@ import material from '../../../native-base-theme/variables/material'
 
 import { delayOrder } from '../../redux/Restaurant/actions'
 import LoaderOverlay from '../../components/LoaderOverlay'
-import Modal from './components/Modal'
 
 class BigButton extends Component {
   constructor(props) {
@@ -64,7 +63,7 @@ class OrderDelayScreen extends Component {
 
   render() {
     return (
-      <Modal
+      <Container
         navigation={ this.props.navigation }
         title={ this.props.t('RESTAURANT_ORDER_DELAY_MODAL_TITLE') }>
         <View style={{ padding: 20 }}>
@@ -72,25 +71,27 @@ class OrderDelayScreen extends Component {
             { this.props.t('RESTAURANT_ORDER_DELAY_DISCLAIMER') }
           </Text>
         </View>
-        <Grid style={{ backgroundColor: '#fff', paddingHorizontal: 20, paddingVertical: 20 }}>
-          <Row style={{ marginBottom: 20 }}>
-            <BigButton
-              heading={ '10 minutes' }
-              onPress={ () => this._delayOrder(10) } />
-          </Row>
-          <Row style={{ marginBottom: 20 }}>
-            <BigButton
-              heading={ '20 minutes' }
-              onPress={ () => this._delayOrder(20) } />
-          </Row>
-          <Row>
-            <BigButton danger
-              heading={ '30 minutes' }
-              onPress={ () => this._delayOrder(30) } />
-          </Row>
-        </Grid>
+        <Content>
+          <Grid style={{ backgroundColor: '#fff', paddingHorizontal: 20, paddingVertical: 20 }}>
+            <Row style={{ marginBottom: 20 }}>
+              <BigButton
+                heading={ '10 minutes' }
+                onPress={ () => this._delayOrder(10) } />
+            </Row>
+            <Row style={{ marginBottom: 20 }}>
+              <BigButton
+                heading={ '20 minutes' }
+                onPress={ () => this._delayOrder(20) } />
+            </Row>
+            <Row>
+              <BigButton danger
+                heading={ '30 minutes' }
+                onPress={ () => this._delayOrder(30) } />
+            </Row>
+          </Grid>
+        </Content>
         <LoaderOverlay loading={ this.props.loading } />
-      </Modal>
+      </Container>
     )
   }
 }

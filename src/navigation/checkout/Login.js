@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { StyleSheet, View } from 'react-native'
-import { Container, Header, Content, Text, Radio, Right, Left, Footer, FooterTab, Button, Icon } from 'native-base'
+import { Container, Content, Text, Button, Icon } from 'native-base'
 import { Col, Row, Grid } from 'react-native-easy-grid'
 import { translate } from 'react-i18next'
 import { connect } from 'react-redux'
@@ -9,7 +9,6 @@ import _ from 'lodash'
 import { incrementItem, decrementItem } from '../../redux/Checkout/actions'
 import { login } from '../../redux/App/actions'
 
-import Modal from '../restaurant/components/Modal'
 import LoginForm from '../../components/LoginForm'
 import LoaderOverlay from '../../components/LoaderOverlay'
 
@@ -57,9 +56,7 @@ class Login extends Component {
   render() {
 
     return (
-      <Modal
-        navigation={ this.props.navigation }
-        title={ this.props.t('CHECKOUT_LOGIN_TITLE') }>
+      <Container>
         <View style={{ padding: 20 }}>
           <Text note>
             { this.props.t('CHECKOUT_LOGIN_DISCLAIMER') }
@@ -75,7 +72,7 @@ class Login extends Component {
             onLoginFail={ this.onLoginFail.bind(this) } />
         </Content>
         <LoaderOverlay loading={ this.state.loading } />
-      </Modal>
+      </Container>
     )
   }
 }

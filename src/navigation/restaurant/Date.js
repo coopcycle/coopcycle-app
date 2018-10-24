@@ -1,10 +1,6 @@
 import React, { Component } from 'react'
 import { StyleSheet, View } from 'react-native'
-import {
-  Container, Header, Title, Content,
-  Left, Right, Body,
-  List, ListItem, InputGroup, Input, Icon, Text, Picker, Button
-} from 'native-base'
+import { Container, Content } from 'native-base'
 
 import { LocaleConfig, Calendar } from 'react-native-calendars'
 import moment from 'moment/min/moment-with-locales'
@@ -42,18 +38,7 @@ class DateScreen extends Component {
 
     return (
       <Container>
-        <Header>
-          <Left>
-            <Button transparent onPress={() => this.props.navigation.goBack()}>
-              <Icon name="close" />
-            </Button>
-          </Left>
-          <Body>
-            <Title>Choose date</Title>
-          </Body>
-          <Right />
-        </Header>
-        <Content style={ styles.content }>
+        <Content padder>
           <Calendar
             current={ this.props.date.format('YYYY-MM-DD') }
             onDayPress={ ({ dateString }) => this.onDateChange(dateString) }
