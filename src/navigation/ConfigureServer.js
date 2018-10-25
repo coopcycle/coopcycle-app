@@ -47,8 +47,8 @@ class ConfigureServer extends Component {
           .then(() => this.props.setBaseURL(baseURL))
           .then(() => this.setState({ loading: false, serverError: false }))
           .then(() => this.props.navigation.navigate({
-            routeName: 'Home',
-            key: 'Home',
+            routeName: 'CheckoutHome',
+            key: 'CheckoutHome',
             params: { baseURL }
           }))
 
@@ -123,11 +123,9 @@ class ConfigureServer extends Component {
           <View style={{ marginHorizontal: 10, marginTop: 20 }}>
             <Card>
               <CardItem>
-                <Body>
                 <Text>
                   {`${this.props.t('CHOOSE_SERVER')}.`}
                 </Text>
-                </Body>
               </CardItem>
             </Card>
           </View>

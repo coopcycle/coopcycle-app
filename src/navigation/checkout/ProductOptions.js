@@ -7,7 +7,6 @@ import { connect } from 'react-redux'
 import _ from 'lodash'
 
 import { addItem } from '../../redux/Checkout/actions'
-import Modal from '../restaurant/components/Modal'
 
 class ProductOptions extends Component {
 
@@ -105,9 +104,7 @@ class ProductOptions extends Component {
     const { product } = this.props.navigation.state.params
 
     return (
-      <Modal
-        navigation={ this.props.navigation }
-        title={ this.props.t('CHECKOUT_PRODUCT_OPTIONS_TITLE') }>
+      <Container>
         <View style={{ padding: 20 }}>
           <Text note>
             { this.props.t('CHECKOUT_PRODUCT_OPTIONS_DISCLAIMER', { name: product.name }) }
@@ -117,7 +114,7 @@ class ProductOptions extends Component {
           { product.menuAddOn.map(menuSection => this.renderSection(menuSection)) }
         </Content>
         { this.renderFooter() }
-      </Modal>
+      </Container>
     )
   }
 }

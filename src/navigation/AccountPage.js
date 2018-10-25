@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, ActivityIndicator } from 'react-native';
+import { StackActions, NavigationActions } from 'react-navigation'
 import {
   Container, Header, Title, Content,
   Left, Right, Body,
@@ -35,11 +36,10 @@ class AccountPage extends Component {
         isAuthenticated: this.props.user.isAuthenticated()
       })
       navigate({
-        routeName: 'Home',
-        key: 'Home',
+        routeName: 'RestaurantHome',
+        key: 'RestaurantHome',
         params: {}
       })
-
     }
   }
 
@@ -57,17 +57,17 @@ class AccountPage extends Component {
 
   async logout() {
 
-    const { navigate } = this.props.navigation
-
     await this.props.user.logout()
 
     this.setState({ isAuthenticated: this.props.user.isAuthenticated() })
 
-    navigate({
-      routeName: 'Home',
-      key: 'Home',
-      params: {}
+    const resetAction = StackActions.reset({
+      index: 0,
+      actions: [
+        NavigationActions.navigate({ routeName: 'AccountHome' }),
+      ]
     })
+    this.props.navigation.dispatch(resetAction)
   }
 
   onRequestStart() {
@@ -94,8 +94,8 @@ class AccountPage extends Component {
         isAuthenticated: this.props.user.isAuthenticated()
       })
       navigate({
-        routeName: 'Home',
-        key: 'Home',
+        routeName: 'CheckoutHome',
+        key: 'CheckoutHome',
         params: {}
       })
     }

@@ -9,7 +9,6 @@ import {
 import { translate } from 'react-i18next'
 import { connect } from 'react-redux'
 
-import Modal from './components/Modal'
 import LoaderOverlay from '../../components/LoaderOverlay'
 import { changeStatus } from '../../redux/Restaurant/actions'
 
@@ -34,9 +33,7 @@ class SettingsScreen extends Component {
 
   render() {
     return (
-      <Modal
-        navigation={ this.props.navigation }
-        title={ this.props.t('SETTINGS') }>
+      <Container>
         <View style={{ paddingHorizontal: 10, paddingVertical: 20 }}>
           <Text style={{ textAlign: 'center' }}>
             { this.props.t('RESTAURANT_SETTINGS_HEADING', { name: this.props.restaurant.name }) }
@@ -93,7 +90,7 @@ class SettingsScreen extends Component {
           </List>
         </Content>
         <LoaderOverlay loading={ this.props.loading } />
-      </Modal>
+      </Container>
     )
   }
 }

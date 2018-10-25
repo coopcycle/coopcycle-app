@@ -1,13 +1,12 @@
 import React, { Component } from 'react'
 import { StyleSheet, View } from 'react-native'
-import { Container, Header, Content, Text, Radio, Right, Left, Footer, FooterTab, Button, Icon } from 'native-base'
+import { Container, Content, Text, Button, Icon } from 'native-base'
 import { Col, Row, Grid } from 'react-native-easy-grid'
 import { translate } from 'react-i18next'
 import { connect } from 'react-redux'
 import _ from 'lodash'
 
 import { incrementItem, decrementItem } from '../../redux/Checkout/actions'
-import Modal from '../restaurant/components/Modal'
 
 class EditItem extends Component {
 
@@ -22,9 +21,7 @@ class EditItem extends Component {
     const { item } = this.props
 
     return (
-      <Modal
-        navigation={ this.props.navigation }
-        title={ this.props.t('CHANGE_QUANT') }>
+      <Container>
         <Content padder>
           <Grid>
             <Row>
@@ -50,7 +47,7 @@ class EditItem extends Component {
             </Row>
           </Grid>
         </Content>
-      </Modal>
+      </Container>
     )
   }
 }

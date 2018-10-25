@@ -1,7 +1,11 @@
-import HomeTab from './HomeTab'
-import AppStack from './AppStack'
+import CheckoutNavigator from './CheckoutNavigator'
+import RestaurantNavigator from './RestaurantNavigator'
+import CourierNavigator from './CourierNavigator'
+import DrawerNavigator from './DrawerNavigator'
 
 export default {
-  HomeTab,
-  AppStack
+  CheckoutNavigator,
+  RestaurantNavigator,
+  CourierNavigator,
+  DrawerNavigator,
 }

@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
 import { StyleSheet, View, TouchableOpacity } from 'react-native'
 import {
-  Container, Header, Title, Content,
-  Left, Right, Body,
+  Container, Content,
   Icon, Text, Button
 } from 'native-base'
 import { Col, Row, Grid } from 'react-native-easy-grid'
@@ -12,7 +11,6 @@ import material from '../../../native-base-theme/variables/material'
 
 import { cancelOrder } from '../../redux/Restaurant/actions'
 import LoaderOverlay from '../../components/LoaderOverlay'
-import Modal from './components/Modal'
 
 class BigButton extends Component {
   constructor(props) {
@@ -69,36 +67,36 @@ class OrderCancelScreen extends Component {
     const { navigate } = this.props.navigation
 
     return (
-      <Modal
-        navigation={ this.props.navigation }
-        title={ this.props.t('RESTAURANT_ORDER_CANCEL_MODAL_TITLE') }>
+      <Container>
         <View style={{ padding: 20 }}>
           <Text note>
             { this.props.t('RESTAURANT_ORDER_CANCEL_DISCLAIMER') }
           </Text>
         </View>
-        <Grid style={{ backgroundColor: '#fff', paddingHorizontal: 20, paddingVertical: 20 }}>
-          <Row style={{ marginBottom: 20 }}>
-            <BigButton
-              heading={ this.props.t('RESTAURANT_ORDER_CANCEL_REASON_CUSTOMER_HEADING') }
-              text={ `${this.props.t('RESTAURANT_ORDER_REFUSE_REASON_ORDER_WILL_BE_REFUSED')}\n${this.props.t('RESTAURANT_ORDER_REFUSE_REASON_ORDER_CONTINUE_RECEIVING')}` }
-              onPress={ () => this._cancelOrder('CUSTOMER') } />
-          </Row>
-          <Row style={{ marginBottom: 20 }}>
-            <BigButton
-              heading={ this.props.t('RESTAURANT_ORDER_REFUSE_REASON_SOLD_OUT_HEADING') }
-              text={ `${this.props.t('RESTAURANT_ORDER_REFUSE_REASON_ORDER_WILL_BE_REFUSED')}\n${this.props.t('RESTAURANT_ORDER_REFUSE_REASON_ORDER_CONTINUE_RECEIVING')}` }
-              onPress={ () => this._cancelOrder('SOLD_OUT') } />
-          </Row>
-          <Row>
-            <BigButton
-              heading={ this.props.t('RESTAURANT_ORDER_REFUSE_REASON_RUSH_HOUR_HEADING') }
-              text={ `${this.props.t('RESTAURANT_ORDER_REFUSE_REASON_ORDER_WILL_BE_REFUSED')}\n${this.props.t('RESTAURANT_ORDER_REFUSE_REASON_ORDER_CONTINUE_RECEIVING')}` }
-              onPress={ () => this._cancelOrder('RUSH_HOUR') } />
-          </Row>
-        </Grid>
+        <Content>
+          <Grid style={{ backgroundColor: '#fff', paddingHorizontal: 20, paddingVertical: 20 }}>
+            <Row style={{ marginBottom: 20 }}>
+              <BigButton
+                heading={ this.props.t('RESTAURANT_ORDER_CANCEL_REASON_CUSTOMER_HEADING') }
+                text={ `${this.props.t('RESTAURANT_ORDER_REFUSE_REASON_ORDER_WILL_BE_REFUSED')}\n${this.props.t('RESTAURANT_ORDER_REFUSE_REASON_ORDER_CONTINUE_RECEIVING')}` }
+                onPress={ () => this._cancelOrder('CUSTOMER') } />
+            </Row>
+            <Row style={{ marginBottom: 20 }}>
+              <BigButton
+                heading={ this.props.t('RESTAURANT_ORDER_REFUSE_REASON_SOLD_OUT_HEADING') }
+                text={ `${this.props.t('RESTAURANT_ORDER_REFUSE_REASON_ORDER_WILL_BE_REFUSED')}\n${this.props.t('RESTAURANT_ORDER_REFUSE_REASON_ORDER_CONTINUE_RECEIVING')}` }
+                onPress={ () => this._cancelOrder('SOLD_OUT') } />
+            </Row>
+            <Row>
+              <BigButton
+                heading={ this.props.t('RESTAURANT_ORDER_REFUSE_REASON_RUSH_HOUR_HEADING') }
+                text={ `${this.props.t('RESTAURANT_ORDER_REFUSE_REASON_ORDER_WILL_BE_REFUSED')}\n${this.props.t('RESTAURANT_ORDER_REFUSE_REASON_ORDER_CONTINUE_RECEIVING')}` }
+                onPress={ () => this._cancelOrder('RUSH_HOUR') } />
+            </Row>
+          </Grid>
+        </Content>
         <LoaderOverlay loading={ this.props.loading } />
-      </Modal>
+      </Container>
     )
   }
 }
