@@ -94,9 +94,9 @@ class App extends Component {
       const { app } = store.getState()
       const { httpClient, currentRoute } = app
 
-      if (currentRoute !== 'RestaurantDashboard') {
+      if (currentRoute !== 'RestaurantHome') {
         const pushAction = NavigationActions.navigate({
-          routeName: 'RestaurantDashboard',
+          routeName: 'RestaurantHome',
           params: {
             restaurant
           }
