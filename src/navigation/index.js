@@ -1,6 +1,7 @@
 import React from 'react'
 import { View } from 'react-native'
 import { Icon } from 'native-base'
+import HeaderButton from '../components/HeaderButton'
 
 import Home from './Home'
 import { primaryColor,  whiteColor, fontTitleName } from '../styles/common'
@@ -64,8 +65,6 @@ export const defaultNavigationOptions = {
 
 export const headerLeft = navigation => {
   return (
-    <View style={{ paddingHorizontal: 10 }}>
-      <Icon style={{ color: '#fff' }} name="menu" onPress={ () => navigation.toggleDrawer() } />
-    </View>
+    <HeaderButton iconName="menu" onPress={ () => navigation.toggleDrawer() } />
   )
 }
