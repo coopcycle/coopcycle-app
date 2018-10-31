@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { StyleSheet, View, TouchableOpacity } from 'react-native'
 import { Col, Row, Grid } from 'react-native-easy-grid'
-import { Icon, Text } from 'native-base'
+import { Icon, Text, H3 } from 'native-base'
 import { translate } from 'react-i18next'
 
 class DatePickerHeader extends Component {
@@ -10,20 +10,21 @@ class DatePickerHeader extends Component {
     const { date } = this.props
 
     return (
-      <Grid style={{ borderBottomWidth: 1, borderBottomColor: '#000' }}>
+      <Grid style={ styles.container }>
         <Row>
           <Col size={ 8 }>
             <TouchableOpacity onPress={ () => this.props.onCalendarClick() }>
               <View style={ [ styles.wrapper, styles.buttonLeft ] }>
-                <Icon name="calendar" />
-                <Text>{ date.format('dddd LL') }</Text>
+                <Icon type="FontAwesome" name="calendar" />
+                <H3>{ date.format('dddd LL') }</H3>
+                <Icon type="FontAwesome" name="chevron-right" style={{ color: '#ddd' }} />
               </View>
             </TouchableOpacity>
           </Col>
           <Col size={ 4 }>
             <TouchableOpacity onPress={ () => this.props.onTodayClick() }>
               <View style={ [ styles.wrapper, styles.buttonRight ] }>
-                <Icon name="refresh" />
+                <Icon type="FontAwesome" name="refresh" />
                 <Text>{ this.props.t('TODAY') }</Text>
               </View>
             </TouchableOpacity>
@@ -35,6 +36,10 @@ class DatePickerHeader extends Component {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: '#ddd'
+  },
   wrapper: {
     flex: 1,
     flexDirection: 'row',
