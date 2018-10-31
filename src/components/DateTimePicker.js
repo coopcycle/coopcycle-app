@@ -2,11 +2,8 @@ import React, { Component } from 'react'
 import { Text, Button, Icon, Header, Left, Right, Title, Body } from 'native-base'
 import { TextInput, View } from 'react-native'
 import ModalSelector from 'react-native-modal-selector'
-import moment from 'moment/min/moment-with-locales'
+import moment from 'moment'
 import { translate } from 'react-i18next'
-import { localeDetector } from '../i18n'
-
-moment.locale(localeDetector())
 
 class DateTimePicker extends Component {
 

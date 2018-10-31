@@ -4,13 +4,12 @@ import { Container, Content, Button, Icon, Text, Thumbnail, CheckBox, Header, Le
 
 import { connect } from 'react-redux'
 import _ from 'lodash'
-import moment from 'moment/min/moment-with-locales'
+import moment from 'moment'
 
 import TaskList from '../../components/TaskList'
 import DateSelectHeader from '../../components/DateSelectHeader'
 import { whiteColor } from '../../styles/common'
 import { translate } from 'react-i18next'
-import { localeDetector } from '../../i18n'
 import {
   loadTasks,
   markTaskDone,
@@ -21,8 +20,6 @@ import {
   selectFilteredTasks,
   selectTagNames,
 } from '../../redux/Courier'
-
-moment.locale(localeDetector())
 
 const taskComparator = (taskA, taskB) => taskA['@id'] === taskB['@id']
 

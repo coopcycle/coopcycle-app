@@ -12,6 +12,9 @@ import Settings from '../Settings'
 import en from './locales/en.json'
 import fr from './locales/fr.json'
 
+// Load additional Moment.js locales
+import 'moment/locale/fr'
+
 export const localeDetector = () => RNLanguages.language || Settings.get('locale')
 
 // https://www.i18next.com/misc/creating-own-plugins.html#languagedetector

@@ -1,4 +1,4 @@
-import moment from 'moment/min/moment-with-locales'
+import moment from 'moment'
 import {
   LOAD_TASKS_REQUEST, LOAD_TASKS_FAILURE, LOAD_TASKS_SUCCESS,
   MARK_TASK_DONE_REQUEST, MARK_TASK_DONE_FAILURE, MARK_TASK_DONE_SUCCESS,
@@ -7,10 +7,6 @@ import {
 } from './taskActions'
 import { MESSAGE } from '../middlewares/WebSocketMiddleware'
 import _ from 'lodash'
-import { localeDetector } from '../../i18n'
-
-
-moment.locale(localeDetector())
 
 /*
  * Intital state shape for the task entity reducer

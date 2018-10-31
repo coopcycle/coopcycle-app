@@ -10,7 +10,7 @@ import {
 import { Col, Row, Grid } from 'react-native-easy-grid'
 import { connect } from 'react-redux'
 import { translate } from 'react-i18next'
-import moment from 'moment/min/moment-with-locales'
+import moment from 'moment'
 import { phonecall } from 'react-native-communications'
 import { PhoneNumberUtil, PhoneNumberFormat } from 'google-libphonenumber'
 
@@ -18,10 +18,7 @@ import { formatPrice } from '../../Cart'
 import LoaderOverlay from '../../components/LoaderOverlay'
 import OrderItems from './components/OrderItems'
 import { acceptOrder, setCurrentOrder } from '../../redux/Restaurant/actions'
-import { localeDetector } from '../../i18n'
 import material from '../../../native-base-theme/variables/material'
-
-moment.locale(localeDetector())
 
 const phoneNumberUtil = PhoneNumberUtil.getInstance()
 

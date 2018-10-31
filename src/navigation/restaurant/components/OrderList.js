@@ -3,13 +3,10 @@ import { SectionList, StyleSheet, TouchableOpacity, View } from 'react-native'
 import { Icon, Text, Thumbnail, Badge } from 'native-base';
 import { Col, Row, Grid } from 'react-native-easy-grid'
 import slugify from 'slugify'
-import moment from 'moment/min/moment-with-locales'
+import moment from 'moment'
 import _ from 'lodash'
 import { translate } from 'react-i18next'
-import { localeDetector } from '../../../i18n'
 import { formatPrice } from '../../../Cart'
-
-moment.locale(localeDetector())
 
 const styles = StyleSheet.create({
   item: {

@@ -9,10 +9,7 @@ import {
   InputGroup, Input,
   Icon, Text, Picker, Button
 } from 'native-base';
-import moment from 'moment/min/moment-with-locales'
-import { localeDetector } from '../i18n'
-
-moment.locale(localeDetector())
+import moment from 'moment'
 
 import CartFooter from './checkout/components/CartFooter'
 import Menu from '../components/Menu'

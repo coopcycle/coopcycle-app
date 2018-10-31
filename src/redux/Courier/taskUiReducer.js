@@ -1,14 +1,8 @@
 /*
  * Task related reducers
  */
-import moment from 'moment/min/moment-with-locales'
+import moment from 'moment'
 import { LOAD_TASKS_REQUEST, ADD_TASK_FILTER, CLEAR_TASK_FILTER } from './taskActions'
-
-import { localeDetector } from '../../i18n'
-
-
-moment.locale(localeDetector())
-
 
 /*
  * Intital state shape for the task UI reducer

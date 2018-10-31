@@ -9,7 +9,6 @@ import { Root, StyleProvider } from 'native-base'
 import getTheme from '../native-base-theme/components'
 import material from '../native-base-theme/variables/material'
 
-import moment from 'moment'
 import { createSwitchNavigator } from 'react-navigation'
 import { Provider } from 'react-redux'
 import { translate, I18nextProvider } from 'react-i18next'
@@ -20,7 +19,12 @@ Sound.setCategory('Playback')
 
 import navigation from './navigation'
 import navigators from './navigation/navigators'
-import i18n from './i18n'
+import i18n, { localeDetector } from './i18n'
+
+// Make sure to call moment.locale() BEFORE creating Redux store
+import moment from 'moment'
+moment.locale(localeDetector())
+
 import store from './redux/store'
 import { loadTasks } from './redux/Courier'
 import { loadOrders, loadOrderAndNavigate } from './redux/Restaurant/actions'
@@ -30,7 +34,7 @@ import PushNotification from './notifications'
 import DropdownAlert from 'react-native-dropdownalert'
 import DropdownHolder from './DropdownHolder'
 
-import NavigationHolder from './NavigationHolder';
+import NavigationHolder from './NavigationHolder'
 
 import { YellowBox } from 'react-native'
 YellowBox.ignoreWarnings([

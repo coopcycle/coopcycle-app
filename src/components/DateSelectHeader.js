@@ -3,14 +3,12 @@ import { StyleSheet, View, Text, Animated } from 'react-native'
 import { Icon, Button } from 'native-base'
 import { Col, Row, Grid } from 'react-native-easy-grid'
 import { LocaleConfig, Calendar } from 'react-native-calendars'
-import moment from 'moment/min/moment-with-locales'
+import moment from 'moment'
 import { localeDetector } from '../i18n'
 
 import { primaryColor, whiteColor, dateSelectHeaderHeight, headerFontSize } from "../styles/common"
 
 const LOCALE = localeDetector()
-
-moment.locale(LOCALE)
 
 LocaleConfig.locales[LOCALE] = {
   monthNames: moment.months(),

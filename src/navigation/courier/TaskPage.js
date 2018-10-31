@@ -5,17 +5,14 @@ import { Container, Content, Footer, Text, Button, Icon, Header, Title, Left, Bo
 import { Col, Row, Grid } from 'react-native-easy-grid'
 import MapView from 'react-native-maps'
 import Swipeout from 'react-native-swipeout'
-import moment from 'moment/min/moment-with-locales'
+import moment from 'moment'
 import { translate } from 'react-i18next'
-import { localeDetector } from '../../i18n'
 import { phonecall } from 'react-native-communications'
 import { showLocation } from 'react-native-map-link'
 import _ from 'lodash'
 
 import { greenColor, greyColor, redColor } from "../../styles/common"
 import { selectTasksList } from "../../redux/Courier"
-
-moment.locale(localeDetector())
 
 const isCompleted = task => task.status !== 'TODO'
 

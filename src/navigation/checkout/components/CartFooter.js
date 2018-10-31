@@ -2,14 +2,11 @@ import React, { Component } from 'react'
 import { Animated, StyleSheet, View } from 'react-native'
 import { Text, Button, Icon, Footer } from 'native-base'
 import { Col, Row, Grid } from 'react-native-easy-grid'
-import moment from 'moment/min/moment-with-locales'
+import moment from 'moment'
 import { connect } from 'react-redux'
 import { translate } from 'react-i18next'
 
-import { localeDetector } from '../../../i18n'
 import { formatPrice } from '../../../Cart'
-
-moment.locale(localeDetector())
 
 const styles = StyleSheet.create({
   column: {

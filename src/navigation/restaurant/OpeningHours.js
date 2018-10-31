@@ -12,11 +12,8 @@ import moment from 'moment'
 import { translate } from 'react-i18next'
 import { connect } from 'react-redux'
 
-import { localeDetector } from '../../i18n'
 import LoaderOverlay from '../../components/LoaderOverlay'
 import { closeRestaurant, deleteOpeningHoursSpecification } from '../../redux/Restaurant/actions'
-
-moment.locale(localeDetector())
 
 class OpeningHoursScreen extends Component {
 

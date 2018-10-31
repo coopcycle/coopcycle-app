@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native'
 import { Container, Content } from 'native-base'
 
 import { LocaleConfig, Calendar } from 'react-native-calendars'
-import moment from 'moment/min/moment-with-locales'
+import moment from 'moment'
 import { translate } from 'react-i18next'
 
 import { connect } from 'react-redux'
@@ -11,8 +11,6 @@ import { localeDetector } from '../../i18n'
 import { changeDate } from '../../redux/Restaurant/actions'
 
 const LOCALE = localeDetector()
-
-moment.locale(LOCALE)
 
 LocaleConfig.locales[LOCALE] = {
   monthNames: moment.months(),

@@ -3,7 +3,7 @@ import { StyleSheet, View, ActivityIndicator, Alert, TouchableOpacity, Platform 
 import {
   Container, Button, Icon, Text
 } from 'native-base'
-import moment from 'moment/min/moment-with-locales'
+import moment from 'moment'
 import MapView from 'react-native-maps'
 import { NavigationActions } from 'react-navigation'
 import KeepAwake from 'react-native-keep-awake'
@@ -14,7 +14,6 @@ import _ from 'lodash'
 
 import { greenColor, redColor, greyColor, whiteColor, orangeColor, dateSelectHeaderHeight, websocketWarningHeight } from "../../styles/common"
 import DateSelectHeader from "../../components/DateSelectHeader"
-import { localeDetector } from '../../i18n'
 import Preferences from '../../Preferences'
 import {
   loadTasks,
@@ -27,9 +26,6 @@ import BackgroundGeolocation from 'react-native-mauron85-background-geolocation'
 
 import { withDefaults } from "../../maps"
 const MapViewWithDefaults = withDefaults(MapView)
-
-moment.locale(localeDetector())
-
 
 class TasksPage extends Component {
 

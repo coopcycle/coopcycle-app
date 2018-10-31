@@ -11,14 +11,11 @@ import {
   Card, CardItem
 } from 'native-base';
 import _ from 'lodash'
-import moment from 'moment/min/moment-with-locales'
+import moment from 'moment'
 import { connect } from 'react-redux'
 import { translate } from 'react-i18next'
 import RestaurantSearch from '../components/RestaurantSearch'
 import RestaurantList from '../components/RestaurantList'
-import { localeDetector } from '../i18n'
-
-moment.locale(localeDetector())
 
 class RestaurantsPage extends Component {
 

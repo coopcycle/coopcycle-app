@@ -2,12 +2,9 @@ import React, { Component } from 'react'
 import { FlatList, StyleSheet, Viewr } from 'react-native'
 import { Container, Icon, Text } from 'native-base'
 import { Col, Row, Grid } from 'react-native-easy-grid'
-import moment from 'moment/min/moment-with-locales'
+import moment from 'moment'
 import { translate } from 'react-i18next'
 import _ from 'lodash'
-import { localeDetector } from '../../i18n'
-
-moment.locale(localeDetector())
 
 class TaskHistoryPage extends Component {
 
