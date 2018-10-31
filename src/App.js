@@ -134,12 +134,6 @@ class App extends Component {
               `Une nouvelle commande pour le ${event.data.date} a été créée`,
               [
                 {
-                  text: 'Annuler',
-                  onPress: () => {
-                    bell.stop(() => {})
-                  }
-                },
-                {
                   text: 'Afficher',
                   onPress: () => {
                     bell.stop(() => {})
@@ -148,7 +142,7 @@ class App extends Component {
                 },
               ],
               {
-                cancelable: true
+                cancelable: false
               }
             )
           } else {
