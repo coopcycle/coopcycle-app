@@ -31,5 +31,4 @@ const styles = StyleSheet.create({
   }
 })
 
-// export default RushModeAlert
 export default translate()(RushModeAlert)

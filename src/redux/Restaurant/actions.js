@@ -1,8 +1,13 @@
 import { createAction } from 'redux-actions'
+import { NavigationActions } from 'react-navigation'
+
+import DropdownHolder from '../../DropdownHolder'
+import NavigationHolder from '../../NavigationHolder'
 
 /*
  * Action Types
  */
+
 export const LOAD_MY_RESTAURANTS_REQUEST = 'LOAD_MY_RESTAURANTS_REQUEST'
 export const LOAD_MY_RESTAURANTS_SUCCESS = 'LOAD_MY_RESTAURANTS_SUCCESS'
 export const LOAD_MY_RESTAURANTS_FAILURE = 'LOAD_MY_RESTAURANTS_FAILURE'
@@ -10,6 +15,12 @@ export const LOAD_MY_RESTAURANTS_FAILURE = 'LOAD_MY_RESTAURANTS_FAILURE'
 export const LOAD_ORDERS_REQUEST = 'LOAD_ORDERS_REQUEST'
 export const LOAD_ORDERS_SUCCESS = 'LOAD_ORDERS_SUCCESS'
 export const LOAD_ORDERS_FAILURE = 'LOAD_ORDERS_FAILURE'
+
+export const LOAD_ORDER_REQUEST = 'LOAD_ORDER_REQUEST'
+export const LOAD_ORDER_SUCCESS = 'LOAD_ORDER_SUCCESS'
+export const LOAD_ORDER_FAILURE = 'LOAD_ORDER_FAILURE'
+
+export const SET_CURRENT_ORDER = 'SET_CURRENT_ORDER'
 
 export const ACCEPT_ORDER_REQUEST = 'ACCEPT_ORDER_REQUEST'
 export const ACCEPT_ORDER_SUCCESS = 'ACCEPT_ORDER_SUCCESS'
@@ -53,6 +64,7 @@ export const DELETE_OPENING_HOURS_SPECIFICATION_FAILURE = 'DELETE_OPENING_HOURS_
 /*
  * Action Creators
  */
+
 export const loadMyRestaurantsRequest = createAction(LOAD_MY_RESTAURANTS_REQUEST)
 export const loadMyRestaurantsSuccess = createAction(LOAD_MY_RESTAURANTS_SUCCESS)
 export const loadMyRestaurantsFailure = createAction(LOAD_MY_RESTAURANTS_FAILURE)
@@ -60,6 +72,12 @@ export const loadMyRestaurantsFailure = createAction(LOAD_MY_RESTAURANTS_FAILURE
 export const loadOrdersRequest = createAction(LOAD_ORDERS_REQUEST)
 export const loadOrdersSuccess = createAction(LOAD_ORDERS_SUCCESS)
 export const loadOrdersFailure = createAction(LOAD_ORDERS_FAILURE)
+
+export const loadOrderRequest = createAction(LOAD_ORDER_REQUEST)
+export const loadOrderSuccess = createAction(LOAD_ORDER_SUCCESS)
+export const loadOrderFailure = createAction(LOAD_ORDER_FAILURE)
+
+export const setCurrentOrder = createAction(SET_CURRENT_ORDER)
 
 export const acceptOrderRequest = createAction(ACCEPT_ORDER_REQUEST)
 export const acceptOrderSuccess = createAction(ACCEPT_ORDER_SUCCESS)
@@ -126,13 +144,46 @@ export function loadOrders(client, restaurant, date) {
   }
 }
 
+export function loadOrderAndNavigate(order) {
+
+  return function (dispatch, getState) {
+
+    const { app } = getState()
+    const { httpClient } = app
+
+    dispatch(loadOrderRequest())
+
+    return httpClient.get(order)
+      .then(res => {
+
+        dispatch(loadOrderSuccess(res))
+
+        NavigationHolder.navigate('RestaurantOrder', {
+          order: res
+        })
+
+      })
+      .catch(e => dispatch(loadOrderFailure(e)))
+  }
+}
+
 export function acceptOrder(client, order) {
 
   return function (dispatch) {
     dispatch(acceptOrderRequest())
 
     return client.put(order['@id'] + '/accept')
-      .then(res => dispatch(acceptOrderSuccess(res)))
+      .then(res => {
+
+        dispatch(acceptOrderSuccess(res))
+
+        DropdownHolder
+          .getDropdown()
+          .alertWithType('success', 'Commande acceptée !',
+            `La commande ${order.number} (#${order.id}) a été acceptée`
+          )
+
+      })
       .catch(e => dispatch(acceptOrderFailure(e)))
   }
 }
@@ -165,7 +216,17 @@ export function cancelOrder(client, order, reason) {
     dispatch(cancelOrderRequest())
 
     return client.put(order['@id'] + '/cancel', { reason })
-      .then(res => dispatch(cancelOrderSuccess(res)))
+      .then(res => {
+
+        dispatch(cancelOrderSuccess(res))
+
+        DropdownHolder
+          .getDropdown()
+          .alertWithType('success', 'Commande annulée !',
+            `La commande ${order.number} (#${order.id}) a été annulée`
+          )
+
+      })
       .catch(e => dispatch(cancelOrderFailure(e)))
   }
 }

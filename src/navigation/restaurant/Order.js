@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity } from 'react-native';
+import { NavigationEvents } from 'react-navigation';
 import {
   Container, Header, Title, Content, Footer,
   Left, Right, Body,
   Icon, Text, Button,
   Card, CardItem,
 } from 'native-base';
-import { connectStyle } from 'native-base';
 import { Col, Row, Grid } from 'react-native-easy-grid'
 import { connect } from 'react-redux'
 import { translate } from 'react-i18next'
@@ -17,7 +17,7 @@ import { PhoneNumberUtil, PhoneNumberFormat } from 'google-libphonenumber'
 import { formatPrice } from '../../Cart'
 import LoaderOverlay from '../../components/LoaderOverlay'
 import OrderItems from './components/OrderItems'
-import { acceptOrder } from '../../redux/Restaurant/actions'
+import { acceptOrder, setCurrentOrder } from '../../redux/Restaurant/actions'
 import { localeDetector } from '../../i18n'
 import material from '../../../native-base-theme/variables/material'
 
@@ -27,23 +27,17 @@ const phoneNumberUtil = PhoneNumberUtil.getInstance()
 
 class OrderScreen extends Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      loading: false,
-    };
+  componentDidFocus(payload) {
+    this.props.setCurrentOrder(this.props.order)
   }
 
-  componentWillReceiveProps(newProps) {
-    // Go back when loading has finished
-    if (this.props.loading === true && newProps.loading === false) {
-      this.props.navigation.goBack()
-    }
+  componentWillBlur(payload) {
+    this.props.setCurrentOrder(null)
   }
 
   renderButtons() {
 
-    const { order } = this.props.navigation.state.params
+    const { order } = this.props
     const { navigate } = this.props.navigation
 
     if (order.state === 'new') {
@@ -107,7 +101,7 @@ class OrderScreen extends Component {
 
   renderHeading() {
 
-    const { order } = this.props.navigation.state.params
+    const { order } = this.props
 
     if (order.state !== 'refused' && order.state !== 'cancelled') {
 
@@ -137,7 +131,7 @@ class OrderScreen extends Component {
 
   renderNotes() {
 
-    const { order } = this.props.navigation.state.params
+    const { order } = this.props
 
     if (order.notes) {
       return (
@@ -155,11 +149,14 @@ class OrderScreen extends Component {
 
   render() {
 
-    const { order } = this.props.navigation.state.params
+    const { order } = this.props
     const phoneNumber = phoneNumberUtil.parse(order.customer.telephone)
 
     return (
       <Container>
+        <NavigationEvents
+          onDidFocus={ this.componentDidFocus.bind(this) }
+          onWillBlur={ this.componentWillBlur.bind(this) } />
         <Grid>
           { this.renderHeading() }
           <Row size={ 10 }>
@@ -228,17 +225,19 @@ const styles = StyleSheet.create({
   }
 });
 
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
   return {
     user: state.app.user,
     httpClient: state.app.httpClient,
-    loading: state.restaurant.isFetching
+    loading: state.restaurant.isFetching,
+    order: state.restaurant.order || ownProps.navigation.state.params.order,
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     acceptOrder: (client, order) => dispatch(acceptOrder(client, order)),
+    setCurrentOrder: (order) => dispatch(setCurrentOrder(order)),
   }
 }
 

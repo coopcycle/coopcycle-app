@@ -2,6 +2,10 @@ import {
   LOAD_ORDERS_REQUEST,
   LOAD_ORDERS_FAILURE,
   LOAD_ORDERS_SUCCESS,
+  LOAD_ORDER_REQUEST,
+  LOAD_ORDER_FAILURE,
+  LOAD_ORDER_SUCCESS,
+  SET_CURRENT_ORDER,
   ACCEPT_ORDER_REQUEST,
   ACCEPT_ORDER_SUCCESS,
   ACCEPT_ORDER_FAILURE,
@@ -43,6 +47,7 @@ const initialState = {
   fetchError: null,  // Error object describing the error
   isFetching: false, // Flag indicating active HTTP request
   orders: [],        // Array of orders
+  order: null,
   myRestaurants: [], // Array of restaurants
   date: moment(),
   status: 'available',
@@ -84,6 +89,7 @@ export default (state = initialState, action = {}) => {
 
   switch (action.type) {
     case LOAD_ORDERS_REQUEST:
+    case LOAD_ORDER_REQUEST:
     case ACCEPT_ORDER_REQUEST:
     case LOAD_MY_RESTAURANTS_REQUEST:
     case REFUSE_ORDER_REQUEST:
@@ -101,6 +107,7 @@ export default (state = initialState, action = {}) => {
       }
 
     case LOAD_ORDERS_FAILURE:
+    case LOAD_ORDER_FAILURE:
     case ACCEPT_ORDER_FAILURE:
     case LOAD_MY_RESTAURANTS_FAILURE:
     case REFUSE_ORDER_FAILURE:
@@ -125,10 +132,19 @@ export default (state = initialState, action = {}) => {
         orders: action.payload,
       }
 
+    case LOAD_ORDER_SUCCESS:
+      return {
+        ...state,
+        fetchError: false,
+        isFetching: false,
+        orders: state.orders.slice(0).concat([ action.payload ]),
+      }
+
     case ACCEPT_ORDER_SUCCESS:
       return {
         ...state,
         orders: spliceOrders(state, action.payload),
+        order: action.payload,
         fetchError: false,
         isFetching: false,
       }
@@ -137,6 +153,7 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         orders: spliceOrders(state, action.payload),
+        order: action.payload,
         fetchError: false,
         isFetching: false,
       }
@@ -145,6 +162,7 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         orders: spliceOrders(state, action.payload),
+        order: action.payload,
         fetchError: false,
         isFetching: false,
       }
@@ -153,8 +171,15 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         orders: spliceOrders(state, action.payload),
+        order: action.payload,
         fetchError: false,
         isFetching: false,
+      }
+
+    case SET_CURRENT_ORDER:
+      return {
+        ...state,
+        order: action.payload,
       }
 
     case LOAD_MY_RESTAURANTS_SUCCESS:

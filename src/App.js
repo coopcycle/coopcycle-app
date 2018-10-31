@@ -10,7 +10,7 @@ import getTheme from '../native-base-theme/components'
 import material from '../native-base-theme/variables/material'
 
 import moment from 'moment'
-import { NavigationActions, createSwitchNavigator } from 'react-navigation'
+import { createSwitchNavigator } from 'react-navigation'
 import { Provider } from 'react-redux'
 import { translate, I18nextProvider } from 'react-i18next'
 
@@ -23,9 +23,14 @@ import navigators from './navigation/navigators'
 import i18n from './i18n'
 import store from './redux/store'
 import { loadTasks } from './redux/Courier'
-import { loadOrders } from './redux/Restaurant/actions'
+import { loadOrders, loadOrderAndNavigate } from './redux/Restaurant/actions'
 import { setRemotePushToken, setCurrentRoute } from './redux/App/actions'
 import PushNotification from './notifications'
+
+import DropdownAlert from 'react-native-dropdownalert'
+import DropdownHolder from './DropdownHolder'
+
+import NavigationHolder from './NavigationHolder';
 
 import { YellowBox } from 'react-native'
 YellowBox.ignoreWarnings([
@@ -79,31 +84,21 @@ class App extends Component {
       const { httpClient, currentRoute } = app
 
       if (currentRoute !== 'CourierTaskList') {
-        const pushAction = NavigationActions.navigate({
-          routeName: 'CourierTaskList',
-          params: {}
-        })
-        this.navigator.dispatch(pushAction)
+        NavigationHolder.navigate('CourierTaskList', {})
       }
 
       store.dispatch(loadTasks(httpClient, moment(date)))
     }
 
-    const onOrderCreated = (restaurant, date) => {
+    const onOrderCreated = (restaurant, date, order) => {
 
       const { app } = store.getState()
-      const { httpClient, currentRoute } = app
+      const { currentRoute } = app
 
       if (currentRoute !== 'RestaurantHome') {
-        const pushAction = NavigationActions.navigate({
-          routeName: 'RestaurantHome',
-          params: {
-            restaurant
-          }
-        })
-        this.navigator.dispatch(pushAction)
+        NavigationHolder.navigate('RestaurantHome', { restaurant })
       } else {
-        store.dispatch(loadOrders(httpClient, restaurant, moment(date).format('YYYY-MM-DD')))
+        store.dispatch(loadOrderAndNavigate(order))
       }
 
     }
@@ -114,7 +109,7 @@ class App extends Component {
         const { event } = notification.data
 
         if (event && event.name === 'order:created') {
-          const { restaurant, date } = event.data
+          const { restaurant, date, order } = event.data
           if (notification.foreground) {
 
             // Load and play sound until the alert is closed
@@ -144,7 +139,7 @@ class App extends Component {
                   text: 'Afficher',
                   onPress: () => {
                     bell.stop(() => {})
-                    onOrderCreated(restaurant, date)
+                    onOrderCreated(restaurant, date, order)
                   }
                 },
               ],
@@ -190,17 +185,18 @@ class App extends Component {
 
   render() {
     return (
-      <Root>
-        <Provider store={ store }>
-          <I18nextProvider i18n={ i18n }>
-            <StyleProvider style={ getTheme(material) }>
+      <Provider store={ store }>
+        <I18nextProvider i18n={ i18n }>
+          <StyleProvider style={ getTheme(material) }>
+            <Root>
               <RootNavigator
-                ref={ ref => { this.navigator = ref } }
+                ref={ ref => { NavigationHolder.setTopLevelNavigator(ref) } }
                 onNavigationStateChange={ onNavigationStateChange } />
-            </StyleProvider>
-          </I18nextProvider>
-        </Provider>
-      </Root>
+              <DropdownAlert ref={ ref => { DropdownHolder.setDropdown(ref) } } />
+            </Root>
+          </StyleProvider>
+        </I18nextProvider>
+      </Provider>
     )
   }
 

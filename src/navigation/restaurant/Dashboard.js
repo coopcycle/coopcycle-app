@@ -5,7 +5,6 @@ import {
   Left, Right, Body,
   List, ListItem, InputGroup, Input, Icon, Text, Button
 } from 'native-base';
-import { Col, Row, Grid } from 'react-native-easy-grid'
 import { connect } from 'react-redux'
 import { translate } from 'react-i18next'
 import KeepAwake from 'react-native-keep-awake'
@@ -14,7 +13,8 @@ import moment from 'moment'
 import LoaderOverlay from '../../components/LoaderOverlay'
 import RushModeAlert from './components/RushModeAlert'
 import OrderList from './components/OrderList'
-import { loadOrders } from '../../redux/Restaurant/actions'
+import DatePickerHeader from './components/DatePickerHeader'
+import { loadOrders, changeDate } from '../../redux/Restaurant/actions'
 
 class DashboardPage extends Component {
 
@@ -55,21 +55,10 @@ class DashboardPage extends Component {
       <Container>
         <RushModeAlert restaurant={ restaurant } />
         <Content style={ styles.content }>
-          <View style={ styles.datePicker }>
-            <Grid>
-              <Row>
-                <Col>
-                  <Text>{ date.format('ll') }</Text>
-                </Col>
-                <Col>
-                  <Button small light style={{ alignSelf: 'flex-end' }}
-                    onPress={ () => navigate('RestaurantDate') }>
-                    <Text>Change</Text>
-                  </Button>
-                </Col>
-              </Row>
-            </Grid>
-          </View>
+          <DatePickerHeader
+            date={ date }
+            onCalendarClick={ () => navigate('RestaurantDate') }
+            onTodayClick={ () => this.props.changeDate(moment()) } />
           <OrderList orders={ orders }
             onItemClick={ order => navigate('RestaurantOrder', { order }) } />
         </Content>
@@ -80,9 +69,6 @@ class DashboardPage extends Component {
 }
 
 const styles = StyleSheet.create({
-  datePicker: {
-    padding: 20
-  },
   content: {
     backgroundColor: '#fff',
   },
@@ -106,6 +92,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     loadOrders: (client, restaurant, date) => dispatch(loadOrders(client, restaurant, date)),
+    changeDate: date => dispatch(changeDate(date)),
   }
 }
 
