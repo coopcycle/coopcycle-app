@@ -1,5 +1,6 @@
 import Enzyme, { shallow, render, mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
+import NavigationHolder from './src/NavigationHolder'
 
 // React 16 Enzyme adapter
 Enzyme.configure({ adapter: new Adapter() })
@@ -16,3 +17,9 @@ global.FormData = require('FormData')
 
 // mock 'fetch' globally
 global.fetch = require('jest-fetch-mock')
+
+const fakeNavigator = {
+  dispatch: (action) => {}
+}
+
+NavigationHolder.setTopLevelNavigator(fakeNavigator)

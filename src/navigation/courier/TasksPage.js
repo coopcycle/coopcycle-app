@@ -32,21 +32,6 @@ class TasksPage extends Component {
   map = null
   markers = []
 
-  static navigationOptions = ({navigation}) => {
-    return {
-      headerRight: (
-        <View style={{flex: 1, flexDirection: 'row', alignItems: 'flex-end'}}>
-          <Button transparent onPress={() => navigation.navigate('CourierFilters')}>
-            <Icon name="settings" style={{color: whiteColor}} />
-          </Button>
-          <Button transparent>
-            <Icon name="navigate" style={{color: navigation.getParam('tracking', false) ? greenColor : greyColor}}/>
-          </Button>
-        </View>
-      ),
-    }
-  }
-
   constructor(props) {
     super(props)
 
@@ -80,6 +65,7 @@ class TasksPage extends Component {
   componentWillUnmount() {
 
     BackgroundGeolocation.stop()
+    BackgroundGeolocation.events.forEach(event => BackgroundGeolocation.removeAllListeners(event))
 
     if (Platform.OS === 'ios') {
       KeepAwake.deactivate()
@@ -240,6 +226,9 @@ class TasksPage extends Component {
 
     const navigationParams = { geolocation }
 
+    // FIXME
+    // this.renderLocateButton() crashes app
+
     return (
       <Container>
         <DateSelectHeader
@@ -279,13 +268,6 @@ class TasksPage extends Component {
               </MapView.Marker>
             ))}
           </MapViewWithDefaults>
-          <View style={ styles.taskListButton }>
-            <Button block onPress={ () => navigate('CourierTaskList', { ...navigationParams, tasks }) }>
-              <Icon name="list" />
-              <Text>{this.props.t('TASK_LIST')}</Text>
-            </Button>
-          </View>
-          { this.renderLocateButton() }
         </View>
         { this.renderLoader() }
       </Container>

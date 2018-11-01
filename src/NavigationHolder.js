@@ -19,4 +19,16 @@ export default class NavigationHolder {
     )
   }
 
+  static dispatch(action) {
+    return this.topLevelNavigator.dispatch(action)
+  }
+
+  static goBack() {
+    return this.topLevelNavigator.dispatch(
+      NavigationActions.back({
+        key: null,
+      })
+    )
+  }
+
 }

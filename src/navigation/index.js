@@ -24,7 +24,6 @@ export default {
   CheckoutLogin: require('./checkout/Login'),
   CartPage: require('./CartPage'),
   CartAddressPage: require('./CartAddressPage'),
-  CourierPage: require('./CourierPage'),
   CourierTasksPage: require('./courier/TasksPage'),
   CourierTaskListPage: require('./courier/TaskListPage'),
   CourierTaskPage: require('./courier/TaskPage'),
@@ -40,7 +39,6 @@ export default {
   OrderTrackingPage: require('./OrderTrackingPage'),
   Loading: require('./Loading'),
   Home,
-  Courier: require('./CourierPage'),
   ConfigureServer: require('./ConfigureServer')
 }
 

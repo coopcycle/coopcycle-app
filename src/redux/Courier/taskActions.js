@@ -1,4 +1,9 @@
+import { Alert } from 'react-native'
 import { createAction } from 'redux-actions'
+import { StackActions, NavigationActions } from 'react-navigation'
+
+import NavigationHolder from '../../NavigationHolder'
+import i18n from '../../i18n'
 
 /*
  * Action Types
@@ -32,7 +37,44 @@ export const dontTriggerTasksNotification = createAction(DONT_TRIGGER_TASKS_NOTI
 export const filterTasks = createAction(ADD_TASK_FILTER)
 export const clearTasksFilter = createAction(CLEAR_TASK_FILTER)
 
-/*
+/**
+ * Side-effects
+ */
+
+function resetNavigation() {
+  const resetAction = StackActions.reset({
+    index: 0,
+    actions: [
+      // WARNING
+      // routeName must be one of current StackNavigator
+      NavigationActions.navigate({ routeName: 'Main' }),
+    ]
+  })
+  NavigationHolder.dispatch(resetAction)
+}
+
+function showAlert(e) {
+  let message = i18n.t('TRY_LATER')
+
+  if (e.hasOwnProperty('hydra:description')) {
+    message = e['hydra:description']
+  }
+
+  Alert.alert(
+    i18n.t('FAILED_TASK_COMPLETE'),
+    message,
+    [
+      {
+        text: 'OK',
+        onPress: () => NavigationHolder.goBack()
+      },
+    ],
+    { cancelable: false }
+  )
+}
+
+
+/**
  * Thunk Creators
  */
 
@@ -54,8 +96,14 @@ export function markTaskFailed(client, task, notes) {
 
     return client
       .put(task['@id'] + '/failed', { reason: notes })
-      .then(task => dispatch(markTaskFailedSuccess(task)))
-      .catch(e => dispatch(markTaskFailedFailure(e)))
+      .then(task => {
+        resetNavigation()
+        dispatch(markTaskFailedSuccess(task))
+      })
+      .catch(e => {
+        showAlert(e)
+        dispatch(markTaskFailedFailure(e))
+      })
   }
 }
 
@@ -66,7 +114,13 @@ export function markTaskDone(client, task, notes) {
 
     return client
       .put(task['@id'] + '/done', { reason: notes })
-      .then(task => dispatch(markTaskDoneSuccess(task)))
-      .catch(e => dispatch(markTaskDoneFailure(e)))
+      .then(task => {
+        resetNavigation()
+        dispatch(markTaskDoneSuccess(task))
+      })
+      .catch(e => {
+        showAlert(e)
+        dispatch(markTaskDoneFailure(e))
+      })
   }
 }
