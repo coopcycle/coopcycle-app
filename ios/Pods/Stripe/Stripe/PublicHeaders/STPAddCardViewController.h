@@ -64,22 +64,51 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, strong, nullable) UIView *customFooterView;
 
+/**
+ Use init: or initWithConfiguration:theme:
+ */
+- (instancetype)initWithTheme:(STPTheme *)theme NS_UNAVAILABLE;
+
+/**
+ Use init: or initWithConfiguration:theme:
+ */
+- (instancetype)initWithNibName:(nullable NSString *)nibNameOrNil
+                         bundle:(nullable NSBundle *)nibBundleOrNil NS_UNAVAILABLE;
+
+/**
+ Use init: or initWithConfiguration:theme:
+ */
+- (nullable instancetype)initWithCoder:(NSCoder *)aDecoder NS_UNAVAILABLE;
+
 @end
 
 /**
- An `STPAddCardViewControllerDelegate` is notified when an `STPAddCardViewController` successfully creates a card token or is cancelled. It has internal error-handling logic, so there's no error case to deal with.
+ An `STPAddCardViewControllerDelegate` is notified when an `STPAddCardViewController`
+ successfully creates a card token or is cancelled. It has internal error-handling
+ logic, so there's no error case to deal with.
  */
 @protocol STPAddCardViewControllerDelegate <NSObject>
 
 /**
- Called when the user cancels adding a card. You should dismiss (or pop) the view controller at this point.
+ Called when the user cancels adding a card. You should dismiss (or pop) the
+ view controller at this point.
 
  @param addCardViewController the view controller that has been cancelled
  */
 - (void)addCardViewControllerDidCancel:(STPAddCardViewController *)addCardViewController;
 
+@optional
 /**
- This is called when the user successfully adds a card and tokenizes it with Stripe. You should send the token to your backend to store it on a customer, and then call the provided `completion` block when that call is finished. If an error occurred while talking to your backend, call `completion(error)`, otherwise, dismiss (or pop) the view controller.
+ This is called when the user successfully adds a card and Stripe returns a
+ card token.
+
+ Note: If `createsCardSource` is true, this method will not be called;
+ `addCardViewController:didCreateSource:` will be called instead.
+
+ You should send the token to your backend to store it on a customer, and then
+ call the provided `completion` block when that call is finished. If an error
+ occurs while talking to your backend, call `completion(error)`, otherwise,
+ dismiss (or pop) the view controller.
 
  @param addCardViewController the view controller that successfully created a token
  @param token                 the Stripe token that was created. @see STPToken
@@ -87,6 +116,26 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)addCardViewController:(STPAddCardViewController *)addCardViewController
                didCreateToken:(STPToken *)token
+                   completion:(STPErrorBlock)completion;
+
+/**
+ This is called when the user successfully adds a card and Stripe returns a
+ card source.
+
+ Note: If `createsCardSource` is false, this method will not be called;
+ `addCardViewController:didCreateToken:` will be called instead.
+
+ You should send the source to your backend to store it on a customer, and then
+ call the provided `completion` block when that call is finished. If an error
+ occurs while talking to your backend, call `completion(error)`, otherwise,
+ dismiss (or pop) the view controller.
+
+ @param addCardViewController the view controller that successfully created a token
+ @param source                the Stripe source that was created. @see STPSource
+ @param completion            call this callback when you're done sending the token to your backend
+ */
+- (void)addCardViewController:(STPAddCardViewController *)addCardViewController
+              didCreateSource:(STPSource *)source
                    completion:(STPErrorBlock)completion;
 
 @end

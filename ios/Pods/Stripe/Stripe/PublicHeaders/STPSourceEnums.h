@@ -107,11 +107,6 @@ typedef NS_ENUM(NSInteger, STPSourceType) {
     STPSourceTypeBancontact,
 
     /**
-     A Bitcoin source. @see https://stripe.com/docs/sources/bitcoin
-     */
-    STPSourceTypeBitcoin,
-
-    /**
      A card source. @see https://stripe.com/docs/sources/cards
      */
     STPSourceTypeCard,
@@ -150,6 +145,16 @@ typedef NS_ENUM(NSInteger, STPSourceType) {
      A P24 source. @see https://stripe.com/docs/sources/p24
      */
     STPSourceTypeP24,
+
+    /**
+     An EPS source. @see https://stripe.com/docs/sources/eps
+     */
+    STPSourceTypeEPS,
+
+    /**
+     A Multibanco source. @see https://stripe.com/docs/sources/multibanco
+     */
+    STPSourceTypeMultibanco,
 
     /**
      An unknown type of source.

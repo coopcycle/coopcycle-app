@@ -11,10 +11,7 @@
 #import "STPBundleLocator.h"
 #import "STPImageLibrary+Private.h"
 
-#define FAUXPAS_IGNORED_IN_METHOD(...)
-
 // Dummy class for locating the framework bundle
-
 
 @implementation STPImageLibrary
 
@@ -40,6 +37,10 @@
 
 + (UIImage *)masterCardCardImage {
     return [self brandImageForCardBrand:STPCardBrandMasterCard];
+}
+
++ (UIImage *)unionPayCardImage {
+    return [self brandImageForCardBrand:STPCardBrandUnionPay];
 }
 
 + (UIImage *)visaCardImage {
@@ -98,11 +99,9 @@
 
 + (UIImage *)safeImageNamed:(NSString *)imageName
         templateIfAvailable:(BOOL)templateIfAvailable {
-    FAUXPAS_IGNORED_IN_METHOD(APIAvailability);
-    UIImage *image = nil;
-    if ([UIImage respondsToSelector:@selector(imageNamed:inBundle:compatibleWithTraitCollection:)]) {
-        image = [UIImage imageNamed:imageName inBundle:[STPBundleLocator stripeResourcesBundle] compatibleWithTraitCollection:nil];
-    }
+
+    UIImage *image = [UIImage imageNamed:imageName inBundle:[STPBundleLocator stripeResourcesBundle] compatibleWithTraitCollection:nil];
+
     if (image == nil) {
         image = [UIImage imageNamed:imageName];
     }
@@ -115,29 +114,35 @@
 + (UIImage *)brandImageForCardBrand:(STPCardBrand)brand 
                            template:(BOOL)isTemplate {
     BOOL shouldUseTemplate = isTemplate;
-    FAUXPAS_IGNORED_IN_METHOD(APIAvailability);
     NSString *imageName;
     switch (brand) {
-            case STPCardBrandAmex:
+        case STPCardBrandAmex:
             imageName = shouldUseTemplate ? @"stp_card_amex_template" : @"stp_card_amex";
             break;
-            case STPCardBrandDinersClub:
+        case STPCardBrandDinersClub:
             imageName = shouldUseTemplate ? @"stp_card_diners_template" : @"stp_card_diners";
             break;
-            case STPCardBrandDiscover:
+        case STPCardBrandDiscover:
             imageName = shouldUseTemplate ? @"stp_card_discover_template" : @"stp_card_discover";
             break;
-            case STPCardBrandJCB:
+        case STPCardBrandJCB:
             imageName = shouldUseTemplate ? @"stp_card_jcb_template" : @"stp_card_jcb";
             break;
-            case STPCardBrandMasterCard:
+        case STPCardBrandMasterCard:
             imageName = shouldUseTemplate ? @"stp_card_mastercard_template" : @"stp_card_mastercard";
             break;
-            case STPCardBrandUnknown:
+        case STPCardBrandUnionPay:
+            if ([[[NSLocale currentLocale] localeIdentifier].lowercaseString hasPrefix:@"zh"]) {
+                imageName = shouldUseTemplate ? @"stp_card_unionpay_template_zh" : @"stp_card_unionpay_zh";
+            } else {
+                imageName = shouldUseTemplate ? @"stp_card_unionpay_template_en" : @"stp_card_unionpay_en";
+            }
+            break;
+        case STPCardBrandUnknown:
             shouldUseTemplate = YES;
             imageName = @"stp_card_unknown";
             break;
-            case STPCardBrandVisa:
+        case STPCardBrandVisa:
             imageName = shouldUseTemplate ? @"stp_card_visa_template" : @"stp_card_visa";
             break;
     }

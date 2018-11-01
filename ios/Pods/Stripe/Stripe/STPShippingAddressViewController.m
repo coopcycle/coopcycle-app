@@ -137,8 +137,8 @@
                        forState:UIControlStateNormal];
     [headerView.button addTarget:self action:@selector(useBillingAddress:)
                 forControlEvents:UIControlEventTouchUpInside];
-    PKAddressField requiredFields = self.configuration.requiredShippingAddressFields;
-    BOOL needsAddress = (requiredFields & PKAddressFieldPostalAddress) && !self.addressViewModel.isValid;
+    NSSet<STPContactField> *requiredFields = self.configuration.requiredShippingAddressFields;
+    BOOL needsAddress = [requiredFields containsObject:STPContactFieldPostalAddress] && !self.addressViewModel.isValid;
     BOOL buttonVisible = (needsAddress
                           && [self.billingAddress containsContentForShippingAddressFields:requiredFields]
                           && !self.hasUsedBillingAddress);
@@ -313,8 +313,8 @@
 - (UITableViewCell *)tableView:(__unused UITableView *)tableView
          cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [self.addressViewModel.addressCells stp_boundSafeObjectAtIndex:indexPath.row];
-    cell.backgroundColor = [UIColor clearColor];
-    cell.contentView.backgroundColor = self.theme.secondaryBackgroundColor;
+    cell.backgroundColor = self.theme.secondaryBackgroundColor;
+    cell.contentView.backgroundColor = [UIColor clearColor];
     return cell;
 }
 
@@ -357,7 +357,7 @@
 }
 
 - (NSString *)titleForShippingType:(STPShippingType)type {
-    if (self.configuration.requiredShippingAddressFields & PKAddressFieldPostalAddress) {
+    if ([self.configuration.requiredShippingAddressFields containsObject:STPContactFieldPostalAddress]) {
         switch (type) {
             case STPShippingTypeShipping:
                 return STPLocalizedString(@"Shipping", @"Title for shipping info form");
@@ -373,7 +373,7 @@
 }
 
 - (NSString *)headerTitleForShippingType:(STPShippingType)type {
-     if (self.configuration.requiredShippingAddressFields & PKAddressFieldPostalAddress) {
+     if ([self.configuration.requiredShippingAddressFields containsObject:STPContactFieldPostalAddress]) {
         switch (type) {
             case STPShippingTypeShipping:
                 return STPLocalizedString(@"Shipping Address", @"Title for shipping address entry section");

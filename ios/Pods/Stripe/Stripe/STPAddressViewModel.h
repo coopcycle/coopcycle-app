@@ -24,12 +24,11 @@
 
 @property (nonatomic, readonly) NSArray<STPAddressFieldTableViewCell *> *addressCells;
 @property (nonatomic, weak) id<STPAddressViewModelDelegate>delegate;
-@property (nonatomic) UIResponder *previousField;
 @property (nonatomic) STPAddress *address;
 @property (nonatomic, readonly) BOOL isValid;
 
 - (instancetype)initWithRequiredBillingFields:(STPBillingAddressFields)requiredBillingAddressFields;
-- (instancetype)initWithRequiredShippingFields:(PKAddressField)requiredShippingAddressFields;
+- (instancetype)initWithRequiredShippingFields:(NSSet<STPContactField> *)requiredShippingAddressFields;
 - (STPAddressFieldTableViewCell *)cellAtIndex:(NSInteger)index;
 
 @end

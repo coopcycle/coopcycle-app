@@ -18,18 +18,18 @@ The Stripe iOS SDK makes it quick and easy to build an excellent payment experie
 
 **Native UI**: We provide out-of-the-box native screens and elements so that you can get started quickly without having to think about designing the right interfaces. See our [Standard Integration Guide](https://stripe.com/docs/mobile/ios/standard) for the most hands off approach. Please see our [Custom Integration Guide](https://stripe.com/docs/mobile/ios/custom) if you want a little more control.
 
-**Card Scanning**: We support card scanning capabilities using card.io. See our [card.io](#cardio) section.
+**Card Scanning**: We support card scanning capabilities using card.io. See our [Card IO](#card-io) section.
 
 ## Releases
 
 We recommend that you install the Stripe iOS SDK using a package manager such as [Cocoapods or Carthage](https://stripe.com/docs/mobile/ios#getting-started). If you prefer to link the library manually, please use a version from our [releases](https://github.com/stripe/stripe-ios/releases) page because we consider the master branch to be unstable.
 
 If you're reading this on GitHub.com, please make sure you are looking at the [tagged version](https://github.com/stripe/stripe-ios/tags) that corresponds to the release you have installed. Otherwise, the instructions and example code may be mismatched with your copy. You can read the latest tagged version of this README and browse the associated code on GitHub using
-[this link](https://github.com/stripe/stripe-ios/tree/v11.5.0).
+[this link](https://github.com/stripe/stripe-ios/tree/v13.2.0).
 
 ## Requirements
 
-The Stripe iOS SDK is compatible with apps supporting iOS 8 and above and requires Xcode 8 or Xcode 9 to build from source.
+The Stripe iOS SDK is compatible with apps supporting iOS 9 and above and requires Xcode 9 to build from source.
 
 ## Getting Started
 
@@ -41,21 +41,11 @@ Please see our [iOS Integration Guide](https://stripe.com/docs/mobile/ios) which
 
 There are 3 example apps included in the repository:
 
-- **UI Examples**: Shows off the various premade UI components the SDK includes, but is not a functional app and makes no network calls.
-- **Standard Integration (Swift)**: shows an integration using our prebuilt UI components.
-- **Custom Integration (ObjC)**: shows how to use our low-level methods to accept payments using several different payment methods.
+- [**UI Examples** Example/UI Examples/README.md ](/Example/UI%20Examples/README.md)
+- [**Standard Integration (Swift)** Example/Standard Integration (Swift)/README.md](/Example/Standard%20Integration%20%28Swift%29/README.md)
+- [**Custom Integration (ObjC)** Example/Custom Integration (Swift)/README.md](/Example/Custom%20Integration%20%28ObjC%29/README.md)
 
-To try out any of these examples, clone this repository, open `Stripe.xcworkspace` with Xcode, and run the appropriate scheme. The **UI Examples** app can be run without any extra work necessary. In order to run the **Standard Integration (Swift)** or **Custom Integration (ObjC)** example, you must perform these setup steps:
-
-1. Execute `./setup.sh` from the root of the repository to build the necessary dependencies.
-2. If you haven't already, sign up for a [Stripe account](https://dashboard.stripe.com/register) (it takes seconds). Then go to https://dashboard.stripe.com/account/apikeys.
-3. Replace the `stripePublishableKey` constant in CheckoutViewController.swift (for the Standard Integration app) or Constants.m (for the Custom Integration app) with your Test Publishable Key.
-4. Head to https://github.com/stripe/example-ios-backend/tree/v11.0.0 and click "Deploy to Heroku" (you may have to sign up for a Heroku account as part of this process). Provide your Stripe test secret key for the STRIPE_TEST_SECRET_KEY field under 'Env'. Click "Deploy for Free".
-5. Replace the `backendBaseURL` variable in the example iOS app with the app URL Heroku provides you with (e.g. "https://my-example-app.herokuapp.com")
-
-After this is done, you can make test payments through the app and see them in your Stripe dashboard. Head to https://stripe.com/docs/testing#cards for a list of test card numbers.
-
-## card.io
+## Card IO
 
 To add card scanning capabilities to our prebuilt UI components, you can simply [install card.io](https://github.com/card-io/card.io-iOS-SDK#setup) alongside our SDK. You'll also need to set `NSCameraUsageDescription` in your application's plist, and provide a reason for accessing the camera (e.g. "To scan cards").
 
@@ -70,7 +60,7 @@ We welcome contributions of any kind including new features, bug fixes, and docu
 1. Install Carthage (if you have homebrew installed, `brew install carthage`)
 2. From the root of the repo, install test dependencies by running `carthage bootstrap --platform ios --configuration Release --no-use-binaries`
 3. Open Stripe.xcworkspace
-4. Choose the "StripeiOS" scheme with the iPhone 6, iOS 10.3 simulator (required for snapshot tests to pass)
+4. Choose the "StripeiOS" scheme with the iPhone 6, iOS 11.2 simulator (required for snapshot tests to pass)
 5. Run Product -> Test
 
 ## Migrating from Older Versions

@@ -10,7 +10,9 @@
 
 #import "STPPaymentCardTextField.h"
 
+#import "NSArray+Stripe.h"
 #import "NSString+Stripe.h"
+#import "STPCardValidator+Private.h"
 #import "STPFormTextField.h"
 #import "STPImageLibrary.h"
 #import "STPPaymentCardTextFieldViewModel.h"
@@ -18,8 +20,6 @@
 #import "STPWeakStrongMacros.h"
 #import "Stripe.h"
 #import "STPLocalizationUtils.h"
-
-#define FAUXPAS_IGNORED_IN_METHOD(...)
 
 @interface STPPaymentCardTextField()<STPFormTextFieldDelegate>
 
@@ -141,12 +141,15 @@ CGFloat const STPPaymentCardTextFieldMinimumPadding = 10;
     UIImageView *brandImageView = [[UIImageView alloc] initWithImage:self.brandImage];
     brandImageView.contentMode = UIViewContentModeCenter;
     brandImageView.backgroundColor = [UIColor clearColor];
-    if ([brandImageView respondsToSelector:@selector(setTintColor:)]) {
-        brandImageView.tintColor = self.placeholderColor;
-    }
+    brandImageView.tintColor = self.placeholderColor;
     self.brandImageView = brandImageView;
     
     STPFormTextField *numberField = [self buildTextField];
+    if (@available(iOS 10.0, *)) {
+        // This does not offer quick-type suggestions (as iOS 11.2), but does pick
+        // the best keyboard (maybe other, hidden behavior?)
+        numberField.textContentType = UITextContentTypeCreditCardNumber;
+    }
     numberField.autoFormattingBehavior = STPFormTextFieldAutoFormattingBehaviorCardNumbers;
     numberField.tag = STPCardFieldTypeNumber;
     numberField.accessibilityLabel = STPLocalizedString(@"card number", @"accessibility label for text field");
@@ -157,6 +160,7 @@ CGFloat const STPPaymentCardTextFieldMinimumPadding = 10;
     expirationField.autoFormattingBehavior = STPFormTextFieldAutoFormattingBehaviorExpiration;
     expirationField.tag = STPCardFieldTypeExpiration;
     expirationField.alpha = 0;
+    expirationField.isAccessibilityElement = NO;
     expirationField.accessibilityLabel = STPLocalizedString(@"expiration date", @"accessibility label for text field");
     self.expirationField = expirationField;
     self.expirationPlaceholder = @"MM/YY";
@@ -164,13 +168,18 @@ CGFloat const STPPaymentCardTextFieldMinimumPadding = 10;
     STPFormTextField *cvcField = [self buildTextField];
     cvcField.tag = STPCardFieldTypeCVC;
     cvcField.alpha = 0;
+    cvcField.isAccessibilityElement = NO;
     self.cvcField = cvcField;
     self.cvcPlaceholder = nil;
     self.cvcField.accessibilityLabel = [self defaultCVCPlaceholder];
 
     STPFormTextField *postalCodeField = [self buildTextField];
+    if (@available(iOS 10.0, *)) {
+        postalCodeField.textContentType = UITextContentTypePostalCode;
+    }
     postalCodeField.tag = STPCardFieldTypePostalCode;
     postalCodeField.alpha = 0;
+    postalCodeField.isAccessibilityElement = NO;
     self.postalCodeField = postalCodeField;
     // Placeholder and appropriate keyboard typeare set by country code setter
 
@@ -190,8 +199,13 @@ CGFloat const STPPaymentCardTextFieldMinimumPadding = 10;
     }
 
     [self addSubview:brandImageView];
+    // On small screens, the number field fits ~4 numbers, and the brandImage is just as large.
+    // Previously, taps on the brand image would *dismiss* the keyboard. Make it move to the numberField instead
+    brandImageView.userInteractionEnabled = YES;
+    [brandImageView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:numberField
+                                                                                 action:@selector(becomeFirstResponder)]];
 
-    self.focusedTextFieldForLayout = @(STPCardFieldTypeNumber);
+    self.focusedTextFieldForLayout = nil;
     [self updateCVCPlaceholder];
     [self resetSubviewEditingTransitionState];
 }
@@ -287,10 +301,7 @@ CGFloat const STPPaymentCardTextFieldMinimumPadding = 10;
 
 - (void)setPlaceholderColor:(UIColor *)placeholderColor {
     _placeholderColor = [placeholderColor copy];
-    
-    if ([self.brandImageView respondsToSelector:@selector(setTintColor:)]) {
-        self.brandImageView.tintColor = placeholderColor;
-    }
+    self.brandImageView.tintColor = placeholderColor;
     
     for (STPFormTextField *field in [self allFields]) {
         field.placeholderColor = _placeholderColor;
@@ -447,42 +458,35 @@ CGFloat const STPPaymentCardTextFieldMinimumPadding = 10;
 #pragma mark UIResponder & related methods
 
 - (BOOL)isFirstResponder {
-    return [self.currentFirstResponderField isFirstResponder];
+    return self.currentFirstResponderField != nil;
 }
 
 - (BOOL)canBecomeFirstResponder {
-    return [[self nextFirstResponderField] canBecomeFirstResponder];
+    STPFormTextField *firstResponder = [self currentFirstResponderField] ?: [self nextFirstResponderField];
+    return [firstResponder canBecomeFirstResponder];
 }
 
 - (BOOL)becomeFirstResponder {
-    return [[self nextFirstResponderField] becomeFirstResponder];
+    STPFormTextField *firstResponder = [self currentFirstResponderField] ?: [self nextFirstResponderField];
+    return [firstResponder becomeFirstResponder];
 }
 
-- (STPFormTextField *)nextFirstResponderField {
-    STPFormTextField *currentSubResponder = self.currentFirstResponderField;
-    if (currentSubResponder) {
-        NSUInteger index = [self.allFields indexOfObject:currentSubResponder];
+- (nonnull STPFormTextField *)nextFirstResponderField {
+    STPFormTextField *currentFirstResponder = [self currentFirstResponderField];
+    if (currentFirstResponder) {
+        NSUInteger index = [self.allFields indexOfObject:currentFirstResponder];
         if (index != NSNotFound) {
-            index += 1;
-            if (self.allFields.count > index) {
-                STPFormTextField *nextField = self.allFields[index];
-                if (nextField == self.postalCodeField
-                    && !self.postalCodeEntryEnabled) {
-                    return [self firstInvalidSubField];
-                }
-                else {
-                    return nextField;
-                }
+            STPFormTextField *nextField = [self.allFields stp_boundSafeObjectAtIndex:index + 1];
+            if (self.postalCodeEntryEnabled || nextField != self.postalCodeField) {
+                return nextField;
             }
         }
-        return [self firstInvalidSubField];
     }
-    else {
-        return [self firstInvalidSubField];
-    }
+
+    return [self firstInvalidSubField] ?: [self lastSubField];
 }
 
-- (STPFormTextField *)firstInvalidSubField {
+- (nullable STPFormTextField *)firstInvalidSubField {
     if ([self.viewModel validationStateForField:STPCardFieldTypeNumber] != STPCardValidationStateValid) {
         return self.numberField;
     }
@@ -499,6 +503,10 @@ CGFloat const STPPaymentCardTextFieldMinimumPadding = 10;
     else {
         return nil;
     }
+}
+
+- (nonnull STPFormTextField *)lastSubField {
+    return self.postalCodeEntryEnabled ? self.postalCodeField : self.cvcField;
 }
 
 - (STPFormTextField *)currentFirstResponderField {
@@ -714,8 +722,19 @@ CGFloat const STPPaymentCardTextFieldMinimumPadding = 10;
 }
 
 - (CGFloat)numberFieldCompressedWidth {
-    // Current longest possible longest pan fragment is 5 characters
-    return [self widthForText:@"88888"];
+
+    NSString *cardNumber = self.cardNumber;
+    if (cardNumber.length == 0) {
+        cardNumber = self.viewModel.defaultPlaceholder;
+    }
+
+    STPCardBrand currentBrand = [STPCardValidator brandForNumber:cardNumber];
+    NSArray<NSNumber *> *sortedCardNumberFormat = [[STPCardValidator cardNumberFormatForBrand:currentBrand] sortedArrayUsingSelector:@selector(unsignedIntegerValue)];
+    NSUInteger fragmentLength = [STPCardValidator fragmentLengthForCardBrand:currentBrand];
+    NSUInteger maxLength = MAX([[sortedCardNumberFormat lastObject] unsignedIntegerValue], fragmentLength);
+
+    NSString *maxCompressedString = [@"" stringByPaddingToLength:maxLength withString:@"8" startingAtIndex:0];
+    return [self widthForText:maxCompressedString];
 }
 
 - (CGFloat)cvcFieldWidth {
@@ -1045,38 +1064,37 @@ typedef NS_ENUM(NSInteger, STPCardTextFieldState) {
     // cursor is at the end position the contents aren't clipped off to the left side
     CGFloat additionalWidth = [self widthForText:@"8"];
 
-    width = [self numberFieldFullWidth]; // Number field is always actually full width, just sometimes clipped off to the left when "compressed"
     if (panVisibility == STPCardTextFieldStateCompressed) {
         // Need to lower xOffset so pan is partially off-screen
 
-        NSString *cardNumberToUse = self.cardNumber;
-        if (cardNumberToUse.length == 0) {
-            cardNumberToUse = self.viewModel.defaultPlaceholder;
-        }
+        BOOL hasEnteredCardNumber = self.cardNumber.length > 0;
+        NSString *compressedCardNumber = self.viewModel.compressedCardNumber;
+        NSString *cardNumberToHide = [(hasEnteredCardNumber ? self.cardNumber : self.viewModel.defaultPlaceholder) stp_stringByRemovingSuffix:compressedCardNumber];
 
-        NSUInteger length = [STPCardValidator fragmentLengthForCardBrand:[STPCardValidator brandForNumber:cardNumberToUse]];
-        NSUInteger toIndex = cardNumberToUse.length - length;
+        if (cardNumberToHide.length > 0) {
+            width = hasEnteredCardNumber ? [self widthForCardNumber:self.cardNumber] : [self numberFieldFullWidth];
 
-        if (toIndex < cardNumberToUse.length) {
-            cardNumberToUse = [cardNumberToUse stp_safeSubstringToIndex:toIndex];
+            CGFloat hiddenWidth = [self widthForCardNumber:cardNumberToHide];
+            xOffset -= hiddenWidth;
+            UIView *maskView = [[UIView alloc] initWithFrame:CGRectMake(hiddenWidth,
+                                                                        0,
+                                                                        (width - hiddenWidth),
+                                                                        fieldsHeight)];
+            maskView.backgroundColor = [UIColor blackColor];
+            maskView.opaque = YES;
+            maskView.userInteractionEnabled = NO;
+            [UIView performWithoutAnimation:^{
+                self.numberField.maskView = maskView;
+            }];
+        } else {
+            width = [self numberFieldCompressedWidth];
+            [UIView performWithoutAnimation:^{
+                self.numberField.maskView = nil;
+            }];
         }
-        else {
-            cardNumberToUse = [self.viewModel.defaultPlaceholder stp_safeSubstringToIndex:toIndex];
-        }
-        CGFloat hiddenWidth = [self widthForCardNumber:cardNumberToUse];
-        xOffset -= hiddenWidth;
-        UIView *maskView = [[UIView alloc] initWithFrame:CGRectMake(hiddenWidth,
-                                                                    0,
-                                                                    (width - hiddenWidth),
-                                                                    fieldsHeight)];
-        maskView.backgroundColor = [UIColor blackColor];
-        maskView.opaque = YES;
-        [UIView performWithoutAnimation:^{
-            self.numberField.maskView = maskView;
-        }];
-
     }
     else {
+        width = [self numberFieldFullWidth];
         [UIView performWithoutAnimation:^{
             self.numberField.maskView = nil;
         }];
@@ -1103,11 +1121,20 @@ typedef NS_ENUM(NSInteger, STPCardTextFieldState) {
         self.postalCodeField.frame = CGRectMake(xOffset, 0, width + additionalWidth, fieldsHeight);
     }
 
-    self.numberField.alpha = (CGFloat) ((panVisibility == STPCardTextFieldStateHidden) ? 0.0:  1.0);
-    self.expirationField.alpha = (CGFloat) ((expiryVisibility == STPCardTextFieldStateHidden) ? 0.0:  1.0);
-    self.cvcField.alpha = (CGFloat) ((cvcVisibility == STPCardTextFieldStateHidden) ? 0.0:  1.0);
-    self.postalCodeField.alpha = (CGFloat) (((postalVisibility == STPCardTextFieldStateHidden)
-                                  || !self.postalCodeEntryEnabled) ? 0.0:  1.0);
+    void (^updateFieldVisibility)(STPFormTextField *, STPCardTextFieldState) = ^(STPFormTextField *field, STPCardTextFieldState fieldState) {
+        if (fieldState == STPCardTextFieldStateHidden) {
+            field.alpha = 0.0f;
+            field.isAccessibilityElement = NO;
+        } else {
+            field.alpha = 1.0f;
+            field.isAccessibilityElement = YES;
+        }
+    };
+
+    updateFieldVisibility(self.numberField, panVisibility);
+    updateFieldVisibility(self.expirationField, expiryVisibility);
+    updateFieldVisibility(self.cvcField, cvcVisibility);
+    updateFieldVisibility(self.postalCodeField, self.postalCodeEntryEnabled ? postalVisibility :  STPCardTextFieldStateHidden);
 }
 
 #pragma mark - private helper methods
@@ -1115,7 +1142,12 @@ typedef NS_ENUM(NSInteger, STPCardTextFieldState) {
 - (STPFormTextField *)buildTextField {
     STPFormTextField *textField = [[STPFormTextField alloc] initWithFrame:CGRectZero];
     textField.backgroundColor = [UIColor clearColor];
-    textField.keyboardType = UIKeyboardTypePhonePad;
+    // setCountryCode: updates the postalCodeField keyboardType, this is safe
+    if (@available(iOS 10, *)) {
+        textField.keyboardType = UIKeyboardTypeASCIICapableNumberPad;
+    } else {
+        textField.keyboardType = UIKeyboardTypePhonePad;
+    }
     textField.textAlignment = NSTextAlignmentLeft;
     textField.font = self.font;
     textField.defaultColor = self.textColor;
@@ -1134,8 +1166,10 @@ typedef void (^STPLayoutAnimationCompletionBlock)(BOOL completed);
     NSNumber *fieldtoFocus = focusedField;
 
     if (fieldtoFocus == nil
+        && ![self.focusedTextFieldForLayout isEqualToNumber:@(STPCardFieldTypeNumber)]
         && ([self.viewModel validationStateForField:STPCardFieldTypeNumber] != STPCardValidationStateValid)) {
         fieldtoFocus = @(STPCardFieldTypeNumber);
+        [self.numberField becomeFirstResponder];
     }
 
     if ((fieldtoFocus == nil && self.focusedTextFieldForLayout == nil)
@@ -1283,6 +1317,7 @@ typedef void (^STPLayoutAnimationCompletionBlock)(BOOL completed);
                 }
             }
 
+            // This is a no-op if this is the last field & they're all valid
             [[self nextFirstResponderField] becomeFirstResponder];
             break;
         }
@@ -1366,6 +1401,7 @@ typedef NS_ENUM(NSInteger, STPFieldEditingTransitionCallSite) {
 
     switch ((STPCardFieldType)textField.tag) {
         case STPCardFieldTypeNumber:
+            ((STPFormTextField *)textField).validText = YES;
             if ([self.delegate respondsToSelector:@selector(paymentCardTextFieldDidBeginEditingNumber:)]) {
                 [self.delegate paymentCardTextFieldDidBeginEditingNumber:self];
             }
@@ -1400,6 +1436,9 @@ typedef NS_ENUM(NSInteger, STPFieldEditingTransitionCallSite) {
 
     switch ((STPCardFieldType)textField.tag) {
         case STPCardFieldTypeNumber:
+            if ([self.viewModel validationStateForField:STPCardFieldTypeNumber] == STPCardValidationStateIncomplete) {
+                ((STPFormTextField *)textField).validText = NO;
+            }
             if ([self.delegate respondsToSelector:@selector(paymentCardTextFieldDidEndEditingNumber:)]) {
                 [self.delegate paymentCardTextFieldDidEndEditingNumber:self];
             }

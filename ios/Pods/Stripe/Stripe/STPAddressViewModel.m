@@ -12,13 +12,12 @@
 #import "STPDispatchFunctions.h"
 #import "STPPostalCodeValidator.h"
 
-#import <AddressBook/AddressBook.h>
 #import <CoreLocation/CoreLocation.h>
 
 @interface STPAddressViewModel()<STPAddressFieldTableViewCellDelegate>
 @property (nonatomic) BOOL isBillingAddress;
 @property (nonatomic) STPBillingAddressFields requiredBillingAddressFields;
-@property (nonatomic) PKAddressField requiredShippingAddressFields;
+@property (nonatomic) NSSet<STPContactField> *requiredShippingAddressFields;
 @property (nonatomic) NSArray<STPAddressFieldTableViewCell *> *addressCells;
 @property (nonatomic) BOOL showingPostalCodeCell;
 @property (nonatomic) BOOL geocodeInProgress;
@@ -53,25 +52,30 @@
                                   [[STPAddressFieldTableViewCell alloc] initWithType:STPAddressFieldTypeCountry contents:_addressFieldTableViewCountryCode lastInList:YES delegate:self],
                                   ];
                 break;
+            case STPBillingAddressFieldsName:
+                _addressCells = @[
+                                  [[STPAddressFieldTableViewCell alloc] initWithType:STPAddressFieldTypeName contents:@"" lastInList:YES delegate:self]
+                                  ];
+                break;
         }
         [self commonInit];
     }
     return self;
 }
 
-- (instancetype)initWithRequiredShippingFields:(PKAddressField)requiredShippingAddressFields {
+- (instancetype)initWithRequiredShippingFields:(NSSet<STPContactField> *)requiredShippingAddressFields {
     self = [super init];
     if (self) {
         _isBillingAddress = NO;
         _requiredShippingAddressFields = requiredShippingAddressFields;
         NSMutableArray *cells = [NSMutableArray new];
-        if (requiredShippingAddressFields & PKAddressFieldName) {
+        if ([requiredShippingAddressFields containsObject:STPContactFieldName]) {
             [cells addObject:[[STPAddressFieldTableViewCell alloc] initWithType:STPAddressFieldTypeName contents:@"" lastInList:NO delegate:self]];
         }
-        if (requiredShippingAddressFields & PKAddressFieldEmail) {
+        if ([requiredShippingAddressFields containsObject:STPContactFieldEmailAddress]) {
             [cells addObject:[[STPAddressFieldTableViewCell alloc] initWithType:STPAddressFieldTypeEmail contents:@"" lastInList:NO delegate:self]];
         }
-        if (requiredShippingAddressFields & PKAddressFieldPostalAddress) {
+        if ([requiredShippingAddressFields containsObject:STPContactFieldPostalAddress]) {
             NSMutableArray *postalCells = [@[
                                              [[STPAddressFieldTableViewCell alloc] initWithType:STPAddressFieldTypeName contents:@"" lastInList:NO delegate:self],
                                              [[STPAddressFieldTableViewCell alloc] initWithType:STPAddressFieldTypeLine1 contents:@"" lastInList:NO delegate:self],
@@ -81,12 +85,12 @@
                                              [[STPAddressFieldTableViewCell alloc] initWithType:STPAddressFieldTypeState contents:@"" lastInList:NO delegate:self],
                                              [[STPAddressFieldTableViewCell alloc] initWithType:STPAddressFieldTypeCountry contents:_addressFieldTableViewCountryCode lastInList:NO delegate:self],
                                              ] mutableCopy];
-            if (requiredShippingAddressFields & PKAddressFieldName) {
+            if ([requiredShippingAddressFields containsObject:STPContactFieldName]) {
                 [postalCells removeObjectAtIndex:0];
             }
             [cells addObjectsFromArray:postalCells];
         }
-        if (requiredShippingAddressFields & PKAddressFieldPhone) {
+        if ([requiredShippingAddressFields containsObject:STPContactFieldPhoneNumber]) {
             [cells addObject:[[STPAddressFieldTableViewCell alloc] initWithType:STPAddressFieldTypePhone contents:@"" lastInList:NO delegate:self]];
         }
         STPAddressFieldTableViewCell *lastCell = [cells lastObject];
@@ -160,7 +164,7 @@
         return self.requiredBillingAddressFields == STPBillingAddressFieldsFull;
     }
     else {
-        return (self.requiredShippingAddressFields & PKAddressFieldPostalAddress) == PKAddressFieldPostalAddress;
+        return [self.requiredShippingAddressFields containsObject:STPContactFieldPostalAddress];
     }
 }
 
@@ -207,40 +211,37 @@
         return;
     }
     else {
-
+        self.geocodeInProgress = YES;
         CLGeocoder *geocoder = [CLGeocoder new];
-        NSString *zipKey = (NSString *) kABPersonAddressZIPKey;
-        NSString *countryCodeKey = (NSString *) kABPersonAddressCountryCodeKey;
 
-        if (zipKey && countryCodeKey) {
-            self.geocodeInProgress = YES;
-            [geocoder geocodeAddressDictionary:@{zipKey : zipCode,
-                                                 countryCodeKey : _addressFieldTableViewCountryCode}
-                             completionHandler:^(NSArray<CLPlacemark *> * _Nullable placemarks, NSError * _Nullable error) {
-                                 stpDispatchToMainThreadIfNecessary(^{
-                                     if (placemarks.count > 0 && error == nil) {
-                                         CLPlacemark *placemark = placemarks.firstObject;
-                                         if (cityCell.contents.length == 0
-                                             && stateCell.contents.length == 0
-                                             && [zipCell.contents isEqualToString:zipCode]) {
-                                             // Check contents again to make sure they're still empty
-                                             // And that zipcode hasn't changed to something else
-                                             cityCell.contents = placemark.locality;
-                                             stateCell.contents = placemark.administrativeArea;
-                                         }
-                                     }
-                                     self.geocodeInProgress = NO;
-                                 });
-                             }];
+        CLGeocodeCompletionHandler onCompletion = ^(NSArray<CLPlacemark *> * _Nullable placemarks, NSError * _Nullable error) {
+            stpDispatchToMainThreadIfNecessary(^{
+                if (placemarks.count > 0 && error == nil) {
+                    CLPlacemark *placemark = placemarks.firstObject;
+                    if (cityCell.contents.length == 0
+                        && stateCell.contents.length == 0
+                        && [zipCell.contents isEqualToString:zipCode]) {
+                        // Check contents again to make sure they're still empty
+                        // And that zipcode hasn't changed to something else
+                        cityCell.contents = placemark.locality;
+                        stateCell.contents = placemark.administrativeArea;
+                    }
+                }
+                self.geocodeInProgress = NO;
+            });
+        };
+
+        if (@available(iOS 11, *)) {
+            CNMutablePostalAddress *address = [CNMutablePostalAddress new];
+            address.postalCode = zipCode;
+            address.ISOCountryCode = _addressFieldTableViewCountryCode;
+
+            [geocoder geocodePostalAddress:address.copy
+                         completionHandler:onCompletion];
+        } else {
+            [geocoder geocodeAddressString:[NSString stringWithFormat:@"%@, %@", zipCode, _addressFieldTableViewCountryCode]
+                         completionHandler:onCompletion];
         }
-    }
-}
-
-- (void)addressFieldTableViewCellDidBackspaceOnEmpty:(STPAddressFieldTableViewCell *)cell {
-    if ([self.addressCells indexOfObject:cell] == 0) {
-        [self.previousField becomeFirstResponder];
-    } else {
-        [[self cellBeforeCell:cell] becomeFirstResponder];
     }
 }
 
@@ -270,7 +271,7 @@
 
 - (void)setAddress:(STPAddress *)address {
     self.addressFieldTableViewCountryCode = address.country;
-    
+
     for (STPAddressFieldTableViewCell *cell in self.addressCells) {
         switch (cell.type) {
             case STPAddressFieldTypeName:
@@ -307,7 +308,7 @@
 - (STPAddress *)address {
     STPAddress *address = [STPAddress new];
     for (STPAddressFieldTableViewCell *cell in self.addressCells) {
-        
+
         switch (cell.type) {
             case STPAddressFieldTypeName:
                 address.name = cell.contents;
@@ -338,12 +339,10 @@
                 break;
         }
     }
+    // Prefer to use the contents of STPAddressFieldTypeCountry, but fallback to
+    // `addressFieldTableViewCountryCode` if nil (important for STPBillingAddressFieldsZip)
+    address.country = address.country ?: self.addressFieldTableViewCountryCode;
     return address;
-}
-
-- (STPAddressFieldTableViewCell *)cellBeforeCell:(STPAddressFieldTableViewCell *)cell {
-    NSInteger index = [self.addressCells indexOfObject:cell];
-    return [self.addressCells stp_boundSafeObjectAtIndex:index - 1];
 }
 
 - (STPAddressFieldTableViewCell *)cellAfterCell:(STPAddressFieldTableViewCell *)cell {

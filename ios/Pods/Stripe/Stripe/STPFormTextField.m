@@ -10,12 +10,10 @@
 
 #import "NSString+Stripe.h"
 #import "STPCardValidator.h"
+#import "STPCardValidator+Private.h"
 #import "STPDelegateProxy.h"
 #import "STPPhoneNumberValidator.h"
 #import "STPWeakStrongMacros.h"
-
-#define FAUXPAS_IGNORED_IN_METHOD(...)
-#define FAUXPAS_IGNORED_ON_LINE(...)
 
 @interface STPTextFieldDelegateProxy : STPDelegateProxy<UITextFieldDelegate>
 @property (nonatomic, assign) STPFormTextFieldAutoFormattingBehavior autoformattingBehavior;
@@ -25,13 +23,42 @@
 @implementation STPTextFieldDelegateProxy
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    BOOL insertingIntoEmptyField = (textField.text.length == 0 && range.location == 0 && range.length == 0);
+    BOOL hasTextContentType = NO;
+    if (@available(iOS 11.0, *)) {
+        // This property is available starting in 10.0, but didn't offer in-app suggestions till 11.0
+        hasTextContentType = textField.textContentType != nil;
+    }
+
+    if (hasTextContentType && insertingIntoEmptyField && [string isEqualToString:@" "]) {
+        /* Observed behavior w/iOS 11.0 through 11.2.0 (latest):
+
+         1. UITextContentType suggestions are only available when textField is empty
+         2. When user taps a QuickType suggestion for the `textContentType`, UIKit *first*
+         calls this method with `range:{0, 0} replacementString:@" "`
+         3. If that succeeds (we return YES), this method is called again, this time with
+         the actual content to insert (and a space at the end)
+
+         Therefore, always allow entry of a single space in order to support `textContentType`.
+
+         Warning: This bypasses `setText:`, and subsequently `setAttributedText:` and the
+         formDelegate methods: `formTextField:modifyIncomingTextChange:` & `formTextFieldTextDidChange:`
+         That's acceptable for a single space.
+         */
+        return YES;
+    }
+
     BOOL deleting = (range.location == textField.text.length - 1 && range.length == 1 && [string isEqualToString:@""]);
     NSString *inputText;
     if (deleting) {
         NSString *sanitized = [self unformattedStringForString:textField.text];
         inputText = [sanitized stp_safeSubstringToIndex:sanitized.length - 1];
-    } else {
+    }
+    else {
         NSString *newString = [textField.text stringByReplacingCharactersInRange:range withString:string];
+        // Removes any disallowed characters from the whole string.
+        // If we (incorrectly) allowed a space to start the text entry hoping it would be a
+        // textContentType completion, this will remove it.
         NSString *sanitized = [self unformattedStringForString:newString];
         inputText = sanitized;
     }
@@ -76,20 +103,9 @@ typedef NSAttributedString* (^STPFormTextTransformationBlock)(NSAttributedString
 @interface STPFormTextField()
 @property (nonatomic) STPTextFieldDelegateProxy *delegateProxy;
 @property (nonatomic, copy) STPFormTextTransformationBlock textFormattingBlock;
-// This property only exists to disable keyboard loading in Travis CI due to a crash that occurs while trying to load the keyboard. Don't use it outside of tests.
-@property (nonatomic) BOOL skipsReloadingInputViews;
 @end
 
 @implementation STPFormTextField
-
-@synthesize placeholderColor = _placeholderColor;
-
-- (void)reloadInputViews {
-    if (self.skipsReloadingInputViews) {
-        return;
-    }
-    [super reloadInputViews];
-}
 
 + (NSDictionary *)attributesForAttributedString:(NSAttributedString *)attributedString {
     if (attributedString.length == 0) {
@@ -110,11 +126,6 @@ typedef NSAttributedString* (^STPFormTextTransformationBlock)(NSAttributedString
         case STPFormTextFieldAutoFormattingBehaviorNone:
         case STPFormTextFieldAutoFormattingBehaviorExpiration:
             self.textFormattingBlock = nil;
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_10_0
-            if ([self respondsToSelector:@selector(setTextContentType:)]) {
-                self.textContentType = nil; FAUXPAS_IGNORED_ON_LINE(APIAvailability);
-            }
-#endif
             break;
         case STPFormTextFieldAutoFormattingBehaviorCardNumbers:
             self.textFormattingBlock = ^NSAttributedString *(NSAttributedString *inputString) {
@@ -122,29 +133,24 @@ typedef NSAttributedString* (^STPFormTextTransformationBlock)(NSAttributedString
                     return [inputString copy];
                 }
                 NSMutableAttributedString *attributedString = [inputString mutableCopy];
-                NSArray *cardSpacing;
                 STPCardBrand currentBrand = [STPCardValidator brandForNumber:attributedString.string];
-                if (currentBrand == STPCardBrandAmex) {
-                    cardSpacing = @[@3, @9];
-                } else {
-                    cardSpacing = @[@3, @7, @11];
-                }
-                for (NSUInteger i = 0; i < attributedString.length; i++) {
-                    if ([cardSpacing containsObject:@(i)]) {
-                        [attributedString addAttribute:NSKernAttributeName value:@(5)
-                                                 range:NSMakeRange(i, 1)];
-                    } else {
-                        [attributedString addAttribute:NSKernAttributeName value:@(0)
-                                                 range:NSMakeRange(i, 1)];
+                NSArray<NSNumber *> *cardNumberFormat = [STPCardValidator cardNumberFormatForBrand:currentBrand];
+
+                NSUInteger index = 0;
+                for (NSNumber *segmentLength in cardNumberFormat) {
+                    NSUInteger segmentIndex = 0;
+                    for (; index < attributedString.length && segmentIndex < [segmentLength unsignedIntegerValue]; index++, segmentIndex++) {
+                        if (index + 1 != attributedString.length && segmentIndex + 1 == [segmentLength unsignedIntegerValue]) {
+                            [attributedString addAttribute:NSKernAttributeName value:@(5)
+                                                     range:NSMakeRange(index, 1)];
+                        } else {
+                            [attributedString addAttribute:NSKernAttributeName value:@(0)
+                                                     range:NSMakeRange(index, 1)];
+                        }
                     }
                 }
                 return [attributedString copy];
             };
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_10_0
-            if ([self respondsToSelector:@selector(setTextContentType:)]) {
-                self.textContentType = UITextContentTypeCreditCardNumber; FAUXPAS_IGNORED_ON_LINE(APIAvailability);
-            }
-#endif
             break;
         case STPFormTextFieldAutoFormattingBehaviorPhoneNumbers: {
             WEAK(self);
@@ -157,11 +163,6 @@ typedef NSAttributedString* (^STPFormTextTransformationBlock)(NSAttributedString
                 NSDictionary *attributes = [[self class] attributesForAttributedString:inputString];
                 return [[NSAttributedString alloc] initWithString:phoneNumber attributes:attributes];
             };
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_10_0
-            if ([self respondsToSelector:@selector(setTextContentType:)]) {
-                self.textContentType = UITextContentTypeTelephoneNumber; FAUXPAS_IGNORED_ON_LINE(APIAvailability);
-            }
-#endif
             break;
         }
     }
@@ -207,69 +208,13 @@ typedef NSAttributedString* (^STPFormTextTransformationBlock)(NSAttributedString
     }
 }
 
-- (void)setPlaceholder:(NSString *)placeholder {
-    NSString *nonNilPlaceholder = placeholder ?: @"";
-    NSAttributedString *attributedPlaceholder = [[NSAttributedString alloc] initWithString:nonNilPlaceholder attributes:[self placeholderTextAttributes]];
-    [self setAttributedPlaceholder:attributedPlaceholder];
-}
-
 - (void)setAttributedPlaceholder:(NSAttributedString *)attributedPlaceholder {
     NSAttributedString *transformed = self.textFormattingBlock ? self.textFormattingBlock(attributedPlaceholder) : attributedPlaceholder;
     [super setAttributedPlaceholder:transformed];
 }
 
-- (NSDictionary *)placeholderTextAttributes {
-    NSMutableDictionary *defaultAttributes = [[self defaultTextAttributes] mutableCopy];
-    if (self.placeholderColor) {
-        defaultAttributes[NSForegroundColorAttributeName] = self.placeholderColor;
-    }
-    return [defaultAttributes copy];
-}
-
-- (void)setDefaultColor:(UIColor *)defaultColor {
-    _defaultColor = defaultColor;
-    [self updateColor];
-}
-
-- (void)setErrorColor:(UIColor *)errorColor {
-    _errorColor = errorColor;
-    [self updateColor];
-}
-
-- (void)setValidText:(BOOL)validText {
-    _validText = validText;
-    [self updateColor];
-}
-
-- (void)setPlaceholderColor:(UIColor *)placeholderColor {
-    _placeholderColor = placeholderColor;
-    [self setPlaceholder:self.placeholder]; //explicitly rebuild attributed placeholder
-}
-
-- (void)updateColor {
-    self.textColor = _validText ? self.defaultColor : self.errorColor;
-}
-
-// Workaround for http://www.openradar.appspot.com/19374610
-- (CGRect)editingRectForBounds:(CGRect)bounds {
-    if (UIDevice.currentDevice.systemVersion.integerValue != 8) {
-        return [self textRectForBounds:bounds];
-    }
-    
-    CGFloat const scale = UIScreen.mainScreen.scale;
-    CGFloat const preferred = self.attributedText.size.height;
-    CGFloat const delta = (CGFloat)ceil(preferred) - preferred;
-    CGFloat const adjustment = (CGFloat)floor(delta * scale) / scale;
-    
-    CGRect const textRect = [self textRectForBounds:bounds];
-    CGRect const editingRect = CGRectOffset(textRect, 0.0, adjustment);
-    
-    return editingRect;
-}
-
 // Fixes a weird issue related to our custom override of deleteBackwards. This only affects the simulator and iPads with custom keyboards.
 - (NSArray *)keyCommands {
-    FAUXPAS_IGNORED_IN_METHOD(APIAvailability);
     return @[[UIKeyCommand keyCommandWithInput:@"\b" modifierFlags:UIKeyModifierCommand action:@selector(commandDeleteBackwards)]];
 }
 

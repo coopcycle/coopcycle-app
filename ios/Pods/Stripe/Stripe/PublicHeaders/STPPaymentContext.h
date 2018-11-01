@@ -234,6 +234,21 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) UIModalPresentationStyle modalPresentationStyle;
 
 /**
+ The mode to use when displaying the title of the navigation bar in all view
+ controllers presented by the context. The default value is `automatic`,
+ which causes the title to use the same styling as the previously displayed
+ navigation item (if the view controller is pushed onto the `hostViewController`).
+
+ If the `prefersLargeTitles` property of the `hostViewController`'s navigation bar
+ is false, this property has no effect and the navigation item's title is always
+ displayed as a small title.
+
+ If the view controller is presented modally, `automatic` and
+ `never` always result in a navigation bar with a small title.
+ */
+@property (nonatomic, assign) UINavigationItemLargeTitleDisplayMode largeTitleDisplayMode NS_AVAILABLE_IOS(11_0);
+
+/**
  A view that will be placed as the footer of the payment methods selection 
  view controller.
 
@@ -251,6 +266,8 @@ NS_ASSUME_NONNULL_BEGIN
  to be sized and positioned properly.
  */
 @property (nonatomic, strong) UIView *addCardViewControllerFooterView;
+
+
 
 /**
  If `paymentContext:didFailToLoadWithError:` is called on your delegate, you
@@ -371,7 +388,9 @@ didCreatePaymentResult:(STPPaymentResult *)paymentResult
  You should call the completion block with the results of your validation
  and the available shipping methods for the given address. If you don't implement
  this method, the user won't be prompted to select a shipping method and all
- addresses will be valid.
+ addresses will be valid. If you call the completion block with nil or an
+ empty array of shipping methods, the user won't be prompted to select a
+ shipping method.
 
  @note If a user updates their shipping address within the Apple Pay dialog,
  this address will be anonymized. For example, in the US, it will only include the
@@ -381,7 +400,10 @@ didCreatePaymentResult:(STPPaymentResult *)paymentResult
 
  @param paymentContext  The context that updated its shipping address
  @param address The current shipping address
- @param completion      Call this block when you're done validating the shipping address and calculating available shipping methods.
+ @param completion      Call this block when you're done validating the shipping
+ address and calculating available shipping methods. If you call the completion
+ block with nil or an empty array of shipping methods, the user won't be prompted
+ to select a shipping method.
  */
 - (void)paymentContext:(STPPaymentContext *)paymentContext
 didUpdateShippingAddress:(STPAddress *)address

@@ -23,6 +23,7 @@
 #import "STPPaymentMethodTuple.h"
 #import "STPPaymentMethodsInternalViewController.h"
 #import "STPPaymentMethodsViewController+Private.h"
+#import "STPSource.h"
 #import "STPTheme.h"
 #import "STPToken.h"
 #import "STPWeakStrongMacros.h"
@@ -117,6 +118,7 @@
                                                                                                                                  shippingAddress:self.shippingAddress
                                                                                                                               paymentMethodTuple:tuple
                                                                                                                                         delegate:self];
+            payMethodsInternal.createsCardSources = self.configuration.createCardSources;
             if (self.paymentMethodsViewControllerFooterView) {
                 payMethodsInternal.customFooterView = self.paymentMethodsViewControllerFooterView;
             }
@@ -169,9 +171,19 @@
 }
 
 - (void)finishWithPaymentMethod:(id<STPPaymentMethod>)paymentMethod {
-    if ([paymentMethod isKindOfClass:[STPCard class]]) {
+    BOOL methodIsCardToken = [paymentMethod isKindOfClass:[STPCard class]];
+    BOOL methodIsCardSource = ([paymentMethod isKindOfClass:[STPSource class]] &&
+                               ((STPSource *)paymentMethod).type == STPSourceTypeCard);
+    id<STPSourceProtocol> source;
+    if (methodIsCardToken) {
+        source = (STPCard *)paymentMethod;
+    }
+    else if (methodIsCardSource) {
+        source = (STPSource *)paymentMethod;
+    }
+    if (source) {
         // Make this payment method the default source
-        [self.apiAdapter selectDefaultCustomerSource:(STPCard *)paymentMethod completion:^(__unused NSError *error) {
+        [self.apiAdapter selectDefaultCustomerSource:source completion:^(__unused NSError *error) {
             // Reload the internal payment methods view controller with the updated customer
             STPPromise<STPPaymentMethodTuple *> *promise = [self retrieveCustomerWithConfiguration:self.configuration apiAdapter:self.apiAdapter];
             [promise onSuccess:^(STPPaymentMethodTuple *tuple) {
@@ -202,12 +214,30 @@
     }
 }
 
-- (void)internalViewControllerDidCreateToken:(STPToken *)token completion:(STPErrorBlock)completion {
-    [self.apiAdapter attachSourceToCustomer:token completion:^(NSError *error) {
+- (void)internalViewControllerDidCreateSource:(id<STPSourceProtocol>)source completion:(STPErrorBlock)completion {
+    [self.apiAdapter attachSourceToCustomer:source completion:^(NSError *error) {
         stpDispatchToMainThreadIfNecessary(^{
             completion(error);
             if (!error) {
-                [self finishWithPaymentMethod:token.card];
+                /**
+                 When createCardSources is false, the SDK:
+                 1. Sends the token to customers/[id]/sources. This
+                 adds token.card to the customer's sources list. Surprisingly,
+                 attaching token.card to the customer will fail.
+                 2. Returns token.card to didCreatePaymentResult,
+                 where the user tells their backend to create a charge.
+                 A charge request with the token ID and customer ID
+                 will fail because the token is not linked to the
+                 customer (the card is).
+                 */
+                if ([source isKindOfClass:[STPToken class]]) {
+                    [self finishWithPaymentMethod:((STPToken *)source).card];
+                }
+                // created a card source
+                else if ([source isKindOfClass:[STPSource class]] &&
+                         ((STPSource *)source).type == STPSourceTypeCard) {
+                    [self finishWithPaymentMethod:(id<STPPaymentMethod>)source];
+                }
             }
         });
     }];
@@ -226,7 +256,13 @@
 - (void)addCardViewController:(__unused STPAddCardViewController *)addCardViewController
                didCreateToken:(STPToken *)token
                    completion:(STPErrorBlock)completion {
-    [self internalViewControllerDidCreateToken:token completion:completion];
+    [self internalViewControllerDidCreateSource:token completion:completion];
+}
+
+- (void)addCardViewController:(__unused STPAddCardViewController *)addCardViewController
+              didCreateSource:(STPSource *)source
+                   completion:(STPErrorBlock)completion {
+    [self internalViewControllerDidCreateSource:source completion:completion];
 }
 
 - (void)dismissWithCompletion:(STPVoidBlock)completion {

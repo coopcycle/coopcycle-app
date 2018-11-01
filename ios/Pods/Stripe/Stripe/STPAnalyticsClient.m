@@ -116,14 +116,16 @@
 }
 
 + (NSString *)tokenTypeFromParameters:(NSDictionary *)parameters {
-    if ([parameters.allKeys count] == 1) {
-        NSArray *validTypes = @[@"bank_account", @"card", @"pii"];
-        NSString *type = [parameters.allKeys firstObject];
-        if ([validTypes containsObject:type]) {
+    NSArray *parameterKeys = parameters.allKeys;
+    // these are currently mutually exclusive, so we can just run through and find the first match
+    NSArray *tokenTypes = @[@"account", @"bank_account", @"card", @"pii"];
+    for (NSString *type in tokenTypes) {
+        if ([parameterKeys containsObject:type]) {
             return type;
         }
     }
-    if ([parameters.allKeys containsObject:@"pk_token"]) {
+    // We want to use a different value for pk_token, that's why it's not above
+    if ([parameterKeys containsObject:@"pk_token"]) {
         return @"apple_pay";
     }
     return nil;
@@ -211,6 +213,20 @@
     [self logPayload:payload];
 }
 
+- (void)logPaymentIntentConfirmationAttemptWithConfiguration:(STPPaymentConfiguration *)configuration
+                                                  sourceType:(NSString *)sourceType {
+    NSDictionary *configurationDictionary = [self.class serializeConfiguration:configuration];
+    NSMutableDictionary *payload = [self.class commonPayload];
+    [payload addEntriesFromDictionary:@{
+                                        @"event": @"stripeios.payment_intent_confirmation",
+                                        @"source_type": sourceType ?: @"unknown",
+                                        @"additional_info": [self additionalInfo],
+                                        }];
+    [payload addEntriesFromDictionary:[self productUsageDictionary]];
+    [payload addEntriesFromDictionary:configurationDictionary];
+    [self logPayload:payload];
+}
+
 + (NSMutableDictionary *)commonPayload {
     NSMutableDictionary *payload = [NSMutableDictionary dictionary];
     payload[@"bindings_version"] = STPSDKVersion;
@@ -249,18 +265,20 @@
             dictionary[@"required_billing_address_fields"] = @"zip";
         case STPBillingAddressFieldsFull:
             dictionary[@"required_billing_address_fields"] = @"full";
+        case STPBillingAddressFieldsName:
+            dictionary[@"required_billing_address_fields"] = @"name";
     }
     NSMutableArray<NSString *> *shippingFields = [NSMutableArray new];
-    if (configuration.requiredShippingAddressFields & PKAddressFieldName) {
+    if ([configuration.requiredShippingAddressFields containsObject:STPContactFieldName]) {
         [shippingFields addObject:@"name"];
     }
-    if (configuration.requiredShippingAddressFields & PKAddressFieldEmail) {
+    if ([configuration.requiredShippingAddressFields containsObject:STPContactFieldEmailAddress]) {
         [shippingFields addObject:@"email"];
     }
-    if (configuration.requiredShippingAddressFields & PKAddressFieldPostalAddress) {
+    if ([configuration.requiredShippingAddressFields containsObject:STPContactFieldPostalAddress]) {
         [shippingFields addObject:@"address"];
     }
-    if (configuration.requiredShippingAddressFields & PKAddressFieldPhone) {
+    if ([configuration.requiredShippingAddressFields containsObject:STPContactFieldPhoneNumber]) {
         [shippingFields addObject:@"phone"];
     }
     if ([shippingFields count] == 0) {

@@ -9,7 +9,7 @@
 #import "STPBankAccountParams.h"
 #import "STPBankAccountParams+Private.h"
 
-#define FAUXPAS_IGNORED_ON_LINE(...)
+#import "FauxPasAnnotations.h"
 
 @interface STPBankAccountParams ()
 
@@ -51,7 +51,7 @@
     NSString *key = [string lowercaseString];
     NSNumber *accountHolderTypeNumber = [self stringToAccountHolderTypeMapping][key];
 
-    if (accountHolderTypeNumber) {
+    if (accountHolderTypeNumber != nil) {
         return (STPBankAccountHolderType)[accountHolderTypeNumber integerValue];
     }
 
