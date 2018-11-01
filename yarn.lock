@@ -4842,9 +4842,9 @@ react-native-maps@0.22.0:
     babel-plugin-module-resolver "^2.3.0"
     babel-preset-react-native "1.9.0"
 
-react-native-mauron85-background-geolocation@^0.5.0-alpha.40:
-  version "0.5.0-alpha.42"
-  resolved "https://registry.yarnpkg.com/react-native-mauron85-background-geolocation/-/react-native-mauron85-background-geolocation-0.5.0-alpha.42.tgz#332674a7a9d04bd70975258823f5727487e546da"
+react-native-mauron85-background-geolocation@0.5.0-alpha.44:
+  version "0.5.0-alpha.44"
+  resolved "https://registry.yarnpkg.com/react-native-mauron85-background-geolocation/-/react-native-mauron85-background-geolocation-0.5.0-alpha.44.tgz#8adb4b98950cf119ddc5b12ced1c79d7c512a55b"
 
 react-native-modal-selector@^0.0.28:
   version "0.0.28"
@@ -5819,11 +5819,9 @@ time-stamp@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/time-stamp/-/time-stamp-1.1.0.tgz#764a5a11af50561921b133f3b44e618687e0f5c3"
 
-tipsi-stripe@4.6.3:
-  version "4.6.3"
-  resolved "http://registry.npmjs.org/tipsi-stripe/-/tipsi-stripe-4.6.3.tgz#a591a3bb4c8162d808068ec41659858879d2dd51"
-  dependencies:
-    prop-types "^15.5.10"
+tipsi-stripe@6.1.2:
+  version "6.1.2"
+  resolved "https://registry.yarnpkg.com/tipsi-stripe/-/tipsi-stripe-6.1.2.tgz#68289d5638a6bea4e9adeeb10e7dafe9f642fc15"
 
 tmp@^0.0.33:
   version "0.0.33"

@@ -33,7 +33,7 @@ class CreditCardPage extends Component {
   }
 
   componentDidMount() {
-    Stripe.init({
+    Stripe.setOptions({
       publishableKey: Settings.get('stripe_publishable_key'),
     });
   }

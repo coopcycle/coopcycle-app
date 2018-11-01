@@ -213,16 +213,4 @@ allprojects {
     }
 }
 
-// Fix mixed versions in tipsi-stripe
-configurations.all {
-    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
-        def requested = details.requested
-        if (requested.group == 'com.android.support') {
-            if (requested.name.startsWith("recyclerview") || requested.name.startsWith("transition") || requested.name.startsWith("design") || requested.name.startsWith("appcompat")) {
-                details.useVersion '26.1.0'
-            }
-        }
-    }
-}
-
 apply plugin: 'com.google.gms.google-services'
