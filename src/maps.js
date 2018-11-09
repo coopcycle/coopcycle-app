@@ -17,6 +17,22 @@ export const withDefaults = (MapView) => {
 
     constructor(props) {
       super(props);
+      this.state = {
+        // This is used to force a render, to fix "showsMyLocationButton"
+        // When the map is ready, marginBottom will be set to 0
+        // @see https://github.com/react-community/react-native-maps/issues/2010
+        // @see https://github.com/react-community/react-native-maps/issues/1033
+        // @see https://github.com/react-community/react-native-maps/search?q=showsMyLocationButton&type=Issues
+        marginBottom: 1
+      }
+    }
+
+    onMapReady() {
+      this.setState({ marginBottom: 0 })
+
+      if (this.props.hasOwnProperty('onMapReady')) {
+        this.props.onMapReady()
+      }
     }
 
     render() {
@@ -32,18 +48,23 @@ export const withDefaults = (MapView) => {
       const { forwardedRef, ...rest } = this.props
       const { extraProp, ...passThroughProps } = rest
 
+      if (passThroughProps.hasOwnProperty('onMapReady')) {
+        delete passThroughProps.onMapReady
+      }
+
       return (
         <MapView
-          style={ styles.map }
+          style={ [ styles.map, { marginBottom: this.state.marginBottom } ] }
           ref={ forwardedRef }
           initialRegion={ initialRegion }
           zoomEnabled={ true }
           zoomControlEnabled={ true }
           showsUserLocation
-          showsMyLocationButton={ false }
+          showsMyLocationButton={ true }
           loadingEnabled
           loadingIndicatorColor={"#666666"}
           loadingBackgroundColor={"#eeeeee"}
+          onMapReady={ () => this.onMapReady() }
           { ...passThroughProps }>
           { this.props.children }
         </MapView>

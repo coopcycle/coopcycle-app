@@ -184,23 +184,6 @@ class TasksPage extends Component {
     )
   }
 
-  renderLocateButton() {
-
-    const { geolocation } = this.state
-
-    if (geolocation) {
-      return (
-        <View style={ styles.locateButton }>
-          <TouchableOpacity
-            onPress={ () => this.center() }
-            style={ styles.circle }>
-            <Icon name="locate" />
-          </TouchableOpacity>
-        </View>
-      )
-    }
-  }
-
   render() {
 
     const { tasks, selectedDate } = this.props
@@ -225,9 +208,6 @@ class TasksPage extends Component {
     }
 
     const navigationParams = { geolocation }
-
-    // FIXME
-    // this.renderLocateButton() crashes app
 
     return (
       <Container>
@@ -286,9 +266,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'rgba(52, 52, 52, 0.4)',
     zIndex: 20
-  },
-  map: {
-    ...StyleSheet.absoluteFillObject,
   },
   mapCalloutText: {
     fontSize: 14
