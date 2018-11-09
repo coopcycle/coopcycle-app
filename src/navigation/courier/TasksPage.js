@@ -157,8 +157,10 @@ class TasksPage extends Component {
 
     BackgroundGeolocation.checkStatus(status => {
       // you don't need to check status before start (this is just the example)
-      if (!status.isRunning) {
-        BackgroundGeolocation.start(); // triggers start on start event
+      if (status.isRunning) {
+        this.setParentParams({ tracking: true })
+      } else {
+        BackgroundGeolocation.start()
       }
     });
 
