@@ -107,14 +107,21 @@ class TasksPage extends Component {
     this.props.loadTasks(this.props.httpClient, selectedDate)
   }
 
+  setParentParams(params) {
+    this.props.navigation.dispatch(NavigationActions.setParams({
+      params,
+      key: 'CourierHome',
+    }))
+  }
+
   onMapReady () {
 
     BackgroundGeolocation.on('start', () => {
-      this.props.navigation.setParams({ tracking: true })
+      this.setParentParams({ tracking: true })
     })
 
     BackgroundGeolocation.on('stop', () => {
-      this.props.navigation.setParams({ tracking: false })
+      this.setParentParams({ tracking: false })
     })
 
     BackgroundGeolocation.on('location', (location) => {
