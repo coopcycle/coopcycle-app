@@ -12,8 +12,9 @@ import { connect } from 'react-redux'
 import { translate } from 'react-i18next'
 import _ from 'lodash'
 
-import { greenColor, redColor, greyColor, whiteColor, orangeColor, dateSelectHeaderHeight, websocketWarningHeight } from "../../styles/common"
-import DateSelectHeader from "../../components/DateSelectHeader"
+import { whiteColor, orangeColor, dateSelectHeaderHeight, websocketWarningHeight } from "../../styles/common"
+import DateSelectHeader from '../../components/DateSelectHeader'
+import TasksMapView from '../../components/TasksMapView'
 import Preferences from '../../Preferences'
 import {
   loadTasks,
@@ -24,13 +25,7 @@ import {
 } from '../../redux/Courier'
 import BackgroundGeolocation from 'react-native-mauron85-background-geolocation'
 
-import { withDefaults } from "../../maps"
-const MapViewWithDefaults = withDefaults(MapView)
-
 class TasksPage extends Component {
-
-  map = null
-  markers = []
 
   constructor(props) {
     super(props)
@@ -92,11 +87,6 @@ class TasksPage extends Component {
         { cancelable: false }
       )
     }
-  }
-
-  center() {
-    const { geolocation } = this.state
-    this.map.animateToCoordinate(geolocation, 500)
   }
 
   onGeolocationChange(geolocation) {
@@ -199,23 +189,6 @@ class TasksPage extends Component {
     const { navigate } = this.props.navigation
     const { geolocation } = this.state
 
-    this.markers = this.markers.slice()
-
-    const pinColor = task => {
-
-      let pinColor = greyColor
-
-      if (task.status === 'DONE') {
-        pinColor = greenColor
-      }
-
-      if (task.status === 'FAILED') {
-        pinColor = redColor
-      }
-
-      return pinColor
-    }
-
     const navigationParams = { geolocation }
 
     return (
@@ -226,37 +199,11 @@ class TasksPage extends Component {
           selectedDate={selectedDate}
         />
         <View style={ styles.container }>
-          <MapViewWithDefaults
-            ref={ component => this.map = component }
-            onMapReady={() => this.onMapReady()}>
-            { tasks.map(task => (
-              <MapView.Marker
-                ref={ component => this.markers.push(component) }
-                identifier={ task['@id'] }
-                key={ task['@id'] }
-                coordinate={ task.address.geo }
-                pinColor={ pinColor(task) }
-                flat={ true }>
-                <MapView.Callout onPress={ () => navigate('CourierTask', { ...navigationParams, task }) }>
-                  { task.address.name && (<Text style={styles.mapCalloutText}>{ task.address.name }</Text>) }
-                  <Text style={styles.mapCalloutText}>{ task.address.streetAddress }</Text>
-                  {
-                    task.tags.map((tag, index) => (
-                      <Text key={{index}} style={{
-                        backgroundColor: tag.color,
-                        textAlign: 'center',
-                        color: whiteColor,
-                        fontSize: 14,
-                        paddingHorizontal: 15,
-                        width: '60%'
-                      }}>
-                        {tag.name}
-                      </Text>))
-                  }
-                </MapView.Callout>
-              </MapView.Marker>
-            ))}
-          </MapViewWithDefaults>
+          <TasksMapView
+            tasks={ tasks }
+            onMapReady={ () => this.onMapReady() }
+            onMarkerCalloutPress={ task => navigate('CourierTask', { ...navigationParams, task }) }>
+          </TasksMapView>
         </View>
         { this.renderLoader() }
       </Container>
@@ -275,35 +222,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'rgba(52, 52, 52, 0.4)',
     zIndex: 20
-  },
-  mapCalloutText: {
-    fontSize: 14
-  },
-  taskListButton: {
-    paddingHorizontal: 15,
-    paddingTop: 0,
-    paddingBottom: 15,
-    alignItems: 'center',
-    justifyContent: 'center',
-    position: 'absolute',
-    zIndex: 2,
-    right: 0,
-    left: 0,
-    bottom: 0
-  },
-  locateButton: {
-    position: 'absolute',
-    zIndex: 2,
-    top: 22,
-    right: 0,
-  },
-  circle: {
-    flex: 1,
-    backgroundColor: 'rgba(255,255,255,0.7)',
-    paddingHorizontal: 8,
-    paddingVertical: 6,
-    marginRight: 20,
-    marginTop: 20,
   },
   websocketWarning: {
     backgroundColor: orangeColor,
