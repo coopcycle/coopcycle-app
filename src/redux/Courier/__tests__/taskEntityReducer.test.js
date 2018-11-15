@@ -15,6 +15,9 @@ import {
 } from '../taskSelectors';
 import { message } from '../../middlewares/WebSocketMiddleware'
 
+// As we may be using setTimeout(), we need to mock timers
+// @see https://jestjs.io/docs/en/timer-mocks.html
+jest.useFakeTimers();
 
 describe('Redux | Tasks | Reducers', () => {
   const initialState = tasksEntityReducer()

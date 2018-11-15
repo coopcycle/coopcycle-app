@@ -13,6 +13,9 @@ import {
   loadTasks, markTaskDone, markTaskFailed,
 } from '../taskActions'
 
+// As we may be using setTimeout(), we need to mock timers
+// @see https://jestjs.io/docs/en/timer-mocks.html
+jest.useFakeTimers();
 
 describe('Redux | Tasks | Actions', () => {
   [
