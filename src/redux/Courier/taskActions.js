@@ -42,15 +42,10 @@ export const clearTasksFilter = createAction(CLEAR_TASK_FILTER)
  */
 
 function resetNavigation() {
-  const resetAction = StackActions.reset({
-    index: 0,
-    actions: [
-      // WARNING
-      // routeName must be one of current StackNavigator
-      NavigationActions.navigate({ routeName: 'Main' }),
-    ]
-  })
-  NavigationHolder.dispatch(resetAction)
+  // StackActions.reset() always goes to tab defined in initialRouteName
+  // Call popToTop() + back() to go back properly
+  NavigationHolder.dispatch(StackActions.popToTop())
+  NavigationHolder.dispatch(NavigationActions.back())
 }
 
 function showAlert(e) {
