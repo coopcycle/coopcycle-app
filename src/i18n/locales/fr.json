@@ -20,6 +20,7 @@
     "FAILED_TASK_COMPLETE": "Impossible de terminer cette tâche",
     "TRY_LATER": "Veuillez réessayer plus tard",
     "NET_FAILED": "Impossible de se connecter",
+    "RETRY": "Réessayer",
     "SERVER_INCOMPATIBLE": "Ce serveur n'est pas compatible",
     "SERVER_INVALID": "Ce serveur n'est pas valide",
     "CHOOSE_SERVER": "Veuillez choisir un serveur pour commencer",

@@ -20,6 +20,7 @@
     "FAILED_TASK_COMPLETE": "Could not complete this task",
     "TRY_LATER": "Please try again later",
     "NET_FAILED": "Network request failed",
+    "RETRY": "Retry",
     "SERVER_INCOMPATIBLE": "Incompatible server",
     "SERVER_INVALID": "Invalid server",
     "CHOOSE_SERVER": "Please choose a server to start",

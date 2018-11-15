@@ -131,7 +131,8 @@ class Settings {
       if (!baseURL) {
         return reject('baseURL is undefined')
       }
-      loadServerSettingsHash(baseURL)
+
+      return loadServerSettingsHash(baseURL)
         .then(hash => {
           const client = API.createClient(baseURL)
           if (hash) {
@@ -162,6 +163,7 @@ class Settings {
           return serverSettings
         })
         .then(settings => resolve(settings))
+        .catch(e => reject(e))
     })
   }
 
