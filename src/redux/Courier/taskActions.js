@@ -92,12 +92,12 @@ export function markTaskFailed(client, task, notes) {
     return client
       .put(task['@id'] + '/failed', { reason: notes })
       .then(task => {
-        resetNavigation()
         dispatch(markTaskFailedSuccess(task))
+        setTimeout(() => resetNavigation(), 100)
       })
       .catch(e => {
-        showAlert(e)
         dispatch(markTaskFailedFailure(e))
+        setTimeout(() => showAlert(e), 100)
       })
   }
 }
@@ -110,12 +110,12 @@ export function markTaskDone(client, task, notes) {
     return client
       .put(task['@id'] + '/done', { reason: notes })
       .then(task => {
-        resetNavigation()
         dispatch(markTaskDoneSuccess(task))
+        setTimeout(() => resetNavigation(), 100)
       })
       .catch(e => {
-        showAlert(e)
         dispatch(markTaskDoneFailure(e))
+        setTimeout(() => showAlert(e), 100)
       })
   }
 }
