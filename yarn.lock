@@ -4529,9 +4529,10 @@ react-native-mauron85-background-geolocation@0.5.0-alpha.44:
   version "0.5.0-alpha.44"
   resolved "https://registry.yarnpkg.com/react-native-mauron85-background-geolocation/-/react-native-mauron85-background-geolocation-0.5.0-alpha.44.tgz#8adb4b98950cf119ddc5b12ced1c79d7c512a55b"
 
-react-native-modal-selector@^0.0.28:
-  version "0.0.28"
-  resolved "https://registry.yarnpkg.com/react-native-modal-selector/-/react-native-modal-selector-0.0.28.tgz#0269cf1e590d60b47a43997260a2fcfbcbe1c466"
+react-native-modal-selector@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/react-native-modal-selector/-/react-native-modal-selector-1.0.0.tgz#7350225d7eaf5cae001c9e634a8ced7b795543a7"
+  integrity sha512-g453ssZ7zx8EeE5sMOg8MPHfZyF9Pm57RSMopOF831r7qgHwjFWpxwybF6AxQQTNGY0bm7DuJ84KgQhHp8XpRA==
   dependencies:
     prop-types "^15.5.10"
 
