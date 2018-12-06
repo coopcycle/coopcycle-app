@@ -1710,9 +1710,10 @@ enzyme-adapter-utils@^1.8.0:
     object.assign "^4.1.0"
     prop-types "^15.6.2"
 
-enzyme-to-json@^3.3.4:
-  version "3.3.4"
-  resolved "https://registry.yarnpkg.com/enzyme-to-json/-/enzyme-to-json-3.3.4.tgz#67c6040e931182f183418af2eb9f4323258aa77f"
+enzyme-to-json@^3.3.5:
+  version "3.3.5"
+  resolved "https://registry.yarnpkg.com/enzyme-to-json/-/enzyme-to-json-3.3.5.tgz#f8eb82bd3d5941c9d8bc6fd9140030777d17d0af"
+  integrity sha512-DmH1wJ68HyPqKSYXdQqB33ZotwfUhwQZW3IGXaNXgR69Iodaoj8TF/D9RjLdz4pEhGq2Tx2zwNUIjBuqoZeTgA==
   dependencies:
     lodash "^4.17.4"
 
@@ -4457,9 +4458,10 @@ react-native-drawer@2.5.0:
     prop-types "^15.5.8"
     tween-functions "^1.0.1"
 
-react-native-dropdownalert@^3.7.0:
-  version "3.7.0"
-  resolved "https://registry.yarnpkg.com/react-native-dropdownalert/-/react-native-dropdownalert-3.7.0.tgz#f5cc31a3c50a0783bfa78523fbfc155bacfb8154"
+react-native-dropdownalert@^3.7.1:
+  version "3.7.1"
+  resolved "https://registry.yarnpkg.com/react-native-dropdownalert/-/react-native-dropdownalert-3.7.1.tgz#055928bc688c47b80a33043b79567be3b1327856"
+  integrity sha512-pdq3EO2bwUAd/jKhesav+Vy5teknD2F3DDUCNOPp5JWOiSc0OV66TjKpgu0mQp6Pr9zokkhEhhRQbRx0D/bZMQ==
   dependencies:
     prop-types "15.5.10"
 
@@ -4504,9 +4506,10 @@ react-native-languages@^3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/react-native-languages/-/react-native-languages-3.0.1.tgz#a35cf89e69e6722205d96cf418411444c328e6c2"
 
-react-native-map-link@^2.1.0:
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/react-native-map-link/-/react-native-map-link-2.1.1.tgz#84ab42a1a8aedc95b9621be94a0de142c39afd6b"
+react-native-map-link@^2.1.4:
+  version "2.1.4"
+  resolved "https://registry.yarnpkg.com/react-native-map-link/-/react-native-map-link-2.1.4.tgz#aaee570460cf4df5361f86b864f92c2397ad4d3f"
+  integrity sha512-BVwIdoGEonBDL4IXt76LbtlCQa+D4FDxVc6A7++MHuYY/+NbTerT/Xx3kFgJOSQuYeTOFCYJLAfNraSRIG8F+g==
   dependencies:
     prop-types "^15.6.1"
     react-native-modal "^6.4.0"
@@ -4816,9 +4819,10 @@ redux-actions@^2.6.4:
     reduce-reducers "^0.4.3"
     to-camel-case "^1.0.0"
 
-redux-devtools-extension@^2.13.5:
-  version "2.13.5"
-  resolved "https://registry.yarnpkg.com/redux-devtools-extension/-/redux-devtools-extension-2.13.5.tgz#3ff34f7227acfeef3964194f5f7fc2765e5c5a39"
+redux-devtools-extension@^2.13.7:
+  version "2.13.7"
+  resolved "https://registry.yarnpkg.com/redux-devtools-extension/-/redux-devtools-extension-2.13.7.tgz#14bd7a1a7c8bee7f397beb1116fd16fc9633b752"
+  integrity sha512-F2GlWMWxCTJGRjJ+GSZcGDcVAj6Pbf77FKb4C9S8eni5Eah6UBGNwxNj8K1MTtmItdZH1Wx+EvIifHN2KKcQrw==
 
 redux-logger@^3.0.6:
   version "3.0.6"
