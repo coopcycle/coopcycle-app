@@ -135,7 +135,7 @@ class TasksPage extends Component {
 
     BackgroundGeolocation.on('authorization', (status) => {
       console.log('[INFO] BackgroundGeolocation authorization status: ' + status);
-      if (status !== BackgroundGeolocation.AUTHORIZED) {
+      if (status === BackgroundGeolocation.NOT_AUTHORIZED) {
         // we need to set delay or otherwise alert may not be shown
         setTimeout(() =>
           Alert.alert('App requires location tracking permission', 'Would you like to open app settings?', [
