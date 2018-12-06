@@ -9,7 +9,7 @@ exports[`renders correcty 1`] = `
       }
     }
   >
-    <Component
+    <View
       style={
         Object {
           "backgroundColor": "#f5f5f5",
@@ -20,7 +20,7 @@ exports[`renders correcty 1`] = `
         <ColumnNB
           size={25}
         >
-          <Component
+          <View
             style={
               Object {
                 "alignItems": "center",
@@ -41,7 +41,7 @@ exports[`renders correcty 1`] = `
                 }
               }
             />
-          </Component>
+          </View>
         </ColumnNB>
         <ColumnNB
           size={75}
@@ -74,8 +74,8 @@ exports[`renders correcty 1`] = `
           </Styled(Text)>
         </ColumnNB>
       </GridNB>
-    </Component>
-    <Component
+    </View>
+    <View
       style={
         Object {
           "alignItems": "center",
@@ -165,7 +165,7 @@ exports[`renders correcty 1`] = `
           </Styled(Text)>
         </RowNB>
       </GridNB>
-    </Component>
+    </View>
   </Styled(Content)>
 </Styled(Container)>
 `;

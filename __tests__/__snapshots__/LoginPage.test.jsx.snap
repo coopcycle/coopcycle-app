@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`renders correcty 1`] = `
-<Component>
+<View>
   <Styled(Form)>
     <Styled(Item)
       stackedLabel={true}
@@ -39,7 +39,7 @@ exports[`renders correcty 1`] = `
       />
     </Styled(Item)>
   </Styled(Form)>
-  <Component
+  <View
     style={
       Object {
         "marginTop": 20,
@@ -55,6 +55,6 @@ exports[`renders correcty 1`] = `
         SUBMIT
       </Styled(Text)>
     </Styled(Button)>
-  </Component>
-</Component>
+  </View>
+</View>
 `;
