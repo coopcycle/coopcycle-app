@@ -1,5 +1,9 @@
 import { AsyncStorage } from 'react-native'
 
+const defaultPreferences = {
+  tasksFilters: [],
+}
+
 class Preferences {
 
   static getKeepAwake() {
@@ -32,6 +36,43 @@ class Preferences {
               return reject(error)
             }
             resolve()
+          });
+      } catch (error) {
+        reject(error.message)
+      }
+    })
+  }
+
+  static setTasksFilters(filters) {
+    return new Promise((resolve, reject) => {
+      try {
+        AsyncStorage.setItem('@Preferences.tasksFilters', JSON.stringify(filters))
+          .then((error) => {
+            if (error) {
+              return reject(error)
+            }
+            resolve()
+          })
+      } catch (error) {
+        reject(error.message)
+      }
+    })
+  }
+
+  static getTasksFilters() {
+    return new Promise((resolve, reject) => {
+      try {
+        AsyncStorage.getItem('@Preferences.tasksFilters')
+          .then((data, error) => {
+            if (error) {
+              return reject(error)
+            }
+
+            if (!data) {
+              return resolve(defaultPreferences.tasksFilters)
+            }
+
+            return resolve(JSON.parse(data))
           });
       } catch (error) {
         reject(error.message)

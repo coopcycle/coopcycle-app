@@ -3,6 +3,8 @@ import { AsyncStorage, Platform } from 'react-native'
 import BackgroundGeolocation from 'react-native-mauron85-background-geolocation'
 import API from '../../API'
 import AppUser from '../../AppUser'
+import Preferences from '../../Preferences'
+import { setTasksFilter } from '../Courier/taskActions'
 
 /*
  * Action Types
@@ -37,6 +39,8 @@ export function bootstrap(baseURL, user) {
     dispatch(_setUser(user))
     dispatch(_setHttpClient(httpClient))
     dispatch(_setBaseURL(baseURL))
+
+    Preferences.getTasksFilters().then(filters => dispatch(setTasksFilter(filters)))
 
     configureBackgroundGeolocation(httpClient, user)
     saveRemotePushToken(dispatch, getState)

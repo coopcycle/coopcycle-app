@@ -2,7 +2,7 @@
  * Task related reducers
  */
 import moment from 'moment'
-import { LOAD_TASKS_REQUEST, ADD_TASK_FILTER, CLEAR_TASK_FILTER } from './taskActions'
+import { LOAD_TASKS_REQUEST, ADD_TASK_FILTER, CLEAR_TASK_FILTER, SET_TASK_FILTER } from './taskActions'
 
 /*
  * Intital state shape for the task UI reducer
@@ -24,6 +24,7 @@ export const tasksUiReducer = (state = tasksUiInitialState, action = {}) => {
       }
 
     case ADD_TASK_FILTER:
+    case SET_TASK_FILTER:
       return {
         ...state,
         excludeFilters: state.excludeFilters.concat(action.payload),
