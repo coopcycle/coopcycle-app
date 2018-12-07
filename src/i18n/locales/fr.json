@@ -118,7 +118,7 @@
     "TASKS_FILTER": "Filtrer les tâches",
     "HIDE_DONE_TASKS": "Masquer les tâches effectuées",
     "HIDE_FAILED_TASKS": "Masquer les tâches ayant échoué",
-    "HIDE_TASKS_FAILED_WITH": "Masquer les tâches marquées avec",
+    "HIDE_TASKS_TAGGED_WITH": "Masquer les tâches marquées avec",
     "RESTAURANT_LIST_CLICK_BELOW": "Cliquez sur un restaurant dans la liste ci-dessous",
     "RESTAURANT_ORDER_LIST_NEW_ORDERS": "Nouvelles commandes ({{count}})",
     "RESTAURANT_ORDER_LIST_ACCEPTED_ORDERS": "Commandes acceptées ({{count}})",

@@ -44,7 +44,7 @@ const MainNavigator = createStackNavigator({
       headerLeft: headerLeft(navigation),
       headerRight: (
         <View style={{flex: 1, flexDirection: 'row', alignItems: 'flex-end'}}>
-          <Button transparent onPress={() => navigation.navigate('CourierFilters')}>
+          <Button transparent onPress={() => navigation.navigate('CourierSettings')}>
             <Icon name="settings" style={{ color: 'white' }} />
           </Button>
           <Button transparent>
@@ -66,18 +66,31 @@ const MainNavigator = createStackNavigator({
       title: i18n.t('HISTORY'),
     })
   },
-  CourierSettings: {
-    screen: navigation.CourierSettingsPage,
-    navigationOptions: ({ navigation }) => ({
-      title: i18n.t('SETTINGS'),
-    })
-  },
 }, {
   initialRouteKey: 'CourierHome',
   initialRouteName: 'CourierHome',
   navigationOptions: {
     ...defaultNavigationOptions
   }
+})
+
+const SettingsStack = createStackNavigator({
+  CourierSettings: {
+    screen: navigation.CourierSettings,
+    navigationOptions: ({ navigation }) => ({
+      header: null,
+    })
+  },
+  CourierSettingsTags: {
+    screen: navigation.CourierSettingsTags,
+    navigationOptions: ({ navigation }) => ({
+      header: null,
+    })
+  },
+}, {
+  navigationOptions: ({ navigation }) => ({
+    ...defaultNavigationOptions
+  })
 })
 
 export default createStackNavigator({
@@ -93,8 +106,8 @@ export default createStackNavigator({
       title: `${i18n.t('TASK')} #${navigation.state.params.task.id}`,
     })
   },
-  CourierFilters: {
-    screen: navigation.CourierFilters,
+  CourierSettings: {
+    screen: SettingsStack,
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('TASKS_FILTER')
     })

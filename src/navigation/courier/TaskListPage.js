@@ -50,19 +50,6 @@ class TaskListPage extends Component {
 
   taskList = null
 
-  static navigationOptions = ({navigation}) => {
-    const { params } = navigation.state
-    return {
-      headerRight: (
-        <View style={{flex: 1, flexDirection: 'row', alignItems: 'flex-end'}}>
-          <Button transparent onPress={() => navigation.navigate('CourierFilters')}>
-            <Icon name="settings" style={{color: whiteColor}} />
-          </Button>
-        </View>
-      ),
-    }
-  }
-
   constructor(props) {
     super(props)
 
