@@ -72,6 +72,7 @@
     "TODAY": "Aujourd'hui",
     "TOMORROW": "Demain",
     "CANCEL": "Annuler",
+    "VIEW": "Afficher",
     "WHEN": "Quand",
     "ADDRESS": "Adresse",
     "POST_CODE": "Code postal",
@@ -161,6 +162,10 @@
     "CHECKOUT_PRODUCT_OPTIONS_DISCLAIMER": "Choisissez les options pour le produit {{name}}",
     "CHECKOUT_LOGIN_TITLE": "Authentification",
     "CHECKOUT_LOGIN_DISCLAIMER": "Veuillez vous indentifier pour poursuivre",
-    "ADD_TO_CART": "Ajouter au panier"
+    "ADD_TO_CART": "Ajouter au panier",
+    "NOTIFICATION_TASKS_CHANGED_TITLE": "Tâches mises à jour",
+    "NOTIFICATION_TASKS_CHANGED_DESC": "Vos tâches du {{date}} ont été mises à jour",
+    "NOTIFICATION_ORDER_CREATED_TITLE": "Nouvelle commande",
+    "NOTIFICATION_ORDER_CREATED_DESC": "Une nouvelle commande pour le {{date}} a été créée"
   }
 }

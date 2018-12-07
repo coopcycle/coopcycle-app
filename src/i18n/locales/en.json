@@ -72,6 +72,7 @@
     "TODAY": "Today",
     "TOMORROW": "Tomorrow",
     "CANCEL": "Cancel",
+    "VIEW": "Show",
     "WHEN": "When",
     "ADDRESS": "Address",
     "POST_CODE": "Post code",
@@ -161,6 +162,10 @@
     "CHECKOUT_PRODUCT_OPTIONS_DISCLAIMER": "Please choose options for product {{name}}",
     "CHECKOUT_LOGIN_TITLE": "Authentication",
     "CHECKOUT_LOGIN_DISCLAIMER": "Please authenticate to continue",
-    "ADD_TO_CART": "Add to cart"
+    "ADD_TO_CART": "Add to cart",
+    "NOTIFICATION_TASKS_CHANGED_TITLE": "Tasks changed",
+    "NOTIFICATION_TASKS_CHANGED_DESC": "Your tasks from {{date}} have been updated",
+    "NOTIFICATION_ORDER_CREATED_TITLE": "New order",
+    "NOTIFICATION_ORDER_CREATED_DESC": "A new order for {{date}} has been created"
   }
 }

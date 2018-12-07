@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import {
-  Alert,
   Platform,
   View
 } from 'react-native'
@@ -13,10 +12,6 @@ import { createSwitchNavigator } from 'react-navigation'
 import { Provider } from 'react-redux'
 import { translate, I18nextProvider } from 'react-i18next'
 
-import Sound from 'react-native-sound'
-// Make sure sound will play even when device is in silent mode
-Sound.setCategory('Playback')
-
 import navigation from './navigation'
 import navigators from './navigation/navigators'
 import i18n, { localeDetector } from './i18n'
@@ -26,10 +21,8 @@ import moment from 'moment'
 moment.locale(localeDetector())
 
 import store from './redux/store'
-import { loadTasks } from './redux/Courier'
-import { loadOrders, loadOrderAndNavigate } from './redux/Restaurant/actions'
-import { setRemotePushToken, setCurrentRoute } from './redux/App/actions'
-import PushNotification from './notifications'
+import { setCurrentRoute } from './redux/App/actions'
+import NotificationHandler from './components/NotificationHandler'
 
 import DropdownAlert from 'react-native-dropdownalert'
 import DropdownHolder from './DropdownHolder'
@@ -80,108 +73,8 @@ function onNavigationStateChange(prevState, currentState) {
 
 class App extends Component {
 
-  componentDidMount() {
-
-    const onTasksChanged = date => {
-
-      const { app } = store.getState()
-      const { httpClient, currentRoute } = app
-
-      if (currentRoute !== 'CourierTaskList') {
-        NavigationHolder.navigate('CourierTaskList', {})
-      }
-
-      store.dispatch(loadTasks(httpClient, moment(date)))
-    }
-
-    const onOrderCreated = (restaurant, date, order) => {
-
-      const { app } = store.getState()
-      const { currentRoute } = app
-
-      if (currentRoute !== 'RestaurantHome') {
-        NavigationHolder.navigate('RestaurantHome', { restaurant })
-      } else {
-        store.dispatch(loadOrderAndNavigate(order))
-      }
-
-    }
-
-    PushNotification.configure({
-      onRegister: token => store.dispatch(setRemotePushToken(token)),
-      onNotification: notification => {
-        const { event } = notification.data
-
-        if (event && event.name === 'order:created') {
-          const { restaurant, date, order } = event.data
-          if (notification.foreground) {
-
-            // Load and play sound until the alert is closed
-            const bell = new Sound('misstickle__indian_bell_chime.wav', Sound.MAIN_BUNDLE, (error) => {
-              if (error) {
-                return
-              }
-              bell.setNumberOfLoops(-1)
-              bell.play((success) => {
-                if (!success) {
-                  bell.reset();
-                }
-              })
-            })
-
-            Alert.alert(
-              'Nouvelle commande',
-              `Une nouvelle commande pour le ${event.data.date} a été créée`,
-              [
-                {
-                  text: 'Afficher',
-                  onPress: () => {
-                    bell.stop(() => {})
-                    onOrderCreated(restaurant, date, order)
-                  }
-                },
-              ],
-              {
-                cancelable: false
-              }
-            )
-          } else {
-            onOrderCreated(restaurant, date)
-          }
-        }
-
-        if (event && event.name === 'tasks:changed') {
-          if (notification.foreground) {
-            Alert.alert(
-              'Tâches mises à jour',
-              `Vos tâches du ${event.data.date} ont été mises à jour`,
-              [
-                {
-                  text: 'Annuler',
-                  onPress: () => {}
-                },
-                {
-                  text: 'Afficher',
-                  onPress: () => onTasksChanged(event.data.date)
-                },
-              ],
-              {
-                cancelable: true
-              }
-            )
-          } else {
-            onTasksChanged(event.data.date)
-          }
-        }
-      }
-    })
-  }
-
-  componentWillUnmount() {
-    PushNotification.removeListeners()
-  }
-
   render() {
+
     return (
       <Provider store={ store }>
         <I18nextProvider i18n={ i18n }>
@@ -191,6 +84,7 @@ class App extends Component {
                 ref={ ref => { NavigationHolder.setTopLevelNavigator(ref) } }
                 onNavigationStateChange={ onNavigationStateChange } />
               <DropdownAlert ref={ ref => { DropdownHolder.setDropdown(ref) } } />
+              <NotificationHandler />
             </Root>
           </StyleProvider>
         </I18nextProvider>
