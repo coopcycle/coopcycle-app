@@ -68,19 +68,6 @@ class TaskPage extends Component {
     })
   }
 
-  onMapPress() {
-
-    const { task } = this.props.navigation.state.params
-
-    showLocation({
-      latitude: task.address.geo.latitude,
-      longitude: task.address.geo.longitude,
-      dialogTitle: this.props.t('OPEN_IN_MAPS_TITLE'),
-      dialogMessage: this.props.t('OPEN_IN_MAPS_MESSAGE'),
-      cancelText: this.props.t('CANCEL'),
-    })
-  }
-
   renderTaskDetails() {
 
     const { navigate } = this.props.navigation
@@ -94,7 +81,14 @@ class TaskPage extends Component {
     const items = [
       {
         iconName: 'md-navigate',
-        text: address
+        text: address,
+        onPress: () => showLocation({
+          latitude: task.address.geo.latitude,
+          longitude: task.address.geo.longitude,
+          dialogTitle: this.props.t('OPEN_IN_MAPS_TITLE'),
+          dialogMessage: this.props.t('OPEN_IN_MAPS_MESSAGE'),
+          cancelText: this.props.t('CANCEL'),
+        })
       },
       {
         iconName: 'md-clock',
@@ -331,8 +325,7 @@ class TaskPage extends Component {
                   loadingIndicatorColor={"#666666"}
                   loadingBackgroundColor={"#eeeeee"}
                   initialRegion={ initialRegion }
-                  onMapReady={() => this.fitToCoordinates()}
-                  onPress={() => this.onMapPress()}>
+                  onMapReady={() => this.fitToCoordinates()}>
                   <MapView.Marker
                     identifier={ task['@id'] }
                     key={ task['@id'] }
