@@ -25,11 +25,15 @@ class DashboardPage extends Component {
     // This is needed to display the title
     this.props.navigation.setParams({ restaurant: this.props.restaurant })
 
-    this.props.loadOrders(
-      this.props.httpClient,
-      this.props.restaurant,
-      this.props.date.format('YYYY-MM-DD')
-    )
+    const loadOrders = this.props.navigation.getParam('loadOrders', true)
+
+    if (loadOrders) {
+      this.props.loadOrders(
+        this.props.httpClient,
+        this.props.restaurant,
+        this.props.date.format('YYYY-MM-DD')
+      )
+    }
   }
 
   componentWillUnmount() {

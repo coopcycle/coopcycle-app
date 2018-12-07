@@ -1,5 +1,5 @@
 import { createAction } from 'redux-actions'
-import { NavigationActions } from 'react-navigation'
+import { NavigationActions, StackActions } from 'react-navigation'
 
 import DropdownHolder from '../../DropdownHolder'
 import NavigationHolder from '../../NavigationHolder'
@@ -158,9 +158,26 @@ export function loadOrderAndNavigate(order) {
 
         dispatch(loadOrderSuccess(res))
 
-        NavigationHolder.navigate('RestaurantOrder', {
-          order: res
+        // We use the "Reset" action so that it works everywhere
+        const resetAction = StackActions.reset({
+          index: 1,
+          actions: [
+            NavigationActions.navigate({
+              routeName: 'RestaurantHome',
+              params: {
+                restaurant: res.restaurant,
+                // We don't want to load orders again when navigating
+                loadOrders: false
+              }
+            }),
+            NavigationActions.navigate({
+              routeName: 'RestaurantOrder',
+              params: { order: res }
+            }),
+          ]
         })
+
+        NavigationHolder.dispatch(resetAction)
 
       })
       .catch(e => dispatch(loadOrderFailure(e)))

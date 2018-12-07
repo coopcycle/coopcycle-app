@@ -26,11 +26,7 @@ class NotificationHandler extends Component {
   }
 
   _onOrderCreated(restaurant, date, order) {
-    if (this.props.currentRoute !== 'RestaurantHome') {
-      NavigationHolder.navigate('RestaurantHome', { restaurant })
-    } else {
-      this.props.loadOrderAndNavigate(order)
-    }
+    this.props.loadOrderAndNavigate(order)
   }
 
   componentDidMount() {
