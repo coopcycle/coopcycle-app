@@ -5,6 +5,7 @@ import API from '../../API'
 import AppUser from '../../AppUser'
 import Preferences from '../../Preferences'
 import { setTasksFilter } from '../Courier/taskActions'
+import i18n from '../../i18n'
 
 /*
  * Action Types
@@ -132,12 +133,14 @@ function configureBackgroundGeolocation(httpClient, user) {
     desiredAccuracy: BackgroundGeolocation.HIGH_ACCURACY,
     stationaryRadius: 5,
     distanceFilter: 10,
-    debug: false,
+    debug: process.env.NODE_ENV === 'development',
     startOnBoot: false,
-    startForeground: false,
+    startForeground: true,
+    notificationTitle: i18n.t('BACKGROUND_GEOLOCATION_NOTIFICATION_TITLE'),
+    notificationText: i18n.t('BACKGROUND_GEOLOCATION_NOTIFICATION_TEXT'),
     stopOnTerminate: true,
     stopOnStillActivity: false,
-    locationProvider: BackgroundGeolocation.RAW_PROVIDER,
+    locationProvider: BackgroundGeolocation.DISTANCE_FILTER_PROVIDER,
     interval: 3000,
     fastestInterval: 1000,
     activitiesInterval: 5000,

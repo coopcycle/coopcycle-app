@@ -183,6 +183,8 @@
     "TASK_FORM_DONE_AFTER_LABEL": "À faire à partir de",
     "TASK_FORM_DONE_BEFORE_LABEL": "À faire avant",
     "TASK_FORM_COMMENTS_LABEL": "Commentaires",
-    "DISPATCH_DATE": "Choose a date"
+    "DISPATCH_DATE": "Choose a date",
+    "BACKGROUND_GEOLOCATION_NOTIFICATION_TITLE": "Géolocalisation en arrière-plan",
+    "BACKGROUND_GEOLOCATION_NOTIFICATION_TEXT": "Activée"
   }
 }
