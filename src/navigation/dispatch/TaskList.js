@@ -45,7 +45,7 @@ class TaskListScreen extends Component {
             tasks={ taskList.items }
             onSwipeRight={ task => this.props.unassignTask(task) }
             swipeOutRightIconName="close"
-            onTaskClick={ task => navigate('DispatchTask', { task }) } />
+            onTaskClick={ task => navigate('Task', { task }) } />
         </Content>
         <LoaderOverlay loading={ this.props.loading } />
       </Container>
