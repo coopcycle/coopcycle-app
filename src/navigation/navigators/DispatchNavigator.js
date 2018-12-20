@@ -63,7 +63,7 @@ const MainNavigator = createStackNavigator({
   TaskComplete: {
     screen: navigation.CourierTaskComplete,
     navigationOptions: ({ navigation }) => ({
-      title: i18n.t('COMPLETE_TASK', { id: navigation.state.params.task.id }),
+      title: i18n.t('END', { id: navigation.state.params.task.id }),
     })
   }
 }, {
