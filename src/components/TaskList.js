@@ -1,13 +1,14 @@
 import React, { Component } from 'react'
-import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { Dimensions, FlatList, StyleSheet, TouchableOpacity, View } from 'react-native'
 import { Icon, Text } from 'native-base'
 import { Col, Row, Grid } from 'react-native-easy-grid'
+import Swipeout from 'react-native-swipeout'
+import PropTypes from 'prop-types'
 import moment from 'moment'
 import _ from 'lodash'
 import { translate } from 'react-i18next'
 
-import { whiteColor, lightGreyColor, redColor } from "../styles/common"
-
+import { greenColor, whiteColor, lightGreyColor, redColor } from "../styles/common"
 
 const styles = StyleSheet.create({
   itemLeftRight: {
@@ -20,7 +21,6 @@ const styles = StyleSheet.create({
     padding: 10
   },
   item: {
-    paddingVertical: 10,
     borderBottomColor: lightGreyColor,
     borderBottomWidth: StyleSheet.hairlineWidth
   },
@@ -45,6 +45,9 @@ class TaskList extends Component {
 
   constructor(props) {
     super(props)
+    this.state = {
+      swipeOutClose: false
+    }
   }
 
   renderTaskStatusIcon(task) {
@@ -66,8 +69,28 @@ class TaskList extends Component {
     }
   }
 
+  renderSwipeoutButton(iconName) {
+
+    return (
+      <View style={{ flex: 1, height: 400, alignItems: 'center', justifyContent: 'center' }}>
+        <Icon name={ iconName } style={{ color: '#fff' }} />
+      </View>
+    )
+  }
+
+  renderSwipeoutLeftButton() {
+
+    return this.renderSwipeoutButton(this.props.swipeOutLeftIconName || 'checkmark')
+  }
+
+  renderSwipeoutRightButton() {
+
+    return this.renderSwipeoutButton(this.props.swipeOutRightIconName || 'warning')
+  }
+
   renderItem(task) {
 
+    const { width } = Dimensions.get('window')
     const { onTaskClick } = this.props
 
     const taskTypeIcon = task.type === 'PICKUP' ? 'cube' : 'arrow-down'
@@ -95,31 +118,79 @@ class TaskList extends Component {
       name = customerDetails.join(' ')
     }
 
-    return (
-      <TouchableOpacity onPress={ () => onTaskClick(task) } style={ styles.item }>
-        <Grid>
-          <Col size={ 1 } style={ itemLeftStyle }>
-            <Row style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-              <Icon style={ iconStyle } name={ taskTypeIcon } />
-            </Row>
-            { isCompleted &&
-            <Row style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-            { this.renderTaskStatusIcon(task) }
-            </Row>
+    const hasOnSwipeLeft = typeof this.props.onSwipeLeft === 'function'
+    const hasOnSwipeRight = typeof this.props.onSwipeRight === 'function'
+
+    let swipeOutProps = {}
+    if (hasOnSwipeLeft) {
+      swipeOutProps = {
+        ...swipeOutProps,
+        left: [
+          {
+            component: this.renderSwipeoutLeftButton(),
+            backgroundColor: greenColor,
+            onPress: () => {
+              this.props.onSwipeLeft(task)
+              this.setState({
+                swipeOutClose: true
+              })
             }
-          </Col>
-          <Col size={ 10 } style={ itemBodyStyle }>
-            <Text style={ textStyle }>{this.props.t('TASK')} #{ task.id }</Text>
-            { name && <Text style={ textStyle }>{ name }</Text> }
-            { task.address.name && <Text style={ textStyle }>{ task.address.name }</Text> }
-            <Text numberOfLines={ 1 } style={ textStyle }>{ task.address.streetAddress }</Text>
-            <Text style={ textStyle }>{ moment(task.doneAfter).format('LT') } - { moment(task.doneBefore).format('LT') }</Text>
-          </Col>
-          <Col size={ 1 } style={ styles.itemLeftRight }>
-            <Icon style={{ color: '#ccc' }} name="ios-arrow-forward" />
-          </Col>
-        </Grid>
-      </TouchableOpacity>
+          }
+        ]
+      }
+    }
+
+    if (hasOnSwipeRight) {
+      swipeOutProps = {
+        ...swipeOutProps,
+        right: [
+          {
+            component: this.renderSwipeoutRightButton(),
+            backgroundColor: redColor,
+            onPress: () => {
+              this.props.onSwipeRight(task)
+              this.setState({
+                swipeOutClose: true
+              })
+            }
+          }
+        ]
+      }
+    }
+
+    return (
+      <Swipeout
+        buttonWidth={ width * 0.4 }
+        close={ this.state.swipeOutClose }
+        style={ styles.item }
+        backgroundColor="#fff"
+        disabled={ !hasOnSwipeLeft && !hasOnSwipeRight }
+        {  ...swipeOutProps }>
+        <TouchableOpacity onPress={ () => onTaskClick(task) }>
+          <Grid style={{ paddingVertical: 10 }}>
+            <Col size={ 1 } style={ itemLeftStyle }>
+              <Row style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                <Icon style={ iconStyle } name={ taskTypeIcon } />
+              </Row>
+              { isCompleted &&
+              <Row style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+              { this.renderTaskStatusIcon(task) }
+              </Row>
+              }
+            </Col>
+            <Col size={ 10 } style={ itemBodyStyle }>
+              <Text style={ textStyle }>{this.props.t('TASK')} #{ task.id }</Text>
+              { name && <Text style={ textStyle }>{ name }</Text> }
+              { task.address.name && <Text style={ textStyle }>{ task.address.name }</Text> }
+              <Text numberOfLines={ 1 } style={ textStyle }>{ task.address.streetAddress }</Text>
+              <Text style={ textStyle }>{ moment(task.doneAfter).format('LT') } - { moment(task.doneBefore).format('LT') }</Text>
+            </Col>
+            <Col size={ 1 } style={ styles.itemLeftRight }>
+              <Icon style={{ color: '#ccc' }} name="ios-arrow-forward" />
+            </Col>
+          </Grid>
+        </TouchableOpacity>
+      </Swipeout>
     )
   }
 
@@ -136,5 +207,9 @@ class TaskList extends Component {
     )
   }
 }
+
+TaskList.propTypes = {
+  onTaskClick: PropTypes.func,
+};
 
 export default translate(['common'], { withRef: true })(TaskList)
