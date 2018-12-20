@@ -202,7 +202,7 @@ class TasksPage extends Component {
           <TasksMapView
             tasks={ tasks }
             onMapReady={ () => this.onMapReady() }
-            onMarkerCalloutPress={ task => navigate('CourierTask', { ...navigationParams, task }) }>
+            onMarkerCalloutPress={ task => navigate('Task', { ...navigationParams, task }) }>
           </TasksMapView>
         </View>
         { this.renderLoader() }

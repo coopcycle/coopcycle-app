@@ -40,7 +40,7 @@ class TaskPage extends Component {
       let previousTask = _.find(prevProps.tasks, t => t['@id'] === task['@id']),
         currentTask = _.find(this.props.tasks, t => t['@id'] === task['@id'])
 
-      if (currentTask.status !== previousTask.status) {
+      if (currentTask && previousTask && currentTask.status !== previousTask.status) {
         this.props.navigation.setParams({ task: currentTask })
       }
     }
@@ -257,7 +257,7 @@ class TaskPage extends Component {
       component: TaskPage.renderSwipeoutLeftButton(),
       backgroundColor: greenColor,
       onPress: () => {
-        this.props.navigation.navigate('CourierTaskComplete', { task, markTaskDone: true })
+        this.props.navigation.navigate('TaskComplete', { task, markTaskDone: true })
         this.setState({
           swipeOutClose: true
         })
@@ -268,7 +268,7 @@ class TaskPage extends Component {
       component: TaskPage.renderSwipeoutRightButton(),
       backgroundColor: redColor,
       onPress: () => {
-        this.props.navigation.navigate('CourierTaskComplete', { task, markTaskFailed: true })
+        this.props.navigation.navigate('TaskComplete', { task, markTaskFailed: true })
         this.setState({
           swipeOutClose: true
         })
@@ -278,7 +278,9 @@ class TaskPage extends Component {
     return (
       <Swipeout buttonWidth={ width * 0.4 } left={[ swipeoutLeftButton ]} right={[ swipeoutRightButton ]} close={ swipeOutClose }>
         <View style={{ padding: 28, width }}>
-          <Text style={{ fontSize: 20, textAlign: 'center', color: '#fff', fontFamily: 'Raleway-Regular' }}>{this.props.t('END')}</Text>
+          <Text style={{ fontSize: 20, textAlign: 'center', color: '#fff', fontFamily: 'Raleway-Regular' }}>
+            { this.props.t('END') }
+          </Text>
         </View>
       </Swipeout>
     )
@@ -345,14 +347,14 @@ class TaskPage extends Component {
           { hasLinkedTasks && <Row size={ 4 } style={ styles.swipeOutHelpContainer }>
             <Col>
               { hasPreviousTask && <Button transparent
-                onPress={ () => navigate('CourierTask', { geolocation, task: previousTask }) }>
+                onPress={ () => navigate('Task', { geolocation, task: previousTask }) }>
                 <Icon name="arrow-back" />
                 <Text>{ this.props.t('PREVIOUS_TASK') }</Text>
               </Button> }
             </Col>
             <Col>
               { hasNextTask && <Button transparent style={{ alignSelf: 'flex-end' }}
-                onPress={ () => navigate('CourierTask', { geolocation, task: nextTask }) }>
+                onPress={ () => navigate('Task', { geolocation, task: nextTask }) }>
                 <Text>{ this.props.t('NEXT_TASK') }</Text>
                 <Icon name="arrow-forward" />
               </Button> }
@@ -413,8 +415,18 @@ const styles = StyleSheet.create({
 })
 
 function mapStateToProps (state) {
+
+  let assignedTasks = []
+
+  _.forEach(state.dispatch.taskLists, (taskList) => {
+    assignedTasks = assignedTasks.concat(taskList.items)
+  })
+  const unassignedTasks = state.dispatch.unassignedTasks
+
+  const allTasks = _.uniqBy(unassignedTasks.concat(assignedTasks), '@id')
+
   return {
-    tasks: selectTasksList(state),
+    tasks: allTasks,
   }
 }
 

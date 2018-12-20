@@ -54,7 +54,7 @@ const MainNavigator = createStackNavigator({
       )
     })
   },
-  CourierTask: {
+  Task: {
     screen: navigation.CourierTaskPage,
     navigationOptions: ({ navigation }) => ({
       title: `${i18n.t('TASK')} #${navigation.state.params.task.id}`,
@@ -100,7 +100,7 @@ export default createStackNavigator({
       header: null,
     })
   },
-  CourierTaskComplete: {
+  TaskComplete: {
     screen: navigation.CourierTaskComplete,
     navigationOptions: ({ navigation }) => ({
       title: `${i18n.t('TASK')} #${navigation.state.params.task.id}`,

@@ -101,7 +101,7 @@ class TaskListPage extends Component {
             <TaskList
               ref={ (e) => {this.taskList = e} }
               tasks={ tasks }
-              onTaskClick={ task => navigate('CourierTask', { task }) }
+              onTaskClick={ task => navigate('Task', { task }) }
             />
           }
           {
