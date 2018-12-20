@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { InteractionManager, StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux'
 import { translate } from 'react-i18next'
+import _ from 'lodash'
 import {
   Container, Content,
   Left, Right,
@@ -68,9 +69,10 @@ class UnassignedTasks extends Component {
 }
 
 function mapStateToProps(state) {
+
   return {
     loading: state.dispatch.isFetching,
-    unassignedTasks: state.dispatch.unassignedTasks,
+    unassignedTasks: _.uniqBy(state.dispatch.unassignedTasks, '@id'),
     date: state.dispatch.date,
     user: state.app.user,
   }
