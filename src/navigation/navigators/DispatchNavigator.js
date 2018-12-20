@@ -54,10 +54,16 @@ const MainNavigator = createStackNavigator({
       title: i18n.t('DISPATCH_TASK_LIST', { username: navigation.state.params.taskList.username }),
     })
   },
-  DispatchTask: {
+  Task: {
     screen: navigation.CourierTaskPage,
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('DISPATCH_TASK', { id: navigation.state.params.task.id }),
+    })
+  },
+  TaskComplete: {
+    screen: navigation.CourierTaskComplete,
+    navigationOptions: ({ navigation }) => ({
+      title: i18n.t('COMPLETE_TASK', { id: navigation.state.params.task.id }),
     })
   }
 }, {

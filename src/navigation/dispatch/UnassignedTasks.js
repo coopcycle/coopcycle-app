@@ -58,7 +58,7 @@ class UnassignedTasks extends Component {
             <TaskList
               tasks={ this.props.unassignedTasks }
               onSwipeLeft={ task => this.props.assignTask(task, this.props.user.username) }
-              onTaskClick={ task => navigate('DispatchTask', { task }) } />
+              onTaskClick={ task => navigate('Task', { task }) } />
           ) }
         </Content>
         <LoaderOverlay loading={ this.props.loading } />
