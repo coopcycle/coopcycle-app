@@ -118,8 +118,13 @@ class TaskList extends Component {
       name = customerDetails.join(' ')
     }
 
+    let swipeOutRightEnabled = true
+    if (typeof this.props.swipeOutRightEnabled === 'function') {
+      swipeOutRightEnabled = this.props.swipeOutRightEnabled(task)
+    }
+
     const hasOnSwipeLeft = typeof this.props.onSwipeLeft === 'function'
-    const hasOnSwipeRight = typeof this.props.onSwipeRight === 'function'
+    const hasOnSwipeRight = typeof this.props.onSwipeRight === 'function' && swipeOutRightEnabled
 
     let swipeOutProps = {}
     if (hasOnSwipeLeft) {
