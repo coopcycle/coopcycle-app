@@ -4530,6 +4530,14 @@ react-native-mauron85-background-geolocation@0.5.0-alpha.50:
   resolved "https://registry.yarnpkg.com/react-native-mauron85-background-geolocation/-/react-native-mauron85-background-geolocation-0.5.0-alpha.50.tgz#92223955d6e6d36942aedcff6043105bccb77c1d"
   integrity sha512-IVL6SzmkGg5JrbjNgSjZD4ZAqdPAwWkG6hRVSvHQvNOX+lRnkO8m8MAC9rzAD/tpEzhNZHZhBlV97WJl/xt8fQ==
 
+react-native-modal-datetime-picker@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/react-native-modal-datetime-picker/-/react-native-modal-datetime-picker-6.0.0.tgz#8018994524122ad48fd6bc66f26f623c75a49fb3"
+  integrity sha512-O8brvSXgvRtfHzAyCNSrPcylE05cyK30D8/7rM0kjXLnlDcoiXtEl62qDQw8wnJOAL6kQFGn/iQ8H4mGXptiHw==
+  dependencies:
+    prop-types "^15.6.1"
+    react-native-modal "^6.2.0"
+
 react-native-modal-selector@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/react-native-modal-selector/-/react-native-modal-selector-1.0.0.tgz#7350225d7eaf5cae001c9e634a8ced7b795543a7"
@@ -4537,7 +4545,7 @@ react-native-modal-selector@^1.0.0:
   dependencies:
     prop-types "^15.5.10"
 
-react-native-modal@^6.4.0:
+react-native-modal@^6.2.0, react-native-modal@^6.4.0:
   version "6.5.0"
   resolved "https://registry.yarnpkg.com/react-native-modal/-/react-native-modal-6.5.0.tgz#46220b2289a41597d344c1db17454611b426a758"
   dependencies:

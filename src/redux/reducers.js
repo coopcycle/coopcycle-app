@@ -20,6 +20,7 @@ import { tasksEntityReducer, tasksUiReducer } from './Courier'
 import { appReducer } from './App'
 import restaurantReducer from './Restaurant/reducers'
 import checkoutReducer from './Checkout/reducers'
+import dispatchReducer from './Dispatch/reducers'
 
 export default combineReducers({
   entities: combineReducers({
@@ -28,6 +29,7 @@ export default combineReducers({
   app: appReducer,
   restaurant: restaurantReducer,
   checkout: checkoutReducer,
+  dispatch: dispatchReducer,
   ui: combineReducers({
     tasks: tasksUiReducer,
   })

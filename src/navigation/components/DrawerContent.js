@@ -23,9 +23,14 @@ class DrawerContent extends Component {
       _.filter(items, item => 'CourierNav' === item.routeName)
     const accountItems =
       _.filter(items, item => 'AccountNav' === item.routeName)
+    const adminItems =
+      _.filter(items, item => _.includes(['DispatchNav'], item.routeName))
 
     const otherItems = _.filter(items, item => {
-      if (_.includes(restaurantItems, item) || _.includes(courierItems, item) || _.includes(accountItems, item)) {
+      if (_.includes(restaurantItems, item)
+        || _.includes(courierItems, item)
+        || _.includes(accountItems, item)
+        || _.includes(adminItems, item)) {
         return false
       }
 
@@ -58,6 +63,9 @@ class DrawerContent extends Component {
     let courierSection = (
       <View />
     )
+    let adminSection = (
+      <View />
+    )
 
     const isAuthenticated = user && user.isAuthenticated()
 
@@ -83,6 +91,19 @@ class DrawerContent extends Component {
           </View>
         )
       }
+
+      if (user.hasRole('ROLE_ADMIN')) {
+        const adminItemsProps = {
+          ...this.props,
+          items: adminItems,
+        }
+
+        adminSection = (
+          <View>
+            <DrawerItems { ...adminItemsProps } />
+          </View>
+        )
+      }
     }
 
     const navigateToAccount = () =>
@@ -98,6 +119,7 @@ class DrawerContent extends Component {
           <DrawerItems { ...otherItemsProps } itemsContainerStyle={ styles.itemsContainer } />
           { restaurantSection }
           { courierSection }
+          { adminSection }
         </SafeAreaView>
       </ScrollView>
     )

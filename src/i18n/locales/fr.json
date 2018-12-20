@@ -36,6 +36,7 @@
     "ORDERS": "Commandes",
     "SIGN_OUT": "Déconnexion",
     "CONTINUE": "Continuer",
+    "EDIT": "Modifier",
     "CHANGE_QUANT": "Modifier la quantité",
     "TOTAL_ITEMS": "Total articles",
     "TOTAL_DELIVERY": "Total livraison",
@@ -166,6 +167,19 @@
     "NOTIFICATION_TASKS_CHANGED_TITLE": "Tâches mises à jour",
     "NOTIFICATION_TASKS_CHANGED_DESC": "Vos tâches du {{date}} ont été mises à jour",
     "NOTIFICATION_ORDER_CREATED_TITLE": "Nouvelle commande",
-    "NOTIFICATION_ORDER_CREATED_DESC": "Une nouvelle commande pour le {{date}} a été créée"
+    "NOTIFICATION_ORDER_CREATED_DESC": "Une nouvelle commande pour le {{date}} a été créée",
+    "UNASSIGNED_TASKS": "Non assignées",
+    "DISPATCH": "Dispatch",
+    "DISPATCH_UNASSIGNED_TASKS": "Non assignées",
+    "DISPATCH_TASK_LISTS": "Assignées",
+    "DISPATCH_ADD_TASK_LIST": "Ajouter un utilisateur",
+    "DISPATCH_ADD_TASK": "Ajouter une tâche",
+    "DISPATCH_CREATE_TASK": "Créer une tâche",
+    "DISPATCH_NO_TASKS": "Pas de tâches pour le moment",
+    "DISPATCH_ASSIGN_TASK": "Assigner une tâche",
+    "TASK_FORM_ADDRESS_LABEL": "Adresse",
+    "TASK_FORM_DONE_AFTER_LABEL": "À faire à partir de",
+    "TASK_FORM_DONE_BEFORE_LABEL": "À faire avant",
+    "TASK_FORM_COMMENTS_LABEL": "Commentaires"
   }
 }

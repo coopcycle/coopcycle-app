@@ -7,6 +7,7 @@ import DrawerContent from '../components/DrawerContent'
 import AccountNavigator from './AccountNavigator'
 import CheckoutNavigator from './CheckoutNavigator'
 import CourierNavigator from './CourierNavigator'
+import DispatchNavigator from './DispatchNavigator'
 import RestaurantNavigator from './RestaurantNavigator'
 
 import i18n from '../../i18n'
@@ -39,6 +40,15 @@ export default createDrawerNavigator({
     screen: CourierNavigator,
     navigationOptions: ({ navigation }) => ({
       drawerLabel: i18n.t('TASKS'),
+      drawerIcon: ({ tintColor }) => (
+        <Icon name="bicycle" style={{ fontSize: 16, color: tintColor }} />
+      ),
+    })
+  },
+  DispatchNav: {
+    screen: DispatchNavigator,
+    navigationOptions: ({ navigation }) => ({
+      drawerLabel: i18n.t('DISPATCH'),
       drawerIcon: ({ tintColor }) => (
         <Icon name="bicycle" style={{ fontSize: 16, color: tintColor }} />
       ),

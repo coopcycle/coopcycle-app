@@ -36,6 +36,7 @@
     "ORDERS": "Orders",
     "SIGN_OUT": "Sign out",
     "CONTINUE": "Continue",
+    "EDIT": "Edit",
     "CHANGE_QUANT": "Change quantity",
     "TOTAL_ITEMS": "Total items",
     "TOTAL_DELIVERY": "Total delivery",
@@ -166,6 +167,17 @@
     "NOTIFICATION_TASKS_CHANGED_TITLE": "Tasks changed",
     "NOTIFICATION_TASKS_CHANGED_DESC": "Your tasks from {{date}} have been updated",
     "NOTIFICATION_ORDER_CREATED_TITLE": "New order",
-    "NOTIFICATION_ORDER_CREATED_DESC": "A new order for {{date}} has been created"
+    "NOTIFICATION_ORDER_CREATED_DESC": "A new order for {{date}} has been created",
+    "UNASSIGNED_TASKS": "Unassigned",
+    "DISPATCH": "Dispatch",
+    "DISPATCH_UNASSIGNED_TASKS": "Unassigned",
+    "DISPATCH_TASK_LISTS": "Assigned",
+    "DISPATCH_TASK_LIST": "{{username}}",
+    "DISPATCH_ADD_TASK_LIST": "Add user",
+    "DISPATCH_CREATE_TASK": "Create task",
+    "DISPATCH_ADD_TASK": "Add task",
+    "DISPATCH_NO_TASKS": "No tasks yet",
+    "DISPATCH_TASK": "Task #{{id}}",
+    "DISPATCH_ASSIGN_TASK": "Assign task"
   }
 }

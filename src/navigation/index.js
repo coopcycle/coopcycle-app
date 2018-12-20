@@ -4,6 +4,13 @@ import { Icon } from 'native-base'
 import HeaderButton from '../components/HeaderButton'
 
 import Home from './Home'
+import DispatchUnassignedTasks from './dispatch/UnassignedTasks'
+import DispatchTaskLists from './dispatch/TaskLists'
+import DispatchTaskList from './dispatch/TaskList'
+import DispatchAddUser from './dispatch/AddUser'
+import DispatchAddTask from './dispatch/AddTask'
+import DispatchDate from './dispatch/Date'
+import DispatchAssignTask from './dispatch/AssignTask'
 import { primaryColor,  whiteColor, fontTitleName } from '../styles/common'
 
 export default {
@@ -37,6 +44,13 @@ export default {
   AccountDetailsPage: require('./account/AccountDetailsPage'),
   CreditCardPage: require('./CreditCardPage'),
   OrderTrackingPage: require('./OrderTrackingPage'),
+  DispatchUnassignedTasks,
+  DispatchTaskLists,
+  DispatchTaskList,
+  DispatchAddUser,
+  DispatchAddTask,
+  DispatchDate,
+  DispatchAssignTask,
   Loading: require('./Loading'),
   Home,
   ConfigureServer: require('./ConfigureServer')

@@ -28,6 +28,7 @@
     "react-native-maps": "0.22.1",
     "react-native-maps-super-cluster": "^1.5.0",
     "react-native-mauron85-background-geolocation": "0.5.0-alpha.50",
+    "react-native-modal-datetime-picker": "^6.0.0",
     "react-native-modal-selector": "^1.0.0",
     "react-native-open-settings": "^1.0.1",
     "react-native-pin-screen": "git+https://git@github.com/coopcycle/react-native-pin-screen.git#1.0.1",
