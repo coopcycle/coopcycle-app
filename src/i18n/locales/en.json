@@ -172,12 +172,17 @@
     "DISPATCH": "Dispatch",
     "DISPATCH_UNASSIGNED_TASKS": "Unassigned",
     "DISPATCH_TASK_LISTS": "Assigned",
-    "DISPATCH_TASK_LIST": "{{username}}",
+    "DISPATCH_TASK_LIST": "Assigned to {{username}}",
     "DISPATCH_ADD_TASK_LIST": "Add user",
-    "DISPATCH_CREATE_TASK": "Create task",
     "DISPATCH_ADD_TASK": "Add task",
+    "DISPATCH_CREATE_TASK": "Create task",
     "DISPATCH_NO_TASKS": "No tasks yet",
     "DISPATCH_TASK": "Task #{{id}}",
-    "DISPATCH_ASSIGN_TASK": "Assign task"
+    "DISPATCH_ASSIGN_TASK": "Assign task",
+    "TASK_FORM_ADDRESS_LABEL": "Adress",
+    "TASK_FORM_DONE_AFTER_LABEL": "To do starting at",
+    "TASK_FORM_DONE_BEFORE_LABEL": "To do before",
+    "TASK_FORM_COMMENTS_LABEL": "Comments",
+    "DISPATCH_DATE": "Choose a date"
   }
 }
