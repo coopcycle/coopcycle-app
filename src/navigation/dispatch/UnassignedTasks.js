@@ -12,13 +12,13 @@ import moment from 'moment'
 
 import TaskList from '../../components/TaskList'
 import LoaderOverlay from '../../components/LoaderOverlay'
-import { loadUnassignedTasks, assignTask, loadTasks } from '../../redux/Dispatch/actions'
+import { loadUnassignedTasks, assignTask, loadTasks, initialize } from '../../redux/Dispatch/actions'
 
 class UnassignedTasks extends Component {
 
   componentDidMount() {
     InteractionManager.runAfterInteractions(() => {
-      this.props.loadTasks(this.props.date)
+      this.props.initialize()
     })
   }
 
@@ -83,6 +83,7 @@ function mapDispatchToProps(dispatch) {
     loadUnassignedTasks: date => dispatch(loadUnassignedTasks(date)),
     loadTasks: date => dispatch(loadTasks(date)),
     assignTask: (task, username) => dispatch(assignTask(task, username)),
+    initialize: () => dispatch(initialize()),
   }
 }
 

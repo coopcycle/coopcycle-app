@@ -4,6 +4,8 @@ import { createAction } from 'redux-actions'
  * Action Types
  */
 
+export const DISPATCH_INITIALIZE = 'DISPATCH_INITIALIZE'
+
 export const LOAD_UNASSIGNED_TASKS_REQUEST = 'LOAD_UNASSIGNED_TASKS_REQUEST'
 export const LOAD_UNASSIGNED_TASKS_SUCCESS = 'LOAD_UNASSIGNED_TASKS_SUCCESS'
 export const LOAD_UNASSIGNED_TASKS_FAILURE = 'LOAD_UNASSIGNED_TASKS_FAILURE'
@@ -84,6 +86,8 @@ export const loadTaskFailure = createAction(LOAD_TASK_FAILURE)
 
 export const changeDate = createAction(CHANGE_DATE)
 
+export const _initialize = createAction(DISPATCH_INITIALIZE)
+
 /**
  * Thunk Creators
  */
@@ -99,6 +103,18 @@ export function loadUnassignedTasks(date) {
     return httpClient.get(`/api/tasks/${date.format('YYYY-MM-DD')}/unassigned`)
       .then(res => dispatch(loadUnassignedTasksSuccess(res['hydra:member'])))
       .catch(e => dispatch(loadUnassignedTasksFailure(e)))
+  }
+}
+
+export function initialize() {
+
+  return function (dispatch, getState) {
+    const date = getState().dispatch.date
+    const initialized = getState().dispatch.initialized
+    if (!initialized) {
+      dispatch(loadTasks(date))
+      dispatch(_initialize())
+    }
   }
 }
 

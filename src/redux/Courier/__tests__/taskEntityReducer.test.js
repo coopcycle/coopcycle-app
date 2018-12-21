@@ -87,7 +87,7 @@ describe('Redux | Tasks | Reducers', () => {
       })
 
     test(`${loadTasksSuccess}`, () => {
-      const tasks = [{ id: 1 }, { id: 2 }]
+      const tasks = [{ id: 1, assignedTo: 'bob' }, { id: 2, assignedTo: 'bob' }]
       const prevState = {
         ...initialState,
         loadTasksFetchError: true,
@@ -96,14 +96,15 @@ describe('Redux | Tasks | Reducers', () => {
       const newState = tasksEntityReducer(prevState, loadTasksSuccess(tasks))
       const fullState = { entities: { tasks: newState } }
 
-      const restOldState = omit(prevState, ['loadTasksFetchError', 'isFetching', 'items', 'order', 'lastUpdated'])
-      const restNewState = omit(newState, ['loadTasksFetchError', 'isFetching', 'items', 'order', 'lastUpdated'])
+      const restOldState = omit(prevState, ['loadTasksFetchError', 'isFetching', 'items', 'order', 'lastUpdated', 'username'])
+      const restNewState = omit(newState, ['loadTasksFetchError', 'isFetching', 'items', 'order', 'lastUpdated', 'username'])
       const { lastUpdated: lastUpdatedOld } = prevState
-      const { lastUpdated: lastUpdatedNew } = newState
+      const { lastUpdated: lastUpdatedNew, username } = newState
 
       expect(selectIsTasksLoading(fullState)).toBe(false)
       expect(selectIsTasksLoadingFailure(fullState)).toBe(false)
       expect(selectTasksList(fullState)).toEqual(tasks)
+      expect(username).toEqual('bob')
 
       expect(restOldState).toEqual(restNewState)
       expect(lastUpdatedNew).not.toEqual(lastUpdatedOld)

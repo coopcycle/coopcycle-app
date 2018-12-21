@@ -1,4 +1,5 @@
 import {
+  DISPATCH_INITIALIZE,
   LOAD_UNASSIGNED_TASKS_REQUEST,
   LOAD_UNASSIGNED_TASKS_SUCCESS,
   LOAD_UNASSIGNED_TASKS_FAILURE,
@@ -28,6 +29,11 @@ import {
   DISPATCH_LOAD_TASKS_FAILURE,
 } from './actions'
 
+import {
+  MARK_TASK_DONE_SUCCESS,
+  MARK_TASK_FAILED_SUCCESS,
+} from '../Courier/taskActions'
+
 import _ from 'lodash'
 import moment from 'moment'
 
@@ -37,10 +43,36 @@ const initialState = {
   users: [],
   allTasks: [],
   taskLists: [],
-  date: moment()
+  date: moment(),
+  initialized: false,
 }
 
 const matchesDate = (task, date) => moment(task.doneBefore).isSame(date, 'day')
+
+const replaceItem = (state, payload) => {
+
+  const index = _.findIndex(state, item => item['@id'] === payload['@id'])
+
+  if (-1 !== index) {
+    const newState = state.slice(0)
+    newState.splice(index, 1, Object.assign({}, payload))
+
+    return newState
+  }
+
+  return state
+}
+
+const replaceTaskLists = (taskLists, task) => {
+
+  return _.map(taskLists, (taskList) => {
+
+    return {
+      ...taskList,
+      items: replaceItem(taskList.items, task)
+    }
+  })
+}
 
 export default (state = initialState, action = {}) => {
 
@@ -49,6 +81,12 @@ export default (state = initialState, action = {}) => {
   let index
 
   switch (action.type) {
+
+    case DISPATCH_INITIALIZE:
+      return {
+        ...state,
+        initialized: true
+      }
 
     case LOAD_UNASSIGNED_TASKS_REQUEST:
     case LOAD_USERS_REQUEST:
@@ -186,6 +224,15 @@ export default (state = initialState, action = {}) => {
         ...state,
         isFetching: false,
         unassignedTasks: state.unassignedTasks.concat(action.payload)
+      }
+
+    case MARK_TASK_DONE_SUCCESS:
+    case MARK_TASK_FAILED_SUCCESS:
+
+      return {
+        ...state,
+        unassignedTasks: replaceItem(state.unassignedTasks, action.payload),
+        taskLists: replaceTaskLists(state.taskLists, action.payload)
       }
 
     case CHANGE_DATE:
