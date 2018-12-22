@@ -10,9 +10,7 @@ import { translate } from 'react-i18next'
 import { connect } from 'react-redux'
 import _ from 'lodash'
 
-import LoaderOverlay from '../../components/LoaderOverlay'
-
-import { selectTasksList, selectIsTasksLoading, selectIsTaskCompleteFailure, markTaskDone, markTaskFailed } from '../../redux/Courier'
+import { selectTasksList, selectIsTaskCompleteFailure, markTaskDone, markTaskFailed } from '../../redux/Courier'
 import { greenColor, greyColor, redColor } from '../../styles/common'
 
 class CompleteTask extends Component {
@@ -68,7 +66,6 @@ class CompleteTask extends Component {
             </View>
           </TouchableOpacity>
         </Footer>
-        <LoaderOverlay loading={ this.props.loading } />
       </Container>
     )
   }
@@ -89,7 +86,6 @@ const styles = StyleSheet.create({
 function mapStateToProps (state) {
   return {
     httpClient: state.app.httpClient,
-    loading: selectIsTasksLoading(state),
     tasks: selectTasksList(state),
     taskCompleteError: selectIsTaskCompleteFailure(state),
   }

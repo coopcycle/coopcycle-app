@@ -8,7 +8,6 @@ import _ from 'lodash'
 import moment from 'moment'
 
 import { createTaskList, loadUsers } from '../../redux/Dispatch/actions'
-import LoaderOverlay from '../../components/LoaderOverlay'
 
 class AddUser extends Component {
 
@@ -45,7 +44,6 @@ class AddUser extends Component {
             keyExtractor={ (item, index) => item.username }
             renderItem={ ({ item }) => this.renderItem(item) } />
         </Content>
-        <LoaderOverlay loading={ this.props.loading } />
       </Container>
     )
   }
@@ -65,7 +63,6 @@ function mapStateToProps(state) {
 
   return {
     users: users,
-    loading: state.dispatch.isFetching,
   }
 }
 

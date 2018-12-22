@@ -17,7 +17,6 @@ import _ from 'lodash'
 import moment from 'moment'
 
 import { createTask } from '../../redux/Dispatch/actions'
-import LoaderOverlay from '../../components/LoaderOverlay'
 import Settings from '../../Settings'
 import { localeDetector } from '../../i18n'
 
@@ -231,7 +230,6 @@ class AddTask extends Component {
           isVisible={ this.state.isDoneBeforeDateTimePickerVisible }
           onConfirm={ this._handleDoneBeforeDatePicked.bind(this) }
           onCancel={ this._hideDoneBeforeDateTimePicker.bind(this) } />
-        <LoaderOverlay loading={ this.props.loading } />
       </Container>
     )
   }
@@ -252,7 +250,6 @@ const styles = StyleSheet.create({
 function mapStateToProps(state) {
   return {
     unassignedTasks: state.dispatch.unassignedTasks,
-    loading: state.dispatch.isFetching,
   }
 }
 

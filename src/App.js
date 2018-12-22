@@ -23,6 +23,7 @@ moment.locale(localeDetector())
 import store from './redux/store'
 import { setCurrentRoute } from './redux/App/actions'
 import NotificationHandler from './components/NotificationHandler'
+import Spinner from './components/Spinner'
 
 import DropdownAlert from 'react-native-dropdownalert'
 import DropdownHolder from './DropdownHolder'
@@ -80,6 +81,7 @@ class App extends Component {
         <I18nextProvider i18n={ i18n }>
           <StyleProvider style={ getTheme(material) }>
             <Root>
+              <Spinner />
               <RootNavigator
                 ref={ ref => { NavigationHolder.setTopLevelNavigator(ref) } }
                 onNavigationStateChange={ onNavigationStateChange } />

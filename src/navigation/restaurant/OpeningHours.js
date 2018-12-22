@@ -12,7 +12,6 @@ import moment from 'moment'
 import { translate } from 'react-i18next'
 import { connect } from 'react-redux'
 
-import LoaderOverlay from '../../components/LoaderOverlay'
 import { closeRestaurant, deleteOpeningHoursSpecification } from '../../redux/Restaurant/actions'
 
 class OpeningHoursScreen extends Component {
@@ -135,7 +134,6 @@ class OpeningHoursScreen extends Component {
             </Button>
           </FooterTab>
         </Footer>
-        <LoaderOverlay loading={ this.props.loading } />
       </Container>
     )
   }
@@ -148,7 +146,6 @@ function mapStateToProps(state) {
 
   return {
     httpClient: state.app.httpClient,
-    loading: restaurantState.isFetching,
     openingHoursSpecification: restaurant.openingHoursSpecification,
     restaurant,
     specialOpeningHoursSpecification,

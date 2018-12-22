@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import {
   StyleSheet,
   View,
-  ActivityIndicator,
   Dimensions
 } from 'react-native';
 import {

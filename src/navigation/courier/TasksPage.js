@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, ActivityIndicator, Alert, TouchableOpacity, Platform } from 'react-native'
+import { StyleSheet, View, Alert, TouchableOpacity, Platform } from 'react-native'
 import {
   Container, Button, Icon, Text
 } from 'native-base'
@@ -19,7 +19,6 @@ import Preferences from '../../Preferences'
 import {
   loadTasks,
   selectFilteredTasks,
-  selectIsTasksLoading,
   selectIsTasksLoadingFailure,
   selectTaskSelectedDate,
 } from '../../redux/Courier'
@@ -32,8 +31,6 @@ class TasksPage extends Component {
 
     this.state = {
       task: null,
-      loading: false,
-      loadingMessage: this.props.t('LOADING'),
       geolocation: null,
       polyline: [],
     }
@@ -158,31 +155,6 @@ class TasksPage extends Component {
     // BackgroundGeolocation.start();
   }
 
-  renderLoader() {
-
-    const { isLoadingTasks } = this.props
-    const { loading, loadingMessage } = this.state
-
-    if (isLoadingTasks || loading) {
-      return (
-        <View style={ styles.loader }>
-          <ActivityIndicator
-            animating={ true }
-            size="large"
-            color="#fff"
-          />
-          <Text style={{ color: '#fff' }}>{
-            loadingMessage || this.props.t('LOADING')
-          }</Text>
-        </View>
-      )
-    }
-
-    return (
-      <View />
-    )
-  }
-
   render() {
 
     const { tasks, selectedDate } = this.props
@@ -205,7 +177,6 @@ class TasksPage extends Component {
             onMarkerCalloutPress={ task => navigate('Task', { ...navigationParams, task }) }>
           </TasksMapView>
         </View>
-        { this.renderLoader() }
       </Container>
     )
   }
@@ -240,7 +211,6 @@ function mapStateToProps (state) {
     httpClient: state.app.httpClient,
     tasks: selectFilteredTasks(state),
     selectedDate: selectTaskSelectedDate(state),
-    isLoadingTasks: selectIsTasksLoading(state),
     tasksLoadingError: selectIsTasksLoadingFailure(state),
   }
 }

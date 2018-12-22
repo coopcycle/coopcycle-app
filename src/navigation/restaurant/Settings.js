@@ -9,7 +9,6 @@ import {
 import { translate } from 'react-i18next'
 import { connect } from 'react-redux'
 
-import LoaderOverlay from '../../components/LoaderOverlay'
 import { changeStatus } from '../../redux/Restaurant/actions'
 
 class SettingsScreen extends Component {
@@ -89,7 +88,6 @@ class SettingsScreen extends Component {
             </ListItem>
           </List>
         </Content>
-        <LoaderOverlay loading={ this.props.loading } />
       </Container>
     )
   }
@@ -104,7 +102,6 @@ const styles = StyleSheet.create({
 function mapStateToProps(state) {
   return {
     httpClient: state.app.httpClient,
-    loading: state.restaurant.isFetching,
     restaurant: state.restaurant.restaurant,
   }
 }

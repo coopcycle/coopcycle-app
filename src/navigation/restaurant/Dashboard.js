@@ -10,7 +10,6 @@ import { translate } from 'react-i18next'
 import KeepAwake from 'react-native-keep-awake'
 import moment from 'moment'
 
-import LoaderOverlay from '../../components/LoaderOverlay'
 import RushModeAlert from './components/RushModeAlert'
 import OrderList from './components/OrderList'
 import DatePickerHeader from './components/DatePickerHeader'
@@ -66,7 +65,6 @@ class DashboardPage extends Component {
           <OrderList orders={ orders }
             onItemClick={ order => navigate('RestaurantOrder', { order }) } />
         </Content>
-        <LoaderOverlay loading={ this.props.loading } />
       </Container>
     )
   }
@@ -86,7 +84,6 @@ function mapStateToProps(state) {
   return {
     user: state.app.user,
     httpClient: state.app.httpClient,
-    loading: state.restaurant.isFetching,
     orders: state.restaurant.orders,
     date: state.restaurant.date,
     restaurant: state.restaurant.restaurant

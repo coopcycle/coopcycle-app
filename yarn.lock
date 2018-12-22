@@ -4506,6 +4506,13 @@ react-native-languages@^3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/react-native-languages/-/react-native-languages-3.0.1.tgz#a35cf89e69e6722205d96cf418411444c328e6c2"
 
+react-native-loading-spinner-overlay@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/react-native-loading-spinner-overlay/-/react-native-loading-spinner-overlay-1.0.1.tgz#07f85a072b6f7d05b8749668cd626df4cc330347"
+  integrity sha512-njZZWs+cgyq6Ni7tkYEowMmuAuHVljuH4CqTWA0plNOfSzZhEcrW209y7WcgHjRWz0RvvEYF5oWGT8DWtTq8bA==
+  dependencies:
+    prop-types "^15.6.2"
+
 react-native-map-link@^2.1.4:
   version "2.1.4"
   resolved "https://registry.yarnpkg.com/react-native-map-link/-/react-native-map-link-2.1.4.tgz#aaee570460cf4df5361f86b864f92c2397ad4d3f"

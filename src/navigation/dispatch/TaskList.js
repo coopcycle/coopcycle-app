@@ -11,7 +11,6 @@ import moment from 'moment'
 import _ from 'lodash'
 
 import TaskList from '../../components/TaskList'
-import LoaderOverlay from '../../components/LoaderOverlay'
 import { unassignTask } from '../../redux/Dispatch/actions'
 
 class TaskListScreen extends Component {
@@ -48,7 +47,6 @@ class TaskListScreen extends Component {
             swipeOutRightIconName="close"
             onTaskClick={ task => navigate('Task', { task }) } />
         </Content>
-        <LoaderOverlay loading={ this.props.loading } />
       </Container>
     );
   }
@@ -56,7 +54,6 @@ class TaskListScreen extends Component {
 
 function mapStateToProps(state) {
   return {
-    loading: state.dispatch.isFetching,
     taskLists: state.dispatch.taskLists,
   }
 }

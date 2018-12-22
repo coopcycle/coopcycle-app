@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, ActivityIndicator } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { Container, Content, Button, Icon, Text, Thumbnail, CheckBox, Header, Left, Right, Grid, Row, Col, Body, Title } from 'native-base'
 
 import { connect } from 'react-redux'
@@ -60,28 +60,6 @@ class TaskListPage extends Component {
     this.props.loadTasks(this.props.httpClient, selectedDate)
   }
 
-  renderLoader() {
-
-    const { isLoadingTasks } = this.props
-
-    if (isLoadingTasks) {
-      return (
-        <View style={ styles.loader }>
-          <ActivityIndicator
-            animating={ true }
-            size="large"
-            color="#fff"
-          />
-          <Text style={{ color: '#fff' }}>{this.props.t('LOADING')}</Text>
-        </View>
-      )
-    }
-
-    return (
-      <View />
-    )
-  }
-
   render() {
 
     const { tasks, selectedDate } = this.props
@@ -110,7 +88,6 @@ class TaskListPage extends Component {
           }
           </View>
         </Content>
-        { this.renderLoader() }
       </Container>
     )
   }
@@ -121,7 +98,6 @@ function mapStateToProps (state) {
     httpClient: state.app.httpClient,
     tasks: selectFilteredTasks(state),
     selectedDate: selectTaskSelectedDate(state),
-    isLoadingTasks: selectIsTasksLoading(state),
   }
 }
 

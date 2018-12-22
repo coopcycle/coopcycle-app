@@ -10,7 +10,6 @@ import { connect } from 'react-redux'
 import material from '../../../native-base-theme/variables/material'
 
 import { refuseOrder } from '../../redux/Restaurant/actions'
-import LoaderOverlay from '../../components/LoaderOverlay'
 
 class BigButton extends Component {
   constructor(props) {
@@ -95,7 +94,6 @@ class OrderRefuseScreen extends Component {
             </Row>
           </Grid>
         </Content>
-        <LoaderOverlay loading={ this.props.loading } />
       </Container>
     )
   }

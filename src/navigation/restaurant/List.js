@@ -7,7 +7,6 @@ import {
 } from 'native-base'
 import { connect } from 'react-redux'
 import { translate } from 'react-i18next'
-import LoaderOverlay from '../../components/LoaderOverlay'
 import { loadMyRestaurants } from '../../redux/Restaurant/actions'
 
 class ListScreen extends Component {
@@ -53,7 +52,6 @@ class ListScreen extends Component {
           </View>
           { this.renderRestaurants() }
         </Content>
-        <LoaderOverlay loading={ this.props.loading } />
       </Container>
     )
   }
@@ -79,7 +77,6 @@ function mapStateToProps(state) {
   return {
     user: state.app.user,
     httpClient: state.app.httpClient,
-    loading: state.restaurant.isFetching,
     restaurants: state.restaurant.myRestaurants,
   }
 }

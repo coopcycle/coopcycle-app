@@ -15,7 +15,6 @@ import { phonecall } from 'react-native-communications'
 import { PhoneNumberUtil, PhoneNumberFormat } from 'google-libphonenumber'
 
 import { formatPrice } from '../../Cart'
-import LoaderOverlay from '../../components/LoaderOverlay'
 import OrderItems from './components/OrderItems'
 import { acceptOrder, setCurrentOrder } from '../../redux/Restaurant/actions'
 import material from '../../../native-base-theme/variables/material'
@@ -176,7 +175,6 @@ class OrderScreen extends Component {
           </Row>
         </Grid>
         { this.renderButtons() }
-        <LoaderOverlay loading={ this.props.loading } />
       </Container>
     )
   }
@@ -226,7 +224,6 @@ function mapStateToProps(state, ownProps) {
   return {
     user: state.app.user,
     httpClient: state.app.httpClient,
-    loading: state.restaurant.isFetching,
     order: state.restaurant.order || ownProps.navigation.state.params.order,
   }
 }

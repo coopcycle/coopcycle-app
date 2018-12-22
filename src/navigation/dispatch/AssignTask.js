@@ -10,7 +10,6 @@ import {
 import moment from 'moment'
 
 import TaskList from '../../components/TaskList'
-import LoaderOverlay from '../../components/LoaderOverlay'
 import { assignTask } from '../../redux/Dispatch/actions'
 
 class AssignTask extends Component {
@@ -43,7 +42,6 @@ class AssignTask extends Component {
               onTaskClick={ task => this.props.assignTask(task, username) } />
           ) }
         </Content>
-        <LoaderOverlay loading={ this.props.loading } />
       </Container>
     );
   }
@@ -51,7 +49,6 @@ class AssignTask extends Component {
 
 function mapStateToProps(state) {
   return {
-    loading: state.dispatch.isFetching,
     unassignedTasks: state.dispatch.unassignedTasks,
   }
 }

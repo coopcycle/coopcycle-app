@@ -10,7 +10,6 @@ import _ from 'lodash'
 import { translate } from 'react-i18next'
 import { connect } from 'react-redux'
 
-import LoaderOverlay from '../../components/LoaderOverlay'
 import { loadProducts, changeProductEnabled } from '../../redux/Restaurant/actions'
 
 class ProductsScreen extends Component {
@@ -79,7 +78,6 @@ class ProductsScreen extends Component {
             dataArray={ products }
             renderRow={ (item) => this.renderItem(item) } />
         </Content>
-        <LoaderOverlay loading={ this.props.loading } />
       </Container>
     )
   }
@@ -88,7 +86,6 @@ class ProductsScreen extends Component {
 function mapStateToProps(state) {
   return {
     httpClient: state.app.httpClient,
-    loading: state.restaurant.isFetching,
     restaurant: state.restaurant.restaurant,
     products: state.restaurant.products,
   }

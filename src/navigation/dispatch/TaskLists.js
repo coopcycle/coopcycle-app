@@ -11,7 +11,6 @@ import { Col, Row, Grid } from 'react-native-easy-grid'
 import moment from 'moment'
 
 import TaskList from '../../components/TaskList'
-import LoaderOverlay from '../../components/LoaderOverlay'
 
 class TaskLists extends Component {
 
@@ -58,7 +57,6 @@ class TaskLists extends Component {
             keyExtractor={ (item, index) => item.username }
             renderItem={ ({ item }) => this.renderItem(item) } />
         </Content>
-        <LoaderOverlay loading={ this.props.loading } />
       </Container>
     );
   }
@@ -79,7 +77,6 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
   return {
-    loading: state.dispatch.isFetching,
     taskLists: state.dispatch.taskLists,
     date: state.dispatch.date,
   }
