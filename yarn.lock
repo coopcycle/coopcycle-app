@@ -2230,9 +2230,10 @@ globals@^9.18.0:
   version "9.18.0"
   resolved "https://registry.yarnpkg.com/globals/-/globals-9.18.0.tgz#aa3896b3e69b487f17e31ed2143d69a8e30c2d8a"
 
-google-libphonenumber@^3.1.11:
-  version "3.1.15"
-  resolved "https://registry.yarnpkg.com/google-libphonenumber/-/google-libphonenumber-3.1.15.tgz#534d923bc7dcaf0235d4320f631229c1c78de2c8"
+google-libphonenumber@^3.2.1:
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/google-libphonenumber/-/google-libphonenumber-3.2.1.tgz#0395f7099ba05012abad78685955e8ba5cdd6373"
+  integrity sha512-SUE8hWi8sJSK00NSuD+lJWVUNJtmoHRjXlAcN6dR3kTc4HYY7rey6/LfOC6COW8Wup07Fup1p0Tao57liq9HRA==
 
 graceful-fs@^4.1.11, graceful-fs@^4.1.2, graceful-fs@^4.1.3, graceful-fs@^4.1.6, graceful-fs@^4.1.9:
   version "4.1.11"
@@ -3662,15 +3663,17 @@ mkdirp@^0.5.0, mkdirp@^0.5.1:
   dependencies:
     minimist "0.0.8"
 
-mock-async-storage@^2.0.3:
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/mock-async-storage/-/mock-async-storage-2.0.3.tgz#c38b00af743e6ddc850b806691e607c929c29ab1"
+mock-async-storage@^2.0.4:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/mock-async-storage/-/mock-async-storage-2.0.4.tgz#2994a3d5e6553ec7aae0b3b83c3ad0de9cbbbffb"
+  integrity sha512-lusYDDqAxqzxVCB+svZLUJC8efG25fCeQvzJ6z6Qt4sbJiGTF4fK27ic96eFCbQqfQWDPr1SPxkRtX0AcwiUoQ==
   dependencies:
     deepmerge "^1.3.1"
 
-moment@^2.22.2:
-  version "2.22.2"
-  resolved "https://registry.yarnpkg.com/moment/-/moment-2.22.2.tgz#3c257f9839fc0e93ff53149632239eb90783ff66"
+moment@^2.23.0:
+  version "2.23.0"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.23.0.tgz#759ea491ac97d54bac5ad776996e2a58cc1bc225"
+  integrity sha512-3IE39bHVqFbWWaPOMHZF98Q9c3LDKGTmypMiTM2QygGXXElkFWIH7GxfmlwmY2vwa+wmNsoYZmG2iusf1ZjJoA==
 
 moo@^0.4.3:
   version "0.4.3"
@@ -4458,10 +4461,10 @@ react-native-drawer@2.5.0:
     prop-types "^15.5.8"
     tween-functions "^1.0.1"
 
-react-native-dropdownalert@^3.7.1:
-  version "3.7.1"
-  resolved "https://registry.yarnpkg.com/react-native-dropdownalert/-/react-native-dropdownalert-3.7.1.tgz#055928bc688c47b80a33043b79567be3b1327856"
-  integrity sha512-pdq3EO2bwUAd/jKhesav+Vy5teknD2F3DDUCNOPp5JWOiSc0OV66TjKpgu0mQp6Pr9zokkhEhhRQbRx0D/bZMQ==
+react-native-dropdownalert@^3.8.0:
+  version "3.8.0"
+  resolved "https://registry.yarnpkg.com/react-native-dropdownalert/-/react-native-dropdownalert-3.8.0.tgz#c242a03cb2bfda3d003e7f53d66556ca17f07500"
+  integrity sha512-srvhw0N19W6d/CEUkidKJPffLaPahXfQ0zPDLPRsP+FRgaYdnmzcHOJsnd0pjfe3rNO/xHQsJNJrLFHYlQzvPg==
   dependencies:
     prop-types "15.5.10"
 
@@ -5228,9 +5231,10 @@ slide@^1.1.5:
   version "1.1.6"
   resolved "https://registry.yarnpkg.com/slide/-/slide-1.1.6.tgz#56eb027d65b4d2dce6cb2e2d32c4d4afc9e1d707"
 
-slugify@^1.3.3:
-  version "1.3.3"
-  resolved "https://registry.yarnpkg.com/slugify/-/slugify-1.3.3.tgz#86200672a4ad7e88dc5190210176b62f9c19ecdf"
+slugify@^1.3.4:
+  version "1.3.4"
+  resolved "https://registry.yarnpkg.com/slugify/-/slugify-1.3.4.tgz#78d2792d7222b55cd9fc81fa018df99af779efeb"
+  integrity sha512-KP0ZYk5hJNBS8/eIjGkFDCzGQIoZ1mnfQRYS5WM3273z+fxGWXeN0fkwf2ebEweydv9tioZIHGZKoF21U07/nw==
 
 snapdragon-node@^2.0.1:
   version "2.1.1"
