@@ -22,7 +22,9 @@ class Loading extends Component {
 
   navigateToHome(httpClient, user) {
     if (user && user.isAuthenticated()) {
-      if (user.hasRole('ROLE_COURIER')) {
+      if (user.hasRole('ROLE_ADMIN')) {
+        return this.props.navigation.navigate('DispatchHome')
+      } else if (user.hasRole('ROLE_COURIER')) {
         return this.props.navigation.navigate('CourierHome')
       } else if (user.hasRole('ROLE_RESTAURANT')) {
         // We will call navigate() in componentDidUpdate, once restaurants are loaded
