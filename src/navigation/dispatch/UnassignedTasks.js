@@ -11,7 +11,7 @@ import {
 import moment from 'moment'
 
 import TaskList from '../../components/TaskList'
-import { loadUnassignedTasks, assignTask, loadTasks, initialize } from '../../redux/Dispatch/actions'
+import { assignTask, initialize } from '../../redux/Dispatch/actions'
 
 class UnassignedTasks extends Component {
 
@@ -19,12 +19,6 @@ class UnassignedTasks extends Component {
     InteractionManager.runAfterInteractions(() => {
       this.props.initialize()
     })
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    if (this.props.date !== prevProps.date) {
-      this.props.loadTasks(this.props.date)
-    }
   }
 
   render() {
@@ -77,8 +71,6 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    loadUnassignedTasks: date => dispatch(loadUnassignedTasks(date)),
-    loadTasks: date => dispatch(loadTasks(date)),
     assignTask: (task, username) => dispatch(assignTask(task, username)),
     initialize: () => dispatch(initialize()),
   }

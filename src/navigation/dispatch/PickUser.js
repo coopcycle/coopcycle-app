@@ -6,15 +6,7 @@ import { Col, Row, Grid } from 'react-native-easy-grid'
 import { translate } from 'react-i18next'
 import _ from 'lodash'
 
-import { loadUsers } from '../../redux/Dispatch/actions'
-
 class AddUser extends Component {
-
-  componentDidMount() {
-    InteractionManager.runAfterInteractions(() => {
-      this.props.loadUsers()
-    })
-  }
 
   _onItemPress(user) {
     this.props.navigation.goBack()
@@ -73,10 +65,5 @@ function mapStateToProps(state, ownProps) {
   }
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    loadUsers: () => dispatch(loadUsers()),
-  }
-}
 
-export default connect(mapStateToProps, mapDispatchToProps)(translate()(AddUser))
+export default connect(mapStateToProps)(translate()(AddUser))
