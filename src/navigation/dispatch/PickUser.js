@@ -1,13 +1,12 @@
 import React, { Component } from 'react'
 import { FlatList, InteractionManager, StyleSheet, TouchableOpacity, View } from 'react-native'
 import { connect } from 'react-redux'
-import { Container, Content, Text } from 'native-base'
+import { Container, Content, Text, Icon, Thumbnail, List, ListItem, Left, Body, Right } from 'native-base'
 import { Col, Row, Grid } from 'react-native-easy-grid'
 import { translate } from 'react-i18next'
 import _ from 'lodash'
-import moment from 'moment'
 
-import { createTaskList, loadUsers } from '../../redux/Dispatch/actions'
+import { loadUsers } from '../../redux/Dispatch/actions'
 
 class AddUser extends Component {
 
@@ -17,18 +16,31 @@ class AddUser extends Component {
     })
   }
 
-  renderItem(user) {
+  _onItemPress(user) {
+    this.props.navigation.goBack()
+    this.props.onUserPicked(user)
+  }
+
+  renderListItem(user) {
+
+    const avatarURI = `${this.props.baseURL}/images/avatars/${user.username}.png`
 
     return (
-      <TouchableOpacity
-        onPress={ () => this.props.createTaskList(moment(), user) }
-        style={ styles.item }>
+      <ListItem avatar
+        onPress={ () => this._onItemPress(user) }
+        key={ user.username }>
         <Grid>
-          <Col>
+          <Left>
+            <Thumbnail small source={{ uri: avatarURI }} />
+          </Left>
+          <Body>
             <Text>{ user.username }</Text>
-          </Col>
+          </Body>
+          <Right>
+            <Icon name="arrow-forward" />
+          </Right>
         </Grid>
-      </TouchableOpacity>
+      </ListItem>
     )
   }
 
@@ -38,37 +50,31 @@ class AddUser extends Component {
 
     return (
       <Container>
-        <Content padder>
-          <FlatList
-            data={ this.props.users }
-            keyExtractor={ (item, index) => item.username }
-            renderItem={ ({ item }) => this.renderItem(item) } />
+        <Content>
+          <List>
+            { this.props.users.map(user => this.renderListItem(user)) }
+          </List>
         </Content>
       </Container>
     )
   }
 }
 
-const styles = StyleSheet.create({
-  item: {
-    paddingVertical: 10,
-    borderBottomColor: 'lightgrey',
-    borderBottomWidth: StyleSheet.hairlineWidth
-  },
-})
-
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
 
   const users = _.filter(state.dispatch.users, user => _.includes(user.roles, 'ROLE_COURIER'))
 
+  const { onUserPicked } = ownProps.navigation.state.params
+
   return {
+    baseURL: state.app.baseURL,
     users: users,
+    onUserPicked: onUserPicked,
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    createTaskList: (date, user) => dispatch(createTaskList(date, user)),
     loadUsers: () => dispatch(loadUsers()),
   }
 }

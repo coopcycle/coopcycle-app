@@ -7,7 +7,7 @@ import Home from './Home'
 import DispatchUnassignedTasks from './dispatch/UnassignedTasks'
 import DispatchTaskLists from './dispatch/TaskLists'
 import DispatchTaskList from './dispatch/TaskList'
-import DispatchAddUser from './dispatch/AddUser'
+import DispatchPickUser from './dispatch/PickUser'
 import DispatchAddTask from './dispatch/AddTask'
 import DispatchDate from './dispatch/Date'
 import DispatchAssignTask from './dispatch/AssignTask'
@@ -47,7 +47,7 @@ export default {
   DispatchUnassignedTasks,
   DispatchTaskLists,
   DispatchTaskList,
-  DispatchAddUser,
+  DispatchPickUser,
   DispatchAddTask,
   DispatchDate,
   DispatchAssignTask,

@@ -11,6 +11,7 @@ import { Col, Row, Grid } from 'react-native-easy-grid'
 import moment from 'moment'
 
 import TaskList from '../../components/TaskList'
+import { createTaskList } from '../../redux/Dispatch/actions'
 
 class TaskLists extends Component {
 
@@ -43,10 +44,13 @@ class TaskLists extends Component {
 
   render() {
 
+    const { navigate } = this.props.navigation
+
     return (
       <Container>
         <View>
-          <Button iconLeft full onPress={ () => this.props.navigation.navigate('DispatchAddUser') }>
+          <Button iconLeft full
+            onPress={ () => navigate('DispatchPickUser', { onUserPicked: user => this.props.createTaskList(this.props.date, user) }) }>
             <Icon name="add" />
             <Text>{ this.props.t('DISPATCH_ADD_TASK_LIST') }</Text>
           </Button>
@@ -82,4 +86,10 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps)(translate()(TaskLists))
+function mapDispatchToProps(dispatch) {
+  return {
+    createTaskList: (date, user) => dispatch(createTaskList(date, user)),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(translate()(TaskLists))

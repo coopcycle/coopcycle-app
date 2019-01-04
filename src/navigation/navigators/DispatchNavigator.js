@@ -83,10 +83,10 @@ export default createStackNavigator({
       header: null,
     })
   },
-  DispatchAddUser: {
-    screen: navigation.DispatchAddUser,
+  DispatchPickUser: {
+    screen: navigation.DispatchPickUser,
     navigationOptions: ({ navigation }) => ({
-      title: i18n.t('DISPATCH_ADD_USER'),
+      title: i18n.t('DISPATCH_PICK_USER'),
     })
   },
   DispatchAddTask: {
