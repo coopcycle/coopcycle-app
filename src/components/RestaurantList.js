@@ -41,6 +41,9 @@ class RestaurantList extends Component {
       firstDeliveryDate = _.find(restaurant.availabilities, availability => moment(availability).isSame(deliveryDay, 'day'))
     }
 
+    // Add 30 minutes to make sure there is time
+    firstDeliveryDate = firstDeliveryDate.add(30, 'minutes')
+
     return (
       <TouchableOpacity style={ styles.item } onPress={ () => this.props.onItemClick(restaurant, firstDeliveryDate) }>
         <Grid>
