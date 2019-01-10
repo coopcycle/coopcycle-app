@@ -11,7 +11,6 @@ import NavigationHolder from '../NavigationHolder'
 import { setRemotePushToken } from '../redux/App/actions'
 import { loadTasks } from '../redux/Courier'
 import { loadOrderAndNavigate } from '../redux/Restaurant/actions'
-import { loadTask } from '../redux/Dispatch/actions'
 
 // Make sure sound will play even when device is in silent mode
 Sound.setCategory('Playback')
@@ -98,15 +97,6 @@ class NotificationHandler extends Component {
           }
         }
 
-        if (event && event.name === 'task:created') {
-          if (notification.foreground) {
-
-            const { task } = event.data
-
-            this.props.loadTask(task)
-          }
-        }
-
       }
     })
   }
@@ -135,7 +125,6 @@ function mapDispatchToProps (dispatch) {
     loadOrderAndNavigate: order => dispatch(loadOrderAndNavigate(order)),
     loadTasks: (httpClient, date) => dispatch(loadTasks(httpClient, date)),
     setRemotePushToken: token => dispatch(setRemotePushToken(token)),
-    loadTask: task => dispatch(loadTask(task)),
   }
 }
 
