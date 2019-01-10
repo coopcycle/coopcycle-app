@@ -51,7 +51,7 @@ const initialState = {
   initialized: false,
 }
 
-const matchesDate = (task, date) => moment(task.doneBefore).isSame(date, 'day')
+const isSameDate = (task, date) => moment(task.doneBefore).isSame(date, 'day')
 
 const addItem = (state, payload) => {
   return _.uniqBy(state.concat([ payload ]), '@id');
@@ -208,10 +208,13 @@ export default (state = initialState, action = {}) => {
 
     case CREATE_TASK_SUCCESS:
 
-      return {
-        ...state,
-        isFetching: false,
-        unassignedTasks: addItem(state.unassignedTasks, action.payload),
+      if (isSameDate(action.payload, state.date)) {
+
+        return {
+          ...state,
+          isFetching: false,
+          unassignedTasks: addItem(state.unassignedTasks, action.payload),
+        }
       }
 
     case ASSIGN_TASK_SUCCESS:
@@ -268,7 +271,7 @@ export default (state = initialState, action = {}) => {
         switch (name) {
           case 'task:created':
 
-            if (!data.task.isAssigned) {
+            if (isSameDate(data.task, state.date) && !data.task.isAssigned) {
 
               return {
                 ...state,
