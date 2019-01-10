@@ -53,6 +53,10 @@ const initialState = {
 
 const matchesDate = (task, date) => moment(task.doneBefore).isSame(date, 'day')
 
+const addItem = (state, payload) => {
+  return _.uniqBy(state.concat([ payload ]), '@id');
+}
+
 const replaceItem = (state, payload) => {
 
   const index = _.findIndex(state, item => item['@id'] === payload['@id'])
@@ -67,15 +71,61 @@ const replaceItem = (state, payload) => {
   return state
 }
 
+const addOrReplaceItem = (state, payload) => {
+
+  const newState = replaceItem(state, payload)
+
+  if (newState === state) {
+
+    return addItem(state, payload)
+  }
+
+  return newState
+}
+
+const removeItem = (state, payload) => {
+  return _.filter(state, item => item['@id'] !== payload['@id'])
+}
+
 const replaceTaskLists = (taskLists, task) => {
 
-  return _.map(taskLists, (taskList) => {
+  return _.map(taskLists, taskList => {
+    if (task.isAssigned && task.assignedTo === taskList.username) {
 
-    return {
-      ...taskList,
-      items: replaceItem(taskList.items, task)
+      return {
+        ...taskList,
+        items: replaceItem(taskList.items, task)
+      }
+    }
+
+    return taskList
+  })
+}
+
+const removeFromTaskLists = (taskLists, task) => {
+
+  const taskList = _.find(taskLists, (taskList) => {
+    const taskIndex = _.findIndex(taskList.items, t => t['@id'] === task['@id'])
+    if (-1 !== taskIndex) {
+
+      return taskList
     }
   })
+
+  if (taskList) {
+
+    const newTaskLists = taskLists.slice(0)
+    const index = _.findIndex(newTaskLists, item => item === taskList)
+
+    newTaskLists.splice(index, 1, {
+      ...taskList,
+      items: _.filter(taskList.items, t => t['@id'] !== task['@id'])
+    })
+
+    return newTaskLists
+  }
+
+  return taskLists
 }
 
 export default (state = initialState, action = {}) => {
@@ -158,76 +208,39 @@ export default (state = initialState, action = {}) => {
 
     case CREATE_TASK_SUCCESS:
 
-      unassignedTasks = state.unassignedTasks.slice(0)
-
-      if (!action.payload.isAssigned) {
-        unassignedTasks.concat(action.payload)
-      }
-
       return {
         ...state,
         isFetching: false,
-        unassignedTasks,
-
+        unassignedTasks: addItem(state.unassignedTasks, action.payload),
       }
 
     case ASSIGN_TASK_SUCCESS:
 
-      unassignedTasks = _.filter(state.unassignedTasks, t => t['@id'] !== action.payload['@id'])
-      taskLists = state.taskLists.slice(0)
-
-      index = _.findIndex(state.taskLists, taskList => taskList.username === action.payload.assignedTo)
-      if (-1 !== index) {
-        taskLists.splice(index, 1, {
-          ...state.taskLists[index],
-          items: state.taskLists[index].items.concat([ action.payload ])
-        })
-      }
-
       return {
         ...state,
         isFetching: false,
-        unassignedTasks,
-        taskLists,
+        unassignedTasks: removeItem(state.unassignedTasks, action.payload),
+        taskLists: replaceTaskLists(state.taskLists, action.payload),
       }
 
     case UNASSIGN_TASK_SUCCESS:
 
-      unassignedTasks = state.unassignedTasks.slice(0)
-      unassignedTasks.push(action.payload)
-
-      taskLists = state.taskLists.slice(0)
-
-      let taskList = _.find(taskLists, (taskList) => {
-        const taskIndex = _.findIndex(taskList.items, t => t['@id'] === action.payload['@id'])
-        if (-1 !== taskIndex) {
-
-          return taskList
-        }
-      })
-
-      if (taskList) {
-
-        index = _.findIndex(taskLists, item => item === taskList)
-
-        taskLists.splice(index, 1, {
-          ...taskList,
-          items: _.filter(taskList.items, t => t['@id'] !== action.payload['@id'])
-        })
-      }
-
       return {
         ...state,
         isFetching: false,
-        unassignedTasks,
-        taskLists,
+        unassignedTasks: addItem(state.unassignedTasks, data.task),
+        taskLists: removeFromTaskLists(state.taskLists, data.task),
       }
 
     case LOAD_TASK_SUCCESS:
+
       return {
         ...state,
         isFetching: false,
-        unassignedTasks: state.unassignedTasks.concat(action.payload)
+        unassignedTasks: action.payload.isAssigned ?
+          removeItem(state.unassignedTasks, action.payload) : addOrReplaceItem(state.unassignedTasks, action.payload),
+        taskLists: action.payload.isAssigned ?
+          replaceTaskLists(state.taskLists, action.payload) : removeFromTaskLists(state.taskLists, action.payload),
       }
 
     case MARK_TASK_DONE_SUCCESS:
@@ -240,6 +253,7 @@ export default (state = initialState, action = {}) => {
       }
 
     case CHANGE_DATE:
+
       return {
         ...state,
         date: action.payload
@@ -258,8 +272,24 @@ export default (state = initialState, action = {}) => {
 
               return {
                 ...state,
-                unassignedTasks: state.unassignedTasks.concat(data.task)
+                unassignedTasks: addItem(state.unassignedTasks, data.task)
               }
+            }
+
+          case 'task:unassigned':
+
+            return {
+              ...state,
+              unassignedTasks: addItem(state.unassignedTasks, data.task),
+              taskLists: removeFromTaskLists(state.taskLists, data.task),
+            }
+
+          case 'task:assigned':
+
+            return {
+              ...state,
+              unassignedTasks: removeItem(state.unassignedTasks, data.task),
+              taskLists: replaceTaskLists(state.taskLists, data.task),
             }
         }
       }
