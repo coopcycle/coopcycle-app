@@ -1,4 +1,6 @@
 import { createAction } from 'redux-actions'
+import { connect, init } from '../middlewares/WebSocketMiddleware/actions'
+import WebSocketClient from '../../websocket/WebSocketClient'
 
 /*
  * Action Types
@@ -145,6 +147,8 @@ export function initialize() {
         dispatch(loadUsersSuccess(users['hydra:member']))
         dispatch(loadUnassignedTasksSuccess(unassignedTasks['hydra:member']))
         dispatch(loadTaskListsSuccess(taskLists['hydra:member']))
+        dispatch(init(new WebSocketClient(httpClient, '/dispatch')))
+        dispatch(connect())
         dispatch(_initialize())
       })
       .catch(e => dispatch(loadTasksFailure(e)))

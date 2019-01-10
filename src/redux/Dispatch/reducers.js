@@ -30,6 +30,10 @@ import {
 } from './actions'
 
 import {
+  MESSAGE,
+} from '../middlewares/WebSocketMiddleware/actions'
+
+import {
   MARK_TASK_DONE_SUCCESS,
   MARK_TASK_FAILED_SUCCESS,
 } from '../Courier/taskActions'
@@ -239,6 +243,25 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         date: action.payload
+      }
+
+    case MESSAGE:
+
+      if (action.payload.name && action.payload.data) {
+
+        const { name, data } = action.payload
+
+        switch (name) {
+          case 'task:created':
+
+            if (!data.task.isAssigned) {
+
+              return {
+                ...state,
+                unassignedTasks: state.unassignedTasks.concat(data.task)
+              }
+            }
+        }
       }
 
     default:
