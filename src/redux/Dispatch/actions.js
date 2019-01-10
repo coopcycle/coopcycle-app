@@ -1,6 +1,9 @@
+import { Alert } from 'react-native'
 import { createAction } from 'redux-actions'
+
 import { connect, init } from '../middlewares/WebSocketMiddleware/actions'
 import WebSocketClient from '../../websocket/WebSocketClient'
+import i18n from '../../i18n'
 
 /*
  * Action Types
@@ -125,6 +128,26 @@ function _loadTasks(httpClient, date) {
   ])
 }
 
+function showAlert(e) {
+  let message = i18n.t('TRY_LATER')
+
+  if (e.hasOwnProperty('hydra:description')) {
+    message = e['hydra:description']
+  }
+
+  Alert.alert(
+    i18n.t('FAILED'),
+    message,
+    [
+      {
+        text: 'OK',
+        onPress: () => {}
+      },
+    ],
+    { cancelable: false }
+  )
+}
+
 export function initialize() {
 
   return function (dispatch, getState) {
@@ -227,7 +250,10 @@ export function createTask(task) {
 
     return httpClient.post('/api/tasks', task)
       .then(res => dispatch(createTaskSuccess(res)))
-      .catch(e => dispatch(createTaskFailure(e)))
+      .catch(e => {
+        dispatch(createTaskFailure(e))
+        setTimeout(() => showAlert(e), 100)
+      })
   }
 }
 
