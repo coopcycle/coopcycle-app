@@ -291,6 +291,15 @@ export default (state = initialState, action = {}) => {
               unassignedTasks: removeItem(state.unassignedTasks, data.task),
               taskLists: replaceTaskLists(state.taskLists, data.task),
             }
+
+          case 'task:done':
+          case 'task:failed':
+
+            return {
+              ...state,
+              unassignedTasks: replaceItem(state.unassignedTasks, data.task),
+              taskLists: replaceTaskLists(state.taskLists, data.task),
+            }
         }
       }
 
