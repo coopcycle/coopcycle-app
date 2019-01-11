@@ -8,7 +8,10 @@ import {
   CLEAR,
   SEARCH_RESTAURANTS_REQUEST,
   SEARCH_RESTAURANTS_SUCCESS,
-  SEARCH_RESTAURANTS_FAILURE
+  SEARCH_RESTAURANTS_FAILURE,
+  CHECKOUT_REQUEST,
+  CHECKOUT_SUCCESS,
+  CHECKOUT_FAILURE
 } from './actions'
 
 import Cart from '../../Cart'
@@ -29,12 +32,14 @@ export default (state = initialState, action = {}) => {
   switch (action.type) {
 
     case SEARCH_RESTAURANTS_REQUEST:
+    case CHECKOUT_REQUEST:
       return {
         ...state,
         isFetching: true,
       }
 
     case SEARCH_RESTAURANTS_FAILURE:
+    case CHECKOUT_FAILURE:
       return {
         ...state,
         isFetching: false,
@@ -49,6 +54,7 @@ export default (state = initialState, action = {}) => {
       }
 
     case CLEAR:
+    case CHECKOUT_SUCCESS:
       return {
         ...state,
         cart: new Cart(),

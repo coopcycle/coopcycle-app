@@ -115,7 +115,7 @@ class Cart {
     if (this.deliveryAddress) {
       payload = {
         ...payload,
-        shippingAddress: this.deliveryAddress['@id'],
+        shippingAddress: this.deliveryAddress,
       }
     }
 

@@ -14,6 +14,7 @@
     "CART": "Cart",
     "DELIVERY_ADDR": "Delivery address",
     "PAYMENT": "Payment",
+    "PAY_AMOUNT": "Pay {{amount}}",
     "ORDER_TRACKING": "Order tracking",
     "TASKS_UPDATED": "Your tasks have been updated",
     "FAILED_TASK_LOAD": "Could not load your tasks",

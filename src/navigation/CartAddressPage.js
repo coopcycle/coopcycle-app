@@ -11,22 +11,12 @@ import { connect } from 'react-redux'
 import { translate } from 'react-i18next'
 
 import DeliveryAddressForm from '../components/DeliveryAddressForm'
-import LoaderOverlay from '../components/LoaderOverlay'
 import { setAddressResource } from '../redux/Checkout/actions'
 
 class CartAddressPage extends Component {
 
   deliveryAddressForm = null
   map = null
-
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      loading: false,
-      errors: []
-    };
-  }
 
   componentDidMount() {
     setTimeout(() => this.map.fitToElements(true), 1000);
@@ -39,29 +29,12 @@ class CartAddressPage extends Component {
     const { deliveryAddress } = this.props
     Object.assign(deliveryAddress, this.deliveryAddressForm.getWrappedInstance().createDeliveryAddress())
 
-    this.setState({ loading: true })
-
-    this.props.httpClient
-      .post('/api/me/addresses', deliveryAddress)
-      .then(data => {
-
-        this.setState({ loading: false })
-        this.props.setAddress(data)
-
-        navigate('CreditCard')
-      })
-      .catch(err => {
-        if (err.hasOwnProperty('@type') && err['@type'] === 'ConstraintViolationList') {
-          const { violations } = err
-          const errors = violations.map(violation => violation.propertyPath)
-          this.setState({ errors })
-        }
-      })
+    this.props.setAddress(deliveryAddress)
+    navigate('CreditCard')
   }
 
   render() {
 
-    const { errors } = this.state
     const { deliveryAddress } = this.props
     const markers = [{
       key: 'deliveryAddress',
@@ -92,14 +65,13 @@ class CartAddressPage extends Component {
               ))}
             </MapView>
           </View>
-          <DeliveryAddressForm ref={ component => this.deliveryAddressForm = component } { ...deliveryAddress } errors={ errors } />
+          <DeliveryAddressForm ref={ component => this.deliveryAddressForm = component } { ...deliveryAddress } />
           <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', padding: 20 }}>
             <Button block onPress={ () => this.createAddress() }>
               <Text>{this.props.t('CONTINUE')}</Text>
             </Button>
           </View>
         </Content>
-        <LoaderOverlay loading={ this.state.loading } />
       </Container>
     );
   }
@@ -109,17 +81,10 @@ const styles = StyleSheet.create({
   map: {
     ...StyleSheet.absoluteFillObject,
   },
-  loader: {
-    flex: 1,
-    marginTop: 20,
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
 });
 
 function mapStateToProps(state) {
   return {
-    httpClient: state.app.httpClient,
     deliveryAddress: state.checkout.address
   }
 }

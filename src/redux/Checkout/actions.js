@@ -1,4 +1,7 @@
 import { createAction } from 'redux-actions'
+import { StackActions, NavigationActions } from 'react-navigation'
+
+import NavigationHolder from '../../NavigationHolder'
 
 /*
  * Action Types
@@ -15,6 +18,10 @@ export const SEARCH_RESTAURANTS_REQUEST = '@checkout/SEARCH_RESTAURANTS_REQUEST'
 export const SEARCH_RESTAURANTS_SUCCESS = '@checkout/SEARCH_RESTAURANTS_SUCCESS'
 export const SEARCH_RESTAURANTS_FAILURE = '@checkout/SEARCH_RESTAURANTS_FAILURE'
 
+export const CHECKOUT_REQUEST = '@checkout/CHECKOUT_REQUEST'
+export const CHECKOUT_SUCCESS = '@checkout/CHECKOUT_SUCCESS'
+export const CHECKOUT_FAILURE = '@checkout/CHECKOUT_FAILURE'
+
 /*
  * Action Creators
  */
@@ -29,6 +36,10 @@ export const clear = createAction(CLEAR)
 export const searchRestaurantsRequest = createAction(SEARCH_RESTAURANTS_REQUEST)
 export const searchRestaurantsSuccess = createAction(SEARCH_RESTAURANTS_SUCCESS)
 export const searchRestaurantsFailure = createAction(SEARCH_RESTAURANTS_FAILURE)
+
+export const checkoutRequest = createAction(CHECKOUT_REQUEST)
+export const checkoutSuccess = createAction(CHECKOUT_SUCCESS)
+export const checkoutFailure = createAction(CHECKOUT_FAILURE)
 
 export function searchRestaurants(latitude, longitude, date) {
 
@@ -75,5 +86,41 @@ export function searchRestaurants(latitude, longitude, date) {
             dispatch(searchRestaurantsSuccess(restaurantsWithMenu))
           })
       })
+  }
+}
+
+export function checkout(token) {
+
+  return (dispatch, getState) => {
+
+    const { httpClient } = getState().app
+    const { addressResource, cart, date } = getState().checkout
+
+    const newCart = cart.clone()
+    newCart.setDeliveryAddress(addressResource)
+    newCart.setDeliveryDate(date)
+
+    dispatch(checkoutRequest())
+
+    httpClient
+      .post('/api/orders', newCart.toJSON())
+      .then(order => httpClient.put(order['@id'] + '/pay', { stripeToken: token.tokenId }))
+      .then(order => {
+
+        // @see https://reactnavigation.org/docs/en/stack-actions.html
+        const resetAction = StackActions.reset({
+          index: 2,
+          actions: [
+            NavigationActions.navigate({ routeName: 'AccountHome' }),
+            NavigationActions.navigate({ routeName: 'AccountOrders' }),
+            NavigationActions.navigate({ routeName: 'OrderTracking', params: { order } }),
+          ]
+        })
+        NavigationHolder.dispatch(resetAction)
+
+        // Make sure to clear AFTER navigation has been reset
+        dispatch(checkoutSuccess(order))
+      })
+      .catch(e => dispatch(checkoutFailure(e)))
   }
 }
