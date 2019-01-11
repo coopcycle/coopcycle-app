@@ -25,12 +25,14 @@ export const STORE_REMOTE_PUSH_TOKEN = 'STORE_REMOTE_PUSH_TOKEN'
 export const SAVE_REMOTE_PUSH_TOKEN = 'SAVE_REMOTE_PUSH_TOKEN'
 export const LOGIN = 'LOGIN'
 export const LOGOUT = 'LOGOUT'
+export const SET_LOADING = '@app/SET_LOADING'
 
 /*
  * Action Creators
  */
 
 export const setCurrentRoute = createAction(SET_CURRENT_ROUTE)
+export const setLoading = createAction(SET_LOADING)
 
 const _setHttpClient = createAction(SET_HTTP_CLIENT)
 const _setUser = createAction(SET_USER)

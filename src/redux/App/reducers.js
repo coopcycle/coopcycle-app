@@ -7,6 +7,7 @@ import {
   SET_HTTP_CLIENT,
   SET_USER,
   SET_CURRENT_ROUTE,
+  SET_LOADING,
   STORE_REMOTE_PUSH_TOKEN,
   SAVE_REMOTE_PUSH_TOKEN,
   LOGIN,
@@ -20,7 +21,8 @@ const initialState = {
   user: null,
   currentRoute: null,
   remotePushTokenStored: false,
-  remotePushTokenSaved: false
+  remotePushTokenSaved: false,
+  loading: false,
 }
 
 export default (state = initialState, action = {}) => {
@@ -44,6 +46,11 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         currentRoute: action.payload,
+      }
+    case SET_LOADING:
+      return {
+        ...state,
+        loading: action.payload,
       }
     case STORE_REMOTE_PUSH_TOKEN:
       return {

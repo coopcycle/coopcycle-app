@@ -18,7 +18,7 @@ class SpinnerWrapper extends Component {
 function mapStateToProps(state) {
 
   return {
-    loading: selectIsTasksLoading(state) || state.dispatch.isFetching || state.restaurant.isFetching || false
+    loading: state.app.loading || selectIsTasksLoading(state) || state.dispatch.isFetching || state.restaurant.isFetching || false
   }
 }
 
