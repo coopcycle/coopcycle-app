@@ -102,6 +102,21 @@ const replaceTaskLists = (taskLists, task) => {
   })
 }
 
+const addOrReplaceTaskLists = (taskLists, task) => {
+
+  return _.map(taskLists, taskList => {
+    if (task.isAssigned && task.assignedTo === taskList.username) {
+
+      return {
+        ...taskList,
+        items: addOrReplaceItem(taskList.items, task)
+      }
+    }
+
+    return taskList
+  })
+}
+
 const removeFromTaskLists = (taskLists, task) => {
 
   const taskList = _.find(taskLists, (taskList) => {
@@ -223,7 +238,7 @@ export default (state = initialState, action = {}) => {
         ...state,
         isFetching: false,
         unassignedTasks: removeItem(state.unassignedTasks, action.payload),
-        taskLists: replaceTaskLists(state.taskLists, action.payload),
+        taskLists: addOrReplaceTaskLists(state.taskLists, action.payload),
       }
 
     case UNASSIGN_TASK_SUCCESS:
