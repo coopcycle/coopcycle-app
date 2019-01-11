@@ -31,8 +31,11 @@ Client.prototype.createRequest = function(method, uri, data) {
 
 Client.prototype.createAuthorizedRequest = function(method, uri, data) {
   var headers = new Headers();
-  headers.append("Authorization", "Bearer " + this.model.token);
   headers.append("Content-Type", "application/ld+json");
+
+  if (this.model.token) {
+    headers.append("Authorization", "Bearer " + this.model.token);
+  }
 
   var options = {
     method: method,
