@@ -31,6 +31,16 @@ class SettingsScreen extends Component {
   }
 
   render() {
+
+    const { restaurants } = this.props
+
+    const openingHoursProps = {
+      last: restaurants.length === 1
+    }
+    const changeRestaurantProps = {
+      last: restaurants.length > 1
+    }
+
     return (
       <Container>
         <View style={{ paddingHorizontal: 10, paddingVertical: 20 }}>
@@ -64,7 +74,7 @@ class SettingsScreen extends Component {
                 <Icon name="arrow-forward" />
               </Right>
             </ListItem>
-            <ListItem icon onPress={ () => this.props.navigation.navigate('RestaurantOpeningHours') }>
+            <ListItem icon onPress={ () => this.props.navigation.navigate('RestaurantOpeningHours') } { ...openingHoursProps }>
               <Left>
                 <Icon active name="calendar" />
               </Left>
@@ -75,7 +85,8 @@ class SettingsScreen extends Component {
                 <Icon name="arrow-forward" />
               </Right>
             </ListItem>
-            <ListItem icon last>
+            { restaurants.length > 1 && (
+            <ListItem icon { ...changeRestaurantProps }>
               <Left>
                 <Icon active name="sync" />
               </Left>
@@ -86,6 +97,7 @@ class SettingsScreen extends Component {
                 <Icon name="arrow-forward" />
               </Right>
             </ListItem>
+            )}
           </List>
         </Content>
       </Container>
@@ -103,6 +115,7 @@ function mapStateToProps(state) {
   return {
     httpClient: state.app.httpClient,
     restaurant: state.restaurant.restaurant,
+    restaurants: state.restaurant.myRestaurants,
   }
 }
 
