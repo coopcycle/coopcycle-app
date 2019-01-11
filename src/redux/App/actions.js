@@ -5,6 +5,12 @@ import API from '../../API'
 import AppUser from '../../AppUser'
 import Preferences from '../../Preferences'
 import { setTasksFilter } from '../Courier/taskActions'
+import {
+  loadMyRestaurantsRequest,
+  loadMyRestaurantsSuccess,
+  loadMyRestaurantsFailure
+} from '../Restaurant/actions'
+import NavigationHolder from '../../NavigationHolder'
 import i18n from '../../i18n'
 
 /*
@@ -33,7 +39,40 @@ const _setBaseURL = createAction(SET_BASE_URL)
 const _storeRemotePushToken = createAction(STORE_REMOTE_PUSH_TOKEN)
 const _saveRemotePushToken = createAction(SAVE_REMOTE_PUSH_TOKEN)
 
-export function bootstrap(baseURL, user) {
+function navigateToHome(dispatch, getState) {
+
+  const { httpClient, user } = getState().app
+
+  if (user && user.isAuthenticated()) {
+    if (user.hasRole('ROLE_ADMIN')) {
+      return NavigationHolder.navigate('DispatchHome')
+    } else if (user.hasRole('ROLE_COURIER')) {
+      return NavigationHolder.navigate('CourierHome')
+    } else if (user.hasRole('ROLE_RESTAURANT')) {
+      dispatch(loadMyRestaurantsRequest())
+      httpClient.get('/api/me/restaurants')
+        .then(res => {
+          const restaurants = res['hydra:member']
+          dispatch(loadMyRestaurantsSuccess(restaurants))
+          if (restaurants.length > 0) {
+            NavigationHolder.navigate('RestaurantHome')
+          } else {
+            NavigationHolder.navigate('CheckoutHome')
+          }
+        })
+        .catch(e => {
+          dispatch(loadMyRestaurantsFailure(e))
+          NavigationHolder.navigate('CheckoutHome')
+        })
+    } else {
+      NavigationHolder.navigate('CheckoutHome')
+    }
+  } else {
+    NavigationHolder.navigate('CheckoutHome')
+  }
+}
+
+export function bootstrap(baseURL, user, navigation) {
   return function (dispatch, getState) {
     const httpClient = API.createClient(baseURL, user)
 
@@ -45,6 +84,19 @@ export function bootstrap(baseURL, user) {
 
     configureBackgroundGeolocation(httpClient, user)
     saveRemotePushToken(dispatch, getState)
+
+    // Navigate to screen depending on user state
+    if (user.isAuthenticated()) {
+      httpClient.checkToken()
+        .then(() => navigateToHome(dispatch, getState))
+        .catch(e => {
+          user
+            .logout()
+            .then(() => navigateToHome(dispatch, getState))
+        })
+    } else {
+      navigateToHome(dispatch, getState)
+    }
   }
 }
 
@@ -87,6 +139,8 @@ export function login(user) {
 
     configureBackgroundGeolocation(httpClient, user)
     saveRemotePushToken(dispatch, getState)
+
+    navigateToHome(dispatch, getState)
   }
 }
 

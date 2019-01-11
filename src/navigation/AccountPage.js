@@ -14,7 +14,6 @@ import LoginForm from '../components/LoginForm'
 import RegisterForm from '../components/RegisterForm'
 import Settings from '../Settings'
 import { login } from '../redux/App/actions'
-import { loadMyRestaurants } from '../redux/Restaurant/actions'
 
 class AccountPage extends Component {
 
@@ -26,21 +25,6 @@ class AccountPage extends Component {
       isAuthenticated: this.props.user.isAuthenticated(),
       formToDisplay: 'login',
     };
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    const { navigate } = this.props.navigation
-
-    if (this.props.restaurants !== prevProps.restaurants) {
-      this.setState({
-        isAuthenticated: this.props.user.isAuthenticated()
-      })
-      navigate({
-        routeName: 'RestaurantHome',
-        key: 'RestaurantHome',
-        params: {}
-      })
-    }
   }
 
   async resetServer() {
@@ -58,8 +42,6 @@ class AccountPage extends Component {
   async logout() {
 
     await this.props.user.logout()
-
-    this.setState({ isAuthenticated: this.props.user.isAuthenticated() })
 
     const resetAction = StackActions.reset({
       index: 0,
@@ -81,24 +63,8 @@ class AccountPage extends Component {
     this.setState({ loading: false })
   }
 
-  async onLoginSuccess(user) {
-
-    const { navigate } = this.props.navigation
-
+  onLoginSuccess(user) {
     this.props.login(user)
-
-    if (user.hasRole('ROLE_RESTAURANT')) {
-      this.props.loadMyRestaurants(this.props.httpClient)
-    } else {
-      this.setState({
-        isAuthenticated: this.props.user.isAuthenticated()
-      })
-      navigate({
-        routeName: 'CheckoutHome',
-        key: 'CheckoutHome',
-        params: {}
-      })
-    }
   }
 
   onLoginFail(message) {
@@ -125,7 +91,7 @@ class AccountPage extends Component {
   }
 
   renderLoader() {
-    if (this.state.loading || this.props.isLoadingRestaurants) {
+    if (this.state.loading) {
       return (
         <View style={ styles.loader }>
           <ActivityIndicator
@@ -281,15 +247,12 @@ function mapStateToProps(state) {
     baseURL: state.app.baseURL,
     user: state.app.user,
     httpClient: state.app.httpClient,
-    isLoadingRestaurants: state.restaurant.isFetching,
-    restaurants: state.restaurant.myRestaurants,
   }
 }
 
 function mapDispatchToProps (dispatch) {
   return {
     login: user => dispatch(login(user)),
-    loadMyRestaurants: client => dispatch(loadMyRestaurants(client)),
   }
 }
 
