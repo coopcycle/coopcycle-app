@@ -20,7 +20,7 @@ class Loading extends Component {
     }
   }
 
-  navigateToHome(httpClient, user) {
+  navigateToHome(user) {
     if (user && user.isAuthenticated()) {
       if (user.hasRole('ROLE_ADMIN')) {
         return this.props.navigation.navigate('DispatchHome')
@@ -28,7 +28,7 @@ class Loading extends Component {
         return this.props.navigation.navigate('CourierHome')
       } else if (user.hasRole('ROLE_RESTAURANT')) {
         // We will call navigate() in componentDidUpdate, once restaurants are loaded
-        this.props.loadMyRestaurants(httpClient)
+        this.props.loadMyRestaurants()
       } else {
         this.props.navigation.navigate({
           routeName: 'CheckoutHome',
@@ -75,7 +75,7 @@ class Loading extends Component {
         this.props.bootstrap(baseURL, user)
 
         if (!user.isAuthenticated()) {
-          return this.navigateToHome(httpClient)
+          return this.navigateToHome()
         }
 
         const httpClient = API.createClient(baseURL, user)
@@ -83,11 +83,11 @@ class Loading extends Component {
         // Make sure the token is still valid
         // If not, logout user
         httpClient.checkToken()
-          .then(() => this.navigateToHome(httpClient, user))
+          .then(() => this.navigateToHome(user))
           .catch(e => {
             user
               .logout()
-              .then(() => this.navigateToHome(httpClient))
+              .then(() => this.navigateToHome())
           })
 
       } catch (e) {

@@ -122,12 +122,13 @@ export const deleteOpeningHoursSpecificationFailure = createAction(DELETE_OPENIN
  * Thunk Creators
  */
 
-export function loadMyRestaurants(client) {
+export function loadMyRestaurants() {
 
-  return function (dispatch) {
+  return function (dispatch, getState) {
+    const httpClient = getState().app.httpClient
     dispatch(loadMyRestaurantsRequest())
 
-    return client.get('/api/me/restaurants')
+    return httpClient.get('/api/me/restaurants')
       .then(res => dispatch(loadMyRestaurantsSuccess(res['hydra:member'])))
       .catch(e => dispatch(loadMyRestaurantsFailure(e)))
   }
