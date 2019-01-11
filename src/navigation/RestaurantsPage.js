@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import {
   StyleSheet,
-  View,
-  ActivityIndicator
+  View
 } from 'react-native';
 import {
   Container, Header, Title, Content,
@@ -16,6 +15,7 @@ import { connect } from 'react-redux'
 import { translate } from 'react-i18next'
 import RestaurantSearch from '../components/RestaurantSearch'
 import RestaurantList from '../components/RestaurantList'
+import { searchRestaurants } from '../redux/Checkout/actions'
 
 class RestaurantsPage extends Component {
 
@@ -23,71 +23,23 @@ class RestaurantsPage extends Component {
     super(props);
 
     this.state = {
-      loading: false,
-      restaurants: props.restaurants || [],
       deliveryAddress: null,
       deliveryDay: null
     }
   }
 
-  request(latitude, longitude, distance) {
-    return this.props.httpClient.get('/api/restaurants?coordinate=' + [latitude, longitude] + '&distance=' + distance)
-  }
-
   onChange(deliveryAddress, deliveryDay) {
     if (deliveryAddress) {
-
-      this.setState({ loading: true, restaurants: [] })
-
       const { latitude, longitude } = deliveryAddress.geo
-      this.request(latitude, longitude, 3000)
-        .then(data => {
-
-          let restaurants = data['hydra:member']
-
-          Promise
-            .all(restaurants.map(restaurant => {
-
-              // Load from API if this is an IRI
-              if (typeof restaurant.hasMenu === 'string') {
-
-                return this.props.httpClient.get(restaurant.hasMenu)
-              }
-
-              return new Promise((resolve, reject) => resolve(restaurant.hasMenu))
-            }))
-            .then(values => {
-
-              restaurants = restaurants.map((restaurant, key) => {
-
-                return {
-                  ...restaurant,
-                  hasMenu: values[key]
-                }
-              })
-
-              if (deliveryDay) {
-                restaurants = _.filter(restaurants, restaurant => {
-                  for (let i = 0; i < restaurant.availabilities.length; i++) {
-                    if (moment(restaurant.availabilities[i]).isSame(deliveryDay, 'day')) {
-
-                      return true
-                    }
-                  }
-
-                  return false
-                })
-              }
-
-              this.setState({ deliveryAddress, deliveryDay, restaurants, loading: false })
-            })
-        })
+      this.setState({ deliveryAddress, deliveryDay })
+      this.props.searchRestaurants(latitude, longitude, deliveryDay)
     }
   }
 
   renderWarning() {
 
-    const { deliveryDay, restaurants, loading } = this.state
+    const { deliveryDay, restaurants } = this.state
+    const { loading } = this.props
 
     if (!loading && deliveryDay && restaurants.length === 0) {
       return (
@@ -119,7 +71,8 @@ class RestaurantsPage extends Component {
   render() {
 
     const { navigate } = this.props.navigation
-    const { deliveryAddress, deliveryDay, restaurants } = this.state
+    const { deliveryAddress, deliveryDay } = this.state
+    const { restaurants } = this.props
 
     return (
       <Container>
@@ -133,34 +86,26 @@ class RestaurantsPage extends Component {
             deliveryDay={ deliveryDay }
             onItemClick={ (restaurant, deliveryDate) => navigate('Restaurant', { restaurant, deliveryAddress, deliveryDate }) } />
           { this.renderWarning() }
-          <View style={styles.loader}>
-            <ActivityIndicator
-              animating={ this.state.loading }
-              size="large"
-              color="#0000ff"
-            />
-          </View>
         </Content>
       </Container>
     );
   }
 }
 
-const styles = StyleSheet.create({
-  loader: {
-    flex: 1,
-    marginTop: 50,
-    // ...StyleSheet.absoluteFillObject,
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-});
-
 function mapStateToProps(state) {
+
   return {
     baseURL: state.app.baseURL,
-    httpClient: state.app.httpClient
+    loading: state.checkout.isFetching,
+    restaurants: state.checkout.restaurants
   }
 }
 
-module.exports = connect(mapStateToProps)(translate()(RestaurantsPage))
+function mapDispatchToProps(dispatch) {
+
+  return {
+    searchRestaurants: (latitude, longitude) => dispatch(searchRestaurants(latitude, longitude)),
+  }
+}
+
+module.exports = connect(mapStateToProps, mapDispatchToProps)(translate()(RestaurantsPage))

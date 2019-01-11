@@ -6,6 +6,9 @@ import {
   DECREMENT_ITEM,
   SET_ADDRESS_RESOURCE,
   CLEAR,
+  SEARCH_RESTAURANTS_REQUEST,
+  SEARCH_RESTAURANTS_SUCCESS,
+  SEARCH_RESTAURANTS_FAILURE
 } from './actions'
 
 import Cart from '../../Cart'
@@ -15,13 +18,27 @@ const initialState = {
   cart: new Cart(),
   address: null,
   addressResource: null,
-  date: null
+  date: null,
+  restaurants: [],
+  isFetching: false,
 }
 
 export default (state = initialState, action = {}) => {
   let newCart, item
 
   switch (action.type) {
+
+    case SEARCH_RESTAURANTS_REQUEST:
+      return {
+        ...state,
+        isFetching: true,
+      }
+
+    case SEARCH_RESTAURANTS_FAILURE:
+      return {
+        ...state,
+        isFetching: false,
+      }
 
     case INIT:
       return {
@@ -95,6 +112,13 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         addressResource: action.payload
+      }
+
+    case SEARCH_RESTAURANTS_SUCCESS:
+      return {
+        ...state,
+        isFetching: false,
+        restaurants: action.payload
       }
 
     default:
