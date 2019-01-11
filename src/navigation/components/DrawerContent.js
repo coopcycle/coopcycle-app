@@ -42,21 +42,6 @@ class DrawerContent extends Component {
       items: otherItems
     }
 
-    const restaurantItemsProps = {
-      ...this.props,
-      items: restaurants.map(restaurant => ({
-        ...restaurantItems[0],
-        params: {
-          restaurant
-        }
-      })),
-      getLabel: ({ route }) => {
-        const { restaurant } = route.params
-
-        return restaurant.name
-      }
-    }
-
     let restaurantSection = (
       <View />
     )
@@ -71,7 +56,36 @@ class DrawerContent extends Component {
 
     if (isAuthenticated) {
 
-      if (user.hasRole('ROLE_RESTAURANT') && restaurants.length > 0) {
+      if ((user.hasRole('ROLE_ADMIN') || user.hasRole('ROLE_RESTAURANT')) && restaurants.length > 0) {
+
+        let restaurantItemsProps
+
+        // When there is ONE restaurant, show a direct link
+        if (restaurants.length === 1) {
+          restaurantItemsProps = {
+            ...this.props,
+            items: restaurants.map(restaurant => ({
+              ...restaurantItems[0],
+              params: {
+                restaurant
+              }
+            })),
+            getLabel: ({ route }) => {
+              const { restaurant } = route.params
+
+              return restaurant.name
+            }
+          }
+        } else {
+          restaurantItemsProps = {
+            ...this.props,
+            items: restaurantItems,
+            getLabel: ({ route }) => {
+              return this.props.t('RESTAURANTS')
+            }
+          }
+        }
+
         restaurantSection = (
           <View>
             <DrawerItems { ...restaurantItemsProps } />
