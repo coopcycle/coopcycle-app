@@ -51,6 +51,8 @@ function navigateToHome(dispatch, getState) {
       const req = user.hasRole('ROLE_ADMIN') ?
         httpClient.get('/api/restaurants') : httpClient.get('/api/me/restaurants')
 
+      dispatch(loadMyRestaurantsRequest())
+
       req
         .then(res => {
 
