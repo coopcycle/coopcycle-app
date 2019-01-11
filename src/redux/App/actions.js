@@ -46,26 +46,34 @@ function navigateToHome(dispatch, getState) {
   const { httpClient, user } = getState().app
 
   if (user && user.isAuthenticated()) {
-    if (user.hasRole('ROLE_ADMIN')) {
-      return NavigationHolder.navigate('DispatchHome')
-    } else if (user.hasRole('ROLE_COURIER')) {
-      return NavigationHolder.navigate('CourierHome')
-    } else if (user.hasRole('ROLE_RESTAURANT')) {
-      dispatch(loadMyRestaurantsRequest())
-      httpClient.get('/api/me/restaurants')
+    if (user.hasRole('ROLE_ADMIN') || user.hasRole('ROLE_RESTAURANT')) {
+
+      const req = user.hasRole('ROLE_ADMIN') ?
+        httpClient.get('/api/restaurants') : httpClient.get('/api/me/restaurants')
+
+      req
         .then(res => {
+
           const restaurants = res['hydra:member']
           dispatch(loadMyRestaurantsSuccess(restaurants))
-          if (restaurants.length > 0) {
-            NavigationHolder.navigate('RestaurantHome')
+
+          if (user.hasRole('ROLE_ADMIN')) {
+            NavigationHolder.navigate('DispatchHome')
           } else {
-            NavigationHolder.navigate('CheckoutHome')
+            if (restaurants.length > 0) {
+              NavigationHolder.navigate('RestaurantHome')
+            } else {
+              NavigationHolder.navigate('CheckoutHome')
+            }
           }
         })
         .catch(e => {
           dispatch(loadMyRestaurantsFailure(e))
           NavigationHolder.navigate('CheckoutHome')
         })
+
+    } else if (user.hasRole('ROLE_COURIER')) {
+      return NavigationHolder.navigate('CourierHome')
     } else {
       NavigationHolder.navigate('CheckoutHome')
     }
