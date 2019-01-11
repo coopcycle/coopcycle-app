@@ -44,19 +44,43 @@ class RestaurantsPage extends Component {
         .then(data => {
 
           let restaurants = data['hydra:member']
-          if (deliveryDay) {
-            restaurants = _.filter(restaurants, restaurant => {
-              for (let i = 0; i < restaurant.availabilities.length; i++) {
-                if (moment(restaurant.availabilities[i]).isSame(deliveryDay, 'day')) {
-                  return true
-                }
+
+          Promise
+            .all(restaurants.map(restaurant => {
+
+              // Load from API if this is an IRI
+              if (typeof restaurant.hasMenu === 'string') {
+
+                return this.props.httpClient.get(restaurant.hasMenu)
               }
 
-              return false
-            })
-          }
 
-          this.setState({ deliveryAddress, deliveryDay, restaurants, loading: false })
+            }))
+            .then(values => {
+
+              restaurants = restaurants.map((restaurant, key) => {
+
+                return {
+                  ...restaurant,
+                  hasMenu: values[key]
+                }
+              })
+
+              if (deliveryDay) {
+                restaurants = _.filter(restaurants, restaurant => {
+                  for (let i = 0; i < restaurant.availabilities.length; i++) {
+                    if (moment(restaurant.availabilities[i]).isSame(deliveryDay, 'day')) {
+
+                      return true
+                    }
+                  }
+
+                  return false
+                })
+              }
+
+              this.setState({ deliveryAddress, deliveryDay, restaurants, loading: false })
+            })
         })
     }
   }
