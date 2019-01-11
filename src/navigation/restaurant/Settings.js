@@ -64,23 +64,12 @@ class SettingsScreen extends Component {
                 <Icon name="arrow-forward" />
               </Right>
             </ListItem>
-            <ListItem icon onPress={ () => this.props.navigation.navigate('RestaurantOpeningHours') }>
+            <ListItem icon last onPress={ () => this.props.navigation.navigate('RestaurantOpeningHours') }>
               <Left>
                 <Icon active name="calendar" />
               </Left>
               <Body>
                 <Text>{ this.props.t('RESTAURANT_SETTINGS_OPENING_HOURS') }</Text>
-              </Body>
-              <Right>
-                <Icon name="arrow-forward" />
-              </Right>
-            </ListItem>
-            <ListItem icon last>
-              <Left>
-                <Icon active name="sync" />
-              </Left>
-              <Body>
-                <Text>{ this.props.t('RESTAURANT_SETTINGS_CHANGE_RESTAURANT') }</Text>
               </Body>
               <Right>
                 <Icon name="arrow-forward" />
