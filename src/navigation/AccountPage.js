@@ -13,14 +13,13 @@ import _ from 'lodash'
 import LoginForm from '../components/LoginForm'
 import RegisterForm from '../components/RegisterForm'
 import Settings from '../Settings'
-import { login } from '../redux/App/actions'
+import { login, setLoading } from '../redux/App/actions'
 
 class AccountPage extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      loading: false,
       message: '',
       isAuthenticated: this.props.user.isAuthenticated(),
       formToDisplay: 'login',
@@ -55,12 +54,12 @@ class AccountPage extends Component {
   onRequestStart() {
     this.setState({
       message: '',
-      loading: true
     })
+    this.props.setLoading(true)
   }
 
   onRequestEnd() {
-    this.setState({ loading: false })
+    this.props.setLoading(false)
   }
 
   onLoginSuccess(user) {
@@ -87,25 +86,6 @@ class AccountPage extends Component {
           <Text>{this.props.t('CHANGE_SERVER')}</Text>
         </Button>
       </View>
-    )
-  }
-
-  renderLoader() {
-    if (this.state.loading) {
-      return (
-        <View style={ styles.loader }>
-          <ActivityIndicator
-            animating={true}
-            size="large"
-            color="#fff"
-          />
-          <Text style={{color: '#fff'}}>{`${this.props.t('LOADING')}...`}</Text>
-        </View>
-      )
-    }
-
-    return (
-      <View />
     )
   }
 
@@ -155,7 +135,6 @@ class AccountPage extends Component {
             </Button>
           </View>
         </Content>
-        { this.renderLoader() }
       </Container>
     )
   }
@@ -219,7 +198,6 @@ class AccountPage extends Component {
           {/* This empty view is for increasing the page height so the button appears above the menu bar */}
           <View style={styles.message} />
         </Content>
-        { this.renderLoader() }
       </Container>
     )
   }
@@ -253,6 +231,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps (dispatch) {
   return {
     login: user => dispatch(login(user)),
+    setLoading: isLoading => dispatch(setLoading(isLoading)),
   }
 }
 
