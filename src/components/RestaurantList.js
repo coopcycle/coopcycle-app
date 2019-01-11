@@ -26,14 +26,7 @@ class RestaurantList extends Component {
 
   renderItem(restaurant) {
 
-    const { baseURL, deliveryDay } = this.props
-
-    let cuisine = 'default';
-    // if (restaurant.servesCuisine.length > 0) {
-    //   var randomCuisine = _.first(_.shuffle(restaurant.servesCuisine));
-    //   cuisine = randomCuisine.name;
-    // }
-    const imageURI = baseURL + '/img/cuisine/' + slugify(cuisine).toLowerCase() +'.jpg'
+    const { deliveryDay } = this.props
 
     let firstDeliveryDate = moment(restaurant.availabilities[0])
 
@@ -48,7 +41,7 @@ class RestaurantList extends Component {
       <TouchableOpacity style={ styles.item } onPress={ () => this.props.onItemClick(restaurant, firstDeliveryDate) }>
         <Grid>
           <Col size={ 1 }>
-            <Thumbnail size={60} source={{ uri: imageURI }} />
+            <Thumbnail size={60} source={{ uri: restaurant.image }} />
           </Col>
           <Col size={ 4 } style={{ paddingLeft: 10 }}>
             <Text style={ styles.restaurantNameText }>{ restaurant.name }</Text>

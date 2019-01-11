@@ -81,7 +81,6 @@ class RestaurantsPage extends Component {
             ref={ component => this.restaurantSearch = component }
             onChange={ this.onChange.bind(this) } />
           <RestaurantList
-            baseURL={ this.props.baseURL }
             restaurants={ restaurants }
             deliveryDay={ deliveryDay }
             onItemClick={ (restaurant, deliveryDate) => navigate('Restaurant', { restaurant, deliveryAddress, deliveryDate }) } />
@@ -95,7 +94,6 @@ class RestaurantsPage extends Component {
 function mapStateToProps(state) {
 
   return {
-    baseURL: state.app.baseURL,
     loading: state.checkout.isFetching,
     restaurants: state.checkout.restaurants
   }
