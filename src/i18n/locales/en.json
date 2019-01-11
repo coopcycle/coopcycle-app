@@ -180,7 +180,7 @@
     "DISPATCH_TASK": "Task #{{id}}",
     "DISPATCH_ASSIGN_TASK": "Assign task",
     "DISPATCH_PICK_USER": "Pick a user",
-    "TASK_FORM_ADDRESS_LABEL": "Adress",
+    "TASK_FORM_ADDRESS_LABEL": "Address",
     "TASK_FORM_DONE_AFTER_LABEL": "To do starting at",
     "TASK_FORM_DONE_BEFORE_LABEL": "To do before",
     "TASK_FORM_COMMENTS_LABEL": "Comments",
