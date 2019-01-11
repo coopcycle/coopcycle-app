@@ -54,7 +54,7 @@ class RestaurantsPage extends Component {
                 return this.props.httpClient.get(restaurant.hasMenu)
               }
 
-
+              return new Promise((resolve, reject) => resolve(restaurant.hasMenu))
             }))
             .then(values => {
 
