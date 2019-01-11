@@ -2,12 +2,13 @@ import React, { Component } from 'react'
 import { StyleSheet, View } from 'react-native'
 import {
   Container, Content, Body, Right,
-  Card, CardItem,
-  Icon, Text, Button
+  Icon, Text, Button,
+  List, ListItem
 } from 'native-base'
 import { connect } from 'react-redux'
 import { translate } from 'react-i18next'
-import { loadMyRestaurants } from '../../redux/Restaurant/actions'
+
+import { changeRestaurant } from '../../redux/Restaurant/actions'
 
 class ListScreen extends Component {
 
@@ -17,27 +18,25 @@ class ListScreen extends Component {
     }
   }
 
-  componentDidMount() {
-    this.props.loadMyRestaurants(this.props.httpClient)
+  _onRestaurantClick(restaurant) {
+    this.props.navigation.goBack()
+    this.props.changeRestaurant(restaurant)
   }
 
   renderRestaurants() {
 
-    const { navigate } = this.props.navigation
     const { restaurants } = this.props
 
     return (
-      <View>
+      <List>
         { restaurants.map(restaurant =>
-          <Card key={ restaurant['@id'] }>
-            <CardItem button onPress={ () => navigate('RestaurantDashboard', { restaurant }) }>
-              <Body>
-                <Text>{ restaurant.name }</Text>
-              </Body>
-            </CardItem>
-          </Card>
+          <ListItem key={ restaurant['@id'] } onPress={ () => this._onRestaurantClick(restaurant) }>
+            <Body>
+              <Text>{ restaurant.name }</Text>
+            </Body>
+          </ListItem>
         ) }
-      </View>
+      </List>
     )
   }
 
@@ -83,7 +82,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    loadMyRestaurants: (client) => dispatch(loadMyRestaurants(client)),
+    changeRestaurant: restaurant => dispatch(changeRestaurant(restaurant)),
   }
 }
 

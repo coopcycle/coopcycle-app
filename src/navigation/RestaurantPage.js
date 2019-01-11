@@ -13,7 +13,7 @@ import moment from 'moment'
 
 import CartFooter from './checkout/components/CartFooter'
 import Menu from '../components/Menu'
-import { init, changeRestaurant, addItem } from '../redux/Checkout/actions'
+import { init, addItem } from '../redux/Checkout/actions'
 
 class RestaurantPage extends Component {
 
@@ -62,7 +62,6 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    changeRestaurant: restaurant => dispatch(changeRestaurant(restaurant)),
     init: (restaurant, address, date) => dispatch(init(restaurant, address, date)),
     addItem: item => dispatch(addItem(item)),
   }

@@ -32,6 +32,7 @@ class SettingsScreen extends Component {
 
   render() {
 
+    const { navigate } = this.props.navigation
     const { restaurants } = this.props
 
     const openingHoursProps = {
@@ -63,7 +64,7 @@ class SettingsScreen extends Component {
                   onValueChange={ this._onRushValueChange.bind(this) } />
               </Right>
             </ListItem>
-            <ListItem icon onPress={ () => this.props.navigation.navigate('RestaurantProducts') }>
+            <ListItem icon onPress={ () => navigate('RestaurantProducts') }>
               <Left>
                 <Icon active name="pricetag" />
               </Left>
@@ -74,7 +75,7 @@ class SettingsScreen extends Component {
                 <Icon name="arrow-forward" />
               </Right>
             </ListItem>
-            <ListItem icon onPress={ () => this.props.navigation.navigate('RestaurantOpeningHours') } { ...openingHoursProps }>
+            <ListItem icon onPress={ () => navigate('RestaurantOpeningHours') } { ...openingHoursProps }>
               <Left>
                 <Icon active name="calendar" />
               </Left>
@@ -86,7 +87,7 @@ class SettingsScreen extends Component {
               </Right>
             </ListItem>
             { restaurants.length > 1 && (
-            <ListItem icon { ...changeRestaurantProps }>
+            <ListItem icon onPress={ () => navigate('RestaurantList') } { ...changeRestaurantProps }>
               <Left>
                 <Icon active name="sync" />
               </Left>

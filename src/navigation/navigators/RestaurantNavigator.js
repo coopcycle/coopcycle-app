@@ -99,6 +99,12 @@ export default createStackNavigator({
       title: 'Choose date', // TODO Translate
     })
   },
+  RestaurantList: {
+    screen: navigation.RestaurantList,
+    navigationOptions: ({ navigation }) => ({
+      title: i18n.t('RESTAURANTS'),
+    })
+  },
   RestaurantSettings: {
     screen: RestaurantSettingsStack,
     navigationOptions: ({ navigation }) => ({
