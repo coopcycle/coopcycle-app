@@ -1,7 +1,12 @@
 import React, { Component } from 'react'
-import { Container, Header, Content, Form, Item, Input, Label } from 'native-base'
+import { Container, Header, Content, Form, Item, Input, Label, Textarea } from 'native-base'
 import _ from 'lodash'
 import { translate } from 'react-i18next'
+
+const inputProps = {
+  autoCorrect: false,
+  autoCapitalize: 'none',
+}
 
 class DeliveryAddressForm extends Component {
   constructor(props) {
@@ -9,22 +14,65 @@ class DeliveryAddressForm extends Component {
     this.state = {
       streetAddress: props.streetAddress || '',
       postalCode: props.postalCode || '',
-      addressLocality: props.addressLocality || ''
+      addressLocality: props.addressLocality || '',
+      name: props.name || '',
+      telephone: props.telephone || '',
+      description: props.description || '',
     }
   }
+
   createDeliveryAddress() {
     return this.state
   }
+
+  renderName() {
+
+    return (
+      <Item stackedLabel>
+        <Label>{ this.props.t('NAME') }</Label>
+        <Input ref="name"
+          { ...inputProps }
+          onChangeText={ name => this.setState({ name }) }
+          value={ this.state.name } />
+      </Item>
+    )
+  }
+
+  renderDescription() {
+
+    return (
+      <Item stackedLabel>
+        <Label>{ this.props.t('ADDRESS_DESCRIPTION') }</Label>
+        <Input ref="description"
+          { ...inputProps }
+          multiline
+          onChangeText={ description => this.setState({ description }) }
+          value={ this.state.description }
+          style={{ height: 5 * 25 }} />
+      </Item>
+    )
+  }
+
+  renderTelephone() {
+
+    return (
+      <Item stackedLabel last>
+        <Label>{ this.props.t('TELEPHONE') }</Label>
+        <Input ref="telephone"
+          { ...inputProps }
+          onChangeText={ telephone => this.setState({ telephone }) }
+          value={ this.state.telephone } />
+      </Item>
+    )
+  }
+
   render() {
 
     const errors = this.props.errors || []
-
-    const inputProps = {
-      autoCorrect: false,
-      autoCapitalize: 'none',
-    }
+    const extended = this.props.extended || false
 
     const postalCodeProps = _.includes(errors, 'postalCode') ? { error: true } : {}
+    const addressLocalityProps = extended ? {} : { last: true }
 
     return (
       <Form>
@@ -42,13 +90,16 @@ class DeliveryAddressForm extends Component {
             onChangeText={ postalCode => this.setState({ postalCode }) }
             value={ this.state.postalCode } />
         </Item>
-        <Item stackedLabel last>
+        <Item stackedLabel { ...addressLocalityProps }>
           <Label>{this.props.t('CITY')}</Label>
           <Input ref="addressLocality"
             { ...inputProps }
             onChangeText={ addressLocality => this.setState({ addressLocality }) }
             value={ this.state.addressLocality } />
         </Item>
+        { extended && this.renderName() }
+        { extended && this.renderDescription() }
+        { extended && this.renderTelephone() }
       </Form>
     );
   }

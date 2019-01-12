@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
-import { FlatList, InteractionManager, StyleSheet, TouchableOpacity, View } from 'react-native'
-import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete'
+import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native'
 import { connect } from 'react-redux'
 import {
   Container, Content,
@@ -17,40 +16,8 @@ import _ from 'lodash'
 import moment from 'moment'
 
 import { createTask } from '../../redux/Dispatch/actions'
-import Settings from '../../Settings'
-import { localeDetector } from '../../i18n'
-
-const autocompleteStyles = {
-  description: {
-    fontWeight: 'bold',
-  },
-  predefinedPlacesDescription: {
-    color: '#1faadb',
-  },
-  textInputContainer: {
-    backgroundColor: '#C9C9CE',
-    height: 54,
-    // borderTopColor: '#7e7e7e',
-    // borderBottomColor: '#b5b5b5',
-    borderTopWidth: 0,
-    borderBottomWidth: 0,
-    flexDirection: 'row',
-  },
-  textInput: {
-    backgroundColor: '#FFFFFF',
-    height: 38,
-    borderRadius: 5,
-    paddingTop: 4.5,
-    paddingBottom: 4.5,
-    paddingLeft: 10,
-    paddingRight: 10,
-    marginTop: 7.5,
-    marginLeft: 8,
-    marginRight: 8,
-    fontSize: 15,
-    flex: 1
-  },
-}
+import AddressTypeahead from './components/AddressTypeahead'
+import AddressUtils from '../../utils/Address'
 
 class AddTask extends Component {
 
@@ -64,12 +31,6 @@ class AddTask extends Component {
       doneAfter: moment().add(1, 'hours'),
       doneBefore: moment().add(1, 'hours').add(30, 'minutes'),
       address: {}
-    }
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    if (this.props.unassignedTasks !== prevProps.unassignedTasks) {
-      this.props.navigation.goBack()
     }
   }
 
@@ -106,6 +67,24 @@ class AddTask extends Component {
     this.props.createTask(task)
   }
 
+  _onSuggestionPress(data, details = null) {
+    this.setState({
+      address: AddressUtils.createAddressFromGoogleDetails(details)
+    })
+  }
+
+  _onEditAddressSubmit(address) {
+
+    const newAddress = _.pickBy({
+      ...this.state.address,
+      ...address
+    }, prop => !_.isEmpty(prop))
+
+    this.setState({
+      address: newAddress
+    })
+  }
+
   render() {
 
     const { navigate } = this.props.navigation
@@ -117,7 +96,7 @@ class AddTask extends Component {
       block: true
     }
 
-    const { type, doneAfter, doneBefore } = this.state
+    const { address, type, doneAfter, doneBefore } = this.state
 
     pickupBtnProps = {
       ...pickupBtnProps,
@@ -149,41 +128,13 @@ class AddTask extends Component {
               </Grid>
             </View>
             <View style={ styles.formRow }>
-              <Label>{ this.props.t('TASK_FORM_ADDRESS_LABEL') }</Label>
-              <GooglePlacesAutocomplete
-                placeholder={ this.props.t('ENTER_ADDRESS') }
-                minLength={ 2 } // minimum length of text to search
-                autoFocus={ false }
-                // listViewDisplayed = auto does not hide the results when pressed
-                listViewDisplayed={ false }
-                fetchDetails={ true }
-                // 'details' is provided when fetchDetails = true
-                onPress={(data, details = null) => {
-                  this.setState({
-                    address: {
-                      streetAddress: details.formatted_address,
-                      geo: {
-                        latitude: details.geometry.location.lat,
-                        longitude: details.geometry.location.lng,
-                      }
-                    }
-                  })
-                }}
-                query={{
-                  // available options: https://developers.google.com/places/web-service/autocomplete
-                  key: Settings.get('google_api_key'),
-                  language: localeDetector(), // language of the results
-                  types: 'geocode', // default: 'geocode'
-                }}
-                styles={ autocompleteStyles }
-                // suppressDefaultStyles={ false }
-                nearbyPlacesAPI="GoogleReverseGeocoding" // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
-                GoogleReverseGeocodingQuery={{
-                  // available options for GoogleReverseGeocoding API : https://developers.google.com/maps/documentation/geocoding/intro
-                  region: Settings.get('country')
-                }}
-                // filter the reverse geocoding results by types - ['locality', 'administrative_area_level_3'] if you want to display only cities
-                filterReverseGeocodingByTypes={[ 'street_address', 'route', 'geocode' ]} />
+              <Label style={{ marginBottom: 5 }}>{ this.props.t('TASK_FORM_ADDRESS_LABEL') }</Label>
+              <View style={ styles.datePickerRow }>
+                <AddressTypeahead
+                  address={ address }
+                  onSuggestionPress={ this._onSuggestionPress.bind(this) }
+                  onEditPress={ () => navigate('DispatchEditAddress', { address, onSubmit: this._onEditAddressSubmit.bind(this) }) } />
+              </View>
             </View>
             <View style={ styles.formRow }>
               <Label>{ this.props.t('TASK_FORM_DONE_AFTER_LABEL') }</Label>

@@ -10,6 +10,7 @@ import DispatchTaskList from './dispatch/TaskList'
 import DispatchPickUser from './dispatch/PickUser'
 import DispatchAddTask from './dispatch/AddTask'
 import DispatchDate from './dispatch/Date'
+import DispatchEditAddress from './dispatch/EditAddress'
 import DispatchAssignTask from './dispatch/AssignTask'
 import { primaryColor,  whiteColor, fontTitleName } from '../styles/common'
 
@@ -51,6 +52,7 @@ export default {
   DispatchAddTask,
   DispatchDate,
   DispatchAssignTask,
+  DispatchEditAddress,
   Loading: require('./Loading'),
   Home,
   ConfigureServer: require('./ConfigureServer')

@@ -74,6 +74,30 @@ const MainNavigator = createStackNavigator({
   }
 })
 
+const AddTaskNavigator = createStackNavigator({
+  DispatchAddTaskHome: {
+    screen: navigation.DispatchAddTask,
+    navigationOptions: ({ navigation }) => ({
+      // Use header = null to get rid of the header
+      // The screen's header will be used
+      header: null,
+    })
+  },
+  DispatchEditAddress: {
+    screen: navigation.DispatchEditAddress,
+    navigationOptions: ({ navigation }) => ({
+      // Use header = null to get rid of the header
+      // The screen's header will be used
+      header: null,
+    })
+  }
+}, {
+  initialRouteName: 'DispatchAddTaskHome',
+  navigationOptions: {
+    ...defaultNavigationOptions
+  }
+})
+
 export default createStackNavigator({
   Main: {
     screen: MainNavigator,
@@ -90,7 +114,7 @@ export default createStackNavigator({
     })
   },
   DispatchAddTask: {
-    screen: navigation.DispatchAddTask,
+    screen: AddTaskNavigator,
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('DISPATCH_ADD_TASK'),
     })

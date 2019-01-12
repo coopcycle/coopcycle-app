@@ -1,9 +1,11 @@
 import { Alert } from 'react-native'
 import { createAction } from 'redux-actions'
+import { NavigationActions, StackActions } from 'react-navigation'
 
 import { connect, init } from '../middlewares/WebSocketMiddleware/actions'
 import WebSocketClient from '../../websocket/WebSocketClient'
 import i18n from '../../i18n'
+import NavigationHolder from '../../NavigationHolder'
 
 /*
  * Action Types
@@ -249,7 +251,17 @@ export function createTask(task) {
     dispatch(createTaskRequest())
 
     return httpClient.post('/api/tasks', task)
-      .then(res => dispatch(createTaskSuccess(res)))
+      .then(res => {
+        dispatch(createTaskSuccess(res))
+        const resetAction = StackActions.reset({
+          index: 0,
+          key: null,
+          actions: [
+            NavigationActions.navigate({ routeName: 'Main' })
+          ]
+        })
+        NavigationHolder.dispatch(resetAction)
+      })
       .catch(e => {
         dispatch(createTaskFailure(e))
         setTimeout(() => showAlert(e), 100)
