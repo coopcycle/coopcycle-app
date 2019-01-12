@@ -108,18 +108,29 @@ export function checkout(token) {
       .then(order => {
 
         // @see https://reactnavigation.org/docs/en/stack-actions.html
-        const resetAction = StackActions.reset({
-          index: 2,
+        // @see https://snack.expo.io/@eriveltonelias/resetstack
+        NavigationHolder.dispatch(StackActions.reset({
+          actions: [
+            NavigationActions.navigate({ routeName: 'CheckoutHome' })
+          ],
+          index: 0,
+        }))
+        NavigationHolder.dispatch(NavigationActions.navigate({ routeName: 'AccountHome' }))
+        NavigationHolder.dispatch(StackActions.reset({
           actions: [
             NavigationActions.navigate({ routeName: 'AccountHome' }),
-            NavigationActions.navigate({ routeName: 'AccountOrders' }),
-            NavigationActions.navigate({ routeName: 'OrderTracking', params: { order } }),
-          ]
-        })
-        NavigationHolder.dispatch(resetAction)
+            NavigationActions.navigate({
+              routeName: 'AccountOrderTracking',
+              params: { order }
+            }),
+          ],
+          index: 1,
+        }))
 
         // Make sure to clear AFTER navigation has been reset
+        dispatch(clear())
         dispatch(checkoutSuccess(order))
+
       })
       .catch(e => dispatch(checkoutFailure(e)))
   }

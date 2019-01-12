@@ -54,7 +54,6 @@ export default (state = initialState, action = {}) => {
       }
 
     case CLEAR:
-    case CHECKOUT_SUCCESS:
       return {
         ...state,
         cart: new Cart(),
@@ -125,6 +124,12 @@ export default (state = initialState, action = {}) => {
         ...state,
         isFetching: false,
         restaurants: action.payload
+      }
+
+    case CHECKOUT_SUCCESS:
+      return {
+        ...state,
+        isFetching: false,
       }
 
     default:

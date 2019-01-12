@@ -44,12 +44,6 @@ const MainNavigator = createStackNavigator({
       title: i18n.t('PAYMENT'),
     })
   },
-  OrderTracking: {
-    screen: navigation.OrderTrackingPage,
-    navigationOptions: ({ navigation }) => ({
-      title: i18n.t('ORDER_TRACKING'),
-    })
-  },
 }, {
   initialRouteKey: 'CheckoutHome',
   initialRouteName: 'CheckoutHome',
@@ -87,4 +81,7 @@ export default createStackNavigator({
   },
 }, {
   mode: 'modal',
+  navigationOptions: ({ navigation }) => ({
+    ...defaultNavigationOptions
+  })
 })

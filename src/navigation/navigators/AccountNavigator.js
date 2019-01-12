@@ -25,6 +25,12 @@ export default createStackNavigator({
       title: i18n.t('MY_ORDERS'),
     })
   },
+  AccountOrderTracking: {
+    screen: navigation.OrderTrackingPage,
+    navigationOptions: ({ navigation }) => ({
+      title: i18n.t('ORDER_TRACKING'),
+    })
+  },
   AccountDetails: {
     screen: navigation.AccountDetailsPage,
     navigationOptions: ({ navigation }) => ({
