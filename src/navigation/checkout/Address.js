@@ -10,6 +10,7 @@ import MapView from 'react-native-maps'
 import { connect } from 'react-redux'
 import { translate } from 'react-i18next'
 
+import CartFooter from './components/CartFooter'
 import DeliveryAddressForm from '../../components/DeliveryAddressForm'
 import { setAddressResource } from '../../redux/Checkout/actions'
 
@@ -66,12 +67,8 @@ class CartAddressPage extends Component {
             </MapView>
           </View>
           <DeliveryAddressForm ref={ component => this.deliveryAddressForm = component } { ...deliveryAddress } />
-          <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', padding: 20 }}>
-            <Button block onPress={ () => this.createAddress() }>
-              <Text>{this.props.t('CONTINUE')}</Text>
-            </Button>
-          </View>
         </Content>
+        <CartFooter onSubmit={ this.createAddress.bind(this) }  />
       </Container>
     );
   }
