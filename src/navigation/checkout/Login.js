@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { Container, Content, Text, Button, Icon } from 'native-base'
 import { Col, Row, Grid } from 'react-native-easy-grid'
+import { StackActions } from 'react-navigation'
 import { translate } from 'react-i18next'
 import { connect } from 'react-redux'
 import _ from 'lodash'
@@ -34,8 +35,9 @@ class Login extends Component {
   }
 
   async onLoginSuccess(user) {
-    this.props.login(user)
-    this.props.navigation.goBack()
+    this.props.login(user, false)
+
+    this.props.navigation.dispatch(StackActions.pop({ n: 1 }))
     this.props.navigation.navigate('CartAddress')
   }
 

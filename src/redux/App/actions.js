@@ -144,7 +144,7 @@ export function setRemotePushToken(remotePushToken) {
   }
 }
 
-export function login(user) {
+export function login(user, navigate = true) {
   return function (dispatch, getState) {
     const { app } = getState()
     const { httpClient, user } = app
@@ -152,7 +152,9 @@ export function login(user) {
     configureBackgroundGeolocation(httpClient, user)
     saveRemotePushToken(dispatch, getState)
 
-    navigateToHome(dispatch, getState)
+    if (navigate) {
+      navigateToHome(dispatch, getState)
+    }
   }
 }
 
