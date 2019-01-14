@@ -44,7 +44,7 @@
     "redux-thunk": "^2.3.0",
     "reselect": "^4.0.0",
     "slugify": "^1.3.4",
-    "tipsi-stripe": "6.1.2",
+    "tipsi-stripe": "7.1.0",
     "validate.js": "^0.12.0"
   },
   "devDependencies": {
