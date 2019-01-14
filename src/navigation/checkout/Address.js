@@ -10,8 +10,8 @@ import MapView from 'react-native-maps'
 import { connect } from 'react-redux'
 import { translate } from 'react-i18next'
 
-import DeliveryAddressForm from '../components/DeliveryAddressForm'
-import { setAddressResource } from '../redux/Checkout/actions'
+import DeliveryAddressForm from '../../components/DeliveryAddressForm'
+import { setAddressResource } from '../../redux/Checkout/actions'
 
 class CartAddressPage extends Component {
 

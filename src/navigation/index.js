@@ -31,7 +31,7 @@ export default {
   CheckoutEditItem: require('./checkout/EditItem'),
   CheckoutLogin: require('./checkout/Login'),
   CartPage: require('./CartPage'),
-  CartAddressPage: require('./CartAddressPage'),
+  CartAddressPage: require('./checkout/Address'),
   CourierTasksPage: require('./courier/TasksPage'),
   CourierTaskListPage: require('./courier/TaskListPage'),
   CourierTaskPage: require('./courier/TaskPage'),
