@@ -22,7 +22,7 @@ class DeliveryAddressForm extends Component {
   }
 
   createDeliveryAddress() {
-    return this.state
+    return _.pickBy(this.state, (value, key) => !_.isEmpty(value))
   }
 
   renderName() {
