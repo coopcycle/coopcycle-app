@@ -18,6 +18,9 @@ const customStyles = {
     borderTopWidth: 0,
     borderBottomWidth: 0,
   },
+  row: {
+    backgroundColor: '#ffffff',
+  }
 }
 
 class AddressTypeahead extends Component {

@@ -74,12 +74,17 @@ class RestaurantsPage extends Component {
     const { deliveryAddress, deliveryDay } = this.state
     const { restaurants } = this.props
 
+    let contentProps = restaurants.length === 0 ? {
+      flex: 1,
+      justifyContent: 'center'
+    } : {}
+
     return (
-      <Container>
-        <Content>
-          <RestaurantSearch
-            ref={ component => this.restaurantSearch = component }
-            onChange={ this.onChange.bind(this) } />
+      <Container style={{ paddingTop: 44 }}>
+        <RestaurantSearch
+          ref={ component => this.restaurantSearch = component }
+          onChange={ this.onChange.bind(this) } />
+        <Content { ...contentProps }>
           <RestaurantList
             restaurants={ restaurants }
             deliveryDay={ deliveryDay }

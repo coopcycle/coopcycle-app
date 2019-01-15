@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, View } from 'react-native'
+import { Dimensions, StyleSheet, View } from 'react-native'
 import { Col, Row, Grid } from 'react-native-easy-grid'
 
 import AddressTypeahead from './AddressTypeahead'
@@ -9,8 +9,11 @@ const dateTimePickerWidth = 100
 
 const styles = StyleSheet.create({
   container : {
-    flex: 1,
-    flexDirection: 'row',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    zIndex: 10,
+    overflow: 'visible'
   },
   left: {
     flex: 1,
@@ -59,15 +62,20 @@ export default class RestaurantSearch extends Component {
   }
 
   render() {
+
+    const { width } = Dimensions.get('window')
+
     return (
-      <View style={ styles.container }>
-        <View style={ styles.left }>
-          <AddressTypeahead onPress={ this.onDeliveryAddressChange.bind(this) } />
-        </View>
-        <View style={ styles.right }>
-          <DateTimePicker
-            ref={ component => this.dateTimePicker = component }
-            onChange={ this.onDeliveryDateChange.bind(this) } />
+      <View style={ [ styles.container, { width } ] }>
+        <View style={{ flex: 1 }}>
+          <View style={ [ styles.left, { flex: 1 } ] }>
+            <AddressTypeahead onPress={ this.onDeliveryAddressChange.bind(this) } />
+          </View>
+          <View style={ styles.right }>
+            <DateTimePicker
+              ref={ component => this.dateTimePicker = component }
+              onChange={ this.onDeliveryDateChange.bind(this) } />
+          </View>
         </View>
       </View>
     )

@@ -56,6 +56,17 @@ class RestaurantList extends Component {
   }
 
   render() {
+
+    if (this.props.restaurants.length === 0) {
+
+      return (
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+          <Icon name="search" style={{ color: '#cccccc' }} />
+          <Text note>{ this.props.t('ENTER_ADDRESS') }</Text>
+        </View>
+      )
+    }
+
     return (
       <View style={ styles.wrapper }>
         <FlatList
