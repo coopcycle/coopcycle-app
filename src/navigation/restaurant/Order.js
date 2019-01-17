@@ -146,7 +146,14 @@ class OrderScreen extends Component {
   render() {
 
     const { order } = this.props
-    const phoneNumber = phoneNumberUtil.parse(order.customer.telephone)
+
+    let phoneNumber
+    let isPhoneValid = false
+
+    try {
+      phoneNumber = phoneNumberUtil.parse(order.customer.telephone)
+      isPhoneValid = true
+    } catch (e) {}
 
     return (
       <Container>
@@ -157,16 +164,18 @@ class OrderScreen extends Component {
           { this.renderHeading() }
           <Row size={ 10 }>
             <Content padder>
-              <View style={ styles.section }>
-                <View style={{ flex: 1, flexDirection: 'row', alignItems: 'flex-end' }}>
-                  <Button iconLeft success
-                    onPress={ () => phonecall(order.customer.telephone, true) }
-                    style={{ marginLeft: 'auto', alignSelf: 'flex-end' }}>
-                    <Icon name="call" />
-                    <Text>{ phoneNumberUtil.format(phoneNumber, PhoneNumberFormat.NATIONAL) }</Text>
-                  </Button>
+              { isPhoneValid && (
+                <View style={ styles.section }>
+                  <View style={{ flex: 1, flexDirection: 'row', alignItems: 'flex-end' }}>
+                    <Button iconLeft success
+                      onPress={ () => phonecall(order.customer.telephone, true) }
+                      style={{ marginLeft: 'auto', alignSelf: 'flex-end' }}>
+                      <Icon name="call" />
+                      <Text>{ phoneNumberUtil.format(phoneNumber, PhoneNumberFormat.NATIONAL) }</Text>
+                    </Button>
+                  </View>
                 </View>
-              </View>
+              )}
               <View style={ styles.section }>
                 <OrderItems order={ order } />
                 { this.renderNotes() }
