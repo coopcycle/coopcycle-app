@@ -2,7 +2,7 @@
 platform :ios, '9.0'
 
 target 'CoopCycle' do
-  pod 'Stripe', '~> 13.2.0'
+  pod 'Stripe', '~> 14.0.0'
   inherit! :search_paths
 
   rn_path = '../node_modules/react-native'

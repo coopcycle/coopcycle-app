@@ -57,7 +57,7 @@ PODS:
     - React/RCTBlob
   - RNGestureHandler (1.0.12):
     - React
-  - Stripe (13.2.0)
+  - Stripe (14.0.0)
   - yoga (0.57.8.React)
 
 DEPENDENCIES:
@@ -79,7 +79,7 @@ DEPENDENCIES:
   - React/RCTVibration (from `../node_modules/react-native`)
   - React/RCTWebSocket (from `../node_modules/react-native`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
-  - Stripe (~> 13.2.0)
+  - Stripe (~> 14.0.0)
   - yoga (from `../node_modules/react-native/ReactCommon/yoga/yoga.podspec`)
 
 EXTERNAL SOURCES:
@@ -106,9 +106,9 @@ SPEC CHECKSUMS:
   React: 1fe0eb13d90b625d94c3b117c274dcfd2e760e11
   react-native-maps: 066c2afcc89e18726377bcc685315f989ca22449
   RNGestureHandler: 282af6ea58ed8483612365159c58a3ca5f55e7da
-  Stripe: 2c69e216061d54d9c538204bb4f58bd597ddfc5b
+  Stripe: db29ad197c74aca6fb981e4e8355cf7ebd0fca5a
   yoga: b1ce48b6cf950b98deae82838f5173ea7cf89e85
 
-PODFILE CHECKSUM: 19f22c6b93727d8845e87e3907671b8e65d60794
+PODFILE CHECKSUM: 58a12e8a4f27221ce291e6f03878dea115d9bdb5
 
 COCOAPODS: 1.4.0
