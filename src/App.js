@@ -8,7 +8,7 @@ import { Root, StyleProvider } from 'native-base'
 import getTheme from '../native-base-theme/components'
 import material from '../native-base-theme/variables/material'
 
-import { createSwitchNavigator } from 'react-navigation'
+import { createSwitchNavigator, createAppContainer } from 'react-navigation'
 import { Provider } from 'react-redux'
 import { translate, I18nextProvider } from 'react-i18next'
 
@@ -39,7 +39,7 @@ YellowBox.ignoreWarnings([
   'Require cycle:',
 ])
 
-const RootNavigator = createSwitchNavigator(
+const RootNavigator = createAppContainer(createSwitchNavigator(
   {
     Loading: navigation.Loading,
     ConfigureServer: navigation.ConfigureServer,
@@ -48,7 +48,7 @@ const RootNavigator = createSwitchNavigator(
   {
     initialRouteName: 'Loading',
   }
-)
+))
 
 /**
  * @see https://reactnavigation.org/docs/en/screen-tracking.html

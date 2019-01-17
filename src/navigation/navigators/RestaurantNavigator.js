@@ -37,9 +37,7 @@ const MainNavigator = createStackNavigator({
 }, {
   initialRouteKey: 'RestaurantHome',
   initialRouteName: 'RestaurantHome',
-  navigationOptions: {
-    ...defaultNavigationOptions
-  }
+  defaultNavigationOptions
 })
 
 const RestaurantSettingsStack = createStackNavigator({
@@ -63,9 +61,7 @@ const RestaurantSettingsStack = createStackNavigator({
   },
 }, {
   initialRouteName: 'RestaurantSettingsHome',
-  navigationOptions: {
-    ...defaultNavigationOptions
-  }
+  defaultNavigationOptions
 })
 
 export default createStackNavigator({
@@ -113,7 +109,5 @@ export default createStackNavigator({
   },
 }, {
   mode: 'modal',
-  navigationOptions: ({ navigation }) => ({
-    ...defaultNavigationOptions
-  })
+  defaultNavigationOptions
 })

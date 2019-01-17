@@ -47,9 +47,7 @@ const MainNavigator = createStackNavigator({
 }, {
   initialRouteKey: 'CheckoutHome',
   initialRouteName: 'CheckoutHome',
-  navigationOptions: {
-    ...defaultNavigationOptions
-  }
+  defaultNavigationOptions
 })
 
 export default createStackNavigator({
@@ -81,7 +79,5 @@ export default createStackNavigator({
   },
 }, {
   mode: 'modal',
-  navigationOptions: ({ navigation }) => ({
-    ...defaultNavigationOptions
-  })
+  defaultNavigationOptions
 })

@@ -69,9 +69,7 @@ const MainNavigator = createStackNavigator({
 }, {
   initialRouteKey: 'DispatchHome',
   initialRouteName: 'DispatchHome',
-  navigationOptions: {
-    ...defaultNavigationOptions
-  }
+  defaultNavigationOptions
 })
 
 const AddTaskNavigator = createStackNavigator({
@@ -93,9 +91,7 @@ const AddTaskNavigator = createStackNavigator({
   }
 }, {
   initialRouteName: 'DispatchAddTaskHome',
-  navigationOptions: {
-    ...defaultNavigationOptions
-  }
+  defaultNavigationOptions
 })
 
 export default createStackNavigator({
@@ -133,7 +129,5 @@ export default createStackNavigator({
   },
 }, {
   mode: 'modal',
-  navigationOptions: ({ navigation }) => ({
-    ...defaultNavigationOptions
-  })
+  defaultNavigationOptions
 })

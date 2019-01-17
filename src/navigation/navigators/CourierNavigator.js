@@ -69,9 +69,7 @@ const MainNavigator = createStackNavigator({
 }, {
   initialRouteKey: 'CourierHome',
   initialRouteName: 'CourierHome',
-  navigationOptions: {
-    ...defaultNavigationOptions
-  }
+  defaultNavigationOptions,
 })
 
 const SettingsStack = createStackNavigator({
@@ -88,9 +86,7 @@ const SettingsStack = createStackNavigator({
     })
   },
 }, {
-  navigationOptions: ({ navigation }) => ({
-    ...defaultNavigationOptions
-  })
+  defaultNavigationOptions
 })
 
 export default createStackNavigator({
@@ -114,7 +110,5 @@ export default createStackNavigator({
   },
 }, {
   mode: 'modal',
-  navigationOptions: ({ navigation }) => ({
-    ...defaultNavigationOptions
-  })
+  defaultNavigationOptions
 })

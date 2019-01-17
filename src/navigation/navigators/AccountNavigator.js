@@ -40,7 +40,5 @@ export default createStackNavigator({
 }, {
   initialRouteKey: 'AccountHome',
   initialRouteName: 'AccountHome',
-  navigationOptions: {
-    ...defaultNavigationOptions
-  }
+  defaultNavigationOptions
 })
