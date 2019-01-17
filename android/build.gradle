@@ -57,4 +57,5 @@ ext {
     supportLibVersion = "27.1.1"
     playServicesVersion = "15.0.1"
     googlePlayServicesVersion = playServicesVersion
+    firebaseVersion = "16.0.6"
 }

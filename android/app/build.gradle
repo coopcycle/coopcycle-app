@@ -182,7 +182,7 @@ dependencies {
     implementation "com.google.android.gms:play-services-base:16.0.1"
 
     // Configure react-native-firebase
-    implementation 'com.google.firebase:firebase-core:16.0.4'
+    implementation 'com.google.firebase:firebase-core:16.0.6'
     implementation 'com.google.firebase:firebase-messaging:17.3.3'
     implementation 'me.leolin:ShortcutBadger:1.1.21@aar'
 
