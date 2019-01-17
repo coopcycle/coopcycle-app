@@ -4,6 +4,8 @@ import { NavigationActions, StackActions } from 'react-navigation'
 import DropdownHolder from '../../DropdownHolder'
 import NavigationHolder from '../../NavigationHolder'
 
+import { pushNotification } from '../App/actions'
+
 /*
  * Action Types
  */
@@ -180,6 +182,24 @@ export function loadOrderAndNavigate(order) {
 
         NavigationHolder.dispatch(resetAction)
 
+      })
+      .catch(e => dispatch(loadOrderFailure(e)))
+  }
+}
+
+export function loadOrderAndPushNotification(order) {
+
+  return function (dispatch, getState) {
+
+    const { app } = getState()
+    const { httpClient } = app
+
+    dispatch(loadOrderRequest())
+
+    return httpClient.get(order)
+      .then(res => {
+        dispatch(loadOrderSuccess(res))
+        dispatch(pushNotification('order:created', { order: res }))
       })
       .catch(e => dispatch(loadOrderFailure(e)))
   }

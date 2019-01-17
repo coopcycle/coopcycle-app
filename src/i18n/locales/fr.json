@@ -190,6 +190,8 @@
     "TASK_FORM_COMMENTS_LABEL": "Commentaires",
     "DISPATCH_DATE": "Choisissez une date",
     "BACKGROUND_GEOLOCATION_NOTIFICATION_TITLE": "Géolocalisation en arrière-plan",
-    "BACKGROUND_GEOLOCATION_NOTIFICATION_TEXT": "Activée"
+    "BACKGROUND_GEOLOCATION_NOTIFICATION_TEXT": "Activée",
+    "NEW_NOTIFICATION": "Nouvelle notification",
+    "CLOSE": "Fermer"
   }
 }

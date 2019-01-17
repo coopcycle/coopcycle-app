@@ -26,6 +26,8 @@ export const SAVE_REMOTE_PUSH_TOKEN = 'SAVE_REMOTE_PUSH_TOKEN'
 export const LOGIN = 'LOGIN'
 export const LOGOUT = 'LOGOUT'
 export const SET_LOADING = '@app/SET_LOADING'
+export const PUSH_NOTIFICATION = '@app/PUSH_NOTIFICATION'
+export const CLEAR_NOTIFICATIONS = '@app/CLEAR_NOTIFICATIONS'
 
 /*
  * Action Creators
@@ -33,6 +35,8 @@ export const SET_LOADING = '@app/SET_LOADING'
 
 export const setCurrentRoute = createAction(SET_CURRENT_ROUTE)
 export const setLoading = createAction(SET_LOADING)
+export const pushNotification = createAction(PUSH_NOTIFICATION, (event, params = {}) => ({ event, params }))
+export const clearNotifications = createAction(CLEAR_NOTIFICATIONS)
 
 const _setHttpClient = createAction(SET_HTTP_CLIENT)
 const _setUser = createAction(SET_USER)

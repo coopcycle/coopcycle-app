@@ -190,6 +190,8 @@
     "TASK_FORM_COMMENTS_LABEL": "Comments",
     "DISPATCH_DATE": "Choose a date",
     "BACKGROUND_GEOLOCATION_NOTIFICATION_TITLE": "Background tracking",
-    "BACKGROUND_GEOLOCATION_NOTIFICATION_TEXT": "Enabled"
+    "BACKGROUND_GEOLOCATION_NOTIFICATION_TEXT": "Enabled",
+    "NEW_NOTIFICATION": "New notification",
+    "CLOSE": "Close"
   }
 }

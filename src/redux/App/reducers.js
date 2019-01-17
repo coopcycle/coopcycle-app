@@ -11,7 +11,9 @@ import {
   STORE_REMOTE_PUSH_TOKEN,
   SAVE_REMOTE_PUSH_TOKEN,
   LOGIN,
-  LOGOUT
+  LOGOUT,
+  PUSH_NOTIFICATION,
+  CLEAR_NOTIFICATIONS,
 } from './actions'
 
 const initialState = {
@@ -23,6 +25,7 @@ const initialState = {
   remotePushTokenStored: false,
   remotePushTokenSaved: false,
   loading: false,
+  notifications: [],
 }
 
 export default (state = initialState, action = {}) => {
@@ -74,6 +77,18 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         isWsOpen: false,
+      }
+
+    case PUSH_NOTIFICATION:
+      return {
+        ...state,
+        notifications: state.notifications.concat([ action.payload ]),
+      }
+
+    case CLEAR_NOTIFICATIONS:
+      return {
+        ...state,
+        notifications: []
       }
 
     default:
