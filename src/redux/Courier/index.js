@@ -19,6 +19,7 @@ import {
   markTaskFailed, markTaskFailedRequest, markTaskFailedSuccess, markTaskFailedFailure,
   dontTriggerTasksNotification,
   filterTasks, clearTasksFilter,
+  setKeepAwake,
 } from './taskActions'
 import {
   selectTaskSelectedDate,
@@ -35,6 +36,7 @@ import {
   selectTags,
   selectTagNames,
   selectIsTagHidden,
+  selectKeepAwake,
 } from './taskSelectors'
 
 
@@ -68,6 +70,7 @@ export {
   dontTriggerTasksNotification,
   filterTasks,
   clearTasksFilter,
+  setKeepAwake,
 
   selectIsTasksLoading,
   selectIsTasksLoadingFailure,
@@ -83,4 +86,5 @@ export {
   selectTags,
   selectTagNames,
   selectIsTagHidden,
+  selectKeepAwake,
 }

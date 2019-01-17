@@ -18,6 +18,7 @@ export const selectIsTaskCompleteFailure = state => state.entities.tasks.complet
 export const selectTasks = state => state.entities.tasks.items
 export const selectTasksOrder = state => state.entities.tasks.order
 export const selectTaskFilters = state => state.ui.tasks.excludeFilters
+export const selectKeepAwake = state => state.ui.tasks.keepAwake
 
 
 /* Compound Selectors */

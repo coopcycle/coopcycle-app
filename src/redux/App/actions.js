@@ -4,7 +4,7 @@ import BackgroundGeolocation from 'react-native-mauron85-background-geolocation'
 import API from '../../API'
 import AppUser from '../../AppUser'
 import Preferences from '../../Preferences'
-import { setTasksFilter } from '../Courier/taskActions'
+import { setTasksFilter, setKeepAwake } from '../Courier/taskActions'
 import {
   loadMyRestaurantsRequest,
   loadMyRestaurantsSuccess,
@@ -93,6 +93,7 @@ export function bootstrap(baseURL, user, navigation) {
     dispatch(_setBaseURL(baseURL))
 
     Preferences.getTasksFilters().then(filters => dispatch(setTasksFilter(filters)))
+    Preferences.getKeepAwake().then(keepAwake => dispatch(setKeepAwake(keepAwake)))
 
     configureBackgroundGeolocation(httpClient, user)
     saveRemotePushToken(dispatch, getState)

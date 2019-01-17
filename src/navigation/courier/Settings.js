@@ -11,10 +11,12 @@ import { translate } from 'react-i18next'
 import {
   filterTasks,
   clearTasksFilter,
+  setKeepAwake,
   selectFilteredTasks,
   selectAreDoneTasksHidden,
   selectAreFailedTasksHidden,
   selectTagNames,
+  selectKeepAwake,
 } from '../../redux/Courier'
 
 const Settings = ({
@@ -23,12 +25,17 @@ const Settings = ({
     areFailedTasksHidden,
     toggleDisplayDone,
     toggleDisplayFailed,
+    setKeepAwake,
     tags,
+    keepAwake,
     t,
   }) => (
     <Container>
       <Content>
         <List>
+          <ListItem itemDivider first>
+            <Text>{ t('TASKS_FILTER') }</Text>
+          </ListItem>
           <ListItem icon>
             <Left>
               <Icon name="checkmark" />
@@ -66,6 +73,22 @@ const Settings = ({
               <Icon active name="arrow-forward" />
             </Right>
           </ListItem>
+          <ListItem itemDivider>
+            <Text>{ t('SETTINGS') }</Text>
+          </ListItem>
+          <ListItem icon last>
+            <Left>
+              <Icon active name="power" />
+            </Left>
+            <Body>
+              <Text>{ t('SETTING_KEEP_AWAKE') }</Text>
+            </Body>
+            <Right>
+              <Switch
+                onValueChange={ (keepAwake) => setKeepAwake(keepAwake) }
+                value={ keepAwake } />
+            </Right>
+          </ListItem>
         </List>
       </Content>
     </Container>
@@ -76,6 +99,7 @@ function mapStateToProps(state) {
     tags: selectTagNames(state),
     areDoneTasksHidden: selectAreDoneTasksHidden(state),
     areFailedTasksHidden: selectAreFailedTasksHidden(state),
+    keepAwake: selectKeepAwake(state),
   }
 }
 
@@ -83,6 +107,7 @@ function mapDispatchToProps(dispatch) {
   return {
     toggleDisplayDone: (hidden) => dispatch(hidden ? clearTasksFilter({ status: 'DONE' }) : filterTasks({ status: 'DONE' })),
     toggleDisplayFailed: (hidden) => dispatch(hidden ? clearTasksFilter({ status: 'FAILED' }) : filterTasks({ status: 'FAILED' })),
+    setKeepAwake: (keepAwake) => dispatch(setKeepAwake(keepAwake)),
   }
 }
 

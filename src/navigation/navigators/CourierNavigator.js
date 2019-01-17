@@ -109,7 +109,7 @@ export default createStackNavigator({
   CourierSettings: {
     screen: SettingsStack,
     navigationOptions: ({ navigation }) => ({
-      title: i18n.t('TASKS_FILTER')
+      title: i18n.t('SETTINGS')
     })
   },
 }, {

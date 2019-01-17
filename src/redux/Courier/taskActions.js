@@ -3,6 +3,7 @@ import { createAction } from 'redux-actions'
 import { StackActions, NavigationActions } from 'react-navigation'
 
 import NavigationHolder from '../../NavigationHolder'
+import Preferences from '../../Preferences'
 import i18n from '../../i18n'
 
 /*
@@ -21,6 +22,7 @@ export const DONT_TRIGGER_TASKS_NOTIFICATION = 'DONT_TRIGGER_TASKS_NOTIFICATION'
 export const ADD_TASK_FILTER = 'ADD_TASK_FILTER'
 export const CLEAR_TASK_FILTER = 'CLEAR_TASK_FILTER'
 export const SET_TASK_FILTER = 'SET_TASK_FILTER'
+export const SET_KEEP_AWAKE = 'SET_KEEP_AWAKE'
 
 /*
  * Action Creators
@@ -73,6 +75,16 @@ function showAlert(e) {
 /**
  * Thunk Creators
  */
+
+const _setKeepAwake = createAction(SET_KEEP_AWAKE)
+
+export function setKeepAwake(keepAwake) {
+
+  return function (dispatch) {
+    Preferences.setKeepAwake(keepAwake)
+      .then(() => dispatch(_setKeepAwake(keepAwake)))
+  }
+}
 
 export function loadTasks(client, selectedDate) {
 

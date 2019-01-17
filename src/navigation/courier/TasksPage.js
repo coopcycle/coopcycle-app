@@ -15,12 +15,12 @@ import _ from 'lodash'
 import { whiteColor, orangeColor, dateSelectHeaderHeight, websocketWarningHeight } from "../../styles/common"
 import DateSelectHeader from '../../components/DateSelectHeader'
 import TasksMapView from '../../components/TasksMapView'
-import Preferences from '../../Preferences'
 import {
   loadTasks,
   selectFilteredTasks,
   selectIsTasksLoadingFailure,
   selectTaskSelectedDate,
+  selectKeepAwake,
 } from '../../redux/Courier'
 import BackgroundGeolocation from 'react-native-mauron85-background-geolocation'
 
@@ -41,15 +41,13 @@ class TasksPage extends Component {
 
   componentDidMount() {
 
-    Preferences.getKeepAwake().then(keepAwake => {
-      if (keepAwake) {
-        if (Platform.OS === 'ios') {
-          KeepAwake.activate()
-        } else {
-          RNPinScreen.pin()
-        }
+    if (this.props.keepAwake) {
+      if (Platform.OS === 'ios') {
+        KeepAwake.activate()
+      } else {
+        RNPinScreen.pin()
       }
-    })
+    }
 
     this.refreshTasks(this.props.selectedDate)
   }
@@ -212,6 +210,7 @@ function mapStateToProps (state) {
     tasks: selectFilteredTasks(state),
     selectedDate: selectTaskSelectedDate(state),
     tasksLoadingError: selectIsTasksLoadingFailure(state),
+    keepAwake: selectKeepAwake(state),
   }
 }
 
