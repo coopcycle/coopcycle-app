@@ -8,8 +8,6 @@
 
 #import "STPCoreViewController.h"
 
-#import "FauxPasAnnotations.h"
-
 NS_ASSUME_NONNULL_BEGIN
 
 /**
@@ -23,7 +21,8 @@ NS_ASSUME_NONNULL_BEGIN
 @interface STPCoreViewController ()
 
 @property (nonatomic) STPTheme *theme;
-@property (nonatomic) UIBarButtonItem *cancelItem;
+@property(nonatomic) UIBarButtonItem *cancelItem;
+@property(nonatomic) UIBarButtonItem *backItem;
 
 /**
  All designated initializers funnel through this method to do their setup
@@ -40,18 +39,8 @@ NS_ASSUME_NONNULL_BEGIN
 
  @param sender Sender of the target action, if applicable.
  */
-- (void)handleCancelTapped:(nullable id)sender;
+- (void)handleBackOrCancelTapped:(nullable id)sender;
 
-/**
- If you override this and return YES, then your CoreVC implementation will not
- create and set up a cancel and instead just use the default
- UIViewController back button behavior.
-
- You won't receive calls to `handleCancelTapped` if this is YES.
-
- Defaults to NO.
- */
-- (BOOL)useSystemBackButton;
 
 /**
  Called in viewDidLoad after doing base implementation, before
@@ -68,7 +57,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 // These methods have significant code done in the base class and super must
 // be called if they are overidden
-- (void)viewDidLoad NS_REQUIRES_SUPER; FAUXPAS_IGNORED_ON_LINE(UnusedMethod)
+- (void)viewDidLoad NS_REQUIRES_SUPER;
 - (void)viewWillAppear:(BOOL)animated NS_REQUIRES_SUPER;
 - (void)viewWillDisappear:(BOOL)animated NS_REQUIRES_SUPER;
 @end

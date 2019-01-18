@@ -41,7 +41,7 @@
     NSString *key = [string lowercaseString];
     NSNumber *purposeNumber = [self stringToPurposeMapping][key];
 
-    if (purposeNumber != nil) {
+    if (purposeNumber) {
         return (STPFilePurpose)[purposeNumber integerValue];
     }
 
@@ -76,29 +76,24 @@
 
 #pragma mark  - STPAPIResponseDecodable
 
++ (NSArray *)requiredFields {
+    return @[@"id", @"created", @"size", @"purpose", @"type"];
+}
+
 + (instancetype)decodedObjectFromAPIResponse:(NSDictionary *)response {
-    NSDictionary *dict = [response stp_dictionaryByRemovingNulls];
+    NSDictionary *dict = [response stp_dictionaryByRemovingNullsValidatingRequiredFields:[self requiredFields]];
     if (!dict) {
         return nil;
     }
-
-    // required fields
-    NSString *stripeId = [dict stp_stringForKey:@"id"];
-    NSDate *created = [dict stp_dateForKey:@"created"];
-    NSNumber *size = [dict stp_numberForKey:@"size"];
-    NSString *type = [dict stp_stringForKey:@"type"];
-    NSString *rawPurpose = [dict stp_stringForKey:@"purpose"];
-    if (stripeId == nil || created == nil || size == nil || type == nil || rawPurpose == nil) {
-        return nil;
-    }
-
-    STPFile *file = [[self alloc] init];
-    file.fileId = stripeId;
-    file.created = created;
-    file.size = size;
-    file.type = type;
     
-    file.purpose = [self.class purposeFromString:rawPurpose];
+    STPFile *file = [[self alloc] init];
+    file.fileId = dict[@"id"];
+    file.created = [[NSDate alloc] initWithTimeIntervalSince1970:[dict[@"created"] doubleValue]];
+    file.size = dict[@"size"];
+    file.type = dict[@"type"];
+    
+    NSString *purpose = dict[@"purpose"];
+    file.purpose = [self.class purposeFromString:purpose];
     file.allResponseFields = dict;
     
     return file;

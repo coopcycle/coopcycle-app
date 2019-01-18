@@ -7,8 +7,6 @@
 //
 
 #import "STPCardIOProxy.h"
-
-#import "FauxPasAnnotations.h"
 #import "STPCardParams.h"
 #import "STPAnalyticsClient.h"
 

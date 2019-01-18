@@ -53,14 +53,15 @@
 
 - (void)commonInitWithTheme:(STPTheme *)theme {
     _theme = theme;
+    self.backItem = [UIBarButtonItem stp_backButtonItemWithTitle:STPLocalizedString(@"Back", @"Text for back button")
+                                                           style:UIBarButtonItemStylePlain
+                                                          target:self
+                                                          action:@selector(handleBackOrCancelTapped:)];
+    self.cancelItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+                                                                    target:self
+                                                                    action:@selector(handleBackOrCancelTapped:)];
 
-    if (![self useSystemBackButton]) {
-        self.cancelItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-                                                                        target:self
-                                                                        action:@selector(handleCancelTapped:)];
-
-        self.stp_navigationItemProxy.leftBarButtonItem = self.cancelItem;
-    }
+    self.stp_navigationItemProxy.leftBarButtonItem = self.cancelItem;
 }
 
 - (void)setTheme:(STPTheme *)theme {
@@ -74,9 +75,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
-    self.automaticallyAdjustsScrollViewInsets = YES;
-
+    self.automaticallyAdjustsScrollViewInsets = NO;
     [self createAndSetupViews];
     [self updateAppearance];
 }
@@ -85,6 +84,7 @@
     STPTheme *navBarTheme = self.navigationController.navigationBar.stp_theme ?: self.theme;
     [self.navigationItem.leftBarButtonItem stp_setTheme:navBarTheme];
     [self.navigationItem.rightBarButtonItem stp_setTheme:navBarTheme];
+    [self.backItem stp_setTheme:navBarTheme];
     [self.cancelItem stp_setTheme:navBarTheme];
 
     self.view.backgroundColor = self.theme.primaryBackgroundColor;
@@ -94,6 +94,10 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+
+    if (![self stp_isAtRootOfNavigationController]) {
+        self.stp_navigationItemProxy.leftBarButtonItem = self.backItem;
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -108,7 +112,7 @@
             : UIStatusBarStyleLightContent);
 }
 
-- (void)handleCancelTapped:(__unused id)sender {
+- (void)handleBackOrCancelTapped:(__unused id)sender {
     if ([self stp_isAtRootOfNavigationController]) {
         // if we're the root of the navigation controller, we've been presented modally.
         [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
@@ -119,8 +123,5 @@
     }
 }
 
-- (BOOL)useSystemBackButton {
-    return NO;
-}
 
 @end

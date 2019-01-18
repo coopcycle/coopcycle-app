@@ -8,7 +8,7 @@
 
 #import "STPEphemeralKeyManager.h"
 
-#import "NSError+Stripe.h"
+#import "StripeError+Private.h"
 #import "STPCustomerContext.h"
 #import "STPEphemeralKey.h"
 #import "STPPromise.h"

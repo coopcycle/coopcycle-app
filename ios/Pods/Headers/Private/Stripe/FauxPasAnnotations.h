@@ -1,1 +1,0 @@
-../../../Stripe/Stripe/PublicHeaders/FauxPasAnnotations.h

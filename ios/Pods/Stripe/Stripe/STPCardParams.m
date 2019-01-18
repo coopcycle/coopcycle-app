@@ -7,7 +7,6 @@
 //
 
 #import "STPCardParams.h"
-#import "STPCard+Private.h"
 
 #import "STPCardValidator.h"
 #import "StripeError.h"
@@ -20,7 +19,6 @@
     self = [super init];
     if (self) {
         _additionalAPIParameters = @{};
-        _address = [STPAddress new];
     }
     return self;
 }
@@ -33,14 +31,26 @@
     }
 }
 
-- (void)setName:(NSString *)name {
-    _name = [name copy];
-    self.address.name = self.name;
+- (STPAddress *)address {
+    STPAddress *address = [STPAddress new];
+    address.name = self.name;
+    address.line1 = self.addressLine1;
+    address.line2 = self.addressLine2;
+    address.city = self.addressCity;
+    address.state = self.addressState;
+    address.postalCode = self.addressZip;
+    address.country = self.addressCountry;
+    return address;
 }
 
 - (void)setAddress:(STPAddress *)address {
-    _address = address;
-    _name = [address.name copy];
+    self.name = address.name;
+    self.addressLine1 = address.line1;
+    self.addressLine2 = address.line2;
+    self.addressCity = address.city;
+    self.addressState = address.state;
+    self.addressZip = address.postalCode;
+    self.addressCountry = address.country;
 }
 
 #pragma mark - Description
@@ -88,76 +98,6 @@
              NSStringFromSelector(@selector(expYear)): @"exp_year",
              NSStringFromSelector(@selector(currency)): @"currency",
              };
-}
-
-#pragma mark - Deprecated methods
-
-- (void)setAddressLine1:(NSString *)addressLine1 {
-    self.address.line1 = addressLine1;
-}
-
-- (NSString *)addressLine1 {
-    return self.address.line1;
-}
-
-- (void)setAddressLine2:(NSString *)addressLine2 {
-    self.address.line2 = addressLine2;
-}
-
-- (NSString *)addressLine2 {
-    return self.address.line2;
-}
-
-- (void)setAddressZip:(NSString *)addressZip {
-    self.address.postalCode = addressZip;
-}
-
-- (NSString *)addressZip {
-    return self.address.postalCode;
-}
-
-- (void)setAddressCity:(NSString *)addressCity {
-    self.address.city = addressCity;
-}
-
-- (NSString *)addressCity {
-    return self.address.city;
-}
-
-- (void)setAddressState:(NSString *)addressState {
-    self.address.state = addressState;
-}
-
-- (NSString *)addressState {
-    return self.address.state;
-}
-
-- (void)setAddressCountry:(NSString *)addressCountry {
-    self.address.country = addressCountry;
-}
-
-- (NSString *)addressCountry {
-    return self.address.country;
-}
-
-#pragma mark - NSCopying
-
-- (id)copyWithZone:(__unused NSZone *)zone {
-    STPCardParams *copyCardParams = [self.class new];
-
-    copyCardParams.number = self.number;
-    copyCardParams.expMonth = self.expMonth;
-    copyCardParams.expYear = self.expYear;
-    copyCardParams.cvc = self.cvc;
-
-    // Use ivar to avoid setName:/setAddress: behavior that'd possibly overwrite name/address.name
-    copyCardParams->_name = self.name;
-    copyCardParams->_address = [self.address copy];
-
-    copyCardParams.currency = self.currency;
-    copyCardParams.additionalAPIParameters = self.additionalAPIParameters;
-
-    return copyCardParams;
 }
 
 @end

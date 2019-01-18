@@ -9,7 +9,7 @@
 #import "STPCoreTableViewController.h"
 #import "STPCoreTableViewController+Private.h"
 
-#import "FauxPasAnnotations.h"
+#define FAUXPAS_IGNORED_IN_METHOD(...)
 
 // Note:
 // The private class extension for this class is in

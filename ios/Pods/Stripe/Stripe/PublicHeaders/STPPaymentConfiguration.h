@@ -55,11 +55,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  The shipping address fields the user must fill out when prompted for their
- shipping info. Set to nil if shipping address is not required.
-
- The default value is nil.
+ shipping info.
  */
-@property (nonatomic, copy, nullable, readwrite) NSSet<STPContactField> *requiredShippingAddressFields;
+@property (nonatomic, assign, readwrite) PKAddressField requiredShippingAddressFields;
 
 /**
  Whether the user should be prompted to verify prefilled shipping information.
@@ -108,24 +106,6 @@ NS_ASSUME_NONNULL_BEGIN
  or directly as an init parameter.
  */
 @property (nonatomic, assign, readwrite) BOOL canDeletePaymentMethods;
-
-/**
- If the value of this property is true, when your user adds a card in our UI,
- a card source will be created and added to their Stripe Customer. The default
- value is false.
-
- @see https://stripe.com/docs/sources/cards#create-source
- */
-@property (nonatomic, assign) BOOL createCardSources;
-
-/**
- In order to perform API requests on behalf of a connected account, e.g. to
- create a source on a connected account, set this property to the ID of the
- account for which this request is being made.
-
- @see https://stripe.com/docs/connect/authentication#authentication-via-the-stripe-account-header
- */
-@property (nonatomic, copy, nullable) NSString *stripeAccount;
 
 @end
 

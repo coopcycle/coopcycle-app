@@ -24,9 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 @property (nonatomic, strong, readwrite) NSURL *apiURL;
-@property (nonatomic, strong, readonly) NSURLSession *urlSession;
-
-- (NSMutableURLRequest *)configuredRequestForURL:(NSURL *)url;
+@property (nonatomic, strong, readwrite) NSURLSession *urlSession;
 
 @end
 
@@ -73,7 +71,7 @@ toCustomerUsingKey:(STPEphemeralKey *)ephemeralKey
  */
 + (void)deleteSource:(NSString *)sourceID
 fromCustomerUsingKey:(STPEphemeralKey *)ephemeralKey
-          completion:(STPErrorBlock)completion;
+          completion:(STPSourceProtocolCompletionBlock)completion;
 
 @end
 

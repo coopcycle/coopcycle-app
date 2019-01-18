@@ -41,12 +41,11 @@
     if (self) {
         _additionalPaymentMethods = STPPaymentMethodTypeAll;
         _requiredBillingAddressFields = STPBillingAddressFieldsNone;
-        _requiredShippingAddressFields = nil;
+        _requiredShippingAddressFields = PKAddressFieldNone;
         _verifyPrefilledShippingAddress = YES;
         _shippingType = STPShippingTypeShipping;
         _companyName = [NSBundle stp_applicationName];
         _canDeletePaymentMethods = YES;
-        _createCardSources = NO;
     }
     return self;
 }
@@ -90,12 +89,37 @@
         case STPBillingAddressFieldsFull:
             requiredBillingAddressFieldsDescription = @"STPBillingAddressFieldsFull";
             break;
-        case STPBillingAddressFieldsName:
-            requiredBillingAddressFieldsDescription = @"STPBillingAddressFieldsName";
-            break;
     }
 
-    NSString *requiredShippingAddressFieldsDescription = [self.requiredShippingAddressFields.allObjects componentsJoinedByString:@"|"];
+    NSString *requiredShippingAddressFieldsDescription;
+
+    if (self.requiredShippingAddressFields == PKAddressFieldAll) {
+        requiredShippingAddressFieldsDescription = @"PKAddressFieldAll";
+    }
+    else if (self.requiredShippingAddressFields == PKAddressFieldNone) {
+        requiredShippingAddressFieldsDescription = @"PKAddressFieldNone";
+    }
+    else {
+        NSMutableArray *addressFieldOptions = [[NSMutableArray alloc] init];
+
+        if (self.requiredShippingAddressFields & PKAddressFieldPostalAddress) {
+            [addressFieldOptions addObject:@"PKAddressFieldPostalAddress"];
+        }
+
+        if (self.requiredShippingAddressFields & PKAddressFieldPhone) {
+            [addressFieldOptions addObject:@"PKAddressFieldPhone"];
+        }
+
+        if (self.requiredShippingAddressFields & PKAddressFieldEmail) {
+            [addressFieldOptions addObject:@"PKAddressFieldEmail"];
+        }
+
+        if (self.requiredShippingAddressFields & PKAddressFieldName) {
+            [addressFieldOptions addObject:@"PKAddressFieldName"];
+        }
+
+        requiredShippingAddressFieldsDescription = [addressFieldOptions componentsJoinedByString:@"|"];
+    }
 
     NSString *shippingTypeDescription;
 

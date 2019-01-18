@@ -8,7 +8,8 @@
 
 #import "STPFormEncoder.h"
 
-#import "STPFormEncodable.h"
+#import "STPBankAccountParams.h"
+#import "STPCardParams.h"
 
 FOUNDATION_EXPORT NSString * STPPercentEscapedStringFromString(NSString *string);
 FOUNDATION_EXPORT NSString * STPQueryStringFromParameters(NSDictionary *parameters);
@@ -52,31 +53,6 @@ FOUNDATION_EXPORT NSString * STPQueryStringFromParameters(NSDictionary *paramete
 + (id)formEncodableValueForObject:(NSObject *)object {
     if ([object conformsToProtocol:@protocol(STPFormEncodable)]) {
         return [self keyPairDictionaryForObject:(NSObject<STPFormEncodable>*)object];
-    } else if ([object isKindOfClass:[NSDictionary class]]) {
-        NSDictionary *dict = (NSDictionary *)object;
-        NSMutableDictionary *result = [NSMutableDictionary dictionaryWithCapacity:dict.count];
-
-        [dict enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull value, __unused BOOL * _Nonnull stop) {
-            result[[self formEncodableValueForObject:key]] = [self formEncodableValueForObject:value];
-        }];
-
-        return result;
-    } else if ([object isKindOfClass:[NSArray class]]) {
-        NSArray *array = (NSArray *)object;
-        NSMutableArray *result = [NSMutableArray arrayWithCapacity:array.count];
-
-        for (NSObject *element in array) {
-            [result addObject:[self formEncodableValueForObject:element]];
-        }
-        return result;
-    } else if ([object isKindOfClass:[NSSet class]]) {
-        NSSet *set = (NSSet *)object;
-        NSMutableSet *result = [NSMutableSet setWithCapacity:set.count];
-
-        for (NSObject *element in set) {
-            [result addObject:[self formEncodableValueForObject:element]];
-        }
-        return result;
     } else {
         return object;
     }
@@ -158,16 +134,7 @@ NSString * STPPercentEscapedStringFromString(NSString *string) {
     if (!self.value || [self.value isEqual:[NSNull null]]) {
         return STPPercentEscapedStringFromString([self.field description]);
     } else {
-        NSString *unescapedValue = [self.value description];
-
-        // coerce boxed BOOL values back into true/false
-        // https://stackoverflow.com/a/30223989/1196205
-        if ([self.value isKindOfClass:[NSNumber class]]
-            && (CFBooleanGetTypeID() == CFGetTypeID((__bridge CFTypeRef)(self.value)))) {
-            unescapedValue = [self.value boolValue] ? @"true" : @"false";
-        }
-
-        return [NSString stringWithFormat:@"%@=%@", STPPercentEscapedStringFromString([self.field description]), STPPercentEscapedStringFromString(unescapedValue)];
+        return [NSString stringWithFormat:@"%@=%@", STPPercentEscapedStringFromString([self.field description]), STPPercentEscapedStringFromString([self.value description])];
     }
 }
 
@@ -207,9 +174,9 @@ NSArray * STPQueryStringPairsFromKeyAndValue(NSString *key, id value) {
         }
     } else if ([value isKindOfClass:[NSArray class]]) {
         NSArray *array = value;
-        [array enumerateObjectsUsingBlock:^(id  _Nonnull nestedValue, NSUInteger idx, __unused BOOL * _Nonnull stop) {
-            [mutableQueryStringComponents addObjectsFromArray:STPQueryStringPairsFromKeyAndValue([NSString stringWithFormat:@"%@[%lu]", key, (unsigned long)idx], nestedValue)];
-        }];
+        for (id nestedValue in array) {
+            [mutableQueryStringComponents addObjectsFromArray:STPQueryStringPairsFromKeyAndValue([NSString stringWithFormat:@"%@[]", key], nestedValue)];
+        }
     } else if ([value isKindOfClass:[NSSet class]]) {
         NSSet *set = value;
         for (id obj in [set sortedArrayUsingDescriptors:@[ sortDescriptor ]]) {

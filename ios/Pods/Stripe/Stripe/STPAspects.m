@@ -114,7 +114,7 @@ static NSString *const STPAspectsMessagePrefix = @"stpaspects_";
 ///////////////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Private Helper
 
-static id stp_aspect_add(id self, SEL selector, STPAspectOptions options, id block, NSError * __autoreleasing *error) {
+static id stp_aspect_add(id self, SEL selector, STPAspectOptions options, id block, NSError **error) {
     NSCParameterAssert(self);
     NSCParameterAssert(selector);
     NSCParameterAssert(block);
@@ -135,7 +135,7 @@ static id stp_aspect_add(id self, SEL selector, STPAspectOptions options, id blo
     return identifier;
 }
 
-static BOOL stp_aspect_remove(STPAspectIdentifier *aspect, NSError * __autoreleasing *error) {
+static BOOL stp_aspect_remove(STPAspectIdentifier *aspect, NSError **error) {
     NSCAssert([aspect isKindOfClass:STPAspectIdentifier.class], @"Must have correct type.");
 
     __block BOOL success = NO;

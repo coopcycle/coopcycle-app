@@ -36,7 +36,7 @@
     NSString *key = [string lowercaseString];
     NSNumber *statusNumber = [self stringToStatusMapping][key];
 
-    if (statusNumber != nil) {
+    if (statusNumber) {
         return (STPSourceRedirectStatus)[statusNumber integerValue];
     }
 
@@ -65,25 +65,21 @@
 
 #pragma mark - STPAPIResponseDecodable
 
-+ (instancetype)decodedObjectFromAPIResponse:(NSDictionary *)response {
-    NSDictionary *dict = [response stp_dictionaryByRemovingNulls];
-    if (!dict) {
-        return nil;
-    }
++ (NSArray *)requiredFields {
+    return @[@"return_url", @"status", @"url"];
+}
 
-    // required fields
-    NSURL *returnURL = [dict stp_urlForKey:@"return_url"];
-    NSString *rawStatus = [dict stp_stringForKey:@"status"];
-    NSURL *url = [dict stp_urlForKey:@"url"];
-    if (!returnURL || !rawStatus || !url) {
++ (instancetype)decodedObjectFromAPIResponse:(NSDictionary *)response {
+    NSDictionary *dict = [response stp_dictionaryByRemovingNullsValidatingRequiredFields:[self requiredFields]];
+    if (!dict) {
         return nil;
     }
 
     STPSourceRedirect *redirect = [self new];
     redirect.allResponseFields = dict;
-    redirect.returnURL = returnURL;
-    redirect.status = [self statusFromString:rawStatus];
-    redirect.url = url;
+    redirect.returnURL = [NSURL URLWithString:dict[@"return_url"]];
+    redirect.status = [self statusFromString:dict[@"status"]];
+    redirect.url = [NSURL URLWithString:dict[@"url"]];
     return redirect;
 }
 

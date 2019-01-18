@@ -9,38 +9,34 @@
 #import <Foundation/Foundation.h>
 #import "STPAPIResponseDecodable.h"
 
-NS_ASSUME_NONNULL_BEGIN
-
 /**
- Information related to a source's receiver flow.
+ *  Information related to a source's receiver flow.
  */
 @interface STPSourceReceiver : NSObject<STPAPIResponseDecodable>
 
 /**
- You cannot directly instantiate an `STPSourceReceiver`. You should only use one that is part of an existing `STPSource` object.
+ *  You cannot directly instantiate an `STPSourceReceiver`. You should only use one that is part of an existing `STPSource` object.
  */
-- (instancetype)init __attribute__((unavailable("You cannot directly instantiate an STPSourceReceiver. You should only use one that is part of an existing STPSource object.")));
+- (nonnull instancetype) init __attribute__((unavailable("You cannot directly instantiate an STPSourceReceiver. You should only use one that is part of an existing STPSource object.")));
 
 /**
- The address of the receiver source. This is the value that should be communicated to the customer to send their funds to.
+ *  The address of the receiver source. This is the value that should be communicated to the customer to send their funds to.
  */
-@property (nonatomic, nullable, readonly) NSString *address;
+@property (nonatomic, readonly, nullable) NSString *address;
 
 /**
- The total amount charged by you.
+ *  The total amount charged by you.
  */
-@property (nonatomic, nullable, readonly) NSNumber *amountCharged;
+@property (nonatomic, readonly, nullable) NSNumber *amountCharged;
 
 /**
- The total amount received by the receiver source.
+ *  The total amount received by the receiver source.
  */
-@property (nonatomic, nullable, readonly) NSNumber *amountReceived;
+@property (nonatomic, readonly, nullable) NSNumber *amountReceived;
 
 /**
- The total amount that was returned to the customer.
+ *  The total amount that was returned to the customer.
  */
-@property (nonatomic, nullable, readonly) NSNumber *amountReturned;
+@property (nonatomic, readonly, nullable) NSNumber *amountReturned;
 
 @end
-
-NS_ASSUME_NONNULL_END

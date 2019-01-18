@@ -28,14 +28,6 @@
     [self.view addSubview:self.scrollView];
 }
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-
-    if (@available(iOS 11, *)) {
-        self.scrollView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentAutomatic;
-    }
-}
-
 - (void)viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
     self.scrollView.frame = self.view.bounds;
@@ -52,6 +44,23 @@
     } else {
         self.scrollView.indicatorStyle = UIScrollViewIndicatorStyleWhite;
     }
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+
+    if (self.navigationController.navigationBar.translucent) {
+        CGFloat insetTop = CGRectGetMaxY(self.navigationController.navigationBar.frame);
+        self.scrollView.contentInset = UIEdgeInsetsMake(insetTop, 0, 0, 0);
+        self.scrollView.scrollIndicatorInsets = self.scrollView.contentInset;
+    } else {
+        self.scrollView.contentInset = UIEdgeInsetsZero;
+        self.scrollView.scrollIndicatorInsets = UIEdgeInsetsZero;
+    }
+    CGPoint offset = self.scrollView.contentOffset;
+    offset.y = -self.scrollView.contentInset.top;
+    self.scrollView.contentOffset = offset;
+    
 }
 
 @end

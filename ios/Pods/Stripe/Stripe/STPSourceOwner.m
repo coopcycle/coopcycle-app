@@ -29,24 +29,26 @@
 
 #pragma mark - STPAPIResponseDecodable
 
++ (NSArray *)requiredFields {
+    return @[];
+}
+
 + (instancetype)decodedObjectFromAPIResponse:(NSDictionary *)response {
-    NSDictionary *dict = [response stp_dictionaryByRemovingNulls];
+    NSDictionary *dict = [response stp_dictionaryByRemovingNullsValidatingRequiredFields:[self requiredFields]];
     if (!dict) {
         return nil;
     }
 
     STPSourceOwner *owner = [self new];
     owner.allResponseFields = dict;
-    NSDictionary *rawAddress = [dict stp_dictionaryForKey:@"address"];
-    owner.address = [STPAddress decodedObjectFromAPIResponse:rawAddress];
-    owner.email = [dict stp_stringForKey:@"email"];
-    owner.name = [dict stp_stringForKey:@"name"];
-    owner.phone = [dict stp_stringForKey:@"phone"];
-    NSDictionary *rawVerifiedAddress = [dict stp_dictionaryForKey:@"verified_address"];
-    owner.verifiedAddress = [STPAddress decodedObjectFromAPIResponse:rawVerifiedAddress];
-    owner.verifiedEmail = [dict stp_stringForKey:@"verified_email"];
-    owner.verifiedName = [dict stp_stringForKey:@"verified_name"];
-    owner.verifiedPhone = [dict stp_stringForKey:@"verified_phone"];
+    owner.address = [STPAddress decodedObjectFromAPIResponse:dict[@"address"]];
+    owner.email = dict[@"email"];
+    owner.name = dict[@"name"];
+    owner.phone = dict[@"phone"];
+    owner.verifiedAddress = [STPAddress decodedObjectFromAPIResponse:dict[@"verified_address"]];
+    owner.verifiedEmail = dict[@"verified_email"];
+    owner.verifiedName = dict[@"verified_name"];
+    owner.verifiedPhone = dict[@"verified_phone"];
     return owner;
 }
 

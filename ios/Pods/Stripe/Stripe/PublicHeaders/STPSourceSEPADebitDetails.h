@@ -13,46 +13,46 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /**
- This class provides typed access to the contents of an STPSource `details`
- dictionary for SEPA Debit sources.
+ *  This class provides typed access to the contents of an STPSource `details`
+ *  dictionary for SEPA Debit sources.
  */
 @interface STPSourceSEPADebitDetails : NSObject <STPAPIResponseDecodable>
 
 /**
- You cannot directly instantiate an `STPSourceSEPADebitDetails`. 
- You should only use one that is part of an existing `STPSource` object.
+ *  You cannot directly instantiate an `STPSourceSEPADebitDetails`. 
+ *  You should only use one that is part of an existing `STPSource` object.
  */
-- (instancetype)init __attribute__((unavailable("You cannot directly instantiate an STPSourceSEPADebitDetails. You should only use one that is part of an existing STPSource object.")));
+- (nonnull instancetype) init __attribute__((unavailable("You cannot directly instantiate an STPSourceSEPADebitDetails. You should only use one that is part of an existing STPSource object.")));
 
 /**
- The last 4 digits of the account number.
+ *  The last 4 digits of the account number.
  */
-@property (nonatomic, nullable, readonly) NSString *last4;
+@property (nonatomic, readonly, nullable) NSString *last4;
 
 /**
- The account's bank code.
+ *  The account's bank code.
  */
-@property (nonatomic, nullable, readonly) NSString *bankCode;
+@property (nonatomic, readonly, nullable) NSString *bankCode;
 
 /**
- Two-letter ISO code representing the country of the bank account.
+ *  Two-letter ISO code representing the country of the bank account.
  */
-@property (nonatomic, nullable, readonly) NSString *country;
+@property (nonatomic, readonly, nullable) NSString *country;
 
 /**
- The account's fingerprint.
+ *  The account's fingerprint.
  */
-@property (nonatomic, nullable, readonly) NSString *fingerprint;
+@property (nonatomic, readonly, nullable) NSString *fingerprint;
 
 /**
- The reference of the mandate accepted by your customer.
+ *  The reference of the mandate accepted by your customer.
  */
-@property (nonatomic, nullable, readonly) NSString *mandateReference;
+@property (nonatomic, readonly, nullable) NSString *mandateReference;
 
 /**
- The details of the mandate accepted by your customer.
+ *  The details of the mandate accepted by your customer.
  */
-@property (nonatomic, nullable, readonly) NSURL *mandateURL;
+@property (nonatomic, readonly, nullable) NSURL *mandateURL;
 
 @end
 

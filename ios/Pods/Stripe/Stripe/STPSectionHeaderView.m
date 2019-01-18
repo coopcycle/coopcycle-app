@@ -8,11 +8,9 @@
 
 #import "STPSectionHeaderView.h"
 
-#import "UIView+Stripe_SafeAreaBounds.h"
-
 @interface STPSectionHeaderView()
-@property (nonatomic, weak) UILabel *label;
-@property (nonatomic) UIEdgeInsets buttonInsets;
+@property(nonatomic, weak)UILabel *label;
+@property(nonatomic)UIEdgeInsets buttonInsets;
 @end
 
 @implementation STPSectionHeaderView
@@ -75,20 +73,13 @@
 
 - (void)layoutSubviews {
     [super layoutSubviews];
-    CGRect bounds = [self stp_boundsWithHorizontalSafeAreaInsets];
     if (self.buttonHidden) {
-        self.label.frame = bounds;
+        self.label.frame = self.bounds;
     } else {
-        CGFloat halfWidth = bounds.size.width/2;
-        CGFloat heightThatFits = [self heightThatFits:bounds.size];
-        self.label.frame = CGRectMake(bounds.origin.x,
-                                      bounds.origin.y,
-                                      halfWidth,
-                                      heightThatFits);
-        self.button.frame = CGRectMake(bounds.origin.x + halfWidth,
-                                       bounds.origin.y,
-                                       halfWidth,
-                                       heightThatFits);
+        CGFloat halfWidth = self.bounds.size.width/2;
+        CGFloat heightThatFits = [self heightThatFits:self.bounds.size];
+        self.label.frame = CGRectMake(0, 0, halfWidth, heightThatFits);
+        self.button.frame = CGRectMake(halfWidth, 0, halfWidth, heightThatFits);
     }
 }
 

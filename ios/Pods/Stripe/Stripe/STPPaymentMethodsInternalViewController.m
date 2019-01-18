@@ -8,24 +8,21 @@
 
 #import "STPPaymentMethodsInternalViewController.h"
 
-#import "NSArray+Stripe.h"
+#import "NSArray+Stripe_BoundSafe.h"
 #import "STPAddCardViewController.h"
 #import "STPAddCardViewController+Private.h"
 #import "STPCoreTableViewController.h"
 #import "STPCoreTableViewController+Private.h"
 #import "STPCustomerContext.h"
+#import "STPCustomerContext+Private.h"
 #import "STPImageLibrary.h"
 #import "STPImageLibrary+Private.h"
 #import "STPLocalizationUtils.h"
 #import "STPPaymentMethodTableViewCell.h"
 #import "STPPaymentMethodTuple.h"
-#import "STPPromise.h"
-#import "STPSource.h"
 #import "STPSourceProtocol.h"
-#import "STPToken.h"
 #import "UITableViewCell+Stripe_Borders.h"
 #import "UIViewController+Stripe_NavigationItemProxy.h"
-#import "UIViewController+Stripe_Promises.h"
 
 static NSString * const PaymentMethodCellReuseIdentifier = @"PaymentMethodCellReuseIdentifier";
 
@@ -35,7 +32,7 @@ static NSInteger const PaymentMethodSectionAddCard = 1;
 @interface STPPaymentMethodsInternalViewController () <UITableViewDataSource, UITableViewDelegate, STPAddCardViewControllerDelegate>
 
 @property (nonatomic, strong, readwrite) STPPaymentConfiguration *configuration;
-@property (nonatomic, strong, nullable, readwrite) id<STPBackendAPIAdapter> apiAdapter;
+@property (nonatomic, strong, nullable, readwrite) STPCustomerContext *customerContext;
 @property (nonatomic, strong, nullable, readwrite) STPUserInformation *prefilledInformation;
 @property (nonatomic, strong, nullable, readwrite) STPAddress *shippingAddress;
 @property (nonatomic, strong, readwrite) NSArray<id<STPPaymentMethod>> *paymentMethods;
@@ -58,14 +55,12 @@ static NSInteger const PaymentMethodSectionAddCard = 1;
     self = [super initWithTheme:theme];
     if (self) {
         _configuration = configuration;
-        // This parameter may be a custom API adapter, and not a CustomerContext.
-        _apiAdapter = customerContext;
+        _customerContext = customerContext;
         _prefilledInformation = prefilledInformation;
         _shippingAddress = shippingAddress;
         _paymentMethods = tuple.paymentMethods;
         _selectedPaymentMethod = tuple.selectedPaymentMethod;
         _delegate = delegate;
-        _createsCardSources = NO;
 
         self.title = STPLocalizedString(@"Payment Method", @"Title for Payment Method screen");
     }
@@ -94,17 +89,6 @@ static NSInteger const PaymentMethodSectionAddCard = 1;
     // Table view editing state
     [self.tableView setEditing:NO animated:NO];
     [self reloadRightBarButtonItemWithTableViewIsEditing:self.tableView.isEditing animated:NO];
-}
-
-- (void)viewDidLayoutSubviews {
-    [super viewDidLayoutSubviews];
-
-    // Resetting it re-calculates the size based on new view width
-    // UITableView requires us to call setter again to actually pick up frame
-    // change on footers
-    if (self.tableView.tableFooterView) {
-        self.customFooterView = self.tableView.tableFooterView;
-    }
 }
 
 - (void)reloadRightBarButtonItemWithTableViewIsEditing:(BOOL)tableViewIsEditing animated:(BOOL)animated {
@@ -144,14 +128,8 @@ static NSInteger const PaymentMethodSectionAddCard = 1;
         return NO;
     }
 
-    if (!self.apiAdapter) {
+    if (!self.customerContext) {
         // Cannot detach payment methods without customer context
-        return NO;
-    }
-
-    if (![self.apiAdapter respondsToSelector:@selector(detachSourceFromCustomer:completion:)]) {
-        // Cannot detach payment methods if customerContext is an apiAdapter
-        // that doesn't implement detachSource
         return NO;
     }
 
@@ -188,19 +166,9 @@ static NSInteger const PaymentMethodSectionAddCard = 1;
     [self.tableView reloadSections:sections withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
-- (void)setCustomFooterView:(UIView *)footerView {
-    _customFooterView = footerView;
-    [self.stp_willAppearPromise voidOnSuccess:^{
-        CGSize size = [footerView sizeThatFits:CGSizeMake(self.view.bounds.size.width, CGFLOAT_MAX)];
-        footerView.frame = CGRectMake(0, 0, size.width, size.height);
-
-        self.tableView.tableFooterView = footerView;
-    }];
-}
-
 #pragma mark - Button Handlers
 
-- (void)handleCancelTapped:(__unused id)sender {
+- (void)handleBackOrCancelTapped:(__unused id)sender {
     [self.delegate internalViewControllerDidCancel];
 }
 
@@ -291,7 +259,7 @@ static NSInteger const PaymentMethodSectionAddCard = 1;
         id<STPSourceProtocol> source = (id<STPSourceProtocol>)paymentMethodToDelete;
 
         // Kickoff request to delete source from customer
-        [self.apiAdapter detachSourceFromCustomer:source completion:nil];
+        [self.customerContext detachSourceFromCustomer:source completion:nil];
 
         // Optimistically remove payment method from data source
         NSMutableArray *paymentMethods = [self.paymentMethods mutableCopy];
@@ -381,11 +349,7 @@ static NSInteger const PaymentMethodSectionAddCard = 1;
 }
 
 - (void)addCardViewController:(__unused STPAddCardViewController *)addCardViewController didCreateToken:(STPToken *)token completion:(STPErrorBlock)completion {
-    [self.delegate internalViewControllerDidCreateSource:token completion:completion];
-}
-
-- (void)addCardViewController:(__unused STPAddCardViewController *)addCardViewController didCreateSource:(STPSource *)source completion:(STPErrorBlock)completion {
-    [self.delegate internalViewControllerDidCreateSource:source completion:completion];
+    [self.delegate internalViewControllerDidCreateToken:token completion:completion];
 }
 
 @end

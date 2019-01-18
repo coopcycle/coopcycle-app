@@ -24,28 +24,21 @@
 
 @implementation STPEphemeralKey
 
++ (NSArray *)requiredFields {
+    return @[@"id", @"created", @"livemode", @"secret", @"expires", @"associated_objects"];
+}
+
 + (instancetype)decodedObjectFromAPIResponse:(NSDictionary *)response {
-    NSDictionary *dict = [response stp_dictionaryByRemovingNulls];
+    NSDictionary *dict = [response stp_dictionaryByRemovingNullsValidatingRequiredFields:[self requiredFields]];
     if (!dict) {
         return nil;
     }
-    // required fields
-    NSString *stripeId = [dict stp_stringForKey:@"id"];
-    NSDate *created = [dict stp_dateForKey:@"created"];
-    NSString *secret = [dict stp_stringForKey:@"secret"];
-    NSDate *expires = [dict stp_dateForKey:@"expires"];
-    NSArray *associatedObjects = [dict stp_arrayForKey:@"associated_objects"];
-    if (!stripeId || !created || !secret || !expires || !associatedObjects || !dict[@"livemode"]) {
-        return nil;
-    }
-
+    NSArray<NSDictionary *>*associatedObjects = dict[@"associated_objects"];
     NSString *customerID;
-    for (id obj in associatedObjects) {
-        if ([obj isKindOfClass:[NSDictionary class]]) {
-            NSString *type = [obj stp_stringForKey:@"type"];
-            if ([type isEqualToString:@"customer"]) {
-                customerID = [obj stp_stringForKey:@"id"];
-            }
+    for (NSDictionary *obj in associatedObjects) {
+        NSString *type = obj[@"type"];
+        if ([type isEqualToString:@"customer"]) {
+            customerID = obj[@"id"];
         }
     }
     if (!customerID) {
@@ -53,11 +46,11 @@
     }
     STPEphemeralKey *key = [self new];
     key.customerID = customerID;
-    key.stripeID = stripeId;
-    key.livemode = [dict stp_boolForKey:@"livemode" or:YES];
-    key.created = created;
-    key.secret = secret;
-    key.expires = expires;
+    key.stripeID = dict[@"id"];
+    key.livemode = [dict[@"livemode"] boolValue];
+    key.created = [NSDate dateWithTimeIntervalSince1970:[dict[@"created"] doubleValue]];
+    key.secret = dict[@"secret"];
+    key.expires = [NSDate dateWithTimeIntervalSince1970:[dict[@"expires"] doubleValue]];
     key.allResponseFields = dict;
     return key;
 }

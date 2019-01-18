@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "STPCardTuple.h"
 #import "STPPaymentMethod.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -16,12 +17,11 @@ NS_ASSUME_NONNULL_BEGIN
 + (instancetype)tupleWithPaymentMethods:(NSArray<id<STPPaymentMethod>> *)paymentMethods
                   selectedPaymentMethod:(nullable id<STPPaymentMethod>)selectedPaymentMethod;
 
-+ (instancetype)tupleWithPaymentMethods:(NSArray<id<STPPaymentMethod>> *)paymentMethods
-                  selectedPaymentMethod:(nullable id<STPPaymentMethod>)selectedPaymentMethod
-                      addApplePayMethod:(BOOL)applePayEnabled;
++ (instancetype)tupleWithCardTuple:(STPCardTuple *)cardTuple
+                   applePayEnabled:(BOOL)applePayEnabled;
 
-@property (nonatomic, nullable, readonly) id<STPPaymentMethod> selectedPaymentMethod;
-@property (nonatomic, readonly) NSArray<id<STPPaymentMethod>> *paymentMethods;
+@property(nonatomic, nullable, readonly)id<STPPaymentMethod> selectedPaymentMethod;
+@property(nonatomic, readonly)NSArray<id<STPPaymentMethod>> *paymentMethods;
 
 @end
 

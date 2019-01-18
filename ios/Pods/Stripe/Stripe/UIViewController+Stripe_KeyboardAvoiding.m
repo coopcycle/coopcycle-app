@@ -14,11 +14,11 @@ NS_ASSUME_NONNULL_BEGIN
 // This is a private class that is only a UIViewController subclass by virtue of the fact
 // that that makes it easier to attach to another UIViewController as a child.
 @interface STPKeyboardDetectingViewController : UIViewController
-@property (nonatomic, assign) CGRect lastKeyboardFrame;
-@property (nonatomic, weak) UIView *lastResponder;
-@property (nonatomic, nullable, copy) STPKeyboardFrameBlock keyboardFrameBlock;
-@property (nonatomic, weak) UIScrollView *managedScrollView;
-@property (nonatomic, assign) CGFloat currentBottomInsetChange;
+@property(nonatomic, assign)CGRect lastKeyboardFrame;
+@property(nonatomic, weak)UIView *lastResponder;
+@property(nonatomic, nullable, copy)STPKeyboardFrameBlock keyboardFrameBlock;
+@property(nonatomic, weak)UIScrollView *managedScrollView;
+@property(nonatomic, assign)CGFloat currentBottomInsetChange;
 @end
 
 @implementation STPKeyboardDetectingViewController
@@ -67,9 +67,17 @@ NS_ASSUME_NONNULL_BEGIN
     
     if (self.keyboardFrameBlock || self.managedScrollView) {
         if (!CGRectEqualToRect(self.lastKeyboardFrame, keyboardFrame)) {
+            // we're iOS 8 or later
             UIView *responder = [self.parentViewController.view stp_findFirstResponder];
             self.lastResponder = responder;
-            [self doKeyboardChangeAnimationWithNewFrame:keyboardFrame];
+            if ([[NSProcessInfo processInfo] respondsToSelector:@selector(operatingSystemVersion)]) {
+                [self doKeyboardChangeAnimationWithNewFrame:keyboardFrame];
+            } else {
+                NSTimeInterval duration = [notification.userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+                [UIView animateWithDuration:duration animations:^{
+                    [self doKeyboardChangeAnimationWithNewFrame:keyboardFrame];
+                }];
+            }
         }
     }
 }
@@ -78,8 +86,10 @@ NS_ASSUME_NONNULL_BEGIN
     self.lastKeyboardFrame = keyboardFrame;
     
     if (self.managedScrollView) {
+        
         UIScrollView *scrollView = self.managedScrollView;
         UIView *scrollViewSuperView = self.managedScrollView.superview;
+        UIView *lastResponder = self.lastResponder;
         
         UIEdgeInsets contentInsets = scrollView.contentInset;
         UIEdgeInsets scrollIndicatorInsets = scrollView.scrollIndicatorInsets;
@@ -94,11 +104,28 @@ NS_ASSUME_NONNULL_BEGIN
         self.currentBottomInsetChange += bottomInsetDelta;
         scrollView.contentInset = contentInsets;
         scrollView.scrollIndicatorInsets = scrollIndicatorInsets;
+        
+        if (!lastResponder || bottomIntersection.size.height <= 0) {
+            scrollView.contentOffset = CGPointMake(0, -scrollView.contentInset.top);
+        }
+        else {
+            // the keyboard is visible
+            CGRect responderFrame = [lastResponder convertRect:lastResponder.bounds toView:scrollView];
+            CGRect keyboardFrameInScrollViewCoords = [scrollView convertRect:keyboardFrame fromView:nil];
+            CGPoint offset = scrollView.contentOffset;
+            
+            CGFloat topOfScreenOffset = CGRectGetMinY(responderFrame);
+            CGFloat topOfKeyboardOffset = CGRectGetMinY(responderFrame) - CGRectGetMinY(keyboardFrameInScrollViewCoords);
+            offset.y = ((topOfScreenOffset + topOfKeyboardOffset) / 2) - scrollView.contentInset.top;
+            offset.y = MAX(offset.y, -scrollView.contentInset.top);
+            scrollView.contentOffset = offset;
+        }
     }
     
     if (self.keyboardFrameBlock) {
         self.keyboardFrameBlock(keyboardFrame, self.lastResponder);
     }
+    
 }
 
 @end
