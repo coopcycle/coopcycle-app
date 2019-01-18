@@ -46,7 +46,6 @@
 		7CC1B2C8CE9743C7AA1CEE0F /* Roboto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DE7C26B381464CBDAC381F32 /* Roboto.ttf */; };
 		802CBC1D5BE34FF4B9E245B0 /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A825C06723E04053AE5510FB /* EvilIcons.ttf */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
-		8CD9A3FDA8584D418F7B3A14 /* libTPSStripe.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CC89B96D265427FA7271B99 /* libTPSStripe.a */; };
 		A228322CFF9248BC87154F90 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C26928B470EA4E69ACA23ACD /* MaterialIcons.ttf */; };
 		A9C30BD9D63F45FEB1FD9DEC /* OpenSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 961D84324BE84213A85D9C7D /* OpenSans-Bold.ttf */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
@@ -56,6 +55,7 @@
 		E48D6D2D52BB4B6B9C422E7D /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5273B426CADD4B88A37CFE61 /* Ionicons.ttf */; };
 		E4A95D69133B4C1B8FD304BA /* Raleway-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CA8DA506BADD462E8A4B68B4 /* Raleway-Regular.ttf */; };
 		EBEA4DEB916A4B2EB2E0BF79 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 59DED19D05AC4D3589C7649F /* FontAwesome.ttf */; };
+		FA76E2B721F1582100F822E1 /* libTPSStripe.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FACC77EC1FE0D05D00B54C2A /* libTPSStripe.a */; };
 		FA97ACD8202E05AF003E463B /* libKCKeepAwake.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FA97ACB1202E0590003E463B /* libKCKeepAwake.a */; };
 		FAC644342166464700D1DA52 /* libRNSound.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FAC64432216645E400D1DA52 /* libRNSound.a */; };
 		FAC644362166467C00D1DA52 /* misstickle__indian_bell_chime.wav in Resources */ = {isa = PBXBuildFile; fileRef = FAC644352166467B00D1DA52 /* misstickle__indian_bell_chime.wav */; };
@@ -487,7 +487,7 @@
 				00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */,
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
 				FACC0F1A217A8A5700DF714D /* libRNLanguages.a in Frameworks */,
-				8CD9A3FDA8584D418F7B3A14 /* libTPSStripe.a in Frameworks */,
+				FA76E2B721F1582100F822E1 /* libTPSStripe.a in Frameworks */,
 				1C4081EC4C8695D81EE0C84A /* libPods-CoopCycle.a in Frameworks */,
 				4AA344CCF6FC4BB4AF2939D3 /* libRCTBackgroundGeolocation.a in Frameworks */,
 				0FF7B8A00BAE9831B703CD78 /* libPods-CoopCycle.a in Frameworks */,
