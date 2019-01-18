@@ -9,7 +9,8 @@ import {
   Left, Right, Body,
   Button, Icon, List, ListItem, Text, Radio
 } from 'native-base';
-import Stripe, { PaymentCardTextField } from 'tipsi-stripe'
+import Stripe from 'tipsi-stripe'
+import { LiteCreditCardInput } from 'react-native-credit-card-input'
 import { connect } from 'react-redux'
 import { translate } from 'react-i18next'
 
@@ -23,7 +24,7 @@ class CreditCardPage extends Component {
     super(props);
     this.state = {
       valid: false,
-      params: {}
+      form: {}
     };
   }
 
@@ -35,10 +36,28 @@ class CreditCardPage extends Component {
 
   _onClick() {
     if (this.state.valid) {
-      Stripe.createTokenWithCard(this.state.params)
+
+      const { number, expiry, cvc } = this.state.form.values
+      const [ expMonth, expYear ] = expiry.split('/')
+
+      const params = {
+        number,
+        expMonth: parseInt(expMonth, 10),
+        expYear: parseInt(expYear, 10),
+        cvc
+      }
+
+      Stripe.createTokenWithCard(params)
         .then(token => this.props.checkout(token))
         .catch(err => console.log(err));
     }
+  }
+
+  _onChange(form) {
+    this.setState({
+      form,
+      valid: form.valid
+    })
   }
 
   render() {
@@ -61,17 +80,7 @@ class CreditCardPage extends Component {
           <Text style={{ marginBottom: 10 }}>
             { this.props.t('ENTER_PAY_DETAILS') }
           </Text>
-          <PaymentCardTextField
-            accessible
-            accessibilityLabel="cardTextField"
-            style={ cardStyle }
-            onParamsChange={(valid, params) => {
-              this.setState({
-                valid: valid,
-                params: params
-              });
-            }}
-          />
+          <LiteCreditCardInput onChange={ this._onChange.bind(this) } />
         </Content>
         <Footer>
           <Right>
