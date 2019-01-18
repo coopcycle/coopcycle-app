@@ -23,7 +23,6 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		140ED2AC1D01E1AD002B40FF /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
-		1C4081EC4C8695D81EE0C84A /* libPods-CoopCycle.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A327F3AC6C0731FB12D58615 /* libPods-CoopCycle.a */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
@@ -38,7 +37,6 @@
 		2DF0FFEE2056DD460020B375 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3EA31DF850E9000B6D8A /* libReact.a */; };
 		346F3EAE31674113876BFD7C /* OpenSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2FBFC77D749D4E7DB675EAD8 /* OpenSans-Regular.ttf */; };
 		366E5B1CDC8743ACBB9E19B6 /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 44A9BC894C6545879BAC5449 /* SimpleLineIcons.ttf */; };
-		4AA344CCF6FC4BB4AF2939D3 /* libRCTBackgroundGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AB2FEDD01C26475491D0DDBF /* libRCTBackgroundGeolocation.a */; };
 		6241DEF7CFA8488993DCB415 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7AC7D4D2BBB741849C3194E3 /* Zocial.ttf */; };
 		64D780A5100A432F9C307BF1 /* rubicon-icon-font.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 81DC8A7E948740B3A830CD98 /* rubicon-icon-font.ttf */; };
 		6CA9EFE6FD4D4EFA87DB1783 /* Roboto_medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8A63899B198346289A19198B /* Roboto_medium.ttf */; };
@@ -56,6 +54,7 @@
 		E4A95D69133B4C1B8FD304BA /* Raleway-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CA8DA506BADD462E8A4B68B4 /* Raleway-Regular.ttf */; };
 		EBEA4DEB916A4B2EB2E0BF79 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 59DED19D05AC4D3589C7649F /* FontAwesome.ttf */; };
 		FA76E2B721F1582100F822E1 /* libTPSStripe.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FACC77EC1FE0D05D00B54C2A /* libTPSStripe.a */; };
+		FA76E36121F1C71700F822E1 /* libRCTBackgroundGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FA444E5320C17E7A00B2B731 /* libRCTBackgroundGeolocation.a */; };
 		FA97ACD8202E05AF003E463B /* libKCKeepAwake.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FA97ACB1202E0590003E463B /* libKCKeepAwake.a */; };
 		FAC644342166464700D1DA52 /* libRNSound.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FAC64432216645E400D1DA52 /* libRNSound.a */; };
 		FAC644362166467C00D1DA52 /* misstickle__indian_bell_chime.wav in Resources */ = {isa = PBXBuildFile; fileRef = FAC644352166467B00D1DA52 /* misstickle__indian_bell_chime.wav */; };
@@ -471,6 +470,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA76E36121F1C71700F822E1 /* libRCTBackgroundGeolocation.a in Frameworks */,
 				FAC644342166464700D1DA52 /* libRNSound.a in Frameworks */,
 				7CB413E120347AE5005A1637 /* libRCTPushNotification.a in Frameworks */,
 				FA97ACD8202E05AF003E463B /* libKCKeepAwake.a in Frameworks */,
@@ -488,8 +488,6 @@
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
 				FACC0F1A217A8A5700DF714D /* libRNLanguages.a in Frameworks */,
 				FA76E2B721F1582100F822E1 /* libTPSStripe.a in Frameworks */,
-				1C4081EC4C8695D81EE0C84A /* libPods-CoopCycle.a in Frameworks */,
-				4AA344CCF6FC4BB4AF2939D3 /* libRCTBackgroundGeolocation.a in Frameworks */,
 				0FF7B8A00BAE9831B703CD78 /* libPods-CoopCycle.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
