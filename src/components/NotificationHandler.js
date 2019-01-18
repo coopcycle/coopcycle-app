@@ -218,9 +218,11 @@ class NotificationHandler extends Component {
 
     return (
       <View style={ styles.modalContent }>
-        <View style={ styles.heading }>
-          <Icon name="notifications" style={{ color: 'white', marginRight: 10 }} />
-          <Text style={{ color: 'white' }}>{ this.props.t('NEW_NOTIFICATION') }</Text>
+        <View>
+          <View style={ styles.heading }>
+            <Icon name="notifications" style={{ color: 'white', marginRight: 10 }} />
+            <Text style={{ color: 'white' }}>{ this.props.t('NEW_NOTIFICATION') }</Text>
+          </View>
         </View>
         <FlatList
           data={ this.props.notifications }
@@ -247,18 +249,16 @@ class NotificationHandler extends Component {
 
 const styles = StyleSheet.create({
   heading: {
-    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 30,
+    paddingVertical: 25,
     backgroundColor: '#39CCCC',
   },
   footer: {
-    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 30,
+    paddingVertical: 25,
   },
   modalContent: {
     backgroundColor: "white",
