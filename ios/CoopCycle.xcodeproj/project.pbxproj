@@ -57,7 +57,6 @@
 		E4A95D69133B4C1B8FD304BA /* Raleway-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CA8DA506BADD462E8A4B68B4 /* Raleway-Regular.ttf */; };
 		EBEA4DEB916A4B2EB2E0BF79 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 59DED19D05AC4D3589C7649F /* FontAwesome.ttf */; };
 		FA97ACD8202E05AF003E463B /* libKCKeepAwake.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FA97ACB1202E0590003E463B /* libKCKeepAwake.a */; };
-		FABBCE2A21F1389500047A22 /* libRNGestureHandler.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FABBCE2521F1387500047A22 /* libRNGestureHandler.a */; };
 		FAC644342166464700D1DA52 /* libRNSound.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FAC64432216645E400D1DA52 /* libRNSound.a */; };
 		FAC644362166467C00D1DA52 /* misstickle__indian_bell_chime.wav in Resources */ = {isa = PBXBuildFile; fileRef = FAC644352166467B00D1DA52 /* misstickle__indian_bell_chime.wav */; };
 		FACC0F1A217A8A5700DF714D /* libRNLanguages.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FA27ED83217A695200A3FB2A /* libRNLanguages.a */; };
@@ -382,13 +381,6 @@
 			remoteGlobalIDString = 134814201AA4EA6300B7C361;
 			remoteInfo = KCKeepAwake;
 		};
-		FABBCE2421F1387500047A22 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FABBCDF721F1387500047A22 /* RNGestureHandler.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 134814201AA4EA6300B7C361;
-			remoteInfo = RNGestureHandler;
-		};
 		FAC64431216645E400D1DA52 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FAC64402216645E400D1DA52 /* RNSound.xcodeproj */;
@@ -462,7 +454,6 @@
 		FA525C07204D765E00899373 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		FA53F9442047D093004395DF /* CoopCycle.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = CoopCycle.entitlements; path = CoopCycle/CoopCycle.entitlements; sourceTree = "<group>"; };
 		FA97ACAB202E0590003E463B /* KCKeepAwake.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = KCKeepAwake.xcodeproj; path = "../node_modules/react-native-keep-awake/ios/KCKeepAwake.xcodeproj"; sourceTree = "<group>"; };
-		FABBCDF721F1387500047A22 /* RNGestureHandler.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNGestureHandler.xcodeproj; path = "../node_modules/react-native-gesture-handler/ios/RNGestureHandler.xcodeproj"; sourceTree = "<group>"; };
 		FAC64402216645E400D1DA52 /* RNSound.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNSound.xcodeproj; path = "../node_modules/react-native-sound/RNSound.xcodeproj"; sourceTree = "<group>"; };
 		FAC644352166467B00D1DA52 /* misstickle__indian_bell_chime.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = misstickle__indian_bell_chime.wav; path = ../android/app/src/main/res/raw/misstickle__indian_bell_chime.wav; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -495,7 +486,6 @@
 				832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */,
 				00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */,
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
-				FABBCE2A21F1389500047A22 /* libRNGestureHandler.a in Frameworks */,
 				FACC0F1A217A8A5700DF714D /* libRNLanguages.a in Frameworks */,
 				8CD9A3FDA8584D418F7B3A14 /* libTPSStripe.a in Frameworks */,
 				1C4081EC4C8695D81EE0C84A /* libPods-CoopCycle.a in Frameworks */,
@@ -700,7 +690,6 @@
 				FA97ACAB202E0590003E463B /* KCKeepAwake.xcodeproj */,
 				5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */,
 				146833FF1AC3E56700842450 /* React.xcodeproj */,
-				FABBCDF721F1387500047A22 /* RNGestureHandler.xcodeproj */,
 				00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */,
 				ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */,
 				00C302B51ABCB90400DB3ED1 /* RCTGeolocation.xcodeproj */,
@@ -809,14 +798,6 @@
 			isa = PBXGroup;
 			children = (
 				FA97ACB1202E0590003E463B /* libKCKeepAwake.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		FABBCDF821F1387500047A22 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				FABBCE2521F1387500047A22 /* libRNGestureHandler.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1032,10 +1013,6 @@
 				{
 					ProductGroup = 146834001AC3E56700842450 /* Products */;
 					ProjectRef = 146833FF1AC3E56700842450 /* React.xcodeproj */;
-				},
-				{
-					ProductGroup = FABBCDF821F1387500047A22 /* Products */;
-					ProjectRef = FABBCDF721F1387500047A22 /* RNGestureHandler.xcodeproj */;
 				},
 				{
 					ProductGroup = FA27ED55217A695100A3FB2A /* Products */;
@@ -1360,13 +1337,6 @@
 			fileType = archive.ar;
 			path = libKCKeepAwake.a;
 			remoteRef = FA97ACB0202E0590003E463B /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		FABBCE2521F1387500047A22 /* libRNGestureHandler.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libRNGestureHandler.a;
-			remoteRef = FABBCE2421F1387500047A22 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		FAC64432216645E400D1DA52 /* libRNSound.a */ = {
