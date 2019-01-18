@@ -103,8 +103,8 @@ android {
         applicationId "fr.coopcycle"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 37
-        versionName "0.11.1"
+        versionCode 38
+        versionName "0.12.0"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
