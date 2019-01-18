@@ -44,7 +44,7 @@ export default {
   AccountOrdersPage: require('./account/AccountOrdersPage'),
   AccountDetailsPage: require('./account/AccountDetailsPage'),
   CreditCardPage: require('./CreditCardPage'),
-  OrderTrackingPage: require('./OrderTrackingPage'),
+  OrderTrackingPage: require('./account/Order'),
   DispatchUnassignedTasks,
   DispatchTaskLists,
   DispatchTaskList,
