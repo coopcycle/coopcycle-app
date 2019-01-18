@@ -3,6 +3,7 @@ import {
   StyleSheet,
   View,
   ActivityIndicator,
+  SectionList,
 } from 'react-native';
 import {
   Container,
@@ -13,76 +14,81 @@ import {
 import { connect } from 'react-redux'
 import { translate } from 'react-i18next'
 import { formatPrice } from '../../Cart'
+import { init } from '../../redux/Account/actions'
+import _ from 'lodash'
+import moment from 'moment'
 
 class AccountOrdersPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
       loading: true,
-      orders: []
     };
   }
   componentDidMount() {
-    this.props.httpClient.get('/api/me/orders')
-      .then((data) => {
-        this.setState({
-          loading: false,
-          orders: data['hydra:member']
-        })
-      });
+    this.props.init()
   }
-  _renderRow(order) {
+  _renderItem(order) {
 
     const { navigate } = this.props.navigation
 
     return (
-      <ListItem onPress={() => navigate('OrderTracking', { order }) }>
+      <ListItem onPress={() => navigate('AccountOrderTracking', { order }) }>
         <Body><Text>{ order.restaurant.name }</Text></Body>
         <Right><Text>{ formatPrice(order.total) } €</Text></Right>
       </ListItem>
     );
   }
-  render() {
-    let loader = (
-      <View />
+  _renderSectionHeader(section) {
+    return (
+      <ListItem itemHeader>
+        <Text>{ moment(section.day).format('LL') }</Text>
+      </ListItem>
     )
-    if (this.state.loading) {
-      loader = (
-        <View style={styles.loader}>
-          <ActivityIndicator
-            animating={true}
-            size="large"
-            color="#fff"
-          />
-          <Text style={{color: '#fff'}}>{`${this.props.t('LOADING')}...`}</Text>
-        </View>
-      );
-    }
+  }
+  render() {
+
+    const ordersByDay =
+      _.groupBy(this.props.orders, order => moment(order.shippedAt).format('YYYY-MM-DD'))
+
+    let sections = []
+    _.forEach(ordersByDay, (orders, day) => {
+      sections.push({
+        day: day,
+        data: orders
+      })
+    })
 
     return (
       <Container>
         <Content>
-          <List dataArray={ this.state.orders } renderRow={ this._renderRow.bind(this) } />
+          <SectionList
+            sections={ sections }
+            renderItem={ ({ item }) => this._renderItem(item) }
+            renderSectionHeader={ ({ section }) => this._renderSectionHeader(section) }
+            keyExtractor={ (item, index) => index }
+          />
         </Content>
-        { loader }
       </Container>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  loader: {
-    ...StyleSheet.absoluteFillObject,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(52, 52, 52, 0.4)'
-  },
 });
 
 function mapStateToProps(state) {
+
   return {
-    httpClient: state.app.httpClient
+    orders: state.account.orders
   }
 }
 
-module.exports = connect(mapStateToProps)(translate()(AccountOrdersPage))
+function mapDispatchToProps(dispatch) {
+
+  return {
+    init: () => dispatch(init()),
+  }
+}
+
+module.exports = connect(mapStateToProps, mapDispatchToProps)(translate()(AccountOrdersPage))

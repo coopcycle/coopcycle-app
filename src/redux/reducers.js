@@ -18,6 +18,7 @@
 import { combineReducers } from 'redux'
 import { tasksEntityReducer, tasksUiReducer } from './Courier'
 import { appReducer } from './App'
+import accountReducer from './Account/reducers'
 import restaurantReducer from './Restaurant/reducers'
 import checkoutReducer from './Checkout/reducers'
 import dispatchReducer from './Dispatch/reducers'
@@ -27,6 +28,7 @@ export default combineReducers({
     tasks: tasksEntityReducer,
   }),
   app: appReducer,
+  account: accountReducer,
   restaurant: restaurantReducer,
   checkout: checkoutReducer,
   dispatch: dispatchReducer,
