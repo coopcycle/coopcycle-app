@@ -22,6 +22,7 @@ class AddressUtils {
         latitude: details.geometry.location.lat,
         longitude: details.geometry.location.lng
       },
+      isPrecise: _.includes(details.types, 'street_address') || _.includes(details.types, 'premise')
     }
   }
 }

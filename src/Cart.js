@@ -115,7 +115,7 @@ class Cart {
     if (this.deliveryAddress) {
       payload = {
         ...payload,
-        shippingAddress: this.deliveryAddress,
+        shippingAddress: _.omit(this.deliveryAddress, ['isPrecise']),
       }
     }
 
