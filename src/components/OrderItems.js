@@ -3,8 +3,8 @@ import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native'
 import { Icon, Text, Thumbnail, Badge } from 'native-base';
 import { Col, Row, Grid } from 'react-native-easy-grid'
 import { translate } from 'react-i18next'
-import { localeDetector } from '../../../i18n'
-import { formatPrice } from '../../../Cart'
+import { localeDetector } from '../i18n'
+import { formatPrice } from '../Cart'
 
 const styles = StyleSheet.create({
   container: {

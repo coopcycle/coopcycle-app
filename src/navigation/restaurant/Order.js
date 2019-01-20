@@ -15,7 +15,7 @@ import { phonecall } from 'react-native-communications'
 import { PhoneNumberUtil, PhoneNumberFormat } from 'google-libphonenumber'
 
 import { formatPrice } from '../../Cart'
-import OrderItems from './components/OrderItems'
+import OrderItems from '../../components/OrderItems'
 import { acceptOrder, setCurrentOrder } from '../../redux/Restaurant/actions'
 import material from '../../../native-base-theme/variables/material'
 
