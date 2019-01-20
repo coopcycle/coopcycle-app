@@ -64,6 +64,7 @@ class AccountPage extends Component {
 
   onLoginSuccess(user) {
     this.props.login(user)
+    this.setState({ isAuthenticated: true })
   }
 
   onLoginFail(message) {
