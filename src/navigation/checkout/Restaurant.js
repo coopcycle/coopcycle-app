@@ -11,9 +11,9 @@ import {
 } from 'native-base';
 import moment from 'moment'
 
-import CartFooter from './checkout/components/CartFooter'
-import Menu from '../components/Menu'
-import { init, addItem } from '../redux/Checkout/actions'
+import CartFooter from './components/CartFooter'
+import Menu from '../../components/Menu'
+import { init, addItem } from '../../redux/Checkout/actions'
 
 class RestaurantPage extends Component {
 

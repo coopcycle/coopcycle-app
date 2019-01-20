@@ -13,9 +13,10 @@ import _ from 'lodash'
 import moment from 'moment'
 import { connect } from 'react-redux'
 import { translate } from 'react-i18next'
-import RestaurantSearch from '../components/RestaurantSearch'
-import RestaurantList from '../components/RestaurantList'
-import { searchRestaurants } from '../redux/Checkout/actions'
+
+import RestaurantSearch from '../../components/RestaurantSearch'
+import RestaurantList from '../../components/RestaurantList'
+import { searchRestaurants } from '../../redux/Checkout/actions'
 
 class RestaurantsPage extends Component {
 

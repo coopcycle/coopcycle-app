@@ -15,8 +15,8 @@ import DispatchAssignTask from './dispatch/AssignTask'
 import { primaryColor,  whiteColor, fontTitleName } from '../styles/common'
 
 export default {
-  RestaurantsPage: require('./RestaurantsPage'),
-  RestaurantPage: require('./RestaurantPage'),
+  RestaurantsPage: require('./checkout/Search'),
+  RestaurantPage: require('./checkout/Restaurant'),
   RestaurantList: require('./restaurant/List'),
   RestaurantDashboard: require('./restaurant/Dashboard'),
   RestaurantOrder: require('./restaurant/Order'),
