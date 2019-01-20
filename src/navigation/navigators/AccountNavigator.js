@@ -28,7 +28,7 @@ export default createStackNavigator({
   AccountOrderTracking: {
     screen: navigation.OrderTrackingPage,
     navigationOptions: ({ navigation }) => ({
-      title: i18n.t('ORDER_TRACKING'),
+      title: i18n.t('ORDER_NUMBER', { number: navigation.state.params.order.number }),
     })
   },
   AccountDetails: {

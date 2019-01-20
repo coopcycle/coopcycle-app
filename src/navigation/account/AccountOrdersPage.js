@@ -10,13 +10,14 @@ import {
   Header,
   Left, Right, Body,
   Title, Content, Footer, Button, Icon, List, ListItem, Text
-} from 'native-base';
+} from 'native-base'
+import _ from 'lodash'
+import moment from 'moment'
 import { connect } from 'react-redux'
 import { translate } from 'react-i18next'
 import { formatPrice } from '../../Cart'
 import { init } from '../../redux/Account/actions'
-import _ from 'lodash'
-import moment from 'moment'
+
 
 class AccountOrdersPage extends Component {
   constructor(props) {

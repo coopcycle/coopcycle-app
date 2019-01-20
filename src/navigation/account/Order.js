@@ -1,89 +1,96 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import {
   StyleSheet,
-} from 'react-native';
+  View,
+  TouchableOpacity,
+} from 'react-native'
 import {
   Container,
   Header,
   Left, Right,
-  Title, Content, Footer, Button, Icon, List, ListItem, Radio
-} from 'native-base';
-import { translate } from 'react-i18next';
-import MapView from 'react-native-maps';
+  Text,
+  Title, Content, Button, Icon,
+} from 'native-base'
+import { translate } from 'react-i18next'
+import moment from 'moment'
 
-const LATITUDE_DELTA = 0.0722;
-const LONGITUDE_DELTA = 0.0221;
-
-const COURIER_COORDS = {
-  latitude: 48.872178,
-  longitude: 2.331797
-};
+import OrderItems from '../../components/OrderItems'
 
 class OrderTrackingPage extends Component {
 
-  map = undefined;
-
-  constructor(props) {
-    super(props);
+  renderHeader() {
 
     const { order } = this.props.navigation.state.params
 
-    this.state = {
-      region: {
-        ...COURIER_COORDS,
-        latitudeDelta: LATITUDE_DELTA,
-        longitudeDelta: LONGITUDE_DELTA,
-      },
-      polylineCoords: [],
-      markers: [{
-        key: 'restaurant',
-        identifier: 'restaurant',
-        coordinate: order.restaurant.address.geo,
-        pinColor: 'red',
-      }, {
-        key: 'deliveryAddress',
-        identifier: 'deliveryAddress',
-        coordinate: order.shippingAddress.geo,
-        pinColor: 'green',
-      }],
-      position: undefined,
-      loading: false,
-      loadingMessage: `${this.props.t('CONNECTING_SERVER')}…`,
-      backButton: props.hasOwnProperty('backButton') ? props.backButton : true
-    };
+    let stateText = ''
+    let iconName = 'question-circle-o'
+    const headerContainerStyle = [ styles.headerContainer ]
+
+    switch (order.state) {
+      case 'new':
+        stateText = this.props.t('ORDER_NEW')
+        headerContainerStyle.push(styles.headerOrderNew)
+        iconName = 'clock-o'
+        break
+      case 'accepted':
+        stateText = this.props.t('ORDER_ACCEPTED')
+        headerContainerStyle.push(styles.headerOrderAccepted)
+        iconName = 'check'
+        break
+      case 'fulfilled':
+        stateText = this.props.t('ORDER_FULFILLED')
+        headerContainerStyle.push(styles.headerOrderFulfilled)
+        iconName = 'check'
+        break
+    }
+
+    return (
+      <View style={ styles.header }>
+        <View style={ headerContainerStyle }>
+          <Icon style={ [ styles.headerText, { marginRight: 10 } ] } type="FontAwesome" name={ iconName } />
+          <Text style={ styles.headerText }>{ stateText }</Text>
+        </View>
+      </View>
+    )
   }
-  componentDidMount() {
-    setTimeout(() => this.map.fitToElements(true), 1000);
+
+  renderSubHeader() {
+
+    const { order } = this.props.navigation.state.params
+
+    switch (order.state) {
+      case 'new':
+        return (
+          <View style={ styles.subHeader }>
+            <View style={ styles.subHeaderContainer }>
+              <Text note>{ this.props.t('ORDER_NEW_HELP') }</Text>
+            </View>
+          </View>
+        )
+    }
+
+    return (
+      <View />
+    )
   }
+
   render() {
+
+    const { order } = this.props.navigation.state.params
+
     return (
       <Container>
-        <Content contentContainerStyle={ { flex: 1, justifyContent: 'center', alignItems: 'center' } }>
-          <MapView
-            ref={ref => { this.map = ref; }}
-            style={styles.map}
-            initialRegion={this.state.region}
-            region={this.state.region}
-            zoomEnabled
-            showsUserLocation
-            loadingEnabled
-            loadingIndicatorColor={"#666666"}
-            loadingBackgroundColor={"#eeeeee"}>
-            {this.state.markers.map(marker => (
-              <MapView.Marker
-                identifier={marker.identifier}
-                key={marker.key}
-                coordinate={marker.coordinate}
-                pinColor={marker.pinColor}
-                title={marker.title}
-                description={marker.description} />
-            ))}
-            <MapView.Polyline
-              coordinates={this.state.polylineCoords}
-              strokeWidth={4}
-              strokeColor="#19B5FE"
-             />
-          </MapView>
+        { this.renderHeader() }
+        { this.renderSubHeader() }
+        <Content padder>
+          <TouchableOpacity style={ styles.restaurantContainer }>
+            <Icon style={ styles.restaurantText }
+              type="FontAwesome" name="cutlery" />
+            <Text style={ styles.restaurantText }>
+              { order.restaurant.name }
+            </Text>
+          </TouchableOpacity>
+          <OrderItems order={ order } />
         </Content>
       </Container>
     );
@@ -91,47 +98,56 @@ class OrderTrackingPage extends Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  header: {
+    height: 64,
+  },
+  headerContainer: {
     flex: 1,
-    paddingTop: 60,
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    alignItems: 'stretch',
-    backgroundColor: '#F5FCFF',
-  },
-  loader: {
-    ...StyleSheet.absoluteFillObject,
+    flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'center',
+  },
+  headerText: {
+    color: 'white'
+  },
+  headerOrderNew: {
+    backgroundColor: '#FF851B'
+  },
+  headerOrderAccepted: {
+    backgroundColor: '#2ECC71'
+  },
+  headerOrderFulfilled: {
+    backgroundColor: '#2ECC71'
+  },
+  subHeader: {
+    height: 32,
+  },
+  subHeaderContainer: {
+    flex: 1,
+    flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(52, 52, 52, 0.4)'
+    justifyContent: 'center',
   },
-  orderOverlay: {
-    ...StyleSheet.absoluteFillObject,
-    justifyContent: 'flex-end',
+  restaurantContainer: {
+    flex: 1,
     alignItems: 'center',
-    backgroundColor: 'rgba(52, 52, 52, 0.3)',
+    justifyContent: 'center',
+    marginBottom: 25,
   },
-  buttonBlue: {
-    alignItems: "center",
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    marginTop: 10,
-    marginBottom: 10,
-    borderRadius: 4,
-    backgroundColor: "#246dd5",
+  restaurantText: {
+    color: '#cccccc',
   },
-  buttonGreen: {
-    alignItems: "center",
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    marginTop: 10,
-    marginBottom: 10,
-    borderRadius: 4,
-    backgroundColor: "#2ecc71",
+  orderNumber: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#0074D9',
   },
-  map: {
-    ...StyleSheet.absoluteFillObject,
-  }
-});
+  orderNumberText: {
+    fontSize: 24,
+    fontWeight: '400',
+    color: 'white'
+  },
+})
 
-module.exports = translate()(OrderTrackingPage);
+module.exports = translate()(OrderTrackingPage)

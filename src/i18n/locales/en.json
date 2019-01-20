@@ -192,6 +192,11 @@
     "BACKGROUND_GEOLOCATION_NOTIFICATION_TITLE": "Background tracking",
     "BACKGROUND_GEOLOCATION_NOTIFICATION_TEXT": "Enabled",
     "NEW_NOTIFICATION": "New notification",
-    "CLOSE": "Close"
+    "CLOSE": "Close",
+    "ORDER_NEW": "Waiting",
+    "ORDER_NEW_HELP": "The restaurant has to confirm your order",
+    "ORDER_ACCEPTED": "Accepted",
+    "ORDER_FULFILLED": "Fulfilled",
+    "ORDER_NUMBER": "Order {{number}}"
   }
 }

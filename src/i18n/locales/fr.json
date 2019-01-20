@@ -192,6 +192,11 @@
     "BACKGROUND_GEOLOCATION_NOTIFICATION_TITLE": "Géolocalisation en arrière-plan",
     "BACKGROUND_GEOLOCATION_NOTIFICATION_TEXT": "Activée",
     "NEW_NOTIFICATION": "Nouvelle notification",
-    "CLOSE": "Fermer"
+    "CLOSE": "Fermer",
+    "ORDER_NEW": "En attente",
+    "ORDER_NEW_HELP": "Le restaurateur doit valider votre commande",
+    "ORDER_ACCEPTED": "Acceptée",
+    "ORDER_FULFILLED": "Terminée",
+    "ORDER_NUMBER": "Commande {{number}}"
   }
 }
