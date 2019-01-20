@@ -51,14 +51,14 @@ class OrderItems extends Component {
     return (
       <TouchableOpacity style={ styles.item }>
         <Grid>
-          <Col size={ 8 } style={ styles.col }>
+          <Col size={ 7 } style={ styles.col }>
             <Text>{ item.name }</Text>
             { this.renderAdjustments(item) }
           </Col>
           <Col size={ 2 } style={ [ styles.col, styles.colRight ] }>
             <Text>{ `× ${item.quantity}` }</Text>
           </Col>
-          <Col size={ 2 } style={ [ styles.col, styles.colRight ] }>
+          <Col size={ 3 } style={ [ styles.col, styles.colRight ] }>
             <Text>{ `${formatPrice(item.total)} €` }</Text>
           </Col>
         </Grid>
@@ -78,10 +78,10 @@ class OrderItems extends Component {
           renderItem={ ({ item }) => this.renderItem(item) } />
         <Grid>
           <Row style={ [ styles.item, styles.itemLast ] }>
-            <Col size={ 10 } style={ styles.col }>
+            <Col size={ 9 } style={ styles.col }>
               <Text style={{ fontWeight: 'bold' }}>{ this.props.t('TOTAL') }</Text>
             </Col>
-            <Col size={ 2 } style={ [ styles.col, styles.colRight ] }>
+            <Col size={ 3 } style={ [ styles.col, styles.colRight ] }>
               <Text style={{ fontWeight: 'bold' }}>{ `${formatPrice(order.itemsTotal)} €` }</Text>
             </Col>
           </Row>
