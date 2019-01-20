@@ -120,7 +120,7 @@ export function checkout(token) {
           actions: [
             NavigationActions.navigate({ routeName: 'AccountHome' }),
             NavigationActions.navigate({
-              routeName: 'AccountOrderTracking',
+              routeName: 'AccountOrder',
               params: { order }
             }),
           ],

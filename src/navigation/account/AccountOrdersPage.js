@@ -34,7 +34,7 @@ class AccountOrdersPage extends Component {
     const { navigate } = this.props.navigation
 
     return (
-      <ListItem onPress={() => navigate('AccountOrderTracking', { order }) }>
+      <ListItem onPress={() => navigate('AccountOrder', { order }) }>
         <Body><Text>{ order.restaurant.name }</Text></Body>
         <Right><Text>{ formatPrice(order.total) } €</Text></Right>
       </ListItem>
