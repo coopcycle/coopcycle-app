@@ -4,7 +4,7 @@ import {
   REMOVE_ITEM,
   INCREMENT_ITEM,
   DECREMENT_ITEM,
-  SET_ADDRESS_RESOURCE,
+  SET_ADDRESS,
   CLEAR,
   SEARCH_RESTAURANTS_REQUEST,
   SEARCH_RESTAURANTS_SUCCESS,
@@ -20,7 +20,6 @@ import _ from 'lodash'
 const initialState = {
   cart: new Cart(),
   address: null,
-  addressResource: null,
   date: null,
   restaurants: [],
   isFetching: false,
@@ -58,7 +57,6 @@ export default (state = initialState, action = {}) => {
         ...state,
         cart: new Cart(),
         address: null,
-        addressResource: null,
         date: null
       }
 
@@ -113,10 +111,10 @@ export default (state = initialState, action = {}) => {
         }
       }
 
-    case SET_ADDRESS_RESOURCE:
+    case SET_ADDRESS:
       return {
         ...state,
-        addressResource: action.payload
+        address: action.payload
       }
 
     case SEARCH_RESTAURANTS_SUCCESS:

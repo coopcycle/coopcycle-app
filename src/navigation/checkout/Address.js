@@ -12,7 +12,7 @@ import { translate } from 'react-i18next'
 
 import CartFooter from './components/CartFooter'
 import DeliveryAddressForm from '../../components/DeliveryAddressForm'
-import { setAddressResource } from '../../redux/Checkout/actions'
+import { setAddress } from '../../redux/Checkout/actions'
 
 class CartAddressPage extends Component {
 
@@ -88,7 +88,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    setAddress: address => dispatch(setAddressResource(address)),
+    setAddress: address => dispatch(setAddress(address)),
   }
 }
 

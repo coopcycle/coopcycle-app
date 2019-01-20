@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
 function mapStateToProps(state) {
   return {
     cart: state.checkout.cart,
-    address: state.checkout.addressResource,
+    address: state.checkout.address,
     date: state.checkout.date,
   }
 }

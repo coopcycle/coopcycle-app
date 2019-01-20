@@ -11,8 +11,8 @@ export const ADD_ITEM = 'ADD_ITEM'
 export const REMOVE_ITEM = 'REMOVE_ITEM'
 export const INCREMENT_ITEM = 'INCREMENT_ITEM'
 export const DECREMENT_ITEM = 'DECREMENT_ITEM'
-export const SET_ADDRESS_RESOURCE = 'SET_ADDRESS_RESOURCE'
-export const CLEAR = 'CHECKOUT_CLEAR'
+export const SET_ADDRESS = '@checkout/SET_ADDRESS'
+export const CLEAR = '@checkout/CLEAR'
 
 export const SEARCH_RESTAURANTS_REQUEST = '@checkout/SEARCH_RESTAURANTS_REQUEST'
 export const SEARCH_RESTAURANTS_SUCCESS = '@checkout/SEARCH_RESTAURANTS_SUCCESS'
@@ -30,7 +30,7 @@ export const addItem = createAction(ADD_ITEM, (item, options = []) => ({ item, o
 export const removeItem = createAction(REMOVE_ITEM)
 export const incrementItem = createAction(INCREMENT_ITEM)
 export const decrementItem = createAction(DECREMENT_ITEM)
-export const setAddressResource = createAction(SET_ADDRESS_RESOURCE)
+export const setAddress = createAction(SET_ADDRESS)
 export const clear = createAction(CLEAR)
 
 export const searchRestaurantsRequest = createAction(SEARCH_RESTAURANTS_REQUEST)
@@ -94,10 +94,10 @@ export function checkout(token) {
   return (dispatch, getState) => {
 
     const { httpClient } = getState().app
-    const { addressResource, cart, date } = getState().checkout
+    const { address, cart, date } = getState().checkout
 
     const newCart = cart.clone()
-    newCart.setDeliveryAddress(addressResource)
+    newCart.setDeliveryAddress(address)
     newCart.setDeliveryDate(date)
 
     dispatch(checkoutRequest())
