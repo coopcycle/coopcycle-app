@@ -48,7 +48,6 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         cart: new Cart(action.payload.restaurant),
-        address: action.payload.address,
         date: action.payload.date,
       }
 

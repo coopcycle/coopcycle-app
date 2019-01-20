@@ -18,9 +18,9 @@ import { init, addItem } from '../../redux/Checkout/actions'
 class RestaurantPage extends Component {
 
   componentDidMount() {
-    const { restaurant, deliveryAddress, deliveryDate } = this.props.navigation.state.params
+    const { restaurant, deliveryDate } = this.props.navigation.state.params
 
-    this.props.init(restaurant, deliveryAddress, deliveryDate)
+    this.props.init(restaurant, deliveryDate)
   }
 
   onItemClick(menuItem) {

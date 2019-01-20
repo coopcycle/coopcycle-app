@@ -16,7 +16,7 @@ import { translate } from 'react-i18next'
 
 import RestaurantSearch from '../../components/RestaurantSearch'
 import RestaurantList from '../../components/RestaurantList'
-import { searchRestaurants } from '../../redux/Checkout/actions'
+import { searchRestaurants, setAddress } from '../../redux/Checkout/actions'
 
 class RestaurantsPage extends Component {
 
@@ -24,7 +24,6 @@ class RestaurantsPage extends Component {
     super(props);
 
     this.state = {
-      deliveryAddress: null,
       deliveryDay: null
     }
   }
@@ -32,8 +31,9 @@ class RestaurantsPage extends Component {
   onChange(deliveryAddress, deliveryDay) {
     if (deliveryAddress) {
       const { latitude, longitude } = deliveryAddress.geo
-      this.setState({ deliveryAddress, deliveryDay })
+      this.setState({ deliveryDay })
       this.props.searchRestaurants(latitude, longitude, deliveryDay)
+      this.props.setAddress(deliveryAddress)
     }
   }
 
@@ -72,7 +72,7 @@ class RestaurantsPage extends Component {
   render() {
 
     const { navigate } = this.props.navigation
-    const { deliveryAddress, deliveryDay } = this.state
+    const { deliveryDay } = this.state
     const { restaurants } = this.props
 
     let contentProps = restaurants.length === 0 ? {
@@ -89,7 +89,7 @@ class RestaurantsPage extends Component {
           <RestaurantList
             restaurants={ restaurants }
             deliveryDay={ deliveryDay }
-            onItemClick={ (restaurant, deliveryDate) => navigate('Restaurant', { restaurant, deliveryAddress, deliveryDate }) } />
+            onItemClick={ (restaurant, deliveryDate) => navigate('Restaurant', { restaurant, deliveryDate }) } />
           { this.renderWarning() }
         </Content>
       </Container>
@@ -109,6 +109,7 @@ function mapDispatchToProps(dispatch) {
 
   return {
     searchRestaurants: (latitude, longitude) => dispatch(searchRestaurants(latitude, longitude)),
+    setAddress: address => dispatch(setAddress(address)),
   }
 }
 

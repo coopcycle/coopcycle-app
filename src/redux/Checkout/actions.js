@@ -25,7 +25,7 @@ export const CHECKOUT_FAILURE = '@checkout/CHECKOUT_FAILURE'
 /*
  * Action Creators
  */
-export const init = createAction(INIT, (restaurant, address, date) => ({ restaurant, address, date }))
+export const init = createAction(INIT, (restaurant, date) => ({ restaurant, date }))
 export const addItem = createAction(ADD_ITEM, (item, options = []) => ({ item, options }))
 export const removeItem = createAction(REMOVE_ITEM)
 export const incrementItem = createAction(INCREMENT_ITEM)
