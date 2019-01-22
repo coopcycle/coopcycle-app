@@ -27,22 +27,27 @@ class CartAddressPage extends Component {
 
     const { navigate } = this.props.navigation
 
-    const { deliveryAddress } = this.props
-    Object.assign(deliveryAddress, this.deliveryAddressForm.getWrappedInstance().createDeliveryAddress())
+    const { address } = this.props
+    const newAddress = Object.assign({}, address, this.deliveryAddressForm.getWrappedInstance().createDeliveryAddress())
 
-    this.props.setAddress(deliveryAddress)
+    this.props.setAddress(newAddress)
     navigate('CreditCard')
   }
 
   render() {
 
-    const { deliveryAddress } = this.props
-    const markers = [{
-      key: 'deliveryAddress',
-      identifier: 'deliveryAddress',
-      coordinate: deliveryAddress.geo,
-      pinColor: 'green',
-    }]
+    const { address } = this.props
+
+    const markers = []
+
+    if (address) {
+      markers.push({
+        key: 'deliveryAddress',
+        identifier: 'deliveryAddress',
+        coordinate: address.geo,
+        pinColor: 'green',
+      })
+    }
 
     return (
       <Container>
@@ -66,7 +71,7 @@ class CartAddressPage extends Component {
               ))}
             </MapView>
           </View>
-          <DeliveryAddressForm ref={ component => this.deliveryAddressForm = component } { ...deliveryAddress } />
+          <DeliveryAddressForm ref={ component => this.deliveryAddressForm = component } { ...address } />
         </Content>
         <CartFooter onSubmit={ this.createAddress.bind(this) }  />
       </Container>
@@ -82,7 +87,7 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
   return {
-    deliveryAddress: state.checkout.address
+    address: state.checkout.address
   }
 }
 
