@@ -96,7 +96,7 @@ class CartAddressPage extends Component {
           </View>
           { this.renderAddressForm() }
         </Content>
-        <CartFooter onSubmit={ this.createAddress.bind(this) }  />
+        <CartFooter onSubmit={ this.createAddress.bind(this) } enabled={ address ? true : false }  />
       </Container>
     );
   }

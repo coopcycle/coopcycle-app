@@ -68,15 +68,18 @@ class CartFooter extends Component {
 
   renderButton() {
 
-    const { cart } = this.props
+    const { cart} = this.props
+    const enabled = this.props.hasOwnProperty('enabled') ? this.props.enabled : true
 
-    if (cart.length === 0) {
+    if (cart.length === 0 || !enabled) {
+
       return (
         <View />
       )
     }
 
     if (cart.totalItems < cart.restaurant.minimumCartAmount) {
+
       return (
         <Button transparent style={{ alignSelf: 'flex-end' }}>
           <Text style={ styles.buttonText }>
@@ -139,6 +142,7 @@ class CartFooter extends Component {
 }
 
 function mapStateToProps(state) {
+
   return {
     cart: state.checkout.cart,
     date: state.checkout.date,
