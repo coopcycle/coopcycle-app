@@ -12,6 +12,7 @@ import { translate } from 'react-i18next'
 
 import CartFooter from './components/CartFooter'
 import DeliveryAddressForm from '../../components/DeliveryAddressForm'
+import AddressTypeahead from '../../components/AddressTypeahead'
 import { setAddress } from '../../redux/Checkout/actions'
 
 class CartAddressPage extends Component {
@@ -32,6 +33,28 @@ class CartAddressPage extends Component {
 
     this.props.setAddress(newAddress)
     navigate('CreditCard')
+  }
+
+  _onAddressChange(address) {
+    this.props.setAddress(address)
+  }
+
+  renderAddressForm() {
+
+    const { address } = this.props
+
+    if (!address) {
+
+      return (
+        <AddressTypeahead onPress={ this._onAddressChange.bind(this) } />
+      )
+    }
+
+    return (
+      <DeliveryAddressForm
+        ref={ component => this.deliveryAddressForm = component }
+        { ...address } />
+    )
   }
 
   render() {
@@ -71,7 +94,7 @@ class CartAddressPage extends Component {
               ))}
             </MapView>
           </View>
-          <DeliveryAddressForm ref={ component => this.deliveryAddressForm = component } { ...address } />
+          { this.renderAddressForm() }
         </Content>
         <CartFooter onSubmit={ this.createAddress.bind(this) }  />
       </Container>
