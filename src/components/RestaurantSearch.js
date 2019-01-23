@@ -31,6 +31,23 @@ const styles = StyleSheet.create({
   }
 });
 
+const typeaheadStyle = {
+  description: {
+    fontWeight: 'bold',
+  },
+  predefinedPlacesDescription: {
+    color: '#1faadb',
+  },
+  textInputContainer: {
+    backgroundColor: '#e4022d',
+    borderTopWidth: 0,
+    borderBottomWidth: 0,
+  },
+  row: {
+    backgroundColor: '#ffffff',
+  }
+}
+
 export default class RestaurantSearch extends Component {
 
   constructor(props) {
@@ -69,7 +86,7 @@ export default class RestaurantSearch extends Component {
       <View style={ [ styles.container, { width } ] }>
         <View style={{ flex: 1 }}>
           <View style={ [ styles.left, { flex: 1 } ] }>
-            <AddressTypeahead onPress={ this.onDeliveryAddressChange.bind(this) } />
+            <AddressTypeahead style={ typeaheadStyle } onPress={ this.onDeliveryAddressChange.bind(this) } />
           </View>
           <View style={ styles.right }>
             <DateTimePicker

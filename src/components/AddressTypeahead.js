@@ -7,23 +7,6 @@ import { localeDetector } from '../i18n'
 import Settings from '../Settings'
 import AddressUtils from '../utils/Address'
 
-const customStyles = {
-  description: {
-    fontWeight: 'bold',
-  },
-  predefinedPlacesDescription: {
-    color: '#1faadb',
-  },
-  textInputContainer: {
-    backgroundColor: '#e4022d',
-    borderTopWidth: 0,
-    borderBottomWidth: 0,
-  },
-  row: {
-    backgroundColor: '#ffffff',
-  }
-}
-
 class AddressTypeahead extends Component {
 
   constructor(props) {
@@ -40,7 +23,7 @@ class AddressTypeahead extends Component {
     const { height, width } = Dimensions.get('window')
 
     const styles = {
-      ...customStyles,
+      ...this.props.style,
       // Make sure ListView takes 100% width
       listView: { width }
     }
