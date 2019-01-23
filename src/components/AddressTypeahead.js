@@ -28,6 +28,8 @@ class AddressTypeahead extends Component {
       listView: { width }
     }
 
+    const country = Settings.get('country').toUpperCase()
+
     // currentLocation={true} // Will add a 'Current location' button at the top of the predefined places list
     // currentLocationLabel="Current location"
     // predefinedPlaces={[homePlace, workPlace]}
@@ -49,12 +51,13 @@ class AddressTypeahead extends Component {
           key: Settings.get('google_api_key'),
           language: localeDetector(), // language of the results
           types: 'geocode', // default: 'geocode'
+          components: `country:${country}`,
         }}
         styles={ styles }
         nearbyPlacesAPI="GoogleReverseGeocoding" // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
         GoogleReverseGeocodingQuery={{
           // available options for GoogleReverseGeocoding API : https://developers.google.com/maps/documentation/geocoding/intro
-          region: Settings.get('country')
+          components: `country:${country}`
         }}
         // filter the reverse geocoding results by types - ['locality', 'administrative_area_level_3'] if you want to display only cities
         filterReverseGeocodingByTypes={[ 'street_address', 'route', 'geocode' ]} />
