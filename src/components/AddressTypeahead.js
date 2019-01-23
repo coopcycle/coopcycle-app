@@ -9,8 +9,16 @@ import AddressUtils from '../utils/Address'
 
 class AddressTypeahead extends Component {
 
+  googlePlacesAutocomplete = null
+
   constructor(props) {
     super(props)
+  }
+
+  componentDidMount() {
+    if (this.props.value) {
+      this.googlePlacesAutocomplete.setAddressText(this.props.value)
+    }
   }
 
   createAddress(details) {
@@ -35,6 +43,7 @@ class AddressTypeahead extends Component {
     // predefinedPlaces={[homePlace, workPlace]}
     return (
       <GooglePlacesAutocomplete
+        ref={ ref => this.googlePlacesAutocomplete = ref }
         placeholder={ this.props.t('ENTER_ADDRESS') }
         minLength={ 2 } // minimum length of text to search
         autoFocus={ false }
