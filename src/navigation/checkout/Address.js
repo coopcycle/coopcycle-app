@@ -3,20 +3,19 @@ import { StyleSheet, View } from 'react-native'
 import {
   Container, Content, Body,
   Button, Icon, Text,
-  Card, CardItem
+  Card, CardItem,
+  Form, Item, Label, Input, Textarea
 } from 'native-base'
 import MapView from 'react-native-maps'
 import { connect } from 'react-redux'
 import { translate } from 'react-i18next'
 
 import CartFooter from './components/CartFooter'
-import DeliveryAddressForm from '../../components/DeliveryAddressForm'
 import AddressTypeahead from '../../components/AddressTypeahead'
 import { setAddress } from '../../redux/Checkout/actions'
 
 class CartAddressPage extends Component {
 
-  deliveryAddressForm = null
   map = null
 
   componentDidMount() {
@@ -24,41 +23,57 @@ class CartAddressPage extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.address !== prevProps.address) {
+    if (this.props.address !== prevProps.address && this.props.address.geo) {
       setTimeout(() => this.map.fitToElements(true), 1000);
     }
-  }
-
-  createAddress() {
-
-    const { navigate } = this.props.navigation
-
-    const { address } = this.props
-    const newAddress = Object.assign({}, address, this.deliveryAddressForm.getWrappedInstance().createDeliveryAddress())
-
-    this.props.setAddress(newAddress)
-    navigate('CreditCard')
   }
 
   _onAddressChange(address) {
     this.props.setAddress(address)
   }
 
-  renderAddressForm() {
+  _onDescriptionChange(description) {
 
     const { address } = this.props
 
-    if (!address || !address.isPrecise) {
-
-      return (
-        <AddressTypeahead onPress={ this._onAddressChange.bind(this) } />
-      )
+    const newAddress = {
+      ...address,
+      description
     }
 
+    this.props.setAddress(newAddress)
+  }
+
+  _isAddressValid() {
+
+    const { address } = this.props
+
+    return address && address.streetAddress && address.geo && address.hasOwnProperty('isPrecise') && address.isPrecise
+  }
+
+  renderAddressForm() {
+
+    const { address } = this.props
+    const itemProps = address && address.isPrecise ? { success: true } : { error: true }
+
     return (
-      <DeliveryAddressForm
-        ref={ component => this.deliveryAddressForm = component }
-        { ...address } />
+      <Form>
+        <AddressTypeahead onPress={ this._onAddressChange.bind(this) } />
+        <Item stackedLabel style={{ marginBottom: 15 }} { ...itemProps }>
+          <Label>{ this.props.t('ADDRESS') }</Label>
+          <Input
+            editable={ false }
+            value={ address ? address.streetAddress : '' } />
+        </Item>
+        <Item stackedLabel>
+          <Label style={{ marginBottom: 10 }}>{ this.props.t('ADDRESS_DESCRIPTION') }</Label>
+          <Input
+            multiline
+            onChangeText={ this._onDescriptionChange.bind(this) }
+            style={{ height: 5 * 25 }} />
+        </Item>
+
+      </Form>
     )
   }
 
@@ -80,11 +95,12 @@ class CartAddressPage extends Component {
 
   render() {
 
+    const { navigate } = this.props.navigation
     const { address } = this.props
 
     const markers = []
 
-    if (address) {
+    if (address && address.geo) {
       markers.push({
         key: 'deliveryAddress',
         identifier: 'deliveryAddress',
@@ -118,7 +134,7 @@ class CartAddressPage extends Component {
           { this.renderAlert() }
           { this.renderAddressForm() }
         </Content>
-        <CartFooter onSubmit={ this.createAddress.bind(this) } enabled={ address ? true : false }  />
+        <CartFooter onSubmit={ () => navigate('CreditCard') } enabled={ this._isAddressValid() }  />
       </Container>
     );
   }
