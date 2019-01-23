@@ -1,11 +1,10 @@
-import React, { Component } from 'react';
-import { StyleSheet, View } from 'react-native';
+import React, { Component } from 'react'
+import { StyleSheet, View } from 'react-native'
 import {
-  Badge,
-  Container,
-  Header, Title, Content, Footer,
-  Left, Right,
-  Button, Icon, List, ListItem, Text, Radio } from 'native-base';
+  Container, Content, Body,
+  Button, Icon, Text,
+  Card, CardItem
+} from 'native-base'
 import MapView from 'react-native-maps'
 import { connect } from 'react-redux'
 import { translate } from 'react-i18next'
@@ -22,6 +21,12 @@ class CartAddressPage extends Component {
 
   componentDidMount() {
     setTimeout(() => this.map.fitToElements(true), 1000);
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.address !== prevProps.address) {
+      setTimeout(() => this.map.fitToElements(true), 1000);
+    }
   }
 
   createAddress() {
@@ -43,7 +48,7 @@ class CartAddressPage extends Component {
 
     const { address } = this.props
 
-    if (!address) {
+    if (!address || !address.isPrecise) {
 
       return (
         <AddressTypeahead onPress={ this._onAddressChange.bind(this) } />
@@ -55,6 +60,22 @@ class CartAddressPage extends Component {
         ref={ component => this.deliveryAddressForm = component }
         { ...address } />
     )
+  }
+
+  renderAlert() {
+
+    const { address } = this.props
+
+    if (address && !address.isPrecise) {
+
+      return (
+        <View style={ styles.alertContainer }>
+          <Text style={ styles.alertText }>
+            { this.props.t('ADDRESS_NOT_PRECISE_ENOUGH') }
+          </Text>
+        </View>
+      )
+    }
   }
 
   render() {
@@ -94,6 +115,7 @@ class CartAddressPage extends Component {
               ))}
             </MapView>
           </View>
+          { this.renderAlert() }
           { this.renderAddressForm() }
         </Content>
         <CartFooter onSubmit={ this.createAddress.bind(this) } enabled={ address ? true : false }  />
@@ -106,15 +128,26 @@ const styles = StyleSheet.create({
   map: {
     ...StyleSheet.absoluteFillObject,
   },
+  alertContainer: {
+    backgroundColor: '#f2dede',
+    paddingHorizontal: 10,
+    paddingVertical: 15,
+  },
+  alertText: {
+    color: '#a94442',
+    textAlign: 'center',
+  }
 });
 
 function mapStateToProps(state) {
+
   return {
     address: state.checkout.address
   }
 }
 
 function mapDispatchToProps(dispatch) {
+
   return {
     setAddress: address => dispatch(setAddress(address)),
   }

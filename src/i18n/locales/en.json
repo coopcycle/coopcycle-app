@@ -197,6 +197,7 @@
     "ORDER_NEW_HELP": "The restaurant has to confirm your order",
     "ORDER_ACCEPTED": "Accepted",
     "ORDER_FULFILLED": "Fulfilled",
-    "ORDER_NUMBER": "Order {{number}}"
+    "ORDER_NUMBER": "Order {{number}}",
+    "ADDRESS_NOT_PRECISE_ENOUGH": "This address is not precise enough"
   }
 }
