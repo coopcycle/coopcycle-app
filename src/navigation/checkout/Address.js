@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, View } from 'react-native'
+import { Dimensions, StyleSheet, PixelRatio, View } from 'react-native'
 import {
   Container, Content, Body,
   Button, Icon, Text,
@@ -13,6 +13,50 @@ import { translate } from 'react-i18next'
 import CartFooter from './components/CartFooter'
 import AddressTypeahead from '../../components/AddressTypeahead'
 import { setAddress } from '../../redux/Checkout/actions'
+
+const typeaheadStyles = {
+  textInputContainer: {
+    backgroundColor: '#FFFFFF',
+    paddingVertical: 7.5,
+    borderTopWidth: 0,
+    borderBottomWidth: 0,
+  },
+  textInput: {
+    marginTop: 0,
+    marginLeft: 15,
+    borderWidth: 1 / PixelRatio.get(),
+    borderColor: '#333333',
+    flex: 1
+  },
+}
+
+const styles = StyleSheet.create({
+  map: {
+    ...StyleSheet.absoluteFillObject,
+  },
+  alertContainer: {
+    backgroundColor: '#f2dede',
+    paddingHorizontal: 10,
+    paddingVertical: 15,
+  },
+  alertText: {
+    color: '#a94442',
+    textAlign: 'center',
+  },
+  typeaheadContainer: {
+    marginTop: 15
+  },
+  typeaheadIconContainer: {
+    position: 'absolute',
+    right: 0,
+    height: 44,
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 15,
+    marginRight: 8
+  }
+});
 
 class CartAddressPage extends Component {
 
@@ -28,8 +72,16 @@ class CartAddressPage extends Component {
     }
   }
 
-  _onAddressChange(address) {
-    this.props.setAddress(address)
+  _onAddressChange(value) {
+
+    const { address } = this.props
+
+    const newAddress = {
+      ...address,
+      ...value
+    }
+
+    this.props.setAddress(newAddress)
   }
 
   _onDescriptionChange(description) {
@@ -48,28 +100,46 @@ class CartAddressPage extends Component {
 
     const { address } = this.props
 
-    return address && address.streetAddress && address.geo && address.hasOwnProperty('isPrecise') && address.isPrecise
+    return address && address.streetAddress && address.geo
+      && address.hasOwnProperty('isPrecise') && address.isPrecise
   }
 
   renderAddressForm() {
 
+    const { width } = Dimensions.get('window')
     const { address } = this.props
-    const itemProps = address && address.isPrecise ? { success: true } : { error: true }
+    const isValid = this._isAddressValid()
+    const iconContainerWidth = width * 0.15
+    const iconName = isValid ? 'checkmark-circle' : 'close-circle'
+    const iconColor = isValid ? '#2ECC71' : '#E74C3C'
+
+    const typeaheadStylesWithPadding = {
+      ...typeaheadStyles,
+      textInputContainer: {
+        ...typeaheadStyles.textInputContainer,
+        paddingRight: iconContainerWidth
+      }
+    }
 
     return (
       <Form>
-        <AddressTypeahead onPress={ this._onAddressChange.bind(this) } />
-        <Item stackedLabel style={{ marginBottom: 15 }} { ...itemProps }>
-          <Label>{ this.props.t('ADDRESS') }</Label>
-          <Input
-            editable={ false }
-            value={ address ? address.streetAddress : '' } />
-        </Item>
+        <View>
+          <View style={ styles.typeaheadContainer }>
+            <AddressTypeahead
+              style={ typeaheadStylesWithPadding }
+              value={ address && address.streetAddress }
+              onPress={ this._onAddressChange.bind(this) } />
+          </View>
+          <View style={ [ styles.typeaheadIconContainer, { width: iconContainerWidth } ] }>
+            <Icon name={ iconName } style={{ color: iconColor }} />
+          </View>
+        </View>
         <Item stackedLabel>
           <Label style={{ marginBottom: 10 }}>{ this.props.t('ADDRESS_DESCRIPTION') }</Label>
           <Input
             multiline
             onChangeText={ this._onDescriptionChange.bind(this) }
+            defaultValue={ address && address.description }
             style={{ height: 5 * 25 }} />
         </Item>
 
@@ -97,7 +167,7 @@ class CartAddressPage extends Component {
 
     const { navigate } = this.props.navigation
     const { address } = this.props
-
+    const enabled = this._isAddressValid()
     const markers = []
 
     if (address && address.geo) {
@@ -134,26 +204,11 @@ class CartAddressPage extends Component {
           { this.renderAlert() }
           { this.renderAddressForm() }
         </Content>
-        <CartFooter onSubmit={ () => navigate('CreditCard') } enabled={ this._isAddressValid() }  />
+        <CartFooter onSubmit={ () => navigate('CreditCard') } enabled={ enabled }  />
       </Container>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  map: {
-    ...StyleSheet.absoluteFillObject,
-  },
-  alertContainer: {
-    backgroundColor: '#f2dede',
-    paddingHorizontal: 10,
-    paddingVertical: 15,
-  },
-  alertText: {
-    color: '#a94442',
-    textAlign: 'center',
-  }
-});
 
 function mapStateToProps(state) {
 
