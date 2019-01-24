@@ -85,7 +85,7 @@ export default class RestaurantSearch extends Component {
     return (
       <View style={ [ styles.container, { width } ] }>
         <View style={{ flex: 1 }}>
-          <View style={ [ styles.left, { flex: 1 } ] }>
+          <View style={ styles.left }>
             <AddressTypeahead style={ typeaheadStyle } onPress={ this.onDeliveryAddressChange.bind(this) } />
           </View>
           <View style={ styles.right }>
