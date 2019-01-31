@@ -1,17 +1,16 @@
-import React, { Component } from 'react';
-import { StyleSheet, View, ActivityIndicator } from 'react-native';
+import React, { Component } from 'react'
+import { StyleSheet, View } from 'react-native'
 import { StackActions, NavigationActions } from 'react-navigation'
 import {
-  Container, Header, Title, Content,
+  Container, Header, Content,
   Left, Right, Body,
-  List, ListItem, InputGroup, Input, Icon, Text, Picker, Button
+  List, ListItem, Icon, Text, Button
 } from 'native-base'
 import { connect } from 'react-redux'
 import { translate } from 'react-i18next'
 import _ from 'lodash'
 
-import LoginForm from '../components/LoginForm'
-import RegisterForm from '../components/RegisterForm'
+import AuthenticateForm from '../components/AuthenticateForm'
 import Settings from '../Settings'
 import { login, setLoading } from '../redux/App/actions'
 
@@ -22,7 +21,6 @@ class AccountPage extends Component {
     this.state = {
       message: '',
       isAuthenticated: this.props.user.isAuthenticated(),
-      formToDisplay: 'login',
     };
   }
 
@@ -140,32 +138,6 @@ class AccountPage extends Component {
     )
   }
 
-  renderForm() {
-    const { formToDisplay } = this.state
-
-    if (this.state.formToDisplay === 'login') {
-      return (
-        <LoginForm
-          client={this.props.httpClient}
-          onRequestStart={this.onRequestStart.bind(this)}
-          onRequestEnd={this.onRequestEnd.bind(this)}
-          onLoginSuccess={this.onLoginSuccess.bind(this)}
-          onLoginFail={this.onLoginFail.bind(this)} />
-      )
-    }
-
-    if (this.state.formToDisplay === 'register') {
-      return (
-        <RegisterForm
-          client={this.props.httpClient}
-          onRequestStart={this.onRequestStart.bind(this)}
-          onRequestEnd={this.onRequestEnd.bind(this)}
-          onRegisterSuccess={this.onLoginSuccess.bind(this)} // TODO: Using the same actions as for Login...is that OK?
-          onRegisterFail={this.onLoginFail.bind(this)} />    // TODO: Using the same actions as for Login...is that OK?
-      )
-    }
-  }
-
   renderMessage() {
     if (this.state.message) {
       return (
@@ -178,10 +150,8 @@ class AccountPage extends Component {
 
   render() {
 
-    const alternateForm = this.state.formToDisplay === 'login' ? 'register' : 'login'
-    const btnLabel = this.state.formToDisplay === 'login' ? 'OR_REGISTER' : 'OR_LOGIN'
-
     if (this.state.isAuthenticated) {
+
       return this.renderAuthenticated()
     }
 
@@ -190,14 +160,14 @@ class AccountPage extends Component {
         <Content padder>
           { this.renderServer() }
           { this.renderMessage() }
-          { this.renderForm() }
-          <View style={{ marginTop: 10 }}>
-            <Button block transparent onPress={() => this.setState({ formToDisplay: alternateForm, message: '' })}>
-              <Text>{this.props.t(btnLabel)}</Text>
-            </Button>
-          </View>
-          {/* This empty view is for increasing the page height so the button appears above the menu bar */}
-          <View style={styles.message} />
+          <AuthenticateForm
+            client={ this.props.httpClient }
+            onRequestStart={ this.onRequestStart.bind(this) }
+            onRequestEnd={ this.onRequestEnd.bind(this) }
+            onLoginSuccess={ this.onLoginSuccess.bind(this) }
+            onLoginFail={ this.onLoginFail.bind(this) }
+            onRegisterSuccess={ this.onLoginSuccess.bind(this) }
+            onRegisterFail={ this.onLoginFail.bind(this) } />
         </Content>
       </Container>
     )
@@ -205,11 +175,7 @@ class AccountPage extends Component {
 }
 
 const styles = StyleSheet.create({
-  message: {
-    alignItems: 'center',
-    padding: 20
-  }
-});
+})
 
 function mapStateToProps(state) {
   return {
