@@ -65,7 +65,7 @@ class LoginForm extends Component {
               style={{ height: 40 }} />
           </Item>
         </Form>
-        <View style={{ paddingHorizontal: 10, marginTop: 20 }}>
+        <View style={{ marginTop: 20 }}>
           <Button block onPress={ () => this.onSubmit() }>
             <Text>{this.props.t('SUBMIT')}</Text>
           </Button>

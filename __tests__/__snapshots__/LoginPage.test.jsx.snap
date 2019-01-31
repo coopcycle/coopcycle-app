@@ -43,7 +43,6 @@ exports[`renders correcty 1`] = `
     style={
       Object {
         "marginTop": 20,
-        "paddingHorizontal": 10,
       }
     }
   >

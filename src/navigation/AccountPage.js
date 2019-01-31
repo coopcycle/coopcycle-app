@@ -96,7 +96,7 @@ class AccountPage extends Component {
 
     return (
       <Container>
-        <Content style={ styles.content }>
+        <Content padder>
           { this.renderServer() }
           <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', marginBottom: 15 }}>
             <Icon name="person" />
@@ -130,7 +130,7 @@ class AccountPage extends Component {
               </Right>
             </ListItem>
           </List>
-          <View style={{ paddingHorizontal: 10, marginTop: 40, marginBottom: 60 }}>
+          <View style={{ marginTop: 40, marginBottom: 60 }}>
             <Button block danger onPress={ () => this.logout() }>
               <Text>{this.props.t('SIGN_OUT')}</Text>
             </Button>
@@ -187,12 +187,12 @@ class AccountPage extends Component {
 
     return (
       <Container>
-        <Content style={ styles.content }>
+        <Content padder>
           { this.renderServer() }
           { this.renderMessage() }
           { this.renderForm() }
-          <View style={{ paddingHorizontal: 10, marginTop: 20 }}>
-            <Button block onPress={() => this.setState({ formToDisplay: alternateForm, message: '' })}>
+          <View style={{ marginTop: 10 }}>
+            <Button block transparent onPress={() => this.setState({ formToDisplay: alternateForm, message: '' })}>
               <Text>{this.props.t(btnLabel)}</Text>
             </Button>
           </View>
@@ -205,18 +205,8 @@ class AccountPage extends Component {
 }
 
 const styles = StyleSheet.create({
-  content: {
-    backgroundColor: '#fff',
-    paddingTop: 30
-  },
-  loader: {
-    ...StyleSheet.absoluteFillObject,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(52, 52, 52, 0.4)'
-  },
   message: {
-    alignItems: "center",
+    alignItems: 'center',
     padding: 20
   }
 });

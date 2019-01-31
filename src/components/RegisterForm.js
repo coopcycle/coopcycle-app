@@ -140,40 +140,12 @@ class RegisterForm extends React.Component {
       <View>
         <Form>
           <Item stackedLabel>
-            <Label>{this.props.t('GIVEN_NAME')}</Label>
-            <Input
-              autoCorrect={false}
-              autoCapitalize="none"
-              onChangeText={givenName => this.setState({ givenName })}
-              style={{ height: 40 }}
-            />
-          </Item>
-          <Item stackedLabel>
-            <Label>{this.props.t('FAMILY_NAME')}</Label>
-            <Input
-              autoCorrect={false}
-              autoCapitalize="none"
-              onChangeText={familyName => this.setState({ familyName })}
-              style={{ height: 40 }}
-            />
-          </Item>
-          <Item stackedLabel>
             <Label>{this.props.t('EMAIL')}</Label>
             <Input
               autoCorrect={false}
               autoCapitalize="none"
               keyboardType="email-address"
               onChangeText={email => this.setState({ email })}
-              style={{ height: 40 }}
-            />
-          </Item>
-          <Item stackedLabel>
-            <Label>{this.props.t('PHONE_NUMBER')}</Label>
-            <Input
-              autoCorrect={false}
-              autoCapitalize="none"
-              keyboardType="phone-pad"
-              onChangeText={telephone => this.setState({ telephone })}
               style={{ height: 40 }}
             />
           </Item>
@@ -206,8 +178,36 @@ class RegisterForm extends React.Component {
               style={{ height: 40 }}
             />
           </Item>
+          <Item stackedLabel>
+            <Label>{this.props.t('GIVEN_NAME')}</Label>
+            <Input
+              autoCorrect={false}
+              autoCapitalize="none"
+              onChangeText={givenName => this.setState({ givenName })}
+              style={{ height: 40 }}
+            />
+          </Item>
+          <Item stackedLabel>
+            <Label>{this.props.t('FAMILY_NAME')}</Label>
+            <Input
+              autoCorrect={false}
+              autoCapitalize="none"
+              onChangeText={familyName => this.setState({ familyName })}
+              style={{ height: 40 }}
+            />
+          </Item>
+          <Item stackedLabel>
+            <Label>{this.props.t('PHONE_NUMBER')}</Label>
+            <Input
+              autoCorrect={false}
+              autoCapitalize="none"
+              keyboardType="phone-pad"
+              onChangeText={telephone => this.setState({ telephone })}
+              style={{ height: 40 }}
+            />
+          </Item>
         </Form>
-        <View style={{ paddingHorizontal: 10, marginTop: 20 }}>
+        <View style={{ marginTop: 20 }}>
           <Button block onPress={() => this.onSubmit()}>
             <Text>{this.props.t('SUBMIT')}</Text>
           </Button>
