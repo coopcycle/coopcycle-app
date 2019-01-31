@@ -8,10 +8,9 @@ import { connect } from 'react-redux'
 import _ from 'lodash'
 
 import { incrementItem, decrementItem } from '../../redux/Checkout/actions'
-import { login } from '../../redux/App/actions'
+import { login, setLoading } from '../../redux/App/actions'
 
-import LoginForm from '../../components/LoginForm'
-import LoaderOverlay from '../../components/LoaderOverlay'
+import AuthenticateForm from '../../components/AuthenticateForm'
 
 class Login extends Component {
 
@@ -19,19 +18,18 @@ class Login extends Component {
     super(props)
     this.state = {
       message: '',
-      loading: false,
     }
   }
 
   onRequestStart() {
     this.setState({
       message: '',
-      loading: true
     })
+    this.props.setLoading(true)
   }
 
   onRequestEnd() {
-    this.setState({ loading: false })
+    this.props.setLoading(false)
   }
 
   async onLoginSuccess(user) {
@@ -60,20 +58,21 @@ class Login extends Component {
     return (
       <Container>
         <View style={{ padding: 20 }}>
-          <Text note>
+          <Text style={{ textAlign: 'center' }} note>
             { this.props.t('CHECKOUT_LOGIN_DISCLAIMER') }
           </Text>
         </View>
         <Content padder>
           { this.renderMessage() }
-          <LoginForm
+          <AuthenticateForm
             client={ this.props.httpClient }
             onRequestStart={ this.onRequestStart.bind(this) }
             onRequestEnd={ this.onRequestEnd.bind(this) }
             onLoginSuccess={ this.onLoginSuccess.bind(this) }
-            onLoginFail={ this.onLoginFail.bind(this) } />
+            onLoginFail={ this.onLoginFail.bind(this) }
+            onRegisterSuccess={ this.onLoginSuccess.bind(this) }
+            onRegisterFail={ this.onLoginFail.bind(this) } />
         </Content>
-        <LoaderOverlay loading={ this.state.loading } />
       </Container>
     )
   }
@@ -95,6 +94,7 @@ function mapStateToProps(state, ownProps) {
 function mapDispatchToProps(dispatch) {
   return {
     login: user => dispatch(login(user)),
+    setLoading: isLoading => dispatch(setLoading(isLoading)),
   }
 }
 
