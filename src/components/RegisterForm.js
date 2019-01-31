@@ -144,20 +144,25 @@ class RegisterForm extends React.Component {
       password: '',
       passwordConfirmation: '',
       error: false,
+      validationErrors: {}
     }
   }
 
   onSubmit() {
     this.setState({ message: '' })
 
-    const { error, ...data } = this.state
+    const { error, validationErrors, ...data } = this.state
     const { client, onRequestStart, onRequestEnd, onRegisterSuccess, onRegisterFail } = this.props
 
-    const validationErrors = validate(data, constraints, { fullMessages: false })
+    const newValidationErrors = validate(data, constraints, { fullMessages: false })
 
-    if (validationErrors) {
-      this.setState({ error: true })
-      return onRegisterFail(Object.values(validationErrors)[0])
+    if (newValidationErrors) {
+      this.setState({
+        error: true,
+        validationErrors: newValidationErrors
+      })
+
+      return onRegisterFail(Object.values(newValidationErrors)[0])
     }
 
     onRequestStart()
@@ -181,21 +186,28 @@ class RegisterForm extends React.Component {
 
   render() {
 
+    const { validationErrors } = this.state
+
     return (
       <View>
         <Form>
-          { inputs.map(input => (
-            <Item key={ input.name } stackedLabel>
-              <Label>{ input.label }</Label>
-              <Input
-                autoCorrect={ false }
-                autoCapitalize="none"
-                style={{ height: 40 }}
-                onChangeText={ value => this.setState({ [input.name]: value }) }
-                { ...input.props }
-              />
-            </Item>
-          )) }
+          { inputs.map(input => {
+
+            const itemProps = validationErrors.hasOwnProperty(input.name) ? { error: true } : {}
+
+            return (
+              <Item key={ input.name } stackedLabel { ...itemProps }>
+                <Label>{ input.label }</Label>
+                <Input
+                  autoCorrect={ false }
+                  autoCapitalize="none"
+                  style={{ height: 40 }}
+                  onChangeText={ value => this.setState({ [input.name]: value }) }
+                  { ...input.props }
+                />
+              </Item>
+            )
+          }) }
         </Form>
         <View style={{ marginTop: 20 }}>
           <Button block onPress={() => this.onSubmit()}>
