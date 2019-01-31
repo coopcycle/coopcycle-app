@@ -4,8 +4,8 @@ import { Form, Item, Input, Label, Button, Text } from 'native-base'
 import { translate } from 'react-i18next'
 import validate from 'validate.js'
 import { PhoneNumberUtil } from 'google-libphonenumber'
+import _ from 'lodash'
 import i18n from '../i18n'
-
 
 const phoneUtil = PhoneNumberUtil.getInstance()
 
@@ -34,57 +34,103 @@ validate.validators.matches = (value, options, key, attributes) =>
     ? null
     : options.message
 
-
-class RegisterForm extends React.Component {
-  static schema = {
-    givenName: {
-      presence: { message: i18n.t('INVALID_GIVEN_NAME') },
-      length: {
-        minimum: 1,
-        message: i18n.t('INVALID_GIVEN_NAME'),
-      },
+const inputs = [
+  {
+    name: 'email',
+    label: i18n.t('EMAIL'),
+    props: {
+      keyboardType: 'email-address',
     },
-    familyName: {
-      presence: { message: i18n.t('INVALID_FAMILY_NAME') },
-      length: {
-        minimum: 1,
-        message: i18n.t('INVALID_FAMILY_NAME'),
-      },
-    },
-    email: {
+    constraints: {
       presence: { message: i18n.t('INVALID_EMAIL') },
       email: {
         message: i18n.t('INVALID_EMAIL'),
       },
-    },
-    telephone: {
-      presence: { message: i18n.t('INVALID_PHONE_NUMBER') },
-      phoneNumber: {
-        message: i18n.t('INVALID_PHONE_NUMBER'),
-      },
-    },
-    username: {
+    }
+  },
+  {
+    name: 'username',
+    label: i18n.t('USERNAME'),
+    constraints: {
       presence: { message: i18n.t('INVALID_USERNAME') },
       length: {
         minimum: 2,
         message: i18n.t('INVALID_USERNAME'),
       },
+    }
+  },
+  {
+    name: 'password',
+    label: i18n.t('PASSWORD'),
+    props: {
+      secureTextEntry: true,
     },
-    password: {
+    constraints: {
       presence: { message: i18n.t('INVALID_PASSWORD') },
       length: {
         minimum: 8,
         message: i18n.t('INVALID_PASSWORD'),
       },
+    }
+  },
+  {
+    name: 'passwordConfirmation',
+    label: i18n.t('CONFIRM_PASSWORD'),
+    props: {
+      secureTextEntry: true,
     },
-    passwordConfirmation: {
+    constraints: {
       presence: { message: i18n.t('INVALID_PASSWORD_CONFIRMATION') },
       matches: {
         key: 'password',
         message: i18n.t('INVALID_PASSWORD_CONFIRMATION'),
       }
+    }
+  },
+  {
+    name: 'givenName',
+    label: i18n.t('GIVEN_NAME'),
+    constraints: {
+      presence: { message: i18n.t('INVALID_GIVEN_NAME') },
+      length: {
+        minimum: 1,
+        message: i18n.t('INVALID_GIVEN_NAME'),
+      }
+    }
+  },
+  {
+    name: 'familyName',
+    label: i18n.t('FAMILY_NAME'),
+    constraints: {
+      presence: { message: i18n.t('INVALID_FAMILY_NAME') },
+      length: {
+        minimum: 1,
+        message: i18n.t('INVALID_FAMILY_NAME'),
+      }
+    }
+  },
+  {
+    name: 'telephone',
+    label: i18n.t('PHONE_NUMBER'),
+    props: {
+      keyboardType: 'phone-pad',
     },
+    constraints: {
+      presence: { message: i18n.t('INVALID_PHONE_NUMBER') },
+      phoneNumber: {
+        message: i18n.t('INVALID_PHONE_NUMBER'),
+      },
+    }
   }
+]
+
+const constraints = _.reduce(
+  inputs,
+  (acc, { name, constraints }) => ({ ...acc, [name]: constraints }),
+  {}
+)
+
+class RegisterForm extends React.Component {
 
   constructor(props) {
     super(props)
@@ -107,7 +153,7 @@ class RegisterForm extends React.Component {
     const { error, ...data } = this.state
     const { client, onRequestStart, onRequestEnd, onRegisterSuccess, onRegisterFail } = this.props
 
-    const validationErrors = validate(data, RegisterForm.schema, { fullMessages: false })
+    const validationErrors = validate(data, constraints, { fullMessages: false })
 
     if (validationErrors) {
       this.setState({ error: true })
@@ -129,83 +175,27 @@ class RegisterForm extends React.Component {
 
         } else {
           onRegisterFail(this.props.t('TRY_LATER'))
-
         }
-
       })
   }
 
   render() {
+
     return (
       <View>
         <Form>
-          <Item stackedLabel>
-            <Label>{this.props.t('EMAIL')}</Label>
-            <Input
-              autoCorrect={false}
-              autoCapitalize="none"
-              keyboardType="email-address"
-              onChangeText={email => this.setState({ email })}
-              style={{ height: 40 }}
-            />
-          </Item>
-          <Item stackedLabel>
-            <Label>{this.props.t('USERNAME')}</Label>
-            <Input
-              autoCorrect={false}
-              autoCapitalize="none"
-              onChangeText={username => this.setState({ username })}
-              style={{ height: 40 }}
-            />
-          </Item>
-          <Item stackedLabel>
-            <Label>{this.props.t('PASSWORD')}</Label>
-            <Input
-              autoCorrect={false}
-              autoCapitalize="none"
-              secureTextEntry={true}
-              onChangeText={password => this.setState({ password })}
-              style={{ height: 40 }}
-            />
-          </Item>
-          <Item stackedLabel>
-            <Label>{this.props.t('CONFIRM_PASSWORD')}</Label>
-            <Input
-              autoCorrect={false}
-              autoCapitalize="none"
-              secureTextEntry={true}
-              onChangeText={passwordConfirmation => this.setState({ passwordConfirmation })}
-              style={{ height: 40 }}
-            />
-          </Item>
-          <Item stackedLabel>
-            <Label>{this.props.t('GIVEN_NAME')}</Label>
-            <Input
-              autoCorrect={false}
-              autoCapitalize="none"
-              onChangeText={givenName => this.setState({ givenName })}
-              style={{ height: 40 }}
-            />
-          </Item>
-          <Item stackedLabel>
-            <Label>{this.props.t('FAMILY_NAME')}</Label>
-            <Input
-              autoCorrect={false}
-              autoCapitalize="none"
-              onChangeText={familyName => this.setState({ familyName })}
-              style={{ height: 40 }}
-            />
-          </Item>
-          <Item stackedLabel>
-            <Label>{this.props.t('PHONE_NUMBER')}</Label>
-            <Input
-              autoCorrect={false}
-              autoCapitalize="none"
-              keyboardType="phone-pad"
-              onChangeText={telephone => this.setState({ telephone })}
-              style={{ height: 40 }}
-            />
-          </Item>
+          { inputs.map(input => (
+            <Item key={ input.name } stackedLabel>
+              <Label>{ input.label }</Label>
+              <Input
+                autoCorrect={ false }
+                autoCapitalize="none"
+                style={{ height: 40 }}
+                onChangeText={ value => this.setState({ [input.name]: value }) }
+                { ...input.props }
+              />
+            </Item>
+          )) }
         </Form>
         <View style={{ marginTop: 20 }}>
           <Button block onPress={() => this.onSubmit()}>
@@ -216,6 +206,5 @@ class RegisterForm extends React.Component {
     )
   }
 }
-
 
 export default translate()(RegisterForm)
