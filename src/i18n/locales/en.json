@@ -40,6 +40,7 @@
     "EDIT": "Edit",
     "NAME": "Name",
     "ADDRESS_DESCRIPTION": "Instructions",
+    "ADDRESS_DESCRIPTION_PLACEHOLDER": "2nd door on the left…",
     "TELEPHONE": "Telephone",
     "CHANGE_QUANT": "Change quantity",
     "TOTAL_ITEMS": "Total items",

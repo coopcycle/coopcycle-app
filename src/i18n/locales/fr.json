@@ -40,6 +40,7 @@
     "EDIT": "Modifier",
     "NAME": "Nom",
     "ADDRESS_DESCRIPTION": "Instructions",
+    "ADDRESS_DESCRIPTION_PLACEHOLDER": "2ème porte à gauche…",
     "TELEPHONE": "Téléphone",
     "CHANGE_QUANT": "Modifier la quantité",
     "TOTAL_ITEMS": "Total articles",

@@ -140,6 +140,7 @@ class CartAddressPage extends Component {
             multiline
             onChangeText={ this._onDescriptionChange.bind(this) }
             defaultValue={ address && address.description }
+            placeholder={ this.props.t('ADDRESS_DESCRIPTION_PLACEHOLDER') }
             style={{ height: 5 * 25 }} />
         </Item>
 
