@@ -66,10 +66,6 @@ class AppUser {
     return this.username && this.token;
   }
 
-  hasCredentials() {
-    return this.token !== null;
-  }
-
   static load() {
     return new Promise((resolve, reject) => {
       try {

@@ -88,7 +88,7 @@ function navigateToHome(dispatch, getState) {
   }
 }
 
-export function bootstrap(baseURL, user, navigation) {
+export function bootstrap(baseURL, user) {
   return function (dispatch, getState) {
     const httpClient = API.createClient(baseURL, user)
 
