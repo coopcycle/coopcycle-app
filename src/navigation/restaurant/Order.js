@@ -231,7 +231,6 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state, ownProps) {
   return {
-    user: state.app.user,
     httpClient: state.app.httpClient,
     order: state.restaurant.order || ownProps.navigation.state.params.order,
   }

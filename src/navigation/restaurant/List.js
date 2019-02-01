@@ -74,8 +74,6 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
   return {
-    user: state.app.user,
-    httpClient: state.app.httpClient,
     restaurants: state.restaurant.myRestaurants,
   }
 }

@@ -61,9 +61,6 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
   return {
-    user: state.app.user,
-    httpClient: state.app.httpClient,
-    loading: state.restaurant.isFetching,
     date: state.restaurant.date
   }
 }
