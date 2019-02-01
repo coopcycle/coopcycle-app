@@ -21,6 +21,7 @@ export default createDrawerNavigator({
   },
   AccountNav: {
     screen: AccountNavigator,
+    path: 'account',
     navigationOptions: ({ navigation }) => ({
       drawerLabel: i18n.t('MY_ACCOUNT'),
     })

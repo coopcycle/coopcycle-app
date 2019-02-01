@@ -43,7 +43,10 @@ const RootNavigator = createAppContainer(createSwitchNavigator(
   {
     Loading: navigation.Loading,
     ConfigureServer: navigation.ConfigureServer,
-    App: navigators.DrawerNavigator,
+    App: {
+      screen: navigators.DrawerNavigator,
+      path: '' // This is needed to start deep linking from here
+    },
   },
   {
     initialRouteName: 'Loading',
@@ -72,6 +75,8 @@ function onNavigationStateChange(prevState, currentState) {
   }
 }
 
+const prefix = 'coopcycle://'
+
 class App extends Component {
 
   render() {
@@ -83,6 +88,7 @@ class App extends Component {
             <Root>
               <Spinner />
               <RootNavigator
+                uriPrefix={ prefix }
                 ref={ ref => { NavigationHolder.setTopLevelNavigator(ref) } }
                 onNavigationStateChange={ onNavigationStateChange } />
               <DropdownAlert ref={ ref => { DropdownHolder.setDropdown(ref) } } />
