@@ -20,8 +20,32 @@
 	<string>0.12.0</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>coopcycle</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>coopcycle</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>34</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>comgooglemaps</string>
+		<string>citymapper</string>
+		<string>uber</string>
+		<string>lyft</string>
+		<string>transit</string>
+		<string>waze</string>
+		<string>yandexnavi</string>
+		<string>moovit</string>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -35,8 +59,14 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>App requires background tracking</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>App requires background tracking</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>App requires background tracking</string>
+	<key>NSMotionUsageDescription</key>
+	<string>App requires motion tracking</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Entypo.ttf</string>
@@ -76,22 +106,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>App requires background tracking</string>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>App requires background tracking</string>
-	<key>NSMotionUsageDescription</key>
-	<string>App requires motion tracking</string>
-	<key>LSApplicationQueriesSchemes</key>
-	<array>
-		<string>comgooglemaps</string>
-		<string>citymapper</string>
-		<string>uber</string>
-		<string>lyft</string>
-		<string>transit</string>
-		<string>waze</string>
-		<string>yandexnavi</string>
-		<string>moovit</string>
-	</array>
 </dict>
 </plist>
