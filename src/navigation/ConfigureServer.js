@@ -5,9 +5,9 @@ import {
   StyleSheet
 } from 'react-native'
 import {
-  Container, Header, Title, Content,
+  Container, Content,
   Left, Right, Body,
-  Button, Text, Icon, List, ListItem, Thumbnail,
+  Button, Text, Icon, List, ListItem,
   Form, Item, Input, Label,
   Card, CardItem,
   Toast
@@ -112,13 +112,6 @@ class ConfigureServer extends Component {
 
     return (
       <Container>
-        <Header>
-          <Left />
-          <Body>
-            <Title>CoopCycle</Title>
-          </Body>
-          <Right />
-        </Header>
         <Content>
           <View style={{ marginHorizontal: 10, marginTop: 20 }}>
             <Card>
