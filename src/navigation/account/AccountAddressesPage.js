@@ -7,8 +7,6 @@ import {
 import { connect } from 'react-redux'
 import { translate } from 'react-i18next'
 
-const AppUser = require('../../AppUser');
-
 class AccountAddressesPage extends Component {
   constructor(props) {
     super(props);

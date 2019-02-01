@@ -19,8 +19,6 @@ import CartFooter from './checkout/components/CartFooter'
 import { formatPrice } from '../Cart'
 import { removeItem } from '../redux/Checkout/actions'
 
-const AppUser = require('../AppUser');
-
 class CartPage extends Component {
 
   constructor(props) {
@@ -54,16 +52,14 @@ class CartPage extends Component {
 
   onSubmit() {
 
+    const { user } = this.props
     const { navigate } = this.props.navigation
 
-    AppUser.load()
-      .then((user) => {
-        if (user.hasCredentials()) {
-          navigate('CartAddress')
-        } else {
-          navigate('CheckoutLogin')
-        }
-      });
+    if (user && user.isAuthenticated()) {
+      navigate('CartAddress')
+    } else {
+      navigate('CheckoutLogin')
+    }
   }
 
   renderTotal() {
@@ -137,6 +133,7 @@ function mapStateToProps(state) {
   return {
     cart: state.checkout.cart,
     httpClient: state.app.httpClient,
+    user: state.app.user,
   }
 }
 
