@@ -141,11 +141,15 @@ Client.prototype.register = function (data) {
   return register(this.httpBaseURL, data)
     .then((credentials) => {
 
+      const enabled =
+        credentials.hasOwnProperty('enabled') ? credentials.enabled : true
+
       Object.assign(this.model, {
         username: data.username,
         token: credentials.token,
         refreshToken: credentials.refresh_token,
         roles: credentials.roles,
+        enabled
       })
 
       return this.model.save()
@@ -156,11 +160,15 @@ Client.prototype.login = function(username, password) {
   return login(this.httpBaseURL, username, password)
     .then((credentials) => {
 
+      const enabled =
+        credentials.hasOwnProperty('enabled') ? credentials.enabled : true
+
       Object.assign(this.model, {
         username: username,
         token: credentials.token,
         refreshToken: credentials.refresh_token,
         roles: credentials.roles,
+        enabled
       });
 
       return this.model.save();

@@ -6,11 +6,12 @@ import _ from 'lodash';
 
 class AppUser {
 
-  constructor(username, token, roles, refreshToken) {
+  constructor(username, token, roles, refreshToken, enabled = true) {
     this.username = username;
     this.token = token;
     this.roles = roles || [];
     this.refreshToken = refreshToken;
+    this.enabled = enabled;
   }
 
   save() {
@@ -21,6 +22,7 @@ class AppUser {
         token: this.token,
         roles: this.roles,
         refresh_token: this.refreshToken,
+        enabled: this.enabled,
       }
       try {
         AsyncStorage.setItem('@User', JSON.stringify(credentials)).then((error) => {
@@ -49,6 +51,7 @@ class AppUser {
               token: null,
               roles: [],
               refreshToken: null,
+              enabled: true,
             })
             resolve()
           })
@@ -75,13 +78,17 @@ class AppUser {
               return reject(error);
             }
 
-            var credentials = data ? JSON.parse(data) : {};
+            const credentials = data ? JSON.parse(data) : {};
 
-            var user = new AppUser(
+            const enabled =
+              credentials.hasOwnProperty('enabled') ? credentials.enabled : true
+
+            const user = new AppUser(
               credentials.username || null,
               credentials.token || null,
               credentials.roles || null,
-              credentials.refresh_token || null
+              credentials.refresh_token || null,
+              enabled
             );
 
             return resolve(user);
