@@ -146,6 +146,7 @@ Client.prototype.register = function (data) {
 
       Object.assign(this.model, {
         username: data.username,
+        email: data.email,
         token: credentials.token,
         refreshToken: credentials.refresh_token,
         roles: credentials.roles,
@@ -164,7 +165,8 @@ Client.prototype.login = function(username, password) {
         credentials.hasOwnProperty('enabled') ? credentials.enabled : true
 
       Object.assign(this.model, {
-        username: username,
+        username: credentials.username,
+        email: credentials.email,
         token: credentials.token,
         refreshToken: credentials.refresh_token,
         roles: credentials.roles,

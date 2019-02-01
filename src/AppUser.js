@@ -6,8 +6,9 @@ import _ from 'lodash';
 
 class AppUser {
 
-  constructor(username, token, roles, refreshToken, enabled = true) {
+  constructor(username, email, token, roles, refreshToken, enabled = true) {
     this.username = username;
+    this.email = email;
     this.token = token;
     this.roles = roles || [];
     this.refreshToken = refreshToken;
@@ -19,6 +20,7 @@ class AppUser {
     return new Promise((resolve, reject) => {
       var credentials = {
         username: this.username,
+        email: this.email,
         token: this.token,
         roles: this.roles,
         refresh_token: this.refreshToken,
@@ -48,6 +50,7 @@ class AppUser {
 
             Object.assign(this, {
               username: null,
+              email: null,
               token: null,
               roles: [],
               refreshToken: null,
@@ -82,9 +85,12 @@ class AppUser {
 
             const enabled =
               credentials.hasOwnProperty('enabled') ? credentials.enabled : true
+            const email =
+              credentials.hasOwnProperty('email') ? credentials.email : credentials.username
 
             const user = new AppUser(
               credentials.username || null,
+              email,
               credentials.token || null,
               credentials.roles || null,
               credentials.refresh_token || null,
