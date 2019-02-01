@@ -143,57 +143,40 @@ class RegisterForm extends React.Component {
       username: '',
       password: '',
       passwordConfirmation: '',
-      error: false,
-      validationErrors: {}
+      errors: {}
     }
   }
 
-  onSubmit() {
-    this.setState({ message: '' })
+  _onSubmit() {
 
-    const { error, validationErrors, ...data } = this.state
-    const { client, onRequestStart, onRequestEnd, onRegisterSuccess, onRegisterFail } = this.props
+    const { errors, ...data } = this.state
+    const newErrors = validate(data, constraints, { fullMessages: false })
 
-    const newValidationErrors = validate(data, constraints, { fullMessages: false })
-
-    if (newValidationErrors) {
+    if (newErrors) {
       this.setState({
-        error: true,
-        validationErrors: newValidationErrors
+        errors: newErrors
       })
 
-      return onRegisterFail(Object.values(newValidationErrors)[0])
+      // TODO Use first error message
+      // Object.values(newErrors)[0]
+
+      return
     }
 
-    onRequestStart()
-    client.register(data)
-      .then(user => {
-        onRequestEnd()
-        onRegisterSuccess(user)
-      })
-      .catch(err => {
-        onRequestEnd()
-
-        if (err.status && err.status === 400) {
-          this.setState({ error: true });
-          onRegisterFail(this.props.t('EMAIL_ALREADY_REGISTERED'));
-
-        } else {
-          onRegisterFail(this.props.t('TRY_LATER'))
-        }
-      })
+    this.props.onSubmit(data)
   }
 
   render() {
 
-    const { validationErrors } = this.state
+    const { errors } = this.state
 
     return (
       <View>
         <Form>
           { inputs.map(input => {
 
-            const itemProps = validationErrors.hasOwnProperty(input.name) ? { error: true } : {}
+            const itemProps =
+              errors.hasOwnProperty(input.name) ? { error: true } : {}
 
             return (
               <Item key={ input.name } stackedLabel { ...itemProps }>
@@ -210,7 +193,7 @@ class RegisterForm extends React.Component {
           }) }
         </Form>
         <View style={{ marginTop: 20 }}>
-          <Button block onPress={() => this.onSubmit()}>
+          <Button block onPress={ this._onSubmit.bind(this) }>
             <Text>{this.props.t('SUBMIT')}</Text>
           </Button>
         </View>

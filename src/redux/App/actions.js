@@ -1,6 +1,7 @@
 import { createAction } from 'redux-actions'
 import { AsyncStorage, Platform } from 'react-native'
 import BackgroundGeolocation from 'react-native-mauron85-background-geolocation'
+import { NavigationActions, StackActions } from 'react-navigation'
 import API from '../../API'
 import AppUser from '../../AppUser'
 import Preferences from '../../Preferences'
@@ -23,11 +24,16 @@ export const SET_USER = 'SET_USER'
 export const SET_CURRENT_ROUTE = 'SET_CURRENT_ROUTE'
 export const STORE_REMOTE_PUSH_TOKEN = 'STORE_REMOTE_PUSH_TOKEN'
 export const SAVE_REMOTE_PUSH_TOKEN = 'SAVE_REMOTE_PUSH_TOKEN'
-export const LOGIN = 'LOGIN'
-export const LOGOUT = 'LOGOUT'
+export const LOGIN = '@app/LOGIN'
+export const LOGOUT = '@app/LOGOUT'
 export const SET_LOADING = '@app/SET_LOADING'
 export const PUSH_NOTIFICATION = '@app/PUSH_NOTIFICATION'
 export const CLEAR_NOTIFICATIONS = '@app/CLEAR_NOTIFICATIONS'
+export const AUTHENTICATION_REQUEST = '@app/AUTHENTICATION_REQUEST'
+export const AUTHENTICATION_SUCCESS = '@app/AUTHENTICATION_SUCCESS'
+export const AUTHENTICATION_FAILURE = '@app/AUTHENTICATION_FAILURE'
+export const LOGOUT_SUCCESS = '@app/LOGOUT_SUCCESS'
+export const AUTHENTICATE = '@app/AUTHENTICATE'
 
 /*
  * Action Creators
@@ -37,6 +43,13 @@ export const setCurrentRoute = createAction(SET_CURRENT_ROUTE)
 export const setLoading = createAction(SET_LOADING)
 export const pushNotification = createAction(PUSH_NOTIFICATION, (event, params = {}) => ({ event, params }))
 export const clearNotifications = createAction(CLEAR_NOTIFICATIONS)
+
+export const authenticationRequest = createAction(AUTHENTICATION_REQUEST)
+export const authenticationSuccess = createAction(AUTHENTICATION_SUCCESS)
+export const authenticationFailure = createAction(AUTHENTICATION_FAILURE)
+
+export const logoutSuccess = createAction(LOGOUT_SUCCESS)
+export const authenticate = createAction(AUTHENTICATE)
 
 const _setHttpClient = createAction(SET_HTTP_CLIENT)
 const _setUser = createAction(SET_USER)
@@ -105,7 +118,10 @@ export function bootstrap(baseURL, user) {
     // Navigate to screen depending on user state
     if (user.isAuthenticated()) {
       httpClient.checkToken()
-        .then(() => navigateToHome(dispatch, getState))
+        .then(() => {
+          dispatch(authenticate())
+          navigateToHome(dispatch, getState)
+        })
         .catch(e => {
           user
             .logout()
@@ -149,23 +165,159 @@ export function setRemotePushToken(remotePushToken) {
   }
 }
 
-export function login(user, navigate = true) {
-  return function (dispatch, getState) {
+export function login(email, password, navigate = true) {
+
+  return (dispatch, getState) => {
+
+    const { app } = getState()
+    const { httpClient } = app
+
+    dispatch(authenticationRequest())
+
+    httpClient.login(email, password)
+      .then(user => {
+
+        dispatch(authenticationSuccess())
+
+        configureBackgroundGeolocation(httpClient, user)
+        saveRemotePushToken(dispatch, getState)
+
+        if (navigate) {
+          navigateToHome(dispatch, getState)
+        }
+
+      })
+      .catch(err => {
+
+        let message = i18n.t('TRY_LATER')
+        if (err.hasOwnProperty('code') && err.code === 401) {
+          message = i18n.t('INVALID_USER_PASS')
+        }
+
+        dispatch(authenticationFailure(message))
+
+      })
+  }
+}
+
+export function register(data) {
+
+  return (dispatch, getState) => {
+
+    const { app } = getState()
+    const { httpClient } = app
+
+    dispatch(authenticationRequest())
+
+    httpClient.register(data)
+      .then(user => {
+
+        // Registration may require email confirmation.
+        // If the user is enabled, we login immediately.
+        // otherwise we wait for confirmation (via deep linking)
+        if (user.enabled) {
+
+          dispatch(authenticationSuccess())
+
+          configureBackgroundGeolocation(httpClient, user)
+          saveRemotePushToken(dispatch, getState)
+
+        } else {
+
+          dispatch(setLoading(false))
+
+          // FIXME We shouldn't reset completely
+          // Maybe we need to use a SwitchNavigator for login/register?
+          const resetAction = StackActions.reset({
+            index: 0,
+            actions: [
+              NavigationActions.navigate({
+                routeName: 'AccountCheckEmail',
+                params: { email: user.email }
+              }),
+            ]
+          })
+          NavigationHolder.dispatch(resetAction)
+
+          // FIXME When using navigation, we can still go back to the filled form
+          // NavigationHolder.navigate('AccountCheckEmail', { email: user.email })
+        }
+
+      })
+      .catch(err => {
+
+        let message = i18n.t('TRY_LATER')
+        if (err.hasOwnProperty('status') && err.status === 400) {
+          message = i18n.t('EMAIL_ALREADY_REGISTERED')
+        }
+
+        dispatch(authenticationFailure(message))
+
+      })
+  }
+}
+
+export function confirmRegistration(token) {
+
+  return (dispatch, getState) => {
+
     const { app } = getState()
     const { httpClient, user } = app
 
-    configureBackgroundGeolocation(httpClient, user)
-    saveRemotePushToken(dispatch, getState)
+    dispatch(authenticationRequest())
 
-    if (navigate) {
-      navigateToHome(dispatch, getState)
-    }
+    httpClient.get(`/api/register/confirm/${token}`)
+      .then(credentials => {
+
+        console.log('USER', credentials)
+
+        Object.assign(user, {
+          username: credentials.username,
+          email: credentials.email,
+          token: credentials.token,
+          refreshToken: credentials.refresh_token,
+          roles: credentials.roles,
+          enabled: credentials.enabled,
+        })
+
+        user.save()
+          .then(() => {
+
+            dispatch(authenticationSuccess())
+
+            configureBackgroundGeolocation(httpClient, user)
+            saveRemotePushToken(dispatch, getState)
+
+            navigateToHome(dispatch, getState)
+
+          })
+      })
+      .catch(err => {
+        // TODO Say that the token is no valid
+      })
   }
 }
 
 export function logout() {
-  return function (dispatch, getState) {
 
+  return (dispatch, getState) => {
+
+    const { user } = getState().app
+
+    user.logout()
+      .then(() => {
+
+        dispatch(logoutSuccess())
+
+        const resetAction = StackActions.reset({
+          index: 0,
+          actions: [
+            NavigationActions.navigate({ routeName: 'AccountHome' }),
+          ]
+        })
+        NavigationHolder.dispatch(resetAction)
+
+      })
   }
 }
 

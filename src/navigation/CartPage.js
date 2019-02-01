@@ -52,10 +52,9 @@ class CartPage extends Component {
 
   onSubmit() {
 
-    const { user } = this.props
     const { navigate } = this.props.navigation
 
-    if (user && user.isAuthenticated()) {
+    if (this.props.isAuthenticated) {
       navigate('CartAddress')
     } else {
       navigate('CheckoutLogin')
@@ -132,8 +131,7 @@ const styles = StyleSheet.create({
 function mapStateToProps(state) {
   return {
     cart: state.checkout.cart,
-    httpClient: state.app.httpClient,
-    user: state.app.user,
+    isAuthenticated: state.app.isAuthenticated
   }
 }
 

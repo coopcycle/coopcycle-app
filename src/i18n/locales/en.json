@@ -199,6 +199,8 @@
     "ORDER_ACCEPTED": "Accepted",
     "ORDER_FULFILLED": "Fulfilled",
     "ORDER_NUMBER": "Order {{number}}",
-    "ADDRESS_NOT_PRECISE_ENOUGH": "This address is not precise enough"
+    "ADDRESS_NOT_PRECISE_ENOUGH": "This address is not precise enough",
+    "REGISTER_CHECK_EMAIL": "Activation",
+    "REGISTER_CHECK_EMAIL_DISCLAIMER": "An email has been sent to {{email}}. It contains an activation link you must click to activate your account."
   }
 }

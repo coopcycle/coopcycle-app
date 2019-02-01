@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
 import { StyleSheet, View } from 'react-native'
+import { connect } from 'react-redux'
 import { Button, Text } from 'native-base'
 import { translate } from 'react-i18next'
 
 import LoginForm from './LoginForm'
 import RegisterForm from './RegisterForm'
+import { login, register } from '../redux/App/actions'
 
 class AuthenticateForm extends Component {
 
@@ -22,21 +24,13 @@ class AuthenticateForm extends Component {
 
       return (
         <RegisterForm
-          client={ this.props.client }
-          onRequestStart={ this.props.onRequestStart }
-          onRequestEnd={ this.props.onRequestEnd }
-          onRegisterSuccess={ this.props.onRegisterSuccess }
-          onRegisterFail={ this.props.onRegisterFail } />
+          onSubmit={ data => this.props.register(data) } />
       )
     }
 
     return (
       <LoginForm
-        client={ this.props.client }
-        onRequestStart={ this.props.onRequestStart }
-        onRequestEnd={ this.props.onRequestEnd }
-        onLoginSuccess={ this.props.onLoginSuccess }
-        onLoginFail={ this.props.onLoginFail } />
+        onSubmit={ (email, password) => this.props.login(email, password, this.props.navigateAfterLogin) } />
     )
   }
 
@@ -69,4 +63,18 @@ const styles = StyleSheet.create({
   }
 })
 
-export default translate()(AuthenticateForm)
+function mapStateToProps(state) {
+
+  return {
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+
+  return {
+    login: (email, password, navigate) => dispatch(login(email, password, navigate)),
+    register: data => dispatch(register(data)),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(translate()(AuthenticateForm))

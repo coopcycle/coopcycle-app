@@ -37,6 +37,19 @@ export default createStackNavigator({
       title: i18n.t('MY_DETAILS'),
     })
   },
+  AccountCheckEmail: {
+    screen: navigation.AccountCheckEmail,
+    navigationOptions: ({ navigation }) => ({
+      title: i18n.t('REGISTER_CHECK_EMAIL'),
+    })
+  },
+  AccountRegisterConfirm: {
+    screen: navigation.AccountRegisterConfirm,
+    path: 'register/confirm/:token',
+    navigationOptions: ({ navigation }) => ({
+      title: i18n.t('REGISTER_CONFIRM'),
+    })
+  },
 }, {
   initialRouteKey: 'AccountHome',
   initialRouteName: 'AccountHome',

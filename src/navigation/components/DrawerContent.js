@@ -15,7 +15,7 @@ class DrawerContent extends Component {
 
   render() {
 
-    const { items, restaurants, user } = this.props
+    const { items, restaurants, user, isAuthenticated } = this.props
 
     const restaurantItems =
       _.filter(items, item => 'RestaurantNav' === item.routeName)
@@ -51,8 +51,6 @@ class DrawerContent extends Component {
     let adminSection = (
       <View />
     )
-
-    const isAuthenticated = user && user.isAuthenticated()
 
     if (isAuthenticated) {
 
@@ -161,6 +159,7 @@ function mapStateToProps(state) {
 
   return {
     user: state.app.user,
+    isAuthenticated: state.app.isAuthenticated,
     restaurants: state.restaurant.myRestaurants,
   }
 }

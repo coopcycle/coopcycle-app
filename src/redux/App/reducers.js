@@ -14,6 +14,11 @@ import {
   LOGOUT,
   PUSH_NOTIFICATION,
   CLEAR_NOTIFICATIONS,
+  AUTHENTICATION_REQUEST,
+  AUTHENTICATION_SUCCESS,
+  AUTHENTICATION_FAILURE,
+  LOGOUT_SUCCESS,
+  AUTHENTICATE,
 } from './actions'
 
 const initialState = {
@@ -26,6 +31,8 @@ const initialState = {
   remotePushTokenSaved: false,
   loading: false,
   notifications: [],
+  lastAuthenticationError: null,
+  isAuthenticated: false,
 }
 
 export default (state = initialState, action = {}) => {
@@ -89,6 +96,39 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         notifications: []
+      }
+
+    case AUTHENTICATION_REQUEST:
+      return {
+        ...state,
+        lastAuthenticationError: null,
+        loading: true,
+      }
+
+    case AUTHENTICATION_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        isAuthenticated: true,
+      }
+
+    case AUTHENTICATION_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        lastAuthenticationError: action.payload,
+      }
+
+    case LOGOUT_SUCCESS:
+      return {
+        ...state,
+        isAuthenticated: false,
+      }
+
+    case AUTHENTICATE:
+      return {
+        ...state,
+        isAuthenticated: true,
       }
 
     default:
