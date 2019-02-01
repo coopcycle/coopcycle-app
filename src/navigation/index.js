@@ -44,6 +44,8 @@ export default {
   AccountOrdersPage: require('./account/AccountOrdersPage'),
   AccountOrderPage: require('./account/Order'),
   AccountDetailsPage: require('./account/AccountDetailsPage'),
+  AccountCheckEmail: require('./account/CheckEmail'),
+  AccountRegisterConfirm: require('./account/RegisterConfirm'),
   CreditCardPage: require('./CreditCardPage'),
   DispatchUnassignedTasks,
   DispatchTaskLists,
