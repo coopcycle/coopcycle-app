@@ -9,49 +9,25 @@ import { connect } from 'react-redux'
 import { translate } from 'react-i18next'
 import _ from 'lodash'
 
-import AuthenticateForm from '../components/AuthenticateForm'
-import Settings from '../Settings'
-import { logout } from '../redux/App/actions'
+import Server from './components/Server'
+import { logout } from '../../redux/App/actions'
 
-class AccountPage extends Component {
+class AccountHome extends Component {
 
-  async resetServer() {
-
-    const { navigate } = this.props.navigation
-
-    await this.props.user.logout()
-    await Settings.removeServer()
-
-    navigate('ConfigureServer')
+  componentDidUpdate() {
+    if (!this.props.isAuthenticated) {
+      this.props.navigation.navigate('AccountNotAuthenticated')
+    }
   }
 
-  renderServer() {
-    return (
-      <View style={{ marginBottom: 15 }}>
-        <Text style={{ textAlign: 'center' }}>
-          {
-            [
-              this.props.t('CONNECTED_TO'),
-              ' ',
-              <Text key={3} style={{ fontWeight: 'bold' }}>{ this.props.baseURL }</Text>
-            ]
-          }
-        </Text>
-        <Button block transparent onPress={ this.resetServer.bind(this) }>
-          <Text>{this.props.t('CHANGE_SERVER')}</Text>
-        </Button>
-      </View>
-    )
-  }
-
-  renderAuthenticated() {
+  render() {
 
     const { navigate } = this.props.navigation
 
     return (
       <Container>
         <Content padder>
-          { this.renderServer() }
+          <Server />
           <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', marginBottom: 15 }}>
             <Icon name="person" />
             <Text style={{ textAlign: 'center', fontWeight: 'bold', fontSize: 18 }}>
@@ -93,34 +69,6 @@ class AccountPage extends Component {
       </Container>
     )
   }
-
-  renderMessage() {
-    if (this.props.message) {
-      return (
-        <View style={styles.message}>
-          <Text style={{ textAlign: 'center' }}>{this.props.message}</Text>
-        </View>
-      )
-    }
-  }
-
-  render() {
-
-    if (this.props.isAuthenticated) {
-
-      return this.renderAuthenticated()
-    }
-
-    return (
-      <Container>
-        <Content padder>
-          { this.renderServer() }
-          { this.renderMessage() }
-          <AuthenticateForm navigateAfterLogin={ true } />
-        </Content>
-      </Container>
-    )
-  }
 }
 
 const styles = StyleSheet.create({
@@ -129,7 +77,6 @@ const styles = StyleSheet.create({
 function mapStateToProps(state) {
 
   return {
-    baseURL: state.app.baseURL,
     user: state.app.user,
     message: state.app.lastAuthenticationError,
     isAuthenticated: state.app.isAuthenticated,
@@ -143,4 +90,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(translate()(AccountPage))
+module.exports = connect(mapStateToProps, mapDispatchToProps)(translate()(AccountHome))

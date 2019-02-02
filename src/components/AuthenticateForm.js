@@ -6,7 +6,6 @@ import { translate } from 'react-i18next'
 
 import LoginForm from './LoginForm'
 import RegisterForm from './RegisterForm'
-import { login, register } from '../redux/App/actions'
 
 class AuthenticateForm extends Component {
 
@@ -24,13 +23,13 @@ class AuthenticateForm extends Component {
 
       return (
         <RegisterForm
-          onSubmit={ data => this.props.register(data) } />
+          onSubmit={ data => this.props.onRegister(data) } />
       )
     }
 
     return (
       <LoginForm
-        onSubmit={ (email, password) => this.props.login(email, password, this.props.navigateAfterLogin) } />
+        onSubmit={ (email, password) => this.props.onLogin(email, password) } />
     )
   }
 
@@ -63,18 +62,4 @@ const styles = StyleSheet.create({
   }
 })
 
-function mapStateToProps(state) {
-
-  return {
-  }
-}
-
-function mapDispatchToProps(dispatch) {
-
-  return {
-    login: (email, password, navigate) => dispatch(login(email, password, navigate)),
-    register: data => dispatch(register(data)),
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(translate()(AuthenticateForm))
+export default translate()(AuthenticateForm)

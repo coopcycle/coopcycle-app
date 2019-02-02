@@ -1,28 +1,37 @@
 import React, { Component } from 'react'
 import { StyleSheet, View } from 'react-native'
-import { Container, Content, Text, Button, Icon } from 'native-base'
-import { StackActions } from 'react-navigation'
-import { translate } from 'react-i18next'
+import {
+  Container, Header, Content,
+  Left, Right, Body,
+  List, ListItem, Icon, Text, Button
+} from 'native-base'
 import { connect } from 'react-redux'
+import { translate } from 'react-i18next'
+import _ from 'lodash'
 
+import Server from './components/Server'
 import AuthenticateForm from '../../components/AuthenticateForm'
 import { login, register } from '../../redux/App/actions'
 
-class Login extends Component {
+class LoginRegister extends Component {
 
-  componentDidUpdate(prevProps) {
-    if (this.props.isAuthenticated !== prevProps.isAuthenticated && true === this.props.isAuthenticated) {
-      this.props.navigation.dispatch(StackActions.pop({ n: 1 }))
-      this.props.navigation.navigate('CartAddress')
+  componentDidUpdate() {
+    if (this.props.isAuthenticated) {
+      this.props.navigation.navigate('AccountAuthenticated')
+    }
+  }
+
+  componentDidMount() {
+    if (this.props.isAuthenticated) {
+      this.props.navigation.navigate('AccountAuthenticated')
     }
   }
 
   renderMessage() {
     if (this.props.message) {
-
       return (
-        <View style={ styles.message }>
-          <Text style={{ textAlign: 'center' }}>{ this.props.message }</Text>
+        <View style={styles.message}>
+          <Text style={{ textAlign: 'center' }}>{this.props.message}</Text>
         </View>
       )
     }
@@ -32,12 +41,8 @@ class Login extends Component {
 
     return (
       <Container>
-        <View style={{ padding: 20 }}>
-          <Text style={{ textAlign: 'center' }} note>
-            { this.props.t('CHECKOUT_LOGIN_DISCLAIMER') }
-          </Text>
-        </View>
         <Content padder>
+          <Server />
           { this.renderMessage() }
           <AuthenticateForm
             onLogin={ (email, password) => this.props.login(email, password, false) }
@@ -49,10 +54,6 @@ class Login extends Component {
 }
 
 const styles = StyleSheet.create({
-  message: {
-    alignItems: 'center',
-    padding: 20
-  }
 })
 
 function mapStateToProps(state) {
@@ -71,4 +72,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(translate()(Login))
+module.exports = connect(mapStateToProps, mapDispatchToProps)(translate()(LoginRegister))

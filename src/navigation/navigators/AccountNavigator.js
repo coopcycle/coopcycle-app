@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
-import { createStackNavigator } from 'react-navigation'
+import { createStackNavigator, createSwitchNavigator } from 'react-navigation'
 
 import navigation, { defaultNavigationOptions, headerLeft } from '..'
 import i18n from '../../i18n'
 
-export default createStackNavigator({
+const AuthenticatedStack = createStackNavigator({
   AccountHome: {
-    screen: navigation.AccountPage,
+    screen: navigation.AccountHome,
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('MY_ACCOUNT'),
       headerLeft: headerLeft(navigation),
@@ -37,12 +37,6 @@ export default createStackNavigator({
       title: i18n.t('MY_DETAILS'),
     })
   },
-  AccountCheckEmail: {
-    screen: navigation.AccountCheckEmail,
-    navigationOptions: ({ navigation }) => ({
-      title: i18n.t('REGISTER_CHECK_EMAIL'),
-    })
-  },
   AccountRegisterConfirm: {
     screen: navigation.AccountRegisterConfirm,
     path: 'register/confirm/:token',
@@ -54,4 +48,31 @@ export default createStackNavigator({
   initialRouteKey: 'AccountHome',
   initialRouteName: 'AccountHome',
   defaultNavigationOptions
+})
+
+const NotAuthenticatedStack = createStackNavigator({
+  AccountLoginRegister: {
+    screen: navigation.AccountLoginRegister,
+    navigationOptions: ({ navigation }) => ({
+      title: i18n.t('MY_ACCOUNT'),
+      headerLeft: headerLeft(navigation),
+      ...defaultNavigationOptions
+    })
+  },
+  AccountCheckEmail: {
+    screen: navigation.AccountCheckEmail,
+    navigationOptions: ({ navigation }) => ({
+      title: i18n.t('REGISTER_CHECK_EMAIL'),
+    })
+  },
+}, {
+  initialRouteName: 'AccountLoginRegister',
+  defaultNavigationOptions
+})
+
+export default createSwitchNavigator({
+  AccountNotAuthenticated: NotAuthenticatedStack,
+  AccountAuthenticated: AuthenticatedStack,
+}, {
+  initialRouteName: 'AccountNotAuthenticated',
 })

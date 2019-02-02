@@ -4,6 +4,7 @@ import BackgroundGeolocation from 'react-native-mauron85-background-geolocation'
 import { NavigationActions, StackActions } from 'react-navigation'
 import API from '../../API'
 import AppUser from '../../AppUser'
+import Settings from '../../Settings'
 import Preferences from '../../Preferences'
 import { setTasksFilter, setKeepAwake } from '../Courier/taskActions'
 import {
@@ -226,21 +227,8 @@ export function register(data) {
 
           dispatch(setLoading(false))
 
-          // FIXME We shouldn't reset completely
-          // Maybe we need to use a SwitchNavigator for login/register?
-          const resetAction = StackActions.reset({
-            index: 0,
-            actions: [
-              NavigationActions.navigate({
-                routeName: 'AccountCheckEmail',
-                params: { email: user.email }
-              }),
-            ]
-          })
-          NavigationHolder.dispatch(resetAction)
-
           // FIXME When using navigation, we can still go back to the filled form
-          // NavigationHolder.navigate('AccountCheckEmail', { email: user.email })
+          NavigationHolder.navigate('AccountCheckEmail', { email: user.email })
         }
 
       })
@@ -305,19 +293,20 @@ export function logout() {
     const { user } = getState().app
 
     user.logout()
-      .then(() => {
+      .then(() => dispatch(logoutSuccess()))
+  }
+}
 
-        dispatch(logoutSuccess())
+export function resetServer() {
 
-        const resetAction = StackActions.reset({
-          index: 0,
-          actions: [
-            NavigationActions.navigate({ routeName: 'AccountHome' }),
-          ]
-        })
-        NavigationHolder.dispatch(resetAction)
+  return async (dispatch, getState) => {
 
-      })
+      const { user } = getState().app
+
+      await user.logout()
+      await Settings.removeServer()
+
+      NavigationHolder.navigate('ConfigureServer')
   }
 }
 
