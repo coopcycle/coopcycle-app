@@ -35,6 +35,7 @@ export const AUTHENTICATION_SUCCESS = '@app/AUTHENTICATION_SUCCESS'
 export const AUTHENTICATION_FAILURE = '@app/AUTHENTICATION_FAILURE'
 export const LOGOUT_SUCCESS = '@app/LOGOUT_SUCCESS'
 export const AUTHENTICATE = '@app/AUTHENTICATE'
+export const RESUME_CHECKOUT_AFTER_ACTIVATION = '@app/RESUME_CHECKOUT_AFTER_ACTIVATION'
 
 /*
  * Action Creators
@@ -55,6 +56,8 @@ export const authenticate = createAction(AUTHENTICATE)
 const _setHttpClient = createAction(SET_HTTP_CLIENT)
 const _setUser = createAction(SET_USER)
 const _setBaseURL = createAction(SET_BASE_URL)
+
+const _resumeCheckoutAfterActivation = createAction(RESUME_CHECKOUT_AFTER_ACTIVATION)
 
 const _storeRemotePushToken = createAction(STORE_REMOTE_PUSH_TOKEN)
 const _saveRemotePushToken = createAction(SAVE_REMOTE_PUSH_TOKEN)
@@ -201,7 +204,7 @@ export function login(email, password, navigate = true) {
   }
 }
 
-export function register(data, checkEmailRouteName = 'AccountCheckEmail', loginRouteName = 'AccountLoginRegister') {
+export function register(data, checkEmailRouteName, loginRouteName, resumeCheckoutAfterActivation = false) {
 
   return (dispatch, getState) => {
 
@@ -226,6 +229,7 @@ export function register(data, checkEmailRouteName = 'AccountCheckEmail', loginR
         } else {
 
           dispatch(setLoading(false))
+          dispatch(_resumeCheckoutAfterActivation(resumeCheckoutAfterActivation))
 
           // FIXME When using navigation, we can still go back to the filled form
           NavigationHolder.navigate(checkEmailRouteName, { email: user.email, loginRouteName })
@@ -250,14 +254,12 @@ export function confirmRegistration(token) {
   return (dispatch, getState) => {
 
     const { app } = getState()
-    const { httpClient, user } = app
+    const { httpClient, user, resumeCheckoutAfterActivation } = app
 
     dispatch(authenticationRequest())
 
     httpClient.confirmRegistration(token)
       .then(credentials => {
-
-        console.log('USER', credentials)
 
         Object.assign(user, {
           username: credentials.username,
@@ -276,7 +278,11 @@ export function confirmRegistration(token) {
             configureBackgroundGeolocation(httpClient, user)
             saveRemotePushToken(dispatch, getState)
 
-            navigateToHome(dispatch, getState)
+            if (resumeCheckoutAfterActivation) {
+              dispatch(_resumeCheckoutAfterActivation(false))
+            } else {
+              navigateToHome(dispatch, getState)
+            }
 
           })
       })

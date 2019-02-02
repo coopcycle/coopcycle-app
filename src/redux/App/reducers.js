@@ -19,6 +19,7 @@ import {
   AUTHENTICATION_FAILURE,
   LOGOUT_SUCCESS,
   AUTHENTICATE,
+  RESUME_CHECKOUT_AFTER_ACTIVATION,
 } from './actions'
 
 const initialState = {
@@ -33,6 +34,7 @@ const initialState = {
   notifications: [],
   lastAuthenticationError: null,
   isAuthenticated: false,
+  resumeCheckoutAfterActivation: false,
 }
 
 export default (state = initialState, action = {}) => {
@@ -129,6 +131,12 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         isAuthenticated: true,
+      }
+
+    case RESUME_CHECKOUT_AFTER_ACTIVATION:
+      return {
+        ...state,
+        resumeCheckoutAfterActivation: action.payload,
       }
 
     default:

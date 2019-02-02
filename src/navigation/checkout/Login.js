@@ -67,7 +67,7 @@ function mapDispatchToProps(dispatch) {
 
   return {
     login: (email, password, navigate) => dispatch(login(email, password, navigate)),
-    register: data => dispatch(register(data, 'CheckoutCheckEmail', 'CheckoutLoginRegister')),
+    register: data => dispatch(register(data, 'CheckoutCheckEmail', 'CheckoutLoginRegister', true)),
   }
 }
 
