@@ -201,7 +201,7 @@ export function login(email, password, navigate = true) {
   }
 }
 
-export function register(data) {
+export function register(data, checkEmailRouteName = 'AccountCheckEmail', loginRouteName = 'AccountLoginRegister') {
 
   return (dispatch, getState) => {
 
@@ -228,7 +228,7 @@ export function register(data) {
           dispatch(setLoading(false))
 
           // FIXME When using navigation, we can still go back to the filled form
-          NavigationHolder.navigate('AccountCheckEmail', { email: user.email })
+          NavigationHolder.navigate(checkEmailRouteName, { email: user.email, loginRouteName })
         }
 
       })

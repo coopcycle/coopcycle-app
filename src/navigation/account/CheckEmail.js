@@ -12,11 +12,15 @@ import { translate } from 'react-i18next'
 class CheckEmail extends Component {
 
   _onPressLogin() {
+
+    const loginRouteName =
+      this.props.navigation.getParam('loginRouteName', 'AccountLoginRegister')
+
     const resetAction = StackActions.reset({
       index: 0,
       actions: [
         NavigationActions.navigate({
-          routeName: 'AccountLoginRegister',
+          routeName: loginRouteName,
         }),
       ]
     })

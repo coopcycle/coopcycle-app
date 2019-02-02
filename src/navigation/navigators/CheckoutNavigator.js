@@ -50,6 +50,28 @@ const MainNavigator = createStackNavigator({
   defaultNavigationOptions
 })
 
+const LoginRegisterStack = createStackNavigator({
+  CheckoutLoginRegister: {
+    screen: navigation.CheckoutLogin,
+    navigationOptions: ({ navigation }) => ({
+      // Use header = null to get rid of the header
+      // The screen's header will be used
+      header: null,
+    })
+  },
+  CheckoutCheckEmail: {
+    screen: navigation.AccountCheckEmail,
+    navigationOptions: ({ navigation }) => ({
+      // Use header = null to get rid of the header
+      // The screen's header will be used
+      header: null,
+    })
+  }
+}, {
+  initialRouteName: 'CheckoutLoginRegister',
+  defaultNavigationOptions
+})
+
 export default createStackNavigator({
   Main: {
     screen: MainNavigator,
@@ -72,7 +94,7 @@ export default createStackNavigator({
     })
   },
   CheckoutLogin: {
-    screen: navigation.CheckoutLogin,
+    screen: LoginRegisterStack,
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('CHECKOUT_LOGIN_TITLE'),
     })
