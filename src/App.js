@@ -83,7 +83,7 @@ function onNavigationStateChange(prevState, currentState) {
   }
 }
 
-const prefix = 'coopcycle://'
+const prefix = /https?:\/\/[a-z0-9]+\.coopcycle\.org|coopcycle:\//
 
 class App extends Component {
 

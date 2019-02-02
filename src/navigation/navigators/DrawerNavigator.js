@@ -74,7 +74,7 @@ export default createDrawerNavigator({
   // We need to put it here to be acessible from everywhere
   RegisterConfirmNav: {
     screen: RegisterConfirmStack,
-    path: 'register',
+    path: '/register',
   }
 }, {
   contentComponent: DrawerContent,
