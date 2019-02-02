@@ -15,11 +15,11 @@ import { Col, Row, Grid } from 'react-native-easy-grid';
 import { connect } from 'react-redux'
 import { translate } from 'react-i18next'
 
-import CartFooter from './checkout/components/CartFooter'
-import { formatPrice } from '../Cart'
-import { removeItem } from '../redux/Checkout/actions'
+import CartFooter from './components/CartFooter'
+import { formatPrice } from '../../Cart'
+import { removeItem } from '../../redux/Checkout/actions'
 
-class CartPage extends Component {
+class Summary extends Component {
 
   constructor(props) {
     super(props);
@@ -141,4 +141,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(translate()(CartPage))
+module.exports = connect(mapStateToProps, mapDispatchToProps)(translate()(Summary))

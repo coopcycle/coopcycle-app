@@ -26,8 +26,8 @@ const MainNavigator = createStackNavigator({
       title: i18n.t('RESTAURANT_ORDER_TITLE', { order: navigation.state.params.order }),
     })
   },
-  Cart: {
-    screen: navigation.CartPage,
+  CheckoutSummary: {
+    screen: navigation.CheckoutSummary,
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('CART'),
     })
@@ -38,8 +38,8 @@ const MainNavigator = createStackNavigator({
       title: i18n.t('DELIVERY_ADDR'),
     })
   },
-  CreditCard: {
-    screen: navigation.CreditCardPage,
+  CheckoutCreditCard: {
+    screen: navigation.CheckoutCreditCard,
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('PAYMENT'),
     })

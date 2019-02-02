@@ -205,7 +205,7 @@ class CartAddressPage extends Component {
           { this.renderAlert() }
           { this.renderAddressForm() }
         </Content>
-        <CartFooter onSubmit={ () => navigate('CreditCard') } enabled={ enabled }  />
+        <CartFooter onSubmit={ () => navigate('CheckoutCreditCard') } enabled={ enabled }  />
       </Container>
     );
   }

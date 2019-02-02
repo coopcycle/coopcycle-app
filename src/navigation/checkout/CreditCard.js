@@ -14,11 +14,11 @@ import { LiteCreditCardInput } from 'react-native-credit-card-input'
 import { connect } from 'react-redux'
 import { translate } from 'react-i18next'
 
-import { checkout } from '../redux/Checkout/actions'
-import Settings from '../Settings'
-import { formatPrice } from '../Cart'
+import { checkout } from '../../redux/Checkout/actions'
+import Settings from '../../Settings'
+import { formatPrice } from '../../Cart'
 
-class CreditCardPage extends Component {
+class CreditCard extends Component {
 
   constructor(props) {
     super(props);
@@ -112,4 +112,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(translate()(CreditCardPage))
+module.exports = connect(mapStateToProps, mapDispatchToProps)(translate()(CreditCard))

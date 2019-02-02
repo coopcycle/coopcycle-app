@@ -48,7 +48,7 @@ class RestaurantPage extends Component {
           <Menu restaurant={ restaurant } onItemClick={ this.onItemClick.bind(this) } />
         </Content>
         <CartFooter
-          onSubmit={ () => navigate('Cart') }  />
+          onSubmit={ () => navigate('CheckoutSummary') }  />
       </Container>
     );
   }
