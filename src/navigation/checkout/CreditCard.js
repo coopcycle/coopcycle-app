@@ -5,9 +5,8 @@ import {
   Dimensions
 } from 'react-native';
 import {
-  Container, Content, Footer,
-  Left, Right, Body,
-  Button, Icon, List, ListItem, Text, Radio
+  Container, Content, Footer, FooterTab,
+  Button, Icon, List, ListItem, Text
 } from 'native-base';
 import Stripe from 'tipsi-stripe'
 import { LiteCreditCardInput } from 'react-native-credit-card-input'
@@ -61,40 +60,37 @@ class CreditCard extends Component {
   }
 
   render() {
-    const { width } = Dimensions.get('window')
+
     const { cart } = this.props
-
-    const btnProps = this.state.loading ? { disabled: true } : {}
-
-    const cardStyle =  {
-      width: (width - 40),
-      color: '#449aeb',
-      borderColor: '#000',
-      borderWidth: 1,
-      borderRadius: 5,
-    }
 
     return (
       <Container>
-        <Content padder contentContainerStyle={ { flex: 1, justifyContent: 'center', alignItems: 'center' } }>
+        <Content padder contentContainerStyle={ styles.content }>
           <Text style={{ marginBottom: 10 }}>
             { this.props.t('ENTER_PAY_DETAILS') }
           </Text>
           <LiteCreditCardInput onChange={ this._onChange.bind(this) } />
         </Content>
         <Footer>
-          <Right>
-            <Button onPress={ this._onClick.bind(this) } { ...btnProps }>
-              <Text>{ this.props.t('PAY_AMOUNT', { amount: formatPrice(cart.total) }) + '€' }</Text>
+          <FooterTab>
+            <Button full onPress={ this._onClick.bind(this) }>
+              <Text style={{ color: '#ffffff' }}>
+                { this.props.t('PAY_AMOUNT', { amount: formatPrice(cart.total) }) + '€' }
+              </Text>
             </Button>
-          </Right>
+          </FooterTab>
         </Footer>
       </Container>
-    );
+    )
   }
 }
 
 const styles = StyleSheet.create({
+  content: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  }
 })
 
 function mapStateToProps(state) {
