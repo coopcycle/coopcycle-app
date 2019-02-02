@@ -29,6 +29,13 @@ const styles = StyleSheet.create({
   colRight: {
     alignItems: 'flex-end',
   },
+  itemQuantity: {
+    fontWeight: '600',
+    fontSize: 15 * 1.2
+  },
+  itemQuantityHighlight: {
+    color: '#FF851B'
+  }
 });
 
 class OrderItems extends Component {
@@ -48,15 +55,21 @@ class OrderItems extends Component {
   }
 
   renderItem(item) {
+
+    const itemQuantityStyle = [ styles.itemQuantity ]
+    if (item.quantity > 1) {
+      itemQuantityStyle.push(styles.itemQuantityHighlight)
+    }
+
     return (
       <TouchableOpacity style={ styles.item }>
         <Grid>
+          <Col size={ 2 } style={ [ styles.col ] }>
+            <Text style={ itemQuantityStyle }>{ `${item.quantity} ×` }</Text>
+          </Col>
           <Col size={ 7 } style={ styles.col }>
             <Text>{ item.name }</Text>
             { this.renderAdjustments(item) }
-          </Col>
-          <Col size={ 2 } style={ [ styles.col, styles.colRight ] }>
-            <Text>{ `× ${item.quantity}` }</Text>
           </Col>
           <Col size={ 3 } style={ [ styles.col, styles.colRight ] }>
             <Text>{ `${formatPrice(item.total)} €` }</Text>
