@@ -15,11 +15,8 @@ import { confirmRegistration } from '../../redux/App/actions'
 class RegisterConfirm extends Component {
 
   componentDidMount() {
-
     const token = this.props.navigation.getParam('token', null)
-
     if (token) {
-      console.log('TOKEN', token);
       this.props.confirmRegistration(token)
     }
   }
@@ -28,11 +25,7 @@ class RegisterConfirm extends Component {
 
     return (
       <Container>
-        <Content padder>
-          <Text>
-            IT WORKS
-          </Text>
-        </Content>
+        <Content padder contentContainerStyle={ styles.content }></Content>
       </Container>
     );
   }
@@ -52,7 +45,14 @@ function mapDispatchToProps(dispatch) {
 }
 
 const styles = StyleSheet.create({
-
+  content: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  icon: {
+    marginBottom: 15
+  }
 })
 
 module.exports = connect(mapStateToProps, mapDispatchToProps)(translate()(RegisterConfirm))

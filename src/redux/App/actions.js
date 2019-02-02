@@ -254,7 +254,7 @@ export function confirmRegistration(token) {
 
     dispatch(authenticationRequest())
 
-    httpClient.get(`/api/register/confirm/${token}`)
+    httpClient.confirmRegistration(token)
       .then(credentials => {
 
         console.log('USER', credentials)
@@ -281,7 +281,10 @@ export function confirmRegistration(token) {
           })
       })
       .catch(err => {
-        // TODO Say that the token is no valid
+        if (err.hasOwnProperty('status') && err.status === 401) {
+          dispatch(setLoading(false))
+          // TODO Say that the token is no valid
+        }
       })
   }
 }

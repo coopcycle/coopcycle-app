@@ -27,6 +27,11 @@ class DrawerContent extends Component {
       _.filter(items, item => _.includes(['DispatchNav'], item.routeName))
 
     const otherItems = _.filter(items, item => {
+
+      if (item.routeName === 'RegisterConfirmNav') {
+        return false
+      }
+
       if (_.includes(restaurantItems, item)
         || _.includes(courierItems, item)
         || _.includes(accountItems, item)

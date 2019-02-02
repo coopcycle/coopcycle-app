@@ -177,6 +177,20 @@ Client.prototype.login = function(username, password) {
     });
 }
 
+Client.prototype.confirmRegistration = function(token) {
+
+  var request = new Request(`${this.httpBaseURL}/api/register/confirm/${token}`, {
+    method: 'GET',
+  })
+
+  return fetch(request)
+    .then(res =>
+      res.ok
+        ? res.json()
+        : Promise.reject({ status: res.status })
+    )
+}
+
 var register = function(baseURL, data) {
   var formData = new FormData()
   Object.keys(data)
