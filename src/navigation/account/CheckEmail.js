@@ -1,13 +1,28 @@
 import React, { Component } from 'react'
 import {
   StyleSheet,
+  View
 } from 'react-native'
+import { NavigationActions, StackActions } from 'react-navigation'
 import {
-  Container, Content, Text, Icon,
+  Container, Content, Text, Button, Icon,
 } from 'native-base'
 import { translate } from 'react-i18next'
 
 class CheckEmail extends Component {
+
+  _onPressLogin() {
+    const resetAction = StackActions.reset({
+      index: 0,
+      actions: [
+        NavigationActions.navigate({
+          routeName: 'AccountLoginRegister',
+        }),
+      ]
+    })
+
+    this.props.navigation.dispatch(resetAction)
+  }
 
   render() {
 
@@ -20,6 +35,14 @@ class CheckEmail extends Component {
           <Text style={{ textAlign: 'center' }}>
             { this.props.t('REGISTER_CHECK_EMAIL_DISCLAIMER', { email }) }
           </Text>
+          <View style={{ marginTop: 20 }}>
+            <Text style={{ textAlign: 'center' }} note>
+              { this.props.t('REGISTER_CHECK_EMAIL_ALREADY_ACTIVATED') }
+            </Text>
+            <Button block transparent onPress={ () => this._onPressLogin() }>
+              <Text>{ this.props.t('REGISTER_CHECK_EMAIL_LOGIN') }</Text>
+            </Button>
+          </View>
         </Content>
       </Container>
     )

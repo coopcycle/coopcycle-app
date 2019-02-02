@@ -201,6 +201,8 @@
     "ORDER_NUMBER": "Commande {{number}}",
     "ADDRESS_NOT_PRECISE_ENOUGH": "Cette adresse n'est pas assez précise",
     "REGISTER_CHECK_EMAIL": "Activation",
-    "REGISTER_CHECK_EMAIL_DISCLAIMER": "Un e-mail a été envoyé à l‘adresse {{email}}. Il contient un lien d‘activation sur lequel il vous faudra cliquer afin d‘activer votre compte."
+    "REGISTER_CHECK_EMAIL_DISCLAIMER": "Un e-mail a été envoyé à l‘adresse {{email}}. Il contient un lien d‘activation sur lequel il vous faudra cliquer afin d‘activer votre compte.",
+    "REGISTER_CHECK_EMAIL_ALREADY_ACTIVATED": "Vous avez déjà activé votre compte ?",
+    "REGISTER_CHECK_EMAIL_LOGIN": "Identifiez-vous"
   }
 }
