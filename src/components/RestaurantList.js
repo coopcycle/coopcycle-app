@@ -47,7 +47,7 @@ class RestaurantList extends Component {
             <Text style={ styles.restaurantNameText }>{ restaurant.name }</Text>
             <Text note>{ restaurant.address.streetAddress }</Text>
             <Text note style={{ fontWeight: 'bold' }}>
-              { `${this.props.t('FROM')}  ${moment(firstDeliveryDate).format('dddd LT')}` }
+              { this.props.t('CHECKOUT_FROM', { date: moment(firstDeliveryDate).format('dddd LT') }) }
             </Text>
           </Col>
         </Grid>

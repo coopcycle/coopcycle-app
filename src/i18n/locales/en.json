@@ -86,7 +86,7 @@
     "USERNAME": "Username",
     "PASSWORD": "Password",
     "EMAIL": "E-mail",
-    "FROM": "From",
+    "CHECKOUT_FROM": "From {{date}}",
     "ORDER": "Order",
     "FLOOR": "Floor",
     "INVALID_USER_PASS": "Username and/or password incorrect",

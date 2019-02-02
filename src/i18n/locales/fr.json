@@ -87,7 +87,7 @@
     "USERNAME": "Nom d'utilisateur",
     "PASSWORD": "Mot de passe",
     "EMAIL": "E-mail",
-    "FROM": "À partir de",
+    "CHECKOUT_FROM": "À partir de {{date}}",
     "ORDER": "Commander",
     "INVALID_USER_PASS": "Utilisateur et/ou mot de passe inexistant",
     "NO_TASKS": "Pas de tâches prévues aujourd'hui",
