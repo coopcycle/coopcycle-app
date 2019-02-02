@@ -45,7 +45,7 @@ class LoginRegister extends Component {
           <Server />
           { this.renderMessage() }
           <AuthenticateForm
-            onLogin={ (email, password) => this.props.login(email, password, false) }
+            onLogin={ (email, password) => this.props.login(email, password) }
             onRegister={ data => this.props.register(data) } />
         </Content>
       </Container>
@@ -67,7 +67,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
 
   return {
-    login: (email, password, navigate) => dispatch(login(email, password, navigate)),
+    login: (email, password, navigate) => dispatch(login(email, password, true)),
     register: data => dispatch(register(data, 'AccountCheckEmail', 'AccountLoginRegister')),
   }
 }
