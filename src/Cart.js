@@ -119,12 +119,13 @@ class Cart {
       }
     }
 
-    if (this.deliveryDate) {
-      payload = {
-        ...payload,
-        shippedAt: moment(this.deliveryDate).format('YYYY-MM-DD HH:mm:ss'),
-      }
-    }
+    // FIXME At the moment, we only allow ordering ASAP through the app
+    // if (this.deliveryDate) {
+    //   payload = {
+    //     ...payload,
+    //     shippedAt: moment(this.deliveryDate).format('YYYY-MM-DD HH:mm:ss'),
+    //   }
+    // }
 
     return payload
   }
