@@ -136,13 +136,13 @@ class RegisterForm extends React.Component {
     super(props)
 
     this.state = {
-      givenName: '',
-      familyName: '',
-      email: '',
-      telephone: '',
-      username: '',
-      password: '',
-      passwordConfirmation: '',
+      givenName: this.props.prefill === true ? 'John' : '',
+      familyName: this.props.prefill === true ? 'Doe' : '',
+      email: this.props.prefill === true ? 'john.doe@coopcycle.org' : '',
+      telephone: this.props.prefill === true ? '+33612345678' : '',
+      username: this.props.prefill === true ? 'johndoe' : '',
+      password: this.props.prefill === true ? '12345678' : '',
+      passwordConfirmation: this.props.prefill === true ? '12345678' : '',
       errors: {}
     }
   }
@@ -182,6 +182,7 @@ class RegisterForm extends React.Component {
               <Item key={ input.name } stackedLabel { ...itemProps }>
                 <Label>{ input.label }</Label>
                 <Input
+                  defaultValue={ this.state[input.name] }
                   autoCorrect={ false }
                   autoCapitalize="none"
                   style={{ height: 40 }}
