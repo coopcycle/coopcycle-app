@@ -1,13 +1,20 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, TouchableOpacity } from 'react-native'
+import { Dimensions, StyleSheet, View, TouchableOpacity } from 'react-native'
 import { Col, Row, Grid } from 'react-native-easy-grid'
 import { Icon, Text, H3 } from 'native-base'
 import { translate } from 'react-i18next'
 
 class DatePickerHeader extends Component {
+
   render() {
 
+    const { width } = Dimensions.get('window')
     const { date } = this.props
+
+    let dateFormat = 'L'
+    if (width > 400) {
+      dateFormat = 'dddd LL'
+    }
 
     return (
       <Grid style={ styles.container }>
@@ -16,7 +23,7 @@ class DatePickerHeader extends Component {
             <TouchableOpacity onPress={ () => this.props.onCalendarClick() }>
               <View style={ [ styles.wrapper, styles.buttonLeft ] }>
                 <Icon type="FontAwesome" name="calendar" />
-                <H3>{ date.format('dddd LL') }</H3>
+                <H3>{ date.format(dateFormat) }</H3>
                 <Icon type="FontAwesome" name="chevron-right" style={{ color: '#ddd' }} />
               </View>
             </TouchableOpacity>
