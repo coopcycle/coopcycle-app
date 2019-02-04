@@ -22,7 +22,7 @@ class SettingsScreen extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (this.state.restaurantState !== prevState.restaurantState) {
-      this.props.changeStatus(this.props.httpClient, this.props.restaurant, this.state.restaurantState)
+      this.props.changeStatus(this.props.restaurant, this.state.restaurantState)
     }
   }
 
@@ -122,7 +122,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    changeStatus: (httpClient, restaurant, state) => dispatch(changeStatus(httpClient, restaurant, state)),
+    changeStatus: (restaurant, state) => dispatch(changeStatus(restaurant, state)),
   }
 }
 

@@ -10,10 +10,11 @@ import { translate } from 'react-i18next'
 import KeepAwake from 'react-native-keep-awake'
 import moment from 'moment'
 
-import RushModeAlert from './components/RushModeAlert'
+import DangerAlert from './components/DangerAlert'
 import OrderList from './components/OrderList'
 import DatePickerHeader from './components/DatePickerHeader'
-import { loadOrders, changeDate } from '../../redux/Restaurant/actions'
+import { changeStatus, loadOrders, changeDate, deleteOpeningHoursSpecification } from '../../redux/Restaurant/actions'
+import { selectSpecialOpeningHoursSpecification } from '../../redux/Restaurant/selectors'
 
 class DashboardPage extends Component {
 
@@ -56,11 +57,20 @@ class DashboardPage extends Component {
   render() {
 
     const { navigate } = this.props.navigation
-    const { orders, date, restaurant } = this.props
+    const { orders, date, restaurant, specialOpeningHoursSpecification } = this.props
 
     return (
       <Container>
-        <RushModeAlert restaurant={ restaurant } />
+        { restaurant.state === 'rush' && (
+          <DangerAlert
+            text={ this.props.t('RESTAURANT_ALERT_RUSH_MODE_ON') }
+            onClose={ () => this.props.changeStatus(this.props.restaurant, 'normal') } />
+        )}
+        { specialOpeningHoursSpecification && (
+          <DangerAlert
+            text={ this.props.t('RESTAURANT_ALERT_CLOSED') }
+            onClose={ () => this.props.deleteOpeningHoursSpecification(specialOpeningHoursSpecification) } />
+        )}
         <Content style={ styles.content }>
           <DatePickerHeader
             date={ date }
@@ -85,11 +95,13 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(state) {
+
   return {
     httpClient: state.app.httpClient,
     orders: state.restaurant.orders,
     date: state.restaurant.date,
-    restaurant: state.restaurant.restaurant
+    restaurant: state.restaurant.restaurant,
+    specialOpeningHoursSpecification: selectSpecialOpeningHoursSpecification(state),
   }
 }
 
@@ -97,6 +109,9 @@ function mapDispatchToProps(dispatch) {
   return {
     loadOrders: (client, restaurant, date) => dispatch(loadOrders(client, restaurant, date)),
     changeDate: date => dispatch(changeDate(date)),
+    changeStatus: (restaurant, state) => dispatch(changeStatus(restaurant, state)),
+    deleteOpeningHoursSpecification: openingHoursSpecification =>
+      dispatch(deleteOpeningHoursSpecification(openingHoursSpecification)),
   }
 }
 

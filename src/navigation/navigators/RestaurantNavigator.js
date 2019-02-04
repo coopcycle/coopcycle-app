@@ -1,17 +1,11 @@
 import React, { Component } from 'react'
+import { View } from 'react-native'
 import { Icon, Text } from 'native-base'
 import { createStackNavigator } from 'react-navigation'
 
 import i18n from '../../i18n'
 import navigation, { defaultNavigationOptions, headerLeft } from '..'
-import HeaderButton from '../../components/HeaderButton'
-
-const restaurantStatusHeaderRight = navigation => {
-  const { navigate } = navigation
-  return (
-    <HeaderButton iconName="settings" onPress={ () => navigate('RestaurantSettings') } />
-  )
-}
+import HeaderRight from '../restaurant/components/HeaderRight'
 
 const MainNavigator = createStackNavigator({
   RestaurantHome: {
@@ -21,9 +15,10 @@ const MainNavigator = createStackNavigator({
       if (navigation.state.params && navigation.state.params.restaurant) {
         title = navigation.state.params.restaurant.name
       }
+
       return {
         title,
-        headerRight: restaurantStatusHeaderRight(navigation),
+        headerRight: (<HeaderRight navigation={ navigation } />),
         headerLeft: headerLeft(navigation)
       }
     }
@@ -99,6 +94,12 @@ export default createStackNavigator({
     screen: navigation.RestaurantList,
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('RESTAURANTS'),
+    })
+  },
+  RestaurantSettings: {
+    screen: RestaurantSettingsStack,
+    navigationOptions: ({ navigation }) => ({
+      title: i18n.t('SETTINGS'),
     })
   },
   RestaurantSettings: {

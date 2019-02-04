@@ -269,12 +269,16 @@ export function cancelOrder(client, order, reason) {
   }
 }
 
-export function changeStatus(client, restaurant, state) {
+export function changeStatus(restaurant, state) {
 
-  return function (dispatch) {
+  return (dispatch, getState) => {
+
+    const { app } = getState()
+    const { httpClient } = app
+
     dispatch(changeStatusRequest())
 
-    return client.put(restaurant['@id'], { state })
+    return httpClient.put(restaurant['@id'], { state })
       .then(res => dispatch(changeStatusSuccess(res)))
       .catch(e => dispatch(changeStatusFailure(e)))
   }
@@ -302,23 +306,31 @@ export function changeProductEnabled(client, product, enabled) {
   }
 }
 
-export function closeRestaurant(client, restaurant) {
+export function closeRestaurant(restaurant) {
 
-  return function (dispatch) {
+  return (dispatch, getState) => {
+
+    const { app } = getState()
+    const { httpClient } = app
+
     dispatch(closeRestaurantRequest())
 
-    return client.put(`${restaurant['@id']}/close`, {})
+    return httpClient.put(`${restaurant['@id']}/close`, {})
       .then(res => dispatch(closeRestaurantSuccess(res)))
       .catch(e => dispatch(closeRestaurantFailure(e)))
   }
 }
 
-export function deleteOpeningHoursSpecification(client, openingHoursSpecification) {
+export function deleteOpeningHoursSpecification(openingHoursSpecification) {
 
-  return function (dispatch) {
+  return function (dispatch, getState) {
+
+    const { app } = getState()
+    const { httpClient } = app
+
     dispatch(deleteOpeningHoursSpecificationRequest())
 
-    return client.delete(openingHoursSpecification['@id'])
+    return httpClient.delete(openingHoursSpecification['@id'])
       .then(res => dispatch(deleteOpeningHoursSpecificationSuccess(openingHoursSpecification)))
       .catch(e => dispatch(deleteOpeningHoursSpecificationFailure(e)))
   }

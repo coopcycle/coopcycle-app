@@ -3,8 +3,7 @@ import { Dimensions, FlatList, StyleSheet, View } from 'react-native'
 import {
   Container, Header, Title, Content,
   Left, Right, Body,
-  List, ListItem, Separator, Icon, Text,
-  Footer, FooterTab, Button
+  List, ListItem, Separator, Button, Icon, Text
 } from 'native-base'
 import _ from 'lodash'
 import moment from 'moment'
@@ -12,7 +11,7 @@ import moment from 'moment'
 import { translate } from 'react-i18next'
 import { connect } from 'react-redux'
 
-import { closeRestaurant, deleteOpeningHoursSpecification } from '../../redux/Restaurant/actions'
+import { deleteOpeningHoursSpecification } from '../../redux/Restaurant/actions'
 
 class OpeningHoursScreen extends Component {
 
@@ -127,13 +126,6 @@ class OpeningHoursScreen extends Component {
           { this.renderOpeningHours() }
           { this.renderSpecialOpeningHours() }
         </Content>
-        <Footer>
-          <FooterTab>
-            <Button full { ...buttonProps }>
-              <Text>{ this.props.t('RESTAURANT_CLOSE_UNTIL_TOMORROW') }</Text>
-            </Button>
-          </FooterTab>
-        </Footer>
       </Container>
     )
   }
@@ -154,8 +146,6 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    closeRestaurant: (httpClient, restaurant) =>
-      dispatch(closeRestaurant(httpClient, restaurant)),
     deleteOpeningHoursSpecification: (httpClient, openingHoursSpecification) =>
       dispatch(deleteOpeningHoursSpecification(httpClient, openingHoursSpecification)),
   }
