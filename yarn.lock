@@ -5650,10 +5650,10 @@ time-stamp@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/time-stamp/-/time-stamp-1.1.0.tgz#764a5a11af50561921b133f3b44e618687e0f5c3"
 
-tipsi-stripe@7.1.0:
-  version "7.1.0"
-  resolved "https://registry.yarnpkg.com/tipsi-stripe/-/tipsi-stripe-7.1.0.tgz#d1a598ef4445ddd157d995cf0106008f62ae7c33"
-  integrity sha512-6XUVK8kSzf5kDZmFsTLCkNfoeLCGiDKo93IkU99gFlio4s0q690dBjuzIohAdBfyAGvx+bp2eCzBRVusTrryBw==
+tipsi-stripe@7.2.0:
+  version "7.2.0"
+  resolved "https://registry.yarnpkg.com/tipsi-stripe/-/tipsi-stripe-7.2.0.tgz#4ace0281d2d2ccebf6812519a444187cb72d554e"
+  integrity sha512-FP0Qa57K0WWQjpmWysPvjLwYsKrt49fPf/4sMbRWzBap3Ur6GcR3547aZVYR45UYDLekmobn2hRDWYmagO8zpQ==
 
 tmp@^0.0.33:
   version "0.0.33"
