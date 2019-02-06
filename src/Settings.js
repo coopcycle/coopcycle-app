@@ -1,5 +1,4 @@
 import { AsyncStorage } from 'react-native'
-import EventEmitter from 'EventEmitter'
 import API from './API'
 import _ from 'lodash'
 
