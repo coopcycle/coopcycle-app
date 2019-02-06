@@ -25,7 +25,7 @@
     "SERVER_INCOMPATIBLE": "Incompatible server",
     "SERVER_INVALID": "Invalid server",
     "CHOOSE_SERVER": "Please choose a server to start",
-    "SERVER_URL": "Server URL",
+    "SERVER_URL": "Your server is not listed? Enter its address",
     "EXAMPLE": "Example",
     "SUBMIT": "Submit",
     "CONNECTED_TO": "Connected to",

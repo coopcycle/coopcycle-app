@@ -20,6 +20,7 @@ import {
   LOGOUT_SUCCESS,
   AUTHENTICATE,
   RESUME_CHECKOUT_AFTER_ACTIVATION,
+  SET_SERVERS,
 } from './actions'
 
 const initialState = {
@@ -35,6 +36,7 @@ const initialState = {
   lastAuthenticationError: null,
   isAuthenticated: false,
   resumeCheckoutAfterActivation: false,
+  servers: [],
 }
 
 export default (state = initialState, action = {}) => {
@@ -137,6 +139,12 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         resumeCheckoutAfterActivation: action.payload,
+      }
+
+    case SET_SERVERS:
+      return {
+        ...state,
+        servers: action.payload,
       }
 
     default:

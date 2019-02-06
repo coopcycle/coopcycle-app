@@ -36,6 +36,7 @@ export const AUTHENTICATION_FAILURE = '@app/AUTHENTICATION_FAILURE'
 export const LOGOUT_SUCCESS = '@app/LOGOUT_SUCCESS'
 export const AUTHENTICATE = '@app/AUTHENTICATE'
 export const RESUME_CHECKOUT_AFTER_ACTIVATION = '@app/RESUME_CHECKOUT_AFTER_ACTIVATION'
+export const SET_SERVERS = '@app/SET_SERVERS'
 
 /*
  * Action Creators
@@ -52,6 +53,7 @@ export const authenticationFailure = createAction(AUTHENTICATION_FAILURE)
 
 export const logoutSuccess = createAction(LOGOUT_SUCCESS)
 export const authenticate = createAction(AUTHENTICATE)
+export const setServers = createAction(SET_SERVERS)
 
 const _setHttpClient = createAction(SET_HTTP_CLIENT)
 const _setUser = createAction(SET_USER)

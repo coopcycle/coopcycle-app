@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import {
   View,
   ActivityIndicator,
+  TouchableOpacity,
   StyleSheet
 } from 'react-native'
 import {
@@ -9,11 +10,12 @@ import {
   Left, Right, Body,
   Button, Text, Icon, List, ListItem,
   Form, Item, Input, Label,
-  Card, CardItem,
   Toast
 } from 'native-base'
 import { connect } from 'react-redux'
 import { translate } from 'react-i18next'
+import { Flag } from 'react-native-svg-flagkit'
+import _ from 'lodash'
 
 import API from '../API'
 import Settings from '../Settings'
@@ -25,7 +27,6 @@ class ConfigureServer extends Component {
     super(props)
     this.state = {
       loading: false,
-      server: null,
       text: '',
       serverError: false,
     }
@@ -34,7 +35,10 @@ class ConfigureServer extends Component {
   }
 
   handleForm() {
-    const server = this.state.text.trim()
+    this._selectServer(this.state.text.trim())
+  }
+
+  _selectServer(server) {
 
     this.setState({ loading: true, serverError: false })
 
@@ -113,18 +117,25 @@ class ConfigureServer extends Component {
     return (
       <Container>
         <Content>
-          <View style={{ marginHorizontal: 10, marginTop: 20 }}>
-            <Card>
-              <CardItem>
-                <Text>
-                  {`${this.props.t('CHOOSE_SERVER')}.`}
-                </Text>
-              </CardItem>
-            </Card>
+          <View style={{ paddingVertical: 20 }}>
+            <Text note style={{ textAlign: 'center' }}>
+              { this.props.t('CHOOSE_SERVER') }
+            </Text>
           </View>
-          <Form style={{ marginVertical: 30 }}>
-            <Item stackedLabel last { ...itemProps }>
-              <Label>{this.props.t('SERVER_URL')}</Label>
+          { this.props.servers.map((server, key) => (
+            <TouchableOpacity key={ key } style={ styles.serverItem }
+              onPress={ () => this._selectServer(server.coopcycle_url) }>
+              <Text>{ `${server.name} - ${server.city}` }</Text>
+              <Flag id={ server.country.toUpperCase() } size={ 0.1 } />
+            </TouchableOpacity>
+          )) }
+          <View style={{ paddingVertical: 20 }}>
+            <Text note style={{ textAlign: 'center' }}>
+              { this.props.t('SERVER_URL') }
+            </Text>
+          </View>
+          <Form style={{ marginBottom: 30 }}>
+            <Item last { ...itemProps }>
               <Input
                 ref={(ref) => { this.input = ref }}
                 autoCapitalize={'none'}
@@ -153,10 +164,23 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(52, 52, 52, 0.4)',
     zIndex: 20
   },
+  serverItem: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 10,
+    paddingVertical: 15,
+    borderBottomColor: '#e0e0e0',
+    borderBottomWidth: StyleSheet.hairlineWidth,
+  }
 })
 
 function mapStateToProps(state) {
-  return {}
+
+  return {
+    servers: _.filter(state.app.servers, server => server.hasOwnProperty('coopcycle_url'))
+  }
 }
 
 function mapDispatchToProps(dispatch) {

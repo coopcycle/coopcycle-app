@@ -6,9 +6,10 @@ import _ from 'lodash'
 import { Button, Icon, Text } from 'native-base'
 
 import Settings from '../Settings'
+import Server from '../Server'
 import API from '../API'
 import AppUser from '../AppUser'
-import { bootstrap } from '../redux/App/actions'
+import { bootstrap, setServers } from '../redux/App/actions'
 
 class Loading extends Component {
 
@@ -24,6 +25,9 @@ class Loading extends Component {
     this.setState({ error: false })
 
     const baseURL = await Settings.loadServer()
+    const servers = await Server.loadAll()
+
+    this.props.setServers(servers)
 
     if (baseURL) {
 
@@ -96,6 +100,7 @@ function mapDispatchToProps(dispatch) {
 
   return {
     bootstrap: (baseURL, user) => dispatch(bootstrap(baseURL, user)),
+    setServers: servers => dispatch(setServers(servers)),
   }
 }
 
