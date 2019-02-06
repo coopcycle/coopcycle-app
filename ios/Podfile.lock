@@ -55,7 +55,9 @@ PODS:
     - React/Core
     - React/fishhook
     - React/RCTBlob
-  - RNGestureHandler (1.0.12):
+  - RNGestureHandler (1.0.15):
+    - React
+  - RNSVG (8.0.10):
     - React
   - Stripe (14.0.0)
   - yoga (0.57.8.React)
@@ -79,6 +81,7 @@ DEPENDENCIES:
   - React/RCTVibration (from `../node_modules/react-native`)
   - React/RCTWebSocket (from `../node_modules/react-native`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
+  - RNSVG (from `../node_modules/react-native-svg`)
   - Stripe (~> 14.0.0)
   - yoga (from `../node_modules/react-native/ReactCommon/yoga/yoga.podspec`)
 
@@ -95,6 +98,8 @@ EXTERNAL SOURCES:
     :path: ../node_modules/react-native-maps
   RNGestureHandler:
     :path: ../node_modules/react-native-gesture-handler
+  RNSVG:
+    :path: ../node_modules/react-native-svg
   yoga:
     :path: ../node_modules/react-native/ReactCommon/yoga/yoga.podspec
 
@@ -105,10 +110,11 @@ SPEC CHECKSUMS:
   glog: e8acf0ebbf99759d3ff18c86c292a5898282dcde
   React: 1fe0eb13d90b625d94c3b117c274dcfd2e760e11
   react-native-maps: 066c2afcc89e18726377bcc685315f989ca22449
-  RNGestureHandler: 282af6ea58ed8483612365159c58a3ca5f55e7da
+  RNGestureHandler: afde2addc517e85cc97a25bfe119acbee779a7ce
+  RNSVG: 6252323c0312735f0af5f58b5adf2965b6a9ffbf
   Stripe: db29ad197c74aca6fb981e4e8355cf7ebd0fca5a
   yoga: b1ce48b6cf950b98deae82838f5173ea7cf89e85
 
-PODFILE CHECKSUM: 58a12e8a4f27221ce291e6f03878dea115d9bdb5
+PODFILE CHECKSUM: c88bc30be7563de9d19f40f14c25b9628941d5f0
 
 COCOAPODS: 1.4.0

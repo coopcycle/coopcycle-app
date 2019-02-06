@@ -1349,7 +1349,7 @@ collection-visit@^1.0.0:
     map-visit "^1.0.0"
     object-visit "^1.0.0"
 
-color-convert@^1.8.2, color-convert@^1.9.0:
+color-convert@^1.8.2, color-convert@^1.9.0, color-convert@^1.9.1:
   version "1.9.3"
   resolved "https://registry.yarnpkg.com/color-convert/-/color-convert-1.9.3.tgz#bb71850690e1f136567de629d2d5471deda4c1e8"
   dependencies:
@@ -1363,7 +1363,7 @@ color-name@^1.0.0:
   version "1.1.4"
   resolved "https://registry.yarnpkg.com/color-name/-/color-name-1.1.4.tgz#c2a09a87acbde69543de6f63fa3995c826c536a2"
 
-color-string@^1.4.0:
+color-string@^1.4.0, color-string@^1.5.2:
   version "1.5.3"
   resolved "https://registry.yarnpkg.com/color-string/-/color-string-1.5.3.tgz#c9bbc5f01b58b5492f3d6857459cb6590ce204cc"
   dependencies:
@@ -1373,6 +1373,14 @@ color-string@^1.4.0:
 color-support@^1.1.3:
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/color-support/-/color-support-1.1.3.tgz#93834379a1cc9a0c61f82f52f0d04322251bd5a2"
+
+color@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/color/-/color-2.0.1.tgz#e4ed78a3c4603d0891eba5430b04b86314f4c839"
+  integrity sha512-ubUCVVKfT7r2w2D3qtHakj8mbmKms+tThR8gI8zEYCbUBl8/voqFGt3kgBqGwXAopgXybnkuOq+qMYCRrp4cXw==
+  dependencies:
+    color-convert "^1.9.1"
+    color-string "^1.5.2"
 
 color@~1.0.3:
   version "1.0.3"
@@ -3406,7 +3414,7 @@ lodash@4.17.10:
   version "4.17.10"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.10.tgz#1b7793cf7259ea38fb3661d4d38b3260af8ae4e7"
 
-lodash@^4.0.0, lodash@^4.10.1, lodash@^4.11.1, lodash@^4.13.1, lodash@^4.15.0, lodash@^4.17.10, lodash@^4.17.4, lodash@^4.17.5, lodash@^4.3.0, lodash@^4.6.1:
+lodash@^4.0.0, lodash@^4.10.1, lodash@^4.11.1, lodash@^4.13.1, lodash@^4.15.0, lodash@^4.16.6, lodash@^4.17.10, lodash@^4.17.4, lodash@^4.17.5, lodash@^4.3.0, lodash@^4.6.1:
   version "4.17.11"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.11.tgz#b39ea6229ef607ecd89e2c8df12536891cac9b8d"
 
@@ -4705,6 +4713,22 @@ react-native-sound@^0.10.12:
   version "0.10.12"
   resolved "https://registry.yarnpkg.com/react-native-sound/-/react-native-sound-0.10.12.tgz#f912d6f9d6e9e2b42b391e0226787628d940f01a"
   integrity sha512-lhvzZ+ekNSHW9s4FjmxxGAQmd7yDT9FnHgJNP824cMyHRrTES/LgHnSOxES/1FWVoaQ8FdfbEHkWd2rN0G/L9A==
+
+react-native-svg-flagkit@^0.9.4:
+  version "0.9.4"
+  resolved "https://registry.yarnpkg.com/react-native-svg-flagkit/-/react-native-svg-flagkit-0.9.4.tgz#23513291fd15d7e805302df6f891d5932bffac3e"
+  integrity sha512-R+QCm/K1aTr+hNwQdCNlal8d7VuBl4vhAVIgCKUg730I/FwgIAnKfhksehARY8P2IQGOOSK1WiAB4UhJpjuwFw==
+  dependencies:
+    react-native-svg "^8.0.0"
+
+react-native-svg@^8.0.0:
+  version "8.0.10"
+  resolved "https://registry.yarnpkg.com/react-native-svg/-/react-native-svg-8.0.10.tgz#b07e2342d1486220f5fda1a584e316e7d2d1f392"
+  integrity sha512-gsG5GUdvlox67+ohLnq3tZSqiYBmz4M5lKKeUfnJZ8EPrMMS5ZgaVj7Zcccee1VvINS5xQaoenUJdha/GEo34w==
+  dependencies:
+    color "^2.0.1"
+    lodash "^4.16.6"
+    pegjs "^0.10.0"
 
 react-native-swipeout@^2.3.6:
   version "2.3.6"
