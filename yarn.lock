@@ -600,10 +600,10 @@
     react-is "^16.5.2"
     react-lifecycles-compat "^3.0.4"
 
-"@react-navigation/native@3.1.3":
-  version "3.1.3"
-  resolved "https://registry.yarnpkg.com/@react-navigation/native/-/native-3.1.3.tgz#8c64e0306b54948f7616e65436f5b03f7872dc70"
-  integrity sha512-rXGpnkBWJM1K9iVMlRJdDzYb9zDHymwl16E0IKB0vQ9odaSHtNyfbfo6R2RLrNEXBcR9OPqoAnJoKpYoQeFG+Q==
+"@react-navigation/native@3.1.4":
+  version "3.1.4"
+  resolved "https://registry.yarnpkg.com/@react-navigation/native/-/native-3.1.4.tgz#ff305d01e156077d06ff513bbcbb6ad54d4ca80d"
+  integrity sha512-Py9+FDgwT1AvQE+NzVtvcaGF5IxLtFu7XxEaDvcnI8LFeOt/CVESdJJW8kgxJuYhQQzgLZagQ2hwz5kU2I7tYg==
   dependencies:
     hoist-non-react-statics "^3.0.1"
     react-native-gesture-handler "~1.0.14"
@@ -4579,16 +4579,7 @@ react-native-flip-card@^3.4.1:
   dependencies:
     prop-types "^15.5.10"
 
-react-native-gesture-handler@^1.0.12:
-  version "1.0.12"
-  resolved "https://registry.yarnpkg.com/react-native-gesture-handler/-/react-native-gesture-handler-1.0.12.tgz#99a22f90212df299245357dbd3a9a01c788f310b"
-  integrity sha512-Qp5FjRmqUFeCevSu2IYQG1Xw+YXZ9YOzqze/ZxaIvWzYAoKsRchlgHhNoxvCqElp/befrnVFIjAEQyUxcmBKJw==
-  dependencies:
-    hoist-non-react-statics "^2.3.1"
-    invariant "^2.2.2"
-    prop-types "^15.5.10"
-
-react-native-gesture-handler@~1.0.14:
+react-native-gesture-handler@^1.0.15, react-native-gesture-handler@~1.0.14:
   version "1.0.15"
   resolved "https://registry.yarnpkg.com/react-native-gesture-handler/-/react-native-gesture-handler-1.0.15.tgz#7e0d0a457820a3c9325a3d492daaed14400508a6"
   integrity sha512-BePn+YOKcspHb1xPkUdJs+H6jiaECrT2c98txADBYWHwuUeundE+uUJG0r3FQLFvM2MoGeiJeD96sePzk+WSvQ==
@@ -4635,10 +4626,10 @@ react-native-loading-spinner-overlay@^1.0.1:
   dependencies:
     prop-types "^15.6.2"
 
-react-native-map-link@^2.1.4:
-  version "2.1.4"
-  resolved "https://registry.yarnpkg.com/react-native-map-link/-/react-native-map-link-2.1.4.tgz#aaee570460cf4df5361f86b864f92c2397ad4d3f"
-  integrity sha512-BVwIdoGEonBDL4IXt76LbtlCQa+D4FDxVc6A7++MHuYY/+NbTerT/Xx3kFgJOSQuYeTOFCYJLAfNraSRIG8F+g==
+react-native-map-link@^2.1.6:
+  version "2.1.6"
+  resolved "https://registry.yarnpkg.com/react-native-map-link/-/react-native-map-link-2.1.6.tgz#a8724732c0bef16ad8bbdf996aba6142e4ed17c8"
+  integrity sha512-kWlZlTf33EgF2Q6CT6RhPUsjpacUiqggjXsoe2qR05HfcK+NNh18CVdaE0sj2Qh3t3Vg2FRPdSHKUNE1tk6hEQ==
   dependencies:
     prop-types "^15.6.1"
     react-native-modal "^6.4.0"
@@ -4655,10 +4646,10 @@ react-native-maps@0.23.0:
   resolved "https://registry.yarnpkg.com/react-native-maps/-/react-native-maps-0.23.0.tgz#edbfdcad0e42190627eb1c8067eaba5965c8f81e"
   integrity sha512-qxOIQGsDtQXQlSJdXMW1wg8pvLaVYdbiIolB7tZTTgTGgIA/hDxXwZbQZ08c4KDD6/VTk8krfd1APaHkqvh6og==
 
-react-native-mauron85-background-geolocation@0.5.0-alpha.50:
-  version "0.5.0-alpha.50"
-  resolved "https://registry.yarnpkg.com/react-native-mauron85-background-geolocation/-/react-native-mauron85-background-geolocation-0.5.0-alpha.50.tgz#92223955d6e6d36942aedcff6043105bccb77c1d"
-  integrity sha512-IVL6SzmkGg5JrbjNgSjZD4ZAqdPAwWkG6hRVSvHQvNOX+lRnkO8m8MAC9rzAD/tpEzhNZHZhBlV97WJl/xt8fQ==
+react-native-mauron85-background-geolocation@0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/react-native-mauron85-background-geolocation/-/react-native-mauron85-background-geolocation-0.5.0.tgz#ec2bb95a9101967caba85681e3dc437e8d7c72dc"
+  integrity sha512-syUMsb+1ouNw3CEdCT7SgELhMY1+hzwi7KnVCMJ49xPgjGsQs2p/EVD8N7tzXhtAOf8YAvqnHe/t91SQpBqGDw==
 
 react-native-modal-datetime-picker@^6.0.0:
   version "6.0.0"
@@ -4669,9 +4660,9 @@ react-native-modal-datetime-picker@^6.0.0:
     react-native-modal "^6.2.0"
 
 react-native-modal-selector@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/react-native-modal-selector/-/react-native-modal-selector-1.0.0.tgz#7350225d7eaf5cae001c9e634a8ced7b795543a7"
-  integrity sha512-g453ssZ7zx8EeE5sMOg8MPHfZyF9Pm57RSMopOF831r7qgHwjFWpxwybF6AxQQTNGY0bm7DuJ84KgQhHp8XpRA==
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/react-native-modal-selector/-/react-native-modal-selector-1.0.2.tgz#d6ec94ea9d280162be6c439fea72455479bc5c73"
+  integrity sha512-nMHwYj5f6brhGC6f+AjZY2BqU3p3TDoqzJJEIMRn7/o27NAvJGE3XS+2J+wfLJstCcYdaDrfYWRWE854KfSHBA==
   dependencies:
     prop-types "^15.5.10"
 
@@ -4710,9 +4701,10 @@ react-native-safe-area-view@^0.12.0:
   resolved "https://registry.yarnpkg.com/react-native-screens/-/react-native-screens-1.0.0-alpha.22.tgz#7a120377b52aa9bbb94d0b8541a014026be9289b"
   integrity sha512-kSyAt0AeVU6N7ZonfV6dP6iZF8B7Bce+tk3eujXhzBGsLg0VSLnU7uE9VqJF0xdQrHR91ZjGgVMieo/8df9KTA==
 
-react-native-sound@^0.10.9:
-  version "0.10.9"
-  resolved "https://registry.yarnpkg.com/react-native-sound/-/react-native-sound-0.10.9.tgz#6b00b0f4afd017cde09fbb9d171df1b5d5b851a8"
+react-native-sound@^0.10.12:
+  version "0.10.12"
+  resolved "https://registry.yarnpkg.com/react-native-sound/-/react-native-sound-0.10.12.tgz#f912d6f9d6e9e2b42b391e0226787628d940f01a"
+  integrity sha512-lhvzZ+ekNSHW9s4FjmxxGAQmd7yDT9FnHgJNP824cMyHRrTES/LgHnSOxES/1FWVoaQ8FdfbEHkWd2rN0G/L9A==
 
 react-native-swipeout@^2.3.6:
   version "2.3.6"
@@ -4803,10 +4795,10 @@ react-navigation-drawer@1.1.0:
   dependencies:
     react-native-tab-view "^1.2.0"
 
-react-navigation-stack@1.0.6:
-  version "1.0.6"
-  resolved "https://registry.yarnpkg.com/react-navigation-stack/-/react-navigation-stack-1.0.6.tgz#5c2b6617dccc1de6001b387cd967baa6b205132d"
-  integrity sha512-7vnoceO6d/KYvtOSi3Ui3u1gvZEF/dBrOn+Gb1zqiZ3t+0oWRPpU36OmXAh/SwI5aokQyoihAlH9UBMfp+fbEA==
+react-navigation-stack@1.0.8:
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/react-navigation-stack/-/react-navigation-stack-1.0.8.tgz#b3c0a131d90f5615e7f14e7f31a86cd1838ab42e"
+  integrity sha512-tJR4LGtubczU9FjEkHHhCwfcsQcn3QMIY+3B7A/7h8jB9C//0/7HNyqlWZCq32IRmp4I1VxnHMVo9d5Bmd+ZMA==
 
 react-navigation-tabs@1.0.2:
   version "1.0.2"
@@ -4819,14 +4811,14 @@ react-navigation-tabs@1.0.2:
     react-native-tab-view "^1.0.0"
 
 react-navigation@^3.0.0:
-  version "3.1.2"
-  resolved "https://registry.yarnpkg.com/react-navigation/-/react-navigation-3.1.2.tgz#5d75bc1c725f3a874f18bc7097155a513264904d"
-  integrity sha512-Nj0Mu8D6ywL8TvThTTRMsMg8mBgqjWPb4Spanyq91ANXJHw5IQSlKHjtCcWvNW9ptFl5ExlkOG9y/jETM2LMOw==
+  version "3.1.4"
+  resolved "https://registry.yarnpkg.com/react-navigation/-/react-navigation-3.1.4.tgz#39457393ace367359f5c859359f7bf0644983cd2"
+  integrity sha512-DGktbguyaUvDwkagkFW5Gnt8IM0e9hVIbiA/w4A/K8QuJ8tPhqlRp00mq6+7Rvp1lNZqnz8oUVNKSrVgU0/2tw==
   dependencies:
     "@react-navigation/core" "3.0.3"
-    "@react-navigation/native" "3.1.3"
+    "@react-navigation/native" "3.1.4"
     react-navigation-drawer "1.1.0"
-    react-navigation-stack "1.0.6"
+    react-navigation-stack "1.0.8"
     react-navigation-tabs "1.0.2"
 
 react-proxy@^1.1.7:
@@ -4958,10 +4950,10 @@ redux-actions@^2.6.4:
     reduce-reducers "^0.4.3"
     to-camel-case "^1.0.0"
 
-redux-devtools-extension@^2.13.7:
-  version "2.13.7"
-  resolved "https://registry.yarnpkg.com/redux-devtools-extension/-/redux-devtools-extension-2.13.7.tgz#14bd7a1a7c8bee7f397beb1116fd16fc9633b752"
-  integrity sha512-F2GlWMWxCTJGRjJ+GSZcGDcVAj6Pbf77FKb4C9S8eni5Eah6UBGNwxNj8K1MTtmItdZH1Wx+EvIifHN2KKcQrw==
+redux-devtools-extension@^2.13.8:
+  version "2.13.8"
+  resolved "https://registry.yarnpkg.com/redux-devtools-extension/-/redux-devtools-extension-2.13.8.tgz#37b982688626e5e4993ff87220c9bbb7cd2d96e1"
+  integrity sha512-8qlpooP2QqPtZHQZRhx3x3OP5skEV1py/zUdMY28WNAocbafxdG2tRD1MWE7sp8obGMNYuLWanhhQ7EQvT1FBg==
 
 redux-logger@^3.0.6:
   version "3.0.6"
