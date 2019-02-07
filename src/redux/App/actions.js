@@ -82,7 +82,10 @@ function navigateToHome(dispatch, getState) {
           const restaurants = res['hydra:member']
           dispatch(loadMyRestaurantsSuccess(restaurants))
 
-          if (user.hasRole('ROLE_ADMIN')) {
+          // Users may have both ROLE_ADMIN & ROLE_COURIER
+          if (user.hasRole('ROLE_COURIER')) {
+            NavigationHolder.navigate('CourierHome')
+          } else if (user.hasRole('ROLE_ADMIN')) {
             NavigationHolder.navigate('DispatchHome')
           } else {
             if (restaurants.length > 0) {
