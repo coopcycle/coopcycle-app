@@ -37,6 +37,8 @@ YellowBox.ignoreWarnings([
   'Module RCTBackgroundGeolocation requires main queue setup',
   // @see https://github.com/invertase/react-native-firebase/issues/1446
   'Require cycle:',
+  // @see https://github.com/BonifyByForteil/react-native-matomo/issues/19
+  'Module Piwik requires main queue setup'
 ])
 
 const RootNavigator = createAppContainer(createSwitchNavigator(
