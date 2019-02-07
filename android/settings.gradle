@@ -23,5 +23,7 @@ include ':react-native-maps'
 project(':react-native-maps').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-maps/lib/android')
 include ':react-native-open-settings'
 project(':react-native-open-settings').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-open-settings/android')
+include ':react-native-piwik'
+project(':react-native-piwik').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-piwik/android')
 
 include ':app'

@@ -177,6 +177,7 @@ dependencies {
     }
 
     implementation project(':react-native-open-settings')
+    implementation project(':react-native-piwik')
 
     // compile gms independantly, in case of conflicting requirements from other dependencies
     // see: https://medium.com/@suchydan/how-to-solve-google-play-services-version-collision-in-gradle-dependencies-ef086ae5c75f

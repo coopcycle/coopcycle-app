@@ -4697,6 +4697,11 @@ react-native-open-settings@^1.0.1:
   version "1.0.0"
   resolved "git+https://git@github.com/coopcycle/react-native-pin-screen.git#a8139525e27413d8c7ab45f6277aef1424d7610f"
 
+react-native-piwik@^0.0.8:
+  version "0.0.8"
+  resolved "https://registry.yarnpkg.com/react-native-piwik/-/react-native-piwik-0.0.8.tgz#80ed1ddf6f16f241c2d3e80973a69ade3550576a"
+  integrity sha512-+tKufoHK1jtnlNBSXi0+7kqSgquhywBUdwtP3fPDzJRIOReIuvBr0QkaBmQE3tZvYQODjRghKjpHTAg0gAZh2w==
+
 react-native-safe-area-view@^0.12.0:
   version "0.12.0"
   resolved "https://registry.yarnpkg.com/react-native-safe-area-view/-/react-native-safe-area-view-0.12.0.tgz#5c312f087300ecf82e8541c3eac25d560e147f22"
