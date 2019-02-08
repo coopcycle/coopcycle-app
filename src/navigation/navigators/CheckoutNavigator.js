@@ -20,12 +20,6 @@ const MainNavigator = createStackNavigator({
       title: i18n.t('RESTAURANT'),
     })
   },
-  RestaurantOrder: {
-    screen: navigation.RestaurantOrder,
-    navigationOptions: ({ navigation }) => ({
-      title: i18n.t('RESTAURANT_ORDER_TITLE', { order: navigation.state.params.order }),
-    })
-  },
   CheckoutSummary: {
     screen: navigation.CheckoutSummary,
     navigationOptions: ({ navigation }) => ({
