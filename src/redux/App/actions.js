@@ -44,7 +44,6 @@ export const TRACKER_INITIALIZED = '@app/TRACKER_INITIALIZED'
  * Action Creators
  */
 
-export const setCurrentRoute = createAction(SET_CURRENT_ROUTE)
 export const setLoading = createAction(SET_LOADING)
 export const pushNotification = createAction(PUSH_NOTIFICATION, (event, params = {}) => ({ event, params }))
 export const clearNotifications = createAction(CLEAR_NOTIFICATIONS)
@@ -61,6 +60,7 @@ export const trackerInitialized = createAction(TRACKER_INITIALIZED)
 const _setHttpClient = createAction(SET_HTTP_CLIENT)
 const _setUser = createAction(SET_USER)
 const _setBaseURL = createAction(SET_BASE_URL)
+const _setCurrentRoute = createAction(SET_CURRENT_ROUTE)
 
 const _resumeCheckoutAfterActivation = createAction(RESUME_CHECKOUT_AFTER_ACTIVATION)
 
@@ -159,6 +159,21 @@ export function setBaseURL(baseURL) {
         configureBackgroundGeolocation(httpClient, user)
         initMatomoClient(dispatch)
       })
+  }
+}
+
+export function setCurrentRoute(routeName) {
+
+  return (dispatch, getState) => {
+
+    dispatch(_setCurrentRoute(routeName))
+
+    const { app } = getState()
+    const { trackerInitialized } = app
+
+    if (trackerInitialized) {
+      Matomo.trackScreen(routeName)
+    }
   }
 }
 
