@@ -16,7 +16,7 @@ import { primaryColor,  whiteColor, fontTitleName } from '../styles/common'
 
 export default {
   RestaurantsPage: require('./checkout/Search'),
-  RestaurantPage: require('./checkout/Restaurant'),
+  CheckoutRestaurant: require('./checkout/Restaurant'),
   RestaurantList: require('./restaurant/List'),
   RestaurantDashboard: require('./restaurant/Dashboard'),
   RestaurantOrder: require('./restaurant/Order'),
@@ -32,7 +32,7 @@ export default {
   CheckoutLogin: require('./checkout/Login'),
   CheckoutSummary: require('./checkout/Summary'),
   CheckoutCreditCard: require('./checkout/CreditCard'),
-  CartAddressPage: require('./checkout/Address'),
+  CheckoutAddress: require('./checkout/Address'),
   CourierTasksPage: require('./courier/TasksPage'),
   CourierTaskListPage: require('./courier/TaskListPage'),
   CourierTaskPage: require('./courier/TaskPage'),

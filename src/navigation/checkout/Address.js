@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
   }
 });
 
-class CartAddressPage extends Component {
+class Address extends Component {
 
   map = null
 
@@ -225,4 +225,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(translate()(CartAddressPage))
+module.exports = connect(mapStateToProps, mapDispatchToProps)(translate()(Address))

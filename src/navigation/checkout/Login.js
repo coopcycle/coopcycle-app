@@ -13,7 +13,7 @@ class Login extends Component {
   componentDidUpdate(prevProps) {
     if (this.props.isAuthenticated !== prevProps.isAuthenticated && true === this.props.isAuthenticated) {
       this.props.navigation.dispatch(StackActions.pop({ n: 1 }))
-      this.props.navigation.navigate('CartAddress')
+      this.props.navigation.navigate('CheckoutAddress')
     }
   }
 

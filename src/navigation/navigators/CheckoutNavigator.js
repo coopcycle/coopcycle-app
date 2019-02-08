@@ -14,8 +14,8 @@ const MainNavigator = createStackNavigator({
       headerLeft: headerLeft(navigation)
     })
   },
-  Restaurant: {
-    screen: navigation.RestaurantPage,
+  CheckoutRestaurant: {
+    screen: navigation.CheckoutRestaurant,
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('RESTAURANT'),
     })
@@ -26,8 +26,8 @@ const MainNavigator = createStackNavigator({
       title: i18n.t('CART'),
     })
   },
-  CartAddress: {
-    screen: navigation.CartAddressPage,
+  CheckoutAddress: {
+    screen: navigation.CheckoutAddress,
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('DELIVERY_ADDR'),
     })

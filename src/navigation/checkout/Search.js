@@ -89,7 +89,7 @@ class RestaurantsPage extends Component {
           <RestaurantList
             restaurants={ restaurants }
             deliveryDay={ deliveryDay }
-            onItemClick={ (restaurant, deliveryDate) => navigate('Restaurant', { restaurant, deliveryDate }) } />
+            onItemClick={ (restaurant, deliveryDate) => navigate('CheckoutRestaurant', { restaurant, deliveryDate }) } />
           { this.renderWarning() }
         </Content>
       </Container>

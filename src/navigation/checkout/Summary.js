@@ -55,7 +55,7 @@ class Summary extends Component {
     const { navigate } = this.props.navigation
 
     if (this.props.isAuthenticated) {
-      navigate('CartAddress')
+      navigate('CheckoutAddress')
     } else {
       navigate('CheckoutLogin')
     }

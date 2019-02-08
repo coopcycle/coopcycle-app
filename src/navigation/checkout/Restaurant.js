@@ -15,7 +15,7 @@ import CartFooter from './components/CartFooter'
 import Menu from '../../components/Menu'
 import { init, addItem } from '../../redux/Checkout/actions'
 
-class RestaurantPage extends Component {
+class Restaurant extends Component {
 
   componentDidMount() {
     const { restaurant, deliveryDate } = this.props.navigation.state.params
@@ -67,4 +67,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(translate()(RestaurantPage))
+module.exports = connect(mapStateToProps, mapDispatchToProps)(translate()(Restaurant))
