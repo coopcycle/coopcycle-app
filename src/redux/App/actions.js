@@ -2,6 +2,7 @@ import { createAction } from 'redux-actions'
 import { AsyncStorage, Platform } from 'react-native'
 import BackgroundGeolocation from 'react-native-mauron85-background-geolocation'
 import { NavigationActions, StackActions } from 'react-navigation'
+import Matomo from 'react-native-piwik'
 import API from '../../API'
 import AppUser from '../../AppUser'
 import Settings from '../../Settings'
@@ -37,6 +38,7 @@ export const LOGOUT_SUCCESS = '@app/LOGOUT_SUCCESS'
 export const AUTHENTICATE = '@app/AUTHENTICATE'
 export const RESUME_CHECKOUT_AFTER_ACTIVATION = '@app/RESUME_CHECKOUT_AFTER_ACTIVATION'
 export const SET_SERVERS = '@app/SET_SERVERS'
+export const TRACKER_INITIALIZED = '@app/TRACKER_INITIALIZED'
 
 /*
  * Action Creators
@@ -54,6 +56,7 @@ export const authenticationFailure = createAction(AUTHENTICATION_FAILURE)
 export const logoutSuccess = createAction(LOGOUT_SUCCESS)
 export const authenticate = createAction(AUTHENTICATE)
 export const setServers = createAction(SET_SERVERS)
+export const trackerInitialized = createAction(TRACKER_INITIALIZED)
 
 const _setHttpClient = createAction(SET_HTTP_CLIENT)
 const _setUser = createAction(SET_USER)
@@ -123,6 +126,7 @@ export function bootstrap(baseURL, user) {
 
     configureBackgroundGeolocation(httpClient, user)
     saveRemotePushToken(dispatch, getState)
+    initMatomoClient(dispatch)
 
     // Navigate to screen depending on user state
     if (user.isAuthenticated()) {
@@ -153,6 +157,7 @@ export function setBaseURL(baseURL) {
         dispatch(_setBaseURL(baseURL))
 
         configureBackgroundGeolocation(httpClient, user)
+        initMatomoClient(dispatch)
       })
   }
 }
@@ -353,6 +358,14 @@ function saveRemotePushToken(dispatch, getState) {
 function postRemotePushToken(httpClient, token) {
   return httpClient
     .post('/api/me/remote_push_tokens', { platform: Platform.OS, token })
+}
+
+function initMatomoClient(dispatch) {
+  const matomoSiteId = Settings.get('piwik_site_id')
+  if (matomoSiteId) {
+    Matomo.initTracker('https://piwik.coopcycle.org/piwik.php', matomoSiteId)
+    dispatch(trackerInitialized())
+  }
 }
 
 function configureBackgroundGeolocation(httpClient, user) {

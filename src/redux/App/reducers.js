@@ -21,6 +21,7 @@ import {
   AUTHENTICATE,
   RESUME_CHECKOUT_AFTER_ACTIVATION,
   SET_SERVERS,
+  TRACKER_INITIALIZED,
 } from './actions'
 
 const initialState = {
@@ -37,6 +38,7 @@ const initialState = {
   isAuthenticated: false,
   resumeCheckoutAfterActivation: false,
   servers: [],
+  trackerInitialized: false,
 }
 
 export default (state = initialState, action = {}) => {
@@ -145,6 +147,12 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         servers: action.payload,
+      }
+
+    case TRACKER_INITIALIZED:
+      return {
+        ...state,
+        trackerInitialized: true,
       }
 
     default:
