@@ -12,6 +12,10 @@ jest.mock('react-native-languages', () => ({
   },
 }));
 
+jest.mock('react-native-piwik', () => ({
+  initTracker: () => {}
+}));
+
 // Avoid 'is not defined' errors when running tests
 global.FormData = require('FormData')
 
