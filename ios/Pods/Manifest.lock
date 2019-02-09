@@ -55,7 +55,11 @@ PODS:
     - React/Core
     - React/fishhook
     - React/RCTBlob
+  - rn-fetch-blob (0.10.6):
+    - React/Core
   - RNGestureHandler (1.0.15):
+    - React
+  - RNSketchCanvas (0.8.0):
     - React
   - RNSVG (8.0.10):
     - React
@@ -80,7 +84,9 @@ DEPENDENCIES:
   - React/RCTText (from `../node_modules/react-native`)
   - React/RCTVibration (from `../node_modules/react-native`)
   - React/RCTWebSocket (from `../node_modules/react-native`)
+  - rn-fetch-blob (from `../node_modules/rn-fetch-blob`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
+  - RNSketchCanvas (from `../node_modules/@terrylinla/react-native-sketch-canvas`)
   - RNSVG (from `../node_modules/react-native-svg`)
   - Stripe (~> 14.0.0)
   - yoga (from `../node_modules/react-native/ReactCommon/yoga/yoga.podspec`)
@@ -96,8 +102,12 @@ EXTERNAL SOURCES:
     :path: ../node_modules/react-native
   react-native-maps:
     :path: ../node_modules/react-native-maps
+  rn-fetch-blob:
+    :path: ../node_modules/rn-fetch-blob
   RNGestureHandler:
     :path: ../node_modules/react-native-gesture-handler
+  RNSketchCanvas:
+    :path: ../node_modules/@terrylinla/react-native-sketch-canvas
   RNSVG:
     :path: ../node_modules/react-native-svg
   yoga:
@@ -110,11 +120,13 @@ SPEC CHECKSUMS:
   glog: e8acf0ebbf99759d3ff18c86c292a5898282dcde
   React: 1fe0eb13d90b625d94c3b117c274dcfd2e760e11
   react-native-maps: 066c2afcc89e18726377bcc685315f989ca22449
+  rn-fetch-blob: 76a8f798dae965bbcd146a2438f2e1d381c91ae3
   RNGestureHandler: afde2addc517e85cc97a25bfe119acbee779a7ce
+  RNSketchCanvas: 7e895178cb74258dc2b0d85370d8644016dac25f
   RNSVG: 6252323c0312735f0af5f58b5adf2965b6a9ffbf
   Stripe: db29ad197c74aca6fb981e4e8355cf7ebd0fca5a
   yoga: b1ce48b6cf950b98deae82838f5173ea7cf89e85
 
-PODFILE CHECKSUM: c88bc30be7563de9d19f40f14c25b9628941d5f0
+PODFILE CHECKSUM: 8c058ecebf9a1727ca8a8ac6da109ac88d0b466a
 
 COCOAPODS: 1.4.0

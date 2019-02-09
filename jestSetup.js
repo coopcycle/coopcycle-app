@@ -16,6 +16,10 @@ jest.mock('react-native-piwik', () => ({
   initTracker: () => {}
 }));
 
+jest.mock('rn-fetch-blob', () => ({
+  fetch: () => {}
+}));
+
 // Avoid 'is not defined' errors when running tests
 global.FormData = require('FormData')
 

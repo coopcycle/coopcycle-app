@@ -38,6 +38,10 @@ target 'CoopCycle' do
 
   pod 'RNSVG', :path => '../node_modules/react-native-svg'
 
+  pod 'RNSketchCanvas', :path => '../node_modules/@terrylinla/react-native-sketch-canvas'
+
+  pod 'rn-fetch-blob', :path => '../node_modules/rn-fetch-blob'
+
 end
 
 post_install do |installer|
