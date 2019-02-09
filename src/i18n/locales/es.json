@@ -207,6 +207,10 @@
     "REGISTER_CHECK_EMAIL_ALREADY_ACTIVATED": "¿Ya ha activado su cuenta?",
     "REGISTER_CHECK_EMAIL_LOGIN": "Iniciar la sesión",
     "REGISTER_CONFIRM": "Activación",
-    "TASK_WITH_ID": "Tarea #{{id}}"
+    "TASK_WITH_ID": "Tarea #{{id}}",
+    "SIGNATURE": "Firma",
+    "SIGNATURE_DISCLAIMER": "Firmar abajo",
+    "SIGNATURE_CLEAR": "Borrar",
+    "SIGNATURE_SIGN": "Enviar la imagen"
   }
 }

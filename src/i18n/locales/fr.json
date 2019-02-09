@@ -209,6 +209,10 @@
     "REGISTER_CHECK_EMAIL_ALREADY_ACTIVATED": "Vous avez déjà activé votre compte ?",
     "REGISTER_CHECK_EMAIL_LOGIN": "Identifiez-vous",
     "REGISTER_CONFIRM": "Activation",
-    "TASK_WITH_ID": "Tâche #{{id}}"
+    "TASK_WITH_ID": "Tâche #{{id}}",
+    "SIGNATURE": "Signature",
+    "SIGNATURE_DISCLAIMER": "Signez ci-dessous",
+    "SIGNATURE_CLEAR": "Effacer",
+    "SIGNATURE_SIGN": "Envoyer l'image"
   }
 }

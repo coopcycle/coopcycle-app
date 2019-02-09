@@ -3,6 +3,7 @@ import {
   LOAD_TASKS_REQUEST, LOAD_TASKS_FAILURE, LOAD_TASKS_SUCCESS,
   MARK_TASK_DONE_REQUEST, MARK_TASK_DONE_FAILURE, MARK_TASK_DONE_SUCCESS,
   MARK_TASK_FAILED_REQUEST, MARK_TASK_FAILED_FAILURE, MARK_TASK_FAILED_SUCCESS,
+  UPLOAD_FILE_REQUEST, UPLOAD_FILE_FAILURE, UPLOAD_FILE_SUCCESS,
   DONT_TRIGGER_TASKS_NOTIFICATION,
 } from './taskActions'
 import {
@@ -51,6 +52,7 @@ export const tasksEntityReducer = (state = tasksEntityInitialState, action = {})
     case LOAD_TASKS_REQUEST:
     case MARK_TASK_DONE_REQUEST:
     case MARK_TASK_FAILED_REQUEST:
+    case UPLOAD_FILE_REQUEST:
       return {
         ...state,
         loadTasksFetchError: false,
@@ -70,6 +72,12 @@ export const tasksEntityReducer = (state = tasksEntityInitialState, action = {})
       return {
         ...state,
         completeTaskFetchError: action.payload || action.error,
+        isFetching: false,
+      }
+
+    case UPLOAD_FILE_FAILURE:
+      return {
+        ...state,
         isFetching: false,
       }
 
@@ -120,6 +128,17 @@ export const tasksEntityReducer = (state = tasksEntityInitialState, action = {})
           items: _.pickBy(state.items, item => item['@id'] !== action.payload['@id']),
           order: _.filter(state.order, item => item !== action.payload.id)
         }
+      }
+
+    case UPLOAD_FILE_SUCCESS:
+
+      return {
+        ...state,
+        isFetching: false,
+        items: {
+          ...state.items,
+          [action.payload.task.id]: action.payload.task,
+        },
       }
 
     case MESSAGE:

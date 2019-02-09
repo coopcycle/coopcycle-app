@@ -209,6 +209,10 @@
     "REGISTER_CHECK_EMAIL_ALREADY_ACTIVATED": "You have already activated your account?",
     "REGISTER_CHECK_EMAIL_LOGIN": "Login",
     "REGISTER_CONFIRM": "Activation",
-    "TASK_WITH_ID": "Task #{{id}}"
+    "TASK_WITH_ID": "Task #{{id}}",
+    "SIGNATURE": "Signature",
+    "SIGNATURE_DISCLAIMER": "Sign below",
+    "SIGNATURE_CLEAR": "Clear",
+    "SIGNATURE_SIGN": "Upload signature"
   }
 }

@@ -20,6 +20,7 @@ import {
   dontTriggerTasksNotification,
   filterTasks, clearTasksFilter,
   setKeepAwake,
+  uploadSignature,
 } from './taskActions'
 import {
   selectTaskSelectedDate,
@@ -71,6 +72,7 @@ export {
   filterTasks,
   clearTasksFilter,
   setKeepAwake,
+  uploadSignature,
 
   selectIsTasksLoading,
   selectIsTasksLoadingFailure,

@@ -1,6 +1,7 @@
 import { Alert } from 'react-native'
 import { createAction } from 'redux-actions'
 import { StackActions, NavigationActions } from 'react-navigation'
+import RNFetchBlob from 'rn-fetch-blob'
 
 import NavigationHolder from '../../NavigationHolder'
 import Preferences from '../../Preferences'
@@ -18,6 +19,10 @@ export const MARK_TASK_DONE_FAILURE = 'MARK_TASK_DONE_FAILURE'
 export const MARK_TASK_FAILED_REQUEST = 'MARK_TASK_FAILED_REQUEST'
 export const MARK_TASK_FAILED_SUCCESS = 'MARK_TASK_FAILED_SUCCESS'
 export const MARK_TASK_FAILED_FAILURE = 'MARK_TASK_FAILED_FAILURE'
+export const UPLOAD_FILE_REQUEST = 'UPLOAD_FILE_REQUEST'
+export const UPLOAD_FILE_SUCCESS = 'UPLOAD_FILE_SUCCESS'
+export const UPLOAD_FILE_FAILURE = 'UPLOAD_FILE_FAILURE'
+
 export const DONT_TRIGGER_TASKS_NOTIFICATION = 'DONT_TRIGGER_TASKS_NOTIFICATION'
 export const ADD_TASK_FILTER = 'ADD_TASK_FILTER'
 export const CLEAR_TASK_FILTER = 'CLEAR_TASK_FILTER'
@@ -36,6 +41,10 @@ export const markTaskDoneFailure = createAction(MARK_TASK_DONE_FAILURE)
 export const markTaskFailedRequest = createAction(MARK_TASK_FAILED_REQUEST)
 export const markTaskFailedSuccess = createAction(MARK_TASK_FAILED_SUCCESS)
 export const markTaskFailedFailure = createAction(MARK_TASK_FAILED_FAILURE)
+export const uploadFileRequest = createAction(UPLOAD_FILE_REQUEST)
+export const uploadFileSuccess = createAction(UPLOAD_FILE_SUCCESS, (task, taskImage) => ({ task, taskImage }))
+export const uploadFileFailure = createAction(UPLOAD_FILE_FAILURE)
+
 export const dontTriggerTasksNotification = createAction(DONT_TRIGGER_TASKS_NOTIFICATION)
 export const filterTasks = createAction(ADD_TASK_FILTER)
 export const clearTasksFilter = createAction(CLEAR_TASK_FILTER)
@@ -129,6 +138,59 @@ export function markTaskDone(client, task, notes) {
       .catch(e => {
         dispatch(markTaskDoneFailure(e))
         setTimeout(() => showAlert(e), 100)
+      })
+  }
+}
+
+export function uploadSignature(task, base64) {
+
+  return (dispatch, getState) => {
+
+    const { app } = getState()
+    const { httpClient } = app
+
+    // Remove line breaks from Base64 string
+    const base64AsString = base64.replace(/(\r\n|\n|\r)/gm, '')
+
+    const headers = {
+      'Authorization' : `Bearer ${httpClient.getToken()}`,
+      'Content-Type' : 'multipart/form-data',
+    }
+
+    const body = [{
+      name : 'file',
+      filename: 'signature.jpg', // This is needed to work
+      data: base64AsString
+    }]
+
+    dispatch(uploadFileRequest())
+
+    RNFetchBlob
+      .fetch('POST', httpClient.getBaseURL() + '/api/task_images', headers, body)
+      // Warning: this is not a standard fetch respone
+      // @see https://github.com/joltup/rn-fetch-blob/wiki/Classes#rnfetchblobresponse
+      .then(fetchBlobResponse => {
+
+        const fetchBlobResponseInfo = fetchBlobResponse.info()
+        if (201 === fetchBlobResponseInfo.status) {
+
+          return fetchBlobResponse.json()
+        }
+
+        // TODO Manage token expired or bad request
+
+      })
+      .then(taskImage => {
+
+        httpClient
+          .put(task['@id'], { images: [ taskImage['@id'] ] })
+          .then(res => dispatch(uploadFileSuccess(res, taskImage)))
+          .catch(e => dispatch(uploadFileFailure(e)))
+
+      })
+      .catch(e => {
+        // TODO Show alert with error message
+        dispatch(uploadFileFailure(e))
       })
   }
 }

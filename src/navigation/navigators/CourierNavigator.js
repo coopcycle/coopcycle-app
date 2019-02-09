@@ -58,6 +58,12 @@ const MainNavigator = createStackNavigator({
     screen: navigation.CourierTaskPage,
     navigationOptions: ({ navigation }) => ({
       title: `${i18n.t('TASK')} #${navigation.state.params.task.id}`,
+      headerRight: (
+        <HeaderButton
+          iconType="FontAwesome5" iconName="file-signature"
+          iconStyle={{ fontSize: 18 }}
+          onPress={ () => navigation.navigate('TaskSignature', { task: navigation.getParam('task') }) } />
+      )
     })
   },
   CourierTaskHistory: {
@@ -108,6 +114,12 @@ export default createStackNavigator({
       title: i18n.t('SETTINGS')
     })
   },
+  TaskSignature: {
+    screen: navigation.CourierSignature,
+    navigationOptions: ({ navigation }) => ({
+      title: i18n.t('SIGNATURE')
+    })
+  }
 }, {
   mode: 'modal',
   defaultNavigationOptions

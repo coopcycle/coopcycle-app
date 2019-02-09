@@ -40,6 +40,7 @@ export default {
   CourierTaskComplete: require('./courier/CompleteTask'),
   CourierSettings: require('./courier/Settings'),
   CourierSettingsTags: require('./courier/Tags'),
+  CourierSignature: require('./courier/Signature'),
   AccountHome: require('./account/Home'),
   AccountLoginRegister: require('./account/LoginRegister'),
   AccountAddressesPage: require('./account/AccountAddressesPage'),

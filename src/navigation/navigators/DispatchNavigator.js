@@ -6,6 +6,7 @@ import { createBottomTabNavigator, createStackNavigator } from 'react-navigation
 import i18n from '../../i18n'
 import HeaderRightButton from '../dispatch/HeaderRightButton'
 import navigation, { defaultNavigationOptions, headerLeft } from '..'
+import HeaderButton from '../../components/HeaderButton'
 
 const Tabs = createBottomTabNavigator({
   DispatchUnassignedTasks: {
@@ -58,7 +59,13 @@ const MainNavigator = createStackNavigator({
     screen: navigation.CourierTaskPage,
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('DISPATCH_TASK', { id: navigation.state.params.task.id }),
-    })
+      headerRight: (
+        <HeaderButton
+          iconType="FontAwesome5" iconName="file-signature"
+          iconStyle={{ fontSize: 18 }}
+          onPress={ () => navigation.navigate('TaskSignature', { task: navigation.getParam('task') }) } />
+      )
+    }),
   },
   TaskComplete: {
     screen: navigation.CourierTaskComplete,
@@ -127,6 +134,12 @@ export default createStackNavigator({
       title: i18n.t('DISPATCH_ASSIGN_TASK'),
     })
   },
+  DispatchTaskSignature: {
+    screen: navigation.CourierSignature,
+    navigationOptions: ({ navigation }) => ({
+      title: i18n.t('SIGNATURE')
+    })
+  }
 }, {
   mode: 'modal',
   defaultNavigationOptions
