@@ -34,7 +34,7 @@ const typeaheadStyle = {
     color: '#1faadb',
   },
   textInputContainer: {
-    backgroundColor: '#e4022d',
+    backgroundColor: 'transparent',
     height: textInputContainerHeight,
     borderTopWidth: 0,
     borderBottomWidth: 0,
