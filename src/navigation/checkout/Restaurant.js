@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux'
 import { translate } from 'react-i18next'
 import {
-  Container, Header, Title, Content, Footer, H3, H4,
+  Container, Content, Footer, H3, H4,
   Left, Right,
   List, ListItem,
   InputGroup, Input,
@@ -18,9 +18,9 @@ import { init, addItem } from '../../redux/Checkout/actions'
 class Restaurant extends Component {
 
   componentDidMount() {
-    const { restaurant, deliveryDate } = this.props.navigation.state.params
+    const { restaurant} = this.props.navigation.state.params
 
-    this.props.init(restaurant, deliveryDate)
+    this.props.init(restaurant)
   }
 
   onItemClick(menuItem) {

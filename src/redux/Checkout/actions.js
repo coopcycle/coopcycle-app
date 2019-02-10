@@ -41,7 +41,7 @@ export const checkoutRequest = createAction(CHECKOUT_REQUEST)
 export const checkoutSuccess = createAction(CHECKOUT_SUCCESS)
 export const checkoutFailure = createAction(CHECKOUT_FAILURE)
 
-export function searchRestaurants(latitude, longitude, date) {
+export function searchRestaurants(latitude, longitude) {
 
   return (dispatch, getState) => {
 
@@ -65,23 +65,6 @@ export function searchRestaurants(latitude, longitude, date) {
             return new Promise((resolve, reject) => resolve(restaurant.hasMenu))
           }))
           .then(values => restaurants.map((restaurant, key) => ({ ...restaurant, hasMenu: values[key] })))
-          .then(restaurantsWithMenu => {
-            if (date) {
-
-              return _.filter(restaurantsWithMenu, restaurant => {
-                for (let i = 0; i < restaurant.availabilities.length; i++) {
-                  if (moment(restaurant.availabilities[i]).isSame(date, 'day')) {
-
-                    return true
-                  }
-                }
-
-                return false
-              })
-            }
-
-            return restaurantsWithMenu
-          })
           .then(restaurantsWithMenu => {
             dispatch(searchRestaurantsSuccess(restaurantsWithMenu))
           })

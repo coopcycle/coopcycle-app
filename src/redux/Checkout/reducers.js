@@ -48,7 +48,7 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         cart: new Cart(action.payload.restaurant),
-        date: action.payload.date,
+        date: _.first(action.payload.restaurant.availabilities),
       }
 
     case CLEAR:

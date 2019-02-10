@@ -4,9 +4,9 @@ import {
   View
 } from 'react-native';
 import {
-  Container, Header, Title, Content,
+  Container, Content,
   Left, Right, Body,
-  Button, Text, Icon, List, ListItem, Thumbnail,
+  Text, Icon, Thumbnail,
   Card, CardItem
 } from 'native-base';
 import _ from 'lodash'
@@ -20,29 +20,20 @@ import { searchRestaurants, setAddress } from '../../redux/Checkout/actions'
 
 class RestaurantsPage extends Component {
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      deliveryDay: null
-    }
-  }
-
-  onChange(deliveryAddress, deliveryDay) {
-    if (deliveryAddress) {
-      const { latitude, longitude } = deliveryAddress.geo
-      this.setState({ deliveryDay })
-      this.props.searchRestaurants(latitude, longitude, deliveryDay)
-      this.props.setAddress(deliveryAddress)
+  _onAddressChange(address) {
+    if (address) {
+      const { latitude, longitude } = address.geo
+      this.props.searchRestaurants(latitude, longitude)
+      this.props.setAddress(address)
     }
   }
 
   renderWarning() {
 
-    const { deliveryDay, restaurants } = this.state
+    const { restaurants } = this.state
     const { loading } = this.props
 
-    if (!loading && deliveryDay && restaurants.length === 0) {
+    if (!loading && restaurants.length === 0) {
       return (
         <View style={{ paddingHorizontal: 10, marginTop: 30 }}>
           <Card>
@@ -51,12 +42,6 @@ class RestaurantsPage extends Component {
                 <Text>
                   {this.props.t('NO_RESTAURANTS')}
                 </Text>
-                <Text>
-                  {`${this.props.t('SEARCH_WITHOUT_DATE')} ?`}
-                </Text>
-                <Button block style={{ marginTop: 10 }} onPress={ () => this.restaurantSearch.resetDeliveryDate() }>
-                  <Text>{this.props.t('SEARCH_AGAIN')}</Text>
-                </Button>
               </Body>
             </CardItem>
           </Card>
@@ -72,30 +57,38 @@ class RestaurantsPage extends Component {
   render() {
 
     const { navigate } = this.props.navigation
-    const { deliveryDay } = this.state
     const { restaurants } = this.props
 
-    let contentProps = restaurants.length === 0 ? {
-      flex: 1,
-      justifyContent: 'center'
-    } : {}
+    let contentProps = {}
+    if (restaurants.length === 0) {
+      contentProps = {
+        contentContainerStyle: styles.content
+      }
+    }
 
     return (
-      <Container style={{ paddingTop: 44 }}>
+      <Container style={{ paddingTop: 54 }}>
         <RestaurantSearch
           ref={ component => this.restaurantSearch = component }
-          onChange={ this.onChange.bind(this) } />
+          onChange={ this._onAddressChange.bind(this) } />
         <Content { ...contentProps }>
           <RestaurantList
             restaurants={ restaurants }
-            deliveryDay={ deliveryDay }
-            onItemClick={ (restaurant, deliveryDate) => navigate('CheckoutRestaurant', { restaurant, deliveryDate }) } />
-          { this.renderWarning() }
+            onItemClick={ restaurant => navigate('CheckoutRestaurant', { restaurant }) } />
+          { /* this.renderWarning() */ }
         </Content>
       </Container>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  content: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+})
 
 function mapStateToProps(state) {
 

@@ -1,11 +1,13 @@
 import React, { Component } from 'react'
 import { Dimensions, StyleSheet, View } from 'react-native'
+import { Icon } from 'native-base'
 import { Col, Row, Grid } from 'react-native-easy-grid'
 
 import AddressTypeahead from './AddressTypeahead'
-import DateTimePicker from './DateTimePicker'
 
-const dateTimePickerWidth = 100
+const textInputContainerHeight = 54
+const textInputPaddingVertical = 7.5
+const textInputHeight = (textInputContainerHeight - (textInputPaddingVertical * 2))
 
 const styles = StyleSheet.create({
   container : {
@@ -13,22 +15,15 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     zIndex: 10,
-    overflow: 'visible'
-  },
-  left: {
-    flex: 1,
-    paddingRight: dateTimePickerWidth
-  },
-  right: {
+    overflow: 'visible',
     backgroundColor: '#e4022d',
-    position: 'absolute',
-    right: 0,
-    height: 44,
-    width: dateTimePickerWidth,
-    flex: 1,
+  },
+  leftButton: {
+    paddingLeft: 20,
+    paddingRight: 20,
     alignItems: 'center',
     justifyContent: 'center'
-  }
+  },
 });
 
 const typeaheadStyle = {
@@ -40,8 +35,15 @@ const typeaheadStyle = {
   },
   textInputContainer: {
     backgroundColor: '#e4022d',
+    height: textInputContainerHeight,
     borderTopWidth: 0,
     borderBottomWidth: 0,
+  },
+  textInput: {
+    height: textInputHeight,
+    marginTop: textInputPaddingVertical,
+    marginLeft: 0,
+    marginRight: 20,
   },
   row: {
     backgroundColor: '#ffffff',
@@ -50,32 +52,16 @@ const typeaheadStyle = {
 
 export default class RestaurantSearch extends Component {
 
-  constructor(props) {
-    super(props)
-    this.state = {
-      deliveryAddress: null,
-      deliveryDate: null
-    }
+  _onAddressChange(address) {
+    this.props.onChange(address)
   }
 
-  onDeliveryAddressChange(deliveryAddress) {
-
-    const { deliveryDate } = this.state
-
-    this.setState({ deliveryAddress })
-    this.props.onChange(deliveryAddress, deliveryDate)
-  }
-
-  onDeliveryDateChange(deliveryDate) {
-
-    const { deliveryAddress } = this.state
-
-    this.setState({ deliveryDate })
-    this.props.onChange(deliveryAddress, deliveryDate)
-  }
-
-  resetDeliveryDate() {
-    this.dateTimePicker.getWrappedInstance().reset()
+  renderLeftButton() {
+    return (
+      <View style={ styles.leftButton }>
+        <Icon type="FontAwesome" name="search" style={{ color: '#fff', fontSize: 18 }} />
+      </View>
+    )
   }
 
   render() {
@@ -85,14 +71,10 @@ export default class RestaurantSearch extends Component {
     return (
       <View style={ [ styles.container, { width } ] }>
         <View style={{ flex: 1 }}>
-          <View style={ styles.left }>
-            <AddressTypeahead style={ typeaheadStyle } onPress={ this.onDeliveryAddressChange.bind(this) } />
-          </View>
-          <View style={ styles.right }>
-            <DateTimePicker
-              ref={ component => this.dateTimePicker = component }
-              onChange={ this.onDeliveryDateChange.bind(this) } />
-          </View>
+          <AddressTypeahead
+            style={ typeaheadStyle }
+            renderLeftButton={ () => this.renderLeftButton() }
+            onPress={ this._onAddressChange.bind(this) } />
         </View>
       </View>
     )

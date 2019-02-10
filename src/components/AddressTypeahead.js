@@ -63,6 +63,7 @@ class AddressTypeahead extends Component {
           components: `country:${country}`,
         }}
         styles={ styles }
+        renderLeftButton={ this.props.renderLeftButton }
         nearbyPlacesAPI="GoogleReverseGeocoding" // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
         GoogleReverseGeocodingQuery={{
           // available options for GoogleReverseGeocoding API : https://developers.google.com/maps/documentation/geocoding/intro
