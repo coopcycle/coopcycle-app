@@ -10,6 +10,7 @@
     "@mapbox/polyline": "^1.0.0",
     "google-libphonenumber": "^3.2.2",
     "i18next": "^10.4.1",
+    "libphonenumber-js": "^1.7.8",
     "lodash": "^4.17.10",
     "moment": "^2.23.0",
     "native-base": "^2.11.0",
