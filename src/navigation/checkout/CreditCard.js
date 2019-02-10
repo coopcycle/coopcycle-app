@@ -65,12 +65,16 @@ class CreditCard extends Component {
 
     return (
       <Container>
-        <Content padder contentContainerStyle={ styles.content }>
-          <Text style={{ marginBottom: 10 }}>
-            { this.props.t('ENTER_PAY_DETAILS') }
-          </Text>
-          <LiteCreditCardInput onChange={ this._onChange.bind(this) } />
-        </Content>
+        <View style={ styles.content }>
+          <View style={{ alignSelf: 'stretch' }}>
+            <Text style={{ textAlign: 'center', marginBottom: 10 }}>
+              { this.props.t('ENTER_PAY_DETAILS') }
+            </Text>
+            <View style={ styles.creditCardInputContainer }>
+              <LiteCreditCardInput onChange={ this._onChange.bind(this) } />
+            </View>
+          </View>
+        </View>
         <Footer>
           <FooterTab>
             <Button full onPress={ this._onClick.bind(this) }>
@@ -90,6 +94,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  creditCardInputContainer: {
+    backgroundColor: '#f7f7f7',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
   }
 })
 
