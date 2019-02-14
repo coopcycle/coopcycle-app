@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
-    "test": "jest"
+    "test": "jest",
+    "lint": "eslint *.js src/"
   },
   "dependencies": {
     "@mapbox/polyline": "^1.0.0",
@@ -57,10 +58,14 @@
   },
   "devDependencies": {
     "babel-core": "7.0.0-bridge.0",
+    "babel-eslint": "^10.0.1",
     "babel-jest": "^23.6.0",
     "enzyme": "^3.7.0",
     "enzyme-adapter-react-16": "^1.6.0",
     "enzyme-to-json": "^3.3.5",
+    "eslint": "^5.13.0",
+    "eslint-plugin-react": "^7.12.4",
+    "eslint-plugin-react-native": "^3.6.0",
     "jest": "^23.6.0",
     "jest-fetch-mock": "^1.6.6",
     "metro-react-native-babel-preset": "^0.48.1",
