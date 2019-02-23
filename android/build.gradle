@@ -1,6 +1,16 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
+    ext {
+        buildToolsVersion = "28.0.3"
+        minSdkVersion = 16
+        compileSdkVersion = 28
+        targetSdkVersion = 26
+        supportLibVersion = "28.0.0"
+        playServicesVersion = "15.0.1"
+        googlePlayServicesVersion = playServicesVersion
+        firebaseVersion = "16.0.6"
+    }
     repositories {
         // Gradle 4.1 and higher include support for Google's Maven repo using
         // the google() method. And you need to include this repo to download
@@ -13,7 +23,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.2.0'
+        classpath 'com.android.tools.build:gradle:3.2.1'
         classpath 'com.google.gms:google-services:4.0.1'
 
         // NOTE: Do not place your application dependencies here; they belong
@@ -42,20 +52,14 @@ subprojects {
     afterEvaluate {project ->
         if (project.hasProperty("android")) {
             android {
-                compileSdkVersion 27
-                buildToolsVersion "28.0.2"
+                buildToolsVersion "28.0.3"
+                compileSdkVersion 28
             }
         }
     }
 }
 
-ext {
-    buildToolsVersion = "28.0.2"
-    minSdkVersion = 16
-    compileSdkVersion = 27
-    targetSdkVersion = 26
-    supportLibVersion = "27.1.1"
-    playServicesVersion = "15.0.1"
-    googlePlayServicesVersion = playServicesVersion
-    firebaseVersion = "16.0.6"
+task wrapper(type: Wrapper) {
+    gradleVersion = '4.7'
+    distributionUrl = distributionUrl.replace("bin", "all")
 }
