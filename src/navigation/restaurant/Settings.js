@@ -6,7 +6,7 @@ import {
   List, ListItem, Icon, Text, Button, Radio, Switch
 } from 'native-base'
 
-import { translate } from 'react-i18next'
+import { withNamespaces } from 'react-i18next'
 import { connect } from 'react-redux'
 
 import { changeStatus } from '../../redux/Restaurant/actions'
@@ -126,4 +126,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(translate()(SettingsScreen))
+module.exports = connect(mapStateToProps, mapDispatchToProps)(withNamespaces('common')(SettingsScreen))

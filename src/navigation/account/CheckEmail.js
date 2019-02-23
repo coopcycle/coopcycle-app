@@ -7,7 +7,7 @@ import { NavigationActions, StackActions } from 'react-navigation'
 import {
   Container, Content, Text, Button, Icon,
 } from 'native-base'
-import { translate } from 'react-i18next'
+import { withNamespaces } from 'react-i18next'
 
 class CheckEmail extends Component {
 
@@ -64,4 +64,4 @@ const styles = StyleSheet.create({
   }
 })
 
-module.exports = translate()(CheckEmail)
+module.exports = withNamespaces('common')(CheckEmail)

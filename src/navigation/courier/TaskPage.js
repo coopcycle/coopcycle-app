@@ -6,7 +6,7 @@ import { Col, Row, Grid } from 'react-native-easy-grid'
 import MapView from 'react-native-maps'
 import Swipeout from 'react-native-swipeout'
 import moment from 'moment'
-import { translate } from 'react-i18next'
+import { withNamespaces } from 'react-i18next'
 import { phonecall } from 'react-native-communications'
 import { showLocation } from 'react-native-map-link'
 import _ from 'lodash'
@@ -430,4 +430,4 @@ function mapStateToProps (state) {
   }
 }
 
-module.exports = connect(mapStateToProps)(translate()(TaskPage))
+module.exports = connect(mapStateToProps)(withNamespaces('common')(TaskPage))

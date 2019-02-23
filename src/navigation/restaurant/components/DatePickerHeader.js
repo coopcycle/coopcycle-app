@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Dimensions, StyleSheet, View, TouchableOpacity } from 'react-native'
 import { Col, Row, Grid } from 'react-native-easy-grid'
 import { Icon, Text, H3 } from 'native-base'
-import { translate } from 'react-i18next'
+import { withNamespaces } from 'react-i18next'
 
 class DatePickerHeader extends Component {
 
@@ -63,4 +63,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default translate()(DatePickerHeader)
+export default withNamespaces('common')(DatePickerHeader)

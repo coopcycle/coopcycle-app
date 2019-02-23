@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { ActivityIndicator, StyleSheet, View } from 'react-native'
 import { connect } from 'react-redux'
-import { translate } from 'react-i18next'
+import { withNamespaces } from 'react-i18next'
 import _ from 'lodash'
 import { Button, Icon, Text } from 'native-base'
 
@@ -104,4 +104,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(translate()(Loading))
+module.exports = connect(mapStateToProps, mapDispatchToProps)(withNamespaces('common')(Loading))

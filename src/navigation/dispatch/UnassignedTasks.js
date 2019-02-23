@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { InteractionManager, StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux'
-import { translate } from 'react-i18next'
+import { withNamespaces } from 'react-i18next'
 import _ from 'lodash'
 import {
   Container, Content,
@@ -78,4 +78,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(translate()(UnassignedTasks))
+export default connect(mapStateToProps, mapDispatchToProps)(withNamespaces('common')(UnassignedTasks))

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { connect } from 'react-redux'
 import { Button, Text } from 'native-base'
-import { translate } from 'react-i18next'
+import { withNamespaces } from 'react-i18next'
 
 import LoginForm from './LoginForm'
 import RegisterForm from './RegisterForm'
@@ -62,4 +62,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default translate()(AuthenticateForm)
+export default withNamespaces('common')(AuthenticateForm)

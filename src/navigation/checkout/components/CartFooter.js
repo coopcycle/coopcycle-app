@@ -4,7 +4,7 @@ import { Text, Button, Icon, Footer } from 'native-base'
 import { Col, Row, Grid } from 'react-native-easy-grid'
 import moment from 'moment'
 import { connect } from 'react-redux'
-import { translate } from 'react-i18next'
+import { withNamespaces } from 'react-i18next'
 
 import { formatPrice } from '../../../Cart'
 
@@ -149,4 +149,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps)(translate()(CartFooter))
+export default connect(mapStateToProps)(withNamespaces('common')(CartFooter))

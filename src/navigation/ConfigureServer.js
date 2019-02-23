@@ -13,7 +13,7 @@ import {
   Toast
 } from 'native-base'
 import { connect } from 'react-redux'
-import { translate } from 'react-i18next'
+import { withNamespaces } from 'react-i18next'
 import { Flag } from 'react-native-svg-flagkit'
 import _ from 'lodash'
 
@@ -189,4 +189,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(translate()(ConfigureServer))
+module.exports = connect(mapStateToProps, mapDispatchToProps)(withNamespaces('common')(ConfigureServer))

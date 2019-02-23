@@ -1,7 +1,7 @@
 import React from 'react'
 import { TextInput, TouchableOpacity, StyleSheet, View } from 'react-native'
 import { Form, Item, Input, Label, Button, Icon, Text } from 'native-base'
-import { translate } from 'react-i18next'
+import { withNamespaces } from 'react-i18next'
 import validate from 'validate.js'
 import { PhoneNumberUtil } from 'google-libphonenumber'
 import phoneNumberExamples from 'libphonenumber-js/examples.mobile.json'
@@ -314,4 +314,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default translate()(RegisterForm)
+export default withNamespaces('common')(RegisterForm)

@@ -8,7 +8,7 @@ import {
 } from 'native-base'
 import MapView from 'react-native-maps'
 import { connect } from 'react-redux'
-import { translate } from 'react-i18next'
+import { withNamespaces } from 'react-i18next'
 
 import CartFooter from './components/CartFooter'
 import AddressTypeahead from '../../components/AddressTypeahead'
@@ -225,4 +225,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(translate()(Address))
+module.exports = connect(mapStateToProps, mapDispatchToProps)(withNamespaces('common')(Address))

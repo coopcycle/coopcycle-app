@@ -8,7 +8,7 @@ import {
 import { Text, Icon } from 'native-base'
 import _ from 'lodash'
 import { connect } from 'react-redux'
-import { translate } from 'react-i18next'
+import { withNamespaces } from 'react-i18next'
 import { DrawerItems, SafeAreaView, NavigationActions } from 'react-navigation'
 
 class DrawerContent extends Component {
@@ -169,4 +169,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps)(translate()(DrawerContent))
+export default connect(mapStateToProps)(withNamespaces('common')(DrawerContent))

@@ -14,7 +14,7 @@ import {
 import _ from 'lodash'
 import moment from 'moment'
 import { connect } from 'react-redux'
-import { translate } from 'react-i18next'
+import { withNamespaces } from 'react-i18next'
 import { formatPrice } from '../../Cart'
 import { init } from '../../redux/Account/actions'
 
@@ -92,4 +92,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(translate()(AccountOrdersPage))
+module.exports = connect(mapStateToProps, mapDispatchToProps)(withNamespaces('common')(AccountOrdersPage))

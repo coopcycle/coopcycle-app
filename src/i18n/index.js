@@ -20,7 +20,10 @@ export const localeDetector = () => RNLanguages.language || Settings.get('locale
 // https://www.i18next.com/misc/creating-own-plugins.html#languagedetector
 const languageDetector = {
   type: 'languageDetector',
-  detect: localeDetector,
+  async: true, // flags below detection to be async
+  detect: callback => {
+    callback(localeDetector())
+  },
   init: () => { },
   cacheUserLanguage: () => { }
 }

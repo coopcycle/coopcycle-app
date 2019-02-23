@@ -4,7 +4,7 @@ import { Container, Content } from 'native-base'
 
 import { LocaleConfig, Calendar } from 'react-native-calendars'
 import moment from 'moment'
-import { translate } from 'react-i18next'
+import { withNamespaces } from 'react-i18next'
 
 import { connect } from 'react-redux'
 import { localeDetector } from '../../i18n'
@@ -69,4 +69,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(translate()(DateScreen))
+export default connect(mapStateToProps, mapDispatchToProps)(withNamespaces('common')(DateScreen))

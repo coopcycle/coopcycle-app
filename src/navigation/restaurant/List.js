@@ -6,7 +6,7 @@ import {
   List, ListItem
 } from 'native-base'
 import { connect } from 'react-redux'
-import { translate } from 'react-i18next'
+import { withNamespaces } from 'react-i18next'
 
 import { changeRestaurant } from '../../redux/Restaurant/actions'
 
@@ -84,4 +84,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(translate()(ListScreen))
+module.exports = connect(mapStateToProps, mapDispatchToProps)(withNamespaces('common')(ListScreen))

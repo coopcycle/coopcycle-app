@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Dimensions, View } from 'react-native'
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-import { translate } from 'react-i18next'
+import { withNamespaces } from 'react-i18next'
 
 import { localeDetector } from '../i18n'
 import Settings from '../Settings'
@@ -75,4 +75,4 @@ class AddressTypeahead extends Component {
   }
 }
 
-export default translate()(AddressTypeahead)
+export default withNamespaces('common')(AddressTypeahead)

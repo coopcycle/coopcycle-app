@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { InteractionManager, View } from 'react-native';
 import { connect } from 'react-redux'
-import { translate } from 'react-i18next'
+import { withNamespaces } from 'react-i18next'
 import {
   Container, Content,
   Left, Right,
@@ -59,4 +59,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(translate()(AssignTask))
+export default connect(mapStateToProps, mapDispatchToProps)(withNamespaces('common')(AssignTask))

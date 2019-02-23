@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import { Icon, Text } from 'native-base'
-import { translate } from 'react-i18next'
+import { withNamespaces } from 'react-i18next'
 
 class DangerAlert extends Component {
   render() {
@@ -39,4 +39,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default translate()(DangerAlert)
+export default withNamespaces('common')(DangerAlert)

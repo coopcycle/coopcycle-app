@@ -11,7 +11,7 @@ import {
 } from 'native-base'
 import { Col, Row, Grid } from 'react-native-easy-grid'
 import DateTimePicker from 'react-native-modal-datetime-picker'
-import { translate } from 'react-i18next'
+import { withNamespaces } from 'react-i18next'
 import _ from 'lodash'
 import moment from 'moment'
 
@@ -210,4 +210,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(translate()(AddTask))
+export default connect(mapStateToProps, mapDispatchToProps)(withNamespaces('common')(AddTask))

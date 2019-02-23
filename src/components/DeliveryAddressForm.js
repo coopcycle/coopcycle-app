@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Container, Header, Content, Form, Item, Input, Label, Textarea } from 'native-base'
 import _ from 'lodash'
-import { translate } from 'react-i18next'
+import { withNamespaces } from 'react-i18next'
 
 const inputProps = {
   autoCorrect: false,
@@ -105,4 +105,4 @@ class DeliveryAddressForm extends Component {
   }
 }
 
-export default translate(['common'], { withRef: true })(DeliveryAddressForm)
+export default withNamespaces(['common'], { innerRef: ref => { ref.props.refChild.current = ref } })(DeliveryAddressForm)

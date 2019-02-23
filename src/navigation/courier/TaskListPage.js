@@ -9,7 +9,7 @@ import moment from 'moment'
 import TaskList from '../../components/TaskList'
 import DateSelectHeader from '../../components/DateSelectHeader'
 import { whiteColor } from '../../styles/common'
-import { translate } from 'react-i18next'
+import { withNamespaces } from 'react-i18next'
 import {
   loadTasks,
   markTaskDone,
@@ -109,4 +109,4 @@ function mapDispatchToProps (dispatch) {
   }
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(translate()(TaskListPage))
+module.exports = connect(mapStateToProps, mapDispatchToProps)(withNamespaces('common')(TaskListPage))

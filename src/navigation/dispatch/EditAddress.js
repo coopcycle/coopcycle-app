@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { InteractionManager, View } from 'react-native';
-import { translate } from 'react-i18next'
+import { withNamespaces } from 'react-i18next'
 import {
   Container, Content,
   Left, Right,
@@ -12,13 +12,19 @@ import AddressForm from '../../components/DeliveryAddressForm'
 
 class EditAddress extends Component {
 
+  constructor(props) {
+    super(props);
+
+    this.addressForm = React.createRef()
+  }
+
   _onCancel() {
     this.props.navigation.goBack()
   }
 
   _onSubmit() {
     const { onSubmit } = this.props.navigation.state.params
-    const address = this.addressForm.getWrappedInstance().createDeliveryAddress()
+    const address = this.addressForm.current.createDeliveryAddress()
     onSubmit(address)
     this.props.navigation.goBack()
   }
@@ -31,7 +37,7 @@ class EditAddress extends Component {
       <Container>
         <Content>
           <AddressForm
-            ref={ component => this.addressForm = component }
+            refChild={ this.addressForm }
             { ...address }
             extended />
         </Content>
@@ -52,4 +58,4 @@ class EditAddress extends Component {
   }
 }
 
-export default translate()(EditAddress)
+export default withNamespaces('common')(EditAddress)

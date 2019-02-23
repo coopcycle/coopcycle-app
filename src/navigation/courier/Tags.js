@@ -6,7 +6,7 @@ import {
   List, ListItem, Radio
 } from 'native-base'
 import { connect } from 'react-redux'
-import { translate } from 'react-i18next'
+import { withNamespaces } from 'react-i18next'
 
 import {
   filterTasks,
@@ -56,4 +56,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(translate()(Tags))
+module.exports = connect(mapStateToProps, mapDispatchToProps)(withNamespaces('common')(Tags))

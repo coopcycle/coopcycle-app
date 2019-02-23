@@ -11,7 +11,7 @@ import {
   Text, Icon,
 } from 'native-base'
 import { Col, Row, Grid } from 'react-native-easy-grid';
-import { translate } from 'react-i18next'
+import { withNamespaces } from 'react-i18next'
 
 const styles = StyleSheet.create({
   restaurant: {
@@ -84,4 +84,4 @@ export class Home extends Component {
   }
 }
 
-export default translate()(Home)
+export default withNamespaces('common')(Home)

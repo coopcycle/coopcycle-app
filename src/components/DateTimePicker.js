@@ -3,7 +3,7 @@ import { Text, Button, Icon, Header, Left, Right, Title, Body } from 'native-bas
 import { TextInput, View } from 'react-native'
 import ModalSelector from 'react-native-modal-selector'
 import moment from 'moment'
-import { translate } from 'react-i18next'
+import { withNamespaces } from 'react-i18next'
 
 class DateTimePicker extends Component {
 
@@ -51,4 +51,4 @@ class DateTimePicker extends Component {
   }
 }
 
-export default translate(['common'], { withRef: true })(DateTimePicker)
+export default withNamespaces(['common'], { withRef: true })(DateTimePicker)

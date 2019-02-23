@@ -13,7 +13,7 @@ import {
 } from 'native-base';
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import { connect } from 'react-redux'
-import { translate } from 'react-i18next'
+import { withNamespaces } from 'react-i18next'
 
 import CartFooter from './components/CartFooter'
 import { formatPrice } from '../../Cart'
@@ -141,4 +141,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(translate()(Summary))
+module.exports = connect(mapStateToProps, mapDispatchToProps)(withNamespaces('common')(Summary))

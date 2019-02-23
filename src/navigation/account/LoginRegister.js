@@ -6,7 +6,7 @@ import {
   List, ListItem, Icon, Text, Button
 } from 'native-base'
 import { connect } from 'react-redux'
-import { translate } from 'react-i18next'
+import { withNamespaces } from 'react-i18next'
 import _ from 'lodash'
 
 import Server from './components/Server'
@@ -72,4 +72,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(translate()(LoginRegister))
+module.exports = connect(mapStateToProps, mapDispatchToProps)(withNamespaces('common')(LoginRegister))

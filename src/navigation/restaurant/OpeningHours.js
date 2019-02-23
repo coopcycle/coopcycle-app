@@ -8,7 +8,7 @@ import {
 import _ from 'lodash'
 import moment from 'moment'
 
-import { translate } from 'react-i18next'
+import { withNamespaces } from 'react-i18next'
 import { connect } from 'react-redux'
 
 import { deleteOpeningHoursSpecification } from '../../redux/Restaurant/actions'
@@ -151,4 +151,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(translate()(OpeningHoursScreen))
+module.exports = connect(mapStateToProps, mapDispatchToProps)(withNamespaces('common')(OpeningHoursScreen))

@@ -9,7 +9,7 @@ import {
 } from 'native-base';
 import { Col, Row, Grid } from 'react-native-easy-grid'
 import { connect } from 'react-redux'
-import { translate } from 'react-i18next'
+import { withNamespaces } from 'react-i18next'
 import moment from 'moment'
 import { phonecall } from 'react-native-communications'
 import { PhoneNumberUtil, PhoneNumberFormat } from 'google-libphonenumber'
@@ -243,4 +243,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(translate()(OrderScreen))
+module.exports = connect(mapStateToProps, mapDispatchToProps)(withNamespaces('common')(OrderScreen))

@@ -10,7 +10,7 @@ import material from '../native-base-theme/variables/material'
 
 import { createSwitchNavigator, createStackNavigator, createAppContainer } from 'react-navigation'
 import { Provider } from 'react-redux'
-import { translate, I18nextProvider } from 'react-i18next'
+import { I18nextProvider } from 'react-i18next'
 
 import navigation, { defaultNavigationOptions } from './navigation'
 import navigators from './navigation/navigators'

@@ -5,7 +5,7 @@ import {
   Icon, Text, Button
 } from 'native-base'
 import { Col, Row, Grid } from 'react-native-easy-grid'
-import { translate } from 'react-i18next'
+import { withNamespaces } from 'react-i18next'
 import { connect } from 'react-redux'
 import material from '../../../native-base-theme/variables/material'
 
@@ -135,4 +135,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(translate()(OrderCancelScreen))
+module.exports = connect(mapStateToProps, mapDispatchToProps)(withNamespaces('common')(OrderCancelScreen))

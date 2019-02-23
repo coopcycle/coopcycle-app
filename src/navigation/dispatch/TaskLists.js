@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { FlatList, InteractionManager, StyleSheet, TouchableOpacity, View } from 'react-native'
 import { connect } from 'react-redux'
-import { translate } from 'react-i18next'
+import { withNamespaces } from 'react-i18next'
 import {
   Container, Content,
   Left, Right,
@@ -92,4 +92,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(translate()(TaskLists))
+export default connect(mapStateToProps, mapDispatchToProps)(withNamespaces('common')(TaskLists))

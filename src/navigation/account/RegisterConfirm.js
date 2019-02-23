@@ -8,7 +8,7 @@ import {
   Container, Content, Button, Text, Icon,
 } from 'native-base'
 import { connect } from 'react-redux'
-import { translate } from 'react-i18next'
+import { withNamespaces } from 'react-i18next'
 
 import { confirmRegistration } from '../../redux/App/actions'
 
@@ -55,4 +55,4 @@ const styles = StyleSheet.create({
   }
 })
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(translate()(RegisterConfirm))
+module.exports = connect(mapStateToProps, mapDispatchToProps)(withNamespaces('common')(RegisterConfirm))
