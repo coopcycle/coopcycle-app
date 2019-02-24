@@ -68,7 +68,7 @@
     "eslint-plugin-react-native": "^3.6.0",
     "jest": "^24.1.0",
     "jest-fetch-mock": "^2.1.1",
-    "metro-react-native-babel-preset": "^0.48.1",
+    "metro-react-native-babel-preset": "^0.52.0",
     "mock-async-storage": "^2.0.4",
     "react-dom": "16.6.3",
     "react-native-svg-transformer": "^0.12.1",
