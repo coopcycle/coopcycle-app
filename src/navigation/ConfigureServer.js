@@ -14,12 +14,12 @@ import {
 } from 'native-base'
 import { connect } from 'react-redux'
 import { withNamespaces } from 'react-i18next'
-import { Flag } from 'react-native-svg-flagkit'
 import _ from 'lodash'
 
 import API from '../API'
 import Settings from '../Settings'
 import { setBaseURL } from '../redux/App/actions'
+import Flag from '../components/Flag'
 
 class ConfigureServer extends Component {
 
@@ -126,7 +126,7 @@ class ConfigureServer extends Component {
             <TouchableOpacity key={ key } style={ styles.serverItem }
               onPress={ () => this._selectServer(server.coopcycle_url) }>
               <Text>{ `${server.name} - ${server.city}` }</Text>
-              <Flag id={ server.country.toUpperCase() } size={ 0.1 } />
+              <Flag country={ server.country.toUpperCase() } width={ 30 } height={ 20 } />
             </TouchableOpacity>
           )) }
           <View style={{ paddingVertical: 20 }}>

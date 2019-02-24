@@ -9,7 +9,7 @@ import {
   getExampleNumber,
   parsePhoneNumberFromString,
   AsYouType } from 'libphonenumber-js'
-import { Flag } from 'react-native-svg-flagkit'
+import Flag from '../components/Flag'
 import _ from 'lodash'
 
 import i18n from '../i18n'
@@ -238,7 +238,7 @@ class RegisterForm extends React.Component {
                     <View style={ telephoneInputStyle }>
                       <View>
                         <TouchableOpacity style={ styles.telephoneCodeBtn }>
-                          <Flag id={ country } size={ 0.1 } />
+                          <Flag country={ country } width={ 30 } height={ 20 } />
                         </TouchableOpacity>
                       </View>
                       <TextInput

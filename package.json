@@ -41,7 +41,7 @@
     "react-native-pin-screen": "git+https://git@github.com/coopcycle/react-native-pin-screen.git#1.0.1",
     "react-native-piwik": "^0.0.8",
     "react-native-sound": "^0.10.12",
-    "react-native-svg-flagkit": "^0.9.4",
+    "react-native-svg": "^9.2.4",
     "react-native-swipeout": "^2.3.6",
     "react-navigation": "^3.3.0",
     "react-redux": "^6.0.1",
@@ -71,6 +71,7 @@
     "metro-react-native-babel-preset": "^0.48.1",
     "mock-async-storage": "^2.0.4",
     "react-dom": "16.6.3",
+    "react-native-svg-transformer": "^0.12.1",
     "react-test-renderer": "16.6.3"
   },
   "jest": {
