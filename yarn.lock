@@ -5810,6 +5810,11 @@ react-native-maps@0.23.0:
   resolved "https://registry.yarnpkg.com/react-native-maps/-/react-native-maps-0.23.0.tgz#edbfdcad0e42190627eb1c8067eaba5965c8f81e"
   integrity sha512-qxOIQGsDtQXQlSJdXMW1wg8pvLaVYdbiIolB7tZTTgTGgIA/hDxXwZbQZ08c4KDD6/VTk8krfd1APaHkqvh6og==
 
+react-native-matomo@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/react-native-matomo/-/react-native-matomo-0.1.1.tgz#399331f3b76f3afa5a01363d62aa1a7db6f11356"
+  integrity sha512-7QJOZIaS7Pi/vHS9+bdebZ7moh/r4Cxu1SOc9pUlOwQIwskOQSCWL9gbxjYVPInTgWNYYc9rP+fR3so00bOOxA==
+
 react-native-mauron85-background-geolocation@0.5.0:
   version "0.5.0"
   resolved "https://registry.yarnpkg.com/react-native-mauron85-background-geolocation/-/react-native-mauron85-background-geolocation-0.5.0.tgz#ec2bb95a9101967caba85681e3dc437e8d7c72dc"
