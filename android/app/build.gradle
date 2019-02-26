@@ -98,11 +98,15 @@ def googleMapsApiKey = hasProperty('googleMapsApiKey') ? googleMapsApiKey : Syst
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
-
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
     defaultConfig {
         applicationId "fr.coopcycle"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
+        multiDexEnabled true
         versionCode 40
         versionName "0.13.2"
         ndk {
@@ -181,6 +185,7 @@ dependencies {
     implementation project(':react-native-open-settings')
     implementation project(':react-native-piwik')
     implementation project(':react-native-matomo')
+    implementation "com.jakewharton.timber:timber:${rootProject.ext.timberVersion}"
 
     // compile gms independantly, in case of conflicting requirements from other dependencies
     // see: https://medium.com/@suchydan/how-to-solve-google-play-services-version-collision-in-gradle-dependencies-ef086ae5c75f

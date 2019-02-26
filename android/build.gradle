@@ -10,6 +10,7 @@ buildscript {
         playServicesVersion = "15.0.1"
         googlePlayServicesVersion = playServicesVersion
         firebaseVersion = "16.0.6"
+        timberVersion = "4.7.1"
     }
     repositories {
         // Gradle 4.1 and higher include support for Google's Maven repo using
