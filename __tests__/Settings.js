@@ -32,6 +32,7 @@ it('rejects when baseURL is undefined', () => {
   return Settings.synchronize(undefined).catch(e => expect(e).toMatch('baseURL is undefined'));
 })
 
+/*
 it('does nothing when hash is the same', async () => {
 
   const baseURL = 'http://localhost'
@@ -105,3 +106,4 @@ it('loads settings from server when hash has changed', async () => {
   expect(actualSettings).toStrictEqual(remoteSettings)
   expect(actualHash).toEqual(remoteHash)
 })
+*/

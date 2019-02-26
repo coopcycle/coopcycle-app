@@ -64,6 +64,7 @@ const defaultSettings = {
   locale: 'fr',
   country: 'fr',
   latlng: '48.872178,2.331797',
+  piwik_site_id: -1,
 }
 
 let serverSettings = {}
@@ -127,10 +128,22 @@ class Settings {
 
   static synchronize(baseURL) {
     return new Promise((resolve, reject) => {
+
       if (!baseURL) {
+
         return reject('baseURL is undefined')
       }
 
+      const client = API.createClient(baseURL)
+
+      return client.get('/api/settings')
+        .then(settings => {
+          serverSettings = Object.assign(defaultSettings, settings)
+          resolve(serverSettings)
+        })
+        .catch(e => reject(e))
+
+      /*
       return loadServerSettingsHash(baseURL)
         .then(hash => {
           const client = API.createClient(baseURL)
@@ -163,6 +176,7 @@ class Settings {
         })
         .then(settings => resolve(settings))
         .catch(e => reject(e))
+      */
     })
   }
 
