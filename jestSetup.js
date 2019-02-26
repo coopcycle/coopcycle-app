@@ -12,7 +12,7 @@ jest.mock('react-native-languages', () => ({
   },
 }));
 
-jest.mock('react-native-piwik', () => ({
+jest.mock('react-native-matomo', () => ({
   initTracker: () => {}
 }));
 
