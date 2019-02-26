@@ -361,6 +361,13 @@
 			remoteGlobalIDString = 2D2A28471D9B043800D4039D;
 			remoteInfo = "RNLanguages-tvOS";
 		};
+		FA2E3ACA222605B4002BBCB4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FA4FE0272225C93400AB66C4 /* BNFMatomo.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 9A01249D21B5AF5E004E207B;
+			remoteInfo = BNFMatomo;
+		};
 		FA444E5220C17E7A00B2B731 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C96C28DE7F334F09930596B3 /* RCTBackgroundGeolocation.xcodeproj */;
@@ -951,6 +958,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				FA2E3ACB222605B4002BBCB4 /* PBXTargetDependency */,
 			);
 			name = CoopCycle;
 			productName = "Hello World";
@@ -1655,6 +1663,11 @@
 			isa = PBXTargetDependency;
 			target = 2D02E47A1E0B4A5D006451C7 /* CoopCycle-tvOS */;
 			targetProxy = 2D02E4911E0B4A5D006451C7 /* PBXContainerItemProxy */;
+		};
+		FA2E3ACB222605B4002BBCB4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = BNFMatomo;
+			targetProxy = FA2E3ACA222605B4002BBCB4 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
