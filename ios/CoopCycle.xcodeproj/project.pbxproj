@@ -83,8 +83,6 @@
 		FAC644362166467C00D1DA52 /* misstickle__indian_bell_chime.wav in Resources */ = {isa = PBXBuildFile; fileRef = FAC644352166467B00D1DA52 /* misstickle__indian_bell_chime.wav */; };
 		FACC0F1A217A8A5700DF714D /* libRNLanguages.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FA27ED83217A695200A3FB2A /* libRNLanguages.a */; };
 		FAD34EA0207C33BE0047382A /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157351DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
-		FAD446D3220C424B0025E17B /* libBNFPiwik.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FAD446A5220C421D0025E17B /* libBNFPiwik.a */; };
-		FAD446D7220C42B30025E17B /* piwiktracker.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FAD446D4220C42B30025E17B /* piwiktracker.xcdatamodeld */; };
 		FB362CCD67634DDBB76CC4A4 /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 48ED43D3AAD841AEBB45A21B /* Foundation.ttf */; };
 		FE1DCA95EC154D25BD3E68A1 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F85D37283EA740CC8E575803 /* Octicons.ttf */; };
 /* End PBXBuildFile section */
@@ -426,13 +424,6 @@
 			remoteGlobalIDString = 3A3A7F1A1DC27B520030F9DC;
 			remoteInfo = TPSStripe;
 		};
-		FAD446A4220C421D0025E17B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FAD446A0220C421D0025E17B /* BNFPiwik.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 134814201AA4EA6300B7C361;
-			remoteInfo = BNFPiwik;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -517,9 +508,6 @@
 		FA97ACAB202E0590003E463B /* KCKeepAwake.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = KCKeepAwake.xcodeproj; path = "../node_modules/react-native-keep-awake/ios/KCKeepAwake.xcodeproj"; sourceTree = "<group>"; };
 		FAC64402216645E400D1DA52 /* RNSound.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNSound.xcodeproj; path = "../node_modules/react-native-sound/RNSound.xcodeproj"; sourceTree = "<group>"; };
 		FAC644352166467B00D1DA52 /* misstickle__indian_bell_chime.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = misstickle__indian_bell_chime.wav; path = ../android/app/src/main/res/raw/misstickle__indian_bell_chime.wav; sourceTree = "<group>"; };
-		FAD446A0220C421D0025E17B /* BNFPiwik.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = BNFPiwik.xcodeproj; path = "../node_modules/react-native-piwik/ios/BNFPiwik.xcodeproj"; sourceTree = "<group>"; };
-		FAD446D5220C42B30025E17B /* piwiktracker v2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "piwiktracker v2.xcdatamodel"; sourceTree = "<group>"; };
-		FAD446D6220C42B30025E17B /* piwiktracker.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = piwiktracker.xcdatamodel; sourceTree = "<group>"; };
 		FD0CA093D26D4874852E144F /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -555,7 +543,6 @@
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
 				FACC0F1A217A8A5700DF714D /* libRNLanguages.a in Frameworks */,
 				FA76E2B721F1582100F822E1 /* libTPSStripe.a in Frameworks */,
-				FAD446D3220C424B0025E17B /* libBNFPiwik.a in Frameworks */,
 				FA2E390E2225E1AA002BBCB4 /* libBNFMatomo.a in Frameworks */,
 				0FF7B8A00BAE9831B703CD78 /* libPods-CoopCycle.a in Frameworks */,
 			);
@@ -677,7 +664,6 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
-				FAD446D4220C42B30025E17B /* piwiktracker.xcdatamodeld */,
 			);
 			name = CoopCycle;
 			sourceTree = "<group>";
@@ -756,7 +742,6 @@
 			isa = PBXGroup;
 			children = (
 				FA4FE0272225C93400AB66C4 /* BNFMatomo.xcodeproj */,
-				FAD446A0220C421D0025E17B /* BNFPiwik.xcodeproj */,
 				FA27ED54217A695100A3FB2A /* RNLanguages.xcodeproj */,
 				FAC64402216645E400D1DA52 /* RNSound.xcodeproj */,
 				7CB413B020347A92005A1637 /* RCTPushNotification.xcodeproj */,
@@ -930,14 +915,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		FAD446A1220C421D0025E17B /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				FAD446A5220C421D0025E17B /* libBNFPiwik.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1068,10 +1045,6 @@
 				{
 					ProductGroup = FA4FE0282225C93400AB66C4 /* Products */;
 					ProjectRef = FA4FE0272225C93400AB66C4 /* BNFMatomo.xcodeproj */;
-				},
-				{
-					ProductGroup = FAD446A1220C421D0025E17B /* Products */;
-					ProjectRef = FAD446A0220C421D0025E17B /* BNFPiwik.xcodeproj */;
 				},
 				{
 					ProductGroup = FA97ACAC202E0590003E463B /* Products */;
@@ -1479,13 +1452,6 @@
 			remoteRef = FACC77EB1FE0D05D00B54C2A /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		FAD446A5220C421D0025E17B /* libBNFPiwik.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libBNFPiwik.a;
-			remoteRef = FAD446A4220C421D0025E17B /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -1654,7 +1620,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FAD446D7220C42B30025E17B /* piwiktracker.xcdatamodeld in Sources */,
 				FA2E390C2225DD32002BBCB4 /* Empty.swift in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
@@ -2118,21 +2083,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCVersionGroup section */
-		FAD446D4220C42B30025E17B /* piwiktracker.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				FAD446D5220C42B30025E17B /* piwiktracker v2.xcdatamodel */,
-				FAD446D6220C42B30025E17B /* piwiktracker.xcdatamodel */,
-			);
-			currentVersion = FAD446D5220C42B30025E17B /* piwiktracker v2.xcdatamodel */;
-			name = piwiktracker.xcdatamodeld;
-			path = "../node_modules/react-native-piwik/ios/PiwikTracker/piwiktracker.xcdatamodeld";
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-/* End XCVersionGroup section */
 	};
 	rootObject = 83CBB9F71A601CBA00E9B192 /* Project object */;
 }

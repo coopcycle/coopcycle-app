@@ -183,7 +183,6 @@ dependencies {
     }
 
     implementation project(':react-native-open-settings')
-    implementation project(':react-native-piwik')
     implementation project(':react-native-matomo')
     implementation "com.jakewharton.timber:timber:${rootProject.ext.timberVersion}"
 

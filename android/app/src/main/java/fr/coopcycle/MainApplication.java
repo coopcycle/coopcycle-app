@@ -18,7 +18,6 @@ import com.coopcycle.pin.RNPinScreenPackage;
 import com.airbnb.android.react.maps.MapsPackage;
 import com.opensettings.OpenSettingsPackage;
 import de.bonify.reactnativematomo.MatomoPackage;
-import de.bonify.reactnativepiwik.PiwikPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -54,7 +53,6 @@ public class MainApplication extends Application implements ReactApplication {
           new StripeReactPackage(),
           new OpenSettingsPackage(),
           new MapsPackage(),
-          new PiwikPackage(),
           new MatomoPackage()
       );
     }
