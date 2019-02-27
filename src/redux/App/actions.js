@@ -39,6 +39,7 @@ export const AUTHENTICATE = '@app/AUTHENTICATE'
 export const RESUME_CHECKOUT_AFTER_ACTIVATION = '@app/RESUME_CHECKOUT_AFTER_ACTIVATION'
 export const SET_SERVERS = '@app/SET_SERVERS'
 export const TRACKER_INITIALIZED = '@app/TRACKER_INITIALIZED'
+export const TRACKER_DISABLED = '@app/TRACKER_DISABLED'
 
 /*
  * Action Creators
@@ -56,6 +57,7 @@ export const logoutSuccess = createAction(LOGOUT_SUCCESS)
 export const authenticate = createAction(AUTHENTICATE)
 export const setServers = createAction(SET_SERVERS)
 export const trackerInitialized = createAction(TRACKER_INITIALIZED)
+export const trackerDisabled = createAction(TRACKER_DISABLED)
 
 const _setHttpClient = createAction(SET_HTTP_CLIENT)
 const _setUser = createAction(SET_USER)
@@ -380,6 +382,8 @@ function initMatomoClient(dispatch) {
   if (matomoSiteId) {
     Matomo.initTracker('https://piwik.coopcycle.org/piwik.php', matomoSiteId)
     dispatch(trackerInitialized())
+  } else {
+    dispatch(trackerDisabled())
   }
 }
 

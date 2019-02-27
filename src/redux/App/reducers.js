@@ -22,6 +22,7 @@ import {
   RESUME_CHECKOUT_AFTER_ACTIVATION,
   SET_SERVERS,
   TRACKER_INITIALIZED,
+  TRACKER_DISABLED,
 } from './actions'
 
 const initialState = {
@@ -153,6 +154,12 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         trackerInitialized: true,
+      }
+
+    case TRACKER_DISABLED:
+      return {
+        ...state,
+        trackerInitialized: false,
       }
 
     default:
