@@ -1,9 +1,13 @@
 import React, { Component } from 'react'
-import { StyleSheet, Dimensions, View, Text } from 'react-native'
+import { FlatList, StyleSheet, Dimensions, View, Text, TouchableOpacity } from 'react-native'
 import { Marker, Callout } from 'react-native-maps'
 import ClusteredMapView from 'react-native-maps-super-cluster'
+import Modal from 'react-native-modal'
+import { withNamespaces } from 'react-i18next'
+
 import Settings from '../Settings'
 import { greenColor, redColor, greyColor, whiteColor } from '../styles/common'
+import { uniq } from 'lodash'
 
 const clusterContainerSize = 40
 
@@ -35,11 +39,32 @@ const styles = StyleSheet.create({
     fontSize: 14,
     paddingHorizontal: 15,
     width: '60%'
+  },
+  modal: {
+    padding: 20
+  },
+  modalFooter: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 25,
+  },
+  modalContentItem: {
+    paddingVertical: 20,
+    paddingHorizontal: 10,
+    borderBottomColor: '#f0f0f0',
+    borderBottomWidth: StyleSheet.hairlineWidth
   }
 })
 
 const latitudeDelta = 0.0722;
 const longitudeDelta = 0.0221;
+
+const edgePadding = {
+  top: 20,
+  left: 20,
+  bottom: 20,
+  right: 20
+}
 
 const pinColor = task => {
 
@@ -56,6 +81,19 @@ const pinColor = task => {
   return pinColor
 }
 
+const hasSameLocation = markers => {
+  const coordsArray = markers.map(m => `${m.location.latitude};${m.location.longitude}`)
+  const coordsArrayUniq = uniq(coordsArray)
+
+  return coordsArrayUniq.length === 1
+}
+
+const addressName = task => {
+  const customerName = task.address.firstName ? [ task.address.firstName, task.address.lastName ].join(' ') : null
+
+  return task.address.name || customerName || task.address.streetAddress
+}
+
 class TasksMapView extends Component {
 
   constructor(props) {
@@ -66,7 +104,9 @@ class TasksMapView extends Component {
       // @see https://github.com/react-community/react-native-maps/issues/2010
       // @see https://github.com/react-community/react-native-maps/issues/1033
       // @see https://github.com/react-community/react-native-maps/search?q=showsMyLocationButton&type=Issues
-      marginBottom: 1
+      marginBottom: 1,
+      isModalVisible: false,
+      modalMarkers: []
     }
   }
 
@@ -85,7 +125,10 @@ class TasksMapView extends Component {
           clusterId = cluster.clusterId
 
     return (
-      <Marker identifier={ `cluster-${clusterId}` } coordinate={ coordinate } onPress={ onPress }>
+      <Marker
+        identifier={ `cluster-${clusterId}` }
+        coordinate={ coordinate }
+        onPress={ onPress }>
         <View style={ styles.clusterContainer }>
           <Text style={ styles.clusterText }>
             { pointCount }
@@ -93,6 +136,19 @@ class TasksMapView extends Component {
         </View>
       </Marker>
     )
+  }
+
+  onClusterPress(clusterId, markers) {
+    if (markers.length > 1 && hasSameLocation(markers)) {
+      this.setState({ isModalVisible: true, modalMarkers: markers })
+    }
+  }
+
+  _onModalItemPress(item) {
+    this.setState({
+      isModalVisible: false,
+      modalMarkers: []
+    }, () => this.props.onMarkerCalloutPress(item))
   }
 
   renderMarker(task) {
@@ -106,7 +162,7 @@ class TasksMapView extends Component {
         <Callout onPress={ () => this.props.onMarkerCalloutPress(task) }>
           { task.address.name && (<Text style={ styles.markerCalloutText }>{ task.address.name }</Text>) }
           <Text style={ styles.markerCalloutText }>
-            { task.address.streetAddress }
+            { addressName(task) }
           </Text>
           {
             task.tags.map((tag, index) => (
@@ -117,6 +173,31 @@ class TasksMapView extends Component {
           }
         </Callout>
       </Marker>
+    )
+  }
+
+  renderModal() {
+    return (
+      <Modal isVisible={ this.state.isModalVisible } style={ styles.modal }>
+        <View style={{ backgroundColor: 'white' }}>
+          <FlatList
+            data={ this.state.modalMarkers }
+            keyExtractor={ (item, index) => item['@id'] }
+            renderItem={ ({ item }) => (
+              <TouchableOpacity style={ styles.modalContentItem }
+                onPress={ () => this._onModalItemPress(item) }>
+                <Text>{ this.props.t('TASK_WITH_ID', { id: item.id }) }</Text>
+                <Text>{ addressName(item) }</Text>
+              </TouchableOpacity>
+            ) } />
+          <TouchableOpacity style={ styles.modalFooter }
+            onPress={ () => this.setState({ isModalVisible: false, modalMarkers: [] }) }>
+            <Text style={{ color: '#FF4136' }}>
+              { this.props.t('CLOSE') }
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
     )
   }
 
@@ -136,27 +217,32 @@ class TasksMapView extends Component {
     const data = this.props.tasks.map(task => ({ ...task, location: task.address.geo }))
 
     return (
-      <ClusteredMapView
-        data={ data }
-        style={ [ styles.map, { marginBottom: this.state.marginBottom } ] }
-        ref={ ref => { this.map = ref } }
-        initialRegion={ initialRegion }
-        zoomEnabled={ true }
-        zoomControlEnabled={ true }
-        showsUserLocation
-        showsMyLocationButton={ true }
-        loadingEnabled
-        loadingIndicatorColor={"#666666"}
-        loadingBackgroundColor={"#eeeeee"}
-        onMapReady={ () => this.onMapReady(onMapReady) }
-        renderCluster={ this.renderCluster.bind(this) }
-        renderMarker={ this.renderMarker.bind(this) }
-        { ...otherProps }>
-        { this.props.children }
-      </ClusteredMapView>
+      <View>
+        <ClusteredMapView
+          data={ data }
+          style={ [ styles.map, { marginBottom: this.state.marginBottom } ] }
+          ref={ ref => { this.map = ref } }
+          initialRegion={ initialRegion }
+          zoomEnabled={ true }
+          zoomControlEnabled={ true }
+          showsUserLocation
+          showsMyLocationButton={ true }
+          loadingEnabled
+          loadingIndicatorColor={"#666666"}
+          loadingBackgroundColor={"#eeeeee"}
+          onMapReady={ () => this.onMapReady(onMapReady) }
+          edgePadding={ edgePadding }
+          renderCluster={ this.renderCluster.bind(this) }
+          renderMarker={ this.renderMarker.bind(this) }
+          onClusterPress={ this.onClusterPress.bind(this) }
+          { ...otherProps }>
+          { this.props.children }
+        </ClusteredMapView>
+        { this.renderModal() }
+      </View>
     );
   }
 
 }
 
-export default TasksMapView
+export default withNamespaces('common')(TasksMapView)
