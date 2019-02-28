@@ -116,10 +116,9 @@ Client.prototype.refreshToken = function() {
         return this.model.save()
       })
       .then(model => resolve(model.token))
+      .catch(e => reject(e))
   })
-
 }
-
 
 Client.prototype.checkToken = function() {
   const req = this.createAuthorizedRequest('GET', '/api/token/check')
