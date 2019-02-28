@@ -55,7 +55,14 @@ class TasksPage extends Component {
   componentWillUnmount() {
 
     BackgroundGeolocation.stop()
-    BackgroundGeolocation.events.forEach(event => BackgroundGeolocation.removeAllListeners(event))
+
+    [
+      'start',
+      'stop',
+      'location',
+      'error',
+      'authorization',
+    ].forEach(event => BackgroundGeolocation.removeAllListeners(event))
 
     if (Platform.OS === 'ios') {
       KeepAwake.deactivate()
