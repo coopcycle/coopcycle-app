@@ -138,9 +138,16 @@ export function bootstrap(baseURL, user) {
           navigateToHome(dispatch, getState)
         })
         .catch(e => {
-          user
-            .logout()
-            .then(() => navigateToHome(dispatch, getState))
+          httpClient.refreshToken()
+            .then(token => {
+              dispatch(authenticate())
+              navigateToHome(dispatch, getState)
+            })
+            .catch(e => {
+              user
+                .logout()
+                .then(() => navigateToHome(dispatch, getState))
+            })
         })
     } else {
       navigateToHome(dispatch, getState)
