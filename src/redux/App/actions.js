@@ -411,12 +411,15 @@ function configureBackgroundGeolocation(httpClient, user) {
     interval: 3000,
     fastestInterval: 1000,
     activitiesInterval: 5000,
+    // option.maxLocations has to be larger than option.syncThreshold.
+    // It's recommended to be 2x larger.
+    // In any other case the location syncing might not work properly.
     maxLocations: 10,
+    syncThreshold: 5,
   }
 
   if (user && user.isAuthenticated()) {
     options = Object.assign(options, {
-      syncThreshold: 10,
       url: httpClient.getBaseURL() + '/api/me/location',
       syncUrl: httpClient.getBaseURL() + '/api/me/location',
       httpHeaders: {
@@ -432,4 +435,19 @@ function configureBackgroundGeolocation(httpClient, user) {
   }
 
   BackgroundGeolocation.configure(options)
+
+  BackgroundGeolocation.removeAllListeners('http_authorization')
+
+  BackgroundGeolocation.on('http_authorization', () => {
+    httpClient.refreshToken()
+      .then(token => {
+        BackgroundGeolocation.configure({
+          httpHeaders: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/ld+json',
+          },
+        })
+      })
+      .catch(e => console.log(e))
+  })
 }
