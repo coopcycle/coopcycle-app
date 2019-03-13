@@ -76,6 +76,7 @@
 		ED2971652150620600B7C4FE /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED2971642150620600B7C4FE /* JavaScriptCore.framework */; };
 		FA2E390C2225DD32002BBCB4 /* Empty.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2E390B2225DD32002BBCB4 /* Empty.swift */; };
 		FA2E390E2225E1AA002BBCB4 /* libBNFMatomo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FA4FE02C2225C93400AB66C4 /* libBNFMatomo.a */; };
+		FA5C2CC82244CD1F006E8545 /* libBleClient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FA5C2C9A2244CD0C006E8545 /* libBleClient.a */; };
 		FA76E2B721F1582100F822E1 /* libTPSStripe.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FACC77EC1FE0D05D00B54C2A /* libTPSStripe.a */; };
 		FA76E36121F1C71700F822E1 /* libRCTBackgroundGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FA444E5320C17E7A00B2B731 /* libRCTBackgroundGeolocation.a */; };
 		FA97ACD8202E05AF003E463B /* libKCKeepAwake.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FA97ACB1202E0590003E463B /* libKCKeepAwake.a */; };
@@ -410,6 +411,13 @@
 			remoteGlobalIDString = ED296FEE214C9CF800B7C4FE;
 			remoteInfo = "jsiexecutor-tvOS";
 		};
+		FA5C2C992244CD0C006E8545 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FA5C2C952244CD0C006E8545 /* BleClient.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D73F06E81D48E17B00AD5963;
+			remoteInfo = BleClient;
+		};
 		FA97ACB0202E0590003E463B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FA97ACAB202E0590003E463B /* KCKeepAwake.xcodeproj */;
@@ -512,6 +520,7 @@
 		FA4FE0642225CF1000AB66C4 /* CoopCycle-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CoopCycle-Bridging-Header.h"; sourceTree = "<group>"; };
 		FA525C07204D765E00899373 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		FA53F9442047D093004395DF /* CoopCycle.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = CoopCycle.entitlements; path = CoopCycle/CoopCycle.entitlements; sourceTree = "<group>"; };
+		FA5C2C952244CD0C006E8545 /* BleClient.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = BleClient.xcodeproj; path = "../node_modules/react-native-ble-plx/ios/BleClient.xcodeproj"; sourceTree = "<group>"; };
 		FA97ACAB202E0590003E463B /* KCKeepAwake.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = KCKeepAwake.xcodeproj; path = "../node_modules/react-native-keep-awake/ios/KCKeepAwake.xcodeproj"; sourceTree = "<group>"; };
 		FAC64402216645E400D1DA52 /* RNSound.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNSound.xcodeproj; path = "../node_modules/react-native-sound/RNSound.xcodeproj"; sourceTree = "<group>"; };
 		FAC644352166467B00D1DA52 /* misstickle__indian_bell_chime.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = misstickle__indian_bell_chime.wav; path = ../android/app/src/main/res/raw/misstickle__indian_bell_chime.wav; sourceTree = "<group>"; };
@@ -551,6 +560,7 @@
 				FACC0F1A217A8A5700DF714D /* libRNLanguages.a in Frameworks */,
 				FA76E2B721F1582100F822E1 /* libTPSStripe.a in Frameworks */,
 				FA2E390E2225E1AA002BBCB4 /* libBNFMatomo.a in Frameworks */,
+				FA5C2CC82244CD1F006E8545 /* libBleClient.a in Frameworks */,
 				0FF7B8A00BAE9831B703CD78 /* libPods-CoopCycle.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -748,6 +758,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				FA5C2C952244CD0C006E8545 /* BleClient.xcodeproj */,
 				FA4FE0272225C93400AB66C4 /* BNFMatomo.xcodeproj */,
 				FA27ED54217A695100A3FB2A /* RNLanguages.xcodeproj */,
 				FAC64402216645E400D1DA52 /* RNSound.xcodeproj */,
@@ -888,6 +899,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		FA5C2C962244CD0C006E8545 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FA5C2C9A2244CD0C006E8545 /* libBleClient.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		FA97ACAC202E0590003E463B /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -1017,7 +1036,7 @@
 					};
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = 66HUGQ2V5L;
-						LastSwiftMigration = 0930;
+						LastSwiftMigration = 930;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -1050,6 +1069,10 @@
 			productRefGroup = 83CBBA001A601CBA00E9B192 /* Products */;
 			projectDirPath = "";
 			projectReferences = (
+				{
+					ProductGroup = FA5C2C962244CD0C006E8545 /* Products */;
+					ProjectRef = FA5C2C952244CD0C006E8545 /* BleClient.xcodeproj */;
+				},
 				{
 					ProductGroup = FA4FE0282225C93400AB66C4 /* Products */;
 					ProjectRef = FA4FE0272225C93400AB66C4 /* BNFMatomo.xcodeproj */;
@@ -1437,6 +1460,13 @@
 			fileType = archive.ar;
 			path = "libjsiexecutor-tvOS.a";
 			remoteRef = FA4FE05D2225C93400AB66C4 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FA5C2C9A2244CD0C006E8545 /* libBleClient.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libBleClient.a;
+			remoteRef = FA5C2C992244CD0C006E8545 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		FA97ACB1202E0590003E463B /* libKCKeepAwake.a */ = {

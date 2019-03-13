@@ -20,6 +20,15 @@ jest.mock('rn-fetch-blob', () => ({
   fetch: () => {}
 }));
 
+jest.mock('react-native-ble-plx', () => {
+  class BleManager {}
+
+  return {
+    BleManager: BleManager,
+    State: 'Unknown'
+  }
+})
+
 // Avoid 'is not defined' errors when running tests
 global.FormData = require('FormData')
 

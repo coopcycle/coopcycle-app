@@ -2,6 +2,7 @@ package fr.coopcycle;
 
 import android.app.Application;
 import com.facebook.react.ReactApplication;
+import com.polidea.reactnativeble.BlePackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
 import com.terrylinla.rnsketchcanvas.SketchCanvasPackage;
 import com.horcrux.svg.SvgPackage;
@@ -38,6 +39,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+          new BlePackage(),
           new RNFetchBlobPackage(),
           new SketchCanvasPackage(),
           new SvgPackage(),
