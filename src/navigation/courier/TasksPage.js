@@ -24,6 +24,14 @@ import {
 } from '../../redux/Courier'
 import BackgroundGeolocation from 'react-native-mauron85-background-geolocation'
 
+const backgroundGeolocationEvents = [
+  'start',
+  'stop',
+  'location',
+  'error',
+  'authorization',
+]
+
 class TasksPage extends Component {
 
   constructor(props) {
@@ -56,13 +64,7 @@ class TasksPage extends Component {
 
     BackgroundGeolocation.stop()
 
-    [
-      'start',
-      'stop',
-      'location',
-      'error',
-      'authorization',
-    ].forEach(event => BackgroundGeolocation.removeAllListeners(event))
+    backgroundGeolocationEvents.forEach(event => BackgroundGeolocation.removeAllListeners(event))
 
     if (Platform.OS === 'ios') {
       KeepAwake.deactivate()
