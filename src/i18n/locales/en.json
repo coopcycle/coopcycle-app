@@ -272,6 +272,7 @@
     "GO_BACK_TO_RESTAURANTS": "Start again",
     "SESSION_EXPIRED": "You session has expired",
     "TOUCH_TO_RELOAD": "Touch to reload",
-    "OFFLINE": "You are offline"
+    "OFFLINE": "You are offline",
+    "SCAN_FOR_PRINTERS": "Start scanning"
   }
 }

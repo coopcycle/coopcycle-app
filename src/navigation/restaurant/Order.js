@@ -15,8 +15,7 @@ import { phonecall } from 'react-native-communications'
 import { PhoneNumberUtil, PhoneNumberFormat } from 'google-libphonenumber'
 
 import OrderItems from '../../components/OrderItems'
-import { acceptOrder, setCurrentOrder } from '../../redux/Restaurant/actions'
-import { printOrder } from '../../redux/App/actions'
+import { acceptOrder, setCurrentOrder, printOrder } from '../../redux/Restaurant/actions'
 import material from '../../../native-base-theme/variables/material'
 
 const phoneNumberUtil = PhoneNumberUtil.getInstance()
@@ -102,7 +101,7 @@ class OrderScreen extends Component {
 
   renderHeading() {
 
-    const { order, thermalPrinterConnected } = this.props
+    const { order } = this.props
 
     if (order.state !== 'refused' && order.state !== 'cancelled') {
 
@@ -124,16 +123,6 @@ class OrderScreen extends Component {
                 <Text>{ this.props.t('RESTAURANT_ORDER_PICKUP_EXPECTED_AT', { date: pickupExpectedAt }) }</Text>
               </View>
             </Row>
-            { thermalPrinterConnected && (
-            <Row>
-              <View style={ styles.dateContainer }>
-                <Icon type="FontAwesome" name="print" />
-                <Button onPress={ () => this._print() }>
-                  <Text>{ this.props.t('RESTAURANT_ORDER_PRINT') }</Text>
-                </Button>
-              </View>
-            </Row>
-            )}
           </Col>
         </Row>
       )
@@ -160,7 +149,7 @@ class OrderScreen extends Component {
 
   render() {
 
-    const { order } = this.props
+    const { order, thermalPrinterConnected } = this.props
 
     let phoneNumber
     let isPhoneValid = false
@@ -182,6 +171,12 @@ class OrderScreen extends Component {
               { isPhoneValid && (
                 <View style={ styles.section }>
                   <View style={{ flex: 1, flexDirection: 'row', alignItems: 'flex-end' }}>
+                    { thermalPrinterConnected && (
+                    <Button iconLeft onPress={ () => this._print() }>
+                      <Icon type="FontAwesome" name="print" />
+                      <Text>{ this.props.t('RESTAURANT_ORDER_PRINT') }</Text>
+                    </Button>
+                    )}
                     <Button iconLeft success
                       onPress={ () => phonecall(order.customer.telephone, true) }
                       style={{ marginLeft: 'auto', alignSelf: 'flex-end' }}>
@@ -248,7 +243,8 @@ function mapStateToProps(state, ownProps) {
   return {
     httpClient: state.app.httpClient,
     order: state.restaurant.order || ownProps.navigation.state.params.order,
-    thermalPrinterConnected: state.app.thermalPrinterConnected,
+    thermalPrinterConnected: !!state.restaurant.printer,
+    printer: state.restaurant.printer,
   }
 }
 

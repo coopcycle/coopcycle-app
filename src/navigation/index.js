@@ -35,6 +35,7 @@ export default {
   RestaurantProducts: require('./restaurant/Products'),
   RestaurantOpeningHours: require('./restaurant/OpeningHours'),
   RestaurantMenus: require('./restaurant/Menus'),
+  RestaurantPrinter: require('./restaurant/Printer'),
   CheckoutProductOptions: require('./checkout/ProductOptions'),
   CheckoutLogin: require('./checkout/Login'),
   CheckoutSummary: require('./checkout/Summary'),

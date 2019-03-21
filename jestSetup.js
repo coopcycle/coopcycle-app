@@ -16,15 +16,6 @@ jest.mock('rn-fetch-blob', () => ({
   fetch: () => {}
 }));
 
-jest.mock('react-native-ble-plx', () => {
-  class BleManager {}
-
-  return {
-    BleManager: BleManager,
-    State: 'Unknown'
-  }
-})
-
 jest.mock('tipsi-stripe', () => ({
   __esModule: true,
   default: {

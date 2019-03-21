@@ -1,10 +1,12 @@
 import { createAction } from 'redux-actions'
 import { NavigationActions, StackActions } from 'react-navigation'
+import BleManager from 'react-native-ble-manager'
 
 import DropdownHolder from '../../DropdownHolder'
 import NavigationHolder from '../../NavigationHolder'
 
 import { pushNotification } from '../App/actions'
+import { encodeForPrinter } from '../../utils/order'
 
 import {
   LOAD_MY_RESTAURANTS_REQUEST,
@@ -75,6 +77,12 @@ export const DELETE_OPENING_HOURS_SPECIFICATION_REQUEST = 'DELETE_OPENING_HOURS_
 export const DELETE_OPENING_HOURS_SPECIFICATION_SUCCESS = 'DELETE_OPENING_HOURS_SPECIFICATION_SUCCESS'
 export const DELETE_OPENING_HOURS_SPECIFICATION_FAILURE = 'DELETE_OPENING_HOURS_SPECIFICATION_FAILURE'
 
+export const PRINTER_CONNECTED = '@restaurant/PRINTER_CONNECTED'
+export const BLUETOOTH_ENABLED = '@restaurant/BLUETOOTH_ENABLED'
+export const BLUETOOTH_DISABLED = '@restaurant/BLUETOOTH_DISABLED'
+export const BLUETOOTH_START_SCAN = '@restaurant/BLUETOOTH_START_SCAN'
+export const BLUETOOTH_STOP_SCAN = '@restaurant/BLUETOOTH_STOP_SCAN'
+
 /*
  * Action Creators
  */
@@ -140,6 +148,13 @@ export const closeRestaurantFailure = createAction(CLOSE_RESTAURANT_FAILURE)
 export const deleteOpeningHoursSpecificationRequest = createAction(DELETE_OPENING_HOURS_SPECIFICATION_REQUEST)
 export const deleteOpeningHoursSpecificationSuccess = createAction(DELETE_OPENING_HOURS_SPECIFICATION_SUCCESS)
 export const deleteOpeningHoursSpecificationFailure = createAction(DELETE_OPENING_HOURS_SPECIFICATION_FAILURE)
+
+export const printerConnected = createAction(PRINTER_CONNECTED)
+
+export const bluetoothEnabled = createAction(BLUETOOTH_ENABLED)
+export const bluetoothDisabled = createAction(BLUETOOTH_DISABLED)
+export const bluetoothStartScan = createAction(BLUETOOTH_START_SCAN)
+export const bluetoothStopScan = createAction(BLUETOOTH_STOP_SCAN)
 
 /*
  * Thunk Creators
@@ -432,5 +447,48 @@ export function deleteOpeningHoursSpecification(openingHoursSpecification) {
     return httpClient.delete(openingHoursSpecification['@id'])
       .then(res => dispatch(deleteOpeningHoursSpecificationSuccess(openingHoursSpecification)))
       .catch(e => dispatch(deleteOpeningHoursSpecificationFailure(e)))
+  }
+}
+
+// const FOODORA_BT_PRINTER = '0F:02:17:A2:32:6A'
+// const MTP_II = '02:03:D2:09:33:47'
+
+export function printOrder(order) {
+
+  return (dispatch, getState) => {
+
+    const encoded = encodeForPrinter(order)
+
+    const { printer } = getState().restaurant
+
+    BleManager.isPeripheralConnected(printer, [])
+      .then((isConnected) => {
+        if (isConnected) {
+          BleManager.retrieveServices(printer).then(services => {
+            BleManager.writeWithoutResponse(
+              printer,
+              "e7810a71-73ae-499d-8c15-faa9aef0c3f2",
+              "bef8d6c9-9c21-4c9e-b632-bd58c1009f9f",
+              Array.from(encoded)
+            )
+            .then(() => console.log('WRITE OK'))
+            .catch((e) => console.log('Error writing to device', e))
+          })
+
+        } else {
+          console.log('Peripheral is NOT connected!');
+        }
+      })
+  }
+}
+
+export function connectPrinter(device) {
+
+  return function (dispatch, getState) {
+    BleManager.connect(device.id)
+      .then(() => {
+        console.log('Connected to device !!!', device)
+        dispatch(printerConnected(device.id))
+      })
   }
 }
