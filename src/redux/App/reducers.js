@@ -23,6 +23,8 @@ import {
   SET_SERVERS,
   TRACKER_INITIALIZED,
   TRACKER_DISABLED,
+  THERMAL_PRINTER_CONNECTED,
+  THERMAL_PRINTER_DEVICE_ID,
 } from './actions'
 
 const initialState = {
@@ -40,6 +42,8 @@ const initialState = {
   resumeCheckoutAfterActivation: false,
   servers: [],
   trackerInitialized: false,
+  thermalPrinterConnected: false,
+  thermalPrinterDeviceId: null,
 }
 
 export default (state = initialState, action = {}) => {
@@ -160,6 +164,18 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         trackerInitialized: false,
+      }
+
+    case THERMAL_PRINTER_CONNECTED:
+      return {
+        ...state,
+        thermalPrinterConnected: true,
+      }
+
+    case THERMAL_PRINTER_DEVICE_ID:
+      return {
+        ...state,
+        thermalPrinterDeviceId: action.payload,
       }
 
     default:

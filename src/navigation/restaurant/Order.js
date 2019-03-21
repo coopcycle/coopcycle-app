@@ -14,9 +14,9 @@ import moment from 'moment'
 import { phonecall } from 'react-native-communications'
 import { PhoneNumberUtil, PhoneNumberFormat } from 'google-libphonenumber'
 
-import { formatPrice } from '../../Cart'
 import OrderItems from '../../components/OrderItems'
 import { acceptOrder, setCurrentOrder } from '../../redux/Restaurant/actions'
+import { printOrder } from '../../redux/App/actions'
 import material from '../../../native-base-theme/variables/material'
 
 const phoneNumberUtil = PhoneNumberUtil.getInstance()
@@ -29,6 +29,11 @@ class OrderScreen extends Component {
 
   componentWillBlur(payload) {
     this.props.setCurrentOrder(null)
+  }
+
+  _print() {
+    const { order } = this.props
+    this.props.printOrder(order)
   }
 
   renderButtons() {
@@ -97,7 +102,7 @@ class OrderScreen extends Component {
 
   renderHeading() {
 
-    const { order } = this.props
+    const { order, thermalPrinterConnected } = this.props
 
     if (order.state !== 'refused' && order.state !== 'cancelled') {
 
@@ -119,6 +124,16 @@ class OrderScreen extends Component {
                 <Text>{ this.props.t('RESTAURANT_ORDER_PICKUP_EXPECTED_AT', { date: pickupExpectedAt }) }</Text>
               </View>
             </Row>
+            { thermalPrinterConnected && (
+            <Row>
+              <View style={ styles.dateContainer }>
+                <Icon type="FontAwesome" name="print" />
+                <Button onPress={ () => this._print() }>
+                  <Text>{ this.props.t('RESTAURANT_ORDER_PRINT') }</Text>
+                </Button>
+              </View>
+            </Row>
+            )}
           </Col>
         </Row>
       )
@@ -233,6 +248,7 @@ function mapStateToProps(state, ownProps) {
   return {
     httpClient: state.app.httpClient,
     order: state.restaurant.order || ownProps.navigation.state.params.order,
+    thermalPrinterConnected: state.app.thermalPrinterConnected,
   }
 }
 
@@ -240,6 +256,7 @@ function mapDispatchToProps(dispatch) {
   return {
     acceptOrder: (client, order) => dispatch(acceptOrder(client, order)),
     setCurrentOrder: (order) => dispatch(setCurrentOrder(order)),
+    printOrder: (order) => dispatch(printOrder(order))
   }
 }
 

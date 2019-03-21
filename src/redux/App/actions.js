@@ -1,12 +1,19 @@
 import { createAction } from 'redux-actions'
+import moment from 'moment'
 import { AsyncStorage, Platform } from 'react-native'
 import BackgroundGeolocation from 'react-native-mauron85-background-geolocation'
 import { NavigationActions, StackActions } from 'react-navigation'
 import Matomo from 'react-native-matomo'
+import { BleManager, State } from 'react-native-ble-plx'
+import { Buffer } from 'buffer'
+import EscPosEncoder from 'esc-pos-encoder'
+import diacritics from 'diacritics'
+
 import API from '../../API'
 import AppUser from '../../AppUser'
 import Settings from '../../Settings'
 import Preferences from '../../Preferences'
+import { formatPrice } from '../../Cart'
 import { setTasksFilter, setKeepAwake } from '../Courier/taskActions'
 import {
   loadMyRestaurantsRequest,
@@ -40,6 +47,8 @@ export const RESUME_CHECKOUT_AFTER_ACTIVATION = '@app/RESUME_CHECKOUT_AFTER_ACTI
 export const SET_SERVERS = '@app/SET_SERVERS'
 export const TRACKER_INITIALIZED = '@app/TRACKER_INITIALIZED'
 export const TRACKER_DISABLED = '@app/TRACKER_DISABLED'
+export const THERMAL_PRINTER_CONNECTED = '@app/THERMAL_PRINTER_CONNECTED'
+export const THERMAL_PRINTER_DEVICE_ID = '@app/THERMAL_PRINTER_DEVICE_ID'
 
 /*
  * Action Creators
@@ -58,6 +67,8 @@ export const authenticate = createAction(AUTHENTICATE)
 export const setServers = createAction(SET_SERVERS)
 export const trackerInitialized = createAction(TRACKER_INITIALIZED)
 export const trackerDisabled = createAction(TRACKER_DISABLED)
+export const thermalPrinterConnected = createAction(THERMAL_PRINTER_CONNECTED)
+export const setThermalPrinterDeviceId = createAction(THERMAL_PRINTER_DEVICE_ID)
 
 const _setHttpClient = createAction(SET_HTTP_CLIENT)
 const _setUser = createAction(SET_USER)
@@ -115,6 +126,8 @@ function navigateToHome(dispatch, getState) {
   }
 }
 
+const bleManager = new BleManager()
+
 export function bootstrap(baseURL, user) {
   return function (dispatch, getState) {
     const httpClient = API.createClient(baseURL, user)
@@ -129,6 +142,7 @@ export function bootstrap(baseURL, user) {
     configureBackgroundGeolocation(httpClient, user)
     saveRemotePushToken(dispatch, getState)
     initMatomoClient(dispatch)
+    initBLE(dispatch)
 
     // Navigate to screen depending on user state
     if (user.isAuthenticated()) {
@@ -450,4 +464,200 @@ function configureBackgroundGeolocation(httpClient, user) {
       })
       .catch(e => console.log(e))
   })
+}
+
+let bleStateChangeSubscription
+
+function splitter(str, l){
+  var strs = [];
+  while(str.length > l){
+    var pos = str.substring(0, l).lastIndexOf(' ');
+    pos = pos <= 0 ? l : pos;
+    strs.push(str.substring(0, pos));
+    var i = str.indexOf(' ', pos)+1;
+    if(i < pos || i > pos+l)
+        i = pos;
+    str = str.substring(i);
+  }
+  strs.push(str);
+  return strs;
+}
+
+function initBLE(dispatch) {
+
+  bleStateChangeSubscription = bleManager.onStateChange((state) => {
+    if (state === State.PoweredOn) {
+
+      bleManager.startDeviceScan(null, null, (error, device) => {
+        if (error) {
+            // Handle error (scanning will be stopped automatically)
+            return
+        }
+
+        if ('MTP-II' === device.name) {
+
+          bleManager.stopDeviceScan()
+
+          device.connect()
+            .then((device) => device.discoverAllServicesAndCharacteristics())
+            .then((device) => {
+              dispatch(setThermalPrinterDeviceId(device.id))
+              dispatch(thermalPrinterConnected())
+            })
+            .catch((error) => {
+              // Handle errors
+              console.log('BLE CONNECT ERROR', error)
+            })
+        }
+      })
+
+      setTimeout(() => {
+        bleManager.stopDeviceScan()
+      }, 10000)
+
+    }
+  }, true);
+}
+
+export function printOrder(order) {
+
+  return (dispatch, getState) => {
+
+    const thermalPrinterDeviceId = getState().app.thermalPrinterDeviceId
+
+    if (!thermalPrinterDeviceId) {
+      return
+    }
+
+    dispatch(setLoading(true))
+
+    const maxChars = 32
+
+    const preparationExpectedAt = moment(order.preparationExpectedAt).format('LT')
+    const pickupExpectedAt = moment(order.pickupExpectedAt).format('LT')
+
+    const preparationLine = 'A COMMENCER A PARTIR DE '.padEnd((maxChars - preparationExpectedAt.length), ' ') + preparationExpectedAt
+    const pickupLine = 'A PREPARER POUR '.padEnd((maxChars - pickupExpectedAt.length), ' ') + pickupExpectedAt
+
+    let encoder = new EscPosEncoder()
+    encoder
+      .initialize()
+      .line(''.padEnd(maxChars, '-'))
+      .align('center')
+      .line(`COMMANDE ${order.number} #${order.id}`)
+      .line(''.padEnd(maxChars, '-'))
+
+    bleManager.writeCharacteristicWithResponseForDevice(
+      thermalPrinterDeviceId,
+      'e7810a71-73ae-499d-8c15-faa9aef0c3f2',
+      'bef8d6c9-9c21-4c9e-b632-bd58c1009f9f',
+      Buffer.from(encoder.encode()).toString('base64')
+    )
+
+    encoder
+      .align('left')
+      .line(preparationLine)
+      .line(pickupLine)
+      .line(''.padEnd(maxChars, '-'))
+      .newline()
+      // .line('Tarte aux pommes           12EUR')
+
+    bleManager.writeCharacteristicWithResponseForDevice(
+      thermalPrinterDeviceId,
+      'e7810a71-73ae-499d-8c15-faa9aef0c3f2',
+      'bef8d6c9-9c21-4c9e-b632-bd58c1009f9f',
+      Buffer.from(encoder.encode()).toString('base64')
+    )
+
+    order.items.forEach((item) => {
+
+      let price = `  ${formatPrice(item.total)} EUR`
+      let name = diacritics.remove(item.name)
+
+      name = `${item.quantity} x ${name}`
+
+      let padding = price.length
+      let maxLength = maxChars - padding
+
+      encoder.align('left')
+
+      let lines = splitter(name, maxLength)
+
+      lines.forEach((line, index) => {
+        if (index === 0) {
+          line = line.padEnd(maxLength, ' ')
+          encoder.line(`${line}${price}`)
+        } else {
+          encoder.line(line)
+        }
+      })
+
+      bleManager.writeCharacteristicWithResponseForDevice(
+        thermalPrinterDeviceId,
+        'e7810a71-73ae-499d-8c15-faa9aef0c3f2',
+        'bef8d6c9-9c21-4c9e-b632-bd58c1009f9f',
+        Buffer.from(encoder.encode()).toString('base64')
+      )
+
+      if (item.adjustments.hasOwnProperty('menu_item_modifier')) {
+        item.adjustments.menu_item_modifier.forEach((adjustment) => {
+          encoder.line(`- ${adjustment.label}`)
+        })
+        bleManager.writeCharacteristicWithResponseForDevice(
+          thermalPrinterDeviceId,
+          'e7810a71-73ae-499d-8c15-faa9aef0c3f2',
+          'bef8d6c9-9c21-4c9e-b632-bd58c1009f9f',
+          Buffer.from(encoder.encode()).toString('base64')
+        )
+      }
+
+      encoder.newline()
+
+    })
+
+    encoder
+      .line(''.padEnd(maxChars, '-'))
+
+    let total = `${formatPrice(order.itemsTotal)} EUR`
+    let totalLine = 'TOTAL '.padEnd((maxChars - total.length), ' ') + total
+
+    encoder
+      .align('left')
+      .line(totalLine)
+      .line(''.padEnd(maxChars, '-'))
+
+    bleManager.writeCharacteristicWithResponseForDevice(
+      thermalPrinterDeviceId,
+      'e7810a71-73ae-499d-8c15-faa9aef0c3f2',
+      'bef8d6c9-9c21-4c9e-b632-bd58c1009f9f',
+      Buffer.from(encoder.encode()).toString('base64')
+    )
+
+    if (order.notes) {
+      let notes = diacritics.remove(order.notes)
+      encoder
+        .line(notes)
+        .line(''.padEnd(maxChars, '-'))
+      bleManager.writeCharacteristicWithResponseForDevice(
+        thermalPrinterDeviceId,
+        'e7810a71-73ae-499d-8c15-faa9aef0c3f2',
+        'bef8d6c9-9c21-4c9e-b632-bd58c1009f9f',
+        Buffer.from(encoder.encode()).toString('base64')
+      )
+    }
+
+    encoder
+      .newline()
+      .newline()
+      .newline()
+
+    bleManager.writeCharacteristicWithResponseForDevice(
+      thermalPrinterDeviceId,
+      'e7810a71-73ae-499d-8c15-faa9aef0c3f2',
+      'bef8d6c9-9c21-4c9e-b632-bd58c1009f9f',
+      Buffer.from(encoder.encode()).toString('base64')
+    )
+
+    dispatch(setLoading(false))
+  }
 }
