@@ -42,6 +42,15 @@ export default createStackNavigator({
       title: i18n.t('RESTAURANT_MENUS'),
     }),
   },
+  RestaurantPrinter: {
+    screen: screens.RestaurantPrinter,
+    navigationOptions: ({ navigation }) => ({
+      // Use header = null to get rid of the header
+      // The screen's header will be used
+      headerShown: false,
+      title: i18n.t('RESTAURANT_PRINTER'),
+    })
+  }
 }, {
   defaultNavigationOptions,
   initialRouteName: 'RestaurantSettingsHome',

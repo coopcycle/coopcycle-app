@@ -10,8 +10,16 @@ import reducers from './reducers'
 import PreferencesMiddleware from './middlewares/PreferencesMiddleware'
 import WsMiddleware from './middlewares/WebSocketMiddleware'
 import GeolocationMiddleware from './middlewares/GeolocationMiddleware'
+import BluetoothMiddleware from './middlewares/BluetoothMiddleware'
 
-const middlewares = [ thunk, ReduxAsyncQueue, PreferencesMiddleware, WsMiddleware(), GeolocationMiddleware ]
+const middlewares = [
+  thunk,
+  ReduxAsyncQueue,
+  PreferencesMiddleware,
+  WsMiddleware(),
+  GeolocationMiddleware,
+  BluetoothMiddleware
+]
 
 if (process.env.NODE_ENV === 'development') {
   middlewares.push(createLogger({ collapsed: true }))
@@ -25,20 +33,3 @@ const store = createStore(
 export default store
 
 export const persistor = persistStore(store)
-
-export const observeStore = (store, selector, onChange) => {
-  let currentState = null
-
-  const handleChange = () => {
-    const nextState = selector(store.getState())
-
-    if (nextState !== currentState) {
-      currentState = nextState
-      onChange(currentState)
-    }
-  }
-
-  const unsubscribe = store.subscribe(handleChange)
-  handleChange()
-  return unsubscribe
-}

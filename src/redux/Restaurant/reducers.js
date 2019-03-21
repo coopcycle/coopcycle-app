@@ -42,6 +42,11 @@ import {
   SET_NEXT_PRODUCTS_PAGE,
   LOAD_MORE_PRODUCTS_SUCCESS,
   SET_HAS_MORE_PRODUCTS,
+  PRINTER_CONNECTED,
+  BLUETOOTH_ENABLED,
+  BLUETOOTH_DISABLED,
+  BLUETOOTH_START_SCAN,
+  BLUETOOTH_STOP_SCAN
 } from './actions'
 
 import {
@@ -67,6 +72,9 @@ const initialState = {
   products: [],
   menus: [],
   specialOpeningHoursSpecification: [],
+  bluetoothEnabled: false,
+  isScanningBluetooth: false,
+  printer: null
 }
 
 const spliceOrders = (state, payload) => {
@@ -347,6 +355,41 @@ export default (state = initialState, action = {}) => {
           ...menu,
           active: menu['@id'] === action.payload.menu['@id'],
         })),
+      }
+
+    case PRINTER_CONNECTED:
+
+      return {
+        ...state,
+        printer: action.payload,
+      }
+
+    case BLUETOOTH_ENABLED:
+
+      return {
+        ...state,
+        bluetoothEnabled: true,
+      }
+
+    case BLUETOOTH_DISABLED:
+
+      return {
+        ...state,
+        bluetoothEnabled: false,
+      }
+
+    case BLUETOOTH_START_SCAN:
+
+      return {
+        ...state,
+        isScanningBluetooth: true,
+      }
+
+    case BLUETOOTH_STOP_SCAN:
+
+      return {
+        ...state,
+        isScanningBluetooth: false,
       }
   }
 

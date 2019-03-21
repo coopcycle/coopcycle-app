@@ -4,17 +4,13 @@ import { Platform } from 'react-native'
 import AsyncStorage from '@react-native-community/async-storage';
 import BackgroundGeolocation from '@mauron85/react-native-background-geolocation'
 import { NavigationActions } from 'react-navigation'
-import { BleManager, State } from 'react-native-ble-plx'
-import { Buffer } from 'buffer'
-import EscPosEncoder from 'esc-pos-encoder'
-import diacritics from 'diacritics'
 import firebase from 'react-native-firebase'
+import BleManager from 'react-native-ble-manager'
 
 import API from '../../API'
 import AppUser from '../../AppUser'
 import Settings from '../../Settings'
 import Preferences from '../../Preferences'
-import { formatPrice } from '../../utils/formatting'
 import { setTasksFilter, setKeepAwake, setSignatureScreenFirst } from '../Courier/taskActions'
 import NavigationHolder from '../../NavigationHolder'
 import i18n from '../../i18n'
@@ -171,8 +167,6 @@ function navigateToHome(dispatch, getState) {
   }
 }
 
-const bleManager = new BleManager()
-
 export function selectServer(server) {
 
   return function (dispatch, getState) {
@@ -219,7 +213,8 @@ export function bootstrap(baseURL, user) {
 
     configureBackgroundGeolocation()
     saveRemotePushToken(dispatch, getState)
-    initBLE(dispatch)
+
+    BleManager.start({ showAlert: false })
 
     // Navigate to screen depending on user state
     if (user.isAuthenticated()) {
@@ -541,198 +536,4 @@ function configureBackgroundGeolocation() {
   }
 
   BackgroundGeolocation.configure(options)
-}
-
-function splitter(str, l){
-  var strs = [];
-  while (str.length > l){
-    var pos = str.substring(0, l).lastIndexOf(' ');
-    pos = pos <= 0 ? l : pos;
-    strs.push(str.substring(0, pos));
-    var i = str.indexOf(' ', pos) + 1;
-    if (i < pos || i > pos + l)
-        {i = pos;}
-    str = str.substring(i);
-  }
-  strs.push(str);
-  return strs;
-}
-
-function initBLE(dispatch) {
-
-  bleManager.onStateChange((state) => {
-    if (state === State.PoweredOn) {
-
-      bleManager.startDeviceScan(null, null, (error, device) => {
-        if (error) {
-            // Handle error (scanning will be stopped automatically)
-            return
-        }
-
-        if (device.name === 'MTP-II') {
-
-          bleManager.stopDeviceScan()
-
-          device.connect()
-            .then((device) => device.discoverAllServicesAndCharacteristics())
-            .then((device) => {
-              dispatch(setThermalPrinterDeviceId(device.id))
-              dispatch(thermalPrinterConnected())
-            })
-            .catch((error) => {
-              // Handle errors
-              console.log('BLE CONNECT ERROR', error)
-            })
-        }
-      })
-
-      setTimeout(() => {
-        bleManager.stopDeviceScan()
-      }, 10000)
-
-    }
-  }, true);
-}
-
-export function printOrder(order) {
-
-  return (dispatch, getState) => {
-
-    const thermalPrinterDeviceId = getState().app.thermalPrinterDeviceId
-
-    if (!thermalPrinterDeviceId) {
-      return
-    }
-
-    dispatch(setLoading(true))
-
-    const maxChars = 32
-
-    const preparationExpectedAt = moment(order.preparationExpectedAt).format('LT')
-    const pickupExpectedAt = moment(order.pickupExpectedAt).format('LT')
-
-    const preparationLine = 'A COMMENCER A PARTIR DE '.padEnd((maxChars - preparationExpectedAt.length), ' ') + preparationExpectedAt
-    const pickupLine = 'A PREPARER POUR '.padEnd((maxChars - pickupExpectedAt.length), ' ') + pickupExpectedAt
-
-    let encoder = new EscPosEncoder()
-    encoder
-      .initialize()
-      .line(''.padEnd(maxChars, '-'))
-      .align('center')
-      .line(`COMMANDE ${order.number} #${order.id}`)
-      .line(''.padEnd(maxChars, '-'))
-
-    bleManager.writeCharacteristicWithResponseForDevice(
-      thermalPrinterDeviceId,
-      'e7810a71-73ae-499d-8c15-faa9aef0c3f2',
-      'bef8d6c9-9c21-4c9e-b632-bd58c1009f9f',
-      Buffer.from(encoder.encode()).toString('base64')
-    )
-
-    encoder
-      .align('left')
-      .line(preparationLine)
-      .line(pickupLine)
-      .line(''.padEnd(maxChars, '-'))
-      .newline()
-      // .line('Tarte aux pommes           12EUR')
-
-    bleManager.writeCharacteristicWithResponseForDevice(
-      thermalPrinterDeviceId,
-      'e7810a71-73ae-499d-8c15-faa9aef0c3f2',
-      'bef8d6c9-9c21-4c9e-b632-bd58c1009f9f',
-      Buffer.from(encoder.encode()).toString('base64')
-    )
-
-    order.items.forEach((item) => {
-
-      let price = `  ${formatPrice(item.total)} EUR`
-      let name = diacritics.remove(item.name)
-
-      name = `${item.quantity} x ${name}`
-
-      let padding = price.length
-      let maxLength = maxChars - padding
-
-      encoder.align('left')
-
-      let lines = splitter(name, maxLength)
-
-      lines.forEach((line, index) => {
-        if (index === 0) {
-          line = line.padEnd(maxLength, ' ')
-          encoder.line(`${line}${price}`)
-        } else {
-          encoder.line(line)
-        }
-      })
-
-      bleManager.writeCharacteristicWithResponseForDevice(
-        thermalPrinterDeviceId,
-        'e7810a71-73ae-499d-8c15-faa9aef0c3f2',
-        'bef8d6c9-9c21-4c9e-b632-bd58c1009f9f',
-        Buffer.from(encoder.encode()).toString('base64')
-      )
-
-      if (item.adjustments.hasOwnProperty('menu_item_modifier')) {
-        item.adjustments.menu_item_modifier.forEach((adjustment) => {
-          encoder.line(`- ${adjustment.label}`)
-        })
-        bleManager.writeCharacteristicWithResponseForDevice(
-          thermalPrinterDeviceId,
-          'e7810a71-73ae-499d-8c15-faa9aef0c3f2',
-          'bef8d6c9-9c21-4c9e-b632-bd58c1009f9f',
-          Buffer.from(encoder.encode()).toString('base64')
-        )
-      }
-
-      encoder.newline()
-
-    })
-
-    encoder
-      .line(''.padEnd(maxChars, '-'))
-
-    let total = `${formatPrice(order.itemsTotal)} EUR`
-    let totalLine = 'TOTAL '.padEnd((maxChars - total.length), ' ') + total
-
-    encoder
-      .align('left')
-      .line(totalLine)
-      .line(''.padEnd(maxChars, '-'))
-
-    bleManager.writeCharacteristicWithResponseForDevice(
-      thermalPrinterDeviceId,
-      'e7810a71-73ae-499d-8c15-faa9aef0c3f2',
-      'bef8d6c9-9c21-4c9e-b632-bd58c1009f9f',
-      Buffer.from(encoder.encode()).toString('base64')
-    )
-
-    if (order.notes) {
-      let notes = diacritics.remove(order.notes)
-      encoder
-        .line(notes)
-        .line(''.padEnd(maxChars, '-'))
-      bleManager.writeCharacteristicWithResponseForDevice(
-        thermalPrinterDeviceId,
-        'e7810a71-73ae-499d-8c15-faa9aef0c3f2',
-        'bef8d6c9-9c21-4c9e-b632-bd58c1009f9f',
-        Buffer.from(encoder.encode()).toString('base64')
-      )
-    }
-
-    encoder
-      .newline()
-      .newline()
-      .newline()
-
-    bleManager.writeCharacteristicWithResponseForDevice(
-      thermalPrinterDeviceId,
-      'e7810a71-73ae-499d-8c15-faa9aef0c3f2',
-      'bef8d6c9-9c21-4c9e-b632-bd58c1009f9f',
-      Buffer.from(encoder.encode()).toString('base64')
-    )
-
-    dispatch(setLoading(false))
-  }
 }
