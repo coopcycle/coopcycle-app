@@ -4202,10 +4202,10 @@ levn@^0.3.0, levn@~0.3.0:
     prelude-ls "~1.1.2"
     type-check "~0.3.2"
 
-libphonenumber-js@^1.7.9:
-  version "1.7.9"
-  resolved "https://registry.yarnpkg.com/libphonenumber-js/-/libphonenumber-js-1.7.9.tgz#687ee7e19bd29d11b1aaa1f769b9c3bdb6fab122"
-  integrity sha512-Pi5XtTeC2E727x46a4jgV/vgZPe9/R6w/ApkFXFqwUzZXS2qZUbRSIgR4yR42SOJWkPHxfIK8lG8CXLOgcsEFQ==
+libphonenumber-js@^1.7.13:
+  version "1.7.13"
+  resolved "https://registry.yarnpkg.com/libphonenumber-js/-/libphonenumber-js-1.7.13.tgz#20aa2c790a6f7f6ea9d171efb7b9e0bd6c0b7c84"
+  integrity sha512-JZWskCCYnYk+lCSkoTmK3qbJh+KrVZHN+VJtqa3qTjz73+RtYECiPiicTS3yBpB46SoQ52HmbC5M7nbR7GEUqg==
   dependencies:
     minimist "^1.2.0"
     semver-compare "^1.0.0"
@@ -4776,10 +4776,10 @@ mkdirp@^0.5.0, mkdirp@^0.5.1:
   dependencies:
     minimist "0.0.8"
 
-mock-async-storage@^2.0.4:
-  version "2.0.4"
-  resolved "https://registry.yarnpkg.com/mock-async-storage/-/mock-async-storage-2.0.4.tgz#2994a3d5e6553ec7aae0b3b83c3ad0de9cbbbffb"
-  integrity sha512-lusYDDqAxqzxVCB+svZLUJC8efG25fCeQvzJ6z6Qt4sbJiGTF4fK27ic96eFCbQqfQWDPr1SPxkRtX0AcwiUoQ==
+mock-async-storage@^2.0.5:
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/mock-async-storage/-/mock-async-storage-2.0.5.tgz#67ccc7fa9b252472c4f47c8101c8c45cc96e0df6"
+  integrity sha512-U1HDVlgL5A+tF9sqKUsQUyqd5/0LAkRoNbcEdQ5QMNAa7UOjC6K+PsJsLIe0MYVyMs5hR9lPrFHFpAiXtk/qDg==
   dependencies:
     deepmerge "^1.3.1"
 
@@ -4850,10 +4850,10 @@ native-base-shoutem-theme@0.2.3:
     lodash "4.17.11"
     prop-types "^15.5.10"
 
-native-base@^2.12.0:
-  version "2.12.0"
-  resolved "https://registry.yarnpkg.com/native-base/-/native-base-2.12.0.tgz#6c51fcb002fc07770e91544e662152eac367e929"
-  integrity sha512-3+HP80L7syMi1pGDBymIUgxpaNfoNrd/Pq6knABfwxZN05GClEHRfhAudsdBc88Zi2zGfbJS+VCwqQNl8tWfsA==
+native-base@^2.12.1:
+  version "2.12.1"
+  resolved "https://registry.yarnpkg.com/native-base/-/native-base-2.12.1.tgz#0ce367076fd5694f92abab6e0a69a84dc5dfa800"
+  integrity sha512-4DH5aKaazOwh7//URZySVxgHFnoZnkhat3aMEJYd/eWW/RBJQ/lBk/nRmDicLqq1chzq/6Ok4KmkQnVwSTt3mA==
   dependencies:
     blueimp-md5 "^2.5.0"
     clamp "^1.0.1"
@@ -5920,10 +5920,10 @@ react-native-modal-datetime-picker@^6.0.0:
     prop-types "^15.6.1"
     react-native-modal "^6.2.0"
 
-react-native-modal-selector@^1.0.0:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/react-native-modal-selector/-/react-native-modal-selector-1.0.2.tgz#d6ec94ea9d280162be6c439fea72455479bc5c73"
-  integrity sha512-nMHwYj5f6brhGC6f+AjZY2BqU3p3TDoqzJJEIMRn7/o27NAvJGE3XS+2J+wfLJstCcYdaDrfYWRWE854KfSHBA==
+react-native-modal-selector@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/react-native-modal-selector/-/react-native-modal-selector-1.0.3.tgz#fc7e26881e36969e98c0cfc5b2dcd2e85b178fa4"
+  integrity sha512-0JJT+2kZld4Il/qXVLsIS7EuynyE60CPd54YdVSS2VE6n9SuGcbLeyIwhSyYYX4AaofNjfRo8W5rI6xsx7RzkA==
   dependencies:
     prop-types "^15.5.10"
 
@@ -6243,10 +6243,10 @@ reduce-reducers@^0.4.3:
   resolved "https://registry.yarnpkg.com/reduce-reducers/-/reduce-reducers-0.4.3.tgz#8e052618801cd8fc2714b4915adaa8937eb6d66c"
   integrity sha512-+CNMnI8QhgVMtAt54uQs3kUxC3Sybpa7Y63HR14uGLgI9/QR5ggHvpxwhGGe3wmx5V91YwqQIblN9k5lspAmGw==
 
-redux-actions@^2.6.4:
-  version "2.6.4"
-  resolved "https://registry.yarnpkg.com/redux-actions/-/redux-actions-2.6.4.tgz#e1d9d7d987d274071b0134b707365d3e25ba3b26"
-  integrity sha512-Gho+gnsvyR5h0pApoMdHLYssVEu4I0DNqyC91u43Xy/BvLrEddEMtukLF8oL3WXUy7DjxqKOKZHKmpKyN6hxlQ==
+redux-actions@^2.6.5:
+  version "2.6.5"
+  resolved "https://registry.yarnpkg.com/redux-actions/-/redux-actions-2.6.5.tgz#bdca548768ee99832a63910c276def85e821a27e"
+  integrity sha512-pFhEcWFTYNk7DhQgxMGnbsB1H2glqhQJRQrtPb96kD3hWiZRzXHwwmFPswg6V2MjraXRXWNmuP9P84tvdLAJmw==
   dependencies:
     invariant "^2.2.4"
     just-curry-it "^3.1.0"
