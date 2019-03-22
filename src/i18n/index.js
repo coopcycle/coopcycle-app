@@ -10,6 +10,7 @@ import { reactI18nextModule } from 'react-i18next'
 import RNLanguages from 'react-native-languages'
 import Settings from '../Settings'
 import en from './locales/en.json'
+import es from './locales/es.json'
 import fr from './locales/fr.json'
 
 // Load additional Moment.js locales
@@ -33,7 +34,7 @@ i18next
   .use(reactI18nextModule)
   .init({
     fallbackLng: 'en',
-    resources: { en, fr },
+    resources: { en, es, fr },
     ns: ['common'],
     defaultNS: 'common',
     debug: process.env.DEBUG
