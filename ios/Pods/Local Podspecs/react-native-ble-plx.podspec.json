@@ -1,0 +1,26 @@
+{
+  "name": "react-native-ble-plx",
+  "version": "1.0.3",
+  "summary": "React Native Bluetooth Low Energy library",
+  "authors": {
+    "Przemysław Lenart": "przemek.lenart@gmail.com"
+  },
+  "homepage": "https://github.com/Polidea/react-native-ble-plx#readme",
+  "license": "Apache License 2.0",
+  "platforms": {
+    "ios": "8.0"
+  },
+  "source": {
+    "git": "https://github.com/Polidea/react-native-ble-plx.git"
+  },
+  "source_files": "ios/**/*.{h,m}",
+  "compiler_flags": "-DREACT_NATIVE_BLE_PLX_SWIFT",
+  "dependencies": {
+    "React": [
+
+    ],
+    "react-native-ble-plx-swift": [
+
+    ]
+  }
+}

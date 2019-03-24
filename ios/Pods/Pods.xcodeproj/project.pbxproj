@@ -665,7 +665,7 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = CF66237783694089CF90D1BF;
+			remoteGlobalIDString = 6E51727FFA305F5C57C9C27A;
 			remoteInfo = React;
 		};
 		083BA5BB7A726C6AB2B8FCE12E3C7427 /* PBXContainerItemProxy */ = {
@@ -679,7 +679,7 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = CF66237783694089CF90D1BF;
+			remoteGlobalIDString = 6E51727FFA305F5C57C9C27A;
 			remoteInfo = React;
 		};
 		236259FFFEAB2173C043A0E7828DFC7C /* PBXContainerItemProxy */ = {
@@ -721,7 +721,7 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = CF66237783694089CF90D1BF;
+			remoteGlobalIDString = 6E51727FFA305F5C57C9C27A;
 			remoteInfo = React;
 		};
 		7BCC004573CF57E339467880FEC29C53 /* PBXContainerItemProxy */ = {
@@ -749,7 +749,7 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = CF66237783694089CF90D1BF;
+			remoteGlobalIDString = 6E51727FFA305F5C57C9C27A;
 			remoteInfo = React;
 		};
 		D4A6A5238CF027CE1BF13CCC7A7ACF06 /* PBXContainerItemProxy */ = {
@@ -763,7 +763,7 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = CF66237783694089CF90D1BF;
+			remoteGlobalIDString = 6E51727FFA305F5C57C9C27A;
 			remoteInfo = React;
 		};
 		D7303F81AAADF487F803EF9975D341CB /* PBXContainerItemProxy */ = {
@@ -784,7 +784,7 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = CF66237783694089CF90D1BF;
+			remoteGlobalIDString = 6E51727FFA305F5C57C9C27A;
 			remoteInfo = React;
 		};
 		E9E5E6A3840ADC1903255C3B1EA8DFA9 /* PBXContainerItemProxy */ = {

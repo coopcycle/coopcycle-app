@@ -42,8 +42,6 @@ target 'CoopCycle' do
 
   pod 'rn-fetch-blob', :path => '../node_modules/rn-fetch-blob'
 
-  pod 'react-native-ble-plx', :path => '../node_modules/react-native-ble-plx'
-
 end
 
 post_install do |installer|

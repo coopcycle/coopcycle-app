@@ -59,7 +59,7 @@ PODS:
     - React/RCTBlob
   - rn-fetch-blob (0.10.6):
     - React/Core
-  - RNGestureHandler (1.0.16):
+  - RNGestureHandler (1.1.0):
     - React
   - RNSketchCanvas (0.8.0):
     - React
