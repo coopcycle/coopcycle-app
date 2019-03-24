@@ -30,7 +30,6 @@
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		2D02E4C21E0B4AEC006451C7 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157351DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		2D02E4C31E0B4AEC006451C7 /* libRCTImage-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3E841DF850E9000B6D8A /* libRCTImage-tvOS.a */; };
 		2D02E4C41E0B4AEC006451C7 /* libRCTLinking-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3E881DF850E9000B6D8A /* libRCTLinking-tvOS.a */; };
 		2D02E4C51E0B4AEC006451C7 /* libRCTNetwork-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3E8C1DF850E9000B6D8A /* libRCTNetwork-tvOS.a */; };
@@ -63,6 +62,7 @@
 		ED2971652150620600B7C4FE /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED2971642150620600B7C4FE /* JavaScriptCore.framework */; };
 		FA2E390C2225DD32002BBCB4 /* Empty.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2E390B2225DD32002BBCB4 /* Empty.swift */; };
 		FA2E390E2225E1AA002BBCB4 /* libBNFMatomo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FA4FE02C2225C93400AB66C4 /* libBNFMatomo.a */; };
+		FA2FED982247F09100044D6B /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		FA5C2CC82244CD1F006E8545 /* libBleClient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FA5C2C9A2244CD0C006E8545 /* libBleClient.a */; };
 		FA76E2B721F1582100F822E1 /* libTPSStripe.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FACC77EC1FE0D05D00B54C2A /* libTPSStripe.a */; };
 		FA76E36121F1C71700F822E1 /* libRCTBackgroundGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FA444E5320C17E7A00B2B731 /* libRCTBackgroundGeolocation.a */; };
@@ -70,7 +70,6 @@
 		FAC644342166464700D1DA52 /* libRNSound.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FAC64432216645E400D1DA52 /* libRNSound.a */; };
 		FAC644362166467C00D1DA52 /* misstickle__indian_bell_chime.wav in Resources */ = {isa = PBXBuildFile; fileRef = FAC644352166467B00D1DA52 /* misstickle__indian_bell_chime.wav */; };
 		FACC0F1A217A8A5700DF714D /* libRNLanguages.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FA27ED83217A695200A3FB2A /* libRNLanguages.a */; };
-		FAD34EA0207C33BE0047382A /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157351DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -510,6 +509,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA2FED982247F09100044D6B /* libRCTAnimation.a in Frameworks */,
 				FA76E36121F1C71700F822E1 /* libRCTBackgroundGeolocation.a in Frameworks */,
 				FAC644342166464700D1DA52 /* libRNSound.a in Frameworks */,
 				7CB413E120347AE5005A1637 /* libRCTPushNotification.a in Frameworks */,
@@ -518,7 +518,6 @@
 				ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
 				00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */,
-				FAD34EA0207C33BE0047382A /* libRCTAnimation.a in Frameworks */,
 				00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */,
 				00C302E81ABCBA2D00DB3ED1 /* libRCTImage.a in Frameworks */,
 				133E29F31AD74F7200F7D852 /* libRCTLinking.a in Frameworks */,
@@ -540,7 +539,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				ED2971652150620600B7C4FE /* JavaScriptCore.framework in Frameworks */,
-				2D02E4C21E0B4AEC006451C7 /* libRCTAnimation.a in Frameworks */,
 				2D02E4C31E0B4AEC006451C7 /* libRCTImage-tvOS.a in Frameworks */,
 				2D02E4C41E0B4AEC006451C7 /* libRCTLinking-tvOS.a in Frameworks */,
 				2D02E4C51E0B4AEC006451C7 /* libRCTNetwork-tvOS.a in Frameworks */,
@@ -1461,22 +1459,13 @@
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
-				CF86BD57B1FE4E1C8AFF67A8 /* Entypo.ttf in Resources */,
-				802CBC1D5BE34FF4B9E245B0 /* EvilIcons.ttf in Resources */,
-				EBEA4DEB916A4B2EB2E0BF79 /* FontAwesome.ttf in Resources */,
-				FB362CCD67634DDBB76CC4A4 /* Foundation.ttf in Resources */,
-				A228322CFF9248BC87154F90 /* MaterialIcons.ttf in Resources */,
-				FE1DCA95EC154D25BD3E68A1 /* Octicons.ttf in Resources */,
 				6CA9EFE6FD4D4EFA87DB1783 /* Roboto_medium.ttf in Resources */,
 				7CC1B2C8CE9743C7AA1CEE0F /* Roboto.ttf in Resources */,
 				FAC644362166467C00D1DA52 /* misstickle__indian_bell_chime.wav in Resources */,
 				64D780A5100A432F9C307BF1 /* rubicon-icon-font.ttf in Resources */,
-				366E5B1CDC8743ACBB9E19B6 /* SimpleLineIcons.ttf in Resources */,
-				6241DEF7CFA8488993DCB415 /* Zocial.ttf in Resources */,
 				E4A95D69133B4C1B8FD304BA /* Raleway-Regular.ttf in Resources */,
 				346F3EAE31674113876BFD7C /* OpenSans-Regular.ttf in Resources */,
 				A9C30BD9D63F45FEB1FD9DEC /* OpenSans-Bold.ttf in Resources */,
-				C5AEFCF5F6DC4424937B7C4C /* MaterialCommunityIcons.ttf in Resources */,
 				E649FAA2C5B94B2FACEAF68F /* AntDesign.ttf in Resources */,
 				1542B1209B3D4036BDE8F4F9 /* Entypo.ttf in Resources */,
 				0516ABEF425A4473B933098C /* EvilIcons.ttf in Resources */,
@@ -1539,7 +1528,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
+			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
 		676D2B5C2ACF31C1F6A1C5E0 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
