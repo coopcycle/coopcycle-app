@@ -69,5 +69,4 @@ rm -rf ~/.rncache
 rm yarn.lock
 yarn cache clean
 yarn install
-react-native link
 ```
