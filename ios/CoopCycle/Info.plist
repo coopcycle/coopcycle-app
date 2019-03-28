@@ -67,6 +67,12 @@
 	<string>App requires background tracking</string>
 	<key>NSMotionUsageDescription</key>
 	<string>App requires motion tracking</string>
+  <key>NSCameraUsageDescription</key>
+  <string>App requires access to camera</string>
+  <key>NSPhotoLibraryUsageDescription</key>
+  <string>App requires access to photo library</string>
+  <key>NSPhotoLibraryAddUsageDescription</key>
+  <string>App requires access to photo library</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Entypo.ttf</string>
