@@ -211,6 +211,8 @@
     "SIGNATURE": "Firma",
     "SIGNATURE_DISCLAIMER": "Firmar abajo",
     "SIGNATURE_CLEAR": "Borrar",
-    "SIGNATURE_SIGN": "Enviar la imagen"
+    "SIGNATURE_SIGN": "Enviar la imagen",
+    "PHOTO": "Foto",
+    "PHOTO_DISCLAIMER": "Tomar una foto"
   }
 }

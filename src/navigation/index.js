@@ -41,6 +41,7 @@ export default {
   CourierSettings: require('./courier/Settings'),
   CourierSettingsTags: require('./courier/Tags'),
   CourierSignature: require('./courier/Signature'),
+  CourierPhoto: require('./courier/Photo'),
   AccountHome: require('./account/Home'),
   AccountLoginRegister: require('./account/LoginRegister'),
   AccountAddressesPage: require('./account/AccountAddressesPage'),

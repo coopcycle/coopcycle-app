@@ -213,6 +213,8 @@
     "SIGNATURE": "Signature",
     "SIGNATURE_DISCLAIMER": "Sign below",
     "SIGNATURE_CLEAR": "Clear",
-    "SIGNATURE_SIGN": "Upload signature"
+    "SIGNATURE_SIGN": "Upload signature",
+    "PHOTO": "Picture",
+    "PHOTO_DISCLAIMER": "Take a picture"
   }
 }

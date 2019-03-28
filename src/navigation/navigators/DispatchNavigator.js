@@ -134,7 +134,7 @@ export default createStackNavigator({
       title: i18n.t('DISPATCH_ASSIGN_TASK'),
     })
   },
-  DispatchTaskSignature: {
+  DispatchTaskProofOfDelivery: {
     screen: navigation.CourierSignature,
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('SIGNATURE')
