@@ -1,17 +1,6 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    ext {
-        buildToolsVersion = "28.0.3"
-        minSdkVersion = 18
-        compileSdkVersion = 28
-        targetSdkVersion = 26
-        supportLibVersion = "28.0.0"
-        playServicesVersion = "15.0.1"
-        googlePlayServicesVersion = playServicesVersion
-        firebaseVersion = "16.0.6"
-        timberVersion = "4.7.1"
-    }
     repositories {
         // Gradle 4.1 and higher include support for Google's Maven repo using
         // the google() method. And you need to include this repo to download
@@ -30,6 +19,18 @@ buildscript {
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
+}
+
+ext {
+    buildToolsVersion = "28.0.3"
+    minSdkVersion = 18
+    compileSdkVersion = 28
+    targetSdkVersion = 26
+    supportLibVersion = "27.1.0"
+    playServicesVersion = "15.0.1"
+    googlePlayServicesVersion = playServicesVersion
+    firebaseVersion = "16.0.6"
+    timberVersion = "4.7.1"
 }
 
 allprojects {
