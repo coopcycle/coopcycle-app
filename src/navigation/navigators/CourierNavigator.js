@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { View } from 'react-native'
 import { Button, Icon, Text } from 'native-base'
-import { createBottomTabNavigator, createStackNavigator } from 'react-navigation'
+import { createBottomTabNavigator, createMaterialTopTabNavigator, createStackNavigator } from 'react-navigation'
 
 import i18n from '../../i18n'
 import navigation, { defaultNavigationOptions, headerLeft } from '..'
@@ -62,7 +62,7 @@ const MainNavigator = createStackNavigator({
         <HeaderButton
           iconType="FontAwesome5" iconName="file-signature"
           iconStyle={{ fontSize: 18 }}
-          onPress={ () => navigation.navigate('TaskSignature', { task: navigation.getParam('task') }) } />
+          onPress={ () => navigation.navigate('TaskProofOfDelivery', { task: navigation.getParam('task') }) } />
       )
     })
   },
@@ -95,6 +95,21 @@ const SettingsStack = createStackNavigator({
   defaultNavigationOptions
 })
 
+const ProofOfDeliveryTabs = createMaterialTopTabNavigator({
+  TaskPhoto: {
+    screen: navigation.CourierPhoto,
+    navigationOptions: ({ navigation }) => ({
+      title: i18n.t('PHOTO')
+    })
+  },
+  TaskSignature: {
+    screen: navigation.CourierSignature,
+    navigationOptions: ({ navigation }) => ({
+      title: i18n.t('SIGNATURE')
+    })
+  }
+})
+
 export default createStackNavigator({
   Main: {
     screen: MainNavigator,
@@ -114,8 +129,8 @@ export default createStackNavigator({
       title: i18n.t('SETTINGS')
     })
   },
-  TaskSignature: {
-    screen: navigation.CourierSignature,
+  TaskProofOfDelivery: {
+    screen: ProofOfDeliveryTabs,
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('SIGNATURE')
     })
