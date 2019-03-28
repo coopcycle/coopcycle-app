@@ -42,6 +42,8 @@ target 'CoopCycle' do
 
   pod 'rn-fetch-blob', :path => '../node_modules/rn-fetch-blob'
 
+  pod 'react-native-camera', :path => '../node_modules/react-native-camera'
+
 end
 
 post_install do |installer|
