@@ -5778,6 +5778,13 @@ react-native-calendars@^1.20.0:
     prop-types "^15.5.10"
     xdate "^0.8.0"
 
+react-native-camera@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/react-native-camera/-/react-native-camera-2.1.1.tgz#437cc62613b386d648baabc4b77147ab33d84558"
+  integrity sha512-lcsV4Pt7Ex402Zof3EYaBhLxytU3wefyxpoSCvQyZ1LligdAmsYwyCZeODj1Otcjuxw3gH/skgr0rl/kRPOq8g==
+  dependencies:
+    prop-types "^15.6.2"
+
 react-native-communications@^2.2.1:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/react-native-communications/-/react-native-communications-2.2.1.tgz#7883b56b20a002eeb790c113f8616ea8692ca795"
