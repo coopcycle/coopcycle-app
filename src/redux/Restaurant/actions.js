@@ -161,26 +161,21 @@ export function loadOrderAndNavigate(order) {
 
         dispatch(loadOrderSuccess(res))
 
-        // We use the "Reset" action so that it works everywhere
-        const resetAction = StackActions.reset({
-          index: 1,
-          actions: [
-            NavigationActions.navigate({
-              routeName: 'RestaurantHome',
-              params: {
-                restaurant: res.restaurant,
-                // We don't want to load orders again when navigating
-                loadOrders: false
-              }
-            }),
-            NavigationActions.navigate({
+        NavigationHolder.dispatch(NavigationActions.navigate({
+          routeName: 'RestaurantNav',
+          action: NavigationActions.navigate({
+            routeName: 'Main',
+            params: {
+              restaurant: res.restaurant,
+              // We don't want to load orders again when navigating
+              loadOrders: false
+            },
+            action: NavigationActions.navigate({
               routeName: 'RestaurantOrder',
               params: { order: res }
             }),
-          ]
-        })
-
-        NavigationHolder.dispatch(resetAction)
+          }),
+        }))
 
       })
       .catch(e => dispatch(loadOrderFailure(e)))

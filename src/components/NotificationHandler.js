@@ -138,30 +138,23 @@ class NotificationHandler extends Component {
 
   _navigateToOrder(order) {
 
-    const resetAction = StackActions.reset({
-      index: 1,
-      actions: [
-        NavigationActions.navigate({
-          routeName: 'RestaurantHome',
-          params: {
-            restaurant: order.restaurant,
-            // We don't want to load orders again when navigating
-            loadOrders: false
-          }
-        }),
-        NavigationActions.navigate({
-          routeName: 'RestaurantOrder',
-          params: { order }
-        }),
-      ]
-    })
-
     this._stopSound()
     this.props.clearNotifications()
 
     NavigationHolder.dispatch(NavigationActions.navigate({
       routeName: 'RestaurantNav',
-      action: resetAction,
+      action: NavigationActions.navigate({
+        routeName: 'Main',
+        params: {
+          restaurant: order.restaurant,
+          // We don't want to load orders again when navigating
+          loadOrders: false
+        },
+        action: NavigationActions.navigate({
+          routeName: 'RestaurantOrder',
+          params: { order }
+        }),
+      }),
     }))
   }
 
@@ -170,21 +163,14 @@ class NotificationHandler extends Component {
     this._stopSound()
     this.props.clearNotifications()
 
-    const resetAction = StackActions.reset({
-      index: 0,
-      actions: [
-        NavigationActions.navigate({
-          routeName: 'CourierHome',
-          action: NavigationActions.navigate({
-            routeName: 'CourierTaskList',
-          }),
-        }),
-      ]
-    })
-
     NavigationHolder.dispatch(NavigationActions.navigate({
       routeName: 'CourierNav',
-      action: resetAction,
+      action: NavigationActions.navigate({
+        routeName: 'CourierHome',
+        action: NavigationActions.navigate({
+          routeName: 'CourierTaskList',
+        }),
+      }),
     }))
 
     this.props.loadTasks(this.props.httpClient, moment(date))
