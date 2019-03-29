@@ -8,6 +8,14 @@ PODS:
   - glog (0.3.5)
   - React (0.59.2):
     - React/Core (= 0.59.2)
+  - react-native-camera (2.1.1):
+    - React
+    - react-native-camera/RCT (= 2.1.1)
+    - react-native-camera/RN (= 2.1.1)
+  - react-native-camera/RCT (2.1.1):
+    - React
+  - react-native-camera/RN (2.1.1):
+    - React
   - react-native-maps (0.23.0):
     - React
   - React/Core (0.59.2):
@@ -78,6 +86,7 @@ DEPENDENCIES:
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - Folly (from `../node_modules/react-native/third-party-podspecs/Folly.podspec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
+  - react-native-camera (from `../node_modules/react-native-camera`)
   - react-native-maps (from `../node_modules/react-native-maps`)
   - React/Core (from `../node_modules/react-native`)
   - React/CxxBridge (from `../node_modules/react-native`)
@@ -113,6 +122,8 @@ EXTERNAL SOURCES:
     :podspec: "../node_modules/react-native/third-party-podspecs/glog.podspec"
   React:
     :path: "../node_modules/react-native"
+  react-native-camera:
+    :path: "../node_modules/react-native-camera"
   react-native-maps:
     :path: "../node_modules/react-native-maps"
   rn-fetch-blob:
@@ -132,6 +143,7 @@ SPEC CHECKSUMS:
   Folly: de497beb10f102453a1afa9edbf8cf8a251890de
   glog: aefd1eb5dda2ab95ba0938556f34b98e2da3a60d
   React: 9d063e2f356c8cd2f54dd550d4507740037cbabe
+  react-native-camera: 9cd8cf5d5f75917a978d3781f315b8191eaee1ff
   react-native-maps: 7525a32bcd025af8cf3b6c469af9b8758245db72
   rn-fetch-blob: 766f85cabd2992300dfa1be2bc9e4e258abc6f04
   RNGestureHandler: b65d391f4f570178d657b99a16ec99d09b8656b0
@@ -140,6 +152,6 @@ SPEC CHECKSUMS:
   Stripe: db29ad197c74aca6fb981e4e8355cf7ebd0fca5a
   yoga: 3768a3026ade0fb46a68f3a31a917cf86bc34fc4
 
-PODFILE CHECKSUM: 3e8757bababf0a1d2ba7f2c26b964719effe7b92
+PODFILE CHECKSUM: 1d7292b38e831f31b9fbface54ffbc8aa5e6e5d3
 
 COCOAPODS: 1.6.1
