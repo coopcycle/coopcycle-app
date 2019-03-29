@@ -7599,10 +7599,10 @@ time-stamp@^1.0.0:
   resolved "https://registry.yarnpkg.com/time-stamp/-/time-stamp-1.1.0.tgz#764a5a11af50561921b133f3b44e618687e0f5c3"
   integrity sha1-dkpaEa9QVhkhsTPztE5hhofg9cM=
 
-tipsi-stripe@7.2.0:
-  version "7.2.0"
-  resolved "https://registry.yarnpkg.com/tipsi-stripe/-/tipsi-stripe-7.2.0.tgz#4ace0281d2d2ccebf6812519a444187cb72d554e"
-  integrity sha512-FP0Qa57K0WWQjpmWysPvjLwYsKrt49fPf/4sMbRWzBap3Ur6GcR3547aZVYR45UYDLekmobn2hRDWYmagO8zpQ==
+tipsi-stripe@7.4.0:
+  version "7.4.0"
+  resolved "https://registry.yarnpkg.com/tipsi-stripe/-/tipsi-stripe-7.4.0.tgz#ddea184becad2e72b163f38ece561e87cd65cb70"
+  integrity sha512-GM9K10ahkcw42awSFsF/CHJnzmqEwzpR2Rr4ejy6g4TChYp+w2q0UNmPowvK+OmdPFNFK75D1SWJHTjsouS+pg==
 
 tmp@^0.0.33:
   version "0.0.33"
