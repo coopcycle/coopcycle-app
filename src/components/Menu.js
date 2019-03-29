@@ -40,6 +40,7 @@ export default class Menu extends Component {
         <Grid>
           <Col size={ 4 }>
             <Text>{ item.name }</Text>
+            { item.description && (<Text note>{ item.description }</Text>) }					
             <Text style={{ color: '#828282', fontSize: 14 }}>{ formatPrice(item.offers.price) } €</Text>
           </Col>
           <Col size={ 1 } style={{ flex: 1, alignItems: 'flex-end', justifyContent: 'center' }}>
