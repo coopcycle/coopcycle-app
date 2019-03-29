@@ -673,7 +673,6 @@
 				2DF0FFE12056DD460020B375 /* libjsinspector-tvOS.a */,
 				FAA0B6A2224E083C00D61E61 /* libthird-party.a */,
 				2DF0FFE52056DD460020B375 /* libthird-party.a */,
-				FAA0B6A4224E083C00D61E61 /* libdouble-conversion.a */,
 				2DF0FFE92056DD460020B375 /* libdouble-conversion.a */,
 				FA4FE0582225C93400AB66C4 /* libjsi.a */,
 				FA4FE05A2225C93400AB66C4 /* libjsiexecutor.a */,
@@ -1434,13 +1433,6 @@
 			fileType = archive.ar;
 			path = "libthird-party.a";
 			remoteRef = FAA0B6A1224E083C00D61E61 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		FAA0B6A4224E083C00D61E61 /* libdouble-conversion.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = "libdouble-conversion.a";
-			remoteRef = FAA0B6A3224E083C00D61E61 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		FAC64432216645E400D1DA52 /* libRNSound.a */ = {
