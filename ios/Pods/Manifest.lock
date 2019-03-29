@@ -63,7 +63,7 @@ PODS:
     - React
   - RNSketchCanvas (0.8.0):
     - React
-  - RNSVG (9.2.4):
+  - RNSVG (9.3.6):
     - React
   - Stripe (14.0.0)
   - yoga (0.58.5.React)
@@ -88,47 +88,52 @@ DEPENDENCIES:
   - React/RCTWebSocket (from `../node_modules/react-native`)
   - rn-fetch-blob (from `../node_modules/rn-fetch-blob`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
-  - RNSketchCanvas (from `../node_modules/@terrylinla/react-native-sketch-canvas`)
+  - "RNSketchCanvas (from `../node_modules/@terrylinla/react-native-sketch-canvas`)"
   - RNSVG (from `../node_modules/react-native-svg`)
   - Stripe (~> 14.0.0)
   - yoga (from `../node_modules/react-native/ReactCommon/yoga/yoga.podspec`)
 
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - boost-for-react-native
+    - Stripe
+
 EXTERNAL SOURCES:
   DoubleConversion:
-    :podspec: ../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec
+    :podspec: "../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
   Folly:
-    :podspec: ../node_modules/react-native/third-party-podspecs/Folly.podspec
+    :podspec: "../node_modules/react-native/third-party-podspecs/Folly.podspec"
   glog:
-    :podspec: ../node_modules/react-native/third-party-podspecs/glog.podspec
+    :podspec: "../node_modules/react-native/third-party-podspecs/glog.podspec"
   React:
-    :path: ../node_modules/react-native
+    :path: "../node_modules/react-native"
   react-native-maps:
-    :path: ../node_modules/react-native-maps
+    :path: "../node_modules/react-native-maps"
   rn-fetch-blob:
-    :path: ../node_modules/rn-fetch-blob
+    :path: "../node_modules/rn-fetch-blob"
   RNGestureHandler:
-    :path: ../node_modules/react-native-gesture-handler
+    :path: "../node_modules/react-native-gesture-handler"
   RNSketchCanvas:
-    :path: ../node_modules/@terrylinla/react-native-sketch-canvas
+    :path: "../node_modules/@terrylinla/react-native-sketch-canvas"
   RNSVG:
-    :path: ../node_modules/react-native-svg
+    :path: "../node_modules/react-native-svg"
   yoga:
-    :path: ../node_modules/react-native/ReactCommon/yoga/yoga.podspec
+    :path: "../node_modules/react-native/ReactCommon/yoga/yoga.podspec"
 
 SPEC CHECKSUMS:
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   DoubleConversion: bb338842f62ab1d708ceb63ec3d999f0f3d98ecd
   Folly: de497beb10f102453a1afa9edbf8cf8a251890de
   glog: aefd1eb5dda2ab95ba0938556f34b98e2da3a60d
-  React: 16c4fb7ce3fc30c041bce809ceae33bf57e7c142
-  react-native-maps: 066c2afcc89e18726377bcc685315f989ca22449
-  rn-fetch-blob: 76a8f798dae965bbcd146a2438f2e1d381c91ae3
-  RNGestureHandler: afde2addc517e85cc97a25bfe119acbee779a7ce
-  RNSketchCanvas: 7e895178cb74258dc2b0d85370d8644016dac25f
-  RNSVG: 4834be1d644eb77f0e3f6de851881b83758a3124
+  React: 6cd5e6fcc3b6a52d2fb27a638f622139da710dff
+  react-native-maps: 9469741f77f270c605cafec603ce47327dc5b5f8
+  rn-fetch-blob: 766f85cabd2992300dfa1be2bc9e4e258abc6f04
+  RNGestureHandler: b65d391f4f570178d657b99a16ec99d09b8656b0
+  RNSketchCanvas: 9c28adb5381543ed55cc98ce6de46479cb3cb12c
+  RNSVG: 172d33eda196063a6a94900d93a4a2cbb126bf33
   Stripe: db29ad197c74aca6fb981e4e8355cf7ebd0fca5a
-  yoga: 0885622311729a02c2bc02dca97167787a51488b
+  yoga: 0e0009ffb2544aeead64a1209f3d488d3849947b
 
 PODFILE CHECKSUM: 8c058ecebf9a1727ca8a8ac6da109ac88d0b466a
 
-COCOAPODS: 1.4.0
+COCOAPODS: 1.6.1
