@@ -48,7 +48,7 @@ matrix:
       - yarn install
       - cd ios
     script:
-      - xcodebuild -workspace CoopCycle.xcworkspace -scheme CoopCycle -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO -quiet | xcpretty && exit ${PIPESTATUS[0]}
+      - xcodebuild -workspace CoopCycle.xcworkspace -scheme CoopCycle -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO -quiet -UseModernBuildSystem=NO | xcpretty && exit ${PIPESTATUS[0]}
 
 notifications:
   email: false
