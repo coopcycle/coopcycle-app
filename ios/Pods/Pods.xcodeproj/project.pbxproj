@@ -39,9 +39,7 @@
 		06002F772C63F06F6927BE601C7CAA24 /* stp_icon_checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = E89A0239ABB1D789871722B93A1E085D /* stp_icon_checkmark.png */; };
 		07D56C2CB22551777CB792DFAE4F3FB0 /* STPPaymentCardTextFieldCell.h in Headers */ = {isa = PBXBuildFile; fileRef = E775B770830C2682941FE382EFE7F27E /* STPPaymentCardTextFieldCell.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		08E76CA796FFF9A443DE39B2C2C9DE1A /* UIViewController+Stripe_NavigationItemProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = ED429A4D7E39CAB2A905B19ECB402A9D /* UIViewController+Stripe_NavigationItemProxy.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		08F9747618A9327A39D7B1AF00D5DC5C /* diy-fp.cc in Sources */ = {isa = PBXBuildFile; fileRef = 5A4391F3E9891DDA3B7BF30EFC1A93FE /* diy-fp.cc */; };
 		09147F07CA60CF255E9972BFB5154E1D /* Utility.h in Headers */ = {isa = PBXBuildFile; fileRef = 14F056ECF4E72F359FEA2A97C0D25636 /* Utility.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		091C0C0E3A30D286E30F860AE0925759 /* bignum.h in Headers */ = {isa = PBXBuildFile; fileRef = B5AF0333FBC11C7B18099E00A29A85D0 /* bignum.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		09AB1C8456024447A8D6FDED0D730E08 /* STPAnalyticsClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 21C32A6E6025F6A264EEC499741249A1 /* STPAnalyticsClient.m */; };
 		09BA2F0E109DD203AAF3BDBBDDFC0B34 /* STPCustomerContext.h in Headers */ = {isa = PBXBuildFile; fileRef = 670F4569D913087021D9EE6F50FC6D7A /* STPCustomerContext.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		09D510993E1222A54503E8F601AA36B9 /* STPCustomer.h in Headers */ = {isa = PBXBuildFile; fileRef = 75A3B198B0817AC98564C6FEE136BE1E /* STPCustomer.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -67,7 +65,6 @@
 		0E89D35F7C131827D94DD432EBC46302 /* STPValidatedTextField.h in Headers */ = {isa = PBXBuildFile; fileRef = 268AF5CC79F1B06F1105EF2755C7893E /* STPValidatedTextField.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		10695B47303DF2F97F58581E0E53C2E2 /* SpookyHashV2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 65B94CC45647246127C77F024241AD6E /* SpookyHashV2.cpp */; settings = {COMPILER_FLAGS = "-DFOLLY_NO_CONFIG -DFOLLY_MOBILE=1 -DFOLLY_USE_LIBCPP=1"; }; };
 		106D6B61792FFDDA7C2026A4E5F6906D /* RNFetchBlob.h in Headers */ = {isa = PBXBuildFile; fileRef = 0BCC92F6A0B4FD9D937C644A02CE1DB4 /* RNFetchBlob.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		107BF2E806089DC6DD5715D1FCADC1FF /* strtod.h in Headers */ = {isa = PBXBuildFile; fileRef = DDA560D20213FB3B61C600B3536443B4 /* strtod.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		10C6796DF91188530363AD8E036D3399 /* UIToolbar+Stripe_InputAccessory.h in Headers */ = {isa = PBXBuildFile; fileRef = A090FC4994D6E5EB9247903CC245C9F5 /* UIToolbar+Stripe_InputAccessory.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		10D9877407861216D2BF1377531FE98B /* rn-fetch-blob-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 149FD4BB1E8F7914979545D9F8EB890D /* rn-fetch-blob-dummy.m */; };
 		115F09889C19B35A5A27F6EB6FE5AC10 /* STPPaymentIntentSourceActionAuthorizeWithURL.m in Sources */ = {isa = PBXBuildFile; fileRef = 2257FA874569C2C6A822C20208B66059 /* STPPaymentIntentSourceActionAuthorizeWithURL.m */; };
@@ -82,7 +79,6 @@
 		1750C0FBFFC8D68DD304770E3EB7B098 /* stp_shipping_form@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AD6341552631095369F0282E63CA20B0 /* stp_shipping_form@2x.png */; };
 		17A9904391D0F3759E990899595639E9 /* RNGestureHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 51D7C4DBFA419E784DED076674454B0E /* RNGestureHandler.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		18E394A314AF90792DE497D753B4F8CB /* AIRMapCoordinate.m in Sources */ = {isa = PBXBuildFile; fileRef = F0E0D99A8DA2519B414F8DD981EFA241 /* AIRMapCoordinate.m */; };
-		191C15F88ACEC13860AD338F208BDDB5 /* double-conversion.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B873682C14CEF3B8DB071C3B586C878 /* double-conversion.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		19300EF47D30DDDD65095318C41C1789 /* STPCategoryLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = AF9EDD17C3EA620F8F48F3529FAAE710 /* STPCategoryLoader.m */; };
 		196E2E4A54942107A7C4C2E4E75CC48E /* NSCharacterSet+Stripe.h in Headers */ = {isa = PBXBuildFile; fileRef = C681541F0119B7F9EF4CFE347DBA4D81 /* NSCharacterSet+Stripe.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		19EE0A91FE936D1BD3DECA7693BE305F /* UIViewController+Stripe_ParentViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 0281C105DAECF9F96379AA469593452C /* UIViewController+Stripe_ParentViewController.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -159,7 +155,6 @@
 		350240A12880D556661A848CDFAF7E26 /* RNSVGUseManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E43698A9EBA3FC7EF47CC4D5FDE95E1 /* RNSVGUseManager.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		3642644F997E13B5EF0C6FE12DCCADA5 /* RNSVGDefsManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 7CB78D1FE479485EDF8F68B1B139273A /* RNSVGDefsManager.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		36D14A82C0608D4504798BA20944151B /* RNSVGPathParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 3FF95FC16F98542985AB290A7A2E87E7 /* RNSVGPathParser.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		3728CB53E4723B332E0C5D8CD2409CDE /* ieee.h in Headers */ = {isa = PBXBuildFile; fileRef = FD488B579CA1363E77B9AD6218188B7A /* ieee.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		373CF6F5F6071FE5BACADAA7DA0A8EF4 /* RNSVGSolidColorBrush.m in Sources */ = {isa = PBXBuildFile; fileRef = A2608E88CD86FD84406B1F92DA97BE0C /* RNSVGSolidColorBrush.m */; };
 		3852A62CBBBD96B24E6F031C71C4AD13 /* STPAPIRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C2873D1796D2EB18194AE99C77D3DE5 /* STPAPIRequest.m */; };
 		38821ACA07B896D30DF19217644DD86E /* NSURLComponents+Stripe.m in Sources */ = {isa = PBXBuildFile; fileRef = 735F268E3F694043228B3143D9E8D32E /* NSURLComponents+Stripe.m */; };
@@ -198,7 +193,6 @@
 		4917496FC384A9DFC6E93469F0DBC4AD /* STPFormEncoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 238E640F60CE72251FBE97C38ED9C555 /* STPFormEncoder.m */; };
 		493834BFDBCF70188F839A1BDDF37473 /* RNFetchBlobProgress.h in Headers */ = {isa = PBXBuildFile; fileRef = 2DBC7E33BD1982AA620CE9AEB1A807F1 /* RNFetchBlobProgress.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		4954D7EFC2632D3DC97593C8B128507D /* STPSwitchTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 4778127CE0E7829AE33E9586FF60A5B0 /* STPSwitchTableViewCell.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		49D5AE148EDE23C66E04C17A9DF3CD0E /* double-conversion.cc in Sources */ = {isa = PBXBuildFile; fileRef = 1A599E59E414FE63D4BD1E480EEBF7A8 /* double-conversion.cc */; };
 		49D74AF9DD4B3DCC51DB40191CD59CA5 /* stp_card_discover.png in Resources */ = {isa = PBXBuildFile; fileRef = 0729A309997811DD3DEC13D0E758F2FC /* stp_card_discover.png */; };
 		4AA09065DE0EC5946810B25D9E492150 /* STPPaymentIntentSourceAction.h in Headers */ = {isa = PBXBuildFile; fileRef = F540CEE28DC991C5BE8FD7D41D787C05 /* STPPaymentIntentSourceAction.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		4B4B3BC6BE5B049020E375FCF61D4AA1 /* AIRMapUrlTile.m in Sources */ = {isa = PBXBuildFile; fileRef = C30674BE317272894CF9674919A69346 /* AIRMapUrlTile.m */; };
@@ -237,7 +231,6 @@
 		580960BEF867BF586A5A5C8CCF2FC35A /* RNFetchBlobFS.m in Sources */ = {isa = PBXBuildFile; fileRef = 27256F725449E5DD8BF82F7C905CAA29 /* RNFetchBlobFS.m */; };
 		58603191092E4D3E3CE8CCA45D5FEB63 /* RNSVGPercentageConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 23770B9DBAC2AED1B9301C8F88A50E88 /* RNSVGPercentageConverter.m */; };
 		589F55672EFD8A8497427FAFD4C6F5E1 /* STPSourceRedirect.h in Headers */ = {isa = PBXBuildFile; fileRef = 3832D9FD46B98EF0A03BD46D85051983 /* STPSourceRedirect.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		598BF86C3CEAF5C934DBC6C26792EF94 /* bignum.cc in Sources */ = {isa = PBXBuildFile; fileRef = 41C6690FF2C4EF1A0E4F7D80DCB574E3 /* bignum.cc */; };
 		59BA8472D39A6AEDA7128478A9F485FE /* STPDispatchFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = AB8D3C781DAD5F1D28688F3AE3F3D097 /* STPDispatchFunctions.m */; };
 		5AD2957BC9616A15C34796F1E7487F00 /* glog-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A14FF7F2B63FB618EC1B2F85D40DA6A /* glog-dummy.m */; };
 		5B6E7F09A3831F2FC48B55E479A87DEC /* RNSVGRadialGradient.m in Sources */ = {isa = PBXBuildFile; fileRef = 5527BBB28550308C0B00B14685FBEFA9 /* RNSVGRadialGradient.m */; };
@@ -296,7 +289,6 @@
 		728539238ADD619F5E5A3A2CD78C76D4 /* STPPaymentMethodsInternalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7750B7B490CC8C0897D8CC2A40E2BA9 /* STPPaymentMethodsInternalViewController.m */; };
 		729A4B277E4541F14C151AEC94487E4B /* NSArray+Stripe.h in Headers */ = {isa = PBXBuildFile; fileRef = F13DE122D233CC3BBD5960B9604331F4 /* NSArray+Stripe.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		72DCC93AEE285470E172AD2068683DD1 /* stp_test_upload_image.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = BDD61791F96EAA13800B3EF94A365A91 /* stp_test_upload_image.jpeg */; };
-		72F769711E01B4FD1FAD993242D3F395 /* cached-powers.cc in Sources */ = {isa = PBXBuildFile; fileRef = C1207E2CB69FCA292ABA35745CC02F86 /* cached-powers.cc */; };
 		733C6838B4093F032CDFF998D9DFB82D /* UIBarButtonItem+Stripe.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D81020CF0E42FBBFB5CE7B2BB7FC4AF /* UIBarButtonItem+Stripe.m */; };
 		73C7AE38AB37B4D9552E211AE50D6805 /* RNSVGRect.h in Headers */ = {isa = PBXBuildFile; fileRef = DBF59DD4C9EC1D7FDE9662A879D660FD /* RNSVGRect.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		74219DB80EB492A4B52B185AC87BE530 /* STPSourceVerification.h in Headers */ = {isa = PBXBuildFile; fileRef = 1975FCDFED7D02267B7CB758A0158E28 /* STPSourceVerification.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -329,7 +321,6 @@
 		7E0FB9BB5548E2CEA013E768E231A7F4 /* STPShippingMethodsViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 7994CD8CA70CA2E5323402DAE79E16DA /* STPShippingMethodsViewController.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		7E5DCAE288C9B15ADB020894828F20FE /* STPCard.m in Sources */ = {isa = PBXBuildFile; fileRef = 153245FA22AAAD2AF177DF15AC596AE1 /* STPCard.m */; };
 		7EE01926CA0D732EFF79DA760B40C9B3 /* UINavigationController+Stripe_Completion.h in Headers */ = {isa = PBXBuildFile; fileRef = 79B503622EE4D0A15D4256B70E377D24 /* UINavigationController+Stripe_Completion.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		7F7874E65AED2A890EE014C9C7D58F1D /* diy-fp.h in Headers */ = {isa = PBXBuildFile; fileRef = 174888322C06D74A99EA6591D311E761 /* diy-fp.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		7FA37658B59EA210F413676D491F254F /* RNSVGClipPath.m in Sources */ = {isa = PBXBuildFile; fileRef = A2BD02ACB8D88B6397987ED6A9255358 /* RNSVGClipPath.m */; };
 		8049E82ADD0F638B3903ADEA6312EDE6 /* STPPaymentResult.m in Sources */ = {isa = PBXBuildFile; fileRef = C018EE6EB47E0DA81E977C06CD361B27 /* STPPaymentResult.m */; };
 		80B187A2585D9604E594E2CDB85F0020 /* STPShippingAddressViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 9BFE20DBB9B73871AECCAFD589763B07 /* STPShippingAddressViewController.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -338,7 +329,6 @@
 		81E630A0011F1E13FC40C82D7A3271ED /* RNSVGGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E501EE27E14248DA84D3D546462A89B /* RNSVGGroup.m */; };
 		823BAA1DBB0EB04022EA5A53907DD5D4 /* STPCardParams.h in Headers */ = {isa = PBXBuildFile; fileRef = 02FF52FE847BE3831C7B174C3EF4A190 /* STPCardParams.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		82E2B03EBF8D8D9C399330CFD43BB9B4 /* STPStringUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = FE6495F6C6A48A5DD563A6DBB6204D24 /* STPStringUtils.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		82F4A08E405B0A3706D5F18335E9D880 /* bignum-dtoa.h in Headers */ = {isa = PBXBuildFile; fileRef = 22BF99D1314297F916A167B997746DC2 /* bignum-dtoa.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		830AC0E023DDB020FAB2A7B55C21A568 /* raw_logging.cc in Sources */ = {isa = PBXBuildFile; fileRef = 894DF9B9DE3A1B1732743E4FDFADFDC8 /* raw_logging.cc */; };
 		83393798F8C1A36D6EFB54A9A17778D5 /* STPLegalEntityParams.h in Headers */ = {isa = PBXBuildFile; fileRef = AE1A1A137EAE93DCB3A3445DE585FEC1 /* STPLegalEntityParams.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		83F6E3E7BAF0411AFE6B770BD22EF47D /* String.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C375BD69C64FA90B6FDBA3AA588C5232 /* String.cpp */; settings = {COMPILER_FLAGS = "-DFOLLY_NO_CONFIG -DFOLLY_MOBILE=1 -DFOLLY_USE_LIBCPP=1"; }; };
@@ -399,7 +389,6 @@
 		94C8E61320819D28C962F34D3FC8B8DA /* STPLocalizationUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = ED22E1665C3176F09E8C75F9FD212272 /* STPLocalizationUtils.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		94C921F65340F551B03C5D6922576388 /* Demangle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8B09C55A6B04033460B65213B03ED29 /* Demangle.cpp */; settings = {COMPILER_FLAGS = "-DFOLLY_NO_CONFIG -DFOLLY_MOBILE=1 -DFOLLY_USE_LIBCPP=1"; }; };
 		95DDEAE38A0405FD2EAEE6660DF96ECC /* AIRMapPolygon.m in Sources */ = {isa = PBXBuildFile; fileRef = 665526BAE4914589DD5A08130B810D95 /* AIRMapPolygon.m */; };
-		95F0126305351DD05D7AA074E2F2AF24 /* cached-powers.h in Headers */ = {isa = PBXBuildFile; fileRef = 891EDD8EF6783B3BF4E40D66DFF79ACA /* cached-powers.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		9756AB05F971BCF0533A4A36DAC80FF9 /* RNSVGMask.m in Sources */ = {isa = PBXBuildFile; fileRef = A21007CD99825AB6A195B0B521A2E311 /* RNSVGMask.m */; };
 		97A5E50A14E72086DE7AFEF96D8C4F22 /* STPStringUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = DE12B265E5FC02F9225FA6BD45EA9D3A /* STPStringUtils.m */; };
 		97C7036E551BD3C3BABD9DE5E4259E54 /* RNSketchData.h in Headers */ = {isa = PBXBuildFile; fileRef = 0DE6E1E60B9D8F57119B8753C279D4DB /* RNSketchData.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -421,7 +410,6 @@
 		9E7CBEF3B02D8F46CBA4706A1A025065 /* stp_card_unionpay_en@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 40D91A8B5DF5B8A20E2E3DC07022DF12 /* stp_card_unionpay_en@3x.png */; };
 		9ED32CCBA6CAF0AEC5E8DC76CDA40F23 /* NSMutableURLRequest+Stripe.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C01636195ED4579A008860AA7797D5E /* NSMutableURLRequest+Stripe.m */; };
 		9F71438099847B320E702A7ED0A49609 /* RNSVGBezierElement.h in Headers */ = {isa = PBXBuildFile; fileRef = FB65E479247B1F3E03C7600B3A7CB5AF /* RNSVGBezierElement.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		9F777CBD04816F19CF33C734C125DC1A /* fast-dtoa.cc in Sources */ = {isa = PBXBuildFile; fileRef = FCD7D08D317D5061EB39898AF2455B52 /* fast-dtoa.cc */; };
 		9F9C7061E324037AE9E1F51672E0E5D8 /* STPShippingMethodTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 2685396681081D368A38327ACF756009 /* STPShippingMethodTableViewCell.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		A040DD12BFDE62453587E3F0EBDF765D /* STPAddressFieldTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C952560115ED1038F156E491DB19C6A0 /* STPAddressFieldTableViewCell.m */; };
 		A04B425171500660BC1C74E3E0A11BC9 /* STPRedirectContext.h in Headers */ = {isa = PBXBuildFile; fileRef = A21B77F0056679B492EE0F476861AA16 /* STPRedirectContext.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -456,14 +444,12 @@
 		AE26E6D7594AFB9AA244F6EEB02A1A1C /* stp_card_form_front@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7424031730071A6BFB97A61123DBAB93 /* stp_card_form_front@2x.png */; };
 		AE8CF6E68B8415A076C73F75CB7FAEE9 /* RNSVGMaskManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F592DE5A7533B8310367E38E8D79F06 /* RNSVGMaskManager.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		AEA12630D0720FB41330D989F84E53BC /* AIRMapCallout.m in Sources */ = {isa = PBXBuildFile; fileRef = ABA013001DA7383FD8D54BDCD7C6DA69 /* AIRMapCallout.m */; };
-		AF8EC55515847D2EE9AD7ADED2B0B0BD /* fast-dtoa.h in Headers */ = {isa = PBXBuildFile; fileRef = 47A747D9BD7F322C6DDD553BBAADA93E /* fast-dtoa.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		B0680F0C6AABE46DDF7BD426C638C4A0 /* RNSVGTSpan.m in Sources */ = {isa = PBXBuildFile; fileRef = 65771E21D94C2545D62497E61B310158 /* RNSVGTSpan.m */; };
 		B118B6A211AD1BB1AABF6A7FC7155F45 /* NSDecimalNumber+Stripe_Currency.h in Headers */ = {isa = PBXBuildFile; fileRef = 14A21DC6AF83860DE1506F86C0814936 /* NSDecimalNumber+Stripe_Currency.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		B175F447D05A507D49945D9B49CF1A8A /* STPSourcePoller.h in Headers */ = {isa = PBXBuildFile; fileRef = EE73188EE7EB401E347F0F46C77DD367 /* STPSourcePoller.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		B1FC7D1727711CB808DF9D6E34654118 /* STPPostalCodeValidator.h in Headers */ = {isa = PBXBuildFile; fileRef = EF335AD3A6DC92A9D38C7196ACC96734 /* STPPostalCodeValidator.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		B22C32D30F485E3229B7A5127F1FF148 /* RNSVGBrushType.h in Headers */ = {isa = PBXBuildFile; fileRef = E9184BB6273E15949154F9535BE9A108 /* RNSVGBrushType.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		B2B1CE75C83931F6A1E0C4C5C6DF0C63 /* stp_card_amex@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BFDDFA609BAA10DAB0C5B85BDC5B70E /* stp_card_amex@2x.png */; };
-		B5342DD8C99B6EAA57FAB6C09E94E38A /* fixed-dtoa.cc in Sources */ = {isa = PBXBuildFile; fileRef = C90E3C5A83CC8655E65A945D7F6ACE4F /* fixed-dtoa.cc */; };
 		B5D32F805696AE493B304BF9E005B2D0 /* RNGestureHandlerRegistry.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C76A2AA6486BD80F0BE31C0DACEDA42 /* RNGestureHandlerRegistry.m */; };
 		B5F422876005E8750A133FCE332ACAA8 /* SMCalloutView.h in Headers */ = {isa = PBXBuildFile; fileRef = C13F3F987D54FA236F46EE3B21458173 /* SMCalloutView.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		B606BBA3AEC2064F07F4AD8E5882CA2C /* RNGestureHandlerModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 9930AB918FC24CB965FFC6FC0C9FC63A /* RNGestureHandlerModule.m */; };
@@ -506,7 +492,6 @@
 		C6EEEB8B318CAF0C871CAF600885A816 /* STPSourceOwner.m in Sources */ = {isa = PBXBuildFile; fileRef = F26576857A562FB592C46A5DF8B79486 /* STPSourceOwner.m */; };
 		C7402DCA9838D6109C027D9C675C2A26 /* STPAPIClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 088658863224E1E1DA77EC2CBF61B903 /* STPAPIClient.m */; };
 		C7AE50F7F7DC6B998EB06D5A3A8B0C5C /* stp_card_amex_template@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D3A183C99982EE1011FB718A615C4D5F /* stp_card_amex_template@2x.png */; };
-		C7DCA36BC01C33478E6BC8801AA6F929 /* utils.h in Headers */ = {isa = PBXBuildFile; fileRef = BFBA127F9CD44900752E7A5708D24421 /* utils.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		C7E7F48A2BCAC0BF1E03FE149FEB1D3D /* stp_card_mastercard.png in Resources */ = {isa = PBXBuildFile; fileRef = BFF7521977A8C1955FD0DA6656B7AF4F /* stp_card_mastercard.png */; };
 		C8EFECBFBED056A47CC61FD73D2DEFD8 /* STPSourceRedirect+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 2B5344D60C1080F8A9C2AA557518D136 /* STPSourceRedirect+Private.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		C903981B6CA02568CD2001EDD0FCB9BF /* RNSVGImage.h in Headers */ = {isa = PBXBuildFile; fileRef = 50A35368B69AE8BEADCDA88067511589 /* RNSVGImage.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -531,7 +516,6 @@
 		D3F966118E71EB42D3325A574FF0FC15 /* RNSVGSvgView.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B513C6840939398F4DC02320304339D /* RNSVGSvgView.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		D4F9B34EECF9000161ADF626363AA4BC /* STPFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D13696320AEBDFC78C078BB7923B52D /* STPFile.m */; };
 		D60DDD7C4BEE02B5A69F814EB098153C /* stp_card_discover_template@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2493D1285A8D63AAEC68921AF0DD8BB0 /* stp_card_discover_template@2x.png */; };
-		D6C20DCB29B6BFF5E545D724066718D0 /* fixed-dtoa.h in Headers */ = {isa = PBXBuildFile; fileRef = C1E4AEB7EACB2C05412729FF8459BC5F /* fixed-dtoa.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		D6F791547955B326FBE6CF8C6E2B7008 /* AIRMap.m in Sources */ = {isa = PBXBuildFile; fileRef = 976EFF1C46C6F0C3E98848D6D8CD7700 /* AIRMap.m */; };
 		D713A26314AC2374AFD19F97A9D7C28C /* stp_card_cvc_amex.png in Resources */ = {isa = PBXBuildFile; fileRef = 1C655FCCC3BA1154FAA40B5D83F4DED9 /* stp_card_cvc_amex.png */; };
 		D73A96452645F0CFD3AD57E4E063400F /* RNSVGFontData.m in Sources */ = {isa = PBXBuildFile; fileRef = F65A664541B3E042EA1BE8CC9DA34136 /* RNSVGFontData.m */; };
@@ -586,13 +570,11 @@
 		ECF450E1F4A4C6632890B8B9CD83D2F6 /* stp_card_error_amex@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F8052A55AEA2CE060BD558A53EC41FEC /* stp_card_error_amex@3x.png */; };
 		ED2B5A1995AFDF63318F71ECE36C618C /* vlog_is_on.cc in Sources */ = {isa = PBXBuildFile; fileRef = 0767D38F26A9F13B021A2C9F6149BD9F /* vlog_is_on.cc */; };
 		ED9C702BFB7B2B01D5A6F2C05B406559 /* Fabric.h in Headers */ = {isa = PBXBuildFile; fileRef = B3450BF759FAD7F548BC5233C6D56BFA /* Fabric.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		EDBEA52F88EBC169CA6F8210950C9A7D /* strtod.cc in Sources */ = {isa = PBXBuildFile; fileRef = DD81BC7F493B2029F1E6B9BDD20D9D49 /* strtod.cc */; };
 		EDC5D829FFAB4DE14A766BD828E5371F /* STPPaymentIntent+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 875DCDBEC5CBE879C34149D23CB6066B /* STPPaymentIntent+Private.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		EDF754E89AA7946757A0BCF6528D2E3E /* NSString+Stripe.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD867BF543F216A9896ABE372BC5BB9 /* NSString+Stripe.m */; };
 		EE0271130987BD04271409BF65048D18 /* RNSVGText.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F543F4B2FB98EC5C6223E0AA118AD44 /* RNSVGText.m */; };
 		EE09782FD254B86FC33D3D92CAD8A60A /* RNFetchBlobNetwork.m in Sources */ = {isa = PBXBuildFile; fileRef = B59F38ACBE565AECA3D8E9E2C33156C1 /* RNFetchBlobNetwork.m */; };
 		EE0F3F1C93737DD5C225EAD446BD3ED5 /* stp_icon_checkmark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 10227C0F0C4C61D6AAA2AAE41706457E /* stp_icon_checkmark@2x.png */; };
-		EE40B868388C40490FF1E07712CA4B3E /* bignum-dtoa.cc in Sources */ = {isa = PBXBuildFile; fileRef = 029B727441B0E5FBBA5227D6F2377F53 /* bignum-dtoa.cc */; };
 		EE60ECD09AC2AB5559B15C5A986C1B72 /* RNSVGTextPathManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 02B8396A183BC46E2B05A467B1F90D69 /* RNSVGTextPathManager.m */; };
 		EEB73C43FFACBEB283C591844BB5A4C1 /* UITableViewCell+Stripe_Borders.h in Headers */ = {isa = PBXBuildFile; fileRef = 6453D55E810EF17B81CCFD49543E3F5A /* UITableViewCell+Stripe_Borders.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		EF9EE6A802D9B35D08544CEEE2400853 /* AIRMapLocalTileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 230A660B247FD503D4B825727FED8EDB /* AIRMapLocalTileManager.m */; };
@@ -627,7 +609,6 @@
 		FD0952FE703E7A0EE68D5CADE57FA515 /* STPPaymentCardTextFieldViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 406AEC9337019DEA622C69757B254A3F /* STPPaymentCardTextFieldViewModel.m */; };
 		FDD11716FB1F33BA4913DA3EAA95C77A /* AIRMapLocalTile.m in Sources */ = {isa = PBXBuildFile; fileRef = 216F846F263B787AC30E4A288005121B /* AIRMapLocalTile.m */; };
 		FE108ACDA74F63F8BE46F5B47CFBB2FD /* STPImageLibrary+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 92B53A4247569424DA0262E94BCCD17A /* STPImageLibrary+Private.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		FE3350C2A4C6ECEE35DA90459AC249CE /* DoubleConversion-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 023482C0AE5615951DFCE168797CA12F /* DoubleConversion-dummy.m */; };
 		FE928BDA661FDA3CF5F15A310390C857 /* STPSourceParams.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C3C3C657E1FFEC72CBD29A5814E1A04 /* STPSourceParams.m */; };
 		FEC20FE1E4D1015A7ED17DDBB2514CAA /* STPDelegateProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = 3DE39D33219820289BED5BA276595E16 /* STPDelegateProxy.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		FFA187F2EFA76FC11D0A6C436D3B8D54 /* AIRMapPolygonManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2ACAB402BEE2044BA0DE2D6D49A94465 /* AIRMapPolygonManager.m */; };
@@ -676,7 +657,7 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 1414ADEE4A421F3C5F9A229345CE3F61;
+			remoteGlobalIDString = 000000004CE0;
 			remoteInfo = DoubleConversion;
 		};
 		A0C8E6E81A6C83CFD6428ACB75CC6142 /* PBXContainerItemProxy */ = {
@@ -725,7 +706,7 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 1414ADEE4A421F3C5F9A229345CE3F61;
+			remoteGlobalIDString = 000000004CE0;
 			remoteInfo = DoubleConversion;
 		};
 		D2D607931538C47BF266CC6D35F1C7C6 /* PBXContainerItemProxy */ = {
@@ -2014,13 +1995,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		933DA3B844AA36790E1184CF33F53746 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		977B34A80819F5A745CF5B52D9236AFD /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -4043,23 +4017,6 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		0E96AC29E4425A68227A380021E382A2 /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				82F4A08E405B0A3706D5F18335E9D880 /* bignum-dtoa.h in Headers */,
-				091C0C0E3A30D286E30F860AE0925759 /* bignum.h in Headers */,
-				95F0126305351DD05D7AA074E2F2AF24 /* cached-powers.h in Headers */,
-				7F7874E65AED2A890EE014C9C7D58F1D /* diy-fp.h in Headers */,
-				191C15F88ACEC13860AD338F208BDDB5 /* double-conversion.h in Headers */,
-				AF8EC55515847D2EE9AD7ADED2B0B0BD /* fast-dtoa.h in Headers */,
-				D6C20DCB29B6BFF5E545D724066718D0 /* fixed-dtoa.h in Headers */,
-				3728CB53E4723B332E0C5D8CD2409CDE /* ieee.h in Headers */,
-				107BF2E806089DC6DD5715D1FCADC1FF /* strtod.h in Headers */,
-				C7DCA36BC01C33478E6BC8801AA6F929 /* utils.h in Headers */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		11482E91C4789E8AFE90F299AC3210EE /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -4393,23 +4350,6 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		1414ADEE4A421F3C5F9A229345CE3F61 /* DoubleConversion */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 3252239A3789995739FB7B8C8A95B493 /* Build configuration list for PBXNativeTarget "DoubleConversion" */;
-			buildPhases = (
-				0E96AC29E4425A68227A380021E382A2 /* Headers */,
-				975735BF1F5E2C092FB2A8E783C373C7 /* Sources */,
-				977B34A80819F5A745CF5B52D9236AFD /* Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = DoubleConversion;
-			productName = DoubleConversion;
-			productReference = 37CEF2281C678BA77DFAC63275E89577 /* libDoubleConversion.a */;
-			productType = "com.apple.product-type.library.static";
-		};
 		214B972DC501DA61B163B4A1334F92E6 /* RNSVG */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 3EE3C7D197CEBA9DAD80148F6734A515 /* Build configuration list for PBXNativeTarget "RNSVG" */;
@@ -4623,7 +4563,6 @@
 			projectRoot = "";
 			targets = (
 				66641B93FAF80FF325B2D7B4AD85056F /* boost-for-react-native */,
-				1414ADEE4A421F3C5F9A229345CE3F61 /* DoubleConversion */,
 				DF470A1028ED32C9E70DBDAA805F8802 /* Folly */,
 				29FC2A0EC130F2F2AF7AC9AE94A583B4 /* glog */,
 				60AEA74FF064B4039169A65A666CCD06 /* Pods-CoopCycle */,
@@ -5014,22 +4953,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		975735BF1F5E2C092FB2A8E783C373C7 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				EE40B868388C40490FF1E07712CA4B3E /* bignum-dtoa.cc in Sources */,
-				598BF86C3CEAF5C934DBC6C26792EF94 /* bignum.cc in Sources */,
-				72F769711E01B4FD1FAD993242D3F395 /* cached-powers.cc in Sources */,
-				08F9747618A9327A39D7B1AF00D5DC5C /* diy-fp.cc in Sources */,
-				49D5AE148EDE23C66E04C17A9DF3CD0E /* double-conversion.cc in Sources */,
-				FE3350C2A4C6ECEE35DA90459AC249CE /* DoubleConversion-dummy.m in Sources */,
-				9F777CBD04816F19CF33C734C125DC1A /* fast-dtoa.cc in Sources */,
-				B5342DD8C99B6EAA57FAB6C09E94E38A /* fixed-dtoa.cc in Sources */,
-				EDBEA52F88EBC169CA6F8210950C9A7D /* strtod.cc in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		A2ECE0582209BDDB65DF9BB14EF9B173 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -5120,7 +5043,6 @@
 		7A965D388110A79C9F1B143531773106 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = DoubleConversion;
-			target = 1414ADEE4A421F3C5F9A229345CE3F61 /* DoubleConversion */;
 			targetProxy = 5A22F78962C911DA1299693B4E3938FE /* PBXContainerItemProxy */;
 		};
 		8865E4A88351A40ECF3A9CA3F9750D87 /* PBXTargetDependency */ = {
@@ -5167,7 +5089,6 @@
 		C83FC2C3E8CEC32DD8932E44896D7CFB /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = DoubleConversion;
-			target = 1414ADEE4A421F3C5F9A229345CE3F61 /* DoubleConversion */;
 			targetProxy = CEE3627BDFC98BF4E34AB2269676FAFF /* PBXContainerItemProxy */;
 		};
 		C9AB176F4744A9F2088986FD7077BD81 /* PBXTargetDependency */ = {
@@ -5289,31 +5210,6 @@
 				PRIVATE_HEADERS_FOLDER_PATH = "";
 				PRODUCT_MODULE_NAME = glog;
 				PRODUCT_NAME = glog;
-				PUBLIC_HEADERS_FOLDER_PATH = "";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_VERSION = 4.2;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
-		};
-		3207CFA149572FB8754B1C284BC27288 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = C9648F1D8F8C7294313FC16A6D6269C9 /* DoubleConversion.xcconfig */;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				GCC_PREFIX_HEADER = "Target Support Files/DoubleConversion/DoubleConversion-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PRIVATE_HEADERS_FOLDER_PATH = "";
-				PRODUCT_MODULE_NAME = DoubleConversion;
-				PRODUCT_NAME = DoubleConversion;
 				PUBLIC_HEADERS_FOLDER_PATH = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -5520,30 +5416,6 @@
 				WRAPPER_EXTENSION = bundle;
 			};
 			name = Release;
-		};
-		7BB4D46E7285C3318F54BB6311AB995D /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = C9648F1D8F8C7294313FC16A6D6269C9 /* DoubleConversion.xcconfig */;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				GCC_PREFIX_HEADER = "Target Support Files/DoubleConversion/DoubleConversion-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PRIVATE_HEADERS_FOLDER_PATH = "";
-				PRODUCT_MODULE_NAME = DoubleConversion;
-				PRODUCT_NAME = DoubleConversion;
-				PUBLIC_HEADERS_FOLDER_PATH = "";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_VERSION = 4.2;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
 		};
 		860AB9F398DF73EA7996689E906378E5 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -5885,15 +5757,6 @@
 			buildConfigurations = (
 				53F21BE3856C39E91D33EA40C40D6664 /* Debug */,
 				369A94720323C0361EE6C6EC6B780DED /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		3252239A3789995739FB7B8C8A95B493 /* Build configuration list for PBXNativeTarget "DoubleConversion" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				7BB4D46E7285C3318F54BB6311AB995D /* Debug */,
-				3207CFA149572FB8754B1C284BC27288 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
