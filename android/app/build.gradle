@@ -116,6 +116,7 @@ android {
             tipsiStripeRedirectScheme: "coopcycle",
             googleMapsApiKey: googleMapsApiKey
         ]
+        missingDimensionStrategy 'react-native-camera', 'general'
     }
     signingConfigs {
         release {
@@ -158,6 +159,10 @@ android {
 }
 
 dependencies {
+    implementation(project(':react-native-camera')){
+        exclude group: 'com.google.android.gms', module: 'play-services-vision'
+        exclude group: 'com.android.support', module: 'support-media-compat'
+    }
     implementation project(':react-native-ble-plx')
     compile project(':rn-fetch-blob')
     compile project(':@terrylinla_react-native-sketch-canvas')
