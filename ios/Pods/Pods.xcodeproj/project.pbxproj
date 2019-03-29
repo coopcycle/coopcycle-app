@@ -38,7 +38,6 @@
 		05DDB490677D2A31949CBF1746E082FA /* STPCoreTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12D3880054BCFEF1DF9286EB06809CB9 /* STPCoreTableViewController.m */; };
 		06002F772C63F06F6927BE601C7CAA24 /* stp_icon_checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = E89A0239ABB1D789871722B93A1E085D /* stp_icon_checkmark.png */; };
 		07D56C2CB22551777CB792DFAE4F3FB0 /* STPPaymentCardTextFieldCell.h in Headers */ = {isa = PBXBuildFile; fileRef = E775B770830C2682941FE382EFE7F27E /* STPPaymentCardTextFieldCell.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		08E1A36B0EA7BAB5E6BB9F9B282132A7 /* YGConfig.h in Headers */ = {isa = PBXBuildFile; fileRef = 3340591EB304792AC5DA2490C1D7BD98 /* YGConfig.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		08E76CA796FFF9A443DE39B2C2C9DE1A /* UIViewController+Stripe_NavigationItemProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = ED429A4D7E39CAB2A905B19ECB402A9D /* UIViewController+Stripe_NavigationItemProxy.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		08F9747618A9327A39D7B1AF00D5DC5C /* diy-fp.cc in Sources */ = {isa = PBXBuildFile; fileRef = 5A4391F3E9891DDA3B7BF30EFC1A93FE /* diy-fp.cc */; };
 		09147F07CA60CF255E9972BFB5154E1D /* Utility.h in Headers */ = {isa = PBXBuildFile; fileRef = 14F056ECF4E72F359FEA2A97C0D25636 /* Utility.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -108,7 +107,6 @@
 		2015D1F1E48805D0DAA2554C8BD987CB /* STPCard+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B027A333BAA0D33287C45D141067664 /* STPCard+Private.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		201C2446DE6E270347E2204576D748C8 /* RNSVGGlyphContext.h in Headers */ = {isa = PBXBuildFile; fileRef = 24A8D59342614666A5CE38D3483BB496 /* RNSVGGlyphContext.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		20F0D13F0C31A19295812D26BA9F58B9 /* vlog_is_on.h in Headers */ = {isa = PBXBuildFile; fileRef = 413CE0A67CDC8E2C2C6760AA5CB3754F /* vlog_is_on.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		212C177095DCAA28620B07BA7DE127CC /* Yoga-internal.h in Headers */ = {isa = PBXBuildFile; fileRef = EDDA3AD1A96BC5C52987A34B43964BE4 /* Yoga-internal.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		21D79050EA3D10A15B5C5D3147334784 /* stp_card_discover@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A45B18D54BBDFCEE92FBBD5F44EF525C /* stp_card_discover@2x.png */; };
 		222BD772770AF8510DD03AF8B6C42CDE /* STPSourceReceiver.m in Sources */ = {isa = PBXBuildFile; fileRef = 14136FD0A95A3D1A6B38C091231B9056 /* STPSourceReceiver.m */; };
 		229A78036851C36D782A9D36A841C39C /* stp_card_diners.png in Resources */ = {isa = PBXBuildFile; fileRef = 361E7095127EBB3FAA5C26187B449B19 /* stp_card_diners.png */; };
@@ -130,7 +128,6 @@
 		260DDA65C5069E07C0F444195FC78DF7 /* STPEphemeralKeyProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = 47B0CE60D5E74B37815C4F6208C57A3B /* STPEphemeralKeyProvider.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		2665CCCCE3EAE96B3A7E62934CC38F89 /* STPCustomer+SourceTuple.h in Headers */ = {isa = PBXBuildFile; fileRef = 08B1B9730FE5642D6652E204677B7E8C /* STPCustomer+SourceTuple.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		2697E799F3B8568105CBCAF347215DCF /* RNSVGRenderableManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A6541E77956271C2685EC1BAC05AD338 /* RNSVGRenderableManager.m */; };
-		2760429FCCD3B4327DAABCAEDC404366 /* YGStyle.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F7100F3AC5E1A0986A9FE1F2C4566B5 /* YGStyle.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		27BB1337418AB8FD67495622C8C78912 /* STPBackendAPIAdapter.h in Headers */ = {isa = PBXBuildFile; fileRef = 3FB6138D0CB763DDB93EA0F98A3ADB6D /* STPBackendAPIAdapter.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		28730D225FAD9DAF362FEE90920AAA3E /* RNSVGDefs.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BA45AF201AF6196F079DF98F4F03259 /* RNSVGDefs.m */; };
 		29A71A714EBED2EB1A638F4AD1E86FE3 /* STPPaymentMethodTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = EA81CE3C6B1F39C7F97349544C08A479 /* STPPaymentMethodTableViewCell.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -178,7 +175,6 @@
 		3E2FEF75F99D56A6E2558A77F32DE7E4 /* RNSVGPainterBrush.h in Headers */ = {isa = PBXBuildFile; fileRef = 90DF9271342564860FDA2615CBB8A0A3 /* RNSVGPainterBrush.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		3E63285EE3811D89BA2D2FD10A6A1916 /* STPCardBrand.h in Headers */ = {isa = PBXBuildFile; fileRef = 2FC86C57AFDAEC1ACC4708F5E1B8EFCA /* STPCardBrand.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		3F1E6FEA57280337AA5764C682E868BD /* STPCoreScrollViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AD12CFAB08C5AC664631C6D5ED44F955 /* STPCoreScrollViewController.m */; };
-		3F6C7B62A6B2F43366623CDD00320389 /* YGNode.h in Headers */ = {isa = PBXBuildFile; fileRef = 7D5EA56C9CD73912A6C54BABB421B0A0 /* YGNode.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		4067F3269D454A29A4F6A3D27D5E8378 /* STPPaymentIntent.m in Sources */ = {isa = PBXBuildFile; fileRef = F4DE560730247110F31AB9A525924ADE /* STPPaymentIntent.m */; };
 		408A36B32CF6BD16D868E3EA5C5885E0 /* AIRMapOverlay.h in Headers */ = {isa = PBXBuildFile; fileRef = 21949400597BBA705A58CA5A34D61C15 /* AIRMapOverlay.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		40D1B67A7881233A81265C2FDA9BAA1E /* RNSVGContainer.h in Headers */ = {isa = PBXBuildFile; fileRef = F5FA91848B391AFE2E64573D099DB606 /* RNSVGContainer.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -223,7 +219,6 @@
 		4F1108FCF0E08608780ACAA43D85F708 /* STPBundleLocator.m in Sources */ = {isa = PBXBuildFile; fileRef = FBD10D228A80F0211AC629033750AF5A /* STPBundleLocator.m */; };
 		4FACAA6FA740DFF3B5B9F457CA8DD4D7 /* STPBankAccountParams+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A12B05297F925FDF768B8C0C9D9A53E /* STPBankAccountParams+Private.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		5008CF25554F8E19C0EAF28A4B4FE491 /* UIImage+Stripe.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E1758EBB940BE1DF145E9A6BCE33BE7 /* UIImage+Stripe.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		50AE71EF11D2AB43DE300493BF7EF9CC /* Utils.h in Headers */ = {isa = PBXBuildFile; fileRef = 9FC282D41F89B516A18D90E1CC32BBBF /* Utils.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		50E0257172624E72FC64DCB4F0716974 /* RNSVGImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 906215CDF0C038D55D72D50A6DABA256 /* RNSVGImage.m */; };
 		5102399E23BAD51BD827B7A9270C5596 /* STPPaymentContextAmountModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C7CB1A2988B78B5F5977F90BAE426698 /* STPPaymentContextAmountModel.m */; };
 		517DD5FE499F1CCDF32A7FD8F8267907 /* RNSketchCanvasManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CF8AD8ED5BAACDC65BD8B1F97291C459 /* RNSketchCanvasManager.m */; };
@@ -251,7 +246,6 @@
 		5BF825FF2D33AE3118CAEA681601040D /* RNSVGGroupManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F223D8AF7758F12C867DF654C1FB62A /* RNSVGGroupManager.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		5C147EA02ECC7CC84BC2332FF2CBC646 /* stp_card_discover_template.png in Resources */ = {isa = PBXBuildFile; fileRef = 2C93A317C641EC68C5E9354D4CCDFC45 /* stp_card_discover_template.png */; };
 		5C351F14A017FC52FD3719F97EBCDBD5 /* NSURLComponents+Stripe.h in Headers */ = {isa = PBXBuildFile; fileRef = 24FF5B86A31C6C850D1A9714CC8A238F /* NSURLComponents+Stripe.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		5D401FA1C44DE5DC1CD0D93445194BAC /* YGNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DC81F58C6E99E664E4EB9B31A27D382 /* YGNode.cpp */; settings = {COMPILER_FLAGS = "-fno-omit-frame-pointer -fexceptions -Wall -Werror -std=c++1y -fPIC -fno-objc-arc"; }; };
 		5DEC0FC75F6E35E20FDF99C6C6A3B319 /* STPPaymentMethodsViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = AD264C78295C923B041634E7ED7E954E /* STPPaymentMethodsViewController.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		5E155756FDE8E7AC6A3F60E5C8DFEE95 /* RNSVGLine.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A1F13EEA1448093667D1A31BCCFB926 /* RNSVGLine.m */; };
 		5FC6B2BA84AD1BE6B8469FB96EAF737B /* STPPaymentMethodTuple.m in Sources */ = {isa = PBXBuildFile; fileRef = D1CFF432DD410F93FC8E6533E6F7EF5A /* STPPaymentMethodTuple.m */; };
@@ -343,9 +337,7 @@
 		81C9B97F44B3C58EB71FF7474FE81E3F /* STPCoreViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = DF502A0CF9CE7B43E606EBCD3C4CD0DB /* STPCoreViewController.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		81E630A0011F1E13FC40C82D7A3271ED /* RNSVGGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E501EE27E14248DA84D3D546462A89B /* RNSVGGroup.m */; };
 		823BAA1DBB0EB04022EA5A53907DD5D4 /* STPCardParams.h in Headers */ = {isa = PBXBuildFile; fileRef = 02FF52FE847BE3831C7B174C3EF4A190 /* STPCardParams.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		826310F5A750A6F34993EFD3310D109C /* Yoga.h in Headers */ = {isa = PBXBuildFile; fileRef = 82A256D2401DE3E969A31C912907AE7B /* Yoga.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		82E2B03EBF8D8D9C399330CFD43BB9B4 /* STPStringUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = FE6495F6C6A48A5DD563A6DBB6204D24 /* STPStringUtils.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		82F2548F5543E77CA8A85EE43895EE54 /* YGMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = 1CD62827BFC66EA947504A28B52335E2 /* YGMacros.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		82F4A08E405B0A3706D5F18335E9D880 /* bignum-dtoa.h in Headers */ = {isa = PBXBuildFile; fileRef = 22BF99D1314297F916A167B997746DC2 /* bignum-dtoa.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		830AC0E023DDB020FAB2A7B55C21A568 /* raw_logging.cc in Sources */ = {isa = PBXBuildFile; fileRef = 894DF9B9DE3A1B1732743E4FDFADFDC8 /* raw_logging.cc */; };
 		83393798F8C1A36D6EFB54A9A17778D5 /* STPLegalEntityParams.h in Headers */ = {isa = PBXBuildFile; fileRef = AE1A1A137EAE93DCB3A3445DE585FEC1 /* STPLegalEntityParams.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -365,7 +357,6 @@
 		87223E1BEAB415F791755EBF9E002C66 /* Folly-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 113BA77CF9B841C46FBE709C6FAED3B9 /* Folly-dummy.m */; };
 		88127346263735B66EF07643C993268F /* STPPaymentCardTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = ADD485B590FEE4B69C2999F3EC4754F3 /* STPPaymentCardTextField.m */; };
 		886C91685BAA1ED8B17D1ADCEDB3B260 /* STPLocalizationUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 64E296E2815DA2290A7FAEC60D79C384 /* STPLocalizationUtils.m */; };
-		89622FDB72AB041B8735C82DB4506516 /* YGEnums.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 15B6BA96261C3E179DB45B10D85D7901 /* YGEnums.cpp */; settings = {COMPILER_FLAGS = "-fno-omit-frame-pointer -fexceptions -Wall -Werror -std=c++1y -fPIC -fno-objc-arc"; }; };
 		8A489DAEA2BBA8CED56AADE4502CF6DA /* STPPaymentCardTextField.h in Headers */ = {isa = PBXBuildFile; fileRef = 68078D08079100C32D0E24FCB07D1873 /* STPPaymentCardTextField.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		8A78BF878F7CB7B8D429CD5B05976461 /* RNFetchBlobRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = F323E6A577640A280BF2C1D9A0C4D045 /* RNFetchBlobRequest.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		8AA1F1A20BA32A163748AB3583F98FE3 /* RNSVGLength.m in Sources */ = {isa = PBXBuildFile; fileRef = 51B6CDF50015EA0E9F9CD18FC5B4C3B4 /* RNSVGLength.m */; };
@@ -403,7 +394,6 @@
 		91F4C9A544A1E9B2C5A26449E0115301 /* RNTapHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 853D4DF163D27AE08F5B0075F89CA2E2 /* RNTapHandler.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		932417D74FA2F438BE07ACDDAE2F6C66 /* stp_card_unionpay_en@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 240DF9E4674113834443A8A18CAE51E1 /* stp_card_unionpay_en@2x.png */; };
 		934D0F7C6CB75CE80A703450069E6BAE /* StripeError.m in Sources */ = {isa = PBXBuildFile; fileRef = C53C383E7BC6C4C37DD5D12F2024EAEA /* StripeError.m */; };
-		9459F046872B7E130B976C36AF2D1C2A /* YGNodePrint.h in Headers */ = {isa = PBXBuildFile; fileRef = 90E979FB99D41450BC5A5971662BAD72 /* YGNodePrint.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		946F590FE98B0DD151F3E3E7EBEBAC5E /* Localizations in Resources */ = {isa = PBXBuildFile; fileRef = 5E36067B0C106C1A64FBA5FA6BC10A73 /* Localizations */; };
 		947B20E77F3DA1A8198F907E170A6878 /* RNPinchHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A3404C6C6270C30FF0682E1E7E6932B /* RNPinchHandler.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		94C8E61320819D28C962F34D3FC8B8DA /* STPLocalizationUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = ED22E1665C3176F09E8C75F9FD212272 /* STPLocalizationUtils.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -441,12 +431,10 @@
 		A13F1FC91A050A6ADFA1CA56061F30E8 /* Stripe.h in Headers */ = {isa = PBXBuildFile; fileRef = 9FD229DE998A60BEEEB9A7F9E2BD68B6 /* Stripe.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		A1DD51C61BB1B05EA85C25A6B135E043 /* AIRMapCoordinate.h in Headers */ = {isa = PBXBuildFile; fileRef = 76E0648C92D88C24232B9EC91C5BE1CA /* AIRMapCoordinate.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		A2F825D0DF726D6F2501EDBCB2A24FC8 /* RNSVGTextManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 238F7D98109527590C8CC03F3D6E3084 /* RNSVGTextManager.m */; };
-		A39C2DB80DD89DEF7E67FDAC015DEC51 /* YGConfig.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 05BBAA1ADAD415B6B9E4D54285F291AD /* YGConfig.cpp */; settings = {COMPILER_FLAGS = "-fno-omit-frame-pointer -fexceptions -Wall -Werror -std=c++1y -fPIC -fno-objc-arc"; }; };
 		A3A5761066C177C782CCD313B131B086 /* RNSVGUnits.h in Headers */ = {isa = PBXBuildFile; fileRef = 237AA43622D239E10BF19B53223E82A9 /* RNSVGUnits.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		A443C15B8B1D7F0F9A223CD1B7701D9D /* STPPromise.h in Headers */ = {isa = PBXBuildFile; fileRef = 99B2FA40248277C112FF0D776ECDE0FB /* STPPromise.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		A4708645A8FAC6D535501D7CAFF8CB5A /* StripeError.h in Headers */ = {isa = PBXBuildFile; fileRef = B30892952838053E20E9E6982932445A /* StripeError.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		A519F7401C571C2475E4DD94A05AFAF7 /* RNSVGRectManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 241A83791F1B9CCC341A7134243A358F /* RNSVGRectManager.m */; };
-		A56C3D3955F479EA0921FE27E18FAC15 /* yoga-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = C031E4BBF494638ACC18A7162FC66580 /* yoga-dummy.m */; };
 		A595CA293B38ACAB6C4480CFEA97288A /* RNSVGNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C9A3DD4B170EFC36624CFE52603E334 /* RNSVGNode.m */; };
 		A603F92302A8297B0F3EBF7F7401EBBD /* Assume.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C976A400AF5A511F45A5A7A18E8345AA /* Assume.cpp */; settings = {COMPILER_FLAGS = "-DFOLLY_NO_CONFIG -DFOLLY_MOBILE=1 -DFOLLY_USE_LIBCPP=1"; }; };
 		A647574DB75170B044CCC48BA170F44E /* stp_card_form_back@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 33E422EBE3674509B71E4EEC26193043 /* stp_card_form_back@2x.png */; };
@@ -458,7 +446,6 @@
 		A7D20D001473AE168D1F580CDA8963CA /* AIRMapSnapshot.h in Headers */ = {isa = PBXBuildFile; fileRef = 383C7335C4F172FF6A10D3EFA82F1B09 /* AIRMapSnapshot.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		A8B4D22163DE1B9F725AA1C583642FF7 /* RNFlingHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 0DD07AFC4CC35B534B6EB56D69EAC399 /* RNFlingHandler.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		A8C216AAEA8B674547F222D47D18E4C2 /* STPPhoneNumberValidator.m in Sources */ = {isa = PBXBuildFile; fileRef = 10FDFAA7BE7868B769898AF97D7E9C81 /* STPPhoneNumberValidator.m */; };
-		A950E010CADFCCDA7A03A469FF19105E /* YGFloatOptional.h in Headers */ = {isa = PBXBuildFile; fileRef = 6CE84986A417767D6397BAC941B0FF12 /* YGFloatOptional.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		AA476BBA00FD97365E0084A65D643E01 /* STPShippingMethodsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D318D716FB19FCCD9F2FA574931939D /* STPShippingMethodsViewController.m */; };
 		AA8F72C548597634BE07AE6F9B13DBBF /* RNSVGViewBox.h in Headers */ = {isa = PBXBuildFile; fileRef = 4C978C08125D790FFE6117364D5CDDB7 /* RNSVGViewBox.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		ABDB15BF09DF085CEC523843577DC135 /* STPAddCardViewController+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = A445B672AF21409BA75FCB1B5A935451 /* STPAddCardViewController+Private.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -470,7 +457,6 @@
 		AE8CF6E68B8415A076C73F75CB7FAEE9 /* RNSVGMaskManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F592DE5A7533B8310367E38E8D79F06 /* RNSVGMaskManager.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		AEA12630D0720FB41330D989F84E53BC /* AIRMapCallout.m in Sources */ = {isa = PBXBuildFile; fileRef = ABA013001DA7383FD8D54BDCD7C6DA69 /* AIRMapCallout.m */; };
 		AF8EC55515847D2EE9AD7ADED2B0B0BD /* fast-dtoa.h in Headers */ = {isa = PBXBuildFile; fileRef = 47A747D9BD7F322C6DDD553BBAADA93E /* fast-dtoa.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		B018EB27517B2C9C96E666CDF583C44B /* YGFloatOptional.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C8A25B1C7C40D472B6908520E63EB16 /* YGFloatOptional.cpp */; settings = {COMPILER_FLAGS = "-fno-omit-frame-pointer -fexceptions -Wall -Werror -std=c++1y -fPIC -fno-objc-arc"; }; };
 		B0680F0C6AABE46DDF7BD426C638C4A0 /* RNSVGTSpan.m in Sources */ = {isa = PBXBuildFile; fileRef = 65771E21D94C2545D62497E61B310158 /* RNSVGTSpan.m */; };
 		B118B6A211AD1BB1AABF6A7FC7155F45 /* NSDecimalNumber+Stripe_Currency.h in Headers */ = {isa = PBXBuildFile; fileRef = 14A21DC6AF83860DE1506F86C0814936 /* NSDecimalNumber+Stripe_Currency.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		B175F447D05A507D49945D9B49CF1A8A /* STPSourcePoller.h in Headers */ = {isa = PBXBuildFile; fileRef = EE73188EE7EB401E347F0F46C77DD367 /* STPSourcePoller.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -502,7 +488,6 @@
 		BE9FCC99B51D48BF576DFB42818E5EEC /* NSDictionary+Stripe.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F3DF429CBA861FE2E105BFD3CDA8418 /* NSDictionary+Stripe.m */; };
 		BF391FA671EFAFCF0FFC512EEA480C2E /* RNGestureHandlerButton.m in Sources */ = {isa = PBXBuildFile; fileRef = D9D34C5A37F6A58B369BD980FA5F8A05 /* RNGestureHandlerButton.m */; };
 		BF4329A2277AF13740BF16914506DFE6 /* stp_card_diners_template@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6F66B6E0583DD3509C949E00A02E7E0E /* stp_card_diners_template@3x.png */; };
-		BFB6BCE96C87B1FB307A852C23007FE8 /* YGLayout.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 056FB6932332D52FEA667629FB30169B /* YGLayout.cpp */; settings = {COMPILER_FLAGS = "-fno-omit-frame-pointer -fexceptions -Wall -Werror -std=c++1y -fPIC -fno-objc-arc"; }; };
 		C08EE26156A041B8F41AC8A4E0AE9DE3 /* stp_card_unionpay_zh.png in Resources */ = {isa = PBXBuildFile; fileRef = 044EF3E408B5DBB83B09955B4A823FAF /* stp_card_unionpay_zh.png */; };
 		C132694527164CDA6FEC02A883CB4253 /* RNSVGPropHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = 6216D1760E952673868AEFA716CA759D /* RNSVGPropHelper.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		C1A82501146BDE6F796F65D963FF3CAF /* stp_card_amex.png in Resources */ = {isa = PBXBuildFile; fileRef = D3D1C2400B69CA1ECB164DD2A451C554 /* stp_card_amex.png */; };
@@ -534,7 +519,6 @@
 		CA3B46F4EFB0FAF939C1BEC41E8B73F5 /* STPSectionHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = F06D43C32631BBCA390684325906B229 /* STPSectionHeaderView.m */; };
 		CA8DDF54AAC742D99C13CDCB1ADE14D4 /* STPPaymentMethodsInternalViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = A1CACBA88A56EE41B48666ACDB76856E /* STPPaymentMethodsInternalViewController.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		CB6DD05464CF03F2F895BF657EEB81C1 /* RNSVGGlyphContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 336E20BF2C69FA5BEC6B4BDBC00404BB /* RNSVGGlyphContext.m */; };
-		CBAF915FEFE6F69503C3B0DA32810FD6 /* YGNodePrint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E49DE0E78148A92300A8659F814BFF6 /* YGNodePrint.cpp */; settings = {COMPILER_FLAGS = "-fno-omit-frame-pointer -fexceptions -Wall -Werror -std=c++1y -fPIC -fno-objc-arc"; }; };
 		CC338D0365C4E712C5F28CF2D117C92C /* STPPaymentIntentSourceActionAuthorizeWithURL.h in Headers */ = {isa = PBXBuildFile; fileRef = 0BC87511A38BD8C7A8D5254B6697857B /* STPPaymentIntentSourceActionAuthorizeWithURL.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		CD9724DB3699A3EB449B4BD6D9C485C4 /* STPFile.h in Headers */ = {isa = PBXBuildFile; fileRef = 9EE405E9AE17030C7A03EAF36659FF4B /* STPFile.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		CDA949D442470BB9C3EE775F8AC63F52 /* stp_card_error_amex@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FDC97EF92C5FB5345655EF7BD58C98AA /* stp_card_error_amex@2x.png */; };
@@ -544,9 +528,6 @@
 		D0962E4C3B3363F023EC952F87578A44 /* stp_icon_checkmark@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 185FEA05B3779817A5FCDE36FAC73997 /* stp_icon_checkmark@3x.png */; };
 		D107A431ACB80D90CA2048FA7EE6D04E /* STPFile+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = F3D7B9E95CE93166D2F77D577562A493 /* STPFile+Private.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		D1FD5A5EE172F8F7DA917301EB7BD0B9 /* STPPaymentIntent.h in Headers */ = {isa = PBXBuildFile; fileRef = 37907C8EF4C29A1565FC2B2B9A6AA2E8 /* STPPaymentIntent.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		D301CD290981ECF7B5D2EC27D017D4F3 /* Utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3017E97ADD05984EE122023139331170 /* Utils.cpp */; settings = {COMPILER_FLAGS = "-fno-omit-frame-pointer -fexceptions -Wall -Werror -std=c++1y -fPIC -fno-objc-arc"; }; };
-		D35A9994F7DCB41F5B57F6A629EF4A9F /* YGEnums.h in Headers */ = {isa = PBXBuildFile; fileRef = ED88AF15DADE2FF322687E770EC8AE17 /* YGEnums.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		D3BF0BF9135E29C8D93BEAB4D53A86E2 /* YGLayout.h in Headers */ = {isa = PBXBuildFile; fileRef = 67823B5238EDFEFAE99F350B2543E907 /* YGLayout.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		D3F966118E71EB42D3325A574FF0FC15 /* RNSVGSvgView.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B513C6840939398F4DC02320304339D /* RNSVGSvgView.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		D4F9B34EECF9000161ADF626363AA4BC /* STPFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D13696320AEBDFC78C078BB7923B52D /* STPFile.m */; };
 		D60DDD7C4BEE02B5A69F814EB098153C /* stp_card_discover_template@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2493D1285A8D63AAEC68921AF0DD8BB0 /* stp_card_discover_template@2x.png */; };
@@ -615,7 +596,6 @@
 		EE60ECD09AC2AB5559B15C5A986C1B72 /* RNSVGTextPathManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 02B8396A183BC46E2B05A467B1F90D69 /* RNSVGTextPathManager.m */; };
 		EEB73C43FFACBEB283C591844BB5A4C1 /* UITableViewCell+Stripe_Borders.h in Headers */ = {isa = PBXBuildFile; fileRef = 6453D55E810EF17B81CCFD49543E3F5A /* UITableViewCell+Stripe_Borders.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		EF9EE6A802D9B35D08544CEEE2400853 /* AIRMapLocalTileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 230A660B247FD503D4B825727FED8EDB /* AIRMapLocalTileManager.m */; };
-		F009F7F39CB5116D6A782EA6951B5C21 /* Yoga.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F724B578DE9EEE7288D7CB9E0B37B2FE /* Yoga.cpp */; settings = {COMPILER_FLAGS = "-fno-omit-frame-pointer -fexceptions -Wall -Werror -std=c++1y -fPIC -fno-objc-arc"; }; };
 		F0B644271733AD0067061C88FF07E689 /* RNSVGUse.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B72094F5515AEFB7B81DA31E3733728 /* RNSVGUse.m */; };
 		F0E1F898509272F3FD6B9D0F7CF6DC22 /* STPInternalAPIResponseDecodable.h in Headers */ = {isa = PBXBuildFile; fileRef = B61F330D7E2022BDDBD34C16560D0E8F /* STPInternalAPIResponseDecodable.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		F13CFB865C8DE57FF49736B205F568E4 /* RNSVGRadialGradientManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 205C5F3A25CB7954831C119209F51538 /* RNSVGRadialGradientManager.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -643,7 +623,6 @@
 		FA03E86802EAE2E1DA32BC288E27FBDB /* stp_card_unionpay_template_en@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3292D3A4294827207FD16E53CC6C0865 /* stp_card_unionpay_template_en@3x.png */; };
 		FA1F1C79F949F2450AA5B9444AB923E9 /* RNSVGEllipseManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 30504E8FF5FCA9636DEAE012A609B6BE /* RNSVGEllipseManager.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		FA6F8BB5EF75D37E09948837CF59F956 /* RNSVGRectManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 3DC6692BF343AD7900ECB3A0B86BAF3A /* RNSVGRectManager.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		FA96F6ABAF7A9F6F3140D901892FDB1F /* YGStyle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 794DCD6C3E0C88D1CB13102A9FB11CB5 /* YGStyle.cpp */; settings = {COMPILER_FLAGS = "-fno-omit-frame-pointer -fexceptions -Wall -Werror -std=c++1y -fPIC -fno-objc-arc"; }; };
 		FCB86A0AB95C7E93D403A746F6908E12 /* RNSVGSymbol.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C3E2EACA3AA4018F526BFF4ADE43DB /* RNSVGSymbol.m */; };
 		FD0952FE703E7A0EE68D5CADE57FA515 /* STPPaymentCardTextFieldViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 406AEC9337019DEA622C69757B254A3F /* STPPaymentCardTextFieldViewModel.m */; };
 		FDD11716FB1F33BA4913DA3EAA95C77A /* AIRMapLocalTile.m in Sources */ = {isa = PBXBuildFile; fileRef = 216F846F263B787AC30E4A288005121B /* AIRMapLocalTile.m */; };
@@ -732,7 +711,7 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = F81094172F19C2E41006A88E805346D9;
+			remoteGlobalIDString = 000000009AC0;
 			remoteInfo = yoga;
 		};
 		CA7B605867FBFE76B4D21E4F53203996 /* PBXContainerItemProxy */ = {
@@ -2063,13 +2042,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		AB1025B3DA30D690CA087D86DD30F78F /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		B976847FC96E9AEB2B51EC06458C9FE6 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -4395,24 +4367,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		DB9F99FA68575E66AF2698046494367B /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				50AE71EF11D2AB43DE300493BF7EF9CC /* Utils.h in Headers */,
-				08E1A36B0EA7BAB5E6BB9F9B282132A7 /* YGConfig.h in Headers */,
-				D35A9994F7DCB41F5B57F6A629EF4A9F /* YGEnums.h in Headers */,
-				A950E010CADFCCDA7A03A469FF19105E /* YGFloatOptional.h in Headers */,
-				D3BF0BF9135E29C8D93BEAB4D53A86E2 /* YGLayout.h in Headers */,
-				82F2548F5543E77CA8A85EE43895EE54 /* YGMacros.h in Headers */,
-				3F6C7B62A6B2F43366623CDD00320389 /* YGNode.h in Headers */,
-				9459F046872B7E130B976C36AF2D1C2A /* YGNodePrint.h in Headers */,
-				2760429FCCD3B4327DAABCAEDC404366 /* YGStyle.h in Headers */,
-				212C177095DCAA28620B07BA7DE127CC /* Yoga-internal.h in Headers */,
-				826310F5A750A6F34993EFD3310D109C /* Yoga.h in Headers */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		E2080F763498E7306A1CD805F9A653FB /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -4647,23 +4601,6 @@
 			productReference = 96990667612414D52A02CB2595E255B8 /* libFolly.a */;
 			productType = "com.apple.product-type.library.static";
 		};
-		F81094172F19C2E41006A88E805346D9 /* yoga */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 5F916A6436FE92458967FC00BDB574CC /* Build configuration list for PBXNativeTarget "yoga" */;
-			buildPhases = (
-				DB9F99FA68575E66AF2698046494367B /* Headers */,
-				385B47D8A87E1E842EFC6CE5EB0230F0 /* Sources */,
-				B976847FC96E9AEB2B51EC06458C9FE6 /* Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = yoga;
-			productName = yoga;
-			productReference = 123024287685B79B4EAEFE837773ACE2 /* libyoga.a */;
-			productType = "com.apple.product-type.library.static";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -4697,7 +4634,6 @@
 				214B972DC501DA61B163B4A1334F92E6 /* RNSVG */,
 				8ED080974CFDAB4C0A21FC04806FBCCE /* Stripe */,
 				8AD2276793A160896ABF4CADED119C97 /* Stripe-Stripe */,
-				F81094172F19C2E41006A88E805346D9 /* yoga */,
 			);
 		};
 /* End PBXProject section */
@@ -4957,23 +4893,6 @@
 				910DC6B92D61027E0E17357EE6ABC0D9 /* RCTConvert+AirMap.m in Sources */,
 				11AEB5231EB243621E531F9616BD6AF4 /* react-native-maps-dummy.m in Sources */,
 				842B541923ACF0B99B96846D940015AB /* SMCalloutView.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		385B47D8A87E1E842EFC6CE5EB0230F0 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				D301CD290981ECF7B5D2EC27D017D4F3 /* Utils.cpp in Sources */,
-				A39C2DB80DD89DEF7E67FDAC015DEC51 /* YGConfig.cpp in Sources */,
-				89622FDB72AB041B8735C82DB4506516 /* YGEnums.cpp in Sources */,
-				B018EB27517B2C9C96E666CDF583C44B /* YGFloatOptional.cpp in Sources */,
-				BFB6BCE96C87B1FB307A852C23007FE8 /* YGLayout.cpp in Sources */,
-				5D401FA1C44DE5DC1CD0D93445194BAC /* YGNode.cpp in Sources */,
-				CBAF915FEFE6F69503C3B0DA32810FD6 /* YGNodePrint.cpp in Sources */,
-				FA96F6ABAF7A9F6F3140D901892FDB1F /* YGStyle.cpp in Sources */,
-				A56C3D3955F479EA0921FE27E18FAC15 /* yoga-dummy.m in Sources */,
-				F009F7F39CB5116D6A782EA6951B5C21 /* Yoga.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5265,7 +5184,6 @@
 		D7D18AB593F7A3DE72AD713AAACCA3A9 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = yoga;
-			target = F81094172F19C2E41006A88E805346D9 /* yoga */;
 			targetProxy = C6BAE7EA2E2B2D395897FB3AAB3C7B50 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -5808,31 +5726,6 @@
 			};
 			name = Debug;
 		};
-		B9CB212C2C0D713D71067A539350B399 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = FEDBD0E1CC7EAF7D64B029374EB7221C /* yoga.xcconfig */;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				GCC_PREFIX_HEADER = "Target Support Files/yoga/yoga-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PRIVATE_HEADERS_FOLDER_PATH = "";
-				PRODUCT_MODULE_NAME = yoga;
-				PRODUCT_NAME = yoga;
-				PUBLIC_HEADERS_FOLDER_PATH = "";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_VERSION = 4.2;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
-		};
 		BCED374361B9387A457B9F7B3685F9FE /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7939C799BC16C215DD0088E548B29079 /* boost-for-react-native.xcconfig */;
@@ -5918,30 +5811,6 @@
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
-		};
-		CDD5595F7CDC64FFBF29189B4EC94FCA /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = FEDBD0E1CC7EAF7D64B029374EB7221C /* yoga.xcconfig */;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				GCC_PREFIX_HEADER = "Target Support Files/yoga/yoga-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PRIVATE_HEADERS_FOLDER_PATH = "";
-				PRODUCT_MODULE_NAME = yoga;
-				PRODUCT_NAME = yoga;
-				PUBLIC_HEADERS_FOLDER_PATH = "";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_VERSION = 4.2;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
 		};
 		D0244FED03A81D00363C5A6E8528165B /* Release */ = {
 			isa = XCBuildConfiguration;
@@ -6061,15 +5930,6 @@
 			buildConfigurations = (
 				BCED374361B9387A457B9F7B3685F9FE /* Debug */,
 				40E4B5C9E39D2A84C21FE63191BC69DD /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		5F916A6436FE92458967FC00BDB574CC /* Build configuration list for PBXNativeTarget "yoga" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				CDD5595F7CDC64FFBF29189B4EC94FCA /* Debug */,
-				B9CB212C2C0D713D71067A539350B399 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
