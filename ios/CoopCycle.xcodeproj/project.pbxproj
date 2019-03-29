@@ -15,7 +15,6 @@
 		00E356F31AD99517003FC87E /* CoopCycleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* CoopCycleTests.m */; };
 		01DB7B7C273D4FF39FAE8377 /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 95478BC4C8514AB496A441B6 /* MaterialCommunityIcons.ttf */; };
 		0516ABEF425A4473B933098C /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 456B1863E87B406397BEEDBC /* EvilIcons.ttf */; };
-		0FF7B8A00BAE9831B703CD78 /* libPods-CoopCycle.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BBC7DE75FA2D3087EB14B7F4 /* libPods-CoopCycle.a */; };
 		133E29F31AD74F7200F7D852 /* libRCTLinking.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 78C398B91ACF4ADC00677621 /* libRCTLinking.a */; };
 		139105C61AF99C1200B5F7CC /* libRCTSettings.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139105C11AF99BAD00B5F7CC /* libRCTSettings.a */; };
 		139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139FDEF41B06529B00C62182 /* libRCTWebSocket.a */; };
@@ -54,6 +53,7 @@
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
 		D463F8AFF199413DB2190D60 /* FontAwesome5_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E8926C258D704EB1B2ACA1DA /* FontAwesome5_Regular.ttf */; };
 		D4BD3879491E4093AC45C8BF /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D380EE36F99448048F2FF410 /* Octicons.ttf */; };
+		E16E9E9401826BDAF2A27B23 /* libPods-CoopCycle.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0468D950C0E9CB89180B5016 /* libPods-CoopCycle.a */; };
 		E47DB885677B48ACAE084A17 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1FCEE7F59F59411DBCCA84A7 /* Ionicons.ttf */; };
 		E4A95D69133B4C1B8FD304BA /* Raleway-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CA8DA506BADD462E8A4B68B4 /* Raleway-Regular.ttf */; };
 		E649FAA2C5B94B2FACEAF68F /* AntDesign.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 07AB41DCD1914F4EA8205618 /* AntDesign.ttf */; };
@@ -435,6 +435,7 @@
 		00E356EE1AD99517003FC87E /* CoopCycleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CoopCycleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* CoopCycleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CoopCycleTests.m; sourceTree = "<group>"; };
+		0468D950C0E9CB89180B5016 /* libPods-CoopCycle.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-CoopCycle.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		07AB41DCD1914F4EA8205618 /* AntDesign.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = AntDesign.ttf; path = "../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf"; sourceTree = "<group>"; };
 		139105B61AF99BAD00B5F7CC /* RCTSettings.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTSettings.xcodeproj; path = "../node_modules/react-native/Libraries/Settings/RCTSettings.xcodeproj"; sourceTree = "<group>"; };
 		139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTWebSocket.xcodeproj; path = "../node_modules/react-native/Libraries/WebSocket/RCTWebSocket.xcodeproj"; sourceTree = "<group>"; };
@@ -457,7 +458,7 @@
 		3801F7EB4C2541F9A04FB311 /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
 		3CC89B96D265427FA7271B99 /* libTPSStripe.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libTPSStripe.a; sourceTree = "<group>"; };
 		456B1863E87B406397BEEDBC /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
-		4D7C56FFD6724A6E6A46A37C /* Pods-CoopCycle.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CoopCycle.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CoopCycle/Pods-CoopCycle.debug.xcconfig"; sourceTree = "<group>"; };
+		4C7570AC848DA8A74EB2B339 /* Pods-CoopCycle.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CoopCycle.debug.xcconfig"; path = "Target Support Files/Pods-CoopCycle/Pods-CoopCycle.debug.xcconfig"; sourceTree = "<group>"; };
 		54087C4B0FAE4051B2360F05 /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
@@ -467,14 +468,12 @@
 		8A63899B198346289A19198B /* Roboto_medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Roboto_medium.ttf; path = "../node_modules/native-base/Fonts/Roboto_medium.ttf"; sourceTree = "<group>"; };
 		95478BC4C8514AB496A441B6 /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
 		961D84324BE84213A85D9C7D /* OpenSans-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-Bold.ttf"; path = "../assets/fonts/OpenSans-Bold.ttf"; sourceTree = "<group>"; };
-		A327F3AC6C0731FB12D58615 /* libPods-CoopCycle.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-CoopCycle.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AB2FEDD01C26475491D0DDBF /* libRCTBackgroundGeolocation.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTBackgroundGeolocation.a; sourceTree = "<group>"; };
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
-		BBC7DE75FA2D3087EB14B7F4 /* libPods-CoopCycle.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-CoopCycle.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C96C28DE7F334F09930596B3 /* RCTBackgroundGeolocation.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTBackgroundGeolocation.xcodeproj; path = "../node_modules/react-native-mauron85-background-geolocation/ios/RCTBackgroundGeolocation.xcodeproj"; sourceTree = "<group>"; };
-		C9CC3CB6C743B5BD440C6290 /* Pods-CoopCycle.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CoopCycle.release.xcconfig"; path = "Pods/Target Support Files/Pods-CoopCycle/Pods-CoopCycle.release.xcconfig"; sourceTree = "<group>"; };
 		CA8DA506BADD462E8A4B68B4 /* Raleway-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Raleway-Regular.ttf"; path = "../assets/fonts/Raleway-Regular.ttf"; sourceTree = "<group>"; };
 		CC718B5C6D094B72A8B4B86A /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
+		CEF108F195E8A4E1918946C6 /* Pods-CoopCycle.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CoopCycle.release.xcconfig"; path = "Target Support Files/Pods-CoopCycle/Pods-CoopCycle.release.xcconfig"; sourceTree = "<group>"; };
 		CFA6A607570A4A7793B7778E /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		D380EE36F99448048F2FF410 /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
 		DE7C26B381464CBDAC381F32 /* Roboto.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Roboto.ttf; path = "../node_modules/native-base/Fonts/Roboto.ttf"; sourceTree = "<group>"; };
@@ -530,7 +529,7 @@
 				FA76E2B721F1582100F822E1 /* libTPSStripe.a in Frameworks */,
 				FA2E390E2225E1AA002BBCB4 /* libBNFMatomo.a in Frameworks */,
 				FA5C2CC82244CD1F006E8545 /* libBleClient.a in Frameworks */,
-				0FF7B8A00BAE9831B703CD78 /* libPods-CoopCycle.a in Frameworks */,
+				E16E9E9401826BDAF2A27B23 /* libPods-CoopCycle.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -682,18 +681,9 @@
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
 				2D16E6891FA4F8E400B85C8A /* libReact.a */,
-				BBC7DE75FA2D3087EB14B7F4 /* libPods-CoopCycle.a */,
+				0468D950C0E9CB89180B5016 /* libPods-CoopCycle.a */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		30B2223E3F146D96F3863DC1 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				4D7C56FFD6724A6E6A46A37C /* Pods-CoopCycle.debug.xcconfig */,
-				C9CC3CB6C743B5BD440C6290 /* Pods-CoopCycle.release.xcconfig */,
-			);
-			name = Pods;
 			sourceTree = "<group>";
 		};
 		5E91572E1DD0AC6500FF2AA8 /* Products */ = {
@@ -768,11 +758,11 @@
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* CoopCycleTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
-				30B2223E3F146D96F3863DC1 /* Pods */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				DA42ACD0A9A4459FA4BF1E57 /* Resources */,
 				FACC77CC1FE0D05C00B54C2A /* Recovered References */,
 				FA4FE0642225CF1000AB66C4 /* CoopCycle-Bridging-Header.h */,
+				C960062D6E6263C103A6D2A6 /* Pods */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -797,6 +787,16 @@
 				2D16E6721FA4F8DC00B85C8A /* libRCTBlob-tvOS.a */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		C960062D6E6263C103A6D2A6 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				4C7570AC848DA8A74EB2B339 /* Pods-CoopCycle.debug.xcconfig */,
+				CEF108F195E8A4E1918946C6 /* Pods-CoopCycle.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
 			sourceTree = "<group>";
 		};
 		DA42ACD0A9A4459FA4BF1E57 /* Resources */ = {
@@ -880,7 +880,6 @@
 			isa = PBXGroup;
 			children = (
 				3CC89B96D265427FA7271B99 /* libTPSStripe.a */,
-				A327F3AC6C0731FB12D58615 /* libPods-CoopCycle.a */,
 				AB2FEDD01C26475491D0DDBF /* libRCTBackgroundGeolocation.a */,
 			);
 			name = "Recovered References";
@@ -919,13 +918,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "CoopCycle" */;
 			buildPhases = (
-				9DA0AE6D735C89C70F1C5FE4 /* [CP] Check Pods Manifest.lock */,
+				97B0A0E83B67D9A11EACB881 /* [CP] Check Pods Manifest.lock */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				850F8054AF70D8F3D48E72D6 /* [CP] Embed Pods Frameworks */,
-				676D2B5C2ACF31C1F6A1C5E0 /* [CP] Copy Pods Resources */,
+				FACE4F1DC672BA93DFA59E1A /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1530,55 +1528,48 @@
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
-		676D2B5C2ACF31C1F6A1C5E0 /* [CP] Copy Pods Resources */ = {
+		97B0A0E83B67D9A11EACB881 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-CoopCycle/Pods-CoopCycle-resources.sh",
-				"${PODS_CONFIGURATION_BUILD_DIR}/Stripe/Stripe.bundle",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Stripe.bundle",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-CoopCycle/Pods-CoopCycle-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		850F8054AF70D8F3D48E72D6 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-CoopCycle/Pods-CoopCycle-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		9DA0AE6D735C89C70F1C5FE4 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
+			inputFileListPaths = (
 			);
 			inputPaths = (
 				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
 				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-CoopCycle-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		FACE4F1DC672BA93DFA59E1A /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-CoopCycle/Pods-CoopCycle-resources.sh",
+				"${PODS_CONFIGURATION_BUILD_DIR}/Stripe/Stripe.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Stripe.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-CoopCycle/Pods-CoopCycle-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -1718,7 +1709,7 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4D7C56FFD6724A6E6A46A37C /* Pods-CoopCycle.debug.xcconfig */;
+			baseConfigurationReference = 4C7570AC848DA8A74EB2B339 /* Pods-CoopCycle.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -1751,7 +1742,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C9CC3CB6C743B5BD440C6290 /* Pods-CoopCycle.release.xcconfig */;
+			baseConfigurationReference = CEF108F195E8A4E1918946C6 /* Pods-CoopCycle.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
