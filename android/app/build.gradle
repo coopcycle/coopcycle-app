@@ -178,10 +178,7 @@ dependencies {
     implementation(project(':tipsi-stripe')){
         exclude group: 'com.google.android.gms'
     }
-    implementation(project(':react-native-maps')){
-        exclude group: 'com.google.android.gms', module: 'play-services-base'
-        exclude group: 'com.google.android.gms', module: 'play-services-maps'
-    }
+    implementation project(':react-native-maps')
 
     implementation project(':react-native-open-settings')
     implementation project(':react-native-matomo')
