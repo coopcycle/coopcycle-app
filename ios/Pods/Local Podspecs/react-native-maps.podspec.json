@@ -5,13 +5,13 @@
   "authors": {
     "intelligibabble": "leland.m.richardson@gmail.com"
   },
-  "homepage": "https://github.com/airbnb/react-native-maps#readme",
+  "homepage": "https://github.com/react-native-community/react-native-maps#readme",
   "license": "MIT",
   "platforms": {
     "ios": "8.0"
   },
   "source": {
-    "git": "https://github.com/airbnb/react-native-maps.git"
+    "git": "https://github.com/react-native-community/react-native-maps.git"
   },
   "source_files": "lib/ios/AirMaps/**/*.{h,m}",
   "dependencies": {

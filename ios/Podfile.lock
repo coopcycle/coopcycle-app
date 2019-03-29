@@ -132,7 +132,7 @@ SPEC CHECKSUMS:
   Folly: de497beb10f102453a1afa9edbf8cf8a251890de
   glog: aefd1eb5dda2ab95ba0938556f34b98e2da3a60d
   React: 0d6c719d9549bea0bd5676f8170b0e5c56e2c3c7
-  react-native-maps: 9469741f77f270c605cafec603ce47327dc5b5f8
+  react-native-maps: 7525a32bcd025af8cf3b6c469af9b8758245db72
   rn-fetch-blob: 766f85cabd2992300dfa1be2bc9e4e258abc6f04
   RNGestureHandler: b65d391f4f570178d657b99a16ec99d09b8656b0
   RNSketchCanvas: 9c28adb5381543ed55cc98ce6de46479cb3cb12c
@@ -140,6 +140,6 @@ SPEC CHECKSUMS:
   Stripe: db29ad197c74aca6fb981e4e8355cf7ebd0fca5a
   yoga: 26673abd38bbdf0c33e134ad9e690c5fbf16e8fc
 
-PODFILE CHECKSUM: 54502d395946a90c0c7adbca4a4613ed06989b1b
+PODFILE CHECKSUM: 3e8757bababf0a1d2ba7f2c26b964719effe7b92
 
 COCOAPODS: 1.6.1
