@@ -30,8 +30,12 @@ const styles = StyleSheet.create({
     color: whiteColor,
     textAlign: 'center',
   },
+  markerCallout: {
+    padding: 10,
+  },
   markerCalloutText: {
-    fontSize: 14
+    fontSize: 14,
+    flexWrap: 'wrap'
   },
   tagContainer: {
     textAlign: 'center',
@@ -152,6 +156,9 @@ class TasksMapView extends Component {
   }
 
   renderMarker(task) {
+
+    const { width } = Dimensions.get('window')
+
     return (
       <Marker
         identifier={ task['@id'] }
@@ -159,9 +166,10 @@ class TasksMapView extends Component {
         coordinate={ task.address.geo }
         pinColor={ pinColor(task) }
         flat={ true }>
-        <Callout onPress={ () => this.props.onMarkerCalloutPress(task) }>
+        <Callout onPress={ () => this.props.onMarkerCalloutPress(task) }
+          style={ [ styles.markerCallout, { width: (width / 3) } ] }>
           { task.address.name && (<Text style={ styles.markerCalloutText }>{ task.address.name }</Text>) }
-          <Text style={ styles.markerCalloutText }>
+          <Text style={ styles.markerCalloutText } numberOfLines={ 2 }>
             { addressName(task) }
           </Text>
           {
