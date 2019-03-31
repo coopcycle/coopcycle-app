@@ -37,6 +37,8 @@ YellowBox.ignoreWarnings([
   'Module RCTBackgroundGeolocation requires main queue setup',
   // @see https://github.com/invertase/react-native-firebase/issues/1446
   'Require cycle:',
+  // https://github.com/coopcycle/coopcycle-app/issues/172
+  'Async Storage has been extracted from react-native core',
 ])
 
 const RootNavigator = createAppContainer(createSwitchNavigator(
