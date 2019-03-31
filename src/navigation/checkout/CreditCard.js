@@ -3,7 +3,9 @@ import {
   StyleSheet,
   View,
   Dimensions,
-  KeyboardAvoidingView
+  Animated,
+  Keyboard,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import {
   Container, Content, Footer, FooterTab,
@@ -21,17 +23,46 @@ import { formatPrice } from '../../Cart'
 class CreditCard extends Component {
 
   constructor(props) {
-    super(props);
+    super(props)
+
+    this.keyboardHeight = new Animated.Value(0)
+
     this.state = {
       valid: false,
       form: {}
-    };
+    }
   }
 
   componentDidMount() {
     Stripe.setOptions({
       publishableKey: Settings.get('stripe_publishable_key'),
     });
+    this.keyboardWillShowSub = Keyboard.addListener('keyboardWillShow', this.keyboardWillShow.bind(this))
+    this.keyboardWillHideSub = Keyboard.addListener('keyboardWillHide', this.keyboardWillHide.bind(this))
+  }
+
+  componentWillUnmount() {
+    this.keyboardWillShowSub.remove()
+    this.keyboardWillHideSub.remove()
+  }
+
+  keyboardWillShow(event) {
+    Animated.parallel([
+      Animated.timing(this.keyboardHeight, {
+        duration: event.duration,
+        toValue: event.endCoordinates.height,
+      }),
+    ]).start();
+  }
+
+  keyboardWillHide(event) {
+    console.log('keyboardWillHide', event)
+    Animated.parallel([
+      Animated.timing(this.keyboardHeight, {
+        duration: event.duration,
+        toValue: 0,
+      }),
+    ]).start();
   }
 
   _onClick() {
@@ -65,17 +96,21 @@ class CreditCard extends Component {
     const { cart } = this.props
 
     return (
-      <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
-        <Content contentContainerStyle={ styles.content }>
-          <View style={{ alignSelf: 'stretch' }}>
-            <Text style={{ textAlign: 'center', marginBottom: 10 }}>
-              { this.props.t('ENTER_PAY_DETAILS') }
-            </Text>
-            <View style={ styles.creditCardInputContainer }>
-              <LiteCreditCardInput onChange={ this._onChange.bind(this) } />
+      <Animated.View style={{ flex: 1, paddingBottom: this.keyboardHeight }}>
+        <TouchableWithoutFeedback
+          style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+          onPress={ Keyboard.dismiss } accessible={ false }>
+          <View style={ styles.content }>
+            <View style={{ alignSelf: 'stretch' }}>
+              <Text style={{ textAlign: 'center', marginBottom: 10 }}>
+                { this.props.t('ENTER_PAY_DETAILS') }
+              </Text>
+              <View style={ styles.creditCardInputContainer }>
+                <LiteCreditCardInput onChange={ this._onChange.bind(this) } />
+              </View>
             </View>
           </View>
-        </Content>
+        </TouchableWithoutFeedback>
         <Footer>
           <FooterTab>
             <Button full onPress={ this._onClick.bind(this) }>
@@ -85,7 +120,7 @@ class CreditCard extends Component {
             </Button>
           </FooterTab>
         </Footer>
-      </KeyboardAvoidingView>
+      </Animated.View>
     )
   }
 }
