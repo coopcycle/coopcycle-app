@@ -48,9 +48,9 @@ class BigButton extends Component {
 
 class OrderDelayScreen extends Component {
 
-  componentWillReceiveProps(newProps) {
+  componentDidUpdate(prevProps) {
     // Close the modal when loading has finished
-    if (this.props.loading === true && newProps.loading === false) {
+    if (prevProps.loading === true && this.props.loading === false) {
       this.props.navigation.goBack()
     }
   }
