@@ -1,10 +1,8 @@
 # Uncomment the next line to define a global platform for your project
 platform :ios, '9.0'
 
-plugin 'cocoapods-fix-react-native'
-
 target 'CoopCycle' do
-  pod 'Stripe', '~> 14.0.0'
+
   inherit! :search_paths
 
   rn_path = '../node_modules/react-native'
@@ -36,6 +34,8 @@ target 'CoopCycle' do
   # react-native-maps dependencies
   pod 'react-native-maps', path: rn_maps_path
 
+  pod 'Stripe', '~> 14.0.0'
+
   pod 'RNGestureHandler', :path => '../node_modules/react-native-gesture-handler'
 
   pod 'RNSVG', :path => '../node_modules/react-native-svg'
@@ -54,6 +54,9 @@ post_install do |installer|
       target.build_configurations.each do |config|
         config.build_settings['CLANG_ENABLE_MODULES'] = 'No'
       end
+    end
+    if target.name == "React"
+      target.remove_from_project
     end
   end
 end
