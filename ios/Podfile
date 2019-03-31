@@ -55,6 +55,9 @@ post_install do |installer|
         config.build_settings['CLANG_ENABLE_MODULES'] = 'No'
       end
     end
+    # https://github.com/react-native-community/react-native-svg/issues/621
+    # https://github.com/invertase/react-native-firebase/issues/414
+    # https://github.com/oblador/react-native-vector-icons/issues/303
     if target.name == "React"
       target.remove_from_project
     end
