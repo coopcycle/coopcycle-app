@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import {
   StyleSheet,
   View,
-  Dimensions
+  Dimensions,
+  KeyboardAvoidingView
 } from 'react-native';
 import {
   Container, Content, Footer, FooterTab,
@@ -64,8 +65,8 @@ class CreditCard extends Component {
     const { cart } = this.props
 
     return (
-      <Container>
-        <View style={ styles.content }>
+      <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
+        <Content contentContainerStyle={ styles.content }>
           <View style={{ alignSelf: 'stretch' }}>
             <Text style={{ textAlign: 'center', marginBottom: 10 }}>
               { this.props.t('ENTER_PAY_DETAILS') }
@@ -74,7 +75,7 @@ class CreditCard extends Component {
               <LiteCreditCardInput onChange={ this._onChange.bind(this) } />
             </View>
           </View>
-        </View>
+        </Content>
         <Footer>
           <FooterTab>
             <Button full onPress={ this._onClick.bind(this) }>
@@ -84,7 +85,7 @@ class CreditCard extends Component {
             </Button>
           </FooterTab>
         </Footer>
-      </Container>
+      </KeyboardAvoidingView>
     )
   }
 }
