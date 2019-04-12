@@ -8,7 +8,7 @@ import moment from 'moment'
 
 import TaskList from '../../components/TaskList'
 import DateSelectHeader from '../../components/DateSelectHeader'
-import { whiteColor } from '../../styles/common'
+import { whiteColor, dateSelectHeaderHeight } from '../../styles/common'
 import { withNamespaces } from 'react-i18next'
 import {
   loadTasks,
@@ -27,7 +27,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: "column",
-    backgroundColor: whiteColor
+    backgroundColor: whiteColor,
+    paddingTop: dateSelectHeaderHeight
   },
   wrapper: {
     paddingHorizontal: 15,
@@ -67,13 +68,7 @@ class TaskListPage extends Component {
 
     return (
       <Container style={ styles.container }>
-        <DateSelectHeader
-          buttonsEnabled={true}
-          toDate={this.refreshTasks}
-          selectedDate={selectedDate}
-        />
-        <Content>
-          <View style={ styles.wrapper }>
+        <Content style={ styles.wrapper }>
           {
             tasks.length > 0 &&
             <TaskList
@@ -86,8 +81,11 @@ class TaskListPage extends Component {
             tasks.length === 0 &&
             <Text style={ styles.noTask }>{`${this.props.t('NO_TASKS')} !`}</Text>
           }
-          </View>
         </Content>
+        <DateSelectHeader
+          buttonsEnabled={true}
+          toDate={this.refreshTasks}
+          selectedDate={selectedDate}/>
       </Container>
     )
   }

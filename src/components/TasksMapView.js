@@ -13,7 +13,6 @@ const clusterContainerSize = 40
 
 const styles = StyleSheet.create({
   map: {
-    ...StyleSheet.absoluteFillObject,
   },
   clusterContainer: {
     width: clusterContainerSize,
