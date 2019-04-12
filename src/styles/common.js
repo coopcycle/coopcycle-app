@@ -10,6 +10,7 @@ let primaryColor = '#e4022d',
     orangeColor = '#d35400',
     fontTitleName = 'Raleway-Regular',
     dateSelectHeaderHeight = 40,
+    calendarHeight = 300,
     websocketWarningHeight = 40,
     headerFontSize = 18
 
@@ -22,6 +23,7 @@ export {
   blueColor,
   headerFontSize,
   dateSelectHeaderHeight,
+  calendarHeight,
   greenColor,
   redColor,
   lightGreyColor,

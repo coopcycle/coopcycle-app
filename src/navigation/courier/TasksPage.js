@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
 import { StyleSheet, View, Alert, TouchableOpacity, Platform } from 'react-native'
-import {
-  Container, Button, Icon, Text
-} from 'native-base'
+import { Container, Content, Button, Icon, Text } from 'native-base'
 import moment from 'moment'
 import MapView from 'react-native-maps'
 import { NavigationActions } from 'react-navigation'
@@ -171,19 +169,16 @@ class TasksPage extends Component {
     const navigationParams = { geolocation }
 
     return (
-      <Container>
+      <Container style={ styles.container }>
+        <TasksMapView
+          tasks={ tasks }
+          onMapReady={ () => this.onMapReady() }
+          onMarkerCalloutPress={ task => navigate('Task', { ...navigationParams, task }) }>
+        </TasksMapView>
         <DateSelectHeader
           buttonsEnabled={true}
           toDate={this.refreshTasks}
-          selectedDate={selectedDate}
-        />
-        <View style={ styles.container }>
-          <TasksMapView
-            tasks={ tasks }
-            onMapReady={ () => this.onMapReady() }
-            onMarkerCalloutPress={ task => navigate('Task', { ...navigationParams, task }) }>
-          </TasksMapView>
-        </View>
+          selectedDate={selectedDate}/>
       </Container>
     )
   }
@@ -191,8 +186,7 @@ class TasksPage extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    ...StyleSheet.absoluteFillObject,
-    top: dateSelectHeaderHeight
+    paddingTop: dateSelectHeaderHeight
   },
   loader: {
     ...StyleSheet.absoluteFillObject,

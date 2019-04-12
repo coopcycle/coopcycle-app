@@ -6,7 +6,7 @@ import { LocaleConfig, Calendar } from 'react-native-calendars'
 import moment from 'moment'
 import { localeDetector } from '../i18n'
 
-import { primaryColor, whiteColor, dateSelectHeaderHeight, headerFontSize } from "../styles/common"
+import { primaryColor, whiteColor, dateSelectHeaderHeight, calendarHeight, headerFontSize } from "../styles/common"
 
 const LOCALE = localeDetector()
 
@@ -21,8 +21,9 @@ LocaleConfig.defaultLocale = LOCALE;
 
 let styles = StyleSheet.create({
   container: {
-    zIndex: 10,
-    height: dateSelectHeaderHeight
+    position: 'absolute',
+    width: '100%',
+    zIndex: 1
   },
   dateHeader: {
     backgroundColor: primaryColor,
@@ -47,11 +48,9 @@ let styles = StyleSheet.create({
     alignItems: 'center',
   },
   calendarWidget: {
-    position: 'absolute',
-    right: 0,
-    left: 0,
+    position: 'relative',
     zIndex: -1,
-    height: 300 // workaround for https://github.com/wix/react-native-calendars/issues/338
+    height: calendarHeight // workaround for https://github.com/wix/react-native-calendars/issues/338
   }
 })
 
@@ -60,9 +59,10 @@ class DateSelectHeader extends React.Component {
   constructor(props) {
     super(props)
 
-    this.initialCalendarTop = -400
+    this.initialCalendarTop = -1 * (dateSelectHeaderHeight + calendarHeight)
 
     this.state = {
+      height: dateSelectHeaderHeight,
       slideCalendarAnim: new Animated.Value(this.initialCalendarTop),
       showCalendar: false
     }
@@ -73,13 +73,9 @@ class DateSelectHeader extends React.Component {
     this.onPastPress = this.onPastPress.bind(this)
   }
 
-  toggleCalendar() {
-    const { showCalendar } = this.state
-    this.setState({ showCalendar: !showCalendar })
-  }
-
   componentDidUpdate(prevProps, prevState) {
     const { showCalendar } = prevState
+    
     if (this.state.showCalendar && !showCalendar) {
       this.openCalendar()
     }
@@ -88,11 +84,27 @@ class DateSelectHeader extends React.Component {
     }
   }
 
+  toggleCalendar() {
+    const { showCalendar } = this.state
+
+    let newHeight
+    if (showCalendar) {
+      newHeight = dateSelectHeaderHeight
+    } else {
+      newHeight = dateSelectHeaderHeight + calendarHeight
+    }
+
+    this.setState(Object.assign({}, this.state, {
+      showCalendar: !showCalendar,
+      height: newHeight
+    }))
+  }
+
   openCalendar() {
     Animated.timing(
       this.state.slideCalendarAnim,
       {
-        toValue: 40,
+        toValue: 0,
         duration: 450,
       }
     ).start()
@@ -119,6 +131,7 @@ class DateSelectHeader extends React.Component {
   onDateSelect(selectedDate) {
     const { toDate } = this.props
     this.closeCalendar()
+    this.toggleCalendar()
     toDate(selectedDate)
   }
 
@@ -136,7 +149,7 @@ class DateSelectHeader extends React.Component {
     const { selectedDate, buttonsEnabled } = this.props
 
     return (
-      <View style={ styles.container }>
+      <View style={[styles.container, {height: this.state.height}]}>
         <Grid>
           <Row style={ styles.dateHeader }>
             <Col size={ 4 } style={ styles.button }>
