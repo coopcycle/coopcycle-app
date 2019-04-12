@@ -22,12 +22,17 @@ Running on Android emulator
 -----------------------
 
 NB: You may need to open the Android project in Android Studio before it builds.
+```
+react-native run-android
+```
 
-* Get a Google Maps API Key
+### Get a Google Maps API Key
 
 A Google Maps API Key is needed at compilation time for Android (see `AndroidManifest.xml`).
 
-You will need to have the [Google Maps Android API](https://console.developers.google.com/apis/api/maps-android-backend.googleapis.com/overview?project=coopcycle-dev-1495029274413&duration=PT1H) service enabled.
+* To get an API key follow the instructions [Get API key](https://developers.google.com/maps/documentation/android-sdk/signup)
+
+* Make sure that you have `Maps SDK for Android` API enabled in your [Google Cloud Platform Console](https://console.cloud.google.com/google/maps-apis)
 
 * Create a `gradle.properties` file in `GRADLE_USER_HOME` (defaults to `~/.gradle`)
 
@@ -37,12 +42,16 @@ You will need to have the [Google Maps Android API](https://console.developers.g
 googleMapsApiKey=YOUR_API_KEY
 ```
 
-* Download `Android Studio`
+### Setup Firebase
+
+* Setup a Firebase account and download `google-services.json` [Add Firebase](https://firebase.google.com/docs/android/setup)
+* Copy `google-services.json` to the `android/app` folder
+
 
 Running on iOS emulator
 -----------------------
 
-NB: You may need to open the iOS project in xCode before it builds.
+NB: You may need to open the iOS project in Xcode before it builds. Make sure that you open Xcode Workspace file (*.xcworkspace) 
 
 ```
 react-native run-ios
@@ -70,3 +79,24 @@ rm yarn.lock
 yarn cache clean
 yarn install
 ```
+
+### Android
+
+#### Gradle project sync failed in Android Studio. ERROR: The minSdk version should not be declared in the android manifest file.
+Affected Modules: `react-native-mauron85-background-geolocation`, `react-native-mauron85-background-geolocation-common`
+
+Remove line:
+```
+<uses-sdk android:minSdkVersion="14" />
+```
+from `react-native-mauron85-background-geolocation/AndroidManifest.xml` and `react-native-mauron85-background-geolocation-common/AndroidManifest.xml` files until this [issue](https://github.com/mauron85/react-native-background-geolocation/issues/357) is resolved
+
+#### Gradle project sync failed in Android Studio. 
+Try to run
+```
+yarn
+```
+in the project directory to get the latest dependencies (in `node_modules` folder)
+
+### iOS
+
