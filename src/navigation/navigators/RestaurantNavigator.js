@@ -46,12 +46,14 @@ const RestaurantSettingsStack = createStackNavigator({
     screen: navigation.RestaurantProducts,
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('RESTAURANT_PRODUCTS'),
+      header: null
     })
   },
   RestaurantOpeningHours: {
     screen: navigation.RestaurantOpeningHours,
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('RESTAURANT_OPENING_HOURS'),
+      header: null
     })
   },
 }, {
