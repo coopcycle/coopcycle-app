@@ -51,6 +51,11 @@ export const LOAD_PRODUCTS_REQUEST = 'LOAD_PRODUCTS_REQUEST'
 export const LOAD_PRODUCTS_SUCCESS = 'LOAD_PRODUCTS_SUCCESS'
 export const LOAD_PRODUCTS_FAILURE = 'LOAD_PRODUCTS_FAILURE'
 
+export const SET_NEXT_PRODUCTS_PAGE = 'SET_NEXT_PRODUCTS_PAGE'
+export const SET_HAS_MORE_PRODUCTS = 'SET_HAS_MORE_PRODUCTS'
+
+export const LOAD_MORE_PRODUCTS_SUCCESS = 'LOAD_MORE_PRODUCTS_SUCCESS'
+
 export const CHANGE_PRODUCT_ENABLED_REQUEST = 'CHANGE_PRODUCT_ENABLED_REQUEST'
 export const CHANGE_PRODUCT_ENABLED_SUCCESS = 'CHANGE_PRODUCT_ENABLED_SUCCESS'
 export const CHANGE_PRODUCT_ENABLED_FAILURE = 'CHANGE_PRODUCT_ENABLED_FAILURE'
@@ -107,6 +112,10 @@ export const changeDate = createAction(CHANGE_DATE)
 export const loadProductsRequest = createAction(LOAD_PRODUCTS_REQUEST)
 export const loadProductsSuccess = createAction(LOAD_PRODUCTS_SUCCESS)
 export const loadProductsFailure = createAction(LOAD_PRODUCTS_FAILURE)
+
+export const setNextProductsPage = createAction(SET_NEXT_PRODUCTS_PAGE)
+export const loadMoreProductsSuccess = createAction(LOAD_MORE_PRODUCTS_SUCCESS)
+export const setHasMoreProducts = createAction(SET_HAS_MORE_PRODUCTS)
 
 export const changeProductEnabledRequest = createAction(CHANGE_PRODUCT_ENABLED_REQUEST)
 export const changeProductEnabledSuccess = createAction(CHANGE_PRODUCT_ENABLED_SUCCESS)
@@ -285,7 +294,56 @@ export function loadProducts(client, restaurant) {
     dispatch(loadProductsRequest())
 
     return client.get(`${restaurant['@id']}/products`)
-      .then(res => dispatch(loadProductsSuccess(res['hydra:member'])))
+      .then(res => {
+
+        if (res.hasOwnProperty('hydra:view')) {
+          const hydraView = res['hydra:view']
+          if (hydraView.hasOwnProperty('hydra:next')) {
+            dispatch(setNextProductsPage(hydraView['hydra:next']))
+            dispatch(setHasMoreProducts(true))
+          } else {
+            // It means we have reached the last page
+            dispatch(setHasMoreProducts(false))
+          }
+        } else {
+          dispatch(setHasMoreProducts(false))
+        }
+
+        dispatch(loadProductsSuccess(res['hydra:member']))
+
+      })
+      .catch(e => dispatch(loadProductsFailure(e)))
+  }
+}
+
+export function loadMoreProducts() {
+
+  return function (dispatch, getState) {
+
+    const { httpClient } = getState().app
+    const { nextProductsPage, hasMoreProducts } = getState().restaurant
+
+    if (!hasMoreProducts) {
+      return
+    }
+
+    dispatch(loadProductsRequest())
+
+    return httpClient.get(nextProductsPage)
+      .then(res => {
+
+        const hydraView = res['hydra:view']
+
+        if (hydraView.hasOwnProperty('hydra:next')) {
+          dispatch(setNextProductsPage(res['hydra:view']['hydra:next']))
+          dispatch(setHasMoreProducts(true))
+        } else {
+          // It means we have reached the last page
+          dispatch(setHasMoreProducts(false))
+        }
+
+        dispatch(loadMoreProductsSuccess(res['hydra:member']))
+      })
       .catch(e => dispatch(loadProductsFailure(e)))
   }
 }

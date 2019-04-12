@@ -213,6 +213,7 @@
     "SIGNATURE_CLEAR": "Borrar",
     "SIGNATURE_SIGN": "Enviar la imagen",
     "PHOTO": "Foto",
-    "PHOTO_DISCLAIMER": "Tomar una foto"
+    "PHOTO_DISCLAIMER": "Tomar una foto",
+    "LOAD_MORE": "Cargar más"
   }
 }
