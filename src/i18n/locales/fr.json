@@ -216,6 +216,8 @@
     "SIGNATURE_SIGN": "Envoyer l'image",
     "PHOTO": "Photo",
     "PHOTO_DISCLAIMER": "Prenez une photo",
-    "LOAD_MORE": "Charger plus"
+    "LOAD_MORE": "Charger plus",
+    "TASK_IMAGE_UPLOAD_CONFIRM_SHORT": "Image uploadée !",
+    "TASK_IMAGE_UPLOAD_CONFIRM_LONG": "L'image a été uploadée avec succès"
   }
 }

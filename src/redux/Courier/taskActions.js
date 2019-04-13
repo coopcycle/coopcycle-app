@@ -4,6 +4,7 @@ import { StackActions, NavigationActions } from 'react-navigation'
 import RNFetchBlob from 'rn-fetch-blob'
 
 import NavigationHolder from '../../NavigationHolder'
+import DropdownHolder from '../../DropdownHolder'
 import Preferences from '../../Preferences'
 import i18n from '../../i18n'
 
@@ -184,7 +185,12 @@ export function uploadSignature(task, base64) {
 
         httpClient
           .put(task['@id'], { images: [ taskImage['@id'] ] })
-          .then(res => dispatch(uploadFileSuccess(res, taskImage)))
+          .then(res => {
+            dispatch(uploadFileSuccess(res, taskImage))
+            DropdownHolder
+              .getDropdown()
+              .alertWithType('success', i18n.t('TASK_IMAGE_UPLOAD_CONFIRM_SHORT'), i18n.t('TASK_IMAGE_UPLOAD_CONFIRM_LONG'))
+          })
           .catch(e => dispatch(uploadFileFailure(e)))
 
       })

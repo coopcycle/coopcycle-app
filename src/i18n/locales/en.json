@@ -216,6 +216,8 @@
     "SIGNATURE_SIGN": "Upload signature",
     "PHOTO": "Picture",
     "PHOTO_DISCLAIMER": "Take a picture",
-    "LOAD_MORE": "Load more"
+    "LOAD_MORE": "Load more",
+    "TASK_IMAGE_UPLOAD_CONFIRM_SHORT": "Image uploaded!",
+    "TASK_IMAGE_UPLOAD_CONFIRM_LONG": "Image was successfully uploaded"
   }
 }
