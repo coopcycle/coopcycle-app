@@ -215,6 +215,7 @@
     "SIGNATURE_CLEAR": "Clear",
     "SIGNATURE_SIGN": "Upload signature",
     "PHOTO": "Picture",
-    "PHOTO_DISCLAIMER": "Take a picture"
+    "PHOTO_DISCLAIMER": "Take a picture",
+    "LOAD_MORE": "Load more"
   }
 }

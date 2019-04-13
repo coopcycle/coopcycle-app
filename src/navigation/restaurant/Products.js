@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Dimensions, FlatList, StyleSheet, View } from 'react-native'
+import { Dimensions, FlatList, StyleSheet, TouchableOpacity, View } from 'react-native'
 import {
   Container, Header, Title, Content,
   Left, Right, Body,
@@ -10,7 +10,7 @@ import _ from 'lodash'
 import { withNamespaces } from 'react-i18next'
 import { connect } from 'react-redux'
 
-import { loadProducts, changeProductEnabled } from '../../redux/Restaurant/actions'
+import { loadProducts, loadMoreProducts, changeProductEnabled } from '../../redux/Restaurant/actions'
 
 class ProductsScreen extends Component {
 
@@ -29,6 +29,7 @@ class ProductsScreen extends Component {
     if (null !== this.state.product) {
       this.props.changeProductEnabled(this.props.httpClient, this.state.product, this.state.product.enabled)
     }
+
     if (this.props.products !== prevProps.products) {
       this.setState({ product: null })
     }
@@ -58,9 +59,14 @@ class ProductsScreen extends Component {
     )
   }
 
+  _keyExtractor(item, index) {
+
+    return item['@id']
+  }
+
   render() {
 
-    let { products } = this.props
+    let { products, hasMoreProducts } = this.props
     const { product } = this.state
 
     if (product) {
@@ -72,28 +78,58 @@ class ProductsScreen extends Component {
     }
 
     return (
-      <Container>
-        <Content>
-          <List
-            dataArray={ products }
-            renderRow={ (item) => this.renderItem(item) } />
-        </Content>
-      </Container>
+      <View style={{ flex: 1 }}>
+        <FlatList
+          data={ products }
+          keyExtractor={ this._keyExtractor }
+          renderItem={ ({ item }) => this.renderItem(item) }
+          initialNumToRender={ 15 }
+          ListFooterComponent={ () => {
+
+            if (products.length > 0 && hasMoreProducts) {
+              return (
+                <TouchableOpacity
+                  onPress={ () => this.props.loadMoreProducts() }
+                  style={ styles.btn }>
+                  <Text style={ styles.btnText }>{ this.props.t('LOAD_MORE') }</Text>
+                </TouchableOpacity>
+              )
+            }
+
+            return (
+              <View />
+            )
+        }} />
+      </View>
     )
   }
 }
+
+const styles = StyleSheet.create({
+  btn: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 20,
+  },
+  btnText: {
+    color: '#0074D9'
+  }
+})
 
 function mapStateToProps(state) {
   return {
     httpClient: state.app.httpClient,
     restaurant: state.restaurant.restaurant,
     products: state.restaurant.products,
+    hasMoreProducts: state.restaurant.hasMoreProducts,
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     loadProducts: (httpClient, restaurant) => dispatch(loadProducts(httpClient, restaurant)),
+    loadMoreProducts: () => dispatch(loadMoreProducts()),
     changeProductEnabled: (httpClient, product, enabled) => dispatch(changeProductEnabled(httpClient, product, enabled)),
   }
 }

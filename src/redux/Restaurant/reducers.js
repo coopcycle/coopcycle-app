@@ -38,6 +38,9 @@ import {
   DELETE_OPENING_HOURS_SPECIFICATION_REQUEST,
   DELETE_OPENING_HOURS_SPECIFICATION_SUCCESS,
   DELETE_OPENING_HOURS_SPECIFICATION_FAILURE,
+  SET_NEXT_PRODUCTS_PAGE,
+  LOAD_MORE_PRODUCTS_SUCCESS,
+  SET_HAS_MORE_PRODUCTS,
 } from './actions'
 
 import moment from 'moment'
@@ -52,6 +55,8 @@ const initialState = {
   date: moment(),
   status: 'available',
   restaurant: null,
+  nextProductsPage: null,
+  hasMoreProducts: false,
   products: [],
   specialOpeningHoursSpecification: [],
 }
@@ -214,6 +219,14 @@ export default (state = initialState, action = {}) => {
         products: action.payload,
       }
 
+    case LOAD_MORE_PRODUCTS_SUCCESS:
+      return {
+        ...state,
+        fetchError: false,
+        isFetching: false,
+        products: state.products.concat(action.payload),
+      }
+
     case CHANGE_PRODUCT_ENABLED_SUCCESS:
       return {
         ...state,
@@ -264,6 +277,18 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         date: action.payload
+      }
+
+    case SET_NEXT_PRODUCTS_PAGE:
+      return {
+        ...state,
+        nextProductsPage: action.payload
+      }
+
+    case SET_HAS_MORE_PRODUCTS:
+      return {
+        ...state,
+        hasMoreProducts: action.payload
       }
 
     default:

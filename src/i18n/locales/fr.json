@@ -215,6 +215,7 @@
     "SIGNATURE_CLEAR": "Effacer",
     "SIGNATURE_SIGN": "Envoyer l'image",
     "PHOTO": "Photo",
-    "PHOTO_DISCLAIMER": "Prenez une photo"
+    "PHOTO_DISCLAIMER": "Prenez une photo",
+    "LOAD_MORE": "Charger plus"
   }
 }
