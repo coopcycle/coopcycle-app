@@ -179,7 +179,9 @@ export function loadOrderAndNavigate(order) {
               // We don't want to load orders again when navigating
               loadOrders: false
             },
-            action: NavigationActions.navigate({
+            // We use push, because if we are already on RestaurantOrder, it opens a new screen
+            // @see https://reactnavigation.org/docs/en/navigating.html#navigate-to-a-route-multiple-times
+            action: StackActions.push({
               routeName: 'RestaurantOrder',
               params: { order: res }
             }),
