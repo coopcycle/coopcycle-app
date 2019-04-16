@@ -31,6 +31,19 @@ class Summary extends Component {
     };
   }
 
+  _renderItemOptions(item) {
+
+    return (
+      <View>
+      { item.options.map(option => {
+        return (
+          <Text note key={ `${item.identifier}:${option.identifier}` }>{ option.name }</Text>
+        )
+      })}
+      </View>
+    )
+  }
+
   _renderRow(item) {
 
     const { navigate } = this.props.navigation
@@ -38,8 +51,9 @@ class Summary extends Component {
     return (
       <ListItem key={ item.key } onPress={() => navigate('CheckoutEditItem', { item })}>
         <Body>
-          <Text>{ item.name }</Text>
-          <Text note>{ formatPrice(item.price) } € x { item.quantity }</Text>
+          <Text>{ `${item.quantity} x ${item.name}` }</Text>
+          { item.options.length > 0 && this._renderItemOptions(item) }
+          <Text note>{ `${formatPrice(item.price)} €` }</Text>
         </Body>
         <Right>
           <Button danger transparent onPress={() => this.props.removeItem(item)}>

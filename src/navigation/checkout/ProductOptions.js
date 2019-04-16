@@ -22,17 +22,46 @@ class ProductOptions extends Component {
     const { product } = this.props.navigation.state.params
     const { options } = this.state
 
-    const optionsKeys = _.keys(options)
+    for (let i = 0; i < product.menuAddOn.length; i++) {
+      let menuSection = product.menuAddOn[i]
+      if (!menuSection.additional && !options.hasOwnProperty(menuSection.identifier)) {
+        return false
+      }
+    }
 
-    return optionsKeys.length === product.menuAddOn.length
+    return true
   }
 
   _onPressItem(menuSection, menuItem) {
     const { options } = this.state
 
-    const newOptions = {
+    let newOptions = {
       ...options,
-      [ menuSection.identifier ]: menuItem.identifier
+    }
+
+    if (menuSection.additional) {
+
+      let choices = []
+
+      if (newOptions.hasOwnProperty(menuSection.identifier)) {
+        choices = newOptions[menuSection.identifier]
+      }
+
+      if (_.includes(choices, menuItem.identifier)) {
+        choices = _.filter(choices, choice => choice !== menuItem.identifier)
+      } else {
+        choices.push(menuItem.identifier)
+      }
+
+      newOptions = {
+        ...newOptions,
+        [ menuSection.identifier ]: choices
+      }
+    } else {
+      newOptions = {
+        ...newOptions,
+        [ menuSection.identifier ]: menuItem.identifier
+      }
     }
 
     this.setState({ options: newOptions })
@@ -42,7 +71,7 @@ class ProductOptions extends Component {
     const { product } = this.props.navigation.state.params
     const { options } = this.state
 
-    const optionsValues = _.values(options);
+    const optionsValues = _.flatten(_.values(options))
 
     const optionsArray = []
     _.forEach(product.menuAddOn, menuSection => {
@@ -74,7 +103,15 @@ class ProductOptions extends Component {
 
     const { options } = this.state
 
-    let selected = options.hasOwnProperty(menuSection.identifier) && options[menuSection.identifier] === menuItem.identifier
+    let selected = false
+
+    if (options.hasOwnProperty(menuSection.identifier)) {
+      if (Array.isArray(options[menuSection.identifier])) {
+        selected = _.includes(options[menuSection.identifier], menuItem.identifier)
+      } else {
+        selected = options[menuSection.identifier] === menuItem.identifier
+      }
+    }
 
     return (
       <ListItem key={ menuItem.identifier } onPress={ () => this._onPressItem(menuSection, menuItem) }>
