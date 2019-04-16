@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Dimensions, Image, StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux'
 import { withNamespaces } from 'react-i18next'
 import {
@@ -39,12 +39,21 @@ class Restaurant extends Component {
     const { navigate } = this.props.navigation
     const { restaurant } = this.props.navigation.state.params
 
+    const { width } = Dimensions.get('window')
+
     return (
       <Container>
-        <Content>
-          <View style={{ paddingHorizontal: 15, backgroundColor: '#fff', borderTopWidth: 1, borderTopColor: '#f1f1f1' }}>
+        <View>
+          <Image
+            style={{ width, height: 50 }}
+            source={{ uri: restaurant.image }}
+            resizeMode="cover" />
+          <View style={ styles.heading }>
             <Text style={{ fontFamily: 'Raleway-Regular', textAlign: 'center', marginVertical: 10 }}>{ restaurant.name }</Text>
           </View>
+        </View>
+        <Content>
+
           <Menu restaurant={ restaurant } onItemClick={ this.onItemClick.bind(this) } />
         </Content>
         <CartFooter
@@ -53,6 +62,15 @@ class Restaurant extends Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  heading: {
+    paddingHorizontal: 15,
+    backgroundColor: '#fff',
+    borderBottomWidth: 1,
+    borderBottomColor: '#f1f1f1'
+  }
+})
 
 function mapStateToProps(state) {
   return {
