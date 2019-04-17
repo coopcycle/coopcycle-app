@@ -26,13 +26,17 @@ class CartItem {
     return this.menuItem['identifier'] === menuItem['identifier']
   }
   get total() {
-    return this.menuItem.offers.price * this.quantity;
+
+    let totalWithOptions = this.menuItem.offers.price
+
+    _.forEach(this.options, (menuItem) => {
+      totalWithOptions += menuItem.offers.price
+    })
+
+    return totalWithOptions * this.quantity;
   }
   get key() {
     return this.menuItem['identifier'];
-  }
-  get price() {
-    return this.menuItem.offers.price
   }
   get name() {
     return this.menuItem.name

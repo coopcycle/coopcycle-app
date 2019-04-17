@@ -36,8 +36,14 @@ class Summary extends Component {
     return (
       <View>
       { item.options.map(option => {
+
+        let optionText = option.name
+        if (option.offers.price > 0) {
+          optionText = `${option.name} (+ ${formatPrice(option.offers.price)} €)`
+        }
+
         return (
-          <Text note key={ `${item.identifier}:${option.identifier}` }>{ option.name }</Text>
+          <Text note key={ `${item.identifier}:${option.identifier}` }>{ optionText }</Text>
         )
       })}
       </View>
@@ -53,7 +59,7 @@ class Summary extends Component {
         <Body>
           <Text>{ `${item.quantity} x ${item.name}` }</Text>
           { item.options.length > 0 && this._renderItemOptions(item) }
-          <Text note>{ `${formatPrice(item.price)} €` }</Text>
+          <Text note>{ `${formatPrice(item.total)} €` }</Text>
         </Body>
         <Right>
           <Button danger transparent onPress={() => this.props.removeItem(item)}>
