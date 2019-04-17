@@ -95,7 +95,12 @@ class Cart {
     return _.reduce(this.items, function(memo, item) { return memo + item.total; }, 0)
   }
   get totalDelivery() {
-    return this.restaurant.flatDeliveryPrice
+    if (this.restaurant) {
+
+      return this.restaurant.flatDeliveryPrice
+    }
+
+    return 0
   }
   get length() {
     return _.reduce(this.items, function(memo, item) { return memo + item.quantity; }, 0);

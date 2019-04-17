@@ -67,7 +67,7 @@ class Address extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.address !== prevProps.address && this.props.address.geo) {
+    if (this.props.address && this.props.address !== prevProps.address && this.props.address.geo) {
       setTimeout(() => this.map.fitToElements(true), 1000);
     }
   }
@@ -214,6 +214,7 @@ class Address extends Component {
 function mapStateToProps(state) {
 
   return {
+    // WARNING This may be null
     address: state.checkout.address
   }
 }
