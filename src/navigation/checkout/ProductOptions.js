@@ -7,6 +7,7 @@ import { connect } from 'react-redux'
 import _ from 'lodash'
 
 import { addItem } from '../../redux/Checkout/actions'
+import { formatPrice } from '../../Cart'
 
 class ProductOptions extends Component {
 
@@ -113,10 +114,16 @@ class ProductOptions extends Component {
       }
     }
 
+    let price = 0
+    if (menuItem.hasOwnProperty('offers')) {
+      price = menuItem.offers.price
+    }
+
     return (
       <ListItem key={ menuItem.identifier } onPress={ () => this._onPressItem(menuSection, menuItem) }>
-        <Left>
+        <Left style={{ flex: 1, justifyContent: 'space-between' }}>
           <Text>{ menuItem.name }</Text>
+          { price > 0 && (<Text note>{ `${formatPrice(price)} €` }</Text>) }
         </Left>
         <Right>
           <Radio selected={ selected } />
