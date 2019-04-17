@@ -16,6 +16,7 @@ import {
 
 import Cart from '../../Cart'
 import _ from 'lodash'
+import moment from 'moment'
 
 const initialState = {
   cart: new Cart(),
@@ -45,10 +46,15 @@ export default (state = initialState, action = {}) => {
       }
 
     case INIT:
+
+      // Add 30 minutes to make sure there is time
+      let date = moment(_.first(action.payload.restaurant.availabilities))
+      date.add(30, 'minutes')
+
       return {
         ...state,
         cart: new Cart(action.payload.restaurant),
-        date: _.first(action.payload.restaurant.availabilities),
+        date: date.format(),
       }
 
     case CLEAR:
