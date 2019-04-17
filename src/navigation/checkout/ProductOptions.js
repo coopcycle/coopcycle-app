@@ -74,9 +74,16 @@ class ProductOptions extends Component {
 
     const optionsValues = _.flatten(_.values(options))
 
+    let allOptions = []
+    if (product.hasOwnProperty('menuAddOn')) {
+      _.forEach(product.menuAddOn, (menuSection) => {
+        allOptions = allOptions.concat(menuSection.hasMenuItem)
+      })
+    }
+
     const optionsArray = []
-    _.forEach(product.menuAddOn, menuSection => {
-      const optionItem = _.find(menuSection.hasMenuItem, item => _.includes(optionsValues, item.identifier))
+    _.forEach(optionsValues, (value) => {
+      const optionItem = _.find(allOptions, item => item.identifier === value)
       if (optionItem) {
         optionsArray.push(optionItem)
       }
