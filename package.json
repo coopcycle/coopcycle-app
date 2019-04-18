@@ -25,7 +25,7 @@
     "react-native-ble-plx": "^1.0.3",
     "react-native-cache-store": "^1.0.2",
     "react-native-calendars": "^1.20.0",
-    "react-native-camera": "^2.1.1",
+    "react-native-camera": "^2.6.0",
     "react-native-communications": "^2.2.1",
     "react-native-credit-card-input": "^0.4.1",
     "react-native-dropdownalert": "^3.8.0",
