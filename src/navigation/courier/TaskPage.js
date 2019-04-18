@@ -12,7 +12,7 @@ import { showLocation } from 'react-native-map-link'
 import _ from 'lodash'
 
 import { greenColor, greyColor, redColor } from "../../styles/common"
-import { selectTasksList } from "../../redux/Courier"
+import { selectTasks } from "../../redux/Courier"
 
 const isCompleted = task => task.status !== 'TODO'
 
@@ -416,17 +416,21 @@ const styles = StyleSheet.create({
 
 function mapStateToProps (state) {
 
-  let assignedTasks = []
+  let allTasks = []
 
+  const courierTasks = _.values(selectTasks(state))
+  allTasks = allTasks.concat(courierTasks)
+
+  let assignedTasks = []
   _.forEach(state.dispatch.taskLists, (taskList) => {
     assignedTasks = assignedTasks.concat(taskList.items)
   })
-  const unassignedTasks = state.dispatch.unassignedTasks
 
-  const allTasks = _.uniqBy(unassignedTasks.concat(assignedTasks), '@id')
+  allTasks = allTasks.concat(assignedTasks)
+  allTasks = allTasks.concat(state.dispatch.unassignedTasks)
 
   return {
-    tasks: allTasks,
+    tasks: _.uniqBy(allTasks, '@id'),
   }
 }
 
