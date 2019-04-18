@@ -3956,9 +3956,9 @@ jest-environment-node@^24.5.0:
     jest-util "^24.5.0"
 
 jest-fetch-mock@^2.1.1:
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/jest-fetch-mock/-/jest-fetch-mock-2.1.1.tgz#fa9c5fdd228fb0d073456658831ae89cec9543e6"
-  integrity sha512-/E0I80zMRTTExfM7QQZsqizT31EMHCBnqACERd2QR+7riSgta3OcHF3RzakukzQ4o3oEyIi6OleB3PAU6ArgDg==
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/jest-fetch-mock/-/jest-fetch-mock-2.1.2.tgz#1260b347918e3931c4ec743ceaf60433da661bd0"
+  integrity sha512-tcSR4Lh2bWLe1+0w/IwvNxeDocMI/6yIA2bijZ0fyWxC4kQ18lckQ1n7Yd40NKuisGmcGBRFPandRXrW/ti/Bw==
   dependencies:
     cross-fetch "^2.2.2"
     promise-polyfill "^7.1.1"
@@ -4493,9 +4493,9 @@ levn@^0.3.0, levn@~0.3.0:
     type-check "~0.3.2"
 
 libphonenumber-js@^1.7.13:
-  version "1.7.14"
-  resolved "https://registry.yarnpkg.com/libphonenumber-js/-/libphonenumber-js-1.7.14.tgz#e1182323a780db1bd704495355a858e3f40e9293"
-  integrity sha512-rxMNAy0zu/X2c4Js7+E/YMlEU8dBRSQuJ//WV5HafvxZlPeifg5ihVR2xVpLS+e8D4MY9htQ9FeMImlRtN18ng==
+  version "1.7.15"
+  resolved "https://registry.yarnpkg.com/libphonenumber-js/-/libphonenumber-js-1.7.15.tgz#2ad337e94c24cb810813554f6cf4a19f1246d3b9"
+  integrity sha512-FYqkPqPc8ZBAeGiCuU/4eKqvCyBP281DtayXoc+9XuRhgARn+CCTvy30VjfCevPROQkVxZKe2SfWj4d/3VrmVw==
   dependencies:
     minimist "^1.2.0"
     semver-compare "^1.0.0"
