@@ -49,7 +49,7 @@
     "react-native-sound": "^0.10.12",
     "react-native-svg": "^9.2.4",
     "react-native-swipeout": "^2.3.6",
-    "react-navigation": "^3.5.1",
+    "react-navigation": "^3.8.1",
     "react-redux": "^6.0.1",
     "redux": "^4.0.1",
     "redux-actions": "^2.6.5",
