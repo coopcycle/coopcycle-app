@@ -16,7 +16,7 @@ PODS:
     - React
   - react-native-camera/RN (2.1.1):
     - React
-  - react-native-maps (0.23.0):
+  - react-native-maps (0.24.2):
     - React
   - React/Core (0.59.2):
     - yoga (= 0.59.2.React)
@@ -144,7 +144,7 @@ SPEC CHECKSUMS:
   glog: aefd1eb5dda2ab95ba0938556f34b98e2da3a60d
   React: 9d063e2f356c8cd2f54dd550d4507740037cbabe
   react-native-camera: 9cd8cf5d5f75917a978d3781f315b8191eaee1ff
-  react-native-maps: 7525a32bcd025af8cf3b6c469af9b8758245db72
+  react-native-maps: 0316ed017dbb64b33b227751fa810e2454fcfa39
   rn-fetch-blob: 766f85cabd2992300dfa1be2bc9e4e258abc6f04
   RNGestureHandler: b65d391f4f570178d657b99a16ec99d09b8656b0
   RNSketchCanvas: 9c28adb5381543ed55cc98ce6de46479cb3cb12c
@@ -152,6 +152,6 @@ SPEC CHECKSUMS:
   Stripe: db29ad197c74aca6fb981e4e8355cf7ebd0fca5a
   yoga: 3768a3026ade0fb46a68f3a31a917cf86bc34fc4
 
-PODFILE CHECKSUM: abc1956ff24f6ce624b5d7c47139fb01351a27dd
+PODFILE CHECKSUM: d2219bc99e450e6c99074caeaa11a8e6260ec5d2
 
 COCOAPODS: 1.6.1
