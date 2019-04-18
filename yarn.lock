@@ -6375,10 +6375,10 @@ react-native-svg-transformer@^0.12.1:
     "@svgr/core" "^4.1.0"
     semver "^5.6.0"
 
-react-native-svg@^9.2.4:
-  version "9.3.6"
-  resolved "https://registry.yarnpkg.com/react-native-svg/-/react-native-svg-9.3.6.tgz#99361aa98aabad0d538f63e7096456cf54f48e2c"
-  integrity sha512-HEx8tSwzIN2kmY4prpUMQK2DY3aGkPXgKIiHfuvmGvuL+7d4wn4j7v1z/3TyLfwwSxlwGKG036TUQOot1BKGMA==
+react-native-svg@^9.4.0:
+  version "9.4.0"
+  resolved "https://registry.yarnpkg.com/react-native-svg/-/react-native-svg-9.4.0.tgz#e428e0eae55aebd2355f1ff4f22675dad4611960"
+  integrity sha512-IVJlVbS2dAPerPr927fEi4uXzrPXzlra5ddgyJXZZ2IKA2ZygyYWFZDM+vsQs+Vj20CfL8nOWszQQV57vdQgFg==
 
 react-native-swipeout@^2.3.6:
   version "2.3.6"

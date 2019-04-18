@@ -77,7 +77,7 @@ PODS:
     - React
   - RNSketchCanvas (0.8.0):
     - React
-  - RNSVG (9.3.6):
+  - RNSVG (9.4.0):
     - React
   - Stripe (14.0.0)
   - yoga (0.59.2.React)
@@ -148,7 +148,7 @@ SPEC CHECKSUMS:
   rn-fetch-blob: 766f85cabd2992300dfa1be2bc9e4e258abc6f04
   RNGestureHandler: b65d391f4f570178d657b99a16ec99d09b8656b0
   RNSketchCanvas: 9c28adb5381543ed55cc98ce6de46479cb3cb12c
-  RNSVG: 172d33eda196063a6a94900d93a4a2cbb126bf33
+  RNSVG: 9cb6e958c4b6a1f58185ac72a350b148947d6fed
   Stripe: db29ad197c74aca6fb981e4e8355cf7ebd0fca5a
   yoga: 3768a3026ade0fb46a68f3a31a917cf86bc34fc4
 
