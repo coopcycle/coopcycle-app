@@ -159,6 +159,11 @@ android {
 }
 
 dependencies {
+
+    // This is needed to enable multidex on API Level < 21
+    // https://developer.android.com/studio/build/multidex.html
+    compile 'com.android.support:multidex:1.0.3'
+
     implementation(project(':react-native-camera')){
         exclude group: 'com.google.android.gms', module: 'play-services-vision'
         exclude group: 'com.android.support', module: 'support-media-compat'

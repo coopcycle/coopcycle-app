@@ -1,6 +1,8 @@
 package fr.coopcycle;
 
 import android.app.Application;
+import android.support.multidex.MultiDexApplication;
+
 import com.facebook.react.ReactApplication;
 import org.reactnative.camera.RNCameraPackage;
 import com.polidea.reactnativeble.BlePackage;
@@ -28,7 +30,10 @@ import com.facebook.soloader.SoLoader;
 import java.util.Arrays;
 import java.util.List;
 
-public class MainApplication extends Application implements ReactApplication {
+// To enable multidex on API Level < 21,
+// we need to extend android.support.multidex.MultiDexApplication instead of android.app.Application
+// https://developer.android.com/studio/build/multidex.html
+public class MainApplication extends MultiDexApplication implements ReactApplication {
 
   private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
     @Override
