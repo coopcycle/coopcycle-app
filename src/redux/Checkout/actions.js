@@ -6,13 +6,17 @@ import NavigationHolder from '../../NavigationHolder'
 /*
  * Action Types
  */
-export const INIT = 'CHECKOUT_INIT'
+
 export const ADD_ITEM = 'ADD_ITEM'
 export const REMOVE_ITEM = 'REMOVE_ITEM'
 export const INCREMENT_ITEM = 'INCREMENT_ITEM'
 export const DECREMENT_ITEM = 'DECREMENT_ITEM'
 export const SET_ADDRESS = '@checkout/SET_ADDRESS'
 export const CLEAR = '@checkout/CLEAR'
+
+export const INIT_REQUEST = '@checkout/INIT_REQUEST'
+export const INIT_SUCCESS = '@checkout/INIT_SUCCESS'
+export const INIT_FAILURE = '@checkout/INIT_FAILURE'
 
 export const SEARCH_RESTAURANTS_REQUEST = '@checkout/SEARCH_RESTAURANTS_REQUEST'
 export const SEARCH_RESTAURANTS_SUCCESS = '@checkout/SEARCH_RESTAURANTS_SUCCESS'
@@ -25,13 +29,17 @@ export const CHECKOUT_FAILURE = '@checkout/CHECKOUT_FAILURE'
 /*
  * Action Creators
  */
-export const init = createAction(INIT, (restaurant, date) => ({ restaurant, date }))
+
 export const addItem = createAction(ADD_ITEM, (item, options = []) => ({ item, options }))
 export const removeItem = createAction(REMOVE_ITEM)
 export const incrementItem = createAction(INCREMENT_ITEM)
 export const decrementItem = createAction(DECREMENT_ITEM)
 export const setAddress = createAction(SET_ADDRESS)
 export const clear = createAction(CLEAR)
+
+export const initRequest = createAction(INIT_REQUEST)
+export const initSuccess = createAction(INIT_SUCCESS)
+export const initFailure = createAction(INIT_FAILURE)
 
 export const searchRestaurantsRequest = createAction(SEARCH_RESTAURANTS_REQUEST)
 export const searchRestaurantsSuccess = createAction(SEARCH_RESTAURANTS_SUCCESS)
@@ -49,26 +57,30 @@ export function searchRestaurants(latitude, longitude) {
 
     dispatch(searchRestaurantsRequest())
 
-    httpClient.get('/api/restaurants?coordinate=' + [latitude, longitude])
+    httpClient.get('/api/restaurants?coordinate=' + [ latitude, longitude ])
       .then(res => {
-
-        const restaurants = res['hydra:member']
-
-        Promise
-          .all(restaurants.map(restaurant => {
-            // Load from API if this is an IRI
-            if (typeof restaurant.hasMenu === 'string') {
-
-              return httpClient.get(restaurant.hasMenu)
-            }
-
-            return new Promise((resolve, reject) => resolve(restaurant.hasMenu))
-          }))
-          .then(values => restaurants.map((restaurant, key) => ({ ...restaurant, hasMenu: values[key] })))
-          .then(restaurantsWithMenu => {
-            dispatch(searchRestaurantsSuccess(restaurantsWithMenu))
-          })
+        dispatch(searchRestaurantsSuccess(res['hydra:member']))
       })
+      .catch(e => dispatch(searchRestaurantsFailure(e)))
+  }
+}
+
+export function init(restaurant) {
+
+  return (dispatch, getState) => {
+
+    const { httpClient } = getState().app
+
+    dispatch(initRequest(restaurant))
+
+    if (typeof restaurant.hasMenu === 'string') {
+      httpClient.get(restaurant.hasMenu)
+        .then((menu) => {
+          const restaurantWithMenu = { ...restaurant, hasMenu: menu }
+          dispatch(initSuccess(restaurantWithMenu))
+        })
+        .catch(e => dispatch(initFailure(e)))
+    }
   }
 }
 

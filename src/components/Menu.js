@@ -40,7 +40,7 @@ export default class Menu extends Component {
         <Grid>
           <Col size={ 4 }>
             <Text>{ item.name }</Text>
-            { item.description && (<Text note>{ item.description }</Text>) }					
+            { item.description && (<Text note>{ item.description }</Text>) }
             <Text style={{ color: '#828282', fontSize: 14 }}>{ formatPrice(item.offers.price) } €</Text>
           </Col>
           <Col size={ 1 } style={{ flex: 1, alignItems: 'flex-end', justifyContent: 'center' }}>
@@ -53,15 +53,17 @@ export default class Menu extends Component {
 
   render() {
 
-    const { restaurant } = this.props
+    const { menu } = this.props
 
     let sections = []
-    _.forEach(restaurant.hasMenu.hasMenuSection, menuSection => {
-      sections.push({
-        title: menuSection.name,
-        data: menuSection.hasMenuItem
+    if (menu) {
+      _.forEach(menu.hasMenuSection, menuSection => {
+        sections.push({
+          title: menuSection.name,
+          data: menuSection.hasMenuItem
+        })
       })
-    })
+    }
 
     return (
       <View style={{ backgroundColor: '#fff' }}>
@@ -70,6 +72,7 @@ export default class Menu extends Component {
           renderItem={ ({ item }) => this.renderItem(item) }
           renderSectionHeader={ ({ section }) => this.renderSectionHeader(section) }
           keyExtractor={ (item, index) => index }
+          initialNumToRender={ 12 }
         />
       </View>
     )

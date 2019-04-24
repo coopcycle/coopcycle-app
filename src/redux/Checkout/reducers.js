@@ -1,5 +1,7 @@
 import {
-  INIT,
+  INIT_REQUEST,
+  INIT_SUCCESS,
+  INIT_FAILURE,
   ADD_ITEM,
   REMOVE_ITEM,
   INCREMENT_ITEM,
@@ -11,7 +13,10 @@ import {
   SEARCH_RESTAURANTS_FAILURE,
   CHECKOUT_REQUEST,
   CHECKOUT_SUCCESS,
-  CHECKOUT_FAILURE
+  CHECKOUT_FAILURE,
+  LOAD_RESTAURANT_REQUEST,
+  LOAD_RESTAURANT_SUCCESS,
+  LOAD_RESTAURANT_FAILURE,
 } from './actions'
 
 import Cart from '../../Cart'
@@ -23,6 +28,7 @@ const initialState = {
   address: null,
   date: null,
   restaurants: [],
+  menu: null,
   isFetching: false,
 }
 
@@ -40,21 +46,32 @@ export default (state = initialState, action = {}) => {
 
     case SEARCH_RESTAURANTS_FAILURE:
     case CHECKOUT_FAILURE:
+    case INIT_FAILURE:
       return {
         ...state,
         isFetching: false,
       }
 
-    case INIT:
+    case INIT_REQUEST:
 
       // Add 30 minutes to make sure there is time
-      let date = moment(_.first(action.payload.restaurant.availabilities))
+      let date = moment(_.first(action.payload.availabilities))
       date.add(30, 'minutes')
 
       return {
         ...state,
-        cart: new Cart(action.payload.restaurant),
+        isFetching: true,
+        cart: new Cart(action.payload),
+        menu: null, // For better navigation through restaurants
         date: date.format(),
+      }
+
+    case INIT_SUCCESS:
+
+      return {
+        ...state,
+        isFetching: false,
+        menu: action.payload.hasMenu
       }
 
     case CLEAR:

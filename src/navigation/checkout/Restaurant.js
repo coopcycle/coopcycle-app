@@ -18,7 +18,7 @@ import { init, addItem } from '../../redux/Checkout/actions'
 class Restaurant extends Component {
 
   componentDidMount() {
-    const { restaurant} = this.props.navigation.state.params
+    const { restaurant } = this.props.navigation.state.params
 
     this.props.init(restaurant)
   }
@@ -38,6 +38,7 @@ class Restaurant extends Component {
 
     const { navigate } = this.props.navigation
     const { restaurant } = this.props.navigation.state.params
+    const { menu } = this.props
 
     const { width } = Dimensions.get('window')
 
@@ -53,8 +54,7 @@ class Restaurant extends Component {
           </View>
         </View>
         <Content>
-
-          <Menu restaurant={ restaurant } onItemClick={ this.onItemClick.bind(this) } />
+          <Menu menu={ menu } onItemClick={ this.onItemClick.bind(this) } />
         </Content>
         <CartFooter
           onSubmit={ () => navigate('CheckoutSummary') }  />
@@ -75,12 +75,13 @@ const styles = StyleSheet.create({
 function mapStateToProps(state) {
   return {
     cart: state.checkout.cart,
+    menu: state.checkout.menu,
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    init: (restaurant, address, date) => dispatch(init(restaurant, address, date)),
+    init: restaurant => dispatch(init(restaurant)),
     addItem: item => dispatch(addItem(item)),
   }
 }
