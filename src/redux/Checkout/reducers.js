@@ -7,6 +7,7 @@ import {
   INCREMENT_ITEM,
   DECREMENT_ITEM,
   SET_ADDRESS,
+  SET_DATE,
   CLEAR,
   SEARCH_RESTAURANTS_REQUEST,
   SEARCH_RESTAURANTS_SUCCESS,
@@ -121,15 +122,17 @@ export default (state = initialState, action = {}) => {
 
     case DECREMENT_ITEM:
 
-      newCart = state.cart.clone()
-
-      item = _.find(newCart.items, item => item.menuItem.identifier === action.payload.menuItem.identifier)
+      item = _.find(state.cart.items, item => item.menuItem.identifier === action.payload.menuItem.identifier)
       if (item) {
         item.decrement()
 
+        if (item.quantity === 0) {
+          state.cart.deleteItem(item)
+        }
+
         return {
           ...state,
-          cart: newCart
+          cart: state.cart.clone()
         }
       }
 
@@ -137,6 +140,12 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         address: action.payload
+      }
+
+    case SET_DATE:
+      return {
+        ...state,
+        date: action.payload
       }
 
     case SEARCH_RESTAURANTS_SUCCESS:

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View } from 'react-native'
+import { View, TouchableOpacity } from 'react-native'
 import { Icon, Text } from 'native-base'
 import { createStackNavigator } from 'react-navigation'
 
@@ -24,6 +24,14 @@ const MainNavigator = createStackNavigator({
     screen: navigation.CheckoutSummary,
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('CART'),
+      headerRight: (
+        <TouchableOpacity style={{ paddingHorizontal: 10 }}
+          onPress={ () => navigation.setParams({ edit: !navigation.getParam('edit', false) }) }>
+          <Text style={{ color: 'white' }}>
+            { navigation.getParam('edit', false) ? i18n.t('SUBMIT') : i18n.t('EDIT') }
+          </Text>
+        </TouchableOpacity>
+      )
     })
   },
   CheckoutAddress: {
@@ -81,10 +89,10 @@ export default createStackNavigator({
       title: i18n.t('CHECKOUT_PRODUCT_OPTIONS_TITLE'),
     })
   },
-  CheckoutEditItem: {
-    screen: navigation.CheckoutEditItem,
+  CheckoutShippingDate: {
+    screen: navigation.CheckoutShippingDate,
     navigationOptions: ({ navigation }) => ({
-      title: i18n.t('CHANGE_QUANT'),
+      title: i18n.t('CHECKOUT_SHIPPING_DATE'),
     })
   },
   CheckoutLogin: {

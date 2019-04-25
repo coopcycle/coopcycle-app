@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
-import { SectionList, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { Dimensions, Image, SectionList, StyleSheet, TouchableOpacity, View } from 'react-native'
 import { Icon, Text } from 'native-base';
 import { Col, Row, Grid } from 'react-native-easy-grid'
 import _ from 'lodash'
+import moment from 'moment'
+
 import { formatPrice } from '../Cart'
 
 const styles = StyleSheet.create({
@@ -21,6 +23,17 @@ const styles = StyleSheet.create({
   item: {
     marginBottom: 10,
     paddingHorizontal: 15
+  },
+  heading: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    backgroundColor: '#fff',
+    borderBottomWidth: 1,
+    borderBottomColor: '#f1f1f1',
   }
 });
 
@@ -53,7 +66,8 @@ export default class Menu extends Component {
 
   render() {
 
-    const { menu } = this.props
+    const { width } = Dimensions.get('window')
+    const { date, menu, restaurant } = this.props
 
     let sections = []
     if (menu) {
@@ -73,6 +87,18 @@ export default class Menu extends Component {
           renderSectionHeader={ ({ section }) => this.renderSectionHeader(section) }
           keyExtractor={ (item, index) => index }
           initialNumToRender={ 15 }
+          ListHeaderComponent={(
+            <View style={{ flex: 1 }}>
+              <Image
+                style={{ flex: 1, width, height: 50 }}
+                source={{ uri: restaurant.image }}
+                resizeMode="cover" />
+              <View style={ styles.heading }>
+                <Text style={{ flex: 2, fontFamily: 'Raleway-Regular' }}>{ restaurant.name }</Text>
+                <Text style={{ flex: 1, fontFamily: 'Raleway-Regular', textAlign: 'right' }}>{ moment(date).format('ddd LT') }</Text>
+              </View>
+            </View>
+          )}
         />
       </View>
     )

@@ -1,42 +1,18 @@
 import React, { Component } from 'react'
 import { Animated, StyleSheet, View } from 'react-native'
 import { Text, Button, Icon, Footer } from 'native-base'
-import { Col, Row, Grid } from 'react-native-easy-grid'
-import moment from 'moment'
-import { connect } from 'react-redux'
 import { withNamespaces } from 'react-i18next'
 
 import { formatPrice } from '../../../Cart'
-import CartFooterButton from './CartFooterButton'
 
 const styles = StyleSheet.create({
-  column: {
-    flex: 1,
-    justifyContent: 'center'
-  },
-  cartSummary: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingLeft: 15
-  },
-  cartSummaryText: {
-    color: '#fff',
-    fontSize: 14
-  },
-  cartSummarySeparator: {
-    paddingHorizontal: 5
-  },
-  cartSummaryTotal: {
-    fontWeight: 'bold'
-  },
   buttonText: {
     color: '#fff',
     fontSize: 14,
   }
 })
 
-class CartFooter extends Component {
+class CartFooterButton extends Component {
 
   constructor(props) {
     super(props)
@@ -64,7 +40,7 @@ class CartFooter extends Component {
     ]).start()
   }
 
-  renderButton() {
+  render() {
 
     const { cart } = this.props
 
@@ -91,7 +67,7 @@ class CartFooter extends Component {
     }
 
     return (
-      <Button block onPress={ () => this.props.onSubmit() }>
+      <Button block onPress={ () => this.props.onPress() }>
         <Text style={{ position: 'absolute', left: 0, fontWeight: 'bold', fontFamily: 'OpenSans-Regular' }}>
           { `[${cart.length}]` }
         </Text>
@@ -102,45 +78,6 @@ class CartFooter extends Component {
       </Button>
     )
   }
-
-  renderSummary() {
-
-    const { opacityAnim } = this.state
-    const { cart, date } = this.props
-
-    return (
-      <View style={ styles.cartSummary }>
-        <Animated.View style={{ opacity: opacityAnim }}>
-          <Text style={[ styles.cartSummaryText, styles.cartSummaryTotal ]}>
-            { `${formatPrice(cart.total)} € (${cart.length})` }
-          </Text>
-        </Animated.View>
-        <Text style={[ styles.cartSummaryText, styles.cartSummarySeparator ]}>|</Text>
-        <Text style={[ styles.cartSummaryText ]}>{ moment(date).format('ddd LT') }</Text>
-      </View>
-    )
-  }
-
-  render() {
-
-    const { cart } = this.props
-
-    return (
-      <Footer>
-        <View style={{ flex: 1, alignItems: 'center', paddingHorizontal: 5, paddingVertical: 5 }}>
-          <CartFooterButton cart={ cart } onPress={ () => this.props.onSubmit() } />
-        </View>
-      </Footer>
-    )
-  }
 }
 
-function mapStateToProps(state) {
-
-  return {
-    cart: state.checkout.cart,
-    date: state.checkout.date,
-  }
-}
-
-export default connect(mapStateToProps)(withNamespaces('common')(CartFooter))
+export default withNamespaces('common')(CartFooterButton)

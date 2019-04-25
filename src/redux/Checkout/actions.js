@@ -12,6 +12,7 @@ export const REMOVE_ITEM = 'REMOVE_ITEM'
 export const INCREMENT_ITEM = 'INCREMENT_ITEM'
 export const DECREMENT_ITEM = 'DECREMENT_ITEM'
 export const SET_ADDRESS = '@checkout/SET_ADDRESS'
+export const SET_DATE = '@checkout/SET_DATE'
 export const CLEAR = '@checkout/CLEAR'
 
 export const INIT_REQUEST = '@checkout/INIT_REQUEST'
@@ -35,6 +36,7 @@ export const removeItem = createAction(REMOVE_ITEM)
 export const incrementItem = createAction(INCREMENT_ITEM)
 export const decrementItem = createAction(DECREMENT_ITEM)
 export const setAddress = createAction(SET_ADDRESS)
+export const setDate = createAction(SET_DATE)
 export const clear = createAction(CLEAR)
 
 export const initRequest = createAction(INIT_REQUEST)
