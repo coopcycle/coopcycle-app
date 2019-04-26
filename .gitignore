@@ -22,6 +22,9 @@ DerivedData
 *.xcuserstate
 project.xcworkspace
 
+# Xcode index datastore
+/ios/Index/
+
 # Android/IntelliJ
 #
 build/
