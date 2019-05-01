@@ -137,6 +137,9 @@ android {
         }
     }
     buildTypes {
+        debug {
+            applicationIdSuffix ".debug"
+        }
         release {
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
@@ -145,6 +148,15 @@ android {
     }
     // applicationVariants are e.g. debug, release
     applicationVariants.all { variant ->
+        // override config for react-native-mauron85-background-geolocation,
+        // because it does not take `applicationIdSuffix` into account right now (version 0.5.0)
+        // https://github.com/mauron85/react-native-background-geolocation/issues/167
+        // https://github.com/mauron85/react-native-background-geolocation/issues/344
+        def RESOURCE_PREFIX = "mauron85_bgloc_"
+        def APPLICATION_ID = "${defaultConfig.applicationId}${variant.buildType.applicationIdSuffix ?: ''}"
+        resValue "string", RESOURCE_PREFIX + "account_type", APPLICATION_ID + '.mauron85.bgloc.account'
+        resValue "string", RESOURCE_PREFIX + "content_authority", APPLICATION_ID + '.mauron85.bgloc.provider'
+
         variant.outputs.each { output ->
             // For each separate APK per architecture, set a unique version code as described here:
             // http://tools.android.com/tech-docs/new-build-system/user-guide/apk-splits
