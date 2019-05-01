@@ -23,7 +23,7 @@ Running on Android emulator
 
 NB: You may need to open the Android project in Android Studio before it builds.
 ```
-react-native run-android
+react-native run-android --appIdSuffix "debug"
 ```
 
 ### Get a Google Maps API Key
@@ -44,7 +44,7 @@ googleMapsApiKey=YOUR_API_KEY
 
 ### Setup Firebase
 
-* Setup a Firebase account and download `google-services.json` [Add Firebase](https://firebase.google.com/docs/android/setup)
+* Setup a Firebase account (debug build has `fr.coopcycle.debug` package name/applicationId) and download `google-services.json` [Add Firebase](https://firebase.google.com/docs/android/setup)
 * Copy `google-services.json` to the `android/app` folder
 
 
