@@ -72,7 +72,7 @@ export default class Menu extends Component {
           renderItem={ ({ item }) => this.renderItem(item) }
           renderSectionHeader={ ({ section }) => this.renderSectionHeader(section) }
           keyExtractor={ (item, index) => index }
-          initialNumToRender={ 12 }
+          initialNumToRender={ 15 }
         />
       </View>
     )
