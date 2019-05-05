@@ -56,6 +56,12 @@ class Summary extends Component {
     }
   }
 
+  _navigate(routeName) {
+    // Set edit = false before navigating
+    this.props.navigation.setParams({ 'edit': false })
+    this.props.navigation.navigate(routeName)
+  }
+
   _renderItemOptions(item) {
 
     return (
@@ -80,9 +86,9 @@ class Summary extends Component {
     const { navigate } = this.props.navigation
 
     if (this.props.isAuthenticated) {
-      navigate('CheckoutAddress')
+      this._navigate('CheckoutAddress')
     } else {
-      navigate('CheckoutLogin')
+      this._navigate('CheckoutLogin')
     }
   }
 
@@ -216,7 +222,7 @@ class Summary extends Component {
       <View style={{ flex: 1 }}>
         <Content contentContainerStyle={{ justifyContent: 'space-between' }}>
           <TouchableOpacity style={ styles.dateBtn }
-            onPress={ () => this.props.navigation.navigate('CheckoutShippingDate') }>
+            onPress={ () => this._navigate('CheckoutShippingDate') }>
             <Text>{ moment(date).format('dddd LT') }</Text>
             <Text note>{ this.props.t('EDIT') }</Text>
           </TouchableOpacity>
