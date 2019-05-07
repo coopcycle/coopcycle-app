@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import _ from 'lodash'
 import moment from 'moment'
 
 class CartItem {
@@ -105,6 +105,9 @@ class Cart {
   get length() {
     return _.reduce(this.items, function(memo, item) { return memo + item.quantity; }, 0);
   }
+  isEmpty() {
+    return this.items.length === 0
+  }
   clone() {
     return new Cart(this.restaurant, this.items.slice(0));
   }
@@ -128,13 +131,12 @@ class Cart {
       }
     }
 
-    // FIXME At the moment, we only allow ordering ASAP through the app
-    // if (this.deliveryDate) {
-    //   payload = {
-    //     ...payload,
-    //     shippedAt: moment(this.deliveryDate).format('YYYY-MM-DD HH:mm:ss'),
-    //   }
-    // }
+    if (this.deliveryDate) {
+      payload = {
+        ...payload,
+        shippedAt: moment(this.deliveryDate).format('YYYY-MM-DD HH:mm:ss'),
+      }
+    }
 
     return payload
   }

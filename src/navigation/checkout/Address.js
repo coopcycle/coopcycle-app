@@ -96,22 +96,13 @@ class Address extends Component {
     this.props.setAddress(newAddress)
   }
 
-  _isAddressValid() {
-
-    const { address } = this.props
-
-    return address && address.streetAddress && address.geo
-      && address.hasOwnProperty('isPrecise') && address.isPrecise
-  }
-
   renderAddressForm() {
 
     const { width } = Dimensions.get('window')
     const { address } = this.props
-    const isValid = this._isAddressValid()
     const iconContainerWidth = width * 0.15
-    const iconName = isValid ? 'checkmark-circle' : 'close-circle'
-    const iconColor = isValid ? '#2ECC71' : '#E74C3C'
+    const iconName = this.props.isValid ? 'checkmark-circle' : 'close-circle'
+    const iconColor = this.props.isValid ? '#2ECC71' : '#E74C3C'
 
     const typeaheadStylesWithPadding = {
       ...typeaheadStyles,
@@ -168,7 +159,6 @@ class Address extends Component {
 
     const { navigate } = this.props.navigation
     const { address } = this.props
-    const enabled = this._isAddressValid()
     const markers = []
 
     if (address && address.geo) {
@@ -205,7 +195,9 @@ class Address extends Component {
           { this.renderAlert() }
           { this.renderAddressForm() }
         </Content>
-        <CartFooter onSubmit={ () => navigate('CheckoutCreditCard') } enabled={ enabled }  />
+        { this.props.isValid === true && (
+        <CartFooter onSubmit={ () => navigate('CheckoutCreditCard') } />
+        ) }
       </Container>
     );
   }
@@ -213,9 +205,12 @@ class Address extends Component {
 
 function mapStateToProps(state) {
 
+  const address = state.checkout.address
+
   return {
     // WARNING This may be null
-    address: state.checkout.address
+    address,
+    isValid: Boolean(address && address.streetAddress && address.geo && address.hasOwnProperty('isPrecise') && address.isPrecise)
   }
 }
 

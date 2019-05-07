@@ -1,5 +1,4 @@
-import React, { Component } from 'react';
-import { Dimensions, Image, StyleSheet, View } from 'react-native';
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { withNamespaces } from 'react-i18next'
 import {
@@ -18,7 +17,7 @@ import { init, addItem } from '../../redux/Checkout/actions'
 class Restaurant extends Component {
 
   componentDidMount() {
-    const { restaurant} = this.props.navigation.state.params
+    const { restaurant } = this.props.navigation.state.params
 
     this.props.init(restaurant)
   }
@@ -38,49 +37,37 @@ class Restaurant extends Component {
 
     const { navigate } = this.props.navigation
     const { restaurant } = this.props.navigation.state.params
-
-    const { width } = Dimensions.get('window')
+    const { cart, date, menu } = this.props
 
     return (
       <Container>
-        <View>
-          <Image
-            style={{ width, height: 50 }}
-            source={{ uri: restaurant.image }}
-            resizeMode="cover" />
-          <View style={ styles.heading }>
-            <Text style={{ fontFamily: 'Raleway-Regular', textAlign: 'center', marginVertical: 10 }}>{ restaurant.name }</Text>
-          </View>
-        </View>
         <Content>
-
-          <Menu restaurant={ restaurant } onItemClick={ this.onItemClick.bind(this) } />
+          <Menu
+            restaurant={ restaurant }
+            menu={ menu }
+            date={ date }
+            onItemClick={ this.onItemClick.bind(this) } />
         </Content>
+        { !cart.isEmpty() && (
         <CartFooter
           onSubmit={ () => navigate('CheckoutSummary') }  />
+        )}
       </Container>
     );
   }
 }
 
-const styles = StyleSheet.create({
-  heading: {
-    paddingHorizontal: 15,
-    backgroundColor: '#fff',
-    borderBottomWidth: 1,
-    borderBottomColor: '#f1f1f1'
-  }
-})
-
 function mapStateToProps(state) {
   return {
     cart: state.checkout.cart,
+    date: state.checkout.date,
+    menu: state.checkout.menu,
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    init: (restaurant, address, date) => dispatch(init(restaurant, address, date)),
+    init: restaurant => dispatch(init(restaurant)),
     addItem: item => dispatch(addItem(item)),
   }
 }
