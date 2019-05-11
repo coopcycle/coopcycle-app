@@ -160,6 +160,9 @@ class RegisterForm extends React.Component {
       passwordConfirmation: this.props.prefill === true ? '12345678' : '',
       errors: {}
     }
+
+    this._inputComponents = new Map()
+    this._onSubmit.bind(this)
   }
 
   _onSubmit() {
@@ -241,7 +244,8 @@ class RegisterForm extends React.Component {
                           <Flag country={ country } width={ 30 } height={ 20 } />
                         </TouchableOpacity>
                       </View>
-                      <TextInput
+                      <Input
+                        ref={component => this._inputComponents.set(input.name, component)}
                         defaultValue={ this.state[input.name] }
                         value={ this.state[input.name] }
                         placeholder={ phoneNumberExample.formatNational() }
@@ -249,7 +253,9 @@ class RegisterForm extends React.Component {
                         autoCapitalize="none"
                         style={{ flex: 1, height: 40, fontSize: 18 }}
                         onChangeText={ this._onChangeTelephone.bind(this) }
-                        { ...input.props } />
+                        { ...input.props } 
+                        returnKeyType="done"
+                        onSubmitEditing={ _ => this._onSubmit() }/>
                     </View>
                   </View>
                   { hasErrors && this.renderErrors(errors[input.name]) }
@@ -262,12 +268,19 @@ class RegisterForm extends React.Component {
                 <Item stackedLabel { ...itemProps }>
                   <Label>{ input.label }</Label>
                   <Input
+                    ref={component => this._inputComponents.set(input.name, component)}
                     defaultValue={ this.state[input.name] }
                     autoCorrect={ false }
                     autoCapitalize="none"
                     style={{ height: 40 }}
                     onChangeText={ value => this.setState({ [input.name]: value }) }
-                    { ...input.props } />
+                    { ...input.props } 
+                    returnKeyType="next"
+                    onSubmitEditing={ event => {
+                      let index = inputs.findIndex((el) => el.name == input.name)
+                      let nextInputName = inputs[index + 1].name
+                      this._inputComponents.get(nextInputName)._root.focus()
+                    } }/>
                 </Item>
                 { hasErrors && this.renderErrors(errors[input.name]) }
               </View>
@@ -275,7 +288,7 @@ class RegisterForm extends React.Component {
           }) }
         </Form>
         <View style={{ marginTop: 20 }}>
-          <Button block onPress={ this._onSubmit.bind(this) }>
+          <Button block onPress={ () => this._onSubmit() }>
             <Text>{this.props.t('SUBMIT')}</Text>
           </Button>
         </View>

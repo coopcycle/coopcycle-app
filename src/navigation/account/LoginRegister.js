@@ -41,7 +41,7 @@ class LoginRegister extends Component {
 
     return (
       <Container>
-        <Content padder>
+        <Content padder extraScrollHeight={64}>
           <Server />
           { this.renderMessage() }
           <AuthenticateForm
