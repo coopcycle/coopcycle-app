@@ -37,7 +37,7 @@ class Login extends Component {
             { this.props.t('CHECKOUT_LOGIN_DISCLAIMER') }
           </Text>
         </View>
-        <Content padder>
+        <Content padder extraScrollHeight={64}>
           { this.renderMessage() }
           <AuthenticateForm
             onLogin={ (email, password) => this.props.login(email, password, false) }
