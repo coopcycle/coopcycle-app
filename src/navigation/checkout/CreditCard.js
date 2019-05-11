@@ -56,7 +56,6 @@ class CreditCard extends Component {
   }
 
   keyboardWillHide(event) {
-    console.log('keyboardWillHide', event)
     Animated.parallel([
       Animated.timing(this.keyboardHeight, {
         duration: event.duration,
@@ -97,24 +96,18 @@ class CreditCard extends Component {
 
     return (
       <Animated.View style={{ flex: 1, paddingBottom: this.keyboardHeight }}>
-        <TouchableWithoutFeedback
-          style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
-          onPress={ Keyboard.dismiss } accessible={ false }>
-          <View style={ styles.content }>
-            <View style={{ alignSelf: 'stretch' }}>
-              <Text style={{ textAlign: 'center', marginBottom: 10 }}>
-                { this.props.t('ENTER_PAY_DETAILS') }
-              </Text>
-              <View style={ styles.creditCardInputContainer }>
-                <LiteCreditCardInput onChange={ this._onChange.bind(this) } />
-              </View>
-            </View>
+        <Content contentContainerStyle={ styles.content } enableAutomaticScroll={ false }>
+          <Text style={ styles.creditCardLabel }>
+            { this.props.t('ENTER_PAY_DETAILS') }
+          </Text>
+          <View style={ styles.creditCardInputContainer }>
+            <LiteCreditCardInput onChange={ this._onChange.bind(this) } />
           </View>
-        </TouchableWithoutFeedback>
+        </Content>
         <Footer>
           <FooterTab>
             <Button full onPress={ this._onClick.bind(this) }>
-              <Text style={{ color: '#ffffff' }}>
+              <Text style={ styles.payButton }>
                 { this.props.t('PAY_AMOUNT', { amount: formatPrice(cart.total) }) + '€' }
               </Text>
             </Button>
@@ -129,12 +122,19 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+  },
+  creditCardLabel: {
+    textAlign: 'center', 
+    marginBottom: 10
   },
   creditCardInputContainer: {
+    alignSelf: 'stretch',
     backgroundColor: '#f7f7f7',
     paddingVertical: 10,
     paddingHorizontal: 20,
+  },
+  payButton: {
+    color: '#ffffff'
   }
 })
 
