@@ -7,7 +7,7 @@ matrix:
   - language: android
     env: ANDROID_API_LEVEL=18
     sudo: required
-    jdk: oraclejdk8
+    jdk: openjdk8
     before_cache:
       - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
       - rm -rf $HOME/.gradle/caches/*/plugin-resolution/
@@ -35,7 +35,7 @@ matrix:
   - language: android
     env: ANDROID_API_LEVEL=28
     sudo: required
-    jdk: oraclejdk8
+    jdk: openjdk8
     before_cache:
       - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
       - rm -rf $HOME/.gradle/caches/*/plugin-resolution/
