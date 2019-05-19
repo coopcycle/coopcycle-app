@@ -106,8 +106,8 @@ class OrderScreen extends Component {
 
     if (order.state !== 'refused' && order.state !== 'cancelled') {
 
-      const preparationExpectedAt = moment(order.preparationExpectedAt).format('LT')
-      const pickupExpectedAt = moment(order.pickupExpectedAt).format('LT')
+      const preparationExpectedAt = moment.parseZone(order.preparationExpectedAt).format('LT')
+      const pickupExpectedAt = moment.parseZone(order.pickupExpectedAt).format('LT')
 
       return (
         <Row size={ 2 }>

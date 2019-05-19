@@ -46,7 +46,7 @@ class OrderList extends Component {
             <Text>{ `${formatPrice(order.itemsTotal)} €` }</Text>
           </Col>
           <Col size={ 4 } style={ styles.col }>
-            <Text>{ moment(order.preparationExpectedAt).format('LT') }</Text>
+            <Text>{ moment.parseZone(order.preparationExpectedAt).format('LT') }</Text>
           </Col>
           <Col size={ 1 } style={ styles.itemLeftRight }>
             <Icon style={{ color: '#ccc' }} name="ios-arrow-forward" />
@@ -68,9 +68,9 @@ class OrderList extends Component {
     let cancelledOrders = ordersByState.hasOwnProperty('cancelled') ? ordersByState['cancelled'] : []
     let allCancelledOrders = cancelledOrders.concat(refusedOrders)
 
-    newOrders = _.sortBy(newOrders, [ order => moment(order.preparationExpectedAt) ])
-    acceptedOrders = _.sortBy(acceptedOrders, [ order => moment(order.preparationExpectedAt) ])
-    allCancelledOrders = _.sortBy(allCancelledOrders, [ order => moment(order.shippedAt) ])
+    newOrders = _.sortBy(newOrders, [ order => moment.parseZone(order.preparationExpectedAt) ])
+    acceptedOrders = _.sortBy(acceptedOrders, [ order => moment.parseZone(order.preparationExpectedAt) ])
+    allCancelledOrders = _.sortBy(allCancelledOrders, [ order => moment.parseZone(order.shippedAt) ])
 
     return (
       <SectionList
