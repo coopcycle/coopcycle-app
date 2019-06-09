@@ -111,14 +111,16 @@ class ConfigureServer extends Component {
               { this.props.t('SERVER_URL') }
             </Text>
           </View>
-          <Form style={{ marginBottom: 30 }}>
+          <Form>
             <Item last { ...itemProps }>
               <Input
                 ref={(ref) => { this.input = ref }}
                 autoCapitalize={'none'}
                 autoCorrect={false}
                 placeholder={`${this.props.t('EXAMPLE')} : demo.coopcycle.org`}
-                onChangeText={(text) => this.setState({ text })} />
+                onChangeText={(text) => this.setState({ text })}
+                returnKeyType="done"
+                onSubmitEditing={ () => this.handleForm() } />
               { this.state.serverError && <Icon name="close-circle" /> }
             </Item>
             { this.state.serverError && (
@@ -126,12 +128,12 @@ class ConfigureServer extends Component {
               <Text style={{ marginVertical: 5, color: '#ed2f2f' }}>{ this.state.errorMessage }</Text>
             </View>
             ) }
+            <View style={{ paddingHorizontal: 10, paddingVertical: 15 }}>
+              <Button block onPress={ this.handleForm }>
+                <Text>{this.props.t('SUBMIT')}</Text>
+              </Button>
+            </View>
           </Form>
-          <View style={{ paddingHorizontal: 10 }}>
-            <Button block onPress={ this.handleForm }>
-              <Text>{this.props.t('SUBMIT')}</Text>
-            </Button>
-          </View>
         </Content>
       </Container>
     )
