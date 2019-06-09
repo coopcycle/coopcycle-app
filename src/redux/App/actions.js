@@ -361,6 +361,8 @@ export function resetServer() {
       const { user } = getState().app
 
       await user.logout()
+      dispatch(logoutSuccess())
+
       await Settings.removeServer()
 
       NavigationHolder.navigate('ConfigureServer')
