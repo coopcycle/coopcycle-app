@@ -56,7 +56,8 @@ googleMapsApiKey=YOUR_API_KEY
 Running on iOS emulator
 -----------------------
 
-NB: You may need to open the iOS project in Xcode before it builds. Make sure that you open Xcode Workspace file (*.xcworkspace)
+NB: You may need to open the iOS project in Xcode before it builds.
+Make sure that you open Xcode Workspace file (`*.xcworkspace`).
 
 ```
 react-native run-ios
