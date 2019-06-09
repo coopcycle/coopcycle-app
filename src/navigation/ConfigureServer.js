@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import {
   View,
-  ActivityIndicator,
   TouchableOpacity,
   StyleSheet
 } from 'react-native'
@@ -10,7 +9,6 @@ import {
   Left, Right, Body,
   Button, Text, Icon, List, ListItem,
   Form, Item, Input, Label,
-  Toast
 } from 'native-base'
 import { connect } from 'react-redux'
 import { withNamespaces } from 'react-i18next'
@@ -18,7 +16,7 @@ import _ from 'lodash'
 
 import API from '../API'
 import Settings from '../Settings'
-import { setBaseURL } from '../redux/App/actions'
+import { setBaseURL, setLoading } from '../redux/App/actions'
 import Flag from '../components/Flag'
 
 class ConfigureServer extends Component {
@@ -26,9 +24,9 @@ class ConfigureServer extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      loading: false,
       text: '',
       serverError: false,
+      errorMessage: '',
     }
 
     this.handleForm = this.handleForm.bind(this)
@@ -40,7 +38,8 @@ class ConfigureServer extends Component {
 
   _selectServer(server) {
 
-    this.setState({ loading: true, serverError: false })
+    this.props.setLoading(true)
+    this.setState({ serverError: false })
 
     API.checkServer(server)
       .then(baseURL =>
@@ -77,17 +76,11 @@ class ConfigureServer extends Component {
             }
           }
 
-          Toast.show({
-            text: message,
-            position: 'bottom',
-            type: 'danger',
-            duration: 3000
-          })
-
           this.input._root.clear()
           this.input._root.focus()
 
-          this.setState({ loading: false, serverError })
+          this.props.setLoading(false)
+          this.setState({ serverError, errorMessage: message })
 
         }, 500)
 
@@ -95,22 +88,6 @@ class ConfigureServer extends Component {
   }
 
   render() {
-
-    let loader = (
-      <View />
-    )
-    if (this.state.loading) {
-      loader = (
-        <View style={styles.loader}>
-          <ActivityIndicator
-            animating={true}
-            size="large"
-            color="#fff"
-          />
-          <Text style={{color: '#fff'}}>{`${this.props.t('LOADING')}...`}</Text>
-        </View>
-      )
-    }
 
     const itemProps = this.state.serverError ? { error: true } : {}
 
@@ -142,7 +119,13 @@ class ConfigureServer extends Component {
                 autoCorrect={false}
                 placeholder={`${this.props.t('EXAMPLE')} : demo.coopcycle.org`}
                 onChangeText={(text) => this.setState({ text })} />
+              { this.state.serverError && <Icon name="close-circle" /> }
             </Item>
+            { this.state.serverError && (
+            <View style={{ paddingLeft: 15 }}>
+              <Text style={{ marginVertical: 5, color: '#ed2f2f' }}>{ this.state.errorMessage }</Text>
+            </View>
+            ) }
           </Form>
           <View style={{ paddingHorizontal: 10 }}>
             <Button block onPress={ this.handleForm }>
@@ -150,7 +133,6 @@ class ConfigureServer extends Component {
             </Button>
           </View>
         </Content>
-        { loader }
       </Container>
     )
   }
@@ -186,6 +168,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     setBaseURL: baseURL => dispatch(setBaseURL(baseURL)),
+    setLoading: loading => dispatch(setLoading(loading)),
   }
 }
 
