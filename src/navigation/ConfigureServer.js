@@ -48,7 +48,8 @@ class ConfigureServer extends Component {
           .saveServer(baseURL)
           .then(() => Settings.synchronize(baseURL))
           .then(() => this.props.setBaseURL(baseURL))
-          .then(() => this.setState({ loading: false, serverError: false }))
+          .then(() => this.setState({ serverError: false }))
+          .then(() => this.props.setLoading(false))
           .then(() => this.props.navigation.navigate({
             routeName: 'CheckoutHome',
             key: 'CheckoutHome',
