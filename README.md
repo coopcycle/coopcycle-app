@@ -11,11 +11,16 @@ Install Node, Watchman & React Native CLI as described [here](https://facebook.g
 Installation
 ------------
 
-Install dependencies with Yarn, and link them with React Native CLI.
+Install dependencies with Yarn.
 
 ```
 $ yarn install
-$ sudo gem install cocoapods
+```
+
+On MacOSX, you will also need to install [CocoaPods](https://cocoapods.org/).
+
+```
+$ sudo gem install -n /usr/local/bin cocoapods
 ```
 
 Running on Android emulator
@@ -51,7 +56,7 @@ googleMapsApiKey=YOUR_API_KEY
 Running on iOS emulator
 -----------------------
 
-NB: You may need to open the iOS project in Xcode before it builds. Make sure that you open Xcode Workspace file (*.xcworkspace) 
+NB: You may need to open the iOS project in Xcode before it builds. Make sure that you open Xcode Workspace file (*.xcworkspace)
 
 ```
 react-native run-ios
@@ -91,7 +96,7 @@ Remove line:
 ```
 from `react-native-mauron85-background-geolocation/AndroidManifest.xml` and `react-native-mauron85-background-geolocation-common/AndroidManifest.xml` files until this [issue](https://github.com/mauron85/react-native-background-geolocation/issues/357) is resolved
 
-#### Gradle project sync failed in Android Studio. 
+#### Gradle project sync failed in Android Studio.
 Try to run
 ```
 yarn
