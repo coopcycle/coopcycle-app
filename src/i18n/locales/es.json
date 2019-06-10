@@ -25,6 +25,7 @@
     "RETRY": "Volver a intentar",
     "SERVER_INCOMPATIBLE": "Este servidor no es compatible",
     "SERVER_INVALID": "Este servidor no es valido",
+    "SERVER_UNDER_MAINTENANCE": "El servidor está bajo mantenimiento",
     "CHOOSE_SERVER": "Por favor seleccione un servidor para iniciar",
     "SERVER_URL": "Su servidor no está en la lista? Ingrese su direccion",
     "EXAMPLE": "Ejemplo",

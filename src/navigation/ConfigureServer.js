@@ -61,27 +61,13 @@ class ConfigureServer extends Component {
 
         setTimeout(() => {
 
-          let message = this.props.t('TRY_LATER')
-          let serverError = false
-          if (err.message) {
-            if (err.message === 'Network request failed') {
-              message = this.props.t('NET_FAILED')
-            }
-            if (err.message === 'Not a CoopCycle server') {
-              message = this.props.t('SERVER_INCOMPATIBLE')
-              serverError = true
-            }
-            if (err.message === 'Hostname is not valid') {
-              message = this.props.t('SERVER_INVALID')
-              serverError = true
-            }
-          }
+          const message = err.message ? err.message : this.props.t('TRY_LATER')
 
           this.input._root.clear()
           this.input._root.focus()
 
           this.props.setLoading(false)
-          this.setState({ serverError, errorMessage: message })
+          this.setState({ serverError: true, errorMessage: message })
 
         }, 500)
 

@@ -1,5 +1,4 @@
-// require('es6-promise').polyfill();
-// require('isomorphic-fetch');
+import i18n from './i18n'
 
 function Client(httpBaseURL, model) {
   this.httpBaseURL = httpBaseURL;
@@ -252,19 +251,23 @@ var refreshToken = function(baseURL, refreshToken) {
   });
 }
 
-const ERROR_NOT_COMPATIBLE = {
-  message: 'Not a CoopCycle server'
-}
+const ERROR_NETWORK_REQUEST_FAILED = 'ERROR_NETWORK_REQUEST_FAILED'
+const ERROR_NOT_COMPATIBLE = 'ERROR_NOT_COMPATIBLE'
+const ERROR_INVALID_HOSTNAME = 'ERROR_INVALID_HOSTNAME'
+const ERROR_MAINTENANCE_ON = 'ERROR_MAINTENANCE_ON'
 
-const ERROR_INVALID_HOSTNAME = {
-  message: 'Hostname is not valid'
+const errorMessages = {
+  [ERROR_NETWORK_REQUEST_FAILED]: 'NET_FAILED',
+  [ERROR_NOT_COMPATIBLE]: 'SERVER_INCOMPATIBLE',
+  [ERROR_INVALID_HOSTNAME]: 'SERVER_INVALID',
+  [ERROR_MAINTENANCE_ON]: 'SERVER_UNDER_MAINTENANCE',
 }
 
 const resolveBaseURL = function(server) {
   return new Promise((resolve, reject) => {
 
     if (server.trim().length === 0) {
-      reject(ERROR_INVALID_HOSTNAME)
+      reject(createError(ERROR_INVALID_HOSTNAME))
       return
     }
 
@@ -279,6 +282,18 @@ const resolveBaseURL = function(server) {
     }
     resolve(server);
   });
+}
+
+const createError = function(code) {
+  if (errorMessages.hasOwnProperty(code)) {
+    return {
+      message: i18n.t(errorMessages[code])
+    }
+  }
+
+  return {
+    message: i18n.t('TRY_LATER')
+  }
 }
 
 const checkServer = function(server) {
@@ -298,8 +313,14 @@ const checkServer = function(server) {
 
         fetch(req)
           .then((response) => {
+
             if (!response.ok) {
-              return reject(ERROR_NOT_COMPATIBLE);
+
+              if (response.status === 503) {
+                return reject(createError(ERROR_MAINTENANCE_ON))
+              }
+
+              return reject(createError(ERROR_NOT_COMPATIBLE))
             }
 
             response.json()
@@ -322,14 +343,16 @@ const checkServer = function(server) {
                 &&  data.hasOwnProperty('@type')) {
                   resolve(baseURL);
                 } else {
-                  reject(ERROR_NOT_COMPATIBLE);
+                  reject(createError(ERROR_NOT_COMPATIBLE))
                 }
 
               })
               // Could not parse JSON
-              .catch((err) => reject(ERROR_NOT_COMPATIBLE));
+              .catch((err) => reject(createError(ERROR_NOT_COMPATIBLE)))
           })
-          .catch((err) => reject(err));
+          .catch((err) => {
+            reject(createError(ERROR_NETWORK_REQUEST_FAILED))
+          });
 
       })
       .catch(err => reject(err))
