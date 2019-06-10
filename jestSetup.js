@@ -6,7 +6,8 @@ import NavigationHolder from './src/NavigationHolder'
 Enzyme.configure({ adapter: new Adapter() })
 
 jest.mock('react-native-languages', () => ({
-  RNLanguages: {
+  __esModule: true,
+  default: {
     language: 'en',
     languages: ['en'],
   },
