@@ -11,6 +11,7 @@ import {
   Container, Content, Footer, FooterTab,
   Button, Icon, List, ListItem, Text
 } from 'native-base';
+import _ from 'lodash'
 import { LiteCreditCardInput } from 'react-native-credit-card-input'
 import { connect } from 'react-redux'
 import { withNamespaces } from 'react-i18next'
@@ -59,7 +60,7 @@ class CreditCard extends Component {
     ]).start();
   }
 
-  _onClick() {
+  _onPress() {
     if (this.state.valid) {
 
       const { number, expiry, cvc } = this.state.form.values
@@ -80,6 +81,11 @@ class CreditCard extends Component {
 
     const { cart } = this.props
 
+    // Make sure button can't be tapped twice
+    // @see https://medium.com/@devmrin/debouncing-touch-events-in-react-native-prevent-navigating-twice-or-more-times-when-button-is-90687e4a8113
+    // @see https://snack.expo.io/@patwoz/withpreventdoubleclick
+    const onPress = _.debounce(this._onPress.bind(this), 1000, { leading: true, trailing: false })
+
     return (
       <Animated.View style={{ flex: 1, paddingBottom: this.keyboardHeight }}>
         <Content contentContainerStyle={ styles.content } enableAutomaticScroll={ false }>
@@ -92,7 +98,7 @@ class CreditCard extends Component {
         </Content>
         <Footer>
           <FooterTab>
-            <Button full onPress={ this._onClick.bind(this) }>
+            <Button full onPress={ onPress }>
               <Text style={ styles.payButton }>
                 { this.props.t('PAY_AMOUNT', { amount: formatPrice(cart.total) }) + '€' }
               </Text>
