@@ -21,6 +21,7 @@ import {
 } from './actions'
 
 import Cart from '../../Cart'
+import i18n from '../../i18n'
 import _ from 'lodash'
 import moment from 'moment'
 
@@ -31,6 +32,7 @@ const initialState = {
   restaurants: [],
   menu: null,
   isFetching: false,
+  errors: []
 }
 
 export default (state = initialState, action = {}) => {
@@ -46,10 +48,26 @@ export default (state = initialState, action = {}) => {
       }
 
     case SEARCH_RESTAURANTS_FAILURE:
-    case CHECKOUT_FAILURE:
     case INIT_FAILURE:
       return {
         ...state,
+        isFetching: false,
+      }
+
+    case CHECKOUT_FAILURE:
+
+      let errors = [ i18n.t('TRY_LATER') ]
+
+      if (action.payload.hasOwnProperty('@context')
+        && action.payload.hasOwnProperty('@type')
+        && action.payload.hasOwnProperty('violations')
+        && Array.isArray(action.payload.violations)) {
+        errors = action.payload.violations.map(violation => violation.message)
+      }
+
+      return {
+        ...state,
+        errors,
         isFetching: false,
       }
 

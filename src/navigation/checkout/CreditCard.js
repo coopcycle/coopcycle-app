@@ -79,7 +79,7 @@ class CreditCard extends Component {
 
   render() {
 
-    const { cart } = this.props
+    const { cart, errors } = this.props
 
     // Make sure button can't be tapped twice
     // @see https://medium.com/@devmrin/debouncing-touch-events-in-react-native-prevent-navigating-twice-or-more-times-when-button-is-90687e4a8113
@@ -95,6 +95,13 @@ class CreditCard extends Component {
           <View style={ styles.creditCardInputContainer }>
             <LiteCreditCardInput onChange={ this._onChange.bind(this) } />
           </View>
+          { errors.length > 0 && (
+          <View style={ styles.errorsContainer }>
+            { errors.map((error, key) => (
+            <Text key={ key } style={ styles.errorText }>{ error }</Text>
+            )) }
+          </View>
+          ) }
         </Content>
         <Footer>
           <FooterTab>
@@ -125,6 +132,14 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 20,
   },
+  errorsContainer: {
+    alignItems: 'center',
+    paddingVertical: 15,
+  },
+  errorText: {
+    textAlign: 'center',
+    color: '#ed2f2f'
+  },
   payButton: {
     color: '#ffffff'
   }
@@ -135,6 +150,7 @@ function mapStateToProps(state) {
     cart: state.checkout.cart,
     address: state.checkout.address,
     date: state.checkout.date,
+    errors: state.checkout.errors,
   }
 }
 
