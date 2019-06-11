@@ -30,6 +30,14 @@ jest.mock('react-native-ble-plx', () => {
   }
 })
 
+jest.mock('tipsi-stripe', () => ({
+  __esModule: true,
+  default: {
+    setOptions: () => {},
+    createTokenWithCard: params => {}
+  },
+}))
+
 // Avoid 'is not defined' errors when running tests
 global.FormData = require('FormData')
 
