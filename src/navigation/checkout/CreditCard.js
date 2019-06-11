@@ -11,13 +11,11 @@ import {
   Container, Content, Footer, FooterTab,
   Button, Icon, List, ListItem, Text
 } from 'native-base';
-import Stripe from 'tipsi-stripe'
 import { LiteCreditCardInput } from 'react-native-credit-card-input'
 import { connect } from 'react-redux'
 import { withNamespaces } from 'react-i18next'
 
 import { checkout } from '../../redux/Checkout/actions'
-import Settings from '../../Settings'
 import { formatPrice } from '../../Cart'
 
 class CreditCard extends Component {
@@ -34,9 +32,6 @@ class CreditCard extends Component {
   }
 
   componentDidMount() {
-    Stripe.setOptions({
-      publishableKey: Settings.get('stripe_publishable_key'),
-    });
     this.keyboardWillShowSub = Keyboard.addListener('keyboardWillShow', this.keyboardWillShow.bind(this))
     this.keyboardWillHideSub = Keyboard.addListener('keyboardWillHide', this.keyboardWillHide.bind(this))
   }
@@ -70,16 +65,7 @@ class CreditCard extends Component {
       const { number, expiry, cvc } = this.state.form.values
       const [ expMonth, expYear ] = expiry.split('/')
 
-      const params = {
-        number,
-        expMonth: parseInt(expMonth, 10),
-        expYear: parseInt(expYear, 10),
-        cvc
-      }
-
-      Stripe.createTokenWithCard(params)
-        .then(token => this.props.checkout(token))
-        .catch(err => console.log(err));
+      this.props.checkout(number, expMonth, expYear, cvc)
     }
   }
 
@@ -124,7 +110,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   creditCardLabel: {
-    textAlign: 'center', 
+    textAlign: 'center',
     marginBottom: 10
   },
   creditCardInputContainer: {
@@ -149,7 +135,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     clear: () => dispatch(clear()),
-    checkout: token => dispatch(checkout(token)),
+    checkout: (number, expMonth, expYear, cvc) => dispatch(checkout(number, expMonth, expYear, cvc)),
   }
 }
 

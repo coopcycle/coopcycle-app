@@ -1,7 +1,9 @@
 import { createAction } from 'redux-actions'
 import { StackActions, NavigationActions } from 'react-navigation'
+import Stripe from 'tipsi-stripe'
 
 import NavigationHolder from '../../NavigationHolder'
+import Settings from '../../Settings'
 
 /*
  * Action Types
@@ -86,12 +88,16 @@ export function init(restaurant) {
   }
 }
 
-export function checkout(token) {
+export function checkout(number, expMonth, expYear, cvc) {
 
   return (dispatch, getState) => {
 
     const { httpClient } = getState().app
     const { address, cart, date } = getState().checkout
+
+    Stripe.setOptions({
+      publishableKey: Settings.get('stripe_publishable_key'),
+    })
 
     const newCart = cart.clone()
     newCart.setDeliveryAddress(address)
@@ -99,28 +105,38 @@ export function checkout(token) {
 
     dispatch(checkoutRequest())
 
-    httpClient
-      .post('/api/orders', newCart.toJSON())
-      .then(order => httpClient.put(order['@id'] + '/pay', { stripeToken: token.tokenId }))
-      .then(order => {
+    Stripe.createTokenWithCard({
+      number,
+      expMonth: parseInt(expMonth, 10),
+      expYear: parseInt(expYear, 10),
+      cvc
+    })
+    .then(token => {
+      httpClient
+        .post('/api/orders', newCart.toJSON())
+        .then(order => httpClient.put(order['@id'] + '/pay', { stripeToken: token.tokenId }))
+        .then(order => {
 
-        // First, reset checkout stack
-        NavigationHolder.dispatch(StackActions.popToTop())
-        // Then, navigate to order screen
-        NavigationHolder.dispatch(NavigationActions.navigate({
-          routeName: 'AccountNav',
-          // We skip the AccountOrders screen
-          action: NavigationActions.navigate({
-            routeName: 'AccountOrder',
-            params: { order }
-          }),
-        }))
+          // First, reset checkout stack
+          NavigationHolder.dispatch(StackActions.popToTop())
+          // Then, navigate to order screen
+          NavigationHolder.dispatch(NavigationActions.navigate({
+            routeName: 'AccountNav',
+            // We skip the AccountOrders screen
+            action: NavigationActions.navigate({
+              routeName: 'AccountOrder',
+              params: { order }
+            }),
+          }))
 
-        // Make sure to clear AFTER navigation has been reset
-        dispatch(clear())
-        dispatch(checkoutSuccess(order))
+          // Make sure to clear AFTER navigation has been reset
+          dispatch(clear())
+          dispatch(checkoutSuccess(order))
 
-      })
-      .catch(e => dispatch(checkoutFailure(e)))
+        })
+        .catch(e => dispatch(checkoutFailure(e)))
+    })
+    .catch(err => console.log(err));
+
   }
 }
