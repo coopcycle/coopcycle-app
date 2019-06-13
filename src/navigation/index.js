@@ -3,7 +3,6 @@ import { View } from 'react-native'
 import { Icon } from 'native-base'
 import HeaderButton from '../components/HeaderButton'
 
-import Home from './Home'
 import DispatchUnassignedTasks from './dispatch/UnassignedTasks'
 import DispatchTaskLists from './dispatch/TaskLists'
 import DispatchTaskList from './dispatch/TaskList'
@@ -59,7 +58,6 @@ export default {
   DispatchAssignTask,
   DispatchEditAddress,
   Loading: require('./Loading'),
-  Home,
   ConfigureServer: require('./ConfigureServer')
 }
 

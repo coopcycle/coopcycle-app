@@ -25,6 +25,8 @@ import {
   TRACKER_DISABLED,
   THERMAL_PRINTER_CONNECTED,
   THERMAL_PRINTER_DEVICE_ID,
+  SET_SELECT_SERVER_ERROR,
+  CLEAR_SELECT_SERVER_ERROR,
 } from './actions'
 
 const initialState = {
@@ -44,6 +46,7 @@ const initialState = {
   trackerInitialized: false,
   thermalPrinterConnected: false,
   thermalPrinterDeviceId: null,
+  selectServerError: null
 }
 
 export default (state = initialState, action = {}) => {
@@ -176,6 +179,18 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         thermalPrinterDeviceId: action.payload,
+      }
+
+    case CLEAR_SELECT_SERVER_ERROR:
+      return {
+        ...state,
+        selectServerError: null
+      }
+
+    case SET_SELECT_SERVER_ERROR:
+      return {
+        ...state,
+        selectServerError: action.payload
       }
 
     default:

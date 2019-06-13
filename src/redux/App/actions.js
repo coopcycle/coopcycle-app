@@ -49,6 +49,8 @@ export const TRACKER_INITIALIZED = '@app/TRACKER_INITIALIZED'
 export const TRACKER_DISABLED = '@app/TRACKER_DISABLED'
 export const THERMAL_PRINTER_CONNECTED = '@app/THERMAL_PRINTER_CONNECTED'
 export const THERMAL_PRINTER_DEVICE_ID = '@app/THERMAL_PRINTER_DEVICE_ID'
+export const SET_SELECT_SERVER_ERROR = '@app/SET_SELECT_SERVER_ERROR'
+export const CLEAR_SELECT_SERVER_ERROR = '@app/CLEAR_SELECT_SERVER_ERROR'
 
 /*
  * Action Creators
@@ -74,6 +76,8 @@ const _setHttpClient = createAction(SET_HTTP_CLIENT)
 const _setUser = createAction(SET_USER)
 const _setBaseURL = createAction(SET_BASE_URL)
 const _setCurrentRoute = createAction(SET_CURRENT_ROUTE)
+const _setSelectServerError = createAction(SET_SELECT_SERVER_ERROR)
+const _clearSelectServerError = createAction(CLEAR_SELECT_SERVER_ERROR)
 
 const _resumeCheckoutAfterActivation = createAction(RESUME_CHECKOUT_AFTER_ACTIVATION)
 
@@ -127,6 +131,38 @@ function navigateToHome(dispatch, getState) {
 }
 
 const bleManager = new BleManager()
+
+export function selectServer(server) {
+
+  return function (dispatch, getState) {
+
+    dispatch(setLoading(true))
+    dispatch(_clearSelectServerError())
+
+    API.checkServer(server)
+      .then(baseURL =>
+        Settings
+          .saveServer(baseURL)
+          .then(() => Settings.synchronize(baseURL))
+          .then(() => dispatch(setBaseURL(baseURL)))
+          .then(() => dispatch(_clearSelectServerError()))
+          .then(() => dispatch(setLoading(false)))
+          .then(() => NavigationHolder.dispatch(
+            NavigationActions.navigate({
+              routeName: 'CheckoutHome',
+              key: 'CheckoutHome',
+            })
+          ))
+      )
+      .catch((err) => {
+        setTimeout(() => {
+          const message = err.message ? err.message : i18n.t('TRY_LATER')
+          dispatch(setLoading(false))
+          dispatch(_setSelectServerError(message))
+        }, 500)
+      })
+  }
+}
 
 export function bootstrap(baseURL, user) {
   return function (dispatch, getState) {

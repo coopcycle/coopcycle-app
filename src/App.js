@@ -8,11 +8,11 @@ import { Root, StyleProvider } from 'native-base'
 import getTheme from '../native-base-theme/components'
 import material from '../native-base-theme/variables/material'
 
-import { createSwitchNavigator, createStackNavigator, createAppContainer } from 'react-navigation'
+import { createSwitchNavigator, createAppContainer } from 'react-navigation'
 import { Provider } from 'react-redux'
 import { I18nextProvider } from 'react-i18next'
 
-import navigation, { defaultNavigationOptions } from './navigation'
+import navigation from './navigation'
 import navigators from './navigation/navigators'
 import i18n, { localeDetector } from './i18n'
 
@@ -44,15 +44,7 @@ YellowBox.ignoreWarnings([
 const RootNavigator = createAppContainer(createSwitchNavigator(
   {
     Loading: navigation.Loading,
-    ConfigureServer: createStackNavigator({
-      ConfigureServerHome: {
-        screen: navigation.ConfigureServer,
-        navigationOptions: ({ navigation }) => ({
-          title: 'CoopCycle',
-          ...defaultNavigationOptions
-        })
-      }
-    }),
+    ConfigureServer: navigators.HomeNavigator,
     App: {
       screen: navigators.DrawerNavigator,
       path: '' // This is needed to start deep linking from here
