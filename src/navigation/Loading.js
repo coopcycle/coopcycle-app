@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { ActivityIndicator, StyleSheet, View } from 'react-native'
+import { ActivityIndicator, StyleSheet, TouchableOpacity, View } from 'react-native'
 import { connect } from 'react-redux'
 import { withNamespaces } from 'react-i18next'
 import _ from 'lodash'
@@ -9,7 +9,7 @@ import Settings from '../Settings'
 import Server from '../Server'
 import API from '../API'
 import AppUser from '../AppUser'
-import { bootstrap, setServers } from '../redux/App/actions'
+import { bootstrap, resetServer, setServers } from '../redux/App/actions'
 
 class Loading extends Component {
 
@@ -61,6 +61,11 @@ class Loading extends Component {
         <Button block onPress={ () => this.load() }>
           <Text>{ this.props.t('RETRY') }</Text>
         </Button>
+        <View style={{ marginVertical: 20 }}>
+          <TouchableOpacity style={{ paddingVertical: 15 }} onPress={ () => this.props.resetServer() }>
+            <Text>{ this.props.t('CHANGE_SERVER') }</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     )
   }
@@ -101,6 +106,7 @@ function mapDispatchToProps(dispatch) {
   return {
     bootstrap: (baseURL, user) => dispatch(bootstrap(baseURL, user)),
     setServers: servers => dispatch(setServers(servers)),
+    resetServer: () => dispatch(resetServer()),
   }
 }
 

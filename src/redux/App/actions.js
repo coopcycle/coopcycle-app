@@ -396,7 +396,9 @@ export function resetServer() {
 
       const { user } = getState().app
 
-      await user.logout()
+      if (user) {
+        await user.logout()
+      }
       dispatch(logoutSuccess())
 
       await Settings.removeServer()
