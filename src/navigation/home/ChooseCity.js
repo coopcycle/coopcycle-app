@@ -24,6 +24,11 @@ class ChooseCity extends Component {
               </TouchableOpacity>
             )) }
           </View>
+          { this.props.hasError && (
+            <View style={{ marginVertical: 20 }}>
+              <Text style={{ color: '#ed2f2f', textAlign: 'center' }}>{ this.props.message }</Text>
+            </View>
+          ) }
         </Content>
       </Container>
     )
@@ -49,7 +54,9 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
   return {
-    servers: _.filter(state.app.servers, server => server.hasOwnProperty('coopcycle_url'))
+    servers: _.filter(state.app.servers, server => server.hasOwnProperty('coopcycle_url')),
+    hasError: !!state.app.selectServerError,
+    message: state.app.selectServerError
   }
 }
 
