@@ -1,4 +1,7 @@
 import i18n from './i18n'
+import axios from 'axios'
+import qs from 'qs'
+import _ from 'lodash'
 
 function Client(httpBaseURL, model) {
   this.httpBaseURL = httpBaseURL;
@@ -48,6 +51,31 @@ Client.prototype.createAuthorizedRequest = function(method, uri, data) {
   }
 
   return new Request(this.httpBaseURL + uri, options);
+}
+
+Client.prototype.createAuthorizedRequestForAxios = function(method, uri, data) {
+
+  let headers = {
+    'Content-Type': 'application/ld+json'
+  }
+
+  if (this.model.token) {
+    headers['Authorization'] = `Bearer ${this.model.token}`
+  }
+
+  let req = {
+    method: method,
+    headers: headers,
+  }
+
+  if (data && typeof data === 'object') {
+    req['data'] = JSON.stringify(data)
+  }
+  if (data && typeof data === 'string') {
+    req['data'] = data
+  }
+
+  return req
 }
 
 function doFetch(req, resolve, reject) {
@@ -120,18 +148,13 @@ Client.prototype.refreshToken = function() {
 }
 
 Client.prototype.checkToken = function() {
-  const req = this.createAuthorizedRequest('GET', '/api/token/check')
+  const req = this.createAuthorizedRequestForAxios('GET', '/api/token/check')
+
   return new Promise((resolve, reject) => {
-    fetch(req)
-      .then(response => {
-        if (response.status === 401) {
-          reject()
-          return
-        }
-        if (response.ok) {
-          resolve()
-        }
-      })
+
+    axios(req)
+      .then(response => resolve())
+      .catch(error => reject())
   })
 }
 
@@ -177,78 +200,107 @@ Client.prototype.login = function(username, password) {
 
 Client.prototype.confirmRegistration = function(token) {
 
-  var request = new Request(`${this.httpBaseURL}/api/register/confirm/${token}`, {
+  const req = {
     method: 'GET',
-  })
+    url: `${this.httpBaseURL}/api/register/confirm/${token}`,
+  }
 
-  return fetch(request)
-    .then(res =>
-      res.ok
-        ? res.json()
-        : Promise.reject({ status: res.status })
-    )
+  return new Promise((resolve, reject) => {
+
+    axios(req)
+      .then(response => resolve(response.data))
+      .catch(error => {
+        if (error.response) {
+          reject({ status: error.response.status })
+        } else {
+          reject({ status: 500 })
+        }
+      })
+  })
 }
 
 var register = function(baseURL, data) {
-  var formData = new FormData()
-  Object.keys(data)
-    .forEach(key => {
-      formData.append(`_${key}`, data[key])
-    })
-  var request = new Request(baseURL + '/api/register', {
-    method: 'POST',
-    body: formData
-  })
 
-  return fetch(request)
-    .then(res =>
-      res.ok
-        ? res.json()
-        : Promise.reject({ status: res.status })
-    )
+  const req = {
+    method: 'POST',
+    url: `${baseURL}/api/register`,
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    data: qs.stringify(_.mapKeys(data, (value, key) => `_${key}`)),
+  }
+
+  return new Promise((resolve, reject) => {
+
+    axios(req)
+      .then(response => resolve(response.data))
+      .catch(error => {
+        if (error.response) {
+          reject({ status: error.response.status })
+        } else {
+          reject({ status: 500 })
+        }
+      })
+  })
 }
 
 var login = function(baseURL, username, password) {
 
-  var formData  = new FormData();
-  formData.append("_username", username);
-  formData.append("_password", password);
-  var request = new Request(baseURL + '/api/login_check', {
+  const req = {
     method: 'POST',
-    body: formData
-  });
+    url: `${baseURL}/api/login_check`,
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    data: qs.stringify({
+      '_username': username,
+      '_password': password
+    }),
+  }
 
   return new Promise((resolve, reject) => {
-    fetch(request)
-      .then(function(res) {
 
-        if (res.ok) {
-          return res.json().then((json) => resolve(json));
+    axios(req)
+      .then(response => {
+        resolve(response.data)
+      })
+      .catch(error => {
+        if (error.response) {
+          reject(error.response.data)
+        } else {
+          reject({ message: 'An error has occured' })
         }
-
-        return res.json().then((json) => reject(json));
-      });
-  });
+      })
+  })
 }
 
 var refreshToken = function(baseURL, refreshToken) {
-  var formData  = new FormData();
-  formData.append("refresh_token", refreshToken);
-  var request = new Request(baseURL + '/api/token/refresh', {
+
+  const req = {
     method: 'POST',
-    body: formData
-  });
+    url: `${baseURL}/api/token/refresh`,
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    data: qs.stringify({
+      'refresh_token': refreshToken,
+    }),
+  }
 
   return new Promise((resolve, reject) => {
-    fetch(request)
-      .then(function(response) {
-        if (response.ok) {
-          return response.json().then((credentials) => resolve(credentials));
-        }
 
-        return response.json().then((json) => reject(json.message));
-      });
-  });
+    axios(req)
+      .then(response => {
+        resolve(response.data)
+      })
+      .catch(error => {
+        if (error.response) {
+          reject(error.response.data.message)
+        } else {
+          reject('An error has occured')
+        }
+      })
+  })
 }
 
 const ERROR_NETWORK_REQUEST_FAILED = 'ERROR_NETWORK_REQUEST_FAILED'
@@ -272,15 +324,13 @@ const resolveBaseURL = function(server) {
     }
 
     if (!server.startsWith('http://') && !server.startsWith('https://')) {
-      try {
-        return fetch('https://' + server, { timeout: 3000 })
-          .then((response) => resolve('https://' + server))
-          .catch((err) => resolve('http://' + server));
-      } catch (e) {
-        resolve('http://' + server)
-      }
+      axios
+        .get(`https://${server}`, { timeout: 3000 })
+        .then(response => resolve(`https://${server}`))
+        .catch(error => resolve(`http://${server}`))
+    } else {
+      resolve(server)
     }
-    resolve(server);
   });
 }
 
@@ -303,56 +353,45 @@ const checkServer = function(server) {
 
         console.log('Base URL is ' + baseURL)
 
-        const headers = new Headers();
-        headers.append('Content-Type', 'application/json');
-
-        const req = new Request(baseURL + '/api', {
-          method: 'GET',
-          headers: headers,
-        });
-
-        fetch(req)
-          .then((response) => {
-
-            if (!response.ok) {
-
-              if (response.status === 503) {
-                return reject(createError(ERROR_MAINTENANCE_ON))
-              }
-
-              return reject(createError(ERROR_NOT_COMPATIBLE))
+        axios
+          .get(`${baseURL}/api`, {
+            headers: {
+              'Content-Type': 'application/json'
             }
-
-            response.json()
-              .then((data) => {
-
-                // {
-                //   "@context":"/api/contexts/Entrypoint",
-                //   "@id":"/api",
-                //   "@type":"Entrypoint",
-                //   "apiUser":"/api/me",
-                //   "restaurant":"/api/restaurants",
-                //   "deliveryAddress":"/api/delivery_addresses",
-                //   "order":"/api/orders",
-                //   "orderItem":"/api/order_items",
-                //   "product":"/api/products"
-                // }
-
-                if (data.hasOwnProperty('@context')
-                &&  data.hasOwnProperty('@id')
-                &&  data.hasOwnProperty('@type')) {
-                  resolve(baseURL);
-                } else {
-                  reject(createError(ERROR_NOT_COMPATIBLE))
-                }
-
-              })
-              // Could not parse JSON
-              .catch((err) => reject(createError(ERROR_NOT_COMPATIBLE)))
           })
-          .catch((err) => {
-            reject(createError(ERROR_NETWORK_REQUEST_FAILED))
-          });
+          .then(response => {
+            // {
+            //   "@context":"/api/contexts/Entrypoint",
+            //   "@id":"/api",
+            //   "@type":"Entrypoint",
+            //   "apiUser":"/api/me",
+            //   "restaurant":"/api/restaurants",
+            //   "deliveryAddress":"/api/delivery_addresses",
+            //   "order":"/api/orders",
+            //   "orderItem":"/api/order_items",
+            //   "product":"/api/products"
+            // }
+            if (response.data.hasOwnProperty('@context')
+            &&  response.data.hasOwnProperty('@id')
+            &&  response.data.hasOwnProperty('@type')) {
+              resolve(baseURL);
+            } else {
+              reject(createError(ERROR_NOT_COMPATIBLE))
+            }
+          })
+          .catch(error => {
+            if (error.response) {
+              if (error.response.status === 503) {
+                reject(createError(ERROR_MAINTENANCE_ON))
+              } else {
+                reject(createError(ERROR_NOT_COMPATIBLE))
+              }
+            } else if (error.request) {
+              reject(createError(ERROR_NETWORK_REQUEST_FAILED))
+            } else {
+              // TODO Handle this case
+            }
+          })
 
       })
       .catch(err => reject(err))
