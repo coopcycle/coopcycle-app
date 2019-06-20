@@ -73,11 +73,10 @@ matrix:
       - gem install xcpretty
       - npm install -g yarn
       - yarn install
-      - cd ios
     before_script:
       - cp sentry.properties.dist ios/sentry.properties
     script:
-      - xcodebuild -workspace CoopCycle.xcworkspace -scheme CoopCycle -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO -quiet -UseModernBuildSystem=NO | xcpretty && exit ${PIPESTATUS[0]}
+      - cd ios && xcodebuild -workspace CoopCycle.xcworkspace -scheme CoopCycle -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO -quiet -UseModernBuildSystem=NO | xcpretty && exit ${PIPESTATUS[0]}
 
 notifications:
   email: false
