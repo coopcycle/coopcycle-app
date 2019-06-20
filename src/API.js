@@ -4,8 +4,35 @@ import qs from 'qs'
 import _ from 'lodash'
 
 function Client(httpBaseURL, model) {
-  this.httpBaseURL = httpBaseURL;
-  this.model = model;
+  this.httpBaseURL = httpBaseURL
+  this.model = model
+
+  this.axios = axios.create({
+    baseURL: httpBaseURL
+  })
+
+  this.axios.interceptors.response.use(
+    response => response,
+    error => {
+
+      const req = error.config
+
+      if (error.response && error.response.status === 401) {
+        console.log('Request is not authorized, refreshing token…')
+
+        return new Promise((resolve, reject) => {
+          this.refreshToken()
+            .then(token => {
+              req.headers['Authorization'] = `Bearer ${token}`
+              resolve(this.axios.request(req))
+            })
+            .catch(e => reject(e))
+        })
+      }
+
+      return Promise.reject(error)
+    }
+  )
 }
 
 Client.prototype.getBaseURL = function() {
@@ -16,44 +43,26 @@ Client.prototype.getToken = function() {
   return this.model.token
 }
 
-Client.prototype.createRequest = function(method, uri, data) {
-  var headers = new Headers();
-  headers.append("Content-Type", "application/json");
+Client.prototype.createRequest = function(method, url, data) {
 
-  var options = {
-    method: method,
-    headers: headers,
+  const headers = {
+    'Content-Type': 'application/json'
   }
+
+  let req = {
+    method,
+    url,
+    headers,
+  }
+
   if (data) {
-    options.body = JSON.stringify(data)
+    req['data'] = data
   }
 
-  return new Request(this.httpBaseURL + uri, options);
+  return req
 }
 
-Client.prototype.createAuthorizedRequest = function(method, uri, data) {
-  var headers = new Headers();
-  headers.append("Content-Type", "application/ld+json");
-
-  if (this.model.token) {
-    headers.append("Authorization", "Bearer " + this.model.token);
-  }
-
-  var options = {
-    method: method,
-    headers: headers,
-  }
-  if (data && typeof data === 'object') {
-    options.body = JSON.stringify(data)
-  }
-  if (data && typeof data === 'string') {
-    options.body = data
-  }
-
-  return new Request(this.httpBaseURL + uri, options);
-}
-
-Client.prototype.createAuthorizedRequestForAxios = function(method, uri, data) {
+Client.prototype.createAuthorizedRequest = function(method, url, data) {
 
   let headers = {
     'Content-Type': 'application/ld+json'
@@ -64,8 +73,9 @@ Client.prototype.createAuthorizedRequestForAxios = function(method, uri, data) {
   }
 
   let req = {
-    method: method,
-    headers: headers,
+    method,
+    url,
+    headers,
   }
 
   if (data && typeof data === 'object') {
@@ -78,40 +88,21 @@ Client.prototype.createAuthorizedRequestForAxios = function(method, uri, data) {
   return req
 }
 
-function doFetch(req, resolve, reject) {
-  // Clone Request now in case it needs to be retried
-  // Once fetched, Request.body can't be copied
-  const clone = req.clone()
-  fetch(req)
-    .then(res => {
-      if (res.ok) {
-        if (res.status === 204) {
-          return resolve()
-        }
-        // Always clone response to make sure Body can be read again
-        // @see https://stackoverflow.com/questions/40497859/reread-a-response-body-from-javascripts-fetch
-        res.clone().json().then(data => resolve(data))
-      } else {
-        if (res.status === 401) {
-          console.log('Request is not authorized, refreshing token…')
-          this.refreshToken()
-            .then(token => {
-              clone.headers.set('Authorization', `Bearer ${token}`)
-              doFetch.apply(this, [ clone, resolve, reject ])
-            })
-            .catch(e => reject(e))
-        } else {
-          res.json().then(data => reject(data))
-        }
-      }
-    })
-    .catch(e => reject(e))
-}
-
 Client.prototype.request = function(method, uri, data) {
   console.log(method + ' ' + uri);
   const req = this.model ? this.createAuthorizedRequest(method, uri, data) : this.createRequest(method, uri, data);
-  return new Promise((resolve, reject) => doFetch.apply(this, [ req, resolve, reject ]))
+
+  return new Promise((resolve, reject) => {
+    this.axios.request(req)
+      .then(response => resolve(response.data))
+      .catch(error => {
+        if (error.response) {
+          reject(error.response.data)
+        } else {
+          reject(error)
+        }
+      })
+  })
 }
 
 Client.prototype.get = function(uri, data) {
@@ -148,7 +139,7 @@ Client.prototype.refreshToken = function() {
 }
 
 Client.prototype.checkToken = function() {
-  const req = this.createAuthorizedRequestForAxios('GET', '/api/token/check')
+  const req = this.createAuthorizedRequest('GET', '/api/token/check')
 
   return new Promise((resolve, reject) => {
 
