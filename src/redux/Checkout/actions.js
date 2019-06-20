@@ -21,9 +21,9 @@ export const INIT_REQUEST = '@checkout/INIT_REQUEST'
 export const INIT_SUCCESS = '@checkout/INIT_SUCCESS'
 export const INIT_FAILURE = '@checkout/INIT_FAILURE'
 
-export const SEARCH_RESTAURANTS_REQUEST = '@checkout/SEARCH_RESTAURANTS_REQUEST'
-export const SEARCH_RESTAURANTS_SUCCESS = '@checkout/SEARCH_RESTAURANTS_SUCCESS'
-export const SEARCH_RESTAURANTS_FAILURE = '@checkout/SEARCH_RESTAURANTS_FAILURE'
+export const LOAD_RESTAURANTS_REQUEST = '@checkout/LOAD_RESTAURANTS_REQUEST'
+export const LOAD_RESTAURANTS_SUCCESS = '@checkout/LOAD_RESTAURANTS_SUCCESS'
+export const LOAD_RESTAURANTS_FAILURE = '@checkout/LOAD_RESTAURANTS_FAILURE'
 
 export const CHECKOUT_REQUEST = '@checkout/CHECKOUT_REQUEST'
 export const CHECKOUT_SUCCESS = '@checkout/CHECKOUT_SUCCESS'
@@ -45,27 +45,32 @@ export const initRequest = createAction(INIT_REQUEST)
 export const initSuccess = createAction(INIT_SUCCESS)
 export const initFailure = createAction(INIT_FAILURE)
 
-export const searchRestaurantsRequest = createAction(SEARCH_RESTAURANTS_REQUEST)
-export const searchRestaurantsSuccess = createAction(SEARCH_RESTAURANTS_SUCCESS)
-export const searchRestaurantsFailure = createAction(SEARCH_RESTAURANTS_FAILURE)
+export const loadRestaurantsRequest = createAction(LOAD_RESTAURANTS_REQUEST)
+export const loadRestaurantsSuccess = createAction(LOAD_RESTAURANTS_SUCCESS)
+export const loadRestaurantsFailure = createAction(LOAD_RESTAURANTS_FAILURE)
 
 export const checkoutRequest = createAction(CHECKOUT_REQUEST)
 export const checkoutSuccess = createAction(CHECKOUT_SUCCESS)
 export const checkoutFailure = createAction(CHECKOUT_FAILURE)
 
-export function searchRestaurants(latitude, longitude) {
+export function searchRestaurants(options) {
 
   return (dispatch, getState) => {
 
     const { httpClient } = getState().app
 
-    dispatch(searchRestaurantsRequest())
+    let queryString = ''
+    if (options && options.hasOwnProperty('latitude') && options.hasOwnProperty('longitude')) {
+      queryString = `coordinate=${options.latitude},${options.longitude}`
+    }
 
-    httpClient.get('/api/restaurants?coordinate=' + [ latitude, longitude ])
+    dispatch(loadRestaurantsRequest())
+
+    httpClient.get('/api/restaurants' + (queryString ? `?${queryString}` : ''))
       .then(res => {
-        dispatch(searchRestaurantsSuccess(res['hydra:member']))
+        dispatch(loadRestaurantsSuccess(res['hydra:member']))
       })
-      .catch(e => dispatch(searchRestaurantsFailure(e)))
+      .catch(e => dispatch(loadRestaurantsFailure(e)))
   }
 }
 

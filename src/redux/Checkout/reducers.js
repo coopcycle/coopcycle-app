@@ -9,9 +9,9 @@ import {
   SET_ADDRESS,
   SET_DATE,
   CLEAR,
-  SEARCH_RESTAURANTS_REQUEST,
-  SEARCH_RESTAURANTS_SUCCESS,
-  SEARCH_RESTAURANTS_FAILURE,
+  LOAD_RESTAURANTS_REQUEST,
+  LOAD_RESTAURANTS_SUCCESS,
+  LOAD_RESTAURANTS_FAILURE,
   CHECKOUT_REQUEST,
   CHECKOUT_SUCCESS,
   CHECKOUT_FAILURE,
@@ -40,14 +40,14 @@ export default (state = initialState, action = {}) => {
 
   switch (action.type) {
 
-    case SEARCH_RESTAURANTS_REQUEST:
+    case LOAD_RESTAURANTS_REQUEST:
     case CHECKOUT_REQUEST:
       return {
         ...state,
         isFetching: true,
       }
 
-    case SEARCH_RESTAURANTS_FAILURE:
+    case LOAD_RESTAURANTS_FAILURE:
     case INIT_FAILURE:
       return {
         ...state,
@@ -166,7 +166,7 @@ export default (state = initialState, action = {}) => {
         date: action.payload
       }
 
-    case SEARCH_RESTAURANTS_SUCCESS:
+    case LOAD_RESTAURANTS_SUCCESS:
       return {
         ...state,
         isFetching: false,

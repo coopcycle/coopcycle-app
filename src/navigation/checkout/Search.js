@@ -23,9 +23,13 @@ class RestaurantsPage extends Component {
   _onAddressChange(address) {
     if (address) {
       const { latitude, longitude } = address.geo
-      this.props.searchRestaurants(latitude, longitude)
+      this.props.searchRestaurants({ latitude, longitude })
       this.props.setAddress(address)
     }
+  }
+
+  componentDidMount() {
+    this.props.searchRestaurants()
   }
 
   renderWarning() {
