@@ -3,6 +3,18 @@ import axios from 'axios'
 import qs from 'qs'
 import _ from 'lodash'
 
+let subscribers = []
+let isRefreshingToken = false
+
+function onTokenFetched(token) {
+  subscribers.forEach(callback => callback(token))
+  subscribers = []
+}
+
+function addSubscriber(callback) {
+  subscribers.push(callback)
+}
+
 function Client(httpBaseURL, model) {
   this.httpBaseURL = httpBaseURL
   this.model = model
@@ -11,23 +23,45 @@ function Client(httpBaseURL, model) {
     baseURL: httpBaseURL
   })
 
+  // @see https://gist.github.com/Godofbrowser/bf118322301af3fc334437c683887c5f
+  // @see https://www.techynovice.com/setting-up-JWT-token-refresh-mechanism-with-axios/
   this.axios.interceptors.response.use(
     response => response,
     error => {
 
-      const req = error.config
-
       if (error.response && error.response.status === 401) {
-        console.log('Request is not authorized, refreshing token…')
 
-        return new Promise((resolve, reject) => {
-          this.refreshToken()
-            .then(token => {
+        console.log('Request is not authorized')
+
+        try {
+
+          const req = error.config
+
+          const retry = new Promise(resolve => {
+            addSubscriber(token => {
               req.headers['Authorization'] = `Bearer ${token}`
-              resolve(this.axios.request(req))
+              resolve(axios(req))
             })
-            .catch(e => reject(e))
-        })
+          })
+
+          if (!isRefreshingToken) {
+
+            isRefreshingToken = true
+
+            console.log('Refreshing token…')
+
+            this.refreshToken()
+              .then(token => onTokenFetched(token))
+              .catch(e => Promise.reject(e))
+              .finally(() => {
+                isRefreshingToken = false
+              })
+          }
+
+          return retry
+        } catch (e) {
+          return Promise.reject(e)
+        }
       }
 
       return Promise.reject(error)
