@@ -144,7 +144,7 @@ export function selectServer(server) {
         Settings
           .saveServer(baseURL)
           .then(() => Settings.synchronize(baseURL))
-          .then(() => dispatch(setBaseURL(baseURL)))
+          .then(() => setBaseURL(dispatch, baseURL))
           .then(() => dispatch(_clearSelectServerError()))
           .then(() => dispatch(setLoading(false)))
           .then(() => NavigationHolder.dispatch(
@@ -205,8 +205,9 @@ export function bootstrap(baseURL, user) {
   }
 }
 
-export function setBaseURL(baseURL) {
-  return function (dispatch, getState) {
+function setBaseURL(dispatch, baseURL) {
+
+  return new Promise(resolve => {
     AppUser.load()
       .then(user => {
         const httpClient = API.createClient(baseURL, user)
@@ -217,8 +218,10 @@ export function setBaseURL(baseURL) {
 
         configureBackgroundGeolocation(httpClient, user)
         initMatomoClient(dispatch)
+
+        resolve()
       })
-  }
+  })
 }
 
 export function setCurrentRoute(routeName) {
