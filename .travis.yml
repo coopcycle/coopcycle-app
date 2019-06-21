@@ -76,7 +76,7 @@ matrix:
     before_script:
       - cp sentry.properties.dist ios/sentry.properties
     script:
-      - cd ios && xcodebuild -workspace CoopCycle.xcworkspace -scheme CoopCycle -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO -quiet -UseModernBuildSystem=NO | xcpretty && exit ${PIPESTATUS[0]}
+      - cd ios && xcodebuild -workspace CoopCycle.xcworkspace -scheme CoopCycle -configuration Debug -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO -quiet -UseModernBuildSystem=NO | xcpretty && exit ${PIPESTATUS[0]}
 
 notifications:
   email: false
