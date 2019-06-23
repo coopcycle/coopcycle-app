@@ -25,47 +25,26 @@ class TaskPage extends Component {
 
     this.state = {
       swipeOutClose: false,
+      mapDimensions: [],
     }
   }
 
   componentDidUpdate(prevProps, prevState) {
 
     const { task } = this.props.navigation.state.params
-    const { task: prevTask } = prevProps.navigation.state.params
 
-    // We are navigating through linked tasks
-    if (task['@id'] !== prevTask['@id']) {
-      this.fitToCoordinates()
-    } else { // Task status has been updated
-      let previousTask = _.find(prevProps.tasks, t => t['@id'] === task['@id']),
-        currentTask = _.find(this.props.tasks, t => t['@id'] === task['@id'])
+    let previousTask = _.find(prevProps.tasks, t => t['@id'] === task['@id'])
+    let currentTask = _.find(this.props.tasks, t => t['@id'] === task['@id'])
 
-      if (currentTask && previousTask && currentTask.status !== previousTask.status) {
-        this.props.navigation.setParams({ task: currentTask })
-      }
+    // Task status has been updated
+    if (currentTask && previousTask && currentTask.status !== previousTask.status) {
+      this.props.navigation.setParams({ task: currentTask })
     }
   }
 
-  fitToCoordinates() {
-    const { geolocation, task } = this.props.navigation.state.params
-
-    const coordinates = [
-      geolocation,
-      {
-        latitude: task.address.geo.latitude,
-        longitude: task.address.geo.longitude,
-      }
-    ]
-
-    this.map.fitToCoordinates(_.filter(coordinates), {
-      edgePadding: {
-        top: 50,
-        left: 50,
-        bottom: 50,
-        right: 50
-      },
-      animated: true
-    })
+  _onMapLayout(e) {
+    const { width, height } = e.nativeEvent.layout
+    this.setState({ mapDimensions: [ width, height ] })
   }
 
   renderTaskDetails() {
@@ -290,12 +269,23 @@ class TaskPage extends Component {
 
     const { geolocation, task } = this.props.navigation.state.params
     const { navigate } = this.props.navigation
+    const { mapDimensions } = this.state
 
-    const initialRegion  = {
+    // @see https://stackoverflow.com/questions/46568465/convert-a-region-latitudedelta-longitudedelta-into-an-approximate-zoomlevel/
+    const zoomLevel = 15
+    const distanceDelta = Math.exp(Math.log(360) - (zoomLevel * Math.LN2))
+
+    let aspectRatio = 1
+    if (mapDimensions.length > 0) {
+      const [ width, height ] = mapDimensions
+      aspectRatio = width / height
+    }
+
+    const region  = {
       latitude: task.address.geo.latitude,
       longitude: task.address.geo.longitude,
-      latitudeDelta: 0.0450,
-      longitudeDelta: 0.0250,
+      latitudeDelta: distanceDelta,
+      longitudeDelta: distanceDelta * aspectRatio
     }
 
     const hasLinkedTasks = (task.previous || task.next)
@@ -326,8 +316,9 @@ class TaskPage extends Component {
                   loadingEnabled
                   loadingIndicatorColor={"#666666"}
                   loadingBackgroundColor={"#eeeeee"}
-                  initialRegion={ initialRegion }
-                  onMapReady={() => this.fitToCoordinates()}>
+                  initialRegion={ region }
+                  region={ region }
+                  onLayout={ this._onMapLayout.bind(this) }>
                   <MapView.Marker
                     identifier={ task['@id'] }
                     key={ task['@id'] }
