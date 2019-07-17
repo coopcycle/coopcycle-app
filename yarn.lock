@@ -6370,10 +6370,10 @@ react-native-calendars@^1.20.0:
     prop-types "^15.5.10"
     xdate "^0.8.0"
 
-react-native-camera@^2.6.0:
-  version "2.6.0"
-  resolved "https://registry.yarnpkg.com/react-native-camera/-/react-native-camera-2.6.0.tgz#bf97b0fc68aa8732d815e9bbd92e63529f51d598"
-  integrity sha512-g0Hi4yhUg1yBsYbW9aLxVaX+rgl9sKrrDAGF6difiRTvwCUEqlID2DosLCQQPkLSniJHVa8gc+SwCegahU23aA==
+react-native-camera@^2.11.1:
+  version "2.11.1"
+  resolved "https://registry.yarnpkg.com/react-native-camera/-/react-native-camera-2.11.1.tgz#a72062f59bb57c0cb2bd57fe6713fa23b2a90571"
+  integrity sha512-ZmPZHcY7UXEf7Z8PoJX/WhFtmLFtdRPBGDwemOLlPRVwTVyu/OXVINDUWCug4daBqV8Fs3X1O6V927+K2u2GfA==
   dependencies:
     prop-types "^15.6.2"
 
@@ -6403,10 +6403,10 @@ react-native-drawer@2.5.1:
     prop-types "^15.5.8"
     tween-functions "^1.0.1"
 
-react-native-dropdownalert@^3.8.0:
-  version "3.10.0"
-  resolved "https://registry.yarnpkg.com/react-native-dropdownalert/-/react-native-dropdownalert-3.10.0.tgz#a925391c4a00fbb5685eb1561ed7c921d6f8539d"
-  integrity sha512-cwKiy1dDCbEVm5GTgas7ktmHbE+hYJhAaE++h4U0Tbq1Bl6BV3bC8L3tTY+igFBOKiH1kQUCSF+9YgrdoifFRA==
+react-native-dropdownalert@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/react-native-dropdownalert/-/react-native-dropdownalert-4.1.0.tgz#920875321dc0f7b0cea4886340a05c236cab9440"
+  integrity sha512-u/hBcpZ1mbkNIm4gTmnheZIJOm/46TtrHMRxi3zKInO6Kn0NZT25L21wQt+2VWEJimQe8RleV5rQ1ml7Sd36aw==
   dependencies:
     prop-types "15.5.10"
 
