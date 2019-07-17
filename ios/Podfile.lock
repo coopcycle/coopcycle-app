@@ -16,7 +16,7 @@ PODS:
     - React
   - react-native-camera/RN (2.6.0):
     - React
-  - react-native-maps (0.24.2):
+  - react-native-maps (0.25.0):
     - React
   - React/Core (0.59.2):
     - yoga (= 0.59.2.React)
@@ -144,7 +144,7 @@ SPEC CHECKSUMS:
   glog: aefd1eb5dda2ab95ba0938556f34b98e2da3a60d
   React: 9d063e2f356c8cd2f54dd550d4507740037cbabe
   react-native-camera: 60e1ec7b259a7779b508712f75671701f23a6b4d
-  react-native-maps: 0316ed017dbb64b33b227751fa810e2454fcfa39
+  react-native-maps: 190c02ca533fddac5bb49cf17bdece3644612107
   rn-fetch-blob: 766f85cabd2992300dfa1be2bc9e4e258abc6f04
   RNGestureHandler: 5329a942fce3d41c68b84c2c2276ce06a696d8b0
   RNSketchCanvas: 9c28adb5381543ed55cc98ce6de46479cb3cb12c
