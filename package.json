@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@mapbox/polyline": "^1.1.0",
+    "@mauron85/react-native-background-geolocation": "^0.5.3",
     "@terrylinla/react-native-sketch-canvas": "^0.8.0",
     "axios": "^0.19.0",
     "buffer": "^5.2.1",
@@ -41,7 +42,6 @@
     "react-native-maps": "0.24.2",
     "react-native-maps-super-cluster": "^1.5.0",
     "react-native-matomo": "^0.1.1",
-    "react-native-mauron85-background-geolocation": "0.5.0",
     "react-native-modal": "^7.0.2",
     "react-native-modal-datetime-picker": "^6.0.0",
     "react-native-modal-selector": "^1.0.3",

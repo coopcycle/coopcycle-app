@@ -20,7 +20,7 @@ import {
   selectTaskSelectedDate,
   selectKeepAwake,
 } from '../../redux/Courier'
-import BackgroundGeolocation from 'react-native-mauron85-background-geolocation'
+import BackgroundGeolocation from '@mauron85/react-native-background-geolocation'
 
 const backgroundGeolocationEvents = [
   'start',

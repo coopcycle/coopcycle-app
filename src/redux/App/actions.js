@@ -1,7 +1,7 @@
 import { createAction } from 'redux-actions'
 import moment from 'moment'
 import { AsyncStorage, Platform } from 'react-native'
-import BackgroundGeolocation from 'react-native-mauron85-background-geolocation'
+import BackgroundGeolocation from '@mauron85/react-native-background-geolocation'
 import { NavigationActions, StackActions } from 'react-navigation'
 import Matomo from 'react-native-matomo'
 import { BleManager, State } from 'react-native-ble-plx'

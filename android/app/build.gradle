@@ -159,6 +159,7 @@ android {
 }
 
 dependencies {
+    implementation project(':@mauron85_react-native-background-geolocation')
 
     // This is needed to enable multidex on API Level < 21
     // https://developer.android.com/studio/build/multidex.html
@@ -177,7 +178,6 @@ dependencies {
     implementation(project(':react-native-firebase')) {
         transitive = false
     }
-    implementation project(':react-native-mauron85-background-geolocation')
     implementation(project(':react-native-languages')){
         exclude group: 'com.google.android.gms'
     }

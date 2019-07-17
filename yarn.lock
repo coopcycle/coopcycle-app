@@ -820,6 +820,11 @@
   resolved "https://registry.yarnpkg.com/@mapbox/sphericalmercator/-/sphericalmercator-1.1.0.tgz#f3b1af042620716a1289fc41e1e97f610823aefe"
   integrity sha512-pEsfZyG4OMThlfFQbCte4gegvHUjxXCjz0KZ4Xk8NdOYTQBLflj6U8PL05RPAiuRAMAQNUUKJuL6qYZ5Y4kAWA==
 
+"@mauron85/react-native-background-geolocation@^0.5.3":
+  version "0.5.3"
+  resolved "https://registry.yarnpkg.com/@mauron85/react-native-background-geolocation/-/react-native-background-geolocation-0.5.3.tgz#449a3f02fa2dd89198ad7db812ae95a37a983309"
+  integrity sha512-KzWzA55jWzCodXqHGdeKnw7MOXXsEO/f4+vd9KVicq7oyGLnEHA+t9DcpRd2YEEsFca515TNHmAcvh6vL1B0Kg==
+
 "@react-native-community/cli@^1.2.1":
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/@react-native-community/cli/-/cli-1.5.1.tgz#21a93266ecf1885990ac86680a369aa3ff432973"
@@ -6453,11 +6458,6 @@ react-native-matomo@^0.1.1:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/react-native-matomo/-/react-native-matomo-0.1.1.tgz#399331f3b76f3afa5a01363d62aa1a7db6f11356"
   integrity sha512-7QJOZIaS7Pi/vHS9+bdebZ7moh/r4Cxu1SOc9pUlOwQIwskOQSCWL9gbxjYVPInTgWNYYc9rP+fR3so00bOOxA==
-
-react-native-mauron85-background-geolocation@0.5.0:
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/react-native-mauron85-background-geolocation/-/react-native-mauron85-background-geolocation-0.5.0.tgz#ec2bb95a9101967caba85681e3dc437e8d7c72dc"
-  integrity sha512-syUMsb+1ouNw3CEdCT7SgELhMY1+hzwi7KnVCMJ49xPgjGsQs2p/EVD8N7tzXhtAOf8YAvqnHe/t91SQpBqGDw==
 
 react-native-modal-datetime-picker@^6.0.0:
   version "6.1.0"
