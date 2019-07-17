@@ -77,10 +77,10 @@ Troubleshooting
 
 ```
 watchman watch-del-all
-rm -rf node_modules
 rm -rf $TMPDIR/react-*
 rm -rf $TMPDIR/haste-map-react-native-packager-*
 rm -rf ~/.rncache
+rm -rf node_modules
 rm yarn.lock
 yarn cache clean
 yarn install
