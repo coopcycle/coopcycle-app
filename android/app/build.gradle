@@ -110,7 +110,7 @@ android {
         versionCode 49
         versionName "0.15.0"
         ndk {
-            abiFilters "armeabi-v7a", "x86"
+            abiFilters "armeabi-v7a", "x86", "arm64-v8a", "x86_64"
         }
         manifestPlaceholders = [
             tipsiStripeRedirectScheme: "coopcycle",
