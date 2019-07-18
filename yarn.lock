@@ -6529,13 +6529,13 @@ react-native-modal@^10.0.0:
     prop-types "^15.6.2"
     react-native-animatable "^1.3.1"
 
-react-native-modal@^7.0.2:
-  version "7.0.2"
-  resolved "https://registry.yarnpkg.com/react-native-modal/-/react-native-modal-7.0.2.tgz#6048217807e03cd585204dace2e1ca1726c0b647"
-  integrity sha512-IRTDeErr4asDdPs4DGbaKvz3fgr56tcVA7nAdCLu4IkjNw7DaIlAbQelg0Sdirb+8+RbIDPyrrnuEH84Fnj4ZA==
+react-native-modal@^11.1.0:
+  version "11.1.0"
+  resolved "https://registry.yarnpkg.com/react-native-modal/-/react-native-modal-11.1.0.tgz#7dcb4be8e535b7ee3cc3b3c017e7a32ec0e1b278"
+  integrity sha512-gSD21evs2m+C/vtRS+R/I1ZuIN5td+K+I9Dt04HpBzux3HyA9km2oonQy8t+EKUNN2rFYjFntfUOMmb3vj7i8A==
   dependencies:
-    prop-types "^15.6.1"
-    react-native-animatable "^1.2.4"
+    prop-types "^15.6.2"
+    react-native-animatable "^1.3.1"
 
 react-native-modal@^9.0.0:
   version "9.0.0"
@@ -6571,10 +6571,10 @@ react-native-safe-area-view@^0.14.1:
   resolved "https://registry.yarnpkg.com/react-native-screens/-/react-native-screens-1.0.0-alpha.22.tgz#7a120377b52aa9bbb94d0b8541a014026be9289b"
   integrity sha512-kSyAt0AeVU6N7ZonfV6dP6iZF8B7Bce+tk3eujXhzBGsLg0VSLnU7uE9VqJF0xdQrHR91ZjGgVMieo/8df9KTA==
 
-react-native-sound@^0.10.12:
-  version "0.10.12"
-  resolved "https://registry.yarnpkg.com/react-native-sound/-/react-native-sound-0.10.12.tgz#f912d6f9d6e9e2b42b391e0226787628d940f01a"
-  integrity sha512-lhvzZ+ekNSHW9s4FjmxxGAQmd7yDT9FnHgJNP824cMyHRrTES/LgHnSOxES/1FWVoaQ8FdfbEHkWd2rN0G/L9A==
+react-native-sound@^0.11.0:
+  version "0.11.0"
+  resolved "https://registry.yarnpkg.com/react-native-sound/-/react-native-sound-0.11.0.tgz#ad60b55ba8c6dc89917f381ad3713f2738de530f"
+  integrity sha512-4bGAZfni6E2L695NQjOZwNLBQGXgBGYC4Sy+h99K5h0HqNZjCqR0+aLel+ezASxEJDpaH83gylNObXpiqJgdwg==
 
 react-native-svg-transformer@^0.13.0:
   version "0.13.0"
