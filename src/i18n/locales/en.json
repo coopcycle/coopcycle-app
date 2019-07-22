@@ -221,6 +221,7 @@
     "PHOTO_DISCLAIMER": "Take a picture",
     "LOAD_MORE": "Load more",
     "TASK_IMAGE_UPLOAD_CONFIRM_SHORT": "Image uploaded!",
-    "TASK_IMAGE_UPLOAD_CONFIRM_LONG": "Image was successfully uploaded"
+    "TASK_IMAGE_UPLOAD_CONFIRM_LONG": "Image was successfully uploaded",
+    "AN_ERROR_OCCURRED": "An error occurred"
   }
 }

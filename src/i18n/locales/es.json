@@ -219,6 +219,7 @@
     "PHOTO_DISCLAIMER": "Tomar una foto",
     "LOAD_MORE": "Cargar más",
     "TASK_IMAGE_UPLOAD_CONFIRM_SHORT": "Imagen cargada!",
-    "TASK_IMAGE_UPLOAD_CONFIRM_LONG": "La imagen fue cargada con éxito"
+    "TASK_IMAGE_UPLOAD_CONFIRM_LONG": "La imagen fue cargada con éxito",
+    "AN_ERROR_OCCURRED": "Se ha producido un error"
   }
 }

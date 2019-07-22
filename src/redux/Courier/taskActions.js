@@ -173,25 +173,35 @@ export function uploadSignature(task, base64) {
       .then(fetchBlobResponse => {
 
         const fetchBlobResponseInfo = fetchBlobResponse.info()
-        if (201 === fetchBlobResponseInfo.status) {
 
-          return fetchBlobResponse.json()
-        }
-
-        // TODO Manage token expired or bad request
-
-      })
-      .then(taskImage => {
-
-        httpClient
-          .put(task['@id'], { images: [ taskImage['@id'] ] })
-          .then(res => {
-            dispatch(uploadFileSuccess(res, taskImage))
+        switch (fetchBlobResponseInfo.status) {
+        case 400:
+          const error = fetchBlobResponse.json()
+          if (error.hasOwnProperty('@type') && error['@type'] === 'ConstraintViolationList') {
+            dispatch(uploadFileFailure(error))
             DropdownHolder
               .getDropdown()
-              .alertWithType('success', i18n.t('TASK_IMAGE_UPLOAD_CONFIRM_SHORT'), i18n.t('TASK_IMAGE_UPLOAD_CONFIRM_LONG'))
-          })
-          .catch(e => dispatch(uploadFileFailure(e)))
+              .alertWithType('error', i18n.t('AN_ERROR_OCCURRED'), error['hydra:description'])
+          }
+          break
+        case 201:
+          const taskImage = fetchBlobResponse.json()
+          httpClient
+            .put(task['@id'], { images: [ taskImage['@id'] ] })
+            .then(res => {
+              dispatch(uploadFileSuccess(res, taskImage))
+              DropdownHolder
+                .getDropdown()
+                .alertWithType('success', i18n.t('TASK_IMAGE_UPLOAD_CONFIRM_SHORT'), i18n.t('TASK_IMAGE_UPLOAD_CONFIRM_LONG'))
+            })
+            .catch(e => dispatch(uploadFileFailure(e)))
+          break
+        default:
+          // TODO Show alert with error message
+          dispatch(uploadFileFailure())
+        }
+
+        // TODO Manage token expired
 
       })
       .catch(e => {
