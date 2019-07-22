@@ -85,24 +85,3 @@ rm yarn.lock
 yarn cache clean
 yarn install
 ```
-
-### Android
-
-#### Gradle project sync failed in Android Studio. ERROR: The minSdk version should not be declared in the android manifest file.
-Affected Modules: `react-native-mauron85-background-geolocation`, `react-native-mauron85-background-geolocation-common`
-
-Remove line:
-```
-<uses-sdk android:minSdkVersion="14" />
-```
-from `react-native-mauron85-background-geolocation/AndroidManifest.xml` and `react-native-mauron85-background-geolocation-common/AndroidManifest.xml` files until this [issue](https://github.com/mauron85/react-native-background-geolocation/issues/357) is resolved
-
-#### Gradle project sync failed in Android Studio.
-Try to run
-```
-yarn
-```
-in the project directory to get the latest dependencies (in `node_modules` folder)
-
-### iOS
-
