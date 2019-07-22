@@ -112,6 +112,11 @@ Client.prototype.createAuthorizedRequest = function(method, url, data) {
     headers,
   }
 
+  // Make sure the request body is not empty for POST/PUT
+  if (['POST', 'PUT'].includes(method.toUpperCase()) && !data) {
+    data = {}
+  }
+
   if (data && typeof data === 'object') {
     req['data'] = JSON.stringify(data)
   }
