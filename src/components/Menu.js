@@ -24,6 +24,22 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     paddingHorizontal: 15
   },
+  disabledText: {
+    color: '#a7a7a7'
+  },
+  itemPrice: {
+    color: '#828282',
+    fontSize: 14
+  },
+  rightCol: {
+    flex: 1,
+    alignItems: 'flex-end',
+    justifyContent: 'center'
+  },
+  rightIcon: {
+    color: '#747474',
+    fontSize: 22
+  },
   heading: {
     flex: 1,
     flexDirection: 'row',
@@ -48,16 +64,39 @@ export default class Menu extends Component {
   }
 
   renderItem(item) {
+
+    // If the "enabled" key does not exist, fallback to true
+    const enabled = item.hasOwnProperty('enabled') ? item.enabled : true
+
+    let itemProps = {}
+    let itemNameStyle = []
+    let itemPriceStyle = [ styles.itemPrice ]
+
+    let rightIconName = 'plus'
+    let rightIconStyle = [ styles.rightIcon ]
+
+    if (enabled) {
+      itemProps = {
+        onPress: () => this.props.onItemClick(item)
+      }
+    } else {
+      itemNameStyle.push(styles.disabledText)
+      itemPriceStyle.push(styles.disabledText)
+
+      rightIconName = 'ban'
+      rightIconStyle.push(styles.disabledText)
+    }
+
     return (
-      <TouchableOpacity style={ styles.item } onPress={ () => this.props.onItemClick(item) }>
+      <TouchableOpacity style={ styles.item } { ...itemProps }>
         <Grid>
           <Col size={ 4 }>
-            <Text>{ item.name }</Text>
-            { item.description && (<Text note>{ item.description }</Text>) }
-            <Text style={{ color: '#828282', fontSize: 14 }}>{ formatPrice(item.offers.price) } €</Text>
+            <Text style={ itemNameStyle }>{ item.name }</Text>
+            { item.description && ( <Text note>{ item.description }</Text> ) }
+            <Text style={ itemPriceStyle }>{ formatPrice(item.offers.price) } €</Text>
           </Col>
-          <Col size={ 1 } style={{ flex: 1, alignItems: 'flex-end', justifyContent: 'center' }}>
-            <Icon name="md-add" style={{ color: '#747474', fontSize: 22 }} />
+          <Col size={ 1 } style={ styles.rightCol }>
+            <Icon type="FontAwesome" name={ rightIconName } style={ rightIconStyle } />
           </Col>
         </Grid>
       </TouchableOpacity>
