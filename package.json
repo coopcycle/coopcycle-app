@@ -24,7 +24,7 @@
     "qs": "^6.7.0",
     "react": "16.8.3",
     "react-i18next": "^9.0.10",
-    "react-native": "0.59.3",
+    "react-native": "0.59.4",
     "react-native-ble-plx": "^1.0.3",
     "react-native-cache-store": "^1.0.2",
     "react-native-calendars": "^1.199.0",
