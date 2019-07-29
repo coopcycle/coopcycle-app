@@ -178,12 +178,8 @@ dependencies {
     implementation(project(':react-native-firebase')) {
         transitive = false
     }
-    implementation(project(':react-native-languages')){
-        exclude group: 'com.google.android.gms'
-    }
-    implementation(project(':react-native-keep-awake')){
-        exclude group: 'com.google.android.gms'
-    }
+    implementation project(':react-native-languages')
+    implementation project(':react-native-keep-awake')
     implementation project(':react-native-pin-screen')
     implementation(project(':tipsi-stripe')){
         exclude group: 'com.google.android.gms'
