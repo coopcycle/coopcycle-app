@@ -28,7 +28,8 @@ class AuthenticateForm extends Component {
 
     return (
       <LoginForm
-        onSubmit={ (email, password) => this.props.onLogin(email, password) } />
+        onSubmit={ (email, password) => this.props.onLogin(email, password) }
+        onForgotPassword={ () => this.props.onForgotPassword() } />
     )
   }
 

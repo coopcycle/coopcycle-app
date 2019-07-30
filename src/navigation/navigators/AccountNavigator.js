@@ -58,6 +58,12 @@ const NotAuthenticatedStack = createStackNavigator({
       title: i18n.t('REGISTER_CHECK_EMAIL'),
     }),
   },
+  AccountForgotPassword: {
+    screen: navigation.AccountForgotPassword,
+    navigationOptions: ({ navigation }) => ({
+      title: i18n.t('FORGOT_PASSWORD'),
+    })
+  },
 }, {
   initialRouteName: 'AccountLoginRegister',
   defaultNavigationOptions,
