@@ -112,6 +112,7 @@
     "SETTING_KEEP_AWAKE": "Disable screen lock",
     "OR_REGISTER": "Don't have an account? Register",
     "OR_LOGIN": "Already have an account? Login",
+    "FORGOT_PASSWORD": "Forgot password?",
     "GIVEN_NAME": "First name",
     "FAMILY_NAME": "Last name",
     "PHONE_NUMBER": "Phone number",
