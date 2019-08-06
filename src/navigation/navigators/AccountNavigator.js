@@ -52,8 +52,8 @@ const NotAuthenticatedStack = createStackNavigator({
       ...defaultNavigationOptions,
     }),
   },
-  AccountCheckEmail: {
-    screen: navigation.AccountCheckEmail,
+  AccountRegisterCheckEmail: {
+    screen: navigation.AccountRegisterCheckEmail,
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('REGISTER_CHECK_EMAIL'),
     }),
@@ -62,6 +62,12 @@ const NotAuthenticatedStack = createStackNavigator({
     screen: navigation.AccountForgotPassword,
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('FORGOT_PASSWORD'),
+    })
+  },
+  AccountResetPasswordCheckEmail: {
+    screen: navigation.AccountResetPasswordCheckEmail,
+    navigationOptions: ({ navigation }) => ({
+      title: i18n.t('RESET_PASSWORD_CHECK_EMAIL'),
     })
   },
 }, {

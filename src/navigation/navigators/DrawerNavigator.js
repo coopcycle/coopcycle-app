@@ -28,6 +28,21 @@ const RegisterConfirmStack = createStackNavigator({
   defaultNavigationOptions,
 })
 
+const ResetPasswordStack = createStackNavigator({
+  ResetPasswordHome: {
+    screen: navigation.AccountResetPasswordNewPassword,
+    path: 'reset/:token',
+    navigationOptions: ({ navigation }) => ({
+      title: i18n.t('RESET_PASSWORD_NEW_PASSWORD'),
+      headerLeft: headerLeft(navigation),
+      ...defaultNavigationOptions
+    })
+  }
+}, {
+  initialRouteName: 'ResetPasswordHome',
+  defaultNavigationOptions
+})
+
 export default createDrawerNavigator({
   CheckoutNav: {
     screen: CheckoutNavigator,
@@ -70,11 +85,17 @@ export default createDrawerNavigator({
       ),
     }),
   },
-  // This screen will not appear in drawer
-  // We need to put it here to be acessible from everywhere
+  // This screen will not appear in drawer, but handle an activate account deep link
+  // We need to put it here to be accessible from everywhere
   RegisterConfirmNav: {
     screen: RegisterConfirmStack,
     path: '/register',
+  },
+  // This screen will not appear in drawer, but handle a reset password deep link
+  // We need to put it here to be accessible from everywhere
+  ResetPasswordNav: {
+    screen: ResetPasswordStack,
+    path: '/resetting',
   },
 }, {
   contentComponent: DrawerContent,

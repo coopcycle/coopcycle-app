@@ -6,10 +6,10 @@ import {
   List, ListItem, Icon, Text, Button
 } from 'native-base'
 import { connect } from 'react-redux'
-import { withNamespaces } from 'react-i18next'
+import { withTranslation } from 'react-i18next'
 import _ from 'lodash'
 
-import { login, register } from '../../redux/App/actions'
+import {resetPassword} from '../../redux/App/actions'
 import ForgotPasswordForm from '../../components/ForgotPasswordForm';
 
 class ForgotPassword extends Component {
@@ -18,9 +18,7 @@ class ForgotPassword extends Component {
       <Container>
         <Content padder>
           <ForgotPasswordForm
-            onLogin={ (email, password) => this.props.login(email, password) }
-            onRegister={ data => this.props.register(data) }
-            onForgotPassword={ () => this.props.navigation.navigate('AccountForgotPassword') } />
+            onSubmit={ (email) => this.props.resetPassword(email) } />
         </Content>
       </Container>
     )
@@ -38,9 +36,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
 
   return {
-    // login: (email, password, navigate) => dispatch(login(email, password, true)),
-    // register: data => dispatch(register(data, 'AccountCheckEmail', 'AccountLoginRegister')),
+    resetPassword: (email) => dispatch(resetPassword(email, 'AccountResetPasswordCheckEmail', 'AccountLoginRegister'))
   }
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(withNamespaces('common')(ForgotPassword))
+module.exports = connect(mapStateToProps, mapDispatchToProps)(withTranslation()(ForgotPassword))

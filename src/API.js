@@ -208,6 +208,27 @@ Client.prototype.register = function (data) {
     })
 }
 
+Client.prototype.confirmRegistration = function(token) {
+
+  const req = {
+    method: 'GET',
+    url: `${this.httpBaseURL}/api/register/confirm/${token}`,
+  }
+
+  return new Promise((resolve, reject) => {
+
+    axios(req)
+      .then(response => resolve(response.data))
+      .catch(error => {
+        if (error.response) {
+          reject({ status: error.response.status })
+        } else {
+          reject({ status: 500 })
+        }
+      })
+  })
+}
+
 Client.prototype.login = function(username, password) {
   return login(this.httpBaseURL, username, password)
     .then((credentials) => {
@@ -228,25 +249,69 @@ Client.prototype.login = function(username, password) {
     });
 }
 
-Client.prototype.confirmRegistration = function(token) {
+Client.prototype.resetPassword = function (email) {
+  //todo
+  // const req = {
+  //   method: 'POST',
+  //   url: `${baseURL}/api/register`,
+  //   headers: {
+  //     'Content-Type': 'application/x-www-form-urlencoded'
+  //   },
+  //   data: qs.stringify(_.mapKeys(data, (value, key) => `_${key}`)),
+  // }
+  //
+  // return new Promise((resolve, reject) => {
+  //   axios(req)
+  //     .then(response => resolve(response.data))
+  //     .catch(error => {
+  //       if (error.response) {
+  //         reject({ status: error.response.status })
+  //       } else {
+  //         reject({ status: 500 })
+  //       }
+  //     })
+  // })
+  //   .then((credentials) => {
+  //
+  //     const enabled =
+  //       credentials.hasOwnProperty('enabled') ? credentials.enabled : true
+  //
+  //     Object.assign(this.model, {
+  //       username: data.username,
+  //       email: data.email,
+  //       token: credentials.token,
+  //       refreshToken: credentials.refresh_token,
+  //       roles: credentials.roles,
+  //       enabled
+  //     })
+  //
+  //     return this.model.save()
+  //   })
 
-  const req = {
-    method: 'GET',
-    url: `${this.httpBaseURL}/api/register/confirm/${token}`,
-  }
+  return new Promise((resolve, reject) => resolve('success'))
+}
 
-  return new Promise((resolve, reject) => {
+Client.prototype.setNewPassword = function(token, password) {
+  //todo
+  // const req = {
+  //   method: 'GET',
+  //   url: `${this.httpBaseURL}/api/register/confirm/${token}`,
+  // }
+  //
+  // return new Promise((resolve, reject) => {
+  //
+  //   axios(req)
+  //     .then(response => resolve(response.data))
+  //     .catch(error => {
+  //       if (error.response) {
+  //         reject({ status: error.response.status })
+  //       } else {
+  //         reject({ status: 500 })
+  //       }
+  //     })
+  // })
 
-    axios(req)
-      .then(response => resolve(response.data))
-      .catch(error => {
-        if (error.response) {
-          reject({ status: error.response.status })
-        } else {
-          reject({ status: 500 })
-        }
-      })
-  })
+  return new Promise((resolve, reject) => resolve('success'))
 }
 
 var register = function(baseURL, data) {

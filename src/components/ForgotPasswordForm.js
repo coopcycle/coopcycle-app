@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
 import { View } from 'react-native'
 import { connect } from 'react-redux'
-import { Container, Content, Form, Item, Input, Label, Button, Text } from 'native-base'
-import { withNamespaces } from 'react-i18next'
-import _ from 'lodash'
+import { Form, Item, Input, Label, Button, Text } from 'native-base'
+import { withTranslation } from 'react-i18next'
 
 class ForgotPasswordForm extends Component {
 
@@ -36,7 +35,7 @@ class ForgotPasswordForm extends Component {
               onChangeText={ email => this.setState({ email }) }
               style={{ height: 40 }}
               returnKeyType="done"
-              onSubmitEditing={ _ => this.__onSubmit() } />
+              onSubmitEditing={ _ => this._onSubmit() } />
           </Item>
         </Form>
         <View style={{ marginTop: 20 }}>
@@ -56,4 +55,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps)(withNamespaces('common')(ForgotPasswordForm))
+export default connect(mapStateToProps)(withTranslation()(ForgotPasswordForm))

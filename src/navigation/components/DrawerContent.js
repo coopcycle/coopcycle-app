@@ -32,6 +32,10 @@ class DrawerContent extends Component {
         return false
       }
 
+      if (item.routeName === 'ResetPasswordNav') {
+        return false
+      }
+
       if (_.includes(restaurantItems, item)
         || _.includes(courierItems, item)
         || _.includes(accountItems, item)

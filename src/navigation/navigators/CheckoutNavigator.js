@@ -56,7 +56,7 @@ const LoginRegisterStack = createStackNavigator({
     }),
   },
   CheckoutCheckEmail: {
-    screen: navigation.AccountCheckEmail,
+    screen: navigation.AccountRegisterCheckEmail,
     navigationOptions: ({ navigation }) => ({
       // Use header = null to get rid of the header
       // The screen's header will be used

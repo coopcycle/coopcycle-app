@@ -69,7 +69,7 @@ function mapDispatchToProps(dispatch) {
 
   return {
     login: (email, password, navigate) => dispatch(login(email, password, true)),
-    register: data => dispatch(register(data, 'AccountCheckEmail', 'AccountLoginRegister')),
+    register: data => dispatch(register(data, 'AccountRegisterCheckEmail', 'AccountLoginRegister')),
   }
 }
 

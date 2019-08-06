@@ -287,6 +287,17 @@ export function login(email, password, navigate = true) {
   }
 }
 
+export function logout() {
+
+  return (dispatch, getState) => {
+
+    const { user } = getState().app
+
+    user.logout()
+      .then(() => dispatch(logoutSuccess()))
+  }
+}
+
 export function register(data, checkEmailRouteName, loginRouteName, resumeCheckoutAfterActivation = false) {
 
   return (dispatch, getState) => {
@@ -370,6 +381,7 @@ export function confirmRegistration(token) {
           })
       })
       .catch(err => {
+        console.log(err);
         if (err.hasOwnProperty('status') && err.status === 401) {
           dispatch(setLoading(false))
           // TODO Say that the token is no valid
@@ -378,14 +390,82 @@ export function confirmRegistration(token) {
   }
 }
 
-export function logout() {
+export function resetPassword(email, checkEmailRouteName, loginRouteName) {
 
   return (dispatch, getState) => {
 
-    const { user } = getState().app
+    const { app } = getState()
+    const { httpClient } = app
 
-    user.logout()
-      .then(() => dispatch(logoutSuccess()))
+    dispatch(authenticationRequest())
+
+    httpClient.resetPassword(email)
+      .then(response => {
+        console.log(`resetPassword then response:${response}`)
+
+        dispatch(setLoading(false))
+        // dispatch(_resumeCheckoutAfterActivation(resumeCheckoutAfterActivation))
+
+        //todo When using navigation, we can still go back to the filled form
+        NavigationHolder.navigate(checkEmailRouteName, { email: email, loginRouteName })
+
+      })
+      .catch(err => {
+
+        let message = i18n.t('TRY_LATER')
+        //todo handle errors
+        // if (err.hasOwnProperty('status') && err.status === 400) {
+        //   message = i18n.t('EMAIL_ALREADY_REGISTERED')
+        // }
+
+        dispatch(authenticationFailure(message))
+      })
+  }
+}
+
+export function setNewPassword(token, password) {
+
+  return (dispatch, getState) => {
+
+    const { app } = getState()
+    const { httpClient, user, resumeCheckoutAfterActivation } = app
+
+    dispatch(authenticationRequest())
+
+    httpClient.setNewPassword(token, password)
+      .then(credentials => {
+
+        Object.assign(user, {
+          username: credentials.username,
+          email: credentials.email,
+          token: credentials.token,
+          refreshToken: credentials.refresh_token,
+          roles: credentials.roles,
+          enabled: credentials.enabled,
+        })
+
+        user.save()
+          .then(() => {
+
+            dispatch(authenticationSuccess())
+
+            configureBackgroundGeolocation(httpClient, user)
+            saveRemotePushToken(dispatch, getState)
+
+            if (resumeCheckoutAfterActivation) {
+              dispatch(_resumeCheckoutAfterActivation(false))
+            } else {
+              navigateToHome(dispatch, getState)
+            }
+          })
+      })
+      .catch(err => {
+        console.log(err);
+        if (err.hasOwnProperty('status') && err.status === 401) {
+          dispatch(setLoading(false))
+          // TODO Say that the token is no valid
+        }
+      })
   }
 }
 
