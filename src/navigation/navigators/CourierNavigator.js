@@ -108,6 +108,9 @@ const ProofOfDeliveryTabs = createMaterialTopTabNavigator({
       title: i18n.t('SIGNATURE')
     })
   }
+}, {
+  // Disable swipe to avoid swiping when signing
+  swipeEnabled: false
 })
 
 export default createStackNavigator({
