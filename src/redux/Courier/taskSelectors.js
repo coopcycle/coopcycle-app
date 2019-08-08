@@ -19,7 +19,8 @@ export const selectTasks = state => state.entities.tasks.items
 export const selectTasksOrder = state => state.entities.tasks.order
 export const selectTaskFilters = state => state.ui.tasks.excludeFilters
 export const selectKeepAwake = state => state.ui.tasks.keepAwake
-
+export const selectSignatures = state => state.entities.tasks.signatures
+export const selectPictures = state => state.entities.tasks.pictures
 
 /* Compound Selectors */
 

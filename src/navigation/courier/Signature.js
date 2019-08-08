@@ -10,7 +10,7 @@ import { connect } from 'react-redux'
 import _ from 'lodash'
 import { SketchCanvas } from '@terrylinla/react-native-sketch-canvas';
 
-import { uploadSignature } from '../../redux/Courier'
+import { addSignature } from '../../redux/Courier'
 
 class Signature extends Component {
 
@@ -18,7 +18,8 @@ class Signature extends Component {
     const task = this.props.navigation.getParam('task')
     this._sketchCanvas.getBase64('jpg', false, true, true, true, (err, base64) => {
       if (!err) {
-        this.props.uploadSignature(task, base64)
+        this.props.addSignature(task, base64)
+        this.props.navigation.navigate('TaskCompleteHome', { task })
       }
     })
   }
@@ -50,7 +51,7 @@ class Signature extends Component {
           <FooterTab>
             <Button full onPress={ this._saveImage.bind(this) }>
               <Text style={{ color: '#ffffff' }}>
-                { this.props.t('SIGNATURE_SIGN') }
+                { this.props.t('SIGNATURE_ADD') }
               </Text>
             </Button>
           </FooterTab>
@@ -82,7 +83,7 @@ function mapStateToProps (state) {
 
 function mapDispatchToProps (dispatch) {
   return {
-    uploadSignature: (task, base64) => dispatch(uploadSignature(task, base64)),
+    addSignature: (task, base64) => dispatch(addSignature(task, base64)),
   }
 }
 

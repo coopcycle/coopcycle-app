@@ -7,6 +7,7 @@ import NavigationHolder from '../../NavigationHolder'
 import DropdownHolder from '../../DropdownHolder'
 import Preferences from '../../Preferences'
 import i18n from '../../i18n'
+import { selectSignatures, selectPictures } from './taskSelectors'
 
 /*
  * Action Types
@@ -23,6 +24,12 @@ export const MARK_TASK_FAILED_FAILURE = 'MARK_TASK_FAILED_FAILURE'
 export const UPLOAD_FILE_REQUEST = 'UPLOAD_FILE_REQUEST'
 export const UPLOAD_FILE_SUCCESS = 'UPLOAD_FILE_SUCCESS'
 export const UPLOAD_FILE_FAILURE = 'UPLOAD_FILE_FAILURE'
+
+export const ADD_PICTURE = 'ADD_PICTURE'
+export const ADD_SIGNATURE = 'ADD_SIGNATURE'
+export const CLEAR_FILES = 'CLEAR_FILES'
+export const DELETE_SIGNATURE = 'DELETE_SIGNATURE'
+export const DELETE_PICTURE = 'DELETE_PICTURE'
 
 export const DONT_TRIGGER_TASKS_NOTIFICATION = 'DONT_TRIGGER_TASKS_NOTIFICATION'
 export const ADD_TASK_FILTER = 'ADD_TASK_FILTER'
@@ -46,6 +53,12 @@ export const uploadFileRequest = createAction(UPLOAD_FILE_REQUEST)
 export const uploadFileSuccess = createAction(UPLOAD_FILE_SUCCESS, (task, taskImage) => ({ task, taskImage }))
 export const uploadFileFailure = createAction(UPLOAD_FILE_FAILURE)
 
+export const addPicture = createAction(ADD_PICTURE, (task, base64) => ({ task, base64 }))
+export const addSignature = createAction(ADD_SIGNATURE, (task, base64) => ({ task, base64 }))
+export const clearFiles = createAction(CLEAR_FILES)
+export const deleteSignatureAt = createAction(DELETE_SIGNATURE)
+export const deletePictureAt = createAction(DELETE_PICTURE)
+
 export const dontTriggerTasksNotification = createAction(DONT_TRIGGER_TASKS_NOTIFICATION)
 export const filterTasks = createAction(ADD_TASK_FILTER)
 export const clearTasksFilter = createAction(CLEAR_TASK_FILTER)
@@ -63,10 +76,12 @@ function resetNavigation() {
 }
 
 function showAlert(e) {
-  let message = i18n.t('TRY_LATER')
+  let message = i18n.t('AN_ERROR_OCCURRED')
 
   if (e.hasOwnProperty('hydra:description')) {
     message = e['hydra:description']
+  } else if (e.hasOwnProperty('message')) {
+    message = e.message
   }
 
   Alert.alert(
@@ -125,16 +140,39 @@ export function markTaskFailed(client, task, notes) {
   }
 }
 
-export function markTaskDone(client, task, notes) {
+export function markTaskDone(httpClient, task, notes = '') {
 
-  return function (dispatch) {
+  return function (dispatch, getState) {
+
     dispatch(markTaskDoneRequest(task))
 
-    return client
-      .put(task['@id'] + '/done', { reason: notes })
+    const state = getState()
+
+    // TODO Get httpClient from store
+    // const httpClient = state.app.httpClient
+
+    const signatures = selectSignatures(state)
+    const pictures = selectPictures(state)
+    const files = signatures.concat(pictures)
+
+    const promises = files.map(file => uploadTaskImage(httpClient, file))
+
+    Promise.all(promises)
+      .then(values => {
+        // Associates images with task
+        return httpClient.put(task['@id'], {
+          images: values.map(taskImage => taskImage['@id'])
+        })
+      })
       .then(task => {
-        dispatch(markTaskDoneSuccess(task))
-        setTimeout(() => resetNavigation(), 100)
+
+        return httpClient
+          .put(task['@id'] + '/done', { reason: notes })
+          .then(task => {
+            dispatch(clearFiles())
+            dispatch(markTaskDoneSuccess(task))
+            setTimeout(() => resetNavigation(), 100)
+          })
       })
       .catch(e => {
         dispatch(markTaskDoneFailure(e))
@@ -143,28 +181,23 @@ export function markTaskDone(client, task, notes) {
   }
 }
 
-export function uploadSignature(task, base64) {
+function uploadTaskImage(httpClient, base64) {
 
-  return (dispatch, getState) => {
+  // Remove line breaks from Base64 string
+  const base64AsString = base64.replace(/(\r\n|\n|\r)/gm, '')
 
-    const { app } = getState()
-    const { httpClient } = app
+  const headers = {
+    'Authorization' : `Bearer ${httpClient.getToken()}`,
+    'Content-Type' : 'multipart/form-data',
+  }
 
-    // Remove line breaks from Base64 string
-    const base64AsString = base64.replace(/(\r\n|\n|\r)/gm, '')
+  const body = [{
+    name : 'file',
+    filename: 'filename.jpg', // This is needed to work
+    data: base64AsString
+  }]
 
-    const headers = {
-      'Authorization' : `Bearer ${httpClient.getToken()}`,
-      'Content-Type' : 'multipart/form-data',
-    }
-
-    const body = [{
-      name : 'file',
-      filename: 'signature.jpg', // This is needed to work
-      data: base64AsString
-    }]
-
-    dispatch(uploadFileRequest())
+  return new Promise((resolve, reject) => {
 
     RNFetchBlob
       .fetch('POST', httpClient.getBaseURL() + '/api/task_images', headers, body)
@@ -176,37 +209,17 @@ export function uploadSignature(task, base64) {
 
         switch (fetchBlobResponseInfo.status) {
         case 400:
-          const error = fetchBlobResponse.json()
-          if (error.hasOwnProperty('@type') && error['@type'] === 'ConstraintViolationList') {
-            dispatch(uploadFileFailure(error))
-            DropdownHolder
-              .getDropdown()
-              .alertWithType('error', i18n.t('AN_ERROR_OCCURRED'), error['hydra:description'])
-          }
-          break
+          return reject(fetchBlobResponse.json())
         case 201:
-          const taskImage = fetchBlobResponse.json()
-          httpClient
-            .put(task['@id'], { images: [ taskImage['@id'] ] })
-            .then(res => {
-              dispatch(uploadFileSuccess(res, taskImage))
-              DropdownHolder
-                .getDropdown()
-                .alertWithType('success', i18n.t('TASK_IMAGE_UPLOAD_CONFIRM_SHORT'), i18n.t('TASK_IMAGE_UPLOAD_CONFIRM_LONG'))
-            })
-            .catch(e => dispatch(uploadFileFailure(e)))
-          break
+          return resolve(fetchBlobResponse.json())
         default:
-          // TODO Show alert with error message
-          dispatch(uploadFileFailure())
+          reject()
         }
 
         // TODO Manage token expired
 
       })
-      .catch(e => {
-        // TODO Show alert with error message
-        dispatch(uploadFileFailure(e))
-      })
-  }
+      .catch(e => reject(e))
+  })
+
 }

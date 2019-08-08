@@ -9,7 +9,7 @@ import { translate } from 'react-i18next'
 import { connect } from 'react-redux'
 import { RNCamera } from 'react-native-camera'
 
-import { uploadSignature } from '../../redux/Courier'
+import { addPicture } from '../../redux/Courier'
 
 class Photo extends Component {
 
@@ -25,7 +25,8 @@ class Photo extends Component {
     const task = this.props.navigation.getParam('task')
     const { image } = this.state
     if (image) {
-      this.props.uploadSignature(task, image.base64)
+      this.props.addPicture(task, image.base64)
+      this.props.navigation.navigate('TaskCompleteHome', { task })
     }
   }
 
@@ -72,7 +73,7 @@ class Photo extends Component {
           <FooterTab>
             <Button full onPress={ this._saveImage.bind(this) }>
               <Text style={{ color: '#ffffff' }}>
-                { this.props.t('SIGNATURE_SIGN') }
+                { this.props.t('PHOTO_ADD') }
               </Text>
             </Button>
           </FooterTab>
@@ -127,7 +128,7 @@ function mapStateToProps (state) {
 
 function mapDispatchToProps (dispatch) {
   return {
-    uploadSignature: (task, base64) => dispatch(uploadSignature(task, base64)),
+    addPicture: (task, base64) => dispatch(addPicture(task, base64)),
   }
 }
 

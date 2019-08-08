@@ -39,6 +39,8 @@ YellowBox.ignoreWarnings([
   'Require cycle:',
   // https://github.com/coopcycle/coopcycle-app/issues/172
   'Async Storage has been extracted from react-native core',
+  // react-native-camera
+  'permissionDialogTitle and permissionDialogMessage are deprecated'
 ])
 
 const RootNavigator = createAppContainer(createSwitchNavigator(

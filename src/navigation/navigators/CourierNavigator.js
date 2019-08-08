@@ -1,7 +1,11 @@
 import React, { Component } from 'react'
 import { View } from 'react-native'
 import { Button, Icon, Text } from 'native-base'
-import { createBottomTabNavigator, createMaterialTopTabNavigator, createStackNavigator } from 'react-navigation'
+import {
+  createBottomTabNavigator,
+  createMaterialTopTabNavigator,
+  createStackNavigator,
+  HeaderBackButton } from 'react-navigation'
 
 import i18n from '../../i18n'
 import navigation, { defaultNavigationOptions, headerLeft } from '..'
@@ -58,12 +62,6 @@ const MainNavigator = createStackNavigator({
     screen: navigation.CourierTaskPage,
     navigationOptions: ({ navigation }) => ({
       title: `${i18n.t('TASK')} #${navigation.state.params.task.id}`,
-      headerRight: (
-        <HeaderButton
-          iconType="FontAwesome5" iconName="file-signature"
-          iconStyle={{ fontSize: 18 }}
-          onPress={ () => navigation.navigate('TaskProofOfDelivery', { task: navigation.getParam('task') }) } />
-      )
     })
   },
   CourierTaskHistory: {
@@ -113,6 +111,36 @@ const ProofOfDeliveryTabs = createMaterialTopTabNavigator({
   swipeEnabled: false
 })
 
+const CompleteStack = createStackNavigator({
+  TaskCompleteHome: {
+    screen: navigation.CourierTaskComplete,
+    navigationOptions: ({ navigation }) => ({
+      header: null,
+    })
+  },
+  TaskCompleteProofOfDelivery: {
+    screen: ProofOfDeliveryTabs,
+    navigationOptions: ({ navigation }) => ({
+      header: null,
+    })
+  },
+}, {
+  defaultNavigationOptions,
+  initialRouteName: 'TaskCompleteHome',
+  navigationOptions: ({ navigation }) => ({
+    // We need to override the back button behavior
+    // because otherwise when we hit "back" on the PoD screen,
+    // it goes back to the task screen
+    headerLeft: (props) => {
+      const { onPress, ...otherProps } = props
+      return (
+        <HeaderBackButton { ...otherProps } onPress={ () => navigation.goBack(null) } />
+      )
+    }
+  })
+
+})
+
 export default createStackNavigator({
   Main: {
     screen: MainNavigator,
@@ -121,7 +149,7 @@ export default createStackNavigator({
     })
   },
   TaskComplete: {
-    screen: navigation.CourierTaskComplete,
+    screen: CompleteStack,
     navigationOptions: ({ navigation }) => ({
       title: `${i18n.t('TASK')} #${navigation.state.params.task.id}`,
     })
@@ -132,13 +160,7 @@ export default createStackNavigator({
       title: i18n.t('SETTINGS')
     })
   },
-  TaskProofOfDelivery: {
-    screen: ProofOfDeliveryTabs,
-    navigationOptions: ({ navigation }) => ({
-      title: i18n.t('SIGNATURE')
-    })
-  }
 }, {
+  defaultNavigationOptions,
   mode: 'modal',
-  defaultNavigationOptions
 })

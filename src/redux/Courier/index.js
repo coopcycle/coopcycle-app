@@ -21,6 +21,8 @@ import {
   filterTasks, clearTasksFilter,
   setKeepAwake,
   uploadSignature,
+  addPicture, addSignature,
+  deleteSignatureAt, deletePictureAt,
 } from './taskActions'
 import {
   selectTaskSelectedDate,
@@ -38,6 +40,8 @@ import {
   selectTagNames,
   selectIsTagHidden,
   selectKeepAwake,
+  selectSignatures,
+  selectPictures,
 } from './taskSelectors'
 
 
@@ -73,6 +77,10 @@ export {
   clearTasksFilter,
   setKeepAwake,
   uploadSignature,
+  addSignature,
+  addPicture,
+  deleteSignatureAt,
+  deletePictureAt,
 
   selectIsTasksLoading,
   selectIsTasksLoadingFailure,
@@ -89,4 +97,6 @@ export {
   selectTagNames,
   selectIsTagHidden,
   selectKeepAwake,
+  selectSignatures,
+  selectPictures,
 }

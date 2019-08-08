@@ -5,6 +5,8 @@ import {
   MARK_TASK_FAILED_REQUEST, MARK_TASK_FAILED_FAILURE, MARK_TASK_FAILED_SUCCESS,
   UPLOAD_FILE_REQUEST, UPLOAD_FILE_FAILURE, UPLOAD_FILE_SUCCESS,
   DONT_TRIGGER_TASKS_NOTIFICATION,
+  ADD_PICTURE, ADD_SIGNATURE,
+  CLEAR_FILES, DELETE_SIGNATURE, DELETE_PICTURE,
 } from './taskActions'
 import {
   ASSIGN_TASK_SUCCESS,
@@ -44,6 +46,8 @@ const tasksEntityInitialState = {
   },
   order: [/* 1, 2, 3, ... */],     // Array of task ids, indicating order for e.g. lists
   username: null,
+  pictures: [], // Array of base64 encoded pictures
+  signatures: [], // Array of base64 encoded signatures
 }
 
 
@@ -150,6 +154,45 @@ export const tasksEntityReducer = (state = tasksEntityInitialState, action = {})
         triggerTasksNotification: false,
       }
 
+    case ADD_SIGNATURE:
+
+      return {
+        ...state,
+        signatures: state.signatures.slice(0).concat([ action.payload.base64 ])
+      }
+
+    case ADD_PICTURE:
+
+      return {
+        ...state,
+        pictures: state.pictures.slice(0).concat([ action.payload.base64 ])
+      }
+
+    case DELETE_SIGNATURE:
+      const newSignatures = state.signatures.slice(0)
+      newSignatures.splice(action.payload, 1);
+
+      return {
+        ...state,
+        signatures: newSignatures
+      }
+
+    case DELETE_PICTURE:
+      const newPictures = state.pictures.slice(0)
+      newPictures.splice(action.payload, 1);
+
+      return {
+        ...state,
+        pictures: newPictures
+      }
+
+    case CLEAR_FILES:
+
+      return {
+        ...state,
+        signatures: [],
+        pictures: []
+      }
     default:
       return { ...state }
   }

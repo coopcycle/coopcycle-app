@@ -1,17 +1,27 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, TouchableOpacity } from 'react-native'
+import { Dimensions, Image, StyleSheet, View, TextInput, TouchableOpacity } from 'react-native'
 import {
   Container, Content,
   Icon, Text, Button, Footer,
   Form, Item, Input, Label
 } from 'native-base'
-import { Col, Row, Grid } from 'react-native-easy-grid'
 import { withNamespaces } from 'react-i18next'
 import { connect } from 'react-redux'
 import _ from 'lodash'
 
-import { selectTasksList, selectIsTaskCompleteFailure, markTaskDone, markTaskFailed } from '../../redux/Courier'
+import {
+  selectTasksList,
+  selectIsTaskCompleteFailure,
+  selectSignatures,
+  selectPictures,
+  deleteSignatureAt,
+  deletePictureAt,
+  markTaskDone,
+  markTaskFailed } from '../../redux/Courier'
 import { greenColor, greyColor, redColor } from '../../styles/common'
+
+const DELETE_ICON_SIZE = 32
+const CONTENT_PADDING = 20
 
 class CompleteTask extends Component {
 
@@ -44,20 +54,60 @@ class CompleteTask extends Component {
   render() {
 
     const { task, markTaskDone, markTaskFailed } = this.props.navigation.state.params
+    const { width, height } = Dimensions.get('window')
 
+    const imageSize = (width - 64) / 2
     const buttonIconName = markTaskDone ? 'checkmark' : 'warning'
     const onPress = markTaskDone ? this.markTaskDone.bind(this) : this.markTaskFailed.bind(this)
 
     return (
       <Container>
-        <Content padder>
-          <Form>
-            <Item stackedLabel>
-              <Label>{ this.props.t('NOTES') }</Label>
-              <Input onChangeText={ text => this.setState({ notes: text }) } />
-            </Item>
-          </Form>
+        <View style={{ padding: 20, borderBottomWidth: 1, borderBottomColor: '#ccc' }}>
+          <Label style={{ marginBottom: 5 }}>{ this.props.t('NOTES') }</Label>
+          <View style={{ paddingVertical: 5, paddingHorizontal: 10, borderWidth: 1, borderColor: '#ccc', borderRadius: 16 }}>
+            <TextInput multiline={ true } numberOfLines={ 3 } />
+          </View>
+        </View>
+        <Content contentContainerStyle={ styles.content }>
+          <View style={ styles.imagesContainer }>
+          { this.props.signatures.map((base64, key) => (
+            <View key={ `signatures:${key}` }
+              style={ [ styles.image, { width: imageSize, height: imageSize }] }>
+              <Image
+                source={{ uri: `data:image/jpeg;base64,${base64}` }}
+                style={{ width: (imageSize - 2), height: (imageSize - 2) }} />
+              <TouchableOpacity
+                style={ styles.imageDelBtn }
+                onPress={ _ => this.props.deleteSignatureAt(key) }>
+                <Icon type="FontAwesome5" name="times-circle" />
+              </TouchableOpacity>
+            </View>
+          ))}
+          { this.props.pictures.map((base64, key) => (
+            <View key={ `pictures:${key}` }
+              style={ [ styles.image, { width: imageSize, height: imageSize }] }>
+              <Image
+                source={{ uri: `data:image/jpeg;base64,${base64}` }}
+                style={{ width: (imageSize - 2), height: (imageSize - 2) }} />
+              <TouchableOpacity
+                style={ styles.imageDelBtn }
+                onPress={ _ => this.props.deletePictureAt(key) }>
+                <Icon type="FontAwesome5" name="times-circle" />
+              </TouchableOpacity>
+            </View>
+          ))}
+          </View>
         </Content>
+        <TouchableOpacity
+          style={ styles.addPoDButton }
+          onPress={ () => this.props.navigation.navigate('TaskCompleteProofOfDelivery', { task }) }>
+          <Icon type="FontAwesome5" name="signature"
+            style={ styles.addPoDButtonText } />
+          <Text
+            style={ [ styles.addPoDButtonText, { textAlign: 'center', marginHorizontal: 10 } ] }>Add a proof of delivery</Text>
+          <Icon type="FontAwesome5" name="camera"
+            style={ styles.addPoDButtonText } />
+        </TouchableOpacity>
         <Footer style={{ alignItems: 'center', backgroundColor: markTaskDone ? greenColor : redColor }}>
           <TouchableOpacity style={ styles.buttonContainer } onPress={ onPress }>
             <View style={ styles.buttonTextContainer }>
@@ -72,6 +122,15 @@ class CompleteTask extends Component {
 }
 
 const styles = StyleSheet.create({
+  content: {
+    flex: 1,
+    paddingTop: (CONTENT_PADDING + (CONTENT_PADDING - (DELETE_ICON_SIZE / 2))),
+    paddingRight: (CONTENT_PADDING + (CONTENT_PADDING - (DELETE_ICON_SIZE / 2))),
+    paddingBottom: CONTENT_PADDING,
+    paddingLeft: CONTENT_PADDING,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc'
+  },
   buttonContainer: {
     ...StyleSheet.absoluteFillObject
   },
@@ -81,6 +140,43 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flexDirection: 'row'
   },
+  form: {
+    flex: 1,
+    marginBottom: 10
+  },
+  addPoDButton: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 15,
+    maxHeight: '15%'
+  },
+  addPoDButtonText: {
+    color: '#0074D9'
+  },
+  imagesContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    flexWrap: 'wrap',
+  },
+  image: {
+    borderWidth: 1,
+    borderColor: '#ddd',
+    marginBottom: 20
+  },
+  imageDelBtn: {
+    position: 'absolute',
+    backgroundColor: '#ffffff',
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: '#ffffff',
+    top: -16,
+    right: -16
+  }
 })
 
 function mapStateToProps (state) {
@@ -88,6 +184,8 @@ function mapStateToProps (state) {
     httpClient: state.app.httpClient,
     tasks: selectTasksList(state),
     taskCompleteError: selectIsTaskCompleteFailure(state),
+    signatures: selectSignatures(state),
+    pictures: selectPictures(state)
   }
 }
 
@@ -95,6 +193,8 @@ function mapDispatchToProps (dispatch) {
   return {
     markTaskFailed: (client, task, notes) => dispatch(markTaskFailed(client, task, notes)),
     markTaskDone: (client, task, notes) => dispatch(markTaskDone(client, task, notes)),
+    deleteSignatureAt: index => dispatch(deleteSignatureAt(index)),
+    deletePictureAt: index => dispatch(deletePictureAt(index)),
   }
 }
 
