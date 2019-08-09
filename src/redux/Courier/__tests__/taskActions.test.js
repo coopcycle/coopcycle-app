@@ -155,8 +155,8 @@ describe('Redux | Tasks | Actions', () => {
         expect(actions).toContainEqual(clearFiles())
         expect(actions).toContainEqual(markTaskDoneSuccess(resolveValue))
 
-        expect(client.put).toHaveBeenCalledTimes(2)
-        expect(client.put).toHaveBeenCalledWith(task['@id'], { images: [] })
+        expect(client.put).toHaveBeenCalledTimes(1)
+        expect(client.put).not.toHaveBeenCalledWith(task['@id'], { images: [] })
         expect(client.put).toHaveBeenCalledWith(`${task['@id']}/done`, { reason: notes })
       })
   })
@@ -190,7 +190,8 @@ describe('Redux | Tasks | Actions', () => {
         expect(actions).toContainEqual(markTaskDoneFailure(rejectValue))
 
         expect(client.put).toHaveBeenCalledTimes(1)
-        expect(client.put).toHaveBeenCalledWith(task['@id'], { images: [] })
+        expect(client.put).not.toHaveBeenCalledWith(task['@id'], { images: [] })
+        expect(client.put).toHaveBeenCalledWith(`${task['@id']}/done`, { reason: notes })
       })
   })
 

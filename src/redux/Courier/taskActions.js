@@ -159,6 +159,9 @@ export function markTaskDone(httpClient, task, notes = '') {
 
     return Promise.all(promises)
       .then(values => {
+        if (values.length === 0) {
+          return task
+        }
         // Associates images with task
         return httpClient.put(task['@id'], {
           images: values.map(taskImage => taskImage['@id'])
