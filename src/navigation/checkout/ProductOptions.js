@@ -6,7 +6,7 @@ import { withNamespaces } from 'react-i18next'
 import { connect } from 'react-redux'
 import _ from 'lodash'
 
-import { addItem } from '../../redux/Checkout/actions'
+import { addItemWithOptions } from '../../redux/Checkout/actions'
 import { formatPrice } from '../../Cart'
 
 class ProductOptions extends Component {
@@ -180,7 +180,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    addItem: (item, options) => dispatch(addItem(item, options)),
+    addItem: (item, options) => dispatch(addItemWithOptions(item, options)),
   }
 }
 

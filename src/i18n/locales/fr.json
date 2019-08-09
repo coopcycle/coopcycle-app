@@ -175,6 +175,8 @@
     "CHECKOUT_LOGIN_TITLE": "Authentification",
     "CHECKOUT_LOGIN_DISCLAIMER": "Veuillez vous indentifier pour poursuivre",
     "CHECKOUT_SHIPPING_DATE": "Choisissez une date",
+    "CHECKOUT_PLEASE_ENTER_ADDRESS": "Veuillez entrer votre adresse",
+    "CHECKOUT_ADDRESS_NOT_VALID": "Désolé, nous ne livrons pas à cette adresse",
     "ADD_TO_CART": "Ajouter au panier",
     "NOTIFICATION_TASKS_CHANGED_TITLE": "Tâches mises à jour",
     "NOTIFICATION_TASKS_CHANGED_DESC": "Vos tâches du {{date}} ont été mises à jour",

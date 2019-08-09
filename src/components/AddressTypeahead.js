@@ -46,7 +46,7 @@ class AddressTypeahead extends Component {
         ref={ ref => this.googlePlacesAutocomplete = ref }
         placeholder={ this.props.t('ENTER_ADDRESS') }
         minLength={ 2 } // minimum length of text to search
-        autoFocus={ false }
+        autoFocus={ this.props.autoFocus || false }
         // listViewDisplayed = auto does not hide the results when pressed
         listViewDisplayed={ false }
         fetchDetails={ true }
