@@ -18,15 +18,25 @@ const isCompleted = task => task.status !== 'TODO'
 
 class TaskPage extends Component {
 
-  map = null
-
   constructor(props) {
     super(props)
 
     this.state = {
       swipeOutClose: false,
       mapDimensions: [],
+      canRenderMap: false
     }
+  }
+
+  componentDidMount() {
+    this.didFocusListener = this.props.navigation.addListener(
+      'didFocus',
+      payload => this.setState({ canRenderMap: true })
+    )
+  }
+
+  componentWillUnmount() {
+    this.didFocusListener.remove()
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -265,10 +275,17 @@ class TaskPage extends Component {
     )
   }
 
-  render() {
+  renderMap() {
 
-    const { geolocation, task } = this.props.navigation.state.params
-    const { navigate } = this.props.navigation
+    if (!this.state.canRenderMap) {
+
+      return (
+        <View style={ [ styles.map, { backgroundColor: '#eeeeee' } ] } />
+      )
+    }
+
+    const { task } = this.props.navigation.state.params
+
     const { mapDimensions } = this.state
 
     // @see https://stackoverflow.com/questions/46568465/convert-a-region-latitudedelta-longitudedelta-into-an-approximate-zoomlevel/
@@ -287,6 +304,33 @@ class TaskPage extends Component {
       latitudeDelta: distanceDelta,
       longitudeDelta: distanceDelta * aspectRatio
     }
+
+    return (
+      <MapView
+        style={ styles.map }
+        zoomEnabled
+        showsUserLocation
+        loadingEnabled
+        loadingIndicatorColor={ "#666666" }
+        loadingBackgroundColor={ "#eeeeee" }
+        initialRegion={ region }
+        region={ region }
+        onLayout={ this._onMapLayout.bind(this) }>
+        <MapView.Marker
+          identifier={ task['@id'] }
+          key={ task['@id'] }
+          coordinate={ task.address.geo }
+          pinColor={ this.pinColor(task) }
+          flat={ true }>
+        </MapView.Marker>
+      </MapView>
+    )
+  }
+
+  render() {
+
+    const { geolocation, task } = this.props.navigation.state.params
+    const { navigate } = this.props.navigation
 
     const hasLinkedTasks = (task.previous || task.next)
     const hasPreviousTask = Boolean(task.previous)
@@ -308,25 +352,7 @@ class TaskPage extends Component {
           <Row size={ 8 }>
             <Col>
               <Row size={ 2 }>
-                <MapView
-                  ref={ component => this.map = component }
-                  style={ styles.map }
-                  zoomEnabled
-                  showsUserLocation
-                  loadingEnabled
-                  loadingIndicatorColor={"#666666"}
-                  loadingBackgroundColor={"#eeeeee"}
-                  initialRegion={ region }
-                  region={ region }
-                  onLayout={ this._onMapLayout.bind(this) }>
-                  <MapView.Marker
-                    identifier={ task['@id'] }
-                    key={ task['@id'] }
-                    coordinate={ task.address.geo }
-                    pinColor={ this.pinColor(task) }
-                    flat={ true }>
-                  </MapView.Marker>
-                </MapView>
+                { this.renderMap() }
               </Row>
               <Row size={ 3 }>
                 <Col>
@@ -335,7 +361,8 @@ class TaskPage extends Component {
               </Row>
             </Col>
           </Row>
-          { hasLinkedTasks && <Row size={ 4 } style={ styles.swipeOutHelpContainer }>
+          { hasLinkedTasks && (
+          <Row size={ 4 } style={ styles.swipeOutHelpContainer }>
             <Col>
               { hasPreviousTask && <Button transparent
                 onPress={ () => navigate('Task', { geolocation, task: previousTask }) }>
@@ -350,7 +377,8 @@ class TaskPage extends Component {
                 <Icon name="arrow-forward" />
               </Button> }
             </Col>
-          </Row> }
+          </Row>
+          )}
           { !isCompleted(task) && <Row size={ 4 } style={ styles.swipeOutHelpContainer }>
             <View style={{ paddingVertical: 10, paddingHorizontal: 15 }}>
               <Text style={styles.swipeOutHelpText}>{`${this.props.t('SWIPE_TO_END')}.`}</Text>
