@@ -1,6 +1,8 @@
 import configureStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import moment from 'moment'
+import RNFetchBlob from 'rn-fetch-blob'
+
 import {
   LOAD_TASKS_REQUEST, LOAD_TASKS_SUCCESS, LOAD_TASKS_FAILURE,
   MARK_TASK_DONE_REQUEST, MARK_TASK_DONE_SUCCESS, MARK_TASK_DONE_FAILURE,
@@ -157,6 +159,53 @@ describe('Redux | Tasks | Actions', () => {
 
         expect(client.put).toHaveBeenCalledTimes(1)
         expect(client.put).not.toHaveBeenCalledWith(task['@id'], { images: [] })
+        expect(client.put).toHaveBeenCalledWith(`${task['@id']}/done`, { reason: notes })
+      })
+  })
+
+  test('markTaskDone with PoDs | Successful request', () => {
+    const task = { '@id': '/api/tasks/1' }
+    const notes = 'notes'
+    const resolveValue = { ...task }
+
+    const client = {
+      put: jest.fn(),
+      getToken: () => '123456',
+      getBaseURL: () => 'https://test.coopcycle.org'
+    }
+    client.put.mockResolvedValue(resolveValue)
+    client.put.mockResolvedValue(resolveValue)
+
+    const store = mockStore({
+      entities: {
+        tasks: {
+          signatures: [
+            '123456'
+          ],
+          pictures: []
+        },
+      },
+    })
+
+    RNFetchBlob.fetch = jest.fn()
+    RNFetchBlob.fetch.mockResolvedValue({
+      info: () => ({ status: 201 }),
+      json: () => ({ '@id': '/api/task_images/1' })
+    })
+
+    // Make sure to return the promise
+    return store.dispatch(markTaskDone(client, task, notes))
+      .then(() => {
+        const actions = store.getActions()
+
+        expect(actions).toContainEqual(markTaskDoneRequest(task))
+        expect(actions).toContainEqual(clearFiles())
+        expect(actions).toContainEqual(markTaskDoneSuccess(resolveValue))
+
+        expect(client.put).toHaveBeenCalledTimes(2)
+        expect(client.put).toHaveBeenCalledWith(task['@id'], { images: [
+          '/api/task_images/1'
+        ] })
         expect(client.put).toHaveBeenCalledWith(`${task['@id']}/done`, { reason: notes })
       })
   })
