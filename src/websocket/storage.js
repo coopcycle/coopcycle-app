@@ -4,8 +4,7 @@
  * A simple abstraction build on top of react-native's `AsyncStorage`.
  * Simplifies dealing with the storage and manipulation of stringified JSON
  */
-import { AsyncStorage } from 'react-native'
-
+import AsyncStorage from '@react-native-community/async-storage'
 
 const JSONAsyncStorage = {
   get: (key) =>

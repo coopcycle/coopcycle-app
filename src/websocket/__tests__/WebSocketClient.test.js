@@ -1,19 +1,18 @@
-import { AsyncStorage } from 'react-native'
+import AsyncStorage from '@react-native-community/async-storage'
 import WebSocketClient from '../WebSocketClient'
 
-
 describe('WebSocketClient', () => {
+
+  beforeEach(() => {
+    AsyncStorage.clear()
+  })
+
   const client = {
     getBaseURL: () => 'http://foo.com',
     getToken: () => 'iot9384htgonrqdq',
     checkToken: jest.fn(),
     refreshToken: jest.fn(),
   }
-
-  jest.mock('AsyncStorage', () => ({
-    getItem: jest.fn(),
-    setItem: jest.fn(),
-  }))
 
   class MockWebSocket {
     url = ''
@@ -100,9 +99,6 @@ describe('WebSocketClient', () => {
   })
 
   test('connect', () => {
-    AsyncStorage.getItem.mockReturnValue(Promise.resolve(null))
-    AsyncStorage.setItem.mockReturnValue(Promise.resolve())
-
     const ws = new WebSocketClient(client, '/dispatch')
 
     const promise = ws.connect()
@@ -118,9 +114,6 @@ describe('WebSocketClient', () => {
   })
 
   test('send | online', () => {
-    AsyncStorage.getItem.mockReturnValue(Promise.resolve(null))
-    AsyncStorage.setItem.mockReturnValue(Promise.resolve())
-
     const ws = new WebSocketClient(client, '/dispatch')
     const msg = { foo: true }
 
@@ -137,24 +130,17 @@ describe('WebSocketClient', () => {
   })
 
   test('send | offline | pre-connect', () => {
-    AsyncStorage.getItem.mockReturnValue(Promise.resolve(null))
-    AsyncStorage.setItem.mockReturnValue(Promise.resolve())
-
     const ws = new WebSocketClient(client, '/dispatch')
     const msg = { foo: true }
 
     return ws.send(msg)
-      .then(() => {
-        expect(AsyncStorage.getItem).toHaveBeenCalledTimes(1)
-        expect(AsyncStorage.setItem).toHaveBeenCalledTimes(1)
-        expect(AsyncStorage.setItem).toHaveBeenCalledWith('@WsMsgQueue', JSON.stringify([msg]))
+      .then(async () => {
+        const value = await AsyncStorage.getItem('@WsMsgQueue')
+        expect(value).toBe(JSON.stringify([msg]))
       })
   })
 
   test('send | offline | post-connect', () => {
-    AsyncStorage.getItem.mockReturnValue(Promise.resolve(null))
-    AsyncStorage.setItem.mockReturnValue(Promise.resolve())
-
     const ws = new WebSocketClient(client, '/dispatch')
     const msg = { foo: true }
 
@@ -165,10 +151,9 @@ describe('WebSocketClient', () => {
 
         return ws.send(msg)
       })
-      .then(() => {
-        expect(AsyncStorage.getItem).toHaveBeenCalledTimes(2)
-        expect(AsyncStorage.setItem).toHaveBeenCalledTimes(2)
-        expect(AsyncStorage.setItem).toHaveBeenCalledWith('@WsMsgQueue', JSON.stringify([msg]))
+      .then(async () => {
+        const value = await AsyncStorage.getItem('@WsMsgQueue')
+        expect(value).toBe(JSON.stringify([msg]))
       })
 
     ws.webSocket._open()

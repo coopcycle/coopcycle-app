@@ -1,6 +1,7 @@
 import { createAction } from 'redux-actions'
 import moment from 'moment'
-import { AsyncStorage, Platform } from 'react-native'
+import { Platform } from 'react-native'
+import AsyncStorage from '@react-native-community/async-storage';
 import BackgroundGeolocation from '@mauron85/react-native-background-geolocation'
 import { NavigationActions, StackActions } from 'react-navigation'
 import Matomo from 'react-native-matomo'

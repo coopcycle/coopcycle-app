@@ -1,11 +1,6 @@
-import MockAsyncStorage from 'mock-async-storage'
+import AsyncStorage from '@react-native-community/async-storage'
 import Settings, { defaults as defaultSettings } from '../src/Settings'
 import API from '../src/API'
-
-const mock = () => {
-  const mockImpl = new MockAsyncStorage()
-  jest.mock('AsyncStorage', () => mockImpl)
-}
 
 const mockClient = (responses) => {
   API.createClient = jest.fn(() => {
@@ -19,13 +14,9 @@ const mockClient = (responses) => {
   })
 }
 
-mock();
-
 afterEach(() => {
   AsyncStorage.clear()
 });
-
-import { AsyncStorage } from 'react-native'
 
 it('rejects when baseURL is undefined', () => {
   expect.assertions(1);
