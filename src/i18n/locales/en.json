@@ -175,6 +175,8 @@
     "CHECKOUT_LOGIN_TITLE": "Authentication",
     "CHECKOUT_LOGIN_DISCLAIMER": "Please authenticate to continue",
     "CHECKOUT_SHIPPING_DATE": "Choose date",
+    "CHECKOUT_PLEASE_ENTER_ADDRESS": "Please enter your address",
+    "CHECKOUT_ADDRESS_NOT_VALID": "Sorry, we don't deliver at this address",
     "ADD_TO_CART": "Add to cart",
     "NOTIFICATION_TASKS_CHANGED_TITLE": "Tasks changed",
     "NOTIFICATION_TASKS_CHANGED_DESC": "Your tasks from {{date}} have been updated",

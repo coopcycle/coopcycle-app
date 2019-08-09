@@ -34,12 +34,6 @@ const MainNavigator = createStackNavigator({
       )
     })
   },
-  CheckoutAddress: {
-    screen: navigation.CheckoutAddress,
-    navigationOptions: ({ navigation }) => ({
-      title: i18n.t('DELIVERY_ADDR'),
-    })
-  },
   CheckoutCreditCard: {
     screen: navigation.CheckoutCreditCard,
     navigationOptions: ({ navigation }) => ({

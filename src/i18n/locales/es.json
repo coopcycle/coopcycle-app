@@ -173,6 +173,8 @@
     "CHECKOUT_LOGIN_TITLE": "Autenticación",
     "CHECKOUT_LOGIN_DISCLAIMER": "Por favor inicie sesión para continuar",
     "CHECKOUT_SHIPPING_DATE": "Elige una fecha",
+    "CHECKOUT_PLEASE_ENTER_ADDRESS": "Por favor, introduzca su dirección",
+    "CHECKOUT_ADDRESS_NOT_VALID": "Lo sentimos, no entregamos a esta dirección",
     "ADD_TO_CART": "Añadir al carrito",
     "NOTIFICATION_TASKS_CHANGED_TITLE": "Tareas actualizadas",
     "NOTIFICATION_TASKS_CHANGED_DESC": "Sus tareas de {{date}} han sido actualizadas",

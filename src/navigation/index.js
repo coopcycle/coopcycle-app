@@ -31,7 +31,6 @@ export default {
   CheckoutSummary: require('./checkout/Summary'),
   CheckoutShippingDate: require('./checkout/ShippingDate'),
   CheckoutCreditCard: require('./checkout/CreditCard'),
-  CheckoutAddress: require('./checkout/Address'),
   CourierTasksPage: require('./courier/TasksPage'),
   CourierTaskListPage: require('./courier/TaskListPage'),
   CourierTaskPage: require('./courier/TaskPage'),

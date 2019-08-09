@@ -7,6 +7,7 @@ import {
   INCREMENT_ITEM,
   DECREMENT_ITEM,
   SET_ADDRESS,
+  SET_ADDRESS_OK,
   SET_DATE,
   CLEAR,
   LOAD_RESTAURANTS_REQUEST,
@@ -18,6 +19,8 @@ import {
   LOAD_RESTAURANT_REQUEST,
   LOAD_RESTAURANT_SUCCESS,
   LOAD_RESTAURANT_FAILURE,
+  SHOW_ADDRESS_MODAL,
+  HIDE_ADDRESS_MODAL
 } from './actions'
 
 import Cart from '../../Cart'
@@ -28,11 +31,13 @@ import moment from 'moment'
 const initialState = {
   cart: new Cart(),
   address: null,
+  isAddressOK: null,
   date: null,
   restaurants: [],
   menu: null,
   isFetching: false,
-  errors: []
+  errors: [],
+  isAddressModalVisible: false
 }
 
 export default (state = initialState, action = {}) => {
@@ -90,7 +95,8 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         isFetching: false,
-        menu: action.payload.hasMenu
+        menu: action.payload.hasMenu,
+        isAddressOK: null // We don't know if it's valid
       }
 
     case CLEAR:
@@ -160,6 +166,12 @@ export default (state = initialState, action = {}) => {
         address: action.payload
       }
 
+    case SET_ADDRESS_OK:
+      return {
+        ...state,
+        isAddressOK: action.payload
+      }
+
     case SET_DATE:
       return {
         ...state,
@@ -177,6 +189,18 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         isFetching: false,
+      }
+
+    case SHOW_ADDRESS_MODAL:
+      return {
+        ...state,
+        isAddressModalVisible: true,
+      }
+
+    case HIDE_ADDRESS_MODAL:
+      return {
+        ...state,
+        isAddressModalVisible: false,
       }
 
     default:
