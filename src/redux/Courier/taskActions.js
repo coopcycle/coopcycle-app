@@ -157,7 +157,7 @@ export function markTaskDone(httpClient, task, notes = '') {
 
     const promises = files.map(file => uploadTaskImage(httpClient, file))
 
-    Promise.all(promises)
+    return Promise.all(promises)
       .then(values => {
         // Associates images with task
         return httpClient.put(task['@id'], {
@@ -165,7 +165,6 @@ export function markTaskDone(httpClient, task, notes = '') {
         })
       })
       .then(task => {
-
         return httpClient
           .put(task['@id'] + '/done', { reason: notes })
           .then(task => {

@@ -1,3 +1,5 @@
+import configureStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 import moment from 'moment'
 import {
   LOAD_TASKS_REQUEST, LOAD_TASKS_SUCCESS, LOAD_TASKS_FAILURE,
@@ -9,6 +11,7 @@ import {
   markTaskDoneRequest, markTaskDoneSuccess, markTaskDoneFailure,
   markTaskFailedRequest, markTaskFailedSuccess, markTaskFailedFailure,
   dontTriggerTasksNotification,
+  clearFiles,
 
   loadTasks, markTaskDone, markTaskFailed,
 } from '../taskActions'
@@ -16,6 +19,10 @@ import {
 // As we may be using setTimeout(), we need to mock timers
 // @see https://jestjs.io/docs/en/timer-mocks.html
 jest.useFakeTimers();
+
+// https://github.com/dmitry-zaets/redux-mock-store#asynchronous-actions
+const middlewares = [thunk]
+const mockStore = configureStore(middlewares)
 
 describe('Redux | Tasks | Actions', () => {
   [
@@ -120,49 +127,71 @@ describe('Redux | Tasks | Actions', () => {
   })
 
   test('markTaskDone | Successful request', () => {
-    const task = { '@id': 1 }
+    const task = { '@id': '/api/tasks/1' }
     const notes = 'notes'
-    const client = { put: jest.fn() }
-    const dispatch = jest.fn()
     const resolveValue = { ...task }
 
+    const client = {
+      put: jest.fn()
+    }
+    client.put.mockResolvedValue(resolveValue)
     client.put.mockResolvedValue(resolveValue)
 
-    const thunk = markTaskDone(client, task, notes)
-    const promise = thunk(dispatch)
-
-    expect(thunk).toBeInstanceOf(Function)
-    expect(client.put).toHaveBeenCalledTimes(1)
-    expect(client.put).toHaveBeenLastCalledWith(`${task['@id']}/done`, { reason: notes })
-
-    return promise.then(() => {
-      expect(dispatch).toHaveBeenCalledTimes(2)
-      expect(dispatch).toHaveBeenCalledWith({ type: MARK_TASK_DONE_REQUEST, payload: task })
-      expect(dispatch).toHaveBeenLastCalledWith({ type: MARK_TASK_DONE_SUCCESS, payload: resolveValue })
+    const store = mockStore({
+      entities: {
+        tasks: {
+          signatures: [],
+          pictures: []
+        },
+      },
     })
+
+    // Make sure to return the promise
+    return store.dispatch(markTaskDone(client, task, notes))
+      .then(() => {
+        const actions = store.getActions()
+
+        expect(actions).toContainEqual(markTaskDoneRequest(task))
+        expect(actions).toContainEqual(clearFiles())
+        expect(actions).toContainEqual(markTaskDoneSuccess(resolveValue))
+
+        expect(client.put).toHaveBeenCalledTimes(2)
+        expect(client.put).toHaveBeenCalledWith(task['@id'], { images: [] })
+        expect(client.put).toHaveBeenCalledWith(`${task['@id']}/done`, { reason: notes })
+      })
   })
 
   test('markTaskDone | Failed request', () => {
     const task = { '@id': 1 }
     const notes = 'notes'
-    const client = { put: jest.fn() }
-    const dispatch = jest.fn()
     const rejectValue = new Error('test error')
 
-    client.put.mockReturnValue(Promise.reject(rejectValue))
+    const client = {
+      put: jest.fn()
+    }
+    client.put.mockRejectedValue(rejectValue)
+    // client.put.mockResolvedValue(resolveValue)
 
-    const thunk = markTaskDone(client, task, notes)
-    const promise = thunk(dispatch)
-
-    expect(thunk).toBeInstanceOf(Function)
-    expect(client.put).toHaveBeenCalledTimes(1)
-    expect(client.put).toHaveBeenLastCalledWith(`${task['@id']}/done`, { reason: notes })
-
-    return promise.then(() => {
-      expect(dispatch).toHaveBeenCalledTimes(2)
-      expect(dispatch).toHaveBeenCalledWith({ type: MARK_TASK_DONE_REQUEST, payload: task })
-      expect(dispatch).toHaveBeenLastCalledWith({ type: MARK_TASK_DONE_FAILURE, payload: rejectValue, error: true })
+    const store = mockStore({
+      entities: {
+        tasks: {
+          signatures: [],
+          pictures: []
+        },
+      },
     })
+
+    // Make sure to return the promise
+    return store.dispatch(markTaskDone(client, task, notes))
+      .then(() => {
+        const actions = store.getActions()
+
+        expect(actions).toContainEqual(markTaskDoneRequest(task))
+        expect(actions).toContainEqual(markTaskDoneFailure(rejectValue))
+
+        expect(client.put).toHaveBeenCalledTimes(1)
+        expect(client.put).toHaveBeenCalledWith(task['@id'], { images: [] })
+      })
   })
 
   test('markTaskFailed | Successful request', () => {
