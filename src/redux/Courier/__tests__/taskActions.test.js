@@ -140,6 +140,7 @@ describe('Redux | Tasks | Actions', () => {
     client.put.mockResolvedValue(resolveValue)
 
     const store = mockStore({
+      app: { httpClient: client },
       entities: {
         tasks: {
           signatures: [],
@@ -177,6 +178,7 @@ describe('Redux | Tasks | Actions', () => {
     client.put.mockResolvedValue(resolveValue)
 
     const store = mockStore({
+      app: { httpClient: client },
       entities: {
         tasks: {
           signatures: [
@@ -219,9 +221,9 @@ describe('Redux | Tasks | Actions', () => {
       put: jest.fn()
     }
     client.put.mockRejectedValue(rejectValue)
-    // client.put.mockResolvedValue(resolveValue)
 
     const store = mockStore({
+      app: { httpClient: client },
       entities: {
         tasks: {
           signatures: [],
@@ -245,48 +247,72 @@ describe('Redux | Tasks | Actions', () => {
   })
 
   test('markTaskFailed | Successful request', () => {
-    const task = { '@id': 1 }
+    const task = { '@id': '/api/tasks/1' }
     const notes = 'notes'
-    const client = { put: jest.fn() }
-    const dispatch = jest.fn()
     const resolveValue = { ...task }
 
+    const client = {
+      put: jest.fn()
+    }
+    client.put.mockResolvedValue(resolveValue)
     client.put.mockResolvedValue(resolveValue)
 
-    const thunk = markTaskFailed(client, task, notes)
-    const promise = thunk(dispatch)
-
-    expect(thunk).toBeInstanceOf(Function)
-    expect(client.put).toHaveBeenCalledTimes(1)
-    expect(client.put).toHaveBeenLastCalledWith(`${task['@id']}/failed`, { reason: notes })
-
-    return promise.then(() => {
-      expect(dispatch).toHaveBeenCalledTimes(2)
-      expect(dispatch).toHaveBeenCalledWith({ type: MARK_TASK_FAILED_REQUEST, payload: task })
-      expect(dispatch).toHaveBeenLastCalledWith({ type: MARK_TASK_FAILED_SUCCESS, payload: resolveValue })
+    const store = mockStore({
+      app: { httpClient: client },
+      entities: {
+        tasks: {
+          signatures: [],
+          pictures: []
+        },
+      },
     })
+
+    // Make sure to return the promise
+    return store.dispatch(markTaskFailed(client, task, notes))
+      .then(() => {
+        const actions = store.getActions()
+
+        expect(actions).toContainEqual(markTaskFailedRequest(task))
+        expect(actions).toContainEqual(clearFiles())
+        expect(actions).toContainEqual(markTaskFailedSuccess(resolveValue))
+
+        expect(client.put).toHaveBeenCalledTimes(1)
+        expect(client.put).not.toHaveBeenCalledWith(task['@id'], { images: [] })
+        expect(client.put).toHaveBeenCalledWith(`${task['@id']}/failed`, { reason: notes })
+      })
   })
 
   test('markTaskFailed | Failed request', () => {
     const task = { '@id': 1 }
     const notes = 'notes'
-    const client = { put: jest.fn() }
-    const dispatch = jest.fn()
     const rejectValue = new Error('test error')
 
-    client.put.mockReturnValue(Promise.reject(rejectValue))
+    const client = {
+      put: jest.fn()
+    }
+    client.put.mockRejectedValue(rejectValue)
 
-    const thunk = markTaskFailed(client, task, notes)
-    const promise = thunk(dispatch)
-
-    expect(thunk).toBeInstanceOf(Function)
-    expect(client.put).toHaveBeenCalledTimes(1)
-    expect(client.put).toHaveBeenLastCalledWith(`${task['@id']}/failed`, { reason: notes })
-
-    return promise.then(() => {
-      expect(dispatch).toHaveBeenCalledTimes(2)
-      expect(dispatch).toHaveBeenCalledWith({ type: MARK_TASK_FAILED_REQUEST, payload: task })
-      expect(dispatch).toHaveBeenLastCalledWith({ type: MARK_TASK_FAILED_FAILURE, payload: rejectValue, error: true })
+    const store = mockStore({
+      app: { httpClient: client },
+      entities: {
+        tasks: {
+          signatures: [],
+          pictures: []
+        },
+      },
     })
+
+    // Make sure to return the promise
+    return store.dispatch(markTaskFailed(client, task, notes))
+      .then(() => {
+        const actions = store.getActions()
+
+        expect(actions).toContainEqual(markTaskFailedRequest(task))
+        expect(actions).toContainEqual(markTaskFailedFailure(rejectValue))
+
+        expect(client.put).toHaveBeenCalledTimes(1)
+        expect(client.put).not.toHaveBeenCalledWith(task['@id'], { images: [] })
+        expect(client.put).toHaveBeenCalledWith(`${task['@id']}/failed`, { reason: notes })
+      })
   })
 })

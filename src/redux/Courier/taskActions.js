@@ -122,16 +122,43 @@ export function loadTasks(client, selectedDate) {
   }
 }
 
-export function markTaskFailed(client, task, notes) {
+function uploadTaskImages(task, state) {
 
-  return function (dispatch) {
+  const signatures = selectSignatures(state)
+  const pictures = selectPictures(state)
+
+  const files = signatures.concat(pictures)
+
+  const promises = files.map(file => uploadTaskImage(state.app.httpClient, file))
+
+  return Promise.all(promises)
+    .then(values => {
+      if (values.length === 0) {
+        return task
+      }
+      // Associates images with task
+      return state.app.httpClient.put(task['@id'], {
+        images: values.map(image => image['@id'])
+      })
+    })
+}
+
+export function markTaskFailed(httpClient, task, notes) {
+
+  return function (dispatch, getState) {
+
     dispatch(markTaskFailedRequest(task))
 
-    return client
-      .put(task['@id'] + '/failed', { reason: notes })
+    // Make sure to return a promise for testing
+    return uploadTaskImages(task, getState())
       .then(task => {
-        dispatch(markTaskFailedSuccess(task))
-        setTimeout(() => resetNavigation(), 100)
+        return httpClient
+          .put(task['@id'] + '/failed', { reason: notes })
+          .then(task => {
+            dispatch(clearFiles())
+            dispatch(markTaskFailedSuccess(task))
+            setTimeout(() => resetNavigation(), 100)
+          })
       })
       .catch(e => {
         dispatch(markTaskFailedFailure(e))
@@ -146,27 +173,8 @@ export function markTaskDone(httpClient, task, notes = '') {
 
     dispatch(markTaskDoneRequest(task))
 
-    const state = getState()
-
-    // TODO Get httpClient from store
-    // const httpClient = state.app.httpClient
-
-    const signatures = selectSignatures(state)
-    const pictures = selectPictures(state)
-    const files = signatures.concat(pictures)
-
-    const promises = files.map(file => uploadTaskImage(httpClient, file))
-
-    return Promise.all(promises)
-      .then(values => {
-        if (values.length === 0) {
-          return task
-        }
-        // Associates images with task
-        return httpClient.put(task['@id'], {
-          images: values.map(taskImage => taskImage['@id'])
-        })
-      })
+    // Make sure to return a promise for testing
+    return uploadTaskImages(task, getState())
       .then(task => {
         return httpClient
           .put(task['@id'] + '/done', { reason: notes })
