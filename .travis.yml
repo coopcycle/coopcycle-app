@@ -74,7 +74,7 @@ matrix:
       - nvm install 8
       - gem install xcpretty
       - npm install -g yarn
-      - yarn config set cache-folder "$HOME/.cache/yarn"
+      # - yarn config set cache-folder "$HOME/.cache/yarn"
       - yarn install
       - rm -rf ios/build
     script:
