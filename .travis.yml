@@ -64,7 +64,7 @@ matrix:
   - language: objective-c
     env: LANE='ios'
     os: osx
-    osx_image: xcode10.1
+    osx_image: xcode10.2
     xcode_project: CoopCycle.xcodeproj
     xcode_scheme: CoopCycleTests
     cache:
@@ -78,7 +78,7 @@ matrix:
       - yarn install
       - cd ios
     script:
-      - xcodebuild -workspace CoopCycle.xcworkspace -scheme CoopCycle -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO -quiet -UseModernBuildSystem=NO | xcpretty && exit ${PIPESTATUS[0]}
+      - xcodebuild -workspace CoopCycle.xcworkspace -scheme CoopCycle -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO | xcpretty && exit ${PIPESTATUS[0]}
 
 notifications:
   email: false
