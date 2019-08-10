@@ -65,14 +65,14 @@ matrix:
     env: LANE='ios'
     os: osx
     osx_image: xcode10.2
-    xcode_workspace: CoopCycle.xcodeproj
-    xcode_scheme: CoopCycle
+    # xcode_workspace: ios/CoopCycle.xcworkspace
+    # xcode_scheme: CoopCycle
     # cache:
     #   directories:
     #     - "$HOME/.cache/yarn"
     before_install:
       - nvm install 8
-      - gem install xcpretty
+      # - gem install xcpretty
       - npm install -g yarn
       # - yarn config set cache-folder "$HOME/.cache/yarn"
       - yarn install
