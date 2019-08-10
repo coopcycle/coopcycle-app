@@ -65,8 +65,8 @@ matrix:
     env: LANE='ios'
     os: osx
     osx_image: xcode10.3
-    xcode_project: CoopCycle.xcodeproj
-    xcode_scheme: CoopCycleTests
+    xcode_workspace: CoopCycle.xcodeproj
+    xcode_scheme: CoopCycle
     cache:
       directories:
         - "$HOME/.cache/yarn"
