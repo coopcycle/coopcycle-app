@@ -179,7 +179,6 @@ dependencies {
     implementation project(':react-native-keep-awake')
     implementation project(':react-native-pin-screen')
     implementation project(':react-native-open-settings')
-    implementation project(':react-native-matomo')
     implementation "com.jakewharton.timber:timber:${rootProject.ext.timberVersion}"
     implementation project(':tipsi-stripe')
 

@@ -22,7 +22,6 @@ import com.gettipsi.stripe.StripeReactPackage;
 import com.coopcycle.pin.RNPinScreenPackage;
 import com.airbnb.android.react.maps.MapsPackage;
 import com.opensettings.OpenSettingsPackage;
-import de.bonify.reactnativematomo.MatomoPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -63,8 +62,7 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
           new RNPinScreenPackage(),
           new StripeReactPackage(),
           new OpenSettingsPackage(),
-          new MapsPackage(),
-          new MatomoPackage()
+          new MapsPackage()
       );
     }
 

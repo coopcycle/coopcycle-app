@@ -13,10 +13,6 @@ jest.mock('react-native-languages', () => ({
   },
 }));
 
-jest.mock('react-native-matomo', () => ({
-  initTracker: () => {}
-}));
-
 jest.mock('rn-fetch-blob', () => ({
   fetch: () => {}
 }));

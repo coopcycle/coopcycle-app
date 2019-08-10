@@ -4,7 +4,6 @@ import { Platform } from 'react-native'
 import AsyncStorage from '@react-native-community/async-storage';
 import BackgroundGeolocation from '@mauron85/react-native-background-geolocation'
 import { NavigationActions, StackActions } from 'react-navigation'
-import Matomo from 'react-native-matomo'
 import { BleManager, State } from 'react-native-ble-plx'
 import { Buffer } from 'buffer'
 import EscPosEncoder from 'esc-pos-encoder'
@@ -178,7 +177,6 @@ export function bootstrap(baseURL, user) {
 
     configureBackgroundGeolocation(httpClient, user)
     saveRemotePushToken(dispatch, getState)
-    initMatomoClient(dispatch)
     initBLE(dispatch)
 
     // Navigate to screen depending on user state
@@ -218,7 +216,6 @@ function setBaseURL(dispatch, baseURL) {
         dispatch(_setBaseURL(baseURL))
 
         configureBackgroundGeolocation(httpClient, user)
-        initMatomoClient(dispatch)
 
         resolve()
       })
@@ -440,16 +437,6 @@ function saveRemotePushToken(dispatch, getState) {
 function postRemotePushToken(httpClient, token) {
   return httpClient
     .post('/api/me/remote_push_tokens', { platform: Platform.OS, token })
-}
-
-function initMatomoClient(dispatch) {
-  const matomoSiteId = Settings.get('piwik_site_id')
-  if (matomoSiteId) {
-    Matomo.initTracker('https://piwik.coopcycle.org/piwik.php', matomoSiteId)
-    dispatch(trackerInitialized())
-  } else {
-    dispatch(trackerDisabled())
-  }
 }
 
 function configureBackgroundGeolocation(httpClient, user) {
