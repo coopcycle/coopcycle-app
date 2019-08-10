@@ -67,9 +67,9 @@ matrix:
     osx_image: xcode10.3
     xcode_workspace: CoopCycle.xcodeproj
     xcode_scheme: CoopCycle
-    cache:
-      directories:
-        - "$HOME/.cache/yarn"
+    # cache:
+    #   directories:
+    #     - "$HOME/.cache/yarn"
     before_install:
       - nvm install 8
       - gem install xcpretty
