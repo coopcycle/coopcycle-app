@@ -64,7 +64,7 @@ matrix:
   - language: objective-c
     env: LANE='ios'
     os: osx
-    osx_image: xcode10.3
+    osx_image: xcode10.2
     xcode_workspace: CoopCycle.xcodeproj
     xcode_scheme: CoopCycle
     # cache:
