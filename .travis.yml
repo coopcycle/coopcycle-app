@@ -71,11 +71,13 @@ matrix:
     before_install:
       - nvm install 8
       - gem install xcpretty
+      - gem install xcpretty-travis-formatter
       - npm install -g yarn
+    install:
       - yarn install
       - cd ios
     script:
-      - xcodebuild -workspace CoopCycle.xcworkspace -scheme CoopCycle -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO -quiet -UseModernBuildSystem=NO | xcpretty && exit ${PIPESTATUS[0]}
+      - xcodebuild -workspace CoopCycle.xcworkspace -scheme CoopCycle -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO -quiet -UseModernBuildSystem=NO | xcpretty -f `xcpretty-travis-formatter` && exit ${PIPESTATUS[0]}
 
 notifications:
   email: false
