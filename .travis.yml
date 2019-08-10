@@ -78,7 +78,7 @@ matrix:
       - yarn install
       - rm -rf ios/build
     script:
-      - xcodebuild -workspace ios/CoopCycle.xcworkspace -scheme CoopCycle -sdk iphonesimulator -derivedDataPath ios/build | xcpretty
+      - xcodebuild -workspace ios/CoopCycle.xcworkspace -scheme CoopCycle -sdk iphonesimulator -derivedDataPath ios/build
 
 notifications:
   email: false
