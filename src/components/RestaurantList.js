@@ -26,19 +26,20 @@ class RestaurantList extends Component {
 
   renderItem(restaurant) {
 
-    const { deliveryDay } = this.props
+    const asap =
+      _.find(restaurant.availabilities, availability => {
+        // Get the first date that is at least
+        const diffInMinutes = moment(availability).diff(moment(), 'minutes')
+        if (diffInMinutes <= 35) {
 
-    let firstDeliveryDate = moment(restaurant.availabilities[0])
+          return false
+        }
 
-    if (deliveryDay) {
-      firstDeliveryDate = _.find(restaurant.availabilities, availability => moment(availability).isSame(deliveryDay, 'day'))
-    }
-
-    // Add 30 minutes to make sure there is time
-    firstDeliveryDate = firstDeliveryDate.add(30, 'minutes')
+        return true
+      })
 
     return (
-      <TouchableOpacity style={ styles.item } onPress={ () => this.props.onItemClick(restaurant, firstDeliveryDate) }>
+      <TouchableOpacity style={ styles.item } onPress={ () => this.props.onItemClick(restaurant, asap) }>
         <Grid>
           <Col size={ 1 }>
             <Thumbnail size={60} source={{ uri: restaurant.image }} />
@@ -47,7 +48,7 @@ class RestaurantList extends Component {
             <Text style={ styles.restaurantNameText }>{ restaurant.name }</Text>
             <Text note>{ restaurant.address.streetAddress }</Text>
             <Text note style={{ fontWeight: 'bold' }}>
-              { this.props.t('CHECKOUT_FROM', { date: moment(firstDeliveryDate).format('dddd LT') }) }
+              { this.props.t('CHECKOUT_FROM', { date: moment(asap).format('dddd LT') }) }
             </Text>
           </Col>
         </Grid>
