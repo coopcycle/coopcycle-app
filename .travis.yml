@@ -66,8 +66,8 @@ matrix:
     xcode_project: CoopCycle.xcodeproj
     xcode_scheme: CoopCycleTests
     cache:
-      - bundler
-      - yarn
+      directories:
+        - "$HOME/.yarn-cache"
     before_install:
       - nvm install 8
       - gem install xcpretty
