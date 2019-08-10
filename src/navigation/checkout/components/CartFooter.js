@@ -64,63 +64,6 @@ class CartFooter extends Component {
     ]).start()
   }
 
-  renderButton() {
-
-    const { cart } = this.props
-
-    if (cart.length === 0) {
-
-      return (
-        <View />
-      )
-    }
-
-    if (cart.totalItems < cart.restaurant.minimumCartAmount) {
-
-      return (
-        <Button block transparent>
-          <Icon style={{ color: '#fff', position: 'absolute', left: 0 }} name="information-circle" />
-          <Text style={ styles.buttonText }>
-            { `Minimum ${formatPrice(cart.restaurant.minimumCartAmount)} €` }
-          </Text>
-          <Text style={{ color: '#fff', position: 'absolute', right: 0, fontWeight: 'bold', fontFamily: 'OpenSans-Regular' }}>
-            { `${formatPrice(cart.totalItems)} €` }
-          </Text>
-        </Button>
-      )
-    }
-
-    return (
-      <Button block onPress={ () => this.props.onSubmit() }>
-        <Text style={{ position: 'absolute', left: 0, fontWeight: 'bold', fontFamily: 'OpenSans-Regular' }}>
-          { `[${cart.length}]` }
-        </Text>
-        <Text>{ this.props.t('ORDER') }</Text>
-        <Text style={{ position: 'absolute', right: 0, fontWeight: 'bold', fontFamily: 'OpenSans-Regular' }}>
-          { `${formatPrice(cart.total)} €` }
-        </Text>
-      </Button>
-    )
-  }
-
-  renderSummary() {
-
-    const { opacityAnim } = this.state
-    const { cart, date } = this.props
-
-    return (
-      <View style={ styles.cartSummary }>
-        <Animated.View style={{ opacity: opacityAnim }}>
-          <Text style={[ styles.cartSummaryText, styles.cartSummaryTotal ]}>
-            { `${formatPrice(cart.total)} € (${cart.length})` }
-          </Text>
-        </Animated.View>
-        <Text style={[ styles.cartSummaryText, styles.cartSummarySeparator ]}>|</Text>
-        <Text style={[ styles.cartSummaryText ]}>{ moment(date).format('ddd LT') }</Text>
-      </View>
-    )
-  }
-
   render() {
 
     const { cart } = this.props
