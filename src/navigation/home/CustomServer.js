@@ -49,7 +49,8 @@ class CustomServer extends Component {
                 placeholder={`${this.props.t('EXAMPLE')} : demo.coopcycle.org`}
                 onChangeText={(text) => this.setState({ text })}
                 returnKeyType="done"
-                onSubmitEditing={ this.handleForm.bind(this) } />
+                onSubmitEditing={ this.handleForm.bind(this) }
+                testID="customServerURL" />
               { this.props.hasError && <Icon name="close-circle" /> }
             </Item>
             { this.props.hasError && (
@@ -58,7 +59,7 @@ class CustomServer extends Component {
             </View>
             ) }
             <View style={{ paddingVertical: 15 }}>
-              <Button block onPress={ this.handleForm.bind(this) }>
+              <Button block onPress={ this.handleForm.bind(this) } testID="submitCustomServer">
                 <Text>{ this.props.t('SUBMIT') }</Text>
               </Button>
             </View>

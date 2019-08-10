@@ -61,17 +61,25 @@ class Restaurant extends Component {
           onSwipeComplete={ this.props.hideAddressModal }
           onBackdropPress={ this.props.hideAddressModal }
           swipeDirection={ ['up', 'down'] }>
-          <View style={ styles.modalContent }>
+          <View style={ styles.modalContent } testID="addressModal">
             <View style={{ width, height: height * 0.5 }}>
               <View style={{ flex: 2, alignItems: 'center', justifyContent: 'center' }}>
                 <Text style={ modalMessageTextStyle }>{ modalMessage }</Text>
               </View>
               <View style={{ flex: 8 }}>
                 <AddressTypeahead
+                  testID="addressModalTypeahead"
                   autoFocus={ true }
                   style={ typeaheadStyles }
                   value={ this.props.address && this.props.address.streetAddress }
-                  onPress={ (address) => this.props.setAddress(address) } />
+                  onPress={ (address) => this.props.setAddress(address) }
+                  renderRow={ rowData => {
+                    return (
+                      <Text testID={ `placeId:${rowData.place_id}` }>
+                        { rowData.description || rowData.formatted_address || rowData.name }
+                      </Text>
+                    )
+                  } } />
               </View>
             </View>
           </View>

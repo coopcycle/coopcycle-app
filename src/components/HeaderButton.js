@@ -24,10 +24,19 @@ class HeaderButton extends Component {
       iconStyle.push(this.props.iconStyle)
     }
 
+    let otherProps = {}
+    if (this.props.testID) {
+      otherProps = {
+        ...otherProps,
+        testID: this.props.testID
+      }
+    }
+
     return (
       <TouchableOpacity
         onPress={ this.props.onPress }
-        style={ containerStyles }>
+        style={ containerStyles }
+        { ...otherProps }>
         { this.props.textLeft && (
           <Text style={ styles.textLeft }>{ this.props.textLeft }</Text>
         )}

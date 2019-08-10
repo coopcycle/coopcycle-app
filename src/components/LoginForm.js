@@ -32,6 +32,7 @@ class LoginForm extends Component {
           <Item stackedLabel { ...itemProps }>
             <Label>{this.props.t('USERNAME')}</Label>
             <Input
+              testID="loginUsername"
               autoCorrect={false}
               autoCapitalize="none"
               onChangeText={ email => this.setState({ email }) }
@@ -42,18 +43,19 @@ class LoginForm extends Component {
           <Item stackedLabel { ...itemProps }>
             <Label>{this.props.t('PASSWORD')}</Label>
             <Input
+              testID="loginPassword"
               ref={component => this._passwordInput = component}
               autoCorrect={false}
               autoCapitalize="none"
               secureTextEntry={true}
               onChangeText={ password => this.setState({ password }) }
-              style={{ height: 40 }} 
+              style={{ height: 40 }}
               returnKeyType="done"
               onSubmitEditing={ _ => this._onSubmit() }/>
           </Item>
         </Form>
         <View style={{ marginTop: 20 }}>
-          <Button block onPress={ () => this._onSubmit() }>
+          <Button block onPress={ () => this._onSubmit() } testID="loginSubmit">
             <Text>{this.props.t('SUBMIT')}</Text>
           </Button>
         </View>

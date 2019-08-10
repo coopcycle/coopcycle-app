@@ -24,6 +24,7 @@ const MainNavigator = createStackNavigator({
       title: i18n.t('CHOOSE_CITY'),
       headerBackTitle: null,
       headerRight: (<HeaderButton
+        testID="moreServerOptions"
         iconType="FontAwesome5"
         iconName="ellipsis-h"
         iconStyle={{ fontSize: 18 }}

@@ -67,7 +67,7 @@ class CartFooterButton extends Component {
     }
 
     return (
-      <Button block onPress={ () => this.props.onPress() }>
+      <Button block onPress={ () => this.props.onPress() } testID="cartSubmit">
         <Text style={{ position: 'absolute', left: 0, fontWeight: 'bold', fontFamily: 'OpenSans-Regular' }}>
           { `[${cart.length}]` }
         </Text>

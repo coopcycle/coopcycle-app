@@ -93,7 +93,19 @@ class CreditCard extends Component {
             { this.props.t('ENTER_PAY_DETAILS') }
           </Text>
           <View style={ styles.creditCardInputContainer }>
-            <LiteCreditCardInput onChange={ this._onChange.bind(this) } />
+            <LiteCreditCardInput
+              additionalInputsProps={{
+                number: {
+                  testID: "creditCardNumber",
+                },
+                expiry: {
+                  testID: "creditCardExpiry",
+                },
+                cvc: {
+                  testID: "creditCardCvc",
+                },
+              }}
+              onChange={ this._onChange.bind(this) } />
           </View>
           { errors.length > 0 && (
           <View style={ styles.errorsContainer }>
@@ -105,7 +117,7 @@ class CreditCard extends Component {
         </Content>
         <Footer>
           <FooterTab>
-            <Button full onPress={ onPress }>
+            <Button full onPress={ onPress } testID="creditCardSubmit">
               <Text style={ styles.payButton }>
                 { this.props.t('PAY_AMOUNT', { amount: formatPrice(cart.total) }) + '€' }
               </Text>

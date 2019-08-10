@@ -38,6 +38,31 @@ class AddressTypeahead extends Component {
 
     const country = Settings.get('country').toUpperCase()
 
+    let textInputProps = {
+      autoCorrect: false,
+    }
+
+    if (this.props.testID) {
+      textInputProps = {
+        ...textInputProps,
+        testID: this.props.testID
+      }
+    }
+
+    let otherProps = {}
+    if (this.props.renderDescription) {
+      otherProps = {
+        ...otherProps,
+        renderDescription: this.props.renderDescription
+      }
+    }
+    if (this.props.renderRow) {
+      otherProps = {
+        ...otherProps,
+        renderRow: this.props.renderRow
+      }
+    }
+
     // currentLocation={true} // Will add a 'Current location' button at the top of the predefined places list
     // currentLocationLabel="Current location"
     // predefinedPlaces={[homePlace, workPlace]}
@@ -63,9 +88,7 @@ class AddressTypeahead extends Component {
           components: `country:${country}`,
         }}
         styles={ styles }
-        textInputProps={{
-          autoCorrect: false
-        }}
+        textInputProps={ textInputProps }
         renderLeftButton={ this.props.renderLeftButton }
         nearbyPlacesAPI="GoogleReverseGeocoding" // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
         GoogleReverseGeocodingQuery={{
@@ -73,7 +96,8 @@ class AddressTypeahead extends Component {
           components: `country:${country}`
         }}
         // filter the reverse geocoding results by types - ['locality', 'administrative_area_level_3'] if you want to display only cities
-        filterReverseGeocodingByTypes={[ 'street_address', 'route', 'geocode' ]} />
+        filterReverseGeocodingByTypes={[ 'street_address', 'route', 'geocode' ]}
+        { ...otherProps } />
     );
   }
 }

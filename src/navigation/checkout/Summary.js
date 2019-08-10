@@ -190,7 +190,7 @@ class Summary extends Component {
     return (
       <Footer>
         <View style={{ flex: 1, alignItems: 'center', paddingHorizontal: 5, paddingVertical: 5 }}>
-          <Button block onPress={ this.onSubmit.bind(this) }>
+          <Button block onPress={ this.onSubmit.bind(this) } testID="cartSummarySubmit">
             <Text>{ this.props.t('ORDER') }</Text>
           </Button>
         </View>

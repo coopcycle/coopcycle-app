@@ -63,7 +63,7 @@ export default class Menu extends Component {
     )
   }
 
-  renderItem(item) {
+  renderItem(item, index, section) {
 
     // If the "enabled" key does not exist, fallback to true
     const enabled = item.hasOwnProperty('enabled') ? item.enabled : true
@@ -88,7 +88,7 @@ export default class Menu extends Component {
     }
 
     return (
-      <TouchableOpacity style={ styles.item } { ...itemProps }>
+      <TouchableOpacity style={ styles.item } { ...itemProps } testID={ `menuItem:${section.index}:${index}` }>
         <Grid>
           <Col size={ 4 }>
             <Text style={ itemNameStyle }>{ item.name }</Text>
@@ -110,10 +110,11 @@ export default class Menu extends Component {
 
     let sections = []
     if (menu) {
-      _.forEach(menu.hasMenuSection, menuSection => {
+      _.forEach(menu.hasMenuSection, (menuSection, index) => {
         sections.push({
           title: menuSection.name,
-          data: menuSection.hasMenuItem
+          data: menuSection.hasMenuItem,
+          index,
         })
       })
     }
@@ -121,8 +122,9 @@ export default class Menu extends Component {
     return (
       <View style={{ backgroundColor: '#fff' }}>
         <SectionList
+          testID="menu"
           sections={ sections }
-          renderItem={ ({ item }) => this.renderItem(item) }
+          renderItem={ ({ item, index, section }) => this.renderItem(item, index, section) }
           renderSectionHeader={ ({ section }) => this.renderSectionHeader(section) }
           keyExtractor={ (item, index) => index }
           initialNumToRender={ 15 }

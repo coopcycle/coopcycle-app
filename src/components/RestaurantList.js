@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
 
 class RestaurantList extends Component {
 
-  renderItem(restaurant) {
+  renderItem(restaurant, index) {
 
     const asap =
       _.find(restaurant.availabilities, availability => {
@@ -39,7 +39,9 @@ class RestaurantList extends Component {
       })
 
     return (
-      <TouchableOpacity style={ styles.item } onPress={ () => this.props.onItemClick(restaurant, asap) }>
+      <TouchableOpacity style={ styles.item }
+        onPress={ () => this.props.onItemClick(restaurant, asap) }
+        testID={ `restaurantIndex:${index}` }>
         <Grid>
           <Col size={ 1 }>
             <Thumbnail size={60} source={{ uri: restaurant.image }} />
@@ -71,9 +73,10 @@ class RestaurantList extends Component {
     return (
       <View style={ styles.wrapper }>
         <FlatList
+          testID="restaurantList"
           data={ this.props.restaurants }
           keyExtractor={ (item, index) => item['@id'] }
-          renderItem={ ({ item }) => this.renderItem(item) } />
+          renderItem={ ({ item, index }) => this.renderItem(item, index) } />
       </View>
     )
   }

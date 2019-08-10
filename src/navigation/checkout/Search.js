@@ -71,7 +71,7 @@ class RestaurantsPage extends Component {
     }
 
     return (
-      <Container style={{ paddingTop: 54 }}>
+      <Container style={{ paddingTop: 54 }} testID="checkoutSearch">
         <RestaurantSearch
           ref={ component => this.restaurantSearch = component }
           onChange={ this._onAddressChange.bind(this) } />

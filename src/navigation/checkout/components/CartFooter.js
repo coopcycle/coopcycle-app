@@ -69,7 +69,7 @@ class CartFooter extends Component {
     const { cart } = this.props
 
     return (
-      <Footer>
+      <Footer testID="cartFooter">
         <View style={{ flex: 1, alignItems: 'center', paddingHorizontal: 5, paddingVertical: 5 }}>
           <CartFooterButton cart={ cart } onPress={ () => this.props.onSubmit() } />
         </View>
