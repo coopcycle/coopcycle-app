@@ -13,7 +13,7 @@ matrix:
       - rm -rf $HOME/.gradle/caches/*/plugin-resolution/
     cache:
       directories:
-        - "$HOME/.yarn-cache"
+        - "$HOME/.cache/yarn"
         - "$HOME/.gradle/caches/"
         - "$HOME/.gradle/wrapper/"
     android:
@@ -41,7 +41,7 @@ matrix:
       - rm -rf $HOME/.gradle/caches/*/plugin-resolution/
     cache:
       directories:
-        - "$HOME/.yarn-cache"
+        - "$HOME/.cache/yarn"
         - "$HOME/.gradle/caches/"
         - "$HOME/.gradle/wrapper/"
     android:
@@ -66,8 +66,8 @@ matrix:
     xcode_project: CoopCycle.xcodeproj
     xcode_scheme: CoopCycleTests
     cache:
-      - bundler
-      - yarn
+      directories:
+        - "$HOME/.cache/yarn"
     before_install:
       - nvm install 8
       - gem install xcpretty
