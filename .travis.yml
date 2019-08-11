@@ -72,7 +72,7 @@ matrix:
       - npm install -g yarn
       - yarn install
     script:
-      - set -o pipefail && xcodebuild -workspace ios/CoopCycle.xcworkspace -scheme CoopCycle -sdk iphonesimulator | xcpretty
+      - set -o pipefail && xcodebuild -workspace ios/CoopCycle.xcworkspace -scheme CoopCycle -sdk iphonesimulator -UseModernBuildSystem=NO | xcpretty
 
 notifications:
   email: false
