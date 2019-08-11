@@ -2,6 +2,7 @@ import React from 'react'
 import { View } from 'react-native'
 import { Icon } from 'native-base'
 import HeaderButton from '../components/HeaderButton'
+import { primaryColor,  whiteColor, fontTitleName } from '../styles/common'
 
 import DispatchUnassignedTasks from './dispatch/UnassignedTasks'
 import DispatchTaskLists from './dispatch/TaskLists'
@@ -11,7 +12,11 @@ import DispatchAddTask from './dispatch/AddTask'
 import DispatchDate from './dispatch/Date'
 import DispatchEditAddress from './dispatch/EditAddress'
 import DispatchAssignTask from './dispatch/AssignTask'
-import { primaryColor,  whiteColor, fontTitleName } from '../styles/common'
+
+import TaskHome from './task/Task'
+import TaskComplete from './task/Complete'
+import TaskPhoto from './task/Photo'
+import TaskSignature from './task/Signature'
 
 export default {
   RestaurantsPage: require('./checkout/Search'),
@@ -33,13 +38,9 @@ export default {
   CheckoutCreditCard: require('./checkout/CreditCard'),
   CourierTasksPage: require('./courier/TasksPage'),
   CourierTaskListPage: require('./courier/TaskListPage'),
-  CourierTaskPage: require('./courier/TaskPage'),
   CourierTaskHistoryPage: require('./courier/TaskHistoryPage'),
-  CourierTaskComplete: require('./courier/CompleteTask'),
   CourierSettings: require('./courier/Settings'),
   CourierSettingsTags: require('./courier/Tags'),
-  CourierSignature: require('./courier/Signature'),
-  CourierPhoto: require('./courier/Photo'),
   AccountHome: require('./account/Home'),
   AccountLoginRegister: require('./account/LoginRegister'),
   AccountAddressesPage: require('./account/AccountAddressesPage'),
@@ -56,6 +57,10 @@ export default {
   DispatchDate,
   DispatchAssignTask,
   DispatchEditAddress,
+  TaskHome,
+  TaskComplete,
+  TaskPhoto,
+  TaskSignature,
   Loading: require('./Loading'),
   ConfigureServer: require('./ConfigureServer')
 }

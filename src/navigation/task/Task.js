@@ -16,7 +16,7 @@ import { selectTasks } from "../../redux/Courier"
 
 const isCompleted = task => task.status !== 'TODO'
 
-class TaskPage extends Component {
+class Task extends Component {
 
   constructor(props) {
     super(props)
@@ -193,7 +193,7 @@ class TaskPage extends Component {
     )
   }
 
-  static renderSwipeoutLeftButton() {
+  renderSwipeoutLeftButton() {
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <Icon name="checkmark" style={{ color: '#fff' }} />
@@ -202,7 +202,7 @@ class TaskPage extends Component {
 
   }
 
-  static renderSwipeoutRightButton() {
+  renderSwipeoutRightButton() {
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <Icon name="warning" style={{ color: '#fff' }} />
@@ -243,7 +243,7 @@ class TaskPage extends Component {
     }
 
     const swipeoutLeftButton = {
-      component: TaskPage.renderSwipeoutLeftButton(),
+      component: this.renderSwipeoutLeftButton(),
       backgroundColor: greenColor,
       onPress: () => {
         this.props.navigation.navigate('TaskComplete', { task, markTaskDone: true })
@@ -254,7 +254,7 @@ class TaskPage extends Component {
     }
 
     const swipeoutRightButton = {
-      component: TaskPage.renderSwipeoutRightButton(),
+      component: this.renderSwipeoutRightButton(),
       backgroundColor: redColor,
       onPress: () => {
         this.props.navigation.navigate('TaskComplete', { task, markTaskFailed: true })
@@ -453,4 +453,4 @@ function mapStateToProps (state) {
   }
 }
 
-module.exports = connect(mapStateToProps)(withTranslation()(TaskPage))
+module.exports = connect(mapStateToProps)(withTranslation()(Task))

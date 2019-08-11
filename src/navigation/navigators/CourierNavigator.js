@@ -9,7 +9,7 @@ import {
 
 import i18n from '../../i18n'
 import navigation, { defaultNavigationOptions, headerLeft } from '..'
-import HeaderButton from '../../components/HeaderButton'
+import TaskNavigator from './TaskNavigator'
 
 const Tabs = createBottomTabNavigator({
   CourierTasks: {
@@ -59,7 +59,7 @@ const MainNavigator = createStackNavigator({
     })
   },
   Task: {
-    screen: navigation.CourierTaskPage,
+    screen: TaskNavigator,
     navigationOptions: ({ navigation }) => ({
       title: `${i18n.t('TASK')} #${navigation.state.params.task.id}`,
     })
@@ -93,65 +93,11 @@ const SettingsStack = createStackNavigator({
   defaultNavigationOptions
 })
 
-const ProofOfDeliveryTabs = createMaterialTopTabNavigator({
-  TaskPhoto: {
-    screen: navigation.CourierPhoto,
-    navigationOptions: ({ navigation }) => ({
-      title: i18n.t('PHOTO')
-    })
-  },
-  TaskSignature: {
-    screen: navigation.CourierSignature,
-    navigationOptions: ({ navigation }) => ({
-      title: i18n.t('SIGNATURE')
-    })
-  }
-}, {
-  // Disable swipe to avoid swiping when signing
-  swipeEnabled: false
-})
-
-const CompleteStack = createStackNavigator({
-  TaskCompleteHome: {
-    screen: navigation.CourierTaskComplete,
-    navigationOptions: ({ navigation }) => ({
-      header: null,
-    })
-  },
-  TaskCompleteProofOfDelivery: {
-    screen: ProofOfDeliveryTabs,
-    navigationOptions: ({ navigation }) => ({
-      header: null,
-    })
-  },
-}, {
-  defaultNavigationOptions,
-  initialRouteName: 'TaskCompleteHome',
-  navigationOptions: ({ navigation }) => ({
-    // We need to override the back button behavior
-    // because otherwise when we hit "back" on the PoD screen,
-    // it goes back to the task screen
-    headerLeft: (props) => {
-      const { onPress, ...otherProps } = props
-      return (
-        <HeaderBackButton { ...otherProps } onPress={ () => navigation.goBack(null) } />
-      )
-    }
-  })
-
-})
-
 export default createStackNavigator({
   Main: {
     screen: MainNavigator,
     navigationOptions: ({ navigation }) => ({
       header: null,
-    })
-  },
-  TaskComplete: {
-    screen: CompleteStack,
-    navigationOptions: ({ navigation }) => ({
-      title: `${i18n.t('TASK')} #${navigation.state.params.task.id}`,
     })
   },
   CourierSettings: {

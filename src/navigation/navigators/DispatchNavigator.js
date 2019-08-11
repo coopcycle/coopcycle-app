@@ -1,12 +1,11 @@
 import React, { Component } from 'react'
-import { View } from 'react-native'
-import { Icon, Text } from 'native-base'
+import { Icon} from 'native-base'
 import { createBottomTabNavigator, createStackNavigator } from 'react-navigation'
 
 import i18n from '../../i18n'
 import HeaderRightButton from '../dispatch/HeaderRightButton'
+import TaskNavigator from './TaskNavigator'
 import navigation, { defaultNavigationOptions, headerLeft } from '..'
-import HeaderButton from '../../components/HeaderButton'
 
 const Tabs = createBottomTabNavigator({
   DispatchUnassignedTasks: {
@@ -56,23 +55,11 @@ const MainNavigator = createStackNavigator({
     })
   },
   Task: {
-    screen: navigation.CourierTaskPage,
+    screen: TaskNavigator,
     navigationOptions: ({ navigation }) => ({
-      title: i18n.t('DISPATCH_TASK', { id: navigation.state.params.task.id }),
-      headerRight: (
-        <HeaderButton
-          iconType="FontAwesome5" iconName="file-signature"
-          iconStyle={{ fontSize: 18 }}
-          onPress={ () => navigation.navigate('TaskSignature', { task: navigation.getParam('task') }) } />
-      )
-    }),
-  },
-  TaskComplete: {
-    screen: navigation.CourierTaskComplete,
-    navigationOptions: ({ navigation }) => ({
-      title: i18n.t('END', { id: navigation.state.params.task.id }),
+      title: `${i18n.t('TASK')} #${navigation.state.params.task.id}`,
     })
-  }
+  },
 }, {
   initialRouteKey: 'DispatchHome',
   initialRouteName: 'DispatchHome',
@@ -132,12 +119,6 @@ export default createStackNavigator({
     screen: navigation.DispatchAssignTask,
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('DISPATCH_ASSIGN_TASK'),
-    })
-  },
-  DispatchTaskProofOfDelivery: {
-    screen: navigation.CourierSignature,
-    navigationOptions: ({ navigation }) => ({
-      title: i18n.t('SIGNATURE')
     })
   }
 }, {

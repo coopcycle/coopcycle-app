@@ -69,10 +69,8 @@ export const setTasksFilter = createAction(SET_TASK_FILTER)
  */
 
 function resetNavigation() {
-  // StackActions.reset() always goes to tab defined in initialRouteName
-  // Call popToTop() + back() to go back properly
-  NavigationHolder.dispatch(StackActions.popToTop())
-  NavigationHolder.dispatch(NavigationActions.back())
+  NavigationHolder.navigate('TaskHome')
+  NavigationHolder.goBack()
 }
 
 function showAlert(e) {
