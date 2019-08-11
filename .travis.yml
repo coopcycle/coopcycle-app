@@ -67,6 +67,9 @@ matrix:
     osx_image: xcode10.2
     xcode_workspace: ios/CoopCycle.xcworkspace
     xcode_scheme: CoopCycle
+    cache:
+      directories:
+        - "$HOME/Library/Developer/Xcode/DerivedData"
     before_install:
       - nvm install 8
       - npm install -g yarn
