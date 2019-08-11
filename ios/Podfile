@@ -48,6 +48,8 @@ target 'CoopCycle' do
 
   pod 'RNCAsyncStorage', :path => '../node_modules/@react-native-community/async-storage'
 
+  pod 'RNLocalize', :path => '../node_modules/react-native-localize'
+
 end
 
 post_install do |installer|

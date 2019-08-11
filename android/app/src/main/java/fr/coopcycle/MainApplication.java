@@ -4,6 +4,7 @@ import android.app.Application;
 import android.support.multidex.MultiDexApplication;
 
 import com.facebook.react.ReactApplication;
+import com.reactcommunity.rnlocalize.RNLocalizePackage;
 import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
 import org.reactnative.camera.RNCameraPackage;
 import com.polidea.reactnativeble.BlePackage;
@@ -11,7 +12,6 @@ import com.RNFetchBlob.RNFetchBlobPackage;
 import com.terrylinla.rnsketchcanvas.SketchCanvasPackage;
 import com.horcrux.svg.SvgPackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
-import com.reactcommunity.rnlanguages.RNLanguagesPackage;
 import com.zmxv.RNSound.RNSoundPackage;
 import io.invertase.firebase.RNFirebasePackage;
 import io.invertase.firebase.messaging.RNFirebaseMessagingPackage;
@@ -45,6 +45,7 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNLocalizePackage(),
             new AsyncStoragePackage(),
             new RNCameraPackage(),
           new BlePackage(),
@@ -57,7 +58,6 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
           new RNFirebaseMessagingPackage(),
           new RNFirebaseNotificationsPackage(),
           new BackgroundGeolocationPackage(),
-          new RNLanguagesPackage(),
           new KCKeepAwakePackage(),
           new RNPinScreenPackage(),
           new StripeReactPackage(),

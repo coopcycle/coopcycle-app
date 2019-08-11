@@ -5,12 +5,9 @@ import NavigationHolder from './src/NavigationHolder'
 // React 16 Enzyme adapter
 Enzyme.configure({ adapter: new Adapter() })
 
-jest.mock('react-native-languages', () => ({
+jest.mock('react-native-localize', () => ({
   __esModule: true,
-  default: {
-    language: 'en',
-    languages: ['en'],
-  },
+  findBestAvailableLanguage: () => 'en',
 }));
 
 jest.mock('rn-fetch-blob', () => ({

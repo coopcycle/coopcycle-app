@@ -7,7 +7,7 @@
  */
 import i18next from 'i18next'
 import { reactI18nextModule } from 'react-i18next'
-import RNLanguages from 'react-native-languages'
+import * as RNLocalize from 'react-native-localize'
 import Settings from '../Settings'
 import en from './locales/en.json'
 import es from './locales/es.json'
@@ -16,7 +16,15 @@ import fr from './locales/fr.json'
 // Load additional Moment.js locales
 import 'moment/locale/fr'
 
-export const localeDetector = () => RNLanguages.language || Settings.get('locale')
+export const localeDetector = () => {
+  const lang = RNLocalize.findBestAvailableLanguage(["en", "es", "fr"])
+  if (!lang) {
+
+    return Settings.get('locale')
+  }
+
+  return lang.languageTag
+}
 
 // https://www.i18next.com/misc/creating-own-plugins.html#languagedetector
 const languageDetector = {
