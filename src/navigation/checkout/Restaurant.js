@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Dimensions, PixelRatio, StyleSheet, View } from 'react-native'
+import { Dimensions, PixelRatio, StyleSheet, View, Animated, Keyboard } from 'react-native'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 import {
@@ -25,12 +25,39 @@ class Restaurant extends Component {
     this.state = {
       shouldShowBackBtn: false
     }
+    this.keyboardHeight = new Animated.Value(0)
   }
 
   componentDidMount() {
     const { restaurant } = this.props.navigation.state.params
 
+    this.keyboardWillShowSub = Keyboard.addListener('keyboardWillShow', this.keyboardWillShow.bind(this))
+    this.keyboardWillHideSub = Keyboard.addListener('keyboardWillHide', this.keyboardWillHide.bind(this))
+
     this.props.init(restaurant)
+  }
+
+  componentWillUnmount() {
+    this.keyboardWillShowSub.remove()
+    this.keyboardWillHideSub.remove()
+  }
+
+  keyboardWillShow(event) {
+    Animated.parallel([
+      Animated.timing(this.keyboardHeight, {
+        duration: event.duration,
+        toValue: event.endCoordinates.height,
+      }),
+    ]).start();
+  }
+
+  keyboardWillHide(event) {
+    Animated.parallel([
+      Animated.timing(this.keyboardHeight, {
+        duration: event.duration,
+        toValue: 0,
+      }),
+    ]).start();
   }
 
   renderBackBtn() {
@@ -93,12 +120,12 @@ class Restaurant extends Component {
           onSwipeComplete={ this.props.hideAddressModal }
           onBackdropPress={ this.props.hideAddressModal }
           swipeDirection={ ['up', 'down'] }>
-          <View style={ styles.modalContent } testID="addressModal">
-            <View style={{ width, height: height * 0.5 }}>
-              <View style={{ flex: 2, alignItems: 'center', justifyContent: 'center' }}>
+          <Animated.View style={ [ styles.modalContent, { paddingBottom: this.keyboardHeight } ] } testID="addressModal">
+            <View style={{ width, height: 44 + 44 + (44 * 3) }}>
+              <View style={{ height: 44, alignItems: 'center', justifyContent: 'center' }}>
                 <Text style={ modalMessageTextStyle }>{ modalMessage }</Text>
               </View>
-              <View style={{ flex: 8 }}>
+              <View style={{ height: 44 + (44 * 3) }}>
                 <AddressTypeahead
                   testID="addressModalTypeahead"
                   autoFocus={ true }
@@ -117,10 +144,10 @@ class Restaurant extends Component {
                   }}
                   onFocus={ _ => this.setState({ shouldShowBackBtn: false }) }
                   onBlur={ _ => this.setState({ shouldShowBackBtn: true }) } />
-                  { this.renderBackBtn() }
+                { this.renderBackBtn() }
               </View>
             </View>
-          </View>
+          </Animated.View>
         </Modal>
       </Container>
     );
