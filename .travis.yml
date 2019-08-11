@@ -65,20 +65,20 @@ matrix:
     env: LANE='ios'
     os: osx
     osx_image: xcode10.2
-    # xcode_project: CoopCycle.xcodeproj
-    # xcode_scheme: CoopCycleTests
+    xcode_workspace: ios/CoopCycle.xcworkspace
+    xcode_scheme: CoopCycle
     # cache:
     #   directories:
     #     - "$HOME/.cache/yarn"
     before_install:
       - nvm install 8
-      - gem install xcpretty
+      # - gem install xcpretty
       - npm install -g yarn
       # - yarn config set cache-folder "$HOME/.cache/yarn"
       - yarn install
-      - cd ios
-    script:
-      - xcodebuild -workspace CoopCycle.xcworkspace -scheme CoopCycle -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO | xcpretty && exit ${PIPESTATUS[0]}
+      # - cd ios
+    # script:
+    #   - xcodebuild -workspace CoopCycle.xcworkspace -scheme CoopCycle -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO | xcpretty && exit ${PIPESTATUS[0]}
 
 notifications:
   email: false
