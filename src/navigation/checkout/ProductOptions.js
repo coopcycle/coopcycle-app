@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { StyleSheet, View, TouchableOpacity } from 'react-native'
 import { Container, Header, Content, ListItem, Text, Radio, Right, Left, Footer, FooterTab, Button } from 'native-base'
 import { Col, Row, Grid } from 'react-native-easy-grid'
-import { withNamespaces } from 'react-i18next'
+import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 import _ from 'lodash'
 
@@ -184,4 +184,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(withNamespaces('common')(ProductOptions))
+module.exports = connect(mapStateToProps, mapDispatchToProps)(withTranslation()(ProductOptions))

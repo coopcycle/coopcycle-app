@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Picker, StyleSheet, View } from 'react-native'
 import { Container, Content, Footer, FooterTab, Text, Button } from 'native-base'
 import { Col, Row, Grid } from 'react-native-easy-grid'
-import { withNamespaces } from 'react-i18next'
+import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 import _ from 'lodash'
 import moment from 'moment'
@@ -15,7 +15,7 @@ class ShippingDate extends Component {
 
     const { availabilities, date } = this.props
 
-    let value = _.find(availabilities, item => 
+    let value = _.find(availabilities, item =>
       moment(item).format('LL') === itemValue && moment(item).format('LT') === moment(date).format('LT'))
     if (!value) {
       value = _.find(availabilities, item => moment(item).format('LL') === itemValue)
@@ -106,13 +106,13 @@ function mapStateToProps(state) {
 
   const availabilities = state.checkout.cart.restaurant.availabilities
 
-  const hash = _.zipObject(availabilities, _.map(availabilities, item => ([ 
-    moment(item).format('LL'), 
-    moment(item).format('LT') 
+  const hash = _.zipObject(availabilities, _.map(availabilities, item => ([
+    moment(item).format('LL'),
+    moment(item).format('LT')
   ])))
 
   return {
-    date: state.checkout.date, 
+    date: state.checkout.date,
     availabilities,
     hash,
   }
@@ -125,4 +125,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(withNamespaces('common')(ShippingDate))
+module.exports = connect(mapStateToProps, mapDispatchToProps)(withTranslation()(ShippingDate))

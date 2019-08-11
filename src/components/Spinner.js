@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { withNamespaces } from 'react-i18next'
+import { withTranslation } from 'react-i18next'
 import Spinner from 'react-native-loading-spinner-overlay'
 
 import { selectIsTasksLoading } from '../redux/Courier/'
@@ -28,4 +28,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps)(withNamespaces('common')(SpinnerWrapper))
+export default connect(mapStateToProps)(withTranslation()(SpinnerWrapper))

@@ -5,7 +5,7 @@ import { Col, Row, Grid } from 'react-native-easy-grid'
 import slugify from 'slugify'
 import moment from 'moment'
 import _ from 'lodash'
-import { withNamespaces } from 'react-i18next'
+import { withTranslation } from 'react-i18next'
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -82,4 +82,4 @@ class RestaurantList extends Component {
   }
 }
 
-export default withNamespaces('common')(RestaurantList)
+export default withTranslation()(RestaurantList)

@@ -5,7 +5,7 @@ import {
   Icon, Text, Button, Footer,
   Form, Item, Input, Label
 } from 'native-base'
-import { withNamespaces } from 'react-i18next'
+import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 import _ from 'lodash'
 
@@ -198,4 +198,4 @@ function mapDispatchToProps (dispatch) {
   }
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(withNamespaces('common')(CompleteTask))
+module.exports = connect(mapStateToProps, mapDispatchToProps)(withTranslation()(CompleteTask))

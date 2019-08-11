@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Animated, StyleSheet, View } from 'react-native'
 import { Text, Button, Icon, Footer } from 'native-base'
-import { withNamespaces } from 'react-i18next'
+import { withTranslation } from 'react-i18next'
 
 import { formatPrice } from '../../../Cart'
 
@@ -80,4 +80,4 @@ class CartFooterButton extends Component {
   }
 }
 
-export default withNamespaces('common')(CartFooterButton)
+export default withTranslation()(CartFooterButton)

@@ -6,7 +6,7 @@
  * See https://react.i18next.com/components/i18next-instance.html
  */
 import i18next from 'i18next'
-import { reactI18nextModule } from 'react-i18next'
+import { initReactI18next } from 'react-i18next'
 import * as RNLocalize from 'react-native-localize'
 import Settings from '../Settings'
 import en from './locales/en.json'
@@ -39,7 +39,7 @@ const languageDetector = {
 
 i18next
   .use(languageDetector)
-  .use(reactI18nextModule)
+  .use(initReactI18next)
   .init({
     fallbackLng: 'en',
     resources: { en, es, fr },

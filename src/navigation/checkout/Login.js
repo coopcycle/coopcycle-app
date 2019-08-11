@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { Container, Content, Text, Button, Icon } from 'native-base'
 import { StackActions } from 'react-navigation'
-import { withNamespaces } from 'react-i18next'
+import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 
 import AuthenticateForm from '../../components/AuthenticateForm'
@@ -70,4 +70,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(withNamespaces('common')(Login))
+module.exports = connect(mapStateToProps, mapDispatchToProps)(withTranslation()(Login))

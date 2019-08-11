@@ -7,7 +7,7 @@ import {
 } from 'native-base'
 import _ from 'lodash'
 
-import { withNamespaces } from 'react-i18next'
+import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 
 import { loadProducts, loadMoreProducts, changeProductEnabled } from '../../redux/Restaurant/actions'
@@ -134,4 +134,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(withNamespaces('common')(ProductsScreen))
+module.exports = connect(mapStateToProps, mapDispatchToProps)(withTranslation()(ProductsScreen))

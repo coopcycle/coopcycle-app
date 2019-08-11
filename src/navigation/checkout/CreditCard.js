@@ -14,7 +14,7 @@ import {
 import _ from 'lodash'
 import { LiteCreditCardInput } from 'react-native-credit-card-input'
 import { connect } from 'react-redux'
-import { withNamespaces } from 'react-i18next'
+import { withTranslation } from 'react-i18next'
 
 import { checkout } from '../../redux/Checkout/actions'
 import { formatPrice } from '../../Cart'
@@ -173,4 +173,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(withNamespaces('common')(CreditCard))
+module.exports = connect(mapStateToProps, mapDispatchToProps)(withTranslation()(CreditCard))

@@ -7,7 +7,7 @@ import { NavigationActions } from 'react-navigation'
 import KeepAwake from 'react-native-keep-awake'
 import RNPinScreen from 'react-native-pin-screen'
 import { connect } from 'react-redux'
-import { withNamespaces } from 'react-i18next'
+import { withTranslation } from 'react-i18next'
 import _ from 'lodash'
 
 import { whiteColor, orangeColor, dateSelectHeaderHeight, websocketWarningHeight } from "../../styles/common"
@@ -224,4 +224,4 @@ function mapDispatchToProps (dispatch) {
   }
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(withNamespaces('common')(TasksPage))
+module.exports = connect(mapStateToProps, mapDispatchToProps)(withTranslation()(TasksPage))

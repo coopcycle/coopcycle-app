@@ -11,7 +11,7 @@ import {
   Text,
   Title, Content, Button, Icon,
 } from 'native-base'
-import { withNamespaces } from 'react-i18next'
+import { withTranslation } from 'react-i18next'
 import moment from 'moment'
 
 import OrderItems from '../../components/OrderItems'
@@ -150,4 +150,4 @@ const styles = StyleSheet.create({
   },
 })
 
-module.exports = withNamespaces('common')(OrderTrackingPage)
+module.exports = withTranslation()(OrderTrackingPage)

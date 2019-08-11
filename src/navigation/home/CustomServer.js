@@ -6,7 +6,7 @@ import {
   Button, Text, Icon,
   Form, Item, Input
 } from 'native-base'
-import { withNamespaces } from 'react-i18next'
+import { withTranslation } from 'react-i18next'
 import _ from 'lodash'
 
 import API from '../../API'
@@ -85,4 +85,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withNamespaces('common')(CustomServer))
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(CustomServer))

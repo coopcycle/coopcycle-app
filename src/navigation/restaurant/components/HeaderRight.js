@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { StyleSheet, View } from 'react-native'
-import { withNamespaces } from 'react-i18next'
+import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 
 import HeaderButton from '../../../components/HeaderButton'
@@ -42,4 +42,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withNamespaces('common')(HeaderRight))
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(HeaderRight))

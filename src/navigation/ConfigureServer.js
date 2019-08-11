@@ -9,7 +9,7 @@ import {
   Container, Content,
   Button, Text, Icon,
 } from 'native-base'
-import { withNamespaces } from 'react-i18next'
+import { withTranslation } from 'react-i18next'
 
 class ConfigureServer extends Component {
 
@@ -62,4 +62,4 @@ const styles = StyleSheet.create({
   }
 })
 
-module.exports = withNamespaces('common')(ConfigureServer)
+module.exports = withTranslation()(ConfigureServer)

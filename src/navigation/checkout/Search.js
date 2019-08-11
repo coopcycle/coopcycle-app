@@ -12,7 +12,7 @@ import {
 import _ from 'lodash'
 import moment from 'moment'
 import { connect } from 'react-redux'
-import { withNamespaces } from 'react-i18next'
+import { withTranslation } from 'react-i18next'
 
 import RestaurantSearch from '../../components/RestaurantSearch'
 import RestaurantList from '../../components/RestaurantList'
@@ -110,4 +110,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(withNamespaces('common')(RestaurantsPage))
+module.exports = connect(mapStateToProps, mapDispatchToProps)(withTranslation()(RestaurantsPage))

@@ -19,7 +19,7 @@ import moment from 'moment'
 import _ from 'lodash'
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import { connect } from 'react-redux'
-import { withNamespaces } from 'react-i18next'
+import { withTranslation } from 'react-i18next'
 
 import CartFooterButton from './components/CartFooterButton'
 import { formatPrice } from '../../Cart'
@@ -287,4 +287,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(withNamespaces('common')(Summary))
+module.exports = connect(mapStateToProps, mapDispatchToProps)(withTranslation()(Summary))

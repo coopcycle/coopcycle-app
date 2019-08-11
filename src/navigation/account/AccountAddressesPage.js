@@ -5,7 +5,7 @@ import {
   Content, Button, Icon, List, ListItem, Text
 } from 'native-base';
 import { connect } from 'react-redux'
-import { withNamespaces } from 'react-i18next'
+import { withTranslation } from 'react-i18next'
 
 class AccountAddressesPage extends Component {
   constructor(props) {
@@ -80,4 +80,4 @@ function mapStateToProps(state) {
   }
 }
 
-module.exports = connect(mapStateToProps)(withNamespaces('common')(AccountAddressesPage))
+module.exports = connect(mapStateToProps)(withTranslation()(AccountAddressesPage))

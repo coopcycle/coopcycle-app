@@ -3,7 +3,7 @@ import { FlatList, InteractionManager, StyleSheet, TouchableOpacity, View } from
 import { connect } from 'react-redux'
 import { Container, Content, Text, Icon, Thumbnail, List, ListItem, Left, Body, Right } from 'native-base'
 import { Col, Row, Grid } from 'react-native-easy-grid'
-import { withNamespaces } from 'react-i18next'
+import { withTranslation } from 'react-i18next'
 import _ from 'lodash'
 
 class AddUser extends Component {
@@ -66,4 +66,4 @@ function mapStateToProps(state, ownProps) {
 }
 
 
-export default connect(mapStateToProps)(withNamespaces('common')(AddUser))
+export default connect(mapStateToProps)(withTranslation()(AddUser))

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import { connect } from 'react-redux'
 import { Container, Content, Text } from 'native-base'
-import { withNamespaces } from 'react-i18next'
+import { withTranslation } from 'react-i18next'
 import _ from 'lodash'
 
 import API from '../../API'
@@ -66,4 +66,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withNamespaces('common')(ChooseCity))
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(ChooseCity))

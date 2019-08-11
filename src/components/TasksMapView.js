@@ -3,7 +3,7 @@ import { FlatList, StyleSheet, Dimensions, View, Text, TouchableOpacity } from '
 import { Marker, Callout } from 'react-native-maps'
 import ClusteredMapView from 'react-native-maps-super-cluster'
 import Modal from 'react-native-modal'
-import { withNamespaces } from 'react-i18next'
+import { withTranslation } from 'react-i18next'
 
 import Settings from '../Settings'
 import { greenColor, redColor, greyColor, whiteColor } from '../styles/common'
@@ -252,4 +252,4 @@ class TasksMapView extends Component {
 
 }
 
-export default withNamespaces('common')(TasksMapView)
+export default withTranslation()(TasksMapView)

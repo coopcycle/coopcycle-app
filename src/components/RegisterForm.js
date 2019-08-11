@@ -1,7 +1,7 @@
 import React from 'react'
 import { TextInput, TouchableOpacity, StyleSheet, View } from 'react-native'
 import { Form, Item, Input, Label, Button, Icon, Text } from 'native-base'
-import { withNamespaces } from 'react-i18next'
+import { withTranslation } from 'react-i18next'
 import validate from 'validate.js'
 import { PhoneNumberUtil } from 'google-libphonenumber'
 import phoneNumberExamples from 'libphonenumber-js/examples.mobile.json'
@@ -253,7 +253,7 @@ class RegisterForm extends React.Component {
                         autoCapitalize="none"
                         style={{ flex: 1, height: 40, fontSize: 18 }}
                         onChangeText={ this._onChangeTelephone.bind(this) }
-                        { ...input.props } 
+                        { ...input.props }
                         returnKeyType="done"
                         onSubmitEditing={ _ => this._onSubmit() }/>
                     </View>
@@ -274,7 +274,7 @@ class RegisterForm extends React.Component {
                     autoCapitalize="none"
                     style={{ height: 40 }}
                     onChangeText={ value => this.setState({ [input.name]: value }) }
-                    { ...input.props } 
+                    { ...input.props }
                     returnKeyType="next"
                     onSubmitEditing={ event => {
                       let index = inputs.findIndex((el) => el.name == input.name)
@@ -327,4 +327,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default withNamespaces('common')(RegisterForm)
+export default withTranslation()(RegisterForm)

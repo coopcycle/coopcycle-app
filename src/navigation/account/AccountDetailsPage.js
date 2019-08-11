@@ -12,7 +12,7 @@ import {
   Label, Item, Input
 } from 'native-base';
 import { connect } from 'react-redux'
-import { withNamespaces } from 'react-i18next'
+import { withTranslation } from 'react-i18next'
 
 class AccountDetailsPage extends Component {
   constructor(props) {
@@ -89,4 +89,4 @@ function mapStateToProps(state) {
   }
 }
 
-module.exports = connect(mapStateToProps)(withNamespaces('common')(AccountDetailsPage))
+module.exports = connect(mapStateToProps)(withTranslation()(AccountDetailsPage))

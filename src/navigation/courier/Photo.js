@@ -5,7 +5,7 @@ import {
   Icon, Text, Button, Footer, FooterTab
 } from 'native-base'
 import { Col, Row, Grid } from 'react-native-easy-grid'
-import { translate } from 'react-i18next'
+import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 import { RNCamera } from 'react-native-camera'
 
@@ -132,4 +132,4 @@ function mapDispatchToProps (dispatch) {
   }
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(translate()(Photo))
+module.exports = connect(mapStateToProps, mapDispatchToProps)(withTranslation()(Photo))

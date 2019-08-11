@@ -5,7 +5,7 @@ import { Col, Row, Grid } from 'react-native-easy-grid'
 import slugify from 'slugify'
 import moment from 'moment'
 import _ from 'lodash'
-import { withNamespaces } from 'react-i18next'
+import { withTranslation } from 'react-i18next'
 import { formatPrice } from '../../../Cart'
 
 const styles = StyleSheet.create({
@@ -104,4 +104,4 @@ class OrderList extends Component {
   }
 }
 
-export default withNamespaces('common')(OrderList)
+export default withTranslation()(OrderList)

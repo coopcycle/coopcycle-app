@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native'
 import { Icon, Text, Thumbnail, Badge } from 'native-base';
 import { Col, Row, Grid } from 'react-native-easy-grid'
-import { withNamespaces } from 'react-i18next'
+import { withTranslation } from 'react-i18next'
 import { localeDetector } from '../i18n'
 import { formatPrice } from '../Cart'
 
@@ -104,4 +104,4 @@ class OrderItems extends Component {
   }
 }
 
-export default withNamespaces('common')(OrderItems)
+export default withTranslation()(OrderItems)

@@ -3,7 +3,7 @@ import { FlatList, StyleSheet, Viewr } from 'react-native'
 import { Container, Icon, Text } from 'native-base'
 import { Col, Row, Grid } from 'react-native-easy-grid'
 import moment from 'moment'
-import { withNamespaces } from 'react-i18next'
+import { withTranslation } from 'react-i18next'
 import _ from 'lodash'
 
 class TaskHistoryPage extends Component {
@@ -62,4 +62,4 @@ const styles = StyleSheet.create({
   }
 })
 
-module.exports = withNamespaces('common')(TaskHistoryPage)
+module.exports = withTranslation()(TaskHistoryPage)

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { InteractionManager, View } from 'react-native';
-import { withNamespaces } from 'react-i18next'
+import { withTranslation } from 'react-i18next'
 import {
   Container, Content,
   Left, Right,
@@ -37,7 +37,7 @@ class EditAddress extends Component {
       <Container>
         <Content>
           <AddressForm
-            refChild={ this.addressForm }
+            ref={ this.addressForm }
             { ...address }
             extended />
         </Content>
@@ -58,4 +58,4 @@ class EditAddress extends Component {
   }
 }
 
-export default withNamespaces('common')(EditAddress)
+export default withTranslation()(EditAddress)

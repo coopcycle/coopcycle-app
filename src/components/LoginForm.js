@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { View } from 'react-native'
 import { connect } from 'react-redux'
 import { Form, Item, Input, Label, Button, Text } from 'native-base'
-import { withNamespaces } from 'react-i18next'
+import { withTranslation } from 'react-i18next'
 
 class LoginForm extends Component {
 
@@ -72,4 +72,4 @@ function mapStateToProps(state) {
 }
 
 export { LoginForm }
-export default connect(mapStateToProps)(withNamespaces('common')(LoginForm))
+export default connect(mapStateToProps)(withTranslation()(LoginForm))

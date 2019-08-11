@@ -6,7 +6,7 @@ import {
   List, ListItem, Switch
 } from 'native-base'
 import { connect } from 'react-redux'
-import { withNamespaces } from 'react-i18next'
+import { withTranslation } from 'react-i18next'
 
 import {
   filterTasks,
@@ -111,4 +111,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(withNamespaces('common')(Settings))
+module.exports = connect(mapStateToProps, mapDispatchToProps)(withTranslation()(Settings))

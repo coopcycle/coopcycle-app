@@ -6,7 +6,7 @@ import Swipeout from 'react-native-swipeout'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 import _ from 'lodash'
-import { withNamespaces } from 'react-i18next'
+import { withTranslation } from 'react-i18next'
 
 import { greenColor, whiteColor, lightGreyColor, redColor } from "../styles/common"
 
@@ -217,4 +217,4 @@ TaskList.propTypes = {
   onTaskClick: PropTypes.func,
 };
 
-export default withNamespaces(['common'], { withRef: true })(TaskList)
+export default withTranslation(['common'], { withRef: true })(TaskList)

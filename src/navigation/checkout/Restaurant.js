@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Dimensions, PixelRatio, StyleSheet, View } from 'react-native'
 import { connect } from 'react-redux'
-import { withNamespaces } from 'react-i18next'
+import { withTranslation } from 'react-i18next'
 import {
   Container, Content, Footer, H3, H4,
   Left, Right,
@@ -156,4 +156,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(withNamespaces('common')(Restaurant))
+module.exports = connect(mapStateToProps, mapDispatchToProps)(withTranslation()(Restaurant))

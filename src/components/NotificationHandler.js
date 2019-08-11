@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Alert, FlatList, View, StyleSheet, TouchableOpacity } from 'react-native'
 import { Button, Icon, Text } from 'native-base'
 import { connect } from 'react-redux'
-import { withNamespaces } from 'react-i18next'
+import { withTranslation } from 'react-i18next'
 import Sound from 'react-native-sound'
 import moment from 'moment'
 import Modal from 'react-native-modal'
@@ -287,4 +287,4 @@ function mapDispatchToProps (dispatch) {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withNamespaces('common')(NotificationHandler))
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(NotificationHandler))
