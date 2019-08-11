@@ -11,6 +11,7 @@
     "DISPATCH": "Dispatch",
     "RESTAURANT": "Restaurant",
     "RESTAURANTS": "Restaurants",
+    "BACK": "Retour",
     "CART": "Panier",
     "CART_EMPTY_WARNING": "Votre panier est vide",
     "DELIVERY_ADDR": "Adresse de livraison",

@@ -49,6 +49,27 @@ class AddressTypeahead extends Component {
       }
     }
 
+    if (this.props.onFocus) {
+      textInputProps = {
+        ...textInputProps,
+        onFocus: this.props.onFocus
+      }
+    }
+
+    if (this.props.onBlur) {
+      textInputProps = {
+        ...textInputProps,
+        onBlur: this.props.onBlur
+      }
+    }
+
+    if (this.props.onChangeText) {
+      textInputProps = {
+        ...textInputProps,
+        onChangeText: this.props.onChangeText
+      }
+    }
+
     let otherProps = {}
     if (this.props.renderDescription) {
       otherProps = {

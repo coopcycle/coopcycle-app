@@ -20,10 +20,42 @@ import { init, addItem, hideAddressModal, setAddress } from '../../redux/Checkou
 
 class Restaurant extends Component {
 
+  constructor(props) {
+    super(props)
+    this.state = {
+      shouldShowBackBtn: false
+    }
+  }
+
   componentDidMount() {
     const { restaurant } = this.props.navigation.state.params
 
     this.props.init(restaurant)
+  }
+
+  renderBackBtn() {
+
+    const { width } = Dimensions.get('window')
+
+    const shouldShowBackBtn = (false === this.props.isAddressOK) && this.state.shouldShowBackBtn
+
+    if (!shouldShowBackBtn) {
+      return (
+        <View />
+      )
+    }
+
+    return (
+      <View style={ [ styles.goBackContainer, { width } ] }>
+        <Button bordered info block
+          onPress={ () => {
+            this.props.hideAddressModal()
+            this.props.navigation.navigate('CheckoutHome')
+          }}>
+          <Text>{ this.props.t('BACK') }</Text>
+        </Button>
+      </View>
+    )
   }
 
   render() {
@@ -75,11 +107,17 @@ class Restaurant extends Component {
                   onPress={ (address) => this.props.setAddress(address) }
                   renderRow={ rowData => {
                     return (
-                      <Text testID={ `placeId:${rowData.place_id}` }>
+                      <Text
+                        testID={ `placeId:${rowData.place_id}` }
+                        style={{ flex: 1, fontWeight: 'bold', fontSize: 14 }}
+                        numberOfLines={ 1 }>
                         { rowData.description || rowData.formatted_address || rowData.name }
                       </Text>
                     )
-                  } } />
+                  }}
+                  onFocus={ _ => this.setState({ shouldShowBackBtn: false }) }
+                  onBlur={ _ => this.setState({ shouldShowBackBtn: true }) } />
+                  { this.renderBackBtn() }
               </View>
             </View>
           </View>
@@ -88,9 +126,6 @@ class Restaurant extends Component {
     );
   }
 }
-
-/*
-*/
 
 const typeaheadStyles = {
   textInputContainer: {
@@ -133,6 +168,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginTop: 15,
     marginRight: 8
+  },
+  goBackContainer: {
+    flex: 1,
+    alignItems: 'center',
+    position: 'absolute',
+    top: '40%',
+    left: 0,
+    paddingHorizontal: 15
   }
 });
 
