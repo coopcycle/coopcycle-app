@@ -77,6 +77,8 @@ matrix:
       # - yarn config set cache-folder "$HOME/.cache/yarn"
       - yarn install
       # - cd ios
+    script:
+      - set -o pipefail && xcodebuild -workspace ios/CoopCycle.xcworkspace -scheme CoopCycle -sdk iphonesimulator | xcpretty
     # script:
     #   - xcodebuild -workspace CoopCycle.xcworkspace -scheme CoopCycle -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO | xcpretty && exit ${PIPESTATUS[0]}
 
