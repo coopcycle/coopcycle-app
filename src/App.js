@@ -9,6 +9,7 @@ import getTheme from '../native-base-theme/components'
 import material from '../native-base-theme/variables/material'
 
 import { createSwitchNavigator, createAppContainer } from 'react-navigation'
+import { useScreens } from 'react-native-screens'
 import { Provider } from 'react-redux'
 import { I18nextProvider } from 'react-i18next'
 
@@ -42,6 +43,8 @@ YellowBox.ignoreWarnings([
   // react-native-camera
   'permissionDialogTitle and permissionDialogMessage are deprecated'
 ])
+
+useScreens()
 
 const RootNavigator = createAppContainer(createSwitchNavigator(
   {
