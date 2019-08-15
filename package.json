@@ -68,6 +68,7 @@
     "@babel/runtime": "^7.4.5",
     "babel-eslint": "^10.0.2",
     "babel-jest": "^24.8.0",
+    "detox": "^14.0.1",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.14.0",
     "enzyme-to-json": "^3.3.5",
@@ -84,6 +85,9 @@
     "redux-mock-store": "^1.5.3"
   },
   "jest": {
+    "testPathIgnorePatterns": [
+      "<rootDir>/e2e/"
+    ],
     "preset": "react-native",
     "setupFiles": [
       "./jestSetup.js"
@@ -102,5 +106,22 @@
     "assets": [
       "./assets/fonts"
     ]
+  },
+  "detox": {
+    "configurations": {
+      "ios.sim.debug": {
+        "binaryPath": "ios/build/Build/Products/Debug-iphonesimulator/CoopCycle.app",
+        "build": "xcodebuild -workspace ios/CoopCycle.xcworkspace -scheme CoopCycle -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build -quiet -UseModernBuildSystem=NO",
+        "type": "ios.simulator",
+        "name": "iPhone X"
+      },
+      "ios.sim.release": {
+        "binaryPath": "ios/build/Build/Products/Release-iphonesimulator/CoopCycle.app",
+        "build": "xcodebuild -workspace ios/CoopCycle.xcworkspace -scheme CoopCycle -configuration Release -sdk iphonesimulator -derivedDataPath ios/build -quiet -UseModernBuildSystem=NO",
+        "type": "ios.simulator",
+        "name": "iPhone X"
+      }
+    },
+    "test-runner": "jest"
   }
 }
