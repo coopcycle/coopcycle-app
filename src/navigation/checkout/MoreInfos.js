@@ -93,6 +93,7 @@ class MoreInfos extends Component {
               <View style={ [ styles.formGroup ] }>
                 <Text style={ styles.label }>{ this.props.t('STORE_NEW_DELIVERY_PHONE_NUMBER') }</Text>
                 <TextInput
+                  testID="checkoutTelephone"
                   style={ [ styles.textInput ] }
                   autoCorrect={ false }
                   keyboardType="phone-pad"
@@ -141,6 +142,7 @@ class MoreInfos extends Component {
               </View>
             </Content>
             <FooterButton
+              testID="moreInfosSubmit"
               text={ this.props.t('SUBMIT') }
               onPress={ handleSubmit } />
           </Container>

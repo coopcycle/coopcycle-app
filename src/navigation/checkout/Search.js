@@ -60,7 +60,7 @@ class RestaurantsPage extends Component {
       }
 
       return (
-        <View style={ styles.content }>
+        <View style={ styles.content } testID="checkoutSearchContent">
           <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
             <Icon name="search" style={{ color: '#cccccc' }} />
             <Text note>{ this.props.t('ENTER_ADDRESS') }</Text>
@@ -80,7 +80,8 @@ class RestaurantsPage extends Component {
 
     return (
       <Container style={{ paddingTop: 54 }} testID="checkoutSearch"
-        onLayout={ event => this.setState({ width: event.nativeEvent.layout.width }) }>
+        onLayout={ event => this.setState({ width: event.nativeEvent.layout.width }) }
+        >
         { this.renderContent() }
         { /* This component needs to be rendered *ABOVE* the list */ }
         { /* This is why it should be the last child component */ }

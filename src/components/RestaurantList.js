@@ -37,12 +37,23 @@ const OneLineText = (props) => (
 
 class RestaurantList extends Component {
 
+  constructor(props) {
+    super(props)
+    this.matchingCounter = 0
+  }
+
   renderItem(restaurant, index) {
+
+    let testID = `restaurants:${index}`
+    if (restaurant.address.streetAddress.match(/75020/g) || restaurant.address.streetAddress.match(/75010/g) || restaurant.address.streetAddress.match(/75019/g)) {
+      testID = `restaurantMatches:${this.matchingCounter}`
+      this.matchingCounter += 1
+    }
 
     return (
       <TouchableOpacity style={ styles.item }
         onPress={ () => this.props.onItemClick(restaurant) }
-        testID={ `restaurantIndex:${index}` }>
+        testID={ testID }>
         <View style={{ flex: 1 }}>
           <OneLineText style={ [ styles.restaurantNameText ] }>{ restaurant.name }</OneLineText>
           <OneLineText note>{ restaurant.address.streetAddress }</OneLineText>
