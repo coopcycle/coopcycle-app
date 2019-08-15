@@ -12,7 +12,6 @@ import org.reactnative.camera.RNCameraPackage;
 import com.polidea.reactnativeble.BlePackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
 import com.terrylinla.rnsketchcanvas.SketchCanvasPackage;
-import com.horcrux.svg.SvgPackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.zmxv.RNSound.RNSoundPackage;
 import io.invertase.firebase.RNFirebasePackage;
@@ -55,7 +54,6 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
           new BlePackage(),
           new RNFetchBlobPackage(),
           new SketchCanvasPackage(),
-          new SvgPackage(),
           new RNGestureHandlerPackage(),
           new RNSoundPackage(),
           new RNFirebasePackage(),

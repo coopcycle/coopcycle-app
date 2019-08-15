@@ -38,7 +38,6 @@ target 'CoopCycle' do
 
   pod 'RNGestureHandler', :path => '../node_modules/react-native-gesture-handler'
 
-  pod 'RNSVG', :path => '../node_modules/react-native-svg'
 
   pod 'RNSketchCanvas', :path => '../node_modules/@terrylinla/react-native-sketch-canvas'
 

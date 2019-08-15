@@ -81,11 +81,9 @@ PODS:
     - React
   - RNReanimated (1.2.0):
     - React
-  - RNScreens (1.0.0-alpha.23):
+  - RNScreens (1.0.0-alpha.22):
     - React
   - RNSketchCanvas (0.8.0):
-    - React
-  - RNSVG (9.4.0):
     - React
   - Stripe (14.0.0)
   - yoga (0.59.10.React)
@@ -116,7 +114,6 @@ DEPENDENCIES:
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - "RNSketchCanvas (from `../node_modules/@terrylinla/react-native-sketch-canvas`)"
-  - RNSVG (from `../node_modules/react-native-svg`)
   - Stripe (~> 14.0.0)
   - yoga (from `../node_modules/react-native/ReactCommon/yoga/yoga.podspec`)
 
@@ -152,8 +149,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-screens"
   RNSketchCanvas:
     :path: "../node_modules/@terrylinla/react-native-sketch-canvas"
-  RNSVG:
-    :path: "../node_modules/react-native-svg"
   yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga/yoga.podspec"
 
@@ -170,12 +165,11 @@ SPEC CHECKSUMS:
   RNGestureHandler: 5329a942fce3d41c68b84c2c2276ce06a696d8b0
   RNLocalize: 62a949d2ec5bee0eb8f39a80a48f01e2f4f67080
   RNReanimated: 1b52415c4302f198cb581282a0166690bad62c43
-  RNScreens: f28b48b8345f2f5f39ed6195518291515032a788
+  RNScreens: 720a9e6968beb73e8196239801e887d8401f86ed
   RNSketchCanvas: 9c28adb5381543ed55cc98ce6de46479cb3cb12c
-  RNSVG: 9cb6e958c4b6a1f58185ac72a350b148947d6fed
   Stripe: db29ad197c74aca6fb981e4e8355cf7ebd0fca5a
   yoga: 684513b14b03201579ba3cee20218c9d1298b0cc
 
-PODFILE CHECKSUM: 622e92065eed07b7e30ee009085356c36a2d3ed7
+PODFILE CHECKSUM: 7403823f035aabeb612ad626079f829296766b06
 
 COCOAPODS: 1.7.1
