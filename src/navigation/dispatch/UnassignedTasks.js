@@ -38,7 +38,7 @@ class UnassignedTasks extends Component {
     return (
       <Container>
         <View>
-          <Button iconLeft full onPress={ () => this.props.navigation.navigate('DispatchAddTask') }>
+          <Button iconLeft full onPress={ () => this.props.navigation.navigate('DispatchAddTask') } testID="addTask">
             <Icon name="add" />
             <Text>{ this.props.t('DISPATCH_CREATE_TASK') }</Text>
           </Button>

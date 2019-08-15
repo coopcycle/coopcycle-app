@@ -129,7 +129,7 @@ class DrawerContent extends Component {
     return (
       <ScrollView>
         <SafeAreaView style={ styles.container } forceInset={{ top: 'always', horizontal: 'never' }}>
-          <TouchableOpacity style={ styles.header } onPress={ navigateToAccount }>
+          <TouchableOpacity style={ styles.header } onPress={ navigateToAccount } testID="drawerAccountBtn">
             <Icon name="person" />
             { isAuthenticated && <Text>{ this.props.user.username }</Text> }
           </TouchableOpacity>

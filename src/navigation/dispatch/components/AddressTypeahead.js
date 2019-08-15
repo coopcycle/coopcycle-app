@@ -95,6 +95,9 @@ class AddressTypeahead extends Component {
             placeholder={ this.props.t('ENTER_ADDRESS') }
             minLength={ 2 } // minimum length of text to search
             autoFocus={ false }
+            textInputProps={{
+              testID: 'taskFormTypeahead'
+            }}
             // listViewDisplayed = auto does not hide the results when pressed
             listViewDisplayed={ false }
             fetchDetails={ true }
@@ -113,7 +116,14 @@ class AddressTypeahead extends Component {
               region: Settings.get('country')
             }}
             // filter the reverse geocoding results by types - ['locality', 'administrative_area_level_3'] if you want to display only cities
-            filterReverseGeocodingByTypes={[ 'street_address', 'route', 'geocode' ]} />
+            filterReverseGeocodingByTypes={[ 'street_address', 'route', 'geocode' ]}
+            renderRow={ rowData => {
+              return (
+                <Text testID={ `placeId:${rowData.place_id}` }>
+                  { rowData.description || rowData.formatted_address || rowData.name }
+                </Text>
+              )
+            }} />
         </View>
         <View style={ [ styles.right, { width: buttonWidth } ] }>
           { this.renderButton() }

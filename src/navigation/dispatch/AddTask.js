@@ -164,7 +164,7 @@ class AddTask extends Component {
         </Content>
         <Footer style={{ backgroundColor: '#3498DB' }}>
           <FooterTab style={{ backgroundColor: '#3498DB' }}>
-            <Button full onPress={ () => this._createTask() }>
+            <Button full onPress={ () => this._createTask() } testID="submitTaskForm">
               <Text style={{ fontSize: 18, color: '#fff' }}>{ this.props.t('DISPATCH_ADD_TASK') }</Text>
             </Button>
           </FooterTab>
