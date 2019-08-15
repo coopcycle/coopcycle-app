@@ -28,7 +28,7 @@ describe('Dispatch', () => {
 
     await waitFor(element(by.id('taskFormTypeahead'))).toExist().withTimeout(5000)
     await element(by.id('taskFormTypeahead')).typeText('23 av claude vellefaux')
-    await waitFor(element(by.id('placeId:ChIJPSRadeBt5kcR4B2HzbBfZQE'))).toBeVisible().withTimeout(5000)
+    await waitFor(element(by.id('placeId:ChIJPSRadeBt5kcR4B2HzbBfZQE'))).toBeVisible().withTimeout(10000)
     await element(by.id('placeId:ChIJPSRadeBt5kcR4B2HzbBfZQE')).tap()
     await element(by.id('submitTaskForm')).tap()
   })
