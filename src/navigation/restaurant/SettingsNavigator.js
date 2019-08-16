@@ -45,6 +45,15 @@ export default createStackNavigator({
       title: i18n.t('RESTAURANT_OPENING_HOURS'),
     })
   },
+  RestaurantMenus: {
+    screen: navigation.RestaurantMenus,
+    navigationOptions: ({ navigation }) => ({
+      // Use header = null to get rid of the header
+      // The screen's header will be used
+      header: null,
+      title: i18n.t('RESTAURANT_MENUS'),
+    })
+  },
 }, {
   defaultNavigationOptions,
   initialRouteName: 'RestaurantSettingsHome',

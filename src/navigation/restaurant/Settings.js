@@ -33,13 +33,48 @@ class SettingsScreen extends Component {
   render() {
 
     const { navigate } = this.props.navigation
-    const { restaurants } = this.props
+    const { restaurant, restaurants } = this.props
 
-    const openingHoursProps = {
+    const lastItemProps = {
       last: restaurants.length === 1
     }
-    const changeRestaurantProps = {
-      last: restaurants.length > 1
+
+    const items = [
+      {
+        icon: 'flame',
+        label: this.props.t('RESTAURANT_SETTINGS_RUSH'),
+        switch: (
+          <Switch
+            value={ this.state.restaurantState === 'rush' }
+            onValueChange={ this._onRushValueChange.bind(this) } />
+        )
+      },
+      {
+        icon: 'pricetag',
+        label: this.props.t('RESTAURANT_SETTINGS_MANAGE_PRODUCTS'),
+        onPress: () => navigate('RestaurantProducts')
+      },
+      {
+        icon: 'calendar',
+        label: this.props.t('RESTAURANT_SETTINGS_OPENING_HOURS'),
+        onPress: () => navigate('RestaurantOpeningHours')
+      },
+      {
+        icon: 'calendar',
+        label: this.props.t('RESTAURANT_SETTINGS_MENUS'),
+        onPress: () => navigate('RestaurantMenus')
+      }
+    ]
+
+    if (restaurants.length > 1) {
+      items.push(
+        {
+          icon: 'calendar',
+          label: this.props.t('RESTAURANT_SETTINGS_CHANGE_RESTAURANT'),
+          onPress: () => navigate('RestaurantList')
+        }
+
+      )
     }
 
     return (
@@ -51,54 +86,45 @@ class SettingsScreen extends Component {
         </View>
         <Content style={ styles.content }>
           <List>
-            <ListItem icon first>
-              <Left>
-                <Icon active name="flame" />
-              </Left>
-              <Body>
-                <Text>{ this.props.t('RESTAURANT_SETTINGS_RUSH') }</Text>
-              </Body>
-              <Right>
-                <Switch
-                  value={ this.state.restaurantState === 'rush' }
-                  onValueChange={ this._onRushValueChange.bind(this) } />
-              </Right>
-            </ListItem>
-            <ListItem icon onPress={ () => navigate('RestaurantProducts') }>
-              <Left>
-                <Icon active name="pricetag" />
-              </Left>
-              <Body>
-                <Text>{ this.props.t('RESTAURANT_SETTINGS_MANAGE_PRODUCTS') }</Text>
-              </Body>
-              <Right>
-                <Icon name="arrow-forward" />
-              </Right>
-            </ListItem>
-            <ListItem icon onPress={ () => navigate('RestaurantOpeningHours') } { ...openingHoursProps }>
-              <Left>
-                <Icon active name="calendar" />
-              </Left>
-              <Body>
-                <Text>{ this.props.t('RESTAURANT_SETTINGS_OPENING_HOURS') }</Text>
-              </Body>
-              <Right>
-                <Icon name="arrow-forward" />
-              </Right>
-            </ListItem>
-            { restaurants.length > 1 && (
-            <ListItem icon onPress={ () => navigate('RestaurantList') } { ...changeRestaurantProps }>
-              <Left>
-                <Icon active name="sync" />
-              </Left>
-              <Body>
-                <Text>{ this.props.t('RESTAURANT_SETTINGS_CHANGE_RESTAURANT') }</Text>
-              </Body>
-              <Right>
-                <Icon name="arrow-forward" />
-              </Right>
-            </ListItem>
-            )}
+            { items.map((item, index) => {
+
+              let itemProps = {}
+
+              if (index === (items.length - 1)) {
+                itemProps = {
+                  ...itemProps,
+                  last: true
+                }
+              }
+
+              if (index === 0) {
+                itemProps = {
+                  ...itemProps,
+                  first: true
+                }
+              }
+
+              if (item.onPress) {
+                itemProps = {
+                  ...itemProps,
+                  onPress: item.onPress
+                }
+              }
+
+              return (
+                <ListItem key={ `item-${index}` } icon { ...itemProps }>
+                  <Left>
+                    <Icon active name={ item.icon } />
+                  </Left>
+                  <Body>
+                    <Text>{ item.label }</Text>
+                  </Body>
+                  <Right>
+                    { item.switch && item.switch }
+                  </Right>
+                </ListItem>
+              )
+            }) }
           </List>
         </Content>
       </Container>

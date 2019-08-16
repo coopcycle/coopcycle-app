@@ -169,6 +169,8 @@
     "RESTAURANT_SETTINGS_OPENING_HOURS": "Horaires d'ouverture",
     "RESTAURANT_SETTINGS_PRINTER": "Imprimantes",
     "RESTAURANT_SETTINGS_HEADING": "Réglages du restaurant {{- name}}",
+    "RESTAURANT_SETTINGS_MENUS": "Changer de menu",
+    "RESTAURANT_SETTINGS_MENU_ACTIVATE": "Activer le menu {{- name }}",
     "RESTAURANT_ALERT_RUSH_MODE_ON": "Le mode rush est activé",
     "RESTAURANT_ALERT_CLOSED": "Le restaurant est fermé",
     "CHECKOUT_PRODUCT_OPTIONS_TITLE": "Choix des options",

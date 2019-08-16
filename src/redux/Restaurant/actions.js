@@ -51,6 +51,11 @@ export const LOAD_PRODUCTS_REQUEST = 'LOAD_PRODUCTS_REQUEST'
 export const LOAD_PRODUCTS_SUCCESS = 'LOAD_PRODUCTS_SUCCESS'
 export const LOAD_PRODUCTS_FAILURE = 'LOAD_PRODUCTS_FAILURE'
 
+export const LOAD_MENUS_REQUEST = 'LOAD_MENUS_REQUEST'
+export const LOAD_MENUS_SUCCESS = 'LOAD_MENUS_SUCCESS'
+export const LOAD_MENUS_FAILURE = 'LOAD_MENUS_FAILURE'
+export const SET_CURRENT_MENU = 'SET_CURRENT_MENU'
+
 export const SET_NEXT_PRODUCTS_PAGE = 'SET_NEXT_PRODUCTS_PAGE'
 export const SET_HAS_MORE_PRODUCTS = 'SET_HAS_MORE_PRODUCTS'
 
@@ -83,6 +88,11 @@ export const loadOrdersFailure = createAction(LOAD_ORDERS_FAILURE)
 export const loadOrderRequest = createAction(LOAD_ORDER_REQUEST)
 export const loadOrderSuccess = createAction(LOAD_ORDER_SUCCESS)
 export const loadOrderFailure = createAction(LOAD_ORDER_FAILURE)
+
+export const loadMenusRequest = createAction(LOAD_MENUS_REQUEST)
+export const loadMenusSuccess = createAction(LOAD_MENUS_SUCCESS)
+export const loadMenusFailure = createAction(LOAD_MENUS_FAILURE)
+export const setCurrentMenu = createAction(SET_CURRENT_MENU, (restaurant, menu) => ({ restaurant, menu }))
 
 export const setCurrentOrder = createAction(SET_CURRENT_ORDER)
 
@@ -153,6 +163,38 @@ export function loadOrders(client, restaurant, date) {
     return client.get(`${restaurant['@id']}/orders?date=${date}`)
       .then(res => dispatch(loadOrdersSuccess(res['hydra:member'])))
       .catch(e => dispatch(loadOrdersFailure(e)))
+  }
+}
+
+export function loadMenus(restaurant, date) {
+
+  return function (dispatch, getState) {
+
+    const { app } = getState()
+    const { httpClient } = app
+
+    dispatch(loadMenusRequest())
+
+    httpClient.get(`${restaurant['@id']}/menus`)
+      .then(res => dispatch(loadMenusSuccess(res['hydra:member'])))
+      .catch(e => dispatch(loadMenusFailure(e)))
+  }
+}
+
+export function activateMenu(restaurant, menu) {
+
+  return function (dispatch, getState) {
+
+    const { app } = getState()
+    const { httpClient } = app
+
+    dispatch(loadMenusRequest())
+
+    httpClient.put(`${restaurant['@id']}`, {
+      hasMenu: menu['@id']
+    })
+      .then(res => dispatch(setCurrentMenu(restaurant, menu)))
+      .catch(e => dispatch(loadMenusFailure(e)))
   }
 }
 

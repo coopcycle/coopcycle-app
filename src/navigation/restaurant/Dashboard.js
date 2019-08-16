@@ -41,14 +41,20 @@ class DashboardPage extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.date !== prevProps.date || this.props.restaurant !== prevProps.restaurant) {
+
+    const hasRestaurantChanged = this.props.restaurant !== prevProps.restaurant
+      && this.props.restaurant['@id'] !== prevProps.restaurant['@id']
+
+    const hasChanged = this.props.date !== prevProps.date || hasRestaurantChanged
+
+    if (hasChanged) {
       this.props.loadOrders(
         this.props.httpClient,
         this.props.restaurant,
         this.props.date.format('YYYY-MM-DD')
       )
     }
-    if (this.props.restaurant !== prevProps.restaurant) {
+    if (hasRestaurantChanged) {
       // This is needed to display the title
       this.props.navigation.setParams({ restaurant: this.props.restaurant })
     }

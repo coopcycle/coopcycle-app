@@ -21,6 +21,10 @@ import {
   LOAD_MY_RESTAURANTS_REQUEST,
   LOAD_MY_RESTAURANTS_SUCCESS,
   LOAD_MY_RESTAURANTS_FAILURE,
+  LOAD_MENUS_REQUEST,
+  LOAD_MENUS_SUCCESS,
+  LOAD_MENUS_FAILURE,
+  SET_CURRENT_MENU,
   CHANGE_STATUS_REQUEST,
   CHANGE_STATUS_SUCCESS,
   CHANGE_STATUS_FAILURE,
@@ -58,6 +62,7 @@ const initialState = {
   nextProductsPage: null,
   hasMoreProducts: false,
   products: [],
+  menus: [],
   specialOpeningHoursSpecification: [],
 }
 
@@ -105,6 +110,7 @@ export default (state = initialState, action = {}) => {
     case CHANGE_PRODUCT_ENABLED_REQUEST:
     case CLOSE_RESTAURANT_REQUEST:
     case DELETE_OPENING_HOURS_SPECIFICATION_REQUEST:
+    case LOAD_MENUS_REQUEST:
       return {
         ...state,
         fetchError: false,
@@ -123,6 +129,7 @@ export default (state = initialState, action = {}) => {
     case CHANGE_PRODUCT_ENABLED_FAILURE:
     case CLOSE_RESTAURANT_FAILURE:
     case DELETE_OPENING_HOURS_SPECIFICATION_FAILURE:
+    case LOAD_MENUS_FAILURE:
       return {
         ...state,
         fetchError: action.payload || action.error,
@@ -289,6 +296,34 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         hasMoreProducts: action.payload
+      }
+
+    case LOAD_MENUS_SUCCESS:
+
+      return {
+        ...state,
+        fetchError: false,
+        isFetching: false,
+        menus: action.payload.slice(0).map(menu => ({
+          ...menu,
+          active: menu['@id'] === state.restaurant.hasMenu
+        }))
+      }
+
+    case SET_CURRENT_MENU:
+
+      return {
+        ...state,
+        fetchError: false,
+        isFetching: false,
+        restaurant: {
+          ...state.restaurant,
+          hasMenu: action.payload.menu['@id']
+        },
+        menus: state.menus.slice(0).map(menu => ({
+          ...menu,
+          active: menu['@id'] === action.payload.menu['@id']
+        }))
       }
 
     default:

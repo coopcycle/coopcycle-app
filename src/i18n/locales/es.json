@@ -167,6 +167,8 @@
     "RESTAURANT_SETTINGS_MANAGE_PRODUCTS": "Gestionar productos",
     "RESTAURANT_SETTINGS_OPENING_HOURS": "Horarios de apertura",
     "RESTAURANT_SETTINGS_HEADING": "Configuración del restaurante {{- name}}",
+    "RESTAURANT_SETTINGS_MENUS": "Cambiar menús",
+    "RESTAURANT_SETTINGS_MENU_ACTIVATE": "Activar el menú {{- name}}",
     "RESTAURANT_ALERT_RUSH_MODE_ON": "El modo rush esta activado",
     "RESTAURANT_ALERT_CLOSED": "El restaurante esta cerrado",
     "CHECKOUT_PRODUCT_OPTIONS_TITLE": "Elección de opciones",
