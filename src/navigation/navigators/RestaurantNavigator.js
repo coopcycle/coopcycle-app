@@ -6,6 +6,7 @@ import { createStackNavigator } from 'react-navigation'
 import i18n from '../../i18n'
 import navigation, { defaultNavigationOptions, headerLeft } from '..'
 import HeaderRight from '../restaurant/components/HeaderRight'
+import SettingsNavigator from '../restaurant/SettingsNavigator'
 
 const MainNavigator = createStackNavigator({
   RestaurantHome: {
@@ -32,32 +33,6 @@ const MainNavigator = createStackNavigator({
 }, {
   initialRouteKey: 'RestaurantHome',
   initialRouteName: 'RestaurantHome',
-  defaultNavigationOptions
-})
-
-const RestaurantSettingsStack = createStackNavigator({
-  RestaurantSettingsHome: {
-    screen: navigation.RestaurantSettings,
-    navigationOptions: ({ navigation }) => ({
-      header: null
-    })
-  },
-  RestaurantProducts: {
-    screen: navigation.RestaurantProducts,
-    navigationOptions: ({ navigation }) => ({
-      title: i18n.t('RESTAURANT_PRODUCTS'),
-      header: null
-    })
-  },
-  RestaurantOpeningHours: {
-    screen: navigation.RestaurantOpeningHours,
-    navigationOptions: ({ navigation }) => ({
-      title: i18n.t('RESTAURANT_OPENING_HOURS'),
-      header: null
-    })
-  },
-}, {
-  initialRouteName: 'RestaurantSettingsHome',
   defaultNavigationOptions
 })
 
@@ -99,13 +74,7 @@ export default createStackNavigator({
     })
   },
   RestaurantSettings: {
-    screen: RestaurantSettingsStack,
-    navigationOptions: ({ navigation }) => ({
-      title: i18n.t('SETTINGS'),
-    })
-  },
-  RestaurantSettings: {
-    screen: RestaurantSettingsStack,
+    screen: SettingsNavigator,
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('SETTINGS'),
     })
