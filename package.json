@@ -41,7 +41,7 @@
     "react-native-localize": "^1.1.4",
     "react-native-map-link": "^2.4.5",
     "react-native-maps": "0.25.0",
-    "react-native-maps-super-cluster": "^1.5.0",
+    "react-native-maps-super-cluster": "^1.6.0",
     "react-native-modal": "^11.1.0",
     "react-native-modal-datetime-picker": "^6.0.0",
     "react-native-modal-selector": "^1.0.3",
