@@ -122,6 +122,7 @@ export const tasksEntityReducer = (state = tasksEntityInitialState, action = {})
           order: state.order.concat([ action.payload.id ])
         }
       }
+      return state
 
     case UNASSIGN_TASK_SUCCESS:
       let task = _.find(state.items, item => item['@id'] === action.payload['@id'])
@@ -133,6 +134,7 @@ export const tasksEntityReducer = (state = tasksEntityInitialState, action = {})
           order: _.filter(state.order, item => item !== action.payload.id)
         }
       }
+      return state
 
     case UPLOAD_FILE_SUCCESS:
 
