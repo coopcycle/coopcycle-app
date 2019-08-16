@@ -30,6 +30,8 @@ class TaskListScreen extends Component {
     const { taskList } = this.props.navigation.state.params
     const { navigate } = this.props.navigation
 
+    const tasks = _.filter(taskList.items, task => task.status !== 'CANCELLED')
+
     return (
       <Container>
         <View>
@@ -41,7 +43,7 @@ class TaskListScreen extends Component {
         </View>
         <Content>
           <TaskList
-            tasks={ taskList.items }
+            tasks={ tasks }
             onSwipeRight={ task => this.props.unassignTask(task) }
             swipeOutRightEnabled={ task => task.status !== 'DONE' }
             swipeOutRightIconName="close"

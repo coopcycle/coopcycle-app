@@ -312,6 +312,7 @@ export default (state = initialState, action = {}) => {
 
           case 'task:done':
           case 'task:failed':
+          case 'task:cancelled':
 
             return {
               ...state,

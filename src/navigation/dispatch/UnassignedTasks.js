@@ -65,7 +65,7 @@ class UnassignedTasks extends Component {
 function mapStateToProps(state) {
 
   return {
-    unassignedTasks: _.uniqBy(state.dispatch.unassignedTasks, '@id'),
+    unassignedTasks: _.filter(_.uniqBy(state.dispatch.unassignedTasks, '@id'), task => task.status !== 'CANCELLED'),
     date: state.dispatch.date,
     user: state.app.user,
   }
