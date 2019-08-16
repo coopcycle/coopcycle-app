@@ -12,6 +12,7 @@ import _ from 'lodash'
 
 import TaskList from '../../components/TaskList'
 import { unassignTask } from '../../redux/Dispatch/actions'
+import { selectTasksNotCancelled } from '../../redux/Dispatch/selectors'
 
 class TaskListScreen extends Component {
 
@@ -30,7 +31,7 @@ class TaskListScreen extends Component {
     const { taskList } = this.props.navigation.state.params
     const { navigate } = this.props.navigation
 
-    const tasks = _.filter(taskList.items, task => task.status !== 'CANCELLED')
+    const tasks = selectTasksNotCancelled({ tasks: taskList.items })
 
     return (
       <Container>

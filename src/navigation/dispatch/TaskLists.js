@@ -12,12 +12,14 @@ import moment from 'moment'
 
 import TaskList from '../../components/TaskList'
 import { createTaskList } from '../../redux/Dispatch/actions'
+import { selectTasksNotCancelled } from '../../redux/Dispatch/selectors'
 
 class TaskLists extends Component {
 
   renderItem(taskList) {
 
     const { navigate } = this.props.navigation
+    const items = selectTasksNotCancelled({ tasks: taskList.items })
 
     return (
       <TouchableOpacity onPress={ () => navigate('DispatchTaskList', { taskList }) } style={ styles.item }>
@@ -29,7 +31,7 @@ class TaskLists extends Component {
           </Col>
           <Col size={ 9 }>
             <View style={ [ styles.verticalAlign ] }>
-              <Text>{ taskList.username } ({ taskList.items.length })</Text>
+              <Text>{ taskList.username } ({ items.length })</Text>
             </View>
           </Col>
           <Col size={ 1 }>

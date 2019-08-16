@@ -12,6 +12,7 @@ import moment from 'moment'
 
 import TaskList from '../../components/TaskList'
 import { assignTask, initialize } from '../../redux/Dispatch/actions'
+import { selectUnassignedTask } from '../../redux/Dispatch/selectors'
 
 class UnassignedTasks extends Component {
 
@@ -65,7 +66,7 @@ class UnassignedTasks extends Component {
 function mapStateToProps(state) {
 
   return {
-    unassignedTasks: _.filter(_.uniqBy(state.dispatch.unassignedTasks, '@id'), task => task.status !== 'CANCELLED'),
+    unassignedTasks: selectUnassignedTask(state),
     date: state.dispatch.date,
     user: state.app.user,
   }
