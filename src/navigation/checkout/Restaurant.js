@@ -23,7 +23,8 @@ class Restaurant extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      shouldShowBackBtn: false
+      shouldShowBackBtn: false,
+      address: ''
     }
     this.keyboardHeight = new Animated.Value(0)
   }
@@ -77,7 +78,7 @@ class Restaurant extends Component {
         <Button bordered info block
           onPress={ () => {
             this.props.hideAddressModal()
-            this.props.navigation.navigate('CheckoutHome')
+            this.props.navigation.navigate('CheckoutHome', { address: this.state.address })
           }}>
           <Text>{ this.props.t('BACK') }</Text>
         </Button>
@@ -131,7 +132,10 @@ class Restaurant extends Component {
                   autoFocus={ true }
                   style={ typeaheadStyles }
                   value={ this.props.address && this.props.address.streetAddress }
-                  onPress={ (address) => this.props.setAddress(address) }
+                  onPress={ (address) => {
+                    this.props.setAddress(address)
+                    this.setState({ address })
+                  }}
                   renderRow={ rowData => {
                     return (
                       <Text

@@ -74,7 +74,8 @@ export default class RestaurantSearch extends Component {
           <AddressTypeahead
             style={ typeaheadStyle }
             renderLeftButton={ () => this.renderLeftButton() }
-            onPress={ this._onAddressChange.bind(this) } />
+            onPress={ this._onAddressChange.bind(this) }
+            defaultValue={ this.props.defaultValue } />
         </View>
       </View>
     )

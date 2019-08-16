@@ -41,6 +41,7 @@ class AddressTypeahead extends Component {
     let textInputProps = {
       autoCorrect: false,
     }
+    let otherProps = {}
 
     if (this.props.testID) {
       textInputProps = {
@@ -62,15 +63,24 @@ class AddressTypeahead extends Component {
         onBlur: this.props.onBlur
       }
     }
-
     if (this.props.onChangeText) {
       textInputProps = {
         ...textInputProps,
         onChangeText: this.props.onChangeText
       }
     }
+    if (this.props.defaultValue) {
+      textInputProps = {
+        ...textInputProps,
+        defaultValue: this.props.defaultValue
+      }
+      otherProps = {
+        ...otherProps,
+        getDefaultValue: () => this.props.defaultValue
+      }
+    }
 
-    let otherProps = {}
+
     if (this.props.renderDescription) {
       otherProps = {
         ...otherProps,

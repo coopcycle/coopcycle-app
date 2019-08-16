@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {
+  InteractionManager,
   StyleSheet,
   View
 } from 'react-native';
@@ -16,20 +17,28 @@ import { withTranslation } from 'react-i18next'
 
 import RestaurantSearch from '../../components/RestaurantSearch'
 import RestaurantList from '../../components/RestaurantList'
-import { searchRestaurants, setAddress } from '../../redux/Checkout/actions'
+import { searchRestaurants, searchRestaurantsForAddress, setAddress } from '../../redux/Checkout/actions'
 
 class RestaurantsPage extends Component {
 
   _onAddressChange(address) {
     if (address) {
-      const { latitude, longitude } = address.geo
-      this.props.searchRestaurants({ latitude, longitude })
-      this.props.setAddress(address)
+      this.props.searchRestaurantsForAddress(address)
     }
   }
 
   componentDidMount() {
     this.props.searchRestaurants()
+  }
+
+  componentDidUpdate(prevProps) {
+
+    const prevAddress = prevProps.navigation.getParam('address', null)
+    const addressAsParam = this.props.navigation.getParam('address', null)
+
+    if (addressAsParam && prevAddress !== addressAsParam) {
+      InteractionManager.runAfterInteractions(() => this._onAddressChange(addressAsParam))
+    }
   }
 
   renderWarning() {
@@ -70,11 +79,19 @@ class RestaurantsPage extends Component {
       }
     }
 
+    let searchText = ''
+    const addressAsParam = this.props.navigation.getParam('address', null)
+    if (addressAsParam) {
+      searchText = addressAsParam.streetAddress
+    }
+
     return (
       <Container style={{ paddingTop: 54 }} testID="checkoutSearch">
         <RestaurantSearch
           ref={ component => this.restaurantSearch = component }
-          onChange={ this._onAddressChange.bind(this) } />
+          onChange={ address => this._onAddressChange(address) }
+          defaultValue={ searchText }
+          key={ searchText } />
         <Content { ...contentProps }>
           <RestaurantList
             restaurants={ restaurants }
@@ -106,6 +123,7 @@ function mapDispatchToProps(dispatch) {
 
   return {
     searchRestaurants: (latitude, longitude) => dispatch(searchRestaurants(latitude, longitude)),
+    searchRestaurantsForAddress: address => dispatch(searchRestaurantsForAddress(address)),
     setAddress: address => dispatch(setAddress(address)),
   }
 }

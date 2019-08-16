@@ -150,7 +150,29 @@ export function setAddress(address) {
   }
 }
 
-export function searchRestaurants(options) {
+export function searchRestaurantsForAddress(address, options = {}) {
+
+  return (dispatch, getState) => {
+
+    const { httpClient } = getState().app
+
+    let queryString = `coordinate=${address.geo.latitude},${address.geo.longitude}`
+    dispatch(loadRestaurantsRequest())
+
+    httpClient.get('/api/restaurants' + (queryString ? `?${queryString}` : ''))
+      .then(res => {
+
+        dispatch(_setAddress(address))
+        onSetAddress(address)
+        dispatch(setAddressOK(true))
+
+        dispatch(loadRestaurantsSuccess(res['hydra:member']))
+      })
+      .catch(e => dispatch(loadRestaurantsFailure(e)))
+  }
+}
+
+export function searchRestaurants(options = {}) {
 
   return (dispatch, getState) => {
 
@@ -164,9 +186,7 @@ export function searchRestaurants(options) {
     dispatch(loadRestaurantsRequest())
 
     httpClient.get('/api/restaurants' + (queryString ? `?${queryString}` : ''))
-      .then(res => {
-        dispatch(loadRestaurantsSuccess(res['hydra:member']))
-      })
+      .then(res => dispatch(loadRestaurantsSuccess(res['hydra:member'])))
       .catch(e => dispatch(loadRestaurantsFailure(e)))
   }
 }
