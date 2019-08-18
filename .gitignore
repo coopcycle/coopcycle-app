@@ -65,6 +65,7 @@ buck-out/
 # Pods/
 
 /android/app/google-services.json
+/ios/GoogleService-Info.plist
 
 # Bundle artifact
 *.jsbundle

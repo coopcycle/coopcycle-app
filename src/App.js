@@ -17,6 +17,8 @@ import navigation from './navigation'
 import navigators from './navigation/navigators'
 import i18n, { localeDetector } from './i18n'
 
+import firebase from 'react-native-firebase'
+
 // Make sure to call moment.locale() BEFORE creating Redux store
 import moment from 'moment'
 moment.locale(localeDetector())
@@ -78,6 +80,7 @@ function onNavigationStateChange(prevState, currentState) {
   const currentScreen = getActiveRouteName(currentState)
   const prevScreen = getActiveRouteName(prevState)
   if (prevScreen !== currentScreen) {
+    firebase.analytics().setCurrentScreen(currentScreen);
     store.dispatch(setCurrentRoute(currentScreen))
   }
 }

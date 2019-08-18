@@ -17,6 +17,7 @@ import com.zmxv.RNSound.RNSoundPackage;
 import io.invertase.firebase.RNFirebasePackage;
 import io.invertase.firebase.messaging.RNFirebaseMessagingPackage;
 import io.invertase.firebase.notifications.RNFirebaseNotificationsPackage;
+import io.invertase.firebase.analytics.RNFirebaseAnalyticsPackage;
 import com.marianhello.bgloc.react.BackgroundGeolocationPackage;
 import com.corbt.keepawake.KCKeepAwakePackage;
 import com.gettipsi.stripe.StripeReactPackage;
@@ -59,6 +60,7 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
           new RNFirebasePackage(),
           new RNFirebaseMessagingPackage(),
           new RNFirebaseNotificationsPackage(),
+          new RNFirebaseAnalyticsPackage(),
           new BackgroundGeolocationPackage(),
           new KCKeepAwakePackage(),
           new RNPinScreenPackage(),

@@ -53,6 +53,10 @@ target 'CoopCycle' do
 
   pod 'RNScreens', :path => '../node_modules/react-native-screens'
 
+  pod 'Firebase/Core', '~> 6.3.0'
+  pod 'RNFirebase', :path => '../node_modules/react-native-firebase/ios'
+  pod 'GoogleIDFASupport', '~> 3.14.0'
+
 end
 
 post_install do |installer|
