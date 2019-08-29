@@ -51,7 +51,6 @@ target 'CoopCycle' do
 
   pod 'RNReanimated', :path => '../node_modules/react-native-reanimated'
 
-  pod 'RNScreens', :path => '../node_modules/react-native-screens'
 
 end
 

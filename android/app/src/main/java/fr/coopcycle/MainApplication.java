@@ -4,7 +4,6 @@ import android.app.Application;
 import android.support.multidex.MultiDexApplication;
 
 import com.facebook.react.ReactApplication;
-import com.swmansion.rnscreens.RNScreensPackage;
 import com.swmansion.reanimated.ReanimatedPackage;
 import com.reactcommunity.rnlocalize.RNLocalizePackage;
 import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
@@ -46,7 +45,6 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-            new RNScreensPackage(),
             new ReanimatedPackage(),
             new RNLocalizePackage(),
             new AsyncStoragePackage(),
