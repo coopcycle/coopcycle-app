@@ -100,7 +100,7 @@ const addressName = task => {
 class TasksMapView extends Component {
 
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       // This is used to force a render, to fix "showsMyLocationButton"
       // When the map is ready, marginBottom will be set to 0
@@ -115,6 +115,15 @@ class TasksMapView extends Component {
     this.renderCluster = this.renderCluster.bind(this)
     this.renderMarker = this.renderMarker.bind(this)
     this.onClusterPress = this.onClusterPress.bind(this)
+
+    const [ latitude, longitude ] = Settings.get('latlng').split(',').map(parseFloat)
+
+    this.initialRegion = {
+      latitude,
+      longitude,
+      latitudeDelta,
+      longitudeDelta
+    }
   }
 
   onMapReady(onMapReady) {
@@ -214,14 +223,6 @@ class TasksMapView extends Component {
 
   render() {
 
-    const [ latitude, longitude ] = Settings.get('latlng').split(',').map(parseFloat)
-    const initialRegion = {
-      latitude,
-      longitude,
-      latitudeDelta,
-      longitudeDelta
-    }
-
     const { onMapReady, ...otherProps } = this.props
 
     // Objects must have an attribute location representing a GeoPoint, i.e. { latitude: x, longitude: y }
@@ -232,14 +233,14 @@ class TasksMapView extends Component {
         <ClusteredMapView
           data={ data }
           style={ [ styles.map, { marginBottom: this.state.marginBottom } ] }
-          initialRegion={ initialRegion }
+          initialRegion={ this.initialRegion }
           zoomEnabled={ true }
           zoomControlEnabled={ true }
           showsUserLocation
           showsMyLocationButton={ true }
           loadingEnabled
-          loadingIndicatorColor={"#666666"}
-          loadingBackgroundColor={"#eeeeee"}
+          loadingIndicatorColor={ '#666666' }
+          loadingBackgroundColor={ '#eeeeee' }
           onMapReady={ () => this.onMapReady(onMapReady) }
           edgePadding={ edgePadding }
           renderCluster={ this.renderCluster }
