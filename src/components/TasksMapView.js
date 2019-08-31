@@ -111,6 +111,10 @@ class TasksMapView extends Component {
       isModalVisible: false,
       modalMarkers: []
     }
+
+    this.renderCluster = this.renderCluster.bind(this)
+    this.renderMarker = this.renderMarker.bind(this)
+    this.onClusterPress = this.onClusterPress.bind(this)
   }
 
   onMapReady(onMapReady) {
@@ -239,9 +243,9 @@ class TasksMapView extends Component {
           loadingBackgroundColor={"#eeeeee"}
           onMapReady={ () => this.onMapReady(onMapReady) }
           edgePadding={ edgePadding }
-          renderCluster={ this.renderCluster.bind(this) }
-          renderMarker={ this.renderMarker.bind(this) }
-          onClusterPress={ this.onClusterPress.bind(this) }
+          renderCluster={ this.renderCluster }
+          renderMarker={ this.renderMarker }
+          onClusterPress={ this.onClusterPress }
           { ...otherProps }>
           { this.props.children }
         </ClusteredMapView>
