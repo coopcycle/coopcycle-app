@@ -232,7 +232,6 @@ class TasksMapView extends Component {
         <ClusteredMapView
           data={ data }
           style={ [ styles.map, { marginBottom: this.state.marginBottom } ] }
-          ref={ ref => { this.map = ref } }
           initialRegion={ initialRegion }
           zoomEnabled={ true }
           zoomControlEnabled={ true }
