@@ -79,6 +79,15 @@ function onSetAddress(address) {
   setAddressListeners = []
 }
 
+function doAddItem(dispatch, item, options = []) {
+  if (item.hasOwnProperty('menuAddOn') && Array.isArray(item.menuAddOn) && item.menuAddOn.length > 0) {
+    NavigationHolder.navigate('CheckoutProductOptions', { product: item })
+    return
+  }
+
+  dispatch(_addItem(item, options))
+}
+
 export function addItem(item, options = []) {
 
   return (dispatch, getState) => {
@@ -93,29 +102,22 @@ export function addItem(item, options = []) {
           .then(() => {
             dispatch(_setAddress(address))
             dispatch(setAddressOK(true))
-            dispatch(_addItem(item, options))
             dispatch(hideAddressModal())
+            doAddItem(dispatch, item, options)
           })
           .catch(() => {
             dispatch(setAddressOK(false))
             dispatch(showAddressModal())
           })
       } else {
-        addSetAddressListener(() => {
-          dispatch(_addItem(item, options))
-        })
+        addSetAddressListener(() => doAddItem(dispatch, item, options))
         dispatch(showAddressModal())
       }
 
       return
     }
 
-    if (item.hasOwnProperty('menuAddOn') && Array.isArray(item.menuAddOn) && item.menuAddOn.length > 0) {
-      NavigationHolder.navigate('CheckoutProductOptions', { product: item })
-      return
-    }
-
-    dispatch(_addItem(item, options))
+    doAddItem(dispatch, item, options)
   }
 }
 
