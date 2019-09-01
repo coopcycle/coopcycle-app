@@ -66,9 +66,8 @@ matrix:
     os: osx
     osx_image: xcode10.3
     cache:
-      directories:
-        - "$HOME/Library/Developer/Xcode/DerivedData"
-        - "$TRAVIS_BUILD_DIR/ios/build"
+      cocoapods: true
+    podfile: ios/Podfile
     addons:
       homebrew:
         update: false
@@ -76,12 +75,12 @@ matrix:
         packages:
           - applesimutils
     before_install:
-      - echo $TRAVIS_BUILD_DIR
       - nvm install 8
       - npm install -g yarn
     install:
       - yarn global add detox-cli
       - yarn install
+      - cd ios/ && pod install --repo-update && cd ..
     script:
       - detox build --configuration ios.sim.release
       - detox test --configuration ios.sim.release --cleanup

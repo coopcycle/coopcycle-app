@@ -1,71 +1,49 @@
-# Uncomment the next line to define a global platform for your project
 platform :ios, '9.0'
+require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 
 target 'CoopCycle' do
+  # Pods for CoopCycle
+  pod 'React', :path => '../node_modules/react-native/'
+  pod 'React-Core', :path => '../node_modules/react-native/React'
+  pod 'React-DevSupport', :path => '../node_modules/react-native/React'
+  pod 'React-RCTActionSheet', :path => '../node_modules/react-native/Libraries/ActionSheetIOS'
+  pod 'React-RCTAnimation', :path => '../node_modules/react-native/Libraries/NativeAnimation'
+  pod 'React-RCTBlob', :path => '../node_modules/react-native/Libraries/Blob'
+  pod 'React-RCTImage', :path => '../node_modules/react-native/Libraries/Image'
+  pod 'React-RCTLinking', :path => '../node_modules/react-native/Libraries/LinkingIOS'
+  pod 'React-RCTNetwork', :path => '../node_modules/react-native/Libraries/Network'
+  pod 'React-RCTSettings', :path => '../node_modules/react-native/Libraries/Settings'
+  pod 'React-RCTText', :path => '../node_modules/react-native/Libraries/Text'
+  pod 'React-RCTVibration', :path => '../node_modules/react-native/Libraries/Vibration'
+  pod 'React-RCTWebSocket', :path => '../node_modules/react-native/Libraries/WebSocket'
 
-  inherit! :search_paths
+  pod 'React-cxxreact', :path => '../node_modules/react-native/ReactCommon/cxxreact'
+  pod 'React-jsi', :path => '../node_modules/react-native/ReactCommon/jsi'
+  pod 'React-jsiexecutor', :path => '../node_modules/react-native/ReactCommon/jsiexecutor'
+  pod 'React-jsinspector', :path => '../node_modules/react-native/ReactCommon/jsinspector'
+  pod 'yoga', :path => '../node_modules/react-native/ReactCommon/yoga'
 
-  rn_path = '../node_modules/react-native'
-  rn_maps_path = '../node_modules/react-native-maps'
+  pod 'DoubleConversion', :podspec => '../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec'
+  pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
+  pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
 
-  # See http://facebook.github.io/react-native/docs/integration-with-existing-apps.html#configuring-cocoapods-dependencies
-  pod 'yoga', path: "#{rn_path}/ReactCommon/yoga/yoga.podspec"
-  pod 'React', path: rn_path, subspecs: [
-    'Core',
-    'CxxBridge',
-    'DevSupport',
-    'RCTActionSheet',
-    'RCTAnimation',
-    'RCTGeolocation',
-    'RCTImage',
-    'RCTLinkingIOS',
-    'RCTNetwork',
-    'RCTSettings',
-    'RCTText',
-    'RCTVibration',
-    'RCTWebSocket',
-  ]
+  pod 'react-native-ble-plx', :path => '../node_modules/react-native-ble-plx'
+  pod 'react-native-ble-plx-swift', :path => '../node_modules/react-native-ble-plx'
 
-  # React Native third party dependencies podspecs
-  pod 'DoubleConversion', :podspec => "#{rn_path}/third-party-podspecs/DoubleConversion.podspec"
-  pod 'glog', :podspec => "#{rn_path}/third-party-podspecs/glog.podspec"
-  pod 'Folly', :podspec => "#{rn_path}/third-party-podspecs/Folly.podspec"
+  target 'CoopCycleTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
 
-  # react-native-maps dependencies
-  pod 'react-native-maps', path: rn_maps_path
-
-  pod 'Stripe', '~> 14.0.0'
-
-  pod 'RNGestureHandler', :path => '../node_modules/react-native-gesture-handler'
-
-
-  pod 'RNSketchCanvas', :path => '../node_modules/@terrylinla/react-native-sketch-canvas'
-
-  pod 'rn-fetch-blob', :path => '../node_modules/rn-fetch-blob'
-
-  pod 'react-native-camera', :path => '../node_modules/react-native-camera'
-
-  pod 'RNCAsyncStorage', :path => '../node_modules/@react-native-community/async-storage'
-
-  pod 'RNLocalize', :path => '../node_modules/react-native-localize'
-
-  pod 'RNReanimated', :path => '../node_modules/react-native-reanimated'
-
-
+  use_native_modules!
 end
 
-post_install do |installer|
-  installer.pods_project.targets.each do |target|
-    if target.name == 'react-native-google-maps'
-      target.build_configurations.each do |config|
-        config.build_settings['CLANG_ENABLE_MODULES'] = 'No'
-      end
-    end
-    # https://github.com/react-native-community/react-native-svg/issues/621
-    # https://github.com/invertase/react-native-firebase/issues/414
-    # https://github.com/oblador/react-native-vector-icons/issues/303
-    if target.name == "React"
-      target.remove_from_project
-    end
+target 'CoopCycle-tvOS' do
+  # Pods for CoopCycle-tvOS
+
+  target 'CoopCycle-tvOSTests' do
+    inherit! :search_paths
+    # Pods for testing
   end
+
 end

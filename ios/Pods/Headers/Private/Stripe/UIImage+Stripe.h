@@ -1,1 +1,0 @@
-../../../Stripe/Stripe/UIImage+Stripe.h

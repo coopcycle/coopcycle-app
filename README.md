@@ -21,14 +21,7 @@ On MacOSX, you will also need to install [CocoaPods](https://cocoapods.org/).
 
 ```
 $ sudo gem install -n /usr/local/bin cocoapods
-```
-
-Running on Android emulator
------------------------
-
-NB: You may need to open the Android project in Android Studio before it builds.
-```
-react-native run-android
+$ cd ios && pod install
 ```
 
 ### Get a Google Maps API Key
@@ -51,17 +44,6 @@ googleMapsApiKey=YOUR_API_KEY
 
 * Setup a Firebase account and download `google-services.json` [Add Firebase](https://firebase.google.com/docs/android/setup)
 * Copy `google-services.json` to the `android/app` folder
-
-
-Running on iOS emulator
------------------------
-
-NB: You may need to open the iOS project in Xcode before it builds.
-Make sure that you open Xcode Workspace file (`*.xcworkspace`).
-
-```
-react-native run-ios
-```
 
 Testing
 ---------------

@@ -1,1 +1,0 @@
-../../../Stripe/Stripe/STPFile+Private.h
