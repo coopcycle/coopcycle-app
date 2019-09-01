@@ -46,7 +46,6 @@
     "react-native-modal": "^11.3.1",
     "react-native-modal-datetime-picker": "^7.5.0",
     "react-native-modal-selector": "^1.1.1",
-    "react-native-open-settings": "^1.0.1",
     "react-native-pin-screen": "git+https://git@github.com/coopcycle/react-native-pin-screen.git#1.0.1",
     "react-native-reanimated": "^1.2.0",
     "react-native-sound": "^0.11.0",

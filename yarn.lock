@@ -6515,11 +6515,6 @@ react-native-modal@^11.0.2, react-native-modal@^11.3.1:
     prop-types "^15.6.2"
     react-native-animatable "^1.3.1"
 
-react-native-open-settings@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/react-native-open-settings/-/react-native-open-settings-1.0.1.tgz#1c0ae3d25fd3fd6de94b6d538333d47245cc5a0c"
-  integrity sha1-HArj0l/T/W3pS21TgzPUckXMWgw=
-
 "react-native-pin-screen@git+https://git@github.com/coopcycle/react-native-pin-screen.git#1.0.1":
   version "1.0.0"
   resolved "git+https://git@github.com/coopcycle/react-native-pin-screen.git#a8139525e27413d8c7ab45f6277aef1424d7610f"

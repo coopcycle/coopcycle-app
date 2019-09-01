@@ -1,7 +1,5 @@
 import firebase from 'react-native-firebase'
-import { Alert, AppState } from 'react-native'
-
-import OpenSettings from 'react-native-open-settings'
+import { Alert, AppState, Linking } from 'react-native'
 
 /**
  * App behavior when receiving messages that include both notification and data payloads
@@ -103,8 +101,7 @@ class PushNotification {
                   }
                   AppState.addEventListener('change', appStateChangeListener)
 
-                  OpenSettings.openSettings()
-
+                  Linking.openSettings()
                 }
               },
             ],

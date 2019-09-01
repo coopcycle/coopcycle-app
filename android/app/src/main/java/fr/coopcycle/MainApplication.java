@@ -1,36 +1,15 @@
 package fr.coopcycle;
 
 import android.app.Application;
-// import android.support.multidex.MultiDexApplication;
+
+import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
-import com.swmansion.reanimated.ReanimatedPackage;
-import com.reactcommunity.rnlocalize.RNLocalizePackage;
-import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
-import org.reactnative.camera.RNCameraPackage;
-import com.polidea.reactnativeble.BlePackage;
-import com.RNFetchBlob.RNFetchBlobPackage;
-import com.terrylinla.rnsketchcanvas.SketchCanvasPackage;
-import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
-import com.zmxv.RNSound.RNSoundPackage;
-import io.invertase.firebase.RNFirebasePackage;
-import io.invertase.firebase.messaging.RNFirebaseMessagingPackage;
-import io.invertase.firebase.notifications.RNFirebaseNotificationsPackage;
-import com.corbt.keepawake.KCKeepAwakePackage;
-import com.gettipsi.stripe.StripeReactPackage;
-import com.coopcycle.pin.RNPinScreenPackage;
-import com.airbnb.android.react.maps.MapsPackage;
-import com.opensettings.OpenSettingsPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
-import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 
-import java.util.Arrays;
 import java.util.List;
 
-// To enable multidex on API Level < 21,
-// we need to extend android.support.multidex.MultiDexApplication instead of android.app.Application
-// https://developer.android.com/studio/build/multidex.html
 public class MainApplication extends Application implements ReactApplication {
 
   private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
@@ -41,26 +20,11 @@ public class MainApplication extends Application implements ReactApplication {
 
     @Override
     protected List<ReactPackage> getPackages() {
-      return Arrays.<ReactPackage>asList(
-          new MainReactPackage(),
-          new ReanimatedPackage(),
-          new RNLocalizePackage(),
-          new AsyncStoragePackage(),
-          new RNCameraPackage(),
-          new BlePackage(),
-          new RNFetchBlobPackage(),
-          new SketchCanvasPackage(),
-          new RNGestureHandlerPackage(),
-          new RNSoundPackage(),
-          new RNFirebasePackage(),
-          new RNFirebaseMessagingPackage(),
-          new RNFirebaseNotificationsPackage(),
-          new KCKeepAwakePackage(),
-          new RNPinScreenPackage(),
-          new StripeReactPackage(),
-          new OpenSettingsPackage(),
-          new MapsPackage()
-      );
+      @SuppressWarnings("UnnecessaryLocalVariable")
+      List<ReactPackage> packages = new PackageList(this).getPackages();
+      // Packages that cannot be autolinked yet can be added manually here, for example:
+      // packages.add(new MyReactNativePackage());
+      return packages;
     }
 
     @Override
