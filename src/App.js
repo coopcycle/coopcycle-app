@@ -37,10 +37,12 @@ YellowBox.ignoreWarnings([
   'Module RCTBackgroundGeolocation requires main queue setup',
   // @see https://github.com/invertase/react-native-firebase/issues/1446
   'Require cycle:',
-  // https://github.com/coopcycle/coopcycle-app/issues/172
-  'Async Storage has been extracted from react-native core',
   // react-native-camera
-  'permissionDialogTitle and permissionDialogMessage are deprecated'
+  'permissionDialogTitle and permissionDialogMessage are deprecated',
+  'Warning: componentWillUpdate is deprecated',
+  'Warning: componentWillMount is deprecated',
+  'Warning: componentWillReceiveProps is deprecated',
+  'Accessing view manager configs directly off UIManager',
 ])
 
 const RootNavigator = createAppContainer(createSwitchNavigator(
