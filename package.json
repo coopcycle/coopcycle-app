@@ -12,6 +12,7 @@
     "@mapbox/polyline": "^1.1.0",
     "@mauron85/react-native-background-geolocation": "^0.6.1",
     "@react-native-community/async-storage": "^1.6.1",
+    "@react-native-community/push-notification-ios": "^1.0.2",
     "@terrylinla/react-native-sketch-canvas": "^0.8.0",
     "axios": "^0.19.0",
     "buffer": "^5.2.1",

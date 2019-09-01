@@ -956,6 +956,13 @@
     eslint-plugin-react-native "3.6.0"
     prettier "1.16.4"
 
+"@react-native-community/push-notification-ios@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@react-native-community/push-notification-ios/-/push-notification-ios-1.0.2.tgz#541bc8ce088d726c4a98fff0e261b4d0f555cacf"
+  integrity sha512-9lWaw+zBGvT8Yw9HZmiLkYbnmF5AzrWexYh2qmRt/shpfZawCTPmPBrq09N7JhiPV4g/gEbeLXlndxl1JQeB0g==
+  dependencies:
+    invariant "^2.2.4"
+
 "@react-navigation/core@~3.5.0":
   version "3.5.0"
   resolved "https://registry.yarnpkg.com/@react-navigation/core/-/core-3.5.0.tgz#73d1a12448e2bd71855e0080b95a7f51ede0cd9e"
