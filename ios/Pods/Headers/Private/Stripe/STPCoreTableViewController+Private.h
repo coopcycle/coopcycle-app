@@ -1,1 +1,0 @@
-../../../Stripe/Stripe/STPCoreTableViewController+Private.h
