@@ -1,8 +1,7 @@
 package fr.coopcycle;
 
 import android.app.Application;
-import android.support.multidex.MultiDexApplication;
-
+// import android.support.multidex.MultiDexApplication;
 import com.facebook.react.ReactApplication;
 import com.swmansion.reanimated.ReanimatedPackage;
 import com.reactcommunity.rnlocalize.RNLocalizePackage;
@@ -16,7 +15,6 @@ import com.zmxv.RNSound.RNSoundPackage;
 import io.invertase.firebase.RNFirebasePackage;
 import io.invertase.firebase.messaging.RNFirebaseMessagingPackage;
 import io.invertase.firebase.notifications.RNFirebaseNotificationsPackage;
-import com.marianhello.bgloc.react.BackgroundGeolocationPackage;
 import com.corbt.keepawake.KCKeepAwakePackage;
 import com.gettipsi.stripe.StripeReactPackage;
 import com.coopcycle.pin.RNPinScreenPackage;
@@ -33,7 +31,7 @@ import java.util.List;
 // To enable multidex on API Level < 21,
 // we need to extend android.support.multidex.MultiDexApplication instead of android.app.Application
 // https://developer.android.com/studio/build/multidex.html
-public class MainApplication extends MultiDexApplication implements ReactApplication {
+public class MainApplication extends Application implements ReactApplication {
 
   private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
     @Override
@@ -45,10 +43,10 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-            new ReanimatedPackage(),
-            new RNLocalizePackage(),
-            new AsyncStoragePackage(),
-            new RNCameraPackage(),
+          new ReanimatedPackage(),
+          new RNLocalizePackage(),
+          new AsyncStoragePackage(),
+          new RNCameraPackage(),
           new BlePackage(),
           new RNFetchBlobPackage(),
           new SketchCanvasPackage(),
@@ -57,7 +55,6 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
           new RNFirebasePackage(),
           new RNFirebaseMessagingPackage(),
           new RNFirebaseNotificationsPackage(),
-          new BackgroundGeolocationPackage(),
           new KCKeepAwakePackage(),
           new RNPinScreenPackage(),
           new StripeReactPackage(),
