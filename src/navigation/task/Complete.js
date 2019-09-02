@@ -65,7 +65,8 @@ class CompleteTask extends Component {
         <View style={{ padding: 20, borderBottomWidth: 1, borderBottomColor: '#ccc' }}>
           <Label style={{ marginBottom: 5 }}>{ this.props.t('NOTES') }</Label>
           <View style={{ paddingVertical: 5, paddingHorizontal: 10, borderWidth: 1, borderColor: '#ccc', borderRadius: 16 }}>
-            <TextInput multiline={ true } numberOfLines={ 3 } />
+            <TextInput multiline={ true } numberOfLines={ 3 }
+              onChangeText={ text => this.setState({ notes: text }) } />
           </View>
         </View>
         <Content contentContainerStyle={ styles.content }>
