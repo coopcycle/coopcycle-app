@@ -10,36 +10,38 @@ class ForgotPasswordForm extends Component {
     super(props)
 
     this.state = {
-      email: undefined,
+      username: undefined,
     }
 
     this._onSubmit.bind(this)
   }
 
   _onSubmit() {
-    const { email } = this.state
-    this.props.onSubmit(email)
+    const {username} = this.state
+    this.props.onSubmit(username)
   }
 
   render() {
-    const itemProps = this.props.hasErrors ? { error: true } : {}
+    const itemProps = this.props.hasErrors ? {error: true} : {}
 
     return (
       <View>
         <Form>
-          <Item stackedLabel { ...itemProps }>
-            <Label>{this.props.t('USERNAME')}</Label>
+          <Item stackedLabel {...itemProps}>
+            <Label>{this.props.t('USERNAME_OR_EMAIL')}</Label>
             <Input
+              style={{ height: 40 }}
               autoCorrect={false}
               autoCapitalize="none"
-              onChangeText={ email => this.setState({ email }) }
-              style={{ height: 40 }}
+              keyboardType="email-address"
               returnKeyType="done"
-              onSubmitEditing={ _ => this._onSubmit() } />
+              onChangeText={username => this.setState({username})}
+              onSubmitEditing={_ => this._onSubmit()}
+            />
           </Item>
         </Form>
-        <View style={{ marginTop: 20 }}>
-          <Button block onPress={ () => this._onSubmit() }>
+        <View style={{marginTop: 20}}>
+          <Button block onPress={() => this._onSubmit()}>
             <Text>{this.props.t('SUBMIT')}</Text>
           </Button>
         </View>

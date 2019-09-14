@@ -390,51 +390,49 @@ export function confirmRegistration(token) {
   }
 }
 
-export function resetPassword(email, checkEmailRouteName, loginRouteName) {
-
+export function resetPassword(username, checkEmailRouteName, loginRouteName) {
   return (dispatch, getState) => {
+    const {app} = getState();
+    const {httpClient} = app;
 
-    const { app } = getState()
-    const { httpClient } = app
+    // dispatch(authenticationRequest());
 
-    dispatch(authenticationRequest())
-
-    httpClient.resetPassword(email)
+    httpClient
+      .resetPassword(username)
       .then(response => {
-        console.log(`resetPassword then response:${response}`)
+        console.log(`resetPassword then response:${response}`);
 
-        dispatch(setLoading(false))
+        dispatch(setLoading(false));
         // dispatch(_resumeCheckoutAfterActivation(resumeCheckoutAfterActivation))
 
         //todo When using navigation, we can still go back to the filled form
-        NavigationHolder.navigate(checkEmailRouteName, { email: email, loginRouteName })
-
+        NavigationHolder.navigate(checkEmailRouteName, {
+          email: username,
+          loginRouteName,
+        });
       })
       .catch(err => {
-
-        let message = i18n.t('TRY_LATER')
+        let message = i18n.t('TRY_LATER');
         //todo handle errors
         // if (err.hasOwnProperty('status') && err.status === 400) {
         //   message = i18n.t('EMAIL_ALREADY_REGISTERED')
         // }
 
-        dispatch(authenticationFailure(message))
-      })
-  }
+        // dispatch(authenticationFailure(message));
+      });
+  };
 }
 
 export function setNewPassword(token, password) {
-
   return (dispatch, getState) => {
+    const {app} = getState();
+    const {httpClient, user, resumeCheckoutAfterActivation} = app;
 
-    const { app } = getState()
-    const { httpClient, user, resumeCheckoutAfterActivation } = app
+    dispatch(authenticationRequest());
 
-    dispatch(authenticationRequest())
-
-    httpClient.setNewPassword(token, password)
+    httpClient
+      .setNewPassword(token, password)
       .then(credentials => {
-
         Object.assign(user, {
           username: credentials.username,
           email: credentials.email,
@@ -442,31 +440,31 @@ export function setNewPassword(token, password) {
           refreshToken: credentials.refresh_token,
           roles: credentials.roles,
           enabled: credentials.enabled,
-        })
+        });
 
-        user.save()
-          .then(() => {
+        user.save().then(() => {
+          dispatch(authenticationSuccess());
 
-            dispatch(authenticationSuccess())
+          configureBackgroundGeolocation(httpClient, user);
+          saveRemotePushToken(dispatch, getState);
 
-            configureBackgroundGeolocation(httpClient, user)
-            saveRemotePushToken(dispatch, getState)
-
-            if (resumeCheckoutAfterActivation) {
-              dispatch(_resumeCheckoutAfterActivation(false))
-            } else {
-              navigateToHome(dispatch, getState)
-            }
-          })
+          if (resumeCheckoutAfterActivation) {
+            dispatch(_resumeCheckoutAfterActivation(false));
+          } else {
+            navigateToHome(dispatch, getState);
+          }
+        });
       })
       .catch(err => {
         console.log(err);
         if (err.hasOwnProperty('status') && err.status === 401) {
-          dispatch(setLoading(false))
+          dispatch(setLoading(false));
           // TODO Say that the token is no valid
         }
-      })
-  }
+
+        // dispatch(authenticationFailure(message));
+      });
+  };
 }
 
 export function resetServer() {

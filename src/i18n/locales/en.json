@@ -87,6 +87,7 @@
     "POST_CODE": "Post code",
     "CITY": "City",
     "USERNAME": "Username",
+    "USERNAME_OR_EMAIL": "Username or email address",
     "PASSWORD": "Password",
     "EMAIL": "E-mail",
     "CHECKOUT_FROM": "From {{date}}",

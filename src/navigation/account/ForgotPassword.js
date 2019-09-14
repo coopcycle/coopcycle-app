@@ -1,16 +1,16 @@
-import React, { Component } from 'react'
+import React, {Component} from 'react'
 import { StyleSheet, View } from 'react-native'
 import {
   Container, Header, Content,
   Left, Right, Body,
   List, ListItem, Icon, Text, Button
 } from 'native-base'
-import { connect } from 'react-redux'
-import { withTranslation } from 'react-i18next'
+import {connect} from 'react-redux'
+import {withTranslation} from 'react-i18next'
 import _ from 'lodash'
 
 import {resetPassword} from '../../redux/App/actions'
-import ForgotPasswordForm from '../../components/ForgotPasswordForm';
+import ForgotPasswordForm from '../../components/ForgotPasswordForm'
 
 class ForgotPassword extends Component {
   render() {
@@ -18,7 +18,8 @@ class ForgotPassword extends Component {
       <Container>
         <Content padder>
           <ForgotPasswordForm
-            onSubmit={ (email) => this.props.resetPassword(email) } />
+            onSubmit={username => this.props.resetPassword(username)}
+          />
         </Content>
       </Container>
     )
@@ -26,7 +27,6 @@ class ForgotPassword extends Component {
 }
 
 function mapStateToProps(state) {
-
   return {
     // message: state.app.lastAuthenticationError,
     // isAuthenticated: state.app.isAuthenticated,
@@ -34,9 +34,15 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-
   return {
-    resetPassword: (email) => dispatch(resetPassword(email, 'AccountResetPasswordCheckEmail', 'AccountLoginRegister'))
+    resetPassword: username =>
+      dispatch(
+        resetPassword(
+          username,
+          'AccountResetPasswordCheckEmail',
+          'AccountLoginRegister',
+        ),
+      ),
   }
 }
 

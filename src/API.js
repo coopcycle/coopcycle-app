@@ -249,69 +249,67 @@ Client.prototype.login = function(username, password) {
     });
 }
 
-Client.prototype.resetPassword = function (email) {
-  //todo
-  // const req = {
-  //   method: 'POST',
-  //   url: `${baseURL}/api/register`,
-  //   headers: {
-  //     'Content-Type': 'application/x-www-form-urlencoded'
-  //   },
-  //   data: qs.stringify(_.mapKeys(data, (value, key) => `_${key}`)),
-  // }
-  //
-  // return new Promise((resolve, reject) => {
-  //   axios(req)
-  //     .then(response => resolve(response.data))
-  //     .catch(error => {
-  //       if (error.response) {
-  //         reject({ status: error.response.status })
-  //       } else {
-  //         reject({ status: 500 })
-  //       }
-  //     })
-  // })
-  //   .then((credentials) => {
-  //
-  //     const enabled =
-  //       credentials.hasOwnProperty('enabled') ? credentials.enabled : true
-  //
-  //     Object.assign(this.model, {
-  //       username: data.username,
-  //       email: data.email,
-  //       token: credentials.token,
-  //       refreshToken: credentials.refresh_token,
-  //       roles: credentials.roles,
-  //       enabled
-  //     })
-  //
-  //     return this.model.save()
-  //   })
+Client.prototype.resetPassword = function(username) {
+  const req = {
+    method: 'POST',
+    url: `${this.httpBaseURL}/api/resetting/send-email`,
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    data: qs.stringify({
+      username: username,
+    }),
+  }
 
-  return new Promise((resolve, reject) => resolve('success'))
+  return new Promise((resolve, reject) => {
+    axios(req)
+      .then(response => resolve(response.data))
+      .catch(error => {
+        if (error.response) {
+          reject({status: error.response.status})
+        } else {
+          reject({status: 500})
+        }
+      })
+  })
 }
 
 Client.prototype.setNewPassword = function(token, password) {
-  //todo
-  // const req = {
-  //   method: 'GET',
-  //   url: `${this.httpBaseURL}/api/register/confirm/${token}`,
-  // }
-  //
-  // return new Promise((resolve, reject) => {
-  //
-  //   axios(req)
-  //     .then(response => resolve(response.data))
-  //     .catch(error => {
-  //       if (error.response) {
-  //         reject({ status: error.response.status })
-  //       } else {
-  //         reject({ status: 500 })
-  //       }
-  //     })
-  // })
+  const req = {
+    method: 'POST',
+    url: `${this.httpBaseURL}/api/resetting/reset/${token}`,
+    data: qs.stringify({
+      password: password,
+    }),
+  }
 
-  return new Promise((resolve, reject) => resolve('success'))
+  return new Promise((resolve, reject) => {
+    axios(req)
+      .then(response => resolve(response.data))
+      .catch(error => {
+        if (error.response) {
+          reject({status: error.response.status})
+        } else {
+          reject({status: 500})
+        }
+      })
+      .then(credentials => {
+        const enabled = credentials.hasOwnProperty('enabled')
+          ? credentials.enabled
+          : true
+
+        Object.assign(this.model, {
+          username: credentials.username,
+          email: credentials.email,
+          token: credentials.token,
+          refreshToken: credentials.refresh_token,
+          roles: credentials.roles,
+          enabled
+        })
+
+        return this.model.save()
+      })
+  })
 }
 
 var register = function(baseURL, data) {
