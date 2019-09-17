@@ -1,28 +1,28 @@
-import React, { Component } from 'react'
-import { View } from 'react-native'
-import { connect } from 'react-redux'
-import { Form, Item, Input, Label, Button, Text } from 'native-base'
-import { withTranslation } from 'react-i18next'
+import React, {Component} from 'react';
+import {View} from 'react-native';
+import {connect} from 'react-redux';
+import {Form, Item, Input, Label, Button, Text} from 'native-base';
+import material from '../../native-base-theme/variables/material';
+import {withTranslation} from 'react-i18next';
 
 class ForgotPasswordForm extends Component {
-
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
       username: undefined,
-    }
+    };
 
-    this._onSubmit.bind(this)
+    this._onSubmit.bind(this);
   }
 
   _onSubmit() {
-    const {username} = this.state
-    this.props.onSubmit(username)
+    const {username} = this.state;
+    this.props.onSubmit(username);
   }
 
   render() {
-    const itemProps = this.props.hasErrors ? {error: true} : {}
+    const itemProps = this.props.inputError ? {error: true} : {};
 
     return (
       <View>
@@ -30,7 +30,6 @@ class ForgotPasswordForm extends Component {
           <Item stackedLabel {...itemProps}>
             <Label>{this.props.t('USERNAME_OR_EMAIL')}</Label>
             <Input
-              style={{ height: 40 }}
               autoCorrect={false}
               autoCapitalize="none"
               keyboardType="email-address"
@@ -44,17 +43,24 @@ class ForgotPasswordForm extends Component {
           <Button block onPress={() => this._onSubmit()}>
             <Text>{this.props.t('SUBMIT')}</Text>
           </Button>
+          <Text
+            style={{
+              marginTop: 15,
+              color: material.inputErrorBorderColor,
+            }}>
+            {this.props.nonInputError}
+          </Text>
         </View>
       </View>
-    )
+    );
   }
 }
 
 function mapStateToProps(state) {
-  //todo is it a correct error to show? (probably not)
   return {
-    hasErrors: state.app.lastAuthenticationError,
-  }
+    inputError: state.app.lastForgotPasswordInputError,
+    nonInputError: state.app.lastForgotPasswordNonInputError,
+  };
 }
 
-export default connect(mapStateToProps)(withTranslation()(ForgotPasswordForm))
+export default connect(mapStateToProps)(withTranslation()(ForgotPasswordForm));

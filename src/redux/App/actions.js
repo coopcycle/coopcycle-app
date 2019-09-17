@@ -41,6 +41,9 @@ export const CLEAR_NOTIFICATIONS = '@app/CLEAR_NOTIFICATIONS'
 export const AUTHENTICATION_REQUEST = '@app/AUTHENTICATION_REQUEST'
 export const AUTHENTICATION_SUCCESS = '@app/AUTHENTICATION_SUCCESS'
 export const AUTHENTICATION_FAILURE = '@app/AUTHENTICATION_FAILURE'
+export const FORGOT_PASSWORD_REQUEST = '@app/FORGOT_PASSWORD_REQUEST'
+export const FORGOT_PASSWORD_REQUEST_SUCCESS = '@app/FORGOT_PASSWORD_REQUEST_SUCCESS'
+export const FORGOT_PASSWORD_REQUEST_FAILURE = '@app/FORGOT_PASSWORD_REQUEST_FAILURE'
 export const LOGOUT_SUCCESS = '@app/LOGOUT_SUCCESS'
 export const AUTHENTICATE = '@app/AUTHENTICATE'
 export const RESUME_CHECKOUT_AFTER_ACTIVATION = '@app/RESUME_CHECKOUT_AFTER_ACTIVATION'
@@ -63,6 +66,10 @@ export const clearNotifications = createAction(CLEAR_NOTIFICATIONS)
 export const authenticationRequest = createAction(AUTHENTICATION_REQUEST)
 export const authenticationSuccess = createAction(AUTHENTICATION_SUCCESS)
 export const authenticationFailure = createAction(AUTHENTICATION_FAILURE)
+
+export const forgotPasswordRequest = createAction(FORGOT_PASSWORD_REQUEST)
+export const forgotPasswordRequestSuccess = createAction(FORGOT_PASSWORD_REQUEST_SUCCESS)
+export const forgotPasswordRequestFailure = createAction(FORGOT_PASSWORD_REQUEST_FAILURE)
 
 export const logoutSuccess = createAction(LOGOUT_SUCCESS)
 export const authenticate = createAction(AUTHENTICATE)
@@ -395,15 +402,14 @@ export function resetPassword(username, checkEmailRouteName, loginRouteName) {
     const {app} = getState();
     const {httpClient} = app;
 
-    // dispatch(authenticationRequest());
+    dispatch(forgotPasswordRequest)
 
     httpClient
       .resetPassword(username)
       .then(response => {
         console.log(`resetPassword then response:${response}`);
 
-        dispatch(setLoading(false));
-        // dispatch(_resumeCheckoutAfterActivation(resumeCheckoutAfterActivation))
+        dispatch(forgotPasswordRequestSuccess)
 
         //todo When using navigation, we can still go back to the filled form
         NavigationHolder.navigate(checkEmailRouteName, {
@@ -413,12 +419,7 @@ export function resetPassword(username, checkEmailRouteName, loginRouteName) {
       })
       .catch(err => {
         let message = i18n.t('TRY_LATER');
-        //todo handle errors
-        // if (err.hasOwnProperty('status') && err.status === 400) {
-        //   message = i18n.t('EMAIL_ALREADY_REGISTERED')
-        // }
-
-        // dispatch(authenticationFailure(message));
+        dispatch(forgotPasswordRequestFailure(message))
       });
   };
 }
@@ -456,13 +457,20 @@ export function setNewPassword(token, password) {
         });
       })
       .catch(err => {
-        console.log(err);
-        if (err.hasOwnProperty('status') && err.status === 401) {
-          dispatch(setLoading(false));
-          // TODO Say that the token is no valid
+        let message = i18n.t('TRY_LATER')
+
+        if (err.hasOwnProperty('status')) {
+          switch (err.status) {
+            case 400:
+              message = i18n.t('RESET_PASSWORD_LINK_EXPIRED')
+              break;
+            case 401:
+              message = i18n.t('AN_ERROR_OCCURRED')
+              break;
+          }
         }
 
-        // dispatch(authenticationFailure(message));
+        dispatch(authenticationFailure(message));
       });
   };
 }

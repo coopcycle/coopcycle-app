@@ -117,6 +117,7 @@
     "RESET_PASSWORD_CHECK_EMAIL": "Reset password",
     "RESET_PASSWORD_CHECK_EMAIL_DISCLAIMER": "An email has been sent to {{email}}. It contains a link you must click to reset your password.",
     "RESET_PASSWORD_NEW_PASSWORD": "Reset password",
+    "RESET_PASSWORD_LINK_EXPIRED": "Link has expired, try to reset password again",
     "GIVEN_NAME": "First name",
     "FAMILY_NAME": "Last name",
     "PHONE_NUMBER": "Phone number",
