@@ -137,6 +137,12 @@ function navigateToHome(dispatch, getState) {
   }
 }
 
+export function popToToHomePage() {
+  return function (dispatch, getState) {
+    navigateToHome(dispatch, getState)
+  }
+}
+
 const bleManager = new BleManager()
 
 export function selectServer(server) {
