@@ -1,10 +1,10 @@
-import React, { Component } from 'react'
-import { View, TouchableOpacity } from 'react-native'
-import { Icon, Text } from 'native-base'
-import { createStackNavigator } from 'react-navigation'
+import React from 'react'
+import {TouchableOpacity} from 'react-native'
+import {Text} from 'native-base'
+import {createStackNavigator} from 'react-navigation'
 
 import i18n from '../../i18n'
-import navigation, { defaultNavigationOptions, headerLeft } from '..'
+import navigation, {defaultNavigationOptions, headerLeft} from '..'
 
 const MainNavigator = createStackNavigator({
   CheckoutHome: {
@@ -62,6 +62,22 @@ const LoginRegisterStack = createStackNavigator({
       // The screen's header will be used
       header: null,
     }),
+  },
+  CheckoutForgotPassword: {
+    screen: navigation.AccountForgotPassword,
+    navigationOptions: ({ navigation }) => ({
+      // Use header = null to get rid of the header
+      // The screen's header will be used
+      header: null,
+    })
+  },
+  CheckoutResetPasswordCheckEmail: {
+    screen: navigation.AccountResetPasswordCheckEmail,
+    navigationOptions: ({ navigation }) => ({
+      // Use header = null to get rid of the header
+      // The screen's header will be used
+      header: null,
+    })
   },
 }, {
   initialRouteName: 'CheckoutLoginRegister',

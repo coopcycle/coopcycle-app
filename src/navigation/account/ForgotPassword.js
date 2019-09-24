@@ -1,14 +1,7 @@
 import React, {Component} from 'react'
-import { StyleSheet, View } from 'react-native'
-import {
-  Container, Header, Content,
-  Left, Right, Body,
-  List, ListItem, Icon, Text, Button
-} from 'native-base'
+import {Container, Content} from 'native-base'
 import {connect} from 'react-redux'
 import {withTranslation} from 'react-i18next'
-import _ from 'lodash'
-
 import {resetPassword} from '../../redux/App/actions'
 import ForgotPasswordForm from '../../components/ForgotPasswordForm'
 
@@ -18,7 +11,10 @@ class ForgotPassword extends Component {
       <Container>
         <Content padder>
           <ForgotPasswordForm
-            onSubmit={username => this.props.resetPassword(username)}
+            onSubmit={username => {
+              const {checkEmailRouteName} = this.props.navigation.state.params;
+              this.props.resetPassword(username, checkEmailRouteName);
+            }}
           />
         </Content>
       </Container>
@@ -27,22 +23,13 @@ class ForgotPassword extends Component {
 }
 
 function mapStateToProps(state) {
-  return {
-    // message: state.app.lastAuthenticationError,
-    // isAuthenticated: state.app.isAuthenticated,
-  }
+  return {}
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    resetPassword: username =>
-      dispatch(
-        resetPassword(
-          username,
-          'AccountResetPasswordCheckEmail',
-          'AccountLoginRegister',
-        ),
-      ),
+    resetPassword: (username, checkEmailRouteName) =>
+      dispatch(resetPassword(username, checkEmailRouteName)),
   }
 }
 

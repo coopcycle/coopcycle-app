@@ -45,9 +45,14 @@ class LoginRegister extends Component {
           <Server />
           { this.renderMessage() }
           <AuthenticateForm
-            onLogin={ (email, password) => this.props.login(email, password) }
-            onRegister={ data => this.props.register(data) }
-            onForgotPassword={ () => this.props.navigation.navigate('AccountForgotPassword') } />
+            onLogin={(email, password) => this.props.login(email, password)}
+            onRegister={data => this.props.register(data)}
+            onForgotPassword={() =>
+              this.props.navigation.navigate('AccountForgotPassword', {
+                checkEmailRouteName: 'AccountResetPasswordCheckEmail',
+              })
+            }
+          />
         </Content>
       </Container>
     )

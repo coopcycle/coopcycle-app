@@ -2,13 +2,10 @@ import React, {Component} from 'react';
 import {StyleSheet} from 'react-native';
 import {Container, Content, Text, Button, Icon} from 'native-base';
 import {withTranslation} from 'react-i18next';
-import {popToToHomePage} from '../../redux/App/actions';
-import {connect} from 'react-redux';
 
 class ResetPasswordCheckEmail extends Component {
   _onPressClose() {
     this.props.navigation.popToTop();
-    this.props.popToToHomePage();
   }
 
   render() {
@@ -45,16 +42,4 @@ const styles = StyleSheet.create({
   },
 });
 
-function mapStateToProps(state) {
-  return {
-  }
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    popToToHomePage: () => dispatch(popToToHomePage()),
-  }
-}
-
-
-module.exports = connect(mapStateToProps, mapDispatchToProps)(withTranslation()(ResetPasswordCheckEmail));
+module.exports = withTranslation()(ResetPasswordCheckEmail);

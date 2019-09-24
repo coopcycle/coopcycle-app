@@ -137,12 +137,6 @@ function navigateToHome(dispatch, getState) {
   }
 }
 
-export function popToToHomePage() {
-  return function (dispatch, getState) {
-    navigateToHome(dispatch, getState)
-  }
-}
-
 const bleManager = new BleManager()
 
 export function selectServer(server) {
@@ -403,7 +397,7 @@ export function confirmRegistration(token) {
   }
 }
 
-export function resetPassword(username, checkEmailRouteName, loginRouteName) {
+export function resetPassword(username, checkEmailRouteName) {
   return (dispatch, getState) => {
     const {app} = getState();
     const {httpClient} = app;
@@ -418,10 +412,7 @@ export function resetPassword(username, checkEmailRouteName, loginRouteName) {
         dispatch(forgotPasswordRequestSuccess)
 
         //todo When using navigation, we can still go back to the filled form
-        NavigationHolder.navigate(checkEmailRouteName, {
-          email: username,
-          loginRouteName,
-        });
+        NavigationHolder.navigate(checkEmailRouteName, {email: username});
       })
       .catch(err => {
         let message = i18n.t('TRY_LATER');

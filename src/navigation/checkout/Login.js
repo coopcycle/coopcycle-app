@@ -39,8 +39,16 @@ class Login extends Component {
         <Content padder extraScrollHeight={64}>
           { this.renderMessage() }
           <AuthenticateForm
-            onLogin={ (email, password) => this.props.login(email, password, false) }
-            onRegister={ data => this.props.register(data) } />
+            onLogin={(email, password) =>
+              this.props.login(email, password, false)
+            }
+            onRegister={data => this.props.register(data)}
+            onForgotPassword={() =>
+              this.props.navigation.navigate('CheckoutForgotPassword', {
+                checkEmailRouteName: 'CheckoutResetPasswordCheckEmail',
+              })
+            }
+          />
         </Content>
       </Container>
     )
