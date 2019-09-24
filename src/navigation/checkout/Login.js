@@ -46,6 +46,7 @@ class Login extends Component {
             onForgotPassword={() =>
               this.props.navigation.navigate('CheckoutForgotPassword', {
                 checkEmailRouteName: 'CheckoutResetPasswordCheckEmail',
+                resumeCheckoutAfterActivation: true,
               })
             }
           />

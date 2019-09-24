@@ -1,37 +1,31 @@
 import React, { Component } from 'react'
-import {
-  StyleSheet,
-  View,
-  TouchableOpacity,
-} from 'react-native'
-import {
-  Container, Content, Button, Text, Icon,
-} from 'native-base'
+import { Container, Content } from 'native-base'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
-
 import { setNewPassword } from '../../redux/App/actions'
 import NewPasswordForm from '../../components/NewPasswordForm'
 
 class ResetPasswordNewPassword extends Component {
+  componentDidUpdate() {
+    // a state when a user successfully set new password
+    if (this.props.isAuthenticated) {
+      this.props.navigation.goBack()
+    }
+  }
 
-  componentDidMount() {
-
-    // if (token) {
-    //   this.props.confirmRegistration(token)
-    // }
+  _onSetNewPassword(password) {
+    const token = this.props.navigation.getParam('token', null)
+    if (token) {
+      this.props.setNewPassword(token, password)
+    }
   }
 
   render() {
-
     return (
       <Container>
         <Content padder>
           <NewPasswordForm
-            onSubmit={ (password) => {
-              const token = this.props.navigation.getParam('token', null)
-              this.props.setNewPassword(token, password)
-            } } />
+            onSubmit={ password => this._onSetNewPassword(password) } />
         </Content>
       </Container>
     );
@@ -40,11 +34,11 @@ class ResetPasswordNewPassword extends Component {
 
 function mapStateToProps(state) {
   return {
+    isAuthenticated: state.app.isAuthenticated,
   }
 }
 
 function mapDispatchToProps(dispatch) {
-
   return {
     setNewPassword: (token, password) => dispatch(setNewPassword(token, password)),
   }

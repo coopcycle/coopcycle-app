@@ -397,7 +397,7 @@ export function confirmRegistration(token) {
   }
 }
 
-export function resetPassword(username, checkEmailRouteName) {
+export function resetPassword(username, checkEmailRouteName, resumeCheckoutAfterActivation) {
   return (dispatch, getState) => {
     const {app} = getState();
     const {httpClient} = app;
@@ -410,6 +410,7 @@ export function resetPassword(username, checkEmailRouteName) {
         console.log(`resetPassword then response:${response}`);
 
         dispatch(forgotPasswordRequestSuccess)
+        dispatch(_resumeCheckoutAfterActivation(resumeCheckoutAfterActivation))
 
         //todo When using navigation, we can still go back to the filled form
         NavigationHolder.navigate(checkEmailRouteName, {email: username});

@@ -50,6 +50,7 @@ class LoginRegister extends Component {
             onForgotPassword={() =>
               this.props.navigation.navigate('AccountForgotPassword', {
                 checkEmailRouteName: 'AccountResetPasswordCheckEmail',
+                resumeCheckoutAfterActivation: false,
               })
             }
           />

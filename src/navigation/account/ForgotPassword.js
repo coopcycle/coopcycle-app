@@ -12,8 +12,11 @@ class ForgotPassword extends Component {
         <Content padder>
           <ForgotPasswordForm
             onSubmit={username => {
-              const {checkEmailRouteName} = this.props.navigation.state.params;
-              this.props.resetPassword(username, checkEmailRouteName);
+              const {
+                checkEmailRouteName,
+                resumeCheckoutAfterActivation,
+              } = this.props.navigation.state.params;
+              this.props.resetPassword(username, checkEmailRouteName, resumeCheckoutAfterActivation);
             }}
           />
         </Content>
@@ -28,8 +31,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    resetPassword: (username, checkEmailRouteName) =>
-      dispatch(resetPassword(username, checkEmailRouteName)),
+    resetPassword: (username, checkEmailRouteName, resumeCheckoutAfterActivation) =>
+      dispatch(resetPassword(username, checkEmailRouteName, resumeCheckoutAfterActivation)),
   }
 }
 
