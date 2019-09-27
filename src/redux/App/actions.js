@@ -67,9 +67,9 @@ export const authenticationRequest = createAction(AUTHENTICATION_REQUEST)
 export const authenticationSuccess = createAction(AUTHENTICATION_SUCCESS)
 export const authenticationFailure = createAction(AUTHENTICATION_FAILURE)
 
-export const forgotPasswordRequest = createAction(FORGOT_PASSWORD_REQUEST)
-export const forgotPasswordRequestSuccess = createAction(FORGOT_PASSWORD_REQUEST_SUCCESS)
-export const forgotPasswordRequestFailure = createAction(FORGOT_PASSWORD_REQUEST_FAILURE)
+const forgotPasswordRequest = createAction(FORGOT_PASSWORD_REQUEST)
+const forgotPasswordRequestSuccess = createAction(FORGOT_PASSWORD_REQUEST_SUCCESS)
+const forgotPasswordRequestFailure = createAction(FORGOT_PASSWORD_REQUEST_FAILURE)
 
 export const logoutSuccess = createAction(LOGOUT_SUCCESS)
 export const authenticate = createAction(AUTHENTICATE)
@@ -402,14 +402,14 @@ export function resetPassword(username, checkEmailRouteName, resumeCheckoutAfter
     const {app} = getState();
     const {httpClient} = app;
 
-    dispatch(forgotPasswordRequest)
+    dispatch(forgotPasswordRequest())
 
     httpClient
       .resetPassword(username)
       .then(response => {
         console.log(`resetPassword then response:${response}`);
 
-        dispatch(forgotPasswordRequestSuccess)
+        dispatch(forgotPasswordRequestSuccess())
         dispatch(_resumeCheckoutAfterActivation(resumeCheckoutAfterActivation))
 
         //todo When using navigation, we can still go back to the filled form
