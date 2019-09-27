@@ -20,9 +20,10 @@ import {
   LOGOUT_SUCCESS,
   AUTHENTICATE,
   RESUME_CHECKOUT_AFTER_ACTIVATION,
-  FORGOT_PASSWORD_REQUEST,
-  FORGOT_PASSWORD_REQUEST_SUCCESS,
-  FORGOT_PASSWORD_REQUEST_FAILURE,
+  RESET_PASSWORD_INIT,
+  RESET_PASSWORD_REQUEST,
+  RESET_PASSWORD_REQUEST_SUCCESS,
+  RESET_PASSWORD_REQUEST_FAILURE,
   SET_SERVERS,
   TRACKER_INITIALIZED,
   TRACKER_DISABLED,
@@ -43,8 +44,14 @@ const initialState = {
   loading: false,
   notifications: [],
   lastAuthenticationError: null,
+  forgotPassword: {
+    inputError: null,
+    nonInputError: null,
+    requested: false,
+  },
   lastForgotPasswordInputError: null,
   lastForgotPasswordNonInputError: null,
+  lastForgotPasswordRequested: false,
   isAuthenticated: false,
   resumeCheckoutAfterActivation: false,
   servers: [],
@@ -138,27 +145,45 @@ export default (state = initialState, action = {}) => {
         lastAuthenticationError: action.payload,
       }
 
-    case FORGOT_PASSWORD_REQUEST:
+    case RESET_PASSWORD_INIT:
+      return {
+        ...state,
+        forgotPassword: {
+          inputError: null,
+          nonInputError: null,
+          requested: false,
+        },
+      }
+
+  case RESET_PASSWORD_REQUEST:
       return {
         ...state,
         loading: true,
-        lastForgotPasswordInputError: null,
-        lastForgotPasswordNonInputError: null,
+        forgotPassword: {
+          ...state.forgotPassword,
+          inputError: null,
+          nonInputError: null,
+        }
       }
 
-    case FORGOT_PASSWORD_REQUEST_SUCCESS:
+    case RESET_PASSWORD_REQUEST_SUCCESS:
       return {
         ...state,
         loading: false,
-        lastForgotPasswordInputError: null,
-        lastForgotPasswordNonInputError: null,
+        forgotPassword: {
+          ...state.forgotPassword,
+          requested: true,
+        },
       }
 
-    case FORGOT_PASSWORD_REQUEST_FAILURE:
+    case RESET_PASSWORD_REQUEST_FAILURE:
       return {
         ...state,
         loading: false,
-        lastForgotPasswordNonInputError: action.payload,
+        forgotPassword: {
+          ...state.forgotPassword,
+          nonInputError: action.payload,
+        },
       }
 
     case LOGOUT_SUCCESS:

@@ -41,9 +41,10 @@ export const CLEAR_NOTIFICATIONS = '@app/CLEAR_NOTIFICATIONS'
 export const AUTHENTICATION_REQUEST = '@app/AUTHENTICATION_REQUEST'
 export const AUTHENTICATION_SUCCESS = '@app/AUTHENTICATION_SUCCESS'
 export const AUTHENTICATION_FAILURE = '@app/AUTHENTICATION_FAILURE'
-export const FORGOT_PASSWORD_REQUEST = '@app/FORGOT_PASSWORD_REQUEST'
-export const FORGOT_PASSWORD_REQUEST_SUCCESS = '@app/FORGOT_PASSWORD_REQUEST_SUCCESS'
-export const FORGOT_PASSWORD_REQUEST_FAILURE = '@app/FORGOT_PASSWORD_REQUEST_FAILURE'
+export const RESET_PASSWORD_INIT = '@app/RESET_PASSWORD_INIT'
+export const RESET_PASSWORD_REQUEST = '@app/RESET_PASSWORD_REQUEST'
+export const RESET_PASSWORD_REQUEST_SUCCESS = '@app/RESET_PASSWORD_REQUEST_SUCCESS'
+export const RESET_PASSWORD_REQUEST_FAILURE = '@app/RESET_PASSWORD_REQUEST_FAILURE'
 export const LOGOUT_SUCCESS = '@app/LOGOUT_SUCCESS'
 export const AUTHENTICATE = '@app/AUTHENTICATE'
 export const RESUME_CHECKOUT_AFTER_ACTIVATION = '@app/RESUME_CHECKOUT_AFTER_ACTIVATION'
@@ -67,9 +68,10 @@ export const authenticationRequest = createAction(AUTHENTICATION_REQUEST)
 export const authenticationSuccess = createAction(AUTHENTICATION_SUCCESS)
 export const authenticationFailure = createAction(AUTHENTICATION_FAILURE)
 
-const forgotPasswordRequest = createAction(FORGOT_PASSWORD_REQUEST)
-const forgotPasswordRequestSuccess = createAction(FORGOT_PASSWORD_REQUEST_SUCCESS)
-const forgotPasswordRequestFailure = createAction(FORGOT_PASSWORD_REQUEST_FAILURE)
+const resetPasswordInit = createAction(RESET_PASSWORD_INIT)
+const resetPasswordRequest = createAction(RESET_PASSWORD_REQUEST)
+const resetPasswordRequestSuccess = createAction(RESET_PASSWORD_REQUEST_SUCCESS)
+const resetPasswordRequestFailure = createAction(RESET_PASSWORD_REQUEST_FAILURE)
 
 export const logoutSuccess = createAction(LOGOUT_SUCCESS)
 export const authenticate = createAction(AUTHENTICATE)
@@ -397,27 +399,32 @@ export function confirmRegistration(token) {
   }
 }
 
+export function forgotPassword() {
+  return (dispatch, getState) => {
+    dispatch(resetPasswordInit())
+  }
+}
+
 export function resetPassword(username, checkEmailRouteName, resumeCheckoutAfterActivation) {
   return (dispatch, getState) => {
     const {app} = getState();
     const {httpClient} = app;
 
-    dispatch(forgotPasswordRequest())
+    dispatch(resetPasswordRequest())
 
     httpClient
       .resetPassword(username)
       .then(response => {
         console.log(`resetPassword then response:${response}`);
 
-        dispatch(forgotPasswordRequestSuccess())
+        dispatch(resetPasswordRequestSuccess())
         dispatch(_resumeCheckoutAfterActivation(resumeCheckoutAfterActivation))
 
-        //todo When using navigation, we can still go back to the filled form
         NavigationHolder.navigate(checkEmailRouteName, {email: username});
       })
       .catch(err => {
         let message = i18n.t('TRY_LATER');
-        dispatch(forgotPasswordRequestFailure(message))
+        dispatch(resetPasswordRequestFailure(message))
       });
   };
 }

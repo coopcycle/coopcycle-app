@@ -6,6 +6,13 @@ import {resetPassword} from '../../redux/App/actions'
 import ForgotPasswordForm from '../../components/ForgotPasswordForm'
 
 class ForgotPassword extends Component {
+  componentDidUpdate() {
+    // a state when a user successfully requested to reset a password
+    if (this.props.isRequested) {
+      this.props.navigation.goBack()
+    }
+  }
+
   render() {
     return (
       <Container>
@@ -26,7 +33,9 @@ class ForgotPassword extends Component {
 }
 
 function mapStateToProps(state) {
-  return {}
+  return {
+    isRequested: state.app.forgotPassword.requested,
+  }
 }
 
 function mapDispatchToProps(dispatch) {

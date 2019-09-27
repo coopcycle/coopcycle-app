@@ -11,7 +11,7 @@ import _ from 'lodash'
 
 import Server from './components/Server'
 import AuthenticateForm from '../../components/AuthenticateForm'
-import { login, register } from '../../redux/App/actions'
+import { login, register, forgotPassword } from '../../redux/App/actions'
 
 class LoginRegister extends Component {
 
@@ -38,7 +38,6 @@ class LoginRegister extends Component {
   }
 
   render() {
-
     return (
       <Container>
         <Content padder extraScrollHeight={64}>
@@ -47,11 +46,13 @@ class LoginRegister extends Component {
           <AuthenticateForm
             onLogin={(email, password) => this.props.login(email, password)}
             onRegister={data => this.props.register(data)}
-            onForgotPassword={() =>
+            onForgotPassword={() => {
+              this.props.forgotPassword()
               this.props.navigation.navigate('AccountForgotPassword', {
                 checkEmailRouteName: 'AccountResetPasswordCheckEmail',
                 resumeCheckoutAfterActivation: false,
               })
+            }
             }
           />
         </Content>
@@ -60,11 +61,9 @@ class LoginRegister extends Component {
   }
 }
 
-const styles = StyleSheet.create({
-})
+const styles = StyleSheet.create({})
 
 function mapStateToProps(state) {
-
   return {
     message: state.app.lastAuthenticationError,
     isAuthenticated: state.app.isAuthenticated,
@@ -72,10 +71,10 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-
   return {
     login: (email, password, navigate) => dispatch(login(email, password, true)),
     register: data => dispatch(register(data, 'AccountRegisterCheckEmail', 'AccountLoginRegister')),
+    forgotPassword: () => dispatch(forgotPassword()),
   }
 }
 

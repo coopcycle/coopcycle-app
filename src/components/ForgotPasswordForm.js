@@ -58,8 +58,8 @@ class ForgotPasswordForm extends Component {
 
 function mapStateToProps(state) {
   return {
-    inputError: state.app.lastForgotPasswordInputError,
-    nonInputError: state.app.lastForgotPasswordNonInputError,
+    inputError: state.app.forgotPassword.inputError,
+    nonInputError: state.app.forgotPassword.nonInputError,
   };
 }
 
