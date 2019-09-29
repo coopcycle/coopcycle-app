@@ -23,7 +23,7 @@
     "libphonenumber-js": "^1.7.25",
     "lodash": "^4.17.15",
     "moment": "^2.23.0",
-    "native-base": "^2.13.5",
+    "native-base": "^2.13.8",
     "qs": "^6.9.0",
     "react": "16.8.6",
     "react-i18next": "^10.13.1",
