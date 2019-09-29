@@ -70,7 +70,7 @@
     "@react-native-community/eslint-config": "^0.0.5",
     "babel-eslint": "^10.0.3",
     "babel-jest": "^24.9.0",
-    "detox": "^14.0.3",
+    "detox": "^14.3.4",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.14.0",
     "enzyme-to-json": "^3.4.0",
