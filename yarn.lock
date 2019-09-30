@@ -856,10 +856,10 @@
   resolved "https://registry.yarnpkg.com/@mapbox/sphericalmercator/-/sphericalmercator-1.1.0.tgz#f3b1af042620716a1289fc41e1e97f610823aefe"
   integrity sha512-pEsfZyG4OMThlfFQbCte4gegvHUjxXCjz0KZ4Xk8NdOYTQBLflj6U8PL05RPAiuRAMAQNUUKJuL6qYZ5Y4kAWA==
 
-"@mauron85/react-native-background-geolocation@^0.6.1":
-  version "0.6.1"
-  resolved "https://registry.yarnpkg.com/@mauron85/react-native-background-geolocation/-/react-native-background-geolocation-0.6.1.tgz#923ccf7405e3fee0b177e8999b7028e009c5b8f6"
-  integrity sha512-LqdH9Sjb9J+ooVbnx2lZzHdW9k4GUiMDWH+RIpqIg/45A5qZI1tQW/O14lNWVXafVTrwzQWKuXFCGbMF8pDS4g==
+"@mauron85/react-native-background-geolocation@^0.6.3":
+  version "0.6.3"
+  resolved "https://registry.yarnpkg.com/@mauron85/react-native-background-geolocation/-/react-native-background-geolocation-0.6.3.tgz#9d0133e42021fbfa0ff7b6283d9561a18f127a2f"
+  integrity sha512-Q4o6OcCooYC4WrddrXS73pqAzowbxwuI3xOjOo2eYYWhNZCs+mioR2T5tij/pqUoJEfzt1h52Yn1a3rhRflKLQ==
   dependencies:
     plist "^3.0.1"
 

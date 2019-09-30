@@ -1,5 +1,5 @@
 PODS:
-  - "@mauron85_react-native-background-geolocation (0.6.1)":
+  - "@mauron85_react-native-background-geolocation (0.6.3)":
     - React
   - boost-for-react-native (1.63.0)
   - Crashlytics (3.13.4):
@@ -330,7 +330,7 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
-  "@mauron85_react-native-background-geolocation": 6f594e9e71093cd3402d376a27437e881c5d9c54
+  "@mauron85_react-native-background-geolocation": fa34ab82e94212be16ef6e75c32bcb707b0a1524
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   Crashlytics: 2dfd686bcb918dc10ee0e76f7f853fe42c7bd552
   DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
