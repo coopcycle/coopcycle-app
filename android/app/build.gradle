@@ -211,15 +211,6 @@ dependencies {
     }
     implementation "com.jakewharton.timber:timber:${rootProject.ext.timberVersion}"
 
-    // react-native-maps
-    // We need at least play-services-maps 16.1.0 to target API level 28
-    // https://developers.google.com/maps/documentation/android-sdk/config#specify_requirement_for_apache_http_legacy_library
-    implementation(project(':react-native-maps')) {
-        exclude group: 'com.google.android.gms', module: 'play-services-maps'
-    }
-    implementation "com.google.android.gms:play-services-base:16.1.0"
-    implementation 'com.google.android.gms:play-services-maps:16.1.0'
-
     // react-native-firebase
     implementation(project(':react-native-firebase')) {
         transitive = false
