@@ -179,7 +179,7 @@ PODS:
     - React
   - RNGestureHandler (1.4.1):
     - React
-  - RNLocalize (1.1.4):
+  - RNLocalize (1.2.1):
     - React
   - RNReanimated (1.3.0):
     - React
@@ -375,7 +375,7 @@ SPEC CHECKSUMS:
   RNCPushNotificationIOS: 0b8d06ff190d84627dd17501bfb96652375970e4
   RNFirebase: ac0de8b24c6f91ae9459575491ed6a77327619c6
   RNGestureHandler: 4cb47a93019c1a201df2644413a0a1569a51c8aa
-  RNLocalize: 62a949d2ec5bee0eb8f39a80a48f01e2f4f67080
+  RNLocalize: f42aea3133d91d7fa3ec01284a6895019af1a83f
   RNReanimated: 6abbbae2e5e72609d85aabd92a982a94566885f1
   RNSketchCanvas: 9c28adb5381543ed55cc98ce6de46479cb3cb12c
   RNSound: da030221e6ac7e8290c6b43f2b5f2133a8e225b0
