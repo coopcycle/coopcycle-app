@@ -272,16 +272,11 @@ export function login(email, password, navigate = true) {
 
     httpClient.login(email, password)
       .then(user => {
-
-        dispatch(authenticationSuccess())
-
-        configureBackgroundGeolocation(httpClient, user)
-        saveRemotePushToken(dispatch, getState)
+        onAuthenticationSuccess(dispatch, getState)
 
         if (navigate) {
           navigateToHome(dispatch, getState)
         }
-
       })
       .catch(err => {
 
@@ -323,21 +318,15 @@ export function register(data, checkEmailRouteName, loginRouteName, resumeChecko
         // If the user is enabled, we login immediately.
         // otherwise we wait for confirmation (via deep linking)
         if (user.enabled) {
-
-          dispatch(authenticationSuccess())
-
-          configureBackgroundGeolocation(httpClient, user)
-          saveRemotePushToken(dispatch, getState)
+          onAuthenticationSuccess(dispatch, getState)
 
         } else {
-
           dispatch(setLoading(false))
           dispatch(_resumeCheckoutAfterActivation(resumeCheckoutAfterActivation))
 
           // FIXME When using navigation, we can still go back to the filled form
           NavigationHolder.navigate(checkEmailRouteName, { email: user.email, loginRouteName })
         }
-
       })
       .catch(err => {
 
@@ -353,41 +342,21 @@ export function register(data, checkEmailRouteName, loginRouteName, resumeChecko
 }
 
 export function confirmRegistration(token) {
-
   return (dispatch, getState) => {
-
     const { app } = getState()
-    const { httpClient, user, resumeCheckoutAfterActivation } = app
+    const { httpClient, resumeCheckoutAfterActivation } = app
 
     dispatch(authenticationRequest())
 
     httpClient.confirmRegistration(token)
       .then(credentials => {
+        onAuthenticationSuccess(dispatch, getState)
 
-        Object.assign(user, {
-          username: credentials.username,
-          email: credentials.email,
-          token: credentials.token,
-          refreshToken: credentials.refresh_token,
-          roles: credentials.roles,
-          enabled: credentials.enabled,
-        })
-
-        user.save()
-          .then(() => {
-
-            dispatch(authenticationSuccess())
-
-            configureBackgroundGeolocation(httpClient, user)
-            saveRemotePushToken(dispatch, getState)
-
-            if (resumeCheckoutAfterActivation) {
-              dispatch(_resumeCheckoutAfterActivation(false))
-            } else {
-              navigateToHome(dispatch, getState)
-            }
-
-          })
+        if (resumeCheckoutAfterActivation) {
+          dispatch(_resumeCheckoutAfterActivation(false))
+        } else {
+          navigateToHome(dispatch, getState)
+        }
       })
       .catch(err => {
         console.log(err);
@@ -415,10 +384,8 @@ export function resetPassword(username, checkEmailRouteName, resumeCheckoutAfter
     httpClient
       .resetPassword(username)
       .then(response => {
-        console.log(`resetPassword then response:${response}`);
-
-        dispatch(resetPasswordRequestSuccess())
-        dispatch(_resumeCheckoutAfterActivation(resumeCheckoutAfterActivation))
+        dispatch(resetPasswordRequestSuccess());
+        dispatch(_resumeCheckoutAfterActivation(resumeCheckoutAfterActivation));
 
         NavigationHolder.navigate(checkEmailRouteName, {email: username});
       })
@@ -432,34 +399,20 @@ export function resetPassword(username, checkEmailRouteName, resumeCheckoutAfter
 export function setNewPassword(token, password) {
   return (dispatch, getState) => {
     const {app} = getState();
-    const {httpClient, user, resumeCheckoutAfterActivation} = app;
+    const {httpClient, resumeCheckoutAfterActivation} = app;
 
     dispatch(authenticationRequest());
 
     httpClient
       .setNewPassword(token, password)
       .then(credentials => {
-        Object.assign(user, {
-          username: credentials.username,
-          email: credentials.email,
-          token: credentials.token,
-          refreshToken: credentials.refresh_token,
-          roles: credentials.roles,
-          enabled: credentials.enabled,
-        });
+        onAuthenticationSuccess(dispatch, getState);
 
-        user.save().then(() => {
-          dispatch(authenticationSuccess());
-
-          configureBackgroundGeolocation(httpClient, user);
-          saveRemotePushToken(dispatch, getState);
-
-          if (resumeCheckoutAfterActivation) {
-            dispatch(_resumeCheckoutAfterActivation(false));
-          } else {
-            navigateToHome(dispatch, getState);
-          }
-        });
+        if (resumeCheckoutAfterActivation) {
+          dispatch(_resumeCheckoutAfterActivation(false));
+        } else {
+          navigateToHome(dispatch, getState);
+        }
       })
       .catch(err => {
         let message = i18n.t('TRY_LATER')
@@ -495,6 +448,16 @@ export function resetServer() {
 
       NavigationHolder.navigate('ConfigureServer')
   }
+}
+
+function onAuthenticationSuccess(dispatch, getState) {
+  dispatch(authenticationSuccess())
+
+  const {app} = getState()
+  const {httpClient, user} = app
+
+  configureBackgroundGeolocation(httpClient, user)
+  saveRemotePushToken(dispatch, getState)
 }
 
 function saveRemotePushToken(dispatch, getState) {

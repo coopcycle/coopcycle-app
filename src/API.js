@@ -209,14 +209,12 @@ Client.prototype.register = function (data) {
 }
 
 Client.prototype.confirmRegistration = function(token) {
-
   const req = {
     method: 'GET',
     url: `${this.httpBaseURL}/api/register/confirm/${token}`,
   }
 
   return new Promise((resolve, reject) => {
-
     axios(req)
       .then(response => resolve(response.data))
       .catch(error => {
@@ -226,27 +224,12 @@ Client.prototype.confirmRegistration = function(token) {
           reject({ status: 500 })
         }
       })
-  })
+  }).then(updateUserData(this.model))
 }
 
 Client.prototype.login = function(username, password) {
   return login(this.httpBaseURL, username, password)
-    .then((credentials) => {
-
-      const enabled =
-        credentials.hasOwnProperty('enabled') ? credentials.enabled : true
-
-      Object.assign(this.model, {
-        username: credentials.username,
-        email: credentials.email,
-        token: credentials.token,
-        refreshToken: credentials.refresh_token,
-        roles: credentials.roles,
-        enabled
-      });
-
-      return this.model.save();
-    });
+    .then(updateUserData(this.model))
 }
 
 Client.prototype.resetPassword = function(username) {
@@ -293,27 +276,27 @@ Client.prototype.setNewPassword = function(token, password) {
           reject({status: 500})
         }
       })
-      .then(credentials => {
-        const enabled = credentials.hasOwnProperty('enabled')
-          ? credentials.enabled
-          : true
+  }).then(updateUserData(this.model))
+}
 
-        Object.assign(this.model, {
-          username: credentials.username,
-          email: credentials.email,
-          token: credentials.token,
-          refreshToken: credentials.refresh_token,
-          roles: credentials.roles,
-          enabled
-        })
+let updateUserData = model => {
+  return credentials => {
+    const enabled = credentials.hasOwnProperty('enabled') ? credentials.enabled : true
 
-        return this.model.save()
-      })
-  })
+    Object.assign(model, {
+      username: credentials.username,
+      email: credentials.email,
+      token: credentials.token,
+      refreshToken: credentials.refresh_token,
+      roles: credentials.roles,
+      enabled
+    })
+
+    return model.save()
+  }
 }
 
 var register = function(baseURL, data) {
-
   const req = {
     method: 'POST',
     url: `${baseURL}/api/register`,
@@ -324,7 +307,6 @@ var register = function(baseURL, data) {
   }
 
   return new Promise((resolve, reject) => {
-
     axios(req)
       .then(response => resolve(response.data))
       .catch(error => {
@@ -338,7 +320,6 @@ var register = function(baseURL, data) {
 }
 
 var login = function(baseURL, username, password) {
-
   const req = {
     method: 'POST',
     url: `${baseURL}/api/login_check`,
@@ -352,7 +333,6 @@ var login = function(baseURL, username, password) {
   }
 
   return new Promise((resolve, reject) => {
-
     axios(req)
       .then(response => {
         resolve(response.data)
