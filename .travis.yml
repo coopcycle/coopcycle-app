@@ -81,6 +81,8 @@ matrix:
       - yarn global add detox-cli
       - yarn install
       - cd ios/ && pod install --repo-update && cd ..
+    before_script:
+      - cp GoogleService-Info.plist.dist ios/GoogleService-Info.plist
     script:
       - detox build --configuration ios.sim.release
       - detox test --configuration ios.sim.release --cleanup
