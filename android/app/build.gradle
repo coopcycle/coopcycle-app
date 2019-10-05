@@ -1,5 +1,6 @@
 apply plugin: "com.android.application"
 apply plugin: "io.fabric"
+apply plugin: "com.google.firebase.firebase-perf"
 
 import com.android.build.OutputFile
 
@@ -218,6 +219,7 @@ dependencies {
     }
     implementation "com.google.firebase:firebase-core:${rootProject.ext.firebaseVersion}"
     implementation 'com.google.firebase:firebase-messaging:18.0.0'
+    implementation "com.google.firebase:firebase-perf:17.0.2"
     implementation 'me.leolin:ShortcutBadger:1.1.21@aar'
     implementation('com.crashlytics.sdk.android:crashlytics:2.9.9@aar') {
         transitive = true
