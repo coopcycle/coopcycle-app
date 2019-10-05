@@ -10,7 +10,7 @@ buildscript {
         playServicesVersion = "17.0.0"
         googlePlayServicesVersion = playServicesVersion
         googlePlayServicesVisionVersion = "17.0.2"
-        firebaseVersion = "16.0.9"
+        firebaseVersion = "17.2.0"
         timberVersion = "4.7.1"
     }
     repositories {
