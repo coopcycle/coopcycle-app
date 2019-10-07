@@ -206,6 +206,11 @@ android {
 }
 
 dependencies {
+
+    // This is needed to enable multidex on API Level < 21
+    // https://developer.android.com/studio/build/multidex.html
+    implementation 'androidx.multidex:multidex:2.0.1'
+
     implementation project(':@mauron85_react-native-background-geolocation')
     implementation(project(':react-native-camera')) {
         exclude group: 'com.android.support', module: 'support-media-compat'

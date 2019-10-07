@@ -1,6 +1,8 @@
 package fr.coopcycle;
 
 import android.app.Application;
+// import android.support.multidex.MultiDexApplication;
+import androidx.multidex.MultiDexApplication;
 
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
@@ -14,7 +16,10 @@ import io.invertase.firebase.fabric.crashlytics.RNFirebaseCrashlyticsPackage;
 
 import java.util.List;
 
-public class MainApplication extends Application implements ReactApplication {
+// To enable multidex on API Level < 21,
+// we need to extend android.support.multidex.MultiDexApplication instead of android.app.Application
+// https://developer.android.com/studio/build/multidex.html
+public class MainApplication extends MultiDexApplication implements ReactApplication {
 
   private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
     @Override
