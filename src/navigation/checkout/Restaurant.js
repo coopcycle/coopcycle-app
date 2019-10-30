@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Dimensions, PixelRatio, StyleSheet, View, Animated, Keyboard } from 'react-native'
+import { Dimensions, Image, PixelRatio, StyleSheet, View, Animated, Keyboard } from 'react-native'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 import {
@@ -104,11 +104,19 @@ class Restaurant extends Component {
 
     return (
       <Container>
+        <View style={{ height: (height * 0.1) }}>
+          <Image
+            style={{ flex: 1, width, height: ((height * 0.1) / 2) }}
+            source={{ uri: restaurant.image }}
+            resizeMode="cover" />
+          <View style={ styles.heading }>
+            <Text style={{ flex: 2, fontFamily: 'Raleway-Regular' }}>{ restaurant.name }</Text>
+          </View>
+        </View>
         <Content>
           <Menu
             restaurant={ restaurant }
             menu={ menu }
-            date={ date }
             onItemClick={ menuItem => this.props.addItem(menuItem) } />
         </Content>
         { !cart.isEmpty() && (
@@ -207,6 +215,17 @@ const styles = StyleSheet.create({
     top: '40%',
     left: 0,
     paddingHorizontal: 15
+  },
+  heading: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 15,
+    paddingVertical: 5,
+    backgroundColor: '#fff',
+    borderBottomWidth: 1,
+    borderBottomColor: '#f1f1f1',
   }
 });
 
