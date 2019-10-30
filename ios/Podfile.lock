@@ -127,13 +127,13 @@ PODS:
     - React
     - react-native-ble-plx-swift
   - react-native-ble-plx-swift (1.1.0)
-  - react-native-camera (3.6.0):
+  - react-native-camera (3.8.0):
     - React
-    - react-native-camera/RCT (= 3.6.0)
-    - react-native-camera/RN (= 3.6.0)
-  - react-native-camera/RCT (3.6.0):
+    - react-native-camera/RCT (= 3.8.0)
+    - react-native-camera/RN (= 3.8.0)
+  - react-native-camera/RCT (3.8.0):
     - React
-  - react-native-camera/RN (3.6.0):
+  - react-native-camera/RN (3.8.0):
     - React
   - react-native-keep-awake (4.0.0):
     - React
@@ -179,7 +179,7 @@ PODS:
     - React
   - RNGestureHandler (1.4.1):
     - React
-  - RNLocalize (1.3.0):
+  - RNLocalize (1.3.1):
     - React
   - RNReanimated (1.3.0):
     - React
@@ -359,7 +359,7 @@ SPEC CHECKSUMS:
   React-jsinspector: e08662d1bf5b129a3d556eb9ea343a3f40353ae4
   react-native-ble-plx: 05e16667ebf56cf802986379fd58a377847885e8
   react-native-ble-plx-swift: e0d041529bd7ae66eb9731123eca3df3d132e8ec
-  react-native-camera: b6a6a61bcdbd619c19df3df581fcb009131938bf
+  react-native-camera: 21cf4ed26cf432ceb1fae959aa6924943fd6f714
   react-native-keep-awake: afad8a51dfef9fe9655a6344771be32c8596d774
   react-native-maps: 6e499eee4eabf422ba8b6f94e993cc768bf35153
   React-RCTActionSheet: b0f1ea83f4bf75fb966eae9bfc47b78c8d3efd90
@@ -377,7 +377,7 @@ SPEC CHECKSUMS:
   RNCPushNotificationIOS: 0b8d06ff190d84627dd17501bfb96652375970e4
   RNFirebase: ac0de8b24c6f91ae9459575491ed6a77327619c6
   RNGestureHandler: 4cb47a93019c1a201df2644413a0a1569a51c8aa
-  RNLocalize: cebb57c3c1e5479806204ce135b26bdd79d17e8a
+  RNLocalize: 07eb7a91d10021cdf59d80061ebf3adb8a5b5688
   RNReanimated: 6abbbae2e5e72609d85aabd92a982a94566885f1
   RNSketchCanvas: 9c28adb5381543ed55cc98ce6de46479cb3cb12c
   RNSound: da030221e6ac7e8290c6b43f2b5f2133a8e225b0
