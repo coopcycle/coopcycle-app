@@ -75,6 +75,8 @@
   <string>App requires access to photo library</string>
   <key>NSBluetoothPeripheralUsageDescription</key>
   <string>App would like to use bluetooth</string>
+  <key>NSBluetoothAlwaysUsageDescription</key>
+  <string>Our app uses bluetooth to print receipts on thermal printers</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Entypo.ttf</string>
