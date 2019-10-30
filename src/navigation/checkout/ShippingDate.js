@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
 
-  const availabilities = state.checkout.cart.restaurant.availabilities
+  const availabilities = state.checkout.timing.choices
 
   const hash = _.zipObject(availabilities, _.map(availabilities, item => ([
     moment(item).format('LL'),
@@ -112,9 +112,9 @@ function mapStateToProps(state) {
   ])))
 
   return {
-    date: state.checkout.date,
+    date: !!state.checkout.date ? state.checkout.date : state.checkout.timing.asap,
     availabilities,
-    hash,
+    hash
   }
 }
 

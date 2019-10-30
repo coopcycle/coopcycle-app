@@ -228,6 +228,9 @@
     "LOAD_MORE": "Load more",
     "TASK_IMAGE_UPLOAD_CONFIRM_SHORT": "Image uploaded!",
     "TASK_IMAGE_UPLOAD_CONFIRM_LONG": "Image was successfully uploaded",
-    "AN_ERROR_OCCURRED": "An error occurred"
+    "AN_ERROR_OCCURRED": "An error occurred",
+    "DELIVERY_ASAP": "As soon as possible",
+    "CART_DELIVERY_TIME": "Delivery {{- fromNow}}",
+    "CART_DELIVERY_TIME_DIFF": "Delivery in {{diff}} minutes"
   }
 }

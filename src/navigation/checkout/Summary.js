@@ -23,7 +23,8 @@ import { withTranslation } from 'react-i18next'
 
 import CartFooterButton from './components/CartFooterButton'
 import { formatPrice } from '../../Cart'
-import { incrementItem, decrementItem, removeItem } from '../../redux/Checkout/actions'
+import i18n from '../../i18n'
+import { incrementItem, decrementItem, removeItem, timing } from '../../redux/Checkout/actions'
 
 class Summary extends Component {
 
@@ -41,6 +42,8 @@ class Summary extends Component {
     this.setState({
       translateXValue: new Animated.Value(width / 4),
     })
+
+    this.props.fetchTiming()
   }
 
   componentDidUpdate(prevProps) {
@@ -211,7 +214,7 @@ class Summary extends Component {
 
   render() {
 
-    const { cart, date } = this.props
+    const { cart, timing, date } = this.props
 
     if (cart.length === 0) {
 
@@ -221,11 +224,13 @@ class Summary extends Component {
     return (
       <View style={{ flex: 1 }}>
         <Content contentContainerStyle={{ justifyContent: 'space-between' }}>
-          <TouchableOpacity style={ styles.dateBtn }
-            onPress={ () => this._navigate('CheckoutShippingDate') }>
-            <Text>{ moment(date).format('dddd LT') }</Text>
-            <Text note>{ this.props.t('EDIT') }</Text>
-          </TouchableOpacity>
+          { timing.asap && (
+            <TouchableOpacity style={ styles.dateBtn }
+              onPress={ () => this._navigate('CheckoutShippingDate') }>
+              <Text>{ this.props.timeAsText }</Text>
+              <Text note>{ this.props.t('EDIT') }</Text>
+            </TouchableOpacity>
+          )}
           { this.renderItems() }
         </Content>
         <View style={{ flex: 0, backgroundColor: '#e4022d' }}>
@@ -270,12 +275,23 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state, ownProps) {
 
+  let timeAsText
+  if (state.checkout.timing.today && state.checkout.timing.fast) {
+    timeAsText = i18n.t('CART_DELIVERY_TIME_DIFF', { diff: state.checkout.timing.diff })
+  } else {
+    const time = !!state.checkout.date ? state.checkout.date : state.checkout.timing.asap
+    let fromNow = moment(time).calendar(null, { sameElse: 'LLLL' }).toLowerCase()
+    timeAsText = i18n.t('CART_DELIVERY_TIME', { fromNow })
+  }
+
   return {
     cart: state.checkout.cart,
     date: state.checkout.date,
+    timing: state.checkout.timing,
     edit: ownProps.navigation.getParam('edit', false),
     items: state.checkout.cart.items,
-    isAuthenticated: state.app.isAuthenticated
+    isAuthenticated: state.app.isAuthenticated,
+    timeAsText
   }
 }
 
@@ -284,6 +300,7 @@ function mapDispatchToProps(dispatch) {
     incrementItem: item => dispatch(incrementItem(item)),
     decrementItem: item => dispatch(decrementItem(item)),
     removeItem: item => dispatch(removeItem(item)),
+    fetchTiming: _ => dispatch(timing())
   }
 }
 
