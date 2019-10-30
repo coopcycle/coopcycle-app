@@ -125,16 +125,6 @@ class Task extends Component {
       })
     }
 
-    const events = _.sortBy(task.events, [ event => moment(event.createdAt) ])
-    if (events.length > 0) {
-      const lastEvent = _.last(events)
-      items.push({
-        iconName: 'calendar',
-        text: this.props.t('LAST_TASK_EVENT', { fromNow: moment(lastEvent.createdAt).fromNow() }),
-        onPress: () => navigate('CourierTaskHistory', { task })
-      })
-    }
-
     return (
       <FlatList
         data={ items }

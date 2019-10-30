@@ -63,13 +63,7 @@ const MainNavigator = createStackNavigator({
     navigationOptions: ({ navigation }) => ({
       title: `${i18n.t('TASK')} #${navigation.state.params.task.id}`,
     })
-  },
-  CourierTaskHistory: {
-    screen: navigation.CourierTaskHistoryPage,
-    navigationOptions: ({ navigation }) => ({
-      title: i18n.t('HISTORY'),
-    })
-  },
+  }
 }, {
   initialRouteKey: 'CourierHome',
   initialRouteName: 'CourierHome',

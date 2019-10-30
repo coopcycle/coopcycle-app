@@ -39,7 +39,6 @@ export default {
   CheckoutCreditCard: require('./checkout/CreditCard'),
   CourierTasksPage: require('./courier/TasksPage'),
   CourierTaskListPage: require('./courier/TaskListPage'),
-  CourierTaskHistoryPage: require('./courier/TaskHistoryPage'),
   CourierSettings: require('./courier/Settings'),
   CourierSettingsTags: require('./courier/Tags'),
   AccountHome: require('./account/Home'),
