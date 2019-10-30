@@ -329,8 +329,10 @@ class Task extends Component {
 
   render() {
 
-    const { geolocation, task } = this.props.navigation.state.params
-    const { navigate } = this.props.navigation
+    const { navigate, getParam } = this.props.navigation
+
+    const geolocation = getParam('geolocation')
+    const task = getParam('task')
 
     const hasLinkedTasks = (task.previous || task.next)
     const hasPreviousTask = Boolean(task.previous)
