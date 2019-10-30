@@ -26,21 +26,9 @@ class RestaurantList extends Component {
 
   renderItem(restaurant, index) {
 
-    const asap =
-      _.find(restaurant.availabilities, availability => {
-        // Get the first date that is at least
-        const diffInMinutes = moment(availability).diff(moment(), 'minutes')
-        if (diffInMinutes <= 35) {
-
-          return false
-        }
-
-        return true
-      })
-
     return (
       <TouchableOpacity style={ styles.item }
-        onPress={ () => this.props.onItemClick(restaurant, asap) }
+        onPress={ () => this.props.onItemClick(restaurant) }
         testID={ `restaurantIndex:${index}` }>
         <Grid>
           <Col size={ 1 }>
@@ -49,9 +37,6 @@ class RestaurantList extends Component {
           <Col size={ 4 } style={{ paddingLeft: 10 }}>
             <Text style={ styles.restaurantNameText }>{ restaurant.name }</Text>
             <Text note>{ restaurant.address.streetAddress }</Text>
-            <Text note style={{ fontWeight: 'bold' }}>
-              { this.props.t('CHECKOUT_FROM', { date: moment(asap).format('dddd LT') }) }
-            </Text>
           </Col>
         </Grid>
       </TouchableOpacity>
