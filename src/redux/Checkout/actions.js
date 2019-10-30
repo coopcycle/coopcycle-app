@@ -16,6 +16,7 @@ export const DECREMENT_ITEM = 'DECREMENT_ITEM'
 export const SET_ADDRESS = '@checkout/SET_ADDRESS'
 export const SET_ADDRESS_OK = '@checkout/SET_ADDRESS_OK'
 export const SET_DATE = '@checkout/SET_DATE'
+export const SET_TIMING = '@checkout/SET_TIMING'
 export const CLEAR = '@checkout/CLEAR'
 
 export const INIT_REQUEST = '@checkout/INIT_REQUEST'
@@ -43,6 +44,7 @@ export const decrementItem = createAction(DECREMENT_ITEM)
 export const setDate = createAction(SET_DATE)
 export const clear = createAction(CLEAR)
 export const setAddressOK = createAction(SET_ADDRESS_OK)
+export const setTiming = createAction(SET_TIMING)
 
 export const initRequest = createAction(INIT_REQUEST)
 export const initSuccess = createAction(INIT_SUCCESS)
@@ -264,5 +266,27 @@ export function checkout(number, expMonth, expYear, cvc) {
     })
     .catch(err => console.log(err));
 
+  }
+}
+
+export function timing() {
+
+  return (dispatch, getState) => {
+
+    const { httpClient } = getState().app
+    const { address, cart, date } = getState().checkout
+
+    const newCart = cart.clone()
+    newCart.setDeliveryAddress(address)
+
+    dispatch(checkoutRequest())
+
+    httpClient
+      .post('/api/orders/timing', newCart.toJSON())
+      .then(timing => {
+        dispatch(setTiming(timing))
+        dispatch(checkoutSuccess())
+      })
+      .catch(e => dispatch(checkoutFailure(e)))
   }
 }

@@ -9,6 +9,7 @@ import {
   SET_ADDRESS,
   SET_ADDRESS_OK,
   SET_DATE,
+  SET_TIMING,
   CLEAR,
   LOAD_RESTAURANTS_REQUEST,
   LOAD_RESTAURANTS_SUCCESS,
@@ -37,7 +38,8 @@ const initialState = {
   menu: null,
   isFetching: false,
   errors: [],
-  isAddressModalVisible: false
+  isAddressModalVisible: false,
+  timing: {}
 }
 
 export default (state = initialState, action = {}) => {
@@ -78,16 +80,11 @@ export default (state = initialState, action = {}) => {
 
     case INIT_REQUEST:
 
-      // Add 30 minutes to make sure there is time
-      let date = moment(_.first(action.payload.availabilities))
-      date.add(30, 'minutes')
-
       return {
         ...state,
         isFetching: true,
         cart: new Cart(action.payload),
         menu: null, // For better navigation through restaurants
-        date: date.format(),
       }
 
     case INIT_SUCCESS:
@@ -201,6 +198,12 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         isAddressModalVisible: false,
+      }
+
+    case SET_TIMING:
+      return {
+        ...state,
+        timing: action.payload,
       }
 
     default:
