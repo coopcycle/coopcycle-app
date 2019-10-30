@@ -5,6 +5,7 @@ import { Container, Content, Button, Icon, Text, Thumbnail, CheckBox, Header, Le
 import { connect } from 'react-redux'
 import _ from 'lodash'
 import moment from 'moment'
+import { NavigationActions } from 'react-navigation'
 
 import TaskList from '../../components/TaskList'
 import DateSelectHeader from '../../components/DateSelectHeader'
@@ -12,8 +13,6 @@ import { whiteColor, dateSelectHeaderHeight } from '../../styles/common'
 import { withTranslation } from 'react-i18next'
 import {
   loadTasks,
-  markTaskDone,
-  markTaskFailed,
   selectTasksList,
   selectTaskSelectedDate,
   selectIsTasksLoading,
@@ -68,12 +67,24 @@ class TaskListPage extends Component {
 
     return (
       <Container style={ styles.container }>
-        <Content style={ styles.wrapper }>
+        <Content enableAutomaticScroll={ false }>
           {
             tasks.length > 0 &&
             <TaskList
               ref={ (e) => {this.taskList = e} }
               tasks={ tasks }
+              onSwipeLeft={ task => navigate(
+                'Task',
+                { task },
+                NavigationActions.navigate({ routeName: 'TaskComplete', params: { task, markTaskDone: true } })
+              ) }
+              onSwipeRight={ task => navigate(
+                'Task',
+                { task },
+                NavigationActions.navigate({ routeName: 'TaskComplete', params: { task, markTaskFailed: true } })
+              ) }
+              swipeOutLeftEnabled={ task => task.status !== 'DONE' }
+              swipeOutRightEnabled={ task => task.status !== 'DONE' }
               onTaskClick={ task => navigate('Task', { task }) }
             />
           }
@@ -102,8 +113,6 @@ function mapStateToProps (state) {
 function mapDispatchToProps (dispatch) {
   return {
     loadTasks: (client, selectedDate) => dispatch(loadTasks(client, selectedDate)),
-    markTaskFailed: (client, task, notes) => dispatch(markTaskFailed(client, task, notes)),
-    markTaskDone: (client, task, notes) => dispatch(markTaskDone(client, task, notes)),
   }
 }
 
