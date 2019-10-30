@@ -45,9 +45,6 @@ class TaskList extends Component {
 
   constructor(props) {
     super(props)
-    this.state = {
-      swipeOutClose: false
-    }
   }
 
   renderTaskStatusIcon(task) {
@@ -123,7 +120,12 @@ class TaskList extends Component {
       swipeOutRightEnabled = this.props.swipeOutRightEnabled(task)
     }
 
-    const hasOnSwipeLeft = typeof this.props.onSwipeLeft === 'function'
+    let swipeOutLeftEnabled = false
+    if (typeof this.props.swipeOutLeftEnabled === 'function') {
+      swipeOutLeftEnabled = this.props.swipeOutLeftEnabled(task)
+    }
+
+    const hasOnSwipeLeft = typeof this.props.onSwipeLeft === 'function' && swipeOutLeftEnabled
     const hasOnSwipeRight = typeof this.props.onSwipeRight === 'function' && swipeOutRightEnabled
 
     let swipeOutProps = {}
@@ -134,12 +136,7 @@ class TaskList extends Component {
           {
             component: this.renderSwipeoutLeftButton(),
             backgroundColor: greenColor,
-            onPress: () => {
-              this.props.onSwipeLeft(task)
-              this.setState({
-                swipeOutClose: true
-              })
-            }
+            onPress: () => this.props.onSwipeLeft(task)
           }
         ]
       }
@@ -152,12 +149,7 @@ class TaskList extends Component {
           {
             component: this.renderSwipeoutRightButton(),
             backgroundColor: redColor,
-            onPress: () => {
-              this.props.onSwipeRight(task)
-              this.setState({
-                swipeOutClose: true
-              })
-            }
+            onPress: () => this.props.onSwipeRight(task)
           }
         ]
       }
@@ -166,7 +158,7 @@ class TaskList extends Component {
     return (
       <Swipeout
         buttonWidth={ width * 0.4 }
-        close={ this.state.swipeOutClose }
+        autoClose={ true }
         style={ styles.item }
         backgroundColor="#fff"
         disabled={ !hasOnSwipeLeft && !hasOnSwipeRight }
@@ -200,13 +192,11 @@ class TaskList extends Component {
   }
 
   render() {
-    let { tasks } = this.props
 
     return (
       <FlatList
-        ref="flatList"
-        data={tasks}
-        keyExtractor={(item, index) => item['@id']}
+        data={ this.props.tasks }
+        keyExtractor={ (item, index) => item['@id'] }
         renderItem={({item}) => this.renderItem(item)}
       />
     )
