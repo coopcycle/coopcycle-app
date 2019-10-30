@@ -68,11 +68,6 @@ export const setTasksFilter = createAction(SET_TASK_FILTER)
  * Side-effects
  */
 
-function resetNavigation() {
-  NavigationHolder.navigate('TaskHome')
-  NavigationHolder.goBack()
-}
-
 function showAlert(e) {
   let message = i18n.t('AN_ERROR_OCCURRED')
 
@@ -141,7 +136,7 @@ function uploadTaskImages(task, state) {
     })
 }
 
-export function markTaskFailed(httpClient, task, notes) {
+export function markTaskFailed(httpClient, task, notes, onSuccess) {
 
   return function (dispatch, getState) {
 
@@ -155,7 +150,9 @@ export function markTaskFailed(httpClient, task, notes) {
           .then(task => {
             dispatch(clearFiles())
             dispatch(markTaskFailedSuccess(task))
-            setTimeout(() => resetNavigation(), 100)
+            if (typeof onSuccess === 'function') {
+              setTimeout(() => onSuccess(), 100)
+            }
           })
       })
       .catch(e => {
@@ -165,7 +162,7 @@ export function markTaskFailed(httpClient, task, notes) {
   }
 }
 
-export function markTaskDone(httpClient, task, notes = '') {
+export function markTaskDone(httpClient, task, notes = '', onSuccess) {
 
   return function (dispatch, getState) {
 
@@ -179,7 +176,9 @@ export function markTaskDone(httpClient, task, notes = '') {
           .then(task => {
             dispatch(clearFiles())
             dispatch(markTaskDoneSuccess(task))
-            setTimeout(() => resetNavigation(), 100)
+            if (typeof onSuccess === 'function') {
+              setTimeout(() => onSuccess(), 100)
+            }
           })
       })
       .catch(e => {

@@ -35,20 +35,20 @@ class CompleteTask extends Component {
 
   markTaskDone() {
 
-    const { task } = this.props.navigation.state.params
+    const task = this.props.navigation.getParam('task')
     const { markTaskDone } = this.props
     const { notes } = this.state
 
-    markTaskDone(this.props.httpClient, task, notes)
+    markTaskDone(this.props.httpClient, task, notes, () => this.props.navigation.goBack(null))
   }
 
   markTaskFailed() {
 
-    const { task } = this.props.navigation.state.params
+    const task = this.props.navigation.getParam('task')
     const { markTaskFailed } = this.props
     const { notes } = this.state
 
-    markTaskFailed(this.props.httpClient, task, notes)
+    markTaskFailed(this.props.httpClient, task, notes, () => this.props.navigation.goBack(null))
   }
 
   render() {
@@ -192,8 +192,8 @@ function mapStateToProps (state) {
 
 function mapDispatchToProps (dispatch) {
   return {
-    markTaskFailed: (client, task, notes) => dispatch(markTaskFailed(client, task, notes)),
-    markTaskDone: (client, task, notes) => dispatch(markTaskDone(client, task, notes)),
+    markTaskFailed: (client, task, notes, onSuccess) => dispatch(markTaskFailed(client, task, notes, onSuccess)),
+    markTaskDone: (client, task, notes, onSuccess) => dispatch(markTaskDone(client, task, notes, onSuccess)),
     deleteSignatureAt: index => dispatch(deleteSignatureAt(index)),
     deletePictureAt: index => dispatch(deletePictureAt(index)),
   }
