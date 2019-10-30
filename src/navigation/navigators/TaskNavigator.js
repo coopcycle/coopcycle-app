@@ -91,7 +91,7 @@ export default createStackNavigator({
       if (routeName === 'TaskCompleteHome') {
         title = i18n.t('CANCEL')
       }
-      if (routeName === 'TaskPhoto' || routeName === 'TaskSignature') {
+      if (routeName === 'TaskPhoto' || routeName === 'TaskSignature' || routeName === 'TaskHome') {
         title = 'Back'
       }
 
