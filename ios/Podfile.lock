@@ -177,11 +177,11 @@ PODS:
     - Fabric
     - Firebase/Core
     - React
-  - RNGestureHandler (1.4.1):
+  - RNGestureHandler (1.5.0):
     - React
   - RNLocalize (1.3.1):
     - React
-  - RNReanimated (1.3.0):
+  - RNReanimated (1.4.0):
     - React
   - RNSketchCanvas (0.8.0):
     - React
@@ -376,9 +376,9 @@ SPEC CHECKSUMS:
   RNCAsyncStorage: 60a80e72d95bf02a01cace55d3697d9724f0d77f
   RNCPushNotificationIOS: 0b8d06ff190d84627dd17501bfb96652375970e4
   RNFirebase: ac0de8b24c6f91ae9459575491ed6a77327619c6
-  RNGestureHandler: 4cb47a93019c1a201df2644413a0a1569a51c8aa
+  RNGestureHandler: a4ddde1ffc6e590c8127b8b7eabfdade45475c74
   RNLocalize: 07eb7a91d10021cdf59d80061ebf3adb8a5b5688
-  RNReanimated: 6abbbae2e5e72609d85aabd92a982a94566885f1
+  RNReanimated: b2ab0b693dddd2339bd2f300e770f6302d2e960c
   RNSketchCanvas: 9c28adb5381543ed55cc98ce6de46479cb3cb12c
   RNSound: da030221e6ac7e8290c6b43f2b5f2133a8e225b0
   Stripe: db29ad197c74aca6fb981e4e8355cf7ebd0fca5a
