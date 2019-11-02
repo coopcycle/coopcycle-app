@@ -124,6 +124,8 @@ class TasksMapView extends Component {
       latitudeDelta,
       longitudeDelta
     }
+
+    this.markers = new Map()
   }
 
   onMapReady(onMapReady) {
@@ -167,9 +169,22 @@ class TasksMapView extends Component {
     }, () => this.props.onMarkerCalloutPress(item))
   }
 
+  onCalloutPress(task) {
+    this.props.onMarkerCalloutPress(task)
+
+    const ref = this.markers.get(task['@id'])
+    if (ref && ref.current) {
+      ref.current.hideCallout()
+    }
+  }
+
   renderMarker(task) {
 
     const { width } = Dimensions.get('window')
+
+    if (!this.markers.has(task['@id'])) {
+      this.markers.set(task['@id'], React.createRef())
+    }
 
     return (
       <Marker
@@ -177,8 +192,9 @@ class TasksMapView extends Component {
         key={ task['@id'] }
         coordinate={ task.address.geo }
         pinColor={ pinColor(task) }
-        flat={ true }>
-        <Callout onPress={ () => this.props.onMarkerCalloutPress(task) }
+        flat={ true }
+        ref={ this.markers.get(task['@id']) }>
+        <Callout onPress={ () => this.onCalloutPress(task) }
           style={ [ styles.markerCallout, { width: Math.floor(width * 0.6666) } ] }>
           { task.address.name && (<Text style={ styles.markerCalloutText }>{ task.address.name }</Text>) }
           <Text style={ styles.markerCalloutText } numberOfLines={ 3 }>
@@ -197,6 +213,7 @@ class TasksMapView extends Component {
   }
 
   renderModal() {
+
     return (
       <Modal isVisible={ this.state.isModalVisible } style={ styles.modal }>
         <View style={{ backgroundColor: 'white' }}>
@@ -225,7 +242,7 @@ class TasksMapView extends Component {
 
     const { onMapReady, ...otherProps } = this.props
 
-    // Objects must have an attribute location representing a GeoPoint, i.e. { latitude: x, longitude: y }
+    // Objects must have a "location" attribute representing a GeoPoint, i.e. { latitude: x, longitude: y }
     const data = this.props.tasks.map(task => ({ ...task, location: task.address.geo }))
 
     return (
