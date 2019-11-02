@@ -65,6 +65,10 @@ class TaskListPage extends Component {
     const { tasks, selectedDate } = this.props
     const { navigate } = this.props.navigation
 
+    const navigateParams = {
+      navigateAfter: this.props.navigation.state.routeName
+    }
+
     return (
       <Container style={ styles.container }>
         <Content enableAutomaticScroll={ false }>
@@ -75,17 +79,17 @@ class TaskListPage extends Component {
               tasks={ tasks }
               onSwipeLeft={ task => navigate(
                 'Task',
-                { task },
-                NavigationActions.navigate({ routeName: 'TaskComplete', params: { task, markTaskDone: true } })
+                { ...navigateParams, task },
+                NavigationActions.navigate({ routeName: 'TaskComplete', params: { ...navigateParams, task, markTaskDone: true } })
               ) }
               onSwipeRight={ task => navigate(
                 'Task',
-                { task },
-                NavigationActions.navigate({ routeName: 'TaskComplete', params: { task, markTaskFailed: true } })
+                { ...navigateParams, task },
+                NavigationActions.navigate({ routeName: 'TaskComplete', params: { ...navigateParams, task, markTaskFailed: true } })
               ) }
               swipeOutLeftEnabled={ task => task.status !== 'DONE' }
               swipeOutRightEnabled={ task => task.status !== 'DONE' }
-              onTaskClick={ task => navigate('Task', { task }) }
+              onTaskClick={ task => navigate('Task', { ...navigateParams, task }) }
             />
           }
           {

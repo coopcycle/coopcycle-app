@@ -41,7 +41,7 @@ class Task extends Component {
 
   componentDidUpdate(prevProps, prevState) {
 
-    const { task } = this.props.navigation.state.params
+    const task = this.props.navigation.getParam('task')
 
     let previousTask = _.find(prevProps.tasks, t => t['@id'] === task['@id'])
     let currentTask = _.find(this.props.tasks, t => t['@id'] === task['@id'])
@@ -60,7 +60,7 @@ class Task extends Component {
   renderTaskDetails() {
 
     const { navigate } = this.props.navigation
-    const { task } = this.props.navigation.state.params
+    const task = this.props.navigation.getParam('task')
 
     const timeframe = moment(task.doneAfter).format('LT') + ' - ' + moment(task.doneBefore).format('LT')
     let address = task.address.name ? [ task.address.name, task.address.streetAddress ].join(' - ') : task.address.streetAddress
@@ -203,8 +203,8 @@ class Task extends Component {
   renderSwipeOutButton() {
 
     const { width } = Dimensions.get('window')
-    const { task } = this.props.navigation.state.params
     const { swipeOutClose } = this.state
+    const task = this.props.navigation.getParam('task')
 
     if (task.status === 'DONE') {
       return (
@@ -232,11 +232,16 @@ class Task extends Component {
       )
     }
 
+    const navigateParams = {
+      task,
+      navigateAfter: this.props.navigation.getParam('navigateAfter')
+    }
+
     const swipeoutLeftButton = {
       component: this.renderSwipeoutLeftButton(),
       backgroundColor: greenColor,
       onPress: () => {
-        this.props.navigation.navigate('TaskComplete', { task, markTaskDone: true })
+        this.props.navigation.navigate('TaskComplete', { ...navigateParams, markTaskDone: true })
         this.setState({
           swipeOutClose: true
         })
@@ -247,7 +252,7 @@ class Task extends Component {
       component: this.renderSwipeoutRightButton(),
       backgroundColor: redColor,
       onPress: () => {
-        this.props.navigation.navigate('TaskComplete', { task, markTaskFailed: true })
+        this.props.navigation.navigate('TaskComplete', { ...navigateParams, markTaskFailed: true })
         this.setState({
           swipeOutClose: true
         })
@@ -274,7 +279,7 @@ class Task extends Component {
       )
     }
 
-    const { task } = this.props.navigation.state.params
+    const task = this.props.navigation.getParam('task')
 
     const { mapDimensions } = this.state
 
@@ -321,8 +326,8 @@ class Task extends Component {
 
     const { navigate, getParam } = this.props.navigation
 
-    const geolocation = getParam('geolocation')
     const task = getParam('task')
+    const navigateAfter = getParam('navigateAfter')
 
     const hasLinkedTasks = (task.previous || task.next)
     const hasPreviousTask = Boolean(task.previous)
@@ -357,14 +362,14 @@ class Task extends Component {
           <Row size={ 4 } style={ styles.swipeOutHelpContainer }>
             <Col>
               { hasPreviousTask && <Button transparent
-                onPress={ () => navigate('Task', { geolocation, task: previousTask }) }>
+                onPress={ () => navigate('Task', { navigateAfter, task: previousTask }) }>
                 <Icon name="arrow-back" />
                 <Text>{ this.props.t('PREVIOUS_TASK') }</Text>
               </Button> }
             </Col>
             <Col>
               { hasNextTask && <Button transparent style={{ alignSelf: 'flex-end' }}
-                onPress={ () => navigate('Task', { geolocation, task: nextTask }) }>
+                onPress={ () => navigate('Task', { navigateAfter, task: nextTask }) }>
                 <Text>{ this.props.t('NEXT_TASK') }</Text>
                 <Icon name="arrow-forward" />
               </Button> }

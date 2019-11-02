@@ -164,16 +164,13 @@ class TasksPage extends Component {
 
     const { tasks, selectedDate } = this.props
     const { navigate } = this.props.navigation
-    const { geolocation } = this.state
-
-    const navigationParams = { geolocation }
 
     return (
       <Container style={ styles.container }>
         <TasksMapView
           tasks={ tasks }
           onMapReady={ () => this.onMapReady() }
-          onMarkerCalloutPress={ task => navigate('Task', { ...navigationParams, task }) }>
+          onMarkerCalloutPress={ task => navigate('Task', { task, navigateAfter: this.props.navigation.state.routeName }) }>
         </TasksMapView>
         <DateSelectHeader
           buttonsEnabled={true}

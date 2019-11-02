@@ -48,7 +48,7 @@ class TaskListScreen extends Component {
             onSwipeRight={ task => this.props.unassignTask(task) }
             swipeOutRightEnabled={ task => task.status !== 'DONE' }
             swipeOutRightIconName="close"
-            onTaskClick={ task => navigate('Task', { task }) } />
+            onTaskClick={ task => navigate('Task', { task, navigateAfter: this.props.navigation.state.routeName }) } />
         </Content>
       </Container>
     );

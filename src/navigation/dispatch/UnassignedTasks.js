@@ -56,7 +56,7 @@ class UnassignedTasks extends Component {
               swipeOutLeftEnabled={ task => !task.isAssigned }
               onSwipeLeft={ task => navigate('DispatchPickUser', { onUserPicked: user => assignTask(task, user.username) }) }
               swipeOutLeftIconName="person"
-              onTaskClick={ task => navigate('Task', { task }) } />
+              onTaskClick={ task => navigate('Task', { task, navigateAfter: this.props.navigation.state.routeName }) } />
           ) }
         </Content>
       </Container>

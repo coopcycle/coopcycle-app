@@ -39,7 +39,9 @@ class CompleteTask extends Component {
     const { markTaskDone } = this.props
     const { notes } = this.state
 
-    markTaskDone(this.props.httpClient, task, notes, () => this.props.navigation.goBack(null))
+    markTaskDone(this.props.httpClient, task, notes, () => {
+      this.props.navigation.navigate(this.props.navigation.getParam('navigateAfter'))
+    })
   }
 
   markTaskFailed() {
@@ -48,7 +50,9 @@ class CompleteTask extends Component {
     const { markTaskFailed } = this.props
     const { notes } = this.state
 
-    markTaskFailed(this.props.httpClient, task, notes, () => this.props.navigation.goBack(null))
+    markTaskFailed(this.props.httpClient, task, notes, () => {
+      this.props.navigation.navigate(this.props.navigation.getParam('navigateAfter'))
+    })
   }
 
   render() {
