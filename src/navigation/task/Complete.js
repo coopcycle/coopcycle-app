@@ -57,12 +57,16 @@ class CompleteTask extends Component {
 
   render() {
 
-    const { task, markTaskDone, markTaskFailed } = this.props.navigation.state.params
+    const task = this.props.navigation.getParam('task')
+    const success = this.props.navigation.getParam('success', true)
+
     const { width, height } = Dimensions.get('window')
 
     const imageSize = (width - 64) / 2
-    const buttonIconName = markTaskDone ? 'checkmark' : 'warning'
-    const onPress = markTaskDone ? this.markTaskDone.bind(this) : this.markTaskFailed.bind(this)
+    const buttonIconName = success ? 'checkmark' : 'warning'
+    const footerBgColor = success ? greenColor : redColor
+    const footerText = success ? this.props.t('VALIDATE') : this.props.t('MARK_FAILED')
+    const onPress = success ? this.markTaskDone.bind(this) : this.markTaskFailed.bind(this)
 
     return (
       <Container>
@@ -109,15 +113,17 @@ class CompleteTask extends Component {
           <Icon type="FontAwesome5" name="signature"
             style={ styles.addPoDButtonText } />
           <Text
-            style={ [ styles.addPoDButtonText, { textAlign: 'center', marginHorizontal: 10 } ] }>Add a proof of delivery</Text>
+            style={ [ styles.addPoDButtonText, { textAlign: 'center', marginHorizontal: 10 } ] }>
+            { this.props.t('TASK_ADD_PROOF_OF_DELIVERY') }
+          </Text>
           <Icon type="FontAwesome5" name="camera"
             style={ styles.addPoDButtonText } />
         </TouchableOpacity>
-        <Footer style={{ alignItems: 'center', backgroundColor: markTaskDone ? greenColor : redColor }}>
+        <Footer style={{ alignItems: 'center', backgroundColor: footerBgColor }}>
           <TouchableOpacity style={ styles.buttonContainer } onPress={ onPress }>
             <View style={ styles.buttonTextContainer }>
               <Icon name={ buttonIconName } style={{ color: '#fff', marginRight: 10 }} />
-              <Text style={{ color: '#fff' }}>{ markTaskDone ? this.props.t('VALIDATE') : this.props.t('MARK_FAILED') }</Text>
+              <Text style={{ color: '#fff' }}>{ footerText }</Text>
             </View>
           </TouchableOpacity>
         </Footer>

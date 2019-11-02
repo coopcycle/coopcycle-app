@@ -231,6 +231,7 @@
     "AN_ERROR_OCCURRED": "An error occurred",
     "DELIVERY_ASAP": "As soon as possible",
     "CART_DELIVERY_TIME": "Delivery {{- fromNow}}",
-    "CART_DELIVERY_TIME_DIFF": "Delivery in {{diff}} minutes"
+    "CART_DELIVERY_TIME_DIFF": "Delivery in {{diff}} minutes",
+    "TASK_ADD_PROOF_OF_DELIVERY": "Add a proof of delivery"
   }
 }

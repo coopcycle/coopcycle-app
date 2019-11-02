@@ -227,6 +227,7 @@
     "LOAD_MORE": "Charger plus",
     "TASK_IMAGE_UPLOAD_CONFIRM_SHORT": "Image uploadée !",
     "TASK_IMAGE_UPLOAD_CONFIRM_LONG": "L'image a été uploadée avec succès",
-    "AN_ERROR_OCCURRED": "Une erreur s'est produite"
+    "AN_ERROR_OCCURRED": "Une erreur s'est produite",
+    "TASK_ADD_PROOF_OF_DELIVERY": "Ajouter une preuve de livraison"
   }
 }

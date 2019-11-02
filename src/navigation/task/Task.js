@@ -241,7 +241,7 @@ class Task extends Component {
       component: this.renderSwipeoutLeftButton(),
       backgroundColor: greenColor,
       onPress: () => {
-        this.props.navigation.navigate('TaskComplete', { ...navigateParams, markTaskDone: true })
+        this.props.navigation.navigate('TaskComplete', { ...navigateParams, success: true })
         this.setState({
           swipeOutClose: true
         })
@@ -252,7 +252,7 @@ class Task extends Component {
       component: this.renderSwipeoutRightButton(),
       backgroundColor: redColor,
       onPress: () => {
-        this.props.navigation.navigate('TaskComplete', { ...navigateParams, markTaskFailed: true })
+        this.props.navigation.navigate('TaskComplete', { ...navigateParams, success: false })
         this.setState({
           swipeOutClose: true
         })

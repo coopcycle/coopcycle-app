@@ -80,12 +80,12 @@ class TaskListPage extends Component {
               onSwipeLeft={ task => navigate(
                 'Task',
                 { ...navigateParams, task },
-                NavigationActions.navigate({ routeName: 'TaskComplete', params: { ...navigateParams, task, markTaskDone: true } })
+                NavigationActions.navigate({ routeName: 'TaskComplete', params: { ...navigateParams, task, success: true } })
               ) }
               onSwipeRight={ task => navigate(
                 'Task',
                 { ...navigateParams, task },
-                NavigationActions.navigate({ routeName: 'TaskComplete', params: { ...navigateParams, task, markTaskFailed: true } })
+                NavigationActions.navigate({ routeName: 'TaskComplete', params: { ...navigateParams, task, success: false } })
               ) }
               swipeOutLeftEnabled={ task => task.status !== 'DONE' }
               swipeOutRightEnabled={ task => task.status !== 'DONE' }
