@@ -4,5 +4,10 @@
 <dict>
 	<key>aps-environment</key>
 	<string>development</string>
+	<key>com.apple.developer.associated-domains</key>
+	<array>
+		<string>applinks:*.coopcycle.org</string>
+		<string>activitycontinuation:*.coopcycle.org</string>
+	</array>
 </dict>
 </plist>
