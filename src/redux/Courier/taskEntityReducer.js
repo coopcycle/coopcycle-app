@@ -195,9 +195,9 @@ export const tasksEntityReducer = (state = tasksEntityInitialState, action = {})
         signatures: [],
         pictures: [],
       }
-    default:
-      return { ...state }
   }
+
+  return state
 }
 
 
@@ -216,8 +216,7 @@ const processWsMsg = (state, { type, ...data }) => {
         }, {}),
         order: tasks.map((task) => task.id),
       }
-
-    default:
-      return { ...state }
   }
+
+  return state
 }

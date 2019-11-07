@@ -209,8 +209,7 @@ export default (state = initialState, action = {}) => {
         ...state,
         timing: action.payload,
       }
-
-    default:
-      return { ...state }
   }
+
+  return state
 }

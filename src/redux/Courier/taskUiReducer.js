@@ -52,8 +52,7 @@ export const tasksUiReducer = (state = tasksUiInitialState, action = {}) => {
         excludeFilters: state.excludeFilters.filter(filter =>
           Object.keys(action.payload).some(k => action.payload[k] !== filter[k])),
       }
-
-    default:
-      return { ...state }
   }
+
+  return state
 }

@@ -325,8 +325,7 @@ export default (state = initialState, action = {}) => {
           active: menu['@id'] === action.payload.menu['@id'],
         })),
       }
-
-    default:
-      return { ...state }
   }
+
+  return state
 }

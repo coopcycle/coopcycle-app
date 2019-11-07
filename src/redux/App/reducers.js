@@ -192,8 +192,7 @@ export default (state = initialState, action = {}) => {
         ...state,
         selectServerError: action.payload,
       }
-
-    default:
-      return { ...state }
   }
+
+  return state
 }
