@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { Alert, FlatList, View, StyleSheet, TouchableOpacity } from 'react-native'
-import { Button, Icon, Text } from 'native-base'
+import { FlatList, View, StyleSheet, TouchableOpacity } from 'react-native'
+import { Icon, Text } from 'native-base'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 import Sound from 'react-native-sound'
@@ -91,7 +91,7 @@ class NotificationHandler extends Component {
         const { event } = notification.data
 
         if (event && event.name === 'order:created') {
-          const { restaurant, date, order } = event.data
+          const { order } = event.data
           if (notification.foreground) {
             this.props.loadOrderAndPushNotification(order)
           } else {

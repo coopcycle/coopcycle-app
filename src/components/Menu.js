@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
-import { Dimensions, SectionList, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { SectionList, StyleSheet, TouchableOpacity, View } from 'react-native'
 import { Icon, Text } from 'native-base';
-import { Col, Row, Grid } from 'react-native-easy-grid'
+import { Col, Grid } from 'react-native-easy-grid'
 import _ from 'lodash'
-import moment from 'moment'
 
 import { formatPrice } from '../Cart'
 
@@ -94,8 +93,7 @@ export default class Menu extends Component {
 
   render() {
 
-    const { width } = Dimensions.get('window')
-    const { menu, restaurant } = this.props
+    const { menu } = this.props
 
     let sections = []
     if (menu) {

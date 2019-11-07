@@ -1,9 +1,8 @@
 import React from 'react'
-import { TextInput, TouchableOpacity, View } from 'react-native'
-import { Form, Item, Input, Label, Button, Icon, Text } from 'native-base'
+import { View } from 'react-native'
+import { Form, Item, Input, Label, Button, Text } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import validate from 'validate.js'
-import { PhoneNumberUtil } from 'google-libphonenumber'
 import phoneNumberExamples from 'libphonenumber-js/examples.mobile.json'
 import {
   getExampleNumber,
@@ -13,8 +12,6 @@ import _ from 'lodash'
 
 import i18n from '../i18n'
 import Settings from '../Settings'
-
-const phoneUtil = PhoneNumberUtil.getInstance()
 
 validate.validators.phoneNumber = (value, options, key, attributes) => {
 
@@ -245,7 +242,7 @@ class RegisterForm extends React.Component {
                 ...inputProps,
                 returnKeyType: 'next',
                 onSubmitEditing: event => {
-                  let index = inputs.findIndex((el) => el.name == input.name)
+                  let index = inputs.findIndex((el) => el.name === input.name)
                   let nextInputName = inputs[index + 1].name
                   this._inputComponents.get(nextInputName)._root.focus()
                 },

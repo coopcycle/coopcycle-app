@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { Dimensions, StyleSheet, View } from 'react-native'
 import { Icon } from 'native-base'
-import { Col, Row, Grid } from 'react-native-easy-grid'
 
 import AddressTypeahead from './AddressTypeahead'
 

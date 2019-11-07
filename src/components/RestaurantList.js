@@ -1,10 +1,7 @@
 import React, { Component } from 'react'
 import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native'
 import { Icon, Text, Thumbnail } from 'native-base';
-import { Col, Row, Grid } from 'react-native-easy-grid'
-import slugify from 'slugify'
-import moment from 'moment'
-import _ from 'lodash'
+import { Col, Grid } from 'react-native-easy-grid'
 import { withTranslation } from 'react-i18next'
 
 const styles = StyleSheet.create({

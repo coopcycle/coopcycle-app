@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Dimensions, View } from 'react-native'
+import { Dimensions } from 'react-native'
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { withTranslation } from 'react-i18next'
 
@@ -28,7 +28,7 @@ class AddressTypeahead extends Component {
 
   render() {
 
-    const { height, width } = Dimensions.get('window')
+    const { width } = Dimensions.get('window')
 
     const styles = {
       ...this.props.style,

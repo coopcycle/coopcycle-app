@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { StyleSheet, View } from 'react-native'
-import { connect } from 'react-redux'
 import { Button, Text } from 'native-base'
 import { withTranslation } from 'react-i18next'
 

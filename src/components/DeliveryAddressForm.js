@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Container, Header, Content, Form, Item, Input, Label, Textarea } from 'native-base'
+import { Form, Item, Input, Label } from 'native-base'
 import _ from 'lodash'
 import { withTranslation } from 'react-i18next'
 

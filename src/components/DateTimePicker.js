@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
-import { Text, Button, Icon, Header, Left, Right, Title, Body } from 'native-base'
-import { TextInput, View } from 'react-native'
+import { TextInput } from 'react-native'
 import ModalSelector from 'react-native-modal-selector'
 import moment from 'moment'
 import { withTranslation } from 'react-i18next'

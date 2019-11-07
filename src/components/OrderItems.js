@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
 import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native'
-import { Icon, Text, Thumbnail, Badge } from 'native-base';
+import { Text } from 'native-base';
 import { Col, Row, Grid } from 'react-native-easy-grid'
 import { withTranslation } from 'react-i18next'
-import { localeDetector } from '../i18n'
 import { formatPrice } from '../Cart'
 
 const styles = StyleSheet.create({

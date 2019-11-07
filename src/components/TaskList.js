@@ -8,7 +8,7 @@ import moment from 'moment'
 import _ from 'lodash'
 import { withTranslation } from 'react-i18next'
 
-import { greenColor, whiteColor, lightGreyColor, redColor } from '../styles/common'
+import { greenColor, lightGreyColor, redColor } from '../styles/common'
 
 const styles = StyleSheet.create({
   itemLeftRight: {
