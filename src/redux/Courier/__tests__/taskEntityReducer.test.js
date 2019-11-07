@@ -183,7 +183,7 @@ describe('Redux | Tasks | Reducers', () => {
       const prevState = {
         ...initialState,
         items: { 1: oldTasks[0], 2: oldTasks[1] },
-        order: [1, 2]
+        order: [1, 2],
       }
 
       const newState = tasksEntityReducer(prevState, message(wsMsg))

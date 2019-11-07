@@ -34,5 +34,5 @@ export default combineReducers({
   dispatch: dispatchReducer,
   ui: combineReducers({
     tasks: tasksUiReducer,
-  })
+  }),
 })

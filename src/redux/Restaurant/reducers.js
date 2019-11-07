@@ -70,7 +70,7 @@ const spliceOrders = (state, payload) => {
 
   const orderIndex = _.findIndex(state.orders, order => order['@id'] === payload['@id'])
 
-  if (-1 !== orderIndex) {
+  if (orderIndex !== -1) {
     const newOrders = state.orders.slice(0)
     newOrders.splice(orderIndex, 1, Object.assign({}, payload))
 
@@ -84,7 +84,7 @@ const spliceProducts = (state, payload) => {
 
   const productIndex = _.findIndex(state.products, product => product['@id'] === payload['@id'])
 
-  if (-1 !== productIndex) {
+  if (productIndex !== -1) {
     const newProducts = state.products.slice(0)
     newProducts.splice(productIndex, 1, Object.assign({}, payload))
 
@@ -263,7 +263,7 @@ export default (state = initialState, action = {}) => {
         specialOpeningHoursSpecification: _.filter(
           specialOpeningHoursSpecification,
           openingHoursSpecification => openingHoursSpecification['@id'] !== action.payload['@id']
-        )
+        ),
       }
 
     case CHANGE_STATUS_SUCCESS:
@@ -271,31 +271,31 @@ export default (state = initialState, action = {}) => {
         ...state,
         fetchError: false,
         isFetching: false,
-        restaurant: action.payload
+        restaurant: action.payload,
       }
 
     case CHANGE_RESTAURANT:
       return {
         ...state,
-        restaurant: action.payload
+        restaurant: action.payload,
       }
 
     case CHANGE_DATE:
       return {
         ...state,
-        date: action.payload
+        date: action.payload,
       }
 
     case SET_NEXT_PRODUCTS_PAGE:
       return {
         ...state,
-        nextProductsPage: action.payload
+        nextProductsPage: action.payload,
       }
 
     case SET_HAS_MORE_PRODUCTS:
       return {
         ...state,
-        hasMoreProducts: action.payload
+        hasMoreProducts: action.payload,
       }
 
     case LOAD_MENUS_SUCCESS:
@@ -306,8 +306,8 @@ export default (state = initialState, action = {}) => {
         isFetching: false,
         menus: action.payload.slice(0).map(menu => ({
           ...menu,
-          active: menu['@id'] === state.restaurant.hasMenu
-        }))
+          active: menu['@id'] === state.restaurant.hasMenu,
+        })),
       }
 
     case SET_CURRENT_MENU:
@@ -318,12 +318,12 @@ export default (state = initialState, action = {}) => {
         isFetching: false,
         restaurant: {
           ...state.restaurant,
-          hasMenu: action.payload.menu['@id']
+          hasMenu: action.payload.menu['@id'],
         },
         menus: state.menus.slice(0).map(menu => ({
           ...menu,
-          active: menu['@id'] === action.payload.menu['@id']
-        }))
+          active: menu['@id'] === action.payload.menu['@id'],
+        })),
       }
 
     default:

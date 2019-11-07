@@ -2,7 +2,7 @@ import { ADD_TASK_FILTER, CLEAR_TASK_FILTER } from '../../Courier/taskActions'
 import { selectTaskFilters } from '../../Courier/taskSelectors'
 import Preferences from '../../../Preferences'
 
-export default middleware = store => next => action => {
+const middleware = store => next => action => {
 
   let result = next(action)
 
@@ -18,3 +18,5 @@ export default middleware = store => next => action => {
 
   return result
 }
+
+export default middleware

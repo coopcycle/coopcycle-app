@@ -11,7 +11,7 @@ describe('Task Selectors', () => {
       tasks: {
         items: {
           1: { id: 1, status: 'DONE', tags: [] },
-          2: { id: 2, status: 'TODO', tags: [{ name: 'foo', slug: 'foo' }] }
+          2: { id: 2, status: 'TODO', tags: [{ name: 'foo', slug: 'foo' }] },
         },
         order: [1, 2],
       },
@@ -21,7 +21,7 @@ describe('Task Selectors', () => {
     },
   }
 
-  describe(`selectFilteredTasks`, () => {
+  describe('selectFilteredTasks', () => {
     test('returns full list when exclude object is empty', () => {
       const state = cloneDeep(baseState)
       expect(selectFilteredTasks(state)).toEqual([state.entities.tasks.items[1], state.entities.tasks.items[2]])
@@ -88,9 +88,9 @@ describe('Task Selectors', () => {
               items: {
                 1: { id: 1, status: 'DONE', tags: [{ name: 'foo', slug: 'foo' }] },
                 2: { id: 2, status: 'DONE', tags: [{ name: 'bar', slug: 'bar' }] },
-              }
-            }
-          }
+              },
+            },
+          },
         }
       )
       expect(selectTags(state)).toEqual([{ name: 'foo', slug: 'foo' }, { name: 'bar', slug: 'bar' }])
@@ -105,9 +105,9 @@ describe('Task Selectors', () => {
               items: {
                 1: { id: 1, status: 'DONE', tags: [{ name: 'foo', slug: 'foo' }] },
                 2: { id: 2, status: 'DONE', tags: [{ name: 'bar', slug: 'bar' }, { name: 'foo', slug: 'foo' }] },
-              }
-            }
-          }
+              },
+            },
+          },
         }
       )
       expect(selectTags(state)).toEqual([{ name: 'foo', slug: 'foo' }, { name: 'bar', slug: 'bar' }])
@@ -127,8 +127,8 @@ describe('Task Selectors', () => {
                 1: { id: 1, status: 'DONE', tags: [{ name: 'foo', slug: 'foo' }, { name: 'bar', slug: 'baz' }] },
               },
               order: [1],
-            }
-          }
+            },
+          },
         }
       )
 

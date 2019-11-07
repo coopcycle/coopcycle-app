@@ -37,7 +37,7 @@ describe('Redux | Tasks | Reducers', () => {
       const restNewState = omit(newState, ['excludeFilters'])
 
       expect(newState).toEqual(expect.objectContaining({
-        excludeFilters: [{ status: 'TODO' }]
+        excludeFilters: [{ status: 'TODO' }],
       }))
       expect(restOldState).toEqual(restNewState)
     })

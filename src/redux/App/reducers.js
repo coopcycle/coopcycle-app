@@ -46,7 +46,7 @@ const initialState = {
   trackerInitialized: false,
   thermalPrinterConnected: false,
   thermalPrinterDeviceId: null,
-  selectServerError: null
+  selectServerError: null,
 }
 
 export default (state = initialState, action = {}) => {
@@ -109,7 +109,7 @@ export default (state = initialState, action = {}) => {
     case CLEAR_NOTIFICATIONS:
       return {
         ...state,
-        notifications: []
+        notifications: [],
       }
 
     case AUTHENTICATION_REQUEST:
@@ -184,13 +184,13 @@ export default (state = initialState, action = {}) => {
     case CLEAR_SELECT_SERVER_ERROR:
       return {
         ...state,
-        selectServerError: null
+        selectServerError: null,
       }
 
     case SET_SELECT_SERVER_ERROR:
       return {
         ...state,
-        selectServerError: action.payload
+        selectServerError: action.payload,
       }
 
     default:

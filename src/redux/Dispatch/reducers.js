@@ -22,9 +22,7 @@ import {
   UNASSIGN_TASK_REQUEST,
   UNASSIGN_TASK_SUCCESS,
   UNASSIGN_TASK_FAILURE,
-  LOAD_TASK_REQUEST,
   LOAD_TASK_SUCCESS,
-  LOAD_TASK_FAILURE,
   DISPATCH_LOAD_TASKS_SUCCESS,
   DISPATCH_LOAD_TASKS_FAILURE,
 } from './actions'
@@ -61,7 +59,7 @@ const replaceItem = (state, payload) => {
 
   const index = _.findIndex(state, item => item['@id'] === payload['@id'])
 
-  if (-1 !== index) {
+  if (index !== -1) {
     const newState = state.slice(0)
     newState.splice(index, 1, Object.assign({}, payload))
 
@@ -94,7 +92,7 @@ const replaceTaskLists = (taskLists, task) => {
 
       return {
         ...taskList,
-        items: replaceItem(taskList.items, task)
+        items: replaceItem(taskList.items, task),
       }
     }
 
@@ -109,7 +107,7 @@ const addOrReplaceTaskLists = (taskLists, task) => {
 
       return {
         ...taskList,
-        items: addOrReplaceItem(taskList.items, task)
+        items: addOrReplaceItem(taskList.items, task),
       }
     }
 
@@ -119,11 +117,11 @@ const addOrReplaceTaskLists = (taskLists, task) => {
 
 const removeFromTaskLists = (taskLists, task) => {
 
-  const taskList = _.find(taskLists, (taskList) => {
-    const taskIndex = _.findIndex(taskList.items, t => t['@id'] === task['@id'])
-    if (-1 !== taskIndex) {
+  const taskList = _.find(taskLists, (item) => {
+    const taskIndex = _.findIndex(item.items, t => t['@id'] === task['@id'])
+    if (taskIndex !== -1) {
 
-      return taskList
+      return item
     }
   })
 
@@ -134,7 +132,7 @@ const removeFromTaskLists = (taskLists, task) => {
 
     newTaskLists.splice(index, 1, {
       ...taskList,
-      items: _.filter(taskList.items, t => t['@id'] !== task['@id'])
+      items: _.filter(taskList.items, t => t['@id'] !== task['@id']),
     })
 
     return newTaskLists
@@ -146,15 +144,13 @@ const removeFromTaskLists = (taskLists, task) => {
 export default (state = initialState, action = {}) => {
 
   let unassignedTasks
-  let taskLists
-  let index
 
   switch (action.type) {
 
     case DISPATCH_INITIALIZE:
       return {
         ...state,
-        initialized: true
+        initialized: true,
       }
 
     case LOAD_UNASSIGNED_TASKS_REQUEST:
@@ -166,7 +162,7 @@ export default (state = initialState, action = {}) => {
     case UNASSIGN_TASK_REQUEST:
       return {
         ...state,
-        isFetching: true
+        isFetching: true,
       }
 
     case LOAD_UNASSIGNED_TASKS_FAILURE:
@@ -179,7 +175,7 @@ export default (state = initialState, action = {}) => {
     case UNASSIGN_TASK_FAILURE:
       return {
         ...state,
-        isFetching: false
+        isFetching: false,
       }
 
     case DISPATCH_LOAD_TASKS_SUCCESS:
@@ -197,28 +193,28 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         isFetching: false,
-        unassignedTasks: action.payload
+        unassignedTasks: action.payload,
       }
 
     case LOAD_USERS_SUCCESS:
       return {
         ...state,
         isFetching: false,
-        users: action.payload
+        users: action.payload,
       }
 
     case LOAD_TASK_LISTS_SUCCESS:
       return {
         ...state,
         isFetching: false,
-        taskLists: action.payload
+        taskLists: action.payload,
       }
 
     case CREATE_TASK_LIST_SUCCESS:
       return {
         ...state,
         isFetching: false,
-        taskLists: state.taskLists.concat(action.payload)
+        taskLists: state.taskLists.concat(action.payload),
       }
 
     case CREATE_TASK_SUCCESS:
@@ -231,6 +227,8 @@ export default (state = initialState, action = {}) => {
           unassignedTasks: addItem(state.unassignedTasks, action.payload),
         }
       }
+
+      break
 
     case ASSIGN_TASK_SUCCESS:
 
@@ -246,8 +244,8 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         isFetching: false,
-        unassignedTasks: addItem(state.unassignedTasks, data.task),
-        taskLists: removeFromTaskLists(state.taskLists, data.task),
+        unassignedTasks: addItem(state.unassignedTasks, action.payload),
+        taskLists: removeFromTaskLists(state.taskLists, action.payload),
       }
 
     case LOAD_TASK_SUCCESS:
@@ -267,14 +265,14 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         unassignedTasks: replaceItem(state.unassignedTasks, action.payload),
-        taskLists: replaceTaskLists(state.taskLists, action.payload)
+        taskLists: replaceTaskLists(state.taskLists, action.payload),
       }
 
     case CHANGE_DATE:
 
       return {
         ...state,
-        date: action.payload
+        date: action.payload,
       }
 
     case MESSAGE:
@@ -290,9 +288,11 @@ export default (state = initialState, action = {}) => {
 
               return {
                 ...state,
-                unassignedTasks: addItem(state.unassignedTasks, data.task)
+                unassignedTasks: addItem(state.unassignedTasks, data.task),
               }
             }
+
+            break
 
           case 'task:unassigned':
 
@@ -321,6 +321,8 @@ export default (state = initialState, action = {}) => {
             }
         }
       }
+
+      break
 
     default:
       return { ...state }

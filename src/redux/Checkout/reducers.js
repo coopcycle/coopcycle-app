@@ -21,7 +21,7 @@ import {
   LOAD_RESTAURANT_SUCCESS,
   LOAD_RESTAURANT_FAILURE,
   SHOW_ADDRESS_MODAL,
-  HIDE_ADDRESS_MODAL
+  HIDE_ADDRESS_MODAL,
 } from './actions'
 
 import Cart from '../../Cart'
@@ -39,7 +39,7 @@ const initialState = {
   isFetching: false,
   errors: [],
   isAddressModalVisible: false,
-  timing: {}
+  timing: {},
 }
 
 export default (state = initialState, action = {}) => {
@@ -93,7 +93,7 @@ export default (state = initialState, action = {}) => {
         ...state,
         isFetching: false,
         menu: action.payload.hasMenu,
-        isAddressOK: null // We don't know if it's valid
+        isAddressOK: null, // We don't know if it's valid
       }
 
     case CLEAR:
@@ -101,7 +101,7 @@ export default (state = initialState, action = {}) => {
         ...state,
         cart: new Cart(),
         address: null,
-        date: null
+        date: null,
       }
 
     case ADD_ITEM:
@@ -114,7 +114,7 @@ export default (state = initialState, action = {}) => {
 
       return {
         ...state,
-        cart: newCart
+        cart: newCart,
       }
 
     case REMOVE_ITEM:
@@ -124,7 +124,7 @@ export default (state = initialState, action = {}) => {
 
       return {
         ...state,
-        cart: newCart
+        cart: newCart,
       }
 
     case INCREMENT_ITEM:
@@ -137,9 +137,11 @@ export default (state = initialState, action = {}) => {
 
         return {
           ...state,
-          cart: newCart
+          cart: newCart,
         }
       }
+
+      break
 
     case DECREMENT_ITEM:
 
@@ -153,33 +155,35 @@ export default (state = initialState, action = {}) => {
 
         return {
           ...state,
-          cart: state.cart.clone()
+          cart: state.cart.clone(),
         }
       }
+
+      break
 
     case SET_ADDRESS:
       return {
         ...state,
-        address: action.payload
+        address: action.payload,
       }
 
     case SET_ADDRESS_OK:
       return {
         ...state,
-        isAddressOK: action.payload
+        isAddressOK: action.payload,
       }
 
     case SET_DATE:
       return {
         ...state,
-        date: action.payload
+        date: action.payload,
       }
 
     case LOAD_RESTAURANTS_SUCCESS:
       return {
         ...state,
         isFetching: false,
-        restaurants: action.payload
+        restaurants: action.payload,
       }
 
     case CHECKOUT_SUCCESS:

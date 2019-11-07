@@ -134,7 +134,7 @@ describe('Redux | Tasks | Actions', () => {
     const resolveValue = { ...task }
 
     const client = {
-      put: jest.fn()
+      put: jest.fn(),
     }
     client.put.mockResolvedValue(resolveValue)
     client.put.mockResolvedValue(resolveValue)
@@ -144,7 +144,7 @@ describe('Redux | Tasks | Actions', () => {
       entities: {
         tasks: {
           signatures: [],
-          pictures: []
+          pictures: [],
         },
       },
     })
@@ -172,7 +172,7 @@ describe('Redux | Tasks | Actions', () => {
     const client = {
       put: jest.fn(),
       getToken: () => '123456',
-      getBaseURL: () => 'https://test.coopcycle.org'
+      getBaseURL: () => 'https://test.coopcycle.org',
     }
     client.put.mockResolvedValue(resolveValue)
     client.put.mockResolvedValue(resolveValue)
@@ -182,9 +182,9 @@ describe('Redux | Tasks | Actions', () => {
       entities: {
         tasks: {
           signatures: [
-            '123456'
+            '123456',
           ],
-          pictures: []
+          pictures: [],
         },
       },
     })
@@ -192,7 +192,7 @@ describe('Redux | Tasks | Actions', () => {
     RNFetchBlob.fetch = jest.fn()
     RNFetchBlob.fetch.mockResolvedValue({
       info: () => ({ status: 201 }),
-      json: () => ({ '@id': '/api/task_images/1' })
+      json: () => ({ '@id': '/api/task_images/1' }),
     })
 
     // Make sure to return the promise
@@ -206,7 +206,7 @@ describe('Redux | Tasks | Actions', () => {
 
         expect(client.put).toHaveBeenCalledTimes(2)
         expect(client.put).toHaveBeenCalledWith(task['@id'], { images: [
-          '/api/task_images/1'
+          '/api/task_images/1',
         ] })
         expect(client.put).toHaveBeenCalledWith(`${task['@id']}/done`, { reason: notes })
       })
@@ -218,7 +218,7 @@ describe('Redux | Tasks | Actions', () => {
     const rejectValue = new Error('test error')
 
     const client = {
-      put: jest.fn()
+      put: jest.fn(),
     }
     client.put.mockRejectedValue(rejectValue)
 
@@ -227,7 +227,7 @@ describe('Redux | Tasks | Actions', () => {
       entities: {
         tasks: {
           signatures: [],
-          pictures: []
+          pictures: [],
         },
       },
     })
@@ -252,7 +252,7 @@ describe('Redux | Tasks | Actions', () => {
     const resolveValue = { ...task }
 
     const client = {
-      put: jest.fn()
+      put: jest.fn(),
     }
     client.put.mockResolvedValue(resolveValue)
     client.put.mockResolvedValue(resolveValue)
@@ -262,7 +262,7 @@ describe('Redux | Tasks | Actions', () => {
       entities: {
         tasks: {
           signatures: [],
-          pictures: []
+          pictures: [],
         },
       },
     })
@@ -288,7 +288,7 @@ describe('Redux | Tasks | Actions', () => {
     const rejectValue = new Error('test error')
 
     const client = {
-      put: jest.fn()
+      put: jest.fn(),
     }
     client.put.mockRejectedValue(rejectValue)
 
@@ -297,7 +297,7 @@ describe('Redux | Tasks | Actions', () => {
       entities: {
         tasks: {
           signatures: [],
-          pictures: []
+          pictures: [],
         },
       },
     })

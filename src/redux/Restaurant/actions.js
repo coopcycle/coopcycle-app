@@ -191,7 +191,7 @@ export function activateMenu(restaurant, menu) {
     dispatch(loadMenusRequest())
 
     httpClient.put(`${restaurant['@id']}`, {
-      hasMenu: menu['@id']
+      hasMenu: menu['@id'],
     })
       .then(res => dispatch(setCurrentMenu(restaurant, menu)))
       .catch(e => dispatch(loadMenusFailure(e)))
@@ -219,13 +219,13 @@ export function loadOrderAndNavigate(order) {
             params: {
               restaurant: res.restaurant,
               // We don't want to load orders again when navigating
-              loadOrders: false
+              loadOrders: false,
             },
             // We use push, because if we are already on RestaurantOrder, it opens a new screen
             // @see https://reactnavigation.org/docs/en/navigating.html#navigate-to-a-route-multiple-times
             action: StackActions.push({
               routeName: 'RestaurantOrder',
-              params: { order: res }
+              params: { order: res },
             }),
           }),
         }))

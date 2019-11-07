@@ -10,7 +10,7 @@ import {
 } from './taskActions'
 import {
   ASSIGN_TASK_SUCCESS,
-  UNASSIGN_TASK_SUCCESS
+  UNASSIGN_TASK_SUCCESS,
 } from '../Dispatch/actions'
 import { MESSAGE } from '../middlewares/WebSocketMiddleware'
 import _ from 'lodash'
@@ -96,7 +96,7 @@ export const tasksEntityReducer = (state = tasksEntityInitialState, action = {})
           return acc
         }, {}),
         order: action.payload.map((task) => task.id),
-        username: _.reduce(action.payload, (acc, task) => task.assignedTo)
+        username: _.reduce(action.payload, (acc, task) => task.assignedTo),
       }
 
     case MARK_TASK_DONE_SUCCESS:
@@ -119,7 +119,7 @@ export const tasksEntityReducer = (state = tasksEntityInitialState, action = {})
             ...state.items,
             [action.payload.id]: action.payload,
           },
-          order: state.order.concat([ action.payload.id ])
+          order: state.order.concat([ action.payload.id ]),
         }
       }
       return state
@@ -131,7 +131,7 @@ export const tasksEntityReducer = (state = tasksEntityInitialState, action = {})
         return {
           ...state,
           items: _.pickBy(state.items, item => item['@id'] !== action.payload['@id']),
-          order: _.filter(state.order, item => item !== action.payload.id)
+          order: _.filter(state.order, item => item !== action.payload.id),
         }
       }
       return state
@@ -160,14 +160,14 @@ export const tasksEntityReducer = (state = tasksEntityInitialState, action = {})
 
       return {
         ...state,
-        signatures: state.signatures.slice(0).concat([ action.payload.base64 ])
+        signatures: state.signatures.slice(0).concat([ action.payload.base64 ]),
       }
 
     case ADD_PICTURE:
 
       return {
         ...state,
-        pictures: state.pictures.slice(0).concat([ action.payload.base64 ])
+        pictures: state.pictures.slice(0).concat([ action.payload.base64 ]),
       }
 
     case DELETE_SIGNATURE:
@@ -176,7 +176,7 @@ export const tasksEntityReducer = (state = tasksEntityInitialState, action = {})
 
       return {
         ...state,
-        signatures: newSignatures
+        signatures: newSignatures,
       }
 
     case DELETE_PICTURE:
@@ -185,7 +185,7 @@ export const tasksEntityReducer = (state = tasksEntityInitialState, action = {})
 
       return {
         ...state,
-        pictures: newPictures
+        pictures: newPictures,
       }
 
     case CLEAR_FILES:
@@ -193,7 +193,7 @@ export const tasksEntityReducer = (state = tasksEntityInitialState, action = {})
       return {
         ...state,
         signatures: [],
-        pictures: []
+        pictures: [],
       }
     default:
       return { ...state }

@@ -3,7 +3,7 @@ import moment from 'moment'
 import { Platform } from 'react-native'
 import AsyncStorage from '@react-native-community/async-storage';
 import BackgroundGeolocation from '@mauron85/react-native-background-geolocation'
-import { NavigationActions, StackActions } from 'react-navigation'
+import { NavigationActions } from 'react-navigation'
 import { BleManager, State } from 'react-native-ble-plx'
 import { Buffer } from 'buffer'
 import EscPosEncoder from 'esc-pos-encoder'
@@ -18,7 +18,7 @@ import { setTasksFilter, setKeepAwake } from '../Courier/taskActions'
 import {
   loadMyRestaurantsRequest,
   loadMyRestaurantsSuccess,
-  loadMyRestaurantsFailure
+  loadMyRestaurantsFailure,
 } from '../Restaurant/actions'
 import NavigationHolder from '../../NavigationHolder'
 import i18n from '../../i18n'
@@ -231,9 +231,7 @@ export function setCurrentRoute(routeName) {
     const { app } = getState()
     const { trackerInitialized } = app
 
-    if (trackerInitialized) {
-      Matomo.trackScreen(routeName)
-    }
+    // TODO Set route name in Firebase Analytics
   }
 }
 
@@ -469,13 +467,13 @@ function configureBackgroundGeolocation(httpClient, user) {
       syncUrl: httpClient.getBaseURL() + '/api/me/location',
       httpHeaders: {
         'Authorization': `Bearer ${httpClient.getToken()}`,
-        'Content-Type': "application/ld+json",
+        'Content-Type': 'application/ld+json',
       },
       postTemplate: {
         latitude: '@latitude',
         longitude: '@longitude',
         time: '@time',
-      }
+      },
     })
   }
 
@@ -497,17 +495,15 @@ function configureBackgroundGeolocation(httpClient, user) {
   })
 }
 
-let bleStateChangeSubscription
-
 function splitter(str, l){
   var strs = [];
-  while(str.length > l){
+  while (str.length > l){
     var pos = str.substring(0, l).lastIndexOf(' ');
     pos = pos <= 0 ? l : pos;
     strs.push(str.substring(0, pos));
-    var i = str.indexOf(' ', pos)+1;
-    if(i < pos || i > pos+l)
-        i = pos;
+    var i = str.indexOf(' ', pos) + 1;
+    if (i < pos || i > pos + l)
+        {i = pos;}
     str = str.substring(i);
   }
   strs.push(str);
@@ -516,7 +512,7 @@ function splitter(str, l){
 
 function initBLE(dispatch) {
 
-  bleStateChangeSubscription = bleManager.onStateChange((state) => {
+  bleManager.onStateChange((state) => {
     if (state === State.PoweredOn) {
 
       bleManager.startDeviceScan(null, null, (error, device) => {
@@ -525,7 +521,7 @@ function initBLE(dispatch) {
             return
         }
 
-        if ('MTP-II' === device.name) {
+        if (device.name === 'MTP-II') {
 
           bleManager.stopDeviceScan()
 

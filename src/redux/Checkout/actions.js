@@ -99,7 +99,7 @@ export function addItem(item, options = []) {
 
     if (!address || !isAddressOK) {
 
-      if (address && null === isAddressOK) {
+      if (address && isAddressOK === null) {
         validateAddress(httpClient, cart.restaurant, address)
           .then(() => {
             dispatch(_setAddress(address))
@@ -237,7 +237,7 @@ export function checkout(number, expMonth, expYear, cvc) {
       number,
       expMonth: parseInt(expMonth, 10),
       expYear: parseInt(expYear, 10),
-      cvc
+      cvc,
     })
     .then(token => {
       httpClient
@@ -253,7 +253,7 @@ export function checkout(number, expMonth, expYear, cvc) {
             // We skip the AccountOrders screen
             action: NavigationActions.navigate({
               routeName: 'AccountOrder',
-              params: { order }
+              params: { order },
             }),
           }))
 

@@ -118,7 +118,7 @@ function _loadAll(httpClient, date) {
   return Promise.all([
     _loadUsers(httpClient),
     _loadUnassignedTasks(httpClient, date),
-    _loadTaskLists(httpClient, date)
+    _loadTaskLists(httpClient, date),
   ])
 }
 
@@ -126,7 +126,7 @@ function _loadTasks(httpClient, date) {
 
   return Promise.all([
     _loadUnassignedTasks(httpClient, date),
-    _loadTaskLists(httpClient, date)
+    _loadTaskLists(httpClient, date),
   ])
 }
 
@@ -143,7 +143,7 @@ function showAlert(e) {
     [
       {
         text: 'OK',
-        onPress: () => {}
+        onPress: () => {},
       },
     ],
     { cancelable: false }
@@ -257,8 +257,8 @@ export function createTask(task) {
           index: 0,
           key: null,
           actions: [
-            NavigationActions.navigate({ routeName: 'Main' })
-          ]
+            NavigationActions.navigate({ routeName: 'Main' }),
+          ],
         })
         NavigationHolder.dispatch(resetAction)
       })

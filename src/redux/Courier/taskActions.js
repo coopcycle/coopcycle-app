@@ -83,7 +83,7 @@ function showAlert(e) {
     [
       {
         text: 'OK',
-        onPress: () => NavigationHolder.goBack()
+        onPress: () => NavigationHolder.goBack(),
       },
     ],
     { cancelable: false }
@@ -131,7 +131,7 @@ function uploadTaskImages(task, state) {
       }
       // Associates images with task
       return state.app.httpClient.put(task['@id'], {
-        images: values.map(image => image['@id'])
+        images: values.map(image => image['@id']),
       })
     })
 }
@@ -201,7 +201,7 @@ function uploadTaskImage(httpClient, base64) {
   const body = [{
     name : 'file',
     filename: 'filename.jpg', // This is needed to work
-    data: base64AsString
+    data: base64AsString,
   }]
 
   return new Promise((resolve, reject) => {
