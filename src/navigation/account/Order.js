@@ -108,16 +108,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   headerText: {
-    color: 'white'
+    color: 'white',
   },
   headerOrderNew: {
-    backgroundColor: '#FF851B'
+    backgroundColor: '#FF851B',
   },
   headerOrderAccepted: {
-    backgroundColor: '#2ECC71'
+    backgroundColor: '#2ECC71',
   },
   headerOrderFulfilled: {
-    backgroundColor: '#2ECC71'
+    backgroundColor: '#2ECC71',
   },
   subHeader: {
     height: 32,
@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
   orderNumberText: {
     fontSize: 24,
     fontWeight: '400',
-    color: 'white'
+    color: 'white',
   },
 })
 

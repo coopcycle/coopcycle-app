@@ -6,7 +6,7 @@ import _ from 'lodash'
 import {
   Container, Content,
   Left, Right,
-  Icon, Text, Button
+  Icon, Text, Button,
 } from 'native-base';
 import moment from 'moment'
 
@@ -32,7 +32,7 @@ class UnassignedTasks extends Component {
     if (isEmpty) {
       contentProps = {
         flex: 1,
-        justifyContent: 'center'
+        justifyContent: 'center',
       }
     }
 

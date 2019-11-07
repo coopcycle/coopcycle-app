@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { StyleSheet, View } from 'react-native'
 import {
   Container, Content,
-  Icon, Text, Button, Footer, FooterTab
+  Icon, Text, Button, Footer, FooterTab,
 } from 'native-base'
 import { Col, Row, Grid } from 'react-native-easy-grid'
 import { withTranslation } from 'react-i18next'
@@ -65,15 +65,15 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     flexDirection: 'column',
-    padding: 20
+    padding: 20,
   },
   canvasContainer: {
     flex: 1,
     flexDirection: 'row',
     marginBottom: 20,
     borderColor: '#000000',
-    borderWidth: 1
-  }
+    borderWidth: 1,
+  },
 })
 
 function mapStateToProps (state) {

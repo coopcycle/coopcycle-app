@@ -3,7 +3,7 @@ import { Dimensions, FlatList, StyleSheet, TouchableOpacity, View } from 'react-
 import {
   Container, Header, Title, Content,
   Left, Right, Body,
-  List, ListItem, Icon, Text, Switch
+  List, ListItem, Icon, Text, Switch,
 } from 'native-base'
 import _ from 'lodash'
 
@@ -17,7 +17,7 @@ class ProductsScreen extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      product: null
+      product: null,
     }
   }
 
@@ -26,7 +26,7 @@ class ProductsScreen extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (null !== this.state.product) {
+    if (this.state.product !== null) {
       this.props.changeProductEnabled(this.props.httpClient, this.state.product, this.state.product.enabled)
     }
 
@@ -39,8 +39,8 @@ class ProductsScreen extends Component {
     this.setState({
       product: {
         ...product,
-        enabled: value
-      }
+        enabled: value,
+      },
     })
   }
 
@@ -71,7 +71,7 @@ class ProductsScreen extends Component {
 
     if (product) {
       const productIndex = _.findIndex(products, item => item['@id'] === product['@id'])
-      if (-1 !== productIndex) {
+      if (productIndex !== -1) {
         products = products.slice(0)
         products.splice(productIndex, 1, Object.assign({}, product))
       }
@@ -113,8 +113,8 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   btnText: {
-    color: '#0074D9'
-  }
+    color: '#0074D9',
+  },
 })
 
 function mapStateToProps(state) {

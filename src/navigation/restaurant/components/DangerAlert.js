@@ -25,18 +25,18 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     backgroundColor: '#f2dede',
     borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: '#a94442'
+    borderBottomColor: '#a94442',
   },
   row: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   text: {
     color: '#a94442',
-    textAlign: 'center'
-  }
+    textAlign: 'center',
+  },
 })
 
 export default withTranslation()(DangerAlert)

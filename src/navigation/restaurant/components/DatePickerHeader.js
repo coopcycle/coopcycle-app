@@ -45,7 +45,7 @@ class DatePickerHeader extends Component {
 const styles = StyleSheet.create({
   container: {
     borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: '#ddd'
+    borderBottomColor: '#ddd',
   },
   wrapper: {
     flex: 1,

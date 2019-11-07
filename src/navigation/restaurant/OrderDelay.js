@@ -3,7 +3,7 @@ import { StyleSheet, View, TouchableOpacity } from 'react-native'
 import {
   Container, Header, Title, Content,
   Left, Right, Body,
-  Icon, Text, Button
+  Icon, Text, Button,
 } from 'native-base'
 import { Col, Row, Grid } from 'react-native-easy-grid'
 import { withTranslation } from 'react-i18next'
@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: '#fff'
+    backgroundColor: '#fff',
   },
   btnDanger: {
     borderColor: material.brandDanger,
@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
   },
   textDanger: {
     color: material.brandDanger,
-  }
+  },
 })
 
 function mapStateToProps(state) {

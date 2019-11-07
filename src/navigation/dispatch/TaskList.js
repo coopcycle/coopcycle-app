@@ -5,7 +5,7 @@ import { withTranslation } from 'react-i18next'
 import {
   Container, Content,
   Left, Right,
-  Icon, Text, Button
+  Icon, Text, Button,
 } from 'native-base';
 import moment from 'moment'
 import _ from 'lodash'

@@ -9,7 +9,7 @@ import {
   Header,
   Left, Right, Body,
   Title, Content, Footer, Button, Icon, Text,
-  Label, Item, Input
+  Label, Item, Input,
 } from 'native-base';
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
@@ -20,7 +20,7 @@ class AccountDetailsPage extends Component {
     this.state = {
       loading: true,
       email: null,
-      username: null
+      username: null,
     };
   }
   componentDidMount() {
@@ -79,13 +79,13 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(52, 52, 52, 0.4)'
+    backgroundColor: 'rgba(52, 52, 52, 0.4)',
   },
 });
 
 function mapStateToProps(state) {
   return {
-    httpClient: state.app.httpClient
+    httpClient: state.app.httpClient,
   }
 }
 

@@ -56,7 +56,7 @@ function mapStateToProps(state) {
   return {
     servers: _.filter(state.app.servers, server => server.hasOwnProperty('coopcycle_url')),
     hasError: !!state.app.selectServerError,
-    message: state.app.selectServerError
+    message: state.app.selectServerError,
   }
 }
 

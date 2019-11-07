@@ -3,7 +3,7 @@ import {
   Dimensions,
   Image,
   View,
-  StyleSheet
+  StyleSheet,
 } from 'react-native'
 import {
   Container, Content,
@@ -58,8 +58,8 @@ const styles = StyleSheet.create({
   disclaimerText: {
     textAlign: 'center',
     fontSize: 14,
-    marginBottom: 5
-  }
+    marginBottom: 5,
+  },
 })
 
 module.exports = withTranslation()(ConfigureServer)

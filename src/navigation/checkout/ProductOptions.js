@@ -15,7 +15,7 @@ class ProductOptions extends Component {
     super(props)
     this.state = {
       // Store options in a hash, indexed per section
-      options: {}
+      options: {},
     }
   }
 
@@ -56,12 +56,12 @@ class ProductOptions extends Component {
 
       newOptions = {
         ...newOptions,
-        [ menuSection.identifier ]: choices
+        [ menuSection.identifier ]: choices,
       }
     } else {
       newOptions = {
         ...newOptions,
-        [ menuSection.identifier ]: menuItem.identifier
+        [ menuSection.identifier ]: menuItem.identifier,
       }
     }
 

@@ -12,28 +12,28 @@ import CartFooterButton from './CartFooterButton'
 const styles = StyleSheet.create({
   column: {
     flex: 1,
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   cartSummary: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    paddingLeft: 15
+    paddingLeft: 15,
   },
   cartSummaryText: {
     color: '#fff',
-    fontSize: 14
+    fontSize: 14,
   },
   cartSummarySeparator: {
-    paddingHorizontal: 5
+    paddingHorizontal: 5,
   },
   cartSummaryTotal: {
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   },
   buttonText: {
     color: '#fff',
     fontSize: 14,
-  }
+  },
 })
 
 class CartFooter extends Component {
@@ -41,7 +41,7 @@ class CartFooter extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      opacityAnim: new Animated.Value(1)
+      opacityAnim: new Animated.Value(1),
     }
   }
 

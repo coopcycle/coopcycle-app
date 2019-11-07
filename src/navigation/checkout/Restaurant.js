@@ -7,7 +7,7 @@ import {
   Left, Right,
   List, ListItem,
   InputGroup, Input,
-  Icon, Text, Picker, Button
+  Icon, Text, Picker, Button,
 } from 'native-base';
 import moment from 'moment'
 import Modal from 'react-native-modal'
@@ -24,7 +24,7 @@ class Restaurant extends Component {
     super(props)
     this.state = {
       shouldShowBackBtn: false,
-      address: ''
+      address: '',
     }
     this.keyboardHeight = new Animated.Value(0)
   }
@@ -65,7 +65,7 @@ class Restaurant extends Component {
 
     const { width } = Dimensions.get('window')
 
-    const shouldShowBackBtn = (false === this.props.isAddressOK) && this.state.shouldShowBackBtn
+    const shouldShowBackBtn = (this.props.isAddressOK === false) && this.state.shouldShowBackBtn
 
     if (!shouldShowBackBtn) {
       return (
@@ -95,11 +95,11 @@ class Restaurant extends Component {
     const { cart, date, menu } = this.props
 
     const modalMessageTextStyle = []
-    if (false === this.props.isAddressOK) {
+    if (this.props.isAddressOK === false) {
       modalMessageTextStyle.push(styles.modalMessageTextError)
     }
 
-    const modalMessage = false === this.props.isAddressOK ?
+    const modalMessage = this.props.isAddressOK === false ?
       this.props.t('CHECKOUT_ADDRESS_NOT_VALID') : this.props.t('CHECKOUT_PLEASE_ENTER_ADDRESS')
 
     return (
@@ -183,20 +183,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#ffffff',
     borderRadius: 4,
-    borderColor: 'rgba(0, 0, 0, 0.1)'
+    borderColor: 'rgba(0, 0, 0, 0.1)',
   },
   bottomModal: {
     justifyContent: 'flex-end',
     margin: 0,
   },
   modalMessageText: {
-    color: '#CCCCCC'
+    color: '#CCCCCC',
   },
   modalMessageTextError: {
-    color: '#E74C3C'
+    color: '#E74C3C',
   },
   typeaheadContainer: {
-    marginTop: 15
+    marginTop: 15,
   },
   typeaheadIconContainer: {
     position: 'absolute',
@@ -206,7 +206,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 15,
-    marginRight: 8
+    marginRight: 8,
   },
   goBackContainer: {
     flex: 1,
@@ -214,7 +214,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: '40%',
     left: 0,
-    paddingHorizontal: 15
+    paddingHorizontal: 15,
   },
   heading: {
     flex: 1,
@@ -226,7 +226,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderBottomWidth: 1,
     borderBottomColor: '#f1f1f1',
-  }
+  },
 });
 
 function mapStateToProps(state) {
@@ -245,7 +245,7 @@ function mapDispatchToProps(dispatch) {
     init: restaurant => dispatch(init(restaurant)),
     addItem: item => dispatch(addItem(item)),
     setAddress: address => dispatch(setAddress(address)),
-    hideAddressModal: _ => dispatch(hideAddressModal())
+    hideAddressModal: _ => dispatch(hideAddressModal()),
   }
 }
 

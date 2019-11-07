@@ -16,7 +16,7 @@ LocaleConfig.locales[LOCALE] = {
   monthNames: moment.months(),
   monthNamesShort: moment.monthsShort(),
   dayNames: moment.weekdays(),
-  dayNamesShort: moment.weekdaysMin()
+  dayNamesShort: moment.weekdaysMin(),
 };
 
 LocaleConfig.defaultLocale = LOCALE;
@@ -55,13 +55,13 @@ const styles = StyleSheet.create({
   content: {
     backgroundColor: '#fff',
     paddingTop: 30,
-    paddingHorizontal: 15
-  }
+    paddingHorizontal: 15,
+  },
 })
 
 function mapStateToProps(state) {
   return {
-    date: state.restaurant.date
+    date: state.restaurant.date,
   }
 }
 

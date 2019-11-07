@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { StyleSheet, View, Image, Dimensions } from 'react-native'
 import {
   Container, Content,
-  Icon, Text, Button, Footer, FooterTab
+  Icon, Text, Button, Footer, FooterTab,
 } from 'native-base'
 import { Col, Row, Grid } from 'react-native-easy-grid'
 import { withTranslation } from 'react-i18next'
@@ -17,7 +17,7 @@ class Photo extends Component {
     super(props)
 
     this.state = {
-      image: null
+      image: null,
     }
   }
 
@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     flexDirection: 'column',
-    padding: 20
+    padding: 20,
   },
   canvasContainer: {
     flex: 1,
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-end',
     alignItems: 'center',
-    padding: 15
+    padding: 15,
   },
   takePictureBtn: {
     flex: 0,
@@ -117,8 +117,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     position: 'absolute',
     top: 15,
-    right: 15
-  }
+    right: 15,
+  },
 })
 
 function mapStateToProps (state) {

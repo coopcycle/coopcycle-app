@@ -11,14 +11,14 @@ const MainNavigator = createStackNavigator({
     screen: navigation.RestaurantsPage,
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('RESTAURANTS'),
-      headerLeft: headerLeft(navigation)
-    })
+      headerLeft: headerLeft(navigation),
+    }),
   },
   CheckoutRestaurant: {
     screen: navigation.CheckoutRestaurant,
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('RESTAURANT'),
-    })
+    }),
   },
   CheckoutSummary: {
     screen: navigation.CheckoutSummary,
@@ -31,19 +31,19 @@ const MainNavigator = createStackNavigator({
             { navigation.getParam('edit', false) ? i18n.t('SUBMIT') : i18n.t('EDIT') }
           </Text>
         </TouchableOpacity>
-      )
-    })
+      ),
+    }),
   },
   CheckoutCreditCard: {
     screen: navigation.CheckoutCreditCard,
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('PAYMENT'),
-    })
+    }),
   },
 }, {
   initialRouteKey: 'CheckoutHome',
   initialRouteName: 'CheckoutHome',
-  defaultNavigationOptions
+  defaultNavigationOptions,
 })
 
 const LoginRegisterStack = createStackNavigator({
@@ -53,7 +53,7 @@ const LoginRegisterStack = createStackNavigator({
       // Use header = null to get rid of the header
       // The screen's header will be used
       header: null,
-    })
+    }),
   },
   CheckoutCheckEmail: {
     screen: navigation.AccountCheckEmail,
@@ -61,11 +61,11 @@ const LoginRegisterStack = createStackNavigator({
       // Use header = null to get rid of the header
       // The screen's header will be used
       header: null,
-    })
-  }
+    }),
+  },
 }, {
   initialRouteName: 'CheckoutLoginRegister',
-  defaultNavigationOptions
+  defaultNavigationOptions,
 })
 
 export default createStackNavigator({
@@ -75,27 +75,27 @@ export default createStackNavigator({
       // Use header = null to get rid of the header
       // The screen's header will be used
       header: null,
-    })
+    }),
   },
   CheckoutProductOptions: {
     screen: navigation.CheckoutProductOptions,
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('CHECKOUT_PRODUCT_OPTIONS_TITLE'),
-    })
+    }),
   },
   CheckoutShippingDate: {
     screen: navigation.CheckoutShippingDate,
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('CHECKOUT_SHIPPING_DATE'),
-    })
+    }),
   },
   CheckoutLogin: {
     screen: LoginRegisterStack,
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('CHECKOUT_LOGIN_TITLE'),
-    })
+    }),
   },
 }, {
   mode: 'modal',
-  defaultNavigationOptions
+  defaultNavigationOptions,
 })

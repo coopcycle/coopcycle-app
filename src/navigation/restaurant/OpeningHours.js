@@ -3,7 +3,7 @@ import { Dimensions, FlatList, StyleSheet, View } from 'react-native'
 import {
   Container, Header, Title, Content,
   Left, Right, Body,
-  List, ListItem, Separator, Button, Icon, Text, Switch
+  List, ListItem, Separator, Button, Icon, Text, Switch,
 } from 'native-base'
 import _ from 'lodash'
 import moment from 'moment'
@@ -116,7 +116,7 @@ class OpeningHoursScreen extends Component {
       buttonProps = { disabled: true }
     } else {
       buttonProps = {
-        onPress: () => this.props.closeRestaurant(httpClient, restaurant)
+        onPress: () => this.props.closeRestaurant(httpClient, restaurant),
       }
     }
 

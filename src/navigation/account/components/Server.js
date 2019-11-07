@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { View } from 'react-native'
 import {
-  Text, Button
+  Text, Button,
 } from 'native-base'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
@@ -19,7 +19,7 @@ class Server extends Component {
             [
               this.props.t('CONNECTED_TO'),
               ' ',
-              <Text key={ 3 } style={{ fontWeight: 'bold' }}>{ this.props.baseURL }</Text>
+              <Text key={ 3 } style={{ fontWeight: 'bold' }}>{ this.props.baseURL }</Text>,
             ]
           }
         </Text>

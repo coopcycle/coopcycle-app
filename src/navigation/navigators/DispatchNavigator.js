@@ -17,7 +17,7 @@ const Tabs = createBottomTabNavigator({
           <Icon type="FontAwesome" name="clock-o" style={{ color: tintColor }} />
         )
       },
-    })
+    }),
   },
   DispatchTaskLists: {
     screen: navigation.DispatchTaskLists,
@@ -27,14 +27,14 @@ const Tabs = createBottomTabNavigator({
         return (
           <Icon type="FontAwesome" name="user" style={{ color: tintColor }} />
         )
-      }
-    })
+      },
+    }),
   },
 }, {
   tabBarOptions: {
     showLabel: true,
-    showIcon: true
-  }
+    showIcon: true,
+  },
 })
 
 const MainNavigator = createStackNavigator({
@@ -45,25 +45,25 @@ const MainNavigator = createStackNavigator({
       headerLeft: headerLeft(navigation),
       headerRight: (
         <HeaderRightButton onPress={ () => navigation.navigate('DispatchDate') } />
-      )
-    })
+      ),
+    }),
   },
   DispatchTaskList: {
     screen: navigation.DispatchTaskList,
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('DISPATCH_TASK_LIST', { username: navigation.state.params.taskList.username }),
-    })
+    }),
   },
   Task: {
     screen: TaskNavigator,
     navigationOptions: ({ navigation }) => ({
       title: `${i18n.t('TASK')} #${navigation.state.params.task.id}`,
-    })
+    }),
   },
 }, {
   initialRouteKey: 'DispatchHome',
   initialRouteName: 'DispatchHome',
-  defaultNavigationOptions
+  defaultNavigationOptions,
 })
 
 const AddTaskNavigator = createStackNavigator({
@@ -73,7 +73,7 @@ const AddTaskNavigator = createStackNavigator({
       // Use header = null to get rid of the header
       // The screen's header will be used
       header: null,
-    })
+    }),
   },
   DispatchEditAddress: {
     screen: navigation.DispatchEditAddress,
@@ -81,11 +81,11 @@ const AddTaskNavigator = createStackNavigator({
       // Use header = null to get rid of the header
       // The screen's header will be used
       header: null,
-    })
-  }
+    }),
+  },
 }, {
   initialRouteName: 'DispatchAddTaskHome',
-  defaultNavigationOptions
+  defaultNavigationOptions,
 })
 
 export default createStackNavigator({
@@ -95,33 +95,33 @@ export default createStackNavigator({
       // Use header = null to get rid of the header
       // The screen's header will be used
       header: null,
-    })
+    }),
   },
   DispatchPickUser: {
     screen: navigation.DispatchPickUser,
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('DISPATCH_PICK_USER'),
-    })
+    }),
   },
   DispatchAddTask: {
     screen: AddTaskNavigator,
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('DISPATCH_ADD_TASK'),
-    })
+    }),
   },
   DispatchDate: {
     screen: navigation.DispatchDate,
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('DISPATCH_DATE'),
-    })
+    }),
   },
   DispatchAssignTask: {
     screen: navigation.DispatchAssignTask,
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('DISPATCH_ASSIGN_TASK'),
-    })
-  }
+    }),
+  },
 }, {
   mode: 'modal',
-  defaultNavigationOptions
+  defaultNavigationOptions,
 })

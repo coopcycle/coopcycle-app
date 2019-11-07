@@ -3,7 +3,7 @@ import { StyleSheet, View, TouchableOpacity } from 'react-native'
 import {
   Container, Header, Title, Content,
   Left, Right, Body,
-  List, ListItem, Icon, Text, Button, Radio, Switch
+  List, ListItem, Icon, Text, Button, Radio, Switch,
 } from 'native-base'
 
 import { withTranslation } from 'react-i18next'
@@ -16,7 +16,7 @@ class SettingsScreen extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      restaurantState: props.restaurant.state
+      restaurantState: props.restaurant.state,
     }
   }
 
@@ -36,7 +36,7 @@ class SettingsScreen extends Component {
     const { restaurant, restaurants } = this.props
 
     const lastItemProps = {
-      last: restaurants.length === 1
+      last: restaurants.length === 1,
     }
 
     const items = [
@@ -47,23 +47,23 @@ class SettingsScreen extends Component {
           <Switch
             value={ this.state.restaurantState === 'rush' }
             onValueChange={ this._onRushValueChange.bind(this) } />
-        )
+        ),
       },
       {
         icon: 'pricetag',
         label: this.props.t('RESTAURANT_SETTINGS_MANAGE_PRODUCTS'),
-        onPress: () => navigate('RestaurantProducts')
+        onPress: () => navigate('RestaurantProducts'),
       },
       {
         icon: 'calendar',
         label: this.props.t('RESTAURANT_SETTINGS_OPENING_HOURS'),
-        onPress: () => navigate('RestaurantOpeningHours')
+        onPress: () => navigate('RestaurantOpeningHours'),
       },
       {
         icon: 'calendar',
         label: this.props.t('RESTAURANT_SETTINGS_MENUS'),
-        onPress: () => navigate('RestaurantMenus')
-      }
+        onPress: () => navigate('RestaurantMenus'),
+      },
     ]
 
     if (restaurants.length > 1) {
@@ -71,7 +71,7 @@ class SettingsScreen extends Component {
         {
           icon: 'calendar',
           label: this.props.t('RESTAURANT_SETTINGS_CHANGE_RESTAURANT'),
-          onPress: () => navigate('RestaurantList')
+          onPress: () => navigate('RestaurantList'),
         }
 
       )
@@ -93,21 +93,21 @@ class SettingsScreen extends Component {
               if (index === (items.length - 1)) {
                 itemProps = {
                   ...itemProps,
-                  last: true
+                  last: true,
                 }
               }
 
               if (index === 0) {
                 itemProps = {
                   ...itemProps,
-                  first: true
+                  first: true,
                 }
               }
 
               if (item.onPress) {
                 itemProps = {
                   ...itemProps,
-                  onPress: item.onPress
+                  onPress: item.onPress,
                 }
               }
 
@@ -134,8 +134,8 @@ class SettingsScreen extends Component {
 
 const styles = StyleSheet.create({
   content: {
-    paddingTop: 20
-  }
+    paddingTop: 20,
+  },
 })
 
 function mapStateToProps(state) {

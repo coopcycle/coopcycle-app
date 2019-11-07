@@ -5,7 +5,7 @@ import { withTranslation } from 'react-i18next'
 import {
   Container, Content,
   Left, Right,
-  Icon, Text, Button
+  Icon, Text, Button,
 } from 'native-base';
 import moment from 'moment'
 
@@ -24,7 +24,7 @@ class AssignTask extends Component {
     if (isEmpty) {
       contentProps = {
         flex: 1,
-        justifyContent: 'center'
+        justifyContent: 'center',
       }
     }
 

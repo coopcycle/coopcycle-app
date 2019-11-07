@@ -3,7 +3,7 @@ import { View } from 'react-native'
 import {
   Container, Header, Button, Icon, Left, Right,
   Body, Title, Content, Text,
-  List, ListItem, Radio
+  List, ListItem, Radio,
 } from 'native-base'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'

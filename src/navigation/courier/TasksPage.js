@@ -10,7 +10,7 @@ import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 import _ from 'lodash'
 
-import { whiteColor, orangeColor, dateSelectHeaderHeight, websocketWarningHeight } from "../../styles/common"
+import { whiteColor, orangeColor, dateSelectHeaderHeight, websocketWarningHeight } from '../../styles/common'
 import DateSelectHeader from '../../components/DateSelectHeader'
 import TasksMapView from '../../components/TasksMapView'
 import {
@@ -83,7 +83,7 @@ class TasksPage extends Component {
           {
             text: 'OK', onPress: () => {
               navigation.dispatch(NavigationActions.back())
-            }
+            },
           },
         ],
         { cancelable: false }
@@ -142,7 +142,7 @@ class TasksPage extends Component {
         setTimeout(() =>
           Alert.alert('App requires location tracking permission', 'Would you like to open app settings?', [
             { text: 'Yes', onPress: () => BackgroundGeolocation.showAppSettings() },
-            { text: 'No', onPress: () => console.log('No Pressed'), style: 'cancel' }
+            { text: 'No', onPress: () => console.log('No Pressed'), style: 'cancel' },
           ]), 1000);
       }
     });
@@ -170,8 +170,7 @@ class TasksPage extends Component {
         <TasksMapView
           tasks={ tasks }
           onMapReady={ () => this.onMapReady() }
-          onMarkerCalloutPress={ task => navigate('Task', { task, navigateAfter: this.props.navigation.state.routeName }) }>
-        </TasksMapView>
+          onMarkerCalloutPress={ task => navigate('Task', { task, navigateAfter: this.props.navigation.state.routeName }) } />
         <DateSelectHeader
           buttonsEnabled={true}
           toDate={this.refreshTasks}
@@ -183,14 +182,14 @@ class TasksPage extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: dateSelectHeaderHeight
+    paddingTop: dateSelectHeaderHeight,
   },
   loader: {
     ...StyleSheet.absoluteFillObject,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'rgba(52, 52, 52, 0.4)',
-    zIndex: 20
+    zIndex: 20,
   },
   websocketWarning: {
     backgroundColor: orangeColor,
@@ -200,8 +199,8 @@ const styles = StyleSheet.create({
     zIndex: 2,
   },
   websocketWarningText: {
-    color: whiteColor
-  }
+    color: whiteColor,
+  },
 })
 
 function mapStateToProps (state) {

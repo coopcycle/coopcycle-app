@@ -15,8 +15,8 @@ const MainNavigator = createStackNavigator({
     screen: ConfigureServer,
     navigationOptions: ({ navigation }) => ({
       title: 'CoopCycle',
-      headerBackTitle: null
-    })
+      headerBackTitle: null,
+    }),
   },
   HomeChooseCity: {
     screen: ChooseCity,
@@ -29,13 +29,13 @@ const MainNavigator = createStackNavigator({
         iconName="ellipsis-h"
         iconStyle={{ fontSize: 18 }}
         onPress={ _ => navigation.navigate('HomeCustomServer') } />
-      )
-    })
+      ),
+    }),
   },
 }, {
   initialRouteKey: 'Home',
   initialRouteName: 'Home',
-  defaultNavigationOptions
+  defaultNavigationOptions,
 })
 
 export default createStackNavigator({
@@ -44,14 +44,14 @@ export default createStackNavigator({
     navigationOptions: ({ navigation }) => ({
       header: null,
       headerBackTitle: null,
-    })
+    }),
   },
   HomeCustomServer: {
     screen: CustomServer,
     navigationOptions: ({ navigation }) => ({
       headerBackTitle: null,
       title: i18n.t('CUSTOM'),
-    })
+    }),
   },
 }, {
   mode: 'modal',

@@ -11,8 +11,8 @@ import { phonecall } from 'react-native-communications'
 import { showLocation } from 'react-native-map-link'
 import _ from 'lodash'
 
-import { greenColor, greyColor, redColor } from "../../styles/common"
-import { selectTasks } from "../../redux/Courier"
+import { greenColor, greyColor, redColor } from '../../styles/common'
+import { selectTasks } from '../../redux/Courier'
 
 const isCompleted = task => task.status !== 'TODO'
 
@@ -24,7 +24,7 @@ class Task extends Component {
     this.state = {
       swipeOutClose: false,
       mapDimensions: [],
-      canRenderMap: false
+      canRenderMap: false,
     }
   }
 
@@ -77,18 +77,18 @@ class Task extends Component {
           dialogTitle: this.props.t('OPEN_IN_MAPS_TITLE'),
           dialogMessage: this.props.t('OPEN_IN_MAPS_MESSAGE'),
           cancelText: this.props.t('CANCEL'),
-        })
+        }),
       },
       {
         iconName: 'md-clock',
-        text: timeframe
-      }
+        text: timeframe,
+      },
     ]
 
     if (task.comments) {
       items.push({
         iconName: 'chatbubbles',
-        text: task.comments
+        text: task.comments,
       })
     }
 
@@ -98,7 +98,7 @@ class Task extends Component {
 
       items.push({
         iconName: 'information-circle',
-        text: description
+        text: description,
       })
     }
 
@@ -113,7 +113,7 @@ class Task extends Component {
             </Button>
           )) }
           </View>
-        )
+        ),
       })
     }
 
@@ -121,7 +121,7 @@ class Task extends Component {
       items.push({
         iconName: 'call',
         text: task.address.telephone,
-        onPress: () => phonecall(task.address.telephone, true)
+        onPress: () => phonecall(task.address.telephone, true),
       })
     }
 
@@ -134,7 +134,7 @@ class Task extends Component {
           <View
             style={{
               height: StyleSheet.hairlineWidth,
-              backgroundColor: "#ccc",
+              backgroundColor: '#ccc',
             }}
           />
         )} />
@@ -234,7 +234,7 @@ class Task extends Component {
 
     const navigateParams = {
       task,
-      navigateAfter: this.props.navigation.getParam('navigateAfter')
+      navigateAfter: this.props.navigation.getParam('navigateAfter'),
     }
 
     const swipeoutLeftButton = {
@@ -243,9 +243,9 @@ class Task extends Component {
       onPress: () => {
         this.props.navigation.navigate('TaskComplete', { ...navigateParams, success: true })
         this.setState({
-          swipeOutClose: true
+          swipeOutClose: true,
         })
-      }
+      },
     }
 
     const swipeoutRightButton = {
@@ -254,9 +254,9 @@ class Task extends Component {
       onPress: () => {
         this.props.navigation.navigate('TaskComplete', { ...navigateParams, success: false })
         this.setState({
-          swipeOutClose: true
+          swipeOutClose: true,
         })
-      }
+      },
     }
 
     return (
@@ -297,7 +297,7 @@ class Task extends Component {
       latitude: task.address.geo.latitude,
       longitude: task.address.geo.longitude,
       latitudeDelta: distanceDelta,
-      longitudeDelta: distanceDelta * aspectRatio
+      longitudeDelta: distanceDelta * aspectRatio,
     }
 
     return (
@@ -306,8 +306,8 @@ class Task extends Component {
         zoomEnabled
         showsUserLocation
         loadingEnabled
-        loadingIndicatorColor={ "#666666" }
-        loadingBackgroundColor={ "#eeeeee" }
+        loadingIndicatorColor={ '#666666' }
+        loadingBackgroundColor={ '#eeeeee' }
         initialRegion={ region }
         region={ region }
         onLayout={ this._onMapLayout.bind(this) }>
@@ -396,22 +396,22 @@ const styles = StyleSheet.create({
     padding: 10,
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   iconContainer: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: 10
+    paddingHorizontal: 10,
   },
   buttonContainer: {
-    ...StyleSheet.absoluteFillObject
+    ...StyleSheet.absoluteFillObject,
   },
   buttonTextContainer: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   swipeOutHelpContainer: {
     flex: 1,
@@ -423,11 +423,11 @@ const styles = StyleSheet.create({
   swipeOutHelpText: {
     fontSize: 12,
     textAlign: 'center',
-    color: '#ccc'
+    color: '#ccc',
   },
   taskDetailText: {
     fontSize: 12,
-  }
+  },
 })
 
 function mapStateToProps (state) {

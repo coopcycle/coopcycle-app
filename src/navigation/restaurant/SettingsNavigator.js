@@ -25,7 +25,7 @@ export default createStackNavigator({
       // Use header = null to get rid of the header
       // The screen's header will be used
       header: null,
-    })
+    }),
   },
   RestaurantProducts: {
     screen: navigation.RestaurantProducts,
@@ -34,7 +34,7 @@ export default createStackNavigator({
       // The screen's header will be used
       header: null,
       title: i18n.t('RESTAURANT_PRODUCTS'),
-    })
+    }),
   },
   RestaurantOpeningHours: {
     screen: navigation.RestaurantOpeningHours,
@@ -43,7 +43,7 @@ export default createStackNavigator({
       // The screen's header will be used
       header: null,
       title: i18n.t('RESTAURANT_OPENING_HOURS'),
-    })
+    }),
   },
   RestaurantMenus: {
     screen: navigation.RestaurantMenus,
@@ -52,7 +52,7 @@ export default createStackNavigator({
       // The screen's header will be used
       header: null,
       title: i18n.t('RESTAURANT_MENUS'),
-    })
+    }),
   },
 }, {
   defaultNavigationOptions,
@@ -73,6 +73,6 @@ export default createStackNavigator({
           title={ 'Back' }
           backImage={ backImage } />
       )
-    }
-  })
+    },
+  }),
 })

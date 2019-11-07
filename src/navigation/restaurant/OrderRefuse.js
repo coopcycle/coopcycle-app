@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { StyleSheet, View, TouchableOpacity } from 'react-native'
 import {
   Container, Content,
-  Icon, Text, Button
+  Icon, Text, Button,
 } from 'native-base'
 import { Col, Row, Grid } from 'react-native-easy-grid'
 import { withTranslation } from 'react-i18next'
@@ -108,18 +108,18 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-around',
-    backgroundColor: '#fff'
+    backgroundColor: '#fff',
   },
   btnDanger: {
     borderColor: material.brandDanger,
   },
   btnTextHeading: {
     fontWeight: 'bold',
-    marginBottom: 10
+    marginBottom: 10,
   },
   textDanger: {
     color: material.brandDanger,
-  }
+  },
 })
 
 function mapStateToProps(state) {

@@ -3,7 +3,7 @@ import { Dimensions, Image, StyleSheet, View, TextInput, TouchableOpacity } from
 import {
   Container, Content,
   Icon, Text, Button, Footer,
-  Form, Item, Input, Label
+  Form, Item, Input, Label,
 } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
@@ -29,7 +29,7 @@ class CompleteTask extends Component {
     super(props)
 
     this.state = {
-      notes: ''
+      notes: '',
     }
   }
 
@@ -140,20 +140,20 @@ const styles = StyleSheet.create({
     paddingBottom: CONTENT_PADDING,
     paddingLeft: CONTENT_PADDING,
     borderBottomWidth: 1,
-    borderBottomColor: '#ccc'
+    borderBottomColor: '#ccc',
   },
   buttonContainer: {
-    ...StyleSheet.absoluteFillObject
+    ...StyleSheet.absoluteFillObject,
   },
   buttonTextContainer: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   form: {
     flex: 1,
-    marginBottom: 10
+    marginBottom: 10,
   },
   addPoDButton: {
     flex: 1,
@@ -161,10 +161,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 15,
-    maxHeight: '15%'
+    maxHeight: '15%',
   },
   addPoDButtonText: {
-    color: '#0074D9'
+    color: '#0074D9',
   },
   imagesContainer: {
     flex: 1,
@@ -175,7 +175,7 @@ const styles = StyleSheet.create({
   image: {
     borderWidth: 1,
     borderColor: '#ddd',
-    marginBottom: 20
+    marginBottom: 20,
   },
   imageDelBtn: {
     position: 'absolute',
@@ -186,8 +186,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#ffffff',
     top: -16,
-    right: -16
-  }
+    right: -16,
+  },
 })
 
 function mapStateToProps (state) {
@@ -196,7 +196,7 @@ function mapStateToProps (state) {
     tasks: selectTasksList(state),
     taskCompleteError: selectIsTaskCompleteFailure(state),
     signatures: selectSignatures(state),
-    pictures: selectPictures(state)
+    pictures: selectPictures(state),
   }
 }
 

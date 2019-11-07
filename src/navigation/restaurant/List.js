@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native'
 import {
   Container, Content, Body, Right,
   Icon, Text, Button,
-  List, ListItem
+  List, ListItem,
 } from 'native-base'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
@@ -63,13 +63,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
   },
   helpContainer: {
-    paddingVertical: 10
+    paddingVertical: 10,
   },
   helpText: {
     fontSize: 14,
     color: '#999',
-    textAlign: 'center'
-  }
+    textAlign: 'center',
+  },
 })
 
 function mapStateToProps(state) {

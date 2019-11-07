@@ -13,7 +13,7 @@ import {
   Left, Right, Body,
   List, ListItem,
   InputGroup, Input,
-  Icon, Picker, Button, Text
+  Icon, Picker, Button, Text,
 } from 'native-base';
 import moment from 'moment'
 import _ from 'lodash'
@@ -274,7 +274,7 @@ const styles = StyleSheet.create({
   emptyContent: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
 })
 
@@ -284,7 +284,7 @@ function mapStateToProps(state, ownProps) {
   if (state.checkout.timing.today && state.checkout.timing.fast) {
     timeAsText = i18n.t('CART_DELIVERY_TIME_DIFF', { diff: state.checkout.timing.diff })
   } else {
-    const time = !!state.checkout.date ? state.checkout.date : state.checkout.timing.asap
+    const time = state.checkout.date ? state.checkout.date : state.checkout.timing.asap
     let fromNow = moment(time).calendar(null, { sameElse: 'LLLL' }).toLowerCase()
     timeAsText = i18n.t('CART_DELIVERY_TIME', { fromNow })
   }
@@ -296,7 +296,7 @@ function mapStateToProps(state, ownProps) {
     edit: ownProps.navigation.getParam('edit', false),
     items: state.checkout.cart.items,
     isAuthenticated: state.app.isAuthenticated,
-    timeAsText
+    timeAsText,
   }
 }
 
@@ -305,7 +305,7 @@ function mapDispatchToProps(dispatch) {
     incrementItem: item => dispatch(incrementItem(item)),
     decrementItem: item => dispatch(decrementItem(item)),
     removeItem: item => dispatch(removeItem(item)),
-    fetchTiming: _ => dispatch(timing())
+    fetchTiming: _ => dispatch(timing()),
   }
 }
 

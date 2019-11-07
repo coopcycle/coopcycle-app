@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import {
   InteractionManager,
   StyleSheet,
-  View
+  View,
 } from 'react-native';
 import {
   Container, Content,
   Left, Right, Body,
   Text, Icon, Thumbnail,
-  Card, CardItem
+  Card, CardItem,
 } from 'native-base';
 import _ from 'lodash'
 import moment from 'moment'
@@ -75,7 +75,7 @@ class RestaurantsPage extends Component {
     let contentProps = {}
     if (restaurants.length === 0) {
       contentProps = {
-        contentContainerStyle: styles.content
+        contentContainerStyle: styles.content,
       }
     }
 
@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
 })
 
@@ -115,7 +115,7 @@ function mapStateToProps(state) {
 
   return {
     loading: state.checkout.isFetching,
-    restaurants: state.checkout.restaurants
+    restaurants: state.checkout.restaurants,
   }
 }
 

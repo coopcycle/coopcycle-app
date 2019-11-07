@@ -25,7 +25,7 @@ class RegisterConfirm extends Component {
 
     return (
       <Container>
-        <Content padder contentContainerStyle={ styles.content }></Content>
+        <Content padder contentContainerStyle={ styles.content } />
       </Container>
     );
   }
@@ -48,11 +48,11 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   icon: {
-    marginBottom: 15
-  }
+    marginBottom: 15,
+  },
 })
 
 module.exports = connect(mapStateToProps, mapDispatchToProps)(withTranslation()(RegisterConfirm))

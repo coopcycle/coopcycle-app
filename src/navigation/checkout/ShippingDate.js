@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-end',
     paddingHorizontal: 10,
-  }
+  },
 });
 
 function mapStateToProps(state) {
@@ -108,13 +108,13 @@ function mapStateToProps(state) {
 
   const hash = _.zipObject(availabilities, _.map(availabilities, item => ([
     moment(item).format('LL'),
-    moment(item).format('LT')
+    moment(item).format('LT'),
   ])))
 
   return {
-    date: !!state.checkout.date ? state.checkout.date : state.checkout.timing.asap,
+    date: state.checkout.date ? state.checkout.date : state.checkout.timing.asap,
     availabilities,
-    hash
+    hash,
   }
 }
 

@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: '#fff',
     fontSize: 14,
-  }
+  },
 })
 
 class CartFooterButton extends Component {
@@ -17,7 +17,7 @@ class CartFooterButton extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      opacityAnim: new Animated.Value(1)
+      opacityAnim: new Animated.Value(1),
     }
   }
 

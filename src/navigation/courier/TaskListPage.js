@@ -25,25 +25,25 @@ const taskComparator = (taskA, taskB) => taskA['@id'] === taskB['@id']
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: "column",
+    flexDirection: 'column',
     backgroundColor: whiteColor,
-    paddingTop: dateSelectHeaderHeight
+    paddingTop: dateSelectHeaderHeight,
   },
   wrapper: {
     paddingHorizontal: 15,
-    backgroundColor: whiteColor
+    backgroundColor: whiteColor,
   },
   noTask: {
     paddingVertical: 30,
-    textAlign: 'center'
+    textAlign: 'center',
   },
   loader: {
     ...StyleSheet.absoluteFillObject,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'rgba(52, 52, 52, 0.4)',
-    zIndex: 20
-  }
+    zIndex: 20,
+  },
 })
 
 class TaskListPage extends Component {
@@ -66,7 +66,7 @@ class TaskListPage extends Component {
     const { navigate } = this.props.navigation
 
     const navigateParams = {
-      navigateAfter: this.props.navigation.state.routeName
+      navigateAfter: this.props.navigation.state.routeName,
     }
 
     return (

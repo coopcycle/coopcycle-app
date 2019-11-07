@@ -7,7 +7,7 @@ import {
   Form, Item, Label, Textarea, Radio,
   List, ListItem,
   Left, Right,
-  Footer, FooterTab
+  Footer, FooterTab,
 } from 'native-base'
 import { Col, Row, Grid } from 'react-native-easy-grid'
 import DateTimePicker from 'react-native-modal-datetime-picker'
@@ -30,14 +30,14 @@ class AddTask extends Component {
       type: 'DROPOFF',
       doneAfter: moment().add(1, 'hours'),
       doneBefore: moment().add(1, 'hours').add(30, 'minutes'),
-      address: {}
+      address: {},
     }
   }
 
   _handleDoneAfterDatePicked(date) {
     this.setState({
       doneAfter: moment(date),
-      isDoneAfterDateTimePickerVisible: false
+      isDoneAfterDateTimePickerVisible: false,
     })
   }
 
@@ -48,7 +48,7 @@ class AddTask extends Component {
   _handleDoneBeforeDatePicked(date) {
     this.setState({
       doneBefore: moment(date),
-      isDoneBeforeDateTimePickerVisible: false
+      isDoneBeforeDateTimePickerVisible: false,
     })
   }
 
@@ -69,7 +69,7 @@ class AddTask extends Component {
 
   _onSuggestionPress(data, details = null) {
     this.setState({
-      address: AddressUtils.createAddressFromGoogleDetails(details)
+      address: AddressUtils.createAddressFromGoogleDetails(details),
     })
   }
 
@@ -77,11 +77,11 @@ class AddTask extends Component {
 
     const newAddress = _.pickBy({
       ...this.state.address,
-      ...address
+      ...address,
     }, prop => !_.isEmpty(prop))
 
     this.setState({
-      address: newAddress
+      address: newAddress,
     })
   }
 
@@ -90,10 +90,10 @@ class AddTask extends Component {
     const { navigate } = this.props.navigation
 
     let pickupBtnProps = {
-      block: true
+      block: true,
     }
     let dropoffBtnProps = {
-      block: true
+      block: true,
     }
 
     const { address, type, doneAfter, doneBefore } = this.state
@@ -101,12 +101,12 @@ class AddTask extends Component {
     pickupBtnProps = {
       ...pickupBtnProps,
       primary: type === 'PICKUP',
-      bordered: type !== 'PICKUP'
+      bordered: type !== 'PICKUP',
     }
     dropoffBtnProps = {
       ...dropoffBtnProps,
       primary: type === 'DROPOFF',
-      bordered: type !== 'DROPOFF'
+      bordered: type !== 'DROPOFF',
     }
 
     return (
@@ -188,14 +188,14 @@ class AddTask extends Component {
 
 const styles = StyleSheet.create({
   formRow: {
-    marginBottom: 15
+    marginBottom: 15,
   },
   datePickerRow: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between'
-  }
+    justifyContent: 'space-between',
+  },
 })
 
 function mapStateToProps(state) {

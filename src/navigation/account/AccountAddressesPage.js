@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, View, ActivityIndicator } from 'react-native';
 import {
   Container,
-  Content, Button, Icon, List, ListItem, Text
+  Content, Button, Icon, List, ListItem, Text,
 } from 'native-base';
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
@@ -12,7 +12,7 @@ class AccountAddressesPage extends Component {
     super(props);
     this.state = {
       addresses: [],
-      loading: false
+      loading: false,
     };
   }
   componentDidMount() {
@@ -23,7 +23,7 @@ class AccountAddressesPage extends Component {
       .then(user => {
         this.setState({
           loading: false,
-          addresses: user.addresses
+          addresses: user.addresses,
         })
       })
   }
@@ -70,13 +70,13 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(52, 52, 52, 0.4)'
+    backgroundColor: 'rgba(52, 52, 52, 0.4)',
   },
 });
 
 function mapStateToProps(state) {
   return {
-    httpClient: state.app.httpClient
+    httpClient: state.app.httpClient,
   }
 }
 

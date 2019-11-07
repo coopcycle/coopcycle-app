@@ -57,8 +57,8 @@ const styles = StyleSheet.create({
     // width is dynamic
     height: addressInputHeight,
     alignItems: 'center',
-    justifyContent: 'center'
-  }
+    justifyContent: 'center',
+  },
 })
 
 class AddressTypeahead extends Component {
@@ -96,7 +96,7 @@ class AddressTypeahead extends Component {
             minLength={ 2 } // minimum length of text to search
             autoFocus={ false }
             textInputProps={{
-              testID: 'taskFormTypeahead'
+              testID: 'taskFormTypeahead',
             }}
             // listViewDisplayed = auto does not hide the results when pressed
             listViewDisplayed={ false }
@@ -113,7 +113,7 @@ class AddressTypeahead extends Component {
             nearbyPlacesAPI="GoogleReverseGeocoding" // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
             GoogleReverseGeocodingQuery={{
               // available options for GoogleReverseGeocoding API : https://developers.google.com/maps/documentation/geocoding/intro
-              region: Settings.get('country')
+              region: Settings.get('country'),
             }}
             // filter the reverse geocoding results by types - ['locality', 'administrative_area_level_3'] if you want to display only cities
             filterReverseGeocodingByTypes={[ 'street_address', 'route', 'geocode' ]}

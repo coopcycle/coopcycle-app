@@ -9,7 +9,7 @@ import {
   Container,
   Header,
   Left, Right, Body,
-  Title, Content, Footer, Button, Icon, List, ListItem, Text
+  Title, Content, Footer, Button, Icon, List, ListItem, Text,
 } from 'native-base'
 import _ from 'lodash'
 import moment from 'moment'
@@ -56,7 +56,7 @@ class AccountOrdersPage extends Component {
     _.forEach(ordersByDay, (orders, day) => {
       sections.push({
         day: day,
-        data: orders
+        data: orders,
       })
     })
 
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
 function mapStateToProps(state) {
 
   return {
-    orders: state.account.orders
+    orders: state.account.orders,
   }
 }
 

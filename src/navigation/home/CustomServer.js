@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import {
   Container, Content,
   Button, Text, Icon,
-  Form, Item, Input
+  Form, Item, Input,
 } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import _ from 'lodash'
@@ -74,7 +74,7 @@ function mapStateToProps(state) {
 
   return {
     hasError: !!state.app.selectServerError,
-    message: state.app.selectServerError
+    message: state.app.selectServerError,
   }
 }
 

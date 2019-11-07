@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     paddingHorizontal: 20,
     borderBottomColor: '#ddd',
-    borderBottomWidth: StyleSheet.hairlineWidth
+    borderBottomWidth: StyleSheet.hairlineWidth,
   },
   itemLeftRight: {
     flex: 1,
@@ -24,13 +24,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   restaurantNameText: {
-    marginBottom: 5
+    marginBottom: 5,
   },
   sectionHeader: {
     paddingVertical: 10,
     paddingHorizontal: 20,
-    backgroundColor: '#efefef'
-  }
+    backgroundColor: '#efefef',
+  },
 });
 
 class OrderList extends Component {
@@ -60,12 +60,12 @@ class OrderList extends Component {
 
     const ordersByState = _.groupBy(this.props.orders, 'state')
 
-    let newOrders = ordersByState.hasOwnProperty('new') ? ordersByState['new'] : []
-    let acceptedOrders = ordersByState.hasOwnProperty('accepted') ? ordersByState['accepted'] : []
-    let fulfilledOrders = ordersByState.hasOwnProperty('fulfilled') ? ordersByState['fulfilled'] : []
+    let newOrders = ordersByState.hasOwnProperty('new') ? ordersByState.new : []
+    let acceptedOrders = ordersByState.hasOwnProperty('accepted') ? ordersByState.accepted : []
+    let fulfilledOrders = ordersByState.hasOwnProperty('fulfilled') ? ordersByState.fulfilled : []
 
-    let refusedOrders = ordersByState.hasOwnProperty('refused') ? ordersByState['refused'] : []
-    let cancelledOrders = ordersByState.hasOwnProperty('cancelled') ? ordersByState['cancelled'] : []
+    let refusedOrders = ordersByState.hasOwnProperty('refused') ? ordersByState.refused : []
+    let cancelledOrders = ordersByState.hasOwnProperty('cancelled') ? ordersByState.cancelled : []
     let allCancelledOrders = cancelledOrders.concat(refusedOrders)
 
     newOrders = _.sortBy(newOrders, [ order => moment.parseZone(order.preparationExpectedAt) ])
@@ -79,19 +79,19 @@ class OrderList extends Component {
         sections={[
           {
             title: this.props.t('RESTAURANT_ORDER_LIST_NEW_ORDERS', { count: newOrders.length }),
-            data: newOrders
+            data: newOrders,
           },
           {
             title: this.props.t('RESTAURANT_ORDER_LIST_ACCEPTED_ORDERS', { count: acceptedOrders.length }),
-            data: acceptedOrders
+            data: acceptedOrders,
           },
           {
             title: this.props.t('RESTAURANT_ORDER_LIST_CANCELLED_ORDERS', { count: allCancelledOrders.length }),
-            data: allCancelledOrders
+            data: allCancelledOrders,
           },
           {
             title: this.props.t('RESTAURANT_ORDER_LIST_FULFILLED_ORDERS', { count: fulfilledOrders.length }),
-            data: fulfilledOrders
+            data: fulfilledOrders,
           },
         ]}
         renderSectionHeader={ ({ section: { title } } ) => (

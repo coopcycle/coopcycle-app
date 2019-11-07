@@ -73,11 +73,11 @@ const styles = StyleSheet.create({
     paddingVertical: 30,
     paddingHorizontal: 15,
     borderBottomColor: 'lightgrey',
-    borderBottomWidth: StyleSheet.hairlineWidth
+    borderBottomWidth: StyleSheet.hairlineWidth,
   },
   verticalAlign: {
     flex: 1,
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
 })
 

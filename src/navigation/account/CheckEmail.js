@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import {
   StyleSheet,
-  View
+  View,
 } from 'react-native'
 import { NavigationActions, StackActions } from 'react-navigation'
 import {
@@ -22,7 +22,7 @@ class CheckEmail extends Component {
         NavigationActions.navigate({
           routeName: loginRouteName,
         }),
-      ]
+      ],
     })
 
     this.props.navigation.dispatch(resetAction)
@@ -57,11 +57,11 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   icon: {
-    marginBottom: 15
-  }
+    marginBottom: 15,
+  },
 })
 
 module.exports = withTranslation()(CheckEmail)

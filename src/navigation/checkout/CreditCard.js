@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import {
   Container, Content, Footer, FooterTab,
-  Button, Icon, List, ListItem, Text
+  Button, Icon, List, ListItem, Text,
 } from 'native-base';
 import _ from 'lodash'
 import { LiteCreditCardInput } from 'react-native-credit-card-input'
@@ -28,7 +28,7 @@ class CreditCard extends Component {
 
     this.state = {
       valid: false,
-      form: {}
+      form: {},
     }
   }
 
@@ -73,7 +73,7 @@ class CreditCard extends Component {
   _onChange(form) {
     this.setState({
       form,
-      valid: form.valid
+      valid: form.valid,
     })
   }
 
@@ -96,13 +96,13 @@ class CreditCard extends Component {
             <LiteCreditCardInput
               additionalInputsProps={{
                 number: {
-                  testID: "creditCardNumber",
+                  testID: 'creditCardNumber',
                 },
                 expiry: {
-                  testID: "creditCardExpiry",
+                  testID: 'creditCardExpiry',
                 },
                 cvc: {
-                  testID: "creditCardCvc",
+                  testID: 'creditCardCvc',
                 },
               }}
               onChange={ this._onChange.bind(this) } />
@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
   },
   creditCardLabel: {
     textAlign: 'center',
-    marginBottom: 10
+    marginBottom: 10,
   },
   creditCardInputContainer: {
     alignSelf: 'stretch',
@@ -150,11 +150,11 @@ const styles = StyleSheet.create({
   },
   errorText: {
     textAlign: 'center',
-    color: '#ed2f2f'
+    color: '#ed2f2f',
   },
   payButton: {
-    color: '#ffffff'
-  }
+    color: '#ffffff',
+  },
 })
 
 function mapStateToProps(state) {

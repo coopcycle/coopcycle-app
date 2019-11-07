@@ -10,37 +10,37 @@ const AuthenticatedStack = createStackNavigator({
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('MY_ACCOUNT'),
       headerLeft: headerLeft(navigation),
-      ...defaultNavigationOptions
-    })
+      ...defaultNavigationOptions,
+    }),
   },
   AccountAddresses: {
     screen: navigation.AccountAddressesPage,
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('MY_ADDRESSES'),
-    })
+    }),
   },
   AccountOrders: {
     screen: navigation.AccountOrdersPage,
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('MY_ORDERS'),
-    })
+    }),
   },
   AccountOrder: {
     screen: navigation.AccountOrderPage,
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('ORDER_NUMBER', { number: navigation.state.params.order.number }),
-    })
+    }),
   },
   AccountDetails: {
     screen: navigation.AccountDetailsPage,
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('MY_DETAILS'),
-    })
+    }),
   },
 }, {
   initialRouteKey: 'AccountHome',
   initialRouteName: 'AccountHome',
-  defaultNavigationOptions
+  defaultNavigationOptions,
 })
 
 const NotAuthenticatedStack = createStackNavigator({
@@ -49,18 +49,18 @@ const NotAuthenticatedStack = createStackNavigator({
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('MY_ACCOUNT'),
       headerLeft: headerLeft(navigation),
-      ...defaultNavigationOptions
-    })
+      ...defaultNavigationOptions,
+    }),
   },
   AccountCheckEmail: {
     screen: navigation.AccountCheckEmail,
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('REGISTER_CHECK_EMAIL'),
-    })
+    }),
   },
 }, {
   initialRouteName: 'AccountLoginRegister',
-  defaultNavigationOptions
+  defaultNavigationOptions,
 })
 
 export default createSwitchNavigator({

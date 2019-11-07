@@ -11,7 +11,7 @@ import { login, register } from '../../redux/App/actions'
 class Login extends Component {
 
   componentDidUpdate(prevProps) {
-    if (this.props.isAuthenticated !== prevProps.isAuthenticated && true === this.props.isAuthenticated) {
+    if (this.props.isAuthenticated !== prevProps.isAuthenticated && this.props.isAuthenticated === true) {
       this.props.navigation.navigate('CheckoutCreditCard')
     }
   }
@@ -50,8 +50,8 @@ class Login extends Component {
 const styles = StyleSheet.create({
   message: {
     alignItems: 'center',
-    padding: 20
-  }
+    padding: 20,
+  },
 })
 
 function mapStateToProps(state) {

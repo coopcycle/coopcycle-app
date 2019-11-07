@@ -206,7 +206,7 @@ class OrderScreen extends Component {
 
 const styles = StyleSheet.create({
   section: {
-    marginBottom: 20
+    marginBottom: 20,
   },
   footerBtn: {
     flex: 1,
@@ -219,29 +219,29 @@ const styles = StyleSheet.create({
   },
   refuseBtnText: {
     color: material.brandDanger,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   },
   acceptBtn: {
      borderColor: material.brandSuccess,
   },
   acceptBtnText: {
     color: material.brandSuccess,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   },
   delayBtn: {
      borderColor: '#333',
   },
   delayBtnText: {
     color: '#333',
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   },
   dateContainer: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: material.contentPadding
-  }
+    paddingHorizontal: material.contentPadding,
+  },
 });
 
 function mapStateToProps(state, ownProps) {
@@ -256,7 +256,7 @@ function mapDispatchToProps(dispatch) {
   return {
     acceptOrder: (client, order) => dispatch(acceptOrder(client, order)),
     setCurrentOrder: (order) => dispatch(setCurrentOrder(order)),
-    printOrder: (order) => dispatch(printOrder(order))
+    printOrder: (order) => dispatch(printOrder(order)),
   }
 }
 

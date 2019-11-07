@@ -3,7 +3,7 @@ import {
   View,
   ScrollView,
   StyleSheet,
-  TouchableOpacity
+  TouchableOpacity,
 } from 'react-native'
 import { Text, Icon } from 'native-base'
 import _ from 'lodash'
@@ -18,11 +18,11 @@ class DrawerContent extends Component {
     const { items, restaurants, user, isAuthenticated } = this.props
 
     const restaurantItems =
-      _.filter(items, item => 'RestaurantNav' === item.routeName)
+      _.filter(items, item => item.routeName === 'RestaurantNav')
     const courierItems =
-      _.filter(items, item => 'CourierNav' === item.routeName)
+      _.filter(items, item => item.routeName === 'CourierNav')
     const accountItems =
-      _.filter(items, item => 'AccountNav' === item.routeName)
+      _.filter(items, item => item.routeName === 'AccountNav')
     const adminItems =
       _.filter(items, item => _.includes(['DispatchNav'], item.routeName))
 
@@ -44,7 +44,7 @@ class DrawerContent extends Component {
 
     const otherItemsProps = {
       ...this.props,
-      items: otherItems
+      items: otherItems,
     }
 
     let restaurantSection = (
@@ -70,14 +70,14 @@ class DrawerContent extends Component {
             items: restaurants.map(restaurant => ({
               ...restaurantItems[0],
               params: {
-                restaurant
-              }
+                restaurant,
+              },
             })),
             getLabel: ({ route }) => {
               const { restaurant } = route.params
 
               return restaurant.name
-            }
+            },
           }
         } else {
           restaurantItemsProps = {
@@ -85,7 +85,7 @@ class DrawerContent extends Component {
             items: restaurantItems,
             getLabel: ({ route }) => {
               return this.props.t('RESTAURANTS')
-            }
+            },
           }
         }
 
@@ -145,7 +145,7 @@ class DrawerContent extends Component {
 
 const styles = StyleSheet.create({
   itemsContainer: {
-    paddingVertical: 0
+    paddingVertical: 0,
   },
   container: {
     flex: 1,
@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
     borderBottomColor: '#e0e0e0',
     borderBottomWidth: StyleSheet.hairlineWidth,
     paddingVertical: 10,
-  }
+  },
 });
 
 function mapStateToProps(state) {

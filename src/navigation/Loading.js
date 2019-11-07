@@ -16,7 +16,7 @@ class Loading extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      error: false
+      error: false,
     }
   }
 
@@ -89,11 +89,11 @@ const styles = StyleSheet.create({
   error: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   errorText: {
     marginBottom: 10,
-  }
+  },
 })
 
 function mapStateToProps(state) {

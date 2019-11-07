@@ -5,7 +5,7 @@ import {
   Container, Content,
   Left, Right,
   Icon, Text, Button,
-  Footer, FooterTab
+  Footer, FooterTab,
 } from 'native-base'
 
 import AddressForm from '../../components/DeliveryAddressForm'

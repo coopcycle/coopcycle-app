@@ -20,12 +20,12 @@ const RegisterConfirmStack = createStackNavigator({
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('REGISTER_CONFIRM'),
       headerLeft: headerLeft(navigation),
-      ...defaultNavigationOptions
-    })
-  }
+      ...defaultNavigationOptions,
+    }),
+  },
 }, {
   initialRouteName: 'RegisterConfirmHome',
-  defaultNavigationOptions
+  defaultNavigationOptions,
 })
 
 export default createDrawerNavigator({
@@ -33,13 +33,13 @@ export default createDrawerNavigator({
     screen: CheckoutNavigator,
     navigationOptions: ({ navigation }) => ({
       drawerLabel: 'Rechercher…',
-    })
+    }),
   },
   AccountNav: {
     screen: AccountNavigator,
     navigationOptions: ({ navigation }) => ({
       drawerLabel: i18n.t('MY_ACCOUNT'),
-    })
+    }),
   },
   RestaurantNav: {
     screen: RestaurantNavigator,
@@ -50,7 +50,7 @@ export default createDrawerNavigator({
       drawerIcon: ({ tintColor }) => (
         <Icon name="restaurant" style={{ fontSize: 16, color: tintColor }} />
       ),
-    })
+    }),
   },
   CourierNav: {
     screen: CourierNavigator,
@@ -59,7 +59,7 @@ export default createDrawerNavigator({
       drawerIcon: ({ tintColor }) => (
         <Icon name="bicycle" style={{ fontSize: 16, color: tintColor }} />
       ),
-    })
+    }),
   },
   DispatchNav: {
     screen: DispatchNavigator,
@@ -68,14 +68,14 @@ export default createDrawerNavigator({
       drawerIcon: ({ tintColor }) => (
         <Icon name="bicycle" style={{ fontSize: 16, color: tintColor }} />
       ),
-    })
+    }),
   },
   // This screen will not appear in drawer
   // We need to put it here to be acessible from everywhere
   RegisterConfirmNav: {
     screen: RegisterConfirmStack,
     path: '/register',
-  }
+  },
 }, {
   contentComponent: DrawerContent,
 })

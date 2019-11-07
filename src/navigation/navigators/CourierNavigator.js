@@ -21,7 +21,7 @@ const Tabs = createBottomTabNavigator({
           <Icon type="FontAwesome" name="map" style={{ color: tintColor }} />
         )
       },
-    })
+    }),
   },
   CourierTaskList: {
     screen: navigation.CourierTaskListPage,
@@ -31,13 +31,13 @@ const Tabs = createBottomTabNavigator({
         return (
           <Icon type="FontAwesome" name="list" style={{ color: tintColor }} />
         )
-      }
-    })
+      },
+    }),
   },
 }, {
   tabBarOptions: {
-    showLabel: false
-  }
+    showLabel: false,
+  },
 })
 
 const MainNavigator = createStackNavigator({
@@ -55,15 +55,15 @@ const MainNavigator = createStackNavigator({
             <Icon name="navigate" style={{ color: navigation.getParam('tracking', false) ? 'green' : 'lightgrey' }}/>
           </Button>
         </View>
-      )
-    })
+      ),
+    }),
   },
   Task: {
     screen: TaskNavigator,
     navigationOptions: ({ navigation }) => ({
       title: `${i18n.t('TASK')} #${navigation.state.params.task.id}`,
-    })
-  }
+    }),
+  },
 }, {
   initialRouteKey: 'CourierHome',
   initialRouteName: 'CourierHome',
@@ -75,16 +75,16 @@ const SettingsStack = createStackNavigator({
     screen: navigation.CourierSettings,
     navigationOptions: ({ navigation }) => ({
       header: null,
-    })
+    }),
   },
   CourierSettingsTags: {
     screen: navigation.CourierSettingsTags,
     navigationOptions: ({ navigation }) => ({
       header: null,
-    })
+    }),
   },
 }, {
-  defaultNavigationOptions
+  defaultNavigationOptions,
 })
 
 export default createStackNavigator({
@@ -92,13 +92,13 @@ export default createStackNavigator({
     screen: MainNavigator,
     navigationOptions: ({ navigation }) => ({
       header: null,
-    })
+    }),
   },
   CourierSettings: {
     screen: SettingsStack,
     navigationOptions: ({ navigation }) => ({
-      title: i18n.t('SETTINGS')
-    })
+      title: i18n.t('SETTINGS'),
+    }),
   },
 }, {
   defaultNavigationOptions,

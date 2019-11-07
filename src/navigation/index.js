@@ -62,7 +62,7 @@ export default {
   TaskPhoto,
   TaskSignature,
   Loading: require('./Loading'),
-  ConfigureServer: require('./ConfigureServer')
+  ConfigureServer: require('./ConfigureServer'),
 }
 
 export const defaultNavigationOptions = {
@@ -72,7 +72,7 @@ export const defaultNavigationOptions = {
   headerBackTitleStyle: {
     color: whiteColor,
     fontWeight: 'normal',
-    fontFamily: fontTitleName
+    fontFamily: fontTitleName,
   },
   headerTintColor: whiteColor,
   headerTitleStyle: {
@@ -80,7 +80,7 @@ export const defaultNavigationOptions = {
     // fontWeight needs to be defined or it doesn't work
     // @see https://github.com/react-community/react-navigation/issues/542#issuecomment-345289122
     fontWeight: 'normal',
-    fontFamily: fontTitleName
+    fontFamily: fontTitleName,
   },
 }
 

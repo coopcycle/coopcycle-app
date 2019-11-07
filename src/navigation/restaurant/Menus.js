@@ -3,7 +3,7 @@ import { Dimensions, FlatList, InteractionManager, StyleSheet, TouchableOpacity,
 import {
   Container, Header, Content,
   Left, Right, Body,
-  List, ListItem, Icon, Text, Radio, Button
+  List, ListItem, Icon, Text, Radio, Button,
 } from 'native-base'
 import _ from 'lodash'
 import Modal from 'react-native-modal'
@@ -43,14 +43,14 @@ class Menus extends Component {
 
   _keyExtractor(item, index) {
 
-    return item['identifier']
+    return item.identifier
   }
 
   _onConfirm() {
     const currentItem = { ...this.state.currentItem }
     this.setState({
       isModalVisible: false,
-      currentItem: null
+      currentItem: null,
     }, () => {
       InteractionManager.runAfterInteractions(() =>
         this.props.activateMenu(this.props.restaurant, currentItem))
@@ -72,7 +72,7 @@ class Menus extends Component {
           <View style={ styles.modalContent }>
             <Button block warning onPress={ () => this._onConfirm() } style={{ marginBottom: 15 }}>
               <Text>{ this.props.t('RESTAURANT_SETTINGS_MENU_ACTIVATE', {
-                name: this.state.currentItem ? this.state.currentItem.name : ''
+                name: this.state.currentItem ? this.state.currentItem.name : '',
               }) }</Text>
             </Button>
             <Button block bordered info onPress={ () => this.setState({ isModalVisible: false, currentItem: null }) }>
@@ -87,12 +87,12 @@ class Menus extends Component {
 
 const styles = StyleSheet.create({
   modalContent: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
     borderRadius: 4,
-    borderColor: "rgba(0, 0, 0, 0.1)",
+    borderColor: 'rgba(0, 0, 0, 0.1)',
     padding: 15,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
 })
 

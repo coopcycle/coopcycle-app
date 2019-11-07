@@ -13,18 +13,18 @@ const ProofOfDeliveryTabs = createMaterialTopTabNavigator({
   TaskPhoto: {
     screen: navigation.TaskPhoto,
     navigationOptions: ({ navigation }) => ({
-      title: i18n.t('PHOTO')
-    })
+      title: i18n.t('PHOTO'),
+    }),
   },
   TaskSignature: {
     screen: navigation.TaskSignature,
     navigationOptions: ({ navigation }) => ({
-      title: i18n.t('SIGNATURE')
-    })
-  }
+      title: i18n.t('SIGNATURE'),
+    }),
+  },
 }, {
   // Disable swipe to avoid swiping when signing
-  swipeEnabled: false
+  swipeEnabled: false,
 })
 
 const CompleteStack = createStackNavigator({
@@ -32,13 +32,13 @@ const CompleteStack = createStackNavigator({
     screen: navigation.TaskComplete,
     navigationOptions: ({ navigation }) => ({
       header: null,
-    })
+    }),
   },
   TaskCompleteProofOfDelivery: {
     screen: ProofOfDeliveryTabs,
     navigationOptions: ({ navigation }) => ({
       header: null,
-    })
+    }),
   },
 }, {
   defaultNavigationOptions,
@@ -63,7 +63,7 @@ export default createStackNavigator({
       // Use header = null to get rid of the header
       // The screen's header will be used
       header: null,
-    })
+    }),
   },
   TaskComplete: {
     screen: CompleteStack,
@@ -72,7 +72,7 @@ export default createStackNavigator({
       // The screen's header will be used
       header: null,
       title: `${i18n.t('TASK')} #${navigation.state.params.task.id}`,
-    })
+    }),
   },
 }, {
   defaultNavigationOptions,
@@ -101,6 +101,6 @@ export default createStackNavigator({
           title={ title }
           backImage={ backImage } />
       )
-    }
-  })
+    },
+  }),
 })
