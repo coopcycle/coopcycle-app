@@ -1,8 +1,7 @@
 import React from 'react'
-import { View } from 'react-native'
 import {
-  Container, Header, Button, Icon, Left, Right,
-  Body, Title, Content, Text,
+  Container, Right,
+  Body, Content, Text,
   List, ListItem, Radio,
 } from 'native-base'
 import { connect } from 'react-redux'
@@ -12,7 +11,6 @@ import {
   filterTasks,
   clearTasksFilter,
   selectIsTagHidden,
-  selectFilteredTasks,
   selectTagNames,
 } from '../../redux/Courier'
 

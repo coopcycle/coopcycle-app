@@ -7,7 +7,7 @@ import {
 } from 'react-native'
 import {
   Container, Content,
-  Button, Text, Icon,
+  Button, Text,
 } from 'native-base'
 import { withTranslation } from 'react-i18next'
 
@@ -15,7 +15,7 @@ class ConfigureServer extends Component {
 
   render() {
 
-    const { height, width } = Dimensions.get('window')
+    const { width } = Dimensions.get('window')
 
     return (
       <Container>

@@ -2,12 +2,10 @@ import React, { Component } from 'react'
 import { ActivityIndicator, StyleSheet, TouchableOpacity, View } from 'react-native'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
-import _ from 'lodash'
 import { Button, Icon, Text } from 'native-base'
 
 import Settings from '../Settings'
 import Server from '../Server'
-import API from '../API'
 import AppUser from '../AppUser'
 import { bootstrap, resetServer, setServers } from '../redux/App/actions'
 
@@ -34,7 +32,8 @@ class Loading extends Component {
       try {
 
         const user = await AppUser.load()
-        const settings = await Settings.synchronize(baseURL)
+
+        await Settings.synchronize(baseURL)
 
         this.props.bootstrap(baseURL, user)
 

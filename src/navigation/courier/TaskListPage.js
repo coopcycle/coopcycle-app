@@ -1,10 +1,8 @@
 import React, { Component } from 'react'
-import { StyleSheet, View } from 'react-native'
-import { Container, Content, Button, Icon, Text, Thumbnail, CheckBox, Header, Left, Right, Grid, Row, Col, Body, Title } from 'native-base'
+import { StyleSheet } from 'react-native'
+import { Container, Content, Text } from 'native-base'
 
 import { connect } from 'react-redux'
-import _ from 'lodash'
-import moment from 'moment'
 import { NavigationActions } from 'react-navigation'
 
 import TaskList from '../../components/TaskList'
@@ -13,14 +11,9 @@ import { whiteColor, dateSelectHeaderHeight } from '../../styles/common'
 import { withTranslation } from 'react-i18next'
 import {
   loadTasks,
-  selectTasksList,
   selectTaskSelectedDate,
-  selectIsTasksLoading,
   selectFilteredTasks,
-  selectTagNames,
 } from '../../redux/Courier'
-
-const taskComparator = (taskA, taskB) => taskA['@id'] === taskB['@id']
 
 const styles = StyleSheet.create({
   container: {
