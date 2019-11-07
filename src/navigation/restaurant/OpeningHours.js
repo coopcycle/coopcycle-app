@@ -3,7 +3,7 @@ import { Dimensions, FlatList, StyleSheet, View } from 'react-native'
 import {
   Container, Header, Title, Content,
   Left, Right, Body,
-  List, ListItem, Separator, Button, Icon, Text
+  List, ListItem, Separator, Button, Icon, Text, Switch
 } from 'native-base'
 import _ from 'lodash'
 import moment from 'moment'

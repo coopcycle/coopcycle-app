@@ -217,7 +217,6 @@ function mapStateToProps (state) {
 function mapDispatchToProps (dispatch) {
   return {
     loadTasks: (client, selectedDate) => dispatch(loadTasks(client, selectedDate)),
-    send: (msg) => dispatch(send(msg)),
   }
 }
 
