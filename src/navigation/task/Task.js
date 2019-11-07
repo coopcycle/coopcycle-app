@@ -162,7 +162,7 @@ class Task extends Component {
 
     const body = (
       <Col size={ onPress ? 7 : 8 }>
-        { text && <Text style={ styles.taskDetailText }>{ text }</Text> }
+        { text ? (<Text style={ styles.taskDetailText }>{ text }</Text>) : null }
         { component && component }
       </Col>
     )

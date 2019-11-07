@@ -130,7 +130,7 @@ class ProductOptions extends Component {
       <ListItem key={ menuItem.identifier } onPress={ () => this._onPressItem(menuSection, menuItem) }>
         <Left style={{ flex: 1, justifyContent: 'space-between' }}>
           <Text>{ menuItem.name }</Text>
-          { price > 0 && (<Text note>{ `${formatPrice(price)} €` }</Text>) }
+          { price > 0 ? (<Text note>{ `${formatPrice(price)} €` }</Text>) : null }
         </Left>
         <Right>
           <Radio selected={ selected } />

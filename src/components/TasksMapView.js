@@ -196,7 +196,7 @@ class TasksMapView extends Component {
         ref={ this.markers.get(task['@id']) }>
         <Callout onPress={ () => this.onCalloutPress(task) }
           style={ [ styles.markerCallout, { width: Math.floor(width * 0.6666) } ] }>
-          { task.address.name && (<Text style={ styles.markerCalloutText }>{ task.address.name }</Text>) }
+          { task.address.name ? (<Text style={ styles.markerCalloutText }>{ task.address.name }</Text>) : null }
           <Text style={ styles.markerCalloutText } numberOfLines={ 3 }>
             { addressName(task) }
           </Text>
