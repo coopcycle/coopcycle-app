@@ -58,8 +58,8 @@ class AuthenticateForm extends Component {
 const styles = StyleSheet.create({
   spacer: {
     alignItems: 'center',
-    padding: 20
-  }
+    padding: 20,
+  },
 })
 
 export default withTranslation()(AuthenticateForm)

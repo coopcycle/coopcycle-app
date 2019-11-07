@@ -24,7 +24,7 @@ function mapStateToProps(state) {
       || state.dispatch.isFetching
       || state.restaurant.isFetching
       || state.checkout.isFetching
-      || false
+      || false,
   }
 }
 

@@ -12,34 +12,34 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 15,
     borderTopWidth: 1,
-    borderTopColor: '#f1f1f1'
+    borderTopColor: '#f1f1f1',
   },
   sectionHeaderText: {
     fontFamily: 'Raleway-Regular',
     color: '#d9d9d9',
     fontSize: 14,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   },
   item: {
     marginBottom: 10,
-    paddingHorizontal: 15
+    paddingHorizontal: 15,
   },
   disabledText: {
-    color: '#a7a7a7'
+    color: '#a7a7a7',
   },
   itemPrice: {
     color: '#828282',
-    fontSize: 14
+    fontSize: 14,
   },
   rightCol: {
     flex: 1,
     alignItems: 'flex-end',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   rightIcon: {
     color: '#747474',
-    fontSize: 22
-  }
+    fontSize: 22,
+  },
 });
 
 export default class Menu extends Component {
@@ -66,7 +66,7 @@ export default class Menu extends Component {
 
     if (enabled) {
       itemProps = {
-        onPress: () => this.props.onItemClick(item)
+        onPress: () => this.props.onItemClick(item),
       }
     } else {
       itemNameStyle.push(styles.disabledText)

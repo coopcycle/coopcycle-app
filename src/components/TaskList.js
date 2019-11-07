@@ -8,7 +8,7 @@ import moment from 'moment'
 import _ from 'lodash'
 import { withTranslation } from 'react-i18next'
 
-import { greenColor, whiteColor, lightGreyColor, redColor } from "../styles/common"
+import { greenColor, whiteColor, lightGreyColor, redColor } from '../styles/common'
 
 const styles = StyleSheet.create({
   itemLeftRight: {
@@ -18,27 +18,27 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5,
   },
   itemBody: {
-    padding: 10
+    padding: 10,
   },
   item: {
     borderBottomColor: lightGreyColor,
-    borderBottomWidth: StyleSheet.hairlineWidth
+    borderBottomWidth: StyleSheet.hairlineWidth,
   },
   disabled: {
-    opacity: 0.4
+    opacity: 0.4,
   },
   text: {
-    fontSize: 14
+    fontSize: 14,
   },
   textDanger: {
-    color: redColor
+    color: redColor,
   },
   icon: {
-    fontSize: 18
+    fontSize: 18,
   },
   iconDanger: {
-    color: redColor
-  }
+    color: redColor,
+  },
 })
 
 class TaskList extends Component {
@@ -136,9 +136,9 @@ class TaskList extends Component {
           {
             component: this.renderSwipeoutLeftButton(),
             backgroundColor: greenColor,
-            onPress: () => this.props.onSwipeLeft(task)
-          }
-        ]
+            onPress: () => this.props.onSwipeLeft(task),
+          },
+        ],
       }
     }
 
@@ -149,9 +149,9 @@ class TaskList extends Component {
           {
             component: this.renderSwipeoutRightButton(),
             backgroundColor: redColor,
-            onPress: () => this.props.onSwipeRight(task)
-          }
-        ]
+            onPress: () => this.props.onSwipeRight(task),
+          },
+        ],
       }
     }
 

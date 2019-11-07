@@ -34,17 +34,17 @@ const styles = StyleSheet.create({
   },
   markerCalloutText: {
     fontSize: 14,
-    flexWrap: 'wrap'
+    flexWrap: 'wrap',
   },
   tagContainer: {
     textAlign: 'center',
     color: whiteColor,
     fontSize: 14,
     paddingHorizontal: 15,
-    width: '60%'
+    width: '60%',
   },
   modal: {
-    padding: 20
+    padding: 20,
   },
   modalFooter: {
     alignItems: 'center',
@@ -55,8 +55,8 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     paddingHorizontal: 10,
     borderBottomColor: '#f0f0f0',
-    borderBottomWidth: StyleSheet.hairlineWidth
-  }
+    borderBottomWidth: StyleSheet.hairlineWidth,
+  },
 })
 
 const latitudeDelta = 0.0722;
@@ -66,7 +66,7 @@ const edgePadding = {
   top: 20,
   left: 20,
   bottom: 20,
-  right: 20
+  right: 20,
 }
 
 const pinColor = task => {
@@ -109,7 +109,7 @@ class TasksMapView extends Component {
       // @see https://github.com/react-community/react-native-maps/search?q=showsMyLocationButton&type=Issues
       marginBottom: 1,
       isModalVisible: false,
-      modalMarkers: []
+      modalMarkers: [],
     }
 
     this.renderCluster = this.renderCluster.bind(this)
@@ -122,7 +122,7 @@ class TasksMapView extends Component {
       latitude,
       longitude,
       latitudeDelta,
-      longitudeDelta
+      longitudeDelta,
     }
 
     this.markers = new Map()
@@ -165,7 +165,7 @@ class TasksMapView extends Component {
   _onModalItemPress(item) {
     this.setState({
       isModalVisible: false,
-      modalMarkers: []
+      modalMarkers: [],
     }, () => this.props.onMarkerCalloutPress(item))
   }
 

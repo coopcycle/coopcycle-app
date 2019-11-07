@@ -10,16 +10,16 @@ import { withTranslation } from 'react-i18next'
 const styles = StyleSheet.create({
   wrapper: {
     paddingHorizontal: 15,
-    backgroundColor: '#fff'
+    backgroundColor: '#fff',
   },
   item: {
     paddingVertical: 10,
     borderBottomColor: '#f7f7f7',
-    borderBottomWidth: StyleSheet.hairlineWidth
+    borderBottomWidth: StyleSheet.hairlineWidth,
   },
   restaurantNameText: {
-    marginBottom: 5
-  }
+    marginBottom: 5,
+  },
 });
 
 class RestaurantList extends Component {

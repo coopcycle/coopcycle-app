@@ -52,7 +52,7 @@ const inputs = [
       email: {
         message: i18n.t('INVALID_EMAIL'),
       },
-    }
+    },
   },
   {
     name: 'username',
@@ -69,7 +69,7 @@ const inputs = [
         pattern: /^[a-zA-Z0-9_]{3,15}$/,
         message: i18n.t('INVALID_USERNAME_FORMAT'),
       },
-    }
+    },
   },
   {
     name: 'password',
@@ -85,7 +85,7 @@ const inputs = [
         maximum: 4096,
         message: i18n.t('INVALID_PASSWORD'),
       },
-    }
+    },
   },
   {
     name: 'passwordConfirmation',
@@ -98,8 +98,8 @@ const inputs = [
       matches: {
         key: 'password',
         message: i18n.t('INVALID_PASSWORD_CONFIRMATION'),
-      }
-    }
+      },
+    },
   },
   {
     name: 'givenName',
@@ -109,8 +109,8 @@ const inputs = [
       length: {
         minimum: 1,
         message: i18n.t('INVALID_GIVEN_NAME'),
-      }
-    }
+      },
+    },
   },
   {
     name: 'familyName',
@@ -120,8 +120,8 @@ const inputs = [
       length: {
         minimum: 1,
         message: i18n.t('INVALID_FAMILY_NAME'),
-      }
-    }
+      },
+    },
   },
   {
     name: 'telephone',
@@ -134,8 +134,8 @@ const inputs = [
       phoneNumber: {
         message: i18n.t('INVALID_PHONE_NUMBER'),
       },
-    }
-  }
+    },
+  },
 ]
 
 const constraints = _.reduce(
@@ -157,7 +157,7 @@ class RegisterForm extends React.Component {
       username: this.props.prefill === true ? 'johndoe' : '',
       password: this.props.prefill === true ? '12345678' : '',
       passwordConfirmation: this.props.prefill === true ? '12345678' : '',
-      errors: {}
+      errors: {},
     }
 
     this._inputComponents = new Map()
@@ -173,7 +173,7 @@ class RegisterForm extends React.Component {
 
     if (newErrors) {
       this.setState({
-        errors: newErrors
+        errors: newErrors,
       })
 
       return
@@ -183,7 +183,7 @@ class RegisterForm extends React.Component {
 
     const newData = {
       ...data,
-      telephone: phoneNumber.format('E.164')
+      telephone: phoneNumber.format('E.164'),
     }
 
     this.props.onSubmit(newData)
@@ -191,7 +191,7 @@ class RegisterForm extends React.Component {
 
   _onChangeTelephone(value) {
     this.setState({
-      telephone: new AsYouType(this.country).input(value)
+      telephone: new AsYouType(this.country).input(value),
     })
   }
 
@@ -238,7 +238,7 @@ class RegisterForm extends React.Component {
               inputProps = {
                 ...inputProps,
                 returnKeyType: 'done',
-                onSubmitEditing: _ => this._onSubmit()
+                onSubmitEditing: _ => this._onSubmit(),
               }
             } else {
               inputProps = {
@@ -248,7 +248,7 @@ class RegisterForm extends React.Component {
                   let index = inputs.findIndex((el) => el.name == input.name)
                   let nextInputName = inputs[index + 1].name
                   this._inputComponents.get(nextInputName)._root.focus()
-                }
+                },
               }
             }
 

@@ -14,14 +14,14 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     paddingHorizontal: 5,
     borderBottomColor: '#ddd',
-    borderBottomWidth: StyleSheet.hairlineWidth
+    borderBottomWidth: StyleSheet.hairlineWidth,
   },
   itemLast: {
-    borderBottomWidth: 0
+    borderBottomWidth: 0,
   },
   adjustmentText: {
     fontSize: 14,
-    color: '#999'
+    color: '#999',
   },
   col: {
     justifyContent: 'center',
@@ -31,11 +31,11 @@ const styles = StyleSheet.create({
   },
   itemQuantity: {
     fontWeight: '600',
-    fontSize: 15 * 1.2
+    fontSize: 15 * 1.2,
   },
   itemQuantityHighlight: {
-    color: '#FF851B'
-  }
+    color: '#FF851B',
+  },
 });
 
 class OrderItems extends Component {
@@ -87,7 +87,7 @@ class OrderItems extends Component {
       <View style={ styles.container }>
         <FlatList
           data={ order.items }
-          keyExtractor={ (item, index) => `ITEM#${item['id']}` }
+          keyExtractor={ (item, index) => `ITEM#${item.id}` }
           renderItem={ ({ item }) => this.renderItem(item) } />
         <Grid>
           <Row style={ [ styles.item, styles.itemLast ] }>

@@ -25,7 +25,7 @@ class NotificationHandler extends Component {
 
     this.state = {
       sound: null,
-      isSoundReady: false
+      isSoundReady: false,
     }
   }
 
@@ -48,7 +48,7 @@ class NotificationHandler extends Component {
 
       this.setState({
         sound: bell,
-        isSoundReady: true
+        isSoundReady: true,
       })
     })
   }
@@ -107,7 +107,7 @@ class NotificationHandler extends Component {
           }
         }
 
-      }
+      },
     })
   }
 
@@ -148,13 +148,13 @@ class NotificationHandler extends Component {
         params: {
           restaurant: order.restaurant,
           // We don't want to load orders again when navigating
-          loadOrders: false
+          loadOrders: false,
         },
         // We use push, because if we are already on RestaurantOrder, it opens a new screen
         // @see https://reactnavigation.org/docs/en/navigating.html#navigate-to-a-route-multiple-times
         action: StackActions.push({
           routeName: 'RestaurantOrder',
-          params: { order }
+          params: { order },
         }),
       }),
     }))
@@ -249,9 +249,9 @@ const styles = StyleSheet.create({
     paddingVertical: 25,
   },
   modalContent: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
     borderRadius: 4,
-    borderColor: "rgba(0, 0, 0, 0.1)"
+    borderColor: 'rgba(0, 0, 0, 0.1)',
   },
   item: {
     paddingVertical: 25,
@@ -283,7 +283,7 @@ function mapDispatchToProps (dispatch) {
     loadTasks: (httpClient, date) => dispatch(loadTasks(httpClient, date)),
     setRemotePushToken: token => dispatch(setRemotePushToken(token)),
     clearNotifications: () => dispatch(clearNotifications()),
-    pushNotification: (event, params) => dispatch(pushNotification(event, params))
+    pushNotification: (event, params) => dispatch(pushNotification(event, params)),
   }
 }
 

@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
     paddingRight: 20,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
 });
 
@@ -47,7 +47,7 @@ const typeaheadStyle = {
   },
   row: {
     backgroundColor: '#ffffff',
-  }
+  },
 }
 
 export default class RestaurantSearch extends Component {

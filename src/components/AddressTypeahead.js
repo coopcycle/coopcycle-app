@@ -33,7 +33,7 @@ class AddressTypeahead extends Component {
     const styles = {
       ...this.props.style,
       // Make sure ListView takes 100% width
-      listView: { width }
+      listView: { width },
     }
 
     const country = Settings.get('country').toUpperCase()
@@ -46,37 +46,37 @@ class AddressTypeahead extends Component {
     if (this.props.testID) {
       textInputProps = {
         ...textInputProps,
-        testID: this.props.testID
+        testID: this.props.testID,
       }
     }
 
     if (this.props.onFocus) {
       textInputProps = {
         ...textInputProps,
-        onFocus: this.props.onFocus
+        onFocus: this.props.onFocus,
       }
     }
 
     if (this.props.onBlur) {
       textInputProps = {
         ...textInputProps,
-        onBlur: this.props.onBlur
+        onBlur: this.props.onBlur,
       }
     }
     if (this.props.onChangeText) {
       textInputProps = {
         ...textInputProps,
-        onChangeText: this.props.onChangeText
+        onChangeText: this.props.onChangeText,
       }
     }
     if (this.props.defaultValue) {
       textInputProps = {
         ...textInputProps,
-        defaultValue: this.props.defaultValue
+        defaultValue: this.props.defaultValue,
       }
       otherProps = {
         ...otherProps,
-        getDefaultValue: () => this.props.defaultValue
+        getDefaultValue: () => this.props.defaultValue,
       }
     }
 
@@ -84,13 +84,13 @@ class AddressTypeahead extends Component {
     if (this.props.renderDescription) {
       otherProps = {
         ...otherProps,
-        renderDescription: this.props.renderDescription
+        renderDescription: this.props.renderDescription,
       }
     }
     if (this.props.renderRow) {
       otherProps = {
         ...otherProps,
-        renderRow: this.props.renderRow
+        renderRow: this.props.renderRow,
       }
     }
 
@@ -124,7 +124,7 @@ class AddressTypeahead extends Component {
         nearbyPlacesAPI="GoogleReverseGeocoding" // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
         GoogleReverseGeocodingQuery={{
           // available options for GoogleReverseGeocoding API : https://developers.google.com/maps/documentation/geocoding/intro
-          components: `country:${country}`
+          components: `country:${country}`,
         }}
         // filter the reverse geocoding results by types - ['locality', 'administrative_area_level_3'] if you want to display only cities
         filterReverseGeocodingByTypes={[ 'street_address', 'route', 'geocode' ]}

@@ -15,7 +15,7 @@ class HeaderButton extends Component {
     if (this.props.iconType) {
       iconProps = {
         ...iconProps,
-        type: this.props.iconType
+        type: this.props.iconType,
       }
     }
 
@@ -28,7 +28,7 @@ class HeaderButton extends Component {
     if (this.props.testID) {
       otherProps = {
         ...otherProps,
-        testID: this.props.testID
+        testID: this.props.testID,
       }
     }
 
@@ -49,17 +49,17 @@ class HeaderButton extends Component {
 const styles = StyleSheet.create({
   base: {
     paddingHorizontal: 20,
-    paddingVertical: 5
+    paddingVertical: 5,
   },
   withText: {
     flex: 1,
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   textLeft: {
     color: '#fff',
-    paddingRight: 15
-  }
+    paddingRight: 15,
+  },
 })
 
 export default HeaderButton
