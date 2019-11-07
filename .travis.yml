@@ -4,6 +4,9 @@ matrix:
     env: LANE='node'
     node_js: 8
     cache: yarn
+    script:
+      - yarn lint
+      - yarn test
   - language: android
     env: ANDROID_API_LEVEL=18
     sudo: required
