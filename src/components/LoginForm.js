@@ -53,6 +53,9 @@ class LoginForm extends Component {
               returnKeyType="done"
               onSubmitEditing={ _ => this._onSubmit() }/>
           </Item>
+          <Button block transparent onPress={() => this.props.onForgotPassword()}>
+            <Text>{this.props.t('FORGOT_PASSWORD')}</Text>
+          </Button>
         </Form>
         <View style={{ marginTop: 20 }}>
           <Button block onPress={ () => this._onSubmit() } testID="loginSubmit">

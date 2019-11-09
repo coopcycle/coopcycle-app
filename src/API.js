@@ -208,35 +208,13 @@ Client.prototype.register = function (data) {
     })
 }
 
-Client.prototype.login = function(username, password) {
-  return login(this.httpBaseURL, username, password)
-    .then((credentials) => {
-
-      const enabled =
-        credentials.hasOwnProperty('enabled') ? credentials.enabled : true
-
-      Object.assign(this.model, {
-        username: credentials.username,
-        email: credentials.email,
-        token: credentials.token,
-        refreshToken: credentials.refresh_token,
-        roles: credentials.roles,
-        enabled
-      });
-
-      return this.model.save();
-    });
-}
-
 Client.prototype.confirmRegistration = function(token) {
-
   const req = {
     method: 'GET',
     url: `${this.httpBaseURL}/api/register/confirm/${token}`,
   }
 
   return new Promise((resolve, reject) => {
-
     axios(req)
       .then(response => resolve(response.data))
       .catch(error => {
@@ -246,11 +224,79 @@ Client.prototype.confirmRegistration = function(token) {
           reject({ status: 500 })
         }
       })
+  }).then(updateUserData(this.model))
+}
+
+Client.prototype.login = function(username, password) {
+  return login(this.httpBaseURL, username, password)
+    .then(updateUserData(this.model))
+}
+
+Client.prototype.resetPassword = function(username) {
+  const req = {
+    method: 'POST',
+    url: `${this.httpBaseURL}/api/resetting/send-email`,
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    data: qs.stringify({
+      username: username,
+    }),
+  }
+
+  return new Promise((resolve, reject) => {
+    axios(req)
+      .then(response => resolve(response.data))
+      .catch(error => {
+        if (error.response) {
+          reject({status: error.response.status})
+        } else {
+          reject({status: 500})
+        }
+      })
   })
 }
 
-var register = function(baseURL, data) {
+Client.prototype.setNewPassword = function(token, password) {
+  const req = {
+    method: 'POST',
+    url: `${this.httpBaseURL}/api/resetting/reset/${token}`,
+    data: qs.stringify({
+      password: password,
+    }),
+  }
 
+  return new Promise((resolve, reject) => {
+    axios(req)
+      .then(response => resolve(response.data))
+      .catch(error => {
+        if (error.response) {
+          reject({status: error.response.status})
+        } else {
+          reject({status: 500})
+        }
+      })
+  }).then(updateUserData(this.model))
+}
+
+let updateUserData = model => {
+  return credentials => {
+    const enabled = credentials.hasOwnProperty('enabled') ? credentials.enabled : true
+
+    Object.assign(model, {
+      username: credentials.username,
+      email: credentials.email,
+      token: credentials.token,
+      refreshToken: credentials.refresh_token,
+      roles: credentials.roles,
+      enabled
+    })
+
+    return model.save()
+  }
+}
+
+var register = function(baseURL, data) {
   const req = {
     method: 'POST',
     url: `${baseURL}/api/register`,
@@ -261,7 +307,6 @@ var register = function(baseURL, data) {
   }
 
   return new Promise((resolve, reject) => {
-
     axios(req)
       .then(response => resolve(response.data))
       .catch(error => {
@@ -275,7 +320,6 @@ var register = function(baseURL, data) {
 }
 
 var login = function(baseURL, username, password) {
-
   const req = {
     method: 'POST',
     url: `${baseURL}/api/login_check`,
@@ -289,7 +333,6 @@ var login = function(baseURL, username, password) {
   }
 
   return new Promise((resolve, reject) => {
-
     axios(req)
       .then(response => {
         resolve(response.data)

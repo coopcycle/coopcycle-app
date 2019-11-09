@@ -6,7 +6,7 @@ import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 
 import AuthenticateForm from '../../components/AuthenticateForm'
-import { login, register } from '../../redux/App/actions'
+import {forgotPassword, login, register} from '../../redux/App/actions'
 
 class Login extends Component {
 
@@ -39,8 +39,19 @@ class Login extends Component {
         <Content padder extraScrollHeight={64}>
           { this.renderMessage() }
           <AuthenticateForm
-            onLogin={ (email, password) => this.props.login(email, password, false) }
-            onRegister={ data => this.props.register(data) } />
+            onLogin={(email, password) =>
+              this.props.login(email, password, false)
+            }
+            onRegister={data => this.props.register(data)}
+            onForgotPassword={() => {
+              this.props.forgotPassword()
+              this.props.navigation.navigate('CheckoutForgotPassword', {
+                checkEmailRouteName: 'CheckoutResetPasswordCheckEmail',
+                resumeCheckoutAfterActivation: true,
+              })
+            }
+            }
+          />
         </Content>
       </Container>
     )
@@ -67,6 +78,7 @@ function mapDispatchToProps(dispatch) {
   return {
     login: (email, password, navigate) => dispatch(login(email, password, navigate)),
     register: data => dispatch(register(data, 'CheckoutCheckEmail', 'CheckoutLogin', true)),
+    forgotPassword: () => dispatch(forgotPassword()),
   }
 }
 

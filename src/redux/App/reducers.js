@@ -20,6 +20,10 @@ import {
   LOGOUT_SUCCESS,
   AUTHENTICATE,
   RESUME_CHECKOUT_AFTER_ACTIVATION,
+  RESET_PASSWORD_INIT,
+  RESET_PASSWORD_REQUEST,
+  RESET_PASSWORD_REQUEST_SUCCESS,
+  RESET_PASSWORD_REQUEST_FAILURE,
   SET_SERVERS,
   TRACKER_INITIALIZED,
   TRACKER_DISABLED,
@@ -40,6 +44,11 @@ const initialState = {
   loading: false,
   notifications: [],
   lastAuthenticationError: null,
+  forgotPassword: {
+    inputError: null,
+    nonInputError: null,
+    requested: false,
+  },
   isAuthenticated: false,
   resumeCheckoutAfterActivation: false,
   servers: [],
@@ -131,6 +140,47 @@ export default (state = initialState, action = {}) => {
         ...state,
         loading: false,
         lastAuthenticationError: action.payload,
+      }
+
+    case RESET_PASSWORD_INIT:
+      return {
+        ...state,
+        forgotPassword: {
+          inputError: null,
+          nonInputError: null,
+          requested: false,
+        },
+      }
+
+  case RESET_PASSWORD_REQUEST:
+      return {
+        ...state,
+        loading: true,
+        forgotPassword: {
+          ...state.forgotPassword,
+          inputError: null,
+          nonInputError: null,
+        }
+      }
+
+    case RESET_PASSWORD_REQUEST_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        forgotPassword: {
+          ...state.forgotPassword,
+          requested: true,
+        },
+      }
+
+    case RESET_PASSWORD_REQUEST_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        forgotPassword: {
+          ...state.forgotPassword,
+          nonInputError: action.payload,
+        },
       }
 
     case LOGOUT_SUCCESS:

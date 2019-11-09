@@ -9,7 +9,7 @@ import {
 } from 'native-base'
 import { withTranslation } from 'react-i18next'
 
-class CheckEmail extends Component {
+class RegisterCheckEmail extends Component {
 
   _onPressLogin() {
 
@@ -64,4 +64,4 @@ const styles = StyleSheet.create({
   },
 })
 
-module.exports = withTranslation()(CheckEmail)
+module.exports = withTranslation()(RegisterCheckEmail)
