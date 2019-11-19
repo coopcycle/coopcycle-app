@@ -1,3 +1,6 @@
+env:
+  global:
+    - NODE_OPTIONS=--max-old-space-size=8192
 matrix:
   include:
   - language: node_js
