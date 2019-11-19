@@ -168,6 +168,8 @@ PODS:
     - React
   - RNCPushNotificationIOS (1.0.2):
     - React
+  - RNDateTimePicker (2.1.0):
+    - React
   - RNFirebase (5.5.6):
     - Firebase/Core
     - React
@@ -228,6 +230,7 @@ DEPENDENCIES:
   - rn-fetch-blob (from `../node_modules/rn-fetch-blob`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
   - "RNCPushNotificationIOS (from `../node_modules/@react-native-community/push-notification-ios`)"
+  - "RNDateTimePicker (from `../node_modules/@react-native-community/datetimepicker`)"
   - RNFirebase (from `../node_modules/react-native-firebase/ios`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNLocalize (from `../node_modules/react-native-localize`)
@@ -314,6 +317,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/async-storage"
   RNCPushNotificationIOS:
     :path: "../node_modules/@react-native-community/push-notification-ios"
+  RNDateTimePicker:
+    :path: "../node_modules/@react-native-community/datetimepicker"
   RNFirebase:
     :path: "../node_modules/react-native-firebase/ios"
   RNGestureHandler:
@@ -375,6 +380,7 @@ SPEC CHECKSUMS:
   rn-fetch-blob: f525a73a78df9ed5d35e67ea65e79d53c15255bc
   RNCAsyncStorage: 3c304d1adfaea02ec732ac218801cb13897aa8c0
   RNCPushNotificationIOS: 0b8d06ff190d84627dd17501bfb96652375970e4
+  RNDateTimePicker: 9db00606d689f5653f08aa601c81b9d3266a0a19
   RNFirebase: ac0de8b24c6f91ae9459575491ed6a77327619c6
   RNGestureHandler: a4ddde1ffc6e590c8127b8b7eabfdade45475c74
   RNLocalize: 07eb7a91d10021cdf59d80061ebf3adb8a5b5688
