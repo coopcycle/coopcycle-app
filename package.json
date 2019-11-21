@@ -25,6 +25,8 @@
     "libphonenumber-js": "^1.7.25",
     "lodash": "^4.17.15",
     "moment": "^2.23.0",
+    "moment-business-days": "^1.1.3",
+    "moment-range": "^4.0.2",
     "native-base": "^2.13.8",
     "qs": "^6.9.0",
     "react": "16.8.6",
