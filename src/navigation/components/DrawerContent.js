@@ -15,14 +15,17 @@ class DrawerContent extends Component {
 
   render() {
 
-    const { items, restaurants, user, isAuthenticated } = this.props
+    const { items, restaurants, stores, user, isAuthenticated } = this.props
 
     const restaurantItems =
       _.filter(items, item => item.routeName === 'RestaurantNav')
+    const storeItems =
+      _.filter(items, item => item.routeName === 'StoreNav')
     const courierItems =
       _.filter(items, item => item.routeName === 'CourierNav')
     const accountItems =
       _.filter(items, item => item.routeName === 'AccountNav')
+
     const adminItems =
       _.filter(items, item => _.includes(['DispatchNav'], item.routeName))
 
@@ -37,6 +40,7 @@ class DrawerContent extends Component {
       }
 
       if (_.includes(restaurantItems, item)
+        || _.includes(storeItems, item)
         || _.includes(courierItems, item)
         || _.includes(accountItems, item)
         || _.includes(adminItems, item)) {
@@ -52,6 +56,9 @@ class DrawerContent extends Component {
     }
 
     let restaurantSection = (
+      <View />
+    )
+    let storeSection = (
       <View />
     )
     let courierSection = (
@@ -100,6 +107,42 @@ class DrawerContent extends Component {
         )
       }
 
+      if (user.hasRole('ROLE_STORE') && stores.length > 0) {
+        let storeItemsProps
+
+        // When there is ONE store, show a direct link
+        if (stores.length === 1) {
+          storeItemsProps = {
+            ...this.props,
+            items: stores.map(store => ({
+              ...storeItems[0],
+              params: {
+                store,
+              },
+            })),
+            getLabel: ({ route }) => {
+              const { store } = route.params
+
+              return store.name
+            },
+          }
+        } else {
+          storeItemsProps = {
+            ...this.props,
+            items: storeItems,
+            getLabel: ({ route }) => {
+              return this.props.t('STORES')
+            },
+          }
+        }
+
+        storeSection = (
+          <View>
+            <DrawerItems { ...storeItemsProps } />
+          </View>
+        )
+      }
+
       if (user.hasRole('ROLE_COURIER')) {
         const courierItemsProps = {
           ...this.props,
@@ -139,6 +182,7 @@ class DrawerContent extends Component {
           </TouchableOpacity>
           <DrawerItems { ...otherItemsProps } itemsContainerStyle={ styles.itemsContainer } />
           { restaurantSection }
+          { storeSection }
           { courierSection }
           { adminSection }
         </SafeAreaView>
@@ -170,6 +214,7 @@ function mapStateToProps(state) {
     user: state.app.user,
     isAuthenticated: state.app.isAuthenticated,
     restaurants: state.restaurant.myRestaurants,
+    stores: state.store.myStores,
   }
 }
 

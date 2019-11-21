@@ -38,7 +38,6 @@ class AddressAutocomplete extends Component {
     axios
       .get(`https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${encodeURIComponent(text)}&${qs.stringify(query)}`)
       .then(response => {
-        console.log(response.data)
         this.setState({ results: response.data.predictions })
       })
   }, 300)
@@ -122,7 +121,7 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
   },
   item: {
-    paddingVertical: 5,
+    paddingVertical: 10,
     paddingHorizontal: 10,
     backgroundColor: '#FFFFFF'
   },

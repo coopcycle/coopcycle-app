@@ -18,6 +18,11 @@ import TaskComplete from './task/Complete'
 import TaskPhoto from './task/Photo'
 import TaskSignature from './task/Signature'
 
+import StoreDashboard from './store/Dashboard'
+import StoreDelivery from './store/Delivery'
+import StoreNewDeliveryAddress from './store/NewDeliveryAddress'
+import StoreNewDeliveryForm from './store/NewDeliveryForm'
+
 export default {
   RestaurantsPage: require('./checkout/Search'),
   CheckoutRestaurant: require('./checkout/Restaurant'),
@@ -64,6 +69,10 @@ export default {
   TaskComplete,
   TaskPhoto,
   TaskSignature,
+  StoreDashboard,
+  StoreDelivery,
+  StoreNewDeliveryAddress,
+  StoreNewDeliveryForm,
   Loading: require('./Loading'),
   ConfigureServer: require('./ConfigureServer'),
 }

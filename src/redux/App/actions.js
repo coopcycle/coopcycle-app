@@ -20,6 +20,9 @@ import {
   loadMyRestaurantsSuccess,
   loadMyRestaurantsFailure,
 } from '../Restaurant/actions'
+import {
+  loadMyStoresSuccess,
+} from '../Store/actions'
 import NavigationHolder from '../../NavigationHolder'
 import i18n from '../../i18n'
 
@@ -127,6 +130,25 @@ function navigateToHome(dispatch, getState) {
         .catch(e => {
           dispatch(loadMyRestaurantsFailure(e))
           NavigationHolder.navigate('CheckoutHome')
+        })
+
+    } else if (user.hasRole('ROLE_STORE')) {
+
+      dispatch(setLoading(true))
+
+      httpClient.get('/api/me/stores')
+        .then(res => {
+          dispatch(setLoading(false))
+          const stores = res['hydra:member']
+          dispatch(loadMyStoresSuccess(stores))
+          if (stores.length > 0) {
+            NavigationHolder.navigate('StoreHome')
+          } else {
+            NavigationHolder.navigate('CheckoutHome')
+          }
+        })
+        .catch(e => {
+          dispatch(setLoading(false))
         })
 
     } else if (user.hasRole('ROLE_COURIER')) {

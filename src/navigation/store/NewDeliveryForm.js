@@ -1,0 +1,298 @@
+import React, { Component } from 'react'
+import { InteractionManager, StyleSheet, TextInput, View } from 'react-native'
+import {
+  Container, Content,
+  Text, Button,
+  Footer
+} from 'native-base'
+import { connect } from 'react-redux'
+import { withTranslation } from 'react-i18next'
+import moment from 'moment'
+import ModalSelector from 'react-native-modal-selector'
+import DateTimePickerModal from 'react-native-modal-datetime-picker'
+import { Formik } from 'formik'
+import _ from 'lodash'
+import phoneNumberExamples from 'libphonenumber-js/examples.mobile.json'
+import {
+  getExampleNumber,
+  parsePhoneNumberFromString,
+  AsYouType
+} from 'libphonenumber-js'
+
+import Settings from '../../Settings'
+import { createDelivery, loadTimeSlot } from '../../redux/Store/actions'
+import { selectStore, selectTimeSlot } from '../../redux/Store/selectors'
+import { getChoicesWithDates } from '../../redux/Store/utils'
+
+class NewDelivery extends Component {
+
+  constructor(props) {
+    super(props)
+
+    this.country = Settings.get('country').toUpperCase()
+
+    this.state = {
+      isDateTimePickerVisible: false,
+    }
+  }
+
+  componentDidMount() {
+    InteractionManager.runAfterInteractions(() => {
+      this.props.loadTimeSlot(this.props.store)
+    })
+  }
+
+  _showDateTimePicker() {
+    this.setState({ isDateTimePickerVisible: true })
+  }
+
+  _hideDateTimePicker() {
+    this.setState({ isDateTimePickerVisible: false })
+  }
+
+  _handleChangeTelephone(value, setFieldValue, setFieldTouched) {
+    setFieldValue('address.telephone', new AsYouType(this.country).input(value))
+    setFieldTouched('address.telephone')
+  }
+
+  _submit(values) {
+
+    const delivery = {
+      store: this.props.store['@id'],
+      dropoff: {
+        ...values,
+        address: {
+          ...values.address,
+          telephone: parsePhoneNumberFromString(values.address.telephone, this.country).format('E.164'),
+        },
+      }
+    }
+
+    this.props.createDelivery(delivery, () => this.props.navigation.navigate('StoreHome'))
+  }
+
+  _validate(values) {
+    let errors = {}
+
+    if (_.isEmpty(values.timeSlot)) {
+      errors = {
+        ...errors,
+        timeSlot: 'Please select a time slot'
+      }
+    }
+
+    if (_.isEmpty(values.address.telephone)) {
+      errors.address = {
+        ...errors.address,
+        telephone: 'Please indicate a phone number'
+      }
+    } else {
+      const phoneNumber = parsePhoneNumberFromString(_.trim(values.address.telephone), this.country)
+      if (!phoneNumber || !phoneNumber.isValid()) {
+        errors.address = {
+          ...errors.address,
+          telephone: 'This phone number is not valid'
+        }
+      }
+    }
+
+    if (_.isEmpty(values.address.recipientName)) {
+      errors.address = {
+        ...errors.address,
+        recipientName: 'Please indicate a name for the recipient'
+      }
+    }
+
+    return errors
+  }
+
+  renderTimeSlotSelector(errors, touched, setFieldValue, setFieldTouched) {
+
+    return (
+      <View style={ [ styles.formGroup ] }>
+        <Text style={ styles.label }>{ this.props.t('STORE_NEW_DELIVERY_TIME_SLOT') }</Text>
+        <ModalSelector
+          data={ this.props.timeSlotChoices }
+          cancelText={ this.props.t('CANCEL') }
+          initValue={ this.props.t('STORE_NEW_DELIVERY_SELECT_TIME_SLOT') }
+          accessible={ true }
+          onChange={ value => {
+            setFieldValue('timeSlot', value.key)
+            setFieldTouched('timeSlot')
+          }} />
+        { errors.timeSlot && touched.timeSlot && (
+          <Text note style={ styles.errorText }>{ errors.timeSlot }</Text>
+        ) }
+      </View>
+    )
+  }
+
+  renderDateTimePicker(initialValues, values, errors, setFieldValue, setFieldTouched) {
+
+    return (
+      <View style={ [ styles.formGroup ] }>
+        <Text style={ styles.label }>{ this.props.t('STORE_NEW_DELIVERY_DROPOFF_BEFORE') }</Text>
+        <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Text>{ moment(values.before).format('LLL') }</Text>
+          <Button bordered info onPress={ this._showDateTimePicker.bind(this) }>
+            <Text>{ this.props.t('EDIT') }</Text>
+          </Button>
+        </View>
+        <DateTimePickerModal
+          isVisible={ this.state.isDateTimePickerVisible }
+          mode="datetime"
+          onConfirm={ value => {
+            setFieldValue('before', moment(value).format())
+            setFieldTouched('before')
+            this._hideDateTimePicker()
+          }}
+          onCancel={ this._hideDateTimePicker.bind(this) }
+          minimumDate={ moment(initialValues.before).toDate() } />
+      </View>
+    )
+  }
+
+  render() {
+
+    const address = this.props.navigation.getParam('address')
+
+    let initialValues = {
+      address: {
+        ...address,
+        recipientName: '',
+        telephone: '',
+      },
+      comments: '',
+    }
+
+    if (!!this.props.store.timeSlot) {
+      initialValues = {
+        ...initialValues,
+        timeSlot: null,
+      }
+    } else {
+      initialValues = {
+        ...initialValues,
+        before: moment().add(1, 'hours').add(30, 'minutes').format(),
+      }
+    }
+
+    return (
+      <Formik
+        initialValues={ initialValues }
+        validate={ this._validate.bind(this) }
+        onSubmit={ this._submit.bind(this) }
+        validateOnBlur={ false }
+        validateOnChange={ false }>
+        {({ handleChange, handleBlur, handleSubmit, values, errors, touched, setFieldValue, setFieldTouched }) => (
+          <Container>
+            <Content contentContainerStyle={ styles.content }>
+              <View style={ [ styles.formGroup ] }>
+                <Text style={ styles.label }>{ this.props.t('STORE_NEW_DELIVERY_ADDRESS') }</Text>
+                <TextInput
+                  autoCorrect={ false }
+                  style={ [ styles.textInput ] }
+                  value={ address.streetAddress }
+                  editable={ false } />
+              </View>
+              <View style={ [ styles.formGroup ] }>
+                <Text style={ styles.label }>{ this.props.t('STORE_NEW_DELIVERY_PHONE_NUMBER') }</Text>
+                <TextInput
+                  style={ [ styles.textInput ] }
+                  autoCorrect={ false }
+                  keyboardType="phone-pad"
+                  returnKeyType="done"
+                  onChangeText={ value => this._handleChangeTelephone(value, setFieldValue, setFieldTouched) }
+                  onBlur={ handleBlur('address.telephone') }
+                  value={ values.address.telephone } />
+                { errors.address && touched.address && errors.address.telephone && touched.address.telephone && (
+                  <Text note style={ styles.errorText }>{ errors.address.telephone }</Text>
+                ) }
+              </View>
+              <View style={ [ styles.formGroup ] }>
+                <Text style={ styles.label }>{ this.props.t('STORE_NEW_DELIVERY_RECIPIENT_NAME') }</Text>
+                <TextInput
+                  style={ [ styles.textInput ] }
+                  autoCorrect={ false }
+                  returnKeyType="done"
+                  onChangeText={ handleChange('address.recipientName') }
+                  onBlur={ handleBlur('address.recipientName') } />
+                { errors.address && touched.address && errors.address.recipientName && touched.address.recipientName && (
+                  <Text note style={ styles.errorText }>{ errors.address.recipientName }</Text>
+                ) }
+              </View>
+              <View style={ [ styles.formGroup ] }>
+                <Text style={ styles.label }>{ this.props.t('STORE_NEW_DELIVERY_COMMENTS') }</Text>
+                <TextInput
+                  style={ [ styles.textInput, styles.textarea ] }
+                  autoCorrect={ false }
+                  multiline={ true }
+                  numberOfLines={ 4 }
+                  onChangeText={ handleChange('comments') }
+                  onBlur={ handleBlur('comments') } />
+              </View>
+              { this.props.store.timeSlot && this.renderTimeSlotSelector(errors, touched, setFieldValue, setFieldTouched) }
+              { !this.props.store.timeSlot && this.renderDateTimePicker(initialValues, values, errors, setFieldValue, setFieldTouched) }
+            </Content>
+            <Footer>
+              <Button block transparent onPress={ handleSubmit }>
+                <Text style={{ color: '#FFFFFF' }}>Save</Text>
+              </Button>
+            </Footer>
+          </Container>
+        )}
+      </Formik>
+    )
+  }
+}
+
+const styles = StyleSheet.create({
+  content: {
+    paddingTop: 10,
+  },
+  message: {
+    alignItems: 'center',
+    padding: 20,
+  },
+  label: {
+    marginBottom: 5,
+    fontWeight: '600',
+  },
+  formGroup: {
+    paddingHorizontal: 10,
+    marginBottom: 10,
+  },
+  textInput: {
+    borderColor: '#b9b9b9',
+    borderRadius: 1,
+    borderWidth: 1,
+    height: 40,
+    padding: 5,
+  },
+  textarea: {
+    height: (40 * 4),
+  },
+  errorText: {
+    paddingVertical: 5,
+    color: '#FF4136'
+  },
+})
+
+function mapStateToProps(state) {
+
+  const timeSlot = selectTimeSlot(state)
+
+  return {
+    store: selectStore(state),
+    timeSlotChoices: timeSlot ? getChoicesWithDates(timeSlot) : []
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    createDelivery: (delivery, onSuccess) => dispatch(createDelivery(delivery, onSuccess)),
+    loadTimeSlot: store => dispatch(loadTimeSlot(store)),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(NewDelivery))

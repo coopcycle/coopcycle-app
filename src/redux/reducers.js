@@ -22,6 +22,7 @@ import accountReducer from './Account/reducers'
 import restaurantReducer from './Restaurant/reducers'
 import checkoutReducer from './Checkout/reducers'
 import dispatchReducer from './Dispatch/reducers'
+import storeReducer from './Store/reducers'
 
 export default combineReducers({
   entities: combineReducers({
@@ -30,6 +31,7 @@ export default combineReducers({
   app: appReducer,
   account: accountReducer,
   restaurant: restaurantReducer,
+  store: storeReducer,
   checkout: checkoutReducer,
   dispatch: dispatchReducer,
   ui: combineReducers({

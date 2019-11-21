@@ -9,6 +9,8 @@ import CheckoutNavigator from './CheckoutNavigator'
 import CourierNavigator from './CourierNavigator'
 import DispatchNavigator from './DispatchNavigator'
 import RestaurantNavigator from './RestaurantNavigator'
+import StoreNavigator from './StoreNavigator'
+
 import navigation, { defaultNavigationOptions, headerLeft } from '..'
 
 import i18n from '../../i18n'
@@ -66,6 +68,17 @@ export default createDrawerNavigator({
         <Icon name="restaurant" style={{ fontSize: 16, color: tintColor }} />
       ),
     }),
+  },
+  StoreNav: {
+    screen: StoreNavigator,
+    navigationOptions: ({ navigation }) => ({
+      // This route is "dynamic", it may appear several times
+      // @see src/navigation/components/DrawerContent.js
+      drawerLabel: '',
+      drawerIcon: ({ tintColor }) => (
+        <Icon name="shopping-cart" type="FontAwesome" style={{ fontSize: 16, color: tintColor }} />
+      ),
+    })
   },
   CourierNav: {
     screen: CourierNavigator,
