@@ -29,6 +29,7 @@
     "react": "16.8.6",
     "react-i18next": "^10.13.1",
     "react-native": "0.60.5",
+    "react-native-autocomplete-input": "^4.1.0",
     "react-native-ble-plx": "^1.1.0",
     "react-native-cache-store": "^1.0.2",
     "react-native-calendars": "^1.212.0",

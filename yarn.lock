@@ -6473,6 +6473,11 @@ react-native-animatable@1.3.3, react-native-animatable@^1.3.1:
   dependencies:
     prop-types "^15.7.2"
 
+react-native-autocomplete-input@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/react-native-autocomplete-input/-/react-native-autocomplete-input-4.1.0.tgz#979ece28d891b245ecb967b6d31f1f924445b8ab"
+  integrity sha512-Yn4GulZ9F6tde74UUGZHdVFeYWVuL7+EbUZy6kt+QHrzMc5B4OuRop1FT4RyWLpvbySW/vvqYgj9LAmlzkuEqA==
+
 react-native-ble-plx@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/react-native-ble-plx/-/react-native-ble-plx-1.1.0.tgz#95ba0025f9bfb507633c7f1d1ffd6eaa54296d4d"
