@@ -77,29 +77,29 @@ class NewDelivery extends Component {
     if (_.isEmpty(values.timeSlot)) {
       errors = {
         ...errors,
-        timeSlot: 'Please select a time slot'
+        timeSlot: this.props.t('STORE_NEW_DELIVERY_ERROR.EMPTY_TIME_SLOT'),
       }
     }
 
     if (_.isEmpty(values.address.telephone)) {
       errors.address = {
         ...errors.address,
-        telephone: 'Please indicate a phone number'
+        telephone: this.props.t('STORE_NEW_DELIVERY_ERROR.EMPTY_PHONE_NUMBER'),
       }
     } else {
       const phoneNumber = parsePhoneNumberFromString(_.trim(values.address.telephone), this.country)
       if (!phoneNumber || !phoneNumber.isValid()) {
         errors.address = {
           ...errors.address,
-          telephone: 'This phone number is not valid'
+          telephone: this.props.t('INVALID_PHONE_NUMBER'),
         }
       }
     }
 
-    if (_.isEmpty(values.address.recipientName)) {
+    if (_.isEmpty(values.address.contactName)) {
       errors.address = {
         ...errors.address,
-        recipientName: 'Please indicate a name for the recipient'
+        contactName: this.props.t('STORE_NEW_DELIVERY_ERROR.EMPTY_CONTACT_NAME'),
       }
     }
 
@@ -159,7 +159,7 @@ class NewDelivery extends Component {
     let initialValues = {
       address: {
         ...address,
-        recipientName: '',
+        contactName: '',
         telephone: '',
       },
       comments: '',
@@ -210,15 +210,15 @@ class NewDelivery extends Component {
                 ) }
               </View>
               <View style={ [ styles.formGroup ] }>
-                <Text style={ styles.label }>{ this.props.t('STORE_NEW_DELIVERY_RECIPIENT_NAME') }</Text>
+                <Text style={ styles.label }>{ this.props.t('STORE_NEW_DELIVERY_CONTACT_NAME') }</Text>
                 <TextInput
                   style={ [ styles.textInput ] }
                   autoCorrect={ false }
                   returnKeyType="done"
-                  onChangeText={ handleChange('address.recipientName') }
-                  onBlur={ handleBlur('address.recipientName') } />
-                { errors.address && touched.address && errors.address.recipientName && touched.address.recipientName && (
-                  <Text note style={ styles.errorText }>{ errors.address.recipientName }</Text>
+                  onChangeText={ handleChange('address.contactName') }
+                  onBlur={ handleBlur('address.contactName') } />
+                { errors.address && touched.address && errors.address.contactName && touched.address.contactName && (
+                  <Text note style={ styles.errorText }>{ errors.address.contactName }</Text>
                 ) }
               </View>
               <View style={ [ styles.formGroup ] }>

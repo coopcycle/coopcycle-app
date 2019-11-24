@@ -41,7 +41,7 @@ class NewDelivery extends Component {
 
     const recipientItems = []
     recipientItems.push({ icon: 'map-marker-alt', text: delivery.dropoff.address.streetAddress })
-    recipientItems.push({ icon: 'user', text: 'John Doe' })
+    recipientItems.push({ icon: 'user', text: delivery.dropoff.address.contactName })
 
     if (!_.isEmpty(delivery.dropoff.comments)) {
       recipientItems.push({
