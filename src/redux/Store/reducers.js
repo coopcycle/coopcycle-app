@@ -52,7 +52,7 @@ export default (state = initialState, action = {}) => {
 
         return {
           ...state,
-          deliveries: state.deliveries.concat(deliveries),
+          deliveries: _.uniqBy(state.deliveries.concat(deliveries), '@id'),
           pagination,
         }
       }
@@ -66,7 +66,7 @@ export default (state = initialState, action = {}) => {
 
       return {
         ...state,
-        deliveries: newDeliveries,
+        deliveries: _.uniqBy(newDeliveries, '@id'),
       }
 
     case LOAD_MY_STORES_SUCCESS:
