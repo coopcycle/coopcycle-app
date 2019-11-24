@@ -72,7 +72,7 @@ class Loading extends Component {
   render() {
     return (
       <View style={ styles.loader }>
-        { !this.state.error && <ActivityIndicator animating={ true } size="large" /> }
+        { (!this.state.error && !this.props.loading) && <ActivityIndicator animating={ true } size="large" /> }
         { this.state.error && this.renderError() }
       </View>
     );
@@ -97,7 +97,9 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
 
-  return {}
+  return {
+    loading: state.app.loading,
+  }
 }
 
 function mapDispatchToProps(dispatch) {
