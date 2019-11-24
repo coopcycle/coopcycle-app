@@ -229,6 +229,25 @@
     "TASK_IMAGE_UPLOAD_CONFIRM_LONG": "L'image a été uploadée avec succès",
     "AN_ERROR_OCCURRED": "Une erreur s'est produite",
     "TASK_ADD_PROOF_OF_DELIVERY": "Ajouter une preuve de livraison",
-    "STORE_NEW_DELIVERY": "Nouvelle livraison"
+    "STORE_NEW_DELIVERY": "Nouvelle livraison",
+    "STORE_NEW_DELIVERY_ADDRESS": "Adresse",
+    "STORE_NEW_DELIVERY_ADDRESS_HELP": "Entrez l'adresse de dépôt pour vérifier la faisabilité",
+    "STORE_NEW_DELIVERY_PHONE_NUMBER": "Numéro de téléphone",
+    "STORE_NEW_DELIVERY_CONTACT_NAME": "Nom de la personne à contacter",
+    "STORE_NEW_DELIVERY_COMMENTS": "Commentaires",
+    "STORE_NEW_DELIVERY_DROPOFF_BEFORE": "À déposer avant",
+    "STORE_NEW_DELIVERY_TIME_SLOT": "Tranche horaire",
+    "STORE_NEW_DELIVERY_SELECT_TIME_SLOT": "Choisissez une tranche horaire",
+    "STORE_NEW_DELIVERY_ERROR": {
+        "EMPTY_TIME_SLOT": "Veuillez choisir une tranche horaire",
+        "EMPTY_CONTACT_NAME": "Veuillez fournir le nom de la personne à contacter",
+        "EMPTY_PHONE_NUMBER": "Veuillez fournir un numéro de téléphone"
+    },
+    "STORE_DELIVERY": "Livraison #{{id}}",
+    "DELIVERY_STATE": {
+        "new": "Nouveau"
+    },
+    "DELIVERY_DETAILS_TIME_SLOT": "Tranche horaire",
+    "DELIVERY_DETAILS_RECIPIENT": "Destinataire"
   }
 }
