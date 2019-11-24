@@ -6,6 +6,7 @@ import {
   LOAD_DELIVERY_SUCCESS,
   CLEAR_DELIVERY,
   ASSERT_DELIVERY_ERROR,
+  SET_LOADING_MORE,
 } from './actions'
 
 import moment from 'moment'
@@ -16,6 +17,11 @@ const initialState = {
   myStores: [], // Array of stores
   store: null,
   deliveries: [],
+  pagination: {
+    next: null,
+    totalItems: 0,
+  },
+  loadingMore: false,
   timeSlots: [],
   delivery: null,
   assertDeliveryError: null,
@@ -27,12 +33,14 @@ export default (state = initialState, action = {}) => {
   switch (action.type) {
     case LOAD_DELIVERIES_SUCCESS:
 
-      const { store, deliveries } = action.payload
+      const { store, deliveries, pagination } = action.payload
 
       if (store['@id'] === state.store['@id']) {
+
         return {
           ...state,
-          deliveries,
+          deliveries: state.deliveries.concat(deliveries),
+          pagination,
         }
       }
 
@@ -98,6 +106,13 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         assertDeliveryError: action.payload,
+      }
+
+    case SET_LOADING_MORE:
+
+      return {
+        ...state,
+        loadingMore: action.payload,
       }
   }
 

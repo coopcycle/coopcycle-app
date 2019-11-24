@@ -1,14 +1,10 @@
 import React, { Component } from 'react'
 import { ActivityIndicator, Platform, SectionList, StyleSheet, TouchableOpacity, View } from 'react-native'
-import { connect } from 'react-redux'
 import { Icon, Text } from 'native-base'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 import _ from 'lodash'
 import { withTranslation } from 'react-i18next'
-
-import { loadDeliveries } from '../redux/Store/actions'
-import { setLoading } from '../redux/App/actions'
 
 const styles = StyleSheet.create({
   item: {
@@ -57,79 +53,12 @@ const ItemSeparatorComponent = () => (
 
 class DeliveryList extends Component {
 
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      data: [],
-      next: null,
-      last: null,
-      totalItems: 0,
-      loadingMore: false,
-    }
-  }
-
-  componentDidMount() {
-
-    this.props.setLoading(true)
-
-    this.props.httpClient.get(`${this.props.store['@id']}/deliveries?order[dropoff.before]=desc`)
-      .then(res => {
-        this.props.setLoading(false)
-        this.setState({
-          data: res['hydra:member'],
-          next: res['hydra:view']['hydra:next'],
-          last: res['hydra:view']['hydra:last'],
-          totalItems: res['hydra:totalItems'],
-        })
-      })
-      .catch(e => {
-        this.props.setLoading(false)
-      })
-  }
-
   _onItemPress(item) {
-    if (this.state.loadingMore) {
+    if (this.props.loading) {
       return
     }
 
     this.props.onItemPress(item)
-  }
-
-  _onEndReached() {
-
-    if (this.state.loadingMore) {
-      return
-    }
-
-    if (this.state.totalItems === this.state.data.length) {
-      return
-    }
-
-    if (!this.state.next) {
-      return
-    }
-
-    this.setState({
-      loadingMore: true,
-    })
-
-    this.props.httpClient.get(this.state.next)
-      .then(res => {
-        this.setState({
-          loadingMore: false,
-          data: this.state.data.concat(res['hydra:member']),
-          next: res['hydra:view']['hydra:next'],
-          last: res['hydra:view']['hydra:last'],
-          totalItems: res['hydra:totalItems'],
-        })
-      })
-      .catch(e => {
-        console.log(e)
-        this.setState({
-          loadingMore: false,
-        })
-      })
   }
 
   renderItem(item) {
@@ -157,7 +86,7 @@ class DeliveryList extends Component {
   }
 
   renderFooter() {
-    if (!this.state.loadingMore) {
+    if (!this.props.loading) {
       return null
     }
 
@@ -177,14 +106,14 @@ class DeliveryList extends Component {
 
   render() {
 
-    if (this.state.data.length === 0) {
+    if (this.props.data.length === 0) {
 
       return (
         <View />
       )
     }
 
-    const groups = _.groupBy(this.state.data, item => moment(item.dropoff.doneBefore).format('LL'))
+    const groups = _.groupBy(this.props.data, item => moment(item.dropoff.doneBefore).format('LL'))
     const sections = _.map(groups, (value, key) => ({ title: key, data: value }))
 
     return (
@@ -193,7 +122,7 @@ class DeliveryList extends Component {
         initialNumToRender={ 17 }
         sections={ sections }
         // scrollEnabled={ !this.state.loadingMore }
-        onEndReached={ this._onEndReached.bind(this) }
+        onEndReached={ this.props.onEndReached }
         onEndReachedThreshold={ Platform.OS === 'ios' ? 0 : 0.01 }
         keyExtractor={ (item, index) => item['@id'] }
         renderItem={ ({ item }) => this.renderItem(item) }
@@ -208,23 +137,16 @@ class DeliveryList extends Component {
   }
 }
 
+DeliveryList.defaultProps = {
+  data: [],
+  loading: false,
+}
+
 DeliveryList.propTypes = {
+  data: PropTypes.arrayOf(PropTypes.object),
+  loading: PropTypes.bool,
   onItemPress: PropTypes.func.isRequired,
+  onEndReached: PropTypes.func.isRequired,
 }
 
-function mapStateToProps(state) {
-
-  return {
-    httpClient: state.app.httpClient,
-    store: state.store.store,
-  }
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    setLoading: (loading) => dispatch(setLoading(loading)),
-    loadDeliveries: (store) => dispatch(loadDeliveries(store)),
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(DeliveryList))
+export default withTranslation()(DeliveryList)
