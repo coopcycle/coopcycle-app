@@ -1,32 +1,21 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, ActivityIndicator } from 'react-native';
+import { InteractionManager } from 'react-native';
 import {
   Container,
   Content, List, ListItem, Text,
 } from 'native-base';
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
+import { loadAddresses } from '../../redux/Account/actions'
 
 class AccountAddressesPage extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      addresses: [],
-      loading: false,
-    };
-  }
+
   componentDidMount() {
-
-    this.setState({ loading: true })
-
-    this.props.httpClient.get('/api/me')
-      .then(user => {
-        this.setState({
-          loading: false,
-          addresses: user.addresses,
-        })
-      })
+    InteractionManager.runAfterInteractions(() => {
+      this.props.loadAddresses()
+    })
   }
+
   _renderRow(item) {
     return (
       <ListItem>
@@ -34,50 +23,33 @@ class AccountAddressesPage extends Component {
       </ListItem>
     );
   }
+
   render() {
 
-    const { addresses } = this.state
-
-    let loader = (
-      <View />
-    )
-    if (this.state.loading) {
-      loader = (
-        <View style={styles.loader}>
-          <ActivityIndicator
-            animating={true}
-            size="large"
-            color="#fff"
-          />
-          <Text style={{color: '#fff'}}>{`${this.props.t('LOADING')}...`}</Text>
-        </View>
-      );
-    }
+    const { addresses } = this.props
 
     return (
       <Container>
         <Content>
           <List dataArray={ addresses } renderRow={ this._renderRow.bind(this) } />
         </Content>
-        { loader }
       </Container>
     );
   }
 }
 
-const styles = StyleSheet.create({
-  loader: {
-    ...StyleSheet.absoluteFillObject,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(52, 52, 52, 0.4)',
-  },
-});
-
 function mapStateToProps(state) {
+
   return {
-    httpClient: state.app.httpClient,
+    addresses: state.account.addresses,
   }
 }
 
-module.exports = connect(mapStateToProps)(withTranslation()(AccountAddressesPage))
+function mapDispatchToProps(dispatch) {
+
+  return {
+    loadAddresses: () => dispatch(loadAddresses()),
+  }
+}
+
+module.exports = connect(mapStateToProps, mapDispatchToProps)(withTranslation()(AccountAddressesPage))
