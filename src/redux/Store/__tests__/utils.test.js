@@ -1,4 +1,4 @@
-import { getChoicesWithDates, humanizeTaskTime } from '../utils'
+import { getChoicesWithDates, humanizeTaskTime, resolveState, composeWithState } from '../utils'
 import moment from 'moment'
 
 describe('getChoicesWithDates', () => {
@@ -141,5 +141,73 @@ describe('humanizeTaskTime', () => {
 
     expect(humanizeTaskTime(task, moment('2019-11-13 19:30:00')))
       .toEqual('Tomorrow between 7:00 PM and 8:00 PM')
+  })
+})
+
+describe('resolveState', () => {
+
+  it('returns expected results', () => {
+
+    expect(resolveState({
+      pickup: {},
+      dropoff: {},
+    })).toEqual('unknown')
+
+    expect(resolveState({
+      pickup: { status: 'TODO' },
+      dropoff: { status: 'TODO' },
+    })).toEqual('new')
+
+    expect(resolveState({
+      pickup: { status: 'DONE' },
+      dropoff: { status: 'TODO' },
+    })).toEqual('picked')
+
+    expect(resolveState({
+      pickup: { status: 'DONE' },
+      dropoff: { status: 'DONE' },
+    })).toEqual('fulfilled')
+  })
+})
+
+describe('composeWithState', () => {
+
+  it('returns expected results', () => {
+
+    expect(composeWithState({
+      pickup: {},
+      dropoff: {},
+    })).toEqual({
+      pickup: {},
+      dropoff: {},
+      state: 'unknown',
+    })
+
+    expect(composeWithState({
+      pickup: { status: 'TODO' },
+      dropoff: { status: 'TODO' },
+    })).toEqual({
+      pickup: { status: 'TODO' },
+      dropoff: { status: 'TODO' },
+      state: 'new',
+    })
+
+    expect(composeWithState({
+      pickup: { status: 'DONE' },
+      dropoff: { status: 'TODO' },
+    })).toEqual({
+      pickup: { status: 'DONE' },
+      dropoff: { status: 'TODO' },
+      state: 'picked',
+    })
+
+    expect(composeWithState({
+      pickup: { status: 'DONE' },
+      dropoff: { status: 'DONE' },
+    })).toEqual({
+      pickup: { status: 'DONE' },
+      dropoff: { status: 'DONE' },
+      state: 'fulfilled',
+    })
   })
 })
