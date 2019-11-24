@@ -19,7 +19,6 @@ function mapStateToProps(state) {
 
   return {
     loading: state.app.loading
-      || state.account.isFetching
       || selectIsTasksLoading(state)
       || state.dispatch.isFetching
       || state.restaurant.isFetching

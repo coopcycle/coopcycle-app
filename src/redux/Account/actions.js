@@ -6,36 +6,32 @@ import { setLoading } from '../App/actions'
  * Action Types
  */
 
-export const LOAD_ORDERS_REQUEST = '@account/LOAD_ORDERS_REQUEST'
 export const LOAD_ORDERS_SUCCESS = '@account/LOAD_ORDERS_SUCCESS'
-export const LOAD_ORDERS_FAILURE = '@account/LOAD_ORDERS_FAILURE'
-
 export const LOAD_ADDRESSES_SUCCESS = '@account/LOAD_ADDRESSES_SUCCESS'
 
 /*
  * Action Creators
  */
 
-export const loadOrdersRequest = createAction(LOAD_ORDERS_REQUEST)
-export const loadOrdersSuccess = createAction(LOAD_ORDERS_SUCCESS)
-export const loadOrdersFailure = createAction(LOAD_ORDERS_FAILURE)
-
+const loadOrdersSuccess = createAction(LOAD_ORDERS_SUCCESS)
 const loadAddressesSuccess = createAction(LOAD_ADDRESSES_SUCCESS)
 
-export function init() {
+export function loadOrders() {
+
   return function (dispatch, getState) {
 
     const httpClient = getState().app.httpClient
-    const initialized = getState().account.initialized
+    dispatch(setLoading(true))
 
-    if (!initialized) {
-
-      dispatch(loadOrdersRequest())
-      httpClient.get('/api/me/orders')
-        .then(res => {
-          dispatch(loadOrdersSuccess(res['hydra:member']))
-        })
-    }
+    httpClient.get('/api/me/orders')
+      .then(res => {
+        dispatch(loadOrdersSuccess(res['hydra:member']))
+        dispatch(setLoading(false))
+      })
+      .catch(e => {
+        console.log(e)
+        dispatch(setLoading(false))
+      })
   }
 }
 

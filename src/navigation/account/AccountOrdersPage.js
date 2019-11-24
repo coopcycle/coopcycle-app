@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { SectionList } from 'react-native'
+import { InteractionManager, SectionList } from 'react-native'
 import {
   Container,
   Right, Body,
@@ -10,19 +10,16 @@ import moment from 'moment'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 import { formatPrice } from '../../Cart'
-import { init } from '../../redux/Account/actions'
-
+import { loadOrders } from '../../redux/Account/actions'
 
 class AccountOrdersPage extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      loading: true,
-    };
-  }
+
   componentDidMount() {
-    this.props.init()
+    InteractionManager.runAfterInteractions(() => {
+      this.props.loadOrders()
+    })
   }
+
   _renderItem(order) {
 
     const { navigate } = this.props.navigation
@@ -34,6 +31,7 @@ class AccountOrdersPage extends Component {
       </ListItem>
     );
   }
+
   _renderSectionHeader(section) {
     return (
       <ListItem itemHeader>
@@ -41,6 +39,7 @@ class AccountOrdersPage extends Component {
       </ListItem>
     )
   }
+
   render() {
 
     const ordersByDay =
@@ -79,7 +78,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
 
   return {
-    init: () => dispatch(init()),
+    loadOrders: () => dispatch(loadOrders()),
   }
 }
 
