@@ -157,10 +157,10 @@ class NewDelivery extends Component {
     let initialValues = {
       address: {
         ...address,
+        description: '',
         contactName: '',
         telephone: '',
       },
-      comments: '',
     }
 
     if (!!this.props.store.timeSlot) {
@@ -225,9 +225,9 @@ class NewDelivery extends Component {
                   style={ [ styles.textInput, styles.textarea ] }
                   autoCorrect={ false }
                   multiline={ true }
-                  numberOfLines={ 4 }
-                  onChangeText={ handleChange('comments') }
-                  onBlur={ handleBlur('comments') } />
+                  numberOfLines={ 3 }
+                  onChangeText={ handleChange('address.description') }
+                  onBlur={ handleBlur('address.description') } />
               </View>
               { this.props.store.timeSlot && this.renderTimeSlotSelector(errors, touched, setFieldValue, setFieldTouched) }
               { !this.props.store.timeSlot && this.renderDateTimePicker(initialValues, values, errors, setFieldValue, setFieldTouched) }
