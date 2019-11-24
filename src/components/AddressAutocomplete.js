@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Dimensions, Image, StyleSheet, TouchableOpacity, TouchableHighlight, View } from 'react-native'
+import PropTypes from 'prop-types'
 import _ from 'lodash'
 import { Text } from 'native-base'
 import qs from 'qs'
@@ -46,6 +47,10 @@ class AddressAutocomplete extends Component {
 
     this.setState({ query: text })
 
+    if (text.length < this.props.minChars) {
+      return
+    }
+
     const query = {
       key: Settings.get('google_api_key'),
       language: localeDetector(),
@@ -72,25 +77,41 @@ class AddressAutocomplete extends Component {
       })
   }
 
+  renderItem({ item, i }) {
+
+    return (
+      <TouchableOpacity onPress={ () => this._onItemPress(item) } key={ `prediction-${i}` } style={ styles.item }>
+        <Text>{ item.description }</Text>
+      </TouchableOpacity>
+    )
+  }
+
   render() {
+
+    const { onSelectAddress, ...otherProps } = this.props
 
     return (
       <Autocomplete
         autoCompleteType="off"
         autoCapitalize="none"
         autoCorrect={ false }
+        clearButtonMode="while-editing"
+        { ...otherProps }
+        renderItem={ this.renderItem.bind(this) }
         data={ this.state.results }
         value={ this.state.query }
         onChangeText={ this._onChangeText.bind(this) }
-        flatListProps={{ ItemSeparatorComponent, ListFooterComponent }}
-        renderItem={ ({ item, i }) => (
-          <TouchableOpacity onPress={ () => this._onItemPress(item) } key={ `prediction-${i}` } style={ styles.item }>
-            <Text>{ item.description }</Text>
-          </TouchableOpacity>
-        )}
-      />
+        flatListProps={{ ItemSeparatorComponent, ListFooterComponent }} />
     )
   }
+}
+
+AddressAutocomplete.defaultProps = {
+  minChars: 3,
+}
+
+AddressAutocomplete.propTypes = {
+  minChars: PropTypes.number,
 }
 
 const styles = StyleSheet.create({
