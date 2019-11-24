@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native'
 import {
   Container, Content,
   Icon, Text,
-  List, ListItem, Left
+  List, ListItem, Left,
 } from 'native-base'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
@@ -11,20 +11,17 @@ import MapView from 'react-native-maps'
 import { parsePhoneNumberFromString } from 'libphonenumber-js'
 import _ from 'lodash'
 
-import { loadDelivery, clearDelivery } from '../../redux/Store/actions'
+import { loadTasks } from '../../redux/Store/actions'
+import { selectDeliveries } from '../../redux/Store/selectors'
 import { humanizeTaskTime } from '../../redux/Store/utils'
 import NavigationAwareMap from '../../components/NavigationAwareMap'
 
 class NewDelivery extends Component {
 
   componentDidMount() {
-    this.props.loadDelivery(
+    this.props.loadTasks(
       this.props.navigation.getParam('delivery')
     )
-  }
-
-  componentWillUnmount() {
-    this.props.clearDelivery()
   }
 
   render() {
@@ -57,11 +54,28 @@ class NewDelivery extends Component {
       })
     }
 
+    const stateStyle = [ styles.state ]
+
+    switch (delivery.state) {
+    case 'new':
+      stateStyle.push(styles.stateNew)
+      break
+    case 'picked':
+      stateStyle.push(styles.statePicked)
+      break
+    case 'fulfilled':
+      stateStyle.push(styles.stateFulfilled)
+      break
+    default:
+      stateStyle.push(styles.stateUnknown)
+      break
+    }
+
     return (
       <Container>
         <Content contentContainerStyle={ styles.content }>
-          <View style={{ backgroundColor: '#2ECC40', alignItems: 'center', paddingVertical: 15 }}>
-            <Text style={{ color: '#FFFFFF' }}>
+          <View style={ stateStyle }>
+            <Text style={ [ styles.stateText ] }>
               { this.props.t(`DELIVERY_STATE.${delivery.state}`) }
             </Text>
           </View>
@@ -123,22 +137,41 @@ const styles = StyleSheet.create({
   itemText: {
     fontSize: 14,
   },
+  state: {
+    alignItems: 'center',
+    paddingVertical: 15,
+  },
+  stateText: {
+    color: '#FFFFFF',
+  },
+  stateUnknown: {
+    backgroundColor: '#bdc3c7',
+  },
+  stateNew: {
+    backgroundColor: '#f1c40f',
+  },
+  statePicked: {
+    backgroundColor: '#3498db',
+  },
+  stateFulfilled: {
+    backgroundColor: '#2ecc71',
+  },
 })
 
 function mapStateToProps(state, ownProps) {
 
-  const delivery = state.store.delivery ?
-    state.store.delivery : ownProps.navigation.getParam('delivery')
+  const delivery = ownProps.navigation.getParam('delivery')
+  const deliveries = selectDeliveries(state)
+  const match = _.find(deliveries, d => d['@id'] === delivery['@id'] && d.pickup.hasOwnProperty('status') && d.dropoff.hasOwnProperty('status'))
 
   return {
-    delivery,
+    delivery: match || delivery,
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    loadDelivery: delivery => dispatch(loadDelivery(delivery)),
-    clearDelivery: () => dispatch(clearDelivery()),
+    loadTasks: delivery => dispatch(loadTasks(delivery)),
   }
 }
 

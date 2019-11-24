@@ -146,6 +146,6 @@ export function composeWithState(delivery) {
 
   return {
     ...delivery,
-    state: resolveState(delivery)
+    state: resolveState(delivery),
   }
 }

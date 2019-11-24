@@ -6,29 +6,27 @@ import { selectTimeSlots, selectStore } from './selectors'
 
 export const LOAD_MY_STORES_SUCCESS = '@store/LOAD_MY_STORES_SUCCESS'
 export const LOAD_MY_STORES_FAILURE = '@store/LOAD_MY_STORES_FAILURE'
-
 export const LOAD_DELIVERIES_SUCCESS = '@store/LOAD_DELIVERIES_SUCCESS'
 export const CREATE_DELIVERY_SUCCESS = '@store/CREATE_DELIVERY_SUCCESS'
 export const LOAD_TIME_SLOT_SUCCESS = '@store/LOAD_TIME_SLOT_SUCCESS'
-
-export const LOAD_DELIVERY_SUCCESS = '@store/LOAD_DELIVERY_SUCCESS'
-export const CLEAR_DELIVERY = '@store/CLEAR_DELIVERY'
+export const LOAD_TASKS_SUCCESS = '@store/LOAD_TASKS_SUCCESS'
 export const ASSERT_DELIVERY_ERROR = '@store/ASSERT_DELIVERY_ERROR'
-
 export const SET_LOADING_MORE = '@store/SET_LOADING_MORE'
 
 export const loadMyStoresSuccess = createAction(LOAD_MY_STORES_SUCCESS)
-
 export const createDeliverySuccess = createAction(CREATE_DELIVERY_SUCCESS)
-
-export const loadDeliveriesSuccess = createAction(LOAD_DELIVERIES_SUCCESS, (store, deliveries, pagination) => ({ store, deliveries, pagination }))
+export const loadDeliveriesSuccess = createAction(LOAD_DELIVERIES_SUCCESS, (store, deliveries, pagination) => ({
+  store,
+  deliveries,
+  pagination,
+}))
 export const loadTimeSlotSuccess = createAction(LOAD_TIME_SLOT_SUCCESS)
-
-export const loadDeliverySuccess = createAction(LOAD_DELIVERY_SUCCESS)
-export const clearDelivery = createAction(CLEAR_DELIVERY)
-
+export const loadTasksSuccess = createAction(LOAD_TASKS_SUCCESS, (delivery, pickup, dropoff) => ({
+  delivery,
+  pickup,
+  dropoff,
+}))
 export const assertDeliveryError = createAction(ASSERT_DELIVERY_ERROR)
-
 export const setLoadingMore = createAction(SET_LOADING_MORE)
 
 export function createDelivery(delivery, onSuccess) {
@@ -141,7 +139,7 @@ export function loadMoreDeliveries() {
   }
 }
 
-export function loadDelivery(delivery) {
+export function loadTasks(delivery) {
 
   return (dispatch, getState) => {
 
@@ -150,14 +148,19 @@ export function loadDelivery(delivery) {
 
     dispatch(setLoading(true))
 
-    return httpClient.get(delivery['@id'])
-      .then(res => {
-        dispatch(setLoading(false))
-        dispatch(loadDeliverySuccess(res))
-      })
-      .catch(e => {
-        dispatch(setLoading(false))
-      })
+    Promise.all([
+      httpClient.get(delivery.pickup['@id']),
+      httpClient.get(delivery.dropoff['@id']),
+    ])
+    .then(values => {
+      const [ pickup, dropoff ] = values
+      dispatch(loadTasksSuccess(delivery, pickup, dropoff))
+      dispatch(setLoading(false))
+    })
+    .catch(e => {
+      console.log(e)
+      dispatch(setLoading(false))
+    })
   }
 }
 

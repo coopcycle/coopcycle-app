@@ -3,11 +3,12 @@ import {
   CREATE_DELIVERY_SUCCESS,
   LOAD_DELIVERIES_SUCCESS,
   LOAD_TIME_SLOT_SUCCESS,
-  LOAD_DELIVERY_SUCCESS,
-  CLEAR_DELIVERY,
+  LOAD_TASKS_SUCCESS,
   ASSERT_DELIVERY_ERROR,
   SET_LOADING_MORE,
 } from './actions'
+
+import { composeWithState } from './utils'
 
 import _ from 'lodash'
 
@@ -22,8 +23,21 @@ const initialState = {
   },
   loadingMore: false,
   timeSlots: [],
-  delivery: null,
   assertDeliveryError: null,
+}
+
+const replace = (deliveries, delivery, pickup, dropoff) => {
+
+  const index = _.findIndex(deliveries, d => d['@id'] === delivery['@id'])
+
+  if (index !== -1) {
+    const newDeliveries = deliveries.slice(0)
+    newDeliveries.splice(index, 1, composeWithState({ ...delivery, pickup, dropoff }))
+
+    return newDeliveries
+  }
+
+  return deliveries
 }
 
 export default (state = initialState, action = {}) => {
@@ -84,18 +98,13 @@ export default (state = initialState, action = {}) => {
         timeSlots,
       }
 
-    case LOAD_DELIVERY_SUCCESS:
+    case LOAD_TASKS_SUCCESS:
+
+      const { delivery, pickup, dropoff } = action.payload
 
       return {
         ...state,
-        delivery: action.payload,
-      }
-
-    case CLEAR_DELIVERY:
-
-      return {
-        ...state,
-        delivery: null,
+        deliveries: replace(state.deliveries, delivery, pickup, dropoff),
       }
 
     case ASSERT_DELIVERY_ERROR:

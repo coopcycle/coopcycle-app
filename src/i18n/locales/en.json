@@ -255,7 +255,11 @@
     },
     "STORE_DELIVERY": "Delivery #{{id}}",
     "DELIVERY_STATE": {
-        "new": "New"
+        "undefined": "Unknown",
+        "unkown": "Unknown",
+        "new": "New",
+        "picked": "Picked",
+        "fulfilled": "Fulfilled"
     },
     "DELIVERY_DETAILS_TIME_SLOT": "Time slot",
     "DELIVERY_DETAILS_RECIPIENT": "Recipient"

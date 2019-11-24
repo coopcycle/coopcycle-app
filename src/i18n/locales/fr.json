@@ -245,7 +245,11 @@
     },
     "STORE_DELIVERY": "Livraison #{{id}}",
     "DELIVERY_STATE": {
-        "new": "Nouveau"
+        "undefined": "Inconnu",
+        "unkown": "Inconnu",
+        "new": "Nouveau",
+        "picked": "Récupérée",
+        "fulfilled": "Livréé"
     },
     "DELIVERY_DETAILS_TIME_SLOT": "Tranche horaire",
     "DELIVERY_DETAILS_RECIPIENT": "Destinataire"
