@@ -1,11 +1,14 @@
 import {
   LOAD_ORDERS_SUCCESS,
   LOAD_ADDRESSES_SUCCESS,
+  LOAD_PERSONAL_INFO_SUCCESS,
 } from './actions'
 
 const initialState = {
   orders: [],
   addresses: [],
+  email: '',
+  username: '',
 }
 
 export default (state = initialState, action = {}) => {
@@ -21,6 +24,13 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         addresses: action.payload,
+      }
+    case LOAD_PERSONAL_INFO_SUCCESS:
+
+      return {
+        ...state,
+        email: action.payload.email,
+        username: action.payload.username,
       }
   }
 
