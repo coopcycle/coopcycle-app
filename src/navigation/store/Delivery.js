@@ -80,7 +80,7 @@ class NewDelivery extends Component {
               <ListItem itemDivider>
                 <Text>{ this.props.t('DELIVERY_DETAILS_TIME_SLOT') }</Text>
               </ListItem>
-              <ListItem>
+              <ListItem last>
                 <Left>
                   <Icon type="FontAwesome5" name="clock" />
                 </Left>
