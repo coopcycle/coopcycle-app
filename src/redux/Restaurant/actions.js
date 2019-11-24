@@ -127,9 +127,9 @@ export const setNextProductsPage = createAction(SET_NEXT_PRODUCTS_PAGE)
 export const loadMoreProductsSuccess = createAction(LOAD_MORE_PRODUCTS_SUCCESS)
 export const setHasMoreProducts = createAction(SET_HAS_MORE_PRODUCTS)
 
-export const changeProductEnabledRequest = createAction(CHANGE_PRODUCT_ENABLED_REQUEST)
+export const changeProductEnabledRequest = createAction(CHANGE_PRODUCT_ENABLED_REQUEST, (product, enabled) => ({ product, enabled }))
 export const changeProductEnabledSuccess = createAction(CHANGE_PRODUCT_ENABLED_SUCCESS)
-export const changeProductEnabledFailure = createAction(CHANGE_PRODUCT_ENABLED_FAILURE)
+export const changeProductEnabledFailure = createAction(CHANGE_PRODUCT_ENABLED_FAILURE, (error, product, enabled) => ({ error, product, enabled }))
 
 export const closeRestaurantRequest = createAction(CLOSE_RESTAURANT_REQUEST)
 export const closeRestaurantSuccess = createAction(CLOSE_RESTAURANT_SUCCESS)
@@ -395,11 +395,11 @@ export function loadMoreProducts() {
 export function changeProductEnabled(client, product, enabled) {
 
   return function (dispatch) {
-    dispatch(changeProductEnabledRequest())
+    dispatch(changeProductEnabledRequest(product, enabled))
 
     return client.put(product['@id'], { enabled })
       .then(res => dispatch(changeProductEnabledSuccess(res)))
-      .catch(e => dispatch(changeProductEnabledFailure(e)))
+      .catch(e => dispatch(changeProductEnabledFailure(e, product, !enabled)))
   }
 }
 

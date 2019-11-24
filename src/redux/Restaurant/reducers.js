@@ -107,7 +107,6 @@ export default (state = initialState, action = {}) => {
     case CANCEL_ORDER_REQUEST:
     case CHANGE_STATUS_REQUEST:
     case LOAD_PRODUCTS_REQUEST:
-    case CHANGE_PRODUCT_ENABLED_REQUEST:
     case CLOSE_RESTAURANT_REQUEST:
     case DELETE_OPENING_HOURS_SPECIFICATION_REQUEST:
     case LOAD_MENUS_REQUEST:
@@ -126,7 +125,6 @@ export default (state = initialState, action = {}) => {
     case CANCEL_ORDER_FAILURE:
     case CHANGE_STATUS_FAILURE:
     case LOAD_PRODUCTS_FAILURE:
-    case CHANGE_PRODUCT_ENABLED_FAILURE:
     case CLOSE_RESTAURANT_FAILURE:
     case DELETE_OPENING_HOURS_SPECIFICATION_FAILURE:
     case LOAD_MENUS_FAILURE:
@@ -134,6 +132,28 @@ export default (state = initialState, action = {}) => {
         ...state,
         fetchError: action.payload || action.error,
         isFetching: false,
+      }
+
+    case CHANGE_PRODUCT_ENABLED_REQUEST:
+      return {
+        ...state,
+        fetchError: false,
+        isFetching: true,
+        products: spliceProducts(state, {
+          ...action.payload.product,
+          enabled: action.payload.enabled
+        }),
+      }
+
+    case CHANGE_PRODUCT_ENABLED_FAILURE:
+      return {
+        ...state,
+        fetchError: action.payload.error,
+        isFetching: false,
+        products: spliceProducts(state, {
+          ...action.payload.product,
+          enabled: action.payload.enabled
+        }),
       }
 
     case LOAD_ORDERS_SUCCESS:

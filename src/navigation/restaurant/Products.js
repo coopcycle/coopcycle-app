@@ -4,7 +4,6 @@ import {
   Left, Right,
   ListItem, Text, Switch,
 } from 'native-base'
-import _ from 'lodash'
 
 import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
@@ -13,34 +12,12 @@ import { loadProducts, loadMoreProducts, changeProductEnabled } from '../../redu
 
 class ProductsScreen extends Component {
 
-  constructor(props) {
-    super(props)
-    this.state = {
-      product: null,
-    }
-  }
-
   componentDidMount() {
     this.props.loadProducts(this.props.httpClient, this.props.restaurant)
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    if (this.state.product !== null) {
-      this.props.changeProductEnabled(this.props.httpClient, this.state.product, this.state.product.enabled)
-    }
-
-    if (this.props.products !== prevProps.products) {
-      this.setState({ product: null })
-    }
-  }
-
   _toggleProductEnabled(product, value) {
-    this.setState({
-      product: {
-        ...product,
-        enabled: value,
-      },
-    })
+    this.props.changeProductEnabled(this.props.httpClient, product, value)
   }
 
   renderItem(item) {
@@ -65,16 +42,7 @@ class ProductsScreen extends Component {
 
   render() {
 
-    let { products, hasMoreProducts } = this.props
-    const { product } = this.state
-
-    if (product) {
-      const productIndex = _.findIndex(products, item => item['@id'] === product['@id'])
-      if (productIndex !== -1) {
-        products = products.slice(0)
-        products.splice(productIndex, 1, Object.assign({}, product))
-      }
-    }
+    const { products, hasMoreProducts } = this.props
 
     return (
       <View style={{ flex: 1 }}>
