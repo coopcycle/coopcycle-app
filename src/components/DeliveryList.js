@@ -51,6 +51,12 @@ const ItemSeparatorComponent = () => (
   <View style={ styles.itemSeparator } />
 )
 
+const SectionHeaderComponent = ({ title }) => (
+  <View style={ styles.header }>
+    <Text style={ styles.headerText }>{ title }</Text>
+  </View>
+)
+
 class DeliveryList extends Component {
 
   _onItemPress(item) {
@@ -129,9 +135,7 @@ class DeliveryList extends Component {
         ItemSeparatorComponent={ ItemSeparatorComponent }
         ListFooterComponent={ this.renderFooter.bind(this) }
         renderSectionHeader={ ({ section: { title } }) => (
-          <View style={ styles.header }>
-            <Text style={ styles.headerText }>{ title }</Text>
-          </View>
+          <SectionHeaderComponent title={ title } />
         )} />
     )
   }
