@@ -6,12 +6,10 @@ import {
 } from 'react-native';
 import {
   Container, Content,
-  Left, Right, Body,
-  Text, Icon, Thumbnail,
+  Body,
+  Text,
   Card, CardItem,
 } from 'native-base';
-import _ from 'lodash'
-import moment from 'moment'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 
@@ -88,7 +86,7 @@ class RestaurantsPage extends Component {
     return (
       <Container style={{ paddingTop: 54 }} testID="checkoutSearch">
         <RestaurantSearch
-          ref={ component => this.restaurantSearch = component }
+          ref={ component => { this.restaurantSearch = component } }
           onChange={ address => this._onAddressChange(address) }
           defaultValue={ searchText }
           key={ searchText } />

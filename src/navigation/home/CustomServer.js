@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { InteractionManager, StyleSheet, View } from 'react-native'
+import { InteractionManager, View } from 'react-native'
 import { connect } from 'react-redux'
 import {
   Container, Content,
@@ -7,10 +7,7 @@ import {
   Form, Item, Input,
 } from 'native-base'
 import { withTranslation } from 'react-i18next'
-import _ from 'lodash'
 
-import API from '../../API'
-import Settings from '../../Settings'
 import { selectServer } from '../../redux/App/actions'
 
 class CustomServer extends Component {

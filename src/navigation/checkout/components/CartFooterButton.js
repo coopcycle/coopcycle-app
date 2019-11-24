@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Animated, StyleSheet, View } from 'react-native'
-import { Text, Button, Icon, Footer } from 'native-base'
+import { Text, Button, Icon } from 'native-base'
 import { withTranslation } from 'react-i18next'
 
 import { formatPrice } from '../../../Cart'

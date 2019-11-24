@@ -17,7 +17,7 @@ import fr from './locales/fr.json'
 import 'moment/locale/fr'
 
 export const localeDetector = () => {
-  const lang = RNLocalize.findBestAvailableLanguage(["en", "es", "fr"])
+  const lang = RNLocalize.findBestAvailableLanguage(['en', 'es', 'fr'])
   if (!lang) {
 
     return Settings.get('locale')
@@ -34,7 +34,7 @@ const languageDetector = {
     callback(localeDetector())
   },
   init: () => { },
-  cacheUserLanguage: () => { }
+  cacheUserLanguage: () => { },
 }
 
 i18next
@@ -45,7 +45,7 @@ i18next
     resources: { en, es, fr },
     ns: ['common'],
     defaultNS: 'common',
-    debug: process.env.DEBUG
+    debug: process.env.DEBUG,
   })
 
 export default i18next

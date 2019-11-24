@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import { NavigationEvents } from 'react-navigation';
 import {
-  Container, Header, Title, Content, Footer,
-  Left, Right, Body,
+  Container, Content, Footer,
+  Left,
   Icon, Text, Button,
   Card, CardItem,
 } from 'native-base';

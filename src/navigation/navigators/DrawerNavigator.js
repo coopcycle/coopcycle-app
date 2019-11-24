@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { createDrawerNavigator, createStackNavigator } from 'react-navigation'
 import { Icon } from 'native-base'
 
@@ -11,13 +11,13 @@ import DispatchNavigator from './DispatchNavigator'
 import RestaurantNavigator from './RestaurantNavigator'
 import StoreNavigator from './StoreNavigator'
 
-import navigation, { defaultNavigationOptions, headerLeft } from '..'
+import screens, { defaultNavigationOptions, headerLeft } from '..'
 
 import i18n from '../../i18n'
 
 const RegisterConfirmStack = createStackNavigator({
   RegisterConfirmHome: {
-    screen: navigation.AccountRegisterConfirm,
+    screen: screens.AccountRegisterConfirm,
     path: 'confirm/:token',
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('REGISTER_CONFIRM'),
@@ -32,17 +32,17 @@ const RegisterConfirmStack = createStackNavigator({
 
 const ResetPasswordStack = createStackNavigator({
   ResetPasswordHome: {
-    screen: navigation.AccountResetPasswordNewPassword,
+    screen: screens.AccountResetPasswordNewPassword,
     path: 'reset/:token',
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('RESET_PASSWORD_NEW_PASSWORD'),
       headerLeft: headerLeft(navigation),
-      ...defaultNavigationOptions
-    })
-  }
+      ...defaultNavigationOptions,
+    }),
+  },
 }, {
   initialRouteName: 'ResetPasswordHome',
-  defaultNavigationOptions
+  defaultNavigationOptions,
 })
 
 export default createDrawerNavigator({
@@ -78,7 +78,7 @@ export default createDrawerNavigator({
       drawerIcon: ({ tintColor }) => (
         <Icon name="shopping-cart" type="FontAwesome" style={{ fontSize: 16, color: tintColor }} />
       ),
-    })
+    }),
   },
   CourierNav: {
     screen: CourierNavigator,

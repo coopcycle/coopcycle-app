@@ -4,24 +4,24 @@ import {Text} from 'native-base'
 import {createStackNavigator} from 'react-navigation'
 
 import i18n from '../../i18n'
-import navigation, {defaultNavigationOptions, headerLeft} from '..'
+import screens, {defaultNavigationOptions, headerLeft} from '..'
 
 const MainNavigator = createStackNavigator({
   CheckoutHome: {
-    screen: navigation.RestaurantsPage,
+    screen: screens.RestaurantsPage,
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('RESTAURANTS'),
       headerLeft: headerLeft(navigation),
     }),
   },
   CheckoutRestaurant: {
-    screen: navigation.CheckoutRestaurant,
+    screen: screens.CheckoutRestaurant,
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('RESTAURANT'),
     }),
   },
   CheckoutSummary: {
-    screen: navigation.CheckoutSummary,
+    screen: screens.CheckoutSummary,
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('CART'),
       headerRight: (
@@ -35,7 +35,7 @@ const MainNavigator = createStackNavigator({
     }),
   },
   CheckoutCreditCard: {
-    screen: navigation.CheckoutCreditCard,
+    screen: screens.CheckoutCreditCard,
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('PAYMENT'),
     }),
@@ -48,7 +48,7 @@ const MainNavigator = createStackNavigator({
 
 const LoginRegisterStack = createStackNavigator({
   CheckoutLoginRegister: {
-    screen: navigation.CheckoutLogin,
+    screen: screens.CheckoutLogin,
     navigationOptions: ({ navigation }) => ({
       // Use header = null to get rid of the header
       // The screen's header will be used
@@ -56,7 +56,7 @@ const LoginRegisterStack = createStackNavigator({
     }),
   },
   CheckoutCheckEmail: {
-    screen: navigation.AccountRegisterCheckEmail,
+    screen: screens.AccountRegisterCheckEmail,
     navigationOptions: ({ navigation }) => ({
       // Use header = null to get rid of the header
       // The screen's header will be used
@@ -64,20 +64,20 @@ const LoginRegisterStack = createStackNavigator({
     }),
   },
   CheckoutForgotPassword: {
-    screen: navigation.AccountForgotPassword,
+    screen: screens.AccountForgotPassword,
     navigationOptions: ({ navigation }) => ({
       // Use header = null to get rid of the header
       // The screen's header will be used
       header: null,
-    })
+    }),
   },
   CheckoutResetPasswordCheckEmail: {
-    screen: navigation.AccountResetPasswordCheckEmail,
+    screen: screens.AccountResetPasswordCheckEmail,
     navigationOptions: ({ navigation }) => ({
       // Use header = null to get rid of the header
       // The screen's header will be used
       header: null,
-    })
+    }),
   },
 }, {
   initialRouteName: 'CheckoutLoginRegister',
@@ -94,13 +94,13 @@ export default createStackNavigator({
     }),
   },
   CheckoutProductOptions: {
-    screen: navigation.CheckoutProductOptions,
+    screen: screens.CheckoutProductOptions,
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('CHECKOUT_PRODUCT_OPTIONS_TITLE'),
     }),
   },
   CheckoutShippingDate: {
-    screen: navigation.CheckoutShippingDate,
+    screen: screens.CheckoutShippingDate,
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('CHECKOUT_SHIPPING_DATE'),
     }),

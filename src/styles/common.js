@@ -27,5 +27,5 @@ export {
   greenColor,
   redColor,
   lightGreyColor,
-  fontTitleName
+  fontTitleName,
 }

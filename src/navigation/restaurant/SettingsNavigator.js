@@ -1,26 +1,14 @@
-import React, { Component } from 'react'
-import { Icon } from 'native-base'
+import React from 'react'
 import {
   createStackNavigator,
   HeaderBackButton } from 'react-navigation'
 
 import i18n from '../../i18n'
-import navigation, { defaultNavigationOptions, headerLeft } from '..'
-
-function getActiveRouteName(navigationState) {
-  if (!navigationState) {
-    return null;
-  }
-  const route = navigationState.routes[navigationState.index]
-  if (route.routes) {
-    return getActiveRouteName(route)
-  }
-  return route.routeName
-}
+import screens, { defaultNavigationOptions } from '..'
 
 export default createStackNavigator({
   RestaurantSettingsHome: {
-    screen: navigation.RestaurantSettings,
+    screen: screens.RestaurantSettings,
     navigationOptions: ({ navigation }) => ({
       // Use header = null to get rid of the header
       // The screen's header will be used
@@ -28,7 +16,7 @@ export default createStackNavigator({
     }),
   },
   RestaurantProducts: {
-    screen: navigation.RestaurantProducts,
+    screen: screens.RestaurantProducts,
     navigationOptions: ({ navigation }) => ({
       // Use header = null to get rid of the header
       // The screen's header will be used
@@ -37,7 +25,7 @@ export default createStackNavigator({
     }),
   },
   RestaurantOpeningHours: {
-    screen: navigation.RestaurantOpeningHours,
+    screen: screens.RestaurantOpeningHours,
     navigationOptions: ({ navigation }) => ({
       // Use header = null to get rid of the header
       // The screen's header will be used
@@ -46,7 +34,7 @@ export default createStackNavigator({
     }),
   },
   RestaurantMenus: {
-    screen: navigation.RestaurantMenus,
+    screen: screens.RestaurantMenus,
     navigationOptions: ({ navigation }) => ({
       // Use header = null to get rid of the header
       // The screen's header will be used
@@ -62,8 +50,6 @@ export default createStackNavigator({
     // because otherwise when we hit "back" on the PoD screen,
     // it goes back to the task screen
     headerLeft: (props) => {
-
-      const routeName = getActiveRouteName(navigation.state)
 
       let { onPress, title, backImage, ...otherProps } = props
 

@@ -1,40 +1,10 @@
 import React, { Component } from 'react'
-import { Animated, StyleSheet, View } from 'react-native'
-import { Text, Button, Icon, Footer } from 'native-base'
-import { Col, Row, Grid } from 'react-native-easy-grid'
-import moment from 'moment'
+import { Animated, View } from 'react-native'
+import { Footer } from 'native-base'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 
-import { formatPrice } from '../../../Cart'
 import CartFooterButton from './CartFooterButton'
-
-const styles = StyleSheet.create({
-  column: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-  cartSummary: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingLeft: 15,
-  },
-  cartSummaryText: {
-    color: '#fff',
-    fontSize: 14,
-  },
-  cartSummarySeparator: {
-    paddingHorizontal: 5,
-  },
-  cartSummaryTotal: {
-    fontWeight: 'bold',
-  },
-  buttonText: {
-    color: '#fff',
-    fontSize: 14,
-  },
-})
 
 class CartFooter extends Component {
 

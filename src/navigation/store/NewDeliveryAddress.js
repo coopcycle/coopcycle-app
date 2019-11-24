@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
         top: 0,
         zIndex: 1,
       },
-    })
+    }),
   },
   formGroup: {
     paddingHorizontal: 10,

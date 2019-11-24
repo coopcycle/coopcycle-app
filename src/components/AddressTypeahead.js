@@ -99,7 +99,7 @@ class AddressTypeahead extends Component {
     // predefinedPlaces={[homePlace, workPlace]}
     return (
       <GooglePlacesAutocomplete
-        ref={ ref => this.googlePlacesAutocomplete = ref }
+        ref={ ref => { this.googlePlacesAutocomplete = ref } }
         placeholder={ this.props.t('ENTER_ADDRESS') }
         minLength={ 2 } // minimum length of text to search
         autoFocus={ this.props.autoFocus || false }

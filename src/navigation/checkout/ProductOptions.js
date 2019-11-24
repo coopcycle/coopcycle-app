@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, TouchableOpacity } from 'react-native'
-import { Container, Header, Content, ListItem, Text, Radio, Right, Left, Footer, FooterTab, Button } from 'native-base'
-import { Col, Row, Grid } from 'react-native-easy-grid'
+import { View } from 'react-native'
+import { Container, Content, ListItem, Text, Radio, Right, Left, Footer, FooterTab, Button } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 import _ from 'lodash'
@@ -169,10 +168,6 @@ class ProductOptions extends Component {
     )
   }
 }
-
-const styles = StyleSheet.create({
-
-})
 
 function mapStateToProps(state) {
   return {}

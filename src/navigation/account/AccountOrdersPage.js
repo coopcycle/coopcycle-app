@@ -1,15 +1,9 @@
-import React, { Component } from 'react';
-import {
-  StyleSheet,
-  View,
-  ActivityIndicator,
-  SectionList,
-} from 'react-native';
+import React, { Component } from 'react'
+import { SectionList } from 'react-native'
 import {
   Container,
-  Header,
-  Left, Right, Body,
-  Title, Content, Footer, Button, Icon, List, ListItem, Text,
+  Right, Body,
+  Content, ListItem, Text,
 } from 'native-base'
 import _ from 'lodash'
 import moment from 'moment'
@@ -74,9 +68,6 @@ class AccountOrdersPage extends Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-});
 
 function mapStateToProps(state) {
 

@@ -1,11 +1,9 @@
 import React, { Component } from 'react'
-import { Dimensions, FlatList, InteractionManager, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { FlatList, InteractionManager, StyleSheet, View } from 'react-native'
 import {
-  Container, Header, Content,
-  Left, Right, Body,
-  List, ListItem, Icon, Text, Radio, Button,
+  Left, Right,
+  ListItem, Text, Radio, Button,
 } from 'native-base'
-import _ from 'lodash'
 import Modal from 'react-native-modal'
 
 import { withTranslation } from 'react-i18next'

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, View } from 'react-native'
+import { View } from 'react-native'
 import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 

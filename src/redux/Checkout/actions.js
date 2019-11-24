@@ -200,7 +200,6 @@ export function init(restaurant) {
   return (dispatch, getState) => {
 
     const { httpClient } = getState().app
-    const { address } = getState().checkout
 
     dispatch(initRequest(restaurant))
 
@@ -274,7 +273,7 @@ export function timing() {
   return (dispatch, getState) => {
 
     const { httpClient } = getState().app
-    const { address, cart, date } = getState().checkout
+    const { address, cart } = getState().checkout
 
     const newCart = cart.clone()
     newCart.setDeliveryAddress(address)

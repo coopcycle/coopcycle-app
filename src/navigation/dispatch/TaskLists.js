@@ -1,16 +1,13 @@
 import React, { Component } from 'react'
-import { FlatList, InteractionManager, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 import {
   Container, Content,
-  Left, Right,
   Icon, Text, Button,
 } from 'native-base'
-import { Col, Row, Grid } from 'react-native-easy-grid'
-import moment from 'moment'
+import { Col, Grid } from 'react-native-easy-grid'
 
-import TaskList from '../../components/TaskList'
 import { createTaskList } from '../../redux/Dispatch/actions'
 import { selectTasksNotCancelled } from '../../redux/Dispatch/selectors'
 

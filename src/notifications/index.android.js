@@ -26,7 +26,7 @@ const parseNotification = (notification, isForeground) => {
 
   return {
     foreground: isForeground,
-    data
+    data,
   }
 }
 
@@ -75,7 +75,7 @@ class PushNotification {
             [
               {
                 text: 'Annuler',
-                onPress: () => {}
+                onPress: () => {},
               },
               {
                 text: 'Ouvrir',
@@ -84,7 +84,7 @@ class PushNotification {
                   appStateChangeListener = nextState => {
                     // User is coming back from app settings
                     // Check again if notifications have been enabled
-                    if ('active' === nextState) {
+                    if (nextState === 'active') {
                       AppState.removeEventListener('change', appStateChangeListener)
                       firebase.messaging().hasPermission()
                         .then(enabled => {
@@ -102,11 +102,11 @@ class PushNotification {
                   AppState.addEventListener('change', appStateChangeListener)
 
                   Linking.openSettings()
-                }
+                },
               },
             ],
             {
-              cancelable: true
+              cancelable: true,
             }
           )
         } else {

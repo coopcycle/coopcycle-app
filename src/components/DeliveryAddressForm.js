@@ -30,7 +30,7 @@ class DeliveryAddressForm extends Component {
     return (
       <Item stackedLabel>
         <Label>{ this.props.t('NAME') }</Label>
-        <Input ref="name"
+        <Input
           { ...inputProps }
           onChangeText={ name => this.setState({ name }) }
           value={ this.state.name } />
@@ -43,7 +43,7 @@ class DeliveryAddressForm extends Component {
     return (
       <Item stackedLabel>
         <Label>{ this.props.t('ADDRESS_DESCRIPTION') }</Label>
-        <Input ref="description"
+        <Input
           { ...inputProps }
           multiline
           onChangeText={ description => this.setState({ description }) }
@@ -58,7 +58,7 @@ class DeliveryAddressForm extends Component {
     return (
       <Item stackedLabel last>
         <Label>{ this.props.t('TELEPHONE') }</Label>
-        <Input ref="telephone"
+        <Input
           { ...inputProps }
           onChangeText={ telephone => this.setState({ telephone }) }
           value={ this.state.telephone } />
@@ -78,21 +78,21 @@ class DeliveryAddressForm extends Component {
       <Form>
         <Item stackedLabel>
           <Label>{this.props.t('ADDRESS')}</Label>
-          <Input ref="streetAddress"
+          <Input
             { ...inputProps }
             onChangeText={ streetAddress => this.setState({ streetAddress }) }
             value={ this.state.streetAddress } />
         </Item>
         <Item stackedLabel { ...postalCodeProps }>
           <Label>{this.props.t('POST_CODE')}</Label>
-          <Input ref="postalCode"
+          <Input
             { ...inputProps }
             onChangeText={ postalCode => this.setState({ postalCode }) }
             value={ this.state.postalCode } />
         </Item>
         <Item stackedLabel { ...addressLocalityProps }>
           <Label>{this.props.t('CITY')}</Label>
-          <Input ref="addressLocality"
+          <Input
             { ...inputProps }
             onChangeText={ addressLocality => this.setState({ addressLocality }) }
             value={ this.state.addressLocality } />

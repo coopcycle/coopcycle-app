@@ -1,5 +1,5 @@
 import { AppState } from 'react-native'
-import PushNotificationIOS from "@react-native-community/push-notification-ios"
+import PushNotificationIOS from '@react-native-community/push-notification-ios'
 
 let registerListener = deviceToken => {}
 let notificationListener = notification => {}
@@ -7,7 +7,7 @@ let notificationListener = notification => {}
 const parseNotification = (notification, isForeground = null) => {
   return {
     foreground: isForeground,
-    data: notification.getData()
+    data: notification.getData(),
   }
 }
 

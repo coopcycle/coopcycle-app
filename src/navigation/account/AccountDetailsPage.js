@@ -5,10 +5,8 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import {
-  Container,
-  Header,
-  Left, Right, Body,
-  Title, Content, Footer, Button, Icon, Text,
+  Container, Content,
+  Icon, Text,
   Label, Item, Input,
 } from 'native-base';
 import { connect } from 'react-redux'

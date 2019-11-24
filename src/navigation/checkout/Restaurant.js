@@ -3,13 +3,9 @@ import { Dimensions, Image, PixelRatio, StyleSheet, View, Animated, Keyboard } f
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 import {
-  Container, Content, Footer, H3, H4,
-  Left, Right,
-  List, ListItem,
-  InputGroup, Input,
-  Icon, Text, Picker, Button,
+  Container, Content,
+  Text, Button,
 } from 'native-base';
-import moment from 'moment'
 import Modal from 'react-native-modal'
 
 import CartFooter from './components/CartFooter'
@@ -92,7 +88,7 @@ class Restaurant extends Component {
 
     const { navigate } = this.props.navigation
     const { restaurant } = this.props.navigation.state.params
-    const { cart, date, menu } = this.props
+    const { cart, menu } = this.props
 
     const modalMessageTextStyle = []
     if (this.props.isAddressOK === false) {

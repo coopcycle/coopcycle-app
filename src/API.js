@@ -20,7 +20,7 @@ function Client(httpBaseURL, model) {
   this.model = model
 
   this.axios = axios.create({
-    baseURL: httpBaseURL
+    baseURL: httpBaseURL,
   })
 
   // @see https://gist.github.com/Godofbrowser/bf118322301af3fc334437c683887c5f
@@ -80,7 +80,7 @@ Client.prototype.getToken = function() {
 Client.prototype.createRequest = function(method, url, data) {
 
   const headers = {
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
   }
 
   let req = {
@@ -99,7 +99,7 @@ Client.prototype.createRequest = function(method, url, data) {
 Client.prototype.createAuthorizedRequest = function(method, url, data) {
 
   let headers = {
-    'Content-Type': 'application/ld+json'
+    'Content-Type': 'application/ld+json',
   }
 
   if (this.model.token) {
@@ -201,7 +201,7 @@ Client.prototype.register = function (data) {
         token: credentials.token,
         refreshToken: credentials.refresh_token,
         roles: credentials.roles,
-        enabled
+        enabled,
       })
 
       return this.model.save()
@@ -289,7 +289,7 @@ let updateUserData = model => {
       token: credentials.token,
       refreshToken: credentials.refresh_token,
       roles: credentials.roles,
-      enabled
+      enabled,
     })
 
     return model.save()
@@ -301,7 +301,7 @@ var register = function(baseURL, data) {
     method: 'POST',
     url: `${baseURL}/api/register`,
     headers: {
-      'Content-Type': 'application/x-www-form-urlencoded'
+      'Content-Type': 'application/x-www-form-urlencoded',
     },
     data: qs.stringify(_.mapKeys(data, (value, key) => `_${key}`)),
   }
@@ -324,11 +324,11 @@ var login = function(baseURL, username, password) {
     method: 'POST',
     url: `${baseURL}/api/login_check`,
     headers: {
-      'Content-Type': 'application/x-www-form-urlencoded'
+      'Content-Type': 'application/x-www-form-urlencoded',
     },
     data: qs.stringify({
       '_username': username,
-      '_password': password
+      '_password': password,
     }),
   }
 
@@ -353,7 +353,7 @@ var refreshToken = function(baseURL, refreshToken) {
     method: 'POST',
     url: `${baseURL}/api/token/refresh`,
     headers: {
-      'Content-Type': 'application/x-www-form-urlencoded'
+      'Content-Type': 'application/x-www-form-urlencoded',
     },
     data: qs.stringify({
       'refresh_token': refreshToken,
@@ -410,12 +410,12 @@ const resolveBaseURL = function(server) {
 const createError = function(code) {
   if (errorMessages.hasOwnProperty(code)) {
     return {
-      message: i18n.t(errorMessages[code])
+      message: i18n.t(errorMessages[code]),
     }
   }
 
   return {
-    message: i18n.t('TRY_LATER')
+    message: i18n.t('TRY_LATER'),
   }
 }
 
@@ -429,8 +429,8 @@ const checkServer = function(server) {
         axios
           .get(`${baseURL}/api`, {
             headers: {
-              'Content-Type': 'application/json'
-            }
+              'Content-Type': 'application/json',
+            },
           })
           .then(response => {
             // {
@@ -486,5 +486,5 @@ module.exports = {
     }
 
     return message
-  }
+  },
 }

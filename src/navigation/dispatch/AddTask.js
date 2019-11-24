@@ -1,15 +1,13 @@
 import React, { Component } from 'react'
-import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { connect } from 'react-redux'
 import {
   Container, Content,
   Text, Button,
-  Form, Item, Label, Textarea, Radio,
-  List, ListItem,
-  Left, Right,
+  Form, Label, Textarea,
   Footer, FooterTab,
 } from 'native-base'
-import { Col, Row, Grid } from 'react-native-easy-grid'
+import { Col, Grid } from 'react-native-easy-grid'
 import DateTimePicker from 'react-native-modal-datetime-picker'
 import { withTranslation } from 'react-i18next'
 import _ from 'lodash'

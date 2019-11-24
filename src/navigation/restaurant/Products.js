@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
-import { Dimensions, FlatList, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native'
 import {
-  Container, Header, Title, Content,
-  Left, Right, Body,
-  List, ListItem, Icon, Text, Switch,
+  Left, Right,
+  ListItem, Text, Switch,
 } from 'native-base'
 import _ from 'lodash'
 

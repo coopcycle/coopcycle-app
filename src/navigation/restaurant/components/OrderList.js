@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
 import { SectionList, StyleSheet, TouchableOpacity, View } from 'react-native'
-import { Icon, Text, Thumbnail, Badge } from 'native-base';
-import { Col, Row, Grid } from 'react-native-easy-grid'
-import slugify from 'slugify'
+import { Icon, Text } from 'native-base';
+import { Col, Grid } from 'react-native-easy-grid'
 import moment from 'moment'
 import _ from 'lodash'
 import { withTranslation } from 'react-i18next'

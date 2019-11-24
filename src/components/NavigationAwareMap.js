@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Dimensions, StyleSheet, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import MapView from 'react-native-maps'
 import { featureCollection, center, point } from '@turf/turf'
 import _ from 'lodash'
@@ -60,7 +60,7 @@ class NavigationAwareMap extends Component {
 
       const features = markers.map(marker => point([
         marker.props.coordinate.latitude,
-        marker.props.coordinate.longitude
+        marker.props.coordinate.longitude,
       ]))
 
       const centerFeature = center(featureCollection(features))
@@ -80,7 +80,7 @@ class NavigationAwareMap extends Component {
       otherProps = {
         ...otherProps,
         initialRegion: region,
-        region
+        region,
       }
     }
 

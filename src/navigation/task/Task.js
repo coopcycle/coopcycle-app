@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Dimensions, FlatList, StyleSheet, TouchableOpacity, View } from 'react-native'
-import { Container, Content, Footer, Text, Button, Icon, Header, Title, Left, Body, Right } from 'native-base'
+import { Container, Footer, Text, Button, Icon } from 'native-base'
 import { Col, Row, Grid } from 'react-native-easy-grid'
 import MapView from 'react-native-maps'
 import Swipeout from 'react-native-swipeout'
@@ -59,7 +59,6 @@ class Task extends Component {
 
   renderTaskDetails() {
 
-    const { navigate } = this.props.navigation
     const task = this.props.navigation.getParam('task')
 
     const timeframe = moment(task.doneAfter).format('LT') + ' - ' + moment(task.doneBefore).format('LT')

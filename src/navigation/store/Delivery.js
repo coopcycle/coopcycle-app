@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native'
 import {
   Container, Content,
   Icon, Text,
-  List, ListItem, Left, Right, Body
+  List, ListItem, Left
 } from 'native-base'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
   },
   itemText: {
     fontSize: 14,
-  }
+  },
 })
 
 function mapStateToProps(state, ownProps) {
@@ -138,7 +138,7 @@ function mapStateToProps(state, ownProps) {
 function mapDispatchToProps(dispatch) {
   return {
     loadDelivery: delivery => dispatch(loadDelivery(delivery)),
-    clearDelivery: _ => dispatch(clearDelivery()),
+    clearDelivery: () => dispatch(clearDelivery()),
   }
 }
 

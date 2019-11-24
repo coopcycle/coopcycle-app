@@ -5,8 +5,6 @@ import { Container, Content, Text } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import _ from 'lodash'
 
-import API from '../../API'
-import Settings from '../../Settings'
 import { selectServer } from '../../redux/App/actions'
 
 class ChooseCity extends Component {
@@ -34,8 +32,6 @@ class ChooseCity extends Component {
     )
   }
 }
-
-const borderColor = '#b0b0b0'
 
 const styles = StyleSheet.create({
   list: {

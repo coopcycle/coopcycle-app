@@ -1,10 +1,8 @@
-import React, { Component } from 'react';
-import { InteractionManager, View } from 'react-native';
+import React, { Component } from 'react'
 import { withTranslation } from 'react-i18next'
 import {
   Container, Content,
-  Left, Right,
-  Icon, Text, Button,
+  Text, Button,
   Footer, FooterTab,
 } from 'native-base'
 

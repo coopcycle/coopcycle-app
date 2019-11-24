@@ -1,8 +1,5 @@
-import React, { Component } from 'react';
-import { InteractionManager, StyleSheet, View } from 'react-native';
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import moment from 'moment'
-import _ from 'lodash'
 
 import HeaderButton from '../../components/HeaderButton'
 

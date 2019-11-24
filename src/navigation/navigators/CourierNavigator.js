@@ -1,19 +1,17 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { View } from 'react-native'
-import { Button, Icon, Text } from 'native-base'
+import { Button, Icon } from 'native-base'
 import {
   createBottomTabNavigator,
-  createMaterialTopTabNavigator,
-  createStackNavigator,
-  HeaderBackButton } from 'react-navigation'
+  createStackNavigator } from 'react-navigation'
 
 import i18n from '../../i18n'
-import navigation, { defaultNavigationOptions, headerLeft } from '..'
+import screens, { defaultNavigationOptions, headerLeft } from '..'
 import TaskNavigator from './TaskNavigator'
 
 const Tabs = createBottomTabNavigator({
   CourierTasks: {
-    screen: navigation.CourierTasksPage,
+    screen: screens.CourierTasksPage,
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('TASKS'),
       tabBarIcon: ({ focused, horizontal, tintColor }) => {
@@ -24,7 +22,7 @@ const Tabs = createBottomTabNavigator({
     }),
   },
   CourierTaskList: {
-    screen: navigation.CourierTaskListPage,
+    screen: screens.CourierTaskListPage,
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('TASK_LIST'),
       tabBarIcon: ({ focused, horizontal, tintColor }) => {
@@ -72,13 +70,13 @@ const MainNavigator = createStackNavigator({
 
 const SettingsStack = createStackNavigator({
   CourierSettings: {
-    screen: navigation.CourierSettings,
+    screen: screens.CourierSettings,
     navigationOptions: ({ navigation }) => ({
       header: null,
     }),
   },
   CourierSettingsTags: {
-    screen: navigation.CourierSettingsTags,
+    screen: screens.CourierSettingsTags,
     navigationOptions: ({ navigation }) => ({
       header: null,
     }),

@@ -8,16 +8,13 @@ import {
   View,
 } from 'react-native'
 import {
-  Container,
-  Header, Footer, Title, Content,
-  Left, Right, Body,
+  Container, Content,
+  Footer,
+  Right, Body,
   List, ListItem,
-  InputGroup, Input,
-  Icon, Picker, Button, Text,
+  Icon, Button, Text,
 } from 'native-base';
 import moment from 'moment'
-import _ from 'lodash'
-import { Col, Row, Grid } from 'react-native-easy-grid';
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 
@@ -90,9 +87,6 @@ class Summary extends Component {
   }
 
   onSubmit() {
-
-    const { navigate } = this.props.navigation
-
     if (this.props.isAuthenticated) {
       this._navigate('CheckoutCreditCard')
     } else {
@@ -219,7 +213,7 @@ class Summary extends Component {
 
   render() {
 
-    const { cart, timing, date } = this.props
+    const { cart, timing } = this.props
 
     if (cart.length === 0) {
 

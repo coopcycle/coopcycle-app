@@ -3,7 +3,7 @@ import { InteractionManager, StyleSheet, TextInput, View } from 'react-native'
 import {
   Container, Content,
   Text, Button,
-  Footer
+  Footer,
 } from 'native-base'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
@@ -12,11 +12,9 @@ import ModalSelector from 'react-native-modal-selector'
 import DateTimePickerModal from 'react-native-modal-datetime-picker'
 import { Formik } from 'formik'
 import _ from 'lodash'
-import phoneNumberExamples from 'libphonenumber-js/examples.mobile.json'
 import {
-  getExampleNumber,
   parsePhoneNumberFromString,
-  AsYouType
+  AsYouType,
 } from 'libphonenumber-js'
 
 import Settings from '../../Settings'
@@ -65,7 +63,7 @@ class NewDelivery extends Component {
           ...values.address,
           telephone: parsePhoneNumberFromString(values.address.telephone, this.country).format('E.164'),
         },
-      }
+      },
     }
 
     this.props.createDelivery(delivery, () => this.props.navigation.navigate('StoreHome'))
@@ -274,7 +272,7 @@ const styles = StyleSheet.create({
   },
   errorText: {
     paddingVertical: 5,
-    color: '#FF4136'
+    color: '#FF4136',
   },
 })
 
@@ -284,7 +282,7 @@ function mapStateToProps(state) {
 
   return {
     store: selectStore(state),
-    timeSlotChoices: timeSlot ? getChoicesWithDates(timeSlot) : []
+    timeSlotChoices: timeSlot ? getChoicesWithDates(timeSlot) : [],
   }
 }
 

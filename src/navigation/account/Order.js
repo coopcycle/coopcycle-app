@@ -6,13 +6,11 @@ import {
 } from 'react-native'
 import {
   Container,
-  Header,
-  Left, Right,
   Text,
-  Title, Content, Button, Icon,
+  Content,
+  Icon,
 } from 'native-base'
 import { withTranslation } from 'react-i18next'
-import moment from 'moment'
 
 import OrderItems from '../../components/OrderItems'
 

@@ -1,23 +1,21 @@
-import React, { Component } from 'react'
-import { Icon } from 'native-base'
+import React from 'react'
 import {
-  createBottomTabNavigator,
   createMaterialTopTabNavigator,
   createStackNavigator,
   HeaderBackButton } from 'react-navigation'
 
 import i18n from '../../i18n'
-import navigation, { defaultNavigationOptions, headerLeft } from '..'
+import screens, { defaultNavigationOptions } from '..'
 
 const ProofOfDeliveryTabs = createMaterialTopTabNavigator({
   TaskPhoto: {
-    screen: navigation.TaskPhoto,
+    screen: screens.TaskPhoto,
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('PHOTO'),
     }),
   },
   TaskSignature: {
-    screen: navigation.TaskSignature,
+    screen: screens.TaskSignature,
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('SIGNATURE'),
     }),
@@ -29,7 +27,7 @@ const ProofOfDeliveryTabs = createMaterialTopTabNavigator({
 
 const CompleteStack = createStackNavigator({
   TaskCompleteHome: {
-    screen: navigation.TaskComplete,
+    screen: screens.TaskComplete,
     navigationOptions: ({ navigation }) => ({
       header: null,
     }),
@@ -58,7 +56,7 @@ function getActiveRouteName(navigationState) {
 
 export default createStackNavigator({
   TaskHome: {
-    screen: navigation.TaskHome,
+    screen: screens.TaskHome,
     navigationOptions: ({ navigation }) => ({
       // Use header = null to get rid of the header
       // The screen's header will be used

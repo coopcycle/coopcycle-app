@@ -1,13 +1,11 @@
 import React, { Component } from 'react'
 import { StyleSheet, View } from 'react-native'
 import {
-  Container, Content,
-  Icon, Text, Button, Footer, FooterTab,
+  Container,
+  Text, Button, Footer, FooterTab,
 } from 'native-base'
-import { Col, Row, Grid } from 'react-native-easy-grid'
 import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
-import _ from 'lodash'
 import { SketchCanvas } from '@terrylinla/react-native-sketch-canvas';
 
 import { addSignature } from '../../redux/Courier'
@@ -38,7 +36,7 @@ class Signature extends Component {
           </Text>
           <View style={ styles.canvasContainer }>
             <SketchCanvas
-              ref={ component => this._sketchCanvas = component }
+              ref={ component => { this._sketchCanvas = component } }
               style={{ flex: 1 }}
               strokeColor={ 'black' }
               strokeWidth={ 7 } />

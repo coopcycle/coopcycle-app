@@ -1,16 +1,13 @@
-import React, { Component } from 'react'
-import { View } from 'react-native'
-import { Icon, Text } from 'native-base'
+import React from 'react'
 import { createStackNavigator, HeaderBackButton } from 'react-navigation'
 
 import i18n from '../../i18n'
-import navigation, { defaultNavigationOptions, headerLeft } from '..'
+import screens, { defaultNavigationOptions, headerLeft } from '..'
 import HeaderButton from '../../components/HeaderButton'
-import SettingsNavigator from '../restaurant/SettingsNavigator'
 
 const MainNavigator = createStackNavigator({
   StoreHome: {
-    screen: navigation.StoreDashboard,
+    screen: screens.StoreDashboard,
     navigationOptions: ({ navigation }) => {
       const store = navigation.getParam('store')
       const title = store ? store.name : ''
@@ -23,36 +20,36 @@ const MainNavigator = createStackNavigator({
             onPress={ () => navigation.navigate('StoreNewDelivery') } />
         ),
       }
-    }
+    },
   },
   StoreDelivery: {
-    screen: navigation.StoreDelivery,
+    screen: screens.StoreDelivery,
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('STORE_DELIVERY', { id: navigation.getParam('delivery').id }),
-    })
+    }),
   },
 }, {
   initialRouteKey: 'StoreHome',
   initialRouteName: 'StoreHome',
-  defaultNavigationOptions
+  defaultNavigationOptions,
 })
 
 const NewDeliveryStack = createStackNavigator({
   StoreNewDeliveryAddress: {
-    screen: navigation.StoreNewDeliveryAddress,
+    screen: screens.StoreNewDeliveryAddress,
     navigationOptions: ({ navigation }) => ({
       header: null,
     }),
   },
   StoreNewDeliveryForm: {
-    screen: navigation.StoreNewDeliveryForm,
+    screen: screens.StoreNewDeliveryForm,
     navigationOptions: ({ navigation }) => ({
       header: null,
     }),
   },
 }, {
   defaultNavigationOptions,
-  initialRouteName: 'StoreNewDeliveryAddress'
+  initialRouteName: 'StoreNewDeliveryAddress',
 })
 
 function getActiveRouteName(navigationState) {
@@ -71,7 +68,7 @@ export default createStackNavigator({
     screen: MainNavigator,
     navigationOptions: ({ navigation }) => ({
       header: null,
-    })
+    }),
   },
   StoreNewDelivery: {
     screen: NewDeliveryStack,
@@ -99,7 +96,7 @@ export default createStackNavigator({
             backImage={ backImage } />
         )
       },
-    })
+    }),
   },
 }, {
   defaultNavigationOptions,

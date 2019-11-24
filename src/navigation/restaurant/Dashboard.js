@@ -1,10 +1,6 @@
 import React, { Component } from 'react';
-import { StyleSheet, View } from 'react-native';
-import {
-  Container, Header, Title, Content,
-  Left, Right, Body,
-  List, ListItem, InputGroup, Input, Icon, Text, Button,
-} from 'native-base';
+import { StyleSheet } from 'react-native';
+import { Container, Content } from 'native-base';
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 import KeepAwake from 'react-native-keep-awake'
@@ -25,9 +21,7 @@ class DashboardPage extends Component {
     // This is needed to display the title
     this.props.navigation.setParams({ restaurant: this.props.restaurant })
 
-    const loadOrders = this.props.navigation.getParam('loadOrders', true)
-
-    if (loadOrders) {
+    if (this.props.navigation.getParam('loadOrders', true)) {
       this.props.loadOrders(
         this.props.httpClient,
         this.props.restaurant,

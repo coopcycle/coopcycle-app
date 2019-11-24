@@ -1,6 +1,4 @@
 import React from 'react'
-import { View } from 'react-native'
-import { Icon } from 'native-base'
 import HeaderButton from '../components/HeaderButton'
 import { primaryColor,  whiteColor, fontTitleName } from '../styles/common'
 

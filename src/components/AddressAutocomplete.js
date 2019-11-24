@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Dimensions, Image, StyleSheet, TouchableOpacity, TouchableHighlight, View } from 'react-native'
+import { Image, StyleSheet, TouchableOpacity, View } from 'react-native'
 import PropTypes from 'prop-types'
 import _ from 'lodash'
 import { Text } from 'native-base'
@@ -19,7 +19,7 @@ const ItemSeparatorComponent = () => (
 const ListFooterComponent = () => (
   <View style={ styles.poweredContainer }>
     <Image
-      resizeMode='contain'
+      resizeMode="contain"
       source={ require('../../assets/images/powered_by_google_on_white.png') } />
   </View>
 )
@@ -30,7 +30,7 @@ class AddressAutocomplete extends Component {
     super(props)
     this.state = {
       query: '',
-      results: []
+      results: [],
     }
   }
 
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
   item: {
     paddingVertical: 10,
     paddingHorizontal: 10,
-    backgroundColor: '#FFFFFF'
+    backgroundColor: '#FFFFFF',
   },
   itemSeparator: {
     height: StyleSheet.hairlineWidth,

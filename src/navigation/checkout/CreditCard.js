@@ -2,14 +2,12 @@ import React, { Component } from 'react';
 import {
   StyleSheet,
   View,
-  Dimensions,
   Animated,
   Keyboard,
-  TouchableWithoutFeedback,
 } from 'react-native';
 import {
-  Container, Content, Footer, FooterTab,
-  Button, Icon, List, ListItem, Text,
+  Content, Footer, FooterTab,
+  Button, Text,
 } from 'native-base';
 import _ from 'lodash'
 import { LiteCreditCardInput } from 'react-native-credit-card-input'

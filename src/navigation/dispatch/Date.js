@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { StyleSheet, View } from 'react-native'
 import { Container, Content } from 'native-base'
 
 import { LocaleConfig, Calendar } from 'react-native-calendars'
@@ -24,8 +23,6 @@ LocaleConfig.defaultLocale = LOCALE;
 class DateScreen extends Component {
 
   onDateChange(dateString) {
-    const { navigate } = this.props.navigation
-
     this.props.changeDate(moment(dateString))
     this.props.navigation.goBack()
   }
@@ -48,14 +45,6 @@ class DateScreen extends Component {
     )
   }
 }
-
-const styles = StyleSheet.create({
-  content: {
-    backgroundColor: '#fff',
-    paddingTop: 30,
-    paddingHorizontal: 15,
-  },
-})
 
 function mapStateToProps(state) {
   return {

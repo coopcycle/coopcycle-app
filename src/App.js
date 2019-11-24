@@ -1,8 +1,4 @@
 import React, { Component } from 'react'
-import {
-  Platform,
-  View
-} from 'react-native'
 
 import { Root, StyleProvider } from 'native-base'
 import getTheme from '../native-base-theme/components'
@@ -51,7 +47,7 @@ const RootNavigator = createAppContainer(createSwitchNavigator(
     ConfigureServer: navigators.HomeNavigator,
     App: {
       screen: navigators.DrawerNavigator,
-      path: '' // This is needed to start deep linking from here
+      path: '', // This is needed to start deep linking from here
     },
   },
   {

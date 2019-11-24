@@ -4,13 +4,9 @@ class AddressUtils {
 
   static createAddressFromGoogleDetails(details) {
 
-    let streetNumber = _.find(details.address_components, component => _.includes(component.types, 'street_number'))
-    let route        = _.find(details.address_components, component => _.includes(component.types, 'route'))
     let postalCode   = _.find(details.address_components, component => _.includes(component.types, 'postal_code'))
     let locality     = _.find(details.address_components, component => _.includes(component.types, 'locality'))
 
-    streetNumber = streetNumber ? streetNumber.short_name : ''
-    route        = route ? route.short_name : ''
     postalCode   = postalCode ? postalCode.short_name : ''
     locality     = locality ? locality.short_name : ''
 
@@ -20,9 +16,9 @@ class AddressUtils {
       addressLocality: locality,
       geo: {
         latitude: details.geometry.location.lat,
-        longitude: details.geometry.location.lng
+        longitude: details.geometry.location.lng,
       },
-      isPrecise: _.includes(details.types, 'street_address') || _.includes(details.types, 'premise')
+      isPrecise: _.includes(details.types, 'street_address') || _.includes(details.types, 'premise'),
     }
   }
 }

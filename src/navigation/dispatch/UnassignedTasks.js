@@ -1,14 +1,11 @@
 import React, { Component } from 'react';
-import { InteractionManager, StyleSheet, View } from 'react-native';
+import { InteractionManager, View } from 'react-native';
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
-import _ from 'lodash'
 import {
   Container, Content,
-  Left, Right,
   Icon, Text, Button,
 } from 'native-base';
-import moment from 'moment'
 
 import TaskList from '../../components/TaskList'
 import { assignTask, initialize } from '../../redux/Dispatch/actions'
@@ -24,7 +21,6 @@ class UnassignedTasks extends Component {
 
   render() {
 
-    const { assignTask, date, user } = this.props
     const { navigate } = this.props.navigation
     const isEmpty = this.props.unassignedTasks.length === 0
 
@@ -54,7 +50,7 @@ class UnassignedTasks extends Component {
             <TaskList
               tasks={ this.props.unassignedTasks }
               swipeOutLeftEnabled={ task => !task.isAssigned }
-              onSwipeLeft={ task => navigate('DispatchPickUser', { onUserPicked: user => assignTask(task, user.username) }) }
+              onSwipeLeft={ task => navigate('DispatchPickUser', { onUserPicked: user => this.props.assignTask(task, user.username) }) }
               swipeOutLeftIconName="person"
               onTaskClick={ task => navigate('Task', { task, navigateAfter: this.props.navigation.state.routeName }) } />
           ) }

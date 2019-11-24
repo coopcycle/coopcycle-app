@@ -2,12 +2,11 @@ import React, { Component } from 'react'
 import { Dimensions, Image, StyleSheet, View, TextInput, TouchableOpacity } from 'react-native'
 import {
   Container, Content,
-  Icon, Text, Button, Footer,
-  Form, Item, Input, Label,
+  Icon, Text, Footer,
+  Label,
 } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
-import _ from 'lodash'
 
 import {
   selectTasksList,
@@ -18,7 +17,7 @@ import {
   deletePictureAt,
   markTaskDone,
   markTaskFailed } from '../../redux/Courier'
-import { greenColor, greyColor, redColor } from '../../styles/common'
+import { greenColor, redColor } from '../../styles/common'
 
 const DELETE_ICON_SIZE = 32
 const CONTENT_PADDING = 20
@@ -36,10 +35,9 @@ class CompleteTask extends Component {
   markTaskDone() {
 
     const task = this.props.navigation.getParam('task')
-    const { markTaskDone } = this.props
     const { notes } = this.state
 
-    markTaskDone(this.props.httpClient, task, notes, () => {
+    this.props.markTaskDone(this.props.httpClient, task, notes, () => {
       this.props.navigation.navigate(this.props.navigation.getParam('navigateAfter'))
     })
   }
@@ -47,10 +45,9 @@ class CompleteTask extends Component {
   markTaskFailed() {
 
     const task = this.props.navigation.getParam('task')
-    const { markTaskFailed } = this.props
     const { notes } = this.state
 
-    markTaskFailed(this.props.httpClient, task, notes, () => {
+    this.props.markTaskFailed(this.props.httpClient, task, notes, () => {
       this.props.navigation.navigate(this.props.navigation.getParam('navigateAfter'))
     })
   }
@@ -60,7 +57,7 @@ class CompleteTask extends Component {
     const task = this.props.navigation.getParam('task')
     const success = this.props.navigation.getParam('success', true)
 
-    const { width, height } = Dimensions.get('window')
+    const { width } = Dimensions.get('window')
 
     const imageSize = (width - 64) / 2
     const buttonIconName = success ? 'checkmark' : 'warning'

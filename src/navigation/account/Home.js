@@ -1,13 +1,12 @@
 import React, { Component } from 'react'
-import { StyleSheet, View } from 'react-native'
+import { View } from 'react-native'
 import {
-  Container, Header, Content,
-  Left, Right, Body,
+  Container, Content,
+  Right, Body,
   List, ListItem, Icon, Text, Button,
 } from 'native-base'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
-import _ from 'lodash'
 
 import Server from './components/Server'
 import { logout } from '../../redux/App/actions'
@@ -70,9 +69,6 @@ class AccountHome extends Component {
     )
   }
 }
-
-const styles = StyleSheet.create({
-})
 
 function mapStateToProps(state) {
 

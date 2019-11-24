@@ -1,11 +1,10 @@
 import React, { Component } from 'react'
 import { StyleSheet, View, TouchableOpacity } from 'react-native'
 import {
-  Container, Header, Title, Content,
-  Left, Right, Body,
-  Icon, Text, Button,
+  Container, Content,
+  Icon, Text,
 } from 'native-base'
-import { Col, Row, Grid } from 'react-native-easy-grid'
+import { Row, Grid } from 'react-native-easy-grid'
 import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 import material from '../../../native-base-theme/variables/material'

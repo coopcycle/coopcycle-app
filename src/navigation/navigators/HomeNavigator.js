@@ -1,9 +1,8 @@
-import React, { Component } from 'react'
-import { View } from 'react-native'
+import React from 'react'
 import { createStackNavigator } from 'react-navigation'
 
 import i18n from '../../i18n'
-import navigation, { defaultNavigationOptions } from '..'
+import { defaultNavigationOptions } from '..'
 import HeaderButton from '../../components/HeaderButton'
 
 import ConfigureServer from '../ConfigureServer'

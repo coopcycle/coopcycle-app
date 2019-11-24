@@ -44,7 +44,7 @@ class LoginForm extends Component {
             <Label>{this.props.t('PASSWORD')}</Label>
             <Input
               testID="loginPassword"
-              ref={component => this._passwordInput = component}
+              ref={ component => { this._passwordInput = component } }
               autoCorrect={false}
               autoCapitalize="none"
               secureTextEntry={true}

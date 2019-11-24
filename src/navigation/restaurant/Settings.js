@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, TouchableOpacity } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import {
-  Container, Header, Title, Content,
+  Container, Content,
   Left, Right, Body,
-  List, ListItem, Icon, Text, Button, Radio, Switch,
+  List, ListItem, Icon, Text, Switch,
 } from 'native-base'
 
 import { withTranslation } from 'react-i18next'
@@ -33,11 +33,7 @@ class SettingsScreen extends Component {
   render() {
 
     const { navigate } = this.props.navigation
-    const { restaurant, restaurants } = this.props
-
-    const lastItemProps = {
-      last: restaurants.length === 1,
-    }
+    const { restaurants } = this.props
 
     const items = [
       {

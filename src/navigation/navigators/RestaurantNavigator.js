@@ -1,16 +1,14 @@
-import React, { Component } from 'react'
-import { View } from 'react-native'
-import { Icon, Text } from 'native-base'
+import React from 'react'
 import { createStackNavigator } from 'react-navigation'
 
 import i18n from '../../i18n'
-import navigation, { defaultNavigationOptions, headerLeft } from '..'
+import screens, { defaultNavigationOptions, headerLeft } from '..'
 import HeaderRight from '../restaurant/components/HeaderRight'
 import SettingsNavigator from '../restaurant/SettingsNavigator'
 
 const MainNavigator = createStackNavigator({
   RestaurantHome: {
-    screen: navigation.RestaurantDashboard,
+    screen: screens.RestaurantDashboard,
     navigationOptions: ({ navigation }) => {
       let title = ''
       if (navigation.state.params && navigation.state.params.restaurant) {
@@ -25,7 +23,7 @@ const MainNavigator = createStackNavigator({
     },
   },
   RestaurantOrder: {
-    screen: navigation.RestaurantOrder,
+    screen: screens.RestaurantOrder,
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('RESTAURANT_ORDER_TITLE', { order: navigation.state.params.order }),
     }),
@@ -44,31 +42,31 @@ export default createStackNavigator({
     }),
   },
   RestaurantOrderRefuse: {
-    screen: navigation.RestaurantOrderRefuse,
+    screen: screens.RestaurantOrderRefuse,
     navigationOptions: ({ navigation }) => ({
       title: 'Refuse order', // TODO Translate
     }),
   },
   RestaurantOrderDelay: {
-    screen: navigation.RestaurantOrderDelay,
+    screen: screens.RestaurantOrderDelay,
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('RESTAURANT_ORDER_DELAY_MODAL_TITLE'),
     }),
   },
   RestaurantOrderCancel: {
-    screen: navigation.RestaurantOrderCancel,
+    screen: screens.RestaurantOrderCancel,
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('RESTAURANT_ORDER_CANCEL_MODAL_TITLE'),
     }),
   },
   RestaurantDate: {
-    screen: navigation.RestaurantDate,
+    screen: screens.RestaurantDate,
     navigationOptions: ({ navigation }) => ({
       title: 'Choose date', // TODO Translate
     }),
   },
   RestaurantList: {
-    screen: navigation.RestaurantList,
+    screen: screens.RestaurantList,
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('RESTAURANTS'),
     }),

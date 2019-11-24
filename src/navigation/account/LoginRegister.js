@@ -1,13 +1,10 @@
 import React, { Component } from 'react'
 import { StyleSheet, View } from 'react-native'
 import {
-  Container, Header, Content,
-  Left, Right, Body,
-  List, ListItem, Icon, Text, Button,
+  Container, Content, Text,
 } from 'native-base'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
-import _ from 'lodash'
 
 import Server from './components/Server'
 import AuthenticateForm from '../../components/AuthenticateForm'

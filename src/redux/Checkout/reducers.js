@@ -17,9 +17,6 @@ import {
   CHECKOUT_REQUEST,
   CHECKOUT_SUCCESS,
   CHECKOUT_FAILURE,
-  LOAD_RESTAURANT_REQUEST,
-  LOAD_RESTAURANT_SUCCESS,
-  LOAD_RESTAURANT_FAILURE,
   SHOW_ADDRESS_MODAL,
   HIDE_ADDRESS_MODAL,
 } from './actions'
@@ -27,7 +24,6 @@ import {
 import Cart from '../../Cart'
 import i18n from '../../i18n'
 import _ from 'lodash'
-import moment from 'moment'
 
 const initialState = {
   cart: new Cart(),

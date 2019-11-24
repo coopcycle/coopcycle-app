@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { StyleSheet, View } from 'react-native'
 import {
-  Container, Content, Body, Right,
-  Icon, Text, Button,
+  Container, Content, Body,
+  Text,
   List, ListItem,
 } from 'native-base'
 import { connect } from 'react-redux'

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { Picker, StyleSheet, View } from 'react-native'
-import { Container, Content, Footer, FooterTab, Text, Button } from 'native-base'
+import { Picker, View } from 'react-native'
+import { Footer, FooterTab, Text, Button } from 'native-base'
 import { Col, Row, Grid } from 'react-native-easy-grid'
 import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
@@ -54,13 +54,13 @@ class ShippingDate extends Component {
             <Row>
               <Col>
                 <Picker
-      					  selectedValue={ selectedDate }
-      					  style={{ height: 50 }}
-      					  onValueChange={ this._onDateChange.bind(this) }>
+                  selectedValue={ selectedDate }
+                  style={{ height: 50 }}
+                  onValueChange={ this._onDateChange.bind(this) }>
                   { dates.map(date => (
                     <Picker.Item key={ date } label={ date } value={ date } />
                   )) }
-      					</Picker>
+                </Picker>
               </Col>
               <Col>
                 <Picker
@@ -86,21 +86,6 @@ class ShippingDate extends Component {
     )
   }
 }
-
-const styles = StyleSheet.create({
-  decrement: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    paddingHorizontal: 10,
-  },
-  increment: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    paddingHorizontal: 10,
-  },
-});
 
 function mapStateToProps(state) {
 

@@ -1,13 +1,11 @@
-import React, { Component } from 'react';
-import { InteractionManager, StyleSheet, View } from 'react-native';
+import React, { Component } from 'react'
+import { View } from 'react-native';
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 import {
   Container, Content,
-  Left, Right,
   Icon, Text, Button,
-} from 'native-base';
-import moment from 'moment'
+} from 'native-base'
 import _ from 'lodash'
 
 import TaskList from '../../components/TaskList'

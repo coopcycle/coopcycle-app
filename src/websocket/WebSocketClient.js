@@ -7,7 +7,7 @@
 import JSONAsyncStorage from './storage'
 
 const defaults = {
-  reconnectTimeout: 3000
+  reconnectTimeout: 3000,
 }
 
 class WebSocketClient {
@@ -64,8 +64,8 @@ class WebSocketClient {
 
     this.webSocket = new WebSocket(socketURL, '', {
       headers: {
-        Authorization: `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     })
 
     this.webSocket.addEventListener('open', this.onOpenHandler)

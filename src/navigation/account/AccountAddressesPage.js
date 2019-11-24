@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, View, ActivityIndicator } from 'react-native';
 import {
   Container,
-  Content, Button, Icon, List, ListItem, Text,
+  Content, List, ListItem, Text,
 } from 'native-base';
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'

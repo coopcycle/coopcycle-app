@@ -1,10 +1,9 @@
 import React, { Component } from 'react'
 import { StyleSheet, View, Image, Dimensions } from 'react-native'
 import {
-  Container, Content,
+  Container,
   Icon, Text, Button, Footer, FooterTab,
 } from 'native-base'
-import { Col, Row, Grid } from 'react-native-easy-grid'
 import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 import { RNCamera } from 'react-native-camera'

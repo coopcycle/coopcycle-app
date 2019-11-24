@@ -1,12 +1,11 @@
-import React, { Component } from 'react'
 import { createStackNavigator, createSwitchNavigator } from 'react-navigation'
 
-import navigation, { defaultNavigationOptions, headerLeft } from '..'
+import screens, { defaultNavigationOptions, headerLeft } from '..'
 import i18n from '../../i18n'
 
 const AuthenticatedStack = createStackNavigator({
   AccountHome: {
-    screen: navigation.AccountHome,
+    screen: screens.AccountHome,
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('MY_ACCOUNT'),
       headerLeft: headerLeft(navigation),
@@ -14,25 +13,25 @@ const AuthenticatedStack = createStackNavigator({
     }),
   },
   AccountAddresses: {
-    screen: navigation.AccountAddressesPage,
+    screen: screens.AccountAddressesPage,
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('MY_ADDRESSES'),
     }),
   },
   AccountOrders: {
-    screen: navigation.AccountOrdersPage,
+    screen: screens.AccountOrdersPage,
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('MY_ORDERS'),
     }),
   },
   AccountOrder: {
-    screen: navigation.AccountOrderPage,
+    screen: screens.AccountOrderPage,
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('ORDER_NUMBER', { number: navigation.state.params.order.number }),
     }),
   },
   AccountDetails: {
-    screen: navigation.AccountDetailsPage,
+    screen: screens.AccountDetailsPage,
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('MY_DETAILS'),
     }),
@@ -45,7 +44,7 @@ const AuthenticatedStack = createStackNavigator({
 
 const NotAuthenticatedStack = createStackNavigator({
   AccountLoginRegister: {
-    screen: navigation.AccountLoginRegister,
+    screen: screens.AccountLoginRegister,
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('MY_ACCOUNT'),
       headerLeft: headerLeft(navigation),
@@ -53,22 +52,22 @@ const NotAuthenticatedStack = createStackNavigator({
     }),
   },
   AccountRegisterCheckEmail: {
-    screen: navigation.AccountRegisterCheckEmail,
+    screen: screens.AccountRegisterCheckEmail,
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('REGISTER_CHECK_EMAIL'),
     }),
   },
   AccountForgotPassword: {
-    screen: navigation.AccountForgotPassword,
+    screen: screens.AccountForgotPassword,
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('FORGOT_PASSWORD'),
-    })
+    }),
   },
   AccountResetPasswordCheckEmail: {
-    screen: navigation.AccountResetPasswordCheckEmail,
+    screen: screens.AccountResetPasswordCheckEmail,
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('RESET_PASSWORD_CHECK_EMAIL'),
-    })
+    }),
   },
 }, {
   initialRouteName: 'AccountLoginRegister',
