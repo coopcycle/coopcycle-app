@@ -92,10 +92,10 @@ describe('Redux | Tasks | Actions', () => {
 
     client.get.mockResolvedValue(resolveValue)
 
-    const thunk = loadTasks(client, date)
-    const promise = thunk(dispatch)
+    const thk = loadTasks(client, date)
+    const promise = thk(dispatch)
 
-    expect(thunk).toBeInstanceOf(Function)
+    expect(thk).toBeInstanceOf(Function)
     expect(client.get).toHaveBeenCalledTimes(1)
     expect(client.get).toHaveBeenLastCalledWith(`/api/me/tasks/${date.format('YYYY-MM-DD')}`)
 
@@ -114,10 +114,10 @@ describe('Redux | Tasks | Actions', () => {
 
     client.get.mockReturnValue(Promise.reject(rejectValue))
 
-    const thunk = loadTasks(client, date)
-    const promise = thunk(dispatch)
+    const thk = loadTasks(client, date)
+    const promise = thk(dispatch)
 
-    expect(thunk).toBeInstanceOf(Function)
+    expect(thk).toBeInstanceOf(Function)
     expect(client.get).toHaveBeenCalledTimes(1)
     expect(client.get).toHaveBeenLastCalledWith(`/api/me/tasks/${date.format('YYYY-MM-DD')}`)
 

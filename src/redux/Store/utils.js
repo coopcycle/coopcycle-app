@@ -6,7 +6,7 @@ import _ from 'lodash'
 const moment = extendMoment(Moment)
 
 function makeLabel(range, now) {
-  if (0 === range.diff('days')) {
+  if (range.diff('days') === 0) {
 
     const nowClone = moment(now)
       .set('hour', range.start.get('hour'))
@@ -17,7 +17,6 @@ function makeLabel(range, now) {
     // https://momentjs.com/docs/#/displaying/calendar-time/
     let calendarFormat = moment.calendarFormat(range.start, nowClone)
 
-    let label = ''
     switch (calendarFormat) {
       case 'sameDay':
         return `Today between ${range.start.format('LT')} and ${range.end.format('LT')}`
@@ -104,7 +103,9 @@ export function getChoicesWithDates(timeSlot, now) {
   }
 
   items.sort((a, b) => {
-    if (a.range.start.isSame(b.range.start)) return 0
+    if (a.range.start.isSame(b.range.start)) {
+      return 0
+    }
     return a.range.start.isBefore(b.range.start) ? -1 : 1
   })
 

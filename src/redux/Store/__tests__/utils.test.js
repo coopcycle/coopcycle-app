@@ -6,8 +6,8 @@ describe('getChoicesWithDates', () => {
   it('returns expected results in the afternoon', () => {
     const timeSlot = {
       choices: [
-        { startTime: "20:00:00", endTime: "21:00:00" },
-        { startTime: "21:00:00", endTime: "22:00:00" },
+        { startTime: '20:00:00', endTime: '21:00:00' },
+        { startTime: '21:00:00', endTime: '22:00:00' },
       ],
       interval: '3 days',
       workingDaysOnly: false,
@@ -17,19 +17,19 @@ describe('getChoicesWithDates', () => {
     expect(items).toEqual([
       {
         key: '2019-11-14 20:00-21:00',
-        label: 'Today between 8:00 PM and 9:00 PM'
+        label: 'Today between 8:00 PM and 9:00 PM',
       },
       {
         key: '2019-11-14 21:00-22:00',
-        label: 'Today between 9:00 PM and 10:00 PM'
+        label: 'Today between 9:00 PM and 10:00 PM',
       },
       {
         key: '2019-11-15 20:00-21:00',
-        label: 'Tomorrow between 8:00 PM and 9:00 PM'
+        label: 'Tomorrow between 8:00 PM and 9:00 PM',
       },
       {
         key: '2019-11-15 21:00-22:00',
-        label: 'Tomorrow between 9:00 PM and 10:00 PM'
+        label: 'Tomorrow between 9:00 PM and 10:00 PM',
       },
       {
         key: '2019-11-16 20:00-21:00',
@@ -45,8 +45,8 @@ describe('getChoicesWithDates', () => {
   it('returns expected results in the evening', () => {
     const timeSlot = {
       choices: [
-        { startTime: "20:00:00", endTime: "21:00:00" },
-        { startTime: "21:00:00", endTime: "22:00:00" },
+        { startTime: '20:00:00', endTime: '21:00:00' },
+        { startTime: '21:00:00', endTime: '22:00:00' },
       ],
       interval: '3 days',
       workingDaysOnly: false,
@@ -56,15 +56,15 @@ describe('getChoicesWithDates', () => {
     expect(items).toEqual([
       {
         key: '2019-11-14 21:00-22:00',
-        label: 'Today between 9:00 PM and 10:00 PM'
+        label: 'Today between 9:00 PM and 10:00 PM',
       },
       {
         key: '2019-11-15 20:00-21:00',
-        label: 'Tomorrow between 8:00 PM and 9:00 PM'
+        label: 'Tomorrow between 8:00 PM and 9:00 PM',
       },
       {
         key: '2019-11-15 21:00-22:00',
-        label: 'Tomorrow between 9:00 PM and 10:00 PM'
+        label: 'Tomorrow between 9:00 PM and 10:00 PM',
       },
       {
         key: '2019-11-16 20:00-21:00',
@@ -80,8 +80,8 @@ describe('getChoicesWithDates', () => {
   it('returns expected results in the afternoon, working days only', () => {
     const timeSlot = {
       choices: [
-        { startTime: "20:00:00", endTime: "21:00:00" },
-        { startTime: "21:00:00", endTime: "22:00:00" },
+        { startTime: '20:00:00', endTime: '21:00:00' },
+        { startTime: '21:00:00', endTime: '22:00:00' },
       ],
       interval: '3 days',
       workingDaysOnly: true,
@@ -91,19 +91,19 @@ describe('getChoicesWithDates', () => {
     expect(items).toEqual([
       {
         key: '2019-11-14 20:00-21:00',
-        label: 'Today between 8:00 PM and 9:00 PM'
+        label: 'Today between 8:00 PM and 9:00 PM',
       },
       {
         key: '2019-11-14 21:00-22:00',
-        label: 'Today between 9:00 PM and 10:00 PM'
+        label: 'Today between 9:00 PM and 10:00 PM',
       },
       {
         key: '2019-11-15 20:00-21:00',
-        label: 'Tomorrow between 8:00 PM and 9:00 PM'
+        label: 'Tomorrow between 8:00 PM and 9:00 PM',
       },
       {
         key: '2019-11-15 21:00-22:00',
-        label: 'Tomorrow between 9:00 PM and 10:00 PM'
+        label: 'Tomorrow between 9:00 PM and 10:00 PM',
       },
       {
         key: '2019-11-18 20:00-21:00',

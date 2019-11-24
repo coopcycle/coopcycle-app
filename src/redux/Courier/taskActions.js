@@ -1,10 +1,8 @@
 import { Alert } from 'react-native'
 import { createAction } from 'redux-actions'
-import { StackActions, NavigationActions } from 'react-navigation'
 import RNFetchBlob from 'rn-fetch-blob'
 
 import NavigationHolder from '../../NavigationHolder'
-import DropdownHolder from '../../DropdownHolder'
 import Preferences from '../../Preferences'
 import i18n from '../../i18n'
 import { selectSignatures, selectPictures } from './taskSelectors'

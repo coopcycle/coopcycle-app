@@ -10,8 +10,6 @@ import {
   SET_LOADING,
   STORE_REMOTE_PUSH_TOKEN,
   SAVE_REMOTE_PUSH_TOKEN,
-  LOGIN,
-  LOGOUT,
   PUSH_NOTIFICATION,
   CLEAR_NOTIFICATIONS,
   AUTHENTICATION_REQUEST,
@@ -160,7 +158,7 @@ export default (state = initialState, action = {}) => {
           ...state.forgotPassword,
           inputError: null,
           nonInputError: null,
-        }
+        },
       }
 
     case RESET_PASSWORD_REQUEST_SUCCESS:

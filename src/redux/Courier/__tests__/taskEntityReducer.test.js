@@ -1,5 +1,4 @@
 import { omit } from 'lodash'
-import moment from 'moment'
 import { tasksEntityReducer } from '../taskEntityReducer'
 import {
   loadTasksRequest, loadTasksFailure, loadTasksSuccess,
@@ -8,10 +7,9 @@ import {
   dontTriggerTasksNotification,
 } from '../taskActions'
 import {
-  selectIsTasksLoading, selectIsTasksLoadingFailure, selectIsTaskCompleteFailure, selectTasks,
-  selectTaskSelectedDate, selectTasksList, selectTasksOrder,
+  selectIsTasksLoading, selectIsTasksLoadingFailure, selectIsTaskCompleteFailure,
+  selectTasksList,
   selectTriggerTasksNotification,
-  selectFilteredTasks,
 } from '../taskSelectors';
 import { message } from '../../middlewares/WebSocketMiddleware'
 

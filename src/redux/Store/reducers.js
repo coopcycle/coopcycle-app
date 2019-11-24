@@ -9,7 +9,6 @@ import {
   SET_LOADING_MORE,
 } from './actions'
 
-import moment from 'moment'
 import _ from 'lodash'
 
 const initialState = {
@@ -53,7 +52,7 @@ export default (state = initialState, action = {}) => {
 
       return {
         ...state,
-        deliveries: newDeliveries
+        deliveries: newDeliveries,
       }
 
     case LOAD_MY_STORES_SUCCESS:
@@ -65,13 +64,11 @@ export default (state = initialState, action = {}) => {
       }
 
       if (action.payload.length > 0) {
-        const store = _.first(action.payload)
-
         newState = {
           ...newState,
           // We select by default the first restaurant from the list
           // Most of the time, users will own only one restaurant
-          store,
+          store: _.first(action.payload),
         }
       }
 

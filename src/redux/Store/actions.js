@@ -172,7 +172,7 @@ export function loadTimeSlot(store) {
     const { app } = getState()
     const { httpClient } = app
 
-    const timeSlot = _.find(selectTimeSlots(getState()), timeSlot => timeSlot['@id'] === store.timeSlot)
+    const timeSlot = _.find(selectTimeSlots(getState()), ts => ts['@id'] === store.timeSlot)
     if (timeSlot) {
       return
     }
