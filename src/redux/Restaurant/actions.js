@@ -6,13 +6,15 @@ import NavigationHolder from '../../NavigationHolder'
 
 import { pushNotification } from '../App/actions'
 
+import {
+  LOAD_MY_RESTAURANTS_REQUEST,
+  LOAD_MY_RESTAURANTS_SUCCESS,
+  LOAD_MY_RESTAURANTS_FAILURE,
+} from '../App/actions'
+
 /*
  * Action Types
  */
-
-export const LOAD_MY_RESTAURANTS_REQUEST = 'LOAD_MY_RESTAURANTS_REQUEST'
-export const LOAD_MY_RESTAURANTS_SUCCESS = 'LOAD_MY_RESTAURANTS_SUCCESS'
-export const LOAD_MY_RESTAURANTS_FAILURE = 'LOAD_MY_RESTAURANTS_FAILURE'
 
 export const LOAD_ORDERS_REQUEST = 'LOAD_ORDERS_REQUEST'
 export const LOAD_ORDERS_SUCCESS = 'LOAD_ORDERS_SUCCESS'
@@ -77,9 +79,9 @@ export const DELETE_OPENING_HOURS_SPECIFICATION_FAILURE = 'DELETE_OPENING_HOURS_
  * Action Creators
  */
 
-export const loadMyRestaurantsRequest = createAction(LOAD_MY_RESTAURANTS_REQUEST)
-export const loadMyRestaurantsSuccess = createAction(LOAD_MY_RESTAURANTS_SUCCESS)
-export const loadMyRestaurantsFailure = createAction(LOAD_MY_RESTAURANTS_FAILURE)
+const loadMyRestaurantsRequest = createAction(LOAD_MY_RESTAURANTS_REQUEST)
+const loadMyRestaurantsSuccess = createAction(LOAD_MY_RESTAURANTS_SUCCESS)
+const loadMyRestaurantsFailure = createAction(LOAD_MY_RESTAURANTS_FAILURE)
 
 export const loadOrdersRequest = createAction(LOAD_ORDERS_REQUEST)
 export const loadOrdersSuccess = createAction(LOAD_ORDERS_SUCCESS)

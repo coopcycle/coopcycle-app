@@ -15,11 +15,6 @@ import Settings from '../../Settings'
 import Preferences from '../../Preferences'
 import { formatPrice } from '../../Cart'
 import { setTasksFilter, setKeepAwake } from '../Courier/taskActions'
-import {
-  loadMyRestaurantsRequest,
-  loadMyRestaurantsSuccess,
-  loadMyRestaurantsFailure,
-} from '../Restaurant/actions'
 import NavigationHolder from '../../NavigationHolder'
 import i18n from '../../i18n'
 
@@ -57,6 +52,10 @@ export const SET_SELECT_SERVER_ERROR = '@app/SET_SELECT_SERVER_ERROR'
 export const CLEAR_SELECT_SERVER_ERROR = '@app/CLEAR_SELECT_SERVER_ERROR'
 
 export const LOAD_MY_STORES_SUCCESS = '@store/LOAD_MY_STORES_SUCCESS'
+
+export const LOAD_MY_RESTAURANTS_REQUEST = '@restaurant/LOAD_MY_RESTAURANTS_REQUEST'
+export const LOAD_MY_RESTAURANTS_SUCCESS = '@restaurant/LOAD_MY_RESTAURANTS_SUCCESS'
+export const LOAD_MY_RESTAURANTS_FAILURE = '@restaurant/LOAD_MY_RESTAURANTS_FAILURE'
 
 /*
  * Action Creators
@@ -96,6 +95,10 @@ const _storeRemotePushToken = createAction(STORE_REMOTE_PUSH_TOKEN)
 const _saveRemotePushToken = createAction(SAVE_REMOTE_PUSH_TOKEN)
 
 const _loadMyStoresSuccess = createAction(LOAD_MY_STORES_SUCCESS)
+
+const loadMyRestaurantsRequest = createAction(LOAD_MY_RESTAURANTS_REQUEST)
+const loadMyRestaurantsSuccess = createAction(LOAD_MY_RESTAURANTS_SUCCESS)
+const loadMyRestaurantsFailure = createAction(LOAD_MY_RESTAURANTS_FAILURE)
 
 function navigateToHome(dispatch, getState) {
 
