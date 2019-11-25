@@ -4,8 +4,6 @@ import _ from 'lodash'
 import { setLoading } from '../App/actions'
 import { selectTimeSlots, selectStore } from './selectors'
 
-export const LOAD_MY_STORES_SUCCESS = '@store/LOAD_MY_STORES_SUCCESS'
-export const LOAD_MY_STORES_FAILURE = '@store/LOAD_MY_STORES_FAILURE'
 export const LOAD_DELIVERIES_SUCCESS = '@store/LOAD_DELIVERIES_SUCCESS'
 export const CREATE_DELIVERY_SUCCESS = '@store/CREATE_DELIVERY_SUCCESS'
 export const LOAD_TIME_SLOT_SUCCESS = '@store/LOAD_TIME_SLOT_SUCCESS'
@@ -13,7 +11,6 @@ export const LOAD_TASKS_SUCCESS = '@store/LOAD_TASKS_SUCCESS'
 export const ASSERT_DELIVERY_ERROR = '@store/ASSERT_DELIVERY_ERROR'
 export const SET_LOADING_MORE = '@store/SET_LOADING_MORE'
 
-export const loadMyStoresSuccess = createAction(LOAD_MY_STORES_SUCCESS)
 export const createDeliverySuccess = createAction(CREATE_DELIVERY_SUCCESS)
 export const loadDeliveriesSuccess = createAction(LOAD_DELIVERIES_SUCCESS, (store, deliveries, pagination) => ({
   store,

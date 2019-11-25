@@ -20,9 +20,6 @@ import {
   loadMyRestaurantsSuccess,
   loadMyRestaurantsFailure,
 } from '../Restaurant/actions'
-import {
-  loadMyStoresSuccess,
-} from '../Store/actions'
 import NavigationHolder from '../../NavigationHolder'
 import i18n from '../../i18n'
 
@@ -58,6 +55,8 @@ export const THERMAL_PRINTER_CONNECTED = '@app/THERMAL_PRINTER_CONNECTED'
 export const THERMAL_PRINTER_DEVICE_ID = '@app/THERMAL_PRINTER_DEVICE_ID'
 export const SET_SELECT_SERVER_ERROR = '@app/SET_SELECT_SERVER_ERROR'
 export const CLEAR_SELECT_SERVER_ERROR = '@app/CLEAR_SELECT_SERVER_ERROR'
+
+export const LOAD_MY_STORES_SUCCESS = '@store/LOAD_MY_STORES_SUCCESS'
 
 /*
  * Action Creators
@@ -95,6 +94,8 @@ const _resumeCheckoutAfterActivation = createAction(RESUME_CHECKOUT_AFTER_ACTIVA
 
 const _storeRemotePushToken = createAction(STORE_REMOTE_PUSH_TOKEN)
 const _saveRemotePushToken = createAction(SAVE_REMOTE_PUSH_TOKEN)
+
+const _loadMyStoresSuccess = createAction(LOAD_MY_STORES_SUCCESS)
 
 function navigateToHome(dispatch, getState) {
 
@@ -140,7 +141,7 @@ function navigateToHome(dispatch, getState) {
         .then(res => {
           dispatch(setLoading(false))
           const stores = res['hydra:member']
-          dispatch(loadMyStoresSuccess(stores))
+          dispatch(_loadMyStoresSuccess(stores))
           if (stores.length > 0) {
             NavigationHolder.navigate('StoreHome')
           } else {

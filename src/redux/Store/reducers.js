@@ -1,5 +1,4 @@
 import {
-  LOAD_MY_STORES_SUCCESS,
   CREATE_DELIVERY_SUCCESS,
   LOAD_DELIVERIES_SUCCESS,
   LOAD_TIME_SLOT_SUCCESS,
@@ -7,6 +6,10 @@ import {
   ASSERT_DELIVERY_ERROR,
   SET_LOADING_MORE,
 } from './actions'
+
+import {
+  LOAD_MY_STORES_SUCCESS,
+} from '../App/actions'
 
 import { composeWithState } from './utils'
 
