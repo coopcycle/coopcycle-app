@@ -13,7 +13,7 @@ import _ from 'lodash'
 
 import { loadTasks } from '../../redux/Store/actions'
 import { selectDeliveries } from '../../redux/Store/selectors'
-import { humanizeTaskTime } from '../../redux/Store/utils'
+import { humanizeTaskTime } from '../../utils/time-slots'
 import NavigationAwareMap from '../../components/NavigationAwareMap'
 
 class NewDelivery extends Component {

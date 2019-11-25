@@ -1,4 +1,4 @@
-import { getChoicesWithDates, humanizeTaskTime, resolveState, composeWithState } from '../utils'
+import { getChoicesWithDates, humanizeTaskTime, resolveState, composeWithState } from '../time-slots'
 import moment from 'moment'
 
 describe('getChoicesWithDates', () => {

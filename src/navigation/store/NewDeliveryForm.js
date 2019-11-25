@@ -20,7 +20,7 @@ import {
 import Settings from '../../Settings'
 import { createDelivery, loadTimeSlot } from '../../redux/Store/actions'
 import { selectStore, selectTimeSlot } from '../../redux/Store/selectors'
-import { getChoicesWithDates } from '../../redux/Store/utils'
+import { getChoicesWithDates } from '../../utils/time-slots'
 
 class NewDelivery extends Component {
 
