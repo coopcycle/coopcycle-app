@@ -72,7 +72,7 @@ class NewDelivery extends Component {
   _validate(values) {
     let errors = {}
 
-    if (_.isEmpty(values.timeSlot)) {
+    if (this.props.hasTimeSlot && _.isEmpty(values.timeSlot)) {
       errors = {
         ...errors,
         timeSlot: this.props.t('STORE_NEW_DELIVERY_ERROR.EMPTY_TIME_SLOT'),
@@ -163,7 +163,7 @@ class NewDelivery extends Component {
       },
     }
 
-    if (!!this.props.store.timeSlot) {
+    if (this.props.hasTimeSlot) {
       initialValues = {
         ...initialValues,
         timeSlot: null,
@@ -229,8 +229,8 @@ class NewDelivery extends Component {
                   onChangeText={ handleChange('address.description') }
                   onBlur={ handleBlur('address.description') } />
               </View>
-              { this.props.store.timeSlot && this.renderTimeSlotSelector(errors, touched, setFieldValue, setFieldTouched) }
-              { !this.props.store.timeSlot && this.renderDateTimePicker(initialValues, values, errors, setFieldValue, setFieldTouched) }
+              { this.props.hasTimeSlot && this.renderTimeSlotSelector(errors, touched, setFieldValue, setFieldTouched) }
+              { !this.props.hasTimeSlot && this.renderDateTimePicker(initialValues, values, errors, setFieldValue, setFieldTouched) }
             </Content>
             <Footer>
               <Button block transparent onPress={ handleSubmit }>
@@ -283,6 +283,7 @@ function mapStateToProps(state) {
   return {
     store: selectStore(state),
     timeSlotChoices: timeSlot ? getChoicesWithDates(timeSlot) : [],
+    hasTimeSlot: !!timeSlot,
   }
 }
 
