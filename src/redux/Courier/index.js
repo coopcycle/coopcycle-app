@@ -28,6 +28,7 @@ import {
   selectTaskSelectedDate,
   selectTriggerTasksNotification,
   selectIsTasksLoading,
+  selectIsTasksRefreshing,
   selectIsTasksLoadingFailure,
   selectIsTaskCompleteFailure,
   selectTasks,
@@ -83,6 +84,7 @@ export {
   deletePictureAt,
 
   selectIsTasksLoading,
+  selectIsTasksRefreshing,
   selectIsTasksLoadingFailure,
   selectIsTaskCompleteFailure,
   selectTasks,

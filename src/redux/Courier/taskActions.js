@@ -38,7 +38,7 @@ export const SET_KEEP_AWAKE = 'SET_KEEP_AWAKE'
 /*
  * Action Creators
  */
-export const loadTasksRequest = createAction(LOAD_TASKS_REQUEST)
+export const loadTasksRequest = createAction(LOAD_TASKS_REQUEST, (date, refresh = false) => ({ date, refresh }))
 export const loadTasksSuccess = createAction(LOAD_TASKS_SUCCESS)
 export const loadTasksFailure = createAction(LOAD_TASKS_FAILURE)
 export const markTaskDoneRequest = createAction(MARK_TASK_DONE_REQUEST)
@@ -102,10 +102,10 @@ export function setKeepAwake(keepAwake) {
   }
 }
 
-export function loadTasks(client, selectedDate) {
+export function loadTasks(client, selectedDate, refresh = false) {
 
   return function (dispatch) {
-    dispatch(loadTasksRequest(selectedDate))
+    dispatch(loadTasksRequest(selectedDate, refresh))
 
     return client.get('/api/me/tasks/' + selectedDate.format('YYYY-MM-DD'))
       .then(res => dispatch(loadTasksSuccess(res['hydra:member'])))

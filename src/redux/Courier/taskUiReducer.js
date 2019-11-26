@@ -21,7 +21,7 @@ export const tasksUiReducer = (state = tasksUiInitialState, action = {}) => {
     case LOAD_TASKS_REQUEST:
       return {
         ...state,
-        selectedDate: action.payload || moment(),
+        selectedDate: action.payload.date || moment(),
       }
 
     case ADD_TASK_FILTER:

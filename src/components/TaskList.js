@@ -193,18 +193,29 @@ class TaskList extends Component {
 
   render() {
 
+    const { refreshing, onRefresh } = this.props
+
     return (
       <FlatList
         data={ this.props.tasks }
         keyExtractor={ (item, index) => item['@id'] }
         renderItem={({item}) => this.renderItem(item)}
+        refreshing={ refreshing }
+        onRefresh={ onRefresh }
       />
     )
   }
 }
 
+TaskList.defaultProps = {
+  refreshing: false,
+  onRefresh: () => {},
+}
+
 TaskList.propTypes = {
   onTaskClick: PropTypes.func,
-};
+  refreshing: PropTypes.bool,
+  onRefresh: PropTypes.func,
+}
 
 export default withTranslation(['common'], { withRef: true })(TaskList)

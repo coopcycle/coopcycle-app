@@ -22,6 +22,7 @@ const tasksEntityInitialState = {
   loadTasksFetchError: false,      // Error object describing the error
   completeTaskFetchError: false,   // Error object describing the error
   isFetching: false,               // Flag indicating active HTTP request
+  isRefreshing: false,
   lastUpdated: moment(),           // Time at which tasks data was last updated
   triggerTasksNotification: false, // Flag indicating whether to trigger Toast alert
   items: {                         // Object of tasks, keyed by task id
@@ -53,7 +54,6 @@ const tasksEntityInitialState = {
 
 export const tasksEntityReducer = (state = tasksEntityInitialState, action = {}) => {
   switch (action.type) {
-    case LOAD_TASKS_REQUEST:
     case MARK_TASK_DONE_REQUEST:
     case MARK_TASK_FAILED_REQUEST:
     case UPLOAD_FILE_REQUEST:
@@ -64,11 +64,21 @@ export const tasksEntityReducer = (state = tasksEntityInitialState, action = {})
         isFetching: true,
       }
 
+    case LOAD_TASKS_REQUEST:
+      return {
+        ...state,
+        loadTasksFetchError: false,
+        completeTaskFetchError: false,
+        isFetching: !action.payload.refresh,
+        isRefreshing: action.payload.refresh,
+      }
+
     case LOAD_TASKS_FAILURE:
       return {
         ...state,
         loadTasksFetchError: action.payload || action.error,
         isFetching: false,
+        isRefreshing: false,
       }
 
     case MARK_TASK_DONE_FAILURE:
@@ -90,6 +100,7 @@ export const tasksEntityReducer = (state = tasksEntityInitialState, action = {})
         ...state,
         loadTasksFetchError: false,
         isFetching: false,
+        isRefreshing: false,
         lastUpdated: moment(),
         items: action.payload.reduce((acc, task) => {
           acc[task.id] = task

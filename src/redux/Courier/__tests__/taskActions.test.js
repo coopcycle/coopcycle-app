@@ -80,7 +80,7 @@ describe('Redux | Tasks | Actions', () => {
   ]
     .forEach(({ actionCreator, actionType }) => {
       test(`${actionType}`, () => {
-        expect(actionCreator()).toEqual({ type: actionType })
+        expect(actionCreator()).toMatchObject({ type: actionType })
       })
     })
 
@@ -101,7 +101,7 @@ describe('Redux | Tasks | Actions', () => {
 
     return promise.then(() => {
       expect(dispatch).toHaveBeenCalledTimes(2)
-      expect(dispatch).toHaveBeenCalledWith({ type: LOAD_TASKS_REQUEST, payload: date })
+      expect(dispatch).toHaveBeenCalledWith({ type: LOAD_TASKS_REQUEST, payload: { date, refresh: false } })
       expect(dispatch).toHaveBeenLastCalledWith({ type: LOAD_TASKS_SUCCESS, payload: resolveValue['hydra:member'] })
     })
   })

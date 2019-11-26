@@ -13,6 +13,7 @@ import { reject, isEqual, uniqWith } from 'lodash'
 export const selectTaskSelectedDate = state => state.ui.tasks.selectedDate
 export const selectTriggerTasksNotification = state => state.entities.tasks.triggerTasksNotification
 export const selectIsTasksLoading = state => state.entities.tasks.isFetching
+export const selectIsTasksRefreshing = state => state.entities.tasks.isRefreshing
 export const selectIsTasksLoadingFailure = state => state.entities.tasks.loadTasksFetchError
 export const selectIsTaskCompleteFailure = state => state.entities.tasks.completeTaskFetchError
 export const selectTasks = state => state.entities.tasks.items
