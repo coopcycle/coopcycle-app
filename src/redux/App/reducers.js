@@ -23,8 +23,6 @@ import {
   RESET_PASSWORD_REQUEST_SUCCESS,
   RESET_PASSWORD_REQUEST_FAILURE,
   SET_SERVERS,
-  TRACKER_INITIALIZED,
-  TRACKER_DISABLED,
   THERMAL_PRINTER_CONNECTED,
   THERMAL_PRINTER_DEVICE_ID,
   SET_SELECT_SERVER_ERROR,
@@ -203,18 +201,6 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         servers: action.payload,
-      }
-
-    case TRACKER_INITIALIZED:
-      return {
-        ...state,
-        trackerInitialized: true,
-      }
-
-    case TRACKER_DISABLED:
-      return {
-        ...state,
-        trackerInitialized: false,
       }
 
     case THERMAL_PRINTER_CONNECTED:

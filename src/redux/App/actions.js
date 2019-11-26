@@ -44,8 +44,6 @@ export const LOGOUT_SUCCESS = '@app/LOGOUT_SUCCESS'
 export const AUTHENTICATE = '@app/AUTHENTICATE'
 export const RESUME_CHECKOUT_AFTER_ACTIVATION = '@app/RESUME_CHECKOUT_AFTER_ACTIVATION'
 export const SET_SERVERS = '@app/SET_SERVERS'
-export const TRACKER_INITIALIZED = '@app/TRACKER_INITIALIZED'
-export const TRACKER_DISABLED = '@app/TRACKER_DISABLED'
 export const THERMAL_PRINTER_CONNECTED = '@app/THERMAL_PRINTER_CONNECTED'
 export const THERMAL_PRINTER_DEVICE_ID = '@app/THERMAL_PRINTER_DEVICE_ID'
 export const SET_SELECT_SERVER_ERROR = '@app/SET_SELECT_SERVER_ERROR'
@@ -77,8 +75,6 @@ const resetPasswordRequestFailure = createAction(RESET_PASSWORD_REQUEST_FAILURE)
 export const logoutSuccess = createAction(LOGOUT_SUCCESS)
 export const authenticate = createAction(AUTHENTICATE)
 export const setServers = createAction(SET_SERVERS)
-export const trackerInitialized = createAction(TRACKER_INITIALIZED)
-export const trackerDisabled = createAction(TRACKER_DISABLED)
 export const thermalPrinterConnected = createAction(THERMAL_PRINTER_CONNECTED)
 export const setThermalPrinterDeviceId = createAction(THERMAL_PRINTER_DEVICE_ID)
 
@@ -262,9 +258,6 @@ export function setCurrentRoute(routeName) {
   return (dispatch, getState) => {
 
     dispatch(_setCurrentRoute(routeName))
-
-    const { app } = getState()
-    const { trackerInitialized } = app
 
     // TODO Set route name in Firebase Analytics
   }
