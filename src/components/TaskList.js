@@ -47,6 +47,13 @@ class TaskList extends Component {
     super(props)
   }
 
+  _onTaskClick(task) {
+    if (this.props.refreshing) {
+      return
+    }
+    this.props.onTaskClick(task)
+  }
+
   renderTaskStatusIcon(task) {
     let iconStyle = [ styles.icon ]
     switch (task.status) {
@@ -88,7 +95,6 @@ class TaskList extends Component {
   renderItem(task) {
 
     const { width } = Dimensions.get('window')
-    const { onTaskClick } = this.props
 
     const taskTypeIcon = task.type === 'PICKUP' ? 'cube' : 'arrow-down'
     const isCompleted = _.includes(['DONE', 'FAILED'], task.status)
@@ -163,7 +169,7 @@ class TaskList extends Component {
         backgroundColor="#fff"
         disabled={ !hasOnSwipeLeft && !hasOnSwipeRight }
         {  ...swipeOutProps }>
-        <TouchableOpacity onPress={ () => onTaskClick(task) }>
+        <TouchableOpacity onPress={ () => this._onTaskClick(task) }>
           <Grid style={{ paddingVertical: 10 }}>
             <Col size={ 1 } style={ itemLeftStyle }>
               <Row style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -213,7 +219,7 @@ TaskList.defaultProps = {
 }
 
 TaskList.propTypes = {
-  onTaskClick: PropTypes.func,
+  onTaskClick: PropTypes.func.isRequired,
   refreshing: PropTypes.bool,
   onRefresh: PropTypes.func,
 }
