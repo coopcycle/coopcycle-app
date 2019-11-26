@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, View } from 'react-native'
+import { View } from 'react-native'
 import {
   Container, Content, Text,
 } from 'native-base'
@@ -27,7 +27,7 @@ class LoginRegister extends Component {
   renderMessage() {
     if (this.props.message) {
       return (
-        <View style={styles.message}>
+        <View>
           <Text style={{ textAlign: 'center' }}>{this.props.message}</Text>
         </View>
       )
@@ -57,8 +57,6 @@ class LoginRegister extends Component {
     )
   }
 }
-
-const styles = StyleSheet.create({})
 
 function mapStateToProps(state) {
   return {
