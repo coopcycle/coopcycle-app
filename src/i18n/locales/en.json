@@ -262,6 +262,9 @@
         "fulfilled": "Fulfilled"
     },
     "DELIVERY_DETAILS_TIME_SLOT": "Time slot",
-    "DELIVERY_DETAILS_RECIPIENT": "Recipient"
+    "DELIVERY_DETAILS_RECIPIENT": "Recipient",
+    "TODAY_BETWEEN_START_AND_END": "Today between {{start}} and {{end}}",
+    "TOMORROW_BETWEEN_START_AND_END": "Tomorrow between {{start}} and {{end}}",
+    "OTHER_DAY_BETWEEN_START_AND_END": "{{date}} between {{start}} and {{end}}"
   }
 }

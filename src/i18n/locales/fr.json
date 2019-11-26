@@ -258,6 +258,9 @@
         "fulfilled": "Livréé"
     },
     "DELIVERY_DETAILS_TIME_SLOT": "Tranche horaire",
-    "DELIVERY_DETAILS_RECIPIENT": "Destinataire"
+    "DELIVERY_DETAILS_RECIPIENT": "Destinataire",
+    "TODAY_BETWEEN_START_AND_END": "Aujourd'hui entre {{start}} et {{end}}",
+    "TOMORROW_BETWEEN_START_AND_END": "Demain entre {{start}} et {{end}}",
+    "OTHER_DAY_BETWEEN_START_AND_END": "{{date}} entre {{start}} et {{end}}"
   }
 }

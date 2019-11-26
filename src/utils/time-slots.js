@@ -4,6 +4,8 @@ import _ from 'lodash'
 
 const moment = extendMoment(Moment)
 
+import i18n from '../i18n'
+
 function makeLabel(range, now) {
   if (range.diff('days') === 0) {
 
@@ -18,11 +20,21 @@ function makeLabel(range, now) {
 
     switch (calendarFormat) {
       case 'sameDay':
-        return `Today between ${range.start.format('LT')} and ${range.end.format('LT')}`
+        return i18n.t('TODAY_BETWEEN_START_AND_END', {
+          start: range.start.format('LT'),
+          end: range.end.format('LT'),
+        })
       case 'nextDay':
-        return `Tomorrow between ${range.start.format('LT')} and ${range.end.format('LT')}`
+        return i18n.t('TOMORROW_BETWEEN_START_AND_END', {
+          start: range.start.format('LT'),
+          end: range.end.format('LT'),
+        })
       default:
-        return `${range.start.format('dddd')} between ${range.start.format('LT')} and ${range.end.format('LT')}`
+        return i18n.t('OTHER_DAY_BETWEEN_START_AND_END', {
+          date: range.start.format('dddd'),
+          start: range.start.format('LT'),
+          end: range.end.format('LT'),
+        })
     }
   }
 }
