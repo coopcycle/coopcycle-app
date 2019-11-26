@@ -1,6 +1,8 @@
 import { getChoicesWithDates, humanizeTaskTime, resolveState, composeWithState } from '../time-slots'
 import moment from 'moment'
 
+moment.locale('en')
+
 describe('getChoicesWithDates', () => {
 
   it('returns expected results in the afternoon', () => {
