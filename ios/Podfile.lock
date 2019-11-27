@@ -127,13 +127,13 @@ PODS:
     - React
     - react-native-ble-plx-swift
   - react-native-ble-plx-swift (1.1.0)
-  - react-native-camera (3.8.0):
+  - react-native-camera (3.11.1):
     - React
-    - react-native-camera/RCT (= 3.8.0)
-    - react-native-camera/RN (= 3.8.0)
-  - react-native-camera/RCT (3.8.0):
+    - react-native-camera/RCT (= 3.11.1)
+    - react-native-camera/RN (= 3.11.1)
+  - react-native-camera/RCT (3.11.1):
     - React
-  - react-native-camera/RN (3.8.0):
+  - react-native-camera/RN (3.11.1):
     - React
   - react-native-keep-awake (4.0.0):
     - React
@@ -364,7 +364,7 @@ SPEC CHECKSUMS:
   React-jsinspector: e08662d1bf5b129a3d556eb9ea343a3f40353ae4
   react-native-ble-plx: 05e16667ebf56cf802986379fd58a377847885e8
   react-native-ble-plx-swift: e0d041529bd7ae66eb9731123eca3df3d132e8ec
-  react-native-camera: 21cf4ed26cf432ceb1fae959aa6924943fd6f714
+  react-native-camera: 576f6dbb490af4285de1f8002a09dd3daa86c112
   react-native-keep-awake: afad8a51dfef9fe9655a6344771be32c8596d774
   react-native-maps: 6e499eee4eabf422ba8b6f94e993cc768bf35153
   React-RCTActionSheet: b0f1ea83f4bf75fb966eae9bfc47b78c8d3efd90
