@@ -7860,9 +7860,9 @@ react-native-cache-store@^1.0.2:
   integrity sha1-MkVYyfq3zZjvyXWtoAzm4VM3N+E=
 
 react-native-calendars@^1.212.0:
-  version "1.212.0"
-  resolved "https://registry.yarnpkg.com/react-native-calendars/-/react-native-calendars-1.212.0.tgz#6070ae37c7a446da5a6fb1c24b71feda5021aafd"
-  integrity sha512-FrWabRJlUeTjCF8qx8cYAId4SbCMmVmO5eE791ykQaTG2/jvQJz2O3MF5QRjJHyaS/QdeEilKf9w/Mk43bM42Q==
+  version "1.214.0"
+  resolved "https://registry.yarnpkg.com/react-native-calendars/-/react-native-calendars-1.214.0.tgz#0786e9148505296539d5caf17078d0aa90a5810d"
+  integrity sha512-JHKQgN+gfw2JzYdDiVw5dDc5shV5aRUfJOx63zIUPDofqKoHTGTRtUdqsY7kezglEy/Kv8epT6ls0+UJgxhGlQ==
   dependencies:
     lodash "^4.0.0"
     prop-types "^15.5.10"
