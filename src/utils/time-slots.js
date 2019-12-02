@@ -39,10 +39,10 @@ function makeLabel(range, now) {
   }
 }
 
-function makeRange(date, choice) {
+function makeRange(date, range) {
 
-  const [ startHour, startMinute ] = choice.startTime.split(':')
-  const [ endHour, endMinute ] = choice.endTime.split(':')
+  const [ startHour, startMinute ] = range[0].split(':')
+  const [ endHour, endMinute ] = range[1].split(':')
 
   const after = moment(date)
   const before = moment(date)
@@ -56,31 +56,18 @@ function makeRange(date, choice) {
   return moment.range(after, before)
 }
 
-function makeChoice(date, choice, now) {
+const countNumberOfDays = items =>
+  _.uniq(_.map(items, item => item.start.format('YYYY-MM-DD'))).length
 
-  now = now || moment()
+const hasOpeningHours = timeSlot =>
+  timeSlot.hasOwnProperty('openingHoursSpecification') && Array.isArray(timeSlot.openingHoursSpecification) && timeSlot.openingHoursSpecification.length > 0
 
-  const range = makeRange(date, choice)
-
-  if (now.isAfter(range.start)) {
-    return false
+const getCursor = (timeSlot, now) => {
+  if (!hasOpeningHours(timeSlot) && timeSlot.workingDaysOnly && !moment(now).isBusinessDay()) {
+    return moment(now).nextBusinessDay()
   }
 
-  return {
-    key: `${moment(date).format('YYYY-MM-DD')} ${range.start.format('HH:mm')}-${range.end.format('HH:mm')}`,
-    label: makeLabel(range, now),
-    range,
-  }
-}
-
-const countNumberOfDays = items => {
-  const itemsAsISO = _.map(items, item => {
-    const matches = /^([0-9]{4}-[0-9]{2}-[0-9]{2})/.exec(item.key)
-
-    return matches[1]
-  })
-
-  return _.uniq(itemsAsISO).length
+  return moment(now)
 }
 
 export function getChoicesWithDates(timeSlot, now) {
@@ -95,32 +82,46 @@ export function getChoicesWithDates(timeSlot, now) {
 
   const expectedNumberOfDays = lastMoment.diff(now, 'days')
 
-  let day = moment(now)
-  if (timeSlot.workingDaysOnly && !moment(now).isBusinessDay()) {
-    day = moment(now).nextBusinessDay()
-  }
+  let cursor = getCursor(timeSlot, now)
 
   // FIXME Don't know why, but it's an object (?)
   const choices = Array.isArray(timeSlot.choices) ? timeSlot.choices : _.values(timeSlot.choices)
   let items = []
+
   while (countNumberOfDays(items) < expectedNumberOfDays) {
-    choices.forEach(choice => {
-      const item = makeChoice(day, choice, now)
-      if (item) {
-        items.push(item)
-      }
-    })
-    day = timeSlot.workingDaysOnly ? day.nextBusinessDay() : day.add(1, 'day')
+
+    if (hasOpeningHours(timeSlot)) {
+      timeSlot.openingHoursSpecification.forEach(spec => {
+        if (_.includes(spec.dayOfWeek, cursor.format('dddd'))) {
+          const item = makeRange(cursor, [ spec.opens, spec.closes ])
+          if (item.start.isAfter(now)) {
+            items.push(item)
+          }
+        }
+      })
+    } else {
+      choices.forEach(choice => {
+        const item = makeRange(cursor, [ choice.startTime, choice.endTime ])
+        if (item.start.isAfter(now)) {
+          items.push(item)
+        }
+      })
+    }
+
+    cursor = timeSlot.workingDaysOnly ? cursor.nextBusinessDay() : cursor.add(1, 'day')
   }
 
   items.sort((a, b) => {
-    if (a.range.start.isSame(b.range.start)) {
+    if (a.start.isSame(b.start)) {
       return 0
     }
-    return a.range.start.isBefore(b.range.start) ? -1 : 1
+    return a.start.isBefore(b.start) ? -1 : 1
   })
 
-  return items.map(item => ({ key: item.key, label: item.label }))
+  return items.map(item => ({
+    key: `${moment(item.start).format('YYYY-MM-DD')} ${item.start.format('HH:mm')}-${item.end.format('HH:mm')}`,
+    label: makeLabel(item, now),
+  }))
 }
 
 export function humanizeTaskTime(task, now) {
