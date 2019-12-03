@@ -2,6 +2,7 @@
 
 let primaryColor = '#e4022d',
     whiteColor = '#fff',
+    darkGreyColor = '#424242',
     greyColor = '#95A5A6',
     lightGreyColor = '#ECF0F1',
     blueColor = '#3498DB',
@@ -20,12 +21,13 @@ export {
   primaryColor,
   whiteColor,
   greyColor,
+  lightGreyColor,
+  darkGreyColor,
   blueColor,
   headerFontSize,
   dateSelectHeaderHeight,
   calendarHeight,
   greenColor,
   redColor,
-  lightGreyColor,
   fontTitleName,
 }

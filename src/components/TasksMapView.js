@@ -5,7 +5,7 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View
+  View,
 } from 'react-native'
 import {Callout, Marker} from 'react-native-maps'
 import ClusteredMapView from 'react-native-maps-super-cluster'
@@ -13,12 +13,22 @@ import Modal from 'react-native-modal'
 import {withTranslation} from 'react-i18next'
 
 import Settings from '../Settings'
-import {greenColor, greyColor, redColor, whiteColor} from '../styles/common'
+import {
+  greyColor,
+  whiteColor,
+} from '../styles/common'
 import {uniq} from 'lodash'
 import {Icon} from 'native-base'
+import {
+  doneIconName,
+  failedIconName,
+  markerBackgroundStyle,
+  markerContainer,
+  markerIconStyle,
+  taskTypeIconName,
+} from '../navigation/task/styles/common'
 
 const clusterContainerSize = 40
-const markerContainerSize = 32
 
 const styles = StyleSheet.create({
   map: {
@@ -37,11 +47,6 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: whiteColor,
     textAlign: 'center',
-  },
-  markerContainer: {
-    margin: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   markerCallout: {
     padding: 5,
@@ -83,63 +88,6 @@ const edgePadding = {
   right: 20,
 }
 
-const todoColor = greyColor
-const doneColor = greenColor
-const failedColor = redColor
-
-const markerColor = task => {
-  switch (task.status) {
-    case 'DONE':
-      return doneColor
-    case 'FAILED':
-      return failedColor
-    default:
-      return todoColor
-  }
-}
-
-const markerBackgroundStyle = task => {
-  return {
-    width: markerContainerSize,
-    height: markerContainerSize,
-    backgroundColor: whiteColor,
-    borderColor: markerColor(task),
-    borderWidth: 2,
-    borderStyle: 'solid',
-    borderTopLeftRadius: markerContainerSize / 2,
-    borderTopRightRadius: markerContainerSize / 2,
-    borderBottomLeftRadius: markerContainerSize / 2,
-    borderBottomRightRadius: 0,
-    transform: [
-      { rotate: '45deg' },
-    ],
-  }
-}
-
-const markerIconStyle = task => {
-  return {
-    position: 'absolute',
-    fontSize: 24,
-    color: markerColor(task),
-  }
-}
-
-const taskTypeIconName = task => {
-  const name = task.type === 'PICKUP' ? 'cube' : 'arrow-down'
-  return name
-}
-
-const markerIconName = task => {
-  switch (task.status) {
-  case 'DONE':
-    return 'checkmark'
-  case 'FAILED':
-    return 'warning'
-  default:
-    return taskTypeIconName(task)
-  }
-}
-
 const hasSameLocation = markers => {
   const coordsArray = markers.map(m => `${m.location.latitude};${m.location.longitude}`)
   const coordsArrayUniq = uniq(coordsArray)
@@ -151,6 +99,17 @@ const addressName = task => {
   const customerName = task.address.firstName ? [ task.address.firstName, task.address.lastName ].join(' ') : null
 
   return task.address.name || customerName || task.address.streetAddress
+}
+
+const markerIconName = task => {
+  switch (task.status) {
+  case 'DONE':
+    return doneIconName
+  case 'FAILED':
+    return failedIconName
+  default:
+    return taskTypeIconName(task)
+  }
 }
 
 class TasksMapView extends Component {
@@ -249,9 +208,9 @@ class TasksMapView extends Component {
         coordinate={ task.address.geo }
         flat={ true }
         ref={ this.markers.get(task['@id']) }>
-        <View style={ styles.markerContainer }>
+        <View style={ markerContainer }>
           <View style={ markerBackgroundStyle(task) } />
-          <Icon style={ markerIconStyle(task) } name={ markerIconName(task) } />
+          <Icon type="FontAwesome" name={ markerIconName(task) } style={ markerIconStyle(task) } />
         </View>
         <Callout onPress={ () => this.onCalloutPress(task) }
           style={ [ styles.markerCallout, { width: Math.floor(width * 0.6666) } ] }>

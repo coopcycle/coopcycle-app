@@ -9,6 +9,11 @@ import _ from 'lodash'
 import { withTranslation } from 'react-i18next'
 
 import { greenColor, lightGreyColor, redColor } from '../styles/common'
+import {
+  doneIconName,
+  failedIconName,
+  taskTypeIconName
+} from '../navigation/task/styles/common'
 
 const styles = StyleSheet.create({
   itemLeftRight: {
@@ -59,12 +64,12 @@ class TaskList extends Component {
     switch (task.status) {
       case 'DONE':
         return (
-          <Icon style={ iconStyle } name="checkmark" />
+          <Icon type="FontAwesome" name={ doneIconName } style={ iconStyle } />
         )
       case 'FAILED':
         iconStyle.push(styles.iconDanger)
         return (
-          <Icon style={ iconStyle } name="warning" />
+          <Icon type="FontAwesome" name={ failedIconName } style={ iconStyle } />
         )
       default:
         return (
@@ -77,26 +82,26 @@ class TaskList extends Component {
 
     return (
       <View style={{ flex: 1, height: 400, alignItems: 'center', justifyContent: 'center' }}>
-        <Icon name={ iconName } style={{ color: '#fff' }} />
+        <Icon type="FontAwesome" name={ iconName } style={{ color: '#fff' }} />
       </View>
     )
   }
 
   renderSwipeoutLeftButton() {
 
-    return this.renderSwipeoutButton(this.props.swipeOutLeftIconName || 'checkmark')
+    return this.renderSwipeoutButton(this.props.swipeOutLeftIconName || doneIconName)
   }
 
   renderSwipeoutRightButton() {
 
-    return this.renderSwipeoutButton(this.props.swipeOutRightIconName || 'warning')
+    return this.renderSwipeoutButton(this.props.swipeOutRightIconName || failedIconName)
   }
 
   renderItem(task) {
 
     const { width } = Dimensions.get('window')
 
-    const taskTypeIcon = task.type === 'PICKUP' ? 'cube' : 'arrow-down'
+    const taskTypeIcon = taskTypeIconName(task)
     const isCompleted = _.includes(['DONE', 'FAILED'], task.status)
 
     let itemLeftStyle = [ styles.itemLeftRight ]
@@ -173,7 +178,7 @@ class TaskList extends Component {
           <Grid style={{ paddingVertical: 10 }}>
             <Col size={ 1 } style={ itemLeftStyle }>
               <Row style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                <Icon style={ iconStyle } name={ taskTypeIcon } />
+                <Icon type="FontAwesome" style={ iconStyle } name={ taskTypeIcon } />
               </Row>
               { isCompleted &&
               <Row style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
