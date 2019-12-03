@@ -59,6 +59,11 @@ const SectionHeaderComponent = ({ title }) => (
   </View>
 )
 
+const captionTextProps = {
+  numberOfLines: 1,
+  ellipsizeMode: 'tail',
+}
+
 class DeliveryList extends Component {
 
   _onItemPress(item) {
@@ -67,6 +72,23 @@ class DeliveryList extends Component {
     }
 
     this.props.onItemPress(item)
+  }
+
+  renderItemCaption(item) {
+    const lines = this.props.itemCaptionLines ? this.props.itemCaptionLines(item) : [
+      item.pickup.address.streetAddress,
+      item.dropoff.address.streetAddress,
+    ]
+
+    return (
+      <View>
+        { lines.map((line, index) => (
+          <Text
+            key={ `${item['@id']}-caption-line-${index}` }
+            style={ styles.textSmall } { ...captionTextProps }>{ line }</Text>
+        )) }
+      </View>
+    )
   }
 
   renderItem(item) {
@@ -81,8 +103,7 @@ class DeliveryList extends Component {
             <Text style={ styles.textSmall }>{ `#${item.id}` }</Text>
           </View>
           <View style={ [ styles.details, { flex: 6 }] }>
-            <Text style={ styles.textSmall } numberOfLines={ 1 } ellipsizeMode="tail">{ item.pickup.address.streetAddress }</Text>
-            <Text style={ styles.textSmall } numberOfLines={ 1 } ellipsizeMode="tail">{ item.dropoff.address.streetAddress }</Text>
+            { this.renderItemCaption(item) }
           </View>
           { /* @see https://stackoverflow.com/questions/43143258/flex-vs-flexgrow-vs-flexshrink-vs-flexbasis-in-react-native */ }
           <View style={{ flex: 0, flexShrink: 1 }}>
@@ -156,6 +177,7 @@ DeliveryList.propTypes = {
   loading: PropTypes.bool,
   onItemPress: PropTypes.func.isRequired,
   onEndReached: PropTypes.func.isRequired,
+  itemCaptionLines: PropTypes.func,
 }
 
 export default withTranslation()(DeliveryList)

@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import { View } from 'react-native'
-import { Container } from 'native-base';
+import { Container, Text } from 'native-base';
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
+import _ from 'lodash'
 
 import DeliveryList from '../../components/DeliveryList'
 
@@ -29,7 +30,21 @@ class StoreDashboard extends Component {
             data={ this.props.deliveries }
             loading={ this.props.loadingMore }
             onEndReached={ this.props.loadMoreDeliveries }
-            onItemPress={ item => navigate('StoreDelivery', { delivery: item }) } />
+            onItemPress={ item => navigate('StoreDelivery', { delivery: item }) }
+            itemCaptionLines={ delivery => {
+              const { pickup, dropoff } = delivery
+
+              const lines = []
+              if (pickup.address['@id'] === this.props.store.address['@id'] && !_.isEmpty(dropoff.address.contactName)) {
+                lines.push(dropoff.address.contactName)
+              } else {
+                lines.push(pickup.address.streetAddress)
+              }
+              lines.push(dropoff.address.streetAddress)
+
+              return lines
+            }}
+            />
         </View>
       </Container>
     )
