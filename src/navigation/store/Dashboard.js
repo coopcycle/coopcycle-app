@@ -31,6 +31,8 @@ class StoreDashboard extends Component {
             loading={ this.props.loadingMore }
             onEndReached={ this.props.loadMoreDeliveries }
             onItemPress={ item => navigate('StoreDelivery', { delivery: item }) }
+            onRefresh={ () => this.props.loadDeliveries(this.props.store, true) }
+            refreshing={ this.props.refreshing }
             itemCaptionLines={ delivery => {
               const { pickup, dropoff } = delivery
 
@@ -57,13 +59,14 @@ function mapStateToProps(state) {
     store: state.store.store,
     deliveries: state.store.deliveries,
     loadingMore: state.store.loadingMore,
+    refreshing: state.store.refreshing,
   }
 }
 
 function mapDispatchToProps(dispatch) {
 
   return {
-    loadDeliveries: (store) => dispatch(loadDeliveries(store)),
+    loadDeliveries: (store, refresh = false) => dispatch(loadDeliveries(store, refresh)),
     loadMoreDeliveries: () => dispatch(loadMoreDeliveries()),
   }
 }

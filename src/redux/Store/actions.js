@@ -10,6 +10,7 @@ export const LOAD_TIME_SLOT_SUCCESS = '@store/LOAD_TIME_SLOT_SUCCESS'
 export const LOAD_TASKS_SUCCESS = '@store/LOAD_TASKS_SUCCESS'
 export const ASSERT_DELIVERY_ERROR = '@store/ASSERT_DELIVERY_ERROR'
 export const SET_LOADING_MORE = '@store/SET_LOADING_MORE'
+export const SET_REFRESHING = '@store/SET_REFRESHING'
 
 export const createDeliverySuccess = createAction(CREATE_DELIVERY_SUCCESS)
 export const loadDeliveriesSuccess = createAction(LOAD_DELIVERIES_SUCCESS, (store, deliveries, pagination) => ({
@@ -24,7 +25,9 @@ export const loadTasksSuccess = createAction(LOAD_TASKS_SUCCESS, (delivery, pick
   dropoff,
 }))
 export const assertDeliveryError = createAction(ASSERT_DELIVERY_ERROR)
+
 export const setLoadingMore = createAction(SET_LOADING_MORE)
+export const setRefreshing = createAction(SET_REFRESHING)
 
 export function createDelivery(delivery, onSuccess) {
 
@@ -69,14 +72,14 @@ export function assertDelivery(delivery, onSuccess) {
   }
 }
 
-export function loadDeliveries(store) {
+export function loadDeliveries(store, refresh = false) {
 
   return (dispatch, getState) => {
 
     const { app } = getState()
     const { httpClient } = app
 
-    dispatch(setLoading(true))
+    refresh ? dispatch(setRefreshing(true)) : dispatch(setLoading(false))
 
     return httpClient.get(`${store['@id']}/deliveries?order[dropoff.before]=desc`)
       .then(res => {
@@ -89,9 +92,11 @@ export function loadDeliveries(store) {
           }
         ))
         dispatch(setLoading(false))
+        dispatch(setRefreshing(false))
       })
       .catch(e => {
         dispatch(setLoading(false))
+        dispatch(setRefreshing(false))
       })
   }
 }

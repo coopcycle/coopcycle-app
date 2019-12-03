@@ -5,6 +5,7 @@ import {
   LOAD_TASKS_SUCCESS,
   ASSERT_DELIVERY_ERROR,
   SET_LOADING_MORE,
+  SET_REFRESHING,
 } from './actions'
 
 import {
@@ -25,6 +26,7 @@ const initialState = {
     totalItems: 0,
   },
   loadingMore: false,
+  refreshing: false,
   timeSlots: [],
   assertDeliveryError: null,
 }
@@ -122,6 +124,13 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         loadingMore: action.payload,
+      }
+
+    case SET_REFRESHING:
+
+      return {
+        ...state,
+        refreshing: action.payload,
       }
   }
 

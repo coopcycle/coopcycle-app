@@ -67,7 +67,7 @@ const captionTextProps = {
 class DeliveryList extends Component {
 
   _onItemPress(item) {
-    if (this.props.loading) {
+    if (this.props.loading || this.props.refreshing) {
       return
     }
 
@@ -156,6 +156,8 @@ class DeliveryList extends Component {
         // scrollEnabled={ !this.state.loadingMore }
         onEndReached={ this.props.onEndReached }
         onEndReachedThreshold={ Platform.OS === 'ios' ? 0 : 0.01 }
+        onRefresh={ this.props.onRefresh }
+        refreshing={ this.props.refreshing }
         keyExtractor={ (item, index) => item['@id'] }
         renderItem={ ({ item }) => this.renderItem(item) }
         ItemSeparatorComponent={ ItemSeparatorComponent }
@@ -170,6 +172,8 @@ class DeliveryList extends Component {
 DeliveryList.defaultProps = {
   data: [],
   loading: false,
+  refreshing: false,
+  onRefresh: () => {},
 }
 
 DeliveryList.propTypes = {
@@ -178,6 +182,8 @@ DeliveryList.propTypes = {
   onItemPress: PropTypes.func.isRequired,
   onEndReached: PropTypes.func.isRequired,
   itemCaptionLines: PropTypes.func,
+  onRefresh: PropTypes.func,
+  refreshing: PropTypes.bool,
 }
 
 export default withTranslation()(DeliveryList)
