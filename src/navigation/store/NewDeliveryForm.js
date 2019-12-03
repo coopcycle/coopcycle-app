@@ -279,11 +279,13 @@ const styles = StyleSheet.create({
 function mapStateToProps(state) {
 
   const timeSlot = selectTimeSlot(state)
+  const hasTimeSlot = timeSlot && (timeSlot.choices.length > 0 || timeSlot.openingHoursSpecification.length > 0)
+  const timeSlotChoices = hasTimeSlot ? getChoicesWithDates(timeSlot) : []
 
   return {
     store: selectStore(state),
-    timeSlotChoices: timeSlot ? getChoicesWithDates(timeSlot) : [],
-    hasTimeSlot: !!timeSlot,
+    timeSlotChoices,
+    hasTimeSlot: hasTimeSlot && timeSlotChoices.length > 0,
   }
 }
 
