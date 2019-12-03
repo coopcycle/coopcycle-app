@@ -15,6 +15,7 @@ import { loadTasks } from '../../redux/Store/actions'
 import { selectDeliveries } from '../../redux/Store/selectors'
 import { humanizeTaskTime } from '../../utils/time-slots'
 import NavigationAwareMap from '../../components/NavigationAwareMap'
+import { stateColor } from '../../utils/delivery'
 
 class NewDelivery extends Component {
 
@@ -54,22 +55,7 @@ class NewDelivery extends Component {
       })
     }
 
-    const stateStyle = [ styles.state ]
-
-    switch (delivery.state) {
-    case 'new':
-      stateStyle.push(styles.stateNew)
-      break
-    case 'picked':
-      stateStyle.push(styles.statePicked)
-      break
-    case 'fulfilled':
-      stateStyle.push(styles.stateFulfilled)
-      break
-    default:
-      stateStyle.push(styles.stateUnknown)
-      break
-    }
+    const stateStyle = [ styles.state, { backgroundColor: stateColor(delivery.state) } ]
 
     return (
       <Container>
@@ -143,18 +129,6 @@ const styles = StyleSheet.create({
   },
   stateText: {
     color: '#FFFFFF',
-  },
-  stateUnknown: {
-    backgroundColor: '#bdc3c7',
-  },
-  stateNew: {
-    backgroundColor: '#f1c40f',
-  },
-  statePicked: {
-    backgroundColor: '#3498db',
-  },
-  stateFulfilled: {
-    backgroundColor: '#2ecc71',
   },
 })
 

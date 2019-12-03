@@ -135,30 +135,3 @@ export function humanizeTaskTime(task, now) {
 
   return makeLabel(range, now)
 }
-
-export function resolveState(delivery) {
-
-  const { pickup, dropoff } = delivery
-
-  if (pickup.hasOwnProperty('status') && dropoff.hasOwnProperty('status')) {
-    if (pickup.status === 'TODO' && dropoff.status === 'TODO') {
-      return 'new'
-    }
-    if (pickup.status === 'DONE' && dropoff.status === 'TODO') {
-      return 'picked'
-    }
-    if (pickup.status === 'DONE' && dropoff.status === 'DONE') {
-      return 'fulfilled'
-    }
-  }
-
-  return 'unknown'
-}
-
-export function composeWithState(delivery) {
-
-  return {
-    ...delivery,
-    state: resolveState(delivery),
-  }
-}

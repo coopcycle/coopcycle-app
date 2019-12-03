@@ -6,6 +6,8 @@ import moment from 'moment'
 import _ from 'lodash'
 import { withTranslation } from 'react-i18next'
 
+import { stateColor } from '../utils/delivery'
+
 const styles = StyleSheet.create({
   item: {
     flex: 1,
@@ -72,6 +74,9 @@ class DeliveryList extends Component {
     return (
       <TouchableOpacity onPress={ () => this._onItemPress(item) } style={ styles.item }>
         <View style={ styles.itemBody }>
+          <View style={{ flex: 1 }}>
+            <Icon type="FontAwesome5" name="circle" solid style={{ color: stateColor(item.state), fontSize: 14 }} />
+          </View>
           <View style={{ flex: 1 }}>
             <Text style={ styles.textSmall }>{ `#${item.id}` }</Text>
           </View>

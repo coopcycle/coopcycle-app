@@ -11,7 +11,7 @@ import {
   LOAD_MY_STORES_SUCCESS,
 } from '../App/actions'
 
-import { composeWithState } from '../../utils/time-slots'
+import { composeWithState } from '../../utils/delivery'
 
 import _ from 'lodash'
 
