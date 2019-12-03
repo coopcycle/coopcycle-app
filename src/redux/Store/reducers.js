@@ -57,7 +57,7 @@ export default (state = initialState, action = {}) => {
 
         return {
           ...state,
-          deliveries: _.uniqBy(state.deliveries.concat(deliveries), '@id'),
+          deliveries: _.uniqBy(state.deliveries.concat(_.map(deliveries, d => composeWithState(d))), '@id'),
           pagination,
         }
       }
