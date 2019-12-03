@@ -6,6 +6,16 @@ const moment = extendMoment(Moment)
 
 import i18n from '../i18n'
 
+const isoWeekDayMap = {
+  'Monday': 1,
+  'Tuesday': 2,
+  'Wednesday': 3,
+  'Thursday': 4,
+  'Friday': 5,
+  'Saturday': 6,
+  'Sunday': 7,
+}
+
 function makeLabel(range, now) {
   if (range.diff('days') === 0) {
 
@@ -31,7 +41,7 @@ function makeLabel(range, now) {
         })
       default:
         return i18n.t('OTHER_DAY_BETWEEN_START_AND_END', {
-          date: range.start.format('dddd'),
+          date: _.capitalize(range.start.format('dddd')),
           start: range.start.format('LT'),
           end: range.end.format('LT'),
         })
@@ -70,6 +80,11 @@ const getCursor = (timeSlot, now) => {
   return moment(now)
 }
 
+const matchesDayOfWeek = (spec, date) => {
+  const day = _.findKey(isoWeekDayMap, num => num === date.isoWeekday())
+  return _.includes(spec.dayOfWeek, day)
+}
+
 export function getChoicesWithDates(timeSlot, now) {
 
   now = now || moment()
@@ -82,6 +97,10 @@ export function getChoicesWithDates(timeSlot, now) {
 
   const expectedNumberOfDays = lastMoment.diff(now, 'days')
 
+  if (expectedNumberOfDays === 0) {
+    return []
+  }
+
   let cursor = getCursor(timeSlot, now)
 
   // FIXME Don't know why, but it's an object (?)
@@ -92,7 +111,7 @@ export function getChoicesWithDates(timeSlot, now) {
 
     if (hasOpeningHours(timeSlot)) {
       timeSlot.openingHoursSpecification.forEach(spec => {
-        if (_.includes(spec.dayOfWeek, cursor.format('dddd'))) {
+        if (matchesDayOfWeek(spec, cursor)) {
           const item = makeRange(cursor, [ spec.opens, spec.closes ])
           if (item.start.isAfter(now)) {
             items.push(item)
