@@ -256,7 +256,7 @@
     "STORE_DELIVERY": "Delivery #{{id}}",
     "DELIVERY_STATE": {
         "undefined": "Unknown",
-        "unkown": "Unknown",
+        "unknown": "Unknown",
         "new": "New",
         "picked": "Picked",
         "fulfilled": "Fulfilled"

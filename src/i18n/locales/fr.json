@@ -252,7 +252,7 @@
     "STORE_DELIVERY": "Livraison #{{id}}",
     "DELIVERY_STATE": {
         "undefined": "Inconnu",
-        "unkown": "Inconnu",
+        "unknown": "Inconnu",
         "new": "Nouveau",
         "picked": "Récupérée",
         "fulfilled": "Livrée"
