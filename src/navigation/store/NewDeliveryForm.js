@@ -234,7 +234,7 @@ class NewDelivery extends Component {
             </Content>
             <Footer>
               <Button block transparent onPress={ handleSubmit }>
-                <Text style={{ color: '#FFFFFF' }}>Save</Text>
+                <Text style={{ color: '#FFFFFF' }}>{ this.props.t('SUBMIT') }</Text>
               </Button>
             </Footer>
           </Container>
