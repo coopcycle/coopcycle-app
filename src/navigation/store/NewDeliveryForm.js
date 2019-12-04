@@ -3,7 +3,7 @@ import { InteractionManager, StyleSheet, TextInput, View } from 'react-native'
 import {
   Container, Content,
   Text, Button,
-  Footer,
+  Footer, FooterTab,
 } from 'native-base'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
@@ -233,9 +233,11 @@ class NewDelivery extends Component {
               { !this.props.hasTimeSlot && this.renderDateTimePicker(initialValues, values, errors, setFieldValue, setFieldTouched) }
             </Content>
             <Footer>
-              <Button block transparent onPress={ handleSubmit }>
-                <Text style={{ color: '#FFFFFF' }}>{ this.props.t('SUBMIT') }</Text>
-              </Button>
+              <FooterTab>
+                <Button block transparent onPress={ handleSubmit }>
+                  <Text style={{ color: '#FFFFFF' }}>{ this.props.t('SUBMIT') }</Text>
+                </Button>
+              </FooterTab>
             </Footer>
           </Container>
         )}
@@ -247,6 +249,7 @@ class NewDelivery extends Component {
 const styles = StyleSheet.create({
   content: {
     paddingTop: 10,
+    paddingBottom: 20,
   },
   message: {
     alignItems: 'center',
@@ -268,7 +271,7 @@ const styles = StyleSheet.create({
     padding: 5,
   },
   textarea: {
-    height: (40 * 4),
+    height: (25 * 3),
   },
   errorText: {
     paddingVertical: 5,
