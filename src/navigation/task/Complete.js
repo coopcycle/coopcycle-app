@@ -11,6 +11,7 @@ import { connect } from 'react-redux'
 import {
   selectTasksList,
   selectIsTaskCompleteFailure,
+  selectSignatureScreenFirst,
   selectSignatures,
   selectPictures,
   deleteSignatureAt,
@@ -57,6 +58,7 @@ class CompleteTask extends Component {
 
     const task = this.props.navigation.getParam('task')
     const success = this.props.navigation.getParam('success', true)
+    const { signatureScreenFirst } = this.props
 
     const { width } = Dimensions.get('window')
 
@@ -107,7 +109,7 @@ class CompleteTask extends Component {
         </Content>
         <TouchableOpacity
           style={ styles.addPoDButton }
-          onPress={ () => this.props.navigation.navigate('TaskCompleteProofOfDelivery', { task }) }>
+          onPress={ () => this.props.navigation.navigate('TaskCompleteProofOfDelivery', { task, signatureScreenFirst }) }>
           <Icon type="FontAwesome5" name="signature"
             style={ styles.addPoDButtonText } />
           <Text
@@ -195,6 +197,7 @@ function mapStateToProps (state) {
     taskCompleteError: selectIsTaskCompleteFailure(state),
     signatures: selectSignatures(state),
     pictures: selectPictures(state),
+    signatureScreenFirst: selectSignatureScreenFirst(state),
   }
 }
 

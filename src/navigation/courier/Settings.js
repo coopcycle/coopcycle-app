@@ -11,10 +11,12 @@ import {
   filterTasks,
   clearTasksFilter,
   setKeepAwake,
+  setSignatureScreenFirst,
   selectAreDoneTasksHidden,
   selectAreFailedTasksHidden,
   selectTagNames,
   selectKeepAwake,
+  selectSignatureScreenFirst,
 } from '../../redux/Courier'
 import {doneIconName, failedIconName} from '../task/styles/common'
 
@@ -25,8 +27,10 @@ const Settings = ({
     toggleDisplayDone,
     toggleDisplayFailed,
     setKeepAwake,
+    setSignatureScreenFirst,
     tags,
     keepAwake,
+    signatureScreenFirst,
     t,
   }) => (
     <Container>
@@ -61,7 +65,7 @@ const Settings = ({
                 value={ areFailedTasksHidden } />
             </Right>
           </ListItem>
-          <ListItem icon onPress={ () => navigation.navigate('CourierSettingsTags') }>
+          <ListItem icon onPress={ () => navigation.navigate('CourierSettingsTags') } last>
             <Left>
               <Icon active name="pricetag" />
             </Left>
@@ -75,6 +79,19 @@ const Settings = ({
           <ListItem itemDivider>
             <Text>{ t('SETTINGS') }</Text>
           </ListItem>
+          <ListItem icon>
+            <Left>
+              <Icon Icon type="FontAwesome5" name="signature" />
+            </Left>
+            <Body>
+              <Text>{ t('SIGNATURE_SCREEN_FIRST') }</Text>
+            </Body>
+            <Right>
+              <Switch
+                onValueChange={ setSignatureScreenFirst }
+                value={ signatureScreenFirst } />
+            </Right>
+          </ListItem>
           <ListItem icon last>
             <Left>
               <Icon active name="power" />
@@ -84,7 +101,7 @@ const Settings = ({
             </Body>
             <Right>
               <Switch
-                onValueChange={ (keepAwake) => setKeepAwake(keepAwake) }
+                onValueChange={ setKeepAwake }
                 value={ keepAwake } />
             </Right>
           </ListItem>
@@ -99,6 +116,7 @@ function mapStateToProps(state) {
     areDoneTasksHidden: selectAreDoneTasksHidden(state),
     areFailedTasksHidden: selectAreFailedTasksHidden(state),
     keepAwake: selectKeepAwake(state),
+    signatureScreenFirst: selectSignatureScreenFirst(state),
   }
 }
 
@@ -107,6 +125,7 @@ function mapDispatchToProps(dispatch) {
     toggleDisplayDone: (hidden) => dispatch(hidden ? clearTasksFilter({ status: 'DONE' }) : filterTasks({ status: 'DONE' })),
     toggleDisplayFailed: (hidden) => dispatch(hidden ? clearTasksFilter({ status: 'FAILED' }) : filterTasks({ status: 'FAILED' })),
     setKeepAwake: (keepAwake) => dispatch(setKeepAwake(keepAwake)),
+    setSignatureScreenFirst: (first) => dispatch(setSignatureScreenFirst(first)),
   }
 }
 

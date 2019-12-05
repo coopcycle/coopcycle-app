@@ -14,7 +14,7 @@ import AppUser from '../../AppUser'
 import Settings from '../../Settings'
 import Preferences from '../../Preferences'
 import { formatPrice } from '../../Cart'
-import { setTasksFilter, setKeepAwake } from '../Courier/taskActions'
+import { setTasksFilter, setKeepAwake, setSignatureScreenFirst } from '../Courier/taskActions'
 import NavigationHolder from '../../NavigationHolder'
 import i18n from '../../i18n'
 
@@ -205,6 +205,7 @@ export function bootstrap(baseURL, user) {
 
     Preferences.getTasksFilters().then(filters => dispatch(setTasksFilter(filters)))
     Preferences.getKeepAwake().then(keepAwake => dispatch(setKeepAwake(keepAwake)))
+    Preferences.getSignatureScreenFirst().then(first => dispatch(setSignatureScreenFirst(first)))
 
     configureBackgroundGeolocation(httpClient, user)
     saveRemotePushToken(dispatch, getState)

@@ -2,6 +2,7 @@ import AsyncStorage from '@react-native-community/async-storage'
 
 const defaultPreferences = {
   tasksFilters: [],
+  signatureScreenFirst: false,
 }
 
 class Preferences {
@@ -70,6 +71,44 @@ class Preferences {
 
             if (!data) {
               return resolve(defaultPreferences.tasksFilters)
+            }
+
+            return resolve(JSON.parse(data))
+          });
+      } catch (error) {
+        reject(error.message)
+      }
+    })
+  }
+
+  static setSignatureScreenFirst(first) {
+    return new Promise((resolve, reject) => {
+      try {
+        AsyncStorage
+          .setItem('@Preferences.signatureScreenFirst', JSON.stringify(first))
+          .then((error) => {
+            if (error) {
+              return reject(error)
+            }
+            resolve()
+          })
+      } catch (error) {
+        reject(error.message)
+      }
+    })
+  }
+
+  static getSignatureScreenFirst() {
+    return new Promise((resolve, reject) => {
+      try {
+        AsyncStorage.getItem('@Preferences.signatureScreenFirst')
+          .then((data, error) => {
+            if (error) {
+              return reject(error)
+            }
+
+            if (!data) {
+              return resolve(defaultPreferences.signatureScreenFirst)
             }
 
             return resolve(JSON.parse(data))

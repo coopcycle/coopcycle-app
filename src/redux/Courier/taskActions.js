@@ -34,6 +34,7 @@ export const ADD_TASK_FILTER = 'ADD_TASK_FILTER'
 export const CLEAR_TASK_FILTER = 'CLEAR_TASK_FILTER'
 export const SET_TASK_FILTER = 'SET_TASK_FILTER'
 export const SET_KEEP_AWAKE = 'SET_KEEP_AWAKE'
+export const SET_SIGNATURE_SCREEN_FIRST = 'SET_SIGNATURE_SCREEN_FIRST'
 
 /*
  * Action Creators
@@ -61,6 +62,7 @@ export const dontTriggerTasksNotification = createAction(DONT_TRIGGER_TASKS_NOTI
 export const filterTasks = createAction(ADD_TASK_FILTER)
 export const clearTasksFilter = createAction(CLEAR_TASK_FILTER)
 export const setTasksFilter = createAction(SET_TASK_FILTER)
+export const setSignatureScreenFirst = createAction(SET_SIGNATURE_SCREEN_FIRST)
 
 /**
  * Side-effects

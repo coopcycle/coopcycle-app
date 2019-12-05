@@ -1,18 +1,23 @@
-import { ADD_TASK_FILTER, CLEAR_TASK_FILTER } from '../../Courier/taskActions'
-import { selectTaskFilters } from '../../Courier/taskSelectors'
+import {
+    ADD_TASK_FILTER,
+    CLEAR_TASK_FILTER,
+    SET_SIGNATURE_SCREEN_FIRST
+} from '../../Courier/taskActions'
+import { selectTaskFilters, selectSignatureScreenFirst } from '../../Courier/taskSelectors'
 import Preferences from '../../../Preferences'
 
 const middleware = store => next => action => {
 
-  let result = next(action)
+  const result = next(action)
 
   switch (action.type) {
     case ADD_TASK_FILTER:
     case CLEAR_TASK_FILTER:
+      Preferences.setTasksFilters(selectTaskFilters(store.getState()))
+      break
 
-      const state = store.getState()
-      Preferences.setTasksFilters(selectTaskFilters(state))
-
+    case SET_SIGNATURE_SCREEN_FIRST:
+      Preferences.setSignatureScreenFirst(selectSignatureScreenFirst(store.getState()))
       break
   }
 

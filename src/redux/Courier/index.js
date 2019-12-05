@@ -19,7 +19,7 @@ import {
   markTaskFailed, markTaskFailedRequest, markTaskFailedSuccess, markTaskFailedFailure,
   dontTriggerTasksNotification,
   filterTasks, clearTasksFilter,
-  setKeepAwake,
+  setKeepAwake, setSignatureScreenFirst,
   uploadSignature,
   addPicture, addSignature,
   deleteSignatureAt, deletePictureAt,
@@ -43,6 +43,7 @@ import {
   selectKeepAwake,
   selectSignatures,
   selectPictures,
+  selectSignatureScreenFirst,
 } from './taskSelectors'
 
 
@@ -77,6 +78,7 @@ export {
   filterTasks,
   clearTasksFilter,
   setKeepAwake,
+  setSignatureScreenFirst,
   uploadSignature,
   addSignature,
   addPicture,
@@ -101,4 +103,5 @@ export {
   selectKeepAwake,
   selectSignatures,
   selectPictures,
+  selectSignatureScreenFirst,
 }

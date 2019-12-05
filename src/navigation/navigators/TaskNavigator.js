@@ -1,29 +1,13 @@
 import React from 'react'
 import {
-  createMaterialTopTabNavigator,
   createStackNavigator,
-  HeaderBackButton } from 'react-navigation'
+  HeaderBackButton,
+} from 'react-navigation'
 
 import i18n from '../../i18n'
 import screens, { defaultNavigationOptions } from '..'
 
-const ProofOfDeliveryTabs = createMaterialTopTabNavigator({
-  TaskPhoto: {
-    screen: screens.TaskPhoto,
-    navigationOptions: ({ navigation }) => ({
-      title: i18n.t('PHOTO'),
-    }),
-  },
-  TaskSignature: {
-    screen: screens.TaskSignature,
-    navigationOptions: ({ navigation }) => ({
-      title: i18n.t('SIGNATURE'),
-    }),
-  },
-}, {
-  // Disable swipe to avoid swiping when signing
-  swipeEnabled: false,
-})
+import ProofOfDeliveryTabs from './TaskAttachmentsNavigator'
 
 const CompleteStack = createStackNavigator({
   TaskCompleteHome: {

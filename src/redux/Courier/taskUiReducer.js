@@ -2,7 +2,14 @@
  * Task related reducers
  */
 import moment from 'moment'
-import { LOAD_TASKS_REQUEST, ADD_TASK_FILTER, CLEAR_TASK_FILTER, SET_TASK_FILTER, SET_KEEP_AWAKE } from './taskActions'
+import {
+  LOAD_TASKS_REQUEST,
+  ADD_TASK_FILTER,
+  CLEAR_TASK_FILTER,
+  SET_TASK_FILTER,
+  SET_KEEP_AWAKE,
+  SET_SIGNATURE_SCREEN_FIRST,
+} from './taskActions'
 
 /*
  * Intital state shape for the task UI reducer
@@ -13,6 +20,7 @@ const tasksUiInitialState = {
   selectedDate: moment(), // Date selected by the user
   excludeFilters: [],     // Key-value pairs of active filters (e.g. status: 'done')
   keepAwake: false,
+  signatureScreenFirst: false,
 }
 
 
@@ -51,6 +59,13 @@ export const tasksUiReducer = (state = tasksUiInitialState, action = {}) => {
         ...state,
         excludeFilters: state.excludeFilters.filter(filter =>
           Object.keys(action.payload).some(k => action.payload[k] !== filter[k])),
+      }
+
+    case SET_SIGNATURE_SCREEN_FIRST:
+
+      return {
+        ...state,
+        signatureScreenFirst: action.payload,
       }
   }
 
