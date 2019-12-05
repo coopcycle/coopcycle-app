@@ -18,11 +18,11 @@ class LoginForm extends Component {
 
     let errors = {}
 
-    if (_.isEmpty(values.email) || this.props.hasErrors) {
+    if (_.isEmpty(values.email)) {
       errors.email = true
     }
 
-    if (_.isEmpty(values.password) || this.props.hasErrors) {
+    if (_.isEmpty(values.password)) {
       errors.password = true
     }
 
@@ -51,7 +51,7 @@ class LoginForm extends Component {
         {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
         <View>
           <Form>
-            <Item stackedLabel error={ touched.email && errors.email }>
+            <Item stackedLabel error={ (touched.email && errors.email) || this.props.hasErrors }>
               <Label>{this.props.t('USERNAME')}</Label>
               <Input
                 testID="loginUsername"
@@ -63,7 +63,7 @@ class LoginForm extends Component {
                 onBlur={ handleBlur('email') }
                 onSubmitEditing={ () => this._passwordInput._root.focus() } />
             </Item>
-            <Item stackedLabel error={ touched.password && errors.password }>
+            <Item stackedLabel error={ (touched.password && errors.password) || this.props.hasErrors }>
               <Label>{this.props.t('PASSWORD')}</Label>
               <Input
                 testID="loginPassword"
