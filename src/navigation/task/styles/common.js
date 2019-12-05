@@ -69,7 +69,7 @@ const markerBackgroundStyle = task => {
 const markerIconStyle = task => {
   return {
     position: 'absolute',
-    fontSize: 24,
+    fontSize: 18,
     color: markerColor(task),
     opacity: markerOpacity(task),
   }
