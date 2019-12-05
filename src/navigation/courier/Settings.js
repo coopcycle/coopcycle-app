@@ -16,6 +16,7 @@ import {
   selectTagNames,
   selectKeepAwake,
 } from '../../redux/Courier'
+import {doneIconName, failedIconName} from '../task/styles/common'
 
 const Settings = ({
     navigation,
@@ -36,7 +37,7 @@ const Settings = ({
           </ListItem>
           <ListItem icon>
             <Left>
-              <Icon name="checkmark" />
+              <Icon type="FontAwesome" name={doneIconName} />
             </Left>
             <Body>
               <Text>{ t('HIDE_DONE_TASKS') }</Text>
@@ -49,7 +50,7 @@ const Settings = ({
           </ListItem>
           <ListItem icon>
             <Left>
-              <Icon name="warning" />
+              <Icon type="FontAwesome" name={failedIconName} />
             </Left>
             <Body>
               <Text>{ t('HIDE_FAILED_TASKS') }</Text>

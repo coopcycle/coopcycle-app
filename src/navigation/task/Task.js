@@ -11,10 +11,18 @@ import { phonecall } from 'react-native-communications'
 import { showLocation } from 'react-native-map-link'
 import _ from 'lodash'
 
-import { greenColor, greyColor, redColor } from '../../styles/common'
+import { greenColor, redColor } from '../../styles/common'
 import { selectTasks } from '../../redux/Courier'
+import {
+  doneIconName,
+  failedIconName,
+  markerBackgroundStyle, markerContainer,
+  markerIconStyle, taskTypeIconName,
+} from './styles/common'
 
 const isCompleted = task => task.status !== 'TODO'
+
+const markerIconName = task => taskTypeIconName(task)
 
 class Task extends Component {
 
@@ -140,16 +148,6 @@ class Task extends Component {
     )
   }
 
-  pinColor(task) {
-    let color = greyColor
-
-    if (task.tags.length > 0) {
-      color = task.tags[0].color
-    }
-
-    return color
-  }
-
   renderTaskDetail(item) {
 
     const { iconName, text, component, onPress } = item
@@ -185,7 +183,7 @@ class Task extends Component {
   renderSwipeoutLeftButton() {
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Icon name="checkmark" style={{ color: '#fff' }} />
+        <Icon type="FontAwesome" name={ doneIconName } style={{ color: '#fff' }} />
       </View>
     )
 
@@ -194,7 +192,7 @@ class Task extends Component {
   renderSwipeoutRightButton() {
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Icon name="warning" style={{ color: '#fff' }} />
+        <Icon type="FontAwesome" name={ failedIconName } style={{ color: '#fff' }} />
       </View>
     )
   }
@@ -210,7 +208,7 @@ class Task extends Component {
         <Footer>
           <View style={ [ styles.buttonContainer, { backgroundColor: greenColor } ] }>
             <View style={ styles.buttonTextContainer }>
-              <Icon name="checkmark" style={{ color: '#fff', marginRight: 10 }} />
+              <Icon type="FontAwesome" name={ doneIconName } style={{ color: '#fff', marginRight: 10 }} />
               <Text style={{ color: '#fff' }}>{this.props.t('COMPLETED')}</Text>
             </View>
           </View>
@@ -223,7 +221,7 @@ class Task extends Component {
         <Footer>
           <View style={ [ styles.buttonContainer, { backgroundColor: redColor } ] }>
             <View style={ styles.buttonTextContainer }>
-              <Icon name="warning" style={{ color: '#fff', marginRight: 10 }} />
+              <Icon type="FontAwesome" name={ failedIconName } style={{ color: '#fff', marginRight: 10 }} />
               <Text style={{ color: '#fff' }}>{this.props.t('FAILED')}</Text>
             </View>
           </View>
@@ -314,8 +312,11 @@ class Task extends Component {
           identifier={ task['@id'] }
           key={ task['@id'] }
           coordinate={ task.address.geo }
-          pinColor={ this.pinColor(task) }
           flat={ true }>
+          <View style={ markerContainer }>
+            <View style={ markerBackgroundStyle(task) } />
+            <Icon type="FontAwesome" name={ markerIconName(task) } style={ markerIconStyle(task) } />
+          </View>
         </MapView.Marker>
       </MapView>
     )

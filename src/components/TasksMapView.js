@@ -1,13 +1,32 @@
-import React, { Component } from 'react'
-import { FlatList, StyleSheet, Dimensions, View, Text, TouchableOpacity } from 'react-native'
-import { Marker, Callout } from 'react-native-maps'
+import React, {Component} from 'react'
+import {
+  Dimensions,
+  FlatList,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native'
+import {Callout, Marker} from 'react-native-maps'
 import ClusteredMapView from 'react-native-maps-super-cluster'
 import Modal from 'react-native-modal'
-import { withTranslation } from 'react-i18next'
+import {withTranslation} from 'react-i18next'
 
 import Settings from '../Settings'
-import { greenColor, redColor, greyColor, whiteColor } from '../styles/common'
-import { uniq } from 'lodash'
+import {
+  greyColor,
+  whiteColor,
+} from '../styles/common'
+import {uniq} from 'lodash'
+import {Icon} from 'native-base'
+import {
+  doneIconName,
+  failedIconName,
+  markerBackgroundStyle,
+  markerContainer,
+  markerIconStyle,
+  taskTypeIconName,
+} from '../navigation/task/styles/common'
 
 const clusterContainerSize = 40
 
@@ -69,21 +88,6 @@ const edgePadding = {
   right: 20,
 }
 
-const pinColor = task => {
-
-  let pinColor = greyColor
-
-  if (task.status === 'DONE') {
-    pinColor = greenColor
-  }
-
-  if (task.status === 'FAILED') {
-    pinColor = redColor
-  }
-
-  return pinColor
-}
-
 const hasSameLocation = markers => {
   const coordsArray = markers.map(m => `${m.location.latitude};${m.location.longitude}`)
   const coordsArrayUniq = uniq(coordsArray)
@@ -95,6 +99,17 @@ const addressName = task => {
   const customerName = task.address.firstName ? [ task.address.firstName, task.address.lastName ].join(' ') : null
 
   return task.address.name || customerName || task.address.streetAddress
+}
+
+const markerIconName = task => {
+  switch (task.status) {
+  case 'DONE':
+    return doneIconName
+  case 'FAILED':
+    return failedIconName
+  default:
+    return taskTypeIconName(task)
+  }
 }
 
 class TasksMapView extends Component {
@@ -191,9 +206,12 @@ class TasksMapView extends Component {
         identifier={ task['@id'] }
         key={ task['@id'] }
         coordinate={ task.address.geo }
-        pinColor={ pinColor(task) }
         flat={ true }
         ref={ this.markers.get(task['@id']) }>
+        <View style={ markerContainer }>
+          <View style={ markerBackgroundStyle(task) } />
+          <Icon type="FontAwesome" name={ markerIconName(task) } style={ markerIconStyle(task) } />
+        </View>
         <Callout onPress={ () => this.onCalloutPress(task) }
           style={ [ styles.markerCallout, { width: Math.floor(width * 0.6666) } ] }>
           { task.address.name ? (<Text style={ styles.markerCalloutText }>{ task.address.name }</Text>) : null }

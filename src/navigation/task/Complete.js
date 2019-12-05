@@ -18,6 +18,7 @@ import {
   markTaskDone,
   markTaskFailed } from '../../redux/Courier'
 import { greenColor, redColor } from '../../styles/common'
+import { doneIconName, failedIconName} from './styles/common'
 
 const DELETE_ICON_SIZE = 32
 const CONTENT_PADDING = 20
@@ -60,7 +61,7 @@ class CompleteTask extends Component {
     const { width } = Dimensions.get('window')
 
     const imageSize = (width - 64) / 2
-    const buttonIconName = success ? 'checkmark' : 'warning'
+    const buttonIconName = success ? doneIconName : failedIconName
     const footerBgColor = success ? greenColor : redColor
     const footerText = success ? this.props.t('VALIDATE') : this.props.t('MARK_FAILED')
     const onPress = success ? this.markTaskDone.bind(this) : this.markTaskFailed.bind(this)
@@ -119,7 +120,7 @@ class CompleteTask extends Component {
         <Footer style={{ alignItems: 'center', backgroundColor: footerBgColor }}>
           <TouchableOpacity style={ styles.buttonContainer } onPress={ onPress }>
             <View style={ styles.buttonTextContainer }>
-              <Icon name={ buttonIconName } style={{ color: '#fff', marginRight: 10 }} />
+              <Icon type="FontAwesome" name={ buttonIconName } style={{ color: '#fff', marginRight: 10 }} />
               <Text style={{ color: '#fff' }}>{ footerText }</Text>
             </View>
           </TouchableOpacity>
