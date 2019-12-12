@@ -3734,9 +3734,9 @@ detect-newline@^2.1.0:
   integrity sha1-9B8cEL5LAOh7XxPaaAdZ8sW/0+I=
 
 detox@^14.4.0:
-  version "14.8.4"
-  resolved "https://registry.yarnpkg.com/detox/-/detox-14.8.4.tgz#5900446fd14586852a28e84aeb95dc887e5aace4"
-  integrity sha512-rKu/a3BTXqHdQ05IB3xj/t0IJ1Z1G1kineBgm250GNxSJC3LEj/gZMuAn7JLT9DA8+nphkd/jVbhYejHJ55Ztw==
+  version "14.9.0"
+  resolved "https://registry.yarnpkg.com/detox/-/detox-14.9.0.tgz#18f49e41997fe6e169467d0dc13ee90c9a376fcc"
+  integrity sha512-iW8F2IoyVUpm2KOfv7Chl9CWmJvQHd0RUAgqh1thJ8yQisi7ll8CjuCtX9KH+ylFcwvJlb7DIZ9Tw323R+u5Cg==
   dependencies:
     "@babel/core" "^7.4.5"
     bunyan "^1.8.12"
