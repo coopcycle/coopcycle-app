@@ -133,7 +133,7 @@ Client.prototype.request = function(method, uri, data) {
 
   return new Promise((resolve, reject) => {
     this.axios.request(req)
-      .then(response => resolve(response.data))
+      .then(response => resolve(response))
       .catch(error => {
         if (error.response) {
           reject(error.response.data)
@@ -145,19 +145,19 @@ Client.prototype.request = function(method, uri, data) {
 }
 
 Client.prototype.get = function(uri, data) {
-  return this.request('GET', uri, data);
+  return this.request('GET', uri, data).then(response => response.data);
 }
 
 Client.prototype.post = function(uri, data) {
-  return this.request('POST', uri, data);
+  return this.request('POST', uri, data).then(response => response.data);
 }
 
 Client.prototype.put = function(uri, data) {
-  return this.request('PUT', uri, data);
+  return this.request('PUT', uri, data).then(response => response.data);
 }
 
 Client.prototype.delete = function(uri) {
-  return this.request('DELETE', uri);
+  return this.request('DELETE', uri).then(response => response.data);
 }
 
 Client.prototype.refreshToken = function() {
