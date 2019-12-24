@@ -1,6 +1,7 @@
 import { createAction } from 'redux-actions'
 import { StackActions, NavigationActions } from 'react-navigation'
 import Stripe from 'tipsi-stripe'
+import _ from 'lodash'
 
 import NavigationHolder from '../../NavigationHolder'
 import Settings from '../../Settings'
@@ -9,14 +10,14 @@ import Settings from '../../Settings'
  * Action Types
  */
 
-export const ADD_ITEM = 'ADD_ITEM'
 export const REMOVE_ITEM = 'REMOVE_ITEM'
-export const INCREMENT_ITEM = 'INCREMENT_ITEM'
-export const DECREMENT_ITEM = 'DECREMENT_ITEM'
+export const UPDATE_ITEM_QUANTITY = 'UPDATE_ITEM_QUANTITY'
+
 export const SET_ADDRESS = '@checkout/SET_ADDRESS'
 export const SET_ADDRESS_OK = '@checkout/SET_ADDRESS_OK'
 export const SET_DATE = '@checkout/SET_DATE'
 export const SET_TIMING = '@checkout/SET_TIMING'
+export const SET_CART_VALIDATION = '@checkout/SET_CART_VALIDATION'
 export const CLEAR = '@checkout/CLEAR'
 
 export const INIT_REQUEST = '@checkout/INIT_REQUEST'
@@ -34,20 +35,25 @@ export const CHECKOUT_FAILURE = '@checkout/CHECKOUT_FAILURE'
 export const SHOW_ADDRESS_MODAL = '@checkout/SHOW_ADDRESS_MODAL'
 export const HIDE_ADDRESS_MODAL = '@checkout/HIDE_ADDRESS_MODAL'
 
+export const UPDATE_CART_SUCCESS = '@checkout/UPDATE_CART_SUCCESS'
+
+export const SET_CHECKOUT_LOADING = '@checkout/SET_CHECKOUT_LOADING'
+
+export const ADD_ITEM_REQUEST = '@checkout/ADD_ITEM_REQUEST'
+export const ADD_ITEM_REQUEST_FINISHED = '@checkout/ADD_ITEM_REQUEST_FINISHED'
+
 /*
  * Action Creators
  */
 
-export const removeItem = createAction(REMOVE_ITEM)
-export const incrementItem = createAction(INCREMENT_ITEM)
-export const decrementItem = createAction(DECREMENT_ITEM)
 export const setDate = createAction(SET_DATE)
 export const clear = createAction(CLEAR)
 export const setAddressOK = createAction(SET_ADDRESS_OK)
 export const setTiming = createAction(SET_TIMING)
+export const setCartValidation = createAction(SET_CART_VALIDATION, (isValid, violations = []) => ({ isValid, violations }))
 
 export const initRequest = createAction(INIT_REQUEST)
-export const initSuccess = createAction(INIT_SUCCESS)
+export const initSuccess = createAction(INIT_SUCCESS, (cart, token, restaurant = null) => ({ cart, token, restaurant }))
 export const initFailure = createAction(INIT_FAILURE)
 
 export const loadRestaurantsRequest = createAction(LOAD_RESTAURANTS_REQUEST)
@@ -61,35 +67,36 @@ export const checkoutFailure = createAction(CHECKOUT_FAILURE)
 export const showAddressModal = createAction(SHOW_ADDRESS_MODAL)
 export const hideAddressModal = createAction(HIDE_ADDRESS_MODAL)
 
-function validateAddress(httpClient, restaurant, address) {
+export const updateCartSuccess = createAction(UPDATE_CART_SUCCESS)
+
+export const setCheckoutLoading = createAction(SET_CHECKOUT_LOADING)
+
+export const addItemRequest = createAction(ADD_ITEM_REQUEST)
+export const addItemRequestFinished = createAction(ADD_ITEM_REQUEST_FINISHED)
+
+export const removeItemRequest = createAction(REMOVE_ITEM)
+
+function validateAddress(httpClient, cart, address) {
   const latitude = address.geo.latitude
   const longitude = address.geo.longitude
 
-  return httpClient.get(`/api/restaurants/${restaurant.id}/can-deliver/${latitude},${longitude}`)
+  return httpClient.get(`${cart.restaurant}/can-deliver/${latitude},${longitude}`)
 }
 
-const _addItem = createAction(ADD_ITEM, (item, options = []) => ({ item, options }))
+let setAddressListener = null
 
-let setAddressListeners = []
-
-function addSetAddressListener(cb) {
-  setAddressListeners.push(cb)
+function setSetAddressListener(cb) {
+  setAddressListener = cb
 }
 
 function onSetAddress(address) {
-  setAddressListeners.forEach(callback => callback(address))
-  setAddressListeners = []
-}
-
-function doAddItem(dispatch, item, options = []) {
-  if (item.hasOwnProperty('menuAddOn') && Array.isArray(item.menuAddOn) && item.menuAddOn.length > 0) {
-    NavigationHolder.navigate('CheckoutProductOptions', { product: item })
-    return
+  if (setAddressListener && typeof setAddressListener === 'function') {
+    setAddressListener(address)
   }
-
-  dispatch(_addItem(item, options))
+  setAddressListener = null
 }
 
+// This action may be dispatched several times "recursively"
 export function addItem(item, options = []) {
 
   return (dispatch, getState) => {
@@ -99,31 +106,225 @@ export function addItem(item, options = []) {
 
     if (!address || !isAddressOK) {
 
-      if (address && isAddressOK === null) {
-        validateAddress(httpClient, cart.restaurant, address)
+      // We don't have an adress
+      // Stop here an ask for address
+      if (!address) {
+        // When the address is set,
+        // re-dispatch the same action
+        setSetAddressListener(() => {
+          dispatch(hideAddressModal())
+          dispatch(addItem(item, options))
+        })
+        dispatch(showAddressModal())
+        return
+      }
+
+      // When isAddressOK === null,
+      // it means we have an address, but it hasn't be validated yet
+      if (isAddressOK === null) {
+        validateAddress(httpClient, cart, address)
+          // When the address is valid,
+          // re-dispatch the same action
           .then(() => {
             dispatch(_setAddress(address))
             dispatch(setAddressOK(true))
-            dispatch(hideAddressModal())
-            doAddItem(dispatch, item, options)
+            dispatch(addItem(item, options))
           })
           .catch(() => {
             dispatch(setAddressOK(false))
             dispatch(showAddressModal())
           })
-      } else {
-        addSetAddressListener(() => doAddItem(dispatch, item, options))
-        dispatch(showAddressModal())
+
+        return
       }
 
+      dispatch(showAddressModal())
       return
     }
 
-    doAddItem(dispatch, item, options)
+    if (item.hasOwnProperty('menuAddOn') && Array.isArray(item.menuAddOn) && item.menuAddOn.length > 0
+      && options.length === 0) {
+      NavigationHolder.navigate('CheckoutProductOptions', { product: item })
+      return
+    }
+
+    dispatch(addItemRequest(item))
+    dispatch(queueAddItem(item, options))
   }
 }
 
-export const addItemWithOptions = createAction(ADD_ITEM, (item, options = []) => ({ item, options }))
+function queueAddItem(item, options = []) {
+
+  return {
+    queue: 'ADD_ITEM',
+    callback: (next, dispatch, getState) => {
+
+      const { httpClient } = getState().app
+      const { cart } = getState().checkout
+
+      dispatch(setCheckoutLoading(true))
+
+      httpClient
+        .post(`${cart['@id']}/items`, {
+          product: item.identifier,
+          options: _.map(options, o => o.identifier),
+        })
+        .then(res => {
+          dispatch(updateCartSuccess(res))
+          dispatch(setCheckoutLoading(false))
+          dispatch(addItemRequestFinished(item))
+        })
+        .catch(e => {
+          console.log(e)
+          dispatch(setCheckoutLoading(false))
+          dispatch(addItemRequestFinished(item))
+        })
+        .finally(next)
+    },
+  }
+}
+
+export function addItemWithOptions(item, options = []) {
+  return addItem(item, options)
+}
+
+const fetchValidation = _.throttle((dispatch, getState) => {
+
+  const { httpClient } = getState().app
+  const { cart } = getState().checkout
+
+  // No need to validate when cart is empty
+  if (cart.items.length === 0) {
+    return
+  }
+
+  const doTiming = () => new Promise((resolve) => {
+    httpClient
+      .get(`${cart['@id']}/timing`)
+      .then(timing => dispatch(setTiming(timing)))
+      // .catch(error => dispatch(setCartValidation(false, error.violations)))
+      .finally(resolve)
+  })
+
+  const doValidate = () => new Promise((resolve) => {
+    httpClient
+      .get(`${cart['@id']}/validate`)
+      .then(() => dispatch(setCartValidation(true)))
+      .catch(error => dispatch(setCartValidation(false, error.violations)))
+      .finally(resolve)
+  })
+
+  dispatch(setCheckoutLoading(true))
+
+  Promise.all([ doTiming(), doValidate() ])
+    .then(() => dispatch(setCheckoutLoading(false)))
+
+}, 500)
+
+const updateItemQuantity = createAction(UPDATE_ITEM_QUANTITY, (item, quantity) => ({ item, quantity }))
+
+function syncItem(item) {
+
+  return {
+    queue: 'UPDATE_CART',
+    callback: (next, dispatch, getState) => {
+
+      const { httpClient } = getState().app
+      const { cart } = getState().checkout
+
+      // We make sure to get item from state,
+      // because it may have been updated
+      const itemFromState = _.find(cart.items, it => it.id === item.id)
+      if (!itemFromState) {
+        next()
+        return
+      }
+
+      dispatch(setCheckoutLoading(true))
+
+      httpClient
+        // FIXME We should have the "@id" property
+        .put(`${cart['@id']}/items/${item.id}`, {
+          quantity: itemFromState.quantity,
+        })
+        .then(res => {
+          dispatch(updateCartSuccess(res))
+          dispatch(setCheckoutLoading(false))
+
+          fetchValidation.cancel()
+          fetchValidation(dispatch, getState)
+        })
+        .catch(e => {
+          dispatch(setCheckoutLoading(false))
+        })
+        .finally(next)
+    },
+  }
+}
+
+const syncItemDebounced = _.debounce((dispatch, item) => dispatch(syncItem(item)), 350)
+
+export function incrementItem(item) {
+
+  return (dispatch, getState) => {
+    const quantity = item.quantity + 1
+    // Dispatch an action to "virtually" change the item quantity,
+    // so that the user has a UI feedback
+    dispatch(updateItemQuantity(item, quantity))
+    syncItemDebounced(dispatch, item)
+  }
+}
+
+export function decrementItem(item) {
+
+  return (dispatch, getState) => {
+    const quantity = item.quantity - 1
+    // Dispatch an action to "virtually" change the item quantity,
+    // so that the user has a UI feedback
+    dispatch(updateItemQuantity(item, quantity))
+    syncItemDebounced(dispatch, item)
+  }
+}
+
+export function removeItem(item) {
+
+  return {
+    queue: 'UPDATE_CART',
+    callback: (next, dispatch, getState) => {
+
+      const { httpClient } = getState().app
+      const { cart } = getState().checkout
+
+      dispatch(setCheckoutLoading(true))
+
+      // Dispatch an action to "virtually" remove the item,
+      // so that the user has a UI feedback
+      dispatch(removeItemRequest(item))
+
+      httpClient
+        // FIXME We should have the "@id" property
+        .delete(`${cart['@id']}/items/${item.id}`)
+        .then(res => {
+          dispatch(updateCartSuccess(res))
+          dispatch(setCheckoutLoading(false))
+
+          fetchValidation.cancel()
+          fetchValidation(dispatch, getState)
+        })
+        .catch(e => {
+          dispatch(setCheckoutLoading(false))
+        })
+        .finally(next)
+    },
+  }
+}
+
+export function validate() {
+
+  return (dispatch, getState) => {
+    fetchValidation(dispatch, getState)
+  }
+}
 
 const _setAddress = createAction(SET_ADDRESS)
 
@@ -135,22 +336,32 @@ export function setAddress(address) {
     const { cart } = getState().checkout
 
     if (cart.restaurant) {
-      validateAddress(httpClient, cart.restaurant, address)
-        .then(() => {
-          dispatch(_setAddress(address))
-          onSetAddress(address)
 
-          dispatch(setAddressOK(true))
-          dispatch(hideAddressModal())
+      dispatch(setCheckoutLoading(true))
+
+      validateAddress(httpClient, cart, address)
+        .then(() => {
+          httpClient.put(cart['@id'], { shippingAddress: address })
+            .then(res => {
+              dispatch(updateCartSuccess(res))
+
+              dispatch(_setAddress(address))
+              dispatch(setAddressOK(true))
+
+              // Invoke listeners
+              // WARNING Must be *AFTER* actions that set address
+              onSetAddress(address)
+            })
+            .catch(e => {
+              console.log(e)
+              dispatch(hideAddressModal())
+              dispatch(setCheckoutLoading(false))
+            })
         })
         .catch(() => {
           dispatch(setAddressOK(false))
         })
-
-        return
       }
-
-      dispatch(_setAddress(address))
   }
 }
 
@@ -203,15 +414,33 @@ export function init(restaurant) {
 
     dispatch(initRequest(restaurant))
 
-    if (typeof restaurant.hasMenu === 'string') {
+    const reqs = []
 
-      httpClient.get(restaurant.hasMenu)
-        .then((menu) => {
-          const restaurantWithMenu = { ...restaurant, hasMenu: menu }
-          dispatch(initSuccess(restaurantWithMenu))
-        })
-        .catch(e => dispatch(initFailure(e)))
+    if (typeof restaurant.hasMenu === 'string') {
+      reqs.push(httpClient.get(restaurant.hasMenu))
     }
+
+    reqs.push(httpClient.request('POST', '/api/carts', {
+      restaurant: restaurant['@id'],
+    }))
+
+    Promise.all(reqs)
+      .then(values => {
+        const createCartRes = values.length === 2 ? values[1] : values[0]
+
+        const args = [
+          createCartRes.data,
+          createCartRes.headers['x-coopcycle-checkout-token'],
+        ]
+
+        if (values.length === 2) {
+          const menu = values[0]
+          const restaurantWithMenu = { ...restaurant, hasMenu: menu }
+          args.push(restaurantWithMenu)
+        }
+
+        dispatch(initSuccess(...args))
+      })
   }
 }
 
@@ -220,15 +449,11 @@ export function checkout(number, expMonth, expYear, cvc) {
   return (dispatch, getState) => {
 
     const { httpClient } = getState().app
-    const { address, cart, date } = getState().checkout
+    const { cart } = getState().checkout
 
     Stripe.setOptions({
       publishableKey: Settings.get('stripe_publishable_key'),
     })
-
-    const newCart = cart.clone()
-    newCart.setDeliveryAddress(address)
-    newCart.setDeliveryDate(date)
 
     dispatch(checkoutRequest())
 
@@ -240,8 +465,7 @@ export function checkout(number, expMonth, expYear, cvc) {
     })
     .then(token => {
       httpClient
-        .post('/api/orders', newCart.toJSON())
-        .then(order => httpClient.put(order['@id'] + '/pay', { stripeToken: token.tokenId }))
+        .put(cart['@id'] + '/pay', { stripeToken: token.tokenId })
         .then(order => {
 
           // First, reset checkout stack
@@ -265,27 +489,5 @@ export function checkout(number, expMonth, expYear, cvc) {
     })
     .catch(err => console.log(err));
 
-  }
-}
-
-export function timing() {
-
-  return (dispatch, getState) => {
-
-    const { httpClient } = getState().app
-    const { address, cart } = getState().checkout
-
-    const newCart = cart.clone()
-    newCart.setDeliveryAddress(address)
-
-    dispatch(checkoutRequest())
-
-    httpClient
-      .post('/api/orders/timing', newCart.toJSON())
-      .then(timing => {
-        dispatch(setTiming(timing))
-        dispatch(checkoutSuccess())
-      })
-      .catch(e => dispatch(checkoutFailure(e)))
   }
 }

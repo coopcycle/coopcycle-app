@@ -89,7 +89,7 @@ class ProductOptions extends Component {
     })
 
     this.props.addItem(product, optionsArray)
-    this.props.navigation.goBack()
+    this.props.navigation.navigate('CheckoutRestaurant', { restaurant: this.props.restaurant })
   }
 
   renderFooter() {
@@ -170,7 +170,9 @@ class ProductOptions extends Component {
 }
 
 function mapStateToProps(state) {
-  return {}
+  return {
+    restaurant: state.checkout.restaurant,
+  }
 }
 
 function mapDispatchToProps(dispatch) {

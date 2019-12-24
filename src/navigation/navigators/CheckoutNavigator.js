@@ -28,7 +28,7 @@ const MainNavigator = createStackNavigator({
         <TouchableOpacity style={{ paddingHorizontal: 10 }}
           onPress={ () => navigation.setParams({ edit: !navigation.getParam('edit', false) }) }>
           <Text style={{ color: 'white' }}>
-            { navigation.getParam('edit', false) ? i18n.t('SUBMIT') : i18n.t('EDIT') }
+            { navigation.getParam('edit', false) ? i18n.t('FINISHED') : i18n.t('EDIT') }
           </Text>
         </TouchableOpacity>
       ),

@@ -41,7 +41,7 @@ class CartFooter extends Component {
     return (
       <Footer testID="cartFooter">
         <View style={{ flex: 1, alignItems: 'center', paddingHorizontal: 5, paddingVertical: 5 }}>
-          <CartFooterButton cart={ cart } onPress={ () => this.props.onSubmit() } />
+          <CartFooterButton cart={ cart } onPress={ () => this.props.onSubmit() } loading={ this.props.isLoading } />
         </View>
       </Footer>
     )
@@ -51,6 +51,7 @@ class CartFooter extends Component {
 function mapStateToProps(state) {
 
   return {
+    isLoading: state.checkout.isLoading,
     cart: state.checkout.cart,
     date: state.checkout.date,
   }

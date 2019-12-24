@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { SectionList, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { ActivityIndicator, SectionList, StyleSheet, TouchableOpacity, View } from 'react-native'
 import { Icon, Text } from 'native-base';
 import { Col, Grid } from 'react-native-easy-grid'
 import _ from 'lodash'
@@ -75,6 +75,8 @@ export default class Menu extends Component {
       rightIconStyle.push(styles.disabledText)
     }
 
+    const isLoading = this.props.isItemLoading(item)
+
     return (
       <TouchableOpacity style={ styles.item } { ...itemProps } testID={ `menuItem:${section.index}:${index}` }>
         <Grid>
@@ -84,7 +86,8 @@ export default class Menu extends Component {
             <Text style={ itemPriceStyle }>{ formatPrice(item.offers.price) } €</Text>
           </Col>
           <Col size={ 1 } style={ styles.rightCol }>
-            <Icon type="FontAwesome" name={ rightIconName } style={ rightIconStyle } />
+            { !isLoading && <Icon type="FontAwesome" name={ rightIconName } style={ rightIconStyle } /> }
+            { isLoading  && <ActivityIndicator size="small" /> }
           </Col>
         </Grid>
       </TouchableOpacity>

@@ -2,10 +2,8 @@ import {
   INIT_REQUEST,
   INIT_SUCCESS,
   INIT_FAILURE,
-  ADD_ITEM,
   REMOVE_ITEM,
-  INCREMENT_ITEM,
-  DECREMENT_ITEM,
+  UPDATE_ITEM_QUANTITY,
   SET_ADDRESS,
   SET_ADDRESS_OK,
   SET_DATE,
@@ -19,14 +17,18 @@ import {
   CHECKOUT_FAILURE,
   SHOW_ADDRESS_MODAL,
   HIDE_ADDRESS_MODAL,
+  UPDATE_CART_SUCCESS,
+  SET_CHECKOUT_LOADING,
+  ADD_ITEM_REQUEST,
+  ADD_ITEM_REQUEST_FINISHED,
+  SET_CART_VALIDATION,
 } from './actions'
 
-import Cart from '../../Cart'
 import i18n from '../../i18n'
 import _ from 'lodash'
 
 const initialState = {
-  cart: new Cart(),
+  cart: null,
   address: null,
   isAddressOK: null,
   date: null,
@@ -36,10 +38,13 @@ const initialState = {
   errors: [],
   isAddressModalVisible: false,
   timing: {},
+  isValid: null,
+  violations: [],
+  isLoading: false,
+  itemRequestStack: [],
 }
 
 export default (state = initialState, action = {}) => {
-  let newCart, item
 
   switch (action.type) {
 
@@ -79,7 +84,8 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         isFetching: true,
-        cart: new Cart(action.payload),
+        restaurant: action.payload.restaurant,
+        cart: null,
         menu: null, // For better navigation through restaurants
       }
 
@@ -88,74 +94,49 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         isFetching: false,
-        menu: action.payload.hasMenu,
+        restaurant: action.payload.restaurant,
+        cart: action.payload.cart,
+        menu: action.payload.restaurant.hasMenu,
         isAddressOK: null, // We don't know if it's valid
       }
 
     case CLEAR:
       return {
         ...state,
-        cart: new Cart(),
+        cart: null,
         address: null,
         date: null,
       }
 
-    case ADD_ITEM:
-
-      newCart = state.cart.clone()
-      newCart.addMenuItem(
-        action.payload.item,
-        action.payload.options
-      )
-
-      return {
-        ...state,
-        cart: newCart,
-      }
-
     case REMOVE_ITEM:
 
-      newCart = state.cart.clone()
-      newCart.deleteItem(action.payload)
+      return {
+        ...state,
+        cart: {
+          ...state.cart,
+          items: _.filter(state.cart.items, item => item.id !== action.payload.id),
+        },
+      }
+
+    case UPDATE_ITEM_QUANTITY:
 
       return {
         ...state,
-        cart: newCart,
+        cart: {
+          ...state.cart,
+          items: _.map(state.cart.items, item => {
+            if (item.id === action.payload.item.id) {
+
+              return {
+                ...item,
+                quantity: action.payload.quantity,
+              }
+            }
+
+            return item
+          }),
+        },
       }
-
-    case INCREMENT_ITEM:
-
-      newCart = state.cart.clone()
-
-      item = _.find(newCart.items, item => item.menuItem.identifier === action.payload.menuItem.identifier)
-      if (item) {
-        item.increment()
-
-        return {
-          ...state,
-          cart: newCart,
-        }
-      }
-
-      break
-
-    case DECREMENT_ITEM:
-
-      item = _.find(state.cart.items, item => item.menuItem.identifier === action.payload.menuItem.identifier)
-      if (item) {
-        item.decrement()
-
-        if (item.quantity === 0) {
-          state.cart.deleteItem(item)
-        }
-
-        return {
-          ...state,
-          cart: state.cart.clone(),
-        }
-      }
-
-      break
 
     case SET_ADDRESS:
       return {
@@ -204,6 +185,46 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         timing: action.payload,
+      }
+
+    case SET_CART_VALIDATION:
+      return {
+        ...state,
+        isValid: action.payload.isValid,
+        violations: action.payload.violations,
+      }
+
+    case UPDATE_CART_SUCCESS:
+      return {
+        ...state,
+        cart: action.payload,
+      }
+
+    case SET_CHECKOUT_LOADING:
+      return {
+        ...state,
+        isLoading: action.payload,
+      }
+
+    case ADD_ITEM_REQUEST:
+      return {
+        ...state,
+        itemRequestStack: state.itemRequestStack.concat(action.payload.identifier),
+      }
+
+    case ADD_ITEM_REQUEST_FINISHED:
+
+      const itemRequestIndex = _.findLastIndex(state.itemRequestStack, identifier => identifier === action.payload.identifier)
+      if (itemRequestIndex === -1) {
+        return state
+      }
+
+      const newItemRequestStack = state.itemRequestStack.slice()
+      newItemRequestStack.splice(itemRequestIndex, 1)
+
+      return {
+        ...state,
+        itemRequestStack: newItemRequestStack,
       }
   }
 

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Dimensions, Image, PixelRatio, StyleSheet, View, Animated, Keyboard } from 'react-native'
+import { ActivityIndicator, Dimensions, Image, PixelRatio, StyleSheet, View, Animated, Keyboard } from 'react-native'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 import {
@@ -7,6 +7,7 @@ import {
   Text, Button,
 } from 'native-base';
 import Modal from 'react-native-modal'
+import _ from 'lodash'
 
 import CartFooter from './components/CartFooter'
 import Menu from '../../components/Menu'
@@ -59,8 +60,6 @@ class Restaurant extends Component {
 
   renderBackBtn() {
 
-    const { width } = Dimensions.get('window')
-
     const shouldShowBackBtn = (this.props.isAddressOK === false) && this.state.shouldShowBackBtn
 
     if (!shouldShowBackBtn) {
@@ -68,6 +67,8 @@ class Restaurant extends Component {
         <View />
       )
     }
+
+    const { width } = Dimensions.get('window')
 
     return (
       <View style={ [ styles.goBackContainer, { width } ] }>
@@ -82,13 +83,29 @@ class Restaurant extends Component {
     )
   }
 
+  renderLoader() {
+    if (!this.props.isLoading) {
+      return (
+        <View />
+      )
+    }
+
+    const { width } = Dimensions.get('window')
+
+    return (
+      <View style={ [ styles.goBackContainer, { width } ] }>
+        <ActivityIndicator size="small" />
+      </View>
+    )
+  }
+
   render() {
 
     const { height, width } = Dimensions.get('window')
 
     const { navigate } = this.props.navigation
     const { restaurant } = this.props.navigation.state.params
-    const { cart, menu } = this.props
+    const { isCartEmpty, menu } = this.props
 
     const modalMessageTextStyle = []
     if (this.props.isAddressOK === false) {
@@ -113,9 +130,12 @@ class Restaurant extends Component {
           <Menu
             restaurant={ restaurant }
             menu={ menu }
-            onItemClick={ menuItem => this.props.addItem(menuItem) } />
+            onItemClick={ menuItem => this.props.addItem(menuItem) }
+            isItemLoading={ menuItem => {
+              return _.includes(this.props.loadingItems, menuItem.identifier)
+            } } />
         </Content>
-        { !cart.isEmpty() && (
+        { !isCartEmpty && (
         <CartFooter
           onSubmit={ () => navigate('CheckoutSummary') }  />
         )}
@@ -150,9 +170,10 @@ class Restaurant extends Component {
                       </Text>
                     )
                   }}
-                  onFocus={ _ => this.setState({ shouldShowBackBtn: false }) }
-                  onBlur={ _ => this.setState({ shouldShowBackBtn: true }) } />
+                  onFocus={ () => this.setState({ shouldShowBackBtn: false }) }
+                  onBlur={ () => this.setState({ shouldShowBackBtn: true }) } />
                 { this.renderBackBtn() }
+                { this.renderLoader() }
               </View>
             </View>
           </Animated.View>
@@ -226,13 +247,18 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(state) {
+
+  const isCartEmpty = !state.checkout.cart ? true : state.checkout.cart.items.length === 0
+
   return {
-    cart: state.checkout.cart,
+    isCartEmpty,
     date: state.checkout.date,
     menu: state.checkout.menu,
     address: state.checkout.address,
     isAddressOK: state.checkout.isAddressOK,
     isModalVisible: state.checkout.isAddressModalVisible,
+    isLoading: state.checkout.isLoading,
+    loadingItems: state.checkout.itemRequestStack,
   }
 }
 
@@ -241,7 +267,7 @@ function mapDispatchToProps(dispatch) {
     init: restaurant => dispatch(init(restaurant)),
     addItem: item => dispatch(addItem(item)),
     setAddress: address => dispatch(setAddress(address)),
-    hideAddressModal: _ => dispatch(hideAddressModal()),
+    hideAddressModal: () => dispatch(hideAddressModal()),
   }
 }
 

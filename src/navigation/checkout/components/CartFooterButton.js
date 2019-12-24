@@ -1,16 +1,9 @@
 import React, { Component } from 'react'
-import { Animated, StyleSheet, View } from 'react-native'
-import { Text, Button, Icon } from 'native-base'
+import { ActivityIndicator, Animated, View } from 'react-native'
+import { Text, Button } from 'native-base'
 import { withTranslation } from 'react-i18next'
 
 import { formatPrice } from '../../../utils/formatting'
-
-const styles = StyleSheet.create({
-  buttonText: {
-    color: '#fff',
-    fontSize: 14,
-  },
-})
 
 class CartFooterButton extends Component {
 
@@ -40,37 +33,34 @@ class CartFooterButton extends Component {
     ]).start()
   }
 
+  renderLeft() {
+    if (this.props.loading) {
+      return (
+        <ActivityIndicator size="small" color="#ffffff" />
+      )
+    }
+
+    return (
+      <Text style={{ position: 'absolute', left: 0, fontWeight: 'bold', fontFamily: 'OpenSans-Regular' }}>
+        { `[${this.props.cart.items.length}]` }
+      </Text>
+    )
+  }
+
   render() {
 
     const { cart } = this.props
 
-    if (cart.length === 0) {
+    if (cart.items.length === 0) {
 
       return (
         <View />
       )
     }
 
-    if (cart.totalItems < cart.restaurant.minimumCartAmount) {
-
-      return (
-        <Button block transparent>
-          <Icon style={{ color: '#fff', position: 'absolute', left: 0 }} name="information-circle" />
-          <Text style={ styles.buttonText }>
-            { `Minimum ${formatPrice(cart.restaurant.minimumCartAmount)} €` }
-          </Text>
-          <Text style={{ color: '#fff', position: 'absolute', right: 0, fontWeight: 'bold', fontFamily: 'OpenSans-Regular' }}>
-            { `${formatPrice(cart.totalItems)} €` }
-          </Text>
-        </Button>
-      )
-    }
-
     return (
       <Button block onPress={ () => this.props.onPress() } testID="cartSubmit">
-        <Text style={{ position: 'absolute', left: 0, fontWeight: 'bold', fontFamily: 'OpenSans-Regular' }}>
-          { `[${cart.length}]` }
-        </Text>
+        { this.renderLeft() }
         <Text>{ this.props.t('ORDER') }</Text>
         <Text style={{ position: 'absolute', right: 0, fontWeight: 'bold', fontFamily: 'OpenSans-Regular' }}>
           { `${formatPrice(cart.total)} €` }

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {
+  ActivityIndicator,
   Animated,
   Dimensions,
   FlatList,
@@ -17,11 +18,13 @@ import {
 import moment from 'moment'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
+import _ from 'lodash'
 
-import CartFooterButton from './components/CartFooterButton'
+import DangerAlert from '../../components/DangerAlert'
 import { formatPrice } from '../../utils/formatting'
 import i18n from '../../i18n'
-import { incrementItem, decrementItem, removeItem, timing } from '../../redux/Checkout/actions'
+import { incrementItem, decrementItem, removeItem, validate } from '../../redux/Checkout/actions'
+import { selectDeliveryTotal } from '../../redux/Checkout/selectors'
 
 class Summary extends Component {
 
@@ -34,7 +37,7 @@ class Summary extends Component {
   }
 
   componentDidMount() {
-    this.props.fetchTiming()
+    this.props.validate()
   }
 
   componentDidUpdate(prevProps) {
@@ -48,10 +51,6 @@ class Summary extends Component {
           duration: 450,
         }
       ).start()
-
-      if (!this.props.edit && prevProps.edit) {
-        this.props.fetchTiming()
-      }
     }
   }
 
@@ -61,21 +60,23 @@ class Summary extends Component {
     this.props.navigation.navigate(routeName)
   }
 
-  _renderItemOptions(item) {
+  _renderItemAdjustments(item, index) {
 
     return (
       <View>
-      { item.options.map(option => {
+      { _.map(item.adjustments, (adjustments, type) => {
+        return _.map(adjustments, (adj, i) => {
 
-        let optionText = option.name
-        if (option.offers.price > 0) {
-          optionText = `${option.name} (+ ${formatPrice(option.offers.price)} €)`
-        }
+          const label = [ adj.label ]
+          if (adj.amount > 0) {
+            label.push(`(${formatPrice(adj.amount)} €)`)
+          }
 
-        return (
-          <Text note key={ `${item.identifier}:${option.identifier}` }>{ optionText }</Text>
-        )
-      })}
+          return (
+            <Text note key={ `item:${index}:adjustments:${i}` }>{ label.join(' ') }</Text>
+          )
+        })
+      }) }
       </View>
     )
   }
@@ -94,12 +95,12 @@ class Summary extends Component {
       <FlatList
         data={ this.props.items }
         keyExtractor={ (item, index) => `item:${index}` }
-        renderItem={ ({ item }) => this.renderItem(item) }
+        renderItem={ ({ item, index }) => this.renderItem(item, index) }
         extraData={{ edit: this.props.edit }} />
     )
   }
 
-  renderItem(item) {
+  renderItem(item, index) {
 
     return (
       <View
@@ -107,7 +108,7 @@ class Summary extends Component {
         key={ item.key }>
         <View style={{ flex: 3, justifyContent: 'center', paddingHorizontal: 15, paddingVertical: 15 }}>
           <Text>{ `${item.quantity} x ${item.name}` }</Text>
-          { item.options.length > 0 && this._renderItemOptions(item) }
+          { _.size(item.adjustments) > 0 && this._renderItemAdjustments(item, index) }
           <Text note>{ `${formatPrice(item.total)} €` }</Text>
         </View>
         <Animated.View
@@ -166,27 +167,22 @@ class Summary extends Component {
 
     const { cart } = this.props
 
-    if (cart.length === 0) {
+    if (cart.items.length === 0) {
 
       return (
         <View />
       )
     }
 
-    if (cart.totalItems < cart.restaurant.minimumCartAmount) {
-      return (
-        <Footer>
-          <View style={{ flex: 1, alignItems: 'center', paddingHorizontal: 5, paddingVertical: 5 }}>
-            <CartFooterButton cart={ cart } onPress={ () => this.props.navigation.goBack() } />
-          </View>
-        </Footer>
-      )
+    const btnProps = {
+      disabled: this.props.isValid !== true
     }
 
     return (
       <Footer>
         <View style={{ flex: 1, alignItems: 'center', paddingHorizontal: 5, paddingVertical: 5 }}>
-          <Button block onPress={ this.onSubmit.bind(this) } testID="cartSummarySubmit">
+          <Button block onPress={ this.onSubmit.bind(this) } testID="cartSummarySubmit" { ...btnProps }>
+            { this.props.isLoading && <ActivityIndicator size="small" color="#ffffff" /> }
             <Text>{ this.props.t('ORDER') }</Text>
           </Button>
         </View>
@@ -209,7 +205,7 @@ class Summary extends Component {
 
     const { cart, timing } = this.props
 
-    if (cart.length === 0) {
+    if (cart.items.length === 0) {
 
       return this.renderEmpty()
     }
@@ -222,6 +218,9 @@ class Summary extends Component {
           })
         }}>
         <Content contentContainerStyle={{ justifyContent: 'space-between' }}>
+          { false === this.props.isValid && (
+            <DangerAlert text={ this.props.alertMessage } />
+          )}
           { timing.asap && (
             <TouchableOpacity style={ styles.dateBtn }
               onPress={ () => this._navigate('CheckoutShippingDate') }>
@@ -234,18 +233,12 @@ class Summary extends Component {
         <View style={{ flex: 0, backgroundColor: '#e4022d' }}>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 5, paddingVertical: 5 }}>
             <Text style={{ color: '#ffffff' }}>{ this.props.t('TOTAL_ITEMS') }</Text>
-            <Text style={{ color: '#ffffff', fontWeight: 'bold' }}>{ `${formatPrice(cart.totalItems)} €` }</Text>
+            <Text style={{ color: '#ffffff', fontWeight: 'bold' }}>{ `${formatPrice(cart.itemsTotal)} €` }</Text>
           </View>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 5, paddingVertical: 5 }}>
             <Text style={{ color: '#ffffff' }}>{ this.props.t('TOTAL_DELIVERY') }</Text>
-            <Text style={{ color: '#ffffff', fontWeight: 'bold' }}>{ `${formatPrice(cart.totalDelivery)} €` }</Text>
+            <Text style={{ color: '#ffffff', fontWeight: 'bold' }}>{ `${formatPrice(this.props.deliveryTotal)} €` }</Text>
           </View>
-          { (cart.totalItems >= cart.restaurant.minimumCartAmount) && (
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 5, paddingVertical: 5 }}>
-            <Text style={{ color: '#ffffff' }}>{ this.props.t('TOTAL') }</Text>
-            <Text style={{ color: '#ffffff', fontWeight: 'bold' }}>{ `${formatPrice(cart.total)} €` }</Text>
-          </View>
-          ) }
         </View>
         { this.renderFooter() }
       </View>
@@ -289,7 +282,11 @@ function mapStateToProps(state, ownProps) {
     edit: ownProps.navigation.getParam('edit', false),
     items: state.checkout.cart.items,
     isAuthenticated: state.app.isAuthenticated,
+    deliveryTotal: selectDeliveryTotal(state),
     timeAsText,
+    isLoading: state.checkout.isLoading,
+    isValid: state.checkout.isValid,
+    alertMessage: _.first(state.checkout.violations.map(v => v.message)),
   }
 }
 
@@ -298,7 +295,7 @@ function mapDispatchToProps(dispatch) {
     incrementItem: item => dispatch(incrementItem(item)),
     decrementItem: item => dispatch(decrementItem(item)),
     removeItem: item => dispatch(removeItem(item)),
-    fetchTiming: _ => dispatch(timing()),
+    validate: () => dispatch(validate()),
   }
 }
 
