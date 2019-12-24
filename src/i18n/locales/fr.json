@@ -262,6 +262,9 @@
     "TODAY_BETWEEN_START_AND_END": "Aujourd'hui entre {{start}} et {{end}}",
     "TOMORROW_BETWEEN_START_AND_END": "Demain entre {{start}} et {{end}}",
     "OTHER_DAY_BETWEEN_START_AND_END": "{{date}} entre {{start}} et {{end}}",
-    "SIGNATURE_SCREEN_FIRST": "Écran de signature par défaut"
+    "SIGNATURE_SCREEN_FIRST": "Écran de signature par défaut",
+    "CART_DELIVERY_TIME": "Livraison {{- fromNow}}",
+    "CART_DELIVERY_TIME_DIFF": "Livraison dans {{diff}} minutes",
+    "FINISHED": "Terminé"
   }
 }

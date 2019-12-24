@@ -266,6 +266,7 @@
     "TODAY_BETWEEN_START_AND_END": "Today between {{start}} and {{end}}",
     "TOMORROW_BETWEEN_START_AND_END": "Tomorrow between {{start}} and {{end}}",
     "OTHER_DAY_BETWEEN_START_AND_END": "{{date}} between {{start}} and {{end}}",
-    "SIGNATURE_SCREEN_FIRST": "Signature screen as default"
+    "SIGNATURE_SCREEN_FIRST": "Signature screen as default",
+    "FINISHED": "Finished"
   }
 }
