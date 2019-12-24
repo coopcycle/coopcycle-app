@@ -8322,6 +8322,11 @@ redux-actions@^2.6.5:
     reduce-reducers "^0.4.3"
     to-camel-case "^1.0.0"
 
+redux-async-queue@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/redux-async-queue/-/redux-async-queue-1.0.0.tgz#e3c0b5a01e150541735cd3bbd24561637cd21e9e"
+  integrity sha1-48C1oB4VBUFzXNO70kVhY3zSHp4=
+
 redux-devtools-extension@^2.13.8:
   version "2.13.8"
   resolved "https://registry.yarnpkg.com/redux-devtools-extension/-/redux-devtools-extension-2.13.8.tgz#37b982688626e5e4993ff87220c9bbb7cd2d96e1"
