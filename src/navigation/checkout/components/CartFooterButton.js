@@ -3,7 +3,7 @@ import { Animated, StyleSheet, View } from 'react-native'
 import { Text, Button, Icon } from 'native-base'
 import { withTranslation } from 'react-i18next'
 
-import { formatPrice } from '../../../Cart'
+import { formatPrice } from '../../../utils/formatting'
 
 const styles = StyleSheet.create({
   buttonText: {

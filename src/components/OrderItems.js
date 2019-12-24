@@ -3,7 +3,7 @@ import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native'
 import { Text } from 'native-base';
 import { Col, Row, Grid } from 'react-native-easy-grid'
 import { withTranslation } from 'react-i18next'
-import { formatPrice } from '../Cart'
+import { formatPrice } from '../utils/formatting'
 
 const styles = StyleSheet.create({
   container: {

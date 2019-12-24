@@ -15,7 +15,7 @@ import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 
 import { checkout } from '../../redux/Checkout/actions'
-import { formatPrice } from '../../Cart'
+import { formatPrice } from '../../utils/formatting'
 
 class CreditCard extends Component {
 

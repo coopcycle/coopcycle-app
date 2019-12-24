@@ -143,6 +143,3 @@ class Cart {
 }
 
 module.exports = Cart;
-module.exports.formatPrice = (price) => {
-  return (price / 100).toFixed(2)
-}

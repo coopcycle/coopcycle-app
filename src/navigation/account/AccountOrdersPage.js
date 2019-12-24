@@ -9,7 +9,7 @@ import _ from 'lodash'
 import moment from 'moment'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
-import { formatPrice } from '../../Cart'
+import { formatPrice } from '../../utils/formatting'
 import { loadOrders } from '../../redux/Account/actions'
 
 class AccountOrdersPage extends Component {

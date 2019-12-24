@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 import _ from 'lodash'
 
 import { addItemWithOptions } from '../../redux/Checkout/actions'
-import { formatPrice } from '../../Cart'
+import { formatPrice } from '../../utils/formatting'
 
 class ProductOptions extends Component {
 

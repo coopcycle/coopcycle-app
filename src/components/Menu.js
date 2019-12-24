@@ -4,7 +4,7 @@ import { Icon, Text } from 'native-base';
 import { Col, Grid } from 'react-native-easy-grid'
 import _ from 'lodash'
 
-import { formatPrice } from '../Cart'
+import { formatPrice } from '../utils/formatting'
 
 const styles = StyleSheet.create({
   sectionHeader: {

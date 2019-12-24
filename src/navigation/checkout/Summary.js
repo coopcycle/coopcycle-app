@@ -19,7 +19,7 @@ import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 
 import CartFooterButton from './components/CartFooterButton'
-import { formatPrice } from '../../Cart'
+import { formatPrice } from '../../utils/formatting'
 import i18n from '../../i18n'
 import { incrementItem, decrementItem, removeItem, timing } from '../../redux/Checkout/actions'
 

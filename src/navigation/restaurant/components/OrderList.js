@@ -5,7 +5,7 @@ import { Col, Grid } from 'react-native-easy-grid'
 import moment from 'moment'
 import _ from 'lodash'
 import { withTranslation } from 'react-i18next'
-import { formatPrice } from '../../../Cart'
+import { formatPrice } from '../../../utils/formatting'
 
 const styles = StyleSheet.create({
   item: {
