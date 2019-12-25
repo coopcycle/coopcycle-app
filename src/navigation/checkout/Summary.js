@@ -37,7 +37,14 @@ class Summary extends Component {
   }
 
   componentDidMount() {
-    this.props.validate()
+    this.didFocusListener = this.props.navigation.addListener(
+      'didFocus',
+      payload => this.props.validate()
+    )
+  }
+
+  componentWillUnmount() {
+    this.didFocusListener.remove()
   }
 
   componentDidUpdate(prevProps) {

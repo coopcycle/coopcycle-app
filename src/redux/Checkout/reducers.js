@@ -9,6 +9,7 @@ import {
   SET_DATE,
   SET_TIMING,
   CLEAR,
+  RESET_RESTAURANT,
   LOAD_RESTAURANTS_REQUEST,
   LOAD_RESTAURANTS_SUCCESS,
   LOAD_RESTAURANTS_FAILURE,
@@ -84,6 +85,15 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         isFetching: true,
+        restaurant: action.payload.restaurant,
+        cart: null,
+        menu: null, // For better navigation through restaurants
+      }
+
+    case RESET_RESTAURANT:
+
+      return {
+        ...state,
         restaurant: action.payload.restaurant,
         cart: null,
         menu: null, // For better navigation through restaurants

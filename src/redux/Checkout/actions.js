@@ -19,6 +19,7 @@ export const SET_DATE = '@checkout/SET_DATE'
 export const SET_TIMING = '@checkout/SET_TIMING'
 export const SET_CART_VALIDATION = '@checkout/SET_CART_VALIDATION'
 export const CLEAR = '@checkout/CLEAR'
+export const RESET_RESTAURANT = '@checkout/RESET_RESTAURANT'
 
 export const INIT_REQUEST = '@checkout/INIT_REQUEST'
 export const INIT_SUCCESS = '@checkout/INIT_SUCCESS'
@@ -55,6 +56,7 @@ export const setCartValidation = createAction(SET_CART_VALIDATION, (isValid, vio
 export const initRequest = createAction(INIT_REQUEST)
 export const initSuccess = createAction(INIT_SUCCESS, (cart, token, restaurant = null) => ({ cart, token, restaurant }))
 export const initFailure = createAction(INIT_FAILURE)
+export const resetRestaurant = createAction(RESET_RESTAURANT)
 
 export const loadRestaurantsRequest = createAction(LOAD_RESTAURANTS_REQUEST)
 export const loadRestaurantsSuccess = createAction(LOAD_RESTAURANTS_SUCCESS)

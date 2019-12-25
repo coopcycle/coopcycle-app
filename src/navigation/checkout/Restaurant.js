@@ -13,7 +13,7 @@ import CartFooter from './components/CartFooter'
 import Menu from '../../components/Menu'
 import AddressTypeahead from '../../components/AddressTypeahead'
 
-import { init, addItem, hideAddressModal, setAddress } from '../../redux/Checkout/actions'
+import { init, addItem, hideAddressModal, resetRestaurant, setAddress } from '../../redux/Checkout/actions'
 
 class Restaurant extends Component {
 
@@ -24,20 +24,29 @@ class Restaurant extends Component {
       address: '',
     }
     this.keyboardHeight = new Animated.Value(0)
+    this.init = _.once(this.props.init.bind(this))
   }
 
   componentDidMount() {
-    const { restaurant } = this.props.navigation.state.params
-
     this.keyboardWillShowSub = Keyboard.addListener('keyboardWillShow', this.keyboardWillShow.bind(this))
     this.keyboardWillHideSub = Keyboard.addListener('keyboardWillHide', this.keyboardWillHide.bind(this))
 
-    this.props.init(restaurant)
+    const restaurant = this.props.navigation.getParam('restaurant')
+
+    this.props.resetRestaurant(restaurant)
+
+    // "didFocus" is called when going back,
+    // so make sure we call init() once
+    this.didFocusListener = this.props.navigation.addListener(
+      'didFocus',
+      payload => this.init(restaurant)
+    )
   }
 
   componentWillUnmount() {
     this.keyboardWillShowSub.remove()
     this.keyboardWillHideSub.remove()
+    this.didFocusListener.remove()
   }
 
   keyboardWillShow(event) {
@@ -104,7 +113,7 @@ class Restaurant extends Component {
     const { height, width } = Dimensions.get('window')
 
     const { navigate } = this.props.navigation
-    const { restaurant } = this.props.navigation.state.params
+    const restaurant = this.props.navigation.getParam('restaurant')
     const { isCartEmpty, menu } = this.props
 
     const modalMessageTextStyle = []
@@ -265,6 +274,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     init: restaurant => dispatch(init(restaurant)),
+    resetRestaurant: restaurant => dispatch(resetRestaurant(restaurant)),
     addItem: item => dispatch(addItem(item)),
     setAddress: address => dispatch(setAddress(address)),
     hideAddressModal: () => dispatch(hideAddressModal()),
