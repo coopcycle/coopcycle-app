@@ -288,7 +288,7 @@ export function decrementItem(item) {
   }
 }
 
-export function removeItem(item) {
+function queueRemoveItem(item) {
 
   return {
     queue: 'UPDATE_CART',
@@ -298,10 +298,6 @@ export function removeItem(item) {
       const { cart } = getState().checkout
 
       dispatch(setCheckoutLoading(true))
-
-      // Dispatch an action to "virtually" remove the item,
-      // so that the user has a UI feedback
-      dispatch(removeItemRequest(item))
 
       httpClient
         // FIXME We should have the "@id" property
@@ -318,6 +314,17 @@ export function removeItem(item) {
         })
         .finally(next)
     },
+  }
+}
+
+export function removeItem(item) {
+
+  return (dispatch, getState) => {
+    // Dispatch an action to "virtually" remove the item,
+    // so that the user has a UI feedback
+    dispatch(removeItemRequest(item))
+
+    dispatch(queueRemoveItem(item))
   }
 }
 
@@ -351,7 +358,6 @@ function syncAddress() {
           onSetAddress(address)
         })
         .finally(next)
-
     }
   }
 }
