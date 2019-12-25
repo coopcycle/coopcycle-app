@@ -146,7 +146,8 @@ class Restaurant extends Component {
         </Content>
         { !isCartEmpty && (
         <CartFooter
-          onSubmit={ () => navigate('CheckoutSummary') }  />
+          onSubmit={ () => navigate('CheckoutSummary') }
+          testID="cartSubmit" />
         )}
         <Modal
           isVisible={ this.props.isModalVisible }

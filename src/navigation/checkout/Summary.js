@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import {
-  ActivityIndicator,
   Animated,
   Dimensions,
   FlatList,
@@ -10,10 +9,9 @@ import {
 } from 'react-native'
 import {
   Container, Content,
-  Footer,
   Right, Body,
   List, ListItem,
-  Icon, Button, Text,
+  Icon, Text,
 } from 'native-base';
 import moment from 'moment'
 import { connect } from 'react-redux'
@@ -25,6 +23,7 @@ import { formatPrice } from '../../utils/formatting'
 import i18n from '../../i18n'
 import { incrementItem, decrementItem, removeItem, validate } from '../../redux/Checkout/actions'
 import { selectDeliveryTotal } from '../../redux/Checkout/selectors'
+import CartFooter from './components/CartFooter'
 
 class Summary extends Component {
 
@@ -181,19 +180,11 @@ class Summary extends Component {
       )
     }
 
-    const btnProps = {
-      disabled: this.props.isValid !== true
-    }
-
     return (
-      <Footer>
-        <View style={{ flex: 1, alignItems: 'center', paddingHorizontal: 5, paddingVertical: 5 }}>
-          <Button block onPress={ this.onSubmit.bind(this) } testID="cartSummarySubmit" { ...btnProps }>
-            { this.props.isLoading && <ActivityIndicator size="small" color="#ffffff" /> }
-            <Text>{ this.props.t('ORDER') }</Text>
-          </Button>
-        </View>
-      </Footer>
+      <CartFooter
+        onSubmit={ this.onSubmit.bind(this) }
+        testID="cartSummarySubmit"
+        disabled={ this.props.isValid !== true } />
     )
   }
 

@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { ActivityIndicator, Animated, View } from 'react-native'
 import { Text, Button } from 'native-base'
 import { withTranslation } from 'react-i18next'
+import PropTypes from 'prop-types'
 
 import { formatPrice } from '../../../utils/formatting'
 
@@ -59,7 +60,7 @@ class CartFooterButton extends Component {
     }
 
     return (
-      <Button block onPress={ () => this.props.onPress() } testID="cartSubmit">
+      <Button block onPress={ this.props.onPress } testID={ this.props.testID } disabled={ this.props.disabled }>
         { this.renderLeft() }
         <Text>{ this.props.t('ORDER') }</Text>
         <Text style={{ position: 'absolute', right: 0, fontWeight: 'bold', fontFamily: 'OpenSans-Regular' }}>
@@ -68,6 +69,15 @@ class CartFooterButton extends Component {
       </Button>
     )
   }
+}
+
+CartFooterButton.defaultProps = {
+  disabled: false,
+}
+
+CartFooterButton.propTypes = {
+  testID: PropTypes.string.isRequired,
+  disabled: PropTypes.bool,
 }
 
 export default withTranslation()(CartFooterButton)
