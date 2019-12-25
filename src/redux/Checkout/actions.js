@@ -122,7 +122,7 @@ export function addItem(item, options = []) {
       }
 
       // When isAddressOK === null,
-      // it means we have an address, but it hasn't be validated yet
+      // it means we have an address, but it hasn't been validated yet
       if (isAddressOK === null) {
         validateAddress(httpClient, cart, address)
           // When the address is valid,
@@ -324,11 +324,37 @@ export function removeItem(item) {
 export function validate() {
 
   return (dispatch, getState) => {
-    fetchValidation(dispatch, getState)
+    setSetAddressListener(() => {
+      fetchValidation(dispatch, getState)
+    })
+    dispatch(syncAddress())
   }
 }
 
 const _setAddress = createAction(SET_ADDRESS)
+
+function syncAddress() {
+
+  return {
+    queue: 'UPDATE_CART',
+    callback: (next, dispatch, getState) => {
+
+      const { httpClient } = getState().app
+      const { address, cart } = getState().checkout
+
+      dispatch(setCheckoutLoading(true))
+
+      httpClient.put(cart['@id'], { shippingAddress: address })
+        .then(res => {
+          dispatch(updateCartSuccess(res))
+          dispatch(setCheckoutLoading(false))
+          onSetAddress(address)
+        })
+        .finally(next)
+
+    }
+  }
+}
 
 export function setAddress(address) {
 
@@ -343,22 +369,9 @@ export function setAddress(address) {
 
       validateAddress(httpClient, cart, address)
         .then(() => {
-          httpClient.put(cart['@id'], { shippingAddress: address })
-            .then(res => {
-              dispatch(updateCartSuccess(res))
-
-              dispatch(_setAddress(address))
-              dispatch(setAddressOK(true))
-
-              // Invoke listeners
-              // WARNING Must be *AFTER* actions that set address
-              onSetAddress(address)
-            })
-            .catch(e => {
-              console.log(e)
-              dispatch(hideAddressModal())
-              dispatch(setCheckoutLoading(false))
-            })
+          dispatch(_setAddress(address))
+          dispatch(setAddressOK(true))
+          dispatch(syncAddress())
         })
         .catch(() => {
           dispatch(setAddressOK(false))
@@ -378,11 +391,7 @@ export function searchRestaurantsForAddress(address, options = {}) {
 
     httpClient.get('/api/restaurants' + (queryString ? `?${queryString}` : ''))
       .then(res => {
-
         dispatch(_setAddress(address))
-        onSetAddress(address)
-        dispatch(setAddressOK(true))
-
         dispatch(loadRestaurantsSuccess(res['hydra:member']))
       })
       .catch(e => dispatch(loadRestaurantsFailure(e)))
