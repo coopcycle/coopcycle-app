@@ -104,13 +104,7 @@ class Summary extends Component {
     return (
       <View
         style={{ flex: 1, flexDirection: 'row', borderBottomColor: '#d9d9d9', borderBottomWidth: StyleSheet.hairlineWidth }}
-        key={ item.key }
-        onLayout={ () => {
-          const { width } = Dimensions.get('window')
-          this.setState({
-            translateXValue: new Animated.Value(width / 4),
-          })
-        }}>
+        key={ item.key }>
         <View style={{ flex: 3, justifyContent: 'center', paddingHorizontal: 15, paddingVertical: 15 }}>
           <Text>{ `${item.quantity} x ${item.name}` }</Text>
           { item.options.length > 0 && this._renderItemOptions(item) }
@@ -221,7 +215,12 @@ class Summary extends Component {
     }
 
     return (
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1 }} onLayout={ () => {
+          const { width } = Dimensions.get('window')
+          this.setState({
+            translateXValue: new Animated.Value(width / 4),
+          })
+        }}>
         <Content contentContainerStyle={{ justifyContent: 'space-between' }}>
           { timing.asap && (
             <TouchableOpacity style={ styles.dateBtn }
