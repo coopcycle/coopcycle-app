@@ -10,9 +10,11 @@ class DangerAlert extends Component {
       <View style={ styles.container }>
         <View style={ styles.row }>
           <Text style={ styles.text }>{ this.props.text }</Text>
-          <TouchableOpacity onPress={ () => this.props.onClose() }>
-            <Icon name="close" style={{ color: '#a94442' }} />
-          </TouchableOpacity>
+          { this.props.onClose && (
+            <TouchableOpacity onPress={ () => this.props.onClose() }>
+              <Icon name="close" style={{ color: '#a94442' }} />
+            </TouchableOpacity>
+          )}
         </View>
       </View>
     )

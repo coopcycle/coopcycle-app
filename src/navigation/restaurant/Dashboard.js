@@ -6,7 +6,7 @@ import { withTranslation } from 'react-i18next'
 import KeepAwake from 'react-native-keep-awake'
 import moment from 'moment'
 
-import DangerAlert from './components/DangerAlert'
+import DangerAlert from '../../components/DangerAlert'
 import OrderList from './components/OrderList'
 import DatePickerHeader from './components/DatePickerHeader'
 import { changeStatus, loadOrders, changeDate, deleteOpeningHoursSpecification } from '../../redux/Restaurant/actions'
