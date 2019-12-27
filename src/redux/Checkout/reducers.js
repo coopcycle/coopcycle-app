@@ -43,6 +43,7 @@ const initialState = {
   violations: [],
   isLoading: false,
   itemRequestStack: [],
+  token: null,
 }
 
 export default (state = initialState, action = {}) => {
@@ -107,6 +108,7 @@ export default (state = initialState, action = {}) => {
         restaurant: action.payload.restaurant,
         cart: action.payload.cart,
         menu: action.payload.restaurant.hasMenu,
+        token: action.payload.token,
         isAddressOK: null, // We don't know if it's valid
       }
 

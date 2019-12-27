@@ -6,9 +6,16 @@ import { withTranslation } from 'react-i18next'
 class DangerAlert extends Component {
   render() {
 
+    const rowStyle = [ styles.row ]
+    if (!this.props.onClose) {
+      rowStyle.push({
+        justifyContent: 'center'
+      })
+    }
+
     return (
       <View style={ styles.container }>
-        <View style={ styles.row }>
+        <View style={ rowStyle }>
           <Text style={ styles.text }>{ this.props.text }</Text>
           { this.props.onClose && (
             <TouchableOpacity onPress={ () => this.props.onClose() }>
@@ -38,6 +45,7 @@ const styles = StyleSheet.create({
   text: {
     color: '#a94442',
     textAlign: 'center',
+    fontSize: 14,
   },
 })
 

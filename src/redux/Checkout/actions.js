@@ -85,6 +85,17 @@ function validateAddress(httpClient, cart, address) {
   return httpClient.get(`${cart.restaurant}/can-deliver/${latitude},${longitude}`)
 }
 
+function createHttpClient(state) {
+  const { httpClient } = state.app
+  if (httpClient.model && httpClient.model.token && httpClient.model.refreshToken) {
+    return httpClient
+  }
+
+  const { token } = state.checkout
+
+  return httpClient.cloneWithModel({ token })
+}
+
 let setAddressListener = null
 
 function setSetAddressListener(cb) {
@@ -114,7 +125,6 @@ export function addItem(item, options = []) {
         // When the address is set,
         // re-dispatch the same action
         setSetAddressListener(() => {
-          dispatch(hideAddressModal())
           dispatch(addItem(item, options))
         })
         dispatch(showAddressModal())
@@ -134,6 +144,9 @@ export function addItem(item, options = []) {
           })
           .catch(() => {
             dispatch(setAddressOK(false))
+            setSetAddressListener(() => {
+              dispatch(addItem(item, options))
+            })
             dispatch(showAddressModal())
           })
 
@@ -161,8 +174,8 @@ function queueAddItem(item, options = []) {
     queue: 'ADD_ITEM',
     callback: (next, dispatch, getState) => {
 
-      const { httpClient } = getState().app
-      const { cart } = getState().checkout
+      const { cart, token } = getState().checkout
+      const httpClient = createHttpClient(getState())
 
       dispatch(setCheckoutLoading(true))
 
@@ -192,7 +205,7 @@ export function addItemWithOptions(item, options = []) {
 
 const fetchValidation = _.throttle((dispatch, getState) => {
 
-  const { httpClient } = getState().app
+  const httpClient = createHttpClient(getState())
   const { cart } = getState().checkout
 
   // No need to validate when cart is empty
@@ -231,7 +244,7 @@ function syncItem(item) {
     queue: 'UPDATE_CART',
     callback: (next, dispatch, getState) => {
 
-      const { httpClient } = getState().app
+      const httpClient = createHttpClient(getState())
       const { cart } = getState().checkout
 
       // We make sure to get item from state,
@@ -294,7 +307,7 @@ function queueRemoveItem(item) {
     queue: 'UPDATE_CART',
     callback: (next, dispatch, getState) => {
 
-      const { httpClient } = getState().app
+      const httpClient = createHttpClient(getState())
       const { cart } = getState().checkout
 
       dispatch(setCheckoutLoading(true))
@@ -346,7 +359,7 @@ function syncAddress() {
     queue: 'UPDATE_CART',
     callback: (next, dispatch, getState) => {
 
-      const { httpClient } = getState().app
+      const httpClient = createHttpClient(getState())
       const { address, cart } = getState().checkout
 
       dispatch(setCheckoutLoading(true))
@@ -355,6 +368,7 @@ function syncAddress() {
         .then(res => {
           dispatch(updateCartSuccess(res))
           dispatch(setCheckoutLoading(false))
+          dispatch(hideAddressModal())
           onSetAddress(address)
         })
         .finally(next)
@@ -381,6 +395,7 @@ export function setAddress(address) {
         })
         .catch(() => {
           dispatch(setAddressOK(false))
+          dispatch(setCheckoutLoading(false))
         })
       }
   }
@@ -433,26 +448,29 @@ export function init(restaurant) {
 
     const reqs = []
 
+    reqs.push(httpClient.post('/api/carts/session', {
+      restaurant: restaurant['@id'],
+    }))
+
     if (typeof restaurant.hasMenu === 'string') {
       reqs.push(httpClient.get(restaurant.hasMenu))
     }
 
-    reqs.push(httpClient.request('POST', '/api/carts', {
-      restaurant: restaurant['@id'],
-    }))
-
     Promise.all(reqs)
       .then(values => {
-        const createCartRes = values.length === 2 ? values[1] : values[0]
+        const session = values[0]
 
         const args = [
-          createCartRes.data,
-          createCartRes.headers['x-coopcycle-checkout-token'],
+          session.cart,
+          session.token,
         ]
 
         if (values.length === 2) {
-          const menu = values[0]
-          const restaurantWithMenu = { ...restaurant, hasMenu: menu }
+          const menu = values[1]
+          const restaurantWithMenu = {
+            ...restaurant,
+            hasMenu: menu
+          }
           args.push(restaurantWithMenu)
         }
 

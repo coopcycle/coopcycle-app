@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { ActivityIndicator, Dimensions, Image, PixelRatio, StyleSheet, View, Animated, Keyboard } from 'react-native'
+import { ActivityIndicator, Dimensions, Image, PixelRatio, StyleSheet, View } from 'react-native'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 import {
@@ -10,6 +10,8 @@ import Modal from 'react-native-modal'
 import _ from 'lodash'
 
 import CartFooter from './components/CartFooter'
+import AddressModal from './components/AddressModal'
+
 import Menu from '../../components/Menu'
 import AddressTypeahead from '../../components/AddressTypeahead'
 
@@ -19,17 +21,10 @@ class Restaurant extends Component {
 
   constructor(props) {
     super(props)
-    this.state = {
-      shouldShowBackBtn: false,
-      address: '',
-    }
-    this.keyboardHeight = new Animated.Value(0)
     this.init = _.once(this.props.init.bind(this))
   }
 
   componentDidMount() {
-    this.keyboardWillShowSub = Keyboard.addListener('keyboardWillShow', this.keyboardWillShow.bind(this))
-    this.keyboardWillHideSub = Keyboard.addListener('keyboardWillHide', this.keyboardWillHide.bind(this))
 
     const restaurant = this.props.navigation.getParam('restaurant')
 
@@ -44,68 +39,7 @@ class Restaurant extends Component {
   }
 
   componentWillUnmount() {
-    this.keyboardWillShowSub.remove()
-    this.keyboardWillHideSub.remove()
     this.didFocusListener.remove()
-  }
-
-  keyboardWillShow(event) {
-    Animated.parallel([
-      Animated.timing(this.keyboardHeight, {
-        duration: event.duration,
-        toValue: event.endCoordinates.height,
-      }),
-    ]).start();
-  }
-
-  keyboardWillHide(event) {
-    Animated.parallel([
-      Animated.timing(this.keyboardHeight, {
-        duration: event.duration,
-        toValue: 0,
-      }),
-    ]).start();
-  }
-
-  renderBackBtn() {
-
-    const shouldShowBackBtn = (this.props.isAddressOK === false) && this.state.shouldShowBackBtn
-
-    if (!shouldShowBackBtn) {
-      return (
-        <View />
-      )
-    }
-
-    const { width } = Dimensions.get('window')
-
-    return (
-      <View style={ [ styles.goBackContainer, { width } ] }>
-        <Button bordered info block
-          onPress={ () => {
-            this.props.hideAddressModal()
-            this.props.navigation.navigate('CheckoutHome', { address: this.state.address })
-          }}>
-          <Text>{ this.props.t('BACK') }</Text>
-        </Button>
-      </View>
-    )
-  }
-
-  renderLoader() {
-    if (!this.props.isLoading) {
-      return (
-        <View />
-      )
-    }
-
-    const { width } = Dimensions.get('window')
-
-    return (
-      <View style={ [ styles.goBackContainer, { width } ] }>
-        <ActivityIndicator size="small" />
-      </View>
-    )
   }
 
   render() {
@@ -115,14 +49,6 @@ class Restaurant extends Component {
     const { navigate } = this.props.navigation
     const restaurant = this.props.navigation.getParam('restaurant')
     const { isCartEmpty, menu } = this.props
-
-    const modalMessageTextStyle = []
-    if (this.props.isAddressOK === false) {
-      modalMessageTextStyle.push(styles.modalMessageTextError)
-    }
-
-    const modalMessage = this.props.isAddressOK === false ?
-      this.props.t('CHECKOUT_ADDRESS_NOT_VALID') : this.props.t('CHECKOUT_PLEASE_ENTER_ADDRESS')
 
     return (
       <Container>
@@ -147,102 +73,19 @@ class Restaurant extends Component {
         { !isCartEmpty && (
         <CartFooter
           onSubmit={ () => navigate('CheckoutSummary') }
-          testID="cartSubmit" />
+          testID="cartSubmit"
+          disabled={ this.props.isLoading } />
         )}
-        <Modal
-          isVisible={ this.props.isModalVisible }
-          style={ styles.bottomModal }
-          onSwipeComplete={ this.props.hideAddressModal }
-          onBackdropPress={ this.props.hideAddressModal }
-          swipeDirection={ ['up', 'down'] }>
-          <Animated.View style={ [ styles.modalContent, { paddingBottom: this.keyboardHeight } ] } testID="addressModal">
-            <View style={{ width, height: 44 + 44 + (44 * 3) }}>
-              <View style={{ height: 44, alignItems: 'center', justifyContent: 'center' }}>
-                <Text style={ modalMessageTextStyle }>{ modalMessage }</Text>
-              </View>
-              <View style={{ height: 44 + (44 * 3) }}>
-                <AddressTypeahead
-                  testID="addressModalTypeahead"
-                  autoFocus={ true }
-                  style={ typeaheadStyles }
-                  value={ this.props.address && this.props.address.streetAddress }
-                  onPress={ (address) => {
-                    this.props.setAddress(address)
-                    this.setState({ address })
-                  }}
-                  renderRow={ rowData => {
-                    return (
-                      <Text
-                        testID={ `placeId:${rowData.place_id}` }
-                        style={{ flex: 1, fontWeight: 'bold', fontSize: 14 }}
-                        numberOfLines={ 1 }>
-                        { rowData.description || rowData.formatted_address || rowData.name }
-                      </Text>
-                    )
-                  }}
-                  onFocus={ () => this.setState({ shouldShowBackBtn: false }) }
-                  onBlur={ () => this.setState({ shouldShowBackBtn: true }) } />
-                { this.renderBackBtn() }
-                { this.renderLoader() }
-              </View>
-            </View>
-          </Animated.View>
-        </Modal>
+        <AddressModal onGoBack={ (address) => {
+          this.props.hideAddressModal()
+          this.props.navigation.navigate('CheckoutHome', { address })
+        }} />
       </Container>
     );
   }
 }
 
-const typeaheadStyles = {
-  textInputContainer: {
-    backgroundColor: '#FFFFFF',
-  },
-  textInput: {
-    borderWidth: 1 / PixelRatio.get(),
-    borderColor: '#333333',
-  },
-}
-
 const styles = StyleSheet.create({
-  modalContent: {
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#ffffff',
-    borderRadius: 4,
-    borderColor: 'rgba(0, 0, 0, 0.1)',
-  },
-  bottomModal: {
-    justifyContent: 'flex-end',
-    margin: 0,
-  },
-  modalMessageText: {
-    color: '#CCCCCC',
-  },
-  modalMessageTextError: {
-    color: '#E74C3C',
-  },
-  typeaheadContainer: {
-    marginTop: 15,
-  },
-  typeaheadIconContainer: {
-    position: 'absolute',
-    right: 0,
-    height: 44,
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 15,
-    marginRight: 8,
-  },
-  goBackContainer: {
-    flex: 1,
-    alignItems: 'center',
-    position: 'absolute',
-    top: '40%',
-    left: 0,
-    paddingHorizontal: 15,
-  },
   heading: {
     flex: 1,
     flexDirection: 'row',
@@ -265,8 +108,6 @@ function mapStateToProps(state) {
     date: state.checkout.date,
     menu: state.checkout.menu,
     address: state.checkout.address,
-    isAddressOK: state.checkout.isAddressOK,
-    isModalVisible: state.checkout.isAddressModalVisible,
     isLoading: state.checkout.isLoading,
     loadingItems: state.checkout.itemRequestStack,
   }

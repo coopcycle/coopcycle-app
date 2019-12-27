@@ -3,6 +3,7 @@ import {
   Animated,
   Dimensions,
   FlatList,
+  Keyboard,
   StyleSheet,
   TouchableOpacity,
   View,
@@ -21,9 +22,10 @@ import _ from 'lodash'
 import DangerAlert from '../../components/DangerAlert'
 import { formatPrice } from '../../utils/formatting'
 import i18n from '../../i18n'
-import { incrementItem, decrementItem, removeItem, validate } from '../../redux/Checkout/actions'
+import { incrementItem, decrementItem, removeItem, validate, showAddressModal, hideAddressModal } from '../../redux/Checkout/actions'
 import { selectDeliveryTotal } from '../../redux/Checkout/selectors'
 import CartFooter from './components/CartFooter'
+import AddressModal from './components/AddressModal'
 
 class Summary extends Component {
 
@@ -33,13 +35,12 @@ class Summary extends Component {
     this.state = {
       translateXValue: new Animated.Value(0),
     }
+
+    this.validate = _.once(this.props.validate.bind(this))
   }
 
   componentDidMount() {
-    this.didFocusListener = this.props.navigation.addListener(
-      'didFocus',
-      payload => this.props.validate()
-    )
+    this.didFocusListener = this.props.navigation.addListener('didFocus', this.validate)
   }
 
   componentWillUnmount() {
@@ -184,7 +185,7 @@ class Summary extends Component {
       <CartFooter
         onSubmit={ this.onSubmit.bind(this) }
         testID="cartSummarySubmit"
-        disabled={ this.props.isValid !== true } />
+        disabled={ this.props.isValid !== true || this.props.isLoading } />
     )
   }
 
@@ -219,26 +220,37 @@ class Summary extends Component {
           { false === this.props.isValid && (
             <DangerAlert text={ this.props.alertMessage } />
           )}
-          { timing.asap && (
-            <TouchableOpacity style={ styles.dateBtn }
-              onPress={ () => this._navigate('CheckoutShippingDate') }>
-              <Text>{ this.props.timeAsText }</Text>
-              <Text note>{ this.props.t('EDIT') }</Text>
-            </TouchableOpacity>
-          )}
           { this.renderItems() }
         </Content>
+        <View style={{ flex: 0, backgroundColor: '#ecf0f1' }}>
+          <TouchableOpacity style={ styles.dateBtn }
+            onPress={ () => this._navigate('CheckoutShippingDate') }>
+            <Icon type="FontAwesome" name="clock-o" style={{ fontSize: 22, marginRight: 15 }} />
+            <Text style={{ flex: 2, fontSize: 14 }}>{ this.props.timeAsText }</Text>
+            <Text note style={{ flex: 1, textAlign: 'right' }}>{ this.props.t('EDIT') }</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={ [ styles.dateBtn, { flexShrink: 1 } ] }
+            onPress={ () => this.props.showAddressModal() }>
+            <Icon type="FontAwesome" name="map-marker" style={{ fontSize: 22, marginRight: 15 }} />
+            <Text numberOfLines={ 2 } ellipsizeMode="tail" style={{ flex: 2, fontSize: 14 }}>{ this.props.cart.shippingAddress.streetAddress }</Text>
+            <Text note style={{ flex: 1, textAlign: 'right' }}>{ this.props.t('EDIT') }</Text>
+          </TouchableOpacity>
+        </View>
         <View style={{ flex: 0, backgroundColor: '#e4022d' }}>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 5, paddingVertical: 5 }}>
+          <View style={ styles.line }>
             <Text style={{ color: '#ffffff' }}>{ this.props.t('TOTAL_ITEMS') }</Text>
             <Text style={{ color: '#ffffff', fontWeight: 'bold' }}>{ `${formatPrice(cart.itemsTotal)} €` }</Text>
           </View>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 5, paddingVertical: 5 }}>
+          <View style={ styles.line }>
             <Text style={{ color: '#ffffff' }}>{ this.props.t('TOTAL_DELIVERY') }</Text>
             <Text style={{ color: '#ffffff', fontWeight: 'bold' }}>{ `${formatPrice(this.props.deliveryTotal)} €` }</Text>
           </View>
         </View>
         { this.renderFooter() }
+        <AddressModal onGoBack={ () => {
+          this.props.hideAddressModal()
+          this.props.navigation.navigate('CheckoutSummary')
+        }} />
       </View>
     );
   }
@@ -246,14 +258,20 @@ class Summary extends Component {
 
 const styles = StyleSheet.create({
   dateBtn: {
-    flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    padding: 15,
-    marginHorizontal: 10,
-    marginVertical: 15,
-    borderColor: '#d7d7d7',
-    borderWidth: StyleSheet.hairlineWidth,
+    alignItems: 'center',
+    padding: 10,
+    borderTopColor: '#d7d7d7',
+    borderTopWidth: StyleSheet.hairlineWidth,
+  },
+  line: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingLeft: 5,
+    paddingRight: 20,
+    paddingVertical: 5
   },
   emptyContent: {
     flex: 1,
@@ -264,7 +282,7 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state, ownProps) {
 
-  let timeAsText
+  let timeAsText = i18n.t('LOADING')
   if (state.checkout.timing.today && state.checkout.timing.fast) {
     timeAsText = i18n.t('CART_DELIVERY_TIME_DIFF', { diff: state.checkout.timing.diff })
   } else {
@@ -294,6 +312,8 @@ function mapDispatchToProps(dispatch) {
     decrementItem: item => dispatch(decrementItem(item)),
     removeItem: item => dispatch(removeItem(item)),
     validate: () => dispatch(validate()),
+    showAddressModal: () => dispatch(showAddressModal()),
+    hideAddressModal: () => dispatch(hideAddressModal()),
   }
 }
 

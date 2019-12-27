@@ -163,6 +163,10 @@ Client.prototype.delete = function(uri) {
 Client.prototype.refreshToken = function() {
 
   return new Promise((resolve, reject) => {
+    if (!this.model.refreshToken) {
+      return reject('No refresh token')
+    }
+
     refreshToken(this.httpBaseURL, this.model.refreshToken)
       .then(credentials => {
 
@@ -277,6 +281,10 @@ Client.prototype.setNewPassword = function(token, password) {
         }
       })
   }).then(updateUserData(this.model))
+}
+
+Client.prototype.cloneWithModel = function(model) {
+  return new Client(this.getBaseURL(), model)
 }
 
 let updateUserData = model => {

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { ActivityIndicator, Animated, View } from 'react-native'
-import { Text, Button } from 'native-base'
+import { Text, Button, Left } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import PropTypes from 'prop-types'
 
@@ -25,11 +25,11 @@ class CartFooterButton extends Component {
     Animated.sequence([
       Animated.timing(this.state.opacityAnim, {
         toValue: 0.4,
-        duration: 300,
+        duration: 500,
       }),
       Animated.timing(this.state.opacityAnim, {
         toValue: 1,
-        duration: 200,
+        duration: 250,
       }),
     ]).start()
   }
@@ -37,7 +37,7 @@ class CartFooterButton extends Component {
   renderLeft() {
     if (this.props.loading) {
       return (
-        <ActivityIndicator size="small" color="#ffffff" />
+        <ActivityIndicator size="small" color="#ffffff" style={{ position: 'absolute', left: 15 }} />
       )
     }
 
@@ -45,6 +45,17 @@ class CartFooterButton extends Component {
       <Text style={{ position: 'absolute', left: 0, fontWeight: 'bold', fontFamily: 'OpenSans-Regular' }}>
         { `[${this.props.cart.items.length}]` }
       </Text>
+    )
+  }
+
+  renderRight() {
+
+    return (
+      <Animated.View style={{ position: 'absolute', right: 0, opacity: this.state.opacityAnim }}>
+        <Text style={{ fontWeight: 'bold', fontFamily: 'OpenSans-Regular' }}>
+          { `${formatPrice(this.props.cart.total)} €` }
+        </Text>
+      </Animated.View>
     )
   }
 
@@ -63,9 +74,7 @@ class CartFooterButton extends Component {
       <Button block onPress={ this.props.onPress } testID={ this.props.testID } disabled={ this.props.disabled }>
         { this.renderLeft() }
         <Text>{ this.props.t('ORDER') }</Text>
-        <Text style={{ position: 'absolute', right: 0, fontWeight: 'bold', fontFamily: 'OpenSans-Regular' }}>
-          { `${formatPrice(cart.total)} €` }
-        </Text>
+        { this.renderRight() }
       </Button>
     )
   }
