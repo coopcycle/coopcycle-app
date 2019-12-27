@@ -96,7 +96,7 @@ Client.prototype.createRequest = function(method, url, data) {
   return req
 }
 
-Client.prototype.createAuthorizedRequest = function(method, url, data) {
+Client.prototype.createAuthorizedRequest = function(method, url, data, options = {}) {
 
   let headers = {
     'Content-Type': 'application/ld+json',
@@ -104,6 +104,13 @@ Client.prototype.createAuthorizedRequest = function(method, url, data) {
 
   if (this.model.token) {
     headers['Authorization'] = `Bearer ${this.model.token}`
+  }
+
+  if (options.headers) {
+    headers = {
+      ...headers,
+      ...options.headers,
+    }
   }
 
   let req = {
@@ -127,9 +134,9 @@ Client.prototype.createAuthorizedRequest = function(method, url, data) {
   return req
 }
 
-Client.prototype.request = function(method, uri, data) {
+Client.prototype.request = function(method, uri, data, options = {}) {
   console.log(method + ' ' + uri);
-  const req = this.model ? this.createAuthorizedRequest(method, uri, data) : this.createRequest(method, uri, data);
+  const req = this.model ? this.createAuthorizedRequest(method, uri, data, options) : this.createRequest(method, uri, data, options);
 
   return new Promise((resolve, reject) => {
     this.axios.request(req)
@@ -152,8 +159,8 @@ Client.prototype.post = function(uri, data) {
   return this.request('POST', uri, data).then(response => response.data);
 }
 
-Client.prototype.put = function(uri, data) {
-  return this.request('PUT', uri, data).then(response => response.data);
+Client.prototype.put = function(uri, data, options = {}) {
+  return this.request('PUT', uri, data, options).then(response => response.data);
 }
 
 Client.prototype.delete = function(uri) {
