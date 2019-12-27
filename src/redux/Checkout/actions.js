@@ -124,9 +124,7 @@ export function addItem(item, options = []) {
       if (!address) {
         // When the address is set,
         // re-dispatch the same action
-        setSetAddressListener(() => {
-          dispatch(addItem(item, options))
-        })
+        setSetAddressListener(() => dispatch(addItem(item, options)))
         dispatch(showAddressModal())
         return
       }
@@ -134,19 +132,27 @@ export function addItem(item, options = []) {
       // When isAddressOK === null,
       // it means we have an address, but it hasn't been validated yet
       if (isAddressOK === null) {
+
+        dispatch(addItemRequest(item))
+
         validateAddress(httpClient, cart, address)
           // When the address is valid,
           // re-dispatch the same action
           .then(() => {
             dispatch(_setAddress(address))
             dispatch(setAddressOK(true))
-            dispatch(addItem(item, options))
+
+            setSetAddressListener(() => {
+              dispatch(addItemRequestFinished(item))
+              dispatch(addItem(item, options))
+            })
+            dispatch(syncAddress())
           })
           .catch(() => {
             dispatch(setAddressOK(false))
-            setSetAddressListener(() => {
-              dispatch(addItem(item, options))
-            })
+            dispatch(addItemRequestFinished(item))
+
+            setSetAddressListener(() => dispatch(addItem(item, options)))
             dispatch(showAddressModal())
           })
 
@@ -524,5 +530,36 @@ export function checkout(number, expMonth, expYear, cvc) {
     })
     .catch(err => console.log(err));
 
+  }
+}
+
+export function assignCustomer() {
+
+  return (dispatch, getState) => {
+
+    const { cart, token } = getState().checkout
+
+    if (cart.customer) {
+      return
+    }
+
+    const httpClient = createHttpClient(getState())
+
+    dispatch(checkoutRequest())
+
+    httpClient
+      .put(cart['@id'] + '/assign', {}, {
+        headers: {
+          'X-CoopCycle-Session': `Bearer ${token}`
+        }
+      })
+      .then(res => {
+        console.log(res)
+        dispatch(checkoutSuccess())
+      })
+      .catch(e => {
+        console.log(e)
+        dispatch(checkoutSuccess())
+      })
   }
 }

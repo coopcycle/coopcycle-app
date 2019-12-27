@@ -14,7 +14,7 @@ import { LiteCreditCardInput } from 'react-native-credit-card-input'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 
-import { checkout } from '../../redux/Checkout/actions'
+import { checkout, assignCustomer } from '../../redux/Checkout/actions'
 import { formatPrice } from '../../utils/formatting'
 
 class CreditCard extends Component {
@@ -33,6 +33,8 @@ class CreditCard extends Component {
   componentDidMount() {
     this.keyboardWillShowSub = Keyboard.addListener('keyboardWillShow', this.keyboardWillShow.bind(this))
     this.keyboardWillHideSub = Keyboard.addListener('keyboardWillHide', this.keyboardWillHide.bind(this))
+    this.props.assignCustomer()
+
   }
 
   componentWillUnmount() {
@@ -167,6 +169,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     checkout: (number, expMonth, expYear, cvc) => dispatch(checkout(number, expMonth, expYear, cvc)),
+    assignCustomer: () => dispatch(assignCustomer()),
   }
 }
 
