@@ -1,17 +1,15 @@
 import React, { Component } from 'react'
-import { ActivityIndicator, Dimensions, Image, PixelRatio, StyleSheet, View, Animated, Keyboard } from 'react-native'
+import { ActivityIndicator, Dimensions, PixelRatio, StyleSheet, View, Animated, Keyboard } from 'react-native'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 import {
-  Container, Content,
   Text, Button,
-} from 'native-base';
+} from 'native-base'
 import Modal from 'react-native-modal'
-import _ from 'lodash'
 
 import AddressTypeahead from '../../../components/AddressTypeahead'
 
-import { hideAddressModal, resetRestaurant, setAddress } from '../../../redux/Checkout/actions'
+import { hideAddressModal, setAddress } from '../../../redux/Checkout/actions'
 
 class AddressModal extends Component {
 
@@ -92,7 +90,7 @@ class AddressModal extends Component {
 
   render() {
 
-    const { height, width } = Dimensions.get('window')
+    const { width } = Dimensions.get('window')
 
     const modalMessageTextStyle = []
     if (this.props.isAddressOK === false) {

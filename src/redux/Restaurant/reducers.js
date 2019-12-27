@@ -144,7 +144,7 @@ export default (state = initialState, action = {}) => {
         isFetching: true,
         products: spliceProducts(state, {
           ...action.payload.product,
-          enabled: action.payload.enabled
+          enabled: action.payload.enabled,
         }),
       }
 
@@ -155,7 +155,7 @@ export default (state = initialState, action = {}) => {
         isFetching: false,
         products: spliceProducts(state, {
           ...action.payload.product,
-          enabled: action.payload.enabled
+          enabled: action.payload.enabled,
         }),
       }
 

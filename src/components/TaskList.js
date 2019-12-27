@@ -12,7 +12,7 @@ import { greenColor, lightGreyColor, redColor } from '../styles/common'
 import {
   doneIconName,
   failedIconName,
-  taskTypeIconName
+  taskTypeIconName,
 } from '../navigation/task/styles/common'
 
 const styles = StyleSheet.create({

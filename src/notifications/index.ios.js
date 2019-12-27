@@ -35,7 +35,7 @@ class PushNotification {
       PushNotificationIOS
         .getInitialNotification()
         .then(notification => {
-          if (null !== notification) {
+          if (notification !== null) {
             notification.finish(PushNotificationIOS.FetchResult.NoData)
             options.onNotification(parseNotification(notification, false))
           }

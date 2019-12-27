@@ -3,7 +3,6 @@ import {
   Animated,
   Dimensions,
   FlatList,
-  Keyboard,
   StyleSheet,
   TouchableOpacity,
   View,
@@ -202,7 +201,7 @@ class Summary extends Component {
 
   render() {
 
-    const { cart, timing } = this.props
+    const { cart } = this.props
 
     if (cart.items.length === 0) {
 
@@ -217,7 +216,7 @@ class Summary extends Component {
           })
         }}>
         <Content contentContainerStyle={{ justifyContent: 'space-between' }}>
-          { false === this.props.isValid && (
+          { this.props.isValid === false && (
             <DangerAlert text={ this.props.alertMessage } />
           )}
           { this.renderItems() }
@@ -271,7 +270,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingLeft: 5,
     paddingRight: 20,
-    paddingVertical: 5
+    paddingVertical: 5,
   },
   emptyContent: {
     flex: 1,

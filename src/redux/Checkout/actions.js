@@ -174,7 +174,7 @@ function queueAddItem(item, options = []) {
     queue: 'ADD_ITEM',
     callback: (next, dispatch, getState) => {
 
-      const { cart, token } = getState().checkout
+      const { cart } = getState().checkout
       const httpClient = createHttpClient(getState())
 
       dispatch(setCheckoutLoading(true))
@@ -372,7 +372,7 @@ function syncAddress() {
           onSetAddress(address)
         })
         .finally(next)
-    }
+    },
   }
 }
 
@@ -469,7 +469,7 @@ export function init(restaurant) {
           const menu = values[1]
           const restaurantWithMenu = {
             ...restaurant,
-            hasMenu: menu
+            hasMenu: menu,
           }
           args.push(restaurantWithMenu)
         }

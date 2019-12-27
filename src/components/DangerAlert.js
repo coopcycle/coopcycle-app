@@ -9,7 +9,7 @@ class DangerAlert extends Component {
     const rowStyle = [ styles.row ]
     if (!this.props.onClose) {
       rowStyle.push({
-        justifyContent: 'center'
+        justifyContent: 'center',
       })
     }
 

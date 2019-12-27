@@ -1,7 +1,7 @@
 import {
     ADD_TASK_FILTER,
     CLEAR_TASK_FILTER,
-    SET_SIGNATURE_SCREEN_FIRST
+    SET_SIGNATURE_SCREEN_FIRST,
 } from '../../Courier/taskActions'
 import { selectTaskFilters, selectSignatureScreenFirst } from '../../Courier/taskSelectors'
 import Preferences from '../../../Preferences'

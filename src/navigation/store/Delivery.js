@@ -48,7 +48,7 @@ class NewDelivery extends Component {
       })
     }
 
-    if (!!delivery.dropoff.address.telephone) {
+    if (delivery.dropoff.address.telephone) {
       recipientItems.push({
         icon: 'phone',
         text: parsePhoneNumberFromString(delivery.dropoff.address.telephone).formatNational(),

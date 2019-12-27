@@ -1,19 +1,17 @@
 import React, { Component } from 'react'
-import { ActivityIndicator, Dimensions, Image, PixelRatio, StyleSheet, View } from 'react-native'
+import { Dimensions, Image, StyleSheet, View } from 'react-native'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 import {
   Container, Content,
-  Text, Button,
+  Text,
 } from 'native-base';
-import Modal from 'react-native-modal'
 import _ from 'lodash'
 
 import CartFooter from './components/CartFooter'
 import AddressModal from './components/AddressModal'
 
 import Menu from '../../components/Menu'
-import AddressTypeahead from '../../components/AddressTypeahead'
 
 import { init, addItem, hideAddressModal, resetRestaurant, setAddress } from '../../redux/Checkout/actions'
 

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { ActivityIndicator, Animated, View } from 'react-native'
-import { Text, Button, Left } from 'native-base'
+import { Text, Button } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import PropTypes from 'prop-types'
 
