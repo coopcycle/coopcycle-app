@@ -92,7 +92,9 @@ class AddressModal extends Component {
 
     const { width } = Dimensions.get('window')
 
-    const modalMessageTextStyle = []
+    const modalMessageTextStyle = [
+      styles.modalMessageText
+    ]
     if (this.props.isAddressOK === false) {
       modalMessageTextStyle.push(styles.modalMessageTextError)
     }
@@ -171,7 +173,6 @@ const styles = StyleSheet.create({
     margin: 0,
   },
   modalMessageText: {
-    color: '#CCCCCC',
     fontSize: 14,
   },
   modalMessageTextError: {

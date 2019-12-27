@@ -96,17 +96,23 @@ function createHttpClient(state) {
   return httpClient.cloneWithModel({ token })
 }
 
-let setAddressListener = null
+let addressListeners = []
 
-function setSetAddressListener(cb) {
-  setAddressListener = cb
+function replaceSetAddressListeners(cb) {
+  addressListeners = [ cb ]
+}
+
+function addSetAddressListener(cb) {
+  addressListeners.push(cb)
 }
 
 function onSetAddress(address) {
-  if (setAddressListener && typeof setAddressListener === 'function') {
-    setAddressListener(address)
-  }
-  setAddressListener = null
+  addressListeners.forEach(cb => {
+    if (typeof cb === 'function') {
+      cb(address)
+    }
+  })
+  addressListeners = []
 }
 
 // This action may be dispatched several times "recursively"
@@ -124,7 +130,7 @@ export function addItem(item, options = []) {
       if (!address) {
         // When the address is set,
         // re-dispatch the same action
-        setSetAddressListener(() => dispatch(addItem(item, options)))
+        replaceSetAddressListeners(() => dispatch(addItem(item, options)))
         dispatch(showAddressModal())
         return
       }
@@ -142,7 +148,7 @@ export function addItem(item, options = []) {
             dispatch(_setAddress(address))
             dispatch(setAddressOK(true))
 
-            setSetAddressListener(() => {
+            addSetAddressListener(() => {
               dispatch(addItemRequestFinished(item))
               dispatch(addItem(item, options))
             })
@@ -152,7 +158,7 @@ export function addItem(item, options = []) {
             dispatch(setAddressOK(false))
             dispatch(addItemRequestFinished(item))
 
-            setSetAddressListener(() => dispatch(addItem(item, options)))
+            replaceSetAddressListeners(() => dispatch(addItem(item, options)))
             dispatch(showAddressModal())
           })
 
@@ -350,7 +356,7 @@ export function removeItem(item) {
 export function validate() {
 
   return (dispatch, getState) => {
-    setSetAddressListener(() => {
+    replaceSetAddressListeners(() => {
       fetchValidation(dispatch, getState)
     })
     dispatch(syncAddress())
@@ -554,12 +560,9 @@ export function assignCustomer() {
         }
       })
       .then(res => {
-        console.log(res)
+        dispatch(updateCartSuccess(res))
         dispatch(checkoutSuccess())
       })
-      .catch(e => {
-        console.log(e)
-        dispatch(checkoutSuccess())
-      })
+      .catch(e => dispatch(checkoutFailure(e)))
   }
 }

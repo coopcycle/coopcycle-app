@@ -110,6 +110,7 @@ export default (state = initialState, action = {}) => {
         menu: action.payload.restaurant.hasMenu,
         token: action.payload.token,
         isAddressOK: null, // We don't know if it's valid
+        itemRequestStack: [],
       }
 
     case CLEAR:
@@ -118,6 +119,7 @@ export default (state = initialState, action = {}) => {
         cart: null,
         address: null,
         date: null,
+        itemRequestStack: [],
       }
 
     case REMOVE_ITEM:
