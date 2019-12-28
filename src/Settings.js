@@ -81,10 +81,27 @@ class Settings {
 
       return client.get('/api/settings')
         .then(settings => {
+          AsyncStorage.setItem('@Settings', JSON.stringify(settings))
           serverSettings = Object.assign(defaultSettings, settings)
           resolve(serverSettings)
         })
-        .catch(e => reject(e))
+        .catch(e => {
+          try {
+            AsyncStorage
+              .getItem('@Settings')
+              .then((data, error) => {
+                if (error || !data) {
+                  return reject(e)
+                }
+
+                const settings = JSON.parse(data)
+                serverSettings = settings
+                resolve(settings)
+              })
+          } catch (e) {
+            reject(e)
+          }
+        })
     })
   }
 

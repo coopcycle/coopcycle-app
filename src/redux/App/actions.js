@@ -73,7 +73,6 @@ const resetPasswordRequestSuccess = createAction(RESET_PASSWORD_REQUEST_SUCCESS)
 const resetPasswordRequestFailure = createAction(RESET_PASSWORD_REQUEST_FAILURE)
 
 export const logoutSuccess = createAction(LOGOUT_SUCCESS)
-export const authenticate = createAction(AUTHENTICATE)
 export const setServers = createAction(SET_SERVERS)
 export const thermalPrinterConnected = createAction(THERMAL_PRINTER_CONNECTED)
 export const setThermalPrinterDeviceId = createAction(THERMAL_PRINTER_DEVICE_ID)
@@ -95,6 +94,16 @@ const _loadMyStoresSuccess = createAction(LOAD_MY_STORES_SUCCESS)
 const loadMyRestaurantsRequest = createAction(LOAD_MY_RESTAURANTS_REQUEST)
 const loadMyRestaurantsSuccess = createAction(LOAD_MY_RESTAURANTS_SUCCESS)
 const loadMyRestaurantsFailure = createAction(LOAD_MY_RESTAURANTS_FAILURE)
+
+const _authenticate = createAction(AUTHENTICATE)
+
+function authenticate(username) {
+
+  return function (dispatch, getState) {
+    dispatch(_authenticate(username))
+    NavigationHolder.navigate('AccountAuthenticated')
+  }
+}
 
 function navigateToHome(dispatch, getState) {
 
@@ -213,28 +222,10 @@ export function bootstrap(baseURL, user) {
 
     // Navigate to screen depending on user state
     if (user.isAuthenticated()) {
-      httpClient.checkToken()
-        .then(() => {
-          dispatch(authenticate(user.username))
-          NavigationHolder.navigate('AccountAuthenticated')
-          navigateToHome(dispatch, getState)
-        })
-        .catch(e => {
-          httpClient.refreshToken()
-            .then(token => {
-              dispatch(authenticate(user.username))
-              NavigationHolder.navigate('AccountAuthenticated')
-              navigateToHome(dispatch, getState)
-            })
-            .catch(e => {
-              user
-                .logout()
-                .then(() => navigateToHome(dispatch, getState))
-            })
-        })
-    } else {
-      navigateToHome(dispatch, getState)
+      dispatch(authenticate(user.username))
     }
+
+    setTimeout(() => navigateToHome(dispatch, getState), 0)
   }
 }
 

@@ -148,7 +148,7 @@ export default (state = initialState, action = {}) => {
         },
       }
 
-  case RESET_PASSWORD_REQUEST:
+    case RESET_PASSWORD_REQUEST:
       return {
         ...state,
         loading: true,
