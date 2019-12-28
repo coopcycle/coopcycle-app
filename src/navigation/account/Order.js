@@ -88,7 +88,7 @@ class OrderTrackingPage extends Component {
               { order.restaurant.name }
             </Text>
           </TouchableOpacity>
-          <OrderItems order={ order } />
+          <OrderItems order={ order } withDeliveryTotal={ true } />
         </Content>
       </Container>
     );
