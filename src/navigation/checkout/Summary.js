@@ -99,7 +99,7 @@ class Summary extends Component {
 
     return (
       <FlatList
-        data={ this.props.items }
+        data={ this.props.cart.items }
         keyExtractor={ (item, index) => `item:${index}` }
         renderItem={ ({ item, index }) => this.renderItem(item, index) }
         extraData={{ edit: this.props.edit }} />
@@ -295,7 +295,6 @@ function mapStateToProps(state, ownProps) {
     date: state.checkout.date,
     timing: state.checkout.timing,
     edit: ownProps.navigation.getParam('edit', false),
-    items: state.checkout.cart ? state.checkout.cart.items : [],
     isAuthenticated: state.app.isAuthenticated,
     deliveryTotal: selectDeliveryTotal(state),
     timeAsText,
