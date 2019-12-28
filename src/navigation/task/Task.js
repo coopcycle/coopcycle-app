@@ -16,13 +16,10 @@ import { selectTasks } from '../../redux/Courier'
 import {
   doneIconName,
   failedIconName,
-  markerBackgroundStyle, markerContainer,
-  markerIconStyle, taskTypeIconName,
 } from './styles/common'
+import TaskMarker from '../../components/TaskMarker'
 
 const isCompleted = task => task.status !== 'TODO'
-
-const markerIconName = task => taskTypeIconName(task)
 
 class Task extends Component {
 
@@ -313,10 +310,7 @@ class Task extends Component {
           key={ task['@id'] }
           coordinate={ task.address.geo }
           flat={ true }>
-          <View style={ markerContainer }>
-            <View style={ markerBackgroundStyle(task) } />
-            <Icon type="FontAwesome" name={ markerIconName(task) } style={ markerIconStyle(task) } />
-          </View>
+          <TaskMarker task={ task } />
         </MapView.Marker>
       </MapView>
     )

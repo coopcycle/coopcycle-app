@@ -18,15 +18,12 @@ import {
   whiteColor,
 } from '../styles/common'
 import {uniq} from 'lodash'
-import {Icon} from 'native-base'
 import {
   doneIconName,
   failedIconName,
-  markerBackgroundStyle,
-  markerContainer,
-  markerIconStyle,
   taskTypeIconName,
 } from '../navigation/task/styles/common'
+import TaskMarker from './TaskMarker'
 
 const clusterContainerSize = 40
 
@@ -208,10 +205,7 @@ class TasksMapView extends Component {
         coordinate={ task.address.geo }
         flat={ true }
         ref={ this.markers.get(task['@id']) }>
-        <View style={ markerContainer }>
-          <View style={ markerBackgroundStyle(task) } />
-          <Icon type="FontAwesome" name={ markerIconName(task) } style={ markerIconStyle(task) } />
-        </View>
+        <TaskMarker task={ task } type="status" />
         <Callout onPress={ () => this.onCalloutPress(task) }
           style={ [ styles.markerCallout, { width: Math.floor(width * 0.6666) } ] }>
           { task.address.name ? (<Text style={ styles.markerCalloutText }>{ task.address.name }</Text>) : null }
