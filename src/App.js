@@ -7,6 +7,7 @@ import coopcycleTheme from '../native-base-theme/variables/coopcycle'
 import { createSwitchNavigator, createAppContainer } from 'react-navigation'
 import { Provider } from 'react-redux'
 import { I18nextProvider } from 'react-i18next'
+import { NetworkProvider } from 'react-native-offline'
 
 import navigation from './navigation'
 import navigators from './navigation/navigators'
@@ -83,21 +84,23 @@ class App extends Component {
   render() {
 
     return (
-      <Provider store={ store }>
-        <I18nextProvider i18n={ i18n }>
-          <StyleProvider style={ getTheme(coopcycleTheme) }>
-            <Root>
-              <Spinner />
-              <RootNavigator
-                uriPrefix={ prefix }
-                ref={ ref => { NavigationHolder.setTopLevelNavigator(ref) } }
-                onNavigationStateChange={ onNavigationStateChange } />
-              <DropdownAlert ref={ ref => { DropdownHolder.setDropdown(ref) } } />
-              <NotificationHandler />
-            </Root>
-          </StyleProvider>
-        </I18nextProvider>
-      </Provider>
+      <NetworkProvider>
+        <Provider store={ store }>
+          <I18nextProvider i18n={ i18n }>
+            <StyleProvider style={ getTheme(coopcycleTheme) }>
+              <Root>
+                <Spinner />
+                <RootNavigator
+                  uriPrefix={ prefix }
+                  ref={ ref => { NavigationHolder.setTopLevelNavigator(ref) } }
+                  onNavigationStateChange={ onNavigationStateChange } />
+                <DropdownAlert ref={ ref => { DropdownHolder.setDropdown(ref) } } />
+                <NotificationHandler />
+              </Root>
+            </StyleProvider>
+          </I18nextProvider>
+        </Provider>
+      </NetworkProvider>
     )
   }
 
