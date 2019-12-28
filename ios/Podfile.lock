@@ -127,13 +127,13 @@ PODS:
     - React
     - react-native-ble-plx-swift
   - react-native-ble-plx-swift (1.1.0)
-  - react-native-camera (3.13.1):
+  - react-native-camera (3.15.0):
     - React
-    - react-native-camera/RCT (= 3.13.1)
-    - react-native-camera/RN (= 3.13.1)
-  - react-native-camera/RCT (3.13.1):
+    - react-native-camera/RCT (= 3.15.0)
+    - react-native-camera/RN (= 3.15.0)
+  - react-native-camera/RCT (3.15.0):
     - React
-  - react-native-camera/RN (3.13.1):
+  - react-native-camera/RN (3.15.0):
     - React
   - react-native-keep-awake (4.0.0):
     - React
@@ -164,7 +164,7 @@ PODS:
     - React-Core (= 0.60.5)
   - rn-fetch-blob (0.11.2):
     - React-Core
-  - RNCAsyncStorage (1.6.3):
+  - RNCAsyncStorage (1.7.1):
     - React
   - RNCPushNotificationIOS (1.0.2):
     - React
@@ -364,7 +364,7 @@ SPEC CHECKSUMS:
   React-jsinspector: e08662d1bf5b129a3d556eb9ea343a3f40353ae4
   react-native-ble-plx: 05e16667ebf56cf802986379fd58a377847885e8
   react-native-ble-plx-swift: e0d041529bd7ae66eb9731123eca3df3d132e8ec
-  react-native-camera: 1df7f9a047591bbc2c9a7ec80bd6412d3c19579f
+  react-native-camera: 52114c432860b89986c9ee4919d00a48a6ba7abb
   react-native-keep-awake: afad8a51dfef9fe9655a6344771be32c8596d774
   react-native-maps: 6e499eee4eabf422ba8b6f94e993cc768bf35153
   React-RCTActionSheet: b0f1ea83f4bf75fb966eae9bfc47b78c8d3efd90
@@ -378,7 +378,7 @@ SPEC CHECKSUMS:
   React-RCTVibration: 2105b2e0e2b66a6408fc69a46c8a7fb5b2fdade0
   React-RCTWebSocket: cd932a16b7214898b6b7f788c8bddb3637246ac4
   rn-fetch-blob: f525a73a78df9ed5d35e67ea65e79d53c15255bc
-  RNCAsyncStorage: 3c304d1adfaea02ec732ac218801cb13897aa8c0
+  RNCAsyncStorage: 44395cb9c7c1523104c2b499eb426ef7aff82bca
   RNCPushNotificationIOS: 0b8d06ff190d84627dd17501bfb96652375970e4
   RNDateTimePicker: 9db00606d689f5653f08aa601c81b9d3266a0a19
   RNFirebase: ac0de8b24c6f91ae9459575491ed6a77327619c6
