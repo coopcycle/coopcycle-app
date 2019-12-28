@@ -1,4 +1,4 @@
-import { getChoicesWithDates, humanizeTaskTime } from '../time-slots'
+import { getChoicesWithDates } from '../time-slots'
 import moment from 'moment'
 
 moment.locale('fr')

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Dimensions, FlatList, StyleSheet, TouchableOpacity, TouchableHighlight, View } from 'react-native'
+import { StyleSheet, TouchableOpacity, TouchableHighlight, View } from 'react-native'
 import { Icon, Text } from 'native-base'
 import { Col, Row, Grid } from 'react-native-easy-grid'
 import { SwipeListView, SwipeRow } from 'react-native-swipe-list-view'
@@ -102,8 +102,6 @@ class TaskList extends Component {
   }
 
   renderItem(task) {
-
-    const { width } = Dimensions.get('window')
 
     const taskTypeIcon = taskTypeIconName(task)
     const isCompleted = _.includes(['DONE', 'FAILED'], task.status)

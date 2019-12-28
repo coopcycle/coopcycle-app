@@ -18,11 +18,6 @@ import {
   whiteColor,
 } from '../styles/common'
 import {uniq} from 'lodash'
-import {
-  doneIconName,
-  failedIconName,
-  taskTypeIconName,
-} from '../navigation/task/styles/common'
 import TaskMarker from './TaskMarker'
 
 const clusterContainerSize = 40
@@ -96,17 +91,6 @@ const addressName = task => {
   const customerName = task.address.firstName ? [ task.address.firstName, task.address.lastName ].join(' ') : null
 
   return task.address.name || customerName || task.address.streetAddress
-}
-
-const markerIconName = task => {
-  switch (task.status) {
-  case 'DONE':
-    return doneIconName
-  case 'FAILED':
-    return failedIconName
-  default:
-    return taskTypeIconName(task)
-  }
 }
 
 class TasksMapView extends Component {

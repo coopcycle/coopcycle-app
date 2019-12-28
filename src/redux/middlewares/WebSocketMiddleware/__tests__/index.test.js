@@ -53,10 +53,10 @@ describe('WebSocketMiddleware', () => {
     })
 
     test(`${send} | connected`, () => {
-      const message = { data: 'foo' }
+      const msg = { data: 'foo' }
       client.isOpen.mockReturnValue(true)
 
-      store.dispatch(send(message))
+      store.dispatch(send(msg))
 
       expect(reducer).not.toHaveBeenCalled()
       expect(client.connect).not.toHaveBeenCalled()
@@ -64,20 +64,20 @@ describe('WebSocketMiddleware', () => {
       expect(client.send).toHaveBeenCalledTimes(1)
       expect(client.isOpen).not.toHaveBeenCalledTimes(1)
 
-      expect(client.send).toHaveBeenCalledWith(message)
+      expect(client.send).toHaveBeenCalledWith(msg)
     })
 
     test(`${send} | disconnected`, (done) => {
-      const message = { data: 'foo' }
+      const msg = { data: 'foo' }
       client.isOpen.mockReturnValue(false)
 
-      store.dispatch(send(message))
+      store.dispatch(send(msg))
 
       process.nextTick(() => {
         expect(reducer).not.toHaveBeenCalled()
         expect(client.connect).not.toHaveBeenCalled()
         expect(client.disconnect).not.toHaveBeenCalled()
-        expect(client.send).toHaveBeenCalledWith(message)
+        expect(client.send).toHaveBeenCalledWith(msg)
         expect(client.isOpen).not.toHaveBeenCalledTimes(1)
 
         done()

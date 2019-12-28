@@ -197,7 +197,6 @@ class Task extends Component {
   renderSwipeOutButton() {
 
     const { width } = Dimensions.get('window')
-    const { swipeOutClose } = this.state
     const task = this.props.navigation.getParam('task')
 
     if (task.status === 'DONE') {

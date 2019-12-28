@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native'
 import PropTypes from 'prop-types'
 import { Text } from 'native-base'
-import { Col, Row, Grid } from 'react-native-easy-grid'
+import { Col, Grid } from 'react-native-easy-grid'
 import { withTranslation } from 'react-i18next'
 import { formatPrice } from '../utils/formatting'
 import _ from 'lodash'
@@ -148,8 +148,6 @@ class OrderItems extends Component {
   render() {
 
     const { order } = this.props
-
-    const total = this.props.withDeliveryTotal === true ? order.total : order.itemsTotal
 
     return (
       <View style={ styles.container }>

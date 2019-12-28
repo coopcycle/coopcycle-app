@@ -556,8 +556,8 @@ export function assignCustomer() {
     httpClient
       .put(cart['@id'] + '/assign', {}, {
         headers: {
-          'X-CoopCycle-Session': `Bearer ${token}`
-        }
+          'X-CoopCycle-Session': `Bearer ${token}`,
+        },
       })
       .then(res => {
         dispatch(updateCartSuccess(res))
