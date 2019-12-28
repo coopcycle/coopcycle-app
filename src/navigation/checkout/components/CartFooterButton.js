@@ -63,7 +63,7 @@ class CartFooterButton extends Component {
 
     const { cart } = this.props
 
-    if (cart.items.length === 0) {
+    if (!cart || cart.items.length === 0) {
 
       return (
         <View />

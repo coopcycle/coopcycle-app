@@ -173,7 +173,7 @@ class Summary extends Component {
 
     const { cart } = this.props
 
-    if (cart.items.length === 0) {
+    if (!cart || cart.items.length === 0) {
 
       return (
         <View />
@@ -203,7 +203,7 @@ class Summary extends Component {
 
     const { cart } = this.props
 
-    if (cart.items.length === 0) {
+    if (!cart || cart.items.length === 0) {
 
       return this.renderEmpty()
     }
@@ -295,7 +295,7 @@ function mapStateToProps(state, ownProps) {
     date: state.checkout.date,
     timing: state.checkout.timing,
     edit: ownProps.navigation.getParam('edit', false),
-    items: state.checkout.cart.items,
+    items: state.checkout.cart ? state.checkout.cart.items : [],
     isAuthenticated: state.app.isAuthenticated,
     deliveryTotal: selectDeliveryTotal(state),
     timeAsText,

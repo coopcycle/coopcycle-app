@@ -81,6 +81,13 @@ class CreditCard extends Component {
 
     const { cart, errors } = this.props
 
+    if (!cart) {
+
+      return (
+        <View />
+      )
+    }
+
     // Make sure button can't be tapped twice
     // @see https://medium.com/@devmrin/debouncing-touch-events-in-react-native-prevent-navigating-twice-or-more-times-when-button-is-90687e4a8113
     // @see https://snack.expo.io/@patwoz/withpreventdoubleclick

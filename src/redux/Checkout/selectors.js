@@ -5,6 +5,10 @@ export const selectDeliveryTotal = createSelector(
   state => state.checkout.cart,
   (cart) => {
 
+    if (!cart || !cart.adjustments) {
+        return 0
+    }
+
     if (!cart.adjustments.hasOwnProperty('delivery')) {
       return 0
     }
