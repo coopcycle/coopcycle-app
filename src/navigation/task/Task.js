@@ -4,7 +4,7 @@ import { Dimensions, FlatList, StyleSheet, TouchableOpacity, View } from 'react-
 import { Container, Footer, Text, Button, Icon } from 'native-base'
 import { Col, Row, Grid } from 'react-native-easy-grid'
 import MapView from 'react-native-maps'
-import Swipeout from 'react-native-swipeout'
+import { SwipeRow } from 'react-native-swipe-list-view'
 import moment from 'moment'
 import { withTranslation } from 'react-i18next'
 import { phonecall } from 'react-native-communications'
@@ -231,36 +231,40 @@ class Task extends Component {
       navigateAfter: this.props.navigation.getParam('navigateAfter'),
     }
 
-    const swipeoutLeftButton = {
-      component: this.renderSwipeoutLeftButton(),
-      backgroundColor: greenColor,
-      onPress: () => {
-        this.props.navigation.navigate('TaskComplete', { ...navigateParams, success: true })
-        this.setState({
-          swipeOutClose: true,
-        })
-      },
-    }
-
-    const swipeoutRightButton = {
-      component: this.renderSwipeoutRightButton(),
-      backgroundColor: redColor,
-      onPress: () => {
-        this.props.navigation.navigate('TaskComplete', { ...navigateParams, success: false })
-        this.setState({
-          swipeOutClose: true,
-        })
-      },
-    }
-
     return (
-      <Swipeout buttonWidth={ width * 0.4 } left={[ swipeoutLeftButton ]} right={[ swipeoutRightButton ]} close={ swipeOutClose }>
-        <View style={{ padding: 28, width }}>
+      <SwipeRow
+        leftOpenValue={ 75 }
+        stopLeftSwipe={ 100 }
+        rightOpenValue={ -75 }
+        stopRightSwipe={ -100 }>
+        <View style={ styles.rowBack }>
+          <TouchableOpacity
+            style={{ flex: 1, alignItems: 'flex-start', justifyContent: 'center', paddingLeft: 15, backgroundColor: greenColor }}
+            onPress={ () => {
+              this.props.navigation.navigate('TaskComplete', { ...navigateParams, success: true })
+              this.setState({
+                swipeOutClose: true,
+              })
+            }}>
+            { this.renderSwipeoutLeftButton() }
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{ flex: 1, alignItems: 'flex-end', justifyContent: 'center', paddingRight: 15, backgroundColor: redColor }}
+            onPress={ () => {
+              this.props.navigation.navigate('TaskComplete', { ...navigateParams, success: false })
+              this.setState({
+                swipeOutClose: true,
+              })
+            }}>
+            { this.renderSwipeoutRightButton() }
+          </TouchableOpacity>
+        </View>
+        <View style={{ padding: 28, width, backgroundColor: '#dedede' }}>
           <Text style={{ fontSize: 20, textAlign: 'center', color: '#fff', fontFamily: 'Raleway-Regular' }}>
             { this.props.t('END') }
           </Text>
         </View>
-      </Swipeout>
+    </SwipeRow>
     )
   }
 
@@ -421,6 +425,11 @@ const styles = StyleSheet.create({
   },
   taskDetailText: {
     fontSize: 12,
+  },
+  rowBack: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
 })
 

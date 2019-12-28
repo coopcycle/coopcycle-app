@@ -35,9 +35,8 @@ YellowBox.ignoreWarnings([
   'Require cycle:',
   // react-native-camera
   'permissionDialogTitle and permissionDialogMessage are deprecated',
-  'Warning: componentWillUpdate is deprecated',
-  'Warning: componentWillMount is deprecated',
-  'Warning: componentWillReceiveProps is deprecated',
+  'Warning: componentWillMount has been renamed',
+  'Warning: componentWillReceiveProps has been renamed',
   'Accessing view manager configs directly off UIManager',
 ])
 

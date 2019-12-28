@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import { Dimensions, FlatList, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { Dimensions, FlatList, StyleSheet, TouchableOpacity, TouchableHighlight, View } from 'react-native'
 import { Icon, Text } from 'native-base'
 import { Col, Row, Grid } from 'react-native-easy-grid'
-import Swipeout from 'react-native-swipeout'
+import { SwipeListView, SwipeRow } from 'react-native-swipe-list-view'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 import _ from 'lodash'
@@ -28,6 +28,7 @@ const styles = StyleSheet.create({
   item: {
     borderBottomColor: lightGreyColor,
     borderBottomWidth: StyleSheet.hairlineWidth,
+    backgroundColor: '#ffffff',
   },
   disabled: {
     opacity: 0.4,
@@ -43,6 +44,11 @@ const styles = StyleSheet.create({
   },
   iconDanger: {
     color: redColor,
+  },
+  rowBack: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
 })
 
@@ -81,9 +87,7 @@ class TaskList extends Component {
   renderSwipeoutButton(iconName) {
 
     return (
-      <View style={{ flex: 1, height: 400, alignItems: 'center', justifyContent: 'center' }}>
-        <Icon type="FontAwesome" name={ iconName } style={{ color: '#fff' }} />
-      </View>
+      <Icon type="FontAwesome" name={ iconName } style={{ color: '#fff' }} />
     )
   }
 
@@ -139,42 +143,27 @@ class TaskList extends Component {
     const hasOnSwipeLeft = typeof this.props.onSwipeLeft === 'function' && swipeOutLeftEnabled
     const hasOnSwipeRight = typeof this.props.onSwipeRight === 'function' && swipeOutRightEnabled
 
-    let swipeOutProps = {}
-    if (hasOnSwipeLeft) {
-      swipeOutProps = {
-        ...swipeOutProps,
-        left: [
-          {
-            component: this.renderSwipeoutLeftButton(),
-            backgroundColor: greenColor,
-            onPress: () => this.props.onSwipeLeft(task),
-          },
-        ],
-      }
-    }
-
-    if (hasOnSwipeRight) {
-      swipeOutProps = {
-        ...swipeOutProps,
-        right: [
-          {
-            component: this.renderSwipeoutRightButton(),
-            backgroundColor: redColor,
-            onPress: () => this.props.onSwipeRight(task),
-          },
-        ],
-      }
-    }
-
     return (
-      <Swipeout
-        buttonWidth={ width * 0.4 }
-        autoClose={ true }
-        style={ styles.item }
-        backgroundColor="#fff"
-        disabled={ !hasOnSwipeLeft && !hasOnSwipeRight }
-        {  ...swipeOutProps }>
-        <TouchableOpacity onPress={ () => this._onTaskClick(task) }>
+      <SwipeRow
+        disableRightSwipe={ !hasOnSwipeLeft }
+        disableLeftSwipe={ !hasOnSwipeRight }
+        leftOpenValue={ 75 }
+        stopLeftSwipe={ 100 }
+        rightOpenValue={ -75 }
+        stopRightSwipe={ -100 }>
+        <View style={ [ styles.rowBack, { backgroundColor: 'grey' } ] }>
+          <TouchableOpacity
+            style={{ flex: 1, alignItems: 'flex-start', justifyContent: 'center', paddingLeft: 15, backgroundColor: greenColor }}
+            onPress={ () => this.props.onSwipeLeft(task) }>
+            { this.renderSwipeoutLeftButton() }
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{ flex: 1, alignItems: 'flex-end', justifyContent: 'center', paddingRight: 15, backgroundColor: redColor }}
+            onPress={ () => this.props.onSwipeRight(task) }>
+            { this.renderSwipeoutRightButton() }
+          </TouchableOpacity>
+        </View>
+        <TouchableHighlight onPress={ () => this._onTaskClick(task) } style={ styles.item } underlayColor={ '#efefef' }>
           <Grid style={{ paddingVertical: 10 }}>
             <Col size={ 1 } style={ itemLeftStyle }>
               <Row style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -197,8 +186,8 @@ class TaskList extends Component {
               <Icon style={{ color: '#ccc' }} name="ios-arrow-forward" />
             </Col>
           </Grid>
-        </TouchableOpacity>
-      </Swipeout>
+        </TouchableHighlight>
+      </SwipeRow>
     )
   }
 
@@ -207,7 +196,7 @@ class TaskList extends Component {
     const { refreshing, onRefresh } = this.props
 
     return (
-      <FlatList
+      <SwipeListView
         data={ this.props.tasks }
         keyExtractor={ (item, index) => item['@id'] }
         renderItem={({item}) => this.renderItem(item)}
