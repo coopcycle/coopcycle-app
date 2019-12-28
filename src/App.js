@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 
 import { Root, StyleProvider } from 'native-base'
 import getTheme from '../native-base-theme/components'
-import material from '../native-base-theme/variables/material'
+import coopcycleTheme from '../native-base-theme/variables/coopcycle'
 
 import { createSwitchNavigator, createAppContainer } from 'react-navigation'
 import { Provider } from 'react-redux'
@@ -85,7 +85,7 @@ class App extends Component {
     return (
       <Provider store={ store }>
         <I18nextProvider i18n={ i18n }>
-          <StyleProvider style={ getTheme(material) }>
+          <StyleProvider style={ getTheme(coopcycleTheme) }>
             <Root>
               <Spinner />
               <RootNavigator
