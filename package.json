@@ -5,7 +5,7 @@
   "scripts": {
     "start": "react-native start",
     "test": "jest",
-    "lint": "eslint .",
+    "lint": "eslint src/",
     "postinstall": "npx jetify"
   },
   "dependencies": {
@@ -81,7 +81,7 @@
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.14.0",
     "enzyme-to-json": "^3.4.0",
-    "eslint": "^6.0.1",
+    "eslint": "^5.0.0",
     "jest": "^24.9.0",
     "jest-fetch-mock": "^2.1.1",
     "jetifier": "^1.6.4",
