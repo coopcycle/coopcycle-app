@@ -10,6 +10,7 @@ import { withTranslation } from 'react-i18next'
 import { phonecall } from 'react-native-communications'
 import { showLocation } from 'react-native-map-link'
 import _ from 'lodash'
+import { NetworkConsumer } from 'react-native-offline'
 
 import { greenColor, redColor } from '../../styles/common'
 import { selectTasks } from '../../redux/Courier'
@@ -379,7 +380,17 @@ class Task extends Component {
             </View>
           </Row> }
         </Grid>
-        { this.renderSwipeOutButton() }
+        <NetworkConsumer>
+          {({ isConnected }) => {
+            if (isConnected) {
+              return this.renderSwipeOutButton()
+            }
+
+            return (
+              <View />
+            )
+          }}
+        </NetworkConsumer>
       </Container>
     )
   }
