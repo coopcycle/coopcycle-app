@@ -33,9 +33,6 @@ jest.mock('tipsi-stripe', () => ({
   },
 }))
 
-// Avoid 'is not defined' errors when running tests
-global.FormData = require('FormData')
-
 // mock 'fetch' globally
 global.fetch = require('jest-fetch-mock')
 

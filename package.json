@@ -3,6 +3,8 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
+    "android": "react-native run-android",
+    "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint src/",
@@ -30,9 +32,9 @@
     "moment-range": "^4.0.2",
     "native-base": "^2.13.8",
     "qs": "^6.9.0",
-    "react": "16.8.6",
+    "react": "16.9.0",
     "react-i18next": "^10.13.1",
-    "react-native": "0.60.5",
+    "react-native": "0.61.5",
     "react-native-autocomplete-input": "^4.1.0",
     "react-native-ble-plx": "^1.1.0",
     "react-native-cache-store": "^1.0.2",
@@ -72,7 +74,7 @@
     "validate.js": "^0.13.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.4.5",
+    "@babel/core": "^7.6.2",
     "@babel/runtime": "^7.6.2",
     "@react-native-community/eslint-config": "^0.0.5",
     "babel-eslint": "^10.0.3",
@@ -87,8 +89,8 @@
     "jetifier": "^1.6.4",
     "metro-react-native-babel-preset": "^0.56.0",
     "mock-async-storage": "^2.2.0",
-    "react-dom": "16.8.6",
-    "react-test-renderer": "16.8.6",
+    "react-dom": "16.9.0",
+    "react-test-renderer": "16.9.0",
     "redux-mock-store": "^1.5.3"
   },
   "jest": {
