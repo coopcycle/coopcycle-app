@@ -7,12 +7,10 @@ import {
   LOAD_TASKS_REQUEST, LOAD_TASKS_SUCCESS, LOAD_TASKS_FAILURE,
   MARK_TASK_DONE_REQUEST, MARK_TASK_DONE_SUCCESS, MARK_TASK_DONE_FAILURE,
   MARK_TASK_FAILED_REQUEST, MARK_TASK_FAILED_SUCCESS, MARK_TASK_FAILED_FAILURE,
-  DONT_TRIGGER_TASKS_NOTIFICATION,
 
   loadTasksRequest, loadTasksSuccess, loadTasksFailure,
   markTaskDoneRequest, markTaskDoneSuccess, markTaskDoneFailure,
   markTaskFailedRequest, markTaskFailedSuccess, markTaskFailedFailure,
-  dontTriggerTasksNotification,
   clearFiles,
 
   loadTasks, markTaskDone, markTaskFailed,
@@ -71,11 +69,6 @@ describe('Redux | Tasks | Actions', () => {
     {
       actionCreator: markTaskFailedSuccess,
       actionType: MARK_TASK_FAILED_SUCCESS,
-    },
-
-    {
-      actionCreator: dontTriggerTasksNotification,
-      actionType: DONT_TRIGGER_TASKS_NOTIFICATION,
     },
   ]
     .forEach(({ actionCreator, actionType }) => {

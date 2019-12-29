@@ -12,12 +12,10 @@ import {
   LOAD_TASKS_REQUEST, LOAD_TASKS_FAILURE, LOAD_TASKS_SUCCESS,
   MARK_TASK_DONE_REQUEST, MARK_TASK_DONE_FAILURE, MARK_TASK_DONE_SUCCESS,
   MARK_TASK_FAILED_REQUEST, MARK_TASK_FAILED_FAILURE, MARK_TASK_FAILED_SUCCESS,
-  DONT_TRIGGER_TASKS_NOTIFICATION,
 
   loadTasks, loadTasksRequest, loadTasksSuccess, loadTasksFailure,
   markTaskDone, markTaskDoneRequest, markTaskDoneSuccess, markTaskDoneFailure,
   markTaskFailed, markTaskFailedRequest, markTaskFailedSuccess, markTaskFailedFailure,
-  dontTriggerTasksNotification,
   filterTasks, clearTasksFilter,
   setKeepAwake, setSignatureScreenFirst,
   uploadSignature,
@@ -26,7 +24,6 @@ import {
 } from './taskActions'
 import {
   selectTaskSelectedDate,
-  selectTriggerTasksNotification,
   selectIsTasksLoading,
   selectIsTasksRefreshing,
   selectIsTasksLoadingFailure,
@@ -60,7 +57,6 @@ export {
   MARK_TASK_FAILED_REQUEST,
   MARK_TASK_FAILED_FAILURE,
   MARK_TASK_FAILED_SUCCESS,
-  DONT_TRIGGER_TASKS_NOTIFICATION,
 
   loadTasks,
   loadTasksRequest,
@@ -74,7 +70,6 @@ export {
   markTaskFailedRequest,
   markTaskFailedSuccess,
   markTaskFailedFailure,
-  dontTriggerTasksNotification,
   filterTasks,
   clearTasksFilter,
   setKeepAwake,
@@ -93,7 +88,6 @@ export {
   selectTasksOrder,
   selectTasksList,
   selectTaskSelectedDate,
-  selectTriggerTasksNotification,
   selectFilteredTasks,
   selectAreDoneTasksHidden,
   selectAreFailedTasksHidden,

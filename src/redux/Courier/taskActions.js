@@ -29,7 +29,6 @@ export const CLEAR_FILES = 'CLEAR_FILES'
 export const DELETE_SIGNATURE = 'DELETE_SIGNATURE'
 export const DELETE_PICTURE = 'DELETE_PICTURE'
 
-export const DONT_TRIGGER_TASKS_NOTIFICATION = 'DONT_TRIGGER_TASKS_NOTIFICATION'
 export const ADD_TASK_FILTER = 'ADD_TASK_FILTER'
 export const CLEAR_TASK_FILTER = 'CLEAR_TASK_FILTER'
 export const SET_TASK_FILTER = 'SET_TASK_FILTER'
@@ -58,7 +57,6 @@ export const clearFiles = createAction(CLEAR_FILES)
 export const deleteSignatureAt = createAction(DELETE_SIGNATURE)
 export const deletePictureAt = createAction(DELETE_PICTURE)
 
-export const dontTriggerTasksNotification = createAction(DONT_TRIGGER_TASKS_NOTIFICATION)
 export const filterTasks = createAction(ADD_TASK_FILTER)
 export const clearTasksFilter = createAction(CLEAR_TASK_FILTER)
 export const setTasksFilter = createAction(SET_TASK_FILTER)
