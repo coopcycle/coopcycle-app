@@ -471,13 +471,22 @@ export function resetServer() {
 }
 
 function onAuthenticationSuccess(dispatch, getState) {
+
+  const { app } = getState()
+
+  const { baseURL, user } = app
+
+  const httpClient = API.createClient(baseURL, user)
+
+  dispatch(_setUser(user))
+  dispatch(_setHttpClient(httpClient))
+
   dispatch(authenticationSuccess())
 
-  const {app} = getState()
-  const {httpClient, user} = app
-
-  configureBackgroundGeolocation(httpClient, user)
-  saveRemotePushToken(dispatch, getState)
+  setTimeout(() => {
+    configureBackgroundGeolocation(httpClient, user)
+    saveRemotePushToken(dispatch, getState)
+  }, 0)
 }
 
 function saveRemotePushToken(dispatch, getState) {
