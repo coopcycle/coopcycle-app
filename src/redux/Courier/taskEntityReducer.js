@@ -12,6 +12,9 @@ import {
   ASSIGN_TASK_SUCCESS,
   UNASSIGN_TASK_SUCCESS,
 } from '../Dispatch/actions'
+import {
+  AUTHENTICATE,
+} from '../App/actions'
 import { MESSAGE } from '../middlewares/WebSocketMiddleware'
 import _ from 'lodash'
 
@@ -107,7 +110,6 @@ export const tasksEntityReducer = (state = tasksEntityInitialState, action = {})
           return acc
         }, {}),
         order: action.payload.map((task) => task.id),
-        username: _.reduce(action.payload, (acc, task) => task.assignedTo),
       }
 
     case MARK_TASK_DONE_SUCCESS:
@@ -205,6 +207,13 @@ export const tasksEntityReducer = (state = tasksEntityInitialState, action = {})
         ...state,
         signatures: [],
         pictures: [],
+      }
+
+    case AUTHENTICATE:
+
+      return {
+        ...state,
+        username: action.payload,
       }
   }
 

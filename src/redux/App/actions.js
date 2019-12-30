@@ -215,13 +215,13 @@ export function bootstrap(baseURL, user) {
     if (user.isAuthenticated()) {
       httpClient.checkToken()
         .then(() => {
-          dispatch(authenticate())
+          dispatch(authenticate(user.username))
           navigateToHome(dispatch, getState)
         })
         .catch(e => {
           httpClient.refreshToken()
             .then(token => {
-              dispatch(authenticate())
+              dispatch(authenticate(user.username))
               navigateToHome(dispatch, getState)
             })
             .catch(e => {
