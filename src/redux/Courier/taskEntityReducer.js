@@ -26,7 +26,6 @@ const tasksEntityInitialState = {
   completeTaskFetchError: false,   // Error object describing the error
   isFetching: false,               // Flag indicating active HTTP request
   isRefreshing: false,
-  lastUpdated: moment(),           // Time at which tasks data was last updated
   triggerTasksNotification: false, // Flag indicating whether to trigger Toast alert
   items: {                         // Object of tasks, keyed by task id
     // 1: {                        // ...This is my best guess of what keys are in this object
@@ -104,7 +103,6 @@ export const tasksEntityReducer = (state = tasksEntityInitialState, action = {})
         loadTasksFetchError: false,
         isFetching: false,
         isRefreshing: false,
-        lastUpdated: moment(),
         items: action.payload.reduce((acc, task) => {
           acc[task.id] = task
           return acc
@@ -228,7 +226,6 @@ const processWsMsg = (state, { type, ...data }) => {
       let tasks = _.sortBy(data.tasks, (task) => task.position)
       return {
         ...state,
-        lastUpdated: moment(),
         triggerTasksNotification: true,
         items: tasks.reduce((acc, task) => {
           acc[task.id] = task

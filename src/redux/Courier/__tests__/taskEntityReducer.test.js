@@ -94,17 +94,14 @@ describe('Redux | Tasks | Reducers', () => {
       const newState = tasksEntityReducer(prevState, loadTasksSuccess(tasks))
       const fullState = { entities: { tasks: newState } }
 
-      const restOldState = omit(prevState, ['loadTasksFetchError', 'isFetching', 'items', 'order', 'lastUpdated'])
-      const restNewState = omit(newState, ['loadTasksFetchError', 'isFetching', 'items', 'order', 'lastUpdated'])
-      const { lastUpdated: lastUpdatedOld } = prevState
-      const { lastUpdated: lastUpdatedNew } = newState
+      const restOldState = omit(prevState, ['loadTasksFetchError', 'isFetching', 'items', 'order'])
+      const restNewState = omit(newState, ['loadTasksFetchError', 'isFetching', 'items', 'order'])
 
       expect(selectIsTasksLoading(fullState)).toBe(false)
       expect(selectIsTasksLoadingFailure(fullState)).toBe(false)
       expect(selectTasksList(fullState)).toEqual(tasks)
 
       expect(restOldState).toEqual(restNewState)
-      expect(lastUpdatedNew).not.toEqual(lastUpdatedOld)
     });
 
     [
@@ -123,15 +120,13 @@ describe('Redux | Tasks | Reducers', () => {
           const newState = tasksEntityReducer(prevState, actionCreator({ ...task, foo: 'foo' }))
           const fullState = { entities: { tasks: newState } }
 
-          const restOldState = omit(prevState, ['lastUpdated', 'items'])
-          const restNewState = omit(newState, ['lastUpdated', 'items'])
-          const { lastUpdated: lastUpdatedOld } = prevState
-          const { lastUpdated: lastUpdatedNew, isFetching } = newState
+          const restOldState = omit(prevState, ['items'])
+          const restNewState = omit(newState, ['items'])
+          const { isFetching } = newState
 
           expect(selectTasksList(fullState)).toEqual([{ ...task, foo: 'foo' }]);
 
           expect(restOldState).toEqual(restNewState)
-          expect(lastUpdatedNew).toEqual(lastUpdatedOld)
           expect(isFetching).toBeFalsy()
         })
       })
@@ -164,8 +159,8 @@ describe('Redux | Tasks | Reducers', () => {
       const newState = tasksEntityReducer(prevState, message(wsMsg))
       const fullState = { entities: { tasks: newState } }
 
-      const restOldState = omit(prevState, ['lastUpdated', 'triggerTasksNotification', 'items', 'order'])
-      const restNewState = omit(newState, ['lastUpdated', 'triggerTasksNotification', 'items', 'order'])
+      const restOldState = omit(prevState, ['triggerTasksNotification', 'items', 'order'])
+      const restNewState = omit(newState, ['triggerTasksNotification', 'items', 'order'])
 
       expect(selectTriggerTasksNotification(fullState)).toBe(true)
       expect(selectTasksList(fullState)).toEqual([tasks[1], tasks[0]])
@@ -186,8 +181,8 @@ describe('Redux | Tasks | Reducers', () => {
       const newState = tasksEntityReducer(prevState, message(wsMsg))
       const fullState = { entities: { tasks: newState } }
 
-      const restOldState = omit(prevState, ['lastUpdated', 'items', 'order', 'triggerTasksNotification'])
-      const restNewState = omit(newState, ['lastUpdated', 'items', 'order', 'triggerTasksNotification'])
+      const restOldState = omit(prevState, ['items', 'order', 'triggerTasksNotification'])
+      const restNewState = omit(newState, ['items', 'order', 'triggerTasksNotification'])
 
       expect(selectTasksList(fullState)).toEqual(newTasks);
       expect(selectTriggerTasksNotification(fullState)).toBe(true);
