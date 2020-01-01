@@ -4736,9 +4736,9 @@ form-data@~2.3.2:
     mime-types "^2.1.12"
 
 formik@^2.0.6:
-  version "2.0.8"
-  resolved "https://registry.yarnpkg.com/formik/-/formik-2.0.8.tgz#a17740007a9a1394360142c128bb686acb5dbc7c"
-  integrity sha512-PxC9G6EvLdJzMv7z+bsvpI/Euplv2vVgTQebD5yNza4t3fiMBB+iD90VOVTLCyH5Pnv3bljsZiKsIqGp/UNKKg==
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/formik/-/formik-2.1.0.tgz#5a59b358170049cebcaf03e661f5f9c6588714d1"
+  integrity sha512-GxH9uMX55UKQcX0hNBd/FuoYnYXKQY0nS9FH00vHyZzEvIfvvt+JMRWU515JbCvR9P2Sx3ZWMFgszjMugF3zNg==
   dependencies:
     deepmerge "^2.1.1"
     hoist-non-react-statics "^3.3.0"
