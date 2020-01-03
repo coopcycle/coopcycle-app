@@ -7989,7 +7989,7 @@ react-native-google-places-autocomplete@^1.3.9:
     prop-types "^15.5.10"
     qs "^5.2.0"
 
-react-native-iphone-x-helper@^1.0.3:
+react-native-iphone-x-helper@^1.0.3, react-native-iphone-x-helper@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/react-native-iphone-x-helper/-/react-native-iphone-x-helper-1.2.1.tgz#645e2ffbbb49e80844bb4cbbe34a126fda1e6772"
   integrity sha512-/VbpIEp8tSNNHIvstuA3Swx610whci1Zpc9mqNkqn14DkMbw+ORviln2u0XyHG1kPvvwTNGZY6QpeFwxYaSdbQ==
@@ -8162,12 +8162,13 @@ react-navigation-drawer@^2.3.3:
   resolved "https://registry.yarnpkg.com/react-navigation-drawer/-/react-navigation-drawer-2.3.3.tgz#d7e607d5e10f2b3c40ab7dc9720228ce3f888a0f"
   integrity sha512-d/rA8Slqv7HoMfONKVDBQUrRF7YQH796Gzal/KOhaY4VOwUUqIwfxMRJ3WrsdL2OkDPixtkXJE2Fz6KAj658uA==
 
-react-navigation-stack@^2.0.2:
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/react-navigation-stack/-/react-navigation-stack-2.0.2.tgz#ae2e4556a33bd0f6db14ec1f2bff390e32378ba0"
-  integrity sha512-DDh1vEC0Sp3nNIsuFxXk5hM0eTH+PgrjDcoivyZ2+EubQYsJISB5Cw6jOyy+1i0LbfBs8YouZ+1fJsbPo3IyOw==
+react-navigation-stack@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/react-navigation-stack/-/react-navigation-stack-2.0.3.tgz#9cc6cdf8aae76f10f9a88f80d319e90f1ab7ea5f"
+  integrity sha512-ux9ddlZ71VTSwV5A97Qi9MhD/kMaBC1W58pVRji6aBiPc0IpFmzrPnCinYHBtAgZb3xey19njqu2UBuD68ol3Q==
   dependencies:
     color "^3.1.2"
+    react-native-iphone-x-helper "^1.2.1"
 
 react-navigation-tabs@^2.6.2:
   version "2.6.2"
