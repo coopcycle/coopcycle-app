@@ -9,5 +9,12 @@
 
 # Add any project specific keep options here:
 
+# https://firebase.google.com/docs/crashlytics/get-deobfuscated-reports?platform=android
+-keepattributes *Annotation*
+-keepattributes SourceFile,LineNumberTable
+-keep public class * extends java.lang.Exception
+-printmapping mapping.txt
+
+# https://rnfirebase.io/docs/v5.x.x/installation/android#Using-with-Proguard-enabled
 -keep class io.invertase.firebase.** { *; }
 -dontwarn io.invertase.firebase.**
