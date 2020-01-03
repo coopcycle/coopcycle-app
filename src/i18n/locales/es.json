@@ -232,6 +232,7 @@
     "TASK_IMAGE_UPLOAD_CONFIRM_SHORT": "Imagen cargada!",
     "TASK_IMAGE_UPLOAD_CONFIRM_LONG": "La imagen fue cargada con éxito",
     "AN_ERROR_OCCURRED": "Se ha producido un error",
-    "TASK_ADD_PROOF_OF_DELIVERY": "Añadir una prueba de entrega"
+    "TASK_ADD_PROOF_OF_DELIVERY": "Añadir una prueba de entrega",
+    "SEARCH": "Buscar…"
   }
 }

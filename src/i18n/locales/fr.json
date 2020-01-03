@@ -265,6 +265,7 @@
     "SIGNATURE_SCREEN_FIRST": "Écran de signature par défaut",
     "CART_DELIVERY_TIME": "Livraison {{- fromNow}}",
     "CART_DELIVERY_TIME_DIFF": "Livraison dans {{diff}} minutes",
-    "FINISHED": "Terminé"
+    "FINISHED": "Terminé",
+    "SEARCH": "Rechercher…"
   }
 }

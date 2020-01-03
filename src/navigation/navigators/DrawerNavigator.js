@@ -50,7 +50,7 @@ export default createDrawerNavigator({
   CheckoutNav: {
     screen: CheckoutNavigator,
     navigationOptions: ({ navigation }) => ({
-      drawerLabel: 'Rechercher…',
+      drawerLabel: i18n.t('SEARCH'),
     }),
   },
   AccountNav: {
