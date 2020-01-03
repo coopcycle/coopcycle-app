@@ -38,7 +38,7 @@ target 'CoopCycle' do
   pod 'react-native-ble-plx-swift', :path => '../node_modules/react-native-ble-plx'
 
   pod 'Fabric', '~> 1.10.2'
-  pod 'Crashlytics', '~> 3.13.2'
+  pod 'Crashlytics', '~> 3.14.0'
 
   target 'CoopCycleTests' do
     inherit! :search_paths
