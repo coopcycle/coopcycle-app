@@ -1,4 +1,5 @@
-import { createStackNavigator, createSwitchNavigator } from 'react-navigation'
+import { createSwitchNavigator } from 'react-navigation'
+import { createStackNavigator } from 'react-navigation-stack'
 
 import screens, { defaultNavigationOptions, headerLeft } from '..'
 import i18n from '../../i18n'

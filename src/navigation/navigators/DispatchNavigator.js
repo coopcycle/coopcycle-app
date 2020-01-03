@@ -1,6 +1,7 @@
 import React from 'react'
 import { Icon} from 'native-base'
-import { createBottomTabNavigator, createStackNavigator } from 'react-navigation'
+import { createStackNavigator } from 'react-navigation-stack'
+import { createBottomTabNavigator } from 'react-navigation-tabs'
 
 import i18n from '../../i18n'
 import HeaderRightButton from '../dispatch/HeaderRightButton'

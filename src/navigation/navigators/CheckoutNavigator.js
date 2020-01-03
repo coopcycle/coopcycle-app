@@ -1,7 +1,7 @@
 import React from 'react'
 import {TouchableOpacity} from 'react-native'
 import {Text} from 'native-base'
-import {createStackNavigator} from 'react-navigation'
+import { createStackNavigator } from 'react-navigation-stack'
 
 import i18n from '../../i18n'
 import screens, {defaultNavigationOptions, headerLeft} from '..'

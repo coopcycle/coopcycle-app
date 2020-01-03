@@ -9,7 +9,8 @@ import { Text, Icon } from 'native-base'
 import _ from 'lodash'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
-import { DrawerItems, SafeAreaView, NavigationActions } from 'react-navigation'
+import { SafeAreaView, NavigationActions } from 'react-navigation'
+import { DrawerItems } from 'react-navigation-drawer'
 
 class DrawerContent extends Component {
 

@@ -1,9 +1,8 @@
 import React from 'react'
 import { View } from 'react-native'
 import { Button, Icon } from 'native-base'
-import {
-  createBottomTabNavigator,
-  createStackNavigator } from 'react-navigation'
+import { createStackNavigator } from 'react-navigation-stack'
+import { createBottomTabNavigator } from 'react-navigation-tabs'
 
 import i18n from '../../i18n'
 import screens, { defaultNavigationOptions, headerLeft } from '..'

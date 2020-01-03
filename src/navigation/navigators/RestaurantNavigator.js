@@ -1,5 +1,5 @@
 import React from 'react'
-import { createStackNavigator } from 'react-navigation'
+import { createStackNavigator } from 'react-navigation-stack'
 
 import i18n from '../../i18n'
 import screens, { defaultNavigationOptions, headerLeft } from '..'

@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
-import {
-  createMaterialTopTabNavigator,
-  NavigationActions,
-} from 'react-navigation'
+import { NavigationActions } from 'react-navigation'
+import { createMaterialTopTabNavigator } from 'react-navigation-tabs'
 
 import i18n from '../../i18n'
 import screens from '..'

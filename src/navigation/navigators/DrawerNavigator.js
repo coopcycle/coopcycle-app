@@ -1,5 +1,6 @@
 import React from 'react'
-import { createDrawerNavigator, createStackNavigator } from 'react-navigation'
+import { createDrawerNavigator } from 'react-navigation-drawer'
+import { createStackNavigator } from 'react-navigation-stack'
 import { Icon } from 'native-base'
 
 import DrawerContent from '../components/DrawerContent'
