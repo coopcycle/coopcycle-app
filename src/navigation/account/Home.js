@@ -13,12 +13,6 @@ import { logout } from '../../redux/App/actions'
 
 class AccountHome extends Component {
 
-  componentDidUpdate() {
-    if (!this.props.isAuthenticated) {
-      this.props.navigation.navigate('AccountNotAuthenticated')
-    }
-  }
-
   render() {
 
     const { navigate } = this.props.navigation
@@ -75,7 +69,6 @@ function mapStateToProps(state) {
   return {
     user: state.app.user,
     message: state.app.lastAuthenticationError,
-    isAuthenticated: state.app.isAuthenticated,
   }
 }
 

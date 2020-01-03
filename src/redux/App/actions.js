@@ -216,12 +216,14 @@ export function bootstrap(baseURL, user) {
       httpClient.checkToken()
         .then(() => {
           dispatch(authenticate(user.username))
+          NavigationHolder.navigate('AccountAuthenticated')
           navigateToHome(dispatch, getState)
         })
         .catch(e => {
           httpClient.refreshToken()
             .then(token => {
               dispatch(authenticate(user.username))
+              NavigationHolder.navigate('AccountAuthenticated')
               navigateToHome(dispatch, getState)
             })
             .catch(e => {
@@ -293,6 +295,7 @@ export function login(email, password, navigate = true) {
     httpClient.login(email, password)
       .then(user => {
         onAuthenticationSuccess(dispatch, getState)
+        NavigationHolder.navigate('AccountAuthenticated')
 
         if (navigate) {
           navigateToHome(dispatch, getState)
@@ -318,7 +321,10 @@ export function logout() {
     const { user } = getState().app
 
     user.logout()
-      .then(() => dispatch(logoutSuccess()))
+      .then(() => {
+        NavigationHolder.navigate('AccountNotAuthenticated')
+        dispatch(logoutSuccess())
+      })
   }
 }
 

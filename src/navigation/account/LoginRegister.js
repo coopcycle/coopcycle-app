@@ -12,18 +12,6 @@ import { login, register, forgotPassword } from '../../redux/App/actions'
 
 class LoginRegister extends Component {
 
-  componentDidUpdate() {
-    if (this.props.isAuthenticated) {
-      this.props.navigation.navigate('AccountAuthenticated')
-    }
-  }
-
-  componentDidMount() {
-    if (this.props.isAuthenticated) {
-      this.props.navigation.navigate('AccountAuthenticated')
-    }
-  }
-
   renderMessage() {
     if (this.props.message) {
       return (
@@ -61,7 +49,6 @@ class LoginRegister extends Component {
 function mapStateToProps(state) {
   return {
     message: state.app.lastAuthenticationError,
-    isAuthenticated: state.app.isAuthenticated,
   }
 }
 
