@@ -41,7 +41,7 @@ export default createStackNavigator({
   Main: {
     screen: MainNavigator,
     navigationOptions: ({ navigation }) => ({
-      header: null,
+      headerShown: false,
       headerBackTitle: null,
     }),
   },

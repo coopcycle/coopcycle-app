@@ -13,13 +13,13 @@ const CompleteStack = createStackNavigator({
   TaskCompleteHome: {
     screen: screens.TaskComplete,
     navigationOptions: ({ navigation }) => ({
-      header: null,
+      headerShown: false,
     }),
   },
   TaskCompleteProofOfDelivery: {
     screen: ProofOfDeliveryTabs,
     navigationOptions: ({ navigation }) => ({
-      header: null,
+      headerShown: false,
     }),
   },
 }, {
@@ -44,7 +44,7 @@ export default createStackNavigator({
     navigationOptions: ({ navigation }) => ({
       // Use header = null to get rid of the header
       // The screen's header will be used
-      header: null,
+      headerShown: false,
     }),
   },
   TaskComplete: {
@@ -52,7 +52,7 @@ export default createStackNavigator({
     navigationOptions: ({ navigation }) => ({
       // Use header = null to get rid of the header
       // The screen's header will be used
-      header: null,
+      headerShown: false,
       title: `${i18n.t('TASK')} #${navigation.state.params.task.id}`,
     }),
   },

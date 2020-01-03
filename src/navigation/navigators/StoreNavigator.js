@@ -38,13 +38,13 @@ const NewDeliveryStack = createStackNavigator({
   StoreNewDeliveryAddress: {
     screen: screens.StoreNewDeliveryAddress,
     navigationOptions: ({ navigation }) => ({
-      header: null,
+      headerShown: false,
     }),
   },
   StoreNewDeliveryForm: {
     screen: screens.StoreNewDeliveryForm,
     navigationOptions: ({ navigation }) => ({
-      header: null,
+      headerShown: false,
     }),
   },
 }, {
@@ -67,7 +67,7 @@ export default createStackNavigator({
   StoreHome: {
     screen: MainNavigator,
     navigationOptions: ({ navigation }) => ({
-      header: null,
+      headerShown: false,
     }),
   },
   StoreNewDelivery: {
@@ -75,7 +75,7 @@ export default createStackNavigator({
     navigationOptions: ({ navigation }) => ({
       // Use header = null to get rid of the header
       // The screen's header will be used
-      // header: null,
+      // headerShown: false,
       title: i18n.t('STORE_NEW_DELIVERY'),
       headerLeft: (props) => {
 

@@ -71,13 +71,13 @@ const SettingsStack = createStackNavigator({
   CourierSettings: {
     screen: screens.CourierSettings,
     navigationOptions: ({ navigation }) => ({
-      header: null,
+      headerShown: false,
     }),
   },
   CourierSettingsTags: {
     screen: screens.CourierSettingsTags,
     navigationOptions: ({ navigation }) => ({
-      header: null,
+      headerShown: false,
     }),
   },
 }, {
@@ -88,7 +88,7 @@ export default createStackNavigator({
   Main: {
     screen: MainNavigator,
     navigationOptions: ({ navigation }) => ({
-      header: null,
+      headerShown: false,
     }),
   },
   CourierSettings: {

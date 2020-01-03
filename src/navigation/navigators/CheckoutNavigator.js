@@ -52,7 +52,7 @@ const LoginRegisterStack = createStackNavigator({
     navigationOptions: ({ navigation }) => ({
       // Use header = null to get rid of the header
       // The screen's header will be used
-      header: null,
+      headerShown: false,
     }),
   },
   CheckoutCheckEmail: {
@@ -60,7 +60,7 @@ const LoginRegisterStack = createStackNavigator({
     navigationOptions: ({ navigation }) => ({
       // Use header = null to get rid of the header
       // The screen's header will be used
-      header: null,
+      headerShown: false,
     }),
   },
   CheckoutForgotPassword: {
@@ -68,7 +68,7 @@ const LoginRegisterStack = createStackNavigator({
     navigationOptions: ({ navigation }) => ({
       // Use header = null to get rid of the header
       // The screen's header will be used
-      header: null,
+      headerShown: false,
     }),
   },
   CheckoutResetPasswordCheckEmail: {
@@ -76,7 +76,7 @@ const LoginRegisterStack = createStackNavigator({
     navigationOptions: ({ navigation }) => ({
       // Use header = null to get rid of the header
       // The screen's header will be used
-      header: null,
+      headerShown: false,
     }),
   },
 }, {
@@ -90,7 +90,7 @@ export default createStackNavigator({
     navigationOptions: ({ navigation }) => ({
       // Use header = null to get rid of the header
       // The screen's header will be used
-      header: null,
+      headerShown: false,
     }),
   },
   CheckoutProductOptions: {

@@ -73,7 +73,7 @@ const AddTaskNavigator = createStackNavigator({
     navigationOptions: ({ navigation }) => ({
       // Use header = null to get rid of the header
       // The screen's header will be used
-      header: null,
+      headerShown: false,
     }),
   },
   DispatchEditAddress: {
@@ -81,7 +81,7 @@ const AddTaskNavigator = createStackNavigator({
     navigationOptions: ({ navigation }) => ({
       // Use header = null to get rid of the header
       // The screen's header will be used
-      header: null,
+      headerShown: false,
     }),
   },
 }, {
@@ -95,7 +95,7 @@ export default createStackNavigator({
     navigationOptions: ({ navigation }) => ({
       // Use header = null to get rid of the header
       // The screen's header will be used
-      header: null,
+      headerShown: false,
     }),
   },
   DispatchPickUser: {

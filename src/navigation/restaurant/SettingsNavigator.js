@@ -12,7 +12,7 @@ export default createStackNavigator({
     navigationOptions: ({ navigation }) => ({
       // Use header = null to get rid of the header
       // The screen's header will be used
-      header: null,
+      headerShown: false,
     }),
   },
   RestaurantProducts: {
@@ -20,7 +20,7 @@ export default createStackNavigator({
     navigationOptions: ({ navigation }) => ({
       // Use header = null to get rid of the header
       // The screen's header will be used
-      header: null,
+      headerShown: false,
       title: i18n.t('RESTAURANT_PRODUCTS'),
     }),
   },
@@ -29,7 +29,7 @@ export default createStackNavigator({
     navigationOptions: ({ navigation }) => ({
       // Use header = null to get rid of the header
       // The screen's header will be used
-      header: null,
+      headerShown: false,
       title: i18n.t('RESTAURANT_OPENING_HOURS'),
     }),
   },
@@ -38,7 +38,7 @@ export default createStackNavigator({
     navigationOptions: ({ navigation }) => ({
       // Use header = null to get rid of the header
       // The screen's header will be used
-      header: null,
+      headerShown: false,
       title: i18n.t('RESTAURANT_MENUS'),
     }),
   },
