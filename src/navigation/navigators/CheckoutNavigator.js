@@ -24,14 +24,14 @@ const MainNavigator = createStackNavigator({
     screen: screens.CheckoutSummary,
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('CART'),
-      headerRight: (
+      headerRight: () =>
         <TouchableOpacity style={{ paddingHorizontal: 10 }}
           onPress={ () => navigation.setParams({ edit: !navigation.getParam('edit', false) }) }>
           <Text style={{ color: 'white' }}>
             { navigation.getParam('edit', false) ? i18n.t('FINISHED') : i18n.t('EDIT') }
           </Text>
         </TouchableOpacity>
-      ),
+      ,
     }),
   },
   CheckoutCreditCard: {

@@ -17,7 +17,7 @@ const MainNavigator = createStackNavigator({
 
       return {
         title,
-        headerRight: (<HeaderRight navigation={ navigation } />),
+        headerRight: () => <HeaderRight navigation={ navigation } />,
         headerLeft: headerLeft(navigation),
       }
     },

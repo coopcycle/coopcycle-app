@@ -22,13 +22,13 @@ const MainNavigator = createStackNavigator({
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('CHOOSE_CITY'),
       headerBackTitle: null,
-      headerRight: (<HeaderButton
+      headerRight: () => <HeaderButton
         testID="moreServerOptions"
         iconType="FontAwesome5"
         iconName="ellipsis-h"
         iconStyle={{ fontSize: 18 }}
         onPress={ _ => navigation.navigate('HomeCustomServer') } />
-      ),
+      ,
     }),
   },
 }, {

@@ -43,7 +43,7 @@ const MainNavigator = createStackNavigator({
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('COURIER'),
       headerLeft: headerLeft(navigation),
-      headerRight: (
+      headerRight: () =>
         <View style={{flex: 1, flexDirection: 'row', alignItems: 'flex-end'}}>
           <Button transparent onPress={() => navigation.navigate('CourierSettings')}>
             <Icon name="settings" style={{ color: 'white' }} />
@@ -52,7 +52,7 @@ const MainNavigator = createStackNavigator({
             <Icon name="navigate" style={{ color: navigation.getParam('tracking', false) ? 'green' : 'lightgrey' }}/>
           </Button>
         </View>
-      ),
+      ,
     }),
   },
   Task: {

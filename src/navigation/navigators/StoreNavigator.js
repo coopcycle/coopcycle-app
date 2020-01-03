@@ -15,10 +15,10 @@ const MainNavigator = createStackNavigator({
       return {
         title,
         headerLeft: headerLeft(navigation),
-        headerRight: (
+        headerRight: () =>
           <HeaderButton iconType="FontAwesome" iconName="plus"
             onPress={ () => navigation.navigate('StoreNewDelivery') } />
-        ),
+        ,
       }
     },
   },

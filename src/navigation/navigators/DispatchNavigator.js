@@ -44,9 +44,7 @@ const MainNavigator = createStackNavigator({
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('DISPATCH'),
       headerLeft: headerLeft(navigation),
-      headerRight: (
-        <HeaderRightButton onPress={ () => navigation.navigate('DispatchDate') } />
-      ),
+      headerRight: () => <HeaderRightButton onPress={ () => navigation.navigate('DispatchDate') } />,
     }),
   },
   DispatchTaskList: {
