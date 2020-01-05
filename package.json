@@ -82,6 +82,7 @@
     "@babel/core": "^7.6.2",
     "@babel/runtime": "^7.6.2",
     "@react-native-community/eslint-config": "^0.0.5",
+    "axios-mock-adapter": "^1.17.0",
     "babel-eslint": "^10.0.3",
     "babel-jest": "^24.9.0",
     "detox": "^14.4.0",
