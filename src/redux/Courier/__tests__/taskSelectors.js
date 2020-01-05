@@ -9,11 +9,10 @@ describe('Task Selectors', () => {
   const baseState = {
     entities: {
       tasks: {
-        items: {
-          1: { id: 1, status: 'DONE', tags: [] },
-          2: { id: 2, status: 'TODO', tags: [{ name: 'foo', slug: 'foo' }] },
-        },
-        order: [1, 2],
+        items: [
+          { id: 1, status: 'DONE', tags: [] },
+          { id: 2, status: 'TODO', tags: [{ name: 'foo', slug: 'foo' }] },
+        ],
       },
     },
     ui: {
@@ -24,7 +23,7 @@ describe('Task Selectors', () => {
   describe('selectFilteredTasks', () => {
     test('returns full list when exclude object is empty', () => {
       const state = cloneDeep(baseState)
-      expect(selectFilteredTasks(state)).toEqual([state.entities.tasks.items[1], state.entities.tasks.items[2]])
+      expect(selectFilteredTasks(state)).toEqual(state.entities.tasks.items)
     })
 
     test('returns correctly filtered list for single filter', () => {
@@ -32,7 +31,7 @@ describe('Task Selectors', () => {
         cloneDeep(baseState),
         { ui: { tasks: { excludeFilters: [{ status: 'DONE' }] } } }
       )
-      expect(selectFilteredTasks(state)).toEqual([state.entities.tasks.items[2]])
+      expect(selectFilteredTasks(state)).toEqual([state.entities.tasks.items[1]])
     })
 
     test('returns correctly filtered list for multiple filters', () => {
@@ -48,7 +47,7 @@ describe('Task Selectors', () => {
         cloneDeep(baseState),
         { ui: { tasks: { excludeFilters: [{ tags: 'foo' }] } } }
       )
-      expect(selectFilteredTasks(state)).toEqual([state.entities.tasks.items[1]])
+      expect(selectFilteredTasks(state)).toEqual([state.entities.tasks.items[0]])
     })
   })
 
@@ -85,10 +84,10 @@ describe('Task Selectors', () => {
         {
           entities: {
             tasks: {
-              items: {
-                1: { id: 1, status: 'DONE', tags: [{ name: 'foo', slug: 'foo' }] },
-                2: { id: 2, status: 'DONE', tags: [{ name: 'bar', slug: 'bar' }] },
-              },
+              items: [
+                { id: 1, status: 'DONE', tags: [{ name: 'foo', slug: 'foo' }] },
+                { id: 2, status: 'DONE', tags: [{ name: 'bar', slug: 'bar' }] },
+              ],
             },
           },
         }
@@ -102,10 +101,10 @@ describe('Task Selectors', () => {
         {
           entities: {
             tasks: {
-              items: {
-                1: { id: 1, status: 'DONE', tags: [{ name: 'foo', slug: 'foo' }] },
-                2: { id: 2, status: 'DONE', tags: [{ name: 'bar', slug: 'bar' }, { name: 'foo', slug: 'foo' }] },
-              },
+              items: [
+                { id: 1, status: 'DONE', tags: [{ name: 'foo', slug: 'foo' }] },
+                { id: 2, status: 'DONE', tags: [{ name: 'bar', slug: 'bar' }, { name: 'foo', slug: 'foo' }] },
+              ],
             },
           },
         }
@@ -123,10 +122,9 @@ describe('Task Selectors', () => {
         {
           entities: {
             tasks: {
-              items: {
-                1: { id: 1, status: 'DONE', tags: [{ name: 'foo', slug: 'foo' }, { name: 'bar', slug: 'baz' }] },
-              },
-              order: [1],
+              items: [
+                { id: 1, status: 'DONE', tags: [{ name: 'foo', slug: 'foo' }, { name: 'bar', slug: 'baz' }] },
+              ],
             },
           },
         }

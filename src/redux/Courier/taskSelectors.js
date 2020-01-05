@@ -16,7 +16,6 @@ export const selectIsTasksRefreshing = state => state.entities.tasks.isRefreshin
 export const selectIsTasksLoadingFailure = state => state.entities.tasks.loadTasksFetchError
 export const selectIsTaskCompleteFailure = state => state.entities.tasks.completeTaskFetchError
 export const selectTasks = state => state.entities.tasks.items
-export const selectTasksOrder = state => state.entities.tasks.order
 export const selectTaskFilters = state => state.ui.tasks.excludeFilters
 export const selectKeepAwake = state => state.ui.tasks.keepAwake
 export const selectSignatureScreenFirst = state => state.ui.tasks.signatureScreenFirst
@@ -26,22 +25,12 @@ export const selectPictures = state => state.entities.tasks.pictures
 /* Compound Selectors */
 
 /**
- * @param   {State}  state  Redux state
- * @returns {Task[]}        List of tasks
- */
-export const selectTasksList = createSelector(
-  selectTasks,
-  selectTasksOrder,
-  (tasks, ids) => ids.map(id => tasks[id])
-)
-
-/**
  * @param   {State}  state Redux state
  * @returns {Task[]}       List of tasks not excluded by filters
  */
 export const selectFilteredTasks = createSelector(
   selectTaskFilters,
-  selectTasksList,
+  selectTasks,
   (filters, tasks) => reject(tasks, t => filters.some(f => doesFilterMatch(f, t)))
 )
 
@@ -68,7 +57,7 @@ export const selectAreFailedTasksHidden = createSelector(
  * @returns {Tag[]}       List of unique tag objects
  */
 export const selectTags = createSelector(
-  selectTasksList,
+  selectTasks,
   (tasks) => uniqWith(
     tasks.reduce(
       (acc, task) => acc.concat(task.tags || []),

@@ -9,7 +9,6 @@ import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 
 import {
-  selectTasksList,
   selectIsTaskCompleteFailure,
   selectSignatureScreenFirst,
   selectSignatures,
@@ -193,7 +192,6 @@ const styles = StyleSheet.create({
 function mapStateToProps (state) {
   return {
     httpClient: state.app.httpClient,
-    tasks: selectTasksList(state),
     taskCompleteError: selectIsTaskCompleteFailure(state),
     signatures: selectSignatures(state),
     pictures: selectPictures(state),

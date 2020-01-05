@@ -25,8 +25,8 @@ const tasksEntityInitialState = {
   completeTaskFetchError: false,   // Error object describing the error
   isFetching: false,               // Flag indicating active HTTP request
   isRefreshing: false,
-  items: {                         // Object of tasks, keyed by task id
-    // 1: {                        // ...This is my best guess of what keys are in this object
+  items: [                         // Array of tasks, keyed by task id
+    // {
     //   '@id': '',
     //   id: '',
     //   type: '',
@@ -44,13 +44,25 @@ const tasksEntityInitialState = {
     //   comments: '',
     //   tags: [{ name, slug, ...}, ...]
     // }
-  },
-  order: [/* 1, 2, 3, ... */],     // Array of task ids, indicating order for e.g. lists
+  ],
   username: null,
   pictures: [], // Array of base64 encoded pictures
   signatures: [], // Array of base64 encoded signatures
 }
 
+function replaceItem(state, payload) {
+
+  const index = _.findIndex(state, item => item['@id'] === payload['@id'])
+
+  if (index !== -1) {
+    const newState = state.slice(0)
+    newState.splice(index, 1, payload)
+
+    return newState
+  }
+
+  return state
+}
 
 export const tasksEntityReducer = (state = tasksEntityInitialState, action = {}) => {
   switch (action.type) {
@@ -101,11 +113,7 @@ export const tasksEntityReducer = (state = tasksEntityInitialState, action = {})
         loadTasksFetchError: false,
         isFetching: false,
         isRefreshing: false,
-        items: action.payload.reduce((acc, task) => {
-          acc[task.id] = task
-          return acc
-        }, {}),
-        order: action.payload.map((task) => task.id),
+        items: action.payload,
       }
 
     case MARK_TASK_DONE_SUCCESS:
@@ -113,10 +121,7 @@ export const tasksEntityReducer = (state = tasksEntityInitialState, action = {})
       return {
         ...state,
         isFetching: false,
-        items: {
-          ...state.items,
-          [action.payload.id]: action.payload,
-        },
+        items: replaceItem(state.items, action.payload),
       }
 
     case ASSIGN_TASK_SUCCESS:
@@ -124,11 +129,7 @@ export const tasksEntityReducer = (state = tasksEntityInitialState, action = {})
 
         return {
           ...state,
-          items: {
-            ...state.items,
-            [action.payload.id]: action.payload,
-          },
-          order: state.order.concat([ action.payload.id ]),
+          items: replaceItem(state.items, action.payload),
         }
       }
       return state
@@ -140,7 +141,6 @@ export const tasksEntityReducer = (state = tasksEntityInitialState, action = {})
         return {
           ...state,
           items: _.pickBy(state.items, item => item['@id'] !== action.payload['@id']),
-          order: _.filter(state.order, item => item !== action.payload.id),
         }
       }
       return state
@@ -150,10 +150,7 @@ export const tasksEntityReducer = (state = tasksEntityInitialState, action = {})
       return {
         ...state,
         isFetching: false,
-        items: {
-          ...state.items,
-          [action.payload.task.id]: action.payload.task,
-        },
+        items: replaceItem(state.items, action.payload.task),
       }
 
     case MESSAGE:
@@ -216,13 +213,10 @@ const processWsMsg = (state, { type, ...data }) => {
     case 'tasks:changed':
       // order tasks by position
       let tasks = _.sortBy(data.tasks, (task) => task.position)
+
       return {
         ...state,
-        items: tasks.reduce((acc, task) => {
-          acc[task.id] = task
-          return acc
-        }, {}),
-        order: tasks.map((task) => task.id),
+        items: tasks,
       }
   }
 
