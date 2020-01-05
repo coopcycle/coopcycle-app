@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { ActivityIndicator, Dimensions, PixelRatio, StyleSheet, View, Animated, Keyboard } from 'react-native'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 import {
@@ -9,7 +10,7 @@ import Modal from 'react-native-modal'
 
 import AddressTypeahead from '../../../components/AddressTypeahead'
 
-import { hideAddressModal, setAddress } from '../../../redux/Checkout/actions'
+import { setAddressModalHidden, hideAddressModal, setAddress } from '../../../redux/Checkout/actions'
 
 class AddressModal extends Component {
 
@@ -111,7 +112,9 @@ class AddressModal extends Component {
         style={ styles.bottomModal }
         onSwipeComplete={ this.props.hideAddressModal }
         onBackdropPress={ this.props.hideAddressModal }
-        swipeDirection={ ['up', 'down'] }>
+        swipeDirection={ ['up', 'down'] }
+        onModalWillShow={ () => this.props.setAddressModalHidden(false) }
+        onModalHide={ () => this.props.setAddressModalHidden(true) }>
         <Animated.View style={ [ styles.modalContent, { paddingBottom: this.keyboardHeight } ] } testID="addressModal">
           <View style={{ width, height: 44 + 44 + (44 * 3) }}>
             <View style={{ height: 44, alignItems: 'center', justifyContent: 'center' }}>
@@ -147,6 +150,10 @@ class AddressModal extends Component {
       </Modal>
     )
   }
+}
+
+AddressModal.propTypes = {
+  onGoBack: PropTypes.func.isRequired,
 }
 
 const typeaheadStyles = {
@@ -218,6 +225,7 @@ function mapDispatchToProps(dispatch) {
   return {
     setAddress: address => dispatch(setAddress(address)),
     hideAddressModal: () => dispatch(hideAddressModal()),
+    setAddressModalHidden: (isHidden) => dispatch(setAddressModalHidden(isHidden)),
   }
 }
 

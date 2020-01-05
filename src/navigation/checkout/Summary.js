@@ -25,6 +25,7 @@ import { incrementItem, decrementItem, removeItem, validate, showAddressModal, h
 import { selectDeliveryTotal } from '../../redux/Checkout/selectors'
 import CartFooter from './components/CartFooter'
 import AddressModal from './components/AddressModal'
+import ExpiredSessionModal from './components/ExpiredSessionModal'
 
 class Summary extends Component {
 
@@ -250,6 +251,8 @@ class Summary extends Component {
           this.props.hideAddressModal()
           this.props.navigation.navigate('CheckoutSummary')
         }} />
+        <ExpiredSessionModal
+          onModalHide={ () => this.props.navigation.navigate('CheckoutHome') } />
       </View>
     );
   }

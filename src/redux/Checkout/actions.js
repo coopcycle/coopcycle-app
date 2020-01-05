@@ -43,6 +43,11 @@ export const SET_CHECKOUT_LOADING = '@checkout/SET_CHECKOUT_LOADING'
 export const ADD_ITEM_REQUEST = '@checkout/ADD_ITEM_REQUEST'
 export const ADD_ITEM_REQUEST_FINISHED = '@checkout/ADD_ITEM_REQUEST_FINISHED'
 
+export const SHOW_EXPIRED_SESSION_MODAL = '@checkout/SHOW_EXPIRED_SESSION_MODAL'
+export const HIDE_EXPIRED_SESSION_MODAL = '@checkout/HIDE_EXPIRED_SESSION_MODAL'
+export const SESSION_EXPIRED = '@checkout/SESSION_EXPIRED'
+export const SET_ADDRESS_MODAL_HIDDEN = '@checkout/SET_ADDRESS_MODAL_HIDDEN'
+
 /*
  * Action Creators
  */
@@ -77,6 +82,12 @@ export const addItemRequest = createAction(ADD_ITEM_REQUEST)
 export const addItemRequestFinished = createAction(ADD_ITEM_REQUEST_FINISHED)
 
 export const removeItemRequest = createAction(REMOVE_ITEM)
+
+export const showExpiredSessionModal = createAction(SHOW_EXPIRED_SESSION_MODAL)
+export const hideExpiredSessionModal = createAction(HIDE_EXPIRED_SESSION_MODAL)
+
+export const sessionExpired = createAction(SESSION_EXPIRED)
+export const setAddressModalHidden = createAction(SET_ADDRESS_MODAL_HIDDEN)
 
 function validateAddress(httpClient, cart, address) {
   const latitude = address.geo.latitude
@@ -197,14 +208,14 @@ function queueAddItem(item, options = []) {
           options: _.map(options, o => o.identifier),
         })
         .then(res => {
-          dispatch(updateCartSuccess(res))
           dispatch(setCheckoutLoading(false))
           dispatch(addItemRequestFinished(item))
+          dispatch(updateCartSuccess(res))
         })
         .catch(e => {
-          console.log(e)
           dispatch(setCheckoutLoading(false))
           dispatch(addItemRequestFinished(item))
+          dispatch(sessionExpired())
         })
         .finally(next)
     },
@@ -283,6 +294,7 @@ function syncItem(item) {
         })
         .catch(e => {
           dispatch(setCheckoutLoading(false))
+          dispatch(sessionExpired())
         })
         .finally(next)
     },
@@ -336,6 +348,7 @@ function queueRemoveItem(item) {
         })
         .catch(e => {
           dispatch(setCheckoutLoading(false))
+          dispatch(sessionExpired())
         })
         .finally(next)
     },
@@ -382,6 +395,11 @@ function syncAddress() {
           dispatch(setCheckoutLoading(false))
           dispatch(hideAddressModal())
           onSetAddress(address)
+        })
+        .catch(e => {
+          dispatch(setCheckoutLoading(false))
+          dispatch(hideAddressModal())
+          dispatch(sessionExpired())
         })
         .finally(next)
     },

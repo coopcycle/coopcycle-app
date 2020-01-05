@@ -233,6 +233,8 @@
     "TASK_IMAGE_UPLOAD_CONFIRM_LONG": "La imagen fue cargada con éxito",
     "AN_ERROR_OCCURRED": "Se ha producido un error",
     "TASK_ADD_PROOF_OF_DELIVERY": "Añadir una prueba de entrega",
-    "SEARCH": "Buscar…"
+    "SEARCH": "Buscar…",
+    "GO_BACK_TO_RESTAURANTS": "Empezar de nuevo",
+    "SESSION_EXPIRED": "Tu sesión ha expirado"
   }
 }

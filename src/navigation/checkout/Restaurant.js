@@ -2,14 +2,12 @@ import React, { Component } from 'react'
 import { Dimensions, Image, StyleSheet, View } from 'react-native'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
-import {
-  Container, Content,
-  Text,
-} from 'native-base';
+import { Container, Content, Text } from 'native-base';
 import _ from 'lodash'
 
 import CartFooter from './components/CartFooter'
 import AddressModal from './components/AddressModal'
+import ExpiredSessionModal from './components/ExpiredSessionModal'
 
 import Menu from '../../components/Menu'
 
@@ -74,10 +72,13 @@ class Restaurant extends Component {
           testID="cartSubmit"
           disabled={ this.props.isLoading } />
         )}
-        <AddressModal onGoBack={ (address) => {
-          this.props.hideAddressModal()
-          this.props.navigation.navigate('CheckoutHome', { address })
-        }} />
+        <AddressModal
+          onGoBack={ (address) => {
+            this.props.hideAddressModal()
+            navigate('CheckoutHome', { address })
+          }} />
+        <ExpiredSessionModal
+          onModalHide={ () => navigate('CheckoutHome') } />
       </Container>
     );
   }
@@ -108,6 +109,7 @@ function mapStateToProps(state) {
     address: state.checkout.address,
     isLoading: state.checkout.isLoading,
     loadingItems: state.checkout.itemRequestStack,
+    isExpiredSessionModalVisible: state.checkout.isExpiredSessionModalVisible,
   }
 }
 

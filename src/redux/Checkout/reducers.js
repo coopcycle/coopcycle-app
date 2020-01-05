@@ -23,6 +23,10 @@ import {
   ADD_ITEM_REQUEST,
   ADD_ITEM_REQUEST_FINISHED,
   SET_CART_VALIDATION,
+  SHOW_EXPIRED_SESSION_MODAL,
+  HIDE_EXPIRED_SESSION_MODAL,
+  SESSION_EXPIRED,
+  SET_ADDRESS_MODAL_HIDDEN,
 } from './actions'
 
 import i18n from '../../i18n'
@@ -38,12 +42,18 @@ const initialState = {
   isFetching: false,
   errors: [],
   isAddressModalVisible: false,
+  // This is used to make sure address modal is hidden,
+  // before showing expired session modal
+  // @see https://github.com/react-native-community/react-native-modal#i-cant-show-multiple-modals-one-after-another
+  isAddressModalHidden: true,
   timing: {},
   isValid: null,
   violations: [],
   isLoading: false,
   itemRequestStack: [],
   token: null,
+  isExpiredSessionModalVisible: false,
+  isSessionExpired: false,
 }
 
 export default (state = initialState, action = {}) => {
@@ -86,6 +96,7 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         isFetching: true,
+        isSessionExpired: false,
         restaurant: action.payload.restaurant,
         cart: null,
         menu: null, // For better navigation through restaurants
@@ -239,6 +250,35 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         itemRequestStack: newItemRequestStack,
+      }
+
+    case SHOW_EXPIRED_SESSION_MODAL:
+
+      return {
+        ...state,
+        isExpiredSessionModalVisible: true,
+      }
+
+    case HIDE_EXPIRED_SESSION_MODAL:
+
+      return {
+        ...state,
+        isExpiredSessionModalVisible: false,
+      }
+
+    case SESSION_EXPIRED:
+
+      return {
+        ...state,
+        isSessionExpired: true,
+        isExpiredSessionModalVisible: true,
+      }
+
+    case SET_ADDRESS_MODAL_HIDDEN:
+
+      return {
+        ...state,
+        isAddressModalHidden: action.payload,
       }
   }
 

@@ -266,6 +266,8 @@
     "CART_DELIVERY_TIME": "Livraison {{- fromNow}}",
     "CART_DELIVERY_TIME_DIFF": "Livraison dans {{diff}} minutes",
     "FINISHED": "Terminé",
-    "SEARCH": "Rechercher…"
+    "SEARCH": "Rechercher…",
+    "GO_BACK_TO_RESTAURANTS": "Recommencer",
+    "SESSION_EXPIRED": "Votre session a expiré"
   }
 }

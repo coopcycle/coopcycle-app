@@ -268,6 +268,8 @@
     "OTHER_DAY_BETWEEN_START_AND_END": "{{date}} between {{start}} and {{end}}",
     "SIGNATURE_SCREEN_FIRST": "Signature screen as default",
     "FINISHED": "Finished",
-    "SEARCH": "Search…"
+    "SEARCH": "Search…",
+    "GO_BACK_TO_RESTAURANTS": "Start again",
+    "SESSION_EXPIRED": "You session has expired"
   }
 }
