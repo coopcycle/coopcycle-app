@@ -16,6 +16,9 @@
  * Initial state-shapes are provided in each individual reducer file.
  */
 import { combineReducers } from 'redux'
+import { persistReducer } from 'redux-persist'
+import AsyncStorage from '@react-native-community/async-storage'
+
 import { tasksEntityReducer, tasksUiReducer } from './Courier'
 import { appReducer } from './App'
 import accountReducer from './Account/reducers'
@@ -24,9 +27,15 @@ import checkoutReducer from './Checkout/reducers'
 import dispatchReducer from './Dispatch/reducers'
 import storeReducer from './Store/reducers'
 
+const taskEntitiesPersistConfig = {
+  key: 'entities.items',
+  storage: AsyncStorage,
+  whitelist: ['items']
+}
+
 export default combineReducers({
   entities: combineReducers({
-    tasks: tasksEntityReducer,
+    tasks: persistReducer(taskEntitiesPersistConfig, tasksEntityReducer),
   }),
   app: appReducer,
   account: accountReducer,

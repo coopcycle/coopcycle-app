@@ -8,6 +8,7 @@ import { createSwitchNavigator, createAppContainer } from 'react-navigation'
 import { Provider } from 'react-redux'
 import { I18nextProvider } from 'react-i18next'
 import { NetworkProvider } from 'react-native-offline'
+import { PersistGate } from 'redux-persist/integration/react'
 
 import navigation from './navigation'
 import navigators from './navigation/navigators'
@@ -17,7 +18,7 @@ import i18n, { localeDetector } from './i18n'
 import moment from 'moment'
 moment.locale(localeDetector())
 
-import store from './redux/store'
+import store, { persistor } from './redux/store'
 import { setCurrentRoute } from './redux/App/actions'
 import NotificationHandler from './components/NotificationHandler'
 import Spinner from './components/Spinner'
@@ -86,19 +87,21 @@ class App extends Component {
     return (
       <NetworkProvider>
         <Provider store={ store }>
-          <I18nextProvider i18n={ i18n }>
-            <StyleProvider style={ getTheme(coopcycleTheme) }>
-              <Root>
-                <Spinner />
-                <RootNavigator
-                  uriPrefix={ prefix }
-                  ref={ ref => { NavigationHolder.setTopLevelNavigator(ref) } }
-                  onNavigationStateChange={ onNavigationStateChange } />
-                <DropdownAlert ref={ ref => { DropdownHolder.setDropdown(ref) } } />
-                <NotificationHandler />
-              </Root>
-            </StyleProvider>
-          </I18nextProvider>
+          <PersistGate loading={ null } persistor={ persistor }>
+            <I18nextProvider i18n={ i18n }>
+              <StyleProvider style={ getTheme(coopcycleTheme) }>
+                <Root>
+                  <Spinner />
+                  <RootNavigator
+                    uriPrefix={ prefix }
+                    ref={ ref => { NavigationHolder.setTopLevelNavigator(ref) } }
+                    onNavigationStateChange={ onNavigationStateChange } />
+                  <DropdownAlert ref={ ref => { DropdownHolder.setDropdown(ref) } } />
+                  <NotificationHandler />
+                </Root>
+              </StyleProvider>
+            </I18nextProvider>
+          </PersistGate>
         </Provider>
       </NetworkProvider>
     )
