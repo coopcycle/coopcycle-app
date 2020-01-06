@@ -4,8 +4,7 @@ import ReduxAsyncQueue from 'redux-async-queue'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import { createLogger } from 'redux-logger'
 
-import { persistStore, persistReducer } from 'redux-persist'
-import AsyncStorage from '@react-native-community/async-storage'
+import { persistStore } from 'redux-persist'
 
 import reducers from './reducers'
 import PreferencesMiddleware from './middlewares/PreferencesMiddleware'
@@ -17,16 +16,8 @@ if (process.env.NODE_ENV === 'development') {
   middlewares.push(createLogger({ collapsed: true }))
 }
 
-const persistConfig = {
-  key: 'root',
-  storage: AsyncStorage,
-  whitelist: ['entities']
-}
-
-const persistedReducer = persistReducer(persistConfig, reducers)
-
 const store = createStore(
-  persistedReducer,
+  reducers,
   composeWithDevTools(applyMiddleware(...middlewares))
 )
 
