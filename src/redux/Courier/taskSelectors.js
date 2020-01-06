@@ -5,6 +5,7 @@
  * Here we use `reselect`, which allows us to memoize computed property values,
  * benefitting performance.
  */
+import moment from 'moment'
 import { createSelector } from 'reselect'
 import { reject, isEqual, uniqWith } from 'lodash'
 
@@ -15,7 +16,6 @@ export const selectIsTasksLoading = state => state.entities.tasks.isFetching
 export const selectIsTasksRefreshing = state => state.entities.tasks.isRefreshing
 export const selectIsTasksLoadingFailure = state => state.entities.tasks.loadTasksFetchError
 export const selectIsTaskCompleteFailure = state => state.entities.tasks.completeTaskFetchError
-export const selectTasks = state => state.entities.tasks.items
 export const selectTaskFilters = state => state.ui.tasks.excludeFilters
 export const selectKeepAwake = state => state.ui.tasks.keepAwake
 export const selectSignatureScreenFirst = state => state.ui.tasks.signatureScreenFirst
@@ -23,6 +23,16 @@ export const selectSignatures = state => state.entities.tasks.signatures
 export const selectPictures = state => state.entities.tasks.pictures
 
 /* Compound Selectors */
+
+export const selectTasks = createSelector(
+  state => state.entities.tasks.date,
+  state => state.entities.tasks.items,
+  (date, tasks) => {
+    const key = moment(date).format('YYYY-MM-DD')
+
+    return tasks[key] || []
+  }
+)
 
 /**
  * @param   {State}  state Redux state

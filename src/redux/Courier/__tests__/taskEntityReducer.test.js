@@ -111,9 +111,13 @@ describe('Redux | Tasks | Reducers', () => {
       .forEach((actionCreator) => {
         test(`${actionCreator}`, () => {
           const task = { id: 1, foo: 'bar' }
+          const date = moment().format('YYYY-MM-DD')
           const prevState = {
             ...initialState,
-            items: [ task ],
+            date,
+            items: {
+              [ date ]: [ task ],
+            }
           }
 
           const newState = tasksEntityReducer(prevState, actionCreator({ ...task, foo: 'foo' }))
@@ -131,38 +135,46 @@ describe('Redux | Tasks | Reducers', () => {
       })
 
     test(`${message} | tasks:changed`, () => {
+      const date = moment().format('YYYY-MM-DD')
+
       const tasks = [{ id: 1, position: 1 }, { id: 2, position: 0 }]
-      const wsMsg = { type: 'tasks:changed', tasks }
+      const wsMsg = { type: 'tasks:changed', date, tasks }
 
       const prevState = {
         ...initialState,
+        date,
       }
 
       const newState = tasksEntityReducer(prevState, message(wsMsg))
       const fullState = { entities: { tasks: newState } }
 
-      const restOldState = omit(prevState, ['items', 'order'])
-      const restNewState = omit(newState, ['items', 'order'])
+      const restOldState = omit(prevState, ['items'])
+      const restNewState = omit(newState, ['items'])
 
-      expect(selectTasks(fullState)).toEqual([tasks[1], tasks[0]])
+      expect(selectTasks(fullState)).toEqual([ tasks[1], tasks[0] ])
       expect(restOldState).toEqual(restNewState)
     })
 
     test(`${message} | task:changed`, () => {
+      const date = moment().format('YYYY-MM-DD')
+
       const oldTasks = [{ id: 1, position: 0 }, { id: 2, position: 1 }]
       const newTasks = [{ id: 1, position: 0 }, { id: 3, position: 1 }, { id: 2, position: 2 }]
-      const wsMsg = { type: 'tasks:changed', tasks: newTasks }
+      const wsMsg = { type: 'tasks:changed', date, tasks: newTasks }
 
       const prevState = {
         ...initialState,
-        items: oldTasks,
+        date,
+        items: {
+          [ date ]: oldTasks
+        },
       }
 
       const newState = tasksEntityReducer(prevState, message(wsMsg))
       const fullState = { entities: { tasks: newState } }
 
-      const restOldState = omit(prevState, ['items', 'order'])
-      const restNewState = omit(newState, ['items', 'order'])
+      const restOldState = omit(prevState, ['items'])
+      const restNewState = omit(newState, ['items'])
 
       expect(selectTasks(fullState)).toEqual(newTasks);
       expect(restOldState).toEqual(restNewState)

@@ -1,3 +1,4 @@
+import moment from 'moment'
 import { merge, cloneDeep } from 'lodash'
 import {
   selectFilteredTasks, selectAreDoneTasksHidden, selectAreFailedTasksHidden,
@@ -6,13 +7,17 @@ import {
 
 
 describe('Task Selectors', () => {
+  const date = moment().format('YYYY-MM-DD')
   const baseState = {
     entities: {
       tasks: {
-        items: [
-          { id: 1, status: 'DONE', tags: [] },
-          { id: 2, status: 'TODO', tags: [{ name: 'foo', slug: 'foo' }] },
-        ],
+        date,
+        items: {
+          [ date ]: [
+            { id: 1, status: 'DONE', tags: [] },
+            { id: 2, status: 'TODO', tags: [{ name: 'foo', slug: 'foo' }] },
+          ]
+        }
       },
     },
     ui: {
@@ -23,7 +28,7 @@ describe('Task Selectors', () => {
   describe('selectFilteredTasks', () => {
     test('returns full list when exclude object is empty', () => {
       const state = cloneDeep(baseState)
-      expect(selectFilteredTasks(state)).toEqual(state.entities.tasks.items)
+      expect(selectFilteredTasks(state)).toEqual(state.entities.tasks.items[date])
     })
 
     test('returns correctly filtered list for single filter', () => {
@@ -31,7 +36,7 @@ describe('Task Selectors', () => {
         cloneDeep(baseState),
         { ui: { tasks: { excludeFilters: [{ status: 'DONE' }] } } }
       )
-      expect(selectFilteredTasks(state)).toEqual([state.entities.tasks.items[1]])
+      expect(selectFilteredTasks(state)).toEqual([ state.entities.tasks.items[date][1] ])
     })
 
     test('returns correctly filtered list for multiple filters', () => {
@@ -47,7 +52,7 @@ describe('Task Selectors', () => {
         cloneDeep(baseState),
         { ui: { tasks: { excludeFilters: [{ tags: 'foo' }] } } }
       )
-      expect(selectFilteredTasks(state)).toEqual([state.entities.tasks.items[0]])
+      expect(selectFilteredTasks(state)).toEqual([ state.entities.tasks.items[date][0] ])
     })
   })
 
@@ -84,10 +89,12 @@ describe('Task Selectors', () => {
         {
           entities: {
             tasks: {
-              items: [
-                { id: 1, status: 'DONE', tags: [{ name: 'foo', slug: 'foo' }] },
-                { id: 2, status: 'DONE', tags: [{ name: 'bar', slug: 'bar' }] },
-              ],
+              items: {
+                [ date ]: [
+                  { id: 1, status: 'DONE', tags: [{ name: 'foo', slug: 'foo' }] },
+                  { id: 2, status: 'DONE', tags: [{ name: 'bar', slug: 'bar' }] },
+                ],
+              }
             },
           },
         }
@@ -101,10 +108,12 @@ describe('Task Selectors', () => {
         {
           entities: {
             tasks: {
-              items: [
-                { id: 1, status: 'DONE', tags: [{ name: 'foo', slug: 'foo' }] },
-                { id: 2, status: 'DONE', tags: [{ name: 'bar', slug: 'bar' }, { name: 'foo', slug: 'foo' }] },
-              ],
+              items: {
+                [ date ]: [
+                  { id: 1, status: 'DONE', tags: [{ name: 'foo', slug: 'foo' }] },
+                  { id: 2, status: 'DONE', tags: [{ name: 'bar', slug: 'bar' }, { name: 'foo', slug: 'foo' }] },
+                ],
+              }
             },
           },
         }
@@ -122,9 +131,11 @@ describe('Task Selectors', () => {
         {
           entities: {
             tasks: {
-              items: [
-                { id: 1, status: 'DONE', tags: [{ name: 'foo', slug: 'foo' }, { name: 'bar', slug: 'baz' }] },
-              ],
+              items: {
+                [ date ]: [
+                  { id: 1, status: 'DONE', tags: [{ name: 'foo', slug: 'foo' }, { name: 'bar', slug: 'baz' }] },
+                ],
+              }
             },
           },
         }

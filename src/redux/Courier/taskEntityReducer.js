@@ -25,26 +25,28 @@ const tasksEntityInitialState = {
   isFetching: false,               // Flag indicating active HTTP request
   isRefreshing: false,
   date: '',                        // YYYY-MM-DD
-  items: [                         // Array of tasks, keyed by task id
-    // {
-    //   '@id': '',
-    //   id: '',
-    //   type: '',
-    //   status: '',
-    //   address: {
-    //     name: '',
-    //     streetAddress: '',
-    //     doneAfter: '',
-    //     doneBefore: '',
-    //     geo: {
-    //       latitude: 0,
-    //       longitude: 0,
-    //     }
-    //   },
-    //   comments: '',
-    //   tags: [{ name, slug, ...}, ...]
-    // }
-  ],
+  items: {                         // Array of tasks, indexed by date
+    // 'YYYY-MM-DD': [
+    //   {
+    //     '@id': '',
+    //     id: '',
+    //     type: '',
+    //     status: '',
+    //     address: {
+    //       name: '',
+    //       streetAddress: '',
+    //       doneAfter: '',
+    //       doneBefore: '',
+    //       geo: {
+    //         latitude: 0,
+    //         longitude: 0,
+    //       }
+    //     },
+    //     comments: '',
+    //     tags: [{ name, slug, ...}, ...]
+    //   }
+    // ]
+  },
   username: null,
   pictures: [], // Array of base64 encoded pictures
   signatures: [], // Array of base64 encoded signatures
@@ -107,7 +109,10 @@ export const tasksEntityReducer = (state = tasksEntityInitialState, action = {})
         isFetching: false,
         isRefreshing: false,
         date: action.payload.date,
-        items: action.payload.tasks,
+        items: {
+          ...state.items,
+          [ action.payload.date ]: action.payload.tasks
+        },
       }
 
     case MARK_TASK_DONE_SUCCESS:
@@ -115,7 +120,7 @@ export const tasksEntityReducer = (state = tasksEntityInitialState, action = {})
       return {
         ...state,
         isFetching: false,
-        items: replaceItem(state.items, action.payload),
+        items: _.mapValues(state.items, tasks => replaceItem(tasks, action.payload)),
       }
 
     case ASSIGN_TASK_SUCCESS:
@@ -123,7 +128,7 @@ export const tasksEntityReducer = (state = tasksEntityInitialState, action = {})
 
         return {
           ...state,
-          items: replaceItem(state.items, action.payload),
+          items: _.mapValues(state.items, tasks => replaceItem(tasks, action.payload)),
         }
       }
       return state
@@ -134,7 +139,7 @@ export const tasksEntityReducer = (state = tasksEntityInitialState, action = {})
 
         return {
           ...state,
-          items: _.pickBy(state.items, item => item['@id'] !== action.payload['@id']),
+          items: _.mapValues(state.items, tasks => _.pickBy(tasks, item => item['@id'] !== action.payload['@id'])),
         }
       }
       return state
@@ -193,7 +198,6 @@ export const tasksEntityReducer = (state = tasksEntityInitialState, action = {})
   return state
 }
 
-
 const processWsMsg = (state, { type, ...data }) => {
   switch (type) {
     case 'tasks:changed':
@@ -202,7 +206,10 @@ const processWsMsg = (state, { type, ...data }) => {
 
       return {
         ...state,
-        items: tasks,
+        items: {
+          ...state.items,
+          [ data.date ]: tasks
+        },
       }
   }
 
