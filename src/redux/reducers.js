@@ -33,13 +33,19 @@ const taskEntitiesPersistConfig = {
   whitelist: ['items']
 }
 
+const restaurantPersistConfig = {
+  key: 'restaurant',
+  storage: AsyncStorage,
+  whitelist: ['myRestaurants', 'restaurant']
+}
+
 export default combineReducers({
   entities: combineReducers({
     tasks: persistReducer(taskEntitiesPersistConfig, tasksEntityReducer),
   }),
   app: appReducer,
   account: accountReducer,
-  restaurant: restaurantReducer,
+  restaurant: persistReducer(restaurantPersistConfig, restaurantReducer),
   store: storeReducer,
   checkout: checkoutReducer,
   dispatch: dispatchReducer,
