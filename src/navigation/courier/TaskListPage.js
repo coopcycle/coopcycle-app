@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { StyleSheet, View } from 'react-native'
-import { Text } from 'native-base'
+import { StyleSheet, TouchableOpacity, View } from 'react-native'
+import { Icon, Text } from 'native-base'
 
 import { connect } from 'react-redux'
 import { NavigationActions } from 'react-navigation'
@@ -17,9 +17,12 @@ import {
 } from '../../redux/Courier'
 
 const styles = StyleSheet.create({
+  containerEmpty: {
+    alignItems: 'center',
+    paddingTop: 0,
+  },
   container: {
     flex: 1,
-    flexDirection: 'column',
     backgroundColor: whiteColor,
     paddingTop: dateSelectHeaderHeight,
   },
@@ -28,7 +31,7 @@ const styles = StyleSheet.create({
     backgroundColor: whiteColor,
   },
   noTask: {
-    paddingVertical: 30,
+    fontSize: 16,
     textAlign: 'center',
   },
 })
@@ -44,8 +47,13 @@ class TaskListPage extends Component {
       navigateAfter: this.props.navigation.state.routeName,
     }
 
+    const containerStyle = [ styles.container ]
+    if (tasks.length === 0) {
+      containerStyle.push(styles.containerEmpty)
+    }
+
     return (
-      <View style={ styles.container }>
+      <View style={ containerStyle }>
         {
           tasks.length > 0 &&
           <TaskList
@@ -69,7 +77,12 @@ class TaskListPage extends Component {
         }
         {
           tasks.length === 0 &&
-          <Text style={ styles.noTask }>{`${this.props.t('NO_TASKS')} !`}</Text>
+            <TouchableOpacity style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
+              onPress={ () => this.props.loadTasks(this.props.httpClient, selectedDate) }>
+              <Icon type="FontAwesome5" name="check-circle" solid style={{ marginBottom: 15, fontSize: 38, color: '#ecedec' }} />
+              <Text style={ styles.noTask }>{ this.props.t('NO_TASKS') }</Text>
+              <Text note>{ this.props.t('TOUCH_TO_RELOAD') }</Text>
+            </TouchableOpacity>
         }
         <DateSelectHeader
           buttonsEnabled={true}

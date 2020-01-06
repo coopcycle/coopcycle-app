@@ -235,6 +235,7 @@
     "TASK_ADD_PROOF_OF_DELIVERY": "Añadir una prueba de entrega",
     "SEARCH": "Buscar…",
     "GO_BACK_TO_RESTAURANTS": "Empezar de nuevo",
-    "SESSION_EXPIRED": "Tu sesión ha expirado"
+    "SESSION_EXPIRED": "Tu sesión ha expirado",
+    "TOUCH_TO_RELOAD": "Toca para intentar de nuevo"
   }
 }

@@ -270,6 +270,7 @@
     "FINISHED": "Finished",
     "SEARCH": "Search…",
     "GO_BACK_TO_RESTAURANTS": "Start again",
-    "SESSION_EXPIRED": "You session has expired"
+    "SESSION_EXPIRED": "You session has expired",
+    "TOUCH_TO_RELOAD": "Touch to reload"
   }
 }
