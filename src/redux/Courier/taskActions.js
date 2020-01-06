@@ -36,7 +36,7 @@ export const SET_SIGNATURE_SCREEN_FIRST = 'SET_SIGNATURE_SCREEN_FIRST'
  * Action Creators
  */
 export const loadTasksRequest = createAction(LOAD_TASKS_REQUEST, (date, refresh = false) => ({ date, refresh }))
-export const loadTasksSuccess = createAction(LOAD_TASKS_SUCCESS)
+export const loadTasksSuccess = createAction(LOAD_TASKS_SUCCESS, (date, tasks) => ({ date, tasks }))
 export const loadTasksFailure = createAction(LOAD_TASKS_FAILURE)
 export const markTaskDoneRequest = createAction(MARK_TASK_DONE_REQUEST)
 export const markTaskDoneSuccess = createAction(MARK_TASK_DONE_SUCCESS)
@@ -102,7 +102,7 @@ export function loadTasks(client, selectedDate, refresh = false) {
     dispatch(loadTasksRequest(selectedDate, refresh))
 
     return client.get('/api/me/tasks/' + selectedDate.format('YYYY-MM-DD'))
-      .then(res => dispatch(loadTasksSuccess(res['hydra:member'])))
+      .then(res => dispatch(loadTasksSuccess(selectedDate.format('YYYY-MM-DD'), res['hydra:member'])))
       .catch(e => dispatch(loadTasksFailure(e)))
   }
 }

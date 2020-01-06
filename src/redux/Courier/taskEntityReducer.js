@@ -24,6 +24,7 @@ const tasksEntityInitialState = {
   completeTaskFetchError: false,   // Error object describing the error
   isFetching: false,               // Flag indicating active HTTP request
   isRefreshing: false,
+  date: '',                        // YYYY-MM-DD
   items: [                         // Array of tasks, keyed by task id
     // {
     //   '@id': '',
@@ -105,7 +106,8 @@ export const tasksEntityReducer = (state = tasksEntityInitialState, action = {})
         loadTasksFetchError: false,
         isFetching: false,
         isRefreshing: false,
-        items: action.payload,
+        date: action.payload.date,
+        items: action.payload.tasks,
       }
 
     case MARK_TASK_DONE_SUCCESS:

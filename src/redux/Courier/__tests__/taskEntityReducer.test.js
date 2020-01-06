@@ -1,3 +1,4 @@
+import moment from 'moment'
 import { omit } from 'lodash'
 import { tasksEntityReducer } from '../taskEntityReducer'
 import {
@@ -89,17 +90,18 @@ describe('Redux | Tasks | Reducers', () => {
         loadTasksFetchError: true,
         isFetching: true,
       }
-      const newState = tasksEntityReducer(prevState, loadTasksSuccess(tasks))
+      const date = moment().format('YYYY-MM-DD')
+      const newState = tasksEntityReducer(prevState, loadTasksSuccess(date, tasks))
       const fullState = { entities: { tasks: newState } }
 
-      const restOldState = omit(prevState, ['loadTasksFetchError', 'isFetching', 'items', 'order'])
-      const restNewState = omit(newState, ['loadTasksFetchError', 'isFetching', 'items', 'order'])
+      const restOldState = omit(prevState, ['loadTasksFetchError', 'isFetching', 'items'])
+      const restNewState = omit(newState, ['loadTasksFetchError', 'isFetching', 'items'])
 
       expect(selectIsTasksLoading(fullState)).toBe(false)
       expect(selectIsTasksLoadingFailure(fullState)).toBe(false)
       expect(selectTasks(fullState)).toEqual(tasks)
 
-      expect(restOldState).toEqual(restNewState)
+      expect(restOldState).toEqual({ ...restNewState, date: '' })
     });
 
     [

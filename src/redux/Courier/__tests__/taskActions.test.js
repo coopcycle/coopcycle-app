@@ -95,7 +95,10 @@ describe('Redux | Tasks | Actions', () => {
     return promise.then(() => {
       expect(dispatch).toHaveBeenCalledTimes(2)
       expect(dispatch).toHaveBeenCalledWith({ type: LOAD_TASKS_REQUEST, payload: { date, refresh: false } })
-      expect(dispatch).toHaveBeenLastCalledWith({ type: LOAD_TASKS_SUCCESS, payload: resolveValue['hydra:member'] })
+      expect(dispatch).toHaveBeenLastCalledWith({ type: LOAD_TASKS_SUCCESS, payload: {
+        date: date.format('YYYY-MM-DD'),
+        tasks: resolveValue['hydra:member']
+      }})
     })
   })
 
