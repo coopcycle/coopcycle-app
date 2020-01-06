@@ -18,9 +18,6 @@ class DashboardPage extends Component {
 
     KeepAwake.activate()
 
-    // This is needed to display the title
-    this.props.navigation.setParams({ restaurant: this.props.restaurant })
-
     if (this.props.navigation.getParam('loadOrders', true)) {
       this.props.loadOrders(
         this.props.httpClient,
