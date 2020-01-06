@@ -13,7 +13,6 @@ import TasksMapView from '../../components/TasksMapView'
 import {
   loadTasks,
   selectFilteredTasks,
-  selectIsTasksLoadingFailure,
   selectTaskSelectedDate,
   selectKeepAwake,
 } from '../../redux/Courier'
@@ -67,25 +66,6 @@ class TasksPage extends Component {
       RNPinScreen.unpin()
     }
 
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    const { tasksLoadingError, navigation } = this.props
-
-    if (tasksLoadingError && !prevProps.tasksLoadingError) {
-      Alert.alert(
-        this.props.t('FAILED_TASK_LOAD'),
-        this.props.t('TRY_LATER'),
-        [
-          {
-            text: 'OK', onPress: () => {
-              navigation.dispatch(NavigationActions.back())
-            },
-          },
-        ],
-        { cancelable: false }
-      )
-    }
   }
 
   onGeolocationChange(geolocation) {
@@ -205,7 +185,6 @@ function mapStateToProps (state) {
     httpClient: state.app.httpClient,
     tasks: selectFilteredTasks(state),
     selectedDate: selectTaskSelectedDate(state),
-    tasksLoadingError: selectIsTasksLoadingFailure(state),
     keepAwake: selectKeepAwake(state),
   }
 }

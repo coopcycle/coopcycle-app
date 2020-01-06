@@ -82,6 +82,7 @@ export const tasksEntityReducer = (state = tasksEntityInitialState, action = {})
         ...state,
         loadTasksFetchError: false,
         completeTaskFetchError: false,
+        date: moment(action.payload.date).format('YYYY-MM-DD'),
         isFetching: !action.payload.refresh,
         isRefreshing: action.payload.refresh,
       }
