@@ -323,7 +323,7 @@ PODS:
     - React
   - RNGestureHandler (1.5.3):
     - React
-  - RNLocalize (1.3.1):
+  - RNLocalize (1.3.2):
     - React
   - RNReanimated (1.4.0):
     - React
@@ -552,7 +552,7 @@ SPEC CHECKSUMS:
   RNDateTimePicker: 9db00606d689f5653f08aa601c81b9d3266a0a19
   RNFirebase: 37daa9a346d070f9f6ee1f3b4aaf4c8e3b1d5d1c
   RNGestureHandler: 02905abe54e1f6e59c081a10b4bd689721e17aa6
-  RNLocalize: 07eb7a91d10021cdf59d80061ebf3adb8a5b5688
+  RNLocalize: 08eb68476e1f2d8cacd75fa919bf5e219fb03b19
   RNReanimated: b2ab0b693dddd2339bd2f300e770f6302d2e960c
   RNSketchCanvas: 9c28adb5381543ed55cc98ce6de46479cb3cb12c
   RNSound: da030221e6ac7e8290c6b43f2b5f2133a8e225b0
