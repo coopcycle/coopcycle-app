@@ -19,9 +19,6 @@ export const MARK_TASK_DONE_FAILURE = 'MARK_TASK_DONE_FAILURE'
 export const MARK_TASK_FAILED_REQUEST = 'MARK_TASK_FAILED_REQUEST'
 export const MARK_TASK_FAILED_SUCCESS = 'MARK_TASK_FAILED_SUCCESS'
 export const MARK_TASK_FAILED_FAILURE = 'MARK_TASK_FAILED_FAILURE'
-export const UPLOAD_FILE_REQUEST = 'UPLOAD_FILE_REQUEST'
-export const UPLOAD_FILE_SUCCESS = 'UPLOAD_FILE_SUCCESS'
-export const UPLOAD_FILE_FAILURE = 'UPLOAD_FILE_FAILURE'
 
 export const ADD_PICTURE = 'ADD_PICTURE'
 export const ADD_SIGNATURE = 'ADD_SIGNATURE'
@@ -47,9 +44,6 @@ export const markTaskDoneFailure = createAction(MARK_TASK_DONE_FAILURE)
 export const markTaskFailedRequest = createAction(MARK_TASK_FAILED_REQUEST)
 export const markTaskFailedSuccess = createAction(MARK_TASK_FAILED_SUCCESS)
 export const markTaskFailedFailure = createAction(MARK_TASK_FAILED_FAILURE)
-export const uploadFileRequest = createAction(UPLOAD_FILE_REQUEST)
-export const uploadFileSuccess = createAction(UPLOAD_FILE_SUCCESS, (task, taskImage) => ({ task, taskImage }))
-export const uploadFileFailure = createAction(UPLOAD_FILE_FAILURE)
 
 export const addPicture = createAction(ADD_PICTURE, (task, base64) => ({ task, base64 }))
 export const addSignature = createAction(ADD_SIGNATURE, (task, base64) => ({ task, base64 }))

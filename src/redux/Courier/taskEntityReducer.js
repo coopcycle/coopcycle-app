@@ -3,7 +3,6 @@ import {
   LOAD_TASKS_REQUEST, LOAD_TASKS_FAILURE, LOAD_TASKS_SUCCESS,
   MARK_TASK_DONE_REQUEST, MARK_TASK_DONE_FAILURE, MARK_TASK_DONE_SUCCESS,
   MARK_TASK_FAILED_REQUEST, MARK_TASK_FAILED_FAILURE, MARK_TASK_FAILED_SUCCESS,
-  UPLOAD_FILE_REQUEST, UPLOAD_FILE_FAILURE, UPLOAD_FILE_SUCCESS,
   ADD_PICTURE, ADD_SIGNATURE,
   CLEAR_FILES, DELETE_SIGNATURE, DELETE_PICTURE,
 } from './taskActions'
@@ -68,7 +67,6 @@ export const tasksEntityReducer = (state = tasksEntityInitialState, action = {})
   switch (action.type) {
     case MARK_TASK_DONE_REQUEST:
     case MARK_TASK_FAILED_REQUEST:
-    case UPLOAD_FILE_REQUEST:
       return {
         ...state,
         loadTasksFetchError: false,
@@ -98,12 +96,6 @@ export const tasksEntityReducer = (state = tasksEntityInitialState, action = {})
       return {
         ...state,
         completeTaskFetchError: action.payload || action.error,
-        isFetching: false,
-      }
-
-    case UPLOAD_FILE_FAILURE:
-      return {
-        ...state,
         isFetching: false,
       }
 
@@ -144,14 +136,6 @@ export const tasksEntityReducer = (state = tasksEntityInitialState, action = {})
         }
       }
       return state
-
-    case UPLOAD_FILE_SUCCESS:
-
-      return {
-        ...state,
-        isFetching: false,
-        items: replaceItem(state.items, action.payload.task),
-      }
 
     case MESSAGE:
       return processWsMsg(state, action.payload)
