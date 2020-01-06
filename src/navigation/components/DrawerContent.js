@@ -10,9 +10,22 @@ import _ from 'lodash'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 import { SafeAreaView, NavigationActions } from 'react-navigation'
-import { DrawerItems } from 'react-navigation-drawer'
+import { DrawerNavigatorItems } from 'react-navigation-drawer'
 
 class DrawerContent extends Component {
+
+  onItemPress({ route, focused }) {
+    if (focused) {
+      this.props.navigation.closeDrawer()
+    } else {
+      this.props.navigation.dispatch(
+        NavigationActions.navigate({
+          routeName: route.routeName,
+          action: route.action,
+        })
+      )
+    }
+  }
 
   render() {
 
@@ -81,9 +94,11 @@ class DrawerContent extends Component {
             ...this.props,
             items: restaurants.map(restaurant => ({
               ...restaurantItems[0],
-              params: {
-                restaurant,
-              },
+              params: { restaurant },
+              action: NavigationActions.navigate({
+                routeName: 'RestaurantHome',
+                params: { restaurant }
+              })
             })),
             getLabel: ({ route }) => {
               const { restaurant } = route.params
@@ -103,7 +118,9 @@ class DrawerContent extends Component {
 
         restaurantSection = (
           <View>
-            <DrawerItems { ...restaurantItemsProps } />
+            <DrawerNavigatorItems
+              { ...restaurantItemsProps }
+              onItemPress={ this.onItemPress.bind(this) } />
           </View>
         )
       }
@@ -139,7 +156,9 @@ class DrawerContent extends Component {
 
         storeSection = (
           <View>
-            <DrawerItems { ...storeItemsProps } />
+            <DrawerNavigatorItems
+              { ...storeItemsProps }
+              onItemPress={ this.onItemPress.bind(this) } />
           </View>
         )
       }
@@ -152,7 +171,7 @@ class DrawerContent extends Component {
 
         courierSection = (
           <View>
-            <DrawerItems { ...courierItemsProps } />
+            <DrawerNavigatorItems { ...courierItemsProps } />
           </View>
         )
       }
@@ -165,14 +184,16 @@ class DrawerContent extends Component {
 
         adminSection = (
           <View>
-            <DrawerItems { ...adminItemsProps } />
+            <DrawerNavigatorItems { ...adminItemsProps } />
           </View>
         )
       }
     }
 
     const navigateToAccount = () =>
-      this.props.navigation.dispatch(NavigationActions.navigate({ routeName: 'AccountNav' }))
+      this.props.navigation.dispatch(
+        NavigationActions.navigate({ routeName: 'AccountNav' })
+      )
 
     return (
       <ScrollView>
@@ -181,7 +202,7 @@ class DrawerContent extends Component {
             <Icon name="person" />
             { isAuthenticated && <Text>{ this.props.user.username }</Text> }
           </TouchableOpacity>
-          <DrawerItems { ...otherItemsProps } itemsContainerStyle={ styles.itemsContainer } />
+          <DrawerNavigatorItems { ...otherItemsProps } itemsContainerStyle={ styles.itemsContainer } />
           { restaurantSection }
           { storeSection }
           { courierSection }
