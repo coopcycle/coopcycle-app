@@ -20,12 +20,12 @@ import _ from 'lodash'
  * Intital state shape for the task entity reducer
  */
 const tasksEntityInitialState = {
-  loadTasksFetchError: false,      // Error object describing the error
-  completeTaskFetchError: false,   // Error object describing the error
-  isFetching: false,               // Flag indicating active HTTP request
+  loadTasksFetchError: false,          // Error object describing the error
+  completeTaskFetchError: false,       // Error object describing the error
+  isFetching: false,                   // Flag indicating active HTTP request
   isRefreshing: false,
-  date: '',                        // YYYY-MM-DD
-  items: {                         // Array of tasks, indexed by date
+  date: moment().format('YYYY-MM-DD'), // YYYY-MM-DD
+  items: {                             // Array of tasks, indexed by date
     // 'YYYY-MM-DD': [
     //   {
     //     '@id': '',
