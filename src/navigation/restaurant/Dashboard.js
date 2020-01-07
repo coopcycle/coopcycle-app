@@ -5,8 +5,10 @@ import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 import KeepAwake from 'react-native-keep-awake'
 import moment from 'moment'
+import { NetworkConsumer } from 'react-native-offline'
 
 import DangerAlert from '../../components/DangerAlert'
+import Offline from '../../components/Offline'
 import OrderList from './components/OrderList'
 import DatePickerHeader from './components/DatePickerHeader'
 import { changeStatus, loadOrders, changeDate, deleteOpeningHoursSpecification } from '../../redux/Restaurant/actions'
@@ -51,7 +53,7 @@ class DashboardPage extends Component {
     }
   }
 
-  render() {
+  renderDashboard() {
 
     const { navigate } = this.props.navigation
     const { orders, date, restaurant, specialOpeningHoursSpecification } = this.props
@@ -68,7 +70,7 @@ class DashboardPage extends Component {
             text={ this.props.t('RESTAURANT_ALERT_CLOSED') }
             onClose={ () => this.props.deleteOpeningHoursSpecification(specialOpeningHoursSpecification) } />
         )}
-        <Content style={ styles.content }>
+        <Content>
           <DatePickerHeader
             date={ date }
             onCalendarClick={ () => navigate('RestaurantDate') }
@@ -79,11 +81,34 @@ class DashboardPage extends Component {
       </Container>
     )
   }
+
+  render() {
+
+    return (
+      <NetworkConsumer>
+        {({ isConnected }) => {
+          if (isConnected) {
+            return this.renderDashboard()
+          }
+
+          return (
+            <Container>
+              <Content contentContainerStyle={ styles.content }>
+                <Offline />
+              </Content>
+            </Container>
+          )
+        }}
+      </NetworkConsumer>
+    )
+  }
 }
 
 const styles = StyleSheet.create({
   content: {
-    backgroundColor: '#fff',
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   message: {
     alignItems: 'center',

@@ -236,6 +236,7 @@
     "SEARCH": "Buscar…",
     "GO_BACK_TO_RESTAURANTS": "Empezar de nuevo",
     "SESSION_EXPIRED": "Tu sesión ha expirado",
-    "TOUCH_TO_RELOAD": "Toca para intentar de nuevo"
+    "TOUCH_TO_RELOAD": "Toca para intentar de nuevo",
+    "OFFLINE": "Estás desconectado"
   }
 }

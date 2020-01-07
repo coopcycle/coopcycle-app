@@ -269,6 +269,7 @@
     "SEARCH": "Rechercher…",
     "GO_BACK_TO_RESTAURANTS": "Recommencer",
     "SESSION_EXPIRED": "Votre session a expiré",
-    "TOUCH_TO_RELOAD": "Touchez pour réessayer"
+    "TOUCH_TO_RELOAD": "Touchez pour réessayer",
+    "OFFLINE": "Vous êtes déconnecté·e"
   }
 }
