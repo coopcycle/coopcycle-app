@@ -33,9 +33,6 @@ jest.mock('tipsi-stripe', () => ({
   },
 }))
 
-// mock 'fetch' globally
-global.fetch = require('jest-fetch-mock')
-
 const fakeNavigator = {
   dispatch: (action) => {}
 }

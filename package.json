@@ -94,7 +94,6 @@
     "enzyme-to-json": "^3.4.0",
     "eslint": "^5.0.0",
     "jest": "^24.9.0",
-    "jest-fetch-mock": "^2.1.1",
     "jetifier": "^1.6.4",
     "metro-react-native-babel-preset": "^0.56.0",
     "mock-async-storage": "^2.2.0",
