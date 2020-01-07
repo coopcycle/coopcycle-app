@@ -101,7 +101,7 @@ describe('Redux | Tasks | Reducers', () => {
       expect(selectIsTasksLoadingFailure(fullState)).toBe(false)
       expect(selectTasks(fullState)).toEqual(tasks)
 
-      expect(restOldState).toEqual({ ...restNewState, date: '' })
+      expect(restOldState).toEqual({ ...restNewState, date })
     });
 
     [
