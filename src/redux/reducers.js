@@ -26,11 +26,13 @@ import restaurantReducer from './Restaurant/reducers'
 import checkoutReducer from './Checkout/reducers'
 import dispatchReducer from './Dispatch/reducers'
 import storeReducer from './Store/reducers'
+import { createTaskItemsTransform } from './util'
 
 const taskEntitiesPersistConfig = {
   key: 'entities.items',
   storage: AsyncStorage,
-  whitelist: ['items']
+  whitelist: ['items'],
+  transforms: [ createTaskItemsTransform() ],
 }
 
 const restaurantPersistConfig = {
