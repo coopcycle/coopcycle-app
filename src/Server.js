@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-community/async-storage'
+import axios from 'axios'
 
 const load = () => {
 
@@ -23,15 +24,9 @@ const fetchRemote = () => {
 
   return new Promise((resolve, reject) => {
     try {
-      fetch('https://coopcycle.org/coopcycle.json')
-        .then(res => {
-          if (res.ok) {
-            res.json().then(resolve)
-          } else {
-            resolve([])
-          }
-        })
-        .catch(e => resolve([]))
+      axios.get('https://coopcycle.org/coopcycle.json')
+        .then((response) => resolve(response.data))
+        .catch(() => resolve([]))
     } catch (e) {
       resolve([])
     }
