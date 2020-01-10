@@ -423,9 +423,12 @@ const resolveBaseURL = function(server) {
       return
     }
 
+    // There is no way to "ping" the server in JavaScript, because of same-origin policy.
+    // Here, we don't really try HTTPS, and fallback to HTTP
+    // Actually, the HTTP "fallback" is for development, i.e localhost for ex.
     if (!server.startsWith('http://') && !server.startsWith('https://')) {
       axios
-        .get(`https://${server}`, { timeout: 3000 })
+        .head(`https://${server}/api`)
         .then(response => resolve(`https://${server}`))
         .catch(error => resolve(`http://${server}`))
     } else {
