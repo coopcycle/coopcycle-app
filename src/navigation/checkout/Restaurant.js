@@ -18,10 +18,7 @@ import { init, addItem, hideAddressModal, resetRestaurant, setAddress } from '..
 // eslint-disable-next-line no-unused-vars
 const GroupImageHeader = (props) => {
 
-
   const { navigation, collapsible } = props
-
-  console.log('GroupImageHeader', props)
 
   const restaurant = navigation.getParam('restaurant')
 
@@ -56,46 +53,6 @@ const GroupImageHeader = (props) => {
   );
 };
 
-/*
-
-<Animated.Image
-        source={{ uri: restaurant.image }}
-        resizeMode="cover"
-        style={{
-          position: 'absolute',
-          width: '100%',
-          height: '100%',
-          opacity: translateOpacity,
-        }}
-      />
-      <Animated.Image
-        source={{ uri: restaurant.image }}
-        resizeMode="cover"
-        style={{
-          transform: [{ scale: translateOpacity }],
-          opacity: translateOpacity,
-          alignSelf: 'center',
-          width: 80,
-          height: 80,
-          borderWidth: 1,
-          borderColor: 'white',
-          borderRadius: 50,
-        }}
-      />
-
-      */
-
-const collapsibleParams = {
-  collapsibleComponent: GroupImageHeader,
-  collapsibleBackgroundStyle: {
-    height: 160,
-    backgroundColor: '#ffffff',
-    disableFadeoutInnerComponent: true,
-  },
-};
-
-// const CollapsibleMenu = withCollapsible(Menu, collapsibleParams);
-
 class Restaurant extends Component {
 
   constructor(props) {
@@ -129,27 +86,8 @@ class Restaurant extends Component {
     const restaurant = this.props.navigation.getParam('restaurant')
     const { isCartEmpty, menu } = this.props
 
-    // return (
-    //   <Menu
-    //     collapsible={ this.props.collapsible }
-    //     restaurant={ restaurant }
-    //     menu={ menu }
-    //     onItemClick={ menuItem => this.props.addItem(menuItem) }
-    //     isItemLoading={ menuItem => {
-    //       return _.includes(this.props.loadingItems, menuItem.identifier)
-    //     } } />
-    // )
-
-    // contentContainerStyle={{paddingTop: paddingHeight}}
-        // scrollIndicatorInsets={{top: paddingHeight}}
-        // _mustAddThis={animatedY}
-
-    // const { paddingHeight, animatedY, onScroll } = this.props.collapsible;
-
-    // console.log('paddingHeight', paddingHeight)
-
     return (
-      <View style={{ paddingTop: 0 }}>
+      <Container>
         <Menu
           collapsible={ this.props.collapsible }
           restaurant={ restaurant }
@@ -171,19 +109,8 @@ class Restaurant extends Component {
           }} />
         <ExpiredSessionModal
           onModalHide={ () => navigate('CheckoutHome') } />
-      </View>
-    );
-
-    // return (
-    //   <Menu
-    //     collapsible={ this.props.collapsible }
-    //     restaurant={ restaurant }
-    //     menu={ menu }
-    //     onItemClick={ menuItem => this.props.addItem(menuItem) }
-    //     isItemLoading={ menuItem => {
-    //       return _.includes(this.props.loadingItems, menuItem.identifier)
-    //     } } />
-    // )
+      </Container>
+    )
   }
 }
 
@@ -234,17 +161,16 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-// const collapsibleParams = {
-//   collapsibleComponent: GroupImageHeader,
-//   collapsibleBackgroundStyle: {
-//     height: 200,
-//     backgroundColor: '#061',
-//     disableFadeoutInnerComponent: true,
-//   },
-// };
+const collapsibleParams = {
+  collapsibleComponent: GroupImageHeader,
+  collapsibleBackgroundStyle: {
+    height: 160,
+    backgroundColor: '#ffffff',
+    disableFadeoutInnerComponent: true,
+  },
+};
 
-// const comp =
-
-const c = connect(mapStateToProps, mapDispatchToProps)(withTranslation()(Restaurant))
-
-module.exports = withCollapsible(c, collapsibleParams);
+module.exports = withCollapsible(
+  connect(mapStateToProps, mapDispatchToProps)(withTranslation()(Restaurant)),
+  collapsibleParams
+);
