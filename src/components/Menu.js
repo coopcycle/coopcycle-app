@@ -12,18 +12,17 @@ const styles = StyleSheet.create({
   sectionHeader: {
     paddingVertical: 10,
     paddingHorizontal: 15,
-    borderTopWidth: 1,
-    borderTopColor: '#f1f1f1',
+    backgroundColor: '#f7f7f7'
   },
   sectionHeaderText: {
-    fontFamily: 'Raleway-Regular',
-    color: '#d9d9d9',
-    fontSize: 14,
+    color: '#3e3e3e',
+    fontSize: 15,
     fontWeight: 'bold',
+    textAlign: 'center'
   },
   item: {
-    marginBottom: 10,
     paddingHorizontal: 15,
+    paddingVertical: 10,
   },
   disabledText: {
     color: '#a7a7a7',
@@ -41,7 +40,16 @@ const styles = StyleSheet.create({
     color: '#747474',
     fontSize: 22,
   },
+  itemSeparator: {
+    height: StyleSheet.hairlineWidth,
+    width: '100%',
+    backgroundColor: '#e7e7e7',
+  },
 });
+
+const ItemSeparatorComponent = () => (
+  <View style={ styles.itemSeparator } />
+)
 
 class Menu extends Component {
 
@@ -122,7 +130,8 @@ class Menu extends Component {
         renderItem={ ({ item, index, section }) => this.renderItem(item, index, section) }
         renderSectionHeader={ ({ section }) => this.renderSectionHeader(section) }
         keyExtractor={ (item, index) => index }
-        initialNumToRender={ 15 } />
+        initialNumToRender={ 15 }
+        ItemSeparatorComponent={ ItemSeparatorComponent } />
     )
   }
 }
