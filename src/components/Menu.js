@@ -3,7 +3,6 @@ import { Animated, ActivityIndicator, SectionList, StyleSheet, TouchableOpacity,
 import { Icon, Text } from 'native-base';
 import { Col, Grid } from 'react-native-easy-grid'
 import _ from 'lodash'
-import {withCollapsible} from 'react-navigation-collapsible'
 
 const AnimatedSectionList = Animated.createAnimatedComponent(SectionList);
 
@@ -43,54 +42,6 @@ const styles = StyleSheet.create({
     fontSize: 22,
   },
 });
-
-const collapsibleParams = {
-  collapsibleComponent: GroupImageHeader,
-  collapsibleBackgroundStyle: {
-    height: 200,
-    backgroundColor: '#061',
-    disableFadeoutInnerComponent: true,
-  },
-};
-
-// eslint-disable-next-line no-unused-vars
-const GroupImageHeader = ({ navigation, collapsible }) => {
-
-  console.log('GroupImageHeader', collapsible)
-
-  const restaurant = navigation.getParam('restaurant')
-
-  // eslint-disable-next-line no-unused-vars
-  const { translateY, translateOpacity, translateProgress } = collapsible;
-
-  return (
-    <View style={{ width: '100%', height: '100%', justifyContent: 'center' }}>
-      <Image
-        source={{ uri: restaurant.image }}
-        resizeMode="cover"
-        style={{
-          position: 'absolute',
-          width: '100%',
-          height: '100%',
-          opacity: 0.5,
-        }}
-      />
-      <Animated.Image
-        source={{ uri: restaurant.image }}
-        resizeMode="cover"
-        style={{
-          transform: [{scale: translateOpacity}],
-          alignSelf: 'center',
-          width: 100,
-          height: 100,
-          borderWidth: 4,
-          borderColor: 'white',
-          borderRadius: 50,
-        }}
-      />
-    </View>
-  );
-};
 
 class Menu extends Component {
 
@@ -165,7 +116,6 @@ class Menu extends Component {
       <AnimatedSectionList
         contentContainerStyle={{paddingTop: paddingHeight}}
         scrollIndicatorInsets={{top: paddingHeight}}
-        // _mustAddThis={animatedY}
         onScroll={onScroll}
         testID="menu"
         sections={ sections }
@@ -176,7 +126,5 @@ class Menu extends Component {
     )
   }
 }
-
-// export default withCollapsible(Menu, collapsibleParams);
 
 export default Menu
