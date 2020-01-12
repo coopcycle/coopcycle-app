@@ -1,8 +1,11 @@
 import React, { Component } from 'react'
-import { ActivityIndicator, SectionList, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { Animated, ActivityIndicator, SectionList, StyleSheet, TouchableOpacity, View } from 'react-native'
 import { Icon, Text } from 'native-base';
 import { Col, Grid } from 'react-native-easy-grid'
 import _ from 'lodash'
+import {withCollapsible} from 'react-navigation-collapsible'
+
+const AnimatedSectionList = Animated.createAnimatedComponent(SectionList);
 
 import { formatPrice } from '../utils/formatting'
 
@@ -41,7 +44,55 @@ const styles = StyleSheet.create({
   },
 });
 
-export default class Menu extends Component {
+const collapsibleParams = {
+  collapsibleComponent: GroupImageHeader,
+  collapsibleBackgroundStyle: {
+    height: 200,
+    backgroundColor: '#061',
+    disableFadeoutInnerComponent: true,
+  },
+};
+
+// eslint-disable-next-line no-unused-vars
+const GroupImageHeader = ({ navigation, collapsible }) => {
+
+  console.log('GroupImageHeader', collapsible)
+
+  const restaurant = navigation.getParam('restaurant')
+
+  // eslint-disable-next-line no-unused-vars
+  const { translateY, translateOpacity, translateProgress } = collapsible;
+
+  return (
+    <View style={{ width: '100%', height: '100%', justifyContent: 'center' }}>
+      <Image
+        source={{ uri: restaurant.image }}
+        resizeMode="cover"
+        style={{
+          position: 'absolute',
+          width: '100%',
+          height: '100%',
+          opacity: 0.5,
+        }}
+      />
+      <Animated.Image
+        source={{ uri: restaurant.image }}
+        resizeMode="cover"
+        style={{
+          transform: [{scale: translateOpacity}],
+          alignSelf: 'center',
+          width: 100,
+          height: 100,
+          borderWidth: 4,
+          borderColor: 'white',
+          borderRadius: 50,
+        }}
+      />
+    </View>
+  );
+};
+
+class Menu extends Component {
 
   renderSectionHeader(section) {
     return (
@@ -97,6 +148,7 @@ export default class Menu extends Component {
   render() {
 
     const { menu } = this.props
+    const {paddingHeight, animatedY, onScroll} = this.props.collapsible;
 
     let sections = []
     if (menu) {
@@ -110,15 +162,21 @@ export default class Menu extends Component {
     }
 
     return (
-      <View style={{ backgroundColor: '#fff' }}>
-        <SectionList
-          testID="menu"
-          sections={ sections }
-          renderItem={ ({ item, index, section }) => this.renderItem(item, index, section) }
-          renderSectionHeader={ ({ section }) => this.renderSectionHeader(section) }
-          keyExtractor={ (item, index) => index }
-          initialNumToRender={ 15 } />
-      </View>
+      <AnimatedSectionList
+        contentContainerStyle={{paddingTop: paddingHeight}}
+        scrollIndicatorInsets={{top: paddingHeight}}
+        // _mustAddThis={animatedY}
+        onScroll={onScroll}
+        testID="menu"
+        sections={ sections }
+        renderItem={ ({ item, index, section }) => this.renderItem(item, index, section) }
+        renderSectionHeader={ ({ section }) => this.renderSectionHeader(section) }
+        keyExtractor={ (item, index) => index }
+        initialNumToRender={ 15 } />
     )
   }
 }
+
+// export default withCollapsible(Menu, collapsibleParams);
+
+export default Menu

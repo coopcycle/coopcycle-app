@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
-import { Dimensions, Image, StyleSheet, View } from 'react-native'
+import { Dimensions, Image, ImageBackground, StyleSheet, View, Animated } from 'react-native'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 import { Container, Content, Text } from 'native-base';
 import _ from 'lodash'
+
+import {withCollapsible} from 'react-navigation-collapsible'
 
 import CartFooter from './components/CartFooter'
 import AddressModal from './components/AddressModal'
@@ -12,6 +14,87 @@ import ExpiredSessionModal from './components/ExpiredSessionModal'
 import Menu from '../../components/Menu'
 
 import { init, addItem, hideAddressModal, resetRestaurant, setAddress } from '../../redux/Checkout/actions'
+
+// eslint-disable-next-line no-unused-vars
+const GroupImageHeader = (props) => {
+
+
+  const { navigation, collapsible } = props
+
+  console.log('GroupImageHeader', props)
+
+  const restaurant = navigation.getParam('restaurant')
+
+  // eslint-disable-next-line no-unused-vars
+  const { translateY, translateOpacity, translateProgress } = collapsible;
+
+  return (
+    <Animated.View style={{
+      width: '100%',
+      height: '100%',
+      opacity: translateOpacity, }}>
+      <ImageBackground source={{ uri: restaurant.image }} style={{width: '100%', height: '100%'}}>
+        <View style={styles.overlay}>
+          <Animated.Image
+            source={{ uri: restaurant.image }}
+            resizeMode="cover"
+            style={{
+              transform: [{ scale: translateOpacity }],
+              opacity: translateOpacity,
+              alignSelf: 'center',
+              width: 80,
+              height: 80,
+              borderWidth: 1,
+              borderColor: 'white',
+              borderRadius: 50,
+            }}
+          />
+          <Text style={{ color: '#ffffff', fontFamily: 'Raleway-Regular', marginTop: 5, fontWeight: 'bold', }}>{ restaurant.name }</Text>
+        </View>
+      </ImageBackground>
+    </Animated.View>
+  );
+};
+
+/*
+
+<Animated.Image
+        source={{ uri: restaurant.image }}
+        resizeMode="cover"
+        style={{
+          position: 'absolute',
+          width: '100%',
+          height: '100%',
+          opacity: translateOpacity,
+        }}
+      />
+      <Animated.Image
+        source={{ uri: restaurant.image }}
+        resizeMode="cover"
+        style={{
+          transform: [{ scale: translateOpacity }],
+          opacity: translateOpacity,
+          alignSelf: 'center',
+          width: 80,
+          height: 80,
+          borderWidth: 1,
+          borderColor: 'white',
+          borderRadius: 50,
+        }}
+      />
+
+      */
+
+const collapsibleParams = {
+  collapsibleComponent: GroupImageHeader,
+  collapsibleBackgroundStyle: {
+    height: 160,
+    backgroundColor: '#ffffff',
+    disableFadeoutInnerComponent: true,
+  },
+};
+
+// const CollapsibleMenu = withCollapsible(Menu, collapsibleParams);
 
 class Restaurant extends Component {
 
@@ -46,26 +129,35 @@ class Restaurant extends Component {
     const restaurant = this.props.navigation.getParam('restaurant')
     const { isCartEmpty, menu } = this.props
 
+    // return (
+    //   <Menu
+    //     collapsible={ this.props.collapsible }
+    //     restaurant={ restaurant }
+    //     menu={ menu }
+    //     onItemClick={ menuItem => this.props.addItem(menuItem) }
+    //     isItemLoading={ menuItem => {
+    //       return _.includes(this.props.loadingItems, menuItem.identifier)
+    //     } } />
+    // )
+
+    // contentContainerStyle={{paddingTop: paddingHeight}}
+        // scrollIndicatorInsets={{top: paddingHeight}}
+        // _mustAddThis={animatedY}
+
+    // const { paddingHeight, animatedY, onScroll } = this.props.collapsible;
+
+    // console.log('paddingHeight', paddingHeight)
+
     return (
-      <Container>
-        <View style={{ height: (height * 0.1) }}>
-          <Image
-            style={{ flex: 1, width, height: ((height * 0.1) / 2) }}
-            source={{ uri: restaurant.image }}
-            resizeMode="cover" />
-          <View style={ styles.heading }>
-            <Text style={{ flex: 2, fontFamily: 'Raleway-Regular' }}>{ restaurant.name }</Text>
-          </View>
-        </View>
-        <Content>
-          <Menu
-            restaurant={ restaurant }
-            menu={ menu }
-            onItemClick={ menuItem => this.props.addItem(menuItem) }
-            isItemLoading={ menuItem => {
-              return _.includes(this.props.loadingItems, menuItem.identifier)
-            } } />
-        </Content>
+      <View style={{ paddingTop: 0 }}>
+        <Menu
+          collapsible={ this.props.collapsible }
+          restaurant={ restaurant }
+          menu={ menu }
+          onItemClick={ menuItem => this.props.addItem(menuItem) }
+          isItemLoading={ menuItem => {
+            return _.includes(this.props.loadingItems, menuItem.identifier)
+          } } />
         { !isCartEmpty && (
         <CartFooter
           onSubmit={ () => navigate('CheckoutSummary') }
@@ -79,12 +171,31 @@ class Restaurant extends Component {
           }} />
         <ExpiredSessionModal
           onModalHide={ () => navigate('CheckoutHome') } />
-      </Container>
+      </View>
     );
+
+    // return (
+    //   <Menu
+    //     collapsible={ this.props.collapsible }
+    //     restaurant={ restaurant }
+    //     menu={ menu }
+    //     onItemClick={ menuItem => this.props.addItem(menuItem) }
+    //     isItemLoading={ menuItem => {
+    //       return _.includes(this.props.loadingItems, menuItem.identifier)
+    //     } } />
+    // )
   }
 }
 
 const styles = StyleSheet.create({
+  overlay: {
+    position: 'absolute',
+          width: '100%',
+          height: '100%',
+    backgroundColor:'rgba(0,0,0,0.5)',
+    justifyContent: 'center',
+      alignItems: 'center',
+  },
   heading: {
     flex: 1,
     flexDirection: 'row',
@@ -123,4 +234,17 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(withTranslation()(Restaurant))
+// const collapsibleParams = {
+//   collapsibleComponent: GroupImageHeader,
+//   collapsibleBackgroundStyle: {
+//     height: 200,
+//     backgroundColor: '#061',
+//     disableFadeoutInnerComponent: true,
+//   },
+// };
+
+// const comp =
+
+const c = connect(mapStateToProps, mapDispatchToProps)(withTranslation()(Restaurant))
+
+module.exports = withCollapsible(c, collapsibleParams);
