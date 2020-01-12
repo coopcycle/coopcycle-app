@@ -17,24 +17,30 @@ const styles = StyleSheet.create({
   sectionHeaderText: {
     color: '#3e3e3e',
     fontSize: 15,
-    fontWeight: 'bold',
     textAlign: 'center'
   },
   item: {
-    paddingHorizontal: 15,
-    paddingVertical: 10,
+    paddingRight: 10,
+    paddingLeft: 25,
+    paddingVertical: 15,
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   disabledText: {
     color: '#a7a7a7',
   },
   itemPrice: {
-    color: '#828282',
-    fontSize: 14,
+    color: '#333',
+    fontSize: 18,
+    marginRight: 10
   },
   rightCol: {
     flex: 1,
-    alignItems: 'flex-end',
-    justifyContent: 'center',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    paddingRight: 20,
   },
   rightIcon: {
     color: '#747474',
@@ -89,17 +95,17 @@ class Menu extends Component {
 
     return (
       <TouchableOpacity style={ styles.item } { ...itemProps } testID={ `menuItem:${section.index}:${index}` }>
-        <Grid>
-          <Col size={ 4 }>
-            <Text style={ itemNameStyle }>{ item.name }</Text>
-            { item.description && ( <Text note>{ item.description }</Text> ) }
-            <Text style={ itemPriceStyle }>{ formatPrice(item.offers.price) } €</Text>
-          </Col>
-          <Col size={ 1 } style={ styles.rightCol }>
-            { !isLoading && <Icon type="FontAwesome" name={ rightIconName } style={ rightIconStyle } /> }
-            { isLoading  && <ActivityIndicator size="small" /> }
-          </Col>
-        </Grid>
+        <View style={{ flex: 3 }}>
+          <Text style={ itemNameStyle }>{ item.name }</Text>
+          { (item.description && item.description.length > 0) && (
+            <Text note numberOfLines={4} ellipsizeMode="tail">{ item.description }</Text>
+          )}
+        </View>
+
+        <View style={ styles.rightCol }>
+          <Text style={ itemPriceStyle }>{ `${formatPrice(item.offers.price)}€` }</Text>
+          { isLoading && <ActivityIndicator size="small" style={{ position: 'absolute', right: 0 }} /> }
+        </View>
       </TouchableOpacity>
     )
   }
