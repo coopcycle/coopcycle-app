@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
-import { ActivityIndicator, SectionList, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { Animated, ActivityIndicator, SectionList, StyleSheet, TouchableOpacity, View } from 'react-native'
 import { Icon, Text } from 'native-base';
 import { Col, Grid } from 'react-native-easy-grid'
 import _ from 'lodash'
+
+const AnimatedSectionList = Animated.createAnimatedComponent(SectionList);
 
 import { formatPrice } from '../utils/formatting'
 
@@ -41,7 +43,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default class Menu extends Component {
+class Menu extends Component {
 
   renderSectionHeader(section) {
     return (
@@ -97,6 +99,7 @@ export default class Menu extends Component {
   render() {
 
     const { menu } = this.props
+    const {paddingHeight, animatedY, onScroll} = this.props.collapsible;
 
     let sections = []
     if (menu) {
@@ -110,15 +113,18 @@ export default class Menu extends Component {
     }
 
     return (
-      <View style={{ backgroundColor: '#fff' }}>
-        <SectionList
-          testID="menu"
-          sections={ sections }
-          renderItem={ ({ item, index, section }) => this.renderItem(item, index, section) }
-          renderSectionHeader={ ({ section }) => this.renderSectionHeader(section) }
-          keyExtractor={ (item, index) => index }
-          initialNumToRender={ 15 } />
-      </View>
+      <AnimatedSectionList
+        contentContainerStyle={{paddingTop: paddingHeight}}
+        scrollIndicatorInsets={{top: paddingHeight}}
+        onScroll={onScroll}
+        testID="menu"
+        sections={ sections }
+        renderItem={ ({ item, index, section }) => this.renderItem(item, index, section) }
+        renderSectionHeader={ ({ section }) => this.renderSectionHeader(section) }
+        keyExtractor={ (item, index) => index }
+        initialNumToRender={ 15 } />
     )
   }
 }
+
+export default Menu
