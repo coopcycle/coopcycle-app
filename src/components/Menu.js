@@ -120,7 +120,7 @@ class Menu extends Component {
       _.forEach(menu.hasMenuSection, (menuSection, index) => {
         sections.push({
           title: menuSection.name,
-          data: menuSection.hasMenuItem,
+          data: _.filter(menuSection.hasMenuItem, it => it.enabled),
           index,
         })
       })
