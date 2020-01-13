@@ -168,14 +168,12 @@ class ProductOptions extends Component {
             { this.props.t('CHECKOUT_PRODUCT_OPTIONS_DISCLAIMER', { name: product.name }) }
           </Text>
         </View>
-        <Content>
-          <SectionList
-            sections={ sections }
-            renderItem={ ({ item, section }) => this.renderItem(item, section) }
-            renderSectionHeader={ ({ section }) => this.renderSection(section) }
-            keyExtractor={ (item, index) => index }
-          />
-        </Content>
+        <SectionList
+          sections={ sections }
+          renderItem={ ({ item, section }) => this.renderItem(item, section) }
+          renderSectionHeader={ ({ section }) => this.renderSection(section) }
+          keyExtractor={ (item, index) => index }
+        />
         { this.renderFooter() }
       </Container>
     )
