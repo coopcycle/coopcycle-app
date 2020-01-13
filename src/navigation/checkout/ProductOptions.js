@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View } from 'react-native'
+import { SectionList, View } from 'react-native'
 import { Container, Content, ListItem, Text, Radio, Right, Left, Footer, FooterTab, Button } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
@@ -106,7 +106,7 @@ class ProductOptions extends Component {
     }
   }
 
-  renderItem(menuSection, menuItem) {
+  renderItem(menuItem, menuSection) {
 
     const { options } = this.state
 
@@ -140,11 +140,10 @@ class ProductOptions extends Component {
 
   renderSection(menuSection) {
     return (
-      <View key={ menuSection.identifier }>
+      <View>
         <ListItem itemDivider>
           <Text>{ menuSection.name }</Text>
         </ListItem>
-        { menuSection.hasMenuItem.map(menuItem => this.renderItem(menuSection, menuItem)) }
       </View>
     )
   }
@@ -152,6 +151,15 @@ class ProductOptions extends Component {
   render() {
 
     const { product } = this.props.navigation.state.params
+
+    let sections = []
+    _.forEach(product.menuAddOn, (menuSection) => {
+      sections.push({
+        identifier: menuSection.identifier,
+        name: menuSection.name,
+        data: menuSection.hasMenuItem,
+      })
+    })
 
     return (
       <Container>
@@ -161,7 +169,12 @@ class ProductOptions extends Component {
           </Text>
         </View>
         <Content>
-          { product.menuAddOn.map(menuSection => this.renderSection(menuSection)) }
+          <SectionList
+            sections={ sections }
+            renderItem={ ({ item, section }) => this.renderItem(item, section) }
+            renderSectionHeader={ ({ section }) => this.renderSection(section) }
+            keyExtractor={ (item, index) => index }
+          />
         </Content>
         { this.renderFooter() }
       </Container>
