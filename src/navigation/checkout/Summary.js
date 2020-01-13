@@ -33,7 +33,7 @@ class Summary extends Component {
     super(props)
 
     this.state = {
-      translateXValue: new Animated.Value(0),
+      translateXValue: new Animated.Value(500),
     }
 
     this.validate = _.once(this.props.validate.bind(this))
@@ -54,7 +54,7 @@ class Summary extends Component {
       Animated.timing(
         this.state.translateXValue,
         {
-          toValue: this.props.edit ? 0 : (width / 4),
+          toValue: this.props.edit ? 0 : 500,
           duration: 450,
         }
       ).start()
@@ -213,7 +213,7 @@ class Summary extends Component {
       <View style={{ flex: 1 }} onLayout={ () => {
           const { width } = Dimensions.get('window')
           this.setState({
-            translateXValue: new Animated.Value(width / 4),
+            translateXValue: new Animated.Value(width),
           })
         }}>
         <Content contentContainerStyle={{ justifyContent: 'space-between' }}>
