@@ -1156,9 +1156,9 @@
   integrity sha512-a/sDB+AsLEUNmhAUlAaTYeXKyQdFGBUfatqKkX5jluBo2CB3OAuTHfm7rSjcaLB9EmG5iSq3fOTpync2E7EYTA==
 
 "@react-native-community/push-notification-ios@^1.0.4":
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/@react-native-community/push-notification-ios/-/push-notification-ios-1.0.4.tgz#eaa43196c4d76b0dc8616724dca555ab64c63a77"
-  integrity sha512-a1Gdrnsk2bLdAiH/3iZEKlZLouEjBToVgphaOpAhhX6GhF/8cVTrwZ6Rxyg4j23n3br1rDpvE1l4VDdDwU9Aow==
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/@react-native-community/push-notification-ios/-/push-notification-ios-1.0.5.tgz#3ad68ea6612875db5c3934dfdc865ebe51606ef3"
+  integrity sha512-4JO5XjmzD4EoReHVxMOYni03Twwuq39oyAIk2U62oIjkIE23tTBblC2KC2IS/iadRyJTg7MQ0LtBat2zse9WQg==
   dependencies:
     invariant "^2.2.4"
 
