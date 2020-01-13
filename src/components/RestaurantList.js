@@ -6,11 +6,11 @@ import { withTranslation } from 'react-i18next'
 
 const styles = StyleSheet.create({
   wrapper: {
-    paddingHorizontal: 15,
     backgroundColor: '#fff',
   },
   item: {
     paddingVertical: 10,
+    paddingHorizontal: 15,
     borderBottomColor: '#f7f7f7',
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
