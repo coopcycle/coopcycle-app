@@ -73,7 +73,7 @@ class RestaurantsPage extends Component {
     let contentProps = {}
     if (restaurants.length === 0) {
       contentProps = {
-        contentContainerStyle: styles.content,
+        style: styles.content,
       }
     }
 
@@ -90,12 +90,12 @@ class RestaurantsPage extends Component {
           onChange={ address => this._onAddressChange(address) }
           defaultValue={ searchText }
           key={ searchText } />
-        <Content { ...contentProps }>
+        <View { ...contentProps }>
           <RestaurantList
             restaurants={ restaurants }
             onItemClick={ restaurant => navigate('CheckoutRestaurant', { restaurant }) } />
           { /* this.renderWarning() */ }
-        </Content>
+        </View>
       </Container>
     );
   }
