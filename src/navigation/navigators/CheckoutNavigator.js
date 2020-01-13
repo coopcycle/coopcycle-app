@@ -91,6 +91,7 @@ export default createStackNavigator({
       // Use header = null to get rid of the header
       // The screen's header will be used
       headerShown: false,
+      title: i18n.t('RESTAURANT'),
     }),
   },
   CheckoutProductOptions: {
