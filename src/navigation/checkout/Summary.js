@@ -238,12 +238,12 @@ class Summary extends Component {
         </View>
         <View style={{ flex: 0, backgroundColor: '#e4022d' }}>
           <View style={ styles.line }>
-            <Text style={{ color: '#ffffff' }}>{ this.props.t('TOTAL_ITEMS') }</Text>
-            <Text style={{ color: '#ffffff', fontWeight: 'bold' }}>{ `${formatPrice(cart.itemsTotal)} €` }</Text>
+            <Text style={{ color: '#ffffff', fontSize: 14 }}>{ this.props.t('TOTAL_ITEMS') }</Text>
+            <Text style={{ color: '#ffffff', fontWeight: 'bold', fontSize: 14 }}>{ `${formatPrice(cart.itemsTotal)} €` }</Text>
           </View>
           <View style={ styles.line }>
-            <Text style={{ color: '#ffffff' }}>{ this.props.t('TOTAL_DELIVERY') }</Text>
-            <Text style={{ color: '#ffffff', fontWeight: 'bold' }}>{ `${formatPrice(this.props.deliveryTotal)} €` }</Text>
+            <Text style={{ color: '#ffffff', fontSize: 14 }}>{ this.props.t('TOTAL_DELIVERY') }</Text>
+            <Text style={{ color: '#ffffff', fontWeight: 'bold', fontSize: 14 }}>{ `${formatPrice(this.props.deliveryTotal)} €` }</Text>
           </View>
         </View>
         { this.renderFooter() }
