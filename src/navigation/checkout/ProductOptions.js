@@ -16,6 +16,7 @@ class ProductOptions extends Component {
       // Store options in a hash, indexed per section
       options: {},
     }
+    this.list = React.createRef()
   }
 
   _enableAddToCartButton() {
@@ -30,6 +31,36 @@ class ProductOptions extends Component {
     }
 
     return true
+  }
+
+  _getSectionIndex(section) {
+
+    const { product } = this.props.navigation.state.params
+    const { options } = this.state
+
+    for (let i = 0; i < product.menuAddOn.length; i++) {
+      let menuSection = product.menuAddOn[i]
+      if (menuSection.identifier === section.identifier) {
+        return i
+      }
+    }
+
+    return -1
+  }
+
+  _findNextSection() {
+
+    const { product } = this.props.navigation.state.params
+    const { options } = this.state
+
+    for (let i = 0; i < product.menuAddOn.length; i++) {
+      let menuSection = product.menuAddOn[i]
+      if (!menuSection.additional && !options.hasOwnProperty(menuSection.identifier)) {
+        return menuSection
+      }
+    }
+
+    return false
   }
 
   _onPressItem(menuSection, menuItem) {
@@ -64,7 +95,21 @@ class ProductOptions extends Component {
       }
     }
 
-    this.setState({ options: newOptions })
+
+    this.setState({
+      options: newOptions
+    }, () => {
+      const nextSection = this._findNextSection()
+      if (nextSection) {
+        const sectionIndex = this._getSectionIndex(nextSection)
+        if (-1 !== sectionIndex) {
+          this.list.current.scrollToLocation({
+            sectionIndex,
+            itemIndex: 0,
+          })
+        }
+      }
+    })
   }
 
   _onPressAddToCart() {
@@ -169,6 +214,7 @@ class ProductOptions extends Component {
           </Text>
         </View>
         <SectionList
+          ref={ this.list }
           sections={ sections }
           renderItem={ ({ item, section }) => this.renderItem(item, section) }
           renderSectionHeader={ ({ section }) => this.renderSection(section) }
@@ -181,12 +227,14 @@ class ProductOptions extends Component {
 }
 
 function mapStateToProps(state) {
+
   return {
     restaurant: state.checkout.restaurant,
   }
 }
 
 function mapDispatchToProps(dispatch) {
+
   return {
     addItem: (item, options) => dispatch(addItemWithOptions(item, options)),
   }
