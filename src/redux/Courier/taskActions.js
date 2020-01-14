@@ -63,9 +63,9 @@ export const setSignatureScreenFirst = createAction(SET_SIGNATURE_SCREEN_FIRST)
 function showAlert(e) {
   let message = i18n.t('AN_ERROR_OCCURRED')
 
-  if (e.hasOwnProperty('hydra:description')) {
+  if (e && e.hasOwnProperty('hydra:description')) {
     message = e['hydra:description']
-  } else if (e.hasOwnProperty('message')) {
+  } else if (e && e.hasOwnProperty('message')) {
     message = e.message
   }
 
