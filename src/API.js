@@ -506,15 +506,4 @@ module.exports = {
   createClient: (httpBaseURL, model) => {
     return new Client(httpBaseURL, model)
   },
-  resolveErrorMessage: data => {
-    let message = 'An error occured'
-    if (data.hasOwnProperty('@context') && data['@context'] === '/api/contexts/ConstraintViolationList') {
-      message = data['hydra:description']
-    }
-    if (data.hasOwnProperty('message')) {
-      message = data.message
-    }
-
-    return message
-  },
 }
