@@ -64,18 +64,17 @@ const CartLine = (props) => {
 
 class OrderItems extends Component {
 
-  renderItemAdjustments(item) {
-    if (item.adjustments.hasOwnProperty('menu_item_modifier')) {
-      return (
-        <View>
-          { item.adjustments.menu_item_modifier.map(adjustment => (
-            <Text style={ styles.adjustmentText } key={ `ADJUSTMENT#${adjustment.id}` }>
-              { adjustment.label }
-            </Text>
-          )) }
-        </View>
-      )
-    }
+  renderItemAdjustments(adjustments) {
+
+    return (
+      <View>
+        { adjustments.map(adjustment => (
+          <Text style={ styles.adjustmentText } key={ `ADJUSTMENT#${adjustment.id}` }>
+            { adjustment.label }
+          </Text>
+        )) }
+      </View>
+    )
   }
 
   renderItem(item) {
@@ -93,7 +92,8 @@ class OrderItems extends Component {
           </Col>
           <Col size={ 7 } style={ styles.col }>
             <Text>{ item.name }</Text>
-            { this.renderItemAdjustments(item) }
+            { (item.adjustments && item.adjustments.hasOwnProperty('menu_item_modifier')) &&
+              this.renderItemAdjustments(item.adjustments.menu_item_modifier) }
           </Col>
           <Col size={ 3 } style={ [ styles.col, styles.colRight ] }>
             <Text>{ `${formatPrice(item.total)} €` }</Text>
