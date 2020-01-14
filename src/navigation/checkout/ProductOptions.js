@@ -171,7 +171,7 @@ class ProductOptions extends Component {
     }
 
     return (
-      <ListItem key={ menuItem.identifier } onPress={ () => this._onPressItem(menuSection, menuItem) }>
+      <ListItem onPress={ () => this._onPressItem(menuSection, menuItem) }>
         <Left style={{ flex: 1, justifyContent: 'space-between' }}>
           <Text>{ menuItem.name }</Text>
           { price > 0 ? (<Text note>{ `${formatPrice(price)} €` }</Text>) : null }
@@ -185,11 +185,9 @@ class ProductOptions extends Component {
 
   renderSection(menuSection) {
     return (
-      <View>
-        <ListItem itemDivider>
-          <Text>{ menuSection.name }</Text>
-        </ListItem>
-      </View>
+      <ListItem itemDivider>
+        <Text>{ menuSection.name }</Text>
+      </ListItem>
     )
   }
 
