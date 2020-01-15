@@ -1,4 +1,5 @@
 apply plugin: "com.android.application"
+apply plugin: "com.google.firebase.firebase-perf"
 apply plugin: "io.fabric"
 
 import com.android.build.OutputFile
@@ -213,7 +214,8 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:24.4.0')
 
     implementation "com.google.firebase:firebase-core"
-    implementation 'com.google.firebase:firebase-messaging'
+    implementation "com.google.firebase:firebase-messaging"
+    implementation "com.google.firebase:firebase-perf"
 
     // https://rnfirebase.io/docs/v5.x.x/releases/v5.6.x
     // https://firebase.google.com/support/release-notes/android

@@ -14,6 +14,7 @@ import androidx.multidex.MultiDexApplication;
 import io.invertase.firebase.messaging.RNFirebaseMessagingPackage;
 import io.invertase.firebase.notifications.RNFirebaseNotificationsPackage;
 import io.invertase.firebase.fabric.crashlytics.RNFirebaseCrashlyticsPackage;
+import io.invertase.firebase.perf.RNFirebasePerformancePackage;
 
 // To enable multidex on API Level < 21,
 // we need to extend android.support.multidex.MultiDexApplication instead of android.app.Application
@@ -36,6 +37,8 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
           packages.add(new RNFirebaseMessagingPackage());
           packages.add(new RNFirebaseNotificationsPackage());
           packages.add(new RNFirebaseCrashlyticsPackage());
+          packages.add(new RNFirebasePerformancePackage());
+
           return packages;
         }
 
