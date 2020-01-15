@@ -8102,10 +8102,10 @@ react-native-offline@^5.2.0:
   version "1.0.0"
   resolved "git+https://git@github.com/coopcycle/react-native-pin-screen.git#a8139525e27413d8c7ab45f6277aef1424d7610f"
 
-react-native-reanimated@^1.4.0:
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/react-native-reanimated/-/react-native-reanimated-1.4.0.tgz#7f1acbf9be08492d834f512700570978052be2f9"
-  integrity sha512-tO7nSNNP+iRLVbkcSS5GXyDBb7tSI02+XuRL3/S39EAr35rnvUy2JfeLUQG+fWSObJjnMVhasUDEUwlENk8IXw==
+react-native-reanimated@^1.6.0:
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/react-native-reanimated/-/react-native-reanimated-1.6.0.tgz#17fe40bb53a8e34a6c695935bc426c904726f037"
+  integrity sha512-pFbPJbXi3Wg2s74/Z8Zw6jcUQ0EAuEYcNNXcWRG9gshxjizsNY9MSGv2kLXGgxQxh13Stf0odtTn8hf3f07u6A==
 
 react-native-safe-area-context@^0.6.2:
   version "0.6.2"
