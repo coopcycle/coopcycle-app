@@ -209,10 +209,17 @@ dependencies {
     implementation(project(':react-native-firebase')) {
         transitive = false
     }
-    implementation "com.google.firebase:firebase-core:${rootProject.ext.firebaseVersion}"
-    implementation 'com.google.firebase:firebase-messaging:19.0.0'
+
+    implementation platform('com.google.firebase:firebase-bom:24.4.0')
+
+    implementation "com.google.firebase:firebase-core"
+    implementation 'com.google.firebase:firebase-messaging'
+
+    // https://rnfirebase.io/docs/v5.x.x/releases/v5.6.x
+    // https://firebase.google.com/support/release-notes/android
+
     implementation 'me.leolin:ShortcutBadger:1.1.21@aar'
-    implementation('com.crashlytics.sdk.android:crashlytics:2.9.9@aar') {
+    implementation('com.crashlytics.sdk.android:crashlytics@aar') {
         transitive = true
     }
 
