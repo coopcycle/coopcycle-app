@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React from 'react'
 import {
   doneIconName,
   failedIconName,
@@ -6,7 +6,6 @@ import {
 } from '../navigation/task/styles/common'
 import {View} from 'react-native'
 import {Icon} from 'native-base'
-import {withTranslation} from 'react-i18next'
 import {darkGreyColor, redColor, whiteColor} from '../styles/common'
 
 const container = {
@@ -85,7 +84,7 @@ const taskStatusIconName = task => {
   }
 }
 
-const iconName = (task, type) => {
+const iconName = (task, type = 'type') => {
   if (type === 'status') {
     return taskStatusIconName(task)
   } else {
@@ -93,18 +92,12 @@ const iconName = (task, type) => {
   }
 }
 
-class TaskMarker extends Component {
-  render() {
-    const task = this.props.task
-    const type = this.props.type || 'type'
+export default ({ task, type }) => {
 
-    return (
-      <View style={container}>
-        <View style={backgroundStyle(task)}/>
-        <Icon type="FontAwesome" name={iconName(task, type)} style={iconStyle(task)}/>
-      </View>
-    )
-  }
+  return (
+    <View style={ container }>
+      <View style={ backgroundStyle(task) }/>
+      <Icon type="FontAwesome" name={ iconName(task, type) } style={ iconStyle(task) }/>
+    </View>
+  )
 }
-
-export default withTranslation()(TaskMarker)

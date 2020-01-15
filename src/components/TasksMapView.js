@@ -142,7 +142,8 @@ class TasksMapView extends Component {
       <Marker
         identifier={ `cluster-${clusterId}` }
         coordinate={ coordinate }
-        onPress={ onPress }>
+        onPress={ onPress }
+        tracksViewChanges={ false }>
         <View style={ styles.clusterContainer }>
           <Text style={ styles.clusterText }>
             { pointCount }
@@ -188,7 +189,8 @@ class TasksMapView extends Component {
         key={ task['@id'] }
         coordinate={ task.address.geo }
         flat={ true }
-        ref={ this.markers.get(task['@id']) }>
+        ref={ this.markers.get(task['@id']) }
+        tracksViewChanges={ false }>
         <TaskMarker task={ task } type="status" />
         <Callout onPress={ () => this.onCalloutPress(task) }
           style={ [ styles.markerCallout, { width: Math.floor(width * 0.6666) } ] }>
