@@ -161,13 +161,6 @@ const styles = StyleSheet.create({
   container: {
     paddingTop: dateSelectHeaderHeight,
   },
-  loader: {
-    ...StyleSheet.absoluteFillObject,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(52, 52, 52, 0.4)',
-    zIndex: 20,
-  },
   websocketWarning: {
     backgroundColor: orangeColor,
     justifyContent: 'center',
