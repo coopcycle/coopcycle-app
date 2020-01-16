@@ -5,7 +5,7 @@ import {
   View,
 } from 'react-native';
 import {
-  Container, Content,
+  Container,
   Body,
   Text,
   Card, CardItem,

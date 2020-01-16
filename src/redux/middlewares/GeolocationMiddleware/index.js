@@ -1,5 +1,4 @@
 import BackgroundGeolocation from '@mauron85/react-native-background-geolocation'
-import AppUser from '../../../AppUser'
 
 const BackgroundGeolocationEvents = [
   'start',

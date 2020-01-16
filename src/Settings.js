@@ -85,13 +85,13 @@ class Settings {
           serverSettings = Object.assign(defaultSettings, settings)
           resolve(serverSettings)
         })
-        .catch(e => {
+        .catch(() => {
           try {
             AsyncStorage
               .getItem('@Settings')
               .then((data, error) => {
                 if (error || !data) {
-                  return reject(e)
+                  return reject(error)
                 }
 
                 const settings = JSON.parse(data)

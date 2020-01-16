@@ -49,8 +49,6 @@ class Summary extends Component {
 
   componentDidUpdate(prevProps) {
     if (this.props.edit !== prevProps.edit) {
-
-      const { width } = Dimensions.get('window')
       Animated.timing(
         this.state.translateXValue,
         {

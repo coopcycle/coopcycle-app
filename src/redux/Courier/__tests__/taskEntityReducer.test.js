@@ -117,7 +117,7 @@ describe('Redux | Tasks | Reducers', () => {
             date,
             items: {
               [ date ]: [ task ],
-            }
+            },
           }
 
           const newState = tasksEntityReducer(prevState, actionCreator({ ...task, foo: 'foo' }))
@@ -166,7 +166,7 @@ describe('Redux | Tasks | Reducers', () => {
         ...initialState,
         date,
         items: {
-          [ date ]: oldTasks
+          [ date ]: oldTasks,
         },
       }
 

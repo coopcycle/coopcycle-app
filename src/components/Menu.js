@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { Animated, ActivityIndicator, SectionList, StyleSheet, TouchableOpacity, View } from 'react-native'
-import { Icon, Text } from 'native-base';
-import { Col, Grid } from 'react-native-easy-grid'
+import { Text } from 'native-base';
 import _ from 'lodash'
 
 const AnimatedSectionList = Animated.createAnimatedComponent(SectionList);
@@ -12,12 +11,12 @@ const styles = StyleSheet.create({
   sectionHeader: {
     paddingVertical: 10,
     paddingHorizontal: 15,
-    backgroundColor: '#f7f7f7'
+    backgroundColor: '#f7f7f7',
   },
   sectionHeaderText: {
     color: '#3e3e3e',
     fontSize: 15,
-    textAlign: 'center'
+    textAlign: 'center',
   },
   item: {
     paddingRight: 10,
@@ -33,7 +32,7 @@ const styles = StyleSheet.create({
   itemPrice: {
     color: '#333',
     fontSize: 18,
-    marginRight: 10
+    marginRight: 10,
   },
   rightCol: {
     flex: 1,
@@ -76,9 +75,6 @@ class Menu extends Component {
     let itemNameStyle = []
     let itemPriceStyle = [ styles.itemPrice ]
 
-    let rightIconName = 'plus'
-    let rightIconStyle = [ styles.rightIcon ]
-
     if (enabled) {
       itemProps = {
         onPress: () => this.props.onItemClick(item),
@@ -86,9 +82,6 @@ class Menu extends Component {
     } else {
       itemNameStyle.push(styles.disabledText)
       itemPriceStyle.push(styles.disabledText)
-
-      rightIconName = 'ban'
-      rightIconStyle.push(styles.disabledText)
     }
 
     const isLoading = this.props.isItemLoading(item)
@@ -113,7 +106,7 @@ class Menu extends Component {
   render() {
 
     const { menu } = this.props
-    const {paddingHeight, animatedY, onScroll} = this.props.collapsible;
+    const {paddingHeight, onScroll} = this.props.collapsible;
 
     let sections = []
     if (menu) {

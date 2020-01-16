@@ -97,12 +97,12 @@ class ProductOptions extends Component {
 
 
     this.setState({
-      options: newOptions
+      options: newOptions,
     }, () => {
       const nextSection = this._findNextSection()
       if (nextSection) {
         const sectionIndex = this._getSectionIndex(nextSection)
-        if (-1 !== sectionIndex) {
+        if (sectionIndex !== -1) {
           this.list.current.scrollToLocation({
             sectionIndex,
             itemIndex: 0,

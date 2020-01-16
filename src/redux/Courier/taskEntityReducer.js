@@ -112,7 +112,7 @@ export const tasksEntityReducer = (state = tasksEntityInitialState, action = {})
         date: action.payload.date,
         items: {
           ...state.items,
-          [ action.payload.date ]: action.payload.tasks
+          [ action.payload.date ]: action.payload.tasks,
         },
       }
 
@@ -209,7 +209,7 @@ const processWsMsg = (state, { type, ...data }) => {
         ...state,
         items: {
           ...state.items,
-          [ data.date ]: tasks
+          [ data.date ]: tasks,
         },
       }
   }

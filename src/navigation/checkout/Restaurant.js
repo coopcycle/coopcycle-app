@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import { Dimensions, Image, ImageBackground, StyleSheet, View, Animated } from 'react-native'
+import { ImageBackground, StyleSheet, View, Animated } from 'react-native'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
-import { Container, Content, Text } from 'native-base';
+import { Container, Text } from 'native-base';
 import _ from 'lodash'
 
 import {withCollapsible} from 'react-navigation-collapsible'
@@ -15,7 +15,6 @@ import Menu from '../../components/Menu'
 
 import { init, addItem, hideAddressModal, resetRestaurant, setAddress } from '../../redux/Checkout/actions'
 
-// eslint-disable-next-line no-unused-vars
 const GroupImageHeader = (props) => {
 
   const { navigation, collapsible } = props
@@ -29,7 +28,7 @@ const GroupImageHeader = (props) => {
     <Animated.View style={{
       width: '100%',
       height: '100%',
-      opacity: translateOpacity, }}>
+      opacity: translateOpacity }}>
       <ImageBackground source={{ uri: restaurant.image }} style={{width: '100%', height: '100%'}}>
         <View style={styles.overlay}>
           <Animated.Image
@@ -46,7 +45,7 @@ const GroupImageHeader = (props) => {
               borderRadius: 50,
             }}
           />
-          <Text style={{ color: '#ffffff', fontFamily: 'Raleway-Regular', marginTop: 5, fontWeight: 'bold', }}>{ restaurant.name }</Text>
+          <Text style={{ color: '#ffffff', fontFamily: 'Raleway-Regular', marginTop: 5, fontWeight: 'bold' }}>{ restaurant.name }</Text>
         </View>
       </ImageBackground>
     </Animated.View>

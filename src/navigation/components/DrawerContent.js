@@ -97,8 +97,8 @@ class DrawerContent extends Component {
               params: { restaurant },
               action: NavigationActions.navigate({
                 routeName: 'RestaurantHome',
-                params: { restaurant }
-              })
+                params: { restaurant },
+              }),
             })),
             getLabel: ({ route }) => {
               const { restaurant } = route.params

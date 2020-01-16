@@ -38,7 +38,7 @@ const taskEntitiesPersistConfig = {
 const restaurantPersistConfig = {
   key: 'restaurant',
   storage: AsyncStorage,
-  whitelist: ['myRestaurants', 'restaurant']
+  whitelist: ['myRestaurants', 'restaurant'],
 }
 
 export default combineReducers({

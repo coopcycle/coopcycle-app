@@ -16,8 +16,8 @@ describe('Task Selectors', () => {
           [ date ]: [
             { id: 1, status: 'DONE', tags: [] },
             { id: 2, status: 'TODO', tags: [{ name: 'foo', slug: 'foo' }] },
-          ]
-        }
+          ],
+        },
       },
     },
     ui: {
@@ -94,7 +94,7 @@ describe('Task Selectors', () => {
                   { id: 1, status: 'DONE', tags: [{ name: 'foo', slug: 'foo' }] },
                   { id: 2, status: 'DONE', tags: [{ name: 'bar', slug: 'bar' }] },
                 ],
-              }
+              },
             },
           },
         }
@@ -113,7 +113,7 @@ describe('Task Selectors', () => {
                   { id: 1, status: 'DONE', tags: [{ name: 'foo', slug: 'foo' }] },
                   { id: 2, status: 'DONE', tags: [{ name: 'bar', slug: 'bar' }, { name: 'foo', slug: 'foo' }] },
                 ],
-              }
+              },
             },
           },
         }
@@ -135,7 +135,7 @@ describe('Task Selectors', () => {
                 [ date ]: [
                   { id: 1, status: 'DONE', tags: [{ name: 'foo', slug: 'foo' }, { name: 'bar', slug: 'baz' }] },
                 ],
-              }
+              },
             },
           },
         }

@@ -1,5 +1,4 @@
 import moment from 'moment'
-import { createStore } from 'redux'
 import { createTaskItemsTransform } from '../util'
 
 describe('Redux | util', () => {
