@@ -33,6 +33,15 @@ jest.mock('tipsi-stripe', () => ({
   },
 }))
 
+jest.mock('react-native-firebase', () => ({
+  perf: () => ({
+    newTrace: () => ({
+      start: () => {},
+      incrementMetric: () => {}
+    })
+  })
+}))
+
 const fakeNavigator = {
   dispatch: (action) => {}
 }
