@@ -39,6 +39,7 @@ matrix:
       - cp google-services.json.dist android/app/google-services.json
     script:
       - cd android && ./gradlew clean && ./gradlew assembleDebug --stacktrace
+  # https://medium.com/@fawwazyusran/how-to-travis-ci-working-for-android-api-level-28-2fde7292813c
   - language: android
     env: ANDROID_API_LEVEL=28
     sudo: required
@@ -55,10 +56,17 @@ matrix:
       components:
         - tools
         - platform-tools
-        - build-tools-28.0.3
-        - android-$ANDROID_API_LEVEL
+        - tools
+        - extra-android-m2repository
         - extra-google-google_play_services
+      licenses:
+        - 'android-sdk-preview-license-52d11cd2'
+        - 'android-sdk-license-.+'
+        - 'google-gdk-license-.+'
     before_install:
+      - touch $HOME/.android/repositories.cfg
+      - yes | sdkmanager "platforms;android-$ANDROID_API_LEVEL"
+      - yes | sdkmanager "build-tools;28.0.3"
       - nvm install 8
     before_script:
       - npm install -g yarn
