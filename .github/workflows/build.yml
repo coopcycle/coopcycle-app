@@ -1,0 +1,23 @@
+# https://github.com/natario1/CameraView/blob/master/.github/workflows/build.yml
+# https://help.github.com/en/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions
+name: Build
+on: [push, pull_request]
+jobs:
+  IOS_SIMULATOR_TESTS:
+    name: iOS Simulator Tests
+    runs-on: macOS-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '8.x'
+      - run: yarn install
+      - run: |
+          brew tap wix/brew
+          brew install applesimutils
+      - run: cp GoogleService-Info.plist.dist ios/GoogleService-Info.plist
+      - run: cd ios/ && pod install --repo-update && cd ..
+      - run: node node_modules/.bin/detox build -c ios.sim.release
+        env:
+          googleMapsApiKey: ${{ secrets.googleMapsApiKey }}
+      - run: node node_modules/.bin/detox test -c ios.sim.release

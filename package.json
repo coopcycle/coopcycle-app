@@ -128,29 +128,28 @@
         "binaryPath": "ios/build/Build/Products/Debug-iphonesimulator/CoopCycle.app",
         "build": "xcodebuild -workspace ios/CoopCycle.xcworkspace -scheme CoopCycle -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build -quiet",
         "type": "ios.simulator",
-        "name": "iPhone X"
+        "name": "iPhone 8"
       },
       "ios.sim.release": {
         "binaryPath": "ios/build/Build/Products/Release-iphonesimulator/CoopCycle.app",
         "build": "xcodebuild -workspace ios/CoopCycle.xcworkspace -scheme CoopCycle -configuration Release -sdk iphonesimulator -derivedDataPath ios/build -quiet",
         "type": "ios.simulator",
-        "name": "iPhone X"
+        "name": "iPhone 8"
       },
       "android.emu.debug": {
         "binaryPath": "android/app/build/outputs/apk/debug/app-debug.apk",
-        "build":
-        "cd android && ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug && cd ..",
+        "build": "cd android && ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug --warning-mode all --stacktrace && cd ..",
         "type": "android.emulator",
         "device": {
-          "avdName": "Nexus_5X_API_26"
+          "avdName": "test"
         }
       },
       "android.emu.release": {
         "binaryPath": "android/app/build/outputs/apk/release/app-release.apk",
-        "build": "cd android && ./gradlew assembleRelease assembleAndroidTest -DtestBuildType=release && cd ..",
+        "build": "cd android && ./gradlew assembleRelease assembleAndroidTest -DtestBuildType=release --warning-mode all --stacktrace && cd ..",
         "type": "android.emulator",
         "device": {
-          "avdName": "Nexus_5X_API_26"
+          "avdName": "test"
         }
       }
     },
