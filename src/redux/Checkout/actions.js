@@ -584,3 +584,11 @@ export function assignCustomer() {
       .catch(e => dispatch(checkoutFailure(e)))
   }
 }
+
+export function resetSearch() {
+
+  return (dispatch, getState) => {
+    dispatch(_setAddress(''))
+    dispatch(searchRestaurants())
+  }
+}

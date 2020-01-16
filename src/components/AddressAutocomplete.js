@@ -29,7 +29,7 @@ class AddressAutocomplete extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      query: '',
+      query: props.value || '',
       results: [],
     }
   }
@@ -45,6 +45,10 @@ class AddressAutocomplete extends Component {
   _onChangeText(text) {
 
     this.setState({ query: text })
+
+    if (this.props.onChangeText) {
+      this.props.onChangeText(text)
+    }
 
     if (text.length < this.props.minChars) {
       return

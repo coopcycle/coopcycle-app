@@ -1,12 +1,11 @@
 import React, { Component } from 'react'
-import { Dimensions, StyleSheet, View } from 'react-native'
+import { StyleSheet, View, TouchableOpacity, TextInput } from 'react-native'
 import { Icon } from 'native-base'
+import { withTranslation } from 'react-i18next'
 
-import AddressTypeahead from './AddressTypeahead'
+import AddressAutocomplete from './AddressAutocomplete'
 
 const textInputContainerHeight = 54
-const textInputPaddingVertical = 7.5
-const textInputHeight = (textInputContainerHeight - (textInputPaddingVertical * 2))
 
 const styles = StyleSheet.create({
   container : {
@@ -16,67 +15,75 @@ const styles = StyleSheet.create({
     zIndex: 10,
     overflow: 'visible',
     backgroundColor: '#e4022d',
-  },
-  leftButton: {
-    paddingLeft: 20,
-    paddingRight: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
-
-const typeaheadStyle = {
-  description: {
-    fontWeight: 'bold',
-  },
-  predefinedPlacesDescription: {
-    color: '#1faadb',
-  },
-  textInputContainer: {
-    backgroundColor: 'transparent',
     height: textInputContainerHeight,
-    borderTopWidth: 0,
-    borderBottomWidth: 0,
   },
-  textInput: {
-    height: textInputHeight,
-    marginTop: textInputPaddingVertical,
-    marginLeft: 0,
-    marginRight: 20,
-  },
-  row: {
-    backgroundColor: '#ffffff',
-  },
-}
+})
 
-export default class RestaurantSearch extends Component {
+class RestaurantSearch extends Component {
 
-  _onAddressChange(address) {
-    this.props.onChange(address)
+  renderButton() {
+
+    const iconName = this.props.defaultValue ? 'times' : 'search'
+    const iconSize = this.props.defaultValue ? 24 : 18
+
+    let touchableProps = {}
+    if (this.props.defaultValue) {
+      touchableProps = {
+        ...touchableProps,
+        onPress: this.props.onReset,
+      }
+    }
+
+    return (
+      <TouchableOpacity
+        style={{ paddingVertical: 5, paddingLeft: 10, paddingRight: 15 }}
+        { ...touchableProps } >
+        <Icon type="FontAwesome5" name={ iconName } style={{ color: '#ffffff', fontSize: iconSize }} />
+      </TouchableOpacity>
+    )
   }
 
-  renderLeftButton() {
+  renderTextInput(props) {
+
     return (
-      <View style={ styles.leftButton }>
-        <Icon type="FontAwesome" name="search" style={{ color: '#fff', fontSize: 18 }} />
+      <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+        <TextInput { ...props } style={ [ props.style, { flex: 1 } ] } />
+        { this.renderButton() }
       </View>
     )
   }
 
   render() {
 
-    const { width } = Dimensions.get('window')
-
     return (
-      <View style={ [ styles.container, { width } ] }>
-        <View style={{ flex: 1 }}>
-          <AddressTypeahead
-            style={ typeaheadStyle }
-            renderLeftButton={ () => this.renderLeftButton() }
-            onPress={ this._onAddressChange.bind(this) }
-            defaultValue={ this.props.defaultValue } />
-        </View>
+      <View style={ [ styles.container, { width: this.props.width } ] }>
+        <AddressAutocomplete
+          placeholder={ this.props.t('ENTER_ADDRESS') }
+          onSelectAddress={ this.props.onSelect }
+          containerStyle={{
+            flex: 1,
+            justifyContent: 'center',
+          }}
+          inputContainerStyle={{
+            flex: 1,
+            justifyContent: 'center',
+            borderWidth: 0,
+            paddingLeft: 15,
+          }}
+          style={{
+            backgroundColor: 'white',
+            borderColor: '#b9b9b9',
+            borderRadius: 20,
+            paddingVertical: 8,
+            paddingHorizontal: 15,
+            borderWidth: 0,
+          }}
+          onChangeText={ this.props.onChangeText }
+          value={ this.props.defaultValue }
+          renderTextInput={ props => this.renderTextInput(props) } />
       </View>
     )
   }
 }
+
+export default withTranslation()(RestaurantSearch)

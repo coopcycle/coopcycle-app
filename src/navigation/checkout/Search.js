@@ -3,23 +3,27 @@ import {
   InteractionManager,
   StyleSheet,
   View,
+  Dimensions,
 } from 'react-native';
-import {
-  Container,
-  Body,
-  Icon, Text,
-  Card, CardItem,
-} from 'native-base';
+import { Container, Icon, Text } from 'native-base';
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 
 import RestaurantSearch from '../../components/RestaurantSearch'
 import RestaurantList from '../../components/RestaurantList'
-import { searchRestaurants, searchRestaurantsForAddress, setAddress } from '../../redux/Checkout/actions'
+import { searchRestaurants, searchRestaurantsForAddress, resetSearch } from '../../redux/Checkout/actions'
 
 class RestaurantsPage extends Component {
 
-  _onAddressChange(address) {
+  constructor() {
+    super()
+    this.state = {
+      width: Dimensions.get('window').width,
+      searchText: '',
+    }
+  }
+
+  _onAddressSelect(address) {
     if (address) {
       this.props.searchRestaurantsForAddress(address)
     }
@@ -29,46 +33,31 @@ class RestaurantsPage extends Component {
     this.props.searchRestaurants()
   }
 
-  componentDidUpdate(prevProps) {
-
+  componentDidUpdate(prevProps, prevState) {
     const prevAddress = prevProps.navigation.getParam('address', null)
     const addressAsParam = this.props.navigation.getParam('address', null)
-
     if (addressAsParam && prevAddress !== addressAsParam) {
-      InteractionManager.runAfterInteractions(() => this._onAddressChange(addressAsParam))
+      InteractionManager.runAfterInteractions(() => this._onAddressSelect(addressAsParam))
     }
-  }
-
-  renderWarning() {
-
-    const { restaurants } = this.state
-    const { loading } = this.props
-
-    if (!loading && restaurants.length === 0) {
-      return (
-        <View style={{ paddingHorizontal: 10, marginTop: 30 }}>
-          <Card>
-            <CardItem>
-              <Body>
-                <Text>
-                  {this.props.t('NO_RESTAURANTS')}
-                </Text>
-              </Body>
-            </CardItem>
-          </Card>
-        </View>
-      )
-    }
-
-    return (
-      <View />
-    )
   }
 
   renderContent() {
-    const { restaurants } = this.props
+    const { restaurants, addressAsText } = this.props
 
     if (restaurants.length === 0) {
+
+      if (addressAsText) {
+
+        return (
+          <View style={ styles.content }>
+            <View style={{ paddingHorizontal: 15 }}>
+              <Text note style={{ textAlign: 'center' }}>
+                {this.props.t('NO_RESTAURANTS')}
+              </Text>
+            </View>
+          </View>
+        )
+      }
 
       return (
         <View style={ styles.content }>
@@ -89,19 +78,21 @@ class RestaurantsPage extends Component {
 
   render() {
 
-    let searchText = ''
-    const addressAsParam = this.props.navigation.getParam('address', null)
-    if (addressAsParam) {
-      searchText = addressAsParam.streetAddress
-    }
-
     return (
-      <Container style={{ paddingTop: 54 }} testID="checkoutSearch">
-        <RestaurantSearch
-          onChange={ address => this._onAddressChange(address) }
-          defaultValue={ searchText }
-          key={ searchText } />
+      <Container style={{ paddingTop: 54 }} testID="checkoutSearch"
+        onLayout={ event => this.setState({ width: event.nativeEvent.layout.width }) }>
         { this.renderContent() }
+        { /* This component needs to be rendered *ABOVE* the list */ }
+        { /* This is why it should be the last child component */ }
+        { /* Use a "key" prop to make sure component renders */ }
+        <RestaurantSearch
+          onSelect={ address => this._onAddressSelect(address) }
+          onReset={ () => {
+            this.props.resetSearch()
+          } }
+          defaultValue={ this.props.addressAsText }
+          width={ this.state.width }
+          key={ this.props.addressAsText } />
       </Container>
     );
   }
@@ -115,11 +106,11 @@ const styles = StyleSheet.create({
   },
 })
 
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
 
   return {
-    loading: state.checkout.isFetching,
     restaurants: state.checkout.restaurants,
+    addressAsText: state.checkout.address ? state.checkout.address.streetAddress : '',
   }
 }
 
@@ -128,7 +119,7 @@ function mapDispatchToProps(dispatch) {
   return {
     searchRestaurants: (latitude, longitude) => dispatch(searchRestaurants(latitude, longitude)),
     searchRestaurantsForAddress: address => dispatch(searchRestaurantsForAddress(address)),
-    setAddress: address => dispatch(setAddress(address)),
+    resetSearch: () => dispatch(resetSearch()),
   }
 }
 
