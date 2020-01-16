@@ -8,6 +8,7 @@ import { BleManager, State } from 'react-native-ble-plx'
 import { Buffer } from 'buffer'
 import EscPosEncoder from 'esc-pos-encoder'
 import diacritics from 'diacritics'
+import firebase from 'react-native-firebase'
 
 import API from '../../API'
 import AppUser from '../../AppUser'
@@ -250,10 +251,8 @@ function setBaseURL(dispatch, baseURL) {
 export function setCurrentRoute(routeName) {
 
   return (dispatch, getState) => {
-
     dispatch(_setCurrentRoute(routeName))
-
-    // TODO Set route name in Firebase Analytics
+    firebase.analytics().setCurrentScreen(routeName)
   }
 }
 

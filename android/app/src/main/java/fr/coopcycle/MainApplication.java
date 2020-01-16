@@ -11,6 +11,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import androidx.multidex.MultiDexApplication;
+import io.invertase.firebase.analytics.RNFirebaseAnalyticsPackage;
 import io.invertase.firebase.messaging.RNFirebaseMessagingPackage;
 import io.invertase.firebase.notifications.RNFirebaseNotificationsPackage;
 import io.invertase.firebase.fabric.crashlytics.RNFirebaseCrashlyticsPackage;
@@ -38,6 +39,7 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
           packages.add(new RNFirebaseNotificationsPackage());
           packages.add(new RNFirebaseCrashlyticsPackage());
           packages.add(new RNFirebasePerformancePackage());
+          packages.add(new RNFirebaseAnalyticsPackage());
 
           return packages;
         }
