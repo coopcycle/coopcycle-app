@@ -560,6 +560,7 @@ function configureBackgroundGeolocation(httpClient, user) {
 
   BackgroundGeolocation.removeAllListeners('http_authorization')
 
+  // This is called when server responded with "401 Unauthorized"
   BackgroundGeolocation.on('http_authorization', () => {
     httpClient.refreshToken()
       .then(token => {
@@ -570,7 +571,11 @@ function configureBackgroundGeolocation(httpClient, user) {
           },
         })
       })
-      .catch(e => console.log(e))
+      .catch(e => {
+        // If the token could not be refreshed,
+        // we mark the locations as deleted to stop retrying
+        BackgroundGeolocation.deleteAllLocations()
+      })
   })
 }
 
