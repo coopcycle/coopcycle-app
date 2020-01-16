@@ -39,6 +39,7 @@ target 'CoopCycle' do
 
   pod 'Fabric', '~> 1.10.2'
   pod 'Crashlytics', '~> 3.14.0'
+  pod 'Firebase/Performance', '~> 6.9.0'
 
   target 'CoopCycleTests' do
     inherit! :search_paths
