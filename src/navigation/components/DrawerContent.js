@@ -226,7 +226,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderBottomColor: '#e0e0e0',
     borderBottomWidth: StyleSheet.hairlineWidth,
-    paddingVertical: 10,
+    paddingVertical: 25,
   },
 });
 
