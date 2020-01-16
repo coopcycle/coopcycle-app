@@ -24,6 +24,7 @@ const clusterContainerSize = 40
 
 const styles = StyleSheet.create({
   map: {
+    // ...StyleSheet.absoluteFillObject,
   },
   clusterContainer: {
     width: clusterContainerSize,
@@ -106,6 +107,7 @@ class TasksMapView extends Component {
       marginBottom: 1,
       isModalVisible: false,
       modalMarkers: [],
+      mapHeight: null,
     }
 
     this.renderCluster = this.renderCluster.bind(this)
@@ -243,27 +245,36 @@ class TasksMapView extends Component {
     // Objects must have a "location" attribute representing a GeoPoint, i.e. { latitude: x, longitude: y }
     const data = this.props.tasks.map(task => ({ ...task, location: task.address.geo }))
 
+    // <ClusteredMapView> has required width/height props which default to Dimensions.get('window')
+    // We use onLayout() to get the actual dimensions to fill all remaining available space
+
+    const { width } = Dimensions.get('window')
+
     return (
-      <View>
-        <ClusteredMapView
-          data={ data }
-          style={ [ styles.map, { marginBottom: this.state.marginBottom } ] }
-          initialRegion={ this.initialRegion }
-          zoomEnabled={ true }
-          zoomControlEnabled={ true }
-          showsUserLocation
-          showsMyLocationButton={ true }
-          loadingEnabled
-          loadingIndicatorColor={ '#666666' }
-          loadingBackgroundColor={ '#eeeeee' }
-          onMapReady={ () => this.onMapReady(onMapReady) }
-          edgePadding={ edgePadding }
-          renderCluster={ this.renderCluster }
-          renderMarker={ this.renderMarker }
-          onClusterPress={ this.onClusterPress }
-          { ...otherProps }>
-          { this.props.children }
-        </ClusteredMapView>
+      <View style={{ flex: 1 }} onLayout={ event => this.setState({ mapHeight: event.nativeEvent.layout.height }) }>
+        { (this.state.mapHeight && this.state.mapHeight > 0) && (
+          <ClusteredMapView
+            data={ data }
+            style={ [ styles.map, { marginBottom: this.state.marginBottom } ] }
+            width={ width }
+            height={ this.state.mapHeight }
+            initialRegion={ this.initialRegion }
+            zoomEnabled={ true }
+            zoomControlEnabled={ true }
+            showsUserLocation
+            showsMyLocationButton={ true }
+            loadingEnabled
+            loadingIndicatorColor={ '#666666' }
+            loadingBackgroundColor={ '#eeeeee' }
+            onMapReady={ () => this.onMapReady(onMapReady) }
+            edgePadding={ edgePadding }
+            renderCluster={ this.renderCluster }
+            renderMarker={ this.renderMarker }
+            onClusterPress={ this.onClusterPress }
+            { ...otherProps }>
+            { this.props.children }
+          </ClusteredMapView>
+        )}
         { this.renderModal() }
       </View>
     );
