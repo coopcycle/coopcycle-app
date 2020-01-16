@@ -7,7 +7,7 @@ import {
 import {
   Container,
   Body,
-  Text,
+  Icon, Text,
   Card, CardItem,
 } from 'native-base';
 import { connect } from 'react-redux'
@@ -65,17 +65,29 @@ class RestaurantsPage extends Component {
     )
   }
 
-  render() {
-
-    const { navigate } = this.props.navigation
+  renderContent() {
     const { restaurants } = this.props
 
-    let contentProps = {}
     if (restaurants.length === 0) {
-      contentProps = {
-        style: styles.content,
-      }
+
+      return (
+        <View style={ styles.content }>
+          <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+            <Icon name="search" style={{ color: '#cccccc' }} />
+            <Text note>{ this.props.t('ENTER_ADDRESS') }</Text>
+          </View>
+        </View>
+      )
     }
+
+    return (
+      <RestaurantList
+        restaurants={ restaurants }
+        onItemClick={ restaurant => this.props.navigation.navigate('CheckoutRestaurant', { restaurant }) } />
+    )
+  }
+
+  render() {
 
     let searchText = ''
     const addressAsParam = this.props.navigation.getParam('address', null)
@@ -90,12 +102,7 @@ class RestaurantsPage extends Component {
           onChange={ address => this._onAddressChange(address) }
           defaultValue={ searchText }
           key={ searchText } />
-        <View { ...contentProps }>
-          <RestaurantList
-            restaurants={ restaurants }
-            onItemClick={ restaurant => navigate('CheckoutRestaurant', { restaurant }) } />
-          { /* this.renderWarning() */ }
-        </View>
+        { this.renderContent() }
       </Container>
     );
   }

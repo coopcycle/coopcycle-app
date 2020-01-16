@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native'
-import { Icon, Text, Thumbnail } from 'native-base';
+import { Text, Thumbnail } from 'native-base';
 import { Col, Grid } from 'react-native-easy-grid'
 import { withTranslation } from 'react-i18next'
 
@@ -41,16 +41,6 @@ class RestaurantList extends Component {
   }
 
   render() {
-
-    if (this.props.restaurants.length === 0) {
-
-      return (
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-          <Icon name="search" style={{ color: '#cccccc' }} />
-          <Text note>{ this.props.t('ENTER_ADDRESS') }</Text>
-        </View>
-      )
-    }
 
     return (
       <View style={ styles.wrapper }>
