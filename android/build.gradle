@@ -12,6 +12,7 @@ buildscript {
         googlePlayServicesVisionVersion = "17.0.2"
         firebaseVersion = "17.2.1"
         timberVersion = "4.7.1"
+        kotlinVersion = "1.3.10"
     }
     repositories {
         // Gradle 4.1 and higher include support for Google's Maven repo using
@@ -32,6 +33,7 @@ buildscript {
         classpath("com.google.gms:google-services:4.3.3")
         classpath("com.google.firebase:perf-plugin:1.3.1")
         classpath("io.fabric.tools:gradle:1.28.1")
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -50,6 +52,9 @@ allprojects {
         maven {
             // Android JSC is installed from npm
             url("$rootDir/../node_modules/jsc-android/dist")
+        }
+        maven {
+            url "$rootDir/../node_modules/detox/Detox-android"
         }
         google()
         jcenter()
