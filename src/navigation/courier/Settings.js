@@ -26,10 +26,10 @@ const Settings = ({
     areFailedTasksHidden,
     toggleDisplayDone,
     toggleDisplayFailed,
-    setKeepAwake,
+    setKeepAwakeDisabled,
     setSignatureScreenFirst,
     tags,
-    keepAwake,
+    isKeepAwakeDisabled,
     signatureScreenFirst,
     t,
   }) => (
@@ -101,8 +101,8 @@ const Settings = ({
             </Body>
             <Right>
               <Switch
-                onValueChange={ setKeepAwake }
-                value={ keepAwake } />
+                onValueChange={ setKeepAwakeDisabled }
+                value={ isKeepAwakeDisabled } />
             </Right>
           </ListItem>
         </List>
@@ -115,7 +115,7 @@ function mapStateToProps(state) {
     tags: selectTagNames(state),
     areDoneTasksHidden: selectAreDoneTasksHidden(state),
     areFailedTasksHidden: selectAreFailedTasksHidden(state),
-    keepAwake: selectKeepAwake(state),
+    isKeepAwakeDisabled: !selectKeepAwake(state),
     signatureScreenFirst: selectSignatureScreenFirst(state),
   }
 }
@@ -124,7 +124,7 @@ function mapDispatchToProps(dispatch) {
   return {
     toggleDisplayDone: (hidden) => dispatch(hidden ? clearTasksFilter({ status: 'DONE' }) : filterTasks({ status: 'DONE' })),
     toggleDisplayFailed: (hidden) => dispatch(hidden ? clearTasksFilter({ status: 'FAILED' }) : filterTasks({ status: 'FAILED' })),
-    setKeepAwake: (keepAwake) => dispatch(setKeepAwake(keepAwake)),
+    setKeepAwakeDisabled: (disabled) => dispatch(setKeepAwake(!disabled)),
     setSignatureScreenFirst: (first) => dispatch(setSignatureScreenFirst(first)),
   }
 }
