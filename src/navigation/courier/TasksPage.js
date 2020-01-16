@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { StyleSheet, Alert, Platform } from 'react-native'
 import { Container } from 'native-base'
-import { NavigationActions } from 'react-navigation'
+import { NavigationActions, withNavigationFocus } from 'react-navigation'
 import KeepAwake from 'react-native-keep-awake'
 import RNPinScreen from 'react-native-pin-screen'
 import { connect } from 'react-redux'
@@ -42,30 +42,30 @@ class TasksPage extends Component {
   }
 
   componentDidMount() {
-
-    if (this.props.keepAwake) {
-      if (Platform.OS === 'ios') {
-        KeepAwake.activate()
-      } else {
-        RNPinScreen.pin()
-      }
-    }
-
     this.refreshTasks(this.props.selectedDate)
   }
 
-  componentWillUnmount() {
-
-    BackgroundGeolocation.stop()
-
-    backgroundGeolocationEvents.forEach(event => BackgroundGeolocation.removeAllListeners(event))
-
-    if (Platform.OS === 'ios') {
-      KeepAwake.deactivate()
-    } else {
-      RNPinScreen.unpin()
+  componentDidUpdate(prevProps) {
+    if (prevProps.isFocused !== this.props.isFocused) {
+      if (this.props.isFocused) {
+        if (Platform.OS === 'ios') {
+          KeepAwake.activate()
+        } else {
+          RNPinScreen.pin()
+        }
+      } else {
+        if (Platform.OS === 'ios') {
+          KeepAwake.deactivate()
+        } else {
+          RNPinScreen.unpin()
+        }
+      }
     }
+  }
 
+  componentWillUnmount() {
+    BackgroundGeolocation.stop()
+    backgroundGeolocationEvents.forEach(event => BackgroundGeolocation.removeAllListeners(event))
   }
 
   onGeolocationChange(geolocation) {
@@ -188,4 +188,4 @@ function mapDispatchToProps (dispatch) {
   }
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(withTranslation()(TasksPage))
+module.exports = connect(mapStateToProps, mapDispatchToProps)(withTranslation()(withNavigationFocus(TasksPage)))
