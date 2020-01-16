@@ -18,14 +18,6 @@ import {
 } from '../../redux/Courier'
 import BackgroundGeolocation from '@mauron85/react-native-background-geolocation'
 
-const backgroundGeolocationEvents = [
-  'start',
-  'stop',
-  'location',
-  'error',
-  'authorization',
-]
-
 class TasksPage extends Component {
 
   constructor(props) {
@@ -33,7 +25,6 @@ class TasksPage extends Component {
 
     this.state = {
       task: null,
-      geolocation: null,
       polyline: [],
     }
 
@@ -58,10 +49,24 @@ class TasksPage extends Component {
   }
 
   componentDidMount() {
+
     this.refreshTasks(this.props.selectedDate)
+
     if (this.props.keepAwake && this.props.isFocused) {
       this.enableKeepAwake()
     }
+
+    BackgroundGeolocation.on('start', () => {
+      this.setParentParams({ tracking: true })
+    })
+    BackgroundGeolocation.on('stop', () => {
+      this.setParentParams({ tracking: false })
+    })
+    BackgroundGeolocation.checkStatus(status => {
+      if (status.isRunning) {
+        this.setParentParams({ tracking: true })
+      }
+    })
   }
 
   componentDidUpdate(prevProps) {
@@ -72,15 +77,6 @@ class TasksPage extends Component {
         this.disableKeepAwake()
       }
     }
-  }
-
-  componentWillUnmount() {
-    BackgroundGeolocation.stop()
-    backgroundGeolocationEvents.forEach(event => BackgroundGeolocation.removeAllListeners(event))
-  }
-
-  onGeolocationChange(geolocation) {
-    this.setState({ geolocation })
   }
 
   refreshTasks (selectedDate) {
@@ -95,34 +91,6 @@ class TasksPage extends Component {
   }
 
   onMapReady () {
-
-    BackgroundGeolocation.on('start', () => {
-      this.setParentParams({ tracking: true })
-    })
-
-    BackgroundGeolocation.on('stop', () => {
-      this.setParentParams({ tracking: false })
-    })
-
-    BackgroundGeolocation.on('location', (location) => {
-
-      this.onGeolocationChange(location)
-
-      // handle your locations here
-      // to perform long running operation on iOS
-      // you need to create background task
-      // BackgroundGeolocation.startTask(taskKey => {
-      //   // execute long running task
-      //   // eg. ajax post location
-      //   // IMPORTANT: task has to be ended by endTask
-      //   BackgroundGeolocation.endTask(taskKey);
-      // });
-    })
-
-    BackgroundGeolocation.on('error', (error) => {
-      console.log('[ERROR] BackgroundGeolocation error:', error);
-    });
-
     BackgroundGeolocation.on('authorization', (status) => {
       console.log('[INFO] BackgroundGeolocation authorization status: ' + status);
       if (status === BackgroundGeolocation.NOT_AUTHORIZED) {
@@ -134,18 +102,6 @@ class TasksPage extends Component {
           ]), 1000);
       }
     });
-
-    BackgroundGeolocation.checkStatus(status => {
-      // you don't need to check status before start (this is just the example)
-      if (status.isRunning) {
-        this.setParentParams({ tracking: true })
-      } else {
-        BackgroundGeolocation.start()
-      }
-    });
-
-    // you can also just start without checking for status
-    // BackgroundGeolocation.start();
   }
 
   render() {

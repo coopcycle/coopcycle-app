@@ -9,8 +9,9 @@ import { persistStore } from 'redux-persist'
 import reducers from './reducers'
 import PreferencesMiddleware from './middlewares/PreferencesMiddleware'
 import WsMiddleware from './middlewares/WebSocketMiddleware'
+import GeolocationMiddleware from './middlewares/GeolocationMiddleware'
 
-const middlewares = [ thunk, ReduxAsyncQueue, PreferencesMiddleware, WsMiddleware() ]
+const middlewares = [ thunk, ReduxAsyncQueue, PreferencesMiddleware, WsMiddleware(), GeolocationMiddleware ]
 
 if (process.env.NODE_ENV === 'development') {
   middlewares.push(createLogger({ collapsed: true }))

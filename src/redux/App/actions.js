@@ -217,7 +217,7 @@ export function bootstrap(baseURL, user) {
     Preferences.getKeepAwake().then(keepAwake => dispatch(setKeepAwake(keepAwake)))
     Preferences.getSignatureScreenFirst().then(first => dispatch(setSignatureScreenFirst(first)))
 
-    configureBackgroundGeolocation(httpClient, user)
+    configureBackgroundGeolocation()
     saveRemotePushToken(dispatch, getState)
     initBLE(dispatch)
 
@@ -241,7 +241,7 @@ function setBaseURL(dispatch, baseURL) {
         dispatch(_setHttpClient(httpClient))
         dispatch(_setBaseURL(baseURL))
 
-        configureBackgroundGeolocation(httpClient, user)
+        configureBackgroundGeolocation()
 
         resolve()
       })
@@ -480,7 +480,7 @@ function onAuthenticationSuccess(dispatch, getState) {
   dispatch(authenticationSuccess())
 
   setTimeout(() => {
-    configureBackgroundGeolocation(httpClient, user)
+    configureBackgroundGeolocation()
     saveRemotePushToken(dispatch, getState)
   }, 0)
 }
@@ -516,9 +516,9 @@ function postRemotePushToken(httpClient, token) {
     .post('/api/me/remote_push_tokens', { platform: Platform.OS, token })
 }
 
-function configureBackgroundGeolocation(httpClient, user) {
+function configureBackgroundGeolocation() {
 
-  let options = {
+  const options = {
     desiredAccuracy: BackgroundGeolocation.HIGH_ACCURACY,
     stationaryRadius: 5,
     distanceFilter: 10,
@@ -540,43 +540,7 @@ function configureBackgroundGeolocation(httpClient, user) {
     syncThreshold: 5,
   }
 
-  if (user && user.isAuthenticated()) {
-    options = Object.assign(options, {
-      url: httpClient.getBaseURL() + '/api/me/location',
-      syncUrl: httpClient.getBaseURL() + '/api/me/location',
-      httpHeaders: {
-        'Authorization': `Bearer ${httpClient.getToken()}`,
-        'Content-Type': 'application/ld+json',
-      },
-      postTemplate: {
-        latitude: '@latitude',
-        longitude: '@longitude',
-        time: '@time',
-      },
-    })
-  }
-
   BackgroundGeolocation.configure(options)
-
-  BackgroundGeolocation.removeAllListeners('http_authorization')
-
-  // This is called when server responded with "401 Unauthorized"
-  BackgroundGeolocation.on('http_authorization', () => {
-    httpClient.refreshToken()
-      .then(token => {
-        BackgroundGeolocation.configure({
-          httpHeaders: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/ld+json',
-          },
-        })
-      })
-      .catch(e => {
-        // If the token could not be refreshed,
-        // we mark the locations as deleted to stop retrying
-        BackgroundGeolocation.deleteAllLocations()
-      })
-  })
 }
 
 function splitter(str, l){
