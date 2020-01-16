@@ -98,7 +98,6 @@ class RestaurantsPage extends Component {
     return (
       <Container style={{ paddingTop: 54 }} testID="checkoutSearch">
         <RestaurantSearch
-          ref={ component => { this.restaurantSearch = component } }
           onChange={ address => this._onAddressChange(address) }
           defaultValue={ searchText }
           key={ searchText } />
