@@ -41,24 +41,35 @@ class TasksPage extends Component {
     this.refreshTasks = this.refreshTasks.bind(this)
   }
 
+  enableKeepAwake() {
+    if (Platform.OS === 'ios') {
+      KeepAwake.activate()
+    } else {
+      RNPinScreen.pin()
+    }
+  }
+
+  disableKeepAwake() {
+    if (Platform.OS === 'ios') {
+      KeepAwake.deactivate()
+    } else {
+      RNPinScreen.unpin()
+    }
+  }
+
   componentDidMount() {
     this.refreshTasks(this.props.selectedDate)
+    if (this.props.keepAwake && this.props.isFocused) {
+      this.enableKeepAwake()
+    }
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.isFocused !== this.props.isFocused) {
-      if (this.props.isFocused) {
-        if (Platform.OS === 'ios') {
-          KeepAwake.activate()
-        } else {
-          RNPinScreen.pin()
-        }
+    if (prevProps.isFocused !== this.props.isFocused || prevProps.keepAwake !== this.props.keepAwake) {
+      if (this.props.keepAwake && this.props.isFocused) {
+        this.enableKeepAwake()
       } else {
-        if (Platform.OS === 'ios') {
-          KeepAwake.deactivate()
-        } else {
-          RNPinScreen.unpin()
-        }
+        this.disableKeepAwake()
       }
     }
   }
