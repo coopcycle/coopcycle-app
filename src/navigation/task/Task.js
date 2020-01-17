@@ -178,18 +178,18 @@ class Task extends Component {
     )
   }
 
-  renderSwipeoutLeftButton() {
+  renderSwipeoutLeftButton(width) {
     return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', width }}>
         <Icon type="FontAwesome" name={ doneIconName } style={{ color: '#fff' }} />
       </View>
     )
 
   }
 
-  renderSwipeoutRightButton() {
+  renderSwipeoutRightButton(width) {
     return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', width }}>
         <Icon type="FontAwesome" name={ failedIconName } style={{ color: '#fff' }} />
       </View>
     )
@@ -231,32 +231,34 @@ class Task extends Component {
       navigateAfter: this.props.navigation.getParam('navigateAfter'),
     }
 
+    const buttonWidth = (width / 3)
+
     return (
       <SwipeRow
-        leftOpenValue={ 75 }
-        stopLeftSwipe={ 100 }
-        rightOpenValue={ -75 }
-        stopRightSwipe={ -100 }>
+        leftOpenValue={ buttonWidth }
+        stopLeftSwipe={ buttonWidth + 25 }
+        rightOpenValue={ buttonWidth * -1 }
+        stopRightSwipe={ (buttonWidth + 25) * -1 }>
         <View style={ styles.rowBack }>
           <TouchableOpacity
-            style={{ flex: 1, alignItems: 'flex-start', justifyContent: 'center', paddingLeft: 15, backgroundColor: greenColor }}
+            style={{ flex: 1, alignItems: 'flex-start', justifyContent: 'center', backgroundColor: greenColor, width: buttonWidth }}
             onPress={ () => {
               this.props.navigation.navigate('TaskComplete', { ...navigateParams, success: true })
               this.setState({
                 swipeOutClose: true,
               })
             }}>
-            { this.renderSwipeoutLeftButton() }
+            { this.renderSwipeoutLeftButton(buttonWidth) }
           </TouchableOpacity>
           <TouchableOpacity
-            style={{ flex: 1, alignItems: 'flex-end', justifyContent: 'center', paddingRight: 15, backgroundColor: redColor }}
+            style={{ flex: 1, alignItems: 'flex-end', justifyContent: 'center', backgroundColor: redColor, width: buttonWidth }}
             onPress={ () => {
               this.props.navigation.navigate('TaskComplete', { ...navigateParams, success: false })
               this.setState({
                 swipeOutClose: true,
               })
             }}>
-            { this.renderSwipeoutRightButton() }
+            { this.renderSwipeoutRightButton(buttonWidth) }
           </TouchableOpacity>
         </View>
         <View style={{ padding: 28, width, backgroundColor: '#dedede' }}>
