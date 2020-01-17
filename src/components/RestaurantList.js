@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native'
-import { Text, Thumbnail } from 'native-base';
-import { Col, Grid } from 'react-native-easy-grid'
+import { Text, Thumbnail } from 'native-base'
 import { withTranslation } from 'react-i18next'
 
 const styles = StyleSheet.create({
@@ -11,13 +10,30 @@ const styles = StyleSheet.create({
   item: {
     paddingVertical: 10,
     paddingHorizontal: 15,
-    borderBottomColor: '#f7f7f7',
-    borderBottomWidth: StyleSheet.hairlineWidth,
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   restaurantNameText: {
     marginBottom: 5,
   },
-});
+  itemSeparator: {
+    height: StyleSheet.hairlineWidth,
+    width: '100%',
+    backgroundColor: '#e7e7e7',
+  },
+})
+
+const ItemSeparatorComponent = () => (
+  <View style={ styles.itemSeparator } />
+)
+
+const OneLineText = (props) => (
+  <Text numberOfLines={ 1 } ellipsizeMode="tail" { ...props }>
+    { props.children }
+  </Text>
+)
 
 class RestaurantList extends Component {
 
@@ -27,15 +43,11 @@ class RestaurantList extends Component {
       <TouchableOpacity style={ styles.item }
         onPress={ () => this.props.onItemClick(restaurant) }
         testID={ `restaurantIndex:${index}` }>
-        <Grid>
-          <Col size={ 1 }>
-            <Thumbnail size={60} source={{ uri: restaurant.image }} />
-          </Col>
-          <Col size={ 4 } style={{ paddingLeft: 10 }}>
-            <Text style={ styles.restaurantNameText }>{ restaurant.name }</Text>
-            <Text note>{ restaurant.address.streetAddress }</Text>
-          </Col>
-        </Grid>
+        <View style={{ flex: 1 }}>
+          <OneLineText style={ [ styles.restaurantNameText ] }>{ restaurant.name }</OneLineText>
+          <OneLineText note>{ restaurant.address.streetAddress }</OneLineText>
+        </View>
+        <Thumbnail size={ 60 } source={{ uri: restaurant.image }} />
       </TouchableOpacity>
     )
   }
@@ -48,7 +60,8 @@ class RestaurantList extends Component {
           testID="restaurantList"
           data={ this.props.restaurants }
           keyExtractor={ (item, index) => item['@id'] }
-          renderItem={ ({ item, index }) => this.renderItem(item, index) } />
+          renderItem={ ({ item, index }) => this.renderItem(item, index) }
+          ItemSeparatorComponent={ ItemSeparatorComponent } />
       </View>
     )
   }
