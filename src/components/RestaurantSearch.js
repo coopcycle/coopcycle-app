@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, TouchableOpacity, TextInput } from 'react-native'
+import { Platform, StyleSheet, View, TouchableOpacity, TextInput } from 'react-native'
 import { Icon } from 'native-base'
 import { withTranslation } from 'react-i18next'
 
@@ -8,13 +8,30 @@ import AddressAutocomplete from './AddressAutocomplete'
 const textInputContainerHeight = 54
 
 const styles = StyleSheet.create({
-  container : {
+  container: {
     position: 'absolute',
-    top: 0,
-    left: 0,
-    zIndex: 10,
-    overflow: 'visible',
     backgroundColor: '#e4022d',
+    ...Platform.select({
+      android: {
+        flex: 1,
+        top: 0,
+        right: 0,
+        left: 0,
+        zIndex: 1,
+      },
+      ios: {
+        top: 0,
+        left: 0,
+        zIndex: 10,
+        overflow: 'visible',
+      },
+    }),
+  },
+  textInput: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     height: textInputContainerHeight,
   },
 })
@@ -46,7 +63,7 @@ class RestaurantSearch extends Component {
   renderTextInput(props) {
 
     return (
-      <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+      <View style={ styles.textInput }>
         <TextInput { ...props } style={ [ props.style, { flex: 1 } ] } />
         { this.renderButton() }
       </View>
@@ -69,6 +86,9 @@ class RestaurantSearch extends Component {
             justifyContent: 'center',
             borderWidth: 0,
             paddingLeft: 15,
+          }}
+          listStyle={{
+            margin: 0,
           }}
           style={{
             backgroundColor: 'white',
