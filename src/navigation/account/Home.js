@@ -10,10 +10,17 @@ import { withTranslation } from 'react-i18next'
 
 import Server from './components/Server'
 import { logout } from '../../redux/App/actions'
+import LoginRegister from './LoginRegister'
 
 class AccountHome extends Component {
 
   render() {
+
+    if (!this.props.isAuthenticated) {
+      return (
+        <LoginRegister />
+      )
+    }
 
     const { navigate } = this.props.navigation
 
@@ -69,6 +76,7 @@ function mapStateToProps(state) {
   return {
     user: state.app.user,
     message: state.app.lastAuthenticationError,
+    isAuthenticated: state.app.isAuthenticated,
   }
 }
 

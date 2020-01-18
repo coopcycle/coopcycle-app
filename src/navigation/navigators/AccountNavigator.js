@@ -1,10 +1,9 @@
-import { createSwitchNavigator } from 'react-navigation'
 import { createStackNavigator } from 'react-navigation-stack'
 
 import screens, { defaultNavigationOptions, headerLeft } from '..'
 import i18n from '../../i18n'
 
-const AuthenticatedStack = createStackNavigator({
+export default createStackNavigator({
   AccountHome: {
     screen: screens.AccountHome,
     navigationOptions: ({ navigation }) => ({
@@ -13,6 +12,7 @@ const AuthenticatedStack = createStackNavigator({
       ...defaultNavigationOptions,
     }),
   },
+  // Authenticated
   AccountAddresses: {
     screen: screens.AccountAddressesPage,
     navigationOptions: ({ navigation }) => ({
@@ -37,21 +37,7 @@ const AuthenticatedStack = createStackNavigator({
       title: i18n.t('MY_DETAILS'),
     }),
   },
-}, {
-  initialRouteKey: 'AccountHome',
-  initialRouteName: 'AccountHome',
-  defaultNavigationOptions,
-})
-
-const NotAuthenticatedStack = createStackNavigator({
-  AccountLoginRegister: {
-    screen: screens.AccountLoginRegister,
-    navigationOptions: ({ navigation }) => ({
-      title: i18n.t('MY_ACCOUNT'),
-      headerLeft: headerLeft(navigation),
-      ...defaultNavigationOptions,
-    }),
-  },
+  // Not authenticated
   AccountRegisterCheckEmail: {
     screen: screens.AccountRegisterCheckEmail,
     navigationOptions: ({ navigation }) => ({
@@ -71,13 +57,7 @@ const NotAuthenticatedStack = createStackNavigator({
     }),
   },
 }, {
-  initialRouteName: 'AccountLoginRegister',
+  initialRouteKey: 'AccountHome',
+  initialRouteName: 'AccountHome',
   defaultNavigationOptions,
-})
-
-export default createSwitchNavigator({
-  AccountNotAuthenticated: NotAuthenticatedStack,
-  AccountAuthenticated: AuthenticatedStack,
-}, {
-  initialRouteName: 'AccountNotAuthenticated',
 })

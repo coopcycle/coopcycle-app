@@ -97,7 +97,6 @@ function authenticate(username) {
 
   return function (dispatch, getState) {
     dispatch(_authenticate(username))
-    NavigationHolder.navigate('AccountAuthenticated')
   }
 }
 
@@ -277,7 +276,6 @@ export function login(email, password, navigate = true) {
     httpClient.login(email, password)
       .then(user => {
         onAuthenticationSuccess(dispatch, getState)
-        NavigationHolder.navigate('AccountAuthenticated')
 
         if (navigate) {
           navigateToHome(dispatch, getState)
@@ -304,7 +302,6 @@ export function logout() {
 
     user.logout()
       .then(() => {
-        NavigationHolder.navigate('AccountNotAuthenticated')
         dispatch(logoutSuccess())
       })
   }
