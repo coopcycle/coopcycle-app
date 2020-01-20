@@ -1,9 +1,12 @@
 import React, {Component} from 'react';
 import {View} from 'react-native';
 import {connect} from 'react-redux';
+import { Formik } from 'formik'
+import {withTranslation} from 'react-i18next'
 import {Form, Item, Input, Label, Button, Text} from 'native-base';
+import _ from 'lodash'
+
 import material from '../../native-base-theme/variables/material';
-import {withTranslation} from 'react-i18next';
 
 class ForgotPasswordForm extends Component {
   constructor(props) {
@@ -12,53 +15,74 @@ class ForgotPasswordForm extends Component {
     this.state = {
       username: undefined,
     };
-
-    this._onSubmit.bind(this);
   }
 
-  _onSubmit() {
-    const {username} = this.state;
+  _validate(values) {
+
+    let errors = {}
+
+    if (_.isEmpty(values.username)) {
+      errors.username = true
+    }
+
+    return errors
+  }
+
+  _onSubmit(values) {
+    const {username} = values
     this.props.onSubmit(username);
   }
 
   render() {
-    const itemProps = this.props.inputError ? {error: true} : {};
+
+    const initialValues = {
+      username: '',
+    }
 
     return (
-      <View>
-        <Form>
-          <Item stackedLabel {...itemProps}>
-            <Label>{this.props.t('USERNAME_OR_EMAIL')}</Label>
-            <Input
-              autoCorrect={false}
-              autoCapitalize="none"
-              keyboardType="email-address"
-              returnKeyType="done"
-              onChangeText={username => this.setState({username})}
-              onSubmitEditing={_ => this._onSubmit()}
-            />
-          </Item>
-        </Form>
-        <View style={{marginTop: 20}}>
-          <Button block onPress={() => this._onSubmit()}>
-            <Text>{this.props.t('SUBMIT')}</Text>
-          </Button>
-          <Text
-            style={{
-              marginTop: 15,
-              color: material.inputErrorBorderColor,
-            }}>
-            {this.props.nonInputError}
-          </Text>
+      <Formik
+        initialValues={ initialValues }
+        validate={ this._validate.bind(this) }
+        onSubmit={ this._onSubmit.bind(this) }
+        validateOnBlur={ false }
+        validateOnChange={ false }>
+        {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
+        <View>
+          <Form>
+            <Item stackedLabel error={ touched.username && errors.username }>
+              <Label>{this.props.t('USERNAME_OR_EMAIL')}</Label>
+              <Input
+                autoCorrect={false}
+                autoCapitalize="none"
+                keyboardType="email-address"
+                returnKeyType="done"
+                onChangeText={ handleChange('username') }
+                onBlur={ handleBlur('username') }
+                onSubmitEditing={ handleSubmit }
+              />
+            </Item>
+          </Form>
+          <View style={{marginTop: 20}}>
+            <Button block onPress={ handleSubmit }>
+              <Text>{this.props.t('SUBMIT')}</Text>
+            </Button>
+            <Text
+              style={{
+                marginTop: 15,
+                color: material.inputErrorBorderColor,
+              }}>
+              {this.props.nonInputError}
+            </Text>
+          </View>
         </View>
-      </View>
+        )}
+      </Formik>
     );
   }
 }
 
 function mapStateToProps(state) {
   return {
-    inputError: state.app.forgotPassword.inputError,
     nonInputError: state.app.forgotPassword.nonInputError,
   };
 }

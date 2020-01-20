@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import {StyleSheet, View} from 'react-native'
 import {Container, Content} from 'native-base'
 import {connect} from 'react-redux'
 import {withTranslation} from 'react-i18next'
@@ -15,22 +16,28 @@ class ForgotPassword extends Component {
 
   render() {
     return (
-      <Container>
-        <Content padder>
-          <ForgotPasswordForm
-            onSubmit={username => {
-              const {
-                checkEmailRouteName,
-                resumeCheckoutAfterActivation,
-              } = this.props.navigation.state.params;
-              this.props.resetPassword(username, checkEmailRouteName, resumeCheckoutAfterActivation);
-            }}
-          />
-        </Content>
-      </Container>
+      <View style={ styles.content }>
+        <ForgotPasswordForm
+          onSubmit={username => {
+            const {
+              checkEmailRouteName,
+              resumeCheckoutAfterActivation,
+            } = this.props.navigation.state.params;
+            this.props.resetPassword(username, checkEmailRouteName, resumeCheckoutAfterActivation);
+          }} />
+      </View>
     )
   }
 }
+
+const styles = StyleSheet.create({
+  content: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 30
+  },
+})
 
 function mapStateToProps(state) {
   return {
