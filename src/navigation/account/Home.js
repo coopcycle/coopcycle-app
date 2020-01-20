@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { View } from 'react-native'
+import { withNavigation } from 'react-navigation'
 import {
   Container, Content,
   Right, Body,
@@ -12,13 +13,15 @@ import Server from './components/Server'
 import { logout } from '../../redux/App/actions'
 import LoginRegister from './LoginRegister'
 
+const LoginRegisterWithNav = withNavigation(LoginRegister)
+
 class AccountHome extends Component {
 
   render() {
 
     if (!this.props.isAuthenticated) {
       return (
-        <LoginRegister />
+        <LoginRegisterWithNav />
       )
     }
 
