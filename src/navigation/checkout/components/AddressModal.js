@@ -67,7 +67,7 @@ class AddressModal extends Component {
       <View style={ [ styles.goBackContainer, { width } ] }>
         <Button bordered info block
           onPress={ () => this.props.onGoBack(this.state.address) }>
-          <Text>{ this.props.t('BACK') }</Text>
+          <Text>{ this.props.t('SEARCH_WITH_ADDRESS', { address: this.state.address.streetAddress }) }</Text>
         </Button>
       </View>
     )

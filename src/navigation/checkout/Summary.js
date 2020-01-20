@@ -3,6 +3,7 @@ import {
   Animated,
   Dimensions,
   FlatList,
+  InteractionManager,
   StyleSheet,
   TouchableOpacity,
   View,
@@ -31,20 +32,15 @@ class Summary extends Component {
 
   constructor(props) {
     super(props)
-
     this.state = {
       translateXValue: new Animated.Value(500),
     }
-
-    this.validate = _.once(this.props.validate.bind(this))
   }
 
   componentDidMount() {
-    this.didFocusListener = this.props.navigation.addListener('didFocus', this.validate)
-  }
-
-  componentWillUnmount() {
-    this.didFocusListener.remove()
+    InteractionManager.runAfterInteractions(() => {
+      this.props.validate()
+    })
   }
 
   componentDidUpdate(prevProps) {

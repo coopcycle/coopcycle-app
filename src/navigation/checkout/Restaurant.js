@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { ImageBackground, StyleSheet, View, Animated } from 'react-native'
+import { ImageBackground, InteractionManager, StyleSheet, View, Animated } from 'react-native'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 import { Container, Text } from 'native-base';
@@ -54,27 +54,11 @@ const GroupImageHeader = (props) => {
 
 class Restaurant extends Component {
 
-  constructor(props) {
-    super(props)
-    this.init = _.once(this.props.init.bind(this))
-  }
-
   componentDidMount() {
-
-    const restaurant = this.props.navigation.getParam('restaurant')
-
-    this.props.resetRestaurant(restaurant)
-
-    // "didFocus" is called when going back,
-    // so make sure we call init() once
-    this.didFocusListener = this.props.navigation.addListener(
-      'didFocus',
-      payload => this.init(restaurant)
-    )
-  }
-
-  componentWillUnmount() {
-    this.didFocusListener.remove()
+    this.props.resetRestaurant(this.props.navigation.getParam('restaurant'))
+    InteractionManager.runAfterInteractions(() => {
+      this.props.init(this.props.navigation.getParam('restaurant'))
+    })
   }
 
   render() {
