@@ -35,7 +35,7 @@ class OrderScreen extends Component {
     this.props.printOrder(order)
   }
 
-  renderButtons() {
+  renderActionButtons() {
 
     const { order } = this.props
     const { navigate } = this.props.navigation
@@ -147,7 +147,7 @@ class OrderScreen extends Component {
     }
   }
 
-  render() {
+  renderButtons() {
 
     const { order, thermalPrinterConnected } = this.props
 
@@ -160,6 +160,38 @@ class OrderScreen extends Component {
     } catch (e) {}
 
     return (
+      <View style={ styles.section }>
+        <View style={{ flex: 1, flexDirection: 'row', alignItems: 'flex-end' }}>
+          { thermalPrinterConnected && (
+          <Button iconLeft onPress={ () => this._print() }>
+            <Icon type="FontAwesome" name="print" />
+            <Text>{ this.props.t('RESTAURANT_ORDER_PRINT') }</Text>
+          </Button>
+          )}
+          { !thermalPrinterConnected && (
+          <Button light iconLeft onPress={ () => this.props.navigation.navigate('RestaurantPrinter') }>
+            <Icon type="FontAwesome" name="print" />
+            <Text>{ this.props.t('RESTAURANT_ORDER_CONNECT_PRINTER') }</Text>
+          </Button>
+          )}
+          { isPhoneValid && (
+          <Button iconLeft success
+            onPress={ () => phonecall(order.customer.telephone, true) }
+            style={{ marginLeft: 'auto', alignSelf: 'flex-end' }}>
+            <Icon name="call" />
+            <Text>{ phoneNumberUtil.format(phoneNumber, PhoneNumberFormat.NATIONAL) }</Text>
+          </Button>
+          )}
+        </View>
+      </View>
+    )
+  }
+
+  render() {
+
+    const { order } = this.props
+
+    return (
       <Container>
         <NavigationEvents
           onDidFocus={ this.componentDidFocus.bind(this) }
@@ -168,24 +200,7 @@ class OrderScreen extends Component {
           { this.renderHeading() }
           <Row size={ 10 }>
             <Content padder>
-              { isPhoneValid && (
-                <View style={ styles.section }>
-                  <View style={{ flex: 1, flexDirection: 'row', alignItems: 'flex-end' }}>
-                    { thermalPrinterConnected && (
-                    <Button iconLeft onPress={ () => this._print() }>
-                      <Icon type="FontAwesome" name="print" />
-                      <Text>{ this.props.t('RESTAURANT_ORDER_PRINT') }</Text>
-                    </Button>
-                    )}
-                    <Button iconLeft success
-                      onPress={ () => phonecall(order.customer.telephone, true) }
-                      style={{ marginLeft: 'auto', alignSelf: 'flex-end' }}>
-                      <Icon name="call" />
-                      <Text>{ phoneNumberUtil.format(phoneNumber, PhoneNumberFormat.NATIONAL) }</Text>
-                    </Button>
-                  </View>
-                </View>
-              )}
+              { this.renderButtons() }
               <View style={ styles.section }>
                 <OrderItems order={ order } />
                 { this.renderNotes() }
@@ -193,7 +208,7 @@ class OrderScreen extends Component {
             </Content>
           </Row>
         </Grid>
-        { this.renderButtons() }
+        { this.renderActionButtons() }
       </Container>
     )
   }

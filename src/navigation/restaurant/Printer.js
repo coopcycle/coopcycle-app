@@ -1,10 +1,6 @@
 import React, { Component } from 'react'
 import { StyleSheet, View, TouchableOpacity, FlatList, NativeModules, NativeEventEmitter, ActivityIndicator } from 'react-native'
-import {
-  Container, Header, Title, Content, Footer, FooterTab,
-  Left, Right, Body,
-  List, ListItem, Icon, Text, Button, Radio, Switch
-} from 'native-base'
+import { Container, Icon, Text } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import _ from 'lodash'
 import { connect } from 'react-redux'

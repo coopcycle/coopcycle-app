@@ -272,6 +272,7 @@
     "TOUCH_TO_RELOAD": "Touchez pour réessayer",
     "OFFLINE": "Vous êtes déconnecté·e",
     "SCAN_FOR_PRINTERS": "Scanner les imprimantes",
-    "SEARCH_WITH_ADDRESS": "Rechercher « {{address}} »"
+    "SEARCH_WITH_ADDRESS": "Rechercher « {{address}} »",
+    "RESTAURANT_ORDER_CONNECT_PRINTER": "Connecter une imprimante"
   }
 }
