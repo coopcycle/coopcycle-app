@@ -491,7 +491,7 @@ export function connectPrinter(device) {
         dispatch(printerConnected(device.id))
       })
       .catch(e => {
-        console.log(error)
+        console.log(e)
       })
   }
 }
