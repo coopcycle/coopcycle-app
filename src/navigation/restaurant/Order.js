@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, TouchableOpacity } from 'react-native';
+import { Dimensions, StyleSheet, View, TouchableOpacity } from 'react-native';
 import { NavigationEvents } from 'react-navigation';
 import {
   Container, Content, Footer,
@@ -13,6 +13,7 @@ import { withTranslation } from 'react-i18next'
 import moment from 'moment'
 import { phonecall } from 'react-native-communications'
 import { PhoneNumberUtil, PhoneNumberFormat } from 'google-libphonenumber'
+import { SwipeRow } from 'react-native-swipe-list-view'
 
 import OrderItems from '../../components/OrderItems'
 import { acceptOrder, setCurrentOrder, printOrder } from '../../redux/Restaurant/actions'
@@ -21,6 +22,20 @@ import material from '../../../native-base-theme/variables/material'
 const phoneNumberUtil = PhoneNumberUtil.getInstance()
 
 class OrderScreen extends Component {
+
+  constructor(props) {
+    super(props)
+    this.state = {
+      openValue: 0,
+    }
+    this.onSwipeValueChange = this.onSwipeValueChange.bind(this)
+    this.onRowOpen = this.onRowOpen.bind(this)
+  }
+
+  componentDidMount() {
+    const { width } = Dimensions.get('window')
+    this.setState({ openValue: (width * 0.7) })
+  }
 
   componentDidFocus(payload) {
     this.props.setCurrentOrder(this.props.order)
@@ -42,30 +57,25 @@ class OrderScreen extends Component {
 
     if (order.state === 'new') {
       return (
-        <Footer style={{ backgroundColor: '#fbfbfb' }}>
-          <Grid>
-            <Row>
-              <Col style={{ padding: 10 }}>
-                <TouchableOpacity
-                  style={ [ styles.footerBtn, styles.refuseBtn ] }
-                  onPress={() => navigate('RestaurantOrderRefuse', { order })}>
-                  <Text style={ styles.refuseBtnText }>
-                    { this.props.t('RESTAURANT_ORDER_BUTTON_REFUSE') }
-                  </Text>
-                </TouchableOpacity>
-              </Col>
-              <Col style={{ padding: 10 }}>
-                <TouchableOpacity
-                  style={ [ styles.footerBtn, styles.acceptBtn ] }
-                  onPress={() => this.props.acceptOrder(this.props.httpClient, order)}>
-                  <Text style={ styles.acceptBtnText }>
-                    { this.props.t('RESTAURANT_ORDER_BUTTON_ACCEPT') }
-                  </Text>
-                </TouchableOpacity>
-              </Col>
-            </Row>
-          </Grid>
-        </Footer>
+        <View style={{ marginBottom: 20 }}>
+          <View style={{ padding: 20 }}>
+            <SwipeRow
+              leftOpenValue={ this.state.openValue }
+              rightOpenValue={ (this.state.openValue * -1) }
+              onRowOpen={ this.onRowOpen }
+              onSwipeValueChange={ this.onSwipeValueChange }>
+              <View style={ styles.swipeBg }>
+                <Text>{ this.props.t('RESTAURANT_ORDER_BUTTON_ACCEPT') }</Text>
+                <Text>{ this.props.t('RESTAURANT_ORDER_BUTTON_REFUSE') }</Text>
+              </View>
+              <View style={ styles.swipeFg }>
+                <Icon type="FontAwesome" name="angle-double-left" />
+                <Icon type="FontAwesome" name="angle-double-right" />
+              </View>
+            </SwipeRow>
+          </View>
+          <Text note style={{ textAlign: 'center' }}>{ this.props.t('SWIPE_TO_ACCEPT_REFUSE') }</Text>
+        </View>
       )
     }
 
@@ -187,6 +197,18 @@ class OrderScreen extends Component {
     )
   }
 
+  onSwipeValueChange({ key, value }) {
+    // TODO Animate color
+  }
+
+  onRowOpen(value) {
+    if (value > 0) {
+      this.props.acceptOrder(this.props.httpClient, this.props.order)
+    } else {
+      this.props.navigation.navigate('RestaurantOrderRefuse', { order: this.props.order })
+    }
+  }
+
   render() {
 
     const { order } = this.props
@@ -251,6 +273,24 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: material.contentPadding,
+  },
+  swipeBg: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: "#e7e7e7",
+    paddingHorizontal: 30,
+  },
+  swipeFg: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 30,
+    borderWidth: 1,
+    borderColor: "#e7e7e7",
+    backgroundColor: '#ffffff',
   },
 });
 

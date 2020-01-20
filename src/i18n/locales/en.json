@@ -275,6 +275,7 @@
     "OFFLINE": "You are offline",
     "SCAN_FOR_PRINTERS": "Start scanning",
     "SEARCH_WITH_ADDRESS": "Search « {{address}} »",
-    "RESTAURANT_ORDER_CONNECT_PRINTER": "Connect a printer"
+    "RESTAURANT_ORDER_CONNECT_PRINTER": "Connect a printer",
+    "SWIPE_TO_ACCEPT_REFUSE": "Slide to the right to accept, to the left to refuse"
   }
 }

@@ -238,6 +238,7 @@
     "SESSION_EXPIRED": "Tu sesión ha expirado",
     "TOUCH_TO_RELOAD": "Toca para intentar de nuevo",
     "OFFLINE": "Estás desconectado",
-    "SEARCH_WITH_ADDRESS": "Buscar « {{address}} »"
+    "SEARCH_WITH_ADDRESS": "Buscar « {{address}} »",
+    "SWIPE_TO_ACCEPT_REFUSE": "Desliza a la derecha para aceptar, a la izquierda para rechazar"
   }
 }

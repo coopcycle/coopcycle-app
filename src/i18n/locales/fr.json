@@ -273,6 +273,7 @@
     "OFFLINE": "Vous êtes déconnecté·e",
     "SCAN_FOR_PRINTERS": "Scanner les imprimantes",
     "SEARCH_WITH_ADDRESS": "Rechercher « {{address}} »",
-    "RESTAURANT_ORDER_CONNECT_PRINTER": "Connecter une imprimante"
+    "RESTAURANT_ORDER_CONNECT_PRINTER": "Connecter une imprimante",
+    "SWIPE_TO_ACCEPT_REFUSE": "Glissez vers la droite pour accepter, vers la gauche pour refuser"
   }
 }
