@@ -31,6 +31,12 @@ class Printer extends Component {
     })
   }
 
+  componentDidUpdate(prevProps) {
+    if (this.props.printer && prevProps.printer !== this.props.printer) {
+      this.props.navigation.navigate('RestaurantOrder')
+    }
+  }
+
   componentWillUnmount() {
     this.discoverPeripheral.remove()
   }
@@ -120,6 +126,7 @@ function mapStateToProps(state) {
   return {
     thermalPrinter: state.restaurant.thermalPrinter,
     isScanning: state.restaurant.isScanningBluetooth,
+    printer: state.restaurant.printer,
   }
 }
 
