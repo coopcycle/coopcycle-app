@@ -10,6 +10,7 @@ import _ from 'lodash'
 const styles = StyleSheet.create({
   container: {
     marginBottom: 20,
+    flex: 1,
   },
   item: {
     flex: 1,
@@ -17,7 +18,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingVertical: 15,
-    paddingHorizontal: 5,
+    paddingHorizontal: 15,
     borderBottomColor: '#ddd',
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
@@ -151,13 +152,17 @@ class OrderItems extends Component {
 
     return (
       <View style={ styles.container }>
-        <FlatList
-          data={ order.items }
-          keyExtractor={ (item, index) => `ITEM#${item.id}` }
-          renderItem={ ({ item }) => this.renderItem(item) } />
-        { this.renderItemsTotal() }
-        { this.props.withDeliveryTotal === true && this.renderAdjustments() }
-        { this.props.withDeliveryTotal === true && this.renderTotal() }
+        <View style={{ flex: 8 }}>
+          <FlatList
+            data={ order.items }
+            keyExtractor={ (item, index) => `ITEM#${item.id}` }
+            renderItem={ ({ item }) => this.renderItem(item) } />
+        </View>
+        <View style={{ flex: 2 }}>
+          { this.renderItemsTotal() }
+          { this.props.withDeliveryTotal === true && this.renderAdjustments() }
+          { this.props.withDeliveryTotal === true && this.renderTotal() }
+        </View>
       </View>
     )
   }

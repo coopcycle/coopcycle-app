@@ -32,11 +32,6 @@ class OrderScreen extends Component {
     this.onRowOpen = this.onRowOpen.bind(this)
   }
 
-  componentDidMount() {
-    const { width } = Dimensions.get('window')
-    this.setState({ openValue: (width * 0.7) })
-  }
-
   componentDidFocus(payload) {
     this.props.setCurrentOrder(this.props.order)
   }
@@ -57,8 +52,8 @@ class OrderScreen extends Component {
 
     if (order.state === 'new') {
       return (
-        <View style={{ marginBottom: 20 }}>
-          <View style={{ padding: 20 }}>
+        <View style={{ backgroundColor: '#fefefe' }}>
+          <View style={{ padding: 20 }} onLayout={ event => this.setState({ openValue: (event.nativeEvent.layout.width * 0.7) }) }>
             <SwipeRow
               leftOpenValue={ this.state.openValue }
               rightOpenValue={ (this.state.openValue * -1) }
@@ -74,7 +69,7 @@ class OrderScreen extends Component {
               </View>
             </SwipeRow>
           </View>
-          <Text note style={{ textAlign: 'center' }}>{ this.props.t('SWIPE_TO_ACCEPT_REFUSE') }</Text>
+          <Text note style={{ textAlign: 'center', marginBottom: 20 }}>{ this.props.t('SWIPE_TO_ACCEPT_REFUSE') }</Text>
         </View>
       )
     }
@@ -119,22 +114,23 @@ class OrderScreen extends Component {
       const pickupExpectedAt = moment.parseZone(order.pickupExpectedAt).format('LT')
 
       return (
-        <Row size={ 2 }>
-          <Col>
-            <Row>
-              <View style={ styles.dateContainer }>
-                <Icon name="md-clock" />
-                <Text>{ this.props.t('RESTAURANT_ORDER_PREPARATION_EXPECTED_AT', { date: preparationExpectedAt }) }</Text>
-              </View>
-            </Row>
-            <Row>
-              <View style={ styles.dateContainer }>
-                <Icon name="md-bicycle" />
-                <Text>{ this.props.t('RESTAURANT_ORDER_PICKUP_EXPECTED_AT', { date: pickupExpectedAt }) }</Text>
-              </View>
-            </Row>
-          </Col>
-        </Row>
+        <View style={{ flex: 2, marginBottom: 15 }}>
+          <View style={{ flex: 1 }}>
+            <View style={ styles.dateContainer }>
+              <Icon name="md-clock" />
+              <Text>{ this.props.t('RESTAURANT_ORDER_PREPARATION_EXPECTED_AT', { date: preparationExpectedAt }) }</Text>
+            </View>
+          </View>
+          <View style={{ flex: 1 }}>
+            <View style={ styles.dateContainer }>
+              <Icon name="md-bicycle" />
+              <Text>{ this.props.t('RESTAURANT_ORDER_PICKUP_EXPECTED_AT', { date: pickupExpectedAt }) }</Text>
+            </View>
+          </View>
+          <View style={{ flex: 1 }}>
+            { this.renderButtons() }
+          </View>
+        </View>
       )
     }
   }
@@ -170,29 +166,26 @@ class OrderScreen extends Component {
     } catch (e) {}
 
     return (
-      <View style={ styles.section }>
-        <View style={{ flex: 1, flexDirection: 'row', alignItems: 'flex-end' }}>
-          { thermalPrinterConnected && (
-          <Button iconLeft onPress={ () => this._print() }>
-            <Icon type="FontAwesome" name="print" />
-            <Text>{ this.props.t('RESTAURANT_ORDER_PRINT') }</Text>
-          </Button>
-          )}
-          { !thermalPrinterConnected && (
-          <Button light iconLeft onPress={ () => this.props.navigation.navigate('RestaurantPrinter') }>
-            <Icon type="FontAwesome" name="print" />
-            <Text>{ this.props.t('RESTAURANT_ORDER_CONNECT_PRINTER') }</Text>
-          </Button>
-          )}
-          { isPhoneValid && (
-          <Button iconLeft success
-            onPress={ () => phonecall(order.customer.telephone, true) }
-            style={{ marginLeft: 'auto', alignSelf: 'flex-end' }}>
-            <Icon name="call" />
-            <Text>{ phoneNumberUtil.format(phoneNumber, PhoneNumberFormat.NATIONAL) }</Text>
-          </Button>
-          )}
-        </View>
+      <View style={ styles.dateContainer }>
+        { thermalPrinterConnected && (
+        <Button small iconLeft onPress={ () => this._print() }>
+          <Icon type="FontAwesome" name="print" />
+          <Text>{ this.props.t('RESTAURANT_ORDER_PRINT') }</Text>
+        </Button>
+        )}
+        { !thermalPrinterConnected && (
+        <Button small light iconLeft onPress={ () => this.props.navigation.navigate('RestaurantPrinter') }>
+          <Icon type="FontAwesome" name="print" />
+          <Text>{ this.props.t('RESTAURANT_ORDER_CONNECT_PRINTER') }</Text>
+        </Button>
+        )}
+        { isPhoneValid && (
+        <Button small iconLeft success
+          onPress={ () => phonecall(order.customer.telephone, true) }>
+          <Icon name="call" />
+          <Text>{ phoneNumberUtil.format(phoneNumber, PhoneNumberFormat.NATIONAL) }</Text>
+        </Button>
+        )}
       </View>
     )
   }
@@ -214,32 +207,22 @@ class OrderScreen extends Component {
     const { order } = this.props
 
     return (
-      <Container>
+      <View style={{ flex: 1 }}>
         <NavigationEvents
           onDidFocus={ this.componentDidFocus.bind(this) }
           onWillBlur={ this.componentWillBlur.bind(this) } />
-        <Grid>
-          { this.renderHeading() }
-          <Row size={ 10 }>
-            <Content padder>
-              { this.renderButtons() }
-              <View style={ styles.section }>
-                <OrderItems order={ order } />
-                { this.renderNotes() }
-              </View>
-            </Content>
-          </Row>
-        </Grid>
+        { this.renderHeading() }
+        <View style={{ flex: 8 }}>
+          <OrderItems order={ order } />
+          { this.renderNotes() }
+        </View>
         { this.renderActionButtons() }
-      </Container>
+      </View>
     )
   }
 }
 
 const styles = StyleSheet.create({
-  section: {
-    marginBottom: 20,
-  },
   footerBtn: {
     flex: 1,
     alignItems: 'center',
