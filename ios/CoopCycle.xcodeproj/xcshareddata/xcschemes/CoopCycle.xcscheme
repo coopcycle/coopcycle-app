@@ -54,7 +54,6 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      language = ""
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
          <TestableReference
@@ -64,6 +63,16 @@
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
                BuildableName = "CoopCycleTests.xctest"
                BlueprintName = "CoopCycleTests"
+               ReferencedContainer = "container:CoopCycle.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "84A98B0E23D8DA2000EFF666"
+               BuildableName = "CoopCycleUITests.xctest"
+               BlueprintName = "CoopCycleUITests"
                ReferencedContainer = "container:CoopCycle.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -84,7 +93,6 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      language = ""
       launchStyle = "0"
       useCustomWorkingDirectory = "NO"
       ignoresPersistentStateOnLaunch = "NO"
