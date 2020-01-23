@@ -15,6 +15,8 @@ class CoopCycleUITests: XCTestCase {
 
         // In UI tests it is usually best to stop immediately when a failure occurs.
         continueAfterFailure = false
+      
+        super.setUp()
 
         // UI tests must launch the application that they test. Doing this in setup will make sure it happens for each test method.
         let app = XCUIApplication()
@@ -31,6 +33,15 @@ class CoopCycleUITests: XCTestCase {
     func testExample() {
         // Use recording to get started writing UI tests.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
+        // https://krausefx.com/blog/run-xcode-7-ui-tests-from-the-command-line
+      
+        snapshot("0Launch")
+      
+      
+      
+      
+        
+        
     }
 
 }
