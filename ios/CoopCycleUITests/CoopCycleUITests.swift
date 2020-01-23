@@ -34,14 +34,21 @@ class CoopCycleUITests: XCTestCase {
         // Use recording to get started writing UI tests.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
         // https://krausefx.com/blog/run-xcode-7-ui-tests-from-the-command-line
+        // https://www.hackingwithswift.com/articles/148/xcode-ui-testing-cheat-sheet
       
-        snapshot("0Launch")
+        let app = XCUIApplication()
+
+        // Wait for the button to appear
+        app.otherElements["chooseCityBtn"].waitForExistence(timeout: 30)
       
+        // print(app.debugDescription)
       
+        snapshot("00_Home")
       
+        // Tap the button
+        app.otherElements["chooseCityBtn"].firstMatch.tap()
       
-        
-        
+        snapshot("01_ChooseCity")
     }
 
 }
