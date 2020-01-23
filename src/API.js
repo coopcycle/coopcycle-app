@@ -2,7 +2,6 @@ import i18n from './i18n'
 import axios from 'axios'
 import qs from 'qs'
 import _ from 'lodash'
-import firebase from 'react-native-firebase'
 
 let subscribers = []
 let isRefreshingToken = false
@@ -23,9 +22,6 @@ function Client(httpBaseURL, model) {
   this.axios = axios.create({
     baseURL: httpBaseURL,
   })
-
-  this.trace = firebase.perf().newTrace('http_client')
-  this.trace.start()
 
   // @see https://gist.github.com/Godofbrowser/bf118322301af3fc334437c683887c5f
   // @see https://www.techynovice.com/setting-up-JWT-token-refresh-mechanism-with-axios/
@@ -189,8 +185,6 @@ Client.prototype.refreshToken = function() {
       reject('No refresh token')
       return
     }
-
-    this.trace.incrementMetric('refreshToken', 1);
 
     refreshToken(this.httpBaseURL, this.model.refreshToken)
       .then(credentials => {
