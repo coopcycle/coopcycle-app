@@ -22,6 +22,14 @@ import TaskMarker from '../../components/TaskMarker'
 
 const isCompleted = task => task.status !== 'TODO'
 
+const OfflineNotice = ({ message }) => (
+  <View>
+    <View style={ styles.offlineNotice }>
+      <Text style={ styles.offlineNoticeText }>{ message }</Text>
+    </View>
+  </View>
+)
+
 class Task extends Component {
 
   constructor(props) {
@@ -234,39 +242,44 @@ class Task extends Component {
     const buttonWidth = (width / 3)
 
     return (
-      <SwipeRow
-        leftOpenValue={ buttonWidth }
-        stopLeftSwipe={ buttonWidth + 25 }
-        rightOpenValue={ buttonWidth * -1 }
-        stopRightSwipe={ (buttonWidth + 25) * -1 }>
-        <View style={ styles.rowBack }>
-          <TouchableOpacity
-            style={{ flex: 1, alignItems: 'flex-start', justifyContent: 'center', backgroundColor: greenColor, width: buttonWidth }}
-            onPress={ () => {
-              this.props.navigation.navigate('TaskComplete', { ...navigateParams, success: true })
-              this.setState({
-                swipeOutClose: true,
-              })
-            }}>
-            { this.renderSwipeoutLeftButton(buttonWidth) }
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{ flex: 1, alignItems: 'flex-end', justifyContent: 'center', backgroundColor: redColor, width: buttonWidth }}
-            onPress={ () => {
-              this.props.navigation.navigate('TaskComplete', { ...navigateParams, success: false })
-              this.setState({
-                swipeOutClose: true,
-              })
-            }}>
-            { this.renderSwipeoutRightButton(buttonWidth) }
-          </TouchableOpacity>
+      <View>
+        <View style={{ paddingVertical: 10, paddingHorizontal: 15 }}>
+          <Text style={styles.swipeOutHelpText}>{`${this.props.t('SWIPE_TO_END')}.`}</Text>
         </View>
-        <View style={{ padding: 28, width, backgroundColor: '#dedede' }}>
-          <Text style={{ fontSize: 20, textAlign: 'center', color: '#fff', fontFamily: 'Raleway-Regular' }}>
-            { this.props.t('END') }
-          </Text>
-        </View>
-    </SwipeRow>
+        <SwipeRow
+          leftOpenValue={ buttonWidth }
+          stopLeftSwipe={ buttonWidth + 25 }
+          rightOpenValue={ buttonWidth * -1 }
+          stopRightSwipe={ (buttonWidth + 25) * -1 }>
+          <View style={ styles.rowBack }>
+            <TouchableOpacity
+              style={{ flex: 1, alignItems: 'flex-start', justifyContent: 'center', backgroundColor: greenColor, width: buttonWidth }}
+              onPress={ () => {
+                this.props.navigation.navigate('TaskComplete', { ...navigateParams, success: true })
+                this.setState({
+                  swipeOutClose: true,
+                })
+              }}>
+              { this.renderSwipeoutLeftButton(buttonWidth) }
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{ flex: 1, alignItems: 'flex-end', justifyContent: 'center', backgroundColor: redColor, width: buttonWidth }}
+              onPress={ () => {
+                this.props.navigation.navigate('TaskComplete', { ...navigateParams, success: false })
+                this.setState({
+                  swipeOutClose: true,
+                })
+              }}>
+              { this.renderSwipeoutRightButton(buttonWidth) }
+            </TouchableOpacity>
+          </View>
+          <View style={{ padding: 28, width, backgroundColor: '#dedede' }}>
+            <Text style={{ fontSize: 20, textAlign: 'center', color: '#fff', fontFamily: 'Raleway-Regular' }}>
+              { this.props.t('END') }
+            </Text>
+          </View>
+        </SwipeRow>
+      </View>
     )
   }
 
@@ -376,20 +389,16 @@ class Task extends Component {
             </Col>
           </Row>
           )}
-          { !isCompleted(task) && <Row size={ 4 } style={ styles.swipeOutHelpContainer }>
-            <View style={{ paddingVertical: 10, paddingHorizontal: 15 }}>
-              <Text style={styles.swipeOutHelpText}>{`${this.props.t('SWIPE_TO_END')}.`}</Text>
-            </View>
-          </Row> }
         </Grid>
         <NetworkConsumer>
           {({ isConnected }) => {
+
             if (isConnected) {
               return this.renderSwipeOutButton()
             }
 
             return (
-              <View />
+              <OfflineNotice message={ this.props.t('OFFLINE') } />
             )
           }}
         </NetworkConsumer>
@@ -443,6 +452,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
+  offlineNotice: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 20,
+    backgroundColor: '#f8d7da'
+  },
+  offlineNoticeText: {
+    color: '#721c24'
+  }
 })
 
 function mapStateToProps (state) {
