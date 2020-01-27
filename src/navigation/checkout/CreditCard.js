@@ -161,6 +161,7 @@ const styles = StyleSheet.create({
   },
   payButton: {
     color: '#ffffff',
+    fontSize: 16,
   },
 })
 
