@@ -210,12 +210,12 @@ class Summary extends Component {
             translateXValue: new Animated.Value(width),
           })
         }}>
-        <Content contentContainerStyle={{ justifyContent: 'space-between' }}>
+        <View style={{ flex: 1, justifyContent: 'space-between' }}>
           { this.props.isValid === false && (
             <DangerAlert text={ this.props.alertMessage } />
           )}
           { this.renderItems() }
-        </Content>
+        </View>
         <View style={{ flex: 0, backgroundColor: '#ecf0f1' }}>
           <TouchableOpacity style={ styles.dateBtn }
             // Disable interaction while loading
