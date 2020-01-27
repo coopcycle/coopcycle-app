@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
+import { View, YellowBox } from 'react-native'
 
-import { Root, StyleProvider } from 'native-base'
+import { StyleProvider } from 'native-base'
 import getTheme from '../native-base-theme/components'
 import coopcycleTheme from '../native-base-theme/variables/coopcycle'
 
@@ -28,7 +29,6 @@ import DropdownHolder from './DropdownHolder'
 
 import NavigationHolder from './NavigationHolder'
 
-import { YellowBox } from 'react-native'
 YellowBox.ignoreWarnings([
   'Warning: isMounted(...) is deprecated in plain JavaScript React classes.',
   'Module RCTImageLoader requires main queue setup',
@@ -90,7 +90,7 @@ class App extends Component {
           <PersistGate loading={ null } persistor={ persistor }>
             <I18nextProvider i18n={ i18n }>
               <StyleProvider style={ getTheme(coopcycleTheme) }>
-                <Root>
+                <View style={{ flex: 1 }}>
                   <Spinner />
                   <RootNavigator
                     uriPrefix={ prefix }
@@ -98,7 +98,7 @@ class App extends Component {
                     onNavigationStateChange={ onNavigationStateChange } />
                   <DropdownAlert ref={ ref => { DropdownHolder.setDropdown(ref) } } />
                   <NotificationHandler />
-                </Root>
+                </View>
               </StyleProvider>
             </I18nextProvider>
           </PersistGate>
