@@ -11,7 +11,7 @@ class Login extends Component {
 
   componentDidUpdate(prevProps) {
     if (this.props.isAuthenticated !== prevProps.isAuthenticated && this.props.isAuthenticated === true) {
-      this.props.navigation.navigate('CheckoutCreditCard')
+      this.props.navigation.navigate('CheckoutMoreInfos')
     }
   }
 

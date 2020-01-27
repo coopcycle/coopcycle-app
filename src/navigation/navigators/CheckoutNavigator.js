@@ -112,6 +112,12 @@ export default createStackNavigator({
       title: i18n.t('CHECKOUT_LOGIN_TITLE'),
     }),
   },
+  CheckoutMoreInfos: {
+    screen: screens.CheckoutMoreInfos,
+    navigationOptions: ({ navigation }) => ({
+      title: i18n.t('CHECKOUT_MORE_INFOS'),
+    }),
+  },
 }, {
   mode: 'modal',
   defaultNavigationOptions,

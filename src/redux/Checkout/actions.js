@@ -592,3 +592,32 @@ export function resetSearch() {
     dispatch(searchRestaurants())
   }
 }
+
+export function updateCart(payload, cb) {
+
+  return (dispatch, getState) => {
+
+    const httpClient = createHttpClient(getState())
+
+    const { cart } = getState().checkout
+
+    const shippingAddress = {
+      ...cart.shippingAddress,
+      ...payload.shippingAddress
+    }
+
+    dispatch(checkoutRequest())
+
+    httpClient
+      .put(cart['@id'], {
+        shippingAddress,
+        notes: payload.notes,
+      })
+      .then(res => {
+        dispatch(updateCartSuccess(res))
+        dispatch(checkoutSuccess())
+        cb()
+      })
+      .catch(e => dispatch(checkoutFailure(e)))
+  }
+}

@@ -84,7 +84,7 @@ class Summary extends Component {
 
   onSubmit() {
     if (this.props.isAuthenticated) {
-      this._navigate('CheckoutCreditCard')
+      this._navigate('CheckoutMoreInfos')
     } else {
       this._navigate('CheckoutLogin')
     }
