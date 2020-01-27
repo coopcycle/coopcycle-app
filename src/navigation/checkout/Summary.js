@@ -210,10 +210,10 @@ class Summary extends Component {
             translateXValue: new Animated.Value(width),
           })
         }}>
-        <View style={{ flex: 1, justifyContent: 'space-between' }}>
-          { this.props.isValid === false && (
-            <DangerAlert text={ this.props.alertMessage } />
-          )}
+        { this.props.isValid === false && (
+          <DangerAlert text={ this.props.alertMessage } />
+        )}
+        <View style={{ flex: 1, paddingTop: 30 }}>
           { this.renderItems() }
         </View>
         <View style={{ flex: 0, backgroundColor: '#ecf0f1' }}>
