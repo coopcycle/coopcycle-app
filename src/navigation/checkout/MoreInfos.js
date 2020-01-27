@@ -72,7 +72,7 @@ class MoreInfos extends Component {
       address: {
         description: '',
         floor: '',
-        telephone: '',
+        telephone: this.props.cart.shippingAddress.telephone || '',
       },
       notes: ''
     }
@@ -189,6 +189,7 @@ const styles = StyleSheet.create({
 function mapStateToProps(state) {
 
   return {
+    cart: state.checkout.cart,
   }
 }
 
