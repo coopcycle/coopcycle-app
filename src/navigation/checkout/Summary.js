@@ -218,13 +218,15 @@ class Summary extends Component {
         </Content>
         <View style={{ flex: 0, backgroundColor: '#ecf0f1' }}>
           <TouchableOpacity style={ styles.dateBtn }
-            onPress={ () => this._navigate('CheckoutShippingDate') }>
+            // Disable interaction while loading
+            onPress={ () => !this.props.isLoading && this._navigate('CheckoutShippingDate') }>
             <Icon type="FontAwesome" name="clock-o" style={{ fontSize: 22, marginRight: 15 }} />
             <Text style={{ flex: 2, fontSize: 14 }}>{ this.props.timeAsText }</Text>
             <Text note style={{ flex: 1, textAlign: 'right' }}>{ this.props.t('EDIT') }</Text>
           </TouchableOpacity>
           <TouchableOpacity style={ [ styles.dateBtn, { flexShrink: 1 } ] }
-            onPress={ () => this.props.showAddressModal() }>
+            // Disable interaction while loading
+            onPress={ () => !this.props.isLoading && this.props.showAddressModal() }>
             <Icon type="FontAwesome" name="map-marker" style={{ fontSize: 22, marginRight: 15 }} />
             <Text numberOfLines={ 2 } ellipsizeMode="tail" style={{ flex: 2, fontSize: 14 }}>{ this.props.cart.shippingAddress.streetAddress }</Text>
             <Text note style={{ flex: 1, textAlign: 'right' }}>{ this.props.t('EDIT') }</Text>
