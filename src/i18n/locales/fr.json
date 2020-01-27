@@ -193,6 +193,7 @@
     "CHECKOUT_ORDER_NOTES": "Un message ?",
     "CHECKOUT_ORDER_NOTES_HELP": "Ce message sera transmis au restaurateur",
     "CHECKOUT_MORE_INFOS": "Informations complémentaires",
+    "CHECKOUT_MORE_INFOS_DISCLAIMER": "Juste une dernière étape",
     "ADD_TO_CART": "Ajouter au panier",
     "NOTIFICATION_TASKS_CHANGED_TITLE": "Tâches mises à jour",
     "NOTIFICATION_TASKS_CHANGED_DESC": "Vos tâches du {{date}} ont été mises à jour",

@@ -193,6 +193,7 @@
     "CHECKOUT_ORDER_NOTES": "A message?",
     "CHECKOUT_ORDER_NOTES_HELP": "This message will be transmitted to the cook",
     "CHECKOUT_MORE_INFOS": "Additional infos",
+    "CHECKOUT_MORE_INFOS_DISCLAIMER": "Just one last step",
     "ADD_TO_CART": "Add to cart",
     "NOTIFICATION_TASKS_CHANGED_TITLE": "Tasks changed",
     "NOTIFICATION_TASKS_CHANGED_DESC": "Your tasks from {{date}} have been updated",

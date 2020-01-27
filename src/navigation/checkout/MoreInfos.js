@@ -88,7 +88,7 @@ class MoreInfos extends Component {
         {({ handleChange, handleBlur, handleSubmit, values, errors, touched, setFieldValue, setFieldTouched }) => (
           <Container>
             <View style={{ backgroundColor: '#cce5ff', padding: 20 }}>
-              <Text note style={{ textAlign: 'center', color: '#004085' }}>Just a few more informations to make sure everything goes smooth</Text>
+              <Text note style={{ textAlign: 'center', color: '#004085' }}>{ this.props.t('CHECKOUT_MORE_INFOS_DISCLAIMER') }</Text>
             </View>
             <Content contentContainerStyle={ styles.content }>
               <View style={ [ styles.formGroup ] }>
