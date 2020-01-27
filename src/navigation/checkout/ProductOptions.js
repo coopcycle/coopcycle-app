@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
 import { SectionList, View } from 'react-native'
-import { Container, Content, ListItem, Text, Radio, Right, Left, Footer, FooterTab, Button } from 'native-base'
+import { Container, Content, ListItem, Text, Radio, Right, Left, Button } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 import _ from 'lodash'
 
 import { addItemWithOptions } from '../../redux/Checkout/actions'
 import { formatPrice } from '../../utils/formatting'
+import FooterButton from './components/FooterButton'
 
 class ProductOptions extends Component {
 
@@ -140,13 +141,9 @@ class ProductOptions extends Component {
   renderFooter() {
     if (this._enableAddToCartButton()) {
       return (
-        <Footer>
-          <FooterTab>
-            <Button full onPress={ () => this._onPressAddToCart() }>
-              <Text>{ this.props.t('ADD_TO_CART') }</Text>
-            </Button>
-          </FooterTab>
-        </Footer>
+        <FooterButton
+          text={ this.props.t('ADD_TO_CART') }
+          onPress={ () => this._onPressAddToCart() } />
       )
     }
   }

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Picker, View, StyleSheet, TextInput } from 'react-native'
-import { Container, Content, Footer, FooterTab, Text, Button } from 'native-base'
+import { Container, Content, Text, Button } from 'native-base'
 import { Col, Row, Grid } from 'react-native-easy-grid'
 import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
@@ -14,6 +14,7 @@ import {
 
 import Settings from '../../Settings'
 import { updateCart } from '../../redux/Checkout/actions'
+import FooterButton from './components/FooterButton'
 
 const hasPhoneNumberErrors = (errors, touched) => {
   return errors.address && touched.address && errors.address.telephone && touched.address.telephone
@@ -140,13 +141,9 @@ class MoreInfos extends Component {
                 <Text note>{ this.props.t('CHECKOUT_ORDER_NOTES_HELP') }</Text>
               </View>
             </Content>
-            <Footer>
-              <FooterTab>
-                <Button block transparent onPress={ handleSubmit }>
-                  <Text style={{ color: '#FFFFFF', fontSize: 16 }}>{ this.props.t('SUBMIT') }</Text>
-                </Button>
-              </FooterTab>
-            </Footer>
+            <FooterButton
+              text={ this.props.t('SUBMIT') }
+              onPress={ handleSubmit } />
           </Container>
         )}
       </Formik>

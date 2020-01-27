@@ -5,10 +5,7 @@ import {
   Animated,
   Keyboard,
 } from 'react-native';
-import {
-  Content, Footer, FooterTab,
-  Button, Text,
-} from 'native-base';
+import { Content, Button, Text } from 'native-base';
 import _ from 'lodash'
 import { LiteCreditCardInput } from 'react-native-credit-card-input'
 import { connect } from 'react-redux'
@@ -16,6 +13,7 @@ import { withTranslation } from 'react-i18next'
 
 import { checkout, assignCustomer } from '../../redux/Checkout/actions'
 import { formatPrice } from '../../utils/formatting'
+import FooterButton from './components/FooterButton'
 
 class CreditCard extends Component {
 
@@ -122,15 +120,10 @@ class CreditCard extends Component {
           </View>
           ) }
         </Content>
-        <Footer>
-          <FooterTab>
-            <Button full onPress={ onPress } testID="creditCardSubmit">
-              <Text style={ styles.payButton }>
-                { this.props.t('PAY_AMOUNT', { amount: formatPrice(cart.total) }) + '€' }
-              </Text>
-            </Button>
-          </FooterTab>
-        </Footer>
+        <FooterButton
+           testID="creditCardSubmit"
+          text={ this.props.t('PAY_AMOUNT', { amount: formatPrice(cart.total) }) + '€' }
+          onPress={ onPress } />
       </Animated.View>
     )
   }
