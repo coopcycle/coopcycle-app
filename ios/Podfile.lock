@@ -285,15 +285,15 @@ PODS:
     - React-cxxreact (= 0.61.5)
     - React-jsi (= 0.61.5)
   - React-jsinspector (0.61.5)
-  - react-native-ble-manager (7.0.0):
+  - react-native-ble-manager (7.1.0):
     - React
-  - react-native-camera (3.15.1):
+  - react-native-camera (3.16.0):
     - React
-    - react-native-camera/RCT (= 3.15.1)
-    - react-native-camera/RN (= 3.15.1)
-  - react-native-camera/RCT (3.15.1):
+    - react-native-camera/RCT (= 3.16.0)
+    - react-native-camera/RN (= 3.16.0)
+  - react-native-camera/RCT (3.16.0):
     - React
-  - react-native-camera/RN (3.15.1):
+  - react-native-camera/RN (3.16.0):
     - React
   - react-native-keep-awake (4.0.0):
     - React
@@ -583,8 +583,8 @@ SPEC CHECKSUMS:
   React-jsi: cb2cd74d7ccf4cffb071a46833613edc79cdf8f7
   React-jsiexecutor: d5525f9ed5f782fdbacb64b9b01a43a9323d2386
   React-jsinspector: fa0ecc501688c3c4c34f28834a76302233e29dc0
-  react-native-ble-manager: 0a5c6e1fb0cf84a035e8600443cdce6fe8461a78
-  react-native-camera: 1ba3e7f2375a6b44ae09ce9be70268e0b225bc10
+  react-native-ble-manager: 2954385809a02d30a808061d59423037282f3b4c
+  react-native-camera: 705c7e9412436957b4dc894a1af61f43830787e2
   react-native-keep-awake: afad8a51dfef9fe9655a6344771be32c8596d774
   react-native-maps: 6e499eee4eabf422ba8b6f94e993cc768bf35153
   react-native-netinfo: ddaca8bbb9e6e914b1a23787ccb879bc642931c9
