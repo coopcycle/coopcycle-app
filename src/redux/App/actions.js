@@ -2,7 +2,6 @@ import { createAction } from 'redux-actions'
 import moment from 'moment'
 import { Platform } from 'react-native'
 import AsyncStorage from '@react-native-community/async-storage';
-import BackgroundGeolocation from '@mauron85/react-native-background-geolocation'
 import { NavigationActions } from 'react-navigation'
 import firebase from 'react-native-firebase'
 
@@ -209,7 +208,6 @@ export function bootstrap(baseURL, user) {
     Preferences.getKeepAwake().then(keepAwake => dispatch(setKeepAwake(keepAwake)))
     Preferences.getSignatureScreenFirst().then(first => dispatch(setSignatureScreenFirst(first)))
 
-    configureBackgroundGeolocation()
     saveRemotePushToken(dispatch, getState)
 
     // Navigate to screen depending on user state
@@ -231,8 +229,6 @@ function setBaseURL(dispatch, baseURL) {
         dispatch(_setUser(user))
         dispatch(_setHttpClient(httpClient))
         dispatch(_setBaseURL(baseURL))
-
-        configureBackgroundGeolocation()
 
         resolve()
       })
@@ -469,7 +465,6 @@ function onAuthenticationSuccess(dispatch, getState) {
   dispatch(authenticationSuccess())
 
   setTimeout(() => {
-    configureBackgroundGeolocation()
     saveRemotePushToken(dispatch, getState)
   }, 0)
 }
@@ -505,29 +500,3 @@ function postRemotePushToken(httpClient, token) {
     .post('/api/me/remote_push_tokens', { platform: Platform.OS, token })
 }
 
-function configureBackgroundGeolocation() {
-
-  const options = {
-    desiredAccuracy: BackgroundGeolocation.HIGH_ACCURACY,
-    stationaryRadius: 5,
-    distanceFilter: 10,
-    debug: process.env.NODE_ENV === 'development',
-    startOnBoot: false,
-    startForeground: true,
-    notificationTitle: i18n.t('BACKGROUND_GEOLOCATION_NOTIFICATION_TITLE'),
-    notificationText: i18n.t('BACKGROUND_GEOLOCATION_NOTIFICATION_TEXT'),
-    stopOnTerminate: true,
-    stopOnStillActivity: false,
-    locationProvider: BackgroundGeolocation.DISTANCE_FILTER_PROVIDER,
-    interval: 3000,
-    fastestInterval: 1000,
-    activitiesInterval: 5000,
-    // option.maxLocations has to be larger than option.syncThreshold.
-    // It's recommended to be 2x larger.
-    // In any other case the location syncing might not work properly.
-    maxLocations: 10,
-    syncThreshold: 5,
-  }
-
-  BackgroundGeolocation.configure(options)
-}
