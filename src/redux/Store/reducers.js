@@ -6,6 +6,8 @@ import {
   ASSERT_DELIVERY_ERROR,
   SET_LOADING_MORE,
   SET_REFRESHING,
+  LOAD_ADDRESSES_SUCCESS,
+  INIT_SUCCESS,
 } from './actions'
 
 import {
@@ -21,6 +23,7 @@ const initialState = {
   myStores: [], // Array of stores
   store: null,
   deliveries: [],
+  addresses: [],
   pagination: {
     next: null,
     totalItems: 0,
@@ -49,6 +52,19 @@ export default (state = initialState, action = {}) => {
   let newState
 
   switch (action.type) {
+    case INIT_SUCCESS:
+
+      if (action.payload.store['@id'] === state.store['@id']) {
+
+        return {
+          ...state,
+          deliveries: _.uniqBy(state.deliveries.concat(_.map(action.payload.deliveries, d => composeWithState(d))), '@id'),
+          pagination: action.payload.pagination,
+          addresses: action.payload.addresses,
+        }
+      }
+
+      break
     case LOAD_DELIVERIES_SUCCESS:
 
       const { store, deliveries, pagination } = action.payload
@@ -132,6 +148,18 @@ export default (state = initialState, action = {}) => {
         ...state,
         refreshing: action.payload,
       }
+
+    case LOAD_ADDRESSES_SUCCESS:
+
+      if (action.payload.store['@id'] === state.store['@id']) {
+
+        return {
+          ...state,
+          addresses: _.uniqBy(action.payload.addresses, '@id'),
+        }
+      }
+
+      break
   }
 
   return state

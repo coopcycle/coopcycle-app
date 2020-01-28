@@ -11,12 +11,24 @@ export const LOAD_TASKS_SUCCESS = '@store/LOAD_TASKS_SUCCESS'
 export const ASSERT_DELIVERY_ERROR = '@store/ASSERT_DELIVERY_ERROR'
 export const SET_LOADING_MORE = '@store/SET_LOADING_MORE'
 export const SET_REFRESHING = '@store/SET_REFRESHING'
+export const LOAD_ADDRESSES_SUCCESS = '@store/LOAD_ADDRESSES_SUCCESS'
+export const INIT_SUCCESS = '@store/INIT_SUCCESS'
 
 export const createDeliverySuccess = createAction(CREATE_DELIVERY_SUCCESS)
 export const loadDeliveriesSuccess = createAction(LOAD_DELIVERIES_SUCCESS, (store, deliveries, pagination) => ({
   store,
   deliveries,
   pagination,
+}))
+export const loadAddressesSuccess = createAction(LOAD_ADDRESSES_SUCCESS, (store, addresses) => ({
+  store,
+  addresses,
+}))
+export const initSuccess = createAction(INIT_SUCCESS, (store, deliveries, pagination, addresses) => ({
+  store,
+  deliveries,
+  pagination,
+  addresses,
 }))
 export const loadTimeSlotSuccess = createAction(LOAD_TIME_SLOT_SUCCESS)
 export const loadTasksSuccess = createAction(LOAD_TASKS_SUCCESS, (delivery, pickup, dropoff) => ({
@@ -90,6 +102,29 @@ export function loadDeliveries(store, refresh = false) {
             next: res['hydra:view']['hydra:next'],
             totalItems: res['hydra:totalItems'],
           }
+        ))
+        dispatch(setLoading(false))
+        dispatch(setRefreshing(false))
+      })
+      .catch(e => {
+        dispatch(setLoading(false))
+        dispatch(setRefreshing(false))
+      })
+  }
+}
+
+export function loadAddresses(store) {
+
+  return (dispatch, getState) => {
+
+    const { app } = getState()
+    const { httpClient } = app
+
+    return httpClient.get(`${store['@id']}/addresses?type=dropoff`)
+      .then(res => {
+        dispatch(loadAddressesSuccess(
+          store,
+          res['hydra:member']
         ))
         dispatch(setLoading(false))
         dispatch(setRefreshing(false))
@@ -191,6 +226,40 @@ export function loadTimeSlot(store) {
       })
       .catch(e => {
         dispatch(setLoading(false))
+      })
+  }
+}
+
+export function init(store) {
+
+  return (dispatch, getState) => {
+
+    const { app } = getState()
+    const { httpClient } = app
+
+    dispatch(setLoading(false))
+
+    Promise.all([
+      httpClient.get(`${store['@id']}/deliveries?order[dropoff.before]=desc`),
+      httpClient.get(`${store['@id']}/addresses?type=dropoff`)
+    ])
+      .then(values => {
+        const [ deliveries, addresses ] = values
+        dispatch(initSuccess(
+          store,
+          deliveries['hydra:member'],
+          {
+            next: deliveries['hydra:view']['hydra:next'],
+            totalItems: deliveries['hydra:totalItems'],
+          },
+          addresses['hydra:member'],
+        ))
+        dispatch(setLoading(false))
+        dispatch(setRefreshing(false))
+      })
+      .catch(e => {
+        dispatch(setLoading(false))
+        dispatch(setRefreshing(false))
       })
   }
 }

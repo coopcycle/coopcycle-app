@@ -64,6 +64,7 @@ class NewDelivery extends Component {
                 { this.props.t('STORE_NEW_DELIVERY_ADDRESS') }
               </Text>
               <AddressAutocomplete
+                addresses={ this.props.addresses }
                 onSelectAddress={ this._onSelectAddress.bind(this) }
                 { ...autocompleteProps } />
               <Text style={ styles.help } note>
@@ -122,6 +123,7 @@ function mapStateToProps(state) {
   return {
     store: selectStore(state),
     error: state.store.assertDeliveryError,
+    addresses: state.store.addresses,
   }
 }
 

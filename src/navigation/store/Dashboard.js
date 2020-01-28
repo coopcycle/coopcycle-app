@@ -9,14 +9,14 @@ import DeliveryList from '../../components/DeliveryList'
 
 import variables from '../../../native-base-theme/variables/platform'
 
-import { loadDeliveries, loadMoreDeliveries } from '../../redux/Store/actions'
+import { loadDeliveries, loadAddresses, loadMoreDeliveries, init } from '../../redux/Store/actions'
 
 class StoreDashboard extends Component {
 
   componentDidMount() {
     // This is needed to display the title
     this.props.navigation.setParams({ store: this.props.store })
-    this.props.loadDeliveries(this.props.store)
+    this.props.init(this.props.store)
   }
 
   render() {
@@ -67,6 +67,8 @@ function mapDispatchToProps(dispatch) {
 
   return {
     loadDeliveries: (store, refresh = false) => dispatch(loadDeliveries(store, refresh)),
+    loadAddresses: (store) => dispatch(loadAddresses(store)),
+    init: (store) => dispatch(init(store)),
     loadMoreDeliveries: () => dispatch(loadMoreDeliveries()),
   }
 }
