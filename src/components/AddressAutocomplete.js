@@ -53,7 +53,7 @@ class AddressAutocomplete extends Component {
   _autocomplete = _.debounce((text, query) => {
 
     const fuseResults = this.fuse.search(text, {
-      limit: 3
+      limit: 2
     })
 
     axios
@@ -73,6 +73,10 @@ class AddressAutocomplete extends Component {
           }))
 
         const results = normalizedResults.concat(normalizedPredictions)
+
+        if (normalizedResults.length > 0 && results.length > 5) {
+          results.splice(5)
+        }
 
         this.setState({ results })
       })
