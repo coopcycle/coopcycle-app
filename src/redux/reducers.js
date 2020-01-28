@@ -41,6 +41,56 @@ const restaurantPersistConfig = {
   whitelist: ['myRestaurants', 'restaurant'],
 }
 
+const tasksUiPersistConfig = {
+  key: 'ui.tasks',
+  version: 0,
+  storage: AsyncStorage,
+  whitelist: ['excludeFilters', 'keepAwake', 'signatureScreenFirst'],
+  migrate: (state) => {
+
+    if (!state) {
+
+      return new Promise((resolve, reject) => {
+        try {
+
+          AsyncStorage.multiGet([
+            '@Settings.keepAwake',
+            '@Preferences.signatureScreenFirst',
+            '@Preferences.tasksFilters'
+          ]).then(values => {
+
+            let [ keepAwake, signatureScreenFirst, tasksFilters ] = values
+
+            let keepAwakeValue = keepAwake[1] ? JSON.parse(keepAwake[1]) : false
+            let signatureScreenFirstValue = signatureScreenFirst[1] ? JSON.parse(signatureScreenFirst[1]) : false
+            let tasksFiltersValue = tasksFilters[1] ? JSON.parse(tasksFilters[1]) : []
+
+            AsyncStorage.removeItem('@Settings.keepAwake')
+            AsyncStorage.removeItem('@Preferences.signatureScreenFirst')
+            AsyncStorage.removeItem('@Preferences.tasksFilters')
+
+            resolve({
+              keepAwake: keepAwakeValue,
+              signatureScreenFirst: signatureScreenFirstValue,
+              excludeFilters: tasksFiltersValue,
+            })
+
+          })
+
+        } catch(e) {
+          resolve({
+            keepAwake: false,
+            signatureScreenFirst: false,
+            excludeFilters: [],
+          })
+        }
+      })
+    }
+
+    return Promise.resolve(state)
+  }
+}
+
 export default combineReducers({
   entities: combineReducers({
     tasks: persistReducer(taskEntitiesPersistConfig, tasksEntityReducer),
@@ -52,6 +102,6 @@ export default combineReducers({
   checkout: checkoutReducer,
   dispatch: dispatchReducer,
   ui: combineReducers({
-    tasks: tasksUiReducer,
+    tasks: persistReducer(tasksUiPersistConfig, tasksUiReducer),
   }),
 })

@@ -7,7 +7,6 @@ import { createLogger } from 'redux-logger'
 import { persistStore } from 'redux-persist'
 
 import reducers from './reducers'
-import PreferencesMiddleware from './middlewares/PreferencesMiddleware'
 import WsMiddleware from './middlewares/WebSocketMiddleware'
 import GeolocationMiddleware from './middlewares/GeolocationMiddleware'
 import BluetoothMiddleware from './middlewares/BluetoothMiddleware'
@@ -15,10 +14,9 @@ import BluetoothMiddleware from './middlewares/BluetoothMiddleware'
 const middlewares = [
   thunk,
   ReduxAsyncQueue,
-  PreferencesMiddleware,
   WsMiddleware(),
   GeolocationMiddleware,
-  BluetoothMiddleware
+  BluetoothMiddleware,
 ]
 
 if (process.env.NODE_ENV === 'development') {

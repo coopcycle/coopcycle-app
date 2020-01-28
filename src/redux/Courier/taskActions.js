@@ -3,7 +3,6 @@ import { createAction } from 'redux-actions'
 import RNFetchBlob from 'rn-fetch-blob'
 
 import NavigationHolder from '../../NavigationHolder'
-import Preferences from '../../Preferences'
 import i18n from '../../i18n'
 import { selectSignatures, selectPictures } from './taskSelectors'
 
@@ -55,6 +54,7 @@ export const filterTasks = createAction(ADD_TASK_FILTER)
 export const clearTasksFilter = createAction(CLEAR_TASK_FILTER)
 export const setTasksFilter = createAction(SET_TASK_FILTER)
 export const setSignatureScreenFirst = createAction(SET_SIGNATURE_SCREEN_FIRST)
+export const setKeepAwake = createAction(SET_KEEP_AWAKE)
 
 /**
  * Side-effects
@@ -85,16 +85,6 @@ function showAlert(e) {
 /**
  * Thunk Creators
  */
-
-const _setKeepAwake = createAction(SET_KEEP_AWAKE)
-
-export function setKeepAwake(keepAwake) {
-
-  return function (dispatch) {
-    Preferences.setKeepAwake(keepAwake)
-      .then(() => dispatch(_setKeepAwake(keepAwake)))
-  }
-}
 
 export function loadTasks(client, selectedDate, refresh = false) {
 

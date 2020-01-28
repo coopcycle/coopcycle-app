@@ -8,8 +8,6 @@ import firebase from 'react-native-firebase'
 import API from '../../API'
 import AppUser from '../../AppUser'
 import Settings from '../../Settings'
-import Preferences from '../../Preferences'
-import { setTasksFilter, setKeepAwake, setSignatureScreenFirst } from '../Courier/taskActions'
 import NavigationHolder from '../../NavigationHolder'
 import i18n from '../../i18n'
 
@@ -203,10 +201,6 @@ export function bootstrap(baseURL, user) {
     dispatch(_setUser(user))
     dispatch(_setHttpClient(httpClient))
     dispatch(_setBaseURL(baseURL))
-
-    Preferences.getTasksFilters().then(filters => dispatch(setTasksFilter(filters)))
-    Preferences.getKeepAwake().then(keepAwake => dispatch(setKeepAwake(keepAwake)))
-    Preferences.getSignatureScreenFirst().then(first => dispatch(setSignatureScreenFirst(first)))
 
     saveRemotePushToken(dispatch, getState)
 
