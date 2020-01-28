@@ -154,12 +154,20 @@ class NewDelivery extends Component {
 
     const address = this.props.navigation.getParam('address')
 
+    let telephone = ''
+    if (address['@id'] && address.telephone) {
+      const phoneNumber = parsePhoneNumberFromString(address.telephone, this.country)
+      if (phoneNumber && phoneNumber.isValid()) {
+        telephone = phoneNumber.formatNational()
+      }
+    }
+
     let initialValues = {
       address: {
         ...address,
-        description: '',
-        contactName: '',
-        telephone: '',
+        description: (address['@id'] && address.description) || '',
+        contactName: (address['@id'] && address.contactName) || '',
+        telephone,
       },
     }
 
@@ -214,7 +222,8 @@ class NewDelivery extends Component {
                   autoCorrect={ false }
                   returnKeyType="done"
                   onChangeText={ handleChange('address.contactName') }
-                  onBlur={ handleBlur('address.contactName') } />
+                  onBlur={ handleBlur('address.contactName') }
+                  value={ values.address.contactName } />
                 { errors.address && touched.address && errors.address.contactName && touched.address.contactName && (
                   <Text note style={ styles.errorText }>{ errors.address.contactName }</Text>
                 ) }
@@ -227,7 +236,8 @@ class NewDelivery extends Component {
                   multiline={ true }
                   numberOfLines={ 3 }
                   onChangeText={ handleChange('address.description') }
-                  onBlur={ handleBlur('address.description') } />
+                  onBlur={ handleBlur('address.description') }
+                  value={ values.address.description } />
               </View>
               { this.props.hasTimeSlot && this.renderTimeSlotSelector(errors, touched, setFieldValue, setFieldTouched) }
               { !this.props.hasTimeSlot && this.renderDateTimePicker(initialValues, values, errors, setFieldValue, setFieldTouched) }

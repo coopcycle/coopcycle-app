@@ -48,6 +48,16 @@ export function createDelivery(delivery, onSuccess) {
     const { app } = getState()
     const { httpClient } = app
 
+    if (delivery.dropoff.address['@id']) {
+      delivery = {
+        ...delivery,
+        dropoff: {
+          ...delivery.dropoff,
+          address: delivery.dropoff.address['@id']
+        }
+      }
+    }
+
     dispatch(setLoading(true))
 
     httpClient.post('/api/deliveries', delivery)
