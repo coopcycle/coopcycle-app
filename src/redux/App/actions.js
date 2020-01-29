@@ -171,9 +171,7 @@ export function selectServer(server) {
 
     API.checkServer(server)
       .then(baseURL =>
-        Settings
-          .saveServer(baseURL)
-          .then(() => Settings.synchronize(baseURL))
+        Settings.synchronize(baseURL)
           .then(() => setBaseURL(dispatch, baseURL))
           .then(() => dispatch(_clearSelectServerError()))
           .then(() => dispatch(setLoading(false)))
@@ -438,8 +436,7 @@ export function resetServer() {
         await user.logout()
       }
       dispatch(logoutSuccess())
-
-      await Settings.removeServer()
+      dispatch(_setBaseURL(null))
 
       NavigationHolder.navigate('ConfigureServer')
   }

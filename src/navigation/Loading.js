@@ -22,20 +22,19 @@ class Loading extends Component {
 
     this.setState({ error: false })
 
-    const baseURL = await Settings.loadServer()
     const servers = await Server.loadAll()
 
     this.props.setServers(servers)
 
-    if (baseURL) {
+    if (this.props.baseURL) {
 
       try {
 
         const user = await AppUser.load()
 
-        await Settings.synchronize(baseURL)
+        await Settings.synchronize(this.props.baseURL)
 
-        this.props.bootstrap(baseURL, user)
+        this.props.bootstrap(this.props.baseURL, user)
 
       } catch (e) {
         this.setState({ error: true })
@@ -99,6 +98,7 @@ function mapStateToProps(state) {
 
   return {
     loading: state.app.loading,
+    baseURL: state.app.baseURL,
   }
 }
 

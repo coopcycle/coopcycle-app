@@ -91,11 +91,49 @@ const tasksUiPersistConfig = {
   }
 }
 
+const appPersistConfig = {
+  key: 'app',
+  version: 0,
+  storage: AsyncStorage,
+  whitelist: ['baseURL'],
+  migrate: (state) => {
+
+    if (!state) {
+
+      return new Promise((resolve, reject) => {
+        try {
+
+          AsyncStorage.getItem('@Server')
+            .then((data, error) => {
+              if (error) {
+                return resolve(null)
+              }
+
+              AsyncStorage.removeItem('@Server')
+
+              return resolve({
+                baseURL: data
+              })
+            })
+
+        } catch(e) {
+          resolve({
+            baseURL: null
+          })
+        }
+      })
+
+    }
+
+    return Promise.resolve(state)
+  }
+}
+
 export default combineReducers({
   entities: combineReducers({
     tasks: persistReducer(taskEntitiesPersistConfig, tasksEntityReducer),
   }),
-  app: appReducer,
+  app: persistReducer(appPersistConfig, appReducer),
   account: accountReducer,
   restaurant: persistReducer(restaurantPersistConfig, restaurantReducer),
   store: storeReducer,
