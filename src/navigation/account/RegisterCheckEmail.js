@@ -34,7 +34,7 @@ class RegisterCheckEmail extends Component {
 
     return (
       <Container>
-        <Content padder contentContainerStyle={ styles.content }>
+        <Content padder contentContainerStyle={ styles.content } testID="registerCheckEmail">
           <Icon type="FontAwesome" name="envelope-o" style={ styles.icon } />
           <Text style={{ textAlign: 'center' }}>
             { this.props.t('REGISTER_CHECK_EMAIL_DISCLAIMER', { email }) }

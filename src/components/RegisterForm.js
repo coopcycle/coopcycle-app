@@ -193,6 +193,7 @@ class RegisterForm extends React.Component {
                 <Item stackedLabel { ...itemProps }>
                   <Label>{ input.label }</Label>
                   <Input
+                    testID={ `registerForm.${input.name}` }
                     ref={ component => this._inputComponents.set(input.name, component) }
                     defaultValue={ this.state[input.name] }
                     autoCorrect={ false }
@@ -207,7 +208,7 @@ class RegisterForm extends React.Component {
           }) }
         </Form>
         <View style={{ marginTop: 20 }}>
-          <Button block onPress={ () => this._onSubmit() }>
+          <Button block onPress={ () => this._onSubmit() } testID="submitRegister">
             <Text>{this.props.t('SUBMIT')}</Text>
           </Button>
         </View>

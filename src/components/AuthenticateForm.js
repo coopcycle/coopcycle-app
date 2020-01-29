@@ -44,7 +44,7 @@ class AuthenticateForm extends Component {
       <View>
         { this.renderForm() }
         <View style={{ marginTop: 10 }}>
-          <Button block transparent onPress={() => this.setState({ formToDisplay: alternateForm, message: '' })}>
+          <Button block transparent onPress={() => this.setState({ formToDisplay: alternateForm, message: '' })} testID="loginOrRegister">
             <Text>{this.props.t(btnLabel)}</Text>
           </Button>
         </View>
