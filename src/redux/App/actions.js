@@ -71,7 +71,6 @@ export const setServers = createAction(SET_SERVERS)
 export const thermalPrinterConnected = createAction(THERMAL_PRINTER_CONNECTED)
 export const setThermalPrinterDeviceId = createAction(THERMAL_PRINTER_DEVICE_ID)
 
-const _setHttpClient = createAction(SET_HTTP_CLIENT)
 const _setUser = createAction(SET_USER)
 const setBaseURL = createAction(SET_BASE_URL)
 const _setCurrentRoute = createAction(SET_CURRENT_ROUTE)
@@ -187,10 +186,7 @@ export function selectServer(server) {
               false
             )
 
-            const httpClient = API.createClient(baseURL, user)
-
             dispatch(_setUser(user))
-            dispatch(_setHttpClient(httpClient))
             dispatch(setBaseURL(baseURL))
 
           })
@@ -221,10 +217,7 @@ export function bootstrap(baseURL, user) {
 
     dispatch(setSettings(settings))
 
-    const httpClient = API.createClient(baseURL, user)
-
     dispatch(_setUser(user))
-    dispatch(_setHttpClient(httpClient))
     dispatch(setBaseURL(baseURL))
 
     saveRemotePushToken(dispatch, getState)
@@ -459,11 +452,7 @@ function onAuthenticationSuccess(dispatch, getState) {
 
   const { baseURL, user } = app
 
-  const httpClient = API.createClient(baseURL, user)
-
   dispatch(_setUser(user))
-  dispatch(_setHttpClient(httpClient))
-
   dispatch(authenticationSuccess())
 
   setTimeout(() => {
