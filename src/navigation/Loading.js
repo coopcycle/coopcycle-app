@@ -20,8 +20,6 @@ class Loading extends Component {
 
   async load() {
 
-    this.setState({ error: false })
-
     const servers = await Server.loadAll()
 
     this.props.setServers(servers)

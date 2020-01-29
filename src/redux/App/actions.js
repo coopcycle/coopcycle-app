@@ -490,4 +490,3 @@ function postRemotePushToken(httpClient, token) {
   return httpClient
     .post('/api/me/remote_push_tokens', { platform: Platform.OS, token })
 }
-
