@@ -267,7 +267,7 @@ export function login(email, password, navigate = true) {
 
     httpClient.login(email, password)
       .then(user => {
-        onAuthenticationSuccess(dispatch, getState)
+        onAuthenticationSuccess(user, dispatch, getState)
 
         if (navigate) {
           navigateToHome(dispatch, getState)
@@ -315,7 +315,7 @@ export function register(data, checkEmailRouteName, loginRouteName, resumeChecko
         // If the user is enabled, we login immediately.
         // otherwise we wait for confirmation (via deep linking)
         if (user.enabled) {
-          onAuthenticationSuccess(dispatch, getState)
+          onAuthenticationSuccess(user, dispatch, getState)
 
         } else {
           dispatch(setLoading(false))
@@ -346,8 +346,8 @@ export function confirmRegistration(token) {
     dispatch(authenticationRequest())
 
     httpClient.confirmRegistration(token)
-      .then(credentials => {
-        onAuthenticationSuccess(dispatch, getState)
+      .then(user => {
+        onAuthenticationSuccess(user, dispatch, getState)
 
         if (resumeCheckoutAfterActivation) {
           dispatch(_resumeCheckoutAfterActivation(false))
@@ -402,8 +402,8 @@ export function setNewPassword(token, password) {
 
     httpClient
       .setNewPassword(token, password)
-      .then(credentials => {
-        onAuthenticationSuccess(dispatch, getState);
+      .then(user => {
+        onAuthenticationSuccess(user, dispatch, getState);
 
         if (resumeCheckoutAfterActivation) {
           dispatch(_resumeCheckoutAfterActivation(false));
@@ -446,13 +446,22 @@ export function resetServer() {
   }
 }
 
-function onAuthenticationSuccess(dispatch, getState) {
+function onAuthenticationSuccess(user, dispatch, getState) {
 
   const { app } = getState()
 
-  const { baseURL, user } = app
+  const { baseURL } = app
 
-  dispatch(_setUser(user))
+  const appUser = new AppUser(
+    user.username,
+    user.email,
+    user.token,
+    user.roles,
+    user.refreshToken,
+    user.enabled
+  )
+  dispatch(_setUser(appUser))
+
   dispatch(authenticationSuccess())
 
   setTimeout(() => {
