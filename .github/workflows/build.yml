@@ -20,4 +20,4 @@ jobs:
       - run: node node_modules/.bin/detox build -c ios.sim.release
         env:
           googleMapsApiKey: ${{ secrets.googleMapsApiKey }}
-      - run: node node_modules/.bin/detox test -c ios.sim.release
+      - run: node node_modules/.bin/detox test -c ios.sim.release --cleanup
