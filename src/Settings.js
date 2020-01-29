@@ -10,15 +10,7 @@ const defaultSettings = {
   latlng: '48.872178,2.331797',
 }
 
-let serverSettings = {}
-
 class Settings {
-
-  static get(name) {
-    if (serverSettings.hasOwnProperty(name)) {
-      return serverSettings[name]
-    }
-  }
 
   static synchronize(baseURL) {
     return new Promise((resolve, reject) => {
@@ -33,8 +25,7 @@ class Settings {
       return client.get('/api/settings')
         .then(settings => {
           AsyncStorage.setItem('@Settings', JSON.stringify(settings))
-          serverSettings = Object.assign(defaultSettings, settings)
-          resolve(serverSettings)
+          resolve(Object.assign(defaultSettings, settings))
         })
         .catch(() => {
           try {
@@ -46,7 +37,6 @@ class Settings {
                 }
 
                 const settings = JSON.parse(data)
-                serverSettings = settings
                 resolve(settings)
               })
           } catch (e) {
@@ -59,4 +49,3 @@ class Settings {
 }
 
 export default Settings
-export { defaultSettings as defaults }

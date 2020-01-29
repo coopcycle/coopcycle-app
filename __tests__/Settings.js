@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-community/async-storage'
-import Settings, { defaults as defaultSettings } from '../src/Settings'
+import Settings from '../src/Settings'
 import API from '../src/API'
 
 const mockClient = (responses) => {
