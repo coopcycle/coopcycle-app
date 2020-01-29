@@ -1,12 +1,12 @@
 import moment from 'moment'
 
-describe('Checkout', () => {
+describe('Registration', () => {
 
   beforeEach(async () => {
     await device.reloadReactNative()
   })
 
-  it('should complete checkout', async () => {
+  it('should be able to register', async () => {
 
     await expect(element(by.id('chooseCityBtn'))).toBeVisible()
     await element(by.id('chooseCityBtn')).tap()
