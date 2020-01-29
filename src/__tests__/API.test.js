@@ -37,7 +37,7 @@ describe('HTTP client', () => {
     return client.get('/api/orders')
   })
 
-  it.skip('fails when token cannot be refreshed', () => {
+  it('fails when token cannot be refreshed', () => {
 
     // TODO Make sure the endpoint returns 401 when token can't be refreshed
     mock.onPost('http://demo.coopcycle.org/api/token/refresh').reply(401, {})
