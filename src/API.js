@@ -15,13 +15,29 @@ function addSubscriber(callback) {
   subscribers.push(callback)
 }
 
-function Client(httpBaseURL, model) {
+function Client(httpBaseURL, options = {}) {
   this.httpBaseURL = httpBaseURL
-  this.model = model
+
+  this.credentials = {
+    token: options.token,
+    refreshToken: options.refreshToken,
+  }
 
   this.axios = axios.create({
     baseURL: httpBaseURL,
   })
+
+  if (options.onCredentialsUpdated) {
+    this.onCredentialsUpdated = options.onCredentialsUpdated
+  } else {
+    this.onCredentialsUpdated = () => {}
+  }
+
+  if (options.onTokenRefreshed) {
+    this.onTokenRefreshed = options.onTokenRefreshed
+  } else {
+    this.onTokenRefreshed = () => {}
+  }
 
   // @see https://gist.github.com/Godofbrowser/bf118322301af3fc334437c683887c5f
   // @see https://www.techynovice.com/setting-up-JWT-token-refresh-mechanism-with-axios/
@@ -49,7 +65,7 @@ function Client(httpBaseURL, model) {
 
               isRefreshingToken = true
 
-              console.log('Refreshing token…')
+              console.log('Refreshing token via interceptor…')
 
               this.refreshToken()
                 .then(token => onTokenFetched(token))
@@ -76,7 +92,7 @@ Client.prototype.getBaseURL = function() {
 }
 
 Client.prototype.getToken = function() {
-  return this.model.token
+  return this.credentials.token
 }
 
 Client.prototype.createRequest = function(method, url, data) {
@@ -104,8 +120,8 @@ Client.prototype.createAuthorizedRequest = function(method, url, data, options =
     'Content-Type': 'application/ld+json',
   }
 
-  if (this.model.token) {
-    headers['Authorization'] = `Bearer ${this.model.token}`
+  if (this.credentials.token) {
+    headers['Authorization'] = `Bearer ${this.credentials.token}`
   }
 
   if (options.headers) {
@@ -138,7 +154,7 @@ Client.prototype.createAuthorizedRequest = function(method, url, data, options =
 
 Client.prototype.request = function(method, uri, data, options = {}) {
   console.log(method + ' ' + uri);
-  const req = this.model ? this.createAuthorizedRequest(method, uri, data, options) : this.createRequest(method, uri, data, options);
+  const req = this.credentials.token ? this.createAuthorizedRequest(method, uri, data, options) : this.createRequest(method, uri, data, options);
 
   return this.axios.request(req);
 }
@@ -181,21 +197,26 @@ function enhanceRequest(client, method, uri, data, options = {}) {
 Client.prototype.refreshToken = function() {
 
   return new Promise((resolve, reject) => {
-    if (!this.model.refreshToken) {
+
+    if (!this.credentials.refreshToken) {
       reject('No refresh token')
       return
     }
 
-    refreshToken(this.httpBaseURL, this.model.refreshToken)
+    console.log('Refreshing token…')
+
+    refreshToken(this.httpBaseURL, this.credentials.refreshToken)
       .then(credentials => {
 
-        console.log('Storing new credentials in DB...')
-        this.model.token = credentials.token
-        this.model.refreshToken = credentials.refresh_token
+        console.log('Token refreshed successfully!')
 
-        return this.model.save()
+        this.credentials.token = credentials.token
+        this.credentials.refreshToken = credentials.refresh_token
+
+        this.onTokenRefreshed(credentials.token, credentials.refresh_token)
+
+        resolve(credentials.token)
       })
-      .then(model => resolve(model.token))
       .catch(e => reject(e))
   })
 }
@@ -214,20 +235,9 @@ Client.prototype.checkToken = function() {
 Client.prototype.register = function (data) {
   return register(this.httpBaseURL, data)
     .then((credentials) => {
-
-      const enabled =
-        credentials.hasOwnProperty('enabled') ? credentials.enabled : true
-
-      Object.assign(this.model, {
-        username: data.username,
-        email: data.email,
-        token: credentials.token,
-        refreshToken: credentials.refresh_token,
-        roles: credentials.roles,
-        enabled,
-      })
-
-      return this.model.save()
+      const user = credentialsToUser(credentials)
+      this.onCredentialsUpdated(user)
+      return user
     })
 }
 
@@ -247,12 +257,20 @@ Client.prototype.confirmRegistration = function(token) {
           reject({ status: 500 })
         }
       })
-  }).then(updateUserData(this.model))
+  })
+    .then(user => {
+      this.onCredentialsUpdated(user)
+      return user
+    })
 }
 
 Client.prototype.login = function(username, password) {
   return login(this.httpBaseURL, username, password)
-    .then(updateUserData(this.model))
+    .then(credentialsToUser)
+    .then(user => {
+      this.onCredentialsUpdated(user)
+      return user
+    })
 }
 
 Client.prototype.resetPassword = function(username) {
@@ -299,28 +317,32 @@ Client.prototype.setNewPassword = function(token, password) {
           reject({status: 500})
         }
       })
-  }).then(updateUserData(this.model))
-}
-
-Client.prototype.cloneWithModel = function(model) {
-  return new Client(this.getBaseURL(), model)
-}
-
-let updateUserData = model => {
-  return credentials => {
-    const enabled = credentials.hasOwnProperty('enabled') ? credentials.enabled : true
-
-    Object.assign(model, {
-      username: credentials.username,
-      email: credentials.email,
-      token: credentials.token,
-      refreshToken: credentials.refresh_token,
-      roles: credentials.roles,
-      enabled,
+  })
+    .then(credentialsToUser)
+    .then(user => {
+      this.onCredentialsUpdated(user)
+      return user
     })
+}
 
-    return model.save()
+Client.prototype.cloneWithToken = function(token) {
+  return new Client(this.getBaseURL(), { token })
+}
+
+function credentialsToUser(credentials) {
+
+  const enabled = credentials.hasOwnProperty('enabled') ? credentials.enabled : true
+
+  const user = {
+    username: credentials.username,
+    email: credentials.email,
+    token: credentials.token,
+    refreshToken: credentials.refresh_token,
+    roles: credentials.roles,
+    enabled,
   }
+
+  return user
 }
 
 var register = function(baseURL, data) {
@@ -503,7 +525,7 @@ const checkServer = function(server) {
 
 module.exports = {
   checkServer,
-  createClient: (httpBaseURL, model) => {
-    return new Client(httpBaseURL, model)
+  createClient: (httpBaseURL, options) => {
+    return new Client(httpBaseURL, options)
   },
 }

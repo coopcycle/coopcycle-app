@@ -97,13 +97,13 @@ function validateAddress(httpClient, cart, address) {
 
 function createHttpClient(state) {
   const { httpClient } = state.app
-  if (httpClient.model && httpClient.model.token && httpClient.model.refreshToken) {
+  if (httpClient.credentials.token && httpClient.credentials.refreshToken) {
     return httpClient
   }
 
   const { token } = state.checkout
 
-  return httpClient.cloneWithModel({ token })
+  return httpClient.cloneWithToken(token)
 }
 
 let addressListeners = []
