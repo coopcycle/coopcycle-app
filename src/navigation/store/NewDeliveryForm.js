@@ -17,7 +17,6 @@ import {
   AsYouType,
 } from 'libphonenumber-js'
 
-import Settings from '../../Settings'
 import { createDelivery, loadTimeSlot } from '../../redux/Store/actions'
 import { selectStore, selectTimeSlot } from '../../redux/Store/selectors'
 import { getChoicesWithDates } from '../../utils/time-slots'
@@ -26,8 +25,6 @@ class NewDelivery extends Component {
 
   constructor(props) {
     super(props)
-
-    this.country = Settings.get('country').toUpperCase()
 
     this.state = {
       isDateTimePickerVisible: false,
@@ -49,7 +46,7 @@ class NewDelivery extends Component {
   }
 
   _handleChangeTelephone(value, setFieldValue, setFieldTouched) {
-    setFieldValue('address.telephone', new AsYouType(this.country).input(value))
+    setFieldValue('address.telephone', new AsYouType(this.props.country).input(value))
     setFieldTouched('address.telephone')
   }
 
@@ -61,7 +58,7 @@ class NewDelivery extends Component {
         ...values,
         address: {
           ...values.address,
-          telephone: parsePhoneNumberFromString(values.address.telephone, this.country).format('E.164'),
+          telephone: parsePhoneNumberFromString(values.address.telephone, this.props.country).format('E.164'),
         },
       },
     }
@@ -85,7 +82,7 @@ class NewDelivery extends Component {
         telephone: this.props.t('STORE_NEW_DELIVERY_ERROR.EMPTY_PHONE_NUMBER'),
       }
     } else {
-      const phoneNumber = parsePhoneNumberFromString(_.trim(values.address.telephone), this.country)
+      const phoneNumber = parsePhoneNumberFromString(_.trim(values.address.telephone), this.props.country)
       if (!phoneNumber || !phoneNumber.isValid()) {
         errors.address = {
           ...errors.address,
@@ -156,7 +153,7 @@ class NewDelivery extends Component {
 
     let telephone = ''
     if (address['@id'] && address.telephone) {
-      const phoneNumber = parsePhoneNumberFromString(address.telephone, this.country)
+      const phoneNumber = parsePhoneNumberFromString(address.telephone, this.props.country)
       if (phoneNumber && phoneNumber.isValid()) {
         telephone = phoneNumber.formatNational()
       }
@@ -296,6 +293,7 @@ function mapStateToProps(state) {
   const timeSlotChoices = hasTimeSlot ? getChoicesWithDates(timeSlot) : []
 
   return {
+    country: state.app.settings.country.toUpperCase(),
     store: selectStore(state),
     timeSlotChoices,
     hasTimeSlot: hasTimeSlot && timeSlotChoices.length > 0,

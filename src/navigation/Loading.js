@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 import { Button, Icon, Text } from 'native-base'
 
-import Settings from '../Settings'
 import Server from '../Server'
 import AppUser from '../AppUser'
 import { bootstrap, resetServer, setServers } from '../redux/App/actions'
@@ -29,8 +28,6 @@ class Loading extends Component {
       try {
 
         const user = await AppUser.load()
-
-        await Settings.synchronize(this.props.baseURL)
 
         this.props.bootstrap(this.props.baseURL, user)
 

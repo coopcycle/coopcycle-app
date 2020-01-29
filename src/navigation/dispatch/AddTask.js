@@ -129,6 +129,8 @@ class AddTask extends Component {
               <Label style={{ marginBottom: 5 }}>{ this.props.t('TASK_FORM_ADDRESS_LABEL') }</Label>
               <View style={ styles.datePickerRow }>
                 <AddressTypeahead
+                  country={ this.props.country }
+                  googleApiKey={ this.props.googleApiKey }
                   address={ address }
                   onSuggestionPress={ this._onSuggestionPress.bind(this) }
                   onEditPress={ () => navigate('DispatchEditAddress', { address, onSubmit: this._onEditAddressSubmit.bind(this) }) } />
@@ -198,6 +200,8 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
   return {
+    googleApiKey: state.app.settings.google_api_key,
+    country: state.app.settings.country,
     unassignedTasks: state.dispatch.unassignedTasks,
   }
 }

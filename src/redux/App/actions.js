@@ -37,6 +37,7 @@ export const LOGOUT_SUCCESS = '@app/LOGOUT_SUCCESS'
 export const AUTHENTICATE = '@app/AUTHENTICATE'
 export const RESUME_CHECKOUT_AFTER_ACTIVATION = '@app/RESUME_CHECKOUT_AFTER_ACTIVATION'
 export const SET_SERVERS = '@app/SET_SERVERS'
+export const SET_SETTINGS = '@app/SET_SETTINGS'
 export const THERMAL_PRINTER_CONNECTED = '@app/THERMAL_PRINTER_CONNECTED'
 export const THERMAL_PRINTER_DEVICE_ID = '@app/THERMAL_PRINTER_DEVICE_ID'
 export const SET_SELECT_SERVER_ERROR = '@app/SET_SELECT_SERVER_ERROR'
@@ -89,6 +90,8 @@ const loadMyRestaurantsSuccess = createAction(LOAD_MY_RESTAURANTS_SUCCESS)
 const loadMyRestaurantsFailure = createAction(LOAD_MY_RESTAURANTS_FAILURE)
 
 const _authenticate = createAction(AUTHENTICATE)
+
+const setSettings = createAction(SET_SETTINGS)
 
 function authenticate(username) {
 
@@ -172,6 +175,7 @@ export function selectServer(server) {
     API.checkServer(server)
       .then(baseURL =>
         Settings.synchronize(baseURL)
+          .then((settings) => dispatch(setSettings(settings)))
           .then(() => setBaseURL(dispatch, baseURL))
           .then(() => dispatch(_clearSelectServerError()))
           .then(() => dispatch(setLoading(false)))
@@ -193,7 +197,13 @@ export function selectServer(server) {
 }
 
 export function bootstrap(baseURL, user) {
-  return function (dispatch, getState) {
+
+  return async (dispatch, getState) => {
+
+    const settings = await Settings.synchronize(baseURL)
+
+    dispatch(setSettings(settings))
+
     const httpClient = API.createClient(baseURL, user)
 
     dispatch(_setUser(user))

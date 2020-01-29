@@ -95,7 +95,7 @@ const appPersistConfig = {
   key: 'app',
   version: 0,
   storage: AsyncStorage,
-  whitelist: ['baseURL'],
+  whitelist: ['baseURL', 'settings'],
   migrate: (state) => {
 
     if (!state) {

@@ -27,6 +27,7 @@ import {
   THERMAL_PRINTER_DEVICE_ID,
   SET_SELECT_SERVER_ERROR,
   CLEAR_SELECT_SERVER_ERROR,
+  SET_SETTINGS,
 } from './actions'
 
 const initialState = {
@@ -52,6 +53,13 @@ const initialState = {
   thermalPrinterConnected: false,
   thermalPrinterDeviceId: null,
   selectServerError: null,
+  settings: {
+    google_api_key: '',
+    stripe_publishable_key: '',
+    locale: 'fr',
+    country: 'fr',
+    latlng: '48.872178,2.331797',
+  }
 }
 
 export default (state = initialState, action = {}) => {
@@ -225,6 +233,12 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         selectServerError: action.payload,
+      }
+
+    case SET_SETTINGS:
+      return {
+        ...state,
+        settings: action.payload,
       }
   }
 

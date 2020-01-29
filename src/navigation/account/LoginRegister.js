@@ -29,6 +29,7 @@ class LoginRegister extends Component {
           <Server />
           { this.renderMessage() }
           <AuthenticateForm
+            country={ this.props.country }
             onLogin={(email, password) => this.props.login(email, password)}
             onRegister={data => this.props.register(data)}
             onForgotPassword={() => {
@@ -48,6 +49,7 @@ class LoginRegister extends Component {
 
 function mapStateToProps(state) {
   return {
+    country: state.app.settings.country.toUpperCase(),
     message: state.app.lastAuthenticationError,
   }
 }

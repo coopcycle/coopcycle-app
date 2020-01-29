@@ -12,7 +12,6 @@ import {
   AsYouType,
 } from 'libphonenumber-js'
 
-import Settings from '../../Settings'
 import { updateCart } from '../../redux/Checkout/actions'
 import FooterButton from './components/FooterButton'
 
@@ -22,14 +21,8 @@ const hasPhoneNumberErrors = (errors, touched) => {
 
 class MoreInfos extends Component {
 
-  constructor(props) {
-    super(props)
-
-    this.country = Settings.get('country').toUpperCase()
-  }
-
   _handleChangeTelephone(value, setFieldValue, setFieldTouched) {
-    setFieldValue('address.telephone', new AsYouType(this.country).input(value))
+    setFieldValue('address.telephone', new AsYouType(this.props.country).input(value))
     setFieldTouched('address.telephone')
   }
 
@@ -38,7 +31,7 @@ class MoreInfos extends Component {
     const payload = {
       shippingAddress: {
         ...values.address,
-        telephone: parsePhoneNumberFromString(values.address.telephone, this.country).format('E.164'),
+        telephone: parsePhoneNumberFromString(values.address.telephone, this.props.country).format('E.164'),
       },
       notes: values.notes,
     }
@@ -55,7 +48,7 @@ class MoreInfos extends Component {
         telephone: this.props.t('STORE_NEW_DELIVERY_ERROR.EMPTY_PHONE_NUMBER'),
       }
     } else {
-      const phoneNumber = parsePhoneNumberFromString(_.trim(values.address.telephone), this.country)
+      const phoneNumber = parsePhoneNumberFromString(_.trim(values.address.telephone), this.props.country)
       if (!phoneNumber || !phoneNumber.isValid()) {
         errors.address = {
           ...errors.address,
@@ -186,6 +179,7 @@ const styles = StyleSheet.create({
 function mapStateToProps(state) {
 
   return {
+    country: state.app.settings.country.toUpperCase(),
     cart: state.checkout.cart,
   }
 }

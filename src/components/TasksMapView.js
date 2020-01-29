@@ -12,7 +12,6 @@ import ClusteredMapView from 'react-native-maps-super-cluster'
 import Modal from 'react-native-modal'
 import {withTranslation} from 'react-i18next'
 
-import Settings from '../Settings'
 import {
   greyColor,
   whiteColor,
@@ -114,7 +113,7 @@ class TasksMapView extends Component {
     this.renderMarker = this.renderMarker.bind(this)
     this.onClusterPress = this.onClusterPress.bind(this)
 
-    const [ latitude, longitude ] = Settings.get('latlng').split(',').map(parseFloat)
+    const [ latitude, longitude ] = this.props.mapCenter
 
     this.initialRegion = {
       latitude,

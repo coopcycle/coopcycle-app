@@ -122,6 +122,8 @@ class AddressModal extends Component {
             </View>
             <View style={{ height: 44 + (44 * 3) }}>
               <AddressTypeahead
+                country={ this.props.country }
+                googleApiKey={ this.props.googleApiKey }
                 testID="addressModalTypeahead"
                 autoFocus={ true }
                 style={ typeaheadStyles }
@@ -212,6 +214,8 @@ const styles = StyleSheet.create({
 function mapStateToProps(state) {
 
   return {
+    googleApiKey: state.app.settings.google_api_key,
+    country: state.app.settings.country,
     date: state.checkout.date,
     address: state.checkout.address,
     isAddressOK: state.checkout.isAddressOK,

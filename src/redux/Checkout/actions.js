@@ -4,7 +4,6 @@ import Stripe from 'tipsi-stripe'
 import _ from 'lodash'
 
 import NavigationHolder from '../../NavigationHolder'
-import Settings from '../../Settings'
 
 /*
  * Action Types
@@ -513,11 +512,11 @@ export function checkout(number, expMonth, expYear, cvc) {
 
   return (dispatch, getState) => {
 
-    const { httpClient } = getState().app
+    const { httpClient, settings } = getState().app
     const { cart } = getState().checkout
 
     Stripe.setOptions({
-      publishableKey: Settings.get('stripe_publishable_key'),
+      publishableKey: settings.stripe_publishable_key,
     })
 
     dispatch(checkoutRequest())

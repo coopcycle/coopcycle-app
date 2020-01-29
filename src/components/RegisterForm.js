@@ -11,7 +11,6 @@ import {
 import _ from 'lodash'
 
 import i18n from '../i18n'
-import Settings from '../Settings'
 
 validate.validators.phoneNumber = (value, options, key, attributes) => {
 
@@ -20,7 +19,7 @@ validate.validators.phoneNumber = (value, options, key, attributes) => {
     return options.message
   }
 
-  const country = Settings.get('country').toUpperCase()
+  const country = options.country.toUpperCase()
 
   const phoneNumber = parsePhoneNumberFromString(value, country)
   if (phoneNumber) {
@@ -135,7 +134,7 @@ const inputs = [
   },
 ]
 
-const constraints = _.reduce(
+let constraints = _.reduce(
   inputs,
   (acc, { name, constraints }) => ({ ...acc, [name]: constraints }),
   {}
@@ -157,9 +156,20 @@ class RegisterForm extends React.Component {
       errors: {},
     }
 
+    constraints = {
+      ...constraints,
+      telephone: {
+        ...constraints.telephone,
+        phoneNumber: {
+          ...constraints.telephone.phoneNumber,
+          country: this.props.country.toUpperCase(),
+        }
+      }
+    }
+
     this._inputComponents = new Map()
     this._onSubmit.bind(this)
-    this.country = Settings.get('country').toUpperCase()
+    this.country = this.props.country.toUpperCase()
     this.phoneNumberPlaceholder = getExampleNumber(this.country, phoneNumberExamples).formatNational()
   }
 

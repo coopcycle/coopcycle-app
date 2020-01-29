@@ -112,6 +112,7 @@ class TasksPage extends Component {
     return (
       <Container style={ styles.container }>
         <TasksMapView
+          mapCenter={ this.props.mapCenter }
           tasks={ tasks }
           onMapReady={ () => this.onMapReady() }
           onMarkerCalloutPress={ task => navigate('Task', { task, navigateAfter: this.props.navigation.state.routeName }) } />
@@ -146,6 +147,7 @@ function mapStateToProps (state) {
     tasks: selectFilteredTasks(state),
     selectedDate: selectTaskSelectedDate(state),
     keepAwake: selectKeepAwake(state),
+    mapCenter: state.app.settings.latlng.split(',').map(parseFloat),
   }
 }
 

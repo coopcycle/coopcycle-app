@@ -5,7 +5,6 @@ import { withTranslation } from 'react-i18next'
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete'
 import _ from 'lodash'
 
-import Settings from '../../../Settings'
 import { localeDetector } from '../../../i18n'
 
 const addressInputHeight = 54
@@ -104,7 +103,7 @@ class AddressTypeahead extends Component {
             onPress={ this.props.onSuggestionPress.bind(this) }
             query={{
               // available options: https://developers.google.com/places/web-service/autocomplete
-              key: Settings.get('google_api_key'),
+              key: this.props.googleApiKey,
               language: localeDetector(), // language of the results
               types: 'geocode', // default: 'geocode'
             }}
@@ -113,7 +112,7 @@ class AddressTypeahead extends Component {
             nearbyPlacesAPI="GoogleReverseGeocoding" // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
             GoogleReverseGeocodingQuery={{
               // available options for GoogleReverseGeocoding API : https://developers.google.com/maps/documentation/geocoding/intro
-              region: Settings.get('country'),
+              region: this.props.country,
             }}
             // filter the reverse geocoding results by types - ['locality', 'administrative_area_level_3'] if you want to display only cities
             filterReverseGeocodingByTypes={[ 'street_address', 'route', 'geocode' ]}

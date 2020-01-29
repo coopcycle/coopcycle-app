@@ -10,7 +10,6 @@ import Autocomplete from 'react-native-autocomplete-input'
 import Fuse from 'fuse.js'
 
 import { localeDetector } from '../i18n'
-import Settings from '../Settings'
 import AddressUtils from '../utils/Address'
 
 const fuseOptions = {
@@ -96,10 +95,10 @@ class AddressAutocomplete extends Component {
     }
 
     const query = {
-      key: Settings.get('google_api_key'),
+      key: this.props.googleApiKey,
       language: localeDetector(),
       types: 'geocode',
-      components: `country:${Settings.get('country').toUpperCase()}`,
+      components: `country:${this.props.country.toUpperCase()}`,
     }
 
     this._autocomplete(text, query)
@@ -109,7 +108,7 @@ class AddressAutocomplete extends Component {
 
     if (item.type === 'prediction') {
       const query = {
-        key: Settings.get('google_api_key'),
+        key: this.props.googleApiKey,
         language: localeDetector(),
         placeid: item.place_id,
       }
@@ -182,6 +181,8 @@ AddressAutocomplete.defaultProps = {
 AddressAutocomplete.propTypes = {
   minChars: PropTypes.number,
   addresses: PropTypes.array,
+  googleApiKey: PropTypes.string.isRequired,
+  country: PropTypes.string.isRequired,
 }
 
 const styles = StyleSheet.create({

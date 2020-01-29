@@ -4,7 +4,6 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import { withTranslation } from 'react-i18next'
 
 import { localeDetector } from '../i18n'
-import Settings from '../Settings'
 import AddressUtils from '../utils/Address'
 
 class AddressTypeahead extends Component {
@@ -36,7 +35,7 @@ class AddressTypeahead extends Component {
       listView: { width },
     }
 
-    const country = Settings.get('country').toUpperCase()
+    const country = this.props.country.toUpperCase()
 
     let textInputProps = {
       autoCorrect: false,
@@ -113,7 +112,7 @@ class AddressTypeahead extends Component {
         }}
         query={{
           // available options: https://developers.google.com/places/web-service/autocomplete
-          key: Settings.get('google_api_key'),
+          key: this.props.googleApiKey,
           language: localeDetector(), // language of the results
           types: 'geocode', // default: 'geocode'
           components: `country:${country}`,
