@@ -123,7 +123,6 @@ class RegisterForm extends React.Component {
 
     this._inputComponents = new Map()
     this._onSubmit.bind(this)
-    this.country = this.props.country.toUpperCase()
   }
 
   _onSubmit() {

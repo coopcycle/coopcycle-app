@@ -22,7 +22,6 @@ class AuthenticateForm extends Component {
 
       return (
         <RegisterForm
-          country={ this.props.country }
           onSubmit={ data => this.props.onRegister(data) } />
       )
     }
