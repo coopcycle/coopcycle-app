@@ -73,7 +73,7 @@ export const setThermalPrinterDeviceId = createAction(THERMAL_PRINTER_DEVICE_ID)
 
 const _setHttpClient = createAction(SET_HTTP_CLIENT)
 const _setUser = createAction(SET_USER)
-const _setBaseURL = createAction(SET_BASE_URL)
+const setBaseURL = createAction(SET_BASE_URL)
 const _setCurrentRoute = createAction(SET_CURRENT_ROUTE)
 const _setSelectServerError = createAction(SET_SELECT_SERVER_ERROR)
 const _clearSelectServerError = createAction(CLEAR_SELECT_SERVER_ERROR)
@@ -176,7 +176,24 @@ export function selectServer(server) {
       .then(baseURL =>
         Settings.synchronize(baseURL)
           .then((settings) => dispatch(setSettings(settings)))
-          .then(() => setBaseURL(dispatch, baseURL))
+          .then(() => {
+
+            const user = new AppUser(
+              null,
+              null,
+              null,
+              null,
+              null,
+              false
+            )
+
+            const httpClient = API.createClient(baseURL, user)
+
+            dispatch(_setUser(user))
+            dispatch(_setHttpClient(httpClient))
+            dispatch(setBaseURL(baseURL))
+
+          })
           .then(() => dispatch(_clearSelectServerError()))
           .then(() => dispatch(setLoading(false)))
           .then(() => NavigationHolder.dispatch(
@@ -208,7 +225,7 @@ export function bootstrap(baseURL, user) {
 
     dispatch(_setUser(user))
     dispatch(_setHttpClient(httpClient))
-    dispatch(_setBaseURL(baseURL))
+    dispatch(setBaseURL(baseURL))
 
     saveRemotePushToken(dispatch, getState)
 
@@ -219,22 +236,6 @@ export function bootstrap(baseURL, user) {
 
     setTimeout(() => navigateToHome(dispatch, getState), 0)
   }
-}
-
-function setBaseURL(dispatch, baseURL) {
-
-  return new Promise(resolve => {
-    AppUser.load()
-      .then(user => {
-        const httpClient = API.createClient(baseURL, user)
-
-        dispatch(_setUser(user))
-        dispatch(_setHttpClient(httpClient))
-        dispatch(_setBaseURL(baseURL))
-
-        resolve()
-      })
-  })
 }
 
 export function setCurrentRoute(routeName) {
@@ -446,7 +447,7 @@ export function resetServer() {
         await user.logout()
       }
       dispatch(logoutSuccess())
-      dispatch(_setBaseURL(null))
+      dispatch(setBaseURL(null))
 
       NavigationHolder.navigate('ConfigureServer')
   }
