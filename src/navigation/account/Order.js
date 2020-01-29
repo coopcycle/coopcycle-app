@@ -80,7 +80,7 @@ class OrderTrackingPage extends Component {
       <Container>
         { this.renderHeader() }
         { this.renderSubHeader() }
-        <Content padder>
+        <Content padder testID="accountOrder">
           <TouchableOpacity style={ styles.restaurantContainer }>
             <Icon style={ styles.restaurantText }
               type="FontAwesome" name="cutlery" />

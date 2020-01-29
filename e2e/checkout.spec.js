@@ -73,5 +73,7 @@ describe('Checkout', () => {
     await element(by.id('creditCardCvc')).typeText('123')
 
     await element(by.id('creditCardSubmit')).tap()
+
+    await expect(element(by.id('accountOrder'))).toBeVisible()
   })
 })
