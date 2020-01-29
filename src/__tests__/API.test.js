@@ -31,7 +31,11 @@ describe('HTTP client', () => {
 
     const client = createClient('http://demo.coopcycle.org', {
       token: expiredToken,
-      refreshToken: '123456'
+      refreshToken: '123456',
+      onTokenRefreshed: (token, refreshToken) => {
+        expect(token).toEqual(validToken)
+        expect(refreshToken).toEqual('123456')
+      }
     })
 
     return client.get('/api/orders')
