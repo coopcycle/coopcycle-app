@@ -14,7 +14,7 @@ jobs:
       - run: yarn install
       - run: |
           brew tap wix/brew
-          brew install applesimutils@0.7.6
+          brew install applesimutils
       - run: cp GoogleService-Info.plist.dist ios/GoogleService-Info.plist
       - run: cd ios/ && pod install --repo-update && cd ..
       - run: node node_modules/.bin/detox build -c ios.sim.release
