@@ -14,7 +14,7 @@ class RegisterCheckEmail extends Component {
   _onPressLogin() {
 
     const loginRouteName =
-      this.props.navigation.getParam('loginRouteName', 'AccountLoginRegister')
+      this.props.navigation.getParam('loginRouteName', 'AccountHome')
 
     const resetAction = StackActions.reset({
       index: 0,
