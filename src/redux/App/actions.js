@@ -328,8 +328,8 @@ export function register(data, checkEmailRouteName, loginRouteName, resumeChecko
       .catch(err => {
 
         let message = i18n.t('TRY_LATER')
-        if (err.hasOwnProperty('status') && err.status === 400) {
-          message = i18n.t('EMAIL_ALREADY_REGISTERED')
+        if (err.hasOwnProperty('status') && err.status === 400 && err.hasOwnProperty('data') && err.data.detail) {
+          message = err.data.detail
         }
 
         dispatch(authenticationFailure(message))
