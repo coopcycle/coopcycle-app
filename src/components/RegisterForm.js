@@ -3,30 +3,9 @@ import { View } from 'react-native'
 import { Form, Item, Input, Label, Button, Text } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import validate from 'validate.js'
-import phoneNumberExamples from 'libphonenumber-js/examples.mobile.json'
-import {
-  getExampleNumber,
-  parsePhoneNumberFromString,
-  AsYouType } from 'libphonenumber-js'
 import _ from 'lodash'
 
 import i18n from '../i18n'
-
-validate.validators.phoneNumber = (value, options, key, attributes) => {
-
-  if (!value) {
-
-    return options.message
-  }
-
-  const country = options.country.toUpperCase()
-
-  const phoneNumber = parsePhoneNumberFromString(value, country)
-  if (phoneNumber) {
-
-    return phoneNumber.isValid() ? null : options.message
-  }
-}
 
 // Custom validator for matches
 // Checks whether the given value matches another value in the object under validation
@@ -118,20 +97,7 @@ const inputs = [
         message: i18n.t('INVALID_FAMILY_NAME'),
       },
     },
-  },
-  {
-    name: 'telephone',
-    label: i18n.t('PHONE_NUMBER'),
-    props: {
-      keyboardType: 'phone-pad',
-    },
-    constraints: {
-      presence: { message: i18n.t('INVALID_PHONE_NUMBER') },
-      phoneNumber: {
-        message: i18n.t('INVALID_PHONE_NUMBER'),
-      },
-    },
-  },
+  }
 ]
 
 let constraints = _.reduce(
@@ -149,28 +115,15 @@ class RegisterForm extends React.Component {
       givenName: this.props.prefill === true ? 'John' : '',
       familyName: this.props.prefill === true ? 'Doe' : '',
       email: this.props.prefill === true ? 'john.doe@coopcycle.org' : '',
-      telephone: this.props.prefill === true ? '+33612345678' : '',
       username: this.props.prefill === true ? 'johndoe' : '',
       password: this.props.prefill === true ? '12345678' : '',
       passwordConfirmation: this.props.prefill === true ? '12345678' : '',
       errors: {},
     }
 
-    constraints = {
-      ...constraints,
-      telephone: {
-        ...constraints.telephone,
-        phoneNumber: {
-          ...constraints.telephone.phoneNumber,
-          country: this.props.country.toUpperCase(),
-        }
-      }
-    }
-
     this._inputComponents = new Map()
     this._onSubmit.bind(this)
     this.country = this.props.country.toUpperCase()
-    this.phoneNumberPlaceholder = getExampleNumber(this.country, phoneNumberExamples).formatNational()
   }
 
   _onSubmit() {
@@ -186,20 +139,7 @@ class RegisterForm extends React.Component {
       return
     }
 
-    const phoneNumber = parsePhoneNumberFromString(data.telephone, this.country)
-
-    const newData = {
-      ...data,
-      telephone: phoneNumber.format('E.164'),
-    }
-
-    this.props.onSubmit(newData)
-  }
-
-  _onChangeTelephone(value) {
-    this.setState({
-      telephone: new AsYouType(this.country).input(value),
-    })
+    this.props.onSubmit(data)
   }
 
   renderErrors(errors) {
@@ -224,22 +164,12 @@ class RegisterForm extends React.Component {
             const hasErrors = errors.hasOwnProperty(input.name)
             const itemProps = hasErrors ? { error: true } : {}
 
-            let inputProps = { ...input.props }
+            let inputProps = {
+              ...input.props,
+              onChangeText: value => this.setState({ [input.name]: value }),
+            }
 
             const isLast = index === (inputs.length - 1)
-
-            if (input.name === 'telephone') {
-              inputProps = {
-                ...inputProps,
-                placeholder: this.phoneNumberPlaceholder,
-                onChangeText: this._onChangeTelephone.bind(this),
-              }
-            } else {
-              inputProps = {
-                ...inputProps,
-                onChangeText: value => this.setState({ [input.name]: value }),
-              }
-            }
 
             if (isLast) {
               inputProps = {
