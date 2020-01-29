@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Picker, View, StyleSheet, TextInput } from 'react-native'
+import { Picker, View, StyleSheet, TextInput, InteractionManager } from 'react-native'
 import { Container, Content, Text, Button } from 'native-base'
 import { Col, Row, Grid } from 'react-native-easy-grid'
 import { withTranslation } from 'react-i18next'
@@ -12,7 +12,7 @@ import {
   AsYouType,
 } from 'libphonenumber-js'
 
-import { updateCart } from '../../redux/Checkout/actions'
+import { assignCustomer, updateCart } from '../../redux/Checkout/actions'
 import FooterButton from './components/FooterButton'
 
 const hasPhoneNumberErrors = (errors, touched) => {
@@ -58,6 +58,12 @@ class MoreInfos extends Component {
     }
 
     return errors
+  }
+
+  componentDidMount() {
+    InteractionManager.runAfterInteractions(() => {
+      this.props.assignCustomer()
+    })
   }
 
   render() {
@@ -188,6 +194,7 @@ function mapDispatchToProps(dispatch) {
 
   return {
     updateCart: (cart, cb) => dispatch(updateCart(cart, cb)),
+    assignCustomer: () => dispatch(assignCustomer()),
   }
 }
 

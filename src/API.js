@@ -171,7 +171,7 @@ Client.prototype.post = function(uri, data) {
 
 Client.prototype.put = function(uri, data, options = {}) {
 
-  return enhanceRequest(this, 'PUT', uri, data);
+  return enhanceRequest(this, 'PUT', uri, data, options);
 }
 
 Client.prototype.delete = function(uri) {
