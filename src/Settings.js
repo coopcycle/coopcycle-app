@@ -1,6 +1,5 @@
 import AsyncStorage from '@react-native-community/async-storage'
-
-import API from './API'
+import axios from 'axios'
 
 const defaultSettings = {
   google_api_key: '',
@@ -20,12 +19,10 @@ class Settings {
         return reject('baseURL is undefined')
       }
 
-      const client = API.createClient(baseURL)
-
-      return client.get('/api/settings')
-        .then(settings => {
-          AsyncStorage.setItem('@Settings', JSON.stringify(settings))
-          resolve(Object.assign(defaultSettings, settings))
+      return axios.get(`${baseURL}/api/settings`)
+        .then(res => {
+          AsyncStorage.setItem('@Settings', JSON.stringify(res.data))
+          resolve(Object.assign(defaultSettings, res.data))
         })
         .catch(() => {
           try {
