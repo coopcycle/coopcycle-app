@@ -43,7 +43,7 @@ class CoopCycleUITests: XCTestCase {
 
         // Wait for the button to appear
         // Use a large timeout, to make sure the JavaScript bundle has been downloaded
-        app.otherElements["chooseCityBtn"].waitForExistence(timeout: 120)
+        app.otherElements["chooseCityBtn"].waitForExistence(timeout: 240)
 
         snapshot("00_Home")
 
