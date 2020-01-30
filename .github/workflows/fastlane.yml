@@ -2,6 +2,7 @@ name: Fastlane
 on: [push, pull_request]
 jobs:
   FASTLANE_SCREENSHOTS:
+    if: false
     name: Fastlane Screenshots
     runs-on: macOS-latest
     steps:
