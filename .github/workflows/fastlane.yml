@@ -1,0 +1,30 @@
+name: Fastlane
+on: [push, pull_request]
+jobs:
+  FASTLANE_SCREENSHOTS:
+    name: Fastlane Screenshots
+    runs-on: macOS-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+      - run: yarn install
+      - run: cp GoogleService-Info.plist.dist ios/GoogleService-Info.plist
+      - uses: actions/setup-ruby@v1
+      - name: Install CocoaPods & RubyGems
+        run: |
+          cd ios/
+          pod install --repo-update
+          bundle install
+          cd ..
+      - name: Create screenshots with Fastlane
+        run: |
+          cd ios/
+          bundle exec fastlane snapshot
+          cd ..
+      - name: Upload screenshots artifacts
+        uses: actions/upload-artifact@v1
+        with:
+          name: screenshots-ios
+          path: ios/fastlane/screenshots
