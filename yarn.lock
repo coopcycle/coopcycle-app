@@ -7892,9 +7892,9 @@ react-native-autocomplete-input@^4.1.0:
   integrity sha512-Yn4GulZ9F6tde74UUGZHdVFeYWVuL7+EbUZy6kt+QHrzMc5B4OuRop1FT4RyWLpvbySW/vvqYgj9LAmlzkuEqA==
 
 react-native-ble-manager@^7.0.0:
-  version "7.1.0"
-  resolved "https://registry.yarnpkg.com/react-native-ble-manager/-/react-native-ble-manager-7.1.0.tgz#9471a4d788ba688ce144ac3d627f04a6eba0de31"
-  integrity sha512-Pj3qAbIXSaUG8LsnG5sT/2EwrKrNs26iBeVqQubcOOxMEMW+HGurIJvy0rThl7UyHc7c1Hman85ha33//Me2XQ==
+  version "7.1.1"
+  resolved "https://registry.yarnpkg.com/react-native-ble-manager/-/react-native-ble-manager-7.1.1.tgz#3627fb3a7fb013b69842f82cd779620096f31541"
+  integrity sha512-acY7F1p9o5TrCt2lN5ZCD+1ekZZrq6JjLcZ57HIIdKjbwrRmjAnY3QuuzWrMdIo9Y1PeG/2b/fhwcZpb1yBOFA==
 
 react-native-cache-store@^1.0.2:
   version "1.0.2"
