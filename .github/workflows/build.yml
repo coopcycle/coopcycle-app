@@ -20,9 +20,13 @@ jobs:
       - run: node node_modules/.bin/detox build -c ios.sim.release
         env:
           googleMapsApiKey: ${{ secrets.googleMapsApiKey }}
+      # See screenshot specifications
+      # https://help.apple.com/app-store-connect/#/devd274dd925
+      - name: Run Detox on iPhone 11
+        run: node node_modules/.bin/detox test -c ios.sim.release --take-screenshots manual --cleanup --device-name="iPhone 11"
       - name: Run Detox on iPhone 8
         run: node node_modules/.bin/detox test -c ios.sim.release --take-screenshots manual --cleanup --device-name="iPhone 8"
-      - name: Run Detox on iPad Pro
+      - name: Run Detox on iPad Pro (12.9-inch) (3rd generation)
         run: node node_modules/.bin/detox test -c ios.sim.release --take-screenshots manual --cleanup --device-name="iPad Pro (12.9-inch) (3rd generation)"
       - name: Upload screenshots artifacts
         uses: actions/upload-artifact@v1
