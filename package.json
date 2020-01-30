@@ -61,7 +61,7 @@
     "react-native-offline": "^5.2.0",
     "react-native-pin-screen": "git+https://git@github.com/coopcycle/react-native-pin-screen.git#1.0.1",
     "react-native-reanimated": "^1.7.0",
-    "react-native-safe-area-context": "^0.6.2",
+    "react-native-safe-area-context": "^0.6.4",
     "react-native-sound": "^0.11.0",
     "react-native-swipe-list-view": "^2.1.2",
     "react-navigation": "^4.0",
