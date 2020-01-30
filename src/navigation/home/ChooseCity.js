@@ -17,7 +17,8 @@ class ChooseCity extends Component {
           <View style={ styles.list }>
             { this.props.servers.map((server, key) => (
               <TouchableOpacity key={ key } style={ styles.item }
-                onPress={ () => this.props.selectServer(server.coopcycle_url) }>
+                onPress={ () => this.props.selectServer(server.coopcycle_url) }
+                testID={ server.city }>
                 <Text style={{ textAlign: 'center' }}>{ server.city }</Text>
               </TouchableOpacity>
             )) }

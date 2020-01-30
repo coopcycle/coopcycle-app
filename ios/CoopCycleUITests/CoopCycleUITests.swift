@@ -28,6 +28,8 @@ class CoopCycleUITests: XCTestCase {
 
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
+        XCUIApplication().terminate()
+        super.tearDown()
     }
 
     func testExample() {
@@ -35,13 +37,12 @@ class CoopCycleUITests: XCTestCase {
         // Use XCTAssert and related functions to verify your tests produce the correct results.
         // https://krausefx.com/blog/run-xcode-7-ui-tests-from-the-command-line
         // https://www.hackingwithswift.com/articles/148/xcode-ui-testing-cheat-sheet
+        // https://www.raywenderlich.com/233168-fastlane-tutorial-getting-started
       
         let app = XCUIApplication()
 
         // Wait for the button to appear
-        app.otherElements["chooseCityBtn"].waitForExistence(timeout: 30)
-      
-        // print(app.debugDescription)
+        app.otherElements["chooseCityBtn"].waitForExistence(timeout: 15)
       
         snapshot("00_Home")
       
@@ -49,6 +50,26 @@ class CoopCycleUITests: XCTestCase {
         app.otherElements["chooseCityBtn"].firstMatch.tap()
       
         snapshot("01_ChooseCity")
+      
+        app.otherElements["Poitiers"].firstMatch.tap()
+      
+        snapshot("02_Restaurants")
+      
+        app.otherElements["restaurantList"].waitForExistence(timeout: 15)
+      
+        app.otherElements["restaurants:2"].tap()
+      
+        snapshot("03_Restaurant")
+      
+        app.otherElements["menu"].waitForExistence(timeout: 5)
+        app.otherElements["menuItem:0:0"].waitForExistence(timeout: 5)
+      
+        app.otherElements["menuItem:0:0"].tap()
+      
+        app.otherElements["addressModal"].waitForExistence(timeout: 5)
+        app.textFields["addressModalTypeahead"].waitForExistence(timeout: 5)
+      
+        app.textFields["addressModalTypeahead"].typeText("23 av claude vellefaux")
     }
 
 }
