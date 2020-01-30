@@ -62,7 +62,10 @@ describe('Checkout', () => {
     await expect(element(by.id('checkoutTelephone'))).toBeVisible()
     await expect(element(by.id('moreInfosSubmit'))).toBeVisible()
 
-    await element(by.id('checkoutTelephone')).typeText('0612345678')
+    // Append "\n" to make sure virtual keybord is hidden after entry
+    // https://github.com/wix/detox/issues/209
+    await element(by.id('checkoutTelephone')).typeText('0612345678\n')
+
     await element(by.id('moreInfosSubmit')).tap()
 
     await waitFor(element(by.id('creditCardNumber'))).toExist().withTimeout(5000)
