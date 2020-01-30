@@ -10,9 +10,5 @@ module.exports = {
     'prettier/prettier': 'off',
     // Allow inline styles (should be removed at some point)
     'react-native/no-inline-styles': 'off'
-  },
-  globals: {
-    // Remove when we upgrade to React Native 0.61
-    WebSocket: true,
   }
 };
