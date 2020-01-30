@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
@@ -67,16 +69,16 @@
 	<string>App requires background tracking</string>
 	<key>NSMotionUsageDescription</key>
 	<string>App requires motion tracking</string>
-  <key>NSCameraUsageDescription</key>
-  <string>App requires access to camera</string>
-  <key>NSPhotoLibraryUsageDescription</key>
-  <string>App requires access to photo library</string>
-  <key>NSPhotoLibraryAddUsageDescription</key>
-  <string>App requires access to photo library</string>
-  <key>NSBluetoothPeripheralUsageDescription</key>
-  <string>App would like to use bluetooth</string>
-  <key>NSBluetoothAlwaysUsageDescription</key>
-  <string>Our app uses bluetooth to print receipts on thermal printers</string>
+	<key>NSCameraUsageDescription</key>
+	<string>App requires access to camera</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>App requires access to photo library</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>App requires access to photo library</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>App would like to use bluetooth</string>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>Our app uses bluetooth to print receipts on thermal printers</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Entypo.ttf</string>
