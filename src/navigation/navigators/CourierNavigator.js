@@ -13,6 +13,7 @@ const Tabs = createBottomTabNavigator({
     screen: screens.CourierTasksPage,
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('TASKS'),
+      tabBarTestID: 'messengerTabMap',
       tabBarIcon: ({ focused, horizontal, tintColor }) => {
         return (
           <Icon type="FontAwesome" name="map" style={{ color: tintColor }} />
@@ -24,6 +25,7 @@ const Tabs = createBottomTabNavigator({
     screen: screens.CourierTaskListPage,
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('TASK_LIST'),
+      tabBarTestID: 'messengerTabList',
       tabBarIcon: ({ focused, horizontal, tintColor }) => {
         return (
           <Icon type="FontAwesome" name="list" style={{ color: tintColor }} />

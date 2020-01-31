@@ -19,7 +19,8 @@ class TaskLists extends Component {
     const items = selectTasksNotCancelled({ tasks: taskList.items })
 
     return (
-      <TouchableOpacity onPress={ () => navigate('DispatchTaskList', { taskList }) } style={ styles.item }>
+      <TouchableOpacity onPress={ () => navigate('DispatchTaskList', { taskList }) } style={ styles.item }
+        testID={ `dispatch:taskLists:${taskList.username}` }>
         <Grid>
           <Col size={ 2 }>
             <View style={ [ styles.verticalAlign ] }>

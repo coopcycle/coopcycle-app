@@ -104,7 +104,7 @@ class TaskList extends Component {
     return this.renderSwipeoutButton(width, this.props.swipeOutRightIconName || failedIconName)
   }
 
-  renderItem(task) {
+  renderItem(task, index) {
 
     const taskTypeIcon = taskTypeIconName(task)
     const isCompleted = _.includes(['DONE', 'FAILED'], task.status)
@@ -160,7 +160,7 @@ class TaskList extends Component {
           <TouchableOpacity
             style={{ flex: 1, alignItems: 'flex-start', justifyContent: 'center', backgroundColor: greenColor, width: buttonWidth }}
             onPress={ () => this.props.onSwipeLeft(task) }
-            testID="task:assignButton">
+            testID={ `task:${index}:assign` }>
             { this.renderSwipeoutLeftButton(buttonWidth) }
           </TouchableOpacity>
           <TouchableOpacity
@@ -169,7 +169,7 @@ class TaskList extends Component {
             { this.renderSwipeoutRightButton(buttonWidth) }
           </TouchableOpacity>
         </View>
-        <TouchableHighlight onPress={ () => this._onTaskClick(task) } style={ styles.item } underlayColor={ '#efefef' }>
+        <TouchableHighlight onPress={ () => this._onTaskClick(task) } style={ styles.item } underlayColor={ '#efefef' } testID={ `task:${index}` }>
           <Grid style={{ paddingVertical: 10 }}>
             <Col size={ 1 } style={ itemLeftStyle }>
               <Row style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -205,7 +205,7 @@ class TaskList extends Component {
       <SwipeListView
         data={ this.props.tasks }
         keyExtractor={ (item, index) => item['@id'] }
-        renderItem={({item}) => this.renderItem(item)}
+        renderItem={({ item, index }) => this.renderItem(item, index)}
         refreshing={ refreshing }
         onRefresh={ onRefresh }
       />

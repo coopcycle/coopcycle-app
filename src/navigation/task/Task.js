@@ -252,6 +252,7 @@ class Task extends Component {
           stopRightSwipe={ (buttonWidth + 25) * -1 }>
           <View style={ styles.rowBack }>
             <TouchableOpacity
+              testID="task:completeSuccessButton"
               style={{ flex: 1, alignItems: 'flex-start', justifyContent: 'center', backgroundColor: greenColor, width: buttonWidth }}
               onPress={ () => {
                 this.props.navigation.navigate('TaskComplete', { ...navigateParams, success: true })
@@ -266,7 +267,7 @@ class Task extends Component {
               { this.renderSwipeoutRightButton(buttonWidth) }
             </TouchableOpacity>
           </View>
-          <View style={{ padding: 28, width, backgroundColor: '#dedede' }}>
+          <View style={{ padding: 28, width, backgroundColor: '#dedede' }} testID="task:completeButton">
             <Text style={{ fontSize: 20, textAlign: 'center', color: '#fff', fontFamily: 'Raleway-Regular' }}>
               { this.props.t('END') }
             </Text>

@@ -19,7 +19,8 @@ class AddUser extends Component {
     return (
       <ListItem avatar
         onPress={ () => this._onItemPress(user) }
-        key={ user.username }>
+        key={ user.username }
+        testID={ `assignTo:${user.username}` }>
         <Grid>
           <Left>
             <Thumbnail small source={{ uri: avatarURI }} />

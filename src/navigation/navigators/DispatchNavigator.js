@@ -13,6 +13,7 @@ const Tabs = createBottomTabNavigator({
     screen: screens.DispatchUnassignedTasks,
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('DISPATCH_UNASSIGNED_TASKS'),
+      tabBarTestID: 'dispatch:unassignedTab',
       tabBarIcon: ({ focused, horizontal, tintColor }) => {
         return (
           <Icon type="FontAwesome" name="clock-o" style={{ color: tintColor }} />
@@ -24,6 +25,7 @@ const Tabs = createBottomTabNavigator({
     screen: screens.DispatchTaskLists,
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('DISPATCH_TASK_LISTS'),
+      tabBarTestID: 'dispatch:assignedTab',
       tabBarIcon: ({ focused, horizontal, tintColor }) => {
         return (
           <Icon type="FontAwesome" name="user" style={{ color: tintColor }} />
