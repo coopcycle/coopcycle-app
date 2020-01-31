@@ -16,10 +16,12 @@ jobs:
         run: |
           brew tap wix/brew
           brew install applesimutils
-      - name: Install fbsimctl
+      - uses: actions/setup-python@v1
+      - name: Install idb
         run: |
           brew tap facebook/fb
-          brew install fbsimctl --HEAD
+          brew install idb-companion
+          pip install fb-idb
       - run: cp GoogleService-Info.plist.dist ios/GoogleService-Info.plist
       - run: cd ios/ && pod install --repo-update && cd ..
       - run: node node_modules/.bin/detox build -c ios.sim.release
