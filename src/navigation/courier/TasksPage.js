@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, Alert, Platform } from 'react-native'
+import { StyleSheet, Alert, Platform, InteractionManager } from 'react-native'
 import { Container } from 'native-base'
 import { NavigationActions, withNavigationFocus } from 'react-navigation'
 import KeepAwake from 'react-native-keep-awake'
@@ -50,7 +50,9 @@ class TasksPage extends Component {
 
   componentDidMount() {
 
-    this.refreshTasks(this.props.selectedDate)
+    InteractionManager.runAfterInteractions(() => {
+      this.refreshTasks(this.props.selectedDate)
+    })
 
     if (this.props.keepAwake && this.props.isFocused) {
       this.enableKeepAwake()

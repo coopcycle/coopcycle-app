@@ -3,5 +3,5 @@
     "testEnvironment": "node",
     "reporters": ["detox/runners/jest/streamlineReporter"],
     "verbose": true,
-    "testRegex": "[0-9]+_.*\\.spec\\.js"
+    "testRegex": "screenshots\\.spec\\.js"
 }

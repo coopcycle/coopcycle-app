@@ -270,7 +270,9 @@ export function login(email, password, navigate = true) {
         onAuthenticationSuccess(user, dispatch, getState)
 
         if (navigate) {
-          navigateToHome(dispatch, getState)
+          // FIXME
+          // Use setTimeout() to let room for loader to hide
+          setTimeout(() => navigateToHome(dispatch, getState), 250)
         }
       })
       .catch(err => {

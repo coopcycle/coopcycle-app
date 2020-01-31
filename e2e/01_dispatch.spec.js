@@ -1,3 +1,5 @@
+import { connectToDemo, authenticateWithCredentials } from './utils'
+
 describe('Dispatch', () => {
 
   beforeEach(async () => {
@@ -6,22 +8,8 @@ describe('Dispatch', () => {
 
   it('should be able to create task', async () => {
 
-    await expect(element(by.id('chooseCityBtn'))).toBeVisible()
-    await element(by.id('chooseCityBtn')).tap()
-
-    await expect(element(by.id('moreServerOptions'))).toBeVisible()
-    await element(by.id('moreServerOptions')).tap()
-
-    await element(by.id('customServerURL')).typeText('demo.coopcycle.org')
-    await element(by.id('submitCustomServer')).tap()
-
-    await expect(element(by.id('menuBtn'))).toBeVisible()
-    await element(by.id('menuBtn')).tap()
-    await element(by.id('drawerAccountBtn')).tap()
-
-    await element(by.id('loginUsername')).typeText('admin')
-    await element(by.id('loginPassword')).typeText('admin')
-    await element(by.id('loginSubmit')).tap()
+    await connectToDemo()
+    await authenticateWithCredentials('admin', 'admin')
 
     await expect(element(by.id('addTask'))).toBeVisible()
     await element(by.id('addTask')).tap()

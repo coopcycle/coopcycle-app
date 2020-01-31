@@ -1,5 +1,7 @@
 import moment from 'moment'
 
+import { connectToDemo } from './utils'
+
 describe('Registration', () => {
 
   beforeEach(async () => {
@@ -8,14 +10,7 @@ describe('Registration', () => {
 
   it('should be able to register', async () => {
 
-    await expect(element(by.id('chooseCityBtn'))).toBeVisible()
-    await element(by.id('chooseCityBtn')).tap()
-
-    await expect(element(by.id('moreServerOptions'))).toBeVisible()
-    await element(by.id('moreServerOptions')).tap()
-
-    await element(by.id('customServerURL')).typeText('demo.coopcycle.org')
-    await element(by.id('submitCustomServer')).tap()
+    await connectToDemo()
 
     await expect(element(by.id('menuBtn'))).toBeVisible()
     await element(by.id('menuBtn')).tap()
