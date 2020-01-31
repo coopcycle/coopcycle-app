@@ -19,11 +19,11 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingVertical: 15,
     paddingHorizontal: 15,
-    borderBottomColor: '#ddd',
-    borderBottomWidth: StyleSheet.hairlineWidth,
   },
-  itemLast: {
-    borderBottomWidth: 0,
+  itemSeparator: {
+    height: StyleSheet.hairlineWidth,
+    width: '100%',
+    backgroundColor: '#dddddd',
   },
   adjustmentText: {
     fontSize: 14,
@@ -44,15 +44,14 @@ const styles = StyleSheet.create({
   },
 });
 
+const ItemSeparatorComponent = () => (
+  <View style={ styles.itemSeparator } />
+)
+
 const CartLine = (props) => {
 
-  const containerStyle = [ styles.item ]
-  if (props.last === true) {
-    containerStyle.push(styles.itemLast)
-  }
-
   return (
-    <View style={ containerStyle }>
+    <View style={ styles.item }>
       <View style={ styles.col }>
         <Text style={{ fontWeight: 'bold' }}>{ props.label }</Text>
       </View>
@@ -141,8 +140,7 @@ class OrderItems extends Component {
     return (
       <CartLine
         label={ this.props.t('TOTAL') }
-        value={ `${formatPrice(this.props.order.total)} €` }
-        last={ true } />
+        value={ `${formatPrice(this.props.order.total)} €` } />
     )
   }
 
@@ -156,7 +154,8 @@ class OrderItems extends Component {
           <FlatList
             data={ order.items }
             keyExtractor={ (item, index) => `ITEM#${item.id}` }
-            renderItem={ ({ item }) => this.renderItem(item) } />
+            renderItem={ ({ item }) => this.renderItem(item) }
+            ItemSeparatorComponent={ ItemSeparatorComponent } />
         </View>
         <View style={{ flex: 2 }}>
           { this.renderItemsTotal() }
