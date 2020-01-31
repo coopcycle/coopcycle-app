@@ -39,6 +39,7 @@ YellowBox.ignoreWarnings([
   'permissionDialogTitle and permissionDialogMessage are deprecated',
   'Warning: componentWillMount has been renamed',
   'Warning: componentWillReceiveProps has been renamed',
+  'Warning: componentWillUpdate has been renamed',
   'Accessing view manager configs directly off UIManager',
 ])
 
