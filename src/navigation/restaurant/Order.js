@@ -52,7 +52,7 @@ class OrderScreen extends Component {
 
     if (order.state === 'new') {
       return (
-        <View style={{ backgroundColor: '#fefefe' }}>
+        <View style={{ backgroundColor: '#efefef' }}>
           <View style={{ padding: 20 }} onLayout={ event => this.setState({ openValue: (event.nativeEvent.layout.width * 0.7) }) }>
             <SwipeRow
               leftOpenValue={ this.state.openValue }
@@ -207,7 +207,7 @@ class OrderScreen extends Component {
     const { order } = this.props
 
     return (
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1, backgroundColor: '#ffffff' }}>
         <NavigationEvents
           onDidFocus={ this.componentDidFocus.bind(this) }
           onWillBlur={ this.componentWillBlur.bind(this) } />
@@ -266,12 +266,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 30,
   },
   swipeFg: {
-    flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 30,
-    borderWidth: 1,
+    padding: 15,
+    borderWidth: 3,
     borderColor: "#e7e7e7",
     backgroundColor: '#ffffff',
   },
