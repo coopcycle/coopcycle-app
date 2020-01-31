@@ -12,9 +12,14 @@ jobs:
         with:
           node-version: '12.x'
       - run: yarn install
-      - run: |
+      - name: Install applesimutils
+        run: |
           brew tap wix/brew
           brew install applesimutils
+      - name: Install fbsimctl
+        run: |
+          brew tap facebook/fb
+          brew install fbsimctl --HEAD
       - run: cp GoogleService-Info.plist.dist ios/GoogleService-Info.plist
       - run: cd ios/ && pod install --repo-update && cd ..
       - run: node node_modules/.bin/detox build -c ios.sim.release
