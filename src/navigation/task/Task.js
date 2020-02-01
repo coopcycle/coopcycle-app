@@ -36,7 +36,6 @@ class Task extends Component {
     super(props)
 
     this.state = {
-      swipeOutClose: false,
       mapDimensions: [],
       canRenderMap: false,
     }
@@ -256,9 +255,6 @@ class Task extends Component {
               style={{ flex: 1, alignItems: 'flex-start', justifyContent: 'center', backgroundColor: greenColor, width: buttonWidth }}
               onPress={ () => {
                 this.props.navigation.navigate('TaskComplete', { ...navigateParams, success: true })
-                this.setState({
-                  swipeOutClose: true,
-                })
               }}>
               { this.renderSwipeoutLeftButton(buttonWidth) }
             </TouchableOpacity>
@@ -266,9 +262,6 @@ class Task extends Component {
               style={{ flex: 1, alignItems: 'flex-end', justifyContent: 'center', backgroundColor: redColor, width: buttonWidth }}
               onPress={ () => {
                 this.props.navigation.navigate('TaskComplete', { ...navigateParams, success: false })
-                this.setState({
-                  swipeOutClose: true,
-                })
               }}>
               { this.renderSwipeoutRightButton(buttonWidth) }
             </TouchableOpacity>
