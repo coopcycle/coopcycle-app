@@ -41,6 +41,7 @@ YellowBox.ignoreWarnings([
   'Warning: componentWillReceiveProps has been renamed',
   'Warning: componentWillUpdate has been renamed',
   'Accessing view manager configs directly off UIManager',
+  'VirtualizedLists should never be nested',
 ])
 
 const RootNavigator = createAppContainer(createSwitchNavigator(
