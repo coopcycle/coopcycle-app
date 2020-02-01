@@ -6,11 +6,12 @@ import { connect } from 'react-redux'
 
 import AuthenticateForm from '../../components/AuthenticateForm'
 import {forgotPassword, login, register} from '../../redux/App/actions'
+import { selectIsAuthenticated } from '../../redux/App/selectors'
 
 class Login extends Component {
 
   componentDidUpdate(prevProps) {
-    if (this.props.isAuthenticated !== prevProps.isAuthenticated && this.props.isAuthenticated === true) {
+    if (this.props.isAuthenticated !== prevProps.isAuthenticated && this.props.isAuthenticated) {
       this.props.navigation.navigate('CheckoutMoreInfos')
     }
   }
@@ -68,7 +69,7 @@ function mapStateToProps(state) {
 
   return {
     message: state.app.lastAuthenticationError,
-    isAuthenticated: state.app.isAuthenticated,
+    isAuthenticated: selectIsAuthenticated(state),
   }
 }
 

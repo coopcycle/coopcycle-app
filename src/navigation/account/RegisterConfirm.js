@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 
 import { confirmRegistration } from '../../redux/App/actions'
+import { selectIsAuthenticated } from '../../redux/App/selectors'
 
 class RegisterConfirm extends Component {
   componentDidMount() {
@@ -32,7 +33,7 @@ class RegisterConfirm extends Component {
 
 function mapStateToProps(state) {
   return {
-    isAuthenticated: state.app.isAuthenticated,
+    isAuthenticated: selectIsAuthenticated(state),
   }
 }
 

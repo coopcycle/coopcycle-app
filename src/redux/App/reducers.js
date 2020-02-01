@@ -45,7 +45,6 @@ const initialState = {
     nonInputError: null,
     requested: false,
   },
-  isAuthenticated: false,
   resumeCheckoutAfterActivation: false,
   servers: [],
   trackerInitialized: false,
@@ -135,7 +134,6 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         loading: false,
-        isAuthenticated: true,
       }
 
     case AUTHENTICATION_FAILURE:
@@ -189,7 +187,7 @@ export default (state = initialState, action = {}) => {
     case LOGOUT_SUCCESS:
       return {
         ...state,
-        isAuthenticated: false,
+        user: null,
       }
 
     case RESUME_CHECKOUT_AFTER_ACTIVATION:

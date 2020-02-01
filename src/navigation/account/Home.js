@@ -11,6 +11,7 @@ import { withTranslation } from 'react-i18next'
 
 import Server from './components/Server'
 import { logout } from '../../redux/App/actions'
+import { selectIsAuthenticated } from '../../redux/App/selectors'
 import LoginRegister from './LoginRegister'
 
 const LoginRegisterWithNav = withNavigation(LoginRegister)
@@ -79,7 +80,7 @@ function mapStateToProps(state) {
   return {
     user: state.app.user,
     message: state.app.lastAuthenticationError,
-    isAuthenticated: state.app.isAuthenticated,
+    isAuthenticated: selectIsAuthenticated(state),
   }
 }
 

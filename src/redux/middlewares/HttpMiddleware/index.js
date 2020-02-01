@@ -4,6 +4,7 @@ import API from '../../../API'
 import AppUser from '../../../AppUser'
 
 import { SET_HTTP_CLIENT, SET_USER } from '../../App/actions'
+import { selectIsAuthenticated } from '../../App/selectors'
 import { REHYDRATE } from 'redux-persist'
 
 const setHttpClient = createAction(SET_HTTP_CLIENT)
@@ -19,7 +20,7 @@ export default ({ getState, dispatch }) => {
 
     const hasBaseURLChanged = prevState.app.baseURL !== state.app.baseURL
     const hasUserChanged = prevState.app.user !== state.app.user
-    const hasAuthenticationChanged = prevState.app.isAuthenticated !== state.app.isAuthenticated
+    const hasAuthenticationChanged = selectIsAuthenticated(prevState) !== selectIsAuthenticated(state)
 
     if (hasBaseURLChanged || hasUserChanged || hasAuthenticationChanged) {
       if (state.app.baseURL) {

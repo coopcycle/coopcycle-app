@@ -24,6 +24,7 @@ import { formatPrice } from '../../utils/formatting'
 import i18n from '../../i18n'
 import { incrementItem, decrementItem, removeItem, validate, showAddressModal, hideAddressModal } from '../../redux/Checkout/actions'
 import { selectDeliveryTotal } from '../../redux/Checkout/selectors'
+import { selectIsAuthenticated } from '../../redux/App/selectors'
 import CartFooter from './components/CartFooter'
 import AddressModal from './components/AddressModal'
 import ExpiredSessionModal from './components/ExpiredSessionModal'
@@ -294,7 +295,7 @@ function mapStateToProps(state, ownProps) {
     date: state.checkout.date,
     timing: state.checkout.timing,
     edit: ownProps.navigation.getParam('edit', false),
-    isAuthenticated: state.app.isAuthenticated,
+    isAuthenticated: selectIsAuthenticated(state),
     deliveryTotal: selectDeliveryTotal(state),
     timeAsText,
     isLoading: state.checkout.isLoading,

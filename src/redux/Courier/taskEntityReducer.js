@@ -192,7 +192,7 @@ export const tasksEntityReducer = (state = tasksEntityInitialState, action = {})
 
       return {
         ...state,
-        username: action.payload.username,
+        username: action.payload ? action.payload.username : null,
       }
   }
 

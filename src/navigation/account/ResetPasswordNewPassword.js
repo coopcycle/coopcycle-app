@@ -3,6 +3,8 @@ import { Container, Content } from 'native-base'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 import { setNewPassword } from '../../redux/App/actions'
+import { selectIsAuthenticated } from '../../redux/App/selectors'
+
 import NewPasswordForm from '../../components/NewPasswordForm'
 
 class ResetPasswordNewPassword extends Component {
@@ -34,7 +36,7 @@ class ResetPasswordNewPassword extends Component {
 
 function mapStateToProps(state) {
   return {
-    isAuthenticated: state.app.isAuthenticated,
+    isAuthenticated: selectIsAuthenticated(state),
   }
 }
 

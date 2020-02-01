@@ -12,6 +12,8 @@ import { withTranslation } from 'react-i18next'
 import { SafeAreaView, NavigationActions } from 'react-navigation'
 import { DrawerNavigatorItems } from 'react-navigation-drawer'
 
+import { selectIsAuthenticated } from '../../redux/App/selectors'
+
 class DrawerContent extends Component {
 
   onItemPress({ route, focused }) {
@@ -234,7 +236,7 @@ function mapStateToProps(state) {
 
   return {
     user: state.app.user,
-    isAuthenticated: state.app.isAuthenticated,
+    isAuthenticated: selectIsAuthenticated(state),
     restaurants: state.restaurant.myRestaurants,
     stores: state.store.myStores,
   }

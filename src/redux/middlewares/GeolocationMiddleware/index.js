@@ -1,6 +1,7 @@
 import BackgroundGeolocation from '@mauron85/react-native-background-geolocation'
 
 import i18n from '../../../i18n'
+import { selectIsAuthenticated } from '../../App/selectors'
 
 const BackgroundGeolocationEvents = [
   'start',
@@ -42,8 +43,10 @@ export default ({ getState, dispatch }) => {
     const result = next(action)
     const state = getState()
 
-    if (prevState.app.isAuthenticated !== state.app.isAuthenticated) {
-      if (state.app.isAuthenticated && state.app.user && state.app.user.hasRole('ROLE_COURIER')) {
+    const hasAuthenticationChanged = selectIsAuthenticated(prevState) !== selectIsAuthenticated(state)
+
+    if (hasAuthenticationChanged) {
+      if (selectIsAuthenticated(state) && state.app.user && state.app.user.hasRole('ROLE_COURIER')) {
 
         BackgroundGeolocation.configure({
           url: state.app.httpClient.getBaseURL() + '/api/me/location',
