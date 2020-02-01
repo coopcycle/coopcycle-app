@@ -38,8 +38,10 @@ export default ({ getState, dispatch }) => {
               credentials.enabled
             )
 
+            dispatch(setUser(user))
+
             user.save()
-              .then(() => dispatch(setUser(user)))
+              .then(() => console.log('Credentials saved!'))
           },
           onTokenRefreshed: (token, refreshToken) => {
 
@@ -54,8 +56,10 @@ export default ({ getState, dispatch }) => {
               enabled
             )
 
+            dispatch(setUser(user))
+
             user.save()
-              .then(() => dispatch(setUser(user)))
+              .then(() => console.log('Credentials saved!'))
           }
         })
 
