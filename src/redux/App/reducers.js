@@ -16,7 +16,6 @@ import {
   AUTHENTICATION_SUCCESS,
   AUTHENTICATION_FAILURE,
   LOGOUT_SUCCESS,
-  AUTHENTICATE,
   RESUME_CHECKOUT_AFTER_ACTIVATION,
   RESET_PASSWORD_INIT,
   RESET_PASSWORD_REQUEST,
@@ -191,12 +190,6 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         isAuthenticated: false,
-      }
-
-    case AUTHENTICATE:
-      return {
-        ...state,
-        isAuthenticated: true,
       }
 
     case RESUME_CHECKOUT_AFTER_ACTIVATION:

@@ -11,7 +11,7 @@ import {
   UNASSIGN_TASK_SUCCESS,
 } from '../Dispatch/actions'
 import {
-  AUTHENTICATE,
+  SET_USER,
 } from '../App/actions'
 import { MESSAGE } from '../middlewares/WebSocketMiddleware'
 import _ from 'lodash'
@@ -188,11 +188,11 @@ export const tasksEntityReducer = (state = tasksEntityInitialState, action = {})
         pictures: [],
       }
 
-    case AUTHENTICATE:
+    case SET_USER:
 
       return {
         ...state,
-        username: action.payload,
+        username: action.payload.username,
       }
   }
 

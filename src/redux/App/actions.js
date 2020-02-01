@@ -34,7 +34,6 @@ export const RESET_PASSWORD_REQUEST = '@app/RESET_PASSWORD_REQUEST'
 export const RESET_PASSWORD_REQUEST_SUCCESS = '@app/RESET_PASSWORD_REQUEST_SUCCESS'
 export const RESET_PASSWORD_REQUEST_FAILURE = '@app/RESET_PASSWORD_REQUEST_FAILURE'
 export const LOGOUT_SUCCESS = '@app/LOGOUT_SUCCESS'
-export const AUTHENTICATE = '@app/AUTHENTICATE'
 export const RESUME_CHECKOUT_AFTER_ACTIVATION = '@app/RESUME_CHECKOUT_AFTER_ACTIVATION'
 export const SET_SERVERS = '@app/SET_SERVERS'
 export const SET_SETTINGS = '@app/SET_SETTINGS'
@@ -88,16 +87,7 @@ const loadMyRestaurantsRequest = createAction(LOAD_MY_RESTAURANTS_REQUEST)
 const loadMyRestaurantsSuccess = createAction(LOAD_MY_RESTAURANTS_SUCCESS)
 const loadMyRestaurantsFailure = createAction(LOAD_MY_RESTAURANTS_FAILURE)
 
-const _authenticate = createAction(AUTHENTICATE)
-
 const setSettings = createAction(SET_SETTINGS)
-
-function authenticate(username) {
-
-  return function (dispatch, getState) {
-    dispatch(_authenticate(username))
-  }
-}
 
 function navigateToHome(dispatch, getState) {
 
@@ -222,12 +212,7 @@ export function bootstrap(baseURL, user) {
 
     saveRemotePushToken(dispatch, getState)
 
-    // Navigate to screen depending on user state
-    if (user.isAuthenticated()) {
-      dispatch(authenticate(user.username))
-    }
-
-    setTimeout(() => navigateToHome(dispatch, getState), 0)
+    setTimeout(() => navigateToHome(dispatch, getState), 250)
   }
 }
 
