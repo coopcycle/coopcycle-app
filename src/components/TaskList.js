@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, TouchableOpacity, TouchableHighlight, View } from 'react-native'
+import { StyleSheet, TouchableOpacity, TouchableHighlight, View, Dimensions } from 'react-native'
 import { Icon, Text } from 'native-base'
 import { Col, Row, Grid } from 'react-native-easy-grid'
 import { SwipeListView, SwipeRow } from 'react-native-swipe-list-view'
@@ -84,21 +84,24 @@ class TaskList extends Component {
     }
   }
 
-  renderSwipeoutButton(iconName) {
+  renderSwipeoutButton(width, iconName) {
 
     return (
-      <Icon type="FontAwesome" name={ iconName } style={{ color: '#fff' }} />
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', width }}>
+        <Icon type="FontAwesome" name={ iconName } style={{ color: '#fff' }} />
+      </View>
+
     )
   }
 
-  renderSwipeoutLeftButton() {
+  renderSwipeoutLeftButton(width) {
 
-    return this.renderSwipeoutButton(this.props.swipeOutLeftIconName || doneIconName)
+    return this.renderSwipeoutButton(width, this.props.swipeOutLeftIconName || doneIconName)
   }
 
-  renderSwipeoutRightButton() {
+  renderSwipeoutRightButton(width) {
 
-    return this.renderSwipeoutButton(this.props.swipeOutRightIconName || failedIconName)
+    return this.renderSwipeoutButton(width, this.props.swipeOutRightIconName || failedIconName)
   }
 
   renderItem(task) {
@@ -141,24 +144,29 @@ class TaskList extends Component {
     const hasOnSwipeLeft = typeof this.props.onSwipeLeft === 'function' && swipeOutLeftEnabled
     const hasOnSwipeRight = typeof this.props.onSwipeRight === 'function' && swipeOutRightEnabled
 
+    const { width } = Dimensions.get('window')
+    const buttonWidth = (width / 3)
+
     return (
       <SwipeRow
         disableRightSwipe={ !hasOnSwipeLeft }
         disableLeftSwipe={ !hasOnSwipeRight }
-        leftOpenValue={ 75 }
-        stopLeftSwipe={ 100 }
-        rightOpenValue={ -75 }
-        stopRightSwipe={ -100 }>
-        <View style={ [ styles.rowBack, { backgroundColor: 'grey' } ] }>
+        leftOpenValue={ buttonWidth }
+        stopLeftSwipe={ buttonWidth + 25 }
+        rightOpenValue={ buttonWidth * -1 }
+        stopRightSwipe={ (buttonWidth + 25) * -1 }
+        >
+        <View style={ [ styles.rowBack ] }>
           <TouchableOpacity
-            style={{ flex: 1, alignItems: 'flex-start', justifyContent: 'center', paddingLeft: 15, backgroundColor: greenColor }}
-            onPress={ () => this.props.onSwipeLeft(task) }>
-            { this.renderSwipeoutLeftButton() }
+            style={{ flex: 1, alignItems: 'flex-start', justifyContent: 'center', backgroundColor: greenColor, width: buttonWidth }}
+            onPress={ () => this.props.onSwipeLeft(task) }
+            testID="task:assignButton">
+            { this.renderSwipeoutLeftButton(buttonWidth) }
           </TouchableOpacity>
           <TouchableOpacity
-            style={{ flex: 1, alignItems: 'flex-end', justifyContent: 'center', paddingRight: 15, backgroundColor: redColor }}
+            style={{ flex: 1, alignItems: 'flex-end', justifyContent: 'center', backgroundColor: redColor, width: buttonWidth }}
             onPress={ () => this.props.onSwipeRight(task) }>
-            { this.renderSwipeoutRightButton() }
+            { this.renderSwipeoutRightButton(buttonWidth) }
           </TouchableOpacity>
         </View>
         <TouchableHighlight onPress={ () => this._onTaskClick(task) } style={ styles.item } underlayColor={ '#efefef' }>
