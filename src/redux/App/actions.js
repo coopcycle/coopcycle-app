@@ -448,20 +448,6 @@ export function resetServer() {
 
 function onAuthenticationSuccess(user, dispatch, getState) {
 
-  const { app } = getState()
-
-  const { baseURL } = app
-
-  const appUser = new AppUser(
-    user.username,
-    user.email,
-    user.token,
-    user.roles,
-    user.refreshToken,
-    user.enabled
-  )
-  dispatch(_setUser(appUser))
-
   dispatch(authenticationSuccess())
 
   setTimeout(() => {
