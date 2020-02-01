@@ -2,10 +2,7 @@ import React, { Component } from 'react';
 import { InteractionManager, View } from 'react-native';
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
-import {
-  Container, Content,
-  Icon, Text, Button,
-} from 'native-base';
+import { Icon, Text, Button } from 'native-base';
 
 import TaskList from '../../components/TaskList'
 import { assignTask, initialize } from '../../redux/Dispatch/actions'
@@ -33,14 +30,14 @@ class UnassignedTasks extends Component {
     }
 
     return (
-      <Container>
+      <View style={{ flex: 1 }}>
         <View>
           <Button iconLeft full onPress={ () => this.props.navigation.navigate('DispatchAddTask') } testID="addTask">
             <Icon name="add" />
             <Text>{ this.props.t('DISPATCH_CREATE_TASK') }</Text>
           </Button>
         </View>
-        <Content { ...contentProps }>
+        <View style={{ flex: 1 }}>
           { isEmpty && (
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
               <Text note>{ this.props.t('DISPATCH_NO_TASKS') }</Text>
@@ -54,8 +51,8 @@ class UnassignedTasks extends Component {
               swipeOutLeftIconName="user"
               onTaskClick={ task => navigate('Task', { task, navigateAfter: this.props.navigation.state.routeName }) } />
           ) }
-        </Content>
-      </Container>
+        </View>
+      </View>
     );
   }
 }
