@@ -69,3 +69,6 @@ buck-out/
 
 # ProGuard
 /android/app/mapping.txt
+
+# Detox
+/artifacts/
