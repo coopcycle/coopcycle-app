@@ -72,13 +72,13 @@ class TaskListPage extends Component {
             swipeOutRightEnabled={ task => task.status !== 'DONE' }
             onTaskClick={ task => navigate('Task', { ...navigateParams, task }) }
             refreshing={ this.props.isRefreshing }
-            onRefresh={ () => this.props.refreshTasks(this.props.httpClient, selectedDate) }
+            onRefresh={ () => this.props.refreshTasks(selectedDate) }
           />
         }
         {
           tasks.length === 0 &&
             <TouchableOpacity style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
-              onPress={ () => this.props.loadTasks(this.props.httpClient, selectedDate) }>
+              onPress={ () => this.props.loadTasks(selectedDate) }>
               <Icon type="FontAwesome5" name="check-circle" solid style={{ marginBottom: 15, fontSize: 38, color: '#ecedec' }} />
               <Text style={ styles.noTask }>{ this.props.t('NO_TASKS') }</Text>
               <Text note>{ this.props.t('TOUCH_TO_RELOAD') }</Text>
@@ -86,7 +86,7 @@ class TaskListPage extends Component {
         }
         <DateSelectHeader
           buttonsEnabled={true}
-          toDate={ date => this.props.loadTasks(this.props.httpClient, date) }
+          toDate={ date => this.props.loadTasks(date) }
           selectedDate={selectedDate}/>
       </View>
     )
@@ -95,7 +95,6 @@ class TaskListPage extends Component {
 
 function mapStateToProps (state) {
   return {
-    httpClient: state.app.httpClient,
     tasks: selectFilteredTasks(state),
     selectedDate: selectTaskSelectedDate(state),
     isRefreshing: selectIsTasksRefreshing(state),
@@ -104,8 +103,8 @@ function mapStateToProps (state) {
 
 function mapDispatchToProps (dispatch) {
   return {
-    loadTasks: (client, selectedDate) => dispatch(loadTasks(client, selectedDate)),
-    refreshTasks: (client, selectedDate) => dispatch(loadTasks(client, selectedDate, true)),
+    loadTasks: (selectedDate) => dispatch(loadTasks(selectedDate)),
+    refreshTasks: (selectedDate) => dispatch(loadTasks(selectedDate, true)),
   }
 }
 

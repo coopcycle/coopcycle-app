@@ -34,7 +34,7 @@ class NotificationHandler extends Component {
       NavigationHolder.navigate('CourierTaskList', {})
     }
 
-    this.props.loadTasks(this.props.httpClient, moment(date))
+    this.props.loadTasks(moment(date))
   }
 
   _loadSound() {
@@ -175,7 +175,7 @@ class NotificationHandler extends Component {
       }),
     }))
 
-    this.props.loadTasks(this.props.httpClient, moment(date))
+    this.props.loadTasks(moment(date))
   }
 
   renderOrderCreated(order) {
@@ -268,7 +268,6 @@ const styles = StyleSheet.create({
 function mapStateToProps(state) {
 
   return {
-    httpClient: state.app.httpClient,
     currentRoute: state.app.currentRoute,
     isModalVisible: state.app.notifications.length > 0,
     notifications: state.app.notifications,
@@ -280,7 +279,7 @@ function mapDispatchToProps (dispatch) {
   return {
     loadOrderAndNavigate: order => dispatch(loadOrderAndNavigate(order)),
     loadOrderAndPushNotification: order => dispatch(loadOrderAndPushNotification(order)),
-    loadTasks: (httpClient, date) => dispatch(loadTasks(httpClient, date)),
+    loadTasks: (date) => dispatch(loadTasks(date)),
     setRemotePushToken: token => dispatch(setRemotePushToken(token)),
     clearNotifications: () => dispatch(clearNotifications()),
     pushNotification: (event, params) => dispatch(pushNotification(event, params)),

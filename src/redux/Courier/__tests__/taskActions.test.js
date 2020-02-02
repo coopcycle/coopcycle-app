@@ -85,8 +85,12 @@ describe('Redux | Tasks | Actions', () => {
 
     client.get.mockResolvedValue(resolveValue)
 
-    const thk = loadTasks(client, date)
-    const promise = thk(dispatch)
+    const store = mockStore({
+      app: { httpClient: client },
+    })
+
+    const thk = loadTasks(date)
+    const promise = thk(dispatch, store.getState)
 
     expect(thk).toBeInstanceOf(Function)
     expect(client.get).toHaveBeenCalledTimes(1)
@@ -110,8 +114,12 @@ describe('Redux | Tasks | Actions', () => {
 
     client.get.mockReturnValue(Promise.reject(rejectValue))
 
-    const thk = loadTasks(client, date)
-    const promise = thk(dispatch)
+    const store = mockStore({
+      app: { httpClient: client },
+    })
+
+    const thk = loadTasks(date)
+    const promise = thk(dispatch, store.getState)
 
     expect(thk).toBeInstanceOf(Function)
     expect(client.get).toHaveBeenCalledTimes(1)

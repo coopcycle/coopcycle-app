@@ -86,12 +86,15 @@ function showAlert(e) {
  * Thunk Creators
  */
 
-export function loadTasks(client, selectedDate, refresh = false) {
+export function loadTasks(selectedDate, refresh = false) {
 
-  return function (dispatch) {
+  return function (dispatch, getState) {
+
+    const { httpClient } = getState().app
+
     dispatch(loadTasksRequest(selectedDate, refresh))
 
-    return client.get('/api/me/tasks/' + selectedDate.format('YYYY-MM-DD'))
+    return httpClient.get('/api/me/tasks/' + selectedDate.format('YYYY-MM-DD'))
       .then(res => dispatch(loadTasksSuccess(selectedDate.format('YYYY-MM-DD'), res['hydra:member'])))
       .catch(e => dispatch(loadTasksFailure(e)))
   }

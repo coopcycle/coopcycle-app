@@ -82,7 +82,7 @@ class TasksPage extends Component {
   }
 
   refreshTasks (selectedDate) {
-    this.props.loadTasks(this.props.httpClient, selectedDate)
+    this.props.loadTasks(selectedDate)
   }
 
   setParentParams(params) {
@@ -145,7 +145,6 @@ const styles = StyleSheet.create({
 
 function mapStateToProps (state) {
   return {
-    httpClient: state.app.httpClient,
     tasks: selectFilteredTasks(state),
     selectedDate: selectTaskSelectedDate(state),
     keepAwake: selectKeepAwake(state),
@@ -155,7 +154,7 @@ function mapStateToProps (state) {
 
 function mapDispatchToProps (dispatch) {
   return {
-    loadTasks: (client, selectedDate) => dispatch(loadTasks(client, selectedDate)),
+    loadTasks: (selectedDate) => dispatch(loadTasks(selectedDate)),
   }
 }
 
