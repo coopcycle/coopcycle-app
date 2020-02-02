@@ -1,5 +1,6 @@
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
+import allSettled from 'promise.allsettled'
 
 import { createClient } from '../API'
 
@@ -68,10 +69,11 @@ describe('HTTP client', () => {
     })
   })
 
-  // FIXME
-  // This test should make sure that when there are several concurrent
-  // requests, and a token refresh fails, all promises return a failure
-  it('fails all promises', () => {
+  /**
+   * This test makes sure that when there are several concurrent requests,
+   * and a token refresh fails, all promises return a failure
+   */
+  it('fails all promises', async () => {
 
     // TODO Make sure the endpoint returns 401 when token can't be refreshed
     mock.onPost('http://demo.coopcycle.org/api/token/refresh').reply(401, {})
@@ -84,12 +86,13 @@ describe('HTTP client', () => {
       return [ 401, { message: 'This is original A response' } ]
     })
 
-    mock.onGet('/api/restaurants').reply(function (config) {
-      if (config.headers['Authorization'] === `Bearer ${validToken}`) {
-        return [ 200, {} ]
-      }
-
-      return [ 401, { message: 'This is original B response' } ]
+    // This will complete 500ms later
+    mock.onGet('/api/restaurants').reply(function(config) {
+      return new Promise((resolve) => {
+        setTimeout(function() {
+          resolve([ 401, { message: 'This is original B response' } ])
+        }, 500)
+      })
     })
 
     const client = createClient('http://demo.coopcycle.org', {
@@ -98,12 +101,21 @@ describe('HTTP client', () => {
     })
 
     return new Promise((resolve, reject) => {
-      Promise.all([
+
+      allSettled([
         client.get('/api/orders'),
         client.get('/api/restaurants')
-      ]).catch(e => {
-        resolve()
-      })
+      ])
+        .then(function (results) {
+
+          expect(results).toHaveLength(2)
+          expect(results[0].status).toEqual('rejected')
+          expect(results[0].reason.response.status).toEqual(401)
+          expect(results[1].status).toEqual('rejected')
+          expect(results[1].reason.response.status).toEqual(401)
+
+          resolve()
+        })
     })
   })
 
