@@ -73,7 +73,7 @@ describe('HTTP client', () => {
    * This test makes sure that when there are several concurrent requests,
    * and a token refresh fails, all promises return a failure
    */
-  it('fails all promises', async () => {
+  it('fails all promises', () => {
 
     // TODO Make sure the endpoint returns 401 when token can't be refreshed
     mock.onPost('http://demo.coopcycle.org/api/token/refresh').reply(401, {})
