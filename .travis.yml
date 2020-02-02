@@ -5,7 +5,7 @@ matrix:
   include:
   - language: node_js
     env: LANE='node'
-    node_js: 8
+    node_js: 12
     cache: yarn
     script:
       - yarn lint
@@ -31,7 +31,7 @@ matrix:
         - extra-google-google_play_services
     before_install:
       - yes | sdkmanager "platforms;android-28"
-      - nvm install 8
+      - nvm install 12
     before_script:
       - npm install -g yarn
       - yarn config set cache-folder "$HOME/.cache/yarn"
@@ -67,7 +67,7 @@ matrix:
       - touch $HOME/.android/repositories.cfg
       - yes | sdkmanager "platforms;android-$ANDROID_API_LEVEL"
       - yes | sdkmanager "build-tools;28.0.3"
-      - nvm install 8
+      - nvm install 12
     before_script:
       - npm install -g yarn
       - yarn config set cache-folder "$HOME/.cache/yarn"
