@@ -65,7 +65,7 @@ class AccountHome extends Component {
             </ListItem>
           </List>
           <View style={{ marginTop: 40, marginBottom: 60 }}>
-            <Button block danger onPress={ () => this.props.logout() }>
+            <Button block danger onPress={ () => this.props.logout() } testID="logout">
               <Text>{this.props.t('SIGN_OUT')}</Text>
             </Button>
           </View>

@@ -96,6 +96,6 @@ export const defaultNavigationOptions = {
   },
 }
 
-export const headerLeft = navigation => {
-  return () => <HeaderButton iconName="menu" onPress={ () => navigation.toggleDrawer() } testID="menuBtn" />
+export const headerLeft = (navigation, testID = 'menuBtn') => {
+  return () => <HeaderButton iconName="menu" onPress={ () => navigation.toggleDrawer() } testID={ testID } />
 }

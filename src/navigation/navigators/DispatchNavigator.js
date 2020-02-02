@@ -45,7 +45,7 @@ const MainNavigator = createStackNavigator({
     screen: Tabs,
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('DISPATCH'),
-      headerLeft: headerLeft(navigation),
+      headerLeft: headerLeft(navigation, 'menuBtnDispatch'),
       headerRight: () => <HeaderRightButton onPress={ () => navigation.navigate('DispatchDate') } />,
     }),
   },
