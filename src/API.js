@@ -4,6 +4,7 @@ import qs from 'qs'
 import _ from 'lodash'
 
 let subscribers = []
+let errorSubscribers = []
 let isRefreshingToken = false
 
 function onTokenFetched(token) {
@@ -13,6 +14,15 @@ function onTokenFetched(token) {
 
 function addSubscriber(callback) {
   subscribers.push(callback)
+}
+
+function addErrorSubscriber(callback) {
+  errorSubscribers.push(callback)
+}
+
+function onTokenRefreshError(e) {
+  errorSubscribers.forEach(callback => callback(e))
+  errorSubscribers = []
 }
 
 function Client(httpBaseURL, options = {}) {
@@ -61,6 +71,10 @@ function Client(httpBaseURL, options = {}) {
               resolve(axios(req))
             })
 
+            addErrorSubscriber((e) => {
+              reject(e)
+            })
+
             if (!isRefreshingToken) {
 
               isRefreshingToken = true
@@ -68,9 +82,9 @@ function Client(httpBaseURL, options = {}) {
               console.log('Refreshing token via interceptor…')
 
               this.refreshToken()
+                // Make sure to resolve/reject the Promise that was returned
                 .then(token => onTokenFetched(token))
-                // Make sure to reject the Promise that was returned
-                .catch(e => reject(error))
+                .catch(e => onTokenRefreshError(e))
                 .finally(() => {
                   isRefreshingToken = false
                 })
