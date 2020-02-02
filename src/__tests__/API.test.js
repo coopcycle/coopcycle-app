@@ -14,7 +14,7 @@ describe('HTTP client', () => {
   const expiredToken = 'ThisTokenIsExpired'
   const validToken = 'ThisTokenIsNotExpired'
 
-  it.skip('retries request when token is expired', () => {
+  it('retries request when token is expired', () => {
 
     mock.onPost('http://demo.coopcycle.org/api/token/refresh').reply(200, {
       token: validToken,
@@ -71,7 +71,7 @@ describe('HTTP client', () => {
   // FIXME
   // This test should make sure that when there are several concurrent
   // requests, and a token refresh fails, all promises return a failure
-  it.skip('fails all promises', () => {
+  it('fails all promises', () => {
 
     // TODO Make sure the endpoint returns 401 when token can't be refreshed
     mock.onPost('http://demo.coopcycle.org/api/token/refresh').reply(401, {})
