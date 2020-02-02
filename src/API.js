@@ -195,17 +195,8 @@ Client.prototype.delete = function(uri) {
 
 function enhanceRequest(client, method, uri, data, options = {}) {
 
-  return new Promise((resolve, reject) => {
-    client.request(method, uri, data, options)
-      .then(response => resolve(response.data))
-      .catch(error => {
-        if (error.response) {
-          reject(error.response.data)
-        } else {
-          reject(error)
-        }
-      })
-  })
+  return client.request(method, uri, data, options)
+    .then(response => resolve(response.data))
 }
 
 Client.prototype.refreshToken = function() {
@@ -220,16 +211,16 @@ Client.prototype.refreshToken = function() {
     console.log('Refreshing token…')
 
     refreshToken(this.httpBaseURL, this.credentials.refreshToken)
-      .then(credentials => {
+      .then(res => {
 
         console.log('Token refreshed successfully!')
 
-        this.credentials.token = credentials.token
-        this.credentials.refreshToken = credentials.refresh_token
+        this.credentials.token = res.data.token
+        this.credentials.refreshToken = res.data.refresh_token
 
-        this.onTokenRefreshed(credentials.token, credentials.refresh_token)
+        this.onTokenRefreshed(res.data.token, res.data.refresh_token)
 
-        resolve(credentials.token)
+        resolve(res.data.token)
       })
       .catch(e => reject(e))
   })
@@ -412,7 +403,7 @@ var login = function(baseURL, username, password) {
 
 var refreshToken = function(baseURL, refreshToken) {
 
-  const req = {
+  return axios({
     method: 'POST',
     url: `${baseURL}/api/token/refresh`,
     headers: {
@@ -421,21 +412,6 @@ var refreshToken = function(baseURL, refreshToken) {
     data: qs.stringify({
       'refresh_token': refreshToken,
     }),
-  }
-
-  return new Promise((resolve, reject) => {
-
-    axios(req)
-      .then(response => {
-        resolve(response.data)
-      })
-      .catch(error => {
-        if (error.response) {
-          reject(error.response.data.message)
-        } else {
-          reject('An error has occured')
-        }
-      })
   })
 }
 
