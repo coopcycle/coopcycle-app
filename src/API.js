@@ -196,7 +196,7 @@ Client.prototype.delete = function(uri) {
 function enhanceRequest(client, method, uri, data, options = {}) {
 
   return client.request(method, uri, data, options)
-    .then(response => resolve(response.data))
+    .then(response => response.data)
 }
 
 Client.prototype.refreshToken = function() {
