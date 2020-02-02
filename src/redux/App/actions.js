@@ -48,6 +48,8 @@ export const LOAD_MY_RESTAURANTS_REQUEST = '@restaurant/LOAD_MY_RESTAURANTS_REQU
 export const LOAD_MY_RESTAURANTS_SUCCESS = '@restaurant/LOAD_MY_RESTAURANTS_SUCCESS'
 export const LOAD_MY_RESTAURANTS_FAILURE = '@restaurant/LOAD_MY_RESTAURANTS_FAILURE'
 
+export const SET_INTERNET_REACHABLE = '@app/SET_INTERNET_REACHABLE'
+
 /*
  * Action Creators
  */
@@ -88,6 +90,8 @@ const loadMyRestaurantsSuccess = createAction(LOAD_MY_RESTAURANTS_SUCCESS)
 const loadMyRestaurantsFailure = createAction(LOAD_MY_RESTAURANTS_FAILURE)
 
 const setSettings = createAction(SET_SETTINGS)
+
+export const setInternetReachable = createAction(SET_INTERNET_REACHABLE)
 
 function navigateToHome(dispatch, getState) {
 

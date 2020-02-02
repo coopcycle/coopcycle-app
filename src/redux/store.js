@@ -11,10 +11,12 @@ import WsMiddleware from './middlewares/WebSocketMiddleware'
 import GeolocationMiddleware from './middlewares/GeolocationMiddleware'
 import BluetoothMiddleware from './middlewares/BluetoothMiddleware'
 import HttpMiddleware from './middlewares/HttpMiddleware'
+import NetInfoMiddleware from './middlewares/NetInfoMiddleware'
 
 const middlewares = [
   thunk,
   ReduxAsyncQueue,
+  NetInfoMiddleware,
   HttpMiddleware,
   WsMiddleware(),
   GeolocationMiddleware,

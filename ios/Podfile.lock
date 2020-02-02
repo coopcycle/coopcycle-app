@@ -299,7 +299,7 @@ PODS:
     - React
   - react-native-maps (0.26.1):
     - React
-  - react-native-netinfo (4.7.0):
+  - react-native-netinfo (5.3.3):
     - React
   - react-native-safe-area-context (0.6.4):
     - React
@@ -587,7 +587,7 @@ SPEC CHECKSUMS:
   react-native-camera: 705c7e9412436957b4dc894a1af61f43830787e2
   react-native-keep-awake: afad8a51dfef9fe9655a6344771be32c8596d774
   react-native-maps: 6e499eee4eabf422ba8b6f94e993cc768bf35153
-  react-native-netinfo: ddaca8bbb9e6e914b1a23787ccb879bc642931c9
+  react-native-netinfo: 8884d510fe67349940b4399c01db3e3591c922aa
   react-native-safe-area-context: 52342d2d80ea8faadd0ffa76d83b6051f20c5329
   React-RCTActionSheet: 600b4d10e3aea0913b5a92256d2719c0cdd26d76
   React-RCTAnimation: 791a87558389c80908ed06cc5dfc5e7920dfa360

@@ -5,7 +5,6 @@ import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 import KeepAwake from 'react-native-keep-awake'
 import moment from 'moment'
-import { NetworkConsumer } from 'react-native-offline'
 
 import DangerAlert from '../../components/DangerAlert'
 import Offline from '../../components/Offline'
@@ -84,22 +83,16 @@ class DashboardPage extends Component {
 
   render() {
 
-    return (
-      <NetworkConsumer>
-        {({ isConnected }) => {
-          if (isConnected) {
-            return this.renderDashboard()
-          }
+    if (this.props.isInternetReachable) {
+      return this.renderDashboard()
+    }
 
-          return (
-            <Container>
-              <Content contentContainerStyle={ styles.content }>
-                <Offline />
-              </Content>
-            </Container>
-          )
-        }}
-      </NetworkConsumer>
+    return (
+      <Container>
+        <Content contentContainerStyle={ styles.content }>
+          <Offline />
+        </Content>
+      </Container>
     )
   }
 }
@@ -124,6 +117,7 @@ function mapStateToProps(state) {
     date: state.restaurant.date,
     restaurant: state.restaurant.restaurant,
     specialOpeningHoursSpecification: selectSpecialOpeningHoursSpecification(state),
+    isInternetReachable: state.app.isInternetReachable,
   }
 }
 

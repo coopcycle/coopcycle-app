@@ -8,7 +8,6 @@ import coopcycleTheme from '../native-base-theme/variables/coopcycle'
 import { createSwitchNavigator, createAppContainer } from 'react-navigation'
 import { Provider } from 'react-redux'
 import { I18nextProvider } from 'react-i18next'
-import { NetworkProvider } from 'react-native-offline'
 import { PersistGate } from 'redux-persist/integration/react'
 
 import navigation from './navigation'
@@ -87,25 +86,23 @@ class App extends Component {
   render() {
 
     return (
-      <NetworkProvider>
-        <Provider store={ store }>
-          <PersistGate loading={ null } persistor={ persistor }>
-            <I18nextProvider i18n={ i18n }>
-              <StyleProvider style={ getTheme(coopcycleTheme) }>
-                <View style={{ flex: 1 }}>
-                  <Spinner />
-                  <RootNavigator
-                    uriPrefix={ prefix }
-                    ref={ ref => { NavigationHolder.setTopLevelNavigator(ref) } }
-                    onNavigationStateChange={ onNavigationStateChange } />
-                  <DropdownAlert ref={ ref => { DropdownHolder.setDropdown(ref) } } />
-                  <NotificationHandler />
-                </View>
-              </StyleProvider>
-            </I18nextProvider>
-          </PersistGate>
-        </Provider>
-      </NetworkProvider>
+      <Provider store={ store }>
+        <PersistGate loading={ null } persistor={ persistor }>
+          <I18nextProvider i18n={ i18n }>
+            <StyleProvider style={ getTheme(coopcycleTheme) }>
+              <View style={{ flex: 1 }}>
+                <Spinner />
+                <RootNavigator
+                  uriPrefix={ prefix }
+                  ref={ ref => { NavigationHolder.setTopLevelNavigator(ref) } }
+                  onNavigationStateChange={ onNavigationStateChange } />
+                <DropdownAlert ref={ ref => { DropdownHolder.setDropdown(ref) } } />
+                <NotificationHandler />
+              </View>
+            </StyleProvider>
+          </I18nextProvider>
+        </PersistGate>
+      </Provider>
     )
   }
 

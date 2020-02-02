@@ -27,6 +27,7 @@ import {
   SET_SELECT_SERVER_ERROR,
   CLEAR_SELECT_SERVER_ERROR,
   SET_SETTINGS,
+  SET_INTERNET_REACHABLE,
 } from './actions'
 
 const initialState = {
@@ -57,7 +58,8 @@ const initialState = {
     locale: 'fr',
     country: 'fr',
     latlng: '48.872178,2.331797',
-  }
+  },
+  isInternetReachable: true,
 }
 
 export default (state = initialState, action = {}) => {
@@ -230,6 +232,12 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         settings: action.payload,
+      }
+
+    case SET_INTERNET_REACHABLE:
+      return {
+        ...state,
+        isInternetReachable: action.payload,
       }
   }
 

@@ -10,7 +10,6 @@ import { withTranslation } from 'react-i18next'
 import { phonecall } from 'react-native-communications'
 import { showLocation } from 'react-native-map-link'
 import _ from 'lodash'
-import { NetworkConsumer } from 'react-native-offline'
 
 import { greenColor, redColor } from '../../styles/common'
 import { selectTasks } from '../../redux/Courier'
@@ -384,18 +383,8 @@ class Task extends Component {
           </Row>
           )}
         </Grid>
-        <NetworkConsumer>
-          {({ isConnected }) => {
-
-            if (isConnected) {
-              return this.renderSwipeOutButton()
-            }
-
-            return (
-              <OfflineNotice message={ this.props.t('OFFLINE') } />
-            )
-          }}
-        </NetworkConsumer>
+        { this.props.isInternetReachable && this.renderSwipeOutButton() }
+        { !this.props.isInternetReachable && <OfflineNotice message={ this.props.t('OFFLINE') } /> }
       </Container>
     )
   }
@@ -474,6 +463,7 @@ function mapStateToProps (state) {
 
   return {
     tasks: _.uniqBy(allTasks, '@id'),
+    isInternetReachable: state.app.isInternetReachable,
   }
 }
 
