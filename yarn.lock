@@ -1344,9 +1344,9 @@
     ws "^1.1.0"
 
 "@react-native-community/datetimepicker@^2.1.2":
-  version "2.1.2"
-  resolved "https://registry.yarnpkg.com/@react-native-community/datetimepicker/-/datetimepicker-2.1.2.tgz#2a60ccbfcd85fdebfb8c51e613d99c288c020fc0"
-  integrity sha512-lAatG0nbW9tSa0VH8nx7N+hz3gkKq+D1kpnktg0Xv5MCsoj3DCc+bCQaiyGxyU+ipkOAZDfQBbzXbSZzl+1iCg==
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@react-native-community/datetimepicker/-/datetimepicker-2.2.0.tgz#d8ca1bbd0a48d2c9006316a5bcb7abf9c1badd69"
+  integrity sha512-1rd2+kVr+7whxVn7aUDiHvnFjGwLP72uxDZCg1fqrvps+yVPhBpNS1m8E7e2YU4jyt/1a8q4+C95hClyyQClzQ==
   dependencies:
     invariant "^2.2.4"
 
