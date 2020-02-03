@@ -1,6 +1,7 @@
 env:
   global:
     - NODE_OPTIONS=--max-old-space-size=8192
+
 matrix:
   include:
   - language: node_js
@@ -10,71 +11,6 @@ matrix:
     script:
       - yarn lint
       - yarn test
-  - language: android
-    env: ANDROID_API_LEVEL=18
-    sudo: required
-    jdk: openjdk8
-    before_cache:
-      - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
-      - rm -rf $HOME/.gradle/caches/*/plugin-resolution/
-    cache:
-      directories:
-        - "$HOME/.cache/yarn"
-        - "$HOME/.gradle/caches/"
-        - "$HOME/.gradle/wrapper/"
-    android:
-      components:
-        - tools
-        - platform-tools
-        - build-tools-28.0.3
-        - android-$ANDROID_API_LEVEL
-        - extra-google-google_play_services
-    before_install:
-      - yes | sdkmanager "platforms;android-28"
-      - nvm install 12
-    before_script:
-      - npm install -g yarn
-      - yarn config set cache-folder "$HOME/.cache/yarn"
-      - yarn install
-      - cp google-services.json.dist android/app/google-services.json
-    script:
-      - cd android && ./gradlew clean && ./gradlew assembleDebug --stacktrace
-  # https://medium.com/@fawwazyusran/how-to-travis-ci-working-for-android-api-level-28-2fde7292813c
-  - language: android
-    env: ANDROID_API_LEVEL=28
-    sudo: required
-    jdk: openjdk8
-    before_cache:
-      - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
-      - rm -rf $HOME/.gradle/caches/*/plugin-resolution/
-    cache:
-      directories:
-        - "$HOME/.cache/yarn"
-        - "$HOME/.gradle/caches/"
-        - "$HOME/.gradle/wrapper/"
-    android:
-      components:
-        - tools
-        - platform-tools
-        - tools
-        - extra-android-m2repository
-        - extra-google-google_play_services
-      licenses:
-        - 'android-sdk-preview-license-52d11cd2'
-        - 'android-sdk-license-.+'
-        - 'google-gdk-license-.+'
-    before_install:
-      - touch $HOME/.android/repositories.cfg
-      - yes | sdkmanager "platforms;android-$ANDROID_API_LEVEL"
-      - yes | sdkmanager "build-tools;28.0.3"
-      - nvm install 12
-    before_script:
-      - npm install -g yarn
-      - yarn config set cache-folder "$HOME/.cache/yarn"
-      - yarn install
-      - cp google-services.json.dist android/app/google-services.json
-    script:
-      - cd android && ./gradlew clean && ./gradlew assembleDebug --stacktrace
 
 notifications:
   email: false

@@ -41,7 +41,7 @@ describe('Checkout', () => {
     await element(by.id('menuItem:0:1')).tap()
     await element(by.id('menuItem:0:2')).tap()
 
-    await waitFor(element(by.id('cartSubmit'))).toExist().withTimeout(5000)
+    await waitFor(element(by.id('cartSubmit'))).toBeVisible().withTimeout(5000)
     await element(by.id('cartSubmit')).tap()
 
     await expect(element(by.id('cartSummarySubmit'))).toBeVisible()
@@ -50,9 +50,12 @@ describe('Checkout', () => {
     await expect(element(by.id('loginUsername'))).toBeVisible()
     await expect(element(by.id('loginPassword'))).toBeVisible()
 
-    await element(by.id('loginUsername')).typeText('user_1')
-    await element(by.id('loginPassword')).typeText('user_1')
-    await element(by.id('loginSubmit')).tap()
+    await element(by.id('loginUsername')).typeText('user_1\n')
+    await element(by.id('loginPassword')).typeText('user_1\n')
+
+    try {
+      await element(by.id('loginSubmit')).tap()
+    } catch (e) {}
 
     await expect(element(by.id('checkoutTelephone'))).toBeVisible()
     await expect(element(by.id('moreInfosSubmit'))).toBeVisible()
@@ -68,7 +71,8 @@ describe('Checkout', () => {
 
     await element(by.id('creditCardNumber')).typeText('4242424242424242')
     await element(by.id('creditCardExpiry')).typeText('1221')
-    await element(by.id('creditCardCvc')).typeText('123')
+    // Add "\n" to make sure keyboard is hidden
+    await element(by.id('creditCardCvc')).typeText('123\n')
 
     await element(by.id('creditCardSubmit')).tap()
 

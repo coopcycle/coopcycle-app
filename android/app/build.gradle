@@ -180,9 +180,15 @@ android {
             signingConfig signingConfigs.debug
         }
         release {
-            minifyEnabled enableProguardInReleaseBuilds
-            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
-            signingConfig signingConfigs.release
+            if (System.getProperty('minifyEnabled', 'yes') == 'yes') {
+                minifyEnabled enableProguardInReleaseBuilds
+            }
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro', "${rootProject.projectDir}/../node_modules/detox/android/detox/proguard-rules-app.pro"
+            if (System.getProperty('useDebugCertificate', 'no') == 'yes') {
+                signingConfig signingConfigs.debug
+            } else {
+                signingConfig signingConfigs.release
+            }
         }
     }
     // applicationVariants are e.g. debug, release

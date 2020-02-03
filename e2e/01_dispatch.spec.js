@@ -7,9 +7,12 @@ describe('Dispatch', () => {
     await device.reloadReactNative()
 
     // https://github.com/wix/Detox/issues/1371
-    // await device.setLocation(48.856613, 2.352222);
-    const { stdout, stderr } = await exec("idb list-targets | grep -n 'Booted'");
-    await exec(`idb set-location --udid ${device._deviceId} 48.856613 2.352222`);
+    if (device.getPlatform() === 'ios') {
+      const { stdout, stderr } = await exec("idb list-targets | grep -n 'Booted'");
+      await exec(`idb set-location --udid ${device._deviceId} 48.856613 2.352222`);
+    } else {
+      await device.setLocation(48.856613, 2.352222);
+    }
   })
 
   it('should be able to create task', async () => {
@@ -45,7 +48,10 @@ describe('Dispatch', () => {
 
     await element(by.id('loginUsername')).typeText('bot_1')
     await element(by.id('loginPassword')).typeText('bot_1')
-    await element(by.id('loginSubmit')).tap()
+
+    try {
+      await element(by.id('loginSubmit')).tap()
+    } catch (e) {}
 
     await element(by.id('messengerTabList')).tap()
 

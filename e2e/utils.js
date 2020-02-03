@@ -6,8 +6,13 @@ export const connectToDemo = async () => {
   await expect(element(by.id('moreServerOptions'))).toBeVisible()
   await element(by.id('moreServerOptions')).tap()
 
-  await element(by.id('customServerURL')).typeText('demo.coopcycle.org')
-  await element(by.id('submitCustomServer')).tap()
+  await element(by.id('customServerURL')).typeText('demo.coopcycle.org\n')
+
+  try {
+    // We deliberately add "\n" to hide the keyboard
+    // The tap below shouldn't be necessary
+    await element(by.id('submitCustomServer')).tap()
+  } catch (e) {}
 
 }
 
@@ -17,9 +22,13 @@ export const authenticateWithCredentials = async (username, password) => {
   await element(by.id('menuBtn')).tap()
   await element(by.id('drawerAccountBtn')).tap()
 
-  await element(by.id('loginUsername')).typeText(username)
-  await element(by.id('loginPassword')).typeText(password)
-  await element(by.id('loginSubmit')).tap()
+  await element(by.id('loginUsername')).typeText(`${username}\n`)
+  await element(by.id('loginPassword')).typeText(`${password}\n`)
+
+  // As we are using "\n", the form may have been submitted yet
+  try {
+      await element(by.id('loginSubmit')).tap()
+  } catch (e) {}
 
 }
 
