@@ -5425,9 +5425,10 @@ growly@^1.3.0:
   resolved "https://registry.yarnpkg.com/growly/-/growly-1.3.0.tgz#f10748cbe76af964b7c96c93c6bcc28af120c081"
   integrity sha1-8QdIy+dq+WS3yWyTxrzCivEgwIE=
 
-"hammerjs@git+https://github.com/naver/hammer.js.git":
+"hammerjs@https://github.com/naver/hammer.js.git":
   version "2.0.17-snapshot"
-  resolved "git+https://github.com/naver/hammer.js.git#54bc698b25edd6e1b76ca975ebaced5ce0467d51"
+  uid "54bc698b25edd6e1b76ca975ebaced5ce0467d51"
+  resolved "https://github.com/naver/hammer.js.git#54bc698b25edd6e1b76ca975ebaced5ce0467d51"
   dependencies:
     "@types/hammerjs" "^2.0.36"
 
@@ -8828,9 +8829,9 @@ react-navigation-drawer@^2.3.3:
   integrity sha512-d/rA8Slqv7HoMfONKVDBQUrRF7YQH796Gzal/KOhaY4VOwUUqIwfxMRJ3WrsdL2OkDPixtkXJE2Fz6KAj658uA==
 
 react-navigation-stack@^2.0.11:
-  version "2.0.16"
-  resolved "https://registry.yarnpkg.com/react-navigation-stack/-/react-navigation-stack-2.0.16.tgz#083ee644eeb600782222ff1d9ef6df939120ec8a"
-  integrity sha512-l6Fqvz0tvs7i9+KHZDW9hdQbzzgE78bq85pLALllyiHBfz/aFAaoNG4RUWNSen+54uU4xLC5uioowxTJPRLQWQ==
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/react-navigation-stack/-/react-navigation-stack-2.1.0.tgz#3cf2d9ce64d3344db2b1def8ba226ca6a68783d5"
+  integrity sha512-IKv1Or7HyWvMZM6Qmc4Owz+l9nn3Jmmm+yDOeEdhGly+yGFKVKsxXKVlpmTH7L+xHCTVPb6dc/p4CisGAvdtQw==
   dependencies:
     color "^3.1.2"
     react-native-iphone-x-helper "^1.2.1"
