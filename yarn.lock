@@ -8542,11 +8542,6 @@ react-native-ble-manager@^7.0.0:
   resolved "https://registry.yarnpkg.com/react-native-ble-manager/-/react-native-ble-manager-7.1.1.tgz#3627fb3a7fb013b69842f82cd779620096f31541"
   integrity sha512-acY7F1p9o5TrCt2lN5ZCD+1ekZZrq6JjLcZ57HIIdKjbwrRmjAnY3QuuzWrMdIo9Y1PeG/2b/fhwcZpb1yBOFA==
 
-react-native-cache-store@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/react-native-cache-store/-/react-native-cache-store-1.0.2.tgz#324558c9fab7cd98efc975ada00ce6e1533737e1"
-  integrity sha1-MkVYyfq3zZjvyXWtoAzm4VM3N+E=
-
 react-native-calendars@^1.212.0:
   version "1.259.0"
   resolved "https://registry.yarnpkg.com/react-native-calendars/-/react-native-calendars-1.259.0.tgz#594749ae1f852f58ca5826bf9766e9e4aeb28e82"

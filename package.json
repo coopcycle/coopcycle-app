@@ -40,7 +40,6 @@
     "react-native": "0.61.5",
     "react-native-autocomplete-input": "^4.1.0",
     "react-native-ble-manager": "^7.0.0",
-    "react-native-cache-store": "^1.0.2",
     "react-native-calendars": "^1.212.0",
     "react-native-camera": "^3.6.0",
     "react-native-communications": "^2.2.1",
