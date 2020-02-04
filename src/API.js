@@ -37,6 +37,8 @@ function Client(httpBaseURL, options = {}) {
     baseURL: httpBaseURL,
   })
 
+  this.axios.defaults.timeout = 30000;
+
   if (options.onCredentialsUpdated) {
     this.onCredentialsUpdated = options.onCredentialsUpdated
   } else {

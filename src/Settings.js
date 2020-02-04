@@ -19,7 +19,7 @@ class Settings {
         return reject('baseURL is undefined')
       }
 
-      return axios.get(`${baseURL}/api/settings`)
+      return axios.get(`${baseURL}/api/settings`, { timeout: 10000 })
         .then(res => {
           AsyncStorage.setItem('@Settings', JSON.stringify(res.data))
           resolve(Object.assign(defaultSettings, res.data))
