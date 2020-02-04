@@ -49,8 +49,8 @@ export default ({ getState, dispatch }) => {
       if (selectIsAuthenticated(state) && state.app.user && state.app.user.hasRole('ROLE_COURIER')) {
 
         BackgroundGeolocation.configure({
-          url: state.app.httpClient.getBaseURL() + '/api/me/location',
-          syncUrl: state.app.httpClient.getBaseURL() + '/api/me/location',
+          url: `${state.app.baseURL}/api/me/location`,
+          syncUrl: `${state.app.baseURL}/api/me/location`,
           httpHeaders: {
             'Authorization': `Bearer ${state.app.user.token}`,
             'Content-Type': 'application/ld+json',
