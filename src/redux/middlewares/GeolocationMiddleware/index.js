@@ -52,7 +52,7 @@ export default ({ getState, dispatch }) => {
           url: state.app.httpClient.getBaseURL() + '/api/me/location',
           syncUrl: state.app.httpClient.getBaseURL() + '/api/me/location',
           httpHeaders: {
-            'Authorization': `Bearer ${state.app.httpClient.getToken()}`,
+            'Authorization': `Bearer ${state.app.user.token}`,
             'Content-Type': 'application/ld+json',
           },
           postTemplate: {
