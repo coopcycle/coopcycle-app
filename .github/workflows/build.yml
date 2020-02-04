@@ -82,7 +82,6 @@ jobs:
             node node_modules/.bin/detox test -c android.att.release --device-name=emulator-5554 --loglevel trace --take-screenshots all
       - name: Upload screenshots artifacts
         uses: actions/upload-artifact@v1
-        if: failure()
         with:
           name: detox-screenshots-android
           path: artifacts
