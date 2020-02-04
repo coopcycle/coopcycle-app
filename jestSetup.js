@@ -33,6 +33,13 @@ jest.mock('react-native-firebase', () => ({
   })
 }))
 
+jest.mock('@mauron85/react-native-background-geolocation', () => ({
+  configure: jest.fn(),
+  removeAllListeners: jest.fn(),
+  on: jest.fn(),
+  start: jest.fn(),
+}))
+
 const fakeNavigator = {
   dispatch: (action) => {}
 }
