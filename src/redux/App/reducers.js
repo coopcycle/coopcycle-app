@@ -8,8 +8,8 @@ import {
   SET_USER,
   SET_CURRENT_ROUTE,
   SET_LOADING,
-  STORE_REMOTE_PUSH_TOKEN,
-  SAVE_REMOTE_PUSH_TOKEN,
+  REGISTER_PUSH_NOTIFICATION_TOKEN,
+  SAVE_PUSH_NOTIFICATION_TOKEN_SUCCESS,
   PUSH_NOTIFICATION,
   CLEAR_NOTIFICATIONS,
   AUTHENTICATION_REQUEST,
@@ -36,8 +36,7 @@ const initialState = {
   httpClient: null,
   user: null,
   currentRoute: null,
-  remotePushTokenStored: false,
-  remotePushTokenSaved: false,
+  pushNotificationToken: null,
   loading: false,
   notifications: [],
   lastAuthenticationError: null,
@@ -89,17 +88,7 @@ export default (state = initialState, action = {}) => {
         ...state,
         loading: action.payload,
       }
-    case STORE_REMOTE_PUSH_TOKEN:
-      return {
-        ...state,
-        remotePushTokenStored: true,
-      }
-    case SAVE_REMOTE_PUSH_TOKEN:
-      return {
-        ...state,
-        remotePushTokenStored: false,
-        remotePushTokenSaved: true,
-      }
+
     case CONNECTED:
     case RECONNECTED:
       return {
@@ -238,6 +227,18 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         isInternetReachable: action.payload,
+      }
+
+    case REGISTER_PUSH_NOTIFICATION_TOKEN:
+      return {
+        ...state,
+        pushNotificationToken: action.payload,
+      }
+
+    case SAVE_PUSH_NOTIFICATION_TOKEN_SUCCESS:
+      return {
+        ...state,
+        pushNotificationToken: null,
       }
   }
 

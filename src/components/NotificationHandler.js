@@ -11,7 +11,7 @@ import { NavigationActions, StackActions } from 'react-navigation'
 import PushNotification from '../notifications'
 import NavigationHolder from '../NavigationHolder'
 
-import { setRemotePushToken, clearNotifications, pushNotification } from '../redux/App/actions'
+import { clearNotifications, pushNotification, registerPushNotificationToken } from '../redux/App/actions'
 import { loadTasks } from '../redux/Courier'
 import { loadOrderAndNavigate, loadOrderAndPushNotification } from '../redux/Restaurant/actions'
 
@@ -86,7 +86,7 @@ class NotificationHandler extends Component {
     this._loadSound()
 
     PushNotification.configure({
-      onRegister: token => this.props.setRemotePushToken(token),
+      onRegister: token => this.props.registerPushNotificationToken(token),
       onNotification: notification => {
         const { event } = notification.data
 
@@ -280,7 +280,7 @@ function mapDispatchToProps (dispatch) {
     loadOrderAndNavigate: order => dispatch(loadOrderAndNavigate(order)),
     loadOrderAndPushNotification: order => dispatch(loadOrderAndPushNotification(order)),
     loadTasks: (date) => dispatch(loadTasks(date)),
-    setRemotePushToken: token => dispatch(setRemotePushToken(token)),
+    registerPushNotificationToken: token => dispatch(registerPushNotificationToken(token)),
     clearNotifications: () => dispatch(clearNotifications()),
     pushNotification: (event, params) => dispatch(pushNotification(event, params)),
   }

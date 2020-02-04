@@ -1,6 +1,5 @@
 import { createAction } from 'redux-actions'
 import moment from 'moment'
-import { Platform } from 'react-native'
 import AsyncStorage from '@react-native-community/async-storage';
 import { NavigationActions } from 'react-navigation'
 import firebase from 'react-native-firebase'
@@ -19,8 +18,10 @@ export const SET_BASE_URL = 'SET_BASE_URL'
 export const SET_HTTP_CLIENT = 'SET_HTTP_CLIENT'
 export const SET_USER = 'SET_USER'
 export const SET_CURRENT_ROUTE = 'SET_CURRENT_ROUTE'
-export const STORE_REMOTE_PUSH_TOKEN = 'STORE_REMOTE_PUSH_TOKEN'
-export const SAVE_REMOTE_PUSH_TOKEN = 'SAVE_REMOTE_PUSH_TOKEN'
+
+export const REGISTER_PUSH_NOTIFICATION_TOKEN = '@app/REGISTER_PUSH_NOTIFICATION_TOKEN'
+export const SAVE_PUSH_NOTIFICATION_TOKEN_SUCCESS = '@app/SAVE_PUSH_NOTIFICATION_TOKEN_SUCCESS'
+
 export const LOGIN = '@app/LOGIN'
 export const LOGOUT = '@app/LOGOUT'
 export const SET_LOADING = '@app/SET_LOADING'
@@ -80,8 +81,8 @@ const _clearSelectServerError = createAction(CLEAR_SELECT_SERVER_ERROR)
 
 const _resumeCheckoutAfterActivation = createAction(RESUME_CHECKOUT_AFTER_ACTIVATION)
 
-const _storeRemotePushToken = createAction(STORE_REMOTE_PUSH_TOKEN)
-const _saveRemotePushToken = createAction(SAVE_REMOTE_PUSH_TOKEN)
+export const registerPushNotificationToken = createAction(REGISTER_PUSH_NOTIFICATION_TOKEN)
+export const savePushNotificationTokenSuccess = createAction(SAVE_PUSH_NOTIFICATION_TOKEN_SUCCESS)
 
 const _loadMyStoresSuccess = createAction(LOAD_MY_STORES_SUCCESS)
 
@@ -210,11 +211,8 @@ export function bootstrap(baseURL, user) {
     const settings = await Settings.synchronize(baseURL)
 
     dispatch(setSettings(settings))
-
     dispatch(_setUser(user))
     dispatch(setBaseURL(baseURL))
-
-    saveRemotePushToken(dispatch, getState)
 
     setTimeout(() => navigateToHome(dispatch, getState), 250)
   }
@@ -225,23 +223,6 @@ export function setCurrentRoute(routeName) {
   return (dispatch, getState) => {
     dispatch(_setCurrentRoute(routeName))
     firebase.analytics().setCurrentScreen(routeName)
-  }
-}
-
-export function setRemotePushToken(remotePushToken) {
-  return function (dispatch, getState) {
-    // As remote push notifications are configured very early,
-    // most of the time the user won't be authenticated
-    // (for example, when app is launched for the first time)
-    // We store the token for later, when the user authenticates
-    try {
-      AsyncStorage
-        .setItem('remotePushToken', remotePushToken)
-        .then(() => dispatch(_storeRemotePushToken()))
-        .catch(e => console.log(e))
-    } catch (e) {
-      console.log(e)
-    }
   }
 }
 
@@ -438,41 +419,5 @@ export function resetServer() {
 }
 
 function onAuthenticationSuccess(user, dispatch, getState) {
-
   dispatch(authenticationSuccess())
-
-  setTimeout(() => {
-    saveRemotePushToken(dispatch, getState)
-  }, 0)
-}
-
-function saveRemotePushToken(dispatch, getState) {
-
-  const { app } = getState()
-  const { httpClient, user } = app
-
-  try {
-    AsyncStorage.getItem('remotePushToken')
-      .then((remotePushToken, error) => {
-        if (error) {
-          console.log(error)
-          return
-        }
-        if (remotePushToken) {
-          if (user.isAuthenticated()) {
-            postRemotePushToken(httpClient, remotePushToken)
-              .then(() => AsyncStorage.removeItem('remotePushToken'))
-              .then(() => dispatch(_saveRemotePushToken()))
-              .catch(e => console.log(e))
-          }
-        }
-      })
-  } catch (e) {
-    console.log(e)
-  }
-}
-
-function postRemotePushToken(httpClient, token) {
-  return httpClient
-    .post('/api/me/remote_push_tokens', { platform: Platform.OS, token })
 }
