@@ -12,7 +12,7 @@ import PushNotification from '../notifications'
 import NavigationHolder from '../NavigationHolder'
 
 import { clearNotifications, pushNotification, registerPushNotificationToken } from '../redux/App/actions'
-import { loadTasks } from '../redux/Courier'
+import {loadTasks, selectTasksChangedAlertSound} from '../redux/Courier'
 import { loadOrderAndNavigate, loadOrderAndPushNotification } from '../redux/Restaurant/actions'
 
 // Make sure sound will play even when device is in silent mode
@@ -71,10 +71,20 @@ class NotificationHandler extends Component {
     }
   }
 
+  includesNotification(notifications, predicate) {
+    return notifications.findIndex(predicate) !== -1
+  }
+
   componentDidUpdate(prevProps) {
     if (this.props.notifications !== prevProps.notifications) {
       if (this.props.notifications.length > 0) {
-        this._startSound()
+        if (this.includesNotification(this.props.notifications, n => n.event === 'order:created')) {
+          this._startSound()
+        } else if (this.includesNotification(this.props.notifications,n => n.event === 'tasks:changed')) {
+          if (this.props.tasksChangedAlertSound) {
+            this._startSound()
+          }
+        }
       } else {
         this._stopSound()
       }
@@ -128,10 +138,8 @@ class NotificationHandler extends Component {
   renderItem(notification) {
     switch (notification.event) {
       case 'order:created':
-
         return this.renderOrderCreated(notification.params.order)
       case 'tasks:changed':
-
         return this.renderTasksChanged(notification.params.date)
     }
   }
@@ -271,6 +279,7 @@ function mapStateToProps(state) {
     currentRoute: state.app.currentRoute,
     isModalVisible: state.app.notifications.length > 0,
     notifications: state.app.notifications,
+    tasksChangedAlertSound: selectTasksChangedAlertSound(state),
   }
 }
 

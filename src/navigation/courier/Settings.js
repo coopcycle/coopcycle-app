@@ -10,10 +10,12 @@ import { withTranslation } from 'react-i18next'
 import {
   filterTasks,
   clearTasksFilter,
+  setTasksChangedAlertSound,
   setKeepAwake,
   setSignatureScreenFirst,
   selectAreDoneTasksHidden,
   selectAreFailedTasksHidden,
+  selectTasksChangedAlertSound,
   selectTagNames,
   selectKeepAwake,
   selectSignatureScreenFirst,
@@ -24,8 +26,10 @@ const Settings = ({
     navigation,
     areDoneTasksHidden,
     areFailedTasksHidden,
+    tasksChangedAlertSound,
     toggleDisplayDone,
     toggleDisplayFailed,
+    toggleTasksChangedAlertSound,
     setKeepAwakeDisabled,
     setSignatureScreenFirst,
     tags,
@@ -65,7 +69,7 @@ const Settings = ({
                 value={ areFailedTasksHidden } />
             </Right>
           </ListItem>
-          <ListItem icon onPress={ () => navigation.navigate('CourierSettingsTags') } last>
+          <ListItem icon onPress={ () => navigation.navigate('CourierSettingsTags') }>
             <Left>
               <Icon active name="pricetag" />
             </Left>
@@ -74,6 +78,19 @@ const Settings = ({
             </Body>
             <Right>
               <Icon active name="arrow-forward" />
+            </Right>
+          </ListItem>
+          <ListItem icon last>
+            <Left>
+              <Icon Icon type="FontAwesome" name="volume-up" style={{fontSize: 24}} />
+            </Left>
+            <Body>
+              <Text>{ t('TASKS_CHANGED_ALERT_SOUND') }</Text>
+            </Body>
+            <Right>
+              <Switch
+                onValueChange={ toggleTasksChangedAlertSound }
+                value={ tasksChangedAlertSound } />
             </Right>
           </ListItem>
           <ListItem itemDivider>
@@ -115,6 +132,7 @@ function mapStateToProps(state) {
     tags: selectTagNames(state),
     areDoneTasksHidden: selectAreDoneTasksHidden(state),
     areFailedTasksHidden: selectAreFailedTasksHidden(state),
+    tasksChangedAlertSound: selectTasksChangedAlertSound(state),
     isKeepAwakeDisabled: !selectKeepAwake(state),
     signatureScreenFirst: selectSignatureScreenFirst(state),
   }
@@ -124,6 +142,7 @@ function mapDispatchToProps(dispatch) {
   return {
     toggleDisplayDone: (hidden) => dispatch(hidden ? clearTasksFilter({ status: 'DONE' }) : filterTasks({ status: 'DONE' })),
     toggleDisplayFailed: (hidden) => dispatch(hidden ? clearTasksFilter({ status: 'FAILED' }) : filterTasks({ status: 'FAILED' })),
+    toggleTasksChangedAlertSound: (enabled) => dispatch(setTasksChangedAlertSound(enabled)),
     setKeepAwakeDisabled: (disabled) => dispatch(setKeepAwake(!disabled)),
     setSignatureScreenFirst: (first) => dispatch(setSignatureScreenFirst(first)),
   }

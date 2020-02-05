@@ -1,10 +1,12 @@
 import { Alert } from 'react-native'
 import { createAction } from 'redux-actions'
 import RNFetchBlob from 'rn-fetch-blob'
+import firebase from 'react-native-firebase'
 
 import NavigationHolder from '../../NavigationHolder'
 import i18n from '../../i18n'
 import { selectSignatures, selectPictures } from './taskSelectors'
+import {event} from '../../Analytics'
 
 /*
  * Action Types
@@ -28,6 +30,7 @@ export const DELETE_PICTURE = 'DELETE_PICTURE'
 export const ADD_TASK_FILTER = 'ADD_TASK_FILTER'
 export const CLEAR_TASK_FILTER = 'CLEAR_TASK_FILTER'
 export const SET_TASK_FILTER = 'SET_TASK_FILTER'
+export const SET_TASKS_CHANGED_ALERT_SOUND = 'SET_TASKS_CHANGED_ALERT_SOUND'
 export const SET_KEEP_AWAKE = 'SET_KEEP_AWAKE'
 export const SET_SIGNATURE_SCREEN_FIRST = 'SET_SIGNATURE_SCREEN_FIRST'
 
@@ -53,6 +56,7 @@ export const deletePictureAt = createAction(DELETE_PICTURE)
 export const filterTasks = createAction(ADD_TASK_FILTER)
 export const clearTasksFilter = createAction(CLEAR_TASK_FILTER)
 export const setTasksFilter = createAction(SET_TASK_FILTER)
+const _setTasksChangedAlertSound = createAction(SET_TASKS_CHANGED_ALERT_SOUND)
 export const setSignatureScreenFirst = createAction(SET_SIGNATURE_SCREEN_FIRST)
 export const setKeepAwake = createAction(SET_KEEP_AWAKE)
 
@@ -213,5 +217,11 @@ function uploadTaskImage(httpClient, base64) {
       })
       .catch(e => reject(e))
   })
+}
 
+export function setTasksChangedAlertSound(enabled) {
+  return (dispatch, getState) => {
+    dispatch(_setTasksChangedAlertSound(enabled))
+    firebase.analytics().logEvent(event.courier.tasksChangedAlertSound, {enabled: enabled})
+  }
 }
