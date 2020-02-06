@@ -8567,9 +8567,9 @@ react-native-calendars@^1.212.0:
     xdate "^0.8.0"
 
 react-native-camera@^3.6.0:
-  version "3.16.0"
-  resolved "https://registry.yarnpkg.com/react-native-camera/-/react-native-camera-3.16.0.tgz#3c98876a282793f6543cd93a7e368bdc05916e8a"
-  integrity sha512-yIPjWf1AWzezDxtG5DTCVgcNtTZhceRdAEJIv+OiHlrl2S+Vzd531lICTErgywVdCbD2TDuuy0mjGULm9ipdOA==
+  version "3.17.0"
+  resolved "https://registry.yarnpkg.com/react-native-camera/-/react-native-camera-3.17.0.tgz#41b12b74ac9e806e86a6efb2a19319b40323f196"
+  integrity sha512-Gd9E5XHrEScYPsugO4sYBYw+RnFg+M1kbjvsCE3B/pk+4Fk01tNY14RYoghYsimWWsQVgYNqOOJG5f1fQ3BUeg==
   dependencies:
     prop-types "^15.6.2"
 
