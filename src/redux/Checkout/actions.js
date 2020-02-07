@@ -51,7 +51,6 @@ export const SET_ADDRESS_MODAL_HIDDEN = '@checkout/SET_ADDRESS_MODAL_HIDDEN'
  * Action Creators
  */
 
-export const setDate = createAction(SET_DATE)
 export const clear = createAction(CLEAR)
 export const setAddressOK = createAction(SET_ADDRESS_OK)
 export const setTiming = createAction(SET_TIMING)
@@ -616,6 +615,31 @@ export function updateCart(payload, cb) {
         dispatch(updateCartSuccess(res))
         dispatch(checkoutSuccess())
         cb()
+      })
+      .catch(e => dispatch(checkoutFailure(e)))
+  }
+}
+
+export function setDate(date, cb) {
+
+  return (dispatch, getState) => {
+
+    const httpClient = createHttpClient(getState())
+
+    const { cart } = getState().checkout
+
+    dispatch(checkoutRequest())
+
+    httpClient
+      .put(cart['@id'], {
+        shippedAt: date
+      })
+      .then(res => {
+        dispatch(updateCartSuccess(res))
+        setTimeout(() => {
+          dispatch(checkoutSuccess())
+          _.isFunction(cb) && cb()
+        }, 250)
       })
       .catch(e => dispatch(checkoutFailure(e)))
   }

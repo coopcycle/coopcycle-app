@@ -8,63 +8,72 @@ import _ from 'lodash'
 import moment from 'moment'
 
 import { setDate } from '../../redux/Checkout/actions'
+import FooterButton from './components/FooterButton'
 
 class ShippingDate extends Component {
 
-  _onDateChange(itemValue, itemIndex) {
+  constructor(props) {
+    super(props)
 
-    const { availabilities, date } = this.props
+    const date = props.dates[0]
 
-    let value = _.find(availabilities, item =>
-      moment(item).format('LL') === itemValue && moment(item).format('LT') === moment(date).format('LT'))
-    if (!value) {
-      value = _.find(availabilities, item => moment(item).format('LL') === itemValue)
+    this.state = {
+      date,
+      time: props.timesByDate[date][0],
+      times: [],
     }
+  }
 
-    this.props.setDate(value)
+  _onDateChange(itemValue, itemIndex) {
+    this.setState({
+      date: itemValue,
+      time: this.props.timesByDate[itemValue][0],
+    })
   }
 
   _onTimeChange(itemValue, itemIndex) {
+    this.setState({ time: itemValue })
+  }
 
-    const { hash } = this.props
-    const key = _.findKey(hash, item => item[1] === itemValue)
+  _resolveDate(date, time) {
+    return _.findKey(this.props.hash, item => item[0] === date && item[1] === time)
+  }
 
-    this.props.setDate(key)
+  _onSubmit() {
+    const date = this._resolveDate(this.state.date, this.state.time)
+    this.props.setDate(date, () => {
+      this.props.navigation.goBack()
+    })
   }
 
   render() {
 
-    const { availabilities, date } = this.props
+    const { availabilities, dates } = this.props
 
-    const selectedDate = moment(date).format('LL')
-    const selectedTime = moment(date).format('LT')
-
-    const groupBy = _.groupBy(availabilities, item => moment(item).format('LL'))
-
-    const dates = _.keys(groupBy)
-    const times = _.map(groupBy[selectedDate], item => moment(item).format('LT'))
+    const date = this._resolveDate(this.state.date, this.state.time)
+    const times = this.props.timesByDate[this.state.date]
 
     return (
       <View style={{ flex: 1 }}>
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-          <Text>{ moment(date).format('LL LT') }</Text>
+          <Text>{ moment.parseZone(date).format('LL LT') }</Text>
         </View>
         <View style={{ flex: 3 }}>
           <Grid>
             <Row>
               <Col>
                 <Picker
-                  selectedValue={ selectedDate }
+                  selectedValue={ this.state.date }
                   style={{ height: 50 }}
                   onValueChange={ this._onDateChange.bind(this) }>
-                  { dates.map(date => (
-                    <Picker.Item key={ date } label={ date } value={ date } />
+                  { dates.map(d => (
+                    <Picker.Item key={ d } label={ d } value={ d } />
                   )) }
                 </Picker>
               </Col>
               <Col>
                 <Picker
-                  selectedValue={ selectedTime }
+                  selectedValue={ this.state.time }
                   style={{ height: 50 }}
                   onValueChange={ this._onTimeChange.bind(this) }>
                   { times.map(time => (
@@ -75,13 +84,9 @@ class ShippingDate extends Component {
             </Row>
           </Grid>
         </View>
-        <Footer>
-          <FooterTab>
-            <Button full onPress={ () => this.props.navigation.goBack() }>
-              <Text>{ this.props.t('SUBMIT') }</Text>
-            </Button>
-          </FooterTab>
-        </Footer>
+        <FooterButton
+          text={ this.props.t('SUBMIT') }
+          onPress={ () => this._onSubmit() } />
       </View>
     )
   }
@@ -92,12 +97,17 @@ function mapStateToProps(state) {
   const availabilities = state.checkout.timing.choices
 
   const hash = _.zipObject(availabilities, _.map(availabilities, item => ([
-    moment(item).format('LL'),
-    moment(item).format('LT'),
+    moment.parseZone(item).format('LL'),
+    moment.parseZone(item).format('LT'),
   ])))
+
+  const groupBy = _.groupBy(availabilities, item => moment.parseZone(item).format('LL'))
+  const timesByDate = _.mapValues(groupBy, items => _.map(items, item => moment.parseZone(item).format('LT')))
 
   return {
     date: state.checkout.date ? state.checkout.date : state.checkout.timing.asap,
+    dates: _.keys(groupBy),
+    timesByDate,
     availabilities,
     hash,
   }
@@ -106,7 +116,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
 
   return {
-    setDate: date => dispatch(setDate(date)),
+    setDate: (date, cb) => dispatch(setDate(date, cb)),
   }
 }
 
