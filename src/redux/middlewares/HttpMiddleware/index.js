@@ -1,4 +1,5 @@
 import { createAction } from 'redux-actions'
+import BackgroundGeolocation from '@mauron85/react-native-background-geolocation'
 
 import API from '../../../API'
 import AppUser from '../../../AppUser'
@@ -58,6 +59,13 @@ export default ({ getState, dispatch }) => {
             )
 
             dispatch(setUser(user))
+
+            BackgroundGeolocation.configure({
+              httpHeaders: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/ld+json',
+              },
+            })
 
             user.save()
               .then(() => console.log('Credentials saved!'))
