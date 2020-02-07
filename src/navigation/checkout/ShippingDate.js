@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Picker, View } from 'react-native'
+import { Picker, TouchableOpacity, View } from 'react-native'
 import { Footer, FooterTab, Text, Button } from 'native-base'
 import { Col, Row, Grid } from 'react-native-easy-grid'
 import { withTranslation } from 'react-i18next'
@@ -8,6 +8,7 @@ import _ from 'lodash'
 import moment from 'moment'
 
 import { setDate } from '../../redux/Checkout/actions'
+import { selectShippingDate, selectIsShippingAsap } from '../../redux/Checkout/selectors'
 import FooterButton from './components/FooterButton'
 
 class ShippingDate extends Component {
@@ -15,12 +16,13 @@ class ShippingDate extends Component {
   constructor(props) {
     super(props)
 
-    const date = props.dates[0]
+    const defaultDate = props.dates[0]
+    const date = props.isAsap ? defaultDate : moment.parseZone(props.shippingDate).format('LL')
+    const time = props.isAsap ? props.timesByDate[defaultDate][0] : moment.parseZone(props.shippingDate).format('LT')
 
     this.state = {
       date,
-      time: props.timesByDate[date][0],
-      times: [],
+      time,
     }
   }
 
@@ -58,32 +60,36 @@ class ShippingDate extends Component {
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
           <Text>{ moment.parseZone(date).format('LL LT') }</Text>
         </View>
-        <View style={{ flex: 3 }}>
-          <Grid>
-            <Row>
-              <Col>
-                <Picker
-                  selectedValue={ this.state.date }
-                  style={{ height: 50 }}
-                  onValueChange={ this._onDateChange.bind(this) }>
-                  { dates.map(d => (
-                    <Picker.Item key={ d } label={ d } value={ d } />
-                  )) }
-                </Picker>
-              </Col>
-              <Col>
-                <Picker
-                  selectedValue={ this.state.time }
-                  style={{ height: 50 }}
-                  onValueChange={ this._onTimeChange.bind(this) }>
-                  { times.map(time => (
-                    <Picker.Item key={ time } label={ time } value={ time } />
-                  )) }
-                </Picker>
-              </Col>
-            </Row>
-          </Grid>
+        <View style={{ flex: 1, flexDirection: 'row' }}>
+          <View style={{ flex: 1 }}>
+            <Picker
+              selectedValue={ this.state.date }
+              style={{ height: 50 }}
+              onValueChange={ this._onDateChange.bind(this) }>
+              { dates.map(d => (
+                <Picker.Item key={ d } label={ d } value={ d } />
+              )) }
+            </Picker>
+          </View>
+          <View style={{ flex: 1 }}>
+            <Picker
+              selectedValue={ this.state.time }
+              style={{ height: 50 }}
+              onValueChange={ this._onTimeChange.bind(this) }>
+              { times.map(time => (
+                <Picker.Item key={ time } label={ time } value={ time } />
+              )) }
+            </Picker>
+          </View>
         </View>
+        { !this.props.isAsap && (
+          <View style={{ flex: 2, justifyContent: 'center', alignItems: 'center' }}>
+            <TouchableOpacity>
+              <Text>{ this.props.t('DELIVERY_ASAP') }</Text>
+            </TouchableOpacity>
+          </View>
+        ) }
+
         <FooterButton
           text={ this.props.t('SUBMIT') }
           onPress={ () => this._onSubmit() } />
@@ -110,6 +116,8 @@ function mapStateToProps(state) {
     timesByDate,
     availabilities,
     hash,
+    isAsap: selectIsShippingAsap(state),
+    shippingDate: selectShippingDate(state),
   }
 }
 

@@ -23,7 +23,7 @@ import DangerAlert from '../../components/DangerAlert'
 import { formatPrice } from '../../utils/formatting'
 import i18n from '../../i18n'
 import { incrementItem, decrementItem, removeItem, validate, showAddressModal, hideAddressModal } from '../../redux/Checkout/actions'
-import { selectDeliveryTotal } from '../../redux/Checkout/selectors'
+import { selectDeliveryTotal, selectShippingDate, selectIsShippingAsap } from '../../redux/Checkout/selectors'
 import { selectIsAuthenticated } from '../../redux/App/selectors'
 import CartFooter from './components/CartFooter'
 import AddressModal from './components/AddressModal'
@@ -281,12 +281,23 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state, ownProps) {
 
+  const { timing } = state.checkout
+
   let timeAsText = i18n.t('LOADING')
-  if (state.checkout.timing.today && state.checkout.timing.fast) {
-    timeAsText = i18n.t('CART_DELIVERY_TIME_DIFF', { diff: state.checkout.timing.diff })
+
+  if (selectIsShippingAsap(state)) {
+    if (timing.today && timing.fast) {
+      timeAsText = i18n.t('CART_DELIVERY_TIME_DIFF', { diff: timing.diff })
+    } else {
+      let fromNow = moment
+        .parseZone(timing.asap)
+        .calendar(null, { sameElse: 'LLLL' }).toLowerCase()
+      timeAsText = i18n.t('CART_DELIVERY_TIME', { fromNow })
+    }
   } else {
-    const time = state.checkout.date ? state.checkout.date : state.checkout.timing.asap
-    let fromNow = moment(time).calendar(null, { sameElse: 'LLLL' }).toLowerCase()
+    let fromNow = moment
+      .parseZone(selectShippingDate(state))
+      .calendar(null, { sameElse: 'LLLL' }).toLowerCase()
     timeAsText = i18n.t('CART_DELIVERY_TIME', { fromNow })
   }
 

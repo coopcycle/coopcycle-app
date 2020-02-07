@@ -6,7 +6,7 @@ export const selectDeliveryTotal = createSelector(
   (cart) => {
 
     if (!cart || !cart.adjustments) {
-        return 0
+      return 0
     }
 
     if (!cart.adjustments.hasOwnProperty('delivery')) {
@@ -19,3 +19,15 @@ export const selectDeliveryTotal = createSelector(
   }
 )
 
+export const selectShippingDate = createSelector(
+  state => state.checkout.cart,
+  state => state.checkout.timing,
+  (cart, timing) => {
+    return cart.shippedAt ? cart.shippedAt : timing.asap
+  }
+)
+
+export const selectIsShippingAsap = createSelector(
+  state => state.checkout.cart,
+  (cart) => (!!cart.shippedAt) !== true
+)
