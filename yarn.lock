@@ -6755,10 +6755,10 @@ levn@^0.3.0, levn@~0.3.0:
     prelude-ls "~1.1.2"
     type-check "~0.3.2"
 
-libphonenumber-js@^1.7.25:
-  version "1.7.37"
-  resolved "https://registry.yarnpkg.com/libphonenumber-js/-/libphonenumber-js-1.7.37.tgz#bb54cf822e951688999220680630514cb9cc8412"
-  integrity sha512-g4H2Q5Inqqv4idVmzhfdGpw58N7mJFaRyyvOZZGWt1wzvnhPH16WI2gRM0irP4p81iVZhClcVvDUgmuaMIc5Hw==
+libphonenumber-js@^1.7.38:
+  version "1.7.38"
+  resolved "https://registry.yarnpkg.com/libphonenumber-js/-/libphonenumber-js-1.7.38.tgz#5f59298859f146eaf795061ae220f88371814971"
+  integrity sha512-3NMPjWl15E51vWtXYdhVXo+DtZcR35OmXfJQWcwQ28XEbpSWOnQXbkaIZq8RmMv5jiY4fMQxBY7MUXvioApOHg==
   dependencies:
     minimist "^1.2.0"
     xml2js "^0.4.17"
@@ -8705,10 +8705,10 @@ react-native-modal-datetime-picker@^8.0.3:
   dependencies:
     prop-types "^15.7.2"
 
-react-native-modal-selector@^1.1.1:
-  version "1.1.3"
-  resolved "https://registry.yarnpkg.com/react-native-modal-selector/-/react-native-modal-selector-1.1.3.tgz#8c6405ebb99a216167575626e9a64d2eaba5e657"
-  integrity sha512-KO6gXwc/1ei0N/a2dEycYED7o+AfJaX0gFzkJLJL54qXdkCjcZoCRCSCOIjYna5nva8u/IHbSdramdpSf5Olow==
+react-native-modal-selector@^1.1.4:
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/react-native-modal-selector/-/react-native-modal-selector-1.1.4.tgz#ea67943b93e85818a30cfe05dcaa61d66b036e27"
+  integrity sha512-FSSC+iqaki5Zi7dkP0t95jYKI/+ciRs1xgTAEubHEj1uycqh9eV6dCjpsJH434zC5g9uRcQKBl+uqw4gZGG7tA==
   dependencies:
     prop-types "^15.5.10"
 
@@ -8822,10 +8822,10 @@ react-navigation-collapsible@^3.0.3:
   dependencies:
     hoist-non-react-statics "^3.0.1"
 
-react-navigation-drawer@^2.3.3:
-  version "2.3.3"
-  resolved "https://registry.yarnpkg.com/react-navigation-drawer/-/react-navigation-drawer-2.3.3.tgz#d7e607d5e10f2b3c40ab7dc9720228ce3f888a0f"
-  integrity sha512-d/rA8Slqv7HoMfONKVDBQUrRF7YQH796Gzal/KOhaY4VOwUUqIwfxMRJ3WrsdL2OkDPixtkXJE2Fz6KAj658uA==
+react-navigation-drawer@^2.3.4:
+  version "2.3.4"
+  resolved "https://registry.yarnpkg.com/react-navigation-drawer/-/react-navigation-drawer-2.3.4.tgz#c1faa96f2d810158c81fdf1e4829bd7f8291181d"
+  integrity sha512-jPGFVsYB+Q51bMFoeXLO2sYXMQISu2b9fQWZ9QMTvRsA/9pqeBfW7AXM97qW+HdciiQJBdJ6DcttoybWjBSpWQ==
 
 react-navigation-stack@^2.0.11:
   version "2.1.0"
