@@ -4,6 +4,7 @@ import Stripe from 'tipsi-stripe'
 import _ from 'lodash'
 
 import NavigationHolder from '../../NavigationHolder'
+import i18n from '../../i18n'
 
 /*
  * Action Types
@@ -246,7 +247,13 @@ const fetchValidation = _.throttle((dispatch, getState) => {
     httpClient
       .get(`${cart['@id']}/validate`)
       .then(() => dispatch(setCartValidation(true)))
-      .catch(error => dispatch(setCartValidation(false, error.violations)))
+      .catch(error => {
+        if (error.response && error.response.status === 400) {
+          dispatch(setCartValidation(false, error.response.data.violations))
+        } else {
+          dispatch(setCartValidation(false, [ { message: i18n.t('TRY_LATER') } ]))
+        }
+      })
       .finally(resolve)
   })
 
