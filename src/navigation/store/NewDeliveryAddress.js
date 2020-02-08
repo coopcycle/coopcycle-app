@@ -64,6 +64,7 @@ class NewDelivery extends Component {
                 { this.props.t('STORE_NEW_DELIVERY_ADDRESS') }
               </Text>
               <AddressAutocomplete
+                googleApiKey={ this.props.googleApiKey }
                 country={ this.props.country }
                 addresses={ this.props.addresses }
                 onSelectAddress={ this._onSelectAddress.bind(this) }
@@ -126,6 +127,7 @@ function mapStateToProps(state) {
     error: state.store.assertDeliveryError,
     addresses: state.store.addresses,
     country: state.app.settings.country,
+    googleApiKey: state.app.settings.google_api_key,
   }
 }
 
