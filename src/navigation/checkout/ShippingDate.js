@@ -7,7 +7,7 @@ import { connect } from 'react-redux'
 import _ from 'lodash'
 import moment from 'moment'
 
-import { setDate } from '../../redux/Checkout/actions'
+import { setDate, setDateAsap } from '../../redux/Checkout/actions'
 import { selectShippingDate, selectIsShippingAsap } from '../../redux/Checkout/selectors'
 import FooterButton from './components/FooterButton'
 
@@ -48,6 +48,12 @@ class ShippingDate extends Component {
     })
   }
 
+  _onAsap() {
+    this.props.setDateAsap(() => {
+      this.props.navigation.goBack()
+    })
+  }
+
   render() {
 
     const { availabilities, dates } = this.props
@@ -57,39 +63,38 @@ class ShippingDate extends Component {
 
     return (
       <View style={{ flex: 1 }}>
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-          <Text>{ moment.parseZone(date).format('LL LT') }</Text>
-        </View>
-        <View style={{ flex: 1, flexDirection: 'row' }}>
-          <View style={{ flex: 1 }}>
-            <Picker
-              selectedValue={ this.state.date }
-              style={{ height: 50 }}
-              onValueChange={ this._onDateChange.bind(this) }>
-              { dates.map(d => (
-                <Picker.Item key={ d } label={ d } value={ d } />
-              )) }
-            </Picker>
+        <View style={{ flex: 1 }}>
+          <View style={{ alignItems: 'center', justifyContent: 'center', padding: 20, backgroundColor: '#ecf0f1' }}>
+            <Text>{ this.props.t('CHECKOUT_PICK_DATE') }</Text>
           </View>
-          <View style={{ flex: 1 }}>
-            <Picker
-              selectedValue={ this.state.time }
-              style={{ height: 50 }}
-              onValueChange={ this._onTimeChange.bind(this) }>
-              { times.map(time => (
-                <Picker.Item key={ time } label={ time } value={ time } />
-              )) }
-            </Picker>
+          <View style={{ flex: 1, flexDirection: 'row' }}>
+            <View style={{ flex: 1 }}>
+              <Picker
+                selectedValue={ this.state.date }
+                style={{ height: 50 }}
+                onValueChange={ this._onDateChange.bind(this) }>
+                { dates.map(d => (
+                  <Picker.Item key={ d } label={ d } value={ d } />
+                )) }
+              </Picker>
+            </View>
+            <View style={{ flex: 1 }}>
+              <Picker
+                selectedValue={ this.state.time }
+                style={{ height: 50 }}
+                onValueChange={ this._onTimeChange.bind(this) }>
+                { times.map(time => (
+                  <Picker.Item key={ time } label={ time } value={ time } />
+                )) }
+              </Picker>
+            </View>
           </View>
-        </View>
-        { !this.props.isAsap && (
-          <View style={{ flex: 2, justifyContent: 'center', alignItems: 'center' }}>
-            <TouchableOpacity>
+          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+            <TouchableOpacity onPress={ this._onAsap.bind(this) }>
               <Text>{ this.props.t('DELIVERY_ASAP') }</Text>
             </TouchableOpacity>
           </View>
-        ) }
-
+        </View>
         <FooterButton
           text={ this.props.t('SUBMIT') }
           onPress={ () => this._onSubmit() } />
@@ -125,6 +130,7 @@ function mapDispatchToProps(dispatch) {
 
   return {
     setDate: (date, cb) => dispatch(setDate(date, cb)),
+    setDateAsap: (cb) => dispatch(setDateAsap(cb)),
   }
 }
 

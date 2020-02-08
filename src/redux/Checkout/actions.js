@@ -644,3 +644,28 @@ export function setDate(date, cb) {
       .catch(e => dispatch(checkoutFailure(e)))
   }
 }
+
+export function setDateAsap(cb) {
+
+  return (dispatch, getState) => {
+
+    const httpClient = createHttpClient(getState())
+
+    const { cart } = getState().checkout
+
+    dispatch(checkoutRequest())
+
+    httpClient
+      .put(cart['@id'], {
+        shippedAt: null
+      })
+      .then(res => {
+        dispatch(updateCartSuccess(res))
+        setTimeout(() => {
+          dispatch(checkoutSuccess())
+          _.isFunction(cb) && cb()
+        }, 250)
+      })
+      .catch(e => dispatch(checkoutFailure(e)))
+  }
+}
