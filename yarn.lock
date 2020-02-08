@@ -1350,10 +1350,10 @@
     wcwidth "^1.0.1"
     ws "^1.1.0"
 
-"@react-native-community/datetimepicker@^2.1.2":
-  version "2.1.2"
-  resolved "https://registry.yarnpkg.com/@react-native-community/datetimepicker/-/datetimepicker-2.1.2.tgz#2a60ccbfcd85fdebfb8c51e613d99c288c020fc0"
-  integrity sha512-lAatG0nbW9tSa0VH8nx7N+hz3gkKq+D1kpnktg0Xv5MCsoj3DCc+bCQaiyGxyU+ipkOAZDfQBbzXbSZzl+1iCg==
+"@react-native-community/datetimepicker@^2.2.1":
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/@react-native-community/datetimepicker/-/datetimepicker-2.2.1.tgz#350883f1d5940d44c3adef838e9941804210ba38"
+  integrity sha512-aw/3sUQ/4iiKz43412E+AnJ8vXhu2rBnEBGEoJEZYf04sLpPLRYCoVsVBGcfWxVGNS5jyCjp5cOiYu52GSMMhA==
   dependencies:
     invariant "^2.2.4"
 
@@ -5427,7 +5427,6 @@ growly@^1.3.0:
 
 "hammerjs@https://github.com/naver/hammer.js.git":
   version "2.0.17-snapshot"
-  uid "54bc698b25edd6e1b76ca975ebaced5ce0467d51"
   resolved "https://github.com/naver/hammer.js.git#54bc698b25edd6e1b76ca975ebaced5ce0467d51"
   dependencies:
     "@types/hammerjs" "^2.0.36"
