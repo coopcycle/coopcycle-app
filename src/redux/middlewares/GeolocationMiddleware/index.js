@@ -44,54 +44,62 @@ export default ({ getState, dispatch }) => {
     const result = next(action)
     const state = getState()
 
-    const hasAuthenticationChanged = selectIsAuthenticated(prevState) !== selectIsAuthenticated(state)
+    const hasUserChanged = state.app.user !== prevState.app.user
 
-    if (hasAuthenticationChanged) {
-      if (selectIsAuthenticated(state) && state.app.user && state.app.user.hasRole('ROLE_COURIER')) {
+    if (!hasUserChanged) {
+      return result
+    }
 
-        BackgroundGeolocation.configure({
-          url: `${state.app.baseURL}/api/me/location`,
-          syncUrl: `${state.app.baseURL}/api/me/location`,
-          httpHeaders: {
-            'Authorization': `Bearer ${state.app.user.token}`,
-            'Content-Type': 'application/ld+json',
-          },
-          postTemplate: {
-            latitude: '@latitude',
-            longitude: '@longitude',
-            time: '@time',
-          },
-        })
+    if (selectIsAuthenticated(state) && state.app.user && state.app.user.hasRole('ROLE_COURIER')) {
 
-        // This is called when server responded with "401 Unauthorized"
-        BackgroundGeolocation.removeAllListeners('http_authorization')
-        BackgroundGeolocation.on('http_authorization', () => {
+      BackgroundGeolocation.configure({
+        url: `${state.app.baseURL}/api/me/location`,
+        syncUrl: `${state.app.baseURL}/api/me/location`,
+        httpHeaders: {
+          'Authorization': `Bearer ${state.app.user.token}`,
+          'Content-Type': 'application/ld+json',
+        },
+        postTemplate: {
+          latitude: '@latitude',
+          longitude: '@longitude',
+          time: '@time',
+        },
+      })
 
-          firebase.analytics().logEvent('background_geoloc_http_authorization')
+      // This is called when server responded with "401 Unauthorized"
+      BackgroundGeolocation.removeAllListeners('http_authorization')
+      BackgroundGeolocation.on('http_authorization', () => {
 
-          state.app.httpClient.refreshToken()
-            .then(token => {
-              firebase.analytics().logEvent('background_geoloc_configure')
-              BackgroundGeolocation.configure({
-                httpHeaders: {
-                  'Authorization': `Bearer ${token}`,
-                  'Content-Type': 'application/ld+json',
-                },
-              })
+        firebase.analytics().logEvent('background_geoloc_http_authorization')
+
+        state.app.httpClient.refreshToken()
+          .then(token => {
+            firebase.analytics().logEvent('background_geoloc_configure')
+            BackgroundGeolocation.configure({
+              httpHeaders: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/ld+json',
+              },
             })
-            .catch(e => {
-              // If the token could not be refreshed,
-              // we mark the locations as deleted to stop retrying
-              BackgroundGeolocation.deleteAllLocations()
-            })
-        })
+          })
+          .catch(e => {
+            // If the token could not be refreshed,
+            // we mark the locations as deleted to stop retrying
+            BackgroundGeolocation.deleteAllLocations()
+          })
+      })
 
-        BackgroundGeolocation.start()
+      BackgroundGeolocation.start()
 
-      } else {
-        BackgroundGeolocation.stop()
-        BackgroundGeolocationEvents.forEach(event => BackgroundGeolocation.removeAllListeners(event))
-      }
+    } else {
+      BackgroundGeolocation.configure({
+        url: null,
+        syncUrl: null,
+        httpHeaders: {},
+        postTemplate: {},
+      })
+      BackgroundGeolocation.stop()
+      BackgroundGeolocationEvents.forEach(event => BackgroundGeolocation.removeAllListeners(event))
     }
 
     return result
