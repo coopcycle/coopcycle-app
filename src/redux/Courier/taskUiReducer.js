@@ -19,7 +19,7 @@ import {
 const tasksUiInitialState = {
   selectedDate: moment(), // Date selected by the user
   excludeFilters: [],     // Key-value pairs of active filters (e.g. status: 'done')
-  tasksChangedAlertSound: false,
+  tasksChangedAlertSound: true,
   keepAwake: false,
   signatureScreenFirst: false,
 }

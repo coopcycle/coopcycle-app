@@ -57,26 +57,22 @@ const tasksUiPersistConfig = {
             '@Settings.keepAwake',
             '@Preferences.signatureScreenFirst',
             '@Preferences.tasksFilters',
-            '@Settings.tasksChangedAlertSound',
           ]).then(values => {
 
-            let [ keepAwake, signatureScreenFirst, tasksFilters, tasksChangedAlertSound ] = values
+            let [ keepAwake, signatureScreenFirst, tasksFilters ] = values
 
             let keepAwakeValue = keepAwake[1] ? JSON.parse(keepAwake[1]) : false
             let signatureScreenFirstValue = signatureScreenFirst[1] ? JSON.parse(signatureScreenFirst[1]) : false
             let tasksFiltersValue = tasksFilters[1] ? JSON.parse(tasksFilters[1]) : []
-            let tasksChangedAlertSoundValue = tasksChangedAlertSound[1] ? JSON.parse(tasksChangedAlertSound[1]) : false
 
             AsyncStorage.removeItem('@Settings.keepAwake')
             AsyncStorage.removeItem('@Preferences.signatureScreenFirst')
             AsyncStorage.removeItem('@Preferences.tasksFilters')
-            AsyncStorage.removeItem('@Settings.tasksChangedAlertSound')
 
             resolve({
               keepAwake: keepAwakeValue,
               signatureScreenFirst: signatureScreenFirstValue,
               excludeFilters: tasksFiltersValue,
-              tasksChangedAlertSound: tasksChangedAlertSoundValue,
             })
 
           })
@@ -86,7 +82,7 @@ const tasksUiPersistConfig = {
             keepAwake: false,
             signatureScreenFirst: false,
             excludeFilters: [],
-            tasksChangedAlertSound: false,
+            tasksChangedAlertSound: true,
           })
         }
       })
