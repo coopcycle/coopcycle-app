@@ -94,6 +94,8 @@ export const defaultNavigationOptions = {
     fontWeight: 'normal',
     fontFamily: fontTitleName,
   },
+  headerTitleAlign: 'center',
+  headerBackTitleVisible: false,
 }
 
 export const headerLeft = (navigation, testID = 'menuBtn') => {
