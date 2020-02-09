@@ -363,6 +363,8 @@ PODS:
     - React
   - RNReanimated (1.7.0):
     - React
+  - RNScreens (2.0.0-beta.2):
+    - React
   - RNSketchCanvas (0.8.0):
     - React
   - RNSound (0.11.0):
@@ -424,6 +426,7 @@ DEPENDENCIES:
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNLocalize (from `../node_modules/react-native-localize`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
+  - RNScreens (from `../node_modules/react-native-screens`)
   - "RNSketchCanvas (from `../node_modules/@terrylinla/react-native-sketch-canvas`)"
   - RNSound (from `../node_modules/react-native-sound`)
   - tipsi-stripe (from `../node_modules/tipsi-stripe`)
@@ -536,6 +539,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-localize"
   RNReanimated:
     :path: "../node_modules/react-native-reanimated"
+  RNScreens:
+    :path: "../node_modules/react-native-screens"
   RNSketchCanvas:
     :path: "../node_modules/@terrylinla/react-native-sketch-canvas"
   RNSound:
@@ -608,6 +613,7 @@ SPEC CHECKSUMS:
   RNGestureHandler: 911d3b110a7a233a34c4f800e7188a84b75319c6
   RNLocalize: a734b53c45e77acd3ffb78b92e63bb4d6cd13257
   RNReanimated: 031fe8d9ea93c2bd689a40f05320ef9d96f74d7f
+  RNScreens: 5e4758109c6d35f9a009ce72af873df907548020
   RNSketchCanvas: 9c28adb5381543ed55cc98ce6de46479cb3cb12c
   RNSound: da030221e6ac7e8290c6b43f2b5f2133a8e225b0
   Stripe: db29ad197c74aca6fb981e4e8355cf7ebd0fca5a
