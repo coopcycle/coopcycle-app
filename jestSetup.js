@@ -38,6 +38,7 @@ jest.mock('@mauron85/react-native-background-geolocation', () => ({
   removeAllListeners: jest.fn(),
   on: jest.fn(),
   start: jest.fn(),
+  stop: jest.fn(),
 }))
 
 const fakeNavigator = {
