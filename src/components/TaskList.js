@@ -104,7 +104,7 @@ class TaskList extends Component {
     return this.renderSwipeoutButton(width, this.props.swipeOutRightIconName || failedIconName)
   }
 
-  renderItem(task, index) {
+  renderItem(task, index, rowMap) {
 
     const taskTypeIcon = taskTypeIconName(task)
     const isCompleted = _.includes(['DONE', 'FAILED'], task.status)
@@ -159,13 +159,19 @@ class TaskList extends Component {
         <View style={ [ styles.rowBack ] }>
           <TouchableOpacity
             style={{ flex: 1, alignItems: 'flex-start', justifyContent: 'center', backgroundColor: greenColor, width: buttonWidth }}
-            onPress={ () => this.props.onSwipeLeft(task) }
+            onPress={ () => {
+              rowMap[task['@id']].closeRow()
+              this.props.onSwipeLeft(task)
+            }}
             testID={ `task:${index}:assign` }>
             { this.renderSwipeoutLeftButton(buttonWidth) }
           </TouchableOpacity>
           <TouchableOpacity
             style={{ flex: 1, alignItems: 'flex-end', justifyContent: 'center', backgroundColor: redColor, width: buttonWidth }}
-            onPress={ () => this.props.onSwipeRight(task) }>
+            onPress={ () => {
+              rowMap[task['@id']].closeRow()
+              this.props.onSwipeRight(task)
+            }}>
             { this.renderSwipeoutRightButton(buttonWidth) }
           </TouchableOpacity>
         </View>
@@ -205,7 +211,7 @@ class TaskList extends Component {
       <SwipeListView
         data={ this.props.tasks }
         keyExtractor={ (item, index) => item['@id'] }
-        renderItem={({ item, index }) => this.renderItem(item, index)}
+        renderItem={({ item, index }, rowMap) => this.renderItem(item, index, rowMap)}
         refreshing={ refreshing }
         onRefresh={ onRefresh }
       />
