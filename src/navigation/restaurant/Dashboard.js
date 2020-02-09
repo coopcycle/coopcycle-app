@@ -46,8 +46,11 @@ class DashboardPage extends Component {
         this.props.date.format('YYYY-MM-DD')
       )
     }
-    if (hasRestaurantChanged) {
-      // This is needed to display the title
+
+    // This is needed to display the title
+    // WARNING Make sure to call navigation.setParams() only when needed to avoid infinite loop
+    const navRestaurant = this.props.navigation.getParam('restaurant')
+    if (!navRestaurant || navRestaurant !== this.props.restaurant) {
       this.props.navigation.setParams({ restaurant: this.props.restaurant })
     }
   }
