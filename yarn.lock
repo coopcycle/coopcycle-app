@@ -8562,9 +8562,9 @@ react-native-ble-manager@^7.0.0:
   integrity sha512-acY7F1p9o5TrCt2lN5ZCD+1ekZZrq6JjLcZ57HIIdKjbwrRmjAnY3QuuzWrMdIo9Y1PeG/2b/fhwcZpb1yBOFA==
 
 react-native-calendars@^1.212.0:
-  version "1.259.0"
-  resolved "https://registry.yarnpkg.com/react-native-calendars/-/react-native-calendars-1.259.0.tgz#594749ae1f852f58ca5826bf9766e9e4aeb28e82"
-  integrity sha512-VKAPr/rlyQR0Nw60sAXPARUxNfVKKW+WRWKeXg3hK1cwO7wfMgOW617tho5sMkfAhFCoHRL0qm0MqXV6mSI4rw==
+  version "1.261.0"
+  resolved "https://registry.yarnpkg.com/react-native-calendars/-/react-native-calendars-1.261.0.tgz#68f77736541bca515e15221e12350414edac128b"
+  integrity sha512-S37TXsunO9PnFpeM6Qk3LmzQDqJSEHOCpu6XKybMYSa2UPPu7Plpz3Lg5sZhCMr5bIs7fNzExHp5vVtxkNHlwQ==
   dependencies:
     hoist-non-react-statics "^3.3.1"
     lodash "^4.0.0"
