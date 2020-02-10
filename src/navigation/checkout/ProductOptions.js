@@ -152,7 +152,7 @@ class ProductOptions extends Component {
     const [ min, max ] = this.optionsBuilder.parseRange(menuSection.valuesRange)
 
     return (
-      <View style={{ paddingHorizontal: 15, paddingVertical: 5 }}>
+      <View style={{ paddingHorizontal: 15, paddingVertical: 5, backgroundColor: '#ffffff' }}>
         <Text style={{ textAlign: 'center' }} note>
           { this.props.t('CHECKOUT_PRODUCT_OPTIONS_CHOICES_BETWEEN', { min, max }) }
         </Text>
