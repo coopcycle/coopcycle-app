@@ -195,8 +195,7 @@ class ProductOptions extends Component {
     let sections = []
     _.forEach(product.menuAddOn, (menuSection) => {
       sections.push({
-        identifier: menuSection.identifier,
-        name: menuSection.name,
+        ...menuSection,
         data: menuSection.hasMenuItem,
       })
     })
