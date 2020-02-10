@@ -1,43 +1,51 @@
 import React, { Component } from 'react'
-import { SectionList, View } from 'react-native'
-import { Container, Content, ListItem, Text, Radio, Right, Left, Button } from 'native-base'
+import { SectionList, TouchableOpacity, View, StyleSheet } from 'react-native'
+import { Badge, Container, Icon, ListItem, Text, Radio } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
-import _ from 'lodash'
 
 import { addItemWithOptions } from '../../redux/Checkout/actions'
 import { formatPrice } from '../../utils/formatting'
+import ProductOptionsBuilder from '../../utils/ProductOptionsBuilder'
 import FooterButton from './components/FooterButton'
+
+const ItemSeparatorComponent = () => (
+  <View style={ styles.itemSeparator } />
+)
 
 class ProductOptions extends Component {
 
   constructor(props) {
     super(props)
     this.state = {
-      // Store options in a hash, indexed per section
-      options: {},
+      payload: [],
+      isValid: false,
     }
     this.list = React.createRef()
+    this.optionsBuilder = new ProductOptionsBuilder()
   }
 
-  _enableAddToCartButton() {
-    const { product } = this.props.navigation.state.params
-    const { options } = this.state
+  componentDidMount() {
+    const product = this.props.navigation.getParam('product')
+    this.optionsBuilder = new ProductOptionsBuilder(product.menuAddOn)
+  }
 
-    for (let i = 0; i < product.menuAddOn.length; i++) {
-      let menuSection = product.menuAddOn[i]
-      if (!menuSection.additional && !options.hasOwnProperty(menuSection.identifier)) {
-        return false
+  _gotoNextOption() {
+    const nextOption = this.optionsBuilder.getFirstInvalidOption()
+    if (nextOption) {
+      const sectionIndex = this._getSectionIndex(nextOption)
+      if (sectionIndex !== -1) {
+        this.list.current.scrollToLocation({
+          sectionIndex,
+          itemIndex: 0,
+        })
       }
     }
-
-    return true
   }
 
   _getSectionIndex(section) {
 
     const product = this.props.navigation.getParam('product')
-    const { options } = this.state
 
     for (let i = 0; i < product.menuAddOn.length; i++) {
       let menuSection = product.menuAddOn[i]
@@ -49,96 +57,43 @@ class ProductOptions extends Component {
     return -1
   }
 
-  _findNextSection() {
-
-    const product = this.props.navigation.getParam('product')
-    const { options } = this.state
-
-    for (let i = 0; i < product.menuAddOn.length; i++) {
-      let menuSection = product.menuAddOn[i]
-      if (!menuSection.additional && !options.hasOwnProperty(menuSection.identifier)) {
-        return menuSection
-      }
-    }
-
-    return false
-  }
-
   _onPressItem(menuSection, menuItem) {
-    const { options } = this.state
 
-    let newOptions = {
-      ...options,
-    }
-
-    if (menuSection.additional) {
-
-      let choices = []
-
-      if (newOptions.hasOwnProperty(menuSection.identifier)) {
-        choices = newOptions[menuSection.identifier]
-      }
-
-      if (_.includes(choices, menuItem.identifier)) {
-        choices = _.filter(choices, choice => choice !== menuItem.identifier)
-      } else {
-        choices.push(menuItem.identifier)
-      }
-
-      newOptions = {
-        ...newOptions,
-        [ menuSection.identifier ]: choices,
-      }
-    } else {
-      newOptions = {
-        ...newOptions,
-        [ menuSection.identifier ]: menuItem.identifier,
-      }
-    }
+    this.optionsBuilder.add(menuItem)
 
     this.setState({
-      options: newOptions,
-    }, () => {
-      const nextSection = this._findNextSection()
-      if (nextSection) {
-        const sectionIndex = this._getSectionIndex(nextSection)
-        if (sectionIndex !== -1) {
-          this.list.current.scrollToLocation({
-            sectionIndex,
-            itemIndex: 0,
-          })
-        }
-      }
-    })
+      payload: this.optionsBuilder.getPayload(),
+      isValid: this.optionsBuilder.isValid(),
+    }, () => this._gotoNextOption())
   }
 
   _onPressAddToCart() {
     const product = this.props.navigation.getParam('product')
-    const { options } = this.state
 
-    const optionsValues = _.flatten(_.values(options))
-
-    let allOptions = []
-    if (product.hasOwnProperty('menuAddOn')) {
-      _.forEach(product.menuAddOn, (menuSection) => {
-        allOptions = allOptions.concat(menuSection.hasMenuItem)
-      })
-    }
-
-    const optionsArray = []
-    _.forEach(optionsValues, (value) => {
-      const optionItem = _.find(allOptions, item => item.identifier === value)
-      if (optionItem) {
-        optionsArray.push(optionItem)
-      }
-    })
-
-    this.props.addItem(product, optionsArray)
+    this.props.addItem(product, this.state.payload)
     this.props.navigation.navigate('CheckoutRestaurant', { restaurant: this.props.restaurant })
   }
 
+  _increment(menuItem) {
+    this.optionsBuilder.increment(menuItem)
+
+    this.setState({
+      payload: this.optionsBuilder.getPayload(),
+      isValid: this.optionsBuilder.isValid(),
+    }, () => this._gotoNextOption())
+  }
+
+  _decrement(menuItem) {
+    this.optionsBuilder.decrement(menuItem)
+
+    this.setState({
+      payload: this.optionsBuilder.getPayload(),
+      isValid: this.optionsBuilder.isValid(),
+    }, () => this._gotoNextOption())
+  }
+
   renderFooter() {
-    if (this._enableAddToCartButton()) {
+    if (this.state.isValid) {
       return (
         <FooterButton
           text={ this.props.t('ADD_TO_CART') }
@@ -149,17 +104,9 @@ class ProductOptions extends Component {
 
   renderItem(menuItem, menuSection) {
 
-    const { options } = this.state
-
-    let selected = false
-
-    if (options.hasOwnProperty(menuSection.identifier)) {
-      if (Array.isArray(options[menuSection.identifier])) {
-        selected = _.includes(options[menuSection.identifier], menuItem.identifier)
-      } else {
-        selected = options[menuSection.identifier] === menuItem.identifier
-      }
-    }
+    const selected = this.optionsBuilder.contains(menuItem)
+    const allowsRange = this.optionsBuilder.allowsRange(menuItem)
+    const quantity = this.optionsBuilder.getQuantity(menuItem)
 
     let price = 0
     if (menuItem.hasOwnProperty('offers')) {
@@ -167,23 +114,61 @@ class ProductOptions extends Component {
     }
 
     return (
-      <ListItem onPress={ () => this._onPressItem(menuSection, menuItem) }>
-        <Left style={{ flex: 1, justifyContent: 'space-between' }}>
+      <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+        <TouchableOpacity style={{ width: '66.6666%', justifyContent: 'space-between', padding: 15 }}
+          onPress={ () => this._onPressItem(menuSection, menuItem) }>
           <Text>{ menuItem.name }</Text>
           { price > 0 ? (<Text note>{ `${formatPrice(price)} €` }</Text>) : null }
-        </Left>
-        <Right>
-          <Radio selected={ selected } />
-        </Right>
-      </ListItem>
+        </TouchableOpacity>
+        <View style={{ width: '33.3333%' }}>
+          { !allowsRange && <View
+            style={{ flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', paddingRight: 15 }}>
+            <Radio selected={ selected } />
+          </View> }
+          { allowsRange && <View
+            style={{ flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around' }}>
+            <TouchableOpacity
+              style={{ flex: 1, alignItems: 'center' }}
+              onPress={ () => this._increment(menuItem) }>
+              <Icon type="FontAwesome" name="plus-circle" />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{ flex: 1, alignItems: 'center' }}
+              onPress={ () => this._decrement(menuItem) }>
+              <Icon type="FontAwesome" name="minus-circle" />
+            </TouchableOpacity>
+            <View style={{ flex: 1, alignItems: 'center' }}>
+              <Badge info style={{ alignSelf: 'center' }}>
+                <Text>{ quantity }</Text>
+              </Badge>
+            </View>
+          </View> }
+        </View>
+      </View>
+    )
+  }
+
+  renderSectionHelp(menuSection) {
+    const [ min, max ] = this.optionsBuilder.parseRange(menuSection.valuesRange)
+
+    return (
+      <View style={{ paddingHorizontal: 15, paddingVertical: 5 }}>
+        <Text style={{ textAlign: 'center' }} note>
+          { this.props.t('CHECKOUT_PRODUCT_OPTIONS_CHOICES_BETWEEN', { min, max }) }
+        </Text>
+      </View>
     )
   }
 
   renderSection(menuSection) {
+
     return (
-      <ListItem itemDivider>
-        <Text>{ menuSection.name }</Text>
-      </ListItem>
+      <View>
+        <ListItem itemDivider>
+          <Text>{ menuSection.name }</Text>
+        </ListItem>
+        { menuSection.valuesRange && this.renderSectionHelp(menuSection) }
+      </View>
     )
   }
 
@@ -209,12 +194,21 @@ class ProductOptions extends Component {
           renderItem={ ({ item, section }) => this.renderItem(item, section) }
           renderSectionHeader={ ({ section }) => this.renderSection(section) }
           keyExtractor={ (item, index) => index }
+          ItemSeparatorComponent={ ItemSeparatorComponent }
         />
         { this.renderFooter() }
       </Container>
     )
   }
 }
+
+const styles = StyleSheet.create({
+  itemSeparator: {
+    height: StyleSheet.hairlineWidth,
+    width: '100%',
+    backgroundColor: '#cccccc',
+  },
+})
 
 function mapStateToProps(state) {
 

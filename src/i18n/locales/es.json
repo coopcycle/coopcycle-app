@@ -193,6 +193,7 @@
     "CHECKOUT_MORE_INFOS": "Información adicional",
     "CHECKOUT_MORE_INFOS_DISCLAIMER": "Sólo un último paso",
     "CHECKOUT_PICK_DATE": "Elija una fecha",
+    "CHECKOUT_PRODUCT_OPTIONS_CHOICES_BETWEEN": "Entre {{min}} y {{max}} opciones",
     "ADD_TO_CART": "Añadir al carrito",
     "NOTIFICATION_TASKS_CHANGED_TITLE": "Tareas actualizadas",
     "NOTIFICATION_TASKS_CHANGED_DESC": "Sus tareas de {{date}} han sido actualizadas",

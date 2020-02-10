@@ -204,7 +204,7 @@ function queueAddItem(item, options = []) {
       httpClient
         .post(`${cart['@id']}/items`, {
           product: item.identifier,
-          options: _.map(options, o => o.identifier),
+          options,
         })
         .then(res => {
           dispatch(setCheckoutLoading(false))
