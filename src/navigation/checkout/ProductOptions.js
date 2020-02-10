@@ -36,7 +36,7 @@ class ProductOptions extends Component {
 
   _getSectionIndex(section) {
 
-    const { product } = this.props.navigation.state.params
+    const product = this.props.navigation.getParam('product')
     const { options } = this.state
 
     for (let i = 0; i < product.menuAddOn.length; i++) {
@@ -51,7 +51,7 @@ class ProductOptions extends Component {
 
   _findNextSection() {
 
-    const { product } = this.props.navigation.state.params
+    const product = this.props.navigation.getParam('product')
     const { options } = this.state
 
     for (let i = 0; i < product.menuAddOn.length; i++) {
@@ -96,7 +96,6 @@ class ProductOptions extends Component {
       }
     }
 
-
     this.setState({
       options: newOptions,
     }, () => {
@@ -114,7 +113,7 @@ class ProductOptions extends Component {
   }
 
   _onPressAddToCart() {
-    const { product } = this.props.navigation.state.params
+    const product = this.props.navigation.getParam('product')
     const { options } = this.state
 
     const optionsValues = _.flatten(_.values(options))
@@ -190,7 +189,7 @@ class ProductOptions extends Component {
 
   render() {
 
-    const { product } = this.props.navigation.state.params
+    const product = this.props.navigation.getParam('product')
 
     let sections = []
     _.forEach(product.menuAddOn, (menuSection) => {
