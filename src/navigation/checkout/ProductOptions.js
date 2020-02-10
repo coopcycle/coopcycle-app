@@ -191,13 +191,10 @@ class ProductOptions extends Component {
 
     const product = this.props.navigation.getParam('product')
 
-    let sections = []
-    _.forEach(product.menuAddOn, (menuSection) => {
-      sections.push({
-        ...menuSection,
-        data: menuSection.hasMenuItem,
-      })
-    })
+    const sections = product.menuAddOn.map(menuSection => ({
+      ...menuSection,
+      data: menuSection.hasMenuItem,
+    }))
 
     return (
       <Container>
