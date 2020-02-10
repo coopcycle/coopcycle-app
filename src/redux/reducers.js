@@ -45,7 +45,7 @@ const tasksUiPersistConfig = {
   key: 'ui.tasks',
   version: 0,
   storage: AsyncStorage,
-  whitelist: ['excludeFilters', 'keepAwake', 'signatureScreenFirst'],
+  whitelist: ['excludeFilters', 'tasksChangedAlertSound', 'keepAwake', 'signatureScreenFirst'],
   migrate: (state) => {
 
     if (!state) {
@@ -56,7 +56,7 @@ const tasksUiPersistConfig = {
           AsyncStorage.multiGet([
             '@Settings.keepAwake',
             '@Preferences.signatureScreenFirst',
-            '@Preferences.tasksFilters'
+            '@Preferences.tasksFilters',
           ]).then(values => {
 
             let [ keepAwake, signatureScreenFirst, tasksFilters ] = values
@@ -82,6 +82,7 @@ const tasksUiPersistConfig = {
             keepAwake: false,
             signatureScreenFirst: false,
             excludeFilters: [],
+            tasksChangedAlertSound: true,
           })
         }
       })

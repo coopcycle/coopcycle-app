@@ -17,6 +17,7 @@ export const selectIsTasksRefreshing = state => state.entities.tasks.isRefreshin
 export const selectIsTasksLoadingFailure = state => state.entities.tasks.loadTasksFetchError
 export const selectIsTaskCompleteFailure = state => state.entities.tasks.completeTaskFetchError
 export const selectTaskFilters = state => state.ui.tasks.excludeFilters
+export const selectTasksChangedAlertSound = state => state.ui.tasks.tasksChangedAlertSound
 export const selectKeepAwake = state => state.ui.tasks.keepAwake
 export const selectSignatureScreenFirst = state => state.ui.tasks.signatureScreenFirst
 export const selectSignatures = state => state.entities.tasks.signatures

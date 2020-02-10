@@ -8,7 +8,7 @@ import {
   CLEAR_TASK_FILTER,
   SET_TASK_FILTER,
   SET_KEEP_AWAKE,
-  SET_SIGNATURE_SCREEN_FIRST,
+  SET_SIGNATURE_SCREEN_FIRST, SET_TASKS_CHANGED_ALERT_SOUND,
 } from './taskActions'
 
 /*
@@ -19,6 +19,7 @@ import {
 const tasksUiInitialState = {
   selectedDate: moment(), // Date selected by the user
   excludeFilters: [],     // Key-value pairs of active filters (e.g. status: 'done')
+  tasksChangedAlertSound: true,
   keepAwake: false,
   signatureScreenFirst: false,
 }
@@ -37,6 +38,12 @@ export const tasksUiReducer = (state = tasksUiInitialState, action = {}) => {
       return {
         ...state,
         excludeFilters: state.excludeFilters.concat(action.payload),
+      }
+
+    case SET_TASKS_CHANGED_ALERT_SOUND:
+      return {
+        ...state,
+        tasksChangedAlertSound: action.payload,
       }
 
     case SET_KEEP_AWAKE:
