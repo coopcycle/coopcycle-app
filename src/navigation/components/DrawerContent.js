@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import {
   View,
-  ScrollView,
   StyleSheet,
   TouchableOpacity,
 } from 'react-native'
@@ -11,6 +10,7 @@ import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 import { SafeAreaView, NavigationActions } from 'react-navigation'
 import { DrawerNavigatorItems } from 'react-navigation-drawer'
+import VersionNumber from 'react-native-version-number'
 
 import { selectIsAuthenticated } from '../../redux/App/selectors'
 
@@ -198,19 +198,24 @@ class DrawerContent extends Component {
       )
 
     return (
-      <ScrollView>
-        <SafeAreaView style={ styles.container } forceInset={{ top: 'always', horizontal: 'never' }}>
-          <TouchableOpacity style={ styles.header } onPress={ navigateToAccount } testID="drawerAccountBtn">
-            <Icon name="person" />
-            { isAuthenticated && <Text>{ this.props.user.username }</Text> }
-          </TouchableOpacity>
-          <DrawerNavigatorItems { ...otherItemsProps } itemsContainerStyle={ styles.itemsContainer } />
-          { restaurantSection }
-          { storeSection }
-          { courierSection }
-          { adminSection }
-        </SafeAreaView>
-      </ScrollView>
+      <SafeAreaView style={ styles.container } forceInset={{ top: 'always', horizontal: 'never' }}>
+        <TouchableOpacity style={ styles.header } onPress={ navigateToAccount } testID="drawerAccountBtn">
+          <Icon name="person" />
+          { isAuthenticated && <Text>{ this.props.user.username }</Text> }
+        </TouchableOpacity>
+        <View style={{ flex: 1 }}>
+          <View style={{ flex: 1 }}>
+            <DrawerNavigatorItems { ...otherItemsProps } itemsContainerStyle={ styles.itemsContainer } />
+            { restaurantSection }
+            { storeSection }
+            { courierSection }
+            { adminSection }
+          </View>
+          <View style={{ alignSelf: 'center', justifySelf: 'flex-end', padding: 15 }}>
+            <Text>{ VersionNumber.appVersion }</Text>
+          </View>
+        </View>
+      </SafeAreaView>
     )
   }
 }
@@ -223,7 +228,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     borderBottomColor: '#e0e0e0',

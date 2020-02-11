@@ -10,6 +10,11 @@ import { Provider } from 'react-redux'
 import { I18nextProvider } from 'react-i18next'
 import { PersistGate } from 'redux-persist/integration/react'
 
+import axios from 'axios'
+import VersionNumber from 'react-native-version-number'
+
+axios.defaults.headers.common['X-CoopCycle-App-Version'] = VersionNumber.appVersion
+
 // Import i18n first
 import i18n from './i18n'
 
