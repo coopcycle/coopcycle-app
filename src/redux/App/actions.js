@@ -1,6 +1,4 @@
 import { createAction } from 'redux-actions'
-import moment from 'moment'
-import AsyncStorage from '@react-native-community/async-storage';
 import { NavigationActions } from 'react-navigation'
 import firebase from 'react-native-firebase'
 

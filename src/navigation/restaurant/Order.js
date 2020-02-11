@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Dimensions, StyleSheet, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import { NavigationEvents } from 'react-navigation';
 import {
-  Container, Content, Footer,
+  Footer,
   Left,
   Icon, Text, Button,
   Card, CardItem,

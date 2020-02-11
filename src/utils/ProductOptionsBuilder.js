@@ -95,14 +95,14 @@ class ProductOptionsBuilder {
 
         this.payload.splice(index, 1, {
           code: optionValue.identifier,
-          quantity: quantity + 1
+          quantity: quantity + 1,
         })
 
       } else {
 
         this.payload.push({
           code: optionValue.identifier,
-          quantity: 1
+          quantity: 1,
         })
 
       }
@@ -113,7 +113,7 @@ class ProductOptionsBuilder {
 
       this.payload.push({
         code: optionValue.identifier,
-        quantity: 1
+        quantity: 1,
       })
     }
   }
@@ -131,7 +131,7 @@ class ProductOptionsBuilder {
       } else {
         this.payload.splice(index, 1, {
           code: optionValue.identifier,
-          quantity: nextQuantity
+          quantity: nextQuantity,
         })
       }
     }

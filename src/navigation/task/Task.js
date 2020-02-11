@@ -19,8 +19,6 @@ import {
 } from './styles/common'
 import TaskMarker from '../../components/TaskMarker'
 
-const isCompleted = task => task.status !== 'TODO'
-
 const OfflineNotice = ({ message }) => (
   <View>
     <View style={ styles.offlineNotice }>

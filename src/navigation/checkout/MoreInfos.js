@@ -1,12 +1,10 @@
 import React, { Component } from 'react'
-import { Picker, View, StyleSheet, TextInput, InteractionManager } from 'react-native'
-import { Container, Content, Text, Button } from 'native-base'
-import { Col, Row, Grid } from 'react-native-easy-grid'
+import { View, StyleSheet, TextInput, InteractionManager } from 'react-native'
+import { Container, Content, Text } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 import { Formik } from 'formik'
 import _ from 'lodash'
-import moment from 'moment'
 import {
   parsePhoneNumberFromString,
   AsYouType,

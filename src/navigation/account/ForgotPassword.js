@@ -1,6 +1,5 @@
 import React, {Component} from 'react'
 import {StyleSheet, View} from 'react-native'
-import {Container, Content} from 'native-base'
 import {connect} from 'react-redux'
 import {withTranslation} from 'react-i18next'
 import {resetPassword} from '../../redux/App/actions'

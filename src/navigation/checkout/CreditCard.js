@@ -5,7 +5,7 @@ import {
   Animated,
   Keyboard,
 } from 'react-native';
-import { Content, Button, Text } from 'native-base';
+import { Content, Text } from 'native-base';
 import _ from 'lodash'
 import { LiteCreditCardInput } from 'react-native-credit-card-input'
 import { connect } from 'react-redux'

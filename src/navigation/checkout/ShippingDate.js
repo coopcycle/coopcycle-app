@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { Picker, TouchableOpacity, View } from 'react-native'
-import { Footer, FooterTab, Text, Button } from 'native-base'
-import { Col, Row, Grid } from 'react-native-easy-grid'
+import { Text } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 import _ from 'lodash'

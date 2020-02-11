@@ -24,7 +24,7 @@ describe('encodeForPrinter', () => {
             quantity: 1,
             adjustments: [],
         }],
-        itemsTotal: 2300
+        itemsTotal: 2300,
     }
 
     const expected =
@@ -45,7 +45,7 @@ A PREPARER POUR          ${time.format('LT')}
 
 
 
-`.split("\n")
+`.split('\n')
 
     const res = encodeForPrinter(order)
     const text = Buffer.from(res).toString()
@@ -56,7 +56,7 @@ A PREPARER POUR          ${time.format('LT')}
         .replace(/(\u0001)/, '')
         .replace(/(\u001b)/, '')
         .replace(/(\u001b)/, '')
-        .split("\n")
+        .split('\n')
 
     expect(actual).toHaveLength(expected.length)
     expect(actual).toEqual(expected)
