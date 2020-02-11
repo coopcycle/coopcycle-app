@@ -11,9 +11,8 @@ import * as RNLocalize from 'react-native-localize'
 import en from './locales/en.json'
 import es from './locales/es.json'
 import fr from './locales/fr.json'
-
-// Load additional Moment.js locales
-import 'moment/locale/fr'
+import moment from 'moment'
+import { LocaleConfig } from 'react-native-calendars'
 
 export const localeDetector = () => {
   const lang = RNLocalize.findBestAvailableLanguage(['en', 'es', 'fr'])
@@ -24,6 +23,27 @@ export const localeDetector = () => {
 
   return lang.languageTag
 }
+
+const LOCALE = localeDetector()
+
+// Load additional Moment.js locales
+import 'moment/locale/de'
+import 'moment/locale/es'
+import 'moment/locale/fr'
+
+// Make sure to call moment.locale() BEFORE creating Redux store
+moment.locale(LOCALE)
+
+// https://github.com/wix/react-native-calendars#usage
+LocaleConfig.locales.en = LocaleConfig.locales['']
+LocaleConfig.locales[LOCALE] = {
+  monthNames: moment.months(),
+  monthNamesShort: moment.monthsShort(),
+  dayNames: moment.weekdays(),
+  dayNamesShort: moment.weekdaysMin(),
+}
+
+LocaleConfig.defaultLocale = LOCALE;
 
 // https://www.i18next.com/misc/creating-own-plugins.html#languagedetector
 const languageDetector = {

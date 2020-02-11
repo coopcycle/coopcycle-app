@@ -10,13 +10,11 @@ import { Provider } from 'react-redux'
 import { I18nextProvider } from 'react-i18next'
 import { PersistGate } from 'redux-persist/integration/react'
 
+// Import i18n first
+import i18n from './i18n'
+
 import navigation from './navigation'
 import navigators from './navigation/navigators'
-import i18n, { localeDetector } from './i18n'
-
-// Make sure to call moment.locale() BEFORE creating Redux store
-import moment from 'moment'
-moment.locale(localeDetector())
 
 import store, { persistor } from './redux/store'
 import { setCurrentRoute } from './redux/App/actions'

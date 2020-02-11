@@ -2,22 +2,11 @@ import React from 'react'
 import { StyleSheet, View, Text, Animated } from 'react-native'
 import { Icon, Button } from 'native-base'
 import { Col, Row, Grid } from 'react-native-easy-grid'
-import { LocaleConfig, Calendar } from 'react-native-calendars'
+import { Calendar } from 'react-native-calendars'
 import moment from 'moment'
 import { localeDetector } from '../i18n'
 
 import { primaryColor, whiteColor, dateSelectHeaderHeight, calendarHeight, headerFontSize } from '../styles/common'
-
-const LOCALE = localeDetector()
-
-LocaleConfig.locales[LOCALE] = {
-  monthNames: moment.months(),
-  monthNamesShort: moment.monthsShort(),
-  dayNames: moment.weekdays(),
-  dayNamesShort: moment.weekdaysMin(),
-};
-
-LocaleConfig.defaultLocale = LOCALE;
 
 let styles = StyleSheet.create({
   container: {
@@ -146,6 +135,7 @@ class DateSelectHeader extends React.Component {
   }
 
   render () {
+
     const { selectedDate, buttonsEnabled } = this.props
 
     return (
@@ -156,7 +146,9 @@ class DateSelectHeader extends React.Component {
               { buttonsEnabled && this.renderButton('arrow-dropleft', this.onPastPress, styles.icon) }
             </Col>
             <Col size={ 8 } style={ styles.body } onPress={ this.toggleCalendar }>
-              <Text numberOfLines={ 1 } style={styles.dateHeaderText}>{selectedDate.format('dddd Do MMM')}</Text>
+              <Text numberOfLines={ 1 } style={styles.dateHeaderText}>
+                { moment(selectedDate).format('dddd Do MMM') }
+              </Text>
             </Col>
             <Col size={ 4 } style={ styles.button }>
               { buttonsEnabled && this.renderButton('arrow-dropright', this.onFuturePress, styles.icon) }

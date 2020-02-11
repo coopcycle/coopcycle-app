@@ -1,24 +1,13 @@
 import React, { Component } from 'react'
 import { Container, Content } from 'native-base'
 
-import { LocaleConfig, Calendar } from 'react-native-calendars'
+import { Calendar } from 'react-native-calendars'
 import moment from 'moment'
 import { withTranslation } from 'react-i18next'
 
 import { connect } from 'react-redux'
 import { localeDetector } from '../../i18n'
 import { changeDate } from '../../redux/Dispatch/actions'
-
-const LOCALE = localeDetector()
-
-LocaleConfig.locales[LOCALE] = {
-  monthNames: moment.months(),
-  monthNamesShort: moment.monthsShort(),
-  dayNames: moment.weekdays(),
-  dayNamesShort: moment.weekdaysMin(),
-};
-
-LocaleConfig.defaultLocale = LOCALE;
 
 class DateScreen extends Component {
 

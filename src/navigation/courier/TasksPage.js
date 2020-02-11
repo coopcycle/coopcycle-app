@@ -144,6 +144,7 @@ const styles = StyleSheet.create({
 })
 
 function mapStateToProps (state) {
+  // console.log('mapStateToProps', selectTaskSelectedDate(state))
   return {
     tasks: selectFilteredTasks(state),
     selectedDate: selectTaskSelectedDate(state),
