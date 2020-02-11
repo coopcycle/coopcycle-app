@@ -8,6 +8,7 @@
 import i18next from 'i18next'
 import { initReactI18next } from 'react-i18next'
 import * as RNLocalize from 'react-native-localize'
+import de from './locales/de.json'
 import en from './locales/en.json'
 import es from './locales/es.json'
 import fr from './locales/fr.json'
@@ -15,7 +16,7 @@ import moment from 'moment'
 import { LocaleConfig } from 'react-native-calendars'
 
 export const localeDetector = () => {
-  const lang = RNLocalize.findBestAvailableLanguage(['en', 'es', 'fr'])
+  const lang = RNLocalize.findBestAvailableLanguage(['de', 'en', 'es', 'fr'])
   if (!lang) {
 
     return 'en'
@@ -61,7 +62,7 @@ i18next
   .use(initReactI18next)
   .init({
     fallbackLng: 'en',
-    resources: { en, es, fr },
+    resources: { de, en, es, fr },
     ns: ['common'],
     defaultNS: 'common',
     debug: process.env.DEBUG,
