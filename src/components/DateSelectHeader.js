@@ -4,7 +4,6 @@ import { Icon, Button } from 'native-base'
 import { Col, Row, Grid } from 'react-native-easy-grid'
 import { Calendar } from 'react-native-calendars'
 import moment from 'moment'
-import { localeDetector } from '../i18n'
 
 import { primaryColor, whiteColor, dateSelectHeaderHeight, calendarHeight, headerFontSize } from '../styles/common'
 
