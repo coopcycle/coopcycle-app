@@ -1,19 +1,24 @@
 import React, { Component } from 'react'
-import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native'
-import { Text, Thumbnail } from 'native-base'
+import { FlatList, StyleSheet, TouchableOpacity, View, Image } from 'react-native'
+import { Badge, Text, Thumbnail, Icon } from 'native-base'
 import { withTranslation } from 'react-i18next'
+import moment from 'moment'
+
+import { getNextShippingTimeAsText, getRestaurantCaption, isFast } from '../utils/checkout'
 
 const styles = StyleSheet.create({
-  wrapper: {
+  container: {
     backgroundColor: '#fff',
   },
   item: {
-    paddingVertical: 10,
-    paddingHorizontal: 15,
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: '#e7e7e7',
+    marginHorizontal: 10,
+    marginTop: 10,
+    marginBottom: 15,
   },
   restaurantNameText: {
     marginBottom: 5,
@@ -23,6 +28,24 @@ const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: '#e7e7e7',
   },
+  badge: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    position: 'absolute',
+    height: 30,
+    alignSelf: 'center',
+    bottom: -15,
+    paddingVertical: 5,
+    paddingLeft: 5,
+    paddingRight: 10,
+    backgroundColor: '#ffffff',
+    borderRadius: 30,
+  },
+  badgeText: {
+    color: '#ffffff',
+    fontSize: 12,
+  },
 })
 
 const ItemSeparatorComponent = () => (
@@ -30,7 +53,7 @@ const ItemSeparatorComponent = () => (
 )
 
 const OneLineText = (props) => (
-  <Text numberOfLines={ 1 } ellipsizeMode="tail" { ...props }>
+  <Text numberOfLines={ props.numberOfLines || 1 } ellipsizeMode="tail" { ...props }>
     { props.children }
   </Text>
 )
@@ -51,14 +74,22 @@ class RestaurantList extends Component {
     }
 
     return (
-      <TouchableOpacity style={ styles.item }
+      <TouchableOpacity
         onPress={ () => this.props.onItemClick(restaurant) }
         testID={ testID }>
-        <View style={{ flex: 1 }}>
-          <OneLineText style={ [ styles.restaurantNameText ] }>{ restaurant.name }</OneLineText>
-          <OneLineText note>{ restaurant.address.streetAddress }</OneLineText>
+        <View style={ styles.item }>
+          <View style={{ flex: 1, width: '66.6666%', padding: 15, paddingBottom: 25 }}>
+            <OneLineText style={ [ styles.restaurantNameText ] }>{ restaurant.name }</OneLineText>
+            <OneLineText note numberOfLines={ 2 }>{ getRestaurantCaption(restaurant) }</OneLineText>
+            <View style={ [ styles.badge, { backgroundColor: isFast(restaurant) ? '#2ed573' : '#ffa502' } ] }>
+              <Icon type="FontAwesome" name="clock-o" style={ [ styles.badgeText, { fontSize: 20, marginRight: 5 } ] } />
+              <Text style={ styles.badgeText }>{ getNextShippingTimeAsText(restaurant) }</Text>
+            </View>
+          </View>
+          <View style={{ width: '33.3333%' }}>
+            <Image style={{ flex: 1, height: undefined, width: undefined }} resizeMode="cover" source={{ uri: restaurant.image }} />
+          </View>
         </View>
-        <Thumbnail size={ 60 } source={{ uri: restaurant.image }} />
       </TouchableOpacity>
     )
   }
@@ -66,13 +97,12 @@ class RestaurantList extends Component {
   render() {
 
     return (
-      <View style={ styles.wrapper }>
+      <View style={ styles.container }>
         <FlatList
           testID="restaurantList"
           data={ this.props.restaurants }
           keyExtractor={ (item, index) => item['@id'] }
-          renderItem={ ({ item, index }) => this.renderItem(item, index) }
-          ItemSeparatorComponent={ ItemSeparatorComponent } />
+          renderItem={ ({ item, index }) => this.renderItem(item, index) } />
       </View>
     )
   }
