@@ -608,7 +608,7 @@ export function updateCart(payload, cb) {
 
     const shippingAddress = {
       ...cart.shippingAddress,
-      ...payload.shippingAddress
+      ...payload.shippingAddress,
     }
 
     dispatch(checkoutRequest())
@@ -639,7 +639,7 @@ export function setDate(date, cb) {
 
     httpClient
       .put(cart['@id'], {
-        shippedAt: date
+        shippedAt: date,
       })
       .then(res => {
         dispatch(updateCartSuccess(res))
@@ -664,7 +664,7 @@ export function setDateAsap(cb) {
 
     httpClient
       .put(cart['@id'], {
-        shippedAt: null
+        shippedAt: null,
       })
       .then(res => {
         dispatch(updateCartSuccess(res))

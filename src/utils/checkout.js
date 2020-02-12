@@ -42,11 +42,9 @@ export function getNextShippingTimeAsText(restaurant, now) {
     }
 
     return i18n.t('TIME_DIFF_SHORT', { min: diffRounded, max: (diffRounded + 5) })
-  } else {
-    return firstM.calendar(now)
   }
 
-  return firstM.fromNow()
+  return firstM.calendar(now)
 }
 
 export function getRestaurantCaption(restaurant) {

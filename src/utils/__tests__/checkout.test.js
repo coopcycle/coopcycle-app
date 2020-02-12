@@ -7,8 +7,8 @@ describe('getNextShippingTimeAsText', () => {
 
     const restaurant = {
       availabilities: [
-        '2020-02-12T19:00:00+01:00'
-      ]
+        '2020-02-12T19:00:00+01:00',
+      ],
     }
 
     expect(

@@ -21,8 +21,8 @@ describe('GeolocationMiddleware', () => {
 
     const preloadedState = {
       app: {
-        user: null
-      }
+        user: null,
+      },
     }
 
     const store = createStore(state => state, preloadedState, applyMiddleware(middleware))
@@ -41,7 +41,7 @@ describe('GeolocationMiddleware', () => {
       app: {
         baseURL: 'https://demo.coopcycle.org',
         user,
-      }
+      },
     }
 
     const reducer = combineReducers({
@@ -61,8 +61,8 @@ describe('GeolocationMiddleware', () => {
     const preloadedState = {
       app: {
         baseURL: 'https://demo.coopcycle.org',
-        user: null
-      }
+        user: null,
+      },
     }
 
     const reducer = combineReducers({
@@ -101,8 +101,8 @@ describe('GeolocationMiddleware', () => {
     const preloadedState = {
       app: {
         baseURL: 'https://demo.coopcycle.org',
-        user: prevUser
-      }
+        user: prevUser,
+      },
     }
 
     const reducer = combineReducers({
@@ -143,7 +143,7 @@ describe('GeolocationMiddleware', () => {
       app: {
         baseURL: 'https://demo.coopcycle.org',
         user,
-      }
+      },
     }
 
     const reducer = combineReducers({

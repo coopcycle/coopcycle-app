@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
 import { FlatList, StyleSheet, TouchableOpacity, View, Image } from 'react-native'
-import { Badge, Text, Thumbnail, Icon } from 'native-base'
+import { Text, Icon } from 'native-base'
 import { withTranslation } from 'react-i18next'
-import moment from 'moment'
 
 import { getNextShippingTimeAsText, getRestaurantCaption, isFast } from '../utils/checkout'
 
@@ -23,11 +22,6 @@ const styles = StyleSheet.create({
   restaurantNameText: {
     marginBottom: 5,
   },
-  itemSeparator: {
-    height: StyleSheet.hairlineWidth,
-    width: '100%',
-    backgroundColor: '#e7e7e7',
-  },
   badge: {
     flex: 1,
     flexDirection: 'row',
@@ -47,10 +41,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
 })
-
-const ItemSeparatorComponent = () => (
-  <View style={ styles.itemSeparator } />
-)
 
 const OneLineText = (props) => (
   <Text numberOfLines={ props.numberOfLines || 1 } ellipsizeMode="tail" { ...props }>

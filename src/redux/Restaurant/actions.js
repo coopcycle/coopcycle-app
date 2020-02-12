@@ -467,8 +467,8 @@ export function printOrder(order) {
           BleManager.retrieveServices(printer).then(services => {
             BleManager.writeWithoutResponse(
               printer,
-              "e7810a71-73ae-499d-8c15-faa9aef0c3f2",
-              "bef8d6c9-9c21-4c9e-b632-bd58c1009f9f",
+              'e7810a71-73ae-499d-8c15-faa9aef0c3f2',
+              'bef8d6c9-9c21-4c9e-b632-bd58c1009f9f',
               Array.from(encoded)
             )
             .then(() => console.log('WRITE OK'))

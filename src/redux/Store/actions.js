@@ -53,8 +53,8 @@ export function createDelivery(delivery, onSuccess) {
         ...delivery,
         dropoff: {
           ...delivery.dropoff,
-          address: delivery.dropoff.address['@id']
-        }
+          address: delivery.dropoff.address['@id'],
+        },
       }
     }
 
@@ -251,7 +251,7 @@ export function init(store) {
 
     Promise.all([
       httpClient.get(`${store['@id']}/deliveries?order[dropoff.before]=desc`),
-      httpClient.get(`${store['@id']}/addresses?type=dropoff`)
+      httpClient.get(`${store['@id']}/addresses?type=dropoff`),
     ])
       .then(values => {
         const [ deliveries, addresses ] = values

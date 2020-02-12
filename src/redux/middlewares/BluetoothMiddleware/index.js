@@ -29,7 +29,7 @@ export default ({ dispatch }) => {
   BleManager.checkState()
 
   BleManager
-    .getConnectedPeripherals(["e7810a71-73ae-499d-8c15-faa9aef0c3f2"])
+    .getConnectedPeripherals(['e7810a71-73ae-499d-8c15-faa9aef0c3f2'])
     .then((devices) => {
       console.log('Connected devices', devices);
       devices.forEach(device => dispatch(printerConnected(device.id)))

@@ -46,7 +46,7 @@ import {
   BLUETOOTH_ENABLED,
   BLUETOOTH_DISABLED,
   BLUETOOTH_START_SCAN,
-  BLUETOOTH_STOP_SCAN
+  BLUETOOTH_STOP_SCAN,
 } from './actions'
 
 import {
@@ -74,7 +74,7 @@ const initialState = {
   specialOpeningHoursSpecification: [],
   bluetoothEnabled: false,
   isScanningBluetooth: false,
-  printer: null
+  printer: null,
 }
 
 const spliceOrders = (state, payload) => {

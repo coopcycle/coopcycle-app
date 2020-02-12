@@ -3,7 +3,7 @@ import { savePushNotificationTokenSuccess } from '../../App/actions'
 import {
   selectIsAuthenticated,
   selectHttpClient,
-  selectHttpClientHasCredentials
+  selectHttpClientHasCredentials,
 } from '../../App/selectors'
 
 let isFetching = false

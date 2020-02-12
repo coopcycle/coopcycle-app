@@ -4,6 +4,7 @@ import {
   StyleSheet,
   View,
   Dimensions,
+  SafeAreaView,
 } from 'react-native';
 import { Container, Icon, Text } from 'native-base';
 import { connect } from 'react-redux'
@@ -70,9 +71,11 @@ class RestaurantsPage extends Component {
     }
 
     return (
-      <RestaurantList
-        restaurants={ restaurants }
-        onItemClick={ restaurant => this.props.navigation.navigate('CheckoutRestaurant', { restaurant }) } />
+      <SafeAreaView>
+        <RestaurantList
+          restaurants={ restaurants }
+          onItemClick={ restaurant => this.props.navigation.navigate('CheckoutRestaurant', { restaurant }) } />
+      </SafeAreaView>
     )
   }
 

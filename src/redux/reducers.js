@@ -77,7 +77,7 @@ const tasksUiPersistConfig = {
 
           })
 
-        } catch(e) {
+        } catch (e) {
           resolve({
             keepAwake: false,
             signatureScreenFirst: false,
@@ -89,7 +89,7 @@ const tasksUiPersistConfig = {
     }
 
     return Promise.resolve(state)
-  }
+  },
 }
 
 const appPersistConfig = {
@@ -113,13 +113,13 @@ const appPersistConfig = {
               AsyncStorage.removeItem('@Server')
 
               return resolve({
-                baseURL: data
+                baseURL: data,
               })
             })
 
-        } catch(e) {
+        } catch (e) {
           resolve({
-            baseURL: null
+            baseURL: null,
           })
         }
       })
@@ -127,7 +127,7 @@ const appPersistConfig = {
     }
 
     return Promise.resolve(state)
-  }
+  },
 }
 
 export default combineReducers({

@@ -61,7 +61,7 @@ export default ({ getState, dispatch }) => {
 
             user.save()
               .then(() => console.log('Credentials saved!'))
-          }
+          },
         })
 
         dispatch(setHttpClient(httpClient))
