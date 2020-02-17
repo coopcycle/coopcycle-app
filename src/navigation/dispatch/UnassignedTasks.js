@@ -21,14 +21,6 @@ class UnassignedTasks extends Component {
     const { navigate } = this.props.navigation
     const isEmpty = this.props.unassignedTasks.length === 0
 
-    let contentProps = {}
-    if (isEmpty) {
-      contentProps = {
-        flex: 1,
-        justifyContent: 'center',
-      }
-    }
-
     return (
       <View style={{ flex: 1 }}>
         <View>

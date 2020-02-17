@@ -6,7 +6,6 @@ import {
   StyleSheet,
 } from 'react-native'
 import {
-  Container, Content,
   Button, Text,
 } from 'native-base'
 import { withTranslation } from 'react-i18next'
@@ -18,37 +17,43 @@ class ConfigureServer extends Component {
     const { width } = Dimensions.get('window')
 
     return (
-      <Container>
-        <Content scrollEnabled={ false } contentContainerStyle={{ flex: 1 }}>
-          <Image
-            style={{ width: width, height: (width / 3.58) }}
-            source={require('../assets/images/home-bg.png')} />
-          <View style={{ flex: 1, justifyContent: 'center', paddingHorizontal: 30 }}>
-            <View style={{ marginBottom: 20 }}>
-              <Text style={ [ styles.disclaimerText, { fontWeight: 'bold' } ] }>{`${this.props.t('WELCOME')} !`}</Text>
-              <Text style={ styles.disclaimerText }>{ this.props.t('ALPHA_DISCLAIMER') }</Text>
-              <Text style={ styles.disclaimerText }>{ this.props.t('UPDATE_REMINDER') }</Text>
-            </View>
+      <View style={ styles.container }>
+        <Image
+          style={{ position: 'absolute', top: 0, right: 0, left: 0, width: width, height: (width / 3.58) }}
+          source={require('../assets/images/home-bg.png')} />
+        <View style={{ paddingHorizontal: '10%', width: '100%' }}>
+          <View style={{ marginBottom: 20 }}>
+            <Text style={ [ styles.disclaimerText, { fontWeight: 'bold', fontSize: 18 } ] }>
+              { this.props.t('WELCOME') }
+            </Text>
+            <Text style={ styles.disclaimerText }>
+              { this.props.t('WELCOME_TEXT') }
+            </Text>
+          </View>
+          <View>
             <View>
-              <View>
-                <Button block bordered onPress={ _ => this.props.navigation.navigate('HomeChooseCity') } testID="chooseCityBtn">
-                  <Text>{ this.props.t('CHOOSE_CITY') }</Text>
-                </Button>
-              </View>
-              <View style={{ paddingVertical: 10 }}>
-                <Text note style={{ textAlign: 'center' }}>
-                  { this.props.t('CHOOSE_SERVER') }
-                </Text>
-              </View>
+              <Button block bordered onPress={ _ => this.props.navigation.navigate('HomeChooseCity') } testID="chooseCityBtn">
+                <Text>{ this.props.t('CHOOSE_CITY') }</Text>
+              </Button>
+            </View>
+            <View style={{ paddingVertical: 10 }}>
+              <Text note style={{ textAlign: 'center' }}>
+                { this.props.t('CHOOSE_SERVER') }
+              </Text>
             </View>
           </View>
-        </Content>
-      </Container>
+        </View>
+      </View>
     )
   }
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   disclaimerRow: {
     flex: 1,
     alignItems: 'center',
