@@ -13,10 +13,10 @@
   "dependencies": {
     "@mapbox/polyline": "^1.1.0",
     "@mauron85/react-native-background-geolocation": "^0.6.3",
-    "@react-native-community/async-storage": "^1.6.2",
+    "@react-native-community/async-storage": "^1.8.0",
     "@react-native-community/datetimepicker": "^2.2.1",
     "@react-native-community/masked-view": "^0.1.5",
-    "@react-native-community/netinfo": "^5.0",
+    "@react-native-community/netinfo": "^5.5.0",
     "@react-native-community/push-notification-ios": "^1.0.6",
     "@terrylinla/react-native-sketch-canvas": "^0.8.0",
     "@turf/turf": "^5.1.6",
