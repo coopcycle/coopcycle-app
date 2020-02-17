@@ -8720,9 +8720,9 @@ react-native-modal@^10.0.0:
     react-native-animatable "^1.3.1"
 
 react-native-modal@^11.5.1:
-  version "11.5.3"
-  resolved "https://registry.yarnpkg.com/react-native-modal/-/react-native-modal-11.5.3.tgz#28b4c761680a165eaf1d2c0fb08e272c0191b39f"
-  integrity sha512-U6RghSkZUZ6c0LHMbwAnVscEwGoI58eXfBstVs18t50miV0GmLcJhIOu5OND+SDGVkBQFiGFRu/pTUJaA7wfGw==
+  version "11.5.4"
+  resolved "https://registry.yarnpkg.com/react-native-modal/-/react-native-modal-11.5.4.tgz#96252895cd10f96a42d3f4884feddda8a9652dde"
+  integrity sha512-3wPBtba2maa4TczV1MeBv/M/8qcipxfOr+HG5pKF7qHmH5MlfaF22OmRhg1ioSN7+rkRkF/gvYIGQOufpI7emQ==
   dependencies:
     prop-types "^15.6.2"
     react-native-animatable "1.3.3"
