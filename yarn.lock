@@ -8612,6 +8612,11 @@ react-native-easy-grid@0.2.2:
   dependencies:
     lodash "^4.17.15"
 
+react-native-email-link@^1.7.2:
+  version "1.7.2"
+  resolved "https://registry.yarnpkg.com/react-native-email-link/-/react-native-email-link-1.7.2.tgz#6c34194d7298bf0bb6d43ad1a2c06d1655fa3511"
+  integrity sha512-0fZegSKNtKBfJDcg0xYeNk7j6UVI1C0xXkoMr57Z6cZhYpwjIuJQLx/cGdhYMbE5YJxass0HDmr0T6DuEiviIA==
+
 react-native-firebase@^5.6.0:
   version "5.6.0"
   resolved "https://registry.yarnpkg.com/react-native-firebase/-/react-native-firebase-5.6.0.tgz#6f6123f53cb73477915dd55c55f3e1de91db38d2"
