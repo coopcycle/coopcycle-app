@@ -91,6 +91,20 @@ const spliceOrders = (state, payload) => {
   return state.orders
 }
 
+const addOrReplace = (state, payload) => {
+
+  const newOrders = state.orders.slice(0)
+
+  const orderIndex = _.findIndex(state.orders, o => o['@id'] === payload['@id'])
+  if (orderIndex !== -1) {
+    newOrders.splice(orderIndex, 1, { ...payload })
+
+    return newOrders
+  }
+
+  return newOrders.concat([ payload ])
+}
+
 const spliceProducts = (state, payload) => {
 
   const productIndex = _.findIndex(state.products, product => product['@id'] === payload['@id'])
@@ -180,7 +194,7 @@ export default (state = initialState, action = {}) => {
         ...state,
         fetchError: false,
         isFetching: false,
-        orders: state.orders.slice(0).concat([ action.payload ]),
+        orders: addOrReplace(state, action.payload),
       }
 
     case ACCEPT_ORDER_SUCCESS:
