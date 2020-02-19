@@ -1,5 +1,6 @@
 import firebase from 'react-native-firebase'
 import { Alert, AppState, Linking } from 'react-native'
+import _ from 'lodash'
 
 /**
  * App behavior when receiving messages that include both notification and data payloads
@@ -16,11 +17,11 @@ import { Alert, AppState, Linking } from 'react-native'
  * @see https://rnfirebase.io/docs/v4.2.x/notifications/receiving-notifications
  */
 
-const parseNotification = (notification, isForeground) => {
+export const parseNotification = (notification, isForeground) => {
 
   let data = notification.data
 
-  if (data.hasOwnProperty('event')) {
+  if (data.event && _.isString(data.event)) {
     data.event = JSON.parse(data.event)
   }
 
