@@ -55,8 +55,12 @@ class Photo extends Component {
               ref={ (ref) => { this.camera = ref }}
               style={ styles.camera }
               type={ RNCamera.Constants.Type.back }
-              permissionDialogTitle={'Permission to use camera'}
-              permissionDialogMessage={'We need your permission to use your camera phone'}
+              androidCameraPermissionOptions={{
+                title: 'Permission to use camera',
+                message: 'We need your permission to use your camera',
+                buttonPositive: 'Ok',
+                buttonNegative: 'Cancel',
+              }}
               captureAudio={ false }>
               <Button style={ styles.takePictureBtn } light onPress={ this._takePicture.bind(this) }>
                 <Icon type="FontAwesome" name="camera" />

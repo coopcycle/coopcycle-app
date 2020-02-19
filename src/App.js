@@ -38,7 +38,6 @@ YellowBox.ignoreWarnings([
   // @see https://github.com/invertase/react-native-firebase/issues/1446
   'Require cycle:',
   // react-native-camera
-  'permissionDialogTitle and permissionDialogMessage are deprecated',
   'Warning: componentWillMount has been renamed',
   'Warning: componentWillReceiveProps has been renamed',
   'Warning: componentWillUpdate has been renamed',
