@@ -27,7 +27,9 @@ class PushNotification {
       PushNotificationIOS.addEventListener('register', registerListener)
 
       notificationListener = notification => {
-        notification.finish(PushNotificationIOS.FetchResult.NoData)
+        // Don't use PushNotificationIOS.FetchResult.NoData
+        // @see https://github.com/invertase/react-native-firebase/issues/1870
+        notification.finish('backgroundFetchResultNoData')
         options.onNotification(parseNotification(notification, AppState.currentState === 'active'))
       }
       PushNotificationIOS.addEventListener('notification', notificationListener)
