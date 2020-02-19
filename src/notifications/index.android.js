@@ -111,6 +111,21 @@ class PushNotification {
             }
           )
         } else {
+
+          // Create notification channels (Android > 8.x, API Level >= 26)
+          // @see https://developer.android.com/guide/topics/ui/notifiers/notifications?hl=en#ManageChannels
+          // @see https://rnfirebase.io/docs/v5.x.x/notifications/android-channels
+          const importantChannel = new firebase.notifications.Android.Channel(
+            'coopcycle_important',
+            'CoopCycle (Important)',
+            firebase.notifications.Android.Importance.Max
+          )
+          importantChannel
+            .setDescription('Important CoopCycle updates')
+            .enableLights(true)
+            .enableVibration(true)
+          firebase.notifications().android.createChannel(importantChannel)
+
           firebase.messaging()
             .getToken()
             .then(fcmToken => {
