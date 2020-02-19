@@ -7,6 +7,7 @@ import Sound from 'react-native-sound'
 import moment from 'moment'
 import Modal from 'react-native-modal'
 import { NavigationActions, StackActions } from 'react-navigation'
+import _ from 'lodash'
 
 import PushNotification from '../notifications'
 import NavigationHolder from '../NavigationHolder'
@@ -98,7 +99,28 @@ class NotificationHandler extends Component {
     PushNotification.configure({
       onRegister: token => this.props.registerPushNotificationToken(token),
       onNotification: notification => {
-        const { event } = notification.data
+
+        console.log('onNotification', notification)
+
+        let event = {
+          name: 'unknown',
+          data: {}
+        }
+
+        // Legacy
+        // New versions of FCM only accepts key/value pairs as strings
+        if (_.isObject(notification.data.event)) {
+          event = notification.data.event
+        }
+
+        if (notification.data.event_name) {
+          const { event_name, ...otherProps } = notification.data
+
+          event = {
+            name: event_name,
+            data: otherProps,
+          }
+        }
 
         if (event && event.name === 'order:created') {
           const { order } = event.data
