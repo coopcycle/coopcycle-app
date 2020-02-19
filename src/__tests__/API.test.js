@@ -1,6 +1,7 @@
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 import allSettled from 'promise.allsettled'
+import RNFetchBlob from 'rn-fetch-blob'
 
 import { createClient } from '../API'
 
@@ -115,6 +116,42 @@ describe('HTTP client', () => {
           expect(results[1].reason.response.status).toEqual(401)
 
           resolve()
+        })
+    })
+  })
+
+  it('retries file upload', () => {
+
+    mock.onPost('http://demo.coopcycle.org/api/token/refresh').reply(200, {
+      token: validToken,
+      refresh_token: '123456',
+    })
+
+    RNFetchBlob.fetch = jest.fn()
+    RNFetchBlob.fetch.mockResolvedValueOnce({
+      info: () => ({ status: 401 }),
+      json: () => ({}),
+    })
+    RNFetchBlob.fetch.mockResolvedValueOnce({
+      info: () => ({ status: 201 }),
+      json: () => ({ '@id': '/api/task_images/1' }),
+    })
+
+    const client = createClient('http://demo.coopcycle.org', {
+      token: expiredToken,
+      refreshToken: '123456'
+    })
+
+    return new Promise((resolve, reject) => {
+
+      client.uploadFile('/api/images', '12345678')
+        .then(response => {
+
+          expect(response).toEqual({ '@id': '/api/task_images/1' })
+          expect(RNFetchBlob.fetch).toHaveBeenCalledTimes(2)
+
+          resolve()
+
         })
     })
   })

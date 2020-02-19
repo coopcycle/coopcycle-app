@@ -1,7 +1,6 @@
 import configureStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import moment from 'moment'
-import RNFetchBlob from 'rn-fetch-blob'
 
 import {
   LOAD_TASKS_REQUEST, LOAD_TASKS_SUCCESS, LOAD_TASKS_FAILURE,
@@ -177,9 +176,11 @@ describe('Redux | Tasks | Actions', () => {
       put: jest.fn(),
       getToken: () => '123456',
       getBaseURL: () => 'https://test.coopcycle.org',
+      uploadFile: jest.fn(),
     }
     client.put.mockResolvedValue(resolveValue)
     client.put.mockResolvedValue(resolveValue)
+    client.uploadFile.mockResolvedValue({ '@id': '/api/task_images/1' })
 
     const store = mockStore({
       app: { httpClient: client },
@@ -191,12 +192,6 @@ describe('Redux | Tasks | Actions', () => {
           pictures: [],
         },
       },
-    })
-
-    RNFetchBlob.fetch = jest.fn()
-    RNFetchBlob.fetch.mockResolvedValue({
-      info: () => ({ status: 201 }),
-      json: () => ({ '@id': '/api/task_images/1' }),
     })
 
     // Make sure to return the promise
