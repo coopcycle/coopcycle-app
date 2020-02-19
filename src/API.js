@@ -2,6 +2,7 @@ import i18n from './i18n'
 import axios from 'axios'
 import qs from 'qs'
 import _ from 'lodash'
+import RNFetchBlob from 'rn-fetch-blob'
 
 let subscribers = []
 let errorSubscribers = []
@@ -334,6 +335,73 @@ Client.prototype.setNewPassword = function(token, password) {
 
 Client.prototype.cloneWithToken = function(token) {
   return new Client(this.getBaseURL(), { token })
+}
+
+Client.prototype.uploadFile = function(uri, base64) {
+
+  // Remove line breaks from Base64 string
+  const base64AsString = base64.replace(/(\r\n|\n|\r)/gm, '')
+
+  const headers = {
+    'Authorization' : `Bearer ${this.getToken()}`,
+    'Content-Type' : 'multipart/form-data',
+  }
+
+  const body = [{
+    name : 'file',
+    filename: 'filename.jpg', // This is needed to work
+    data: base64AsString,
+  }]
+
+  return new Promise((resolve, reject) => {
+
+    RNFetchBlob
+      .fetch('POST', `${this.getBaseURL()}${uri}`, headers, body)
+      // Warning: this is not a standard fetch respone
+      // @see https://github.com/joltup/rn-fetch-blob/wiki/Classes#rnfetchblobresponse
+      .then(fetchBlobResponse => {
+
+        const fetchBlobResponseInfo = fetchBlobResponse.info()
+
+        switch (fetchBlobResponseInfo.status) {
+        case 401:
+
+          addSubscriber(token => {
+            console.log('Retrying request…')
+            this.uploadFile(uri, base64).then(response => resolve(response))
+          })
+
+          addErrorSubscriber((e) => {
+            reject(e)
+          })
+
+          if (!isRefreshingToken) {
+
+            isRefreshingToken = true
+
+            console.log('Refreshing token for file upload…')
+
+            this.refreshToken()
+              // Make sure to resolve/reject the Promise that was returned
+              .then(token => onTokenFetched(token))
+              .catch(e => onTokenRefreshError(e))
+              .finally(() => {
+                isRefreshingToken = false
+              })
+          }
+
+          break
+        case 400:
+          return reject(fetchBlobResponse.json())
+        case 201:
+          return resolve(fetchBlobResponse.json())
+        default:
+          reject()
+        }
+
+      })
+      .catch(e => reject(e))
+  })
 }
 
 function credentialsToUser(credentials) {

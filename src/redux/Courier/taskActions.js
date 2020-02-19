@@ -1,6 +1,5 @@
 import { Alert } from 'react-native'
 import { createAction } from 'redux-actions'
-import RNFetchBlob from 'rn-fetch-blob'
 import firebase from 'react-native-firebase'
 
 import NavigationHolder from '../../NavigationHolder'
@@ -179,44 +178,7 @@ export function markTaskDone(httpClient, task, notes = '', onSuccess) {
 
 function uploadTaskImage(httpClient, base64) {
 
-  // Remove line breaks from Base64 string
-  const base64AsString = base64.replace(/(\r\n|\n|\r)/gm, '')
-
-  const headers = {
-    'Authorization' : `Bearer ${httpClient.getToken()}`,
-    'Content-Type' : 'multipart/form-data',
-  }
-
-  const body = [{
-    name : 'file',
-    filename: 'filename.jpg', // This is needed to work
-    data: base64AsString,
-  }]
-
-  return new Promise((resolve, reject) => {
-
-    RNFetchBlob
-      .fetch('POST', httpClient.getBaseURL() + '/api/task_images', headers, body)
-      // Warning: this is not a standard fetch respone
-      // @see https://github.com/joltup/rn-fetch-blob/wiki/Classes#rnfetchblobresponse
-      .then(fetchBlobResponse => {
-
-        const fetchBlobResponseInfo = fetchBlobResponse.info()
-
-        switch (fetchBlobResponseInfo.status) {
-        case 400:
-          return reject(fetchBlobResponse.json())
-        case 201:
-          return resolve(fetchBlobResponse.json())
-        default:
-          reject()
-        }
-
-        // TODO Manage token expired
-
-      })
-      .catch(e => reject(e))
-  })
+  return httpClient.uploadFile('/api/task_images', base64)
 }
 
 export function setTasksChangedAlertSound(enabled) {
