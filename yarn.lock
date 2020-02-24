@@ -8660,9 +8660,9 @@ react-native-maps@0.26.1:
   integrity sha512-p4VTB8YB5ZmOmDRCUpoHZkm05amZwhIo04AJMBbB9+JAR2PNNfpo0vceoWX0Mag4wnePkdzPomeWMplr/wimTg==
 
 react-native-modal-datetime-picker@^8.2.0:
-  version "8.2.0"
-  resolved "https://registry.yarnpkg.com/react-native-modal-datetime-picker/-/react-native-modal-datetime-picker-8.2.0.tgz#7f67d44afab7416e5c662a0d64c99a1c7f644379"
-  integrity sha512-+9ZKjZ3UhvDDHmJybyoeuNKSSWvFuUzGhPMknM6D+5SNFzunf2fw+VcTTC8tKwUfCC746Ea1UwngObBZVQOFAQ==
+  version "8.4.0"
+  resolved "https://registry.yarnpkg.com/react-native-modal-datetime-picker/-/react-native-modal-datetime-picker-8.4.0.tgz#cc047548060d5295b2d3c0013c67ef5ec04b86d1"
+  integrity sha512-arjU8ih01AXrU2afNwJEST5MLznvJFPuxCd6AQtlB86yPfXn1XFqlydVdlWe1mzPb/69Sx6jSZGvnkVl3Tb2JA==
   dependencies:
     prop-types "^15.7.2"
 
