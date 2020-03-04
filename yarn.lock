@@ -1220,10 +1220,10 @@
   dependencies:
     plist "^3.0.1"
 
-"@react-native-community/async-storage@^1.8.0":
-  version "1.8.0"
-  resolved "https://registry.yarnpkg.com/@react-native-community/async-storage/-/async-storage-1.8.0.tgz#5f23ad486daa284398c71f2cc94d15fb7be40bb8"
-  integrity sha512-R8hYm9h7MqoTa/opzBID6hhL5rseNoMJK1wG/B/Diob+JzEv7b1GMpHjsAZX2pU2o82LU73XbPJOPzfvkGFaUA==
+"@react-native-community/async-storage@^1.8.1":
+  version "1.8.1"
+  resolved "https://registry.yarnpkg.com/@react-native-community/async-storage/-/async-storage-1.8.1.tgz#c93e69dcf948667b207e409b8039b7edf199159b"
+  integrity sha512-MA1fTp4SB7OOtDmNAwds6jIpiwwty1NIoFboWjEWkoyWW35zIuxlhHxD4joSy21aWEzUVwvv6JJ2hSsP/HTb7A==
 
 "@react-native-community/cli-debugger-ui@^3.0.0":
   version "3.0.0"
@@ -1350,15 +1350,15 @@
   resolved "https://registry.yarnpkg.com/@react-native-community/masked-view/-/masked-view-0.1.6.tgz#c7f2ac187c1f25aa8c30d11baa8f4398eca3bb84"
   integrity sha512-PpMoeXwPUoldCRKDuSi+zK5rT+sJTW6ri6RdGPkSKRzU77Q1d9IaR0O5IKvBj0XSdL3p+dcOa05gk35aGDffBQ==
 
-"@react-native-community/netinfo@^5.5.0":
-  version "5.5.0"
-  resolved "https://registry.yarnpkg.com/@react-native-community/netinfo/-/netinfo-5.5.0.tgz#7f1d2e301b8a1294da44fb44d7b3fd6ea4d40c8a"
-  integrity sha512-9fdOk1dxR3Bt+T4OuQxhf7EjyfbI6qVbPcNfTvVjGgRrx798ixAbBcCC+k5wp3LloVChVicXkyblu+wXEGiCWw==
+"@react-native-community/netinfo@^5.5.1":
+  version "5.5.1"
+  resolved "https://registry.yarnpkg.com/@react-native-community/netinfo/-/netinfo-5.5.1.tgz#6433d4d9d5fbe836f019e5a88a6a24b6e2dc50b9"
+  integrity sha512-6NKX/WzzC5FP2RSzoq+7CW/iIiRL2S6yN0JKiGvZ8EWAzJ43dbX5KG4kRa1JiKopAal5Vyh80dymbygeylwekQ==
 
-"@react-native-community/push-notification-ios@^1.0.6":
-  version "1.0.6"
-  resolved "https://registry.yarnpkg.com/@react-native-community/push-notification-ios/-/push-notification-ios-1.0.6.tgz#d0e90ec91139a6dfa043a572d41fe694db58bf54"
-  integrity sha512-aTFlFZcYhkPgqq7IdktkubqaG0hVHuSEerjGkR0IwVljbkEahqKMJzTWjVH95YcgEEkPLDqYv39Ie7WYfQdndA==
+"@react-native-community/push-notification-ios@^1.0.7":
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/@react-native-community/push-notification-ios/-/push-notification-ios-1.0.7.tgz#4b3b459fb3d6bdf0a9851efdd430fdc0bd7a05f9"
+  integrity sha512-qY+vdaWVif7ulcdDTd9KryDudbuWtPnT4H0mWGadE73lSNM9X6x131WArAl0+Oo1tqfmE1TKRSocSN7CG0Ou/Q==
   dependencies:
     invariant "^2.2.4"
 
@@ -5373,10 +5373,10 @@ globals@^11.1.0, globals@^11.7.0:
   resolved "https://registry.yarnpkg.com/globals/-/globals-11.12.0.tgz#ab8795338868a0babd8525758018c2a7eb95c42e"
   integrity sha512-WOBp/EEGUiIsJSp7wcv/y6MO+lV9UoncWqxuFfm8eBwzWNgyfBd6Gz+IeKQ9jCmyhoH99g15M3T+QaVHFjizVA==
 
-google-libphonenumber@^3.2.5:
-  version "3.2.6"
-  resolved "https://registry.yarnpkg.com/google-libphonenumber/-/google-libphonenumber-3.2.6.tgz#3d725b48ff44706b80246e77f95f2c2fdc6fd729"
-  integrity sha512-6QCQAaKJlSd/1dUqvdQf7zzfb3uiZHsG8yhCfOdCVRfMuPZ/VDIEB47y5SYwjPQJPs7ebfW5jj6PeobB9JJ4JA==
+google-libphonenumber@^3.2.7:
+  version "3.2.7"
+  resolved "https://registry.yarnpkg.com/google-libphonenumber/-/google-libphonenumber-3.2.7.tgz#1a8d790206631cd9a56a0f79dc4aa086e17b6f5b"
+  integrity sha512-8Es+gIaGoBddq/tqegG52iuzHOV+VU+de2mvkIOVlDkg/bnJlNdVZcof6iMPChy9Dte+si7BJeDaaueBtFoV6Q==
 
 graceful-fs@^4.1.11, graceful-fs@^4.1.15, graceful-fs@^4.1.2, graceful-fs@^4.1.3, graceful-fs@^4.1.6, graceful-fs@^4.1.9, graceful-fs@^4.2.3:
   version "4.2.3"
@@ -6712,10 +6712,10 @@ levn@^0.3.0, levn@~0.3.0:
     prelude-ls "~1.1.2"
     type-check "~0.3.2"
 
-libphonenumber-js@^1.7.38:
-  version "1.7.38"
-  resolved "https://registry.yarnpkg.com/libphonenumber-js/-/libphonenumber-js-1.7.38.tgz#5f59298859f146eaf795061ae220f88371814971"
-  integrity sha512-3NMPjWl15E51vWtXYdhVXo+DtZcR35OmXfJQWcwQ28XEbpSWOnQXbkaIZq8RmMv5jiY4fMQxBY7MUXvioApOHg==
+libphonenumber-js@^1.7.46:
+  version "1.7.46"
+  resolved "https://registry.yarnpkg.com/libphonenumber-js/-/libphonenumber-js-1.7.46.tgz#72e5bc1337ec3898e8a00971161fa16cb542ccf9"
+  integrity sha512-NrNz2+OW/7lb4HnKDbcYOMCY0SOzCa7EHFY0hHeHl9JMJmpvTmonPaLiMAE1M+K1HWCsXtGdDj9AkOmr5DKqIQ==
   dependencies:
     minimist "^1.2.0"
     xml2js "^0.4.17"
@@ -8507,10 +8507,10 @@ react-native-autocomplete-input@^4.1.0:
   resolved "https://registry.yarnpkg.com/react-native-autocomplete-input/-/react-native-autocomplete-input-4.1.0.tgz#979ece28d891b245ecb967b6d31f1f924445b8ab"
   integrity sha512-Yn4GulZ9F6tde74UUGZHdVFeYWVuL7+EbUZy6kt+QHrzMc5B4OuRop1FT4RyWLpvbySW/vvqYgj9LAmlzkuEqA==
 
-react-native-ble-manager@^7.0.0:
-  version "7.1.1"
-  resolved "https://registry.yarnpkg.com/react-native-ble-manager/-/react-native-ble-manager-7.1.1.tgz#3627fb3a7fb013b69842f82cd779620096f31541"
-  integrity sha512-acY7F1p9o5TrCt2lN5ZCD+1ekZZrq6JjLcZ57HIIdKjbwrRmjAnY3QuuzWrMdIo9Y1PeG/2b/fhwcZpb1yBOFA==
+react-native-ble-manager@^7.1.4:
+  version "7.1.4"
+  resolved "https://registry.yarnpkg.com/react-native-ble-manager/-/react-native-ble-manager-7.1.4.tgz#619bb0462d5dd1db08565ba90aec561794bf843b"
+  integrity sha512-x9ccpiZp0mnJAvFJVL5N0SO6UTGJJSHgv+MgtC04PJKRj0DpVLelQw5UbxTJKw36w26HtXSb/HkaT+mTKlQTZA==
 
 react-native-calendars@^1.212.0:
   version "1.263.0"
@@ -8638,10 +8638,10 @@ react-native-localize@^1.3.0:
   resolved "https://registry.yarnpkg.com/react-native-localize/-/react-native-localize-1.3.3.tgz#3e29520b4c7907227729326dfbf2f2643a07495a"
   integrity sha512-lpKx/iqDKQ7dC58fb/vGGERLT4ZYfk+H2AXMg6aaVkgv8eEIgApQAzB2Oaotx7FIM/RopJponUFyJ4PMIHi4Rw==
 
-react-native-map-link@^2.5.1:
-  version "2.7.3"
-  resolved "https://registry.yarnpkg.com/react-native-map-link/-/react-native-map-link-2.7.3.tgz#4e3cc7b5b9e5dc640cd45f4514dacf5dc36fc4ae"
-  integrity sha512-2C3gYWYi+x0Tjfiu14K0hPtP1Dgyc9eJC9QqpS1p1oXID4huPv3hvqMXuXVTNpjQnW0HEUc7y3tPKxboJCNdCA==
+react-native-map-link@^2.7.4:
+  version "2.7.4"
+  resolved "https://registry.yarnpkg.com/react-native-map-link/-/react-native-map-link-2.7.4.tgz#d5cb878bc0110263c4b5175e73e77440fd220cb8"
+  integrity sha512-J7tgM9bodHIsSq0Zdw0Qq5duXOtvjQq5rvUpSzCAc+N4d9qSUSO0zN/hNpLmZnQf1xb1rzbZmt5JwBSXOC8THA==
   dependencies:
     prop-types "^15.7.2"
     react-native-modal "^10.0.0"
@@ -8666,10 +8666,10 @@ react-native-modal-datetime-picker@^8.2.0:
   dependencies:
     prop-types "^15.7.2"
 
-react-native-modal-selector@^1.1.4:
-  version "1.1.4"
-  resolved "https://registry.yarnpkg.com/react-native-modal-selector/-/react-native-modal-selector-1.1.4.tgz#ea67943b93e85818a30cfe05dcaa61d66b036e27"
-  integrity sha512-FSSC+iqaki5Zi7dkP0t95jYKI/+ciRs1xgTAEubHEj1uycqh9eV6dCjpsJH434zC5g9uRcQKBl+uqw4gZGG7tA==
+react-native-modal-selector@^1.1.5:
+  version "1.1.5"
+  resolved "https://registry.yarnpkg.com/react-native-modal-selector/-/react-native-modal-selector-1.1.5.tgz#17fed51943f5025875c0af8f2bd2cbbfcbb3fd6e"
+  integrity sha512-4qjMDSHCoWJSSxCsiNvKQiAH0LMg5ef/dijmlac7km+UzMeAzD6GIub9Xa1vSoQojRkF7NEz5ug+g8giOxDIaA==
   dependencies:
     prop-types "^15.5.10"
 
