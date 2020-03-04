@@ -364,7 +364,7 @@ PODS:
     - React
   - RNReanimated (1.7.0):
     - React
-  - RNScreens (2.0.0-beta.10):
+  - RNScreens (2.2.0):
     - React
   - RNSketchCanvas (0.8.0):
     - React
@@ -615,7 +615,7 @@ SPEC CHECKSUMS:
   RNGestureHandler: dde546180bf24af0b5f737c8ad04b6f3fa51609a
   RNLocalize: a734b53c45e77acd3ffb78b92e63bb4d6cd13257
   RNReanimated: 031fe8d9ea93c2bd689a40f05320ef9d96f74d7f
-  RNScreens: c596b54c3ab63b0390aa3cb081edd438147d40ae
+  RNScreens: 812b79d384e2bea7eebc4ec981469160d4948fd5
   RNSketchCanvas: 9c28adb5381543ed55cc98ce6de46479cb3cb12c
   RNSound: da030221e6ac7e8290c6b43f2b5f2133a8e225b0
   Stripe: db29ad197c74aca6fb981e4e8355cf7ebd0fca5a
