@@ -6713,9 +6713,9 @@ levn@^0.3.0, levn@~0.3.0:
     type-check "~0.3.2"
 
 libphonenumber-js@^1.7.38:
-  version "1.7.38"
-  resolved "https://registry.yarnpkg.com/libphonenumber-js/-/libphonenumber-js-1.7.38.tgz#5f59298859f146eaf795061ae220f88371814971"
-  integrity sha512-3NMPjWl15E51vWtXYdhVXo+DtZcR35OmXfJQWcwQ28XEbpSWOnQXbkaIZq8RmMv5jiY4fMQxBY7MUXvioApOHg==
+  version "1.7.45"
+  resolved "https://registry.yarnpkg.com/libphonenumber-js/-/libphonenumber-js-1.7.45.tgz#c0e80e1392c8b77564abc5366b5053423a517dd3"
+  integrity sha512-cj46yq224r08HUPNGLmsJEl+dowMpp9RDAWVUTB8Cb4WaiKaFUTyPENWjyIDGjFHZzwryB+E1aoDB3bhemS8sA==
   dependencies:
     minimist "^1.2.0"
     xml2js "^0.4.17"
