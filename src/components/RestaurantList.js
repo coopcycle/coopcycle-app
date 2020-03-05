@@ -52,21 +52,14 @@ class RestaurantList extends Component {
 
   constructor(props) {
     super(props)
-    this.matchingCounter = 0
   }
 
   renderItem(restaurant, index) {
 
-    let testID = `restaurants:${index}`
-    if (restaurant.address.streetAddress.match(/75020/g) || restaurant.address.streetAddress.match(/75010/g) || restaurant.address.streetAddress.match(/75019/g)) {
-      testID = `restaurantMatches:${this.matchingCounter}`
-      this.matchingCounter += 1
-    }
-
     return (
       <TouchableOpacity
         onPress={ () => this.props.onItemClick(restaurant) }
-        testID={ testID }>
+        testID={ restaurant.testID }>
         <View style={ styles.item }>
           <View style={{ flex: 1, width: '66.6666%', padding: 15, paddingBottom: 25 }}>
             <OneLineText style={ [ styles.restaurantNameText ] }>{ restaurant.name }</OneLineText>
@@ -86,11 +79,29 @@ class RestaurantList extends Component {
 
   render() {
 
+    let matchingCounter = 0
+    const restaurantsWithTestIDs = this.props.restaurants.map((restaurant, index) => {
+
+      let testID = `restaurants:${index}`
+      if (restaurant.address.streetAddress.match(/75020/g)
+      ||  restaurant.address.streetAddress.match(/75010/g)
+      ||  restaurant.address.streetAddress.match(/75019/g)) {
+        testID = `restaurantMatches:${matchingCounter}`
+        matchingCounter += 1
+      }
+
+      return {
+        ...restaurant,
+        testID
+      }
+
+    })
+
     return (
       <View style={ styles.container }>
         <FlatList
           testID="restaurantList"
-          data={ this.props.restaurants }
+          data={ restaurantsWithTestIDs }
           keyExtractor={ (item, index) => item['@id'] }
           renderItem={ ({ item, index }) => this.renderItem(item, index) } />
       </View>
