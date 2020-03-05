@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { InteractionManager, StyleSheet, TextInput, View } from 'react-native'
+import { InteractionManager, Platform, StyleSheet, TextInput, View } from 'react-native'
 import {
   Container, Content,
   Text, Button,
@@ -111,6 +111,9 @@ class NewDelivery extends Component {
           cancelText={ this.props.t('CANCEL') }
           initValue={ this.props.t('STORE_NEW_DELIVERY_SELECT_TIME_SLOT') }
           accessible={ true }
+          // Bug on Android
+          // The component thinks it's a long press while it's a short press
+          enableLongPress={ Platform.OS === 'android' }
           onChange={ value => {
             setFieldValue('timeSlot', value.key)
             setFieldTouched('timeSlot')
