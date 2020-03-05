@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, YellowBox } from 'react-native'
+import { Platform, View, YellowBox } from 'react-native'
 
 import { StyleProvider } from 'native-base'
 import getTheme from '../native-base-theme/components'
@@ -12,6 +12,14 @@ import { PersistGate } from 'redux-persist/integration/react'
 
 import axios from 'axios'
 import VersionNumber from 'react-native-version-number'
+
+import KeyboardManager from 'react-native-keyboard-manager'
+
+if (Platform.OS === 'ios') {
+    KeyboardManager.setEnable(false)
+    KeyboardManager.setEnableAutoToolbar(false)
+    KeyboardManager.setToolbarPreviousNextButtonEnable(false)
+}
 
 axios.defaults.headers.common['X-CoopCycle-App-Version'] = VersionNumber.appVersion
 

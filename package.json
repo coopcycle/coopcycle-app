@@ -51,6 +51,7 @@
     "react-native-gesture-handler": "^1.6.0",
     "react-native-google-places-autocomplete": "^1.3.9",
     "react-native-keep-awake": "^4.0.0",
+    "react-native-keyboard-manager": "^4.0.13-16",
     "react-native-loading-spinner-overlay": "^1.0.1",
     "react-native-localize": "^1.3.0",
     "react-native-map-link": "^2.7.4",

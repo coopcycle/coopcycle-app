@@ -16,6 +16,7 @@ import {
   parsePhoneNumberFromString,
   AsYouType,
 } from 'libphonenumber-js'
+import KeyboardManager from 'react-native-keyboard-manager'
 
 import { createDelivery, loadTimeSlot } from '../../redux/Store/actions'
 import { selectStore, selectTimeSlot } from '../../redux/Store/selectors'
@@ -35,6 +36,18 @@ class NewDelivery extends Component {
     InteractionManager.runAfterInteractions(() => {
       this.props.loadTimeSlot(this.props.store)
     })
+    // This will add a "OK" button above keyboard, to dismiss keyboard
+    if (Platform.OS === 'ios') {
+      KeyboardManager.setEnable(true)
+      KeyboardManager.setEnableAutoToolbar(true)
+    }
+  }
+
+  componentWillUnmount() {
+    if (Platform.OS === 'ios') {
+      KeyboardManager.setEnable(false)
+      KeyboardManager.setEnableAutoToolbar(false)
+    }
   }
 
   _showDateTimePicker() {
