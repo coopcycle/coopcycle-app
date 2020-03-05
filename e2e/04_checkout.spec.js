@@ -13,10 +13,15 @@ describe('Checkout', () => {
     await expect(element(by.id('checkoutSearch'))).toBeVisible()
     await expect(element(by.id('restaurantList'))).toBeVisible()
 
-    await waitFor(element(by.id('restaurantMatches:2')))
-      .toBeVisible()
-      .whileElement(by.id('restaurantList')).scroll(80, 'down')
-    await element(by.id('restaurantMatches:2')).tap()
+    try {
+        await expect(element(by.id('restaurantMatches:0'))).toBeVisible()
+    } catch (e) {
+        await waitFor(element(by.id('restaurantMatches:0')))
+          .toBeVisible()
+          .whileElement(by.id('restaurantList')).scroll(120, 'down')
+    }
+
+    await element(by.id('restaurantMatches:0')).tap()
 
     await waitFor(element(by.id('menu'))).toExist().withTimeout(5000)
     await waitFor(element(by.id('menuItem:0:0'))).toExist().withTimeout(5000)
