@@ -80,8 +80,10 @@ jobs:
           script: |
             bash -c "echo 'hw.lcd.height=2560' >> /Users/runner/.android/avd/test.avd/config.ini"
             bash -c "echo 'hw.lcd.width=1440' >> /Users/runner/.android/avd/test.avd/config.ini"
-            node node_modules/.bin/detox test -c android.att.release --device-name=emulator-5554 --loglevel trace --take-screenshots all
+            node node_modules/.bin/detox test -c android.att.release --device-name="emulator-5554" --take-screenshots all --loglevel trace
+            node node_modules/.bin/detox test -c android.att.release --device-name="emulator-5554" --take-screenshots manual -o e2e/screenshots.config.json --loglevel trace
       - name: Upload screenshots artifacts
+        if: github.ref == 'refs/heads/master'
         uses: actions/upload-artifact@v1
         with:
           name: detox-screenshots-android
