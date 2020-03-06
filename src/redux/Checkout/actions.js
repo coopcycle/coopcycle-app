@@ -126,7 +126,7 @@ function onSetAddress(address) {
 }
 
 // This action may be dispatched several times "recursively"
-export function addItem(item, options = []) {
+export function addItem(item, options) {
 
   return (dispatch, getState) => {
 
@@ -179,10 +179,11 @@ export function addItem(item, options = []) {
       return
     }
 
-    if (item.hasOwnProperty('menuAddOn') && Array.isArray(item.menuAddOn) && item.menuAddOn.length > 0
-      && options.length === 0) {
-      NavigationHolder.navigate('CheckoutProductOptions', { product: item })
-      return
+    if (item.hasOwnProperty('menuAddOn') && Array.isArray(item.menuAddOn) && item.menuAddOn.length > 0) {
+      if (options === undefined) {
+        NavigationHolder.navigate('CheckoutProductOptions', { product: item })
+        return
+      }
     }
 
     dispatch(addItemRequest(item))

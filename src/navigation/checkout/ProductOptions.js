@@ -22,7 +22,9 @@ class ProductOptions extends Component {
       isValid: false,
     }
     this.list = React.createRef()
-    this.optionsBuilder = new ProductOptionsBuilder()
+
+    const product = props.navigation.getParam('product')
+    this.optionsBuilder = new ProductOptionsBuilder(product && product.menuAddOn)
   }
 
   componentDidMount() {
@@ -93,7 +95,7 @@ class ProductOptions extends Component {
   }
 
   renderFooter() {
-    if (this.state.isValid) {
+    if (this.optionsBuilder.isValid()) {
       return (
         <FooterButton
           text={ this.props.t('ADD_TO_CART') }

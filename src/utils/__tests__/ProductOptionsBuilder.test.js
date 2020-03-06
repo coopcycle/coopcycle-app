@@ -27,6 +27,36 @@ const productOptions = [
       {'@type':'MenuItem','name':'Baz','identifier':'2b1f2e13-c957-4786-8c48-d0a2b94806fd','offers':{'@type':'Offer','price':0}},
       {'@type':'MenuItem','name':'Foo','identifier':'8c68f1e4-3cac-48db-b030-9dce70d052e5','offers':{'@type':'Offer','price':0}},
     ],
+  }, {
+    '@type':'MenuSection',
+    'name':'Suppléments',
+    'identifier':'3da98061-b57a-48c1-9c7b-1a26b1cd8963',
+    'additionalType':'free',
+    'additional':true,
+    'valuesRange':'[0,4]',
+    'hasMenuItem':[
+      {'@type':'MenuItem','name':'Bar','identifier':'4363401d-e69e-4c75-9fed-f75e44540b5e','offers':{'@type':'Offer','price':0}},
+      {'@type':'MenuItem','name':'Bat','identifier':'64b97ccc-0ff5-4577-a881-8a0a834fdf81','offers':{'@type':'Offer','price':0}},
+      {'@type':'MenuItem','name':'Baz','identifier':'2b1f2e13-c957-4786-8c48-d0a2b94806fe','offers':{'@type':'Offer','price':0}},
+      {'@type':'MenuItem','name':'Foo','identifier':'8c68f1e4-3cac-48db-b030-9dce70d052e4','offers':{'@type':'Offer','price':0}},
+    ],
+  },
+]
+
+const notMandatoryProductOptions = [
+  {
+    '@type':'MenuSection',
+    'name':'Sauces',
+    'identifier':'SAUCES',
+    'additionalType':'free',
+    'additional':true,
+    'valuesRange':'[0,4]',
+    'hasMenuItem':[
+      {'@type':'MenuItem','name':'Mayo','identifier':'MAYO','offers':{'@type':'Offer','price':0}},
+      {'@type':'MenuItem','name':'Ketchup','identifier':'64b97ccc-0ff5-4577-a881-8a0a834fdf81','offers':{'@type':'Offer','price':0}},
+      {'@type':'MenuItem','name':'Mustard','identifier':'2b1f2e13-c957-4786-8c48-d0a2b94806fe','offers':{'@type':'Offer','price':0}},
+      {'@type':'MenuItem','name':'Foo','identifier':'8c68f1e4-3cac-48db-b030-9dce70d052e4','offers':{'@type':'Offer','price':0}},
+    ],
   },
 ]
 
@@ -149,6 +179,13 @@ describe('ProductOptionsBuilder', () => {
       },
     ])
     expect(optionsBuilder.isValid()).toBe(true)
+
+    // ---
+
+    const notMandatoryProductOptionsBuilder = new ProductOptionsBuilder(notMandatoryProductOptions)
+
+    expect(optionsBuilder.isValid()).toBe(true)
+
   })
 
   it('increments quantity when adding twice', () => {
