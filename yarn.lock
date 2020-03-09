@@ -8507,10 +8507,10 @@ react-native-autocomplete-input@^4.1.0:
   resolved "https://registry.yarnpkg.com/react-native-autocomplete-input/-/react-native-autocomplete-input-4.1.0.tgz#979ece28d891b245ecb967b6d31f1f924445b8ab"
   integrity sha512-Yn4GulZ9F6tde74UUGZHdVFeYWVuL7+EbUZy6kt+QHrzMc5B4OuRop1FT4RyWLpvbySW/vvqYgj9LAmlzkuEqA==
 
-react-native-ble-manager@^7.1.4:
-  version "7.1.4"
-  resolved "https://registry.yarnpkg.com/react-native-ble-manager/-/react-native-ble-manager-7.1.4.tgz#619bb0462d5dd1db08565ba90aec561794bf843b"
-  integrity sha512-x9ccpiZp0mnJAvFJVL5N0SO6UTGJJSHgv+MgtC04PJKRj0DpVLelQw5UbxTJKw36w26HtXSb/HkaT+mTKlQTZA==
+react-native-ble-manager@^7.2.0:
+  version "7.2.0"
+  resolved "https://registry.yarnpkg.com/react-native-ble-manager/-/react-native-ble-manager-7.2.0.tgz#bbbf0e4b1dd01f131c26192413fb7cfa42d738f6"
+  integrity sha512-3N3gb3W3Y7Wdw2nxyam+TRUfRrTAM+rkEKerimmzlVledRWGkhYBLESDhO0pityTzP5HAYVXF1O5GwisTviZ9Q==
 
 react-native-calendars@^1.212.0:
   version "1.263.0"
