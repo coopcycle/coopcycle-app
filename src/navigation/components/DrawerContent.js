@@ -43,7 +43,7 @@ class DrawerContent extends Component {
       _.filter(items, item => item.routeName === 'AccountNav')
 
     const adminItems =
-      _.filter(items, item => _.includes(['DispatchNav'], item.routeName))
+      _.filter(items, item => _.includes(['DispatchNav', 'OrdersNav'], item.routeName))
 
     const otherItems = _.filter(items, item => {
 

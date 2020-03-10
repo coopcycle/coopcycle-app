@@ -21,11 +21,14 @@ import StoreDelivery from './store/Delivery'
 import StoreNewDeliveryAddress from './store/NewDeliveryAddress'
 import StoreNewDeliveryForm from './store/NewDeliveryForm'
 
+import RestaurantAdminDashboard from './restaurant/AdminDashboard'
+
 export default {
   RestaurantsPage: require('./checkout/Search'),
   CheckoutRestaurant: require('./checkout/Restaurant'),
   RestaurantList: require('./restaurant/List'),
   RestaurantDashboard: require('./restaurant/Dashboard'),
+  RestaurantAdminDashboard,
   RestaurantOrder: require('./restaurant/Order'),
   RestaurantOrderRefuse: require('./restaurant/OrderRefuse'),
   RestaurantOrderDelay: require('./restaurant/OrderDelay'),

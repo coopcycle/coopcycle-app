@@ -183,6 +183,21 @@ export function loadOrders(client, restaurant, date) {
   }
 }
 
+export function loadOrdersByDate(date) {
+
+  return function (dispatch, getState) {
+
+    const { app } = getState()
+    const { httpClient } = app
+
+    dispatch(loadOrdersRequest())
+
+    return httpClient.get(`/api/orders?date=${date}`)
+      .then(res => dispatch(loadOrdersSuccess(res['hydra:member'])))
+      .catch(e => dispatch(loadOrdersFailure(e)))
+  }
+}
+
 export function loadMenus(restaurant, date) {
 
   return function (dispatch, getState) {

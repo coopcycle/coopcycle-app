@@ -11,6 +11,7 @@ import CourierNavigator from './CourierNavigator'
 import DispatchNavigator from './DispatchNavigator'
 import RestaurantNavigator from './RestaurantNavigator'
 import StoreNavigator from './StoreNavigator'
+import OrdersNavigator from './OrdersNavigator'
 
 import screens, { defaultNavigationOptions, headerLeft } from '..'
 
@@ -67,6 +68,15 @@ export default createDrawerNavigator({
       drawerLabel: '',
       drawerIcon: ({ tintColor }) => (
         <Icon name="restaurant" style={{ fontSize: 16, color: tintColor }} />
+      ),
+    }),
+  },
+  OrdersNav: {
+    screen: OrdersNavigator,
+    navigationOptions: ({ navigation }) => ({
+      drawerLabel: i18n.t('ORDERS'),
+      drawerIcon: ({ tintColor }) => (
+        <Icon name="cube" type="FontAwesome" style={{ fontSize: 16, color: tintColor }} />
       ),
     }),
   },
