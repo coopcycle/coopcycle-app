@@ -19,9 +19,9 @@ export const SET_CURRENT_ROUTE = 'SET_CURRENT_ROUTE'
 
 export const REGISTER_PUSH_NOTIFICATION_TOKEN = '@app/REGISTER_PUSH_NOTIFICATION_TOKEN'
 export const SAVE_PUSH_NOTIFICATION_TOKEN_SUCCESS = '@app/SAVE_PUSH_NOTIFICATION_TOKEN_SUCCESS'
+export const DELETE_PUSH_NOTIFICATION_TOKEN_SUCCESS = '@app/DELETE_PUSH_NOTIFICATION_TOKEN_SUCCESS'
 
 export const LOGIN = '@app/LOGIN'
-export const LOGOUT = '@app/LOGOUT'
 export const SET_LOADING = '@app/SET_LOADING'
 export const PUSH_NOTIFICATION = '@app/PUSH_NOTIFICATION'
 export const CLEAR_NOTIFICATIONS = '@app/CLEAR_NOTIFICATIONS'
@@ -32,6 +32,7 @@ export const RESET_PASSWORD_INIT = '@app/RESET_PASSWORD_INIT'
 export const RESET_PASSWORD_REQUEST = '@app/RESET_PASSWORD_REQUEST'
 export const RESET_PASSWORD_REQUEST_SUCCESS = '@app/RESET_PASSWORD_REQUEST_SUCCESS'
 export const RESET_PASSWORD_REQUEST_FAILURE = '@app/RESET_PASSWORD_REQUEST_FAILURE'
+export const LOGOUT_REQUEST = '@app/LOGOUT_REQUEST'
 export const LOGOUT_SUCCESS = '@app/LOGOUT_SUCCESS'
 export const RESUME_CHECKOUT_AFTER_ACTIVATION = '@app/RESUME_CHECKOUT_AFTER_ACTIVATION'
 export const SET_SERVERS = '@app/SET_SERVERS'
@@ -66,6 +67,7 @@ const resetPasswordRequest = createAction(RESET_PASSWORD_REQUEST)
 const resetPasswordRequestSuccess = createAction(RESET_PASSWORD_REQUEST_SUCCESS)
 const resetPasswordRequestFailure = createAction(RESET_PASSWORD_REQUEST_FAILURE)
 
+export const logoutRequest = createAction(LOGOUT_REQUEST)
 export const logoutSuccess = createAction(LOGOUT_SUCCESS)
 export const setServers = createAction(SET_SERVERS)
 export const thermalPrinterConnected = createAction(THERMAL_PRINTER_CONNECTED)
@@ -81,6 +83,7 @@ const _resumeCheckoutAfterActivation = createAction(RESUME_CHECKOUT_AFTER_ACTIVA
 
 export const registerPushNotificationToken = createAction(REGISTER_PUSH_NOTIFICATION_TOKEN)
 export const savePushNotificationTokenSuccess = createAction(SAVE_PUSH_NOTIFICATION_TOKEN_SUCCESS)
+export const deletePushNotificationTokenSuccess = createAction(DELETE_PUSH_NOTIFICATION_TOKEN_SUCCESS)
 
 const _loadMyStoresSuccess = createAction(LOAD_MY_STORES_SUCCESS)
 
@@ -258,14 +261,13 @@ export function login(email, password, navigate = true) {
 
 export function logout() {
 
-  return (dispatch, getState) => {
+  return async (dispatch, getState) => {
 
     const { user } = getState().app
 
-    user.logout()
-      .then(() => {
-        dispatch(logoutSuccess())
-      })
+    dispatch(logoutRequest())
+    await user.logout()
+    dispatch(logoutSuccess())
   }
 }
 
@@ -407,9 +409,11 @@ export function resetServer() {
       const { user } = getState().app
 
       if (user) {
+        dispatch(logoutRequest())
         await user.logout()
+        dispatch(logoutSuccess())
       }
-      dispatch(logoutSuccess())
+
       dispatch(setBaseURL(null))
 
       NavigationHolder.navigate('ConfigureServer')

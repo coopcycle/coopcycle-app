@@ -1,5 +1,5 @@
 import { Platform } from 'react-native'
-import { savePushNotificationTokenSuccess } from '../../App/actions'
+import { deletePushNotificationTokenSuccess, savePushNotificationTokenSuccess, LOGOUT_REQUEST } from '../../App/actions'
 import {
   selectIsAuthenticated,
   selectHttpClient,
@@ -20,6 +20,22 @@ export default ({ getState, dispatch }) => {
     const state = getState()
 
     if (!state.app.pushNotificationToken) {
+      return result
+    }
+
+    if (action.type === LOGOUT_REQUEST) {
+
+      const httpClient = selectHttpClient(state)
+
+      httpClient
+        .delete(`/api/me/remote_push_tokens/${state.app.pushNotificationToken}`)
+        // We don't care about 404s or what
+        .finally(() => dispatch(deletePushNotificationTokenSuccess()))
+
+      return result
+    }
+
+    if (state.app.pushNotificationTokenSaved) {
       return result
     }
 

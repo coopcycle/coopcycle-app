@@ -10,6 +10,7 @@ import {
   SET_LOADING,
   REGISTER_PUSH_NOTIFICATION_TOKEN,
   SAVE_PUSH_NOTIFICATION_TOKEN_SUCCESS,
+  DELETE_PUSH_NOTIFICATION_TOKEN_SUCCESS,
   PUSH_NOTIFICATION,
   CLEAR_NOTIFICATIONS,
   AUTHENTICATION_REQUEST,
@@ -37,6 +38,7 @@ const initialState = {
   user: null,
   currentRoute: null,
   pushNotificationToken: null,
+  pushNotificationTokenSaved: null,
   loading: false,
   notifications: [],
   lastAuthenticationError: null,
@@ -233,12 +235,19 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         pushNotificationToken: action.payload,
+        pushNotificationTokenSaved: false,
       }
 
     case SAVE_PUSH_NOTIFICATION_TOKEN_SUCCESS:
       return {
         ...state,
-        pushNotificationToken: null,
+        pushNotificationTokenSaved: true,
+      }
+
+    case DELETE_PUSH_NOTIFICATION_TOKEN_SUCCESS:
+      return {
+        ...state,
+        pushNotificationTokenSaved: false,
       }
   }
 
