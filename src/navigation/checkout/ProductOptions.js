@@ -13,6 +13,50 @@ const ItemSeparatorComponent = () => (
   <View style={ styles.itemSeparator } />
 )
 
+const SimpleOption = ({ name, price, onPress, selected }) => (
+  <TouchableOpacity style={ styles.item } onPress={ onPress }>
+    <View style={{ width: '66.6666%', justifyContent: 'space-between', padding: 15 }}>
+      <Text>{ name }</Text>
+      { price > 0 ? (<Text note>{ `${formatPrice(price)} €` }</Text>) : null }
+    </View>
+    <View style={{ width: '33.3333%' }}>
+      <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', paddingRight: 15 }}>
+        <Radio selected={ selected } />
+      </View>
+    </View>
+  </TouchableOpacity>
+)
+
+const RangeOption = ({ name, price, onPress, selected, onPressIncrement, onPressDecrement, quantity }) => (
+  <View style={ styles.item }>
+    <TouchableOpacity style={{ width: '66.6666%', justifyContent: 'space-between', padding: 15 }}
+      onPress={ onPress }>
+      <Text>{ name }</Text>
+      { price > 0 ? (<Text note>{ `${formatPrice(price)} €` }</Text>) : null }
+    </TouchableOpacity>
+    <View style={{ width: '33.3333%' }}>
+      <View
+        style={{ flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around' }}>
+        <TouchableOpacity
+          style={{ flex: 1, alignItems: 'center' }}
+          onPress={ onPressIncrement }>
+          <Icon type="FontAwesome" name="plus-circle" />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{ flex: 1, alignItems: 'center' }}
+          onPress={ onPressDecrement }>
+          <Icon type="FontAwesome" name="minus-circle" />
+        </TouchableOpacity>
+        <View style={{ flex: 1, alignItems: 'center' }}>
+          <Badge info style={{ alignSelf: 'center' }}>
+            <Text>{ quantity }</Text>
+          </Badge>
+        </View>
+      </View>
+    </View>
+  </View>
+)
+
 class ProductOptions extends Component {
 
   constructor(props) {
@@ -115,38 +159,21 @@ class ProductOptions extends Component {
       price = menuItem.offers.price
     }
 
+    if (allowsRange) {
+      return (
+        <RangeOption name={ menuItem.name } price={ price }
+          selected={ selected }
+          onPress={ () => this._onPressItem(menuSection, menuItem) }
+          onPressIncrement={ () => this._increment(menuItem) }
+          onPressDecrement={ () => this._decrement(menuItem) }
+          quantity={ quantity } />
+      )
+    }
+
     return (
-      <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
-        <TouchableOpacity style={{ width: '66.6666%', justifyContent: 'space-between', padding: 15 }}
-          onPress={ () => this._onPressItem(menuSection, menuItem) }>
-          <Text>{ menuItem.name }</Text>
-          { price > 0 ? (<Text note>{ `${formatPrice(price)} €` }</Text>) : null }
-        </TouchableOpacity>
-        <View style={{ width: '33.3333%' }}>
-          { !allowsRange && <View
-            style={{ flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', paddingRight: 15 }}>
-            <Radio selected={ selected } />
-          </View> }
-          { allowsRange && <View
-            style={{ flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around' }}>
-            <TouchableOpacity
-              style={{ flex: 1, alignItems: 'center' }}
-              onPress={ () => this._increment(menuItem) }>
-              <Icon type="FontAwesome" name="plus-circle" />
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={{ flex: 1, alignItems: 'center' }}
-              onPress={ () => this._decrement(menuItem) }>
-              <Icon type="FontAwesome" name="minus-circle" />
-            </TouchableOpacity>
-            <View style={{ flex: 1, alignItems: 'center' }}>
-              <Badge info style={{ alignSelf: 'center' }}>
-                <Text>{ quantity }</Text>
-              </Badge>
-            </View>
-          </View> }
-        </View>
-      </View>
+      <SimpleOption name={ menuItem.name } price={ price }
+        selected={ selected }
+        onPress={ () => this._onPressItem(menuSection, menuItem) } />
     )
   }
 
@@ -210,6 +237,11 @@ const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: '#cccccc',
   },
+  item: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center'
+  }
 })
 
 function mapStateToProps(state) {
