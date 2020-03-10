@@ -166,26 +166,30 @@ class OrderScreen extends Component {
     } catch (e) {}
 
     return (
-      <View style={ styles.dateContainer }>
-        { thermalPrinterConnected && (
-        <Button small iconLeft onPress={ () => this._print() }>
-          <Icon type="FontAwesome" name="print" />
-          <Text>{ this.props.t('RESTAURANT_ORDER_PRINT') }</Text>
-        </Button>
-        )}
-        { !thermalPrinterConnected && (
-        <Button small light iconLeft onPress={ () => this.props.navigation.navigate('RestaurantPrinter') }>
-          <Icon type="FontAwesome" name="print" />
-          <Text>{ this.props.t('RESTAURANT_ORDER_CONNECT_PRINTER') }</Text>
-        </Button>
-        )}
-        { isPhoneValid && (
-        <Button small iconLeft success
-          onPress={ () => phonecall(order.customer.telephone, true) }>
-          <Icon name="call" />
-          <Text>{ phoneNumberUtil.format(phoneNumber, PhoneNumberFormat.NATIONAL) }</Text>
-        </Button>
-        )}
+      <View style={{ flex: 1, flexDirection: 'row', paddingHorizontal: 10 }}>
+        <View style={{ width: '50%', paddingRight: 5 }}>
+          { thermalPrinterConnected && (
+          <Button small iconLeft onPress={ () => this._print() }>
+            <Icon type="FontAwesome" name="print" />
+            <Text>{ this.props.t('RESTAURANT_ORDER_PRINT') }</Text>
+          </Button>
+          )}
+          { !thermalPrinterConnected && (
+          <Button small light iconLeft onPress={ () => this.props.navigation.navigate('RestaurantPrinter') }>
+            <Icon type="FontAwesome" name="print" />
+            <Text>{ this.props.t('RESTAURANT_ORDER_CONNECT_PRINTER') }</Text>
+          </Button>
+          )}
+        </View>
+        <View style={{ width: '50%', paddingLeft: 5 }}>
+          { isPhoneValid && (
+          <Button small iconLeft success
+            onPress={ () => phonecall(order.customer.telephone, true) }>
+            <Icon name="call" />
+            <Text>{ phoneNumberUtil.format(phoneNumber, PhoneNumberFormat.NATIONAL) }</Text>
+          </Button>
+          )}
+        </View>
       </View>
     )
   }
