@@ -23,6 +23,7 @@ class DateScreen extends Component {
           <Calendar
             current={ this.props.date.format('YYYY-MM-DD') }
             onDayPress={ ({ dateString }) => this.onDateChange(dateString) }
+            onDayLongPress={ ({ dateString }) => this.onDateChange(dateString) }
             theme={{
               textDayFontSize: 18,
               textMonthFontSize: 18,
