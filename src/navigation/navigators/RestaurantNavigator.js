@@ -41,7 +41,7 @@ export default createStackNavigator({
   RestaurantOrderRefuse: {
     screen: screens.RestaurantOrderRefuse,
     navigationOptions: ({ navigation }) => ({
-      title: 'Refuse order', // TODO Translate
+      title: i18n.t('REFUSE'),
     }),
   },
   RestaurantOrderDelay: {
@@ -59,7 +59,7 @@ export default createStackNavigator({
   RestaurantDate: {
     screen: screens.RestaurantDate,
     navigationOptions: ({ navigation }) => ({
-      title: 'Choose date', // TODO Translate
+      title: i18n.t('PICK_DATE'),
     }),
   },
   RestaurantList: {
