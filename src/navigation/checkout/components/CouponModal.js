@@ -10,18 +10,7 @@ import Modal from 'react-native-modal'
 class CouponModal extends Component {
 
   _validate(values) {
-
-    let errors = {}
-
-    // if (_.isEmpty(values.email)) {
-    //   errors.email = true
-    // }
-
-    // if (_.isEmpty(values.password)) {
-    //   errors.password = true
-    // }
-
-    return errors
+    return {}
   }
 
   _onSubmit(values) {
@@ -76,13 +65,6 @@ CouponModal.propTypes = {
 }
 
 const styles = StyleSheet.create({
-  // modalText: {
-  //   padding: 10,
-  //   backgroundColor: '#f2dede',
-  //   borderWidth: StyleSheet.hairlineWidth,
-  //   borderColor: '#a94442',
-  //   marginBottom: 10,
-  // },
   modalContent: {
     backgroundColor: '#ffffff',
     padding: 15,
@@ -90,14 +72,7 @@ const styles = StyleSheet.create({
 })
 
 function mapStateToProps(state) {
-
-  // const isVisible = state.checkout.isAddressModalHidden
-  //   && state.checkout.isSessionExpired
-    // && state.checkout.isExpiredSessionModalVisible
-
-  return {
-    // isVisible,
-  }
+  return {}
 }
 
 export default connect(mapStateToProps)(withTranslation()(CouponModal))
