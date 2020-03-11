@@ -22,12 +22,20 @@ import _ from 'lodash'
 import DangerAlert from '../../components/DangerAlert'
 import { formatPrice } from '../../utils/formatting'
 import i18n from '../../i18n'
-import { incrementItem, decrementItem, removeItem, validate, showAddressModal, hideAddressModal } from '../../redux/Checkout/actions'
+import { incrementItem, decrementItem, removeItem, validate, showAddressModal, hideAddressModal, updateCart } from '../../redux/Checkout/actions'
 import { selectDeliveryTotal, selectShippingDate, selectIsShippingAsap } from '../../redux/Checkout/selectors'
 import { selectIsAuthenticated } from '../../redux/App/selectors'
 import CartFooter from './components/CartFooter'
 import AddressModal from './components/AddressModal'
 import ExpiredSessionModal from './components/ExpiredSessionModal'
+import CouponModal from './components/CouponModal'
+
+const BottomLine = ({ label, value }) => (
+  <View style={ styles.line }>
+    <Text style={{ color: '#ffffff', fontSize: 14 }}>{ label }</Text>
+    <Text style={{ color: '#ffffff', fontWeight: 'bold', fontSize: 14 }}>{ `${formatPrice(value)} €` }</Text>
+  </View>
+)
 
 class Summary extends Component {
 
@@ -35,6 +43,7 @@ class Summary extends Component {
     super(props)
     this.state = {
       translateXValue: new Animated.Value(500),
+      isCouponModalVisible: false,
     }
   }
 
@@ -89,6 +98,11 @@ class Summary extends Component {
     } else {
       this._navigate('CheckoutLogin')
     }
+  }
+
+  onSubmitCoupon(code) {
+    this.setState({ isCouponModalVisible: false })
+    this.props.updateCart({ promotionCoupon: code })
   }
 
   renderItems() {
@@ -204,6 +218,8 @@ class Summary extends Component {
       return this.renderEmpty()
     }
 
+    const deliveryPromotions = cart.adjustments.delivery_promotion || []
+
     return (
       <View style={{ flex: 1 }} onLayout={ () => {
           const { width } = Dimensions.get('window')
@@ -232,16 +248,20 @@ class Summary extends Component {
             <Text numberOfLines={ 2 } ellipsizeMode="tail" style={{ flex: 2, fontSize: 14 }}>{ this.props.cart.shippingAddress.streetAddress }</Text>
             <Text note style={{ flex: 1, textAlign: 'right' }}>{ this.props.t('EDIT') }</Text>
           </TouchableOpacity>
+          <TouchableOpacity style={ [ styles.dateBtn, { flexShrink: 1 } ] }
+            // Disable interaction while loading
+            onPress={ () => !this.props.isLoading && this.setState({ isCouponModalVisible: true }) }>
+            <Icon type="FontAwesome" name="tag" style={{ fontSize: 22, marginRight: 15 }} />
+            <Text note style={{ flex: 1, textAlign: 'right' }}>{ this.props.t('ADD_COUPON') }</Text>
+          </TouchableOpacity>
         </View>
         <View style={{ flex: 0, backgroundColor: '#e4022d' }}>
-          <View style={ styles.line }>
-            <Text style={{ color: '#ffffff', fontSize: 14 }}>{ this.props.t('TOTAL_ITEMS') }</Text>
-            <Text style={{ color: '#ffffff', fontWeight: 'bold', fontSize: 14 }}>{ `${formatPrice(cart.itemsTotal)} €` }</Text>
-          </View>
-          <View style={ styles.line }>
-            <Text style={{ color: '#ffffff', fontSize: 14 }}>{ this.props.t('TOTAL_DELIVERY') }</Text>
-            <Text style={{ color: '#ffffff', fontWeight: 'bold', fontSize: 14 }}>{ `${formatPrice(this.props.deliveryTotal)} €` }</Text>
-          </View>
+          <BottomLine label={ this.props.t('TOTAL_ITEMS') } value={ cart.itemsTotal } />
+          <BottomLine label={ this.props.t('TOTAL_DELIVERY') } value={ this.props.deliveryTotal } />
+          { deliveryPromotions.map((promotion, index) => (
+            <BottomLine key={ `delivery_promotion_${index}` }
+              label={ promotion.label } value={ promotion.amount } />
+          )) }
         </View>
         { this.renderFooter() }
         <AddressModal onGoBack={ () => {
@@ -250,6 +270,10 @@ class Summary extends Component {
         }} />
         <ExpiredSessionModal
           onModalHide={ () => this.props.navigation.navigate('CheckoutHome') } />
+        <CouponModal
+          isVisible={ this.state.isCouponModalVisible }
+          onSwipeComplete={ () => this.setState({ isCouponModalVisible: false }) }
+          onSubmit={ (code) => this.onSubmitCoupon(code) } />
       </View>
     );
   }
@@ -323,6 +347,7 @@ function mapDispatchToProps(dispatch) {
     validate: () => dispatch(validate()),
     showAddressModal: () => dispatch(showAddressModal()),
     hideAddressModal: () => dispatch(hideAddressModal()),
+    updateCart: (cart, cb) => dispatch(updateCart(cart, cb)),
   }
 }
 
