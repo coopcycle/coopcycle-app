@@ -226,8 +226,8 @@ class Summary extends Component {
     const orderPromotions = cart.adjustments.order_promotion || []
     const reusablePackagings = cart.adjustments.reusable_packaging || []
 
-    const reusablePackagingAction = cart.hints &&
-      _.find(cart.hints, hint => hint['@type'] === 'EnableReusablePackagingAction')
+    const reusablePackagingAction = cart.potentialAction &&
+      _.find(cart.potentialAction, action => action['@type'] === 'EnableReusablePackagingAction')
 
     return (
       <View style={{ flex: 1 }} onLayout={ () => {
