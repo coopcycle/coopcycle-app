@@ -105,6 +105,10 @@ class Summary extends Component {
     this.props.updateCart({ promotionCoupon: code })
   }
 
+  toggleReusablePackaging() {
+    this.props.updateCart({ reusablePackagingEnabled: !this.props.cart.reusablePackagingEnabled })
+  }
+
   renderItems() {
 
     return (
@@ -220,6 +224,10 @@ class Summary extends Component {
 
     const deliveryPromotions = cart.adjustments.delivery_promotion || []
     const orderPromotions = cart.adjustments.order_promotion || []
+    const reusablePackagings = cart.adjustments.reusable_packaging || []
+
+    const reusablePackagingAction = cart.hints &&
+      _.find(cart.hints, hint => hint['@type'] === 'EnableReusablePackagingAction')
 
     return (
       <View style={{ flex: 1 }} onLayout={ () => {
@@ -255,6 +263,14 @@ class Summary extends Component {
             <Icon type="FontAwesome" name="tag" style={{ fontSize: 22, marginRight: 15 }} />
             <Text note style={{ flex: 1, textAlign: 'right' }}>{ this.props.t('ADD_COUPON') }</Text>
           </TouchableOpacity>
+          { reusablePackagingAction && (
+            <TouchableOpacity style={ [ styles.dateBtn, { flexShrink: 1 } ] }
+              // Disable interaction while loading
+              onPress={ () => !this.props.isLoading && this.toggleReusablePackaging() }>
+              <Icon type="FontAwesome" name="cube" style={{ fontSize: 22, marginRight: 15 }} />
+              <Text note style={{ flex: 1, textAlign: 'right' }}>{ reusablePackagingAction.description }</Text>
+            </TouchableOpacity>
+          ) }
         </View>
         <View style={{ flex: 0, backgroundColor: '#e4022d' }}>
           <BottomLine label={ this.props.t('TOTAL_ITEMS') } value={ cart.itemsTotal } />
@@ -266,6 +282,10 @@ class Summary extends Component {
           { orderPromotions.map((promotion, index) => (
             <BottomLine key={ `order_promotion_${index}` }
               label={ promotion.label } value={ promotion.amount } />
+          )) }
+          { reusablePackagings.map((packaging, index) => (
+            <BottomLine key={ `reusable_packaging_${index}` }
+              label={ packaging.label } value={ packaging.amount } />
           )) }
         </View>
         { this.renderFooter() }
