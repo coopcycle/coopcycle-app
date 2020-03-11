@@ -607,22 +607,25 @@ export function updateCart(payload, cb) {
 
     const { cart } = getState().checkout
 
-    const shippingAddress = {
-      ...cart.shippingAddress,
-      ...payload.shippingAddress,
+    if (payload.shippingAddress) {
+      const shippingAddress = {
+        ...cart.shippingAddress,
+        ...payload.shippingAddress,
+      }
+      payload = {
+        ...payload,
+        shippingAddress
+      }
     }
 
     dispatch(checkoutRequest())
 
     httpClient
-      .put(cart['@id'], {
-        shippingAddress,
-        notes: payload.notes,
-      })
+      .put(cart['@id'], payload)
       .then(res => {
         dispatch(updateCartSuccess(res))
         dispatch(checkoutSuccess())
-        cb()
+        _.isFunction(cb) && cb()
       })
       .catch(e => dispatch(checkoutFailure(e)))
   }
