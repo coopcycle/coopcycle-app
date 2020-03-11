@@ -219,6 +219,7 @@ class Summary extends Component {
     }
 
     const deliveryPromotions = cart.adjustments.delivery_promotion || []
+    const orderPromotions = cart.adjustments.order_promotion || []
 
     return (
       <View style={{ flex: 1 }} onLayout={ () => {
@@ -260,6 +261,10 @@ class Summary extends Component {
           <BottomLine label={ this.props.t('TOTAL_DELIVERY') } value={ this.props.deliveryTotal } />
           { deliveryPromotions.map((promotion, index) => (
             <BottomLine key={ `delivery_promotion_${index}` }
+              label={ promotion.label } value={ promotion.amount } />
+          )) }
+          { orderPromotions.map((promotion, index) => (
+            <BottomLine key={ `order_promotion_${index}` }
               label={ promotion.label } value={ promotion.amount } />
           )) }
         </View>
