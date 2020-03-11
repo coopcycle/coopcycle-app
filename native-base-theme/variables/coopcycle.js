@@ -7,4 +7,5 @@ export default {
   toolbarDefaultBg: '#e4022d',
   titleFontfamily: 'Raleway-Regular',
   buttonFontFamily: 'Raleway-Regular',
+  buttonUppercaseAndroidText: false,
 };
