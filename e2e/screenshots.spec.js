@@ -3,6 +3,7 @@ const VARIANTS = [
   { locale: 'fr-FR', city: 'Montpellier' },
   { locale: 'fr-FR', city: 'Grenoble' },
   { locale: 'es-ES', city: 'Madrid' },
+  { locale: 'en-US', city: 'Berlin' },
 ]
 
 VARIANTS.forEach(variant => {
