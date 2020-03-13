@@ -289,6 +289,9 @@
         "RESTAURANT_ORDER_CONNECT_PRINTER": "Connecter une imprimante",
         "SWIPE_TO_ACCEPT_REFUSE": "Glissez vers la droite pour accepter, vers la gauche pour refuser",
         "ADD_COUPON": "Ajouter un code promo",
-        "VOUCHER_CODE": "Code promo"
+        "VOUCHER_CODE": "Code promo",
+        "DELIVERY_ASAP": "Au plus tôt",
+        "PHOTO_ADD": "Ajouter l'image",
+        "TASKS_CHANGED_ALERT_SOUND": "Son pour les notifications"
     }
 }
