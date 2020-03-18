@@ -287,19 +287,19 @@ PODS:
   - React-jsinspector (0.61.5)
   - react-native-ble-manager (7.2.0):
     - React
-  - react-native-camera (3.19.0):
+  - react-native-camera (3.19.2):
     - React
-    - react-native-camera/RCT (= 3.19.0)
-    - react-native-camera/RN (= 3.19.0)
-  - react-native-camera/RCT (3.19.0):
+    - react-native-camera/RCT (= 3.19.2)
+    - react-native-camera/RN (= 3.19.2)
+  - react-native-camera/RCT (3.19.2):
     - React
-  - react-native-camera/RN (3.19.0):
+  - react-native-camera/RN (3.19.2):
     - React
   - react-native-keep-awake (4.0.0):
     - React
   - react-native-maps (0.26.1):
     - React
-  - react-native-netinfo (5.6.1):
+  - react-native-netinfo (5.6.2):
     - React
   - react-native-safe-area-context (0.7.3):
     - React
@@ -365,7 +365,7 @@ PODS:
     - React
   - RNGestureHandler (1.6.0):
     - React
-  - RNLocalize (1.3.3):
+  - RNLocalize (1.3.4):
     - React
   - RNReanimated (1.7.0):
     - React
@@ -600,10 +600,10 @@ SPEC CHECKSUMS:
   React-jsiexecutor: d5525f9ed5f782fdbacb64b9b01a43a9323d2386
   React-jsinspector: fa0ecc501688c3c4c34f28834a76302233e29dc0
   react-native-ble-manager: fda5f6b20092f2b2d356676bd1f3dc7065bb4329
-  react-native-camera: 1f4c5be75a037b5573716a01d84ca0390c162954
+  react-native-camera: 7c6cf8ddc64405e1aff0a26d1b487378597f9fed
   react-native-keep-awake: afad8a51dfef9fe9655a6344771be32c8596d774
   react-native-maps: 6e499eee4eabf422ba8b6f94e993cc768bf35153
-  react-native-netinfo: fa42683301345997e876760ba2be86f06148baa5
+  react-native-netinfo: 73303369946c2487c600418961bfdc87748b832f
   react-native-safe-area-context: e200d4433aba6b7e60b52da5f37af11f7a0b0392
   react-native-version-number: b415bbec6a13f2df62bf978e85bc0d699462f37f
   React-RCTActionSheet: 600b4d10e3aea0913b5a92256d2719c0cdd26d76
@@ -624,7 +624,7 @@ SPEC CHECKSUMS:
   RNDateTimePicker: bc947b8ee2d74cf940df1915bf1dd3359f375c9f
   RNFirebase: 37daa9a346d070f9f6ee1f3b4aaf4c8e3b1d5d1c
   RNGestureHandler: dde546180bf24af0b5f737c8ad04b6f3fa51609a
-  RNLocalize: a734b53c45e77acd3ffb78b92e63bb4d6cd13257
+  RNLocalize: 215c419a17d7585eb7a63c748ebfd042e0cb2c3d
   RNReanimated: 031fe8d9ea93c2bd689a40f05320ef9d96f74d7f
   RNScreens: 03bf608b92ac0acf323f47d8f5b63a8f829340c8
   RNSketchCanvas: 9c28adb5381543ed55cc98ce6de46479cb3cb12c

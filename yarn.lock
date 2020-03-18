@@ -1350,10 +1350,10 @@
   resolved "https://registry.yarnpkg.com/@react-native-community/masked-view/-/masked-view-0.1.7.tgz#a65ce0702f55cb67fd777995de6fc7b3e5781903"
   integrity sha512-9KbP7LTLFz9dx1heURJbO6nuVMdSjDez8znlrUzaB1nUwKVsTTwlKRuHxGUYIIkReLWrJQeCv9tidy+84z2eCw==
 
-"@react-native-community/netinfo@^5.6.1":
-  version "5.6.1"
-  resolved "https://registry.yarnpkg.com/@react-native-community/netinfo/-/netinfo-5.6.1.tgz#3f7affd395996eb98a155134f15cc117ffab8112"
-  integrity sha512-TzMwZVSDDH6iuAhYgNOlQKXCauqVoC0jviCxVuIKtNXUQ8ReDxa5e/9yrLf+FVgOVlFv7DC+7+dQPlSnKDDAzQ==
+"@react-native-community/netinfo@^5.6.2":
+  version "5.6.2"
+  resolved "https://registry.yarnpkg.com/@react-native-community/netinfo/-/netinfo-5.6.2.tgz#a054db83a1787711f9f69029e2c9b80735ac3f75"
+  integrity sha512-IkzS78nOiPNM/MboBqqbk2eMBrflp8VML/p33pd50KZq+PvBq8Oywt1JKOgdaMxUIbGjP73zVz+f6r2f80u2Eg==
 
 "@react-native-community/push-notification-ios@^1.0.7":
   version "1.0.7"
@@ -5373,10 +5373,10 @@ globals@^11.1.0, globals@^11.7.0:
   resolved "https://registry.yarnpkg.com/globals/-/globals-11.12.0.tgz#ab8795338868a0babd8525758018c2a7eb95c42e"
   integrity sha512-WOBp/EEGUiIsJSp7wcv/y6MO+lV9UoncWqxuFfm8eBwzWNgyfBd6Gz+IeKQ9jCmyhoH99g15M3T+QaVHFjizVA==
 
-google-libphonenumber@^3.2.7:
-  version "3.2.7"
-  resolved "https://registry.yarnpkg.com/google-libphonenumber/-/google-libphonenumber-3.2.7.tgz#1a8d790206631cd9a56a0f79dc4aa086e17b6f5b"
-  integrity sha512-8Es+gIaGoBddq/tqegG52iuzHOV+VU+de2mvkIOVlDkg/bnJlNdVZcof6iMPChy9Dte+si7BJeDaaueBtFoV6Q==
+google-libphonenumber@^3.2.8:
+  version "3.2.8"
+  resolved "https://registry.yarnpkg.com/google-libphonenumber/-/google-libphonenumber-3.2.8.tgz#fb5898cbae18104d456e0fd80df52d860a3eb2b8"
+  integrity sha512-iWs1KcxOozmKQbCeGjvU0M7urrkNjBYOSBtb819RjkUNJHJLfn7DADKkKwdJTOMPLcLOE11/4h/FyFwJsTiwLg==
 
 graceful-fs@^4.1.11, graceful-fs@^4.1.15, graceful-fs@^4.1.2, graceful-fs@^4.1.3, graceful-fs@^4.1.6, graceful-fs@^4.1.9, graceful-fs@^4.2.3:
   version "4.2.3"
@@ -6712,10 +6712,10 @@ levn@^0.3.0, levn@~0.3.0:
     prelude-ls "~1.1.2"
     type-check "~0.3.2"
 
-libphonenumber-js@^1.7.46:
-  version "1.7.46"
-  resolved "https://registry.yarnpkg.com/libphonenumber-js/-/libphonenumber-js-1.7.46.tgz#72e5bc1337ec3898e8a00971161fa16cb542ccf9"
-  integrity sha512-NrNz2+OW/7lb4HnKDbcYOMCY0SOzCa7EHFY0hHeHl9JMJmpvTmonPaLiMAE1M+K1HWCsXtGdDj9AkOmr5DKqIQ==
+libphonenumber-js@^1.7.47:
+  version "1.7.47"
+  resolved "https://registry.yarnpkg.com/libphonenumber-js/-/libphonenumber-js-1.7.47.tgz#0ca1c75144db0431a80466a37a683e31e099adcd"
+  integrity sha512-ICw2Rb+KxPAoeKedwXFmFvweP1ncZg32leYbhk68wrGkZstobKQZvxQ7cqdOJRx2m2j/R0VHE6A4sgobqH+6Gg==
   dependencies:
     minimist "^1.2.0"
     xml2js "^0.4.17"
@@ -7490,10 +7490,10 @@ native-base-shoutem-theme@0.3.1:
     lodash "^4.17.14"
     prop-types "^15.5.10"
 
-native-base@^2.13.8:
-  version "2.13.8"
-  resolved "https://registry.yarnpkg.com/native-base/-/native-base-2.13.8.tgz#817dfaf74ec63cd17f48991fab452fdc75103db9"
-  integrity sha512-47Wm7bjH5Dc99gBUeVvsURyADU97aiLMLPGX4ewPgR9kW47TD9slS/Y5vGMToBgz1bsku9anXgN2T1rpdQbpFA==
+native-base@^2.13.12:
+  version "2.13.12"
+  resolved "https://registry.yarnpkg.com/native-base/-/native-base-2.13.12.tgz#06020b46019964ddaef3a646ec07e72008018efc"
+  integrity sha512-LdKGNXisbmQ0vDHG86McZKIFTlRyo+OQdJpqmQ05Yf7CGlMbBykJZCFe9rdiee5pLq20xiChe/jXbzFdWcysrg==
   dependencies:
     blueimp-md5 "^2.5.0"
     clamp "^1.0.1"
@@ -8522,10 +8522,10 @@ react-native-calendars@^1.212.0:
     prop-types "^15.5.10"
     xdate "^0.8.0"
 
-react-native-camera@^3.19.0:
-  version "3.19.0"
-  resolved "https://registry.yarnpkg.com/react-native-camera/-/react-native-camera-3.19.0.tgz#32c43908d3ba398c89d21437a9dba2ebb17f3896"
-  integrity sha512-ef3ccKUu5nYRvc2fXlnRDsrBPBygkXoMvk0c/mrgfLYgr4X0G/8Qg7t+MOAisQ0V6RastHVygpjgAW+dxcZnyA==
+react-native-camera@^3.19.2:
+  version "3.19.2"
+  resolved "https://registry.yarnpkg.com/react-native-camera/-/react-native-camera-3.19.2.tgz#d272466f7d3700c42afa491ad980cc406dd2a0c4"
+  integrity sha512-JCW0UzYrR1jqX69qZrhLnRwg4fmRQ6iq2plIs4Dt8jkvJcJ4xi+vmH4Wo5BvpRWFPT9+39jDzY5MfAjSx2JXlw==
   dependencies:
     prop-types "^15.6.2"
 
@@ -8569,10 +8569,10 @@ react-native-easy-grid@0.2.2:
   dependencies:
     lodash "^4.17.15"
 
-react-native-email-link@^1.7.2:
-  version "1.7.2"
-  resolved "https://registry.yarnpkg.com/react-native-email-link/-/react-native-email-link-1.7.2.tgz#6c34194d7298bf0bb6d43ad1a2c06d1655fa3511"
-  integrity sha512-0fZegSKNtKBfJDcg0xYeNk7j6UVI1C0xXkoMr57Z6cZhYpwjIuJQLx/cGdhYMbE5YJxass0HDmr0T6DuEiviIA==
+react-native-email-link@^1.7.3:
+  version "1.7.3"
+  resolved "https://registry.yarnpkg.com/react-native-email-link/-/react-native-email-link-1.7.3.tgz#594ea39fb5a3d93a5f61f4771cb0c6e221c894b4"
+  integrity sha512-KugyNEAysWoYUh8TiIg3pFMxcktNteImyEheIsCu9+w0X9qwq+78xlqtf/jCaY8CjVb6Tk0Mf2Mn1X26LQKizQ==
 
 react-native-firebase@^5.6.0:
   version "5.6.0"
@@ -8638,15 +8638,15 @@ react-native-loading-spinner-overlay@^1.0.1:
   dependencies:
     prop-types "^15.6.2"
 
-react-native-localize@^1.3.0:
-  version "1.3.3"
-  resolved "https://registry.yarnpkg.com/react-native-localize/-/react-native-localize-1.3.3.tgz#3e29520b4c7907227729326dfbf2f2643a07495a"
-  integrity sha512-lpKx/iqDKQ7dC58fb/vGGERLT4ZYfk+H2AXMg6aaVkgv8eEIgApQAzB2Oaotx7FIM/RopJponUFyJ4PMIHi4Rw==
+react-native-localize@^1.3.4:
+  version "1.3.4"
+  resolved "https://registry.yarnpkg.com/react-native-localize/-/react-native-localize-1.3.4.tgz#7d5c7b7ea30548d777a641457434d363cfac48db"
+  integrity sha512-ZVdapfTIcizCQ6nfbkTzjN/+D1eFb3aRtmOSC6d4LtjYRovUnv0QmNSg35CI/Q8Jy3nx4bHg6M9QyQ75MHzf7Q==
 
-react-native-map-link@^2.7.4:
-  version "2.7.4"
-  resolved "https://registry.yarnpkg.com/react-native-map-link/-/react-native-map-link-2.7.4.tgz#d5cb878bc0110263c4b5175e73e77440fd220cb8"
-  integrity sha512-J7tgM9bodHIsSq0Zdw0Qq5duXOtvjQq5rvUpSzCAc+N4d9qSUSO0zN/hNpLmZnQf1xb1rzbZmt5JwBSXOC8THA==
+react-native-map-link@^2.7.5:
+  version "2.7.5"
+  resolved "https://registry.yarnpkg.com/react-native-map-link/-/react-native-map-link-2.7.5.tgz#106e37cca6a0fe95c83e97017919a6b409cfcc36"
+  integrity sha512-hYFtJgrzN8CjOUEHTkn681LXTFXIdcXY8RdpT5GKSRbEvCwAVk372x/YhyeaBFRDinDW3xLe8aQYwOCcEO11EQ==
   dependencies:
     prop-types "^15.7.2"
     react-native-modal "^10.0.0"
