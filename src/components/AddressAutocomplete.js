@@ -133,6 +133,7 @@ class AddressAutocomplete extends Component {
     let text = item.description
 
     if (item.type === 'fuse') {
+      // FIXME Why "aaaaaaaa"?
       text = [ item.contactName, item.streetAddress, 'aaaaaaaa' ].join(' - ')
       itemStyle.push({
         backgroundColor: '#fff3cd',
