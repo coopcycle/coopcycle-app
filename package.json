@@ -92,7 +92,7 @@
     "@react-native-community/eslint-config": "^0.0.7",
     "@react-native-community/eslint-plugin": "^1.0.0",
     "axios-mock-adapter": "^1.17.0",
-    "babel-eslint": "^10.0.3",
+    "babel-eslint": "^10.1.0",
     "babel-jest": "^25.0",
     "babel-plugin-transform-remove-console": "^6.9.4",
     "detox": "^15.4.2",
