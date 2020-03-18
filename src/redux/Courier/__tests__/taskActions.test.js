@@ -163,7 +163,7 @@ describe('Redux | Tasks | Actions', () => {
 
         expect(client.put).toHaveBeenCalledTimes(1)
         expect(client.put).not.toHaveBeenCalledWith(task['@id'], { images: [] })
-        expect(client.put).toHaveBeenCalledWith(`${task['@id']}/done`, { reason: notes })
+        expect(client.put).toHaveBeenCalledWith(`${task['@id']}/done`, { notes })
       })
   })
 
@@ -207,7 +207,7 @@ describe('Redux | Tasks | Actions', () => {
         expect(client.put).toHaveBeenCalledWith(task['@id'], { images: [
           '/api/task_images/1',
         ] })
-        expect(client.put).toHaveBeenCalledWith(`${task['@id']}/done`, { reason: notes })
+        expect(client.put).toHaveBeenCalledWith(`${task['@id']}/done`, { notes })
       })
   })
 
@@ -241,7 +241,7 @@ describe('Redux | Tasks | Actions', () => {
 
         expect(client.put).toHaveBeenCalledTimes(1)
         expect(client.put).not.toHaveBeenCalledWith(task['@id'], { images: [] })
-        expect(client.put).toHaveBeenCalledWith(`${task['@id']}/done`, { reason: notes })
+        expect(client.put).toHaveBeenCalledWith(`${task['@id']}/done`, { notes })
       })
   })
 
@@ -277,7 +277,7 @@ describe('Redux | Tasks | Actions', () => {
 
         expect(client.put).toHaveBeenCalledTimes(1)
         expect(client.put).not.toHaveBeenCalledWith(task['@id'], { images: [] })
-        expect(client.put).toHaveBeenCalledWith(`${task['@id']}/failed`, { reason: notes })
+        expect(client.put).toHaveBeenCalledWith(`${task['@id']}/failed`, { notes })
       })
   })
 
@@ -311,7 +311,7 @@ describe('Redux | Tasks | Actions', () => {
 
         expect(client.put).toHaveBeenCalledTimes(1)
         expect(client.put).not.toHaveBeenCalledWith(task['@id'], { images: [] })
-        expect(client.put).toHaveBeenCalledWith(`${task['@id']}/failed`, { reason: notes })
+        expect(client.put).toHaveBeenCalledWith(`${task['@id']}/failed`, { notes })
       })
   })
 })

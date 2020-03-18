@@ -1,6 +1,7 @@
 import { Alert } from 'react-native'
 import { createAction } from 'redux-actions'
 import firebase from 'react-native-firebase'
+import _ from 'lodash'
 
 import NavigationHolder from '../../NavigationHolder'
 import i18n from '../../i18n'
@@ -124,17 +125,28 @@ function uploadTaskImages(task, state) {
     })
 }
 
-export function markTaskFailed(httpClient, task, notes, onSuccess) {
+export function markTaskFailed(httpClient, task, notes = '', onSuccess, contactName = '') {
 
   return function (dispatch, getState) {
 
     dispatch(markTaskFailedRequest(task))
 
+    let payload = {
+      notes
+    }
+
+    if (!_.isEmpty(contactName)) {
+      payload = {
+        ...payload,
+        contactName
+      }
+    }
+
     // Make sure to return a promise for testing
     return uploadTaskImages(task, getState())
       .then(task => {
         return httpClient
-          .put(task['@id'] + '/failed', { reason: notes })
+          .put(task['@id'] + '/failed', payload)
           .then(task => {
             dispatch(clearFiles())
             dispatch(markTaskFailedSuccess(task))
@@ -150,17 +162,28 @@ export function markTaskFailed(httpClient, task, notes, onSuccess) {
   }
 }
 
-export function markTaskDone(httpClient, task, notes = '', onSuccess) {
+export function markTaskDone(httpClient, task, notes = '', onSuccess, contactName = '') {
 
   return function (dispatch, getState) {
 
     dispatch(markTaskDoneRequest(task))
 
+    let payload = {
+      notes
+    }
+
+    if (!_.isEmpty(contactName)) {
+      payload = {
+        ...payload,
+        contactName
+      }
+    }
+
     // Make sure to return a promise for testing
     return uploadTaskImages(task, getState())
       .then(task => {
         return httpClient
-          .put(task['@id'] + '/done', { reason: notes })
+          .put(task['@id'] + '/done', payload)
           .then(task => {
             dispatch(clearFiles())
             dispatch(markTaskDoneSuccess(task))
