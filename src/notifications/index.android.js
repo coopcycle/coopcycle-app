@@ -33,6 +33,7 @@ export const parseNotification = (notification, isForeground) => {
 
 let notificationOpenedListener = () => {}
 let notificationListener = () => {}
+let dataListener = () => {}
 let tokenRefreshListener = () => {}
 let appStateChangeListener = () => {}
 
@@ -51,6 +52,15 @@ class PushNotification {
       .onNotification(notification => {
         options.onNotification(parseNotification(notification, true))
     })
+
+    // data message was received in the foreground
+    dataListener = firebase.messaging()
+      .onMessage(message => {
+        //todo
+
+        console.log('data message (in foreground): ' + message.messageId)
+
+      })
 
     // FIXME
     // firebase.messaging().requestPermission() always resolves to null
@@ -131,6 +141,7 @@ class PushNotification {
   static removeListeners() {
     notificationOpenedListener()
     notificationListener()
+    dataListener()
     tokenRefreshListener()
   }
 
