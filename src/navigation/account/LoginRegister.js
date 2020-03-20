@@ -37,9 +37,8 @@ class LoginRegister extends Component {
                 checkEmailRouteName: 'AccountResetPasswordCheckEmail',
                 resumeCheckoutAfterActivation: false,
               })
-            }
-            }
-          />
+            }}
+            registrationErrors={ this.props.registrationErrors } />
         </Content>
       </Container>
     )
@@ -49,6 +48,7 @@ class LoginRegister extends Component {
 function mapStateToProps(state) {
   return {
     message: state.app.lastAuthenticationError,
+    registrationErrors: state.app.registrationErrors,
   }
 }
 

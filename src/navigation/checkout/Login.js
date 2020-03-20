@@ -49,9 +49,8 @@ class Login extends Component {
                 checkEmailRouteName: 'CheckoutResetPasswordCheckEmail',
                 resumeCheckoutAfterActivation: true,
               })
-            }
-            }
-          />
+            }}
+            registrationErrors={ this.props.registrationErrors } />
         </Content>
       </Container>
     )
@@ -70,6 +69,7 @@ function mapStateToProps(state) {
   return {
     message: state.app.lastAuthenticationError,
     isAuthenticated: selectIsAuthenticated(state),
+    registrationErrors: state.app.registrationErrors,
   }
 }
 
