@@ -4,6 +4,7 @@ import { Form, Item, Input, Label, Button, Text } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import validate from 'validate.js'
 import _ from 'lodash'
+import { Formik } from 'formik'
 
 import i18n from '../i18n'
 
@@ -111,108 +112,116 @@ class RegisterForm extends React.Component {
   constructor(props) {
     super(props)
 
-    this.state = {
-      givenName: this.props.prefill === true ? 'John' : '',
-      familyName: this.props.prefill === true ? 'Doe' : '',
-      email: this.props.prefill === true ? 'john.doe@coopcycle.org' : '',
-      username: this.props.prefill === true ? 'johndoe' : '',
-      password: this.props.prefill === true ? '12345678' : '',
-      passwordConfirmation: this.props.prefill === true ? '12345678' : '',
-      errors: {},
-    }
-
     this._inputComponents = new Map()
-    this._onSubmit.bind(this)
   }
 
-  _onSubmit() {
-
-    const { errors, ...data } = this.state
-    const newErrors = validate(data, constraints, { fullMessages: false })
-
-    if (newErrors) {
-      this.setState({
-        errors: newErrors,
-      })
-
-      return
-    }
-
-    this.props.onSubmit(data)
-  }
-
-  renderErrors(errors) {
+  renderError(message) {
 
     return (
       <View>
-        { errors.map((message, key) => (<Text key={ key } note style={{ marginLeft: 15, color: '#ed2f2f' }}>{ message }</Text>)) }
+        <Text note style={{ marginLeft: 15, color: '#ed2f2f' }}>{ message }</Text>
       </View>
-
     )
+  }
+
+  _validate(values) {
+
+    return _.mapValues(
+      validate(values, constraints, { fullMessages: false }),
+      messages => _.first(messages)
+    )
+  }
+
+  _onSubmit(values) {
+    this.props.onSubmit(values)
   }
 
   render() {
 
-    const { errors } = this.state
+    const initialValues = {
+      email: this.props.prefill === true ? 'john.doe@coopcycle.org' : '',
+      username: this.props.prefill === true ? 'johndoe' : '',
+      password: this.props.prefill === true ? '12345678' : '',
+      passwordConfirmation: this.props.prefill === true ? '12345678' : '',
+      givenName: this.props.prefill === true ? 'John' : '',
+      familyName: this.props.prefill === true ? 'Doe' : '',
+    }
 
     return (
-      <View>
-        <Form>
-          { inputs.map((input, index) => {
+      <Formik
+        initialValues={ initialValues }
+        validate={ this._validate.bind(this) }
+        onSubmit={ this._onSubmit.bind(this) }
+        validateOnBlur={ false }
+        validateOnChange={ false }>
+        {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => {
 
-            const hasErrors = errors.hasOwnProperty(input.name)
-            const itemProps = hasErrors ? { error: true } : {}
+          const allErrors = {
+            ...errors,
+            ...this.props.errors,
+          }
 
-            let inputProps = {
-              ...input.props,
-              onChangeText: value => this.setState({ [input.name]: value }),
-            }
+          return (
+            <View>
+              <Form>
+                { inputs.map((input, index) => {
 
-            const isLast = index === (inputs.length - 1)
+                  const hasError = allErrors.hasOwnProperty(input.name)
+                  const itemProps = hasError ? { error: true } : {}
 
-            if (isLast) {
-              inputProps = {
-                ...inputProps,
-                returnKeyType: 'done',
-                onSubmitEditing: _ => this._onSubmit(),
-              }
-            } else {
-              inputProps = {
-                ...inputProps,
-                returnKeyType: 'next',
-                onSubmitEditing: event => {
-                  let index = inputs.findIndex((el) => el.name === input.name)
-                  let nextInputName = inputs[index + 1].name
-                  this._inputComponents.get(nextInputName)._root.focus()
-                },
-              }
-            }
+                  let inputProps = {
+                    ...input.props,
+                    onChangeText: handleChange(input.name),
+                    onBlur: handleBlur(input.name),
+                  }
 
-            return (
-              <View key={ input.name }>
-                <Item stackedLabel { ...itemProps }>
-                  <Label>{ input.label }</Label>
-                  <Input
-                    testID={ `registerForm.${input.name}` }
-                    ref={ component => this._inputComponents.set(input.name, component) }
-                    defaultValue={ this.state[input.name] }
-                    autoCorrect={ false }
-                    autoCapitalize="none"
-                    style={{ height: 40 }}
-                    onChangeText={ value => this.setState({ [input.name]: value }) }
-                    { ...inputProps } />
-                </Item>
-                { hasErrors && this.renderErrors(errors[input.name]) }
+                  const isLast = index === (inputs.length - 1)
+
+                  if (isLast) {
+                    inputProps = {
+                      ...inputProps,
+                      returnKeyType: 'done',
+                      onSubmitEditing: handleSubmit,
+                    }
+                  } else {
+                    inputProps = {
+                      ...inputProps,
+                      returnKeyType: 'next',
+                      onSubmitEditing: event => {
+                        let index = inputs.findIndex((el) => el.name === input.name)
+                        let nextInputName = inputs[index + 1].name
+                        this._inputComponents.get(nextInputName)._root.focus()
+                      },
+                    }
+                  }
+
+                  return (
+                    <View key={ input.name }>
+                      <Item stackedLabel { ...itemProps }>
+                        <Label>{ input.label }</Label>
+                        <Input
+                          testID={ `registerForm.${input.name}` }
+                          ref={ component => this._inputComponents.set(input.name, component) }
+                          defaultValue={ values[input.name] }
+                          autoCorrect={ false }
+                          autoCapitalize="none"
+                          style={{ height: 40 }}
+                          { ...inputProps } />
+                      </Item>
+                      { hasError && this.renderError(allErrors[input.name]) }
+                    </View>
+                  )
+                }) }
+              </Form>
+              <View style={{ marginTop: 20 }}>
+                <Button block onPress={ handleSubmit } testID="submitRegister">
+                  <Text>{this.props.t('SUBMIT')}</Text>
+                </Button>
               </View>
-            )
-          }) }
-        </Form>
-        <View style={{ marginTop: 20 }}>
-          <Button block onPress={ () => this._onSubmit() } testID="submitRegister">
-            <Text>{this.props.t('SUBMIT')}</Text>
-          </Button>
-        </View>
-      </View>
+            </View>
+          )
+        }}
+      </Formik>
     )
   }
 }

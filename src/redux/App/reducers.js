@@ -124,6 +124,7 @@ export default (state = initialState, action = {}) => {
         ...state,
         lastAuthenticationError: null,
         loading: true,
+        registrationErrors: initialState.registrationErrors,
       }
 
     case AUTHENTICATION_SUCCESS:
@@ -257,6 +258,7 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         registrationErrors: action.payload,
+        loading: false,
       }
   }
 
