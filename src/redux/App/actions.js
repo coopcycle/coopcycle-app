@@ -51,6 +51,8 @@ export const LOAD_MY_RESTAURANTS_FAILURE = '@restaurant/LOAD_MY_RESTAURANTS_FAIL
 
 export const SET_INTERNET_REACHABLE = '@app/SET_INTERNET_REACHABLE'
 
+export const REGISTRATION_ERRORS = '@app/REGISTRATION_ERRORS'
+
 /*
  * Action Creators
  */
@@ -95,6 +97,8 @@ const loadMyRestaurantsFailure = createAction(LOAD_MY_RESTAURANTS_FAILURE)
 const setSettings = createAction(SET_SETTINGS)
 
 export const setInternetReachable = createAction(SET_INTERNET_REACHABLE)
+
+const registrationErrors = createAction(REGISTRATION_ERRORS)
 
 function navigateToHome(dispatch, getState) {
 
@@ -308,14 +312,11 @@ export function register(data, checkEmailRouteName, loginRouteName, resumeChecko
         }
       })
       .catch(err => {
-
-        let message = i18n.t('TRY_LATER')
-        if (err.hasOwnProperty('status') && err.status === 400 && err.hasOwnProperty('data') && err.data.detail) {
-          message = err.data.detail
+        if (err.status === 400 && err.hasOwnProperty('errors')) {
+          dispatch(registrationErrors(err.errors))
+        } else {
+          dispatch(authenticationFailure(i18n.t('TRY_LATER')))
         }
-
-        dispatch(authenticationFailure(message))
-
       })
   }
 }
@@ -338,7 +339,6 @@ export function confirmRegistration(token) {
         }
       })
       .catch(err => {
-        console.log(err);
         if (err.hasOwnProperty('status') && err.status === 401) {
           dispatch(setLoading(false))
           // TODO Say that the token is no valid

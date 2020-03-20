@@ -29,6 +29,7 @@ import {
   CLEAR_SELECT_SERVER_ERROR,
   SET_SETTINGS,
   SET_INTERNET_REACHABLE,
+  REGISTRATION_ERRORS,
 } from './actions'
 
 const initialState = {
@@ -62,6 +63,7 @@ const initialState = {
     currency_code: 'eur',
   },
   isInternetReachable: true,
+  registrationErrors: {},
 }
 
 export default (state = initialState, action = {}) => {
@@ -249,6 +251,12 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         pushNotificationTokenSaved: false,
+      }
+
+    case REGISTRATION_ERRORS:
+      return {
+        ...state,
+        registrationErrors: action.payload,
       }
   }
 
