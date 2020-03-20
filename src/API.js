@@ -435,7 +435,16 @@ var register = function(baseURL, data) {
       .then(response => resolve(response.data))
       .catch(error => {
         if (error.response) {
-          reject({ status: error.response.status })
+
+          const violations = (error.response.data && error.response.data.violations) || []
+
+          const errors = _.reduce(
+            violations,
+            (acc, { propertyPath, message }) => ({ ...acc, [ propertyPath.replace('data.', '') ]: message }),
+            {}
+          )
+
+          reject({ status: error.response.status, errors })
         } else {
           reject({ status: 500 })
         }
