@@ -96,7 +96,7 @@ class OrderItems extends Component {
               this.renderItemAdjustments(item.adjustments.menu_item_modifier) }
           </Col>
           <Col size={ 3 } style={ [ styles.col, styles.colRight ] }>
-            <Text>{ `${formatPrice(item.total)} €` }</Text>
+            <Text>{ `${formatPrice(item.total)}` }</Text>
           </Col>
         </Grid>
       </TouchableOpacity>
@@ -122,7 +122,7 @@ class OrderItems extends Component {
     return (
       <CartLine
         label={ this.props.t('TOTAL_DELIVERY') }
-        value={ `${formatPrice(this._deliveryTotal(this.props.order))} €` } />
+        value={ `${formatPrice(this._deliveryTotal(this.props.order))}` } />
     )
   }
 
@@ -131,7 +131,7 @@ class OrderItems extends Component {
     return (
       <CartLine
         label={ this.props.t('TOTAL_ITEMS') }
-        value={ `${formatPrice(this.props.order.itemsTotal)} €` } />
+        value={ `${formatPrice(this.props.order.itemsTotal)}` } />
     )
   }
 
@@ -140,7 +140,7 @@ class OrderItems extends Component {
     return (
       <CartLine
         label={ this.props.t('TOTAL') }
-        value={ `${formatPrice(this.props.order.total)} €` } />
+        value={ `${formatPrice(this.props.order.total)}` } />
     )
   }
 

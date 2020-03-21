@@ -17,7 +17,7 @@ const SimpleOption = ({ name, price, onPress, selected }) => (
   <TouchableOpacity style={ styles.item } onPress={ onPress }>
     <View style={{ width: '66.6666%', justifyContent: 'space-between', padding: 15 }}>
       <Text>{ name }</Text>
-      { price > 0 ? (<Text note>{ `${formatPrice(price)} €` }</Text>) : null }
+      { price > 0 ? (<Text note>{ `${formatPrice(price)}` }</Text>) : null }
     </View>
     <View style={{ width: '33.3333%' }}>
       <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', paddingRight: 15 }}>
@@ -32,7 +32,7 @@ const RangeOption = ({ name, price, onPress, selected, onPressIncrement, onPress
     <TouchableOpacity style={{ width: '66.6666%', justifyContent: 'space-between', padding: 15 }}
       onPress={ onPress }>
       <Text>{ name }</Text>
-      { price > 0 ? (<Text note>{ `${formatPrice(price)} €` }</Text>) : null }
+      { price > 0 ? (<Text note>{ `${formatPrice(price)}` }</Text>) : null }
     </TouchableOpacity>
     <View style={{ width: '33.3333%' }}>
       <View

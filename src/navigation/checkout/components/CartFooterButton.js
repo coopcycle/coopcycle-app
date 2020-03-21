@@ -53,7 +53,7 @@ class CartFooterButton extends Component {
     return (
       <Animated.View style={{ position: 'absolute', right: 0, opacity: this.state.opacityAnim }}>
         <Text style={{ fontWeight: 'bold', fontFamily: 'OpenSans-Regular' }}>
-          { `${formatPrice(this.props.cart.total)} €` }
+          { `${formatPrice(this.props.cart.total)}` }
         </Text>
       </Animated.View>
     )

@@ -27,7 +27,7 @@ class AccountOrdersPage extends Component {
     return (
       <ListItem onPress={() => navigate('AccountOrder', { order }) }>
         <Body><Text>{ order.restaurant.name }</Text></Body>
-        <Right><Text>{ formatPrice(order.total) } €</Text></Right>
+        <Right><Text>{ formatPrice(order.total) }</Text></Right>
       </ListItem>
     );
   }

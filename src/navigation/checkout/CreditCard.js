@@ -120,7 +120,7 @@ class CreditCard extends Component {
         </Content>
         <FooterButton
            testID="creditCardSubmit"
-          text={ this.props.t('PAY_AMOUNT', { amount: formatPrice(cart.total) }) + '€' }
+          text={ this.props.t('PAY_AMOUNT', { amount: formatPrice(cart.total) }) }
           onPress={ onPress } />
       </Animated.View>
     )

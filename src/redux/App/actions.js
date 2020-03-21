@@ -7,6 +7,7 @@ import AppUser from '../../AppUser'
 import Settings from '../../Settings'
 import NavigationHolder from '../../NavigationHolder'
 import i18n from '../../i18n'
+import { setCurrencyCode } from '../../utils/formatting'
 
 /*
  * Action Types
@@ -170,7 +171,12 @@ export function selectServer(server) {
     API.checkServer(server)
       .then(baseURL =>
         Settings.synchronize(baseURL)
-          .then((settings) => dispatch(setSettings(settings)))
+          .then((settings) => {
+            dispatch(setSettings(settings))
+            if (settings.currency_code) {
+              setCurrencyCode(settings.currency_code)
+            }
+          })
           .then(() => {
 
             const user = new AppUser(
@@ -212,6 +218,10 @@ export function bootstrap(baseURL, user) {
     const settings = await Settings.synchronize(baseURL)
 
     dispatch(setSettings(settings))
+    if (settings.currency_code) {
+      setCurrencyCode(settings.currency_code)
+    }
+
     dispatch(_setUser(user))
     dispatch(setBaseURL(baseURL))
 

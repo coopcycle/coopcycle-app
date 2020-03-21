@@ -96,7 +96,7 @@ class Menu extends Component {
         </View>
 
         <View style={ styles.rightCol }>
-          <Text style={ itemPriceStyle }>{ `${formatPrice(item.offers.price)}€` }</Text>
+          <Text style={ itemPriceStyle }>{ `${formatPrice(item.offers.price)}` }</Text>
           { isLoading && <ActivityIndicator size="small" style={{ position: 'absolute', right: 0 }} /> }
         </View>
       </TouchableOpacity>

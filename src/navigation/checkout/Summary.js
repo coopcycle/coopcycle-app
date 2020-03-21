@@ -33,7 +33,7 @@ import CouponModal from './components/CouponModal'
 const BottomLine = ({ label, value }) => (
   <View style={ styles.line }>
     <Text style={{ color: '#ffffff', fontSize: 14 }}>{ label }</Text>
-    <Text style={{ color: '#ffffff', fontWeight: 'bold', fontSize: 14 }}>{ `${formatPrice(value)} €` }</Text>
+    <Text style={{ color: '#ffffff', fontWeight: 'bold', fontSize: 14 }}>{ `${formatPrice(value)}` }</Text>
   </View>
 )
 
@@ -80,7 +80,7 @@ class Summary extends Component {
 
           const label = [ adj.label ]
           if (adj.amount > 0) {
-            label.push(`(${formatPrice(adj.amount)} €)`)
+            label.push(formatPrice(adj.amount))
           }
 
           return (
@@ -129,7 +129,7 @@ class Summary extends Component {
         <View style={{ flex: 3, justifyContent: 'center', paddingHorizontal: 15, paddingVertical: 15 }}>
           <Text>{ `${item.quantity} x ${item.name}` }</Text>
           { _.size(item.adjustments) > 0 && this._renderItemAdjustments(item, index) }
-          <Text note>{ `${formatPrice(item.total)} €` }</Text>
+          <Text note>{ `${formatPrice(item.total)}` }</Text>
         </View>
         <Animated.View
           style={{ flex: 1, flexDirection: 'row', transform: [{ translateX: this.state.translateXValue }] }}>
@@ -167,7 +167,7 @@ class Summary extends Component {
               <Text>{this.props.t('TOTAL_ITEMS')}</Text>
             </Body>
             <Right>
-              <Text style={{ fontWeight: 'bold' }}>{ formatPrice(cart.totalItems) } €</Text>
+              <Text style={{ fontWeight: 'bold' }}>{ formatPrice(cart.totalItems) }</Text>
             </Right>
           </ListItem>
           <ListItem>
@@ -175,7 +175,7 @@ class Summary extends Component {
               <Text>{this.props.t('TOTAL_DELIVERY')}</Text>
             </Body>
             <Right>
-              <Text style={{ fontWeight: 'bold' }}>{ formatPrice(cart.totalDelivery) } €</Text>
+              <Text style={{ fontWeight: 'bold' }}>{ formatPrice(cart.totalDelivery) }</Text>
             </Right>
           </ListItem>
         </List>
