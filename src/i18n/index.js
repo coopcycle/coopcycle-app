@@ -15,6 +15,12 @@ import fr from './locales/fr.json'
 import moment from 'moment'
 import { LocaleConfig } from 'react-native-calendars'
 
+import numbro from 'numbro'
+import deDE from 'numbro/languages/de-DE'
+import enGB from 'numbro/languages/en-GB'
+import esES from 'numbro/languages/es-ES'
+import frFR from 'numbro/languages/fr-FR'
+
 export const localeDetector = () => {
   const lang = RNLocalize.findBestAvailableLanguage(['de', 'en', 'es', 'fr'])
   if (!lang) {
@@ -25,12 +31,31 @@ export const localeDetector = () => {
   return lang.languageTag
 }
 
+export const localeWithTagDetector = () => {
+  const lang = RNLocalize.findBestAvailableLanguage(['de-DE', 'en-GB', 'en-US', 'es-ES', 'fr-FR'])
+  if (!lang) {
+
+    return 'en-US'
+  }
+
+  return lang.languageTag
+}
+
 const LOCALE = localeDetector()
+const LOCALE_WITH_TAG = localeWithTagDetector()
 
 // Load additional Moment.js locales
 import 'moment/locale/de'
 import 'moment/locale/es'
 import 'moment/locale/fr'
+
+// Load Numbro locales
+numbro.registerLanguage(deDE)
+numbro.registerLanguage(enGB)
+numbro.registerLanguage(esES)
+numbro.registerLanguage(frFR)
+
+numbro.setLanguage(LOCALE_WITH_TAG)
 
 // Make sure to call moment.locale() BEFORE creating Redux store
 moment.locale(LOCALE)
