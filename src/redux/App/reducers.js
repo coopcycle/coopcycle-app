@@ -59,6 +59,7 @@ const initialState = {
     locale: 'fr',
     country: 'fr',
     latlng: '48.872178,2.331797',
+    currency_code: 'eur',
   },
   isInternetReachable: true,
 }
