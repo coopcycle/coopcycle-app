@@ -2,7 +2,7 @@ import moment from 'moment'
 import EscPosEncoder from 'esc-pos-encoder'
 import diacritics from 'diacritics'
 
-import { formatPrice } from './formatting'
+import { formatPriceWithCode } from './formatting'
 
 function splitter(str, l){
   var strs = [];
@@ -48,7 +48,7 @@ export function encodeForPrinter(order) {
 
   order.items.forEach((item) => {
 
-    let price = `  ${formatPrice(item.total)} EUR`
+    let price = `  ${formatPriceWithCode(item.total)}`
     let name = diacritics.remove(item.name)
 
     name = `${item.quantity} x ${name}`
@@ -82,7 +82,7 @@ export function encodeForPrinter(order) {
   encoder
     .line(''.padEnd(maxChars, '-'))
 
-  let total = `${formatPrice(order.itemsTotal)} EUR`
+  let total = formatPriceWithCode(order.itemsTotal)
   let totalLine = 'TOTAL '.padEnd((maxChars - total.length), ' ') + total
 
   encoder

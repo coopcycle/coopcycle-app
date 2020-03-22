@@ -35,12 +35,12 @@ describe('encodeForPrinter', () => {
 A PREPARER POUR          ${time.format('LT')}
 --------------------------------
 
-\u001ba\u00002 x Burger              9.00 EUR
+\u001ba\u00002 x Burger               EUR9.00
 
-\u001ba\u00001 x Cake                5.00 EUR
+\u001ba\u00001 x Cake                 EUR5.00
 
 --------------------------------
-\u001ba\u0000TOTAL                  23.00 EUR
+\u001ba\u0000TOTAL                   EUR23.00
 --------------------------------
 
 
