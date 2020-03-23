@@ -8833,9 +8833,9 @@ react-navigation-collapsible@^3.0.3:
     hoist-non-react-statics "^3.0.1"
 
 react-navigation-drawer@^2.4.6:
-  version "2.4.6"
-  resolved "https://registry.yarnpkg.com/react-navigation-drawer/-/react-navigation-drawer-2.4.6.tgz#70571ce8a8e392fa3d45a666dc3d53a44ae74ed2"
-  integrity sha512-gmXyhbvBOi0iUhY8FiErXXsGUPhv4lf4+X2hBl1QIqcXf+DGywQX/GvyLwtNNOPNzi/wMgbu+7Okhy35VI8fNg==
+  version "2.4.7"
+  resolved "https://registry.yarnpkg.com/react-navigation-drawer/-/react-navigation-drawer-2.4.7.tgz#761bfbb218bb246b96d1b185f87279800ff4bf35"
+  integrity sha512-rnXO6JrkAybY852MXs2bE3wl6uoXJa5AAUHgP1p0qwPGBygJQ/5ljl2/a1kN+JfC7B8KRVluCCmZdUAgixkRLg==
 
 react-navigation-stack@^2.3.4:
   version "2.3.4"
