@@ -8849,9 +8849,9 @@ react-navigation-drawer@^2.4.7:
   integrity sha512-rnXO6JrkAybY852MXs2bE3wl6uoXJa5AAUHgP1p0qwPGBygJQ/5ljl2/a1kN+JfC7B8KRVluCCmZdUAgixkRLg==
 
 react-navigation-stack@^2.3.5:
-  version "2.3.5"
-  resolved "https://registry.yarnpkg.com/react-navigation-stack/-/react-navigation-stack-2.3.5.tgz#489ebc29a361e0f505fd3e0c9dd7d6c6745b4abf"
-  integrity sha512-8MqhhUDzBB4CNnFpKE0XmV0GB7RHSezZMFE2YAyKrYUGt52SSL1Hmdq64pQNZY0caXI4v3Zm0wHIurg7m+VoPw==
+  version "2.3.6"
+  resolved "https://registry.yarnpkg.com/react-navigation-stack/-/react-navigation-stack-2.3.6.tgz#13598b9d828e74039427216f8fa18b15a561e73f"
+  integrity sha512-wEqjH3DKQ4hudrB6Sr3aKEQuuXInBy97D41/0MZj/PdexrwosMpHlW4othprLlzkksvaezjUEAk4BX6ewqeRQQ==
   dependencies:
     color "^3.1.2"
     react-native-iphone-x-helper "^1.2.1"
