@@ -6,7 +6,7 @@ import _ from 'lodash'
 import NavigationHolder from '../../NavigationHolder'
 import i18n from '../../i18n'
 import { selectSignatures, selectPictures } from './taskSelectors'
-import {event} from '../../Analytics'
+import {analyticsEvent} from '../../Analytics'
 
 /*
  * Action Types
@@ -207,6 +207,8 @@ function uploadTaskImage(httpClient, base64) {
 export function setTasksChangedAlertSound(enabled) {
   return (dispatch, getState) => {
     dispatch(_setTasksChangedAlertSound(enabled))
-    firebase.analytics().logEvent(event.courier.tasksChangedAlertSound, {enabled: enabled})
+    firebase.analytics().logEvent(
+      analyticsEvent.courier.tasksChangedAlertSound,
+      {enabled: enabled})
   }
 }

@@ -6,6 +6,7 @@ import launchActivity from './launchActivity';
 import store from '../redux/store'
 import {loadOrderAndPushNotification} from '../redux/Restaurant/actions'
 import {parseNotification} from './index.android'
+import {analyticsEvent} from '../Analytics'
 
 // data message was received in the background (works only on android)
 export default async (remoteMessage: RemoteMessage) => {
@@ -14,6 +15,10 @@ export default async (remoteMessage: RemoteMessage) => {
   const { event } = message.data
 
   if (event && event.name === 'order:created') {
+    firebase.analytics().logEvent(
+      analyticsEvent.restaurant.orderCreatedMessage,
+      {medium: 'background_data_message'})
+
     const {order} = event.data
 
     launchActivity.invoke()
