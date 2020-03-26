@@ -8760,10 +8760,12 @@ react-native-modal@^11.5.6:
   version "1.0.2"
   resolved "git+https://git@github.com/coopcycle/react-native-pin-screen.git#91b801646eb2abebb4f0693ad112f1d57c19abb1"
 
-react-native-reanimated@^1.7.0:
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/react-native-reanimated/-/react-native-reanimated-1.7.0.tgz#896db2576552ac59d288a1f6c7f00afc171f240c"
-  integrity sha512-FQWSqP605eQVJumuK2HpR+7heF0ZI+qfy4jNguv3Xv8nPFHeIgZaRTXHCEQL2AcuSIj50zy8jGJf5l134QMQWQ==
+react-native-reanimated@^1.7.1:
+  version "1.7.1"
+  resolved "https://registry.yarnpkg.com/react-native-reanimated/-/react-native-reanimated-1.7.1.tgz#6363c7f3ebbabc56a05d5dccaf09d95f3b6a2d69"
+  integrity sha512-aBwhoQdH4shkeTPbi7vKcAwYOzBp/6zElEKuIOgby11TceoM7y5SgNImC3HbDWWld3QV2PA2AgQGwAy51WgF3Q==
+  dependencies:
+    fbjs "^1.0.0"
 
 react-native-safe-area-context@^0.7.3:
   version "0.7.3"
@@ -8860,10 +8862,10 @@ react-navigation-drawer@^2.4.7:
   resolved "https://registry.yarnpkg.com/react-navigation-drawer/-/react-navigation-drawer-2.4.7.tgz#761bfbb218bb246b96d1b185f87279800ff4bf35"
   integrity sha512-rnXO6JrkAybY852MXs2bE3wl6uoXJa5AAUHgP1p0qwPGBygJQ/5ljl2/a1kN+JfC7B8KRVluCCmZdUAgixkRLg==
 
-react-navigation-stack@^2.3.5:
-  version "2.3.5"
-  resolved "https://registry.yarnpkg.com/react-navigation-stack/-/react-navigation-stack-2.3.5.tgz#489ebc29a361e0f505fd3e0c9dd7d6c6745b4abf"
-  integrity sha512-8MqhhUDzBB4CNnFpKE0XmV0GB7RHSezZMFE2YAyKrYUGt52SSL1Hmdq64pQNZY0caXI4v3Zm0wHIurg7m+VoPw==
+react-navigation-stack@^2.3.6:
+  version "2.3.6"
+  resolved "https://registry.yarnpkg.com/react-navigation-stack/-/react-navigation-stack-2.3.6.tgz#13598b9d828e74039427216f8fa18b15a561e73f"
+  integrity sha512-wEqjH3DKQ4hudrB6Sr3aKEQuuXInBy97D41/0MZj/PdexrwosMpHlW4othprLlzkksvaezjUEAk4BX6ewqeRQQ==
   dependencies:
     color "^3.1.2"
     react-native-iphone-x-helper "^1.2.1"
