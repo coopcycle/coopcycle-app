@@ -41,25 +41,27 @@ class PushNotification {
 
   static configure(options) {
 
-    // Notification was received in the background
+    // Notification was received in the background (and opened by a user)
     notificationOpenedListener = firebase.notifications()
       .onNotificationOpened(notificationOpen => {
-        options.onNotification(parseNotification(notificationOpen.notification, false))
+        const message = parseNotification(notificationOpen.notification, false)
+
+        options.onNotification(message)
     })
 
     // Notification was received in the foreground
     notificationListener = firebase.notifications()
-      .onNotification(notification => {
-        options.onNotification(parseNotification(notification, true))
+      .onNotification(remoteMessage => {
+        // "notification + data" messages are duplicate as "data-only" messages,
+        // handle them as "data-only" messages when the app is in the foreground
     })
 
     // data message was received in the foreground
     dataListener = firebase.messaging()
-      .onMessage(message => {
-        //todo
+      .onMessage(remoteMessage => {
+        const message = parseNotification(remoteMessage, true)
 
-        console.log('data message (in foreground): ' + message.messageId)
-
+        options.onNotification(message)
       })
 
     // FIXME
