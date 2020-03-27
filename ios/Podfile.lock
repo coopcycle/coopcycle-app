@@ -297,7 +297,7 @@ PODS:
     - React
   - react-native-keep-awake (4.0.0):
     - React
-  - react-native-maps (0.26.1):
+  - react-native-maps (0.27.1):
     - React
   - react-native-netinfo (5.6.2):
     - React
@@ -602,7 +602,7 @@ SPEC CHECKSUMS:
   react-native-ble-manager: fda5f6b20092f2b2d356676bd1f3dc7065bb4329
   react-native-camera: 4e12e877b8fef60b0914a49c942a0f32479e5b50
   react-native-keep-awake: afad8a51dfef9fe9655a6344771be32c8596d774
-  react-native-maps: 6e499eee4eabf422ba8b6f94e993cc768bf35153
+  react-native-maps: f4b89da81626ad7f151a8bfcb79733295d31ce5c
   react-native-netinfo: 73303369946c2487c600418961bfdc87748b832f
   react-native-safe-area-context: e200d4433aba6b7e60b52da5f37af11f7a0b0392
   react-native-version-number: b415bbec6a13f2df62bf978e85bc0d699462f37f

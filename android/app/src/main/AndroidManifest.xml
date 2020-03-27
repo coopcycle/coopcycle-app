@@ -65,6 +65,7 @@
       <meta-data
         android:name="com.google.android.geo.API_KEY"
         android:value="${googleMapsApiKey}" />
+      <uses-library android:name="org.apache.http.legacy" android:required="false" />
 
       <!-- Configure react-native-firebase -->
       <!-- Set custom default icon. This is used when no icon is set for incoming notification messages.
