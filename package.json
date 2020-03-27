@@ -37,7 +37,7 @@
     "native-base": "^2.13.12",
     "numbro": "^2.2.0",
     "prop-types": "^15.7.2",
-    "qs": "^6.9.2",
+    "qs": "^6.9.3",
     "react": "16.9.0",
     "react-i18next": "^10.13.1",
     "react-native": "0.61.5",
