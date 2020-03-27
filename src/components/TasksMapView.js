@@ -18,6 +18,7 @@ import {
 } from '../styles/common'
 import {uniq} from 'lodash'
 import TaskMarker from './TaskMarker'
+import TaskCallout from './TaskCallout'
 
 const clusterContainerSize = 40
 
@@ -42,17 +43,6 @@ const styles = StyleSheet.create({
   },
   markerCallout: {
     padding: 5,
-  },
-  markerCalloutText: {
-    fontSize: 14,
-    flexWrap: 'wrap',
-  },
-  tagContainer: {
-    textAlign: 'center',
-    color: whiteColor,
-    fontSize: 14,
-    paddingHorizontal: 15,
-    width: '60%',
   },
   modal: {
     padding: 20,
@@ -195,17 +185,7 @@ class TasksMapView extends Component {
         <TaskMarker task={ task } type="status" />
         <Callout onPress={ () => this.onCalloutPress(task) }
           style={ [ styles.markerCallout, { width: Math.floor(width * 0.6666) } ] }>
-          { task.address.name ? (<Text style={ styles.markerCalloutText }>{ task.address.name }</Text>) : null }
-          <Text style={ styles.markerCalloutText } numberOfLines={ 3 }>
-            { addressName(task) }
-          </Text>
-          {
-            task.tags.map((tag, index) => (
-              <Text key={ index } style={ [ styles.tagContainer, { backgroundColor: tag.color } ] }>
-                { tag.name }
-              </Text>
-            ))
-          }
+          <TaskCallout task={ task } />
         </Callout>
       </Marker>
     )
