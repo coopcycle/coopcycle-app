@@ -100,12 +100,6 @@ class AddressModal extends Component {
       modalMessageTextStyle.push(styles.modalMessageTextError)
     }
 
-    let modalMessage = this.props.t('LOADING')
-    if (!this.props.isLoading) {
-      modalMessage = this.props.isAddressOK === false ?
-        this.props.t('CHECKOUT_ADDRESS_NOT_VALID') : this.props.t('CHECKOUT_PLEASE_ENTER_ADDRESS')
-    }
-
     return (
       <Modal
         isVisible={ this.props.isModalVisible }
@@ -118,7 +112,7 @@ class AddressModal extends Component {
         <Animated.View style={ [ styles.modalContent, { paddingBottom: this.keyboardHeight } ] } testID="addressModal">
           <View style={{ width, height: 44 + 44 + (44 * 3) }}>
             <View style={{ height: 44, alignItems: 'center', justifyContent: 'center' }}>
-              <Text style={ modalMessageTextStyle }>{ modalMessage }</Text>
+              <Text style={ modalMessageTextStyle }>{ this.props.message }</Text>
             </View>
             <View style={{ height: 44 + (44 * 3) }}>
               <AddressTypeahead
@@ -211,7 +205,7 @@ const styles = StyleSheet.create({
   },
 });
 
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
 
   return {
     googleApiKey: state.app.settings.google_api_key,
@@ -221,6 +215,7 @@ function mapStateToProps(state) {
     isAddressOK: state.checkout.isAddressOK,
     isModalVisible: state.checkout.isAddressModalVisible,
     isLoading: state.checkout.isLoading,
+    message: state.checkout.isLoading ? ownProps.t('LOADING') : state.checkout.addressModalMessage,
   }
 }
 
@@ -233,4 +228,5 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(AddressModal))
+// Make sure to enchance like this, to have the "t" function available in mapStateToProps
+export default withTranslation()(connect(mapStateToProps, mapDispatchToProps)(AddressModal))

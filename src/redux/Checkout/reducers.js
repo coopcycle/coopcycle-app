@@ -27,6 +27,7 @@ import {
   HIDE_EXPIRED_SESSION_MODAL,
   SESSION_EXPIRED,
   SET_ADDRESS_MODAL_HIDDEN,
+  SET_ADDRESS_MODAL_MESSAGE,
 } from './actions'
 
 import i18n from '../../i18n'
@@ -36,6 +37,7 @@ const initialState = {
   cart: null,
   address: null,
   isAddressOK: null,
+  addressModalMessage: '',
   date: null,
   restaurants: [],
   menu: null,
@@ -198,12 +200,20 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         isAddressModalVisible: true,
+        addressModalMessage: action.payload || state.addressModalMessage,
       }
 
     case HIDE_ADDRESS_MODAL:
       return {
         ...state,
         isAddressModalVisible: false,
+        addressModalMessage: initialState.addressModalMessage,
+      }
+
+    case SET_ADDRESS_MODAL_MESSAGE:
+      return {
+        ...state,
+        addressModalMessage: action.payload,
       }
 
     case SET_TIMING:
@@ -235,6 +245,7 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         itemRequestStack: state.itemRequestStack.concat(action.payload.identifier),
+        addressModalMessage: initialState.addressModalMessage,
       }
 
     case ADD_ITEM_REQUEST_FINISHED:

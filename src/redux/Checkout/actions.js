@@ -47,6 +47,7 @@ export const SHOW_EXPIRED_SESSION_MODAL = '@checkout/SHOW_EXPIRED_SESSION_MODAL'
 export const HIDE_EXPIRED_SESSION_MODAL = '@checkout/HIDE_EXPIRED_SESSION_MODAL'
 export const SESSION_EXPIRED = '@checkout/SESSION_EXPIRED'
 export const SET_ADDRESS_MODAL_HIDDEN = '@checkout/SET_ADDRESS_MODAL_HIDDEN'
+export const SET_ADDRESS_MODAL_MESSAGE = '@checkout/SET_ADDRESS_MODAL_MESSAGE'
 
 /*
  * Action Creators
@@ -87,12 +88,23 @@ export const hideExpiredSessionModal = createAction(HIDE_EXPIRED_SESSION_MODAL)
 
 export const sessionExpired = createAction(SESSION_EXPIRED)
 export const setAddressModalHidden = createAction(SET_ADDRESS_MODAL_HIDDEN)
+export const setAddressModalMessage = createAction(SET_ADDRESS_MODAL_MESSAGE)
 
 function validateAddress(httpClient, cart, address) {
+
+  if (!address.isPrecise) {
+    return Promise.reject(i18n.t('ADDRESS_NOT_PRECISE_ENOUGH'))
+  }
+
   const latitude = address.geo.latitude
   const longitude = address.geo.longitude
 
-  return httpClient.get(`${cart.restaurant}/can-deliver/${latitude},${longitude}`)
+  return new Promise((resolve, reject) => {
+    httpClient
+      .get(`${cart.restaurant}/can-deliver/${latitude},${longitude}`)
+      .then(resolve)
+      .catch(() => reject(i18n.t('CHECKOUT_ADDRESS_NOT_VALID')))
+  })
 }
 
 function createHttpClient(state) {
@@ -141,7 +153,7 @@ export function addItem(item, options) {
         // When the address is set,
         // re-dispatch the same action
         replaceSetAddressListeners(() => dispatch(addItem(item, options)))
-        dispatch(showAddressModal())
+        dispatch(showAddressModal(i18n.t('CHECKOUT_PLEASE_ENTER_ADDRESS')))
         return
       }
 
@@ -164,12 +176,13 @@ export function addItem(item, options) {
             })
             dispatch(syncAddress())
           })
-          .catch(() => {
+          .catch((reason) => {
+
             dispatch(setAddressOK(false))
             dispatch(addItemRequestFinished(item))
 
             replaceSetAddressListeners(() => dispatch(addItem(item, options)))
-            dispatch(showAddressModal())
+            dispatch(showAddressModal(reason))
           })
 
         return
@@ -429,8 +442,9 @@ export function setAddress(address) {
           dispatch(setAddressOK(true))
           dispatch(syncAddress())
         })
-        .catch(() => {
+        .catch((reason) => {
           dispatch(setAddressOK(false))
+          dispatch(setAddressModalMessage(reason))
           dispatch(setCheckoutLoading(false))
         })
       }
