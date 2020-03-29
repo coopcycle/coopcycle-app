@@ -67,7 +67,7 @@
     "react-native-safe-area-context": "^0.7.3",
     "react-native-screens": "^2.4.0",
     "react-native-sound": "^0.11.0",
-    "react-native-swipe-list-view": "^2.4.0",
+    "react-native-swipe-list-view": "^2.5.0",
     "react-native-version-number": "^0.3.6",
     "react-navigation": "^4.3.5",
     "react-navigation-collapsible": "^3.0.3",

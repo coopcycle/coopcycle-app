@@ -8960,10 +8960,10 @@ react-native-sound@^0.11.0:
   resolved "https://registry.yarnpkg.com/react-native-sound/-/react-native-sound-0.11.0.tgz#ad60b55ba8c6dc89917f381ad3713f2738de530f"
   integrity sha512-4bGAZfni6E2L695NQjOZwNLBQGXgBGYC4Sy+h99K5h0HqNZjCqR0+aLel+ezASxEJDpaH83gylNObXpiqJgdwg==
 
-react-native-swipe-list-view@^2.4.0:
-  version "2.4.0"
-  resolved "https://registry.yarnpkg.com/react-native-swipe-list-view/-/react-native-swipe-list-view-2.4.0.tgz#20c90e3ea65b9099ac909bc9eb93a366fab41c56"
-  integrity sha512-fk2ogIvju2wTAcJZ73hljPRdLB6f2DAGv/QxWS2IjSZRkidYnU2v9cqFOYCql/VRO788nTzD8mcdAPAnxIMHJg==
+react-native-swipe-list-view@^2.5.0:
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/react-native-swipe-list-view/-/react-native-swipe-list-view-2.5.0.tgz#4740f595aa3253ccd2c8e44131f83bc957f57ddb"
+  integrity sha512-HTsVaxA3an6myShlLroTyDZo/AOrZ6HJr+EwCaGRE2YuGdM/cFHoYfsuslOEEig5GenTw8DILUB8kqYWQ5lJtA==
 
 react-native-tab-view@^2.11.0:
   version "2.11.0"
