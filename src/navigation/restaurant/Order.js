@@ -33,7 +33,7 @@ class OrderScreen extends Component {
   }
 
   componentDidFocus(payload) {
-    this.props.setCurrentOrder(this.props.order)
+    this.props.setCurrentOrder(this.props.navigation.getParam('order'))
   }
 
   componentWillBlur(payload) {
@@ -281,15 +281,17 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(state, ownProps) {
+
   return {
     httpClient: state.app.httpClient,
-    order: state.restaurant.order || ownProps.navigation.state.params.order,
+    order: state.restaurant.order || ownProps.navigation.getParam('order'),
     thermalPrinterConnected: !!state.restaurant.printer,
     printer: state.restaurant.printer,
   }
 }
 
 function mapDispatchToProps(dispatch) {
+
   return {
     acceptOrder: (client, order) => dispatch(acceptOrder(client, order)),
     setCurrentOrder: (order) => dispatch(setCurrentOrder(order)),
