@@ -186,6 +186,10 @@
         "RESTAURANT_SETTINGS_MENU_ACTIVATE": "Activate menu {{- name}}",
         "RESTAURANT_ALERT_RUSH_MODE_ON": "Rush mode is activated",
         "RESTAURANT_ALERT_CLOSED": "Restaurant is closed",
+        "RESTAURANT_PRINTER_CONNECTED_TITLE": "Device connected",
+        "RESTAURANT_PRINTER_CONNECTED_BODY": "The device {{name}} is connected",
+        "RESTAURANT_PRINTER_DISCONNECTED_TITLE": "Device disconnected",
+        "RESTAURANT_PRINTER_DISCONNECTED_BODY": "The device {{name}} has been disconnected",
         "CHECKOUT_PRODUCT_OPTIONS_TITLE": "Choose options",
         "CHECKOUT_PRODUCT_OPTIONS_DISCLAIMER": "Please choose options for product {{name}}",
         "CHECKOUT_LOGIN_TITLE": "Authentication",
@@ -290,11 +294,13 @@
         "SESSION_EXPIRED": "You session has expired",
         "TOUCH_TO_RELOAD": "Touch to reload",
         "OFFLINE": "You are offline",
-        "SCAN_FOR_PRINTERS": "Start scanning",
+        "SCAN_FOR_PRINTERS": "Tap to scan",
         "SEARCH_WITH_ADDRESS": "Search « {{address}} »",
         "RESTAURANT_ORDER_CONNECT_PRINTER": "Connect a printer",
         "SWIPE_TO_ACCEPT_REFUSE": "Slide to the right to accept, to the left to refuse",
         "ADD_COUPON": "Add a voucher code",
-        "VOUCHER_CODE": "Voucher code"
+        "VOUCHER_CODE": "Voucher code",
+        "RECEIPT_HEADING_ORDER_NUMBER": "ORDER {{number}} (#{{id}})",
+        "RECEIPT_HEADING_PICKUP_EXPECTED_AT": "PICKUP EXPECTED AT {{time}}"
     }
 }

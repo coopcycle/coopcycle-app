@@ -38,8 +38,6 @@ export const LOGOUT_SUCCESS = '@app/LOGOUT_SUCCESS'
 export const RESUME_CHECKOUT_AFTER_ACTIVATION = '@app/RESUME_CHECKOUT_AFTER_ACTIVATION'
 export const SET_SERVERS = '@app/SET_SERVERS'
 export const SET_SETTINGS = '@app/SET_SETTINGS'
-export const THERMAL_PRINTER_CONNECTED = '@app/THERMAL_PRINTER_CONNECTED'
-export const THERMAL_PRINTER_DEVICE_ID = '@app/THERMAL_PRINTER_DEVICE_ID'
 export const SET_SELECT_SERVER_ERROR = '@app/SET_SELECT_SERVER_ERROR'
 export const CLEAR_SELECT_SERVER_ERROR = '@app/CLEAR_SELECT_SERVER_ERROR'
 
@@ -73,8 +71,6 @@ const resetPasswordRequestFailure = createAction(RESET_PASSWORD_REQUEST_FAILURE)
 export const logoutRequest = createAction(LOGOUT_REQUEST)
 export const logoutSuccess = createAction(LOGOUT_SUCCESS)
 export const setServers = createAction(SET_SERVERS)
-export const thermalPrinterConnected = createAction(THERMAL_PRINTER_CONNECTED)
-export const setThermalPrinterDeviceId = createAction(THERMAL_PRINTER_DEVICE_ID)
 
 const _setUser = createAction(SET_USER)
 const setBaseURL = createAction(SET_BASE_URL)

@@ -23,8 +23,6 @@ import {
   RESET_PASSWORD_REQUEST_SUCCESS,
   RESET_PASSWORD_REQUEST_FAILURE,
   SET_SERVERS,
-  THERMAL_PRINTER_CONNECTED,
-  THERMAL_PRINTER_DEVICE_ID,
   SET_SELECT_SERVER_ERROR,
   CLEAR_SELECT_SERVER_ERROR,
   SET_SETTINGS,
@@ -51,8 +49,6 @@ const initialState = {
   resumeCheckoutAfterActivation: false,
   servers: [],
   trackerInitialized: false,
-  thermalPrinterConnected: false,
-  thermalPrinterDeviceId: null,
   selectServerError: null,
   settings: {
     google_api_key: '',
@@ -197,18 +193,6 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         servers: action.payload,
-      }
-
-    case THERMAL_PRINTER_CONNECTED:
-      return {
-        ...state,
-        thermalPrinterConnected: true,
-      }
-
-    case THERMAL_PRINTER_DEVICE_ID:
-      return {
-        ...state,
-        thermalPrinterDeviceId: action.payload,
       }
 
     case CLEAR_SELECT_SERVER_ERROR:

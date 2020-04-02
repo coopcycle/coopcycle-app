@@ -148,7 +148,7 @@ class OrderScreen extends Component {
 
   renderButtons() {
 
-    const { order, thermalPrinterConnected } = this.props
+    const { order, isPrinterConnected } = this.props
 
     let phoneNumber
     let isPhoneValid = false
@@ -161,13 +161,13 @@ class OrderScreen extends Component {
     return (
       <View style={{ flex: 1, flexDirection: 'row', paddingHorizontal: 10 }}>
         <View style={{ width: '50%', paddingRight: 5 }}>
-          { thermalPrinterConnected && (
+          { isPrinterConnected && (
           <Button small iconLeft onPress={ () => this._print() }>
             <Icon type="FontAwesome" name="print" />
             <Text>{ this.props.t('RESTAURANT_ORDER_PRINT') }</Text>
           </Button>
           )}
-          { !thermalPrinterConnected && (
+          { !isPrinterConnected && (
           <Button small light iconLeft onPress={ () => this.props.navigation.navigate('RestaurantPrinter') }>
             <Icon type="FontAwesome" name="print" />
             <Text>{ this.props.t('RESTAURANT_ORDER_CONNECT_PRINTER') }</Text>
@@ -275,7 +275,7 @@ function mapStateToProps(state, ownProps) {
 
   return {
     order: ownProps.navigation.getParam('order'),
-    thermalPrinterConnected: !!state.restaurant.printer,
+    isPrinterConnected: !!state.restaurant.printer,
     printer: state.restaurant.printer,
   }
 }

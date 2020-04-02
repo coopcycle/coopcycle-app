@@ -1,12 +1,22 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, TouchableOpacity, FlatList, NativeModules, NativeEventEmitter, ActivityIndicator } from 'react-native'
+import {
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  FlatList,
+  NativeModules,
+  NativeEventEmitter,
+  ActivityIndicator,
+  Platform,
+  PermissionsAndroid
+} from 'react-native'
 import { Container, Icon, Text } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import _ from 'lodash'
 import { connect } from 'react-redux'
 import BleManager from 'react-native-ble-manager'
 
-import { connectPrinter, bluetoothStartScan } from '../../redux/Restaurant/actions'
+import { connectPrinter, bluetoothStartScan, disconnectPrinter } from '../../redux/Restaurant/actions'
 
 const BleManagerModule = NativeModules.BleManager
 const bleManagerEmitter = new NativeEventEmitter(BleManagerModule)
@@ -23,49 +33,65 @@ class Printer extends Component {
 
   componentDidMount() {
     this.discoverPeripheral = bleManagerEmitter.addListener('BleManagerDiscoverPeripheral', (device) => {
-      let devices = this.state.devices.slice(0)
-      if (!_.find(devices, d => d.id === device.id)) {
-        devices.push(device)
-        this.setState({ devices })
-      }
-    })
-  }
 
-  componentDidUpdate(prevProps) {
-    if (this.props.printer && prevProps.printer !== this.props.printer) {
-      this.props.navigation.navigate('RestaurantOrder')
-    }
+      if (!device.advertising.isConnectable) {
+        return
+      }
+
+      const devices = this.state.devices.slice(0)
+      devices.push(device)
+
+      this.setState({ devices: _.uniqBy(devices, 'id') })
+    })
   }
 
   componentWillUnmount() {
     this.discoverPeripheral.remove()
   }
 
-  _connectToDevice(device) {
-    this.props.connectPrinter(device)
+  _connect(device) {
+    this.props.connectPrinter(device, () => this.props.navigation.navigate('RestaurantSettings'))
   }
 
-  _onPressScan() {
-    if (!this.props.isScanning) {
-      BleManager.scan(["e7810a71-73ae-499d-8c15-faa9aef0c3f2"], 10, true)
-        .then(() => {
+  _disconnect(device) {
+    this.props.disconnectPrinter(device, () => this.props.navigation.navigate('RestaurantSettings'))
+  }
+
+  async _onPressScan() {
+
+    if (this.props.isScanning) {
+      return
+    }
+
+    // Make sure we have "ACCESS_COARSE_LOCATION" permission or scan won't work
+    if (Platform.OS === 'android' && Platform.Version >= 23) {
+
+      const isGranted = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION)
+      if (!isGranted) {
+        const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION)
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+          await BleManager.scan([], 30, true)
           this.props.bluetoothStartScan()
-        })
+        }
+      } else {
+        await BleManager.scan([], 30, true)
+        this.props.bluetoothStartScan()
+      }
+
+    } else {
+      await BleManager.scan([], 30, true)
+      this.props.bluetoothStartScan()
     }
   }
 
   renderItem(item) {
 
-    const { thermalPrinter } = this.props
-
-    const isConnected = thermalPrinter && thermalPrinter.id === item.id
-
     return (
-      <TouchableOpacity style={ styles.item } onPress={ () => this._connectToDevice(item) }>
+      <TouchableOpacity style={ styles.item } onPress={ () => item.isConnected ? this._disconnect(item) : this._connect(item) }>
         <Text>
-          { item.name }
+          { item.name || item.id }
         </Text>
-        <Icon type="FontAwesome" name={ isConnected ? 'check' : 'chevron-right' } />
+        <Icon type="FontAwesome" name={ item.isConnected ? 'close' : 'chevron-right' } />
       </TouchableOpacity>
     )
   }
@@ -73,9 +99,18 @@ class Printer extends Component {
   render() {
 
     const { devices } = this.state
-    const { isScanning } = this.props
+    const { isScanning, printer } = this.props
 
-    const showList = !isScanning && devices.length > 0
+    let items = []
+    if (printer) {
+      items.push({ ...printer, isConnected: true })
+    } else {
+      items = devices.map(device => ({ ...device, isConnected: false }))
+    }
+
+    console.log(items)
+
+    const showList = !isScanning && items.length > 0
 
     const contentStyle = []
     if (!showList) {
@@ -87,15 +122,15 @@ class Printer extends Component {
         <View style={ contentStyle }>
           { showList && (
             <FlatList
-              data={ this.state.devices }
+              data={ items }
               keyExtractor={ item => item.id }
               renderItem={ ({ item }) => this.renderItem(item) } />
           ) }
           { !showList && (
-            <TouchableOpacity onPress={ this._onPressScan.bind(this) } style={{ padding: 15, alignItems: 'center' }}>
+            <TouchableOpacity onPress={ () => this._onPressScan() } style={{ padding: 15, alignItems: 'center' }}>
               <Icon type="FontAwesome" name="print" style={{ fontSize: 42 }} />
               <Text>{ this.props.t('SCAN_FOR_PRINTERS') }</Text>
-              { isScanning && <ActivityIndicator size="large" color="#c7c7c7" /> }
+              { isScanning && <ActivityIndicator size="large" color="#c7c7c7" style={{ marginTop: 5 }} /> }
             </TouchableOpacity>
           ) }
         </View>
@@ -123,16 +158,18 @@ const styles = StyleSheet.create({
 })
 
 function mapStateToProps(state) {
+
   return {
-    thermalPrinter: state.restaurant.thermalPrinter,
     isScanning: state.restaurant.isScanningBluetooth,
     printer: state.restaurant.printer,
   }
 }
 
 function mapDispatchToProps(dispatch) {
+
   return {
-    connectPrinter: (device) => dispatch(connectPrinter(device)),
+    connectPrinter: (device, cb) => dispatch(connectPrinter(device, cb)),
+    disconnectPrinter: (device, cb) => dispatch(disconnectPrinter(device, cb)),
     bluetoothStartScan: () => dispatch(bluetoothStartScan()),
   }
 }

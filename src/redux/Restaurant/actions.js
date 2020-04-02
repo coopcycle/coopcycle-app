@@ -1,6 +1,7 @@
 import { createAction } from 'redux-actions'
 import { NavigationActions, StackActions } from 'react-navigation'
 import BleManager from 'react-native-ble-manager'
+import _ from 'lodash'
 
 import DropdownHolder from '../../DropdownHolder'
 import NavigationHolder from '../../NavigationHolder'
@@ -78,6 +79,7 @@ export const DELETE_OPENING_HOURS_SPECIFICATION_SUCCESS = 'DELETE_OPENING_HOURS_
 export const DELETE_OPENING_HOURS_SPECIFICATION_FAILURE = 'DELETE_OPENING_HOURS_SPECIFICATION_FAILURE'
 
 export const PRINTER_CONNECTED = '@restaurant/PRINTER_CONNECTED'
+export const PRINTER_DISCONNECTED = '@restaurant/PRINTER_DISCONNECTED'
 export const BLUETOOTH_ENABLED = '@restaurant/BLUETOOTH_ENABLED'
 export const BLUETOOTH_DISABLED = '@restaurant/BLUETOOTH_DISABLED'
 export const BLUETOOTH_START_SCAN = '@restaurant/BLUETOOTH_START_SCAN'
@@ -148,6 +150,7 @@ export const deleteOpeningHoursSpecificationSuccess = createAction(DELETE_OPENIN
 export const deleteOpeningHoursSpecificationFailure = createAction(DELETE_OPENING_HOURS_SPECIFICATION_FAILURE)
 
 export const printerConnected = createAction(PRINTER_CONNECTED)
+export const printerDisconnected = createAction(PRINTER_DISCONNECTED)
 
 export const bluetoothEnabled = createAction(BLUETOOTH_ENABLED)
 export const bluetoothDisabled = createAction(BLUETOOTH_DISABLED)
@@ -481,45 +484,100 @@ export function deleteOpeningHoursSpecification(openingHoursSpecification) {
   }
 }
 
-// const FOODORA_BT_PRINTER = '0F:02:17:A2:32:6A'
-// const MTP_II = '02:03:D2:09:33:47'
-
 export function printOrder(order) {
 
-  return (dispatch, getState) => {
-
-    const encoded = encodeForPrinter(order)
+  return async (dispatch, getState) => {
 
     const { printer } = getState().restaurant
 
-    BleManager.isPeripheralConnected(printer, [])
-      .then((isConnected) => {
-        if (isConnected) {
-          BleManager.retrieveServices(printer).then(services => {
-            BleManager.writeWithoutResponse(
-              printer,
-              'e7810a71-73ae-499d-8c15-faa9aef0c3f2',
-              'bef8d6c9-9c21-4c9e-b632-bd58c1009f9f',
+    if (!printer) {
+      return
+    }
+
+    try {
+
+      const peripheralInfo = await BleManager.retrieveServices(printer.id)
+
+      // We keep only writable characteristics
+
+      const writableCharacteristics = _.filter(peripheralInfo.characteristics, (characteristic) => {
+        return characteristic.properties && (characteristic.properties.Write || characteristic.properties.WriteWithoutResponse)
+      })
+
+      if (writableCharacteristics.length > 0) {
+
+        const encoded = encodeForPrinter(order)
+
+        for (let i = 0; i < writableCharacteristics.length; i++) {
+
+          const writableCharacteristic = writableCharacteristics[i]
+
+          try {
+
+            await BleManager.writeWithoutResponse(
+              printer.id,
+              writableCharacteristic.service,
+              writableCharacteristic.characteristic,
               Array.from(encoded)
             )
-            .then(() => console.log('WRITE OK'))
-            .catch((e) => console.log('Error writing to device', e))
-          })
 
-        } else {
-          console.log('Peripheral is NOT connected!');
+            break
+
+          } catch (e) {
+            console.log('Write failed', e)
+          }
         }
-      })
+      }
+
+    } catch (e) {
+      console.log('retrieveServices error', e)
+    }
   }
 }
 
-export function connectPrinter(device) {
+export function connectPrinter(device, cb) {
 
   return function (dispatch, getState) {
     BleManager.connect(device.id)
       .then(() => {
-        console.log('Connected to device !!!', device)
-        dispatch(printerConnected(device.id))
+
+        dispatch(printerConnected(device))
+
+        DropdownHolder
+          .getDropdown()
+          .alertWithType(
+            'success',
+            i18n.t('RESTAURANT_PRINTER_CONNECTED_TITLE'),
+            i18n.t('RESTAURANT_PRINTER_CONNECTED_BODY', { name: (device.name || device.id) })
+          )
+
+        cb && cb()
+
+      })
+      .catch(e => {
+        console.log(e)
+      })
+  }
+}
+
+export function disconnectPrinter(device, cb) {
+
+  return function (dispatch, getState) {
+    BleManager.disconnect(device.id)
+      .then(() => {
+
+        dispatch(printerDisconnected(device))
+
+        DropdownHolder
+          .getDropdown()
+          .alertWithType(
+            'success',
+            i18n.t('RESTAURANT_PRINTER_DISCONNECTED_TITLE'),
+            i18n.t('RESTAURANT_PRINTER_DISCONNECTED_BODY', { name: (device.name || device.id) })
+          )
+
+        cb && cb()
+
       })
       .catch(e => {
         console.log(e)

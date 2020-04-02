@@ -1,6 +1,7 @@
 import moment from 'moment'
 import EscPosEncoder from 'esc-pos-encoder'
 import diacritics from 'diacritics'
+import i18n from '../i18n'
 
 import { formatPriceWithCode } from './formatting'
 
@@ -24,26 +25,25 @@ const CODEPAGE = 'windows1251'
 export function encodeForPrinter(order) {
   const maxChars = 32
 
-  const preparationExpectedAt = moment(order.preparationExpectedAt).format('LT')
-  const pickupExpectedAt = moment(order.pickupExpectedAt).format('LT')
+  const pickupLine = i18n.t('RECEIPT_HEADING_PICKUP_EXPECTED_AT', {
+    time: moment(order.pickupExpectedAt).format('LT')
+  })
 
-  const preparationLine = 'A COMMENCER A PARTIR DE '.padEnd((maxChars - preparationExpectedAt.length), ' ') + preparationExpectedAt
-  const pickupLine = 'A PREPARER POUR '.padEnd((maxChars - pickupExpectedAt.length), ' ') + pickupExpectedAt
+  const hr = ''.padEnd(maxChars, '-')
 
   let encoder = new EscPosEncoder()
   encoder
     .initialize()
     .codepage(CODEPAGE)
-    .line(''.padEnd(maxChars, '-'))
+    .line(hr)
     .align('center')
-    .line(`COMMANDE ${order.number} #${order.id}`)
-    .line(''.padEnd(maxChars, '-'))
+    .line(i18n.t('RECEIPT_HEADING_ORDER_NUMBER', { number: order.number, id: order.id }))
+    .line(hr)
 
   encoder
-    .align('left')
-    .line(preparationLine)
+    .align('center')
     .line(pickupLine)
-    .line(''.padEnd(maxChars, '-'))
+    .line(hr)
     .newline()
 
   order.items.forEach((item) => {
@@ -80,7 +80,7 @@ export function encodeForPrinter(order) {
   })
 
   encoder
-    .line(''.padEnd(maxChars, '-'))
+    .line(hr)
 
   let total = formatPriceWithCode(order.itemsTotal)
   let totalLine = 'TOTAL '.padEnd((maxChars - total.length), ' ') + total
@@ -88,13 +88,13 @@ export function encodeForPrinter(order) {
   encoder
     .align('left')
     .line(totalLine)
-    .line(''.padEnd(maxChars, '-'))
+    .line(hr)
 
   if (order.notes) {
     let notes = diacritics.remove(order.notes)
     encoder
       .line(notes)
-      .line(''.padEnd(maxChars, '-'))
+      .line(hr)
   }
 
   encoder

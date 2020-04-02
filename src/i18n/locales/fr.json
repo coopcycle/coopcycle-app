@@ -185,6 +185,10 @@
         "RESTAURANT_ORDER_ACCEPTED_CONFIRM_BODY": "La commande {{number}} ({{id}}) a été acceptée",
         "RESTAURANT_ORDER_ACCEPTED_CONFIRM_TITLE": "Commande annulée !",
         "RESTAURANT_ORDER_ACCEPTED_CONFIRM_BODY": "La commande {{number}} ({{id}}) a été annulée",
+        "RESTAURANT_PRINTER_CONNECTED_TITLE": "Appareil connecté",
+        "RESTAURANT_PRINTER_CONNECTED_BODY": "L'appareil {{name}} est désormais connecté",
+        "RESTAURANT_PRINTER_DISCONNECTED_TITLE": "Appareil déconnecté",
+        "RESTAURANT_PRINTER_DISCONNECTED_BODY": "L'appareil {{name}} a été déconnecté",
         "CHECKOUT_PRODUCT_OPTIONS_TITLE": "Choix des options",
         "CHECKOUT_PRODUCT_OPTIONS_DISCLAIMER": "Choisissez les options pour le produit {{name}}",
         "CHECKOUT_LOGIN_TITLE": "Authentification",
@@ -288,7 +292,7 @@
         "SESSION_EXPIRED": "Votre session a expiré",
         "TOUCH_TO_RELOAD": "Touchez pour réessayer",
         "OFFLINE": "Vous êtes déconnecté·e",
-        "SCAN_FOR_PRINTERS": "Scanner les imprimantes",
+        "SCAN_FOR_PRINTERS": "Touchez l'écran pour scanner",
         "SEARCH_WITH_ADDRESS": "Rechercher « {{address}} »",
         "RESTAURANT_ORDER_CONNECT_PRINTER": "Connecter une imprimante",
         "SWIPE_TO_ACCEPT_REFUSE": "Glissez vers la droite pour accepter, vers la gauche pour refuser",
@@ -296,6 +300,8 @@
         "VOUCHER_CODE": "Code promo",
         "DELIVERY_ASAP": "Au plus tôt",
         "PHOTO_ADD": "Ajouter l'image",
-        "TASKS_CHANGED_ALERT_SOUND": "Son pour les notifications"
+        "TASKS_CHANGED_ALERT_SOUND": "Son pour les notifications",
+        "RECEIPT_HEADING_ORDER_NUMBER": "COMMANDE {{number}} (#{{id}})",
+        "RECEIPT_HEADING_PICKUP_EXPECTED_AT": "RETRAIT A {{time}}"
     }
 }

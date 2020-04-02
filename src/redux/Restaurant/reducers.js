@@ -42,6 +42,7 @@ import {
   LOAD_MORE_PRODUCTS_SUCCESS,
   SET_HAS_MORE_PRODUCTS,
   PRINTER_CONNECTED,
+  PRINTER_DISCONNECTED,
   BLUETOOTH_ENABLED,
   BLUETOOTH_DISABLED,
   BLUETOOTH_START_SCAN,
@@ -364,6 +365,13 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         printer: action.payload,
+      }
+
+    case PRINTER_DISCONNECTED:
+
+      return {
+        ...state,
+        printer: null,
       }
 
     case BLUETOOTH_ENABLED:

@@ -28,14 +28,13 @@ describe('encodeForPrinter', () => {
     }
 
     const expected =
-`@tI--------------------------------
-\u001baCOMMANDE AAA #1
+`@\u001btI--------------------------------
+\u001baORDER AAA (#1)
 --------------------------------
-\u001baA COMMENCER A PARTIR DE  ${time.format('LT')}
-A PREPARER POUR          ${time.format('LT')}
+\u001ba\u0001PICKUP EXPECTED AT ${time.format('LT')}
 --------------------------------
 
-\u001ba\u00002 x Burger               EUR9.00
+\u001ba2 x Burger               EUR9.00
 
 \u001ba\u00001 x Cake                 EUR5.00
 
@@ -54,7 +53,6 @@ A PREPARER POUR          ${time.format('LT')}
         .replace(/\r/gm, '')
         .replace(/(\u0000)/, '')
         .replace(/(\u0001)/, '')
-        .replace(/(\u001b)/, '')
         .replace(/(\u001b)/, '')
         .split('\n')
 
