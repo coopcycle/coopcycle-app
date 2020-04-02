@@ -183,6 +183,8 @@
         "RESTAURANT_ALERT_CLOSED": "Le restaurant est fermé",
         "RESTAURANT_ORDER_ACCEPTED_CONFIRM_TITLE": "Commande acceptée !",
         "RESTAURANT_ORDER_ACCEPTED_CONFIRM_BODY": "La commande {{number}} ({{id}}) a été acceptée",
+        "RESTAURANT_ORDER_ACCEPTED_CONFIRM_TITLE": "Commande annulée !",
+        "RESTAURANT_ORDER_ACCEPTED_CONFIRM_BODY": "La commande {{number}} ({{id}}) a été annulée",
         "CHECKOUT_PRODUCT_OPTIONS_TITLE": "Choix des options",
         "CHECKOUT_PRODUCT_OPTIONS_DISCLAIMER": "Choisissez les options pour le produit {{name}}",
         "CHECKOUT_LOGIN_TITLE": "Authentification",

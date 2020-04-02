@@ -287,7 +287,9 @@ export function acceptOrder(order, cb) {
 
         DropdownHolder
           .getDropdown()
-          .alertWithType('success', i18n.t('RESTAURANT_ORDER_ACCEPTED_CONFIRM_TITLE'),
+          .alertWithType(
+            'success',
+            i18n.t('RESTAURANT_ORDER_ACCEPTED_CONFIRM_TITLE'),
             i18n.t('RESTAURANT_ORDER_ACCEPTED_CONFIRM_BODY', { number: order.number, id: order.id })
           )
 
@@ -350,8 +352,10 @@ export function cancelOrder(order, reason, cb) {
 
         DropdownHolder
           .getDropdown()
-          .alertWithType('success', 'Commande annulée !',
-            `La commande ${order.number} (#${order.id}) a été annulée`
+          .alertWithType(
+            'success',
+            i18n.t('RESTAURANT_ORDER_CANCELLED_CONFIRM_TITLE'),
+            i18n.t('RESTAURANT_ORDER_CANCELLED_CONFIRM_BODY', { number: order.number, id: order.id })
           )
 
         cb(res)
