@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity } from 'react-native';
-import { NavigationEvents } from 'react-navigation';
 import {
   Footer,
   Left,
@@ -16,7 +15,7 @@ import { PhoneNumberUtil, PhoneNumberFormat } from 'google-libphonenumber'
 import { SwipeRow } from 'react-native-swipe-list-view'
 
 import OrderItems from '../../components/OrderItems'
-import { acceptOrder, setCurrentOrder, printOrder } from '../../redux/Restaurant/actions'
+import { acceptOrder, printOrder } from '../../redux/Restaurant/actions'
 import material from '../../../native-base-theme/variables/material'
 
 const phoneNumberUtil = PhoneNumberUtil.getInstance()
@@ -30,14 +29,6 @@ class OrderScreen extends Component {
     }
     this.onSwipeValueChange = this.onSwipeValueChange.bind(this)
     this.onRowOpen = this.onRowOpen.bind(this)
-  }
-
-  componentDidFocus(payload) {
-    this.props.setCurrentOrder(this.props.navigation.getParam('order'))
-  }
-
-  componentWillBlur(payload) {
-    this.props.setCurrentOrder(null)
   }
 
   _print() {
@@ -200,7 +191,7 @@ class OrderScreen extends Component {
 
   onRowOpen(value) {
     if (value > 0) {
-      this.props.acceptOrder(this.props.httpClient, this.props.order)
+      this.props.acceptOrder(this.props.order, order => this.props.navigation.setParams({ order }))
     } else {
       this.props.navigation.navigate('RestaurantOrderRefuse', { order: this.props.order })
     }
@@ -212,9 +203,6 @@ class OrderScreen extends Component {
 
     return (
       <View style={{ flex: 1, backgroundColor: '#ffffff' }}>
-        <NavigationEvents
-          onDidFocus={ this.componentDidFocus.bind(this) }
-          onWillBlur={ this.componentWillBlur.bind(this) } />
         { this.renderHeading() }
         <View style={{ flex: 8 }}>
           <OrderItems order={ order } />
@@ -283,8 +271,7 @@ const styles = StyleSheet.create({
 function mapStateToProps(state, ownProps) {
 
   return {
-    httpClient: state.app.httpClient,
-    order: state.restaurant.order || ownProps.navigation.getParam('order'),
+    order: ownProps.navigation.getParam('order'),
     thermalPrinterConnected: !!state.restaurant.printer,
     printer: state.restaurant.printer,
   }
@@ -293,8 +280,7 @@ function mapStateToProps(state, ownProps) {
 function mapDispatchToProps(dispatch) {
 
   return {
-    acceptOrder: (client, order) => dispatch(acceptOrder(client, order)),
-    setCurrentOrder: (order) => dispatch(setCurrentOrder(order)),
+    acceptOrder: (order, cb) => dispatch(acceptOrder(order, cb)),
     printOrder: (order) => dispatch(printOrder(order)),
   }
 }

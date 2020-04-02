@@ -1,64 +1,21 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, TouchableOpacity } from 'react-native'
-import {
-  Container, Content,
-  Icon, Text,
-} from 'native-base'
+import { View } from 'react-native'
+import { Container, Content, Text } from 'native-base'
 import { Row, Grid } from 'react-native-easy-grid'
 import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
-import material from '../../../native-base-theme/variables/material'
 
+import BigButton from './components/BigButton'
 import { refuseOrder } from '../../redux/Restaurant/actions'
-
-class BigButton extends Component {
-  constructor(props) {
-    super(props);
-  }
-  render() {
-
-    const danger = this.props.danger
-
-    const btnStyles = [ styles.btn ]
-    const btnTextHeadingStyles = [ styles.btnTextHeading ]
-    const btnTextNoteStyles = []
-
-    if (danger) {
-      btnStyles.push(styles.btnDanger)
-      btnTextHeadingStyles.push(styles.textDanger)
-      btnTextNoteStyles.push(styles.textDanger)
-    }
-
-    const iconColor = danger ? material.brandDanger : '#ccc'
-
-    return (
-      <TouchableOpacity style={ btnStyles } onPress={ this.props.onPress }>
-        <View>
-          <Text style={ btnTextHeadingStyles }>
-            { this.props.heading }
-          </Text>
-          <Text note style={ btnTextNoteStyles }>
-            { this.props.text }
-          </Text>
-        </View>
-        <Icon style={{ color: iconColor, alignSelf: 'center' }} name="ios-arrow-forward" />
-      </TouchableOpacity>
-    )
-  }
-}
 
 class OrderRefuseScreen extends Component {
 
-  componentDidUpdate(prevProps) {
-    // Close the modal when loading has finished
-    if (prevProps.loading === true && this.props.loading === false) {
-      this.props.navigation.goBack()
-    }
-  }
-
   _refuseOrder(reason) {
-    const { order } = this.props.navigation.state.params
-    this.props.refuseOrder(this.props.httpClient, order, reason)
+    this.props.refuseOrder(
+      this.props.navigation.getParam('order'),
+      reason,
+      order => this.props.navigation.navigate('RestaurantOrder', { order })
+    )
   }
 
   render() {
@@ -97,39 +54,15 @@ class OrderRefuseScreen extends Component {
   }
 }
 
-const styles = StyleSheet.create({
-  btn: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 4,
-    padding: 15,
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    backgroundColor: '#fff',
-  },
-  btnDanger: {
-    borderColor: material.brandDanger,
-  },
-  btnTextHeading: {
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
-  textDanger: {
-    color: material.brandDanger,
-  },
-})
-
 function mapStateToProps(state) {
-  return {
-    httpClient: state.app.httpClient,
-    loading: state.restaurant.isFetching,
-  }
+
+  return {}
 }
 
 function mapDispatchToProps(dispatch) {
+
   return {
-    refuseOrder: (httpClient, order, reason) => dispatch(refuseOrder(httpClient, order, reason)),
+    refuseOrder: (order, reason, cb) => dispatch(refuseOrder(order, reason, cb)),
   }
 }
 

@@ -162,6 +162,8 @@
         "RESTAURANT_OPENING_HOURS_VALID_FROM_THROUGH": "From {{validFrom}} to {{validThrough}}",
         "RESTAURANT_OPENING_HOURS_ONE_DAY": "{{day}} from {{opens}} to {{closes}}",
         "RESTAURANT_OPENING_HOURS_DAY_RANGE": "From {{firstDay}} to {{lastDay}} from {{opens}} to {{closes}}",
+        "RESTAURANT_ORDER_ACCEPTED_CONFIRM_TITLE": "Order accepted!",
+        "RESTAURANT_ORDER_ACCEPTED_CONFIRM_BODY": "Order {{number}} ({{id}}) has been accepted",
         "OPEN_IN_MAPS_TITLE": "Show task on map",
         "OPEN_IN_MAPS_MESSAGE": "Choose an app",
         "RESTAURANT_ORDER_TITLE": "Order {{order.number}} (#{{order.id}})",

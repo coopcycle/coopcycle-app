@@ -5,7 +5,6 @@ import {
   LOAD_ORDER_REQUEST,
   LOAD_ORDER_FAILURE,
   LOAD_ORDER_SUCCESS,
-  SET_CURRENT_ORDER,
   ACCEPT_ORDER_REQUEST,
   ACCEPT_ORDER_SUCCESS,
   ACCEPT_ORDER_FAILURE,
@@ -62,7 +61,6 @@ const initialState = {
   fetchError: null,  // Error object describing the error
   isFetching: false, // Flag indicating active HTTP request
   orders: [],        // Array of orders
-  order: null,
   myRestaurants: [], // Array of restaurants
   date: moment(),
   status: 'available',
@@ -201,7 +199,6 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         orders: spliceOrders(state, action.payload),
-        order: action.payload,
         fetchError: false,
         isFetching: false,
       }
@@ -210,7 +207,6 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         orders: spliceOrders(state, action.payload),
-        order: action.payload,
         fetchError: false,
         isFetching: false,
       }
@@ -219,7 +215,6 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         orders: spliceOrders(state, action.payload),
-        order: action.payload,
         fetchError: false,
         isFetching: false,
       }
@@ -228,15 +223,8 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         orders: spliceOrders(state, action.payload),
-        order: action.payload,
         fetchError: false,
         isFetching: false,
-      }
-
-    case SET_CURRENT_ORDER:
-      return {
-        ...state,
-        order: action.payload,
       }
 
     case LOAD_MY_RESTAURANTS_SUCCESS:

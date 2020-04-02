@@ -21,7 +21,6 @@ class DashboardPage extends Component {
 
     if (this.props.navigation.getParam('loadOrders', true)) {
       this.props.loadOrders(
-        this.props.httpClient,
         this.props.restaurant,
         this.props.date.format('YYYY-MM-DD')
       )
@@ -41,7 +40,6 @@ class DashboardPage extends Component {
 
     if (hasChanged) {
       this.props.loadOrders(
-        this.props.httpClient,
         this.props.restaurant,
         this.props.date.format('YYYY-MM-DD')
       )
@@ -115,7 +113,6 @@ const styles = StyleSheet.create({
 function mapStateToProps(state) {
 
   return {
-    httpClient: state.app.httpClient,
     orders: state.restaurant.orders,
     date: state.restaurant.date,
     restaurant: state.restaurant.restaurant,
@@ -126,7 +123,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    loadOrders: (client, restaurant, date) => dispatch(loadOrders(client, restaurant, date)),
+    loadOrders: (restaurant, date) => dispatch(loadOrders(restaurant, date)),
     changeDate: date => dispatch(changeDate(date)),
     changeStatus: (restaurant, state) => dispatch(changeStatus(restaurant, state)),
     deleteOpeningHoursSpecification: openingHoursSpecification =>

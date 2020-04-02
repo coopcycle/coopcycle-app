@@ -8,6 +8,8 @@ import NavigationHolder from '../../NavigationHolder'
 import { pushNotification } from '../App/actions'
 import { encodeForPrinter } from '../../utils/order'
 
+import i18n from '../../i18n'
+
 import {
   LOAD_MY_RESTAURANTS_REQUEST,
   LOAD_MY_RESTAURANTS_SUCCESS,
@@ -25,8 +27,6 @@ export const LOAD_ORDERS_FAILURE = 'LOAD_ORDERS_FAILURE'
 export const LOAD_ORDER_REQUEST = 'LOAD_ORDER_REQUEST'
 export const LOAD_ORDER_SUCCESS = 'LOAD_ORDER_SUCCESS'
 export const LOAD_ORDER_FAILURE = 'LOAD_ORDER_FAILURE'
-
-export const SET_CURRENT_ORDER = 'SET_CURRENT_ORDER'
 
 export const ACCEPT_ORDER_REQUEST = 'ACCEPT_ORDER_REQUEST'
 export const ACCEPT_ORDER_SUCCESS = 'ACCEPT_ORDER_SUCCESS'
@@ -104,8 +104,6 @@ export const loadMenusSuccess = createAction(LOAD_MENUS_SUCCESS)
 export const loadMenusFailure = createAction(LOAD_MENUS_FAILURE)
 export const setCurrentMenu = createAction(SET_CURRENT_MENU, (restaurant, menu) => ({ restaurant, menu }))
 
-export const setCurrentOrder = createAction(SET_CURRENT_ORDER)
-
 export const acceptOrderRequest = createAction(ACCEPT_ORDER_REQUEST)
 export const acceptOrderSuccess = createAction(ACCEPT_ORDER_SUCCESS)
 export const acceptOrderFailure = createAction(ACCEPT_ORDER_FAILURE)
@@ -163,6 +161,7 @@ export const bluetoothStopScan = createAction(BLUETOOTH_STOP_SCAN)
 export function loadMyRestaurants() {
 
   return function (dispatch, getState) {
+
     const httpClient = getState().app.httpClient
     dispatch(loadMyRestaurantsRequest())
 
@@ -172,12 +171,14 @@ export function loadMyRestaurants() {
   }
 }
 
-export function loadOrders(client, restaurant, date) {
+export function loadOrders(restaurant, date) {
 
-  return function (dispatch) {
+  return function (dispatch, getState) {
+
+    const httpClient = getState().app.httpClient
     dispatch(loadOrdersRequest())
 
-    return client.get(`${restaurant['@id']}/orders?date=${date}`)
+    return httpClient.get(`${restaurant['@id']}/orders?date=${date}`)
       .then(res => dispatch(loadOrdersSuccess(res['hydra:member'])))
       .catch(e => dispatch(loadOrdersFailure(e)))
   }
@@ -270,55 +271,79 @@ export function loadOrderAndPushNotification(order) {
   }
 }
 
-export function acceptOrder(client, order) {
+export function acceptOrder(order, cb) {
 
-  return function (dispatch) {
+  return function (dispatch, getState) {
+
+    const { app } = getState()
+    const { httpClient } = app
+
     dispatch(acceptOrderRequest())
 
-    return client.put(order['@id'] + '/accept')
+    return httpClient.put(order['@id'] + '/accept')
       .then(res => {
 
         dispatch(acceptOrderSuccess(res))
 
         DropdownHolder
           .getDropdown()
-          .alertWithType('success', 'Commande acceptée !',
-            `La commande ${order.number} (#${order.id}) a été acceptée`
+          .alertWithType('success', i18n.t('RESTAURANT_ORDER_ACCEPTED_CONFIRM_TITLE'),
+            i18n.t('RESTAURANT_ORDER_ACCEPTED_CONFIRM_BODY', { number: order.number, id: order.id })
           )
+
+        cb(res)
 
       })
       .catch(e => dispatch(acceptOrderFailure(e)))
   }
 }
 
-export function refuseOrder(client, order, reason) {
+export function refuseOrder(order, reason, cb) {
 
-  return function (dispatch) {
+  return function (dispatch, getState) {
+
+    const { app } = getState()
+    const { httpClient } = app
+
     dispatch(refuseOrderRequest())
 
-    return client.put(order['@id'] + '/refuse', { reason })
-      .then(res => dispatch(refuseOrderSuccess(res)))
+    return httpClient.put(order['@id'] + '/refuse', { reason })
+      .then(res => {
+        dispatch(refuseOrderSuccess(res))
+        cb(res)
+      })
       .catch(e => dispatch(refuseOrderFailure(e)))
   }
 }
 
-export function delayOrder(client, order, delay) {
+export function delayOrder(order, delay, cb) {
 
-  return function (dispatch) {
+  return function (dispatch, getState) {
+
+    const { app } = getState()
+    const { httpClient } = app
+
     dispatch(delayOrderRequest())
 
-    return client.put(order['@id'] + '/delay', { delay })
-      .then(res => dispatch(delayOrderSuccess(res)))
+    return httpClient.put(order['@id'] + '/delay', { delay })
+      .then(res => {
+        dispatch(delayOrderSuccess(res))
+        cb(res)
+      })
       .catch(e => dispatch(delayOrderFailure(e)))
   }
 }
 
-export function cancelOrder(client, order, reason) {
+export function cancelOrder(order, reason, cb) {
 
-  return function (dispatch) {
+  return function (dispatch, getState) {
+
+    const { app } = getState()
+    const { httpClient } = app
+
     dispatch(cancelOrderRequest())
 
-    return client.put(order['@id'] + '/cancel', { reason })
+    return httpClient.put(order['@id'] + '/cancel', { reason })
       .then(res => {
 
         dispatch(cancelOrderSuccess(res))
@@ -328,6 +353,8 @@ export function cancelOrder(client, order, reason) {
           .alertWithType('success', 'Commande annulée !',
             `La commande ${order.number} (#${order.id}) a été annulée`
           )
+
+        cb(res)
 
       })
       .catch(e => dispatch(cancelOrderFailure(e)))
