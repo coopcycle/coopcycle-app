@@ -29,6 +29,7 @@ class OrderScreen extends Component {
     }
     this.onSwipeValueChange = this.onSwipeValueChange.bind(this)
     this.onRowOpen = this.onRowOpen.bind(this)
+    this.swipeRow = React.createRef()
   }
 
   _print() {
@@ -49,7 +50,8 @@ class OrderScreen extends Component {
               leftOpenValue={ this.state.openValue }
               rightOpenValue={ (this.state.openValue * -1) }
               onRowOpen={ this.onRowOpen }
-              onSwipeValueChange={ this.onSwipeValueChange }>
+              onSwipeValueChange={ this.onSwipeValueChange }
+              ref={ this.swipeRow }>
               <View style={ styles.swipeBg }>
                 <Text>{ this.props.t('RESTAURANT_ORDER_BUTTON_ACCEPT') }</Text>
                 <Text>{ this.props.t('RESTAURANT_ORDER_BUTTON_REFUSE') }</Text>
@@ -195,6 +197,7 @@ class OrderScreen extends Component {
     } else {
       this.props.navigation.navigate('RestaurantOrderRefuse', { order: this.props.order })
     }
+    setTimeout(() => this.swipeRow.current.closeRow(), 250)
   }
 
   render() {
