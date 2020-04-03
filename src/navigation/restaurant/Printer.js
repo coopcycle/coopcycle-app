@@ -108,8 +108,6 @@ class Printer extends Component {
       items = devices.map(device => ({ ...device, isConnected: false }))
     }
 
-    console.log(items)
-
     const showList = !isScanning && items.length > 0
 
     const contentStyle = []
