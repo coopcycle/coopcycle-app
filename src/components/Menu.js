@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Animated, ActivityIndicator, SectionList, StyleSheet, TouchableOpacity, View } from 'react-native'
 import { Text } from 'native-base';
 import _ from 'lodash'
+import { AllergenList, RestrictedDietList } from './MenuBadges'
 
 const AnimatedSectionList = Animated.createAnimatedComponent(SectionList);
 
@@ -18,10 +19,12 @@ const styles = StyleSheet.create({
     fontSize: 15,
     textAlign: 'center',
   },
+  itemContainer: {
+    paddingVertical: 15,
+  },
   item: {
     paddingRight: 10,
     paddingLeft: 25,
-    paddingVertical: 15,
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -34,12 +37,14 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginRight: 10,
   },
+  leftCol: {
+    width: '75%',
+  },
   rightCol: {
-    flex: 1,
+    width: '25%',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-end',
-    paddingRight: 20,
   },
   rightIcon: {
     color: '#747474',
@@ -85,20 +90,28 @@ class Menu extends Component {
     }
 
     const isLoading = this.props.isItemLoading(item)
+    const hasBadges = !!item.suitableForDiet || !!item.allergens
 
     return (
-      <TouchableOpacity style={ styles.item } { ...itemProps } testID={ `menuItem:${section.index}:${index}` }>
-        <View style={{ flex: 3 }}>
-          <Text style={ itemNameStyle }>{ item.name }</Text>
-          { (item.description && item.description.length > 0) && (
-            <Text note numberOfLines={4} ellipsizeMode="tail">{ item.description }</Text>
-          )}
+      <TouchableOpacity style={ styles.itemContainer } { ...itemProps } testID={ `menuItem:${section.index}:${index}` }>
+        <View style={ styles.item }>
+          <View style={ styles.leftCol }>
+            <Text style={ itemNameStyle }>{ item.name }</Text>
+            { (item.description && item.description.length > 0) && (
+              <Text note numberOfLines={ 4 } ellipsizeMode="tail">{ item.description }</Text>
+            )}
+          </View>
+          <View style={ styles.rightCol }>
+            <Text style={ itemPriceStyle }>{ `${formatPrice(item.offers.price)}` }</Text>
+            { isLoading && <ActivityIndicator size="small" style={{ position: 'absolute', right: 0 }} /> }
+          </View>
         </View>
-
-        <View style={ styles.rightCol }>
-          <Text style={ itemPriceStyle }>{ `${formatPrice(item.offers.price)}` }</Text>
-          { isLoading && <ActivityIndicator size="small" style={{ position: 'absolute', right: 0 }} /> }
-        </View>
+        { hasBadges && (
+          <View style={{ paddingHorizontal: 25, marginVertical: 5 }}>
+            { item.suitableForDiet && (<RestrictedDietList items={ item.suitableForDiet } />) }
+            { item.allergens && (<AllergenList items={ item.allergens } />) }
+          </View>
+        ) }
       </TouchableOpacity>
     )
   }

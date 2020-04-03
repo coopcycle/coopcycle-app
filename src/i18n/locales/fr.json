@@ -302,6 +302,35 @@
         "PHOTO_ADD": "Ajouter l'image",
         "TASKS_CHANGED_ALERT_SOUND": "Son pour les notifications",
         "RECEIPT_HEADING_ORDER_NUMBER": "COMMANDE {{number}} (#{{id}})",
-        "RECEIPT_HEADING_PICKUP_EXPECTED_AT": "RETRAIT A {{time}}"
+        "RECEIPT_HEADING_PICKUP_EXPECTED_AT": "RETRAIT A {{time}}",
+        "RESTRICTED_DIET": {
+            "DiabeticDiet": "Diabétique",
+            "GlutenFreeDiet": "Sans gluten",
+            "HalalDiet": "Halal",
+            "HinduDiet": "Hindou",
+            "KosherDiet": "Casher",
+            "LowCalorieDiet": "Faible calorie",
+            "LowFatDiet": "Sans graisses",
+            "LowLactoseDiet": "Sans lactose",
+            "LowSaltDiet": "Sans sel",
+            "VeganDiet": "Vegan",
+            "VegetarianDiet": "Végétarien"
+        },
+        "ALLERGEN": {
+            "CEREALS_CONTAINING_GLUTEN": "Céréales contenant du gluten",
+            "CRUSTACEANS": "Crustacés",
+            "EGGS": "Oeufs",
+            "FISH": "Poisson",
+            "PEANUTS": "Arachides",
+            "SOYBEANS": "Soja",
+            "MILK": "Lait",
+            "NUTS": "Noix",
+            "CELERY": "Céleri",
+            "MUSTARD": "Moutarde",
+            "SESAME_SEEDS": "Graines de sésame",
+            "SULPHUR_DIOXIDE_SULPHITES": "Dioxyde de soufre",
+            "LUPIN": "Lupins",
+            "MOLLUSCS": "Mollusques"
+        }
     }
 }

@@ -301,6 +301,35 @@
         "ADD_COUPON": "Add a voucher code",
         "VOUCHER_CODE": "Voucher code",
         "RECEIPT_HEADING_ORDER_NUMBER": "ORDER {{number}} (#{{id}})",
-        "RECEIPT_HEADING_PICKUP_EXPECTED_AT": "PICKUP EXPECTED AT {{time}}"
+        "RECEIPT_HEADING_PICKUP_EXPECTED_AT": "PICKUP EXPECTED AT {{time}}",
+        "RESTRICTED_DIET": {
+            "DiabeticDiet": "Diabetic",
+            "GlutenFreeDiet": "Gluten free",
+            "HalalDiet": "Halal",
+            "HinduDiet": "Hindu",
+            "KosherDiet": "Kosher",
+            "LowCalorieDiet": "Low calorie",
+            "LowFatDiet": "Low fat",
+            "LowLactoseDiet": "Low lactose",
+            "LowSaltDiet": "Low salt",
+            "VeganDiet": "Vegan",
+            "VegetarianDiet": "Vegetarian"
+        },
+        "ALLERGEN": {
+            "CEREALS_CONTAINING_GLUTEN": "Cereals containing gluten",
+            "CRUSTACEANS": "Crustaceans",
+            "EGGS": "Eggs",
+            "FISH": "Fish",
+            "PEANUTS": "Peanuts",
+            "SOYBEANS": "Soybeans",
+            "MILK": "Milk",
+            "NUTS": "Nuts",
+            "CELERY": "Celery",
+            "MUSTARD": "Mustard",
+            "SESAME_SEEDS": "Sesame seeds",
+            "SULPHUR_DIOXIDE_SULPHITES": "Sulphur dioxide",
+            "LUPIN": "Lupin",
+            "MOLLUSCS": "Molluscs"
+        }
     }
 }
