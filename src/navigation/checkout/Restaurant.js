@@ -29,7 +29,7 @@ const GroupImageHeader = (props) => {
       width: '100%',
       height: '100%',
       opacity: translateOpacity }}>
-      <ImageBackground source={{ uri: restaurant.image }} style={{width: '100%', height: '100%'}}>
+      <ImageBackground source={{ uri: restaurant.image }} style={{ width: '100%', height: '100%' }}>
         <View style={styles.overlay}>
           <Animated.Image
             source={{ uri: restaurant.image }}
@@ -45,7 +45,7 @@ const GroupImageHeader = (props) => {
               borderRadius: 50,
             }}
           />
-          <Text style={{ color: '#ffffff', fontFamily: 'Raleway-Regular', marginTop: 5, fontWeight: 'bold' }}>{ restaurant.name }</Text>
+          <Text style={ styles.restaurantName } numberOfLines={ 1 }>{ restaurant.name }</Text>
         </View>
       </ImageBackground>
     </Animated.View>
@@ -115,6 +115,13 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#f1f1f1',
   },
+  restaurantName: {
+    color: '#ffffff',
+    fontFamily: 'Raleway-Regular',
+    marginTop: 5,
+    fontWeight: 'bold',
+    paddingHorizontal: 10,
+  }
 });
 
 function mapStateToProps(state) {
