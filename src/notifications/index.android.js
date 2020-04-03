@@ -52,16 +52,17 @@ class PushNotification {
     // Notification was received in the foreground
     notificationListener = firebase.notifications()
       .onNotification(remoteMessage => {
-        // "notification + data" messages are duplicate as "data-only" messages,
-        // handle them as "data-only" messages when the app is in the foreground
+        const message = parseNotification(remoteMessage, true)
+
+        options.onNotification(message)
     })
 
     // data message was received in the foreground
     dataListener = firebase.messaging()
       .onMessage(remoteMessage => {
-        const message = parseNotification(remoteMessage, true)
-
-        options.onNotification(message)
+        // in the current implementation, server sends both
+        // "notification + data" and "data-only" messages (with the same data),
+        // handle only "notification + data" messages when the app is in the foreground
       })
 
     // FIXME
@@ -138,6 +139,12 @@ class PushNotification {
     tokenRefreshListener = firebase.messaging()
       .onTokenRefresh(fcmToken => options.onRegister(fcmToken))
 
+    const serviceUpdatesChannel = new firebase.notifications.Android.Channel(
+      'coopcycle_important',
+      'Service Updates',
+      firebase.notifications.Android.Importance.Max)
+      .setDescription('CoopCycle Service Updates');
+    firebase.notifications().android.createChannel(serviceUpdatesChannel);
   }
 
   static removeListeners() {

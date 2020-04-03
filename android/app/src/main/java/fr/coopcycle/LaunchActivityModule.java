@@ -2,7 +2,6 @@ package fr.coopcycle;
 
 import android.content.Context;
 import android.content.Intent;
-import android.view.View;
 
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
@@ -10,8 +9,6 @@ import com.facebook.react.bridge.ReactMethod;
 
 public class LaunchActivityModule extends ReactContextBaseJavaModule {
   private static ReactApplicationContext reactContext;
-
-  private View floatyView;
 
   LaunchActivityModule(ReactApplicationContext context) {
     super(context);
