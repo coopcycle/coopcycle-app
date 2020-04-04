@@ -501,7 +501,18 @@ export function printOrder(order) {
       // We keep only writable characteristics
 
       const writableCharacteristics = _.filter(peripheralInfo.characteristics, (characteristic) => {
-        return characteristic.properties && (characteristic.properties.Write || characteristic.properties.WriteWithoutResponse)
+
+        if (!characteristic.properties) {
+          return false
+        }
+
+        // iOS
+        if (Array.isArray(characteristic.properties)) {
+          return _.includes(characteristic.properties, 'WriteWithoutResponse')
+        }
+
+        // Android
+        return characteristic.properties.WriteWithoutResponse
       })
 
       if (writableCharacteristics.length > 0) {
