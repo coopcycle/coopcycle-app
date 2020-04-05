@@ -1505,10 +1505,10 @@
   resolved "https://registry.yarnpkg.com/@react-native-community/masked-view/-/masked-view-0.1.7.tgz#a65ce0702f55cb67fd777995de6fc7b3e5781903"
   integrity sha512-9KbP7LTLFz9dx1heURJbO6nuVMdSjDez8znlrUzaB1nUwKVsTTwlKRuHxGUYIIkReLWrJQeCv9tidy+84z2eCw==
 
-"@react-native-community/netinfo@^5.6.2":
-  version "5.6.2"
-  resolved "https://registry.yarnpkg.com/@react-native-community/netinfo/-/netinfo-5.6.2.tgz#a054db83a1787711f9f69029e2c9b80735ac3f75"
-  integrity sha512-IkzS78nOiPNM/MboBqqbk2eMBrflp8VML/p33pd50KZq+PvBq8Oywt1JKOgdaMxUIbGjP73zVz+f6r2f80u2Eg==
+"@react-native-community/netinfo@^5.7.0":
+  version "5.7.0"
+  resolved "https://registry.yarnpkg.com/@react-native-community/netinfo/-/netinfo-5.7.0.tgz#54be55f22c6a6358d5d61f2aa1bc1de20c7b53b6"
+  integrity sha512-ZhmkaqRpLFvOMu/Ln3YCitBJUgk7lbFsvcinbW/LIktXM6BwVwEZPTkYr+N74hEAhKz2CcDN8aMzzaokxwxRqg==
 
 "@react-native-community/push-notification-ios@^1.1.0":
   version "1.1.0"
