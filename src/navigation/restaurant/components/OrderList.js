@@ -39,7 +39,7 @@ class OrderList extends Component {
       <TouchableOpacity style={ styles.item } onPress={ () => this.props.onItemClick(order) }>
         <Grid>
           <Col size={ 2 } style={ styles.col }>
-            <Text>{ `#${order.id}` }</Text>
+            <Text>{ order.number }</Text>
           </Col>
           <Col size={ 4 } style={ styles.col }>
             <Text>{ `${formatPrice(order.itemsTotal)}` }</Text>

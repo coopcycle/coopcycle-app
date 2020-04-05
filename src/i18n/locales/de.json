@@ -101,7 +101,7 @@
         "OPEN_IN_MAPS_TITLE": "Aufgaben auf der Karte anzeigen",
         "OPEN_IN_MAPS_MESSAGE": "App auswählen",
         "RESTAURANT_ORDER_CANCEL_MODAL_TITLE": "Stornieren",
-        "RESTAURANT_ORDER_TITLE": "Bestellung {{order.number}} (#{{order.id}})",
+        "RESTAURANT_ORDER_TITLE": "Bestellung {{order.number}}",
         "RESTAURANT_ORDER_CANCEL_DISCLAIMER": "Bitte sag uns, warum du die Bestellung stornieren möchtest",
         "RESTAURANT_SETTINGS_OPENING_HOURS": "Öffnungszeiten",
         "RESTAURANT_SETTINGS_PRINTER": "Drucker",
