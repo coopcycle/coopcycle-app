@@ -91,7 +91,7 @@
   "devDependencies": {
     "@babel/core": "^7.9.0",
     "@babel/runtime": "^7.9.2",
-    "@react-native-community/eslint-config": "^0.0.7",
+    "@react-native-community/eslint-config": "^1.0.0",
     "@react-native-community/eslint-plugin": "^1.0.0",
     "axios-mock-adapter": "^1.18.1",
     "babel-eslint": "^10.1.0",
