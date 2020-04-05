@@ -8741,10 +8741,10 @@ react-native-ble-manager@^7.2.0:
   resolved "https://registry.yarnpkg.com/react-native-ble-manager/-/react-native-ble-manager-7.2.0.tgz#bbbf0e4b1dd01f131c26192413fb7cfa42d738f6"
   integrity sha512-3N3gb3W3Y7Wdw2nxyam+TRUfRrTAM+rkEKerimmzlVledRWGkhYBLESDhO0pityTzP5HAYVXF1O5GwisTviZ9Q==
 
-react-native-calendars@^1.264.0:
-  version "1.264.0"
-  resolved "https://registry.yarnpkg.com/react-native-calendars/-/react-native-calendars-1.264.0.tgz#552cfff1480ab6c860f54e12ec2b82f9b514aae6"
-  integrity sha512-NHNekv1iwHMI+evr8dDLFqCdvnCWGlBxPKO0/bw1+HDy4uukuab//akoOx9/GGl/3+XV6MVTLdda+qjT6pD2Bg==
+react-native-calendars@^1.265.0:
+  version "1.265.0"
+  resolved "https://registry.yarnpkg.com/react-native-calendars/-/react-native-calendars-1.265.0.tgz#4144408254afaebc97213708e3c7d911dc73a335"
+  integrity sha512-iOv5JXgo7Dm9yQ+P0PE5a8tmxGUHwGQOk1AddD8cmNZiuCIAv5G3f5fuBRJ8+sLcNdic1tamrh+e8A4UNMZsHA==
   dependencies:
     hoist-non-react-statics "^3.3.1"
     lodash "^4.0.0"
