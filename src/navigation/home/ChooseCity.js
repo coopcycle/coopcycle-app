@@ -45,22 +45,24 @@ class ChooseCity extends Component {
   render() {
 
     return (
-      <View style={{ flex: 1, justifyContent: 'center' }}>
-        <View>
-          <Text note style={{ textAlign: 'center', marginBottom: 30 }}>
+      <View style={{ flex: 1 }}>
+        <View style={{ flex: 1, justifyContent: 'space-between', flexDirection: 'column' }}>
+          <Text note style={{ textAlign: 'center', paddingVertical: 15 }}>
             { this.props.t('CHOOSE_SERVER') }
           </Text>
-          <FlatList
-            data={ this.props.servers }
-            keyExtractor={ (item, index) => `server:${index}` }
-            renderItem={ ({ item, index }) => this.renderItem(item, index) }
-            ItemSeparatorComponent={ ItemSeparator } />
-          { this.props.hasError && (
-            <View style={{ marginVertical: 20 }}>
-              <Text style={{ color: '#ed2f2f', textAlign: 'center' }}>{ this.props.message }</Text>
-            </View>
-          ) }
-          <TouchableOpacity style={{ width: '100%', height: undefined, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: 30 }}
+          <View style={{ flex: 1 }}>
+            <FlatList
+              data={ this.props.servers }
+              keyExtractor={ (item, index) => `server:${index}` }
+              renderItem={ ({ item, index }) => this.renderItem(item, index) }
+              ItemSeparatorComponent={ ItemSeparator } />
+            { this.props.hasError && (
+              <View style={{ marginVertical: 20 }}>
+                <Text style={{ color: '#ed2f2f', textAlign: 'center' }}>{ this.props.message }</Text>
+              </View>
+            ) }
+          </View>
+          <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', paddingVertical: 15 }}
             onPress={ () => this.setState({ isModalVisible: true }) }>
             <Icon type="FontAwesome5" name="question-circle" style={{ marginRight: 10, fontSize: 22, color: '#0074D9' }} />
             <Text note style={{ textAlign: 'center', color: '#0074D9' }}>
