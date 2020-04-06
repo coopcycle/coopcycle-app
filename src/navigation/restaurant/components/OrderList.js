@@ -6,6 +6,7 @@ import moment from 'moment'
 import _ from 'lodash'
 import { withTranslation } from 'react-i18next'
 import { formatPrice } from '../../../utils/formatting'
+import OrderNumber from '../../../components/OrderNumber'
 
 const styles = StyleSheet.create({
   item: {
@@ -39,7 +40,7 @@ class OrderList extends Component {
       <TouchableOpacity style={ styles.item } onPress={ () => this.props.onItemClick(order) }>
         <Grid>
           <Col size={ 2 } style={ styles.col }>
-            <Text>{ order.number }</Text>
+            <OrderNumber order={ order } />
           </Col>
           <Col size={ 4 } style={ styles.col }>
             <Text>{ `${formatPrice(order.itemsTotal)}` }</Text>

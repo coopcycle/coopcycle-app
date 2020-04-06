@@ -5,6 +5,7 @@ import i18n from '../../i18n'
 import screens, { defaultNavigationOptions, headerLeft } from '..'
 import HeaderRight from '../restaurant/components/HeaderRight'
 import SettingsNavigator from '../restaurant/SettingsNavigator'
+import OrderNumber from '../../components/OrderNumber'
 
 const MainNavigator = createStackNavigator({
   RestaurantHome: {
@@ -22,7 +23,7 @@ const MainNavigator = createStackNavigator({
   RestaurantOrder: {
     screen: screens.RestaurantOrder,
     navigationOptions: ({ navigation }) => ({
-      title: i18n.t('RESTAURANT_ORDER_TITLE', { order: navigation.state.params.order }),
+      headerTitle: () => <OrderNumber order={ navigation.getParam('order') } color={ '#ffffff' } />,
     }),
   },
 }, {
