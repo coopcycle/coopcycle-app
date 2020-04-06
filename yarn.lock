@@ -9000,10 +9000,10 @@ react-native-maps@^0.27.1:
   resolved "https://registry.yarnpkg.com/react-native-maps/-/react-native-maps-0.27.1.tgz#2f10cd417bb2fd938c9e015b1c9b6d9b1a44b97f"
   integrity sha512-HygBkZBecTnIVRYrSiLRAvu4OmXOYso/A7c6Cy73HkOh9CgGV8Ap5eBea24tvmFGptjj5Hg8AJ94/YbmWK1Okw==
 
-react-native-modal-datetime-picker@^8.5.2:
-  version "8.5.2"
-  resolved "https://registry.yarnpkg.com/react-native-modal-datetime-picker/-/react-native-modal-datetime-picker-8.5.2.tgz#7bf6bd488903bfa3cc69e9ce9feb01c9144bf3f4"
-  integrity sha512-P9O0iNFn+vPROXLl/aHFndDh0sxxMdGJDTQfA0i6DHxW0v/Pu3vpBHYQVy0tPr26gn/l513/E82LrjlcWctz9g==
+react-native-modal-datetime-picker@^8.5.3:
+  version "8.5.3"
+  resolved "https://registry.yarnpkg.com/react-native-modal-datetime-picker/-/react-native-modal-datetime-picker-8.5.3.tgz#522d5cfa09e599e10adea6e7287a7eb1a78f96fd"
+  integrity sha512-pqsc3Df43nvhQJKYHHhwNG1qcQmTsW5P3cROUEV8tANaHuonxW8tF7Hbay8Aapqbyt00nsBsOQM0m8ys++rkGA==
   dependencies:
     prop-types "^15.7.2"
 
