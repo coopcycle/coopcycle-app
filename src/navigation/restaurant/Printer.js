@@ -89,7 +89,7 @@ class Printer extends Component {
     return (
       <TouchableOpacity style={ styles.item } onPress={ () => item.isConnected ? this._disconnect(item) : this._connect(item) }>
         <Text>
-          { item.name || item.id }
+          { item.name || (item.advertising && item.advertising.localName) || item.id }
         </Text>
         <Icon type="FontAwesome" name={ item.isConnected ? 'close' : 'chevron-right' } />
       </TouchableOpacity>
