@@ -2,10 +2,15 @@ import React, { Component } from 'react'
 import { Alert, View } from 'react-native'
 import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
+import { HeaderButtons, HeaderButton, Item } from 'react-navigation-header-buttons'
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
-import HeaderButton from '../../../components/HeaderButton'
 import { closeRestaurant } from '../../../redux/Restaurant/actions'
 import { selectSpecialOpeningHoursSpecification } from '../../../redux/Restaurant/selectors'
+
+const FontAwesomeHeaderButton = props => (
+  <HeaderButton { ...props } IconComponent={ FontAwesome } iconSize={ 23 } color="#ffffff" />
+)
 
 class HeaderRight extends Component {
 
@@ -32,14 +37,12 @@ class HeaderRight extends Component {
     const { specialOpeningHoursSpecification } = this.props
 
     return (
-      <View style={{ display: 'flex', flexDirection: 'row' }}>
+      <HeaderButtons HeaderButtonComponent={ FontAwesomeHeaderButton }>
         { !specialOpeningHoursSpecification && (
-          <HeaderButton iconType="FontAwesome" iconName="power-off"
-            onPress={ () => this.onPressClose() } />
+          <Item title="close" iconName="power-off" onPress={ () => this.onPressClose() } />
         )}
-        <HeaderButton iconName="settings"
-          onPress={ () => navigate('RestaurantSettings') } />
-      </View>
+        <Item title="openSettings" iconName="cog" onPress={ () => navigate('RestaurantSettings') } />
+      </HeaderButtons>
     )
   }
 }
