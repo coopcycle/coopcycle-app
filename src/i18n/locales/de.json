@@ -96,7 +96,7 @@
         "RESTAURANT_ORDER_REFUSE_REASON_ORDER_STOP_RECEIVING": "Du wirst keine weiteren Bestellungen bekommen",
         "RESTAURANT_ORDER_PRINT": "Drücken",
         "RESTAURANT_PRODUCTS": "Artikeln",
-        "RESTAURANT_CLOSE_UNTIL_TOMORROW": "Bis Morgen geschlossen",
+        "RESTAURANT_CLOSE_ALERT_TITLE": "Bis Morgen geschlossen",
         "RESTAURANT_OPENING_HOURS": "Öffnungszeiten",
         "OPEN_IN_MAPS_TITLE": "Aufgaben auf der Karte anzeigen",
         "OPEN_IN_MAPS_MESSAGE": "App auswählen",

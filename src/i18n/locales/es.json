@@ -154,7 +154,7 @@
     "RESTAURANT_ORDER_REFUSE_REASON_ORDER_CONTINUE_RECEIVING": "Seguira recibiendo nuevos pedidos",
     "RESTAURANT_ORDER_REFUSE_REASON_ORDER_STOP_RECEIVING": "No recibira nuevos pedidos",
     "RESTAURANT_PRODUCTS": "Productos",
-    "RESTAURANT_CLOSE_UNTIL_TOMORROW": "Cerrar hasta mañana",
+    "RESTAURANT_CLOSE_ALERT_TITLE": "Cerrar hasta mañana",
     "RESTAURANT_OPENING_HOURS": "Horarios de apertura",
     "RESTAURANT_SPECIAL_OPENING_HOURS": "Cierres excepcionales",
     "RESTAURANT_OPENING_HOURS_VALID_FROM_THROUGH": "Desde {{validFrom}} hasta {{validThrough}}",

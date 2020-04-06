@@ -155,7 +155,7 @@
         "RESTAURANT_ORDER_REFUSE_REASON_ORDER_STOP_RECEIVING": "Vous ne recevrez plus de nouvelles commandes",
         "RESTAURANT_ORDER_PRINT": "Imprimer",
         "RESTAURANT_PRODUCTS": "Produits",
-        "RESTAURANT_CLOSE_UNTIL_TOMORROW": "Fermer jusqu'à demain",
+        "RESTAURANT_CLOSE_ALERT_TITLE": "Fermer jusqu'à demain",
         "RESTAURANT_OPENING_HOURS": "Horaires d'ouverture",
         "RESTAURANT_SPECIAL_OPENING_HOURS": "Fermetures exceptionnelles",
         "RESTAURANT_OPENING_HOURS_VALID_FROM_THROUGH": "Du {{validFrom}} au {{validThrough}}",
