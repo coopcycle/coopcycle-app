@@ -56,7 +56,7 @@
     "react-native-keyboard-manager": "^4.0.13-16",
     "react-native-loading-spinner-overlay": "^1.0.1",
     "react-native-localize": "^1.3.4",
-    "react-native-map-link": "^2.7.5",
+    "react-native-map-link": "^2.7.7",
     "react-native-maps": "^0.27.1",
     "react-native-maps-super-cluster": "^1.6.0",
     "react-native-modal": "^11.5.6",
