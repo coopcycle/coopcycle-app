@@ -68,15 +68,12 @@ class ChooseCity extends Component {
             </Text>
           </TouchableOpacity>
         </View>
-        <Modal isVisible={ this.state.isModalVisible }>
+        <Modal
+          isVisible={ this.state.isModalVisible }
+          onSwipeComplete={ () => this.setState({ isModalVisible: false }) }
+          swipeDirection={ ['up', 'down'] }>
           <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', padding: 20 }}>
             <View style={{ backgroundColor: '#ffffff', padding: 20 }}>
-              <Button transparent block
-                onPress={ () => this.setState({ isModalVisible: false }) }>
-                <Text style={{ textAlign: 'right' }}>
-                  { this.props.t('CLOSE') }
-                </Text>
-              </Button>
               <Text style={{ marginBottom: 20, fontSize: 14 }}>{ this.props.t('ABOUT_COOPCYCLE') }</Text>
               <Button iconLeft transparent block
                 onPress={ () => this.openEmail() }
