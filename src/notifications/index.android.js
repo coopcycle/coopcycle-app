@@ -33,6 +33,7 @@ export const parseNotification = (notification, isForeground) => {
 
 let notificationOpenedListener = () => {}
 let notificationListener = () => {}
+let dataListener = () => {}
 let tokenRefreshListener = () => {}
 let appStateChangeListener = () => {}
 
@@ -40,17 +41,29 @@ class PushNotification {
 
   static configure(options) {
 
-    // Notification was received in the background
+    // Notification was received in the background (and opened by a user)
     notificationOpenedListener = firebase.notifications()
       .onNotificationOpened(notificationOpen => {
-        options.onNotification(parseNotification(notificationOpen.notification, false))
+        const message = parseNotification(notificationOpen.notification, false)
+
+        options.onNotification(message)
     })
 
     // Notification was received in the foreground
     notificationListener = firebase.notifications()
-      .onNotification(notification => {
-        options.onNotification(parseNotification(notification, true))
+      .onNotification(remoteMessage => {
+        const message = parseNotification(remoteMessage, true)
+
+        options.onNotification(message)
     })
+
+    // data message was received in the foreground
+    dataListener = firebase.messaging()
+      .onMessage(remoteMessage => {
+        // in the current implementation, server sends both
+        // "notification + data" and "data-only" messages (with the same data),
+        // handle only "notification + data" messages when the app is in the foreground
+      })
 
     // FIXME
     // firebase.messaging().requestPermission() always resolves to null
@@ -126,11 +139,18 @@ class PushNotification {
     tokenRefreshListener = firebase.messaging()
       .onTokenRefresh(fcmToken => options.onRegister(fcmToken))
 
+    const serviceUpdatesChannel = new firebase.notifications.Android.Channel(
+      'coopcycle_important',
+      'Service Updates',
+      firebase.notifications.Android.Importance.Max)
+      .setDescription('CoopCycle Service Updates');
+    firebase.notifications().android.createChannel(serviceUpdatesChannel);
   }
 
   static removeListeners() {
     notificationOpenedListener()
     notificationListener()
+    dataListener()
     tokenRefreshListener()
   }
 

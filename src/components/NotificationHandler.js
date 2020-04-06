@@ -14,6 +14,8 @@ import NavigationHolder from '../NavigationHolder'
 import { clearNotifications, pushNotification, registerPushNotificationToken } from '../redux/App/actions'
 import {loadTasks, selectTasksChangedAlertSound} from '../redux/Courier'
 import { loadOrderAndNavigate, loadOrderAndPushNotification } from '../redux/Restaurant/actions'
+import firebase from 'react-native-firebase'
+import {analyticsEvent} from '../Analytics'
 
 // Make sure sound will play even when device is in silent mode
 Sound.setCategory('Playback')
@@ -97,26 +99,36 @@ class NotificationHandler extends Component {
 
     PushNotification.configure({
       onRegister: token => this.props.registerPushNotificationToken(token),
-      onNotification: notification => {
-        const { event } = notification.data
+      onNotification: message => {
+        const { event } = message.data
 
         if (event && event.name === 'order:created') {
+          firebase.analytics().logEvent(
+            analyticsEvent.restaurant.orderCreatedMessage,
+            {medium: message.foreground ? 'in_app' : 'notification_center'})
+
           const { order } = event.data
-          if (notification.foreground) {
+
+          if (message.foreground) {
             this.props.loadOrderAndPushNotification(order)
           } else {
+            // user clicked on a notification in the notification center
             this.props.loadOrderAndNavigate(order)
           }
         }
 
         if (event && event.name === 'tasks:changed') {
-          if (notification.foreground) {
+          firebase.analytics().logEvent(
+            analyticsEvent.courier.tasksChangedMessage,
+            {medium: message.foreground ? 'in_app' : 'notification_center'})
+
+          if (message.foreground) {
             this.props.pushNotification('tasks:changed', { date: event.data.date })
           } else {
+            // user clicked on a notification in the notification center
             this._onTasksChanged(event.data.date)
           }
         }
-
       },
     })
   }
