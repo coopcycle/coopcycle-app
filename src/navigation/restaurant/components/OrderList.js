@@ -1,57 +1,38 @@
 import React, { Component } from 'react'
 import { SectionList, StyleSheet, TouchableOpacity, View } from 'react-native'
-import { Icon, Text } from 'native-base';
-import { Col, Grid } from 'react-native-easy-grid'
+import { Icon, Text } from 'native-base'
 import moment from 'moment'
 import _ from 'lodash'
 import { withTranslation } from 'react-i18next'
 import { formatPrice } from '../../../utils/formatting'
 import OrderNumber from '../../../components/OrderNumber'
+import ItemSeparatorComponent from '../../../components/ItemSeparator'
 
 const styles = StyleSheet.create({
   item: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     paddingVertical: 15,
     paddingHorizontal: 20,
-    borderBottomColor: '#ddd',
-    borderBottomWidth: StyleSheet.hairlineWidth,
-  },
-  itemLeftRight: {
-    flex: 1,
-    alignItems: 'flex-end',
-    justifyContent: 'center',
-  },
-  col: {
-    justifyContent: 'center',
-  },
-  restaurantNameText: {
-    marginBottom: 5,
   },
   sectionHeader: {
     paddingVertical: 10,
     paddingHorizontal: 20,
     backgroundColor: '#efefef',
   },
-});
+})
 
 class OrderList extends Component {
 
   renderItem(order) {
     return (
       <TouchableOpacity style={ styles.item } onPress={ () => this.props.onItemClick(order) }>
-        <Grid>
-          <Col size={ 2 } style={ styles.col }>
-            <OrderNumber order={ order } />
-          </Col>
-          <Col size={ 4 } style={ styles.col }>
-            <Text>{ `${formatPrice(order.itemsTotal)}` }</Text>
-          </Col>
-          <Col size={ 4 } style={ styles.col }>
-            <Text>{ moment.parseZone(order.preparationExpectedAt).format('LT') }</Text>
-          </Col>
-          <Col size={ 1 } style={ styles.itemLeftRight }>
-            <Icon style={{ color: '#ccc' }} name="ios-arrow-forward" />
-          </Col>
-        </Grid>
+        <OrderNumber order={ order } />
+        <Text>{ `${formatPrice(order.itemsTotal)}` }</Text>
+        <Text>{ moment.parseZone(order.preparationExpectedAt).format('LT') }</Text>
+        <Icon style={{ color: '#ccc' }} name="ios-arrow-forward" />
       </TouchableOpacity>
     )
   }
@@ -99,7 +80,8 @@ class OrderList extends Component {
             <Text style={{ fontWeight: 'bold' }}>{title}</Text>
           </View>
         )}
-        renderItem={ ({ item }) => this.renderItem(item) } />
+        renderItem={ ({ item }) => this.renderItem(item) }
+        ItemSeparatorComponent={ ItemSeparatorComponent } />
     )
   }
 }
