@@ -102,7 +102,7 @@
     "FAILED": "Fallo",
     "VALIDATE": "Validar",
     "MARK_FAILED": "Señalar un problema",
-    "END": "Acabar",
+    "COMPLETE_TASK": "Acabar",
     "SWIPE_TO_END": "Deslice el dedo hacia la derecha para terminar, o hacia la izquierda si hay un problema",
     "WAITING_FOR_POS": "Esperando ubicación",
     "PROBLEM_CONNECTING": "Conexión imposible",

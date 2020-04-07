@@ -100,7 +100,7 @@
         "NOTES": "Notes",
         "COMPLETED": "Completed",
         "FAILED": "Failed",
-        "END": "End",
+        "COMPLETE_TASK": "Complete",
         "VALIDATE": "Validate",
         "MARK_FAILED": "Mark task as failed",
         "SWIPE_TO_END": "Swipe right to end task, or to the left if there is a problem",

@@ -269,7 +269,7 @@ class Task extends Component {
           </View>
           <View style={{ padding: 28, width, backgroundColor: '#dedede' }} testID="task:completeButton">
             <Text style={{ fontSize: 20, textAlign: 'center', color: '#fff', fontFamily: 'Raleway-Regular' }}>
-              { this.props.t('END') }
+              { this.props.t('COMPLETE_TASK') }
             </Text>
           </View>
         </SwipeRow>
