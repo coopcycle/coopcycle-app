@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { SwipeListView } from 'react-native-swipe-list-view'
 import PropTypes from 'prop-types'
 
+import ItemSeparatorComponent from './ItemSeparator'
 import TaskListItem from './TaskListItem'
 
 class TaskList extends Component {
@@ -43,7 +44,9 @@ class TaskList extends Component {
           this.props.onSwipeRight(task)
         }}
         disableRightSwipe={ !hasOnSwipeLeft }
-        disableLeftSwipe={ !hasOnSwipeRight } />
+        disableLeftSwipe={ !hasOnSwipeRight }
+        swipeOutLeftIconName={ this.props.swipeOutLeftIconName }
+        swipeOutRightIconName={ this.props.swipeOutRightIconName } />
     )
   }
 
@@ -58,7 +61,7 @@ class TaskList extends Component {
         renderItem={({ item, index }) => this.renderItem(item, index)}
         refreshing={ refreshing }
         onRefresh={ onRefresh }
-      />
+        ItemSeparatorComponent={ ItemSeparatorComponent } />
     )
   }
 }
