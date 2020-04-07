@@ -20,6 +20,9 @@ export const MARK_TASK_DONE_FAILURE = 'MARK_TASK_DONE_FAILURE'
 export const MARK_TASK_FAILED_REQUEST = 'MARK_TASK_FAILED_REQUEST'
 export const MARK_TASK_FAILED_SUCCESS = 'MARK_TASK_FAILED_SUCCESS'
 export const MARK_TASK_FAILED_FAILURE = 'MARK_TASK_FAILED_FAILURE'
+export const START_TASK_REQUEST = 'START_TASK_REQUEST'
+export const START_TASK_SUCCESS = 'START_TASK_SUCCESS'
+export const START_TASK_FAILURE = 'START_TASK_FAILURE'
 
 export const ADD_PICTURE = 'ADD_PICTURE'
 export const ADD_SIGNATURE = 'ADD_SIGNATURE'
@@ -46,6 +49,9 @@ export const markTaskDoneFailure = createAction(MARK_TASK_DONE_FAILURE)
 export const markTaskFailedRequest = createAction(MARK_TASK_FAILED_REQUEST)
 export const markTaskFailedSuccess = createAction(MARK_TASK_FAILED_SUCCESS)
 export const markTaskFailedFailure = createAction(MARK_TASK_FAILED_FAILURE)
+export const startTaskRequest = createAction(START_TASK_REQUEST)
+export const startTaskSuccess = createAction(START_TASK_SUCCESS)
+export const startTaskFailure = createAction(START_TASK_FAILURE)
 
 export const addPicture = createAction(ADD_PICTURE, (task, base64) => ({ task, base64 }))
 export const addSignature = createAction(ADD_SIGNATURE, (task, base64) => ({ task, base64 }))
@@ -196,6 +202,26 @@ export function markTaskDone(httpClient, task, notes = '', onSuccess, contactNam
         dispatch(markTaskDoneFailure(e))
         setTimeout(() => showAlert(e), 100)
       })
+  }
+}
+
+export function startTask(task, cb) {
+
+  return function (dispatch, getState) {
+
+    dispatch(startTaskRequest(task))
+
+    const httpClient = getState().app.httpClient
+
+    httpClient
+      .put(task['@id'] + '/start', {})
+      .then(task => {
+        dispatch(startTaskSuccess(task))
+        if (typeof cb === 'function') {
+          setTimeout(() => cb(), 100)
+        }
+      })
+      .catch(e => dispatch(startTaskFailure(e)))
   }
 }
 

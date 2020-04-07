@@ -12,7 +12,7 @@ import { showLocation } from 'react-native-map-link'
 import _ from 'lodash'
 
 import { greenColor, redColor } from '../../styles/common'
-import { selectTasks } from '../../redux/Courier'
+import { selectTasks, startTask } from '../../redux/Courier'
 import {
   doneIconName,
   failedIconName,
@@ -70,14 +70,23 @@ class Task extends Component {
 
   _complete(success = true, force = false) {
 
-    if (success && !force) {
+    const task = this.props.navigation.getParam('task')
+
+    if (success && task.status === 'TODO' && !force) {
       Alert.alert(
         this.props.t('TASK_COMPLETE_ALERT_TITLE'),
         this.props.t('TASK_COMPLETE_ALERT_MESSAGE'),
         [
           {
-            text: this.props.t('TASK_COMPLETE_ALERT_NEGATIVE'),
+            text: this.props.t('CANCEL'),
             style: 'cancel'
+          },
+          {
+            text: this.props.t('TASK_COMPLETE_ALERT_NEGATIVE'),
+            onPress: () => {
+              this.props.startTask(task)
+              setTimeout(() => this.swipeRow.current.closeRow(), 250)
+            },
           },
           {
             text: this.props.t('TASK_COMPLETE_ALERT_POSITIVE'),
@@ -89,7 +98,7 @@ class Task extends Component {
     }
 
     const params = {
-      task: this.props.navigation.getParam('task'),
+      task,
       navigateAfter: this.props.navigation.getParam('navigateAfter'),
       success
     }
@@ -487,4 +496,11 @@ function mapStateToProps (state) {
   }
 }
 
-module.exports = connect(mapStateToProps)(withTranslation()(Task))
+function mapDispatchToProps(dispatch) {
+
+  return {
+    startTask: (task) => dispatch(startTask(task)),
+  }
+}
+
+module.exports = connect(mapStateToProps, mapDispatchToProps)(withTranslation()(Task))

@@ -3,6 +3,7 @@ import {
   LOAD_TASKS_REQUEST, LOAD_TASKS_FAILURE, LOAD_TASKS_SUCCESS,
   MARK_TASK_DONE_REQUEST, MARK_TASK_DONE_FAILURE, MARK_TASK_DONE_SUCCESS,
   MARK_TASK_FAILED_REQUEST, MARK_TASK_FAILED_FAILURE, MARK_TASK_FAILED_SUCCESS,
+  START_TASK_REQUEST, START_TASK_SUCCESS, START_TASK_FAILURE,
   ADD_PICTURE, ADD_SIGNATURE,
   CLEAR_FILES, DELETE_SIGNATURE, DELETE_PICTURE,
 } from './taskActions'
@@ -68,6 +69,7 @@ function replaceItem(state, payload) {
 
 export const tasksEntityReducer = (state = tasksEntityInitialState, action = {}) => {
   switch (action.type) {
+    case START_TASK_REQUEST:
     case MARK_TASK_DONE_REQUEST:
     case MARK_TASK_FAILED_REQUEST:
       return {
@@ -116,6 +118,7 @@ export const tasksEntityReducer = (state = tasksEntityInitialState, action = {})
         },
       }
 
+    case START_TASK_SUCCESS:
     case MARK_TASK_DONE_SUCCESS:
     case MARK_TASK_FAILED_SUCCESS:
       return {
