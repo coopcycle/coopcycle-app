@@ -52,18 +52,29 @@ const styles = StyleSheet.create({
   },
 })
 
+const iconStyle = task => {
+  const style = [ styles.icon ]
+  if (task.status === 'FAILED') {
+    style.push(styles.iconDanger)
+  }
+
+  return style
+}
+
+const TaskTypeIcon = ({ task }) => (
+  <Icon type="FontAwesome" style={ iconStyle(task) } name={ taskTypeIconName(task) } />
+)
+
 const TaskStatusIcon = ({ task }) => {
-  const iconStyle = [ styles.icon ]
 
   switch (task.status) {
     case 'DONE':
       return (
-        <Icon type="FontAwesome" name={ doneIconName } style={ iconStyle } />
+        <Icon type="FontAwesome" name={ doneIconName } style={ iconStyle(task) } />
       )
     case 'FAILED':
-      iconStyle.push(styles.iconDanger)
       return (
-        <Icon type="FontAwesome" name={ failedIconName } style={ iconStyle } />
+        <Icon type="FontAwesome" name={ failedIconName } style={ iconStyle(task) } />
       )
     default:
       return (
@@ -105,12 +116,8 @@ class TaskListItem extends Component {
 
     const { task, index } = this.props
 
-    const taskTypeIcon = taskTypeIconName(task)
-    const isCompleted = _.includes(['DONE', 'FAILED'], task.status)
-
     const itemStyle = [ styles.item ]
     const textStyle = [ styles.text ]
-    const iconStyle = [ styles.icon ]
 
     if (task.status === 'DONE' || task.status === 'FAILED') {
       itemStyle.push(styles.disabled)
@@ -118,13 +125,6 @@ class TaskListItem extends Component {
 
     if (task.status === 'FAILED') {
       textStyle.push(styles.textDanger)
-      iconStyle.push(styles.iconDanger)
-    }
-
-    let name
-    const customerDetails = _.filter([ task.address.firstName, task.address.lastName ])
-    if (customerDetails.length > 0) {
-      name = customerDetails.join(' ')
     }
 
     const { width } = Dimensions.get('window')
@@ -167,12 +167,12 @@ class TaskListItem extends Component {
           testID={ `task:${index}` }>
           <View style={ itemStyle }>
             <View style={{ alignItems: 'center' }}>
-              <Icon type="FontAwesome" style={ iconStyle } name={ taskTypeIcon } />
-              { isCompleted && <TaskStatusIcon task={ task } /> }
+              <TaskTypeIcon task={ task } />
+              <TaskStatusIcon task={ task } />
             </View>
             <View style={ styles.itemBody }>
               <Text style={ textStyle }>{ this.props.t('TASK_WITH_ID', { id: task.id }) }</Text>
-              { name ? (<Text style={ textStyle }>{ name }</Text>) : null }
+              { task.address.contactName ? (<Text style={ textStyle }>{ task.address.contactName }</Text>) : null }
               { task.address.name ? (<Text style={ textStyle }>{ task.address.name }</Text>) : null }
               <Text numberOfLines={ 1 } style={ textStyle }>{ task.address.streetAddress }</Text>
               <Text style={ textStyle }>{ moment(task.doneAfter).format('LT') } - { moment(task.doneBefore).format('LT') }</Text>
