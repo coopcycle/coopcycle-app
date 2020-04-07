@@ -36,6 +36,7 @@ class Task extends Component {
       mapDimensions: [],
       canRenderMap: false,
     }
+    this.swipeRow = React.createRef()
   }
 
   componentDidMount() {
@@ -65,6 +66,16 @@ class Task extends Component {
   _onMapLayout(e) {
     const { width, height } = e.nativeEvent.layout
     this.setState({ mapDimensions: [ width, height ] })
+  }
+
+  _complete(success = true) {
+    const params = {
+      task: this.props.navigation.getParam('task'),
+      navigateAfter: this.props.navigation.getParam('navigateAfter'),
+      success
+    }
+    this.props.navigation.navigate('TaskComplete', params)
+    setTimeout(() => this.swipeRow.current.closeRow(), 250)
   }
 
   renderTaskDetails() {
@@ -230,11 +241,6 @@ class Task extends Component {
       )
     }
 
-    const navigateParams = {
-      task,
-      navigateAfter: this.props.navigation.getParam('navigateAfter'),
-    }
-
     const buttonWidth = (width / 3)
 
     return (
@@ -246,21 +252,18 @@ class Task extends Component {
           leftOpenValue={ buttonWidth }
           stopLeftSwipe={ buttonWidth + 25 }
           rightOpenValue={ buttonWidth * -1 }
-          stopRightSwipe={ (buttonWidth + 25) * -1 }>
+          stopRightSwipe={ (buttonWidth + 25) * -1 }
+          ref={ this.swipeRow }>
           <View style={ styles.rowBack }>
             <TouchableOpacity
               testID="task:completeSuccessButton"
               style={{ flex: 1, alignItems: 'flex-start', justifyContent: 'center', backgroundColor: greenColor, width: buttonWidth }}
-              onPress={ () => {
-                this.props.navigation.navigate('TaskComplete', { ...navigateParams, success: true })
-              }}>
+              onPress={ () => this._complete(true) }>
               { this.renderSwipeoutLeftButton(buttonWidth) }
             </TouchableOpacity>
             <TouchableOpacity
               style={{ flex: 1, alignItems: 'flex-end', justifyContent: 'center', backgroundColor: redColor, width: buttonWidth }}
-              onPress={ () => {
-                this.props.navigation.navigate('TaskComplete', { ...navigateParams, success: false })
-              }}>
+              onPress={ () => this._complete(false) }>
               { this.renderSwipeoutRightButton(buttonWidth) }
             </TouchableOpacity>
           </View>
