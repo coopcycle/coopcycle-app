@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Dimensions, FlatList, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { Alert, Dimensions, FlatList, StyleSheet, TouchableOpacity, View } from 'react-native'
 import { Container, Footer, Text, Button, Icon } from 'native-base'
 import { Col, Row, Grid } from 'react-native-easy-grid'
 import MapView from 'react-native-maps'
@@ -68,7 +68,26 @@ class Task extends Component {
     this.setState({ mapDimensions: [ width, height ] })
   }
 
-  _complete(success = true) {
+  _complete(success = true, force = false) {
+
+    if (success && !force) {
+      Alert.alert(
+        this.props.t('TASK_COMPLETE_ALERT_TITLE'),
+        this.props.t('TASK_COMPLETE_ALERT_MESSAGE'),
+        [
+          {
+            text: this.props.t('TASK_COMPLETE_ALERT_NEGATIVE'),
+            style: 'cancel'
+          },
+          {
+            text: this.props.t('TASK_COMPLETE_ALERT_POSITIVE'),
+            onPress: () => this._complete(true, true)
+          },
+        ]
+      )
+      return
+    }
+
     const params = {
       task: this.props.navigation.getParam('task'),
       navigateAfter: this.props.navigation.getParam('navigateAfter'),
