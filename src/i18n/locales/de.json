@@ -188,6 +188,12 @@
         "CHOOSE_SERVER": "Um anzufangen, wähle bitte eine Stadt aus",
         "SERVER_UNDER_MAINTENANCE": "Der Server wird gewartet",
         "NET_FAILED": "Netzwerk-Anfrage fehlgeschlagen",
-        "FAILED_TASK_COMPLETE": "Siehe Kommentar"
+        "FAILED_TASK_COMPLETE": "Siehe Kommentar",
+        "EMAIL_ALREADY_REGISTERED": "Diese E-Mail-Adresse wurde bereits registriert",
+        "SWIPE_TO_END": "Wische rechts um die Aufgabe zu beenden, oder links wenn es ein Problem gibt",
+        "CANCEL": "Löschen",
+        "LOADING_ORDER": "Die Bestellung wird geladen",
+        "ADDRESS_DESCRIPTION_PLACEHOLDER": "HH, 2 OG links",
+        "ADDRESS_DESCRIPTION": "Siehe Kommentar"
     }
 }
