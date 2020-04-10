@@ -182,7 +182,7 @@
         "ORDER_NUMBER": "Bestellung {{number}}",
         "PHOTO": "Bild",
         "TOMORROW_BETWEEN_START_AND_END": "Morgen zwischen {{start}} und {{end}}",
-        "DETAILS": "Details - Persönliche Daten - siehe Kommentar",
+        "DETAILS": "Persönliche Daten",
         "LOADING": "Siehe Kommentar",
         "SERVER_URL": "Dein Server ist nicht aufgelistet? Bitte gib seine Adresse ein. ",
         "CHOOSE_SERVER": "Um anzufangen, wähle bitte eine Stadt aus",
