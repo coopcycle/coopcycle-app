@@ -9,6 +9,7 @@ import { withTranslation } from 'react-i18next'
 
 import { greenColor, redColor } from '../styles/common'
 import {
+  doingIconName,
   doneIconName,
   failedIconName,
   taskTypeIconName,
@@ -68,6 +69,10 @@ const TaskTypeIcon = ({ task }) => (
 const TaskStatusIcon = ({ task }) => {
 
   switch (task.status) {
+    case 'DOING':
+      return (
+        <Icon type="FontAwesome" name={ doingIconName } style={ iconStyle(task) } />
+      )
     case 'DONE':
       return (
         <Icon type="FontAwesome" name={ doneIconName } style={ iconStyle(task) } />
@@ -166,7 +171,7 @@ class TaskListItem extends Component {
           underlayColor={ '#efefef' }
           testID={ `task:${index}` }>
           <View style={ itemStyle }>
-            <View style={{ alignItems: 'center' }}>
+            <View style={{ alignItems: 'center', justifyContent: 'space-around', height: '100%' }}>
               <TaskTypeIcon task={ task } />
               <TaskStatusIcon task={ task } />
             </View>
