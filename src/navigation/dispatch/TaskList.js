@@ -2,13 +2,11 @@ import React, { Component } from 'react'
 import { View } from 'react-native';
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
-import {
-  Container, Content,
-  Icon, Text, Button,
-} from 'native-base'
+import { Text } from 'native-base'
 import _ from 'lodash'
 
 import TaskList from '../../components/TaskList'
+import AddButton from './components/AddButton'
 import { unassignTask } from '../../redux/Dispatch/actions'
 import { selectTasksNotCancelled } from '../../redux/Dispatch/selectors'
 
@@ -32,23 +30,22 @@ class TaskListScreen extends Component {
     const tasks = selectTasksNotCancelled({ tasks: taskList.items })
 
     return (
-      <Container>
+      <View style={{ flex: 1 }}>
         <View>
-          <Button iconLeft full
+          <AddButton
             onPress={ () => navigate('DispatchAssignTask', { username: taskList.username }) }>
-            <Icon name="add" />
             <Text>{ this.props.t('DISPATCH_ASSIGN_TASK') }</Text>
-          </Button>
+          </AddButton>
         </View>
-        <Content>
+        <View style={{ flex: 1 }}>
           <TaskList
             tasks={ tasks }
             onSwipeRight={ task => this.props.unassignTask(task) }
             swipeOutRightEnabled={ task => task.status !== 'DONE' }
             swipeOutRightIconName="close"
             onTaskClick={ task => navigate('Task', { task, navigateAfter: this.props.navigation.state.routeName }) } />
-        </Content>
-      </Container>
+        </View>
+      </View>
     );
   }
 }

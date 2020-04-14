@@ -2,12 +2,11 @@ import React, { Component } from 'react'
 import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
-import {
-  Container, Content,
-  Icon, Text, Button,
-} from 'native-base'
-import { Col, Grid } from 'react-native-easy-grid'
+import { Icon, Text } from 'native-base'
 
+import ItemSeparatorComponent from '../../components/ItemSeparator'
+import Avatar from '../../components/Avatar'
+import AddButton from './components/AddButton'
 import { createTaskList } from '../../redux/Dispatch/actions'
 import { selectTasksNotCancelled } from '../../redux/Dispatch/selectors'
 
@@ -21,23 +20,9 @@ class TaskLists extends Component {
     return (
       <TouchableOpacity onPress={ () => navigate('DispatchTaskList', { taskList }) } style={ styles.item }
         testID={ `dispatch:taskLists:${taskList.username}` }>
-        <Grid>
-          <Col size={ 2 }>
-            <View style={ [ styles.verticalAlign ] }>
-              <Icon style={{ color: '#ccc' }} name="person" />
-            </View>
-          </Col>
-          <Col size={ 9 }>
-            <View style={ [ styles.verticalAlign ] }>
-              <Text>{ taskList.username } ({ items.length })</Text>
-            </View>
-          </Col>
-          <Col size={ 1 }>
-            <View style={ [ styles.verticalAlign, { alignItems: 'flex-end' } ] }>
-              <Icon style={{ color: '#ccc' }} name="ios-arrow-forward" />
-            </View>
-          </Col>
-        </Grid>
+        <Avatar baseURL={ this.props.baseURL } username={ taskList.username } />
+        <Text style={ styles.itemLabel }>{ taskList.username } ({ items.length })</Text>
+        <Icon style={{ color: '#ccc' }} name="ios-arrow-forward" />
       </TouchableOpacity>
     )
   }
@@ -47,31 +32,38 @@ class TaskLists extends Component {
     const { navigate } = this.props.navigation
 
     return (
-      <Container>
+      <View style={{ flex: 1 }}>
         <View>
-          <Button iconLeft full
+          <AddButton
             onPress={ () => navigate('DispatchPickUser', { onUserPicked: user => this.props.createTaskList(this.props.date, user) }) }>
-            <Icon name="add" />
             <Text>{ this.props.t('DISPATCH_ADD_TASK_LIST') }</Text>
-          </Button>
+          </AddButton>
         </View>
-        <Content>
+        <View style={{ flex: 1 }}>
           <FlatList
             data={ this.props.taskLists }
             keyExtractor={ (item, index) => item.username }
-            renderItem={ ({ item }) => this.renderItem(item) } />
-        </Content>
-      </Container>
+            renderItem={ ({ item }) => this.renderItem(item) }
+            ItemSeparatorComponent={ ItemSeparatorComponent } />
+        </View>
+      </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
   item: {
-    paddingVertical: 30,
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: 15,
     paddingHorizontal: 15,
-    borderBottomColor: 'lightgrey',
-    borderBottomWidth: StyleSheet.hairlineWidth,
+    backgroundColor: '#ffffff',
+  },
+  itemLabel: {
+    flex: 1,
+    paddingHorizontal: 10,
   },
   verticalAlign: {
     flex: 1,
@@ -81,6 +73,7 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
   return {
+    baseURL: state.app.baseURL,
     taskLists: state.dispatch.taskLists,
     date: state.dispatch.date,
   }

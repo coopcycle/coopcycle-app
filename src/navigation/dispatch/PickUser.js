@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Container, Content, Text, Icon, Thumbnail, List, ListItem, Left, Body, Right } from 'native-base'
+import { Container, Content, Text, Icon, List, ListItem, Left, Body, Right } from 'native-base'
 import { Grid } from 'react-native-easy-grid'
 import { withTranslation } from 'react-i18next'
 import _ from 'lodash'
+
+import Avatar from '../../components/Avatar'
 
 class AddUser extends Component {
 
@@ -14,8 +16,6 @@ class AddUser extends Component {
 
   renderListItem(user) {
 
-    const avatarURI = `${this.props.baseURL}/images/avatars/${user.username}.png`
-
     return (
       <ListItem avatar
         onPress={ () => this._onItemPress(user) }
@@ -23,7 +23,7 @@ class AddUser extends Component {
         testID={ `assignTo:${user.username}` }>
         <Grid>
           <Left>
-            <Thumbnail small source={{ uri: avatarURI }} />
+            <Avatar baseURL={ this.props.baseURL } username={ user.username } />
           </Left>
           <Body>
             <Text>{ user.username }</Text>

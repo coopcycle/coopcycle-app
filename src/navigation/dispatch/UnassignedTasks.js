@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import { InteractionManager, View } from 'react-native';
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
-import { Icon, Text, Button } from 'native-base';
+import { Text } from 'native-base';
 
 import TaskList from '../../components/TaskList'
+import AddButton from './components/AddButton'
 import { assignTask, initialize } from '../../redux/Dispatch/actions'
 import { selectUnassignedTask } from '../../redux/Dispatch/selectors'
 
@@ -24,10 +25,10 @@ class UnassignedTasks extends Component {
     return (
       <View style={{ flex: 1 }}>
         <View>
-          <Button iconLeft full onPress={ () => this.props.navigation.navigate('DispatchAddTask') } testID="addTask">
-            <Icon name="add" />
+          <AddButton testID="addTask"
+            onPress={ () => this.props.navigation.navigate('DispatchAddTask') }>
             <Text>{ this.props.t('DISPATCH_CREATE_TASK') }</Text>
-          </Button>
+          </AddButton>
         </View>
         <View style={{ flex: 1 }}>
           { isEmpty && (
