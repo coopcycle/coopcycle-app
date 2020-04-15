@@ -5,6 +5,7 @@ import { Button, Icon, Text } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import _ from 'lodash'
 import Modal from 'react-native-modal'
+import { SafeAreaView } from 'react-navigation'
 import { openComposer } from 'react-native-email-link'
 
 import { selectServer } from '../../redux/App/actions'
@@ -45,7 +46,7 @@ class ChooseCity extends Component {
   render() {
 
     return (
-      <View style={{ flex: 1 }}>
+      <SafeAreaView style={{ flex: 1 }}>
         <View style={{ flex: 1, justifyContent: 'space-between', flexDirection: 'column' }}>
           <Text note style={{ textAlign: 'center', paddingVertical: 15 }}>
             { this.props.t('CHOOSE_SERVER') }
@@ -88,7 +89,7 @@ class ChooseCity extends Component {
             </View>
           </View>
         </Modal>
-      </View>
+      </SafeAreaView>
     )
   }
 }
