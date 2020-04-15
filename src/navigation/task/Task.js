@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import { Alert, Dimensions, StyleSheet, TouchableOpacity, View } from 'react-native'
 import { Container, Footer, Text, Button, Icon } from 'native-base'
 import { Col, Row, Grid } from 'react-native-easy-grid'
-import MapView from 'react-native-maps'
 import { SwipeRow } from 'react-native-swipe-list-view'
 import { withTranslation } from 'react-i18next'
 import _ from 'lodash'
@@ -14,8 +13,8 @@ import {
   doneIconName,
   failedIconName,
 } from './styles/common'
-import TaskMarker from '../../components/TaskMarker'
 import TaskDetails from './components/Details'
+import TaskMiniMap from './components/MiniMap'
 
 const OfflineNotice = ({ message }) => (
   <View>
@@ -198,12 +197,7 @@ class Task extends Component {
     }
 
     const task = this.props.navigation.getParam('task')
-
     const { mapDimensions } = this.state
-
-    // @see https://stackoverflow.com/questions/46568465/convert-a-region-latitudedelta-longitudedelta-into-an-approximate-zoomlevel/
-    const zoomLevel = 15
-    const distanceDelta = Math.exp(Math.log(360) - (zoomLevel * Math.LN2))
 
     let aspectRatio = 1
     if (mapDimensions.length > 0) {
@@ -211,32 +205,8 @@ class Task extends Component {
       aspectRatio = width / height
     }
 
-    const region  = {
-      latitude: task.address.geo.latitude,
-      longitude: task.address.geo.longitude,
-      latitudeDelta: distanceDelta,
-      longitudeDelta: distanceDelta * aspectRatio,
-    }
-
     return (
-      <MapView
-        style={ styles.map }
-        zoomEnabled
-        showsUserLocation
-        loadingEnabled
-        loadingIndicatorColor={ '#666666' }
-        loadingBackgroundColor={ '#eeeeee' }
-        initialRegion={ region }
-        region={ region }
-        onLayout={ this._onMapLayout.bind(this) }>
-        <MapView.Marker
-          identifier={ task['@id'] }
-          key={ task['@id'] }
-          coordinate={ task.address.geo }
-          flat={ true }>
-          <TaskMarker task={ task } />
-        </MapView.Marker>
-      </MapView>
+      <TaskMiniMap task={ task } onLayout={ this._onMapLayout.bind(this) } aspectRatio={ aspectRatio } />
     )
   }
 
@@ -303,9 +273,6 @@ class Task extends Component {
 }
 
 const styles = StyleSheet.create({
-  map: {
-    ...StyleSheet.absoluteFillObject,
-  },
   buttonContainer: {
     ...StyleSheet.absoluteFillObject,
   },
