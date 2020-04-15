@@ -1,21 +1,17 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Alert, Dimensions, StyleSheet, TouchableOpacity, View } from 'react-native'
-import { Container, Footer, Text, Icon } from 'native-base'
+import { Alert, StyleSheet, View } from 'react-native'
+import { Container, Text } from 'native-base'
 import { Col, Row, Grid } from 'react-native-easy-grid'
-import { SwipeRow } from 'react-native-swipe-list-view'
 import { withTranslation } from 'react-i18next'
 import _ from 'lodash'
 
-import { greenColor, redColor } from '../../styles/common'
 import { selectTasks, startTask } from '../../redux/Courier'
-import {
-  doneIconName,
-  failedIconName,
-} from './styles/common'
+
 import TaskDetails from './components/Details'
 import TaskMiniMap from './components/MiniMap'
 import TaskNav from './components/Nav'
+import TaskCompleteButton from './components/CompleteButton'
 
 const OfflineNotice = ({ message }) => (
   <View>
@@ -77,7 +73,11 @@ class Task extends Component {
         [
           {
             text: this.props.t('CANCEL'),
-            style: 'cancel'
+            style: 'cancel',
+            onPress: () => {
+              this.props.startTask(task)
+              setTimeout(() => this.swipeRow.current.closeRow(), 250)
+            },
           },
           {
             text: this.props.t('TASK_COMPLETE_ALERT_NEGATIVE'),
@@ -95,97 +95,12 @@ class Task extends Component {
       return
     }
 
-    const params = {
+    this.props.navigation.navigate('TaskComplete', {
       task,
       navigateAfter: this.props.navigation.getParam('navigateAfter'),
       success
-    }
-    this.props.navigation.navigate('TaskComplete', params)
+    })
     setTimeout(() => this.swipeRow.current.closeRow(), 250)
-  }
-
-  renderSwipeoutLeftButton(width) {
-    return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', width }}>
-        <Icon type="FontAwesome" name={ doneIconName } style={{ color: '#fff' }} />
-      </View>
-    )
-
-  }
-
-  renderSwipeoutRightButton(width) {
-    return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', width }}>
-        <Icon type="FontAwesome" name={ failedIconName } style={{ color: '#fff' }} />
-      </View>
-    )
-  }
-
-  renderSwipeOutButton() {
-
-    const { width } = Dimensions.get('window')
-    const task = this.props.navigation.getParam('task')
-
-    if (task.status === 'DONE') {
-      return (
-        <Footer>
-          <View style={ [ styles.buttonContainer, { backgroundColor: greenColor } ] }>
-            <View style={ styles.buttonTextContainer }>
-              <Icon type="FontAwesome" name={ doneIconName } style={{ color: '#fff', marginRight: 10 }} />
-              <Text style={{ color: '#fff' }}>{this.props.t('COMPLETED')}</Text>
-            </View>
-          </View>
-        </Footer>
-      )
-    }
-
-    if (task.status === 'FAILED') {
-      return (
-        <Footer>
-          <View style={ [ styles.buttonContainer, { backgroundColor: redColor } ] }>
-            <View style={ styles.buttonTextContainer }>
-              <Icon type="FontAwesome" name={ failedIconName } style={{ color: '#fff', marginRight: 10 }} />
-              <Text style={{ color: '#fff' }}>{this.props.t('FAILED')}</Text>
-            </View>
-          </View>
-        </Footer>
-      )
-    }
-
-    const buttonWidth = (width / 3)
-
-    return (
-      <View>
-        <View style={{ paddingVertical: 10, paddingHorizontal: 15 }}>
-          <Text style={styles.swipeOutHelpText}>{`${this.props.t('SWIPE_TO_END')}.`}</Text>
-        </View>
-        <SwipeRow
-          leftOpenValue={ buttonWidth }
-          stopLeftSwipe={ buttonWidth + 25 }
-          rightOpenValue={ buttonWidth * -1 }
-          stopRightSwipe={ (buttonWidth + 25) * -1 }
-          ref={ this.swipeRow }>
-          <View style={ styles.rowBack }>
-            <TouchableOpacity
-              testID="task:completeSuccessButton"
-              style={{ flex: 1, alignItems: 'flex-start', justifyContent: 'center', backgroundColor: greenColor, width: buttonWidth }}
-              onPress={ () => this._complete(true) }>
-              { this.renderSwipeoutLeftButton(buttonWidth) }
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={{ flex: 1, alignItems: 'flex-end', justifyContent: 'center', backgroundColor: redColor, width: buttonWidth }}
-              onPress={ () => this._complete(false) }>
-              { this.renderSwipeoutRightButton(buttonWidth) }
-            </TouchableOpacity>
-          </View>
-          <View style={{ padding: 28, width, backgroundColor: '#dedede' }} testID="task:completeButton">
-            <Text style={{ fontSize: 20, textAlign: 'center', color: '#fff', fontFamily: 'Raleway-Regular' }}>
-              { this.props.t('COMPLETE_TASK') }
-            </Text>
-          </View>
-        </SwipeRow>
-      </View>
-    )
   }
 
   renderMap() {
@@ -237,7 +152,11 @@ class Task extends Component {
             tasks={ tasks }
             task={ task } />
         </Grid>
-        { this.props.isInternetReachable && this.renderSwipeOutButton() }
+        { this.props.isInternetReachable && <TaskCompleteButton
+            ref={ this.swipeRow }
+            task={ task }
+            onPressSuccess={ () => this._complete(true) }
+            onPressFailure={ () => this._complete(false) } /> }
         { !this.props.isInternetReachable && <OfflineNotice message={ this.props.t('OFFLINE') } /> }
       </Container>
     )
@@ -245,32 +164,6 @@ class Task extends Component {
 }
 
 const styles = StyleSheet.create({
-  buttonContainer: {
-    ...StyleSheet.absoluteFillObject,
-  },
-  buttonTextContainer: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'row',
-  },
-  swipeOutHelpContainer: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderTopColor: '#ccc',
-    borderTopWidth: StyleSheet.hairlineWidth,
-  },
-  swipeOutHelpText: {
-    fontSize: 12,
-    textAlign: 'center',
-    color: '#ccc',
-  },
-  rowBack: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
   offlineNotice: {
     alignItems: 'center',
     justifyContent: 'center',
