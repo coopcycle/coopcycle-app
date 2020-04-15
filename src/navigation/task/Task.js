@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Alert, Dimensions, StyleSheet, TouchableOpacity, View } from 'react-native'
-import { Container, Footer, Text, Button, Icon } from 'native-base'
+import { Container, Footer, Text, Icon } from 'native-base'
 import { Col, Row, Grid } from 'react-native-easy-grid'
 import { SwipeRow } from 'react-native-swipe-list-view'
 import { withTranslation } from 'react-i18next'
@@ -15,6 +15,7 @@ import {
 } from './styles/common'
 import TaskDetails from './components/Details'
 import TaskMiniMap from './components/MiniMap'
+import TaskNav from './components/Nav'
 
 const OfflineNotice = ({ message }) => (
   <View>
@@ -212,24 +213,10 @@ class Task extends Component {
 
   render() {
 
-    const { navigate, getParam } = this.props.navigation
+    const { getParam } = this.props.navigation
 
     const task = getParam('task')
-    const navigateAfter = getParam('navigateAfter')
-
-    const hasLinkedTasks = (task.previous || task.next)
-    const hasPreviousTask = Boolean(task.previous)
-    const hasNextTask = Boolean(task.next)
-
-    let previousTask
-    if (hasPreviousTask) {
-      previousTask = _.find(this.props.tasks, t => t['@id'] === task.previous)
-    }
-
-    let nextTask
-    if (hasNextTask) {
-      nextTask = _.find(this.props.tasks, t => t['@id'] === task.next)
-    }
+    const tasks = getParam('tasks', [])
 
     return (
       <Container style={{ backgroundColor: '#fff' }}>
@@ -246,24 +233,9 @@ class Task extends Component {
               </Row>
             </Col>
           </Row>
-          { hasLinkedTasks && (
-          <Row size={ 4 } style={ styles.swipeOutHelpContainer }>
-            <Col>
-              { hasPreviousTask && <Button transparent
-                onPress={ () => navigate('Task', { navigateAfter, task: previousTask }) }>
-                <Icon name="arrow-back" />
-                <Text>{ this.props.t('PREVIOUS_TASK') }</Text>
-              </Button> }
-            </Col>
-            <Col>
-              { hasNextTask && <Button transparent style={{ alignSelf: 'flex-end' }}
-                onPress={ () => navigate('Task', { navigateAfter, task: nextTask }) }>
-                <Text>{ this.props.t('NEXT_TASK') }</Text>
-                <Icon name="arrow-forward" />
-              </Button> }
-            </Col>
-          </Row>
-          )}
+          <TaskNav
+            tasks={ tasks }
+            task={ task } />
         </Grid>
         { this.props.isInternetReachable && this.renderSwipeOutButton() }
         { !this.props.isInternetReachable && <OfflineNotice message={ this.props.t('OFFLINE') } /> }

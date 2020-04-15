@@ -9,6 +9,7 @@ import TaskList from '../../components/TaskList'
 import AddButton from './components/AddButton'
 import { unassignTask } from '../../redux/Dispatch/actions'
 import { selectTasksNotCancelled } from '../../redux/Dispatch/selectors'
+import { navigateToTask } from '../../navigation'
 
 class TaskListScreen extends Component {
 
@@ -24,7 +25,7 @@ class TaskListScreen extends Component {
 
   render() {
 
-    const { taskList } = this.props.navigation.state.params
+    const taskList = this.props.navigation.getParam('taskList')
     const { navigate } = this.props.navigation
 
     const tasks = selectTasksNotCancelled({ tasks: taskList.items })
@@ -43,7 +44,7 @@ class TaskListScreen extends Component {
             onSwipeRight={ task => this.props.unassignTask(task) }
             swipeOutRightEnabled={ task => task.status !== 'DONE' }
             swipeOutRightIconName="close"
-            onTaskClick={ task => navigate('Task', { task, navigateAfter: this.props.navigation.state.routeName }) } />
+            onTaskClick={ task => navigateToTask(this.props.navigation, task, tasks) } />
         </View>
       </View>
     );

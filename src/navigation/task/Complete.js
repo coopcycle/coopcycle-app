@@ -140,7 +140,7 @@ class CompleteTask extends Component {
                 style={{ width: (imageSize - 2), height: (imageSize - 2) }} />
               <TouchableOpacity
                 style={ styles.imageDelBtn }
-                onPress={ _ => this.props.deleteSignatureAt(key) }>
+                onPress={ () => this.props.deleteSignatureAt(key) }>
                 <Icon type="FontAwesome5" name="times-circle" />
               </TouchableOpacity>
             </View>
@@ -153,7 +153,7 @@ class CompleteTask extends Component {
                 style={{ width: (imageSize - 2), height: (imageSize - 2) }} />
               <TouchableOpacity
                 style={ styles.imageDelBtn }
-                onPress={ _ => this.props.deletePictureAt(key) }>
+                onPress={ () => this.props.deletePictureAt(key) }>
                 <Icon type="FontAwesome5" name="times-circle" />
               </TouchableOpacity>
             </View>

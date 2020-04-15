@@ -3,7 +3,6 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import { Icon, Text } from 'native-base'
 
 import { connect } from 'react-redux'
-import { NavigationActions } from 'react-navigation'
 
 import TaskList from '../../components/TaskList'
 import DateSelectHeader from '../../components/DateSelectHeader'
@@ -15,6 +14,7 @@ import {
   selectFilteredTasks,
   selectIsTasksRefreshing,
 } from '../../redux/Courier'
+import { navigateToTask, navigateToCompleteTask } from '../../navigation'
 
 const styles = StyleSheet.create({
   containerEmpty: {
@@ -41,11 +41,6 @@ class TaskListPage extends Component {
   render() {
 
     const { tasks, selectedDate } = this.props
-    const { navigate } = this.props.navigation
-
-    const navigateParams = {
-      navigateAfter: this.props.navigation.state.routeName,
-    }
 
     const containerStyle = [ styles.container ]
     if (tasks.length === 0) {
@@ -58,19 +53,11 @@ class TaskListPage extends Component {
           tasks.length > 0 &&
           <TaskList
             tasks={ tasks }
-            onSwipeLeft={ task => navigate(
-              'Task',
-              { ...navigateParams, task },
-              NavigationActions.navigate({ routeName: 'TaskComplete', params: { ...navigateParams, task, success: true } })
-            ) }
-            onSwipeRight={ task => navigate(
-              'Task',
-              { ...navigateParams, task },
-              NavigationActions.navigate({ routeName: 'TaskComplete', params: { ...navigateParams, task, success: false } })
-            ) }
+            onSwipeLeft={ task => navigateToCompleteTask(this.props.navigation, task, tasks, true) }
+            onSwipeRight={ task => navigateToCompleteTask(this.props.navigation, task, tasks, false) }
             swipeOutLeftEnabled={ task => task.status !== 'DONE' }
             swipeOutRightEnabled={ task => task.status !== 'DONE' }
-            onTaskClick={ task => navigate('Task', { ...navigateParams, task }) }
+            onTaskClick={ task => navigateToTask(this.props.navigation, task, tasks) }
             refreshing={ this.props.isRefreshing }
             onRefresh={ () => this.props.refreshTasks(selectedDate) }
           />

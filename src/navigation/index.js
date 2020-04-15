@@ -1,6 +1,7 @@
 import React from 'react'
 import HeaderButton from '../components/HeaderButton'
 import { primaryColor,  whiteColor, fontTitleName } from '../styles/common'
+import { NavigationActions } from 'react-navigation'
 
 import DispatchUnassignedTasks from './dispatch/UnassignedTasks'
 import DispatchTaskLists from './dispatch/TaskLists'
@@ -100,4 +101,39 @@ export const defaultNavigationOptions = {
 
 export const headerLeft = (navigation, testID = 'menuBtn') => {
   return () => <HeaderButton iconName="menu" onPress={ () => navigation.toggleDrawer() } testID={ testID } />
+}
+
+let navigateAfter = null
+
+export const navigateToTask = (navigation, task, tasks = []) => {
+
+  if (navigation.state.routeName !== 'TaskHome') {
+    navigateAfter = navigation.state.routeName
+  }
+
+  const params = {
+    task,
+    tasks,
+    navigateAfter,
+  }
+
+  navigation.navigate({ routeName: 'Task', params, key: task['@id'] })
+}
+
+export const navigateToCompleteTask = (navigation, task, tasks = [], success = true) => {
+
+  const params = {
+    task,
+    navigateAfter: navigation.state.routeName,
+  }
+
+  navigation.navigate({
+    routeName: 'Task',
+    params: { ...params, tasks },
+    key: task['@id'],
+    action: NavigationActions.navigate({
+      routeName: 'TaskComplete',
+      params: { ...params, success }
+    })
+  })
 }

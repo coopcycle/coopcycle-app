@@ -8,6 +8,7 @@ import TaskList from '../../components/TaskList'
 import AddButton from './components/AddButton'
 import { assignTask, initialize } from '../../redux/Dispatch/actions'
 import { selectUnassignedTask } from '../../redux/Dispatch/selectors'
+import { navigateToTask } from '../../navigation'
 
 class UnassignedTasks extends Component {
 
@@ -42,7 +43,7 @@ class UnassignedTasks extends Component {
               swipeOutLeftEnabled={ task => !task.isAssigned }
               onSwipeLeft={ task => navigate('DispatchPickUser', { onUserPicked: user => this.props.assignTask(task, user.username) }) }
               swipeOutLeftIconName="user"
-              onTaskClick={ task => navigate('Task', { task, navigateAfter: this.props.navigation.state.routeName }) } />
+              onTaskClick={ task => navigateToTask(this.props.navigation, task, this.props.unassignedTasks) } />
           ) }
         </View>
       </View>

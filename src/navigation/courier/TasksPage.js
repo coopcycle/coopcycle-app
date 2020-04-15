@@ -17,6 +17,7 @@ import {
   selectKeepAwake,
 } from '../../redux/Courier'
 import BackgroundGeolocation from '@mauron85/react-native-background-geolocation'
+import { navigateToTask } from '../../navigation'
 
 class TasksPage extends Component {
 
@@ -109,7 +110,6 @@ class TasksPage extends Component {
   render() {
 
     const { tasks, selectedDate } = this.props
-    const { navigate } = this.props.navigation
 
     return (
       <Container style={ styles.container }>
@@ -117,7 +117,7 @@ class TasksPage extends Component {
           mapCenter={ this.props.mapCenter }
           tasks={ tasks }
           onMapReady={ () => this.onMapReady() }
-          onMarkerCalloutPress={ task => navigate('Task', { task, navigateAfter: this.props.navigation.state.routeName }) } />
+          onMarkerCalloutPress={ task => navigateToTask(this.props.navigation, task, tasks) } />
         <DateSelectHeader
           buttonsEnabled={true}
           toDate={this.refreshTasks}
