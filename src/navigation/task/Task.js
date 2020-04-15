@@ -1,14 +1,11 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Alert, Dimensions, FlatList, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { Alert, Dimensions, StyleSheet, TouchableOpacity, View } from 'react-native'
 import { Container, Footer, Text, Button, Icon } from 'native-base'
 import { Col, Row, Grid } from 'react-native-easy-grid'
 import MapView from 'react-native-maps'
 import { SwipeRow } from 'react-native-swipe-list-view'
-import moment from 'moment'
 import { withTranslation } from 'react-i18next'
-import { phonecall } from 'react-native-communications'
-import { showLocation } from 'react-native-map-link'
 import _ from 'lodash'
 
 import { greenColor, redColor } from '../../styles/common'
@@ -18,6 +15,7 @@ import {
   failedIconName,
 } from './styles/common'
 import TaskMarker from '../../components/TaskMarker'
+import TaskDetails from './components/Details'
 
 const OfflineNotice = ({ message }) => (
   <View>
@@ -104,121 +102,6 @@ class Task extends Component {
     }
     this.props.navigation.navigate('TaskComplete', params)
     setTimeout(() => this.swipeRow.current.closeRow(), 250)
-  }
-
-  renderTaskDetails() {
-
-    const task = this.props.navigation.getParam('task')
-
-    const timeframe = moment(task.doneAfter).format('LT') + ' - ' + moment(task.doneBefore).format('LT')
-    let address = task.address.name ? [ task.address.name, task.address.streetAddress ].join(' - ') : task.address.streetAddress
-    const name = [ task.address.firstName, task.address.lastName ].filter(function (item) {return item}).join(' ')
-    address = name ? [ name, address ].join(' - ') : address
-
-    const items = [
-      {
-        iconName: 'md-navigate',
-        text: address,
-        onPress: () => showLocation({
-          latitude: task.address.geo.latitude,
-          longitude: task.address.geo.longitude,
-          dialogTitle: this.props.t('OPEN_IN_MAPS_TITLE'),
-          dialogMessage: this.props.t('OPEN_IN_MAPS_MESSAGE'),
-          cancelText: this.props.t('CANCEL'),
-        }),
-      },
-      {
-        iconName: 'md-clock',
-        text: timeframe,
-      },
-    ]
-
-    if (task.comments) {
-      items.push({
-        iconName: 'chatbubbles',
-        text: task.comments,
-      })
-    }
-
-    if (task.address.description || task.address.floor) {
-      const floor = task.address.floor ? [ this.props.t('FLOOR'), task.address.floor ].join(' : ') : null
-      const description = [ floor, task.address.description ].filter(function (item) {return item}).join(' - ')
-
-      items.push({
-        iconName: 'information-circle',
-        text: description,
-      })
-    }
-
-    if (task.tags.length > 0) {
-      items.push({
-        iconName: 'star',
-        component: (
-          <View style={{ flex: 1, flexDirection: 'row' }}>
-          { task.tags.map(tag => (
-            <Button style={{ backgroundColor: tag.color, marginRight: 5 }} key={ tag.slug } small disabled>
-              <Text style={{ fontSize: 10 }}>{ tag.slug }</Text>
-            </Button>
-          )) }
-          </View>
-        ),
-      })
-    }
-
-    if (task.address.telephone) {
-      items.push({
-        iconName: 'call',
-        text: task.address.telephone,
-        onPress: () => phonecall(task.address.telephone, true),
-      })
-    }
-
-    return (
-      <FlatList
-        data={ items }
-        keyExtractor={ (item, index) => item.iconName }
-        renderItem={ ({ item }) => this.renderTaskDetail(item) }
-        ItemSeparatorComponent={ () => (
-          <View
-            style={{
-              height: StyleSheet.hairlineWidth,
-              backgroundColor: '#ccc',
-            }}
-          />
-        )} />
-    )
-  }
-
-  renderTaskDetail(item) {
-
-    const { iconName, text, component, onPress } = item
-
-    let touchableOpacityProps = {}
-    if (onPress) {
-      touchableOpacityProps = { onPress }
-    }
-
-    const body = (
-      <Col size={ onPress ? 7 : 8 }>
-        { text ? (<Text style={ styles.taskDetailText }>{ text }</Text>) : null }
-        { component && component }
-      </Col>
-    )
-
-    return (
-      <TouchableOpacity style={{ flex:  1 }} { ...touchableOpacityProps }>
-        <Row style={ styles.row }>
-          <Col size={ 2 } style={ styles.iconContainer }>
-            <Icon name={ iconName } style={{ color: '#ccc' }} />
-          </Col>
-          { body }
-          { onPress &&
-          <Col size={ 1 }>
-            <Icon name="arrow-forward" style={{ color: '#ccc' }} />
-          </Col> }
-        </Row>
-      </TouchableOpacity>
-    )
   }
 
   renderSwipeoutLeftButton(width) {
@@ -388,7 +271,7 @@ class Task extends Component {
               </Row>
               <Row size={ 3 }>
                 <Col>
-                  { this.renderTaskDetails() }
+                  <TaskDetails task={ task } />
                 </Col>
               </Row>
             </Col>
@@ -423,18 +306,6 @@ const styles = StyleSheet.create({
   map: {
     ...StyleSheet.absoluteFillObject,
   },
-  row: {
-    padding: 10,
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  iconContainer: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingHorizontal: 10,
-  },
   buttonContainer: {
     ...StyleSheet.absoluteFillObject,
   },
@@ -455,9 +326,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
     textAlign: 'center',
     color: '#ccc',
-  },
-  taskDetailText: {
-    fontSize: 12,
   },
   rowBack: {
     flex: 1,
