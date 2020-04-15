@@ -1513,10 +1513,10 @@
   resolved "https://registry.yarnpkg.com/@react-native-community/masked-view/-/masked-view-0.1.9.tgz#383aca2fb053e3e14405c99cce2d5805df730821"
   integrity sha512-nUtzbiLeXU0K9oVed6rc/WVrjGJwDSL4q1RTDkpZYU4j0FeovfuzcNUIDesD2r728LYfIop+uAgQdm+6qBOCug==
 
-"@react-native-community/netinfo@^5.7.0":
-  version "5.7.0"
-  resolved "https://registry.yarnpkg.com/@react-native-community/netinfo/-/netinfo-5.7.0.tgz#54be55f22c6a6358d5d61f2aa1bc1de20c7b53b6"
-  integrity sha512-ZhmkaqRpLFvOMu/Ln3YCitBJUgk7lbFsvcinbW/LIktXM6BwVwEZPTkYr+N74hEAhKz2CcDN8aMzzaokxwxRqg==
+"@react-native-community/netinfo@^5.7.1":
+  version "5.7.1"
+  resolved "https://registry.yarnpkg.com/@react-native-community/netinfo/-/netinfo-5.7.1.tgz#715a6061307055c6aa59c901bca313050695f75e"
+  integrity sha512-ddefrDUgJgeYevk1QQFWQD2n3fq9B7PfYZoBTXw8yYgV5AdXdolFtwt5DnfFHqqibgiQGCd9lNP6SvM6xktu9Q==
 
 "@react-native-community/push-notification-ios@^1.1.0":
   version "1.1.0"
@@ -8858,10 +8858,10 @@ react-native-calendars@^1.265.0:
     prop-types "^15.5.10"
     xdate "^0.8.0"
 
-react-native-camera@^3.22.0:
-  version "3.22.0"
-  resolved "https://registry.yarnpkg.com/react-native-camera/-/react-native-camera-3.22.0.tgz#bd3dc0323f340711e2bd7f67472468e6a31729d1"
-  integrity sha512-bo+tolEmclVV5TVeDz02gRgnsR9lyM5Rc77OFo9PccVTKDu3eTRXeYJBkyZx1Im+TImKro0tkGYKg1/juOQolQ==
+react-native-camera@^3.23.0:
+  version "3.23.0"
+  resolved "https://registry.yarnpkg.com/react-native-camera/-/react-native-camera-3.23.0.tgz#d5a969ef0826a04669e5436f79e328eec019eff5"
+  integrity sha512-4i7FTwhJn4jnvNyLKKDxvnJfzx1QD8UCIw6evBPtZJai1VIBn3gnSC6jvxrap8Ld5+s8MV02CvyeMKIrfXvmjA==
   dependencies:
     prop-types "^15.6.2"
 
@@ -8974,10 +8974,10 @@ react-native-loading-spinner-overlay@^1.0.1:
   dependencies:
     prop-types "^15.6.2"
 
-react-native-localize@^1.3.4:
-  version "1.3.4"
-  resolved "https://registry.yarnpkg.com/react-native-localize/-/react-native-localize-1.3.4.tgz#7d5c7b7ea30548d777a641457434d363cfac48db"
-  integrity sha512-ZVdapfTIcizCQ6nfbkTzjN/+D1eFb3aRtmOSC6d4LtjYRovUnv0QmNSg35CI/Q8Jy3nx4bHg6M9QyQ75MHzf7Q==
+react-native-localize@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/react-native-localize/-/react-native-localize-1.4.0.tgz#4653596d066d0941c48f5404dc1c0d08b6950443"
+  integrity sha512-W2MQxm6hzD549ZbZcbWzWtYJseY7S7WR2WgsNhm9ULmbwP7tXFfOTbkJjQoqgPXYSXogKN3srXhntVsNZL0Ksw==
 
 react-native-map-link@^2.7.7:
   version "2.7.7"
