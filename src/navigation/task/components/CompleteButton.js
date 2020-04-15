@@ -10,23 +10,17 @@ import {
   failedIconName,
 } from '../styles/common'
 
-const LeftButton = ({ width }) => {
+const LeftButton = ({ width }) => (
+  <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', width }}>
+    <Icon type="FontAwesome" name={ doneIconName } style={{ color: '#fff' }} />
+  </View>
+)
 
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', width }}>
-      <Icon type="FontAwesome" name={ doneIconName } style={{ color: '#fff' }} />
-    </View>
-  )
-}
-
-const RightButton = ({ width }) => {
-
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', width }}>
-      <Icon type="FontAwesome" name={ failedIconName } style={{ color: '#fff' }} />
-    </View>
-  )
-}
+const RightButton = ({ width }) => (
+  <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', width }}>
+    <Icon type="FontAwesome" name={ failedIconName } style={{ color: '#fff' }} />
+  </View>
+)
 
 const CompleteButton = React.forwardRef((props, ref) => {
 
@@ -96,7 +90,7 @@ const CompleteButton = React.forwardRef((props, ref) => {
 
 const styles = StyleSheet.create({
   buttonContainer: {
-    ...StyleSheet.absoluteFillObject,
+    height: '10%',
   },
   buttonTextContainer: {
     flex: 1,

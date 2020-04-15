@@ -29,9 +29,9 @@ const NavButton = ({ disabled, left, right, onPress, t, task }) => {
 
   return (
     <TouchableOpacity style={ buttonStyle } { ...buttonProps }>
-      { (!disabled && task && right) && <Text style={{ marginRight: 10 }}>{ t('TASK_WITH_ID', { id: task.id }) }</Text> }
+      { (!disabled && task && right) && <Text style={{ marginRight: 10, fontSize: 14 }}>{ t('TASK_WITH_ID', { id: task.id }) }</Text> }
       <Icon type="FontAwesome" name={ right ? 'arrow-right' : 'arrow-left' } style={ iconStyle } />
-      { (!disabled && task && left) && <Text style={{ marginLeft: 10 }}>{ t('TASK_WITH_ID', { id: task.id }) }</Text> }
+      { (!disabled && task && left) && <Text style={{ marginLeft: 10, fontSize: 14 }}>{ t('TASK_WITH_ID', { id: task.id }) }</Text> }
     </TouchableOpacity>
   )
 }

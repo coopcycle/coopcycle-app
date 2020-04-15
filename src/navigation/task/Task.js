@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Alert, StyleSheet, View } from 'react-native'
+import { Alert, SafeAreaView, StyleSheet, View } from 'react-native'
 import { Container, Text } from 'native-base'
 import { Col, Row, Grid } from 'react-native-easy-grid'
 import { withTranslation } from 'react-i18next'
@@ -74,10 +74,7 @@ class Task extends Component {
           {
             text: this.props.t('CANCEL'),
             style: 'cancel',
-            onPress: () => {
-              this.props.startTask(task)
-              setTimeout(() => this.swipeRow.current.closeRow(), 250)
-            },
+            onPress: () => this.swipeRow.current.closeRow()
           },
           {
             text: this.props.t('TASK_COMPLETE_ALERT_NEGATIVE'),
@@ -134,31 +131,25 @@ class Task extends Component {
     const tasks = getParam('tasks', [])
 
     return (
-      <Container style={{ backgroundColor: '#fff' }}>
-        <Grid>
-          <Row size={ 8 }>
-            <Col>
-              <Row size={ 2 }>
-                { this.renderMap() }
-              </Row>
-              <Row size={ 3 }>
-                <Col>
-                  <TaskDetails task={ task } />
-                </Col>
-              </Row>
-            </Col>
-          </Row>
-          <TaskNav
-            tasks={ tasks }
-            task={ task } />
-        </Grid>
+      <SafeAreaView style={{ flex: 1 }}>
+        <View style={{ flex: 1 }}>
+          <View style={{ height: '35%' }}>
+            { this.renderMap() }
+          </View>
+          <View style={{ height: '55%' }}>
+            <TaskDetails task={ task } />
+          </View>
+          <View style={{ height: '10%' }}>
+            <TaskNav tasks={ tasks } task={ task } />
+          </View>
+        </View>
         { this.props.isInternetReachable && <TaskCompleteButton
-            ref={ this.swipeRow }
-            task={ task }
-            onPressSuccess={ () => this._complete(true) }
-            onPressFailure={ () => this._complete(false) } /> }
+          ref={ this.swipeRow }
+          task={ task }
+          onPressSuccess={ () => this._complete(true) }
+          onPressFailure={ () => this._complete(false) } /> }
         { !this.props.isInternetReachable && <OfflineNotice message={ this.props.t('OFFLINE') } /> }
-      </Container>
+      </SafeAreaView>
     )
   }
 }
