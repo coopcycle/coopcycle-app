@@ -1,14 +1,12 @@
 import React, { Component } from 'react'
 import { ActivityIndicator, Image, StyleSheet, View } from 'react-native'
 import { connect } from 'react-redux'
-import { Button, Icon, Text } from 'native-base'
+import { Text } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import _ from 'lodash'
 import { SafeAreaView } from 'react-navigation'
 import axios from 'axios'
 
-import { selectServer } from '../../redux/App/actions'
-import ItemSeparator from '../../components/ItemSeparator'
 import { localeDetector } from '../../i18n'
 
 class About extends Component {
