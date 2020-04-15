@@ -14,6 +14,12 @@ import VersionNumber from 'react-native-version-number'
 
 import { selectIsAuthenticated } from '../../redux/App/selectors'
 
+const blacklist = [
+  'RegisterConfirmNav',
+  'ResetPasswordNav',
+  'AboutNav',
+]
+
 class DrawerContent extends Component {
 
   onItemPress({ route, focused }) {
@@ -47,11 +53,7 @@ class DrawerContent extends Component {
 
     const otherItems = _.filter(items, item => {
 
-      if (item.routeName === 'RegisterConfirmNav') {
-        return false
-      }
-
-      if (item.routeName === 'ResetPasswordNav') {
+      if (_.includes(blacklist, item.routeName)) {
         return false
       }
 
@@ -197,6 +199,11 @@ class DrawerContent extends Component {
         NavigationActions.navigate({ routeName: 'AccountNav' })
       )
 
+    const navigateToAbout = () =>
+      this.props.navigation.dispatch(
+        NavigationActions.navigate({ routeName: 'AboutHome', params: { name: this.props.brandName } })
+      )
+
     return (
       <SafeAreaView style={ styles.container } forceInset={{ top: 'always', horizontal: 'never' }}>
         <TouchableOpacity style={ styles.header } onPress={ navigateToAccount } testID="drawerAccountBtn">
@@ -204,14 +211,19 @@ class DrawerContent extends Component {
           { isAuthenticated && <Text>{ this.props.user.username }</Text> }
         </TouchableOpacity>
         <View style={{ flex: 1 }}>
-          <View style={{ flex: 1 }}>
+          <View style={ styles.content }>
             <DrawerNavigatorItems { ...otherItemsProps } itemsContainerStyle={ styles.itemsContainer } />
             { restaurantSection }
             { storeSection }
             { courierSection }
             { adminSection }
           </View>
-          <View style={{ alignSelf: 'center', justifySelf: 'flex-end', padding: 15 }}>
+          <View style={ styles.footer }>
+            { this.props.showAbout && (
+              <TouchableOpacity onPress={ navigateToAbout }>
+                <Text>{ this.props.brandName }</Text>
+              </TouchableOpacity>
+            )}
             <Text>{ VersionNumber.appVersion }</Text>
           </View>
         </View>
@@ -234,15 +246,34 @@ const styles = StyleSheet.create({
     borderBottomWidth: StyleSheet.hairlineWidth,
     paddingVertical: 25,
   },
+  content: {
+    flex: 1,
+    borderBottomColor: '#e0e0e0',
+    borderBottomWidth: StyleSheet.hairlineWidth,
+  },
+  footer: {
+    alignSelf: 'center',
+    padding: 15,
+    alignItems: 'center',
+    width: '100%',
+  }
 });
 
 function mapStateToProps(state) {
+
+  const publicServers =
+    _.filter(state.app.servers, s => !!s.coopcycle_url)
+
+  const showAbout =
+    _.includes(publicServers.map(s => s.coopcycle_url), state.app.baseURL)
 
   return {
     user: state.app.user,
     isAuthenticated: selectIsAuthenticated(state),
     restaurants: state.restaurant.myRestaurants,
     stores: state.store.myStores,
+    brandName: state.app.settings['brand_name'],
+    showAbout,
   }
 }
 

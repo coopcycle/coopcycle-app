@@ -1,3 +1,4 @@
+
 import React from 'react'
 import { createDrawerNavigator } from 'react-navigation-drawer'
 import { createStackNavigator } from 'react-navigation-stack'
@@ -11,6 +12,7 @@ import CourierNavigator from './CourierNavigator'
 import DispatchNavigator from './DispatchNavigator'
 import RestaurantNavigator from './RestaurantNavigator'
 import StoreNavigator from './StoreNavigator'
+import About from '../home/About'
 
 import screens, { defaultNavigationOptions, headerLeft } from '..'
 
@@ -43,6 +45,22 @@ const ResetPasswordStack = createStackNavigator({
   },
 }, {
   initialRouteName: 'ResetPasswordHome',
+  defaultNavigationOptions,
+})
+
+const AboutStack = createStackNavigator({
+  AboutHome: {
+    screen: About,
+    navigationOptions: ({ navigation }) => {
+
+      return {
+        title: i18n.t('ABOUT'),
+        headerLeft: headerLeft(navigation),
+      }
+    },
+  },
+}, {
+  initialRouteName: 'AboutHome',
   defaultNavigationOptions,
 })
 
@@ -98,6 +116,9 @@ export default createDrawerNavigator({
         <Icon name="bicycle" style={{ fontSize: 16, color: tintColor }} />
       ),
     }),
+  },
+  AboutNav: {
+    screen: AboutStack,
   },
   // This screen will not appear in drawer, but handle an activate account deep link
   // We need to put it here to be accessible from everywhere
