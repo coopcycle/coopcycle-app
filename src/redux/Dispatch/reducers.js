@@ -1,3 +1,6 @@
+import _ from 'lodash'
+import moment from 'moment'
+
 import {
   DISPATCH_INITIALIZE,
   LOAD_UNASSIGNED_TASKS_REQUEST,
@@ -36,8 +39,7 @@ import {
   MARK_TASK_FAILED_SUCCESS,
 } from '../Courier/taskActions'
 
-import _ from 'lodash'
-import moment from 'moment'
+import { createTaskList } from './utils'
 
 const initialState = {
   isFetching: false,
@@ -87,12 +89,20 @@ const removeItem = (state, payload) => {
 
 const replaceTaskLists = (taskLists, task) => {
 
+  const taskList = _.find(taskLists, o => task.assignedTo === o.username)
+  if (!taskList) {
+    const newTaskLists = taskLists.slice(0)
+    newTaskLists.push(createTaskList(task.assignedTo, [ task ]))
+
+    return newTaskLists
+  }
+
   return _.map(taskLists, taskList => {
     if (task.isAssigned && task.assignedTo === taskList.username) {
 
       return {
         ...taskList,
-        items: replaceItem(taskList.items, task),
+        items: addOrReplaceItem(taskList.items, task),
       }
     }
 
@@ -101,6 +111,14 @@ const replaceTaskLists = (taskLists, task) => {
 }
 
 const addOrReplaceTaskLists = (taskLists, task) => {
+
+  const taskList = _.find(taskLists, o => task.assignedTo === o.username)
+  if (!taskList) {
+    const newTaskLists = taskLists.slice(0)
+    newTaskLists.push(createTaskList(task.assignedTo, [ task ]))
+
+    return newTaskLists
+  }
 
   return _.map(taskLists, taskList => {
     if (task.isAssigned && task.assignedTo === taskList.username) {
