@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { ActivityIndicator, Image, StyleSheet, View } from 'react-native'
+import { ActivityIndicator, Image, ScrollView, StyleSheet, View } from 'react-native'
 import { connect } from 'react-redux'
 import { Text } from 'native-base'
 import { withTranslation } from 'react-i18next'
@@ -56,7 +56,7 @@ class About extends Component {
     text = text.replace(/(<([^>]+)>)/ig, '')
 
     return (
-      <Text style={{ textAlign: 'center', paddingHorizontal: '10%' }}>{ text }</Text>
+      <Text style={{ textAlign: 'center', paddingHorizontal: '10%', fontSize: 14 }}>{ text }</Text>
     )
   }
 
@@ -66,14 +66,7 @@ class About extends Component {
 
     return (
       <View style={{ alignItems: 'center' }}>
-        <Text style={{ textAlign: 'center', marginBottom: 5, fontWeight: '700' }}>{ this.props.t('ABOUT_INSTANCE', { name: instance.name }) }</Text>
-        <Text note style={{ textAlign: 'center', marginBottom: 10 }}>{ instance.city }</Text>
-        { this.props.logo && (
-          <View style={{ width: 128, height: 128, backgroundColor: 'red', marginBottom: 10 }}>
-            <Image style={{ flex: 1, height: undefined, width: undefined }} source={{ uri: this.props.logo }} />
-          </View>
-        )}
-        { this.renderText() }
+
 
       </View>
     )
@@ -83,10 +76,26 @@ class About extends Component {
 
     const { instance } = this.state
 
+    if (!instance) {
+      return (
+        <SafeAreaView style={ styles.container }>
+          <ActivityIndicator size="large" color="#0000ff" />
+        </SafeAreaView>
+      )
+    }
+
     return (
       <SafeAreaView style={ styles.container }>
-        { !instance && (<ActivityIndicator size="large" color="#0000ff" />) }
-        { instance && this.renderContent() }
+        <View style={{ height: '33.3333%', paddingVertical: 15 }}>
+          <Text style={{ textAlign: 'center', marginBottom: 5, fontWeight: '700' }}>{ this.props.t('ABOUT_INSTANCE', { name: instance.name }) }</Text>
+          <Text note style={{ textAlign: 'center', marginBottom: 10 }}>{ instance.city }</Text>
+          { this.props.logo && (
+            <Image style={{ flex: 1, height: undefined, width: undefined }} source={{ uri: this.props.logo }} />
+          )}
+        </View>
+        <ScrollView style={{ height: '66.6666%', marginVertical: 30 }}>
+          { this.renderText() }
+        </ScrollView>
       </SafeAreaView>
     )
   }

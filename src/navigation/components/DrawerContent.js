@@ -220,11 +220,13 @@ class DrawerContent extends Component {
           </View>
           <View style={ styles.footer }>
             { this.props.showAbout && (
-              <TouchableOpacity onPress={ navigateToAbout }>
+              <TouchableOpacity onPress={ navigateToAbout } style={ styles.footerItem }>
                 <Text>{ this.props.brandName }</Text>
               </TouchableOpacity>
             )}
-            <Text>{ VersionNumber.appVersion }</Text>
+            <View style={ styles.footerItem }>
+              <Text note>{ VersionNumber.appVersion }</Text>
+            </View>
           </View>
         </View>
       </SafeAreaView>
@@ -252,12 +254,15 @@ const styles = StyleSheet.create({
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
   footer: {
-    alignSelf: 'center',
-    padding: 15,
     alignItems: 'center',
     width: '100%',
-  }
-});
+  },
+  footerItem: {
+    width: '100%',
+    paddingVertical: 10,
+    alignItems: 'center',
+  },
+})
 
 function mapStateToProps(state) {
 
