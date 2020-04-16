@@ -11,8 +11,12 @@ import { withTranslation } from 'react-i18next'
 import { SafeAreaView, NavigationActions } from 'react-navigation'
 import { DrawerNavigatorItems } from 'react-navigation-drawer'
 import VersionNumber from 'react-native-version-number'
+import { PhoneNumberUtil, PhoneNumberFormat } from 'google-libphonenumber'
+import { phonecall } from 'react-native-communications'
 
 import { selectIsAuthenticated } from '../../redux/App/selectors'
+
+const phoneNumberUtil = PhoneNumberUtil.getInstance()
 
 const blacklist = [
   'RegisterConfirmNav',
@@ -204,6 +208,16 @@ class DrawerContent extends Component {
         NavigationActions.navigate({ routeName: 'AboutHome', params: { name: this.props.brandName } })
       )
 
+    let phoneNumberText = this.props.phoneNumber
+    if (this.props.phoneNumber) {
+      try {
+        phoneNumberText = phoneNumberUtil.format(
+          phoneNumberUtil.parse(this.props.phoneNumber),
+          PhoneNumberFormat.NATIONAL
+        )
+      } catch (e) {}
+    }
+
     return (
       <SafeAreaView style={ styles.container } forceInset={{ top: 'always', horizontal: 'never' }}>
         <TouchableOpacity style={ styles.header } onPress={ navigateToAccount } testID="drawerAccountBtn">
@@ -221,7 +235,12 @@ class DrawerContent extends Component {
           <View style={ styles.footer }>
             { this.props.showAbout && (
               <TouchableOpacity onPress={ navigateToAbout } style={ styles.footerItem }>
-                <Text>{ this.props.brandName }</Text>
+                <Text style={{ fontWeight: '700' }}>{ this.props.brandName }</Text>
+              </TouchableOpacity>
+            )}
+            { this.props.phoneNumber && (
+              <TouchableOpacity onPress={ () => phonecall(this.props.phoneNumber, true) } style={ styles.footerItem }>
+                <Text style={{ fontSize: 14 }}>{ phoneNumberText }</Text>
               </TouchableOpacity>
             )}
             <View style={ styles.footerItem }>
@@ -256,6 +275,7 @@ const styles = StyleSheet.create({
   footer: {
     alignItems: 'center',
     width: '100%',
+    marginBottom: 5
   },
   footerItem: {
     width: '100%',
@@ -278,6 +298,7 @@ function mapStateToProps(state) {
     restaurants: state.restaurant.myRestaurants,
     stores: state.store.myStores,
     brandName: state.app.settings['brand_name'],
+    phoneNumber: state.app.settings['phone_number'],
     showAbout,
   }
 }
