@@ -239,6 +239,11 @@ class DrawerContent extends Component {
                 <Text style={{ fontWeight: '700' }}>{ this.props.brandName }</Text>
               </TouchableOpacity>
             )}
+            { !this.props.showAbout && (
+              <View style={ styles.footerItem }>
+                <Text style={{ fontWeight: '700' }}>{ this.props.brandName }</Text>
+              </View>
+            )}
             { this.props.email && (
               <Mailto email={ this.props.email } style={ styles.footerItem }>
                 <Text style={{ fontSize: 14 }}>{ this.props.email }</Text>
