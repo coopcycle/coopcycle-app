@@ -18,6 +18,11 @@ class UnassignedTasks extends Component {
     })
   }
 
+  _assignTask(task, user) {
+    this.props.navigation.navigate('DispatchUnassignedTasks')
+    this.props.assignTask(task, user.username)
+  }
+
   render() {
 
     const { navigate } = this.props.navigation
@@ -41,7 +46,7 @@ class UnassignedTasks extends Component {
             <TaskList
               tasks={ this.props.unassignedTasks }
               swipeOutLeftEnabled={ task => !task.isAssigned }
-              onSwipeLeft={ task => navigate('DispatchPickUser', { onUserPicked: user => this.props.assignTask(task, user.username) }) }
+              onSwipeLeft={ task => navigate('DispatchPickUser', { onItemPress: user => this._assignTask(task, user) }) }
               swipeOutLeftIconName="user"
               onTaskClick={ task => navigateToTask(this.props.navigation, task, this.props.unassignedTasks) } />
           ) }
