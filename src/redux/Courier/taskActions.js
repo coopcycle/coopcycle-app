@@ -71,10 +71,11 @@ export const setKeepAwake = createAction(SET_KEEP_AWAKE)
  */
 
 function showAlert(e) {
+
   let message = i18n.t('AN_ERROR_OCCURRED')
 
-  if (e && e.hasOwnProperty('hydra:description')) {
-    message = e['hydra:description']
+  if (e.isAxiosError && e.response && e.response.data && e.response.data['hydra:description']) {
+    message = e.response.data['hydra:description']
   } else if (e && e.hasOwnProperty('message')) {
     message = e.message
   }
