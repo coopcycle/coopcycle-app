@@ -566,7 +566,21 @@ export function connectPrinter(device, cb) {
 
       })
       .catch(e => {
-        console.log(e)
+
+        let message = ''
+        if (typeof e === 'string') {
+          message = e
+        } else {
+          message = e.message ? e.message : (e.toString && typeof e.toString === 'function' ? e.toString() : e)
+        }
+
+        DropdownHolder
+          .getDropdown()
+          .alertWithType(
+            'error',
+            i18n.t('RESTAURANT_PRINTER_CONNECT_ERROR_TITLE'),
+            message
+          )
       })
   }
 }

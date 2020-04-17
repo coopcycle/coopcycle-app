@@ -192,6 +192,7 @@
         "RESTAURANT_ALERT_CLOSED": "Restaurant is closed",
         "RESTAURANT_PRINTER_CONNECTED_TITLE": "Device connected",
         "RESTAURANT_PRINTER_CONNECTED_BODY": "The device {{name}} is connected",
+        "RESTAURANT_PRINTER_CONNECT_ERROR_TITLE": "Can't connect to device",
         "RESTAURANT_PRINTER_DISCONNECTED_TITLE": "Device disconnected",
         "RESTAURANT_PRINTER_DISCONNECTED_BODY": "The device {{name}} has been disconnected",
         "RESTAURANT_SOUND_ALERT_TITLE": "Sound volume is low",

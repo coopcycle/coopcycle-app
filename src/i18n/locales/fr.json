@@ -191,6 +191,7 @@
         "RESTAURANT_PRINTER_CONNECTED_BODY": "L'appareil {{name}} est désormais connecté",
         "RESTAURANT_PRINTER_DISCONNECTED_TITLE": "Appareil déconnecté",
         "RESTAURANT_PRINTER_DISCONNECTED_BODY": "L'appareil {{name}} a été déconnecté",
+        "RESTAURANT_PRINTER_CONNECT_ERROR_TITLE": "Impossible de se connecter à l'appareil",
         "RESTAURANT_SOUND_ALERT_TITLE": "Le volume sonore est bas",
         "RESTAURANT_SOUND_ALERT_MESSAGE": "Le volume sonore est plutôt bas. Vous devriez l'augmenter pour ne pas manquer les notifications.",
         "RESTAURANT_SOUND_ALERT_CONFIRM": "D'accord",
