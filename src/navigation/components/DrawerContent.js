@@ -14,6 +14,7 @@ import VersionNumber from 'react-native-version-number'
 import { PhoneNumberUtil, PhoneNumberFormat } from 'google-libphonenumber'
 import { phonecall } from 'react-native-communications'
 
+import Mailto from '../../components/Mailto'
 import { selectIsAuthenticated } from '../../redux/App/selectors'
 
 const phoneNumberUtil = PhoneNumberUtil.getInstance()
@@ -238,6 +239,11 @@ class DrawerContent extends Component {
                 <Text style={{ fontWeight: '700' }}>{ this.props.brandName }</Text>
               </TouchableOpacity>
             )}
+            { this.props.email && (
+              <Mailto email={ this.props.email } style={ styles.footerItem }>
+                <Text style={{ fontSize: 14 }}>{ this.props.email }</Text>
+              </Mailto>
+            )}
             { this.props.phoneNumber && (
               <TouchableOpacity onPress={ () => phonecall(this.props.phoneNumber, true) } style={ styles.footerItem }>
                 <Text style={{ fontSize: 14 }}>{ phoneNumberText }</Text>
@@ -299,6 +305,7 @@ function mapStateToProps(state) {
     stores: state.store.myStores,
     brandName: state.app.settings['brand_name'],
     phoneNumber: state.app.settings['phone_number'],
+    email: state.app.settings['administrator_email'],
     showAbout,
   }
 }
