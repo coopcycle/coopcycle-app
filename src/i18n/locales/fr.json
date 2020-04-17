@@ -228,6 +228,7 @@
         "DISPATCH_TASK": "Task #{{id}}",
         "DISPATCH_ASSIGN_TASK": "Assigner une tâche",
         "DISPATCH_PICK_USER": "Choisissez un utilisateur",
+        "DISPATCH_ASSIGN_TO_ME": "M'assigner la tâche",
         "TASK_FORM_ADDRESS_LABEL": "Adresse",
         "TASK_FORM_DONE_AFTER_LABEL": "À faire à partir de",
         "TASK_FORM_DONE_BEFORE_LABEL": "À faire avant",

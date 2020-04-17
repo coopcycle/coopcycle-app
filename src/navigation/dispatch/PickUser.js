@@ -7,6 +7,9 @@ import _ from 'lodash'
 
 import Avatar from '../../components/Avatar'
 import ItemSeparatorComponent from '../../components/ItemSeparator'
+import { greenColor } from '../../styles/common'
+
+import { selectUser } from '../../redux/App/selectors'
 
 class PickUser extends Component {
 
@@ -33,6 +36,11 @@ class PickUser extends Component {
           keyExtractor={ (item, index) => item.username }
           renderItem={ ({ item, index }) => this.renderItem(item, index) }
           ItemSeparatorComponent={ ItemSeparatorComponent } />
+        { this.props.selfAssign && (
+          <TouchableOpacity style={ styles.button } onPress={ () => this.props.onPress(this.props.user) }>
+            <Text style={{ color: '#ffffff' }}>{ this.props.t('DISPATCH_ASSIGN_TO_ME') }</Text>
+          </TouchableOpacity>
+        )}
       </View>
     )
   }
@@ -51,18 +59,25 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 10,
   },
+  button: {
+    alignItems: 'center',
+    padding: 20,
+    backgroundColor: greenColor,
+  }
 })
 
 function mapStateToProps(state, ownProps) {
 
-  const users = _.filter(state.dispatch.users, user => _.includes(user.roles, 'ROLE_COURIER'))
+  const user = selectUser(state)
+  const users = _.filter(state.dispatch.users, u => _.includes(u.roles, 'ROLE_COURIER') && u.username !== user.username)
 
   return {
     baseURL: state.app.baseURL,
     users: users,
     onPress: ownProps.navigation.getParam('onItemPress'),
+    selfAssign: _.includes(user.roles, 'ROLE_COURIER'),
+    user,
   }
 }
-
 
 export default connect(mapStateToProps)(withTranslation()(PickUser))
