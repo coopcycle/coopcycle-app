@@ -1,12 +1,12 @@
 import { Alert } from 'react-native'
 import { createAction } from 'redux-actions'
-import firebase from 'react-native-firebase'
 import _ from 'lodash'
 
 import NavigationHolder from '../../NavigationHolder'
 import i18n from '../../i18n'
 import { selectSignatures, selectPictures } from './taskSelectors'
-import {analyticsEvent} from '../../Analytics'
+import tracker from '../../analytics/Tracker'
+import analyticsEvent from '../../analytics/Event'
 
 /*
  * Action Types
@@ -234,7 +234,7 @@ function uploadTaskImage(httpClient, base64) {
 export function setTasksChangedAlertSound(enabled) {
   return (dispatch, getState) => {
     dispatch(_setTasksChangedAlertSound(enabled))
-    firebase.analytics().logEvent(
+    tracker.logEvent(
       analyticsEvent.courier.tasksChangedAlertSound,
       {enabled: enabled})
   }

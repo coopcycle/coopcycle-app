@@ -1,6 +1,6 @@
 import { createAction } from 'redux-actions'
 import { NavigationActions } from 'react-navigation'
-import firebase from 'react-native-firebase'
+import tracker from '../../analytics/Tracker'
 
 import API from '../../API'
 import AppUser from '../../AppUser'
@@ -233,7 +233,7 @@ export function setCurrentRoute(routeName) {
 
   return (dispatch, getState) => {
     dispatch(_setCurrentRoute(routeName))
-    firebase.analytics().setCurrentScreen(routeName)
+    tracker.setCurrentScreen(routeName)
   }
 }
 

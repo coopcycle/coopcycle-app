@@ -1,8 +1,10 @@
 import BackgroundGeolocation from '@mauron85/react-native-background-geolocation'
-import firebase from 'react-native-firebase'
 
 import i18n from '../../../i18n'
 import { selectIsAuthenticated } from '../../App/selectors'
+
+import tracker from '../../../analytics/Tracker'
+import analyticsEvent from '../../../analytics/Event'
 
 const BackgroundGeolocationEvents = [
   'start',
@@ -70,11 +72,11 @@ export default ({ getState, dispatch }) => {
       BackgroundGeolocation.removeAllListeners('http_authorization')
       BackgroundGeolocation.on('http_authorization', () => {
 
-        firebase.analytics().logEvent('background_geoloc_http_authorization')
+        tracker.logEvent(analyticsEvent.system.backgroundGeolocation.httpAuthorization)
 
         state.app.httpClient.refreshToken()
           .then(token => {
-            firebase.analytics().logEvent('background_geoloc_configure')
+            tracker.logEvent(analyticsEvent.system.backgroundGeolocation.configure)
             BackgroundGeolocation.configure({
               httpHeaders: {
                 'Authorization': `Bearer ${token}`,
