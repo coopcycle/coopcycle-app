@@ -13,4 +13,8 @@ FirebaseTracker.prototype.logEvent = function(event, params) {
   firebase.analytics().logEvent(event, params);
 }
 
+FirebaseTracker.prototype.setUserProperty = function(name, value) {
+  firebase.analytics().setUserProperty(name, value)
+}
+
 export default FirebaseTracker

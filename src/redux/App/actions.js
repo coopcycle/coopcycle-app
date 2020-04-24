@@ -1,6 +1,7 @@
 import { createAction } from 'redux-actions'
 import { NavigationActions } from 'react-navigation'
 import tracker from '../../analytics/Tracker'
+import userProperty from '../../analytics/UserProperty'
 
 import API from '../../API'
 import AppUser from '../../AppUser'
@@ -73,7 +74,7 @@ export const logoutSuccess = createAction(LOGOUT_SUCCESS)
 export const setServers = createAction(SET_SERVERS)
 
 const _setUser = createAction(SET_USER)
-const setBaseURL = createAction(SET_BASE_URL)
+const _setBaseURL = createAction(SET_BASE_URL)
 const _setCurrentRoute = createAction(SET_CURRENT_ROUTE)
 const _setSelectServerError = createAction(SET_SELECT_SERVER_ERROR)
 const _clearSelectServerError = createAction(CLEAR_SELECT_SERVER_ERROR)
@@ -95,6 +96,34 @@ const setSettings = createAction(SET_SETTINGS)
 export const setInternetReachable = createAction(SET_INTERNET_REACHABLE)
 
 const registrationErrors = createAction(REGISTRATION_ERRORS)
+
+function setBaseURL(baseURL) {
+  return (dispatch, getState) => {
+    dispatch(_setBaseURL(baseURL))
+    tracker.setUserProperty(
+      userProperty.server,
+      baseURL)
+  }
+}
+
+function setUser(user) {
+  return (dispatch, getState) => {
+    dispatch(_setUser(user))
+
+    if (user !== null && user.roles !== null) {
+      let roles = user.roles.slice()
+      roles.sort()
+
+      tracker.setUserProperty(
+        userProperty.roles,
+        roles.toString())
+    } else {
+      tracker.setUserProperty(
+        userProperty.roles,
+        null)
+    }
+  }
+}
 
 function navigateToHome(dispatch, getState) {
 
@@ -188,7 +217,7 @@ export function selectServer(server) {
               false
             )
 
-            dispatch(_setUser(user))
+            dispatch(setUser(user))
             dispatch(setBaseURL(baseURL))
 
           })
@@ -222,7 +251,7 @@ export function bootstrap(baseURL, user) {
       setCurrencyCode(settings.currency_code)
     }
 
-    dispatch(_setUser(user))
+    dispatch(setUser(user))
     dispatch(setBaseURL(baseURL))
 
     setTimeout(() => navigateToHome(dispatch, getState), 250)

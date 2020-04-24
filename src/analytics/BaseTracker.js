@@ -6,12 +6,26 @@ function BaseTracker() {
  * Whilst screenClassOverride is optional,
  * it is recommended it is always sent as your current class name,
  * for example on Android it will always show as 'MainActivity' if not specified.
+ * screenName: string | null,
+ * screenClassOverride?: string
  */
 BaseTracker.prototype.setCurrentScreen = function(screenName, screenClassOverride) {
 }
 
-/**Log a custom event with optional params. */
+/**
+ * Log a custom event with optional params.
+ * event: string,
+ * params?: Object
+ */
 BaseTracker.prototype.logEvent = function(event, params) {
+}
+
+/**
+ * Sets a key/value pair of data on the current user.
+ * name: string,
+ * value: string | null
+ */
+BaseTracker.prototype.setUserProperty = function(name, value) {
 }
 
 export default BaseTracker
