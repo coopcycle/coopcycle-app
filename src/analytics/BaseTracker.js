@@ -14,10 +14,12 @@ BaseTracker.prototype.setCurrentScreen = function(screenName, screenClassOverrid
 
 /**
  * Log a custom event with optional params.
- * event: string,
- * params?: Object
+ * category: string,
+ * action: string,
+ * text?: string (optional parameter)
+ * number?: double (optional parameter)
  */
-BaseTracker.prototype.logEvent = function(event, params) {
+BaseTracker.prototype.logEvent = function(category, action, text, number) {
 }
 
 /**

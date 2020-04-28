@@ -1,16 +1,27 @@
 const event = {
   system: {
     backgroundGeolocation: {
-      httpAuthorization : 'background_geoloc_http_authorization',
-      configure: 'background_geoloc_configure',
+      _category: 'background_geoloc',
+      httpAuthorization : 'http_authorization',
+      configure: 'configure',
+    },
+  },
+  user: {
+    login: {
+      _category: 'user_login',
+      submit: 'submit',
+      success: 'success',
+      failure: 'failure',
     },
   },
   courier : {
-    tasksChangedAlertSound: 'courier_tasks_changed_alert_sound',
-    tasksChangedMessage: 'courier_tasks_changed_message',
+    _category: 'courier',
+    tasksChangedAlertSound: 'tasks_changed_alert_sound',
+    tasksChangedMessage: 'tasks_changed_message',
   },
   restaurant: {
-    orderCreatedMessage: 'restaurant_order_created_message',
+    _category: 'restaurant',
+    orderCreatedMessage: 'order_created_message',
   },
 }
 

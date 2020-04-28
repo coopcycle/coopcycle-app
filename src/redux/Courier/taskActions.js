@@ -235,7 +235,9 @@ export function setTasksChangedAlertSound(enabled) {
   return (dispatch, getState) => {
     dispatch(_setTasksChangedAlertSound(enabled))
     tracker.logEvent(
+      analyticsEvent.courier._category,
       analyticsEvent.courier.tasksChangedAlertSound,
-      {enabled: enabled})
+      null,
+      enabled ? 1 : 0)
   }
 }

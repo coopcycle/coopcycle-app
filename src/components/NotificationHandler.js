@@ -104,8 +104,9 @@ class NotificationHandler extends Component {
 
         if (event && event.name === 'order:created') {
           tracker.logEvent(
+            analyticsEvent.restaurant._category,
             analyticsEvent.restaurant.orderCreatedMessage,
-            {medium: message.foreground ? 'in_app' : 'notification_center'})
+            message.foreground ? 'in_app' : 'notification_center')
 
           const { order } = event.data
 
@@ -119,8 +120,9 @@ class NotificationHandler extends Component {
 
         if (event && event.name === 'tasks:changed') {
           tracker.logEvent(
+            analyticsEvent.courier._category,
             analyticsEvent.courier.tasksChangedMessage,
-            {medium: message.foreground ? 'in_app' : 'notification_center'})
+            message.foreground ? 'in_app' : 'notification_center')
 
           if (message.foreground) {
             this.props.pushNotification('tasks:changed', { date: event.data.date })

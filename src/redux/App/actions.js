@@ -1,6 +1,7 @@
 import { createAction } from 'redux-actions'
 import { NavigationActions } from 'react-navigation'
 import tracker from '../../analytics/Tracker'
+import analyticsEvent from '../../analytics/Event'
 import userProperty from '../../analytics/UserProperty'
 
 import API from '../../API'
@@ -60,9 +61,9 @@ export const setLoading = createAction(SET_LOADING)
 export const pushNotification = createAction(PUSH_NOTIFICATION, (event, params = {}) => ({ event, params }))
 export const clearNotifications = createAction(CLEAR_NOTIFICATIONS)
 
-export const authenticationRequest = createAction(AUTHENTICATION_REQUEST)
-export const authenticationSuccess = createAction(AUTHENTICATION_SUCCESS)
-export const authenticationFailure = createAction(AUTHENTICATION_FAILURE)
+export const _authenticationRequest = createAction(AUTHENTICATION_REQUEST)
+export const _authenticationSuccess = createAction(AUTHENTICATION_SUCCESS)
+export const _authenticationFailure = createAction(AUTHENTICATION_FAILURE)
 
 const resetPasswordInit = createAction(RESET_PASSWORD_INIT)
 const resetPasswordRequest = createAction(RESET_PASSWORD_REQUEST)
@@ -122,6 +123,33 @@ function setUser(user) {
         userProperty.roles,
         null)
     }
+  }
+}
+
+function authenticationRequest() {
+  return (dispatch, getState) => {
+    dispatch(_authenticationRequest())
+    tracker.logEvent(
+      analyticsEvent.user.login._category,
+      analyticsEvent.user.login.submit)
+  }
+}
+
+function authenticationSuccess() {
+  return (dispatch, getState) => {
+    dispatch(_authenticationSuccess())
+    tracker.logEvent(
+      analyticsEvent.user.login._category,
+      analyticsEvent.user.login.success)
+  }
+}
+
+function authenticationFailure() {
+  return (dispatch, getState) => {
+    dispatch(_authenticationFailure())
+    tracker.logEvent(
+      analyticsEvent.user.login._category,
+      analyticsEvent.user.login.failure)
   }
 }
 

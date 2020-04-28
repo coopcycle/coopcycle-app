@@ -72,11 +72,17 @@ export default ({ getState, dispatch }) => {
       BackgroundGeolocation.removeAllListeners('http_authorization')
       BackgroundGeolocation.on('http_authorization', () => {
 
-        tracker.logEvent(analyticsEvent.system.backgroundGeolocation.httpAuthorization)
+        tracker.logEvent(
+          analyticsEvent.system.backgroundGeolocation._category,
+          analyticsEvent.system.backgroundGeolocation.httpAuthorization
+        )
 
         state.app.httpClient.refreshToken()
           .then(token => {
-            tracker.logEvent(analyticsEvent.system.backgroundGeolocation.configure)
+            tracker.logEvent(
+              analyticsEvent.system.backgroundGeolocation._category,
+              analyticsEvent.system.backgroundGeolocation.configure
+            )
             BackgroundGeolocation.configure({
               httpHeaders: {
                 'Authorization': `Bearer ${token}`,

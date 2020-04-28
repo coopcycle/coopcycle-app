@@ -9,7 +9,19 @@ FirebaseTracker.prototype.setCurrentScreen = function(screenName, screenClassOve
   firebase.analytics().setCurrentScreen(screenName, screenClassOverride)
 }
 
-FirebaseTracker.prototype.logEvent = function(event, params) {
+FirebaseTracker.prototype.logEvent = function(category, action, text, number) {
+  let event = category + '_' + action
+
+  let params = {}
+
+  if (text != null) {
+    params.text = text
+  }
+
+  if (number != null) {
+    params.number = text
+  }
+
   firebase.analytics().logEvent(event, params);
 }
 

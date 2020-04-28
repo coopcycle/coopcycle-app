@@ -23,8 +23,9 @@ export default async (remoteMessage: RemoteMessage) => {
 
   if (event && event.name === 'order:created') {
     tracker.logEvent(
+      analyticsEvent.restaurant._category,
       analyticsEvent.restaurant.orderCreatedMessage,
-      {medium: 'background_data_message'})
+      'background_data_message')
 
     const {order} = event.data
 
