@@ -71,10 +71,10 @@ const resetPasswordRequestSuccess = createAction(RESET_PASSWORD_REQUEST_SUCCESS)
 const resetPasswordRequestFailure = createAction(RESET_PASSWORD_REQUEST_FAILURE)
 
 export const logoutRequest = createAction(LOGOUT_REQUEST)
-export const logoutSuccess = createAction(LOGOUT_SUCCESS)
+export const _logoutSuccess = createAction(LOGOUT_SUCCESS)
 export const setServers = createAction(SET_SERVERS)
 
-const _setUser = createAction(SET_USER)
+const setUser = createAction(SET_USER)
 const _setBaseURL = createAction(SET_BASE_URL)
 const _setCurrentRoute = createAction(SET_CURRENT_ROUTE)
 const _setSelectServerError = createAction(SET_SELECT_SERVER_ERROR)
@@ -107,25 +107,6 @@ function setBaseURL(baseURL) {
   }
 }
 
-function setUser(user) {
-  return (dispatch, getState) => {
-    dispatch(_setUser(user))
-
-    if (user !== null && user.roles !== null) {
-      let roles = user.roles.slice()
-      roles.sort()
-
-      tracker.setUserProperty(
-        userProperty.roles,
-        roles.toString())
-    } else {
-      tracker.setUserProperty(
-        userProperty.roles,
-        null)
-    }
-  }
-}
-
 function authenticationRequest() {
   return (dispatch, getState) => {
     dispatch(_authenticationRequest())
@@ -135,9 +116,10 @@ function authenticationRequest() {
   }
 }
 
-function authenticationSuccess() {
+function authenticationSuccess(user) {
   return (dispatch, getState) => {
     dispatch(_authenticationSuccess())
+    setRolesProperty(user)
     tracker.logEvent(
       analyticsEvent.user.login._category,
       analyticsEvent.user.login.success)
@@ -150,6 +132,28 @@ function authenticationFailure() {
     tracker.logEvent(
       analyticsEvent.user.login._category,
       analyticsEvent.user.login.failure)
+  }
+}
+
+function logoutSuccess() {
+  return (dispatch, getState) => {
+    dispatch(_logoutSuccess())
+    setRolesProperty(null)
+  }
+}
+
+function setRolesProperty(user) {
+  if (user !== null && user.roles !== null) {
+    let roles = user.roles.slice()
+    roles.sort()
+
+    tracker.setUserProperty(
+      userProperty.roles,
+      roles.toString())
+  } else {
+    tracker.setUserProperty(
+      userProperty.roles,
+      'ROLE_USER')
   }
 }
 
@@ -281,6 +285,7 @@ export function bootstrap(baseURL, user) {
 
     dispatch(setUser(user))
     dispatch(setBaseURL(baseURL))
+    setRolesProperty(user)
 
     setTimeout(() => navigateToHome(dispatch, getState), 250)
   }
@@ -305,7 +310,7 @@ export function login(email, password, navigate = true) {
 
     httpClient.login(email, password)
       .then(user => {
-        onAuthenticationSuccess(user, dispatch, getState)
+        dispatch(authenticationSuccess(user));
 
         if (navigate) {
           // FIXME
@@ -354,7 +359,7 @@ export function register(data, checkEmailRouteName, loginRouteName, resumeChecko
         // If the user is enabled, we login immediately.
         // otherwise we wait for confirmation (via deep linking)
         if (user.enabled) {
-          onAuthenticationSuccess(user, dispatch, getState)
+          dispatch(authenticationSuccess(user))
 
         } else {
           dispatch(setLoading(false))
@@ -383,7 +388,7 @@ export function confirmRegistration(token) {
 
     httpClient.confirmRegistration(token)
       .then(user => {
-        onAuthenticationSuccess(user, dispatch, getState)
+        dispatch(authenticationSuccess(user))
 
         if (resumeCheckoutAfterActivation) {
           dispatch(_resumeCheckoutAfterActivation(false))
@@ -438,7 +443,7 @@ export function setNewPassword(token, password) {
     httpClient
       .setNewPassword(token, password)
       .then(user => {
-        onAuthenticationSuccess(user, dispatch, getState);
+        dispatch(authenticationSuccess(user));
 
         if (resumeCheckoutAfterActivation) {
           dispatch(_resumeCheckoutAfterActivation(false));
@@ -481,8 +486,4 @@ export function resetServer() {
 
       NavigationHolder.navigate('ConfigureServer')
   }
-}
-
-function onAuthenticationSuccess(user, dispatch, getState) {
-  dispatch(authenticationSuccess())
 }
