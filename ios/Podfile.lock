@@ -1,6 +1,7 @@
 PODS:
   - "@mauron85_react-native-background-geolocation (0.6.3)":
     - React
+  - BNFMatomo (0.1.2)
   - boost-for-react-native (1.63.0)
   - Crashlytics (3.14.0):
     - Fabric (~> 1.10.2)
@@ -378,7 +379,7 @@ PODS:
     - RNSound/Core (= 0.11.0)
   - RNSound/Core (0.11.0):
     - React
-  - Stripe (14.0.0)
+  - Stripe (14.0.1)
   - tipsi-stripe (7.5.1):
     - React
     - Stripe (~> 14.0.0)
@@ -386,6 +387,7 @@ PODS:
 
 DEPENDENCIES:
   - "@mauron85_react-native-background-geolocation (from `../node_modules/@mauron85/react-native-background-geolocation`)"
+  - BNFMatomo (from `../node_modules/react-native-matomo/BNFMatomo.podspec`)
   - Crashlytics (~> 3.14.0)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - Fabric (~> 1.10.2)
@@ -440,7 +442,7 @@ DEPENDENCIES:
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  https://github.com/CocoaPods/Specs.git:
     - boost-for-react-native
     - Crashlytics
     - Fabric
@@ -463,11 +465,14 @@ SPEC REPOS:
     - IQKeyboardManager
     - nanopb
     - Protobuf
+  trunk:
     - Stripe
 
 EXTERNAL SOURCES:
   "@mauron85_react-native-background-geolocation":
     :path: "../node_modules/@mauron85/react-native-background-geolocation"
+  BNFMatomo:
+    :podspec: "../node_modules/react-native-matomo/BNFMatomo.podspec"
   DoubleConversion:
     :podspec: "../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
   FBLazyVector:
@@ -561,8 +566,14 @@ EXTERNAL SOURCES:
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
+CHECKOUT OPTIONS:
+  BNFMatomo:
+    :commit: 246800bfdd76951163a3107f24da429a9caba3ec
+    :git: https://github.com/BonifyByForteil/react-native-matomo.git
+
 SPEC CHECKSUMS:
   "@mauron85_react-native-background-geolocation": fa34ab82e94212be16ef6e75c32bcb707b0a1524
+  BNFMatomo: 65746dc9505cd85bac4119e6c65fd7b8e0edfad9
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   Crashlytics: 540b7e5f5da5a042647227a5e3ac51d85eed06df
   DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
@@ -629,10 +640,10 @@ SPEC CHECKSUMS:
   RNScreens: ac02d0e4529f08ced69f5580d416f968a6ec3a1d
   RNSketchCanvas: 9c28adb5381543ed55cc98ce6de46479cb3cb12c
   RNSound: da030221e6ac7e8290c6b43f2b5f2133a8e225b0
-  Stripe: db29ad197c74aca6fb981e4e8355cf7ebd0fca5a
+  Stripe: 4305b646743612854819fb5d5cf67aaeb93577c0
   tipsi-stripe: 61c247493a58d7e8e0bf6ee6b014271f473d2b11
   Yoga: f2a7cd4280bfe2cca5a7aed98ba0eb3d1310f18b
 
-PODFILE CHECKSUM: 7d62360c1e32ec84698e347a1e80a8c41b0dbc19
+PODFILE CHECKSUM: 786975c5945b5cadec16bdd02fa33c776972495a
 
-COCOAPODS: 1.7.1
+COCOAPODS: 1.9.1

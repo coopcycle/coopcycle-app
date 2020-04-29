@@ -59,6 +59,7 @@
     "react-native-map-link": "^2.7.7",
     "react-native-maps": "^0.27.1",
     "react-native-maps-super-cluster": "^1.6.0",
+    "react-native-matomo": "https://github.com/BonifyByForteil/react-native-matomo.git#246800bfdd76951163a3107f24da429a9caba3ec",
     "react-native-modal": "^11.5.6",
     "react-native-modal-datetime-picker": "^8.5.4",
     "react-native-modal-selector": "^1.1.5",

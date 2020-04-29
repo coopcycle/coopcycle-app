@@ -9064,6 +9064,10 @@ react-native-maps@^0.27.1:
   resolved "https://registry.yarnpkg.com/react-native-maps/-/react-native-maps-0.27.1.tgz#2f10cd417bb2fd938c9e015b1c9b6d9b1a44b97f"
   integrity sha512-HygBkZBecTnIVRYrSiLRAvu4OmXOYso/A7c6Cy73HkOh9CgGV8Ap5eBea24tvmFGptjj5Hg8AJ94/YbmWK1Okw==
 
+"react-native-matomo@https://github.com/BonifyByForteil/react-native-matomo.git#246800bfdd76951163a3107f24da429a9caba3ec":
+  version "0.1.2"
+  resolved "https://github.com/BonifyByForteil/react-native-matomo.git#246800bfdd76951163a3107f24da429a9caba3ec"
+
 react-native-modal-datetime-picker@^8.5.4:
   version "8.5.4"
   resolved "https://registry.yarnpkg.com/react-native-modal-datetime-picker/-/react-native-modal-datetime-picker-8.5.4.tgz#e348367810b4b534c8a1f844ec1f0a57a1542232"
