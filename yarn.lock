@@ -8829,10 +8829,10 @@ qs@^5.2.0:
   resolved "https://registry.yarnpkg.com/qs/-/qs-5.2.1.tgz#801fee030e0b9450d6385adc48a4cc55b44aedfc"
   integrity sha1-gB/uAw4LlFDWOFrcSKTMVbRK7fw=
 
-qs@^6.9.3:
-  version "6.9.3"
-  resolved "https://registry.yarnpkg.com/qs/-/qs-6.9.3.tgz#bfadcd296c2d549f1dffa560619132c977f5008e"
-  integrity sha512-EbZYNarm6138UKKq46tdx08Yo/q9ZhFoAXAI1meAFd2GtbRDhbZY2WQSICskT0c5q99aFzLG1D4nvTk9tqfXIw==
+qs@^6.9.4:
+  version "6.9.4"
+  resolved "https://registry.yarnpkg.com/qs/-/qs-6.9.4.tgz#9090b290d1f91728d3c22e54843ca44aea5ab687"
+  integrity sha512-A1kFqHekCTM7cz0udomYUoYNWjBebHm/5wzU/XqrBRBNWectVH0QIiN+NEcZ0Dte5hvzHwbr8+XQmguPhJ6WdQ==
 
 qs@~6.5.2:
   version "6.5.2"
@@ -9032,10 +9032,10 @@ react-native-easy-grid@0.2.2:
   dependencies:
     lodash "^4.17.15"
 
-react-native-email-link@^1.7.3:
-  version "1.7.3"
-  resolved "https://registry.yarnpkg.com/react-native-email-link/-/react-native-email-link-1.7.3.tgz#594ea39fb5a3d93a5f61f4771cb0c6e221c894b4"
-  integrity sha512-KugyNEAysWoYUh8TiIg3pFMxcktNteImyEheIsCu9+w0X9qwq+78xlqtf/jCaY8CjVb6Tk0Mf2Mn1X26LQKizQ==
+react-native-email-link@^1.7.5:
+  version "1.7.5"
+  resolved "https://registry.yarnpkg.com/react-native-email-link/-/react-native-email-link-1.7.5.tgz#cb0d6f3bc0e87c1bb4896ae1133ca08705c07ea0"
+  integrity sha512-9Nsj1GaJKl0aNi7WJuqlxAnD2uNsqYIb50JoXj4VBJJAPMFjozK9OXGrHllalpZLdBq6Q2gN9nKBk3JJaL+DVw==
 
 react-native-firebase@^5.6.0:
   version "5.6.0"
@@ -9106,10 +9106,10 @@ react-native-localize@^1.4.0:
   resolved "https://registry.yarnpkg.com/react-native-localize/-/react-native-localize-1.4.0.tgz#4653596d066d0941c48f5404dc1c0d08b6950443"
   integrity sha512-W2MQxm6hzD549ZbZcbWzWtYJseY7S7WR2WgsNhm9ULmbwP7tXFfOTbkJjQoqgPXYSXogKN3srXhntVsNZL0Ksw==
 
-react-native-map-link@^2.7.7:
-  version "2.7.7"
-  resolved "https://registry.yarnpkg.com/react-native-map-link/-/react-native-map-link-2.7.7.tgz#4b81242473a7807028c72708906a6d43e61f5c8a"
-  integrity sha512-loYFtkS482J0CWSs8ZV1aPUM3Y94GtN6Ne+BuPkzDhv/uTfXxBwIOiBCTzbcJoByQXFGlwtU9bnF4cnSK331eg==
+react-native-map-link@^2.7.9:
+  version "2.7.9"
+  resolved "https://registry.yarnpkg.com/react-native-map-link/-/react-native-map-link-2.7.9.tgz#fdc79a5ca7642cd61f2d305384dd872cf3f2455d"
+  integrity sha512-Y2fwDJcjqqr7V1BCMXnLqhciSLXAMpEFnuxZqkCGFu6r2vU7KvaIhPj9P4xPK5DvQfr8pojV8Xq+JuxkP3CF5A==
   dependencies:
     prop-types "^15.7.2"
     react-native-modal "^10.0.0"
