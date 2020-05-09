@@ -14,8 +14,8 @@ import NavigationHolder from '../NavigationHolder'
 import { clearNotifications, pushNotification, registerPushNotificationToken } from '../redux/App/actions'
 import {loadTasks, selectTasksChangedAlertSound} from '../redux/Courier'
 import { loadOrderAndNavigate, loadOrderAndPushNotification } from '../redux/Restaurant/actions'
-import firebase from 'react-native-firebase'
-import {analyticsEvent} from '../Analytics'
+import tracker from '../analytics/Tracker'
+import analyticsEvent from '../analytics/Event'
 
 // Make sure sound will play even when device is in silent mode
 Sound.setCategory('Playback')
@@ -103,9 +103,10 @@ class NotificationHandler extends Component {
         const { event } = message.data
 
         if (event && event.name === 'order:created') {
-          firebase.analytics().logEvent(
+          tracker.logEvent(
+            analyticsEvent.restaurant._category,
             analyticsEvent.restaurant.orderCreatedMessage,
-            {medium: message.foreground ? 'in_app' : 'notification_center'})
+            message.foreground ? 'in_app' : 'notification_center')
 
           const { order } = event.data
 
@@ -118,9 +119,10 @@ class NotificationHandler extends Component {
         }
 
         if (event && event.name === 'tasks:changed') {
-          firebase.analytics().logEvent(
+          tracker.logEvent(
+            analyticsEvent.courier._category,
             analyticsEvent.courier.tasksChangedMessage,
-            {medium: message.foreground ? 'in_app' : 'notification_center'})
+            message.foreground ? 'in_app' : 'notification_center')
 
           if (message.foreground) {
             this.props.pushNotification('tasks:changed', { date: event.data.date })

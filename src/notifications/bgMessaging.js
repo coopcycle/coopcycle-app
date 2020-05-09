@@ -1,5 +1,4 @@
 // @flow
-import firebase from 'react-native-firebase';
 // Optional flow type
 import type { RemoteMessage } from 'react-native-firebase';
 import launchActivity from './launchActivity';
@@ -7,7 +6,8 @@ import notificationManager from './notificationManager';
 import store from '../redux/store'
 import {loadOrderAndPushNotification} from '../redux/Restaurant/actions'
 import {parseNotification} from './index.android'
-import {analyticsEvent} from '../Analytics'
+import tracker from '../analytics/Tracker'
+import analyticsEvent from '../analytics/Event'
 import {Platform} from 'react-native';
 
 // it seems that firebase always shows a notification with id = 0 (int)
@@ -22,9 +22,10 @@ export default async (remoteMessage: RemoteMessage) => {
   const { event } = message.data
 
   if (event && event.name === 'order:created') {
-    firebase.analytics().logEvent(
+    tracker.logEvent(
+      analyticsEvent.restaurant._category,
       analyticsEvent.restaurant.orderCreatedMessage,
-      {medium: 'background_data_message'})
+      'background_data_message')
 
     const {order} = event.data
 

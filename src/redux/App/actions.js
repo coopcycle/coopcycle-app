@@ -1,6 +1,8 @@
 import { createAction } from 'redux-actions'
 import { NavigationActions } from 'react-navigation'
-import firebase from 'react-native-firebase'
+import tracker from '../../analytics/Tracker'
+import analyticsEvent from '../../analytics/Event'
+import userProperty from '../../analytics/UserProperty'
 
 import API from '../../API'
 import AppUser from '../../AppUser'
@@ -59,9 +61,9 @@ export const setLoading = createAction(SET_LOADING)
 export const pushNotification = createAction(PUSH_NOTIFICATION, (event, params = {}) => ({ event, params }))
 export const clearNotifications = createAction(CLEAR_NOTIFICATIONS)
 
-export const authenticationRequest = createAction(AUTHENTICATION_REQUEST)
-export const authenticationSuccess = createAction(AUTHENTICATION_SUCCESS)
-export const authenticationFailure = createAction(AUTHENTICATION_FAILURE)
+export const _authenticationRequest = createAction(AUTHENTICATION_REQUEST)
+export const _authenticationSuccess = createAction(AUTHENTICATION_SUCCESS)
+export const _authenticationFailure = createAction(AUTHENTICATION_FAILURE)
 
 const resetPasswordInit = createAction(RESET_PASSWORD_INIT)
 const resetPasswordRequest = createAction(RESET_PASSWORD_REQUEST)
@@ -69,11 +71,11 @@ const resetPasswordRequestSuccess = createAction(RESET_PASSWORD_REQUEST_SUCCESS)
 const resetPasswordRequestFailure = createAction(RESET_PASSWORD_REQUEST_FAILURE)
 
 export const logoutRequest = createAction(LOGOUT_REQUEST)
-export const logoutSuccess = createAction(LOGOUT_SUCCESS)
+export const _logoutSuccess = createAction(LOGOUT_SUCCESS)
 export const setServers = createAction(SET_SERVERS)
 
-const _setUser = createAction(SET_USER)
-const setBaseURL = createAction(SET_BASE_URL)
+const setUser = createAction(SET_USER)
+const _setBaseURL = createAction(SET_BASE_URL)
 const _setCurrentRoute = createAction(SET_CURRENT_ROUTE)
 const _setSelectServerError = createAction(SET_SELECT_SERVER_ERROR)
 const _clearSelectServerError = createAction(CLEAR_SELECT_SERVER_ERROR)
@@ -95,6 +97,65 @@ const setSettings = createAction(SET_SETTINGS)
 export const setInternetReachable = createAction(SET_INTERNET_REACHABLE)
 
 const registrationErrors = createAction(REGISTRATION_ERRORS)
+
+function setBaseURL(baseURL) {
+  return (dispatch, getState) => {
+    dispatch(_setBaseURL(baseURL))
+    tracker.setUserProperty(
+      userProperty.server,
+      baseURL)
+  }
+}
+
+function authenticationRequest() {
+  return (dispatch, getState) => {
+    dispatch(_authenticationRequest())
+    tracker.logEvent(
+      analyticsEvent.user.login._category,
+      analyticsEvent.user.login.submit)
+  }
+}
+
+function authenticationSuccess(user) {
+  return (dispatch, getState) => {
+    dispatch(_authenticationSuccess())
+    setRolesProperty(user)
+    tracker.logEvent(
+      analyticsEvent.user.login._category,
+      analyticsEvent.user.login.success)
+  }
+}
+
+function authenticationFailure() {
+  return (dispatch, getState) => {
+    dispatch(_authenticationFailure())
+    tracker.logEvent(
+      analyticsEvent.user.login._category,
+      analyticsEvent.user.login.failure)
+  }
+}
+
+function logoutSuccess() {
+  return (dispatch, getState) => {
+    dispatch(_logoutSuccess())
+    setRolesProperty(null)
+  }
+}
+
+function setRolesProperty(user) {
+  if (user !== null && user.roles !== null) {
+    let roles = user.roles.slice()
+    roles.sort()
+
+    tracker.setUserProperty(
+      userProperty.roles,
+      roles.toString())
+  } else {
+    tracker.setUserProperty(
+      userProperty.roles,
+      'ROLE_USER')
+  }
+}
 
 function navigateToHome(dispatch, getState) {
 
@@ -188,7 +249,7 @@ export function selectServer(server) {
               false
             )
 
-            dispatch(_setUser(user))
+            dispatch(setUser(user))
             dispatch(setBaseURL(baseURL))
 
           })
@@ -222,8 +283,9 @@ export function bootstrap(baseURL, user) {
       setCurrencyCode(settings.currency_code)
     }
 
-    dispatch(_setUser(user))
+    dispatch(setUser(user))
     dispatch(setBaseURL(baseURL))
+    setRolesProperty(user)
 
     setTimeout(() => navigateToHome(dispatch, getState), 250)
   }
@@ -233,7 +295,7 @@ export function setCurrentRoute(routeName) {
 
   return (dispatch, getState) => {
     dispatch(_setCurrentRoute(routeName))
-    firebase.analytics().setCurrentScreen(routeName)
+    tracker.setCurrentScreen(routeName)
   }
 }
 
@@ -248,7 +310,7 @@ export function login(email, password, navigate = true) {
 
     httpClient.login(email, password)
       .then(user => {
-        onAuthenticationSuccess(user, dispatch, getState)
+        dispatch(authenticationSuccess(user));
 
         if (navigate) {
           // FIXME
@@ -297,7 +359,7 @@ export function register(data, checkEmailRouteName, loginRouteName, resumeChecko
         // If the user is enabled, we login immediately.
         // otherwise we wait for confirmation (via deep linking)
         if (user.enabled) {
-          onAuthenticationSuccess(user, dispatch, getState)
+          dispatch(authenticationSuccess(user))
 
         } else {
           dispatch(setLoading(false))
@@ -326,7 +388,7 @@ export function confirmRegistration(token) {
 
     httpClient.confirmRegistration(token)
       .then(user => {
-        onAuthenticationSuccess(user, dispatch, getState)
+        dispatch(authenticationSuccess(user))
 
         if (resumeCheckoutAfterActivation) {
           dispatch(_resumeCheckoutAfterActivation(false))
@@ -381,7 +443,7 @@ export function setNewPassword(token, password) {
     httpClient
       .setNewPassword(token, password)
       .then(user => {
-        onAuthenticationSuccess(user, dispatch, getState);
+        dispatch(authenticationSuccess(user));
 
         if (resumeCheckoutAfterActivation) {
           dispatch(_resumeCheckoutAfterActivation(false));
@@ -424,8 +486,4 @@ export function resetServer() {
 
       NavigationHolder.navigate('ConfigureServer')
   }
-}
-
-function onAuthenticationSuccess(user, dispatch, getState) {
-  dispatch(authenticationSuccess())
 }
