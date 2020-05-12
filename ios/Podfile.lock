@@ -301,7 +301,7 @@ PODS:
     - React
   - react-native-netinfo (5.7.1):
     - React
-  - react-native-safe-area-context (0.7.3):
+  - react-native-safe-area-context (1.0.0):
     - React
   - react-native-version-number (0.3.6):
     - React
@@ -348,7 +348,7 @@ PODS:
     - React-Core
   - RNCAsyncStorage (1.8.1):
     - React
-  - RNCMaskedView (0.1.9):
+  - RNCMaskedView (0.1.10):
     - React
   - RNCPushNotificationIOS (1.1.0):
     - React
@@ -369,7 +369,7 @@ PODS:
     - React
   - RNReanimated (1.8.0):
     - React
-  - RNScreens (2.5.0):
+  - RNScreens (2.7.0):
     - React
   - RNSketchCanvas (0.8.0):
     - React
@@ -604,7 +604,7 @@ SPEC CHECKSUMS:
   react-native-keep-awake: afad8a51dfef9fe9655a6344771be32c8596d774
   react-native-maps: f4b89da81626ad7f151a8bfcb79733295d31ce5c
   react-native-netinfo: 4fa023c153d582aeae8435df95c9a975c5986449
-  react-native-safe-area-context: e200d4433aba6b7e60b52da5f37af11f7a0b0392
+  react-native-safe-area-context: a346c75f2288147527365ce27b59ca6d38c27805
   react-native-version-number: b415bbec6a13f2df62bf978e85bc0d699462f37f
   React-RCTActionSheet: 600b4d10e3aea0913b5a92256d2719c0cdd26d76
   React-RCTAnimation: 791a87558389c80908ed06cc5dfc5e7920dfa360
@@ -619,14 +619,14 @@ SPEC CHECKSUMS:
   ReactNativeKeyboardManager: 6c42da02c08b7eb16440f9fdc1c78f776a11cdca
   rn-fetch-blob: f065bb7ab7fb48dd002629f8bdcb0336602d3cba
   RNCAsyncStorage: e0dd7c8a36543b4ef84969acd9f8aceba3a92dc2
-  RNCMaskedView: 71fc32d971f03b7f03d6ab6b86b730c4ee64f5b6
+  RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
   RNCPushNotificationIOS: ec3e8c17cda6a92a0bb97a53ec5ecf5771d94d21
   RNDateTimePicker: 4bd49e09f91ca73d69119a9e1173b0d43b82f5e5
   RNFirebase: 37daa9a346d070f9f6ee1f3b4aaf4c8e3b1d5d1c
   RNGestureHandler: 8f09cd560f8d533eb36da5a6c5a843af9f056b38
   RNLocalize: b6df30cc25ae736d37874f9bce13351db2f56796
   RNReanimated: 955cf4068714003d2f1a6e2bae3fb1118f359aff
-  RNScreens: ac02d0e4529f08ced69f5580d416f968a6ec3a1d
+  RNScreens: cf198f915f8a2bf163de94ca9f5bfc8d326c3706
   RNSketchCanvas: 9c28adb5381543ed55cc98ce6de46479cb3cb12c
   RNSound: da030221e6ac7e8290c6b43f2b5f2133a8e225b0
   Stripe: db29ad197c74aca6fb981e4e8355cf7ebd0fca5a
