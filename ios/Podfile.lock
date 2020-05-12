@@ -287,13 +287,13 @@ PODS:
   - React-jsinspector (0.61.5)
   - react-native-ble-manager (7.2.0):
     - React
-  - react-native-camera (3.23.1):
+  - react-native-camera (3.24.2):
     - React
-    - react-native-camera/RCT (= 3.23.1)
-    - react-native-camera/RN (= 3.23.1)
-  - react-native-camera/RCT (3.23.1):
+    - react-native-camera/RCT (= 3.24.2)
+    - react-native-camera/RN (= 3.24.2)
+  - react-native-camera/RCT (3.24.2):
     - React
-  - react-native-camera/RN (3.23.1):
+  - react-native-camera/RN (3.24.2):
     - React
   - react-native-keep-awake (4.0.0):
     - React
@@ -600,7 +600,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: d5525f9ed5f782fdbacb64b9b01a43a9323d2386
   React-jsinspector: fa0ecc501688c3c4c34f28834a76302233e29dc0
   react-native-ble-manager: fda5f6b20092f2b2d356676bd1f3dc7065bb4329
-  react-native-camera: 1b52abea404d04e040edb3e74b7c5523c01a3089
+  react-native-camera: b61f184120195e10971d9ea26f21601db4f77c14
   react-native-keep-awake: afad8a51dfef9fe9655a6344771be32c8596d774
   react-native-maps: f4b89da81626ad7f151a8bfcb79733295d31ce5c
   react-native-netinfo: 4fa023c153d582aeae8435df95c9a975c5986449
