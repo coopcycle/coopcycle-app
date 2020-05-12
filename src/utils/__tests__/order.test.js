@@ -1,6 +1,6 @@
 import moment from 'moment'
 import { Buffer } from 'buffer'
-import { encodeForPrinter } from '../order'
+import { encodeForPrinter, resolveFulfillmentMethod } from '../order'
 
 describe('encodeForPrinter', () => {
 
@@ -58,5 +58,15 @@ describe('encodeForPrinter', () => {
 
     expect(actual).toHaveLength(expected.length)
     expect(actual).toEqual(expected)
+  })
+})
+
+describe('resolveFulfillmentMethod', () => {
+  it('returns expected results', () => {
+    expect(resolveFulfillmentMethod({})).toEqual('delivery')
+    expect(resolveFulfillmentMethod({ takeaway: false })).toEqual('delivery')
+    expect(resolveFulfillmentMethod({ takeaway: true })).toEqual('collection')
+    expect(resolveFulfillmentMethod({ fulfillmentMethod: 'delivery' })).toEqual('delivery')
+    expect(resolveFulfillmentMethod({ fulfillmentMethod: 'collection' })).toEqual('collection')
   })
 })
