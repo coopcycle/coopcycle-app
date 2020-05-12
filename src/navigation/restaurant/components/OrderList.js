@@ -7,6 +7,7 @@ import { withTranslation } from 'react-i18next'
 import { formatPrice } from '../../../utils/formatting'
 import OrderNumber from '../../../components/OrderNumber'
 import ItemSeparatorComponent from '../../../components/ItemSeparator'
+import OrderFulfillmentMethodIcon from '../../../components/OrderFulfillmentMethodIcon'
 
 const styles = StyleSheet.create({
   item: {
@@ -22,6 +23,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     backgroundColor: '#efefef',
   },
+  numberAndIcon: {
+    flexDirection: 'row',
+  },
+  number: {
+    marginRight: 10
+  }
 })
 
 class OrderList extends Component {
@@ -29,7 +36,12 @@ class OrderList extends Component {
   renderItem(order) {
     return (
       <TouchableOpacity style={ styles.item } onPress={ () => this.props.onItemClick(order) }>
-        <OrderNumber order={ order } />
+        <View style={ styles.numberAndIcon }>
+          <View style={ styles.number }>
+            <OrderNumber order={ order } />
+          </View>
+          <OrderFulfillmentMethodIcon order={ order } />
+        </View>
         <Text>{ `${formatPrice(order.itemsTotal)}` }</Text>
         <Text>{ moment.parseZone(order.preparationExpectedAt).format('LT') }</Text>
         <Icon style={{ color: '#ccc' }} name="ios-arrow-forward" />
