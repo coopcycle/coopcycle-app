@@ -40,7 +40,7 @@ class OrderList extends Component {
           <View style={ styles.number }>
             <OrderNumber order={ order } />
           </View>
-          <OrderFulfillmentMethodIcon order={ order } />
+          <OrderFulfillmentMethodIcon order={ order } small />
         </View>
         <Text>{ `${formatPrice(order.itemsTotal)}` }</Text>
         <Text>{ moment.parseZone(order.preparationExpectedAt).format('LT') }</Text>

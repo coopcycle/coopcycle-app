@@ -343,6 +343,10 @@
         "TASK_COMPLETE_ALERT_TITLE": "Start or complete?",
         "TASK_COMPLETE_ALERT_MESSAGE": "Do you want to start, or complete this task?",
         "TASK_COMPLETE_ALERT_NEGATIVE": "▶ Start",
-        "TASK_COMPLETE_ALERT_POSITIVE": "✓ Complete"
+        "TASK_COMPLETE_ALERT_POSITIVE": "✓ Complete",
+        "FULFILLMENT_METHOD": {
+            "collection": "Collection",
+            "delivery": "Delivery"
+        }
     }
 }

@@ -104,3 +104,17 @@ export function encodeForPrinter(order) {
 
   return encoder.encode()
 }
+
+export function resolveFulfillmentMethod(order) {
+  if (Object.prototype.hasOwnProperty.call(order, 'fulfillmentMethod')) {
+
+    return order.fulfillmentMethod
+  }
+
+  if (Object.prototype.hasOwnProperty.call(order, 'takeaway')) {
+
+    return order.takeaway ? 'collection' : 'delivery'
+  }
+
+  return 'delivery'
+}

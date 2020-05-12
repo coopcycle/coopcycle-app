@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import {
+  Container,
   Footer,
   Left,
   Icon, Text, Button,
@@ -15,8 +16,10 @@ import { PhoneNumberUtil, PhoneNumberFormat } from 'google-libphonenumber'
 import { SwipeRow } from 'react-native-swipe-list-view'
 
 import OrderItems from '../../components/OrderItems'
+import OrderFulfillmentMethodIcon from '../../components/OrderFulfillmentMethodIcon'
 import { acceptOrder, printOrder } from '../../redux/Restaurant/actions'
 import material from '../../../native-base-theme/variables/material'
+import { resolveFulfillmentMethod } from '../../utils/order'
 
 const phoneNumberUtil = PhoneNumberUtil.getInstance()
 
@@ -107,20 +110,19 @@ class OrderScreen extends Component {
       const pickupExpectedAt = moment.parseZone(order.pickupExpectedAt).format('LT')
 
       return (
-        <View style={{ flex: 2, marginBottom: 15 }}>
-          <View style={{ flex: 1 }}>
-            <View style={ styles.dateContainer }>
-              <Icon name="md-clock" />
-              <Text>{ this.props.t('RESTAURANT_ORDER_PREPARATION_EXPECTED_AT', { date: preparationExpectedAt }) }</Text>
-            </View>
+        <View style={{ borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: '#CCCCCC' }}>
+          <View style={ styles.fulfillment }>
+            <OrderFulfillmentMethodIcon order={ order } />
+            <Text>{ this.props.t(`FULFILLMENT_METHOD.${resolveFulfillmentMethod(order)}`) }</Text>
           </View>
-          <View style={{ flex: 1 }}>
-            <View style={ styles.dateContainer }>
-              <Icon name="md-bicycle" />
+          <View style={ styles.timeline }>
+            <Icon type="FontAwesome" name="clock-o" />
+            <View style={{ alignItems: 'flex-end' }}>
+              <Text>{ this.props.t('RESTAURANT_ORDER_PREPARATION_EXPECTED_AT', { date: preparationExpectedAt }) }</Text>
               <Text>{ this.props.t('RESTAURANT_ORDER_PICKUP_EXPECTED_AT', { date: pickupExpectedAt }) }</Text>
             </View>
           </View>
-          <View style={{ flex: 1 }}>
+          <View style={{ marginBottom: 15 }}>
             { this.renderButtons() }
           </View>
         </View>
@@ -133,15 +135,18 @@ class OrderScreen extends Component {
     const { order } = this.props
 
     if (order.notes) {
+
       return (
-        <Card>
-          <CardItem>
-            <Left>
-              <Icon name="quote" />
-              <Text note>{ order.notes }</Text>
-            </Left>
-          </CardItem>
-        </Card>
+        <View style={{ paddingHorizontal: 20 }}>
+          <Card>
+            <CardItem>
+              <Left>
+                <Icon name="quote" />
+                <Text note>{ order.notes }</Text>
+              </Left>
+            </CardItem>
+          </Card>
+        </View>
       )
     }
   }
@@ -159,18 +164,18 @@ class OrderScreen extends Component {
     } catch (e) {}
 
     return (
-      <View style={{ flex: 1, flexDirection: 'row', paddingHorizontal: 10 }}>
+      <View style={{ flexDirection: 'row', paddingHorizontal: 10 }}>
         <View style={{ width: '50%', paddingRight: 5 }}>
           { isPrinterConnected && (
-          <Button small iconLeft onPress={ () => this._print() }>
-            <Icon type="FontAwesome" name="print" />
+          <Button small iconRight onPress={ () => this._print() }>
             <Text>{ this.props.t('RESTAURANT_ORDER_PRINT') }</Text>
+            <Icon type="FontAwesome" name="print" />
           </Button>
           )}
           { !isPrinterConnected && (
-          <Button small light iconLeft onPress={ () => this.props.navigation.navigate('RestaurantPrinter') }>
+          <Button small light iconRight onPress={ () => this.props.navigation.navigate('RestaurantPrinter') }>
+            <Text>{ this.props.t('RESTAURANT_ORDER_PRINT') }</Text>
             <Icon type="FontAwesome" name="print" />
-            <Text>{ this.props.t('RESTAURANT_ORDER_CONNECT_PRINTER') }</Text>
           </Button>
           )}
         </View>
@@ -205,14 +210,14 @@ class OrderScreen extends Component {
     const { order } = this.props
 
     return (
-      <View style={{ flex: 1, backgroundColor: '#ffffff' }}>
-        { this.renderHeading() }
-        <View style={{ flex: 8 }}>
+      <Container style={{ flex: 1, backgroundColor: '#ffffff' }}>
+        <View style={{ flex: 1 }}>
+          { this.renderHeading() }
           <OrderItems order={ order } />
           { this.renderNotes() }
         </View>
         { this.renderActionButtons() }
-      </View>
+      </Container>
     )
   }
 }
@@ -245,12 +250,21 @@ const styles = StyleSheet.create({
     color: '#333',
     fontWeight: 'bold',
   },
-  dateContainer: {
-    flex: 1,
+  fulfillment: {
+    backgroundColor: '#f9ca24',
+    paddingHorizontal: material.contentPadding,
+    paddingVertical: (material.contentPadding * 1.5),
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 5
+  },
+  timeline: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: material.contentPadding,
+    marginBottom: 10
   },
   swipeBg: {
     flex: 1,

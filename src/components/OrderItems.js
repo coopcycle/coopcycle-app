@@ -9,7 +9,6 @@ import _ from 'lodash'
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: 20,
     flex: 1,
   },
   item: {

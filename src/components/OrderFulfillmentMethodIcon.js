@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native'
 import { Icon } from 'native-base'
 
 const styles = StyleSheet.create({
-  icon: {
+  small: {
     fontSize: 20,
   }
 })
@@ -23,13 +23,13 @@ const resolve = order => {
   return 'delivery'
 }
 
-export default ({ order }) => {
+export default ({ order, small }) => {
 
   const fulfillmentMethod = resolve(order)
 
   return (
     <Icon type="FontAwesome"
-      style={ styles.icon }
+      style={ small ? [ styles.small ] : [] }
       name={ fulfillmentMethod === 'collection' ? 'cube' : 'bicycle' } />
   )
 }

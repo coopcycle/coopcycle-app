@@ -338,6 +338,10 @@
             "SULPHUR_DIOXIDE_SULPHITES": "Dioxyde de soufre",
             "LUPIN": "Lupins",
             "MOLLUSCS": "Mollusques"
+        },
+        "FULFILLMENT_METHOD": {
+            "collection": "Retrait sur place",
+            "delivery": "Livraison"
         }
     }
 }
