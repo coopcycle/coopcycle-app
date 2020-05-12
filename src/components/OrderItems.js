@@ -94,6 +94,8 @@ class OrderItems extends Component {
             <Text>{ item.name }</Text>
             { (item.adjustments && item.adjustments.hasOwnProperty('menu_item_modifier')) &&
               this.renderItemAdjustments(item.adjustments.menu_item_modifier) }
+            { (item.adjustments && item.adjustments.hasOwnProperty('reusable_packaging')) &&
+              this.renderItemAdjustments(item.adjustments.reusable_packaging) }
           </Col>
           <Col size={ 3 } style={ [ styles.col, styles.colRight ] }>
             <Text>{ `${formatPrice(item.total)}` }</Text>
