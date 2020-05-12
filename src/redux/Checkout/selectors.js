@@ -31,3 +31,24 @@ export const selectIsShippingAsap = createSelector(
   state => state.checkout.cart,
   (cart) => (!!cart.shippedAt) !== true
 )
+
+export const selectCartFulfillmentMethod = createSelector(
+  state => state.checkout.cart,
+  (cart) => cart.fulfillmentMethod || 'delivery'
+)
+
+export const selectFulfillmentMethods = createSelector(
+  state => state.checkout.restaurant,
+  (restaurant) => (restaurant && restaurant.fulfillmentMethods && Array.isArray(restaurant.fulfillmentMethods)) ?
+    _.map(restaurant.fulfillmentMethods, fm => fm.type) : ['delivery']
+)
+
+export const selectIsDeliveryEnabled = createSelector(
+  selectFulfillmentMethods,
+  (fulfillmentMethods) => _.includes(fulfillmentMethods, 'delivery')
+)
+
+export const selectIsCollectionEnabled = createSelector(
+  selectFulfillmentMethods,
+  (fulfillmentMethods) => _.includes(fulfillmentMethods, 'collection')
+)
