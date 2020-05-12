@@ -13,7 +13,10 @@ Install Node, Watchman & React Native CLI as described [here](https://facebook.g
 Installation
 ------------
 
+Install dependencies to compile [node-canvas](https://github.com/Automattic/node-canvas#compiling) depending on your OS.
+
 Install dependencies with Yarn.
+
 
 ```
 $ yarn install
