@@ -9023,9 +9023,9 @@ react-native-easy-grid@0.2.2:
     lodash "^4.17.15"
 
 react-native-email-link@^1.7.5:
-  version "1.7.5"
-  resolved "https://registry.yarnpkg.com/react-native-email-link/-/react-native-email-link-1.7.5.tgz#cb0d6f3bc0e87c1bb4896ae1133ca08705c07ea0"
-  integrity sha512-9Nsj1GaJKl0aNi7WJuqlxAnD2uNsqYIb50JoXj4VBJJAPMFjozK9OXGrHllalpZLdBq6Q2gN9nKBk3JJaL+DVw==
+  version "1.9.1"
+  resolved "https://registry.yarnpkg.com/react-native-email-link/-/react-native-email-link-1.9.1.tgz#506eea5a55f10a39cece227534bd40a2099e64ba"
+  integrity sha512-U6DtYKfBD9ZJdoaEhsMKKRAH4+HWm/rfqnWb+LU+Vx4Jy41KxvJIl6O9x3i7ExlJX0FPw4OIus5hfTkcxoTnow==
 
 react-native-firebase@^5.6.0:
   version "5.6.0"
