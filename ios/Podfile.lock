@@ -378,10 +378,10 @@ PODS:
     - RNSound/Core (= 0.11.0)
   - RNSound/Core (0.11.0):
     - React
-  - Stripe (14.0.0)
-  - tipsi-stripe (7.5.1):
+  - Stripe (14.0.1)
+  - tipsi-stripe (7.5.3):
     - React
-    - Stripe (~> 14.0.0)
+    - Stripe (~> 14.0.1)
   - Yoga (1.14.0)
 
 DEPENDENCIES:
@@ -629,8 +629,8 @@ SPEC CHECKSUMS:
   RNScreens: cf198f915f8a2bf163de94ca9f5bfc8d326c3706
   RNSketchCanvas: 9c28adb5381543ed55cc98ce6de46479cb3cb12c
   RNSound: da030221e6ac7e8290c6b43f2b5f2133a8e225b0
-  Stripe: db29ad197c74aca6fb981e4e8355cf7ebd0fca5a
-  tipsi-stripe: 61c247493a58d7e8e0bf6ee6b014271f473d2b11
+  Stripe: 4305b646743612854819fb5d5cf67aaeb93577c0
+  tipsi-stripe: fb5b32e890a4528322c491e1827133a3cb919e0a
   Yoga: f2a7cd4280bfe2cca5a7aed98ba0eb3d1310f18b
 
 PODFILE CHECKSUM: 7d62360c1e32ec84698e347a1e80a8c41b0dbc19

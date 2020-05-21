@@ -86,7 +86,7 @@
     "reselect": "^4.0.0",
     "rn-fetch-blob": "^0.12.0",
     "slugify": "^1.4.0",
-    "tipsi-stripe": "7.5.1",
+    "tipsi-stripe": "^7.5.3",
     "validate.js": "^0.13.1"
   },
   "devDependencies": {
