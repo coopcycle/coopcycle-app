@@ -5763,10 +5763,10 @@ globals@^12.1.0:
   dependencies:
     type-fest "^0.8.1"
 
-google-libphonenumber@^3.2.8:
-  version "3.2.8"
-  resolved "https://registry.yarnpkg.com/google-libphonenumber/-/google-libphonenumber-3.2.8.tgz#fb5898cbae18104d456e0fd80df52d860a3eb2b8"
-  integrity sha512-iWs1KcxOozmKQbCeGjvU0M7urrkNjBYOSBtb819RjkUNJHJLfn7DADKkKwdJTOMPLcLOE11/4h/FyFwJsTiwLg==
+google-libphonenumber@^3.2.9:
+  version "3.2.9"
+  resolved "https://registry.yarnpkg.com/google-libphonenumber/-/google-libphonenumber-3.2.9.tgz#d65c2467eec22c35e3dcddfc91d26e2b135024c4"
+  integrity sha512-PCU6Z5drRaFHNICJcurXsf6DN//ZNl0PXmPIpbHi+E1pp54GwyrhxBn57rr1nx+3mNUOMr4zeWirIKPc4ziJgw==
 
 graceful-fs@^4.1.11, graceful-fs@^4.1.15, graceful-fs@^4.1.2, graceful-fs@^4.1.3, graceful-fs@^4.1.6, graceful-fs@^4.1.9:
   version "4.2.3"
@@ -7152,10 +7152,10 @@ levn@^0.3.0, levn@~0.3.0:
     prelude-ls "~1.1.2"
     type-check "~0.3.2"
 
-libphonenumber-js@^1.7.48:
-  version "1.7.48"
-  resolved "https://registry.yarnpkg.com/libphonenumber-js/-/libphonenumber-js-1.7.48.tgz#15b7258b642d0ef5faced14401528639be9a8eaa"
-  integrity sha512-qiHOxCBQ8cNqSkpUcAFn0vwk8eZs6Bq6ttQTiiAICEfUZp3uQ/RuOnPqYMw5qciHCrCNjLN3qp3ih1u0+NuzVA==
+libphonenumber-js@^1.7.51:
+  version "1.7.51"
+  resolved "https://registry.yarnpkg.com/libphonenumber-js/-/libphonenumber-js-1.7.51.tgz#e84901179a154c8074f9c01214dd80b859598d74"
+  integrity sha512-YrmFi5rLnSMKp2tM0FkjIHGAlHyUo8pRP8u4DeMseX+gXDY96q7sgfy/Ty54nv0BqObYKzPJBUq4LMMNESjfBA==
   dependencies:
     minimist "^1.2.5"
     xml2js "^0.4.17"
@@ -7843,10 +7843,15 @@ moment-range@^4.0.2:
   dependencies:
     es6-symbol "^3.1.0"
 
-moment@^2.10.6, moment@^2.23.0:
+moment@^2.10.6:
   version "2.24.0"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.24.0.tgz#0d055d53f5052aa653c9f6eb68bb5d12bf5c2b5b"
   integrity sha512-bV7f+6l2QigeBBZSM/6yTNq4P2fNpSWj/0e7jQcy87A8e7o2nAfP/34/2ky5Vw4B9S446EtIhodAzkFCcR4dQg==
+
+moment@^2.26.0:
+  version "2.26.0"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.26.0.tgz#5e1f82c6bafca6e83e808b30c8705eed0dcbd39a"
+  integrity sha512-oIixUO+OamkUkwjhAVE18rAMfRJNsNe/Stid/gwHSOfHrOtw9EhAY2AHvdKZ/k/MggcYELFCJz/Sn2pL8b8JMw==
 
 monotone-convex-hull-2d@^1.0.1:
   version "1.0.1"
@@ -9022,10 +9027,10 @@ react-native-easy-grid@0.2.2:
   dependencies:
     lodash "^4.17.15"
 
-react-native-email-link@^1.7.5:
-  version "1.7.5"
-  resolved "https://registry.yarnpkg.com/react-native-email-link/-/react-native-email-link-1.7.5.tgz#cb0d6f3bc0e87c1bb4896ae1133ca08705c07ea0"
-  integrity sha512-9Nsj1GaJKl0aNi7WJuqlxAnD2uNsqYIb50JoXj4VBJJAPMFjozK9OXGrHllalpZLdBq6Q2gN9nKBk3JJaL+DVw==
+react-native-email-link@^1.9.1:
+  version "1.9.1"
+  resolved "https://registry.yarnpkg.com/react-native-email-link/-/react-native-email-link-1.9.1.tgz#506eea5a55f10a39cece227534bd40a2099e64ba"
+  integrity sha512-U6DtYKfBD9ZJdoaEhsMKKRAH4+HWm/rfqnWb+LU+Vx4Jy41KxvJIl6O9x3i7ExlJX0FPw4OIus5hfTkcxoTnow==
 
 react-native-firebase@^5.6.0:
   version "5.6.0"
