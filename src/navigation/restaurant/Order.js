@@ -71,6 +71,9 @@ class OrderScreen extends Component {
     }
 
     if (order.state === 'accepted') {
+
+      const fulfillmentMethod = resolveFulfillmentMethod(order)
+
       return (
         <Footer style={{ backgroundColor: '#fbfbfb' }}>
           <Grid>
@@ -93,6 +96,7 @@ class OrderScreen extends Component {
                   </Text>
                 </TouchableOpacity>
               </Col>
+              { fulfillmentMethod === 'collection' && (
               <Col style={{ padding: 10 }}>
                 <TouchableOpacity
                   style={ [ styles.footerBtn, styles.fulfillBtn ] }
@@ -102,6 +106,7 @@ class OrderScreen extends Component {
                   </Text>
                 </TouchableOpacity>
               </Col>
+              )}
             </Row>
           </Grid>
         </Footer>
