@@ -63,7 +63,7 @@
         "FAILED_TASK_LOAD": "Das Laden deiner Aufgaben ist fehlgeschlagen",
         "TRY_LATER": "Bitte, versuchen Sie es später noch einmal",
         "CHOOSE_CITY": "Wähle eine Stadt aus",
-        "CITY_NOT_LISTED": "Ist Ihre Stadt nicht aufgelistet?",
+        "CITY_NOT_LISTED": "Ist deine Stadt nicht aufgelistet?",
         "CONTACT_US": "Kontaktieren Sie uns",
         "SIGN_OUT": "Abmelden",
         "CALCULATING_YOUR_POS": "Deine Position wird berechnet",
@@ -194,6 +194,13 @@
         "CANCEL": "Löschen",
         "LOADING_ORDER": "Die Bestellung wird geladen",
         "ADDRESS_DESCRIPTION_PLACEHOLDER": "HH, 2 OG links",
-        "ADDRESS_DESCRIPTION": "Siehe Kommentar"
+        "ADDRESS_DESCRIPTION": "Siehe Kommentar",
+        "ABOUT_INSTANCE": "Über {{name}}",
+        "TOTAL_ITEMS": "Gesamte Artikel",
+        "SUBMIT": "Einreichen",
+        "ABOUT": "Über",
+        "SERVER_INVALID": "Ungültiger Server",
+        "SERVER_INCOMPATIBLE": "Inkompatibler Server",
+        "WS_NOT_CONNECTED_WARNING": "Verbindung zu Auto-Refresh fehlgeschlagen. Neuer Versuch ..."
     }
 }
