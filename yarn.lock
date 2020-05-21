@@ -1550,10 +1550,10 @@
     wcwidth "^1.0.1"
     ws "^1.1.0"
 
-"@react-native-community/datetimepicker@^2.3.2":
-  version "2.3.2"
-  resolved "https://registry.yarnpkg.com/@react-native-community/datetimepicker/-/datetimepicker-2.3.2.tgz#c4dfc503ed260c7c93ce838f60e707dbba179452"
-  integrity sha512-BbDmWVIaSYoYK2x5tRRuy/UWUVS6WtZ+3D210zYZgyD47yEVcTbaLFL9zFw7VxNMb8c/6BFcEpC6k18WTYplwA==
+"@react-native-community/datetimepicker@^2.4.0":
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/@react-native-community/datetimepicker/-/datetimepicker-2.4.0.tgz#6b3cf050f507f9b70d31d5a572e1153bb5bd50c9"
+  integrity sha512-ZXPwNAQt4T66PTL20l2nSEbtsn6vtsvFqdYWBfx8aaNKBoCPDygR6SsYzWcIoexKH5wmX0zctSzIsryl+Gtngg==
   dependencies:
     invariant "^2.2.4"
 
@@ -9117,10 +9117,10 @@ react-native-maps@^0.27.1:
   resolved "https://registry.yarnpkg.com/react-native-maps/-/react-native-maps-0.27.1.tgz#2f10cd417bb2fd938c9e015b1c9b6d9b1a44b97f"
   integrity sha512-HygBkZBecTnIVRYrSiLRAvu4OmXOYso/A7c6Cy73HkOh9CgGV8Ap5eBea24tvmFGptjj5Hg8AJ94/YbmWK1Okw==
 
-react-native-modal-datetime-picker@^8.5.4:
-  version "8.5.4"
-  resolved "https://registry.yarnpkg.com/react-native-modal-datetime-picker/-/react-native-modal-datetime-picker-8.5.4.tgz#e348367810b4b534c8a1f844ec1f0a57a1542232"
-  integrity sha512-QKs4nsiZ2Ncr9pOrnnFyy3laHzReH87StV54hos1jGhT8MwlC5yQ9QfGqVDy8yRKz3bROST0wg3hS2Wy1mSQuQ==
+react-native-modal-datetime-picker@^8.7.0:
+  version "8.7.0"
+  resolved "https://registry.yarnpkg.com/react-native-modal-datetime-picker/-/react-native-modal-datetime-picker-8.7.0.tgz#4149975ec78c46eae9697d88d47f973002ccabf7"
+  integrity sha512-CeKrrU1F4VrddlqXlnnRln+YnGAXrY97YsPhBhll/DAfZFalqU9JM7Cfu/v+FDNx6xSCSXS+cb0+RPvOLN4P7w==
   dependencies:
     prop-types "^15.7.2"
 
