@@ -51,7 +51,7 @@
     "react-native-email-link": "^1.9.1",
     "react-native-firebase": "^5.6.0",
     "react-native-gesture-handler": "^1.6.1",
-    "react-native-google-places-autocomplete": "^1.4.2",
+    "react-native-google-places-autocomplete": "^1.7.1",
     "react-native-keep-awake": "^4.0.0",
     "react-native-keyboard-manager": "^4.0.13-16",
     "react-native-loading-spinner-overlay": "^1.0.1",
