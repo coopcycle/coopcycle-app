@@ -149,6 +149,7 @@
         "RESTAURANT_ORDER_BUTTON_REFUSE": "Refuse",
         "RESTAURANT_ORDER_BUTTON_CANCEL": "Cancel",
         "RESTAURANT_ORDER_BUTTON_DELAY": "Delay",
+        "RESTAURANT_ORDER_BUTTON_FULFILL": "Fulfill",
         "RESTAURANT_ORDER_REFUSE_DISCLAIMER": "Please tell us why you want to decline this order so that we can inform the customer",
         "RESTAURANT_ORDER_REFUSE_REASON_SOLD_OUT_HEADING": "I'm out of stock",
         "RESTAURANT_ORDER_REFUSE_REASON_RUSH_HOUR_HEADING": "I'm in a rush",

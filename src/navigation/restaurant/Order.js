@@ -17,7 +17,7 @@ import { SwipeRow } from 'react-native-swipe-list-view'
 
 import OrderItems from '../../components/OrderItems'
 import OrderFulfillmentMethodIcon from '../../components/OrderFulfillmentMethodIcon'
-import { acceptOrder, printOrder } from '../../redux/Restaurant/actions'
+import { acceptOrder, printOrder, fulfillOrder } from '../../redux/Restaurant/actions'
 import material from '../../../native-base-theme/variables/material'
 import { resolveFulfillmentMethod } from '../../utils/order'
 
@@ -90,6 +90,15 @@ class OrderScreen extends Component {
                   onPress={() => navigate('RestaurantOrderDelay', { order })}>
                   <Text style={ styles.delayBtnText }>
                     { this.props.t('RESTAURANT_ORDER_BUTTON_DELAY') }
+                  </Text>
+                </TouchableOpacity>
+              </Col>
+              <Col style={{ padding: 10 }}>
+                <TouchableOpacity
+                  style={ [ styles.footerBtn, styles.fulfillBtn ] }
+                  onPress={() => this.fulfillOrder(order) }>
+                  <Text style={ styles.fulfillBtnText }>
+                    { this.props.t('RESTAURANT_ORDER_BUTTON_FULFILL') }
                   </Text>
                 </TouchableOpacity>
               </Col>
@@ -196,6 +205,10 @@ class OrderScreen extends Component {
     // TODO Animate color
   }
 
+  fulfillOrder(order) {
+    this.props.fulfillOrder(order, o => this.props.navigation.setParams({ order: o }))
+  }
+
   onRowOpen(value) {
     if (value > 0) {
       this.props.acceptOrder(this.props.order, order => this.props.navigation.setParams({ order }))
@@ -244,10 +257,17 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   delayBtn: {
-     borderColor: '#333',
+    borderColor: '#333',
+  },
+  fulfillBtn: {
+    borderColor: material.brandSuccess,
   },
   delayBtnText: {
     color: '#333',
+    fontWeight: 'bold',
+  },
+  fulfillBtnText: {
+    color: material.brandSuccess,
     fontWeight: 'bold',
   },
   fulfillment: {
@@ -299,6 +319,7 @@ function mapDispatchToProps(dispatch) {
   return {
     acceptOrder: (order, cb) => dispatch(acceptOrder(order, cb)),
     printOrder: (order) => dispatch(printOrder(order)),
+    fulfillOrder: (order, cb) => dispatch(fulfillOrder(order, cb)),
   }
 }
 

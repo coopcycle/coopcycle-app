@@ -14,6 +14,9 @@ import {
   DELAY_ORDER_REQUEST,
   DELAY_ORDER_SUCCESS,
   DELAY_ORDER_FAILURE,
+  FULFILL_ORDER_REQUEST,
+  FULFILL_ORDER_SUCCESS,
+  FULFILL_ORDER_FAILURE,
   CANCEL_ORDER_REQUEST,
   CANCEL_ORDER_SUCCESS,
   CANCEL_ORDER_FAILURE,
@@ -128,6 +131,7 @@ export default (state = initialState, action = {}) => {
     case LOAD_MY_RESTAURANTS_REQUEST:
     case REFUSE_ORDER_REQUEST:
     case DELAY_ORDER_REQUEST:
+    case FULFILL_ORDER_REQUEST:
     case CANCEL_ORDER_REQUEST:
     case CHANGE_STATUS_REQUEST:
     case LOAD_PRODUCTS_REQUEST:
@@ -146,6 +150,7 @@ export default (state = initialState, action = {}) => {
     case LOAD_MY_RESTAURANTS_FAILURE:
     case REFUSE_ORDER_FAILURE:
     case DELAY_ORDER_FAILURE:
+    case FULFILL_ORDER_FAILURE:
     case CANCEL_ORDER_FAILURE:
     case CHANGE_STATUS_FAILURE:
     case LOAD_PRODUCTS_FAILURE:
@@ -197,29 +202,9 @@ export default (state = initialState, action = {}) => {
       }
 
     case ACCEPT_ORDER_SUCCESS:
-      return {
-        ...state,
-        orders: spliceOrders(state, action.payload),
-        fetchError: false,
-        isFetching: false,
-      }
-
     case REFUSE_ORDER_SUCCESS:
-      return {
-        ...state,
-        orders: spliceOrders(state, action.payload),
-        fetchError: false,
-        isFetching: false,
-      }
-
     case DELAY_ORDER_SUCCESS:
-      return {
-        ...state,
-        orders: spliceOrders(state, action.payload),
-        fetchError: false,
-        isFetching: false,
-      }
-
+    case FULFILL_ORDER_SUCCESS:
     case CANCEL_ORDER_SUCCESS:
       return {
         ...state,
