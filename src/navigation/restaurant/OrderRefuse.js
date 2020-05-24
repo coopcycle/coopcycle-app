@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { View } from 'react-native'
-import { Container, Content, Text } from 'native-base'
-import { Row, Grid } from 'react-native-easy-grid'
+import { Container, Text } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 

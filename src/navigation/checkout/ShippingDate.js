@@ -55,7 +55,7 @@ class ShippingDate extends Component {
 
   render() {
 
-    const { availabilities, dates } = this.props
+    const { dates } = this.props
 
     const date = this._resolveDate(this.state.date, this.state.time)
     const times = this.props.timesByDate[this.state.date]
@@ -118,7 +118,6 @@ function mapStateToProps(state) {
     date: state.checkout.date ? state.checkout.date : state.checkout.timing.asap,
     dates: _.keys(groupBy),
     timesByDate,
-    availabilities,
     hash,
     isAsap: selectIsShippingAsap(state),
     shippingDate: selectShippingDate(state),

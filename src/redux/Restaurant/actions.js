@@ -359,7 +359,9 @@ export function fulfillOrder(order, cb) {
     return httpClient.put(order['@id'] + '/fulfill', {})
       .then(res => {
         dispatch(fulfillOrderSuccess(res))
-        if (cb && typeof cb === 'function') cb(res)
+        if (cb && typeof cb === 'function') {
+          cb(res)
+        }
       })
       .catch(e => dispatch(fulfillOrderFailure(e)))
   }

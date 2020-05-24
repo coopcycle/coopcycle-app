@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Alert, InteractionManager, Linking, NativeModules, Platform, StyleSheet } from 'react-native';
+import { Alert, InteractionManager, NativeModules, StyleSheet } from 'react-native';
 import { Container, Content } from 'native-base';
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
