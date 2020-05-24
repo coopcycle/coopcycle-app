@@ -20,8 +20,8 @@ describe('Dispatch', () => {
     await connectToDemo()
     await authenticateWithCredentials('admin', 'admin')
 
-    await expect(element(by.id('menuBtn'))).toBeVisible()
-    await element(by.id('menuBtn')).tap()
+    await expect(element(by.id('menuBtnCourier'))).toBeVisible()
+    await element(by.id('menuBtnCourier')).tap()
     await element(by.label('Dispatch')).tap()
 
     await expect(element(by.id('addTask'))).toBeVisible()

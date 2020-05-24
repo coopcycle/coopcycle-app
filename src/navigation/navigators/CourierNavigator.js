@@ -44,7 +44,7 @@ const MainNavigator = createStackNavigator({
     screen: Tabs,
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('COURIER'),
-      headerLeft: headerLeft(navigation),
+      headerLeft: headerLeft(navigation, 'menuBtnCourier'),
       headerRight: () =>
         <View style={{flex: 1, flexDirection: 'row', alignItems: 'flex-end'}}>
           <Button transparent onPress={() => navigation.navigate('CourierSettings')}>
