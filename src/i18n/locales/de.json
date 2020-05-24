@@ -57,7 +57,7 @@
         "TASK": "Aufgabe",
         "TASK_LIST": "Aufgabeliste",
         "CART_EMPTY_WARNING": "Dein *Warenkorb* ist leer",
-        "DISPATCH": "Siehe Kommentar.",
+        "DISPATCH": "Dispo",
         "PAY": "Bezahle",
         "PAY_AMOUNT": "Bezahle",
         "FAILED_TASK_LOAD": "Das Laden deiner Aufgaben ist fehlgeschlagen",
@@ -183,17 +183,17 @@
         "PHOTO": "Bild",
         "TOMORROW_BETWEEN_START_AND_END": "Morgen zwischen {{start}} und {{end}}",
         "DETAILS": "Persönliche Daten",
-        "LOADING": "Siehe Kommentar",
+        "LOADING": "Laden",
         "SERVER_URL": "Dein Server ist nicht aufgelistet? Bitte gib seine Adresse ein",
         "CHOOSE_SERVER": "Um anzufangen, wähle bitte eine Stadt aus",
         "SERVER_UNDER_MAINTENANCE": "Der Server wird gewartet",
         "NET_FAILED": "Netzwerk-Anfrage fehlgeschlagen",
-        "FAILED_TASK_COMPLETE": "Siehe Kommentar",
+        "FAILED_TASK_COMPLETE": "Konnte diese Aufgabe nicht erfüllen",
         "EMAIL_ALREADY_REGISTERED": "Diese E-Mail-Adresse wurde bereits registriert",
         "SWIPE_TO_END": "Wische rechts um die Aufgabe zu beenden, oder links wenn es ein Problem gibt",
         "CANCEL": "Löschen",
         "LOADING_ORDER": "Die Bestellung wird geladen",
         "ADDRESS_DESCRIPTION_PLACEHOLDER": "HH, 2 OG links",
-        "ADDRESS_DESCRIPTION": "Siehe Kommentar"
+        "ADDRESS_DESCRIPTION": "Anleitungen"
     }
 }
