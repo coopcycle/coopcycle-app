@@ -19,7 +19,7 @@ FirebaseTracker.prototype.logEvent = function(category, action, text, number) {
   }
 
   if (number != null) {
-    params.number = text
+    params.number = number
   }
 
   firebase.analytics().logEvent(event, params);
