@@ -5,8 +5,8 @@ function FirebaseTracker() { }
 FirebaseTracker.prototype = Object.create(BaseTracker.prototype);
 FirebaseTracker.prototype.constructor = FirebaseTracker;
 
-FirebaseTracker.prototype.setCurrentScreen = function(screenName, screenClassOverride) {
-  firebase.analytics().setCurrentScreen(screenName, screenClassOverride)
+FirebaseTracker.prototype.setCurrentScreen = function(screenName) {
+  firebase.analytics().setCurrentScreen(screenName)
 }
 
 FirebaseTracker.prototype.logEvent = function(category, action, text, number) {
