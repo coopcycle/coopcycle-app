@@ -345,7 +345,8 @@
         "TASK_COMPLETE_ALERT_NEGATIVE": "▶ Inizio",
         "TASK_COMPLETE_ALERT_POSITIVE": "✓ Completa",
         "FULFILLMENT_METHOD": {
-            "collection": "Collezione"
+            "collection": "Collezione",
+            "delivery": "Spedizione"
         }
     }
 }
