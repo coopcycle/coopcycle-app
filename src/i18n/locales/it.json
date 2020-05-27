@@ -1,6 +1,6 @@
 {
     "common": {
-        "MY_ADDRESSES": "Il mio indirizzo",
+        "MY_ADDRESSES": "I miei indirizzi",
         "MY_ORDERS": "I miei ordini",
         "MY_DETAILS": "I miei dettagli",
         "COURIER": "Corriere",
@@ -8,7 +8,7 @@
         "TASKS": "Task",
         "TASK_LIST": "Lista dei Task",
         "WS_NOT_CONNECTED_WARNING": "Connessione con l'auto-refresh fallita. Nuovo tentativo ...",
-        "DISPATCH": "Dispaccio",
+        "DISPATCH": "Dispatch",
         "RESTAURANT": "Ristorante",
         "RESTAURANTS": "Ristoranti",
         "BACK": "Indietro",
