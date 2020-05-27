@@ -7,11 +7,13 @@ function CountlyTracker() {
   // initialize
   let serverURL = '';
   let appKey = '';
-  let deviceId = null; // or use some string that identifies current app user
+  let salt = ''
+
+  let deviceId = ''; // or use some string that identifies current app user
   Countly.init(serverURL, appKey, deviceId);
 
   // configure other Countly parameters if needed
-  Countly.enableParameterTamperingProtection('');
+  Countly.enableParameterTamperingProtection(salt);
   Countly.enableLogging();
 
   // start session tracking
