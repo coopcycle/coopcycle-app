@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Alert, View } from 'react-native'
+import { Alert } from 'react-native'
 import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 import { HeaderButtons, HeaderButton, Item } from 'react-navigation-header-buttons'

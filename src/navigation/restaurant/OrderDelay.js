@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { View } from 'react-native'
-import { Container, Content, Text } from 'native-base'
-import { Row, Grid } from 'react-native-easy-grid'
+import { Container, Text } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 
@@ -28,25 +27,17 @@ class OrderDelayScreen extends Component {
             { this.props.t('RESTAURANT_ORDER_DELAY_DISCLAIMER') }
           </Text>
         </View>
-        <Content>
-          <Grid style={{ backgroundColor: '#fff', paddingHorizontal: 20, paddingVertical: 20 }}>
-            <Row style={{ marginBottom: 20 }}>
-              <BigButton
-                heading={ '10 minutes' }
-                onPress={ () => this._delayOrder(10) } />
-            </Row>
-            <Row style={{ marginBottom: 20 }}>
-              <BigButton
-                heading={ '20 minutes' }
-                onPress={ () => this._delayOrder(20) } />
-            </Row>
-            <Row>
-              <BigButton danger
-                heading={ '30 minutes' }
-                onPress={ () => this._delayOrder(30) } />
-            </Row>
-          </Grid>
-        </Content>
+        <View style={{ flex: 1 }}>
+          <BigButton
+            heading={ '10 minutes' }
+            onPress={ () => this._delayOrder(10) } />
+          <BigButton
+            heading={ '20 minutes' }
+            onPress={ () => this._delayOrder(20) } />
+          <BigButton danger
+            heading={ '30 minutes' }
+            onPress={ () => this._delayOrder(30) } />
+        </View>
       </Container>
     )
   }

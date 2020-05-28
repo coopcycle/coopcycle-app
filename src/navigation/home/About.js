@@ -60,18 +60,6 @@ class About extends Component {
     )
   }
 
-  renderContent() {
-
-    const { instance } = this.state
-
-    return (
-      <View style={{ alignItems: 'center' }}>
-
-
-      </View>
-    )
-  }
-
   render() {
 
     const { instance } = this.state

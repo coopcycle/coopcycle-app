@@ -143,7 +143,7 @@
         "RESTAURANT_ORDER_LIST_NEW_ORDERS": "Nouvelles commandes ({{count}})",
         "RESTAURANT_ORDER_LIST_ACCEPTED_ORDERS": "Commandes acceptées ({{count}})",
         "RESTAURANT_ORDER_LIST_CANCELLED_ORDERS": "Commandes annulées ({{count}})",
-        "RESTAURANT_ORDER_LIST_FULFILLED_ORDERS": "Commandes livrées ({{count}})",
+        "RESTAURANT_ORDER_LIST_FULFILLED_ORDERS": "Commandes terminées ({{count}})",
         "RESTAURANT_ORDER_BUTTON_ACCEPT": "Accepter",
         "RESTAURANT_ORDER_BUTTON_REFUSE": "Refuser",
         "RESTAURANT_ORDER_BUTTON_CANCEL": "Annuler",

@@ -188,7 +188,7 @@
         "CHOOSE_SERVER": "Um anzufangen, wähle bitte eine Stadt aus",
         "SERVER_UNDER_MAINTENANCE": "Der Server wird gewartet",
         "NET_FAILED": "Netzwerk-Anfrage fehlgeschlagen",
-        "FAILED_TASK_COMPLETE": "Siehe Kommentar",
+        "FAILED_TASK_COMPLETE": "Konnte diese Aufgabe nicht erfüllen",
         "EMAIL_ALREADY_REGISTERED": "Diese E-Mail-Adresse wurde bereits registriert",
         "SWIPE_TO_END": "Wische rechts um die Aufgabe zu beenden, oder links wenn es ein Problem gibt",
         "CANCEL": "Löschen",
@@ -211,6 +211,8 @@
         "TRACKING_YOUR_POS": "Tracke deine Position",
         "CONN_LOST": "Verbindung verloren! Verbinde neu",
         "AUTHENTICATING": "Authentisiere",
-        "NO_RESTAURANTS": "Entschuldigung, wir konnten kein geöffnetes Restaurant finden"
+        "NO_RESTAURANTS": "Entschuldigung, wir konnten kein geöffnetes Restaurant finden",
+        "ADDRESS_DESCRIPTION_PLACEHOLDER": "HH, 2 OG links",
+        "ADDRESS_DESCRIPTION": "Anleitungen"
     }
 }

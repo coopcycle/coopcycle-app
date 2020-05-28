@@ -5,7 +5,6 @@ import AppUser from '../../../AppUser'
 
 import { SET_HTTP_CLIENT, SET_USER } from '../../App/actions'
 import { selectIsAuthenticated } from '../../App/selectors'
-import { REHYDRATE } from 'redux-persist'
 
 const setHttpClient = createAction(SET_HTTP_CLIENT)
 const setUser = createAction(SET_USER)

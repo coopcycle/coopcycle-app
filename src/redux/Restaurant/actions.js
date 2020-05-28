@@ -41,6 +41,10 @@ export const DELAY_ORDER_REQUEST = 'DELAY_ORDER_REQUEST'
 export const DELAY_ORDER_SUCCESS = 'DELAY_ORDER_SUCCESS'
 export const DELAY_ORDER_FAILURE = 'DELAY_ORDER_FAILURE'
 
+export const FULFILL_ORDER_REQUEST = 'FULFILL_ORDER_REQUEST'
+export const FULFILL_ORDER_SUCCESS = 'FULFILL_ORDER_SUCCESS'
+export const FULFILL_ORDER_FAILURE = 'FULFILL_ORDER_FAILURE'
+
 export const CANCEL_ORDER_REQUEST = 'CANCEL_ORDER_REQUEST'
 export const CANCEL_ORDER_SUCCESS = 'CANCEL_ORDER_SUCCESS'
 export const CANCEL_ORDER_FAILURE = 'CANCEL_ORDER_FAILURE'
@@ -117,6 +121,10 @@ export const refuseOrderFailure = createAction(REFUSE_ORDER_FAILURE)
 export const delayOrderRequest = createAction(DELAY_ORDER_REQUEST)
 export const delayOrderSuccess = createAction(DELAY_ORDER_SUCCESS)
 export const delayOrderFailure = createAction(DELAY_ORDER_FAILURE)
+
+export const fulfillOrderRequest = createAction(FULFILL_ORDER_REQUEST)
+export const fulfillOrderSuccess = createAction(FULFILL_ORDER_SUCCESS)
+export const fulfillOrderFailure = createAction(FULFILL_ORDER_FAILURE)
 
 export const cancelOrderRequest = createAction(CANCEL_ORDER_REQUEST)
 export const cancelOrderSuccess = createAction(CANCEL_ORDER_SUCCESS)
@@ -336,6 +344,26 @@ export function delayOrder(order, delay, cb) {
         cb(res)
       })
       .catch(e => dispatch(delayOrderFailure(e)))
+  }
+}
+
+export function fulfillOrder(order, cb) {
+
+  return function (dispatch, getState) {
+
+    const { app } = getState()
+    const { httpClient } = app
+
+    dispatch(fulfillOrderRequest())
+
+    return httpClient.put(order['@id'] + '/fulfill', {})
+      .then(res => {
+        dispatch(fulfillOrderSuccess(res))
+        if (cb && typeof cb === 'function') {
+          cb(res)
+        }
+      })
+      .catch(e => dispatch(fulfillOrderFailure(e)))
   }
 }
 

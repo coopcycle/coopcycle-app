@@ -35,12 +35,14 @@ export default ({ heading, text, onPress, danger }) => {
 
 const styles = StyleSheet.create({
   btn: {
+    margin: 20,
     borderWidth: 1,
     borderColor: '#ccc',
     borderRadius: 4,
     padding: 15,
     flex: 1,
     flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'space-around',
     backgroundColor: '#fff',
   },
@@ -48,8 +50,7 @@ const styles = StyleSheet.create({
     borderColor: material.brandDanger,
   },
   btnTextHeading: {
-    fontWeight: 'bold',
-    marginBottom: 10,
+    fontWeight: '700',
   },
   textDanger: {
     color: material.brandDanger,
