@@ -1,24 +1,23 @@
 import BaseTracker from './BaseTracker'
 import Countly from 'countly-sdk-react-native-bridge';
 
+import { COUNTLY_SERVER_URL, COUNTLY_APP_KEY, COUNTLY_SALT } from 'react-native-dotenv'
+
 function CountlyTracker() {
   this.userProperties = {}
 
-  // initialize
-  let serverURL = '';
-  let appKey = '';
-  let salt = ''
-
   let deviceId = ''; // or use some string that identifies current app user
-  Countly.init(serverURL, appKey, deviceId);
 
-  // configure other Countly parameters if needed
-  Countly.enableParameterTamperingProtection(salt);
-  Countly.enableLogging();
+  // configure Countly parameters if needed
+  Countly.enableParameterTamperingProtection(COUNTLY_SALT);
+
+  // initialize
+  Countly.init(COUNTLY_SERVER_URL, COUNTLY_APP_KEY, deviceId);
 
   // start session tracking
   Countly.start();
 }
+
 CountlyTracker.prototype = Object.create(BaseTracker.prototype);
 CountlyTracker.prototype.constructor = CountlyTracker;
 
@@ -47,7 +46,8 @@ CountlyTracker.prototype.logEvent = function(category, action, text, number) {
 }
 
 CountlyTracker.prototype.setUserProperty = function(name, value) {
-  Countly.userData.setProperty(name, value);
+  // there is no plugin on a backend to handle it
+  // Countly.userData.setProperty(name, value);
   this.userProperties[name] = value
 }
 
