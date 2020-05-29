@@ -256,7 +256,7 @@
         "RESTAURANT_ORDER_CANCEL_REASON_CUSTOMER_HEADING": "Vom Kunden storniert",
         "RESTAURANT_PRINTER_CONNECTED_BODY": "Das Gerät {{name}} ist verbunden",
         "RESTAURANT_PRINTER_CONNECTED_TITLE": "Gerät verbunden",
-        "RESTAURANT_ALERT_RUSH_MODE_ON": "Rush Mode ist aktiv",
-        "RESTAURANT_SETTINGS_MANAGE_PRODUCTS": "Produkte Verwalten"
+        "RESTAURANT_ALERT_RUSH_MODE_ON": "Eilmodus ist aktiviert",
+        "RESTAURANT_SETTINGS_MANAGE_PRODUCTS": "Produkte verwalten"
     }
 }
