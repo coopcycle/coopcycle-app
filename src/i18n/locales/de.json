@@ -66,7 +66,7 @@
         "CITY_NOT_LISTED": "Ist deine Stadt nicht aufgelistet?",
         "CONTACT_US": "Kontaktieren Sie uns",
         "SIGN_OUT": "Abmelden",
-        "CALCULATING_YOUR_POS": "Deine Position wird berechnet",
+        "CALCULATING_YOUR_POS": "Dein Standort wird berechnet",
         "TASKS": "Aufgaben",
         "BACK": "Zurück",
         "CART": "Warenkorb",
@@ -244,6 +244,7 @@
         "COMPLETED": "Abgeschlossen",
         "NO_TASKS": "Keine Aufgaben für heute geplant",
         "CUSTOM": "Personalisiert",
-        "ABOUT_COOPCYCLE": "Anders als auf den \"großen Platformen\" liegt CoopCycle in der Hand der Kurier*innen die sich vor Ort organisieren. \n\nWenn du deine Stadt hier nicht findest, dann gibt es dort (noch) kein Projekt.\n\nWenn du Kurier*in  einer Initiative vor Ort bist, dann melde dich um zu klären wie wir euch unterstützen können."
+        "ABOUT_COOPCYCLE": "Anders als auf den \"großen Platformen\" liegt CoopCycle in der Hand der Kurier*innen die sich vor Ort organisieren. \n\nWenn du deine Stadt hier nicht findest, dann gibt es dort (noch) kein Projekt.\n\nWenn du Kurier*in  einer Initiative vor Ort bist, dann melde dich um zu klären wie wir euch unterstützen können.",
+        "WAITING_FOR_POS": "auf Standort warten"
     }
 }
