@@ -253,6 +253,10 @@
         "RESTAURANT_ORDER_DELAY_MODAL_TITLE": "Bestellung verzögern",
         "RESTAURANT_SETTINGS_CHANGE_RESTAURANT": "Wechsle Restaurant",
         "RESTAURANT_SETTINGS_RUSH": "Wechsle zum Rush Mode",
-        "RESTAURANT_ORDER_CANCEL_REASON_CUSTOMER_HEADING": "Vom Kunden storniert"
+        "RESTAURANT_ORDER_CANCEL_REASON_CUSTOMER_HEADING": "Vom Kunden storniert",
+        "RESTAURANT_PRINTER_CONNECTED_BODY": "Das Gerät {{name}} ist verbunden",
+        "RESTAURANT_PRINTER_CONNECTED_TITLE": "Gerät verbunden",
+        "RESTAURANT_ALERT_RUSH_MODE_ON": "Rush Mode ist aktiv",
+        "RESTAURANT_SETTINGS_MANAGE_PRODUCTS": "Produkte Verwalten"
     }
 }
