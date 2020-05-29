@@ -213,7 +213,7 @@
         "AUTHENTICATING": "Authentisiere",
         "NO_RESTAURANTS": "Entschuldigung, wir konnten kein geöffnetes Restaurant finden",
         "RESTAURANT_ORDER_CANCELLED_CONFIRM_TITLE": "Bestellung storniert!",
-        "RESTAURANT_ORDER_ACCEPTED_CONFIRM_BODY": "Die Bestellung {{number}} ({{id}}) ist angenommen worden",
+        "RESTAURANT_ORDER_ACCEPTED_CONFIRM_BODY": "Die Bestellung {{number}} ({{id}}) wurde angenommen",
         "RESTAURANT_ORDER_ACCEPTED_CONFIRM_TITLE": "Bestellung angenommen!",
         "RESTAURANT_SPECIAL_OPENING_HOURS": "Urlaub",
         "RESTAURANT_CLOSE_ALERT_CONFIRM": "Ja",
