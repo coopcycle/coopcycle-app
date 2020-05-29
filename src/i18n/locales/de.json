@@ -248,6 +248,8 @@
         "WAITING_FOR_POS": "auf Standort warten",
         "RESTAURANT_ORDER_CANCELLED_CONFIRM_BODY": "Die Bestellung {{number}} ({{id}}) wurde storniert",
         "RESTAURANT_ORDER_PICKUP_EXPECTED_AT": "Die Bestellung sollte um {{date}} fertig sein",
-        "RESTAURANT_ORDER_PREPARATION_EXPECTED_AT": "sollte um {{date}} beginnen"
+        "RESTAURANT_ORDER_PREPARATION_EXPECTED_AT": "sollte um {{date}} beginnen",
+        "RESTAURANT_ORDER_DELAY_DISCLAIMER": "Wie viele Verspätung sollte sein?",
+        "RESTAURANT_ORDER_DELAY_MODAL_TITLE": "Verspätung"
     }
 }
