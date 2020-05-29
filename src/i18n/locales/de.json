@@ -245,6 +245,7 @@
         "NO_TASKS": "Keine Aufgaben für heute geplant",
         "CUSTOM": "Personalisiert",
         "ABOUT_COOPCYCLE": "Anders als auf den \"großen Platformen\" liegt CoopCycle in der Hand der Kurier*innen die sich vor Ort organisieren. \n\nWenn du deine Stadt hier nicht findest, dann gibt es dort (noch) kein Projekt.\n\nWenn du Kurier*in  einer Initiative vor Ort bist, dann melde dich um zu klären wie wir euch unterstützen können.",
-        "WAITING_FOR_POS": "auf Standort warten"
+        "WAITING_FOR_POS": "auf Standort warten",
+        "RESTAURANT_ORDER_CANCELLED_CONFIRM_BODY": "Die Bestellung {{number}} ({{id}}) wurde storniert"
     }
 }
