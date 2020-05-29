@@ -257,6 +257,8 @@
         "RESTAURANT_PRINTER_CONNECTED_BODY": "Das Gerät {{name}} ist verbunden",
         "RESTAURANT_PRINTER_CONNECTED_TITLE": "Gerät verbunden",
         "RESTAURANT_ALERT_RUSH_MODE_ON": "Eilmodus ist aktiviert",
-        "RESTAURANT_SETTINGS_MANAGE_PRODUCTS": "Produkte verwalten"
+        "RESTAURANT_SETTINGS_MANAGE_PRODUCTS": "Produkte verwalten",
+        "RESTAURANT_PRINTER_DISCONNECTED_TITLE": "Verbindung mit dem Gerät beendet",
+        "RESTAURANT_PRINTER_CONNECT_ERROR_TITLE": "Verbindung mit dem Gerät fehlgeschlagen"
     }
 }
