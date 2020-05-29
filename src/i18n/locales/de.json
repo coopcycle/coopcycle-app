@@ -273,6 +273,10 @@
         "CHECKOUT_ORDER_ADDRESS_DESCRIPTION": "Informationen abrufen",
         "CHECKOUT_ADDRESS_NOT_VALID": "Tut uns Leid, aber zu dieser Adresse können wir nicht liefern",
         "RESTAURANT_SOUND_ALERT_MESSAGE": "Die Lautstärke ist niedrig eingestellt, du solltest sie erhöhen, um Benachrichtigungen zu hören",
-        "RESTAURANT_SOUND_ALERT_TITLE": "Lautstärke ist niedrig"
+        "RESTAURANT_SOUND_ALERT_TITLE": "Lautstärke ist niedrig",
+        "TASK_FORM_DONE_BEFORE_LABEL": "zu tun vor",
+        "TASK_FORM_DONE_AFTER_LABEL": "offen ab",
+        "DISPATCH_ASSIGN_TO_ME": "mir zuweisen",
+        "DISPATCH_NO_TASKS": "noch keine Aufgaben"
     }
 }
