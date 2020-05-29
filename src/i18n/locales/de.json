@@ -250,6 +250,9 @@
         "RESTAURANT_ORDER_PICKUP_EXPECTED_AT": "Die Bestellung sollte um {{date}} fertig sein",
         "RESTAURANT_ORDER_PREPARATION_EXPECTED_AT": "sollte um {{date}} beginnen",
         "RESTAURANT_ORDER_DELAY_DISCLAIMER": "um wieviel Zeit möchtest du die Bestellung verzögern?",
-        "RESTAURANT_ORDER_DELAY_MODAL_TITLE": "Bestellung verzögern"
+        "RESTAURANT_ORDER_DELAY_MODAL_TITLE": "Bestellung verzögern",
+        "RESTAURANT_SETTINGS_CHANGE_RESTAURANT": "Wechsle Restaurant",
+        "RESTAURANT_SETTINGS_RUSH": "Wechsle zum Rush Mode",
+        "RESTAURANT_ORDER_CANCEL_REASON_CUSTOMER_HEADING": "Vom Kunden storniert"
     }
 }
