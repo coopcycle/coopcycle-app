@@ -325,7 +325,7 @@
         "SESSION_EXPIRED": "deine Sitzung ist abgelaufen",
         "GO_BACK_TO_RESTAURANTS": "zurück auf Anfang",
         "SEARCH": "Restaurants finden...",
-        "FINISHED": "beendet",
+        "FINISHED": "Beendet",
         "DELIVERY_DETAILS_RECIPIENT": "Empfänger*in",
         "DELIVERY_DETAILS_TIME_SLOT": "Zeitfenster",
         "STORE_NEW_DELIVERY_ERROR": {
@@ -344,6 +344,7 @@
         "SIGNATURE_CLEAR": "abwischen",
         "ORDER_NEW_HELP": "das Restaurant muss deine Bestellung noch annehmen",
         "ORDER_NEW": "warten",
-        "BACKGROUND_GEOLOCATION_NOTIFICATION_TITLE": "Lokalisierung im Hintergrund"
+        "BACKGROUND_GEOLOCATION_NOTIFICATION_TITLE": "Lokalisierung im Hintergrund",
+        "STORE_NEW_DELIVERY_ADDRESS_HELP": "Gebe die Adresse der Zustellung ein, um die Realisierbarkeit zu überprüfen"
     }
 }
