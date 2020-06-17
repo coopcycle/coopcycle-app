@@ -9347,10 +9347,10 @@ react-navigation-header-buttons@^3.0.5:
   dependencies:
     react-native-platform-touchable "^1.1.1"
 
-react-navigation-stack@^2.5.1:
-  version "2.5.1"
-  resolved "https://registry.yarnpkg.com/react-navigation-stack/-/react-navigation-stack-2.5.1.tgz#4ae3511654fb7f5c1e28305366aa8d3d973dec9e"
-  integrity sha512-LNMIIt1B22IohL7Nbyk7Jk4y8lSvFrA6nna1pqx8wwEDlylT9U1NZ719HZibegr3CPJBZKjqpdGCGUd8sE6b8A==
+react-navigation-stack@^2.7.0:
+  version "2.7.0"
+  resolved "https://registry.yarnpkg.com/react-navigation-stack/-/react-navigation-stack-2.7.0.tgz#290e8c054d7559d3980e2bff0869c5e7066a4d4f"
+  integrity sha512-EnPQqbhBwY6b53O3JBNCG38w5Z1/ZbTJ79OZsC2ukdAPlpF7pQ9+0m2BFLqtPTieeh4wBfYW4eX/DXgKEqkNOA==
   dependencies:
     color "^3.1.2"
     react-native-iphone-x-helper "^1.2.1"
