@@ -72,3 +72,7 @@ buck-out/
 
 # Detox
 /artifacts/
+
+# secrets
+# https://levelup.gitconnected.com/how-to-gracefully-use-environment-variables-in-a-react-native-app-7f1600446116
+.env

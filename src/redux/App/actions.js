@@ -143,17 +143,25 @@ function logoutSuccess() {
 }
 
 function setRolesProperty(user) {
+  let roles;
   if (user !== null && user.roles !== null) {
-    let roles = user.roles.slice()
-    roles.sort()
+    roles = user.roles.slice();
+    roles.sort();
 
+  } else {
+    roles = [];
+  }
+
+  let DEFAULT_ROLE = 'ROLE_USER';
+
+  if (roles.length > 0) {
     tracker.setUserProperty(
       userProperty.roles,
-      roles.toString())
+      roles.toString());
   } else {
     tracker.setUserProperty(
       userProperty.roles,
-      'ROLE_USER')
+      DEFAULT_ROLE);
   }
 }
 
