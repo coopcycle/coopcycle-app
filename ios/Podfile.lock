@@ -295,21 +295,21 @@ PODS:
     - React-cxxreact (= 0.61.5)
     - React-jsi (= 0.61.5)
   - React-jsinspector (0.61.5)
-  - react-native-ble-manager (7.2.0):
+  - react-native-ble-manager (7.3.0):
     - React
-  - react-native-camera (3.26.0):
+  - react-native-camera (3.30.0):
     - React
-    - react-native-camera/RCT (= 3.26.0)
-    - react-native-camera/RN (= 3.26.0)
-  - react-native-camera/RCT (3.26.0):
+    - react-native-camera/RCT (= 3.30.0)
+    - react-native-camera/RN (= 3.30.0)
+  - react-native-camera/RCT (3.30.0):
     - React
-  - react-native-camera/RN (3.26.0):
+  - react-native-camera/RN (3.30.0):
     - React
   - react-native-keep-awake (4.0.0):
     - React
   - react-native-maps (0.27.1):
     - React
-  - react-native-netinfo (5.9.0):
+  - react-native-netinfo (5.9.2):
     - React
   - react-native-safe-area-context (1.0.2):
     - React
@@ -360,7 +360,7 @@ PODS:
     - React
   - RNCMaskedView (0.1.10):
     - React
-  - RNCPushNotificationIOS (1.2.0):
+  - RNCPushNotificationIOS (1.2.2):
     - React
   - RNDateTimePicker (2.4.2):
     - React
@@ -615,11 +615,11 @@ SPEC CHECKSUMS:
   React-jsi: cb2cd74d7ccf4cffb071a46833613edc79cdf8f7
   React-jsiexecutor: d5525f9ed5f782fdbacb64b9b01a43a9323d2386
   React-jsinspector: fa0ecc501688c3c4c34f28834a76302233e29dc0
-  react-native-ble-manager: fda5f6b20092f2b2d356676bd1f3dc7065bb4329
-  react-native-camera: 2b74be8edc1103c4c46d1f4e5f41723d9ff052cc
+  react-native-ble-manager: 30803381a43a806eb5e871f4d0d4681280015c63
+  react-native-camera: eeb5b5f4ba4c1365fed3563af8a72007cbad7aab
   react-native-keep-awake: afad8a51dfef9fe9655a6344771be32c8596d774
   react-native-maps: f4b89da81626ad7f151a8bfcb79733295d31ce5c
-  react-native-netinfo: 7b3c53674ea611b26a7788821f137c6d9d3a038b
+  react-native-netinfo: cb74e17062b2af5a16a4b137f32495f241df1a8e
   react-native-safe-area-context: 9d9640a9085014864052e38496fc1dfde0b93974
   react-native-version-number: b415bbec6a13f2df62bf978e85bc0d699462f37f
   React-RCTActionSheet: 600b4d10e3aea0913b5a92256d2719c0cdd26d76
@@ -636,7 +636,7 @@ SPEC CHECKSUMS:
   rn-fetch-blob: f065bb7ab7fb48dd002629f8bdcb0336602d3cba
   RNCAsyncStorage: e0dd7c8a36543b4ef84969acd9f8aceba3a92dc2
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
-  RNCPushNotificationIOS: 4d9ffd08f00ef6c1029ebbf4d72fc711eca3ff01
+  RNCPushNotificationIOS: 4c97a36dbec42dba411cc35e6dac25e34a805fde
   RNDateTimePicker: bacbf754c3298b061c7eaa0a5352cbb2ede8d5a2
   RNFirebase: 37daa9a346d070f9f6ee1f3b4aaf4c8e3b1d5d1c
   RNGestureHandler: 8f09cd560f8d533eb36da5a6c5a843af9f056b38
