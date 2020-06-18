@@ -24,6 +24,7 @@ jobs:
           pip install fb-idb
       - run: cp GoogleService-Info.plist.dist ios/GoogleService-Info.plist
       - run: cd ios/ && pod install --repo-update && cd ..
+      - run: cp .env.dist .env
       - run: node node_modules/.bin/detox build -c ios.sim.release
         env:
           googleMapsApiKey: ${{ secrets.googleMapsApiKey }}
@@ -64,6 +65,7 @@ jobs:
         run: |
           brew install xmlstarlet
           xmlstarlet ed --inplace --ps --insert "/manifest/application" --type attr -n "android:usesCleartextTraffic" -v "true" android/app/src/main/AndroidManifest.xml
+      - run: cp .env.dist .env
       - run: node node_modules/.bin/detox build -c android.emu.release
         env:
           googleMapsApiKey: ${{ secrets.googleMapsApiKey }}
