@@ -6033,6 +6033,11 @@ image-size@^0.6.0:
   resolved "https://registry.yarnpkg.com/image-size/-/image-size-0.6.3.tgz#e7e5c65bb534bd7cdcedd6cb5166272a85f75fb2"
   integrity sha512-47xSUiQioGaB96nqtp5/q55m0aBQSQdyIloMOc/x+QVTDZLNmXE892IIDrJ0hM1A5vcNUDD5tDffkSP5lCaIIA==
 
+immutable@^4.0.0-rc.12:
+  version "4.0.0-rc.12"
+  resolved "https://registry.yarnpkg.com/immutable/-/immutable-4.0.0-rc.12.tgz#ca59a7e4c19ae8d9bf74a97bdf0f6e2f2a5d0217"
+  integrity sha512-0M2XxkZLx/mi3t8NVwIm1g8nHoEmM9p9UBl/G9k4+hm0kBgOVdMV/B3CY5dQ8qG8qc80NN4gDV4HQv6FTJ5q7A==
+
 import-fresh@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/import-fresh/-/import-fresh-2.0.0.tgz#d81355c15612d386c61f9ddd3922d4304822a546"
@@ -7889,12 +7894,7 @@ moment-range@^4.0.2:
   dependencies:
     es6-symbol "^3.1.0"
 
-moment@^2.10.6:
-  version "2.24.0"
-  resolved "https://registry.yarnpkg.com/moment/-/moment-2.24.0.tgz#0d055d53f5052aa653c9f6eb68bb5d12bf5c2b5b"
-  integrity sha512-bV7f+6l2QigeBBZSM/6yTNq4P2fNpSWj/0e7jQcy87A8e7o2nAfP/34/2ky5Vw4B9S446EtIhodAzkFCcR4dQg==
-
-moment@^2.24.0, moment@^2.26.0:
+moment@^2.10.6, moment@^2.24.0, moment@^2.26.0:
   version "2.26.0"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.26.0.tgz#5e1f82c6bafca6e83e808b30c8705eed0dcbd39a"
   integrity sha512-oIixUO+OamkUkwjhAVE18rAMfRJNsNe/Stid/gwHSOfHrOtw9EhAY2AHvdKZ/k/MggcYELFCJz/Sn2pL8b8JMw==
@@ -9017,11 +9017,12 @@ react-native-ble-manager@^7.3.0:
   integrity sha512-Zuu+9E628cFj1Xd3s1V7qD1mwROrmIxGhrLCdg3Q1Ii1gCAYD9/b5OoVoopiRV2Be0aRYW3CiA0SmeFHQldQ3Q==
 
 react-native-calendars@^1.296.0:
-  version "1.296.0"
-  resolved "https://registry.yarnpkg.com/react-native-calendars/-/react-native-calendars-1.296.0.tgz#4ecc3b0e5b980119c8476b83dbe6b93840d9c9de"
-  integrity sha512-uxRL6RAd0/ITXZ64puL/UiIM4hfXgsyyo0bdnDMXnUG+KiXodigSdqiYQA/i+258etQtpSD7B28Irbb/PM/wsQ==
+  version "1.299.0"
+  resolved "https://registry.yarnpkg.com/react-native-calendars/-/react-native-calendars-1.299.0.tgz#184a373a5f97d58c1f44e051d26820f6a48ac7ee"
+  integrity sha512-AG5fvyElTh+V6bLo9MovgwFTKozUp1Uu/7hDAwweT40aQw/TlaX/lwK1ctR0+WzLgMLKfxLY/nQD1P/shctcPw==
   dependencies:
     hoist-non-react-statics "^3.3.1"
+    immutable "^4.0.0-rc.12"
     lodash "^4.17.15"
     moment "^2.24.0"
     prop-types "^15.5.10"
