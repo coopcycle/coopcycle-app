@@ -13,7 +13,7 @@
   "dependencies": {
     "@mapbox/polyline": "^1.1.0",
     "@mauron85/react-native-background-geolocation": "^0.6.3",
-    "@react-native-community/async-storage": "^1.8.1",
+    "@react-native-community/async-storage": "^1.11.0",
     "@react-native-community/datetimepicker": "^2.4.2",
     "@react-native-community/masked-view": "^0.1.10",
     "@react-native-community/netinfo": "^5.9.2",
