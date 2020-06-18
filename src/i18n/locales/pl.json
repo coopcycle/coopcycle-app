@@ -255,7 +255,7 @@
         "AN_ERROR_OCCURRED": "Wystąpił błąd",
         "DELIVERY_ASAP": "Najszybciej jak się da",
         "CART_DELIVERY_TIME": "Dostawa {{- fromNow}}",
-        "CART_DELIVERY_TIME_DIFF": "Dostawa za {{diff}} minut",
+        "CART_DELIVERY_TIME_DIFF": "Dostawa w ciągu {{diff}} minut",
         "TIME_DIFF_SHORT": "{{min}} – {{max}} minut",
         "TASK_ADD_PROOF_OF_DELIVERY": "Dodaj potwierdzenie doręczenia",
         "STORE_NEW_DELIVERY": "Nowa dostawa",
