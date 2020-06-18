@@ -8225,9 +8225,9 @@ number-is-nan@^1.0.0:
   integrity sha1-CXtgK1NCKlIsGvuHkDGDNpQaAR0=
 
 numbro@^2.3.0:
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/numbro/-/numbro-2.3.0.tgz#a2cdcf164346833fded1128dfc5056a882b3097a"
-  integrity sha512-KGa4qVveFGC0HgKaJnmKYqyC9CX7jQONxEfREVwc/8UwTJtcEt60F8j/NCKgZH/IFW/Z9uibhCDqpJiRxuXdsA==
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/numbro/-/numbro-2.3.1.tgz#be748b71e90879e30c1131faf50e0e47f1202117"
+  integrity sha512-oVGNn/Ssvz4i9C76C07NDk3QXjj4DApD5QZsJSeGckzs4YxwyWeSu4bD+s9M3BzemqN3y0DW1Fthxlb2p/+U5w==
   dependencies:
     bignumber.js "^8.1.1"
 
