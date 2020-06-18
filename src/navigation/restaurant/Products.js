@@ -88,7 +88,7 @@ function mapStateToProps(state) {
   return {
     httpClient: state.app.httpClient,
     restaurant: state.restaurant.restaurant,
-    products: state.restaurant.products,
+    products: state.restaurant.products.sort((a, b) => a.name < b.name ? -1 : 1),
     hasMoreProducts: state.restaurant.hasMoreProducts,
   }
 }
