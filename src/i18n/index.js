@@ -19,7 +19,7 @@ import moment from 'moment'
 import { LocaleConfig } from 'react-native-calendars'
 
 import numbro from 'numbro'
-import csCZ from 'numbro/languages/csCZ'
+import csCZ from 'numbro/languages/cs-CZ'
 import deDE from 'numbro/languages/de-DE'
 import enGB from 'numbro/languages/en-GB'
 import esES from 'numbro/languages/es-ES'
