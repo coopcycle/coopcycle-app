@@ -309,7 +309,7 @@ PODS:
     - React
   - react-native-maps (0.27.1):
     - React
-  - react-native-netinfo (5.9.2):
+  - react-native-netinfo (5.9.4):
     - React
   - react-native-safe-area-context (3.0.7):
     - React
@@ -362,7 +362,7 @@ PODS:
     - React
   - RNCPushNotificationIOS (1.2.2):
     - React
-  - RNDateTimePicker (2.4.2):
+  - RNDateTimePicker (2.4.3):
     - React
   - RNFirebase (5.6.0):
     - Firebase/Core
@@ -619,7 +619,7 @@ SPEC CHECKSUMS:
   react-native-camera: eeb5b5f4ba4c1365fed3563af8a72007cbad7aab
   react-native-keep-awake: afad8a51dfef9fe9655a6344771be32c8596d774
   react-native-maps: f4b89da81626ad7f151a8bfcb79733295d31ce5c
-  react-native-netinfo: cb74e17062b2af5a16a4b137f32495f241df1a8e
+  react-native-netinfo: cd479ab1b67cdd1cb1403a99ecdb24190a6dd7ef
   react-native-safe-area-context: ef6f16c66b0797ecae1bf86c103dfb3dc16fc33d
   react-native-version-number: b415bbec6a13f2df62bf978e85bc0d699462f37f
   React-RCTActionSheet: 600b4d10e3aea0913b5a92256d2719c0cdd26d76
@@ -637,7 +637,7 @@ SPEC CHECKSUMS:
   RNCAsyncStorage: d059c3ee71738c39834a627476322a5a8cd5bf36
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
   RNCPushNotificationIOS: 4c97a36dbec42dba411cc35e6dac25e34a805fde
-  RNDateTimePicker: bacbf754c3298b061c7eaa0a5352cbb2ede8d5a2
+  RNDateTimePicker: 6cba311a3ba473624d97cc762fd270b2a3cfca49
   RNFirebase: 37daa9a346d070f9f6ee1f3b4aaf4c8e3b1d5d1c
   RNGestureHandler: 8f09cd560f8d533eb36da5a6c5a843af9f056b38
   RNLocalize: b6df30cc25ae736d37874f9bce13351db2f56796
