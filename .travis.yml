@@ -1,6 +1,9 @@
 env:
   global:
     - NODE_OPTIONS=--max-old-space-size=8192
+    - COUNTLY_SERVER_URL=
+    - COUNTLY_APP_KEY=
+    - COUNTLY_SALT=
 
 matrix:
   include:
