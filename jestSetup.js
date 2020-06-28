@@ -47,12 +47,6 @@ jest.mock('countly-sdk-react-native-bridge', () => ({
   recordView: () => {},
 }));
 
-jest.mock('react-native-dotenv', () => ({
-  COUNTLY_SERVER_URL: '',
-  COUNTLY_APP_KEY: '',
-  COUNTLY_SALT: ''
-}));
-
 const fakeNavigator = {
   dispatch: (action) => {}
 }

@@ -11,6 +11,8 @@ matrix:
     env: LANE='node'
     node_js: 12
     cache: yarn
+    before_script:
+      - cp .env.dist .env
     script:
       - yarn lint
       - yarn test
