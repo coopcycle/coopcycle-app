@@ -40,6 +40,13 @@ jest.mock('@mauron85/react-native-background-geolocation', () => ({
   stop: jest.fn(),
 }))
 
+jest.mock('countly-sdk-react-native-bridge', () => ({
+  enableParameterTamperingProtection: () => {},
+  init: () => {},
+  start: () => {},
+  recordView: () => {},
+}));
+
 const fakeNavigator = {
   dispatch: (action) => {}
 }
