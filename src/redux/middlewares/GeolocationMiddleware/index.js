@@ -1,6 +1,8 @@
+import { Alert } from 'react-native'
 import BackgroundGeolocation from '@mauron85/react-native-background-geolocation'
 
 import i18n from '../../../i18n'
+import { setBackgroundGeolocationEnabled } from '../../App/actions'
 import { selectIsAuthenticated } from '../../App/selectors'
 
 import tracker from '../../../analytics/Tracker'
@@ -37,6 +39,25 @@ export default ({ getState, dispatch }) => {
     maxLocations: 10,
     syncThreshold: 5,
   }
+
+  BackgroundGeolocation.on('authorization', (status) => {
+    console.log('[INFO] BackgroundGeolocation authorization status: ' + status);
+    if (status === BackgroundGeolocation.NOT_AUTHORIZED) {
+      // we need to set delay or otherwise alert may not be shown
+      setTimeout(() =>
+        Alert.alert('App requires location tracking permission', 'Would you like to open app settings?', [
+          { text: 'Yes', onPress: () => BackgroundGeolocation.showAppSettings() },
+          { text: 'No', style: 'cancel' },
+        ]), 1000)
+    }
+  })
+
+  BackgroundGeolocation.on('start', () => {
+    dispatch(setBackgroundGeolocationEnabled(true))
+  })
+  BackgroundGeolocation.on('stop', () => {
+    dispatch(setBackgroundGeolocationEnabled(false))
+  })
 
   BackgroundGeolocation.configure(options)
 
@@ -98,6 +119,10 @@ export default ({ getState, dispatch }) => {
       })
 
       BackgroundGeolocation.start()
+
+      BackgroundGeolocation.checkStatus(status => {
+        dispatch(setBackgroundGeolocationEnabled(status.isRunning))
+      })
 
     } else {
       BackgroundGeolocation.configure({

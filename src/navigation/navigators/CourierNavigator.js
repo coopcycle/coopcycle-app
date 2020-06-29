@@ -5,6 +5,7 @@ import { createStackNavigator } from 'react-navigation-stack'
 import { createBottomTabNavigator } from 'react-navigation-tabs'
 
 import i18n from '../../i18n'
+import TrackingIcon from '../../components/TrackingIcon'
 import screens, { defaultNavigationOptions, headerLeft } from '..'
 import TaskNavigator from './TaskNavigator'
 
@@ -51,7 +52,7 @@ const MainNavigator = createStackNavigator({
             <Icon name="settings" style={{ color: 'white' }} />
           </Button>
           <Button transparent>
-            <Icon name="navigate" style={{ color: navigation.getParam('tracking', false) ? 'green' : 'lightgrey' }}/>
+            <TrackingIcon />
           </Button>
         </View>
       ,

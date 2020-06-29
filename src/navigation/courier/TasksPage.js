@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import { StyleSheet, Alert, Platform, InteractionManager } from 'react-native'
+import { StyleSheet, Platform, InteractionManager } from 'react-native'
 import { Container } from 'native-base'
-import { NavigationActions, withNavigationFocus } from 'react-navigation'
+import { withNavigationFocus } from 'react-navigation'
 import KeepAwake from 'react-native-keep-awake'
 import RNPinScreen from 'react-native-pin-screen'
 import { connect } from 'react-redux'
@@ -16,7 +16,6 @@ import {
   selectTaskSelectedDate,
   selectKeepAwake,
 } from '../../redux/Courier'
-import BackgroundGeolocation from '@mauron85/react-native-background-geolocation'
 import { navigateToTask } from '../../navigation'
 
 class TasksPage extends Component {
@@ -29,7 +28,6 @@ class TasksPage extends Component {
       polyline: [],
     }
 
-    this.onMapReady = this.onMapReady.bind(this)
     this.refreshTasks = this.refreshTasks.bind(this)
   }
 
@@ -50,7 +48,6 @@ class TasksPage extends Component {
   }
 
   componentDidMount() {
-
     InteractionManager.runAfterInteractions(() => {
       this.refreshTasks(this.props.selectedDate)
     })
@@ -58,18 +55,6 @@ class TasksPage extends Component {
     if (this.props.keepAwake && this.props.isFocused) {
       this.enableKeepAwake()
     }
-
-    BackgroundGeolocation.on('start', () => {
-      this.setParentParams({ tracking: true })
-    })
-    BackgroundGeolocation.on('stop', () => {
-      this.setParentParams({ tracking: false })
-    })
-    BackgroundGeolocation.checkStatus(status => {
-      if (status.isRunning) {
-        this.setParentParams({ tracking: true })
-      }
-    })
   }
 
   componentDidUpdate(prevProps) {
@@ -86,27 +71,6 @@ class TasksPage extends Component {
     this.props.loadTasks(selectedDate)
   }
 
-  setParentParams(params) {
-    this.props.navigation.dispatch(NavigationActions.setParams({
-      params,
-      key: 'CourierHome',
-    }))
-  }
-
-  onMapReady () {
-    BackgroundGeolocation.on('authorization', (status) => {
-      console.log('[INFO] BackgroundGeolocation authorization status: ' + status);
-      if (status === BackgroundGeolocation.NOT_AUTHORIZED) {
-        // we need to set delay or otherwise alert may not be shown
-        setTimeout(() =>
-          Alert.alert('App requires location tracking permission', 'Would you like to open app settings?', [
-            { text: 'Yes', onPress: () => BackgroundGeolocation.showAppSettings() },
-            { text: 'No', onPress: () => console.log('No Pressed'), style: 'cancel' },
-          ]), 1000);
-      }
-    });
-  }
-
   render() {
 
     const { tasks, selectedDate } = this.props
@@ -116,7 +80,6 @@ class TasksPage extends Component {
         <TasksMapView
           mapCenter={ this.props.mapCenter }
           tasks={ tasks }
-          onMapReady={ () => this.onMapReady() }
           onMarkerCalloutPress={ task => navigateToTask(this.props.navigation, task, tasks) } />
         <DateSelectHeader
           buttonsEnabled={true}
