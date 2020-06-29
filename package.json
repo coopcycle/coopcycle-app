@@ -43,6 +43,8 @@
     "react-i18next": "^10.13.1",
     "react-native": "0.61.5",
     "react-native-autocomplete-input": "^4.2.0",
+    "react-native-background-fetch": "^3.1.0",
+    "react-native-background-geolocation": "^3.7.0",
     "react-native-ble-manager": "^7.3.0",
     "react-native-calendars": "^1.299.0",
     "react-native-camera": "^3.30.0",

@@ -1,7 +1,8 @@
 PODS:
-  - "@mauron85_react-native-background-geolocation (0.6.3)":
-    - React
   - boost-for-react-native (1.63.0)
+  - CocoaLumberjack (3.5.3):
+    - CocoaLumberjack/Core (= 3.5.3)
+  - CocoaLumberjack/Core (3.5.3)
   - Countly (20.04):
     - Countly/Core (= 20.04)
   - Countly/Core (20.04)
@@ -356,6 +357,11 @@ PODS:
     - React-RCTText
   - rn-fetch-blob (0.12.0):
     - React-Core
+  - RNBackgroundFetch (3.1.0):
+    - React
+  - RNBackgroundGeolocation (3.7.0):
+    - CocoaLumberjack (~> 3.5.1)
+    - React
   - RNCAsyncStorage (1.11.0):
     - React
   - RNCMaskedView (0.1.10):
@@ -395,7 +401,6 @@ PODS:
   - Yoga (1.14.0)
 
 DEPENDENCIES:
-  - "@mauron85_react-native-background-geolocation (from `../node_modules/@mauron85/react-native-background-geolocation`)"
   - CountlyReactNative (from `../node_modules/countly-sdk-react-native-bridge`)
   - Crashlytics (~> 3.14.0)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
@@ -436,6 +441,8 @@ DEPENDENCIES:
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - ReactNativeKeyboardManager (from `../node_modules/react-native-keyboard-manager`)
   - rn-fetch-blob (from `../node_modules/rn-fetch-blob`)
+  - RNBackgroundFetch (from `../node_modules/react-native-background-fetch`)
+  - RNBackgroundGeolocation (from `../node_modules/react-native-background-geolocation`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
   - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
   - "RNCPushNotificationIOS (from `../node_modules/@react-native-community/push-notification-ios`)"
@@ -453,6 +460,7 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - boost-for-react-native
+    - CocoaLumberjack
     - Countly
     - Crashlytics
     - Fabric
@@ -478,8 +486,6 @@ SPEC REPOS:
     - Stripe
 
 EXTERNAL SOURCES:
-  "@mauron85_react-native-background-geolocation":
-    :path: "../node_modules/@mauron85/react-native-background-geolocation"
   CountlyReactNative:
     :path: "../node_modules/countly-sdk-react-native-bridge"
   DoubleConversion:
@@ -548,6 +554,10 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-keyboard-manager"
   rn-fetch-blob:
     :path: "../node_modules/rn-fetch-blob"
+  RNBackgroundFetch:
+    :path: "../node_modules/react-native-background-fetch"
+  RNBackgroundGeolocation:
+    :path: "../node_modules/react-native-background-geolocation"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-community/async-storage"
   RNCMaskedView:
@@ -576,8 +586,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
-  "@mauron85_react-native-background-geolocation": fa34ab82e94212be16ef6e75c32bcb707b0a1524
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
+  CocoaLumberjack: 2f44e60eb91c176d471fdba43b9e3eae6a721947
   Countly: ff7755bdc2dfe6e9a5f7cd3fa4104ada6b3eaee4
   CountlyReactNative: c008304f22d8054b77390d8639e733f78af2677b
   Crashlytics: 540b7e5f5da5a042647227a5e3ac51d85eed06df
@@ -634,6 +644,8 @@ SPEC CHECKSUMS:
   ReactCommon: 198c7c8d3591f975e5431bec1b0b3b581aa1c5dd
   ReactNativeKeyboardManager: 6c42da02c08b7eb16440f9fdc1c78f776a11cdca
   rn-fetch-blob: f065bb7ab7fb48dd002629f8bdcb0336602d3cba
+  RNBackgroundFetch: 8dbb63141792f1473e863a0797ffbd5d987af2fc
+  RNBackgroundGeolocation: 7e6d7f7627f47602e07612814734a1644359256b
   RNCAsyncStorage: d059c3ee71738c39834a627476322a5a8cd5bf36
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
   RNCPushNotificationIOS: 4c97a36dbec42dba411cc35e6dac25e34a805fde

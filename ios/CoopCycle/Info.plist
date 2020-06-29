@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>ITSAppUsesNonExemptEncryption</key>
-	<false/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
@@ -37,6 +35,8 @@
 	</array>
 	<key>CFBundleVersion</key>
 	<string>88</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>comgooglemaps</string>
@@ -69,6 +69,12 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>Our app uses bluetooth to print receipts on thermal printers</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>App would like to use bluetooth</string>
+	<key>NSCameraUsageDescription</key>
+	<string>App requires access to camera</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>App requires background tracking</string>
 	<key>NSLocationAlwaysUsageDescription</key>
@@ -77,16 +83,10 @@
 	<string>App requires background tracking</string>
 	<key>NSMotionUsageDescription</key>
 	<string>App requires motion tracking</string>
-	<key>NSCameraUsageDescription</key>
-	<string>App requires access to camera</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>App requires access to photo library</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>App requires access to photo library</string>
-	<key>NSBluetoothPeripheralUsageDescription</key>
-	<string>App would like to use bluetooth</string>
-	<key>NSBluetoothAlwaysUsageDescription</key>
-	<string>Our app uses bluetooth to print receipts on thermal printers</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>App requires access to photo library</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Entypo.ttf</string>
@@ -115,8 +115,9 @@
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>
-		<string>remote-notification</string>
+		<string>fetch</string>
 		<string>location</string>
+		<string>remote-notification</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
