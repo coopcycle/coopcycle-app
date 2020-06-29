@@ -28,6 +28,7 @@ import {
   SET_SETTINGS,
   SET_INTERNET_REACHABLE,
   REGISTRATION_ERRORS,
+  SET_BACKGROUND_GEOLOCATION_ENABLED,
 } from './actions'
 
 const initialState = {
@@ -60,6 +61,7 @@ const initialState = {
   },
   isInternetReachable: true,
   registrationErrors: {},
+  isBackgroundGeolocationEnabled: false,
 }
 
 export default (state = initialState, action = {}) => {
@@ -243,6 +245,12 @@ export default (state = initialState, action = {}) => {
         ...state,
         registrationErrors: action.payload,
         loading: false,
+      }
+
+    case SET_BACKGROUND_GEOLOCATION_ENABLED:
+      return {
+        ...state,
+        isBackgroundGeolocationEnabled: action.payload,
       }
   }
 

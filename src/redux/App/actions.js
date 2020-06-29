@@ -53,6 +53,8 @@ export const SET_INTERNET_REACHABLE = '@app/SET_INTERNET_REACHABLE'
 
 export const REGISTRATION_ERRORS = '@app/REGISTRATION_ERRORS'
 
+export const SET_BACKGROUND_GEOLOCATION_ENABLED = '@app/SET_BACKGROUND_GEOLOCATION_ENABLED'
+
 /*
  * Action Creators
  */
@@ -95,6 +97,8 @@ const loadMyRestaurantsFailure = createAction(LOAD_MY_RESTAURANTS_FAILURE)
 const setSettings = createAction(SET_SETTINGS)
 
 export const setInternetReachable = createAction(SET_INTERNET_REACHABLE)
+
+export const setBackgroundGeolocationEnabled = createAction(SET_BACKGROUND_GEOLOCATION_ENABLED)
 
 const registrationErrors = createAction(REGISTRATION_ERRORS)
 
