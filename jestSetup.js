@@ -38,6 +38,7 @@ jest.mock('@mauron85/react-native-background-geolocation', () => ({
   on: jest.fn(),
   start: jest.fn(),
   stop: jest.fn(),
+  checkStatus: jest.fn(),
 }))
 
 jest.mock('countly-sdk-react-native-bridge', () => ({
