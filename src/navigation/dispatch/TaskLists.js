@@ -40,7 +40,10 @@ class TaskLists extends Component {
       <View style={{ flex: 1 }}>
         <View>
           <AddButton
-            onPress={ () => navigate('DispatchPickUser', { onItemPress: user => this._createTaskList(user) }) }>
+            onPress={ () => navigate('DispatchPickUser', {
+              onItemPress: user => this._createTaskList(user),
+              withSelfAssignBtn: false,
+            }) }>
             <Text>{ this.props.t('DISPATCH_ADD_TASK_LIST') }</Text>
           </AddButton>
         </View>

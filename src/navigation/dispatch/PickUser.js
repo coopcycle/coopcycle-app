@@ -71,11 +71,13 @@ function mapStateToProps(state, ownProps) {
   const user = selectUser(state)
   const users = _.filter(state.dispatch.users, u => _.includes(u.roles, 'ROLE_COURIER') && u.username !== user.username)
 
+  const withSelfAssignBtn = ownProps.navigation.getParam('withSelfAssignBtn', true)
+
   return {
     baseURL: state.app.baseURL,
     users: users,
     onPress: ownProps.navigation.getParam('onItemPress'),
-    selfAssign: _.includes(user.roles, 'ROLE_COURIER'),
+    selfAssign: withSelfAssignBtn && _.includes(user.roles, 'ROLE_COURIER'),
     user,
   }
 }
