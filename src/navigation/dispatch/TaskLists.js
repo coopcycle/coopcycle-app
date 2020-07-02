@@ -12,6 +12,11 @@ import { selectTasksNotCancelled } from '../../redux/Dispatch/selectors'
 
 class TaskLists extends Component {
 
+  _createTaskList(user) {
+    this.props.navigation.navigate('DispatchTaskLists')
+    this.props.createTaskList(this.props.date, user)
+  }
+
   renderItem(taskList) {
 
     const { navigate } = this.props.navigation
@@ -35,7 +40,7 @@ class TaskLists extends Component {
       <View style={{ flex: 1 }}>
         <View>
           <AddButton
-            onPress={ () => navigate('DispatchPickUser', { onUserPicked: user => this.props.createTaskList(this.props.date, user) }) }>
+            onPress={ () => navigate('DispatchPickUser', { onItemPress: user => this._createTaskList(user) }) }>
             <Text>{ this.props.t('DISPATCH_ADD_TASK_LIST') }</Text>
           </AddButton>
         </View>
