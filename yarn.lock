@@ -16,7 +16,7 @@
   dependencies:
     "@babel/highlight" "^7.8.3"
 
-"@babel/core@^7.0.0", "@babel/core@^7.1.0", "@babel/core@^7.4.5", "@babel/core@^7.7.5":
+"@babel/core@^7.0.0", "@babel/core@^7.1.0", "@babel/core@^7.7.5":
   version "7.8.4"
   resolved "https://registry.yarnpkg.com/@babel/core/-/core-7.8.4.tgz#d496799e5c12195b3602d0fddd77294e3e38e80e"
   integrity sha512-0LiLrB2PwrVI+a2/IEskBopDYSd8BCb3rOvH7D5tzoWd696TBEduBvuLVm4Nx6rltrLZqvI3MCalB2K2aVzQjA==
@@ -4533,16 +4533,16 @@ detect-newline@^3.0.0:
   resolved "https://registry.yarnpkg.com/detect-newline/-/detect-newline-3.1.0.tgz#576f5dfc63ae1a192ff192d8ad3af6308991b651"
   integrity sha512-TLz+x/vEXm/Y7P7wn1EJFNLxYpUD4TgMosxY6fAVJUnJMbupHBOncxyWUG9OpTaH9EBD7uFI5LfEgmMOc54DsA==
 
-detox@^16.5.1:
-  version "16.5.1"
-  resolved "https://registry.yarnpkg.com/detox/-/detox-16.5.1.tgz#4d2472f641c3aadaeaed4967a7c3c84dca4b0f34"
-  integrity sha512-GtNQY20r7n0Nl0u4C3vHjv9Zsp1Nw1puOHOLylqeX3WGe8V5awutIipp2ASKc7ufSn0Z8lteRoY7HGVtzpf67w==
+detox@^17.0:
+  version "17.0.2"
+  resolved "https://registry.yarnpkg.com/detox/-/detox-17.0.2.tgz#188ad89e83b6a1de8c4f733072095d44aeca22a7"
+  integrity sha512-90nTa8Z3N5veiySWA6Teawbv7Q3llGC+sWHPV06mwtSPz07Dw38VE7Nz1yAAlQndzIevbWMFwJNjCDFhF5+5eg==
   dependencies:
-    "@babel/core" "^7.4.5"
     bunyan "^1.8.12"
     bunyan-debug-stream "^1.1.0"
     chalk "^2.4.2"
     child-process-promise "^2.2.0"
+    find-up "^4.1.0"
     fs-extra "^4.0.2"
     funpermaproxy "^1.0.1"
     get-port "^2.1.0"
@@ -4552,6 +4552,7 @@ detox@^16.5.1:
     proper-lockfile "^3.0.2"
     sanitize-filename "^1.6.1"
     shell-utils "^1.0.9"
+    signal-exit "^3.0.3"
     tail "^2.0.0"
     telnet-client "1.2.8"
     tempfile "^2.0.0"
@@ -10293,6 +10294,11 @@ signal-exit@^3.0.0, signal-exit@^3.0.2:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-3.0.2.tgz#b5fdc08f1287ea1178628e415e25132b73646c6d"
   integrity sha1-tf3AjxKH6hF4Yo5BXiUTK3NkbG0=
+
+signal-exit@^3.0.3:
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-3.0.3.tgz#a1410c2edd8f077b08b4e253c8eacfcaf057461c"
+  integrity sha512-VUJ49FC8U1OxwZLxIbTTrDvLnf/6TDgxZcK8wxR8zs13xpx7xbG60ndBlhNrFi2EMuFRoeDoJO7wthSLq42EjA==
 
 simple-concat@^1.0.0:
   version "1.0.0"
