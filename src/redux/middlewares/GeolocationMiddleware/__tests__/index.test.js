@@ -1,7 +1,7 @@
 import { createStore, applyMiddleware, combineReducers } from 'redux'
 import { createAction } from 'redux-actions'
 import BackgroundGeolocation from '@mauron85/react-native-background-geolocation'
-import middleware from '..'
+import middleware from '../index.android.js'
 import AppUser from '../../../../AppUser'
 import { SET_USER } from '../../../../redux/App/actions'
 import appReducer from '../../../../redux/App/reducers'
