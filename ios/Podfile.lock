@@ -296,15 +296,15 @@ PODS:
     - React-cxxreact (= 0.61.5)
     - React-jsi (= 0.61.5)
   - React-jsinspector (0.61.5)
-  - react-native-ble-manager (7.3.0):
+  - react-native-ble-manager (7.3.1):
     - React
-  - react-native-camera (3.30.0):
+  - react-native-camera (3.31.0):
     - React
-    - react-native-camera/RCT (= 3.30.0)
-    - react-native-camera/RN (= 3.30.0)
-  - react-native-camera/RCT (3.30.0):
+    - react-native-camera/RCT (= 3.31.0)
+    - react-native-camera/RN (= 3.31.0)
+  - react-native-camera/RCT (3.31.0):
     - React
-  - react-native-camera/RN (3.30.0):
+  - react-native-camera/RN (3.31.0):
     - React
   - react-native-keep-awake (4.0.0):
     - React
@@ -368,7 +368,7 @@ PODS:
     - React
   - RNCPushNotificationIOS (1.2.2):
     - React
-  - RNDateTimePicker (2.4.3):
+  - RNDateTimePicker (2.5.0):
     - React
   - RNFirebase (5.6.0):
     - Firebase/Core
@@ -625,8 +625,8 @@ SPEC CHECKSUMS:
   React-jsi: cb2cd74d7ccf4cffb071a46833613edc79cdf8f7
   React-jsiexecutor: d5525f9ed5f782fdbacb64b9b01a43a9323d2386
   React-jsinspector: fa0ecc501688c3c4c34f28834a76302233e29dc0
-  react-native-ble-manager: 30803381a43a806eb5e871f4d0d4681280015c63
-  react-native-camera: eeb5b5f4ba4c1365fed3563af8a72007cbad7aab
+  react-native-ble-manager: 73a2c5d7ca510866d2bdf67d56bec42bd76c004f
+  react-native-camera: b5c8c7a71feecfdd5b39f0dbbf6b64b957ed55f2
   react-native-keep-awake: afad8a51dfef9fe9655a6344771be32c8596d774
   react-native-maps: f4b89da81626ad7f151a8bfcb79733295d31ce5c
   react-native-netinfo: cd479ab1b67cdd1cb1403a99ecdb24190a6dd7ef
@@ -649,7 +649,7 @@ SPEC CHECKSUMS:
   RNCAsyncStorage: d059c3ee71738c39834a627476322a5a8cd5bf36
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
   RNCPushNotificationIOS: 4c97a36dbec42dba411cc35e6dac25e34a805fde
-  RNDateTimePicker: 6cba311a3ba473624d97cc762fd270b2a3cfca49
+  RNDateTimePicker: a8000390e7a4fe23d9f36492ded9282640721c82
   RNFirebase: 37daa9a346d070f9f6ee1f3b4aaf4c8e3b1d5d1c
   RNGestureHandler: 8f09cd560f8d533eb36da5a6c5a843af9f056b38
   RNLocalize: b6df30cc25ae736d37874f9bce13351db2f56796
