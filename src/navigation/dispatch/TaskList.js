@@ -8,7 +8,7 @@ import _ from 'lodash'
 import TaskList from '../../components/TaskList'
 import AddButton from './components/AddButton'
 import { unassignTask } from '../../redux/Dispatch/actions'
-import { selectTasksNotCancelled } from '../../redux/Dispatch/selectors'
+import {selectTasksNotCancelled, selectTasksWithColor} from '../../redux/Dispatch/selectors'
 import { navigateToTask } from '../../navigation'
 
 class TaskListScreen extends Component {
@@ -41,6 +41,7 @@ class TaskListScreen extends Component {
         <View style={{ flex: 1 }}>
           <TaskList
             tasks={ tasks }
+            tasksWithColor={ this.props.tasksWithColor }
             onSwipeRight={ task => this.props.unassignTask(task) }
             swipeOutRightEnabled={ task => task.status !== 'DONE' }
             swipeOutRightIconName="close"
@@ -54,6 +55,7 @@ class TaskListScreen extends Component {
 function mapStateToProps(state) {
   return {
     taskLists: state.dispatch.taskLists,
+    tasksWithColor: selectTasksWithColor(state),
   }
 }
 
