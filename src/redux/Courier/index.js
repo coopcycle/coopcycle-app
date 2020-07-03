@@ -43,6 +43,7 @@ import {
   selectSignatures,
   selectPictures,
   selectSignatureScreenFirst,
+  selectTasksWithColor
 } from './taskSelectors'
 
 
@@ -102,4 +103,5 @@ export {
   selectSignatures,
   selectPictures,
   selectSignatureScreenFirst,
+  selectTasksWithColor,
 }

@@ -13,6 +13,7 @@ import {
   selectTaskSelectedDate,
   selectFilteredTasks,
   selectIsTasksRefreshing,
+  selectTasksWithColor
 } from '../../redux/Courier'
 import { navigateToTask, navigateToCompleteTask } from '../../navigation'
 
@@ -40,7 +41,7 @@ class TaskListPage extends Component {
 
   render() {
 
-    const { tasks, selectedDate } = this.props
+    const { tasks, tasksWithColor, selectedDate } = this.props
 
     const containerStyle = [ styles.container ]
     if (tasks.length === 0) {
@@ -53,6 +54,7 @@ class TaskListPage extends Component {
           tasks.length > 0 &&
           <TaskList
             tasks={ tasks }
+            tasksWithColor={ tasksWithColor }
             onSwipeLeft={ task => navigateToCompleteTask(this.props.navigation, task, tasks, true) }
             onSwipeRight={ task => navigateToCompleteTask(this.props.navigation, task, tasks, false) }
             swipeOutLeftEnabled={ task => task.status !== 'DONE' }
@@ -83,6 +85,7 @@ class TaskListPage extends Component {
 function mapStateToProps (state) {
   return {
     tasks: selectFilteredTasks(state),
+    tasksWithColor: selectTasksWithColor(state),
     selectedDate: selectTaskSelectedDate(state),
     isRefreshing: selectIsTasksRefreshing(state),
   }

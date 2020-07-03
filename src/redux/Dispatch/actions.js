@@ -17,10 +17,6 @@ export const LOAD_UNASSIGNED_TASKS_REQUEST = 'LOAD_UNASSIGNED_TASKS_REQUEST'
 export const LOAD_UNASSIGNED_TASKS_SUCCESS = 'LOAD_UNASSIGNED_TASKS_SUCCESS'
 export const LOAD_UNASSIGNED_TASKS_FAILURE = 'LOAD_UNASSIGNED_TASKS_FAILURE'
 
-export const DISPATCH_LOAD_TASKS_REQUEST = 'DISPATCH_LOAD_TASKS_REQUEST'
-export const DISPATCH_LOAD_TASKS_SUCCESS = 'DISPATCH_LOAD_TASKS_SUCCESS'
-export const DISPATCH_LOAD_TASKS_FAILURE = 'DISPATCH_LOAD_TASKS_FAILURE'
-
 export const LOAD_USERS_REQUEST = 'LOAD_USERS_REQUEST'
 export const LOAD_USERS_SUCCESS = 'LOAD_USERS_SUCCESS'
 export const LOAD_USERS_FAILURE = 'LOAD_USERS_FAILURE'
@@ -58,10 +54,6 @@ export const CHANGE_DATE = 'CHANGE_DATE'
 export const loadUnassignedTasksRequest = createAction(LOAD_UNASSIGNED_TASKS_REQUEST)
 export const loadUnassignedTasksSuccess = createAction(LOAD_UNASSIGNED_TASKS_SUCCESS)
 export const loadUnassignedTasksFailure = createAction(LOAD_UNASSIGNED_TASKS_FAILURE)
-
-export const loadTasksRequest = createAction(DISPATCH_LOAD_TASKS_REQUEST)
-export const loadTasksSuccess = createAction(DISPATCH_LOAD_TASKS_SUCCESS)
-export const loadTasksFailure = createAction(DISPATCH_LOAD_TASKS_FAILURE)
 
 export const loadUsersRequest = createAction(LOAD_USERS_REQUEST)
 export const loadUsersSuccess = createAction(LOAD_USERS_SUCCESS)
@@ -176,7 +168,7 @@ export function initialize() {
         dispatch(connect())
         dispatch(_initialize())
       })
-      .catch(e => dispatch(loadTasksFailure(e)))
+      .catch(e => dispatch(loadUnassignedTasksFailure(e)))
   }
 }
 
@@ -194,7 +186,7 @@ export function changeDate(date) {
         dispatch(loadUnassignedTasksSuccess(unassignedTasks['hydra:member']))
         dispatch(loadTaskListsSuccess(taskLists['hydra:member']))
       })
-      .catch(e => dispatch(loadTasksFailure(e)))
+      .catch(e => dispatch(loadUnassignedTasksFailure(e)))
 
     dispatch(_changeDate(date))
   }

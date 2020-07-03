@@ -7,7 +7,7 @@ import { Text } from 'native-base';
 import TaskList from '../../components/TaskList'
 import AddButton from './components/AddButton'
 import { assignTask, initialize } from '../../redux/Dispatch/actions'
-import { selectUnassignedTask } from '../../redux/Dispatch/selectors'
+import {selectUnassignedTask, selectTasksWithColor} from '../../redux/Dispatch/selectors'
 import { navigateToTask } from '../../navigation'
 
 class UnassignedTasks extends Component {
@@ -45,6 +45,7 @@ class UnassignedTasks extends Component {
           { !isEmpty && (
             <TaskList
               tasks={ this.props.unassignedTasks }
+              tasksWithColor={ this.props.tasksWithColor }
               swipeOutLeftEnabled={ task => !task.isAssigned }
               onSwipeLeft={ task => navigate('DispatchPickUser', { onItemPress: user => this._assignTask(task, user) }) }
               swipeOutLeftIconName="user"
@@ -60,6 +61,7 @@ function mapStateToProps(state) {
 
   return {
     unassignedTasks: selectUnassignedTask(state),
+    tasksWithColor: selectTasksWithColor(state),
     date: state.dispatch.date,
     user: state.app.user,
   }

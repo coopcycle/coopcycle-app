@@ -1,5 +1,6 @@
 import { createSelector } from 'reselect'
 import _ from 'lodash'
+import {mapToColor} from "coopcycle-frontend-js";
 
 export const selectUnassignedTask = createSelector(
   state => state.dispatch.unassignedTasks,
@@ -9,4 +10,9 @@ export const selectUnassignedTask = createSelector(
 export const selectTasksNotCancelled = createSelector(
   state => state.tasks,
   (tasks) => _.filter(tasks, task => task.status !== 'CANCELLED')
+)
+
+export const selectTasksWithColor = createSelector(
+  state => state.dispatch.allTasks,
+  tasks => mapToColor(tasks)
 )

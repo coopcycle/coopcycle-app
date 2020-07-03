@@ -8,6 +8,7 @@
 import moment from 'moment'
 import { createSelector } from 'reselect'
 import { reject, isEqual, uniqWith } from 'lodash'
+import {mapToColor} from "coopcycle-frontend-js";
 
 
 /* Simple Selectors */
@@ -106,3 +107,8 @@ const doesFilterMatch = (filter, task) =>
       (k === 'tags')
         ? task.tags.map(t => t.name).includes(filter[k])
         : task[k] === filter[k], false)
+
+export const selectTasksWithColor = createSelector(
+  selectTasks,
+  tasks => mapToColor(tasks)
+)

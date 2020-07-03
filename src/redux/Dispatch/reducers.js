@@ -26,8 +26,6 @@ import {
   UNASSIGN_TASK_SUCCESS,
   UNASSIGN_TASK_FAILURE,
   LOAD_TASK_SUCCESS,
-  DISPATCH_LOAD_TASKS_SUCCESS,
-  DISPATCH_LOAD_TASKS_FAILURE,
 } from './actions'
 
 import {
@@ -161,8 +159,6 @@ const removeFromTaskLists = (taskLists, task) => {
 
 export default (state = initialState, action = {}) => {
 
-  let unassignedTasks
-
   switch (action.type) {
 
     case DISPATCH_INITIALIZE:
@@ -189,31 +185,22 @@ export default (state = initialState, action = {}) => {
     case CREATE_TASK_LIST_FAILURE:
     case CREATE_TASK_FAILURE:
     case ASSIGN_TASK_FAILURE:
-    case DISPATCH_LOAD_TASKS_FAILURE:
     case UNASSIGN_TASK_FAILURE:
       return {
         ...state,
         isFetching: false,
       }
 
-    case DISPATCH_LOAD_TASKS_SUCCESS:
+  case LOAD_UNASSIGNED_TASKS_SUCCESS: {
+    let allTasks = _.uniqBy(Array.prototype.concat(state.allTasks, action.payload), '@id')
 
-      unassignedTasks = _.filter(action.payload, task => !task.isAssigned)
-
-      return {
-        ...state,
-        isFetching: false,
-        allTasks: action.payload,
-        unassignedTasks,
-      }
-
-    case LOAD_UNASSIGNED_TASKS_SUCCESS:
-      return {
-        ...state,
-        isFetching: false,
-        unassignedTasks: action.payload,
-      }
-
+    return {
+      ...state,
+      isFetching: false,
+      unassignedTasks: action.payload,
+      allTasks: allTasks,
+    }
+  }
     case LOAD_USERS_SUCCESS:
       return {
         ...state,
@@ -222,10 +209,15 @@ export default (state = initialState, action = {}) => {
       }
 
     case LOAD_TASK_LISTS_SUCCESS:
+      let allTasks = _.uniqBy(Array.prototype.concat(
+        state.allTasks,
+        _.flatMap(action.payload, it => it.items)), '@id')
+
       return {
         ...state,
         isFetching: false,
         taskLists: action.payload,
+        allTasks: allTasks,
       }
 
     case CREATE_TASK_LIST_SUCCESS:
