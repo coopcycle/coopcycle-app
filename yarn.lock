@@ -1551,14 +1551,14 @@
     wcwidth "^1.0.1"
     ws "^1.1.0"
 
-"@react-native-community/datetimepicker@^2.5.0":
-  version "2.5.0"
-  resolved "https://registry.yarnpkg.com/@react-native-community/datetimepicker/-/datetimepicker-2.5.0.tgz#81dd33d168e7947906ab6b1900f3702073bf57ed"
-  integrity sha512-BqJp/WZA1xryIzwaIJaGrJhhBf3S3lmiAA3CurDBeOXFtgAVn9gW+efNY+Z6DtrUax0QO77qeHyg1zjqOZ84kA==
+"@react-native-community/datetimepicker@^2.6.0":
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/@react-native-community/datetimepicker/-/datetimepicker-2.6.0.tgz#260715abc88dac2485f525f046bd33ac0e62a281"
+  integrity sha512-9fdMV4j5LK1iyYwIlvimIe0kSdSEMaDk93bqbQrJg6IrT0cKG1ColFbxXxmW1eBwxkROaDwtzF0HzLnrYJb0Iw==
   dependencies:
     invariant "^2.2.4"
   optionalDependencies:
-    react-native-windows "^0.62.0-preview.1"
+    react-native-windows "^0.62.0-0"
 
 "@react-native-community/eslint-config@^2.0":
   version "2.0.0"
@@ -1594,10 +1594,10 @@
   resolved "https://registry.yarnpkg.com/@react-native-community/netinfo/-/netinfo-5.9.4.tgz#a05a9403f8ee09c7d7f7c2dda850b79cac376691"
   integrity sha512-mb664NOqPvyUZ4TznzdYEfdS3OhSXWGbZprgsDZn4THw2X/4wcBFcBUeWuMzeQ56KhY0rm/YBBlZWHrSf3C/Aw==
 
-"@react-native-community/push-notification-ios@^1.2.2":
-  version "1.2.2"
-  resolved "https://registry.yarnpkg.com/@react-native-community/push-notification-ios/-/push-notification-ios-1.2.2.tgz#e4437a89bddca2cdeac96d17e02cde34336caaf3"
-  integrity sha512-0+DL68CgH5TF8WKwdjI9pul+mPKChGk9uHYcMJ0C6b296W5BQVaBQP6On2QYOgL/EWOWNWeBenW65FjKzWFf0g==
+"@react-native-community/push-notification-ios@^1.3.0":
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/@react-native-community/push-notification-ios/-/push-notification-ios-1.3.0.tgz#349095f5dda42f59501316c7ef7896adb8c2a1db"
+  integrity sha512-fXLtDYsDv8CZIF/1pnrLyKv68X1VVgsWQTVdxA4UeYPAGP9OU4XdShD1TsPFWIF5VgabNrnmKl1uEDLw3X+6jA==
   dependencies:
     invariant "^2.2.4"
 
@@ -9411,10 +9411,10 @@ react-native-version-number@^0.3.6:
   resolved "https://registry.yarnpkg.com/react-native-version-number/-/react-native-version-number-0.3.6.tgz#dd8b1435fc217df0a166d7e4a61fdc993f3e7437"
   integrity sha512-TdyXiK90NiwmSbmAUlUBOV6WI1QGoqtvZZzI5zQY4fKl67B3ZrZn/h+Wy/OYIKKFMfePSiyfeIs8LtHGOZ/NgA==
 
-react-native-windows@^0.62.0-preview.1:
-  version "0.62.0-preview.16"
-  resolved "https://registry.yarnpkg.com/react-native-windows/-/react-native-windows-0.62.0-preview.16.tgz#cf110dbb541c3a0b45d67b152ec1eed5827bcafd"
-  integrity sha512-zSlUFiXBZqyNW5yKXwWwyLfGyo5pTmOKn1mf+InOj8L56L3KOuel01cJ+0AtAYSP0qGcDusGrDgyBYjKR1Z1dw==
+react-native-windows@^0.62.0-0:
+  version "0.62.1"
+  resolved "https://registry.yarnpkg.com/react-native-windows/-/react-native-windows-0.62.1.tgz#8ed01b6778ff6d3f9d9e2a9b65b0180a8ee4e9f1"
+  integrity sha512-0q3iMV/uvosnYJdMeCjI1oXLJSFgN23ZrnW1tJpnyO4LPALQ4PgguFeNF8y8tUf/bTcc9UGATwzrj9qd4ulKQg==
   dependencies:
     "@babel/runtime" "^7.8.4"
     cli-spinners "^2.2.0"
