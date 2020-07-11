@@ -102,7 +102,7 @@
     "babel-eslint": "^10.1.0",
     "babel-jest": "^26.1.0",
     "babel-plugin-transform-remove-console": "^6.9.4",
-    "detox": "^17.0",
+    "detox": "^17.1.1",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.14.0",
     "enzyme-to-json": "^3.5.0",
