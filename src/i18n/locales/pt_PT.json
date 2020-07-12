@@ -236,7 +236,7 @@
         "DISPATCH_PICK_USER": "Escolha um utilizador",
         "DISPATCH_ASSIGN_TO_ME": "Atribuído a mim",
         "TASK_FORM_ADDRESS_LABEL": "Endereço",
-        "TASK_FORM_DONE_AFTER_LABEL": "",
+        "TASK_FORM_DONE_AFTER_LABEL": "Para começar em",
         "TASK_FORM_DONE_BEFORE_LABEL": "Fazer antes",
         "TASK_FORM_COMMENTS_LABEL": "Comentários",
         "DISPATCH_DATE": "Escolha uma data",
@@ -295,7 +295,7 @@
             "fulfilled": "Realizado"
         },
         "DELIVERY_DETAILS_TIME_SLOT": "Horário",
-        "DELIVERY_DETAILS_RECIPIENT": "",
+        "DELIVERY_DETAILS_RECIPIENT": "Destinatário",
         "TODAY_BETWEEN_START_AND_END": "Hoje entre as {{start}} e as {{end}}",
         "TOMORROW_BETWEEN_START_AND_END": "Amanhã entre as {{start}} e as {{end}}",
         "OTHER_DAY_BETWEEN_START_AND_END": "{{date}} entre as {{start}} e as {{end}}",
