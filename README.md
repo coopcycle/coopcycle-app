@@ -10,24 +10,28 @@ Prerequisites
 
 Install Node, Watchman & React Native CLI as described [here](https://facebook.github.io/react-native/docs/getting-started.html).
 
-Installation
-------------
-
 Install dependencies to compile [node-canvas](https://github.com/Automattic/node-canvas#compiling) depending on your OS.
 
-Install dependencies with Yarn.
+Setup - All Platforms
+---------------------
 
+Install dependencies with Yarn.
 
 ```
 $ yarn install
 ```
 
-On MacOSX, you will also need to install [CocoaPods](https://cocoapods.org/).
+Populate your local `.env` file:
+```
+$ cp .env.dist .env
+```
 
-```
-$ sudo gem install -n /usr/local/bin cocoapods
-$ cd ios && pod install
-```
+### Set up Firebase
+
+* Create a [Firebase](https://firebase.google.com/) account, create a new app ( | [iOS](https://firebase.google.com/docs/ios/setup))
+
+Setup - Android
+---------------
 
 ### Get a Google Maps API Key
 
@@ -45,10 +49,19 @@ A Google Maps API Key is needed at compilation time for Android (see `AndroidMan
 googleMapsApiKey=YOUR_API_KEY
 ```
 
-### Setup Firebase
+* Follow the [Firebase instructions](https://firebase.google.com/docs/android/setup) to download and copy `google-services.json` to the `android/app` folder
 
-* Setup a Firebase account and download `google-services.json` [Add Firebase](https://firebase.google.com/docs/android/setup)
-* Copy `google-services.json` to the `android/app` folder
+
+Setup - iOS
+-----------
+iOS development requires macOS and [CocoaPods](https://cocoapods.org/).
+
+```
+$ sudo gem install -n /usr/local/bin cocoapods
+$ cd ios && pod install
+```
+
+* Follow the [Firebase instructions](https://firebase.google.com/docs/ios/setup) to download and copy `GoogleService-Info.plist` to the `ios/` folder
 
 Testing
 ---------------
