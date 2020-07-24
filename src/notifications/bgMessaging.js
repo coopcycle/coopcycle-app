@@ -1,6 +1,6 @@
 // @flow
 // Optional flow type
-import type { RemoteMessage } from 'react-native-firebase';
+import type { RemoteMessage } from '@react-native-firebase/messaging';
 import launchActivity from './launchActivity';
 import notificationManager from './notificationManager';
 import store from '../redux/store'

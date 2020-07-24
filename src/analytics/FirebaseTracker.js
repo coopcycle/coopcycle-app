@@ -1,12 +1,12 @@
 import BaseTracker from './BaseTracker'
-import firebase from 'react-native-firebase'
+import analytics from '@react-native-firebase/analytics'
 
 function FirebaseTracker() { }
 FirebaseTracker.prototype = Object.create(BaseTracker.prototype);
 FirebaseTracker.prototype.constructor = FirebaseTracker;
 
 FirebaseTracker.prototype.setCurrentScreen = function(screenName) {
-  firebase.analytics().setCurrentScreen(screenName)
+  analytics().setCurrentScreen(screenName)
 }
 
 FirebaseTracker.prototype.logEvent = function(category, action, text, number) {
@@ -22,11 +22,11 @@ FirebaseTracker.prototype.logEvent = function(category, action, text, number) {
     params.number = number
   }
 
-  firebase.analytics().logEvent(event, params);
+  analytics().logEvent(event, params);
 }
 
 FirebaseTracker.prototype.setUserProperty = function(name, value) {
-  firebase.analytics().setUserProperty(name, value)
+  analytics().setUserProperty(name, value)
 }
 
 export default FirebaseTracker

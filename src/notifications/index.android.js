@@ -1,5 +1,4 @@
-import firebase from 'react-native-firebase'
-import { Alert, AppState, Linking } from 'react-native'
+import messaging from '@react-native-firebase/messaging'
 import _ from 'lodash'
 
 /**
@@ -15,11 +14,12 @@ import _ from 'lodash'
  * @see https://rnfirebase.io/docs/v4.2.x/messaging/receiving-messages
  * @see https://rnfirebase.io/docs/v4.2.x/messaging/device-token
  * @see https://rnfirebase.io/docs/v4.2.x/notifications/receiving-notifications
+ * @see https://rnfirebase.io/messaging/usage
  */
 
-export const parseNotification = (notification, isForeground) => {
+export const parseNotification = (remoteMessage, isForeground) => {
 
-  let data = notification.data
+  let data = remoteMessage.data
 
   if (data.event && _.isString(data.event)) {
     data.event = JSON.parse(data.event)
@@ -31,124 +31,49 @@ export const parseNotification = (notification, isForeground) => {
   }
 }
 
-let notificationOpenedListener = () => {}
+let notificationOpenedAppListener = () => {}
 let notificationListener = () => {}
 let dataListener = () => {}
 let tokenRefreshListener = () => {}
-let appStateChangeListener = () => {}
 
 class PushNotification {
 
   static configure(options) {
 
     // Notification was received in the background (and opened by a user)
-    notificationOpenedListener = firebase.notifications()
-      .onNotificationOpened(notificationOpen => {
-        const message = parseNotification(notificationOpen.notification, false)
-
-        options.onNotification(message)
-    })
+    notificationOpenedAppListener = messaging()
+      .onNotificationOpenedApp(remoteMessage => {
+        options.onNotification(
+          parseNotification(remoteMessage, false)
+        )
+      })
 
     // Notification was received in the foreground
-    notificationListener = firebase.notifications()
-      .onNotification(remoteMessage => {
-        const message = parseNotification(remoteMessage, true)
-
-        options.onNotification(message)
-    })
-
-    // data message was received in the foreground
-    dataListener = firebase.messaging()
+    // in the current implementation, server sends both
+    // "notification + data" and "data-only" messages (with the same data),
+    // handle only "notification + data" messages when the app is in the foreground
+    notificationListener = messaging()
       .onMessage(remoteMessage => {
-        // in the current implementation, server sends both
-        // "notification + data" and "data-only" messages (with the same data),
-        // handle only "notification + data" messages when the app is in the foreground
-      })
-
-    // FIXME
-    // firebase.messaging().requestPermission() always resolves to null
-    // We tell the user to open the app settings to enable notifications
-
-    // firebase.messaging()
-    //   .requestPermission()
-    //   .then(() => {
-    //     // User has authorised
-    //   })
-    //   .catch(error => {
-    //     // User has rejected permissions
-    //   })
-
-    firebase.messaging().hasPermission()
-      .then(enabled => {
-
-        if (!enabled) {
-
-          Alert.alert(
-            'Notifications désactivées',
-            'Voulez-vous ouvrir les paramètres de l\'application ?',
-            [
-              {
-                text: 'Annuler',
-                onPress: () => {},
-              },
-              {
-                text: 'Ouvrir',
-                onPress: () => {
-
-                  appStateChangeListener = nextState => {
-                    // User is coming back from app settings
-                    // Check again if notifications have been enabled
-                    if (nextState === 'active') {
-                      AppState.removeEventListener('change', appStateChangeListener)
-                      firebase.messaging().hasPermission()
-                        .then(enabled => {
-                          firebase.messaging()
-                            .getToken()
-                            .then(fcmToken => {
-                              if (fcmToken) {
-                                options.onRegister(fcmToken)
-                              }
-                            })
-                        })
-                        .catch(e => console.log(e))
-                    }
-                  }
-                  AppState.addEventListener('change', appStateChangeListener)
-
-                  Linking.openSettings()
-                },
-              },
-            ],
-            {
-              cancelable: true,
-            }
+        // @see https://rnfirebase.io/messaging/usage#foreground-state-messages
+        if (remoteMessage.notification) {
+          options.onNotification(
+            parseNotification(remoteMessage, true)
           )
-        } else {
-          firebase.messaging()
-            .getToken()
-            .then(fcmToken => {
-              if (fcmToken) {
-                options.onRegister(fcmToken)
-              }
-            })
         }
-
       })
-      .catch(e => console.log(e))
 
-    tokenRefreshListener = firebase.messaging()
+    // @see https://rnfirebase.io/messaging/usage#usage
+    // On Android, you do not need to request user permission.
+    messaging()
+      .getToken()
+      .then(fcmToken => options.onRegister(fcmToken))
+
+    tokenRefreshListener = messaging()
       .onTokenRefresh(fcmToken => options.onRegister(fcmToken))
-
-    const serviceUpdatesChannel = new firebase.notifications.Android.Channel(
-      'coopcycle_important',
-      'Service Updates',
-      firebase.notifications.Android.Importance.Max)
-      .setDescription('CoopCycle Service Updates');
-    firebase.notifications().android.createChannel(serviceUpdatesChannel);
   }
 
   static removeListeners() {
-    notificationOpenedListener()
+    notificationOpenedAppListener()
     notificationListener()
     dataListener()
     tokenRefreshListener()
