@@ -53,7 +53,6 @@
     "react-native-dotenv": "^0.2.0",
     "react-native-dropdownalert": "^4.2.0",
     "react-native-email-link": "^1.9.2",
-    "react-native-firebase": "^5.6.0",
     "react-native-gesture-handler": "^1.6.1",
     "react-native-google-places-autocomplete": "^1.8.0",
     "react-native-keep-awake": "^4.0.0",

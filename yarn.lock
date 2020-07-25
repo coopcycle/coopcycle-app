@@ -8469,7 +8469,7 @@ open@^6.2.0:
   dependencies:
     is-wsl "^1.1.0"
 
-opencollective-postinstall@^2.0.0, opencollective-postinstall@^2.0.2:
+opencollective-postinstall@^2.0.2:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/opencollective-postinstall/-/opencollective-postinstall-2.0.2.tgz#5657f1bede69b6e33a45939b061eb53d3c6c3a89"
   integrity sha512-pVOEP16TrAO2/fjej1IdOyupJY8KDUM1CvsaScRbw6oddvpQoOfGk4ywha0HKKVAD6RkW4x6Q+tNBwhf3Bgpuw==
@@ -9218,14 +9218,6 @@ react-native-email-link@^1.9.2:
   version "1.9.2"
   resolved "https://registry.yarnpkg.com/react-native-email-link/-/react-native-email-link-1.9.2.tgz#cbacf7eec9ab8c80f01b0daf50e14edeb466d9cf"
   integrity sha512-w9VbKWcbqO138QcuiUyNUGoLcwZPhUY/jl+y3oiyuCzBwZGvoFeo138TOxoI8FecpHd+IMtsVn9QZVIB8PFXpQ==
-
-react-native-firebase@^5.6.0:
-  version "5.6.0"
-  resolved "https://registry.yarnpkg.com/react-native-firebase/-/react-native-firebase-5.6.0.tgz#6f6123f53cb73477915dd55c55f3e1de91db38d2"
-  integrity sha512-I+o3zNLdIz4pxWTCSZH70M1BcPl+SdqKQfurOT0sWcaMSL2ecDqVy0PCTmN7ORt7/Z879Er6PLgA/psjArQlmw==
-  dependencies:
-    opencollective-postinstall "^2.0.0"
-    prop-types "^15.7.2"
 
 react-native-flip-card@^3.4.1:
   version "3.5.5"
