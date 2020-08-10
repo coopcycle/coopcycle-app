@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { ActivityIndicator, Dimensions, PixelRatio, StyleSheet, View, Animated, Keyboard } from 'react-native'
+import { ActivityIndicator, Dimensions, PixelRatio, StyleSheet, View, Animated, Keyboard, Platform } from 'react-native'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
@@ -8,7 +8,7 @@ import {
 } from 'native-base'
 import Modal from 'react-native-modal'
 
-import AddressTypeahead from '../../../components/AddressTypeahead'
+import AddressAutocomplete from '../../../components/AddressAutocomplete'
 
 import { setAddressModalHidden, hideAddressModal, setAddress } from '../../../redux/Checkout/actions'
 
@@ -91,7 +91,7 @@ class AddressModal extends Component {
 
   render() {
 
-    const { width } = Dimensions.get('window')
+    const { width, height } = Dimensions.get('window')
 
     const modalMessageTextStyle = [
       styles.modalMessageText,
@@ -110,38 +110,40 @@ class AddressModal extends Component {
         onModalWillShow={ () => this.props.setAddressModalHidden(false) }
         onModalHide={ () => this.props.setAddressModalHidden(true) }>
         <Animated.View style={ [ styles.modalContent, { paddingBottom: this.keyboardHeight } ] } testID="addressModal">
-          <View style={{ width, height: 44 + 44 + (44 * 3) }}>
-            <View style={{ height: 44, alignItems: 'center', justifyContent: 'center' }}>
-              <Text style={ modalMessageTextStyle }>{ this.props.message }</Text>
-            </View>
-            <View style={{ height: 44 + (44 * 3) }}>
-              <AddressTypeahead
+          <Text style={ modalMessageTextStyle }>{ this.props.message }</Text>
+          <View style={{ width, height: height / 3 }}>
+            <View style={ styles.autocompleteContainer }>
+              <AddressAutocomplete
                 country={ this.props.country }
                 googleApiKey={ this.props.googleApiKey }
-                testID="addressModalTypeahead"
-                autoFocus={ true }
-                style={ typeaheadStyles }
-                value={ this.props.address && this.props.address.streetAddress }
-                onPress={ (address) => {
+                onSelectAddress={ (address) => {
                   this.props.setAddress(address)
                   this.setState({ address })
                 }}
-                renderRow={ rowData => {
-                  return (
-                    <Text
-                      testID={ `placeId:${rowData.place_id}` }
-                      style={{ flex: 1, fontWeight: 'bold', fontSize: 14 }}
-                      numberOfLines={ 1 }>
-                      { rowData.description || rowData.formatted_address || rowData.name }
-                    </Text>
-                  )
+                value={ this.props.address && this.props.address.streetAddress }
+                inputContainerStyle={{
+                  justifyContent: 'center',
+                  borderWidth: 0,
+                  paddingHorizontal: 10,
                 }}
-                onFocus={ () => this.setState({ shouldShowBackBtn: false }) }
-                onBlur={ () => this.setState({ shouldShowBackBtn: true }) } />
-              { this.renderBackBtn() }
-              { this.renderLoader() }
+                listStyle={{
+                  margin: 0,
+                }}
+                style={{
+                  backgroundColor: 'white',
+                  borderColor: '#b9b9b9',
+                  borderRadius: 12,
+                  paddingVertical: 4,
+                  paddingHorizontal: 15,
+                  borderWidth: 1,
+                }}
+                // onFocus={ () => this.setState({ shouldShowBackBtn: false }) }
+                // onBlur={ () => this.setState({ shouldShowBackBtn: true }) }
+                />
             </View>
           </View>
+          { this.renderBackBtn() }
+          { this.renderLoader() }
         </Animated.View>
       </Modal>
     )
@@ -163,6 +165,24 @@ const typeaheadStyles = {
 }
 
 const styles = StyleSheet.create({
+  autocompleteContainer: {
+    position: 'absolute',
+    ...Platform.select({
+      android: {
+        flex: 1,
+        top: 0,
+        right: 0,
+        left: 0,
+        zIndex: 1,
+      },
+      ios: {
+        top: 0,
+        left: 0,
+        zIndex: 10,
+        overflow: 'visible',
+      },
+    }),
+  },
   modalContent: {
     flexDirection: 'column',
     justifyContent: 'center',
@@ -177,6 +197,7 @@ const styles = StyleSheet.create({
   },
   modalMessageText: {
     fontSize: 14,
+    padding: 15
   },
   modalMessageTextError: {
     color: '#E74C3C',
