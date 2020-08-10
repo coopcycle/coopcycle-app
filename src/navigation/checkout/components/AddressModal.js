@@ -137,6 +137,7 @@ class AddressModal extends Component {
                   paddingHorizontal: 15,
                   borderWidth: 1,
                 }}
+                autoFocus={ true }
                 // onFocus={ () => this.setState({ shouldShowBackBtn: false }) }
                 // onBlur={ () => this.setState({ shouldShowBackBtn: true }) }
                 />
@@ -177,6 +178,7 @@ const styles = StyleSheet.create({
       },
       ios: {
         top: 0,
+        right: 0,
         left: 0,
         zIndex: 10,
         overflow: 'visible',
