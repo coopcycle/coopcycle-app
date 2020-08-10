@@ -1,6 +1,7 @@
 apply plugin: "com.android.application"
+apply plugin: "com.google.gms.google-services"
 apply plugin: "com.google.firebase.firebase-perf"
-apply plugin: "io.fabric"
+apply plugin: "com.google.firebase.crashlytics"
 
 import com.android.build.OutputFile
 
@@ -215,26 +216,6 @@ dependencies {
     implementation project(':@mauron85_react-native-background-geolocation')
     implementation "com.jakewharton.timber:timber:${rootProject.ext.timberVersion}"
 
-    // react-native-firebase
-    implementation(project(':react-native-firebase')) {
-        transitive = false
-    }
-
-    implementation platform('com.google.firebase:firebase-bom:24.4.0')
-
-    implementation "com.google.firebase:firebase-core"
-    implementation "com.google.firebase:firebase-messaging"
-    implementation "com.google.firebase:firebase-perf"
-
-    // https://rnfirebase.io/docs/v5.x.x/releases/v5.6.x
-    // https://firebase.google.com/support/release-notes/android
-
-    implementation 'me.leolin:ShortcutBadger:1.1.21@aar'
-    implementation('com.crashlytics.sdk.android:crashlytics@aar') {
-        transitive = true
-    }
-
-
     implementation 'androidx.appcompat:appcompat:1.1.0-rc01'
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0-alpha02'
 
@@ -268,5 +249,4 @@ allprojects {
     }
 }
 
-apply plugin: 'com.google.gms.google-services'
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)

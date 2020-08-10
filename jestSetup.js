@@ -23,13 +23,12 @@ jest.mock('tipsi-stripe', () => ({
   },
 }))
 
-jest.mock('react-native-firebase', () => ({
-  perf: () => ({
-    newTrace: () => ({
-      start: () => {},
-      incrementMetric: () => {}
-    })
-  })
+jest.mock('@react-native-firebase/analytics', () => ({
+  logEvent: jest.fn(),
+  setUserProperty: jest.fn(),
+}))
+
+jest.mock('@react-native-firebase/messaging', () => ({
 }))
 
 jest.mock('@mauron85/react-native-background-geolocation', () => ({

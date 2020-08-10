@@ -34,10 +34,6 @@ target 'CoopCycle' do
   pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
 
-  pod 'Fabric', '~> 1.10.2'
-  pod 'Crashlytics', '~> 3.14.0'
-  pod 'Firebase/Performance', '~> 6.9.0'
-
   target 'CoopCycleTests' do
     inherit! :search_paths
     # Pods for testing

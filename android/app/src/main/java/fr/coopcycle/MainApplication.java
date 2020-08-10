@@ -11,11 +11,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import androidx.multidex.MultiDexApplication;
-import io.invertase.firebase.analytics.RNFirebaseAnalyticsPackage;
-import io.invertase.firebase.messaging.RNFirebaseMessagingPackage;
-import io.invertase.firebase.notifications.RNFirebaseNotificationsPackage;
-import io.invertase.firebase.fabric.crashlytics.RNFirebaseCrashlyticsPackage;
-import io.invertase.firebase.perf.RNFirebasePerformancePackage;
 
 // To enable multidex on API Level < 21,
 // we need to extend android.support.multidex.MultiDexApplication instead of android.app.Application
@@ -35,11 +30,6 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
           List<ReactPackage> packages = new PackageList(this).getPackages();
           // Packages that cannot be autolinked yet can be added manually here, for example:
           // packages.add(new MyReactNativePackage());
-          packages.add(new RNFirebaseMessagingPackage());
-          packages.add(new RNFirebaseNotificationsPackage());
-          packages.add(new RNFirebaseCrashlyticsPackage());
-          packages.add(new RNFirebasePerformancePackage());
-          packages.add(new RNFirebaseAnalyticsPackage());
           packages.add(new LaunchActivityPackage());
           packages.add(new NotificationManagerPackage());
 
