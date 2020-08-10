@@ -133,8 +133,7 @@ class AddressAutocomplete extends Component {
     let text = item.description
 
     if (item.type === 'fuse') {
-      // FIXME Why "aaaaaaaa"?
-      text = [ item.contactName, item.streetAddress, 'aaaaaaaa' ].join(' - ')
+      text = [ item.contactName, item.streetAddress ].join(' - ')
       itemStyle.push({
         backgroundColor: '#fff3cd',
         flex: 1,
@@ -145,7 +144,7 @@ class AddressAutocomplete extends Component {
     }
 
     return (
-      <TouchableOpacity onPress={ () => this._onItemPress(item) } key={ `prediction-${i}` } style={ itemStyle }>
+      <TouchableOpacity onPress={ () => this._onItemPress(item) } style={ itemStyle }>
         <Text style={{ fontSize: 14, flex: 1 }} numberOfLines={1} ellipsizeMode="tail">{ text }</Text>
         { item.type === 'fuse' && (
           <Icon type="FontAwesome5" name="star" regular style={{ fontSize: 16, color: '#856404', paddingLeft: 5 }} />
@@ -169,6 +168,7 @@ class AddressAutocomplete extends Component {
         data={ this.state.results }
         value={ this.state.query }
         onChangeText={ this._onChangeText.bind(this) }
+        keyExtractor={ (item, i) => `prediction-${i}` }
         flatListProps={{ ItemSeparatorComponent, ListFooterComponent }} />
     )
   }
