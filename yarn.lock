@@ -4250,10 +4250,10 @@ cosmiconfig@^5.0.5, cosmiconfig@^5.1.0:
     js-yaml "^3.13.1"
     parse-json "^4.0.0"
 
-countly-sdk-react-native-bridge@19.8.5:
-  version "19.8.5"
-  resolved "https://registry.yarnpkg.com/countly-sdk-react-native-bridge/-/countly-sdk-react-native-bridge-19.8.5.tgz#8b3fc9dc5a646272307ffd5d57a9be59c47a0777"
-  integrity sha512-6unA5rghAbqeNTsTLphsggcdYrA6w8JP3jDVKikbeuhcF1Bq9n8HWQesfz86oOjGd2ADgoCRjH6KV69oSAPX6A==
+countly-sdk-react-native-bridge@^20.0:
+  version "20.4.5"
+  resolved "https://registry.yarnpkg.com/countly-sdk-react-native-bridge/-/countly-sdk-react-native-bridge-20.4.5.tgz#fd34d57c0aa6cc4f2b061f7bd9e28fcf194cad4f"
+  integrity sha512-A8JhCHa6QjqW13kTRkXiy7jhVhXs5kNS8fBlo+LN857XpHZwqwv/J/Sp9G0jzN3V1HBPSCK9KBEM4nvCmOdFUw==
 
 create-react-class@^15.6.3:
   version "15.6.3"
@@ -4572,10 +4572,10 @@ detect-newline@^3.0.0:
   resolved "https://registry.yarnpkg.com/detect-newline/-/detect-newline-3.1.0.tgz#576f5dfc63ae1a192ff192d8ad3af6308991b651"
   integrity sha512-TLz+x/vEXm/Y7P7wn1EJFNLxYpUD4TgMosxY6fAVJUnJMbupHBOncxyWUG9OpTaH9EBD7uFI5LfEgmMOc54DsA==
 
-detox@^17.1.1:
-  version "17.2.0"
-  resolved "https://registry.yarnpkg.com/detox/-/detox-17.2.0.tgz#1b938421d99278a801f5a58e619bcbe834ada679"
-  integrity sha512-AkSfNtZW7iakJdODKDe5tFDVSLitIhM1PFqFRYWLexERYzyQlothGQrLvKBbEUCk6poLgy2DIrS0O+CM+pzqmg==
+detox@^17.3.5:
+  version "17.3.5"
+  resolved "https://registry.yarnpkg.com/detox/-/detox-17.3.5.tgz#abc4a2bae23290e249e241a5371e0b8eec9df22a"
+  integrity sha512-is322w49jw4g/DjzAR9QvYBF1rtPMkCe3RXTSciIiTJ8MipQY5bgqcosuFsEmwJ8h3ivvY3X+sHV5xe5MT2CwQ==
   dependencies:
     bunyan "^1.8.12"
     bunyan-debug-stream "^1.1.0"
@@ -9273,10 +9273,10 @@ react-native-drawer@2.5.1:
     prop-types "^15.5.8"
     tween-functions "^1.0.1"
 
-react-native-dropdownalert@^4.2.0:
-  version "4.2.1"
-  resolved "https://registry.yarnpkg.com/react-native-dropdownalert/-/react-native-dropdownalert-4.2.1.tgz#e49ca7b37fde4582aaecc6d241828e907c18a520"
-  integrity sha512-FaGAnL4LMzVqM3a/qjkk5z/YlbJ4pQVv0a+x/06h0BwWFXUvii4RFt+6KRgYn7ZzZQo78SJcWVDCpqxjTKSZHw==
+react-native-dropdownalert@^4.3.0:
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/react-native-dropdownalert/-/react-native-dropdownalert-4.3.0.tgz#56b612d63576387fa1a507b4158d92e7b7638af3"
+  integrity sha512-fXs18A23nrTB95jkTdP7c9TzoSZU0xS9F4lxMzwW1DFI08Nm62S4X00UqWu+Ong+TBDDP18/aF7b50T67Z26EQ==
   dependencies:
     prop-types "15.5.10"
 
@@ -9374,10 +9374,10 @@ react-native-maps@^0.27.1:
   resolved "https://registry.yarnpkg.com/react-native-maps/-/react-native-maps-0.27.1.tgz#2f10cd417bb2fd938c9e015b1c9b6d9b1a44b97f"
   integrity sha512-HygBkZBecTnIVRYrSiLRAvu4OmXOYso/A7c6Cy73HkOh9CgGV8Ap5eBea24tvmFGptjj5Hg8AJ94/YbmWK1Okw==
 
-react-native-modal-datetime-picker@^8.7.1:
-  version "8.7.1"
-  resolved "https://registry.yarnpkg.com/react-native-modal-datetime-picker/-/react-native-modal-datetime-picker-8.7.1.tgz#9769492f3e61d48bad06817f8986cb8be4a46acc"
-  integrity sha512-wcP8WRe9uDqWF9KdScItkDSfJ3w/xi4fGAe8Q9xvU15+7sWWCHDJzXMlRv2Jeeu7MIlHS6XBisTprvqBcqjwtA==
+react-native-modal-datetime-picker@^8.9.3:
+  version "8.9.3"
+  resolved "https://registry.yarnpkg.com/react-native-modal-datetime-picker/-/react-native-modal-datetime-picker-8.9.3.tgz#4ab01386c525bf8df9e8e71a93cdd61aa0916212"
+  integrity sha512-bLqwvSRYZb3LD5AUWhGd2iJxeUoOMkTg81Z8TbNQP4SFsHpoqEi6LoUJ+DJvaxwTvpN8/LgqJ5bNRGJl4VwATQ==
   dependencies:
     prop-types "^15.7.2"
 
