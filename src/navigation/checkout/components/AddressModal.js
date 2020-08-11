@@ -116,6 +116,7 @@ class AddressModal extends Component {
               <AddressAutocomplete
                 country={ this.props.country }
                 googleApiKey={ this.props.googleApiKey }
+                testID="addressModalTypeahead"
                 onSelectAddress={ (address) => {
                   this.props.setAddress(address)
                   this.setState({ address })
