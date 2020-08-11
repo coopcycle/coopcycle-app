@@ -409,13 +409,13 @@ PODS:
     - Firebase/Performance (~> 6.28.1)
     - React
     - RNFBApp
-  - RNGestureHandler (1.6.1):
+  - RNGestureHandler (1.7.0):
     - React
   - RNLocalize (1.4.1):
     - React
-  - RNReanimated (1.9.0):
+  - RNReanimated (1.12.0):
     - React
-  - RNScreens (2.9.0):
+  - RNScreens (2.10.1):
     - React
   - RNSketchCanvas (0.8.0):
     - React
@@ -692,10 +692,10 @@ SPEC CHECKSUMS:
   RNFBCrashlytics: cb41386ed09729fa68cb9cde9efd8737277a1423
   RNFBMessaging: 3bb7dcf398789ce359a9f6b97b83472a3090f65a
   RNFBPerf: e54ea2882f794a931c52496b720178ed8d4b7c0b
-  RNGestureHandler: 8f09cd560f8d533eb36da5a6c5a843af9f056b38
+  RNGestureHandler: b6b359bb800ae399a9c8b27032bdbf7c18f08a08
   RNLocalize: 49634a6a605dcdeb319e9c42a5c2f1aec508694b
-  RNReanimated: b5ccb50650ba06f6e749c7c329a1bc3ae0c88b43
-  RNScreens: c526239bbe0e957b988dacc8d75ac94ec9cb19da
+  RNReanimated: 9c475f9b272232351d94a1a781e8b7580bac1ff4
+  RNScreens: b748efec66e095134c7166ca333b628cd7e6f3e2
   RNSketchCanvas: 9c28adb5381543ed55cc98ce6de46479cb3cb12c
   RNSound: da030221e6ac7e8290c6b43f2b5f2133a8e225b0
   Stripe: 4305b646743612854819fb5d5cf67aaeb93577c0
