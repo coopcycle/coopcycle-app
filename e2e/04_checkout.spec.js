@@ -35,7 +35,6 @@ describe('Checkout', () => {
     await waitFor(element(by.id('addressModalTypeahead'))).toExist().withTimeout(5000)
     await element(by.id('addressModalTypeahead')).typeText('23 av claude vellefaux')
 
-    await waitFor(element(by.id('placeId:ChIJPSRadeBt5kcR4B2HzbBfZQE'))).toBeVisible().withTimeout(5000)
     await element(by.id('placeId:ChIJPSRadeBt5kcR4B2HzbBfZQE')).tap()
 
     // Check if footer is present
