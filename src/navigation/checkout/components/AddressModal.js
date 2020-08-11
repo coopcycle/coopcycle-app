@@ -139,8 +139,8 @@ class AddressModal extends Component {
                   borderWidth: 1,
                 }}
                 autoFocus={ true }
-                // onFocus={ () => this.setState({ shouldShowBackBtn: false }) }
-                // onBlur={ () => this.setState({ shouldShowBackBtn: true }) }
+                onFocus={ () => this.setState({ shouldShowBackBtn: false }) }
+                onBlur={ () => this.setState({ shouldShowBackBtn: true }) }
                 />
             </View>
           </View>
