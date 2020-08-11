@@ -1594,10 +1594,10 @@
   resolved "https://registry.yarnpkg.com/@react-native-community/netinfo/-/netinfo-5.9.6.tgz#fab6cd78fe740f9c674b4a93abd77f6bfb90f655"
   integrity sha512-cEkA1Apg8+VjnDdeDZRHI+2RqouiPKgYnewouRkvF4ettH9ZS4Cmi/nANQKIpIu2L+czboxM3fCZ44nc7IM9VQ==
 
-"@react-native-community/push-notification-ios@^1.3.0":
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/@react-native-community/push-notification-ios/-/push-notification-ios-1.3.0.tgz#349095f5dda42f59501316c7ef7896adb8c2a1db"
-  integrity sha512-fXLtDYsDv8CZIF/1pnrLyKv68X1VVgsWQTVdxA4UeYPAGP9OU4XdShD1TsPFWIF5VgabNrnmKl1uEDLw3X+6jA==
+"@react-native-community/push-notification-ios@^1.4.0":
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/@react-native-community/push-notification-ios/-/push-notification-ios-1.4.0.tgz#e1781e60fb8a2569547e3f1613c62e1c3b46960c"
+  integrity sha512-YnfxtAuHkiuvprh1d9npGZVwOrso6sys8+w8XY6RQAs8kD2LHZg0C8rA5gfX4jW/GrQV7m14Y6ngciE6Rpd91w==
   dependencies:
     invariant "^2.2.4"
 
@@ -9196,7 +9196,7 @@ react-native-autocomplete-input@^4.2.0:
   resolved "https://registry.yarnpkg.com/react-native-autocomplete-input/-/react-native-autocomplete-input-4.2.0.tgz#fcfc3d2f19134d4c3394a4e6a5aae13d8c4c9129"
   integrity sha512-bLZ9FO3NwcqYY3r6hefEEC4VW45L97kXuCyAqKXW1SJkkG/pGcen6zLq3SMFgoQuG3ryrO/ohz7gme7hFwzjoQ==
 
-react-native-background-fetch@^3.1.0:
+react-native-background-fetch@^3.1.0, react-native-background-fetch@~3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/react-native-background-fetch/-/react-native-background-fetch-3.1.0.tgz#5ec182662e76bd8257f21c6f65cdcb73e87a0708"
   integrity sha512-dnrfX3Od4r3aKuRSwDkpaPFXc3dYD5DbIW7CWC41M1CdEZEXNIWfZRvJPMVa72iflOzAh68ZTfZ3PgBK/NDtsQ==
@@ -9205,23 +9205,14 @@ react-native-background-fetch@^3.1.0:
     plist "^3.0.1"
     xcode "^2.0.0"
 
-react-native-background-fetch@~3.0.6:
-  version "3.0.6"
-  resolved "https://registry.yarnpkg.com/react-native-background-fetch/-/react-native-background-fetch-3.0.6.tgz#0123722caa92bcbe4bb191bd37f2d5b0d3e65f2d"
-  integrity sha512-F3C/uHC6PHcyPLEB5iQeX4bU41x1CcjFKYf7P54rTSuYG9BlV3z0oyhzbCkWxCCabMl9yzFozuqpUMKybMGD4w==
-  dependencies:
-    fast-plist "^0.1.2"
-    plist "^3.0.1"
-    xcode "^2.0.0"
-
-react-native-background-geolocation@^3.7.0:
-  version "3.7.0"
-  resolved "https://registry.yarnpkg.com/react-native-background-geolocation/-/react-native-background-geolocation-3.7.0.tgz#685ee980bc12e66d56c8751860a38e6139daf70a"
-  integrity sha512-9hTDIvYw+jH4dP066uomBEaYc3JRxE+fvGcNa4DpN5roOkUXfoxU2muMrI4RwGbeLlMAiqCAxeB3j4mtCL4ozA==
+react-native-background-geolocation@^3.8.1:
+  version "3.8.1"
+  resolved "https://registry.yarnpkg.com/react-native-background-geolocation/-/react-native-background-geolocation-3.8.1.tgz#0137e76da5e3db0ba9c5f69014c0a1b8487cd7c3"
+  integrity sha512-IhBR6wj1g/PNHZ8yqWeFxxVBvmjYUJX+MhN3LpdMfJA/pBBm/Z5Q4DY7FFbzR5YD30qaIzOZqA+C/Yt0q22zmQ==
   dependencies:
     fast-plist "^0.1.2"
     plist "^2.0.1"
-    react-native-background-fetch "~3.0.6"
+    react-native-background-fetch "~3.1.0"
     xcode "^0.9.1"
 
 react-native-ble-manager@^7.3.1:
@@ -9229,10 +9220,10 @@ react-native-ble-manager@^7.3.1:
   resolved "https://registry.yarnpkg.com/react-native-ble-manager/-/react-native-ble-manager-7.3.1.tgz#f2cb982c2070cadd9650fde353a092d29ba00d97"
   integrity sha512-/pw3Z+TLrZWyvGgyIaiA0YJkuNn/Gn0SVJATds9A9PQ1XuKqcR/ibgWVfnZ2UBhPXwVhPtmuEhBhseGP1Su2uQ==
 
-react-native-calendars@^1.300.0:
-  version "1.300.0"
-  resolved "https://registry.yarnpkg.com/react-native-calendars/-/react-native-calendars-1.300.0.tgz#ddd3941a0e01c9256a5aa0c44f615161bb9e664f"
-  integrity sha512-GOSaF+I24+cK5uxUfw85LEwskCj6Cpi5Cnm3OXdXexMer9hg0FlJ6AYlDrvu0ck0b9yAFdQTxExt64u1wkh+gw==
+react-native-calendars@^1.308.0:
+  version "1.308.0"
+  resolved "https://registry.yarnpkg.com/react-native-calendars/-/react-native-calendars-1.308.0.tgz#f1ff967db0f5463a540f67cfd3b6fa9cb287dc22"
+  integrity sha512-lKCbIvZ7CourENg0AJzsMiuWxp+wdkmMt/5M0xdUSx+Td/TXPgHBCVsNAIWiRa7gnMjJyuEr4csHkaGH5AzRCQ==
   dependencies:
     hoist-non-react-statics "^3.3.1"
     immutable "^4.0.0-rc.12"
@@ -9242,10 +9233,10 @@ react-native-calendars@^1.300.0:
     react-native-swipe-gestures "^1.0.5"
     xdate "^0.8.0"
 
-react-native-camera@^3.31.0:
-  version "3.31.0"
-  resolved "https://registry.yarnpkg.com/react-native-camera/-/react-native-camera-3.31.0.tgz#7b9b4dd30b6d1363bdffed4ce0a0bef93c3ebf87"
-  integrity sha512-TTuse7JGVUbh/cj+a4OfyXoPqhwPyYx+63tzJWZT0sWwZX5bvlxjYaEur/U1hiZZjOC03muEIMkTD7nYp6ZVFA==
+react-native-camera@^3.35.0:
+  version "3.35.0"
+  resolved "https://registry.yarnpkg.com/react-native-camera/-/react-native-camera-3.35.0.tgz#3c8b8392f9cdcac51d30fed45c1db70332fc6a1c"
+  integrity sha512-hs9ja6qc2JMB2oYDzYuzOF1GUMRZY0O7KX1e7K7WJBQzAwsXnlwm4d2r6P61kGMk1FUDUn186Yc3kb5vfEAyoA==
   dependencies:
     prop-types "^15.6.2"
 
