@@ -95,7 +95,7 @@ class CreditCard extends Component {
           <Text style={ styles.creditCardLabel }>
             { this.props.t('ENTER_PAY_DETAILS') }
           </Text>
-          <View style={ styles.creditCardInputContainer }>
+          <View style={ styles.creditCardInputContainer } testID="creditCardWrapper">
             <LiteCreditCardInput
               additionalInputsProps={{
                 number: {

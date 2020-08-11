@@ -70,8 +70,10 @@ describe('Checkout', () => {
 
     await element(by.id('moreInfosSubmit')).tap()
 
-    await waitFor(element(by.id('creditCardNumber'))).toExist().withTimeout(5000)
-    // await expect(element(by.id('creditCardNumber'))).toBeVisible()
+    // Tap the credit card input to make sure we can interact with it
+    // Test Failed: View “<RCTUITextField: 0x7f9185939e00>” is not hittable at point “{"x":500,"y":20}”;
+    // Point “{"x":530,"y":463.5}” is outside of window bounds
+    await element(by.id('creditCardWrapper')).tap()
 
     await element(by.id('creditCardNumber')).typeText('4242424242424242')
     await element(by.id('creditCardExpiry')).typeText('1221')
