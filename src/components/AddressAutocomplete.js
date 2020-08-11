@@ -143,8 +143,16 @@ class AddressAutocomplete extends Component {
       })
     }
 
+    let itemProps = {}
+    if (item.type === 'prediction') {
+      itemProps = {
+        ...itemProps,
+        testID:  `placeId:${item.place_id}`
+      }
+    }
+
     return (
-      <TouchableOpacity onPress={ () => this._onItemPress(item) } style={ itemStyle }>
+      <TouchableOpacity onPress={ () => this._onItemPress(item) } style={ itemStyle } { ...itemProps }>
         <Text style={{ fontSize: 14, flex: 1 }} numberOfLines={1} ellipsizeMode="tail">{ text }</Text>
         { item.type === 'fuse' && (
           <Icon type="FontAwesome5" name="star" regular style={{ fontSize: 16, color: '#856404', paddingLeft: 5 }} />
