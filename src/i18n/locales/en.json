@@ -82,6 +82,7 @@
         "SEARCH_WITHOUT_DATE": "Do you want to restart the search without including a date",
         "SEARCH_AGAIN": "Search again",
         "ENTER_ADDRESS": "Enter your address",
+        "ENTER_POSTCODE": "Enter your postcode",
         "TODAY": "Today",
         "TOMORROW": "Tomorrow",
         "CANCEL": "Cancel",

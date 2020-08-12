@@ -96,7 +96,7 @@ class RestaurantsPage extends Component {
           onReset={ () => {
             this.props.resetSearch()
           } }
-          defaultValue={ this.props.addressAsText }
+          defaultValue={ this.props.address }
           width={ this.state.width }
           key={ this.props.addressAsText } />
       </Container>
@@ -118,6 +118,7 @@ function mapStateToProps(state, ownProps) {
     googleApiKey: state.app.settings.google_api_key,
     country: state.app.settings.country,
     restaurants: state.checkout.restaurants,
+    address: state.checkout.address,
     addressAsText: state.checkout.address ? state.checkout.address.streetAddress : '',
   }
 }

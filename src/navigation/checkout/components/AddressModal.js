@@ -127,17 +127,6 @@ class AddressModal extends Component {
                   borderWidth: 0,
                   paddingHorizontal: 10,
                 }}
-                listStyle={{
-                  margin: 0,
-                }}
-                style={{
-                  backgroundColor: 'white',
-                  borderColor: '#b9b9b9',
-                  borderRadius: 12,
-                  paddingVertical: 4,
-                  paddingHorizontal: 15,
-                  borderWidth: 1,
-                }}
                 autoFocus={ true }
                 onFocus={ () => this.setState({ shouldShowBackBtn: false }) }
                 onBlur={ () => this.setState({ shouldShowBackBtn: true }) }
@@ -205,19 +194,6 @@ const styles = StyleSheet.create({
   modalMessageTextError: {
     color: '#E74C3C',
     fontSize: 14,
-  },
-  typeaheadContainer: {
-    marginTop: 15,
-  },
-  typeaheadIconContainer: {
-    position: 'absolute',
-    right: 0,
-    height: 44,
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 15,
-    marginRight: 8,
   },
   goBackContainer: {
     flex: 1,
