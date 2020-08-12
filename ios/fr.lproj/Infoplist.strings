@@ -1,0 +1,12 @@
+/* 
+  Infoplist.strings
+  CoopCycle
+
+  Created by admin on 12/08/2020.
+  Copyright © 2020 Facebook. All rights reserved.
+*/
+
+"NSBluetoothAlwaysUsageDescription" = "L'application utilise le bluetooth pour imprimer des reçus sur des imprimantes thermiques";
+"NSBluetoothPeripheralUsageDescription" = "L'application aimerait utiliser le bluetooth";
+"NSCameraUsageDescription" = "L'application nécessite d'accéder à l'appareil photo";
+"NSMotionUsageDescription" = "L'application nécessite l'accès aux données de mouvement pour optimiser l'utilisation de la batterie lors du suivi de la position";

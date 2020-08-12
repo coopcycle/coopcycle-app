@@ -34,6 +34,7 @@
 		845246CF2344832500A3A1B2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 845246CE2344832500A3A1B2 /* GoogleService-Info.plist */; };
 		84A98B1223D8DA2000EFF666 /* CoopCycleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A98B1123D8DA2000EFF666 /* CoopCycleUITests.swift */; };
 		84A98B1A23D8DB6500EFF666 /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A98B1923D8DB6500EFF666 /* SnapshotHelper.swift */; };
+		84E9E2D424E3EA5B00740A6D /* Infoplist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 84E9E2D624E3EA5B00740A6D /* Infoplist.strings */; };
 		96AE515DDEA1498E89D89F8F /* RobotoMono-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 767153BC6E2E4B5A88732015 /* RobotoMono-Regular.ttf */; };
 		A9C30BD9D63F45FEB1FD9DEC /* OpenSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 961D84324BE84213A85D9C7D /* OpenSans-Bold.ttf */; };
 		CE9C2845CDEA3EF517F337E0 /* libPods-CoopCycleTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ABBA3CB74DDED61901E486EB /* libPods-CoopCycleTests.a */; };
@@ -105,15 +106,17 @@
 		4C7570AC848DA8A74EB2B339 /* Pods-CoopCycle.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CoopCycle.debug.xcconfig"; path = "Target Support Files/Pods-CoopCycle/Pods-CoopCycle.debug.xcconfig"; sourceTree = "<group>"; };
 		54087C4B0FAE4051B2360F05 /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
 		55DB7A3B32A91910826E4CF7 /* Pods-CoopCycle-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CoopCycle-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-CoopCycle-tvOSTests/Pods-CoopCycle-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
-		5654BC430BE34AEAAF13CA9E /* RobotoMono-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "RobotoMono-Bold.ttf"; path = "../assets/fonts/RobotoMono-Bold.ttf"; sourceTree = "<group>"; };
+		5654BC430BE34AEAAF13CA9E /* RobotoMono-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "RobotoMono-Bold.ttf"; path = "../assets/fonts/RobotoMono-Bold.ttf"; sourceTree = "<group>"; };
 		6A2DD5B51DB371897E6601B6 /* Pods-CoopCycleTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CoopCycleTests.debug.xcconfig"; path = "Target Support Files/Pods-CoopCycleTests/Pods-CoopCycleTests.debug.xcconfig"; sourceTree = "<group>"; };
-		767153BC6E2E4B5A88732015 /* RobotoMono-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "RobotoMono-Regular.ttf"; path = "../assets/fonts/RobotoMono-Regular.ttf"; sourceTree = "<group>"; };
+		767153BC6E2E4B5A88732015 /* RobotoMono-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "RobotoMono-Regular.ttf"; path = "../assets/fonts/RobotoMono-Regular.ttf"; sourceTree = "<group>"; };
 		81DC8A7E948740B3A830CD98 /* rubicon-icon-font.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "rubicon-icon-font.ttf"; path = "../node_modules/native-base/Fonts/rubicon-icon-font.ttf"; sourceTree = "<group>"; };
 		845246CE2344832500A3A1B2 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		84A98B0F23D8DA2000EFF666 /* CoopCycleUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CoopCycleUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		84A98B1123D8DA2000EFF666 /* CoopCycleUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoopCycleUITests.swift; sourceTree = "<group>"; };
 		84A98B1323D8DA2000EFF666 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		84A98B1923D8DB6500EFF666 /* SnapshotHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnapshotHelper.swift; sourceTree = "<group>"; };
+		84E9E2D524E3EA5B00740A6D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Infoplist.strings; sourceTree = "<group>"; };
+		84E9E2D724E3EA7100740A6D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Infoplist.strings; sourceTree = "<group>"; };
 		8A63899B198346289A19198B /* Roboto_medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Roboto_medium.ttf; path = "../node_modules/native-base/Fonts/Roboto_medium.ttf"; sourceTree = "<group>"; };
 		95478BC4C8514AB496A441B6 /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
 		961D84324BE84213A85D9C7D /* OpenSans-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-Bold.ttf"; path = "../assets/fonts/OpenSans-Bold.ttf"; sourceTree = "<group>"; };
@@ -211,6 +214,7 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				84E9E2D624E3EA5B00740A6D /* Infoplist.strings */,
 			);
 			name = CoopCycle;
 			sourceTree = "<group>";
@@ -513,6 +517,7 @@
 				845246CF2344832500A3A1B2 /* GoogleService-Info.plist in Resources */,
 				6CA9EFE6FD4D4EFA87DB1783 /* Roboto_medium.ttf in Resources */,
 				7CC1B2C8CE9743C7AA1CEE0F /* Roboto.ttf in Resources */,
+				84E9E2D424E3EA5B00740A6D /* Infoplist.strings in Resources */,
 				FAC644362166467C00D1DA52 /* misstickle__indian_bell_chime.wav in Resources */,
 				64D780A5100A432F9C307BF1 /* rubicon-icon-font.ttf in Resources */,
 				E4A95D69133B4C1B8FD304BA /* Raleway-Regular.ttf in Resources */,
@@ -833,6 +838,15 @@
 			);
 			name = LaunchScreen.xib;
 			path = CoopCycle;
+			sourceTree = "<group>";
+		};
+		84E9E2D624E3EA5B00740A6D /* Infoplist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				84E9E2D524E3EA5B00740A6D /* en */,
+				84E9E2D724E3EA7100740A6D /* fr */,
+			);
+			name = Infoplist.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
