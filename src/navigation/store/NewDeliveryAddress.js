@@ -1,10 +1,9 @@
 import React, { Component } from 'react'
-import { Platform, StyleSheet, View } from 'react-native'
+import { Platform, StyleSheet, View, KeyboardAvoidingView } from 'react-native'
 import { Text } from 'native-base'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 import _ from 'lodash'
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 import AddressAutocomplete from '../../components/AddressAutocomplete'
 
@@ -39,43 +38,48 @@ class NewDelivery extends Component {
 
   render() {
 
-    let autocompleteProps = {}
+    let autocompleteProps = {
+      inputContainerStyle: {
+        flex: 1,
+        borderWidth: 0,
+      }
+    }
     if (!_.isEmpty(this.props.error)) {
       autocompleteProps = {
         ...autocompleteProps,
-        inputContainerStyle: styles.errorInput,
+        inputContainerStyle: {
+          ...autocompleteProps.inputContainerStyle,
+          ...styles.errorInput,
+        }
       }
     }
 
     return (
-      <KeyboardAwareScrollView
-        contentContainerStyle={ styles.content }
-        extraScrollHeight={ this.state.extraScrollHeight }
-        onLayout={ event => {
-          const { height } = event.nativeEvent.layout
-          this.setState({ extraScrollHeight: (height / 2) - 100 })
-        }}
-        keyboardShouldPersistTaps="always"
-        enableOnAndroid={ true }>
+      <KeyboardAvoidingView
+        style={ styles.content }
+        behavior="padding"
+        >
+        <Text style={ styles.label }>
+          { this.props.t('STORE_NEW_DELIVERY_ADDRESS') }
+        </Text>
+        <Text style={ styles.help } note>
+          { this.props.t('STORE_NEW_DELIVERY_ADDRESS_HELP') }
+        </Text>
         <View style={ styles.container }>
           <View style={ styles.autocompleteContainer }>
-            <View style={ [ styles.formGroup ] }>
-              <Text style={ styles.label }>
-                { this.props.t('STORE_NEW_DELIVERY_ADDRESS') }
-              </Text>
-              <AddressAutocomplete
-                googleApiKey={ this.props.googleApiKey }
-                country={ this.props.country }
-                addresses={ this.props.addresses }
-                onSelectAddress={ this._onSelectAddress.bind(this) }
-                { ...autocompleteProps } />
-              <Text style={ styles.help } note>
-                { this.props.t('STORE_NEW_DELIVERY_ADDRESS_HELP') }
-              </Text>
-            </View>
+            <AddressAutocomplete
+              googleApiKey={ this.props.googleApiKey }
+              country={ this.props.country }
+              addresses={ this.props.addresses }
+              onSelectAddress={ this._onSelectAddress.bind(this) }
+              containerStyle={{
+                flex: 1,
+                justifyContent: 'center',
+              }}
+              { ...autocompleteProps } />
           </View>
         </View>
-      </KeyboardAwareScrollView>
+      </KeyboardAvoidingView>
     )
   }
 }
@@ -83,28 +87,38 @@ class NewDelivery extends Component {
 const styles = StyleSheet.create({
   content: {
     flex: 1,
-    alignItems: 'center',
     justifyContent: 'center',
   },
   container: {
-    alignSelf: 'stretch',
+    height: 54,
+    marginHorizontal: 10
   },
   // @see https://github.com/mrlaessig/react-native-autocomplete-input#android
   autocompleteContainer: {
+    position: 'absolute',
+    height: 54,
+    width: '100%',
     ...Platform.select({
       android: {
         flex: 1,
-        left: 0,
-        position: 'absolute',
-        right: 0,
         top: 0,
+        right: 0,
+        left: 0,
         zIndex: 1,
+      },
+      ios: {
+        top: 0,
+        right: 0,
+        left: 0,
+        zIndex: 10,
+        overflow: 'visible',
       },
     }),
   },
   formGroup: {
     paddingHorizontal: 10,
     marginBottom: 10,
+    backgroundColor: 'green'
   },
   label: {
     paddingVertical: 10,
