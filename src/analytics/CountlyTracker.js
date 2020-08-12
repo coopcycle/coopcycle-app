@@ -1,4 +1,5 @@
 import BaseTracker from './BaseTracker'
+import { Platform } from 'react-native'
 import Countly from 'countly-sdk-react-native-bridge';
 
 import { COUNTLY_SERVER_URL, COUNTLY_APP_KEY, COUNTLY_SALT } from 'react-native-dotenv'
@@ -7,6 +8,10 @@ function CountlyTracker() {
   this.userProperties = {}
 
   let deviceId = ''; // or use some string that identifies current app user
+
+  if (Platform.OS === 'ios') {
+    return
+  }
 
   // configure Countly parameters if needed
   Countly.enableParameterTamperingProtection(COUNTLY_SALT);
@@ -22,10 +27,20 @@ CountlyTracker.prototype = Object.create(BaseTracker.prototype);
 CountlyTracker.prototype.constructor = CountlyTracker;
 
 CountlyTracker.prototype.setCurrentScreen = function(screenName) {
+
+  if (Platform.OS === 'ios') {
+    return
+  }
+
   Countly.recordView(screenName);
 }
 
 CountlyTracker.prototype.logEvent = function(category, action, text, number) {
+
+  if (Platform.OS === 'ios') {
+    return
+  }
+
   let eventName;
 
   if (text != null) {
@@ -46,6 +61,11 @@ CountlyTracker.prototype.logEvent = function(category, action, text, number) {
 }
 
 CountlyTracker.prototype.setUserProperty = function(name, value) {
+
+  if (Platform.OS === 'ios') {
+    return
+  }
+
   // there is no plugin on a backend to handle it
   // Countly.userData.setProperty(name, value);
   this.userProperties[name] = value
