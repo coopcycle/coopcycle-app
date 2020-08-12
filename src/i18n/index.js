@@ -16,6 +16,7 @@ import fr from './locales/fr.json'
 import it from './locales/it.json'
 import pl from './locales/pl.json'
 import pt_BR from './locales/pt_BR.json'
+import pt_PT from './locales/pt_PT.json'
 import moment from 'moment'
 import { LocaleConfig } from 'react-native-calendars'
 
@@ -28,9 +29,10 @@ import frFR from 'numbro/languages/fr-FR'
 import itIT from 'numbro/languages/it-IT'
 import plPL from 'numbro/languages/pl-PL'
 import ptBR from 'numbro/languages/pt-BR'
+import ptPT from 'numbro/languages/pt-PT'
 
 export const localeDetector = () => {
-  const lang = RNLocalize.findBestAvailableLanguage(['cs', 'de', 'en', 'es', 'fr', 'it', 'pl', 'pt-BR'])
+  const lang = RNLocalize.findBestAvailableLanguage(['cs', 'de', 'en', 'es', 'fr', 'it', 'pl', 'pt-BR', 'pt-PT'])
   if (!lang) {
 
     return 'en'
@@ -40,7 +42,7 @@ export const localeDetector = () => {
 }
 
 export const localeWithTagDetector = () => {
-  const lang = RNLocalize.findBestAvailableLanguage(['cs-CZ', 'de-DE', 'en-GB', 'en-US', 'es-ES', 'fr-FR', 'it-IT', 'pl-PL', 'pt-BR'])
+  const lang = RNLocalize.findBestAvailableLanguage(['cs-CZ', 'de-DE', 'en-GB', 'en-US', 'es-ES', 'fr-FR', 'it-IT', 'pl-PL', 'pt-BR', 'pt-PT'])
   if (!lang) {
 
     return 'en-US'
@@ -60,6 +62,7 @@ import 'moment/locale/fr'
 import 'moment/locale/it'
 import 'moment/locale/pl'
 import 'moment/locale/pt-br'
+import 'moment/locale/pt'
 
 // Load Numbro locales
 numbro.registerLanguage(csCZ)
@@ -70,6 +73,7 @@ numbro.registerLanguage(frFR)
 numbro.registerLanguage(itIT)
 numbro.registerLanguage(plPL)
 numbro.registerLanguage(ptBR)
+numbro.registerLanguage(ptPT)
 
 numbro.setLanguage(LOCALE_WITH_TAG)
 
@@ -103,7 +107,7 @@ i18next
   .use(initReactI18next)
   .init({
     fallbackLng: 'en',
-    resources: { cs, de, en, es, fr, it, pl, "pt-BR": pt_BR },
+    resources: { cs, de, en, es, fr, it, pl, "pt-BR": pt_BR, "pt-PT": pt_PT },
     ns: ['common'],
     defaultNS: 'common',
     debug: process.env.DEBUG,
