@@ -21,6 +21,22 @@ class AddressUtils {
       isPrecise: _.includes(details.types, 'street_address') || _.includes(details.types, 'premise'),
     }
   }
+
+  static createAddressFromPostcode(postcode, streetAddress) {
+
+    return {
+      streetAddress: streetAddress,
+      postalCode: postcode.postcode,
+      addressCountry: postcode.country,
+      addressLocality: postcode.admin_district || '',
+      addressRegion: postcode.region || '',
+      geo: {
+        latitude: postcode.latitude,
+        longitude: postcode.longitude,
+      },
+      isPrecise: true
+    }
+  }
 }
 
 export default AddressUtils

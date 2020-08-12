@@ -26,14 +26,7 @@ const styles = StyleSheet.create({
         overflow: 'visible',
       },
     }),
-  },
-  textInput: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    height: textInputContainerHeight,
-  },
+  }
 })
 
 class RestaurantSearch extends Component {
@@ -60,16 +53,6 @@ class RestaurantSearch extends Component {
     )
   }
 
-  renderTextInput(props) {
-
-    return (
-      <View style={ styles.textInput }>
-        <TextInput { ...props } style={ [ props.style, { flex: 1 } ] } />
-        { this.renderButton() }
-      </View>
-    )
-  }
-
   render() {
 
     return (
@@ -77,7 +60,6 @@ class RestaurantSearch extends Component {
         <AddressAutocomplete
           googleApiKey={ this.props.googleApiKey }
           country={ this.props.country }
-          placeholder={ this.props.t('ENTER_ADDRESS') }
           onSelectAddress={ this.props.onSelect }
           containerStyle={{
             flex: 1,
@@ -88,21 +70,11 @@ class RestaurantSearch extends Component {
             justifyContent: 'center',
             borderWidth: 0,
             paddingLeft: 15,
-          }}
-          listStyle={{
-            margin: 0,
-          }}
-          style={{
-            backgroundColor: 'white',
-            borderColor: '#b9b9b9',
-            borderRadius: 20,
-            paddingVertical: 8,
-            paddingHorizontal: 15,
-            borderWidth: 0,
+            height: textInputContainerHeight,
           }}
           onChangeText={ this.props.onChangeText }
           value={ this.props.defaultValue }
-          renderTextInput={ props => this.renderTextInput(props) } />
+          renderRight={ this.renderButton.bind(this) } />
       </View>
     )
   }

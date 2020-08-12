@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Image, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { Image, StyleSheet, TouchableOpacity, TextInput, View } from 'react-native'
 import PropTypes from 'prop-types'
 import _ from 'lodash'
 import { Icon, Text } from 'native-base'
@@ -38,13 +38,31 @@ const ListFooterComponent = () => (
   </View>
 )
 
+const PostCodeButton = ({ postcode, onPress }) => {
+  return (
+    <TouchableOpacity style={{
+      flexDirection: 'row', alignItems: 'center',
+      paddingLeft: 10,
+      paddingRight: 10,
+      paddingVertical: 5,
+      position: 'absolute', right: 1, backgroundColor: '#0984e3', borderTopRightRadius: 20, borderBottomRightRadius: 20 }}
+      onPress={ onPress }>
+      <Text style={{ marginRight: 10, fontWeight: '700', fontSize: 16, color: 'white', fontFamily: 'RobotoMono-Regular' }}>{ postcode }</Text>
+      <Icon type="FontAwesome5" name="times" style={{ fontSize: 18, color: 'white' }} />
+    </TouchableOpacity>
+  )
+}
+
 class AddressAutocomplete extends Component {
 
   constructor(props) {
+
     super(props)
+
     this.state = {
-      query: props.value || '',
+      query: _.isObject(props.value) ? (props.value.streetAddress || '') : (props.value || ''),
       results: [],
+      postcode: _.isObject(props.value) ? { postcode: props.value.postalCode } : null,
     }
     this.fuse = new Fuse(this.props.addresses, fuseOptions)
   }
@@ -55,30 +73,63 @@ class AddressAutocomplete extends Component {
       limit: 2
     })
 
-    axios
-      .get(`https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${encodeURIComponent(text)}&${qs.stringify(query)}`)
-      .then(response => {
+    if (this.props.country === 'gb') {
 
-        const normalizedResults =
-          fuseResults.map(fuseResult => ({
-            ...fuseResult.item,
-            type: 'fuse',
-          }))
+      if (!this.state.postcode) {
 
-        const normalizedPredictions =
-          response.data.predictions.map(prediction => ({
-            ...prediction,
-            type: 'prediction'
-          }))
+        axios({
+          method: 'get',
+          url: `https://api.postcodes.io/postcodes/${text.replace(/\s/g, '')}/autocomplete`,
+        })
+          .then(response => {
+            if (response.data.status === 200 && Array.isArray(response.data.result)) {
+              const normalizedPostcodes = response.data.result.map(postcode => ({
+                postcode: postcode,
+                type: 'postcode',
+              }))
+              this.setState({
+                results: normalizedPostcodes,
+              })
+            }
+          })
 
-        const results = normalizedResults.concat(normalizedPredictions)
+      } else {
+        this.setState({
+          results: [{
+            type: 'manual_address',
+            description: text,
+          }],
+        })
+      }
 
-        if (normalizedResults.length > 0 && results.length > 5) {
-          results.splice(5)
-        }
+    } else {
 
-        this.setState({ results })
-      })
+      axios
+        .get(`https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${encodeURIComponent(text)}&${qs.stringify(query)}`)
+        .then(response => {
+
+          const normalizedResults =
+            fuseResults.map(fuseResult => ({
+              ...fuseResult.item,
+              type: 'fuse',
+            }))
+
+          const normalizedPredictions =
+            response.data.predictions.map(prediction => ({
+              ...prediction,
+              type: 'prediction'
+            }))
+
+          const results = normalizedResults.concat(normalizedPredictions)
+
+          if (normalizedResults.length > 0 && results.length > 5) {
+            results.splice(5)
+          }
+
+          this.setState({ results })
+        })
+
+    }
 
   }, 300)
 
@@ -121,8 +172,34 @@ class AddressAutocomplete extends Component {
         })
     }
 
+    if (item.type === 'postcode') {
+      axios({
+        method: 'get',
+        url: `https://api.postcodes.io/postcodes/${item.postcode}`,
+      })
+        .then(response => {
+          if (response.data.status === 200 && response.data.result) {
+            this.setState({
+              query: '',
+              results: [],
+              postcode: response.data.result,
+            })
+          }
+        })
+    }
+
     if (item.type === 'fuse') {
       this.props.onSelectAddress(item)
+    }
+
+    if (item.type === 'manual_address') {
+
+      this.setState({
+        results: [],
+      })
+      this.props.onSelectAddress(
+        AddressUtils.createAddressFromPostcode(this.state.postcode, item.description)
+      )
     }
   }
 
@@ -143,6 +220,10 @@ class AddressAutocomplete extends Component {
       })
     }
 
+    if (item.type === 'postcode') {
+      text = item.postcode
+    }
+
     let itemProps = {}
     if (item.type === 'prediction') {
       itemProps = {
@@ -161,9 +242,35 @@ class AddressAutocomplete extends Component {
     )
   }
 
+  renderTextInput(props) {
+
+    return (
+      <View style={ styles.textInput }>
+        <View style={ styles.textInput }>
+          <TextInput { ...props } style={ [ props.style, { flex: 1 } ] } />
+          { (this.props.country === 'gb' && this.state.postcode) && (
+            <PostCodeButton postcode={ this.state.postcode.postcode } onPress={ () => {
+              this.setState({
+                query: '',
+                results: [],
+                postcode: null
+              })
+            }} />
+          ) }
+        </View>
+        { this.props.renderRight() }
+      </View>
+    )
+  }
+
   render() {
 
-    const { onSelectAddress, ...otherProps } = this.props
+    const { onSelectAddress, renderTextInput, placeholder, ...otherProps } = this.props
+
+    let finalPlaceholder = placeholder || this.props.t('ENTER_ADDRESS')
+    if (this.props.country === 'gb' && !this.state.postcode) {
+      finalPlaceholder = this.props.t('ENTER_POSTCODE')
+    }
 
     return (
       <Autocomplete
@@ -175,9 +282,23 @@ class AddressAutocomplete extends Component {
         renderItem={ this.renderItem.bind(this) }
         data={ this.state.results }
         value={ this.state.query }
+        placeholder={ finalPlaceholder }
         onChangeText={ this._onChangeText.bind(this) }
         keyExtractor={ (item, i) => `prediction-${i}` }
-        flatListProps={{ ItemSeparatorComponent, ListFooterComponent }} />
+        flatListProps={{ ItemSeparatorComponent, ListFooterComponent }}
+        renderTextInput={ props => this.renderTextInput(props) }
+        listStyle={{
+          margin: 0,
+        }}
+        style={{
+          backgroundColor: 'white',
+          borderColor: '#b9b9b9',
+          borderRadius: 20,
+          paddingVertical: 8,
+          paddingHorizontal: 15,
+          borderWidth: 1,
+        }}
+        />
     )
   }
 }
@@ -185,6 +306,7 @@ class AddressAutocomplete extends Component {
 AddressAutocomplete.defaultProps = {
   minChars: 3,
   addresses: [],
+  renderRight: () => <View />
 }
 
 AddressAutocomplete.propTypes = {
@@ -192,6 +314,7 @@ AddressAutocomplete.propTypes = {
   addresses: PropTypes.array,
   googleApiKey: PropTypes.string.isRequired,
   country: PropTypes.string.isRequired,
+  renderRight: PropTypes.func,
 }
 
 const styles = StyleSheet.create({
@@ -210,6 +333,12 @@ const styles = StyleSheet.create({
     height: StyleSheet.hairlineWidth,
     width: '100%',
     backgroundColor: '#333',
+  },
+  textInput: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
 })
 
