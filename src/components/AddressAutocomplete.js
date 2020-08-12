@@ -53,9 +53,19 @@ const PostCodeButton = ({ postcode, onPress }) => {
       paddingLeft: 10,
       paddingRight: 10,
       paddingVertical: 5,
-      position: 'absolute', right: 1, backgroundColor: '#0984e3', borderTopRightRadius: 20, borderBottomRightRadius: 20 }}
+      position: 'absolute',
+      right: 0,
+      top: 0,
+      bottom: 0,
+      backgroundColor: '#0984e3', borderTopRightRadius: 20, borderBottomRightRadius: 20 }}
       onPress={ onPress }>
-      <Text style={{ marginRight: 10, fontWeight: '700', fontSize: 16, color: 'white', fontFamily: 'RobotoMono-Regular' }}>{ postcode }</Text>
+      <Text style={{
+        marginRight: 10,
+        fontWeight: '700',
+        fontSize: 16,
+        color: 'white',
+        fontFamily: 'RobotoMono-Regular'
+      }}>{ postcode }</Text>
       <Icon type="FontAwesome5" name="times" style={{ fontSize: 18, color: 'white' }} />
     </TouchableOpacity>
   )
@@ -307,6 +317,7 @@ class AddressAutocomplete extends Component {
           paddingVertical: 8,
           paddingHorizontal: 15,
           borderWidth: 1,
+          ...this.props.style,
         }}
         />
     )

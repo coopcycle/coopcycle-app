@@ -195,19 +195,6 @@ const styles = StyleSheet.create({
     color: '#E74C3C',
     fontSize: 14,
   },
-  typeaheadContainer: {
-    marginTop: 15,
-  },
-  typeaheadIconContainer: {
-    position: 'absolute',
-    right: 0,
-    height: 44,
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 15,
-    marginRight: 8,
-  },
   goBackContainer: {
     flex: 1,
     alignItems: 'center',

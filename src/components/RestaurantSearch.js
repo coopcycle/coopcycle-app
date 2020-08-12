@@ -72,6 +72,9 @@ class RestaurantSearch extends Component {
             paddingLeft: 15,
             height: textInputContainerHeight,
           }}
+          style={{
+            height: (textInputContainerHeight * 0.7),
+          }}
           onChangeText={ this.props.onChangeText }
           value={ this.props.defaultValue }
           renderRight={ this.renderButton.bind(this) } />
