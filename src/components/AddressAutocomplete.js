@@ -30,11 +30,19 @@ const ItemSeparatorComponent = () => (
   <View style={ styles.itemSeparator } />
 )
 
-const ListFooterComponent = () => (
+const PoweredByGoogle = () => (
   <View style={ styles.poweredContainer }>
     <Image
       resizeMode="contain"
       source={ require('../../assets/images/powered_by_google_on_white.png') } />
+  </View>
+)
+
+const PoweredByIdealPostcodes = () => (
+  <View style={ styles.poweredContainer }>
+    <Image
+      resizeMode="contain"
+      source={ require('../../assets/images/ideal_postcodes.png') } />
   </View>
 )
 
@@ -285,7 +293,9 @@ class AddressAutocomplete extends Component {
         placeholder={ finalPlaceholder }
         onChangeText={ this._onChangeText.bind(this) }
         keyExtractor={ (item, i) => `prediction-${i}` }
-        flatListProps={{ ItemSeparatorComponent, ListFooterComponent }}
+        flatListProps={{ ItemSeparatorComponent,
+          ListFooterComponent: (this.props.country === 'gb' ? PoweredByIdealPostcodes : PoweredByGoogle)
+        }}
         renderTextInput={ props => this.renderTextInput(props) }
         listStyle={{
           margin: 0,
