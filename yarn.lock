@@ -4598,9 +4598,9 @@ detect-newline@^3.0.0:
   integrity sha512-TLz+x/vEXm/Y7P7wn1EJFNLxYpUD4TgMosxY6fAVJUnJMbupHBOncxyWUG9OpTaH9EBD7uFI5LfEgmMOc54DsA==
 
 detox@^17.3.5:
-  version "17.3.5"
-  resolved "https://registry.yarnpkg.com/detox/-/detox-17.3.5.tgz#abc4a2bae23290e249e241a5371e0b8eec9df22a"
-  integrity sha512-is322w49jw4g/DjzAR9QvYBF1rtPMkCe3RXTSciIiTJ8MipQY5bgqcosuFsEmwJ8h3ivvY3X+sHV5xe5MT2CwQ==
+  version "17.3.6"
+  resolved "https://registry.yarnpkg.com/detox/-/detox-17.3.6.tgz#112027d78fecc07a61ef6d8672dd161f0f1d1a68"
+  integrity sha512-f3JmOAQ7hELG/VXzGbcMDYqHJz6ACIjRoAfDhEdPsk7Exe7xCU6mgE91N/hlV/pbIFCOXm+8Z745Y8WRCQ25Vg==
   dependencies:
     bunyan "^1.8.12"
     bunyan-debug-stream "^1.1.0"
