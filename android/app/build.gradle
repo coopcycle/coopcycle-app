@@ -2,6 +2,7 @@ apply plugin: "com.android.application"
 apply plugin: "com.google.gms.google-services"
 apply plugin: "com.google.firebase.firebase-perf"
 apply plugin: "com.google.firebase.crashlytics"
+apply from: '../../node_modules/react-native-unimodules/gradle.groovy'
 
 import com.android.build.OutputFile
 
@@ -213,11 +214,12 @@ dependencies {
     // https://developer.android.com/studio/build/multidex.html
     implementation 'androidx.multidex:multidex:2.0.1'
 
-    implementation project(':@mauron85_react-native-background-geolocation')
     implementation "com.jakewharton.timber:timber:${rootProject.ext.timberVersion}"
 
     implementation 'androidx.appcompat:appcompat:1.1.0-rc01'
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0-alpha02'
+
+    addUnimodulesDependencies()
 
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.facebook.react:react-native:+"  // From node_modules

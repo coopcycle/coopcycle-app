@@ -31,13 +31,18 @@ jest.mock('@react-native-firebase/analytics', () => ({
 jest.mock('@react-native-firebase/messaging', () => ({
 }))
 
-jest.mock('@mauron85/react-native-background-geolocation', () => ({
-  configure: jest.fn(),
-  removeAllListeners: jest.fn(),
-  on: jest.fn(),
-  start: jest.fn(),
-  stop: jest.fn(),
-  checkStatus: jest.fn(),
+jest.mock('expo-location', () => ({
+  Accuracy: {
+    BestForNavigation: ''
+  },
+  hasServicesEnabledAsync: jest.fn().mockResolvedValue(true),
+  startLocationUpdatesAsync: jest.fn().mockImplementation(() => Promise.resolve()),
+  hasStartedLocationUpdatesAsync: jest.fn().mockResolvedValue(true),
+  stopLocationUpdatesAsync: jest.fn().mockImplementation(() => Promise.resolve()),
+}))
+
+jest.mock('expo-task-manager', () => ({
+  defineTask: jest.fn(),
 }))
 
 jest.mock('countly-sdk-react-native-bridge', () => ({

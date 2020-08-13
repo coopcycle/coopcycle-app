@@ -1,5 +1,7 @@
 package fr.coopcycle;
 
+import fr.coopcycle.generated.BasePackageList;
+
 import android.content.Context;
 import android.content.Intent;
 
@@ -14,6 +16,11 @@ import com.google.android.gms.security.ProviderInstaller.ProviderInstallListener
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+import java.util.Arrays;
+
+import org.unimodules.adapters.react.ModuleRegistryAdapter;
+import org.unimodules.adapters.react.ReactModuleRegistryProvider;
+import org.unimodules.core.interfaces.SingletonModule;
 
 import androidx.multidex.MultiDexApplication;
 
@@ -21,6 +28,8 @@ import androidx.multidex.MultiDexApplication;
 // we need to extend android.support.multidex.MultiDexApplication instead of android.app.Application
 // https://developer.android.com/studio/build/multidex.html
 public class MainApplication extends MultiDexApplication implements ReactApplication {
+
+  private final ReactModuleRegistryProvider mModuleRegistryProvider = new ReactModuleRegistryProvider(new BasePackageList().getPackageList(), null);
 
   private final ReactNativeHost mReactNativeHost =
       new ReactNativeHost(this) {
@@ -37,6 +46,12 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
           // packages.add(new MyReactNativePackage());
           packages.add(new LaunchActivityPackage());
           packages.add(new NotificationManagerPackage());
+
+          // Add unimodules
+          List<ReactPackage> unimodules = Arrays.<ReactPackage>asList(
+            new ModuleRegistryAdapter(mModuleRegistryProvider)
+          );
+          packages.addAll(unimodules);
 
           return packages;
         }
