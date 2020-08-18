@@ -345,6 +345,10 @@
         "FULFILLMENT_METHOD": {
             "collection": "Vyzvednutí",
             "delivery": "Doručení"
-        }
+        },
+        "RESTAURANT_ORDER_REFUSE_REASON_ORDER_WILL_BE_CAPTURED": "Objednávka bude zrušena, ale nebudou vráceny peníze zákazníkovi",
+        "RESTAURANT_ORDER_REFUSE_REASON_NO_SHOW": "Nic k zobrazení",
+        "RESTAURANT_ORDER_BUTTON_FULFILL": "Splnit",
+        "ENTER_POSTCODE": "Zadejte své PSČ"
     }
 }
