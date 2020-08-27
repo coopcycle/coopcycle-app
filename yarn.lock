@@ -1651,9 +1651,9 @@
   integrity sha512-43VmHNJCTUC8dj5RS/2PPvY8iWk8qp6VHg1hhmu/oCzcgpeeAdNHPLiQfPxkqiaeHVIr9q8mDKEs+NqSNUD6aw==
 
 "@react-native-firebase/perf@^7.3.1":
-  version "7.3.1"
-  resolved "https://registry.yarnpkg.com/@react-native-firebase/perf/-/perf-7.3.1.tgz#d3dad6138768e13e7391035e172d34ba23563d6a"
-  integrity sha512-BmbrRiMwDyc9rFAsAA96fLsvCprSEr+LYOlwQcw2nYikLus+zuu6/yTUmFS/kQIqO2lWnIRUjarVN3V483zc3w==
+  version "7.4.1"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/perf/-/perf-7.4.1.tgz#b20f552de0e06d430463730c84967854f9ae4ab1"
+  integrity sha512-RRaUL8sD+2H2YuSn/GylKA+wI7iWHK57qxZn6Y+BgtaLQOGOvdqUhE4fXyD79PF+saOkdcFAj598F1RgkLePeQ==
 
 "@react-navigation/core@^3.7.6":
   version "3.7.6"
