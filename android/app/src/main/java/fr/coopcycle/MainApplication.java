@@ -1,12 +1,17 @@
 package fr.coopcycle;
 
-import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
+
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.soloader.SoLoader;
+import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.security.ProviderInstaller;
+import com.google.android.gms.security.ProviderInstaller.ProviderInstallListener;
+
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
@@ -51,8 +56,21 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
   @Override
   public void onCreate() {
     super.onCreate();
+    upgradeSecurityProvider();
     SoLoader.init(this, /* native exopackage */ false);
     initializeFlipper(this); // Remove this line if you don't want Flipper enabled
+  }
+
+  private void upgradeSecurityProvider() {
+    ProviderInstaller.installIfNeededAsync(this, new ProviderInstallListener() {
+      @Override
+      public void onProviderInstalled() {}
+
+      @Override
+      public void onProviderInstallFailed(int errorCode, Intent recoveryIntent) {
+        GoogleApiAvailability.getInstance().showErrorNotification(MainApplication.this, errorCode);
+      }
+    });
   }
 
   /**
