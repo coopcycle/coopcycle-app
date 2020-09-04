@@ -22,7 +22,7 @@ export default ({ getState, dispatch }) => {
     }
 
     BackgroundGeolocation.onEnabledChange(isEnabled => {
-      dispatch(setBackgroundGeolocationEnabled())
+      dispatch(setBackgroundGeolocationEnabled(isEnabled))
     })
 
     if (selectIsAuthenticated(state) && state.app.user && state.app.user.hasRole('ROLE_COURIER')) {
@@ -53,6 +53,7 @@ export default ({ getState, dispatch }) => {
         autoSyncThreshold: 5,
         autoSync: true,
       }, (state) => {
+        dispatch(setBackgroundGeolocationEnabled(state.enabled))
         if (!state.enabled) {
           BackgroundGeolocation.start(function() {
             if (process.env.NODE_ENV === 'development') {
