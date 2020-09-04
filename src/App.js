@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Platform, View, YellowBox } from 'react-native'
+import { Platform, View, LogBox } from 'react-native'
 
 import { StyleProvider } from 'native-base'
 import getTheme from '../native-base-theme/components'
@@ -39,7 +39,7 @@ import DropdownHolder from './DropdownHolder'
 
 import NavigationHolder from './NavigationHolder'
 
-YellowBox.ignoreWarnings([
+LogBox.ignoreLogs([
   'Warning: isMounted(...) is deprecated in plain JavaScript React classes.',
   'Module RCTImageLoader requires main queue setup',
   'Module RCTBackgroundGeolocation requires main queue setup',
