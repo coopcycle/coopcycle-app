@@ -2272,10 +2272,10 @@
   resolved "https://registry.yarnpkg.com/@mapbox/sphericalmercator/-/sphericalmercator-1.1.0.tgz#f3b1af042620716a1289fc41e1e97f610823aefe"
   integrity sha512-pEsfZyG4OMThlfFQbCte4gegvHUjxXCjz0KZ4Xk8NdOYTQBLflj6U8PL05RPAiuRAMAQNUUKJuL6qYZ5Y4kAWA==
 
-"@react-native-community/async-storage@^1.11.0":
-  version "1.11.0"
-  resolved "https://registry.yarnpkg.com/@react-native-community/async-storage/-/async-storage-1.11.0.tgz#bf81b8813080846f150c67f531987c429b442166"
-  integrity sha512-Pq9LlmvtCEKAGdkyrgTcRxNh2fnHFykEj2qnRYijOl1pDIl2MkD5IxaXu5eOL0wgOtAl4U//ff4z40Td6XR5rw==
+"@react-native-community/async-storage@^1.12.0":
+  version "1.12.0"
+  resolved "https://registry.yarnpkg.com/@react-native-community/async-storage/-/async-storage-1.12.0.tgz#d2fc65bc08aa1c3e9514bbe9fe7095eab8e8aca3"
+  integrity sha512-y3zVxuVyiOxI8TXrvajmYfDbIt2vFNxzV5MiA28v15DQTxDk6uJH3rpc9my+la7u2Tiwt3PpdU2+59ZgZ4h7wA==
   dependencies:
     deep-assign "^3.0.0"
 
@@ -10659,10 +10659,10 @@ react-native-calendars@^1.309.0:
     react-native-swipe-gestures "^1.0.5"
     xdate "^0.8.0"
 
-react-native-camera@^3.36.0:
-  version "3.36.0"
-  resolved "https://registry.yarnpkg.com/react-native-camera/-/react-native-camera-3.36.0.tgz#573980154decba57929957733c300d028697f52c"
-  integrity sha512-TdpT4q9gG4waDsnpKliFpmRnUMuBd3sHBlLBTlIFPPnxayVA9Z2E1yHuR10TCnuGI5a0i0wyCeLFOPJbMg70IQ==
+react-native-camera@^3.38.0:
+  version "3.38.0"
+  resolved "https://registry.yarnpkg.com/react-native-camera/-/react-native-camera-3.38.0.tgz#d51bd78306c185d8210cd89c6cf8d8b1b4cc1294"
+  integrity sha512-mczUap9TWHeFuGOY5fCoMnPWv704BiPyGNU5p4filB/XuQL4/M93Teqgw6gWMdd8KfElY9uqH4QNtHruJ67A5A==
   dependencies:
     prop-types "^15.6.2"
 

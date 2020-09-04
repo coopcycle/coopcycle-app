@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@mapbox/polyline": "^1.1.1",
-    "@react-native-community/async-storage": "^1.11.0",
+    "@react-native-community/async-storage": "^1.12.0",
     "@react-native-community/datetimepicker": "^2.6.1",
     "@react-native-community/masked-view": "^0.1.10",
     "@react-native-community/netinfo": "^5.9.6",
@@ -54,7 +54,7 @@
     "react-native-background-geolocation": "^3.8.1",
     "react-native-ble-manager": "^7.3.1",
     "react-native-calendars": "^1.309.0",
-    "react-native-camera": "^3.36.0",
+    "react-native-camera": "^3.38.0",
     "react-native-communications": "^2.2.1",
     "react-native-credit-card-input": "^0.4.1",
     "react-native-dotenv": "^0.2.0",
