@@ -102,8 +102,8 @@
     "validate.js": "^0.13.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.9.0",
-    "@babel/runtime": "^7.9.2",
+    "@babel/core": "^7.8.4",
+    "@babel/runtime": "^7.8.4",
     "@react-native-community/eslint-config": "^2.0",
     "@react-native-community/eslint-plugin": "^1.1.0",
     "axios-mock-adapter": "^1.18.2",
