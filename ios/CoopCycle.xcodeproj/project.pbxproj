@@ -43,6 +43,7 @@
 		DDC15750275B21FBAFF7526E /* libPods-CoopCycle-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 03B013237FF3D1C02757A701 /* libPods-CoopCycle-tvOSTests.a */; };
 		DEBE2D3913362689219B6069 /* libPods-CoopCycle-CoopCycleTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7AC169A3D49A1C48D1AFA8CE /* libPods-CoopCycle-CoopCycleTests.a */; };
 		E16E9E9401826BDAF2A27B23 /* libPods-CoopCycle.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0468D950C0E9CB89180B5016 /* libPods-CoopCycle.a */; };
+		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = RnDiffApp/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E47DB885677B48ACAE084A17 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1FCEE7F59F59411DBCCA84A7 /* Ionicons.ttf */; };
 		E4A95D69133B4C1B8FD304BA /* Raleway-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CA8DA506BADD462E8A4B68B4 /* Raleway-Regular.ttf */; };
 		E649FAA2C5B94B2FACEAF68F /* AntDesign.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 07AB41DCD1914F4EA8205618 /* AntDesign.ttf */; };
@@ -214,7 +215,7 @@
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
-				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
+				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
 				84E9E2D624E3EA5B00740A6D /* Infoplist.strings */,
 			);
@@ -516,8 +517,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 				845246CF2344832500A3A1B2 /* GoogleService-Info.plist in Resources */,
 				6CA9EFE6FD4D4EFA87DB1783 /* Roboto_medium.ttf in Resources */,
 				7CC1B2C8CE9743C7AA1CEE0F /* Roboto.ttf in Resources */,
@@ -854,16 +855,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		13B07FB11A68108700A75B9A /* LaunchScreen.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				13B07FB21A68108700A75B9A /* Base */,
-				FA525C07204D765E00899373 /* fr */,
-			);
-			name = LaunchScreen.xib;
-			path = CoopCycle;
-			sourceTree = "<group>";
-		};
 		84E9E2D624E3EA5B00740A6D /* Infoplist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -892,7 +883,7 @@
 					"$(SRCROOT)/../node_modules/react-native-locale-detector/RNI18n",
 				);
 				INFOPLIST_FILE = CoopCycleTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = (
@@ -919,7 +910,7 @@
 					"$(SRCROOT)/../node_modules/react-native-locale-detector/RNI18n",
 				);
 				INFOPLIST_FILE = CoopCycleTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = (
@@ -942,10 +933,6 @@
 				CODE_SIGN_ENTITLEMENTS = CoopCycle/CoopCycle.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_BITCODE = NO;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"$(inherited)",
-					"FB_SONARKIT_ENABLED=1",
-				);
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 66HUGQ2V5L;
 				HEADER_SEARCH_PATHS = (
@@ -1028,7 +1015,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
 				TARGETED_DEVICE_FAMILY = 3;
-				TVOS_DEPLOYMENT_TARGET = 9.2;
+				TVOS_DEPLOYMENT_TARGET = 10.0;
 			};
 			name = Debug;
 		};
@@ -1061,7 +1048,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
 				TARGETED_DEVICE_FAMILY = 3;
-				TVOS_DEPLOYMENT_TARGET = 9.2;
+				TVOS_DEPLOYMENT_TARGET = 10.0;
 			};
 			name = Release;
 		};
@@ -1171,7 +1158,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -1219,7 +1206,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
