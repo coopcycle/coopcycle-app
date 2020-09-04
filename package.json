@@ -13,7 +13,7 @@
   "dependencies": {
     "@mapbox/polyline": "^1.1.1",
     "@react-native-community/async-storage": "^1.12.0",
-    "@react-native-community/datetimepicker": "^2.6.1",
+    "@react-native-community/datetimepicker": "^2.6.2",
     "@react-native-community/masked-view": "^0.1.10",
     "@react-native-community/netinfo": "^5.9.6",
     "@react-native-community/picker": "^1.6.6",
@@ -61,7 +61,7 @@
     "react-native-dotenv": "^0.2.0",
     "react-native-dropdownalert": "^4.3.0",
     "react-native-email-link": "^1.9.2",
-    "react-native-gesture-handler": "^1.7.0",
+    "react-native-gesture-handler": "^1.8.0",
     "react-native-google-places-autocomplete": "^1.8.1",
     "react-native-keep-awake": "^4.0.0",
     "react-native-keyboard-manager": "^4.0.13-16",
