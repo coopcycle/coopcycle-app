@@ -142,7 +142,7 @@ class DateSelectHeader extends React.Component {
         <Grid>
           <Row style={ styles.dateHeader }>
             <Col size={ 4 } style={ styles.button }>
-              { buttonsEnabled && this.renderButton('arrow-dropleft', this.onPastPress, styles.icon) }
+              { buttonsEnabled && this.renderButton('arrow-back', this.onPastPress, styles.icon) }
             </Col>
             <Col size={ 8 } style={ styles.body } onPress={ this.toggleCalendar }>
               <Text numberOfLines={ 1 } style={styles.dateHeaderText}>
@@ -150,7 +150,7 @@ class DateSelectHeader extends React.Component {
               </Text>
             </Col>
             <Col size={ 4 } style={ styles.button }>
-              { buttonsEnabled && this.renderButton('arrow-dropright', this.onFuturePress, styles.icon) }
+              { buttonsEnabled && this.renderButton('arrow-forward', this.onFuturePress, styles.icon) }
             </Col>
           </Row>
         </Grid>

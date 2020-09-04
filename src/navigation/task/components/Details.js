@@ -48,7 +48,7 @@ const Details = ({ task, t }) => {
 
   const items = [
     {
-      iconName: 'md-navigate',
+      iconName: 'navigate',
       text: address,
       onPress: () => showLocation({
         latitude: task.address.geo.latitude,
@@ -59,7 +59,7 @@ const Details = ({ task, t }) => {
       }),
     },
     {
-      iconName: 'md-clock',
+      iconName: 'time',
       text: timeframe,
     },
   ]
