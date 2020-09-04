@@ -1,8 +1,8 @@
 PODS:
   - boost-for-react-native (1.63.0)
-  - CocoaLumberjack (3.5.3):
-    - CocoaLumberjack/Core (= 3.5.3)
-  - CocoaLumberjack/Core (3.5.3)
+  - CocoaLumberjack (3.6.2):
+    - CocoaLumberjack/Core (= 3.6.2)
+  - CocoaLumberjack/Core (3.6.2)
   - Countly (20.04.2):
     - Countly/Core (= 20.04.2)
   - Countly/Core (20.04.2)
@@ -378,8 +378,8 @@ PODS:
     - React-Core
   - RNBackgroundFetch (3.1.0):
     - React
-  - RNBackgroundGeolocation (3.8.1):
-    - CocoaLumberjack (~> 3.5.1)
+  - RNBackgroundGeolocation (3.9.0):
+    - CocoaLumberjack (~> 3.6.1)
     - React
   - RNCAsyncStorage (1.12.0):
     - React
@@ -624,7 +624,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
-  CocoaLumberjack: 2f44e60eb91c176d471fdba43b9e3eae6a721947
+  CocoaLumberjack: bd155f2dd06c0e0b03f876f7a3ee55693122ec94
   Countly: 671fafd48d7436e7ddc0c8dc67001ad3cb41ee51
   CountlyReactNative: 65f8c65c490cbe36db075034158ac473c1405aea
   DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
@@ -681,7 +681,7 @@ SPEC CHECKSUMS:
   ReactNativeKeyboardManager: 6c42da02c08b7eb16440f9fdc1c78f776a11cdca
   rn-fetch-blob: f065bb7ab7fb48dd002629f8bdcb0336602d3cba
   RNBackgroundFetch: 8dbb63141792f1473e863a0797ffbd5d987af2fc
-  RNBackgroundGeolocation: dc849f37ad483aa318364c85bab2309077cd2071
+  RNBackgroundGeolocation: 66b7cd2859fb4659ff2a1c09fd7739f9ba179e05
   RNCAsyncStorage: 2a692bcb9b69b76a2f1a95f33db057129700af64
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
   RNCPushNotificationIOS: c145c6253ea016e5efeff604f2720736b4a596f7

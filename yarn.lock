@@ -10623,10 +10623,10 @@ react-native-background-fetch@^3.1.0, react-native-background-fetch@~3.1.0:
     plist "^3.0.1"
     xcode "^2.0.0"
 
-react-native-background-geolocation@^3.8.1:
-  version "3.8.1"
-  resolved "https://registry.yarnpkg.com/react-native-background-geolocation/-/react-native-background-geolocation-3.8.1.tgz#0137e76da5e3db0ba9c5f69014c0a1b8487cd7c3"
-  integrity sha512-IhBR6wj1g/PNHZ8yqWeFxxVBvmjYUJX+MhN3LpdMfJA/pBBm/Z5Q4DY7FFbzR5YD30qaIzOZqA+C/Yt0q22zmQ==
+react-native-background-geolocation@^3.9.0:
+  version "3.9.0"
+  resolved "https://registry.yarnpkg.com/react-native-background-geolocation/-/react-native-background-geolocation-3.9.0.tgz#7fc1c438b6568fe2aadae5d88500b029fdafb238"
+  integrity sha512-yUBNrQteDSrujUwX/qwQyML2s6RuVnvwF+iCxH7SgdMuBRvYTOi3zRYqITvZ56dJgrk9PcNRjj1nwapZ3Ldavg==
   dependencies:
     fast-plist "^0.1.2"
     plist "^2.0.1"

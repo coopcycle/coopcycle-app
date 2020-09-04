@@ -51,7 +51,7 @@
     "react-native": "0.61.5",
     "react-native-autocomplete-input": "^4.2.0",
     "react-native-background-fetch": "^3.1.0",
-    "react-native-background-geolocation": "^3.8.1",
+    "react-native-background-geolocation": "^3.9.0",
     "react-native-ble-manager": "^7.3.1",
     "react-native-calendars": "^1.309.0",
     "react-native-camera": "^3.38.0",
