@@ -24,7 +24,7 @@ import com.android.build.OutputFile
  *   // default. Can be overridden with ENTRY_FILE environment variable.
  *   entryFile: "index.android.js",
  *
- *   // https://facebook.github.io/react-native/docs/performance#enable-the-ram-format
+ *   // https://reactnative.dev/docs/performance#enable-the-ram-format
  *   bundleCommand: "ram-bundle",
  *
  *   // whether to bundle JS and assets in debug mode
@@ -154,6 +154,8 @@ android {
     }
     signingConfigs {
         release {
+            // Caution! In production, you need to generate your own keystore file.
+            // see https://reactnative.dev/docs/signed-apk-android.
             if (project.hasProperty('COOPCYCLE_RELEASE_STORE_FILE')) {
                 storeFile file(COOPCYCLE_RELEASE_STORE_FILE)
                 storePassword COOPCYCLE_RELEASE_STORE_PASSWORD
@@ -193,13 +195,6 @@ android {
                 signingConfig signingConfigs.release
             }
         }
-    }
-
-    packagingOptions {
-        pickFirst "lib/armeabi-v7a/libc++_shared.so"
-        pickFirst "lib/arm64-v8a/libc++_shared.so"
-        pickFirst "lib/x86/libc++_shared.so"
-        pickFirst "lib/x86_64/libc++_shared.so"
     }
 
     // applicationVariants are e.g. debug, release
@@ -242,6 +237,7 @@ dependencies {
     }
     debugImplementation("com.facebook.flipper:flipper-network-plugin:${FLIPPER_VERSION}") {
         exclude group:'com.facebook.flipper'
+        exclude group:'com.squareup.okhttp3', module:'okhttp'
     }
     debugImplementation("com.facebook.flipper:flipper-fresco-plugin:${FLIPPER_VERSION}") {
         exclude group:'com.facebook.flipper'
