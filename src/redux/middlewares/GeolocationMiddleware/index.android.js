@@ -51,8 +51,6 @@ export default ({ getState, dispatch }) => {
       time: loc.timestamp,
     }))
 
-    console.log('locations', data)
-
     axios({
       method: 'post',
       url: `${baseURL}/api/me/location`,
