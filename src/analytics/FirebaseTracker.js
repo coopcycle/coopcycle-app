@@ -6,7 +6,10 @@ FirebaseTracker.prototype = Object.create(BaseTracker.prototype);
 FirebaseTracker.prototype.constructor = FirebaseTracker;
 
 FirebaseTracker.prototype.setCurrentScreen = function(screenName) {
-  analytics().setCurrentScreen(screenName)
+  analytics().logScreenView({
+    screen_name: screenName,
+    screen_class: screenName,
+  })
 }
 
 FirebaseTracker.prototype.logEvent = function(category, action, text, number) {
