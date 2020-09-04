@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { Picker, TouchableOpacity, View } from 'react-native'
+import { TouchableOpacity, View } from 'react-native'
+import { Picker } from '@react-native-community/picker'
 import { Text } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
