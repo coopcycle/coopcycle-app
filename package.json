@@ -29,7 +29,7 @@
     "countly-sdk-react-native-bridge": "^20.0",
     "currency-symbol-map": "^4.0.4",
     "diacritics": "^1.3.0",
-    "esc-pos-encoder": "^1.2.0",
+    "esc-pos-encoder": "^1.3.0",
     "expo": "^38.0.10",
     "expo-location": "~8.2.1",
     "expo-task-manager": "~8.4.0",
