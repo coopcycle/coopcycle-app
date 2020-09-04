@@ -30,6 +30,7 @@
 		6CA9EFE6FD4D4EFA87DB1783 /* Roboto_medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8A63899B198346289A19198B /* Roboto_medium.ttf */; };
 		6F45B79BF21D4098B10FF4FA /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E8A547E9C6C2466B8211C4CC /* Foundation.ttf */; };
 		7CC1B2C8CE9743C7AA1CEE0F /* Roboto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DE7C26B381464CBDAC381F32 /* Roboto.ttf */; };
+		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		845246CF2344832500A3A1B2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 845246CE2344832500A3A1B2 /* GoogleService-Info.plist */; };
 		84A98B1223D8DA2000EFF666 /* CoopCycleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A98B1123D8DA2000EFF666 /* CoopCycleUITests.swift */; };
 		84A98B1A23D8DB6500EFF666 /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A98B1923D8DB6500EFF666 /* SnapshotHelper.swift */; };
@@ -514,6 +515,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				845246CF2344832500A3A1B2 /* GoogleService-Info.plist in Resources */,
 				6CA9EFE6FD4D4EFA87DB1783 /* Roboto_medium.ttf in Resources */,
