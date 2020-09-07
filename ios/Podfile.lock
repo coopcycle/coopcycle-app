@@ -9,11 +9,11 @@ PODS:
     - Countly/Core (= 20.04.3)
   - Countly/Core (20.04.3)
   - CountlyReactNative (20.04):
-    - Countly
+    - Countly (= 20.04.3)
     - CountlyReactNative/NotificationService (= 20.04)
     - React
   - CountlyReactNative/NotificationService (20.04):
-    - Countly
+    - Countly (= 20.04.3)
     - React
   - DoubleConversion (1.1.6)
   - FBLazyVector (0.62.2)
@@ -735,7 +735,7 @@ SPEC CHECKSUMS:
   CocoaLibEvent: 2fab71b8bd46dd33ddb959f7928ec5909f838e3f
   CocoaLumberjack: bd155f2dd06c0e0b03f876f7a3ee55693122ec94
   Countly: 6e4af408faaa26192227f06d27899532c4c2317b
-  CountlyReactNative: 65f8c65c490cbe36db075034158ac473c1405aea
+  CountlyReactNative: 3df193f0ce9d2d8f1d9d6b682979a539f4e2cc83
   DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
   FBLazyVector: 4aab18c93cd9546e4bfed752b4084585eca8b245
   FBReactNativeSpec: 5465d51ccfeecb7faa12f9ae0024f2044ce4044e
