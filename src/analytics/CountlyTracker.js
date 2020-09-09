@@ -2,7 +2,7 @@ import BaseTracker from './BaseTracker'
 import { Platform } from 'react-native'
 import Countly from 'countly-sdk-react-native-bridge';
 
-import { COUNTLY_SERVER_URL, COUNTLY_APP_KEY, COUNTLY_SALT } from 'react-native-dotenv'
+import { COUNTLY_SERVER_URL, COUNTLY_APP_KEY, COUNTLY_SALT } from '@env'
 
 function CountlyTracker() {
   this.userProperties = {}
