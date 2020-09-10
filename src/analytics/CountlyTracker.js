@@ -17,10 +17,10 @@ function CountlyTracker() {
   Countly.enableParameterTamperingProtection(COUNTLY_SALT);
 
   // initialize
-  Countly.init(COUNTLY_SERVER_URL, COUNTLY_APP_KEY, deviceId);
-
-  // start session tracking
-  Countly.start();
+  Countly.init(COUNTLY_SERVER_URL, COUNTLY_APP_KEY, deviceId).then(() => {
+    // start session tracking
+    Countly.start();
+  });
 }
 
 CountlyTracker.prototype = Object.create(BaseTracker.prototype);
@@ -32,7 +32,15 @@ CountlyTracker.prototype.setCurrentScreen = function(screenName) {
     return
   }
 
-  Countly.recordView(screenName);
+  Countly.isInitialized().then((initialized) => {
+
+    if (!initialized) {
+      return
+    }
+
+    Countly.recordView(screenName);
+
+  })
 }
 
 CountlyTracker.prototype.logEvent = function(category, action, text, number) {
@@ -41,23 +49,32 @@ CountlyTracker.prototype.logEvent = function(category, action, text, number) {
     return
   }
 
-  let eventName;
+  Countly.isInitialized().then((initialized) => {
 
-  if (text != null) {
-    eventName = `${category}_${action}_${text}`;
-  } else {
-    eventName = `${category}_${action}`;
-  }
+    if (!initialized) {
+      return
+    }
 
-  let event = {'eventName': eventName};
+    let eventName;
 
-  if (number != null) {
-    event.eventCount = number
-  }
+    if (text != null) {
+      eventName = `${category}_${action}_${text}`;
+    } else {
+      eventName = `${category}_${action}`;
+    }
 
-  event.segments = this.userProperties
+    let event = {'eventName': eventName};
 
-  Countly.sendEvent(event);
+    if (number != null) {
+      event.eventCount = number
+    }
+
+    event.segments = this.userProperties
+
+    Countly.sendEvent(event);
+
+  })
+
 }
 
 CountlyTracker.prototype.setUserProperty = function(name, value) {
