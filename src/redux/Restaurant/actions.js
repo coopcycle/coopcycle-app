@@ -182,7 +182,7 @@ export function loadMyRestaurants() {
   }
 }
 
-export function loadOrders(restaurant, date) {
+export function loadOrders(restaurant, date, cb) {
 
   return function (dispatch, getState) {
 
@@ -190,7 +190,12 @@ export function loadOrders(restaurant, date) {
     dispatch(loadOrdersRequest())
 
     return httpClient.get(`${restaurant['@id']}/orders?date=${date}`)
-      .then(res => dispatch(loadOrdersSuccess(res['hydra:member'])))
+      .then(res => {
+        dispatch(loadOrdersSuccess(res['hydra:member']))
+        if (cb && typeof cb === 'function') {
+          cb(res)
+        }
+      })
       .catch(e => dispatch(loadOrdersFailure(e)))
   }
 }
