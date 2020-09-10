@@ -72,6 +72,18 @@ class PushNotification {
       .onTokenRefresh(fcmToken => options.onRegister(fcmToken))
   }
 
+  static getInitialNotification() {
+    return new Promise((resolve, reject) => {
+      messaging().getInitialNotification().then(remoteMessage => {
+        if (remoteMessage) {
+          resolve(parseNotification(remoteMessage, false))
+        } else {
+          resolve(null)
+        }
+      })
+    })
+  }
+
   static removeListeners() {
     notificationOpenedAppListener()
     notificationListener()

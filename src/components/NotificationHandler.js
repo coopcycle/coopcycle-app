@@ -20,6 +20,11 @@ import analyticsEvent from '../analytics/Event'
 // Make sure sound will play even when device is in silent mode
 Sound.setCategory('Playback')
 
+/**
+ * This component is used
+ * 1/ To configure push notifications (see componentDidMount)
+ * 2/ To show notifications when the app is in foreground.
+ */
 class NotificationHandler extends Component {
 
   constructor(props) {

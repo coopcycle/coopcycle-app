@@ -35,21 +35,26 @@ class PushNotification {
       PushNotificationIOS.addEventListener('notification', notificationListener)
 
       PushNotificationIOS
-        .getInitialNotification()
-        .then(notification => {
-          if (notification !== null) {
-            notification.finish(PushNotificationIOS.FetchResult.NoData)
-            options.onNotification(parseNotification(notification, false))
-          }
-        })
-
-      PushNotificationIOS
         .requestPermissions()
         .catch(e => console.log(e))
 
       isConfigured = true
     }
 
+  }
+
+  static getInitialNotification() {
+    return new Promise((resolve, reject) => {
+      PushNotificationIOS.getInitialNotification()
+        .then(notification => {
+          if (notification) {
+            notification.finish(PushNotificationIOS.FetchResult.NoData)
+            resolve(parseNotification(notification, false))
+          } else {
+            resolve(null)
+          }
+        })
+    })
   }
 
   static removeListeners() {
