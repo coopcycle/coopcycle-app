@@ -47,6 +47,7 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
           // packages.add(new MyReactNativePackage());
           packages.add(new LaunchActivityPackage());
           packages.add(new NotificationManagerPackage());
+          packages.add(new StopOnTerminatePackage());
 
           // Add unimodules
           List<ReactPackage> unimodules = Arrays.<ReactPackage>asList(
