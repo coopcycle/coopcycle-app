@@ -232,7 +232,7 @@ export function activateMenu(restaurant, menu) {
   }
 }
 
-export function loadOrderAndNavigate(order) {
+export function loadOrderAndNavigate(order, cb) {
 
   return function (dispatch, getState) {
 
@@ -245,6 +245,10 @@ export function loadOrderAndNavigate(order) {
       .then(res => {
 
         dispatch(loadOrderSuccess(res))
+
+        if (cb && typeof cb === 'function') {
+          cb()
+        }
 
         NavigationHolder.dispatch(NavigationActions.navigate({
           routeName: 'RestaurantNav',
@@ -265,7 +269,12 @@ export function loadOrderAndNavigate(order) {
         }))
 
       })
-      .catch(e => dispatch(loadOrderFailure(e)))
+      .catch(e => {
+        dispatch(loadOrderFailure(e))
+        if (cb && typeof cb === 'function') {
+          cb()
+        }
+      })
   }
 }
 
