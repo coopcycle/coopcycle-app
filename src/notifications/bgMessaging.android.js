@@ -1,6 +1,4 @@
-// @flow
-// Optional flow type
-import type { RemoteMessage } from '@react-native-firebase/messaging';
+import messaging from '@react-native-firebase/messaging';
 import launchActivity from './launchActivity';
 import notificationManager from './notificationManager';
 import store from '../redux/store'
@@ -16,7 +14,7 @@ import {Platform} from 'react-native';
 const firebaseNotificationId = 'f5a5a608'
 
 // data message was received in the background (works only on android)
-export default async (remoteMessage: RemoteMessage) => {
+const handler = async (remoteMessage) => {
   const message = parseNotification(remoteMessage, false)
 
   const { event } = message.data
@@ -51,4 +49,11 @@ export default async (remoteMessage: RemoteMessage) => {
 
 
   return Promise.resolve();
+}
+
+export default () => {
+  // The background message handler below is *ALWAYS* called
+  // when the app is in background or quit state
+  // @see https://rnfirebase.io/messaging/usage#background-application-state
+  messaging().setBackgroundMessageHandler(handler);
 }
