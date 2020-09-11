@@ -52,6 +52,7 @@ export default ({ getState, dispatch }) => {
         httpRootProperty: '.',
         autoSyncThreshold: 5,
         autoSync: true,
+        locationAuthorizationRequest: 'Any',
       }, (state) => {
         dispatch(setBackgroundGeolocationEnabled(state.enabled))
         if (!state.enabled) {
