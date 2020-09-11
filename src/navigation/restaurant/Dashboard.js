@@ -10,9 +10,13 @@ import DangerAlert from '../../components/DangerAlert'
 import Offline from '../../components/Offline'
 import OrderList from './components/OrderList'
 import DatePickerHeader from './components/DatePickerHeader'
-import { changeStatus, loadOrders, changeDate, deleteOpeningHoursSpecification } from '../../redux/Restaurant/actions'
+import {
+  changeStatus, loadOrders, changeDate, deleteOpeningHoursSpecification, loadOrderAndNavigate } from '../../redux/Restaurant/actions'
+import { connect as connectWs, init } from '../../redux/middlewares/WebSocketMiddleware/actions'
 import { selectSpecialOpeningHoursSpecification } from '../../redux/Restaurant/selectors'
 import { selectIsLoading } from '../../redux/App/selectors'
+import PushNotification from '../../notifications'
+import WebSocketClient from '../../websocket/WebSocketClient'
 
 const RNSound = NativeModules.RNSound
 
@@ -63,11 +67,41 @@ class DashboardPage extends Component {
 
     KeepAwake.activate()
 
+    this.props.initWs(new WebSocketClient(this.props.httpClient, '/dispatch'))
+    this.props.connectWs()
+
     InteractionManager.runAfterInteractions(() => {
       if (this.props.navigation.getParam('loadOrders', true)) {
         this.props.loadOrders(
           this.props.restaurant,
-          this.props.date.format('YYYY-MM-DD')
+          this.props.date.format('YYYY-MM-DD'),
+          () => {
+            // If getInitialNotification returns something,
+            // it means the app was opened from a quit state.
+            //
+            // We handle this here, and *NOT* in NotificationHandler,
+            // because when the app opens from a quit state,
+            // NotificationHandler.componentDidMount is called too early.
+            //
+            // It tries to call loadOrderAndNavigate, and it fails
+            // because Redux is not completely ready.
+            //
+            // It's not a big issue to handle this here,
+            // because as the app was opened from a quit state,
+            // the home screen will be this one (for restaurants).
+            //
+            // @see https://rnfirebase.io/messaging/notifications#handling-interaction
+            PushNotification.getInitialNotification()
+              .then(remoteMessage => {
+                console.log('getInitialNotification', remoteMessage)
+                if (remoteMessage) {
+                  const { event } = remoteMessage.data
+                  if (event && event.name === 'order:created') {
+                    this.props.loadOrderAndNavigate(event.data.order)
+                  }
+                }
+              })
+          }
         )
       }
       // setTimeout(() => this._checkSystemVolume(), 1500)
@@ -167,6 +201,7 @@ const styles = StyleSheet.create({
 function mapStateToProps(state) {
 
   return {
+    httpClient: state.app.httpClient,
     orders: state.restaurant.orders,
     date: state.restaurant.date,
     restaurant: state.restaurant.restaurant,
@@ -178,11 +213,13 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    loadOrders: (restaurant, date) => dispatch(loadOrders(restaurant, date)),
+    loadOrders: (restaurant, date, cb) => dispatch(loadOrders(restaurant, date, cb)),
+    loadOrderAndNavigate: order => dispatch(loadOrderAndNavigate(order)),
     changeDate: date => dispatch(changeDate(date)),
     changeStatus: (restaurant, state) => dispatch(changeStatus(restaurant, state)),
-    deleteOpeningHoursSpecification: openingHoursSpecification =>
-      dispatch(deleteOpeningHoursSpecification(openingHoursSpecification)),
+    deleteOpeningHoursSpecification: openingHoursSpecification => dispatch(deleteOpeningHoursSpecification(openingHoursSpecification)),
+    initWs: wsClient => dispatch(init(wsClient)),
+    connectWs: () => dispatch(connectWs()),
   }
 }
 

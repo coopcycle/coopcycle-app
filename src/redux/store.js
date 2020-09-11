@@ -13,6 +13,7 @@ import BluetoothMiddleware from './middlewares/BluetoothMiddleware'
 import HttpMiddleware from './middlewares/HttpMiddleware'
 import NetInfoMiddleware from './middlewares/NetInfoMiddleware'
 import PushNotificationMiddleware from './middlewares/PushNotificationMiddleware'
+import { ringOnNewOrderCreated } from './Restaurant/middlewares'
 
 const middlewares = [
   thunk,
@@ -23,6 +24,7 @@ const middlewares = [
   WsMiddleware(),
   GeolocationMiddleware,
   BluetoothMiddleware,
+  ringOnNewOrderCreated,
 ]
 
 if (process.env.NODE_ENV === 'development') {

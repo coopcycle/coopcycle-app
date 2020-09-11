@@ -58,6 +58,10 @@ import {
   LOAD_MY_RESTAURANTS_FAILURE,
 } from '../App/actions'
 
+import {
+  MESSAGE,
+} from '../middlewares/WebSocketMiddleware/actions'
+
 import moment from 'moment'
 import _ from 'lodash'
 
@@ -386,6 +390,26 @@ export default (state = initialState, action = {}) => {
         ...state,
         isScanningBluetooth: false,
       }
+
+    case MESSAGE:
+
+      if (action.payload.name && action.payload.data) {
+
+        const { name, data } = action.payload
+
+        switch (name) {
+          case 'order:created':
+
+            return {
+              ...state,
+              orders: addOrReplace(state, data.order),
+            }
+          default:
+            break
+        }
+      }
+
+      return state
   }
 
   return state
