@@ -93,7 +93,6 @@ class DashboardPage extends Component {
             // @see https://rnfirebase.io/messaging/notifications#handling-interaction
             PushNotification.getInitialNotification()
               .then(remoteMessage => {
-                console.log('getInitialNotification', remoteMessage)
                 if (remoteMessage) {
                   const { event } = remoteMessage.data
                   if (event && event.name === 'order:created') {
