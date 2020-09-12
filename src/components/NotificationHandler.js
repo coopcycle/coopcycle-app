@@ -68,6 +68,8 @@ class NotificationHandler extends Component {
           sound.reset()
         }
       })
+      // Clear notifications after 10 seconds
+      setTimeout(() => this.props.clearNotifications(), 10000)
     }
   }
 
