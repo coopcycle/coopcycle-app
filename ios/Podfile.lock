@@ -352,13 +352,13 @@ PODS:
   - React-jsinspector (0.62.2)
   - react-native-ble-manager (7.3.1):
     - React
-  - react-native-camera (3.38.0):
+  - react-native-camera (3.39.0):
     - React
-    - react-native-camera/RCT (= 3.38.0)
-    - react-native-camera/RN (= 3.38.0)
-  - react-native-camera/RCT (3.38.0):
+    - react-native-camera/RCT (= 3.39.0)
+    - react-native-camera/RN (= 3.39.0)
+  - react-native-camera/RCT (3.39.0):
     - React
-  - react-native-camera/RN (3.38.0):
+  - react-native-camera/RN (3.39.0):
     - React
   - react-native-keep-awake (4.0.0):
     - React
@@ -465,7 +465,7 @@ PODS:
     - Firebase/Performance (~> 6.30.0)
     - React
     - RNFBApp
-  - RNGestureHandler (1.7.0):
+  - RNGestureHandler (1.8.0):
     - React
   - RNLocalize (1.4.1):
     - React
@@ -757,7 +757,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 1540d1c01bb493ae3124ed83351b1b6a155db7da
   React-jsinspector: 512e560d0e985d0e8c479a54a4e5c147a9c83493
   react-native-ble-manager: 73a2c5d7ca510866d2bdf67d56bec42bd76c004f
-  react-native-camera: 74f48f9b6e198c77e2187b10aca39126971080b2
+  react-native-camera: 3940f67a49eaf736525a3e730653fcb98e1525dd
   react-native-keep-awake: afad8a51dfef9fe9655a6344771be32c8596d774
   react-native-maps: f4b89da81626ad7f151a8bfcb79733295d31ce5c
   react-native-netinfo: 38a1e0b3e89b48e4b5833ed475d8df5f049f6f90
@@ -786,7 +786,7 @@ SPEC CHECKSUMS:
   RNFBApp: 373cce42559cc7a9a42afc876746e3946de3e32e
   RNFBCrashlytics: 834057016b34fa49e3eef028a13e35f48840c78c
   RNFBPerf: cf6720eb30e6d363627c46b87a03eb9ba59fee14
-  RNGestureHandler: b6b359bb800ae399a9c8b27032bdbf7c18f08a08
+  RNGestureHandler: 7a5833d0f788dbd107fbb913e09aa0c1ff333c39
   RNLocalize: 49634a6a605dcdeb319e9c42a5c2f1aec508694b
   RNReanimated: 89f5e0a04d1dd52fbf27e7e7030d8f80a646a3fc
   RNScreens: b748efec66e095134c7166ca333b628cd7e6f3e2
