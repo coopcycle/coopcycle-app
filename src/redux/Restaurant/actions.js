@@ -232,12 +232,41 @@ export function activateMenu(restaurant, menu) {
   }
 }
 
+function gotoOrder(restaurant, order) {
+  NavigationHolder.dispatch(NavigationActions.navigate({
+    routeName: 'RestaurantNav',
+    action: NavigationActions.navigate({
+      routeName: 'Main',
+      params: {
+        restaurant,
+        // We don't want to load orders again when navigating
+        loadOrders: false,
+      },
+      // We use push, because if we are already on RestaurantOrder, it opens a new screen
+      // @see https://reactnavigation.org/docs/en/navigating.html#navigate-to-a-route-multiple-times
+      action: StackActions.push({
+        routeName: 'RestaurantOrder',
+        params: { order },
+      }),
+    }),
+  }))
+}
+
 export function loadOrderAndNavigate(order, cb) {
 
   return function (dispatch, getState) {
 
-    const { app } = getState()
+    const { app, restaurant } = getState()
     const { httpClient } = app
+    const { orders } = restaurant
+
+    const sameOrder = _.find(restaurant.orders, o => o['@id'] === order)
+
+    // Optimization: don't reload the order if already loaded
+    if (sameOrder) {
+      gotoOrder(sameOrder.restaurant, sameOrder)
+      return
+    }
 
     dispatch(loadOrderRequest())
 
@@ -250,23 +279,7 @@ export function loadOrderAndNavigate(order, cb) {
           cb()
         }
 
-        NavigationHolder.dispatch(NavigationActions.navigate({
-          routeName: 'RestaurantNav',
-          action: NavigationActions.navigate({
-            routeName: 'Main',
-            params: {
-              restaurant: res.restaurant,
-              // We don't want to load orders again when navigating
-              loadOrders: false,
-            },
-            // We use push, because if we are already on RestaurantOrder, it opens a new screen
-            // @see https://reactnavigation.org/docs/en/navigating.html#navigate-to-a-route-multiple-times
-            action: StackActions.push({
-              routeName: 'RestaurantOrder',
-              params: { order: res },
-            }),
-          }),
-        }))
+        gotoOrder(res.restaurant, res)
 
       })
       .catch(e => {

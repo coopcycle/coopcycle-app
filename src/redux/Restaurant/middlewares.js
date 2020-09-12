@@ -1,3 +1,4 @@
+import { AppState } from 'react-native'
 import _ from 'lodash'
 
 import { pushNotification } from '../App/actions'
@@ -6,6 +7,10 @@ import { MESSAGE } from '../middlewares/WebSocketMiddleware/actions'
 export const ringOnNewOrderCreated = ({ getState, dispatch }) => {
 
   return (next) => (action) => {
+
+    if (AppState.currentState !== 'active') {
+      return next(action)
+    }
 
     if (action.type !== MESSAGE) {
       return next(action)
