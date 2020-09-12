@@ -23,6 +23,7 @@
     "@react-native-firebase/crashlytics": "^8.4.4",
     "@react-native-firebase/messaging": "^7.8.6",
     "@react-native-firebase/perf": "^7.4.3",
+    "@supersami/react-native-foreground-service": "git+https://github.com/Raja0sama/-supersami-react-native-foreground-service.git#d900cae9c885d7085f6aee7b75ecb4b44939d77f",
     "@terrylinla/react-native-sketch-canvas": "^0.8.0",
     "@turf/turf": "^5.1.6",
     "axios": "^0.19.0",

@@ -19,6 +19,7 @@
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
 
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
       android:name=".MainApplication"
@@ -65,6 +66,13 @@
         android:name="com.google.android.geo.API_KEY"
         android:value="${googleMapsApiKey}" />
       <uses-library android:name="org.apache.http.legacy" android:required="false" />
+
+      <meta-data android:name="com.supersami.foregroundservice.notification_channel_name" android:value="supersami Service"/>
+      <meta-data android:name="com.supersami.foregroundservice.notification_channel_description" android:value="supersami Service."/>
+      <meta-data android:name="com.supersami.foregroundservice.notification_color" android:resource="@color/colorAccent"/>
+
+      <service android:name="com.supersami.foregroundservice.ForegroundService"></service>
+      <service android:name="com.supersami.foregroundservice.ForegroundServiceTask"></service>
 
     </application>
 

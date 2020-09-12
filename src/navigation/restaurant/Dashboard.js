@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 import KeepAwake from 'react-native-keep-awake'
 import moment from 'moment'
+import ReactNativeForegroundService from '@supersami/react-native-foreground-service'
 
 import DangerAlert from '../../components/DangerAlert'
 import Offline from '../../components/Offline'
@@ -64,6 +65,71 @@ class DashboardPage extends Component {
   }
 
   componentDidMount() {
+
+    // // This will register your headless task.
+    // ReactNativeForegroundService.register()
+
+    console.log('FS isRunning', ReactNativeForegroundService.is_task_running('taskid'))
+
+    const task = () => {
+
+      // ReactNativeForegroundService.update({
+      //   id: 145,
+      //   title: 'Foreground Service',
+      //   message: 'Chargement....',
+      //   importance: 'none',
+      //   visibility: 'secret',
+      //   ongoing: false
+      // })
+
+      console.log('RUNNING TASK')
+
+      // this.props.loadOrders(
+      //   this.props.restaurant,
+      //   this.props.date.format('YYYY-MM-DD'),
+      //   () => {
+      //     // ReactNativeForegroundService.update({
+      //     //   id: 144,
+      //     //   title: 'Foreground Service',
+      //     //   message: 'OK!',
+      //     //   importance: 'min',
+      //     //   visibility: 'secret',
+      //     //   ongoing: true
+      //     // })
+      //   },
+      //   true
+      // )
+    }
+
+    if (!ReactNativeForegroundService.is_task_running('taskid')) {
+
+      ReactNativeForegroundService.add_task(task, {
+        delay: 30000,
+        onLoop: true,
+        taskId: 'taskid',
+        onError: (e) => console.log(e),
+      });
+
+      ReactNativeForegroundService.start({
+        id: 144,
+        title: 'Foreground Service',
+        message: 'you are online!',
+        priority: 'none',
+      })
+
+    } else {
+
+      ReactNativeForegroundService.update_task(task, {
+        delay: 30000,
+        onLoop: true,
+        taskId: 'taskid',
+        onError: (e) => console.log(e),
+      });
+
+    }
+
+    // ReactNativeForegroundService.remove_task('taskid');
+    // ReactNativeForegroundService.stop()
 
     KeepAwake.activate()
 
@@ -215,7 +281,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    loadOrders: (restaurant, date, cb) => dispatch(loadOrders(restaurant, date, cb)),
+    loadOrders: (restaurant, date, cb, background) => dispatch(loadOrders(restaurant, date, cb, background)),
     loadOrderAndNavigate: order => dispatch(loadOrderAndNavigate(order)),
     changeDate: date => dispatch(changeDate(date)),
     changeStatus: (restaurant, state) => dispatch(changeStatus(restaurant, state)),

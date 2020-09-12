@@ -182,12 +182,14 @@ export function loadMyRestaurants() {
   }
 }
 
-export function loadOrders(restaurant, date, cb) {
+export function loadOrders(restaurant, date, cb, background) {
 
   return function (dispatch, getState) {
 
     const httpClient = getState().app.httpClient
-    dispatch(loadOrdersRequest())
+    if (!background) {
+      dispatch(loadOrdersRequest())
+    }
 
     return httpClient.get(`${restaurant['@id']}/orders?date=${date}`)
       .then(res => {
