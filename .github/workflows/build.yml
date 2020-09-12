@@ -45,6 +45,7 @@ jobs:
           name: detox-screenshots-ios
           path: artifacts
   ANDROID_EMULATOR_TESTS:
+    if: false
     name: Android Emulator Tests
     runs-on: macOS-latest
     strategy:
