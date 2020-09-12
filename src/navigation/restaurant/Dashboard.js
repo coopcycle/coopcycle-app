@@ -67,8 +67,10 @@ class DashboardPage extends Component {
 
     KeepAwake.activate()
 
-    this.props.initWs(new WebSocketClient(this.props.httpClient, '/dispatch'))
-    this.props.connectWs()
+    if (!this.props.isWsOpen) {
+      this.props.initWs(new WebSocketClient(this.props.httpClient, '/dispatch'))
+      this.props.connectWs()
+    }
 
     InteractionManager.runAfterInteractions(() => {
       if (this.props.navigation.getParam('loadOrders', true)) {
@@ -207,6 +209,7 @@ function mapStateToProps(state) {
     specialOpeningHoursSpecification: selectSpecialOpeningHoursSpecification(state),
     isInternetReachable: state.app.isInternetReachable,
     isLoading: selectIsLoading(state),
+    isWsOpen: state.app.isWsOpen,
   }
 }
 
