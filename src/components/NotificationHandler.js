@@ -117,12 +117,9 @@ class NotificationHandler extends Component {
 
           const { order } = event.data
 
-          if (message.foreground) {
-            this.props.loadOrderAndPushNotification(order)
-          } else {
-            // user clicked on a notification in the notification center
-            this.props.loadOrderAndNavigate(order)
-          }
+          // Here in any case, we navigate to the order that was tapped,
+          // it should have been loading via WebSocket already.
+          this.props.loadOrderAndNavigate(order)
         }
 
         if (event && event.name === 'tasks:changed') {
