@@ -8,18 +8,18 @@ describe('Redux | Dispatch | Reducers', () => {
 
     const task = {
       isAssigned: true,
-      assignedTo: 'foo'
+      assignedTo: 'foo',
     }
 
     const action = message({
       name: 'task:assigned',
-      data: { task }
+      data: { task },
     })
 
     expect(
       reducers({
         unassignedTasks: [],
-        taskLists: []
+        taskLists: [],
       }, action)
     ).toMatchObject({
       unassignedTasks: [],
@@ -34,8 +34,8 @@ describe('Redux | Dispatch | Reducers', () => {
           createdAt: expect.any(String),
           updatedAt: expect.any(String),
           username: 'foo',
-          items: [ task ]
-        }
+          items: [ task ],
+        },
       ],
     })
 
@@ -45,12 +45,12 @@ describe('Redux | Dispatch | Reducers', () => {
 
     const task = {
       isAssigned: true,
-      assignedTo: 'foo'
+      assignedTo: 'foo',
     }
 
     const action = message({
       name: 'task:assigned',
-      data: { task }
+      data: { task },
     })
 
     expect(
@@ -58,16 +58,16 @@ describe('Redux | Dispatch | Reducers', () => {
         unassignedTasks: [],
         taskLists: [{
           username: 'foo',
-          items: []
-        }]
+          items: [],
+        }],
       }, action)
     ).toMatchObject({
       unassignedTasks: [],
       taskLists: [
         {
           username: 'foo',
-          items: [ task ]
-        }
+          items: [ task ],
+        },
       ],
     })
 
@@ -78,31 +78,31 @@ describe('Redux | Dispatch | Reducers', () => {
     const task = {
       '@id': '/api/tasks/1',
       isAssigned: true,
-      assignedTo: 'foo'
+      assignedTo: 'foo',
     }
 
     const action = message({
       name: 'task:assigned',
-      data: { task }
+      data: { task },
     })
 
     expect(
       reducers({
         unassignedTasks: [
-          { '@id': '/api/tasks/1' }
+          { '@id': '/api/tasks/1' },
         ],
         taskLists: [{
           username: 'foo',
-          items: []
-        }]
+          items: [],
+        }],
       }, action)
     ).toMatchObject({
       unassignedTasks: [],
       taskLists: [
         {
           username: 'foo',
-          items: [ task ]
-        }
+          items: [ task ],
+        },
       ],
     })
 
@@ -113,12 +113,12 @@ describe('Redux | Dispatch | Reducers', () => {
     const task = {
       '@id': '/api/tasks/1',
       isAssigned: false,
-      assignedTo: null
+      assignedTo: null,
     }
 
     const action = message({
       name: 'task:unassigned',
-      data: { task }
+      data: { task },
     })
 
     expect(
@@ -128,18 +128,18 @@ describe('Redux | Dispatch | Reducers', () => {
           {
             username: 'foo',
             items: [
-              { '@id': '/api/tasks/1' }
-            ]
-          }
-        ]
+              { '@id': '/api/tasks/1' },
+            ],
+          },
+        ],
       }, action)
     ).toMatchObject({
       unassignedTasks: [ task ],
       taskLists: [
         {
           username: 'foo',
-          items: []
-        }
+          items: [],
+        },
       ],
     })
 
@@ -155,14 +155,14 @@ describe('Redux | Dispatch | Reducers', () => {
 
     const action = message({
       name: 'task:created',
-      data: { task }
+      data: { task },
     })
 
     expect(
       reducers({
         date: moment('2020-04-16'),
         unassignedTasks: [],
-        taskLists: []
+        taskLists: [],
       }, action)
     ).toMatchObject({
       date: moment('2020-04-16'),
@@ -182,14 +182,14 @@ describe('Redux | Dispatch | Reducers', () => {
 
     const action = message({
       name: 'task:created',
-      data: { task }
+      data: { task },
     })
 
     expect(
       reducers({
         date: moment('2020-04-16'),
         unassignedTasks: [],
-        taskLists: []
+        taskLists: [],
       }, action)
     ).toMatchObject({
       date: moment('2020-04-16'),

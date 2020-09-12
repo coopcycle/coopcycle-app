@@ -8,7 +8,7 @@ import {
   NativeEventEmitter,
   ActivityIndicator,
   Platform,
-  PermissionsAndroid
+  PermissionsAndroid,
 } from 'react-native'
 import { Container, Icon, Text } from 'native-base'
 import { withTranslation } from 'react-i18next'
@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   item: {
     paddingVertical: 25,

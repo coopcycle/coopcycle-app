@@ -50,12 +50,12 @@ class DashboardPage extends Component {
                 //   // https://developer.android.com/reference/android/provider/Settings#ACTION_SOUND_SETTINGS
                 //   Linking.sendIntent('android.settings.SOUND_SETTINGS')
                 // }
-              }
+              },
             },
             {
               text: this.props.t('CANCEL'),
               style: 'cancel',
-              onPress: () => this.setState({ wasAlertShown: true })
+              onPress: () => this.setState({ wasAlertShown: true }),
             },
           ]
         )

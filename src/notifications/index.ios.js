@@ -1,4 +1,3 @@
-import { AppState } from 'react-native'
 import PushNotificationIOS from '@react-native-community/push-notification-ios'
 
 let registerListener = deviceToken => {}

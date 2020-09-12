@@ -133,7 +133,7 @@ export const navigateToCompleteTask = (navigation, task, tasks = [], success = t
     key: task['@id'],
     action: NavigationActions.navigate({
       routeName: 'TaskComplete',
-      params: { ...params, success }
-    })
+      params: { ...params, success },
+    }),
   })
 }

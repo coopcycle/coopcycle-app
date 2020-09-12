@@ -18,7 +18,7 @@ const NavButton = ({ disabled, left, right, onPress, t, task }) => {
   if (!disabled) {
     buttonProps = {
       ...buttonProps,
-      onPress
+      onPress,
     }
   }
 
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   iconDisabled: {
-    color: '#cccccc'
+    color: '#cccccc',
   },
 })
 

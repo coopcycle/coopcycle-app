@@ -5,7 +5,7 @@ import { Text } from 'native-base'
 const styles = StyleSheet.create({
   orderNumber: {
     fontFamily: 'RobotoMono-Regular',
-  }
+  },
 })
 
 export default ({ order, color }) => {

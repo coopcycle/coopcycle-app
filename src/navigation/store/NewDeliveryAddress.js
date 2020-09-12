@@ -42,7 +42,7 @@ class NewDelivery extends Component {
       inputContainerStyle: {
         flex: 1,
         borderWidth: 0,
-      }
+      },
     }
     if (!_.isEmpty(this.props.error)) {
       autocompleteProps = {
@@ -50,7 +50,7 @@ class NewDelivery extends Component {
         inputContainerStyle: {
           ...autocompleteProps.inputContainerStyle,
           ...styles.errorInput,
-        }
+        },
       }
     }
 
@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
   },
   container: {
     height: 54,
-    marginHorizontal: 10
+    marginHorizontal: 10,
   },
   // @see https://github.com/mrlaessig/react-native-autocomplete-input#android
   autocompleteContainer: {
@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
   formGroup: {
     paddingHorizontal: 10,
     marginBottom: 10,
-    backgroundColor: 'green'
+    backgroundColor: 'green',
   },
   label: {
     paddingVertical: 10,

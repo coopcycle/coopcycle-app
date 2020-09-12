@@ -92,7 +92,7 @@ class RestaurantList extends Component {
 
       return {
         ...restaurant,
-        testID
+        testID,
       }
 
     })

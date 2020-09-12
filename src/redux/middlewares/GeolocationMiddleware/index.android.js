@@ -19,7 +19,7 @@ export default ({ getState, dispatch }) => {
     foregroundService: {
       notificationTitle: i18n.t('BACKGROUND_GEOLOCATION_NOTIFICATION_TITLE'),
       notificationBody: i18n.t('BACKGROUND_GEOLOCATION_NOTIFICATION_TEXT'),
-    }
+    },
   }
 
   TaskManager.defineTask('location-updates', ({ data: { locations }, error }) => {
@@ -58,8 +58,8 @@ export default ({ getState, dispatch }) => {
       headers: {
         'Accept': 'application/ld+json',
         'Content-Type': 'application/ld+json',
-        'Authorization': `Bearer ${user.token}`
-      }
+        'Authorization': `Bearer ${user.token}`,
+      },
     })
     .then(function (response) {
       // TODO

@@ -21,11 +21,11 @@ class HeaderRight extends Component {
       [
         {
           text: this.props.t('RESTAURANT_CLOSE_ALERT_CONFIRM'),
-          onPress: () => this.props.closeRestaurant(this.props.restaurant)
+          onPress: () => this.props.closeRestaurant(this.props.restaurant),
         },
         {
           text: this.props.t('CANCEL'),
-          style: 'cancel'
+          style: 'cancel',
         },
       ]
     )

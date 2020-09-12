@@ -7,7 +7,7 @@ import { resolveFulfillmentMethod } from '../utils/order'
 const styles = StyleSheet.create({
   small: {
     fontSize: 20,
-  }
+  },
 })
 
 export default ({ order, small }) => {

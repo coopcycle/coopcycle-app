@@ -23,7 +23,7 @@ const fuseOptions = {
   keys: [
     'contactName',
     'streetAddress',
-  ]
+  ],
 }
 
 const ItemSeparatorComponent = () => (
@@ -64,7 +64,7 @@ const PostCodeButton = ({ postcode, onPress }) => {
         fontWeight: '700',
         fontSize: 16,
         color: 'white',
-        fontFamily: 'RobotoMono-Regular'
+        fontFamily: 'RobotoMono-Regular',
       }}>{ postcode }</Text>
       <Icon type="FontAwesome5" name="times" style={{ fontSize: 18, color: 'white' }} />
     </TouchableOpacity>
@@ -88,7 +88,7 @@ class AddressAutocomplete extends Component {
   _autocomplete = _.debounce((text, query) => {
 
     const fuseResults = this.fuse.search(text, {
-      limit: 2
+      limit: 2,
     })
 
     if (this.props.country === 'gb') {
@@ -135,7 +135,7 @@ class AddressAutocomplete extends Component {
           const normalizedPredictions =
             response.data.predictions.map(prediction => ({
               ...prediction,
-              type: 'prediction'
+              type: 'prediction',
             }))
 
           const results = normalizedResults.concat(normalizedPredictions)
@@ -246,7 +246,7 @@ class AddressAutocomplete extends Component {
     if (item.type === 'prediction') {
       itemProps = {
         ...itemProps,
-        testID:  `placeId:${item.place_id}`
+        testID:  `placeId:${item.place_id}`,
       }
     }
 
@@ -271,7 +271,7 @@ class AddressAutocomplete extends Component {
               this.setState({
                 query: '',
                 results: [],
-                postcode: null
+                postcode: null,
               })
             }} />
           ) }
@@ -304,7 +304,7 @@ class AddressAutocomplete extends Component {
         onChangeText={ this._onChangeText.bind(this) }
         keyExtractor={ (item, i) => `prediction-${i}` }
         flatListProps={{ ItemSeparatorComponent,
-          ListFooterComponent: (this.props.country === 'gb' ? PoweredByIdealPostcodes : PoweredByGoogle)
+          ListFooterComponent: (this.props.country === 'gb' ? PoweredByIdealPostcodes : PoweredByGoogle),
         }}
         renderTextInput={ props => this.renderTextInput(props) }
         listStyle={{
@@ -327,7 +327,7 @@ class AddressAutocomplete extends Component {
 AddressAutocomplete.defaultProps = {
   minChars: 3,
   addresses: [],
-  renderRight: () => <View />
+  renderRight: () => <View />,
 }
 
 AddressAutocomplete.propTypes = {

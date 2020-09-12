@@ -27,8 +27,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   number: {
-    marginRight: 10
-  }
+    marginRight: 10,
+  },
 })
 
 class OrderList extends Component {

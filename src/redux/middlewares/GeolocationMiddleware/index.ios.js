@@ -38,12 +38,12 @@ export default ({ getState, dispatch }) => {
         url: `${state.app.baseURL}/api/me/location`,
         // https://transistorsoft.github.io/react-native-background-geolocation/interfaces/_react_native_background_geolocation_.config.html#authorization
         authorization: {
-          strategy: "JWT",
+          strategy: 'JWT',
           accessToken: state.app.user.token,
           refreshToken: state.app.user.refreshToken,
           refreshUrl: `${state.app.baseURL}/api/token/refresh`,
           refreshPayload: {
-            refresh_token: "{refreshToken}"
+            refresh_token: '{refreshToken}',
           },
         },
         batchSync: true,

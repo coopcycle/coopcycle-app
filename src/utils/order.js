@@ -26,7 +26,7 @@ export function encodeForPrinter(order) {
   const maxChars = 32
 
   const pickupLine = i18n.t('RECEIPT_HEADING_PICKUP_EXPECTED_AT', {
-    time: moment(order.pickupExpectedAt).format('LT')
+    time: moment(order.pickupExpectedAt).format('LT'),
   })
 
   const hr = ''.padEnd(maxChars, '-')

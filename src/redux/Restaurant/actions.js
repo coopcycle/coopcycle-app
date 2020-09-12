@@ -258,7 +258,6 @@ export function loadOrder(order, cb) {
 
     const { app, restaurant } = getState()
     const { httpClient } = app
-    const { orders } = restaurant
 
     const sameOrder = _.find(restaurant.orders, o => o['@id'] === order)
 
@@ -295,7 +294,6 @@ export function loadOrderAndNavigate(order, cb) {
 
     const { app, restaurant } = getState()
     const { httpClient } = app
-    const { orders } = restaurant
 
     const sameOrder = _.find(restaurant.orders, o => o['@id'] === order)
 

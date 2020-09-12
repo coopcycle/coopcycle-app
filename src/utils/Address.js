@@ -34,7 +34,7 @@ class AddressUtils {
         latitude: postcode.latitude,
         longitude: postcode.longitude,
       },
-      isPrecise: true
+      isPrecise: true,
     }
   }
 }

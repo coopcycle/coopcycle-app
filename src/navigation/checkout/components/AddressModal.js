@@ -189,7 +189,7 @@ const styles = StyleSheet.create({
   },
   modalMessageText: {
     fontSize: 14,
-    padding: 15
+    padding: 15,
   },
   modalMessageTextError: {
     color: '#E74C3C',

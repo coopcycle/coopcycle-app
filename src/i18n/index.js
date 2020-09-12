@@ -107,7 +107,7 @@ i18next
   .use(initReactI18next)
   .init({
     fallbackLng: 'en',
-    resources: { cs, de, en, es, fr, it, pl, "pt-BR": pt_BR, "pt-PT": pt_PT },
+    resources: { cs, de, en, es, fr, it, pl, 'pt-BR': pt_BR, 'pt-PT': pt_PT },
     ns: ['common'],
     defaultNS: 'common',
     debug: process.env.DEBUG,

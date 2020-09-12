@@ -139,13 +139,13 @@ export function markTaskFailed(httpClient, task, notes = '', onSuccess, contactN
     dispatch(markTaskFailedRequest(task))
 
     let payload = {
-      notes
+      notes,
     }
 
     if (!_.isEmpty(contactName)) {
       payload = {
         ...payload,
-        contactName
+        contactName,
       }
     }
 
@@ -176,13 +176,13 @@ export function markTaskDone(httpClient, task, notes = '', onSuccess, contactNam
     dispatch(markTaskDoneRequest(task))
 
     let payload = {
-      notes
+      notes,
     }
 
     if (!_.isEmpty(contactName)) {
       payload = {
         ...payload,
-        contactName
+        contactName,
       }
     }
 

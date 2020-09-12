@@ -282,21 +282,21 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginBottom: 5
+    marginBottom: 5,
   },
   timeline: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: material.contentPadding,
-    marginBottom: 10
+    marginBottom: 10,
   },
   swipeBg: {
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: "#e7e7e7",
+    backgroundColor: '#e7e7e7',
     paddingHorizontal: 30,
   },
   swipeFg: {
@@ -305,7 +305,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 15,
     borderWidth: 3,
-    borderColor: "#e7e7e7",
+    borderColor: '#e7e7e7',
     backgroundColor: '#ffffff',
   },
 });

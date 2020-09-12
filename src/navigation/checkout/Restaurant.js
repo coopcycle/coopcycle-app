@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
     fontWeight: 'bold',
     paddingHorizontal: 10,
-  }
+  },
 });
 
 function mapStateToProps(state) {

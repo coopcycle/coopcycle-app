@@ -64,7 +64,7 @@ class SettingsScreen extends Component {
         icon: 'print',
         label: this.props.t('RESTAURANT_SETTINGS_PRINTER'),
         onPress: () => navigate('RestaurantPrinter'),
-      }
+      },
     ]
 
     if (restaurants.length > 1) {

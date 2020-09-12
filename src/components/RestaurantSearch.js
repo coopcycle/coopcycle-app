@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Platform, StyleSheet, View, TouchableOpacity, TextInput } from 'react-native'
+import { Platform, StyleSheet, View, TouchableOpacity } from 'react-native'
 import { Icon } from 'native-base'
 import { withTranslation } from 'react-i18next'
 
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
         overflow: 'visible',
       },
     }),
-  }
+  },
 })
 
 class RestaurantSearch extends Component {

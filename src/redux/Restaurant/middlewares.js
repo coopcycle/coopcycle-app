@@ -23,7 +23,7 @@ export const ringOnNewOrderCreated = ({ getState, dispatch }) => {
     if (state.restaurant.orders.length > 0) {
       if (state.restaurant.orders.length !== prevState.restaurant.orders.length) {
         const orders =
-          _.differenceWith(state.restaurant.orders, prevState.restaurant.orders, (a, b) => (a['@id']+':'+a.state) === (b['@id']+':'+b.state))
+          _.differenceWith(state.restaurant.orders, prevState.restaurant.orders, (a, b) => (a['@id'] + ':' + a.state) === (b['@id'] + ':' + b.state))
         orders.forEach(o => {
           if (o.state === 'new') {
             dispatch(pushNotification('order:created', { order: o }))

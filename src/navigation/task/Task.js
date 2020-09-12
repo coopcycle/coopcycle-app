@@ -73,7 +73,7 @@ class Task extends Component {
           {
             text: this.props.t('CANCEL'),
             style: 'cancel',
-            onPress: () => this.swipeRow.current.closeRow()
+            onPress: () => this.swipeRow.current.closeRow(),
           },
           {
             text: this.props.t('TASK_COMPLETE_ALERT_NEGATIVE'),
@@ -84,7 +84,7 @@ class Task extends Component {
           },
           {
             text: this.props.t('TASK_COMPLETE_ALERT_POSITIVE'),
-            onPress: () => this._complete(true, true)
+            onPress: () => this._complete(true, true),
           },
         ]
       )
@@ -94,7 +94,7 @@ class Task extends Component {
     this.props.navigation.navigate('TaskComplete', {
       task,
       navigateAfter: this.props.navigation.getParam('navigateAfter'),
-      success
+      success,
     })
     setTimeout(() => this.swipeRow.current.closeRow(), 250)
   }
@@ -158,11 +158,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 20,
-    backgroundColor: '#f8d7da'
+    backgroundColor: '#f8d7da',
   },
   offlineNoticeText: {
-    color: '#721c24'
-  }
+    color: '#721c24',
+  },
 })
 
 function mapStateToProps (state) {

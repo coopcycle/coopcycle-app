@@ -4,7 +4,6 @@ import { Icon, Text } from 'native-base'
 import { SwipeRow } from 'react-native-swipe-list-view'
 import PropTypes from 'prop-types'
 import moment from 'moment'
-import _ from 'lodash'
 import { withTranslation } from 'react-i18next'
 
 import { greenColor, redColor } from '../styles/common'

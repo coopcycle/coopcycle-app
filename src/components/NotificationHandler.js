@@ -145,12 +145,12 @@ class NotificationHandler extends Component {
               // Simulate a WebSocket message
               this.props.message({
                 name: 'order:created',
-                data: { order }
+                data: { order },
               })
             }
           })
         }
-      }
+      },
     })
   }
 
@@ -326,7 +326,7 @@ function mapDispatchToProps (dispatch) {
     registerPushNotificationToken: token => dispatch(registerPushNotificationToken(token)),
     clearNotifications: () => dispatch(clearNotifications()),
     pushNotification: (event, params) => dispatch(pushNotification(event, params)),
-    message: payload => dispatch(message(payload))
+    message: payload => dispatch(message(payload)),
   }
 }
 

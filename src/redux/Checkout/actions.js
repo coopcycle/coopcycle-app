@@ -628,7 +628,7 @@ export function updateCart(payload, cb) {
       }
       payload = {
         ...payload,
-        shippingAddress
+        shippingAddress,
       }
     }
 

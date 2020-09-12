@@ -49,8 +49,8 @@ export default createStackNavigator({
       // The screen's header will be used
       headerShown: false,
       title: i18n.t('RESTAURANT_PRINTER'),
-    })
-  }
+    }),
+  },
 }, {
   defaultNavigationOptions,
   initialRouteName: 'RestaurantSettingsHome',

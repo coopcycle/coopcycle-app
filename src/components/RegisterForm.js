@@ -98,7 +98,7 @@ const inputs = [
         message: i18n.t('INVALID_FAMILY_NAME'),
       },
     },
-  }
+  },
 ]
 
 let constraints = _.reduce(

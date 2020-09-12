@@ -72,7 +72,7 @@ class MoreInfos extends Component {
         floor: '',
         telephone: this.props.cart.shippingAddress.telephone || '',
       },
-      notes: ''
+      notes: '',
     }
 
     return (
