@@ -2,7 +2,8 @@ import messaging from '@react-native-firebase/messaging';
 import launchActivity from './launchActivity';
 import notificationManager from './notificationManager';
 import store from '../redux/store'
-import {loadOrderAndPushNotification} from '../redux/Restaurant/actions'
+import {loadOrderAndPushNotification, loadOrder} from '../redux/Restaurant/actions'
+import {message as wsMessage} from '../redux/middlewares/WebSocketMiddleware/actions'
 import {parseNotification} from './index.android'
 import tracker from '../analytics/Tracker'
 import analyticsEvent from '../analytics/Event'
@@ -25,28 +26,16 @@ const handler = async (remoteMessage) => {
       analyticsEvent.restaurant.orderCreatedMessage,
       'background_data_message')
 
-    const {order} = event.data
-
-    if (Platform.Version < 29) {
-      // remove a notification shown by firebase
-      // in response to "notification+data" message
-      notificationManager.cancel('order:created', firebaseNotificationId)
-
-      launchActivity.invoke()
-
-      //todo we dont have much time here (10-20 seconds) may be just keep id somewhere
-      //and load order later?
-
-      store.dispatch(loadOrderAndPushNotification(order))
-
-    } else {
-      // android 10 and later
-      // keep a notification shown by firebase
-      // because to be able to launch an activity we must
-      // get a special permission from a user
-    }
+    store.dispatch(loadOrder(event.data.order, (order) => {
+      if (order) {
+        // Simulate a WebSocket message
+        store.dispatch(wsMessage({
+          name: 'order:created',
+          data: { order }
+        }))
+      }
+    }))
   }
-
 
   return Promise.resolve();
 }

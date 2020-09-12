@@ -252,6 +252,43 @@ function gotoOrder(restaurant, order) {
   }))
 }
 
+export function loadOrder(order, cb) {
+
+  return function (dispatch, getState) {
+
+    const { app, restaurant } = getState()
+    const { httpClient } = app
+    const { orders } = restaurant
+
+    const sameOrder = _.find(restaurant.orders, o => o['@id'] === order)
+
+    // Optimization: don't reload the order if already loaded
+    if (sameOrder) {
+      // gotoOrder(sameOrder.restaurant, sameOrder)
+      if (cb && typeof cb === 'function') {
+        cb(sameOrder)
+      }
+      return
+    }
+
+    dispatch(loadOrderRequest())
+
+    return httpClient.get(order)
+      .then(res => {
+        dispatch(loadOrderSuccess(res))
+        if (cb && typeof cb === 'function') {
+          cb(res)
+        }
+      })
+      .catch(e => {
+        dispatch(loadOrderFailure(e))
+        if (cb && typeof cb === 'function') {
+          cb()
+        }
+      })
+  }
+}
+
 export function loadOrderAndNavigate(order, cb) {
 
   return function (dispatch, getState) {

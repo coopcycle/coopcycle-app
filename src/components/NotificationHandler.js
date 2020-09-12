@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { FlatList, View, StyleSheet, TouchableOpacity } from 'react-native'
+import { AppState, FlatList, View, StyleSheet, TouchableOpacity } from 'react-native'
 import { Icon, Text } from 'native-base'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
@@ -13,7 +13,8 @@ import NavigationHolder from '../NavigationHolder'
 
 import { clearNotifications, pushNotification, registerPushNotificationToken } from '../redux/App/actions'
 import {loadTasks, selectTasksChangedAlertSound} from '../redux/Courier'
-import { loadOrderAndNavigate, loadOrderAndPushNotification } from '../redux/Restaurant/actions'
+import { loadOrderAndNavigate, loadOrderAndPushNotification, loadOrder } from '../redux/Restaurant/actions'
+import { message } from '../redux/middlewares/WebSocketMiddleware/actions'
 import tracker from '../analytics/Tracker'
 import analyticsEvent from '../analytics/Event'
 
@@ -136,6 +137,20 @@ class NotificationHandler extends Component {
           }
         }
       },
+      onBackgroundMessage: message => {
+        const { event } = message.data
+        if (event && event.name === 'order:created') {
+          this.props.loadOrder(event.data.order, (order) => {
+            if (order) {
+              // Simulate a WebSocket message
+              this.props.message({
+                name: 'order:created',
+                data: { order }
+              })
+            }
+          })
+        }
+      }
     })
   }
 
@@ -304,12 +319,14 @@ function mapStateToProps(state) {
 function mapDispatchToProps (dispatch) {
 
   return {
+    loadOrder: (order, cb) => dispatch(loadOrder(order, cb)),
     loadOrderAndNavigate: order => dispatch(loadOrderAndNavigate(order)),
     loadOrderAndPushNotification: order => dispatch(loadOrderAndPushNotification(order)),
     loadTasks: (date) => dispatch(loadTasks(date)),
     registerPushNotificationToken: token => dispatch(registerPushNotificationToken(token)),
     clearNotifications: () => dispatch(clearNotifications()),
     pushNotification: (event, params) => dispatch(pushNotification(event, params)),
+    message: payload => dispatch(message(payload))
   }
 }
 

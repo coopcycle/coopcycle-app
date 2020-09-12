@@ -55,8 +55,8 @@ class PushNotification {
     notificationListener = messaging()
       .onMessage(remoteMessage => {
         // @see https://rnfirebase.io/messaging/usage#foreground-state-messages
-        if (remoteMessage.notification) {
-          options.onNotification(
+        if (remoteMessage.data) {
+          options.onBackgroundMessage(
             parseNotification(remoteMessage, true)
           )
         }
