@@ -265,7 +265,7 @@ class AddressAutocomplete extends Component {
     return (
       <View style={ styles.textInput }>
         <View style={ styles.textInput }>
-          <TextInput { ...props } style={ [ props.style, { flex: 1 } ] } />
+          <TextInput { ...props } style={ [ props.style, { flex: 1 } ] } placeholderTextColor="#d0d0d0" />
           { (this.props.country === 'gb' && this.state.postcode) && (
             <PostCodeButton postcode={ this.state.postcode.postcode } onPress={ () => {
               this.setState({
@@ -312,6 +312,7 @@ class AddressAutocomplete extends Component {
         }}
         style={{
           backgroundColor: 'white',
+          color: '#333',
           borderColor: '#b9b9b9',
           borderRadius: 20,
           paddingVertical: 8,
