@@ -43,7 +43,7 @@ class OrderList extends Component {
           <OrderFulfillmentMethodIcon order={ order } small />
         </View>
         <Text>{ `${formatPrice(order.itemsTotal)}` }</Text>
-        <Text>{ moment.parseZone(order.preparationExpectedAt).format('LT') }</Text>
+        <Text>{ moment.parseZone(order.pickupExpectedAt).format('LT') }</Text>
         <Icon style={{ color: '#ccc' }} name="ios-arrow-forward" />
       </TouchableOpacity>
     )
@@ -61,8 +61,8 @@ class OrderList extends Component {
     let cancelledOrders = ordersByState.hasOwnProperty('cancelled') ? ordersByState.cancelled : []
     let allCancelledOrders = cancelledOrders.concat(refusedOrders)
 
-    newOrders = _.sortBy(newOrders, [ order => moment.parseZone(order.preparationExpectedAt) ])
-    acceptedOrders = _.sortBy(acceptedOrders, [ order => moment.parseZone(order.preparationExpectedAt) ])
+    newOrders = _.sortBy(newOrders, [ order => moment.parseZone(order.pickupExpectedAt) ])
+    acceptedOrders = _.sortBy(acceptedOrders, [ order => moment.parseZone(order.pickupExpectedAt) ])
     allCancelledOrders = _.sortBy(allCancelledOrders, [ order => moment.parseZone(order.shippedAt) ])
 
     return (
