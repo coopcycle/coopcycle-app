@@ -64,6 +64,14 @@ const Details = ({ task, t }) => {
     },
   ]
 
+  if (task.address.telephone) {
+    items.push({
+      iconName: 'call',
+      text: task.address.telephone,
+      onPress: () => phonecall(task.address.telephone, true),
+    })
+  }
+
   if (task.comments) {
     items.push({
       iconName: 'chatbubbles',
@@ -93,14 +101,6 @@ const Details = ({ task, t }) => {
         )) }
         </View>
       ),
-    })
-  }
-
-  if (task.address.telephone) {
-    items.push({
-      iconName: 'call',
-      text: task.address.telephone,
-      onPress: () => phonecall(task.address.telephone, true),
     })
   }
 
