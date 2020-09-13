@@ -8,7 +8,6 @@ class HeaderRightButton extends Component {
 
     return (
       <HeaderButton iconName="calendar"
-        textLeft={ this.props.date.format('ll') }
         onPress={ () => this.props.onPress() } />
     );
   }

@@ -44,7 +44,7 @@ class TaskLists extends Component {
               onItemPress: user => this._createTaskList(user),
               withSelfAssignBtn: false,
             }) }>
-            <Text>{ this.props.t('DISPATCH_ADD_TASK_LIST') }</Text>
+            <Text style={{ fontWeight: '700' }}>{ this.props.date.format('ll') }</Text>
           </AddButton>
         </View>
         <View style={{ flex: 1 }}>

@@ -33,7 +33,7 @@ class UnassignedTasks extends Component {
         <View>
           <AddButton testID="addTask"
             onPress={ () => this.props.navigation.navigate('DispatchAddTask') }>
-            <Text>{ this.props.t('DISPATCH_CREATE_TASK') }</Text>
+            <Text style={{ fontWeight: '700' }}>{ this.props.date.format('ll') }</Text>
           </AddButton>
         </View>
         <View style={{ flex: 1 }}>
