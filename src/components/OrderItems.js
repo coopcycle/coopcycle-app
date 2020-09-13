@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     fontSize: 15 * 1.2,
   },
-  itemQuantityHighlight: {
+  textHighlight: {
     color: '#FF851B',
   },
 });
@@ -63,12 +63,17 @@ const CartLine = (props) => {
 
 class OrderItems extends Component {
 
-  renderItemAdjustments(adjustments) {
+  renderItemAdjustments(adjustments, important = false) {
+
+    const textStyle = [ styles.adjustmentText ]
+    if (important) {
+      textStyle.push(styles.textHighlight)
+    }
 
     return (
       <View>
         { adjustments.map(adjustment => (
-          <Text style={ styles.adjustmentText } key={ `ADJUSTMENT#${adjustment.id}` }>
+          <Text style={ textStyle } key={ `ADJUSTMENT#${adjustment.id}` }>
             { adjustment.label }
           </Text>
         )) }
@@ -80,7 +85,7 @@ class OrderItems extends Component {
 
     const itemQuantityStyle = [ styles.itemQuantity ]
     if (item.quantity > 1) {
-      itemQuantityStyle.push(styles.itemQuantityHighlight)
+      itemQuantityStyle.push(styles.textHighlight)
     }
 
     return (
@@ -94,7 +99,7 @@ class OrderItems extends Component {
             { (item.adjustments && item.adjustments.hasOwnProperty('menu_item_modifier')) &&
               this.renderItemAdjustments(item.adjustments.menu_item_modifier) }
             { (item.adjustments && item.adjustments.hasOwnProperty('reusable_packaging')) &&
-              this.renderItemAdjustments(item.adjustments.reusable_packaging) }
+              this.renderItemAdjustments(item.adjustments.reusable_packaging, true) }
           </Col>
           <Col size={ 3 } style={ [ styles.col, styles.colRight ] }>
             <Text>{ `${formatPrice(item.total)}` }</Text>
