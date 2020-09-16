@@ -178,8 +178,9 @@ function navigateToHome(dispatch, getState) {
     if (user.hasRole('ROLE_ADMIN') || user.hasRole('ROLE_RESTAURANT') || user.hasRole('ROLE_STORE')) {
 
       const promises = []
-      if (user.hasRole('ROLE_ADMIN') || user.hasRole('ROLE_RESTAURANT')) {
-        promises.push(new Promise((resolve, reject) => {
+
+      promises.push(new Promise((resolve, reject) => {
+        if (user.hasRole('ROLE_ADMIN') || user.hasRole('ROLE_RESTAURANT')) {
           const req = user.hasRole('ROLE_ADMIN') ?
             httpClient.get('/api/restaurants') : httpClient.get('/api/me/restaurants')
           req
@@ -190,11 +191,12 @@ function navigateToHome(dispatch, getState) {
               console.log(e)
               resolve([])
             })
-        }))
-      }
-
-      if (user.hasRole('ROLE_STORE')) {
-        promises.push(new Promise((resolve, reject) => {
+        } else {
+          resolve([])
+        }
+      }))
+      promises.push(new Promise((resolve, reject) => {
+        if (user.hasRole('ROLE_STORE')) {
           const req = httpClient.get('/api/me/stores')
           req
             .then(res => {
@@ -204,8 +206,10 @@ function navigateToHome(dispatch, getState) {
               console.log(e)
               resolve([])
             })
-        }))
-      }
+        } else {
+          resolve([])
+        }
+      }))
 
       dispatch(loadMyRestaurantsRequest())
 
