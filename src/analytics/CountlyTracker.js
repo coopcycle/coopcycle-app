@@ -6,21 +6,6 @@ import { COUNTLY_SERVER_URL, COUNTLY_APP_KEY, COUNTLY_SALT } from '@env'
 
 function CountlyTracker() {
   this.userProperties = {}
-
-  let deviceId = ''; // or use some string that identifies current app user
-
-  if (Platform.OS === 'ios') {
-    return
-  }
-
-  // configure Countly parameters if needed
-  Countly.enableParameterTamperingProtection(COUNTLY_SALT);
-
-  // initialize
-  Countly.init(COUNTLY_SERVER_URL, COUNTLY_APP_KEY, deviceId).then(() => {
-    // start session tracking
-    Countly.start();
-  });
 }
 
 CountlyTracker.prototype = Object.create(BaseTracker.prototype);
@@ -39,7 +24,6 @@ CountlyTracker.prototype.setCurrentScreen = function(screenName) {
     }
 
     Countly.recordView(screenName);
-
   })
 }
 
@@ -72,9 +56,7 @@ CountlyTracker.prototype.logEvent = function(category, action, text, number) {
     event.segments = this.userProperties
 
     Countly.sendEvent(event);
-
   })
-
 }
 
 CountlyTracker.prototype.setUserProperty = function(name, value) {
@@ -86,6 +68,23 @@ CountlyTracker.prototype.setUserProperty = function(name, value) {
   // there is no plugin on a backend to handle it
   // Countly.userData.setProperty(name, value);
   this.userProperties[name] = value
+}
+
+CountlyTracker.prototype.init = function() {
+  let deviceId = ''; // or use some string that identifies current app user
+
+  if (Platform.OS === 'ios') {
+    return
+  }
+
+  // configure Countly parameters if needed
+  Countly.enableParameterTamperingProtection(COUNTLY_SALT);
+
+  // initialize
+  Countly.init(COUNTLY_SERVER_URL, COUNTLY_APP_KEY, deviceId).then(() => {
+    // start session tracking
+    Countly.start();
+  });
 }
 
 export default CountlyTracker

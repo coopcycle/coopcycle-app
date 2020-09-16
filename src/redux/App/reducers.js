@@ -49,7 +49,6 @@ const initialState = {
   },
   resumeCheckoutAfterActivation: false,
   servers: [],
-  trackerInitialized: false,
   selectServerError: null,
   settings: {
     google_api_key: '',

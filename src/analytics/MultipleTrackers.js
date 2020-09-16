@@ -22,4 +22,9 @@ MultipleTrackers.prototype.setUserProperty = function(name, value) {
   this.tracker2.setUserProperty(name, value)
 }
 
+MultipleTrackers.prototype.init = function() {
+  this.tracker1.init()
+  this.tracker2.init()
+}
+
 export default MultipleTrackers

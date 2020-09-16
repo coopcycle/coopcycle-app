@@ -4,6 +4,7 @@ import { Platform, View, YellowBox } from 'react-native'
 import { StyleProvider } from 'native-base'
 import getTheme from '../native-base-theme/components'
 import coopcycleTheme from '../native-base-theme/variables/coopcycle'
+import tracker from './analytics/Tracker'
 
 import { createSwitchNavigator, createAppContainer } from 'react-navigation'
 import { Provider } from 'react-redux'
@@ -92,6 +93,15 @@ function onNavigationStateChange(prevState, currentState) {
 const prefix = /https?:\/\/[a-z0-9]+\.coopcycle\.org|coopcycle:\//
 
 class App extends Component {
+
+  componentDidMount() {
+    // https://support.count.ly/hc/en-us/articles/360037813231-React-Native-Bridge-#implementation
+    // We will need to call two methods (init and start) in order to set up our SDK.
+    // You may also like to specify other parameters at this step (i.e. whether logging will be used).
+    // These methods should only be called once during the app's lifecycle and should be done as early as possible.
+    // Your main App component's componentDidMountmethod may be a good place.
+    tracker.init()
+  }
 
   render() {
 

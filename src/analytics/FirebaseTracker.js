@@ -32,4 +32,6 @@ FirebaseTracker.prototype.setUserProperty = function(name, value) {
   analytics().setUserProperty(name, value)
 }
 
+FirebaseTracker.prototype.init = function() {}
+
 export default FirebaseTracker
