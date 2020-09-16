@@ -1,4 +1,3 @@
-import { Alert } from 'react-native'
 import * as Location from 'expo-location'
 import * as TaskManager from 'expo-task-manager'
 import axios from 'axios'
@@ -6,9 +5,6 @@ import axios from 'axios'
 import i18n from '../../../i18n'
 import { setBackgroundGeolocationEnabled } from '../../App/actions'
 import { selectIsAuthenticated } from '../../App/selectors'
-
-import tracker from '../../../analytics/Tracker'
-import analyticsEvent from '../../../analytics/Event'
 
 export default ({ getState, dispatch }) => {
 

@@ -1,11 +1,7 @@
 import BackgroundGeolocation from 'react-native-background-geolocation'
 
-import i18n from '../../../i18n'
 import { setBackgroundGeolocationEnabled } from '../../App/actions'
 import { selectIsAuthenticated } from '../../App/selectors'
-
-import tracker from '../../../analytics/Tracker'
-import analyticsEvent from '../../../analytics/Event'
 
 export default ({ getState, dispatch }) => {
 
@@ -53,9 +49,9 @@ export default ({ getState, dispatch }) => {
         autoSyncThreshold: 5,
         autoSync: true,
         locationAuthorizationRequest: 'Any',
-      }, (state) => {
-        dispatch(setBackgroundGeolocationEnabled(state.enabled))
-        if (!state.enabled) {
+      }, (bgState) => {
+        dispatch(setBackgroundGeolocationEnabled(bgState.enabled))
+        if (!bgState.enabled) {
           BackgroundGeolocation.start(function() {
             if (process.env.NODE_ENV === 'development') {
               setTimeout(() => BackgroundGeolocation.changePace(true), 5000)
