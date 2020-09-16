@@ -130,9 +130,9 @@ function authenticationSuccess(user) {
   }
 }
 
-function authenticationFailure() {
+function authenticationFailure(message) {
   return (dispatch, getState) => {
-    dispatch(_authenticationFailure())
+    dispatch(_authenticationFailure(message))
     tracker.logEvent(
       analyticsEvent.user.login._category,
       analyticsEvent.user.login.failure)

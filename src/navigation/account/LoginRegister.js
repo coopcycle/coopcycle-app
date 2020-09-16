@@ -9,6 +9,7 @@ import { withTranslation } from 'react-i18next'
 import Server from './components/Server'
 import AuthenticateForm from '../../components/AuthenticateForm'
 import { login, register, forgotPassword } from '../../redux/App/actions'
+import { redColor } from '../../styles/common'
 
 class LoginRegister extends Component {
 
@@ -16,7 +17,7 @@ class LoginRegister extends Component {
     if (this.props.message) {
       return (
         <View>
-          <Text style={{ textAlign: 'center' }}>{this.props.message}</Text>
+          <Text style={{ textAlign: 'center', color: redColor }}>{this.props.message}</Text>
         </View>
       )
     }
