@@ -2496,9 +2496,9 @@
   integrity sha512-Yfb2BSNTZsf4QTV2cKV5jhuP5ECu5rgL9owwnwkb//qr3bQlS18tx5gxzJ/rRdzI03eIspVUht2T/nZnxUd+xQ==
 
 "@react-native-firebase/app@^8.4.2":
-  version "8.4.2"
-  resolved "https://registry.yarnpkg.com/@react-native-firebase/app/-/app-8.4.2.tgz#3d7093062e403368f90947e2d999fb9101330bf4"
-  integrity sha512-toHk6bPdhLPQUWw9ZNljNisv58JrZdSDzDzZPa19xEB5465iAMx46tCBrKdoSdq0pMq9w1iYzgOhMg8lxzM2qw==
+  version "8.4.3"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/app/-/app-8.4.3.tgz#7f5c0d16c8b56808a26625af34259c8c50e0307b"
+  integrity sha512-qkjY4gvX4B0x1PKwaZIxByxwtnSlpvRt6IAlygB4rkeUv9XTBvW2j2xCGprEbKYZswEgSeY4ZDWl5SXYe6FgCg==
   dependencies:
     opencollective-postinstall "^2.0.1"
     superstruct "^0.6.2"
