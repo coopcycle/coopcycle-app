@@ -40,6 +40,12 @@ const MainNavigator = createStackNavigator({
       title: i18n.t('PAYMENT'),
     }),
   },
+  CheckoutMercadopago: {
+    screen: screens.CheckoutMercadopago,
+    navigationOptions: ({ navigation }) => ({
+      title: i18n.t('PAYMENT'),
+    }),
+  },
 }, {
   initialRouteKey: 'CheckoutHome',
   initialRouteName: 'CheckoutHome',
