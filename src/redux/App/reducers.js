@@ -53,6 +53,8 @@ const initialState = {
   settings: {
     google_api_key: '',
     stripe_publishable_key: '',
+    payment_gateway: '',
+    payment_method_publishable_key: '',
     locale: 'fr',
     country: 'fr',
     latlng: '48.872178,2.331797',

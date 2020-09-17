@@ -25,6 +25,7 @@ class MoreInfos extends Component {
   }
 
   _submit(values) {
+    const { checkoutMethodScreen } = this.props
 
     const payload = {
       shippingAddress: {
@@ -33,8 +34,7 @@ class MoreInfos extends Component {
       },
       notes: values.notes,
     }
-
-    this.props.updateCart(payload, () => this.props.navigation.navigate('CheckoutCreditCard'))
+    this.props.updateCart(payload, () => this.props.navigation.navigate(checkoutMethodScreen))
   }
 
   _validate(values) {
@@ -183,10 +183,16 @@ const styles = StyleSheet.create({
 })
 
 function mapStateToProps(state) {
+  const { app: { settings: { payment_gateway } } } = state
+
+  const checkoutMethodScreen = payment_gateway === 'mercadopago'
+    ? 'CheckoutMercadopago'
+    : 'CheckoutCreditCard'
 
   return {
     country: state.app.settings.country.toUpperCase(),
     cart: state.checkout.cart,
+    checkoutMethodScreen
   }
 }
 
