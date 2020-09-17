@@ -65,7 +65,7 @@ function Mercadopago(props) {
     }
 
     checkout(createPayment(cart, { publicKey }))
-  }, [])
+  }, [access_token, cart, checkout, country, currencyId, publicKey])
 
   return (
     <View />
