@@ -529,6 +529,36 @@ export function init(restaurant) {
   }
 }
 
+export function mercadopagoCheckout(payment) {
+  return (dispatch, getState) => {
+
+    dispatch(checkoutRequest())
+
+    payment
+    .then(res => {
+      // First, reset checkout stack
+      NavigationHolder.dispatch(StackActions.popToTop())
+      // Then, navigate to order screen
+      // NavigationHolder.dispatch(NavigationActions.navigate({
+      //   routeName: 'AccountNav',
+      //   // We skip the AccountOrders screen
+      //   action: NavigationActions.navigate({
+      //     routeName: 'AccountOrder',
+      //     params: { order },
+      //   }),
+      // }))
+
+      // Make sure to clear AFTER navigation has been reset
+      dispatch(clear())
+      // dispatch(checkoutSuccess(order))
+    })
+    .catch(err => {
+      console.log('Err ::: ', err)
+      dispatch(checkoutFailure(err))
+    })
+  }
+}
+
 export function checkout(number, expMonth, expYear, cvc) {
 
   return (dispatch, getState) => {
