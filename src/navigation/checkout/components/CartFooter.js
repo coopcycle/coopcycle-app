@@ -27,12 +27,12 @@ class CartFooter extends Component {
       Animated.timing(this.state.opacityAnim, {
         toValue: 0.4,
         duration: 300,
-        useNativeDriver: true,
+        useNativeDriver: false,
       }),
       Animated.timing(this.state.opacityAnim, {
         toValue: 1,
         duration: 200,
-        useNativeDriver: true,
+        useNativeDriver: false,
       }),
     ]).start()
   }
