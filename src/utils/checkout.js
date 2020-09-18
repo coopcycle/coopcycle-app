@@ -6,37 +6,14 @@ function round5(x) {
   return Math.ceil(x / 5) * 5
 }
 
-function getNextShippingTime(restaurant, now) {
-  now = now || moment()
+function timingAsText(timing, now) {
+  const lower = moment.parseZone(timing.range[0])
 
-  const first = _.first(restaurant.availabilities)
+  if (timing.fast) {
 
-  return moment.parseZone(first)
-}
-
-export function isFast(restaurant, now) {
-  now = now || moment()
-
-  const next = getNextShippingTime(restaurant, now)
-
-  const isSameDay = next.isSame(now, 'day')
-  const diffMinutes = next.diff(now, 'minutes')
-
-  return isSameDay && diffMinutes <= 45
-}
-
-export function getNextShippingTimeAsText(restaurant, now) {
-
-  now = now || moment()
-
-  const firstM = getNextShippingTime(restaurant, now)
-
-  if (isFast(restaurant, now)) {
-
-    const diffMinutes = firstM.diff(now, 'minutes')
+    const diffMinutes = lower.diff(now, 'minutes')
 
     let diffRounded = round5(diffMinutes)
-
     if (diffRounded <= 5) {
       diffRounded = 25
     }
@@ -44,7 +21,37 @@ export function getNextShippingTimeAsText(restaurant, now) {
     return i18n.t('TIME_DIFF_SHORT', { min: diffRounded, max: (diffRounded + 5) })
   }
 
-  return firstM.calendar(now)
+  return lower.calendar(now)
+}
+
+export function isFast(restaurant) {
+
+  if (restaurant.timing.delivery) {
+    return restaurant.timing.delivery.fast
+  }
+
+  if (restaurant.timing.collection) {
+    return restaurant.timing.collection.fast
+  }
+
+  return false
+}
+
+export function getNextShippingTimeAsText(restaurant, now) {
+
+  now = now || moment()
+
+  if (restaurant.timing.delivery) {
+
+    return timingAsText(restaurant.timing.delivery, now)
+  }
+
+  if (restaurant.timing.collection) {
+
+    return timingAsText(restaurant.timing.collection, now)
+  }
+
+  return ''
 }
 
 export function getRestaurantCaption(restaurant) {

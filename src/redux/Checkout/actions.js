@@ -451,6 +451,30 @@ export function setAddress(address) {
   }
 }
 
+function wrapRestaurantsWithTiming(restaurants) {
+
+  return (dispatch, getState) => {
+
+    const { httpClient } = getState().app
+
+    const promises = restaurants.map(restaurant => new Promise((resolve) => {
+      httpClient.get(restaurant['@id'] + '/timing')
+        .then(res => resolve(res))
+        .catch(e => resolve({ delivery: null, collection: null }))
+    }))
+
+    Promise
+      .all(promises)
+      .then(values => {
+        const restaurantsWithTiming = _.map(restaurants, (restaurant, index) => ({
+          ...restaurant,
+          timing: values[index]
+        }))
+        dispatch(loadRestaurantsSuccess(restaurantsWithTiming))
+      })
+  }
+}
+
 export function searchRestaurantsForAddress(address, options = {}) {
 
   return (dispatch, getState) => {
@@ -463,7 +487,7 @@ export function searchRestaurantsForAddress(address, options = {}) {
     httpClient.get('/api/restaurants' + (queryString ? `?${queryString}` : ''))
       .then(res => {
         dispatch(_setAddress(address))
-        dispatch(loadRestaurantsSuccess(res['hydra:member']))
+        dispatch(wrapRestaurantsWithTiming(res['hydra:member']))
       })
       .catch(e => dispatch(loadRestaurantsFailure(e)))
   }
@@ -483,7 +507,7 @@ export function searchRestaurants(options = {}) {
     dispatch(loadRestaurantsRequest())
 
     httpClient.get('/api/restaurants' + (queryString ? `?${queryString}` : ''))
-      .then(res => dispatch(loadRestaurantsSuccess(res['hydra:member'])))
+      .then(res => dispatch(wrapRestaurantsWithTiming(res['hydra:member'])))
       .catch(e => dispatch(loadRestaurantsFailure(e)))
   }
 }
