@@ -31,8 +31,8 @@ import CouponModal from './components/CouponModal'
 
 const BottomLine = ({ label, value }) => (
   <View style={ styles.line }>
-    <Text style={{ color: '#ffffff', fontSize: 14 }}>{ label }</Text>
-    <Text style={{ color: '#ffffff', fontWeight: 'bold', fontSize: 14 }}>{ `${formatPrice(value)}` }</Text>
+    <Text style={ styles.bottomLineLabel }>{ label }</Text>
+    <Text style={ styles.bottomLineAmount }>{ `${formatPrice(value)}` }</Text>
   </View>
 )
 
@@ -340,6 +340,15 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  bottomLineLabel: {
+    color: '#ffffff',
+    fontSize: 14,
+  },
+  bottomLineAmount: {
+    color: '#ffffff',
+    fontSize: 14,
+    fontWeight: 'bold',
   },
 })
 
