@@ -10,7 +10,6 @@ import {
 } from 'react-native'
 import {
   Container, Content,
-  Right, Body,
   Icon, Text,
 } from 'native-base';
 import moment from 'moment'
@@ -36,6 +35,11 @@ const BottomLine = ({ label, value }) => (
     <Text style={{ color: '#ffffff', fontWeight: 'bold', fontSize: 14 }}>{ `${formatPrice(value)}` }</Text>
   </View>
 )
+
+const mapAdjustments = (adjustments, type) => _.map(adjustments, (adjustment, index) => (
+  <BottomLine key={ `${type}_${index}` }
+    label={ adjustment.label } value={ adjustment.amount } />
+))
 
 const CollectionDisclaimerModal = withTranslation()(({ isVisible, onSwipeComplete, t, restaurant }) => {
 
@@ -264,7 +268,9 @@ class Summary extends Component {
           <ActionButton
             onPress={ () => this.props.showAddressModal() }
             iconName="map-marker">
-            <Text numberOfLines={ 2 } ellipsizeMode="tail" style={{ flex: 2, fontSize: 14 }}>{ this.props.cart.shippingAddress.streetAddress }</Text>
+            <Text numberOfLines={ 2 } ellipsizeMode="tail" style={{ flex: 2, fontSize: 14 }}>
+              { this.props.cart.shippingAddress.streetAddress }
+            </Text>
             <Text note style={{ flex: 1, textAlign: 'right' }}>{ this.props.t('EDIT') }</Text>
           </ActionButton>
           )}
@@ -286,18 +292,9 @@ class Summary extends Component {
           { this.props.fulfillmentMethod === 'delivery' && (
           <BottomLine label={ this.props.t('TOTAL_DELIVERY') } value={ this.props.deliveryTotal } />
           )}
-          { deliveryPromotions.map((promotion, index) => (
-            <BottomLine key={ `delivery_promotion_${index}` }
-              label={ promotion.label } value={ promotion.amount } />
-          )) }
-          { orderPromotions.map((promotion, index) => (
-            <BottomLine key={ `order_promotion_${index}` }
-              label={ promotion.label } value={ promotion.amount } />
-          )) }
-          { reusablePackagings.map((packaging, index) => (
-            <BottomLine key={ `reusable_packaging_${index}` }
-              label={ packaging.label } value={ packaging.amount } />
-          )) }
+          { mapAdjustments(deliveryPromotions, 'delivery_promotion') }
+          { mapAdjustments(orderPromotions, 'order_promotion') }
+          { mapAdjustments(reusablePackagings, 'reusable_packaging') }
         </View>
         { this.renderFooter() }
         <AddressModal onGoBack={ () => {
