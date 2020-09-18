@@ -60,6 +60,7 @@ class Summary extends Component {
         {
           toValue: this.props.edit ? 0 : 500,
           duration: 450,
+          useNativeDriver: true,
         }
       ).start()
     }

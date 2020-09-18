@@ -94,6 +94,7 @@ class DateSelectHeader extends React.Component {
       {
         toValue: 0,
         duration: 450,
+        useNativeDriver: true,
       }
     ).start()
   }
@@ -104,6 +105,7 @@ class DateSelectHeader extends React.Component {
       {
         toValue: this.initialCalendarTop,
         duration: 350,
+        useNativeDriver: true,
       }
     ).start()
   }

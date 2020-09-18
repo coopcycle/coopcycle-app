@@ -38,6 +38,7 @@ class AddressModal extends Component {
       Animated.timing(this.keyboardHeight, {
         duration: event.duration,
         toValue: event.endCoordinates.height,
+        useNativeDriver: true,
       }),
     ]).start();
   }
@@ -47,6 +48,7 @@ class AddressModal extends Component {
       Animated.timing(this.keyboardHeight, {
         duration: event.duration,
         toValue: 0,
+        useNativeDriver: true,
       }),
     ]).start();
   }
