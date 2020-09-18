@@ -32,15 +32,18 @@ export const selectIsShippingAsap = createSelector(
   (cart) => (!!cart.shippedAt) !== true
 )
 
-export const selectCartFulfillmentMethod = createSelector(
-  state => state.checkout.cart,
-  (cart) => cart.fulfillmentMethod || 'delivery'
-)
-
 export const selectFulfillmentMethods = createSelector(
   state => state.checkout.restaurant,
-  (restaurant) => (restaurant && restaurant.fulfillmentMethods && Array.isArray(restaurant.fulfillmentMethods)) ?
-    _.map(restaurant.fulfillmentMethods, fm => fm.type) : ['delivery']
+  (restaurant) => {
+
+    if (restaurant && restaurant.fulfillmentMethods && Array.isArray(restaurant.fulfillmentMethods)) {
+      const enabled = _.filter(restaurant.fulfillmentMethods, fm => fm.enabled)
+      return _.map(enabled, fm => fm.type)
+    }
+
+    return []
+
+  }
 )
 
 export const selectIsDeliveryEnabled = createSelector(
@@ -51,4 +54,26 @@ export const selectIsDeliveryEnabled = createSelector(
 export const selectIsCollectionEnabled = createSelector(
   selectFulfillmentMethods,
   (fulfillmentMethods) => _.includes(fulfillmentMethods, 'collection')
+)
+
+export const selectCartFulfillmentMethod = createSelector(
+  state => state.checkout.cart,
+  selectIsDeliveryEnabled,
+  selectIsCollectionEnabled,
+  (cart, isDeliveryEnabled, isCollectionEnabled) => {
+
+    if (cart.fulfillmentMethod) {
+      return cart.fulfillmentMethod
+    }
+
+    if (isDeliveryEnabled && isCollectionEnabled) {
+      return 'delivery'
+    }
+
+    if (isCollectionEnabled && !isDeliveryEnabled) {
+      return 'collection'
+    }
+
+    return'delivery'
+  }
 )
