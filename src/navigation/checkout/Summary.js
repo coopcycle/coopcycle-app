@@ -11,7 +11,6 @@ import {
 import {
   Container, Content,
   Right, Body,
-  List, ListItem,
   Icon, Text,
 } from 'native-base';
 import moment from 'moment'
@@ -51,6 +50,18 @@ const CollectionDisclaimerModal = withTranslation()(({ isVisible, onSwipeComplet
         </View>
       </View>
     </Modal>
+  )
+})
+
+const ActionButton = withTranslation()(({ isLoading, onPress, iconName, children }) => {
+
+  return (
+    <TouchableOpacity style={ [ styles.btn, styles.btnGrey ] }
+      // Disable interaction while loading
+      onPress={ () => !isLoading && onPress() }>
+      <Icon type="FontAwesome" name={ iconName } style={{ fontSize: 22, marginRight: 15 }} />
+      { children }
+    </TouchableOpacity>
   )
 })
 
@@ -174,34 +185,6 @@ class Summary extends Component {
     )
   }
 
-  renderTotal() {
-
-    const { cart } = this.props
-
-    return (
-      <View style={{ justifySelf: 'flex-end' }}>
-        <List>
-          <ListItem>
-            <Body>
-              <Text>{this.props.t('TOTAL_ITEMS')}</Text>
-            </Body>
-            <Right>
-              <Text style={{ fontWeight: 'bold' }}>{ formatPrice(cart.totalItems) }</Text>
-            </Right>
-          </ListItem>
-          <ListItem>
-            <Body>
-              <Text>{this.props.t('TOTAL_DELIVERY')}</Text>
-            </Body>
-            <Right>
-              <Text style={{ fontWeight: 'bold' }}>{ formatPrice(cart.totalDelivery) }</Text>
-            </Right>
-          </ListItem>
-        </List>
-      </View>
-    )
-  }
-
   renderFooter() {
 
     const { cart } = this.props
@@ -271,36 +254,32 @@ class Summary extends Component {
             <Text note style={{ flex: 1, textAlign: 'right' }}>{ this.props.t('LEARN_MORE') }</Text>
           </TouchableOpacity>
           )}
-          <TouchableOpacity style={ [ styles.btn, styles.btnGrey ] }
-            // Disable interaction while loading
-            onPress={ () => !this.props.isLoading && this._navigate('CheckoutShippingDate') }>
-            <Icon type="FontAwesome" name="clock-o" style={{ fontSize: 22, marginRight: 15 }} />
+          <ActionButton
+            onPress={ () => this._navigate('CheckoutShippingDate') }
+            iconName="clock-o">
             <Text style={{ flex: 2, fontSize: 14 }}>{ this.props.timeAsText }</Text>
             <Text note style={{ flex: 1, textAlign: 'right' }}>{ this.props.t('EDIT') }</Text>
-          </TouchableOpacity>
+          </ActionButton>
           { this.props.fulfillmentMethod === 'delivery' && (
-          <TouchableOpacity style={ [ styles.btn, styles.btnGrey, { flexShrink: 1 } ] }
-            // Disable interaction while loading
-            onPress={ () => !this.props.isLoading && this.props.showAddressModal() }>
-            <Icon type="FontAwesome" name="map-marker" style={{ fontSize: 22, marginRight: 15 }} />
+          <ActionButton
+            onPress={ () => this.props.showAddressModal() }
+            iconName="map-marker">
             <Text numberOfLines={ 2 } ellipsizeMode="tail" style={{ flex: 2, fontSize: 14 }}>{ this.props.cart.shippingAddress.streetAddress }</Text>
             <Text note style={{ flex: 1, textAlign: 'right' }}>{ this.props.t('EDIT') }</Text>
-          </TouchableOpacity>
+          </ActionButton>
           )}
-          <TouchableOpacity style={ [ styles.btn, styles.btnGrey, { flexShrink: 1 } ] }
-            // Disable interaction while loading
-            onPress={ () => !this.props.isLoading && this.setState({ isCouponModalVisible: true }) }>
-            <Icon type="FontAwesome" name="tag" style={{ fontSize: 22, marginRight: 15 }} />
+          <ActionButton
+            onPress={ () => this.setState({ isCouponModalVisible: true }) }
+            iconName="tag">
             <Text note style={{ flex: 1, textAlign: 'right' }}>{ this.props.t('ADD_COUPON') }</Text>
-          </TouchableOpacity>
+          </ActionButton>
           { reusablePackagingAction && (
-            <TouchableOpacity style={ [ styles.btn, styles.btnGrey, { flexShrink: 1 } ] }
-              // Disable interaction while loading
-              onPress={ () => !this.props.isLoading && this.toggleReusablePackaging() }>
-              <Icon type="FontAwesome" name="cube" style={{ fontSize: 22, marginRight: 15 }} />
-              <Text note style={{ flex: 1, textAlign: 'right' }}>{ reusablePackagingAction.description }</Text>
-            </TouchableOpacity>
-          ) }
+          <ActionButton
+            onPress={ () => this.toggleReusablePackaging() }
+            iconName="cube">
+            <Text note style={{ flex: 1, textAlign: 'right' }}>{ reusablePackagingAction.description }</Text>
+          </ActionButton>
+          )}
         </View>
         <View style={{ flex: 0, backgroundColor: '#e4022d' }}>
           <BottomLine label={ this.props.t('TOTAL_ITEMS') } value={ cart.itemsTotal } />
