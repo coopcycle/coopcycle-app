@@ -364,8 +364,8 @@ PODS:
     - React
   - react-native-maps (0.27.1):
     - React
-  - react-native-netinfo (5.9.6):
-    - React
+  - react-native-netinfo (5.9.7):
+    - React-Core
   - react-native-safe-area-context (3.1.7):
     - React
   - react-native-version-number (0.3.6):
@@ -450,16 +450,16 @@ PODS:
     - React
   - RNDateTimePicker (2.6.1):
     - React
-  - RNFBAnalytics (7.6.2):
+  - RNFBAnalytics (7.6.4):
     - Firebase/Analytics (~> 6.30.0)
-    - React
+    - React-Core
     - RNFBApp
-  - RNFBApp (8.4.2):
+  - RNFBApp (8.4.3):
     - Firebase/CoreOnly (~> 6.30.0)
-    - React
-  - RNFBCrashlytics (8.4.4):
+    - React-Core
+  - RNFBCrashlytics (8.4.5):
     - Firebase/Crashlytics (~> 6.30.0)
-    - React
+    - React-Core
     - RNFBApp
   - RNFBPerf (7.4.3):
     - Firebase/Performance (~> 6.30.0)
@@ -760,7 +760,7 @@ SPEC CHECKSUMS:
   react-native-camera: 3940f67a49eaf736525a3e730653fcb98e1525dd
   react-native-keep-awake: afad8a51dfef9fe9655a6344771be32c8596d774
   react-native-maps: f4b89da81626ad7f151a8bfcb79733295d31ce5c
-  react-native-netinfo: 38a1e0b3e89b48e4b5833ed475d8df5f049f6f90
+  react-native-netinfo: 250dc0ca126512f618a8a2ca6a936577e1f66586
   react-native-safe-area-context: 955ecfce672683b495d9294d2f154a9ad1d9796b
   react-native-version-number: b415bbec6a13f2df62bf978e85bc0d699462f37f
   React-RCTActionSheet: f41ea8a811aac770e0cc6e0ad6b270c644ea8b7c
@@ -782,9 +782,9 @@ SPEC CHECKSUMS:
   RNCPicker: a2bf7bad059f23de52add203c3c5a3bc5b5239d8
   RNCPushNotificationIOS: ef00b111c849a9bb5dbc86d40cf91acb8b262772
   RNDateTimePicker: 83540fb5d71f28bd34990d8fabccb8d91e5d957e
-  RNFBAnalytics: 20564db4cfd317c304fe5a8e5d840f8c9d105aaa
-  RNFBApp: 373cce42559cc7a9a42afc876746e3946de3e32e
-  RNFBCrashlytics: 834057016b34fa49e3eef028a13e35f48840c78c
+  RNFBAnalytics: 66f1008f38c9ed5f3953a7224b82246ef2a88403
+  RNFBApp: a74d8259d827c8bf55100e759cffa2e50ba6fe30
+  RNFBCrashlytics: 4039c6b27a35dd6cbbb0c111d4f668ce513a2881
   RNFBPerf: cf6720eb30e6d363627c46b87a03eb9ba59fee14
   RNGestureHandler: 7a5833d0f788dbd107fbb913e09aa0c1ff333c39
   RNLocalize: 49634a6a605dcdeb319e9c42a5c2f1aec508694b
