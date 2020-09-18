@@ -18,12 +18,13 @@ import moment from 'moment'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 import _ from 'lodash'
+import Modal from 'react-native-modal'
 
 import DangerAlert from '../../components/DangerAlert'
 import { formatPrice } from '../../utils/formatting'
 import i18n from '../../i18n'
 import { incrementItem, decrementItem, removeItem, validate, showAddressModal, hideAddressModal, updateCart } from '../../redux/Checkout/actions'
-import { selectDeliveryTotal, selectShippingDate, selectIsShippingAsap } from '../../redux/Checkout/selectors'
+import { selectDeliveryTotal, selectShippingDate, selectIsShippingAsap, selectCartFulfillmentMethod } from '../../redux/Checkout/selectors'
 import { selectIsAuthenticated } from '../../redux/App/selectors'
 import CartFooter from './components/CartFooter'
 import AddressModal from './components/AddressModal'
@@ -37,6 +38,22 @@ const BottomLine = ({ label, value }) => (
   </View>
 )
 
+const CollectionDisclaimerModal = withTranslation()(({ isVisible, onSwipeComplete, t, restaurant }) => {
+
+  return (
+    <Modal
+      isVisible={ isVisible }
+      onSwipeComplete={ onSwipeComplete }
+      swipeDirection={ ['up', 'down'] }>
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', padding: 20 }}>
+        <View style={{ backgroundColor: '#ffffff', paddingHorizontal: 20, paddingVertical: 30 }}>
+          <Text style={{ fontSize: 14 }}>{ t('CART_COLLECTION_DISCLAIMER', { telephone: restaurant.telephone }) }</Text>
+        </View>
+      </View>
+    </Modal>
+  )
+})
+
 class Summary extends Component {
 
   constructor(props) {
@@ -44,6 +61,7 @@ class Summary extends Component {
     this.state = {
       translateXValue: new Animated.Value(500),
       isCouponModalVisible: false,
+      isCollectionDisclaimerModalVisible: false,
     }
   }
 
@@ -243,29 +261,40 @@ class Summary extends Component {
         <View style={{ flex: 1, paddingTop: 30 }}>
           { this.renderItems() }
         </View>
-        <View style={{ flex: 0, backgroundColor: '#ecf0f1' }}>
-          <TouchableOpacity style={ styles.dateBtn }
+        <View style={{ flex: 0 }}>
+          { this.props.fulfillmentMethod === 'collection' && (
+          <TouchableOpacity style={ [ styles.btn ]  }
+            // Disable interaction while loading
+            onPress={ () => !this.props.isLoading && this.setState({ isCollectionDisclaimerModalVisible: true }) }>
+            <Icon type="FontAwesome" name="info-circle" style={{ fontSize: 22, marginRight: 15, color: '#3498db' }} />
+            <Text style={{ flex: 2, fontSize: 14, color: '#3498db' }}>{ this.props.t('FULFILLMENT_METHOD.collection') }</Text>
+            <Text note style={{ flex: 1, textAlign: 'right' }}>{ this.props.t('LEARN_MORE') }</Text>
+          </TouchableOpacity>
+          )}
+          <TouchableOpacity style={ [ styles.btn, styles.btnGrey ] }
             // Disable interaction while loading
             onPress={ () => !this.props.isLoading && this._navigate('CheckoutShippingDate') }>
             <Icon type="FontAwesome" name="clock-o" style={{ fontSize: 22, marginRight: 15 }} />
-            <Text style={{ flex: 2, fontSize: 14 }}>{ this.props.timeAsText }</Text>
+            <Text style={{ flex: 2, fontSize: 14 }}>{ this.props.timeAsText }</Text>
             <Text note style={{ flex: 1, textAlign: 'right' }}>{ this.props.t('EDIT') }</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={ [ styles.dateBtn, { flexShrink: 1 } ] }
+          { this.props.fulfillmentMethod === 'delivery' && (
+          <TouchableOpacity style={ [ styles.btn, styles.btnGrey, { flexShrink: 1 } ] }
             // Disable interaction while loading
             onPress={ () => !this.props.isLoading && this.props.showAddressModal() }>
             <Icon type="FontAwesome" name="map-marker" style={{ fontSize: 22, marginRight: 15 }} />
             <Text numberOfLines={ 2 } ellipsizeMode="tail" style={{ flex: 2, fontSize: 14 }}>{ this.props.cart.shippingAddress.streetAddress }</Text>
             <Text note style={{ flex: 1, textAlign: 'right' }}>{ this.props.t('EDIT') }</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={ [ styles.dateBtn, { flexShrink: 1 } ] }
+          )}
+          <TouchableOpacity style={ [ styles.btn, styles.btnGrey, { flexShrink: 1 } ] }
             // Disable interaction while loading
             onPress={ () => !this.props.isLoading && this.setState({ isCouponModalVisible: true }) }>
             <Icon type="FontAwesome" name="tag" style={{ fontSize: 22, marginRight: 15 }} />
             <Text note style={{ flex: 1, textAlign: 'right' }}>{ this.props.t('ADD_COUPON') }</Text>
           </TouchableOpacity>
           { reusablePackagingAction && (
-            <TouchableOpacity style={ [ styles.dateBtn, { flexShrink: 1 } ] }
+            <TouchableOpacity style={ [ styles.btn, styles.btnGrey, { flexShrink: 1 } ] }
               // Disable interaction while loading
               onPress={ () => !this.props.isLoading && this.toggleReusablePackaging() }>
               <Icon type="FontAwesome" name="cube" style={{ fontSize: 22, marginRight: 15 }} />
@@ -275,7 +304,9 @@ class Summary extends Component {
         </View>
         <View style={{ flex: 0, backgroundColor: '#e4022d' }}>
           <BottomLine label={ this.props.t('TOTAL_ITEMS') } value={ cart.itemsTotal } />
+          { this.props.fulfillmentMethod === 'delivery' && (
           <BottomLine label={ this.props.t('TOTAL_DELIVERY') } value={ this.props.deliveryTotal } />
+          )}
           { deliveryPromotions.map((promotion, index) => (
             <BottomLine key={ `delivery_promotion_${index}` }
               label={ promotion.label } value={ promotion.amount } />
@@ -300,17 +331,24 @@ class Summary extends Component {
           isVisible={ this.state.isCouponModalVisible }
           onSwipeComplete={ () => this.setState({ isCouponModalVisible: false }) }
           onSubmit={ (code) => this.onSubmitCoupon(code) } />
+        <CollectionDisclaimerModal
+          isVisible={ this.state.isCollectionDisclaimerModalVisible }
+          onSwipeComplete={ () => this.setState({ isCollectionDisclaimerModalVisible: false }) }
+          restaurant={ this.props.restaurant } />
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  dateBtn: {
+  btn: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: 10,
+  },
+  btnGrey: {
+    backgroundColor: '#ecf0f1',
     borderTopColor: '#d7d7d7',
     borderTopWidth: StyleSheet.hairlineWidth,
   },
@@ -335,20 +373,22 @@ function mapStateToProps(state, ownProps) {
 
   let timeAsText = i18n.t('LOADING')
 
+  const fulfillmentMethod = selectCartFulfillmentMethod(state)
+
   if (selectIsShippingAsap(state)) {
     if (timing.today && timing.fast) {
-      timeAsText = i18n.t('CART_DELIVERY_TIME_DIFF', { diff: timing.diff })
+      timeAsText = i18n.t(`CART_${fulfillmentMethod.toUpperCase()}_TIME_DIFF`, { diff: timing.diff })
     } else {
       let fromNow = moment
         .parseZone(timing.asap)
         .calendar(null, { sameElse: 'LLLL' }).toLowerCase()
-      timeAsText = i18n.t('CART_DELIVERY_TIME', { fromNow })
+      timeAsText = i18n.t(`CART_${fulfillmentMethod.toUpperCase()}_TIME`, { fromNow })
     }
   } else {
     let fromNow = moment
       .parseZone(selectShippingDate(state))
       .calendar(null, { sameElse: 'LLLL' }).toLowerCase()
-    timeAsText = i18n.t('CART_DELIVERY_TIME', { fromNow })
+    timeAsText = i18n.t(`CART_${fulfillmentMethod.toUpperCase()}_TIME`, { fromNow })
   }
 
   return {
@@ -362,6 +402,8 @@ function mapStateToProps(state, ownProps) {
     isLoading: state.checkout.isLoading,
     isValid: state.checkout.isValid,
     alertMessage: _.first(state.checkout.violations.map(v => v.message)),
+    fulfillmentMethod,
+    restaurant: state.checkout.restaurant,
   }
 }
 

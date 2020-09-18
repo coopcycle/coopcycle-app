@@ -269,6 +269,8 @@
         "DELIVERY_ASAP": "As soon as possible",
         "CART_DELIVERY_TIME": "Delivery {{- fromNow}}",
         "CART_DELIVERY_TIME_DIFF": "Delivery in {{diff}} minutes",
+        "CART_COLLECTION_TIME": "Collection {{- fromNow}}",
+        "CART_COLLECTION_TIME_DIFF": "Collection dans {{diff}} minutes",
         "TIME_DIFF_SHORT": "{{min}} - {{max}} minutes",
         "TASK_ADD_PROOF_OF_DELIVERY": "Add a proof of delivery",
         "STORE_NEW_DELIVERY": "New delivery",
@@ -349,6 +351,11 @@
         "FULFILLMENT_METHOD": {
             "collection": "Collection",
             "delivery": "Delivery"
-        }
+        },
+        "CART_COLLECTION_DISCLAIMER": "You have opted for click&collect. \nYou are responsible for collecting your order on the day and time selected. \nIf you have a problem, contact the establishment at {{telephone}}. \nPlease note - If you do not collect, you will be charged the full amount for the order.",
+        "LEARN_MORE": "Learn more",
+        "SELECTED": "Selected",
+        "AVAILABLE": "Available",
+        "COMING_SOON": "Coming soon"
     }
 }

@@ -5,6 +5,7 @@ import _ from 'lodash'
 
 import NavigationHolder from '../../NavigationHolder'
 import i18n from '../../i18n'
+import { selectCartFulfillmentMethod } from './selectors'
 
 /*
  * Action Types
@@ -118,23 +119,23 @@ function createHttpClient(state) {
   return httpClient.cloneWithToken(token)
 }
 
-let addressListeners = []
+let listeners = []
 
-function replaceSetAddressListeners(cb) {
-  addressListeners = [ cb ]
+function replaceListeners(cb) {
+  listeners = [ cb ]
 }
 
-function addSetAddressListener(cb) {
-  addressListeners.push(cb)
+function addListener(cb) {
+  listeners.push(cb)
 }
 
-function onSetAddress(address) {
-  addressListeners.forEach(cb => {
+function notifyListeners(address) {
+  listeners.forEach(cb => {
     if (typeof cb === 'function') {
       cb(address)
     }
   })
-  addressListeners = []
+  listeners = []
 }
 
 // This action may be dispatched several times "recursively"
@@ -145,14 +146,16 @@ export function addItem(item, options) {
     const { httpClient } = getState().app
     const { address, cart, isAddressOK } = getState().checkout
 
-    if (!address || !isAddressOK) {
+    const fulfillmentMethod = selectCartFulfillmentMethod(getState())
+
+    if (fulfillmentMethod === 'delivery' && (!address || !isAddressOK)) {
 
       // We don't have an adress
       // Stop here an ask for address
       if (!address) {
         // When the address is set,
         // re-dispatch the same action
-        replaceSetAddressListeners(() => dispatch(addItem(item, options)))
+        replaceListeners(() => dispatch(addItem(item, options)))
         dispatch(showAddressModal(i18n.t('CHECKOUT_PLEASE_ENTER_ADDRESS')))
         return
       }
@@ -170,7 +173,7 @@ export function addItem(item, options) {
             dispatch(_setAddress(address))
             dispatch(setAddressOK(true))
 
-            addSetAddressListener(() => {
+            addListener(() => {
               dispatch(addItemRequestFinished(item))
               dispatch(addItem(item, options))
             })
@@ -181,7 +184,7 @@ export function addItem(item, options) {
             dispatch(setAddressOK(false))
             dispatch(addItemRequestFinished(item))
 
-            replaceSetAddressListeners(() => dispatch(addItem(item, options)))
+            replaceListeners(() => dispatch(addItem(item, options)))
             dispatch(showAddressModal(reason))
           })
 
@@ -388,7 +391,7 @@ export function removeItem(item) {
 export function validate() {
 
   return (dispatch, getState) => {
-    replaceSetAddressListeners(() => {
+    replaceListeners(() => {
       fetchValidation(dispatch, getState)
     })
     dispatch(syncAddress())
@@ -413,7 +416,7 @@ function syncAddress() {
           dispatch(updateCartSuccess(res))
           dispatch(setCheckoutLoading(false))
           dispatch(hideAddressModal())
-          onSetAddress(address)
+          notifyListeners(address)
         })
         .catch(e => {
           dispatch(setCheckoutLoading(false))
@@ -716,5 +719,38 @@ export function setDateAsap(cb) {
         }, 250)
       })
       .catch(e => dispatch(checkoutFailure(e)))
+  }
+}
+
+export function setFulfillmentMethod(method, cb) {
+
+  return (dispatch, getState) => {
+
+    const httpClient = createHttpClient(getState())
+
+    const { cart } = getState().checkout
+
+    dispatch(checkoutRequest())
+
+    httpClient
+      .put(cart['@id'], {
+        fulfillmentMethod: method,
+      })
+      .then(res => {
+        httpClient
+          .get(`${cart['@id']}/timing`)
+          .then(timing => {
+            dispatch(setCheckoutLoading(false))
+            dispatch(setTiming(timing))
+            dispatch(updateCartSuccess(res))
+            dispatch(hideAddressModal())
+            notifyListeners()
+            _.isFunction(cb) && cb()
+          })
+          .catch(e => .catch(e => dispatch(checkoutFailure(e))))
+      })
+      .catch(e => {
+        dispatch(setCheckoutLoading(false))
+      })
   }
 }
