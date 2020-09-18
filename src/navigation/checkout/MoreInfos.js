@@ -97,7 +97,8 @@ class MoreInfos extends Component {
                   returnKeyType="done"
                   onChangeText={ value => this._handleChangeTelephone(value, setFieldValue, setFieldTouched) }
                   onBlur={ handleBlur('address.telephone') }
-                  value={ values.address.telephone } />
+                  value={ values.address.telephone }
+                  placeholderTextColor="#d0d0d0" />
                 { hasPhoneNumberErrors(errors, touched) && (
                   <Text note style={ styles.errorText }>{ errors.address.telephone }</Text>
                 ) }
@@ -162,6 +163,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     height: 40,
     padding: 5,
+    color: '#333'
   },
   textarea: {
     height: (25 * 3),
