@@ -233,6 +233,7 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         cart: action.payload,
+        isFetching: false,
       }
 
     case SET_CHECKOUT_LOADING:
