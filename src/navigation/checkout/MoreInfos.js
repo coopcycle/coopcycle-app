@@ -69,7 +69,6 @@ class MoreInfos extends Component {
     const initialValues = {
       address: {
         description: '',
-        floor: '',
         telephone: this.props.cart.shippingAddress.telephone || '',
       },
       notes: '',
@@ -105,16 +104,6 @@ class MoreInfos extends Component {
                 { !hasPhoneNumberErrors(errors, touched) && (
                   <Text note>{ this.props.t('CHECKOUT_ORDER_PHONE_NUMBER_HELP') }</Text>
                 ) }
-              </View>
-              <View style={ [ styles.formGroup ] }>
-                <Text style={ styles.label }>{ this.props.t('CHECKOUT_ORDER_ADDRESS_FLOOR') }</Text>
-                <TextInput
-                  style={ [ styles.textInput ] }
-                  keyboardType="numeric"
-                  returnKeyType="done"
-                  onChangeText={ handleChange('address.floor') }
-                  onBlur={ handleBlur('address.floor') }
-                  value={ values.address.floor } />
               </View>
               <View style={ [ styles.formGroup ] }>
                 <Text style={ styles.label }>{ this.props.t('CHECKOUT_ORDER_ADDRESS_DESCRIPTION') }</Text>

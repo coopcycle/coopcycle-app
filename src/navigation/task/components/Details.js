@@ -79,13 +79,10 @@ const Details = ({ task, t }) => {
     })
   }
 
-  if (task.address.description || task.address.floor) {
-    const floor = task.address.floor ? [ t('FLOOR'), task.address.floor ].join(' : ') : null
-    const description = [ floor, task.address.description ].filter(function (item) {return item}).join(' - ')
-
+  if (task.address.description) {
     items.push({
       iconName: 'information-circle',
-      text: description,
+      text: task.address.description,
     })
   }
 
