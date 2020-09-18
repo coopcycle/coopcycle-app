@@ -42,7 +42,6 @@ export const selectFulfillmentMethods = createSelector(
     }
 
     return []
-
   }
 )
 
@@ -74,6 +73,6 @@ export const selectCartFulfillmentMethod = createSelector(
       return 'collection'
     }
 
-    return'delivery'
+    return 'delivery'
   }
 )

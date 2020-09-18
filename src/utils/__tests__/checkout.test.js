@@ -2,7 +2,7 @@ import moment from 'moment'
 import { getNextShippingTimeAsText } from '../checkout'
 
 const createTiming = (type, range, fast) => ({
-  [type]: { range, fast }
+  [type]: { range, fast },
 })
 
 describe('getNextShippingTimeAsText', () => {
@@ -37,11 +37,11 @@ describe('getNextShippingTimeAsText', () => {
 
     const timingWithBoth = {
       ...createTiming('delivery', delivery, false),
-      ...createTiming('collection', collection, false)
+      ...createTiming('collection', collection, false),
     }
 
     expect(
-      getNextShippingTimeAsText({ timing: createTiming('delivery', delivery, false) }, moment.parseZone('2020-02-12T17:00:00+01:00'))
+      getNextShippingTimeAsText({ timing: timingWithBoth }, moment.parseZone('2020-02-12T17:00:00+01:00'))
     ).toEqual('Today at 6:55 PM')
 
   })

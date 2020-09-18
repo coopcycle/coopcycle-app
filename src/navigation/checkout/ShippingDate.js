@@ -38,7 +38,7 @@ const FulfillmentMethodButton = withTranslation()(({ type, enabled, active, onPr
   )
 })
 
-const FulfillmentMethodButtons = withTranslation()(({ fulfillmentMethod, isDeliveryEnabled, isCollectionEnabled, setFulfillmentMethod }) => {
+const FulfillmentMethodButtons = withTranslation()(({ fulfillmentMethod, isDeliveryEnabled, isCollectionEnabled, setValue }) => {
 
   const types = (isCollectionEnabled && !isDeliveryEnabled) ?
     ['collection', 'delivery'] : ['delivery', 'collection']
@@ -55,7 +55,7 @@ const FulfillmentMethodButtons = withTranslation()(({ fulfillmentMethod, isDeliv
           type={ type }
           active={ fulfillmentMethod === type }
           enabled={ enabled[type] }
-          onPress={ () => setFulfillmentMethod(type) } />
+          onPress={ () => setValue(type) } />
       )) }
     </View>
   )
@@ -117,7 +117,7 @@ class ShippingDate extends Component {
             fulfillmentMethod={ this.props.fulfillmentMethod }
             isDeliveryEnabled={ this.props.isDeliveryEnabled }
             isCollectionEnabled={ this.props.isCollectionEnabled }
-            setFulfillmentMethod={ this.props.setFulfillmentMethod } />
+            setValue={ this.props.setFulfillmentMethod } />
           <View style={{ alignItems: 'center', justifyContent: 'center', padding: 20, backgroundColor: '#ecf0f1' }}>
             <Text>{ this.props.t('CHECKOUT_PICK_DATE') }</Text>
           </View>
@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
   fmBtn: {
     width: '50%',
     paddingHorizontal: 10,
-    paddingVertical: 20
+    paddingVertical: 20,
   },
 })
 

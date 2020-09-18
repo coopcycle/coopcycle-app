@@ -78,7 +78,7 @@ class ProductOptionsBuilder {
     if (option.additional) {
 
       const range = option.valuesRange ? this.parseRange(option.valuesRange) : [ 0, Infinity ]
-      const [ min, max ] = range
+      const max = range[1]
       const optionQuantity = this.getQuantityForOption(option)
 
       if (max !== Infinity && optionQuantity >= max) {

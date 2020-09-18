@@ -471,7 +471,7 @@ function wrapRestaurantsWithTiming(restaurants) {
       .then(values => {
         const restaurantsWithTiming = _.map(restaurants, (restaurant, index) => ({
           ...restaurant,
-          timing: values[index]
+          timing: values[index],
         }))
         dispatch(loadRestaurantsSuccess(restaurantsWithTiming))
       })
