@@ -47,18 +47,12 @@ class MoreInfos extends Component {
   _validate(values) {
     let errors = {}
 
-    if (_.isEmpty(values.address.telephone)) {
-      errors.address = {
-        ...errors.address,
-        telephone: this.props.t('STORE_NEW_DELIVERY_ERROR.EMPTY_PHONE_NUMBER'),
-      }
+    if (_.isEmpty(values.telephone)) {
+      errors.telephone = this.props.t('STORE_NEW_DELIVERY_ERROR.EMPTY_PHONE_NUMBER')
     } else {
-      const phoneNumber = parsePhoneNumberFromString(_.trim(values.address.telephone), this.props.country)
+      const phoneNumber = parsePhoneNumberFromString(_.trim(values.telephone), this.props.country)
       if (!phoneNumber || !phoneNumber.isValid()) {
-        errors.address = {
-          ...errors.address,
-          telephone: this.props.t('INVALID_PHONE_NUMBER'),
-        }
+        errors.telephone = this.props.t('INVALID_PHONE_NUMBER')
       }
     }
 
