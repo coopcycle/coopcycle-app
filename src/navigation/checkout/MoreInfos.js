@@ -11,6 +11,7 @@ import {
 } from 'libphonenumber-js'
 
 import { assignCustomer, updateCart } from '../../redux/Checkout/actions'
+import { selectCartFulfillmentMethod } from '../../redux/Checkout/selectors'
 import FooterButton from './components/FooterButton'
 
 const hasPhoneNumberErrors = (errors, touched) => {
@@ -20,18 +21,24 @@ const hasPhoneNumberErrors = (errors, touched) => {
 class MoreInfos extends Component {
 
   _handleChangeTelephone(value, setFieldValue, setFieldTouched) {
-    setFieldValue('address.telephone', new AsYouType(this.props.country).input(value))
-    setFieldTouched('address.telephone')
+    setFieldValue('telephone', new AsYouType(this.props.country).input(value))
+    setFieldTouched('telephone')
   }
 
   _submit(values) {
 
-    const payload = {
-      shippingAddress: {
-        ...values.address,
-        telephone: parsePhoneNumberFromString(values.address.telephone, this.props.country).format('E.164'),
-      },
+    const telephone =
+      parsePhoneNumberFromString(values.telephone, this.props.country).format('E.164')
+
+    let payload = {
       notes: values.notes,
+    }
+
+    if (Object.prototype.hasOwnProperty.call(values, 'address')) {
+      payload = {
+        ...payload,
+        shippingAddress: { ...values.address, telephone }
+      }
     }
 
     this.props.updateCart(payload, () => this.props.navigation.navigate('CheckoutCreditCard'))
@@ -66,12 +73,18 @@ class MoreInfos extends Component {
 
   render() {
 
-    const initialValues = {
-      address: {
-        description: '',
-        telephone: this.props.cart.shippingAddress.telephone || '',
-      },
-      notes: '',
+    let initialValues = {
+      telephone: this.props.telephone,
+      notes: ''
+    }
+
+    if (this.props.fulfillmentMethod === 'delivery') {
+      initialValues = {
+        ...initialValues,
+        address: {
+          description: '',
+        },
+      }
     }
 
     return (
@@ -96,16 +109,17 @@ class MoreInfos extends Component {
                   keyboardType="phone-pad"
                   returnKeyType="done"
                   onChangeText={ value => this._handleChangeTelephone(value, setFieldValue, setFieldTouched) }
-                  onBlur={ handleBlur('address.telephone') }
-                  value={ values.address.telephone }
+                  onBlur={ handleBlur('telephone') }
+                  value={ values.telephone }
                   placeholderTextColor="#d0d0d0" />
                 { hasPhoneNumberErrors(errors, touched) && (
-                  <Text note style={ styles.errorText }>{ errors.address.telephone }</Text>
+                  <Text note style={ styles.errorText }>{ errors.telephone }</Text>
                 ) }
                 { !hasPhoneNumberErrors(errors, touched) && (
                   <Text note>{ this.props.t('CHECKOUT_ORDER_PHONE_NUMBER_HELP') }</Text>
                 ) }
               </View>
+              { Object.prototype.hasOwnProperty.call(values, 'address') && (
               <View style={ [ styles.formGroup ] }>
                 <Text style={ styles.label }>{ this.props.t('CHECKOUT_ORDER_ADDRESS_DESCRIPTION') }</Text>
                 <TextInput
@@ -117,6 +131,7 @@ class MoreInfos extends Component {
                   onBlur={ handleBlur('address.description') } />
                 <Text note>{ this.props.t('CHECKOUT_ORDER_ADDRESS_DESCRIPTION_HELP') }</Text>
               </View>
+              )}
               <View style={ [ styles.formGroup ] }>
                 <Text style={ styles.label }>{ this.props.t('CHECKOUT_ORDER_NOTES') }</Text>
                 <TextInput
@@ -175,9 +190,13 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
 
+  const fulfillmentMethod = selectCartFulfillmentMethod(state)
+
   return {
     country: state.app.settings.country.toUpperCase(),
     cart: state.checkout.cart,
+    fulfillmentMethod,
+    telephone: fulfillmentMethod === 'delivery' ? (state.checkout.cart.shippingAddress.telephone || '') : '',
   }
 }
 

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { TouchableOpacity, View } from 'react-native'
+import { TouchableOpacity, View, StyleSheet } from 'react-native'
 import { Picker } from '@react-native-community/picker'
 import { Text } from 'native-base'
 import { withTranslation } from 'react-i18next'
@@ -7,9 +7,59 @@ import { connect } from 'react-redux'
 import _ from 'lodash'
 import moment from 'moment'
 
-import { setDate, setDateAsap } from '../../redux/Checkout/actions'
-import { selectShippingDate, selectIsShippingAsap } from '../../redux/Checkout/selectors'
+import { setDate, setDateAsap, setFulfillmentMethod } from '../../redux/Checkout/actions'
+import { selectShippingDate,
+  selectIsShippingAsap, selectCartFulfillmentMethod,
+  selectIsDeliveryEnabled, selectIsCollectionEnabled } from '../../redux/Checkout/selectors'
 import FooterButton from './components/FooterButton'
+
+
+
+const FulfillmentMethodButton = withTranslation()(({ type, enabled, active, onPress, t }) => {
+
+  const titleStyle = [{ fontWeight: '700' }]
+  if (active) {
+    titleStyle.push({ color: 'white' })
+  }
+  if (!enabled) {
+    titleStyle.push({ textDecorationLine: 'line-through', textDecorationStyle: 'solid' })
+  }
+
+  return (
+    <TouchableOpacity style={ [ styles.fmBtn, { backgroundColor: active ? '#3498db' : 'transparent' } ] }
+      onPress={ () => (enabled && !active) ? onPress() : null }>
+      <Text style={ titleStyle }>
+        { t(`FULFILLMENT_METHOD.${type}`) }
+      </Text>
+      <Text note style={ active ? { color: 'white' } : [] }>
+        { active ? t('SELECTED') : ( enabled ? t('AVAILABLE') : t('COMING_SOON') ) }
+      </Text>
+    </TouchableOpacity>
+  )
+})
+
+const FulfillmentMethodButtons = withTranslation()(({ fulfillmentMethod, isDeliveryEnabled, isCollectionEnabled, setFulfillmentMethod }) => {
+
+  const types = (isCollectionEnabled && !isDeliveryEnabled) ?
+    ['collection', 'delivery'] : ['delivery', 'collection']
+
+  const enabled = {
+    delivery: isDeliveryEnabled,
+    collection: isCollectionEnabled,
+  }
+
+  return (
+    <View style={{ alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }}>
+      { _.map(types, (type) => (
+        <FulfillmentMethodButton
+          type={ type }
+          active={ fulfillmentMethod === type }
+          enabled={ enabled[type] }
+          onPress={ () => setFulfillmentMethod(type) } />
+      )) }
+    </View>
+  )
+})
 
 class ShippingDate extends Component {
 
@@ -58,12 +108,16 @@ class ShippingDate extends Component {
 
     const { dates } = this.props
 
-    const date = this._resolveDate(this.state.date, this.state.time)
-    const times = this.props.timesByDate[this.state.date]
+    const times = this.props.timesByDate[this.state.date] || this.props.timesByDate[dates[0]]
 
     return (
       <View style={{ flex: 1 }}>
         <View style={{ flex: 1 }}>
+          <FulfillmentMethodButtons
+            fulfillmentMethod={ this.props.fulfillmentMethod }
+            isDeliveryEnabled={ this.props.isDeliveryEnabled }
+            isCollectionEnabled={ this.props.isCollectionEnabled }
+            setFulfillmentMethod={ this.props.setFulfillmentMethod } />
           <View style={{ alignItems: 'center', justifyContent: 'center', padding: 20, backgroundColor: '#ecf0f1' }}>
             <Text>{ this.props.t('CHECKOUT_PICK_DATE') }</Text>
           </View>
@@ -89,7 +143,7 @@ class ShippingDate extends Component {
               </Picker>
             </View>
           </View>
-          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          <View style={{ flex: 0, paddingVertical: 30, justifyContent: 'center', alignItems: 'center' }}>
             <TouchableOpacity onPress={ this._onAsap.bind(this) }>
               <Text>{ this.props.t('DELIVERY_ASAP') }</Text>
             </TouchableOpacity>
@@ -102,6 +156,14 @@ class ShippingDate extends Component {
     )
   }
 }
+
+const styles = StyleSheet.create({
+  fmBtn: {
+    width: '50%',
+    paddingHorizontal: 10,
+    paddingVertical: 20
+  },
+})
 
 function mapStateToProps(state) {
 
@@ -122,6 +184,9 @@ function mapStateToProps(state) {
     hash,
     isAsap: selectIsShippingAsap(state),
     shippingDate: selectShippingDate(state),
+    fulfillmentMethod: selectCartFulfillmentMethod(state),
+    isDeliveryEnabled: selectIsDeliveryEnabled(state),
+    isCollectionEnabled: selectIsCollectionEnabled(state),
   }
 }
 
@@ -130,6 +195,7 @@ function mapDispatchToProps(dispatch) {
   return {
     setDate: (date, cb) => dispatch(setDate(date, cb)),
     setDateAsap: (cb) => dispatch(setDateAsap(cb)),
+    setFulfillmentMethod: (method, cb) => dispatch(setFulfillmentMethod(method, cb)),
   }
 }
 

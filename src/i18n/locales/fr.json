@@ -291,6 +291,8 @@
         "SIGNATURE_SCREEN_FIRST": "Écran de signature par défaut",
         "CART_DELIVERY_TIME": "Livraison {{- fromNow}}",
         "CART_DELIVERY_TIME_DIFF": "Livraison dans {{diff}} minutes",
+        "CART_COLLECTION_TIME": "Retrait {{- fromNow}}",
+        "CART_COLLECTION_TIME_DIFF": "Retrait dans {{diff}} minutes",
         "TIME_DIFF_SHORT": "{{min}} - {{max}} minutes",
         "FINISHED": "Terminé",
         "SEARCH": "Rechercher…",
@@ -341,6 +343,11 @@
         "FULFILLMENT_METHOD": {
             "collection": "Retrait sur place",
             "delivery": "Livraison"
-        }
+        },
+        "CART_COLLECTION_DISCLAIMER": "Vous avez opté pour le retrait sur place de votre commande. Vous vous engagez à venir récupérer votre commande le jour et l'heure indiqués. \nEn cas de problème, contactez l'établissement au {{telephone}}. \nSi vous ne vous présentez pas, nous encaisserons la commande dans son intégralité. ",
+        "LEARN_MORE": "En savoir plus",
+        "SELECTED": "Selectionné",
+        "AVAILABLE": "Disponible",
+        "COMING_SOON": "Bientôt"
     }
 }
