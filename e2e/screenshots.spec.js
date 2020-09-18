@@ -35,7 +35,10 @@ VARIANTS.forEach(variant => {
 
       await element(by.id('chooseCityBtn')).tap()
 
-      await expect(element(by.id(city))).toBeVisible()
+      await waitFor(element(by.id(city)))
+        .toBeVisible()
+        .whileElement(by.id('cityList')).scroll(120, 'down')
+
       await element(by.id(city)).tap()
 
       // The server may be under maintenance

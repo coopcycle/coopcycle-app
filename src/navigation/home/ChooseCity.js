@@ -53,6 +53,7 @@ class ChooseCity extends Component {
           </Text>
           <View style={{ flex: 1 }}>
             <FlatList
+              testID="cityList"
               data={ this.props.servers }
               keyExtractor={ (item, index) => `server:${index}` }
               renderItem={ ({ item, index }) => this.renderItem(item, index) }
