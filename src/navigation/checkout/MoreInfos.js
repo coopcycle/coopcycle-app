@@ -15,7 +15,7 @@ import { selectCartFulfillmentMethod } from '../../redux/Checkout/selectors'
 import FooterButton from './components/FooterButton'
 
 const hasPhoneNumberErrors = (errors, touched) => {
-  return errors.address && touched.address && errors.address.telephone && touched.address.telephone
+  return errors.telephone && touched.telephone
 }
 
 class MoreInfos extends Component {
