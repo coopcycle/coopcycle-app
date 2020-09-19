@@ -41,7 +41,7 @@ export default ({ getState, dispatch }) => {
       return
     }
 
-    const data = locations.map(loc => ({
+    const payload = locations.map(loc => ({
       latitude: loc.coords.latitude,
       longitude: loc.coords.longitude,
       time: loc.timestamp,
@@ -50,7 +50,7 @@ export default ({ getState, dispatch }) => {
     axios({
       method: 'post',
       url: `${baseURL}/api/me/location`,
-      data,
+      data: payload,
       headers: {
         'Accept': 'application/ld+json',
         'Content-Type': 'application/ld+json',
@@ -77,13 +77,14 @@ export default ({ getState, dispatch }) => {
     }
 
     if (selectIsAuthenticated(state) && state.app.user && state.app.user.hasRole('ROLE_COURIER')) {
-      Location.hasServicesEnabledAsync()
-        .then(enabled => {
-          if (enabled) {
-            Location.startLocationUpdatesAsync('location-updates', options)
-              .then(() => dispatch(setBackgroundGeolocationEnabled(true)))
-          }
-        })
+
+      Location.requestPermissionsAsync().then((permissions) => {
+        if (permissions.status === 'granted') {
+          Location.startLocationUpdatesAsync('location-updates', options)
+            .then(() => dispatch(setBackgroundGeolocationEnabled(true)))
+        }
+      })
+
     } else {
       Location.hasStartedLocationUpdatesAsync('location-updates')
         .then(started => {
