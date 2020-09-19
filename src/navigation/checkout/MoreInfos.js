@@ -41,6 +41,8 @@ class MoreInfos extends Component {
       }
     }
 
+    // FIXME Store the phone number on server for click & collect
+
     this.props.updateCart(payload, () => this.props.navigation.navigate('CheckoutCreditCard'))
   }
 
@@ -190,6 +192,9 @@ function mapStateToProps(state) {
     country: state.app.settings.country.toUpperCase(),
     cart: state.checkout.cart,
     fulfillmentMethod,
+    // FIXME
+    // For click & collect, we need to retrieve the customer phone number
+    // This needs a change server side
     telephone: fulfillmentMethod === 'delivery' ? (state.checkout.cart.shippingAddress.telephone || '') : '',
   }
 }
