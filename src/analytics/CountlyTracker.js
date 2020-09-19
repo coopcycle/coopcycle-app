@@ -77,14 +77,23 @@ CountlyTracker.prototype.init = function() {
     return
   }
 
-  // configure Countly parameters if needed
-  Countly.enableParameterTamperingProtection(COUNTLY_SALT);
+  try {
 
-  // initialize
-  Countly.init(COUNTLY_SERVER_URL, COUNTLY_APP_KEY, deviceId).then(() => {
-    // start session tracking
-    Countly.start();
-  });
+    // configure Countly parameters if needed
+    Countly.enableParameterTamperingProtection(COUNTLY_SALT);
+
+    // initialize
+    Countly.init(COUNTLY_SERVER_URL, COUNTLY_APP_KEY, deviceId)
+      .then(() => {
+        // start session tracking
+        Countly.start();
+      })
+      .catch(e => console.log(e));
+
+  } catch (e) {
+    console.log(e)
+  }
+
 }
 
 export default CountlyTracker
