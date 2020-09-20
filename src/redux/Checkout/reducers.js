@@ -194,6 +194,7 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         isFetching: false,
+        errors: [],
       }
 
     case SHOW_ADDRESS_MODAL:
