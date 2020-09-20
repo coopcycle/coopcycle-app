@@ -37,11 +37,14 @@ class MoreInfos extends Component {
     if (Object.prototype.hasOwnProperty.call(values, 'address')) {
       payload = {
         ...payload,
-        shippingAddress: { ...values.address, telephone }
+        shippingAddress: { ...values.address, telephone },
+      }
+    } else {
+      payload = {
+        ...payload,
+        telephone,
       }
     }
-
-    // FIXME Store the phone number on server for click & collect
 
     this.props.updateCart(payload, () => this.props.navigation.navigate('CheckoutCreditCard'))
   }

@@ -661,14 +661,31 @@ export function updateCart(payload, cb) {
 
     dispatch(checkoutRequest())
 
-    httpClient
-      .put(cart['@id'], payload)
-      .then(res => {
-        dispatch(updateCartSuccess(res))
-        dispatch(checkoutSuccess())
-        _.isFunction(cb) && cb()
-      })
-      .catch(e => dispatch(checkoutFailure(e)))
+    const doUpdateCart = (httpClient, cart, payload, cb) => {
+      httpClient
+        .put(cart['@id'], payload)
+        .then(res => {
+          dispatch(updateCartSuccess(res))
+          dispatch(checkoutSuccess())
+          _.isFunction(cb) && cb()
+        })
+        .catch(e => dispatch(checkoutFailure(e)))
+    }
+
+    // For "collection" fulfillment
+    // We store the phone number at the user level
+    if (payload.telephone) {
+
+      const { telephone, ...payloadWithoutTelephone } = payload
+
+      httpClient
+        .put(cart.customer, { telephone })
+        .then(res => doUpdateCart(httpClient, cart, payloadWithoutTelephone, cb))
+        .catch(e => dispatch(checkoutFailure(e)))
+
+    } else {
+      doUpdateCart(httpClient, cart, payload, cb)
+    }
   }
 }
 
