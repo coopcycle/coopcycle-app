@@ -29,4 +29,10 @@ BaseTracker.prototype.logEvent = function(category, action, text, number) {
 BaseTracker.prototype.setUserProperty = function(name, value) {
 }
 
+/**
+ * Initialize the tracker
+ */
+BaseTracker.prototype.init = function() {
+}
+
 export default BaseTracker
