@@ -39,6 +39,7 @@ jest.mock('expo-location', () => ({
   startLocationUpdatesAsync: jest.fn().mockImplementation(() => Promise.resolve()),
   hasStartedLocationUpdatesAsync: jest.fn().mockResolvedValue(true),
   stopLocationUpdatesAsync: jest.fn().mockImplementation(() => Promise.resolve()),
+  requestPermissionsAsync: jest.fn().mockResolvedValue({ status: 'granted' }),
 }))
 
 jest.mock('expo-task-manager', () => ({
