@@ -349,6 +349,13 @@
         "RESTAURANT_ORDER_REFUSE_REASON_ORDER_WILL_BE_CAPTURED": "Objednávka bude zrušena, ale nebudou vráceny peníze zákazníkovi",
         "RESTAURANT_ORDER_REFUSE_REASON_NO_SHOW": "Nic k zobrazení",
         "RESTAURANT_ORDER_BUTTON_FULFILL": "Splnit",
-        "ENTER_POSTCODE": "Zadejte své PSČ"
+        "ENTER_POSTCODE": "Zadejte své PSČ",
+        "COMING_SOON": "Již brzy",
+        "AVAILABLE": "Dostupné",
+        "SELECTED": "Vybráno",
+        "LEARN_MORE": "Zjistit více",
+        "CART_COLLECTION_DISCLAIMER": "Rozhodli jste se pro vyzvednutí na kliknutí.\nJste odpovědní za vyzvednutí objednávky ve vybraný den a čas.\nPokud máte problém, kontaktujte provozovnu na {{telephone}}.\nVezměte prosím na vědomí - Pokud si nevyzvednete, bude vám účtována celá částka za objednávku.",
+        "CART_COLLECTION_TIME_DIFF": "Vyzvednutí zabere {{diff}} minut",
+        "CART_COLLECTION_TIME": "Vyzvednutí {{- fromNow}}"
     }
 }
