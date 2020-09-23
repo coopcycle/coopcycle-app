@@ -5590,10 +5590,10 @@ detect-newline@^3.0.0:
   resolved "https://registry.yarnpkg.com/detect-newline/-/detect-newline-3.1.0.tgz#576f5dfc63ae1a192ff192d8ad3af6308991b651"
   integrity sha512-TLz+x/vEXm/Y7P7wn1EJFNLxYpUD4TgMosxY6fAVJUnJMbupHBOncxyWUG9OpTaH9EBD7uFI5LfEgmMOc54DsA==
 
-detox@^17.5.6:
-  version "17.5.6"
-  resolved "https://registry.yarnpkg.com/detox/-/detox-17.5.6.tgz#b50131628a7a950e924115195abecb7242b43ddf"
-  integrity sha512-OTbkJah+L4YiYtPJRCCwA/MoAaOLezJmlNuuickr5lX8gvcuezn2m7QBl3ndaSBCRNSMcdid1Q1au4X95QG/dQ==
+detox@^17.5.8:
+  version "17.5.8"
+  resolved "https://registry.yarnpkg.com/detox/-/detox-17.5.8.tgz#caccf26b0b1a8b3d112d7d053ba81fc6cd4ad116"
+  integrity sha512-qrHNMQmVI+gnOfNaP2YMqH1WEHNemMk8DLye5d+r5e37ss43BaG4i8CRhd7Nez3hfOJachS3ltYLVQSf2AHXIQ==
   dependencies:
     bunyan "^1.8.12"
     bunyan-debug-stream "^1.1.0"
@@ -9320,10 +9320,10 @@ moment@^2.24.0:
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.26.0.tgz#5e1f82c6bafca6e83e808b30c8705eed0dcbd39a"
   integrity sha512-oIixUO+OamkUkwjhAVE18rAMfRJNsNe/Stid/gwHSOfHrOtw9EhAY2AHvdKZ/k/MggcYELFCJz/Sn2pL8b8JMw==
 
-moment@^2.28.0:
-  version "2.28.0"
-  resolved "https://registry.yarnpkg.com/moment/-/moment-2.28.0.tgz#cdfe73ce01327cee6537b0fafac2e0f21a237d75"
-  integrity sha512-Z5KOjYmnHyd/ukynmFd/WwyXHd7L4J9vTI/nn5Ap9AVUgaAE15VvQ9MOGmJJygEUklupqIrFnor/tjTwRU+tQw==
+moment@^2.29.0:
+  version "2.29.0"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.0.tgz#fcbef955844d91deb55438613ddcec56e86a3425"
+  integrity sha512-z6IJ5HXYiuxvFTI6eiQ9dm77uE0gyy1yXNApVHqTcnIKfY9tIwEjlzsZ6u1LQXvVgKeTnv9Xm7NDvJ7lso3MtA==
 
 monotone-convex-hull-2d@^1.0.1:
   version "1.0.1"
@@ -10592,10 +10592,10 @@ react-native-gesture-handler@^1.8.0:
     invariant "^2.2.4"
     prop-types "^15.7.2"
 
-react-native-google-places-autocomplete@^1.8.2:
-  version "1.8.2"
-  resolved "https://registry.yarnpkg.com/react-native-google-places-autocomplete/-/react-native-google-places-autocomplete-1.8.2.tgz#8cd2edea6b9946416f5994358a94e8186c47c762"
-  integrity sha512-+bQPeSJCfq6nqdVSGJQTwe7djCzKHBT/ULuSjhWiijidWhKstVnZ/9bB8z/8Jpk0gHs0fYCJb0DFR3djFrg7uw==
+react-native-google-places-autocomplete@^1.8.3:
+  version "1.8.3"
+  resolved "https://registry.yarnpkg.com/react-native-google-places-autocomplete/-/react-native-google-places-autocomplete-1.8.3.tgz#4a0a56a3129aebf69320130254bba53f8656fbf7"
+  integrity sha512-BaWPEtZpaXH1dR17YhN83GDuaB4PNn2qkrzYEVFOYuufTb5DagqNLbgMQlsNAbRMUcGmlGe5K9NOb4syHXNWlw==
   dependencies:
     lodash.debounce "^4.0.8"
     prop-types "^15.5.10"
@@ -10628,10 +10628,10 @@ react-native-localize@^1.4.1:
   resolved "https://registry.yarnpkg.com/react-native-localize/-/react-native-localize-1.4.1.tgz#031bd2089f09cc16ee7daee03019684dda60c275"
   integrity sha512-g1L1au6GtCd0Ci6lQ8JVPYgl7uvEtKY2jeVghJcV6qQEN9+qACyqjOIR8pskUyI+qcSj1z4/nZh3IFxDVu1drw==
 
-react-native-map-link@^2.7.17:
-  version "2.7.17"
-  resolved "https://registry.yarnpkg.com/react-native-map-link/-/react-native-map-link-2.7.17.tgz#513525e5e0e44e9f0b016b74138ea0a2e0a06f8e"
-  integrity sha512-fz12hRJeDFf8DC1LQ/fqT2pGkyaCMzditzSYEjRTyeeNwuc76LKjlQmwqrBzirn6ztWbfK5brQqY5JwBjwcRow==
+react-native-map-link@^2.7.18:
+  version "2.7.18"
+  resolved "https://registry.yarnpkg.com/react-native-map-link/-/react-native-map-link-2.7.18.tgz#7f714beb6553f79d17484c014f992f448695da01"
+  integrity sha512-wumrp79d6xIynSnbNSi+n8uaspO1Mj5YL4xw6elCG2G0WYunnDMGpPkeP9hcQPKpcfjSc+Y4f0FHeTfP2nCitQ==
   dependencies:
     prop-types "^15.7.2"
     react-native-modal "^10.0.0"
