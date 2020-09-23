@@ -3,7 +3,7 @@ import { Alert, InteractionManager, NativeModules, StyleSheet } from 'react-nati
 import { Container, Content } from 'native-base';
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
-import KeepAwake from 'react-native-keep-awake'
+import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake'
 import moment from 'moment'
 
 import DangerAlert from '../../components/DangerAlert'
@@ -65,7 +65,7 @@ class DashboardPage extends Component {
 
   componentDidMount() {
 
-    KeepAwake.activate()
+    activateKeepAwake()
 
     if (!this.props.isWsOpen) {
       this.props.initWs(new WebSocketClient(this.props.httpClient, '/dispatch'))
@@ -110,7 +110,7 @@ class DashboardPage extends Component {
   }
 
   componentWillUnmount() {
-    KeepAwake.deactivate()
+    deactivateKeepAwake()
   }
 
   componentDidUpdate(prevProps) {

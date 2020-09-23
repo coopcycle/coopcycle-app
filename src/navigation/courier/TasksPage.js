@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { StyleSheet, Platform, InteractionManager } from 'react-native'
 import { Container } from 'native-base'
 import { withNavigationFocus } from 'react-navigation'
-import KeepAwake from 'react-native-keep-awake'
+import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake'
 import RNPinScreen from 'react-native-pin-screen'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
@@ -33,7 +33,7 @@ class TasksPage extends Component {
 
   enableKeepAwake() {
     if (Platform.OS === 'ios') {
-      KeepAwake.activate()
+      activateKeepAwake()
     } else {
       RNPinScreen.pin()
     }
@@ -41,7 +41,7 @@ class TasksPage extends Component {
 
   disableKeepAwake() {
     if (Platform.OS === 'ios') {
-      KeepAwake.deactivate()
+      deactivateKeepAwake()
     } else {
       RNPinScreen.unpin()
     }
