@@ -10819,9 +10819,9 @@ react-navigation-collapsible@^3.0.3:
     hoist-non-react-statics "^3.0.1"
 
 react-navigation-drawer@^2.5.0:
-  version "2.5.0"
-  resolved "https://registry.yarnpkg.com/react-navigation-drawer/-/react-navigation-drawer-2.5.0.tgz#6d2940fb6f9ae557b47a717203b4058194ae9665"
-  integrity sha512-wSsIdLYXYdi9wOOXGzaY4Hk/NIXaP8tClEpjlAPl1rhn3kU++gyJFcQ3xLsPWg0yRYq3y8jDPEWFFf81JqfP9Q==
+  version "2.5.1"
+  resolved "https://registry.yarnpkg.com/react-navigation-drawer/-/react-navigation-drawer-2.5.1.tgz#7d8b956d44f45112de8f25b3af5207e8ba8f535d"
+  integrity sha512-Xn3Iak4vsYPVf8vwanHRlmL2dBx5Td7nuMAwO2iV7Mm6sqqA/Yil6m+62oU5ZwFbPdprHxVDbErAwpv3yxa/PQ==
 
 react-navigation-header-buttons@^3.0.5:
   version "3.0.5"
