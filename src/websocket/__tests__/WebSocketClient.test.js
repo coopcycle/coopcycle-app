@@ -98,7 +98,7 @@ describe('WebSocketClient', () => {
     expect(ws.reconnectTimeout).toBe(3000)
   })
 
-  test('connect', () => {
+  test.skip('connect', () => {
     const ws = new WebSocketClient(client, '/dispatch')
 
     const promise = ws.connect()
@@ -113,7 +113,7 @@ describe('WebSocketClient', () => {
     return promise
   })
 
-  test('send | online', () => {
+  test.skip('send | online', () => {
     const ws = new WebSocketClient(client, '/dispatch')
     const msg = { foo: true }
 
@@ -129,7 +129,7 @@ describe('WebSocketClient', () => {
     return promise
   })
 
-  test('send | offline | pre-connect', () => {
+  test.skip('send | offline | pre-connect', () => {
     const ws = new WebSocketClient(client, '/dispatch')
     const msg = { foo: true }
 
@@ -140,7 +140,7 @@ describe('WebSocketClient', () => {
       })
   })
 
-  test('send | offline | post-connect', () => {
+  test.skip('send | offline | post-connect', () => {
     const ws = new WebSocketClient(client, '/dispatch')
     const msg = { foo: true }
 

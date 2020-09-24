@@ -88,6 +88,7 @@
     "react-navigation-stack": "^2.8.2",
     "react-navigation-tabs": "^2.9.0",
     "react-redux": "^7.2.1",
+    "reconnecting-websocket": "^4.4.0",
     "redux": "^4.0.4",
     "redux-actions": "^2.6.5",
     "redux-async-queue": "^1.0.0",
