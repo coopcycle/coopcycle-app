@@ -95,7 +95,6 @@ describe('WebSocketClient', () => {
     const ws = new WebSocketClient(client, '/dispatch')
 
     expect(ws).toBeInstanceOf(WebSocketClient)
-    expect(ws.reconnectTimeout).toBe(3000)
   })
 
   test.skip('connect', () => {
