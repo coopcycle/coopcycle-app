@@ -31,3 +31,5 @@ export const selectIsLoading = createSelector(
       || false
   }
 )
+
+export const selectIsWsOpen = state => state.app.isWsOpen
