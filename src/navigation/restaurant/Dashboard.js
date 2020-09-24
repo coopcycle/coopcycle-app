@@ -8,8 +8,11 @@ import moment from 'moment'
 
 import DangerAlert from '../../components/DangerAlert'
 import Offline from '../../components/Offline'
+
 import OrderList from './components/OrderList'
 import DatePickerHeader from './components/DatePickerHeader'
+import WebSocketIndicator from './components/WebSocketIndicator'
+
 import {
   changeStatus, loadOrders, changeDate, deleteOpeningHoursSpecification, loadOrderAndNavigate } from '../../redux/Restaurant/actions'
 import { connect as connectWs, init } from '../../redux/middlewares/WebSocketMiddleware/actions'
@@ -159,6 +162,7 @@ class DashboardPage extends Component {
             text={ this.props.t('RESTAURANT_ALERT_CLOSED') }
             onClose={ () => this.props.deleteOpeningHoursSpecification(specialOpeningHoursSpecification) } />
         )}
+        <WebSocketIndicator connected={ this.props.isWsOpen } />
         <Content>
           <DatePickerHeader
             date={ date }
