@@ -360,8 +360,6 @@ PODS:
     - React-Core
   - react-native-camera/RN (3.40.0):
     - React-Core
-  - react-native-keep-awake (4.0.0):
-    - React
   - react-native-maps (0.27.1):
     - React
   - react-native-netinfo (5.9.7):
@@ -527,7 +525,6 @@ DEPENDENCIES:
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - react-native-ble-manager (from `../node_modules/react-native-ble-manager`)
   - react-native-camera (from `../node_modules/react-native-camera`)
-  - react-native-keep-awake (from `../node_modules/react-native-keep-awake`)
   - react-native-maps (from `../node_modules/react-native-maps`)
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
@@ -636,8 +633,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-ble-manager"
   react-native-camera:
     :path: "../node_modules/react-native-camera"
-  react-native-keep-awake:
-    :path: "../node_modules/react-native-keep-awake"
   react-native-maps:
     :path: "../node_modules/react-native-maps"
   react-native-netinfo:
@@ -758,7 +753,6 @@ SPEC CHECKSUMS:
   React-jsinspector: 512e560d0e985d0e8c479a54a4e5c147a9c83493
   react-native-ble-manager: 73a2c5d7ca510866d2bdf67d56bec42bd76c004f
   react-native-camera: 35854c4f764a4a6cf61c1c3525888b92f0fe4b31
-  react-native-keep-awake: afad8a51dfef9fe9655a6344771be32c8596d774
   react-native-maps: f4b89da81626ad7f151a8bfcb79733295d31ce5c
   react-native-netinfo: 250dc0ca126512f618a8a2ca6a936577e1f66586
   react-native-safe-area-context: 79fea126c6830c85f65947c223a5e3058a666937
