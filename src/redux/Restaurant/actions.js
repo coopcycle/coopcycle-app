@@ -265,7 +265,7 @@ export function loadOrder(order, cb) {
     if (sameOrder) {
       // gotoOrder(sameOrder.restaurant, sameOrder)
       if (cb && typeof cb === 'function') {
-        cb(sameOrder)
+        setTimeout(() => cb(sameOrder), 0)
       }
       return
     }
@@ -276,13 +276,13 @@ export function loadOrder(order, cb) {
       .then(res => {
         dispatch(loadOrderSuccess(res))
         if (cb && typeof cb === 'function') {
-          cb(res)
+          setTimeout(() => cb(res), 0)
         }
       })
       .catch(e => {
         dispatch(loadOrderFailure(e))
         if (cb && typeof cb === 'function') {
-          cb()
+          setTimeout(() => cb(), 0)
         }
       })
   }
