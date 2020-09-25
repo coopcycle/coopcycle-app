@@ -87,6 +87,9 @@ project.ext.react = [
 
 apply from: "../../node_modules/react-native/react.gradle"
 
+Project background_geolocation = project(':react-native-background-geolocation')
+apply from: "${background_geolocation.projectDir}/app.gradle"
+
 /**
  * Set this to true to create two separate APKs instead of one:
  *   - An APK that only works on ARM devices
@@ -187,6 +190,7 @@ android {
                 minifyEnabled enableProguardInReleaseBuilds
             }
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro', "${rootProject.projectDir}/../node_modules/detox/android/detox/proguard-rules-app.pro"
+            proguardFiles "${background_geolocation.projectDir}/proguard-rules.pro"
             if (System.getProperty('useDebugCertificate', 'no') == 'yes') {
                 signingConfig signingConfigs.debug
             } else {

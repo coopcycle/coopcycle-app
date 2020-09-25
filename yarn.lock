@@ -6449,13 +6449,6 @@ expo-sqlite@~8.4.0:
     "@expo/websql" "^1.0.1"
     lodash "^4.17.15"
 
-expo-task-manager@~8.5.0:
-  version "8.5.0"
-  resolved "https://registry.yarnpkg.com/expo-task-manager/-/expo-task-manager-8.5.0.tgz#8d4d192937a10f046cc4d7a5346f1a69dbacc939"
-  integrity sha512-5r0k9m7sY802pGjC/HtFchEG1oiOEScuSOA1jgsbaiC6qXyxKEOGNLBcjtvmI5BAKuSkGBC4dmxyL8sWCRLTAg==
-  dependencies:
-    unimodules-app-loader "~1.3.0"
-
 expo@^39.0.0:
   version "39.0.3"
   resolved "https://registry.yarnpkg.com/expo/-/expo-39.0.3.tgz#55d10609b2df9b8d511acb4f3e72e4dc162e6b27"

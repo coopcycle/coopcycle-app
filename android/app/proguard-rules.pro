@@ -18,3 +18,6 @@
 # https://rnfirebase.io/docs/v5.x.x/installation/android#Using-with-Proguard-enabled
 -keep class io.invertase.firebase.** { *; }
 -dontwarn io.invertase.firebase.**
+
+# [react-native-background-fetch]
+-keep class com.transistorsoft.rnbackgroundfetch.HeadlessTask { *; }

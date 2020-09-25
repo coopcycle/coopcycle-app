@@ -66,6 +66,9 @@
         android:value="${googleMapsApiKey}" />
       <uses-library android:name="org.apache.http.legacy" android:required="false" />
 
+      <service android:name="com.transistorsoft.locationmanager.service.TrackingService" android:foregroundServiceType="location" />
+      <service android:name="com.transistorsoft.locationmanager.service.LocationRequestService" android:foregroundServiceType="location" />
+
     </application>
 
 </manifest>
