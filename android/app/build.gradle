@@ -128,6 +128,7 @@ def jscFlavor = 'org.webkit:android-jsc:+'
 def enableHermes = project.ext.react.get("enableHermes", false);
 
 def googleMapsApiKey = hasProperty('googleMapsApiKey') ? googleMapsApiKey : System.getenv('googleMapsApiKey')
+def transistorsoftLicenseKey = hasProperty('transistorsoftLicenseKey') ? transistorsoftLicenseKey : System.getenv('transistorsoftLicenseKey')
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -148,7 +149,8 @@ android {
         }
         manifestPlaceholders = [
             tipsiStripeRedirectScheme: "coopcycle",
-            googleMapsApiKey: googleMapsApiKey
+            googleMapsApiKey: googleMapsApiKey,
+            transistorsoftLicenseKey: transistorsoftLicenseKey
         ]
         missingDimensionStrategy 'react-native-camera', 'general'
 
