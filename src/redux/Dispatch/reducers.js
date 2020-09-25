@@ -41,11 +41,7 @@ import { createTaskList } from './utils'
 
 const initialState = {
   isFetching: false,
-  unassignedTasks: [],
   users: [],
-  allTasks: [],
-  taskLists: [],
-  date: moment(),
   initialized: false,
 }
 
@@ -192,13 +188,10 @@ export default (state = initialState, action = {}) => {
       }
 
   case LOAD_UNASSIGNED_TASKS_SUCCESS: {
-    let allTasks = _.uniqBy(Array.prototype.concat(state.allTasks, action.payload), '@id')
-
     return {
       ...state,
       isFetching: false,
       unassignedTasks: action.payload,
-      allTasks: allTasks,
     }
   }
     case LOAD_USERS_SUCCESS:
@@ -209,15 +202,10 @@ export default (state = initialState, action = {}) => {
       }
 
     case LOAD_TASK_LISTS_SUCCESS:
-      let allTasks = _.uniqBy(Array.prototype.concat(
-        state.allTasks,
-        _.flatMap(action.payload, it => it.items)), '@id')
-
       return {
         ...state,
         isFetching: false,
         taskLists: action.payload,
-        allTasks: allTasks,
       }
 
     case CREATE_TASK_LIST_SUCCESS:

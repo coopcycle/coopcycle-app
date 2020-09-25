@@ -24,9 +24,11 @@ import { appReducer } from './App'
 import accountReducer from './Account/reducers'
 import restaurantReducer from './Restaurant/reducers'
 import checkoutReducer from './Checkout/reducers'
-import dispatchReducer from './Dispatch/reducers'
+import { reducer as coreDispatchReducer } from 'coopcycle-frontend-js/dispatch/redux'
+import appDispatchReducer from './Dispatch/reducers'
 import storeReducer from './Store/reducers'
 import { createTaskItemsTransform } from './util'
+import reduceReducers from 'reduce-reducers';
 
 const taskEntitiesPersistConfig = {
   key: 'entities.items',
@@ -129,6 +131,8 @@ const appPersistConfig = {
     return Promise.resolve(state)
   },
 }
+
+const dispatchReducer = reduceReducers(coreDispatchReducer, appDispatchReducer)
 
 export default combineReducers({
   entities: combineReducers({

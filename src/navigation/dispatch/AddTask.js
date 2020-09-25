@@ -202,7 +202,6 @@ function mapStateToProps(state) {
   return {
     googleApiKey: state.app.settings.google_api_key,
     country: state.app.settings.country,
-    unassignedTasks: state.dispatch.unassignedTasks,
   }
 }
 

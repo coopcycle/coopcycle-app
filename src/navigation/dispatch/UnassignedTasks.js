@@ -7,7 +7,9 @@ import { Text } from 'native-base';
 import TaskList from '../../components/TaskList'
 import AddButton from './components/AddButton'
 import { assignTask, initialize } from '../../redux/Dispatch/actions'
-import {selectUnassignedTask, selectTasksWithColor} from '../../redux/Dispatch/selectors'
+import { selectUnassignedTasksNotCancelled } from '../../redux/Dispatch/selectors'
+import { selectSelectedDate, selectTasksWithColor } from 'coopcycle-frontend-js/dispatch/redux'
+
 import { navigateToTask } from '../../navigation'
 
 class UnassignedTasks extends Component {
@@ -60,9 +62,9 @@ class UnassignedTasks extends Component {
 function mapStateToProps(state) {
 
   return {
-    unassignedTasks: selectUnassignedTask(state),
+    unassignedTasks: selectUnassignedTasksNotCancelled(state),
     tasksWithColor: selectTasksWithColor(state),
-    date: state.dispatch.date,
+    date: selectSelectedDate(state),
     user: state.app.user,
   }
 }

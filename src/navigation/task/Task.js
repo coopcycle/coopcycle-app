@@ -6,6 +6,7 @@ import { withTranslation } from 'react-i18next'
 import _ from 'lodash'
 
 import { selectTasks, startTask } from '../../redux/Courier'
+import { selectAllTasks as selectAllDispatchTasks } from 'coopcycle-frontend-js/dispatch/redux'
 
 import TaskDetails from './components/Details'
 import TaskMiniMap from './components/MiniMap'
@@ -171,14 +172,7 @@ function mapStateToProps (state) {
 
   const courierTasks = _.values(selectTasks(state))
   allTasks = allTasks.concat(courierTasks)
-
-  let assignedTasks = []
-  _.forEach(state.dispatch.taskLists, (taskList) => {
-    assignedTasks = assignedTasks.concat(taskList.items)
-  })
-
-  allTasks = allTasks.concat(assignedTasks)
-  allTasks = allTasks.concat(state.dispatch.unassignedTasks)
+  allTasks = allTasks.concat(selectAllDispatchTasks(state))
 
   return {
     tasks: _.uniqBy(allTasks, '@id'),
