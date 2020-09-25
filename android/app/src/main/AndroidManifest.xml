@@ -66,6 +66,17 @@
         android:value="${googleMapsApiKey}" />
       <uses-library android:name="org.apache.http.legacy" android:required="false" />
 
+      <service
+        android:name="fr.coopcycle.RestaurantForegroundService"
+        android:enabled="true"
+        android:exported="false" >
+      </service>
+      <!--
+      <service
+        android:name="com.rnheartbeat.HeartbeatEventService">
+      </service>
+      -->
+
     </application>
 
 </manifest>
