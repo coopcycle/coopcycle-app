@@ -1,8 +1,7 @@
 import { createStore, applyMiddleware, combineReducers } from 'redux'
 import { createAction } from 'redux-actions'
-import * as Location from 'expo-location'
-import * as TaskManager from 'expo-task-manager'
-import middleware from '../index.android.js'
+import BackgroundGeolocation from 'react-native-background-geolocation'
+import middleware from '../index'
 import AppUser from '../../../../AppUser'
 import { SET_USER } from '../../../../redux/App/actions'
 import appReducer from '../../../../redux/App/reducers'
@@ -15,22 +14,50 @@ describe('GeolocationMiddleware', () => {
     jest.clearAllMocks()
   })
 
-  it('configures background task', () => {
+  it('does not start background geolocation if already started', async () => {
+
+    BackgroundGeolocation.ready.mockImplementation((options, callback) => {
+      callback({ enabled: true })
+    })
 
     const preloadedState = {
       app: {
+        baseURL: 'https://demo.coopcycle.org',
         user: null,
+        isBackgroundGeolocationEnabled: true,
       },
     }
 
-    const store = createStore(state => state, preloadedState, applyMiddleware(middleware))
+    const reducer = combineReducers({
+      app: appReducer,
+    })
 
-    store.dispatch({ type: 'DUMMY' })
+    const store = createStore(reducer, preloadedState, applyMiddleware(middleware))
 
-    expect(TaskManager.defineTask).toHaveBeenCalledTimes(1)
+    const user = new AppUser('foo', 'foo@coopcycle.org', '123456', ['ROLE_COURIER'])
+    store.dispatch(setUser(user))
+
+    expect(BackgroundGeolocation.ready).toHaveBeenCalledTimes(1)
+    expect(BackgroundGeolocation.start).toHaveBeenCalledTimes(0)
+
+    const newState = store.getState()
+
+    expect(newState.app.isBackgroundGeolocationEnabled).toBe(true)
   })
 
-  it('configures background geolocation sync', async () => {
+  it('starts background geolocation if not started', async () => {
+
+    let onEnabledChangeCallback
+
+    BackgroundGeolocation.onEnabledChange.mockImplementation((callback) => {
+      onEnabledChangeCallback = callback
+    })
+    BackgroundGeolocation.ready.mockImplementation((options, callback) => {
+      callback({ enabled: false })
+    })
+    BackgroundGeolocation.start.mockImplementation(() => {
+      onEnabledChangeCallback(true)
+    })
 
     const preloadedState = {
       app: {
@@ -48,18 +75,24 @@ describe('GeolocationMiddleware', () => {
     const user = new AppUser('foo', 'foo@coopcycle.org', '123456', ['ROLE_COURIER'])
     store.dispatch(setUser(user))
 
-    expect(TaskManager.defineTask).toHaveBeenCalledTimes(1)
-
-    await expect(Location.hasServicesEnabledAsync()).resolves.toBe(true)
-    await expect(Location.startLocationUpdatesAsync).toHaveBeenCalledTimes(1)
+    expect(BackgroundGeolocation.ready).toHaveBeenCalledTimes(1)
+    expect(BackgroundGeolocation.start).toHaveBeenCalledTimes(1)
 
     const newState = store.getState()
 
     expect(newState.app.isBackgroundGeolocationEnabled).toBe(true)
-
   })
 
   it('stops background geolocation on logout', async () => {
+
+    let onEnabledChangeCallback
+
+    BackgroundGeolocation.onEnabledChange.mockImplementation((callback) => {
+      onEnabledChangeCallback = callback
+    })
+    BackgroundGeolocation.stop.mockImplementation(() => {
+      onEnabledChangeCallback(false)
+    })
 
     const user = new AppUser('foo', 'foo@coopcycle.org', '123456', ['ROLE_COURIER'])
 
@@ -78,14 +111,11 @@ describe('GeolocationMiddleware', () => {
 
     store.dispatch(setUser(null))
 
-    expect(TaskManager.defineTask).toHaveBeenCalledTimes(1)
-
-    await expect(Location.hasStartedLocationUpdatesAsync()).resolves.toBe(true)
-    await expect(Location.stopLocationUpdatesAsync).toHaveBeenCalledTimes(1)
+    expect(BackgroundGeolocation.stop).toHaveBeenCalledTimes(1)
+    expect(BackgroundGeolocation.removeListeners).toHaveBeenCalledTimes(1)
 
     const newState = store.getState()
 
     expect(newState.app.isBackgroundGeolocationEnabled).toBe(false)
   })
-
 })

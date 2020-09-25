@@ -31,27 +31,23 @@ jest.mock('@react-native-firebase/analytics', () => ({
 jest.mock('@react-native-firebase/messaging', () => ({
 }))
 
-jest.mock('expo-location', () => ({
-  Accuracy: {
-    BestForNavigation: ''
-  },
-  hasServicesEnabledAsync: jest.fn().mockResolvedValue(true),
-  startLocationUpdatesAsync: jest.fn().mockImplementation(() => Promise.resolve()),
-  hasStartedLocationUpdatesAsync: jest.fn().mockResolvedValue(true),
-  stopLocationUpdatesAsync: jest.fn().mockImplementation(() => Promise.resolve()),
-  requestPermissionsAsync: jest.fn().mockResolvedValue({ status: 'granted' }),
-}))
-
-jest.mock('expo-task-manager', () => ({
-  defineTask: jest.fn(),
-}))
-
 jest.mock('countly-sdk-react-native-bridge', () => ({
   enableParameterTamperingProtection: () => {},
   init: () => {},
   start: () => {},
   recordView: () => {},
 }));
+
+jest.mock('react-native-background-geolocation', () => ({
+  DESIRED_ACCURACY_HIGH: -1,
+  LOG_LEVEL_VERBOSE: 5,
+  LOG_LEVEL_OFF: 0,
+  onEnabledChange: jest.fn(),
+  ready: jest.fn(),
+  start: jest.fn(),
+  stop: jest.fn(),
+  removeListeners: jest.fn(),
+}))
 
 const fakeNavigator = {
   dispatch: (action) => {}
