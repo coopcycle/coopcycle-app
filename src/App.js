@@ -6,10 +6,12 @@ import getTheme from '../native-base-theme/components'
 import coopcycleTheme from '../native-base-theme/variables/coopcycle'
 import tracker from './analytics/Tracker'
 
-import { createSwitchNavigator, createAppContainer } from 'react-navigation'
 import { Provider } from 'react-redux'
 import { I18nextProvider } from 'react-i18next'
 import { PersistGate } from 'redux-persist/integration/react'
+
+import { NavigationContainer } from '@react-navigation/native'
+import { SafeAreaProvider } from 'react-native-safe-area-context'
 
 import axios from 'axios'
 import VersionNumber from 'react-native-version-number'
@@ -27,19 +29,18 @@ axios.defaults.headers.common['X-CoopCycle-App-Version'] = VersionNumber.appVers
 // Import i18n first
 import i18n from './i18n'
 
-import navigation from './navigation'
 import { URI_PREFIX } from './navigation/constants'
-import navigators from './navigation/navigators'
-
 import store, { persistor } from './redux/store'
 import { setCurrentRoute } from './redux/App/actions'
-import NotificationHandler from './components/NotificationHandler'
+// import NotificationHandler from './components/NotificationHandler'
 import Spinner from './components/Spinner'
 
 import DropdownAlert from 'react-native-dropdownalert'
 import DropdownHolder from './DropdownHolder'
 
-import NavigationHolder from './NavigationHolder'
+import Root from './navigation/Root'
+
+import { navigationRef } from './NavigationHolder'
 
 YellowBox.ignoreWarnings([
   'Warning: isMounted(...) is deprecated in plain JavaScript React classes.',
@@ -53,21 +54,8 @@ YellowBox.ignoreWarnings([
   'Warning: componentWillUpdate has been renamed',
   'Accessing view manager configs directly off UIManager',
   'VirtualizedLists should never be nested',
+  'No native splash screen registered',
 ])
-
-const RootNavigator = createAppContainer(createSwitchNavigator(
-  {
-    Loading: navigation.Loading,
-    ConfigureServer: navigators.HomeNavigator,
-    App: {
-      screen: navigators.DrawerNavigator,
-      path: '', // This is needed to start deep linking from here
-    },
-  },
-  {
-    initialRouteName: 'Loading',
-  }
-))
 
 /**
  * @see https://reactnavigation.org/docs/en/screen-tracking.html
@@ -111,12 +99,21 @@ class App extends Component {
             <StyleProvider style={ getTheme(coopcycleTheme) }>
               <View style={{ flex: 1 }}>
                 <Spinner />
-                <RootNavigator
-                  uriPrefix={ URI_PREFIX }
-                  ref={ ref => { NavigationHolder.setTopLevelNavigator(ref) } }
-                  onNavigationStateChange={ onNavigationStateChange } />
+                <SafeAreaProvider>
+                  <NavigationContainer ref={ navigationRef }>
+                    <Root />
+                  </NavigationContainer>
+                  {
+                  /*
+                  <RootNavigator
+                    uriPrefix={ URI_PREFIX }
+                    ref={ ref => { NavigationHolder.setTopLevelNavigator(ref) } }
+                    onNavigationStateChange={ onNavigationStateChange } />
+                  */
+                  }
+                </SafeAreaProvider>
                 <DropdownAlert ref={ ref => { DropdownHolder.setDropdown(ref) } } />
-                <NotificationHandler />
+                { /* <NotificationHandler /> */ }
               </View>
             </StyleProvider>
           </I18nextProvider>
@@ -124,7 +121,6 @@ class App extends Component {
       </Provider>
     )
   }
-
 }
 
 export default App

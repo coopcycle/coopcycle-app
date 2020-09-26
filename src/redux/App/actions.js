@@ -1,5 +1,5 @@
 import { createAction } from 'redux-actions'
-import { NavigationActions } from 'react-navigation'
+// import { NavigationActions } from 'react-navigation'
 import tracker from '../../analytics/Tracker'
 import analyticsEvent from '../../analytics/Event'
 import userProperty from '../../analytics/UserProperty'
@@ -171,6 +171,8 @@ function setRolesProperty(user) {
 
 function navigateToHome(dispatch, getState) {
 
+  return
+
   const { httpClient, user } = getState().app
 
   if (user && user.isAuthenticated()) {
@@ -284,12 +286,12 @@ export function selectServer(server) {
           })
           .then(() => dispatch(_clearSelectServerError()))
           .then(() => dispatch(setLoading(false)))
-          .then(() => NavigationHolder.dispatch(
-            NavigationActions.navigate({
-              routeName: 'CheckoutHome',
-              key: 'CheckoutHome',
-            })
-          ))
+          // .then(() => NavigationHolder.dispatch(
+          //   NavigationActions.navigate({
+          //     routeName: 'CheckoutHome',
+          //     key: 'CheckoutHome',
+          //   })
+          // ))
       )
       .catch((err) => {
         setTimeout(() => {
@@ -305,6 +307,8 @@ export function bootstrap(baseURL, user) {
 
   return async (dispatch, getState) => {
 
+    console.log('bootstrap - BEGIN')
+
     const settings = await Settings.synchronize(baseURL)
 
     dispatch(setSettings(settings))
@@ -316,7 +320,92 @@ export function bootstrap(baseURL, user) {
     dispatch(setBaseURL(baseURL))
     setRolesProperty(user)
 
-    setTimeout(() => navigateToHome(dispatch, getState), 250)
+    const { httpClient } = getState().app
+
+    if (user.hasRole('ROLE_ADMIN') || user.hasRole('ROLE_RESTAURANT') || user.hasRole('ROLE_STORE')) {
+
+      const promises = []
+
+      promises.push(new Promise((resolve, reject) => {
+        if (user.hasRole('ROLE_ADMIN') || user.hasRole('ROLE_RESTAURANT')) {
+          const req = user.hasRole('ROLE_ADMIN') ?
+            httpClient.get('/api/restaurants') : httpClient.get('/api/me/restaurants')
+          req
+            .then(res => {
+              resolve(res['hydra:member'])
+            })
+            .catch(e => {
+              console.log(e)
+              resolve([])
+            })
+        } else {
+          resolve([])
+        }
+      }))
+      promises.push(new Promise((resolve, reject) => {
+        if (user.hasRole('ROLE_STORE')) {
+          const req = httpClient.get('/api/me/stores')
+          req
+            .then(res => {
+              resolve(res['hydra:member'])
+            })
+            .catch(e => {
+              console.log(e)
+              resolve([])
+            })
+        } else {
+          resolve([])
+        }
+      }))
+
+      const values = await Promise.all(promises)
+
+      const [ restaurants, stores ] = values
+
+      dispatch(loadMyRestaurantsSuccess(restaurants))
+
+      if (stores) {
+        dispatch(_loadMyStoresSuccess(stores))
+      }
+
+      /*
+
+      dispatch(loadMyRestaurantsRequest())
+
+      Promise.all(promises)
+        .then(values => {
+
+          const [ restaurants, stores ] = values
+
+          dispatch(loadMyRestaurantsSuccess(restaurants))
+
+          if (stores) {
+            dispatch(_loadMyStoresSuccess(stores))
+          }
+
+          // Users may have both ROLE_ADMIN & ROLE_COURIER
+          if (user.hasRole('ROLE_COURIER')) {
+            NavigationHolder.navigate('CourierHome')
+          } else if (user.hasRole('ROLE_ADMIN')) {
+            NavigationHolder.navigate('DispatchHome')
+          } else {
+            if (restaurants.length > 0) {
+              NavigationHolder.navigate('RestaurantHome')
+            } else if (stores && stores.length > 0) {
+              NavigationHolder.navigate('StoreHome')
+            } else {
+              NavigationHolder.navigate('CheckoutHome')
+            }
+          }
+
+        })
+      */
+
+    }
+
+    console.log('bootstrap - END')
+
+    // setTimeout(() => navigateToHome(dispatch, getState), 250)
   }
 }
 
@@ -344,7 +433,7 @@ export function login(email, password, navigate = true) {
         if (navigate) {
           // FIXME
           // Use setTimeout() to let room for loader to hide
-          setTimeout(() => navigateToHome(dispatch, getState), 250)
+          // setTimeout(() => navigateToHome(dispatch, getState), 250)
         }
       })
       .catch(err => {
@@ -422,7 +511,7 @@ export function confirmRegistration(token) {
         if (resumeCheckoutAfterActivation) {
           dispatch(resumeCheckout())
         } else {
-          navigateToHome(dispatch, getState)
+          // navigateToHome(dispatch, getState)
         }
       })
       .catch(err => {
@@ -489,7 +578,7 @@ export function setNewPassword(token, password) {
         if (resumeCheckoutAfterActivation) {
           dispatch(resumeCheckout());
         } else {
-          navigateToHome(dispatch, getState);
+          // navigateToHome(dispatch, getState);
         }
       })
       .catch(err => {

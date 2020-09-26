@@ -34,27 +34,27 @@ class Task extends Component {
   }
 
   componentDidMount() {
-    this.didFocusListener = this.props.navigation.addListener(
-      'didFocus',
-      payload => this.setState({ canRenderMap: true })
-    )
+    // this.didFocusListener = this.props.navigation.addListener(
+    //   'didFocus',
+    //   payload => this.setState({ canRenderMap: true })
+    // )
   }
 
   componentWillUnmount() {
-    this.didFocusListener.remove()
+    // this.didFocusListener.remove()
   }
 
   componentDidUpdate(prevProps, prevState) {
 
-    const task = this.props.navigation.getParam('task')
+    // const task = this.props.route.params.task
 
-    let previousTask = _.find(prevProps.tasks, t => t['@id'] === task['@id'])
-    let currentTask = _.find(this.props.tasks, t => t['@id'] === task['@id'])
+    // let previousTask = _.find(prevProps.tasks, t => t['@id'] === task['@id'])
+    // let currentTask = _.find(this.props.tasks, t => t['@id'] === task['@id'])
 
-    // Task status has been updated
-    if (currentTask && previousTask && currentTask.status !== previousTask.status) {
-      this.props.navigation.setParams({ task: currentTask })
-    }
+    // // Task status has been updated
+    // if (currentTask && previousTask && currentTask.status !== previousTask.status) {
+    //   this.props.navigation.setParams({ task: currentTask })
+    // }
   }
 
   _onMapLayout(e) {
@@ -64,7 +64,7 @@ class Task extends Component {
 
   _complete(success = true, force = false) {
 
-    const task = this.props.navigation.getParam('task')
+    const task = this.props.route.params.task
 
     if (success && task.status === 'TODO' && !force) {
       Alert.alert(
@@ -93,9 +93,12 @@ class Task extends Component {
     }
 
     this.props.navigation.navigate('TaskComplete', {
-      task,
-      navigateAfter: this.props.navigation.getParam('navigateAfter'),
-      success,
+      screen: 'TaskCompleteHome',
+      params: {
+        task,
+        navigateAfter: this.props.route.params.navigateAfter,
+        success,
+      },
     })
     setTimeout(() => this.swipeRow.current.closeRow(), 250)
   }
@@ -109,7 +112,7 @@ class Task extends Component {
       )
     }
 
-    const task = this.props.navigation.getParam('task')
+    const task = this.props.route.params.task
     const { mapDimensions } = this.state
 
     let aspectRatio = 1
@@ -125,10 +128,10 @@ class Task extends Component {
 
   render() {
 
-    const { getParam } = this.props.navigation
+    const { route } = this.props
 
-    const task = getParam('task')
-    const tasks = getParam('tasks', [])
+    const task = route.params.task
+    const tasks = route.params?.tasks ?? []
 
     return (
       <SafeAreaView style={{ flex: 1 }}>
@@ -187,4 +190,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(withTranslation()(Task))
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(Task))

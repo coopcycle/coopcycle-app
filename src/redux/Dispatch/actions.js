@@ -1,6 +1,6 @@
 import { Alert } from 'react-native'
 import { createAction } from 'redux-actions'
-import { NavigationActions, StackActions } from 'react-navigation'
+// import { NavigationActions, StackActions } from 'react-navigation'
 
 import { connect, init } from '../middlewares/WebSocketMiddleware/actions'
 import WebSocketClient from '../../websocket/WebSocketClient'

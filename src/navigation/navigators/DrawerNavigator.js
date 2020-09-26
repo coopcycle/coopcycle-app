@@ -1,23 +1,23 @@
-
 import React from 'react'
-import { createDrawerNavigator } from 'react-navigation-drawer'
-import { createStackNavigator } from 'react-navigation-stack'
+import { createDrawerNavigator } from '@react-navigation/drawer'
+import { createStackNavigator } from '@react-navigation/stack'
 import { Icon } from 'native-base'
+import { withTranslation } from 'react-i18next'
+import { connect } from 'react-redux'
+
+import { selectIsAuthenticated } from '../../redux/App/selectors'
 
 import DrawerContent from '../components/DrawerContent'
 
 import AccountNavigator from './AccountNavigator'
 import CheckoutNavigator from './CheckoutNavigator'
 import CourierNavigator from './CourierNavigator'
-import DispatchNavigator from './DispatchNavigator'
+// import DispatchNavigator from './DispatchNavigator'
 import RestaurantNavigator from './RestaurantNavigator'
-import StoreNavigator from './StoreNavigator'
-import About from '../home/About'
+// import StoreNavigator from './StoreNavigator'
+// import About from '../home/About'
 
-import screens, { defaultNavigationOptions, headerLeft } from '..'
-
-import i18n from '../../i18n'
-
+/*
 const RegisterConfirmStack = createStackNavigator({
   RegisterConfirmHome: {
     screen: screens.AccountRegisterConfirm,
@@ -135,3 +135,79 @@ export default createDrawerNavigator({
 }, {
   contentComponent: DrawerContent,
 })
+*/
+
+function mapStateToProps(state) {
+
+  const user = state.app.user
+  const restaurants = state.restaurant.myRestaurants
+
+  let initialRouteName = 'CheckoutNav'
+
+  if (user && user.isAuthenticated()) {
+
+    if (user.hasRole('ROLE_ADMIN') || user.hasRole('ROLE_RESTAURANT') || user.hasRole('ROLE_STORE')) {
+
+      if (restaurants.length > 0) {
+        initialRouteName = 'RestaurantNav'
+      }
+
+    } else if (user.hasRole('ROLE_COURIER')) {
+      initialRouteName = 'CourierNav'
+    } else {
+      // NavigationHolder.navigate('CheckoutHome')
+    }
+  } else {
+    // NavigationHolder.navigate('CheckoutHome')
+  }
+
+  console.log('initialRouteName', initialRouteName)
+
+  return {
+    isAuthenticated: selectIsAuthenticated(state),
+    user,
+    initialRouteName,
+  }
+}
+
+const Drawer = createDrawerNavigator()
+
+const DrawerNav = withTranslation()(({ t, initialRouteName, user, isAuthenticated }) => {
+
+  return (
+    <Drawer.Navigator
+      drawerContent={ (props) => <DrawerContent { ...props } /> }
+      initialRouteName={ initialRouteName }
+      >
+      <Drawer.Screen
+        name="CheckoutNav"
+        component={ CheckoutNavigator }
+        options={{
+          title: t('SEARCH'),
+        }} />
+      <Drawer.Screen
+        name="AccountNav"
+        component={ AccountNavigator } />
+      { (isAuthenticated && user.hasRole('ROLE_COURIER')) && (
+        <Drawer.Screen
+        name="CourierNav"
+        component={ CourierNavigator }
+        options={{
+          title: t('TASKS'),
+        }} />
+      )}
+      { (isAuthenticated && user.hasRole('ROLE_RESTAURANT')) && (
+        <Drawer.Screen
+        name="RestaurantNav"
+        component={ RestaurantNavigator }
+        options={{
+          // This route is "dynamic", it may appear several times
+          // @see src/navigation/components/DrawerContent.js
+          title: '',
+        }} />
+      )}
+    </Drawer.Navigator>
+  )
+})
+
+export default connect(mapStateToProps)(DrawerNav)

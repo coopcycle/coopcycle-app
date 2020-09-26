@@ -35,11 +35,11 @@ class RestaurantsPage extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const prevAddress = prevProps.navigation.getParam('address', null)
-    const addressAsParam = this.props.navigation.getParam('address', null)
-    if (addressAsParam && prevAddress !== addressAsParam) {
-      InteractionManager.runAfterInteractions(() => this._onAddressSelect(addressAsParam))
-    }
+    // const prevAddress = prevProps.navigation.getParam('address', null)
+    // const addressAsParam = this.props.navigation.getParam('address', null)
+    // if (addressAsParam && prevAddress !== addressAsParam) {
+    //   InteractionManager.runAfterInteractions(() => this._onAddressSelect(addressAsParam))
+    // }
   }
 
   renderContent() {

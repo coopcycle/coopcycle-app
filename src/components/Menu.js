@@ -1,12 +1,47 @@
 import React, { Component } from 'react'
-import { Animated, ActivityIndicator, SectionList, StyleSheet, TouchableOpacity, View } from 'react-native'
-import { Text } from 'native-base';
+import { Animated, ActivityIndicator, SectionList, StyleSheet, TouchableOpacity, View, ImageBackground, TextInput } from 'react-native'
+import { Text } from 'native-base'
 import _ from 'lodash'
+import {
+  useCollapsibleStack,
+  CollapsibleStackSub,
+} from 'react-navigation-collapsible'
+
 import { AllergenList, RestrictedDietList } from './MenuBadges'
 
-const AnimatedSectionList = Animated.createAnimatedComponent(SectionList);
-
 import { formatPrice } from '../utils/formatting'
+
+const GroupImageHeader = (props) => {
+
+  const { restaurant, translateY, opacity, progress } = props
+
+  return (
+    <Animated.View style={{
+      width: '100%',
+      height: 160,
+      opacity: opacity }}>
+      <ImageBackground source={{ uri: restaurant.image }} style={{ width: '100%', height: '100%' }}>
+        <View style={ styles.overlay }>
+          <Animated.Image
+            source={{ uri: restaurant.image }}
+            resizeMode="cover"
+            style={{
+              transform: [{ scale: opacity }],
+              opacity: opacity,
+              alignSelf: 'center',
+              width: 80,
+              height: 80,
+              borderWidth: 1,
+              borderColor: 'white',
+              borderRadius: 50,
+            }}
+          />
+          <Text style={ styles.restaurantName } numberOfLines={ 1 }>{ restaurant.name }</Text>
+        </View>
+      </ImageBackground>
+    </Animated.View>
+  );
+}
 
 const styles = StyleSheet.create({
   sectionHeader: {
@@ -55,11 +90,32 @@ const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: '#e7e7e7',
   },
+  overlay: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  restaurantName: {
+    color: '#ffffff',
+    fontFamily: 'Raleway-Regular',
+    marginTop: 5,
+    fontWeight: 'bold',
+    paddingHorizontal: 10,
+  },
 });
 
 const ItemSeparatorComponent = () => (
   <View style={ styles.itemSeparator } />
 )
+
+const MySearchBar = () => (
+  <View style={{ padding: 15, width: '100%', height: 60, backgroundColor: 'red' }}>
+    <TextInput placeholder="search here" />
+  </View>
+);
 
 class Menu extends Component {
 
@@ -118,8 +174,7 @@ class Menu extends Component {
 
   render() {
 
-    const { menu } = this.props
-    const {paddingHeight, onScroll} = this.props.collapsible;
+    const { restaurant, menu, onScroll, containerPaddingTop, scrollIndicatorInsetTop, opacity } = this.props
 
     let sections = []
     if (menu) {
@@ -133,17 +188,22 @@ class Menu extends Component {
     }
 
     return (
-      <AnimatedSectionList
-        contentContainerStyle={{paddingTop: paddingHeight}}
-        scrollIndicatorInsets={{top: paddingHeight}}
-        onScroll={onScroll}
-        testID="menu"
-        sections={ sections }
-        renderItem={ ({ item, index, section }) => this.renderItem(item, index, section) }
-        renderSectionHeader={ ({ section }) => this.renderSectionHeader(section) }
-        keyExtractor={ (item, index) => index }
-        initialNumToRender={ 15 }
-        ItemSeparatorComponent={ ItemSeparatorComponent } />
+      <>
+        <Animated.SectionList
+          contentContainerStyle={{ paddingTop: containerPaddingTop }}
+          scrollIndicatorInsets={{ top: scrollIndicatorInsetTop }}
+          onScroll={ onScroll }
+          testID="menu"
+          sections={ sections }
+          renderItem={ ({ item, index, section }) => this.renderItem(item, index, section) }
+          renderSectionHeader={ ({ section }) => this.renderSectionHeader(section) }
+          keyExtractor={ (item, index) => index }
+          initialNumToRender={ 15 }
+          ItemSeparatorComponent={ ItemSeparatorComponent } />
+        <CollapsibleStackSub>
+          <GroupImageHeader restaurant={ restaurant } opacity={ opacity } />
+        </CollapsibleStackSub>
+      </>
     )
   }
 }

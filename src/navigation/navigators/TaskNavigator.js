@@ -1,32 +1,31 @@
 import React from 'react'
-import {
-  createStackNavigator,
-  HeaderBackButton,
-} from 'react-navigation-stack'
+import { createStackNavigator } from '@react-navigation/stack'
+import { withTranslation } from 'react-i18next'
 
-import i18n from '../../i18n'
-import screens, { defaultNavigationOptions } from '..'
+import { stackNavigatorScreenOptions } from '../styles'
+import screens from '..'
 
 import ProofOfDeliveryTabs from './TaskAttachmentsNavigator'
 
-const CompleteStack = createStackNavigator({
-  TaskCompleteHome: {
-    screen: screens.TaskComplete,
-    navigationOptions: ({ navigation }) => ({
-      headerShown: false,
-    }),
-  },
-  TaskCompleteProofOfDelivery: {
-    screen: ProofOfDeliveryTabs,
-    navigationOptions: ({ navigation }) => ({
-      headerShown: false,
-    }),
-  },
-}, {
-  defaultNavigationOptions,
-  initialRouteName: 'TaskCompleteHome',
-})
+const CompleteStack = createStackNavigator()
 
+const CompleteStackNavigator = () => (
+  <CompleteStack.Navigator
+    screenOptions={ stackNavigatorScreenOptions }>
+    <CompleteStack.Screen
+      name="TaskCompleteHome"
+      component={ screens.TaskComplete }
+      options={{ headerShown: false }}
+    />
+    <CompleteStack.Screen
+      name="TaskCompleteProofOfDelivery"
+      component={ ProofOfDeliveryTabs }
+      options={{ headerShown: false }}
+    />
+  </CompleteStack.Navigator>
+)
+
+/*
 function getActiveRouteName(navigationState) {
   if (!navigationState) {
     return null;
@@ -37,7 +36,9 @@ function getActiveRouteName(navigationState) {
   }
   return route.routeName
 }
+*/
 
+/*
 export default createStackNavigator({
   TaskHome: {
     screen: screens.TaskHome,
@@ -86,3 +87,23 @@ export default createStackNavigator({
     },
   }),
 })
+*/
+
+const RootStack = createStackNavigator()
+
+export default withTranslation()(({ t }) => (
+  <RootStack.Navigator
+    screenOptions={ stackNavigatorScreenOptions }
+    mode="modal">
+    <RootStack.Screen
+      name="TaskHome"
+      component={ screens.TaskHome }
+      options={{ headerShown: false }}
+    />
+    <RootStack.Screen
+      name="TaskComplete"
+      component={ CompleteStackNavigator }
+      options={{ headerShown: false }}
+    />
+  </RootStack.Navigator>
+))

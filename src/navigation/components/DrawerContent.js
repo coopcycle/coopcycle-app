@@ -8,8 +8,12 @@ import { Text, Icon } from 'native-base'
 import _ from 'lodash'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
-import { SafeAreaView, NavigationActions } from 'react-navigation'
-import { DrawerNavigatorItems } from 'react-navigation-drawer'
+import {
+  DrawerContentScrollView,
+  DrawerItemList,
+  DrawerItem
+} from '@react-navigation/drawer'
+import { SafeAreaView } from 'react-native-safe-area-context'
 import VersionNumber from 'react-native-version-number'
 import { PhoneNumberUtil, PhoneNumberFormat } from 'google-libphonenumber'
 import { phonecall } from 'react-native-communications'
@@ -23,6 +27,7 @@ const blacklist = [
   'RegisterConfirmNav',
   'ResetPasswordNav',
   'AboutNav',
+  'AccountNav',
 ]
 
 class DrawerContent extends Component {
@@ -42,167 +47,134 @@ class DrawerContent extends Component {
 
   render() {
 
-    const { items, restaurants, stores, user, isAuthenticated } = this.props
+    const {
+      restaurants,
+      stores,
+      user,
+      isAuthenticated,
+      // This is coming from drawer navigator
+      descriptors,
+      state,
+      ...rest
+    } = this.props
 
-    const restaurantItems =
-      _.filter(items, item => item.routeName === 'RestaurantNav')
-    const storeItems =
-      _.filter(items, item => item.routeName === 'StoreNav')
-    const courierItems =
-      _.filter(items, item => item.routeName === 'CourierNav')
-    const accountItems =
-      _.filter(items, item => item.routeName === 'AccountNav')
+    // console.log('DrawerContent', this.props)
 
-    const adminItems =
-      _.filter(items, item => _.includes(['DispatchNav'], item.routeName))
+    let newRoutes = state.routes.slice()
+    let newDescriptors = { ...descriptors }
 
-    const otherItems = _.filter(items, item => {
+    newRoutes = _.filter(newRoutes, route => {
 
-      if (_.includes(blacklist, item.routeName)) {
-        return false
-      }
-
-      if (_.includes(restaurantItems, item)
-        || _.includes(storeItems, item)
-        || _.includes(courierItems, item)
-        || _.includes(accountItems, item)
-        || _.includes(adminItems, item)) {
+      if (_.includes(blacklist, route.name)) {
         return false
       }
 
       return true
     })
 
-    const otherItemsProps = {
-      ...this.props,
-      items: otherItems,
-    }
-
-    let restaurantSection = (
-      <View />
-    )
-    let storeSection = (
-      <View />
-    )
-    let courierSection = (
-      <View />
-    )
-    let adminSection = (
-      <View />
-    )
-
     if (isAuthenticated) {
 
       if ((user.hasRole('ROLE_ADMIN') || user.hasRole('ROLE_RESTAURANT')) && restaurants.length > 0) {
 
-        let restaurantItemsProps
-
         // When there is ONE restaurant, show a direct link
         if (restaurants.length === 1) {
-          restaurantItemsProps = {
-            ...this.props,
-            items: restaurants.map(restaurant => ({
-              ...restaurantItems[0],
-              params: { restaurant },
-              action: NavigationActions.navigate({
-                routeName: 'RestaurantHome',
-                params: { restaurant },
-              }),
-            })),
-            getLabel: ({ route }) => {
-              const { restaurant } = route.params
 
-              return restaurant.name
-            },
-          }
+          newDescriptors = _.mapValues(newDescriptors, (value, key) => {
+
+            // FIXME
+            // Dangerous, match with state.routes
+            if (key.startsWith('RestaurantNav-')) {
+
+              return {
+                ...value,
+                options: {
+                  ...value.options,
+                  title: _.first(restaurants).name
+                }
+              }
+            }
+
+            return value
+          })
+
         } else {
-          restaurantItemsProps = {
-            ...this.props,
-            items: restaurantItems,
-            getLabel: ({ route }) => {
-              return this.props.t('RESTAURANTS')
-            },
-          }
+          // restaurantItemsProps = {
+          //   ...this.props,
+          //   items: restaurantItems,
+          //   getLabel: ({ route }) => {
+          //     return this.props.t('RESTAURANTS')
+          //   },
+          // }
         }
-
-        restaurantSection = (
-          <View>
-            <DrawerNavigatorItems
-              { ...restaurantItemsProps }
-              onItemPress={ this.onItemPress.bind(this) } />
-          </View>
-        )
       }
 
       if (user.hasRole('ROLE_STORE') && stores.length > 0) {
-        let storeItemsProps
+        // let storeItemsProps
 
-        // When there is ONE store, show a direct link
-        if (stores.length === 1) {
-          storeItemsProps = {
-            ...this.props,
-            items: stores.map(store => ({
-              ...storeItems[0],
-              params: {
-                store,
-              },
-            })),
-            getLabel: ({ route }) => {
-              const { store } = route.params
+        // // When there is ONE store, show a direct link
+        // if (stores.length === 1) {
+        //   storeItemsProps = {
+        //     ...this.props,
+        //     items: stores.map(store => ({
+        //       ...storeItems[0],
+        //       params: {
+        //         store,
+        //       },
+        //     })),
+        //     getLabel: ({ route }) => {
+        //       const { store } = route.params
 
-              return store.name
-            },
-          }
-        } else {
-          storeItemsProps = {
-            ...this.props,
-            items: storeItems,
-            getLabel: ({ route }) => {
-              return this.props.t('STORES')
-            },
-          }
-        }
+        //       return store.name
+        //     },
+        //   }
+        // } else {
+        //   storeItemsProps = {
+        //     ...this.props,
+        //     items: storeItems,
+        //     getLabel: ({ route }) => {
+        //       return this.props.t('STORES')
+        //     },
+        //   }
+        // }
 
-        storeSection = (
-          <View>
-            <DrawerNavigatorItems
-              { ...storeItemsProps }
-              onItemPress={ this.onItemPress.bind(this) } />
-          </View>
-        )
+        // storeSection = (
+        //   <View>
+        //     <DrawerNavigatorItems
+        //       { ...storeItemsProps }
+        //       onItemPress={ this.onItemPress.bind(this) } />
+        //   </View>
+        // )
       }
 
       if (user.hasRole('ROLE_COURIER')) {
-        const courierItemsProps = {
-          ...this.props,
-          items: courierItems,
-        }
+        // const courierItemsProps = {
+        //   ...this.props,
+        //   items: courierItems,
+        // }
 
-        courierSection = (
-          <View>
-            <DrawerNavigatorItems { ...courierItemsProps } />
-          </View>
-        )
+        // courierSection = (
+        //   <View>
+        //     <DrawerNavigatorItems { ...courierItemsProps } />
+        //   </View>
+        // )
       }
 
       if (user.hasRole('ROLE_ADMIN')) {
-        const adminItemsProps = {
-          ...this.props,
-          items: adminItems,
-        }
+        // const adminItemsProps = {
+        //   ...this.props,
+        //   items: adminItems,
+        // }
 
-        adminSection = (
-          <View>
-            <DrawerNavigatorItems { ...adminItemsProps } />
-          </View>
-        )
+        // adminSection = (
+        //   <View>
+        //     <DrawerNavigatorItems { ...adminItemsProps } />
+        //   </View>
+        // )
       }
     }
 
     const navigateToAccount = () =>
-      this.props.navigation.dispatch(
-        NavigationActions.navigate({ routeName: 'AccountNav' })
-      )
+      this.props.navigation.navigate('AccountNav')
 
     const navigateToAbout = () =>
       this.props.navigation.dispatch(
@@ -227,11 +199,12 @@ class DrawerContent extends Component {
         </TouchableOpacity>
         <View style={{ flex: 1 }}>
           <View style={ styles.content }>
-            <DrawerNavigatorItems { ...otherItemsProps } itemsContainerStyle={ styles.itemsContainer } />
-            { restaurantSection }
-            { storeSection }
-            { courierSection }
-            { adminSection }
+            <DrawerContentScrollView { ...this.props }>
+              <DrawerItemList
+                descriptors={ newDescriptors }
+                state={{ ...state, routes: newRoutes }}
+                { ...rest } />
+            </DrawerContentScrollView>
           </View>
           <View style={ styles.footer }>
             { this.props.showAbout && (

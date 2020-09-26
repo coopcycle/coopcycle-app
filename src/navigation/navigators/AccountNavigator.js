@@ -1,8 +1,15 @@
-import { createStackNavigator } from 'react-navigation-stack'
+import React from 'react'
+import { createStackNavigator } from '@react-navigation/stack'
+import { withTranslation } from 'react-i18next'
+import { connect } from 'react-redux'
 
-import screens, { defaultNavigationOptions, headerLeft } from '..'
-import i18n from '../../i18n'
+import screens, { headerLeft } from '..'
+import { stackNavigatorScreenOptions } from '../styles'
+import { selectIsAuthenticated } from '../../redux/App/selectors'
 
+const Stack = createStackNavigator()
+
+/*
 export default createStackNavigator({
   AccountHome: {
     screen: screens.AccountHome,
@@ -61,3 +68,53 @@ export default createStackNavigator({
   initialRouteName: 'AccountHome',
   defaultNavigationOptions,
 })
+*/
+
+function mapStateToProps(state) {
+
+  return {
+    isAuthenticated: selectIsAuthenticated(state),
+  }
+}
+
+const MainStack = withTranslation()(({ t, isAuthenticated }) => (
+  <Stack.Navigator
+    screenOptions={ stackNavigatorScreenOptions }>
+    { isAuthenticated && (
+      <>
+        <Stack.Screen
+          name="AccountHome"
+          component={ screens.AccountHome }
+          options={ ({ navigation, route }) => ({
+            title: t('MY_ACCOUNT'),
+            headerLeft: headerLeft(navigation),
+          })} />
+        <Stack.Screen
+          name="AccountAddresses"
+          component={ screens.AccountAddressesPage }
+          options={{
+            title: t('MY_ADDRESSES'),
+          }} />
+        <Stack.Screen
+          name="AccountDetails"
+          component={ screens.AccountDetailsPage }
+          options={{
+            title: t('MY_DETAILS'),
+          }} />
+      </>
+    ) }
+    { !isAuthenticated && (
+      <>
+        <Stack.Screen
+          name="AccountLoginRegister"
+          component={ screens.AccountLoginRegister }
+          options={ ({ navigation, route }) => ({
+            title: t('MY_ACCOUNT'),
+            headerLeft: headerLeft(navigation),
+          })} />
+      </>
+    ) }
+  </Stack.Navigator>
+))
+
+export default connect(mapStateToProps)(MainStack)

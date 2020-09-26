@@ -15,6 +15,7 @@ class TaskList extends Component {
     if (this.props.refreshing) {
       return
     }
+
     this.props.onTaskClick(task)
   }
 

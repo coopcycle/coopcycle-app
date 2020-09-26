@@ -1,58 +1,53 @@
 import React from 'react'
-import { createStackNavigator } from 'react-navigation-stack'
+import { createStackNavigator } from '@react-navigation/stack'
+import { withTranslation } from 'react-i18next'
 
-import i18n from '../../i18n'
-import { defaultNavigationOptions } from '..'
+import { stackNavigatorScreenOptions } from '../styles'
 import HeaderButton from '../../components/HeaderButton'
 
 import ConfigureServer from '../ConfigureServer'
 import ChooseCity from '../home/ChooseCity'
 import CustomServer from '../home/CustomServer'
 
-const MainNavigator = createStackNavigator({
-  Home: {
-    screen: ConfigureServer,
-    navigationOptions: ({ navigation }) => ({
-      title: 'CoopCycle',
-      headerBackTitle: null,
-    }),
-  },
-  HomeChooseCity: {
-    screen: ChooseCity,
-    navigationOptions: ({ navigation }) => ({
-      title: i18n.t('CHOOSE_CITY'),
-      headerBackTitle: null,
-      headerRight: () => <HeaderButton
-        testID="moreServerOptions"
-        iconType="FontAwesome5"
-        iconName="ellipsis-h"
-        iconStyle={{ fontSize: 18 }}
-        onPress={ _ => navigation.navigate('HomeCustomServer') } />
-      ,
-    }),
-  },
-}, {
-  initialRouteKey: 'Home',
-  initialRouteName: 'Home',
-  defaultNavigationOptions,
-})
+const MainStack = createStackNavigator()
+const RootStack = createStackNavigator()
 
-export default createStackNavigator({
-  Main: {
-    screen: MainNavigator,
-    navigationOptions: ({ navigation }) => ({
-      headerShown: false,
-      headerBackTitle: null,
-    }),
-  },
-  HomeCustomServer: {
-    screen: CustomServer,
-    navigationOptions: ({ navigation }) => ({
-      headerBackTitle: null,
-      title: i18n.t('CUSTOM'),
-    }),
-  },
-}, {
-  mode: 'modal',
-  defaultNavigationOptions,
-})
+const MainStackScreen = withTranslation()(({ t }) => (
+  <MainStack.Navigator
+    screenOptions={ stackNavigatorScreenOptions }>
+    <MainStack.Screen
+      name="Home"
+      component={ ConfigureServer }
+      options={{ title: 'CoopCycle' }} />
+    <MainStack.Screen
+      name="HomeChooseCity"
+      component={ ChooseCity }
+      options={ ({ navigation, route }) => ({
+        title: t('CHOOSE_CITY'),
+        headerRight: () => (
+          <HeaderButton
+            testID="moreServerOptions"
+            iconType="FontAwesome5"
+            iconName="ellipsis-h"
+            iconStyle={{ fontSize: 18 }}
+            onPress={ () => navigation.navigate('HomeCustomServer') } />
+        )
+      })} />
+  </MainStack.Navigator>
+))
+
+export default withTranslation()(({ t }) => (
+  <RootStack.Navigator
+    screenOptions={ stackNavigatorScreenOptions }
+    mode="modal">
+    <RootStack.Screen
+      name="Main"
+      component={ MainStackScreen }
+      options={{ headerShown: false }}
+    />
+    <RootStack.Screen
+      name="HomeCustomServer"
+      component={ CustomServer }
+      options={{ title: t('CUSTOM') }} />
+  </RootStack.Navigator>
+))

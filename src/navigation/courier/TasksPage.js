@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { StyleSheet, Platform, InteractionManager } from 'react-native'
 import { Container } from 'native-base'
-import { withNavigationFocus } from 'react-navigation'
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake'
 import RNPinScreen from 'react-native-pin-screen'
 import { connect } from 'react-redux'
@@ -80,7 +79,7 @@ class TasksPage extends Component {
         <TasksMapView
           mapCenter={ this.props.mapCenter }
           tasks={ tasks }
-          onMarkerCalloutPress={ task => navigateToTask(this.props.navigation, task, tasks) } />
+          onMarkerCalloutPress={ task => navigateToTask(this.props.navigation, this.props.route, task, tasks) } />
         <DateSelectHeader
           buttonsEnabled={true}
           toDate={this.refreshTasks}
@@ -121,4 +120,6 @@ function mapDispatchToProps (dispatch) {
   }
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(withTranslation()(withNavigationFocus(TasksPage)))
+// module.exports = connect(mapStateToProps, mapDispatchToProps)(withTranslation()(withNavigationFocus(TasksPage)))
+
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(TasksPage))

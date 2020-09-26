@@ -3,7 +3,7 @@ import {
   StyleSheet,
   View,
 } from 'react-native'
-import { NavigationActions, StackActions } from 'react-navigation'
+// import { NavigationActions, StackActions } from 'react-navigation'
 import {
   Container, Content, Text, Button, Icon,
 } from 'native-base'
@@ -64,4 +64,4 @@ const styles = StyleSheet.create({
   },
 })
 
-module.exports = withTranslation()(RegisterCheckEmail)
+export default withTranslation()(RegisterCheckEmail)

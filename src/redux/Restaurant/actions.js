@@ -1,10 +1,10 @@
 import { createAction } from 'redux-actions'
-import { NavigationActions, StackActions } from 'react-navigation'
+// import { NavigationActions, StackActions } from 'react-navigation'
 import BleManager from 'react-native-ble-manager'
 import _ from 'lodash'
 
 import DropdownHolder from '../../DropdownHolder'
-import NavigationHolder from '../../NavigationHolder'
+// import NavigationHolder from '../../NavigationHolder'
 
 import { pushNotification } from '../App/actions'
 import { encodeForPrinter } from '../../utils/order'

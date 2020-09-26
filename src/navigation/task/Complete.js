@@ -13,7 +13,6 @@ import { Formik } from 'formik'
 
 import {
   selectIsTaskCompleteFailure,
-  selectSignatureScreenFirst,
   selectSignatures,
   selectPictures,
   deleteSignatureAt,
@@ -40,21 +39,21 @@ class CompleteTask extends Component {
 
   markTaskDone() {
 
-    const task = this.props.navigation.getParam('task')
+    const task = this.props.route.params.task
     const { notes } = this.state
 
     this.props.markTaskDone(this.props.httpClient, task, notes, () => {
-      this.props.navigation.navigate(this.props.navigation.getParam('navigateAfter'))
+      this.props.navigation.navigate(this.props.route.params.navigateAfter)
     }, this.state.contactName)
   }
 
   markTaskFailed() {
 
-    const task = this.props.navigation.getParam('task')
+    const task = this.props.route.params.task
     const { notes } = this.state
 
     this.props.markTaskFailed(this.props.httpClient, task, notes, () => {
-      this.props.navigation.navigate(this.props.navigation.getParam('navigateAfter'))
+      this.props.navigation.navigate(this.props.route.params.navigateAfter)
     }, this.state.contactName)
   }
 
@@ -81,7 +80,7 @@ class CompleteTask extends Component {
   }
 
   resolveContactName() {
-    const task = this.props.navigation.getParam('task')
+    const task = this.props.route.params.task
 
     if (!_.isEmpty(this.state.contactName)) {
       return this.state.contactName
@@ -92,9 +91,8 @@ class CompleteTask extends Component {
 
   render() {
 
-    const task = this.props.navigation.getParam('task')
-    const success = this.props.navigation.getParam('success', true)
-    const { signatureScreenFirst } = this.props
+    const task = this.props.route.params.task
+    const success = this.props.route.params?.success ?? true
 
     const { width } = Dimensions.get('window')
 
@@ -162,7 +160,7 @@ class CompleteTask extends Component {
         </Content>
         <TouchableOpacity
           style={ styles.addPoDButton }
-          onPress={ () => this.props.navigation.navigate('TaskCompleteProofOfDelivery', { task, signatureScreenFirst }) }>
+          onPress={ () => this.props.navigation.navigate('TaskCompleteProofOfDelivery', { task }) }>
           <Icon type="FontAwesome5" name="signature"
             style={ styles.addPoDButtonText } />
           <Text
@@ -286,7 +284,6 @@ function mapStateToProps (state) {
     taskCompleteError: selectIsTaskCompleteFailure(state),
     signatures: selectSignatures(state),
     pictures: selectPictures(state),
-    signatureScreenFirst: selectSignatureScreenFirst(state),
   }
 }
 

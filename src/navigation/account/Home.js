@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { View } from 'react-native'
-import { withNavigation } from 'react-navigation'
 import {
   Container, Content,
   Right, Body,
@@ -11,20 +10,10 @@ import { withTranslation } from 'react-i18next'
 
 import Server from './components/Server'
 import { logout } from '../../redux/App/actions'
-import { selectIsAuthenticated } from '../../redux/App/selectors'
-import LoginRegister from './LoginRegister'
-
-const LoginRegisterWithNav = withNavigation(LoginRegister)
 
 class AccountHome extends Component {
 
   render() {
-
-    if (!this.props.isAuthenticated) {
-      return (
-        <LoginRegisterWithNav />
-      )
-    }
 
     const { navigate } = this.props.navigation
 
@@ -80,7 +69,6 @@ function mapStateToProps(state) {
   return {
     user: state.app.user,
     message: state.app.lastAuthenticationError,
-    isAuthenticated: selectIsAuthenticated(state),
   }
 }
 
@@ -91,4 +79,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(withTranslation()(AccountHome))
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(AccountHome))

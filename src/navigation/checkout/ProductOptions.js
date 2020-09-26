@@ -67,12 +67,12 @@ class ProductOptions extends Component {
     }
     this.list = React.createRef()
 
-    const product = props.navigation.getParam('product')
+    const product = props.route.params?.product
     this.optionsBuilder = new ProductOptionsBuilder(product && product.menuAddOn)
   }
 
   componentDidMount() {
-    const product = this.props.navigation.getParam('product')
+    const product = this.props.route.params?.product
     this.optionsBuilder = new ProductOptionsBuilder(product.menuAddOn)
   }
 
@@ -91,7 +91,7 @@ class ProductOptions extends Component {
 
   _getSectionIndex(section) {
 
-    const product = this.props.navigation.getParam('product')
+    const product = this.props.route.params?.product
 
     for (let i = 0; i < product.menuAddOn.length; i++) {
       let menuSection = product.menuAddOn[i]
@@ -114,7 +114,7 @@ class ProductOptions extends Component {
   }
 
   _onPressAddToCart() {
-    const product = this.props.navigation.getParam('product')
+    const product = this.props.route.params?.product
 
     this.props.addItem(product, this.state.payload)
     this.props.navigation.navigate('CheckoutRestaurant', { restaurant: this.props.restaurant })
@@ -203,7 +203,7 @@ class ProductOptions extends Component {
 
   render() {
 
-    const product = this.props.navigation.getParam('product')
+    const product = this.props.route.params?.product
 
     const sections = product.menuAddOn.map(menuSection => ({
       ...menuSection,

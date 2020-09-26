@@ -1,5 +1,5 @@
 import { createAction } from 'redux-actions'
-import { StackActions, NavigationActions } from 'react-navigation'
+// import { StackActions, NavigationActions } from 'react-navigation'
 import Stripe from 'tipsi-stripe'
 import _ from 'lodash'
 

@@ -55,11 +55,11 @@ class TaskListPage extends Component {
           <TaskList
             tasks={ tasks }
             tasksWithColor={ tasksWithColor }
-            onSwipeLeft={ task => navigateToCompleteTask(this.props.navigation, task, tasks, true) }
-            onSwipeRight={ task => navigateToCompleteTask(this.props.navigation, task, tasks, false) }
+            onSwipeLeft={ task => navigateToCompleteTask(this.props.navigation, this.props.route, task, tasks, true) }
+            onSwipeRight={ task => navigateToCompleteTask(this.props.navigation, this.props.route, task, tasks, false) }
             swipeOutLeftEnabled={ task => task.status !== 'DONE' }
             swipeOutRightEnabled={ task => task.status !== 'DONE' }
-            onTaskClick={ task => navigateToTask(this.props.navigation, task, tasks) }
+            onTaskClick={ task => navigateToTask(this.props.navigation, this.props.route, task, tasks) }
             refreshing={ this.props.isRefreshing }
             onRefresh={ () => this.props.refreshTasks(selectedDate) }
           />
@@ -98,4 +98,4 @@ function mapDispatchToProps (dispatch) {
   }
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(withTranslation()(TaskListPage))
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(TaskListPage))

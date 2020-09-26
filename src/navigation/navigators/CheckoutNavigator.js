@@ -1,124 +1,118 @@
 import React from 'react'
-import {TouchableOpacity} from 'react-native'
-import {Text} from 'native-base'
-import { createStackNavigator } from 'react-navigation-stack'
+import { TouchableOpacity } from 'react-native'
+import { Text } from 'native-base'
+import { createStackNavigator } from '@react-navigation/stack'
+import { withTranslation } from 'react-i18next'
+import { createCollapsibleStackSub } from 'react-navigation-collapsible'
 
-import i18n from '../../i18n'
-import screens, {defaultNavigationOptions, headerLeft} from '..'
+import { stackNavigatorScreenOptions } from '../styles'
+import screens, { headerLeft } from '..'
 
-const MainNavigator = createStackNavigator({
-  CheckoutHome: {
-    screen: screens.RestaurantsPage,
-    navigationOptions: ({ navigation }) => ({
-      title: i18n.t('RESTAURANTS'),
-      headerLeft: headerLeft(navigation),
-    }),
-  },
-  CheckoutRestaurant: {
-    screen: screens.CheckoutRestaurant,
-    navigationOptions: ({ navigation }) => ({
-      title: i18n.t('RESTAURANT'),
-    }),
-  },
-  CheckoutSummary: {
-    screen: screens.CheckoutSummary,
-    navigationOptions: ({ navigation }) => ({
-      title: i18n.t('CART'),
-      headerRight: () =>
-        <TouchableOpacity style={{ paddingHorizontal: 10 }}
-          onPress={ () => navigation.setParams({ edit: !navigation.getParam('edit', false) }) }>
-          <Text style={{ color: 'white' }}>
-            { navigation.getParam('edit', false) ? i18n.t('FINISHED') : i18n.t('EDIT') }
-          </Text>
-        </TouchableOpacity>
-      ,
-    }),
-  },
-  CheckoutCreditCard: {
-    screen: screens.CheckoutCreditCard,
-    navigationOptions: ({ navigation }) => ({
-      title: i18n.t('PAYMENT'),
-    }),
-  },
-}, {
-  initialRouteKey: 'CheckoutHome',
-  initialRouteName: 'CheckoutHome',
-  defaultNavigationOptions,
-})
+const MainStack = createStackNavigator()
+const LoginRegisterStack = createStackNavigator()
+const RootStack = createStackNavigator()
 
-const LoginRegisterStack = createStackNavigator({
-  CheckoutLoginRegister: {
-    screen: screens.CheckoutLogin,
-    navigationOptions: ({ navigation }) => ({
-      // Use header = null to get rid of the header
-      // The screen's header will be used
-      headerShown: false,
-    }),
-  },
-  CheckoutCheckEmail: {
-    screen: screens.AccountRegisterCheckEmail,
-    navigationOptions: ({ navigation }) => ({
-      // Use header = null to get rid of the header
-      // The screen's header will be used
-      headerShown: false,
-    }),
-  },
-  CheckoutForgotPassword: {
-    screen: screens.AccountForgotPassword,
-    navigationOptions: ({ navigation }) => ({
-      // Use header = null to get rid of the header
-      // The screen's header will be used
-      headerShown: false,
-    }),
-  },
-  CheckoutResetPasswordCheckEmail: {
-    screen: screens.AccountResetPasswordCheckEmail,
-    navigationOptions: ({ navigation }) => ({
-      // Use header = null to get rid of the header
-      // The screen's header will be used
-      headerShown: false,
-    }),
-  },
-}, {
-  initialRouteName: 'CheckoutLoginRegister',
-  defaultNavigationOptions,
-})
+const LoginRegisterScreen = withTranslation()(({ t }) => (
+  <LoginRegisterStack.Navigator
+    screenOptions={ stackNavigatorScreenOptions }>
+    <LoginRegisterStack.Screen
+      name="CheckoutLoginRegister"
+      component={ screens.CheckoutLogin }
+      options={{ headerShown: false }} />
+    <LoginRegisterStack.Screen
+      name="CheckoutCheckEmail"
+      component={ screens.AccountRegisterCheckEmail }
+      options={{ headerShown: false }} />
+    <LoginRegisterStack.Screen
+      name="CheckoutForgotPassword"
+      component={ screens.AccountForgotPassword }
+      options={{ headerShown: false }} />
+    <LoginRegisterStack.Screen
+      name="CheckoutResetPasswordCheckEmail"
+      component={ screens.AccountResetPasswordCheckEmail }
+      options={{ headerShown: false }} />
+  </LoginRegisterStack.Navigator>
+))
 
-export default createStackNavigator({
-  Main: {
-    screen: MainNavigator,
-    navigationOptions: ({ navigation }) => ({
-      // Use header = null to get rid of the header
-      // The screen's header will be used
-      headerShown: false,
-      title: i18n.t('RESTAURANT'),
-    }),
-  },
-  CheckoutProductOptions: {
-    screen: screens.CheckoutProductOptions,
-    navigationOptions: ({ navigation }) => ({
-      title: i18n.t('CHECKOUT_PRODUCT_OPTIONS_TITLE'),
-    }),
-  },
-  CheckoutShippingDate: {
-    screen: screens.CheckoutShippingDate,
-    navigationOptions: ({ navigation }) => ({
-      title: i18n.t('CHECKOUT_SHIPPING_DATE'),
-    }),
-  },
-  CheckoutLogin: {
-    screen: LoginRegisterStack,
-    navigationOptions: ({ navigation }) => ({
-      title: i18n.t('CHECKOUT_LOGIN_TITLE'),
-    }),
-  },
-  CheckoutMoreInfos: {
-    screen: screens.CheckoutMoreInfos,
-    navigationOptions: ({ navigation }) => ({
-      title: i18n.t('CHECKOUT_MORE_INFOS'),
-    }),
-  },
-}, {
-  mode: 'modal',
-  defaultNavigationOptions,
-})
+const MainStackScreen = withTranslation()(({ t }) => (
+  <MainStack.Navigator
+    screenOptions={ stackNavigatorScreenOptions }>
+    <MainStack.Screen
+      name="CheckoutHome"
+      component={ screens.RestaurantsPage }
+      options={ ({ navigation, route }) => ({
+        title: t('RESTAURANTS'),
+        headerLeft: headerLeft(navigation),
+      })} />
+    { createCollapsibleStackSub(
+      <MainStack.Screen
+        name="CheckoutRestaurant"
+        component={ screens.CheckoutRestaurant }
+        options={ ({ navigation, route }) => ({
+          title: t('RESTAURANT'),
+        })} />,
+      {
+        collapsedColor: 'red' /* Optional */,
+        useNativeDriver: true /* Optional, default: true */,
+        key: 'CheckoutRestaurant' /* Optional, a key for your Stack.Screen element */,
+        elevation: 4 /* Optional */,
+      }
+    )}
+    <MainStack.Screen
+      name="CheckoutSummary"
+      component={ screens.CheckoutSummary }
+      options={ ({ navigation, route }) => ({
+        title: t('CART'),
+        headerRight: () =>
+          <TouchableOpacity style={{ paddingHorizontal: 10 }}
+            onPress={ () => navigation.setParams({ edit: !(route.params?.edit ?? false) }) }>
+            <Text style={{ color: 'white' }}>
+              { (route.params?.edit ?? false) ? t('FINISHED') : t('EDIT') }
+            </Text>
+          </TouchableOpacity>
+        ,
+      })} />
+    <MainStack.Screen
+      name="CheckoutCreditCard"
+      component={ screens.CheckoutCreditCard }
+      options={ ({ navigation, route }) => ({
+        title: t('PAYMENT'),
+      })} />
+  </MainStack.Navigator>
+))
+
+export default withTranslation()(({ t }) => (
+  <RootStack.Navigator
+    screenOptions={ stackNavigatorScreenOptions }
+    mode="modal">
+    <RootStack.Screen
+      name="Main"
+      component={ MainStackScreen }
+      options={{ headerShown: false }}
+    />
+    <RootStack.Screen
+      name="CheckoutProductOptions"
+      component={ screens.CheckoutProductOptions }
+      options={{
+        title: t('CHECKOUT_PRODUCT_OPTIONS_TITLE'),
+      }} />
+    <RootStack.Screen
+      name="CheckoutShippingDate"
+      component={ screens.CheckoutShippingDate }
+      options={{
+        title: t('CHECKOUT_SHIPPING_DATE'),
+      }} />
+    <RootStack.Screen
+      name="CheckoutLogin"
+      component={ LoginRegisterScreen }
+      options={{
+        title: t('CHECKOUT_LOGIN_TITLE'),
+      }} />
+    <RootStack.Screen
+      name="CheckoutMoreInfos"
+      component={ screens.CheckoutMoreInfos }
+      options={{
+        title: t('CHECKOUT_MORE_INFOS'),
+      }} />
+  </RootStack.Navigator>
+))

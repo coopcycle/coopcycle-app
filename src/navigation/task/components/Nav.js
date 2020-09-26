@@ -2,7 +2,7 @@ import React from 'react'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import { Text, Icon } from 'native-base'
 import { withTranslation } from 'react-i18next'
-import { withNavigation } from 'react-navigation'
+// import { withNavigation } from 'react-navigation'
 import _ from 'lodash'
 
 import { navigateToTask } from '../../../navigation'
@@ -85,4 +85,5 @@ const styles = StyleSheet.create({
   },
 })
 
-export default withNavigation(Nav)
+// export default withNavigation(Nav)
+export default Nav
