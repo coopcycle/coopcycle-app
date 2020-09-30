@@ -2511,9 +2511,9 @@
     stacktrace-js "^2.0.0"
 
 "@react-native-firebase/messaging@^7.8.6":
-  version "7.8.6"
-  resolved "https://registry.yarnpkg.com/@react-native-firebase/messaging/-/messaging-7.8.6.tgz#360cec3f7f6c405a6c1c0a955f16c7c664e27b12"
-  integrity sha512-sZ8Ygje573rJEMLgHIgrnDZ5H73xpLDXGOSGncQYzD+p4QxRqyBYVKLdbCkFqBjeHNXZw/GmRjtRh56DeqA+PQ==
+  version "7.8.10"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/messaging/-/messaging-7.8.10.tgz#3320ccc7472de400e9a781dc9e3e19b7d52e3dd9"
+  integrity sha512-PtQhNdhglrB1McNSUEO4OPBrLPBRZUCoED12a3nGWXRj4QIkZpWttIssa1/NodSUHUC560H1jHvWv2GF3hoWAg==
 
 "@react-native-firebase/perf@^7.4.3":
   version "7.4.3"
