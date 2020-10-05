@@ -467,9 +467,9 @@ PODS:
     - React-Core
   - RNBackgroundFetch (3.1.0):
     - React
-  - RNBackgroundGeolocation (3.9.0):
+  - RNBackgroundGeolocation (3.9.1):
     - CocoaLumberjack (~> 3.6.1)
-    - React
+    - React-Core
   - RNCAsyncStorage (1.12.0):
     - React
   - RNCMaskedView (0.1.10):
@@ -902,7 +902,7 @@ SPEC CHECKSUMS:
   ReactNativeKeyboardManager: 6c42da02c08b7eb16440f9fdc1c78f776a11cdca
   rn-fetch-blob: f065bb7ab7fb48dd002629f8bdcb0336602d3cba
   RNBackgroundFetch: 8dbb63141792f1473e863a0797ffbd5d987af2fc
-  RNBackgroundGeolocation: 66b7cd2859fb4659ff2a1c09fd7739f9ba179e05
+  RNBackgroundGeolocation: 807366bac2fc9f64cadad355695a9c19a9760d66
   RNCAsyncStorage: 2a692bcb9b69b76a2f1a95f33db057129700af64
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
   RNCPicker: a724b3aa22b182697c190a8fd7b060b66119e136
