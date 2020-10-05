@@ -10850,9 +10850,9 @@ react-native@0.62.2:
     whatwg-fetch "^3.0.0"
 
 react-navigation-collapsible@^3.0.3:
-  version "3.0.3"
-  resolved "https://registry.yarnpkg.com/react-navigation-collapsible/-/react-navigation-collapsible-3.0.3.tgz#181252f7fe3117a8792aaac7ca58cd5f3f05cd1b"
-  integrity sha512-SP2SRyjuU9svwsyWcdSSToCEmwLR41sSQm8XEZtc7RGqVgWDoNNyiOq6XGX0MXyPl3Q2jWH6XGIxNNpXpfZfVA==
+  version "3.0.4"
+  resolved "https://registry.yarnpkg.com/react-navigation-collapsible/-/react-navigation-collapsible-3.0.4.tgz#f41a1456a4467cf81a72261a772163f812a95039"
+  integrity sha512-W2Kzga4KfcMig1dZdVBn+H/Pd7t12z8t9zQ+KMdV/HDaR5Y54J7zIiYPpqYZDaWPMaGl1/nxgssGq1rkCq9cww==
   dependencies:
     hoist-non-react-statics "^3.0.1"
 
