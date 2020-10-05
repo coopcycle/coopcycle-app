@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
 import HeaderButton from '../../components/HeaderButton'
+import { selectSelectedDate } from 'coopcycle-frontend-js/dispatch/redux'
 
 class HeaderRightButton extends Component {
   render() {
@@ -15,7 +16,7 @@ class HeaderRightButton extends Component {
 
 function mapStateToProps(state) {
   return {
-    date: state.dispatch.date,
+    date: selectSelectedDate(state),
   }
 }
 

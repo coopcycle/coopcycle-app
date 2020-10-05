@@ -7,7 +7,9 @@ import { Text } from 'native-base';
 import TaskList from '../../components/TaskList'
 import AddButton from './components/AddButton'
 import { assignTask, initialize } from '../../redux/Dispatch/actions'
-import { selectUnassignedTask } from '../../redux/Dispatch/selectors'
+import { selectUnassignedTasksNotCancelled } from '../../redux/Dispatch/selectors'
+import { selectSelectedDate, selectTasksWithColor } from 'coopcycle-frontend-js/dispatch/redux'
+
 import { navigateToTask } from '../../navigation'
 
 class UnassignedTasks extends Component {
@@ -45,6 +47,7 @@ class UnassignedTasks extends Component {
           { !isEmpty && (
             <TaskList
               tasks={ this.props.unassignedTasks }
+              tasksWithColor={ this.props.tasksWithColor }
               swipeOutLeftEnabled={ task => !task.isAssigned }
               onSwipeLeft={ task => navigate('DispatchPickUser', { onItemPress: user => this._assignTask(task, user) }) }
               swipeOutLeftIconName="user"
@@ -59,8 +62,9 @@ class UnassignedTasks extends Component {
 function mapStateToProps(state) {
 
   return {
-    unassignedTasks: selectUnassignedTask(state),
-    date: state.dispatch.date,
+    unassignedTasks: selectUnassignedTasksNotCancelled(state),
+    tasksWithColor: selectTasksWithColor(state),
+    date: selectSelectedDate(state),
     user: state.app.user,
   }
 }

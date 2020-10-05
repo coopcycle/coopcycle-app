@@ -8,7 +8,7 @@
 import moment from 'moment'
 import { createSelector } from 'reselect'
 import { reject, isEqual, uniqWith } from 'lodash'
-
+import { taskUtils } from 'coopcycle-frontend-js/dispatch/redux'
 
 /* Simple Selectors */
 export const selectTaskSelectedDate = state => state.ui.tasks.selectedDate
@@ -106,3 +106,8 @@ const doesFilterMatch = (filter, task) =>
       (k === 'tags')
         ? task.tags.map(t => t.name).includes(filter[k])
         : task[k] === filter[k], false)
+
+export const selectTasksWithColor = createSelector(
+  selectTasks,
+  tasks => taskUtils.mapToColor(tasks)
+)

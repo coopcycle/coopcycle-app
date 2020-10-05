@@ -26,8 +26,6 @@ import {
   UNASSIGN_TASK_SUCCESS,
   UNASSIGN_TASK_FAILURE,
   LOAD_TASK_SUCCESS,
-  DISPATCH_LOAD_TASKS_SUCCESS,
-  DISPATCH_LOAD_TASKS_FAILURE,
 } from './actions'
 
 import {
@@ -43,11 +41,7 @@ import { createTaskList } from './utils'
 
 const initialState = {
   isFetching: false,
-  unassignedTasks: [],
   users: [],
-  allTasks: [],
-  taskLists: [],
-  date: moment(),
   initialized: false,
 }
 
@@ -161,8 +155,6 @@ const removeFromTaskLists = (taskLists, task) => {
 
 export default (state = initialState, action = {}) => {
 
-  let unassignedTasks
-
   switch (action.type) {
 
     case DISPATCH_INITIALIZE:
@@ -189,31 +181,19 @@ export default (state = initialState, action = {}) => {
     case CREATE_TASK_LIST_FAILURE:
     case CREATE_TASK_FAILURE:
     case ASSIGN_TASK_FAILURE:
-    case DISPATCH_LOAD_TASKS_FAILURE:
     case UNASSIGN_TASK_FAILURE:
       return {
         ...state,
         isFetching: false,
       }
 
-    case DISPATCH_LOAD_TASKS_SUCCESS:
-
-      unassignedTasks = _.filter(action.payload, task => !task.isAssigned)
-
-      return {
-        ...state,
-        isFetching: false,
-        allTasks: action.payload,
-        unassignedTasks,
-      }
-
-    case LOAD_UNASSIGNED_TASKS_SUCCESS:
-      return {
-        ...state,
-        isFetching: false,
-        unassignedTasks: action.payload,
-      }
-
+  case LOAD_UNASSIGNED_TASKS_SUCCESS: {
+    return {
+      ...state,
+      isFetching: false,
+      unassignedTasks: action.payload,
+    }
+  }
     case LOAD_USERS_SUCCESS:
       return {
         ...state,
