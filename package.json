@@ -58,7 +58,7 @@
     "react-native-camera": "^3.40.0",
     "react-native-communications": "^2.2.1",
     "react-native-credit-card-input": "^0.4.1",
-    "react-native-dotenv": "^2.4.0",
+    "react-native-dotenv": "^2.4.1",
     "react-native-dropdownalert": "^4.3.0",
     "react-native-email-link": "^1.9.2",
     "react-native-gesture-handler": "^1.8.0",
