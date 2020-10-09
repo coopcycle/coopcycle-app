@@ -529,67 +529,62 @@ export function init(restaurant) {
   }
 }
 
-export function mercadopagoCheckout(payment) {
+export function mercadopagoCheckout({payment, preferenceId}) {
+  /**
+   * Helper function to handle errors
+   */
+  function handleError(dispatch, error) {
+    dispatch(checkoutFailure(error))
+    NavigationHolder.dispatch(NavigationActions.navigate({
+      routeName: 'CheckoutNav',
+      // We navigate back to the MoreInfos screen
+      action: NavigationActions.navigate({
+        routeName: 'CheckoutMoreInfos',
+        params: {},
+      }),
+    }))
+  }
+
   return (dispatch, getState) => {
+    const { httpClient } = getState().app
+    const { cart } = getState().checkout
 
     dispatch(checkoutRequest())
-
+    
+    /**
+     * Starts a Mercadopago checkout
+     */
     payment
-    .then(res => {
-      // First, reset checkout stack
-      NavigationHolder.dispatch(StackActions.popToTop())
+    .then(({id: paymentId}) => {
+      const params = {
+        mercadopagoPreferenceId: preferenceId,
+        mercadopagoPaymentId: paymentId
+      }
 
-      // Fake order for testing purposes until endpoint `/api/orders/{id}/pay` is available for Mercadopago
-      const items = [
-        {
-          quantity: 3,
-          name: 'test product 1',
-          adjustments: {
-            menu_item_modifier: [
-              {id: 1, label: 'menu item modifier test'},
-              {id: 2, label: 'menu item modifier test'}
-            ]
-          },
-          total: 420
-        },
-        {
-          quantity: 1,
-          name: 'test product 2',
-          adjustments: {
-            menu_item_modifier: [
-              {id: 1, label: 'menu item modifier test'},
-              {id: 2, label: 'menu item modifier test'}
-            ]
-          },
-          total: 300
-        }
-      ]
-      const order = { total: 720, itemsTotal: 720, number: 6, state: 'new', restaurant: { name: 'Test Restaurant' }, items }
-
-      // Then, navigate to order screen
-      NavigationHolder.dispatch(NavigationActions.navigate({
-        routeName: 'AccountNav',
-        // We skip the AccountOrders screen
-        action: NavigationActions.navigate({
-          routeName: 'AccountOrder',
-          params: { order },
-        }),
-      }))
-      
-      // Make sure to clear AFTER navigation has been reset
-      dispatch(clear())
-      dispatch(checkoutSuccess(order))
+      httpClient
+      .put(cart['@id'] + '/pay', params)
+      .then(order => {
+        // First, reset checkout stack
+        NavigationHolder.dispatch(StackActions.popToTop())
+        // Then, navigate to order screen
+        NavigationHolder.dispatch(NavigationActions.navigate({
+          routeName: 'AccountNav',
+          // We skip the AccountOrders screen
+          action: NavigationActions.navigate({
+            routeName: 'AccountOrder',
+            params: { order },
+          }),
+        }))
+        // Make sure to clear AFTER navigation has been reseted
+        dispatch(clear())
+        dispatch(checkoutSuccess(order))
+      })
+      .catch(orderUpdateError => {
+        handleError(dispatch, orderUpdateError)
+      })
     })
-    .catch(err => {
-      dispatch(checkoutFailure(err))
-      NavigationHolder.dispatch(NavigationActions.navigate({
-        routeName: 'CheckoutNav',
-        // We navigate back to the MoreInfos screen
-        action: NavigationActions.navigate({
-          routeName: 'CheckoutMoreInfos',
-          params: {},
-        }),
-      }))
+    .catch(paymentError => {
+      handleError(dispatch, paymentError)
     })
   }
 }
