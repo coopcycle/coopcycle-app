@@ -11,3 +11,9 @@ export const selectTasksNotCancelled = createSelector(
   state => state.tasks,
   (tasks) => _.filter(tasks, task => task.status !== 'CANCELLED')
 )
+
+export const selectIsDispatchFetching = createSelector(
+  state => state.dispatch.isFetching,
+  state => state.dispatch.taskListsLoading,
+  (isFetching, taskListsLoading) => isFetching || taskListsLoading
+)
