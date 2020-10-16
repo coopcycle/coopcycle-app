@@ -63,9 +63,9 @@ export const loadTaskListsRequest = createAction(LOAD_TASK_LISTS_REQUEST)
 export const loadTaskListsSuccess = createAction(LOAD_TASK_LISTS_SUCCESS)
 export const loadTaskListsFailure = createAction(LOAD_TASK_LISTS_FAILURE)
 
-export const createTaskListRequest = createAction(CREATE_TASK_LIST_REQUEST)
-export const createTaskListSuccess = createAction(CREATE_TASK_LIST_SUCCESS)
-export const createTaskListFailure = createAction(CREATE_TASK_LIST_FAILURE)
+const createTaskListRequest = createAction(CREATE_TASK_LIST_REQUEST)
+const createTaskListSuccess = createAction(CREATE_TASK_LIST_SUCCESS)
+const createTaskListFailure = createAction(CREATE_TASK_LIST_FAILURE)
 
 export const createTaskRequest = createAction(CREATE_TASK_REQUEST)
 export const createTaskSuccess = createAction(CREATE_TASK_SUCCESS)

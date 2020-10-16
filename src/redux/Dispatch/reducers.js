@@ -41,6 +41,7 @@ import { createTaskList } from './utils'
 
 const initialState = {
   isFetching: false,
+  taskListsLoading: false,
   users: [],
   initialized: false,
 }
@@ -166,7 +167,6 @@ export default (state = initialState, action = {}) => {
     case LOAD_UNASSIGNED_TASKS_REQUEST:
     case LOAD_USERS_REQUEST:
     case LOAD_TASK_LISTS_REQUEST:
-    case CREATE_TASK_LIST_REQUEST:
     case CREATE_TASK_REQUEST:
     case ASSIGN_TASK_REQUEST:
     case UNASSIGN_TASK_REQUEST:
@@ -175,10 +175,15 @@ export default (state = initialState, action = {}) => {
         isFetching: true,
       }
 
+    case CREATE_TASK_LIST_REQUEST:
+      return {
+        ...state,
+        taskListsLoading: true,
+      }
+
     case LOAD_UNASSIGNED_TASKS_FAILURE:
     case LOAD_USERS_FAILURE:
     case LOAD_TASK_LISTS_FAILURE:
-    case CREATE_TASK_LIST_FAILURE:
     case CREATE_TASK_FAILURE:
     case ASSIGN_TASK_FAILURE:
     case UNASSIGN_TASK_FAILURE:
@@ -187,13 +192,18 @@ export default (state = initialState, action = {}) => {
         isFetching: false,
       }
 
-  case LOAD_UNASSIGNED_TASKS_SUCCESS: {
-    return {
-      ...state,
-      isFetching: false,
-      unassignedTasks: action.payload,
-    }
-  }
+    case CREATE_TASK_LIST_FAILURE:
+      return {
+        ...state,
+        taskListsLoading: false,
+      }
+
+    case LOAD_UNASSIGNED_TASKS_SUCCESS:
+      return {
+        ...state,
+        isFetching: false,
+        unassignedTasks: action.payload,
+      }
     case LOAD_USERS_SUCCESS:
       return {
         ...state,
@@ -211,7 +221,7 @@ export default (state = initialState, action = {}) => {
     case CREATE_TASK_LIST_SUCCESS:
       return {
         ...state,
-        isFetching: false,
+        taskListsLoading: false,
         taskLists: state.taskLists.concat(action.payload),
       }
 
