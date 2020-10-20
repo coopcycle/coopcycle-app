@@ -12,9 +12,6 @@ import {
   LOAD_TASK_LISTS_REQUEST,
   LOAD_TASK_LISTS_SUCCESS,
   LOAD_TASK_LISTS_FAILURE,
-  CREATE_TASK_LIST_REQUEST,
-  CREATE_TASK_LIST_SUCCESS,
-  CREATE_TASK_LIST_FAILURE,
   CHANGE_DATE,
   CREATE_TASK_REQUEST,
   CREATE_TASK_SUCCESS,
@@ -41,7 +38,6 @@ import { createTaskList } from './utils'
 
 const initialState = {
   isFetching: false,
-  taskListsLoading: false,
   users: [],
   initialized: false,
 }
@@ -175,12 +171,6 @@ export default (state = initialState, action = {}) => {
         isFetching: true,
       }
 
-    case CREATE_TASK_LIST_REQUEST:
-      return {
-        ...state,
-        taskListsLoading: true,
-      }
-
     case LOAD_UNASSIGNED_TASKS_FAILURE:
     case LOAD_USERS_FAILURE:
     case LOAD_TASK_LISTS_FAILURE:
@@ -190,12 +180,6 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         isFetching: false,
-      }
-
-    case CREATE_TASK_LIST_FAILURE:
-      return {
-        ...state,
-        taskListsLoading: false,
       }
 
     case LOAD_UNASSIGNED_TASKS_SUCCESS:
@@ -216,13 +200,6 @@ export default (state = initialState, action = {}) => {
         ...state,
         isFetching: false,
         taskLists: action.payload,
-      }
-
-    case CREATE_TASK_LIST_SUCCESS:
-      return {
-        ...state,
-        taskListsLoading: false,
-        taskLists: state.taskLists.concat(action.payload),
       }
 
     case CREATE_TASK_SUCCESS:

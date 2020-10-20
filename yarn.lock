@@ -5232,9 +5232,9 @@ convert-source-map@^1.6.0, convert-source-map@^1.7.0:
   dependencies:
     safe-buffer "~5.1.1"
 
-"coopcycle-frontend-js@git+https://git@github.com/coopcycle/coopcycle-frontend-js.git#1.0.4":
-  version "1.0.3"
-  resolved "git+https://git@github.com/coopcycle/coopcycle-frontend-js.git#fb03b808828d494e1269cb18144f39abf4d50c69"
+"coopcycle-frontend-js@git+https://git@github.com/coopcycle/coopcycle-frontend-js.git#1.1.0-beta.1":
+  version "1.1.0-beta.1"
+  resolved "git+https://git@github.com/coopcycle/coopcycle-frontend-js.git#70dd8538ee8b755e86255d2265473c27e4b6b539"
   dependencies:
     lodash "^4.17.15"
     moment "^2.29.0"

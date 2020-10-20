@@ -7,6 +7,12 @@ import WebSocketClient from '../../websocket/WebSocketClient'
 import i18n from '../../i18n'
 import NavigationHolder from '../../NavigationHolder'
 
+import {
+  createTaskListRequest,
+  createTaskListSuccess,
+  createTaskListFailure,
+} from '../../coopcycle-frontend-js/dispatch/redux'
+
 /*
  * Action Types
  */
@@ -24,10 +30,6 @@ export const LOAD_USERS_FAILURE = 'LOAD_USERS_FAILURE'
 export const LOAD_TASK_LISTS_REQUEST = 'LOAD_TASK_LISTS_REQUEST'
 export const LOAD_TASK_LISTS_SUCCESS = 'LOAD_TASK_LISTS_SUCCESS'
 export const LOAD_TASK_LISTS_FAILURE = 'LOAD_TASK_LISTS_FAILURE'
-
-export const CREATE_TASK_LIST_REQUEST = 'CREATE_TASK_LIST_REQUEST'
-export const CREATE_TASK_LIST_SUCCESS = 'CREATE_TASK_LIST_SUCCESS'
-export const CREATE_TASK_LIST_FAILURE = 'CREATE_TASK_LIST_FAILURE'
 
 export const CREATE_TASK_REQUEST = 'CREATE_TASK_REQUEST'
 export const CREATE_TASK_SUCCESS = 'CREATE_TASK_SUCCESS'
@@ -62,10 +64,6 @@ export const loadUsersFailure = createAction(LOAD_USERS_FAILURE)
 export const loadTaskListsRequest = createAction(LOAD_TASK_LISTS_REQUEST)
 export const loadTaskListsSuccess = createAction(LOAD_TASK_LISTS_SUCCESS)
 export const loadTaskListsFailure = createAction(LOAD_TASK_LISTS_FAILURE)
-
-const createTaskListRequest = createAction(CREATE_TASK_LIST_REQUEST)
-const createTaskListSuccess = createAction(CREATE_TASK_LIST_SUCCESS)
-const createTaskListFailure = createAction(CREATE_TASK_LIST_FAILURE)
 
 export const createTaskRequest = createAction(CREATE_TASK_REQUEST)
 export const createTaskSuccess = createAction(CREATE_TASK_SUCCESS)
