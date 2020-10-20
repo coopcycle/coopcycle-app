@@ -9,7 +9,7 @@ import Avatar from '../../components/Avatar'
 import AddButton from './components/AddButton'
 import { createTaskList } from '../../redux/Dispatch/actions'
 import { selectTasksNotCancelled } from '../../redux/Dispatch/selectors'
-import { selectSelectedDate, selectTaskLists } from 'coopcycle-frontend-js/dispatch/redux'
+import { selectSelectedDate, selectTaskLists } from '../../coopcycle-frontend-js/dispatch/redux'
 
 class TaskLists extends Component {
 
