@@ -11,7 +11,7 @@ import {
   createTaskListRequest,
   createTaskListSuccess,
   createTaskListFailure,
-} from '../../coopcycle-frontend-js/dispatch/redux'
+} from '../../coopcycle-frontend-js/logistics/redux'
 
 /*
  * Action Types
