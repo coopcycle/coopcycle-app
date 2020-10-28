@@ -9,7 +9,7 @@ import TaskList from '../../components/TaskList'
 import AddButton from './components/AddButton'
 import { unassignTask } from '../../redux/Dispatch/actions'
 import { selectTasksNotCancelled } from '../../redux/Dispatch/selectors'
-import { selectTaskLists, selectTasksWithColor } from '../../coopcycle-frontend-js/logistics/redux'
+import { selectTaskLists, selectTasksWithColor } from '../../coopcycle-frontend-js/lastmile/redux'
 
 import { navigateToTask } from '../../navigation'
 

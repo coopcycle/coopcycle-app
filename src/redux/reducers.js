@@ -24,8 +24,17 @@ import { appReducer } from './App'
 import accountReducer from './Account/reducers'
 import restaurantReducer from './Restaurant/reducers'
 import checkoutReducer from './Checkout/reducers'
-import { reducer as coreDispatchReducer } from '../coopcycle-frontend-js/logistics/redux'
+import {
+  dateReducer as coreDateReducer,
+  taskEntityReducers as coreTaskEntityReducers,
+  taskListEntityReducers as coreTaskListEntityReducers,
+  uiReducers as coreUiReducers,
+} from '../coopcycle-frontend-js/lastmile/redux'
 import appDispatchReducer from './Dispatch/reducers'
+import appDateReducer from './lastmile/dateReducer'
+import appTaskEntityReducers from './lastmile/taskEntityReducers'
+import appTaskListEntityReducers from './lastmile/taskListEntityReducers'
+import appLogisticsUiReducers from './lastmile/uiReducers'
 import storeReducer from './Store/reducers'
 import { createTaskItemsTransform } from './util'
 import reduceReducers from 'reduce-reducers';
@@ -132,8 +141,6 @@ const appPersistConfig = {
   },
 }
 
-const dispatchReducer = reduceReducers(coreDispatchReducer, appDispatchReducer)
-
 export default combineReducers({
   entities: combineReducers({
     tasks: persistReducer(taskEntitiesPersistConfig, tasksEntityReducer),
@@ -143,8 +150,17 @@ export default combineReducers({
   restaurant: persistReducer(restaurantPersistConfig, restaurantReducer),
   store: storeReducer,
   checkout: checkoutReducer,
-  dispatch: dispatchReducer,
   ui: combineReducers({
     tasks: persistReducer(tasksUiPersistConfig, tasksUiReducer),
+  }),
+  //todo move more properties from webReducers inside `lastmile` state
+  dispatch: appDispatchReducer,
+  lastmile: combineReducers({
+    date: reduceReducers(coreDateReducer, appDateReducer),
+    entities: combineReducers({
+      tasks: reduceReducers(coreTaskEntityReducers, appTaskEntityReducers),
+      taskLists: reduceReducers(coreTaskListEntityReducers, appTaskListEntityReducers),
+    }),
+    ui: reduceReducers(coreUiReducers, appLogisticsUiReducers),
   }),
 })

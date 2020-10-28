@@ -11,7 +11,17 @@ import {
   createTaskListRequest,
   createTaskListSuccess,
   createTaskListFailure,
-} from '../../coopcycle-frontend-js/logistics/redux'
+
+  selectSelectedDate,
+} from '../../coopcycle-frontend-js/lastmile/redux'
+
+import {
+  startTaskSuccess,
+  markTaskDoneSuccess,
+  markTaskFailedSuccess,
+} from "../Courier";
+
+import { isSameDate } from "./utils";
 
 /*
  * Action Types
@@ -34,6 +44,10 @@ export const LOAD_TASK_LISTS_FAILURE = 'LOAD_TASK_LISTS_FAILURE'
 export const CREATE_TASK_REQUEST = 'CREATE_TASK_REQUEST'
 export const CREATE_TASK_SUCCESS = 'CREATE_TASK_SUCCESS'
 export const CREATE_TASK_FAILURE = 'CREATE_TASK_FAILURE'
+
+export const CANCEL_TASK_REQUEST = 'CANCEL_TASK_REQUEST'
+export const CANCEL_TASK_SUCCESS = 'CANCEL_TASK_SUCCESS'
+export const CANCEL_TASK_FAILURE = 'CANCEL_TASK_FAILURE'
 
 export const ASSIGN_TASK_REQUEST = 'ASSIGN_TASK_REQUEST'
 export const ASSIGN_TASK_SUCCESS = 'ASSIGN_TASK_SUCCESS'
@@ -68,6 +82,10 @@ export const loadTaskListsFailure = createAction(LOAD_TASK_LISTS_FAILURE)
 export const createTaskRequest = createAction(CREATE_TASK_REQUEST)
 export const createTaskSuccess = createAction(CREATE_TASK_SUCCESS)
 export const createTaskFailure = createAction(CREATE_TASK_FAILURE)
+
+export const cancelTaskRequest = createAction(CANCEL_TASK_REQUEST)
+export const cancelTaskSuccess = createAction(CANCEL_TASK_SUCCESS)
+export const cancelTaskFailure = createAction(CANCEL_TASK_FAILURE)
 
 export const assignTaskRequest = createAction(ASSIGN_TASK_REQUEST)
 export const assignTaskSuccess = createAction(ASSIGN_TASK_SUCCESS)
@@ -152,7 +170,7 @@ export function initialize() {
     }
 
     const httpClient = getState().app.httpClient
-    const date = getState().dispatch.date
+    const date = selectSelectedDate(getState())
 
     dispatch(loadUnassignedTasksRequest())
 
@@ -241,8 +259,14 @@ export function createTask(task) {
     dispatch(createTaskRequest())
 
     return httpClient.post('/api/tasks', task)
-      .then(res => {
-        dispatch(createTaskSuccess(res))
+      .then(task => {
+        let date = selectSelectedDate(getState())
+
+        if (isSameDate(task, date)) {
+          dispatch(createTaskSuccess(task))
+        }
+
+
         const resetAction = StackActions.reset({
           index: 0,
           key: null,
@@ -298,5 +322,37 @@ export function loadTask(task) {
     return httpClient.get(task)
       .then(res => dispatch(loadTaskSuccess(res)))
       .catch(e => dispatch(loadTaskFailure(e)))
+  }
+}
+
+export function updateTask(action, task) {
+  return function (dispatch, getState) {
+    let date = selectSelectedDate(getState())
+
+    if (isSameDate(task, date)) {
+      switch (action) {
+        case 'task:created':
+          dispatch(createTaskSuccess(task))
+          break;
+        case 'task:cancelled':
+          dispatch(cancelTaskSuccess(task))
+          break;
+        case 'task:assigned':
+          dispatch(assignTaskSuccess(task))
+          break
+        case 'task:unassigned':
+          dispatch(unassignTaskSuccess(task))
+          break
+        case 'task:started':
+          dispatch(startTaskSuccess(task))
+          break;
+        case 'task:done':
+          dispatch(markTaskDoneSuccess(task))
+          break;
+        case 'task:failed':
+          dispatch(markTaskFailedSuccess(task))
+          break;
+      }
+    }
   }
 }
