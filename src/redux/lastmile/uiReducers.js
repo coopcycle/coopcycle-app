@@ -17,7 +17,7 @@ import {
   UNASSIGN_TASK_REQUEST,
   UNASSIGN_TASK_SUCCESS,
   UNASSIGN_TASK_FAILURE,
-  LOAD_TASK_SUCCESS, CANCEL_TASK_SUCCESS,
+  CANCEL_TASK_SUCCESS,
 } from '../Dispatch/actions'
 
 const initialState = {
@@ -51,7 +51,6 @@ export default (state = initialState, action) => {
     case LOAD_USERS_SUCCESS:
     case LOAD_UNASSIGNED_TASKS_SUCCESS:
     case LOAD_TASK_LISTS_SUCCESS:
-    case LOAD_TASK_SUCCESS:
     case CREATE_TASK_SUCCESS:
     case CANCEL_TASK_SUCCESS:
     case ASSIGN_TASK_SUCCESS:

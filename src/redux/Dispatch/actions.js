@@ -57,10 +57,6 @@ export const UNASSIGN_TASK_REQUEST = 'UNASSIGN_TASK_REQUEST'
 export const UNASSIGN_TASK_SUCCESS = 'UNASSIGN_TASK_SUCCESS'
 export const UNASSIGN_TASK_FAILURE = 'UNASSIGN_TASK_FAILURE'
 
-export const LOAD_TASK_REQUEST = 'LOAD_TASK_REQUEST'
-export const LOAD_TASK_SUCCESS = 'LOAD_TASK_SUCCESS'
-export const LOAD_TASK_FAILURE = 'LOAD_TASK_FAILURE'
-
 export const CHANGE_DATE = 'CHANGE_DATE'
 
 /*
@@ -94,10 +90,6 @@ export const assignTaskFailure = createAction(ASSIGN_TASK_FAILURE)
 export const unassignTaskRequest = createAction(UNASSIGN_TASK_REQUEST)
 export const unassignTaskSuccess = createAction(UNASSIGN_TASK_SUCCESS)
 export const unassignTaskFailure = createAction(UNASSIGN_TASK_FAILURE)
-
-export const loadTaskRequest = createAction(LOAD_TASK_REQUEST)
-export const loadTaskSuccess = createAction(LOAD_TASK_SUCCESS)
-export const loadTaskFailure = createAction(LOAD_TASK_FAILURE)
 
 const _changeDate = createAction(CHANGE_DATE)
 const _initialize = createAction(DISPATCH_INITIALIZE)
@@ -308,20 +300,6 @@ export function unassignTask(task, username) {
     return httpClient.put(`${task['@id']}/unassign`, { username })
       .then(res => dispatch(unassignTaskSuccess(res)))
       .catch(e => dispatch(unassignTaskFailure(e)))
-  }
-}
-
-export function loadTask(task) {
-
-  return function (dispatch, getState) {
-
-    const httpClient = getState().app.httpClient
-
-    // dispatch(loadTaskRequest())
-
-    return httpClient.get(task)
-      .then(res => dispatch(loadTaskSuccess(res)))
-      .catch(e => dispatch(loadTaskFailure(e)))
   }
 }
 

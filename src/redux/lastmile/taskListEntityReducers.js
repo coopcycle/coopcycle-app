@@ -1,12 +1,10 @@
 import {
-  ASSIGN_TASK_SUCCESS,
   CHANGE_DATE,
   LOAD_TASK_LISTS_SUCCESS,
-  LOAD_TASK_SUCCESS,
-  UNASSIGN_TASK_SUCCESS
+  ASSIGN_TASK_SUCCESS,
+  UNASSIGN_TASK_SUCCESS, CREATE_TASK_SUCCESS,
 } from "../Dispatch/actions";
-import { taskListUtils, objectUtils } from '../../coopcycle-frontend-js/lastmile/redux'
-import _ from "lodash"
+import { taskListUtils as utils } from '../../coopcycle-frontend-js/lastmile/redux'
 
 const initialState = {
   items: new Map(),
@@ -20,41 +18,40 @@ export default (state = initialState, action) => {
         items: new Map(),
       }
     case LOAD_TASK_LISTS_SUCCESS: {
-      let newItems = objectUtils.copyMap(state.items)
+      let newItems = new Map(state.items)
 
-      let taskLists = action.payload.map(taskList => taskListUtils.replaceTasksWithIds(taskList))
-      taskLists.forEach(taskList => newItems.set(taskList["@id"], taskList))
+      let entities = action.payload.map(taskList => utils.replaceTasksWithIds(taskList))
+      entities.forEach(taskList => newItems.set(taskList[utils.taskListKey], taskList))
 
       return {
         ...state,
         items: newItems,
       }
     }
-    case LOAD_TASK_SUCCESS: {
+    case CREATE_TASK_SUCCESS: {
       let task = action.payload
 
-      let newItems
-
       if (task.isAssigned) {
-        newItems = taskListUtils.addAssignedTask(state, task)
-      } else {
-        newItems = taskListUtils.removeUnassignedTask(state, task)
-      }
+        let newItems = utils.addAssignedTask(state, task)
 
-      return {
-        ...state,
-        items: newItems,
+        return {
+          ...state,
+          items: newItems,
+        }
+
+      } else {
+        return state
       }
     }
     case ASSIGN_TASK_SUCCESS:
       return {
         ...state,
-        items: taskListUtils.addAssignedTask(state, action.payload),
+        items: utils.addAssignedTask(state, action.payload),
       }
     case UNASSIGN_TASK_SUCCESS:
       return {
         ...state,
-        items: taskListUtils.removeUnassignedTask(state, action.payload),
+        items: utils.removeUnassignedTask(state, action.payload),
       }
     default:
       return state
