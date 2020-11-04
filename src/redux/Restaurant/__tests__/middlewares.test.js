@@ -1,5 +1,5 @@
 import { createStore, applyMiddleware, combineReducers } from 'redux'
-import { createAction } from 'redux-actions'
+import thunk from 'redux-thunk'
 import { ringOnNewOrderCreated } from '../middlewares'
 import { loadOrdersSuccess, loadOrderSuccess } from '../actions'
 import { message as wsMessage } from '../../middlewares/WebSocketMiddleware/actions'
@@ -105,7 +105,7 @@ describe('ringOnNewOrderCreated', () => {
       restaurant: restaurantReducer,
     })
 
-    const store = createStore(reducer, preloadedState, applyMiddleware(ringOnNewOrderCreated))
+    const store = createStore(reducer, preloadedState, applyMiddleware(thunk, ringOnNewOrderCreated))
 
     store.dispatch(wsMessage(
       {

@@ -21,7 +21,7 @@ export const connected = createAction(CONNECTED)
 export const disconnected = createAction(DISCONNECTED)
 export const reconnected = createAction(RECONNECTED)
 export const error = createAction(ERROR)
-const _message = createAction(MESSAGE)
+export const _message = createAction(MESSAGE)
 
 export function message(payload) {
   return function (dispatch, getState) {
@@ -43,6 +43,8 @@ export function message(payload) {
           dispatch(_message(payload))
           break
       }
+    } else {
+      dispatch(_message(payload))
     }
   }
 }

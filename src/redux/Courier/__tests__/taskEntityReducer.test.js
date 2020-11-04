@@ -10,7 +10,7 @@ import {
   selectIsTasksLoading, selectIsTasksLoadingFailure, selectIsTaskCompleteFailure,
   selectTasks,
 } from '../taskSelectors';
-import { message } from '../../middlewares/WebSocketMiddleware'
+import { _message } from '../../middlewares/WebSocketMiddleware/actions'
 
 // As we may be using setTimeout(), we need to mock timers
 // @see https://jestjs.io/docs/en/timer-mocks.html
@@ -134,7 +134,7 @@ describe('Redux | Tasks | Reducers', () => {
         })
       })
 
-    test(`${message} | tasks:changed`, () => {
+    test(`${_message} | tasks:changed`, () => {
       const date = moment().format('YYYY-MM-DD')
 
       const tasks = [{ id: 1, position: 1 }, { id: 2, position: 0 }]
@@ -145,7 +145,7 @@ describe('Redux | Tasks | Reducers', () => {
         date,
       }
 
-      const newState = tasksEntityReducer(prevState, message(wsMsg))
+      const newState = tasksEntityReducer(prevState, _message(wsMsg))
       const fullState = { entities: { tasks: newState } }
 
       const restOldState = omit(prevState, ['items'])
@@ -155,7 +155,7 @@ describe('Redux | Tasks | Reducers', () => {
       expect(restOldState).toEqual(restNewState)
     })
 
-    test(`${message} | task:changed`, () => {
+    test(`${_message} | task:changed`, () => {
       const date = moment().format('YYYY-MM-DD')
 
       const oldTasks = [{ id: 1, position: 0 }, { id: 2, position: 1 }]
@@ -170,7 +170,7 @@ describe('Redux | Tasks | Reducers', () => {
         },
       }
 
-      const newState = tasksEntityReducer(prevState, message(wsMsg))
+      const newState = tasksEntityReducer(prevState, _message(wsMsg))
       const fullState = { entities: { tasks: newState } }
 
       const restOldState = omit(prevState, ['items'])
@@ -180,9 +180,9 @@ describe('Redux | Tasks | Reducers', () => {
       expect(restOldState).toEqual(restNewState)
     })
 
-    test(`${message} | unrecognized message type`, () => {
+    test(`${_message} | unrecognized message type`, () => {
       const prevState = { ...initialState }
-      const newState = tasksEntityReducer(prevState, message({ type: 'fake' }))
+      const newState = tasksEntityReducer(prevState, _message({ type: 'fake' }))
 
       expect(newState).toEqual(prevState)
     })
