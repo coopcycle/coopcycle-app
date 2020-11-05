@@ -153,7 +153,7 @@ export default combineReducers({
   ui: combineReducers({
     tasks: persistReducer(tasksUiPersistConfig, tasksUiReducer),
   }),
-  //todo move more properties from webReducers inside `lastmile` state
+  //todo move more properties from appDispatchReducer into `lastmile` state
   dispatch: appDispatchReducer,
   lastmile: combineReducers({
     date: reduceReducers(coreDateReducer, appDateReducer),
