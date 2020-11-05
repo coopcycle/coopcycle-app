@@ -97,6 +97,7 @@ export const tasksEntityReducer = (state = tasksEntityInitialState, action = {})
         isRefreshing: false,
       }
 
+    case START_TASK_FAILURE:
     case MARK_TASK_DONE_FAILURE:
     case MARK_TASK_FAILED_FAILURE:
       return {
