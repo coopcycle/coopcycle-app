@@ -13,8 +13,12 @@ import {
   MARK_TASK_FAILED_SUCCESS
 } from "../Courier";
 
+import {
+  taskUtils as utils
+} from "../../coopcycle-frontend-js/lastmile/redux"
+
 const initialState = {
-  items: new Map(),
+  byId: {},
 }
 
 export default (state = initialState, action) => {
@@ -22,28 +26,28 @@ export default (state = initialState, action) => {
     case CHANGE_DATE:
       return {
         ...state,
-        items: new Map(),
+        byId: {},
       }
     case LOAD_UNASSIGNED_TASKS_SUCCESS: {
-      let newItems = new Map(state.items)
-
-      action.payload.forEach(task => newItems.set(task['@id'], task))
+      let newItems = utils.upsertTasks(state.byId, action.payload)
 
       return {
         ...state,
-        items: newItems,
+        byId: newItems,
       }
     }
     case LOAD_TASK_LISTS_SUCCESS: {
-      let newItems = new Map(state.items)
+      let newItems = Object.assign({}, state.byId)
 
       action.payload.forEach(taskList => {
-        taskList.items.forEach(task => newItems.set(task['@id'], task))
+        taskList.items.forEach(task => {
+          newItems[task['@id']] = task
+        })
       })
 
       return {
         ...state,
-        items: newItems,
+        byId: newItems,
       }
     }
     case CREATE_TASK_SUCCESS:
@@ -54,13 +58,11 @@ export default (state = initialState, action) => {
     case MARK_TASK_DONE_SUCCESS:
     case MARK_TASK_FAILED_SUCCESS: {
       let task = action.payload
-
-      let newItems = new Map(state.items)
-      newItems.set(task['@id'], task)
+      let newItems = utils.upsertTasks(state.byId, [task])
 
       return {
         ...state,
-        items: newItems,
+        byId: newItems,
       }
     }
     default:

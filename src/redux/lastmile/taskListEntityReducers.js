@@ -7,7 +7,7 @@ import {
 import { taskListUtils as utils } from '../../coopcycle-frontend-js/lastmile/redux'
 
 const initialState = {
-  items: new Map(),
+  byUsername: {},
 }
 
 export default (state = initialState, action) => {
@@ -15,17 +15,19 @@ export default (state = initialState, action) => {
     case CHANGE_DATE:
       return {
         ...state,
-        items: new Map(),
+        byUsername: {},
       }
     case LOAD_TASK_LISTS_SUCCESS: {
-      let newItems = new Map(state.items)
+      let newItems = Object.assign({}, state.byUsername)
 
       let entities = action.payload.map(taskList => utils.replaceTasksWithIds(taskList))
-      entities.forEach(taskList => newItems.set(taskList[utils.taskListKey], taskList))
+      entities.forEach(taskList => {
+        newItems[taskList[utils.taskListKey]] = taskList
+      })
 
       return {
         ...state,
-        items: newItems,
+        byUsername: newItems,
       }
     }
     case CREATE_TASK_SUCCESS: {
@@ -36,7 +38,7 @@ export default (state = initialState, action) => {
 
         return {
           ...state,
-          items: newItems,
+          byUsername: newItems,
         }
 
       } else {
@@ -46,12 +48,12 @@ export default (state = initialState, action) => {
     case ASSIGN_TASK_SUCCESS:
       return {
         ...state,
-        items: utils.addAssignedTask(state, action.payload),
+        byUsername: utils.addAssignedTask(state, action.payload),
       }
     case UNASSIGN_TASK_SUCCESS:
       return {
         ...state,
-        items: utils.removeUnassignedTask(state, action.payload),
+        byUsername: utils.removeUnassignedTask(state, action.payload),
       }
     default:
       return state
