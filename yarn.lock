@@ -5321,10 +5321,10 @@ cosmiconfig@^5.0.5, cosmiconfig@^5.1.0:
     js-yaml "^3.13.1"
     parse-json "^4.0.0"
 
-countly-sdk-react-native-bridge@^20.4.7:
-  version "20.4.7"
-  resolved "https://registry.yarnpkg.com/countly-sdk-react-native-bridge/-/countly-sdk-react-native-bridge-20.4.7.tgz#7b1c50287f42df0ee6bb0d8f27d1a3452220c24c"
-  integrity sha512-NJWmK3A0KJYI2yDOdfaKCg5tEXRjpOhLpPMoQLNJOyJPRBhyrW6ATwV4TQHSJLmZt8yf17xZGqFKo+tK/tlq9A==
+countly-sdk-react-native-bridge@^20.4.9:
+  version "20.4.9"
+  resolved "https://registry.yarnpkg.com/countly-sdk-react-native-bridge/-/countly-sdk-react-native-bridge-20.4.9.tgz#60391485f331a28a144616ee28cce1d7c6d74646"
+  integrity sha512-LpGq5wCvFc6jjXDCKpzuB3Ccwpvam9zXItktmgNemRAv4TBEypQsnUBhJ4Fivgtu6b+ZvxgiNIW6Ms6XWccU8g==
 
 create-react-class@^15.6.3:
   version "15.6.3"
@@ -10577,10 +10577,10 @@ react-native-background-geolocation@^3.9.1:
     react-native-background-fetch "~3.1.0"
     xcode "^0.9.1"
 
-react-native-ble-manager@^7.3.1:
-  version "7.3.1"
-  resolved "https://registry.yarnpkg.com/react-native-ble-manager/-/react-native-ble-manager-7.3.1.tgz#f2cb982c2070cadd9650fde353a092d29ba00d97"
-  integrity sha512-/pw3Z+TLrZWyvGgyIaiA0YJkuNn/Gn0SVJATds9A9PQ1XuKqcR/ibgWVfnZ2UBhPXwVhPtmuEhBhseGP1Su2uQ==
+react-native-ble-manager@^7.4.1:
+  version "7.4.1"
+  resolved "https://registry.yarnpkg.com/react-native-ble-manager/-/react-native-ble-manager-7.4.1.tgz#062c13614e0e627a4d2648075716e02938d44a13"
+  integrity sha512-d9VS9y11SKxU6eUBIlUYrGo3kJKtGfuLJ4eDV7corETARz8JRWd5a/lXO5uqvyNP2lV5w3SiuycOJXEZdX7sow==
 
 react-native-calendars@^1.403.0:
   version "1.403.0"
@@ -10620,10 +10620,10 @@ react-native-credit-card-input@^0.4.1:
     prop-types "^15.6.0"
     react-native-flip-card "^3.4.1"
 
-react-native-dotenv@^2.4.1:
-  version "2.4.1"
-  resolved "https://registry.yarnpkg.com/react-native-dotenv/-/react-native-dotenv-2.4.1.tgz#f15fa3e4a8821a92a4297ca0ef416d84409d6a32"
-  integrity sha512-pt+769G395XNPiKtpLDXZC0+yCpl+DXyf7Qua3hTYKX/Kw/xA1heT5NWGSWvWIgYZ8b8mE1OjZYWctmIGIlAHg==
+react-native-dotenv@^2.4.2:
+  version "2.4.2"
+  resolved "https://registry.yarnpkg.com/react-native-dotenv/-/react-native-dotenv-2.4.2.tgz#231071a1c3a9c29d96e6221b80d2cef6d9be39b7"
+  integrity sha512-j2ig8RTdv+PQ6JemHzIskqrbjfFpV82Wd5v9cIAEZsw5wto864R4BW7gn8r347SKystdokZbMosdIRyYMXVi1Q==
   dependencies:
     dotenv "^8.0.0"
 
@@ -10702,15 +10702,15 @@ react-native-loading-spinner-overlay@^1.0.1:
   dependencies:
     prop-types "^15.6.2"
 
-react-native-localize@^1.4.2:
-  version "1.4.2"
-  resolved "https://registry.yarnpkg.com/react-native-localize/-/react-native-localize-1.4.2.tgz#92fc7bb76fa0381c7297b7fa66ee3af0a9bc165e"
-  integrity sha512-LAUFsgcVHHJkU6AYjEDi9e6fJfahrep4IBXPNREKzG9uvHhjXno0Lv8TKNRMzrx6wGntpM/1bxs5pSTstpKllg==
+react-native-localize@^1.4.3:
+  version "1.4.3"
+  resolved "https://registry.yarnpkg.com/react-native-localize/-/react-native-localize-1.4.3.tgz#6fde2fb1e73a7205910419a680cb4734187d556f"
+  integrity sha512-n3pi89LBeSzB825CBagyaYRtBS93LdvNz3sI386iXwLSg1ONjEGR1Ez36JBuxZalZgORjrKzV2Pun6MO7iwD6w==
 
-react-native-map-link@^2.7.18:
-  version "2.7.18"
-  resolved "https://registry.yarnpkg.com/react-native-map-link/-/react-native-map-link-2.7.18.tgz#7f714beb6553f79d17484c014f992f448695da01"
-  integrity sha512-wumrp79d6xIynSnbNSi+n8uaspO1Mj5YL4xw6elCG2G0WYunnDMGpPkeP9hcQPKpcfjSc+Y4f0FHeTfP2nCitQ==
+react-native-map-link@^2.7.19:
+  version "2.7.19"
+  resolved "https://registry.yarnpkg.com/react-native-map-link/-/react-native-map-link-2.7.19.tgz#ace01fe6e3c4dbd77db488da2249eac0039e4fe5"
+  integrity sha512-kLNgMpDCVr/iBoy9kYm4wbTQVE7gLv9VqyBxbHqcu4yP0jGw4935f2MYCMimcFRu77r0D01TUsjFxCrgvHjigw==
   dependencies:
     prop-types "^15.7.2"
     react-native-modal "^10.0.0"
