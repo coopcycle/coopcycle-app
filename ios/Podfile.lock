@@ -459,7 +459,7 @@ PODS:
     - React-cxxreact (= 0.62.2)
     - React-jsi (= 0.62.2)
     - ReactCommon/callinvoker (= 0.62.2)
-  - ReactNativeKeyboardManager (4.0.13-16):
+  - ReactNativeKeyboardManager (4.0.13-17):
     - IQKeyboardManager (= 4.0.13)
     - React
     - React-RCTText
@@ -636,7 +636,7 @@ DEPENDENCIES:
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  https://github.com/CocoaPods/Specs.git:
     - boost-for-react-native
     - CocoaAsyncSocket
     - CocoaLibEvent
@@ -899,7 +899,7 @@ SPEC CHECKSUMS:
   React-RCTText: fae545b10cfdb3d247c36c56f61a94cfd6dba41d
   React-RCTVibration: 4356114dbcba4ce66991096e51a66e61eda51256
   ReactCommon: ed4e11d27609d571e7eee8b65548efc191116eb3
-  ReactNativeKeyboardManager: 6c42da02c08b7eb16440f9fdc1c78f776a11cdca
+  ReactNativeKeyboardManager: d0e285b82ef60a861d71834d8e996fbc09607a67
   rn-fetch-blob: f065bb7ab7fb48dd002629f8bdcb0336602d3cba
   RNBackgroundFetch: 8dbb63141792f1473e863a0797ffbd5d987af2fc
   RNBackgroundGeolocation: 807366bac2fc9f64cadad355695a9c19a9760d66
@@ -938,4 +938,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 88472e0991e247cba05763107ceb024480f93b78
 
-COCOAPODS: 1.7.1
+COCOAPODS: 1.10.0
