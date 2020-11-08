@@ -10689,9 +10689,9 @@ react-native-get-random-values@^1.5.0:
     fast-base64-decode "^1.0.0"
 
 react-native-google-places-autocomplete@^1.8.3:
-  version "1.8.3"
-  resolved "https://registry.yarnpkg.com/react-native-google-places-autocomplete/-/react-native-google-places-autocomplete-1.8.3.tgz#4a0a56a3129aebf69320130254bba53f8656fbf7"
-  integrity sha512-BaWPEtZpaXH1dR17YhN83GDuaB4PNn2qkrzYEVFOYuufTb5DagqNLbgMQlsNAbRMUcGmlGe5K9NOb4syHXNWlw==
+  version "1.9.0"
+  resolved "https://registry.yarnpkg.com/react-native-google-places-autocomplete/-/react-native-google-places-autocomplete-1.9.0.tgz#d88bdbb78ca78d5223e1fdf8701d75625f2a2833"
+  integrity sha512-gYWwI6ZeCxW8zkknMPcQ8oSGe5vckNFagIrGx9Fpqf4j/CAoxAYm7gHrHvipTLLKtEIhwlK3gb4VntyQg4bwmw==
   dependencies:
     lodash.debounce "^4.0.8"
     prop-types "^15.5.10"
