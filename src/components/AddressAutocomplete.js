@@ -8,6 +8,7 @@ import axios from 'axios'
 import { withTranslation } from 'react-i18next'
 import Autocomplete from 'react-native-autocomplete-input'
 import Fuse from 'fuse.js'
+import { v4 as uuidv4 } from 'uuid'
 
 import { localeDetector } from '../i18n'
 import AddressUtils from '../utils/Address'
@@ -81,6 +82,7 @@ class AddressAutocomplete extends Component {
       query: _.isObject(props.value) ? (props.value.streetAddress || '') : (props.value || ''),
       results: [],
       postcode: _.isObject(props.value) ? { postcode: props.value.postalCode } : null,
+      sessionToken: null,
     }
     this.fuse = new Fuse(this.props.addresses, fuseOptions)
   }
@@ -122,6 +124,7 @@ class AddressAutocomplete extends Component {
 
     } else {
 
+      // @see https://developers.google.com/places/web-service/autocomplete
       axios
         .get(`https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${encodeURIComponent(text)}&${qs.stringify(query)}`)
         .then(response => {
@@ -153,7 +156,18 @@ class AddressAutocomplete extends Component {
 
   _onChangeText(text) {
 
-    this.setState({ query: text })
+    let newState = { query: text }
+
+    // @see https://developers.google.com/places/web-service/autocomplete#session_tokens
+    let sessionToken = ''
+    if (!this.state.sessionToken) {
+      sessionToken = uuidv4()
+      newState = { ...newState, sessionToken }
+    } else {
+      sessionToken = this.state.sessionToken
+    }
+
+    this.setState(newState)
 
     if (this.props.onChangeText) {
       this.props.onChangeText(text)
@@ -168,6 +182,7 @@ class AddressAutocomplete extends Component {
       language: localeDetector(),
       types: 'geocode',
       components: `country:${this.props.country.toUpperCase()}`,
+      sessiontoken: sessionToken,
     }
 
     this._autocomplete(text, query)
@@ -176,12 +191,22 @@ class AddressAutocomplete extends Component {
   _onItemPress(item) {
 
     if (item.type === 'prediction') {
+
+      const { sessionToken } = this.state
+
       const query = {
         key: this.props.googleApiKey,
         language: localeDetector(),
         placeid: item.place_id,
+        sessionToken,
       }
 
+      // https://developers.google.com/places/web-service/session-tokens
+      // The session begins when the user starts typing a query,
+      // and concludes when they select a place and a call to Place Details is made.
+      this.setState({ sessionToken: null })
+
+      // @see https://developers.google.com/places/web-service/details
       axios
         .get(`https://maps.googleapis.com/maps/api/place/details/json?${qs.stringify(query)}`)
         .then(response => {
