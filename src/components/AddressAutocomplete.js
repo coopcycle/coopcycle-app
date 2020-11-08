@@ -1,3 +1,5 @@
+// @see https://github.com/uuidjs/uuid#getrandomvalues-not-supported
+import 'react-native-get-random-values'
 import React, { Component } from 'react'
 import { Image, StyleSheet, TouchableOpacity, TextInput, View } from 'react-native'
 import PropTypes from 'prop-types'
