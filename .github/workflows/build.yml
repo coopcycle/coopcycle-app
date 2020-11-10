@@ -33,13 +33,15 @@ jobs:
       # See screenshot specifications
       # https://help.apple.com/app-store-connect/#/devd274dd925
       - name: Take screenshots
-        if: github.ref == 'refs/heads/master'
+        # if: github.ref == 'refs/heads/master'
+        if: false
         run: |
           node node_modules/.bin/detox test -c ios.sim.release -o e2e/screenshots.config.json --take-screenshots manual --cleanup --device-name="iPhone 11" --artifacts-location ./artifacts/6.5-inch
           node node_modules/.bin/detox test -c ios.sim.release -o e2e/screenshots.config.json --take-screenshots manual --cleanup --device-name="iPhone 8 Plus" --artifacts-location ./artifacts/5.5-inch
           node node_modules/.bin/detox test -c ios.sim.release -o e2e/screenshots.config.json --take-screenshots manual --cleanup --device-name="iPad Pro (12.9-inch) (3rd generation)" --artifacts-location ./artifacts/12.9-inch
       - name: Upload screenshots artifacts
-        if: github.ref == 'refs/heads/master'
+        # if: github.ref == 'refs/heads/master'
+        if: false
         uses: actions/upload-artifact@v1
         with:
           name: detox-screenshots-ios
