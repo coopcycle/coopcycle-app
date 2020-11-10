@@ -107,9 +107,11 @@ class Summary extends Component {
 
   _renderItemAdjustments(item, index) {
 
+    const adjustmentsWithoutTax = _.pickBy(item.adjustments, (value, key) => key !== 'tax')
+
     return (
       <View>
-      { _.map(item.adjustments, (adjustments, type) => {
+      { _.map(adjustmentsWithoutTax, (adjustments, type) => {
         return _.map(adjustments, (adj, i) => {
 
           const label = [ adj.label ]
