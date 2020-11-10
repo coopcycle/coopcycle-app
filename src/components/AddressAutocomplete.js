@@ -200,7 +200,7 @@ class AddressAutocomplete extends Component {
         key: this.props.googleApiKey,
         language: localeDetector(),
         placeid: item.place_id,
-        sessionToken,
+        sessiontoken: sessionToken,
       }
 
       // https://developers.google.com/places/web-service/session-tokens
