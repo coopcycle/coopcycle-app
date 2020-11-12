@@ -97,9 +97,9 @@ class Menu extends Component {
         <View style={ styles.item }>
           <View style={ styles.leftCol }>
             <Text style={ itemNameStyle }>{ item.name }</Text>
-            { (item.description && item.description.length > 0) && (
+            { (item.description && item.description.length > 0) ? (
               <Text note numberOfLines={ 4 } ellipsizeMode="tail">{ item.description }</Text>
-            )}
+            ) : null }
           </View>
           <View style={ styles.rightCol }>
             <Text style={ itemPriceStyle }>{ `${formatPrice(item.offers.price)}` }</Text>
