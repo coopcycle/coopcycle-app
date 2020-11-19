@@ -23,19 +23,6 @@ function timingAsText(timing, now) {
   return lower.calendar(now)
 }
 
-export function isFast(restaurant) {
-
-  if (restaurant.timing.delivery) {
-    return restaurant.timing.delivery.fast
-  }
-
-  if (restaurant.timing.collection) {
-    return restaurant.timing.collection.fast
-  }
-
-  return false
-}
-
 export function getNextShippingTimeAsText(restaurant, now) {
 
   now = now || moment()
