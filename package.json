@@ -63,7 +63,6 @@
     "react-native-email-link": "^1.10.0",
     "react-native-gesture-handler": "^1.8.0",
     "react-native-get-random-values": "^1.5.0",
-    "react-native-google-places-autocomplete": "^1.8.3",
     "react-native-keyboard-manager": "^4.0.13-17",
     "react-native-loading-spinner-overlay": "^1.0.1",
     "react-native-localize": "^1.4.3",

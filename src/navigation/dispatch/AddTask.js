@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
-import { StyleSheet, View } from 'react-native'
+import { Platform, StyleSheet, TouchableOpacity, View } from 'react-native'
 import { connect } from 'react-redux'
 import {
   Container, Content,
   Text, Button,
   Form, Label, Textarea,
   Footer, FooterTab,
+  Icon,
 } from 'native-base'
 import { Col, Grid } from 'react-native-easy-grid'
 import DateTimePicker from 'react-native-modal-datetime-picker'
@@ -14,8 +15,7 @@ import _ from 'lodash'
 import moment from 'moment'
 
 import { createTask } from '../../redux/Dispatch/actions'
-import AddressTypeahead from './components/AddressTypeahead'
-import AddressUtils from '../../utils/Address'
+import AddressAutocomplete from '../../components/AddressAutocomplete'
 
 class AddTask extends Component {
 
@@ -65,9 +65,9 @@ class AddTask extends Component {
     this.props.createTask(task)
   }
 
-  _onSuggestionPress(data, details = null) {
+  _onSelectAddress(address) {
     this.setState({
-      address: AddressUtils.createAddressFromGoogleDetails(details),
+      address,
     })
   }
 
@@ -128,12 +128,26 @@ class AddTask extends Component {
             <View style={ styles.formRow }>
               <Label style={{ marginBottom: 5 }}>{ this.props.t('TASK_FORM_ADDRESS_LABEL') }</Label>
               <View style={ styles.datePickerRow }>
-                <AddressTypeahead
+                { address.streetAddress && (
+                  <TouchableOpacity style={ styles.editAddressBtn }
+                    onPress={ () => navigate('DispatchEditAddress', { address, onSubmit: this._onEditAddressSubmit.bind(this) }) }>
+                    <Icon type="FontAwesome" name="pencil" style={{ color: '#333333' }} />
+                  </TouchableOpacity>
+                )}
+                <AddressAutocomplete
                   country={ this.props.country }
                   googleApiKey={ this.props.googleApiKey }
+                  location={ this.props.location }
                   address={ address }
-                  onSuggestionPress={ this._onSuggestionPress.bind(this) }
-                  onEditPress={ () => navigate('DispatchEditAddress', { address, onSubmit: this._onEditAddressSubmit.bind(this) }) } />
+                  inputContainerStyle={{
+                    flex: 1,
+                    justifyContent: 'center',
+                    borderWidth: 0,
+                    marginRight: address.streetAddress ? 50 : 0,
+                  }}
+                  style={{ borderRadius: 0 }}
+                  onSelectAddress={ this._onSelectAddress.bind(this) }
+                  />
               </View>
             </View>
             <View style={ styles.formRow }>
@@ -196,12 +210,23 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
+  editAddressBtn: {
+    width: 50,
+    position: 'absolute',
+    right: 0,
+    backgroundColor: '#e5e5e5',
+    flex: 1,
+    alignItems: 'center',
+    height: '100%',
+    justifyContent: 'center',
+  }
 })
 
 function mapStateToProps(state) {
   return {
     googleApiKey: state.app.settings.google_api_key,
     country: state.app.settings.country,
+    location: state.app.settings.latlng,
   }
 }
 
