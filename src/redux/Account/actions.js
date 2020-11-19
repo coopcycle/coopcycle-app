@@ -15,7 +15,7 @@ export const LOAD_PERSONAL_INFO_SUCCESS = '@account/LOAD_PERSONAL_INFO_SUCCESS'
  */
 
 const loadOrdersSuccess = createAction(LOAD_ORDERS_SUCCESS)
-const loadAddressesSuccess = createAction(LOAD_ADDRESSES_SUCCESS)
+export const loadAddressesSuccess = createAction(LOAD_ADDRESSES_SUCCESS)
 const loadPersonalInfoSuccess = createAction(LOAD_PERSONAL_INFO_SUCCESS)
 
 export function loadOrders() {
