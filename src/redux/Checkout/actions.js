@@ -6,6 +6,8 @@ import _ from 'lodash'
 import NavigationHolder from '../../NavigationHolder'
 import i18n from '../../i18n'
 import { selectCartFulfillmentMethod } from './selectors'
+import { selectIsAuthenticated } from '../App/selectors'
+import { loadAddressesSuccess } from '../Account/actions'
 
 /*
  * Action Types
@@ -509,8 +511,25 @@ export function searchRestaurants(options = {}) {
 
     dispatch(loadRestaurantsRequest())
 
-    httpClient.get('/api/restaurants' + (queryString ? `?${queryString}` : ''))
-      .then(res => dispatch(wrapRestaurantsWithTiming(res['hydra:member'])))
+    const reqs = [
+      httpClient.get('/api/restaurants' + (queryString ? `?${queryString}` : ''))
+    ]
+
+    if (selectIsAuthenticated(getState())) {
+      reqs.push(httpClient.get('/api/me'))
+    }
+
+    Promise.all(reqs)
+      .then(values => {
+        if (values.length === 2) {
+          const addresses = values[1].addresses.map(address => ({
+            ...address,
+            isPrecise: true
+          }))
+          dispatch(loadAddressesSuccess(addresses))
+        }
+        dispatch(wrapRestaurantsWithTiming(values[0]['hydra:member']))
+      })
       .catch(e => dispatch(loadRestaurantsFailure(e)))
   }
 }

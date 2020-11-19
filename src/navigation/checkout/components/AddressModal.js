@@ -120,6 +120,7 @@ class AddressModal extends Component {
                 <AddressAutocomplete
                   country={ this.props.country }
                   googleApiKey={ this.props.googleApiKey }
+                  location={ this.props.location }
                   testID="addressModalTypeahead"
                   onSelectAddress={ (address) => {
                     this.props.setAddress(address)
@@ -134,6 +135,7 @@ class AddressModal extends Component {
                   autoFocus={ true }
                   onFocus={ () => this.setState({ shouldShowBackBtn: false }) }
                   onBlur={ () => this.setState({ shouldShowBackBtn: true }) }
+                  addresses={ this.props.savedAddresses }
                   />
               </View>
             </View>
@@ -212,6 +214,7 @@ function mapStateToProps(state, ownProps) {
 
   return {
     googleApiKey: state.app.settings.google_api_key,
+    location: state.app.settings.latlng,
     country: state.app.settings.country,
     date: state.checkout.date,
     address: state.checkout.address,
@@ -220,6 +223,7 @@ function mapStateToProps(state, ownProps) {
     isLoading: state.checkout.isLoading,
     message: state.checkout.isLoading ? ownProps.t('LOADING') : state.checkout.addressModalMessage,
     isCollectionEnabled: selectIsCollectionEnabled(state),
+    savedAddresses: state.account.addresses.slice(0, 3),
   }
 }
 

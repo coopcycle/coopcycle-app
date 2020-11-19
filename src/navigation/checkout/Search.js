@@ -98,7 +98,8 @@ class RestaurantsPage extends Component {
           } }
           defaultValue={ this.props.address }
           width={ this.state.width }
-          key={ this.props.addressAsText } />
+          key={ this.props.addressAsText }
+          savedAddresses={ this.props.savedAddresses } />
       </Container>
     );
   }
@@ -116,10 +117,12 @@ function mapStateToProps(state, ownProps) {
 
   return {
     googleApiKey: state.app.settings.google_api_key,
+    location: state.app.settings.latlng,
     country: state.app.settings.country,
     restaurants: state.checkout.restaurants,
     address: state.checkout.address,
     addressAsText: state.checkout.address ? state.checkout.address.streetAddress : '',
+    savedAddresses: state.account.addresses.slice(0, 3),
   }
 }
 
