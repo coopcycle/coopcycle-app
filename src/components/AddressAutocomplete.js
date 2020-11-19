@@ -179,12 +179,20 @@ class AddressAutocomplete extends Component {
       return
     }
 
-    const query = {
+    let query = {
       key: this.props.googleApiKey,
       language: localeDetector(),
       types: 'geocode',
       components: `country:${this.props.country.toUpperCase()}`,
       sessiontoken: sessionToken,
+    }
+
+    if (this.props.location && this.props.location.length > 0) {
+      query = {
+        ...query,
+        location: this.props.location,
+        radius: 50000,
+      }
     }
 
     this._autocomplete(text, query)
@@ -255,7 +263,12 @@ class AddressAutocomplete extends Component {
     let text = item.description
 
     if (item.type === 'fuse') {
-      text = [ item.contactName, item.streetAddress ].join(' - ')
+
+      const parts = [ item.streetAddress ]
+      if (item.contactName && item.contactName.length > 0) {
+        parts.unshift(item.contactName)
+      }
+      text = parts.join(' - ')
       itemStyle.push({
         backgroundColor: '#fff3cd',
         flex: 1,
@@ -287,12 +300,37 @@ class AddressAutocomplete extends Component {
     )
   }
 
+  onTextInputFocus(e) {
+    if (this.props.addresses.length > 0) {
+      this.setState({
+        results: this.props.addresses.map(address => ({
+          ...address,
+          type: 'fuse',
+        }))
+      })
+    }
+    if (this.props.onFocus && typeof this.props.onFocus === 'function') {
+      this.props.onFocus(e)
+    }
+  }
+
+  onTextInputBlur(e) {
+    this.setState({
+      results: []
+    })
+    if (this.props.onBlur && typeof this.props.onBlur === 'function') {
+      this.props.onBlur(e)
+    }
+  }
+
   renderTextInput(props) {
 
     return (
       <View style={ styles.textInput }>
         <View style={ styles.textInput }>
-          <TextInput { ...props } style={ [ props.style, { flex: 1 } ] } placeholderTextColor="#d0d0d0" />
+          <TextInput { ...props } style={ [ props.style, { flex: 1 } ] } placeholderTextColor="#d0d0d0"
+            onFocus={ this.onTextInputFocus.bind(this) }
+            onBlur={ this.onTextInputBlur.bind(this) } />
           { (this.props.country === 'gb' && this.state.postcode) && (
             <PostCodeButton postcode={ this.state.postcode.postcode } onPress={ () => {
               this.setState({
@@ -356,6 +394,7 @@ AddressAutocomplete.defaultProps = {
   minChars: 3,
   addresses: [],
   renderRight: () => <View />,
+  location: '',
 }
 
 AddressAutocomplete.propTypes = {
@@ -364,6 +403,7 @@ AddressAutocomplete.propTypes = {
   googleApiKey: PropTypes.string.isRequired,
   country: PropTypes.string.isRequired,
   renderRight: PropTypes.func,
+  location: PropTypes.string,
 }
 
 const styles = StyleSheet.create({
