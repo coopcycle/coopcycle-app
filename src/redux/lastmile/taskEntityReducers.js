@@ -6,16 +6,16 @@ import {
   CANCEL_TASK_SUCCESS,
   ASSIGN_TASK_SUCCESS,
   UNASSIGN_TASK_SUCCESS,
-} from "../Dispatch/actions";
+} from '../Dispatch/actions';
 import {
   START_TASK_SUCCESS,
   MARK_TASK_DONE_SUCCESS,
-  MARK_TASK_FAILED_SUCCESS
-} from "../Courier";
+  MARK_TASK_FAILED_SUCCESS,
+} from '../Courier';
 
 import {
-  taskUtils as utils
-} from "../../coopcycle-frontend-js/lastmile/redux"
+  taskUtils as utils,
+} from '../../coopcycle-frontend-js/lastmile/redux'
 
 const initialState = {
   byId: {},

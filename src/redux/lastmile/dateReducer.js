@@ -1,5 +1,5 @@
 import { moment } from '../../coopcycle-frontend-js'
-import { CHANGE_DATE } from "../Dispatch/actions";
+import { CHANGE_DATE } from '../Dispatch/actions';
 
 const initialState = moment()
 

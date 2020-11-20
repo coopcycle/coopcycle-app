@@ -34,7 +34,7 @@ import appDispatchReducer from './Dispatch/reducers'
 import appDateReducer from './lastmile/dateReducer'
 import appTaskEntityReducers from './lastmile/taskEntityReducers'
 import appTaskListEntityReducers from './lastmile/taskListEntityReducers'
-import appLogisticsUiReducers from './lastmile/uiReducers'
+import appLastmileUiReducers from './lastmile/uiReducers'
 import storeReducer from './Store/reducers'
 import { createTaskItemsTransform } from './util'
 import reduceReducers from 'reduce-reducers';
@@ -161,6 +161,6 @@ export default combineReducers({
       tasks: reduceReducers(coreTaskEntityReducers, appTaskEntityReducers),
       taskLists: reduceReducers(coreTaskListEntityReducers, appTaskListEntityReducers),
     }),
-    ui: reduceReducers(coreUiReducers, appLogisticsUiReducers),
+    ui: reduceReducers(coreUiReducers, appLastmileUiReducers),
   }),
 })

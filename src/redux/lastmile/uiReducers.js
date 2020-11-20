@@ -21,6 +21,7 @@ import {
 } from '../Dispatch/actions'
 
 const initialState = {
+  taskListsLoading: false,
   isFetching: false,
 }
 

@@ -3,7 +3,7 @@ import {
   LOAD_TASK_LISTS_SUCCESS,
   ASSIGN_TASK_SUCCESS,
   UNASSIGN_TASK_SUCCESS, CREATE_TASK_SUCCESS,
-} from "../Dispatch/actions";
+} from '../Dispatch/actions';
 import { taskListUtils as utils } from '../../coopcycle-frontend-js/lastmile/redux'
 
 const initialState = {
