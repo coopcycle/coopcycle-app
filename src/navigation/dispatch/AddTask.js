@@ -29,6 +29,7 @@ class AddTask extends Component {
       doneAfter: moment().add(1, 'hours'),
       doneBefore: moment().add(1, 'hours').add(30, 'minutes'),
       address: {},
+      comments: '',
     }
   }
 
@@ -60,6 +61,8 @@ class AddTask extends Component {
       address: this.state.address,
       doneAfter: this.state.doneAfter,
       doneBefore: this.state.doneBefore,
+      type: this.state.type,
+      comments: this.state.comments,
     }
 
     this.props.createTask(task)
@@ -171,7 +174,7 @@ class AddTask extends Component {
             <View style={ styles.formRow }>
               <Label>{ this.props.t('TASK_FORM_COMMENTS_LABEL') }</Label>
               <View>
-                <Textarea rowSpan={ 5 } bordered />
+                <Textarea rowSpan={ 5 } bordered onChangeText={text => this.setState({ comments: text })} />
               </View>
             </View>
           </Form>

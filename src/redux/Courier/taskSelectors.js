@@ -8,7 +8,7 @@
 import moment from 'moment'
 import { createSelector } from 'reselect'
 import { reject, isEqual, uniqWith } from 'lodash'
-import { taskUtils } from 'coopcycle-frontend-js/dispatch/redux'
+import { taskUtils } from '../../coopcycle-frontend-js/lastmile/redux'
 
 /* Simple Selectors */
 export const selectTaskSelectedDate = state => state.ui.tasks.selectedDate

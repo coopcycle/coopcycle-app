@@ -1,4 +1,5 @@
 import { createAction } from 'redux-actions'
+import {updateTask} from "../../Dispatch/actions";
 
 export const INIT = '@ws/INIT'
 export const CONNECT = '@ws/CONNECT'
@@ -19,5 +20,31 @@ export const send = createAction(SEND)
 export const connected = createAction(CONNECTED)
 export const disconnected = createAction(DISCONNECTED)
 export const reconnected = createAction(RECONNECTED)
-export const message = createAction(MESSAGE)
 export const error = createAction(ERROR)
+export const _message = createAction(MESSAGE)
+
+export function message(payload) {
+  return function (dispatch, getState) {
+    if (payload.name && payload.data) {
+
+      const {name, data} = payload
+
+      switch (name) {
+        case 'task:created':
+        case 'task:cancelled':
+        case 'task:assigned':
+        case 'task:unassigned':
+        case 'task:started':
+        case 'task:done':
+        case 'task:failed':
+          dispatch(updateTask(name, data.task))
+          break
+        default:
+          dispatch(_message(payload))
+          break
+      }
+    } else {
+      dispatch(_message(payload))
+    }
+  }
+}

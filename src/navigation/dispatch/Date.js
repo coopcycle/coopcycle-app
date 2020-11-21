@@ -7,7 +7,7 @@ import { withTranslation } from 'react-i18next'
 
 import { connect } from 'react-redux'
 import { changeDate } from '../../redux/Dispatch/actions'
-import { selectSelectedDate } from 'coopcycle-frontend-js/dispatch/redux'
+import { selectSelectedDate } from '../../coopcycle-frontend-js/lastmile/redux'
 
 class DateScreen extends Component {
 

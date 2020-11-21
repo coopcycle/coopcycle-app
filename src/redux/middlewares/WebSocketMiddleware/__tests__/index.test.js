@@ -1,9 +1,12 @@
 import { createStore, applyMiddleware } from 'redux'
+import thunk from 'redux-thunk'
 import middleware, {
   init,
-  connect, disconnect, send, message,
+  connect, disconnect, send,
   connected, disconnected, reconnected,
 } from '..'
+
+import { _message } from '../actions'
 
 describe('WebSocketMiddleware', () => {
   describe('Middleware | pre-initialised', () => {
@@ -16,7 +19,7 @@ describe('WebSocketMiddleware', () => {
     }
 
     const reducer = jest.fn()
-    const store = createStore(reducer, applyMiddleware(middleware({ client })))
+    const store = createStore(reducer, applyMiddleware(thunk, middleware({ client })))
 
     beforeEach(() => {
       jest.resetAllMocks()
@@ -123,26 +126,26 @@ describe('WebSocketMiddleware', () => {
       expect(client.isOpen).not.toHaveBeenCalled()
     })
 
-    test(`${message} | valid JSON`, () => {
+    test(`${_message} | valid JSON`, () => {
       const event = { data: JSON.stringify({ foo: 1 }) }
 
       client.options.onMessage(event)
 
       expect(reducer).toHaveBeenCalledTimes(1)
-      expect(reducer).toHaveBeenLastCalledWith(undefined, message({ foo: 1 }))
+      expect(reducer).toHaveBeenLastCalledWith(undefined, _message({ foo: 1 }))
       expect(client.connect).not.toHaveBeenCalled()
       expect(client.disconnect).not.toHaveBeenCalled()
       expect(client.send).not.toHaveBeenCalled()
       expect(client.isOpen).not.toHaveBeenCalled()
     })
 
-    test(`${message} | invalid JSON`, () => {
+    test(`${_message} | invalid JSON`, () => {
       const event = { data: 'not valid json' }
 
       client.options.onMessage(event)
 
       expect(reducer).toHaveBeenCalledTimes(1)
-      expect(reducer).toHaveBeenLastCalledWith(undefined, message(event.data))
+      expect(reducer).toHaveBeenLastCalledWith(undefined, _message(event.data))
       expect(client.connect).not.toHaveBeenCalled()
       expect(client.disconnect).not.toHaveBeenCalled()
       expect(client.send).not.toHaveBeenCalled()

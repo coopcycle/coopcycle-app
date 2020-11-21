@@ -6,7 +6,7 @@ import { Container, Content, Text } from 'native-base'
 
 import TaskList from '../../components/TaskList'
 import { assignTask } from '../../redux/Dispatch/actions'
-import { selectTasksWithColor } from 'coopcycle-frontend-js/dispatch/redux'
+import { selectTasksWithColor } from '../../coopcycle-frontend-js/lastmile/redux'
 import { selectUnassignedTasksNotCancelled } from '../../redux/Dispatch/selectors'
 
 class AssignTask extends Component {

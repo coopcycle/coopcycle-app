@@ -7,6 +7,22 @@ import WebSocketClient from '../../websocket/WebSocketClient'
 import i18n from '../../i18n'
 import NavigationHolder from '../../NavigationHolder'
 
+import {
+  createTaskListRequest,
+  createTaskListSuccess,
+  createTaskListFailure,
+
+  selectSelectedDate,
+} from '../../coopcycle-frontend-js/lastmile/redux'
+
+import {
+  startTaskSuccess,
+  markTaskDoneSuccess,
+  markTaskFailedSuccess,
+} from "../Courier";
+
+import { isSameDate } from "./utils";
+
 /*
  * Action Types
  */
@@ -25,13 +41,13 @@ export const LOAD_TASK_LISTS_REQUEST = 'LOAD_TASK_LISTS_REQUEST'
 export const LOAD_TASK_LISTS_SUCCESS = 'LOAD_TASK_LISTS_SUCCESS'
 export const LOAD_TASK_LISTS_FAILURE = 'LOAD_TASK_LISTS_FAILURE'
 
-export const CREATE_TASK_LIST_REQUEST = 'CREATE_TASK_LIST_REQUEST'
-export const CREATE_TASK_LIST_SUCCESS = 'CREATE_TASK_LIST_SUCCESS'
-export const CREATE_TASK_LIST_FAILURE = 'CREATE_TASK_LIST_FAILURE'
-
 export const CREATE_TASK_REQUEST = 'CREATE_TASK_REQUEST'
 export const CREATE_TASK_SUCCESS = 'CREATE_TASK_SUCCESS'
 export const CREATE_TASK_FAILURE = 'CREATE_TASK_FAILURE'
+
+export const CANCEL_TASK_REQUEST = 'CANCEL_TASK_REQUEST'
+export const CANCEL_TASK_SUCCESS = 'CANCEL_TASK_SUCCESS'
+export const CANCEL_TASK_FAILURE = 'CANCEL_TASK_FAILURE'
 
 export const ASSIGN_TASK_REQUEST = 'ASSIGN_TASK_REQUEST'
 export const ASSIGN_TASK_SUCCESS = 'ASSIGN_TASK_SUCCESS'
@@ -40,10 +56,6 @@ export const ASSIGN_TASK_FAILURE = 'ASSIGN_TASK_FAILURE'
 export const UNASSIGN_TASK_REQUEST = 'UNASSIGN_TASK_REQUEST'
 export const UNASSIGN_TASK_SUCCESS = 'UNASSIGN_TASK_SUCCESS'
 export const UNASSIGN_TASK_FAILURE = 'UNASSIGN_TASK_FAILURE'
-
-export const LOAD_TASK_REQUEST = 'LOAD_TASK_REQUEST'
-export const LOAD_TASK_SUCCESS = 'LOAD_TASK_SUCCESS'
-export const LOAD_TASK_FAILURE = 'LOAD_TASK_FAILURE'
 
 export const CHANGE_DATE = 'CHANGE_DATE'
 
@@ -63,13 +75,13 @@ export const loadTaskListsRequest = createAction(LOAD_TASK_LISTS_REQUEST)
 export const loadTaskListsSuccess = createAction(LOAD_TASK_LISTS_SUCCESS)
 export const loadTaskListsFailure = createAction(LOAD_TASK_LISTS_FAILURE)
 
-export const createTaskListRequest = createAction(CREATE_TASK_LIST_REQUEST)
-export const createTaskListSuccess = createAction(CREATE_TASK_LIST_SUCCESS)
-export const createTaskListFailure = createAction(CREATE_TASK_LIST_FAILURE)
-
 export const createTaskRequest = createAction(CREATE_TASK_REQUEST)
 export const createTaskSuccess = createAction(CREATE_TASK_SUCCESS)
 export const createTaskFailure = createAction(CREATE_TASK_FAILURE)
+
+export const cancelTaskRequest = createAction(CANCEL_TASK_REQUEST)
+export const cancelTaskSuccess = createAction(CANCEL_TASK_SUCCESS)
+export const cancelTaskFailure = createAction(CANCEL_TASK_FAILURE)
 
 export const assignTaskRequest = createAction(ASSIGN_TASK_REQUEST)
 export const assignTaskSuccess = createAction(ASSIGN_TASK_SUCCESS)
@@ -78,10 +90,6 @@ export const assignTaskFailure = createAction(ASSIGN_TASK_FAILURE)
 export const unassignTaskRequest = createAction(UNASSIGN_TASK_REQUEST)
 export const unassignTaskSuccess = createAction(UNASSIGN_TASK_SUCCESS)
 export const unassignTaskFailure = createAction(UNASSIGN_TASK_FAILURE)
-
-export const loadTaskRequest = createAction(LOAD_TASK_REQUEST)
-export const loadTaskSuccess = createAction(LOAD_TASK_SUCCESS)
-export const loadTaskFailure = createAction(LOAD_TASK_FAILURE)
 
 const _changeDate = createAction(CHANGE_DATE)
 const _initialize = createAction(DISPATCH_INITIALIZE)
@@ -154,7 +162,7 @@ export function initialize() {
     }
 
     const httpClient = getState().app.httpClient
-    const date = getState().dispatch.date
+    const date = selectSelectedDate(getState())
 
     dispatch(loadUnassignedTasksRequest())
 
@@ -243,8 +251,14 @@ export function createTask(task) {
     dispatch(createTaskRequest())
 
     return httpClient.post('/api/tasks', task)
-      .then(res => {
-        dispatch(createTaskSuccess(res))
+      .then(task => {
+        let date = selectSelectedDate(getState())
+
+        if (isSameDate(task, date)) {
+          dispatch(createTaskSuccess(task))
+        }
+
+
         const resetAction = StackActions.reset({
           index: 0,
           key: null,
@@ -289,16 +303,34 @@ export function unassignTask(task, username) {
   }
 }
 
-export function loadTask(task) {
-
+export function updateTask(action, task) {
   return function (dispatch, getState) {
+    let date = selectSelectedDate(getState())
 
-    const httpClient = getState().app.httpClient
-
-    // dispatch(loadTaskRequest())
-
-    return httpClient.get(task)
-      .then(res => dispatch(loadTaskSuccess(res)))
-      .catch(e => dispatch(loadTaskFailure(e)))
+    if (isSameDate(task, date)) {
+      switch (action) {
+        case 'task:created':
+          dispatch(createTaskSuccess(task))
+          break;
+        case 'task:cancelled':
+          dispatch(cancelTaskSuccess(task))
+          break;
+        case 'task:assigned':
+          dispatch(assignTaskSuccess(task))
+          break
+        case 'task:unassigned':
+          dispatch(unassignTaskSuccess(task))
+          break
+        case 'task:started':
+          dispatch(startTaskSuccess(task))
+          break;
+        case 'task:done':
+          dispatch(markTaskDoneSuccess(task))
+          break;
+        case 'task:failed':
+          dispatch(markTaskFailedSuccess(task))
+          break;
+      }
+    }
   }
 }
