@@ -253,7 +253,7 @@
         "TASKS_CHANGED_ALERT_SOUND": "Las tareas cambiaron el sonido de alerta",
         "FULFILLMENT_METHOD": {
             "delivery": "Entrega",
-            "collection": "Colección"
+            "collection": "Recoger en el local"
         },
         "TASK_COMPLETE_ALERT_POSITIVE": "✓ Completado",
         "TASK_COMPLETE_ALERT_NEGATIVE": "▶ Empezar",
