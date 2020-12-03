@@ -29,12 +29,12 @@ import {
   taskEntityReducers as coreTaskEntityReducers,
   taskListEntityReducers as coreTaskListEntityReducers,
   uiReducers as coreUiReducers,
-} from '../coopcycle-frontend-js/lastmile/redux'
+} from '../coopcycle-frontend-js/logistics/redux'
 import appDispatchReducer from './Dispatch/reducers'
-import appDateReducer from './lastmile/dateReducer'
-import appTaskEntityReducers from './lastmile/taskEntityReducers'
-import appTaskListEntityReducers from './lastmile/taskListEntityReducers'
-import appLastmileUiReducers from './lastmile/uiReducers'
+import appDateReducer from './logistics/dateReducer'
+import appTaskEntityReducers from './logistics/taskEntityReducers'
+import appTaskListEntityReducers from './logistics/taskListEntityReducers'
+import appLastmileUiReducers from './logistics/uiReducers'
 import storeReducer from './Store/reducers'
 import { createTaskItemsTransform } from './util'
 import reduceReducers from 'reduce-reducers';
@@ -153,9 +153,9 @@ export default combineReducers({
   ui: combineReducers({
     tasks: persistReducer(tasksUiPersistConfig, tasksUiReducer),
   }),
-  //todo move more properties from appDispatchReducer into `lastmile` state
+  //todo move more properties from appDispatchReducer into `logistics` state
   dispatch: appDispatchReducer,
-  lastmile: combineReducers({
+  logistics: combineReducers({
     date: reduceReducers(coreDateReducer, appDateReducer),
     entities: combineReducers({
       tasks: reduceReducers(coreTaskEntityReducers, appTaskEntityReducers),

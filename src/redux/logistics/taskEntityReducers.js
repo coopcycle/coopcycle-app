@@ -15,7 +15,7 @@ import {
 
 import {
   taskUtils as utils,
-} from '../../coopcycle-frontend-js/lastmile/redux'
+} from '../../coopcycle-frontend-js/logistics/redux'
 
 const initialState = {
   byId: {},

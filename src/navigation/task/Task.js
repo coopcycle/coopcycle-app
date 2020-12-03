@@ -6,7 +6,7 @@ import { withTranslation } from 'react-i18next'
 import _ from 'lodash'
 
 import { selectTasks, startTask } from '../../redux/Courier'
-import { selectAllTasks as selectAllDispatchTasks } from '../../coopcycle-frontend-js/lastmile/redux'
+import { selectAllTasks as selectAllDispatchTasks } from '../../coopcycle-frontend-js/logistics/redux'
 
 import TaskDetails from './components/Details'
 import TaskMiniMap from './components/MiniMap'
