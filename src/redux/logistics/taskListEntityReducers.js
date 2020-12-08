@@ -7,7 +7,7 @@ import {
 import { taskListUtils as utils } from '../../coopcycle-frontend-js/logistics/redux'
 
 const initialState = {
-  byUsername: {},
+  byId: {},
 }
 
 export default (state = initialState, action) => {
@@ -15,30 +15,26 @@ export default (state = initialState, action) => {
     case CHANGE_DATE:
       return {
         ...state,
-        byUsername: {},
+        byId: {},
       }
     case LOAD_TASK_LISTS_SUCCESS: {
-      let newItems = Object.assign({}, state.byUsername)
-
       let entities = action.payload.map(taskList => utils.replaceTasksWithIds(taskList))
-      entities.forEach(taskList => {
-        newItems[taskList[utils.taskListKey]] = taskList
-      })
+      let newItems = utils.upsertTaskLists(state.byId, entities)
 
       return {
         ...state,
-        byUsername: newItems,
+        byId: newItems,
       }
     }
     case CREATE_TASK_SUCCESS: {
       let task = action.payload
 
       if (task.isAssigned) {
-        let newItems = utils.addAssignedTask(state, task)
+        let newItems = utils.addAssignedTask(state.byId, task)
 
         return {
           ...state,
-          byUsername: newItems,
+          byId: newItems,
         }
 
       } else {
@@ -48,12 +44,12 @@ export default (state = initialState, action) => {
     case ASSIGN_TASK_SUCCESS:
       return {
         ...state,
-        byUsername: utils.addAssignedTask(state, action.payload),
+        byId: utils.addAssignedTask(state.byId, action.payload),
       }
     case UNASSIGN_TASK_SUCCESS:
       return {
         ...state,
-        byUsername: utils.removeUnassignedTask(state, action.payload),
+        byId: utils.removeUnassignedTask(state.byId, action.payload),
       }
     default:
       return state
