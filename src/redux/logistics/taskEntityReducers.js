@@ -29,7 +29,7 @@ export default (state = initialState, action) => {
         byId: {},
       }
     case LOAD_UNASSIGNED_TASKS_SUCCESS: {
-      let newItems = utils.upsertTasks(state.byId, action.payload)
+      let newItems = utils.addOrReplaceTasks(state.byId, action.payload)
 
       return {
         ...state,
@@ -58,7 +58,7 @@ export default (state = initialState, action) => {
     case MARK_TASK_DONE_SUCCESS:
     case MARK_TASK_FAILED_SUCCESS: {
       let task = action.payload
-      let newItems = utils.upsertTasks(state.byId, [task])
+      let newItems = utils.addOrReplaceTasks(state.byId, [task])
 
       return {
         ...state,

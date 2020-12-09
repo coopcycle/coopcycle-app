@@ -19,7 +19,7 @@ export default (state = initialState, action) => {
       }
     case LOAD_TASK_LISTS_SUCCESS: {
       let entities = action.payload.map(taskList => utils.replaceTasksWithIds(taskList))
-      let newItems = utils.upsertTaskLists(state.byId, entities)
+      let newItems = utils.addOrReplaceTaskLists(state.byId, entities)
 
       return {
         ...state,
