@@ -14,7 +14,8 @@ import {
 } from '../Courier';
 
 import {
-  taskUtils as utils,
+  taskUtils,
+  taskListUtils,
 } from '../../coopcycle-frontend-js/logistics/redux'
 
 const initialState = {
@@ -29,7 +30,7 @@ export default (state = initialState, action) => {
         byId: {},
       }
     case LOAD_UNASSIGNED_TASKS_SUCCESS: {
-      let newItems = utils.addOrReplaceTasks(state.byId, action.payload)
+      let newItems = taskUtils.addOrReplaceTasks(state.byId, action.payload)
 
       return {
         ...state,
@@ -37,13 +38,8 @@ export default (state = initialState, action) => {
       }
     }
     case LOAD_TASK_LISTS_SUCCESS: {
-      let newItems = Object.assign({}, state.byId)
-
-      action.payload.forEach(taskList => {
-        taskList.items.forEach(task => {
-          newItems[task['@id']] = task
-        })
-      })
+      let assignedTasks = taskListUtils.assignedTasks(action.payload)
+      let newItems = taskUtils.addOrReplaceTasks(state.byId, assignedTasks)
 
       return {
         ...state,
@@ -58,7 +54,7 @@ export default (state = initialState, action) => {
     case MARK_TASK_DONE_SUCCESS:
     case MARK_TASK_FAILED_SUCCESS: {
       let task = action.payload
-      let newItems = utils.addOrReplaceTasks(state.byId, [task])
+      let newItems = taskUtils.addOrReplaceTasks(state.byId, [task])
 
       return {
         ...state,
