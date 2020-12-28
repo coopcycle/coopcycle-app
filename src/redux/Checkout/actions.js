@@ -601,7 +601,7 @@ function handleSuccess(dispatch, httpClient, cart, paymentIntentId) {
 /**
  * @see https://gist.github.com/mindlapse/72139f022d6e620e4f0d59dc50c1797e
  */
-export function checkout(number, expMonth, expYear, cvc) {
+export function checkout(number, expMonth, expYear, cvc, cardholderName) {
 
   return (dispatch, getState) => {
 
@@ -628,6 +628,9 @@ export function checkout(number, expMonth, expYear, cvc) {
             expMonth: parseInt(expMonth, 10),
             expYear: parseInt(expYear, 10),
             cvc,
+          },
+          billingDetails: {
+            name: cardholderName
           }
         })
         .then(paymentMethod => {

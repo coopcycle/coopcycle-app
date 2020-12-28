@@ -357,6 +357,7 @@
         "COMING_SOON": "Próximamente",
         "AVAILABLE": "Disponible",
         "LEARN_MORE": "Aprender más",
-        "SELECTED": "Seleccionado"
+        "SELECTED": "Seleccionado",
+        "CARDHOLDER_NAME": "Nombre del titular de la tarjeta"
     }
 }

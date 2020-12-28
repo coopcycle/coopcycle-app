@@ -4,12 +4,14 @@ import {
   View,
   Animated,
   Keyboard,
+  TextInput,
 } from 'react-native';
 import { Content, Text } from 'native-base';
 import _ from 'lodash'
 import { LiteCreditCardInput } from 'react-native-credit-card-input'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
+import { Formik } from 'formik'
 
 import { checkout } from '../../redux/Checkout/actions'
 import { formatPrice } from '../../utils/formatting'
@@ -58,21 +60,39 @@ class CreditCard extends Component {
     ]).start();
   }
 
-  _onPress() {
-    if (this.state.valid) {
+  _onChange(form, setFieldValue, setFieldTouched) {
 
-      const { number, expiry, cvc } = this.state.form.values
-      const [ expMonth, expYear ] = expiry.split('/')
+    _.each(form.values, (value, key) => {
+      setFieldValue(key, value)
+      setFieldTouched(key)
+    })
 
-      this.props.checkout(number, expMonth, expYear, cvc)
-    }
-  }
-
-  _onChange(form) {
     this.setState({
-      form,
       valid: form.valid,
     })
+  }
+
+  _validate(values) {
+
+    let errors = {}
+
+    if (!this.state.valid) {
+      errors.card = true
+    }
+
+    if (_.isEmpty(values.cardholderName)) {
+      errors.cardholderName = true
+    }
+
+    return errors
+  }
+
+  _onSubmit(values) {
+
+    const { number, expiry, cvc, cardholderName } = values
+    const [ expMonth, expYear ] = expiry.split('/')
+
+    this.props.checkout(number, expMonth, expYear, cvc, cardholderName)
   }
 
   render() {
@@ -86,45 +106,72 @@ class CreditCard extends Component {
       )
     }
 
+    const initialValues = {
+      cardholderName: '',
+      number: '',
+      expiry: '',
+      cvc: '',
+    }
+
     // Make sure button can't be tapped twice
     // @see https://medium.com/@devmrin/debouncing-touch-events-in-react-native-prevent-navigating-twice-or-more-times-when-button-is-90687e4a8113
     // @see https://snack.expo.io/@patwoz/withpreventdoubleclick
-    const onPress = _.debounce(this._onPress.bind(this), 1000, { leading: true, trailing: false })
 
     return (
-      <Animated.View style={{ flex: 1, paddingBottom: this.keyboardHeight }}>
-        <Content contentContainerStyle={ styles.content } enableAutomaticScroll={ false }>
-          <Text style={ styles.creditCardLabel }>
-            { this.props.t('ENTER_PAY_DETAILS') }
-          </Text>
-          <View style={ styles.creditCardInputContainer } testID="creditCardWrapper">
-            <LiteCreditCardInput
-              additionalInputsProps={{
-                number: {
-                  testID: 'creditCardNumber',
-                },
-                expiry: {
-                  testID: 'creditCardExpiry',
-                },
-                cvc: {
-                  testID: 'creditCardCvc',
-                },
-              }}
-              onChange={ this._onChange.bind(this) } />
-          </View>
-          { errors.length > 0 && (
-          <View style={ styles.errorsContainer }>
-            { errors.map((error, key) => (
-            <Text key={ key } style={ styles.errorText }>{ error }</Text>
-            )) }
-          </View>
-          ) }
-        </Content>
-        <FooterButton
-           testID="creditCardSubmit"
-          text={ this.props.t('PAY_AMOUNT', { amount: formatPrice(cart.total) }) }
-          onPress={ onPress } />
-      </Animated.View>
+      <Formik
+        initialValues={ initialValues }
+        validate={ this._validate.bind(this) }
+        onSubmit={ this._onSubmit.bind(this) }
+        validateOnBlur={ false }
+        validateOnChange={ false }>
+        {({ handleChange, handleBlur, handleSubmit, values, errors, touched, setFieldValue, setFieldTouched }) => (
+        <Animated.View style={{ flex: 1, paddingBottom: this.keyboardHeight }}>
+          <Content contentContainerStyle={ styles.content } enableAutomaticScroll={ false }>
+            <Text style={ styles.creditCardLabel }>
+              { this.props.t('ENTER_PAY_DETAILS') }
+            </Text>
+            <View style={ styles.creditCardInputContainer }>
+              <View style={ [ styles.formInputContainer, { paddingHorizontal: 20, marginBottom: 15 } ] }>
+                <TextInput
+                  testID="cardholderName"
+                  autoCorrect={ false }
+                  autoCapitalize="none"
+                  style={{ height: 40, color: '#333' }}
+                  placeholder={ this.props.t('CARDHOLDER_NAME') }
+                  onChangeText={ handleChange('cardholderName') }
+                  onBlur={ handleBlur('cardholderName') } />
+              </View>
+              <View style={[ styles.formInputContainer, { paddingHorizontal: 10, marginBottom: 15 } ] } testID="creditCardWrapper">
+                <LiteCreditCardInput
+                  additionalInputsProps={{
+                    number: {
+                      testID: 'creditCardNumber',
+                    },
+                    expiry: {
+                      testID: 'creditCardExpiry',
+                    },
+                    cvc: {
+                      testID: 'creditCardCvc',
+                    },
+                  }}
+                  onChange={ form => this._onChange(form, setFieldValue, setFieldTouched) } />
+              </View>
+            </View>
+            { errors.length > 0 && (
+            <View style={ styles.errorsContainer }>
+              { errors.map((error, key) => (
+              <Text key={ key } style={ styles.errorText }>{ error }</Text>
+              )) }
+            </View>
+            ) }
+          </Content>
+          <FooterButton
+            testID="creditCardSubmit"
+            text={ this.props.t('PAY_AMOUNT', { amount: formatPrice(cart.total) }) }
+            onPress={ _.debounce(handleSubmit, 1000, { leading: true, trailing: false }) } />
+        </Animated.View>
+        )}
+      </Formik>
     )
   }
 }
@@ -140,9 +187,10 @@ const styles = StyleSheet.create({
   },
   creditCardInputContainer: {
     alignSelf: 'stretch',
-    backgroundColor: '#f7f7f7',
+  },
+  formInputContainer: {
     paddingVertical: 10,
-    paddingHorizontal: 20,
+    backgroundColor: '#f7f7f7',
   },
   errorsContainer: {
     alignItems: 'center',

@@ -348,6 +348,7 @@
         "LEARN_MORE": "En savoir plus",
         "SELECTED": "Selectionné",
         "AVAILABLE": "Disponible",
-        "COMING_SOON": "Bientôt"
+        "COMING_SOON": "Bientôt",
+        "CARDHOLDER_NAME": "Nom du titulaire de la carte"
     }
 }

@@ -70,6 +70,8 @@ describe('Checkout', () => {
 
     await element(by.id('moreInfosSubmit')).tap()
 
+    await element(by.id('cardholderName')).typeText('John Doe')
+
     // Tap the credit card input to make sure we can interact with it
     // Test Failed: View “<RCTUITextField: 0x7f9185939e00>” is not hittable at point “{"x":500,"y":20}”;
     // Point “{"x":530,"y":463.5}” is outside of window bounds
