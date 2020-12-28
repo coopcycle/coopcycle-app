@@ -575,6 +575,32 @@ export function init(restaurant) {
   }
 }
 
+function handleSuccess(dispatch, httpClient, cart, paymentIntentId) {
+  httpClient
+    .put(cart['@id'] + '/pay', { paymentIntentId })
+    .then(order => {
+      // First, reset checkout stack
+      NavigationHolder.dispatch(StackActions.popToTop())
+      // Then, navigate to order screen
+      NavigationHolder.dispatch(NavigationActions.navigate({
+        routeName: 'AccountNav',
+        // We skip the AccountOrders screen
+        action: NavigationActions.navigate({
+          routeName: 'AccountOrder',
+          params: { order },
+        }),
+      }))
+
+      // Make sure to clear AFTER navigation has been reset
+      dispatch(clear())
+      dispatch(checkoutSuccess(order))
+    })
+    .catch(e => dispatch(checkoutFailure(e)))
+}
+
+/**
+ * @see https://gist.github.com/mindlapse/72139f022d6e620e4f0d59dc50c1797e
+ */
 export function checkout(number, expMonth, expYear, cvc) {
 
   return (dispatch, getState) => {
@@ -588,38 +614,40 @@ export function checkout(number, expMonth, expYear, cvc) {
 
     dispatch(checkoutRequest())
 
-    Stripe.createTokenWithCard({
-      number,
-      expMonth: parseInt(expMonth, 10),
-      expYear: parseInt(expYear, 10),
-      cvc,
+    Stripe.createPaymentMethod({
+      card : {
+        number,
+        expMonth: parseInt(expMonth, 10),
+        expYear: parseInt(expYear, 10),
+        cvc,
+      }
     })
-    .then(token => {
+    .then(paymentMethod => {
       httpClient
-        .put(cart['@id'] + '/pay', { stripeToken: token.tokenId })
-        .then(order => {
+        .put(cart['@id'] + '/pay', { paymentMethodId: paymentMethod.id })
+        .then(stripeResponse => {
 
-          // First, reset checkout stack
-          NavigationHolder.dispatch(StackActions.popToTop())
-          // Then, navigate to order screen
-          NavigationHolder.dispatch(NavigationActions.navigate({
-            routeName: 'AccountNav',
-            // We skip the AccountOrders screen
-            action: NavigationActions.navigate({
-              routeName: 'AccountOrder',
-              params: { order },
-            }),
-          }))
+          if (stripeResponse.requiresAction) {
 
-          // Make sure to clear AFTER navigation has been reset
-          dispatch(clear())
-          dispatch(checkoutSuccess(order))
+            // FIXME
+            // This method uses authenticatePayment on Android, which is deprecated
+            // @see https://github.com/stripe/stripe-android/blob/master/CHANGELOG.md#1230---2019-11-05
+            Stripe.authenticatePaymentIntent({ clientSecret: stripeResponse.paymentIntentClientSecret })
+              .then(authenticatePaymentResult => {
+                handleSuccess(dispatch, httpClient, cart, authenticatePaymentResult.paymentIntentId)
+              })
+              .catch(e => {
+                dispatch(checkoutFailure(e))
+              })
+
+          } else {
+            handleSuccess(dispatch, httpClient, cart, stripeResponse.paymentIntentId)
+          }
 
         })
         .catch(e => dispatch(checkoutFailure(e)))
     })
-    .catch(err => console.log(err));
-
+    .catch(e => dispatch(checkoutFailure(e)))
   }
 }
 

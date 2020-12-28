@@ -482,18 +482,18 @@ PODS:
     - React
   - RNDateTimePicker (2.6.1):
     - React
-  - RNFBAnalytics (7.6.9):
+  - RNFBAnalytics (7.6.10):
     - Firebase/Analytics (~> 6.34.0)
     - React-Core
     - RNFBApp
   - RNFBApp (8.4.7):
     - Firebase/CoreOnly (~> 6.34.0)
     - React-Core
-  - RNFBCrashlytics (8.4.12):
+  - RNFBCrashlytics (8.5.2):
     - Firebase/Crashlytics (~> 6.34.0)
     - React-Core
     - RNFBApp
-  - RNFBPerf (7.4.10):
+  - RNFBPerf (7.4.12):
     - Firebase/Performance (~> 6.34.0)
     - React-Core
     - RNFBApp
@@ -512,10 +512,10 @@ PODS:
     - RNSound/Core (= 0.11.0)
   - RNSound/Core (0.11.0):
     - React
-  - Stripe (14.0.1)
-  - tipsi-stripe (7.5.3):
+  - Stripe (19.4.0)
+  - tipsi-stripe (8.0.0-beta.11):
     - React
-    - Stripe (~> 14.0.1)
+    - Stripe (>= 19.0.1)
   - UMAppLoader (1.3.0)
   - UMBarCodeScannerInterface (5.3.0)
   - UMCameraInterface (5.3.0)
@@ -914,18 +914,18 @@ SPEC CHECKSUMS:
   RNCPicker: 914b557e20b3b8317b084aca9ff4b4edb95f61e4
   RNCPushNotificationIOS: ef00b111c849a9bb5dbc86d40cf91acb8b262772
   RNDateTimePicker: 83540fb5d71f28bd34990d8fabccb8d91e5d957e
-  RNFBAnalytics: 7d40b9b392fe2b8e6c2beeb119d1b090ed671c94
+  RNFBAnalytics: 6414e9fe1f36c3074f39cd6265b3def777dbfbdb
   RNFBApp: 804b98033f45c3a3e35b56de8c894f85ef5e4388
-  RNFBCrashlytics: 99a37e88b45e599908d8b2fabfda1f98420ae48a
-  RNFBPerf: 008dc6909378ab197ffb81f8a22b32a05d4c9a9e
+  RNFBCrashlytics: 501d01e5dd0cd6affedba60762b9b8d7d579cea8
+  RNFBPerf: aa494d0db6c246d14ffa46b157d63b0a4d5da4ff
   RNGestureHandler: 7a5833d0f788dbd107fbb913e09aa0c1ff333c39
   RNLocalize: 7c7aeda16c01db7a0918981c14875c0a53be9b79
   RNReanimated: e03f7425cb7a38dcf1b644d680d1bfc91c3337ad
   RNScreens: 2ad555d4d9fa10b91bb765ca07fe9b29d59573f0
   RNSketchCanvas: 9c28adb5381543ed55cc98ce6de46479cb3cb12c
   RNSound: da030221e6ac7e8290c6b43f2b5f2133a8e225b0
-  Stripe: 4305b646743612854819fb5d5cf67aaeb93577c0
-  tipsi-stripe: fb5b32e890a4528322c491e1827133a3cb919e0a
+  Stripe: 92f1c73a9dbd3c54277ed06a1fea6e08f20414c6
+  tipsi-stripe: b0655ee97dfd4b865d178d81b53ff54b95348701
   UMAppLoader: 5db5dc03176c6238da9c8b3657a370137882a4ad
   UMBarCodeScannerInterface: 017672479f93de88d94c3a50dfb66b5348b65989
   UMCameraInterface: 22bd2c4bf15dcf68530368fa5704af7490818457
