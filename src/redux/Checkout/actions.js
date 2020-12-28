@@ -614,40 +614,51 @@ export function checkout(number, expMonth, expYear, cvc) {
 
     dispatch(checkoutRequest())
 
-    Stripe.createPaymentMethod({
-      card : {
-        number,
-        expMonth: parseInt(expMonth, 10),
-        expYear: parseInt(expYear, 10),
-        cvc,
-      }
-    })
-    .then(paymentMethod => {
-      httpClient
-        .put(cart['@id'] + '/pay', { paymentMethodId: paymentMethod.id })
-        .then(stripeResponse => {
+    httpClient
+      .get(cart['@id'] + '/payment')
+      .then(payment => {
 
-          if (stripeResponse.requiresAction) {
+        if (null !== payment.stripeAccount) {
+          Stripe.setStripeAccount(payment.stripeAccount)
+        }
 
-            // FIXME
-            // This method uses authenticatePayment on Android, which is deprecated
-            // @see https://github.com/stripe/stripe-android/blob/master/CHANGELOG.md#1230---2019-11-05
-            Stripe.authenticatePaymentIntent({ clientSecret: stripeResponse.paymentIntentClientSecret })
-              .then(authenticatePaymentResult => {
-                handleSuccess(dispatch, httpClient, cart, authenticatePaymentResult.paymentIntentId)
-              })
-              .catch(e => {
-                dispatch(checkoutFailure(e))
-              })
-
-          } else {
-            handleSuccess(dispatch, httpClient, cart, stripeResponse.paymentIntentId)
+        Stripe.createPaymentMethod({
+          card : {
+            number,
+            expMonth: parseInt(expMonth, 10),
+            expYear: parseInt(expYear, 10),
+            cvc,
           }
+        })
+        .then(paymentMethod => {
+          httpClient
+            .put(cart['@id'] + '/pay', { paymentMethodId: paymentMethod.id })
+            .then(stripeResponse => {
 
+              if (stripeResponse.requiresAction) {
+
+                // FIXME
+                // This method uses authenticatePayment on Android, which is deprecated
+                // @see https://github.com/stripe/stripe-android/blob/master/CHANGELOG.md#1230---2019-11-05
+                Stripe.authenticatePaymentIntent({ clientSecret: stripeResponse.paymentIntentClientSecret })
+                  .then(authenticatePaymentResult => {
+                    handleSuccess(dispatch, httpClient, cart, authenticatePaymentResult.paymentIntentId)
+                  })
+                  .catch(e => {
+                    dispatch(checkoutFailure(e))
+                  })
+
+              } else {
+                handleSuccess(dispatch, httpClient, cart, stripeResponse.paymentIntentId)
+              }
+
+            })
+            .catch(e => dispatch(checkoutFailure(e)))
         })
         .catch(e => dispatch(checkoutFailure(e)))
-    })
-    .catch(e => dispatch(checkoutFailure(e)))
+
+      })
+      .catch(e => dispatch(checkoutFailure(e)))
   }
 }
 
