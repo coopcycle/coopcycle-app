@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
 import HeaderButton from '../../components/HeaderButton'
-import { selectSelectedDate } from '../../coopcycle-frontend-js/lastmile/redux'
+import { selectSelectedDate } from '../../coopcycle-frontend-js/logistics/redux'
 
 class HeaderRightButton extends Component {
   render() {

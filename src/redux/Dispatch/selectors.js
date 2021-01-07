@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect'
 import _ from 'lodash'
-import { selectUnassignedTasks } from '../../coopcycle-frontend-js/lastmile/redux'
+import { selectUnassignedTasks } from '../../coopcycle-frontend-js/logistics/redux'
 
 export const selectUnassignedTasksNotCancelled = createSelector(
   selectUnassignedTasks,
@@ -13,7 +13,7 @@ export const selectTasksNotCancelled = createSelector(
 )
 
 export const selectIsDispatchFetching = createSelector(
-  state => state.lastmile.ui.isFetching,
-  state => state.lastmile.ui.taskListsLoading,
+  state => state.logistics.ui.isFetching,
+  state => state.logistics.ui.taskListsLoading,
   (isFetching, taskListsLoading) => isFetching || taskListsLoading
 )
