@@ -574,6 +574,14 @@ export function deleteOpeningHoursSpecification(openingHoursSpecification) {
   }
 }
 
+function bluetoothErrorToString(e) {
+  if (typeof e === 'string') {
+    return e
+  }
+
+  return e.message ? e.message : (e.toString && typeof e.toString === 'function' ? e.toString() : e)
+}
+
 export function printOrder(order) {
 
   return async (dispatch, getState) => {
@@ -585,6 +593,25 @@ export function printOrder(order) {
     }
 
     try {
+
+      const isPeripheralConnected = await BleManager.isPeripheralConnected(printer.id, [])
+
+      // Try to reconnect first
+      if (!isPeripheralConnected) {
+        try {
+          await BleManager.connect(printer.id)
+        } catch (e) {
+          dispatch(printerDisconnected())
+          DropdownHolder
+            .getDropdown()
+            .alertWithType(
+              'error',
+              i18n.t('RESTAURANT_PRINTER_CONNECT_ERROR_TITLE'),
+              bluetoothErrorToString(e)
+            )
+          return
+        }
+      }
 
       const peripheralInfo = await BleManager.retrieveServices(printer.id)
 
@@ -631,7 +658,13 @@ export function printOrder(order) {
       }
 
     } catch (e) {
-      console.log('retrieveServices error', e)
+      DropdownHolder
+        .getDropdown()
+        .alertWithType(
+          'error',
+          i18n.t('RESTAURANT_PRINTER_CONNECT_ERROR_TITLE'),
+          bluetoothErrorToString(e)
+        )
     }
   }
 }
@@ -656,20 +689,12 @@ export function connectPrinter(device, cb) {
 
       })
       .catch(e => {
-
-        let message = ''
-        if (typeof e === 'string') {
-          message = e
-        } else {
-          message = e.message ? e.message : (e.toString && typeof e.toString === 'function' ? e.toString() : e)
-        }
-
         DropdownHolder
           .getDropdown()
           .alertWithType(
             'error',
             i18n.t('RESTAURANT_PRINTER_CONNECT_ERROR_TITLE'),
-            message
+            bluetoothErrorToString(e)
           )
       })
   }
@@ -681,7 +706,7 @@ export function disconnectPrinter(device, cb) {
     BleManager.disconnect(device.id)
       .then(() => {
 
-        dispatch(printerDisconnected(device))
+        dispatch(printerDisconnected())
 
         DropdownHolder
           .getDropdown()
