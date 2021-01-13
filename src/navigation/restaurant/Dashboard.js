@@ -16,7 +16,12 @@ import WebSocketIndicator from './components/WebSocketIndicator'
 import {
   changeStatus, loadOrders, changeDate, deleteOpeningHoursSpecification, loadOrderAndNavigate } from '../../redux/Restaurant/actions'
 import { connect as connectWs, init } from '../../redux/middlewares/WebSocketMiddleware/actions'
-import { selectSpecialOpeningHoursSpecification } from '../../redux/Restaurant/selectors'
+import {
+  selectSpecialOpeningHoursSpecification,
+  selectNewOrders,
+  selectAcceptedOrders,
+  selectCancelledOrders,
+  selectFulfilledOrders } from '../../redux/Restaurant/selectors'
 import { selectIsLoading, selectIsWsOpen } from '../../redux/App/selectors'
 import PushNotification from '../../notifications'
 import WebSocketClient from '../../websocket/WebSocketClient'
@@ -148,7 +153,7 @@ class DashboardPage extends Component {
   renderDashboard() {
 
     const { navigate } = this.props.navigation
-    const { orders, date, restaurant, specialOpeningHoursSpecification } = this.props
+    const { date, restaurant, specialOpeningHoursSpecification } = this.props
 
     return (
       <Container>
@@ -168,7 +173,11 @@ class DashboardPage extends Component {
             date={ date }
             onCalendarClick={ () => navigate('RestaurantDate') }
             onTodayClick={ () => this.props.changeDate(moment()) } />
-          <OrderList orders={ orders }
+          <OrderList
+            newOrders={ this.props.newOrders }
+            acceptedOrders={ this.props.acceptedOrders }
+            cancelledOrders={ this.props.cancelledOrders }
+            fulfilledOrders={ this.props.fulfilledOrders }
             onItemClick={ order => navigate('RestaurantOrder', { order }) } />
         </Content>
       </Container>
@@ -208,6 +217,10 @@ function mapStateToProps(state) {
   return {
     httpClient: state.app.httpClient,
     orders: state.restaurant.orders,
+    newOrders: selectNewOrders(state),
+    acceptedOrders: selectAcceptedOrders(state),
+    cancelledOrders: selectCancelledOrders(state),
+    fulfilledOrders: selectFulfilledOrders(state),
     date: state.restaurant.date,
     restaurant: state.restaurant.restaurant,
     specialOpeningHoursSpecification: selectSpecialOpeningHoursSpecification(state),

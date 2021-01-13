@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { SectionList, StyleSheet, TouchableOpacity, View } from 'react-native'
 import { Icon, Text } from 'native-base'
 import moment from 'moment'
-import _ from 'lodash'
 import { withTranslation } from 'react-i18next'
 import { formatPrice } from '../../../utils/formatting'
 import OrderNumber from '../../../components/OrderNumber'
@@ -51,40 +50,33 @@ class OrderList extends Component {
 
   render() {
 
-    const ordersByState = _.groupBy(this.props.orders, 'state')
-
-    let newOrders = ordersByState.hasOwnProperty('new') ? ordersByState.new : []
-    let acceptedOrders = ordersByState.hasOwnProperty('accepted') ? ordersByState.accepted : []
-    let fulfilledOrders = ordersByState.hasOwnProperty('fulfilled') ? ordersByState.fulfilled : []
-
-    let refusedOrders = ordersByState.hasOwnProperty('refused') ? ordersByState.refused : []
-    let cancelledOrders = ordersByState.hasOwnProperty('cancelled') ? ordersByState.cancelled : []
-    let allCancelledOrders = cancelledOrders.concat(refusedOrders)
-
-    newOrders = _.sortBy(newOrders, [ order => moment.parseZone(order.pickupExpectedAt) ])
-    acceptedOrders = _.sortBy(acceptedOrders, [ order => moment.parseZone(order.pickupExpectedAt) ])
-    allCancelledOrders = _.sortBy(allCancelledOrders, [ order => moment.parseZone(order.shippedAt) ])
+    const allOrders = [
+      ...this.props.newOrders,
+      ...this.props.acceptedOrders,
+      ...this.props.cancelledOrders,
+      ...this.props.fulfilledOrders,
+    ]
 
     return (
       <SectionList
-        data={ this.props.orders }
+        data={ allOrders }
         keyExtractor={ (item, index) => item['@id'] }
         sections={[
           {
-            title: this.props.t('RESTAURANT_ORDER_LIST_NEW_ORDERS', { count: newOrders.length }),
-            data: newOrders,
+            title: this.props.t('RESTAURANT_ORDER_LIST_NEW_ORDERS', { count: this.props.newOrders.length }),
+            data: this.props.newOrders,
           },
           {
-            title: this.props.t('RESTAURANT_ORDER_LIST_ACCEPTED_ORDERS', { count: acceptedOrders.length }),
-            data: acceptedOrders,
+            title: this.props.t('RESTAURANT_ORDER_LIST_ACCEPTED_ORDERS', { count: this.props.acceptedOrders.length }),
+            data: this.props.acceptedOrders,
           },
           {
-            title: this.props.t('RESTAURANT_ORDER_LIST_CANCELLED_ORDERS', { count: allCancelledOrders.length }),
-            data: allCancelledOrders,
+            title: this.props.t('RESTAURANT_ORDER_LIST_CANCELLED_ORDERS', { count: this.props.cancelledOrders.length }),
+            data: this.props.cancelledOrders,
           },
           {
-            title: this.props.t('RESTAURANT_ORDER_LIST_FULFILLED_ORDERS', { count: fulfilledOrders.length }),
-            data: fulfilledOrders,
+            title: this.props.t('RESTAURANT_ORDER_LIST_FULFILLED_ORDERS', { count: this.props.fulfilledOrders.length }),
+            data: this.props.fulfilledOrders,
           },
         ]}
         renderSectionHeader={ ({ section: { title } } ) => (
