@@ -384,19 +384,19 @@ PODS:
   - React-jsinspector (0.62.2)
   - react-native-ble-manager (7.4.1):
     - React
-  - react-native-camera (3.40.0):
+  - react-native-camera (3.42.0):
     - React-Core
-    - react-native-camera/RCT (= 3.40.0)
-    - react-native-camera/RN (= 3.40.0)
-  - react-native-camera/RCT (3.40.0):
+    - react-native-camera/RCT (= 3.42.0)
+    - react-native-camera/RN (= 3.42.0)
+  - react-native-camera/RCT (3.42.0):
     - React-Core
-  - react-native-camera/RN (3.40.0):
+  - react-native-camera/RN (3.42.0):
     - React-Core
-  - react-native-get-random-values (1.5.0):
-    - React
+  - react-native-get-random-values (1.5.1):
+    - React-Core
   - react-native-maps (0.27.1):
     - React
-  - react-native-netinfo (5.9.9):
+  - react-native-netinfo (5.9.10):
     - React-Core
   - react-native-safe-area-context (3.1.9):
     - React-Core
@@ -889,10 +889,10 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 1540d1c01bb493ae3124ed83351b1b6a155db7da
   React-jsinspector: 512e560d0e985d0e8c479a54a4e5c147a9c83493
   react-native-ble-manager: a0d0ee16185d281d55dfeb76dab387541eed201e
-  react-native-camera: 35854c4f764a4a6cf61c1c3525888b92f0fe4b31
-  react-native-get-random-values: 1404bd5cc0ab0e287f75ee1c489555688fc65f89
+  react-native-camera: cf8a153d33138dcc457172fc3c33fdf4e5d288d2
+  react-native-get-random-values: 41f0c91ac0da870e47b307e07752e9e54bc2dc7e
   react-native-maps: f4b89da81626ad7f151a8bfcb79733295d31ce5c
-  react-native-netinfo: 0212ce8604e88edf686f1481b925b17a42a52449
+  react-native-netinfo: 30fb89fa913c342be82a887b56e96be6d71201dd
   react-native-safe-area-context: b6e0e284002381d2ff29fa4fff42b4d8282e3c94
   react-native-version-number: b415bbec6a13f2df62bf978e85bc0d699462f37f
   React-RCTActionSheet: f41ea8a811aac770e0cc6e0ad6b270c644ea8b7c
