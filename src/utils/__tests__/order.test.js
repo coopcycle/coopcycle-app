@@ -1,6 +1,6 @@
 import moment from 'moment'
 import { Buffer } from 'buffer'
-import { encodeForPrinter, resolveFulfillmentMethod } from '../order'
+import { encodeForPrinter, resolveFulfillmentMethod, matchesDate } from '../order'
 
 describe('encodeForPrinter', () => {
 
@@ -68,5 +68,39 @@ describe('resolveFulfillmentMethod', () => {
     expect(resolveFulfillmentMethod({ takeaway: true })).toEqual('collection')
     expect(resolveFulfillmentMethod({ fulfillmentMethod: 'delivery' })).toEqual('delivery')
     expect(resolveFulfillmentMethod({ fulfillmentMethod: 'collection' })).toEqual('collection')
+  })
+})
+
+describe('matchesDate', () => {
+  it('returns expected results', () => {
+
+    expect(
+      matchesDate(
+        { pickupExpectedAt: "2021-01-13T21:50:00+01:00" },
+        moment('2021-01-12')
+      )
+    ).toBe(false)
+
+    expect(
+      matchesDate(
+        { pickupExpectedAt: "2021-01-13T21:50:00+01:00" },
+        moment('2021-01-13')
+      )
+    ).toBe(true)
+
+    expect(
+      matchesDate(
+        { pickupExpectedAt: "2021-01-13T21:50:00+01:00" },
+        '2021-01-13'
+      )
+    ).toBe(true)
+
+    expect(
+      matchesDate(
+        { pickupExpectedAt: "2021-01-13T21:50:00+01:00" },
+        moment('2021-01-14')
+      )
+    ).toBe(false)
+
   })
 })

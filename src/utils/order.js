@@ -118,3 +118,8 @@ export function resolveFulfillmentMethod(order) {
 
   return 'delivery'
 }
+
+export function matchesDate(order, date) {
+
+  return moment(order.pickupExpectedAt).format('YYYY-MM-DD') === moment(date).format('YYYY-MM-DD')
+}
