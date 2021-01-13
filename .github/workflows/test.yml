@@ -1,0 +1,19 @@
+name: Test
+on: [push, pull_request]
+jobs:
+  LINT_AND_TEST:
+    env:
+      COUNTLY_SERVER_URL: ''
+      COUNTLY_APP_KEY: ''
+      COUNTLY_SALT: ''
+    name: Basic tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+      - run: yarn install
+      - run: yarn lint
+      - run: yarn test
+
