@@ -116,24 +116,34 @@ class OrderScreen extends Component {
 
   renderHeading() {
 
-    const { order } = this.props
+    const { order, t } = this.props
 
     if (order.state !== 'refused' && order.state !== 'cancelled') {
 
-      const preparationExpectedAt = moment.parseZone(order.preparationExpectedAt).format('LT')
-      const pickupExpectedAt = moment.parseZone(order.pickupExpectedAt).format('LT')
+      const preparationExpectedAt = moment.parseZone(order.preparationExpectedAt)
+      const pickupExpectedAt = moment.parseZone(order.pickupExpectedAt)
+
+      const fallbackFormat = 'dddd D MMM'
 
       return (
         <View style={{ borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: '#CCCCCC' }}>
           <View style={ styles.fulfillment }>
             <OrderFulfillmentMethodIcon order={ order } />
+            <Text style={{ fontWeight: '700' }}>{ moment(pickupExpectedAt).calendar(null, {
+              lastDay : fallbackFormat,
+              sameDay: `[${t('TODAY')}]`,
+              nextDay: `[${t('TOMORROW')}]`,
+              lastWeek : fallbackFormat,
+              nextWeek : fallbackFormat,
+              sameElse : fallbackFormat,
+            }) }</Text>
             <Text>{ this.props.t(`FULFILLMENT_METHOD.${resolveFulfillmentMethod(order)}`) }</Text>
           </View>
           <View style={ styles.timeline }>
             <Icon type="FontAwesome" name="clock-o" />
             <View style={{ alignItems: 'flex-end' }}>
-              <Text>{ this.props.t('RESTAURANT_ORDER_PREPARATION_EXPECTED_AT', { date: preparationExpectedAt }) }</Text>
-              <Text>{ this.props.t('RESTAURANT_ORDER_PICKUP_EXPECTED_AT', { date: pickupExpectedAt }) }</Text>
+              <Text>{ this.props.t('RESTAURANT_ORDER_PREPARATION_EXPECTED_AT', { date: preparationExpectedAt.format('LT') }) }</Text>
+              <Text>{ this.props.t('RESTAURANT_ORDER_PICKUP_EXPECTED_AT', { date: pickupExpectedAt.format('LT') }) }</Text>
             </View>
           </View>
           <View style={{ marginBottom: 15 }}>
