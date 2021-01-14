@@ -202,7 +202,7 @@ class OrderScreen extends Component {
           <Card>
             <CardItem>
               <Left>
-                <Icon name="quote" />
+                <Icon type="FontAwesome" name="quote-left" />
                 <Text note>{ order.notes }</Text>
               </Left>
             </CardItem>
