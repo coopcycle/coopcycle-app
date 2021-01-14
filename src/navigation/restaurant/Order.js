@@ -23,6 +23,88 @@ import { resolveFulfillmentMethod } from '../../utils/order'
 
 const phoneNumberUtil = PhoneNumberUtil.getInstance()
 
+const OrderButtons = ({ order, isPrinterConnected, t, onPrinterClick, printOrder }) => {
+
+  let phoneNumber
+  let isPhoneValid = false
+
+  try {
+    phoneNumber = phoneNumberUtil.parse(order.customer.telephone)
+    isPhoneValid = true
+  } catch (e) {}
+
+  return (
+    <View style={{ flexDirection: 'row', paddingHorizontal: 10 }}>
+      <View style={{ width: '50%', paddingRight: 5 }}>
+        { isPrinterConnected && (
+        <Button small iconRight onPress={ printOrder }>
+          <Text>{ t('RESTAURANT_ORDER_PRINT') }</Text>
+          <Icon type="FontAwesome" name="print" />
+        </Button>
+        )}
+        { !isPrinterConnected && (
+        <Button small light iconRight onPress={ onPrinterClick }>
+          <Text>{ t('RESTAURANT_ORDER_PRINT') }</Text>
+          <Icon type="FontAwesome" name="print" />
+        </Button>
+        )}
+      </View>
+      <View style={{ width: '50%', paddingLeft: 5 }}>
+        { isPhoneValid && (
+        <Button small iconLeft success
+          onPress={ () => phonecall(order.customer.telephone, true) }>
+          <Icon name="call" />
+          <Text>{ phoneNumberUtil.format(phoneNumber, PhoneNumberFormat.NATIONAL) }</Text>
+        </Button>
+        )}
+      </View>
+    </View>
+  )
+}
+
+const fallbackFormat = 'dddd D MMM'
+
+const OrderHeading = ({ order, isPrinterConnected, t, onPrinterClick, printOrder }) => {
+
+  if (order.state !== 'refused' && order.state !== 'cancelled') {
+
+    const preparationExpectedAt = moment.parseZone(order.preparationExpectedAt)
+    const pickupExpectedAt = moment.parseZone(order.pickupExpectedAt)
+
+    return (
+      <View style={{ borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: '#CCCCCC' }}>
+        <View style={ styles.fulfillment }>
+          <OrderFulfillmentMethodIcon order={ order } />
+          <Text style={{ fontWeight: '700' }}>{ moment(pickupExpectedAt).calendar(null, {
+            lastDay : fallbackFormat,
+            sameDay: `[${t('TODAY')}]`,
+            nextDay: `[${t('TOMORROW')}]`,
+            lastWeek : fallbackFormat,
+            nextWeek : fallbackFormat,
+            sameElse : fallbackFormat,
+          }) }</Text>
+          <Text>{ t(`FULFILLMENT_METHOD.${resolveFulfillmentMethod(order)}`) }</Text>
+        </View>
+        <View style={ styles.timeline }>
+          <Icon type="FontAwesome" name="clock-o" />
+          <View style={{ alignItems: 'flex-end' }}>
+            <Text>{ t('RESTAURANT_ORDER_PREPARATION_EXPECTED_AT', { date: preparationExpectedAt.format('LT') }) }</Text>
+            <Text>{ t('RESTAURANT_ORDER_PICKUP_EXPECTED_AT', { date: pickupExpectedAt.format('LT') }) }</Text>
+          </View>
+        </View>
+        <View style={{ marginBottom: 15 }}>
+          <OrderButtons
+            order={ order }
+            isPrinterConnected={ isPrinterConnected }
+            onPrinterClick={ onPrinterClick }
+            printOrder={ printOrder }
+            t={ t } />
+        </View>
+      </View>
+    )
+  }
+}
+
 class OrderScreen extends Component {
 
   constructor(props) {
@@ -33,11 +115,6 @@ class OrderScreen extends Component {
     this.onSwipeValueChange = this.onSwipeValueChange.bind(this)
     this.onRowOpen = this.onRowOpen.bind(this)
     this.swipeRow = React.createRef()
-  }
-
-  _print() {
-    const { order } = this.props
-    this.props.printOrder(order)
   }
 
   renderActionButtons() {
@@ -114,46 +191,6 @@ class OrderScreen extends Component {
     }
   }
 
-  renderHeading() {
-
-    const { order, t } = this.props
-
-    if (order.state !== 'refused' && order.state !== 'cancelled') {
-
-      const preparationExpectedAt = moment.parseZone(order.preparationExpectedAt)
-      const pickupExpectedAt = moment.parseZone(order.pickupExpectedAt)
-
-      const fallbackFormat = 'dddd D MMM'
-
-      return (
-        <View style={{ borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: '#CCCCCC' }}>
-          <View style={ styles.fulfillment }>
-            <OrderFulfillmentMethodIcon order={ order } />
-            <Text style={{ fontWeight: '700' }}>{ moment(pickupExpectedAt).calendar(null, {
-              lastDay : fallbackFormat,
-              sameDay: `[${t('TODAY')}]`,
-              nextDay: `[${t('TOMORROW')}]`,
-              lastWeek : fallbackFormat,
-              nextWeek : fallbackFormat,
-              sameElse : fallbackFormat,
-            }) }</Text>
-            <Text>{ this.props.t(`FULFILLMENT_METHOD.${resolveFulfillmentMethod(order)}`) }</Text>
-          </View>
-          <View style={ styles.timeline }>
-            <Icon type="FontAwesome" name="clock-o" />
-            <View style={{ alignItems: 'flex-end' }}>
-              <Text>{ this.props.t('RESTAURANT_ORDER_PREPARATION_EXPECTED_AT', { date: preparationExpectedAt.format('LT') }) }</Text>
-              <Text>{ this.props.t('RESTAURANT_ORDER_PICKUP_EXPECTED_AT', { date: pickupExpectedAt.format('LT') }) }</Text>
-            </View>
-          </View>
-          <View style={{ marginBottom: 15 }}>
-            { this.renderButtons() }
-          </View>
-        </View>
-      )
-    }
-  }
-
   renderNotes() {
 
     const { order } = this.props
@@ -173,47 +210,6 @@ class OrderScreen extends Component {
         </View>
       )
     }
-  }
-
-  renderButtons() {
-
-    const { order, isPrinterConnected } = this.props
-
-    let phoneNumber
-    let isPhoneValid = false
-
-    try {
-      phoneNumber = phoneNumberUtil.parse(order.customer.telephone)
-      isPhoneValid = true
-    } catch (e) {}
-
-    return (
-      <View style={{ flexDirection: 'row', paddingHorizontal: 10 }}>
-        <View style={{ width: '50%', paddingRight: 5 }}>
-          { isPrinterConnected && (
-          <Button small iconRight onPress={ () => this._print() }>
-            <Text>{ this.props.t('RESTAURANT_ORDER_PRINT') }</Text>
-            <Icon type="FontAwesome" name="print" />
-          </Button>
-          )}
-          { !isPrinterConnected && (
-          <Button small light iconRight onPress={ () => this.props.navigation.navigate('RestaurantPrinter') }>
-            <Text>{ this.props.t('RESTAURANT_ORDER_PRINT') }</Text>
-            <Icon type="FontAwesome" name="print" />
-          </Button>
-          )}
-        </View>
-        <View style={{ width: '50%', paddingLeft: 5 }}>
-          { isPhoneValid && (
-          <Button small iconLeft success
-            onPress={ () => phonecall(order.customer.telephone, true) }>
-            <Icon name="call" />
-            <Text>{ phoneNumberUtil.format(phoneNumber, PhoneNumberFormat.NATIONAL) }</Text>
-          </Button>
-          )}
-        </View>
-      </View>
-    )
   }
 
   onSwipeValueChange({ key, value }) {
@@ -240,7 +236,12 @@ class OrderScreen extends Component {
     return (
       <Container style={{ flex: 1, backgroundColor: '#ffffff' }}>
         <View style={{ flex: 1 }}>
-          { this.renderHeading() }
+          <OrderHeading
+            order={ order }
+            t={ this.props.t }
+            isPrinterConnected={ this.props.isPrinterConnected }
+            onPrinterClick={ () => this.props.navigation.navigate('RestaurantPrinter') }
+            printOrder={ () => this.props.printOrder(this.props.order) } />
           <OrderItems order={ order } />
           { this.renderNotes() }
         </View>
