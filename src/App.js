@@ -90,7 +90,7 @@ function onNavigationStateChange(prevState, currentState) {
   }
 }
 
-const prefix = /https?:\/\/[a-z0-9]+\.coopcycle\.org|coopcycle:\//
+const prefix = /https?:\/\/[a-z0-9-]+\.coopcycle\.org|coopcycle:\/|https?:\/\/khora\.berlin|https?:\/\/livraison\.sicklo\.fr/
 
 class App extends Component {
 
