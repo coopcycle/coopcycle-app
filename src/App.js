@@ -28,6 +28,7 @@ axios.defaults.headers.common['X-CoopCycle-App-Version'] = VersionNumber.appVers
 import i18n from './i18n'
 
 import navigation from './navigation'
+import { URI_PREFIX } from './navigation/constants'
 import navigators from './navigation/navigators'
 
 import store, { persistor } from './redux/store'
@@ -90,8 +91,6 @@ function onNavigationStateChange(prevState, currentState) {
   }
 }
 
-const prefix = /https?:\/\/[a-z0-9-]+\.coopcycle\.org|coopcycle:\/|https?:\/\/khora\.berlin|https?:\/\/livraison\.sicklo\.fr/
-
 class App extends Component {
 
   componentDidMount() {
@@ -113,7 +112,7 @@ class App extends Component {
               <View style={{ flex: 1 }}>
                 <Spinner />
                 <RootNavigator
-                  uriPrefix={ prefix }
+                  uriPrefix={ URI_PREFIX }
                   ref={ ref => { NavigationHolder.setTopLevelNavigator(ref) } }
                   onNavigationStateChange={ onNavigationStateChange } />
                 <DropdownAlert ref={ ref => { DropdownHolder.setDropdown(ref) } } />
