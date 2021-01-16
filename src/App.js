@@ -79,6 +79,24 @@ function onNavigationStateChange(prevState, currentState) {
   }
 }
 
+// @see https://reactnavigation.org/docs/configuring-links/
+const linking = {
+  prefixes: [
+    'https://*.coopcycle.org',
+    'https://coopcycle.org',
+    'coopcycle://',
+    'https://livraison.sicklo.fr',
+    'https://khora.berlin',
+  ],
+  /* configuration for matching screens with paths */
+  config: {
+    screens: {
+      RegisterConfirm: 'register/confirm/:token',
+      AccountResetPasswordNewPassword: 'resetting/reset/:token',
+    },
+  },
+}
+
 class App extends Component {
 
   componentDidMount() {
@@ -100,7 +118,7 @@ class App extends Component {
               <View style={{ flex: 1 }}>
                 <Spinner />
                 <SafeAreaProvider>
-                  <NavigationContainer ref={ navigationRef }>
+                  <NavigationContainer ref={ navigationRef } linking={ linking }>
                     <Root />
                   </NavigationContainer>
                   {
