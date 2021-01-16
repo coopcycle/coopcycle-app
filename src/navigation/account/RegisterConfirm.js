@@ -16,18 +16,6 @@ class RegisterConfirm extends Component {
     }
   }
 
-  componentDidUpdate() {
-    // a state when an account is successfully confirmed
-    if (this.props.isAuthenticated) {
-      this.props.navigation.dispatch(NavigationActions.navigate({
-        routeName: 'CheckoutNav',
-        action: NavigationActions.navigate({
-          routeName: 'CheckoutSummary',
-        }),
-      }))
-    }
-  }
-
   render() {
     return (
       <Container>

@@ -420,7 +420,7 @@ export function confirmRegistration(token) {
         dispatch(authenticationSuccess(user))
 
         if (resumeCheckoutAfterActivation) {
-          dispatch(_resumeCheckoutAfterActivation(false))
+          dispatch(resumeCheckout())
         } else {
           navigateToHome(dispatch, getState)
         }
@@ -437,6 +437,18 @@ export function confirmRegistration(token) {
 export function forgotPassword() {
   return (dispatch, getState) => {
     dispatch(resetPasswordInit())
+  }
+}
+
+export function resumeCheckout() {
+  return (dispatch, getState) => {
+    dispatch(_resumeCheckoutAfterActivation(false))
+    NavigationHolder.dispatch(NavigationActions.navigate({
+      routeName: 'CheckoutNav',
+      action: NavigationActions.navigate({
+        routeName: 'CheckoutSummary',
+      }),
+    }))
   }
 }
 
@@ -475,7 +487,7 @@ export function setNewPassword(token, password) {
         dispatch(authenticationSuccess(user));
 
         if (resumeCheckoutAfterActivation) {
-          dispatch(_resumeCheckoutAfterActivation(false));
+          dispatch(resumeCheckout());
         } else {
           navigateToHome(dispatch, getState);
         }
