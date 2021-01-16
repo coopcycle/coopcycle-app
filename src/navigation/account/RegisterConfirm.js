@@ -3,6 +3,7 @@ import { StyleSheet } from 'react-native'
 import { Container, Content } from 'native-base'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
+import { NavigationActions } from 'react-navigation'
 
 import { confirmRegistration } from '../../redux/App/actions'
 import { selectIsAuthenticated } from '../../redux/App/selectors'
@@ -18,7 +19,12 @@ class RegisterConfirm extends Component {
   componentDidUpdate() {
     // a state when an account is successfully confirmed
     if (this.props.isAuthenticated) {
-      this.props.navigation.goBack()
+      this.props.navigation.dispatch(NavigationActions.navigate({
+        routeName: 'CheckoutNav',
+        action: NavigationActions.navigate({
+          routeName: 'CheckoutSummary',
+        }),
+      }))
     }
   }
 
