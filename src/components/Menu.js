@@ -119,7 +119,6 @@ class Menu extends Component {
   render() {
 
     const { menu } = this.props
-    const {paddingHeight, onScroll} = this.props.collapsible;
 
     let sections = []
     if (menu) {
@@ -134,9 +133,8 @@ class Menu extends Component {
 
     return (
       <AnimatedSectionList
-        contentContainerStyle={{paddingTop: paddingHeight}}
-        scrollIndicatorInsets={{top: paddingHeight}}
-        onScroll={onScroll}
+        onScroll={ this.props.onScroll }
+        scrollEventThrottle={ 16 }
         testID="menu"
         sections={ sections }
         renderItem={ ({ item, index, section }) => this.renderItem(item, index, section) }

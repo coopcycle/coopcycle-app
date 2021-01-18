@@ -7998,7 +7998,7 @@ hoist-non-react-statics@^2.3.1:
   resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-2.5.5.tgz#c5903cf409c0dfd908f388e619d86b9c1174cb47"
   integrity sha512-rqcy4pJo55FTTLWt+bU8ukscqHeE/e9KWvsOW2b/a3afxQZhwkQdT1rPPCJ0rYXdj4vNcasY8zHTH+jF/qStxw==
 
-hoist-non-react-statics@^3.0.1, hoist-non-react-statics@^3.3.0, hoist-non-react-statics@^3.3.1, hoist-non-react-statics@^3.3.2:
+hoist-non-react-statics@^3.3.0, hoist-non-react-statics@^3.3.1, hoist-non-react-statics@^3.3.2:
   version "3.3.2"
   resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-3.3.2.tgz#ece0acaf71d62c2969c2ec59feff42a4b1a85b45"
   integrity sha512-/gGivxi8JPKWNm/W0jSmzcMPpfpPLc3dY/6GxhX2hQ9iGj3aDfklV4ET7NjKpSinLpJ5vafa9iiGIEZg10SfBw==
@@ -11612,13 +11612,6 @@ react-native@0.62.2:
     stacktrace-parser "^0.1.3"
     use-subscription "^1.0.0"
     whatwg-fetch "^3.0.0"
-
-react-navigation-collapsible@^3.0.4:
-  version "3.0.4"
-  resolved "https://registry.yarnpkg.com/react-navigation-collapsible/-/react-navigation-collapsible-3.0.4.tgz#f41a1456a4467cf81a72261a772163f812a95039"
-  integrity sha512-W2Kzga4KfcMig1dZdVBn+H/Pd7t12z8t9zQ+KMdV/HDaR5Y54J7zIiYPpqYZDaWPMaGl1/nxgssGq1rkCq9cww==
-  dependencies:
-    hoist-non-react-statics "^3.0.1"
 
 react-navigation-drawer@^2.6.0:
   version "2.6.0"
