@@ -3,7 +3,6 @@ import { StyleSheet } from 'react-native'
 import { Container, Content } from 'native-base'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
-import { NavigationActions } from 'react-navigation'
 
 import { confirmRegistration } from '../../redux/App/actions'
 import { selectIsAuthenticated } from '../../redux/App/selectors'
