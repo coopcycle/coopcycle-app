@@ -133,8 +133,6 @@ class Menu extends Component {
 
     return (
       <AnimatedSectionList
-        onScroll={ this.props.onScroll }
-        scrollEventThrottle={ 16 }
         testID="menu"
         sections={ sections }
         renderItem={ ({ item, index, section }) => this.renderItem(item, index, section) }

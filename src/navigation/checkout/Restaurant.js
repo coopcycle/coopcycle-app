@@ -13,33 +13,15 @@ import Menu from '../../components/Menu'
 
 import { init, addItem, hideAddressModal, resetRestaurant, setAddress } from '../../redux/Checkout/actions'
 
-const H_MAX_HEIGHT = 160 // = 60 (text) + 80 (image) + 20 (marginTop)
-const H_MIN_HEIGHT = 60
-const H_SCROLL_DISTANCE = H_MAX_HEIGHT - H_MIN_HEIGHT;
-
 const GroupImageHeader = ({ restaurant, scale }) => {
 
   return (
     <Animated.View style={{
       width: '100%',
-      height: H_MAX_HEIGHT,
+      height: '100%',
       }}>
       <ImageBackground source={{ uri: restaurant.image }} style={{ width: '100%', height: '100%' }}>
-        <View style={styles.overlay}>
-          <Animated.Image
-            source={{ uri: restaurant.image }}
-            resizeMode="cover"
-            style={{
-              transform: [{ scale: scale }],
-              alignSelf: 'center',
-              width: 80,
-              height: 80,
-              borderWidth: 1,
-              borderColor: 'white',
-              borderRadius: 50,
-              marginTop: 20
-            }}
-          />
+        <View style={ styles.overlay }>
           <View style={{ height: 60, justifyContent: 'center' }}>
             <Text style={ styles.restaurantName } numberOfLines={ 1 }>{ restaurant.name }</Text>
           </View>
@@ -56,6 +38,7 @@ class Restaurant extends Component {
     this.state = {
       scrollOffsetY: new Animated.Value(0)
     }
+    this.scrollOffsetY = new Animated.Value(0)
   }
 
   componentDidMount() {
@@ -71,34 +54,20 @@ class Restaurant extends Component {
     const restaurant = this.props.navigation.getParam('restaurant')
     const { isCartEmpty, menu } = this.props
 
-    const translateY = this.state.scrollOffsetY.interpolate({
-      inputRange: [ 0, H_SCROLL_DISTANCE ],
-      outputRange: [ 0, H_SCROLL_DISTANCE * -1 ],
-      extrapolate: 'clamp'
-    })
-
-    const scale = this.state.scrollOffsetY.interpolate({
-      inputRange: [ 0, H_SCROLL_DISTANCE ],
-      outputRange: [ 1, 0 ],
-      extrapolate: 'clamp'
-    })
-
     return (
       <Container>
-        <Animated.View style={{ transform: [{ translateY: translateY }] }}>
-          <GroupImageHeader restaurant={ restaurant } scale={ scale } />
+        <View style={{ flex: 1, paddingTop: 60 }}>
+          <View style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: 60 }}>
+            <GroupImageHeader restaurant={ restaurant } />
+          </View>
           <Menu
-            onScroll={ Animated.event(
-              [ { nativeEvent: { contentOffset: { y: this.state.scrollOffsetY }}} ],
-              { useNativeDriver: true }
-            ) }
             restaurant={ restaurant }
             menu={ menu }
             onItemClick={ menuItem => this.props.addItem(menuItem) }
             isItemLoading={ menuItem => {
               return _.includes(this.props.loadingItems, menuItem.identifier)
             } } />
-        </Animated.View>
+        </View>
         { !isCartEmpty && (
         <CartFooter
           onSubmit={ () => navigate('CheckoutSummary') }
