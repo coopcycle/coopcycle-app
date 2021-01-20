@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Alert, StyleSheet, View } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
 import { Text } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import _ from 'lodash'
@@ -35,19 +34,19 @@ class Task extends Component {
   }
 
   componentDidMount() {
-    this.didFocusListener = this.props.navigation.addListener(
-      'didFocus',
-      payload => this.setState({ canRenderMap: true })
+    this.unsubscribeFromFocusListener = this.props.navigation.addListener(
+      'focus',
+      () => this.setState({ canRenderMap: true })
     )
   }
 
   componentWillUnmount() {
-    this.didFocusListener.remove()
+    this.unsubscribeFromFocusListener()
   }
 
   componentDidUpdate(prevProps, prevState) {
 
-    const task = this.props.navigation.getParam('task')
+    const task = this.props.route.params?.task
 
     let previousTask = _.find(prevProps.tasks, t => t['@id'] === task['@id'])
     let currentTask = _.find(this.props.tasks, t => t['@id'] === task['@id'])
@@ -65,7 +64,7 @@ class Task extends Component {
 
   _complete(success = true, force = false) {
 
-    const task = this.props.navigation.getParam('task')
+    const task = this.props.route.params?.task
 
     if (success && task.status === 'TODO' && !force) {
       Alert.alert(
@@ -95,7 +94,7 @@ class Task extends Component {
 
     this.props.navigation.navigate('TaskComplete', {
       task,
-      navigateAfter: this.props.navigation.getParam('navigateAfter'),
+      navigateAfter: this.props.route.params?.navigateAfter,
       success,
     })
     setTimeout(() => this.swipeRow.current.closeRow(), 250)
@@ -110,7 +109,7 @@ class Task extends Component {
       )
     }
 
-    const task = this.props.navigation.getParam('task')
+    const task = this.props.route.params?.task
     const { mapDimensions } = this.state
 
     let aspectRatio = 1
@@ -126,13 +125,11 @@ class Task extends Component {
 
   render() {
 
-    const { getParam } = this.props.navigation
-
-    const task = getParam('task')
-    const tasks = getParam('tasks', [])
+    const task = this.props.route.params?.task
+    const tasks = this.props.route.params?.tasks || []
 
     return (
-      <SafeAreaView style={{ flex: 1 }}>
+      <View style={{ flex: 1 }}>
         <View style={{ flex: 1 }}>
           <View style={{ height: '35%' }}>
             { this.renderMap() }
@@ -150,7 +147,7 @@ class Task extends Component {
           onPressSuccess={ () => this._complete(true) }
           onPressFailure={ () => this._complete(false) } /> }
         { !this.props.isInternetReachable && <OfflineNotice message={ this.props.t('OFFLINE') } /> }
-      </SafeAreaView>
+      </View>
     )
   }
 }

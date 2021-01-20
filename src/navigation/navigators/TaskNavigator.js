@@ -4,9 +4,13 @@ import {
   HeaderBackButton,
 } from '@react-navigation/stack'
 import { createCompatNavigatorFactory } from '@react-navigation/compat'
+import { connect } from 'react-redux'
+import { withTranslation } from 'react-i18next'
+import { useNavigation } from '@react-navigation/native'
 
 import i18n from '../../i18n'
 import screens, { defaultNavigationOptions } from '..'
+import { stackNavigatorScreenOptions } from '../styles'
 
 import ProofOfDeliveryTabs from './TaskAttachmentsNavigator'
 
@@ -28,6 +32,7 @@ const CompleteStack = createCompatNavigatorFactory(createStackNavigator)({
   initialRouteName: 'TaskCompleteHome',
 })
 
+/*
 function getActiveRouteName(navigationState) {
   if (!navigationState) {
     return null;
@@ -87,3 +92,64 @@ export default createCompatNavigatorFactory(createStackNavigator)({
     },
   }),
 })
+*/
+
+function mapStateToProps(state) {
+
+  return {
+    currentRoute: state.app.currentRoute,
+  }
+}
+
+const RootStack = createStackNavigator()
+
+const TaskNav = withTranslation()(({ currentRoute, t }) => {
+
+  const navigation = useNavigation()
+
+  return (
+    <RootStack.Navigator mode="modal"
+      screenOptions={{
+        ...stackNavigatorScreenOptions,
+        // headerLeft: (props) => {
+
+        //   console.log('headerLeft', props)
+        //   return 'Fooo'
+        // }
+      }}>
+      <RootStack.Screen
+        name="TaskHome"
+        component={ screens.TaskHome }
+        options={{
+          headerShown: false,
+        }}
+      />
+      <RootStack.Screen
+        name="TaskComplete"
+        component={ CompleteStack }
+        options={{
+          headerShown: false,
+          // headerLeft: (props) => {
+
+          //   let { onPress, title, backImage, ...otherProps } = props
+
+          //   if (currentRoute === 'StoreNewDeliveryAddress') {
+          //     title = t('CANCEL')
+          //   } else {
+          //     title = 'Back'
+          //   }
+
+          //   return (
+          //     <HeaderBackButton { ...otherProps }
+          //       onPress={ () => navigation.navigate('StoreHome') }
+          //       title={ title }
+          //       backImage={ backImage } />
+          //   )
+          // }
+        }}
+        />
+    </RootStack.Navigator>
+  )
+})
+
+export default connect(mapStateToProps)(TaskNav)

@@ -117,7 +117,10 @@ export const navigateToTask = (navigation, task, tasks = []) => {
     navigateAfter,
   }
 
-  navigation.navigate({ routeName: 'Task', params, key: task['@id'] })
+  navigation.navigate('Task', {
+    screen: 'TaskHome',
+    params
+  })
 }
 
 export const navigateToCompleteTask = (navigation, task, tasks = [], success = true) => {
@@ -127,13 +130,8 @@ export const navigateToCompleteTask = (navigation, task, tasks = [], success = t
     navigateAfter: navigation.state.routeName,
   }
 
-  navigation.navigate({
-    routeName: 'Task',
-    params: { ...params, tasks },
-    key: task['@id'],
-    action: NavigationActions.navigate({
-      routeName: 'TaskComplete',
-      params: { ...params, success },
-    }),
+  navigation.navigate('Task', {
+    screen: 'TaskComplete',
+    params: { ...params, success }
   })
 }

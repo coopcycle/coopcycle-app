@@ -46,7 +46,7 @@ const MainNavigator = createCompatNavigatorFactory(createStackNavigator)({
     screen: Tabs,
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('COURIER'),
-      headerLeft: headerLeft(navigation, 'menuBtnCourier'),
+      // headerLeft: headerLeft(navigation, 'menuBtnCourier'),
       headerRight: () =>
         <View style={{flex: 1, flexDirection: 'row', alignItems: 'flex-end'}}>
           <Button transparent onPress={() => navigation.navigate('CourierSettings')}>
@@ -62,7 +62,7 @@ const MainNavigator = createCompatNavigatorFactory(createStackNavigator)({
   Task: {
     screen: TaskNavigator,
     navigationOptions: ({ navigation }) => ({
-      title: `${i18n.t('TASK')} #${navigation.state.params.task.id}`,
+      title: 'Foo', // `${i18n.t('TASK')} #${navigation.state.params.task.id}`,
     }),
   },
 }, {
