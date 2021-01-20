@@ -1,7 +1,7 @@
 import React from 'react'
 import HeaderButton from '../components/HeaderButton'
 import { primaryColor,  whiteColor, fontTitleName } from '../styles/common'
-import { NavigationActions } from '@react-navigation/compat'
+import { NavigationActions, DrawerActions } from '@react-navigation/compat'
 
 import DispatchUnassignedTasks from './dispatch/UnassignedTasks'
 import DispatchTaskLists from './dispatch/TaskLists'
@@ -100,7 +100,7 @@ export const defaultNavigationOptions = {
 }
 
 export const headerLeft = (navigation, testID = 'menuBtn') => {
-  return () => <HeaderButton iconName="menu" onPress={ () => navigation.toggleDrawer() } testID={ testID } />
+  return () => <HeaderButton iconName="menu" onPress={ () => navigation.dispatch(DrawerActions.toggleDrawer()) } testID={ testID } />
 }
 
 let navigateAfter = null
