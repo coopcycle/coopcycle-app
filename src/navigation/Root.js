@@ -82,7 +82,7 @@ class Loading extends Component {
     console.log('baseURL', this.props.baseURL)
 
     if (this.state.ready) {
-      if (this.props.baseURL) {
+      if (this.props.baseURL && this.props.httpClient) {
         return <DrawerNavigator />
       } else {
         return <HomeNavigator />
@@ -127,6 +127,7 @@ function mapStateToProps(state) {
   return {
     loading: state.app.loading,
     baseURL: state.app.baseURL,
+    httpClient: state.app.httpClient,
   }
 }
 
