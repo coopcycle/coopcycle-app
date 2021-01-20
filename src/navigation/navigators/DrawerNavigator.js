@@ -1,8 +1,14 @@
-
 import React from 'react'
-import { createDrawerNavigator } from 'react-navigation-drawer'
-import { createStackNavigator } from 'react-navigation-stack'
+import { createDrawerNavigator } from '@react-navigation/drawer'
+import { createStackNavigator } from '@react-navigation/stack'
+import { createCompatNavigatorFactory } from '@react-navigation/compat'
 import { Icon } from 'native-base'
+import { withTranslation } from 'react-i18next'
+import { connect } from 'react-redux'
+
+import i18n from '../../i18n'
+import { selectIsAuthenticated } from '../../redux/App/selectors'
+import { defaultNavigationOptions, headerLeft } from '..'
 
 import DrawerContent from '../components/DrawerContent'
 
@@ -14,10 +20,7 @@ import RestaurantNavigator from './RestaurantNavigator'
 import StoreNavigator from './StoreNavigator'
 import About from '../home/About'
 
-import screens, { defaultNavigationOptions, headerLeft } from '..'
-
-import i18n from '../../i18n'
-
+/*
 const RegisterConfirmStack = createStackNavigator({
   RegisterConfirmHome: {
     screen: screens.AccountRegisterConfirm,
@@ -47,23 +50,21 @@ const ResetPasswordStack = createStackNavigator({
   initialRouteName: 'ResetPasswordHome',
   defaultNavigationOptions,
 })
+*/
 
-const AboutStack = createStackNavigator({
+const AboutStack = createCompatNavigatorFactory(createStackNavigator)({
   AboutHome: {
     screen: About,
-    navigationOptions: ({ navigation }) => {
-
-      return {
-        title: i18n.t('ABOUT'),
-        headerLeft: headerLeft(navigation),
-      }
-    },
+    navigationOptions: ({ navigation }) => ({
+      title: i18n.t('ABOUT'),
+      headerLeft: headerLeft(navigation),
+    })
   },
 }, {
-  initialRouteName: 'AboutHome',
   defaultNavigationOptions,
 })
 
+/*
 export default createDrawerNavigator({
   CheckoutNav: {
     screen: CheckoutNavigator,
@@ -135,3 +136,107 @@ export default createDrawerNavigator({
 }, {
   contentComponent: DrawerContent,
 })
+*/
+
+// TODO Move to a selector
+function getInitialRouteName(state) {
+
+  const user = state.app.user
+  const restaurants = state.restaurant.myRestaurants
+
+  if (user && user.isAuthenticated()) {
+
+    if (user.hasRole('ROLE_ADMIN')) {
+      return 'DispatchNav'
+    }
+
+    if (user.hasRole('ROLE_COURIER')) {
+      return 'CourierNav'
+    }
+
+    if (user.hasRole('ROLE_RESTAURANT') || user.hasRole('ROLE_STORE')) {
+
+      if (restaurants.length > 0) {
+        return 'RestaurantNav'
+      }
+
+      return 'StoreNav'
+    }
+  }
+
+  return 'CheckoutNav'
+}
+
+function mapStateToProps(state) {
+
+  const user = state.app.user
+
+  return {
+    isAuthenticated: selectIsAuthenticated(state),
+    user,
+    initialRouteName: getInitialRouteName(state),
+  }
+}
+
+const Drawer = createDrawerNavigator()
+
+const DrawerNav = withTranslation()(({ t, initialRouteName, user, isAuthenticated }) => {
+
+  return (
+    <Drawer.Navigator
+      drawerContent={ (props) => <DrawerContent { ...props } /> }
+      initialRouteName={ initialRouteName }
+      >
+      <Drawer.Screen
+        name="CheckoutNav"
+        component={ CheckoutNavigator }
+        options={{
+          title: t('SEARCH'),
+        }} />
+      <Drawer.Screen
+        name="AccountNav"
+        component={ AccountNavigator } />
+      <Drawer.Screen
+        name="AboutNav"
+        component={ AboutStack } />
+      { (isAuthenticated && user.hasRole('ROLE_COURIER')) && (
+        <Drawer.Screen
+          name="CourierNav"
+          component={ CourierNavigator }
+          options={{
+            title: t('TASKS'),
+          }} />
+      )}
+      { (isAuthenticated && user.hasRole('ROLE_RESTAURANT')) && (
+        <Drawer.Screen
+          name="RestaurantNav"
+          component={ RestaurantNavigator }
+          options={{
+            // This route is "dynamic", it may appear several times
+            // @see src/navigation/components/DrawerContent.js
+            title: '',
+          }} />
+      )}
+      { (isAuthenticated && user.hasRole('ROLE_STORE')) && (
+        <Drawer.Screen
+          name="StoreNav"
+          component={ StoreNavigator }
+          options={{
+            // This route is "dynamic", it may appear several times
+            // @see src/navigation/components/DrawerContent.js
+            title: '',
+          }} />
+      )}
+      { (isAuthenticated && user.hasRole('ROLE_ADMIN')) && (
+        <Drawer.Screen
+          name="DispatchNav"
+          component={ DispatchNavigator }
+          options={{
+            title: t('DISPATCH'),
+          }} />
+      )}
+    </Drawer.Navigator>
+  )
+})
+
+export default connect(mapStateToProps)(DrawerNav)

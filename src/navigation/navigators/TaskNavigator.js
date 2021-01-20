@@ -2,14 +2,15 @@ import React from 'react'
 import {
   createStackNavigator,
   HeaderBackButton,
-} from 'react-navigation-stack'
+} from '@react-navigation/stack'
+import { createCompatNavigatorFactory } from '@react-navigation/compat'
 
 import i18n from '../../i18n'
 import screens, { defaultNavigationOptions } from '..'
 
 import ProofOfDeliveryTabs from './TaskAttachmentsNavigator'
 
-const CompleteStack = createStackNavigator({
+const CompleteStack = createCompatNavigatorFactory(createStackNavigator)({
   TaskCompleteHome: {
     screen: screens.TaskComplete,
     navigationOptions: ({ navigation }) => ({
@@ -38,7 +39,7 @@ function getActiveRouteName(navigationState) {
   return route.routeName
 }
 
-export default createStackNavigator({
+export default createCompatNavigatorFactory(createStackNavigator)({
   TaskHome: {
     screen: screens.TaskHome,
     navigationOptions: ({ navigation }) => ({

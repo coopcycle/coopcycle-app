@@ -1,14 +1,15 @@
 import React from 'react'
 import { Icon} from 'native-base'
-import { createStackNavigator } from 'react-navigation-stack'
-import { createBottomTabNavigator } from 'react-navigation-tabs'
+import { createStackNavigator } from '@react-navigation/stack'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { createCompatNavigatorFactory } from '@react-navigation/compat'
 
 import i18n from '../../i18n'
 import HeaderRightButton from '../dispatch/HeaderRightButton'
 import TaskNavigator from './TaskNavigator'
 import screens, { defaultNavigationOptions, headerLeft } from '..'
 
-const Tabs = createBottomTabNavigator({
+const Tabs = createCompatNavigatorFactory(createBottomTabNavigator)({
   DispatchUnassignedTasks: {
     screen: screens.DispatchUnassignedTasks,
     navigationOptions: ({ navigation }) => ({
@@ -40,7 +41,7 @@ const Tabs = createBottomTabNavigator({
   },
 })
 
-const MainNavigator = createStackNavigator({
+const MainNavigator = createCompatNavigatorFactory(createStackNavigator)({
   DispatchHome: {
     screen: Tabs,
     navigationOptions: ({ navigation }) => ({
@@ -67,7 +68,7 @@ const MainNavigator = createStackNavigator({
   defaultNavigationOptions,
 })
 
-const AddTaskNavigator = createStackNavigator({
+const AddTaskNavigator = createCompatNavigatorFactory(createStackNavigator)({
   DispatchAddTaskHome: {
     screen: screens.DispatchAddTask,
     navigationOptions: ({ navigation }) => ({
@@ -89,7 +90,7 @@ const AddTaskNavigator = createStackNavigator({
   defaultNavigationOptions,
 })
 
-export default createStackNavigator({
+export default createCompatNavigatorFactory(createStackNavigator)({
   Main: {
     screen: MainNavigator,
     navigationOptions: ({ navigation }) => ({

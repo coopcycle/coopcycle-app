@@ -5,7 +5,7 @@ import { Button, Icon, Text } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import _ from 'lodash'
 import Modal from 'react-native-modal'
-import { SafeAreaView } from 'react-navigation'
+import { SafeAreaView } from 'react-native-safe-area-context'
 import { openComposer } from 'react-native-email-link'
 
 import { selectServer } from '../../redux/App/actions'

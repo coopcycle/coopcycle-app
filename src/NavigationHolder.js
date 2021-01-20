@@ -1,6 +1,6 @@
 // @see https://reactnavigation.org/docs/en/navigating-without-navigation-prop.html
 
-import { NavigationActions } from 'react-navigation'
+import { NavigationActions } from '@react-navigation/compat'
 
 export default class NavigationHolder {
 

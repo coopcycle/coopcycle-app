@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { StyleSheet, Platform, InteractionManager } from 'react-native'
 import { Container } from 'native-base'
-import { withNavigationFocus } from 'react-navigation'
+import { withNavigationFocus } from '@react-navigation/compat'
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake'
 import RNPinScreen from 'react-native-pin-screen'
 import { connect } from 'react-redux'

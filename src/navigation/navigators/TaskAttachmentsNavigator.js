@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { NavigationActions } from 'react-navigation'
-import { createMaterialTopTabNavigator } from 'react-navigation-tabs'
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
+import { createCompatNavigatorFactory, NavigationActions } from '@react-navigation/compat'
 
 import i18n from '../../i18n'
 import screens from '..'
@@ -26,7 +26,7 @@ const tabNavigatorConfig = {
   backBehavior: 'history',
 }
 
-const TopTabNavigator = createMaterialTopTabNavigator(routeConfigs, tabNavigatorConfig)
+const TopTabNavigator = createCompatNavigatorFactory(createMaterialTopTabNavigator)(routeConfigs, tabNavigatorConfig)
 
 // @see https://reactnavigation.org/docs/en/custom-navigators.html
 

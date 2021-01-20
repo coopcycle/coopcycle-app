@@ -1,15 +1,16 @@
 import React from 'react'
 import { View } from 'react-native'
 import { Button, Icon } from 'native-base'
-import { createStackNavigator } from 'react-navigation-stack'
-import { createBottomTabNavigator } from 'react-navigation-tabs'
+import { createStackNavigator } from '@react-navigation/stack'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { createCompatNavigatorFactory } from '@react-navigation/compat'
 
 import i18n from '../../i18n'
 import TrackingIcon from '../../components/TrackingIcon'
 import screens, { defaultNavigationOptions, headerLeft } from '..'
 import TaskNavigator from './TaskNavigator'
 
-const Tabs = createBottomTabNavigator({
+const Tabs = createCompatNavigatorFactory(createBottomTabNavigator)({
   CourierTasks: {
     screen: screens.CourierTasksPage,
     navigationOptions: ({ navigation }) => ({
@@ -40,7 +41,7 @@ const Tabs = createBottomTabNavigator({
   },
 })
 
-const MainNavigator = createStackNavigator({
+const MainNavigator = createCompatNavigatorFactory(createStackNavigator)({
   CourierHome: {
     screen: Tabs,
     navigationOptions: ({ navigation }) => ({
@@ -70,7 +71,7 @@ const MainNavigator = createStackNavigator({
   defaultNavigationOptions,
 })
 
-const SettingsStack = createStackNavigator({
+const SettingsStack = createCompatNavigatorFactory(createStackNavigator)({
   CourierSettings: {
     screen: screens.CourierSettings,
     navigationOptions: ({ navigation }) => ({
@@ -87,7 +88,7 @@ const SettingsStack = createStackNavigator({
   defaultNavigationOptions,
 })
 
-export default createStackNavigator({
+export default createCompatNavigatorFactory(createStackNavigator)({
   Main: {
     screen: MainNavigator,
     navigationOptions: ({ navigation }) => ({

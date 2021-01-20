@@ -1,11 +1,16 @@
 import React from 'react'
-import { createStackNavigator, HeaderBackButton } from 'react-navigation-stack'
+import { createStackNavigator, HeaderBackButton } from '@react-navigation/stack'
+import { createCompatNavigatorFactory } from '@react-navigation/compat'
+import { useNavigation } from '@react-navigation/native'
+import { connect } from 'react-redux'
+import { withTranslation } from 'react-i18next'
 
 import i18n from '../../i18n'
 import screens, { defaultNavigationOptions, headerLeft } from '..'
+import { stackNavigatorScreenOptions } from '../styles'
 import HeaderButton from '../../components/HeaderButton'
 
-const MainNavigator = createStackNavigator({
+const MainNavigator = createCompatNavigatorFactory(createStackNavigator)({
   StoreHome: {
     screen: screens.StoreDashboard,
     navigationOptions: ({ navigation }) => {
@@ -34,7 +39,7 @@ const MainNavigator = createStackNavigator({
   defaultNavigationOptions,
 })
 
-const NewDeliveryStack = createStackNavigator({
+const NewDeliveryStack = createCompatNavigatorFactory(createStackNavigator)({
   StoreNewDeliveryAddress: {
     screen: screens.StoreNewDeliveryAddress,
     navigationOptions: ({ navigation }) => ({
@@ -52,54 +57,54 @@ const NewDeliveryStack = createStackNavigator({
   initialRouteName: 'StoreNewDeliveryAddress',
 })
 
-function getActiveRouteName(navigationState) {
-  if (!navigationState) {
-    return null;
+function mapStateToProps(state) {
+
+  return {
+    currentRoute: state.app.currentRoute,
   }
-  const route = navigationState.routes[navigationState.index]
-  if (route.routes) {
-    return getActiveRouteName(route)
-  }
-  return route.routeName
 }
 
-export default createStackNavigator({
-  StoreHome: {
-    screen: MainNavigator,
-    navigationOptions: ({ navigation }) => ({
-      headerShown: false,
-    }),
-  },
-  StoreNewDelivery: {
-    screen: NewDeliveryStack,
-    navigationOptions: ({ navigation }) => ({
-      // Use header = null to get rid of the header
-      // The screen's header will be used
-      // headerShown: false,
-      title: i18n.t('STORE_NEW_DELIVERY'),
-      headerLeft: (props) => {
+const RootStack = createStackNavigator()
 
-        const routeName = getActiveRouteName(navigation.state)
+const StoreNav = withTranslation()(({ currentRoute, t }) => {
 
-        let { onPress, title, backImage, ...otherProps } = props
+  const navigation = useNavigation()
 
-        if (routeName === 'StoreNewDeliveryAddress') {
-          title = i18n.t('CANCEL')
-        } else {
-          title = 'Back'
-        }
+  return (
+    <RootStack.Navigator mode="modal"
+      screenOptions={ stackNavigatorScreenOptions }>
+      <RootStack.Screen
+        name="StoreHome"
+        component={ MainNavigator }
+        options={{
+          headerShown: false,
+        }}
+      />
+      <RootStack.Screen
+        name="StoreNewDelivery"
+        component={ NewDeliveryStack }
+        options={{
+          title: t('STORE_NEW_DELIVERY'),
+          headerLeft: (props) => {
 
-        return (
-          <HeaderBackButton { ...otherProps }
-            onPress={ () => navigation.goBack(null) }
-            title={ title }
-            backImage={ backImage } />
-        )
-      },
-    }),
-  },
-}, {
-  defaultNavigationOptions,
-  mode: 'modal',
-  initialRouteName: 'StoreHome',
+            let { onPress, title, backImage, ...otherProps } = props
+
+            if (currentRoute === 'StoreNewDeliveryAddress') {
+              title = t('CANCEL')
+            } else {
+              title = 'Back'
+            }
+
+            return (
+              <HeaderBackButton { ...otherProps }
+                onPress={ () => navigation.navigate('StoreHome') }
+                title={ title }
+                backImage={ backImage } />
+            )
+          }
+        }} />
+    </RootStack.Navigator>
+  )
 })
+
+export default connect(mapStateToProps)(StoreNav)

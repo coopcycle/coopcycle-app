@@ -1,5 +1,6 @@
 import React from 'react'
-import { createStackNavigator } from 'react-navigation-stack'
+import { createStackNavigator } from '@react-navigation/stack'
+import { createCompatNavigatorFactory } from '@react-navigation/compat'
 
 import i18n from '../../i18n'
 import { defaultNavigationOptions } from '..'
@@ -9,7 +10,7 @@ import ConfigureServer from '../ConfigureServer'
 import ChooseCity from '../home/ChooseCity'
 import CustomServer from '../home/CustomServer'
 
-const MainNavigator = createStackNavigator({
+const MainNavigator = createCompatNavigatorFactory(createStackNavigator)({
   Home: {
     screen: ConfigureServer,
     navigationOptions: ({ navigation }) => ({
@@ -37,7 +38,7 @@ const MainNavigator = createStackNavigator({
   defaultNavigationOptions,
 })
 
-export default createStackNavigator({
+export default createCompatNavigatorFactory(createStackNavigator)({
   Main: {
     screen: MainNavigator,
     navigationOptions: ({ navigation }) => ({
