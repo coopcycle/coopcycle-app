@@ -613,7 +613,5 @@ export function resetServer() {
       }
 
       dispatch(setBaseURL(null))
-
-      NavigationHolder.navigate('ConfigureServer')
   }
 }
