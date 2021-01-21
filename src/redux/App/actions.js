@@ -169,90 +169,6 @@ function setRolesProperty(user) {
   }
 }
 
-function navigateToHome(dispatch, getState) {
-
-  return
-
-  const { httpClient, user } = getState().app
-
-  if (user && user.isAuthenticated()) {
-
-    if (user.hasRole('ROLE_ADMIN') || user.hasRole('ROLE_RESTAURANT') || user.hasRole('ROLE_STORE')) {
-
-      const promises = []
-
-      promises.push(new Promise((resolve, reject) => {
-        if (user.hasRole('ROLE_ADMIN') || user.hasRole('ROLE_RESTAURANT')) {
-          const req = user.hasRole('ROLE_ADMIN') ?
-            httpClient.get('/api/restaurants') : httpClient.get('/api/me/restaurants')
-          req
-            .then(res => {
-              resolve(res['hydra:member'])
-            })
-            .catch(e => {
-              console.log(e)
-              resolve([])
-            })
-        } else {
-          resolve([])
-        }
-      }))
-      promises.push(new Promise((resolve, reject) => {
-        if (user.hasRole('ROLE_STORE')) {
-          const req = httpClient.get('/api/me/stores')
-          req
-            .then(res => {
-              resolve(res['hydra:member'])
-            })
-            .catch(e => {
-              console.log(e)
-              resolve([])
-            })
-        } else {
-          resolve([])
-        }
-      }))
-
-      dispatch(loadMyRestaurantsRequest())
-
-      Promise.all(promises)
-        .then(values => {
-
-          const [ restaurants, stores ] = values
-
-          dispatch(loadMyRestaurantsSuccess(restaurants))
-
-          if (stores) {
-            dispatch(_loadMyStoresSuccess(stores))
-          }
-
-          // Users may have both ROLE_ADMIN & ROLE_COURIER
-          if (user.hasRole('ROLE_COURIER')) {
-            NavigationHolder.navigate('CourierHome')
-          } else if (user.hasRole('ROLE_ADMIN')) {
-            NavigationHolder.navigate('DispatchHome')
-          } else {
-            if (restaurants.length > 0) {
-              NavigationHolder.navigate('RestaurantHome')
-            } else if (stores && stores.length > 0) {
-              NavigationHolder.navigate('StoreHome')
-            } else {
-              NavigationHolder.navigate('CheckoutHome')
-            }
-          }
-
-        })
-
-    } else if (user.hasRole('ROLE_COURIER')) {
-      return NavigationHolder.navigate('CourierHome')
-    } else {
-      NavigationHolder.navigate('CheckoutHome')
-    }
-  } else {
-    NavigationHolder.navigate('CheckoutHome')
-  }
-}
-
 export function selectServer(server) {
 
   return function (dispatch, getState) {
@@ -306,8 +222,6 @@ export function selectServer(server) {
 export function bootstrap(baseURL, user) {
 
   return async (dispatch, getState) => {
-
-    console.log('bootstrap - BEGIN')
 
     const settings = await Settings.synchronize(baseURL)
 
@@ -367,43 +281,7 @@ export function bootstrap(baseURL, user) {
       if (stores) {
         dispatch(_loadMyStoresSuccess(stores))
       }
-
-      /*
-
-      dispatch(loadMyRestaurantsRequest())
-
-      Promise.all(promises)
-        .then(values => {
-
-          const [ restaurants, stores ] = values
-
-          dispatch(loadMyRestaurantsSuccess(restaurants))
-
-          if (stores) {
-            dispatch(_loadMyStoresSuccess(stores))
-          }
-
-          // Users may have both ROLE_ADMIN & ROLE_COURIER
-          if (user.hasRole('ROLE_COURIER')) {
-            NavigationHolder.navigate('CourierHome')
-          } else if (user.hasRole('ROLE_ADMIN')) {
-            NavigationHolder.navigate('DispatchHome')
-          } else {
-            if (restaurants.length > 0) {
-              NavigationHolder.navigate('RestaurantHome')
-            } else if (stores && stores.length > 0) {
-              NavigationHolder.navigate('StoreHome')
-            } else {
-              NavigationHolder.navigate('CheckoutHome')
-            }
-          }
-
-        })
-      */
-
     }
-
-    console.log('bootstrap - END')
 
     // setTimeout(() => navigateToHome(dispatch, getState), 250)
   }

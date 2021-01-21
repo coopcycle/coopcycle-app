@@ -82,6 +82,9 @@ class Loading extends Component {
     console.log('baseURL', this.props.baseURL)
 
     if (this.state.ready) {
+      // We need to check if httpClient is defined, because it is managed by a middleware.
+      // So, when dispatching a Redux action that triggers the middleware,
+      // the screens may re-render *BEFORE* httpClient has been defined.
       if (this.props.baseURL && this.props.httpClient) {
         return <DrawerNavigator />
       } else {

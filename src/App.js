@@ -75,6 +75,8 @@ function getActiveRouteName(navigationState) {
 const navigationRef = createRef()
 const routeNameRef = createRef()
 
+NavigationHolder.setNavigationRef(navigationRef)
+
 // @see https://reactnavigation.org/docs/screen-tracking
 function onNavigationStateChange(prevState, currentState) {
   const previousRouteName = routeNameRef.current;
