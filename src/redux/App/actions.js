@@ -202,12 +202,6 @@ export function selectServer(server) {
           })
           .then(() => dispatch(_clearSelectServerError()))
           .then(() => dispatch(setLoading(false)))
-          // .then(() => NavigationHolder.dispatch(
-          //   NavigationActions.navigate({
-          //     routeName: 'CheckoutHome',
-          //     key: 'CheckoutHome',
-          //   })
-          // ))
       )
       .catch((err) => {
         setTimeout(() => {
