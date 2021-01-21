@@ -276,8 +276,6 @@ export function bootstrap(baseURL, user) {
         dispatch(_loadMyStoresSuccess(stores))
       }
     }
-
-    // setTimeout(() => navigateToHome(dispatch, getState), 250)
   }
 }
 
