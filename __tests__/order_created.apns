@@ -1,0 +1,14 @@
+{
+    "Simulator Target Bundle": "org.coopcycle.CoopCycle",
+    "aps": {
+        "alert": "Push Notifications Test",
+        "sound": "default",
+        "badge": 0
+    },
+    "event": {
+        "name": "order:created",
+        "data": {
+            "order": "/api/orders/5105"
+        }
+    }
+}
