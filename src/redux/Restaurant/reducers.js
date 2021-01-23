@@ -399,10 +399,22 @@ export default (state = initialState, action = {}) => {
 
         switch (name) {
           case 'order:created':
+          case 'order:accepted':
+          case 'order:cancelled':
+
+            // FIXME
+            // Fix this on API side
+            let newOrder = { ...data.order }
+            if (name === 'order:cancelled' && newOrder.state !== 'cancelled') {
+              newOrder = {
+                ...newOrder,
+                state: 'cancelled',
+              }
+            }
 
             return {
               ...state,
-              orders: addOrReplace(state, data.order),
+              orders: addOrReplace(state, newOrder),
             }
           default:
             break
