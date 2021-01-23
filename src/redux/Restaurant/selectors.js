@@ -38,7 +38,16 @@ export const selectAcceptedOrders = createSelector(
   _selectDate,
   _selectOrders,
   (date, orders) => _.sortBy(
-    _.filter(orders, o => matchesDate(o, date) && o.state === 'accepted'),
+    _.filter(orders, o => matchesDate(o, date) && o.state === 'accepted' && !o.assignedTo),
+    [ o => moment.parseZone(o.pickupExpectedAt) ]
+  )
+)
+
+export const selectPickedOrders = createSelector(
+  _selectDate,
+  _selectOrders,
+  (date, orders) => _.sortBy(
+    _.filter(orders, o => matchesDate(o, date) && o.state === 'accepted' && !!o.assignedTo),
     [ o => moment.parseZone(o.pickupExpectedAt) ]
   )
 )

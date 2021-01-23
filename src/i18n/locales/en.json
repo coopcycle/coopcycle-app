@@ -357,6 +357,7 @@
         "SELECTED": "Selected",
         "AVAILABLE": "Available",
         "COMING_SOON": "Coming soon",
-        "CARDHOLDER_NAME": "Cardholder name"
+        "CARDHOLDER_NAME": "Cardholder name",
+        "RESTAURANT_ORDER_LIST_PICKED_ORDERS": "Picked orders ({{count}})"
     }
 }

@@ -20,6 +20,7 @@ import {
   selectSpecialOpeningHoursSpecification,
   selectNewOrders,
   selectAcceptedOrders,
+  selectPickedOrders,
   selectCancelledOrders,
   selectFulfilledOrders } from '../../redux/Restaurant/selectors'
 import { selectIsLoading, selectIsWsOpen } from '../../redux/App/selectors'
@@ -174,8 +175,10 @@ class DashboardPage extends Component {
             onCalendarClick={ () => navigate('RestaurantDate') }
             onTodayClick={ () => this.props.changeDate(moment()) } />
           <OrderList
+            baseURL={ this.props.baseURL }
             newOrders={ this.props.newOrders }
             acceptedOrders={ this.props.acceptedOrders }
+            pickedOrders={ this.props.pickedOrders }
             cancelledOrders={ this.props.cancelledOrders }
             fulfilledOrders={ this.props.fulfilledOrders }
             onItemClick={ order => navigate('RestaurantOrder', { order }) } />
@@ -216,9 +219,11 @@ function mapStateToProps(state) {
 
   return {
     httpClient: state.app.httpClient,
+    baseURL: state.app.baseURL,
     orders: state.restaurant.orders,
     newOrders: selectNewOrders(state),
     acceptedOrders: selectAcceptedOrders(state),
+    pickedOrders: selectPickedOrders(state),
     cancelledOrders: selectCancelledOrders(state),
     fulfilledOrders: selectFulfilledOrders(state),
     date: state.restaurant.date,

@@ -349,6 +349,7 @@
         "SELECTED": "Selectionné",
         "AVAILABLE": "Disponible",
         "COMING_SOON": "Bientôt",
-        "CARDHOLDER_NAME": "Nom du titulaire de la carte"
+        "CARDHOLDER_NAME": "Nom du titulaire de la carte",
+        "RESTAURANT_ORDER_LIST_PICKED_ORDERS": "Commandes récupérées ({{count}})"
     }
 }

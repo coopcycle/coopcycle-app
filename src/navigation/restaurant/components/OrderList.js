@@ -53,6 +53,7 @@ class OrderList extends Component {
     const allOrders = [
       ...this.props.newOrders,
       ...this.props.acceptedOrders,
+      ...this.props.pickedOrders,
       ...this.props.cancelledOrders,
       ...this.props.fulfilledOrders,
     ]
@@ -69,6 +70,10 @@ class OrderList extends Component {
           {
             title: this.props.t('RESTAURANT_ORDER_LIST_ACCEPTED_ORDERS', { count: this.props.acceptedOrders.length }),
             data: this.props.acceptedOrders,
+          },
+          {
+            title: this.props.t('RESTAURANT_ORDER_LIST_PICKED_ORDERS', { count: this.props.pickedOrders.length }),
+            data: this.props.pickedOrders,
           },
           {
             title: this.props.t('RESTAURANT_ORDER_LIST_CANCELLED_ORDERS', { count: this.props.cancelledOrders.length }),

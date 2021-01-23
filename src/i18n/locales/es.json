@@ -358,6 +358,7 @@
         "AVAILABLE": "Disponible",
         "LEARN_MORE": "Aprender más",
         "SELECTED": "Seleccionado",
-        "CARDHOLDER_NAME": "Nombre del titular de la tarjeta"
+        "CARDHOLDER_NAME": "Nombre del titular de la tarjeta",
+        "RESTAURANT_ORDER_LIST_PICKED_ORDERS": "Pedidos recogidos ({{count}})"
     }
 }
