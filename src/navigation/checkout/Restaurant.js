@@ -108,7 +108,6 @@ function mapStateToProps(state) {
 
   return {
     isCartEmpty,
-    date: state.checkout.date,
     menu: state.checkout.menu,
     address: state.checkout.address,
     isLoading: state.checkout.isLoading,

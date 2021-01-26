@@ -216,7 +216,6 @@ function mapStateToProps(state, ownProps) {
     googleApiKey: state.app.settings.google_api_key,
     location: state.app.settings.latlng,
     country: state.app.settings.country,
-    date: state.checkout.date,
     address: state.checkout.address,
     isAddressOK: state.checkout.isAddressOK,
     isModalVisible: state.checkout.isAddressModalVisible,

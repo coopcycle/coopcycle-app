@@ -22,7 +22,7 @@ import DangerAlert from '../../components/DangerAlert'
 import { formatPrice } from '../../utils/formatting'
 import i18n from '../../i18n'
 import { incrementItem, decrementItem, removeItem, validate, showAddressModal, hideAddressModal, updateCart } from '../../redux/Checkout/actions'
-import { selectDeliveryTotal, selectShippingDate, selectIsShippingAsap, selectCartFulfillmentMethod } from '../../redux/Checkout/selectors'
+import { selectDeliveryTotal, selectShippingTimeRangeLabel, selectCartFulfillmentMethod } from '../../redux/Checkout/selectors'
 import { selectIsAuthenticated } from '../../redux/App/selectors'
 import CartFooter from './components/CartFooter'
 import AddressModal from './components/AddressModal'
@@ -356,40 +356,16 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state, ownProps) {
 
-  const { timing } = state.checkout
-
-  let timeAsText = i18n.t('LOADING')
-
-  const fulfillmentMethod = selectCartFulfillmentMethod(state)
-
-  if (selectIsShippingAsap(state)) {
-    if (timing.today && timing.fast) {
-      timeAsText = i18n.t(`CART_${fulfillmentMethod.toUpperCase()}_TIME_DIFF`, { diff: timing.diff })
-    } else {
-      let fromNow = moment
-        .parseZone(timing.asap)
-        .calendar(null, { sameElse: 'LLLL' }).toLowerCase()
-      timeAsText = i18n.t(`CART_${fulfillmentMethod.toUpperCase()}_TIME`, { fromNow })
-    }
-  } else {
-    let fromNow = moment
-      .parseZone(selectShippingDate(state))
-      .calendar(null, { sameElse: 'LLLL' }).toLowerCase()
-    timeAsText = i18n.t(`CART_${fulfillmentMethod.toUpperCase()}_TIME`, { fromNow })
-  }
-
   return {
     cart: state.checkout.cart,
-    date: state.checkout.date,
-    timing: state.checkout.timing,
     edit: ownProps.navigation.getParam('edit', false),
     isAuthenticated: selectIsAuthenticated(state),
     deliveryTotal: selectDeliveryTotal(state),
-    timeAsText,
+    timeAsText: selectShippingTimeRangeLabel(state),
     isLoading: state.checkout.isLoading,
     isValid: state.checkout.isValid,
     alertMessage: _.first(state.checkout.violations.map(v => v.message)),
-    fulfillmentMethod,
+    fulfillmentMethod: selectCartFulfillmentMethod(state),
     restaurant: state.checkout.restaurant,
   }
 }

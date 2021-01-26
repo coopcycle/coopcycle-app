@@ -6,7 +6,6 @@ import {
   UPDATE_ITEM_QUANTITY,
   SET_ADDRESS,
   SET_ADDRESS_OK,
-  SET_DATE,
   SET_TIMING,
   CLEAR,
   RESET_RESTAURANT,
@@ -175,12 +174,6 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         isAddressOK: action.payload,
-      }
-
-    case SET_DATE:
-      return {
-        ...state,
-        date: action.payload,
       }
 
     case LOAD_RESTAURANTS_SUCCESS:

@@ -18,7 +18,6 @@ export const UPDATE_ITEM_QUANTITY = 'UPDATE_ITEM_QUANTITY'
 
 export const SET_ADDRESS = '@checkout/SET_ADDRESS'
 export const SET_ADDRESS_OK = '@checkout/SET_ADDRESS_OK'
-export const SET_DATE = '@checkout/SET_DATE'
 export const SET_TIMING = '@checkout/SET_TIMING'
 export const SET_CART_VALIDATION = '@checkout/SET_CART_VALIDATION'
 export const CLEAR = '@checkout/CLEAR'
@@ -750,7 +749,7 @@ export function updateCart(payload, cb) {
   }
 }
 
-export function setDate(date, cb) {
+export function setDate(shippingTimeRange, cb) {
 
   return (dispatch, getState) => {
 
@@ -762,7 +761,7 @@ export function setDate(date, cb) {
 
     httpClient
       .put(cart['@id'], {
-        shippedAt: date,
+        shippingTimeRange,
       })
       .then(res => {
         dispatch(updateCartSuccess(res))
@@ -787,7 +786,7 @@ export function setDateAsap(cb) {
 
     httpClient
       .put(cart['@id'], {
-        shippedAt: null,
+        shippingTimeRange: null,
       })
       .then(res => {
         dispatch(updateCartSuccess(res))

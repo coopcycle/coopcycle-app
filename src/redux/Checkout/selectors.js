@@ -1,5 +1,8 @@
 import { createSelector } from 'reselect'
 import _ from 'lodash'
+import moment from 'moment'
+
+import i18n from '../../i18n'
 
 export const selectDeliveryTotal = createSelector(
   state => state.checkout.cart,
@@ -17,19 +20,6 @@ export const selectDeliveryTotal = createSelector(
       return total + adj.amount
     }, 0)
   }
-)
-
-export const selectShippingDate = createSelector(
-  state => state.checkout.cart,
-  state => state.checkout.timing,
-  (cart, timing) => {
-    return cart.shippedAt ? cart.shippedAt : timing.asap
-  }
-)
-
-export const selectIsShippingAsap = createSelector(
-  state => state.checkout.cart,
-  (cart) => (!!cart.shippedAt) !== true
 )
 
 export const selectFulfillmentMethods = createSelector(
@@ -74,5 +64,36 @@ export const selectCartFulfillmentMethod = createSelector(
     }
 
     return 'delivery'
+  }
+)
+
+export const selectShippingTimeRangeLabel = createSelector(
+  selectCartFulfillmentMethod,
+  state => state.checkout.timing,
+  state => state.checkout.cart,
+  (fulfillmentMethod, timing, cart) => {
+
+    if (_.size(timing) === 0) {
+      return i18n.t('LOADING')
+    }
+
+    if (!cart.shippingTimeRange) {
+
+      if (timing.today && timing.fast) {
+        return i18n.t(`CART_${fulfillmentMethod.toUpperCase()}_TIME_DIFF`, { diff: timing.diff })
+      }
+
+      let fromNow = moment
+        .parseZone(timing.range[0])
+        .calendar(null, { sameElse: 'LLLL' }).toLowerCase()
+
+      return i18n.t(`CART_${fulfillmentMethod.toUpperCase()}_TIME`, { fromNow })
+    }
+
+    let fromNow = moment
+      .parseZone(cart.shippingTimeRange[0])
+      .calendar(null, { sameElse: 'LLLL' }).toLowerCase()
+
+    return i18n.t(`CART_${fulfillmentMethod.toUpperCase()}_TIME`, { fromNow })
   }
 )

@@ -8,12 +8,11 @@ import _ from 'lodash'
 import moment from 'moment'
 
 import { setDate, setDateAsap, setFulfillmentMethod } from '../../redux/Checkout/actions'
-import { selectShippingDate,
-  selectIsShippingAsap, selectCartFulfillmentMethod,
-  selectIsDeliveryEnabled, selectIsCollectionEnabled } from '../../redux/Checkout/selectors'
+import {
+  selectCartFulfillmentMethod,
+  selectIsDeliveryEnabled,
+  selectIsCollectionEnabled } from '../../redux/Checkout/selectors'
 import FooterButton from './components/FooterButton'
-
-
 
 const FulfillmentMethodButton = withTranslation()(({ type, enabled, active, onPress, t }) => {
 
@@ -52,6 +51,7 @@ const FulfillmentMethodButtons = withTranslation()(({ fulfillmentMethod, isDeliv
     <View style={{ alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }}>
       { _.map(types, (type) => (
         <FulfillmentMethodButton
+          key={ type }
           type={ type }
           active={ fulfillmentMethod === type }
           enabled={ enabled[type] }
@@ -61,14 +61,21 @@ const FulfillmentMethodButtons = withTranslation()(({ fulfillmentMethod, isDeliv
   )
 })
 
+const rangeAsDateLabel = (range) => moment.parseZone(range[0]).format('LL')
+const rangeAsTimeLabel = (range) => `${moment.parseZone(range[0]).format('LT')} - ${moment.parseZone(range[1]).format('LT')}`
+
+const rangeAsString = (range) => range.join('/')
+const stringAsRange = (text) => text.split('/')
+
 class ShippingDate extends Component {
 
   constructor(props) {
     super(props)
 
     const defaultDate = props.dates[0]
-    const date = props.isAsap ? defaultDate : moment.parseZone(props.shippingDate).format('LL')
-    const time = props.isAsap ? props.timesByDate[defaultDate][0] : moment.parseZone(props.shippingDate).format('LT')
+
+    const date = props.shippingTimeRange ? rangeAsDateLabel(props.shippingTimeRange) : defaultDate
+    const time = props.shippingTimeRange ? rangeAsString(props.shippingTimeRange)    : _.first(props.timesByDate[defaultDate])
 
     this.state = {
       date,
@@ -79,7 +86,7 @@ class ShippingDate extends Component {
   _onDateChange(itemValue, itemIndex) {
     this.setState({
       date: itemValue,
-      time: this.props.timesByDate[itemValue][0],
+      time: rangeAsTimeLabel(this.props.timesByDate[itemValue][0]),
     })
   }
 
@@ -87,13 +94,8 @@ class ShippingDate extends Component {
     this.setState({ time: itemValue })
   }
 
-  _resolveDate(date, time) {
-    return _.findKey(this.props.hash, item => item[0] === date && item[1] === time)
-  }
-
   _onSubmit() {
-    const date = this._resolveDate(this.state.date, this.state.time)
-    this.props.setDate(date, () => {
+    this.props.setDate(stringAsRange(this.state.time), () => {
       this.props.navigation.goBack()
     })
   }
@@ -138,7 +140,7 @@ class ShippingDate extends Component {
                 style={{ height: 50 }}
                 onValueChange={ this._onTimeChange.bind(this) }>
                 { times.map(time => (
-                  <Picker.Item key={ time } label={ time } value={ time } />
+                  <Picker.Item key={ time.value } label={ time.label } value={ time.value } />
                 )) }
               </Picker>
             </View>
@@ -167,23 +169,17 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
 
-  const availabilities = state.checkout.timing.choices
-
-  const hash = _.zipObject(availabilities, _.map(availabilities, item => ([
-    moment.parseZone(item).format('LL'),
-    moment.parseZone(item).format('LT'),
-  ])))
-
-  const groupBy = _.groupBy(availabilities, item => moment.parseZone(item).format('LL'))
-  const timesByDate = _.mapValues(groupBy, items => _.map(items, item => moment.parseZone(item).format('LT')))
+  const ranges = state.checkout.timing.ranges
+  const groupBy = _.groupBy(ranges, item => rangeAsDateLabel(item))
+  const timesByDate = _.mapValues(groupBy, items => _.map(items, item => ({
+    label: rangeAsTimeLabel(item),
+    value: rangeAsString(item)
+  })))
 
   return {
-    date: state.checkout.date ? state.checkout.date : state.checkout.timing.asap,
     dates: _.keys(groupBy),
     timesByDate,
-    hash,
-    isAsap: selectIsShippingAsap(state),
-    shippingDate: selectShippingDate(state),
+    shippingTimeRange: state.checkout.cart.shippingTimeRange,
     fulfillmentMethod: selectCartFulfillmentMethod(state),
     isDeliveryEnabled: selectIsDeliveryEnabled(state),
     isCollectionEnabled: selectIsCollectionEnabled(state),
