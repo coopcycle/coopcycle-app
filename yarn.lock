@@ -4345,7 +4345,7 @@
     "@turf/helpers" "^6.3.0"
     "@turf/meta" "^6.3.0"
 
-"@turf/turf@^6.3.0":
+"@turf/turf@^6.2.0":
   version "6.3.0"
   resolved "https://registry.yarnpkg.com/@turf/turf/-/turf-6.3.0.tgz#e8b11d85b908452d10477360c3621ce098e1b8ab"
   integrity sha512-6CcUammJKsn6mI7/+DlnXqf1iAk5HZ86/wmHIVG6VTmmPBP5drWSjoRUcaiXQADzLLuR9eZ3kl11KEOdvn9DmQ==
@@ -6398,10 +6398,10 @@ detect-newline@^3.0.0:
   resolved "https://registry.yarnpkg.com/detect-newline/-/detect-newline-3.1.0.tgz#576f5dfc63ae1a192ff192d8ad3af6308991b651"
   integrity sha512-TLz+x/vEXm/Y7P7wn1EJFNLxYpUD4TgMosxY6fAVJUnJMbupHBOncxyWUG9OpTaH9EBD7uFI5LfEgmMOc54DsA==
 
-detox@^17.11.0:
-  version "17.11.0"
-  resolved "https://registry.yarnpkg.com/detox/-/detox-17.11.0.tgz#2392a5e6b33fb1252609015f6c9b1f8a04ef9209"
-  integrity sha512-Jr9L1fU/DrSLMu/EWNsd6fF2BDGJZrEvYcYY8Cc/tWkBianxlsBUbA713ZfLio4vaAYVWKqrhO1zjnc5+gl2vw==
+detox@^17.14.9:
+  version "17.14.9"
+  resolved "https://registry.yarnpkg.com/detox/-/detox-17.14.9.tgz#e269de0937e615eac92ac283b2303751bcf2c072"
+  integrity sha512-WLpl7BJ2xecZJ02hFFWgzo61RnlO/LlsH/U8GWztoXsT0z0t9iKsBci8AhSSErQfH0IHnNtDcZknIxt0gzNhoQ==
   dependencies:
     bunyan "^1.8.12"
     bunyan-debug-stream "^1.1.0"
