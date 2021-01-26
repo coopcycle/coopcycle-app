@@ -270,7 +270,7 @@
         "CART_DELIVERY_TIME": "Delivery {{- fromNow}}",
         "CART_DELIVERY_TIME_DIFF": "Delivery in {{diff}} minutes",
         "CART_COLLECTION_TIME": "Collection {{- fromNow}}",
-        "CART_COLLECTION_TIME_DIFF": "Collection dans {{diff}} minutes",
+        "CART_COLLECTION_TIME_DIFF": "Collection in {{diff}} minutes",
         "TIME_DIFF_SHORT": "{{min}} - {{max}} minutes",
         "TASK_ADD_PROOF_OF_DELIVERY": "Add a proof of delivery",
         "STORE_NEW_DELIVERY": "New delivery",
