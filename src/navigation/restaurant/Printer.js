@@ -34,10 +34,6 @@ class Printer extends Component {
   componentDidMount() {
     this.discoverPeripheral = bleManagerEmitter.addListener('BleManagerDiscoverPeripheral', (device) => {
 
-      if (!device.advertising.isConnectable) {
-        return
-      }
-
       const devices = this.state.devices.slice(0)
       devices.push(device)
 
