@@ -514,7 +514,7 @@ PODS:
   - RNSound/Core (0.11.0):
     - React
   - Stripe (19.4.0)
-  - tipsi-stripe (8.0.0-beta.11):
+  - tipsi-stripe (8.0.2):
     - React
     - Stripe (>= 19.0.1)
   - UMAppLoader (1.4.0)
@@ -930,7 +930,7 @@ SPEC CHECKSUMS:
   RNSketchCanvas: 9c28adb5381543ed55cc98ce6de46479cb3cb12c
   RNSound: da030221e6ac7e8290c6b43f2b5f2133a8e225b0
   Stripe: 92f1c73a9dbd3c54277ed06a1fea6e08f20414c6
-  tipsi-stripe: b0655ee97dfd4b865d178d81b53ff54b95348701
+  tipsi-stripe: 6f4d2805c174b5109f455932d5e9f302bf2a3b9a
   UMAppLoader: 92d044af52626af3d81a69796ad666fc7a9a7d78
   UMBarCodeScannerInterface: 3f6c1b09ef4b867ce752b8c0b3893bcf9cd85f32
   UMCameraInterface: d516032121192fee9a6c93bdfff0bb2cc7282796

@@ -13364,10 +13364,10 @@ tinyqueue@^1.1.0:
   resolved "https://registry.yarnpkg.com/tinyqueue/-/tinyqueue-1.2.3.tgz#b6a61de23060584da29f82362e45df1ec7353f3d"
   integrity sha512-Qz9RgWuO9l8lT+Y9xvbzhPT2efIUIFd69N7eF7tJ9lnQl0iLj1M7peK7IoUGZL9DJHw9XftqLreccfxcQgYLxA==
 
-tipsi-stripe@8.0.0-beta.11:
-  version "8.0.0-beta.11"
-  resolved "https://registry.yarnpkg.com/tipsi-stripe/-/tipsi-stripe-8.0.0-beta.11.tgz#7b60c5624e1ec539e7ab2188e925c0f6ab5ae5b8"
-  integrity sha512-alHeMetHkRXhr74WSwpDwu8LCrN3wZtpdeDPYa7RHioGLrOYJq+HQRHUj1GEBqmPSO5mJ6r4AQLwhnDaHK157Q==
+tipsi-stripe@8.0.2:
+  version "8.0.2"
+  resolved "https://registry.yarnpkg.com/tipsi-stripe/-/tipsi-stripe-8.0.2.tgz#7f3d83ab632ba0a88f84e1bf4a611bf7e0c6b776"
+  integrity sha512-LV2JegJlK0SEwB/auxDS5jnxnVNI2vju+IPNt3Uq1hmzV40li7UIyLQA5w6rihe/JDk2IdmRMFQUTuSoBzf1mQ==
 
 tmp@^0.0.33:
   version "0.0.33"
