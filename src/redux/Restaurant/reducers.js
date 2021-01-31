@@ -400,6 +400,7 @@ export default (state = initialState, action = {}) => {
         switch (name) {
           case 'order:created':
           case 'order:accepted':
+          case 'order:picked':
           case 'order:cancelled':
 
             // FIXME
@@ -409,6 +410,12 @@ export default (state = initialState, action = {}) => {
               newOrder = {
                 ...newOrder,
                 state: 'cancelled',
+              }
+            }
+            if (name === 'order:accepted' && newOrder.state !== 'accepted') {
+              newOrder = {
+                ...newOrder,
+                state: 'accepted',
               }
             }
 
