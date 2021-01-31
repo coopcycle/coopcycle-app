@@ -32,7 +32,7 @@
     "@terrylinla/react-native-sketch-canvas": "^0.8.0",
     "@turf/turf": "^6.2.0",
     "axios": "^0.21.1",
-    "buffer": "^5.6.0",
+    "buffer": "^5.7.1",
     "coopcycle-frontend-js": "git+https://git@github.com/coopcycle/coopcycle-frontend-js.git#3.0.0-beta.2",
     "countly-sdk-react-native-bridge": "^20.4.9",
     "currency-symbol-map": "^5.0.1",
