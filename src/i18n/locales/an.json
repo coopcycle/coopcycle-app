@@ -149,7 +149,6 @@
         "RESTAURANT_ORDER_BUTTON_REFUSE": "Refusar",
         "RESTAURANT_ORDER_BUTTON_CANCEL": "Cancelar",
         "RESTAURANT_ORDER_BUTTON_DELAY": "Retardar",
-        "RESTAURANT_ORDER_BUTTON_FULFILL": "",
         "RESTAURANT_ORDER_REFUSE_DISCLAIMER": "Diga-nos per qué quiere refusar este pediu pa que podamos informar a lo client",
         "RESTAURANT_ORDER_REFUSE_REASON_SOLD_OUT_HEADING": "Soi difuera de stock",
         "RESTAURANT_ORDER_REFUSE_REASON_RUSH_HOUR_HEADING": "Tiengo masiaus pedius",
