@@ -156,7 +156,6 @@
         "RESTAURANT_ORDER_REFUSE_REASON_ORDER_WILL_BE_REFUSED": "Eskaera hau ezeztatu egingo da",
         "RESTAURANT_ORDER_REFUSE_REASON_ORDER_CONTINUE_RECEIVING": "Eskaera berriak jasotzen jarraituko duzu",
         "RESTAURANT_ORDER_REFUSE_REASON_ORDER_STOP_RECEIVING": "Ez duzu eskaera berririk jasoko",
-        "RESTAURANT_ORDER_REFUSE_REASON_NO_SHOW": "",
         "RESTAURANT_ORDER_REFUSE_REASON_ORDER_WILL_BE_CAPTURED": "Eskaera ezeztatuko da, baina bezeroari ez zaio dirua itzuliko",
         "RESTAURANT_ORDER_PRINT": "Inprimatu",
         "RESTAURANT_PRODUCTS": "Produktuak",

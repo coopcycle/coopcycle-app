@@ -351,10 +351,7 @@
             "collection": "Colección",
             "delivery": "Entrega"
         },
-        "CART_COLLECTION_DISCLAIMER": "",
         "LEARN_MORE": "Mas información",
-        "SELECTED": "",
-        "AVAILABLE": "Disponible",
-        "COMING_SOON": ""
+        "AVAILABLE": "Disponible"
     }
 }
