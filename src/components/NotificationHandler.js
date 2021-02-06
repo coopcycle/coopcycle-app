@@ -173,7 +173,7 @@ class NotificationHandler extends Component {
       case 'order:created':
         return this.renderOrderCreated(notification.params.order)
       case 'tasks:changed':
-        return this.renderTasksChanged(notification.params.date)
+        return this.renderTasksChanged(notification.params.date, notification.params.added, notification.params.removed)
     }
   }
 
@@ -231,13 +231,25 @@ class NotificationHandler extends Component {
     )
   }
 
-  renderTasksChanged(date) {
+  renderTasksChanged(date, added, removed) {
 
     return (
       <TouchableOpacity style={ styles.item } onPress={ () => this._navigateToTasks(date) }>
-        <Text>
-          { this.props.t('NOTIFICATION_TASKS_CHANGED_TITLE') }
-        </Text>
+        <View>
+          <Text style={{ fontSize: 14, fontWeight: '700' }}>
+            { this.props.t('NOTIFICATION_TASKS_CHANGED_TITLE') }
+          </Text>
+          { added.length > 0 && (
+          <Text style={{ fontSize: 14 }}>
+            { this.props.t('NOTIFICATION_TASKS_ADDED', { count: added.length }) }
+          </Text>
+          ) }
+          { removed.length > 0 && (
+          <Text style={{ fontSize: 14 }}>
+            { this.props.t('NOTIFICATION_TASKS_REMOVED', { count: removed.length }) }
+          </Text>
+          ) }
+        </View>
         <Icon type="FontAwesome" name="chevron-right" />
       </TouchableOpacity>
     )

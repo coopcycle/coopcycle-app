@@ -18,6 +18,10 @@ import {
 } from '../../redux/Courier'
 import { navigateToTask } from '../../navigation'
 
+import { selectIsWsOpen } from '../../redux/App/selectors'
+import { connect as connectWs, init } from '../../redux/middlewares/WebSocketMiddleware/actions'
+import WebSocketClient from '../../websocket/WebSocketClient'
+
 class TasksPage extends Component {
 
   constructor(props) {
@@ -50,6 +54,10 @@ class TasksPage extends Component {
   componentDidMount() {
     InteractionManager.runAfterInteractions(() => {
       this.refreshTasks(this.props.selectedDate)
+      if (!this.props.isWsOpen) {
+        this.props.initWs(new WebSocketClient(this.props.httpClient, '/dispatch'))
+        this.props.connectWs()
+      }
     })
 
     if (this.props.keepAwake && this.props.isFocused) {
@@ -111,6 +119,8 @@ function mapStateToProps (state) {
     tasks: selectFilteredTasks(state),
     selectedDate: selectTaskSelectedDate(state),
     keepAwake: selectKeepAwake(state),
+    isWsOpen: selectIsWsOpen(state),
+    httpClient: state.app.httpClient,
     mapCenter: state.app.settings.latlng.split(',').map(parseFloat),
   }
 }
@@ -118,6 +128,8 @@ function mapStateToProps (state) {
 function mapDispatchToProps (dispatch) {
   return {
     loadTasks: (selectedDate) => dispatch(loadTasks(selectedDate)),
+    initWs: wsClient => dispatch(init(wsClient)),
+    connectWs: () => dispatch(connectWs()),
   }
 }
 

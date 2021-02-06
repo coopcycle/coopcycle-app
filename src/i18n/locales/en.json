@@ -219,7 +219,7 @@
         "CHECKOUT_PRODUCT_OPTIONS_CHOICES_BETWEEN": "Between {{min}} and {{max}} choices",
         "ADD_TO_CART": "Add to cart",
         "NOTIFICATION_TASKS_CHANGED_TITLE": "Tasks changed",
-        "NOTIFICATION_TASKS_CHANGED_DESC": "Your tasks from {{date}} have been updated",
+        "NOTIFICATION_TASKS_CHANGED_DESC": "Your tasks from {{date}} have been updated, {{added}}",
         "NOTIFICATION_ORDER_CREATED_TITLE": "New order",
         "NOTIFICATION_ORDER_CREATED_DESC": "A new order for {{date}} has been created",
         "UNASSIGNED_TASKS": "Unassigned",
@@ -358,6 +358,8 @@
         "AVAILABLE": "Available",
         "COMING_SOON": "Coming soon",
         "CARDHOLDER_NAME": "Cardholder name",
-        "RESTAURANT_ORDER_LIST_PICKED_ORDERS": "Picked orders ({{count}})"
+        "RESTAURANT_ORDER_LIST_PICKED_ORDERS": "Picked orders ({{count}})",
+        "NOTIFICATION_TASKS_ADDED": "{{ count }} added",
+        "NOTIFICATION_TASKS_REMOVED": "{{ count }} removed"
     }
 }

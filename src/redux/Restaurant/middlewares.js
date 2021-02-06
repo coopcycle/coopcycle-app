@@ -2,7 +2,6 @@ import { AppState } from 'react-native'
 import _ from 'lodash'
 
 import { pushNotification } from '../App/actions'
-import { MESSAGE } from '../middlewares/WebSocketMiddleware/actions'
 import { LOAD_ORDERS_SUCCESS } from './actions'
 
 export const ringOnNewOrderCreated = ({ getState, dispatch }) => {

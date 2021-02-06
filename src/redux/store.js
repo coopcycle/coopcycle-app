@@ -15,6 +15,7 @@ import NetInfoMiddleware from './middlewares/NetInfoMiddleware'
 import PushNotificationMiddleware from './middlewares/PushNotificationMiddleware'
 import SentryMiddleware from './middlewares/SentryMiddleware'
 import { ringOnNewOrderCreated } from './Restaurant/middlewares'
+import { ringOnTaskListUpdated } from './Courier/taskMiddlewares'
 
 const middlewares = [
   thunk,
@@ -26,6 +27,7 @@ const middlewares = [
   GeolocationMiddleware,
   BluetoothMiddleware,
   ringOnNewOrderCreated,
+  ringOnTaskListUpdated,
   SentryMiddleware,
 ]
 

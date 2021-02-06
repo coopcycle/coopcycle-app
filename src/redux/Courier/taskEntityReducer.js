@@ -84,7 +84,9 @@ export const tasksEntityReducer = (state = tasksEntityInitialState, action = {})
         ...state,
         loadTasksFetchError: false,
         completeTaskFetchError: false,
-        date: moment(action.payload.date).format('YYYY-MM-DD'),
+        // This is the date that is selected in the UI
+        date: action.payload.date ?
+          action.payload.date.format('YYYY-MM-DD') : moment().format('YYYY-MM-DD'),
         isFetching: !action.payload.refresh,
         isRefreshing: action.payload.refresh,
       }
@@ -112,7 +114,6 @@ export const tasksEntityReducer = (state = tasksEntityInitialState, action = {})
         loadTasksFetchError: false,
         isFetching: false,
         isRefreshing: false,
-        date: action.payload.date,
         items: {
           ...state.items,
           [ action.payload.date ]: action.payload.tasks,
@@ -150,7 +151,7 @@ export const tasksEntityReducer = (state = tasksEntityInitialState, action = {})
       return state
 
     case MESSAGE:
-      return processWsMsg(state, action.payload)
+      return processWsMsg(state, action)
 
     case ADD_SIGNATURE:
 
@@ -203,19 +204,37 @@ export const tasksEntityReducer = (state = tasksEntityInitialState, action = {})
   return state
 }
 
-const processWsMsg = (state, { type, ...data }) => {
-  switch (type) {
-    case 'tasks:changed':
-      // order tasks by position
-      let tasks = _.sortBy(data.tasks, (task) => task.position)
+const processWsMsg = (state, action) => {
 
-      return {
-        ...state,
-        items: {
-          ...state.items,
-          [ data.date ]: tasks,
-        },
-      }
+  if (action.payload.name && action.payload.data) {
+
+    const { name, data } = action.payload
+
+    switch (name) {
+      case 'tasks:changed':
+        // order tasks by position
+        const tasks = _.sortBy(data.tasks, (task) => task.position)
+
+        return {
+          ...state,
+          items: {
+            ...state.items,
+            [ data.date ]: tasks,
+          },
+        }
+
+      case 'task_list:updated':
+
+        const taskList = data.task_list
+
+        return {
+          ...state,
+          items: {
+            ...state.items,
+            [ taskList.date ]: taskList.items,
+          },
+        }
+    }
   }
 
   return state
