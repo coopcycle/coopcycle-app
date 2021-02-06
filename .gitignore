@@ -78,3 +78,5 @@ buck-out/
 .env
 
 /src/shared-js-lib-local
+
+sentry.properties
