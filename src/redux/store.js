@@ -13,6 +13,7 @@ import BluetoothMiddleware from './middlewares/BluetoothMiddleware'
 import HttpMiddleware from './middlewares/HttpMiddleware'
 import NetInfoMiddleware from './middlewares/NetInfoMiddleware'
 import PushNotificationMiddleware from './middlewares/PushNotificationMiddleware'
+import SentryMiddleware from './middlewares/SentryMiddleware'
 import { ringOnNewOrderCreated } from './Restaurant/middlewares'
 
 const middlewares = [
@@ -25,6 +26,7 @@ const middlewares = [
   GeolocationMiddleware,
   BluetoothMiddleware,
   ringOnNewOrderCreated,
+  SentryMiddleware,
 ]
 
 if (process.env.NODE_ENV === 'development') {
