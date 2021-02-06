@@ -13,7 +13,6 @@
 -keepattributes *Annotation*
 -keepattributes SourceFile,LineNumberTable
 -keep public class * extends java.lang.Exception
--printmapping mapping.txt
 
 # https://rnfirebase.io/docs/v5.x.x/installation/android#Using-with-Proguard-enabled
 -keep class io.invertase.firebase.** { *; }

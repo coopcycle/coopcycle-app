@@ -198,6 +198,9 @@ android {
             } else {
                 signingConfig signingConfigs.release
             }
+            firebaseCrashlytics {
+                mappingFileUploadEnabled true
+            }
         }
     }
 
