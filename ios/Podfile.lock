@@ -497,6 +497,9 @@ PODS:
     - React-Core
   - RNScreens (2.17.1):
     - React-Core
+  - RNSentry (2.2.0):
+    - React-Core
+    - Sentry (= 6.1.4)
   - RNSketchCanvas (0.8.0):
     - React
   - RNSound (0.11.0):
@@ -504,6 +507,9 @@ PODS:
     - RNSound/Core (= 0.11.0)
   - RNSound/Core (0.11.0):
     - React
+  - Sentry (6.1.4):
+    - Sentry/Core (= 6.1.4)
+  - Sentry/Core (6.1.4)
   - Stripe (19.4.0)
   - tipsi-stripe (8.0.2):
     - React
@@ -613,6 +619,7 @@ DEPENDENCIES:
   - RNLocalize (from `../node_modules/react-native-localize`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
+  - "RNSentry (from `../node_modules/@sentry/react-native`)"
   - "RNSketchCanvas (from `../node_modules/@terrylinla/react-native-sketch-canvas`)"
   - RNSound (from `../node_modules/react-native-sound`)
   - tipsi-stripe (from `../node_modules/tipsi-stripe`)
@@ -662,6 +669,7 @@ SPEC REPOS:
     - OpenSSL-Universal
     - PromisesObjC
     - Protobuf
+    - Sentry
     - Stripe
     - YogaKit
 
@@ -788,6 +796,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
     :path: "../node_modules/react-native-screens"
+  RNSentry:
+    :path: "../node_modules/@sentry/react-native"
   RNSketchCanvas:
     :path: "../node_modules/@terrylinla/react-native-sketch-canvas"
   RNSound:
@@ -914,8 +924,10 @@ SPEC CHECKSUMS:
   RNLocalize: 7c7aeda16c01db7a0918981c14875c0a53be9b79
   RNReanimated: e03f7425cb7a38dcf1b644d680d1bfc91c3337ad
   RNScreens: b6c9607e6fe47c1b6e2f1910d2acd46dd7ecea3a
+  RNSentry: 6aeba1adc242fd22a6826acae92f430697b47a9c
   RNSketchCanvas: 9c28adb5381543ed55cc98ce6de46479cb3cb12c
   RNSound: da030221e6ac7e8290c6b43f2b5f2133a8e225b0
+  Sentry: 9d055e2de30a77685e86b219acf02e59b82091fc
   Stripe: 92f1c73a9dbd3c54277ed06a1fea6e08f20414c6
   tipsi-stripe: 6f4d2805c174b5109f455932d5e9f302bf2a3b9a
   UMAppLoader: 92d044af52626af3d81a69796ad666fc7a9a7d78
