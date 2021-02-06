@@ -8,7 +8,8 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint src/",
-    "postinstall": "npx jetify"
+    "postinstall": "npx jetify",
+    "i18n-lint": "ajv validate -s i18n.schema.json -d \"src/i18n/locales/*.json\""
   },
   "dependencies": {
     "@mapbox/polyline": "^1.1.1",
