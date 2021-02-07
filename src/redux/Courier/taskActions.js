@@ -1,6 +1,7 @@
 import { Alert } from 'react-native'
 import { createAction } from 'redux-actions'
 import _ from 'lodash'
+import moment from 'moment'
 
 import NavigationHolder from '../../NavigationHolder'
 import i18n from '../../i18n'
@@ -41,7 +42,7 @@ export const SET_SIGNATURE_SCREEN_FIRST = 'SET_SIGNATURE_SCREEN_FIRST'
  * Action Creators
  */
 export const loadTasksRequest = createAction(LOAD_TASKS_REQUEST, (date, refresh = false) => ({ date, refresh }))
-export const loadTasksSuccess = createAction(LOAD_TASKS_SUCCESS, (date, tasks) => ({ date, tasks }))
+export const loadTasksSuccess = createAction(LOAD_TASKS_SUCCESS, (date, items, updatedAt) => ({ date, items, updatedAt }))
 export const loadTasksFailure = createAction(LOAD_TASKS_FAILURE)
 export const markTaskDoneRequest = createAction(MARK_TASK_DONE_REQUEST)
 export const markTaskDoneSuccess = createAction(MARK_TASK_DONE_SUCCESS)
@@ -106,7 +107,22 @@ export function loadTasks(selectedDate, refresh = false) {
     dispatch(loadTasksRequest(selectedDate, refresh))
 
     return httpClient.get('/api/me/tasks/' + selectedDate.format('YYYY-MM-DD'))
-      .then(res => dispatch(loadTasksSuccess(selectedDate.format('YYYY-MM-DD'), res['hydra:member'])))
+      .then(res => {
+        if (Object.prototype.hasOwnProperty.call(res, '@type') && res['@type'] === 'TaskList') {
+          dispatch(loadTasksSuccess(
+            selectedDate.format('YYYY-MM-DD'),
+            res['items'],
+            moment.parseZone(res.updatedAt)
+          ))
+        } else {
+          // Legacy
+          dispatch(loadTasksSuccess(
+            selectedDate.format('YYYY-MM-DD'),
+            res['hydra:member'],
+            moment()
+          ))
+        }
+      })
       .catch(e => dispatch(loadTasksFailure(e)))
   }
 }

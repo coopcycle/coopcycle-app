@@ -26,6 +26,7 @@ const tasksEntityInitialState = {
   isFetching: false,                   // Flag indicating active HTTP request
   isRefreshing: false,
   date: moment().format('YYYY-MM-DD'), // YYYY-MM-DD
+  updatedAt: moment().toString(),
   items: {                             // Array of tasks, indexed by date
     // 'YYYY-MM-DD': [
     //   {
@@ -114,9 +115,10 @@ export const tasksEntityReducer = (state = tasksEntityInitialState, action = {})
         loadTasksFetchError: false,
         isFetching: false,
         isRefreshing: false,
+        updatedAt: action.payload.updatedAt.toString(),
         items: {
           ...state.items,
-          [ action.payload.date ]: action.payload.tasks,
+          [ action.payload.date ]: action.payload.items,
         },
       }
 
