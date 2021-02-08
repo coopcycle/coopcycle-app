@@ -3186,9 +3186,9 @@
     superstruct "^0.6.2"
 
 "@react-native-firebase/crashlytics@^10.5.1":
-  version "10.5.1"
-  resolved "https://registry.yarnpkg.com/@react-native-firebase/crashlytics/-/crashlytics-10.5.1.tgz#8911ce15a0ee9c658cec44233e731c423a2900bf"
-  integrity sha512-czH0p6KWf7gIJScqyPRUWSrRUbgYK4NpqESW0vc57V1KlkGSv+MivuFTEeDQNvH8Hwgi3W5m8L5dZ4r6pTRzSw==
+  version "10.6.4"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/crashlytics/-/crashlytics-10.6.4.tgz#85851dde540c725fac91f712b4fbeb047ef90b63"
+  integrity sha512-aUjpNhIs0qYiHK3/XtnXRKjM8zYtc7aeCfScSTz9c1VNn2zyuEgcEF23uJif6wFm0vdX5auFawcqAsAlSWFzrQ==
   dependencies:
     stacktrace-js "^2.0.0"
 
