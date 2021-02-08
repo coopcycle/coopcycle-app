@@ -239,12 +239,12 @@ class NotificationHandler extends Component {
           <Text style={{ fontSize: 14, fontWeight: '700' }}>
             { this.props.t('NOTIFICATION_TASKS_CHANGED_TITLE') }
           </Text>
-          { added.length > 0 && (
+          { (added && Array.isArray(added) && added.length > 0) && (
           <Text style={{ fontSize: 14 }}>
             { this.props.t('NOTIFICATION_TASKS_ADDED', { count: added.length }) }
           </Text>
           ) }
-          { removed.length > 0 && (
+          { (removed && Array.isArray(removed) && removed.length > 0) && (
           <Text style={{ fontSize: 14 }}>
             { this.props.t('NOTIFICATION_TASKS_REMOVED', { count: removed.length }) }
           </Text>
