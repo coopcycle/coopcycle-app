@@ -3173,9 +3173,9 @@
     invariant "^2.2.4"
 
 "@react-native-firebase/analytics@^10.5.1":
-  version "10.5.1"
-  resolved "https://registry.yarnpkg.com/@react-native-firebase/analytics/-/analytics-10.5.1.tgz#cfe6980d55261e0ea93ae1491654d7a01a8ed8da"
-  integrity sha512-qfxgQtRfF5e7cHUnK2se90EyndItH7GKxe6EnY4+vJEcpRjzgJXi3S8sH+VR2xGZr6nFslZBn3iY1peYUUBYgA==
+  version "10.7.0"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/analytics/-/analytics-10.7.0.tgz#6178028c34903d8b6300ce119b750a5ad8083f63"
+  integrity sha512-cdPf6UtjWQVOYYWJIyNLRJcHcCizdCx/Emqo19zXN69nTf/pCF5RFWJQdFdI7iDmOl48EMrVZ6bLpFvpvKBgug==
 
 "@react-native-firebase/app@^10.5.0":
   version "10.5.0"
