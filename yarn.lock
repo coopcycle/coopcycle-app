@@ -3198,9 +3198,9 @@
   integrity sha512-cpx87M3vaR34vUYEFdpsFQk0/A29225tD5lqqvKW+l/u8FHD9KHyjm+XoEenV2eCayF8IxkmO9PQKsufgg4FHQ==
 
 "@react-native-firebase/perf@^10.5.1":
-  version "10.5.1"
-  resolved "https://registry.yarnpkg.com/@react-native-firebase/perf/-/perf-10.5.1.tgz#d6370e141f1f9eda8b27347e441e333fce2370ea"
-  integrity sha512-3nF4ld23L2Di9cgXfW7BGK/xQ5ZLxoQbzz2pviEVpegR/NUEcKIQD0ZyIeH+hOVehtsqtf2QW5dxq7dBBBxFJg==
+  version "10.8.0"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/perf/-/perf-10.8.0.tgz#949c73280e3f45b9bb892c6977392fd80d114e27"
+  integrity sha512-eugiUcPgDwZV5P5f8jXjcgH8jIQZdtwP89JwvWOlG92LJiW9kBgm7F0i76aurOka/xZrVlUtp6wsGfMK/xdplA==
 
 "@react-native-picker/picker@^1.9.7":
   version "1.9.11"
