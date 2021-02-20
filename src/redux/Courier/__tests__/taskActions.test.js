@@ -76,11 +76,11 @@ describe('Redux | Tasks | Actions', () => {
       })
     })
 
-  test('loadTasks | Successful request', () => {
+  test('loadTasks | Successful request (legacy)', () => {
     const date = moment()
     const client = { get: jest.fn() }
     const dispatch = jest.fn()
-    const resolveValue = { 'hydra:member': 'foo' }
+    const resolveValue = { '@type': 'hydra:Collection', 'hydra:member': [ { '@id': '/api/tasks/1' } ] }
 
     client.get.mockResolvedValue(resolveValue)
 
@@ -98,10 +98,53 @@ describe('Redux | Tasks | Actions', () => {
     return promise.then(() => {
       expect(dispatch).toHaveBeenCalledTimes(2)
       expect(dispatch).toHaveBeenCalledWith({ type: LOAD_TASKS_REQUEST, payload: { date, refresh: false } })
-      expect(dispatch).toHaveBeenLastCalledWith({ type: LOAD_TASKS_SUCCESS, payload: {
-        date: date.format('YYYY-MM-DD'),
-        tasks: resolveValue['hydra:member'],
-      }})
+      expect(dispatch).toHaveBeenLastCalledWith(expect.objectContaining({
+        type: LOAD_TASKS_SUCCESS,
+        payload: expect.objectContaining({
+          date: date.format('YYYY-MM-DD'),
+          items: resolveValue['hydra:member'],
+          updatedAt: expect.any(moment)
+        })
+      }))
+    })
+  })
+
+  test('loadTasks | Successful request', () => {
+    const date = moment()
+    const client = { get: jest.fn() }
+    const dispatch = jest.fn()
+    const resolveValue = {
+      '@type': 'TaskList',
+      'items': [
+        { '@id': '/api/tasks/1' }
+      ],
+      updatedAt: moment().format()
+    }
+
+    client.get.mockResolvedValue(resolveValue)
+
+    const store = mockStore({
+      app: { httpClient: client },
+    })
+
+    const thk = loadTasks(date)
+    const promise = thk(dispatch, store.getState)
+
+    expect(thk).toBeInstanceOf(Function)
+    expect(client.get).toHaveBeenCalledTimes(1)
+    expect(client.get).toHaveBeenLastCalledWith(`/api/me/tasks/${date.format('YYYY-MM-DD')}`)
+
+    return promise.then(() => {
+      expect(dispatch).toHaveBeenCalledTimes(2)
+      expect(dispatch).toHaveBeenCalledWith({ type: LOAD_TASKS_REQUEST, payload: { date, refresh: false } })
+      expect(dispatch).toHaveBeenLastCalledWith(expect.objectContaining({
+        type: LOAD_TASKS_SUCCESS,
+        payload: expect.objectContaining({
+          date: date.format('YYYY-MM-DD'),
+          items: resolveValue['items'],
+          updatedAt: expect.any(moment)
+        })
+      }))
     })
   })
 

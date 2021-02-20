@@ -213,17 +213,6 @@ const processWsMsg = (state, action) => {
     const { name, data } = action.payload
 
     switch (name) {
-      case 'tasks:changed':
-        // order tasks by position
-        const tasks = _.sortBy(data.tasks, (task) => task.position)
-
-        return {
-          ...state,
-          items: {
-            ...state.items,
-            [ data.date ]: tasks,
-          },
-        }
 
       case 'task_list:updated':
 

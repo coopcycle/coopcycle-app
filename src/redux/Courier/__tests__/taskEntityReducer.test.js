@@ -91,7 +91,7 @@ describe('Redux | Tasks | Reducers', () => {
         isFetching: true,
       }
       const date = moment().format('YYYY-MM-DD')
-      const newState = tasksEntityReducer(prevState, loadTasksSuccess(date, tasks))
+      const newState = tasksEntityReducer(prevState, loadTasksSuccess(date, tasks, moment()))
       const fullState = { entities: { tasks: newState } }
 
       const restOldState = omit(prevState, ['loadTasksFetchError', 'isFetching', 'items'])
@@ -134,15 +134,20 @@ describe('Redux | Tasks | Reducers', () => {
         })
       })
 
-    test(`${_message} | tasks:changed`, () => {
+    test(`${_message} | tasks:changed (deprecated)`, () => {
       const date = moment().format('YYYY-MM-DD')
 
-      const tasks = [{ id: 1, position: 1 }, { id: 2, position: 0 }]
-      const wsMsg = { type: 'tasks:changed', date, tasks }
+      const wsMsg = { name: 'tasks:changed', data: { date } }
 
       const prevState = {
         ...initialState,
         date,
+        items: {
+          [ date ]: [
+            { '@id': '/api/tasks/1' },
+            { '@id': '/api/tasks/2' }
+          ]
+        },
       }
 
       const newState = tasksEntityReducer(prevState, _message(wsMsg))
@@ -151,22 +156,36 @@ describe('Redux | Tasks | Reducers', () => {
       const restOldState = omit(prevState, ['items'])
       const restNewState = omit(newState, ['items'])
 
-      expect(selectTasks(fullState)).toEqual([ tasks[1], tasks[0] ])
-      expect(restOldState).toEqual(restNewState)
+      expect(newState).toEqual(prevState)
     })
 
-    test(`${_message} | task:changed`, () => {
+    test(`${_message} | task_list:updated`, () => {
       const date = moment().format('YYYY-MM-DD')
 
-      const oldTasks = [{ id: 1, position: 0 }, { id: 2, position: 1 }]
-      const newTasks = [{ id: 1, position: 0 }, { id: 3, position: 1 }, { id: 2, position: 2 }]
-      const wsMsg = { type: 'tasks:changed', date, tasks: newTasks }
+      const oldTasks = [
+        { '@id': '/api/tasks/1' },
+        { '@id': '/api/tasks/2' }
+      ]
+      const newTasks = [
+        { '@id': '/api/tasks/1' },
+        { '@id': '/api/tasks/2' },
+        { '@id': '/api/tasks/3' }
+      ]
+      const wsMsg = {
+        name: 'task_list:updated',
+        data: {
+          task_list: {
+            date,
+            items: newTasks
+          }
+        }
+      }
 
       const prevState = {
         ...initialState,
         date,
         items: {
-          [ date ]: oldTasks,
+          [ date ]: oldTasks
         },
       }
 
