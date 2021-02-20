@@ -30,7 +30,7 @@
     "@react-navigation/material-top-tabs": "^5.3.13",
     "@react-navigation/native": "^5.9.2",
     "@react-navigation/stack": "^5.14.2",
-    "@sentry/react-native": "^2.2.0",
+    "@sentry/react-native": "^2.2.1",
     "@terrylinla/react-native-sketch-canvas": "^0.8.0",
     "@turf/turf": "^6.2.0",
     "axios": "^0.21.1",
