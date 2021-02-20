@@ -3202,15 +3202,10 @@
   resolved "https://registry.yarnpkg.com/@react-native-firebase/perf/-/perf-10.5.1.tgz#d6370e141f1f9eda8b27347e441e333fce2370ea"
   integrity sha512-3nF4ld23L2Di9cgXfW7BGK/xQ5ZLxoQbzz2pviEVpegR/NUEcKIQD0ZyIeH+hOVehtsqtf2QW5dxq7dBBBxFJg==
 
-"@react-native-picker/picker@^1.9.11":
+"@react-native-picker/picker@^1.9.7":
   version "1.9.11"
   resolved "https://registry.yarnpkg.com/@react-native-picker/picker/-/picker-1.9.11.tgz#490c752417c17d687e2941659b3c0bff9cb79b83"
   integrity sha512-E7whvvMIl9Ln1sxgug7OAEVWQ69n82iV0d2OWWp5VV52+RW3azKh1IFm4rxdW5/oByMfl7FFL0eHNelGgY4BMQ==
-
-"@react-native-picker/picker@^1.9.7":
-  version "1.9.10"
-  resolved "https://registry.yarnpkg.com/@react-native-picker/picker/-/picker-1.9.10.tgz#c0d445453e91077cc85a3f0a6d0074d44d21e438"
-  integrity sha512-g0C0RLjXXGE4UfmGxNtAOY3LE5Epz8+ck/rB1oErJowskIIG83U6LVqH9oFrx1Hq1k/lbVQGgabURlE0QQ1MHA==
 
 "@react-navigation/bottom-tabs@^5.11.7":
   version "5.11.7"
