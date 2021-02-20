@@ -1,0 +1,4 @@
+defaults.url=https://sentry.io/
+defaults.org=coopcycle
+defaults.project=app
+auth.token=%token%

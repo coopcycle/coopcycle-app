@@ -11,6 +11,9 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: '12.x'
+      - name: Configure Sentry
+        run: |
+          sed 's/%token%/${{ secrets.SENTRY_API_TOKEN }}/' ios/sentry.properties.dist > ios/sentry.properties
       - run: yarn install
       - name: Install applesimutils
         run: |
