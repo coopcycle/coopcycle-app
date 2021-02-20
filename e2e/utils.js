@@ -49,3 +49,26 @@ export const logout = async (username, password) => {
   await element(by.id('logout')).tap()
 
 }
+
+export const chooseOptionsIfNeeded = async () => {
+  try {
+
+    // This means the product options modal is visible
+    await waitFor(element(by.text('Choose options'))).toBeVisible().withTimeout(1000)
+
+    // As there is no way to know the number of sections,
+    // we try with 100 sections
+    for (let section = 0; section < 100; section++) {
+      try {
+        await waitFor(element(by.id('addProductWithOptions'))).toBeVisible().withTimeout(1000)
+        await element(by.id('addProductWithOptions')).tap()
+        break
+      } catch (e) {
+        await element(by.id(`productOptions:${section}:0`)).tap()
+      }
+    }
+
+  } catch (e) {
+    // next step in case the element is not displayed
+  }
+}

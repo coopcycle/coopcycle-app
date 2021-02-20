@@ -1,4 +1,4 @@
-import { connectToDemo } from './utils'
+import { connectToDemo, chooseOptionsIfNeeded } from './utils'
 
 describe('Checkout', () => {
 
@@ -31,11 +31,13 @@ describe('Checkout', () => {
     // Add item
     await element(by.id('menuItem:0:0')).tap()
 
+    // Enter address
     await waitFor(element(by.id('addressModal'))).toExist().withTimeout(5000)
     await waitFor(element(by.id('addressModalTypeahead'))).toExist().withTimeout(5000)
     await element(by.id('addressModalTypeahead')).typeText('23 av claude vellefaux')
-
     await element(by.id('placeId:ChIJPSRadeBt5kcR4B2HzbBfZQE')).tap()
+
+    await chooseOptionsIfNeeded()
 
     // Check if footer is present
     await waitFor(element(by.id('cartFooter'))).toExist().withTimeout(5000)
@@ -43,7 +45,10 @@ describe('Checkout', () => {
 
     // Add 2 more items
     await element(by.id('menuItem:0:1')).tap()
+    await chooseOptionsIfNeeded()
+
     await element(by.id('menuItem:0:2')).tap()
+    await chooseOptionsIfNeeded()
 
     await waitFor(element(by.id('cartSubmit'))).toBeVisible().withTimeout(5000)
     await element(by.id('cartSubmit')).tap()
@@ -66,7 +71,8 @@ describe('Checkout', () => {
 
     // Append "\n" to make sure virtual keybord is hidden after entry
     // https://github.com/wix/detox/issues/209
-    await element(by.id('checkoutTelephone')).typeText('0612345678\n')
+    await element(by.id('checkoutTelephone')).typeText('0612345678')
+    await element(by.id('checkoutTelephone')).typeText('\n')
 
     await element(by.id('moreInfosSubmit')).tap()
 
