@@ -154,6 +154,12 @@
     ]
   },
   "detox": {
+    "testRunner": "jest",
+    "behavior": {
+      "init": {
+        "launchApp": false
+      }
+    },
     "configurations": {
       "ios.sim.debug": {
         "binaryPath": "ios/build/Build/Products/Debug-iphonesimulator/CoopCycle.app",
@@ -188,7 +194,6 @@
         "build": "cd android && ./gradlew assembleRelease assembleAndroidTest -DtestBuildType=release -DuseDebugCertificate=yes -DminifyEnabled=no --warning-mode all --stacktrace && cd ..",
         "type": "android.attached"
       }
-    },
-    "test-runner": "jest"
+    }
   }
 }

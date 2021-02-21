@@ -1,6 +1,8 @@
 {
-    "setupFilesAfterEnv": ["./init.js"],
-    "testEnvironment": "node",
+    "setupFilesAfterEnv": ["./setup.js"],
+    "testEnvironment": "./environment",
+    "testRunner": "jest-circus/runner",
+    "testTimeout": 120000,
     "reporters": ["detox/runners/jest/streamlineReporter"],
     "verbose": true,
     "testRegex": "screenshots\\.spec\\.js"
