@@ -157,7 +157,7 @@
     "testRunner": "jest",
     "behavior": {
       "init": {
-        "launchApp": false
+        "launchApp": "manual"
       }
     },
     "configurations": {
