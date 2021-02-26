@@ -474,18 +474,18 @@ PODS:
     - React-Core
   - RNDateTimePicker (3.0.9):
     - React-Core
-  - RNFBAnalytics (10.8.0):
+  - RNFBAnalytics (10.8.1):
     - Firebase/Analytics (~> 7.6.0)
     - React-Core
     - RNFBApp
-  - RNFBApp (10.8.0):
+  - RNFBApp (10.8.1):
     - Firebase/CoreOnly (~> 7.6.0)
     - React-Core
-  - RNFBCrashlytics (10.8.0):
+  - RNFBCrashlytics (10.8.1):
     - Firebase/Crashlytics (~> 7.6.0)
     - React-Core
     - RNFBApp
-  - RNFBPerf (10.8.0):
+  - RNFBPerf (10.8.1):
     - Firebase/Performance (~> 7.6.0)
     - React-Core
     - RNFBApp
@@ -916,10 +916,10 @@ SPEC CHECKSUMS:
   RNCPicker: 6780c753e9e674065db90d9c965920516402579d
   RNCPushNotificationIOS: 61a7c72bd1ebad3568025957d001e0f0e7b32191
   RNDateTimePicker: 8a51a2216c307769e69ef827293d59549ab1ca23
-  RNFBAnalytics: 90d32a12ca53f8cd6246030b7f1c12615c148f1f
-  RNFBApp: 97b618641633d6d23187a9d0537c3893482c483f
-  RNFBCrashlytics: bce8050df4a789ceba3984fbb66c4fc12158fdfd
-  RNFBPerf: c694f4b67bf9788d8951c84b29f6bf9c87d6e99a
+  RNFBAnalytics: 454b17745d3824156cb906e2777d85f6848bf3e1
+  RNFBApp: 02bde3edecf2e9694b908a5d3504e03449980f20
+  RNFBCrashlytics: 0e6347d4e2251c6656b43ce8544662d1bac7deff
+  RNFBPerf: 4d6ab97701da4aeb51da94117bf4026a0c3a5843
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
   RNLocalize: 7c7aeda16c01db7a0918981c14875c0a53be9b79
   RNReanimated: e03f7425cb7a38dcf1b644d680d1bfc91c3337ad
