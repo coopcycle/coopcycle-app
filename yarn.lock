@@ -3355,10 +3355,10 @@
     "@sentry/types" "6.2.0"
     tslib "^1.9.3"
 
-"@sentry/react-native@^2.2.1":
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/@sentry/react-native/-/react-native-2.2.1.tgz#6f88e19734d5a25bcf0e737c233811315f23b5f0"
-  integrity sha512-jFxPPDrUHNZfUvym34IzS8yV1HQvFyEYUAxSrSNfdmWaYCTRfnVZr2IYjaV+jSn+F4W32NhbW0m+1Gcg7XuR9Q==
+"@sentry/react-native@^2.2.2":
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/@sentry/react-native/-/react-native-2.2.2.tgz#02afaaa52ce8a67b89036a9cbb2598262f387c3e"
+  integrity sha512-4Le7qw0cKqYsqJuIfe3C1aTBQ8fB7Jg1BRSPCGOu6q4Jw31MAKWK2mdSm6YeMB9pKew2urbCLK115Csfjhj3aQ==
   dependencies:
     "@sentry/browser" "6.2.0"
     "@sentry/core" "6.2.0"
@@ -8405,10 +8405,10 @@ human-signals@^1.1.1:
   resolved "https://registry.yarnpkg.com/human-signals/-/human-signals-1.1.1.tgz#c5b1cd14f50aeae09ab6c59fe63ba3395fe4dfa3"
   integrity sha512-SEQu7vl8KjNL2eoGBLF3+wAjpsNfA9XMlXAYj/3EdaNfAlxKthD1xjEQfGOUhllCGGJVNY34bRr6lPINhNjyZw==
 
-i18next@^19.9.0:
-  version "19.9.0"
-  resolved "https://registry.yarnpkg.com/i18next/-/i18next-19.9.0.tgz#0a8cdacac4c8fb384f81f1cfcce823772b37e5d3"
-  integrity sha512-5zRG3aFl+e+LsdpVUp0dKkVhYH2iCv+gxyzXP1q2oJUc3BV26fqX87cBE3AHkMOir1X0liOaSoxS/Kg95iEcEQ==
+i18next@^19.9.1:
+  version "19.9.1"
+  resolved "https://registry.yarnpkg.com/i18next/-/i18next-19.9.1.tgz#7a072b75daf677aa51fd4ce55214f21702af3ffd"
+  integrity sha512-9Azzyb3DvMJUMd7sPhwVEs6PQcogvdHmLQTjMQ+P+h3XwW4O66/8lgZTmYShgkjPOCqTw4Fwl5LOp/VhZgPo5A==
   dependencies:
     "@babel/runtime" "^7.12.0"
 
@@ -12129,10 +12129,10 @@ react-navigation-header-buttons@^5.0.2:
     invariant ">=2"
     react-native-platform-touchable "^1.1.1"
 
-react-navigation-stack@^2.10.3:
-  version "2.10.3"
-  resolved "https://registry.yarnpkg.com/react-navigation-stack/-/react-navigation-stack-2.10.3.tgz#06346edbcb6b896c9bde3d7d9405ffdcbb8a44ae"
-  integrity sha512-HXstYiUKn1MR2Hwae/W786TEza+eIWcXVhmABfxwLc9zWPIuZZtAfYh6xScTaWfjQ7NSyUmyCSYwOcwURLatDA==
+react-navigation-stack@^2.10.4:
+  version "2.10.4"
+  resolved "https://registry.yarnpkg.com/react-navigation-stack/-/react-navigation-stack-2.10.4.tgz#377fd6533f8ae0cf5ca5a435a0115851f010306a"
+  integrity sha512-3LE1PFsFV9v4PUlZRATMotqs6H7MOOpIKtjyP+l8D1cyzYmsMQh3EFikeDfzGQUXIvy8VyLAMtcEssicQPYvFA==
   dependencies:
     color "^3.1.3"
     react-native-iphone-x-helper "^1.3.0"
