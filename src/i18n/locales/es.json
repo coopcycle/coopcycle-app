@@ -197,7 +197,7 @@
         "TIME_DIFF_SHORT": "{{min}} - {{max}} minutos",
         "ADD_TO_CART": "Añadir al carrito",
         "NOTIFICATION_TASKS_CHANGED_TITLE": "Tareas actualizadas",
-        "NOTIFICATION_TASKS_CHANGED_DESC": "Sus tareas de {{date}} han sido actualizadas",
+        "NOTIFICATION_TASKS_CHANGED_DESC": "Sus tareas de {{date}} han sido actualizadas, {{added}}",
         "NOTIFICATION_ORDER_CREATED_TITLE": "Nuevo pedido",
         "NOTIFICATION_ORDER_CREATED_DESC": "Un nuevo pedido para el {{date}} ha sido creado",
         "UNASSIGNED_TASKS": "Sin asignar",
@@ -359,6 +359,8 @@
         "LEARN_MORE": "Aprender más",
         "SELECTED": "Seleccionado",
         "CARDHOLDER_NAME": "Nombre del titular de la tarjeta",
-        "RESTAURANT_ORDER_LIST_PICKED_ORDERS": "Pedidos recogidos ({{count}})"
+        "RESTAURANT_ORDER_LIST_PICKED_ORDERS": "Pedidos recogidos ({{count}})",
+        "NOTIFICATION_TASKS_REMOVED": "{{ count }} removida",
+        "NOTIFICATION_TASKS_ADDED": "{{ count }} añadida"
     }
 }
