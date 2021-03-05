@@ -6596,10 +6596,10 @@ detect-newline@^3.0.0:
   resolved "https://registry.yarnpkg.com/detect-newline/-/detect-newline-3.1.0.tgz#576f5dfc63ae1a192ff192d8ad3af6308991b651"
   integrity sha512-TLz+x/vEXm/Y7P7wn1EJFNLxYpUD4TgMosxY6fAVJUnJMbupHBOncxyWUG9OpTaH9EBD7uFI5LfEgmMOc54DsA==
 
-detox@^18.6.2:
-  version "18.6.2"
-  resolved "https://registry.yarnpkg.com/detox/-/detox-18.6.2.tgz#9e8808a1f570c67d954e76d4793dc8270c22fd49"
-  integrity sha512-p+qh6XBKapp1aPAUA/oa1wqjIi+bBthCE/WylfCnHOhmB3ZjaeloskS+8qpxCLtu6efcO6CoxLiD2aStjhn9/w==
+detox@^18.7.0:
+  version "18.7.0"
+  resolved "https://registry.yarnpkg.com/detox/-/detox-18.7.0.tgz#e09fc5b65f06748d3589181e1e59f039c3c9f842"
+  integrity sha512-hMhzp4ZuSvRSEqw2CyQb+3iskm+MaOa6VHM5iORcW3kKyqvwpBpiFsMWBRoUManzOvkvL/m+tbkTpJLI72VtTA==
   dependencies:
     bunyan "^1.8.12"
     bunyan-debug-stream "^1.1.0"
@@ -11936,10 +11936,10 @@ react-native-localize@^1.4.3:
   resolved "https://registry.yarnpkg.com/react-native-localize/-/react-native-localize-1.4.3.tgz#6fde2fb1e73a7205910419a680cb4734187d556f"
   integrity sha512-n3pi89LBeSzB825CBagyaYRtBS93LdvNz3sI386iXwLSg1ONjEGR1Ez36JBuxZalZgORjrKzV2Pun6MO7iwD6w==
 
-react-native-map-link@^2.7.20:
-  version "2.7.20"
-  resolved "https://registry.yarnpkg.com/react-native-map-link/-/react-native-map-link-2.7.20.tgz#0f71b20195fd7b0f4957a9d8bcd75d3b55e1a444"
-  integrity sha512-4YGTZySOPwQ9vnq3Ie7fjT+fAd3pQH23aqmplGp1IJ+YQ8pC/E6DddOXX8gnSGWsdsp7K/LISx950ZgCLGEQyA==
+react-native-map-link@^2.7.22:
+  version "2.7.22"
+  resolved "https://registry.yarnpkg.com/react-native-map-link/-/react-native-map-link-2.7.22.tgz#3e5736ee9e793e6b665fbeb0d1a97fa1ddd3a347"
+  integrity sha512-vKmdwJyTcjNvfgFXLQ3pHgZv0r3MtPOpCujU8kz74lZertfNdmJ0FTCR5JG3U+lpbB2CtegYS5nqndugRMXnCA==
   dependencies:
     prop-types "^15.7.2"
     react-native-modal "^10.0.0"
