@@ -472,7 +472,7 @@ PODS:
     - React-Core
   - RNCPushNotificationIOS (1.8.0):
     - React-Core
-  - RNDateTimePicker (3.0.9):
+  - RNDateTimePicker (3.1.1):
     - React-Core
   - RNFBAnalytics (10.8.1):
     - Firebase/Analytics (~> 7.6.0)
@@ -915,7 +915,7 @@ SPEC CHECKSUMS:
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
   RNCPicker: 6780c753e9e674065db90d9c965920516402579d
   RNCPushNotificationIOS: 61a7c72bd1ebad3568025957d001e0f0e7b32191
-  RNDateTimePicker: 8a51a2216c307769e69ef827293d59549ab1ca23
+  RNDateTimePicker: 106d5cddc16710299724d81615377a6b1327e209
   RNFBAnalytics: 454b17745d3824156cb906e2777d85f6848bf3e1
   RNFBApp: 02bde3edecf2e9694b908a5d3504e03449980f20
   RNFBCrashlytics: 0e6347d4e2251c6656b43ce8544662d1bac7deff
