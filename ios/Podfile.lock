@@ -472,7 +472,7 @@ PODS:
     - React-Core
   - RNCPushNotificationIOS (1.8.0):
     - React-Core
-  - RNDateTimePicker (3.1.1):
+  - RNDateTimePicker (3.2.0):
     - React-Core
   - RNFBAnalytics (10.8.1):
     - Firebase/Analytics (~> 7.6.0)
@@ -497,7 +497,7 @@ PODS:
     - React-Core
   - RNScreens (2.18.1):
     - React-Core
-  - RNSentry (2.2.2):
+  - RNSentry (2.3.0):
     - React-Core
     - Sentry (= 6.1.4)
   - RNSketchCanvas (0.8.0):
@@ -915,7 +915,7 @@ SPEC CHECKSUMS:
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
   RNCPicker: 6780c753e9e674065db90d9c965920516402579d
   RNCPushNotificationIOS: 61a7c72bd1ebad3568025957d001e0f0e7b32191
-  RNDateTimePicker: 106d5cddc16710299724d81615377a6b1327e209
+  RNDateTimePicker: 17593e41b6b1585aeb8ecbe1c1cbc30cba3d0b4b
   RNFBAnalytics: 454b17745d3824156cb906e2777d85f6848bf3e1
   RNFBApp: 02bde3edecf2e9694b908a5d3504e03449980f20
   RNFBCrashlytics: 0e6347d4e2251c6656b43ce8544662d1bac7deff
@@ -924,7 +924,7 @@ SPEC CHECKSUMS:
   RNLocalize: 7c7aeda16c01db7a0918981c14875c0a53be9b79
   RNReanimated: e03f7425cb7a38dcf1b644d680d1bfc91c3337ad
   RNScreens: f7ad633b2e0190b77b6a7aab7f914fad6f198d8d
-  RNSentry: 490708be01d0871588b33435d144369551ab038d
+  RNSentry: 4f6907f9a4a41058988ebaa17666e9a402b50ff2
   RNSketchCanvas: 9c28adb5381543ed55cc98ce6de46479cb3cb12c
   RNSound: da030221e6ac7e8290c6b43f2b5f2133a8e225b0
   Sentry: 9d055e2de30a77685e86b219acf02e59b82091fc
