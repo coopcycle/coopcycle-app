@@ -8,7 +8,7 @@ CoopCycle
 Prerequisites
 -------------
 
-Install Node, Watchman & React Native CLI as described [here](https://facebook.github.io/react-native/docs/getting-started.html).
+Install Node, Watchman & React Native CLI as described [here](https://reactnative.dev/docs/environment-setup).
 
 Install dependencies to compile [node-canvas](https://github.com/Automattic/node-canvas#compiling) depending on your OS.
 
