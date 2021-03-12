@@ -468,11 +468,11 @@ PODS:
     - React-Core
   - RNCMaskedView (0.1.10):
     - React
-  - RNCPicker (1.9.11):
+  - RNCPicker (1.9.12):
     - React-Core
   - RNCPushNotificationIOS (1.8.0):
     - React-Core
-  - RNDateTimePicker (3.2.0):
+  - RNDateTimePicker (3.0.9):
     - React-Core
   - RNFBAnalytics (10.8.1):
     - Firebase/Analytics (~> 7.6.0)
@@ -913,9 +913,9 @@ SPEC CHECKSUMS:
   RNBackgroundGeolocation: 1184aff02a730e243785482561d0b8d9649548a3
   RNCAsyncStorage: b03032fdbdb725bea0bd9e5ec5a7272865ae7398
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
-  RNCPicker: 6780c753e9e674065db90d9c965920516402579d
+  RNCPicker: b1e22287e5feb38fb10cac877753b924ba1c05d1
   RNCPushNotificationIOS: 61a7c72bd1ebad3568025957d001e0f0e7b32191
-  RNDateTimePicker: 17593e41b6b1585aeb8ecbe1c1cbc30cba3d0b4b
+  RNDateTimePicker: 8a51a2216c307769e69ef827293d59549ab1ca23
   RNFBAnalytics: 454b17745d3824156cb906e2777d85f6848bf3e1
   RNFBApp: 02bde3edecf2e9694b908a5d3504e03449980f20
   RNFBCrashlytics: 0e6347d4e2251c6656b43ce8544662d1bac7deff
@@ -948,4 +948,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 88472e0991e247cba05763107ceb024480f93b78
 
-COCOAPODS: 1.10.0
+COCOAPODS: 1.10.1

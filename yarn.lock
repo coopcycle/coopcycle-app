@@ -3138,13 +3138,6 @@
   dependencies:
     invariant "^2.2.4"
 
-"@react-native-community/datetimepicker@^3.2.0":
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/@react-native-community/datetimepicker/-/datetimepicker-3.2.0.tgz#757ae731bab4442842a4a884941239efa75f371f"
-  integrity sha512-RX4/mi2beCiJXakJJr9bJrqNSfu7wc69Q0gPw21m/PdpYM14bJplVgjmL0hm3VSedj3Eg/dErWy5DdLM8upS/A==
-  dependencies:
-    invariant "^2.2.4"
-
 "@react-native-community/eslint-config@^2.0":
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/@react-native-community/eslint-config/-/eslint-config-2.0.0.tgz#35dcc529a274803fc4e0a6b3d6c274551fb91774"
@@ -3216,7 +3209,12 @@
   resolved "https://registry.yarnpkg.com/@react-native-firebase/perf/-/perf-10.8.1.tgz#b52e2afd2be623a146b684dd20a888fbfceb1232"
   integrity sha512-FQXERKbCF7gazsD3oZNq/HDP/zZSZS4qPnJWbpzgYYeofCfxrUmgjx6/vy0k0Io/ZsdyF67NWxvLLmqPay2FjA==
 
-"@react-native-picker/picker@^1.9.11", "@react-native-picker/picker@^1.9.7":
+"@react-native-picker/picker@^1.9.12":
+  version "1.9.12"
+  resolved "https://registry.yarnpkg.com/@react-native-picker/picker/-/picker-1.9.12.tgz#627a865d759be4062bc41b50cb614972c1d66634"
+  integrity sha512-Fyvpu7+VLheC+Y2D21DJ6SCpx8WG3xSEBmgR+7SDcAuc6wqMEeIFUxtIjlGoSQXyGIsOoDUsuZ17pbbQnw/MeA==
+
+"@react-native-picker/picker@^1.9.7":
   version "1.9.11"
   resolved "https://registry.yarnpkg.com/@react-native-picker/picker/-/picker-1.9.11.tgz#490c752417c17d687e2941659b3c0bff9cb79b83"
   integrity sha512-E7whvvMIl9Ln1sxgug7OAEVWQ69n82iV0d2OWWp5VV52+RW3azKh1IFm4rxdW5/oByMfl7FFL0eHNelGgY4BMQ==
@@ -11750,10 +11748,10 @@ react-fast-compare@^2.0.1:
   resolved "https://registry.yarnpkg.com/react-fast-compare/-/react-fast-compare-2.0.4.tgz#e84b4d455b0fec113e0402c329352715196f81f9"
   integrity sha512-suNP+J1VU1MWFKcyt7RtjiSWUjvidmQSlqu+eHslq+342xCbGTYmC0mEhPCOHxlW0CywylOC1u2DFAT+bv4dBw==
 
-react-i18next@^11.8.9:
-  version "11.8.9"
-  resolved "https://registry.yarnpkg.com/react-i18next/-/react-i18next-11.8.9.tgz#188039708f99a6114b4437f0e620bf99a6c3c7dd"
-  integrity sha512-HVW4/KtBvXcnzkYeS32IqdGBJJ1fksvqVDnnspsyruO99fhHQaAw1vTSrRpcNE5D8vrOu7B9c6sawfmQJ6OWRg==
+react-i18next@^11.8.10:
+  version "11.8.10"
+  resolved "https://registry.yarnpkg.com/react-i18next/-/react-i18next-11.8.10.tgz#aa64bc20410ee8f660a5b918d53f4e41271edf00"
+  integrity sha512-ckjNzMjYkmx4fQ8zzuaYTosYN3Co6ebrgCQJzuZCcGFYSR/kGHZzSu0xw9VhtnbjJVKx0gEMV3DLRvzi4xDZUw==
   dependencies:
     "@babel/runtime" "^7.13.6"
     html-parse-stringify2 "^2.0.1"
@@ -11943,10 +11941,10 @@ react-native-localize@^1.4.3:
   resolved "https://registry.yarnpkg.com/react-native-localize/-/react-native-localize-1.4.3.tgz#6fde2fb1e73a7205910419a680cb4734187d556f"
   integrity sha512-n3pi89LBeSzB825CBagyaYRtBS93LdvNz3sI386iXwLSg1ONjEGR1Ez36JBuxZalZgORjrKzV2Pun6MO7iwD6w==
 
-react-native-map-link@^2.7.22:
-  version "2.7.22"
-  resolved "https://registry.yarnpkg.com/react-native-map-link/-/react-native-map-link-2.7.22.tgz#3e5736ee9e793e6b665fbeb0d1a97fa1ddd3a347"
-  integrity sha512-vKmdwJyTcjNvfgFXLQ3pHgZv0r3MtPOpCujU8kz74lZertfNdmJ0FTCR5JG3U+lpbB2CtegYS5nqndugRMXnCA==
+react-native-map-link@^2.7.23:
+  version "2.7.23"
+  resolved "https://registry.yarnpkg.com/react-native-map-link/-/react-native-map-link-2.7.23.tgz#7d8135319ddc4acff6084b13c50d7d2768cfaf6f"
+  integrity sha512-QwR8WxPa+lbNYVVo8JKWXcgzDqG1bS7VjdOHbT+l8qvL25+R5jjNGVctajsnywgr7FxacC7Gm4nitWz4L99O5Q==
   dependencies:
     prop-types "^15.7.2"
     react-native-modal "^10.0.0"
