@@ -11884,10 +11884,10 @@ react-native-easy-grid@0.2.2:
   dependencies:
     lodash "^4.17.15"
 
-react-native-email-link@^1.10.0:
-  version "1.10.0"
-  resolved "https://registry.yarnpkg.com/react-native-email-link/-/react-native-email-link-1.10.0.tgz#e724a528d49c8f4d8525615501dc4c791ae1026b"
-  integrity sha512-QPbG0pbI6sfqaQJt5RoOrRtpbxEO3iB/UX2354qMqPqbPHk1ijxgAQj2wGpnRZqOKI62PqfCrub+0NUmCgZ3bg==
+react-native-email-link@^1.11.0:
+  version "1.11.0"
+  resolved "https://registry.yarnpkg.com/react-native-email-link/-/react-native-email-link-1.11.0.tgz#cdeb69e4176a84870408631c00224f006194edcf"
+  integrity sha512-VSGy+4/0opkjXuXYyAS9W5tkLtLte+qYZPCVZzRe5qj+2b7ZHRBxJAkUyHoEGnTX6eVXbXchIDhlTgIPsZDr1g==
 
 react-native-flip-card@^3.4.1:
   version "3.5.5"
@@ -11941,10 +11941,10 @@ react-native-localize@^1.4.3:
   resolved "https://registry.yarnpkg.com/react-native-localize/-/react-native-localize-1.4.3.tgz#6fde2fb1e73a7205910419a680cb4734187d556f"
   integrity sha512-n3pi89LBeSzB825CBagyaYRtBS93LdvNz3sI386iXwLSg1ONjEGR1Ez36JBuxZalZgORjrKzV2Pun6MO7iwD6w==
 
-react-native-map-link@^2.7.23:
-  version "2.7.23"
-  resolved "https://registry.yarnpkg.com/react-native-map-link/-/react-native-map-link-2.7.23.tgz#7d8135319ddc4acff6084b13c50d7d2768cfaf6f"
-  integrity sha512-QwR8WxPa+lbNYVVo8JKWXcgzDqG1bS7VjdOHbT+l8qvL25+R5jjNGVctajsnywgr7FxacC7Gm4nitWz4L99O5Q==
+react-native-map-link@^2.7.25:
+  version "2.7.25"
+  resolved "https://registry.yarnpkg.com/react-native-map-link/-/react-native-map-link-2.7.25.tgz#4070f6f85bf1ff446a0f353468214f905cd26eab"
+  integrity sha512-iY90o0ZOw1yIxs+uftS81kqWEua3FZV4KKw9x45kikcGXU7cBXUrDfUbRDhTSXXIXd5SLL7i/UPROiBmQBeM8g==
   dependencies:
     prop-types "^15.7.2"
     react-native-modal "^10.0.0"
