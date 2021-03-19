@@ -5,8 +5,9 @@ import { withTranslation } from 'react-i18next'
 import { Text } from 'native-base';
 
 import TaskList from '../../components/TaskList'
+import TapToRefresh from '../../components/TapToRefresh'
 import AddButton from './components/AddButton'
-import { assignTask, initialize } from '../../redux/Dispatch/actions'
+import { assignTask, initialize, loadUnassignedTasks } from '../../redux/Dispatch/actions'
 import { selectUnassignedTasksNotCancelled } from '../../redux/Dispatch/selectors'
 import { selectSelectedDate, selectTasksWithColor } from '../../coopcycle-frontend-js/logistics/redux'
 
@@ -40,9 +41,7 @@ class UnassignedTasks extends Component {
         </View>
         <View style={{ flex: 1 }}>
           { isEmpty && (
-            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-              <Text note>{ this.props.t('DISPATCH_NO_TASKS') }</Text>
-            </View>
+            <TapToRefresh onPress={ this.props.loadUnassignedTasks } />
           ) }
           { !isEmpty && (
             <TaskList
@@ -73,6 +72,7 @@ function mapDispatchToProps(dispatch) {
   return {
     assignTask: (task, username) => dispatch(assignTask(task, username)),
     initialize: () => dispatch(initialize()),
+    loadUnassignedTasks: () => dispatch(loadUnassignedTasks()),
   }
 }
 

@@ -180,6 +180,21 @@ export function initialize() {
   }
 }
 
+export function loadUnassignedTasks() {
+
+  return function (dispatch, getState) {
+
+    const httpClient = getState().app.httpClient
+    const date = selectSelectedDate(getState())
+
+    dispatch(loadUnassignedTasksRequest())
+
+    _loadUnassignedTasks(httpClient, date)
+      .then(res => dispatch(loadUnassignedTasksSuccess(res['hydra:member'])))
+      .catch(e => dispatch(loadUnassignedTasksFailure(e)))
+  }
+}
+
 export function changeDate(date) {
 
   return function (dispatch, getState) {

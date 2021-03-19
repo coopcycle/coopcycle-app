@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
-import { Icon, Text } from 'native-base'
 
 import { connect } from 'react-redux'
 
 import TaskList from '../../components/TaskList'
+import TapToRefresh from '../../components/TapToRefresh'
 import DateSelectHeader from '../../components/DateSelectHeader'
 import { whiteColor, dateSelectHeaderHeight } from '../../styles/common'
 import { withTranslation } from 'react-i18next'
@@ -30,10 +30,6 @@ const styles = StyleSheet.create({
   wrapper: {
     paddingHorizontal: 15,
     backgroundColor: whiteColor,
-  },
-  noTask: {
-    fontSize: 16,
-    textAlign: 'center',
   },
 })
 
@@ -66,12 +62,8 @@ class TaskListPage extends Component {
         }
         {
           tasks.length === 0 &&
-            <TouchableOpacity style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
-              onPress={ () => this.props.loadTasks(selectedDate) }>
-              <Icon type="FontAwesome5" name="check-circle" solid style={{ marginBottom: 15, fontSize: 38, color: '#ecedec' }} />
-              <Text style={ styles.noTask }>{ this.props.t('NO_TASKS') }</Text>
-              <Text note>{ this.props.t('TOUCH_TO_RELOAD') }</Text>
-            </TouchableOpacity>
+            <TapToRefresh
+              onPress={ () => this.props.loadTasks(selectedDate) } />
         }
         <DateSelectHeader
           buttonsEnabled={true}
