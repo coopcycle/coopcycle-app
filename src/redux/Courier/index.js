@@ -42,7 +42,8 @@ import {
   selectSignatures,
   selectPictures,
   selectSignatureScreenFirst,
-  selectTasksWithColor
+  selectTasksWithColor,
+  selectShouldRefreshTasks,
 } from './taskSelectors'
 
 
@@ -103,4 +104,5 @@ export {
   selectPictures,
   selectSignatureScreenFirst,
   selectTasksWithColor,
+  selectShouldRefreshTasks,
 }

@@ -13,6 +13,7 @@ import {
 } from '../Dispatch/actions'
 import {
   SET_USER,
+  LOGOUT_SUCCESS,
 } from '../App/actions'
 import { MESSAGE } from '../middlewares/WebSocketMiddleware'
 import _ from 'lodash'
@@ -52,6 +53,7 @@ const tasksEntityInitialState = {
   username: null,
   pictures: [], // Array of base64 encoded pictures
   signatures: [], // Array of base64 encoded signatures
+  shouldRefreshTasks: true,
 }
 
 function replaceItem(state, payload) {
@@ -120,6 +122,7 @@ export const tasksEntityReducer = (state = tasksEntityInitialState, action = {})
           ...state.items,
           [ action.payload.date ]: action.payload.items,
         },
+        shouldRefreshTasks: false,
       }
 
     case START_TASK_SUCCESS:
@@ -200,6 +203,17 @@ export const tasksEntityReducer = (state = tasksEntityInitialState, action = {})
       return {
         ...state,
         username: action.payload ? action.payload.username : null,
+      }
+
+    // The "items" key is persisted by redux-persists,
+    // When the user logs out, we reset it
+    // This is useful when multiple messengers use the same device
+    case LOGOUT_SUCCESS:
+
+      return {
+        ...state,
+        items: {},
+        shouldRefreshTasks: true,
       }
   }
 

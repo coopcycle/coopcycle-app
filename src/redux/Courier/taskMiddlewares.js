@@ -1,7 +1,7 @@
 import { AppState } from 'react-native'
 import _ from 'lodash'
 
-import { pushNotification } from '../App/actions'
+import { pushNotification, LOGOUT_SUCCESS } from '../App/actions'
 import { MESSAGE } from '../middlewares/WebSocketMiddleware/actions'
 import { LOAD_TASKS_SUCCESS } from './taskActions'
 import { selectTasks, selectTaskSelectedDate } from './taskSelectors'
@@ -16,6 +16,11 @@ export const ringOnTaskListUpdated = ({ getState, dispatch }) => {
 
     // Avoid ringing on first load
     if (action.type === LOAD_TASKS_SUCCESS || action.type === 'persist/REHYDRATE') {
+      return next(action)
+    }
+
+    // Avoid ringing when user disconnects
+    if (action.type === LOGOUT_SUCCESS) {
       return next(action)
     }
 

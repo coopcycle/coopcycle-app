@@ -15,6 +15,7 @@ import {
   selectFilteredTasks,
   selectTaskSelectedDate,
   selectKeepAwake,
+  selectShouldRefreshTasks,
 } from '../../redux/Courier'
 import { navigateToTask } from '../../navigation'
 
@@ -52,13 +53,8 @@ class TasksPage extends Component {
   }
 
   componentDidMount() {
-    InteractionManager.runAfterInteractions(() => {
-      this.refreshTasks(this.props.selectedDate)
-      if (!this.props.isWsOpen) {
-        this.props.initWs(new WebSocketClient(this.props.httpClient, '/dispatch'))
-        this.props.connectWs()
-      }
-    })
+
+    this._bootstrap()
 
     if (this.props.keepAwake && this.props.isFocused) {
       this.enableKeepAwake()
@@ -66,6 +62,13 @@ class TasksPage extends Component {
   }
 
   componentDidUpdate(prevProps) {
+
+    if (prevProps.isFocused !== this.props.isFocused) {
+      if (this.props.isFocused && this.props.shouldRefreshTasks) {
+        this._bootstrap()
+      }
+    }
+
     if (prevProps.isFocused !== this.props.isFocused || prevProps.keepAwake !== this.props.keepAwake) {
       if (this.props.keepAwake && this.props.isFocused) {
         this.enableKeepAwake()
@@ -73,6 +76,16 @@ class TasksPage extends Component {
         this.disableKeepAwake()
       }
     }
+  }
+
+  _bootstrap() {
+    InteractionManager.runAfterInteractions(() => {
+      this.refreshTasks(this.props.selectedDate)
+      if (!this.props.isWsOpen) {
+        this.props.initWs(new WebSocketClient(this.props.httpClient, '/dispatch'))
+        this.props.connectWs()
+      }
+    })
   }
 
   refreshTasks (selectedDate) {
@@ -122,6 +135,7 @@ function mapStateToProps (state) {
     isWsOpen: selectIsWsOpen(state),
     httpClient: state.app.httpClient,
     mapCenter: state.app.settings.latlng.split(',').map(parseFloat),
+    shouldRefreshTasks: selectShouldRefreshTasks(state),
   }
 }
 
