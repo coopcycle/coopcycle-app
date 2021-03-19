@@ -352,6 +352,7 @@
         "CARDHOLDER_NAME": "Nom du titulaire de la carte",
         "RESTAURANT_ORDER_LIST_PICKED_ORDERS": "Commandes récupérées ({{count}})",
         "NOTIFICATION_TASKS_ADDED": "{{ count }} ajoutée(s)",
-        "NOTIFICATION_TASKS_REMOVED": "{{ count }} supprimée(s)"
+        "NOTIFICATION_TASKS_REMOVED": "{{ count }} supprimée(s)",
+        "NOT_AVAILABLE_ATM": "Indisponible pour l'instant"
     }
 }

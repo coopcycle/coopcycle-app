@@ -360,6 +360,7 @@
         "CARDHOLDER_NAME": "Cardholder name",
         "RESTAURANT_ORDER_LIST_PICKED_ORDERS": "Picked orders ({{count}})",
         "NOTIFICATION_TASKS_ADDED": "{{ count }} added",
-        "NOTIFICATION_TASKS_REMOVED": "{{ count }} removed"
+        "NOTIFICATION_TASKS_REMOVED": "{{ count }} removed",
+        "NOT_AVAILABLE_ATM": "Not available at the moment"
     }
 }

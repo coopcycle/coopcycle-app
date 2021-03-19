@@ -6,6 +6,14 @@ function round5(x) {
 }
 
 function timingAsText(timing, now) {
+
+  // FIXME
+  // This hotfixes a bug on the API
+  // https://github.com/coopcycle/coopcycle-web/issues/2213
+  if (timing.range[0] === timing.range[1]) {
+    return i18n.t('NOT_AVAILABLE_ATM')
+  }
+
   const lower = moment.parseZone(timing.range[0])
 
   if (timing.fast) {
@@ -37,7 +45,7 @@ export function getNextShippingTimeAsText(restaurant, now) {
     return timingAsText(restaurant.timing.collection, now)
   }
 
-  return ''
+  return i18n.t('NOT_AVAILABLE_ATM')
 }
 
 export function getRestaurantCaption(restaurant) {
