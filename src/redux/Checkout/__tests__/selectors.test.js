@@ -33,6 +33,10 @@ describe('Redux | Checkout | Selectors', () => {
           today: true,
           fast: true,
           diff: '35 - 45',
+          range: [
+            '2021-01-29T12:20:00+01:00',
+            '2021-01-29T12:30:00+01:00',
+          ]
         },
         cart: {
           shippingTimeRange: null,
