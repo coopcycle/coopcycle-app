@@ -15,6 +15,7 @@ import * as Sentry from '@sentry/react-native'
 import RestaurantSearch from '../../components/RestaurantSearch'
 import RestaurantList from '../../components/RestaurantList'
 import { searchRestaurants, searchRestaurantsForAddress, resetSearch } from '../../redux/Checkout/actions'
+import { selectRestaurants } from '../../redux/Checkout/selectors'
 
 class RestaurantsPage extends Component {
 
@@ -121,7 +122,7 @@ function mapStateToProps(state, ownProps) {
     googleApiKey: state.app.settings.google_api_key,
     location: state.app.settings.latlng,
     country: state.app.settings.country,
-    restaurants: state.checkout.restaurants,
+    restaurants: selectRestaurants(state),
     address: state.checkout.address,
     addressAsText: state.checkout.address ? state.checkout.address.streetAddress : '',
     savedAddresses: state.account.addresses.slice(0, 3),
