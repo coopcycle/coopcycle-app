@@ -77,6 +77,10 @@ export const selectShippingTimeRangeLabel = createSelector(
       return i18n.t('LOADING')
     }
 
+    if (!timing.range || !Array.isArray(timing.range)) {
+      return i18n.t('NOT_AVAILABLE_ATM')
+    }
+
     if (!cart.shippingTimeRange) {
 
       if (timing.today && timing.fast) {
