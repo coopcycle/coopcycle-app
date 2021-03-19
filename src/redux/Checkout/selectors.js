@@ -121,27 +121,20 @@ const timingToInteger = (timing) => {
 
 export const selectRestaurants = createSelector(
   state => state.checkout.restaurants,
-  restaurants => {
+  restaurants => _.sortBy(restaurants, [
+    restaurant => {
 
-    const regex = /([0-9]+) - ([0-9]+)/
+      if (restaurant.timing.delivery) {
 
-    return _.sortBy(restaurants, [
-      restaurant => {
-
-        if (restaurant.timing.delivery) {
-
-          return timingToInteger(restaurant.timing.delivery)
-        }
-
-        if (restaurant.timing.collection) {
-
-          return timingToInteger(restaurant.timing.collection)
-        }
-
-        return NEXT_YEAR
+        return timingToInteger(restaurant.timing.delivery)
       }
-    ])
 
-    return restaurants
-  }
+      if (restaurant.timing.collection) {
+
+        return timingToInteger(restaurant.timing.collection)
+      }
+
+      return NEXT_YEAR
+    }
+  ])
 )
