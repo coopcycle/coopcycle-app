@@ -359,6 +359,15 @@
         "LEARN_MORE": "Aprender más",
         "SELECTED": "Seleccionado",
         "CARDHOLDER_NAME": "Nombre del titular de la tarjeta",
-        "RESTAURANT_ORDER_LIST_PICKED_ORDERS": "Pedidos recogidos ({{count}})"
+        "RESTAURANT_ORDER_LIST_PICKED_ORDERS": "Pedidos recogidos ({{count}})",
+        "BACKGROUND_PERMISSION_DISCLOSURE": {
+            "title": "Uso de la ubicación",
+            "message": "Para que los repartidores puedan asignar las tareas con precisión, permite que CoopCycle acceda a la ubicación de este dispositivo incluso cuando la aplicación está cerrada o no se está usando.\n\nEstos datos serán cargados en el servidor CoopCycle al que esté conectado."
+        },
+        "BACKGROUND_PERMISSION_RATIONALE": {
+            "title": "Permitir que {applicationName} acceda a la ubicación de este dispositivo incluso cuando la aplicación está cerrada o no se está usando",
+            "message": "Para usuarios conectados como mensajeros, esta aplicación recoge datos de ubicación para que los repartidores puedan asignar las tareas con precisión",
+            "positiveAction": "Cambiar a « {backgroundPermissionOptionLabel} »"
+        }
     }
 }

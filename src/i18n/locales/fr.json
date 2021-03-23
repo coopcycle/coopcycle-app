@@ -353,6 +353,15 @@
         "RESTAURANT_ORDER_LIST_PICKED_ORDERS": "Commandes récupérées ({{count}})",
         "NOTIFICATION_TASKS_ADDED": "{{ count }} ajoutée(s)",
         "NOTIFICATION_TASKS_REMOVED": "{{ count }} supprimée(s)",
-        "NOT_AVAILABLE_ATM": "Indisponible pour l'instant"
+        "NOT_AVAILABLE_ATM": "Indisponible pour l'instant",
+        "BACKGROUND_PERMISSION_DISCLOSURE": {
+            "title": "Utilisation de votre position",
+            "message": "Afin de permettre aux répartiteurs d'attribuer les tâches avec précision, autorisez CoopCycle à accéder à la position de cet appareil même lorsque l'application fermée ou n'est pas utilisée.\n\nCes données seront téléversées sur le serveur CoopCycle auquel vous êtes connecté."
+        },
+        "BACKGROUND_PERMISSION_RATIONALE": {
+            "title": "Permettre à {applicationName} d'accéder à la position de cet appareil même lorsque l'application fermée ou n'est pas utilisée",
+            "message": "Pour les utilisateurs authentifiés comme coursiers, cette application collecte les données de localisation afin de permettre aux répartiteurs d'attribuer les tâches avec précision",
+            "positiveAction": "Changer pour « {backgroundPermissionOptionLabel} »"
+        }
     }
 }

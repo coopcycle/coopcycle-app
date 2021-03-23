@@ -107,7 +107,7 @@ const appPersistConfig = {
   key: 'app',
   version: 0,
   storage: AsyncStorage,
-  whitelist: ['baseURL', 'settings', 'pushNotificationToken'],
+  whitelist: ['baseURL', 'settings', 'pushNotificationToken', 'hasDisclosedBackgroundPermission'],
   migrate: (state) => {
 
     if (!state) {

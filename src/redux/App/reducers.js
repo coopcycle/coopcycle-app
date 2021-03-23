@@ -29,6 +29,7 @@ import {
   SET_INTERNET_REACHABLE,
   REGISTRATION_ERRORS,
   SET_BACKGROUND_GEOLOCATION_ENABLED,
+  BACKGROUND_PERMISSION_DISCLOSED,
 } from './actions'
 
 const initialState = {
@@ -61,6 +62,7 @@ const initialState = {
   isInternetReachable: true,
   registrationErrors: {},
   isBackgroundGeolocationEnabled: false,
+  hasDisclosedBackgroundPermission: false
 }
 
 export default (state = initialState, action = {}) => {
@@ -250,6 +252,12 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         isBackgroundGeolocationEnabled: action.payload,
+      }
+
+    case BACKGROUND_PERMISSION_DISCLOSED:
+      return {
+        ...state,
+        hasDisclosedBackgroundPermission: true,
       }
   }
 

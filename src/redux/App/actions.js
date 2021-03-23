@@ -54,6 +54,7 @@ export const SET_INTERNET_REACHABLE = '@app/SET_INTERNET_REACHABLE'
 export const REGISTRATION_ERRORS = '@app/REGISTRATION_ERRORS'
 
 export const SET_BACKGROUND_GEOLOCATION_ENABLED = '@app/SET_BACKGROUND_GEOLOCATION_ENABLED'
+export const BACKGROUND_PERMISSION_DISCLOSED = '@app/BACKGROUND_PERMISSION_DISCLOSED'
 
 /*
  * Action Creators
@@ -99,6 +100,7 @@ const setSettings = createAction(SET_SETTINGS)
 export const setInternetReachable = createAction(SET_INTERNET_REACHABLE)
 
 export const setBackgroundGeolocationEnabled = createAction(SET_BACKGROUND_GEOLOCATION_ENABLED)
+export const backgroundPermissionDisclosed = createAction(BACKGROUND_PERMISSION_DISCLOSED)
 
 const registrationErrors = createAction(REGISTRATION_ERRORS)
 

@@ -361,6 +361,15 @@
         "RESTAURANT_ORDER_LIST_PICKED_ORDERS": "Picked orders ({{count}})",
         "NOTIFICATION_TASKS_ADDED": "{{ count }} added",
         "NOTIFICATION_TASKS_REMOVED": "{{ count }} removed",
-        "NOT_AVAILABLE_ATM": "Not available at the moment"
+        "NOT_AVAILABLE_ATM": "Not available at the moment",
+        "BACKGROUND_PERMISSION_DISCLOSURE": {
+            "title": "Use your location",
+            "message": "To allow dispatchers to assign jobs accurately, allow CoopCycle to access this device's location even when the app is closed or not in use.\n\nThis data will be uploaded to the CoopCycle instance you are connected to."
+        },
+        "BACKGROUND_PERMISSION_RATIONALE": {
+            "title": "Allow {applicationName} to access this device's location even when the app is closed or not in use",
+            "message": "When authenticated as a messenger, this app collects location data to allow dispatchers to assign jobs accurately",
+            "positiveAction": "Change to « {backgroundPermissionOptionLabel} »"
+        }
     }
 }
