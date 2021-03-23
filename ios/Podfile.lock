@@ -5,15 +5,10 @@ PODS:
   - CocoaLumberjack (3.6.2):
     - CocoaLumberjack/Core (= 3.6.2)
   - CocoaLumberjack/Core (3.6.2)
-  - Countly (20.04.3):
-    - Countly/Core (= 20.04.3)
-  - Countly/Core (20.04.3)
-  - CountlyReactNative (20.04):
-    - Countly (= 20.04.3)
-    - CountlyReactNative/NotificationService (= 20.04)
+  - CountlyReactNative (20.11.5):
+    - CountlyReactNative/NotificationService (= 20.11.5)
     - React
-  - CountlyReactNative/NotificationService (20.04):
-    - Countly (= 20.04.3)
+  - CountlyReactNative/NotificationService (20.11.5):
     - React
   - DoubleConversion (1.1.6)
   - EXApplication (2.4.1):
@@ -468,7 +463,7 @@ PODS:
     - React-Core
   - RNCMaskedView (0.1.10):
     - React
-  - RNCPicker (1.9.12):
+  - RNCPicker (1.9.11):
     - React-Core
   - RNCPushNotificationIOS (1.8.0):
     - React-Core
@@ -644,7 +639,6 @@ SPEC REPOS:
     - CocoaAsyncSocket
     - CocoaLibEvent
     - CocoaLumberjack
-    - Countly
     - Firebase
     - FirebaseABTesting
     - FirebaseAnalytics
@@ -838,8 +832,7 @@ SPEC CHECKSUMS:
   CocoaAsyncSocket: 694058e7c0ed05a9e217d1b3c7ded962f4180845
   CocoaLibEvent: 2fab71b8bd46dd33ddb959f7928ec5909f838e3f
   CocoaLumberjack: bd155f2dd06c0e0b03f876f7a3ee55693122ec94
-  Countly: 6e4af408faaa26192227f06d27899532c4c2317b
-  CountlyReactNative: 3df193f0ce9d2d8f1d9d6b682979a539f4e2cc83
+  CountlyReactNative: 95172a57adc428ceb3d33b7af1002ee897c514a4
   DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
   EXApplication: e3c201e7b913d081bbd37bd3c5d0e2cdc21733b4
   EXConstants: 54d0bf04319d1692c6c7bc03ca151ef7a71705a4
@@ -913,7 +906,7 @@ SPEC CHECKSUMS:
   RNBackgroundGeolocation: 1184aff02a730e243785482561d0b8d9649548a3
   RNCAsyncStorage: b03032fdbdb725bea0bd9e5ec5a7272865ae7398
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
-  RNCPicker: b1e22287e5feb38fb10cac877753b924ba1c05d1
+  RNCPicker: 6780c753e9e674065db90d9c965920516402579d
   RNCPushNotificationIOS: 61a7c72bd1ebad3568025957d001e0f0e7b32191
   RNDateTimePicker: 8a51a2216c307769e69ef827293d59549ab1ca23
   RNFBAnalytics: 454b17745d3824156cb906e2777d85f6848bf3e1
