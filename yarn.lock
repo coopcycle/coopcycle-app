@@ -3355,10 +3355,10 @@
     "@sentry/types" "6.2.1"
     tslib "^1.9.3"
 
-"@sentry/react-native@^2.3.0":
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/@sentry/react-native/-/react-native-2.3.0.tgz#7c877c697c00635723d2ae47ee45b3af32be0095"
-  integrity sha512-wOkVf11K1E2jZbtVQnc0XAHeMwUs+Tz7QAcy63hf43XYK4YyP25FYertM72L1FF8vOhYsegxT+0RgHtFGt0Fog==
+"@sentry/react-native@^2.4.0":
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/@sentry/react-native/-/react-native-2.4.0.tgz#2b573949c9b85ac1ce3b7a8e0aca222716c4b640"
+  integrity sha512-yRUN36tKRSsGEtNHihEzl0KqGh7pmWfNV0h3jf5Q1VKXNHA9iO2ABcmr47wScrbrK2MDL1umO1AQNq2+6z24QA==
   dependencies:
     "@sentry/browser" "6.2.1"
     "@sentry/core" "6.2.1"
@@ -6638,10 +6638,10 @@ detect-newline@^3.0.0:
   resolved "https://registry.yarnpkg.com/detect-newline/-/detect-newline-3.1.0.tgz#576f5dfc63ae1a192ff192d8ad3af6308991b651"
   integrity sha512-TLz+x/vEXm/Y7P7wn1EJFNLxYpUD4TgMosxY6fAVJUnJMbupHBOncxyWUG9OpTaH9EBD7uFI5LfEgmMOc54DsA==
 
-detox@^18.8.0:
-  version "18.8.0"
-  resolved "https://registry.yarnpkg.com/detox/-/detox-18.8.0.tgz#661aacf0e83cb37b0b3b239f362f65798e5cc593"
-  integrity sha512-n2HkQ5Vk9BlJmp+LE75msnz4IIHZGk7woS0J2R7Z1WV1jnvUD+XWa3xwd4bc7TEPU1tqfP9YRjkTGQaLT7eReA==
+detox@^18.8.1:
+  version "18.8.1"
+  resolved "https://registry.yarnpkg.com/detox/-/detox-18.8.1.tgz#49893bd8fd139826f78fc5c6773624c467bbda66"
+  integrity sha512-dxtyM5f/IyzkL5wVsmWyg2an3Ls0rNRSOOJ82pk26alBY7TKGm+PqtK9vnFuS84vN1uxdsBez+4W15ojmAEZZw==
   dependencies:
     bunyan "^1.8.12"
     bunyan-debug-stream "^1.1.0"
@@ -8234,10 +8234,10 @@ globals@^12.1.0:
   dependencies:
     type-fest "^0.8.1"
 
-google-libphonenumber@^3.2.18:
-  version "3.2.18"
-  resolved "https://registry.yarnpkg.com/google-libphonenumber/-/google-libphonenumber-3.2.18.tgz#7d5a62abc8e20fb70dc19ed9d88519562d54ac58"
-  integrity sha512-6u+PF7Nf6TXMUNekHxc7pO6iE9PI1n2/q+z80GzFckH5riSKn4K1EeFimA5UqHA4MpxgKHYsVpcj8YDq32ob9g==
+google-libphonenumber@^3.2.19:
+  version "3.2.19"
+  resolved "https://registry.yarnpkg.com/google-libphonenumber/-/google-libphonenumber-3.2.19.tgz#4177f9a1232a740cfd378a46f628ae9a62982069"
+  integrity sha512-zevRvpUuc88wIXa+ijlMprAc8SrldUtYY2vQpfymmxyZ2ksct6gFrGxccpo28+zjvjK51VoSUaDUHS24XYp6dA==
 
 graceful-fs@^4.1.11, graceful-fs@^4.1.15, graceful-fs@^4.1.2, graceful-fs@^4.1.3, graceful-fs@^4.1.6, graceful-fs@^4.1.9:
   version "4.2.3"
@@ -11787,10 +11787,10 @@ react-fast-compare@^2.0.1:
   resolved "https://registry.yarnpkg.com/react-fast-compare/-/react-fast-compare-2.0.4.tgz#e84b4d455b0fec113e0402c329352715196f81f9"
   integrity sha512-suNP+J1VU1MWFKcyt7RtjiSWUjvidmQSlqu+eHslq+342xCbGTYmC0mEhPCOHxlW0CywylOC1u2DFAT+bv4dBw==
 
-react-i18next@^11.8.10:
-  version "11.8.10"
-  resolved "https://registry.yarnpkg.com/react-i18next/-/react-i18next-11.8.10.tgz#aa64bc20410ee8f660a5b918d53f4e41271edf00"
-  integrity sha512-ckjNzMjYkmx4fQ8zzuaYTosYN3Co6ebrgCQJzuZCcGFYSR/kGHZzSu0xw9VhtnbjJVKx0gEMV3DLRvzi4xDZUw==
+react-i18next@^11.8.11:
+  version "11.8.11"
+  resolved "https://registry.yarnpkg.com/react-i18next/-/react-i18next-11.8.11.tgz#bdf0440bad0d576664057a0c1233cb4fecf9eaab"
+  integrity sha512-S17B952IB8T5Zs0SoGNR5zSHU5N7+X2D2OydhAtqNHT+iw9Tbt7WBNExufe9NbmpUQUUjKrCHIkl2diNTdGYtA==
   dependencies:
     "@babel/runtime" "^7.13.6"
     html-parse-stringify2 "^2.0.1"
