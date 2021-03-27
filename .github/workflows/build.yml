@@ -32,7 +32,7 @@ jobs:
         env:
           googleMapsApiKey: ${{ secrets.googleMapsApiKey }}
       - name: Run Detox tests
-        run: node node_modules/.bin/detox test -c ios.sim.release --loglevel="trace" --device-name="iPhone 11"
+        run: node node_modules/.bin/detox test -c ios.sim.release --loglevel="trace" --device-name="iPhone 11 --debug-synchronization 500"
       # See screenshot specifications
       # https://help.apple.com/app-store-connect/#/devd274dd925
       - name: Take screenshots
