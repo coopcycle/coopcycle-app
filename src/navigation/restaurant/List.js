@@ -19,22 +19,31 @@ class ListScreen extends Component {
   }
 
   _onRestaurantClick(restaurant) {
-    this.props.navigation.goBack()
     this.props.changeRestaurant(restaurant)
+    this.props.navigation.navigate('RestaurantHome')
   }
 
   renderRestaurants() {
 
-    const { restaurants } = this.props
+    const { restaurants, currentRestaurant } = this.props
 
     return (
       <List>
-        { restaurants.map(restaurant =>
-          <ListItem key={ restaurant['@id'] } onPress={ () => this._onRestaurantClick(restaurant) }>
-            <Body>
-              <Text>{ restaurant.name }</Text>
-            </Body>
-          </ListItem>
+        { restaurants.map(restaurant => {
+
+          const selected = restaurant['@id'] === currentRestaurant['@id']
+
+          return (
+            <ListItem key={ restaurant['@id'] }
+              onPress={ () => this._onRestaurantClick(restaurant) }
+              selected={ selected }>
+              <Body>
+                <Text>{ restaurant.name }</Text>
+              </Body>
+            </ListItem>
+          )
+        }
+
         ) }
       </List>
     )
@@ -75,6 +84,7 @@ const styles = StyleSheet.create({
 function mapStateToProps(state) {
   return {
     restaurants: state.restaurant.myRestaurants,
+    currentRestaurant: state.restaurant.restaurant,
   }
 }
 
