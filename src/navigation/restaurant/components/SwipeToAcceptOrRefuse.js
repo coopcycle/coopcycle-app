@@ -35,15 +35,10 @@ const Comp = ({ onAccept, onRefuse }) => {
   }
 
   const onRowOpen = (value) => {
-
-    console.log('onRowOpen')
-
     if (value > 0) {
       onAccept()
-      // this.props.acceptOrder(this.props.order, order => this.props.navigation.setParams({ order }))
     } else {
       onRefuse()
-      // this.props.navigation.navigate('RestaurantOrderRefuse', { order: this.props.order })
     }
     setTimeout(() => swipeRow.current.closeRow(), 250)
   }

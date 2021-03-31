@@ -13,56 +13,12 @@ import { withTranslation } from 'react-i18next'
 import moment from 'moment'
 
 import OrderItems from '../../components/OrderItems'
-import OrderFulfillmentMethodIcon from '../../components/OrderFulfillmentMethodIcon'
-import OrderButtons from './components/OrderButtons'
 import SwipeToAcceptOrRefuse from './components/SwipeToAcceptOrRefuse'
+import OrderHeading from './components/OrderHeading'
 
 import { acceptOrder, printOrder, fulfillOrder } from '../../redux/Restaurant/actions'
 import material from '../../../native-base-theme/variables/material'
 import { resolveFulfillmentMethod } from '../../utils/order'
-
-const fallbackFormat = 'dddd D MMM'
-
-const OrderHeading = ({ order, isPrinterConnected, t, onPrinterClick, printOrder }) => {
-
-  if (order.state !== 'refused' && order.state !== 'cancelled') {
-
-    const preparationExpectedAt = moment.parseZone(order.preparationExpectedAt)
-    const pickupExpectedAt = moment.parseZone(order.pickupExpectedAt)
-
-    return (
-      <View style={{ borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: '#CCCCCC' }}>
-        <View style={ styles.fulfillment }>
-          <OrderFulfillmentMethodIcon order={ order } />
-          <Text style={{ fontWeight: '700' }}>{ moment(pickupExpectedAt).calendar(null, {
-            lastDay : fallbackFormat,
-            sameDay: `[${t('TODAY')}]`,
-            nextDay: `[${t('TOMORROW')}]`,
-            lastWeek : fallbackFormat,
-            nextWeek : fallbackFormat,
-            sameElse : fallbackFormat,
-          }) }</Text>
-          <Text>{ t(`FULFILLMENT_METHOD.${resolveFulfillmentMethod(order)}`) }</Text>
-        </View>
-        <View style={ styles.timeline }>
-          <Icon type="FontAwesome" name="clock-o" />
-          <View style={{ alignItems: 'flex-end' }}>
-            <Text>{ t('RESTAURANT_ORDER_PREPARATION_EXPECTED_AT', { date: preparationExpectedAt.format('LT') }) }</Text>
-            <Text>{ t('RESTAURANT_ORDER_PICKUP_EXPECTED_AT', { date: pickupExpectedAt.format('LT') }) }</Text>
-          </View>
-        </View>
-        <View style={{ marginBottom: 15 }}>
-          <OrderButtons
-            order={ order }
-            isPrinterConnected={ isPrinterConnected }
-            onPrinterClick={ onPrinterClick }
-            printOrder={ printOrder }
-            t={ t } />
-        </View>
-      </View>
-    )
-  }
-}
 
 class OrderScreen extends Component {
 
@@ -149,15 +105,6 @@ class OrderScreen extends Component {
     this.props.fulfillOrder(order, o => this.props.navigation.setParams({ order: o }))
   }
 
-  onRowOpen(value) {
-    if (value > 0) {
-      this.props.acceptOrder(this.props.order, order => this.props.navigation.setParams({ order }))
-    } else {
-      this.props.navigation.navigate('RestaurantOrderRefuse', { order: this.props.order })
-    }
-    setTimeout(() => this.swipeRow.current.closeRow(), 250)
-  }
-
   render() {
 
     const { order } = this.props
@@ -167,7 +114,6 @@ class OrderScreen extends Component {
         <View style={{ flex: 1 }}>
           <OrderHeading
             order={ order }
-            t={ this.props.t }
             isPrinterConnected={ this.props.isPrinterConnected }
             onPrinterClick={ () => this.props.navigation.navigate('RestaurantPrinter') }
             printOrder={ () => this.props.printOrder(this.props.order) } />
@@ -207,22 +153,6 @@ const styles = StyleSheet.create({
   fulfillBtnText: {
     color: material.brandSuccess,
     fontWeight: 'bold',
-  },
-  fulfillment: {
-    backgroundColor: '#f9ca24',
-    paddingHorizontal: material.contentPadding,
-    paddingVertical: (material.contentPadding * 1.5),
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginBottom: 5,
-  },
-  timeline: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: material.contentPadding,
-    marginBottom: 10,
   },
 });
 
