@@ -11,6 +11,7 @@ import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 
 import { deleteOpeningHoursSpecification } from '../../redux/Restaurant/actions'
+import { selectSpecialOpeningHoursSpecification } from '../../redux/Restaurant/selectors'
 
 class OpeningHoursScreen extends Component {
 
@@ -118,14 +119,15 @@ class OpeningHoursScreen extends Component {
 
 function mapStateToProps(state) {
 
-  const { restaurant: restaurantState } = state
-  const { restaurant, specialOpeningHoursSpecification } = restaurantState
+  const { restaurant } = state.restaurant
+
+  console.log('selectSpecialOpeningHoursSpecification(state)', selectSpecialOpeningHoursSpecification(state))
 
   return {
     httpClient: state.app.httpClient,
     openingHoursSpecification: restaurant.openingHoursSpecification,
     restaurant,
-    specialOpeningHoursSpecification,
+    specialOpeningHoursSpecification: selectSpecialOpeningHoursSpecification(state),
   }
 }
 

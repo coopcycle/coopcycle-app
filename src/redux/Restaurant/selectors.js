@@ -6,22 +6,35 @@ import { matchesDate } from '../../utils/order'
 
 const _selectDate = state => state.restaurant.date
 const _selectOrders = state => state.restaurant.orders
-const _selectSpecialOpeningHoursSpecification = state => state.restaurant.specialOpeningHoursSpecification
+const _selectSpecialOpeningHoursSpecification =
+  state => state.restaurant.restaurant?.specialOpeningHoursSpecification || []
 
-export const selectSpecialOpeningHoursSpecification = createSelector(
+export const selectSpecialOpeningHoursSpecificationForToday = createSelector(
+  state => state.restaurant.restaurant,
   _selectDate,
-  _selectSpecialOpeningHoursSpecification,
-  (date, specialOpeningHoursSpecification) => {
+  (restaurant, date) => {
 
-    if (specialOpeningHoursSpecification.length === 0) {
+    if (!Array.isArray(restaurant?.specialOpeningHoursSpecification)) {
 
       return null
     }
 
-    return find(specialOpeningHoursSpecification, openingHoursSpecification => {
+    return find(restaurant.specialOpeningHoursSpecification, openingHoursSpecification => {
 
       return date.isSame(moment(openingHoursSpecification.validFrom, 'YYYY-MM-DD'), 'day')
     })
+  }
+)
+
+export const selectSpecialOpeningHoursSpecification = createSelector(
+  state => state.restaurant.restaurant,
+  (restaurant) => {
+
+    if (restaurant) {
+      return restaurant.specialOpeningHoursSpecification
+    }
+
+    return []
   }
 )
 

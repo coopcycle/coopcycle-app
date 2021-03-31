@@ -77,7 +77,6 @@ const initialState = {
   hasMoreProducts: false,
   products: [],
   menus: [],
-  specialOpeningHoursSpecification: [],
   bluetoothEnabled: false,
   isScanningBluetooth: false,
   printer: null,
@@ -234,8 +233,6 @@ export default (state = initialState, action = {}) => {
           // We select by default the first restaurant from the list
           // Most of the time, users will own only one restaurant
           restaurant,
-          specialOpeningHoursSpecification:
-            restaurant.hasOwnProperty('specialOpeningHoursSpecification') ? restaurant.specialOpeningHoursSpecification : [],
         }
       }
 
@@ -266,13 +263,12 @@ export default (state = initialState, action = {}) => {
       }
 
     case CLOSE_RESTAURANT_SUCCESS:
+
       return {
         ...state,
         fetchError: false,
         isFetching: false,
         restaurant: action.payload,
-        specialOpeningHoursSpecification:
-          action.payload.hasOwnProperty('specialOpeningHoursSpecification') ? action.payload.specialOpeningHoursSpecification : [],
       }
 
     case DELETE_OPENING_HOURS_SPECIFICATION_SUCCESS:
@@ -283,10 +279,13 @@ export default (state = initialState, action = {}) => {
         ...state,
         fetchError: false,
         isFetching: false,
-        specialOpeningHoursSpecification: _.filter(
-          specialOpeningHoursSpecification,
-          openingHoursSpecification => openingHoursSpecification['@id'] !== action.payload['@id']
-        ),
+        restaurant: {
+          ...state.restaurant,
+          specialOpeningHoursSpecification: _.filter(
+            specialOpeningHoursSpecification,
+            openingHoursSpecification => openingHoursSpecification['@id'] !== action.payload['@id']
+          )
+        }
       }
 
     case CHANGE_STATUS_SUCCESS:
@@ -298,6 +297,7 @@ export default (state = initialState, action = {}) => {
       }
 
     case CHANGE_RESTAURANT:
+
       return {
         ...state,
         restaurant: action.payload,

@@ -17,7 +17,7 @@ import {
   changeStatus, loadOrders, changeDate, deleteOpeningHoursSpecification, loadOrderAndNavigate } from '../../redux/Restaurant/actions'
 import { connect as connectWs, init } from '../../redux/middlewares/WebSocketMiddleware/actions'
 import {
-  selectSpecialOpeningHoursSpecification,
+  selectSpecialOpeningHoursSpecificationForToday,
   selectNewOrders,
   selectAcceptedOrders,
   selectPickedOrders,
@@ -228,7 +228,7 @@ function mapStateToProps(state) {
     fulfilledOrders: selectFulfilledOrders(state),
     date: state.restaurant.date,
     restaurant: state.restaurant.restaurant,
-    specialOpeningHoursSpecification: selectSpecialOpeningHoursSpecification(state),
+    specialOpeningHoursSpecification: selectSpecialOpeningHoursSpecificationForToday(state),
     isInternetReachable: state.app.isInternetReachable,
     isLoading: selectIsLoading(state),
     isWsOpen: selectIsWsOpen(state),

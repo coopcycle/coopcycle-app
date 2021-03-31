@@ -6,7 +6,7 @@ import { HeaderButtons, HeaderButton, Item } from 'react-navigation-header-butto
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
 import { closeRestaurant } from '../../../redux/Restaurant/actions'
-import { selectSpecialOpeningHoursSpecification } from '../../../redux/Restaurant/selectors'
+import { selectSpecialOpeningHoursSpecificationForToday } from '../../../redux/Restaurant/selectors'
 
 const FontAwesomeHeaderButton = props => (
   <HeaderButton { ...props } IconComponent={ FontAwesome } iconSize={ 23 } color="#ffffff" />
@@ -51,7 +51,7 @@ function mapStateToProps(state) {
 
   return {
     restaurant: state.restaurant.restaurant,
-    specialOpeningHoursSpecification: selectSpecialOpeningHoursSpecification(state),
+    specialOpeningHoursSpecification: selectSpecialOpeningHoursSpecificationForToday(state),
   }
 }
 
