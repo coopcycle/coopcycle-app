@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
+import { useTranslation } from 'react-i18next'
 import {
   Footer,
   Icon, Text, Button,
