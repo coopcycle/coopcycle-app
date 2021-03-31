@@ -15,6 +15,7 @@ import OrderHeading from './components/OrderHeading'
 import OrderAcceptedFooter from './components/OrderAcceptedFooter'
 
 import { acceptOrder, printOrder, fulfillOrder } from '../../redux/Restaurant/actions'
+import { isMultiVendor } from '../../utils/order'
 
 const OrderNotes = ({ order }) => {
 
@@ -47,6 +48,8 @@ class OrderScreen extends Component {
 
     const { order } = this.props
 
+    const canEdit = !isMultiVendor(order)
+
     return (
       <Container style={{ flex: 1, backgroundColor: '#ffffff' }}>
         <View style={{ flex: 1 }}>
@@ -58,12 +61,12 @@ class OrderScreen extends Component {
           <OrderItems order={ order } />
           <OrderNotes order={ order } />
         </View>
-        { order.state === 'new' &&
+        { (canEdit && order.state === 'new') &&
           <SwipeToAcceptOrRefuse
             onAccept={ () => this.props.acceptOrder(order, order => this.props.navigation.setParams({ order })) }
             onRefuse={ () => this.props.navigation.navigate('RestaurantOrderRefuse', { order }) } />
         }
-        { order.state === 'accepted' &&
+        { (canEdit && order.state === 'accepted') &&
           <OrderAcceptedFooter
             order={ order }
             onPressCancel={  () => this.props.navigation.navigate('RestaurantOrderCancel', { order }) }

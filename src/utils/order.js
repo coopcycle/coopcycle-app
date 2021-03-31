@@ -1,6 +1,8 @@
 import moment from 'moment'
 import EscPosEncoder from 'esc-pos-encoder'
 import diacritics from 'diacritics'
+import _ from 'lodash'
+
 import i18n from '../i18n'
 
 import { formatPriceWithCode } from './formatting'
@@ -122,4 +124,10 @@ export function resolveFulfillmentMethod(order) {
 export function matchesDate(order, date) {
 
   return moment(order.pickupExpectedAt).format('YYYY-MM-DD') === moment(date).format('YYYY-MM-DD')
+}
+
+export function isMultiVendor(order) {
+  const itemsGroupedByVendor = _.groupBy(order.items, 'vendor.@id')
+
+  return _.size(itemsGroupedByVendor) > 1
 }
