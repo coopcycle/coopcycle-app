@@ -11,56 +11,15 @@ import { Col, Row, Grid } from 'react-native-easy-grid'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 import moment from 'moment'
-import { phonecall } from 'react-native-communications'
-import { PhoneNumberUtil, PhoneNumberFormat } from 'google-libphonenumber'
-import { SwipeRow } from 'react-native-swipe-list-view'
 
 import OrderItems from '../../components/OrderItems'
 import OrderFulfillmentMethodIcon from '../../components/OrderFulfillmentMethodIcon'
+import OrderButtons from './components/OrderButtons'
+import SwipeToAcceptOrRefuse from './components/SwipeToAcceptOrRefuse'
+
 import { acceptOrder, printOrder, fulfillOrder } from '../../redux/Restaurant/actions'
 import material from '../../../native-base-theme/variables/material'
 import { resolveFulfillmentMethod } from '../../utils/order'
-
-const phoneNumberUtil = PhoneNumberUtil.getInstance()
-
-const OrderButtons = ({ order, isPrinterConnected, t, onPrinterClick, printOrder }) => {
-
-  let phoneNumber
-  let isPhoneValid = false
-
-  try {
-    phoneNumber = phoneNumberUtil.parse(order.customer.telephone)
-    isPhoneValid = true
-  } catch (e) {}
-
-  return (
-    <View style={{ flexDirection: 'row', paddingHorizontal: 10 }}>
-      <View style={{ width: '50%', paddingRight: 5 }}>
-        { isPrinterConnected && (
-        <Button small iconRight onPress={ printOrder }>
-          <Text>{ t('RESTAURANT_ORDER_PRINT') }</Text>
-          <Icon type="FontAwesome" name="print" />
-        </Button>
-        )}
-        { !isPrinterConnected && (
-        <Button small light iconRight onPress={ onPrinterClick }>
-          <Text>{ t('RESTAURANT_ORDER_PRINT') }</Text>
-          <Icon type="FontAwesome" name="print" />
-        </Button>
-        )}
-      </View>
-      <View style={{ width: '50%', paddingLeft: 5 }}>
-        { isPhoneValid && (
-        <Button small iconLeft success
-          onPress={ () => phonecall(order.customer.telephone, true) }>
-          <Icon name="call" />
-          <Text>{ phoneNumberUtil.format(phoneNumber, PhoneNumberFormat.NATIONAL) }</Text>
-        </Button>
-        )}
-      </View>
-    </View>
-  )
-}
 
 const fallbackFormat = 'dddd D MMM'
 
@@ -107,43 +66,17 @@ const OrderHeading = ({ order, isPrinterConnected, t, onPrinterClick, printOrder
 
 class OrderScreen extends Component {
 
-  constructor(props) {
-    super(props)
-    this.state = {
-      openValue: 0,
-    }
-    this.onSwipeValueChange = this.onSwipeValueChange.bind(this)
-    this.onRowOpen = this.onRowOpen.bind(this)
-    this.swipeRow = React.createRef()
-  }
-
   renderActionButtons() {
 
     const { order } = this.props
     const { navigate } = this.props.navigation
 
     if (order.state === 'new') {
+
       return (
-        <View style={{ backgroundColor: '#efefef' }}>
-          <View style={{ padding: 20 }} onLayout={ event => this.setState({ openValue: (event.nativeEvent.layout.width * 0.7) }) }>
-            <SwipeRow
-              leftOpenValue={ this.state.openValue }
-              rightOpenValue={ (this.state.openValue * -1) }
-              onRowOpen={ this.onRowOpen }
-              onSwipeValueChange={ this.onSwipeValueChange }
-              ref={ this.swipeRow }>
-              <View style={ styles.swipeBg }>
-                <Text>{ this.props.t('RESTAURANT_ORDER_BUTTON_ACCEPT') }</Text>
-                <Text>{ this.props.t('RESTAURANT_ORDER_BUTTON_REFUSE') }</Text>
-              </View>
-              <View style={ styles.swipeFg }>
-                <Icon type="FontAwesome" name="angle-double-left" />
-                <Icon type="FontAwesome" name="angle-double-right" />
-              </View>
-            </SwipeRow>
-          </View>
-          <Text note style={{ textAlign: 'center', marginBottom: 20 }}>{ this.props.t('SWIPE_TO_ACCEPT_REFUSE') }</Text>
-        </View>
+        <SwipeToAcceptOrRefuse
+          onAccept={ () => this.props.acceptOrder(this.props.order, order => this.props.navigation.setParams({ order })) }
+          onRefuse={ () => this.props.navigation.navigate('RestaurantOrderRefuse', { order: this.props.order }) } />
       )
     }
 
@@ -212,10 +145,6 @@ class OrderScreen extends Component {
     }
   }
 
-  onSwipeValueChange({ key, value }) {
-    // TODO Animate color
-  }
-
   fulfillOrder(order) {
     this.props.fulfillOrder(order, o => this.props.navigation.setParams({ order: o }))
   }
@@ -265,13 +194,6 @@ const styles = StyleSheet.create({
     color: material.brandDanger,
     fontWeight: 'bold',
   },
-  acceptBtn: {
-     borderColor: material.brandSuccess,
-  },
-  acceptBtnText: {
-    color: material.brandSuccess,
-    fontWeight: 'bold',
-  },
   delayBtn: {
     borderColor: '#333',
   },
@@ -301,23 +223,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: material.contentPadding,
     marginBottom: 10,
-  },
-  swipeBg: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    backgroundColor: '#e7e7e7',
-    paddingHorizontal: 30,
-  },
-  swipeFg: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: 15,
-    borderWidth: 3,
-    borderColor: '#e7e7e7',
-    backgroundColor: '#ffffff',
   },
 });
 
