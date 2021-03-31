@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { FlatList, SectionList, StyleSheet, TouchableOpacity, View } from 'react-native'
 import PropTypes from 'prop-types'
 import { Text } from 'native-base'
 import { Col, Grid } from 'react-native-easy-grid'
@@ -60,6 +60,16 @@ const CartLine = (props) => {
     </View>
   )
 }
+
+const SectionHeader = ({ section: { title } }) => (
+  <Text style={{ paddingHorizontal: 15, paddingVertical: 10, fontWeight: '700', color: '#c7c7c7' }}>{title}</Text>
+)
+
+const itemsToSections = (itemsGroupedByVendor) =>
+  _.map(itemsGroupedByVendor, (items) => ({
+    title: items[0].vendor.name,
+    data: items
+  }))
 
 class OrderItems extends Component {
 
@@ -154,14 +164,29 @@ class OrderItems extends Component {
 
     const { order } = this.props
 
+    const itemsGroupedByVendor = _.groupBy(order.items, 'vendor.@id')
+    const isMultiVendor = _.size(itemsGroupedByVendor) > 1
+
+    const items = isMultiVendor ?
+      itemsToSections(itemsGroupedByVendor) : order.items
+
     return (
       <View style={ styles.container }>
         <View style={{ flex: 8 }}>
-          <FlatList
-            data={ order.items }
-            keyExtractor={ (item, index) => `ITEM#${item.id}` }
-            renderItem={ ({ item }) => this.renderItem(item) }
-            ItemSeparatorComponent={ ItemSeparatorComponent } />
+          { isMultiVendor && (
+            <SectionList
+              sections={ items }
+              keyExtractor={ (item, index) => `ITEM#${item.id}` }
+              renderItem={ ({ item }) => this.renderItem(item) }
+              renderSectionHeader={ SectionHeader } />
+          )}
+          { !isMultiVendor && (
+            <FlatList
+              data={ items }
+              keyExtractor={ (item, index) => `ITEM#${item.id}` }
+              renderItem={ ({ item }) => this.renderItem(item) }
+              ItemSeparatorComponent={ ItemSeparatorComponent } />
+          )}
         </View>
         <View style={{ flex: 2 }}>
           { this.renderItemsTotal() }
