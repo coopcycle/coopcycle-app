@@ -3,6 +3,7 @@ apply plugin: "com.google.gms.google-services"
 apply plugin: "com.google.firebase.firebase-perf"
 apply plugin: "com.google.firebase.crashlytics"
 apply from: '../../node_modules/react-native-unimodules/gradle.groovy'
+apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
 
 import com.android.build.OutputFile
 
@@ -128,9 +129,6 @@ def jscFlavor = 'org.webkit:android-jsc:+'
  */
 def enableHermes = project.ext.react.get("enableHermes", false);
 
-def googleMapsApiKey = hasProperty('googleMapsApiKey') ? googleMapsApiKey : System.getenv('googleMapsApiKey')
-def transistorsoftLicenseKey = hasProperty('transistorsoftLicenseKey') ? transistorsoftLicenseKey : System.getenv('transistorsoftLicenseKey')
-
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
@@ -150,8 +148,8 @@ android {
         }
         manifestPlaceholders = [
             tipsiStripeRedirectScheme: "coopcycle",
-            googleMapsApiKey: googleMapsApiKey,
-            transistorsoftLicenseKey: transistorsoftLicenseKey
+            googleMapsApiKey: project.env.get("GOOGLE_MAPS_ANDROID_KEY"),
+            transistorsoftLicenseKey: project.env.get("TRANSISTORSOFT_LICENSE_KEY")
         ]
         missingDimensionStrategy 'react-native-camera', 'general'
 

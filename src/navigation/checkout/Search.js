@@ -93,7 +93,6 @@ class RestaurantsPage extends Component {
         { /* This is why it should be the last child component */ }
         { /* Use a "key" prop to make sure component renders */ }
         <RestaurantSearch
-          googleApiKey={ this.props.googleApiKey }
           country={ this.props.country }
           onSelect={ address => this._onAddressSelect(address) }
           onReset={ () => {
@@ -119,7 +118,6 @@ const styles = StyleSheet.create({
 function mapStateToProps(state, ownProps) {
 
   return {
-    googleApiKey: state.app.settings.google_api_key,
     location: state.app.settings.latlng,
     country: state.app.settings.country,
     restaurants: selectRestaurants(state),

@@ -11,6 +11,7 @@ import { withTranslation } from 'react-i18next'
 import Autocomplete from 'react-native-autocomplete-input'
 import Fuse from 'fuse.js'
 import { v4 as uuidv4 } from 'uuid'
+import Config from 'react-native-config'
 
 import { localeDetector } from '../i18n'
 import AddressUtils from '../utils/Address'
@@ -180,7 +181,7 @@ class AddressAutocomplete extends Component {
     }
 
     let query = {
-      key: this.props.googleApiKey,
+      key: Config.GOOGLE_MAPS_BROWSER_KEY,
       language: localeDetector(),
       types: 'geocode',
       components: `country:${this.props.country.toUpperCase()}`,
@@ -205,7 +206,7 @@ class AddressAutocomplete extends Component {
       const { sessionToken } = this.state
 
       const query = {
-        key: this.props.googleApiKey,
+        key: Config.GOOGLE_MAPS_BROWSER_KEY,
         language: localeDetector(),
         placeid: item.place_id,
         sessiontoken: sessionToken,
@@ -400,7 +401,6 @@ AddressAutocomplete.defaultProps = {
 AddressAutocomplete.propTypes = {
   minChars: PropTypes.number,
   addresses: PropTypes.array,
-  googleApiKey: PropTypes.string.isRequired,
   country: PropTypes.string.isRequired,
   renderRight: PropTypes.func,
   location: PropTypes.string,

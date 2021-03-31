@@ -16,11 +16,11 @@ import VersionNumber from 'react-native-version-number'
 
 import KeyboardManager from 'react-native-keyboard-manager'
 
-import { SENTRY_DSN } from '@env'
+import Config from 'react-native-config'
 import * as Sentry from '@sentry/react-native'
 
 Sentry.init({
-  dsn: SENTRY_DSN,
+  dsn: Config.SENTRY_DSN,
 })
 
 if (Platform.OS === 'ios') {

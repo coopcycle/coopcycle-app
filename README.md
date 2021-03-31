@@ -37,16 +37,15 @@ Setup - Android
 
 A Google Maps API Key is needed at compilation time for Android (see `AndroidManifest.xml`).
 
-* To get an API key follow the instructions [Get API key](https://developers.google.com/maps/documentation/android-sdk/signup)
+* To get an API key follow the instructions [Get API key](https://developers.google.com/maps/documentation/android-sdk/get-api-key)
 
 * Make sure that you have `Maps SDK for Android` API enabled in your [Google Cloud Platform Console](https://console.cloud.google.com/google/maps-apis)
 
-* Create a `gradle.properties` file in `GRADLE_USER_HOME` (defaults to `~/.gradle`)
-
-[Learn more about configuring Gradle Build Environment](https://docs.gradle.org/current/userguide/build_environment.html)
+* Add your API key to `.env`
 
 ```
-googleMapsApiKey=YOUR_API_KEY
+GOOGLE_MAPS_BROWSER_KEY=YOUR_API_KEY
+GOOGLE_MAPS_ANDROID_KEY=YOUR_API_KEY
 ```
 
 * Follow the [Firebase instructions](https://firebase.google.com/docs/android/setup) to download and copy `google-services.json` to the `android/app` folder
@@ -54,6 +53,7 @@ googleMapsApiKey=YOUR_API_KEY
 
 Setup - iOS
 -----------
+
 iOS development requires macOS and [CocoaPods](https://cocoapods.org/).
 
 ```
@@ -64,7 +64,7 @@ $ cd ios && pod install
 * Follow the [Firebase instructions](https://firebase.google.com/docs/ios/setup) to download and copy `GoogleService-Info.plist` to the `ios/` folder
 
 Testing
----------------
+-------
 
 ```
 yarn test

@@ -2,7 +2,7 @@ import BaseTracker from './BaseTracker'
 import { Platform } from 'react-native'
 import Countly from 'countly-sdk-react-native-bridge';
 
-import { COUNTLY_SERVER_URL, COUNTLY_APP_KEY, COUNTLY_SALT } from '@env'
+import Config from 'react-native-config'
 
 function CountlyTracker() {
   this.userProperties = {}
@@ -80,10 +80,10 @@ CountlyTracker.prototype.init = function() {
   try {
 
     // configure Countly parameters if needed
-    Countly.enableParameterTamperingProtection(COUNTLY_SALT);
+    Countly.enableParameterTamperingProtection(Config.COUNTLY_SALT);
 
     // initialize
-    Countly.init(COUNTLY_SERVER_URL, COUNTLY_APP_KEY, deviceId)
+    Countly.init(Config.COUNTLY_SERVER_URL, Config.COUNTLY_APP_KEY, deviceId)
       .then(() => {
         // start session tracking
         Countly.start();

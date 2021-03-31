@@ -139,7 +139,6 @@ class AddTask extends Component {
                 )}
                 <AddressAutocomplete
                   country={ this.props.country }
-                  googleApiKey={ this.props.googleApiKey }
                   location={ this.props.location }
                   address={ address }
                   inputContainerStyle={{
@@ -227,7 +226,6 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
   return {
-    googleApiKey: state.app.settings.google_api_key,
     country: state.app.settings.country,
     location: state.app.settings.latlng,
   }

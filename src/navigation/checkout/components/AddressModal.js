@@ -119,7 +119,6 @@ class AddressModal extends Component {
               <View style={ styles.autocompleteContainer }>
                 <AddressAutocomplete
                   country={ this.props.country }
-                  googleApiKey={ this.props.googleApiKey }
                   location={ this.props.location }
                   testID="addressModalTypeahead"
                   onSelectAddress={ (address) => {
@@ -213,7 +212,6 @@ const styles = StyleSheet.create({
 function mapStateToProps(state, ownProps) {
 
   return {
-    googleApiKey: state.app.settings.google_api_key,
     location: state.app.settings.latlng,
     country: state.app.settings.country,
     address: state.checkout.address,

@@ -65,7 +65,6 @@ class NewDelivery extends Component {
         <View style={ styles.container }>
           <View style={ styles.autocompleteContainer }>
             <AddressAutocomplete
-              googleApiKey={ this.props.googleApiKey }
               location={ this.props.location }
               country={ this.props.country }
               addresses={ this.props.addresses }
@@ -137,7 +136,6 @@ function mapStateToProps(state) {
     error: state.store.assertDeliveryError,
     addresses: state.store.addresses,
     country: state.app.settings.country,
-    googleApiKey: state.app.settings.google_api_key,
     location: state.app.settings.latlng,
   }
 }

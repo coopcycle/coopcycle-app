@@ -58,7 +58,6 @@ class RestaurantSearch extends Component {
     return (
       <View style={ [ styles.container, { width: this.props.width } ] }>
         <AddressAutocomplete
-          googleApiKey={ this.props.googleApiKey }
           location={ this.props.location }
           country={ this.props.country }
           onSelectAddress={ this.props.onSelect }
