@@ -3,6 +3,7 @@ import { StyleSheet, View } from 'react-native'
 import {
   Container, Content, Body,
   Text,
+  Left, Right, Radio,
   List, ListItem,
 } from 'native-base'
 import { connect } from 'react-redux'
@@ -37,14 +38,15 @@ class ListScreen extends Component {
             <ListItem key={ restaurant['@id'] }
               onPress={ () => this._onRestaurantClick(restaurant) }
               selected={ selected }>
-              <Body>
+              <Left>
                 <Text>{ restaurant.name }</Text>
-              </Body>
+              </Left>
+              <Right>
+                <Radio selected={ selected } />
+              </Right>
             </ListItem>
           )
-        }
-
-        ) }
+        })}
       </List>
     )
   }
