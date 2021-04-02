@@ -9938,10 +9938,10 @@ levn@^0.3.0, levn@~0.3.0:
     prelude-ls "~1.1.2"
     type-check "~0.3.2"
 
-libphonenumber-js@^1.9.14:
-  version "1.9.14"
-  resolved "https://registry.yarnpkg.com/libphonenumber-js/-/libphonenumber-js-1.9.14.tgz#c5fd28c4c4e5139fa3459e113c1f5015a52aeb42"
-  integrity sha512-lQEHej1NQwKwmn89ixSfvj+m7Gm6AsafuxU1BMsS22VUizQPnamVslA2d5wsHHaaXOExAvlcYjUF1C7ieTzoCg==
+libphonenumber-js@^1.9.15:
+  version "1.9.15"
+  resolved "https://registry.yarnpkg.com/libphonenumber-js/-/libphonenumber-js-1.9.15.tgz#d08c533009216c993382c833eaf1639217bd4350"
+  integrity sha512-gKgvXJmYX00mS+dsy7VUWAsnfKeAyEqGFmDBDor2mtHo08RkceNLQ6PUKS+6h7Tq1SK/4MP2Re8rJ3J0gHmfTA==
 
 lie@3.1.1:
   version "3.1.1"
@@ -11922,10 +11922,10 @@ react-native-calendars@^1.1254.0:
     react-native-swipe-gestures "^1.0.5"
     xdate "^0.8.0"
 
-react-native-camera@^3.43.1:
-  version "3.43.1"
-  resolved "https://registry.yarnpkg.com/react-native-camera/-/react-native-camera-3.43.1.tgz#26758ed66a63ea87a8bb25361364034419c60043"
-  integrity sha512-hglDMBpJyqxwlyElYjeY5zTj838P5LWUQcOpcO8zKh+w6waPyDi1F4vUd/5KHjQ4hPt0xJXXYuxo0IRGo5hyHQ==
+react-native-camera@^3.43.2:
+  version "3.43.2"
+  resolved "https://registry.yarnpkg.com/react-native-camera/-/react-native-camera-3.43.2.tgz#36f7e77440622df0279f0c474fd2af58d3baa82c"
+  integrity sha512-/5rY4+yu//nxvdhLkGnDQ3GgFH2ELX+w2ETWn4aKrg/o5ihP4w1K0tmePyMr//f9T4ioIzfWloGpBhz1eUi74g==
   dependencies:
     prop-types "^15.6.2"
 
@@ -12091,10 +12091,10 @@ react-native-platform-touchable@^1.1.1:
   resolved "https://registry.yarnpkg.com/react-native-platform-touchable/-/react-native-platform-touchable-1.1.1.tgz#fde4acc65eea585d28b164d0c3716a42129a68e4"
   integrity sha1-/eSsxl7qWF0osWTQw3FqQhKaaOQ=
 
-react-native-reanimated@^1.13.2:
-  version "1.13.2"
-  resolved "https://registry.yarnpkg.com/react-native-reanimated/-/react-native-reanimated-1.13.2.tgz#1ae5457b24b4913d173a5a064bb28eae7783d293"
-  integrity sha512-O+WhgxSjOIzcVdAAvx+h2DY331Ek1knKlaq+jsNLpC1fhRy9XTdOObovgob/aF2ve9uJfPEawCx8381g/tUJZQ==
+react-native-reanimated@^1.13.3:
+  version "1.13.3"
+  resolved "https://registry.yarnpkg.com/react-native-reanimated/-/react-native-reanimated-1.13.3.tgz#fb0e1d582c8866015140f2159e147ffe6e798a3a"
+  integrity sha512-i714H24dv6ncpFO7/SZ0PfAMbvjgVbF8Ow2NPtowoZAz8osS54DmTMrkgJ9Za+uEku/s0AEaxqiXG2Xgntvv2g==
   dependencies:
     fbjs "^1.0.0"
 
