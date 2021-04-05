@@ -3333,9 +3333,9 @@
     react-native-iphone-x-helper "^1.3.0"
 
 "@react-navigation/compat@^5.3.14":
-  version "5.3.14"
-  resolved "https://registry.yarnpkg.com/@react-navigation/compat/-/compat-5.3.14.tgz#bcf38ec0e1d55ae5d8970a7b28dcf90153f46b37"
-  integrity sha512-MOWfoq5ViXqoB1gFldRqIVqfvxbYtVMOyGuNh/I7VJi6eXanz4fmEd5inovL4HGimX6e6icD0zn8a/oo6FNi+A==
+  version "5.3.15"
+  resolved "https://registry.yarnpkg.com/@react-navigation/compat/-/compat-5.3.15.tgz#bdfc4a41be44aefa3ffb3ba5ec0307e40e97ab99"
+  integrity sha512-Gh5O6Ng3z0/qSBhuuWuPSi24+RrkgNy5hzvEke8qjS+kbrPfSFLD6aq9B2Fdfndp/dAyfxgTi6aULUsnv847Hw==
 
 "@react-navigation/core@^3.7.9":
   version "3.7.9"
