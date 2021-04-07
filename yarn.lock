@@ -9939,9 +9939,9 @@ levn@^0.3.0, levn@~0.3.0:
     type-check "~0.3.2"
 
 libphonenumber-js@^1.9.15:
-  version "1.9.15"
-  resolved "https://registry.yarnpkg.com/libphonenumber-js/-/libphonenumber-js-1.9.15.tgz#d08c533009216c993382c833eaf1639217bd4350"
-  integrity sha512-gKgvXJmYX00mS+dsy7VUWAsnfKeAyEqGFmDBDor2mtHo08RkceNLQ6PUKS+6h7Tq1SK/4MP2Re8rJ3J0gHmfTA==
+  version "1.9.16"
+  resolved "https://registry.yarnpkg.com/libphonenumber-js/-/libphonenumber-js-1.9.16.tgz#84fcadf834a1e4234dab3399b5798cf8ff809683"
+  integrity sha512-PaHT7nTtnejZ0HHekAaA0olv6BUTKZGtKM4SCQS0yE3XjFuVo/tjePMHUAr32FKwIZfyPky1ExMUuaiBAUmV6w==
 
 lie@3.1.1:
   version "3.1.1"
