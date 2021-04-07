@@ -103,7 +103,7 @@ function validateAddress(httpClient, cart, address) {
 
   return new Promise((resolve, reject) => {
     httpClient
-      .get(`${cart.restaurant}/can-deliver/${latitude},${longitude}`)
+      .get(`${cart.restaurant}/can-deliver/${latitude},${longitude}`, {}, { anonymous: true })
       .then(resolve)
       .catch(() => reject(i18n.t('CHECKOUT_ADDRESS_NOT_VALID')))
   })
@@ -462,7 +462,7 @@ function wrapRestaurantsWithTiming(restaurants) {
     const { httpClient } = getState().app
 
     const promises = restaurants.map(restaurant => new Promise((resolve) => {
-      httpClient.get(restaurant['@id'] + '/timing')
+      httpClient.get(restaurant['@id'] + '/timing', {}, { anonymous: true })
         .then(res => resolve(res))
         .catch(e => resolve({ delivery: null, collection: null }))
     }))
@@ -488,7 +488,7 @@ export function searchRestaurantsForAddress(address, options = {}) {
     let queryString = `coordinate=${address.geo.latitude},${address.geo.longitude}`
     dispatch(loadRestaurantsRequest())
 
-    httpClient.get('/api/restaurants' + (queryString ? `?${queryString}` : ''))
+    httpClient.get('/api/restaurants' + (queryString ? `?${queryString}` : ''), {}, { anonymous: true })
       .then(res => {
         dispatch(_setAddress(address))
         dispatch(wrapRestaurantsWithTiming(res['hydra:member']))
@@ -511,7 +511,7 @@ export function searchRestaurants(options = {}) {
     dispatch(loadRestaurantsRequest())
 
     const reqs = [
-      httpClient.get('/api/restaurants' + (queryString ? `?${queryString}` : ''))
+      httpClient.get('/api/restaurants' + (queryString ? `?${queryString}` : ''), {}, { anonymous: true })
     ]
 
     if (selectIsAuthenticated(getState())) {
@@ -548,7 +548,7 @@ export function init(restaurant) {
     }))
 
     if (typeof restaurant.hasMenu === 'string') {
-      reqs.push(httpClient.get(restaurant.hasMenu))
+      reqs.push(httpClient.get(restaurant.hasMenu, {}, { anonymous: true }))
     }
 
     Promise.all(reqs)
