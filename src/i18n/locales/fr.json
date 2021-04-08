@@ -362,6 +362,7 @@
             "title": "Permettre à {applicationName} d'accéder à la position de cet appareil même lorsque l'application fermée ou n'est pas utilisée",
             "message": "Pour les utilisateurs authentifiés comme coursiers, cette application collecte les données de localisation afin de permettre aux répartiteurs d'attribuer les tâches avec précision",
             "positiveAction": "Changer pour « {backgroundPermissionOptionLabel} »"
-        }
+        },
+        "RESTAURANT_SETTINGS_MANAGE_PRODUCT_OPTIONS": "Gérer les options des produits"
     }
 }

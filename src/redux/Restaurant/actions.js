@@ -60,6 +60,8 @@ export const LOAD_PRODUCTS_REQUEST = 'LOAD_PRODUCTS_REQUEST'
 export const LOAD_PRODUCTS_SUCCESS = 'LOAD_PRODUCTS_SUCCESS'
 export const LOAD_PRODUCTS_FAILURE = 'LOAD_PRODUCTS_FAILURE'
 
+export const LOAD_PRODUCT_OPTIONS_SUCCESS = 'LOAD_PRODUCT_OPTIONS_SUCCESS'
+
 export const LOAD_MENUS_REQUEST = 'LOAD_MENUS_REQUEST'
 export const LOAD_MENUS_SUCCESS = 'LOAD_MENUS_SUCCESS'
 export const LOAD_MENUS_FAILURE = 'LOAD_MENUS_FAILURE'
@@ -73,6 +75,10 @@ export const LOAD_MORE_PRODUCTS_SUCCESS = 'LOAD_MORE_PRODUCTS_SUCCESS'
 export const CHANGE_PRODUCT_ENABLED_REQUEST = 'CHANGE_PRODUCT_ENABLED_REQUEST'
 export const CHANGE_PRODUCT_ENABLED_SUCCESS = 'CHANGE_PRODUCT_ENABLED_SUCCESS'
 export const CHANGE_PRODUCT_ENABLED_FAILURE = 'CHANGE_PRODUCT_ENABLED_FAILURE'
+
+export const CHANGE_PRODUCT_OPTION_VALUE_ENABLED_REQUEST = 'CHANGE_PRODUCT_OPTION_VALUE_ENABLED_REQUEST'
+export const CHANGE_PRODUCT_OPTION_VALUE_ENABLED_SUCCESS = 'CHANGE_PRODUCT_OPTION_VALUE_ENABLED_SUCCESS'
+export const CHANGE_PRODUCT_OPTION_VALUE_ENABLED_FAILURE = 'CHANGE_PRODUCT_OPTION_VALUE_ENABLED_FAILURE'
 
 export const CLOSE_RESTAURANT_REQUEST = 'CLOSE_RESTAURANT_REQUEST'
 export const CLOSE_RESTAURANT_SUCCESS = 'CLOSE_RESTAURANT_SUCCESS'
@@ -141,6 +147,8 @@ export const loadProductsRequest = createAction(LOAD_PRODUCTS_REQUEST)
 export const loadProductsSuccess = createAction(LOAD_PRODUCTS_SUCCESS)
 export const loadProductsFailure = createAction(LOAD_PRODUCTS_FAILURE)
 
+export const loadProductOptionsSuccess = createAction(LOAD_PRODUCT_OPTIONS_SUCCESS)
+
 export const setNextProductsPage = createAction(SET_NEXT_PRODUCTS_PAGE)
 export const loadMoreProductsSuccess = createAction(LOAD_MORE_PRODUCTS_SUCCESS)
 export const setHasMoreProducts = createAction(SET_HAS_MORE_PRODUCTS)
@@ -148,6 +156,10 @@ export const setHasMoreProducts = createAction(SET_HAS_MORE_PRODUCTS)
 export const changeProductEnabledRequest = createAction(CHANGE_PRODUCT_ENABLED_REQUEST, (product, enabled) => ({ product, enabled }))
 export const changeProductEnabledSuccess = createAction(CHANGE_PRODUCT_ENABLED_SUCCESS)
 export const changeProductEnabledFailure = createAction(CHANGE_PRODUCT_ENABLED_FAILURE, (error, product, enabled) => ({ error, product, enabled }))
+
+export const changeProductOptionValueEnabledRequest = createAction(CHANGE_PRODUCT_OPTION_VALUE_ENABLED_REQUEST, (productOptionValue, enabled) => ({ productOptionValue, enabled }))
+export const changeProductOptionValueEnabledSuccess = createAction(CHANGE_PRODUCT_OPTION_VALUE_ENABLED_SUCCESS, (productOptionValue, enabled) => ({ productOptionValue, enabled }))
+export const changeProductOptionValueEnabledFailure = createAction(CHANGE_PRODUCT_OPTION_VALUE_ENABLED_FAILURE, (error, productOptionValue, enabled) => ({ error, productOptionValue, enabled }))
 
 export const closeRestaurantRequest = createAction(CLOSE_RESTAURANT_REQUEST)
 export const closeRestaurantSuccess = createAction(CLOSE_RESTAURANT_SUCCESS)
@@ -722,5 +734,37 @@ export function disconnectPrinter(device, cb) {
       .catch(e => {
         console.log(e)
       })
+  }
+}
+
+export function loadProductOptions(restaurant) {
+
+  return function (dispatch, getState) {
+
+    const { app } = getState()
+    const { httpClient } = app
+
+    dispatch(loadProductsRequest())
+
+    return httpClient.get(`${restaurant['@id']}/product_options`)
+      .then(res => {
+        dispatch(loadProductOptionsSuccess(res['hydra:member']))
+      })
+      .catch(e => dispatch(loadProductsFailure(e)))
+  }
+}
+
+export function changeProductOptionValueEnabled(productOptionValue, enabled) {
+
+  return function (dispatch, getState) {
+
+    const { app } = getState()
+    const { httpClient } = app
+
+    dispatch(changeProductOptionValueEnabledRequest(productOptionValue, enabled))
+
+    httpClient.put(productOptionValue['@id'], { enabled })
+      .then(res => dispatch(changeProductOptionValueEnabledSuccess(productOptionValue, res.enabled)))
+      .catch(e => dispatch(changeProductOptionValueEnabledSuccess(e, productOptionValue, !enabled)))
   }
 }

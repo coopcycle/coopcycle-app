@@ -5,6 +5,7 @@ import {
 
 import i18n from '../../i18n'
 import screens, { defaultNavigationOptions } from '..'
+import ProductOptions from './ProductOptions'
 
 export default createStackNavigator({
   RestaurantSettingsHome: {
@@ -22,6 +23,15 @@ export default createStackNavigator({
       // The screen's header will be used
       headerShown: false,
       title: i18n.t('RESTAURANT_PRODUCTS'),
+    }),
+  },
+  RestaurantProductOptions: {
+    screen: ProductOptions,
+    navigationOptions: ({ navigation }) => ({
+      // Use header = null to get rid of the header
+      // The screen's header will be used
+      headerShown: false,
+      title: i18n.t('RESTAURANT_PRODUCT_OPTIONS'),
     }),
   },
   RestaurantOpeningHours: {

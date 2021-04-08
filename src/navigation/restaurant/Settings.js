@@ -51,6 +51,12 @@ class SettingsScreen extends Component {
         onPress: () => navigate('RestaurantProducts'),
       },
       {
+        icon: 'sliders',
+        iconType: 'FontAwesome',
+        label: this.props.t('RESTAURANT_SETTINGS_MANAGE_PRODUCT_OPTIONS'),
+        onPress: () => navigate('RestaurantProductOptions'),
+      },
+      {
         icon: 'calendar',
         label: this.props.t('RESTAURANT_SETTINGS_OPENING_HOURS'),
         onPress: () => navigate('RestaurantOpeningHours'),
@@ -115,7 +121,7 @@ class SettingsScreen extends Component {
               return (
                 <ListItem key={ `item-${index}` } icon { ...itemProps }>
                   <Left>
-                    <Icon active name={ item.icon } />
+                    <Icon active name={ item.icon } type={ item.iconType || 'Ionicons' } />
                   </Left>
                   <Body>
                     <Text>{ item.label }</Text>

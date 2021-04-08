@@ -50,6 +50,10 @@ import {
   BLUETOOTH_DISABLED,
   BLUETOOTH_START_SCAN,
   BLUETOOTH_STOP_SCAN,
+  LOAD_PRODUCT_OPTIONS_SUCCESS,
+  CHANGE_PRODUCT_OPTION_VALUE_ENABLED_REQUEST,
+  CHANGE_PRODUCT_OPTION_VALUE_ENABLED_SUCCESS,
+  CHANGE_PRODUCT_OPTION_VALUE_ENABLED_FAILURE,
 } from './actions'
 
 import {
@@ -80,6 +84,7 @@ const initialState = {
   bluetoothEnabled: false,
   isScanningBluetooth: false,
   printer: null,
+  productOptions: [],
 }
 
 const spliceOrders = (state, payload) => {
@@ -122,6 +127,27 @@ const spliceProducts = (state, payload) => {
   }
 
   return state.products
+}
+
+const spliceProductOptions = (state, payload) => {
+
+  const productOptionIndex = _.findIndex(state, productOption => {
+    return -1 !== _.findIndex(productOption.values, productOptionValue => productOptionValue['@id'] === payload.productOptionValue['@id'])
+  })
+
+  if (productOptionIndex !== -1) {
+
+    const newProductOptions = state.slice()
+
+    const productOptionValueIndex =
+      _.findIndex(state[productOptionIndex].values, productOptionValue => productOptionValue['@id'] === payload.productOptionValue['@id'])
+
+    newProductOptions[productOptionIndex].values[productOptionValueIndex].enabled = payload.enabled
+
+    return newProductOptions
+  }
+
+  return state
 }
 
 export default (state = initialState, action = {}) => {
@@ -188,6 +214,23 @@ export default (state = initialState, action = {}) => {
         }),
       }
 
+    case CHANGE_PRODUCT_OPTION_VALUE_ENABLED_REQUEST:
+    case CHANGE_PRODUCT_OPTION_VALUE_ENABLED_SUCCESS:
+      return {
+        ...state,
+        fetchError: false,
+        isFetching: action.type === CHANGE_PRODUCT_OPTION_VALUE_ENABLED_REQUEST,
+        productOptions: spliceProductOptions(state.productOptions, action.payload),
+      }
+
+    case CHANGE_PRODUCT_OPTION_VALUE_ENABLED_FAILURE:
+      return {
+        ...state,
+        fetchError: action.payload.error,
+        isFetching: false,
+        productOptions: spliceProductOptions(state.productOptions, action.payload),
+      }
+
     case LOAD_ORDERS_SUCCESS:
       return {
         ...state,
@@ -244,6 +287,14 @@ export default (state = initialState, action = {}) => {
         fetchError: false,
         isFetching: false,
         products: action.payload,
+      }
+
+    case LOAD_PRODUCT_OPTIONS_SUCCESS:
+      return {
+        ...state,
+        fetchError: false,
+        isFetching: false,
+        productOptions: action.payload,
       }
 
     case LOAD_MORE_PRODUCTS_SUCCESS:

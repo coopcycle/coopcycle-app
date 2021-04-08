@@ -370,6 +370,7 @@
             "title": "Allow {applicationName} to access this device's location even when the app is closed or not in use",
             "message": "When authenticated as a messenger, this app collects location data to allow dispatchers to assign jobs accurately",
             "positiveAction": "Change to « {backgroundPermissionOptionLabel} »"
-        }
+        },
+        "RESTAURANT_SETTINGS_MANAGE_PRODUCT_OPTIONS": "Manage product options"
     }
 }
