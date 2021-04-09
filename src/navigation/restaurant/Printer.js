@@ -59,12 +59,15 @@ class Printer extends Component {
       return
     }
 
-    // Make sure we have "ACCESS_FINE_LOCATION" permission or scan won't work
+    // Make sure we have "ACCESS_COARSE_LOCATION " or "ACCESS_FINE_LOCATION" permission or scan won't work
     if (Platform.OS === 'android' && Platform.Version >= 23) {
 
-      const isGranted = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION)
+      const wantedPermission = Platform.Version >= 29 ?
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION : PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION
+
+      const isGranted = await PermissionsAndroid.check(wantedPermission)
       if (!isGranted) {
-        const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION)
+        const granted = await PermissionsAndroid.request(wantedPermission)
         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
           await BleManager.scan([], 30, true)
           this.props.bluetoothStartScan()
