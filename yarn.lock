@@ -6744,9 +6744,9 @@ detect-newline@^3.0.0:
   integrity sha512-TLz+x/vEXm/Y7P7wn1EJFNLxYpUD4TgMosxY6fAVJUnJMbupHBOncxyWUG9OpTaH9EBD7uFI5LfEgmMOc54DsA==
 
 detox@^18.10.0:
-  version "18.10.0"
-  resolved "https://registry.yarnpkg.com/detox/-/detox-18.10.0.tgz#8b8d6b6f2bf9775f09d92b63f98dc1b5f4c9334e"
-  integrity sha512-okqMongBq0hKuJN8hxVHoBjM3Ms0XbaaWq5PyZGWuog3SXTX18ux8YjSmCU2J8ESA8muXyuOpl9KGgT8bWJTHA==
+  version "18.11.2"
+  resolved "https://registry.yarnpkg.com/detox/-/detox-18.11.2.tgz#463d67155b40435a6d42049679328d12be179e1f"
+  integrity sha512-zEm4sdz6ItKIzWByfLldPzk8SLE562l+/nRKUBfV9fXzys6VeZ7YKb1YbMmC2JF0slmR4rIqCr9Fji4laDwE6w==
   dependencies:
     bunyan "^1.8.12"
     bunyan-debug-stream "^1.1.0"
@@ -6769,7 +6769,7 @@ detox@^18.10.0:
     telnet-client "1.2.8"
     tempfile "^2.0.0"
     which "^1.3.1"
-    ws "^7.4.3"
+    ws "^7.0.0"
     yargs "^16.0.3"
     yargs-unparser "^2.0.0"
 
@@ -14465,12 +14465,7 @@ ws@^1.1.0, ws@^1.1.5:
     options ">=0.0.5"
     ultron "1.0.x"
 
-ws@^7, ws@^7.2.3:
-  version "7.3.0"
-  resolved "https://registry.yarnpkg.com/ws/-/ws-7.3.0.tgz#4b2f7f219b3d3737bc1a2fbf145d825b94d38ffd"
-  integrity sha512-iFtXzngZVXPGgpTlP1rBqsUK82p9tKqsWRPg5L56egiljujJT3vGAYnHANvFxBieXrTFavhzhxW52jnaWV+w2w==
-
-ws@^7.4.3:
+ws@^7, ws@^7.0.0, ws@^7.2.3:
   version "7.4.4"
   resolved "https://registry.yarnpkg.com/ws/-/ws-7.4.4.tgz#383bc9742cb202292c9077ceab6f6047b17f2d59"
   integrity sha512-Qm8k8ojNQIMx7S+Zp8u/uHOx7Qazv3Yv4q68MiWWWOJhiwG5W3x7iqmRtJo8xxrciZUY4vRxUTJCKuRnF28ZZw==
