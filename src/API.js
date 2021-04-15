@@ -124,7 +124,7 @@ Client.prototype.createRequest = function(method, url, data) {
     headers,
   }
 
-  if (data) {
+  if (['POST', 'PUT'].includes(method.toUpperCase()) && _.size(data) > 0) {
     req['data'] = data
   }
 
