@@ -313,7 +313,10 @@
         "ADD_COUPON": "Anyadir un codigo promocional",
         "VOUCHER_CODE": "Codigo promocional",
         "RECEIPT_HEADING_ORDER_NUMBER": "PEDIU {{number}} (#{{id}})",
-        "RECEIPT_HEADING_PICKUP_EXPECTED_AT": "RECULLIDA ASPERADA PA LAS {{time}}",
+        "RECEIPT_CUSTOMER_NAME": "CLIENTE: {{customer}}",
+        "RECEIPT_HEADING_PICKUP_EXPECTED_AT": "A LAS {{time}}",
+        "RECEIPT_HEADING_PICKUP_EXPECTED_ON": "RECULLIDA ASPERADA PA {{time}}",
+        "RECEIPT_HEADING_PICKUP_EXPECTED_TODAY": "RECULLIDA UEI",
         "RESTRICTED_DIET": {
             "DiabeticDiet": "Diabetica",
             "GlutenFreeDiet": "Sin Gluten",

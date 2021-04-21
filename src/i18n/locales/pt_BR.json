@@ -311,7 +311,9 @@
         "ADD_COUPON": "Adicionar um código de voucher",
         "VOUCHER_CODE": "Código de voucher",
         "RECEIPT_HEADING_ORDER_NUMBER": "PEDIDO {{number}} (#{{id}})",
-        "RECEIPT_HEADING_PICKUP_EXPECTED_AT": "COLETA ESPERADA ÀS {{time}}",
+        "RECEIPT_HEADING_PICKUP_EXPECTED_AT": "ÀS {{time}}",
+        "RECEIPT_HEADING_PICKUP_EXPECTED_ON": "COLETA ESPERADA PARA {{time}}",
+        "RECEIPT_HEADING_PICKUP_EXPECTED_TODAY": "COLETA ESPERADA HOJE",
         "RESTRICTED_DIET": {
             "DiabeticDiet": "Diabética",
             "GlutenFreeDiet": "Sem glúten",

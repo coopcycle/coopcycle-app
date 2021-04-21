@@ -308,7 +308,10 @@
         "ADD_COUPON": "Přidejte kód voucheru",
         "VOUCHER_CODE": "kód voucheru",
         "RECEIPT_HEADING_ORDER_NUMBER": "OBJEDNÁVKA {{number}} (#{{id}})",
-        "RECEIPT_HEADING_PICKUP_EXPECTED_AT": "VYZVEDNUTÍ OČEKÁVÁNO V {{time}}",
+        "RECEIPT_CUSTOMER_NAME": "ZAKAZNIK: {{customer}}",
+        "RECEIPT_HEADING_PICKUP_EXPECTED_AT": "V {{time}}",
+        "RECEIPT_HEADING_PICKUP_EXPECTED_ON": "VYZVEDNUTÍ OČEKÁVÁNO V {{time}}",
+        "RECEIPT_HEADING_PICKUP_EXPECTED_TODAY": "VYZVEDNUTÍ OČEKÁVÁNO DNES",
         "RESTRICTED_DIET": {
             "DiabeticDiet": "Diabetická",
             "GlutenFreeDiet": "Bezlepková",

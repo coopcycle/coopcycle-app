@@ -311,7 +311,9 @@
         "ADD_COUPON": "Adicionar código promocional",
         "VOUCHER_CODE": "Código promocional",
         "RECEIPT_HEADING_ORDER_NUMBER": "PEDIDO {{number}} (#{{id}})",
-        "RECEIPT_HEADING_PICKUP_EXPECTED_AT": "LEVANTAMENTO ESPERADO ÀS {{time}}",
+        "RECEIPT_HEADING_PICKUP_EXPECTED_AT": "ÀS {{time}}",
+        "RECEIPT_HEADING_PICKUP_EXPECTED_ON": "LEVANTAMENTO ESPERADO PARA {{time}}",
+        "RECEIPT_HEADING_PICKUP_EXPECTED_TODAY": "LEVANTAMENTO ESPERADO HOJE",
         "RESTRICTED_DIET": {
             "DiabeticDiet": "Diabético",
             "GlutenFreeDiet": "Sem glúten",

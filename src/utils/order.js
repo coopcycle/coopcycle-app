@@ -27,7 +27,16 @@ const CODEPAGE = 'windows1251'
 export function encodeForPrinter(order) {
   const maxChars = 32
 
-  const pickupLine = i18n.t('RECEIPT_HEADING_PICKUP_EXPECTED_AT', {
+  let pickupLineDate = "";
+  
+  if (moment(order.pickupExpectedAt).isSame(moment(), 'day')){
+    pickupLineDate = i18n.t('RECEIPT_HEADING_PICKUP_EXPECTED_TODAY')
+  } else {
+    pickupLineDate = i18n.t('RECEIPT_HEADING_PICKUP_EXPECTED_ON', {
+      time: moment(order.pickupExpectedAt).format('LL'),
+    })
+  }
+  const pickupLineTime = i18n.t('RECEIPT_HEADING_PICKUP_EXPECTED_AT', {
     time: moment(order.pickupExpectedAt).format('LT'),
   })
 
@@ -40,13 +49,18 @@ export function encodeForPrinter(order) {
     .line(hr)
     .align('center')
     .line(i18n.t('RECEIPT_HEADING_ORDER_NUMBER', { number: order.number, id: order.id }))
+    .line(i18n.t('RECEIPT_CUSTOMER_NAME', {customer: order.shippingAddress.name}))
     .line(hr)
 
-  encoder
-    .align('center')
-    .line(pickupLine)
-    .line(hr)
-    .newline()
+    encoder
+      .align('center')
+      .line(pickupLineDate)
+
+    encoder
+      .align('center')
+      .line(pickupLineTime)
+      .line(hr)
+      .newline()
 
   order.items.forEach((item) => {
 
