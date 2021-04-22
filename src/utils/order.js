@@ -48,6 +48,10 @@ export function encodeForPrinter(order) {
     .codepage(CODEPAGE)
     .line(hr)
     .align('center')
+    // Set double height text size
+    // @see https://github.com/mike42/escpos-php/blob/dcb569a123d75f9f6a4a927aae7625ca6b7fdcf3/src/Mike42/Escpos/Printer.php#L954-L960
+    // @see https://github.com/NielsLeenheer/EscPosEncoder/pull/21
+    .raw([ 0x1b, 0x21, 16 ])
     .line(i18n.t('RECEIPT_HEADING_ORDER_NUMBER', { number: order.number, id: order.id }))
     .line(i18n.t('RECEIPT_CUSTOMER_NAME', {customer: order.customer.email}))
     .line(hr)
