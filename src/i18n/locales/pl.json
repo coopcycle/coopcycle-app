@@ -297,7 +297,9 @@
         "ADD_COUPON": "Dodaj kod rabatowy",
         "VOUCHER_CODE": "Kod rabatowy",
         "RECEIPT_HEADING_ORDER_NUMBER": "ZAMÓWIENIE {{number}} (#{{id}})",
-        "RECEIPT_HEADING_PICKUP_EXPECTED_AT": "OCZEKIWANIE NA ODBIÓR O {{time}}",
+        "RECEIPT_HEADING_PICKUP_EXPECTED_AT": "O {{time}}",
+        "RECEIPT_HEADING_PICKUP_EXPECTED_ON": "OCZEKIWANIE NA ODBIÓR W {{time}}",
+        "RECEIPT_HEADING_PICKUP_EXPECTED_TODAY": "ODBIÓR DZISIAJ",
         "RESTRICTED_DIET": {
             "DiabeticDiet": "Cukrzyca",
             "GlutenFreeDiet": "Gluten free",

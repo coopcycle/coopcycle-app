@@ -314,7 +314,10 @@
         "ADD_COUPON": "Add a voucher code",
         "VOUCHER_CODE": "Voucher code",
         "RECEIPT_HEADING_ORDER_NUMBER": "ORDER {{number}} (#{{id}})",
-        "RECEIPT_HEADING_PICKUP_EXPECTED_AT": "PICKUP EXPECTED AT {{time}}",
+        "RECEIPT_CUSTOMER_NAME": "CUSTOMER: {{customer}}",
+        "RECEIPT_HEADING_PICKUP_EXPECTED_AT": "AT {{time}}",
+        "RECEIPT_HEADING_PICKUP_EXPECTED_ON": "PICKUP EXPECTED ON {{time}}",
+        "RECEIPT_HEADING_PICKUP_EXPECTED_TODAY": "PICKUP TODAY",
         "RESTRICTED_DIET": {
             "DiabeticDiet": "Diabetic",
             "GlutenFreeDiet": "Gluten free",

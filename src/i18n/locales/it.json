@@ -308,7 +308,10 @@
         "ADD_COUPON": "Aggiungi un codice sconto",
         "VOUCHER_CODE": "Codice sconto",
         "RECEIPT_HEADING_ORDER_NUMBER": "ORDINE {{number}} (#{{id}})",
-        "RECEIPT_HEADING_PICKUP_EXPECTED_AT": "RITIRO ALLE {{time}}",
+        "RECEIPT_CUSTOMER_NAME": "CLIENTE: {{customer}}",
+        "RECEIPT_HEADING_PICKUP_EXPECTED_AT": "ALLE {{time}}",
+        "RECEIPT_HEADING_PICKUP_EXPECTED_ON": "RITIRO PER {{time}}",
+        "RECEIPT_HEADING_PICKUP_EXPECTED_TODAY": "RITIRO OGGI",
         "RESTRICTED_DIET": {
             "DiabeticDiet": "Diabetico",
             "GlutenFreeDiet": "Senza glutine",

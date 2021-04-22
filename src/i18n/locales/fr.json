@@ -310,7 +310,10 @@
         "PHOTO_ADD": "Ajouter l'image",
         "TASKS_CHANGED_ALERT_SOUND": "Son pour les notifications",
         "RECEIPT_HEADING_ORDER_NUMBER": "COMMANDE {{number}} (#{{id}})",
-        "RECEIPT_HEADING_PICKUP_EXPECTED_AT": "RETRAIT A {{time}}",
+        "RECEIPT_CUSTOMER_NAME": "CLIENT: {{customer}}",
+        "RECEIPT_HEADING_PICKUP_EXPECTED_AT": "A {{time}}",
+        "RECEIPT_HEADING_PICKUP_EXPECTED_ON": "RETRAIT LE {{time}}",
+        "RECEIPT_HEADING_PICKUP_EXPECTED_TODAY": "RETRAIT AUJOURD'HUI",
         "RESTRICTED_DIET": {
             "DiabeticDiet": "Diabétique",
             "GlutenFreeDiet": "Sans gluten",
