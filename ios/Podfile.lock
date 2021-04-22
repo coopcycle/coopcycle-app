@@ -376,13 +376,13 @@ PODS:
   - React-jsinspector (0.63.4)
   - react-native-ble-manager (7.4.2):
     - React
-  - react-native-camera (3.43.5):
+  - react-native-camera (3.43.6):
     - React-Core
-    - react-native-camera/RCT (= 3.43.5)
-    - react-native-camera/RN (= 3.43.5)
-  - react-native-camera/RCT (3.43.5):
+    - react-native-camera/RCT (= 3.43.6)
+    - react-native-camera/RN (= 3.43.6)
+  - react-native-camera/RCT (3.43.6):
     - React-Core
-  - react-native-camera/RN (3.43.5):
+  - react-native-camera/RN (3.43.6):
     - React-Core
   - react-native-config (1.4.2):
     - react-native-config/App (= 1.4.2)
@@ -502,7 +502,7 @@ PODS:
     - React-Core
   - RNScreens (2.18.1):
     - React-Core
-  - RNSentry (2.4.0):
+  - RNSentry (2.4.1):
     - React-Core
     - Sentry (= 6.1.4)
   - RNSketchCanvas (0.8.0):
@@ -900,7 +900,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 93bd528844ad21dc07aab1c67cb10abae6df6949
   React-jsinspector: 58aef7155bc9a9683f5b60b35eccea8722a4f53a
   react-native-ble-manager: dfac830e02b29de0147b103a4ed21ad2c618ee71
-  react-native-camera: 04a9a85b63d169094db5fd13a0c786101238e925
+  react-native-camera: 9e55a09596b8c4e41eb7d4cce7c39826990c3cac
   react-native-config: c98128a72bc2c3a1ca72caec0b021f0fa944aa29
   react-native-get-random-values: 237bffb1c7e05fb142092681531810a29ba53015
   react-native-maps: f4b89da81626ad7f151a8bfcb79733295d31ce5c
@@ -934,7 +934,7 @@ SPEC CHECKSUMS:
   RNLocalize: 7c7aeda16c01db7a0918981c14875c0a53be9b79
   RNReanimated: 514a11da3a2bcc6c3dfd9de32b38e2b9bf101926
   RNScreens: f7ad633b2e0190b77b6a7aab7f914fad6f198d8d
-  RNSentry: b0d55027200c96f52e26b9bfb20296d47fc5051d
+  RNSentry: 824a6a0ec885428163fe6827aa08014f9962f223
   RNSketchCanvas: 9c28adb5381543ed55cc98ce6de46479cb3cb12c
   RNSound: da030221e6ac7e8290c6b43f2b5f2133a8e225b0
   Sentry: 9d055e2de30a77685e86b219acf02e59b82091fc
