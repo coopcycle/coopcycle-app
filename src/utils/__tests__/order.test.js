@@ -25,15 +25,15 @@ describe('encodeForPrinter', () => {
         adjustments: [],
       }],
       itemsTotal: 2300,
-      shippingAddress: {
-        name: "TEST"
+      customer: {
+        email: "camille@example.com"
       }
     }
 
     const expected =
       `@\u001btI--------------------------------
 \u001baORDER AAA (#1)
-CUSTOMER: TEST
+CUSTOMER: camille@example.com
 --------------------------------
 \u001ba\u0001PICKUP EXPECTED ON ${time.format('LL')}
 \u001ba\u0001AT ${time.format('LT')}
@@ -88,15 +88,15 @@ describe('encodeForPrinterToday', () => {
         adjustments: [],
       }],
       itemsTotal: 2300,
-      shippingAddress: {
-        name: "TEST"
+      customer: {
+        email: "camille@example.com"
       }
     }
 
     const expected =
     `@\u001btI--------------------------------
 \u001baORDER AAA (#1)
-CUSTOMER: TEST
+CUSTOMER: camille@example.com
 --------------------------------
 \u001ba\u0001PICKUP TODAY
 \u001ba\u0001AT ${time.format('LT')}
@@ -172,5 +172,5 @@ describe('matchesDate', () => {
     ).toBe(false)
 
   })
-  
+
 })

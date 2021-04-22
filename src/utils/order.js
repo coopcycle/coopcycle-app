@@ -28,7 +28,7 @@ export function encodeForPrinter(order) {
   const maxChars = 32
 
   let pickupLineDate = "";
-  
+
   if (moment(order.pickupExpectedAt).isSame(moment(), 'day')){
     pickupLineDate = i18n.t('RECEIPT_HEADING_PICKUP_EXPECTED_TODAY')
   } else {
@@ -49,7 +49,7 @@ export function encodeForPrinter(order) {
     .line(hr)
     .align('center')
     .line(i18n.t('RECEIPT_HEADING_ORDER_NUMBER', { number: order.number, id: order.id }))
-    .line(i18n.t('RECEIPT_CUSTOMER_NAME', {customer: order.shippingAddress.name}))
+    .line(i18n.t('RECEIPT_CUSTOMER_NAME', {customer: order.customer.email}))
     .line(hr)
 
     encoder
