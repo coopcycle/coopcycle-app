@@ -3279,10 +3279,10 @@
   resolved "https://registry.yarnpkg.com/@react-native-community/eslint-plugin/-/eslint-plugin-1.1.0.tgz#e42b1bef12d2415411519fd528e64b593b1363dc"
   integrity sha512-W/J0fNYVO01tioHjvYWQ9m6RgndVtbElzYozBq1ZPrHO/iCzlqoySHl4gO/fpCl9QEFjvJfjPgtPMTMlsoq5DQ==
 
-"@react-native-community/masked-view@^0.1.10":
-  version "0.1.10"
-  resolved "https://registry.yarnpkg.com/@react-native-community/masked-view/-/masked-view-0.1.10.tgz#5dda643e19e587793bc2034dd9bf7398ad43d401"
-  integrity sha512-rk4sWFsmtOw8oyx8SD3KSvawwaK7gRBSEIy2TAwURyGt+3TizssXP1r8nx3zY+R7v2vYYHXZ+k2/GULAT/bcaQ==
+"@react-native-community/masked-view@^0.1.11":
+  version "0.1.11"
+  resolved "https://registry.yarnpkg.com/@react-native-community/masked-view/-/masked-view-0.1.11.tgz#2f4c6e10bee0786abff4604e39a37ded6f3980ce"
+  integrity sha512-rQfMIGSR/1r/SyN87+VD8xHHzDYeHaJq6elOSCAD+0iLagXkSI2pfA0LmSXP21uw5i3em7GkkRjfJ8wpqWXZNw==
 
 "@react-native-community/netinfo@^5.9.10":
   version "5.9.10"
@@ -3472,10 +3472,10 @@
     "@sentry/types" "6.2.1"
     tslib "^1.9.3"
 
-"@sentry/react-native@^2.4.1":
-  version "2.4.1"
-  resolved "https://registry.yarnpkg.com/@sentry/react-native/-/react-native-2.4.1.tgz#02dc53848b77c61b312100b413f9dfbcf2ac975e"
-  integrity sha512-aht7NzhjV9aBxd2EfTiMjyBn2/woJEx6qo21pfEQfBlWN+7iiCF4nZPP5wCMhB4B817uPBy5loO426ZXzVsh5A==
+"@sentry/react-native@^2.4.2":
+  version "2.4.2"
+  resolved "https://registry.yarnpkg.com/@sentry/react-native/-/react-native-2.4.2.tgz#82095e33a2dcd7720c2f71f35f02329ab7351547"
+  integrity sha512-+GAH2cdbZBz+EJOpBGAvVRl2jExLYrZ/gfmHnew3NYGlE/77GX1KQGJ+sKLA6xnPtXjcC7tJ13uvbQD6cltZnQ==
   dependencies:
     "@sentry/browser" "6.2.1"
     "@sentry/core" "6.2.1"
@@ -11912,18 +11912,19 @@ react-native-ble-manager@^7.4.2:
   resolved "https://registry.yarnpkg.com/react-native-ble-manager/-/react-native-ble-manager-7.4.2.tgz#6ef8b088994cd94e4c4df0f7c4f332f0b1b5cb8a"
   integrity sha512-V9vg5g4OTasivBFIjxltDMEdFxCVcrS3BpULNXDSRkJJ+8STvmrpwksSJUo2R/kEh7dxs263aEHetOBeIdvGGQ==
 
-react-native-calendars@^1.1258.0:
-  version "1.1258.0"
-  resolved "https://registry.yarnpkg.com/react-native-calendars/-/react-native-calendars-1.1258.0.tgz#7626ceaa92f6114c31e924d881890fe16981efff"
-  integrity sha512-gO4It/EU94vWZQ7/73RxV0TCm2y1+a4j44YHzjd25eo20n4NAb5+wi2A2uOC9rCunTUfKzu/jKSFwhS4IdbGtw==
+react-native-calendars@^1.1259.0:
+  version "1.1259.0"
+  resolved "https://registry.yarnpkg.com/react-native-calendars/-/react-native-calendars-1.1259.0.tgz#47308416aae61027605c67a905912dc0918a599c"
+  integrity sha512-3hNX/tH6oMm4KxlTDOLhwJjLv6aReCLmqUvQsAWd6pSf3gEoCBJ1CpLEBDQoszpRW1nD37mW540jOtaGBwPMNA==
   dependencies:
     hoist-non-react-statics "^3.3.1"
     immutable "^4.0.0-rc.12"
     lodash "^4.17.15"
-    moment "^2.24.0"
     prop-types "^15.5.10"
     react-native-swipe-gestures "^1.0.5"
     xdate "^0.8.0"
+  optionalDependencies:
+    moment "^2.24.0"
 
 react-native-camera@^3.43.6:
   version "3.43.6"

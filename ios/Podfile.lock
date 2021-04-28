@@ -471,7 +471,7 @@ PODS:
     - React-Core
   - RNCAsyncStorage (1.12.1):
     - React-Core
-  - RNCMaskedView (0.1.10):
+  - RNCMaskedView (0.1.11):
     - React
   - RNCPicker (1.9.11):
     - React-Core
@@ -502,7 +502,7 @@ PODS:
     - React-Core
   - RNScreens (2.18.1):
     - React-Core
-  - RNSentry (2.4.1):
+  - RNSentry (2.4.2):
     - React-Core
     - Sentry (= 6.1.4)
   - RNSketchCanvas (0.8.0):
@@ -922,7 +922,7 @@ SPEC CHECKSUMS:
   RNBackgroundFetch: 8dbb63141792f1473e863a0797ffbd5d987af2fc
   RNBackgroundGeolocation: 1184aff02a730e243785482561d0b8d9649548a3
   RNCAsyncStorage: b03032fdbdb725bea0bd9e5ec5a7272865ae7398
-  RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
+  RNCMaskedView: 0e1bc4bfa8365eba5fbbb71e07fbdc0555249489
   RNCPicker: 6780c753e9e674065db90d9c965920516402579d
   RNCPushNotificationIOS: 61a7c72bd1ebad3568025957d001e0f0e7b32191
   RNDateTimePicker: 8a51a2216c307769e69ef827293d59549ab1ca23
@@ -934,7 +934,7 @@ SPEC CHECKSUMS:
   RNLocalize: 7c7aeda16c01db7a0918981c14875c0a53be9b79
   RNReanimated: 514a11da3a2bcc6c3dfd9de32b38e2b9bf101926
   RNScreens: f7ad633b2e0190b77b6a7aab7f914fad6f198d8d
-  RNSentry: 824a6a0ec885428163fe6827aa08014f9962f223
+  RNSentry: e86fb2e2fec0365644f4b582938bf66be515acce
   RNSketchCanvas: 9c28adb5381543ed55cc98ce6de46479cb3cb12c
   RNSound: da030221e6ac7e8290c6b43f2b5f2133a8e225b0
   Sentry: 9d055e2de30a77685e86b219acf02e59b82091fc
