@@ -11913,17 +11913,18 @@ react-native-ble-manager@^7.4.2:
   integrity sha512-V9vg5g4OTasivBFIjxltDMEdFxCVcrS3BpULNXDSRkJJ+8STvmrpwksSJUo2R/kEh7dxs263aEHetOBeIdvGGQ==
 
 react-native-calendars@^1.1258.0:
-  version "1.1258.0"
-  resolved "https://registry.yarnpkg.com/react-native-calendars/-/react-native-calendars-1.1258.0.tgz#7626ceaa92f6114c31e924d881890fe16981efff"
-  integrity sha512-gO4It/EU94vWZQ7/73RxV0TCm2y1+a4j44YHzjd25eo20n4NAb5+wi2A2uOC9rCunTUfKzu/jKSFwhS4IdbGtw==
+  version "1.1259.0"
+  resolved "https://registry.yarnpkg.com/react-native-calendars/-/react-native-calendars-1.1259.0.tgz#47308416aae61027605c67a905912dc0918a599c"
+  integrity sha512-3hNX/tH6oMm4KxlTDOLhwJjLv6aReCLmqUvQsAWd6pSf3gEoCBJ1CpLEBDQoszpRW1nD37mW540jOtaGBwPMNA==
   dependencies:
     hoist-non-react-statics "^3.3.1"
     immutable "^4.0.0-rc.12"
     lodash "^4.17.15"
-    moment "^2.24.0"
     prop-types "^15.5.10"
     react-native-swipe-gestures "^1.0.5"
     xdate "^0.8.0"
+  optionalDependencies:
+    moment "^2.24.0"
 
 react-native-camera@^3.43.6:
   version "3.43.6"
