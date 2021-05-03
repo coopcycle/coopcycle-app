@@ -12036,9 +12036,9 @@ react-native-localize@^1.4.3:
   integrity sha512-n3pi89LBeSzB825CBagyaYRtBS93LdvNz3sI386iXwLSg1ONjEGR1Ez36JBuxZalZgORjrKzV2Pun6MO7iwD6w==
 
 react-native-map-link@^2.7.25:
-  version "2.7.25"
-  resolved "https://registry.yarnpkg.com/react-native-map-link/-/react-native-map-link-2.7.25.tgz#4070f6f85bf1ff446a0f353468214f905cd26eab"
-  integrity sha512-iY90o0ZOw1yIxs+uftS81kqWEua3FZV4KKw9x45kikcGXU7cBXUrDfUbRDhTSXXIXd5SLL7i/UPROiBmQBeM8g==
+  version "2.7.26"
+  resolved "https://registry.yarnpkg.com/react-native-map-link/-/react-native-map-link-2.7.26.tgz#be05e37b7b2fde496df9073ee573de69b55bd27d"
+  integrity sha512-Pi82pVtRVGxcY3imRp1jH6h0zOIaTJpFGdJElrN19VJC2CgP6vTWjTgZJRQA/ZDRdPe6OJUZjcV544rNbmcRTA==
   dependencies:
     prop-types "^15.7.2"
     react-native-modal "^10.0.0"
