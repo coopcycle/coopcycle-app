@@ -5,10 +5,10 @@ PODS:
   - CocoaLumberjack (3.6.2):
     - CocoaLumberjack/Core (= 3.6.2)
   - CocoaLumberjack/Core (3.6.2)
-  - CountlyReactNative (20.11.5):
-    - CountlyReactNative/NotificationService (= 20.11.5)
+  - CountlyReactNative (20.11.6):
+    - CountlyReactNative/NotificationService (= 20.11.6)
     - React
-  - CountlyReactNative/NotificationService (20.11.5):
+  - CountlyReactNative/NotificationService (20.11.6):
     - React
   - DoubleConversion (1.1.6)
   - EXApplication (2.4.1):
@@ -847,7 +847,7 @@ SPEC CHECKSUMS:
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
   CocoaLibEvent: 2fab71b8bd46dd33ddb959f7928ec5909f838e3f
   CocoaLumberjack: bd155f2dd06c0e0b03f876f7a3ee55693122ec94
-  CountlyReactNative: 95172a57adc428ceb3d33b7af1002ee897c514a4
+  CountlyReactNative: 32bbbb8e647d19d7ea9a362f74f996b514cf098d
   DoubleConversion: cde416483dac037923206447da6e1454df403714
   EXApplication: e3c201e7b913d081bbd37bd3c5d0e2cdc21733b4
   EXConstants: 54d0bf04319d1692c6c7bc03ca151ef7a71705a4

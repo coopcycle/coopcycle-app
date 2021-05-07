@@ -6406,10 +6406,10 @@ cosmiconfig@^5.0.5, cosmiconfig@^5.1.0:
     js-yaml "^3.13.1"
     parse-json "^4.0.0"
 
-countly-sdk-react-native-bridge@^20.11.0:
-  version "20.11.5"
-  resolved "https://registry.yarnpkg.com/countly-sdk-react-native-bridge/-/countly-sdk-react-native-bridge-20.11.5.tgz#dd9706b35fd13ecacd45317fcb221967450dd7cd"
-  integrity sha512-IX/MCJNwVJkhOcGzSyXcptbXOo2DV1CURqC2wq9xKXZnzUGlGlEUPw6c6pqExk74Dnllsizw2K3JONigO18IJw==
+countly-sdk-react-native-bridge@^20.11.6:
+  version "20.11.6"
+  resolved "https://registry.yarnpkg.com/countly-sdk-react-native-bridge/-/countly-sdk-react-native-bridge-20.11.6.tgz#04c637451a5cd081dd8406821309a7f66dbaa1b0"
+  integrity sha512-2lufbdCzGQuJhTTpBgEnF+7eMARZco2T8QxUJOO0rci4Gktf2nGrbzFZIkHOZFl7+iRdFxQYPakJaEYWOb8e7Q==
 
 create-react-class@^15.6.3:
   version "15.6.3"
@@ -8335,10 +8335,10 @@ globals@^12.1.0:
   dependencies:
     type-fest "^0.8.1"
 
-google-libphonenumber@^3.2.19:
-  version "3.2.19"
-  resolved "https://registry.yarnpkg.com/google-libphonenumber/-/google-libphonenumber-3.2.19.tgz#4177f9a1232a740cfd378a46f628ae9a62982069"
-  integrity sha512-zevRvpUuc88wIXa+ijlMprAc8SrldUtYY2vQpfymmxyZ2ksct6gFrGxccpo28+zjvjK51VoSUaDUHS24XYp6dA==
+google-libphonenumber@^3.2.20:
+  version "3.2.20"
+  resolved "https://registry.yarnpkg.com/google-libphonenumber/-/google-libphonenumber-3.2.20.tgz#f25e1b9170e7d785bee0387cf3d4111645b58bd5"
+  integrity sha512-8FANvW/lLTeXMk5M/OvhrtvJHM+IhTspMqz/5vmsw9joOwe42tvPST2mV7pKH4S8zPSbxl1sODD9hkssHL0Ocw==
 
 graceful-fs@^4.1.11, graceful-fs@^4.1.15, graceful-fs@^4.1.2, graceful-fs@^4.1.3, graceful-fs@^4.1.6, graceful-fs@^4.1.9:
   version "4.2.3"
@@ -9941,10 +9941,10 @@ levn@^0.3.0, levn@~0.3.0:
     prelude-ls "~1.1.2"
     type-check "~0.3.2"
 
-libphonenumber-js@^1.9.16:
-  version "1.9.16"
-  resolved "https://registry.yarnpkg.com/libphonenumber-js/-/libphonenumber-js-1.9.16.tgz#84fcadf834a1e4234dab3399b5798cf8ff809683"
-  integrity sha512-PaHT7nTtnejZ0HHekAaA0olv6BUTKZGtKM4SCQS0yE3XjFuVo/tjePMHUAr32FKwIZfyPky1ExMUuaiBAUmV6w==
+libphonenumber-js@^1.9.17:
+  version "1.9.17"
+  resolved "https://registry.yarnpkg.com/libphonenumber-js/-/libphonenumber-js-1.9.17.tgz#fef2e6fd7a981be69ba358c24495725ee8daf331"
+  integrity sha512-ElJki901OynMg1l+evooPH1VyHrECuLqpgc12z2BkK25dFU5lUKTuMHEYV2jXxvtns/PIuJax56cBeoSK7ANow==
 
 lie@3.1.1:
   version "3.1.1"
@@ -11843,10 +11843,10 @@ react-fast-compare@^2.0.1:
   resolved "https://registry.yarnpkg.com/react-fast-compare/-/react-fast-compare-2.0.4.tgz#e84b4d455b0fec113e0402c329352715196f81f9"
   integrity sha512-suNP+J1VU1MWFKcyt7RtjiSWUjvidmQSlqu+eHslq+342xCbGTYmC0mEhPCOHxlW0CywylOC1u2DFAT+bv4dBw==
 
-react-i18next@^11.8.14:
-  version "11.8.14"
-  resolved "https://registry.yarnpkg.com/react-i18next/-/react-i18next-11.8.14.tgz#4d2f9486513f8e23e5b77a69dc314cf153ea4545"
-  integrity sha512-IlfmezceEic7nMkhK39bYSV1tXqcOraLpiBc8ADN7CfoqTpANW6/UmNUvtlj0jEdpI69fQ2bO9+ZmTxeAg5ehA==
+react-i18next@^11.8.15:
+  version "11.8.15"
+  resolved "https://registry.yarnpkg.com/react-i18next/-/react-i18next-11.8.15.tgz#89450d585298f18d4a8eb1628b0868863f3a4767"
+  integrity sha512-ZbKcbYYKukgDL0MiUWKJTEsEftjSTNVZv67/V+SjPqTRwuF/aL4NbUtuEcb4WjHk0HyZ1M+2wGd07Fp0RUNHKA==
   dependencies:
     "@babel/runtime" "^7.13.6"
     html-parse-stringify "^3.0.1"
@@ -11912,10 +11912,10 @@ react-native-ble-manager@^7.4.2:
   resolved "https://registry.yarnpkg.com/react-native-ble-manager/-/react-native-ble-manager-7.4.2.tgz#6ef8b088994cd94e4c4df0f7c4f332f0b1b5cb8a"
   integrity sha512-V9vg5g4OTasivBFIjxltDMEdFxCVcrS3BpULNXDSRkJJ+8STvmrpwksSJUo2R/kEh7dxs263aEHetOBeIdvGGQ==
 
-react-native-calendars@^1.1259.0:
-  version "1.1259.0"
-  resolved "https://registry.yarnpkg.com/react-native-calendars/-/react-native-calendars-1.1259.0.tgz#47308416aae61027605c67a905912dc0918a599c"
-  integrity sha512-3hNX/tH6oMm4KxlTDOLhwJjLv6aReCLmqUvQsAWd6pSf3gEoCBJ1CpLEBDQoszpRW1nD37mW540jOtaGBwPMNA==
+react-native-calendars@^1.1260.0:
+  version "1.1260.0"
+  resolved "https://registry.yarnpkg.com/react-native-calendars/-/react-native-calendars-1.1260.0.tgz#1dd4f5108acc414555059be2f58b61caf9a65c10"
+  integrity sha512-LOM8Jb9RGSv/qwAnuj55ijgsiC5uGFnlLIyE4GyEMoW212qIjTaNIgGR5kLQQmJ8cfh7vBpuDPKy17Io4Ar/4A==
   dependencies:
     hoist-non-react-statics "^3.3.1"
     immutable "^4.0.0-rc.12"
@@ -12035,10 +12035,10 @@ react-native-localize@^1.4.3:
   resolved "https://registry.yarnpkg.com/react-native-localize/-/react-native-localize-1.4.3.tgz#6fde2fb1e73a7205910419a680cb4734187d556f"
   integrity sha512-n3pi89LBeSzB825CBagyaYRtBS93LdvNz3sI386iXwLSg1ONjEGR1Ez36JBuxZalZgORjrKzV2Pun6MO7iwD6w==
 
-react-native-map-link@^2.7.25:
-  version "2.7.25"
-  resolved "https://registry.yarnpkg.com/react-native-map-link/-/react-native-map-link-2.7.25.tgz#4070f6f85bf1ff446a0f353468214f905cd26eab"
-  integrity sha512-iY90o0ZOw1yIxs+uftS81kqWEua3FZV4KKw9x45kikcGXU7cBXUrDfUbRDhTSXXIXd5SLL7i/UPROiBmQBeM8g==
+react-native-map-link@^2.7.26:
+  version "2.7.26"
+  resolved "https://registry.yarnpkg.com/react-native-map-link/-/react-native-map-link-2.7.26.tgz#be05e37b7b2fde496df9073ee573de69b55bd27d"
+  integrity sha512-Pi82pVtRVGxcY3imRp1jH6h0zOIaTJpFGdJElrN19VJC2CgP6vTWjTgZJRQA/ZDRdPe6OJUZjcV544rNbmcRTA==
   dependencies:
     prop-types "^15.7.2"
     react-native-modal "^10.0.0"
@@ -13200,10 +13200,10 @@ slugify@^1.3.4:
   resolved "https://registry.yarnpkg.com/slugify/-/slugify-1.4.6.tgz#ef288d920a47fb01c2be56b3487b6722f5e34ace"
   integrity sha512-ZdJIgv9gdrYwhXqxsH9pv7nXxjUEyQ6nqhngRxoAAOlmMGA28FDq5O4/5US4G2/Nod7d1ovNcgURQJ7kHq50KQ==
 
-slugify@^1.5.0:
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/slugify/-/slugify-1.5.0.tgz#5f3c8e2a84105b54eb51486db1b468a599b3c9b8"
-  integrity sha512-Q2UPZ2udzquy1ElHfOLILMBMqBEXkiD3wE75qtBvV+FsDdZZjUqPZ44vqLTejAVq+wLLHacOMcENnP8+ZbzmIA==
+slugify@^1.5.1:
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/slugify/-/slugify-1.5.1.tgz#ef268872982a3a3b18f213ddee8cd1a28ac7a130"
+  integrity sha512-54gP60qIkxaUCFXORn/u+tNPqdTsqvqonB2nxjQV52wWTCuJJ4kbfU7URkpn8646Lr2T3CSh8ecDzzBK/dD9jA==
 
 snapdragon-node@^2.0.1:
   version "2.1.1"
