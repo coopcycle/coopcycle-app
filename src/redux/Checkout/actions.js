@@ -799,13 +799,13 @@ export function setDateAsap(cb) {
   }
 }
 
-export function setFulfillmentMethod(method, cb) {
+export function setFulfillmentMethod(method) {
 
   return (dispatch, getState) => {
 
     const httpClient = createHttpClient(getState())
 
-    const { cart } = getState().checkout
+    const { address, cart } = getState().checkout
 
     dispatch(checkoutRequest())
 
@@ -820,9 +820,22 @@ export function setFulfillmentMethod(method, cb) {
             dispatch(setCheckoutLoading(false))
             dispatch(setTiming(timing))
             dispatch(updateCartSuccess(res))
-            dispatch(hideAddressModal())
-            notifyListeners()
-            _.isFunction(cb) && cb()
+
+            if (method === 'delivery') {
+              if (!cart.shippingAddress) {
+                if (!address) {
+                  dispatch(showAddressModal(i18n.t('CHECKOUT_PLEASE_ENTER_ADDRESS')))
+                } else {
+                  dispatch(updateCartSuccess({
+                    ...res,
+                    shippingAddress: address
+                  }))
+                }
+              }
+            } else {
+              dispatch(hideAddressModal())
+              notifyListeners()
+            }
           })
           .catch(e => dispatch(checkoutFailure(e)))
       })

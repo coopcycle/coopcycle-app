@@ -191,7 +191,7 @@ function mapDispatchToProps(dispatch) {
   return {
     setDate: (date, cb) => dispatch(setDate(date, cb)),
     setDateAsap: (cb) => dispatch(setDateAsap(cb)),
-    setFulfillmentMethod: (method, cb) => dispatch(setFulfillmentMethod(method, cb)),
+    setFulfillmentMethod: (method) => dispatch(setFulfillmentMethod(method)),
   }
 }
 

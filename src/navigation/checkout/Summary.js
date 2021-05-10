@@ -266,7 +266,7 @@ class Summary extends Component {
             <Text style={{ flex: 2, fontSize: 14 }}>{ this.props.timeAsText }</Text>
             <Text note style={{ flex: 1, textAlign: 'right' }}>{ this.props.t('EDIT') }</Text>
           </ActionButton>
-          { this.props.fulfillmentMethod === 'delivery' && (
+          { (this.props.fulfillmentMethod === 'delivery' && this.props.cart.shippingAddress) && (
           <ActionButton
             onPress={ () => this.props.showAddressModal() }
             iconName="map-marker">
