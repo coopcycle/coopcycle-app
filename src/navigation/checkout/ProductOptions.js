@@ -24,7 +24,11 @@ const SimpleOption = ({ name, price, onPress, selected, index, sectionIndex }) =
       </View>
       <View style={{ width: '33.3333%' }}>
         <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', paddingRight: 15 }}>
-          <Radio selected={ selected } />
+          <Radio
+            selected={ selected }
+            // FIXME If color is not specified, element is not visible on Android
+            color="#333333"
+            onPress={ onPress } />
         </View>
       </View>
     </TouchableOpacity>
