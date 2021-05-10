@@ -1,6 +1,8 @@
 import moment from 'moment'
 import i18n from '../i18n'
 
+const DIFF_REGEXP = /^(?<min>[0-9]+) - (?<max>[0-9]+)$/
+
 function round5(x) {
   return Math.ceil(x / 5) * 5
 }
@@ -17,6 +19,12 @@ function timingAsText(timing, now) {
   const lower = moment.parseZone(timing.range[0])
 
   if (timing.fast) {
+
+    if (timing.diff && DIFF_REGEXP.test(timing.diff)) {
+      const { groups: { min, max } } = DIFF_REGEXP.exec(timing.diff)
+
+      return i18n.t('TIME_DIFF_SHORT', { min, max })
+    }
 
     const diffMinutes = lower.diff(now, 'minutes')
 
