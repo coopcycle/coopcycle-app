@@ -24,11 +24,17 @@ $ yarn install
 Populate your local `.env` file:
 ```
 $ cp .env.dist .env
+$ cp google-services.json.dist android/app/google-services.json
 ```
 
 ### Set up Firebase
 
 * Create a [Firebase](https://firebase.google.com/) account, create a new app ( | [iOS](https://firebase.google.com/docs/ios/setup))
+
+Setup - Linux
+-------------
+
+To launch an Android emulator on Linux, you will need to [enable acceleration](https://developer.android.com/studio/run/emulator-acceleration)
 
 Setup - Android
 ---------------
