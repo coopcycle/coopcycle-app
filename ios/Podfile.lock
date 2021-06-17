@@ -5,10 +5,10 @@ PODS:
   - CocoaLumberjack (3.6.2):
     - CocoaLumberjack/Core (= 3.6.2)
   - CocoaLumberjack/Core (3.6.2)
-  - CountlyReactNative (20.11.6):
-    - CountlyReactNative/NotificationService (= 20.11.6)
+  - CountlyReactNative (20.11.7):
+    - CountlyReactNative/NotificationService (= 20.11.7)
     - React
-  - CountlyReactNative/NotificationService (20.11.6):
+  - CountlyReactNative/NotificationService (20.11.7):
     - React
   - DoubleConversion (1.1.6)
   - EXApplication (2.4.1):
@@ -65,7 +65,7 @@ PODS:
   - Firebase/Performance (7.6.0):
     - Firebase/CoreOnly
     - FirebasePerformance (~> 7.6.0)
-  - FirebaseABTesting (7.8.0):
+  - FirebaseABTesting (7.11.0):
     - FirebaseCore (~> 7.0)
   - FirebaseAnalytics (7.6.0):
     - FirebaseCore (~> 7.0)
@@ -80,7 +80,7 @@ PODS:
     - FirebaseCoreDiagnostics (~> 7.4)
     - GoogleUtilities/Environment (~> 7.0)
     - GoogleUtilities/Logger (~> 7.0)
-  - FirebaseCoreDiagnostics (7.8.0):
+  - FirebaseCoreDiagnostics (7.9.0):
     - GoogleDataTransport (~> 8.0)
     - GoogleUtilities/Environment (~> 7.0)
     - GoogleUtilities/Logger (~> 7.0)
@@ -91,7 +91,7 @@ PODS:
     - GoogleDataTransport (~> 8.0)
     - nanopb (~> 2.30907.0)
     - PromisesObjC (~> 1.2)
-  - FirebaseInstallations (7.8.0):
+  - FirebaseInstallations (7.11.0):
     - FirebaseCore (~> 7.0)
     - GoogleUtilities/Environment (~> 7.0)
     - GoogleUtilities/UserDefaults (~> 7.0)
@@ -105,7 +105,7 @@ PODS:
     - GoogleUtilities/ISASwizzler (~> 7.0)
     - GoogleUtilities/MethodSwizzler (~> 7.0)
     - Protobuf (~> 3.12)
-  - FirebaseRemoteConfig (7.8.0):
+  - FirebaseRemoteConfig (7.11.0):
     - FirebaseABTesting (~> 7.0)
     - FirebaseCore (~> 7.0)
     - FirebaseInstallations (~> 7.0)
@@ -173,29 +173,29 @@ PODS:
     - GoogleUtilities/Network (~> 7.0)
     - "GoogleUtilities/NSData+zlib (~> 7.0)"
     - nanopb (~> 2.30907.0)
-  - GoogleDataTransport (8.3.0):
+  - GoogleDataTransport (8.3.1):
     - GoogleUtilities/Environment (~> 7.2)
     - nanopb (~> 2.30907.0)
     - PromisesObjC (~> 1.2)
-  - GoogleUtilities/AppDelegateSwizzler (7.3.0):
+  - GoogleUtilities/AppDelegateSwizzler (7.4.1):
     - GoogleUtilities/Environment
     - GoogleUtilities/Logger
     - GoogleUtilities/Network
-  - GoogleUtilities/Environment (7.3.0):
+  - GoogleUtilities/Environment (7.4.1):
     - PromisesObjC (~> 1.2)
-  - GoogleUtilities/ISASwizzler (7.3.0)
-  - GoogleUtilities/Logger (7.3.0):
+  - GoogleUtilities/ISASwizzler (7.4.1)
+  - GoogleUtilities/Logger (7.4.1):
     - GoogleUtilities/Environment
-  - GoogleUtilities/MethodSwizzler (7.3.0):
+  - GoogleUtilities/MethodSwizzler (7.4.1):
     - GoogleUtilities/Logger
-  - GoogleUtilities/Network (7.3.0):
+  - GoogleUtilities/Network (7.4.1):
     - GoogleUtilities/Logger
     - "GoogleUtilities/NSData+zlib"
     - GoogleUtilities/Reachability
-  - "GoogleUtilities/NSData+zlib (7.3.0)"
-  - GoogleUtilities/Reachability (7.3.0):
+  - "GoogleUtilities/NSData+zlib (7.4.1)"
+  - GoogleUtilities/Reachability (7.4.1):
     - GoogleUtilities/Logger
-  - GoogleUtilities/UserDefaults (7.3.0):
+  - GoogleUtilities/UserDefaults (7.4.1):
     - GoogleUtilities/Logger
   - IQKeyboardManager (4.0.13)
   - nanopb (2.30907.0):
@@ -207,7 +207,7 @@ PODS:
     - OpenSSL-Universal/Static (= 1.0.2.20)
   - OpenSSL-Universal/Static (1.0.2.20)
   - PromisesObjC (1.2.12)
-  - Protobuf (3.14.0)
+  - Protobuf (3.17.0)
   - RCTRequired (0.63.4)
   - RCTTypeSafety (0.63.4):
     - FBLazyVector (= 0.63.4)
@@ -374,15 +374,15 @@ PODS:
     - React-cxxreact (= 0.63.4)
     - React-jsi (= 0.63.4)
   - React-jsinspector (0.63.4)
-  - react-native-ble-manager (7.4.2):
-    - React
-  - react-native-camera (3.43.6):
+  - react-native-ble-manager (7.5.0):
     - React-Core
-    - react-native-camera/RCT (= 3.43.6)
-    - react-native-camera/RN (= 3.43.6)
-  - react-native-camera/RCT (3.43.6):
+  - react-native-camera (3.44.1):
     - React-Core
-  - react-native-camera/RN (3.43.6):
+    - react-native-camera/RCT (= 3.44.1)
+    - react-native-camera/RN (= 3.44.1)
+  - react-native-camera/RCT (3.44.1):
+    - React-Core
+  - react-native-camera/RN (3.44.1):
     - React-Core
   - react-native-config (1.4.2):
     - react-native-config/App (= 1.4.2)
@@ -502,9 +502,9 @@ PODS:
     - React-Core
   - RNScreens (2.18.1):
     - React-Core
-  - RNSentry (2.4.2):
+  - RNSentry (2.5.1):
     - React-Core
-    - Sentry (= 6.1.4)
+    - Sentry (= 7.0.0)
   - RNSketchCanvas (0.8.0):
     - React
   - RNSound (0.11.0):
@@ -512,10 +512,10 @@ PODS:
     - RNSound/Core (= 0.11.0)
   - RNSound/Core (0.11.0):
     - React
-  - Sentry (6.1.4):
-    - Sentry/Core (= 6.1.4)
-  - Sentry/Core (6.1.4)
-  - Stripe (19.4.0)
+  - Sentry (7.0.0):
+    - Sentry/Core (= 7.0.0)
+  - Sentry/Core (7.0.0)
+  - Stripe (19.4.1)
   - tipsi-stripe (8.0.2):
     - React
     - Stripe (>= 19.0.1)
@@ -847,7 +847,7 @@ SPEC CHECKSUMS:
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
   CocoaLibEvent: 2fab71b8bd46dd33ddb959f7928ec5909f838e3f
   CocoaLumberjack: bd155f2dd06c0e0b03f876f7a3ee55693122ec94
-  CountlyReactNative: 32bbbb8e647d19d7ea9a362f74f996b514cf098d
+  CountlyReactNative: 251d0aaca20510398d643fa354cf424c5e3709ba
   DoubleConversion: cde416483dac037923206447da6e1454df403714
   EXApplication: e3c201e7b913d081bbd37bd3c5d0e2cdc21733b4
   EXConstants: 54d0bf04319d1692c6c7bc03ca151ef7a71705a4
@@ -864,14 +864,14 @@ SPEC CHECKSUMS:
   FBLazyVector: 3bb422f41b18121b71783a905c10e58606f7dc3e
   FBReactNativeSpec: f2c97f2529dd79c083355182cc158c9f98f4bd6e
   Firebase: e1e089d9aac215a52442583f818ab61de3c4581b
-  FirebaseABTesting: 44acbfc9db915bca8f111ebae342da6fd4f1cc55
+  FirebaseABTesting: e66f1f80747792630d9b292966de206d5df9853b
   FirebaseAnalytics: 9f8f4feab1f3fddf4e4515f8f022fe6aa9e51043
   FirebaseCore: 0a43b7f1c5b36f3358cd703011ca4c7e0df55870
-  FirebaseCoreDiagnostics: 066f996579cf097bdad3d7dc9a918d6b9e129c50
+  FirebaseCoreDiagnostics: 3d36e05da74cb8b7ce30e6594a8f201b982c725c
   FirebaseCrashlytics: 1e87b25303b1840b3c99c37ee427c3e9564a4be1
-  FirebaseInstallations: 7f7ed0e7e27fb51f57291e1876e2ddb1524126c1
+  FirebaseInstallations: a58d4f72ec5861840b84df489f2668d970df558a
   FirebasePerformance: bd70a911919ab62b6a4a51728fadb901406b0a13
-  FirebaseRemoteConfig: 0d7a7e45c23bfaa1f299c768b3c357ae3a5bc9d5
+  FirebaseRemoteConfig: 0ea30de5fb0231df8c1bdcdf3b6c23bdc5066131
   Flipper: be611d4b742d8c87fbae2ca5f44603a02539e365
   Flipper-DoubleConversion: 38631e41ef4f9b12861c67d17cb5518d06badc41
   Flipper-Folly: e4493b013c02d9347d5e0cb4d128680239f6c78a
@@ -882,13 +882,13 @@ SPEC CHECKSUMS:
   Folly: b73c3869541e86821df3c387eb0af5f65addfab4
   glog: 40a13f7840415b9a77023fbcae0f1e6f43192af3
   GoogleAppMeasurement: c542a2feaac9ab98fd074e8f1a02c3585bbfbd47
-  GoogleDataTransport: b006084b73915a42c28a3466961a4edda3065da6
-  GoogleUtilities: abda45f519bc4073aa1171d2f8742108def46017
+  GoogleDataTransport: 8b0e733ea77c9218778e5a9e34ba9508b8328939
+  GoogleUtilities: f8a43108b38a68eebe8b3540e1f4f2d28843ce20
   IQKeyboardManager: 8eab4d8111418414619d1df8e4779ce5d0f8d7e2
   nanopb: 59221d7f958fb711001e6a449489542d92ae113e
   OpenSSL-Universal: ff34003318d5e1163e9529b08470708e389ffcdd
   PromisesObjC: 3113f7f76903778cf4a0586bd1ab89329a0b7b97
-  Protobuf: 0cde852566359049847168e51bd1c690e0f70056
+  Protobuf: 7327d4444215b5f18e560a97f879ff5503c4581c
   RCTRequired: 082f10cd3f905d6c124597fd1c14f6f2655ff65e
   RCTTypeSafety: 8c9c544ecbf20337d069e4ae7fd9a377aadf504b
   React: b0a957a2c44da4113b0c4c9853d8387f8e64e615
@@ -899,8 +899,8 @@ SPEC CHECKSUMS:
   React-jsi: a0418934cf48f25b485631deb27c64dc40fb4c31
   React-jsiexecutor: 93bd528844ad21dc07aab1c67cb10abae6df6949
   React-jsinspector: 58aef7155bc9a9683f5b60b35eccea8722a4f53a
-  react-native-ble-manager: dfac830e02b29de0147b103a4ed21ad2c618ee71
-  react-native-camera: 9e55a09596b8c4e41eb7d4cce7c39826990c3cac
+  react-native-ble-manager: c51fe60663155712b17f35895eceffcd1343a818
+  react-native-camera: 7bf59f2728ffb019fa25e60a225d2c57e1a8f0f6
   react-native-config: c98128a72bc2c3a1ca72caec0b021f0fa944aa29
   react-native-get-random-values: 237bffb1c7e05fb142092681531810a29ba53015
   react-native-maps: f4b89da81626ad7f151a8bfcb79733295d31ce5c
@@ -934,11 +934,11 @@ SPEC CHECKSUMS:
   RNLocalize: 7c7aeda16c01db7a0918981c14875c0a53be9b79
   RNReanimated: 514a11da3a2bcc6c3dfd9de32b38e2b9bf101926
   RNScreens: f7ad633b2e0190b77b6a7aab7f914fad6f198d8d
-  RNSentry: e86fb2e2fec0365644f4b582938bf66be515acce
+  RNSentry: f109c8729739aa29f182c7d995bbcbccad373f31
   RNSketchCanvas: 9c28adb5381543ed55cc98ce6de46479cb3cb12c
   RNSound: da030221e6ac7e8290c6b43f2b5f2133a8e225b0
-  Sentry: 9d055e2de30a77685e86b219acf02e59b82091fc
-  Stripe: 92f1c73a9dbd3c54277ed06a1fea6e08f20414c6
+  Sentry: 89d26e036063b9cb9caa59b6951dd2f8277aa13b
+  Stripe: 5914399ac5878056b985d56b409cb4bb1e7fc7e8
   tipsi-stripe: 6f4d2805c174b5109f455932d5e9f302bf2a3b9a
   UMAppLoader: 92d044af52626af3d81a69796ad666fc7a9a7d78
   UMBarCodeScannerInterface: 3f6c1b09ef4b867ce752b8c0b3893bcf9cd85f32
