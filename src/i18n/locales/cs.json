@@ -215,7 +215,7 @@
         "CHECKOUT_PRODUCT_OPTIONS_CHOICES_BETWEEN": "Mezi {{min}} a {{max}} možnostmi",
         "ADD_TO_CART": "Přidat do košíku",
         "NOTIFICATION_TASKS_CHANGED_TITLE": "Úkoly se změnily",
-        "NOTIFICATION_TASKS_CHANGED_DESC": "Vaše úkoly od {{date}} byly aktualizovány",
+        "NOTIFICATION_TASKS_CHANGED_DESC": "Vaše úkoly od {{date}} byly aktualizovány, {{added}}",
         "NOTIFICATION_ORDER_CREATED_TITLE": "Nová objednávka",
         "NOTIFICATION_ORDER_CREATED_DESC": "Byla vytvořena nová objednávka pro {{date}}",
         "UNASSIGNED_TASKS": "Nepřiřazeno",
@@ -358,7 +358,11 @@
         "SELECTED": "Vybráno",
         "LEARN_MORE": "Zjistit více",
         "CART_COLLECTION_DISCLAIMER": "Rozhodli jste se pro vyzvednutí na kliknutí.\nJste odpovědní za vyzvednutí objednávky ve vybraný den a čas.\nPokud máte problém, kontaktujte provozovnu na {{telephone}}.\nVezměte prosím na vědomí - Pokud si nevyzvednete, bude vám účtována celá částka za objednávku.",
-        "CART_COLLECTION_TIME_DIFF": "Vyzvednutí zabere {{diff}} minut",
-        "CART_COLLECTION_TIME": "Vyzvednutí {{- fromNow}}"
+        "CART_COLLECTION_TIME_DIFF": "Vyzvednutí do {{diff}} minut",
+        "CART_COLLECTION_TIME": "Vyzvednutí {{- fromNow}}",
+        "NOTIFICATION_TASKS_REMOVED": "{{ count }} odebráno",
+        "NOTIFICATION_TASKS_ADDED": "{{ count }} přidáno",
+        "RESTAURANT_ORDER_LIST_PICKED_ORDERS": "Vybrané objednávky ({{count}})",
+        "CARDHOLDER_NAME": "Jméno držitele karty"
     }
 }

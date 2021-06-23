@@ -197,7 +197,7 @@
         "TIME_DIFF_SHORT": "{{min}} - {{max}} minutos",
         "ADD_TO_CART": "Añadir al carrito",
         "NOTIFICATION_TASKS_CHANGED_TITLE": "Tareas actualizadas",
-        "NOTIFICATION_TASKS_CHANGED_DESC": "Sus tareas de {{date}} han sido actualizadas",
+        "NOTIFICATION_TASKS_CHANGED_DESC": "Sus tareas de {{date}} han sido actualizadas, {{added}}",
         "NOTIFICATION_ORDER_CREATED_TITLE": "Nuevo pedido",
         "NOTIFICATION_ORDER_CREATED_DESC": "Un nuevo pedido para el {{date}} ha sido creado",
         "UNASSIGNED_TASKS": "Sin asignar",
@@ -350,7 +350,7 @@
         "RESTAURANT_ORDER_PRINT": "Imprimir",
         "ABOUT_INSTANCE": "Acerca de {{nombre}}",
         "ABOUT": "Acerca de",
-        "CART_COLLECTION_DISCLAIMER": "Has elegido Recogida en sitio.\nEs tu responsibilidad recoger el pedido a la hora y el dia elejido.\nSi tienes algun problema, contacta al local a {{telephone}}.\nPor favor, tenga en cuenta - Si no vienes a recoger el pedido, se te cobrará para el valor total del pedido",
+        "CART_COLLECTION_DISCLAIMER": "Has elegido Recogida en sitio.\nEs tu responsibilidad recoger el pedido a la hora y el dia elejido.\nSi tienes algun problema, contacta al local a {{telephone}}.\nPor favor, tenga en cuenta - Si no vienes a recoger el pedido, se te cobrará para el valor total del pedido.",
         "CART_COLLECTION_TIME_DIFF": "Recogida en {{diff}} minutos",
         "CART_COLLECTION_TIME": "Recogida en sitio",
         "RESTAURANT_ORDER_REFUSE_REASON_ORDER_WILL_BE_CAPTURED": "El pedido será cancelado, pero no se reembolsará al cliente",
@@ -371,6 +371,8 @@
             "title": "Permitir que {applicationName} acceda a la ubicación de este dispositivo incluso cuando la aplicación está cerrada o no se está usando",
             "message": "Para usuarios conectados como mensajeros, esta aplicación recoge datos de ubicación para que los repartidores puedan asignar las tareas con precisión",
             "positiveAction": "Cambiar a « {backgroundPermissionOptionLabel} »"
-        }
+        },
+        "NOTIFICATION_TASKS_REMOVED": "{{ count }} removida",
+        "NOTIFICATION_TASKS_ADDED": "{{ count }} añadida"
     }
 }
