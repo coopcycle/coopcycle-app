@@ -363,6 +363,17 @@
         "NOTIFICATION_TASKS_REMOVED": "{{ count }} odebráno",
         "NOTIFICATION_TASKS_ADDED": "{{ count }} přidáno",
         "RESTAURANT_ORDER_LIST_PICKED_ORDERS": "Vybrané objednávky ({{count}})",
-        "CARDHOLDER_NAME": "Jméno držitele karty"
+        "CARDHOLDER_NAME": "Jméno držitele karty",
+        "RESTAURANT_SETTINGS_MANAGE_PRODUCT_OPTIONS": "Správa možností produktů",
+        "BACKGROUND_PERMISSION_RATIONALE": {
+            "positiveAction": "Změnit na « {backgroundPermissionOptionLabel} »",
+            "message": "Po ověření jako messenger tato aplikace shromažďuje údaje o poloze, aby mohli dispečeři přesně přiřazovat úlohy",
+            "title": "Povolit {applicationName} přístup k poloze tohoto zařízení, i když je aplikace zavřená nebo se nepoužívá"
+        },
+        "BACKGROUND_PERMISSION_DISCLOSURE": {
+            "message": "Aby mohli dispečeři přesně přidělovat úlohy, umožněte aplikaci CoopCycle přístup k poloze tohoto zařízení, i když je aplikace zavřená nebo se nepoužívá.\n\nTato data budou nahrána do instance CoopCycle, ke které jste připojeni.",
+            "title": "Použijte svou polohu"
+        },
+        "NOT_AVAILABLE_ATM": "Momentálně není k dispozici"
     }
 }
