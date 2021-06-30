@@ -248,7 +248,7 @@
             "GlutenFreeDiet": "Gluten gabe",
             "DiabeticDiet": "Diabetikoa"
         },
-        "RECEIPT_HEADING_PICKUP_EXPECTED_AT": "JASOTZEA {{time}}(r)etan ESPERO DA",
+        "RECEIPT_HEADING_PICKUP_EXPECTED_AT": "{{time}}(r)etan ESPERO DA",
         "RECEIPT_HEADING_ORDER_NUMBER": "{{number}} ESKAERA (#{{id}})",
         "VOUCHER_CODE": "Kupoi kodea",
         "ADD_COUPON": "Gehitu kupoi kodea",
@@ -360,6 +360,20 @@
         "CHECKOUT_SHIPPING_DATE": "Hautatu data",
         "CHECKOUT_LOGIN_DISCLAIMER": "Mesedez, autentifikatu jarraitzeko",
         "RESTAURANT_ORDER_REFUSE_REASON_NO_SHOW": "Ez da agertu",
-        "RESTAURANT_ORDER_REFUSE_REASON_SOLD_OUT_HEADING": "Izakinik gabe nago"
+        "RESTAURANT_ORDER_REFUSE_REASON_SOLD_OUT_HEADING": "Izakinik gabe nago",
+        "RESTAURANT_SETTINGS_MANAGE_PRODUCT_OPTIONS": "Kudeatu produktuen aukerak",
+        "BACKGROUND_PERMISSION_RATIONALE": {
+            "positiveAction": "Aldatu « {backgroundPermissionOptionLabel} » aukerara",
+            "message": "Saioa mezulari bezala hasi baduzu, aplikazio honek kokapen datuak biltzen ditu banatzaileek lanak zehaztasunez esleitu ahal izateko",
+            "title": "Baimendu {applicationName} gailu honen kokapena atzitzen aplikazioa itxita edo erabiltzen ez bazaude ere"
+        },
+        "BACKGROUND_PERMISSION_DISCLOSURE": {
+            "message": "Banatzaileek lanak zehaztasunez esleitu ahal izateko, baimendu CoopCycle zure kokapena atzitzen aplikazioa itxita edo erabiltzen ez zaudenean ere.\n\nDatu hauek konektatuta zauden CoopCycle instantziara kargatuko dira.",
+            "title": "Kokapenaren erabilpena"
+        },
+        "NOT_AVAILABLE_ATM": "Ez dago eskuragarri momentuz",
+        "RECEIPT_HEADING_PICKUP_EXPECTED_TODAY": "BILKETA GAUR",
+        "RECEIPT_HEADING_PICKUP_EXPECTED_ON": "BILKETA {{time}}(E)TAN ESPERO DA",
+        "RECEIPT_CUSTOMER_NAME": "BEZEROA: {{customer}}"
     }
 }
