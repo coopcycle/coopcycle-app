@@ -6751,10 +6751,10 @@ detect-newline@^3.0.0:
   resolved "https://registry.yarnpkg.com/detect-newline/-/detect-newline-3.1.0.tgz#576f5dfc63ae1a192ff192d8ad3af6308991b651"
   integrity sha512-TLz+x/vEXm/Y7P7wn1EJFNLxYpUD4TgMosxY6fAVJUnJMbupHBOncxyWUG9OpTaH9EBD7uFI5LfEgmMOc54DsA==
 
-detox@^18.18.0:
-  version "18.18.0"
-  resolved "https://registry.yarnpkg.com/detox/-/detox-18.18.0.tgz#4c6254752374f4905ee9110061b7dcfbd263c4ab"
-  integrity sha512-8TPkZWRalJUsIXn1Z0BwjSfU7dELW4vqwplgzeVnDyRnEe2/9UNClBlqGOvsKOLyy/8RgtCcCFPzPC5y0P2XJg==
+detox@^18.18.1:
+  version "18.18.1"
+  resolved "https://registry.yarnpkg.com/detox/-/detox-18.18.1.tgz#11fdfbcf698ee79f6baaecc7f09bacc37134841b"
+  integrity sha512-H3KouvWnuPjeqV6R+f/SN5ZGSXIQMwMG/24lcynRmaq2ASSjSaJqKWRCimreIr3WKkhkaEmY9cPKtj0nAJHOmw==
   dependencies:
     bunyan "^1.8.12"
     bunyan-debug-stream "^1.1.0"
@@ -9943,10 +9943,10 @@ levn@^0.3.0, levn@~0.3.0:
     prelude-ls "~1.1.2"
     type-check "~0.3.2"
 
-libphonenumber-js@^1.9.20:
-  version "1.9.20"
-  resolved "https://registry.yarnpkg.com/libphonenumber-js/-/libphonenumber-js-1.9.20.tgz#b9c84c56b3a574e4bf4323181b11f424deea1eca"
-  integrity sha512-fZw/XGE19SdRtcmAa5mEUjhGuFrVsT6x3V07TLt36psLbJnZiAdI0i/h4JSufKGXFCyreYM7gP98julXfO1XNA==
+libphonenumber-js@^1.9.21:
+  version "1.9.21"
+  resolved "https://registry.yarnpkg.com/libphonenumber-js/-/libphonenumber-js-1.9.21.tgz#ae7ce30d68a4b697024287e108f391f3938e8b1e"
+  integrity sha512-hMt+UTcXjRj7ETZBCxdPSw362Lq16Drf4R9vYgw19WoJLLpi/gMwseW62tevBKfF3pfXfr5rNnbc/hSl7XgWnQ==
 
 lie@3.1.1:
   version "3.1.1"
@@ -11919,10 +11919,10 @@ react-native-ble-manager@^7.5.0:
   resolved "https://registry.yarnpkg.com/react-native-ble-manager/-/react-native-ble-manager-7.5.0.tgz#081ab72c42d8dc38e4ac3f09b51164887697f048"
   integrity sha512-FQVjUWuwWJzRL1yUuGFZMgCsvP6voP3bue31wrdgWgaizn4JItiZE9qFsTVtHamugoLl1Eg73LpSSxrBMUg+Ig==
 
-react-native-calendars@^1.1263.0:
-  version "1.1263.0"
-  resolved "https://registry.yarnpkg.com/react-native-calendars/-/react-native-calendars-1.1263.0.tgz#f69f1696629fd9b7c0222ecd1e5a6647041616e3"
-  integrity sha512-O9Pl9YeV3SVeXoXnuxgf4itl+hhJceLu4cCvxX+rcI/2FgIDGD30R/cblxGmSXznbLGj9SZtuJDXmG9Bnd7TEA==
+react-native-calendars@^1.1264.0:
+  version "1.1264.0"
+  resolved "https://registry.yarnpkg.com/react-native-calendars/-/react-native-calendars-1.1264.0.tgz#98d1905b7bfe9f44cba80c9c34a0b8441fe1c1a1"
+  integrity sha512-MX9Dy9xDtdmvGEA9rQWas1NVxvC2T6tEYrx7NvX8w0pWpYqsq5sVS4N+Y/vHBmcbiykStgrHTcWCP1bBLee3yg==
   dependencies:
     hoist-non-react-statics "^3.3.1"
     immutable "^4.0.0-rc.12"
@@ -11934,10 +11934,10 @@ react-native-calendars@^1.1263.0:
   optionalDependencies:
     moment "^2.24.0"
 
-react-native-camera@^3.44.1:
-  version "3.44.1"
-  resolved "https://registry.yarnpkg.com/react-native-camera/-/react-native-camera-3.44.1.tgz#60e7d60fe778c1fc59d0579b64c63c3c1a59865a"
-  integrity sha512-B95RL3laK2v8R7L/37v28MYcEcwsM/mS94h6EZuRMLH5HFolkAwh7zJo+UAn7FG9eFtAdBwIM6s9OqYudTVO4Q==
+react-native-camera@^3.44.3:
+  version "3.44.3"
+  resolved "https://registry.yarnpkg.com/react-native-camera/-/react-native-camera-3.44.3.tgz#f8f35f2484e508b0694dee54a8801a1e0833d851"
+  integrity sha512-Efb5aKhFsE7qnqvTnbSEwFAom79L5BT4jMn+B2wYVUnZeRgWh45gNSG7Ou3MQ6zU2DpUHBPlBFKGVS5yOSfSZQ==
   dependencies:
     prop-types "^15.6.2"
 
@@ -12043,10 +12043,10 @@ react-native-localize@^1.4.3:
   resolved "https://registry.yarnpkg.com/react-native-localize/-/react-native-localize-1.4.3.tgz#6fde2fb1e73a7205910419a680cb4734187d556f"
   integrity sha512-n3pi89LBeSzB825CBagyaYRtBS93LdvNz3sI386iXwLSg1ONjEGR1Ez36JBuxZalZgORjrKzV2Pun6MO7iwD6w==
 
-react-native-map-link@^2.7.27:
-  version "2.7.27"
-  resolved "https://registry.yarnpkg.com/react-native-map-link/-/react-native-map-link-2.7.27.tgz#6dd965620c7b70e2879cf30ee66eb44c7c797221"
-  integrity sha512-w18hrDg3NqfdriiD1R31/r8vVia4q04/wMhtXMvITIPkSW5zMKREail2F6V79TIoSMPgS9KgCDAIiCsbbup5TQ==
+react-native-map-link@^2.7.28:
+  version "2.7.28"
+  resolved "https://registry.yarnpkg.com/react-native-map-link/-/react-native-map-link-2.7.28.tgz#048a15b69acbe286b6aa806c512259dbf9b51ff6"
+  integrity sha512-WZ9airCpBAZpleA+0Ov8GMb588sQ4AblIpQV5099Ppo3TDObtxPWXJ15rlDW19B/omAdazPLAlw6vTPopGE1OQ==
   dependencies:
     prop-types "^15.7.2"
     react-native-modal "^10.0.0"
