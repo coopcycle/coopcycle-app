@@ -4,11 +4,12 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 import {
-  Text, Button,
+  Text, Button, Icon
 } from 'native-base'
 import Modal from 'react-native-modal'
 
 import AddressAutocomplete from '../../../components/AddressAutocomplete'
+import AddressUtils from '../../../utils/Address'
 
 import { setAddressModalHidden, hideAddressModal, setAddress, setFulfillmentMethod } from '../../../redux/Checkout/actions'
 import { selectIsCollectionEnabled } from '../../../redux/Checkout/selectors'
@@ -92,6 +93,21 @@ class AddressModal extends Component {
     )
   }
 
+  renderAutocompleteButton() {
+
+    return (
+      <View style={{ alignItems: 'center', paddingHorizontal: 10 }}>
+        <TouchableOpacity
+          onPress={ () => AddressUtils.getAddressFromCurrentPosition().then(address => {
+            this.props.setAddress(address)
+            this.setState({ address })
+          }) }>
+          <Icon type="MaterialIcons" name="my-location" style={{ color: '#b9b9b9', fontSize: 24 }} />
+        </TouchableOpacity>
+      </View>
+    )
+  }
+
   render() {
 
     const { width, height } = Dimensions.get('window')
@@ -135,6 +151,7 @@ class AddressModal extends Component {
                   onFocus={ () => this.setState({ shouldShowBackBtn: false }) }
                   onBlur={ () => this.setState({ shouldShowBackBtn: true }) }
                   addresses={ this.props.savedAddresses }
+                  renderRight={ this.renderAutocompleteButton.bind(this) }
                   />
               </View>
             </View>

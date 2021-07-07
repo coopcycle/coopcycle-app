@@ -2,10 +2,6 @@ import React, { Component } from 'react'
 import { Platform, StyleSheet, View, TouchableOpacity } from 'react-native'
 import { Icon } from 'native-base'
 import { withTranslation } from 'react-i18next'
-import BackgroundGeolocation from 'react-native-background-geolocation'
-import Config from 'react-native-config'
-import axios from 'axios'
-import qs from 'qs'
 
 import AddressAutocomplete from './AddressAutocomplete'
 import AddressUtils from '../utils/Address'
@@ -36,35 +32,6 @@ const styles = StyleSheet.create({
 
 class RestaurantSearch extends Component {
 
-  getCurrentPosition() {
-    BackgroundGeolocation.getCurrentPosition().then(position => {
-
-      const { latitude, longitude } = position.coords
-
-      const query = {
-        key: Config.GOOGLE_MAPS_BROWSER_KEY,
-        latlng: [ latitude, longitude ].join(','),
-      }
-
-      // https://developers.google.com/maps/documentation/geocoding/overview#ReverseGeocoding
-
-      axios
-        .get(`https://maps.googleapis.com/maps/api/geocode/json?${qs.stringify(query)}`)
-        .then(response => {
-
-          if (response.data.status === 'OK' && response.data.results.length > 0) {
-
-            const firstResult = response.data.results[0]
-            const address =
-              AddressUtils.createAddressFromGoogleDetails(firstResult)
-
-            this.props.onSelect(address)
-          }
-        })
-
-    })
-  }
-
   renderButton() {
 
     const iconName = this.props.defaultValue ? 'times' : 'search'
@@ -86,7 +53,7 @@ class RestaurantSearch extends Component {
           <Icon type="FontAwesome5" name={ iconName } style={{ color: '#ffffff', fontSize: iconSize }} />
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={ () => this.getCurrentPosition() }>
+          onPress={ () => AddressUtils.getAddressFromCurrentPosition().then(address => this.props.onSelect(address)) }>
           <Icon type="MaterialIcons" name="my-location" style={{ color: '#ffffff', fontSize: 24 }} />
         </TouchableOpacity>
       </View>

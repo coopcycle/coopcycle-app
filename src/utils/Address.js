@@ -1,4 +1,8 @@
 import _ from 'lodash'
+import BackgroundGeolocation from 'react-native-background-geolocation'
+import Config from 'react-native-config'
+import axios from 'axios'
+import qs from 'qs'
 
 class AddressUtils {
 
@@ -36,6 +40,39 @@ class AddressUtils {
       },
       isPrecise: true,
     }
+  }
+
+  static getAddressFromCurrentPosition() {
+
+    return new Promise((resolve, reject) => {
+
+      BackgroundGeolocation.getCurrentPosition().then(position => {
+
+        const { latitude, longitude } = position.coords
+
+        const query = {
+          key: Config.GOOGLE_MAPS_BROWSER_KEY,
+          latlng: [ latitude, longitude ].join(','),
+        }
+
+        // https://developers.google.com/maps/documentation/geocoding/overview#ReverseGeocoding
+
+        axios
+          .get(`https://maps.googleapis.com/maps/api/geocode/json?${qs.stringify(query)}`)
+          .then(response => {
+
+            if (response.data.status === 'OK' && response.data.results.length > 0) {
+
+              const firstResult = response.data.results[0]
+              const address =
+                this.createAddressFromGoogleDetails(firstResult)
+
+              resolve(address)
+            }
+          })
+
+      })
+    })
   }
 }
 
