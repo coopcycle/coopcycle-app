@@ -67,7 +67,9 @@ class AddressUtils {
               const address =
                 this.createAddressFromGoogleDetails(firstResult)
 
-              resolve(address)
+              // When using the current position,
+              // we see the address as always precise
+              resolve({ ...address, isPrecise: true })
             }
           })
 
