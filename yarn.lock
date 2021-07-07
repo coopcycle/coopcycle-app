@@ -11850,10 +11850,10 @@ react-fast-compare@^2.0.1:
   resolved "https://registry.yarnpkg.com/react-fast-compare/-/react-fast-compare-2.0.4.tgz#e84b4d455b0fec113e0402c329352715196f81f9"
   integrity sha512-suNP+J1VU1MWFKcyt7RtjiSWUjvidmQSlqu+eHslq+342xCbGTYmC0mEhPCOHxlW0CywylOC1u2DFAT+bv4dBw==
 
-react-i18next@^11.11.0:
-  version "11.11.0"
-  resolved "https://registry.yarnpkg.com/react-i18next/-/react-i18next-11.11.0.tgz#2f7c6cb4f81f94d1728a02d60e4bb5216709f942"
-  integrity sha512-p1jHmoyJgDFQmyubUEjrx6kCsr1izW/C8i9pOiJy+9lJqLYwNA8sElVplm0VAnop3kH68edT0/g3wB3UvAcRCQ==
+react-i18next@^11.11.1:
+  version "11.11.1"
+  resolved "https://registry.yarnpkg.com/react-i18next/-/react-i18next-11.11.1.tgz#758edd7ef521f6703c2d6b83f3165d078f7acf35"
+  integrity sha512-MtfzPEOvx0ev2cz0HmrEcduuqkktSa5bfeN8Flp0cvN0xP3H3MRSTa8P6pxPtqstHbRe1cD9QBOr5T/FEV2gOw==
   dependencies:
     "@babel/runtime" "^7.14.5"
     html-parse-stringify "^3.0.1"
@@ -12071,10 +12071,10 @@ react-native-modal-datetime-picker@^9.2.3:
   dependencies:
     prop-types "^15.7.2"
 
-react-native-modal-selector@^2.0.3:
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/react-native-modal-selector/-/react-native-modal-selector-2.0.3.tgz#7872b61cde0680541b7ff6e3787dd1b3bfc79179"
-  integrity sha512-d1ejtVi40p34p3eDC55r93Qb1UWUq2oSuIU+GRBhbrcwNcxWbstRAU8Him2BYbns5g/jzyeOQOJzyEnKCMniBw==
+react-native-modal-selector@^2.0.4:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/react-native-modal-selector/-/react-native-modal-selector-2.0.4.tgz#3e8ebcc4b51c5e8e8fcae7da31e609b7746936c3"
+  integrity sha512-VcRJkXZd20W6+Ukyu30i1q7LF/I7dxOi94Nu/g6pRb6cR68K7bkiaEwia0jHuhbAOd5RxZ+KsLXFpTMk1vqu5A==
   dependencies:
     prop-types "^15.5.10"
 
