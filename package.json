@@ -79,7 +79,7 @@
     "react-native-maps-super-cluster": "^1.6.0",
     "react-native-modal": "^11.10.0",
     "react-native-modal-datetime-picker": "^9.2.3",
-    "react-native-modal-selector": "^2.0.4",
+    "react-native-modal-selector": "^2.0.6",
     "react-native-pin-screen": "git+https://git@github.com/coopcycle/react-native-pin-screen.git#1.0.3",
     "react-native-reanimated": "^1.13.3",
     "react-native-safe-area-context": "^3.2.0",
