@@ -42,7 +42,7 @@ class ProductOptionsBuilder {
 
   parseRange(range) {
 
-    const matches = range.match(/^(\[|\()([0-9]+),([0-9]?)(\]|\))$/)
+    const matches = range.match(/^(\[|\()([0-9]{1,}),([0-9]*)(\]|\))$/)
 
     return [
       parseInt(matches[2], 10),
