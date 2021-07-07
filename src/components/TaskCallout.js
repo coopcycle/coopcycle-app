@@ -1,6 +1,8 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 
+import TaskTitle from './TaskTitle'
+
 const Recipient = ({ task }) => {
   if (task.address.contactName) {
     return (
@@ -34,6 +36,7 @@ export default ({ task }) => {
   return (
     <View>
       <View style={ styles.container }>
+        <Text><TaskTitle task={ task } /></Text>
         <Recipient task={ task } />
         <Address task={ task } />
       </View>
