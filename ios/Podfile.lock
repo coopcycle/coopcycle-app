@@ -500,7 +500,7 @@ PODS:
     - React-Core
   - RNScreens (2.18.1):
     - React-Core
-  - RNSentry (2.5.1):
+  - RNSentry (2.6.0):
     - React-Core
     - Sentry (= 7.0.0)
   - RNSketchCanvas (0.8.0):
@@ -932,7 +932,7 @@ SPEC CHECKSUMS:
   RNLocalize: 7c7aeda16c01db7a0918981c14875c0a53be9b79
   RNReanimated: 514a11da3a2bcc6c3dfd9de32b38e2b9bf101926
   RNScreens: f7ad633b2e0190b77b6a7aab7f914fad6f198d8d
-  RNSentry: f109c8729739aa29f182c7d995bbcbccad373f31
+  RNSentry: a2b02b326ae4fce91ce7c57d3f7dcf8df4f72269
   RNSketchCanvas: 9c28adb5381543ed55cc98ce6de46479cb3cb12c
   RNSound: da030221e6ac7e8290c6b43f2b5f2133a8e225b0
   Sentry: 89d26e036063b9cb9caa59b6951dd2f8277aa13b
