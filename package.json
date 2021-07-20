@@ -8,7 +8,6 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint src/",
-    "postinstall": "npx jetify",
     "i18n-lint": "ajv validate -s i18n.schema.json -d \"src/i18n/locales/*.json\""
   },
   "dependencies": {
@@ -128,7 +127,6 @@
     "eslint": "^6.0.0",
     "jest": "^26.6.3",
     "jest-circus": "26.6.3",
-    "jetifier": "^1.6.6",
     "metro-react-native-babel-preset": "^0.59.0",
     "mock-async-storage": "^2.2.0",
     "promise.allsettled": "^1.0.4",
