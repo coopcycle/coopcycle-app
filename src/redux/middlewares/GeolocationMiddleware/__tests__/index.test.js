@@ -87,8 +87,6 @@ describe('GeolocationMiddleware', () => {
         resolve()
       })
 
-      // const store = createStore(reducer, preloadedState, applyMiddleware(middleware))
-
       const user = new AppUser('foo', 'foo@coopcycle.org', '123456', ['ROLE_COURIER'])
 
       store.dispatch(setUser(user))
