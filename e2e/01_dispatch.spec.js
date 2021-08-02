@@ -8,8 +8,7 @@ describe('Dispatch', () => {
 
     // https://github.com/wix/Detox/issues/1371
     if (device.getPlatform() === 'ios') {
-      const { stdout, stderr } = await exec("idb list-targets | grep -n 'Booted'");
-      await exec(`idb set-location --udid ${device._deviceId} 48.856613 2.352222`);
+      await exec('applesimutils --setLocation "[48.856613, 2.352222]"')
     } else {
       await device.setLocation(48.856613, 2.352222);
     }
