@@ -119,7 +119,7 @@ class NotificationHandler extends Component {
           const { order } = event.data
 
           // Here in any case, we navigate to the order that was tapped,
-          // it should have been loading via WebSocket already.
+          // it should have been loaded via WebSocket already.
           this.props.loadOrderAndNavigate(order)
         }
 
