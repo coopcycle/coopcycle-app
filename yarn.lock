@@ -6743,10 +6743,10 @@ detect-newline@^3.0.0:
   resolved "https://registry.yarnpkg.com/detect-newline/-/detect-newline-3.1.0.tgz#576f5dfc63ae1a192ff192d8ad3af6308991b651"
   integrity sha512-TLz+x/vEXm/Y7P7wn1EJFNLxYpUD4TgMosxY6fAVJUnJMbupHBOncxyWUG9OpTaH9EBD7uFI5LfEgmMOc54DsA==
 
-detox@^18.19.0:
-  version "18.19.0"
-  resolved "https://registry.yarnpkg.com/detox/-/detox-18.19.0.tgz#f6779b4a42a0c40b22fe8ea129321a74d2d97576"
-  integrity sha512-l/RFuLXsCbcY8x2iqapcKrlijHE35gFXiZzTKRzOyY8nODKctf6aRhYPBSX9xaSKRa3rKPTYi/ffdUIIKZIFoA==
+detox@^18.20.1:
+  version "18.20.1"
+  resolved "https://registry.yarnpkg.com/detox/-/detox-18.20.1.tgz#83be9b06f2bcb6645444de9664094f8dc15770e0"
+  integrity sha512-rXkp7hoCrMXqhx3S3Majz3l2+W4d/F3mBfv4MW6ZjttQtWlC+cVVuXnhEgTYxbC71LGKXRhm114q4oBSq/XFeg==
   dependencies:
     bunyan "^1.8.12"
     bunyan-debug-stream "^1.1.0"
@@ -9925,10 +9925,10 @@ levn@^0.3.0, levn@~0.3.0:
     prelude-ls "~1.1.2"
     type-check "~0.3.2"
 
-libphonenumber-js@^1.9.22:
-  version "1.9.22"
-  resolved "https://registry.yarnpkg.com/libphonenumber-js/-/libphonenumber-js-1.9.22.tgz#b6b460603dedbd58f2d71f15500f216d70850fad"
-  integrity sha512-nE0aF0wrNq09ewF36s9FVqRW73hmpw6cobVDlbexmsu1432LEfuN24BCudNuRx4t2rElSeK/N0JbedzRW/TC4A==
+libphonenumber-js@^1.9.23:
+  version "1.9.23"
+  resolved "https://registry.yarnpkg.com/libphonenumber-js/-/libphonenumber-js-1.9.23.tgz#e28babdaaaf7e09fbaf23a1c714166fa63001ea3"
+  integrity sha512-+qWSwPyJWSV9ukb7Iu21WpWEP7irFWR1ojoYykL2itAfXKj9FjsTjS6PPZoPUOZk+1kxliHjwsilqA1TNeOhuQ==
 
 lie@3.1.1:
   version "3.1.1"
@@ -11832,10 +11832,10 @@ react-fast-compare@^2.0.1:
   resolved "https://registry.yarnpkg.com/react-fast-compare/-/react-fast-compare-2.0.4.tgz#e84b4d455b0fec113e0402c329352715196f81f9"
   integrity sha512-suNP+J1VU1MWFKcyt7RtjiSWUjvidmQSlqu+eHslq+342xCbGTYmC0mEhPCOHxlW0CywylOC1u2DFAT+bv4dBw==
 
-react-i18next@^11.11.3:
-  version "11.11.3"
-  resolved "https://registry.yarnpkg.com/react-i18next/-/react-i18next-11.11.3.tgz#38d083bb079c3e6ee376b3321b0d6e409d798f68"
-  integrity sha512-upzG5/SpyOlYP5oSF4K8TZBvDWVhnCo38JNV+KnWjrg0+IaJCBltyh6lRGZDO5ovLyA4dU6Ip0bwbUCjb6Yyxw==
+react-i18next@^11.11.4:
+  version "11.11.4"
+  resolved "https://registry.yarnpkg.com/react-i18next/-/react-i18next-11.11.4.tgz#f6f9a1c827e7a5271377de2bf14db04cb1c9e5ce"
+  integrity sha512-ayWFlu8Sc7GAxW1PzMaPtzq+yiozWMxs0P1WeITNVzXAVRhC0Httkzw/IiODBta6seJRBCLrtUeFUSXhAIxlRg==
   dependencies:
     "@babel/runtime" "^7.14.5"
     html-parse-stringify "^3.0.1"
@@ -11928,10 +11928,10 @@ react-native-communications@^2.2.1:
   resolved "https://registry.yarnpkg.com/react-native-communications/-/react-native-communications-2.2.1.tgz#7883b56b20a002eeb790c113f8616ea8692ca795"
   integrity sha1-eIO1ayCgAu63kMET+GFuqGksp5U=
 
-react-native-config@^1.4.2:
-  version "1.4.2"
-  resolved "https://registry.yarnpkg.com/react-native-config/-/react-native-config-1.4.2.tgz#cc39f22ed72c5cb06af1adf0ba70ef01593900b4"
-  integrity sha512-iTvCvThvFTH7SdiBcsxYtpLy86zglsh51ZBqFPPZ75tdrQMdlRnDNnb86kNjQf03KT0qs1nCMLRejfPMIim8iA==
+react-native-config@^1.4.3:
+  version "1.4.3"
+  resolved "https://registry.yarnpkg.com/react-native-config/-/react-native-config-1.4.3.tgz#22de798ffea621c2683abfa3fc054e17dd2cf1cc"
+  integrity sha512-KcrlImtkrANeYMT5VM3NaXO5+nyxZkY42CVW8FCHThVqLa5xkNwQJSn8RXu+pNn5WpUatxYgUTP5ZqUpA4/ZKQ==
 
 react-native-credit-card-input@^0.4.1:
   version "0.4.1"
@@ -12068,10 +12068,10 @@ react-native-modal@^10.0.0:
     prop-types "^15.6.2"
     react-native-animatable "^1.3.1"
 
-react-native-modal@^12.0.2:
-  version "12.0.2"
-  resolved "https://registry.yarnpkg.com/react-native-modal/-/react-native-modal-12.0.2.tgz#c7d737330600916d1ff9527e1000629bde2f63c6"
-  integrity sha512-UAQIqB3sg9b4LaQT3GY0JUtnXDonCzGv61JFQl9DZIBPgxrqoKmGtUcjBERu+xnBYJGogFFMyswQ8vLgAvh17w==
+react-native-modal@^12.0.3:
+  version "12.0.3"
+  resolved "https://registry.yarnpkg.com/react-native-modal/-/react-native-modal-12.0.3.tgz#95c0e62573b93c5408d84d29b6afb25a79057905"
+  integrity sha512-dfceW9w6qeMsxzMgWGR/aCdUb4ku3uvykRgrYDvrBXDghS84eGtEQUyTHO5GMwClQJbC/JtsLmDz/GfiFOkmqw==
   dependencies:
     prop-types "^15.6.2"
     react-native-animatable "1.3.3"

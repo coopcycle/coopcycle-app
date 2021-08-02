@@ -382,9 +382,9 @@ PODS:
     - React-Core
   - react-native-camera/RN (3.44.3):
     - React-Core
-  - react-native-config (1.4.2):
-    - react-native-config/App (= 1.4.2)
-  - react-native-config/App (1.4.2):
+  - react-native-config (1.4.3):
+    - react-native-config/App (= 1.4.3)
+  - react-native-config/App (1.4.3):
     - React-Core
   - react-native-get-random-values (1.7.0):
     - React-Core
@@ -899,7 +899,7 @@ SPEC CHECKSUMS:
   React-jsinspector: 58aef7155bc9a9683f5b60b35eccea8722a4f53a
   react-native-ble-manager: fe313716f5edd2f406ec2a48a2c2ef5a0daeb5f3
   react-native-camera: b8cc03e2feec0c04403d0998e37cf519d8fd4c6f
-  react-native-config: c98128a72bc2c3a1ca72caec0b021f0fa944aa29
+  react-native-config: 387b1ea507bc50a2059e69149dac1342b9532f58
   react-native-get-random-values: 237bffb1c7e05fb142092681531810a29ba53015
   react-native-maps: f4b89da81626ad7f151a8bfcb79733295d31ce5c
   react-native-netinfo: 30fb89fa913c342be82a887b56e96be6d71201dd
