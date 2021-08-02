@@ -49,7 +49,9 @@ export default ({ getState, dispatch }) => {
         const url = parseUrl(baseURL)
         const protocol = url.protocol === 'https:' ? 'wss': 'ws'
 
-        const centrifuge = new Centrifuge(`${protocol}://${url.hostname}/centrifugo/connection/websocket`)
+        const centrifuge = new Centrifuge(`${protocol}://${url.hostname}/centrifugo/connection/websocket`, {
+          debug: __DEV__,
+        })
         centrifuge.setToken(res.token)
 
         centrifuge.on('connect', context => dispatch(connected(context)))
