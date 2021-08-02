@@ -1,12 +1,21 @@
 import { createStore, applyMiddleware, combineReducers } from 'redux'
 import { createAction } from 'redux-actions'
 import BackgroundGeolocation from 'react-native-background-geolocation'
+import thunk from 'redux-thunk'
+
 import middleware from '../index'
 import AppUser from '../../../../AppUser'
 import { SET_USER } from '../../../../redux/App/actions'
 import appReducer from '../../../../redux/App/reducers'
 
 const setUser = createAction(SET_USER)
+
+// This needs to be defined here to be "mockable"
+
+let onEnabledChangeCallback
+BackgroundGeolocation.onEnabledChange.mockImplementation((callback) => {
+  onEnabledChangeCallback = callback
+})
 
 describe('GeolocationMiddleware', () => {
 
@@ -45,24 +54,17 @@ describe('GeolocationMiddleware', () => {
     expect(newState.app.isBackgroundGeolocationEnabled).toBe(true)
   })
 
-  it('starts background geolocation if not started', async () => {
+  it('starts background geolocation if not started', () => {
 
-    let onEnabledChangeCallback
-
-    BackgroundGeolocation.onEnabledChange.mockImplementation((callback) => {
-      onEnabledChangeCallback = callback
-    })
-    BackgroundGeolocation.ready.mockImplementation((options, callback) => {
-      callback({ enabled: false })
-    })
-    BackgroundGeolocation.start.mockImplementation(() => {
-      onEnabledChangeCallback(true)
-    })
+    // Change Jest timeout limit,
+    // because we are calling changePace with setTimeout
+    jest.setTimeout(30000)
 
     const preloadedState = {
       app: {
         baseURL: 'https://demo.coopcycle.org',
         user: null,
+        hasDisclosedBackgroundPermission: true,
       },
     }
 
@@ -70,26 +72,40 @@ describe('GeolocationMiddleware', () => {
       app: appReducer,
     })
 
-    const store = createStore(reducer, preloadedState, applyMiddleware(middleware))
+    const store = createStore(reducer, preloadedState, applyMiddleware(...[ thunk, middleware ]))
 
-    const user = new AppUser('foo', 'foo@coopcycle.org', '123456', ['ROLE_COURIER'])
-    store.dispatch(setUser(user))
+    return new Promise((resolve, reject) => {
 
-    expect(BackgroundGeolocation.ready).toHaveBeenCalledTimes(1)
-    expect(BackgroundGeolocation.start).toHaveBeenCalledTimes(1)
+      BackgroundGeolocation.ready.mockImplementation((options, callback) => {
+        callback({ enabled: false })
+      })
+      BackgroundGeolocation.start.mockImplementation((callback) => {
+        onEnabledChangeCallback(true)
+        callback()
+      })
+      BackgroundGeolocation.changePace.mockImplementation((moving) => {
+        resolve()
+      })
 
-    const newState = store.getState()
+      // const store = createStore(reducer, preloadedState, applyMiddleware(middleware))
 
-    expect(newState.app.isBackgroundGeolocationEnabled).toBe(true)
+      const user = new AppUser('foo', 'foo@coopcycle.org', '123456', ['ROLE_COURIER'])
+
+      store.dispatch(setUser(user))
+
+    }).then(() => {
+
+      expect(BackgroundGeolocation.ready).toHaveBeenCalledTimes(1)
+      expect(BackgroundGeolocation.start).toHaveBeenCalledTimes(1)
+
+      const newState = store.getState()
+
+      expect(newState.app.isBackgroundGeolocationEnabled).toBe(true)
+    })
   })
 
   it('stops background geolocation on logout', async () => {
 
-    let onEnabledChangeCallback
-
-    BackgroundGeolocation.onEnabledChange.mockImplementation((callback) => {
-      onEnabledChangeCallback = callback
-    })
     BackgroundGeolocation.stop.mockImplementation(() => {
       onEnabledChangeCallback(false)
     })

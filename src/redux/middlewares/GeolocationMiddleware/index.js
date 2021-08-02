@@ -1,4 +1,4 @@
-import { Alert, Platform } from 'react-native'
+import { Alert, Platform } from 'react-native'
 import BackgroundGeolocation from 'react-native-background-geolocation'
 
 import i18n from '../../../i18n'
