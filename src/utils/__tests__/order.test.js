@@ -32,7 +32,7 @@ describe('encodeForPrinter', () => {
 
     const expected =
       `@\u001btI--------------------------------
-\u001baORDER AAA (#1)
+\u001ba\u001b!\u0010ORDER AAA (#1)
 CUSTOMER: camille@example.com
 --------------------------------
 \u001ba\u0001PICKUP EXPECTED ON ${time.format('LL')}
@@ -95,7 +95,7 @@ describe('encodeForPrinterToday', () => {
 
     const expected =
     `@\u001btI--------------------------------
-\u001baORDER AAA (#1)
+\u001ba\u001b!\u0010ORDER AAA (#1)
 CUSTOMER: camille@example.com
 --------------------------------
 \u001ba\u0001PICKUP TODAY
