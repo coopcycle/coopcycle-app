@@ -2,7 +2,7 @@ import { createStore, applyMiddleware, combineReducers } from 'redux'
 import thunk from 'redux-thunk'
 import { ringOnNewOrderCreated } from '../middlewares'
 import { loadOrdersSuccess, loadOrderSuccess } from '../actions'
-import { message as wsMessage } from '../../middlewares/WebSocketMiddleware/actions'
+import { message as wsMessage } from '../../middlewares/CentrifugoMiddleware/actions'
 import restaurantReducer from '../reducers'
 import appReducer from '../../App/reducers'
 

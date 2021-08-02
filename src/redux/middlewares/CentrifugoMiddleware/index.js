@@ -69,4 +69,6 @@ export {
   MESSAGE,
   CONNECTED,
   DISCONNECTED,
+  connected,
+  disconnected
 }
