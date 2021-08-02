@@ -34,6 +34,7 @@
     "@turf/turf": "^6.5.0",
     "axios": "^0.21.1",
     "buffer": "^5.7.1",
+    "centrifuge": "^2.7.7",
     "coopcycle-frontend-js": "git+https://git@github.com/coopcycle/coopcycle-frontend-js.git#3.0.0-beta.2",
     "countly-sdk-react-native-bridge": "^20.11.7",
     "currency-symbol-map": "^5.0.1",
@@ -107,6 +108,7 @@
     "rn-fetch-blob": "^0.12.0",
     "slugify": "^1.6.0",
     "tipsi-stripe": "8.0.2",
+    "url-parse": "^1.5.3",
     "uuid": "^8.3.2",
     "validate.js": "^0.13.1"
   },
