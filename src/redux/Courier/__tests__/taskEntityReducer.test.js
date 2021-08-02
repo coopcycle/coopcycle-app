@@ -10,7 +10,7 @@ import {
   selectIsTasksLoading, selectIsTasksLoadingFailure, selectIsTaskCompleteFailure,
   selectTasks,
 } from '../taskSelectors';
-import { _message } from '../../middlewares/WebSocketMiddleware/actions'
+import { _message } from '../../middlewares/CentrifugoMiddleware/actions'
 
 // As we may be using setTimeout(), we need to mock timers
 // @see https://jestjs.io/docs/en/timer-mocks.html

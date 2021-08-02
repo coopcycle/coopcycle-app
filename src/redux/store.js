@@ -7,7 +7,6 @@ import { createLogger } from 'redux-logger'
 import { persistStore } from 'redux-persist'
 
 import reducers from './reducers'
-import WsMiddleware from './middlewares/WebSocketMiddleware'
 import GeolocationMiddleware from './middlewares/GeolocationMiddleware'
 import BluetoothMiddleware from './middlewares/BluetoothMiddleware'
 import HttpMiddleware from './middlewares/HttpMiddleware'
@@ -16,6 +15,7 @@ import PushNotificationMiddleware from './middlewares/PushNotificationMiddleware
 import SentryMiddleware from './middlewares/SentryMiddleware'
 import { ringOnNewOrderCreated } from './Restaurant/middlewares'
 import { ringOnTaskListUpdated } from './Courier/taskMiddlewares'
+import CentrifugoMiddleware from './middlewares/CentrifugoMiddleware'
 
 const middlewares = [
   thunk,
@@ -23,7 +23,7 @@ const middlewares = [
   NetInfoMiddleware,
   HttpMiddleware,
   PushNotificationMiddleware,
-  WsMiddleware(),
+  CentrifugoMiddleware,
   GeolocationMiddleware,
   BluetoothMiddleware,
   ringOnNewOrderCreated,

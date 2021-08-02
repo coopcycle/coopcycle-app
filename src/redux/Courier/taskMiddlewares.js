@@ -2,7 +2,6 @@ import { AppState } from 'react-native'
 import _ from 'lodash'
 
 import { pushNotification, LOGOUT_SUCCESS } from '../App/actions'
-import { MESSAGE } from '../middlewares/WebSocketMiddleware/actions'
 import { LOAD_TASKS_SUCCESS } from './taskActions'
 import { selectTasks, selectTaskSelectedDate } from './taskSelectors'
 

@@ -14,7 +14,7 @@ import NavigationHolder from '../NavigationHolder'
 import { clearNotifications, pushNotification, registerPushNotificationToken } from '../redux/App/actions'
 import {loadTasks, selectTasksChangedAlertSound} from '../redux/Courier'
 import { loadOrderAndNavigate, loadOrderAndPushNotification, loadOrder } from '../redux/Restaurant/actions'
-import { message } from '../redux/middlewares/WebSocketMiddleware/actions'
+import { message } from '../redux/middlewares/CentrifugoMiddleware/actions'
 import tracker from '../analytics/Tracker'
 import analyticsEvent from '../analytics/Event'
 

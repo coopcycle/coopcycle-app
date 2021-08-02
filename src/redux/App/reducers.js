@@ -1,7 +1,7 @@
 /*
  * App reducer, dealing with non-domain specific state
  */
-import { CONNECTED, DISCONNECTED, RECONNECTED } from '../middlewares/WebSocketMiddleware'
+import { CONNECTED, DISCONNECTED } from '../middlewares/CentrifugoMiddleware'
 import {
   SET_BASE_URL,
   SET_HTTP_CLIENT,
@@ -62,7 +62,8 @@ const initialState = {
   isInternetReachable: true,
   registrationErrors: {},
   isBackgroundGeolocationEnabled: false,
-  hasDisclosedBackgroundPermission: false
+  hasDisclosedBackgroundPermission: false,
+  isCentrifugoConnected: false,
 }
 
 export default (state = initialState, action = {}) => {
@@ -94,16 +95,15 @@ export default (state = initialState, action = {}) => {
       }
 
     case CONNECTED:
-    case RECONNECTED:
       return {
         ...state,
-        isWsOpen: true,
+        isCentrifugoConnected: true,
       }
 
     case DISCONNECTED:
       return {
         ...state,
-        isWsOpen: false,
+        isCentrifugoConnected: false,
       }
 
     case PUSH_NOTIFICATION:

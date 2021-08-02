@@ -19,9 +19,8 @@ import {
 } from '../../redux/Courier'
 import { navigateToTask } from '../../navigation'
 
-import { selectIsWsOpen } from '../../redux/App/selectors'
-import { connect as connectWs, init } from '../../redux/middlewares/WebSocketMiddleware/actions'
-import WebSocketClient from '../../websocket/WebSocketClient'
+import { selectIsCentrifugoConnected } from '../../redux/App/selectors'
+import { connect as connectCentrifugo } from '../../redux/middlewares/CentrifugoMiddleware/actions'
 
 class TasksPage extends Component {
 
@@ -81,9 +80,8 @@ class TasksPage extends Component {
   _bootstrap() {
     InteractionManager.runAfterInteractions(() => {
       this.refreshTasks(this.props.selectedDate)
-      if (!this.props.isWsOpen) {
-        this.props.initWs(new WebSocketClient(this.props.httpClient, '/dispatch'))
-        this.props.connectWs()
+      if (!this.props.selectIsCentrifugoConnected) {
+        this.props.connectCent()
       }
     })
   }
@@ -122,7 +120,7 @@ function mapStateToProps (state) {
     tasks: selectFilteredTasks(state),
     selectedDate: selectTaskSelectedDate(state),
     keepAwake: selectKeepAwake(state),
-    isWsOpen: selectIsWsOpen(state),
+    isCentrifugoConnected: selectIsCentrifugoConnected(state),
     httpClient: state.app.httpClient,
     mapCenter: state.app.settings.latlng.split(',').map(parseFloat),
     shouldRefreshTasks: selectShouldRefreshTasks(state),
@@ -132,8 +130,7 @@ function mapStateToProps (state) {
 function mapDispatchToProps (dispatch) {
   return {
     loadTasks: (selectedDate) => dispatch(loadTasks(selectedDate)),
-    initWs: wsClient => dispatch(init(wsClient)),
-    connectWs: () => dispatch(connectWs()),
+    connectCent: () => dispatch(connectCentrifugo())
   }
 }
 
