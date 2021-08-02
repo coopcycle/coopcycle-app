@@ -33,4 +33,4 @@ export const selectIsLoading = createSelector(
   }
 )
 
-export const selectIsWsOpen = state => state.app.isWsOpen
+export const selectIsCentrifugoConnected = state => state.app.isCentrifugoConnected

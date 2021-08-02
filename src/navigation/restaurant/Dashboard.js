@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake'
 import moment from 'moment'
+import Centrifuge from 'centrifuge'
 
 import DangerAlert from '../../components/DangerAlert'
 import Offline from '../../components/Offline'
@@ -15,7 +16,7 @@ import WebSocketIndicator from './components/WebSocketIndicator'
 
 import {
   changeStatus, loadOrders, changeDate, deleteOpeningHoursSpecification, loadOrderAndNavigate } from '../../redux/Restaurant/actions'
-import { connect as connectWs, init } from '../../redux/middlewares/WebSocketMiddleware/actions'
+import { connect as connectCentrifugo } from '../../redux/middlewares/CentrifugoMiddleware/actions'
 import {
   selectSpecialOpeningHoursSpecificationForToday,
   selectNewOrders,
@@ -23,9 +24,8 @@ import {
   selectPickedOrders,
   selectCancelledOrders,
   selectFulfilledOrders } from '../../redux/Restaurant/selectors'
-import { selectIsLoading, selectIsWsOpen } from '../../redux/App/selectors'
+import { selectIsLoading, selectIsCentrifugoConnected } from '../../redux/App/selectors'
 import PushNotification from '../../notifications'
-import WebSocketClient from '../../websocket/WebSocketClient'
 
 const RNSound = NativeModules.RNSound
 
@@ -76,9 +76,8 @@ class DashboardPage extends Component {
 
     activateKeepAwake()
 
-    if (!this.props.isWsOpen) {
-      this.props.initWs(new WebSocketClient(this.props.httpClient, '/dispatch'))
-      this.props.connectWs()
+    if (!this.props.isCentrifugoConnected) {
+      this.props.connectCent()
     }
 
     InteractionManager.runAfterInteractions(() => {
@@ -168,7 +167,7 @@ class DashboardPage extends Component {
             text={ this.props.t('RESTAURANT_ALERT_CLOSED') }
             onClose={ () => this.props.deleteOpeningHoursSpecification(specialOpeningHoursSpecification) } />
         )}
-        <WebSocketIndicator connected={ this.props.isWsOpen } />
+        <WebSocketIndicator connected={ this.props.isCentrifugoConnected } />
         <Content>
           <DatePickerHeader
             date={ date }
@@ -231,7 +230,7 @@ function mapStateToProps(state) {
     specialOpeningHoursSpecification: selectSpecialOpeningHoursSpecificationForToday(state),
     isInternetReachable: state.app.isInternetReachable,
     isLoading: selectIsLoading(state),
-    isWsOpen: selectIsWsOpen(state),
+    isCentrifugoConnected: selectIsCentrifugoConnected(state),
   }
 }
 
@@ -242,8 +241,7 @@ function mapDispatchToProps(dispatch) {
     changeDate: date => dispatch(changeDate(date)),
     changeStatus: (restaurant, state) => dispatch(changeStatus(restaurant, state)),
     deleteOpeningHoursSpecification: openingHoursSpecification => dispatch(deleteOpeningHoursSpecification(openingHoursSpecification)),
-    initWs: wsClient => dispatch(init(wsClient)),
-    connectWs: () => dispatch(connectWs()),
+    connectCent: () => dispatch(connectCentrifugo())
   }
 }
 

@@ -2,8 +2,7 @@ import { Alert } from 'react-native'
 import { createAction } from 'redux-actions'
 import { NavigationActions, StackActions } from 'react-navigation'
 
-import { connect, init } from '../middlewares/WebSocketMiddleware/actions'
-import WebSocketClient from '../../websocket/WebSocketClient'
+import { connect } from '../middlewares/CentrifugoMiddleware/actions'
 import i18n from '../../i18n'
 import NavigationHolder from '../../NavigationHolder'
 
@@ -172,7 +171,6 @@ export function initialize() {
         dispatch(loadUsersSuccess(users['hydra:member']))
         dispatch(loadUnassignedTasksSuccess(unassignedTasks['hydra:member']))
         dispatch(loadTaskListsSuccess(taskLists['hydra:member']))
-        dispatch(init(new WebSocketClient(httpClient, '/dispatch')))
         dispatch(connect())
         dispatch(_initialize())
       })

@@ -5,9 +5,7 @@
  * non-domain specific aspects of the application
  */
 import appReducer from './reducers'
-import { selectIsWsOpen } from './selectors'
 
 export {
   appReducer,
-  selectIsWsOpen,
 }

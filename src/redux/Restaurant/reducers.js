@@ -64,7 +64,7 @@ import {
 
 import {
   MESSAGE,
-} from '../middlewares/WebSocketMiddleware/actions'
+} from '../middlewares/CentrifugoMiddleware/actions'
 
 import moment from 'moment'
 import _ from 'lodash'

@@ -15,7 +15,7 @@ import {
   SET_USER,
   LOGOUT_SUCCESS,
 } from '../App/actions'
-import { MESSAGE } from '../middlewares/WebSocketMiddleware'
+import { MESSAGE } from '../middlewares/CentrifugoMiddleware'
 import _ from 'lodash'
 
 /*
