@@ -7,7 +7,7 @@ import RNPinScreen from 'react-native-pin-screen'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 
-import { whiteColor, orangeColor, dateSelectHeaderHeight, websocketWarningHeight } from '../../styles/common'
+import { whiteColor, orangeColor, dateSelectHeaderHeight } from '../../styles/common'
 import DateSelectHeader from '../../components/DateSelectHeader'
 import TasksMapView from '../../components/TasksMapView'
 import {
@@ -114,16 +114,6 @@ class TasksPage extends Component {
 const styles = StyleSheet.create({
   container: {
     paddingTop: dateSelectHeaderHeight,
-  },
-  websocketWarning: {
-    backgroundColor: orangeColor,
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: websocketWarningHeight,
-    zIndex: 2,
-  },
-  websocketWarningText: {
-    color: whiteColor,
   },
 })
 
