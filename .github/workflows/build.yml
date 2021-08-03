@@ -74,6 +74,10 @@ jobs:
       - name: Run Detox tests
         if: false
         run: node node_modules/.bin/detox test -c ios.sim.release --loglevel="trace" --device-name="iPhone 11" --debug-synchronization 500
+      # Run 'applesimutils --list' to list your supported devices.
+      # It is advised only to specify a device type, e.g., "iPhone Xʀ" and avoid explicit search by OS version.
+      - name: List supported devices
+        run: applesimutils --list
       # See screenshot specifications
       # https://help.apple.com/app-store-connect/#/devd274dd925
       - name: Take screenshots
@@ -81,7 +85,7 @@ jobs:
         run: |
           node node_modules/.bin/detox test -c ios.sim.release -o e2e/screenshots.config.json --take-screenshots manual --cleanup --device-name="iPhone 11" --artifacts-location ./artifacts/6.5-inch
           node node_modules/.bin/detox test -c ios.sim.release -o e2e/screenshots.config.json --take-screenshots manual --cleanup --device-name="iPhone 8 Plus" --artifacts-location ./artifacts/5.5-inch
-          node node_modules/.bin/detox test -c ios.sim.release -o e2e/screenshots.config.json --take-screenshots manual --cleanup --device-name="iPad Pro (12.9-inch) (3rd generation)" --artifacts-location ./artifacts/12.9-inch
+          node node_modules/.bin/detox test -c ios.sim.release -o e2e/screenshots.config.json --take-screenshots manual --cleanup --device-name="iPad Pro (12.9-inch) (4th generation)" --artifacts-location ./artifacts/12.9-inch
       - name: Upload screenshots artifacts
         if: github.ref == 'refs/heads/master'
         uses: actions/upload-artifact@v1
