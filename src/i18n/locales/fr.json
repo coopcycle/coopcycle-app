@@ -148,7 +148,7 @@
         "RESTAURANT_ORDER_BUTTON_REFUSE": "Refuser",
         "RESTAURANT_ORDER_BUTTON_CANCEL": "Annuler",
         "RESTAURANT_ORDER_BUTTON_DELAY": "Retarder",
-        "RESTAURANT_ORDER_BUTTON_FULFILL": "Confirmer retrait",
+        "RESTAURANT_ORDER_BUTTON_FULFILL": "Terminer",
         "RESTAURANT_ORDER_REFUSE_DISCLAIMER": "Veuillez nous indiquer pourquoi vous souhaitez refuser cette commande pour que nous puissions informer le client.",
         "RESTAURANT_ORDER_REFUSE_REASON_SOLD_OUT_HEADING": "Je suis en rupture de stock",
         "RESTAURANT_ORDER_REFUSE_REASON_RUSH_HOUR_HEADING": "Je suis en plein rush",
