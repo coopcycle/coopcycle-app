@@ -6004,13 +6004,13 @@ buffer-to-uint8array@^1.1.0:
   resolved "https://registry.yarnpkg.com/buffer-to-uint8array/-/buffer-to-uint8array-1.1.0.tgz#cf6f41287c022f458da752c391c1a8d535ec5f72"
   integrity sha1-z29BKHwCL0WNp1LDkcGo1TXsX3I=
 
-buffer@^5.7.1:
-  version "5.7.1"
-  resolved "https://registry.yarnpkg.com/buffer/-/buffer-5.7.1.tgz#ba62e7c13133053582197160851a8f648e99eed0"
-  integrity sha512-EHcyIPBQ4BSGlvjB16k5KgAJ27CIsHY/2JBmCRReo48y9rQ3MaUzWX3KVlBa4U7MyX02HdVj0K7C3WaB3ju7FQ==
+buffer@^6.0.3:
+  version "6.0.3"
+  resolved "https://registry.yarnpkg.com/buffer/-/buffer-6.0.3.tgz#2ace578459cc8fbe2a70aaa8f52ee63b6a74c6c6"
+  integrity sha512-FTiCpNxtwiZZHEZbcbTIcZjERVICn9yq/pDFkTl95/AxzD1naBctN7YO68riM/gLSDY7sdrMby8hofADYuuqOA==
   dependencies:
     base64-js "^1.3.1"
-    ieee754 "^1.1.13"
+    ieee754 "^1.2.1"
 
 bunyan-debug-stream@^1.1.0:
   version "1.1.1"
@@ -8800,7 +8800,7 @@ iconv-lite@^0.6.2:
   dependencies:
     safer-buffer ">= 2.1.2 < 3.0.0"
 
-ieee754@^1.1.13:
+ieee754@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/ieee754/-/ieee754-1.2.1.tgz#8eb7a10a63fff25d15a57b001586d177d1b0d352"
   integrity sha512-dcyqhDvX1C46lXZcVqCpK+FtMRQVdIMN6/Df5js2zouUsqG7I6sFxitIC+7KYK29KdXOLHdu9zL4sFnoVQnqaA==
