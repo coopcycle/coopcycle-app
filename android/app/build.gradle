@@ -1,6 +1,5 @@
 apply plugin: "com.android.application"
 apply plugin: "com.google.gms.google-services"
-apply plugin: "com.google.firebase.firebase-perf"
 apply plugin: "com.google.firebase.crashlytics"
 apply from: '../../node_modules/react-native-unimodules/gradle.groovy'
 apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"

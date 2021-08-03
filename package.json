@@ -21,7 +21,6 @@
     "@react-native-firebase/app": "^10.8.1",
     "@react-native-firebase/crashlytics": "^10.8.1",
     "@react-native-firebase/messaging": "^10.8.1",
-    "@react-native-firebase/perf": "^10.8.1",
     "@react-native-picker/picker": "^1.9.7",
     "@react-navigation/bottom-tabs": "^5.11.11",
     "@react-navigation/compat": "^5.3.15",
