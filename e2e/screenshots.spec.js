@@ -1,8 +1,11 @@
 const VARIANTS = [
   { locale: 'fr-FR', city: 'Poitiers' },
   { locale: 'fr-FR', city: 'Montpellier' },
+  { locale: 'fr-FR', city: 'Nantes - Naofood' },
   { locale: 'fr-FR', city: 'Grenoble' },
+  { locale: 'es-ES', city: 'Barcelona' },
   { locale: 'es-ES', city: 'Madrid' },
+  { locale: 'es-ES', city: 'Zaragoza' },
   { locale: 'en-US', city: 'Berlin' },
 ]
 
@@ -34,6 +37,8 @@ VARIANTS.forEach(variant => {
       await device.takeScreenshot(`Home-${locale}`);
 
       await element(by.id('chooseCityBtn')).tap()
+
+      await device.takeScreenshot(`Cities-${locale}`);
 
       await waitFor(element(by.id(city)))
         .toBeVisible()
