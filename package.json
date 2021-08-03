@@ -44,7 +44,7 @@
     "formik": "^2.2.9",
     "fuse.js": "^3.6.1",
     "google-libphonenumber": "^3.2.22",
-    "i18next": "^19.9.2",
+    "i18next": "^20.3.5",
     "libphonenumber-js": "^1.9.23",
     "lodash": "^4.17.21",
     "moment": "^2.29.1",
