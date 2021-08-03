@@ -373,6 +373,8 @@
             "positiveAction": "Cambiar a « {backgroundPermissionOptionLabel} »"
         },
         "NOTIFICATION_TASKS_REMOVED": "{{ count }} removida",
-        "NOTIFICATION_TASKS_ADDED": "{{ count }} añadida"
+        "NOTIFICATION_TASKS_ADDED": "{{ count }} añadida",
+        "RESTAURANT_SETTINGS_MANAGE_PRODUCT_OPTIONS": "Administrar opciones de productos",
+        "NOT_AVAILABLE_ATM": "No disponible en este momento"
     }
 }
