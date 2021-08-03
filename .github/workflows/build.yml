@@ -6,6 +6,8 @@ name: Build
 on: [push, pull_request]
 jobs:
   IOS_SIMULATOR_TESTS:
+    # https://github.community/t/how-to-stop-github-actions-workflow-to-trigger-when-the-pull-request-is-from-dependabot-preview/116486
+    if: github.actor != 'dependabot[bot]'
     name: iOS Simulator Tests
     runs-on: macOS-latest
     steps:
