@@ -5,7 +5,6 @@ import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake'
 import moment from 'moment'
-import Centrifuge from 'centrifuge'
 
 import DangerAlert from '../../components/DangerAlert'
 import Offline from '../../components/Offline'
@@ -241,7 +240,7 @@ function mapDispatchToProps(dispatch) {
     changeDate: date => dispatch(changeDate(date)),
     changeStatus: (restaurant, state) => dispatch(changeStatus(restaurant, state)),
     deleteOpeningHoursSpecification: openingHoursSpecification => dispatch(deleteOpeningHoursSpecification(openingHoursSpecification)),
-    connectCent: () => dispatch(connectCentrifugo())
+    connectCent: () => dispatch(connectCentrifugo()),
   }
 }
 

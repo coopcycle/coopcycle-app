@@ -1,6 +1,5 @@
 import Centrifuge from 'centrifuge'
 import parseUrl from 'url-parse'
-import axios from 'axios'
 
 import {
   CONNECT,
@@ -16,7 +15,8 @@ import {
   selectIsAuthenticated,
   selectHttpClient,
   selectHttpClientHasCredentials,
-  selectUser, } from '../../App/selectors'
+  selectUser,
+} from '../../App/selectors'
 
 const isCentrifugoAction = ({ type }) =>
   [
@@ -45,33 +45,32 @@ export default ({ getState, dispatch }) => {
 
     httpClient
       .get('/api/centrifugo/token')
-      .then(res => {
+      .then(tokenResponse => {
 
         const url = parseUrl(baseURL)
-        const protocol = url.protocol === 'https:' ? 'wss': 'ws'
+        const protocol = url.protocol === 'https:' ? 'wss' : 'ws'
 
         const centrifuge = new Centrifuge(`${protocol}://${url.hostname}/centrifugo/connection/websocket`, {
           debug: __DEV__,
           onRefresh: function(ctx, cb) {
-
             httpClient
               .post('/api/centrifugo/token/refresh')
-              .then(res => {
+              .then(refreshResponse => {
                 // @see https://github.com/centrifugal/centrifuge-js#refreshendpoint
                 // Data must be like {"status": 200, "data": {"token": "JWT"}} - see
                 // type definitions in dist folder. Note that setting status to 200 is
                 // required at moment. Any other status will result in refresh process
                 // failure so client will eventually be disconnected by server.
-                cb({"status": 200, "data": {"token": res.token}})
+                cb({ status: 200, data: { token: refreshResponse.token } })
               })
-          }
+          },
         })
-        centrifuge.setToken(res.token)
+        centrifuge.setToken(tokenResponse.token)
 
         centrifuge.on('connect', context => dispatch(connected(context)))
         centrifuge.on('disconnect', context => dispatch(disconnected(context)))
 
-        centrifuge.subscribe(`${res.namespace}_events#${user.username}`, msg => dispatch(message(msg.data.event)))
+        centrifuge.subscribe(`${tokenResponse.namespace}_events#${user.username}`, msg => dispatch(message(msg.data.event)))
 
         centrifuge.connect()
 
@@ -86,5 +85,5 @@ export {
   CONNECTED,
   DISCONNECTED,
   connected,
-  disconnected
+  disconnected,
 }

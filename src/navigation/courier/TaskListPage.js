@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, TouchableOpacity, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 
 import { connect } from 'react-redux'
 
@@ -13,7 +13,7 @@ import {
   selectTaskSelectedDate,
   selectFilteredTasks,
   selectIsTasksRefreshing,
-  selectTasksWithColor
+  selectTasksWithColor,
 } from '../../redux/Courier'
 import { navigateToTask, navigateToCompleteTask } from '../../navigation'
 

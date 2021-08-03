@@ -7,7 +7,7 @@ import RNPinScreen from 'react-native-pin-screen'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 
-import { whiteColor, orangeColor, dateSelectHeaderHeight } from '../../styles/common'
+import { dateSelectHeaderHeight } from '../../styles/common'
 import DateSelectHeader from '../../components/DateSelectHeader'
 import TasksMapView from '../../components/TasksMapView'
 import {
@@ -130,7 +130,7 @@ function mapStateToProps (state) {
 function mapDispatchToProps (dispatch) {
   return {
     loadTasks: (selectedDate) => dispatch(loadTasks(selectedDate)),
-    connectCent: () => dispatch(connectCentrifugo())
+    connectCent: () => dispatch(connectCentrifugo()),
   }
 }
 
