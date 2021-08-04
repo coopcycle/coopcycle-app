@@ -5,6 +5,7 @@ import {
   Animated,
   Keyboard,
   TextInput,
+  Platform,
 } from 'react-native';
 import { Content, Text } from 'native-base';
 import _ from 'lodash'
@@ -31,8 +32,15 @@ class CreditCard extends Component {
   }
 
   componentDidMount() {
-    this.keyboardWillShowSub = Keyboard.addListener('keyboardWillShow', this.keyboardWillShow.bind(this))
-    this.keyboardWillHideSub = Keyboard.addListener('keyboardWillHide', this.keyboardWillHide.bind(this))
+    // https://reactnative.dev/docs/keyboard
+    // keyboardWillShow as well as keyboardWillHide are generally not available on Android
+    // since there is no native corresponding event.
+
+    const showEventName = Platform.OS === 'android' ? 'keyboardDidShow' : 'keyboardWillShow'
+    const hideEventName = Platform.OS === 'android' ? 'keyboardDidHide' : 'keyboardWillHide'
+
+    this.keyboardWillShowSub = Keyboard.addListener(showEventName, this.keyboardWillShow.bind(this))
+    this.keyboardWillHideSub = Keyboard.addListener(hideEventName, this.keyboardWillHide.bind(this))
   }
 
   componentWillUnmount() {
