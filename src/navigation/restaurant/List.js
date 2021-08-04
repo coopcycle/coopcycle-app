@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { StyleSheet, View } from 'react-native'
 import {
-  Container, Content, Body,
+  Container, Content,
   Text,
   Left, Right, Radio,
   List, ListItem,

@@ -20,13 +20,13 @@ const willDiscloseBackgroundPermission = (hasDisclosedBackgroundPermission) => {
       [
         {
           text: i18n.t('CLOSE'),
-          onPress: resolve
-        }
+          onPress: resolve,
+        },
       ],
       {
         cancelable: true,
-        onDismiss: resolve
-      }
+        onDismiss: resolve,
+      },
     )
   })
 }
@@ -90,8 +90,8 @@ export default ({ getState, dispatch }) => {
           title: i18n.t('BACKGROUND_PERMISSION_RATIONALE.title'),
           message: i18n.t('BACKGROUND_PERMISSION_RATIONALE.message'),
           positiveAction: i18n.t('BACKGROUND_PERMISSION_RATIONALE.positiveAction'),
-          negativeAction: i18n.t('CANCEL')
-        }
+          negativeAction: i18n.t('CANCEL'),
+        },
       }, (bgState) => {
 
         dispatch(setBackgroundGeolocationEnabled(bgState.enabled))

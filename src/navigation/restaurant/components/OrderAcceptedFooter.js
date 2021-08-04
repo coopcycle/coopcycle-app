@@ -1,12 +1,11 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import { useTranslation } from 'react-i18next'
 import {
   Footer,
-  Icon, Text, Button,
+  Text,
 } from 'native-base';
 import { Col, Row, Grid } from 'react-native-easy-grid'
-import { withTranslation } from 'react-i18next'
 
 import { resolveFulfillmentMethod } from '../../../utils/order'
 import material from '../../../../native-base-theme/variables/material'

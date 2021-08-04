@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import {
   Container,
   Left,
-  Icon, Text, Button,
+  Icon, Text,
   Card, CardItem,
 } from 'native-base';
 import { connect } from 'react-redux'
@@ -63,7 +63,7 @@ class OrderScreen extends Component {
         </View>
         { (canEdit && order.state === 'new') &&
           <SwipeToAcceptOrRefuse
-            onAccept={ () => this.props.acceptOrder(order, order => this.props.navigation.setParams({ order })) }
+            onAccept={ () => this.props.acceptOrder(order, o => this.props.navigation.setParams({ order: o })) }
             onRefuse={ () => this.props.navigation.navigate('RestaurantOrderRefuse', { order }) } />
         }
         { (canEdit && order.state === 'accepted') &&

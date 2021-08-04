@@ -10,8 +10,6 @@ import { Container, Icon, Text } from 'native-base';
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 
-import * as Sentry from '@sentry/react-native'
-
 import RestaurantSearch from '../../components/RestaurantSearch'
 import RestaurantList from '../../components/RestaurantList'
 import { searchRestaurants, searchRestaurantsForAddress, resetSearch } from '../../redux/Checkout/actions'

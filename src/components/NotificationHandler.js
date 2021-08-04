@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { AppState, FlatList, View, StyleSheet, TouchableOpacity } from 'react-native'
+import { FlatList, View, StyleSheet, TouchableOpacity } from 'react-native'
 import { Icon, Text } from 'native-base'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'

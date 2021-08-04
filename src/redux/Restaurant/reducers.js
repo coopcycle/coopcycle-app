@@ -132,7 +132,7 @@ const spliceProducts = (state, payload) => {
 const spliceProductOptions = (state, payload) => {
 
   const productOptionIndex = _.findIndex(state, productOption => {
-    return -1 !== _.findIndex(productOption.values, productOptionValue => productOptionValue['@id'] === payload.productOptionValue['@id'])
+    return _.findIndex(productOption.values, productOptionValue => productOptionValue['@id'] === payload.productOptionValue['@id']) !== -1
   })
 
   if (productOptionIndex !== -1) {
@@ -335,8 +335,8 @@ export default (state = initialState, action = {}) => {
           specialOpeningHoursSpecification: _.filter(
             specialOpeningHoursSpecification,
             openingHoursSpecification => openingHoursSpecification['@id'] !== action.payload['@id']
-          )
-        }
+          ),
+        },
       }
 
     case CHANGE_STATUS_SUCCESS:

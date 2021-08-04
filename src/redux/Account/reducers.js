@@ -5,7 +5,7 @@ import {
 } from './actions'
 
 import {
-  LOGOUT_SUCCESS
+  LOGOUT_SUCCESS,
 } from '../App/actions'
 
 const initialState = {

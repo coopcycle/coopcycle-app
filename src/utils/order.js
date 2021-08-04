@@ -27,7 +27,7 @@ const CODEPAGE = 'windows1251'
 export function encodeForPrinter(order) {
   const maxChars = 32
 
-  let pickupLineDate = "";
+  let pickupLineDate = '';
 
   if (moment(order.pickupExpectedAt).isSame(moment(), 'day')){
     pickupLineDate = i18n.t('RECEIPT_HEADING_PICKUP_EXPECTED_TODAY')

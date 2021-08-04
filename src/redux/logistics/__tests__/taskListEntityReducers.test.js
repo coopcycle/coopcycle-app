@@ -10,7 +10,7 @@ describe('taskListEntityReducers', () => {
               '@id': '/api/task_lists/1',
               'username': 'bot_1',
               itemIds: [
-              ]
+              ],
             },
           },
         },

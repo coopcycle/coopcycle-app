@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
-import { SectionList, TouchableOpacity, View } from 'react-native'
+import { SectionList, View } from 'react-native'
 import {
   Left, Right,
   ListItem, Text, Switch,
-  Body,
 } from 'native-base'
 import _ from 'lodash'
 
@@ -30,8 +29,6 @@ class ProductOptions extends Component {
 
   _renderItem(productOptionValue) {
 
-    const { navigate } = this.props.navigation
-
     return (
       <ListItem>
         <Left>
@@ -50,7 +47,7 @@ class ProductOptions extends Component {
 
     const sections = _.map(this.props.productOptions, (productOption) => ({
       title: productOption.name,
-      data: productOption.values
+      data: productOption.values,
     }))
 
     return (

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { View, StyleSheet } from 'react-native'
 import { useTranslation } from 'react-i18next'
-import { Icon, Text, Button } from 'native-base'
+import { Icon, Text } from 'native-base'
 import { SwipeRow } from 'react-native-swipe-list-view'
 
 const styles = StyleSheet.create({

@@ -12,7 +12,6 @@ import {
   Container, Content,
   Icon, Text,
 } from 'native-base';
-import moment from 'moment'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 import _ from 'lodash'
@@ -20,7 +19,6 @@ import Modal from 'react-native-modal'
 
 import DangerAlert from '../../components/DangerAlert'
 import { formatPrice } from '../../utils/formatting'
-import i18n from '../../i18n'
 import { incrementItem, decrementItem, removeItem, validate, showAddressModal, hideAddressModal, updateCart } from '../../redux/Checkout/actions'
 import { selectDeliveryTotal, selectShippingTimeRangeLabel, selectCartFulfillmentMethod } from '../../redux/Checkout/selectors'
 import { selectIsAuthenticated } from '../../redux/App/selectors'
