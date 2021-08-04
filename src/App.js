@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Platform, View, LogBox } from 'react-native'
+import { Platform, View, LogBox } from 'react-native'
 
 import { StyleProvider } from 'native-base'
 import getTheme from '../native-base-theme/components'
