@@ -105,7 +105,7 @@ class CreditCard extends Component {
 
   render() {
 
-    const { cart, errors } = this.props
+    const { cart } = this.props
 
     if (!cart) {
 
@@ -165,9 +165,9 @@ class CreditCard extends Component {
                   onChange={ form => this._onChange(form, setFieldValue, setFieldTouched) } />
               </View>
             </View>
-            { errors.length > 0 && (
+            { this.props.errors.length > 0 && (
             <View style={ styles.errorsContainer }>
-              { errors.map((error, key) => (
+              { this.props.errors.map((error, key) => (
               <Text key={ key } style={ styles.errorText }>{ error }</Text>
               )) }
             </View>
