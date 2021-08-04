@@ -6636,9 +6636,9 @@ cosmiconfig@^5.0.5, cosmiconfig@^5.1.0:
     parse-json "^4.0.0"
 
 countly-sdk-react-native-bridge@^20.11.7:
-  version "20.11.7"
-  resolved "https://registry.yarnpkg.com/countly-sdk-react-native-bridge/-/countly-sdk-react-native-bridge-20.11.7.tgz#4801b8adc55e3956725684216658048e57463d7f"
-  integrity sha512-eMuXe73bjxu5SjSfcwTmQUIW9+J4rDlQy8x2uGgXF7DnmGb+fK3l0XUtZyuh2SzrbmnIejrOWCdSU0VPpYsbgw==
+  version "20.11.8"
+  resolved "https://registry.yarnpkg.com/countly-sdk-react-native-bridge/-/countly-sdk-react-native-bridge-20.11.8.tgz#2b57171f2f107fd34799df9cdf74b982ad006d68"
+  integrity sha512-V6MEeY77PRG5jN241U3uATPC4tl8rhvabZhgDByWwoV9Fnkc961GlqkW0SYv1x53iIkA8F+C0ITHE4wMPGLY2g==
 
 create-react-class@^15.6.3:
   version "15.6.3"
