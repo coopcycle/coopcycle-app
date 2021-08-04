@@ -51,6 +51,10 @@ export const SESSION_EXPIRED = '@checkout/SESSION_EXPIRED'
 export const SET_ADDRESS_MODAL_HIDDEN = '@checkout/SET_ADDRESS_MODAL_HIDDEN'
 export const SET_ADDRESS_MODAL_MESSAGE = '@checkout/SET_ADDRESS_MODAL_MESSAGE'
 
+export const LOAD_PAYMENT_METHODS_REQUEST = '@checkout/LOAD_PAYMENT_METHODS_REQUEST'
+export const LOAD_PAYMENT_METHODS_SUCCESS = '@checkout/LOAD_PAYMENT_METHODS_SUCCESS'
+export const LOAD_PAYMENT_METHODS_FAILURE = '@checkout/LOAD_PAYMENT_METHODS_FAILURE'
+
 /*
  * Action Creators
  */
@@ -91,6 +95,10 @@ export const hideExpiredSessionModal = createAction(HIDE_EXPIRED_SESSION_MODAL)
 export const sessionExpired = createAction(SESSION_EXPIRED)
 export const setAddressModalHidden = createAction(SET_ADDRESS_MODAL_HIDDEN)
 export const setAddressModalMessage = createAction(SET_ADDRESS_MODAL_MESSAGE)
+
+export const loadPaymentMethodsRequest = createAction(LOAD_PAYMENT_METHODS_REQUEST)
+export const loadPaymentMethodsSuccess = createAction(LOAD_PAYMENT_METHODS_SUCCESS)
+export const loadPaymentMethodsFailure = createAction(LOAD_PAYMENT_METHODS_FAILURE)
 
 function validateAddress(httpClient, cart, address) {
 
@@ -842,5 +850,22 @@ export function setFulfillmentMethod(method) {
       .catch(e => {
         dispatch(setCheckoutLoading(false))
       })
+  }
+}
+
+export function loadPaymentMethods(method) {
+
+  return (dispatch, getState) => {
+
+    const httpClient = createHttpClient(getState())
+
+    const { cart } = getState().checkout
+
+    dispatch(loadPaymentMethodsRequest())
+
+    httpClient
+      .get(`${cart['@id']}/payment_methods`)
+      .then(res => dispatch(loadPaymentMethodsSuccess(res)))
+      .catch(e => dispatch(loadPaymentMethodsFailure(e)))
   }
 }
