@@ -1,16 +1,29 @@
 import React from 'react'
 import { View, StyleSheet, TouchableOpacity } from 'react-native'
 import { useTranslation } from 'react-i18next'
-import { Text } from 'native-base'
+import { Icon, Text } from 'native-base'
 
 const styles = StyleSheet.create({
+  heading: {
+    textAlign: 'center',
+    marginBottom: 20,
+  },
   button: {
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: '#a94442',
+    backgroundColor: '#f7f7f7',
     padding: 15,
     marginBottom: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  buttonIcon: {
+    marginRight: 5,
   },
 })
+
+const icons = {
+  card: 'credit-card',
+  cash_on_delivery: 'dollar-bill',
+}
 
 const PaymentMethodPicker = ({ methods, onSelect }) => {
 
@@ -18,11 +31,13 @@ const PaymentMethodPicker = ({ methods, onSelect }) => {
 
   return (
     <View>
-      <Text style={{ textAlign: 'center', marginBottom: 10 }}>{ t('SELECT_PAYMENT_METHOD') }</Text>
+      <Text style={ styles.heading }>{ t('SELECT_PAYMENT_METHOD') }</Text>
       <View>
         { methods.map(method => (
-          <TouchableOpacity style={ styles.button }
+          <TouchableOpacity key={ method.type }
+            style={ styles.button }
             onPress={ () => onSelect(method.type) }>
+            <Icon type="Foundation" name={ icons[method.type] } style={ styles.buttonIcon } />
             <Text>{ t(`PAYMENT_METHOD.${method.type}`) }</Text>
           </TouchableOpacity>
         )) }

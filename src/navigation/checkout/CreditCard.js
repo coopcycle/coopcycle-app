@@ -54,7 +54,7 @@ class CreditCard extends Component {
     }
 
     return (
-      <Content contentContainerStyle={ styles.content } padder>
+      <Content contentContainerStyle={ styles.content }>
         <PaymentMethodPicker
           methods={ paymentMethods }
           onSelect={ type => {
