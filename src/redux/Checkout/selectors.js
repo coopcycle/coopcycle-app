@@ -139,6 +139,6 @@ export const selectRestaurants = createSelector(
       }
 
       return NEXT_YEAR
-    }
+    },
   ])
 )

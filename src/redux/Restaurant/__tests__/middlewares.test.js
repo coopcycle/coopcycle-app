@@ -33,7 +33,7 @@ describe('ringOnNewOrderCreated', () => {
     const store = createStore(reducer, preloadedState, applyMiddleware(ringOnNewOrderCreated))
 
     store.dispatch(loadOrdersSuccess([
-      { '@id': '/api/orders/1', state: 'new' }
+      { '@id': '/api/orders/1', state: 'new' },
     ]))
 
     const newState = store.getState()
@@ -79,8 +79,8 @@ describe('ringOnNewOrderCreated', () => {
             event: 'order:created',
             params: {
               order: { '@id': '/api/orders/1', state: 'new' },
-            }
-          }
+            },
+          },
         ],
       },
       restaurant: {
@@ -123,8 +123,8 @@ describe('ringOnNewOrderCreated', () => {
             event: 'order:created',
             params: {
               order: { '@id': '/api/orders/1', state: 'new' },
-            }
-          }
+            },
+          },
         ],
       },
       restaurant: {
@@ -141,7 +141,7 @@ describe('ringOnNewOrderCreated', () => {
       },
       restaurant: {
         orders: [
-          { '@id': '/api/orders/1', state: 'new' }
+          { '@id': '/api/orders/1', state: 'new' },
         ],
       },
     }

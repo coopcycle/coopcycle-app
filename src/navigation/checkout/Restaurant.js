@@ -36,7 +36,7 @@ class Restaurant extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      scrollOffsetY: new Animated.Value(0)
+      scrollOffsetY: new Animated.Value(0),
     }
     this.scrollOffsetY = new Animated.Value(0)
   }

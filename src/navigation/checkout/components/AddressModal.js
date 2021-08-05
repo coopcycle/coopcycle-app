@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 import {
-  Text, Button, Icon
+  Text, Button, Icon,
 } from 'native-base'
 import Modal from 'react-native-modal'
 

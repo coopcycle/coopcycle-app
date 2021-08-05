@@ -173,7 +173,7 @@ function mapStateToProps(state) {
   const groupBy = _.groupBy(ranges, item => rangeAsDateLabel(item))
   const timesByDate = _.mapValues(groupBy, items => _.map(items, item => ({
     label: rangeAsTimeLabel(item),
-    value: rangeAsString(item)
+    value: rangeAsString(item),
   })))
 
   return {

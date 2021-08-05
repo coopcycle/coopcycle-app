@@ -74,7 +74,7 @@ class MoreInfos extends Component {
 
     let initialValues = {
       telephone: this.props.telephone,
-      notes: ''
+      notes: '',
     }
 
     if (this.props.fulfillmentMethod === 'delivery') {
@@ -177,7 +177,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     height: 40,
     padding: 5,
-    color: '#333'
+    color: '#333',
   },
   textarea: {
     height: (25 * 3),

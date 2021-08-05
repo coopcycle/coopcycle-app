@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
   icon: {
     fontSize: 36,
     textAlign: 'center',
-  }
+  },
 })
 
 const CashOnDelivery = ({ onSubmit }) => {
