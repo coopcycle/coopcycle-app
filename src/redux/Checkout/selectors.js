@@ -51,6 +51,10 @@ export const selectCartFulfillmentMethod = createSelector(
   selectIsCollectionEnabled,
   (cart, isDeliveryEnabled, isCollectionEnabled) => {
 
+    if (!cart) {
+      return 'delivery'
+    }
+
     if (cart.fulfillmentMethod) {
       return cart.fulfillmentMethod
     }
@@ -73,7 +77,7 @@ export const selectShippingTimeRangeLabel = createSelector(
   state => state.checkout.cart,
   (fulfillmentMethod, timing, cart) => {
 
-    if (_.size(timing) === 0) {
+    if (_.size(timing) === 0 || !cart) {
       return i18n.t('LOADING')
     }
 
