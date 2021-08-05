@@ -18,9 +18,9 @@ import {
   startTaskSuccess,
   markTaskDoneSuccess,
   markTaskFailedSuccess,
-} from "../Courier";
+} from '../Courier';
 
-import { isSameDate } from "./utils";
+import { isSameDate } from './utils';
 
 /*
  * Action Types
@@ -264,11 +264,11 @@ export function createTask(task) {
     dispatch(createTaskRequest())
 
     return httpClient.post('/api/tasks', task)
-      .then(task => {
+      .then(t => {
         let date = selectSelectedDate(getState())
 
-        if (isSameDate(task, date)) {
-          dispatch(createTaskSuccess(task))
+        if (isSameDate(t, date)) {
+          dispatch(createTaskSuccess(t))
         }
 
 

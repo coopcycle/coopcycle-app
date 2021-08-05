@@ -9,7 +9,7 @@ export default ({ getState, dispatch }) => {
   return (next) => (action) => {
 
     if (!initialized) {
-      const unsubscribe = NetInfo.addEventListener(state => {
+      NetInfo.addEventListener(state => {
         dispatch(setInternetReachable(state.isInternetReachable))
       })
       initialized = true

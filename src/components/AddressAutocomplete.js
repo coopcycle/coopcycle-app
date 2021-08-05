@@ -307,7 +307,7 @@ class AddressAutocomplete extends Component {
         results: this.props.addresses.map(address => ({
           ...address,
           type: 'fuse',
-        }))
+        })),
       })
     }
     if (this.props.onFocus && typeof this.props.onFocus === 'function') {
@@ -317,7 +317,7 @@ class AddressAutocomplete extends Component {
 
   onTextInputBlur(e) {
     this.setState({
-      results: []
+      results: [],
     })
     if (this.props.onBlur && typeof this.props.onBlur === 'function') {
       this.props.onBlur(e)

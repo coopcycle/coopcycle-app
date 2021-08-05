@@ -68,7 +68,7 @@ const SectionHeader = ({ section: { title } }) => (
 const itemsToSections = (itemsGroupedByVendor) =>
   _.map(itemsGroupedByVendor, (items) => ({
     title: items[0].vendor.name,
-    data: items
+    data: items,
   }))
 
 class OrderItems extends Component {
