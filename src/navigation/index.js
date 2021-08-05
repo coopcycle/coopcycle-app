@@ -22,6 +22,9 @@ import StoreDelivery from './store/Delivery'
 import StoreNewDeliveryAddress from './store/NewDeliveryAddress'
 import StoreNewDeliveryForm from './store/NewDeliveryForm'
 
+import CheckoutPaymentMethodCard from './checkout/PaymentMethodCard'
+import CheckoutPaymentMethodCashOnDelivery from './checkout/PaymentMethodCashOnDelivery'
+
 export default {
   RestaurantsPage: require('./checkout/Search'),
   CheckoutRestaurant: require('./checkout/Restaurant'),
@@ -47,6 +50,8 @@ export default {
   CourierTaskListPage: require('./courier/TaskListPage'),
   CourierSettings: require('./courier/Settings'),
   CourierSettingsTags: require('./courier/Tags'),
+  CheckoutPaymentMethodCard,
+  CheckoutPaymentMethodCashOnDelivery,
   AccountHome: require('./account/Home'),
   AccountLoginRegister: require('./account/LoginRegister'),
   AccountAddressesPage: require('./account/AccountAddressesPage'),

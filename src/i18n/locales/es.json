@@ -375,6 +375,12 @@
         "NOTIFICATION_TASKS_REMOVED": "{{ count }} removida",
         "NOTIFICATION_TASKS_ADDED": "{{ count }} añadida",
         "RESTAURANT_SETTINGS_MANAGE_PRODUCT_OPTIONS": "Administrar opciones de productos",
-        "NOT_AVAILABLE_ATM": "No disponible en este momento"
+        "NOT_AVAILABLE_ATM": "No disponible en este momento",
+        "SELECT_PAYMENT_METHOD": "Seleccione un método de pago",
+        "PAYMENT_METHOD": {
+            "card": "Pago con tarjeta",
+            "cash_on_delivery": "Pago en efectivo"
+        },
+        "CASH_ON_DELIVERY_DISCLAIMER": "El pago se realizará contra reembolso. Por favor, prepare la cantidad exacta y asegúrese de estar al alcance."
     }
 }

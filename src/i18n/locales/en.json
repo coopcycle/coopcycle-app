@@ -374,6 +374,12 @@
             "message": "When authenticated as a messenger, this app collects location data to allow dispatchers to assign jobs accurately",
             "positiveAction": "Change to « {backgroundPermissionOptionLabel} »"
         },
-        "RESTAURANT_SETTINGS_MANAGE_PRODUCT_OPTIONS": "Manage product options"
+        "RESTAURANT_SETTINGS_MANAGE_PRODUCT_OPTIONS": "Manage product options",
+        "SELECT_PAYMENT_METHOD": "Select a payment method",
+        "PAYMENT_METHOD": {
+            "card": "Credit card",
+            "cash_on_delivery": "Cash on delivery"
+        },
+        "CASH_ON_DELIVERY_DISCLAIMER": "You are going to pay by cash on delivery. Please prepare the exact amount and make sure to be reachable."
     }
 }
