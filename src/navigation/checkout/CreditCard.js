@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux'
+import { Content } from 'native-base';
 
 import CreditCardComp from './components/CreditCard'
-import { checkout } from '../../redux/Checkout/actions'
+import CashComp from './components/CashOnDelivery'
+import PaymentMethodPicker from './components/PaymentMethodPicker'
+import { checkout, checkoutWithCash, loadPaymentMethods } from '../../redux/Checkout/actions'
 
 class CreditCard extends Component {
 
-  _onSubmit(values) {
+  _onSubmitCard(values) {
 
     const { number, expiry, cvc, cardholderName } = values
     const [ expMonth, expYear ] = expiry.split('/')
@@ -15,34 +18,75 @@ class CreditCard extends Component {
     this.props.checkout(number, expMonth, expYear, cvc, cardholderName)
   }
 
+  _onSubmitCash() {
+    this.props.checkoutWithCash()
+  }
+
+  componentDidMount() {
+    this.props.loadPaymentMethods()
+  }
+
   render() {
 
-    const { cart, errors } = this.props
+    const { cart, errors, paymentMethods } = this.props
 
-    if (!cart) {
+    if (!cart || paymentMethods.length === 0) {
 
       return (
         <View />
       )
     }
 
+    if (paymentMethods.length === 1 && paymentMethods[0].type === 'card') {
+
+      return (
+        <CreditCardComp cart={ cart } errors={ errors }
+          onSubmit={ this._onSubmitCard.bind(this) } />
+      )
+    }
+
+    if (paymentMethods.length === 1 && paymentMethods[0].type === 'cash_on_delivery') {
+
+      return (
+        <CashComp
+          onSubmit={ this._onSubmitCash.bind(this) } />
+      )
+    }
+
     return (
-      <CreditCardComp cart={ cart } errors={ errors }
-        onSubmit={ this._onSubmit.bind(this) } />
+      <Content contentContainerStyle={ styles.content } padder>
+        <PaymentMethodPicker
+          methods={ paymentMethods }
+          onSelect={ type => {
+            const routeName = type === 'cash_on_delivery' ?
+              'CheckoutPaymentMethodCashOnDelivery' : 'CheckoutPaymentMethodCard'
+            this.props.navigation.navigate(routeName)
+          }} />
+      </Content>
     )
   }
 }
+
+const styles = StyleSheet.create({
+  content: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+})
 
 function mapStateToProps(state) {
   return {
     cart: state.checkout.cart,
     errors: state.checkout.errors,
+    paymentMethods: state.checkout.paymentMethods,
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     checkout: (number, expMonth, expYear, cvc) => dispatch(checkout(number, expMonth, expYear, cvc)),
+    loadPaymentMethods: () => dispatch(loadPaymentMethods()),
+    checkoutWithCash: () => dispatch(checkoutWithCash()),
   }
 }
 

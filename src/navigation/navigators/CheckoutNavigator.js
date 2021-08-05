@@ -118,6 +118,18 @@ export default createStackNavigator({
       title: i18n.t('CHECKOUT_MORE_INFOS'),
     }),
   },
+  CheckoutPaymentMethodCard: {
+    screen: screens.CheckoutPaymentMethodCard,
+    navigationOptions: ({ navigation }) => ({
+      title: i18n.t('PAYMENT_METHOD.card'),
+    }),
+  },
+  CheckoutPaymentMethodCashOnDelivery: {
+    screen: screens.CheckoutPaymentMethodCashOnDelivery,
+    navigationOptions: ({ navigation }) => ({
+      title: i18n.t('PAYMENT_METHOD.cash_on_delivery'),
+    }),
+  },
 }, {
   mode: 'modal',
   defaultNavigationOptions,

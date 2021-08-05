@@ -582,26 +582,28 @@ export function init(restaurant) {
   }
 }
 
+function handleSuccessNav(dispatch, order) {
+  // First, reset checkout stack
+  NavigationHolder.dispatch(StackActions.popToTop())
+  // Then, navigate to order screen
+  NavigationHolder.dispatch(NavigationActions.navigate({
+    routeName: 'AccountNav',
+    // We skip the AccountOrders screen
+    action: NavigationActions.navigate({
+      routeName: 'AccountOrder',
+      params: { order },
+    }),
+  }))
+
+  // Make sure to clear AFTER navigation has been reset
+  dispatch(clear())
+  dispatch(checkoutSuccess(order))
+}
+
 function handleSuccess(dispatch, httpClient, cart, paymentIntentId) {
   httpClient
     .put(cart['@id'] + '/pay', { paymentIntentId })
-    .then(order => {
-      // First, reset checkout stack
-      NavigationHolder.dispatch(StackActions.popToTop())
-      // Then, navigate to order screen
-      NavigationHolder.dispatch(NavigationActions.navigate({
-        routeName: 'AccountNav',
-        // We skip the AccountOrders screen
-        action: NavigationActions.navigate({
-          routeName: 'AccountOrder',
-          params: { order },
-        }),
-      }))
-
-      // Make sure to clear AFTER navigation has been reset
-      dispatch(clear())
-      dispatch(checkoutSuccess(order))
-    })
+    .then(o => handleSuccessNav(dispatch, o))
     .catch(e => dispatch(checkoutFailure(e)))
 }
 
@@ -867,5 +869,23 @@ export function loadPaymentMethods(method) {
       .get(`${cart['@id']}/payment_methods`)
       .then(res => dispatch(loadPaymentMethodsSuccess(res)))
       .catch(e => dispatch(loadPaymentMethodsFailure(e)))
+  }
+}
+
+export function checkoutWithCash() {
+
+  return (dispatch, getState) => {
+
+    const { httpClient, settings } = getState().app
+    const { cart } = getState().checkout
+
+    dispatch(checkoutRequest())
+
+    httpClient
+      .put(cart['@id'] + '/pay', { cashOnDelivery: true })
+      .then(order => {
+        handleSuccessNav(dispatch, order)
+      })
+      .catch(e => dispatch(checkoutFailure(e)))
   }
 }
