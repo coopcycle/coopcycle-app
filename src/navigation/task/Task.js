@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Alert, SafeAreaView, StyleSheet, View } from 'react-native'
+import { Alert, StyleSheet, View } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
 import { Text } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import _ from 'lodash'

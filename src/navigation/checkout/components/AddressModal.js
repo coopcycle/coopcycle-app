@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { ActivityIndicator, Dimensions, StyleSheet, View, Animated, Keyboard, Platform, SafeAreaView, TouchableOpacity } from 'react-native'
+import { ActivityIndicator, Dimensions, StyleSheet, View, Animated, Keyboard, Platform, TouchableOpacity } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'

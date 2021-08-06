@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { Text } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import _ from 'lodash'
-import { SafeAreaView } from 'react-navigation'
+import { SafeAreaView } from 'react-native-safe-area-context'
 import axios from 'axios'
 
 import { localeDetector } from '../../i18n'
