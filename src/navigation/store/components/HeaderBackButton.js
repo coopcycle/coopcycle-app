@@ -2,14 +2,12 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { HeaderBackButton } from '@react-navigation/stack'
-import { useNavigation } from '@react-navigation/native'
 
 const HeaderBackButtonWrapper = (props) => {
 
   const { t } = useTranslation()
-  const navigation = useNavigation()
 
-  let { onPress, title, backImage, currentRoute, ...otherProps } = props
+  let { title, currentRoute, ...otherProps } = props
 
   if (currentRoute === 'StoreNewDeliveryAddress') {
     title = t('CANCEL')
@@ -18,10 +16,7 @@ const HeaderBackButtonWrapper = (props) => {
   }
 
   return (
-    <HeaderBackButton { ...otherProps }
-      onPress={ () => navigation.goBack(null) }
-      title={ title }
-      backImage={ backImage } />
+    <HeaderBackButton { ...otherProps } title={ title } />
   )
 }
 

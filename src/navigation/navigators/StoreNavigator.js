@@ -1,9 +1,10 @@
 import React from 'react'
-import { createStackNavigator, HeaderBackButton } from 'react-navigation-stack'
+import { createStackNavigator } from 'react-navigation-stack'
 
 import i18n from '../../i18n'
 import screens, { defaultNavigationOptions, headerLeft } from '..'
 import HeaderButton from '../../components/HeaderButton'
+import HeaderBackButton from '../store/components/HeaderBackButton'
 
 const MainNavigator = createStackNavigator({
   StoreHome: {
@@ -75,27 +76,8 @@ export default createStackNavigator({
     navigationOptions: ({ navigation }) => ({
       // Use header = null to get rid of the header
       // The screen's header will be used
-      // headerShown: false,
       title: i18n.t('STORE_NEW_DELIVERY'),
-      headerLeft: (props) => {
-
-        const routeName = getActiveRouteName(navigation.state)
-
-        let { onPress, title, backImage, ...otherProps } = props
-
-        if (routeName === 'StoreNewDeliveryAddress') {
-          title = i18n.t('CANCEL')
-        } else {
-          title = 'Back'
-        }
-
-        return (
-          <HeaderBackButton { ...otherProps }
-            onPress={ () => navigation.goBack(null) }
-            title={ title }
-            backImage={ backImage } />
-        )
-      },
+      headerLeft: (props) => <HeaderBackButton { ...props } />
     }),
   },
 }, {
