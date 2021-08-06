@@ -93,7 +93,7 @@
         "PASSWORD": "Contraseña",
         "EMAIL": "Correo electrónico",
         "CHECKOUT_FROM": "Desde el {{date}}",
-        "ORDER": "Hacer el pedido",
+        "ORDER": "Realizar el pedido",
         "INVALID_USER_PASS": "Usuario y/o constraseña inexistente",
         "NO_TASKS": "No hay tareas planeadas hoy",
         "NOTES": "Notas",
