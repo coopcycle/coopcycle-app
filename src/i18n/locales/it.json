@@ -215,7 +215,7 @@
         "CHECKOUT_PRODUCT_OPTIONS_CHOICES_BETWEEN": "Tra {{min}} e {{max}} opzioni",
         "ADD_TO_CART": "Aggiungi al carrello",
         "NOTIFICATION_TASKS_CHANGED_TITLE": "Attività cambiate",
-        "NOTIFICATION_TASKS_CHANGED_DESC": "Le tue attività dal {{date}} sono state aggiornate",
+        "NOTIFICATION_TASKS_CHANGED_DESC": "I tuoi incarichi dal {{date}} sono stati aggiornati, {{added}}",
         "NOTIFICATION_ORDER_CREATED_TITLE": "Nuovo ordine",
         "NOTIFICATION_ORDER_CREATED_DESC": "Un nuovo ordine per il {{date}} è stato creato",
         "UNASSIGNED_TASKS": "Non assegnato",
@@ -346,9 +346,34 @@
         "TASK_COMPLETE_ALERT_NEGATIVE": "▶ Inizio",
         "TASK_COMPLETE_ALERT_POSITIVE": "✓ Completa",
         "FULFILLMENT_METHOD": {
-            "collection": "Collezione",
-            "delivery": "Spedizione"
+            "collection": "Ritiro al locale",
+            "delivery": "Consegna"
         },
-        "ENTER_POSTCODE": "Inserisci il tuo codice postale"
+        "ENTER_POSTCODE": "Inserisci il tuo codice postale",
+        "RESTAURANT_SETTINGS_MANAGE_PRODUCT_OPTIONS": "Gestire le opzioni del prodotto",
+        "BACKGROUND_PERMISSION_RATIONALE": {
+            "positiveAction": "Cambiare a « {backgroundPermissionOptionLabel} »",
+            "message": "Quando autenticato come corriere, questa app raccoglie dati di localizzazione per permettere ai dispatcher di assegnare gli incarichi in maniera accurata",
+            "title": "Permettere {applicationName} l'accesso alla localizzazione di questo dispositivo anche quando la app è chiusa o non in uso"
+        },
+        "BACKGROUND_PERMISSION_DISCLOSURE": {
+            "message": "Per permettere ai dispatcher di assegnare gli incarichi in maniera precisa, permettere a CoopCycle l'accesso alla localizzazione del dispositivo anche quando la app è chiusa o non in uso.\n\nQuesti dati saranno caricati sul server di CoopCycle al quale sei connesso.",
+            "title": "Usa il tuo indirizzo"
+        },
+        "NOT_AVAILABLE_ATM": "Non disponibile al momento",
+        "NOTIFICATION_TASKS_REMOVED": "{{ count }} rimosso",
+        "NOTIFICATION_TASKS_ADDED": "{{ count }} aggiunto",
+        "RESTAURANT_ORDER_LIST_PICKED_ORDERS": "Ordini ritirati ({{count}})",
+        "CARDHOLDER_NAME": "Nome del titolare della carta",
+        "COMING_SOON": "Prossimamente",
+        "AVAILABLE": "Disponibile",
+        "SELECTED": "Selezionato",
+        "LEARN_MORE": "Scopri di più",
+        "CART_COLLECTION_DISCLAIMER": "Hai scelto di ritirare l'ordine al locale.\nSei responsabile del ritiro dell'ordine nel giorno e all'ora selezionata.\nIn caso di problemi, contatta il locale al {{telephone}}. \nNota bene - in caso di mancato ritiro, verrà addebitato l'intero ammontare dell'ordine.",
+        "CART_COLLECTION_TIME_DIFF": "Ritiro in {{diff}} minuti",
+        "CART_COLLECTION_TIME": "Ritiro {{- fromNow}}",
+        "RESTAURANT_ORDER_REFUSE_REASON_ORDER_WILL_BE_CAPTURED": "L'ordine sarà cancellato, ma non sarà rimborsato al cliente",
+        "RESTAURANT_ORDER_REFUSE_REASON_NO_SHOW": "Il cliente non è arrivato",
+        "RESTAURANT_ORDER_BUTTON_FULFILL": "Completare"
     }
 }
