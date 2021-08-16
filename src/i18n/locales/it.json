@@ -348,6 +348,7 @@
         "FULFILLMENT_METHOD": {
             "collection": "Collezione",
             "delivery": "Spedizione"
-        }
+        },
+        "ENTER_POSTCODE": "Inserisci il tuo codice postale"
     }
 }
