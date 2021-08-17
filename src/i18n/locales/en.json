@@ -380,6 +380,7 @@
             "card": "Credit card",
             "cash_on_delivery": "Cash on delivery"
         },
-        "CASH_ON_DELIVERY_DISCLAIMER": "You are going to pay by cash on delivery. Please prepare the exact amount and make sure to be reachable."
+        "CASH_ON_DELIVERY_DISCLAIMER": "You are going to pay by cash on delivery. Please prepare the exact amount and make sure to be reachable.",
+        "STORES": "Stores"
     }
 }
