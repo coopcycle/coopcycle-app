@@ -1,22 +1,24 @@
 import React from 'react'
 import { Icon} from 'native-base'
-import { createStackNavigator } from 'react-navigation-stack'
-import { createBottomTabNavigator } from 'react-navigation-tabs'
+import { createStackNavigator } from '@react-navigation/stack'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { createCompatNavigatorFactory } from '@react-navigation/compat'
 
 import i18n from '../../i18n'
 import HeaderRightButton from '../dispatch/HeaderRightButton'
 import TaskNavigator from './TaskNavigator'
 import screens, { defaultNavigationOptions, headerLeft } from '..'
+import HeaderBackButton from '../task/components/HeaderBackButton'
 
-const Tabs = createBottomTabNavigator({
+const Tabs = createCompatNavigatorFactory(createBottomTabNavigator)({
   DispatchUnassignedTasks: {
     screen: screens.DispatchUnassignedTasks,
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('DISPATCH_UNASSIGNED_TASKS'),
       tabBarTestID: 'dispatch:unassignedTab',
-      tabBarIcon: ({ focused, horizontal, tintColor }) => {
+      tabBarIcon: ({ focused, horizontal, color }) => {
         return (
-          <Icon type="FontAwesome" name="clock-o" style={{ color: tintColor }} />
+          <Icon type="FontAwesome" name="clock-o" style={{ color }} />
         )
       },
     }),
@@ -26,9 +28,9 @@ const Tabs = createBottomTabNavigator({
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('DISPATCH_TASK_LISTS'),
       tabBarTestID: 'dispatch:assignedTab',
-      tabBarIcon: ({ focused, horizontal, tintColor }) => {
+      tabBarIcon: ({ focused, horizontal, color }) => {
         return (
-          <Icon type="FontAwesome" name="user" style={{ color: tintColor }} />
+          <Icon type="FontAwesome" name="user" style={{ color }} />
         )
       },
     }),
@@ -40,7 +42,7 @@ const Tabs = createBottomTabNavigator({
   },
 })
 
-const MainNavigator = createStackNavigator({
+const MainNavigator = createCompatNavigatorFactory(createStackNavigator)({
   DispatchHome: {
     screen: Tabs,
     navigationOptions: ({ navigation }) => ({
@@ -58,7 +60,11 @@ const MainNavigator = createStackNavigator({
   Task: {
     screen: TaskNavigator,
     navigationOptions: ({ navigation }) => ({
-      title: `${i18n.t('TASK')} #${navigation.state.params.task.id}`,
+      title: `${i18n.t('TASK')} #${navigation.state.params.params.task.id}`,
+      // We need to override the back button behavior
+      // because otherwise when we hit "back" on the PoD screen,
+      // it goes back to the task screen
+      headerLeft: (props) => <HeaderBackButton { ...props } />
     }),
   },
 }, {
@@ -67,7 +73,7 @@ const MainNavigator = createStackNavigator({
   defaultNavigationOptions,
 })
 
-const AddTaskNavigator = createStackNavigator({
+const AddTaskNavigator = createCompatNavigatorFactory(createStackNavigator)({
   DispatchAddTaskHome: {
     screen: screens.DispatchAddTask,
     navigationOptions: ({ navigation }) => ({
@@ -89,7 +95,7 @@ const AddTaskNavigator = createStackNavigator({
   defaultNavigationOptions,
 })
 
-export default createStackNavigator({
+export default createCompatNavigatorFactory(createStackNavigator)({
   Main: {
     screen: MainNavigator,
     navigationOptions: ({ navigation }) => ({

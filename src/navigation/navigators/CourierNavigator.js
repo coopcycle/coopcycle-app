@@ -1,23 +1,25 @@
 import React from 'react'
-import { View } from 'react-native'
-import { Button, Icon } from 'native-base'
-import { createStackNavigator } from 'react-navigation-stack'
-import { createBottomTabNavigator } from 'react-navigation-tabs'
+import { View, TouchableOpacity, StyleSheet } from 'react-native'
+import { Icon } from 'native-base'
+import { createStackNavigator } from '@react-navigation/stack'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { createCompatNavigatorFactory } from '@react-navigation/compat'
 
 import i18n from '../../i18n'
 import TrackingIcon from '../../components/TrackingIcon'
 import screens, { defaultNavigationOptions, headerLeft } from '..'
 import TaskNavigator from './TaskNavigator'
+import HeaderBackButton from '../task/components/HeaderBackButton'
 
-const Tabs = createBottomTabNavigator({
+const Tabs = createCompatNavigatorFactory(createBottomTabNavigator)({
   CourierTasks: {
     screen: screens.CourierTasksPage,
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('TASKS'),
       tabBarTestID: 'messengerTabMap',
-      tabBarIcon: ({ focused, horizontal, tintColor }) => {
+      tabBarIcon: ({ color }) => {
         return (
-          <Icon type="FontAwesome" name="map" style={{ color: tintColor }} />
+          <Icon type="FontAwesome" name="map" style={{ color }} />
         )
       },
     }),
@@ -27,9 +29,9 @@ const Tabs = createBottomTabNavigator({
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('TASK_LIST'),
       tabBarTestID: 'messengerTabList',
-      tabBarIcon: ({ focused, horizontal, tintColor }) => {
+      tabBarIcon: ({ color }) => {
         return (
-          <Icon type="FontAwesome" name="list" style={{ color: tintColor }} />
+          <Icon type="FontAwesome" name="list" style={{ color }} />
         )
       },
     }),
@@ -40,20 +42,39 @@ const Tabs = createBottomTabNavigator({
   },
 })
 
-const MainNavigator = createStackNavigator({
+const styles = StyleSheet.create({
+  buttonBar: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  button: {
+    paddingHorizontal: 10,
+  },
+})
+
+const ButtonWithIcon = ({ name, onPress }) => {
+
+  return (
+    <TouchableOpacity onPress={ onPress } style={ styles.button }>
+      <Icon name={ name } style={{ color: 'white' }} />
+    </TouchableOpacity>
+  )
+}
+
+const MainNavigator = createCompatNavigatorFactory(createStackNavigator)({
   CourierHome: {
     screen: Tabs,
     navigationOptions: ({ navigation }) => ({
       title: i18n.t('COURIER'),
       headerLeft: headerLeft(navigation, 'menuBtnCourier'),
       headerRight: () =>
-        <View style={{flex: 1, flexDirection: 'row', alignItems: 'flex-end'}}>
-          <Button transparent onPress={() => navigation.navigate('CourierSettings')}>
-            <Icon name="settings" style={{ color: 'white' }} />
-          </Button>
-          <Button transparent>
+        <View style={ styles.buttonBar }>
+          <ButtonWithIcon name="settings" onPress={ () => navigation.navigate('CourierSettings') } />
+          <TouchableOpacity style={ styles.button }>
             <TrackingIcon />
-          </Button>
+          </TouchableOpacity>
         </View>
       ,
     }),
@@ -61,7 +82,11 @@ const MainNavigator = createStackNavigator({
   Task: {
     screen: TaskNavigator,
     navigationOptions: ({ navigation }) => ({
-      title: `${i18n.t('TASK')} #${navigation.state.params.task.id}`,
+      title: `${i18n.t('TASK')} #${navigation.state.params.params.task.id}`,
+      // We need to override the back button behavior
+      // because otherwise when we hit "back" on the PoD screen,
+      // it goes back to the task screen
+      headerLeft: (props) => <HeaderBackButton { ...props } />
     }),
   },
 }, {
@@ -70,7 +95,7 @@ const MainNavigator = createStackNavigator({
   defaultNavigationOptions,
 })
 
-const SettingsStack = createStackNavigator({
+const SettingsStack = createCompatNavigatorFactory(createStackNavigator)({
   CourierSettings: {
     screen: screens.CourierSettings,
     navigationOptions: ({ navigation }) => ({
@@ -87,7 +112,7 @@ const SettingsStack = createStackNavigator({
   defaultNavigationOptions,
 })
 
-export default createStackNavigator({
+export default createCompatNavigatorFactory(createStackNavigator)({
   Main: {
     screen: MainNavigator,
     navigationOptions: ({ navigation }) => ({

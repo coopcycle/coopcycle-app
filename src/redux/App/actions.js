@@ -1,5 +1,5 @@
 import { createAction } from 'redux-actions'
-import { NavigationActions } from 'react-navigation'
+import { NavigationActions } from '@react-navigation/compat'
 import tracker from '../../analytics/Tracker'
 import analyticsEvent from '../../analytics/Event'
 import userProperty from '../../analytics/UserProperty'
@@ -10,6 +10,7 @@ import Settings from '../../Settings'
 import NavigationHolder from '../../NavigationHolder'
 import i18n from '../../i18n'
 import { setCurrencyCode } from '../../utils/formatting'
+import { selectInitialRouteName } from './selectors'
 
 /*
  * Action Types
@@ -173,84 +174,77 @@ function setRolesProperty(user) {
 
 function navigateToHome(dispatch, getState) {
 
-  const { httpClient, user } = getState().app
+  dispatch(loadMyRestaurantsRequest())
 
-  if (user && user.isAuthenticated()) {
+  loadAll(getState).then(values => {
+    const [ restaurants, stores ] = values
 
-    if (user.hasRole('ROLE_ADMIN') || user.hasRole('ROLE_RESTAURANT') || user.hasRole('ROLE_STORE')) {
-
-      const promises = []
-
-      promises.push(new Promise((resolve, reject) => {
-        if (user.hasRole('ROLE_ADMIN') || user.hasRole('ROLE_RESTAURANT')) {
-          const req = user.hasRole('ROLE_ADMIN') ?
-            httpClient.get('/api/restaurants') : httpClient.get('/api/me/restaurants')
-          req
-            .then(res => {
-              resolve(res['hydra:member'])
-            })
-            .catch(e => {
-              console.log(e)
-              resolve([])
-            })
-        } else {
-          resolve([])
-        }
-      }))
-      promises.push(new Promise((resolve, reject) => {
-        if (user.hasRole('ROLE_STORE')) {
-          const req = httpClient.get('/api/me/stores')
-          req
-            .then(res => {
-              resolve(res['hydra:member'])
-            })
-            .catch(e => {
-              console.log(e)
-              resolve([])
-            })
-        } else {
-          resolve([])
-        }
-      }))
-
-      dispatch(loadMyRestaurantsRequest())
-
-      Promise.all(promises)
-        .then(values => {
-
-          const [ restaurants, stores ] = values
-
-          dispatch(loadMyRestaurantsSuccess(restaurants))
-
-          if (stores) {
-            dispatch(_loadMyStoresSuccess(stores))
-          }
-
-          // Users may have both ROLE_ADMIN & ROLE_COURIER
-          if (user.hasRole('ROLE_COURIER')) {
-            NavigationHolder.navigate('CourierHome')
-          } else if (user.hasRole('ROLE_ADMIN')) {
-            NavigationHolder.navigate('DispatchHome')
-          } else {
-            if (restaurants.length > 0) {
-              NavigationHolder.navigate('RestaurantHome')
-            } else if (stores && stores.length > 0) {
-              NavigationHolder.navigate('StoreHome')
-            } else {
-              NavigationHolder.navigate('CheckoutHome')
-            }
-          }
-
-        })
-
-    } else if (user.hasRole('ROLE_COURIER')) {
-      return NavigationHolder.navigate('CourierHome')
-    } else {
-      NavigationHolder.navigate('CheckoutHome')
+    dispatch(loadMyRestaurantsSuccess(restaurants))
+    if (stores) {
+      dispatch(_loadMyStoresSuccess(stores))
     }
-  } else {
-    NavigationHolder.navigate('CheckoutHome')
-  }
+
+    NavigationHolder.navigate(selectInitialRouteName(getState()))
+  })
+}
+
+function loadAll(getState) {
+
+  const defaultValues = [
+    [], []
+  ]
+
+  return new Promise((resolve) => {
+
+    const { httpClient, user } = getState().app
+
+    if (user && user.isAuthenticated()) {
+
+      if (user.hasRole('ROLE_ADMIN') || user.hasRole('ROLE_RESTAURANT') || user.hasRole('ROLE_STORE')) {
+
+        const promises = []
+
+        promises.push(new Promise((resolve, reject) => {
+          if (user.hasRole('ROLE_ADMIN') || user.hasRole('ROLE_RESTAURANT')) {
+            const req = user.hasRole('ROLE_ADMIN') ?
+              httpClient.get('/api/restaurants') : httpClient.get('/api/me/restaurants')
+            req
+              .then(res => {
+                resolve(res['hydra:member'])
+              })
+              .catch(e => {
+                resolve([])
+              })
+          } else {
+            resolve([])
+          }
+        }))
+        promises.push(new Promise((resolve, reject) => {
+          if (user.hasRole('ROLE_STORE')) {
+            const req = httpClient.get('/api/me/stores')
+            req
+              .then(res => {
+                resolve(res['hydra:member'])
+              })
+              .catch(e => {
+                resolve([])
+              })
+          } else {
+            resolve([])
+          }
+        }))
+
+        Promise.all(promises)
+          .then(values => {
+            resolve(values)
+          })
+      } else {
+        resolve(defaultValues)
+      }
+    } else {
+      resolve(defaultValues)
+    }
+  })
 }
 
 export function selectServer(server) {
@@ -286,12 +280,6 @@ export function selectServer(server) {
           })
           .then(() => dispatch(_clearSelectServerError()))
           .then(() => dispatch(setLoading(false)))
-          .then(() => NavigationHolder.dispatch(
-            NavigationActions.navigate({
-              routeName: 'CheckoutHome',
-              key: 'CheckoutHome',
-            })
-          ))
       )
       .catch((err) => {
         setTimeout(() => {
@@ -318,7 +306,16 @@ export function bootstrap(baseURL, user) {
     dispatch(setBaseURL(baseURL))
     setRolesProperty(user)
 
-    setTimeout(() => navigateToHome(dispatch, getState), 250)
+    dispatch(loadMyRestaurantsRequest())
+
+    const values = await loadAll(getState)
+
+    const [ restaurants, stores ] = values
+
+    dispatch(loadMyRestaurantsSuccess(restaurants))
+    if (stores) {
+      dispatch(_loadMyStoresSuccess(stores))
+    }
   }
 }
 
@@ -526,7 +523,5 @@ export function resetServer() {
       }
 
       dispatch(setBaseURL(null))
-
-      NavigationHolder.navigate('ConfigureServer')
   }
 }

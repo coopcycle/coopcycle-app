@@ -93,7 +93,7 @@ class Menu extends Component {
     const hasBadges = !!item.suitableForDiet || !!item.allergens
 
     return (
-      <TouchableOpacity style={ styles.itemContainer } { ...itemProps } testID={ `menuItem:${section.index}:${index}` }>
+      <TouchableOpacity style={ styles.itemContainer } { ...itemProps } testID={ `menuItem:${section.index}:${index}` }>
         <View style={ styles.item }>
           <View style={ styles.leftCol }>
             <Text style={ itemNameStyle }>{ item.name }</Text>

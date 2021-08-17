@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Alert, StyleSheet, View } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
 import { Text } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import _ from 'lodash'
@@ -35,14 +34,14 @@ class Task extends Component {
   }
 
   componentDidMount() {
-    this.didFocusListener = this.props.navigation.addListener(
-      'didFocus',
-      payload => this.setState({ canRenderMap: true })
+    this.unsubscribeFromFocusListener = this.props.navigation.addListener(
+      'focus',
+      () => this.setState({ canRenderMap: true })
     )
   }
 
   componentWillUnmount() {
-    this.didFocusListener.remove()
+    this.unsubscribeFromFocusListener()
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -132,7 +131,7 @@ class Task extends Component {
     const tasks = getParam('tasks', [])
 
     return (
-      <SafeAreaView style={{ flex: 1 }}>
+      <View style={{ flex: 1 }}>
         <View style={{ flex: 1 }}>
           <View style={{ height: '35%' }}>
             { this.renderMap() }
@@ -150,7 +149,7 @@ class Task extends Component {
           onPressSuccess={ () => this._complete(true) }
           onPressFailure={ () => this._complete(false) } /> }
         { !this.props.isInternetReachable && <OfflineNotice message={ this.props.t('OFFLINE') } /> }
-      </SafeAreaView>
+      </View>
     )
   }
 }

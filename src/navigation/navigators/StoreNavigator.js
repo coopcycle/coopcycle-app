@@ -1,12 +1,13 @@
 import React from 'react'
-import { createStackNavigator } from 'react-navigation-stack'
+import { createStackNavigator } from '@react-navigation/stack'
+import { createCompatNavigatorFactory } from '@react-navigation/compat'
 
 import i18n from '../../i18n'
 import screens, { defaultNavigationOptions, headerLeft } from '..'
 import HeaderButton from '../../components/HeaderButton'
 import HeaderBackButton from '../store/components/HeaderBackButton'
 
-const MainNavigator = createStackNavigator({
+const MainNavigator = createCompatNavigatorFactory(createStackNavigator)({
   StoreHome: {
     screen: screens.StoreDashboard,
     navigationOptions: ({ navigation }) => {
@@ -35,7 +36,7 @@ const MainNavigator = createStackNavigator({
   defaultNavigationOptions,
 })
 
-const NewDeliveryStack = createStackNavigator({
+const NewDeliveryStack = createCompatNavigatorFactory(createStackNavigator)({
   StoreNewDeliveryAddress: {
     screen: screens.StoreNewDeliveryAddress,
     navigationOptions: ({ navigation }) => ({
@@ -53,18 +54,7 @@ const NewDeliveryStack = createStackNavigator({
   initialRouteName: 'StoreNewDeliveryAddress',
 })
 
-function getActiveRouteName(navigationState) {
-  if (!navigationState) {
-    return null;
-  }
-  const route = navigationState.routes[navigationState.index]
-  if (route.routes) {
-    return getActiveRouteName(route)
-  }
-  return route.routeName
-}
-
-export default createStackNavigator({
+export default createCompatNavigatorFactory(createStackNavigator)({
   StoreHome: {
     screen: MainNavigator,
     navigationOptions: ({ navigation }) => ({
@@ -74,10 +64,8 @@ export default createStackNavigator({
   StoreNewDelivery: {
     screen: NewDeliveryStack,
     navigationOptions: ({ navigation }) => ({
-      // Use header = null to get rid of the header
-      // The screen's header will be used
       title: i18n.t('STORE_NEW_DELIVERY'),
-      headerLeft: (props) => <HeaderBackButton { ...props } />
+      headerLeft: (props) => <HeaderBackButton { ...props } />,
     }),
   },
 }, {

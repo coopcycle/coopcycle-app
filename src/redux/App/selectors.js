@@ -34,3 +34,32 @@ export const selectIsLoading = createSelector(
 )
 
 export const selectIsCentrifugoConnected = state => state.app.isCentrifugoConnected
+
+export const selectInitialRouteName = createSelector(
+  selectUser,
+  state => state.restaurant.myRestaurants,
+  (user, restaurants) => {
+
+    if (user && user.isAuthenticated()) {
+
+      if (user.hasRole('ROLE_ADMIN')) {
+        return 'DispatchNav'
+      }
+
+      if (user.hasRole('ROLE_COURIER')) {
+        return 'CourierNav'
+      }
+
+      if (user.hasRole('ROLE_RESTAURANT') || user.hasRole('ROLE_STORE')) {
+
+        if (restaurants.length > 0) {
+          return 'RestaurantNav'
+        }
+
+        return 'StoreNav'
+      }
+    }
+
+    return 'CheckoutNav'
+  }
+)

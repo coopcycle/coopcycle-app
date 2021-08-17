@@ -6,7 +6,7 @@ import { withTranslation } from 'react-i18next'
 import Sound from 'react-native-sound'
 import moment from 'moment'
 import Modal from 'react-native-modal'
-import { NavigationActions, StackActions } from 'react-navigation'
+import { NavigationActions, StackActions } from '@react-navigation/compat'
 
 import PushNotification from '../notifications'
 import NavigationHolder from '../NavigationHolder'

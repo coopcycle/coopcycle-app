@@ -1,9 +1,10 @@
-import { createStackNavigator } from 'react-navigation-stack'
+import { createStackNavigator } from '@react-navigation/stack'
+import { createCompatNavigatorFactory } from '@react-navigation/compat'
 
 import screens, { defaultNavigationOptions, headerLeft } from '..'
 import i18n from '../../i18n'
 
-export default createStackNavigator({
+export default createCompatNavigatorFactory(createStackNavigator)({
   AccountHome: {
     screen: screens.AccountHome,
     navigationOptions: ({ navigation }) => ({

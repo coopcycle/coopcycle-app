@@ -1,5 +1,5 @@
 import { createAction } from 'redux-actions'
-import { NavigationActions, StackActions } from 'react-navigation'
+import { NavigationActions, StackActions } from '@react-navigation/compat'
 import BleManager from 'react-native-ble-manager'
 import _ from 'lodash'
 
