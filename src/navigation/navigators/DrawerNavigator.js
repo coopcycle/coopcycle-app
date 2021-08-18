@@ -7,6 +7,7 @@ import { connect } from 'react-redux'
 import i18n from '../../i18n'
 import { selectIsAuthenticated, selectInitialRouteName } from '../../redux/App/selectors'
 import { defaultNavigationOptions, headerLeft } from '..'
+import { stackNavigatorScreenOptions } from '../styles'
 
 import DrawerContent from '../components/DrawerContent'
 
@@ -48,17 +49,21 @@ const ResetPasswordStack = createCompatNavigatorFactory(createStackNavigator)({
   defaultNavigationOptions,
 })
 
-const AboutStack = createCompatNavigatorFactory(createStackNavigator)({
-  AboutHome: {
-    screen: About,
-    navigationOptions: ({ navigation }) => ({
-      title: i18n.t('ABOUT'),
-      headerLeft: headerLeft(navigation),
-    })
-  },
-}, {
-  defaultNavigationOptions,
-})
+const Stack = createStackNavigator()
+
+const AboutStack = () => (
+  <Stack.Navigator
+    screenOptions={ stackNavigatorScreenOptions }>
+    <Stack.Screen
+      name="AboutHome"
+      component={ About }
+      options={({ navigation }) => ({
+        title: i18n.t('ABOUT'),
+        headerLeft: headerLeft(navigation),
+      })}
+    />
+  </Stack.Navigator>
+)
 
 function mapStateToProps(state) {
 

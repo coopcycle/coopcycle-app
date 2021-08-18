@@ -8,8 +8,6 @@ import Server from '../Server'
 import AppUser from '../AppUser'
 import { bootstrap, resetServer, setServers } from '../redux/App/actions'
 
-import { stackNavigatorScreenOptions } from './styles'
-
 import HomeNavigator from './navigators/HomeNavigator'
 import DrawerNavigator from './navigators/DrawerNavigator'
 
