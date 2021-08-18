@@ -8,7 +8,6 @@ import i18n from '../../i18n'
 import HeaderRightButton from '../dispatch/HeaderRightButton'
 import TaskNavigator from './TaskNavigator'
 import screens, { defaultNavigationOptions, headerLeft } from '..'
-import HeaderBackButton from '../task/components/HeaderBackButton'
 
 const Tabs = createCompatNavigatorFactory(createBottomTabNavigator)({
   DispatchUnassignedTasks: {
@@ -60,11 +59,7 @@ const MainNavigator = createCompatNavigatorFactory(createStackNavigator)({
   Task: {
     screen: TaskNavigator,
     navigationOptions: ({ navigation }) => ({
-      title: `${i18n.t('TASK')} #${navigation.state.params.params.task.id}`,
-      // We need to override the back button behavior
-      // because otherwise when we hit "back" on the PoD screen,
-      // it goes back to the task screen
-      headerLeft: (props) => <HeaderBackButton { ...props } />
+      headerShown: false,
     }),
   },
 }, {
