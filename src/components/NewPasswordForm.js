@@ -48,7 +48,7 @@ const inputs = [
   },
 ];
 
-const constraints = _.reduce(
+const CONSTRAINTS = _.reduce(
   inputs,
   (acc, {name, constraints}) => ({...acc, [name]: constraints}),
   {},
@@ -70,7 +70,7 @@ class NewPasswordForm extends React.Component {
 
   _onSubmit() {
     const {errors, ...data} = this.state;
-    const newErrors = validate(data, constraints, {fullMessages: false});
+    const newErrors = validate(data, CONSTRAINTS, {fullMessages: false});
 
     if (newErrors) {
       this.setState({

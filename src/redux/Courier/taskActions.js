@@ -111,7 +111,7 @@ export function loadTasks(selectedDate, refresh = false) {
         if (Object.prototype.hasOwnProperty.call(res, '@type') && res['@type'] === 'TaskList') {
           dispatch(loadTasksSuccess(
             selectedDate.format('YYYY-MM-DD'),
-            res['items'],
+            res.items,
             moment.parseZone(res.updatedAt)
           ))
         } else {
@@ -167,12 +167,12 @@ export function markTaskFailed(httpClient, task, notes = '', onSuccess, contactN
 
     // Make sure to return a promise for testing
     return uploadTaskImages(task, getState())
-      .then(task => {
+      .then(() => {
         return httpClient
           .put(task['@id'] + '/failed', payload)
-          .then(task => {
+          .then(savedTask => {
             dispatch(clearFiles())
-            dispatch(markTaskFailedSuccess(task))
+            dispatch(markTaskFailedSuccess(savedTask))
             if (typeof onSuccess === 'function') {
               setTimeout(() => onSuccess(), 100)
             }
@@ -204,12 +204,12 @@ export function markTaskDone(httpClient, task, notes = '', onSuccess, contactNam
 
     // Make sure to return a promise for testing
     return uploadTaskImages(task, getState())
-      .then(task => {
+      .then(() => {
         return httpClient
           .put(task['@id'] + '/done', payload)
-          .then(task => {
+          .then(savedTask => {
             dispatch(clearFiles())
-            dispatch(markTaskDoneSuccess(task))
+            dispatch(markTaskDoneSuccess(savedTask))
             if (typeof onSuccess === 'function') {
               setTimeout(() => onSuccess(), 100)
             }
@@ -232,7 +232,7 @@ export function startTask(task, cb) {
 
     httpClient
       .put(task['@id'] + '/start', {})
-      .then(task => {
+      .then(savedTask => {
         dispatch(startTaskSuccess(task))
         if (typeof cb === 'function') {
           setTimeout(() => cb(), 100)
