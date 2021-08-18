@@ -72,7 +72,7 @@ class RestaurantsPage extends Component {
     }
 
     return (
-      <SafeAreaView>
+      <SafeAreaView edges={ [ 'right', 'bottom', 'left' ] }>
         <RestaurantList
           restaurants={ restaurants }
           onItemClick={ restaurant => this.props.navigation.navigate('CheckoutRestaurant', { restaurant }) } />
