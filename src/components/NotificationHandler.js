@@ -14,7 +14,7 @@ import NavigationHolder from '../NavigationHolder'
 import { clearNotifications, pushNotification, registerPushNotificationToken } from '../redux/App/actions'
 import {loadTasks, selectTasksChangedAlertSound} from '../redux/Courier'
 import { loadOrderAndNavigate, loadOrderAndPushNotification, loadOrder } from '../redux/Restaurant/actions'
-import { message } from '../redux/middlewares/CentrifugoMiddleware/actions'
+import { message as wsMessage } from '../redux/middlewares/CentrifugoMiddleware/actions'
 import tracker from '../analytics/Tracker'
 import analyticsEvent from '../analytics/Event'
 
@@ -338,7 +338,7 @@ function mapDispatchToProps (dispatch) {
     registerPushNotificationToken: token => dispatch(registerPushNotificationToken(token)),
     clearNotifications: () => dispatch(clearNotifications()),
     pushNotification: (event, params) => dispatch(pushNotification(event, params)),
-    message: payload => dispatch(message(payload)),
+    message: payload => dispatch(wsMessage(payload)),
   }
 }
 
