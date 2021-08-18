@@ -79,7 +79,6 @@ export default {
   StoreDelivery,
   StoreNewDeliveryAddress,
   StoreNewDeliveryForm,
-  ConfigureServer: require('./ConfigureServer'),
 }
 
 export const defaultNavigationOptions = {
