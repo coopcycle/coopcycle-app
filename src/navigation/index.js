@@ -25,6 +25,18 @@ import StoreNewDeliveryForm from './store/NewDeliveryForm'
 import CheckoutPaymentMethodCard from './checkout/PaymentMethodCard'
 import CheckoutPaymentMethodCashOnDelivery from './checkout/PaymentMethodCashOnDelivery'
 
+import AccountHome from './account/Home'
+import AccountLoginRegister from './account/LoginRegister'
+import AccountAddressesPage from './account/AccountAddressesPage'
+import AccountOrdersPage from './account/AccountOrdersPage'
+import AccountOrderPage from './account/Order'
+import AccountDetailsPage from './account/AccountDetailsPage'
+import AccountRegisterCheckEmail from './account/RegisterCheckEmail'
+import AccountRegisterConfirm from './account/RegisterConfirm'
+import AccountForgotPassword from './account/ForgotPassword'
+import AccountResetPasswordCheckEmail from './account/ResetPasswordCheckEmail'
+import AccountResetPasswordNewPassword from './account/ResetPasswordNewPassword'
+
 export default {
   RestaurantsPage: require('./checkout/Search'),
   CheckoutRestaurant: require('./checkout/Restaurant'),
@@ -52,17 +64,17 @@ export default {
   CourierSettingsTags: require('./courier/Tags'),
   CheckoutPaymentMethodCard,
   CheckoutPaymentMethodCashOnDelivery,
-  AccountHome: require('./account/Home'),
-  AccountLoginRegister: require('./account/LoginRegister'),
-  AccountAddressesPage: require('./account/AccountAddressesPage'),
-  AccountOrdersPage: require('./account/AccountOrdersPage'),
-  AccountOrderPage: require('./account/Order'),
-  AccountDetailsPage: require('./account/AccountDetailsPage'),
-  AccountRegisterCheckEmail: require('./account/RegisterCheckEmail'),
-  AccountRegisterConfirm: require('./account/RegisterConfirm'),
-  AccountForgotPassword: require('./account/ForgotPassword'),
-  AccountResetPasswordCheckEmail: require('./account/ResetPasswordCheckEmail'),
-  AccountResetPasswordNewPassword: require('./account/ResetPasswordNewPassword'),
+  AccountHome,
+  AccountLoginRegister,
+  AccountAddressesPage,
+  AccountOrdersPage,
+  AccountOrderPage,
+  AccountDetailsPage,
+  AccountRegisterCheckEmail,
+  AccountRegisterConfirm,
+  AccountForgotPassword,
+  AccountResetPasswordCheckEmail,
+  AccountResetPasswordNewPassword,
   DispatchUnassignedTasks,
   DispatchTaskLists,
   DispatchTaskList,

@@ -64,4 +64,4 @@ const styles = StyleSheet.create({
   },
 })
 
-module.exports = withTranslation()(RegisterCheckEmail)
+export default withTranslation()(RegisterCheckEmail)

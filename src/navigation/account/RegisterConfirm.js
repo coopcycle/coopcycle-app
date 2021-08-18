@@ -47,4 +47,4 @@ const styles = StyleSheet.create({
   },
 })
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(withTranslation()(RegisterConfirm))
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(RegisterConfirm))

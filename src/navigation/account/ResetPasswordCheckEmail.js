@@ -42,4 +42,4 @@ const styles = StyleSheet.create({
   },
 });
 
-module.exports = withTranslation()(ResetPasswordCheckEmail);
+export default withTranslation()(ResetPasswordCheckEmail);

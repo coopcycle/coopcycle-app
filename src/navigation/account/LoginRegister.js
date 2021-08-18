@@ -61,4 +61,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(withTranslation()(LoginRegister))
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(LoginRegister))

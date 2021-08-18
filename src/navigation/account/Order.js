@@ -187,4 +187,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(withTranslation()(OrderTrackingPage))
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(OrderTrackingPage))
