@@ -52,21 +52,34 @@ import CheckoutMoreInfos from './checkout/MoreInfos'
 import RestaurantsPage from './checkout/Search'
 import CheckoutRestaurant from './checkout/Restaurant'
 
+import RestaurantList from './restaurant/List'
+import RestaurantDashboard from './restaurant/Dashboard'
+import RestaurantOrder from './restaurant/Order'
+import RestaurantOrderRefuse from './restaurant/OrderRefuse'
+import RestaurantOrderDelay from './restaurant/OrderDelay'
+import RestaurantOrderCancel from './restaurant/OrderCancel'
+import RestaurantDate from './restaurant/Date'
+import RestaurantSettings from './restaurant/Settings'
+import RestaurantProducts from './restaurant/Products'
+import RestaurantOpeningHours from './restaurant/OpeningHours'
+import RestaurantMenus from './restaurant/Menus'
+import RestaurantPrinter from './restaurant/Printer'
+
 export default {
   RestaurantsPage,
   CheckoutRestaurant,
-  RestaurantList: require('./restaurant/List'),
-  RestaurantDashboard: require('./restaurant/Dashboard'),
-  RestaurantOrder: require('./restaurant/Order'),
-  RestaurantOrderRefuse: require('./restaurant/OrderRefuse'),
-  RestaurantOrderDelay: require('./restaurant/OrderDelay'),
-  RestaurantOrderCancel: require('./restaurant/OrderCancel'),
-  RestaurantDate: require('./restaurant/Date'),
-  RestaurantSettings: require('./restaurant/Settings'),
-  RestaurantProducts: require('./restaurant/Products'),
-  RestaurantOpeningHours: require('./restaurant/OpeningHours'),
-  RestaurantMenus: require('./restaurant/Menus'),
-  RestaurantPrinter: require('./restaurant/Printer'),
+  RestaurantList,
+  RestaurantDashboard,
+  RestaurantOrder,
+  RestaurantOrderRefuse,
+  RestaurantOrderDelay,
+  RestaurantOrderCancel,
+  RestaurantDate,
+  RestaurantSettings,
+  RestaurantProducts,
+  RestaurantOpeningHours,
+  RestaurantMenus,
+  RestaurantPrinter,
   CheckoutProductOptions,
   CheckoutLogin,
   CheckoutSummary,

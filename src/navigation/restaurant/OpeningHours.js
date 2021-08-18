@@ -138,4 +138,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(withTranslation()(OpeningHoursScreen))
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(OpeningHoursScreen))

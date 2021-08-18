@@ -55,4 +55,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(withTranslation()(OrderDelayScreen))
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(OrderDelayScreen))
