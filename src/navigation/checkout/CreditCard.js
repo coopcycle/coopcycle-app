@@ -90,4 +90,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(CreditCard)
+export default connect(mapStateToProps, mapDispatchToProps)(CreditCard)

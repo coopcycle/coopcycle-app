@@ -37,6 +37,18 @@ import AccountForgotPassword from './account/ForgotPassword'
 import AccountResetPasswordCheckEmail from './account/ResetPasswordCheckEmail'
 import AccountResetPasswordNewPassword from './account/ResetPasswordNewPassword'
 
+import CourierTasksPage from './courier/TasksPage'
+import CourierTaskListPage from './courier/TaskListPage'
+import CourierSettings from './courier/Settings'
+import CourierSettingsTags from './courier/Tags'
+
+import CheckoutProductOptions from './checkout/ProductOptions'
+import CheckoutLogin from './checkout/Login'
+import CheckoutSummary from './checkout/Summary'
+import CheckoutShippingDate from './checkout/ShippingDate'
+import CheckoutCreditCard from './checkout/CreditCard'
+import CheckoutMoreInfos from './checkout/MoreInfos'
+
 export default {
   RestaurantsPage: require('./checkout/Search'),
   CheckoutRestaurant: require('./checkout/Restaurant'),
@@ -52,16 +64,16 @@ export default {
   RestaurantOpeningHours: require('./restaurant/OpeningHours'),
   RestaurantMenus: require('./restaurant/Menus'),
   RestaurantPrinter: require('./restaurant/Printer'),
-  CheckoutProductOptions: require('./checkout/ProductOptions'),
-  CheckoutLogin: require('./checkout/Login'),
-  CheckoutSummary: require('./checkout/Summary'),
-  CheckoutShippingDate: require('./checkout/ShippingDate'),
-  CheckoutCreditCard: require('./checkout/CreditCard'),
-  CheckoutMoreInfos: require('./checkout/MoreInfos'),
-  CourierTasksPage: require('./courier/TasksPage'),
-  CourierTaskListPage: require('./courier/TaskListPage'),
-  CourierSettings: require('./courier/Settings'),
-  CourierSettingsTags: require('./courier/Tags'),
+  CheckoutProductOptions,
+  CheckoutLogin,
+  CheckoutSummary,
+  CheckoutShippingDate,
+  CheckoutCreditCard,
+  CheckoutMoreInfos,
+  CourierTasksPage,
+  CourierTaskListPage,
+  CourierSettings,
+  CourierSettingsTags,
   CheckoutPaymentMethodCard,
   CheckoutPaymentMethodCashOnDelivery,
   AccountHome,

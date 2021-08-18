@@ -143,4 +143,4 @@ function mapDispatchToProps (dispatch) {
   }
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(withTranslation()(TasksPage))
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(TasksPage))

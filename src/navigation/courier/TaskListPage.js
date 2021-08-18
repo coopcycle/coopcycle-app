@@ -90,4 +90,4 @@ function mapDispatchToProps (dispatch) {
   }
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(withTranslation()(TaskListPage))
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(TaskListPage))
