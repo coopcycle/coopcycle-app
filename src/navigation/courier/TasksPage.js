@@ -16,7 +16,7 @@ import {
   selectKeepAwake,
   selectShouldRefreshTasks,
 } from '../../redux/Courier'
-import { navigateToTask } from '../../navigation'
+import { navigateToTask } from '../../navigation/utils'
 
 import { selectIsCentrifugoConnected } from '../../redux/App/selectors'
 import { connect as connectCentrifugo } from '../../redux/middlewares/CentrifugoMiddleware/actions'

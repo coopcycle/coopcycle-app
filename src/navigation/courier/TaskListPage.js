@@ -15,7 +15,7 @@ import {
   selectIsTasksRefreshing,
   selectTasksWithColor,
 } from '../../redux/Courier'
-import { navigateToTask, navigateToCompleteTask } from '../../navigation'
+import { navigateToTask, navigateToCompleteTask } from '../../navigation/utils'
 
 const styles = StyleSheet.create({
   containerEmpty: {

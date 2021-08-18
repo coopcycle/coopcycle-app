@@ -11,7 +11,7 @@ import { assignTask, initialize, loadUnassignedTasks } from '../../redux/Dispatc
 import { selectUnassignedTasksNotCancelled } from '../../redux/Dispatch/selectors'
 import { selectSelectedDate, selectTasksWithColor } from '../../coopcycle-frontend-js/logistics/redux'
 
-import { navigateToTask } from '../../navigation'
+import { navigateToTask } from '../../navigation/utils'
 
 class UnassignedTasks extends Component {
 

@@ -5,7 +5,7 @@ import { withTranslation } from 'react-i18next'
 import { withNavigation } from '@react-navigation/compat'
 import _ from 'lodash'
 
-import { navigateToTask } from '../../../navigation'
+import { navigateToTask } from '../../../navigation/utils'
 
 const NavButton = ({ disabled, left, right, onPress, t, task }) => {
 

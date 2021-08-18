@@ -11,7 +11,7 @@ import { unassignTask } from '../../redux/Dispatch/actions'
 import { selectTasksNotCancelled } from '../../redux/Dispatch/selectors'
 import { selectTaskLists, selectTasksWithColor } from '../../coopcycle-frontend-js/logistics/redux'
 
-import { navigateToTask } from '../../navigation'
+import { navigateToTask } from '../../navigation/utils'
 
 class TaskListScreen extends Component {
 
