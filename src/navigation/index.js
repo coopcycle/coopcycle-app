@@ -49,9 +49,12 @@ import CheckoutShippingDate from './checkout/ShippingDate'
 import CheckoutCreditCard from './checkout/CreditCard'
 import CheckoutMoreInfos from './checkout/MoreInfos'
 
+import RestaurantsPage from './checkout/Search'
+import CheckoutRestaurant from './checkout/Restaurant'
+
 export default {
-  RestaurantsPage: require('./checkout/Search'),
-  CheckoutRestaurant: require('./checkout/Restaurant'),
+  RestaurantsPage,
+  CheckoutRestaurant,
   RestaurantList: require('./restaurant/List'),
   RestaurantDashboard: require('./restaurant/Dashboard'),
   RestaurantOrder: require('./restaurant/Order'),
