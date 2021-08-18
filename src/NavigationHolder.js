@@ -1,34 +1,29 @@
-// @see https://reactnavigation.org/docs/en/navigating-without-navigation-prop.html
+// @see https://reactnavigation.org/docs/navigating-without-navigation-prop
 
-import { NavigationActions } from 'react-navigation'
+import * as React from 'react'
+import { NavigationActions } from '@react-navigation/compat'
 
 export default class NavigationHolder {
 
-  static topLevelNavigator
+  static navigationRef
 
-  static setTopLevelNavigator(topLevelNavigator) {
-    this.topLevelNavigator = topLevelNavigator
+  static setNavigationRef(navigationRef) {
+    this.navigationRef = navigationRef
   }
 
   static navigate(routeName, params) {
-    return this.topLevelNavigator.dispatch(
-      NavigationActions.navigate({
-        routeName,
-        params,
-      })
-    )
+    return this.navigationRef.current?.navigate(routeName, params)
   }
 
   static dispatch(action) {
-    return this.topLevelNavigator.dispatch(action)
+    return this.navigationRef.current?.dispatch(action)
   }
 
   static goBack() {
-    return this.topLevelNavigator.dispatch(
+    return this.navigationRef.current?.dispatch(
       NavigationActions.back({
         key: null,
       })
     )
   }
-
 }

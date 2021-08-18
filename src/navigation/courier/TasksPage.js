@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { StyleSheet, Platform, InteractionManager } from 'react-native'
 import { Container } from 'native-base'
-import { withNavigationFocus } from 'react-navigation'
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake'
 import RNPinScreen from 'react-native-pin-screen'
 import { connect } from 'react-redux'
@@ -30,6 +29,7 @@ class TasksPage extends Component {
     this.state = {
       task: null,
       polyline: [],
+      isFocused: false,
     }
 
     this.refreshTasks = this.refreshTasks.bind(this)
@@ -58,23 +58,32 @@ class TasksPage extends Component {
     if (this.props.keepAwake && this.props.isFocused) {
       this.enableKeepAwake()
     }
+
+    this.unsubscribeFromFocusListener = this.props.navigation.addListener(
+      'focus',
+      () => this.setState({ isFocused: true })
+    )
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, prevState) {
 
-    if (prevProps.isFocused !== this.props.isFocused) {
-      if (this.props.isFocused && this.props.shouldRefreshTasks) {
+    if (prevState.isFocused !== this.state.isFocused) {
+      if (this.state.isFocused && this.props.shouldRefreshTasks) {
         this._bootstrap()
       }
     }
 
-    if (prevProps.isFocused !== this.props.isFocused || prevProps.keepAwake !== this.props.keepAwake) {
-      if (this.props.keepAwake && this.props.isFocused) {
+    if (prevState.isFocused !== this.state.isFocused || prevProps.keepAwake !== this.props.keepAwake) {
+      if (this.props.keepAwake && this.state.isFocused) {
         this.enableKeepAwake()
       } else {
         this.disableKeepAwake()
       }
     }
+  }
+
+  componentWillUnmount() {
+    this.unsubscribeFromFocusListener()
   }
 
   _bootstrap() {
@@ -134,4 +143,4 @@ function mapDispatchToProps (dispatch) {
   }
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(withTranslation()(withNavigationFocus(TasksPage)))
+module.exports = connect(mapStateToProps, mapDispatchToProps)(withTranslation()(TasksPage))

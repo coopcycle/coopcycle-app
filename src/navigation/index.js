@@ -1,7 +1,7 @@
 import React from 'react'
 import HeaderButton from '../components/HeaderButton'
 import { primaryColor,  whiteColor, fontTitleName } from '../styles/common'
-import { NavigationActions } from 'react-navigation'
+import { DrawerActions } from '@react-navigation/compat'
 
 import DispatchUnassignedTasks from './dispatch/UnassignedTasks'
 import DispatchTaskLists from './dispatch/TaskLists'
@@ -79,7 +79,6 @@ export default {
   StoreDelivery,
   StoreNewDeliveryAddress,
   StoreNewDeliveryForm,
-  Loading: require('./Loading'),
   ConfigureServer: require('./ConfigureServer'),
 }
 
@@ -105,7 +104,7 @@ export const defaultNavigationOptions = {
 }
 
 export const headerLeft = (navigation, testID = 'menuBtn') => {
-  return () => <HeaderButton iconName="menu" onPress={ () => navigation.toggleDrawer() } testID={ testID } />
+  return () => <HeaderButton iconName="menu" onPress={ () => navigation.dispatch(DrawerActions.toggleDrawer()) } testID={ testID } />
 }
 
 let navigateAfter = null
@@ -122,7 +121,10 @@ export const navigateToTask = (navigation, task, tasks = []) => {
     navigateAfter,
   }
 
-  navigation.navigate({ routeName: 'Task', params, key: task['@id'] })
+  navigation.navigate('Task', {
+    screen: 'TaskHome',
+    params,
+  })
 }
 
 export const navigateToCompleteTask = (navigation, task, tasks = [], success = true) => {
@@ -132,13 +134,8 @@ export const navigateToCompleteTask = (navigation, task, tasks = [], success = t
     navigateAfter: navigation.state.routeName,
   }
 
-  navigation.navigate({
-    routeName: 'Task',
-    params: { ...params, tasks },
-    key: task['@id'],
-    action: NavigationActions.navigate({
-      routeName: 'TaskComplete',
-      params: { ...params, success },
-    }),
+  navigation.navigate('Task', {
+    screen: 'TaskComplete',
+    params: { ...params, success }
   })
 }

@@ -1,5 +1,6 @@
 import React from 'react'
-import { createStackNavigator } from 'react-navigation-stack'
+import { createStackNavigator } from '@react-navigation/stack'
+import { createCompatNavigatorFactory } from '@react-navigation/compat'
 
 import i18n from '../../i18n'
 import screens, { defaultNavigationOptions, headerLeft } from '..'
@@ -7,7 +8,7 @@ import HeaderRight from '../restaurant/components/HeaderRight'
 import SettingsNavigator from '../restaurant/SettingsNavigator'
 import OrderNumber from '../../components/OrderNumber'
 
-const MainNavigator = createStackNavigator({
+const MainNavigator = createCompatNavigatorFactory(createStackNavigator)({
   RestaurantHome: {
     screen: screens.RestaurantDashboard,
     navigationOptions: ({ navigation }) => {
@@ -32,7 +33,7 @@ const MainNavigator = createStackNavigator({
   defaultNavigationOptions,
 })
 
-export default createStackNavigator({
+export default createCompatNavigatorFactory(createStackNavigator)({
   Main: {
     screen: MainNavigator,
     navigationOptions: ({ navigation }) => ({

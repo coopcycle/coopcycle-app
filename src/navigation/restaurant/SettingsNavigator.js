@@ -1,13 +1,14 @@
 import React from 'react'
 import {
   createStackNavigator,
-  HeaderBackButton } from 'react-navigation-stack'
+  HeaderBackButton } from '@react-navigation/stack'
+import { createCompatNavigatorFactory } from '@react-navigation/compat'
 
 import i18n from '../../i18n'
 import screens, { defaultNavigationOptions } from '..'
 import ProductOptions from './ProductOptions'
 
-export default createStackNavigator({
+export default createCompatNavigatorFactory(createStackNavigator)({
   RestaurantSettingsHome: {
     screen: screens.RestaurantSettings,
     navigationOptions: ({ navigation }) => ({

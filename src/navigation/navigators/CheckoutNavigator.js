@@ -1,12 +1,13 @@
 import React from 'react'
 import {TouchableOpacity} from 'react-native'
 import {Text} from 'native-base'
-import { createStackNavigator } from 'react-navigation-stack'
+import { createStackNavigator } from '@react-navigation/stack'
+import { createCompatNavigatorFactory } from '@react-navigation/compat'
 
 import i18n from '../../i18n'
 import screens, {defaultNavigationOptions, headerLeft} from '..'
 
-const MainNavigator = createStackNavigator({
+const MainNavigator = createCompatNavigatorFactory(createStackNavigator)({
   CheckoutHome: {
     screen: screens.RestaurantsPage,
     navigationOptions: ({ navigation }) => ({
@@ -46,7 +47,7 @@ const MainNavigator = createStackNavigator({
   defaultNavigationOptions,
 })
 
-const LoginRegisterStack = createStackNavigator({
+const LoginRegisterStack = createCompatNavigatorFactory(createStackNavigator)({
   CheckoutLoginRegister: {
     screen: screens.CheckoutLogin,
     navigationOptions: ({ navigation }) => ({
@@ -84,7 +85,7 @@ const LoginRegisterStack = createStackNavigator({
   defaultNavigationOptions,
 })
 
-export default createStackNavigator({
+export default createCompatNavigatorFactory(createStackNavigator)({
   Main: {
     screen: MainNavigator,
     navigationOptions: ({ navigation }) => ({

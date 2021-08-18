@@ -3,7 +3,7 @@ import {
   StyleSheet,
   View,
 } from 'react-native'
-import { NavigationActions, StackActions } from 'react-navigation'
+import { NavigationActions, StackActions } from '@react-navigation/compat'
 import {
   Container, Content, Text, Button, Icon,
 } from 'native-base'

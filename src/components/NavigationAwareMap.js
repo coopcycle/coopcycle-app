@@ -16,14 +16,14 @@ class NavigationAwareMap extends Component {
   }
 
   componentDidMount() {
-    this.didFocusListener = this.props.navigation.addListener(
-      'didFocus',
-      payload => this.setState({ canRenderMap: true })
+    this.unsubscribeFromFocusListener = this.props.navigation.addListener(
+      'focus',
+      () => this.setState({ canRenderMap: true })
     )
   }
 
   componentWillUnmount() {
-    this.didFocusListener.remove()
+    this.unsubscribeFromFocusListener()
   }
 
   _onMapLayout(e) {

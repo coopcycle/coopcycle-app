@@ -1,6 +1,6 @@
 import { Alert } from 'react-native'
 import { createAction } from 'redux-actions'
-import { NavigationActions, StackActions } from 'react-navigation'
+import { NavigationActions, StackActions } from '@react-navigation/compat'
 
 import { connect } from '../middlewares/CentrifugoMiddleware/actions'
 import i18n from '../../i18n'

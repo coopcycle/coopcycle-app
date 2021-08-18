@@ -51,7 +51,9 @@ jest.mock('react-native-background-geolocation', () => ({
 }))
 
 const fakeNavigator = {
-  dispatch: (action) => {}
+  current: {
+    dispatch: (action) => {}
+  }
 }
 
-NavigationHolder.setTopLevelNavigator(fakeNavigator)
+NavigationHolder.setNavigationRef(fakeNavigator)
