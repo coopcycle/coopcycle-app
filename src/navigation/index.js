@@ -1,7 +1,7 @@
 import React from 'react'
 import HeaderButton from '../components/HeaderButton'
 import { primaryColor,  whiteColor, fontTitleName } from '../styles/common'
-import { DrawerActions } from '@react-navigation/compat'
+import { DrawerActions } from '@react-navigation/native'
 
 import DispatchUnassignedTasks from './dispatch/UnassignedTasks'
 import DispatchTaskLists from './dispatch/TaskLists'
