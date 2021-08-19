@@ -13,7 +13,6 @@ import {
   DrawerItem
 } from '@react-navigation/drawer'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { NavigationActions } from '@react-navigation/compat'
 import VersionNumber from 'react-native-version-number'
 import { PhoneNumberUtil, PhoneNumberFormat } from 'google-libphonenumber'
 import { phonecall } from 'react-native-communications'
@@ -71,19 +70,6 @@ const StoresDrawerItem = ({ stores, navigate }) => {
 }
 
 class DrawerContent extends Component {
-
-  onItemPress({ route, focused }) {
-    if (focused) {
-      this.props.navigation.closeDrawer()
-    } else {
-      this.props.navigation.dispatch(
-        NavigationActions.navigate({
-          routeName: route.routeName,
-          action: route.action,
-        })
-      )
-    }
-  }
 
   render() {
 
