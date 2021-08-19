@@ -1,64 +1,71 @@
+import React from 'react'
 import { createStackNavigator } from '@react-navigation/stack'
-import { createCompatNavigatorFactory } from '@react-navigation/compat'
 
-import screens, { defaultNavigationOptions, headerLeft } from '..'
+import screens, { headerLeft } from '..'
+import { stackNavigatorScreenOptions } from '../styles'
 import i18n from '../../i18n'
 
-export default createCompatNavigatorFactory(createStackNavigator)({
-  AccountHome: {
-    screen: screens.AccountHome,
-    navigationOptions: ({ navigation }) => ({
-      title: i18n.t('MY_ACCOUNT'),
-      headerLeft: headerLeft(navigation),
-      ...defaultNavigationOptions,
-    }),
-  },
-  // Authenticated
-  AccountAddresses: {
-    screen: screens.AccountAddressesPage,
-    navigationOptions: ({ navigation }) => ({
-      title: i18n.t('MY_ADDRESSES'),
-    }),
-  },
-  AccountOrders: {
-    screen: screens.AccountOrdersPage,
-    navigationOptions: ({ navigation }) => ({
-      title: i18n.t('MY_ORDERS'),
-    }),
-  },
-  AccountOrder: {
-    screen: screens.AccountOrderPage,
-    navigationOptions: ({ navigation }) => ({
-      title: i18n.t('ORDER_NUMBER', { number: navigation.state.params.order.number }),
-    }),
-  },
-  AccountDetails: {
-    screen: screens.AccountDetailsPage,
-    navigationOptions: ({ navigation }) => ({
-      title: i18n.t('MY_DETAILS'),
-    }),
-  },
-  // Not authenticated
-  AccountRegisterCheckEmail: {
-    screen: screens.AccountRegisterCheckEmail,
-    navigationOptions: ({ navigation }) => ({
-      title: i18n.t('REGISTER_CHECK_EMAIL'),
-    }),
-  },
-  AccountForgotPassword: {
-    screen: screens.AccountForgotPassword,
-    navigationOptions: ({ navigation }) => ({
-      title: i18n.t('FORGOT_PASSWORD'),
-    }),
-  },
-  AccountResetPasswordCheckEmail: {
-    screen: screens.AccountResetPasswordCheckEmail,
-    navigationOptions: ({ navigation }) => ({
-      title: i18n.t('RESET_PASSWORD_CHECK_EMAIL'),
-    }),
-  },
-}, {
-  initialRouteKey: 'AccountHome',
-  initialRouteName: 'AccountHome',
-  defaultNavigationOptions,
-})
+const Stack = createStackNavigator()
+
+export default () => (
+  <Stack.Navigator
+    screenOptions={ stackNavigatorScreenOptions }>
+    <Stack.Screen
+      name="AccountHome"
+      component={ screens.AccountHome }
+      options={({ navigation }) => ({
+        title: i18n.t('MY_ACCOUNT'),
+        headerLeft: headerLeft(navigation),
+      })}
+    />
+    <Stack.Screen
+      name="AccountAddresses"
+      component={ screens.AccountAddressesPage }
+      options={{
+        title: i18n.t('MY_ADDRESSES'),
+      }}
+    />
+    <Stack.Screen
+      name="AccountOrders"
+      component={ screens.AccountOrdersPage }
+      options={{
+        title: i18n.t('MY_ORDERS'),
+      }}
+    />
+    <Stack.Screen
+      name="AccountOrder"
+      component={ screens.AccountOrderPage }
+      options={({ navigation }) => ({
+        title: i18n.t('ORDER_NUMBER', { number: navigation.state.params.order.number }),
+      })}
+    />
+    <Stack.Screen
+      name="AccountDetails"
+      component={ screens.AccountDetailsPage }
+      options={{
+        title: i18n.t('MY_DETAILS'),
+      }}
+    />
+    <Stack.Screen
+      name="AccountRegisterCheckEmail"
+      component={ screens.AccountRegisterCheckEmail }
+      options={{
+        title: i18n.t('REGISTER_CHECK_EMAIL'),
+      }}
+    />
+    <Stack.Screen
+      name="AccountForgotPassword"
+      component={ screens.AccountForgotPassword }
+      options={{
+        title: i18n.t('FORGOT_PASSWORD'),
+      }}
+    />
+    <Stack.Screen
+      name="AccountResetPasswordCheckEmail"
+      component={ screens.AccountResetPasswordCheckEmail }
+      options={{
+        title: i18n.t('RESET_PASSWORD_CHECK_EMAIL'),
+      }}
+    />
+  </Stack.Navigator>
+)
