@@ -13,7 +13,7 @@ export default () => (
     <Stack.Screen
       name="AccountHome"
       component={ screens.AccountHome }
-      options={({ navigation }) => ({
+      options={ ({ navigation }) => ({
         title: i18n.t('MY_ACCOUNT'),
         headerLeft: headerLeft(navigation),
       })}
@@ -35,8 +35,8 @@ export default () => (
     <Stack.Screen
       name="AccountOrder"
       component={ screens.AccountOrderPage }
-      options={({ navigation }) => ({
-        title: i18n.t('ORDER_NUMBER', { number: navigation.state.params.order.number }),
+      options={ ({ route }) => ({
+        title: i18n.t('ORDER_NUMBER', { number: route.params.order.number }),
       })}
     />
     <Stack.Screen

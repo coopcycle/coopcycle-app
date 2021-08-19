@@ -19,7 +19,7 @@ import { subscribe, unsubscribe } from '../../redux/Account/actions'
 class OrderTrackingPage extends Component {
 
   componentDidMount() {
-    const { order } = this.props.navigation.state.params
+    const { order } = this.props.route.params
     if (order) {
       this.props.subscribe(order, (event) => {
         switch (event.name) {
@@ -35,7 +35,7 @@ class OrderTrackingPage extends Component {
   }
 
   componentWillUnmount() {
-    const { order } = this.props.navigation.state.params
+    const { order } = this.props.route.params
     if (order) {
       this.props.unsubscribe(order)
     }
@@ -43,7 +43,7 @@ class OrderTrackingPage extends Component {
 
   renderHeader() {
 
-    const { order } = this.props.navigation.state.params
+    const { order } = this.props.route.params
 
     let stateText = ''
     let iconName = 'question-circle-o'
@@ -79,7 +79,7 @@ class OrderTrackingPage extends Component {
 
   renderSubHeader() {
 
-    const { order } = this.props.navigation.state.params
+    const { order } = this.props.route.params
 
     switch (order.state) {
       case 'new':
@@ -99,7 +99,7 @@ class OrderTrackingPage extends Component {
 
   render() {
 
-    const { order } = this.props.navigation.state.params
+    const { order } = this.props.route.params
 
     return (
       <Container>
