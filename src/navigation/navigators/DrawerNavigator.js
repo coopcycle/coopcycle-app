@@ -1,7 +1,6 @@
 import React from 'react'
 import { createDrawerNavigator } from '@react-navigation/drawer'
 import { createStackNavigator } from '@react-navigation/stack'
-import { createCompatNavigatorFactory } from '@react-navigation/compat'
 import { connect } from 'react-redux'
 
 import i18n from '../../i18n'
@@ -21,40 +20,44 @@ import About from '../home/About'
 import AccountRegisterConfirm from '../account/RegisterConfirm'
 import AccountResetPasswordNewPassword from '../account/ResetPasswordNewPassword'
 
-const RegisterConfirmStack = createCompatNavigatorFactory(createStackNavigator)({
-  RegisterConfirmHome: {
-    screen: AccountRegisterConfirm,
-    navigationOptions: ({ navigation }) => ({
-      title: i18n.t('REGISTER_CONFIRM'),
-      headerLeft: headerLeft(navigation),
-      ...defaultNavigationOptions,
-    }),
-  },
-}, {
-  initialRouteName: 'RegisterConfirmHome',
-  defaultNavigationOptions,
-})
+const RegisterConfirmStack = createStackNavigator()
 
-const ResetPasswordStack = createCompatNavigatorFactory(createStackNavigator)({
-  ResetPasswordHome: {
-    screen: AccountResetPasswordNewPassword,
-    navigationOptions: ({ navigation }) => ({
-      title: i18n.t('RESET_PASSWORD_NEW_PASSWORD'),
-      headerLeft: headerLeft(navigation),
-      ...defaultNavigationOptions,
-    }),
-  },
-}, {
-  initialRouteName: 'ResetPasswordHome',
-  defaultNavigationOptions,
-})
-
-const Stack = createStackNavigator()
-
-const AboutStack = () => (
-  <Stack.Navigator
+const RegisterConfirmNavigator = () => (
+  <RegisterConfirmStack.Navigator
     screenOptions={ stackNavigatorScreenOptions }>
-    <Stack.Screen
+    <RegisterConfirmStack.Screen
+      name="RegisterConfirmHome"
+      component={ AccountRegisterConfirm }
+      options={({ navigation }) => ({
+        title: i18n.t('REGISTER_CONFIRM'),
+        headerLeft: headerLeft(navigation),
+      })}
+    />
+  </RegisterConfirmStack.Navigator>
+)
+
+const ResetPasswordStack = createStackNavigator()
+
+const ResetPasswordNavigator = () => (
+  <ResetPasswordStack.Navigator
+    screenOptions={ stackNavigatorScreenOptions }>
+    <ResetPasswordStack.Screen
+      name="ResetPasswordHome"
+      component={ AccountResetPasswordNewPassword }
+      options={({ navigation }) => ({
+        title: i18n.t('RESET_PASSWORD_NEW_PASSWORD'),
+        headerLeft: headerLeft(navigation),
+      })}
+    />
+  </ResetPasswordStack.Navigator>
+)
+
+const AboutStack = createStackNavigator()
+
+const AboutNavigator = () => (
+  <AboutStack.Navigator
+    screenOptions={ stackNavigatorScreenOptions }>
+    <AboutStack.Screen
       name="AboutHome"
       component={ About }
       options={({ navigation }) => ({
@@ -62,7 +65,7 @@ const AboutStack = () => (
         headerLeft: headerLeft(navigation),
       })}
     />
-  </Stack.Navigator>
+  </AboutStack.Navigator>
 )
 
 function mapStateToProps(state) {
@@ -93,13 +96,13 @@ const DrawerNav = ({ initialRouteName, user, isAuthenticated }) => {
         component={ AccountNavigator } />
       <Drawer.Screen
         name="AboutNav"
-        component={ AboutStack } />
+        component={ AboutNavigator } />
       <Drawer.Screen
         name="RegisterConfirmNav"
-        component={ RegisterConfirmStack } />
+        component={ RegisterConfirmNavigator } />
       <Drawer.Screen
         name="ResetPasswordNav"
-        component={ ResetPasswordStack } />
+        component={ ResetPasswordNavigator } />
 
       { (isAuthenticated && user.hasRole('ROLE_COURIER')) && (
         <Drawer.Screen
