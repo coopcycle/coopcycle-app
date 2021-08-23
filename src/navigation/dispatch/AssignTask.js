@@ -13,7 +13,7 @@ class AssignTask extends Component {
 
   render() {
 
-    const { username } = this.props.navigation.state.params
+    const { username } = this.props.route.params
     const isEmpty = this.props.unassignedTasks.length === 0
 
     let contentProps = {}
