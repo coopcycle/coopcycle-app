@@ -3,80 +3,94 @@ import { createStackNavigator } from '@react-navigation/stack'
 import { createCompatNavigatorFactory } from '@react-navigation/compat'
 
 import i18n from '../../i18n'
-import screens, { defaultNavigationOptions, headerLeft } from '..'
+import screens, { headerLeft } from '..'
+import { stackNavigatorScreenOptions } from '../styles'
 import HeaderRight from '../restaurant/components/HeaderRight'
 import SettingsNavigator from '../restaurant/SettingsNavigator'
 import OrderNumber from '../../components/OrderNumber'
 
-const MainNavigator = createCompatNavigatorFactory(createStackNavigator)({
-  RestaurantHome: {
-    screen: screens.RestaurantDashboard,
-    navigationOptions: ({ navigation }) => {
-      const restaurant = navigation.getParam('restaurant', { name: '' })
+const MainStack = createStackNavigator()
 
-      return {
-        title: restaurant.name,
-        headerRight: () => <HeaderRight navigation={ navigation } />,
-        headerLeft: headerLeft(navigation),
-      }
-    },
-  },
-  RestaurantOrder: {
-    screen: screens.RestaurantOrder,
-    navigationOptions: ({ navigation }) => ({
-      headerTitle: () => <OrderNumber order={ navigation.getParam('order') } color={ '#ffffff' } />,
-    }),
-  },
-}, {
-  initialRouteKey: 'RestaurantHome',
-  initialRouteName: 'RestaurantHome',
-  defaultNavigationOptions,
-})
+const MainNavigator = () => (
+  <MainStack.Navigator
+    screenOptions={ stackNavigatorScreenOptions }>
+    <MainStack.Screen
+      name="RestaurantHome"
+      component={ screens.RestaurantDashboard }
+      options={ ({ navigation, route }) => {
+        const restaurant = route.params?.restaurant || { name: '' }
 
-export default createCompatNavigatorFactory(createStackNavigator)({
-  Main: {
-    screen: MainNavigator,
-    navigationOptions: ({ navigation }) => ({
-      headerShown: false,
-    }),
-  },
-  RestaurantOrderRefuse: {
-    screen: screens.RestaurantOrderRefuse,
-    navigationOptions: ({ navigation }) => ({
-      title: 'Refuse order', // TODO Translate
-    }),
-  },
-  RestaurantOrderDelay: {
-    screen: screens.RestaurantOrderDelay,
-    navigationOptions: ({ navigation }) => ({
-      title: i18n.t('RESTAURANT_ORDER_DELAY_MODAL_TITLE'),
-    }),
-  },
-  RestaurantOrderCancel: {
-    screen: screens.RestaurantOrderCancel,
-    navigationOptions: ({ navigation }) => ({
-      title: i18n.t('RESTAURANT_ORDER_CANCEL_MODAL_TITLE'),
-    }),
-  },
-  RestaurantDate: {
-    screen: screens.RestaurantDate,
-    navigationOptions: ({ navigation }) => ({
-      title: 'Choose date', // TODO Translate
-    }),
-  },
-  RestaurantList: {
-    screen: screens.RestaurantList,
-    navigationOptions: ({ navigation }) => ({
-      title: i18n.t('RESTAURANTS'),
-    }),
-  },
-  RestaurantSettings: {
-    screen: SettingsNavigator,
-    navigationOptions: ({ navigation }) => ({
-      title: i18n.t('SETTINGS'),
-    }),
-  },
-}, {
-  mode: 'modal',
-  defaultNavigationOptions,
-})
+        return {
+          title: restaurant.name,
+          headerRight: () => <HeaderRight navigation={ navigation } />,
+          headerLeft: headerLeft(navigation),
+        }
+      }}
+    />
+    <MainStack.Screen
+      name="RestaurantOrder"
+      component={ screens.RestaurantOrder }
+      options={ ({ route }) => ({
+        headerTitle: () => <OrderNumber order={ route.params?.order } color={ '#ffffff' } />
+      })}
+    />
+  </MainStack.Navigator>
+)
+
+const RootStack = createStackNavigator()
+
+export default () => (
+  <RootStack.Navigator
+    mode="modal"
+    screenOptions={ stackNavigatorScreenOptions }>
+    <RootStack.Screen
+      name="Main"
+      component={ MainNavigator }
+      options={{
+        headerShown: false,
+      }}
+    />
+    <RootStack.Screen
+      name="RestaurantOrderRefuse"
+      component={ screens.RestaurantOrderRefuse }
+      options={{
+        title: 'Refuse order', // TODO Translate
+      }}
+    />
+    <RootStack.Screen
+      name="RestaurantOrderDelay"
+      component={ screens.RestaurantOrderDelay }
+      options={{
+        title: i18n.t('RESTAURANT_ORDER_DELAY_MODAL_TITLE'),
+      }}
+    />
+    <RootStack.Screen
+      name="RestaurantOrderCancel"
+      component={ screens.RestaurantOrderCancel }
+      options={{
+        title: i18n.t('RESTAURANT_ORDER_CANCEL_MODAL_TITLE'),
+      }}
+    />
+    <RootStack.Screen
+      name="RestaurantDate"
+      component={ screens.RestaurantDate }
+      options={{
+        title: 'Choose date', // TODO Translate
+      }}
+    />
+    <RootStack.Screen
+      name="RestaurantList"
+      component={ screens.RestaurantList }
+      options={{
+        title: i18n.t('RESTAURANTS'),
+      }}
+    />
+    <RootStack.Screen
+      name="RestaurantSettings"
+      component={ SettingsNavigator }
+      options={{
+        title: i18n.t('SETTINGS'),
+      }}
+    />
+  </RootStack.Navigator>
+)

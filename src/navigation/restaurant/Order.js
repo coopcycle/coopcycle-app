@@ -81,7 +81,7 @@ class OrderScreen extends Component {
 function mapStateToProps(state, ownProps) {
 
   return {
-    order: ownProps.navigation.getParam('order'),
+    order: ownProps.route.params?.order,
     isPrinterConnected: !!state.restaurant.printer,
     printer: state.restaurant.printer,
   }

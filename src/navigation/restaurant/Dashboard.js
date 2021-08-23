@@ -80,7 +80,7 @@ class DashboardPage extends Component {
     }
 
     InteractionManager.runAfterInteractions(() => {
-      if (this.props.navigation.getParam('loadOrders', true)) {
+      if (this.props.route.params?.loadOrders || true) {
         this.props.loadOrders(
           this.props.restaurant,
           this.props.date.format('YYYY-MM-DD'),
@@ -136,7 +136,7 @@ class DashboardPage extends Component {
 
     // This is needed to display the title
     // WARNING Make sure to call navigation.setParams() only when needed to avoid infinite loop
-    const navRestaurant = this.props.navigation.getParam('restaurant')
+    const navRestaurant = this.props.route.params?.restaurant
     if (!navRestaurant || navRestaurant !== this.props.restaurant) {
       this.props.navigation.setParams({ restaurant: this.props.restaurant })
     }

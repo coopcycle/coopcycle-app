@@ -11,7 +11,7 @@ class OrderDelayScreen extends Component {
 
   _delayOrder(delay) {
     this.props.delayOrder(
-      this.props.navigation.getParam('order'),
+      this.props.route.params?.order,
       delay,
       order => this.props.navigation.navigate('RestaurantOrder', { order })
     )

@@ -11,7 +11,7 @@ class OrderCancelScreen extends Component {
 
   _cancelOrder(reason) {
     this.props.cancelOrder(
-      this.props.navigation.getParam('order'),
+      this.props.route.params?.order,
       reason,
       order => this.props.navigation.navigate('RestaurantOrder', { order })
     )

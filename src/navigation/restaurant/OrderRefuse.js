@@ -11,7 +11,7 @@ class OrderRefuseScreen extends Component {
 
   _refuseOrder(reason) {
     this.props.refuseOrder(
-      this.props.navigation.getParam('order'),
+      this.props.route.params?.order,
       reason,
       order => this.props.navigation.navigate('RestaurantOrder', { order })
     )
