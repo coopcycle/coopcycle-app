@@ -3,73 +3,85 @@ import { createStackNavigator } from '@react-navigation/stack'
 import { createCompatNavigatorFactory } from '@react-navigation/compat'
 
 import i18n from '../../i18n'
-import screens, { defaultNavigationOptions, headerLeft } from '..'
+import screens, { headerLeft } from '..'
+import { stackNavigatorScreenOptions } from '../styles'
 import HeaderButton from '../../components/HeaderButton'
 import HeaderBackButton from '../store/components/HeaderBackButton'
 
-const MainNavigator = createCompatNavigatorFactory(createStackNavigator)({
-  StoreHome: {
-    screen: screens.StoreDashboard,
-    navigationOptions: ({ navigation }) => {
-      const store = navigation.getParam('store')
-      const title = store ? store.name : ''
+const MainStack = createStackNavigator()
 
-      return {
-        title,
-        headerLeft: headerLeft(navigation),
-        headerRight: () =>
-          <HeaderButton iconType="FontAwesome" iconName="plus"
-            onPress={ () => navigation.navigate('StoreNewDelivery') } />
-        ,
-      }
-    },
-  },
-  StoreDelivery: {
-    screen: screens.StoreDelivery,
-    navigationOptions: ({ navigation }) => ({
-      title: i18n.t('STORE_DELIVERY', { id: navigation.getParam('delivery').id }),
-    }),
-  },
-}, {
-  initialRouteKey: 'StoreHome',
-  initialRouteName: 'StoreHome',
-  defaultNavigationOptions,
-})
+const MainNavigator = () => (
+  <MainStack.Navigator
+    screenOptions={ stackNavigatorScreenOptions }>
+    <MainStack.Screen
+      name="StoreHome"
+      component={ screens.StoreDashboard }
+      options={ ({ navigation, route }) => {
+        const store = route.params?.store
+        const title = store ? store.name : ''
 
-const NewDeliveryStack = createCompatNavigatorFactory(createStackNavigator)({
-  StoreNewDeliveryAddress: {
-    screen: screens.StoreNewDeliveryAddress,
-    navigationOptions: ({ navigation }) => ({
-      headerShown: false,
-    }),
-  },
-  StoreNewDeliveryForm: {
-    screen: screens.StoreNewDeliveryForm,
-    navigationOptions: ({ navigation }) => ({
-      headerShown: false,
-    }),
-  },
-}, {
-  defaultNavigationOptions,
-  initialRouteName: 'StoreNewDeliveryAddress',
-})
+        return {
+          title,
+          headerLeft: headerLeft(navigation),
+          headerRight: () =>
+            <HeaderButton iconType="FontAwesome" iconName="plus"
+              onPress={ () => navigation.navigate('StoreNewDelivery') } />
+          ,
+        }
+      }}
+    />
+    <MainStack.Screen
+      name="StoreDelivery"
+      component={ screens.StoreDelivery }
+      options={ ({ route }) => ({
+        title: i18n.t('STORE_DELIVERY', { id: route.params?.delivery.id }),
+      })}
+    />
+  </MainStack.Navigator>
+)
 
-export default createCompatNavigatorFactory(createStackNavigator)({
-  StoreHome: {
-    screen: MainNavigator,
-    navigationOptions: ({ navigation }) => ({
-      headerShown: false,
-    }),
-  },
-  StoreNewDelivery: {
-    screen: NewDeliveryStack,
-    navigationOptions: ({ navigation }) => ({
-      title: i18n.t('STORE_NEW_DELIVERY'),
-      headerLeft: (props) => <HeaderBackButton { ...props } />,
-    }),
-  },
-}, {
-  defaultNavigationOptions,
-  mode: 'modal',
-  initialRouteName: 'StoreHome',
-})
+const NewDeliveryStack = createStackNavigator()
+
+const NewDeliveryNavigator = () => (
+  <NewDeliveryStack.Navigator
+    screenOptions={ stackNavigatorScreenOptions }>
+    <NewDeliveryStack.Screen
+      name="StoreNewDeliveryAddress"
+      component={ screens.StoreNewDeliveryAddress }
+      options={{
+        headerShown: false,
+      }}
+    />
+    <NewDeliveryStack.Screen
+      name="StoreNewDeliveryForm"
+      component={ screens.StoreNewDeliveryForm }
+      options={{
+        headerShown: false,
+      }}
+    />
+  </NewDeliveryStack.Navigator>
+)
+
+const RootStack = createStackNavigator()
+
+export default () => (
+  <RootStack.Navigator
+    mode="modal"
+    screenOptions={ stackNavigatorScreenOptions }>
+    <RootStack.Screen
+      name="StoreHome"
+      component={ MainNavigator }
+      options={{
+        headerShown: false,
+      }}
+    />
+    <RootStack.Screen
+      name="StoreNewDelivery"
+      component={ NewDeliveryNavigator }
+      options={{
+        title: i18n.t('STORE_NEW_DELIVERY'),
+        headerLeft: (props) => <HeaderBackButton { ...props } />,
+      }}
+    />
+  </RootStack.Navigator>
+)
