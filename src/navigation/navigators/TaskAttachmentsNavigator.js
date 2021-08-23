@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
 import { connect } from 'react-redux'
 

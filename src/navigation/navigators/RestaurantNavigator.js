@@ -1,6 +1,5 @@
 import React from 'react'
 import { createStackNavigator } from '@react-navigation/stack'
-import { createCompatNavigatorFactory } from '@react-navigation/compat'
 
 import i18n from '../../i18n'
 import screens, { headerLeft } from '..'
@@ -31,7 +30,7 @@ const MainNavigator = () => (
       name="RestaurantOrder"
       component={ screens.RestaurantOrder }
       options={ ({ route }) => ({
-        headerTitle: () => <OrderNumber order={ route.params?.order } color={ '#ffffff' } />
+        headerTitle: () => <OrderNumber order={ route.params?.order } color={ '#ffffff' } />,
       })}
     />
   </MainStack.Navigator>
