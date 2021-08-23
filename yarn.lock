@@ -12369,11 +12369,6 @@ react-native-modal@^12.1.0:
   version "1.0.3"
   resolved "git+https://git@github.com/coopcycle/react-native-pin-screen.git#2c7bb40caec4478d3e600fb2b9c69e71b09843e5"
 
-react-native-platform-touchable@^1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/react-native-platform-touchable/-/react-native-platform-touchable-1.1.1.tgz#fde4acc65eea585d28b164d0c3716a42129a68e4"
-  integrity sha1-/eSsxl7qWF0osWTQw3FqQhKaaOQ=
-
 react-native-reanimated@^1.13.3:
   version "1.13.3"
   resolved "https://registry.yarnpkg.com/react-native-reanimated/-/react-native-reanimated-1.13.3.tgz#fb0e1d582c8866015140f2159e147ffe6e798a3a"
@@ -12497,13 +12492,12 @@ react-navigation-drawer@^2.7.1:
   resolved "https://registry.yarnpkg.com/react-navigation-drawer/-/react-navigation-drawer-2.7.1.tgz#b025be11f612e8215f15f9f605851d281606fe82"
   integrity sha512-W36XDl+Ts5uGNr6Ryt1xGrQ5JTeddPmvR31bNX7o6Oo7OsdPZ3b1+oMDoRClGca0d6Ggo7btIqiWUsUshm+p/g==
 
-react-navigation-header-buttons@^5.0.2:
-  version "5.0.2"
-  resolved "https://registry.yarnpkg.com/react-navigation-header-buttons/-/react-navigation-header-buttons-5.0.2.tgz#e2701dc1d27637b73ab458033ee7c0f49992bf82"
-  integrity sha512-tr23aMc/Aakrp8J8+Py6qCg2gPqr+XtBLDuv0+CFdU521ersA4q0vLJjGtYTzP9Lg+bKhR29foWizK1Xl9ft+g==
+react-navigation-header-buttons@^7.0.2:
+  version "7.0.2"
+  resolved "https://registry.yarnpkg.com/react-navigation-header-buttons/-/react-navigation-header-buttons-7.0.2.tgz#2971aa6e9c927a8e9872afa9a394bdbb625cbe4a"
+  integrity sha512-9upSzWAaIYalBwwMDIUa9XtquVElFAfPStjzl4SvV7XE4HAIcnafDGcMApyxn5zf3N4VvDSRTB9xfEiDzr98jg==
   dependencies:
     invariant ">=2"
-    react-native-platform-touchable "^1.1.1"
 
 react-navigation-stack@^2.10.4:
   version "2.10.4"
