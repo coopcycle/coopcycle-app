@@ -40,13 +40,13 @@ const NavButtonWithTrans = withTranslation()(NavButton)
 
 const Nav = ({ task, tasks }) => {
 
+  const navigation = useNavigation()
+  const route = useRoute()
+
   if (tasks.length === 0) {
 
     return null
   }
-
-  const navigation = useNavigation()
-  const route = useRoute()
 
   const index = _.findIndex(tasks, t => t['@id'] === task['@id'])
   const isFirst = index === 0
