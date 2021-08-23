@@ -1,7 +1,7 @@
 // @see https://reactnavigation.org/docs/navigating-without-navigation-prop
 
 import * as React from 'react'
-import { NavigationActions } from '@react-navigation/compat'
+import { CommonActions } from '@react-navigation/native'
 
 export default class NavigationHolder {
 
@@ -21,9 +21,7 @@ export default class NavigationHolder {
 
   static goBack() {
     return this.navigationRef.current?.dispatch(
-      NavigationActions.back({
-        key: null,
-      })
+      CommonActions.goBack()
     )
   }
 }

@@ -3,7 +3,7 @@ import {
   StyleSheet,
   View,
 } from 'react-native'
-import { NavigationActions, StackActions } from '@react-navigation/compat'
+import { CommonActions } from '@react-navigation/native'
 import {
   Container, Content, Text, Button, Icon,
 } from 'native-base'
@@ -14,14 +14,12 @@ class RegisterCheckEmail extends Component {
   _onPressLogin() {
 
     const loginRouteName =
-      this.props.navigation.getParam('loginRouteName', 'AccountHome')
+      this.props.route.params?.loginRouteName || 'AccountHome'
 
-    const resetAction = StackActions.reset({
+    const resetAction = CommonActions.reset({
       index: 0,
-      actions: [
-        NavigationActions.navigate({
-          routeName: loginRouteName,
-        }),
+      routes: [
+        { name: loginRouteName },
       ],
     })
 
@@ -30,7 +28,7 @@ class RegisterCheckEmail extends Component {
 
   render() {
 
-    const email = this.props.navigation.getParam('email', '')
+    const email = this.props.route.params?.email || ''
 
     return (
       <Container>
