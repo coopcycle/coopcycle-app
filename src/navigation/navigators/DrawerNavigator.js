@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 
 import i18n from '../../i18n'
 import { selectIsAuthenticated, selectInitialRouteName } from '../../redux/App/selectors'
-import { defaultNavigationOptions, headerLeft } from '..'
+import { headerLeft } from '..'
 import { stackNavigatorScreenOptions } from '../styles'
 
 import DrawerContent from '../components/DrawerContent'
