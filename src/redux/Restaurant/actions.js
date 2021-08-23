@@ -1,5 +1,5 @@
 import { createAction } from 'redux-actions'
-import { NavigationActions, StackActions } from '@react-navigation/compat'
+import { CommonActions, StackActions } from '@react-navigation/native'
 import BleManager from 'react-native-ble-manager'
 import _ from 'lodash'
 
@@ -245,22 +245,20 @@ export function activateMenu(restaurant, menu) {
 }
 
 function gotoOrder(restaurant, order) {
-  NavigationHolder.dispatch(NavigationActions.navigate({
-    routeName: 'RestaurantNav',
-    action: NavigationActions.navigate({
-      routeName: 'Main',
+  NavigationHolder.dispatch(CommonActions.navigate({
+    name: 'RestaurantNav',
+    params: {
+      screen: 'Main',
       params: {
         restaurant,
         // We don't want to load orders again when navigating
         loadOrders: false,
+        screen: 'RestaurantOrder',
+        params: {
+          order
+        }
       },
-      // We use push, because if we are already on RestaurantOrder, it opens a new screen
-      // @see https://reactnavigation.org/docs/en/navigating.html#navigate-to-a-route-multiple-times
-      action: StackActions.push({
-        routeName: 'RestaurantOrder',
-        params: { order },
-      }),
-    }),
+    },
   }))
 }
 

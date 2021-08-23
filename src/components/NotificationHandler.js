@@ -6,7 +6,7 @@ import { withTranslation } from 'react-i18next'
 import Sound from 'react-native-sound'
 import moment from 'moment'
 import Modal from 'react-native-modal'
-import { NavigationActions, StackActions } from '@react-navigation/compat'
+import { CommonActions, StackActions } from '@react-navigation/native'
 
 import PushNotification from '../notifications'
 import NavigationHolder from '../NavigationHolder'
@@ -182,22 +182,20 @@ class NotificationHandler extends Component {
     this._stopSound()
     this.props.clearNotifications()
 
-    NavigationHolder.dispatch(NavigationActions.navigate({
-      routeName: 'RestaurantNav',
-      action: NavigationActions.navigate({
-        routeName: 'Main',
+    NavigationHolder.dispatch(CommonActions.navigate({
+      name: 'RestaurantNav',
+      params: {
+        screen: 'Main',
         params: {
           restaurant: order.restaurant,
           // We don't want to load orders again when navigating
           loadOrders: false,
+          screen: 'RestaurantOrder',
+          params: {
+            order,
+          }
         },
-        // We use push, because if we are already on RestaurantOrder, it opens a new screen
-        // @see https://reactnavigation.org/docs/en/navigating.html#navigate-to-a-route-multiple-times
-        action: StackActions.push({
-          routeName: 'RestaurantOrder',
-          params: { order },
-        }),
-      }),
+      },
     }))
   }
 
@@ -206,14 +204,14 @@ class NotificationHandler extends Component {
     this._stopSound()
     this.props.clearNotifications()
 
-    NavigationHolder.dispatch(NavigationActions.navigate({
-      routeName: 'CourierNav',
-      action: NavigationActions.navigate({
-        routeName: 'CourierHome',
-        action: NavigationActions.navigate({
-          routeName: 'CourierTaskList',
-        }),
-      }),
+    NavigationHolder.dispatch(CommonActions.navigate({
+      name: 'CourierNav',
+      params: {
+        screen: 'CourierHome',
+        params: {
+          screen: 'CourierTaskList',
+        },
+      },
     }))
 
     this.props.loadTasks(moment(date))

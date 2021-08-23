@@ -1,5 +1,5 @@
 import { createAction } from 'redux-actions'
-import { StackActions, NavigationActions } from '@react-navigation/compat'
+import { StackActions, CommonActions } from '@react-navigation/native'
 import Stripe from 'tipsi-stripe'
 import _ from 'lodash'
 
@@ -586,13 +586,13 @@ function handleSuccessNav(dispatch, order) {
   // First, reset checkout stack
   NavigationHolder.dispatch(StackActions.popToTop())
   // Then, navigate to order screen
-  NavigationHolder.dispatch(NavigationActions.navigate({
-    routeName: 'AccountNav',
+  NavigationHolder.dispatch(CommonActions.navigate({
+    name: 'AccountNav',
     // We skip the AccountOrders screen
-    action: NavigationActions.navigate({
-      routeName: 'AccountOrder',
+    params: {
+      screen: 'AccountOrder',
       params: { order },
-    }),
+    },
   }))
 
   // Make sure to clear AFTER navigation has been reset
