@@ -1,6 +1,6 @@
 import { Alert } from 'react-native'
 import { createAction } from 'redux-actions'
-import { NavigationActions, StackActions } from '@react-navigation/compat'
+import { CommonActions } from '@react-navigation/native'
 
 import { connect } from '../middlewares/CentrifugoMiddleware/actions'
 import i18n from '../../i18n'
@@ -271,12 +271,10 @@ export function createTask(task) {
           dispatch(createTaskSuccess(t))
         }
 
-
-        const resetAction = StackActions.reset({
+        const resetAction = CommonActions.reset({
           index: 0,
-          key: null,
-          actions: [
-            NavigationActions.navigate({ routeName: 'Main' }),
+          routes: [
+            { name: 'Main' },
           ],
         })
         NavigationHolder.dispatch(resetAction)
