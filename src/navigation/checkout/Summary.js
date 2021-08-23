@@ -356,7 +356,7 @@ function mapStateToProps(state, ownProps) {
 
   return {
     cart: state.checkout.cart,
-    edit: ownProps.navigation.getParam('edit', false),
+    edit: ownProps.route.params?.edit || false,
     isAuthenticated: selectIsAuthenticated(state),
     deliveryTotal: selectDeliveryTotal(state),
     timeAsText: selectShippingTimeRangeLabel(state),

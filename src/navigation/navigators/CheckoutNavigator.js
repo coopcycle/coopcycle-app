@@ -5,133 +5,147 @@ import { createStackNavigator } from '@react-navigation/stack'
 import { createCompatNavigatorFactory } from '@react-navigation/compat'
 
 import i18n from '../../i18n'
-import screens, {defaultNavigationOptions, headerLeft} from '..'
+import screens, { headerLeft } from '..'
+import { stackNavigatorScreenOptions } from '../styles'
 
-const MainNavigator = createCompatNavigatorFactory(createStackNavigator)({
-  CheckoutHome: {
-    screen: screens.RestaurantsPage,
-    navigationOptions: ({ navigation }) => ({
-      title: i18n.t('RESTAURANTS'),
-      headerLeft: headerLeft(navigation),
-    }),
-  },
-  CheckoutRestaurant: {
-    screen: screens.CheckoutRestaurant,
-    navigationOptions: ({ navigation }) => ({
-      title: i18n.t('RESTAURANT'),
-    }),
-  },
-  CheckoutSummary: {
-    screen: screens.CheckoutSummary,
-    navigationOptions: ({ navigation }) => ({
-      title: i18n.t('CART'),
-      headerRight: () =>
-        <TouchableOpacity style={{ paddingHorizontal: 10 }}
-          onPress={ () => navigation.setParams({ edit: !navigation.getParam('edit', false) }) }>
-          <Text style={{ color: 'white' }}>
-            { navigation.getParam('edit', false) ? i18n.t('FINISHED') : i18n.t('EDIT') }
-          </Text>
-        </TouchableOpacity>
-      ,
-    }),
-  },
-  CheckoutCreditCard: {
-    screen: screens.CheckoutCreditCard,
-    navigationOptions: ({ navigation }) => ({
-      title: i18n.t('PAYMENT'),
-    }),
-  },
-}, {
-  initialRouteKey: 'CheckoutHome',
-  initialRouteName: 'CheckoutHome',
-  defaultNavigationOptions,
-})
+const MainStack = createStackNavigator()
 
-const LoginRegisterStack = createCompatNavigatorFactory(createStackNavigator)({
-  CheckoutLoginRegister: {
-    screen: screens.CheckoutLogin,
-    navigationOptions: ({ navigation }) => ({
-      // Use header = null to get rid of the header
-      // The screen's header will be used
-      headerShown: false,
-    }),
-  },
-  CheckoutCheckEmail: {
-    screen: screens.AccountRegisterCheckEmail,
-    navigationOptions: ({ navigation }) => ({
-      // Use header = null to get rid of the header
-      // The screen's header will be used
-      headerShown: false,
-    }),
-  },
-  CheckoutForgotPassword: {
-    screen: screens.AccountForgotPassword,
-    navigationOptions: ({ navigation }) => ({
-      // Use header = null to get rid of the header
-      // The screen's header will be used
-      headerShown: false,
-    }),
-  },
-  CheckoutResetPasswordCheckEmail: {
-    screen: screens.AccountResetPasswordCheckEmail,
-    navigationOptions: ({ navigation }) => ({
-      // Use header = null to get rid of the header
-      // The screen's header will be used
-      headerShown: false,
-    }),
-  },
-}, {
-  initialRouteName: 'CheckoutLoginRegister',
-  defaultNavigationOptions,
-})
+const MainNavigator = () => (
+  <MainStack.Navigator
+    screenOptions={ stackNavigatorScreenOptions }>
+    <MainStack.Screen
+      name="CheckoutHome"
+      component={ screens.RestaurantsPage }
+      options={ ({ navigation }) => ({
+        title: i18n.t('RESTAURANTS'),
+        headerLeft: headerLeft(navigation),
+      })}
+    />
+    <MainStack.Screen
+      name="CheckoutRestaurant"
+      component={ screens.CheckoutRestaurant }
+      options={{
+        title: i18n.t('RESTAURANT'),
+      }}
+    />
+    <MainStack.Screen
+      name="CheckoutSummary"
+      component={ screens.CheckoutSummary }
+      options={ ({ navigation, route }) => ({
+        title: i18n.t('CART'),
+        headerRight: () => (
+          <TouchableOpacity style={{ paddingHorizontal: 10 }}
+            onPress={ () => {
+              navigation.setParams({ edit: !(route.params?.edit || false) })
+            }}>
+            <Text style={{ color: 'white' }}>
+              { (route.params?.edit || false) ? i18n.t('FINISHED') : i18n.t('EDIT') }
+            </Text>
+          </TouchableOpacity>
+        ),
+      })}
+    />
+    <MainStack.Screen
+      name="CheckoutCreditCard"
+      component={ screens.CheckoutCreditCard }
+      options={{
+        title: i18n.t('PAYMENT'),
+      }}
+    />
+  </MainStack.Navigator>
+)
 
-export default createCompatNavigatorFactory(createStackNavigator)({
-  Main: {
-    screen: MainNavigator,
-    navigationOptions: ({ navigation }) => ({
-      // Use header = null to get rid of the header
-      // The screen's header will be used
-      headerShown: false,
-      title: i18n.t('RESTAURANT'),
-    }),
-  },
-  CheckoutProductOptions: {
-    screen: screens.CheckoutProductOptions,
-    navigationOptions: ({ navigation }) => ({
-      title: i18n.t('CHECKOUT_PRODUCT_OPTIONS_TITLE'),
-    }),
-  },
-  CheckoutShippingDate: {
-    screen: screens.CheckoutShippingDate,
-    navigationOptions: ({ navigation }) => ({
-      title: i18n.t('CHECKOUT_SHIPPING_DATE'),
-    }),
-  },
-  CheckoutLogin: {
-    screen: LoginRegisterStack,
-    navigationOptions: ({ navigation }) => ({
-      title: i18n.t('CHECKOUT_LOGIN_TITLE'),
-    }),
-  },
-  CheckoutMoreInfos: {
-    screen: screens.CheckoutMoreInfos,
-    navigationOptions: ({ navigation }) => ({
-      title: i18n.t('CHECKOUT_MORE_INFOS'),
-    }),
-  },
-  CheckoutPaymentMethodCard: {
-    screen: screens.CheckoutPaymentMethodCard,
-    navigationOptions: ({ navigation }) => ({
-      title: i18n.t('PAYMENT_METHOD.card'),
-    }),
-  },
-  CheckoutPaymentMethodCashOnDelivery: {
-    screen: screens.CheckoutPaymentMethodCashOnDelivery,
-    navigationOptions: ({ navigation }) => ({
-      title: i18n.t('PAYMENT_METHOD.cash_on_delivery'),
-    }),
-  },
-}, {
-  mode: 'modal',
-  defaultNavigationOptions,
-})
+const LoginRegisterStack = createStackNavigator()
+
+const LoginRegisterNavigator = () => (
+  <LoginRegisterStack.Navigator
+    screenOptions={ stackNavigatorScreenOptions }>
+    <LoginRegisterStack.Screen
+      name="CheckoutLoginRegister"
+      component={ screens.CheckoutLogin }
+      options={{
+        headerShown: false,
+      }}
+    />
+    <LoginRegisterStack.Screen
+      name="CheckoutCheckEmail"
+      component={ screens.AccountRegisterCheckEmail }
+      options={{
+        headerShown: false,
+      }}
+    />
+    <LoginRegisterStack.Screen
+      name="CheckoutForgotPassword"
+      component={ screens.AccountForgotPassword }
+      options={{
+        headerShown: false,
+      }}
+    />
+    <LoginRegisterStack.Screen
+      name="CheckoutResetPasswordCheckEmail"
+      component={ screens.AccountResetPasswordCheckEmail }
+      options={{
+        headerShown: false,
+      }}
+    />
+  </LoginRegisterStack.Navigator>
+)
+
+const RootStack = createStackNavigator()
+
+export default () => (
+  <RootStack.Navigator
+    mode="modal"
+    screenOptions={ stackNavigatorScreenOptions }>
+    <RootStack.Screen
+      name="Main"
+      component={ MainNavigator }
+      options={{
+        headerShown: false,
+        title: i18n.t('RESTAURANT'),
+      }}
+    />
+    <RootStack.Screen
+      name="CheckoutProductOptions"
+      component={ screens.CheckoutProductOptions }
+      options={{
+        title: i18n.t('CHECKOUT_PRODUCT_OPTIONS_TITLE'),
+      }}
+    />
+    <RootStack.Screen
+      name="CheckoutShippingDate"
+      component={ screens.CheckoutShippingDate }
+      options={{
+        title: i18n.t('CHECKOUT_SHIPPING_DATE'),
+      }}
+    />
+    <RootStack.Screen
+      name="CheckoutLogin"
+      component={ LoginRegisterNavigator }
+      options={{
+        title: i18n.t('CHECKOUT_LOGIN_TITLE'),
+      }}
+    />
+    <RootStack.Screen
+      name="CheckoutMoreInfos"
+      component={ screens.CheckoutMoreInfos }
+      options={{
+        title: i18n.t('CHECKOUT_MORE_INFOS'),
+      }}
+    />
+    <RootStack.Screen
+      name="CheckoutPaymentMethodCard"
+      component={ screens.CheckoutPaymentMethodCard }
+      options={{
+        title: i18n.t('PAYMENT_METHOD.card'),
+      }}
+    />
+    <RootStack.Screen
+      name="CheckoutPaymentMethodCashOnDelivery"
+      component={ screens.CheckoutPaymentMethodCashOnDelivery }
+      options={{
+        title: i18n.t('PAYMENT_METHOD.cash_on_delivery'),
+      }}
+    />
+  </RootStack.Navigator>
+)

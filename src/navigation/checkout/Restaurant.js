@@ -42,16 +42,16 @@ class Restaurant extends Component {
   }
 
   componentDidMount() {
-    this.props.resetRestaurant(this.props.navigation.getParam('restaurant'))
+    this.props.resetRestaurant(this.props.route.params?.restaurant)
     InteractionManager.runAfterInteractions(() => {
-      this.props.init(this.props.navigation.getParam('restaurant'))
+      this.props.init(this.props.route.params?.restaurant)
     })
   }
 
   render() {
 
     const { navigate } = this.props.navigation
-    const restaurant = this.props.navigation.getParam('restaurant')
+    const restaurant = this.props.route.params?.restaurant
     const { isCartEmpty, menu } = this.props
 
     return (
