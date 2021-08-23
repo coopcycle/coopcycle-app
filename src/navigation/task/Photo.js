@@ -21,7 +21,7 @@ class Photo extends Component {
   }
 
   _saveImage() {
-    const task = this.props.navigation.getParam('task')
+    const task = this.props.route.params?.task
     const { image } = this.state
     if (image) {
       this.props.addPicture(task, image.base64)
