@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, TouchableOpacity, View } from 'react-native'
+import { StyleSheet, TouchableOpacity, View, Platform } from 'react-native'
 import { connect } from 'react-redux'
 import {
   Container, Content,
