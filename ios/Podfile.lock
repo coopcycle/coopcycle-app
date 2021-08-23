@@ -363,7 +363,7 @@ PODS:
     - React-Core
   - react-native-maps (0.27.1):
     - React
-  - react-native-netinfo (5.9.10):
+  - react-native-netinfo (6.0.0):
     - React-Core
   - react-native-safe-area-context (3.3.0):
     - React-Core
@@ -808,7 +808,7 @@ SPEC CHECKSUMS:
   react-native-config: 387b1ea507bc50a2059e69149dac1342b9532f58
   react-native-get-random-values: 237bffb1c7e05fb142092681531810a29ba53015
   react-native-maps: f4b89da81626ad7f151a8bfcb79733295d31ce5c
-  react-native-netinfo: 30fb89fa913c342be82a887b56e96be6d71201dd
+  react-native-netinfo: e849fc21ca2f4128a5726c801a82fc6f4a6db50d
   react-native-safe-area-context: 61c8c484a3a9e7d1fda19f7b1794b35bbfd2262a
   react-native-version-number: b415bbec6a13f2df62bf978e85bc0d699462f37f
   React-RCTActionSheet: 89a0ca9f4a06c1f93c26067af074ccdce0f40336
