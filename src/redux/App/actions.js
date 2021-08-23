@@ -1,5 +1,5 @@
 import { createAction } from 'redux-actions'
-import { NavigationActions } from '@react-navigation/compat'
+import { CommonActions } from '@react-navigation/native'
 import tracker from '../../analytics/Tracker'
 import analyticsEvent from '../../analytics/Event'
 import userProperty from '../../analytics/UserProperty'
@@ -442,11 +442,11 @@ export function forgotPassword() {
 export function resumeCheckout() {
   return (dispatch, getState) => {
     dispatch(_resumeCheckoutAfterActivation(false))
-    NavigationHolder.dispatch(NavigationActions.navigate({
-      routeName: 'CheckoutNav',
-      action: NavigationActions.navigate({
-        routeName: 'CheckoutSummary',
-      }),
+    NavigationHolder.dispatch(CommonActions.navigate({
+      name: 'CheckoutNav',
+      params: {
+        screen: 'CheckoutSummary',
+      },
     }))
   }
 }
