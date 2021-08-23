@@ -23,7 +23,6 @@
     "@react-native-firebase/messaging": "^10.8.1",
     "@react-native-picker/picker": "^1.9.7",
     "@react-navigation/bottom-tabs": "^5.11.15",
-    "@react-navigation/compat": "^5.3.20",
     "@react-navigation/drawer": "^5.12.9",
     "@react-navigation/material-top-tabs": "^5.3.19",
     "@react-navigation/native": "^5.9.8",
