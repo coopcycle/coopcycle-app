@@ -37,8 +37,8 @@ class RestaurantsPage extends Component {
 
   componentDidUpdate(prevProps, prevState) {
 
-    const prevAddress = prevProps.route.address
-    const addressAsParam = this.props.route.address
+    const prevAddress = prevProps.route.params?.address
+    const addressAsParam = this.props.route.params?.address
 
     if (addressAsParam && prevAddress !== addressAsParam) {
       InteractionManager.runAfterInteractions(() => this._onAddressSelect(addressAsParam))
