@@ -12297,10 +12297,10 @@ react-native-iphone-x-helper@^1.3.0:
   resolved "https://registry.yarnpkg.com/react-native-iphone-x-helper/-/react-native-iphone-x-helper-1.3.0.tgz#84fd13e6b89cc3aa4daa80ec514bf15cb724d86d"
   integrity sha512-+/bcZWFeZt0xSS/+3CHM5K7qPL4vDO/3ARLIowzFpUPGZiPsv9+NET+XNqqseRYwFJwYMmtX+Q4TZKxAVy09ew==
 
-react-native-keyboard-manager@^4.0.13-17:
-  version "4.0.13-17"
-  resolved "https://registry.yarnpkg.com/react-native-keyboard-manager/-/react-native-keyboard-manager-4.0.13-17.tgz#abb4038ad5a404aad087d3ecf69f9a60fd2fb899"
-  integrity sha512-otrAg02z1zulqTUL/CyvRzVZDb68v3I30PfdjQlocfVchfn/VOQUeHr/XFAeTo7dv8XBxBzcspYxCzE48fPC+A==
+react-native-keyboard-manager@^6.5.4-2:
+  version "6.5.4-2"
+  resolved "https://registry.yarnpkg.com/react-native-keyboard-manager/-/react-native-keyboard-manager-6.5.4-2.tgz#46b77a95b469ff9bdfd5c94074f8c494388d5b83"
+  integrity sha512-x76IjgI+i6Jf4pQsP6guaSl9ejHziqfOXaHhHilqIqNpwgIxcB0i1LSMiafgp2fzVyIs2/b6Ot/gv5dgN63CGg==
 
 react-native-loading-spinner-overlay@^2.0.0:
   version "2.0.0"
