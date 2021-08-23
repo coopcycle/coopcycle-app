@@ -1,59 +1,45 @@
 import React, { Component } from 'react'
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
-import { createCompatNavigatorFactory, NavigationActions } from '@react-navigation/compat'
+import { connect } from 'react-redux'
 
 import i18n from '../../i18n'
 import screens from '..'
+import { stackNavigatorScreenOptions } from '../styles'
+import { selectSignatureScreenFirst } from '../../redux/Courier'
 
-const routeConfigs = {
-  TaskPhoto: {
-    screen: screens.TaskPhoto,
-    navigationOptions: ({ navigation }) => ({
-      title: i18n.t('PHOTO'),
-    }),
-  },
-  TaskSignature: {
-    screen: screens.TaskSignature,
-    navigationOptions: ({ navigation }) => ({
-      title: i18n.t('SIGNATURE'),
-    }),
-  },
-}
+const Tab = createMaterialTopTabNavigator()
 
-const tabNavigatorConfig = {
-  // Disable swipe to avoid swiping when signing
-  swipeEnabled: false,
-  backBehavior: 'history',
-}
+const TabNavigator = ({ initialRouteName }) => (
+  <Tab.Navigator
+    screenOptions={ stackNavigatorScreenOptions }
+    backBehavior="history"
+    // Disable swipe to avoid swiping when signing
+    swipeEnabled={ false }
+    initialRouteName={ initialRouteName }>
+    <Tab.Screen
+      name="TaskPhoto"
+      component={ screens.TaskPhoto }
+      options={{
+        title: i18n.t('PHOTO'),
+      }}
+    />
+    <Tab.Screen
+      name="TaskSignature"
+      component={ screens.TaskSignature }
+      options={{
+        title: i18n.t('SIGNATURE'),
+      }}
+    />
+  </Tab.Navigator>
+)
 
-const TopTabNavigator = createCompatNavigatorFactory(createMaterialTopTabNavigator)(routeConfigs, tabNavigatorConfig)
+const PreferencesAwareNavigator = ({ signatureScreenFirst }) => (
+  <TabNavigator
+    initialRouteName={ signatureScreenFirst ? 'TaskSignature' : 'TaskPhoto' } />
+)
 
-// @see https://reactnavigation.org/docs/en/custom-navigators.html
+const mapStateToProps = (state) => ({
+  signatureScreenFirst: selectSignatureScreenFirst(state),
+})
 
-class PreferencesAwareNavigator extends Component {
-
-  static router = {
-    ...TopTabNavigator.router,
-    getStateForAction: (action, inputState) => {
-      const state = TopTabNavigator.router.getStateForAction(action, inputState)
-
-      if (action.type === NavigationActions.INIT) {
-        if (action.params && action.params.signatureScreenFirst) {
-
-          return {
-            ...state,
-            index: 1,
-          }
-        }
-      }
-
-      return state
-    },
-  }
-
-  render() {
-    return <TopTabNavigator navigation={ this.props.navigation } />
-  }
-}
-
-export default PreferencesAwareNavigator
+export default connect(mapStateToProps)(PreferencesAwareNavigator)

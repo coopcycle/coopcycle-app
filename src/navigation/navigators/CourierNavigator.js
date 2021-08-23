@@ -3,43 +3,48 @@ import { View, TouchableOpacity, StyleSheet } from 'react-native'
 import { Icon } from 'native-base'
 import { createStackNavigator } from '@react-navigation/stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import { createCompatNavigatorFactory } from '@react-navigation/compat'
 
 import i18n from '../../i18n'
 import TrackingIcon from '../../components/TrackingIcon'
-import screens, { defaultNavigationOptions, headerLeft } from '..'
+import screens, { headerLeft } from '..'
+import { stackNavigatorScreenOptions } from '../styles'
 import TaskNavigator from './TaskNavigator'
 
-const Tabs = createCompatNavigatorFactory(createBottomTabNavigator)({
-  CourierTasks: {
-    screen: screens.CourierTasksPage,
-    navigationOptions: ({ navigation }) => ({
-      title: i18n.t('TASKS'),
-      tabBarTestID: 'messengerTabMap',
-      tabBarIcon: ({ color }) => {
-        return (
-          <Icon type="FontAwesome" name="map" style={{ color }} />
-        )
-      },
-    }),
-  },
-  CourierTaskList: {
-    screen: screens.CourierTaskListPage,
-    navigationOptions: ({ navigation }) => ({
-      title: i18n.t('TASK_LIST'),
-      tabBarTestID: 'messengerTabList',
-      tabBarIcon: ({ color }) => {
-        return (
-          <Icon type="FontAwesome" name="list" style={{ color }} />
-        )
-      },
-    }),
-  },
-}, {
-  tabBarOptions: {
-    showLabel: false,
-  },
-})
+const Tab = createBottomTabNavigator()
+
+const Tabs = () => (
+  <Tab.Navigator
+    tabBarOptions={{
+      showLabel: false,
+    }}>
+    <Tab.Screen
+      name="CourierTasks"
+      component={ screens.CourierTasksPage }
+      options={ ({ navigation }) => ({
+        title: i18n.t('TASKS'),
+        tabBarTestID: 'messengerTabMap',
+        tabBarIcon: ({ color }) => {
+          return (
+            <Icon type="FontAwesome" name="map" style={{ color }} />
+          )
+        },
+      })}
+    />
+    <Tab.Screen
+      name="CourierTaskList"
+      component={ screens.CourierTaskListPage }
+      options={ ({ navigation }) => ({
+        title: i18n.t('TASK_LIST'),
+        tabBarTestID: 'messengerTabList',
+        tabBarIcon: ({ color }) => {
+          return (
+            <Icon type="FontAwesome" name="list" style={{ color }} />
+          )
+        },
+      })}
+    />
+  </Tab.Navigator>
+)
 
 const styles = StyleSheet.create({
   buttonBar: {
@@ -62,65 +67,78 @@ const ButtonWithIcon = ({ name, onPress }) => {
   )
 }
 
-const MainNavigator = createCompatNavigatorFactory(createStackNavigator)({
-  CourierHome: {
-    screen: Tabs,
-    navigationOptions: ({ navigation }) => ({
-      title: i18n.t('COURIER'),
-      headerLeft: headerLeft(navigation, 'menuBtnCourier'),
-      headerRight: () =>
-        <View style={ styles.buttonBar }>
-          <ButtonWithIcon name="settings" onPress={ () => navigation.navigate('CourierSettings') } />
-          <TouchableOpacity style={ styles.button }>
-            <TrackingIcon />
-          </TouchableOpacity>
-        </View>
-      ,
-    }),
-  },
-  Task: {
-    screen: TaskNavigator,
-    navigationOptions: ({ navigation }) => ({
-      headerShown: false,
-    }),
-  },
-}, {
-  initialRouteKey: 'CourierHome',
-  initialRouteName: 'CourierHome',
-  defaultNavigationOptions,
-})
+const MainStack = createStackNavigator()
 
-const SettingsStack = createCompatNavigatorFactory(createStackNavigator)({
-  CourierSettings: {
-    screen: screens.CourierSettings,
-    navigationOptions: ({ navigation }) => ({
-      headerShown: false,
-    }),
-  },
-  CourierSettingsTags: {
-    screen: screens.CourierSettingsTags,
-    navigationOptions: ({ navigation }) => ({
-      headerShown: false,
-    }),
-  },
-}, {
-  defaultNavigationOptions,
-})
+const MainNavigator = () => (
+  <MainStack.Navigator
+    screenOptions={ stackNavigatorScreenOptions }>
+    <MainStack.Screen
+      name="CourierHome"
+      component={ Tabs }
+      options={ ({ navigation }) => ({
+        title: i18n.t('COURIER'),
+        headerLeft: headerLeft(navigation, 'menuBtnCourier'),
+        headerRight: () =>
+          <View style={ styles.buttonBar }>
+            <ButtonWithIcon name="settings" onPress={ () => navigation.navigate('CourierSettings') } />
+            <TouchableOpacity style={ styles.button }>
+              <TrackingIcon />
+            </TouchableOpacity>
+          </View>
+        ,
+      })}
+    />
+    <MainStack.Screen
+      name="Task"
+      component={ TaskNavigator }
+      options={{
+        headerShown: false,
+      }}
+    />
+  </MainStack.Navigator>
+)
 
-export default createCompatNavigatorFactory(createStackNavigator)({
-  Main: {
-    screen: MainNavigator,
-    navigationOptions: ({ navigation }) => ({
-      headerShown: false,
-    }),
-  },
-  CourierSettings: {
-    screen: SettingsStack,
-    navigationOptions: ({ navigation }) => ({
-      title: i18n.t('SETTINGS'),
-    }),
-  },
-}, {
-  defaultNavigationOptions,
-  mode: 'modal',
-})
+const SettingsStack = createStackNavigator()
+
+const SettingsNavigator = () => (
+  <SettingsStack.Navigator
+    screenOptions={ stackNavigatorScreenOptions }>
+    <SettingsStack.Screen
+      name="CourierSettings"
+      component={ screens.CourierSettings }
+      options={{
+        headerShown: false,
+      }}
+    />
+    <SettingsStack.Screen
+      name="CourierSettingsTags"
+      component={ screens.CourierSettingsTags }
+      options={{
+        headerShown: false,
+      }}
+    />
+  </SettingsStack.Navigator>
+)
+
+const RootStack = createStackNavigator()
+
+export default () => (
+  <RootStack.Navigator
+    mode="modal"
+    screenOptions={ stackNavigatorScreenOptions }>
+    <RootStack.Screen
+      name="Main"
+      component={ MainNavigator }
+      options={{
+        headerShown: false,
+      }}
+    />
+    <RootStack.Screen
+      name="CourierSettings"
+      component={ SettingsNavigator }
+      options={{
+        title: i18n.t('SETTINGS'),
+      }}
+    />
+  </RootStack.Navigator>
+)

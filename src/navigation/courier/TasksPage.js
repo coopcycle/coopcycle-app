@@ -108,7 +108,7 @@ class TasksPage extends Component {
         <TasksMapView
           mapCenter={ this.props.mapCenter }
           tasks={ tasks }
-          onMarkerCalloutPress={ task => navigateToTask(this.props.navigation, task, tasks) } />
+          onMarkerCalloutPress={ task => navigateToTask(this.props.navigation, this.props.route, task, tasks) } />
         <DateSelectHeader
           buttonsEnabled={true}
           toDate={this.refreshTasks}

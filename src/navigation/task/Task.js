@@ -46,7 +46,7 @@ class Task extends Component {
 
   componentDidUpdate(prevProps, prevState) {
 
-    const task = this.props.navigation.getParam('task')
+    const task = this.props.route.params?.task
 
     let previousTask = _.find(prevProps.tasks, t => t['@id'] === task['@id'])
     let currentTask = _.find(this.props.tasks, t => t['@id'] === task['@id'])
@@ -64,7 +64,7 @@ class Task extends Component {
 
   _complete(success = true, force = false) {
 
-    const task = this.props.navigation.getParam('task')
+    const task = this.props.route.params?.task
 
     if (success && task.status === 'TODO' && !force) {
       Alert.alert(
@@ -93,9 +93,12 @@ class Task extends Component {
     }
 
     this.props.navigation.navigate('TaskComplete', {
-      task,
-      navigateAfter: this.props.navigation.getParam('navigateAfter'),
-      success,
+      screen: 'TaskCompleteHome',
+      params: {
+        task,
+        navigateAfter: this.props.route.params?.navigateAfter,
+        success,
+      },
     })
     setTimeout(() => this.swipeRow.current.closeRow(), 250)
   }
@@ -109,7 +112,7 @@ class Task extends Component {
       )
     }
 
-    const task = this.props.navigation.getParam('task')
+    const task = this.props.route.params?.task
     const { mapDimensions } = this.state
 
     let aspectRatio = 1
@@ -125,10 +128,8 @@ class Task extends Component {
 
   render() {
 
-    const { getParam } = this.props.navigation
-
-    const task = getParam('task')
-    const tasks = getParam('tasks', [])
+    const task = this.props.route.params?.task
+    const tasks = this.props.route.params?.tasks || []
 
     return (
       <View style={{ flex: 1 }}>

@@ -1,9 +1,9 @@
 let navigateAfter = null
 
-export const navigateToTask = (navigation, task, tasks = []) => {
+export const navigateToTask = (navigation, route, task, tasks = []) => {
 
-  if (navigation.state.routeName !== 'TaskHome') {
-    navigateAfter = navigation.state.routeName
+  if (route.name !== 'TaskHome') {
+    navigateAfter = route.name
   }
 
   const params = {
@@ -18,15 +18,18 @@ export const navigateToTask = (navigation, task, tasks = []) => {
   })
 }
 
-export const navigateToCompleteTask = (navigation, task, tasks = [], success = true) => {
+export const navigateToCompleteTask = (navigation, route, task, tasks = [], success = true) => {
 
   const params = {
     task,
-    navigateAfter: navigation.state.routeName,
+    navigateAfter: route.name,
   }
 
   navigation.navigate('Task', {
     screen: 'TaskComplete',
-    params: { ...params, success }
+    params: {
+      screen: 'TaskCompleteHome',
+      params: { ...params, success },
+    },
   })
 }
