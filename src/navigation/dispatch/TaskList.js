@@ -17,7 +17,7 @@ class TaskListScreen extends Component {
 
   componentDidUpdate(prevProps) {
     if (this.props.taskLists !== prevProps.taskLists) {
-      const { taskList } = this.props.navigation.state.params
+      const { taskList } = this.props.route.params
       const thisTaskList = _.find(this.props.taskLists, aTaskList => aTaskList.username === taskList.username)
       if (thisTaskList) {
         this.props.navigation.setParams({ taskList: thisTaskList })

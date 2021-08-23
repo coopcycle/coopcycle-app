@@ -21,7 +21,7 @@ class EditAddress extends Component {
   }
 
   _onSubmit() {
-    const { onSubmit } = this.props.navigation.state.params
+    const { onSubmit } = this.props.route.params
     const address = this.addressForm.current.createDeliveryAddress()
     onSubmit(address)
     this.props.navigation.goBack()
@@ -29,7 +29,7 @@ class EditAddress extends Component {
 
   render() {
 
-    const { address } = this.props.navigation.state.params
+    const { address } = this.props.route.params
 
     return (
       <Container>
