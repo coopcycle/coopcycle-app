@@ -71,7 +71,7 @@
     "react-native-get-random-values": "^1.7.0",
     "react-native-keyboard-manager": "^6.5.4-2",
     "react-native-loading-spinner-overlay": "^2.0.0",
-    "react-native-localize": "^1.4.3",
+    "react-native-localize": "^2.1.1",
     "react-native-map-link": "^2.7.28",
     "react-native-maps": "^0.27.1",
     "react-native-maps-super-cluster": "^1.6.0",

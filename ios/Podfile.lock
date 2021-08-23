@@ -463,7 +463,7 @@ PODS:
     - RNFBApp
   - RNGestureHandler (1.10.3):
     - React-Core
-  - RNLocalize (1.4.3):
+  - RNLocalize (2.1.1):
     - React-Core
   - RNReanimated (1.13.3):
     - React-Core
@@ -834,7 +834,7 @@ SPEC CHECKSUMS:
   RNFBApp: 02bde3edecf2e9694b908a5d3504e03449980f20
   RNFBCrashlytics: 0e6347d4e2251c6656b43ce8544662d1bac7deff
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
-  RNLocalize: 7c7aeda16c01db7a0918981c14875c0a53be9b79
+  RNLocalize: 82a569022724d35461e2dc5b5d015a13c3ca995b
   RNReanimated: 514a11da3a2bcc6c3dfd9de32b38e2b9bf101926
   RNScreens: f7ad633b2e0190b77b6a7aab7f914fad6f198d8d
   RNSentry: a2b02b326ae4fce91ce7c57d3f7dcf8df4f72269
