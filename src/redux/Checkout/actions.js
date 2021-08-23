@@ -627,7 +627,7 @@ export function checkout(number, expMonth, expYear, cvc, cardholderName) {
       .get(cart['@id'] + '/payment')
       .then(payment => {
 
-        if (null !== payment.stripeAccount) {
+        if (payment.stripeAccount !== null) {
           Stripe.setStripeAccount(payment.stripeAccount)
         }
 

@@ -10,7 +10,7 @@ import { connect } from 'react-redux'
 import { withTranslation, useTranslation } from 'react-i18next'
 import {
   DrawerContentScrollView,
-  DrawerItem
+  DrawerItem,
 } from '@react-navigation/drawer'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import VersionNumber from 'react-native-version-number'
@@ -21,13 +21,6 @@ import Mailto from '../../components/Mailto'
 import { selectIsAuthenticated } from '../../redux/App/selectors'
 
 const phoneNumberUtil = PhoneNumberUtil.getInstance()
-
-const blacklist = [
-  'RegisterConfirmNav',
-  'ResetPasswordNav',
-  'AboutNav',
-  'AccountNav',
-]
 
 const RestaurantsDrawerItem = ({ restaurants, navigate }) => {
 
@@ -183,7 +176,7 @@ const styles = StyleSheet.create({
   footer: {
     alignItems: 'center',
     width: '100%',
-    marginBottom: 5
+    marginBottom: 5,
   },
   footerItem: {
     width: '100%',
