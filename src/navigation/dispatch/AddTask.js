@@ -129,14 +129,9 @@ class AddTask extends Component {
               </Grid>
             </View>
             <View style={ styles.formRow }>
-              <Label style={{ marginBottom: 5 }}>{ this.props.t('TASK_FORM_ADDRESS_LABEL') }</Label>
-              <View style={ styles.datePickerRow }>
-                { address.streetAddress && (
-                  <TouchableOpacity style={ styles.editAddressBtn }
-                    onPress={ () => navigate('DispatchEditAddress', { address, onSubmit: this._onEditAddressSubmit.bind(this) }) }>
-                    <Icon type="FontAwesome" name="pencil" style={{ color: '#333333' }} />
-                  </TouchableOpacity>
-                )}
+              <Label style={{ marginBottom: 50 }}>{ this.props.t('TASK_FORM_ADDRESS_LABEL') }</Label>
+            </View>
+            <View style={ [ styles.autocompleteContainer, { marginTop: 85 } ] }>
                 <AddressAutocomplete
                   country={ this.props.country }
                   location={ this.props.location }
@@ -145,12 +140,23 @@ class AddTask extends Component {
                     flex: 1,
                     justifyContent: 'center',
                     borderWidth: 0,
-                    marginRight: address.streetAddress ? 50 : 0,
                   }}
                   style={{ borderRadius: 0 }}
                   onSelectAddress={ this._onSelectAddress.bind(this) }
+                  renderRight={ () => {
+
+                    if (!address.streetAddress) {
+                      return null
+                    }
+
+                    return (
+                      <TouchableOpacity style={ styles.editAddressBtn }
+                        onPress={ () => navigate('DispatchEditAddress', { address, onSubmit: this._onEditAddressSubmit.bind(this) }) }>
+                        <Icon type="FontAwesome" name="pencil" style={{ color: '#333333' }} />
+                      </TouchableOpacity>
+                    )
+                  } }
                   />
-              </View>
             </View>
             <View style={ styles.formRow }>
               <Label>{ this.props.t('TASK_FORM_DONE_AFTER_LABEL') }</Label>
@@ -221,6 +227,28 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: '100%',
     justifyContent: 'center',
+  },
+  // @see https://github.com/mrlaessig/react-native-autocomplete-input#android
+  autocompleteContainer: {
+    position: 'absolute',
+    width: '100%',
+    backgroundColor: 'red',
+    ...Platform.select({
+      android: {
+        flex: 1,
+        top: 0,
+        right: 0,
+        left: 0,
+        zIndex: 1,
+      },
+      ios: {
+        top: 0,
+        right: 0,
+        left: 0,
+        zIndex: 10,
+        overflow: 'visible',
+      },
+    }),
   },
 })
 
