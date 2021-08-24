@@ -1,5 +1,5 @@
 import React from 'react'
-import { createStackNavigator } from '@react-navigation/stack'
+import { createStackNavigator, HeaderBackButton } from '@react-navigation/stack'
 
 import screens, { headerLeft } from '..'
 import { stackNavigatorScreenOptions } from '../styles'
