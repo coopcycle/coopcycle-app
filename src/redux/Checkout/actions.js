@@ -519,7 +519,7 @@ export function searchRestaurants(options = {}) {
     dispatch(loadRestaurantsRequest())
 
     const reqs = [
-      httpClient.get('/api/restaurants' + (queryString ? `?${queryString}` : ''), {}, { anonymous: true })
+      httpClient.get('/api/restaurants' + (queryString ? `?${queryString}` : ''), {}, { anonymous: true }),
     ]
 
     if (selectIsAuthenticated(getState())) {
@@ -531,7 +531,7 @@ export function searchRestaurants(options = {}) {
         if (values.length === 2) {
           const addresses = values[1].addresses.map(address => ({
             ...address,
-            isPrecise: true
+            isPrecise: true,
           }))
           dispatch(loadAddressesSuccess(addresses))
         }
@@ -642,7 +642,7 @@ export function checkout(number, expMonth, expYear, cvc, cardholderName) {
             cvc,
           },
           billingDetails: {
-            name: cardholderName
+            name: cardholderName,
           }
         })
         .then(paymentMethod => {
@@ -713,6 +713,17 @@ export function resetSearch() {
   }
 }
 
+const doUpdateCart = (dispatch, httpClient, cart, payload, cb) => {
+  httpClient
+    .put(cart['@id'], payload)
+    .then(res => {
+      dispatch(updateCartSuccess(res))
+      dispatch(checkoutSuccess())
+      _.isFunction(cb) && cb()
+    })
+    .catch(e => dispatch(checkoutFailure(e)))
+}
+
 export function updateCart(payload, cb) {
 
   return (dispatch, getState) => {
@@ -734,17 +745,6 @@ export function updateCart(payload, cb) {
 
     dispatch(checkoutRequest())
 
-    const doUpdateCart = (httpClient, cart, payload, cb) => {
-      httpClient
-        .put(cart['@id'], payload)
-        .then(res => {
-          dispatch(updateCartSuccess(res))
-          dispatch(checkoutSuccess())
-          _.isFunction(cb) && cb()
-        })
-        .catch(e => dispatch(checkoutFailure(e)))
-    }
-
     // For "collection" fulfillment
     // We store the phone number at the user level
     if (payload.telephone) {
@@ -753,11 +753,11 @@ export function updateCart(payload, cb) {
 
       httpClient
         .put(cart.customer, { telephone })
-        .then(res => doUpdateCart(httpClient, cart, payloadWithoutTelephone, cb))
+        .then(res => doUpdateCart(dispatch, httpClient, cart, payloadWithoutTelephone, cb))
         .catch(e => dispatch(checkoutFailure(e)))
 
     } else {
-      doUpdateCart(httpClient, cart, payload, cb)
+      doUpdateCart(dispatch, httpClient, cart, payload, cb)
     }
   }
 }
@@ -841,7 +841,7 @@ export function setFulfillmentMethod(method) {
                 } else {
                   dispatch(updateCartSuccess({
                     ...res,
-                    shippingAddress: address
+                    shippingAddress: address,
                   }))
                 }
               }
@@ -879,7 +879,7 @@ export function checkoutWithCash() {
 
   return (dispatch, getState) => {
 
-    const { httpClient, settings } = getState().app
+    const { httpClient } = getState().app
     const { cart } = getState().checkout
 
     dispatch(checkoutRequest())
