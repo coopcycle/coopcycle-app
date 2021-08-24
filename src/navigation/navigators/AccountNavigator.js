@@ -35,8 +35,10 @@ export default () => (
     <Stack.Screen
       name="AccountOrder"
       component={ screens.AccountOrderPage }
-      options={ ({ route }) => ({
+      options={ ({ navigation, route }) => ({
         title: i18n.t('ORDER_NUMBER', { number: route.params.order.number }),
+        headerLeft: (props) => <HeaderBackButton { ...props }
+          onPress={ () => navigation.goBack() } />,
       })}
     />
     <Stack.Screen
