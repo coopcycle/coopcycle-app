@@ -9,7 +9,7 @@ import { selectSignatureScreenFirst } from '../../redux/Courier'
 
 const Tab = createMaterialTopTabNavigator()
 
-const TabNavigator = ({ initialRouteName }) => (
+const TabNavigator = ({ initialRouteName, initialParams }) => (
   <Tab.Navigator
     screenOptions={ stackNavigatorScreenOptions }
     backBehavior="history"
@@ -22,6 +22,7 @@ const TabNavigator = ({ initialRouteName }) => (
       options={{
         title: i18n.t('PHOTO'),
       }}
+      initialParams={ initialParams }
     />
     <Tab.Screen
       name="TaskSignature"
@@ -29,13 +30,17 @@ const TabNavigator = ({ initialRouteName }) => (
       options={{
         title: i18n.t('SIGNATURE'),
       }}
+      initialParams={ initialParams }
     />
   </Tab.Navigator>
 )
 
-const PreferencesAwareNavigator = ({ signatureScreenFirst }) => (
+// The params are *NOT* passed to the child tab navigator
+// https://stackoverflow.com/a/68651234/333739
+const PreferencesAwareNavigator = ({ signatureScreenFirst, route }) => (
   <TabNavigator
-    initialRouteName={ signatureScreenFirst ? 'TaskSignature' : 'TaskPhoto' } />
+    initialRouteName={ signatureScreenFirst ? 'TaskSignature' : 'TaskPhoto' }
+    initialParams={ route.params } />
 )
 
 const mapStateToProps = (state) => ({
