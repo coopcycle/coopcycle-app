@@ -590,8 +590,11 @@ function handleSuccessNav(dispatch, order) {
     name: 'AccountNav',
     // We skip the AccountOrders screen
     params: {
-      screen: 'AccountOrder',
-      params: { order },
+      screen: 'AccountOrders',
+      params: {
+        screen: 'AccountOrder',
+        params: { order },
+      },
     },
   }))
 
