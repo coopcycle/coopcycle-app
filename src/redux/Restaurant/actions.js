@@ -1,5 +1,5 @@
 import { createAction } from 'redux-actions'
-import { CommonActions, StackActions } from '@react-navigation/native'
+import { CommonActions } from '@react-navigation/native'
 import BleManager from 'react-native-ble-manager'
 import _ from 'lodash'
 
@@ -255,8 +255,8 @@ function gotoOrder(restaurant, order) {
         loadOrders: false,
         screen: 'RestaurantOrder',
         params: {
-          order
-        }
+          order,
+        },
       },
     },
   }))

@@ -6,7 +6,7 @@ import { withTranslation } from 'react-i18next'
 import Sound from 'react-native-sound'
 import moment from 'moment'
 import Modal from 'react-native-modal'
-import { CommonActions, StackActions } from '@react-navigation/native'
+import { CommonActions } from '@react-navigation/native'
 
 import PushNotification from '../notifications'
 import NavigationHolder from '../NavigationHolder'
@@ -193,7 +193,7 @@ class NotificationHandler extends Component {
           screen: 'RestaurantOrder',
           params: {
             order,
-          }
+          },
         },
       },
     }))
