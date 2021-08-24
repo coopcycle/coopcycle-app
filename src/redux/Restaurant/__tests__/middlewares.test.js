@@ -5,6 +5,7 @@ import { loadOrdersSuccess, loadOrderSuccess } from '../actions'
 import { message as wsMessage } from '../../middlewares/CentrifugoMiddleware/actions'
 import restaurantReducer from '../reducers'
 import appReducer from '../../App/reducers'
+import AppUser from '../../../AppUser'
 
 describe('ringOnNewOrderCreated', () => {
 
@@ -53,6 +54,7 @@ describe('ringOnNewOrderCreated', () => {
     const preloadedState = {
       app: {
         notifications: [],
+        user: new AppUser('bob', 'bob@example.com', 'abc123456', ['ROLE_RESTAURANT'], ''),
       },
       restaurant: {
         orders: [],
@@ -94,6 +96,7 @@ describe('ringOnNewOrderCreated', () => {
     const preloadedState = {
       app: {
         notifications: [],
+        user: new AppUser('bob', 'bob@example.com', 'abc123456', ['ROLE_RESTAURANT'], ''),
       },
       restaurant: {
         orders: [],
