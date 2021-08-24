@@ -1,5 +1,5 @@
 import React from 'react'
-import { createStackNavigator } from '@react-navigation/stack'
+import { createStackNavigator, HeaderBackButton } from '@react-navigation/stack'
 
 import screens from '..'
 import { stackNavigatorScreenOptions } from '../styles'
@@ -15,8 +15,10 @@ const CompleteNavigator = () => (
     <CompleteStack.Screen
       name="TaskCompleteHome"
       component={ screens.TaskComplete }
-      options={ ({ route }) => ({
+      options={ ({ navigation, route }) => ({
         title: `${i18n.t('TASK')} #${route.params?.task.id}`,
+        headerLeft: (props) => <HeaderBackButton { ...props }
+          onPress={ () => navigation.goBack() } />,
       })}
     />
     <CompleteStack.Screen
