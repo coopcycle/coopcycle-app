@@ -398,7 +398,7 @@ PODS:
     - React-Core
   - react-native-maps (0.27.1):
     - React
-  - react-native-netinfo (6.0.0):
+  - react-native-netinfo (6.0.1):
     - React-Core
   - react-native-safe-area-context (3.3.0):
     - React-Core
@@ -489,14 +489,14 @@ PODS:
     - React-Core
   - RNDateTimePicker (3.0.9):
     - React-Core
-  - RNFBAnalytics (12.7.2):
+  - RNFBAnalytics (12.7.3):
     - Firebase/Analytics (= 8.6.0)
     - React-Core
     - RNFBApp
-  - RNFBApp (12.7.2):
+  - RNFBApp (12.7.3):
     - Firebase/CoreOnly (= 8.6.0)
     - React-Core
-  - RNFBCrashlytics (12.7.2):
+  - RNFBCrashlytics (12.7.3):
     - Firebase/Crashlytics (= 8.6.0)
     - React-Core
     - RNFBApp
@@ -859,7 +859,7 @@ SPEC CHECKSUMS:
   react-native-config: 387b1ea507bc50a2059e69149dac1342b9532f58
   react-native-get-random-values: 237bffb1c7e05fb142092681531810a29ba53015
   react-native-maps: f4b89da81626ad7f151a8bfcb79733295d31ce5c
-  react-native-netinfo: e849fc21ca2f4128a5726c801a82fc6f4a6db50d
+  react-native-netinfo: 7cb7877ff31ebeb3d03ce0b4fbb616f121ddd859
   react-native-safe-area-context: 61c8c484a3a9e7d1fda19f7b1794b35bbfd2262a
   react-native-version-number: b415bbec6a13f2df62bf978e85bc0d699462f37f
   React-perflogger: 25373e382fed75ce768a443822f07098a15ab737
@@ -883,9 +883,9 @@ SPEC CHECKSUMS:
   RNCPicker: 6780c753e9e674065db90d9c965920516402579d
   RNCPushNotificationIOS: 5ee247e594d0b5df3cd7be74b51035a0d91807eb
   RNDateTimePicker: 8a51a2216c307769e69ef827293d59549ab1ca23
-  RNFBAnalytics: dd764b378705057bc58bfd90f959fad6f1cd7b40
-  RNFBApp: 9c4eb84da8418346829c0d0220c4794d1de7b1f6
-  RNFBCrashlytics: 93526080590094b9d6971fe4f7a31d719c84163a
+  RNFBAnalytics: ad26944af564d05dd761dab55e111cccbf281f99
+  RNFBApp: 348de8df1e2e281c05bd6cf69ff99cc85c74da63
+  RNFBCrashlytics: 0f959ad9d1273e90413e2742968d06d752a7340b
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
   RNLocalize: 82a569022724d35461e2dc5b5d015a13c3ca995b
   RNReanimated: 514a11da3a2bcc6c3dfd9de32b38e2b9bf101926
