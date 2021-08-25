@@ -9,7 +9,7 @@ class ResetPasswordCheckEmail extends Component {
   }
 
   render() {
-    const email = this.props.navigation.getParam('email', '');
+    const email = this.props.route.params?.email || ''
 
     return (
       <Container>

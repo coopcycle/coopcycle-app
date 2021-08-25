@@ -9,7 +9,7 @@ import { selectIsAuthenticated } from '../../redux/App/selectors'
 
 class RegisterConfirm extends Component {
   componentDidMount() {
-    const token = this.props.navigation.getParam('token', null)
+    const token = this.props.route.params?.token
     if (token) {
       this.props.confirmRegistration(token)
     }
