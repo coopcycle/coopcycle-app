@@ -12,7 +12,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   item: {
-    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -172,7 +171,7 @@ class OrderItems extends Component {
 
     return (
       <View style={ styles.container }>
-        <View style={{ flex: 8 }}>
+        <View style={{ flex: 1 }}>
           { isMultiVendor && (
             <SectionList
               sections={ items }
@@ -188,7 +187,7 @@ class OrderItems extends Component {
               ItemSeparatorComponent={ ItemSeparatorComponent } />
           )}
         </View>
-        <View style={{ flex: 2 }}>
+        <View style={{ flex: 0, flexShrink: 1 }}>
           { this.renderItemsTotal() }
           { this.props.withDeliveryTotal === true && this.renderAdjustments() }
           { this.props.withDeliveryTotal === true && this.renderTotal() }
