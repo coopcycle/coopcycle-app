@@ -26,8 +26,8 @@ const OrderNotes = ({ order }) => {
         <Card>
           <CardItem>
             <Left>
-              <Icon type="FontAwesome" name="quote-left" />
-              <Text note>{ order.notes }</Text>
+              <Icon type="FontAwesome" name="exclamation-triangle" />
+              <Text>{ order.notes }</Text>
             </Left>
           </CardItem>
         </Card>
@@ -58,8 +58,8 @@ class OrderScreen extends Component {
             isPrinterConnected={ this.props.isPrinterConnected }
             onPrinterClick={ () => this.props.navigation.navigate('RestaurantPrinter') }
             printOrder={ () => this.props.printOrder(this.props.order) } />
-          <OrderItems order={ order } />
           <OrderNotes order={ order } />
+          <OrderItems order={ order } />
         </View>
         { (canEdit && order.state === 'new') &&
           <SwipeToAcceptOrRefuse
