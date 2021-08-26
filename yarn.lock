@@ -10136,9 +10136,9 @@ levn@~0.3.0:
     type-check "~0.3.2"
 
 libphonenumber-js@^1.9.24:
-  version "1.9.24"
-  resolved "https://registry.yarnpkg.com/libphonenumber-js/-/libphonenumber-js-1.9.24.tgz#711329b171577635147a0fa1533164944873f805"
-  integrity sha512-ypFnxTPbOzV98oiJhl4YlUJFsM0vx+40ZJDJ9N3nNfRyhoOYne3NGcUsTfZmXgLq0j7tfSLT6km6GYzjb5Y8bQ==
+  version "1.9.25"
+  resolved "https://registry.yarnpkg.com/libphonenumber-js/-/libphonenumber-js-1.9.25.tgz#e54b570f03d36ce059a88ab01ec49b9037ec1c97"
+  integrity sha512-LsSjcmXXGujESsrOsF2rrLdmuABj3OluCzPJKVNslJ2qc7xF5KdKXN8y0OcxHVurqosVf1/r4itrVrKSrlbVHA==
 
 lie@3.1.1:
   version "3.1.1"
