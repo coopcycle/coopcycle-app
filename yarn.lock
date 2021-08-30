@@ -12281,9 +12281,9 @@ react-native-camera@^3.44.3:
     prop-types "^15.6.2"
 
 react-native-clean-project@^3.6.5:
-  version "3.6.5"
-  resolved "https://registry.yarnpkg.com/react-native-clean-project/-/react-native-clean-project-3.6.5.tgz#b398fa559861f32f6b48f368a2fc09c067faaa28"
-  integrity sha512-rLCtz7xz7tilD3kB/PweSwts7Xu8he83/Xy2k/bVrKUPY8cOJsfYi/YiQGTsdvYmWrNnyrxqGbSaDIxh2DinqQ==
+  version "3.6.7"
+  resolved "https://registry.yarnpkg.com/react-native-clean-project/-/react-native-clean-project-3.6.7.tgz#6d22ad22fe3a1e6efdb040eb66f9bdfb2273ac2e"
+  integrity sha512-GSJG1oNRJKtINPMzfHgRmu7HJs7phwgtwQ6GvyGARiySqQlU/bAc5zsI9rOeNPGlpgYongQtjOGdmqSpsWMJTw==
 
 react-native-codegen@^0.0.6:
   version "0.0.6"
