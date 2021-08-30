@@ -390,9 +390,9 @@ PODS:
     - React-Core
   - react-native-camera/RN (3.44.3):
     - React-Core
-  - react-native-config (1.4.3):
-    - react-native-config/App (= 1.4.3)
-  - react-native-config/App (1.4.3):
+  - react-native-config (1.4.4):
+    - react-native-config/App (= 1.4.4)
+  - react-native-config/App (1.4.4):
     - React-Core
   - react-native-get-random-values (1.7.0):
     - React-Core
@@ -513,11 +513,11 @@ PODS:
     - Sentry (= 7.0.0)
   - RNSketchCanvas (0.8.0):
     - React
-  - RNSound (0.11.0):
-    - React
-    - RNSound/Core (= 0.11.0)
-  - RNSound/Core (0.11.0):
-    - React
+  - RNSound (0.11.1):
+    - React-Core
+    - RNSound/Core (= 0.11.1)
+  - RNSound/Core (0.11.1):
+    - React-Core
   - Sentry (7.0.0):
     - Sentry/Core (= 7.0.0)
   - Sentry/Core (7.0.0)
@@ -856,7 +856,7 @@ SPEC CHECKSUMS:
   React-jsinspector: cc614ec18a9ca96fd275100c16d74d62ee11f0ae
   react-native-ble-manager: fe313716f5edd2f406ec2a48a2c2ef5a0daeb5f3
   react-native-camera: b8cc03e2feec0c04403d0998e37cf519d8fd4c6f
-  react-native-config: 387b1ea507bc50a2059e69149dac1342b9532f58
+  react-native-config: 72d948053a442779b3178fddd571e37f118ef606
   react-native-get-random-values: 237bffb1c7e05fb142092681531810a29ba53015
   react-native-maps: f4b89da81626ad7f151a8bfcb79733295d31ce5c
   react-native-netinfo: 7cb7877ff31ebeb3d03ce0b4fbb616f121ddd859
@@ -892,7 +892,7 @@ SPEC CHECKSUMS:
   RNScreens: f7ad633b2e0190b77b6a7aab7f914fad6f198d8d
   RNSentry: a2b02b326ae4fce91ce7c57d3f7dcf8df4f72269
   RNSketchCanvas: 9c28adb5381543ed55cc98ce6de46479cb3cb12c
-  RNSound: da030221e6ac7e8290c6b43f2b5f2133a8e225b0
+  RNSound: 27e8268bdb0a1f191f219a33267f7e0445e8d62f
   Sentry: 89d26e036063b9cb9caa59b6951dd2f8277aa13b
   Stripe: 57c6997c64042a3f5aedae9b76e331942f8b75d2
   StripeCore: a6e50d58119a0c7601773b56f274db2d394dcdac
