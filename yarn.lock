@@ -12254,9 +12254,9 @@ react-native-background-geolocation@^3.10.0:
     xcode "^0.9.1"
 
 react-native-ble-manager@^7.6.0:
-  version "7.6.0"
-  resolved "https://registry.yarnpkg.com/react-native-ble-manager/-/react-native-ble-manager-7.6.0.tgz#9874a96efe026f4241894e565b2f656ac18cdebe"
-  integrity sha512-/xuo14zyiMrPJjxOMZPdOz6/hw6Ks0kmSP4tLLdcYLANJvwOJhtlDY1+Zc0H7PuOiSTpp2Si8iJ5cBw+plFphg==
+  version "7.6.1"
+  resolved "https://registry.yarnpkg.com/react-native-ble-manager/-/react-native-ble-manager-7.6.1.tgz#22a97c28fc0f19ac366e316751ce9b4a065153e7"
+  integrity sha512-tp4zibEZUCL8LGeLZlmDYfRq3CupLxcJscPdIfaYmvvsZjxBDVvITfHRzdhkh2BG18AEjZc1YqyQURN+0A1qKg==
 
 react-native-calendars@^1.1264.0:
   version "1.1264.0"
