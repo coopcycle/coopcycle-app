@@ -380,7 +380,7 @@ PODS:
     - React-jsi (= 0.64.2)
     - React-perflogger (= 0.64.2)
   - React-jsinspector (0.64.2)
-  - react-native-ble-manager (7.6.0):
+  - react-native-ble-manager (7.6.1):
     - React-Core
   - react-native-camera (3.44.3):
     - React-Core
@@ -400,7 +400,7 @@ PODS:
     - React
   - react-native-netinfo (6.0.1):
     - React-Core
-  - react-native-safe-area-context (3.3.0):
+  - react-native-safe-area-context (3.3.1):
     - React-Core
   - react-native-version-number (0.3.6):
     - React
@@ -489,20 +489,20 @@ PODS:
     - React-Core
   - RNDateTimePicker (3.0.9):
     - React-Core
-  - RNFBAnalytics (12.7.3):
+  - RNFBAnalytics (12.7.4):
     - Firebase/Analytics (= 8.6.0)
     - React-Core
     - RNFBApp
-  - RNFBApp (12.7.3):
+  - RNFBApp (12.7.4):
     - Firebase/CoreOnly (= 8.6.0)
     - React-Core
-  - RNFBCrashlytics (12.7.3):
+  - RNFBCrashlytics (12.7.4):
     - Firebase/Crashlytics (= 8.6.0)
     - React-Core
     - RNFBApp
   - RNGestureHandler (1.10.3):
     - React-Core
-  - RNLocalize (2.1.1):
+  - RNLocalize (2.1.3):
     - React-Core
   - RNReanimated (1.13.3):
     - React-Core
@@ -854,13 +854,13 @@ SPEC CHECKSUMS:
   React-jsi: 67747b9722f6dab2ffe15b011bcf6b3f2c3f1427
   React-jsiexecutor: 80c46bd381fd06e418e0d4f53672dc1d1945c4c3
   React-jsinspector: cc614ec18a9ca96fd275100c16d74d62ee11f0ae
-  react-native-ble-manager: fe313716f5edd2f406ec2a48a2c2ef5a0daeb5f3
+  react-native-ble-manager: 0db2dcfb9de2053dc6a607a64721423db124c250
   react-native-camera: b8cc03e2feec0c04403d0998e37cf519d8fd4c6f
   react-native-config: 72d948053a442779b3178fddd571e37f118ef606
   react-native-get-random-values: 237bffb1c7e05fb142092681531810a29ba53015
   react-native-maps: f4b89da81626ad7f151a8bfcb79733295d31ce5c
   react-native-netinfo: 7cb7877ff31ebeb3d03ce0b4fbb616f121ddd859
-  react-native-safe-area-context: 61c8c484a3a9e7d1fda19f7b1794b35bbfd2262a
+  react-native-safe-area-context: ca9f3b49266e56b1d841ccdde7cfe2e076f529b6
   react-native-version-number: b415bbec6a13f2df62bf978e85bc0d699462f37f
   React-perflogger: 25373e382fed75ce768a443822f07098a15ab737
   React-RCTActionSheet: af7796ba49ffe4ca92e7277a5d992d37203f7da5
@@ -883,11 +883,11 @@ SPEC CHECKSUMS:
   RNCPicker: 6780c753e9e674065db90d9c965920516402579d
   RNCPushNotificationIOS: 5ee247e594d0b5df3cd7be74b51035a0d91807eb
   RNDateTimePicker: 8a51a2216c307769e69ef827293d59549ab1ca23
-  RNFBAnalytics: ad26944af564d05dd761dab55e111cccbf281f99
-  RNFBApp: 348de8df1e2e281c05bd6cf69ff99cc85c74da63
-  RNFBCrashlytics: 0f959ad9d1273e90413e2742968d06d752a7340b
+  RNFBAnalytics: e3955c3037ab3b25380facb6d82cf56ad70c46c3
+  RNFBApp: 150a5a9f4b4cbadd7be07b08d524bd5cfba9fc7b
+  RNFBCrashlytics: 7c488e5e9021c6db87659192ae7b8dbe0129d3b8
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
-  RNLocalize: 82a569022724d35461e2dc5b5d015a13c3ca995b
+  RNLocalize: 6351aa411de4283a753a2946e21a77d1b9e271e3
   RNReanimated: 514a11da3a2bcc6c3dfd9de32b38e2b9bf101926
   RNScreens: f7ad633b2e0190b77b6a7aab7f914fad6f198d8d
   RNSentry: a2b02b326ae4fce91ce7c57d3f7dcf8df4f72269

@@ -3558,32 +3558,32 @@
   dependencies:
     invariant "^2.2.4"
 
-"@react-native-firebase/analytics@^12.7.3":
-  version "12.7.3"
-  resolved "https://registry.yarnpkg.com/@react-native-firebase/analytics/-/analytics-12.7.3.tgz#5f3245bb812d5f2b50304ca7dbc9358291b762dc"
-  integrity sha512-X0Wzk6Q7YFS1vgHlTxywuN3jVBp5Lr+zeexQqKZ+r+POHfkDSQC0XEuKe9LXBfOmrks4WP0jy3F+FdXfPZ8Vcw==
+"@react-native-firebase/analytics@^12.7.4":
+  version "12.7.4"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/analytics/-/analytics-12.7.4.tgz#48bac327afad129246cb0b86b679f1c576a9a202"
+  integrity sha512-dYQf03bxqB/ODZ4jvVaALHTr85hAdQaoiM4hKxk8+dlw9rGODYBFgZ9CWuDLLvfpb2vHDfKY7Gnb43i8f6Z+YQ==
 
-"@react-native-firebase/app@^12.7.3":
-  version "12.7.3"
-  resolved "https://registry.yarnpkg.com/@react-native-firebase/app/-/app-12.7.3.tgz#80c1519380abc26dbbf170c916529fe6689e04b4"
-  integrity sha512-dp4lbLM0xJsR8mT5PHrCGSoCMCZ0KrXFIt69pAsjaQ22AEr2ETeBrCxbwHQjXylfPrg1PudqADzMIifS44Qq9g==
+"@react-native-firebase/app@^12.7.4":
+  version "12.7.4"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/app/-/app-12.7.4.tgz#aa41a8b68881c7ced3a9b9125306bc3935b12fb6"
+  integrity sha512-ao8jSyevNItQ1sFhn2yAS7BIMGChbQVfJj5/9bsJ7OdS2gQx6vczh6N0QB7AlGfzpYT/w+4xebJvnBs21V3jpg==
   dependencies:
     "@expo/config-plugins" "^3.0.7"
     opencollective-postinstall "^2.0.1"
     superstruct "^0.6.2"
 
-"@react-native-firebase/crashlytics@^12.7.3":
-  version "12.7.3"
-  resolved "https://registry.yarnpkg.com/@react-native-firebase/crashlytics/-/crashlytics-12.7.3.tgz#c2cf930b93abdd32682b929f9da2ad95e0613f0e"
-  integrity sha512-4IQs7Oo1uaT6xqrA+hlreminePO1kISIBfdIDqdoBmnOJcsVwwU+ghZ2QB15wd3c/xM06MNezFBH/b/5SmBXTg==
+"@react-native-firebase/crashlytics@^12.7.4":
+  version "12.7.4"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/crashlytics/-/crashlytics-12.7.4.tgz#ab70702144e14a9cf387dac41672da4ec67ffe70"
+  integrity sha512-G1fAnoj0PibtmUr8T70ijQZk9lUNX+Tnaa4vOBP4/A2WDIY09f4rXXSSRDB86sCqyo5NYMTUoOWhNWhtRZoIvg==
   dependencies:
     "@expo/config-plugins" "^3.0.7"
     stacktrace-js "^2.0.0"
 
-"@react-native-firebase/messaging@^12.7.3":
-  version "12.7.3"
-  resolved "https://registry.yarnpkg.com/@react-native-firebase/messaging/-/messaging-12.7.3.tgz#cf7acf906b981a76dd0ddf19922bf292f43ec14d"
-  integrity sha512-H/Eh6Ze3pF88CidCw7EDfGRVsFbDpzmcfaBWmkeTO0WKVbvoC2nRqjWqx5ykh4owmVyo16VD0naPQ2r99vXtqQ==
+"@react-native-firebase/messaging@^12.7.4":
+  version "12.7.4"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/messaging/-/messaging-12.7.4.tgz#86b9f396f63c1ee8670158b7ad4e2944e09d3902"
+  integrity sha512-qZgm+mKt6ugMCQB54VC6dxxJYgYmtIkH55Rzf7/0rGpPmWEqlLs0BhXaJ8Z4euIdXbiTJ61cPCL3qD4t3fpYHA==
 
 "@react-native-picker/picker@^1.9.7":
   version "1.9.11"
@@ -12253,15 +12253,15 @@ react-native-background-geolocation@^3.10.0:
     react-native-background-fetch "~3.1.0"
     xcode "^0.9.1"
 
-react-native-ble-manager@^7.6.0:
-  version "7.6.0"
-  resolved "https://registry.yarnpkg.com/react-native-ble-manager/-/react-native-ble-manager-7.6.0.tgz#9874a96efe026f4241894e565b2f656ac18cdebe"
-  integrity sha512-/xuo14zyiMrPJjxOMZPdOz6/hw6Ks0kmSP4tLLdcYLANJvwOJhtlDY1+Zc0H7PuOiSTpp2Si8iJ5cBw+plFphg==
+react-native-ble-manager@^7.6.1:
+  version "7.6.1"
+  resolved "https://registry.yarnpkg.com/react-native-ble-manager/-/react-native-ble-manager-7.6.1.tgz#22a97c28fc0f19ac366e316751ce9b4a065153e7"
+  integrity sha512-tp4zibEZUCL8LGeLZlmDYfRq3CupLxcJscPdIfaYmvvsZjxBDVvITfHRzdhkh2BG18AEjZc1YqyQURN+0A1qKg==
 
-react-native-calendars@^1.1264.0:
-  version "1.1264.0"
-  resolved "https://registry.yarnpkg.com/react-native-calendars/-/react-native-calendars-1.1264.0.tgz#98d1905b7bfe9f44cba80c9c34a0b8441fe1c1a1"
-  integrity sha512-MX9Dy9xDtdmvGEA9rQWas1NVxvC2T6tEYrx7NvX8w0pWpYqsq5sVS4N+Y/vHBmcbiykStgrHTcWCP1bBLee3yg==
+react-native-calendars@^1.1266.0:
+  version "1.1266.0"
+  resolved "https://registry.yarnpkg.com/react-native-calendars/-/react-native-calendars-1.1266.0.tgz#f6426baf9774fb41ce296ace1c446b51148fc02b"
+  integrity sha512-FABZJsam2RsKpD2gTt8OGwSmHEFFbCntMWB7B8Joh6gz8U/rZZ4TCpo2ofH4tUFkF/bpqtbWMygtJzDl/paADw==
   dependencies:
     hoist-non-react-statics "^3.3.1"
     immutable "^4.0.0-rc.12"
@@ -12391,10 +12391,10 @@ react-native-loading-spinner-overlay@^2.0.0:
   dependencies:
     prop-types "^15.6.2"
 
-react-native-localize@^2.1.1:
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/react-native-localize/-/react-native-localize-2.1.1.tgz#da8f8776991d2b748708c408db05152602cefb38"
-  integrity sha512-+uyz2/b0vyLq19fcb7r1qU1gqmzbp3aC6EMTvOVXwfBuiN+aJXR/fDdFOJJ8D7+bLccKeuS2zBDrazh+ZayX/g==
+react-native-localize@^2.1.3:
+  version "2.1.3"
+  resolved "https://registry.yarnpkg.com/react-native-localize/-/react-native-localize-2.1.3.tgz#935b5dd1276952fb549f7797fd1a8d4208ab069b"
+  integrity sha512-C7vwoLY1DDppfDZ/MUYnTdVGBTbTIP+UigON1EY6w/TTb30j6vrb+WOwkfERJaM7IcVUZudXReW5N4pDcpYN2Q==
 
 react-native-map-link@^2.7.28:
   version "2.7.28"
@@ -12463,10 +12463,10 @@ react-native-safe-area-context@3.2.0:
   resolved "https://registry.yarnpkg.com/react-native-safe-area-context/-/react-native-safe-area-context-3.2.0.tgz#06113c6b208f982d68ab5c3cebd199ca93db6941"
   integrity sha512-k2Nty4PwSnrg9HwrYeeE+EYqViYJoOFwEy9LxL5RIRfoqxAq/uQXNGwpUg2/u4gnKpBbEPa9eRh15KKMe/VHkA==
 
-react-native-safe-area-context@^3.3.0:
-  version "3.3.0"
-  resolved "https://registry.yarnpkg.com/react-native-safe-area-context/-/react-native-safe-area-context-3.3.0.tgz#6e0b45baa031589ec9c54f8359ace166a36aa5e5"
-  integrity sha512-IrCNx56LO9RJ75yCf2CSSO1ceLj3mvxTAF+HWnehaeRIfF4pIcIn3WEUlXulFiha641OKS5X0+1XZCbbQ7pITA==
+react-native-safe-area-context@^3.3.1:
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/react-native-safe-area-context/-/react-native-safe-area-context-3.3.1.tgz#70a8b366f35ad224b01967a65c86543b0f3fbbce"
+  integrity sha512-vVb6ahpo6WkMIzi7SzpYZdUgLADQQMBUmKnxwtAl3QpAjJ+YirCrF1uMZs8bPuLSMY7Z4V+s6zWdmQo/wNhfpQ==
 
 react-native-safe-area-view@^0.14.9:
   version "0.14.9"
