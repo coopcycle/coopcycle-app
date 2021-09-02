@@ -22,7 +22,7 @@ import AccountResetPasswordNewPassword from '../account/ResetPasswordNewPassword
 
 const RegisterConfirmStack = createStackNavigator()
 
-const RegisterConfirmNavigator = () => (
+const RegisterConfirmNavigator = ({ route }) => (
   <RegisterConfirmStack.Navigator
     screenOptions={ stackNavigatorScreenOptions }>
     <RegisterConfirmStack.Screen
@@ -32,13 +32,14 @@ const RegisterConfirmNavigator = () => (
         title: i18n.t('REGISTER_CONFIRM'),
         headerLeft: headerLeft(navigation),
       })}
+      initialParams={{ ...route.params }}
     />
   </RegisterConfirmStack.Navigator>
 )
 
 const ResetPasswordStack = createStackNavigator()
 
-const ResetPasswordNavigator = () => (
+const ResetPasswordNavigator = ({ route }) => (
   <ResetPasswordStack.Navigator
     screenOptions={ stackNavigatorScreenOptions }>
     <ResetPasswordStack.Screen
@@ -48,6 +49,7 @@ const ResetPasswordNavigator = () => (
         title: i18n.t('RESET_PASSWORD_NEW_PASSWORD'),
         headerLeft: headerLeft(navigation),
       })}
+      initialParams={{ ...route.params }}
     />
   </ResetPasswordStack.Navigator>
 )
