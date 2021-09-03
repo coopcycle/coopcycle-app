@@ -17,6 +17,7 @@ import TaskTitle from './TaskTitle'
 
 const styles = StyleSheet.create({
   itemContainer: {
+    // FIXME Use backgroundColor depending on dark mode
     backgroundColor: '#ffffff',
   },
   item: {
