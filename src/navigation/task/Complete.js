@@ -110,11 +110,8 @@ class CompleteTask extends Component {
       contactName,
     }
 
-    // console.log(this.props.theme.colors)
-
     return (
       <Container>
-        <Text style={{ color: '#000' }}>{ JSON.stringify(this.props.theme.colors) }</Text>
         { task.type === 'DROPOFF' && (
           <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: 20, borderBottomWidth: 1, borderBottomColor: '#ccc' }}>
             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
