@@ -8,7 +8,6 @@ import {
   Footer, FooterTab,
   Icon,
 } from 'native-base'
-import { Col, Grid } from 'react-native-easy-grid'
 import DateTimePicker from 'react-native-modal-datetime-picker'
 import { withTranslation } from 'react-i18next'
 import _ from 'lodash'
@@ -114,19 +113,13 @@ class AddTask extends Component {
       <Container>
         <Content padder>
           <Form>
-            <View style={ styles.formRow }>
-              <Grid>
-                <Col>
-                  <Button { ...pickupBtnProps } onPress={ () => this.setState({ type: 'PICKUP' }) }>
-                    <Text>Pickup</Text>
-                  </Button>
-                </Col>
-                <Col>
-                  <Button { ...dropoffBtnProps } onPress={ () => this.setState({ type: 'DROPOFF' }) }>
-                    <Text>Dropoff</Text>
-                  </Button>
-                </Col>
-              </Grid>
+            <View style={ [ styles.formRow, { flexDirection: 'row' } ] }>
+              <Button { ...pickupBtnProps } onPress={ () => this.setState({ type: 'PICKUP' }) } style={{ flex: 1 }}>
+                <Text>Pickup</Text>
+              </Button>
+              <Button { ...dropoffBtnProps } onPress={ () => this.setState({ type: 'DROPOFF' }) } style={{ flex: 1 }}>
+                <Text>Dropoff</Text>
+              </Button>
             </View>
             <View style={ styles.formRow }>
               <Label style={{ marginBottom: 50 }}>{ this.props.t('TASK_FORM_ADDRESS_LABEL') }</Label>
