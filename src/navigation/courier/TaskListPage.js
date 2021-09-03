@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 import TaskList from '../../components/TaskList'
 import TapToRefresh from '../../components/TapToRefresh'
 import DateSelectHeader from '../../components/DateSelectHeader'
-import { whiteColor, dateSelectHeaderHeight } from '../../styles/common'
+import { dateSelectHeaderHeight } from '../../styles/common'
 import { withTranslation } from 'react-i18next'
 import {
   loadTasks,
@@ -24,12 +24,10 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: whiteColor,
     paddingTop: dateSelectHeaderHeight,
   },
   wrapper: {
     paddingHorizontal: 15,
-    backgroundColor: whiteColor,
   },
 })
 
