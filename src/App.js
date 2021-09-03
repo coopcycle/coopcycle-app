@@ -1,12 +1,12 @@
 import React, { Component, createRef } from 'react'
-import { Platform, LogBox } from 'react-native'
+import { Platform, LogBox, Appearance } from 'react-native'
 
 import { StyleProvider } from 'native-base'
 import getTheme from '../native-base-theme/components'
 import coopcycleTheme from '../native-base-theme/variables/coopcycle'
 import tracker from './analytics/Tracker'
 
-import { NavigationContainer } from '@react-navigation/native'
+import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 
 import { Provider } from 'react-redux'
@@ -109,6 +109,8 @@ class App extends Component {
 
   render() {
 
+    const scheme = Appearance.getColorScheme()
+
     return (
       <Provider store={ store }>
         <PersistGate loading={ null } persistor={ persistor }>
@@ -118,6 +120,7 @@ class App extends Component {
                 <Spinner />
                 <NavigationContainer
                   ref={ navigationRef }
+                  theme={ scheme === 'dark' ? DarkTheme : DefaultTheme }
                   linking={ linking }
                   onReady={ () => (routeNameRef.current = navigationRef.current.getCurrentRoute()?.name) }
                   onStateChange={ onNavigationStateChange }>
