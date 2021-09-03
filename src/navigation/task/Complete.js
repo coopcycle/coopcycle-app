@@ -10,6 +10,7 @@ import { connect } from 'react-redux'
 import _ from 'lodash'
 import Modal from 'react-native-modal'
 import { Formik } from 'formik'
+import { useTheme } from '@react-navigation/native'
 
 import {
   selectIsTaskCompleteFailure,
@@ -109,8 +110,11 @@ class CompleteTask extends Component {
       contactName,
     }
 
+    // console.log(this.props.theme.colors)
+
     return (
       <Container>
+        <Text style={{ color: '#000' }}>{ JSON.stringify(this.props.theme.colors) }</Text>
         { task.type === 'DROPOFF' && (
           <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: 20, borderBottomWidth: 1, borderBottomColor: '#ccc' }}>
             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -126,8 +130,13 @@ class CompleteTask extends Component {
           <Label style={{ marginBottom: 5 }}>{ this.props.t('NOTES') }</Label>
           <TextInput multiline={ true } numberOfLines={ 3 }
             onChangeText={ text => this.setState({ notes: text }) }
-            placeholderTextColor="#d0d0d0"
-            style={ styles.textInput } />
+            style={[
+              styles.textInput,
+              {
+                backgroundColor: this.props.theme.colors.background,
+                borderColor: this.props.theme.colors.border,
+              },
+            ]} />
         </View>
         <Content contentContainerStyle={ styles.content }>
           <View style={ styles.imagesContainer }>
@@ -305,4 +314,10 @@ function mapDispatchToProps (dispatch) {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(CompleteTask))
+const CompleteTaskWithTheme = (props) => {
+  const theme = useTheme();
+
+  return <CompleteTask {...props} theme={theme} />;
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(CompleteTaskWithTheme))
