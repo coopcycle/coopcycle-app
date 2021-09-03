@@ -42,12 +42,12 @@ export const selectInitialRouteName = createSelector(
 
     if (user && user.isAuthenticated()) {
 
-      if (user.hasRole('ROLE_ADMIN')) {
-        return 'DispatchNav'
-      }
-
       if (user.hasRole('ROLE_COURIER')) {
         return 'CourierNav'
+      }
+
+      if (user.hasRole('ROLE_ADMIN')) {
+        return 'DispatchNav'
       }
 
       if (user.hasRole('ROLE_RESTAURANT') || user.hasRole('ROLE_STORE')) {
