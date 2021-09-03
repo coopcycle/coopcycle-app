@@ -115,7 +115,7 @@ class App extends Component {
       <Provider store={ store }>
         <PersistGate loading={ null } persistor={ persistor }>
           <I18nextProvider i18n={ i18n }>
-            <StyleProvider style={ getTheme(coopcycleTheme, scheme) }>
+            <StyleProvider style={ getTheme(coopcycleTheme, scheme, scheme === 'dark' ? DarkTheme : DefaultTheme) }>
               <SafeAreaProvider>
                 <Spinner />
                 <NavigationContainer

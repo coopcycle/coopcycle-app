@@ -47,7 +47,7 @@ import separatorTheme from './Separator';
 import pickerTheme from './Picker';
 import variable from './../variables/platform';
 
-export default (variables /* : * */ = variable, colorScheme = 'light') => {
+export default (variables /* : * */ = variable, colorScheme = 'light', reactNavigationTheme) => {
 
   if (colorScheme === 'dark') {
 
@@ -56,6 +56,9 @@ export default (variables /* : * */ = variable, colorScheme = 'light') => {
 
     variables.textColor = inverseTextColor
     variables.inverseTextColor = textColor
+
+    variables.containerBgColor = reactNavigationTheme.colors.background
+    variables.listDividerBg = reactNavigationTheme.colors.card
   }
 
   const theme = {
