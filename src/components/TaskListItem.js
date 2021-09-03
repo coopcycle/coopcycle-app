@@ -5,6 +5,7 @@ import { SwipeRow } from 'react-native-swipe-list-view'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 import { withTranslation } from 'react-i18next'
+import { useTheme } from '@react-navigation/native'
 
 import { greenColor, redColor } from '../styles/common'
 import {
@@ -16,10 +17,6 @@ import {
 import TaskTitle from './TaskTitle'
 
 const styles = StyleSheet.create({
-  itemContainer: {
-    // FIXME Use backgroundColor depending on dark mode
-    backgroundColor: '#ffffff',
-  },
   item: {
     flex: 1,
     flexDirection: 'row',
@@ -175,7 +172,7 @@ class TaskListItem extends Component {
         </View>
         <TouchableHighlight
           onPress={ this.props.onPress }
-          style={ styles.itemContainer }
+          style={{ backgroundColor: this.props.theme.colors.background }}
           underlayColor={ '#efefef' }
           testID={ `task:${index}` }>
           <View style={ itemStyle }>
@@ -214,6 +211,12 @@ TaskListItem.propTypes = {
   onPressRight: PropTypes.func,
 }
 
+const TaskListItemWithTheme = (props) => {
+  const theme = useTheme()
+
+  return <TaskListItem { ...props } theme={ theme } />
+}
+
 // We need to use "withRef" prop,
 // for react-native-swipe-list-view CellRenderer to not trigger a warning
-export default withTranslation([ 'common' ], { withRef: true })(TaskListItem)
+export default withTranslation([ 'common' ], { withRef: true })(TaskListItemWithTheme)
