@@ -124,12 +124,10 @@ class CompleteTask extends Component {
         ) }
         <View style={{ padding: 20, borderBottomWidth: 1, borderBottomColor: '#ccc' }}>
           <Label style={{ marginBottom: 5 }}>{ this.props.t('NOTES') }</Label>
-          <View style={{ paddingVertical: 5, paddingHorizontal: 10, borderWidth: 1, borderColor: '#ccc', borderRadius: 16 }}>
-            <TextInput multiline={ true } numberOfLines={ 3 }
-              onChangeText={ text => this.setState({ notes: text }) }
-              placeholderTextColor="#d0d0d0"
-              style={{ color: '#333' }} />
-          </View>
+          <TextInput multiline={ true } numberOfLines={ 3 }
+            onChangeText={ text => this.setState({ notes: text }) }
+            placeholderTextColor="#d0d0d0"
+            style={ styles.textInput } />
         </View>
         <Content contentContainerStyle={ styles.content }>
           <View style={ styles.imagesContainer }>
@@ -278,6 +276,14 @@ const styles = StyleSheet.create({
   modalContent: {
     backgroundColor: '#ffffff',
     padding: 15,
+  },
+  textInput: {
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 16,
+    color: '#000',
   },
 })
 
