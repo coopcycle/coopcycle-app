@@ -643,7 +643,7 @@ export function checkout(number, expMonth, expYear, cvc, cardholderName) {
           },
           billingDetails: {
             name: cardholderName,
-          }
+          },
         })
         .then(paymentMethod => {
           httpClient

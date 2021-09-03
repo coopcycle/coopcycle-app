@@ -184,7 +184,7 @@ describe('ProductOptionsBuilder', () => {
 
     const notMandatoryProductOptionsBuilder = new ProductOptionsBuilder(notMandatoryProductOptions)
 
-    expect(optionsBuilder.isValid()).toBe(true)
+    expect(notMandatoryProductOptionsBuilder.isValid()).toBe(true)
 
   })
 

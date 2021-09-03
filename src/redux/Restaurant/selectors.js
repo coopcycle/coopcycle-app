@@ -6,8 +6,6 @@ import { matchesDate } from '../../utils/order'
 
 const _selectDate = state => state.restaurant.date
 const _selectOrders = state => state.restaurant.orders
-const _selectSpecialOpeningHoursSpecification =
-  state => state.restaurant.restaurant?.specialOpeningHoursSpecification || []
 
 export const selectSpecialOpeningHoursSpecificationForToday = createSelector(
   state => state.restaurant.restaurant,
