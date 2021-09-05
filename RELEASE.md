@@ -18,7 +18,7 @@ Generate a signed APK
 
 ```
 cd android/
-./gradlew clean && ./gradlew assembleRelease
+./gradlew clean && ./gradlew bundleRelease
 ```
 
 Signed APK file can be found in `android/app/build/outputs/apk/release/app-release.apk`
