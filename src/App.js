@@ -1,12 +1,10 @@
 import React, { Component, createRef } from 'react'
-import { Platform, LogBox } from 'react-native'
+import { Platform, LogBox, Appearance } from 'react-native'
 
-import { StyleProvider } from 'native-base'
-import getTheme from '../native-base-theme/components'
-import coopcycleTheme from '../native-base-theme/variables/coopcycle'
+import { NativeBaseProvider, extendTheme } from 'native-base'
 import tracker from './analytics/Tracker'
 
-import { NavigationContainer } from '@react-navigation/native'
+import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 
 import { Provider } from 'react-redux'
@@ -109,24 +107,33 @@ class App extends Component {
 
   render() {
 
+    const colorScheme = Appearance.getColorScheme()
+
+    const customTheme = extendTheme({
+      config: {
+        useSystemColorMode: true,
+      }
+    })
+
     return (
       <Provider store={ store }>
         <PersistGate loading={ null } persistor={ persistor }>
           <I18nextProvider i18n={ i18n }>
-            <StyleProvider style={ getTheme(coopcycleTheme) }>
+            <NativeBaseProvider theme={customTheme}>
               <SafeAreaProvider>
                 <Spinner />
                 <NavigationContainer
                   ref={ navigationRef }
                   linking={ linking }
                   onReady={ () => (routeNameRef.current = navigationRef.current.getCurrentRoute()?.name) }
-                  onStateChange={ onNavigationStateChange }>
+                  onStateChange={ onNavigationStateChange }
+                  theme={ colorScheme === 'dark' ? DarkTheme : DefaultTheme }>
                   <Root />
                 </NavigationContainer>
                 <DropdownAlert ref={ ref => { DropdownHolder.setDropdown(ref) } } />
                 <NotificationHandler />
               </SafeAreaProvider>
-            </StyleProvider>
+            </NativeBaseProvider>
           </I18nextProvider>
         </PersistGate>
       </Provider>

@@ -2,16 +2,16 @@ import React, { Component } from 'react'
 import {
   StyleSheet,
   View,
-  TouchableOpacity,
 } from 'react-native'
 import {
-  Container,
   Text,
-  Content,
   Icon,
+  VStack,
+  Box,
 } from 'native-base'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
 import OrderItems from '../../components/OrderItems'
 import { subscribe, unsubscribe } from '../../redux/Account/actions'
@@ -70,7 +70,7 @@ class OrderTrackingPage extends Component {
     return (
       <View style={ styles.header }>
         <View style={ headerContainerStyle }>
-          <Icon style={ [ styles.headerText, { marginRight: 10 } ] } type="FontAwesome" name={ iconName } />
+          <Icon style={ [ styles.headerText, { marginRight: 10 } ] } as={ FontAwesome } name={ iconName } />
           <Text style={ styles.headerText }>{ stateText }</Text>
         </View>
       </View>
@@ -102,20 +102,20 @@ class OrderTrackingPage extends Component {
     const { order } = this.props.route.params
 
     return (
-      <Container>
+      <VStack flex={ 1 }>
         { this.renderHeader() }
         { this.renderSubHeader() }
-        <Content padder testID="accountOrder">
-          <TouchableOpacity style={ styles.restaurantContainer }>
+        <VStack flex={ 1 } testID="accountOrder">
+          <Box style={ styles.restaurantContainer }>
             <Icon style={ styles.restaurantText }
-              type="FontAwesome" name="cutlery" />
+              as={ FontAwesome } name="cutlery" />
             <Text style={ styles.restaurantText }>
               { order.restaurant.name }
             </Text>
-          </TouchableOpacity>
+          </Box>
           <OrderItems order={ order } withDeliveryTotal={ true } />
-        </Content>
-      </Container>
+        </VStack>
+      </VStack>
     );
   }
 }
@@ -152,7 +152,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   restaurantContainer: {
-    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 25,

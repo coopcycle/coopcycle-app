@@ -1,6 +1,6 @@
 import React from 'react'
 import { View } from 'react-native'
-import { Form, Item, Input, Label, Button, Text } from 'native-base'
+import { Stack, FormControl, Input, Button, Text } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import validate from 'validate.js'
 import _ from 'lodash'
@@ -118,9 +118,9 @@ class RegisterForm extends React.Component {
   renderError(message) {
 
     return (
-      <View>
-        <Text note style={{ marginLeft: 15, color: '#ed2f2f' }}>{ message }</Text>
-      </View>
+      <FormControl.ErrorMessage>
+        { message }
+      </FormControl.ErrorMessage>
     )
   }
 
@@ -162,63 +162,59 @@ class RegisterForm extends React.Component {
           }
 
           return (
-            <View>
-              <Form>
-                { inputs.map((input, index) => {
+            <Stack>
+              { inputs.map((input, index) => {
 
-                  const hasError = allErrors.hasOwnProperty(input.name)
-                  const itemProps = hasError ? { error: true } : {}
+                const hasError = allErrors.hasOwnProperty(input.name)
+                const itemProps = hasError ? { error: true } : {}
 
-                  let inputProps = {
-                    ...input.props,
-                    onChangeText: handleChange(input.name),
-                    onBlur: handleBlur(input.name),
+                let inputProps = {
+                  ...input.props,
+                  onChangeText: handleChange(input.name),
+                  onBlur: handleBlur(input.name),
+                }
+
+                const isLast = index === (inputs.length - 1)
+
+                if (isLast) {
+                  inputProps = {
+                    ...inputProps,
+                    returnKeyType: 'done',
+                    onSubmitEditing: handleSubmit,
                   }
-
-                  const isLast = index === (inputs.length - 1)
-
-                  if (isLast) {
-                    inputProps = {
-                      ...inputProps,
-                      returnKeyType: 'done',
-                      onSubmitEditing: handleSubmit,
-                    }
-                  } else {
-                    inputProps = {
-                      ...inputProps,
-                      returnKeyType: 'next',
-                      onSubmitEditing: event => {
-                        const idx = inputs.findIndex((el) => el.name === input.name)
-                        const nextInputName = inputs[idx + 1].name
-                        this._inputComponents.get(nextInputName)._root.focus()
-                      },
-                    }
+                } else {
+                  inputProps = {
+                    ...inputProps,
+                    returnKeyType: 'next',
+                    onSubmitEditing: event => {
+                      const idx = inputs.findIndex((el) => el.name === input.name)
+                      const nextInputName = inputs[idx + 1].name
+                      this._inputComponents.get(nextInputName)._root.focus()
+                    },
                   }
+                }
 
-                  return (
-                    <View key={ input.name }>
-                      <Item stackedLabel { ...itemProps }>
-                        <Label>{ input.label }</Label>
-                        <Input
-                          testID={ `registerForm.${input.name}` }
-                          ref={ component => this._inputComponents.set(input.name, component) }
-                          defaultValue={ values[input.name] }
-                          autoCorrect={ false }
-                          autoCapitalize="none"
-                          style={{ height: 40 }}
-                          { ...inputProps } />
-                      </Item>
-                      { hasError && this.renderError(allErrors[input.name]) }
-                    </View>
-                  )
-                }) }
-              </Form>
+                return (
+                  <FormControl { ...itemProps } key={ input.name }>
+                    <FormControl.Label>{ input.label }</FormControl.Label>
+                    <Input
+                      testID={ `registerForm.${input.name}` }
+                      ref={ component => this._inputComponents.set(input.name, component) }
+                      defaultValue={ values[input.name] }
+                      autoCorrect={ false }
+                      autoCapitalize="none"
+                      style={{ height: 40 }}
+                      { ...inputProps } />
+                    { hasError && this.renderError(allErrors[input.name]) }
+                  </FormControl>
+                )
+              }) }
               <View style={{ marginTop: 20 }}>
                 <Button block onPress={ handleSubmit } testID="submitRegister">
-                  <Text>{this.props.t('SUBMIT')}</Text>
+                  {this.props.t('SUBMIT')}
                 </Button>
               </View>
-            </View>
+            </Stack>
           )
         }}
       </Formik>

@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
-import { FlatList, TouchableOpacity, View } from 'react-native'
+import { TouchableOpacity, View } from 'react-native'
 import {
-  Container, Content,
-  Icon, Text, Button,
+  Icon, Text, Button, FlatList, Box, HStack,
 } from 'native-base'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
+import Ionicons from 'react-native-vector-icons/Ionicons'
 
 import Server from './components/Server'
 import { logout } from '../../redux/App/actions'
@@ -41,37 +41,40 @@ class AccountHome extends Component {
     ]
 
     return (
-      <Container>
-        <Content padder>
-          <Server />
-          <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', marginBottom: 15 }}>
-            <Icon name="person" />
-            <Text style={{ textAlign: 'center', fontWeight: 'bold', fontSize: 18 }}>
-              {`${this.props.t('HELLO')} ${ this.props.user.username }`}
-            </Text>
-          </View>
-          <FlatList
-            data={ data }
-            keyExtractor={ (item, index) => `account-${index}` }
-            ItemSeparatorComponent={ ItemSeparator }
-            renderItem={({ item }) => (
-              <TouchableOpacity onPress={ item.onPress }>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 10 }}>
+      <View style={{ flex: 1 }}>
+        <Server />
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', marginBottom: 15 }}>
+          <Icon as={Ionicons} name="person" />
+          <Text style={{ textAlign: 'center', fontWeight: 'bold', fontSize: 18 }}>
+            {`${this.props.t('HELLO')} ${ this.props.user.username }`}
+          </Text>
+        </View>
+        <FlatList
+          data={ data }
+          keyExtractor={ (item, index) => `account-${index}` }
+          ItemSeparatorComponent={ ItemSeparator }
+          renderItem={({ item }) => (
+            <TouchableOpacity onPress={ item.onPress }>
+              <Box
+                px="3"
+                py="3"
+              >
+                <HStack space={3} justifyContent="space-between">
                   <Text>
                     { item.label }
                   </Text>
-                  <Icon name="arrow-forward" />
-                </View>
-              </TouchableOpacity>
-            )}
-          />
-          <View style={{ marginTop: 40, marginBottom: 60 }}>
-            <Button block danger onPress={ () => this.props.logout() } testID="logout">
-              <Text>{this.props.t('SIGN_OUT')}</Text>
-            </Button>
-          </View>
-        </Content>
-      </Container>
+                  <Icon as={ Ionicons } name="arrow-forward" />
+                </HStack>
+              </Box>
+            </TouchableOpacity>
+          )}
+        />
+        <Box p="2">
+          <Button colorScheme="secondary" onPress={ () => this.props.logout() } testID="logout">
+            {this.props.t('SIGN_OUT')}
+          </Button>
+        </Box>
+      </View>
     )
   }
 }

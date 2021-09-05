@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import { Dimensions, StyleSheet, View, TouchableOpacity } from 'react-native'
-import { Col, Row, Grid } from 'react-native-easy-grid'
-import { Icon, Text, H3 } from 'native-base'
+import { Dimensions } from 'react-native'
+import { Icon, Text, HStack, Pressable } from 'native-base'
 import { withTranslation } from 'react-i18next'
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
 class DatePickerHeader extends Component {
 
@@ -17,50 +17,23 @@ class DatePickerHeader extends Component {
     }
 
     return (
-      <Grid style={ styles.container }>
-        <Row>
-          <Col size={ 8 }>
-            <TouchableOpacity onPress={ () => this.props.onCalendarClick() }>
-              <View style={ [ styles.wrapper, styles.buttonLeft ] }>
-                <Icon type="FontAwesome" name="calendar" />
-                <H3>{ date.format(dateFormat) }</H3>
-                <Icon type="FontAwesome" name="chevron-right" style={{ color: '#ddd' }} />
-              </View>
-            </TouchableOpacity>
-          </Col>
-          <Col size={ 4 }>
-            <TouchableOpacity onPress={ () => this.props.onTodayClick() }>
-              <View style={ [ styles.wrapper, styles.buttonRight ] }>
-                <Icon type="FontAwesome" name="refresh" />
-                <Text>{ this.props.t('TODAY') }</Text>
-              </View>
-            </TouchableOpacity>
-          </Col>
-        </Row>
-      </Grid>
+      <HStack w="100%">
+        <Pressable w="50%" onPress={ () => this.props.onCalendarClick() }>
+          <HStack flex={ 1 } alignItems="center" justifyContent="space-between" p="2">
+            <Icon as={FontAwesome} name="calendar" />
+            <Text>{ date.format(dateFormat) }</Text>
+            <Icon as={FontAwesome} name="chevron-right" style={{ color: '#ddd' }} />
+          </HStack>
+        </Pressable>
+        <Pressable w="50%" onPress={ () => this.props.onTodayClick() }>
+          <HStack alignItems="center" justifyContent="space-between" p="2" bgColor="#2ECC71">
+            <Icon as={FontAwesome} name="refresh" />
+            <Text>{ this.props.t('TODAY') }</Text>
+          </HStack>
+        </Pressable>
+      </HStack>
     )
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: '#ddd',
-  },
-  wrapper: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 25,
-    paddingHorizontal: 20,
-  },
-  buttonRight: {
-    justifyContent: 'space-around',
-    backgroundColor: '#2ECC71',
-  },
-  buttonLeft: {
-    justifyContent: 'space-between',
-  },
-})
 
 export default withTranslation()(DatePickerHeader)

@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import { Icon, Text } from 'native-base'
 import { withTranslation } from 'react-i18next'
+import Ionicons from 'react-native-vector-icons/Ionicons'
 
 class DangerAlert extends Component {
   render() {
@@ -19,7 +20,7 @@ class DangerAlert extends Component {
           <Text style={ styles.text }>{ this.props.text }</Text>
           { this.props.onClose && (
             <TouchableOpacity onPress={ () => this.props.onClose() }>
-              <Icon name="close" style={{ color: '#a94442' }} />
+              <Icon as={Ionicons} name="close" style={{ color: '#a94442' }} />
             </TouchableOpacity>
           )}
         </View>

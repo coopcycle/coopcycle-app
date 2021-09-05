@@ -7,6 +7,7 @@ import _ from 'lodash'
 import Modal from 'react-native-modal'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { openComposer } from 'react-native-email-link'
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 
 import { selectServer } from '../../redux/App/actions'
 import ItemSeparator from '../../components/ItemSeparator'
@@ -66,7 +67,7 @@ class ChooseCity extends Component {
           </View>
           <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', paddingVertical: 15 }}
             onPress={ () => this.setState({ isModalVisible: true }) }>
-            <Icon type="FontAwesome5" name="question-circle" style={{ marginRight: 10, fontSize: 22, color: '#0074D9' }} />
+            <Icon as={FontAwesome5} name="question-circle" style={{ marginRight: 10, fontSize: 22, color: '#0074D9' }} />
             <Text note style={{ textAlign: 'center', color: '#0074D9' }}>
               { this.props.t('CITY_NOT_LISTED') }
             </Text>
@@ -82,7 +83,7 @@ class ChooseCity extends Component {
               <Button iconLeft transparent block
                 onPress={ () => this.openEmail() }
                 style={{ marginVertical: 0 }}>
-                <Icon type="FontAwesome5" name="envelope" style={{ color: '#62B1F6' }} />
+                <Icon as={FontAwesome5} name="envelope" style={{ color: '#62B1F6' }} />
                 <Text>
                   { this.props.t('CONTACT_US') }
                 </Text>

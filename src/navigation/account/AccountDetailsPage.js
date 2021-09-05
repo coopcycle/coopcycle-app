@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
 import { InteractionManager } from 'react-native'
 import {
-  Container, Content,
-  Icon,
-  Label, Item, Input,
+  Center,
+  FormControl, Input,
 } from 'native-base'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
@@ -23,24 +22,20 @@ class AccountDetailsPage extends Component {
     const { email, username } = this.props
 
     return (
-      <Container>
-        <Content style={{ paddingHorizontal: 10, paddingTop: 20 }}>
-          { username ? (
-            <Item stackedLabel disabled>
-              <Label>{this.props.t('USERNAME')}</Label>
-              <Input disabled placeholder={ username } />
-              <Icon name="information-circle" />
-            </Item>
-          ) : null }
-          { email ? (
-            <Item stackedLabel disabled>
-              <Label>{this.props.t('EMAIL')}</Label>
-              <Input disabled placeholder={ email } />
-              <Icon name="information-circle" />
-            </Item>
-          ) : null }
-        </Content>
-      </Container>
+      <Center flex={1} px="2">
+        { username ? (
+          <FormControl disabled>
+            <FormControl.Label>{this.props.t('USERNAME')}</FormControl.Label>
+            <Input disabled placeholder={ username } />
+          </FormControl>
+        ) : null }
+        { email ? (
+          <FormControl disabled>
+            <FormControl.Label>{this.props.t('EMAIL')}</FormControl.Label>
+            <Input disabled placeholder={ email } />
+          </FormControl>
+        ) : null }
+      </Center>
     )
   }
 }

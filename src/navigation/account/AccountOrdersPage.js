@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import { InteractionManager, SectionList, TouchableOpacity, View } from 'react-native'
+import { InteractionManager, SectionList, View } from 'react-native'
 import {
-  Text,
+  Pressable, HStack, Text, Heading,
 } from 'native-base'
 import _ from 'lodash'
 import moment from 'moment'
@@ -24,19 +24,20 @@ class AccountOrdersPage extends Component {
     const { navigate } = this.props.navigation
 
     return (
-      <TouchableOpacity onPress={() => navigate('AccountOrder', { order }) }
-        style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 10, paddingVertical: 15 }}>
-        <Text>{ order.restaurant.name }</Text>
-        <Text>{ formatPrice(order.total) }</Text>
-      </TouchableOpacity>
+      <Pressable onPress={() => navigate('AccountOrder', { order }) }>
+        <HStack justifyContent="space-between" p="2">
+          <Text>{ order.restaurant.name }</Text>
+          <Text>{ formatPrice(order.total) }</Text>
+        </HStack>
+      </Pressable>
     );
   }
 
   _renderSectionHeader(section) {
     return (
-      <View style={{ paddingHorizontal: 10, paddingVertical: 15 }}>
-        <Text note>{ moment(section.day).format('LL') }</Text>
-      </View>
+      <Heading size="sm" p="2">
+        { moment(section.day).format('LL') }
+      </Heading>
     )
   }
 

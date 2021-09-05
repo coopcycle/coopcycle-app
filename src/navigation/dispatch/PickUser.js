@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { Text, Icon } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import _ from 'lodash'
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
 import Avatar from '../../components/Avatar'
 import ItemSeparatorComponent from '../../components/ItemSeparator'
@@ -22,7 +23,7 @@ class PickUser extends Component {
         style={ styles.item }>
         <Avatar baseURL={ this.props.baseURL } username={ user.username } />
         <Text style={ styles.itemText }>{ user.username }</Text>
-        <Icon name="arrow-forward" />
+        <Icon as={ FontAwesome } name="arrow-right" size="sm" />
       </TouchableOpacity>
     )
   }

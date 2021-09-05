@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Footer, FooterTab, Button, Text } from 'native-base'
+import { HStack, Button } from 'native-base'
 import PropTypes from 'prop-types'
 
 class FooterButton extends Component {
@@ -9,13 +9,11 @@ class FooterButton extends Component {
     const { text, ...otherProps } = this.props
 
     return (
-      <Footer>
-        <FooterTab>
-          <Button block transparent { ...otherProps }>
-            <Text style={{ color: '#FFFFFF', fontSize: 16 }}>{ text }</Text>
-          </Button>
-        </FooterTab>
-      </Footer>
+      <HStack p="3">
+        <Button w="100%" { ...otherProps }>
+          { text }
+        </Button>
+      </HStack>
     )
   }
 }

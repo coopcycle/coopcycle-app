@@ -6,9 +6,10 @@ import {
   Dimensions,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { Container, Icon, Text } from 'native-base';
+import { Icon, Text } from 'native-base';
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
+import Ionicons from 'react-native-vector-icons/Ionicons'
 
 import RestaurantSearch from '../../components/RestaurantSearch'
 import RestaurantList from '../../components/RestaurantList'
@@ -66,7 +67,7 @@ class RestaurantsPage extends Component {
       return (
         <View style={ styles.content } testID="checkoutSearchContent">
           <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-            <Icon name="search" style={{ color: '#cccccc' }} />
+            <Icon as={Ionicons} name="search" style={{ color: '#cccccc' }} />
             <Text note>{ this.props.t('ENTER_ADDRESS') }</Text>
           </View>
         </View>
@@ -85,7 +86,7 @@ class RestaurantsPage extends Component {
   render() {
 
     return (
-      <Container style={{ paddingTop: 54 }} testID="checkoutSearch"
+      <View style={{ paddingTop: 54 }} testID="checkoutSearch"
         onLayout={ event => this.setState({ width: event.nativeEvent.layout.width }) }
         >
         { this.renderContent() }
@@ -102,7 +103,7 @@ class RestaurantsPage extends Component {
           width={ this.state.width }
           key={ this.props.addressAsText }
           savedAddresses={ this.props.savedAddresses } />
-      </Container>
+      </View>
     );
   }
 }

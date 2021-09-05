@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { ImageBackground, InteractionManager, StyleSheet, View, Animated } from 'react-native'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
-import { Container, Text } from 'native-base';
+import { Text } from 'native-base';
 import _ from 'lodash'
 
 import CartFooter from './components/CartFooter'
@@ -55,7 +55,7 @@ class Restaurant extends Component {
     const { isCartEmpty, menu } = this.props
 
     return (
-      <Container>
+      <View style={{ flex: 1 }}>
         <View style={{ flex: 1, paddingTop: 60 }}>
           <View style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: 60 }}>
             <GroupImageHeader restaurant={ restaurant } />
@@ -81,7 +81,7 @@ class Restaurant extends Component {
           }} />
         <ExpiredSessionModal
           onModalHide={ () => navigate('CheckoutHome') } />
-      </Container>
+      </View>
     )
   }
 }

@@ -3,6 +3,7 @@ import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 import { Icon, Text } from 'native-base'
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
 import ItemSeparatorComponent from '../../components/ItemSeparator'
 import Avatar from '../../components/Avatar'
@@ -28,7 +29,7 @@ class TaskLists extends Component {
         testID={ `dispatch:taskLists:${taskList.username}` }>
         <Avatar baseURL={ this.props.baseURL } username={ taskList.username } />
         <Text style={ styles.itemLabel }>{ taskList.username } ({ items.length })</Text>
-        <Icon style={{ color: '#ccc' }} name="ios-arrow-forward" />
+        <Icon as={ FontAwesome } name="arrow-right" />
       </TouchableOpacity>
     )
   }
@@ -68,7 +69,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingVertical: 15,
     paddingHorizontal: 15,
-    backgroundColor: '#ffffff',
   },
   itemLabel: {
     flex: 1,

@@ -4,6 +4,7 @@ import { Text, Icon } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import _ from 'lodash'
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
 import { navigateToTask } from '../../../navigation/utils'
 
@@ -30,7 +31,7 @@ const NavButton = ({ disabled, left, right, onPress, t, task }) => {
   return (
     <TouchableOpacity style={ buttonStyle } { ...buttonProps }>
       { (!disabled && task && right) && <Text style={{ marginRight: 10, fontSize: 14 }}>{ t('TASK_WITH_ID', { id: task.id }) }</Text> }
-      <Icon type="FontAwesome" name={ right ? 'arrow-right' : 'arrow-left' } style={ iconStyle } />
+      <Icon as={FontAwesome} name={ right ? 'arrow-right' : 'arrow-left' } style={ iconStyle } />
       { (!disabled && task && left) && <Text style={{ marginLeft: 10, fontSize: 14 }}>{ t('TASK_WITH_ID', { id: task.id }) }</Text> }
     </TouchableOpacity>
   )

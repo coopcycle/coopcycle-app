@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
+import { FlatList } from 'react-native'
 import {
-  Container, Content,
-  Left, Right, Body,
-  List, ListItem, Icon, Text, Switch,
+  Icon, Text, HStack, Box, Heading, Pressable,
 } from 'native-base'
 import _ from 'lodash'
 import moment from 'moment'
@@ -12,6 +11,8 @@ import { connect } from 'react-redux'
 
 import { deleteOpeningHoursSpecification } from '../../redux/Restaurant/actions'
 import { selectSpecialOpeningHoursSpecification } from '../../redux/Restaurant/selectors'
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
+import ItemSeparator from '../../components/ItemSeparator'
 
 class OpeningHoursScreen extends Component {
 
@@ -21,58 +22,50 @@ class OpeningHoursScreen extends Component {
     }
   }
 
-  renderItem(item) {
-    return (
-      <ListItem>
-        <Left>
-          <Text>{ item.name }</Text>
-        </Left>
-        <Right>
-          <Switch
-            value={ item.enabled }
-            onValueChange={ this._toggleProductEnabled.bind(this, item) } />
-        </Right>
-      </ListItem>
-    )
-  }
-
   renderOpeningHours() {
     const { openingHoursSpecification } = this.props
 
+    const data = openingHoursSpecification.map(ohs => {
+
+      let text = ''
+
+      const baseParams = {
+        opens: moment(ohs.opens, 'HH:mm').format('LT'),
+        closes: moment(ohs.closes, 'HH:mm').format('LT'),
+      }
+
+      if (ohs.dayOfWeek.length === 1) {
+        text = this.props.t('RESTAURANT_OPENING_HOURS_ONE_DAY', {
+          ...baseParams,
+          day: moment().isoWeekday(ohs.dayOfWeek[0]).format('dddd'),
+        })
+      } else {
+        text = this.props.t('RESTAURANT_OPENING_HOURS_DAY_RANGE', {
+          ...baseParams,
+          firstDay: moment().isoWeekday(_.first(ohs.dayOfWeek)).format('dddd'),
+          lastDay: moment().isoWeekday(_.last(ohs.dayOfWeek)).format('dddd'),
+        })
+      }
+
+      return {
+        ohs,
+        text,
+      }
+    })
+
     return (
-      <List>
-        <ListItem itemDivider>
-          <Text>{ this.props.t('RESTAURANT_OPENING_HOURS') }</Text>
-        </ListItem>
-        { openingHoursSpecification.map(ohs => {
-
-          let text = ''
-
-          const baseParams = {
-            opens: moment(ohs.opens, 'HH:mm').format('LT'),
-            closes: moment(ohs.closes, 'HH:mm').format('LT'),
-          }
-
-          if (ohs.dayOfWeek.length === 1) {
-            text = this.props.t('RESTAURANT_OPENING_HOURS_ONE_DAY', {
-              ...baseParams,
-              day: moment().isoWeekday(ohs.dayOfWeek[0]).format('dddd'),
-            })
-          } else {
-            text = this.props.t('RESTAURANT_OPENING_HOURS_DAY_RANGE', {
-              ...baseParams,
-              firstDay: moment().isoWeekday(_.first(ohs.dayOfWeek)).format('dddd'),
-              lastDay: moment().isoWeekday(_.last(ohs.dayOfWeek)).format('dddd'),
-            })
-          }
-
-          return (
-            <ListItem key={ JSON.stringify(ohs) }>
-              <Text>{ text }</Text>
-            </ListItem>
-          )
-        })}
-      </List>
+      <Box>
+        <Heading size="md" p="3">{ this.props.t('RESTAURANT_OPENING_HOURS') }</Heading>
+        <FlatList
+          data={ data }
+          ItemSeparatorComponent={ ItemSeparator }
+          keyExtractor={ (item, index) => `ohs-${index}` }
+          renderItem={ ({ item, index }) => (
+            <Box p="3">
+              <Text>{ item.text }</Text>
+            </Box>
+          )} />
+      </Box>
     )
   }
 
@@ -80,39 +73,36 @@ class OpeningHoursScreen extends Component {
     const { specialOpeningHoursSpecification, httpClient } = this.props
 
     return (
-      <List>
-        <ListItem itemDivider>
-          <Text>{ this.props.t('RESTAURANT_SPECIAL_OPENING_HOURS') }</Text>
-        </ListItem>
-        { specialOpeningHoursSpecification.map(openingHoursSpecification => {
-          const { validFrom, validThrough } = openingHoursSpecification
-          return (
-            <ListItem icon key={ JSON.stringify(openingHoursSpecification) }
-              onPress={ () => this.props.deleteOpeningHoursSpecification(httpClient, openingHoursSpecification) }>
-              <Body>
+      <Box>
+        <Heading size="md" p="3">{ this.props.t('RESTAURANT_SPECIAL_OPENING_HOURS') }</Heading>
+        <FlatList
+          data={ specialOpeningHoursSpecification }
+          ItemSeparatorComponent={ ItemSeparator }
+          keyExtractor={ (item, index) => `sohs-${index}` }
+          renderItem={ ({ item, index }) => (
+            <Pressable onPress={ () => this.props.deleteOpeningHoursSpecification(httpClient, item) }>
+              <HStack
+                p="3"
+                justifyContent="space-between"
+                alignItems="center">
                 <Text>{ this.props.t('RESTAURANT_OPENING_HOURS_VALID_FROM_THROUGH', {
-                  validFrom: moment(validFrom, 'YYYY-MM-DD').format('ll'),
-                  validThrough: moment(validThrough, 'YYYY-MM-DD').format('ll') }) }</Text>
-              </Body>
-              <Right>
-                <Icon active name="close" />
-              </Right>
-            </ListItem>
-          )
-        })}
-      </List>
+                  validFrom: moment(item.validFrom, 'YYYY-MM-DD').format('ll'),
+                  validThrough: moment(item.validThrough, 'YYYY-MM-DD').format('ll') }) }</Text>
+                <Icon as={FontAwesome} name="close" />
+              </HStack>
+            </Pressable>
+          )} />
+      </Box>
     )
   }
 
   render() {
 
     return (
-      <Container>
-        <Content>
-          { this.renderOpeningHours() }
-          { this.renderSpecialOpeningHours() }
-        </Content>
-      </Container>
+      <Box>
+        { this.renderOpeningHours() }
+        { this.renderSpecialOpeningHours() }
+      </Box>
     )
   }
 }

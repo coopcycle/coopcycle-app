@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
 import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native'
 import {
-  Left, Right,
-  ListItem, Text, Switch,
+  Text, Switch, HStack,
 } from 'native-base'
 
 import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 
 import { loadProducts, loadMoreProducts, changeProductEnabled } from '../../redux/Restaurant/actions'
+import ItemSeparator from '../../components/ItemSeparator'
 
 class ProductsScreen extends Component {
 
@@ -22,16 +22,12 @@ class ProductsScreen extends Component {
 
   renderItem(item) {
     return (
-      <ListItem>
-        <Left>
-          <Text>{ item.name }</Text>
-        </Left>
-        <Right>
-          <Switch
-            value={ item.enabled }
-            onValueChange={ this._toggleProductEnabled.bind(this, item) } />
-        </Right>
-      </ListItem>
+      <HStack p="3" justifyContent="space-between">
+        <Text>{ item.name }</Text>
+        <Switch
+          isChecked={ item.enabled }
+          onToggle={ this._toggleProductEnabled.bind(this, item) } />
+      </HStack>
     )
   }
 
@@ -51,6 +47,7 @@ class ProductsScreen extends Component {
           keyExtractor={ this._keyExtractor }
           renderItem={ ({ item }) => this.renderItem(item) }
           initialNumToRender={ 15 }
+          ItemSeparatorComponent={ ItemSeparator }
           ListFooterComponent={ () => {
 
             if (products.length > 0 && hasMoreProducts) {

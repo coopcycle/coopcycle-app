@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { ActivityIndicator, Dimensions, StyleSheet, View, Animated, Keyboard, Platform, TouchableOpacity } from 'react-native'
+import { ActivityIndicator, Dimensions, StyleSheet, View, Animated, Keyboard, Platform, TouchableOpacity, Appearance } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
@@ -8,6 +8,7 @@ import {
   Text, Button, Icon,
 } from 'native-base'
 import Modal from 'react-native-modal'
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 
 import AddressAutocomplete from '../../../components/AddressAutocomplete'
 import AddressUtils from '../../../utils/Address'
@@ -103,7 +104,7 @@ class AddressModal extends Component {
             this.props.setAddress(address)
             this.setState({ address })
           }) }>
-          <Icon type="MaterialIcons" name="my-location" style={{ color: '#b9b9b9', fontSize: 24 }} />
+          <Icon as={ MaterialIcons } name="my-location" style={{ color: '#b9b9b9', fontSize: 24 }} />
         </TouchableOpacity>
       </View>
     )
@@ -112,6 +113,7 @@ class AddressModal extends Component {
   render() {
 
     const { width, height } = Dimensions.get('window')
+    const colorScheme = Appearance.getColorScheme()
 
     const modalMessageTextStyle = [
       styles.modalMessageText,
@@ -129,7 +131,7 @@ class AddressModal extends Component {
         swipeDirection={ ['up', 'down'] }
         onModalWillShow={ () => this.props.setAddressModalHidden(false) }
         onModalHide={ () => this.props.setAddressModalHidden(true) }>
-        <SafeAreaView style={{ backgroundColor: '#ffffff' }}>
+        <SafeAreaView style={{ backgroundColor: colorScheme === 'dark' ? 'black' : 'white' }}>
           <Animated.View style={ [ styles.modalContent, { paddingBottom: this.keyboardHeight } ] } testID="addressModal">
             <Text style={ modalMessageTextStyle }>{ this.props.message }</Text>
             <View style={{ width, height: height / 3 }}>
@@ -201,7 +203,6 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#ffffff',
     borderRadius: 4,
     borderColor: 'rgba(0, 0, 0, 0.1)',
   },

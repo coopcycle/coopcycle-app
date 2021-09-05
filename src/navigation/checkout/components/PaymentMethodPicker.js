@@ -2,6 +2,7 @@ import React from 'react'
 import { View, StyleSheet, TouchableOpacity } from 'react-native'
 import { useTranslation } from 'react-i18next'
 import { Icon, Text } from 'native-base'
+import Foundation from 'react-native-vector-icons/Foundation'
 
 const styles = StyleSheet.create({
   heading: {
@@ -37,7 +38,7 @@ const PaymentMethodPicker = ({ methods, onSelect }) => {
           <TouchableOpacity key={ method.type }
             style={ styles.button }
             onPress={ () => onSelect(method.type) }>
-            <Icon type="Foundation" name={ icons[method.type] } style={ styles.buttonIcon } />
+            <Icon as={Foundation} name={ icons[method.type] } style={ styles.buttonIcon } />
             <Text>{ t(`PAYMENT_METHOD.${method.type}`) }</Text>
           </TouchableOpacity>
         )) }

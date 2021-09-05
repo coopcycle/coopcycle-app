@@ -6,6 +6,7 @@ import {
 } from '../navigation/task/styles/common'
 import {View} from 'react-native'
 import {Icon} from 'native-base'
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import {darkGreyColor, redColor, whiteColor} from '../styles/common'
 
 const container = {
@@ -67,7 +68,6 @@ const backgroundStyle = task => {
 const iconStyle = task => {
   return {
     position: 'absolute',
-    fontSize: 18,
     color: markerColor(task),
     opacity: markerOpacity(task),
   }
@@ -97,7 +97,7 @@ export default ({ task, type }) => {
   return (
     <View style={ container }>
       <View style={ backgroundStyle(task) }/>
-      <Icon type="FontAwesome" name={ iconName(task, type) } style={ iconStyle(task) }/>
+      <Icon as={FontAwesome} name={ iconName(task, type) } style={ iconStyle(task) } size="18px"/>
     </View>
   )
 }

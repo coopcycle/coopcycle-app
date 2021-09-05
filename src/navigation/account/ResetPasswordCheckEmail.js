@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import {StyleSheet} from 'react-native';
-import {Container, Content, Text, Button, Icon} from 'native-base';
+import {Center, Text, Button, Icon} from 'native-base';
 import {withTranslation} from 'react-i18next';
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
 class ResetPasswordCheckEmail extends Component {
   _onPressClose() {
@@ -12,34 +12,21 @@ class ResetPasswordCheckEmail extends Component {
     const email = this.props.route.params?.email || ''
 
     return (
-      <Container>
-        <Content padder contentContainerStyle={styles.content}>
-          <Icon type="FontAwesome" name="envelope-o" style={styles.icon} />
-          <Text style={{textAlign: 'center'}}>
-            {this.props.t('RESET_PASSWORD_CHECK_EMAIL_DISCLAIMER', {email})}
-          </Text>
-          <Button
-            style={{marginTop: 20}}
-            block
-            transparent
-            onPress={() => this._onPressClose()}>
-            <Text>{this.props.t('CLOSE')}</Text>
-          </Button>
-        </Content>
-      </Container>
+      <Center flex={ 1 } testID="registerCheckEmail">
+        <Icon as={ FontAwesome } name="envelope-o" mb="3" />
+        <Text style={{textAlign: 'center'}}>
+          {this.props.t('RESET_PASSWORD_CHECK_EMAIL_DISCLAIMER', {email})}
+        </Text>
+        <Button
+          style={{marginTop: 20}}
+          block
+          transparent
+          onPress={() => this._onPressClose()}>
+          <Text>{this.props.t('CLOSE')}</Text>
+        </Button>
+      </Center>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  content: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  icon: {
-    marginBottom: 15,
-  },
-});
 
 export default withTranslation()(ResetPasswordCheckEmail);

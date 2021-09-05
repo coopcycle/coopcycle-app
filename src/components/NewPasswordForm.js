@@ -1,6 +1,6 @@
 import React from 'react';
 import {View} from 'react-native';
-import {Form, Item, Input, Label, Button, Text} from 'native-base';
+import {FormControl, Input, Button, Text, VStack} from 'native-base';
 import material from '../../native-base-theme/variables/material';
 import {withTranslation} from 'react-i18next';
 import validate from 'validate.js';
@@ -103,15 +103,15 @@ class NewPasswordForm extends React.Component {
 
     return (
       <View>
-        <Form>
+        <VStack>
           {inputs.map(input => {
             const hasErrors = errors.hasOwnProperty(input.name);
             const itemProps = hasErrors ? {error: true} : {};
 
             return (
               <View key={input.name}>
-                <Item stackedLabel {...itemProps}>
-                  <Label>{input.label}</Label>
+                <FormControl stackedLabel {...itemProps}>
+                  <FormControl.Label>{input.label}</FormControl.Label>
                   <Input
                     ref={component =>
                       this._inputComponents.set(input.name, component)
@@ -129,15 +129,15 @@ class NewPasswordForm extends React.Component {
                       this._inputComponents.get(nextInputName)._root.focus();
                     }}
                   />
-                </Item>
+                </FormControl>
                 {hasErrors && this.renderErrors(errors[input.name])}
               </View>
             );
           })}
-        </Form>
+        </VStack>
         <View style={{marginTop: 20}}>
           <Button block onPress={() => this._onSubmit()}>
-            <Text>{this.props.t('SUBMIT')}</Text>
+            {this.props.t('SUBMIT')}
           </Button>
           <Text
             style={{

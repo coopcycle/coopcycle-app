@@ -7,7 +7,7 @@ import {
   TextInput,
   Platform,
 } from 'react-native';
-import { Content, Text } from 'native-base';
+import { Center, Text } from 'native-base';
 import _ from 'lodash'
 import { LiteCreditCardInput } from 'react-native-credit-card-input'
 import { withTranslation } from 'react-i18next'
@@ -124,7 +124,7 @@ class CreditCard extends Component {
         validateOnChange={ false }>
         {({ handleChange, handleBlur, handleSubmit, values, errors, touched, setFieldValue, setFieldTouched }) => (
         <Animated.View style={{ flex: 1, paddingBottom: this.keyboardHeight }}>
-          <Content contentContainerStyle={ styles.content } enableAutomaticScroll={ false }>
+          <Center flex={ 1 }>
             <Text style={ styles.creditCardLabel }>
               { this.props.t('ENTER_PAY_DETAILS') }
             </Text>
@@ -162,7 +162,7 @@ class CreditCard extends Component {
               )) }
             </View>
             ) }
-          </Content>
+          </Center>
           <FooterButton
             testID="creditCardSubmit"
             text={ this.props.t('PAY_AMOUNT', { amount: formatPrice(cart.total) }) }
@@ -175,10 +175,6 @@ class CreditCard extends Component {
 }
 
 const styles = StyleSheet.create({
-  content: {
-    flex: 1,
-    justifyContent: 'center',
-  },
   creditCardLabel: {
     textAlign: 'center',
     marginBottom: 10,
@@ -188,7 +184,6 @@ const styles = StyleSheet.create({
   },
   formInputContainer: {
     paddingVertical: 10,
-    backgroundColor: '#f7f7f7',
   },
   errorsContainer: {
     alignItems: 'center',

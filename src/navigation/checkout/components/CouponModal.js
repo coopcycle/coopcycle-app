@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, View, Appearance } from 'react-native'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
-import { Form, Item, Input, Label, Button, Text } from 'native-base'
+import { FormControl, Input, Button, Text, VStack } from 'native-base'
 import { Formik } from 'formik'
 import PropTypes from 'prop-types'
 import Modal from 'react-native-modal'
@@ -19,6 +19,8 @@ class CouponModal extends Component {
 
   render() {
 
+    const colorScheme = Appearance.getColorScheme()
+
     const initialValues = {
       code: '',
     }
@@ -28,7 +30,7 @@ class CouponModal extends Component {
         isVisible={ this.props.isVisible }
         onSwipeComplete={ this.props.onSwipeComplete }
         swipeDirection={ ['up', 'down'] }>
-        <View style={ styles.modalContent }>
+        <View style={ [ styles.modalContent, { backgroundColor: colorScheme === 'dark' ? 'black' : 'white' } ] }>
           <Formik
             initialValues={ initialValues }
             validate={ this._validate.bind(this) }
@@ -36,9 +38,9 @@ class CouponModal extends Component {
             validateOnBlur={ false }
             validateOnChange={ false }>
             {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
-            <Form>
-              <Item stackedLabel error={ (touched.code && errors.code) } style={{ marginBottom: 15 }}>
-                <Label>{this.props.t('VOUCHER_CODE')}</Label>
+            <VStack>
+              <FormControl error={ (touched.code && errors.code) } style={{ marginBottom: 15 }}>
+                <FormControl.Label>{this.props.t('VOUCHER_CODE')}</FormControl.Label>
                 <Input
                   autoCorrect={ false }
                   autoCapitalize="none"
@@ -46,11 +48,11 @@ class CouponModal extends Component {
                   returnKeyType="done"
                   onChangeText={ handleChange('code') }
                   onBlur={ handleBlur('code') } />
-              </Item>
+              </FormControl>
               <Button block onPress={ handleSubmit }>
                 <Text>{ this.props.t('SUBMIT') }</Text>
               </Button>
-            </Form>
+            </VStack>
             )}
           </Formik>
         </View>
@@ -66,7 +68,6 @@ CouponModal.propTypes = {
 
 const styles = StyleSheet.create({
   modalContent: {
-    backgroundColor: '#ffffff',
     padding: 15,
   },
 })

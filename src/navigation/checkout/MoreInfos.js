@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { View, StyleSheet, TextInput, InteractionManager } from 'react-native'
-import { Container, Content, Text } from 'native-base'
+import { Text, VStack } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 import { Formik } from 'formik'
@@ -94,11 +94,11 @@ class MoreInfos extends Component {
         validateOnBlur={ false }
         validateOnChange={ false }>
         {({ handleChange, handleBlur, handleSubmit, values, errors, touched, setFieldValue, setFieldTouched }) => (
-          <Container>
+          <VStack>
             <View style={{ backgroundColor: '#cce5ff', padding: 20 }}>
               <Text note style={{ textAlign: 'center', color: '#004085' }}>{ this.props.t('CHECKOUT_MORE_INFOS_DISCLAIMER') }</Text>
             </View>
-            <Content contentContainerStyle={ styles.content }>
+            <VStack style={ styles.content }>
               <View style={ [ styles.formGroup ] }>
                 <Text style={ styles.label }>{ this.props.t('STORE_NEW_DELIVERY_PHONE_NUMBER') }</Text>
                 <TextInput
@@ -109,8 +109,7 @@ class MoreInfos extends Component {
                   returnKeyType="done"
                   onChangeText={ value => this._handleChangeTelephone(value, setFieldValue, setFieldTouched) }
                   onBlur={ handleBlur('telephone') }
-                  value={ values.telephone }
-                  placeholderTextColor="#d0d0d0" />
+                  value={ values.telephone } />
                 { hasPhoneNumberErrors(errors, touched) && (
                   <Text note style={ styles.errorText }>{ errors.telephone }</Text>
                 ) }
@@ -142,12 +141,12 @@ class MoreInfos extends Component {
                   onBlur={ handleBlur('notes') } />
                 <Text note>{ this.props.t('CHECKOUT_ORDER_NOTES_HELP') }</Text>
               </View>
-            </Content>
+            </VStack>
             <FooterButton
               testID="moreInfosSubmit"
               text={ this.props.t('SUBMIT') }
               onPress={ handleSubmit } />
-          </Container>
+          </VStack>
         )}
       </Formik>
     )

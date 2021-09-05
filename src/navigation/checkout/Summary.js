@@ -9,13 +9,13 @@ import {
   View,
 } from 'react-native'
 import {
-  Container, Content,
-  Icon, Text,
+  Icon, Text, Center,
 } from 'native-base';
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 import _ from 'lodash'
 import Modal from 'react-native-modal'
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
 import DangerAlert from '../../components/DangerAlert'
 import { formatPrice } from '../../utils/formatting'
@@ -61,7 +61,7 @@ const ActionButton = withTranslation()(({ isLoading, onPress, iconName, children
     <TouchableOpacity style={ [ styles.btn, styles.btnGrey ] }
       // Disable interaction while loading
       onPress={ () => !isLoading && onPress() }>
-      <Icon type="FontAwesome" name={ iconName } style={{ fontSize: 22, marginRight: 15 }} />
+      <Icon as={ FontAwesome } name={ iconName } mr="2" size="sm" />
       { children }
     </TouchableOpacity>
   )
@@ -171,18 +171,18 @@ class Summary extends Component {
             <TouchableOpacity
               style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
               onPress={ () => this.props.incrementItem(item) }>
-              <Icon type="FontAwesome" name="plus-circle" style={{ fontSize: 20 }} />
+              <Icon as={ FontAwesome } name="plus-circle" size="sm" />
             </TouchableOpacity>
             <TouchableOpacity
               style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
               onPress={ () => this.props.decrementItem(item) }>
-              <Icon type="FontAwesome" name="minus-circle" style={{ fontSize: 20 }} />
+              <Icon as={ FontAwesome } name="minus-circle" size="sm" />
             </TouchableOpacity>
           </View>
           <TouchableOpacity
             style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
             onPress={() => this.props.removeItem(item)}>
-            <Icon type="FontAwesome" name="trash-o" style={{ fontSize: 20 }} />
+            <Icon as={ FontAwesome } name="trash-o" size="sm" />
           </TouchableOpacity>
         </Animated.View>
       </View>
@@ -211,11 +211,9 @@ class Summary extends Component {
   renderEmpty() {
 
     return (
-      <Container>
-        <Content contentContainerStyle={ styles.emptyContent }>
-          <Text>{ this.props.t('CART_EMPTY_WARNING') }</Text>
-        </Content>
-      </Container>
+      <Center flex={ 1 }>
+        <Text>{ this.props.t('CART_EMPTY_WARNING') }</Text>
+      </Center>
     )
   }
 
@@ -253,7 +251,7 @@ class Summary extends Component {
           <TouchableOpacity style={ [ styles.btn ]  }
             // Disable interaction while loading
             onPress={ () => !this.props.isLoading && this.setState({ isCollectionDisclaimerModalVisible: true }) }>
-            <Icon type="FontAwesome" name="info-circle" style={{ fontSize: 22, marginRight: 15, color: '#3498db' }} />
+            <Icon as={FontAwesome} name="info-circle" style={{ fontSize: 22, marginRight: 15, color: '#3498db' }} />
             <Text style={{ flex: 2, fontSize: 14, color: '#3498db' }}>{ this.props.t('FULFILLMENT_METHOD.collection') }</Text>
             <Text note style={{ flex: 1, textAlign: 'right' }}>{ this.props.t('LEARN_MORE') }</Text>
           </TouchableOpacity>
@@ -324,7 +322,6 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   btnGrey: {
-    backgroundColor: '#ecf0f1',
     borderTopColor: '#d7d7d7',
     borderTopWidth: StyleSheet.hairlineWidth,
   },
@@ -335,11 +332,6 @@ const styles = StyleSheet.create({
     paddingLeft: 5,
     paddingRight: 20,
     paddingVertical: 5,
-  },
-  emptyContent: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   bottomLineLabel: {
     color: '#ffffff',

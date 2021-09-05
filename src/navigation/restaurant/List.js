@@ -1,15 +1,14 @@
 import React, { Component } from 'react'
-import { StyleSheet, View } from 'react-native'
+import { FlatList, StyleSheet, TouchableOpacity } from 'react-native'
 import {
-  Container, Content,
-  Text,
-  Left, Right, Radio,
-  List, ListItem,
+  Text, Box, Icon, HStack,
 } from 'native-base'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
 import { changeRestaurant } from '../../redux/Restaurant/actions'
+import ItemSeparator from '../../components/ItemSeparator'
 
 class ListScreen extends Component {
 
@@ -29,40 +28,31 @@ class ListScreen extends Component {
     const { restaurants, currentRestaurant } = this.props
 
     return (
-      <List>
-        { restaurants.map(restaurant => {
-
-          const selected = restaurant['@id'] === currentRestaurant['@id']
-
-          return (
-            <ListItem key={ restaurant['@id'] }
-              onPress={ () => this._onRestaurantClick(restaurant) }
-              selected={ selected }>
-              <Left>
-                <Text>{ restaurant.name }</Text>
-              </Left>
-              <Right>
-                <Radio selected={ selected } />
-              </Right>
-            </ListItem>
-          )
-        })}
-      </List>
+      <FlatList
+        keyExtractor={ (item, index) => `${index}` }
+        ItemSeparatorComponent={ ItemSeparator }
+        data={ restaurants }
+        renderItem={ ({ item }) => (
+          <TouchableOpacity onPress={ () => this._onRestaurantClick(item) }>
+            <HStack justifyContent="space-between" p="3">
+              <Text>{ item.name }</Text>
+              { (item['@id'] === currentRestaurant['@id']) && <Icon as={FontAwesome} name="check-square" /> }
+            </HStack>
+          </TouchableOpacity>
+        )} />
     )
   }
 
   render() {
     return (
-      <Container>
-        <Content style={ styles.content }>
-          <View style={ styles.helpContainer }>
-            <Text style={ styles.helpText }>
-              { this.props.i18n.t('RESTAURANT_LIST_CLICK_BELOW') }
-            </Text>
-          </View>
-          { this.renderRestaurants() }
-        </Content>
-      </Container>
+      <Box>
+        <Box style={ styles.helpContainer }>
+          <Text style={ styles.helpText }>
+            { this.props.i18n.t('RESTAURANT_LIST_CLICK_BELOW') }
+          </Text>
+        </Box>
+        { this.renderRestaurants() }
+      </Box>
     )
   }
 }
