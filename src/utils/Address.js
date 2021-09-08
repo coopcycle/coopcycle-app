@@ -46,8 +46,11 @@ class AddressUtils {
 
     return new Promise((resolve, reject) => {
 
-      BackgroundGeolocation.getCurrentPosition().then(position => {
+      BackgroundGeolocation.setConfig({
+        locationAuthorizationRequest: 'WhenInUse'
+      })
 
+      BackgroundGeolocation.getCurrentPosition().then(position => {
         const { latitude, longitude } = position.coords
 
         const query = {
@@ -72,7 +75,6 @@ class AddressUtils {
               resolve({ ...address, isPrecise: true })
             }
           })
-
       })
     })
   }
