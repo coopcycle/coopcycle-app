@@ -77,11 +77,11 @@
 	<key>NSCameraUsageDescription</key>
 	<string>App requires access to camera</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>App requires background tracking</string>
+	<string>This allows us to track your location in realtime while delivering, to be visible by dispatchers</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>App requires background tracking</string>
+	<string>This allows us to track your location in realtime while delivering, to be visible by dispatchers</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>App requires background tracking</string>
+	<string>Your current location will be used by the messenger to locate you when there is no exact address (for example, in a park)</string>
 	<key>NSMotionUsageDescription</key>
 	<string>App requires access to motion data to optimize battery usage when tracking location</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
