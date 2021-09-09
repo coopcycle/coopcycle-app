@@ -23,6 +23,10 @@ buildscript {
         // the google() method. And you need to include this repo to download
         // Android plugin 3.0.0 or higher.
         google()
+        // FIXME
+        // Bump to 4.x and remove jCenter
+        // https://github.com/transistorsoft/react-native-background-geolocation/blob/1eb86e6010fdd342a9c861508473ed02e2184827/CHANGELOG.md#422--2021-08-23
+        jcenter()
         mavenCentral()
         maven {
             url 'https://maven.google.com/'
@@ -69,6 +73,10 @@ allprojects {
             url("${project(':react-native-background-geolocation').projectDir}/libs")
         }
         google()
+        // FIXME
+        // Bump to 4.x and remove jCenter
+        // https://github.com/transistorsoft/react-native-background-geolocation/blob/1eb86e6010fdd342a9c861508473ed02e2184827/CHANGELOG.md#422--2021-08-23
+        jcenter()
     }
 }
 
