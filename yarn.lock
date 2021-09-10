@@ -10150,10 +10150,10 @@ levn@~0.3.0:
     prelude-ls "~1.1.2"
     type-check "~0.3.2"
 
-libphonenumber-js@^1.9.26:
-  version "1.9.26"
-  resolved "https://registry.yarnpkg.com/libphonenumber-js/-/libphonenumber-js-1.9.26.tgz#888aca88a4019d0b108e45db8e0509d55785ae45"
-  integrity sha512-j0brmDsZLSKJCrcli1HjzHYP29VOf5P/Yz+xxe7WmKTe+0XVnKa0J+UEAaT96D21w1mfLPhlm0ZXBQ13EVF+XQ==
+libphonenumber-js@^1.9.31:
+  version "1.9.31"
+  resolved "https://registry.yarnpkg.com/libphonenumber-js/-/libphonenumber-js-1.9.31.tgz#9522c75b253a171794273a9caca2a71773ad7a52"
+  integrity sha512-sCDoVli8jXFlDc/8QgiwM8LPQPy9vpbG1oxg0hAgKxosw8ryygTH1ZJatWk9mDhRiHBJtDVytw+E/P1ua8bxsA==
 
 lie@3.1.1:
   version "3.1.1"
@@ -12199,10 +12199,10 @@ react-fast-compare@^2.0.1:
   resolved "https://registry.yarnpkg.com/react-fast-compare/-/react-fast-compare-2.0.4.tgz#e84b4d455b0fec113e0402c329352715196f81f9"
   integrity sha512-suNP+J1VU1MWFKcyt7RtjiSWUjvidmQSlqu+eHslq+342xCbGTYmC0mEhPCOHxlW0CywylOC1u2DFAT+bv4dBw==
 
-react-i18next@^11.11.4:
-  version "11.11.4"
-  resolved "https://registry.yarnpkg.com/react-i18next/-/react-i18next-11.11.4.tgz#f6f9a1c827e7a5271377de2bf14db04cb1c9e5ce"
-  integrity sha512-ayWFlu8Sc7GAxW1PzMaPtzq+yiozWMxs0P1WeITNVzXAVRhC0Httkzw/IiODBta6seJRBCLrtUeFUSXhAIxlRg==
+react-i18next@^11.12.0:
+  version "11.12.0"
+  resolved "https://registry.yarnpkg.com/react-i18next/-/react-i18next-11.12.0.tgz#2a053321b9b7a876d5baa7af55a12d986117bffc"
+  integrity sha512-M9BT+hqVG03ywrl+L7CK74ugK+4jIo7AeKJ17+g9BoqJz2+/aVbs8SIVXT4KMQ1rjIdcw+GcSRDy1CXjcz6tLQ==
   dependencies:
     "@babel/runtime" "^7.14.5"
     html-parse-stringify "^3.0.1"
@@ -12439,10 +12439,10 @@ react-native-modal-datetime-picker@^10.2.0:
   dependencies:
     prop-types "^15.7.2"
 
-react-native-modal-selector@^2.0.9:
-  version "2.0.9"
-  resolved "https://registry.yarnpkg.com/react-native-modal-selector/-/react-native-modal-selector-2.0.9.tgz#895c7bd7b413676ea2bdb56769ad2cdf43cdf4cc"
-  integrity sha512-GNC5SPA+eSc/NhpCJ4LLFq/ksVS97AqA8VH0onm0Hj/bmCBkGDtSfsAdGHoBht/0qsgVw/81NpSmH1pAJMKDmQ==
+react-native-modal-selector@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/react-native-modal-selector/-/react-native-modal-selector-2.1.0.tgz#eb4e38254af8a54d6ab5244533e15ee91f132e26"
+  integrity sha512-aXOF8tC69XXfI6kbIskRRLe8xcexiYc21GD0s8gNz/Pl1FT8921PuLz647uY2le+fsJsztX6Taaf3mij/Noc+A==
   dependencies:
     prop-types "^15.5.10"
 
