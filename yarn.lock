@@ -10151,9 +10151,9 @@ levn@~0.3.0:
     type-check "~0.3.2"
 
 libphonenumber-js@^1.9.26:
-  version "1.9.26"
-  resolved "https://registry.yarnpkg.com/libphonenumber-js/-/libphonenumber-js-1.9.26.tgz#888aca88a4019d0b108e45db8e0509d55785ae45"
-  integrity sha512-j0brmDsZLSKJCrcli1HjzHYP29VOf5P/Yz+xxe7WmKTe+0XVnKa0J+UEAaT96D21w1mfLPhlm0ZXBQ13EVF+XQ==
+  version "1.9.30"
+  resolved "https://registry.yarnpkg.com/libphonenumber-js/-/libphonenumber-js-1.9.30.tgz#48c701e1b5e8cbf5d766c5aa438a90d19c14db66"
+  integrity sha512-gn8jYc47T2JlCcwQSV55rzbkJF8TXQ31c+298YZf4OQ0cmJS+tp/Sezy3OYZS42dtKHv2UleGRb8kULaSBA53w==
 
 lie@3.1.1:
   version "3.1.1"
@@ -12490,10 +12490,10 @@ react-native-safe-area-view@^0.14.9:
   dependencies:
     hoist-non-react-statics "^2.3.1"
 
-react-native-screens@^3.6.0:
-  version "3.6.0"
-  resolved "https://registry.yarnpkg.com/react-native-screens/-/react-native-screens-3.6.0.tgz#054af728e50c06bff6b3b4fa7b4b656b70f247cd"
-  integrity sha512-emQmSu+B6cOIjJH2OIgpuxd9zCD6xz7/oo5GCetyjsM5qR3sMnVgOxqtK99xPu9XJH/8k7MplXbtJgtk/PHXwA==
+react-native-screens@^3.7.0:
+  version "3.7.0"
+  resolved "https://registry.yarnpkg.com/react-native-screens/-/react-native-screens-3.7.0.tgz#95dfc69a0c26dc6f87dc957e56ccccfabc9820a8"
+  integrity sha512-+fmODKdhLITkxmynP2LXEN5DsKzot5TRWnSgkh8zVdf4BL7mDTN035PiOSjlgCxTqXopRPMZJk9TUPCYsRkbeA==
   dependencies:
     warn-once "^0.1.0"
 
