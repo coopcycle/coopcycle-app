@@ -6252,10 +6252,10 @@ caseless@^0.12.0, caseless@~0.12.0:
   resolved "https://registry.yarnpkg.com/caseless/-/caseless-0.12.0.tgz#1b681c21ff84033c826543090689420d187151dc"
   integrity sha1-G2gcIf+EAzyCZUMJBolCDRhxUdw=
 
-centrifuge@^2.8.0:
-  version "2.8.0"
-  resolved "https://registry.yarnpkg.com/centrifuge/-/centrifuge-2.8.0.tgz#43e39194ddcb914c0c3645678496f491614ff92f"
-  integrity sha512-b6BuhIGmX/ayQTJWkKQOs//JlV43IWdQZqF/keyl9CJsD47hiWETDjSbMRXPD1uKtL/lBCMGLMJp9eQuuE2w9g==
+centrifuge@^2.8.1:
+  version "2.8.1"
+  resolved "https://registry.yarnpkg.com/centrifuge/-/centrifuge-2.8.1.tgz#065d7ce515b3f0a1f41ab57f70870d20bf078250"
+  integrity sha512-lcmBnDLPn6xD0hHfvzfhtcQtLhbvJUKm8vwjjUs2q3JrxrQAe0ikLr7cigeLbEgrRXVU6n2ZQFvLFZIvxoJrhg==
   dependencies:
     protobufjs "^6.10.2"
 
@@ -10150,10 +10150,10 @@ levn@~0.3.0:
     prelude-ls "~1.1.2"
     type-check "~0.3.2"
 
-libphonenumber-js@^1.9.31:
-  version "1.9.31"
-  resolved "https://registry.yarnpkg.com/libphonenumber-js/-/libphonenumber-js-1.9.31.tgz#9522c75b253a171794273a9caca2a71773ad7a52"
-  integrity sha512-sCDoVli8jXFlDc/8QgiwM8LPQPy9vpbG1oxg0hAgKxosw8ryygTH1ZJatWk9mDhRiHBJtDVytw+E/P1ua8bxsA==
+libphonenumber-js@^1.9.32:
+  version "1.9.32"
+  resolved "https://registry.yarnpkg.com/libphonenumber-js/-/libphonenumber-js-1.9.32.tgz#ec8048c7a9d7bb0ce282c5bccea2f945a056af29"
+  integrity sha512-sXuNLzTU/lNUZ78eWUi5JvqaHAhwBMuMT17613EjLZl/ejIoDe0EV225Xhw4vuZ6FcqkiwsF8qHcOyyn1dBEWQ==
 
 lie@3.1.1:
   version "3.1.1"
@@ -12490,10 +12490,10 @@ react-native-safe-area-view@^0.14.9:
   dependencies:
     hoist-non-react-statics "^2.3.1"
 
-react-native-screens@^3.7.0:
-  version "3.7.0"
-  resolved "https://registry.yarnpkg.com/react-native-screens/-/react-native-screens-3.7.0.tgz#95dfc69a0c26dc6f87dc957e56ccccfabc9820a8"
-  integrity sha512-+fmODKdhLITkxmynP2LXEN5DsKzot5TRWnSgkh8zVdf4BL7mDTN035PiOSjlgCxTqXopRPMZJk9TUPCYsRkbeA==
+react-native-screens@^3.7.1:
+  version "3.7.1"
+  resolved "https://registry.yarnpkg.com/react-native-screens/-/react-native-screens-3.7.1.tgz#eedde380185768696041fe94d94d36816dbb3bf0"
+  integrity sha512-QZdE8ZaQ6e9wuwSkBWX49G4hlosr351v368RaMUn2y/RFAYedFtDtaCI8ychUCFThrg0pT9uKJF03nNtkXqWcg==
   dependencies:
     warn-once "^0.1.0"
 
