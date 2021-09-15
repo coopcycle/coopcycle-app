@@ -84,7 +84,7 @@ function mapStateToProps(state) {
 
 const Drawer = createDrawerNavigator()
 
-const DrawerNav = ({ initialRouteName, user, isAuthenticated }) => {
+const DrawerNav = ({ initialRouteName, user, isAuthenticated, showRestaurantsDrawerItem }) => {
 
   return (
     <Drawer.Navigator
