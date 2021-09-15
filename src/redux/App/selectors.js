@@ -63,3 +63,11 @@ export const selectInitialRouteName = createSelector(
     return 'CheckoutNav'
   }
 )
+
+export const selectShowRestaurantsDrawerItem = createSelector(
+  selectUser,
+  selectIsAuthenticated,
+  state => state.restaurant.myRestaurants,
+  (user, isAuthenticated, restaurants) =>
+    isAuthenticated && (user.hasRole('ROLE_ADMIN') || user.hasRole('ROLE_RESTAURANT')) && restaurants.length > 0
+)

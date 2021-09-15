@@ -18,7 +18,7 @@ import { PhoneNumberUtil, PhoneNumberFormat } from 'google-libphonenumber'
 import { phonecall } from 'react-native-communications'
 
 import Mailto from '../../components/Mailto'
-import { selectIsAuthenticated } from '../../redux/App/selectors'
+import { selectIsAuthenticated, selectShowRestaurantsDrawerItem } from '../../redux/App/selectors'
 
 const phoneNumberUtil = PhoneNumberUtil.getInstance()
 
@@ -71,6 +71,7 @@ class DrawerContent extends Component {
       stores,
       user,
       isAuthenticated,
+      showRestaurantsDrawerItem,
       // // This is coming from drawer navigator
       // descriptors,
       // state,
@@ -105,7 +106,7 @@ class DrawerContent extends Component {
               <DrawerItem
                 label={ this.props.t('SEARCH') }
                 onPress={ () => this.props.navigation.navigate('CheckoutNav') } />
-              { (isAuthenticated && (user.hasRole('ROLE_ADMIN') || user.hasRole('ROLE_RESTAURANT')) && restaurants.length > 0) && (
+              { showRestaurantsDrawerItem && (
                 <RestaurantsDrawerItem restaurants={ restaurants } navigate={ this.props.navigation.navigate } />
               ) }
               { (isAuthenticated && user.hasRole('ROLE_STORE') && stores.length > 0) && (
@@ -202,6 +203,7 @@ function mapStateToProps(state) {
     phoneNumber: state.app.settings['phone_number'],
     email: state.app.settings['administrator_email'],
     showAbout,
+    showRestaurantsDrawerItem: selectShowRestaurantsDrawerItem(state),
   }
 }
 

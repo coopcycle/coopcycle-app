@@ -4,7 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack'
 import { connect } from 'react-redux'
 
 import i18n from '../../i18n'
-import { selectIsAuthenticated, selectInitialRouteName } from '../../redux/App/selectors'
+import { selectIsAuthenticated, selectInitialRouteName, selectShowRestaurantsDrawerItem } from '../../redux/App/selectors'
 import { headerLeft } from '..'
 import { stackNavigatorScreenOptions } from '../styles'
 
@@ -78,6 +78,7 @@ function mapStateToProps(state) {
     isAuthenticated: selectIsAuthenticated(state),
     user,
     initialRouteName: selectInitialRouteName(state),
+    showRestaurantsDrawerItem: selectShowRestaurantsDrawerItem(state),
   }
 }
 
@@ -111,7 +112,7 @@ const DrawerNav = ({ initialRouteName, user, isAuthenticated }) => {
           name="CourierNav"
           component={ CourierNavigator } />
       )}
-      { (isAuthenticated && (user.hasRole('ROLE_RESTAURANT') || user.hasRole('ROLE_ADMIN'))) && (
+      { showRestaurantsDrawerItem && (
         <Drawer.Screen
           name="RestaurantNav"
           component={ RestaurantNavigator } />
