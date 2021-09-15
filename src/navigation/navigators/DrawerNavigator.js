@@ -111,7 +111,7 @@ const DrawerNav = ({ initialRouteName, user, isAuthenticated }) => {
           name="CourierNav"
           component={ CourierNavigator } />
       )}
-      { (isAuthenticated && user.hasRole('ROLE_RESTAURANT')) && (
+      { (isAuthenticated && (user.hasRole('ROLE_RESTAURANT') || user.hasRole('ROLE_ADMIN'))) && (
         <Drawer.Screen
           name="RestaurantNav"
           component={ RestaurantNavigator } />
