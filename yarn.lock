@@ -3568,32 +3568,32 @@
   dependencies:
     invariant "^2.2.4"
 
-"@react-native-firebase/analytics@^12.7.5":
-  version "12.7.5"
-  resolved "https://registry.yarnpkg.com/@react-native-firebase/analytics/-/analytics-12.7.5.tgz#317f6a6f02c4fd7e0913376f257e55df671eca2a"
-  integrity sha512-tBFKkQHrZv4TEjRIF62lvqa6d2bIJ3SKOoa2UW/zRPgyzp5yak9casfvokHdCwMk1jXNgHgVOYbg2jiwSldK4A==
+"@react-native-firebase/analytics@^12.8.0":
+  version "12.8.0"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/analytics/-/analytics-12.8.0.tgz#a4d7f6a9872945849af0a3f1bae601fa11925fad"
+  integrity sha512-aVl1pJmbs15XWpOGHiBCKbleSF4U16DgYWbbepiCW20ElKh65onhZYnlZXNMMs2v/t9lG1S3vmfpBaTR5aPZrg==
 
-"@react-native-firebase/app@^12.7.5":
-  version "12.7.5"
-  resolved "https://registry.yarnpkg.com/@react-native-firebase/app/-/app-12.7.5.tgz#337fd517a6329dd9d734b36ca91bf0c54cc3a337"
-  integrity sha512-q3NjTHiO4zjPmXopuRuBxbJw5rX5JqqQmE6a+77ONEI+yCx1VF/p+545+plOY1HhA8PqUuWfbqZlbWlYo5K5IA==
+"@react-native-firebase/app@^12.8.0":
+  version "12.8.0"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/app/-/app-12.8.0.tgz#d9716529add20ed70e8a712dba4ce153e469fa7e"
+  integrity sha512-Ya9/3VhLOjuf3oRCx9zvmHJtKXCNgGbaQzKR0hVs5n+D0qj30O6tXqxi/I69lnH6/ZX2jJ00n8W6azVwt/iWtw==
   dependencies:
     "@expo/config-plugins" "^3.1.0"
     opencollective-postinstall "^2.0.1"
     superstruct "^0.6.2"
 
-"@react-native-firebase/crashlytics@^12.7.5":
-  version "12.7.5"
-  resolved "https://registry.yarnpkg.com/@react-native-firebase/crashlytics/-/crashlytics-12.7.5.tgz#2c46fb2285ec9ad92ec1686de0a87ef8bd94dfb1"
-  integrity sha512-vIoM84bZ1FtjvLZcrCtKK6IWhlYk/cBza+0xxPIrN12vr6tBQI5j2sQNn6v6zsCFnGxt+jkhoSdTxAJjr/X8pg==
+"@react-native-firebase/crashlytics@^12.8.0":
+  version "12.8.0"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/crashlytics/-/crashlytics-12.8.0.tgz#ab85ccd95590654ca0849d36e987fb4229b07026"
+  integrity sha512-drjR87eB3cs2WrdwaOxy+/8WnRjS8l0SYvDfJVMn/yNYHacLq5TjwiB3KLKDHGzjZ2moUKcYuTwzPorCq1MEoA==
   dependencies:
     "@expo/config-plugins" "^3.1.0"
     stacktrace-js "^2.0.0"
 
-"@react-native-firebase/messaging@^12.7.5":
-  version "12.7.5"
-  resolved "https://registry.yarnpkg.com/@react-native-firebase/messaging/-/messaging-12.7.5.tgz#cfe61c5a2e9c562d9801d97825fafe3dd91044c8"
-  integrity sha512-HLsjmuI5ZcU0j6r1ttlcadeAS0+wIALzY1St5ITmJsQ/VzbGilzbr4oGTRZxAXBN8cHn4UyXl55MB62346OxFA==
+"@react-native-firebase/messaging@^12.8.0":
+  version "12.8.0"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/messaging/-/messaging-12.8.0.tgz#f601541be15e67678d6e44ff0a4f3fd9183142bb"
+  integrity sha512-Lc6qxhSP7w7XHSPy9CKbIuRVqCk//G3dbMFr9Jq5jmRgbT4pr6tlsZVjMVU1Yx5OBJm8beB3RPWKjZhAsRxy7Q==
 
 "@react-native-picker/picker@^1.9.7":
   version "1.9.11"
@@ -6252,10 +6252,10 @@ caseless@^0.12.0, caseless@~0.12.0:
   resolved "https://registry.yarnpkg.com/caseless/-/caseless-0.12.0.tgz#1b681c21ff84033c826543090689420d187151dc"
   integrity sha1-G2gcIf+EAzyCZUMJBolCDRhxUdw=
 
-centrifuge@^2.8.1:
-  version "2.8.1"
-  resolved "https://registry.yarnpkg.com/centrifuge/-/centrifuge-2.8.1.tgz#065d7ce515b3f0a1f41ab57f70870d20bf078250"
-  integrity sha512-lcmBnDLPn6xD0hHfvzfhtcQtLhbvJUKm8vwjjUs2q3JrxrQAe0ikLr7cigeLbEgrRXVU6n2ZQFvLFZIvxoJrhg==
+centrifuge@^2.8.2:
+  version "2.8.2"
+  resolved "https://registry.yarnpkg.com/centrifuge/-/centrifuge-2.8.2.tgz#67b042fccc2952d8ab213e9fb3484adae41badc7"
+  integrity sha512-BHDohzgA4P66y1OcgrF6q8t+0cMG6lxWcFBxu+QYC/KQBxsebJj3L7H/rqe/xQuHXSvBY+mJkQJIJWUeFgpdXA==
   dependencies:
     protobufjs "^6.10.2"
 
@@ -10150,10 +10150,10 @@ levn@~0.3.0:
     prelude-ls "~1.1.2"
     type-check "~0.3.2"
 
-libphonenumber-js@^1.9.32:
-  version "1.9.32"
-  resolved "https://registry.yarnpkg.com/libphonenumber-js/-/libphonenumber-js-1.9.32.tgz#ec8048c7a9d7bb0ce282c5bccea2f945a056af29"
-  integrity sha512-sXuNLzTU/lNUZ78eWUi5JvqaHAhwBMuMT17613EjLZl/ejIoDe0EV225Xhw4vuZ6FcqkiwsF8qHcOyyn1dBEWQ==
+libphonenumber-js@^1.9.34:
+  version "1.9.34"
+  resolved "https://registry.yarnpkg.com/libphonenumber-js/-/libphonenumber-js-1.9.34.tgz#ddddc778a9b2f53c70500fcf10c9483596e3574f"
+  integrity sha512-gHTNU9xTtVgSp30IDX/57W4pETMXDIYXFfwEOJVXiYosiY7Hc7ogJwlBjOqlCcU04X0aA8DT57hdwUC1sJBJnA==
 
 lie@3.1.1:
   version "3.1.1"
@@ -12490,10 +12490,10 @@ react-native-safe-area-view@^0.14.9:
   dependencies:
     hoist-non-react-statics "^2.3.1"
 
-react-native-screens@^3.7.1:
-  version "3.7.1"
-  resolved "https://registry.yarnpkg.com/react-native-screens/-/react-native-screens-3.7.1.tgz#eedde380185768696041fe94d94d36816dbb3bf0"
-  integrity sha512-QZdE8ZaQ6e9wuwSkBWX49G4hlosr351v368RaMUn2y/RFAYedFtDtaCI8ychUCFThrg0pT9uKJF03nNtkXqWcg==
+react-native-screens@^3.7.2:
+  version "3.7.2"
+  resolved "https://registry.yarnpkg.com/react-native-screens/-/react-native-screens-3.7.2.tgz#933cb0b6564b84a624a1e6ee0481e81415030ea9"
+  integrity sha512-TUmCE2ZIr6SFCUqsUqLsYQZ7EWo+tKyxSVFj3G5BCkGFOl3MwXEPgT/ihNCnL1aUAgr6TEMWVHg+awLkkQgYyQ==
   dependencies:
     warn-once "^0.1.0"
 
