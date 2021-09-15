@@ -1,5 +1,6 @@
 import React from 'react'
-import { createStackNavigator, HeaderBackButton } from '@react-navigation/stack'
+import { createStackNavigator } from '@react-navigation/stack'
+import { HeaderBackButton } from '@react-navigation/elements'
 
 import screens from '..'
 import { stackNavigatorScreenOptions } from '../styles'

@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { useTranslation } from 'react-i18next'
-import { HeaderBackButton } from '@react-navigation/stack'
+import { HeaderBackButton } from '@react-navigation/elements'
 
 const HeaderBackButtonWrapper = (props) => {
 
