@@ -18,7 +18,11 @@ const Tabs = () => (
   <Tab.Navigator
     tabBarOptions={{
       showLabel: false,
-    }}>
+    }}
+    screenOptions={{
+      headerShown: false,
+    }}
+    >
     <Tab.Screen
       name="CourierTasks"
       component={ screens.CourierTasksPage }
