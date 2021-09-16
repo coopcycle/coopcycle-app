@@ -62,7 +62,8 @@ class SettingsScreen extends Component {
         onPress: () => navigate('RestaurantOpeningHours'),
       },
       {
-        icon: 'calendar',
+        icon: 'list',
+        iconType: 'FontAwesome',
         label: this.props.t('RESTAURANT_SETTINGS_MENUS'),
         onPress: () => navigate('RestaurantMenus'),
       },
@@ -76,7 +77,8 @@ class SettingsScreen extends Component {
     if (restaurants.length > 1) {
       items.push(
         {
-          icon: 'calendar',
+          icon: 'refresh',
+          iconType: 'FontAwesome',
           label: this.props.t('RESTAURANT_SETTINGS_CHANGE_RESTAURANT'),
           onPress: () => navigate('RestaurantList'),
         }
