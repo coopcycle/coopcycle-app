@@ -381,6 +381,7 @@
             "cash_on_delivery": "Cash on delivery"
         },
         "CASH_ON_DELIVERY_DISCLAIMER": "You are going to pay by cash on delivery. Please prepare the exact amount and make sure to be reachable.",
-        "STORES": "Stores"
+        "STORES": "Stores",
+        "FILTER_BY_TAGS": "Filter by tags"
     }
 }

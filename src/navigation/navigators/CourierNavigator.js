@@ -107,14 +107,14 @@ const SettingsNavigator = () => (
       name="CourierSettings"
       component={ screens.CourierSettings }
       options={{
-        headerShown: false,
+        title: i18n.t('SETTINGS'),
       }}
     />
     <SettingsStack.Screen
       name="CourierSettingsTags"
       component={ screens.CourierSettingsTags }
       options={{
-        headerShown: false,
+        title: i18n.t('FILTER_BY_TAGS'),
       }}
     />
   </SettingsStack.Navigator>
@@ -137,7 +137,7 @@ export default () => (
       name="CourierSettings"
       component={ SettingsNavigator }
       options={{
-        title: i18n.t('SETTINGS'),
+        headerShown: false,
       }}
     />
   </RootStack.Navigator>

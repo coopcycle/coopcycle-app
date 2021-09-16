@@ -368,6 +368,7 @@
             "positiveAction": "Changer pour « {backgroundPermissionOptionLabel} »"
         },
         "RESTAURANT_SETTINGS_MANAGE_PRODUCT_OPTIONS": "Gérer les options des produits",
-        "STORES": "Magasins"
+        "STORES": "Magasins",
+        "FILTER_BY_TAGS": "Filtrer par tags"
     }
 }
