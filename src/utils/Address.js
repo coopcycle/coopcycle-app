@@ -47,7 +47,7 @@ class AddressUtils {
     return new Promise((resolve, reject) => {
 
       BackgroundGeolocation.setConfig({
-        locationAuthorizationRequest: 'WhenInUse'
+        locationAuthorizationRequest: 'WhenInUse',
       })
 
       BackgroundGeolocation.getCurrentPosition().then(position => {

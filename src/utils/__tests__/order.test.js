@@ -26,8 +26,8 @@ describe('encodeForPrinter', () => {
       }],
       itemsTotal: 2300,
       customer: {
-        email: "camille@example.com"
-      }
+        email: 'camille@example.com',
+      },
     }
 
     const expected =
@@ -89,8 +89,8 @@ describe('encodeForPrinterToday', () => {
       }],
       itemsTotal: 2300,
       customer: {
-        email: "camille@example.com"
-      }
+        email: 'camille@example.com',
+      },
     }
 
     const expected =
@@ -145,28 +145,28 @@ describe('matchesDate', () => {
 
     expect(
       matchesDate(
-        { pickupExpectedAt: "2021-01-13T21:50:00+01:00" },
+        { pickupExpectedAt: '2021-01-13T21:50:00+01:00' },
         moment('2021-01-12')
       )
     ).toBe(false)
 
     expect(
       matchesDate(
-        { pickupExpectedAt: "2021-01-13T21:50:00+01:00" },
+        { pickupExpectedAt: '2021-01-13T21:50:00+01:00' },
         moment('2021-01-13')
       )
     ).toBe(true)
 
     expect(
       matchesDate(
-        { pickupExpectedAt: "2021-01-13T21:50:00+01:00" },
+        { pickupExpectedAt: '2021-01-13T21:50:00+01:00' },
         '2021-01-13'
       )
     ).toBe(true)
 
     expect(
       matchesDate(
-        { pickupExpectedAt: "2021-01-13T21:50:00+01:00" },
+        { pickupExpectedAt: '2021-01-13T21:50:00+01:00' },
         moment('2021-01-14')
       )
     ).toBe(false)
