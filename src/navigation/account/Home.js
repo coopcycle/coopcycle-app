@@ -52,7 +52,7 @@ class AccountHome extends Component {
                 <Icon name="arrow-forward" />
               </Right>
             </ListItem>
-            <ListItem button iconRight onPress={ () => navigate('AccountOrders') }>
+            <ListItem button iconRight onPress={ () => navigate('AccountOrders', { screen: 'AccountOrdersList' }) }>
               <Body>
                 <Text>{this.props.t('ORDERS')}</Text>
               </Body>
