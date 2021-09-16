@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { InteractionManager } from 'react-native';
+import { InteractionManager, View } from 'react-native';
 import {
-  Container,
-  Content, List, ListItem, Text,
+  List, ListItem, Text,
 } from 'native-base';
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
@@ -29,11 +28,10 @@ class AccountAddressesPage extends Component {
     const { addresses } = this.props
 
     return (
-      <Container>
-        <Content>
-          <List dataArray={ addresses } renderRow={ this._renderRow.bind(this) } />
-        </Content>
-      </Container>
+      <View style={{ flex: 1 }}>
+        <List dataArray={ addresses } renderRow={ this._renderRow.bind(this) }
+          keyExtractor={ (item) => item['@id'] } />
+      </View>
     );
   }
 }
