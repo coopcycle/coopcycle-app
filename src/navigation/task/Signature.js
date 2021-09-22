@@ -13,7 +13,7 @@ import { addSignature } from '../../redux/Courier'
 class Signature extends Component {
 
   _saveImage() {
-    const task = this.props.navigation.getParam('task')
+    const task = this.props.route.params?.task
     this._sketchCanvas.getBase64('jpg', false, true, true, true, (err, base64) => {
       if (!err) {
         this.props.addSignature(task, base64)
@@ -85,4 +85,4 @@ function mapDispatchToProps (dispatch) {
   }
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(withTranslation()(Signature))
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(Signature))

@@ -4,8 +4,8 @@ import {
   StyleSheet,
   View,
   Dimensions,
-  SafeAreaView,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context'
 import { Container, Icon, Text } from 'native-base';
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
@@ -13,6 +13,7 @@ import { withTranslation } from 'react-i18next'
 import RestaurantSearch from '../../components/RestaurantSearch'
 import RestaurantList from '../../components/RestaurantList'
 import { searchRestaurants, searchRestaurantsForAddress, resetSearch } from '../../redux/Checkout/actions'
+import { selectRestaurants } from '../../redux/Checkout/selectors'
 
 class RestaurantsPage extends Component {
 
@@ -35,8 +36,10 @@ class RestaurantsPage extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const prevAddress = prevProps.navigation.getParam('address', null)
-    const addressAsParam = this.props.navigation.getParam('address', null)
+
+    const prevAddress = prevProps.route.params?.address
+    const addressAsParam = this.props.route.params?.address
+
     if (addressAsParam && prevAddress !== addressAsParam) {
       InteractionManager.runAfterInteractions(() => this._onAddressSelect(addressAsParam))
     }
@@ -71,7 +74,7 @@ class RestaurantsPage extends Component {
     }
 
     return (
-      <SafeAreaView>
+      <SafeAreaView edges={ [ 'right', 'bottom', 'left' ] }>
         <RestaurantList
           restaurants={ restaurants }
           onItemClick={ restaurant => this.props.navigation.navigate('CheckoutRestaurant', { restaurant }) } />
@@ -90,7 +93,6 @@ class RestaurantsPage extends Component {
         { /* This is why it should be the last child component */ }
         { /* Use a "key" prop to make sure component renders */ }
         <RestaurantSearch
-          googleApiKey={ this.props.googleApiKey }
           country={ this.props.country }
           onSelect={ address => this._onAddressSelect(address) }
           onReset={ () => {
@@ -98,7 +100,8 @@ class RestaurantsPage extends Component {
           } }
           defaultValue={ this.props.address }
           width={ this.state.width }
-          key={ this.props.addressAsText } />
+          key={ this.props.addressAsText }
+          savedAddresses={ this.props.savedAddresses } />
       </Container>
     );
   }
@@ -115,11 +118,12 @@ const styles = StyleSheet.create({
 function mapStateToProps(state, ownProps) {
 
   return {
-    googleApiKey: state.app.settings.google_api_key,
+    location: state.app.settings.latlng,
     country: state.app.settings.country,
-    restaurants: state.checkout.restaurants,
+    restaurants: selectRestaurants(state),
     address: state.checkout.address,
     addressAsText: state.checkout.address ? state.checkout.address.streetAddress : '',
+    savedAddresses: state.account.addresses.slice(0, 3),
   }
 }
 
@@ -132,4 +136,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(withTranslation()(RestaurantsPage))
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(RestaurantsPage))

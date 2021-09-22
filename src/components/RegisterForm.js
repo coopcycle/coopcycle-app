@@ -101,7 +101,7 @@ const inputs = [
   },
 ]
 
-let constraints = _.reduce(
+const CONSTRAINTS = _.reduce(
   inputs,
   (acc, { name, constraints }) => ({ ...acc, [name]: constraints }),
   {}
@@ -127,7 +127,7 @@ class RegisterForm extends React.Component {
   _validate(values) {
 
     return _.mapValues(
-      validate(values, constraints, { fullMessages: false }),
+      validate(values, CONSTRAINTS, { fullMessages: false }),
       messages => _.first(messages)
     )
   }
@@ -188,8 +188,8 @@ class RegisterForm extends React.Component {
                       ...inputProps,
                       returnKeyType: 'next',
                       onSubmitEditing: event => {
-                        let index = inputs.findIndex((el) => el.name === input.name)
-                        let nextInputName = inputs[index + 1].name
+                        const idx = inputs.findIndex((el) => el.name === input.name)
+                        const nextInputName = inputs[idx + 1].name
                         this._inputComponents.get(nextInputName)._root.focus()
                       },
                     }

@@ -3,7 +3,7 @@ import { FlatList, StyleSheet, TouchableOpacity, View, Image } from 'react-nativ
 import { Text, Icon } from 'native-base'
 import { withTranslation } from 'react-i18next'
 
-import { getNextShippingTimeAsText, getRestaurantCaption, isFast } from '../utils/checkout'
+import { getNextShippingTimeAsText, getRestaurantCaption } from '../utils/checkout'
 
 const styles = StyleSheet.create({
   container: {
@@ -33,11 +33,10 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     paddingLeft: 5,
     paddingRight: 10,
-    backgroundColor: '#ffffff',
-    borderRadius: 30,
+    backgroundColor: '#e5e5e5',
+    borderRadius: 4,
   },
   badgeText: {
-    color: '#ffffff',
     fontSize: 12,
   },
 })
@@ -64,7 +63,7 @@ class RestaurantList extends Component {
           <View style={{ flex: 1, width: '66.6666%', padding: 15, paddingBottom: 25 }}>
             <OneLineText style={ [ styles.restaurantNameText ] }>{ restaurant.name }</OneLineText>
             <OneLineText note numberOfLines={ 2 }>{ getRestaurantCaption(restaurant) }</OneLineText>
-            <View style={ [ styles.badge, { backgroundColor: isFast(restaurant) ? '#2ed573' : '#ffa502' } ] }>
+            <View style={ [ styles.badge ] }>
               <Icon type="FontAwesome" name="clock-o" style={ [ styles.badgeText, { fontSize: 20, marginRight: 5 } ] } />
               <Text style={ styles.badgeText }>{ getNextShippingTimeAsText(restaurant) }</Text>
             </View>

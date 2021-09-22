@@ -4,6 +4,7 @@ import { Icon } from 'native-base'
 import { withTranslation } from 'react-i18next'
 
 import AddressAutocomplete from './AddressAutocomplete'
+import AddressUtils from '../utils/Address'
 
 const textInputContainerHeight = 54
 
@@ -45,11 +46,17 @@ class RestaurantSearch extends Component {
     }
 
     return (
-      <TouchableOpacity
-        style={{ paddingVertical: 5, paddingLeft: 10, paddingRight: 15 }}
-        { ...touchableProps } >
-        <Icon type="FontAwesome5" name={ iconName } style={{ color: '#ffffff', fontSize: iconSize }} />
-      </TouchableOpacity>
+      <View style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 5, paddingLeft: 10, paddingRight: 15 }}>
+        <TouchableOpacity
+          style={{ marginRight: 15 }}
+          { ...touchableProps }>
+          <Icon type="FontAwesome5" name={ iconName } style={{ color: '#ffffff', fontSize: iconSize }} />
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={ () => AddressUtils.getAddressFromCurrentPosition().then(address => this.props.onSelect(address)) }>
+          <Icon type="MaterialIcons" name="my-location" style={{ color: '#ffffff', fontSize: 24 }} />
+        </TouchableOpacity>
+      </View>
     )
   }
 
@@ -58,7 +65,7 @@ class RestaurantSearch extends Component {
     return (
       <View style={ [ styles.container, { width: this.props.width } ] }>
         <AddressAutocomplete
-          googleApiKey={ this.props.googleApiKey }
+          location={ this.props.location }
           country={ this.props.country }
           onSelectAddress={ this.props.onSelect }
           containerStyle={{
@@ -77,7 +84,8 @@ class RestaurantSearch extends Component {
           }}
           onChangeText={ this.props.onChangeText }
           value={ this.props.defaultValue }
-          renderRight={ this.renderButton.bind(this) } />
+          renderRight={ this.renderButton.bind(this) }
+          addresses={ this.props.savedAddresses } />
       </View>
     )
   }

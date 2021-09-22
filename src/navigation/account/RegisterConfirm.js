@@ -9,16 +9,9 @@ import { selectIsAuthenticated } from '../../redux/App/selectors'
 
 class RegisterConfirm extends Component {
   componentDidMount() {
-    const token = this.props.navigation.getParam('token', null)
+    const token = this.props.route.params?.token
     if (token) {
       this.props.confirmRegistration(token)
-    }
-  }
-
-  componentDidUpdate() {
-    // a state when an account is successfully confirmed
-    if (this.props.isAuthenticated) {
-      this.props.navigation.goBack()
     }
   }
 
@@ -54,4 +47,4 @@ const styles = StyleSheet.create({
   },
 })
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(withTranslation()(RegisterConfirm))
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(RegisterConfirm))

@@ -46,4 +46,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(withTranslation()(DateScreen))
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(DateScreen))

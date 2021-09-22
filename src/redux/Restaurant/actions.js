@@ -1,5 +1,5 @@
 import { createAction } from 'redux-actions'
-import { NavigationActions, StackActions } from 'react-navigation'
+import { CommonActions } from '@react-navigation/native'
 import BleManager from 'react-native-ble-manager'
 import _ from 'lodash'
 
@@ -60,6 +60,8 @@ export const LOAD_PRODUCTS_REQUEST = 'LOAD_PRODUCTS_REQUEST'
 export const LOAD_PRODUCTS_SUCCESS = 'LOAD_PRODUCTS_SUCCESS'
 export const LOAD_PRODUCTS_FAILURE = 'LOAD_PRODUCTS_FAILURE'
 
+export const LOAD_PRODUCT_OPTIONS_SUCCESS = 'LOAD_PRODUCT_OPTIONS_SUCCESS'
+
 export const LOAD_MENUS_REQUEST = 'LOAD_MENUS_REQUEST'
 export const LOAD_MENUS_SUCCESS = 'LOAD_MENUS_SUCCESS'
 export const LOAD_MENUS_FAILURE = 'LOAD_MENUS_FAILURE'
@@ -73,6 +75,10 @@ export const LOAD_MORE_PRODUCTS_SUCCESS = 'LOAD_MORE_PRODUCTS_SUCCESS'
 export const CHANGE_PRODUCT_ENABLED_REQUEST = 'CHANGE_PRODUCT_ENABLED_REQUEST'
 export const CHANGE_PRODUCT_ENABLED_SUCCESS = 'CHANGE_PRODUCT_ENABLED_SUCCESS'
 export const CHANGE_PRODUCT_ENABLED_FAILURE = 'CHANGE_PRODUCT_ENABLED_FAILURE'
+
+export const CHANGE_PRODUCT_OPTION_VALUE_ENABLED_REQUEST = 'CHANGE_PRODUCT_OPTION_VALUE_ENABLED_REQUEST'
+export const CHANGE_PRODUCT_OPTION_VALUE_ENABLED_SUCCESS = 'CHANGE_PRODUCT_OPTION_VALUE_ENABLED_SUCCESS'
+export const CHANGE_PRODUCT_OPTION_VALUE_ENABLED_FAILURE = 'CHANGE_PRODUCT_OPTION_VALUE_ENABLED_FAILURE'
 
 export const CLOSE_RESTAURANT_REQUEST = 'CLOSE_RESTAURANT_REQUEST'
 export const CLOSE_RESTAURANT_SUCCESS = 'CLOSE_RESTAURANT_SUCCESS'
@@ -141,6 +147,8 @@ export const loadProductsRequest = createAction(LOAD_PRODUCTS_REQUEST)
 export const loadProductsSuccess = createAction(LOAD_PRODUCTS_SUCCESS)
 export const loadProductsFailure = createAction(LOAD_PRODUCTS_FAILURE)
 
+export const loadProductOptionsSuccess = createAction(LOAD_PRODUCT_OPTIONS_SUCCESS)
+
 export const setNextProductsPage = createAction(SET_NEXT_PRODUCTS_PAGE)
 export const loadMoreProductsSuccess = createAction(LOAD_MORE_PRODUCTS_SUCCESS)
 export const setHasMoreProducts = createAction(SET_HAS_MORE_PRODUCTS)
@@ -148,6 +156,10 @@ export const setHasMoreProducts = createAction(SET_HAS_MORE_PRODUCTS)
 export const changeProductEnabledRequest = createAction(CHANGE_PRODUCT_ENABLED_REQUEST, (product, enabled) => ({ product, enabled }))
 export const changeProductEnabledSuccess = createAction(CHANGE_PRODUCT_ENABLED_SUCCESS)
 export const changeProductEnabledFailure = createAction(CHANGE_PRODUCT_ENABLED_FAILURE, (error, product, enabled) => ({ error, product, enabled }))
+
+export const changeProductOptionValueEnabledRequest = createAction(CHANGE_PRODUCT_OPTION_VALUE_ENABLED_REQUEST, (productOptionValue, enabled) => ({ productOptionValue, enabled }))
+export const changeProductOptionValueEnabledSuccess = createAction(CHANGE_PRODUCT_OPTION_VALUE_ENABLED_SUCCESS, (productOptionValue, enabled) => ({ productOptionValue, enabled }))
+export const changeProductOptionValueEnabledFailure = createAction(CHANGE_PRODUCT_OPTION_VALUE_ENABLED_FAILURE, (error, productOptionValue, enabled) => ({ error, productOptionValue, enabled }))
 
 export const closeRestaurantRequest = createAction(CLOSE_RESTAURANT_REQUEST)
 export const closeRestaurantSuccess = createAction(CLOSE_RESTAURANT_SUCCESS)
@@ -233,22 +245,20 @@ export function activateMenu(restaurant, menu) {
 }
 
 function gotoOrder(restaurant, order) {
-  NavigationHolder.dispatch(NavigationActions.navigate({
-    routeName: 'RestaurantNav',
-    action: NavigationActions.navigate({
-      routeName: 'Main',
+  NavigationHolder.dispatch(CommonActions.navigate({
+    name: 'RestaurantNav',
+    params: {
+      screen: 'Main',
       params: {
         restaurant,
         // We don't want to load orders again when navigating
         loadOrders: false,
+        screen: 'RestaurantOrder',
+        params: {
+          order,
+        },
       },
-      // We use push, because if we are already on RestaurantOrder, it opens a new screen
-      // @see https://reactnavigation.org/docs/en/navigating.html#navigate-to-a-route-multiple-times
-      action: StackActions.push({
-        routeName: 'RestaurantOrder',
-        params: { order },
-      }),
-    }),
+    },
   }))
 }
 
@@ -265,7 +275,7 @@ export function loadOrder(order, cb) {
     if (sameOrder) {
       // gotoOrder(sameOrder.restaurant, sameOrder)
       if (cb && typeof cb === 'function') {
-        cb(sameOrder)
+        setTimeout(() => cb(sameOrder), 0)
       }
       return
     }
@@ -276,13 +286,13 @@ export function loadOrder(order, cb) {
       .then(res => {
         dispatch(loadOrderSuccess(res))
         if (cb && typeof cb === 'function') {
-          cb(res)
+          setTimeout(() => cb(res), 0)
         }
       })
       .catch(e => {
         dispatch(loadOrderFailure(e))
         if (cb && typeof cb === 'function') {
-          cb()
+          setTimeout(() => cb(), 0)
         }
       })
   }
@@ -574,6 +584,14 @@ export function deleteOpeningHoursSpecification(openingHoursSpecification) {
   }
 }
 
+function bluetoothErrorToString(e) {
+  if (typeof e === 'string') {
+    return e
+  }
+
+  return e.message ? e.message : (e.toString && typeof e.toString === 'function' ? e.toString() : e)
+}
+
 export function printOrder(order) {
 
   return async (dispatch, getState) => {
@@ -585,6 +603,25 @@ export function printOrder(order) {
     }
 
     try {
+
+      const isPeripheralConnected = await BleManager.isPeripheralConnected(printer.id, [])
+
+      // Try to reconnect first
+      if (!isPeripheralConnected) {
+        try {
+          await BleManager.connect(printer.id)
+        } catch (e) {
+          dispatch(printerDisconnected())
+          DropdownHolder
+            .getDropdown()
+            .alertWithType(
+              'error',
+              i18n.t('RESTAURANT_PRINTER_CONNECT_ERROR_TITLE'),
+              bluetoothErrorToString(e)
+            )
+          return
+        }
+      }
 
       const peripheralInfo = await BleManager.retrieveServices(printer.id)
 
@@ -631,7 +668,13 @@ export function printOrder(order) {
       }
 
     } catch (e) {
-      console.log('retrieveServices error', e)
+      DropdownHolder
+        .getDropdown()
+        .alertWithType(
+          'error',
+          i18n.t('RESTAURANT_PRINTER_CONNECT_ERROR_TITLE'),
+          bluetoothErrorToString(e)
+        )
     }
   }
 }
@@ -656,20 +699,12 @@ export function connectPrinter(device, cb) {
 
       })
       .catch(e => {
-
-        let message = ''
-        if (typeof e === 'string') {
-          message = e
-        } else {
-          message = e.message ? e.message : (e.toString && typeof e.toString === 'function' ? e.toString() : e)
-        }
-
         DropdownHolder
           .getDropdown()
           .alertWithType(
             'error',
             i18n.t('RESTAURANT_PRINTER_CONNECT_ERROR_TITLE'),
-            message
+            bluetoothErrorToString(e)
           )
       })
   }
@@ -681,7 +716,7 @@ export function disconnectPrinter(device, cb) {
     BleManager.disconnect(device.id)
       .then(() => {
 
-        dispatch(printerDisconnected(device))
+        dispatch(printerDisconnected())
 
         DropdownHolder
           .getDropdown()
@@ -697,5 +732,37 @@ export function disconnectPrinter(device, cb) {
       .catch(e => {
         console.log(e)
       })
+  }
+}
+
+export function loadProductOptions(restaurant) {
+
+  return function (dispatch, getState) {
+
+    const { app } = getState()
+    const { httpClient } = app
+
+    dispatch(loadProductsRequest())
+
+    return httpClient.get(`${restaurant['@id']}/product_options`)
+      .then(res => {
+        dispatch(loadProductOptionsSuccess(res['hydra:member']))
+      })
+      .catch(e => dispatch(loadProductsFailure(e)))
+  }
+}
+
+export function changeProductOptionValueEnabled(productOptionValue, enabled) {
+
+  return function (dispatch, getState) {
+
+    const { app } = getState()
+    const { httpClient } = app
+
+    dispatch(changeProductOptionValueEnabledRequest(productOptionValue, enabled))
+
+    httpClient.put(productOptionValue['@id'], { enabled })
+      .then(res => dispatch(changeProductOptionValueEnabledSuccess(productOptionValue, res.enabled)))
+      .catch(e => dispatch(changeProductOptionValueEnabledSuccess(e, productOptionValue, !enabled)))
   }
 }

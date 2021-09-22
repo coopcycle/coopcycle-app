@@ -54,4 +54,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(withTranslation()(Tags))
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(Tags))

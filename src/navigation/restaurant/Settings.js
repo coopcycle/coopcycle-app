@@ -51,12 +51,19 @@ class SettingsScreen extends Component {
         onPress: () => navigate('RestaurantProducts'),
       },
       {
+        icon: 'sliders',
+        iconType: 'FontAwesome',
+        label: this.props.t('RESTAURANT_SETTINGS_MANAGE_PRODUCT_OPTIONS'),
+        onPress: () => navigate('RestaurantProductOptions'),
+      },
+      {
         icon: 'calendar',
         label: this.props.t('RESTAURANT_SETTINGS_OPENING_HOURS'),
         onPress: () => navigate('RestaurantOpeningHours'),
       },
       {
-        icon: 'calendar',
+        icon: 'list',
+        iconType: 'FontAwesome',
         label: this.props.t('RESTAURANT_SETTINGS_MENUS'),
         onPress: () => navigate('RestaurantMenus'),
       },
@@ -70,7 +77,8 @@ class SettingsScreen extends Component {
     if (restaurants.length > 1) {
       items.push(
         {
-          icon: 'calendar',
+          icon: 'refresh',
+          iconType: 'FontAwesome',
           label: this.props.t('RESTAURANT_SETTINGS_CHANGE_RESTAURANT'),
           onPress: () => navigate('RestaurantList'),
         }
@@ -115,7 +123,7 @@ class SettingsScreen extends Component {
               return (
                 <ListItem key={ `item-${index}` } icon { ...itemProps }>
                   <Left>
-                    <Icon active name={ item.icon } />
+                    <Icon active name={ item.icon } type={ item.iconType || 'Ionicons' } />
                   </Left>
                   <Body>
                     <Text>{ item.label }</Text>
@@ -153,4 +161,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(withTranslation()(SettingsScreen))
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(SettingsScreen))

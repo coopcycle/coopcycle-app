@@ -13,7 +13,6 @@ import { Formik } from 'formik'
 
 import {
   selectIsTaskCompleteFailure,
-  selectSignatureScreenFirst,
   selectSignatures,
   selectPictures,
   deleteSignatureAt,
@@ -40,21 +39,21 @@ class CompleteTask extends Component {
 
   markTaskDone() {
 
-    const task = this.props.navigation.getParam('task')
+    const task = this.props.route.params?.task
     const { notes } = this.state
 
     this.props.markTaskDone(this.props.httpClient, task, notes, () => {
-      this.props.navigation.navigate(this.props.navigation.getParam('navigateAfter'))
+      this.props.navigation.navigate(this.props.route.params?.navigateAfter)
     }, this.state.contactName)
   }
 
   markTaskFailed() {
 
-    const task = this.props.navigation.getParam('task')
+    const task = this.props.route.params?.task
     const { notes } = this.state
 
     this.props.markTaskFailed(this.props.httpClient, task, notes, () => {
-      this.props.navigation.navigate(this.props.navigation.getParam('navigateAfter'))
+      this.props.navigation.navigate(this.props.route.params?.navigateAfter)
     }, this.state.contactName)
   }
 
@@ -81,7 +80,7 @@ class CompleteTask extends Component {
   }
 
   resolveContactName() {
-    const task = this.props.navigation.getParam('task')
+    const task = this.props.route.params?.task
 
     if (!_.isEmpty(this.state.contactName)) {
       return this.state.contactName
@@ -92,9 +91,9 @@ class CompleteTask extends Component {
 
   render() {
 
-    const task = this.props.navigation.getParam('task')
-    const success = this.props.navigation.getParam('success', true)
-    const { signatureScreenFirst } = this.props
+    const task = this.props.route.params?.task
+    const success = Object.prototype.hasOwnProperty.call(this.props.route.params || {}, 'success') ?
+      this.props.route.params?.success : true
 
     const { width } = Dimensions.get('window')
 
@@ -125,10 +124,10 @@ class CompleteTask extends Component {
         ) }
         <View style={{ padding: 20, borderBottomWidth: 1, borderBottomColor: '#ccc' }}>
           <Label style={{ marginBottom: 5 }}>{ this.props.t('NOTES') }</Label>
-          <View style={{ paddingVertical: 5, paddingHorizontal: 10, borderWidth: 1, borderColor: '#ccc', borderRadius: 16 }}>
-            <TextInput multiline={ true } numberOfLines={ 3 }
-              onChangeText={ text => this.setState({ notes: text }) } />
-          </View>
+          <TextInput multiline={ true } numberOfLines={ 3 }
+            onChangeText={ text => this.setState({ notes: text }) }
+            placeholderTextColor="#d0d0d0"
+            style={ styles.textInput } />
         </View>
         <Content contentContainerStyle={ styles.content }>
           <View style={ styles.imagesContainer }>
@@ -162,7 +161,7 @@ class CompleteTask extends Component {
         </Content>
         <TouchableOpacity
           style={ styles.addPoDButton }
-          onPress={ () => this.props.navigation.navigate('TaskCompleteProofOfDelivery', { task, signatureScreenFirst }) }>
+          onPress={ () => this.props.navigation.navigate('TaskCompleteProofOfDelivery', { task }) }>
           <Icon type="FontAwesome5" name="signature"
             style={ styles.addPoDButtonText } />
           <Text
@@ -278,6 +277,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
     padding: 15,
   },
+  textInput: {
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 16,
+    color: '#000',
+  },
 })
 
 function mapStateToProps (state) {
@@ -286,7 +293,6 @@ function mapStateToProps (state) {
     taskCompleteError: selectIsTaskCompleteFailure(state),
     signatures: selectSignatures(state),
     pictures: selectPictures(state),
-    signatureScreenFirst: selectSignatureScreenFirst(state),
   }
 }
 
@@ -299,4 +305,4 @@ function mapDispatchToProps (dispatch) {
   }
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(withTranslation()(CompleteTask))
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(CompleteTask))

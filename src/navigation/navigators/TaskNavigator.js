@@ -1,88 +1,55 @@
 import React from 'react'
-import {
-  createStackNavigator,
-  HeaderBackButton,
-} from 'react-navigation-stack'
+import { createStackNavigator, HeaderBackButton } from '@react-navigation/stack'
 
+import screens from '..'
+import { stackNavigatorScreenOptions } from '../styles'
 import i18n from '../../i18n'
-import screens, { defaultNavigationOptions } from '..'
 
 import ProofOfDeliveryTabs from './TaskAttachmentsNavigator'
 
-const CompleteStack = createStackNavigator({
-  TaskCompleteHome: {
-    screen: screens.TaskComplete,
-    navigationOptions: ({ navigation }) => ({
-      headerShown: false,
-    }),
-  },
-  TaskCompleteProofOfDelivery: {
-    screen: ProofOfDeliveryTabs,
-    navigationOptions: ({ navigation }) => ({
-      headerShown: false,
-    }),
-  },
-}, {
-  defaultNavigationOptions,
-  initialRouteName: 'TaskCompleteHome',
-})
+const CompleteStack = createStackNavigator()
 
-function getActiveRouteName(navigationState) {
-  if (!navigationState) {
-    return null;
-  }
-  const route = navigationState.routes[navigationState.index]
-  if (route.routes) {
-    return getActiveRouteName(route)
-  }
-  return route.routeName
-}
+const CompleteNavigator = () => (
+  <CompleteStack.Navigator
+    screenOptions={ stackNavigatorScreenOptions }>
+    <CompleteStack.Screen
+      name="TaskCompleteHome"
+      component={ screens.TaskComplete }
+      options={ ({ navigation, route }) => ({
+        title: `${i18n.t('TASK')} #${route.params?.task.id}`,
+        headerLeft: (props) => <HeaderBackButton { ...props }
+          onPress={ () => navigation.goBack() } />,
+      })}
+    />
+    <CompleteStack.Screen
+      name="TaskCompleteProofOfDelivery"
+      component={ ProofOfDeliveryTabs }
+      options={ ({ route }) => ({
+        title: `${i18n.t('TASK')} #${route.params?.task.id}`,
+      })}
+    />
+  </CompleteStack.Navigator>
+)
 
-export default createStackNavigator({
-  TaskHome: {
-    screen: screens.TaskHome,
-    navigationOptions: ({ navigation }) => ({
-      // Use header = null to get rid of the header
-      // The screen's header will be used
-      headerShown: false,
-    }),
-  },
-  TaskComplete: {
-    screen: CompleteStack,
-    navigationOptions: ({ navigation }) => ({
-      // Use header = null to get rid of the header
-      // The screen's header will be used
-      headerShown: false,
-      title: `${i18n.t('TASK')} #${navigation.state.params.task.id}`,
-    }),
-  },
-}, {
-  defaultNavigationOptions,
-  mode: 'modal',
-  initialRouteName: 'TaskHome',
-  navigationOptions: ({ navigation }) => ({
-    // We need to override the back button behavior
-    // because otherwise when we hit "back" on the PoD screen,
-    // it goes back to the task screen
-    headerLeft: (props) => {
+const RootStack = createStackNavigator()
 
-      const routeName = getActiveRouteName(navigation.state)
-
-      let { onPress, title, backImage, ...otherProps } = props
-
-      if (routeName === 'TaskCompleteHome') {
-        title = i18n.t('CANCEL')
-      }
-      if (routeName === 'TaskPhoto' || routeName === 'TaskSignature' || routeName === 'TaskHome') {
-        title = 'Back'
-      }
-
-      return (
-        <HeaderBackButton { ...otherProps }
-          onPress={ () => navigation.goBack(null) }
-          title={ title }
-          backImage={ backImage } />
-      )
-    },
-  }),
-})
+export default () => (
+  <RootStack.Navigator
+    mode="modal"
+    screenOptions={ stackNavigatorScreenOptions }>
+    <RootStack.Screen
+      name="TaskHome"
+      component={ screens.TaskHome }
+      options={ ({ route }) => ({
+        title: `${i18n.t('TASK')} #${route.params?.task.id}`,
+      })}
+    />
+    <RootStack.Screen
+      name="TaskComplete"
+      component={ CompleteNavigator }
+      options={{
+        headerShown: false,
+      }}
+    />
+  </RootStack.Navigator>
+)

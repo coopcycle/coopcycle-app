@@ -13,8 +13,13 @@
 -keepattributes *Annotation*
 -keepattributes SourceFile,LineNumberTable
 -keep public class * extends java.lang.Exception
--printmapping mapping.txt
 
 # https://rnfirebase.io/docs/v5.x.x/installation/android#Using-with-Proguard-enabled
 -keep class io.invertase.firebase.** { *; }
 -dontwarn io.invertase.firebase.**
+
+# [react-native-background-fetch]
+-keep class com.transistorsoft.rnbackgroundfetch.HeadlessTask { *; }
+
+# https://github.com/luggit/react-native-config#problems-with-proguard
+-keep class fr.coopcycle.BuildConfig { *; }

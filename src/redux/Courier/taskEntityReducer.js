@@ -13,8 +13,9 @@ import {
 } from '../Dispatch/actions'
 import {
   SET_USER,
+  LOGOUT_SUCCESS,
 } from '../App/actions'
-import { MESSAGE } from '../middlewares/WebSocketMiddleware'
+import { MESSAGE } from '../middlewares/CentrifugoMiddleware'
 import _ from 'lodash'
 
 /*
@@ -26,6 +27,7 @@ const tasksEntityInitialState = {
   isFetching: false,                   // Flag indicating active HTTP request
   isRefreshing: false,
   date: moment().format('YYYY-MM-DD'), // YYYY-MM-DD
+  updatedAt: moment().toString(),
   items: {                             // Array of tasks, indexed by date
     // 'YYYY-MM-DD': [
     //   {
@@ -51,6 +53,7 @@ const tasksEntityInitialState = {
   username: null,
   pictures: [], // Array of base64 encoded pictures
   signatures: [], // Array of base64 encoded signatures
+  shouldRefreshTasks: true,
 }
 
 function replaceItem(state, payload) {
@@ -84,7 +87,9 @@ export const tasksEntityReducer = (state = tasksEntityInitialState, action = {})
         ...state,
         loadTasksFetchError: false,
         completeTaskFetchError: false,
-        date: moment(action.payload.date).format('YYYY-MM-DD'),
+        // This is the date that is selected in the UI
+        date: action.payload.date ?
+          action.payload.date.format('YYYY-MM-DD') : moment().format('YYYY-MM-DD'),
         isFetching: !action.payload.refresh,
         isRefreshing: action.payload.refresh,
       }
@@ -97,6 +102,7 @@ export const tasksEntityReducer = (state = tasksEntityInitialState, action = {})
         isRefreshing: false,
       }
 
+    case START_TASK_FAILURE:
     case MARK_TASK_DONE_FAILURE:
     case MARK_TASK_FAILED_FAILURE:
       return {
@@ -111,11 +117,12 @@ export const tasksEntityReducer = (state = tasksEntityInitialState, action = {})
         loadTasksFetchError: false,
         isFetching: false,
         isRefreshing: false,
-        date: action.payload.date,
+        updatedAt: action.payload.updatedAt.toString(),
         items: {
           ...state.items,
-          [ action.payload.date ]: action.payload.tasks,
+          [ action.payload.date ]: action.payload.items,
         },
+        shouldRefreshTasks: false,
       }
 
     case START_TASK_SUCCESS:
@@ -149,7 +156,7 @@ export const tasksEntityReducer = (state = tasksEntityInitialState, action = {})
       return state
 
     case MESSAGE:
-      return processWsMsg(state, action.payload)
+      return processWsMsg(state, action)
 
     case ADD_SIGNATURE:
 
@@ -197,24 +204,42 @@ export const tasksEntityReducer = (state = tasksEntityInitialState, action = {})
         ...state,
         username: action.payload ? action.payload.username : null,
       }
+
+    // The "items" key is persisted by redux-persists,
+    // When the user logs out, we reset it
+    // This is useful when multiple messengers use the same device
+    case LOGOUT_SUCCESS:
+
+      return {
+        ...state,
+        items: {},
+        shouldRefreshTasks: true,
+      }
   }
 
   return state
 }
 
-const processWsMsg = (state, { type, ...data }) => {
-  switch (type) {
-    case 'tasks:changed':
-      // order tasks by position
-      let tasks = _.sortBy(data.tasks, (task) => task.position)
+const processWsMsg = (state, action) => {
 
-      return {
-        ...state,
-        items: {
-          ...state.items,
-          [ data.date ]: tasks,
-        },
-      }
+  if (action.payload.name && action.payload.data) {
+
+    const { name, data } = action.payload
+
+    switch (name) {
+
+      case 'task_list:updated':
+
+        const taskList = data.task_list
+
+        return {
+          ...state,
+          items: {
+            ...state.items,
+            [ taskList.date ]: taskList.items,
+          },
+        }
+    }
   }
 
   return state

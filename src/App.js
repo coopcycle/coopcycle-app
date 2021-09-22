@@ -1,12 +1,14 @@
-import React, { Component } from 'react'
-import { Platform, View, YellowBox } from 'react-native'
+import React, { Component, createRef } from 'react'
+import { Platform, LogBox } from 'react-native'
 
 import { StyleProvider } from 'native-base'
 import getTheme from '../native-base-theme/components'
 import coopcycleTheme from '../native-base-theme/variables/coopcycle'
 import tracker from './analytics/Tracker'
 
-import { createSwitchNavigator, createAppContainer } from 'react-navigation'
+import { NavigationContainer } from '@react-navigation/native'
+import { SafeAreaProvider } from 'react-native-safe-area-context'
+
 import { Provider } from 'react-redux'
 import { I18nextProvider } from 'react-i18next'
 import { PersistGate } from 'redux-persist/integration/react'
@@ -15,6 +17,13 @@ import axios from 'axios'
 import VersionNumber from 'react-native-version-number'
 
 import KeyboardManager from 'react-native-keyboard-manager'
+
+import Config from 'react-native-config'
+import * as Sentry from '@sentry/react-native'
+
+Sentry.init({
+  dsn: Config.SENTRY_DSN,
+})
 
 if (Platform.OS === 'ios') {
     KeyboardManager.setEnable(false)
@@ -27,8 +36,8 @@ axios.defaults.headers.common['X-CoopCycle-App-Version'] = VersionNumber.appVers
 // Import i18n first
 import i18n from './i18n'
 
-import navigation from './navigation'
-import navigators from './navigation/navigators'
+import Root from './navigation/Loading'
+import { linkingPrefixes } from './navigation/constants'
 
 import store, { persistor } from './redux/store'
 import { setCurrentRoute } from './redux/App/actions'
@@ -40,7 +49,7 @@ import DropdownHolder from './DropdownHolder'
 
 import NavigationHolder from './NavigationHolder'
 
-YellowBox.ignoreWarnings([
+LogBox.ignoreLogs([
   'Warning: isMounted(...) is deprecated in plain JavaScript React classes.',
   'Module RCTImageLoader requires main queue setup',
   'Module RCTBackgroundGeolocation requires main queue setup',
@@ -54,43 +63,38 @@ YellowBox.ignoreWarnings([
   'VirtualizedLists should never be nested',
 ])
 
-const RootNavigator = createAppContainer(createSwitchNavigator(
-  {
-    Loading: navigation.Loading,
-    ConfigureServer: navigators.HomeNavigator,
-    App: {
-      screen: navigators.DrawerNavigator,
-      path: '', // This is needed to start deep linking from here
-    },
-  },
-  {
-    initialRouteName: 'Loading',
-  }
-))
+const navigationRef = createRef()
+const routeNameRef = createRef()
 
 /**
- * @see https://reactnavigation.org/docs/en/screen-tracking.html
+ * @see https://reactnavigation.org/docs/screen-tracking
  */
-function getActiveRouteName(navigationState) {
-  if (!navigationState) {
-    return null;
-  }
-  const route = navigationState.routes[navigationState.index]
-  if (route.routes) {
-    return getActiveRouteName(route)
-  }
-  return route.routeName
-}
-
 function onNavigationStateChange(prevState, currentState) {
-  const currentScreen = getActiveRouteName(currentState)
-  const prevScreen = getActiveRouteName(prevState)
-  if (prevScreen !== currentScreen) {
-    store.dispatch(setCurrentRoute(currentScreen))
+  const previousRouteName = routeNameRef.current;
+  const currentRouteName = navigationRef.current.getCurrentRoute().name
+
+  if (previousRouteName !== currentRouteName) {
+    store.dispatch(setCurrentRoute(currentRouteName))
   }
+
+  routeNameRef.current = currentRouteName;
 }
 
-const prefix = /https?:\/\/[a-z0-9]+\.coopcycle\.org|coopcycle:\//
+NavigationHolder.setNavigationRef(navigationRef)
+
+// https://reactnavigation.org/docs/5.x/configuring-links/
+
+const config = {
+  screens: {
+    RegisterConfirmNav: 'register/confirm/:token',
+    ResetPasswordNav: 'resetting/reset/:token',
+  },
+}
+
+const linking = {
+  prefixes: linkingPrefixes,
+  config,
+}
 
 class App extends Component {
 
@@ -110,15 +114,18 @@ class App extends Component {
         <PersistGate loading={ null } persistor={ persistor }>
           <I18nextProvider i18n={ i18n }>
             <StyleProvider style={ getTheme(coopcycleTheme) }>
-              <View style={{ flex: 1 }}>
+              <SafeAreaProvider>
                 <Spinner />
-                <RootNavigator
-                  uriPrefix={ prefix }
-                  ref={ ref => { NavigationHolder.setTopLevelNavigator(ref) } }
-                  onNavigationStateChange={ onNavigationStateChange } />
+                <NavigationContainer
+                  ref={ navigationRef }
+                  linking={ linking }
+                  onReady={ () => (routeNameRef.current = navigationRef.current.getCurrentRoute()?.name) }
+                  onStateChange={ onNavigationStateChange }>
+                  <Root />
+                </NavigationContainer>
                 <DropdownAlert ref={ ref => { DropdownHolder.setDropdown(ref) } } />
                 <NotificationHandler />
-              </View>
+              </SafeAreaProvider>
             </StyleProvider>
           </I18nextProvider>
         </PersistGate>

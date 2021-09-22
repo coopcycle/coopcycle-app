@@ -9,13 +9,15 @@ import TaskList from '../../components/TaskList'
 import AddButton from './components/AddButton'
 import { unassignTask } from '../../redux/Dispatch/actions'
 import { selectTasksNotCancelled } from '../../redux/Dispatch/selectors'
-import { navigateToTask } from '../../navigation'
+import { selectTaskLists, selectTasksWithColor } from '../../coopcycle-frontend-js/logistics/redux'
+
+import { navigateToTask } from '../../navigation/utils'
 
 class TaskListScreen extends Component {
 
   componentDidUpdate(prevProps) {
     if (this.props.taskLists !== prevProps.taskLists) {
-      const { taskList } = this.props.navigation.state.params
+      const { taskList } = this.props.route.params
       const thisTaskList = _.find(this.props.taskLists, aTaskList => aTaskList.username === taskList.username)
       if (thisTaskList) {
         this.props.navigation.setParams({ taskList: thisTaskList })
@@ -25,7 +27,7 @@ class TaskListScreen extends Component {
 
   render() {
 
-    const taskList = this.props.navigation.getParam('taskList')
+    const taskList = this.props.route.params?.taskList
     const { navigate } = this.props.navigation
 
     const tasks = selectTasksNotCancelled({ tasks: taskList.items })
@@ -41,10 +43,11 @@ class TaskListScreen extends Component {
         <View style={{ flex: 1 }}>
           <TaskList
             tasks={ tasks }
+            tasksWithColor={ this.props.tasksWithColor }
             onSwipeRight={ task => this.props.unassignTask(task) }
             swipeOutRightEnabled={ task => task.status !== 'DONE' }
             swipeOutRightIconName="close"
-            onTaskClick={ task => navigateToTask(this.props.navigation, task, tasks) } />
+            onTaskClick={ task => navigateToTask(this.props.navigation, this.props.route, task, tasks) } />
         </View>
       </View>
     );
@@ -53,7 +56,8 @@ class TaskListScreen extends Component {
 
 function mapStateToProps(state) {
   return {
-    taskLists: state.dispatch.taskLists,
+    taskLists: selectTaskLists(state),
+    tasksWithColor: selectTasksWithColor(state),
   }
 }
 

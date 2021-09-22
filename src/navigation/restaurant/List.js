@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import { StyleSheet, View } from 'react-native'
 import {
-  Container, Content, Body,
+  Container, Content,
   Text,
+  Left, Right, Radio,
   List, ListItem,
 } from 'native-base'
 import { connect } from 'react-redux'
@@ -19,23 +20,33 @@ class ListScreen extends Component {
   }
 
   _onRestaurantClick(restaurant) {
-    this.props.navigation.goBack()
     this.props.changeRestaurant(restaurant)
+    this.props.navigation.navigate('RestaurantHome')
   }
 
   renderRestaurants() {
 
-    const { restaurants } = this.props
+    const { restaurants, currentRestaurant } = this.props
 
     return (
       <List>
-        { restaurants.map(restaurant =>
-          <ListItem key={ restaurant['@id'] } onPress={ () => this._onRestaurantClick(restaurant) }>
-            <Body>
-              <Text>{ restaurant.name }</Text>
-            </Body>
-          </ListItem>
-        ) }
+        { restaurants.map(restaurant => {
+
+          const selected = restaurant['@id'] === currentRestaurant['@id']
+
+          return (
+            <ListItem key={ restaurant['@id'] }
+              onPress={ () => this._onRestaurantClick(restaurant) }
+              selected={ selected }>
+              <Left>
+                <Text>{ restaurant.name }</Text>
+              </Left>
+              <Right>
+                <Radio selected={ selected } />
+              </Right>
+            </ListItem>
+          )
+        })}
       </List>
     )
   }
@@ -75,6 +86,7 @@ const styles = StyleSheet.create({
 function mapStateToProps(state) {
   return {
     restaurants: state.restaurant.myRestaurants,
+    currentRestaurant: state.restaurant.restaurant,
   }
 }
 
@@ -84,4 +96,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(withTranslation()(ListScreen))
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(ListScreen))

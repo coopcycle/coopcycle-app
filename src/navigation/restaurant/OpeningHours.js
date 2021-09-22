@@ -11,6 +11,7 @@ import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 
 import { deleteOpeningHoursSpecification } from '../../redux/Restaurant/actions'
+import { selectSpecialOpeningHoursSpecification } from '../../redux/Restaurant/selectors'
 
 class OpeningHoursScreen extends Component {
 
@@ -43,30 +44,30 @@ class OpeningHoursScreen extends Component {
         <ListItem itemDivider>
           <Text>{ this.props.t('RESTAURANT_OPENING_HOURS') }</Text>
         </ListItem>
-        { openingHoursSpecification.map(openingHoursSpecification => {
+        { openingHoursSpecification.map(ohs => {
 
           let text = ''
 
           const baseParams = {
-            opens: moment(openingHoursSpecification.opens, 'HH:mm').format('LT'),
-            closes: moment(openingHoursSpecification.closes, 'HH:mm').format('LT'),
+            opens: moment(ohs.opens, 'HH:mm').format('LT'),
+            closes: moment(ohs.closes, 'HH:mm').format('LT'),
           }
 
-          if (openingHoursSpecification.dayOfWeek.length === 1) {
+          if (ohs.dayOfWeek.length === 1) {
             text = this.props.t('RESTAURANT_OPENING_HOURS_ONE_DAY', {
               ...baseParams,
-              day: moment().isoWeekday(openingHoursSpecification.dayOfWeek[0]).format('dddd'),
+              day: moment().isoWeekday(ohs.dayOfWeek[0]).format('dddd'),
             })
           } else {
             text = this.props.t('RESTAURANT_OPENING_HOURS_DAY_RANGE', {
               ...baseParams,
-              firstDay: moment().isoWeekday(_.first(openingHoursSpecification.dayOfWeek)).format('dddd'),
-              lastDay: moment().isoWeekday(_.last(openingHoursSpecification.dayOfWeek)).format('dddd'),
+              firstDay: moment().isoWeekday(_.first(ohs.dayOfWeek)).format('dddd'),
+              lastDay: moment().isoWeekday(_.last(ohs.dayOfWeek)).format('dddd'),
             })
           }
 
           return (
-            <ListItem key={ JSON.stringify(openingHoursSpecification) }>
+            <ListItem key={ JSON.stringify(ohs) }>
               <Text>{ text }</Text>
             </ListItem>
           )
@@ -118,14 +119,13 @@ class OpeningHoursScreen extends Component {
 
 function mapStateToProps(state) {
 
-  const { restaurant: restaurantState } = state
-  const { restaurant, specialOpeningHoursSpecification } = restaurantState
+  const { restaurant } = state.restaurant
 
   return {
     httpClient: state.app.httpClient,
     openingHoursSpecification: restaurant.openingHoursSpecification,
     restaurant,
-    specialOpeningHoursSpecification,
+    specialOpeningHoursSpecification: selectSpecialOpeningHoursSpecification(state),
   }
 }
 
@@ -136,4 +136,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(withTranslation()(OpeningHoursScreen))
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(OpeningHoursScreen))

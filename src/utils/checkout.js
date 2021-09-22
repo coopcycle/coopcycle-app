@@ -1,42 +1,34 @@
-import _ from 'lodash'
 import moment from 'moment'
 import i18n from '../i18n'
+
+const DIFF_REGEXP = /^(?<min>[0-9]+) - (?<max>[0-9]+)$/
 
 function round5(x) {
   return Math.ceil(x / 5) * 5
 }
 
-function getNextShippingTime(restaurant, now) {
-  now = now || moment()
+function timingAsText(timing, now) {
 
-  const first = _.first(restaurant.availabilities)
+  // FIXME
+  // This hotfixes a bug on the API
+  // https://github.com/coopcycle/coopcycle-web/issues/2213
+  if (timing.range[0] === timing.range[1]) {
+    return i18n.t('NOT_AVAILABLE_ATM')
+  }
 
-  return moment.parseZone(first)
-}
+  const lower = moment.parseZone(timing.range[0])
 
-export function isFast(restaurant, now) {
-  now = now || moment()
+  if (timing.fast) {
 
-  const next = getNextShippingTime(restaurant, now)
+    if (timing.diff && DIFF_REGEXP.test(timing.diff)) {
+      const { groups: { min, max } } = DIFF_REGEXP.exec(timing.diff)
 
-  const isSameDay = next.isSame(now, 'day')
-  const diffMinutes = next.diff(now, 'minutes')
+      return i18n.t('TIME_DIFF_SHORT', { min, max })
+    }
 
-  return isSameDay && diffMinutes <= 45
-}
-
-export function getNextShippingTimeAsText(restaurant, now) {
-
-  now = now || moment()
-
-  const firstM = getNextShippingTime(restaurant, now)
-
-  if (isFast(restaurant, now)) {
-
-    const diffMinutes = firstM.diff(now, 'minutes')
+    const diffMinutes = lower.diff(now, 'minutes')
 
     let diffRounded = round5(diffMinutes)
-
     if (diffRounded <= 5) {
       diffRounded = 25
     }
@@ -44,7 +36,24 @@ export function getNextShippingTimeAsText(restaurant, now) {
     return i18n.t('TIME_DIFF_SHORT', { min: diffRounded, max: (diffRounded + 5) })
   }
 
-  return firstM.calendar(now)
+  return lower.calendar(now)
+}
+
+export function getNextShippingTimeAsText(restaurant, now) {
+
+  now = now || moment()
+
+  if (restaurant.timing.delivery) {
+
+    return timingAsText(restaurant.timing.delivery, now)
+  }
+
+  if (restaurant.timing.collection) {
+
+    return timingAsText(restaurant.timing.collection, now)
+  }
+
+  return i18n.t('NOT_AVAILABLE_ATM')
 }
 
 export function getRestaurantCaption(restaurant) {

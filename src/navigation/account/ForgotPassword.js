@@ -21,7 +21,7 @@ class ForgotPassword extends Component {
             const {
               checkEmailRouteName,
               resumeCheckoutAfterActivation,
-            } = this.props.navigation.state.params;
+            } = this.props.route.params;
             this.props.resetPassword(username, checkEmailRouteName, resumeCheckoutAfterActivation);
           }} />
       </View>
@@ -51,4 +51,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(withTranslation()(ForgotPassword))
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(ForgotPassword))

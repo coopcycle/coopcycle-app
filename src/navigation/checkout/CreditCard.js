@@ -1,128 +1,68 @@
 import React, { Component } from 'react';
-import {
-  StyleSheet,
-  View,
-  Animated,
-  Keyboard,
-} from 'react-native';
-import { Content, Text } from 'native-base';
-import _ from 'lodash'
-import { LiteCreditCardInput } from 'react-native-credit-card-input'
+import { StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux'
-import { withTranslation } from 'react-i18next'
+import { Content } from 'native-base';
 
-import { checkout } from '../../redux/Checkout/actions'
-import { formatPrice } from '../../utils/formatting'
-import FooterButton from './components/FooterButton'
+import CreditCardComp from './components/CreditCard'
+import CashComp from './components/CashOnDelivery'
+import PaymentMethodPicker from './components/PaymentMethodPicker'
+import { checkout, checkoutWithCash, loadPaymentMethods } from '../../redux/Checkout/actions'
 
 class CreditCard extends Component {
 
-  constructor(props) {
-    super(props)
+  _onSubmitCard(values) {
 
-    this.keyboardHeight = new Animated.Value(0)
+    const { number, expiry, cvc, cardholderName } = values
+    const [ expMonth, expYear ] = expiry.split('/')
 
-    this.state = {
-      valid: false,
-      form: {},
-    }
+    this.props.checkout(number, expMonth, expYear, cvc, cardholderName)
+  }
+
+  _onSubmitCash() {
+    this.props.checkoutWithCash()
   }
 
   componentDidMount() {
-    this.keyboardWillShowSub = Keyboard.addListener('keyboardWillShow', this.keyboardWillShow.bind(this))
-    this.keyboardWillHideSub = Keyboard.addListener('keyboardWillHide', this.keyboardWillHide.bind(this))
-  }
-
-  componentWillUnmount() {
-    this.keyboardWillShowSub.remove()
-    this.keyboardWillHideSub.remove()
-  }
-
-  keyboardWillShow(event) {
-    Animated.parallel([
-      Animated.timing(this.keyboardHeight, {
-        duration: event.duration,
-        toValue: event.endCoordinates.height,
-      }),
-    ]).start();
-  }
-
-  keyboardWillHide(event) {
-    Animated.parallel([
-      Animated.timing(this.keyboardHeight, {
-        duration: event.duration,
-        toValue: 0,
-      }),
-    ]).start();
-  }
-
-  _onPress() {
-    if (this.state.valid) {
-
-      const { number, expiry, cvc } = this.state.form.values
-      const [ expMonth, expYear ] = expiry.split('/')
-
-      this.props.checkout(number, expMonth, expYear, cvc)
-    }
-  }
-
-  _onChange(form) {
-    this.setState({
-      form,
-      valid: form.valid,
-    })
+    this.props.loadPaymentMethods()
   }
 
   render() {
 
-    const { cart, errors } = this.props
+    const { cart, errors, paymentMethods } = this.props
 
-    if (!cart) {
+    if (!cart || paymentMethods.length === 0) {
 
       return (
         <View />
       )
     }
 
-    // Make sure button can't be tapped twice
-    // @see https://medium.com/@devmrin/debouncing-touch-events-in-react-native-prevent-navigating-twice-or-more-times-when-button-is-90687e4a8113
-    // @see https://snack.expo.io/@patwoz/withpreventdoubleclick
-    const onPress = _.debounce(this._onPress.bind(this), 1000, { leading: true, trailing: false })
+    if (paymentMethods.length === 1 && paymentMethods[0].type === 'card') {
+
+      return (
+        <CreditCardComp cart={ cart } errors={ errors }
+          onSubmit={ this._onSubmitCard.bind(this) } />
+      )
+    }
+
+    if (paymentMethods.length === 1 && paymentMethods[0].type === 'cash_on_delivery') {
+
+      return (
+        <CashComp
+          onSubmit={ this._onSubmitCash.bind(this) } />
+      )
+    }
 
     return (
-      <Animated.View style={{ flex: 1, paddingBottom: this.keyboardHeight }}>
-        <Content contentContainerStyle={ styles.content } enableAutomaticScroll={ false }>
-          <Text style={ styles.creditCardLabel }>
-            { this.props.t('ENTER_PAY_DETAILS') }
-          </Text>
-          <View style={ styles.creditCardInputContainer } testID="creditCardWrapper">
-            <LiteCreditCardInput
-              additionalInputsProps={{
-                number: {
-                  testID: 'creditCardNumber',
-                },
-                expiry: {
-                  testID: 'creditCardExpiry',
-                },
-                cvc: {
-                  testID: 'creditCardCvc',
-                },
-              }}
-              onChange={ this._onChange.bind(this) } />
-          </View>
-          { errors.length > 0 && (
-          <View style={ styles.errorsContainer }>
-            { errors.map((error, key) => (
-            <Text key={ key } style={ styles.errorText }>{ error }</Text>
-            )) }
-          </View>
-          ) }
-        </Content>
-        <FooterButton
-           testID="creditCardSubmit"
-          text={ this.props.t('PAY_AMOUNT', { amount: formatPrice(cart.total) }) }
-          onPress={ onPress } />
-      </Animated.View>
+      <Content contentContainerStyle={ styles.content }>
+        <PaymentMethodPicker
+          methods={ paymentMethods }
+          onSelect={ type => {
+            const routeName = type === 'cash_on_delivery' ?
+              'CheckoutPaymentMethodCashOnDelivery' : 'CheckoutPaymentMethodCard'
+            this.props.navigation.navigate(routeName)
+          }} />
+      </Content>
     )
   }
 }
@@ -132,43 +72,22 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
   },
-  creditCardLabel: {
-    textAlign: 'center',
-    marginBottom: 10,
-  },
-  creditCardInputContainer: {
-    alignSelf: 'stretch',
-    backgroundColor: '#f7f7f7',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-  },
-  errorsContainer: {
-    alignItems: 'center',
-    paddingVertical: 15,
-  },
-  errorText: {
-    textAlign: 'center',
-    color: '#ed2f2f',
-  },
-  payButton: {
-    color: '#ffffff',
-    fontSize: 16,
-  },
 })
 
 function mapStateToProps(state) {
   return {
     cart: state.checkout.cart,
-    address: state.checkout.address,
-    date: state.checkout.date,
     errors: state.checkout.errors,
+    paymentMethods: state.checkout.paymentMethods,
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     checkout: (number, expMonth, expYear, cvc) => dispatch(checkout(number, expMonth, expYear, cvc)),
+    loadPaymentMethods: () => dispatch(loadPaymentMethods()),
+    checkoutWithCash: () => dispatch(checkoutWithCash()),
   }
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(withTranslation()(CreditCard))
+export default connect(mapStateToProps, mapDispatchToProps)(CreditCard)

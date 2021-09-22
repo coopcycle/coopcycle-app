@@ -7,6 +7,7 @@ import { withTranslation } from 'react-i18next'
 
 import { connect } from 'react-redux'
 import { changeDate } from '../../redux/Dispatch/actions'
+import { selectSelectedDate } from '../../coopcycle-frontend-js/logistics/redux'
 
 class DateScreen extends Component {
 
@@ -36,7 +37,7 @@ class DateScreen extends Component {
 
 function mapStateToProps(state) {
   return {
-    date: state.dispatch.date,
+    date: selectSelectedDate(state),
   }
 }
 

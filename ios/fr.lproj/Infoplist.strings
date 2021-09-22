@@ -10,3 +10,6 @@
 "NSBluetoothPeripheralUsageDescription" = "L'application aimerait utiliser le bluetooth";
 "NSCameraUsageDescription" = "L'application nécessite d'accéder à l'appareil photo";
 "NSMotionUsageDescription" = "L'application nécessite l'accès aux données de mouvement pour optimiser l'utilisation de la batterie lors du suivi de la position";
+"NSLocationAlwaysAndWhenInUseUsageDescription" = "Cela nous permet de suivre votre position en temps réel pendant la livraison, afin qu'elle soit visible par le dispatch";
+"NSLocationAlwaysUsageDescription" = "Cela nous permet de suivre votre position en temps réel pendant la livraison, afin qu'elle soit visible par le dispatch";
+"NSMotionUsageDescription" = "Votre position actuelle sera utilisée pour vous localiser lorsqu'il n'y a pas d'adresse exacte (par exemple, dans un parc).";

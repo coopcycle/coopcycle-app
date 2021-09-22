@@ -73,12 +73,12 @@ function mapStateToProps(state, ownProps) {
 
   users.sort((a, b) => a.username < b.username ? -1 : 1)
 
-  const withSelfAssignBtn = ownProps.navigation.getParam('withSelfAssignBtn', true)
+  const withSelfAssignBtn = ownProps.route.params?.withSelfAssignBtn || true
 
   return {
     baseURL: state.app.baseURL,
     users: users,
-    onPress: ownProps.navigation.getParam('onItemPress'),
+    onPress: ownProps.route.params?.onItemPress,
     selfAssign: withSelfAssignBtn && _.includes(user.roles, 'ROLE_COURIER'),
     user,
   }

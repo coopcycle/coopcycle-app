@@ -6,12 +6,14 @@ import { Container, Content, Text } from 'native-base'
 
 import TaskList from '../../components/TaskList'
 import { assignTask } from '../../redux/Dispatch/actions'
+import { selectTasksWithColor } from '../../coopcycle-frontend-js/logistics/redux'
+import { selectUnassignedTasksNotCancelled } from '../../redux/Dispatch/selectors'
 
 class AssignTask extends Component {
 
   render() {
 
-    const { username } = this.props.navigation.state.params
+    const { username } = this.props.route.params
     const isEmpty = this.props.unassignedTasks.length === 0
 
     let contentProps = {}
@@ -33,6 +35,7 @@ class AssignTask extends Component {
           { !isEmpty && (
             <TaskList
               tasks={ this.props.unassignedTasks }
+              tasksWithColor={ this.props.tasksWithColor }
               onTaskClick={ task => this.props.assignTask(task, username) } />
           ) }
         </Content>
@@ -43,7 +46,8 @@ class AssignTask extends Component {
 
 function mapStateToProps(state) {
   return {
-    unassignedTasks: state.dispatch.unassignedTasks,
+    unassignedTasks: selectUnassignedTasksNotCancelled(state),
+    tasksWithColor: selectTasksWithColor(state),
   }
 }
 

@@ -5,10 +5,13 @@ import { withTranslation } from 'react-i18next'
 import { Text } from 'native-base';
 
 import TaskList from '../../components/TaskList'
+import TapToRefresh from '../../components/TapToRefresh'
 import AddButton from './components/AddButton'
-import { assignTask, initialize } from '../../redux/Dispatch/actions'
-import { selectUnassignedTask } from '../../redux/Dispatch/selectors'
-import { navigateToTask } from '../../navigation'
+import { assignTask, initialize, loadUnassignedTasks } from '../../redux/Dispatch/actions'
+import { selectUnassignedTasksNotCancelled } from '../../redux/Dispatch/selectors'
+import { selectSelectedDate, selectTasksWithColor } from '../../coopcycle-frontend-js/logistics/redux'
+
+import { navigateToTask } from '../../navigation/utils'
 
 class UnassignedTasks extends Component {
 
@@ -38,17 +41,16 @@ class UnassignedTasks extends Component {
         </View>
         <View style={{ flex: 1 }}>
           { isEmpty && (
-            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-              <Text note>{ this.props.t('DISPATCH_NO_TASKS') }</Text>
-            </View>
+            <TapToRefresh onPress={ this.props.loadUnassignedTasks } />
           ) }
           { !isEmpty && (
             <TaskList
               tasks={ this.props.unassignedTasks }
+              tasksWithColor={ this.props.tasksWithColor }
               swipeOutLeftEnabled={ task => !task.isAssigned }
               onSwipeLeft={ task => navigate('DispatchPickUser', { onItemPress: user => this._assignTask(task, user) }) }
               swipeOutLeftIconName="user"
-              onTaskClick={ task => navigateToTask(this.props.navigation, task, this.props.unassignedTasks) } />
+              onTaskClick={ task => navigateToTask(this.props.navigation, this.props.route, task, this.props.unassignedTasks) } />
           ) }
         </View>
       </View>
@@ -59,8 +61,9 @@ class UnassignedTasks extends Component {
 function mapStateToProps(state) {
 
   return {
-    unassignedTasks: selectUnassignedTask(state),
-    date: state.dispatch.date,
+    unassignedTasks: selectUnassignedTasksNotCancelled(state),
+    tasksWithColor: selectTasksWithColor(state),
+    date: selectSelectedDate(state),
     user: state.app.user,
   }
 }
@@ -69,6 +72,7 @@ function mapDispatchToProps(dispatch) {
   return {
     assignTask: (task, username) => dispatch(assignTask(task, username)),
     initialize: () => dispatch(initialize()),
+    loadUnassignedTasks: () => dispatch(loadUnassignedTasks()),
   }
 }
 

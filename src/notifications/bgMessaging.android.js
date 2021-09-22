@@ -1,7 +1,7 @@
 import messaging from '@react-native-firebase/messaging';
 import store from '../redux/store'
 import {loadOrder} from '../redux/Restaurant/actions'
-import {message as wsMessage} from '../redux/middlewares/WebSocketMiddleware/actions'
+import {message as wsMessage} from '../redux/middlewares/CentrifugoMiddleware/actions'
 import {parseNotification} from './index.android'
 import tracker from '../analytics/Tracker'
 import analyticsEvent from '../analytics/Event'

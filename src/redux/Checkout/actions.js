@@ -1,10 +1,13 @@
 import { createAction } from 'redux-actions'
-import { StackActions, NavigationActions } from 'react-navigation'
+import { StackActions, CommonActions } from '@react-navigation/native'
 import Stripe from 'tipsi-stripe'
 import _ from 'lodash'
 
 import NavigationHolder from '../../NavigationHolder'
 import i18n from '../../i18n'
+import { selectCartFulfillmentMethod } from './selectors'
+import { selectIsAuthenticated } from '../App/selectors'
+import { loadAddressesSuccess } from '../Account/actions'
 
 /*
  * Action Types
@@ -15,7 +18,6 @@ export const UPDATE_ITEM_QUANTITY = 'UPDATE_ITEM_QUANTITY'
 
 export const SET_ADDRESS = '@checkout/SET_ADDRESS'
 export const SET_ADDRESS_OK = '@checkout/SET_ADDRESS_OK'
-export const SET_DATE = '@checkout/SET_DATE'
 export const SET_TIMING = '@checkout/SET_TIMING'
 export const SET_CART_VALIDATION = '@checkout/SET_CART_VALIDATION'
 export const CLEAR = '@checkout/CLEAR'
@@ -48,6 +50,10 @@ export const HIDE_EXPIRED_SESSION_MODAL = '@checkout/HIDE_EXPIRED_SESSION_MODAL'
 export const SESSION_EXPIRED = '@checkout/SESSION_EXPIRED'
 export const SET_ADDRESS_MODAL_HIDDEN = '@checkout/SET_ADDRESS_MODAL_HIDDEN'
 export const SET_ADDRESS_MODAL_MESSAGE = '@checkout/SET_ADDRESS_MODAL_MESSAGE'
+
+export const LOAD_PAYMENT_METHODS_REQUEST = '@checkout/LOAD_PAYMENT_METHODS_REQUEST'
+export const LOAD_PAYMENT_METHODS_SUCCESS = '@checkout/LOAD_PAYMENT_METHODS_SUCCESS'
+export const LOAD_PAYMENT_METHODS_FAILURE = '@checkout/LOAD_PAYMENT_METHODS_FAILURE'
 
 /*
  * Action Creators
@@ -90,6 +96,10 @@ export const sessionExpired = createAction(SESSION_EXPIRED)
 export const setAddressModalHidden = createAction(SET_ADDRESS_MODAL_HIDDEN)
 export const setAddressModalMessage = createAction(SET_ADDRESS_MODAL_MESSAGE)
 
+export const loadPaymentMethodsRequest = createAction(LOAD_PAYMENT_METHODS_REQUEST)
+export const loadPaymentMethodsSuccess = createAction(LOAD_PAYMENT_METHODS_SUCCESS)
+export const loadPaymentMethodsFailure = createAction(LOAD_PAYMENT_METHODS_FAILURE)
+
 function validateAddress(httpClient, cart, address) {
 
   if (!address.isPrecise) {
@@ -101,7 +111,7 @@ function validateAddress(httpClient, cart, address) {
 
   return new Promise((resolve, reject) => {
     httpClient
-      .get(`${cart.restaurant}/can-deliver/${latitude},${longitude}`)
+      .get(`${cart.restaurant}/can-deliver/${latitude},${longitude}`, {}, { anonymous: true })
       .then(resolve)
       .catch(() => reject(i18n.t('CHECKOUT_ADDRESS_NOT_VALID')))
   })
@@ -118,23 +128,23 @@ function createHttpClient(state) {
   return httpClient.cloneWithToken(token)
 }
 
-let addressListeners = []
+let listeners = []
 
-function replaceSetAddressListeners(cb) {
-  addressListeners = [ cb ]
+function replaceListeners(cb) {
+  listeners = [ cb ]
 }
 
-function addSetAddressListener(cb) {
-  addressListeners.push(cb)
+function addListener(cb) {
+  listeners.push(cb)
 }
 
-function onSetAddress(address) {
-  addressListeners.forEach(cb => {
+function notifyListeners(address) {
+  listeners.forEach(cb => {
     if (typeof cb === 'function') {
       cb(address)
     }
   })
-  addressListeners = []
+  listeners = []
 }
 
 // This action may be dispatched several times "recursively"
@@ -145,14 +155,16 @@ export function addItem(item, options) {
     const { httpClient } = getState().app
     const { address, cart, isAddressOK } = getState().checkout
 
-    if (!address || !isAddressOK) {
+    const fulfillmentMethod = selectCartFulfillmentMethod(getState())
+
+    if (fulfillmentMethod === 'delivery' && (!address || !isAddressOK)) {
 
       // We don't have an adress
       // Stop here an ask for address
       if (!address) {
         // When the address is set,
         // re-dispatch the same action
-        replaceSetAddressListeners(() => dispatch(addItem(item, options)))
+        replaceListeners(() => dispatch(addItem(item, options)))
         dispatch(showAddressModal(i18n.t('CHECKOUT_PLEASE_ENTER_ADDRESS')))
         return
       }
@@ -170,7 +182,7 @@ export function addItem(item, options) {
             dispatch(_setAddress(address))
             dispatch(setAddressOK(true))
 
-            addSetAddressListener(() => {
+            addListener(() => {
               dispatch(addItemRequestFinished(item))
               dispatch(addItem(item, options))
             })
@@ -181,7 +193,7 @@ export function addItem(item, options) {
             dispatch(setAddressOK(false))
             dispatch(addItemRequestFinished(item))
 
-            replaceSetAddressListeners(() => dispatch(addItem(item, options)))
+            replaceListeners(() => dispatch(addItem(item, options)))
             dispatch(showAddressModal(reason))
           })
 
@@ -388,7 +400,7 @@ export function removeItem(item) {
 export function validate() {
 
   return (dispatch, getState) => {
-    replaceSetAddressListeners(() => {
+    replaceListeners(() => {
       fetchValidation(dispatch, getState)
     })
     dispatch(syncAddress())
@@ -413,7 +425,7 @@ function syncAddress() {
           dispatch(updateCartSuccess(res))
           dispatch(setCheckoutLoading(false))
           dispatch(hideAddressModal())
-          onSetAddress(address)
+          notifyListeners(address)
         })
         .catch(e => {
           dispatch(setCheckoutLoading(false))
@@ -451,6 +463,30 @@ export function setAddress(address) {
   }
 }
 
+function wrapRestaurantsWithTiming(restaurants) {
+
+  return (dispatch, getState) => {
+
+    const { httpClient } = getState().app
+
+    const promises = restaurants.map(restaurant => new Promise((resolve) => {
+      httpClient.get(restaurant['@id'] + '/timing', {}, { anonymous: true })
+        .then(res => resolve(res))
+        .catch(e => resolve({ delivery: null, collection: null }))
+    }))
+
+    Promise
+      .all(promises)
+      .then(values => {
+        const restaurantsWithTiming = _.map(restaurants, (restaurant, index) => ({
+          ...restaurant,
+          timing: values[index],
+        }))
+        dispatch(loadRestaurantsSuccess(restaurantsWithTiming))
+      })
+  }
+}
+
 export function searchRestaurantsForAddress(address, options = {}) {
 
   return (dispatch, getState) => {
@@ -460,10 +496,10 @@ export function searchRestaurantsForAddress(address, options = {}) {
     let queryString = `coordinate=${address.geo.latitude},${address.geo.longitude}`
     dispatch(loadRestaurantsRequest())
 
-    httpClient.get('/api/restaurants' + (queryString ? `?${queryString}` : ''))
+    httpClient.get('/api/restaurants' + (queryString ? `?${queryString}` : ''), {}, { anonymous: true })
       .then(res => {
         dispatch(_setAddress(address))
-        dispatch(loadRestaurantsSuccess(res['hydra:member']))
+        dispatch(wrapRestaurantsWithTiming(res['hydra:member']))
       })
       .catch(e => dispatch(loadRestaurantsFailure(e)))
   }
@@ -482,8 +518,25 @@ export function searchRestaurants(options = {}) {
 
     dispatch(loadRestaurantsRequest())
 
-    httpClient.get('/api/restaurants' + (queryString ? `?${queryString}` : ''))
-      .then(res => dispatch(loadRestaurantsSuccess(res['hydra:member'])))
+    const reqs = [
+      httpClient.get('/api/restaurants' + (queryString ? `?${queryString}` : ''), {}, { anonymous: true }),
+    ]
+
+    if (selectIsAuthenticated(getState())) {
+      reqs.push(httpClient.get('/api/me'))
+    }
+
+    Promise.all(reqs)
+      .then(values => {
+        if (values.length === 2) {
+          const addresses = values[1].addresses.map(address => ({
+            ...address,
+            isPrecise: true,
+          }))
+          dispatch(loadAddressesSuccess(addresses))
+        }
+        dispatch(wrapRestaurantsWithTiming(values[0]['hydra:member']))
+      })
       .catch(e => dispatch(loadRestaurantsFailure(e)))
   }
 }
@@ -503,7 +556,7 @@ export function init(restaurant) {
     }))
 
     if (typeof restaurant.hasMenu === 'string') {
-      reqs.push(httpClient.get(restaurant.hasMenu))
+      reqs.push(httpClient.get(restaurant.hasMenu, {}, { anonymous: true }))
     }
 
     Promise.all(reqs)
@@ -589,7 +642,38 @@ export function mercadopagoCheckout({payment, preferenceId}) {
   }
 }
 
-export function checkout(number, expMonth, expYear, cvc) {
+function handleSuccessNav(dispatch, order) {
+  // First, reset checkout stack
+  NavigationHolder.dispatch(StackActions.popToTop())
+  // Then, navigate to order screen
+  NavigationHolder.dispatch(CommonActions.navigate({
+    name: 'AccountNav',
+    // We skip the AccountOrders screen
+    params: {
+      screen: 'AccountOrders',
+      params: {
+        screen: 'AccountOrder',
+        params: { order },
+      },
+    },
+  }))
+
+  // Make sure to clear AFTER navigation has been reset
+  dispatch(clear())
+  dispatch(checkoutSuccess(order))
+}
+
+function handleSuccess(dispatch, httpClient, cart, paymentIntentId) {
+  httpClient
+    .put(cart['@id'] + '/pay', { paymentIntentId })
+    .then(o => handleSuccessNav(dispatch, o))
+    .catch(e => dispatch(checkoutFailure(e)))
+}
+
+/**
+ * @see https://gist.github.com/mindlapse/72139f022d6e620e4f0d59dc50c1797e
+ */
+export function checkout(number, expMonth, expYear, cvc, cardholderName) {
 
   return (dispatch, getState) => {
 
@@ -602,38 +686,54 @@ export function checkout(number, expMonth, expYear, cvc) {
 
     dispatch(checkoutRequest())
 
-    Stripe.createTokenWithCard({
-      number,
-      expMonth: parseInt(expMonth, 10),
-      expYear: parseInt(expYear, 10),
-      cvc,
-    })
-    .then(token => {
-      httpClient
-        .put(cart['@id'] + '/pay', { stripeToken: token.tokenId })
-        .then(order => {
+    httpClient
+      .get(cart['@id'] + '/payment')
+      .then(payment => {
 
-          // First, reset checkout stack
-          NavigationHolder.dispatch(StackActions.popToTop())
-          // Then, navigate to order screen
-          NavigationHolder.dispatch(NavigationActions.navigate({
-            routeName: 'AccountNav',
-            // We skip the AccountOrders screen
-            action: NavigationActions.navigate({
-              routeName: 'AccountOrder',
-              params: { order },
-            }),
-          }))
+        if (payment.stripeAccount !== null) {
+          Stripe.setStripeAccount(payment.stripeAccount)
+        }
 
-          // Make sure to clear AFTER navigation has been reset
-          dispatch(clear())
-          dispatch(checkoutSuccess(order))
+        Stripe.createPaymentMethod({
+          card : {
+            number,
+            expMonth: parseInt(expMonth, 10),
+            expYear: parseInt(expYear, 10),
+            cvc,
+          },
+          billingDetails: {
+            name: cardholderName,
+          },
+        })
+        .then(paymentMethod => {
+          httpClient
+            .put(cart['@id'] + '/pay', { paymentMethodId: paymentMethod.id })
+            .then(stripeResponse => {
 
+              if (stripeResponse.requiresAction) {
+
+                // FIXME
+                // This method uses authenticatePayment on Android, which is deprecated
+                // @see https://github.com/stripe/stripe-android/blob/master/CHANGELOG.md#1230---2019-11-05
+                Stripe.authenticatePaymentIntent({ clientSecret: stripeResponse.paymentIntentClientSecret })
+                  .then(authenticatePaymentResult => {
+                    handleSuccess(dispatch, httpClient, cart, authenticatePaymentResult.paymentIntentId)
+                  })
+                  .catch(e => {
+                    dispatch(checkoutFailure(e))
+                  })
+
+              } else {
+                handleSuccess(dispatch, httpClient, cart, stripeResponse.paymentIntentId)
+              }
+
+            })
+            .catch(e => dispatch(checkoutFailure(e)))
         })
         .catch(e => dispatch(checkoutFailure(e)))
-    })
-    .catch(err => console.log(err));
 
+      })
+      .catch(e => dispatch(checkoutFailure(e)))
   }
 }
 
@@ -673,6 +773,17 @@ export function resetSearch() {
   }
 }
 
+const doUpdateCart = (dispatch, httpClient, cart, payload, cb) => {
+  httpClient
+    .put(cart['@id'], payload)
+    .then(res => {
+      dispatch(updateCartSuccess(res))
+      dispatch(checkoutSuccess())
+      _.isFunction(cb) && cb()
+    })
+    .catch(e => dispatch(checkoutFailure(e)))
+}
+
 export function updateCart(payload, cb) {
 
   return (dispatch, getState) => {
@@ -694,18 +805,24 @@ export function updateCart(payload, cb) {
 
     dispatch(checkoutRequest())
 
-    httpClient
-      .put(cart['@id'], payload)
-      .then(res => {
-        dispatch(updateCartSuccess(res))
-        dispatch(checkoutSuccess())
-        _.isFunction(cb) && cb()
-      })
-      .catch(e => dispatch(checkoutFailure(e)))
+    // For "collection" fulfillment
+    // We store the phone number at the user level
+    if (payload.telephone) {
+
+      const { telephone, ...payloadWithoutTelephone } = payload
+
+      httpClient
+        .put(cart.customer, { telephone })
+        .then(res => doUpdateCart(dispatch, httpClient, cart, payloadWithoutTelephone, cb))
+        .catch(e => dispatch(checkoutFailure(e)))
+
+    } else {
+      doUpdateCart(dispatch, httpClient, cart, payload, cb)
+    }
   }
 }
 
-export function setDate(date, cb) {
+export function setDate(shippingTimeRange, cb) {
 
   return (dispatch, getState) => {
 
@@ -717,7 +834,7 @@ export function setDate(date, cb) {
 
     httpClient
       .put(cart['@id'], {
-        shippedAt: date,
+        shippingTimeRange,
       })
       .then(res => {
         dispatch(updateCartSuccess(res))
@@ -742,7 +859,7 @@ export function setDateAsap(cb) {
 
     httpClient
       .put(cart['@id'], {
-        shippedAt: null,
+        shippingTimeRange: null,
       })
       .then(res => {
         dispatch(updateCartSuccess(res))
@@ -750,6 +867,87 @@ export function setDateAsap(cb) {
           dispatch(checkoutSuccess())
           _.isFunction(cb) && cb()
         }, 250)
+      })
+      .catch(e => dispatch(checkoutFailure(e)))
+  }
+}
+
+export function setFulfillmentMethod(method) {
+
+  return (dispatch, getState) => {
+
+    const httpClient = createHttpClient(getState())
+
+    const { address, cart } = getState().checkout
+
+    dispatch(checkoutRequest())
+
+    httpClient
+      .put(cart['@id'], {
+        fulfillmentMethod: method,
+      })
+      .then(res => {
+        httpClient
+          .get(`${cart['@id']}/timing`)
+          .then(timing => {
+            dispatch(setCheckoutLoading(false))
+            dispatch(setTiming(timing))
+            dispatch(updateCartSuccess(res))
+
+            if (method === 'delivery') {
+              if (!cart.shippingAddress) {
+                if (!address) {
+                  dispatch(showAddressModal(i18n.t('CHECKOUT_PLEASE_ENTER_ADDRESS')))
+                } else {
+                  dispatch(updateCartSuccess({
+                    ...res,
+                    shippingAddress: address,
+                  }))
+                }
+              }
+            } else {
+              dispatch(hideAddressModal())
+              notifyListeners()
+            }
+          })
+          .catch(e => dispatch(checkoutFailure(e)))
+      })
+      .catch(e => {
+        dispatch(setCheckoutLoading(false))
+      })
+  }
+}
+
+export function loadPaymentMethods(method) {
+
+  return (dispatch, getState) => {
+
+    const httpClient = createHttpClient(getState())
+
+    const { cart } = getState().checkout
+
+    dispatch(loadPaymentMethodsRequest())
+
+    httpClient
+      .get(`${cart['@id']}/payment_methods`)
+      .then(res => dispatch(loadPaymentMethodsSuccess(res)))
+      .catch(e => dispatch(loadPaymentMethodsFailure(e)))
+  }
+}
+
+export function checkoutWithCash() {
+
+  return (dispatch, getState) => {
+
+    const { httpClient } = getState().app
+    const { cart } = getState().checkout
+
+    dispatch(checkoutRequest())
+
+    httpClient
+      .put(cart['@id'] + '/pay', { cashOnDelivery: true })
+      .then(order => {
+        handleSuccessNav(dispatch, order)
       })
       .catch(e => dispatch(checkoutFailure(e)))
   }

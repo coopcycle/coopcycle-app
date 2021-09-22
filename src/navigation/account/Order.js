@@ -10,15 +10,40 @@ import {
   Content,
   Icon,
 } from 'native-base'
+import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 
 import OrderItems from '../../components/OrderItems'
+import { subscribe, unsubscribe } from '../../redux/Account/actions'
 
 class OrderTrackingPage extends Component {
 
+  componentDidMount() {
+    const { order } = this.props.route.params
+    if (order) {
+      this.props.subscribe(order, (event) => {
+        switch (event.name) {
+          case 'order:accepted':
+            this.props.navigation.setParams({ order: { ...order, state: 'accepted' } })
+            break;
+          case 'order:fulfilled':
+            this.props.navigation.setParams({ order: { ...order, state: 'fulfilled' } })
+            break;
+        }
+      })
+    }
+  }
+
+  componentWillUnmount() {
+    const { order } = this.props.route.params
+    if (order) {
+      this.props.unsubscribe(order)
+    }
+  }
+
   renderHeader() {
 
-    const { order } = this.props.navigation.state.params
+    const { order } = this.props.route.params
 
     let stateText = ''
     let iconName = 'question-circle-o'
@@ -54,7 +79,7 @@ class OrderTrackingPage extends Component {
 
   renderSubHeader() {
 
-    const { order } = this.props.navigation.state.params
+    const { order } = this.props.route.params
 
     switch (order.state) {
       case 'new':
@@ -74,7 +99,7 @@ class OrderTrackingPage extends Component {
 
   render() {
 
-    const { order } = this.props.navigation.state.params
+    const { order } = this.props.route.params
 
     return (
       <Container>
@@ -148,4 +173,18 @@ const styles = StyleSheet.create({
   },
 })
 
-module.exports = withTranslation()(OrderTrackingPage)
+function mapStateToProps(state) {
+
+  return {
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+
+  return {
+    subscribe: (order, onMessage) => dispatch(subscribe(order, onMessage)),
+    unsubscribe: (order) => dispatch(unsubscribe(order)),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(OrderTrackingPage))

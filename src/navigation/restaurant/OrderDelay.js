@@ -11,7 +11,7 @@ class OrderDelayScreen extends Component {
 
   _delayOrder(delay) {
     this.props.delayOrder(
-      this.props.navigation.getParam('order'),
+      this.props.route.params?.order,
       delay,
       order => this.props.navigation.navigate('RestaurantOrder', { order })
     )
@@ -55,4 +55,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(withTranslation()(OrderDelayScreen))
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(OrderDelayScreen))

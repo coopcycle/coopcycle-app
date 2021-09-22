@@ -1,9 +1,13 @@
 # https://github.com/natario1/CameraView/blob/master/.github/workflows/build.yml
 # https://help.github.com/en/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions
+# https://dev.to/edvinasbartkus/running-react-native-detox-tests-for-ios-and-android-on-github-actions-2ekn
+# https://github.com/wix/Detox/issues/2617
 name: Build
 on: [push, pull_request]
 jobs:
   IOS_SIMULATOR_TESTS:
+    # https://github.community/t/how-to-stop-github-actions-workflow-to-trigger-when-the-pull-request-is-from-dependabot-preview/116486
+    if: github.actor != 'dependabot[bot]'
     name: iOS Simulator Tests
     runs-on: macOS-latest
     steps:
@@ -11,25 +15,69 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: '12.x'
-      - run: yarn install
+      - name: Configure Sentry
+        run: |
+          sed 's/%token%/${{ secrets.SENTRY_API_TOKEN }}/' ios/sentry.properties.dist > ios/sentry.properties
+      # https://github.com/actions/cache/blob/main/examples.md#node---yarn
+      - name: Get Yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+      - name: Cache Yarn
+        uses: actions/cache@v2
+        id: cache-yarn
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+      - name: Install dependencies
+        run: yarn install
       - name: Install applesimutils
         run: |
           brew tap wix/brew
           brew install applesimutils
-      - uses: actions/setup-python@v1
-      - name: Install idb
+      - name: Configure Firebase
         run: |
-          brew tap facebook/fb
-          brew install idb-companion
-          pip install fb-idb
-      - run: cp GoogleService-Info.plist.dist ios/GoogleService-Info.plist
+          brew install xmlstarlet
+          cp GoogleService-Info.plist.dist ios/GoogleService-Info.plist
+          xmlstarlet ed --inplace --ps --update '//key[text()="CLIENT_ID"]/following-sibling::string[1]'          -v '${{ secrets.FIREBASE_CLIENT_ID }}'          ios/GoogleService-Info.plist
+          xmlstarlet ed --inplace --ps --update '//key[text()="REVERSED_CLIENT_ID"]/following-sibling::string[1]' -v '${{ secrets.FIREBASE_REVERSED_CLIENT_ID }}' ios/GoogleService-Info.plist
+          xmlstarlet ed --inplace --ps --update '//key[text()="API_KEY"]/following-sibling::string[1]'            -v '${{ secrets.FIREBASE_API_KEY }}'            ios/GoogleService-Info.plist
+          xmlstarlet ed --inplace --ps --update '//key[text()="GCM_SENDER_ID"]/following-sibling::string[1]'      -v '${{ secrets.FIREBASE_GCM_SENDER_ID }}'      ios/GoogleService-Info.plist
+          xmlstarlet ed --inplace --ps --update '//key[text()="PROJECT_ID"]/following-sibling::string[1]'         -v '${{ secrets.FIREBASE_PROJECT_ID }}'         ios/GoogleService-Info.plist
+          xmlstarlet ed --inplace --ps --update '//key[text()="STORAGE_BUCKET"]/following-sibling::string[1]'     -v '${{ secrets.FIREBASE_STORAGE_BUCKET }}'     ios/GoogleService-Info.plist
+          xmlstarlet ed --inplace --ps --update '//key[text()="GOOGLE_APP_ID"]/following-sibling::string[1]'      -v '${{ secrets.FIREBASE_GOOGLE_APP_ID }}'      ios/GoogleService-Info.plist
+          xmlstarlet ed --inplace --ps --update '//key[text()="DATABASE_URL"]/following-sibling::string[1]'       -v '${{ secrets.FIREBASE_DATABASE_URL }}'       ios/GoogleService-Info.plist
+      - name: Cache Pods
+        uses: actions/cache@v2
+        id: cache-pods
+        with:
+          path: ios/Pods
+          key: pods-${{ hashFiles('**/Podfile.lock') }}
       - run: cd ios/ && pod install --repo-update && cd ..
-      - run: cp .env.dist .env
-      - run: node node_modules/.bin/detox build -c ios.sim.release
-        env:
-          googleMapsApiKey: ${{ secrets.googleMapsApiKey }}
+      - run: |
+          cp .env.dist .env
+          sed -i '' -e 's/GOOGLE_MAPS_BROWSER_KEY=/GOOGLE_MAPS_BROWSER_KEY=${{ secrets.GOOGLE_MAPS_BROWSER_KEY }}/' .env
+          sed -i '' -e 's/GOOGLE_MAPS_ANDROID_KEY=/GOOGLE_MAPS_ANDROID_KEY=${{ secrets.GOOGLE_MAPS_ANDROID_KEY }}/' .env
+      # https://vojtastavik.com/2018/09/02/what-is-inside-derived-data-xcode/
+      # https://discuss.circleci.com/t/sharing-xcode-derived-data-folder-across-jobs-workflows/31363/5
+      # https://medium.com/@bitrise/60-faster-builds-force-xcode-to-use-caching-on-bitrise-af8979ca39a6
+      - name: Cache XCode derived data
+        if: false
+        uses: actions/cache@v2
+        id: cache-xcode-derived-data
+        with:
+          path: ios/build
+          key: xcode-derived-data-${{ hashFiles('**/Podfile.lock') }}
+      - name: Build app for Detox
+        run: node node_modules/.bin/detox build -c ios.sim.release
       - name: Run Detox tests
-        run: node node_modules/.bin/detox test -c ios.sim.release --cleanup --device-name="iPhone 11"
+        if: false
+        run: node node_modules/.bin/detox test -c ios.sim.release --loglevel="trace" --device-name="iPhone 11" --debug-synchronization 500
+      # Run 'applesimutils --list' to list your supported devices.
+      # It is advised only to specify a device type, e.g., "iPhone Xʀ" and avoid explicit search by OS version.
+      - name: List supported devices
+        run: applesimutils --list
       # See screenshot specifications
       # https://help.apple.com/app-store-connect/#/devd274dd925
       - name: Take screenshots
@@ -37,7 +85,7 @@ jobs:
         run: |
           node node_modules/.bin/detox test -c ios.sim.release -o e2e/screenshots.config.json --take-screenshots manual --cleanup --device-name="iPhone 11" --artifacts-location ./artifacts/6.5-inch
           node node_modules/.bin/detox test -c ios.sim.release -o e2e/screenshots.config.json --take-screenshots manual --cleanup --device-name="iPhone 8 Plus" --artifacts-location ./artifacts/5.5-inch
-          node node_modules/.bin/detox test -c ios.sim.release -o e2e/screenshots.config.json --take-screenshots manual --cleanup --device-name="iPad Pro (12.9-inch) (3rd generation)" --artifacts-location ./artifacts/12.9-inch
+          node node_modules/.bin/detox test -c ios.sim.release -o e2e/screenshots.config.json --take-screenshots manual --cleanup --device-name="iPad Pro (12.9-inch) (4th generation)" --artifacts-location ./artifacts/12.9-inch
       - name: Upload screenshots artifacts
         if: github.ref == 'refs/heads/master'
         uses: actions/upload-artifact@v1

@@ -93,13 +93,13 @@ class Menu extends Component {
     const hasBadges = !!item.suitableForDiet || !!item.allergens
 
     return (
-      <TouchableOpacity style={ styles.itemContainer } { ...itemProps } testID={ `menuItem:${section.index}:${index}` }>
+      <TouchableOpacity style={ styles.itemContainer } { ...itemProps } testID={ `menuItem:${section.index}:${index}` }>
         <View style={ styles.item }>
           <View style={ styles.leftCol }>
             <Text style={ itemNameStyle }>{ item.name }</Text>
-            { (item.description && item.description.length > 0) && (
+            { (item.description && item.description.length > 0) ? (
               <Text note numberOfLines={ 4 } ellipsizeMode="tail">{ item.description }</Text>
-            )}
+            ) : null }
           </View>
           <View style={ styles.rightCol }>
             <Text style={ itemPriceStyle }>{ `${formatPrice(item.offers.price)}` }</Text>
@@ -119,7 +119,6 @@ class Menu extends Component {
   render() {
 
     const { menu } = this.props
-    const {paddingHeight, onScroll} = this.props.collapsible;
 
     let sections = []
     if (menu) {
@@ -134,9 +133,6 @@ class Menu extends Component {
 
     return (
       <AnimatedSectionList
-        contentContainerStyle={{paddingTop: paddingHeight}}
-        scrollIndicatorInsets={{top: paddingHeight}}
-        onScroll={onScroll}
         testID="menu"
         sections={ sections }
         renderItem={ ({ item, index, section }) => this.renderItem(item, index, section) }

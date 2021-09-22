@@ -1,6 +1,5 @@
 package fr.coopcycle;
 
-import android.app.KeyguardManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
@@ -15,32 +14,9 @@ import com.facebook.react.ReactRootView;
 import com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView;
 
 public class MainActivity extends ReactActivity {
-  private static final String EXTRA_SHOW_WHEN_LOCKED = "extra_show_when_locked";
-
-  public static Intent newIntent(Context context, boolean showWhenLocked) {
-    Intent intent = new Intent(context, MainActivity.class);
-    intent.putExtra(EXTRA_SHOW_WHEN_LOCKED, showWhenLocked);
-    return intent;
-  }
-
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-
-    boolean showWhenLocked = getIntent().getBooleanExtra(EXTRA_SHOW_WHEN_LOCKED, false);
-    if (showWhenLocked) {
-      if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O_MR1) {
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD |
-          WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED |
-          WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
-      } else {
-        setShowWhenLocked(true);
-        setTurnScreenOn(true);
-        KeyguardManager keyguardManager = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
-        if (keyguardManager != null)
-          keyguardManager.requestDismissKeyguard(this, null);
-      }
-    }
 
     // @see https://github.com/invertase/react-native-firebase/issues/2791
     // @see https://developer.android.com/training/notify-user/channels

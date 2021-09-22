@@ -124,7 +124,7 @@ Client.prototype.createRequest = function(method, url, data) {
     headers,
   }
 
-  if (data) {
+  if (data && _.size(data) > 0 && ['POST', 'PUT'].includes(method.toUpperCase())) {
     req['data'] = data
   }
 
@@ -170,15 +170,18 @@ Client.prototype.createAuthorizedRequest = function(method, url, data, options =
 }
 
 Client.prototype.request = function(method, uri, data, options = {}) {
-  console.log(method + ' ' + uri);
-  const req = this.credentials.token ? this.createAuthorizedRequest(method, uri, data, options) : this.createRequest(method, uri, data, options);
+
+  const authorized = !(!this.credentials.token || options.anonymous)
+  const req = authorized ? this.createAuthorizedRequest(method, uri, data, options) : this.createRequest(method, uri, data, options)
+
+  console.log(`${method} ${uri}${authorized ? '' : ' (anon.)'}`);
 
   return this.axios.request(req);
 }
 
-Client.prototype.get = function(uri, data) {
+Client.prototype.get = function(uri, data, options = {}) {
 
-  return enhanceRequest(this, 'GET', uri, data);
+  return enhanceRequest(this, 'GET', uri, data, options);
 }
 
 Client.prototype.post = function(uri, data) {

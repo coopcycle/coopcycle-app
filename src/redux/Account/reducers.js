@@ -4,6 +4,10 @@ import {
   LOAD_PERSONAL_INFO_SUCCESS,
 } from './actions'
 
+import {
+  LOGOUT_SUCCESS,
+} from '../App/actions'
+
 const initialState = {
   orders: [],
   addresses: [],
@@ -31,6 +35,13 @@ export default (state = initialState, action = {}) => {
         ...state,
         email: action.payload.email,
         username: action.payload.username,
+      }
+
+    case LOGOUT_SUCCESS:
+
+      return {
+        ...state,
+        ...initialState,
       }
   }
 

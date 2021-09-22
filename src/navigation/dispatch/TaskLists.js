@@ -9,6 +9,7 @@ import Avatar from '../../components/Avatar'
 import AddButton from './components/AddButton'
 import { createTaskList } from '../../redux/Dispatch/actions'
 import { selectTasksNotCancelled } from '../../redux/Dispatch/selectors'
+import { selectSelectedDate, selectTaskLists } from '../../coopcycle-frontend-js/logistics/redux'
 
 class TaskLists extends Component {
 
@@ -82,8 +83,8 @@ const styles = StyleSheet.create({
 function mapStateToProps(state) {
   return {
     baseURL: state.app.baseURL,
-    taskLists: state.dispatch.taskLists,
-    date: state.dispatch.date,
+    taskLists: selectTaskLists(state),
+    date: selectSelectedDate(state),
   }
 }
 

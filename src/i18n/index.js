@@ -17,6 +17,7 @@ import it from './locales/it.json'
 import pl from './locales/pl.json'
 import pt_BR from './locales/pt_BR.json'
 import pt_PT from './locales/pt_PT.json'
+import eu from './locales/eu.json'
 import moment from 'moment'
 import { LocaleConfig } from 'react-native-calendars'
 
@@ -32,7 +33,7 @@ import ptBR from 'numbro/languages/pt-BR'
 import ptPT from 'numbro/languages/pt-PT'
 
 export const localeDetector = () => {
-  const lang = RNLocalize.findBestAvailableLanguage(['cs', 'de', 'en', 'es', 'fr', 'it', 'pl', 'pt-BR', 'pt-PT'])
+  const lang = RNLocalize.findBestAvailableLanguage(['cs', 'de', 'en', 'es', 'fr', 'it', 'pl', 'pt-BR', 'pt-PT', 'eu'])
   if (!lang) {
 
     return 'en'
@@ -42,7 +43,7 @@ export const localeDetector = () => {
 }
 
 export const localeWithTagDetector = () => {
-  const lang = RNLocalize.findBestAvailableLanguage(['cs-CZ', 'de-DE', 'en-GB', 'en-US', 'es-ES', 'fr-FR', 'it-IT', 'pl-PL', 'pt-BR', 'pt-PT'])
+  const lang = RNLocalize.findBestAvailableLanguage(['cs-CZ', 'de-DE', 'en-GB', 'en-US', 'es-ES', 'fr-FR', 'it-IT', 'pl-PL', 'pt-BR', 'pt-PT', 'eu-ES'])
   if (!lang) {
 
     return 'en-US'
@@ -58,6 +59,7 @@ const LOCALE_WITH_TAG = localeWithTagDetector()
 import 'moment/locale/cs'
 import 'moment/locale/de'
 import 'moment/locale/es'
+import 'moment/locale/eu'
 import 'moment/locale/fr'
 import 'moment/locale/it'
 import 'moment/locale/pl'
@@ -107,7 +109,7 @@ i18next
   .use(initReactI18next)
   .init({
     fallbackLng: 'en',
-    resources: { cs, de, en, es, fr, it, pl, 'pt-BR': pt_BR, 'pt-PT': pt_PT },
+    resources: { cs, de, en, es, fr, it, pl, 'pt-BR': pt_BR, 'pt-PT': pt_PT, eu },
     ns: ['common'],
     defaultNS: 'common',
     debug: process.env.DEBUG,

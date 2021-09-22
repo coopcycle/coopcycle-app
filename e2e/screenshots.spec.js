@@ -1,8 +1,11 @@
 const VARIANTS = [
   { locale: 'fr-FR', city: 'Poitiers' },
   { locale: 'fr-FR', city: 'Montpellier' },
+  { locale: 'fr-FR', city: 'Nantes - Naofood' },
   { locale: 'fr-FR', city: 'Grenoble' },
+  { locale: 'es-ES', city: 'Barcelona' },
   { locale: 'es-ES', city: 'Madrid' },
+  { locale: 'es-ES', city: 'Zaragoza' },
   { locale: 'en-US', city: 'Berlin' },
 ]
 
@@ -35,7 +38,12 @@ VARIANTS.forEach(variant => {
 
       await element(by.id('chooseCityBtn')).tap()
 
-      await expect(element(by.id(city))).toBeVisible()
+      await device.takeScreenshot(`Cities-${locale}`);
+
+      await waitFor(element(by.id(city)))
+        .toBeVisible()
+        .whileElement(by.id('cityList')).scroll(120, 'down')
+
       await element(by.id(city)).tap()
 
       // The server may be under maintenance

@@ -1,8 +1,8 @@
 apply plugin: "com.android.application"
 apply plugin: "com.google.gms.google-services"
-apply plugin: "com.google.firebase.firebase-perf"
 apply plugin: "com.google.firebase.crashlytics"
 apply from: '../../node_modules/react-native-unimodules/gradle.groovy'
+apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
 
 import com.android.build.OutputFile
 
@@ -24,7 +24,7 @@ import com.android.build.OutputFile
  *   // default. Can be overridden with ENTRY_FILE environment variable.
  *   entryFile: "index.android.js",
  *
- *   // https://facebook.github.io/react-native/docs/performance#enable-the-ram-format
+ *   // https://reactnative.dev/docs/performance#enable-the-ram-format
  *   bundleCommand: "ram-bundle",
  *
  *   // whether to bundle JS and assets in debug mode
@@ -86,6 +86,10 @@ project.ext.react = [
 ]
 
 apply from: "../../node_modules/react-native/react.gradle"
+apply from: "../../node_modules/@sentry/react-native/sentry.gradle"
+
+Project background_geolocation = project(':react-native-background-geolocation')
+apply from: "${background_geolocation.projectDir}/app.gradle"
 
 /**
  * Set this to true to create two separate APKs instead of one:
@@ -124,9 +128,9 @@ def jscFlavor = 'org.webkit:android-jsc:+'
  */
 def enableHermes = project.ext.react.get("enableHermes", false);
 
-def googleMapsApiKey = hasProperty('googleMapsApiKey') ? googleMapsApiKey : System.getenv('googleMapsApiKey')
-
 android {
+    ndkVersion rootProject.ext.ndkVersion
+
     compileSdkVersion rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileOptions {
@@ -138,14 +142,15 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         multiDexEnabled true
-        versionCode 105
-        versionName "1.2.1"
+        versionCode 137
+        versionName "1.10.5"
         ndk {
             abiFilters "armeabi-v7a", "x86", "arm64-v8a", "x86_64"
         }
         manifestPlaceholders = [
             tipsiStripeRedirectScheme: "coopcycle",
-            googleMapsApiKey: googleMapsApiKey
+            googleMapsApiKey: project.env.get("GOOGLE_MAPS_ANDROID_KEY"),
+            transistorsoftLicenseKey: project.env.get("TRANSISTORSOFT_LICENSE_KEY")
         ]
         missingDimensionStrategy 'react-native-camera', 'general'
 
@@ -154,6 +159,8 @@ android {
     }
     signingConfigs {
         release {
+            // Caution! In production, you need to generate your own keystore file.
+            // see https://reactnative.dev/docs/signed-apk-android.
             if (project.hasProperty('COOPCYCLE_RELEASE_STORE_FILE')) {
                 storeFile file(COOPCYCLE_RELEASE_STORE_FILE)
                 storePassword COOPCYCLE_RELEASE_STORE_PASSWORD
@@ -187,19 +194,16 @@ android {
                 minifyEnabled enableProguardInReleaseBuilds
             }
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro', "${rootProject.projectDir}/../node_modules/detox/android/detox/proguard-rules-app.pro"
+            proguardFiles "${background_geolocation.projectDir}/proguard-rules.pro"
             if (System.getProperty('useDebugCertificate', 'no') == 'yes') {
                 signingConfig signingConfigs.debug
             } else {
                 signingConfig signingConfigs.release
             }
+            firebaseCrashlytics {
+                mappingFileUploadEnabled true
+            }
         }
-    }
-
-    packagingOptions {
-        pickFirst "lib/armeabi-v7a/libc++_shared.so"
-        pickFirst "lib/arm64-v8a/libc++_shared.so"
-        pickFirst "lib/x86/libc++_shared.so"
-        pickFirst "lib/x86_64/libc++_shared.so"
     }
 
     // applicationVariants are e.g. debug, release
@@ -207,11 +211,12 @@ android {
         variant.outputs.each { output ->
             // For each separate APK per architecture, set a unique version code as described here:
             // https://developer.android.com/studio/build/configure-apk-splits.html
+            // Example: versionCode 1 will generate 1001 for armeabi-v7a, 1002 for x86, etc.
             def versionCodes = ["armeabi-v7a": 1, "x86": 2, "arm64-v8a": 3, "x86_64": 4]
             def abi = output.getFilter(OutputFile.ABI)
             if (abi != null) {  // null for the universal-debug, universal-release variants
                 output.versionCodeOverride =
-                        versionCodes.get(abi) * 1048576 + defaultConfig.versionCode
+                        defaultConfig.versionCode * 1000 + versionCodes.get(abi)
             }
         }
     }
@@ -242,6 +247,7 @@ dependencies {
     }
     debugImplementation("com.facebook.flipper:flipper-network-plugin:${FLIPPER_VERSION}") {
         exclude group:'com.facebook.flipper'
+        exclude group:'com.squareup.okhttp3', module:'okhttp'
     }
     debugImplementation("com.facebook.flipper:flipper-fresco-plugin:${FLIPPER_VERSION}") {
         exclude group:'com.facebook.flipper'

@@ -11,47 +11,54 @@ import {
 } from 'libphonenumber-js'
 
 import { assignCustomer, updateCart } from '../../redux/Checkout/actions'
+import { selectCartFulfillmentMethod } from '../../redux/Checkout/selectors'
 import FooterButton from './components/FooterButton'
 
 const hasPhoneNumberErrors = (errors, touched) => {
-  return errors.address && touched.address && errors.address.telephone && touched.address.telephone
+  return errors.telephone && touched.telephone
 }
 
 class MoreInfos extends Component {
 
   _handleChangeTelephone(value, setFieldValue, setFieldTouched) {
-    setFieldValue('address.telephone', new AsYouType(this.props.country).input(value))
-    setFieldTouched('address.telephone')
+    setFieldValue('telephone', new AsYouType(this.props.country).input(value))
+    setFieldTouched('telephone')
   }
 
   _submit(values) {
     const { checkoutMethodScreen } = this.props
 
-    const payload = {
-      shippingAddress: {
-        ...values.address,
-        telephone: parsePhoneNumberFromString(values.address.telephone, this.props.country).format('E.164'),
-      },
+    const telephone =
+      parsePhoneNumberFromString(values.telephone, this.props.country).format('E.164')
+
+    let payload = {
       notes: values.notes,
     }
+
+    if (Object.prototype.hasOwnProperty.call(values, 'address')) {
+      payload = {
+        ...payload,
+        shippingAddress: { ...values.address, telephone },
+      }
+    } else {
+      payload = {
+        ...payload,
+        telephone,
+      }
+    }
+
     this.props.updateCart(payload, () => this.props.navigation.navigate(checkoutMethodScreen))
   }
 
   _validate(values) {
     let errors = {}
 
-    if (_.isEmpty(values.address.telephone)) {
-      errors.address = {
-        ...errors.address,
-        telephone: this.props.t('STORE_NEW_DELIVERY_ERROR.EMPTY_PHONE_NUMBER'),
-      }
+    if (_.isEmpty(values.telephone)) {
+      errors.telephone = this.props.t('STORE_NEW_DELIVERY_ERROR.EMPTY_PHONE_NUMBER')
     } else {
-      const phoneNumber = parsePhoneNumberFromString(_.trim(values.address.telephone), this.props.country)
+      const phoneNumber = parsePhoneNumberFromString(_.trim(values.telephone), this.props.country)
       if (!phoneNumber || !phoneNumber.isValid()) {
-        errors.address = {
-          ...errors.address,
-          telephone: this.props.t('INVALID_PHONE_NUMBER'),
-        }
+        errors.telephone = this.props.t('INVALID_PHONE_NUMBER')
       }
     }
 
@@ -66,13 +73,18 @@ class MoreInfos extends Component {
 
   render() {
 
-    const initialValues = {
-      address: {
-        description: '',
-        floor: '',
-        telephone: this.props.cart.shippingAddress.telephone || '',
-      },
+    let initialValues = {
+      telephone: this.props.telephone,
       notes: '',
+    }
+
+    if (this.props.fulfillmentMethod === 'delivery') {
+      initialValues = {
+        ...initialValues,
+        address: {
+          description: '',
+        },
+      }
     }
 
     return (
@@ -97,25 +109,17 @@ class MoreInfos extends Component {
                   keyboardType="phone-pad"
                   returnKeyType="done"
                   onChangeText={ value => this._handleChangeTelephone(value, setFieldValue, setFieldTouched) }
-                  onBlur={ handleBlur('address.telephone') }
-                  value={ values.address.telephone } />
+                  onBlur={ handleBlur('telephone') }
+                  value={ values.telephone }
+                  placeholderTextColor="#d0d0d0" />
                 { hasPhoneNumberErrors(errors, touched) && (
-                  <Text note style={ styles.errorText }>{ errors.address.telephone }</Text>
+                  <Text note style={ styles.errorText }>{ errors.telephone }</Text>
                 ) }
                 { !hasPhoneNumberErrors(errors, touched) && (
                   <Text note>{ this.props.t('CHECKOUT_ORDER_PHONE_NUMBER_HELP') }</Text>
                 ) }
               </View>
-              <View style={ [ styles.formGroup ] }>
-                <Text style={ styles.label }>{ this.props.t('CHECKOUT_ORDER_ADDRESS_FLOOR') }</Text>
-                <TextInput
-                  style={ [ styles.textInput ] }
-                  keyboardType="numeric"
-                  returnKeyType="done"
-                  onChangeText={ handleChange('address.floor') }
-                  onBlur={ handleBlur('address.floor') }
-                  value={ values.address.floor } />
-              </View>
+              { Object.prototype.hasOwnProperty.call(values, 'address') && (
               <View style={ [ styles.formGroup ] }>
                 <Text style={ styles.label }>{ this.props.t('CHECKOUT_ORDER_ADDRESS_DESCRIPTION') }</Text>
                 <TextInput
@@ -127,6 +131,7 @@ class MoreInfos extends Component {
                   onBlur={ handleBlur('address.description') } />
                 <Text note>{ this.props.t('CHECKOUT_ORDER_ADDRESS_DESCRIPTION_HELP') }</Text>
               </View>
+              )}
               <View style={ [ styles.formGroup ] }>
                 <Text style={ styles.label }>{ this.props.t('CHECKOUT_ORDER_NOTES') }</Text>
                 <TextInput
@@ -173,6 +178,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     height: 40,
     padding: 5,
+    color: '#333',
   },
   textarea: {
     height: (25 * 3),
@@ -189,10 +195,17 @@ function mapStateToProps(state) {
     ? 'CheckoutMercadopago'
     : 'CheckoutCreditCard'
 
+  const fulfillmentMethod = selectCartFulfillmentMethod(state)
+
   return {
     country: state.app.settings.country.toUpperCase(),
     cart: state.checkout.cart,
-    checkoutMethodScreen
+    checkoutMethodScreen,
+    fulfillmentMethod,
+    // FIXME
+    // For click & collect, we need to retrieve the customer phone number
+    // This needs a change server side
+    telephone: fulfillmentMethod === 'delivery' ? (state.checkout.cart.shippingAddress.telephone || '') : '',
   }
 }
 
@@ -204,4 +217,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(withTranslation()(MoreInfos))
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(MoreInfos))

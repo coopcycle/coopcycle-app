@@ -1,7 +1,7 @@
 import React from 'react'
 import HeaderButton from '../components/HeaderButton'
 import { primaryColor,  whiteColor, fontTitleName } from '../styles/common'
-import { NavigationActions } from 'react-navigation'
+import { DrawerActions } from '@react-navigation/native'
 
 import DispatchUnassignedTasks from './dispatch/UnassignedTasks'
 import DispatchTaskLists from './dispatch/TaskLists'
@@ -22,43 +22,89 @@ import StoreDelivery from './store/Delivery'
 import StoreNewDeliveryAddress from './store/NewDeliveryAddress'
 import StoreNewDeliveryForm from './store/NewDeliveryForm'
 
+import CheckoutPaymentMethodCard from './checkout/PaymentMethodCard'
+import CheckoutPaymentMethodCashOnDelivery from './checkout/PaymentMethodCashOnDelivery'
+
+import AccountHome from './account/Home'
+import AccountLoginRegister from './account/LoginRegister'
+import AccountAddressesPage from './account/AccountAddressesPage'
+import AccountOrdersPage from './account/AccountOrdersPage'
+import AccountOrderPage from './account/Order'
+import AccountDetailsPage from './account/AccountDetailsPage'
+import AccountRegisterCheckEmail from './account/RegisterCheckEmail'
+import AccountRegisterConfirm from './account/RegisterConfirm'
+import AccountForgotPassword from './account/ForgotPassword'
+import AccountResetPasswordCheckEmail from './account/ResetPasswordCheckEmail'
+import AccountResetPasswordNewPassword from './account/ResetPasswordNewPassword'
+
+import CourierTasksPage from './courier/TasksPage'
+import CourierTaskListPage from './courier/TaskListPage'
+import CourierSettings from './courier/Settings'
+import CourierSettingsTags from './courier/Tags'
+
+import CheckoutProductOptions from './checkout/ProductOptions'
+import CheckoutLogin from './checkout/Login'
+import CheckoutSummary from './checkout/Summary'
+import CheckoutShippingDate from './checkout/ShippingDate'
+import CheckoutCreditCard from './checkout/CreditCard'
+import CheckoutMoreInfos from './checkout/MoreInfos'
+import CheckoutMercadopago from './checkout/Mercadopago'
+
+import RestaurantsPage from './checkout/Search'
+import CheckoutRestaurant from './checkout/Restaurant'
+
+import RestaurantList from './restaurant/List'
+import RestaurantDashboard from './restaurant/Dashboard'
+import RestaurantOrder from './restaurant/Order'
+import RestaurantOrderRefuse from './restaurant/OrderRefuse'
+import RestaurantOrderDelay from './restaurant/OrderDelay'
+import RestaurantOrderCancel from './restaurant/OrderCancel'
+import RestaurantDate from './restaurant/Date'
+import RestaurantSettings from './restaurant/Settings'
+import RestaurantProducts from './restaurant/Products'
+import RestaurantOpeningHours from './restaurant/OpeningHours'
+import RestaurantMenus from './restaurant/Menus'
+import RestaurantPrinter from './restaurant/Printer'
+
 export default {
-  RestaurantsPage: require('./checkout/Search'),
-  CheckoutRestaurant: require('./checkout/Restaurant'),
-  RestaurantList: require('./restaurant/List'),
-  RestaurantDashboard: require('./restaurant/Dashboard'),
-  RestaurantOrder: require('./restaurant/Order'),
-  RestaurantOrderRefuse: require('./restaurant/OrderRefuse'),
-  RestaurantOrderDelay: require('./restaurant/OrderDelay'),
-  RestaurantOrderCancel: require('./restaurant/OrderCancel'),
-  RestaurantDate: require('./restaurant/Date'),
-  RestaurantSettings: require('./restaurant/Settings'),
-  RestaurantProducts: require('./restaurant/Products'),
-  RestaurantOpeningHours: require('./restaurant/OpeningHours'),
-  RestaurantMenus: require('./restaurant/Menus'),
-  RestaurantPrinter: require('./restaurant/Printer'),
-  CheckoutProductOptions: require('./checkout/ProductOptions'),
-  CheckoutLogin: require('./checkout/Login'),
-  CheckoutSummary: require('./checkout/Summary'),
-  CheckoutShippingDate: require('./checkout/ShippingDate'),
-  CheckoutCreditCard: require('./checkout/CreditCard'),
-  CheckoutMercadopago: require('./checkout/Mercadopago'),
-  CheckoutMoreInfos: require('./checkout/MoreInfos'),
-  CourierTasksPage: require('./courier/TasksPage'),
-  CourierTaskListPage: require('./courier/TaskListPage'),
-  CourierSettings: require('./courier/Settings'),
-  CourierSettingsTags: require('./courier/Tags'),
-  AccountHome: require('./account/Home'),
-  AccountLoginRegister: require('./account/LoginRegister'),
-  AccountAddressesPage: require('./account/AccountAddressesPage'),
-  AccountOrdersPage: require('./account/AccountOrdersPage'),
-  AccountOrderPage: require('./account/Order'),
-  AccountDetailsPage: require('./account/AccountDetailsPage'),
-  AccountRegisterCheckEmail: require('./account/RegisterCheckEmail'),
-  AccountRegisterConfirm: require('./account/RegisterConfirm'),
-  AccountForgotPassword: require('./account/ForgotPassword'),
-  AccountResetPasswordCheckEmail: require('./account/ResetPasswordCheckEmail'),
-  AccountResetPasswordNewPassword: require('./account/ResetPasswordNewPassword'),
+  RestaurantsPage,
+  CheckoutRestaurant,
+  RestaurantList,
+  RestaurantDashboard,
+  RestaurantOrder,
+  RestaurantOrderRefuse,
+  RestaurantOrderDelay,
+  RestaurantOrderCancel,
+  RestaurantDate,
+  RestaurantSettings,
+  RestaurantProducts,
+  RestaurantOpeningHours,
+  RestaurantMenus,
+  RestaurantPrinter,
+  CheckoutProductOptions,
+  CheckoutLogin,
+  CheckoutSummary,
+  CheckoutShippingDate,
+  CheckoutCreditCard,
+  CheckoutMercadopago,
+  CheckoutMoreInfos,
+  CourierTasksPage,
+  CourierTaskListPage,
+  CourierSettings,
+  CourierSettingsTags,
+  CheckoutPaymentMethodCard,
+  CheckoutPaymentMethodCashOnDelivery,
+  AccountHome,
+  AccountLoginRegister,
+  AccountAddressesPage,
+  AccountOrdersPage,
+  AccountOrderPage,
+  AccountDetailsPage,
+  AccountRegisterCheckEmail,
+  AccountRegisterConfirm,
+  AccountForgotPassword,
+  AccountResetPasswordCheckEmail,
+  AccountResetPasswordNewPassword,
   DispatchUnassignedTasks,
   DispatchTaskLists,
   DispatchTaskList,
@@ -75,8 +121,6 @@ export default {
   StoreDelivery,
   StoreNewDeliveryAddress,
   StoreNewDeliveryForm,
-  Loading: require('./Loading'),
-  ConfigureServer: require('./ConfigureServer'),
 }
 
 export const defaultNavigationOptions = {
@@ -101,40 +145,5 @@ export const defaultNavigationOptions = {
 }
 
 export const headerLeft = (navigation, testID = 'menuBtn') => {
-  return () => <HeaderButton iconName="menu" onPress={ () => navigation.toggleDrawer() } testID={ testID } />
-}
-
-let navigateAfter = null
-
-export const navigateToTask = (navigation, task, tasks = []) => {
-
-  if (navigation.state.routeName !== 'TaskHome') {
-    navigateAfter = navigation.state.routeName
-  }
-
-  const params = {
-    task,
-    tasks,
-    navigateAfter,
-  }
-
-  navigation.navigate({ routeName: 'Task', params, key: task['@id'] })
-}
-
-export const navigateToCompleteTask = (navigation, task, tasks = [], success = true) => {
-
-  const params = {
-    task,
-    navigateAfter: navigation.state.routeName,
-  }
-
-  navigation.navigate({
-    routeName: 'Task',
-    params: { ...params, tasks },
-    key: task['@id'],
-    action: NavigationActions.navigate({
-      routeName: 'TaskComplete',
-      params: { ...params, success },
-    }),
-  })
+  return () => <HeaderButton iconName="menu" onPress={ () => navigation.dispatch(DrawerActions.toggleDrawer()) } testID={ testID } />
 }

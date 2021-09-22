@@ -1,106 +1,144 @@
 import React from 'react'
-import { View } from 'react-native'
-import { Button, Icon } from 'native-base'
-import { createStackNavigator } from 'react-navigation-stack'
-import { createBottomTabNavigator } from 'react-navigation-tabs'
+import { View, TouchableOpacity, StyleSheet } from 'react-native'
+import { Icon } from 'native-base'
+import { createStackNavigator } from '@react-navigation/stack'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 
 import i18n from '../../i18n'
 import TrackingIcon from '../../components/TrackingIcon'
-import screens, { defaultNavigationOptions, headerLeft } from '..'
+import screens, { headerLeft } from '..'
+import { stackNavigatorScreenOptions } from '../styles'
 import TaskNavigator from './TaskNavigator'
 
-const Tabs = createBottomTabNavigator({
-  CourierTasks: {
-    screen: screens.CourierTasksPage,
-    navigationOptions: ({ navigation }) => ({
-      title: i18n.t('TASKS'),
-      tabBarTestID: 'messengerTabMap',
-      tabBarIcon: ({ focused, horizontal, tintColor }) => {
-        return (
-          <Icon type="FontAwesome" name="map" style={{ color: tintColor }} />
-        )
-      },
-    }),
+const Tab = createBottomTabNavigator()
+
+const Tabs = () => (
+  <Tab.Navigator
+    tabBarOptions={{
+      showLabel: false,
+    }}>
+    <Tab.Screen
+      name="CourierTasks"
+      component={ screens.CourierTasksPage }
+      options={ ({ navigation }) => ({
+        title: i18n.t('TASKS'),
+        tabBarTestID: 'messengerTabMap',
+        tabBarIcon: ({ color }) => {
+          return (
+            <Icon type="FontAwesome" name="map" style={{ color }} />
+          )
+        },
+      })}
+    />
+    <Tab.Screen
+      name="CourierTaskList"
+      component={ screens.CourierTaskListPage }
+      options={ ({ navigation }) => ({
+        title: i18n.t('TASK_LIST'),
+        tabBarTestID: 'messengerTabList',
+        tabBarIcon: ({ color }) => {
+          return (
+            <Icon type="FontAwesome" name="list" style={{ color }} />
+          )
+        },
+      })}
+    />
+  </Tab.Navigator>
+)
+
+const styles = StyleSheet.create({
+  buttonBar: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  CourierTaskList: {
-    screen: screens.CourierTaskListPage,
-    navigationOptions: ({ navigation }) => ({
-      title: i18n.t('TASK_LIST'),
-      tabBarTestID: 'messengerTabList',
-      tabBarIcon: ({ focused, horizontal, tintColor }) => {
-        return (
-          <Icon type="FontAwesome" name="list" style={{ color: tintColor }} />
-        )
-      },
-    }),
-  },
-}, {
-  tabBarOptions: {
-    showLabel: false,
+  button: {
+    paddingHorizontal: 10,
   },
 })
 
-const MainNavigator = createStackNavigator({
-  CourierHome: {
-    screen: Tabs,
-    navigationOptions: ({ navigation }) => ({
-      title: i18n.t('COURIER'),
-      headerLeft: headerLeft(navigation, 'menuBtnCourier'),
-      headerRight: () =>
-        <View style={{flex: 1, flexDirection: 'row', alignItems: 'flex-end'}}>
-          <Button transparent onPress={() => navigation.navigate('CourierSettings')}>
-            <Icon name="settings" style={{ color: 'white' }} />
-          </Button>
-          <Button transparent>
-            <TrackingIcon />
-          </Button>
-        </View>
-      ,
-    }),
-  },
-  Task: {
-    screen: TaskNavigator,
-    navigationOptions: ({ navigation }) => ({
-      title: `${i18n.t('TASK')} #${navigation.state.params.task.id}`,
-    }),
-  },
-}, {
-  initialRouteKey: 'CourierHome',
-  initialRouteName: 'CourierHome',
-  defaultNavigationOptions,
-})
+const ButtonWithIcon = ({ name, onPress }) => {
 
-const SettingsStack = createStackNavigator({
-  CourierSettings: {
-    screen: screens.CourierSettings,
-    navigationOptions: ({ navigation }) => ({
-      headerShown: false,
-    }),
-  },
-  CourierSettingsTags: {
-    screen: screens.CourierSettingsTags,
-    navigationOptions: ({ navigation }) => ({
-      headerShown: false,
-    }),
-  },
-}, {
-  defaultNavigationOptions,
-})
+  return (
+    <TouchableOpacity onPress={ onPress } style={ styles.button }>
+      <Icon name={ name } style={{ color: 'white' }} />
+    </TouchableOpacity>
+  )
+}
 
-export default createStackNavigator({
-  Main: {
-    screen: MainNavigator,
-    navigationOptions: ({ navigation }) => ({
-      headerShown: false,
-    }),
-  },
-  CourierSettings: {
-    screen: SettingsStack,
-    navigationOptions: ({ navigation }) => ({
-      title: i18n.t('SETTINGS'),
-    }),
-  },
-}, {
-  defaultNavigationOptions,
-  mode: 'modal',
-})
+const MainStack = createStackNavigator()
+
+const MainNavigator = () => (
+  <MainStack.Navigator
+    screenOptions={ stackNavigatorScreenOptions }>
+    <MainStack.Screen
+      name="CourierHome"
+      component={ Tabs }
+      options={ ({ navigation }) => ({
+        title: i18n.t('COURIER'),
+        headerLeft: headerLeft(navigation, 'menuBtnCourier'),
+        headerRight: () =>
+          <View style={ styles.buttonBar }>
+            <ButtonWithIcon name="settings" onPress={ () => navigation.navigate('CourierSettings') } />
+            <TouchableOpacity style={ styles.button }>
+              <TrackingIcon />
+            </TouchableOpacity>
+          </View>
+        ,
+      })}
+    />
+    <MainStack.Screen
+      name="Task"
+      component={ TaskNavigator }
+      options={{
+        headerShown: false,
+      }}
+    />
+  </MainStack.Navigator>
+)
+
+const SettingsStack = createStackNavigator()
+
+const SettingsNavigator = () => (
+  <SettingsStack.Navigator
+    screenOptions={ stackNavigatorScreenOptions }>
+    <SettingsStack.Screen
+      name="CourierSettings"
+      component={ screens.CourierSettings }
+      options={{
+        title: i18n.t('SETTINGS'),
+      }}
+    />
+    <SettingsStack.Screen
+      name="CourierSettingsTags"
+      component={ screens.CourierSettingsTags }
+      options={{
+        title: i18n.t('FILTER_BY_TAGS'),
+      }}
+    />
+  </SettingsStack.Navigator>
+)
+
+const RootStack = createStackNavigator()
+
+export default () => (
+  <RootStack.Navigator
+    mode="modal"
+    screenOptions={ stackNavigatorScreenOptions }>
+    <RootStack.Screen
+      name="Main"
+      component={ MainNavigator }
+      options={{
+        headerShown: false,
+      }}
+    />
+    <RootStack.Screen
+      name="CourierSettings"
+      component={ SettingsNavigator }
+      options={{
+        headerShown: false,
+      }}
+    />
+  </RootStack.Navigator>
+)

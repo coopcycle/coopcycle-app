@@ -18,6 +18,13 @@ class TaskList extends Component {
     this.props.onTaskClick(task)
   }
 
+  taskColor(task) {
+    let tasksWithColor = this.props.tasksWithColor ?? []
+
+    return Object.prototype.hasOwnProperty.call(tasksWithColor, task['@id']) ?
+      this.props.tasksWithColor[task['@id']] : '#ffffff'
+  }
+
   renderItem(task, index) {
 
     let swipeOutRightEnabled = true
@@ -36,6 +43,7 @@ class TaskList extends Component {
     return (
       <TaskListItem
         task={ task } index={ index }
+        color={ this.taskColor(task) }
         onPress={ () => this._onTaskClick(task) }
         onPressLeft={ () => {
           this.props.onSwipeLeft(task)

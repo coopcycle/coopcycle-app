@@ -8,11 +8,15 @@ import Server from '../Server'
 import AppUser from '../AppUser'
 import { bootstrap, resetServer, setServers } from '../redux/App/actions'
 
+import HomeNavigator from './navigators/HomeNavigator'
+import DrawerNavigator from './navigators/DrawerNavigator'
+
 class Loading extends Component {
 
   constructor(props) {
     super(props)
     this.state = {
+      ready: false,
       error: false,
     }
   }
@@ -29,14 +33,16 @@ class Loading extends Component {
 
         const user = await AppUser.load()
 
-        this.props.bootstrap(this.props.baseURL, user)
+        await this.props.bootstrap(this.props.baseURL, user)
+
+        this.setState({ ready: true })
 
       } catch (e) {
         this.setState({ error: true })
       }
 
     } else {
-      this.props.navigation.navigate('ConfigureServer')
+      this.setState({ ready: true })
     }
   }
 
@@ -64,18 +70,33 @@ class Loading extends Component {
   }
 
   render() {
+
+    if (this.state.error) {
+      return this.renderError()
+    }
+
+    if (this.state.ready) {
+      // We need to check if httpClient is defined, because it is managed by a middleware.
+      // So, when dispatching a Redux action that triggers the middleware,
+      // the screens may re-render *BEFORE* httpClient has been defined.
+      if (this.props.baseURL && this.props.httpClient) {
+        return <DrawerNavigator />
+      } else {
+        return <HomeNavigator />
+      }
+    }
+
     return (
       <View style={ styles.loader }>
-        { (!this.state.error && !this.props.loading) && <ActivityIndicator animating={ true } size="large" /> }
-        { this.state.error && this.renderError() }
+        <ActivityIndicator size="large" color="#c7c7c7" />
       </View>
-    );
+    )
   }
 }
 
 const styles = StyleSheet.create({
   loader: {
-    ...StyleSheet.absoluteFillObject,
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -94,6 +115,7 @@ function mapStateToProps(state) {
   return {
     loading: state.app.loading,
     baseURL: state.app.baseURL,
+    httpClient: state.app.httpClient,
   }
 }
 
@@ -106,4 +128,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(withTranslation()(Loading))
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(Loading))

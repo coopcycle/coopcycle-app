@@ -10,7 +10,7 @@ import {
   selectIsTasksLoading, selectIsTasksLoadingFailure, selectIsTaskCompleteFailure,
   selectTasks,
 } from '../taskSelectors';
-import { message } from '../../middlewares/WebSocketMiddleware'
+import { _message } from '../../middlewares/CentrifugoMiddleware/actions'
 
 // As we may be using setTimeout(), we need to mock timers
 // @see https://jestjs.io/docs/en/timer-mocks.html
@@ -91,7 +91,7 @@ describe('Redux | Tasks | Reducers', () => {
         isFetching: true,
       }
       const date = moment().format('YYYY-MM-DD')
-      const newState = tasksEntityReducer(prevState, loadTasksSuccess(date, tasks))
+      const newState = tasksEntityReducer(prevState, loadTasksSuccess(date, tasks, moment()))
       const fullState = { entities: { tasks: newState } }
 
       const restOldState = omit(prevState, ['loadTasksFetchError', 'isFetching', 'items'])
@@ -101,7 +101,7 @@ describe('Redux | Tasks | Reducers', () => {
       expect(selectIsTasksLoadingFailure(fullState)).toBe(false)
       expect(selectTasks(fullState)).toEqual(tasks)
 
-      expect(restOldState).toEqual({ ...restNewState, date })
+      expect(restOldState).toEqual({ ...restNewState, date, shouldRefreshTasks: true })
     });
 
     [
@@ -134,43 +134,62 @@ describe('Redux | Tasks | Reducers', () => {
         })
       })
 
-    test(`${message} | tasks:changed`, () => {
+    test(`${_message} | tasks:changed (deprecated)`, () => {
       const date = moment().format('YYYY-MM-DD')
 
-      const tasks = [{ id: 1, position: 1 }, { id: 2, position: 0 }]
-      const wsMsg = { type: 'tasks:changed', date, tasks }
-
-      const prevState = {
-        ...initialState,
-        date,
-      }
-
-      const newState = tasksEntityReducer(prevState, message(wsMsg))
-      const fullState = { entities: { tasks: newState } }
-
-      const restOldState = omit(prevState, ['items'])
-      const restNewState = omit(newState, ['items'])
-
-      expect(selectTasks(fullState)).toEqual([ tasks[1], tasks[0] ])
-      expect(restOldState).toEqual(restNewState)
-    })
-
-    test(`${message} | task:changed`, () => {
-      const date = moment().format('YYYY-MM-DD')
-
-      const oldTasks = [{ id: 1, position: 0 }, { id: 2, position: 1 }]
-      const newTasks = [{ id: 1, position: 0 }, { id: 3, position: 1 }, { id: 2, position: 2 }]
-      const wsMsg = { type: 'tasks:changed', date, tasks: newTasks }
+      const wsMsg = { name: 'tasks:changed', data: { date } }
 
       const prevState = {
         ...initialState,
         date,
         items: {
-          [ date ]: oldTasks,
+          [ date ]: [
+            { '@id': '/api/tasks/1' },
+            { '@id': '/api/tasks/2' }
+          ]
         },
       }
 
-      const newState = tasksEntityReducer(prevState, message(wsMsg))
+      const newState = tasksEntityReducer(prevState, _message(wsMsg))
+      const fullState = { entities: { tasks: newState } }
+
+      const restOldState = omit(prevState, ['items'])
+      const restNewState = omit(newState, ['items'])
+
+      expect(newState).toEqual(prevState)
+    })
+
+    test(`${_message} | task_list:updated`, () => {
+      const date = moment().format('YYYY-MM-DD')
+
+      const oldTasks = [
+        { '@id': '/api/tasks/1' },
+        { '@id': '/api/tasks/2' }
+      ]
+      const newTasks = [
+        { '@id': '/api/tasks/1' },
+        { '@id': '/api/tasks/2' },
+        { '@id': '/api/tasks/3' }
+      ]
+      const wsMsg = {
+        name: 'task_list:updated',
+        data: {
+          task_list: {
+            date,
+            items: newTasks
+          }
+        }
+      }
+
+      const prevState = {
+        ...initialState,
+        date,
+        items: {
+          [ date ]: oldTasks
+        },
+      }
+
+      const newState = tasksEntityReducer(prevState, _message(wsMsg))
       const fullState = { entities: { tasks: newState } }
 
       const restOldState = omit(prevState, ['items'])
@@ -180,9 +199,9 @@ describe('Redux | Tasks | Reducers', () => {
       expect(restOldState).toEqual(restNewState)
     })
 
-    test(`${message} | unrecognized message type`, () => {
+    test(`${_message} | unrecognized message type`, () => {
       const prevState = { ...initialState }
-      const newState = tasksEntityReducer(prevState, message({ type: 'fake' }))
+      const newState = tasksEntityReducer(prevState, _message({ type: 'fake' }))
 
       expect(newState).toEqual(prevState)
     })

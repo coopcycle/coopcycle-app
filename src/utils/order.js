@@ -1,6 +1,8 @@
 import moment from 'moment'
 import EscPosEncoder from 'esc-pos-encoder'
 import diacritics from 'diacritics'
+import _ from 'lodash'
+
 import i18n from '../i18n'
 
 import { formatPriceWithCode } from './formatting'
@@ -25,7 +27,16 @@ const CODEPAGE = 'windows1251'
 export function encodeForPrinter(order) {
   const maxChars = 32
 
-  const pickupLine = i18n.t('RECEIPT_HEADING_PICKUP_EXPECTED_AT', {
+  let pickupLineDate = '';
+
+  if (moment(order.pickupExpectedAt).isSame(moment(), 'day')){
+    pickupLineDate = i18n.t('RECEIPT_HEADING_PICKUP_EXPECTED_TODAY')
+  } else {
+    pickupLineDate = i18n.t('RECEIPT_HEADING_PICKUP_EXPECTED_ON', {
+      time: moment(order.pickupExpectedAt).format('LL'),
+    })
+  }
+  const pickupLineTime = i18n.t('RECEIPT_HEADING_PICKUP_EXPECTED_AT', {
     time: moment(order.pickupExpectedAt).format('LT'),
   })
 
@@ -37,14 +48,23 @@ export function encodeForPrinter(order) {
     .codepage(CODEPAGE)
     .line(hr)
     .align('center')
+    // Set double height text size
+    // @see https://github.com/mike42/escpos-php/blob/dcb569a123d75f9f6a4a927aae7625ca6b7fdcf3/src/Mike42/Escpos/Printer.php#L954-L960
+    // @see https://github.com/NielsLeenheer/EscPosEncoder/pull/21
+    .raw([ 0x1b, 0x21, 16 ])
     .line(i18n.t('RECEIPT_HEADING_ORDER_NUMBER', { number: order.number, id: order.id }))
+    .line(i18n.t('RECEIPT_CUSTOMER_NAME', {customer: order.customer.email}))
     .line(hr)
 
-  encoder
-    .align('center')
-    .line(pickupLine)
-    .line(hr)
-    .newline()
+    encoder
+      .align('center')
+      .line(pickupLineDate)
+
+    encoder
+      .align('center')
+      .line(pickupLineTime)
+      .line(hr)
+      .newline()
 
   order.items.forEach((item) => {
 
@@ -117,4 +137,15 @@ export function resolveFulfillmentMethod(order) {
   }
 
   return 'delivery'
+}
+
+export function matchesDate(order, date) {
+
+  return moment(order.pickupExpectedAt).format('YYYY-MM-DD') === moment(date).format('YYYY-MM-DD')
+}
+
+export function isMultiVendor(order) {
+  const itemsGroupedByVendor = _.groupBy(order.items, 'vendor.@id')
+
+  return _.size(itemsGroupedByVendor) > 1
 }

@@ -10,20 +10,17 @@ import {
 } from 'react-native'
 import {
   Container, Content,
-  Right, Body,
-  List, ListItem,
   Icon, Text,
 } from 'native-base';
-import moment from 'moment'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 import _ from 'lodash'
+import Modal from 'react-native-modal'
 
 import DangerAlert from '../../components/DangerAlert'
 import { formatPrice } from '../../utils/formatting'
-import i18n from '../../i18n'
 import { incrementItem, decrementItem, removeItem, validate, showAddressModal, hideAddressModal, updateCart } from '../../redux/Checkout/actions'
-import { selectDeliveryTotal, selectShippingDate, selectIsShippingAsap } from '../../redux/Checkout/selectors'
+import { selectDeliveryTotal, selectShippingTimeRangeLabel, selectCartFulfillmentMethod } from '../../redux/Checkout/selectors'
 import { selectIsAuthenticated } from '../../redux/App/selectors'
 import CartFooter from './components/CartFooter'
 import AddressModal from './components/AddressModal'
@@ -32,10 +29,43 @@ import CouponModal from './components/CouponModal'
 
 const BottomLine = ({ label, value }) => (
   <View style={ styles.line }>
-    <Text style={{ color: '#ffffff', fontSize: 14 }}>{ label }</Text>
-    <Text style={{ color: '#ffffff', fontWeight: 'bold', fontSize: 14 }}>{ `${formatPrice(value)}` }</Text>
+    <Text style={ styles.bottomLineLabel }>{ label }</Text>
+    <Text style={ styles.bottomLineAmount }>{ `${formatPrice(value)}` }</Text>
   </View>
 )
+
+const mapAdjustments = (adjustments, type) => _.map(adjustments, (adjustment, index) => (
+  <BottomLine key={ `${type}_${index}` }
+    label={ adjustment.label } value={ adjustment.amount } />
+))
+
+const CollectionDisclaimerModal = withTranslation()(({ isVisible, onSwipeComplete, t, restaurant }) => {
+
+  return (
+    <Modal
+      isVisible={ isVisible }
+      onSwipeComplete={ onSwipeComplete }
+      swipeDirection={ ['up', 'down'] }>
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', padding: 20 }}>
+        <View style={{ backgroundColor: '#ffffff', paddingHorizontal: 20, paddingVertical: 30 }}>
+          <Text style={{ fontSize: 14 }}>{ t('CART_COLLECTION_DISCLAIMER', { telephone: restaurant.telephone }) }</Text>
+        </View>
+      </View>
+    </Modal>
+  )
+})
+
+const ActionButton = withTranslation()(({ isLoading, onPress, iconName, children }) => {
+
+  return (
+    <TouchableOpacity style={ [ styles.btn, styles.btnGrey ] }
+      // Disable interaction while loading
+      onPress={ () => !isLoading && onPress() }>
+      <Icon type="FontAwesome" name={ iconName } style={{ fontSize: 22, marginRight: 15 }} />
+      { children }
+    </TouchableOpacity>
+  )
+})
 
 class Summary extends Component {
 
@@ -44,6 +74,7 @@ class Summary extends Component {
     this.state = {
       translateXValue: new Animated.Value(500),
       isCouponModalVisible: false,
+      isCollectionDisclaimerModalVisible: false,
     }
   }
 
@@ -60,6 +91,7 @@ class Summary extends Component {
         {
           toValue: this.props.edit ? 0 : 500,
           duration: 450,
+          useNativeDriver: false,
         }
       ).start()
     }
@@ -73,9 +105,11 @@ class Summary extends Component {
 
   _renderItemAdjustments(item, index) {
 
+    const adjustmentsWithoutTax = _.pickBy(item.adjustments, (value, key) => key !== 'tax')
+
     return (
       <View>
-      { _.map(item.adjustments, (adjustments, type) => {
+      { _.map(adjustmentsWithoutTax, (adjustments, type) => {
         return _.map(adjustments, (adj, i) => {
 
           const label = [ adj.label ]
@@ -155,34 +189,6 @@ class Summary extends Component {
     )
   }
 
-  renderTotal() {
-
-    const { cart } = this.props
-
-    return (
-      <View style={{ justifySelf: 'flex-end' }}>
-        <List>
-          <ListItem>
-            <Body>
-              <Text>{this.props.t('TOTAL_ITEMS')}</Text>
-            </Body>
-            <Right>
-              <Text style={{ fontWeight: 'bold' }}>{ formatPrice(cart.totalItems) }</Text>
-            </Right>
-          </ListItem>
-          <ListItem>
-            <Body>
-              <Text>{this.props.t('TOTAL_DELIVERY')}</Text>
-            </Body>
-            <Right>
-              <Text style={{ fontWeight: 'bold' }}>{ formatPrice(cart.totalDelivery) }</Text>
-            </Right>
-          </ListItem>
-        </List>
-      </View>
-    )
-  }
-
   renderFooter() {
 
     const { cart } = this.props
@@ -242,51 +248,53 @@ class Summary extends Component {
         <View style={{ flex: 1, paddingTop: 30 }}>
           { this.renderItems() }
         </View>
-        <View style={{ flex: 0, backgroundColor: '#ecf0f1' }}>
-          <TouchableOpacity style={ styles.dateBtn }
+        <View style={{ flex: 0 }}>
+          { this.props.fulfillmentMethod === 'collection' && (
+          <TouchableOpacity style={ [ styles.btn ]  }
             // Disable interaction while loading
-            onPress={ () => !this.props.isLoading && this._navigate('CheckoutShippingDate') }>
-            <Icon type="FontAwesome" name="clock-o" style={{ fontSize: 22, marginRight: 15 }} />
-            <Text style={{ flex: 2, fontSize: 14 }}>{ this.props.timeAsText }</Text>
-            <Text note style={{ flex: 1, textAlign: 'right' }}>{ this.props.t('EDIT') }</Text>
+            onPress={ () => !this.props.isLoading && this.setState({ isCollectionDisclaimerModalVisible: true }) }>
+            <Icon type="FontAwesome" name="info-circle" style={{ fontSize: 22, marginRight: 15, color: '#3498db' }} />
+            <Text style={{ flex: 2, fontSize: 14, color: '#3498db' }}>{ this.props.t('FULFILLMENT_METHOD.collection') }</Text>
+            <Text note style={{ flex: 1, textAlign: 'right' }}>{ this.props.t('LEARN_MORE') }</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={ [ styles.dateBtn, { flexShrink: 1 } ] }
-            // Disable interaction while loading
-            onPress={ () => !this.props.isLoading && this.props.showAddressModal() }>
-            <Icon type="FontAwesome" name="map-marker" style={{ fontSize: 22, marginRight: 15 }} />
-            <Text numberOfLines={ 2 } ellipsizeMode="tail" style={{ flex: 2, fontSize: 14 }}>{ this.props.cart.shippingAddress.streetAddress }</Text>
+          )}
+          <ActionButton
+            onPress={ () => this._navigate('CheckoutShippingDate') }
+            iconName="clock-o">
+            <Text style={{ flex: 2, fontSize: 14 }}>{ this.props.timeAsText }</Text>
             <Text note style={{ flex: 1, textAlign: 'right' }}>{ this.props.t('EDIT') }</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={ [ styles.dateBtn, { flexShrink: 1 } ] }
-            // Disable interaction while loading
-            onPress={ () => !this.props.isLoading && this.setState({ isCouponModalVisible: true }) }>
-            <Icon type="FontAwesome" name="tag" style={{ fontSize: 22, marginRight: 15 }} />
+          </ActionButton>
+          { (this.props.fulfillmentMethod === 'delivery' && this.props.cart.shippingAddress) && (
+          <ActionButton
+            onPress={ () => this.props.showAddressModal() }
+            iconName="map-marker">
+            <Text numberOfLines={ 2 } ellipsizeMode="tail" style={{ flex: 2, fontSize: 14 }}>
+              { this.props.cart.shippingAddress.streetAddress }
+            </Text>
+            <Text note style={{ flex: 1, textAlign: 'right' }}>{ this.props.t('EDIT') }</Text>
+          </ActionButton>
+          )}
+          <ActionButton
+            onPress={ () => this.setState({ isCouponModalVisible: true }) }
+            iconName="tag">
             <Text note style={{ flex: 1, textAlign: 'right' }}>{ this.props.t('ADD_COUPON') }</Text>
-          </TouchableOpacity>
+          </ActionButton>
           { reusablePackagingAction && (
-            <TouchableOpacity style={ [ styles.dateBtn, { flexShrink: 1 } ] }
-              // Disable interaction while loading
-              onPress={ () => !this.props.isLoading && this.toggleReusablePackaging() }>
-              <Icon type="FontAwesome" name="cube" style={{ fontSize: 22, marginRight: 15 }} />
-              <Text note style={{ flex: 1, textAlign: 'right' }}>{ reusablePackagingAction.description }</Text>
-            </TouchableOpacity>
-          ) }
+          <ActionButton
+            onPress={ () => this.toggleReusablePackaging() }
+            iconName="cube">
+            <Text note style={{ flex: 1, textAlign: 'right' }}>{ reusablePackagingAction.description }</Text>
+          </ActionButton>
+          )}
         </View>
         <View style={{ flex: 0, backgroundColor: '#e4022d' }}>
           <BottomLine label={ this.props.t('TOTAL_ITEMS') } value={ cart.itemsTotal } />
+          { this.props.fulfillmentMethod === 'delivery' && (
           <BottomLine label={ this.props.t('TOTAL_DELIVERY') } value={ this.props.deliveryTotal } />
-          { deliveryPromotions.map((promotion, index) => (
-            <BottomLine key={ `delivery_promotion_${index}` }
-              label={ promotion.label } value={ promotion.amount } />
-          )) }
-          { orderPromotions.map((promotion, index) => (
-            <BottomLine key={ `order_promotion_${index}` }
-              label={ promotion.label } value={ promotion.amount } />
-          )) }
-          { reusablePackagings.map((packaging, index) => (
-            <BottomLine key={ `reusable_packaging_${index}` }
-              label={ packaging.label } value={ packaging.amount } />
-          )) }
+          )}
+          { mapAdjustments(deliveryPromotions, 'delivery_promotion') }
+          { mapAdjustments(orderPromotions, 'order_promotion') }
+          { mapAdjustments(reusablePackagings, 'reusable_packaging') }
         </View>
         { this.renderFooter() }
         <AddressModal onGoBack={ () => {
@@ -299,17 +307,24 @@ class Summary extends Component {
           isVisible={ this.state.isCouponModalVisible }
           onSwipeComplete={ () => this.setState({ isCouponModalVisible: false }) }
           onSubmit={ (code) => this.onSubmitCoupon(code) } />
+        <CollectionDisclaimerModal
+          isVisible={ this.state.isCollectionDisclaimerModalVisible }
+          onSwipeComplete={ () => this.setState({ isCollectionDisclaimerModalVisible: false }) }
+          restaurant={ this.props.restaurant } />
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  dateBtn: {
+  btn: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: 10,
+  },
+  btnGrey: {
+    backgroundColor: '#ecf0f1',
     borderTopColor: '#d7d7d7',
     borderTopWidth: StyleSheet.hairlineWidth,
   },
@@ -326,41 +341,30 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  bottomLineLabel: {
+    color: '#ffffff',
+    fontSize: 14,
+  },
+  bottomLineAmount: {
+    color: '#ffffff',
+    fontSize: 14,
+    fontWeight: 'bold',
+  },
 })
 
 function mapStateToProps(state, ownProps) {
 
-  const { timing } = state.checkout
-
-  let timeAsText = i18n.t('LOADING')
-
-  if (selectIsShippingAsap(state)) {
-    if (timing.today && timing.fast) {
-      timeAsText = i18n.t('CART_DELIVERY_TIME_DIFF', { diff: timing.diff })
-    } else {
-      let fromNow = moment
-        .parseZone(timing.asap)
-        .calendar(null, { sameElse: 'LLLL' }).toLowerCase()
-      timeAsText = i18n.t('CART_DELIVERY_TIME', { fromNow })
-    }
-  } else {
-    let fromNow = moment
-      .parseZone(selectShippingDate(state))
-      .calendar(null, { sameElse: 'LLLL' }).toLowerCase()
-    timeAsText = i18n.t('CART_DELIVERY_TIME', { fromNow })
-  }
-
   return {
     cart: state.checkout.cart,
-    date: state.checkout.date,
-    timing: state.checkout.timing,
-    edit: ownProps.navigation.getParam('edit', false),
+    edit: ownProps.route.params?.edit || false,
     isAuthenticated: selectIsAuthenticated(state),
     deliveryTotal: selectDeliveryTotal(state),
-    timeAsText,
+    timeAsText: selectShippingTimeRangeLabel(state),
     isLoading: state.checkout.isLoading,
     isValid: state.checkout.isValid,
     alertMessage: _.first(state.checkout.violations.map(v => v.message)),
+    fulfillmentMethod: selectCartFulfillmentMethod(state),
+    restaurant: state.checkout.restaurant,
   }
 }
 
@@ -376,4 +380,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(withTranslation()(Summary))
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(Summary))

@@ -1,21 +1,20 @@
 import React, { Component } from 'react'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, TouchableOpacity, View, Platform } from 'react-native'
 import { connect } from 'react-redux'
 import {
   Container, Content,
   Text, Button,
   Form, Label, Textarea,
   Footer, FooterTab,
+  Icon,
 } from 'native-base'
-import { Col, Grid } from 'react-native-easy-grid'
 import DateTimePicker from 'react-native-modal-datetime-picker'
 import { withTranslation } from 'react-i18next'
 import _ from 'lodash'
 import moment from 'moment'
 
 import { createTask } from '../../redux/Dispatch/actions'
-import AddressTypeahead from './components/AddressTypeahead'
-import AddressUtils from '../../utils/Address'
+import AddressAutocomplete from '../../components/AddressAutocomplete'
 
 class AddTask extends Component {
 
@@ -29,6 +28,7 @@ class AddTask extends Component {
       doneAfter: moment().add(1, 'hours'),
       doneBefore: moment().add(1, 'hours').add(30, 'minutes'),
       address: {},
+      comments: '',
     }
   }
 
@@ -60,14 +60,16 @@ class AddTask extends Component {
       address: this.state.address,
       doneAfter: this.state.doneAfter,
       doneBefore: this.state.doneBefore,
+      type: this.state.type,
+      comments: this.state.comments,
     }
 
     this.props.createTask(task)
   }
 
-  _onSuggestionPress(data, details = null) {
+  _onSelectAddress(address) {
     this.setState({
-      address: AddressUtils.createAddressFromGoogleDetails(details),
+      address,
     })
   }
 
@@ -111,30 +113,43 @@ class AddTask extends Component {
       <Container>
         <Content padder>
           <Form>
-            <View style={ styles.formRow }>
-              <Grid>
-                <Col>
-                  <Button { ...pickupBtnProps } onPress={ () => this.setState({ type: 'PICKUP' }) }>
-                    <Text>Pickup</Text>
-                  </Button>
-                </Col>
-                <Col>
-                  <Button { ...dropoffBtnProps } onPress={ () => this.setState({ type: 'DROPOFF' }) }>
-                    <Text>Dropoff</Text>
-                  </Button>
-                </Col>
-              </Grid>
+            <View style={ [ styles.formRow, { flexDirection: 'row' } ] }>
+              <Button { ...pickupBtnProps } onPress={ () => this.setState({ type: 'PICKUP' }) } style={{ flex: 1 }}>
+                <Text>Pickup</Text>
+              </Button>
+              <Button { ...dropoffBtnProps } onPress={ () => this.setState({ type: 'DROPOFF' }) } style={{ flex: 1 }}>
+                <Text>Dropoff</Text>
+              </Button>
             </View>
             <View style={ styles.formRow }>
-              <Label style={{ marginBottom: 5 }}>{ this.props.t('TASK_FORM_ADDRESS_LABEL') }</Label>
-              <View style={ styles.datePickerRow }>
-                <AddressTypeahead
+              <Label style={{ marginBottom: 50 }}>{ this.props.t('TASK_FORM_ADDRESS_LABEL') }</Label>
+            </View>
+            <View style={ [ styles.autocompleteContainer, { marginTop: 85 } ] }>
+                <AddressAutocomplete
                   country={ this.props.country }
-                  googleApiKey={ this.props.googleApiKey }
+                  location={ this.props.location }
                   address={ address }
-                  onSuggestionPress={ this._onSuggestionPress.bind(this) }
-                  onEditPress={ () => navigate('DispatchEditAddress', { address, onSubmit: this._onEditAddressSubmit.bind(this) }) } />
-              </View>
+                  inputContainerStyle={{
+                    flex: 1,
+                    justifyContent: 'center',
+                    borderWidth: 0,
+                  }}
+                  style={{ borderRadius: 0 }}
+                  onSelectAddress={ this._onSelectAddress.bind(this) }
+                  renderRight={ () => {
+
+                    if (!address.streetAddress) {
+                      return null
+                    }
+
+                    return (
+                      <TouchableOpacity style={ styles.editAddressBtn }
+                        onPress={ () => navigate('DispatchEditAddress', { address, onSubmit: this._onEditAddressSubmit.bind(this) }) }>
+                        <Icon type="FontAwesome" name="pencil" style={{ color: '#333333' }} />
+                      </TouchableOpacity>
+                    )
+                  } }
+                  />
             </View>
             <View style={ styles.formRow }>
               <Label>{ this.props.t('TASK_FORM_DONE_AFTER_LABEL') }</Label>
@@ -157,7 +172,7 @@ class AddTask extends Component {
             <View style={ styles.formRow }>
               <Label>{ this.props.t('TASK_FORM_COMMENTS_LABEL') }</Label>
               <View>
-                <Textarea rowSpan={ 5 } bordered />
+                <Textarea rowSpan={ 5 } bordered onChangeText={text => this.setState({ comments: text })} />
               </View>
             </View>
           </Form>
@@ -196,13 +211,44 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
+  editAddressBtn: {
+    width: 50,
+    position: 'absolute',
+    right: 0,
+    backgroundColor: '#e5e5e5',
+    flex: 1,
+    alignItems: 'center',
+    height: '100%',
+    justifyContent: 'center',
+  },
+  // @see https://github.com/mrlaessig/react-native-autocomplete-input#android
+  autocompleteContainer: {
+    position: 'absolute',
+    width: '100%',
+    backgroundColor: 'red',
+    ...Platform.select({
+      android: {
+        flex: 1,
+        top: 0,
+        right: 0,
+        left: 0,
+        zIndex: 1,
+      },
+      ios: {
+        top: 0,
+        right: 0,
+        left: 0,
+        zIndex: 10,
+        overflow: 'visible',
+      },
+    }),
+  },
 })
 
 function mapStateToProps(state) {
   return {
-    googleApiKey: state.app.settings.google_api_key,
     country: state.app.settings.country,
-    unassignedTasks: state.dispatch.unassignedTasks,
+    location: state.app.settings.latlng,
   }
 }
 

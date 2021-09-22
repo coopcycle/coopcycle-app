@@ -21,7 +21,7 @@ class NewDelivery extends Component {
 
   componentDidMount() {
     this.props.loadTasks(
-      this.props.navigation.getParam('delivery')
+      this.props.route.params?.delivery
     )
   }
 
@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state, ownProps) {
 
-  const delivery = ownProps.navigation.getParam('delivery')
+  const delivery = ownProps.route.params?.delivery
   const deliveries = selectDeliveries(state)
   const match = _.find(deliveries, d => d['@id'] === delivery['@id'] && d.pickup.hasOwnProperty('status') && d.dropoff.hasOwnProperty('status'))
 

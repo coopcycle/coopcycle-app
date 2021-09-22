@@ -2,10 +2,10 @@ import React from 'react'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import { Text, Icon } from 'native-base'
 import { withTranslation } from 'react-i18next'
-import { withNavigation } from 'react-navigation'
+import { useNavigation, useRoute } from '@react-navigation/native'
 import _ from 'lodash'
 
-import { navigateToTask } from '../../../navigation'
+import { navigateToTask } from '../../../navigation/utils'
 
 const NavButton = ({ disabled, left, right, onPress, t, task }) => {
 
@@ -38,7 +38,10 @@ const NavButton = ({ disabled, left, right, onPress, t, task }) => {
 
 const NavButtonWithTrans = withTranslation()(NavButton)
 
-const Nav = ({ navigation, task, tasks }) => {
+const Nav = ({ task, tasks }) => {
+
+  const navigation = useNavigation()
+  const route = useRoute()
 
   if (tasks.length === 0) {
 
@@ -56,10 +59,10 @@ const Nav = ({ navigation, task, tasks }) => {
     <View style={ styles.container }>
       <NavButtonWithTrans left disabled={ isFirst }
         task={ prev }
-        onPress={ () => navigateToTask(navigation, prev, tasks) } />
+        onPress={ () => navigateToTask(navigation, route, prev, tasks) } />
       <NavButtonWithTrans right disabled={ isLast }
         task={ next }
-        onPress={ () => navigateToTask(navigation, next, tasks) } />
+        onPress={ () => navigateToTask(navigation, route, next, tasks) } />
     </View>
   )
 }
@@ -85,4 +88,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default withNavigation(Nav)
+export default Nav

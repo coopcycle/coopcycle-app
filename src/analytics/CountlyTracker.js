@@ -2,7 +2,7 @@ import BaseTracker from './BaseTracker'
 import { Platform } from 'react-native'
 import Countly from 'countly-sdk-react-native-bridge';
 
-import { COUNTLY_SERVER_URL, COUNTLY_APP_KEY, COUNTLY_SALT } from '@env'
+import Config from 'react-native-config'
 
 function CountlyTracker() {
   this.userProperties = {}
@@ -77,14 +77,23 @@ CountlyTracker.prototype.init = function() {
     return
   }
 
-  // configure Countly parameters if needed
-  Countly.enableParameterTamperingProtection(COUNTLY_SALT);
+  try {
 
-  // initialize
-  Countly.init(COUNTLY_SERVER_URL, COUNTLY_APP_KEY, deviceId).then(() => {
-    // start session tracking
-    Countly.start();
-  });
+    // configure Countly parameters if needed
+    Countly.enableParameterTamperingProtection(Config.COUNTLY_SALT);
+
+    // initialize
+    Countly.init(Config.COUNTLY_SERVER_URL, Config.COUNTLY_APP_KEY, deviceId)
+      .then(() => {
+        // start session tracking
+        Countly.start();
+      })
+      .catch(e => console.log(e));
+
+  } catch (e) {
+    console.log(e)
+  }
+
 }
 
 export default CountlyTracker

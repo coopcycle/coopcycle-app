@@ -1,59 +1,50 @@
-import React, { Component } from 'react'
-import { NavigationActions } from 'react-navigation'
-import { createMaterialTopTabNavigator } from 'react-navigation-tabs'
+import React from 'react'
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
+import { connect } from 'react-redux'
 
 import i18n from '../../i18n'
 import screens from '..'
+import { stackNavigatorScreenOptions } from '../styles'
+import { selectSignatureScreenFirst } from '../../redux/Courier'
 
-const routeConfigs = {
-  TaskPhoto: {
-    screen: screens.TaskPhoto,
-    navigationOptions: ({ navigation }) => ({
-      title: i18n.t('PHOTO'),
-    }),
-  },
-  TaskSignature: {
-    screen: screens.TaskSignature,
-    navigationOptions: ({ navigation }) => ({
-      title: i18n.t('SIGNATURE'),
-    }),
-  },
-}
+const Tab = createMaterialTopTabNavigator()
 
-const tabNavigatorConfig = {
-  // Disable swipe to avoid swiping when signing
-  swipeEnabled: false,
-  backBehavior: 'history',
-}
+const TabNavigator = ({ initialRouteName, initialParams }) => (
+  <Tab.Navigator
+    screenOptions={ stackNavigatorScreenOptions }
+    backBehavior="history"
+    // Disable swipe to avoid swiping when signing
+    swipeEnabled={ false }
+    initialRouteName={ initialRouteName }>
+    <Tab.Screen
+      name="TaskPhoto"
+      component={ screens.TaskPhoto }
+      options={{
+        title: i18n.t('PHOTO'),
+      }}
+      initialParams={ initialParams }
+    />
+    <Tab.Screen
+      name="TaskSignature"
+      component={ screens.TaskSignature }
+      options={{
+        title: i18n.t('SIGNATURE'),
+      }}
+      initialParams={ initialParams }
+    />
+  </Tab.Navigator>
+)
 
-const TopTabNavigator = createMaterialTopTabNavigator(routeConfigs, tabNavigatorConfig)
+// The params are *NOT* passed to the child tab navigator
+// https://stackoverflow.com/a/68651234/333739
+const PreferencesAwareNavigator = ({ signatureScreenFirst, route }) => (
+  <TabNavigator
+    initialRouteName={ signatureScreenFirst ? 'TaskSignature' : 'TaskPhoto' }
+    initialParams={ route.params } />
+)
 
-// @see https://reactnavigation.org/docs/en/custom-navigators.html
+const mapStateToProps = (state) => ({
+  signatureScreenFirst: selectSignatureScreenFirst(state),
+})
 
-class PreferencesAwareNavigator extends Component {
-
-  static router = {
-    ...TopTabNavigator.router,
-    getStateForAction: (action, inputState) => {
-      const state = TopTabNavigator.router.getStateForAction(action, inputState)
-
-      if (action.type === NavigationActions.INIT) {
-        if (action.params && action.params.signatureScreenFirst) {
-
-          return {
-            ...state,
-            index: 1,
-          }
-        }
-      }
-
-      return state
-    },
-  }
-
-  render() {
-    return <TopTabNavigator navigation={ this.props.navigation } />
-  }
-}
-
-export default PreferencesAwareNavigator
+export default connect(mapStateToProps)(PreferencesAwareNavigator)

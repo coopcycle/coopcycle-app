@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
-import { InteractionManager, SectionList } from 'react-native'
+import { InteractionManager, SectionList, View } from 'react-native'
 import {
-  Container,
   Right, Body,
-  Content, ListItem, Text,
+  ListItem, Text,
 } from 'native-base'
 import _ from 'lodash'
 import moment from 'moment'
@@ -54,16 +53,14 @@ class AccountOrdersPage extends Component {
     })
 
     return (
-      <Container>
-        <Content>
-          <SectionList
-            sections={ sections }
-            renderItem={ ({ item }) => this._renderItem(item) }
-            renderSectionHeader={ ({ section }) => this._renderSectionHeader(section) }
-            keyExtractor={ (item, index) => index }
-          />
-        </Content>
-      </Container>
+      <View style={{ flex: 1 }}>
+        <SectionList
+          sections={ sections }
+          renderItem={ ({ item }) => this._renderItem(item) }
+          renderSectionHeader={ ({ section }) => this._renderSectionHeader(section) }
+          keyExtractor={ (item, index) => index }
+        />
+      </View>
     );
   }
 }
@@ -82,4 +79,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(withTranslation()(AccountOrdersPage))
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(AccountOrdersPage))

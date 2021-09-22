@@ -2,7 +2,8 @@ import { AppState } from 'react-native'
 import _ from 'lodash'
 
 import { pushNotification } from '../App/actions'
-import { MESSAGE } from '../middlewares/WebSocketMiddleware/actions'
+import { selectUser }  from '../App/selectors'
+import { LOAD_ORDERS_SUCCESS } from './actions'
 
 export const ringOnNewOrderCreated = ({ getState, dispatch }) => {
 
@@ -12,13 +13,22 @@ export const ringOnNewOrderCreated = ({ getState, dispatch }) => {
       return next(action)
     }
 
-    if (action.type !== MESSAGE) {
+    // Avoid ringing on first load
+    if (action.type === LOAD_ORDERS_SUCCESS) {
       return next(action)
     }
 
     const prevState = getState()
     const result = next(action)
     const state = getState()
+
+    const user = selectUser(state)
+    const shouldShowAlert =
+      user && user.isAuthenticated() && (user.hasRole('ROLE_ADMIN') || user.hasRole('ROLE_RESTAURANT'))
+
+    if (!shouldShowAlert) {
+      return result
+    }
 
     if (state.restaurant.orders.length > 0) {
       if (state.restaurant.orders.length !== prevState.restaurant.orders.length) {

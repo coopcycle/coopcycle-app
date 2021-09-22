@@ -47,7 +47,8 @@ class CustomServer extends Component {
                 onChangeText={(text) => this.setState({ text })}
                 returnKeyType="done"
                 onSubmitEditing={ this.handleForm.bind(this) }
-                testID="customServerURL" />
+                testID="customServerURL"
+                autoCompleteType="off" />
               { this.props.hasError && <Icon name="close-circle" /> }
             </Item>
             { this.props.hasError && (

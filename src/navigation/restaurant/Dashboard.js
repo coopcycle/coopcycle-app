@@ -3,20 +3,28 @@ import { Alert, InteractionManager, NativeModules, StyleSheet } from 'react-nati
 import { Container, Content } from 'native-base';
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
-import KeepAwake from 'react-native-keep-awake'
+import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake'
 import moment from 'moment'
 
 import DangerAlert from '../../components/DangerAlert'
 import Offline from '../../components/Offline'
+
 import OrderList from './components/OrderList'
 import DatePickerHeader from './components/DatePickerHeader'
+import WebSocketIndicator from './components/WebSocketIndicator'
+
 import {
   changeStatus, loadOrders, changeDate, deleteOpeningHoursSpecification, loadOrderAndNavigate } from '../../redux/Restaurant/actions'
-import { connect as connectWs, init } from '../../redux/middlewares/WebSocketMiddleware/actions'
-import { selectSpecialOpeningHoursSpecification } from '../../redux/Restaurant/selectors'
-import { selectIsLoading } from '../../redux/App/selectors'
+import { connect as connectCentrifugo } from '../../redux/middlewares/CentrifugoMiddleware/actions'
+import {
+  selectSpecialOpeningHoursSpecificationForToday,
+  selectNewOrders,
+  selectAcceptedOrders,
+  selectPickedOrders,
+  selectCancelledOrders,
+  selectFulfilledOrders } from '../../redux/Restaurant/selectors'
+import { selectIsLoading, selectIsCentrifugoConnected } from '../../redux/App/selectors'
 import PushNotification from '../../notifications'
-import WebSocketClient from '../../websocket/WebSocketClient'
 
 const RNSound = NativeModules.RNSound
 
@@ -65,15 +73,14 @@ class DashboardPage extends Component {
 
   componentDidMount() {
 
-    KeepAwake.activate()
+    activateKeepAwake()
 
-    if (!this.props.isWsOpen) {
-      this.props.initWs(new WebSocketClient(this.props.httpClient, '/dispatch'))
-      this.props.connectWs()
+    if (!this.props.isCentrifugoConnected) {
+      this.props.connectCent()
     }
 
     InteractionManager.runAfterInteractions(() => {
-      if (this.props.navigation.getParam('loadOrders', true)) {
+      if (this.props.route.params?.loadOrders || true) {
         this.props.loadOrders(
           this.props.restaurant,
           this.props.date.format('YYYY-MM-DD'),
@@ -110,7 +117,7 @@ class DashboardPage extends Component {
   }
 
   componentWillUnmount() {
-    KeepAwake.deactivate()
+    deactivateKeepAwake()
   }
 
   componentDidUpdate(prevProps) {
@@ -129,7 +136,7 @@ class DashboardPage extends Component {
 
     // This is needed to display the title
     // WARNING Make sure to call navigation.setParams() only when needed to avoid infinite loop
-    const navRestaurant = this.props.navigation.getParam('restaurant')
+    const navRestaurant = this.props.route.params?.restaurant
     if (!navRestaurant || navRestaurant !== this.props.restaurant) {
       this.props.navigation.setParams({ restaurant: this.props.restaurant })
     }
@@ -145,7 +152,7 @@ class DashboardPage extends Component {
   renderDashboard() {
 
     const { navigate } = this.props.navigation
-    const { orders, date, restaurant, specialOpeningHoursSpecification } = this.props
+    const { date, restaurant, specialOpeningHoursSpecification } = this.props
 
     return (
       <Container>
@@ -159,12 +166,19 @@ class DashboardPage extends Component {
             text={ this.props.t('RESTAURANT_ALERT_CLOSED') }
             onClose={ () => this.props.deleteOpeningHoursSpecification(specialOpeningHoursSpecification) } />
         )}
+        <WebSocketIndicator connected={ this.props.isCentrifugoConnected } />
         <Content>
           <DatePickerHeader
             date={ date }
             onCalendarClick={ () => navigate('RestaurantDate') }
             onTodayClick={ () => this.props.changeDate(moment()) } />
-          <OrderList orders={ orders }
+          <OrderList
+            baseURL={ this.props.baseURL }
+            newOrders={ this.props.newOrders }
+            acceptedOrders={ this.props.acceptedOrders }
+            pickedOrders={ this.props.pickedOrders }
+            cancelledOrders={ this.props.cancelledOrders }
+            fulfilledOrders={ this.props.fulfilledOrders }
             onItemClick={ order => navigate('RestaurantOrder', { order }) } />
         </Content>
       </Container>
@@ -203,13 +217,19 @@ function mapStateToProps(state) {
 
   return {
     httpClient: state.app.httpClient,
+    baseURL: state.app.baseURL,
     orders: state.restaurant.orders,
+    newOrders: selectNewOrders(state),
+    acceptedOrders: selectAcceptedOrders(state),
+    pickedOrders: selectPickedOrders(state),
+    cancelledOrders: selectCancelledOrders(state),
+    fulfilledOrders: selectFulfilledOrders(state),
     date: state.restaurant.date,
     restaurant: state.restaurant.restaurant,
-    specialOpeningHoursSpecification: selectSpecialOpeningHoursSpecification(state),
+    specialOpeningHoursSpecification: selectSpecialOpeningHoursSpecificationForToday(state),
     isInternetReachable: state.app.isInternetReachable,
     isLoading: selectIsLoading(state),
-    isWsOpen: state.app.isWsOpen,
+    isCentrifugoConnected: selectIsCentrifugoConnected(state),
   }
 }
 
@@ -220,9 +240,8 @@ function mapDispatchToProps(dispatch) {
     changeDate: date => dispatch(changeDate(date)),
     changeStatus: (restaurant, state) => dispatch(changeStatus(restaurant, state)),
     deleteOpeningHoursSpecification: openingHoursSpecification => dispatch(deleteOpeningHoursSpecification(openingHoursSpecification)),
-    initWs: wsClient => dispatch(init(wsClient)),
-    connectWs: () => dispatch(connectWs()),
+    connectCent: () => dispatch(connectCentrifugo()),
   }
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(withTranslation()(DashboardPage))
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(DashboardPage))

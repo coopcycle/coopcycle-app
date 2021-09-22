@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { View } from 'react-native'
-import { withNavigation } from 'react-navigation'
 import {
   Container, Content,
   Right, Body,
@@ -14,15 +13,13 @@ import { logout } from '../../redux/App/actions'
 import { selectIsAuthenticated } from '../../redux/App/selectors'
 import LoginRegister from './LoginRegister'
 
-const LoginRegisterWithNav = withNavigation(LoginRegister)
-
 class AccountHome extends Component {
 
   render() {
 
     if (!this.props.isAuthenticated) {
       return (
-        <LoginRegisterWithNav />
+        <LoginRegister navigation={ this.props.navigation } />
       )
     }
 
@@ -55,7 +52,7 @@ class AccountHome extends Component {
                 <Icon name="arrow-forward" />
               </Right>
             </ListItem>
-            <ListItem button iconRight onPress={ () => navigate('AccountOrders') }>
+            <ListItem button iconRight onPress={ () => navigate('AccountOrders', { screen: 'AccountOrdersList' }) }>
               <Body>
                 <Text>{this.props.t('ORDERS')}</Text>
               </Body>
@@ -91,4 +88,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(withTranslation()(AccountHome))
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(AccountHome))

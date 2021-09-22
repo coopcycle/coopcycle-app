@@ -57,18 +57,15 @@ class NewDelivery extends Component {
     return (
       <KeyboardAvoidingView
         style={ styles.content }
-        behavior="padding"
+        behavior="position"
         >
         <Text style={ styles.label }>
           { this.props.t('STORE_NEW_DELIVERY_ADDRESS') }
         </Text>
-        <Text style={ styles.help } note>
-          { this.props.t('STORE_NEW_DELIVERY_ADDRESS_HELP') }
-        </Text>
         <View style={ styles.container }>
           <View style={ styles.autocompleteContainer }>
             <AddressAutocomplete
-              googleApiKey={ this.props.googleApiKey }
+              location={ this.props.location }
               country={ this.props.country }
               addresses={ this.props.addresses }
               onSelectAddress={ this._onSelectAddress.bind(this) }
@@ -76,8 +73,12 @@ class NewDelivery extends Component {
                 flex: 1,
                 justifyContent: 'center',
               }}
+              style={{ borderRadius: 0 }}
               { ...autocompleteProps } />
           </View>
+          <Text style={ styles.help } note>
+            { this.props.t('STORE_NEW_DELIVERY_ADDRESS_HELP') }
+          </Text>
         </View>
       </KeyboardAvoidingView>
     )
@@ -90,13 +91,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   container: {
-    height: 54,
     marginHorizontal: 10,
   },
   // @see https://github.com/mrlaessig/react-native-autocomplete-input#android
   autocompleteContainer: {
     position: 'absolute',
-    height: 54,
     width: '100%',
     ...Platform.select({
       android: {
@@ -115,11 +114,6 @@ const styles = StyleSheet.create({
       },
     }),
   },
-  formGroup: {
-    paddingHorizontal: 10,
-    marginBottom: 10,
-    backgroundColor: 'green',
-  },
   label: {
     paddingVertical: 10,
     textAlign: 'center',
@@ -128,6 +122,7 @@ const styles = StyleSheet.create({
   help: {
     paddingVertical: 5,
     textAlign: 'center',
+    paddingTop: 50,
   },
   errorInput: {
     borderColor: '#FF4136',
@@ -141,7 +136,7 @@ function mapStateToProps(state) {
     error: state.store.assertDeliveryError,
     addresses: state.store.addresses,
     country: state.app.settings.country,
-    googleApiKey: state.app.settings.google_api_key,
+    location: state.app.settings.latlng,
   }
 }
 

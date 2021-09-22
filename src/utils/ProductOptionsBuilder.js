@@ -42,7 +42,7 @@ class ProductOptionsBuilder {
 
   parseRange(range) {
 
-    const matches = range.match(/^(\[|\()([0-9]+),([0-9]?)(\]|\))$/)
+    const matches = range.match(/^(\[|\()([0-9]{1,}),([0-9]*)(\]|\))$/)
 
     return [
       parseInt(matches[2], 10),
@@ -78,7 +78,7 @@ class ProductOptionsBuilder {
     if (option.additional) {
 
       const range = option.valuesRange ? this.parseRange(option.valuesRange) : [ 0, Infinity ]
-      const [ min, max ] = range
+      const max = range[1]
       const optionQuantity = this.getQuantityForOption(option)
 
       if (max !== Infinity && optionQuantity >= max) {

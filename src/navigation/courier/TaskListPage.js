@@ -1,20 +1,21 @@
 import React, { Component } from 'react'
-import { StyleSheet, TouchableOpacity, View } from 'react-native'
-import { Icon, Text } from 'native-base'
+import { StyleSheet, View } from 'react-native'
 
 import { connect } from 'react-redux'
 
 import TaskList from '../../components/TaskList'
+import TapToRefresh from '../../components/TapToRefresh'
 import DateSelectHeader from '../../components/DateSelectHeader'
-import { whiteColor, dateSelectHeaderHeight } from '../../styles/common'
+import { dateSelectHeaderHeight } from '../../styles/common'
 import { withTranslation } from 'react-i18next'
 import {
   loadTasks,
   selectTaskSelectedDate,
   selectFilteredTasks,
   selectIsTasksRefreshing,
+  selectTasksWithColor,
 } from '../../redux/Courier'
-import { navigateToTask, navigateToCompleteTask } from '../../navigation'
+import { navigateToTask, navigateToCompleteTask } from '../../navigation/utils'
 
 const styles = StyleSheet.create({
   containerEmpty: {
@@ -23,16 +24,10 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: whiteColor,
     paddingTop: dateSelectHeaderHeight,
   },
   wrapper: {
     paddingHorizontal: 15,
-    backgroundColor: whiteColor,
-  },
-  noTask: {
-    fontSize: 16,
-    textAlign: 'center',
   },
 })
 
@@ -40,7 +35,7 @@ class TaskListPage extends Component {
 
   render() {
 
-    const { tasks, selectedDate } = this.props
+    const { tasks, tasksWithColor, selectedDate } = this.props
 
     const containerStyle = [ styles.container ]
     if (tasks.length === 0) {
@@ -53,23 +48,20 @@ class TaskListPage extends Component {
           tasks.length > 0 &&
           <TaskList
             tasks={ tasks }
-            onSwipeLeft={ task => navigateToCompleteTask(this.props.navigation, task, tasks, true) }
-            onSwipeRight={ task => navigateToCompleteTask(this.props.navigation, task, tasks, false) }
+            tasksWithColor={ tasksWithColor }
+            onSwipeLeft={ task => navigateToCompleteTask(this.props.navigation, this.props.route, task, tasks, true) }
+            onSwipeRight={ task => navigateToCompleteTask(this.props.navigation, this.props.route, task, tasks, false) }
             swipeOutLeftEnabled={ task => task.status !== 'DONE' }
             swipeOutRightEnabled={ task => task.status !== 'DONE' }
-            onTaskClick={ task => navigateToTask(this.props.navigation, task, tasks) }
+            onTaskClick={ task => navigateToTask(this.props.navigation, this.props.route, task, tasks) }
             refreshing={ this.props.isRefreshing }
             onRefresh={ () => this.props.refreshTasks(selectedDate) }
           />
         }
         {
           tasks.length === 0 &&
-            <TouchableOpacity style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
-              onPress={ () => this.props.loadTasks(selectedDate) }>
-              <Icon type="FontAwesome5" name="check-circle" solid style={{ marginBottom: 15, fontSize: 38, color: '#ecedec' }} />
-              <Text style={ styles.noTask }>{ this.props.t('NO_TASKS') }</Text>
-              <Text note>{ this.props.t('TOUCH_TO_RELOAD') }</Text>
-            </TouchableOpacity>
+            <TapToRefresh
+              onPress={ () => this.props.loadTasks(selectedDate) } />
         }
         <DateSelectHeader
           buttonsEnabled={true}
@@ -83,6 +75,7 @@ class TaskListPage extends Component {
 function mapStateToProps (state) {
   return {
     tasks: selectFilteredTasks(state),
+    tasksWithColor: selectTasksWithColor(state),
     selectedDate: selectTaskSelectedDate(state),
     isRefreshing: selectIsTasksRefreshing(state),
   }
@@ -95,4 +88,4 @@ function mapDispatchToProps (dispatch) {
   }
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(withTranslation()(TaskListPage))
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(TaskListPage))

@@ -24,9 +24,20 @@ import { appReducer } from './App'
 import accountReducer from './Account/reducers'
 import restaurantReducer from './Restaurant/reducers'
 import checkoutReducer from './Checkout/reducers'
-import dispatchReducer from './Dispatch/reducers'
+import {
+  dateReducer as coreDateReducer,
+  taskEntityReducers as coreTaskEntityReducers,
+  taskListEntityReducers as coreTaskListEntityReducers,
+  uiReducers as coreUiReducers,
+} from '../coopcycle-frontend-js/logistics/redux'
+import appDispatchReducer from './Dispatch/reducers'
+import appDateReducer from './logistics/dateReducer'
+import appTaskEntityReducers from './logistics/taskEntityReducers'
+import appTaskListEntityReducers from './logistics/taskListEntityReducers'
+import appLastmileUiReducers from './logistics/uiReducers'
 import storeReducer from './Store/reducers'
 import { createTaskItemsTransform } from './util'
+import reduceReducers from 'reduce-reducers';
 
 const taskEntitiesPersistConfig = {
   key: 'entities.items',
@@ -38,7 +49,7 @@ const taskEntitiesPersistConfig = {
 const restaurantPersistConfig = {
   key: 'restaurant',
   storage: AsyncStorage,
-  whitelist: ['myRestaurants', 'restaurant'],
+  whitelist: ['myRestaurants', 'restaurant', 'printer'],
 }
 
 const tasksUiPersistConfig = {
@@ -96,7 +107,7 @@ const appPersistConfig = {
   key: 'app',
   version: 0,
   storage: AsyncStorage,
-  whitelist: ['baseURL', 'settings', 'pushNotificationToken'],
+  whitelist: ['baseURL', 'settings', 'pushNotificationToken', 'hasDisclosedBackgroundPermission'],
   migrate: (state) => {
 
     if (!state) {
@@ -139,8 +150,17 @@ export default combineReducers({
   restaurant: persistReducer(restaurantPersistConfig, restaurantReducer),
   store: storeReducer,
   checkout: checkoutReducer,
-  dispatch: dispatchReducer,
   ui: combineReducers({
     tasks: persistReducer(tasksUiPersistConfig, tasksUiReducer),
+  }),
+  //todo move more properties from appDispatchReducer into `logistics` state
+  dispatch: appDispatchReducer,
+  logistics: combineReducers({
+    date: reduceReducers(coreDateReducer, appDateReducer),
+    entities: combineReducers({
+      tasks: reduceReducers(coreTaskEntityReducers, appTaskEntityReducers),
+      taskLists: reduceReducers(coreTaskListEntityReducers, appTaskListEntityReducers),
+    }),
+    ui: reduceReducers(coreUiReducers, appLastmileUiReducers),
   }),
 })

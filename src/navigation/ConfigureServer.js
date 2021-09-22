@@ -67,4 +67,4 @@ const styles = StyleSheet.create({
   },
 })
 
-module.exports = withTranslation()(ConfigureServer)
+export default withTranslation()(ConfigureServer)

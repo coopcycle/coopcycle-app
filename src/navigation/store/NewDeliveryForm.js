@@ -165,7 +165,7 @@ class NewDelivery extends Component {
 
   render() {
 
-    const address = this.props.navigation.getParam('address')
+    const address = this.props.route.params?.address
 
     let telephone = ''
     if (address['@id'] && address.telephone) {

@@ -104,4 +104,4 @@ class AppUser {
 
 }
 
-module.exports = AppUser;
+export default AppUser;

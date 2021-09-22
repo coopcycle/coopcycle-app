@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
-import { AppState, FlatList, View, StyleSheet, TouchableOpacity } from 'react-native'
+import { FlatList, View, StyleSheet, TouchableOpacity } from 'react-native'
 import { Icon, Text } from 'native-base'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 import Sound from 'react-native-sound'
 import moment from 'moment'
 import Modal from 'react-native-modal'
-import { NavigationActions, StackActions } from 'react-navigation'
+import { CommonActions } from '@react-navigation/native'
 
 import PushNotification from '../notifications'
 import NavigationHolder from '../NavigationHolder'
@@ -14,7 +14,7 @@ import NavigationHolder from '../NavigationHolder'
 import { clearNotifications, pushNotification, registerPushNotificationToken } from '../redux/App/actions'
 import {loadTasks, selectTasksChangedAlertSound} from '../redux/Courier'
 import { loadOrderAndNavigate, loadOrderAndPushNotification, loadOrder } from '../redux/Restaurant/actions'
-import { message } from '../redux/middlewares/WebSocketMiddleware/actions'
+import { message as wsMessage } from '../redux/middlewares/CentrifugoMiddleware/actions'
 import tracker from '../analytics/Tracker'
 import analyticsEvent from '../analytics/Event'
 
@@ -119,7 +119,7 @@ class NotificationHandler extends Component {
           const { order } = event.data
 
           // Here in any case, we navigate to the order that was tapped,
-          // it should have been loading via WebSocket already.
+          // it should have been loaded via WebSocket already.
           this.props.loadOrderAndNavigate(order)
         }
 
@@ -173,7 +173,7 @@ class NotificationHandler extends Component {
       case 'order:created':
         return this.renderOrderCreated(notification.params.order)
       case 'tasks:changed':
-        return this.renderTasksChanged(notification.params.date)
+        return this.renderTasksChanged(notification.params.date, notification.params.added, notification.params.removed)
     }
   }
 
@@ -182,22 +182,20 @@ class NotificationHandler extends Component {
     this._stopSound()
     this.props.clearNotifications()
 
-    NavigationHolder.dispatch(NavigationActions.navigate({
-      routeName: 'RestaurantNav',
-      action: NavigationActions.navigate({
-        routeName: 'Main',
+    NavigationHolder.dispatch(CommonActions.navigate({
+      name: 'RestaurantNav',
+      params: {
+        screen: 'Main',
         params: {
           restaurant: order.restaurant,
           // We don't want to load orders again when navigating
           loadOrders: false,
+          screen: 'RestaurantOrder',
+          params: {
+            order,
+          },
         },
-        // We use push, because if we are already on RestaurantOrder, it opens a new screen
-        // @see https://reactnavigation.org/docs/en/navigating.html#navigate-to-a-route-multiple-times
-        action: StackActions.push({
-          routeName: 'RestaurantOrder',
-          params: { order },
-        }),
-      }),
+      },
     }))
   }
 
@@ -206,14 +204,14 @@ class NotificationHandler extends Component {
     this._stopSound()
     this.props.clearNotifications()
 
-    NavigationHolder.dispatch(NavigationActions.navigate({
-      routeName: 'CourierNav',
-      action: NavigationActions.navigate({
-        routeName: 'CourierHome',
-        action: NavigationActions.navigate({
-          routeName: 'CourierTaskList',
-        }),
-      }),
+    NavigationHolder.dispatch(CommonActions.navigate({
+      name: 'CourierNav',
+      params: {
+        screen: 'CourierHome',
+        params: {
+          screen: 'CourierTaskList',
+        },
+      },
     }))
 
     this.props.loadTasks(moment(date))
@@ -231,13 +229,25 @@ class NotificationHandler extends Component {
     )
   }
 
-  renderTasksChanged(date) {
+  renderTasksChanged(date, added, removed) {
 
     return (
       <TouchableOpacity style={ styles.item } onPress={ () => this._navigateToTasks(date) }>
-        <Text>
-          { this.props.t('NOTIFICATION_TASKS_CHANGED_TITLE') }
-        </Text>
+        <View>
+          <Text style={{ fontSize: 14, fontWeight: '700' }}>
+            { this.props.t('NOTIFICATION_TASKS_CHANGED_TITLE') }
+          </Text>
+          { (added && Array.isArray(added) && added.length > 0) && (
+          <Text style={{ fontSize: 14 }}>
+            { this.props.t('NOTIFICATION_TASKS_ADDED', { count: added.length }) }
+          </Text>
+          ) }
+          { (removed && Array.isArray(removed) && removed.length > 0) && (
+          <Text style={{ fontSize: 14 }}>
+            { this.props.t('NOTIFICATION_TASKS_REMOVED', { count: removed.length }) }
+          </Text>
+          ) }
+        </View>
         <Icon type="FontAwesome" name="chevron-right" />
       </TouchableOpacity>
     )
@@ -326,7 +336,7 @@ function mapDispatchToProps (dispatch) {
     registerPushNotificationToken: token => dispatch(registerPushNotificationToken(token)),
     clearNotifications: () => dispatch(clearNotifications()),
     pushNotification: (event, params) => dispatch(pushNotification(event, params)),
-    message: payload => dispatch(message(payload)),
+    message: payload => dispatch(wsMessage(payload)),
   }
 }
 

@@ -16,7 +16,7 @@ class ResetPasswordNewPassword extends Component {
   }
 
   _onSetNewPassword(password) {
-    const token = this.props.navigation.getParam('token', null)
+    const token = this.props.route.params?.token
     if (token) {
       this.props.setNewPassword(token, password)
     }
@@ -46,4 +46,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(withTranslation()(ResetPasswordNewPassword))
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(ResetPasswordNewPassword))

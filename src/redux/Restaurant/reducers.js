@@ -50,6 +50,10 @@ import {
   BLUETOOTH_DISABLED,
   BLUETOOTH_START_SCAN,
   BLUETOOTH_STOP_SCAN,
+  LOAD_PRODUCT_OPTIONS_SUCCESS,
+  CHANGE_PRODUCT_OPTION_VALUE_ENABLED_REQUEST,
+  CHANGE_PRODUCT_OPTION_VALUE_ENABLED_SUCCESS,
+  CHANGE_PRODUCT_OPTION_VALUE_ENABLED_FAILURE,
 } from './actions'
 
 import {
@@ -60,7 +64,7 @@ import {
 
 import {
   MESSAGE,
-} from '../middlewares/WebSocketMiddleware/actions'
+} from '../middlewares/CentrifugoMiddleware/actions'
 
 import moment from 'moment'
 import _ from 'lodash'
@@ -77,10 +81,10 @@ const initialState = {
   hasMoreProducts: false,
   products: [],
   menus: [],
-  specialOpeningHoursSpecification: [],
   bluetoothEnabled: false,
   isScanningBluetooth: false,
   printer: null,
+  productOptions: [],
 }
 
 const spliceOrders = (state, payload) => {
@@ -123,6 +127,27 @@ const spliceProducts = (state, payload) => {
   }
 
   return state.products
+}
+
+const spliceProductOptions = (state, payload) => {
+
+  const productOptionIndex = _.findIndex(state, productOption => {
+    return _.findIndex(productOption.values, productOptionValue => productOptionValue['@id'] === payload.productOptionValue['@id']) !== -1
+  })
+
+  if (productOptionIndex !== -1) {
+
+    const newProductOptions = state.slice()
+
+    const productOptionValueIndex =
+      _.findIndex(state[productOptionIndex].values, productOptionValue => productOptionValue['@id'] === payload.productOptionValue['@id'])
+
+    newProductOptions[productOptionIndex].values[productOptionValueIndex].enabled = payload.enabled
+
+    return newProductOptions
+  }
+
+  return state
 }
 
 export default (state = initialState, action = {}) => {
@@ -189,6 +214,23 @@ export default (state = initialState, action = {}) => {
         }),
       }
 
+    case CHANGE_PRODUCT_OPTION_VALUE_ENABLED_REQUEST:
+    case CHANGE_PRODUCT_OPTION_VALUE_ENABLED_SUCCESS:
+      return {
+        ...state,
+        fetchError: false,
+        isFetching: action.type === CHANGE_PRODUCT_OPTION_VALUE_ENABLED_REQUEST,
+        productOptions: spliceProductOptions(state.productOptions, action.payload),
+      }
+
+    case CHANGE_PRODUCT_OPTION_VALUE_ENABLED_FAILURE:
+      return {
+        ...state,
+        fetchError: action.payload.error,
+        isFetching: false,
+        productOptions: spliceProductOptions(state.productOptions, action.payload),
+      }
+
     case LOAD_ORDERS_SUCCESS:
       return {
         ...state,
@@ -234,8 +276,6 @@ export default (state = initialState, action = {}) => {
           // We select by default the first restaurant from the list
           // Most of the time, users will own only one restaurant
           restaurant,
-          specialOpeningHoursSpecification:
-            restaurant.hasOwnProperty('specialOpeningHoursSpecification') ? restaurant.specialOpeningHoursSpecification : [],
         }
       }
 
@@ -247,6 +287,14 @@ export default (state = initialState, action = {}) => {
         fetchError: false,
         isFetching: false,
         products: action.payload,
+      }
+
+    case LOAD_PRODUCT_OPTIONS_SUCCESS:
+      return {
+        ...state,
+        fetchError: false,
+        isFetching: false,
+        productOptions: action.payload,
       }
 
     case LOAD_MORE_PRODUCTS_SUCCESS:
@@ -266,13 +314,12 @@ export default (state = initialState, action = {}) => {
       }
 
     case CLOSE_RESTAURANT_SUCCESS:
+
       return {
         ...state,
         fetchError: false,
         isFetching: false,
         restaurant: action.payload,
-        specialOpeningHoursSpecification:
-          action.payload.hasOwnProperty('specialOpeningHoursSpecification') ? action.payload.specialOpeningHoursSpecification : [],
       }
 
     case DELETE_OPENING_HOURS_SPECIFICATION_SUCCESS:
@@ -283,10 +330,13 @@ export default (state = initialState, action = {}) => {
         ...state,
         fetchError: false,
         isFetching: false,
-        specialOpeningHoursSpecification: _.filter(
-          specialOpeningHoursSpecification,
-          openingHoursSpecification => openingHoursSpecification['@id'] !== action.payload['@id']
-        ),
+        restaurant: {
+          ...state.restaurant,
+          specialOpeningHoursSpecification: _.filter(
+            specialOpeningHoursSpecification,
+            openingHoursSpecification => openingHoursSpecification['@id'] !== action.payload['@id']
+          ),
+        },
       }
 
     case CHANGE_STATUS_SUCCESS:
@@ -298,6 +348,7 @@ export default (state = initialState, action = {}) => {
       }
 
     case CHANGE_RESTAURANT:
+
       return {
         ...state,
         restaurant: action.payload,
@@ -399,10 +450,29 @@ export default (state = initialState, action = {}) => {
 
         switch (name) {
           case 'order:created':
+          case 'order:accepted':
+          case 'order:picked':
+          case 'order:cancelled':
+
+            // FIXME
+            // Fix this on API side
+            let newOrder = { ...data.order }
+            if (name === 'order:cancelled' && newOrder.state !== 'cancelled') {
+              newOrder = {
+                ...newOrder,
+                state: 'cancelled',
+              }
+            }
+            if (name === 'order:accepted' && newOrder.state !== 'accepted') {
+              newOrder = {
+                ...newOrder,
+                state: 'accepted',
+              }
+            }
 
             return {
               ...state,
-              orders: addOrReplace(state, data.order),
+              orders: addOrReplace(state, newOrder),
             }
           default:
             break
