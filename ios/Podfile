@@ -1,10 +1,10 @@
-plugin 'cocoapods-user-defined-build-types'
-
-enable_user_defined_build_types!
-
 require_relative '../node_modules/react-native/scripts/react_native_pods'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 require_relative '../node_modules/react-native-unimodules/cocoapods.rb'
+
+plugin 'cocoapods-user-defined-build-types'
+
+enable_user_defined_build_types!
 
 platform :ios, '11.0'
 
