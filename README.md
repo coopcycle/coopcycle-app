@@ -13,7 +13,7 @@ Prerequisites
             npm install –g react-native-cli
         ```
 
-    * Or you can use `npx` wich ships with Node.js instead of install React Native CLI.
+    * Or you can use `npx` which ships with Node.js instead of installing React Native CLI.
 
         With `npx react-native <command>`, the current stable version of the CLI will be downloaded and executed at the time the command is run.
 
@@ -70,7 +70,8 @@ A Google Maps API Key is needed at compilation time for Android (see `AndroidMan
 GOOGLE_MAPS_BROWSER_KEY=YOUR_API_KEY
 GOOGLE_MAPS_ANDROID_KEY=YOUR_API_KEY
 ```
-Those keys won't work for address autocomplete if you don't have [billing enabled in Google Cloud](https://cloud.google.com/billing/docs/how-to/manage-billing-account). Before enable billing in your project, read and check the [the terms and conditions for the free trial](https://cloud.google.com/terms/free-trial/).
+
+Those keys won't work for address autocomplete if you don't have [billing enabled in Google Cloud](https://cloud.google.com/billing/docs/how-to/manage-billing-account). Before enabling billing in your project, read and check the [the terms and conditions for the free trial](https://cloud.google.com/terms/free-trial/).
 
 Setup - iOS
 -----------
