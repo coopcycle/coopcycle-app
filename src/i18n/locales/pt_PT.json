@@ -218,7 +218,7 @@
         "CHECKOUT_PRODUCT_OPTIONS_CHOICES_BETWEEN": "Escolhas entre {{min}} e {{max}}",
         "ADD_TO_CART": "Adicionar ao carrinho",
         "NOTIFICATION_TASKS_CHANGED_TITLE": "Tarefas alteradas",
-        "NOTIFICATION_TASKS_CHANGED_DESC": "As suas tarefas de {{date}} foram atualizadas",
+        "NOTIFICATION_TASKS_CHANGED_DESC": "Suas tarefas de {{date}} foram atualizadas, {{added}}",
         "NOTIFICATION_ORDER_CREATED_TITLE": "Novo pedido",
         "NOTIFICATION_ORDER_CREATED_DESC": "Foi criado um novo pedido para {{date}}",
         "UNASSIGNED_TASKS": "Não atribuído",
@@ -357,7 +357,23 @@
         "SELECTED": "Selecionado",
         "LEARN_MORE": "Saiba mais",
         "CART_COLLECTION_DISCLAIMER": "Você optou por \"clicar & levantar\". \nVocê é responsável pelo levantamento do seu pedido no dia e hora marcados.\nSe tiver um problema, contacte o estabelecimento via {{telephone}}.\nNota relevante: se não fizer o levantamento será na mesma cobrado no valor integral.",
-        "CART_COLLECTION_TIME_DIFF": "Levantamento dentro de {{diff}} minutos",
-        "CART_COLLECTION_TIME": "Levantamento {{- fromNow}}"
+        "CART_COLLECTION_TIME_DIFF": "Levantamento em {{diff}} minutes",
+        "CART_COLLECTION_TIME": "Levantamento {{- fromNow}}",
+        "RESTAURANT_SETTINGS_MANAGE_PRODUCT_OPTIONS": "Alterar opções do produto",
+        "BACKGROUND_PERMISSION_RATIONALE": {
+            "positiveAction": "Mudar para « {backgroundPermissionOptionLabel} »",
+            "message": "Quando usuários conectados como apoio, este app necessita da localização para permitir que sejam atribuídos pedidos corretamente",
+            "title": "Permitir que {applicationName} acesse sua localização, mesmo quando o app está fechado ou não está em uso"
+        },
+        "BACKGROUND_PERMISSION_DISCLOSURE": {
+            "message": "Para permitir que a atribuição de pedidos com precisão, permita que o CoopCycle acesse a localização deste dispositivo, mesmo quando o aplicativo está fechado ou não em uso.\n\nEsses dados serão carregados para a CoopCycle à qual você está conectado.",
+            "title": "Use sua localização"
+        },
+        "NOT_AVAILABLE_ATM": "Não disponível no momento",
+        "NOTIFICATION_TASKS_REMOVED": "{{ count }} removida",
+        "NOTIFICATION_TASKS_ADDED": "{{ count }} adicionada",
+        "RESTAURANT_ORDER_LIST_PICKED_ORDERS": "Pedidos levantados ({{count}})",
+        "CARDHOLDER_NAME": "Nome do titular",
+        "RECEIPT_CUSTOMER_NAME": "CLIENTE: {{customer}}"
     }
 }
