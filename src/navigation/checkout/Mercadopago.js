@@ -3,17 +3,17 @@ import { withTranslation } from 'react-i18next'
 import { Image, View } from 'react-native'
 import { connect } from 'react-redux'
 import MercadoPagoCheckout from '@blackbox-vision/react-native-mercadopago-px'
-import { mercadopagoCheckout as checkout } from '../../redux/Checkout/actions'
+import { mercadopagoCheckout } from '../../redux/Checkout/actions'
 
 function Mercadopago({ cart, checkout, country, httpClient, publicKey }) {
 
   React.useEffect(() => {
-    async function fetchPreferenceId(httpClient, cart) {
+    async function fetchPreferenceId() {
       const { ['@id']: namespace } = cart
       return await httpClient.get(`${namespace}/mercadopago-preference`)
     }
 
-    async function createPayment({ publicKey, preferenceId }) {
+    async function createPayment({ preferenceId }) {
       return await MercadoPagoCheckout.createPayment({
         publicKey,
         preferenceId,
@@ -21,18 +21,18 @@ function Mercadopago({ cart, checkout, country, httpClient, publicKey }) {
         advancedOptions: {
           amountRowEnabled: false,
           bankDealsEnabled: false,
-        }
+        },
       })
     }
 
-    cart && fetchPreferenceId(httpClient, cart)
+    cart && fetchPreferenceId()
     .then(preferenceId => {
       checkout({
-        payment: createPayment({ publicKey, preferenceId }),
-        preferenceId
+        payment: createPayment({ preferenceId }),
+        preferenceId,
       })
     })
-  }, [cart, checkout, country, publicKey])
+  }, [cart, checkout, country, publicKey, httpClient])
 
   return (
     <View style={{alignItems: 'center', justifyContent: 'center', flex: 1}}>
@@ -49,8 +49,8 @@ function mapStateToProps(state) {
       settings: {
         mercadopago_publishable_key: publicKey,
         country,
-      }
-    }
+      },
+    },
   } = state
 
   return { cart, country, httpClient, publicKey }
@@ -58,7 +58,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    checkout: ({payment, preferenceId}) => dispatch(checkout({payment, preferenceId})),
+    checkout: ({payment, preferenceId}) => dispatch(mercadopagoCheckout({payment, preferenceId})),
   }
 }
 

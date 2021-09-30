@@ -1,5 +1,6 @@
 import { createAction } from 'redux-actions'
 import { StackActions, CommonActions } from '@react-navigation/native'
+import { NavigationActions } from 'react-navigation';
 import Stripe from 'tipsi-stripe'
 import _ from 'lodash'
 
@@ -603,7 +604,7 @@ export function mercadopagoCheckout({payment, preferenceId}) {
     const { cart } = getState().checkout
 
     dispatch(checkoutRequest())
-    
+
     /**
      * Starts a Mercadopago checkout
      */
@@ -611,7 +612,7 @@ export function mercadopagoCheckout({payment, preferenceId}) {
     .then(({id: paymentId}) => {
       const params = {
         mercadopagoPreferenceId: preferenceId,
-        mercadopagoPaymentId: paymentId
+        mercadopagoPaymentId: paymentId,
       }
 
       httpClient
