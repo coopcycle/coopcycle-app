@@ -380,7 +380,7 @@ PODS:
     - React-jsi (= 0.64.2)
     - React-perflogger (= 0.64.2)
   - React-jsinspector (0.64.2)
-  - react-native-ble-manager (7.6.1):
+  - react-native-ble-manager (7.6.3):
     - React-Core
   - react-native-camera (3.44.3):
     - React-Core
@@ -502,11 +502,11 @@ PODS:
     - RNFBApp
   - RNGestureHandler (1.10.3):
     - React-Core
-  - RNLocalize (2.1.4):
+  - RNLocalize (2.1.5):
     - React-Core
   - RNReanimated (1.13.3):
     - React-Core
-  - RNScreens (3.7.2):
+  - RNScreens (3.8.0):
     - React-Core
     - React-RCTImage
   - RNSentry (2.6.0):
@@ -855,7 +855,7 @@ SPEC CHECKSUMS:
   React-jsi: 67747b9722f6dab2ffe15b011bcf6b3f2c3f1427
   React-jsiexecutor: 80c46bd381fd06e418e0d4f53672dc1d1945c4c3
   React-jsinspector: cc614ec18a9ca96fd275100c16d74d62ee11f0ae
-  react-native-ble-manager: 0db2dcfb9de2053dc6a607a64721423db124c250
+  react-native-ble-manager: 0a801bf5a08ed405da046aa155243a987d779c59
   react-native-camera: b8cc03e2feec0c04403d0998e37cf519d8fd4c6f
   react-native-config: 72d948053a442779b3178fddd571e37f118ef606
   react-native-get-random-values: 237bffb1c7e05fb142092681531810a29ba53015
@@ -888,9 +888,9 @@ SPEC CHECKSUMS:
   RNFBApp: b97d6654509a5852d49f0abf93be76b300fd2e2c
   RNFBCrashlytics: ec6152821499cc74aa5fba9f5016591a817c8451
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
-  RNLocalize: 7f1e5792b65a839af55a9552d05b3558b66d017e
+  RNLocalize: 74b82db20cc3895ccc25af992c644879bcec2815
   RNReanimated: 514a11da3a2bcc6c3dfd9de32b38e2b9bf101926
-  RNScreens: 0591543e343c7444ea1756b6265d81a4295922c9
+  RNScreens: 6e1ea5787989f92b0671049b808aef64fa1ef98c
   RNSentry: a2b02b326ae4fce91ce7c57d3f7dcf8df4f72269
   RNSketchCanvas: 9c28adb5381543ed55cc98ce6de46479cb3cb12c
   RNSound: 27e8268bdb0a1f191f219a33267f7e0445e8d62f
