@@ -615,23 +615,11 @@ export function mercadopagoCheckout({payment, preferenceId}) {
         mercadopagoPaymentId: paymentId,
       }
 
+      // TODO we need to fix how we are calling /pay endpoint
       httpClient
       .put(cart['@id'] + '/pay', params)
       .then(order => {
-        // First, reset checkout stack
-        NavigationHolder.dispatch(StackActions.popToTop())
-        // Then, navigate to order screen
-        NavigationHolder.dispatch(NavigationActions.navigate({
-          routeName: 'AccountNav',
-          // We skip the AccountOrders screen
-          action: NavigationActions.navigate({
-            routeName: 'AccountOrder',
-            params: { order },
-          }),
-        }))
-        // Make sure to clear AFTER navigation has been reseted
-        dispatch(clear())
-        dispatch(checkoutSuccess(order))
+        handleSuccessNav(dispatch, order);
       })
       .catch(orderUpdateError => {
         handleError(dispatch, orderUpdateError)

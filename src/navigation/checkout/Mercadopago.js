@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import MercadoPagoCheckout from '@blackbox-vision/react-native-mercadopago-px'
 import { mercadopagoCheckout } from '../../redux/Checkout/actions'
 
-function Mercadopago({ cart, checkout, country, httpClient, publicKey }) {
+function Mercadopago({ cart, checkout, country, httpClient, restaurant }) {
 
   React.useEffect(() => {
     async function fetchPreferenceId() {
@@ -13,7 +13,11 @@ function Mercadopago({ cart, checkout, country, httpClient, publicKey }) {
       return await httpClient.get(`${namespace}/mercadopago-preference`)
     }
 
-    async function createPayment({ preferenceId }) {
+    async function fetchMercadopagoAccount() {
+      return await httpClient.get(`/restaurant/${restaurant.id}/mercadopago-account`)
+    }
+
+    async function createPayment({ preferenceId, publicKey }) {
       return await MercadoPagoCheckout.createPayment({
         publicKey,
         preferenceId,
@@ -25,14 +29,14 @@ function Mercadopago({ cart, checkout, country, httpClient, publicKey }) {
       })
     }
 
-    cart && fetchPreferenceId()
-    .then(preferenceId => {
+    cart && Promise.all([fetchPreferenceId(), fetchMercadopagoAccount()])
+    .then(([preferenceId, { public_key: publicKey }]) => {
       checkout({
-        payment: createPayment({ preferenceId }),
+        payment: createPayment({ preferenceId, publicKey }),
         preferenceId,
       })
     })
-  }, [cart, checkout, country, publicKey, httpClient])
+  }, [cart, checkout, country, restaurant, httpClient])
 
   return (
     <View style={{alignItems: 'center', justifyContent: 'center', flex: 1}}>
@@ -43,17 +47,16 @@ function Mercadopago({ cart, checkout, country, httpClient, publicKey }) {
 
 function mapStateToProps(state) {
   const {
-    checkout: { cart },
+    checkout: { cart, restaurant },
     app: {
       httpClient,
       settings: {
-        mercadopago_publishable_key: publicKey,
         country,
       },
     },
   } = state
 
-  return { cart, country, httpClient, publicKey }
+  return { cart, country, httpClient, restaurant }
 }
 
 function mapDispatchToProps(dispatch) {
