@@ -7,6 +7,7 @@ import { AllergenList, RestrictedDietList } from './MenuBadges'
 const AnimatedSectionList = Animated.createAnimatedComponent(SectionList);
 
 import { formatPrice } from '../utils/formatting'
+import ItemSeparator from './ItemSeparator'
 
 const styles = StyleSheet.create({
   sectionHeader: {
@@ -50,16 +51,7 @@ const styles = StyleSheet.create({
     color: '#747474',
     fontSize: 22,
   },
-  itemSeparator: {
-    height: StyleSheet.hairlineWidth,
-    width: '100%',
-    backgroundColor: '#e7e7e7',
-  },
 });
-
-const ItemSeparatorComponent = () => (
-  <View style={ styles.itemSeparator } />
-)
 
 class Menu extends Component {
 
@@ -139,7 +131,7 @@ class Menu extends Component {
         renderSectionHeader={ ({ section }) => this.renderSectionHeader(section) }
         keyExtractor={ (item, index) => index }
         initialNumToRender={ 15 }
-        ItemSeparatorComponent={ ItemSeparatorComponent } />
+        ItemSeparatorComponent={ ItemSeparator } />
     )
   }
 }

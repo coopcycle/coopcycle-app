@@ -15,6 +15,7 @@ import Config from 'react-native-config'
 
 import { localeDetector } from '../i18n'
 import AddressUtils from '../utils/Address'
+import ItemSeparator from './ItemSeparator'
 
 const fuseOptions = {
   shouldSort: true,
@@ -29,10 +30,6 @@ const fuseOptions = {
     'streetAddress',
   ],
 }
-
-const ItemSeparatorComponent = () => (
-  <View style={ styles.itemSeparator } />
-)
 
 const PoweredByGoogle = () => (
   <View style={ styles.poweredContainer }>
@@ -369,7 +366,8 @@ class AddressAutocomplete extends Component {
         placeholder={ finalPlaceholder }
         onChangeText={ this._onChangeText.bind(this) }
         keyExtractor={ (item, i) => `prediction-${i}` }
-        flatListProps={{ ItemSeparatorComponent,
+        flatListProps={{
+          ItemSeparatorComponent: ItemSeparator,
           ListFooterComponent: (this.props.country === 'gb' ? PoweredByIdealPostcodes : PoweredByGoogle),
         }}
         renderTextInput={ props => this.renderTextInput(props) }
@@ -417,11 +415,6 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 10,
     backgroundColor: '#FFFFFF',
-  },
-  itemSeparator: {
-    height: StyleSheet.hairlineWidth,
-    width: '100%',
-    backgroundColor: '#333',
   },
   textInput: {
     flex: 1,

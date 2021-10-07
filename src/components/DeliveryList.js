@@ -7,6 +7,7 @@ import _ from 'lodash'
 import { withTranslation } from 'react-i18next'
 
 import { stateColor } from '../utils/delivery'
+import ItemSeparator from './ItemSeparator'
 
 const styles = StyleSheet.create({
   item: {
@@ -24,11 +25,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingRight: 15,
-  },
-  itemSeparator: {
-    height: StyleSheet.hairlineWidth,
-    width: '100%',
-    backgroundColor: '#CCCCCC',
   },
   textSmall: {
     fontSize: 12,
@@ -48,10 +44,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
 })
-
-const ItemSeparatorComponent = () => (
-  <View style={ styles.itemSeparator } />
-)
 
 const SectionHeaderComponent = ({ title }) => (
   <View style={ styles.header }>
@@ -160,7 +152,7 @@ class DeliveryList extends Component {
         refreshing={ this.props.refreshing }
         keyExtractor={ (item, index) => item['@id'] }
         renderItem={ ({ item }) => this.renderItem(item) }
-        ItemSeparatorComponent={ ItemSeparatorComponent }
+        ItemSeparatorComponent={ ItemSeparator }
         ListFooterComponent={ this.renderFooter.bind(this) }
         renderSectionHeader={ ({ section: { title } }) => (
           <SectionHeaderComponent title={ title } />

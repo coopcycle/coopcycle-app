@@ -8,10 +8,7 @@ import { addItemWithOptions } from '../../redux/Checkout/actions'
 import { formatPrice } from '../../utils/formatting'
 import ProductOptionsBuilder from '../../utils/ProductOptionsBuilder'
 import FooterButton from './components/FooterButton'
-
-const ItemSeparatorComponent = () => (
-  <View style={ styles.itemSeparator } />
-)
+import ItemSeparator from '../../components/ItemSeparator'
 
 const SimpleOption = ({ name, price, onPress, selected, index, sectionIndex }) => {
 
@@ -235,7 +232,7 @@ class ProductOptions extends Component {
           renderItem={ ({ item, section, index }) => this.renderItem(item, section, index) }
           renderSectionHeader={ ({ section }) => this.renderSection(section) }
           keyExtractor={ (item, index) => index }
-          ItemSeparatorComponent={ ItemSeparatorComponent }
+          ItemSeparatorComponent={ ItemSeparator }
         />
         { this.renderFooter() }
       </Container>
@@ -244,11 +241,6 @@ class ProductOptions extends Component {
 }
 
 const styles = StyleSheet.create({
-  itemSeparator: {
-    height: StyleSheet.hairlineWidth,
-    width: '100%',
-    backgroundColor: '#cccccc',
-  },
   item: {
     flex: 1,
     flexDirection: 'row',

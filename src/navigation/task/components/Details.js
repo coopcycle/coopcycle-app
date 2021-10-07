@@ -7,6 +7,8 @@ import { phonecall } from 'react-native-communications'
 import moment from 'moment'
 import { Col, Row } from 'react-native-easy-grid'
 
+import ItemSeparator from '../../../components/ItemSeparator'
+
 const Detail = ({ item }) => {
 
   const { iconName, text, component, onPress } = item
@@ -106,14 +108,7 @@ const Details = ({ task, t }) => {
       data={ items }
       keyExtractor={ (item, index) => item.iconName }
       renderItem={ ({ item }) => <Detail item={ item } /> }
-      ItemSeparatorComponent={ () => (
-        <View
-          style={{
-            height: StyleSheet.hairlineWidth,
-            backgroundColor: '#ccc',
-          }}
-        />
-      )} />
+      ItemSeparatorComponent={ ItemSeparator } />
   )
 }
 
