@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { InteractionManager, View } from 'react-native';
+import { InteractionManager, View, FlatList } from 'react-native';
 import {
-  List, ListItem, Text,
+  Text,
 } from 'native-base';
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 import { loadAddresses } from '../../redux/Account/actions'
+import ItemSeparator from '../../components/ItemSeparator'
 
 class AccountAddressesPage extends Component {
 
@@ -15,11 +16,11 @@ class AccountAddressesPage extends Component {
     })
   }
 
-  _renderRow(item) {
+  _renderRow({ item }) {
     return (
-      <ListItem>
+      <View style={{ paddingVertical: 15, paddingHorizontal: 10 }}>
         <Text>{ item.streetAddress }</Text>
-      </ListItem>
+      </View>
     );
   }
 
@@ -29,8 +30,12 @@ class AccountAddressesPage extends Component {
 
     return (
       <View style={{ flex: 1 }}>
-        <List dataArray={ addresses } renderRow={ this._renderRow.bind(this) }
-          keyExtractor={ (item) => item['@id'] } />
+        <FlatList
+          keyExtractor={ (item) => item['@id'] }
+          data={ addresses }
+          ItemSeparatorComponent={ ItemSeparator }
+          renderItem={ this._renderRow.bind(this) }
+        />
       </View>
     );
   }
