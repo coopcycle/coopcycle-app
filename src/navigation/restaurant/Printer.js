@@ -17,6 +17,7 @@ import BleManager from 'react-native-ble-manager'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
 import { connectPrinter, bluetoothStartScan, disconnectPrinter } from '../../redux/Restaurant/actions'
+import ItemSeparator from '../../components/ItemSeparator'
 
 const BleManagerModule = NativeModules.BleManager
 const bleManagerEmitter = new NativeEventEmitter(BleManagerModule)
@@ -107,24 +108,27 @@ class Printer extends Component {
       items = devices.map(device => ({ ...device, isConnected: false }))
     }
 
-    const showList = !isScanning && items.length > 0
+    const hasItems = !isScanning && items.length > 0
+
+    if (!hasItems) {
+
+      return (
+        <Center flex={ 1 }>
+          <TouchableOpacity onPress={ () => this._onPressScan() } style={{ padding: 15, alignItems: 'center' }}>
+            <Icon as={ FontAwesome } name="print" size="lg" />
+            <Text>{ this.props.t('SCAN_FOR_PRINTERS') }</Text>
+            { isScanning && <ActivityIndicator size="large" color="#c7c7c7" style={{ marginTop: 5 }} /> }
+          </TouchableOpacity>
+        </Center>
+      )
+    }
 
     return (
-        <Center flex={ 1 }>
-          { showList && (
-            <FlatList
-              data={ items }
-              keyExtractor={ item => item.id }
-              renderItem={ ({ item }) => this.renderItem(item) } />
-          ) }
-          { !showList && (
-            <TouchableOpacity onPress={ () => this._onPressScan() } style={{ padding: 15, alignItems: 'center' }}>
-              <Icon as={ FontAwesome } name="print" size="lg" />
-              <Text>{ this.props.t('SCAN_FOR_PRINTERS') }</Text>
-              { isScanning && <ActivityIndicator size="large" color="#c7c7c7" style={{ marginTop: 5 }} /> }
-            </TouchableOpacity>
-          ) }
-        </Center>
+      <FlatList
+        data={ items }
+        keyExtractor={ item => item.id }
+        renderItem={ ({ item }) => this.renderItem(item) }
+        ItemSeparatorComponent={ ItemSeparator } />
     )
   }
 }
