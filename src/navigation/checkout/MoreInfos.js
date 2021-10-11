@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { View, StyleSheet, TextInput, InteractionManager } from 'react-native'
-import { Text, VStack } from 'native-base'
+import { View, StyleSheet, InteractionManager } from 'react-native'
+import { Text, VStack, FormControl, Input, TextArea } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 import { Formik } from 'formik'
@@ -98,12 +98,11 @@ class MoreInfos extends Component {
             <View style={{ backgroundColor: '#cce5ff', padding: 20 }}>
               <Text note style={{ textAlign: 'center', color: '#004085' }}>{ this.props.t('CHECKOUT_MORE_INFOS_DISCLAIMER') }</Text>
             </View>
-            <VStack style={ styles.content }>
-              <View style={ [ styles.formGroup ] }>
-                <Text style={ styles.label }>{ this.props.t('STORE_NEW_DELIVERY_PHONE_NUMBER') }</Text>
-                <TextInput
+            <VStack p="2">
+              <FormControl mb="2">
+                <FormControl.Label>{ this.props.t('STORE_NEW_DELIVERY_PHONE_NUMBER') }</FormControl.Label>
+                <Input
                   testID="checkoutTelephone"
-                  style={ [ styles.textInput ] }
                   autoCorrect={ false }
                   keyboardType="phone-pad"
                   returnKeyType="done"
@@ -114,33 +113,29 @@ class MoreInfos extends Component {
                   <Text note style={ styles.errorText }>{ errors.telephone }</Text>
                 ) }
                 { !hasPhoneNumberErrors(errors, touched) && (
-                  <Text note>{ this.props.t('CHECKOUT_ORDER_PHONE_NUMBER_HELP') }</Text>
+                  <FormControl.HelperText>{ this.props.t('CHECKOUT_ORDER_PHONE_NUMBER_HELP') }</FormControl.HelperText>
                 ) }
-              </View>
+              </FormControl>
               { Object.prototype.hasOwnProperty.call(values, 'address') && (
-              <View style={ [ styles.formGroup ] }>
-                <Text style={ styles.label }>{ this.props.t('CHECKOUT_ORDER_ADDRESS_DESCRIPTION') }</Text>
-                <TextInput
-                  style={ [ styles.textInput, styles.textarea ] }
+              <FormControl mb="2">
+                <FormControl.Label>{ this.props.t('CHECKOUT_ORDER_ADDRESS_DESCRIPTION') }</FormControl.Label>
+                <TextArea
                   autoCorrect={ false }
-                  multiline={ true }
-                  numberOfLines={ 3 }
+                  totalLines={ 3 }
                   onChangeText={ handleChange('address.description') }
                   onBlur={ handleBlur('address.description') } />
-                <Text note>{ this.props.t('CHECKOUT_ORDER_ADDRESS_DESCRIPTION_HELP') }</Text>
-              </View>
+                <FormControl.HelperText>{ this.props.t('CHECKOUT_ORDER_ADDRESS_DESCRIPTION_HELP') }</FormControl.HelperText>
+              </FormControl>
               )}
-              <View style={ [ styles.formGroup ] }>
-                <Text style={ styles.label }>{ this.props.t('CHECKOUT_ORDER_NOTES') }</Text>
-                <TextInput
-                  style={ [ styles.textInput, styles.textarea ] }
+              <FormControl mb="2">
+                <FormControl.Label>{ this.props.t('CHECKOUT_ORDER_NOTES') }</FormControl.Label>
+                <TextArea
                   autoCorrect={ false }
-                  multiline={ true }
-                  numberOfLines={ 3 }
+                  totalLines={ 3 }
                   onChangeText={ handleChange('notes') }
                   onBlur={ handleBlur('notes') } />
-                <Text note>{ this.props.t('CHECKOUT_ORDER_NOTES_HELP') }</Text>
-              </View>
+                <FormControl.HelperText>{ this.props.t('CHECKOUT_ORDER_NOTES_HELP') }</FormControl.HelperText>
+              </FormControl>
             </VStack>
             <FooterButton
               testID="moreInfosSubmit"
@@ -154,10 +149,6 @@ class MoreInfos extends Component {
 }
 
 const styles = StyleSheet.create({
-  content: {
-    paddingTop: 15,
-    paddingBottom: 20,
-  },
   message: {
     alignItems: 'center',
     padding: 20,
@@ -165,21 +156,6 @@ const styles = StyleSheet.create({
   label: {
     marginBottom: 5,
     fontWeight: '600',
-  },
-  formGroup: {
-    paddingHorizontal: 10,
-    marginBottom: 10,
-  },
-  textInput: {
-    borderColor: '#b9b9b9',
-    borderRadius: 1,
-    borderWidth: 1,
-    height: 40,
-    padding: 5,
-    color: '#333',
-  },
-  textarea: {
-    height: (25 * 3),
   },
   errorText: {
     color: '#FF4136',
