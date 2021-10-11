@@ -4,10 +4,9 @@ import {
   View,
   Animated,
   Keyboard,
-  TextInput,
   Platform,
 } from 'react-native';
-import { Center, Text } from 'native-base';
+import { Center, Text, Input } from 'native-base';
 import _ from 'lodash'
 import { LiteCreditCardInput } from 'react-native-credit-card-input'
 import { withTranslation } from 'react-i18next'
@@ -130,11 +129,11 @@ class CreditCard extends Component {
             </Text>
             <View style={ styles.creditCardInputContainer }>
               <View style={ [ styles.formInputContainer, { paddingHorizontal: 20, marginBottom: 15 } ] }>
-                <TextInput
+                <Input
                   testID="cardholderName"
                   autoCorrect={ false }
                   autoCapitalize="none"
-                  style={{ height: 40, color: '#333' }}
+                  style={{ height: 40 }}
                   placeholder={ this.props.t('CARDHOLDER_NAME') }
                   onChangeText={ handleChange('cardholderName') }
                   onBlur={ handleBlur('cardholderName') } />
@@ -192,10 +191,6 @@ const styles = StyleSheet.create({
   errorText: {
     textAlign: 'center',
     color: '#ed2f2f',
-  },
-  payButton: {
-    color: '#ffffff',
-    fontSize: 16,
   },
 })
 
