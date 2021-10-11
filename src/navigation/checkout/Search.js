@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import {
   InteractionManager,
-  StyleSheet,
   View,
   Dimensions,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { Icon, Text } from 'native-base';
+import { Icon, Text, Center } from 'native-base';
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 import Ionicons from 'react-native-vector-icons/Ionicons'
@@ -54,23 +53,19 @@ class RestaurantsPage extends Component {
       if (addressAsText) {
 
         return (
-          <View style={ styles.content }>
-            <View style={{ paddingHorizontal: 15 }}>
-              <Text note style={{ textAlign: 'center' }}>
-                {this.props.t('NO_RESTAURANTS')}
-              </Text>
-            </View>
-          </View>
+          <Center flex={ 1 } px="2">
+            <Text note style={{ textAlign: 'center' }}>
+              {this.props.t('NO_RESTAURANTS')}
+            </Text>
+          </Center>
         )
       }
 
       return (
-        <View style={ styles.content } testID="checkoutSearchContent">
-          <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-            <Icon as={Ionicons} name="search" style={{ color: '#cccccc' }} />
-            <Text note>{ this.props.t('ENTER_ADDRESS') }</Text>
-          </View>
-        </View>
+        <Center flex={ 1 } testID="checkoutSearchContent">
+          <Icon as={Ionicons} name="search" style={{ color: '#cccccc' }} />
+          <Text note>{ this.props.t('ENTER_ADDRESS') }</Text>
+        </Center>
       )
     }
 
@@ -107,14 +102,6 @@ class RestaurantsPage extends Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  content: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-})
 
 function mapStateToProps(state, ownProps) {
 
