@@ -5,7 +5,6 @@ import { SwipeRow } from 'react-native-swipe-list-view'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 import { withTranslation } from 'react-i18next'
-import Ionicons from 'react-native-vector-icons/Ionicons'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
 import { greenColor, redColor } from '../styles/common'
@@ -22,6 +21,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
+    paddingRight: 10,
   },
   itemIcon: {
     alignItems: 'center',
@@ -32,9 +32,6 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     paddingHorizontal: 5,
     flexGrow: 1,
-  },
-  itemNavigation: {
-    paddingRight: 15,
   },
   disabled: {
     opacity: 0.4,
@@ -189,7 +186,7 @@ class TaskListItem extends Component {
               <Text numberOfLines={ 1 } style={ textStyle }>{ task.address.streetAddress }</Text>
               <Text style={ textStyle }>{ moment(task.doneAfter).format('LT') } - { moment(task.doneBefore).format('LT') }</Text>
             </View>
-            <Icon as={Ionicons} style={ styles.itemNavigation } name="ios-arrow-forward" />
+            <Icon as={ FontAwesome } name="arrow-right" />
           </View>
         </TouchableHighlight>
       </SwipeRow>
