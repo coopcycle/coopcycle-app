@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import {
-  Left,
   Icon, Text,
-  Card, CardItem,
   Box, HStack,
 } from 'native-base';
 import { connect } from 'react-redux'
