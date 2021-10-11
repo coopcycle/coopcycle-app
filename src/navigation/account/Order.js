@@ -8,6 +8,8 @@ import {
   Icon,
   VStack,
   Box,
+  Center,
+  HStack,
 } from 'native-base'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
@@ -47,7 +49,7 @@ class OrderTrackingPage extends Component {
 
     let stateText = ''
     let iconName = 'question-circle-o'
-    const headerContainerStyle = [ styles.headerContainer ]
+    const headerContainerStyle = []
 
     switch (order.state) {
       case 'new':
@@ -68,12 +70,12 @@ class OrderTrackingPage extends Component {
     }
 
     return (
-      <View style={ styles.header }>
-        <View style={ headerContainerStyle }>
+      <Center style={ headerContainerStyle } p="2">
+        <HStack alignItems="center">
           <Icon style={ [ styles.headerText, { marginRight: 10 } ] } as={ FontAwesome } name={ iconName } />
           <Text style={ styles.headerText }>{ stateText }</Text>
-        </View>
-      </View>
+        </HStack>
+      </Center>
     )
   }
 
@@ -84,11 +86,9 @@ class OrderTrackingPage extends Component {
     switch (order.state) {
       case 'new':
         return (
-          <View style={ styles.subHeader }>
-            <View style={ styles.subHeaderContainer }>
-              <Text note>{ this.props.t('ORDER_NEW_HELP') }</Text>
-            </View>
-          </View>
+          <Center py="1">
+            <Text note>{ this.props.t('ORDER_NEW_HELP') }</Text>
+          </Center>
         )
     }
 
@@ -106,13 +106,13 @@ class OrderTrackingPage extends Component {
         { this.renderHeader() }
         { this.renderSubHeader() }
         <VStack flex={ 1 } testID="accountOrder">
-          <Box style={ styles.restaurantContainer }>
+          <Center mb="3" py="2">
             <Icon style={ styles.restaurantText }
               as={ FontAwesome } name="cutlery" />
             <Text style={ styles.restaurantText }>
               { order.restaurant.name }
             </Text>
-          </Box>
+          </Center>
           <OrderItems order={ order } withDeliveryTotal={ true } />
         </VStack>
       </VStack>
@@ -121,15 +121,6 @@ class OrderTrackingPage extends Component {
 }
 
 const styles = StyleSheet.create({
-  header: {
-    height: 64,
-  },
-  headerContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   headerText: {
     color: 'white',
   },
@@ -141,20 +132,6 @@ const styles = StyleSheet.create({
   },
   headerOrderFulfilled: {
     backgroundColor: '#2ECC71',
-  },
-  subHeader: {
-    height: 32,
-  },
-  subHeaderContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  restaurantContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 25,
   },
   restaurantText: {
     color: '#cccccc',
