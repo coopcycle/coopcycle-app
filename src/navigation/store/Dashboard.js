@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { View } from 'react-native'
-import { Container } from 'native-base';
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 import _ from 'lodash'
@@ -24,31 +23,29 @@ class StoreDashboard extends Component {
     const { navigate } = this.props.navigation
 
     return (
-      <Container>
-        <View style={{ flex: 1, flexDirection: 'column', marginBottom: variables.isIphoneX ? 88 : 0 }}>
-          <DeliveryList
-            data={ this.props.deliveries }
-            loading={ this.props.loadingMore }
-            onEndReached={ this.props.loadMoreDeliveries }
-            onItemPress={ item => navigate('StoreDelivery', { delivery: item }) }
-            onRefresh={ () => this.props.loadDeliveries(this.props.store, true) }
-            refreshing={ this.props.refreshing }
-            itemCaptionLines={ delivery => {
-              const { pickup, dropoff } = delivery
+      <View style={{ flex: 1, flexDirection: 'column', marginBottom: variables.isIphoneX ? 88 : 0 }}>
+        <DeliveryList
+          data={ this.props.deliveries }
+          loading={ this.props.loadingMore }
+          onEndReached={ this.props.loadMoreDeliveries }
+          onItemPress={ item => navigate('StoreDelivery', { delivery: item }) }
+          onRefresh={ () => this.props.loadDeliveries(this.props.store, true) }
+          refreshing={ this.props.refreshing }
+          itemCaptionLines={ delivery => {
+            const { pickup, dropoff } = delivery
 
-              const lines = []
-              if (pickup.address['@id'] === this.props.store.address['@id'] && !_.isEmpty(dropoff.address.contactName)) {
-                lines.push(dropoff.address.contactName)
-              } else {
-                lines.push(pickup.address.streetAddress)
-              }
-              lines.push(dropoff.address.streetAddress)
+            const lines = []
+            if (pickup.address['@id'] === this.props.store.address['@id'] && !_.isEmpty(dropoff.address.contactName)) {
+              lines.push(dropoff.address.contactName)
+            } else {
+              lines.push(pickup.address.streetAddress)
+            }
+            lines.push(dropoff.address.streetAddress)
 
-              return lines
-            }}
-            />
-        </View>
-      </Container>
+            return lines
+          }}
+          />
+      </View>
     )
   }
 }

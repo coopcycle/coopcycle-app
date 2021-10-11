@@ -3,6 +3,7 @@ import { View, StyleSheet } from 'react-native'
 import { useTranslation } from 'react-i18next'
 import moment from 'moment'
 import { Icon, Text } from 'native-base'
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
 import material from '../../../../native-base-theme/variables/material'
 import OrderButtons from './OrderButtons'
@@ -52,7 +53,7 @@ const OrderHeading = ({ order, isPrinterConnected, onPrinterClick, printOrder })
         <Text>{ t(`FULFILLMENT_METHOD.${resolveFulfillmentMethod(order)}`) }</Text>
       </View>
       <View style={ styles.timeline }>
-        <Icon type="FontAwesome" name="clock-o" />
+        <Icon as={FontAwesome} name="clock-o" />
         <View style={{ alignItems: 'flex-end' }}>
           <Text>{ t('RESTAURANT_ORDER_PREPARATION_EXPECTED_AT', { date: preparationExpectedAt.format('LT') }) }</Text>
           <Text>{ t('RESTAURANT_ORDER_PICKUP_EXPECTED_AT',      { date: pickupExpectedAt.format('LT') }) }</Text>

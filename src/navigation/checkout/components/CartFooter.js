@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Animated, View } from 'react-native'
-import { Footer } from 'native-base'
+import { HStack } from 'native-base'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 import PropTypes from 'prop-types'
@@ -42,7 +42,7 @@ class CartFooter extends Component {
     const { cart } = this.props
 
     return (
-      <Footer testID="cartFooter">
+      <HStack testID="cartFooter">
         <View style={{ flex: 1, alignItems: 'center', paddingHorizontal: 5, paddingVertical: 5 }}>
           <CartFooterButton
             cart={ cart }
@@ -51,7 +51,7 @@ class CartFooter extends Component {
             testID={ this.props.testID }
             disabled={  this.props.disabled } />
         </View>
-      </Footer>
+      </HStack>
     )
   }
 }

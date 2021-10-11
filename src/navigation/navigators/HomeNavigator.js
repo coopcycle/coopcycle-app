@@ -34,7 +34,7 @@ const MainNavigator = () => (
           iconType="FontAwesome5"
           iconName="ellipsis-h"
           iconStyle={{ fontSize: 18 }}
-          onPress={ _ => navigation.navigate('HomeCustomServer') } />
+          onPress={ () => navigation.navigate('HomeCustomServer') } />
         ,
       })}
     />

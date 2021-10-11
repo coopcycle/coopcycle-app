@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import { StyleSheet, View, Image, Dimensions } from 'react-native'
 import {
-  Container,
-  Icon, Text, Button, Footer, FooterTab,
+  Icon, Text, Button, HStack, Box, VStack,
 } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 import { RNCamera } from 'react-native-camera'
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
 import { addPicture } from '../../redux/Courier'
 
@@ -45,8 +45,8 @@ class Photo extends Component {
     const { image } = this.state
 
     return (
-      <Container>
-        <View style={ styles.content }>
+      <VStack flex={ 1 }>
+        <Box flex={ 1 }>
           <Text note style={{ textAlign: 'center', marginBottom: 20 }}>
             { this.props.t('PHOTO_DISCLAIMER') }
           </Text>
@@ -63,25 +63,21 @@ class Photo extends Component {
               }}
               captureAudio={ false }>
               <Button style={ styles.takePictureBtn } light onPress={ this._takePicture.bind(this) }>
-                <Icon type="FontAwesome" name="camera" />
+                <Icon as={ FontAwesome } name="camera" />
               </Button>
               <View style={ [ styles.preview, { width: previewSize, height: previewSize } ] }>
-                { !image && ( <Icon type="FontAwesome" name="picture-o" /> ) }
+                { !image && ( <Icon as={ FontAwesome } name="picture-o" size="sm" /> ) }
                 { image && ( <Image style={{ width: previewSize, height: previewSize }} source={{ uri: image.uri }} /> ) }
               </View>
             </RNCamera>
           </View>
-        </View>
-        <Footer>
-          <FooterTab>
-            <Button full onPress={ this._saveImage.bind(this) }>
-              <Text style={{ color: '#ffffff' }}>
-                { this.props.t('PHOTO_ADD') }
-              </Text>
-            </Button>
-          </FooterTab>
-        </Footer>
-      </Container>
+        </Box>
+        <HStack p="2">
+          <Button full onPress={ this._saveImage.bind(this) }>
+            { this.props.t('PHOTO_ADD') }
+          </Button>
+        </HStack>
+      </VStack>
     )
   }
 }

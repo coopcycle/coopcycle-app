@@ -3,7 +3,7 @@ import {View} from 'react-native';
 import {connect} from 'react-redux';
 import { Formik } from 'formik'
 import {withTranslation} from 'react-i18next'
-import {Form, Item, Input, Label, Button, Text} from 'native-base';
+import {FormControl, Input, Button, Text} from 'native-base';
 import _ from 'lodash'
 
 import material from '../../native-base-theme/variables/material';
@@ -48,20 +48,18 @@ class ForgotPasswordForm extends Component {
         validateOnChange={ false }>
         {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
         <View>
-          <Form>
-            <Item stackedLabel error={ touched.username && errors.username }>
-              <Label>{this.props.t('USERNAME_OR_EMAIL')}</Label>
-              <Input
-                autoCorrect={false}
-                autoCapitalize="none"
-                keyboardType="email-address"
-                returnKeyType="done"
-                onChangeText={ handleChange('username') }
-                onBlur={ handleBlur('username') }
-                onSubmitEditing={ handleSubmit }
-              />
-            </Item>
-          </Form>
+          <FormControl error={ touched.username && errors.username }>
+            <FormControl.Label>{this.props.t('USERNAME_OR_EMAIL')}</FormControl.Label>
+            <Input
+              autoCorrect={false}
+              autoCapitalize="none"
+              keyboardType="email-address"
+              returnKeyType="done"
+              onChangeText={ handleChange('username') }
+              onBlur={ handleBlur('username') }
+              onSubmitEditing={ handleSubmit }
+            />
+          </FormControl>
           <View style={{marginTop: 20}}>
             <Button block onPress={ handleSubmit }>
               <Text>{this.props.t('SUBMIT')}</Text>

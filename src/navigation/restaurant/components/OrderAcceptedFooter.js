@@ -2,10 +2,9 @@ import React from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import { useTranslation } from 'react-i18next'
 import {
-  Footer,
+  HStack,
   Text,
 } from 'native-base';
-import { Col, Row, Grid } from 'react-native-easy-grid'
 
 import { resolveFulfillmentMethod } from '../../../utils/order'
 import material from '../../../../native-base-theme/variables/material'
@@ -16,6 +15,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 1,
+    padding: 10,
+    margin: 10,
   },
   refuseBtn: {
     borderColor: material.brandDanger,
@@ -47,41 +48,31 @@ const OrderAcceptedFooter = ({ order, onPressCancel, onPressDelay, onPressFulfil
   const fulfillmentMethod = resolveFulfillmentMethod(order)
 
   return (
-    <Footer style={{ backgroundColor: '#fbfbfb' }}>
-      <Grid>
-        <Row>
-          <Col style={{ padding: 10 }}>
-            <TouchableOpacity
-              style={ [ styles.footerBtn, styles.refuseBtn ] }
-              onPress={ onPressCancel }>
-              <Text style={ styles.refuseBtnText }>
-                { t('RESTAURANT_ORDER_BUTTON_CANCEL') }
-              </Text>
-            </TouchableOpacity>
-          </Col>
-          <Col style={{ padding: 10 }}>
-            <TouchableOpacity
-              style={ [ styles.footerBtn, styles.delayBtn ] }
-              onPress={ onPressDelay }>
-              <Text style={ styles.delayBtnText }>
-                { t('RESTAURANT_ORDER_BUTTON_DELAY') }
-              </Text>
-            </TouchableOpacity>
-          </Col>
-          { fulfillmentMethod === 'collection' && (
-          <Col style={{ padding: 10 }}>
-            <TouchableOpacity
-              style={ [ styles.footerBtn, styles.fulfillBtn ] }
-              onPress={ onPressFulfill }>
-              <Text style={ styles.fulfillBtnText }>
-                { t('RESTAURANT_ORDER_BUTTON_FULFILL') }
-              </Text>
-            </TouchableOpacity>
-          </Col>
-          )}
-        </Row>
-      </Grid>
-    </Footer>
+    <HStack>
+      <TouchableOpacity
+        style={ [ styles.footerBtn, styles.refuseBtn ] }
+        onPress={ onPressCancel }>
+        <Text style={ styles.refuseBtnText }>
+          { t('RESTAURANT_ORDER_BUTTON_CANCEL') }
+        </Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={ [ styles.footerBtn, styles.delayBtn ] }
+        onPress={ onPressDelay }>
+        <Text style={ styles.delayBtnText }>
+          { t('RESTAURANT_ORDER_BUTTON_DELAY') }
+        </Text>
+      </TouchableOpacity>
+      { fulfillmentMethod === 'collection' && (
+      <TouchableOpacity
+        style={ [ styles.footerBtn, styles.fulfillBtn ] }
+        onPress={ onPressFulfill }>
+        <Text style={ styles.fulfillBtnText }>
+          { t('RESTAURANT_ORDER_BUTTON_FULFILL') }
+        </Text>
+      </TouchableOpacity>
+      )}
+    </HStack>
   )
 }
 

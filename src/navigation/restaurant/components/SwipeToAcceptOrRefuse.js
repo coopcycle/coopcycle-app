@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import { View, StyleSheet } from 'react-native'
 import { useTranslation } from 'react-i18next'
-import { Icon, Text } from 'native-base'
+import { Icon, Text, useColorMode } from 'native-base'
 import { SwipeRow } from 'react-native-swipe-list-view'
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
 const styles = StyleSheet.create({
   swipeBg: {
@@ -10,7 +11,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: '#e7e7e7',
     paddingHorizontal: 30,
   },
   swipeFg: {
@@ -20,7 +20,6 @@ const styles = StyleSheet.create({
     padding: 15,
     borderWidth: 3,
     borderColor: '#e7e7e7',
-    backgroundColor: '#ffffff',
   },
 });
 
@@ -28,6 +27,7 @@ const swipeRow = React.createRef()
 
 const Comp = ({ onAccept, onRefuse }) => {
 
+  const { colorMode } = useColorMode()
   const { t } = useTranslation()
 
   const onSwipeValueChange = ({ key, value }) => {
@@ -46,7 +46,7 @@ const Comp = ({ onAccept, onRefuse }) => {
   const [ openValue, setOpenValue ] = useState(0)
 
   return (
-    <View style={{ backgroundColor: '#efefef' }}>
+    <View>
       <View
         style={{ padding: 20 }}
         onLayout={ event => setOpenValue(event.nativeEvent.layout.width * 0.7) }>
@@ -60,13 +60,13 @@ const Comp = ({ onAccept, onRefuse }) => {
             <Text>{ t('RESTAURANT_ORDER_BUTTON_ACCEPT') }</Text>
             <Text>{ t('RESTAURANT_ORDER_BUTTON_REFUSE') }</Text>
           </View>
-          <View style={ styles.swipeFg }>
-            <Icon type="FontAwesome" name="angle-double-left" />
-            <Icon type="FontAwesome" name="angle-double-right" />
+          <View style={ [ styles.swipeFg, { backgroundColor: colorMode === 'dark' ? 'black' : 'white' } ] }>
+            <Icon as={FontAwesome} name="angle-double-left" />
+            <Icon as={FontAwesome} name="angle-double-right" />
           </View>
         </SwipeRow>
       </View>
-      <Text note style={{ textAlign: 'center', marginBottom: 20 }}>{ t('SWIPE_TO_ACCEPT_REFUSE') }</Text>
+      <Text note style={{ textAlign: 'center', marginBottom: 20, paddingHorizontal: 10 }}>{ t('SWIPE_TO_ACCEPT_REFUSE') }</Text>
     </View>
   )
 }

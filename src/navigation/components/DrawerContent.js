@@ -16,6 +16,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import VersionNumber from 'react-native-version-number'
 import { PhoneNumberUtil, PhoneNumberFormat } from 'google-libphonenumber'
 import { phonecall } from 'react-native-communications'
+import Ionicons from 'react-native-vector-icons/Ionicons'
 
 import Mailto from '../../components/Mailto'
 import { selectIsAuthenticated, selectShowRestaurantsDrawerItem } from '../../redux/App/selectors'
@@ -97,7 +98,7 @@ class DrawerContent extends Component {
     return (
       <SafeAreaView style={ styles.container } forceInset={{ top: 'always', horizontal: 'never' }}>
         <TouchableOpacity style={ styles.header } onPress={ navigateToAccount } testID="drawerAccountBtn">
-          <Icon name="person" />
+          <Icon as={ Ionicons } name="person" />
           { isAuthenticated && <Text>{ this.props.user.username }</Text> }
         </TouchableOpacity>
         <View style={{ flex: 1 }}>

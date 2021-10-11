@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Alert, InteractionManager, NativeModules, StyleSheet } from 'react-native';
-import { Container, Content } from 'native-base';
+import { Alert, InteractionManager, NativeModules, View } from 'react-native';
+import { Center, VStack } from 'native-base';
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake'
@@ -155,7 +155,7 @@ class DashboardPage extends Component {
     const { date, restaurant, specialOpeningHoursSpecification } = this.props
 
     return (
-      <Container>
+      <View>
         { restaurant.state === 'rush' && (
           <DangerAlert
             text={ this.props.t('RESTAURANT_ALERT_RUSH_MODE_ON') }
@@ -167,7 +167,7 @@ class DashboardPage extends Component {
             onClose={ () => this.props.deleteOpeningHoursSpecification(specialOpeningHoursSpecification) } />
         )}
         <WebSocketIndicator connected={ this.props.isCentrifugoConnected } />
-        <Content>
+        <VStack>
           <DatePickerHeader
             date={ date }
             onCalendarClick={ () => navigate('RestaurantDate') }
@@ -180,8 +180,8 @@ class DashboardPage extends Component {
             cancelledOrders={ this.props.cancelledOrders }
             fulfilledOrders={ this.props.fulfilledOrders }
             onItemClick={ order => navigate('RestaurantOrder', { order }) } />
-        </Content>
-      </Container>
+        </VStack>
+      </View>
     )
   }
 
@@ -192,26 +192,12 @@ class DashboardPage extends Component {
     }
 
     return (
-      <Container>
-        <Content contentContainerStyle={ styles.content }>
-          <Offline />
-        </Content>
-      </Container>
+      <Center flex={1}>
+        <Offline />
+      </Center>
     )
   }
 }
-
-const styles = StyleSheet.create({
-  content: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  message: {
-    alignItems: 'center',
-    padding: 20,
-  },
-});
 
 function mapStateToProps(state) {
 

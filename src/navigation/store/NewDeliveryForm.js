@@ -1,9 +1,7 @@
 import React, { Component } from 'react'
 import { InteractionManager, Platform, StyleSheet, TextInput, View } from 'react-native'
 import {
-  Container, Content,
-  Text, Button,
-  Footer, FooterTab,
+  Text, Button, Box, HStack, VStack,
 } from 'native-base'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
@@ -141,14 +139,16 @@ class NewDelivery extends Component {
   renderDateTimePicker(initialValues, values, errors, setFieldValue, setFieldTouched) {
 
     return (
-      <View style={ [ styles.formGroup ] }>
-        <Text style={ styles.label }>{ this.props.t('STORE_NEW_DELIVERY_DROPOFF_BEFORE') }</Text>
-        <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-          <Text>{ moment(values.before).format('LLL') }</Text>
-          <Button bordered info onPress={ this._showDateTimePicker.bind(this) }>
-            <Text>{ this.props.t('EDIT') }</Text>
+      <Box py="4">
+        <HStack justifyContent="space-between">
+          <VStack>
+            <Text style={ styles.label }>{ this.props.t('STORE_NEW_DELIVERY_DROPOFF_BEFORE') }</Text>
+            <Text>{ moment(values.before).format('LLL') }</Text>
+          </VStack>
+          <Button onPress={ this._showDateTimePicker.bind(this) }>
+            { this.props.t('EDIT') }
           </Button>
-        </View>
+        </HStack>
         <DateTimePickerModal
           isVisible={ this.state.isDateTimePickerVisible }
           mode="datetime"
@@ -159,7 +159,7 @@ class NewDelivery extends Component {
           }}
           onCancel={ this._hideDateTimePicker.bind(this) }
           minimumDate={ moment(initialValues.before).toDate() } />
-      </View>
+      </Box>
     )
   }
 
@@ -204,8 +204,8 @@ class NewDelivery extends Component {
         validateOnBlur={ false }
         validateOnChange={ false }>
         {({ handleChange, handleBlur, handleSubmit, values, errors, touched, setFieldValue, setFieldTouched }) => (
-          <Container>
-            <Content contentContainerStyle={ styles.content }>
+          <VStack flex={ 1 } justifyContent="space-between">
+            <Box p="3">
               <View style={ [ styles.formGroup ] }>
                 <Text style={ styles.label }>{ this.props.t('STORE_NEW_DELIVERY_ADDRESS') }</Text>
                 <TextInput
@@ -254,15 +254,13 @@ class NewDelivery extends Component {
               </View>
               { this.props.hasTimeSlot && this.renderTimeSlotSelector(errors, touched, setFieldValue, setFieldTouched) }
               { !this.props.hasTimeSlot && this.renderDateTimePicker(initialValues, values, errors, setFieldValue, setFieldTouched) }
-            </Content>
-            <Footer>
-              <FooterTab>
-                <Button block transparent onPress={ handleSubmit }>
-                  <Text style={{ color: '#FFFFFF', fontSize: 16 }}>{ this.props.t('SUBMIT') }</Text>
-                </Button>
-              </FooterTab>
-            </Footer>
-          </Container>
+            </Box>
+            <Box p="3">
+              <Button onPress={ handleSubmit }>
+                { this.props.t('SUBMIT') }
+              </Button>
+            </Box>
+          </VStack>
         )}
       </Formik>
     )
@@ -270,10 +268,6 @@ class NewDelivery extends Component {
 }
 
 const styles = StyleSheet.create({
-  content: {
-    paddingTop: 10,
-    paddingBottom: 20,
-  },
   message: {
     alignItems: 'center',
     padding: 20,
@@ -283,7 +277,6 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   formGroup: {
-    paddingHorizontal: 10,
     marginBottom: 10,
   },
   textInput: {

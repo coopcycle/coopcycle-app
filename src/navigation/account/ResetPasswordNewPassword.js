@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Container, Content } from 'native-base'
+import { Center } from 'native-base'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 import { setNewPassword } from '../../redux/App/actions'
@@ -24,12 +24,10 @@ class ResetPasswordNewPassword extends Component {
 
   render() {
     return (
-      <Container>
-        <Content padder>
-          <NewPasswordForm
-            onSubmit={ password => this._onSetNewPassword(password) } />
-        </Content>
-      </Container>
+      <Center flex={ 1 }>
+        <NewPasswordForm
+          onSubmit={ password => this._onSetNewPassword(password) } />
+      </Center>
     );
   }
 }

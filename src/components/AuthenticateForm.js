@@ -45,8 +45,8 @@ class AuthenticateForm extends Component {
       <View>
         { this.renderForm() }
         <View style={{ marginTop: 10 }}>
-          <Button block transparent onPress={() => this.setState({ formToDisplay: alternateForm, message: '' })} testID="loginOrRegister">
-            <Text>{this.props.t(btnLabel)}</Text>
+          <Button size="sm" variant="link" onPress={() => this.setState({ formToDisplay: alternateForm, message: '' })} testID="loginOrRegister">
+            {this.props.t(btnLabel)}
           </Button>
         </View>
         {/* This empty view is for increasing the page height so the button appears above the menu bar */}

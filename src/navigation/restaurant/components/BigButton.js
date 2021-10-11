@@ -1,6 +1,7 @@
 import React from 'react'
 import { StyleSheet, View, TouchableOpacity } from 'react-native'
 import { Icon, Text } from 'native-base'
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import material from '../../../../native-base-theme/variables/material'
 
 export default ({ heading, text, onPress, danger }) => {
@@ -27,7 +28,7 @@ export default ({ heading, text, onPress, danger }) => {
           { text }
         </Text>
       </View>
-      <Icon style={{ color: iconColor, alignSelf: 'center' }} name="ios-arrow-forward" />
+      <Icon as={ FontAwesome } style={{ color: iconColor, alignSelf: 'center' }} name="arrow-right" />
     </TouchableOpacity>
   )
 
@@ -44,7 +45,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-around',
-    backgroundColor: '#fff',
   },
   btnDanger: {
     borderColor: material.brandDanger,

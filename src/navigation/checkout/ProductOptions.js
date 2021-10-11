@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import { SectionList, TouchableOpacity, View, StyleSheet } from 'react-native'
-import { Badge, Container, Icon, ListItem, Text, Radio } from 'native-base'
+import { Badge, Icon, Text, Heading, Box } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
 import { addItemWithOptions } from '../../redux/Checkout/actions'
 import { formatPrice } from '../../utils/formatting'
@@ -17,15 +18,11 @@ const SimpleOption = ({ name, price, onPress, selected, index, sectionIndex }) =
       testID={ `productOptions:${sectionIndex}:${index}` }>
       <View style={{ width: '66.6666%', justifyContent: 'space-between', padding: 15 }}>
         <Text>{ name }</Text>
-        { price > 0 ? (<Text note>{ `${formatPrice(price)}` }</Text>) : null }
+        { price > 0 ? (<Text note>{ `${formatPrice(price)}` }</Text>) : null }
       </View>
       <View style={{ width: '33.3333%' }}>
         <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', paddingRight: 15 }}>
-          <Radio
-            selected={ selected }
-            // FIXME If color is not specified, element is not visible on Android
-            color="#333333"
-            onPress={ onPress } />
+          { selected && <Icon as={ FontAwesome } name="check-square" /> }
         </View>
       </View>
     </TouchableOpacity>
@@ -37,7 +34,7 @@ const RangeOption = ({ name, price, onPress, selected, onPressIncrement, onPress
     <TouchableOpacity style={{ width: '66.6666%', justifyContent: 'space-between', padding: 15 }}
       onPress={ onPress }>
       <Text>{ name }</Text>
-      { price > 0 ? (<Text note>{ `${formatPrice(price)}` }</Text>) : null }
+      { price > 0 ? (<Text note>{ `${formatPrice(price)}` }</Text>) : null }
     </TouchableOpacity>
     <View style={{ width: '33.3333%' }}>
       <View
@@ -45,12 +42,12 @@ const RangeOption = ({ name, price, onPress, selected, onPressIncrement, onPress
         <TouchableOpacity
           style={{ flex: 1, alignItems: 'center' }}
           onPress={ onPressIncrement }>
-          <Icon type="FontAwesome" name="plus-circle" />
+          <Icon as={ FontAwesome } name="plus-circle" />
         </TouchableOpacity>
         <TouchableOpacity
           style={{ flex: 1, alignItems: 'center' }}
           onPress={ onPressDecrement }>
-          <Icon type="FontAwesome" name="minus-circle" />
+          <Icon as={ FontAwesome } name="minus-circle" />
         </TouchableOpacity>
         <View style={{ flex: 1, alignItems: 'center' }}>
           <Badge info style={{ alignSelf: 'center' }}>
@@ -200,12 +197,10 @@ class ProductOptions extends Component {
   renderSection(menuSection) {
 
     return (
-      <View>
-        <ListItem itemDivider>
-          <Text>{ menuSection.name }</Text>
-        </ListItem>
+      <Box p="3">
+        <Heading>{ menuSection.name }</Heading>
         { menuSection.valuesRange && this.renderSectionHelp(menuSection) }
-      </View>
+      </Box>
     )
   }
 
@@ -220,12 +215,12 @@ class ProductOptions extends Component {
     }))
 
     return (
-      <Container>
-        <View style={{ padding: 20 }}>
+      <Box>
+        <Box p="3">
           <Text note>
             { this.props.t('CHECKOUT_PRODUCT_OPTIONS_DISCLAIMER', { name: product.name }) }
           </Text>
-        </View>
+        </Box>
         <SectionList
           ref={ this.list }
           sections={ sections }
@@ -235,7 +230,7 @@ class ProductOptions extends Component {
           ItemSeparatorComponent={ ItemSeparator }
         />
         { this.renderFooter() }
-      </Container>
+      </Box>
     )
   }
 }

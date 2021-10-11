@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { View } from 'react-native'
 import {
-  Container, Content, Text,
+  Center, Text,
 } from 'native-base'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
@@ -25,23 +25,21 @@ class LoginRegister extends Component {
 
   render() {
     return (
-      <Container>
-        <Content padder extraScrollHeight={64}>
-          <Server />
-          { this.renderMessage() }
-          <AuthenticateForm
-            onLogin={(email, password) => this.props.login(email, password)}
-            onRegister={data => this.props.register(data)}
-            onForgotPassword={() => {
-              this.props.forgotPassword()
-              this.props.navigation.navigate('AccountForgotPassword', {
-                checkEmailRouteName: 'AccountResetPasswordCheckEmail',
-                resumeCheckoutAfterActivation: false,
-              })
-            }}
-            registrationErrors={ this.props.registrationErrors } />
-        </Content>
-      </Container>
+      <Center flex={1} px="2">
+        <Server />
+        { this.renderMessage() }
+        <AuthenticateForm
+          onLogin={(email, password) => this.props.login(email, password)}
+          onRegister={data => this.props.register(data)}
+          onForgotPassword={() => {
+            this.props.forgotPassword()
+            this.props.navigation.navigate('AccountForgotPassword', {
+              checkEmailRouteName: 'AccountResetPasswordCheckEmail',
+              resumeCheckoutAfterActivation: false,
+            })
+          }}
+          registrationErrors={ this.props.registrationErrors } />
+      </Center>
     )
   }
 }

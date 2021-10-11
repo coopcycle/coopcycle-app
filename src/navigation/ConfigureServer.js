@@ -32,8 +32,8 @@ class ConfigureServer extends Component {
           </View>
           <View>
             <View>
-              <Button block bordered onPress={ _ => this.props.navigation.navigate('HomeChooseCity') } testID="chooseCityBtn">
-                <Text>{ this.props.t('CHOOSE_CITY') }</Text>
+              <Button onPress={ _ => this.props.navigation.navigate('HomeChooseCity') } testID="chooseCityBtn">
+                { this.props.t('CHOOSE_CITY') }
               </Button>
             </View>
             <View style={{ paddingVertical: 10 }}>

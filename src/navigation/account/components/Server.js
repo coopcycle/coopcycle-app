@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { View } from 'react-native'
 import {
-  Text, Button,
+  Text, Button, Box,
 } from 'native-base'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
@@ -13,7 +13,7 @@ class Server extends Component {
   render() {
 
     return (
-      <View style={{ marginBottom: 15 }}>
+      <Box p="2">
         <Text style={{ textAlign: 'center' }}>
           {
             [
@@ -23,10 +23,10 @@ class Server extends Component {
             ]
           }
         </Text>
-        <Button block transparent onPress={ () => this.props.resetServer() }>
-          <Text>{ this.props.t('CHANGE_SERVER') }</Text>
+        <Button size="sm" variant="link" onPress={ () => this.props.resetServer() }>
+          { this.props.t('CHANGE_SERVER') }
         </Button>
-      </View>
+      </Box>
     )
   }
 }

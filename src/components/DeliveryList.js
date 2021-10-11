@@ -5,6 +5,7 @@ import PropTypes from 'prop-types'
 import moment from 'moment'
 import _ from 'lodash'
 import { withTranslation } from 'react-i18next'
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 
 import { stateColor } from '../utils/delivery'
 import ItemSeparator from './ItemSeparator'
@@ -89,7 +90,7 @@ class DeliveryList extends Component {
       <TouchableOpacity onPress={ () => this._onItemPress(item) } style={ styles.item }>
         <View style={ styles.itemBody }>
           <View style={{ flex: 1 }}>
-            <Icon type="FontAwesome5" name="circle" solid style={{ color: stateColor(item.state), fontSize: 14 }} />
+            <Icon as={FontAwesome5} name="circle" solid style={{ color: stateColor(item.state), fontSize: 14 }} />
           </View>
           <View style={{ flex: 1 }}>
             <Text style={ styles.textSmall }>{ `#${item.id}` }</Text>
@@ -103,7 +104,7 @@ class DeliveryList extends Component {
           </View>
         </View>
         <View >
-          <Icon type="FontAwesome5" name="chevron-right" style={{ color: '#DDDDDD', fontSize: 18 }} />
+          <Icon as={FontAwesome5} name="chevron-right" style={{ color: '#DDDDDD', fontSize: 18 }} />
         </View>
       </TouchableOpacity>
     )

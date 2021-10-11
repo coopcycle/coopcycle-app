@@ -2,6 +2,7 @@ import React from 'react'
 import { Icon} from 'native-base'
 import { createStackNavigator } from '@react-navigation/stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
 import i18n from '../../i18n'
 import HeaderRightButton from '../dispatch/HeaderRightButton'
@@ -25,7 +26,7 @@ const Tabs = () => (
         tabBarTestID: 'dispatch:unassignedTab',
         tabBarIcon: ({ focused, horizontal, color }) => {
           return (
-            <Icon type="FontAwesome" name="clock-o" style={{ color }} />
+            <Icon as={ FontAwesome } name="clock-o" style={{ color }} />
           )
         },
       })}
@@ -38,7 +39,7 @@ const Tabs = () => (
         tabBarTestID: 'dispatch:assignedTab',
         tabBarIcon: ({ focused, horizontal, color }) => {
           return (
-            <Icon type="FontAwesome" name="user" style={{ color }} />
+            <Icon as={ FontAwesome } name="user" style={{ color }} />
           )
         },
       })}

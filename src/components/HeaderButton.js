@@ -1,6 +1,20 @@
 import React, { Component } from 'react'
 import { TouchableOpacity, StyleSheet } from 'react-native'
 import { Text, Icon } from 'native-base'
+import Ionicons from 'react-native-vector-icons/Ionicons'
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
+
+const asProp = name => {
+  switch (name) {
+    case 'FontAwesome':
+      return FontAwesome
+    case 'FontAwesome5':
+      return FontAwesome5
+  }
+
+  return Ionicons
+}
 
 class HeaderButton extends Component {
 
@@ -9,14 +23,6 @@ class HeaderButton extends Component {
     const containerStyles = [ styles.base ]
     if (this.props.textLeft) {
       containerStyles.push(styles.withText)
-    }
-
-    let iconProps = {}
-    if (this.props.iconType) {
-      iconProps = {
-        ...iconProps,
-        type: this.props.iconType,
-      }
     }
 
     let iconStyle = [ { color: '#fff' } ]
@@ -40,7 +46,7 @@ class HeaderButton extends Component {
         { this.props.textLeft && (
           <Text style={ styles.textLeft }>{ this.props.textLeft }</Text>
         )}
-        <Icon name={ this.props.iconName } style={ iconStyle } { ...iconProps } />
+        <Icon as={ asProp(this.props.iconType) } name={ this.props.iconName } style={ iconStyle } />
       </TouchableOpacity>
     )
   }

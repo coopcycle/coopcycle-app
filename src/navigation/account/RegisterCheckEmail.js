@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
 import {
-  StyleSheet,
   View,
 } from 'react-native'
 import { CommonActions } from '@react-navigation/native'
 import {
-  Container, Content, Text, Button, Icon,
+  Center, Text, Button, Icon,
 } from 'native-base'
 import { withTranslation } from 'react-i18next'
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
 class RegisterCheckEmail extends Component {
 
@@ -31,35 +31,22 @@ class RegisterCheckEmail extends Component {
     const email = this.props.route.params?.email || ''
 
     return (
-      <Container>
-        <Content padder contentContainerStyle={ styles.content } testID="registerCheckEmail">
-          <Icon type="FontAwesome" name="envelope-o" style={ styles.icon } />
-          <Text style={{ textAlign: 'center' }}>
-            { this.props.t('REGISTER_CHECK_EMAIL_DISCLAIMER', { email }) }
+      <Center flex={ 1 } testID="registerCheckEmail">
+        <Icon as={ FontAwesome } name="envelope-o" mb="3" />
+        <Text style={{ textAlign: 'center' }}>
+          { this.props.t('REGISTER_CHECK_EMAIL_DISCLAIMER', { email }) }
+        </Text>
+        <View style={{ marginTop: 20 }}>
+          <Text style={{ textAlign: 'center' }} note>
+            { this.props.t('REGISTER_CHECK_EMAIL_ALREADY_ACTIVATED') }
           </Text>
-          <View style={{ marginTop: 20 }}>
-            <Text style={{ textAlign: 'center' }} note>
-              { this.props.t('REGISTER_CHECK_EMAIL_ALREADY_ACTIVATED') }
-            </Text>
-            <Button block transparent onPress={ () => this._onPressLogin() }>
-              <Text>{ this.props.t('REGISTER_CHECK_EMAIL_LOGIN') }</Text>
-            </Button>
-          </View>
-        </Content>
-      </Container>
+          <Button block transparent onPress={ () => this._onPressLogin() }>
+            <Text>{ this.props.t('REGISTER_CHECK_EMAIL_LOGIN') }</Text>
+          </Button>
+        </View>
+      </Center>
     )
   }
 }
-
-const styles = StyleSheet.create({
-  content: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  icon: {
-    marginBottom: 15,
-  },
-})
 
 export default withTranslation()(RegisterCheckEmail)

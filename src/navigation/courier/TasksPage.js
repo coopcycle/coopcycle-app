@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, Platform, InteractionManager } from 'react-native'
-import { Container } from 'native-base'
+import { StyleSheet, Platform, InteractionManager, View } from 'react-native'
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake'
 import RNPinScreen from 'react-native-pin-screen'
 import { connect } from 'react-redux'
@@ -104,7 +103,7 @@ class TasksPage extends Component {
     const { tasks, selectedDate } = this.props
 
     return (
-      <Container style={ styles.container }>
+      <View style={ styles.container }>
         <TasksMapView
           mapCenter={ this.props.mapCenter }
           tasks={ tasks }
@@ -113,7 +112,7 @@ class TasksPage extends Component {
           buttonsEnabled={true}
           toDate={this.refreshTasks}
           selectedDate={selectedDate}/>
-      </Container>
+      </View>
     )
   }
 }
@@ -121,6 +120,7 @@ class TasksPage extends Component {
 const styles = StyleSheet.create({
   container: {
     paddingTop: dateSelectHeaderHeight,
+    flex: 1,
   },
 })
 

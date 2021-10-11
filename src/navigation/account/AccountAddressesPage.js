@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { InteractionManager, View, FlatList } from 'react-native';
 import {
-  Text,
+  Box, Text,
 } from 'native-base';
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
@@ -18,9 +18,9 @@ class AccountAddressesPage extends Component {
 
   _renderRow({ item }) {
     return (
-      <View style={{ paddingVertical: 15, paddingHorizontal: 10 }}>
+      <Box px="2" py="3">
         <Text>{ item.streetAddress }</Text>
-      </View>
+      </Box>
     );
   }
 

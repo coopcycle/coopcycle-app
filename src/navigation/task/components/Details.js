@@ -6,6 +6,7 @@ import { showLocation } from 'react-native-map-link'
 import { phonecall } from 'react-native-communications'
 import moment from 'moment'
 import { Col, Row } from 'react-native-easy-grid'
+import Ionicons from 'react-native-vector-icons/Ionicons'
 
 import ItemSeparator from '../../../components/ItemSeparator'
 
@@ -29,12 +30,12 @@ const Detail = ({ item }) => {
     <TouchableOpacity style={{ flex:  1 }} { ...touchableOpacityProps }>
       <Row style={ styles.row }>
         <Col size={ 2 } style={ styles.iconContainer }>
-          <Icon name={ iconName } style={{ color: '#ccc' }} />
+          <Icon as={Ionicons} name={ iconName } style={{ color: '#ccc' }} />
         </Col>
         { body }
         { onPress &&
         <Col size={ 1 }>
-          <Icon name="arrow-forward" style={{ color: '#ccc' }} />
+          <Icon as={Ionicons} name="arrow-forward" style={{ color: '#ccc' }} />
         </Col> }
       </Row>
     </TouchableOpacity>

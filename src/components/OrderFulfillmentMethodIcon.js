@@ -1,6 +1,7 @@
 import React from 'react'
 import { StyleSheet } from 'react-native'
 import { Icon } from 'native-base'
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
 import { resolveFulfillmentMethod } from '../utils/order'
 
@@ -15,7 +16,7 @@ export default ({ order, small }) => {
   const fulfillmentMethod = resolveFulfillmentMethod(order)
 
   return (
-    <Icon type="FontAwesome"
+    <Icon as={FontAwesome}
       style={ small ? [ styles.small ] : [] }
       name={ fulfillmentMethod === 'collection' ? 'cube' : 'bicycle' } />
   )

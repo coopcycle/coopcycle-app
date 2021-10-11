@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { View } from 'react-native'
-import { Container, Text } from 'native-base'
+import { Center, Text } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 
@@ -19,9 +19,7 @@ class OrderDelayScreen extends Component {
 
   render() {
     return (
-      <Container
-        navigation={ this.props.navigation }
-        title={ this.props.t('RESTAURANT_ORDER_DELAY_MODAL_TITLE') }>
+      <Center flex={ 1 }>
         <View style={{ padding: 20 }}>
           <Text note>
             { this.props.t('RESTAURANT_ORDER_DELAY_DISCLAIMER') }
@@ -38,14 +36,9 @@ class OrderDelayScreen extends Component {
             heading={ '30 minutes' }
             onPress={ () => this._delayOrder(30) } />
         </View>
-      </Container>
+      </Center>
     )
   }
-}
-
-function mapStateToProps(state) {
-
-  return {}
 }
 
 function mapDispatchToProps(dispatch) {
@@ -55,4 +48,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(OrderDelayScreen))
+export default connect(() => ({}), mapDispatchToProps)(withTranslation()(OrderDelayScreen))

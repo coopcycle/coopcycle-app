@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
 import { FlatList, InteractionManager, StyleSheet, View } from 'react-native'
 import {
-  Left, Right,
-  ListItem, Text, Radio, Button,
+  Icon, Text, Button, HStack, Pressable,
 } from 'native-base'
 import Modal from 'react-native-modal'
 
 import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
 import { loadMenus, activateMenu } from '../../redux/Restaurant/actions'
 
@@ -28,14 +28,12 @@ class Menus extends Component {
   renderItem(item) {
 
     return (
-      <ListItem onPress={ () => this.setState({ isModalVisible: true, currentItem: item }) }>
-        <Left>
+      <Pressable onPress={ () => this.setState({ isModalVisible: true, currentItem: item }) }>
+        <HStack justifyContent="space-between" p="3">
           <Text>{ item.name }</Text>
-        </Left>
-        <Right>
-          <Radio selected={ item.active } />
-        </Right>
-      </ListItem>
+          { item.active && <Icon as={FontAwesome} name="check-square" /> }
+        </HStack>
+      </Pressable>
     )
   }
 

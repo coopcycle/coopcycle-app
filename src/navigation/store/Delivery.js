@@ -1,15 +1,14 @@
 import React, { Component } from 'react'
 import { StyleSheet, View } from 'react-native'
 import {
-  Container, Content,
-  Icon, Text,
-  List, ListItem, Left,
+  Icon, Text, HStack, Heading, VStack,
 } from 'native-base'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 import MapView from 'react-native-maps'
 import { parsePhoneNumberFromString } from 'libphonenumber-js'
 import _ from 'lodash'
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 
 import { loadTasks } from '../../redux/Store/actions'
 import { selectDeliveries } from '../../redux/Store/selectors'
@@ -58,49 +57,39 @@ class NewDelivery extends Component {
     const stateStyle = [ styles.state, { backgroundColor: stateColor(delivery.state) } ]
 
     return (
-      <Container>
-        <Content contentContainerStyle={ styles.content }>
-          <View style={ stateStyle }>
-            <Text style={ [ styles.stateText ] }>
-              { this.props.t(`DELIVERY_STATE.${delivery.state}`) }
-            </Text>
-          </View>
-          <View style={{ flex: 1 }}>
-            <NavigationAwareMap navigation={ this.props.navigation }>
-              { markers.map((marker, index) => (
-                <MapView.Marker
-                  { ...marker }
-                  key={ `marker-${index}` }
-                  flat={ true } />
-              )) }
-            </NavigationAwareMap>
-          </View>
-          <View style={{ flex: 2 }}>
-            <List>
-              <ListItem itemDivider>
-                <Text>{ this.props.t('DELIVERY_DETAILS_TIME_SLOT') }</Text>
-              </ListItem>
-              <ListItem last>
-                <Left>
-                  <Icon type="FontAwesome5" name="clock" />
-                </Left>
-                <Text style={ styles.itemText }>{ humanizeTaskTime(delivery.dropoff) }</Text>
-              </ListItem>
-              <ListItem itemDivider>
-                <Text>{ this.props.t('DELIVERY_DETAILS_RECIPIENT') }</Text>
-              </ListItem>
-              { recipientItems.map((item, i) => (
-              <ListItem last={ (i + 1) === recipientItems.length } key={ `recipient-${i}` }>
-                <Left>
-                  <Icon type="FontAwesome5" name={ item.icon } />
-                </Left>
-                <Text style={ styles.itemText }>{ item.text }</Text>
-              </ListItem>
-              ))}
-            </List>
-          </View>
-        </Content>
-      </Container>
+      <View style={ styles.content }>
+        <View style={ stateStyle }>
+          <Text style={ [ styles.stateText ] }>
+            { this.props.t(`DELIVERY_STATE.${delivery.state}`) }
+          </Text>
+        </View>
+        <View style={{ flex: 1 }}>
+          <NavigationAwareMap navigation={ this.props.navigation }>
+            { markers.map((marker, index) => (
+              <MapView.Marker
+                { ...marker }
+                key={ `marker-${index}` }
+                flat={ true } />
+            )) }
+          </NavigationAwareMap>
+        </View>
+        <View style={{ flex: 2 }}>
+          <VStack p="3">
+            <Heading>{ this.props.t('DELIVERY_DETAILS_TIME_SLOT') }</Heading>
+            <HStack py="2">
+              <Icon as={FontAwesome5} name="clock" size="sm" mr="2" />
+              <Text style={ styles.itemText }>{ humanizeTaskTime(delivery.dropoff) }</Text>
+            </HStack>
+            <Heading>{ this.props.t('DELIVERY_DETAILS_RECIPIENT') }</Heading>
+            { recipientItems.map((item, i) => (
+            <HStack py="2" key={ `recipient-${i}` }>
+              <Icon as={FontAwesome5} name={ item.icon } size="sm" mr="2" />
+              <Text style={ styles.itemText }>{ item.text }</Text>
+            </HStack>
+            ))}
+          </VStack>
+        </View>
+      </View>
     )
   }
 }

@@ -1,15 +1,16 @@
 import React, { Component } from 'react'
 import { Dimensions, Image, StyleSheet, View, TextInput, TouchableOpacity } from 'react-native'
 import {
-  Container, Content,
-  Icon, Text, Footer,
-  Label, Button, Form, Item, Input,
+  Icon, Text,
+  Button, FormControl, Input, VStack, HStack, Box,
 } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 import _ from 'lodash'
 import Modal from 'react-native-modal'
 import { Formik } from 'formik'
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 
 import {
   selectIsTaskCompleteFailure,
@@ -110,80 +111,82 @@ class CompleteTask extends Component {
     }
 
     return (
-      <Container>
-        { task.type === 'DROPOFF' && (
-          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: 20, borderBottomWidth: 1, borderBottomColor: '#ccc' }}>
-            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-              <Icon name="person" style={{ marginRight: 10 }} />
-              <Text numberOfLines={ 1 }>{ contactName }</Text>
+      <View style={{ flex: 1 }}>
+        <VStack flex={1} justifyContent="space-between">
+          <Box>
+            { task.type === 'DROPOFF' && (
+              <HStack justifyContent="space-between" alignItems="center" p="3"
+                borderBottomWidth={ 1 } borderBottomColor="gray.800">
+                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <Icon as={ FontAwesome } name="user" style={{ marginRight: 10 }} />
+                  <Text numberOfLines={ 1 }>{ contactName }</Text>
+                </View>
+                <TouchableOpacity onPress={ () => this.setState({ isContactNameModalVisible: true }) }>
+                  <Text>{ this.props.t('EDIT') }</Text>
+                </TouchableOpacity>
+              </HStack>
+            ) }
+            <FormControl p="3">
+              <FormControl.Label style={{ marginBottom: 5 }}>{ this.props.t('NOTES') }</FormControl.Label>
+              <TextInput multiline={ true } numberOfLines={ 3 }
+                onChangeText={ text => this.setState({ notes: text }) }
+                style={ styles.textInput } />
+            </FormControl>
+            <View syle={ styles.content }>
+              <View style={ styles.imagesContainer }>
+              { this.props.signatures.map((base64, key) => (
+                <View key={ `signatures:${key}` }
+                  style={ [ styles.image, { width: imageSize, height: imageSize }] }>
+                  <Image
+                    source={{ uri: `data:image/jpeg;base64,${base64}` }}
+                    style={{ width: (imageSize - 2), height: (imageSize - 2) }} />
+                  <TouchableOpacity
+                    style={ styles.imageDelBtn }
+                    onPress={ () => this.props.deleteSignatureAt(key) }>
+                    <Icon as={ FontAwesome5 } name="times-circle" />
+                  </TouchableOpacity>
+                </View>
+              ))}
+              { this.props.pictures.map((base64, key) => (
+                <View key={ `pictures:${key}` }
+                  style={ [ styles.image, { width: imageSize, height: imageSize }] }>
+                  <Image
+                    source={{ uri: `data:image/jpeg;base64,${base64}` }}
+                    style={{ width: (imageSize - 2), height: (imageSize - 2) }} />
+                  <TouchableOpacity
+                    style={ styles.imageDelBtn }
+                    onPress={ () => this.props.deletePictureAt(key) }>
+                    <Icon as={ FontAwesome5 } name="times-circle" />
+                  </TouchableOpacity>
+                </View>
+              ))}
+              </View>
             </View>
-            <TouchableOpacity onPress={ () => this.setState({ isContactNameModalVisible: true }) }>
-              <Text>{ this.props.t('EDIT') }</Text>
+          </Box>
+          <Box borderTopWidth={ 1 } borderTopColor="gray.800">
+            <TouchableOpacity
+              onPress={ () => this.props.navigation.navigate('TaskCompleteProofOfDelivery', { task }) }>
+              <HStack alignItems="center" justifyContent="space-between" p="3">
+                <Icon as={ FontAwesome5 } name="signature" />
+                <Text>
+                  { this.props.t('TASK_ADD_PROOF_OF_DELIVERY') }
+                </Text>
+                <Icon as={ FontAwesome5 } name="camera" />
+              </HStack>
             </TouchableOpacity>
-          </View>
-        ) }
-        <View style={{ padding: 20, borderBottomWidth: 1, borderBottomColor: '#ccc' }}>
-          <Label style={{ marginBottom: 5 }}>{ this.props.t('NOTES') }</Label>
-          <TextInput multiline={ true } numberOfLines={ 3 }
-            onChangeText={ text => this.setState({ notes: text }) }
-            placeholderTextColor="#d0d0d0"
-            style={ styles.textInput } />
-        </View>
-        <Content contentContainerStyle={ styles.content }>
-          <View style={ styles.imagesContainer }>
-          { this.props.signatures.map((base64, key) => (
-            <View key={ `signatures:${key}` }
-              style={ [ styles.image, { width: imageSize, height: imageSize }] }>
-              <Image
-                source={{ uri: `data:image/jpeg;base64,${base64}` }}
-                style={{ width: (imageSize - 2), height: (imageSize - 2) }} />
-              <TouchableOpacity
-                style={ styles.imageDelBtn }
-                onPress={ () => this.props.deleteSignatureAt(key) }>
-                <Icon type="FontAwesome5" name="times-circle" />
-              </TouchableOpacity>
-            </View>
-          ))}
-          { this.props.pictures.map((base64, key) => (
-            <View key={ `pictures:${key}` }
-              style={ [ styles.image, { width: imageSize, height: imageSize }] }>
-              <Image
-                source={{ uri: `data:image/jpeg;base64,${base64}` }}
-                style={{ width: (imageSize - 2), height: (imageSize - 2) }} />
-              <TouchableOpacity
-                style={ styles.imageDelBtn }
-                onPress={ () => this.props.deletePictureAt(key) }>
-                <Icon type="FontAwesome5" name="times-circle" />
-              </TouchableOpacity>
-            </View>
-          ))}
-          </View>
-        </Content>
-        <TouchableOpacity
-          style={ styles.addPoDButton }
-          onPress={ () => this.props.navigation.navigate('TaskCompleteProofOfDelivery', { task }) }>
-          <Icon type="FontAwesome5" name="signature"
-            style={ styles.addPoDButtonText } />
-          <Text
-            style={ [ styles.addPoDButtonText, { textAlign: 'center', marginHorizontal: 10 } ] }>
-            { this.props.t('TASK_ADD_PROOF_OF_DELIVERY') }
-          </Text>
-          <Icon type="FontAwesome5" name="camera"
-            style={ styles.addPoDButtonText } />
-        </TouchableOpacity>
-        <Footer style={{ alignItems: 'center', backgroundColor: footerBgColor }}>
-          <TouchableOpacity style={ styles.buttonContainer } onPress={ onPress }>
-            <View style={ styles.buttonTextContainer }>
-              <Icon type="FontAwesome" name={ buttonIconName } style={{ color: '#fff', marginRight: 10 }} />
-              <Text style={{ color: '#fff' }}>{ footerText }</Text>
-            </View>
-          </TouchableOpacity>
-        </Footer>
+            <TouchableOpacity onPress={ onPress } style={{ alignItems: 'center', backgroundColor: footerBgColor }}>
+              <HStack py="3" alignItems="center">
+                <Icon as={ FontAwesome } name={ buttonIconName } style={{ color: '#fff', marginRight: 10 }} />
+                <Text>{ footerText }</Text>
+              </HStack>
+            </TouchableOpacity>
+          </Box>
+        </VStack>
         <Modal
           isVisible={ this.state.isContactNameModalVisible }
           onSwipeComplete={ this.onSwipeComplete.bind(this) }
           swipeDirection={ ['up', 'down'] }>
-          <View style={ styles.modalContent }>
+          <Box p="3">
             <Formik
               initialValues={ initialValues }
               validate={ this._validate.bind(this) }
@@ -191,9 +194,9 @@ class CompleteTask extends Component {
               validateOnBlur={ false }
               validateOnChange={ false }>
               {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
-              <Form>
-                <Item stackedLabel error={ (touched.contactName && errors.contactName) } style={{ marginBottom: 15 }}>
-                  <Label>{ this.props.t('DELIVERY_DETAILS_RECIPIENT') }</Label>
+              <View>
+                <FormControl error={ (touched.contactName && errors.contactName) } style={{ marginBottom: 15 }}>
+                  <FormControl.Label>{ this.props.t('DELIVERY_DETAILS_RECIPIENT') }</FormControl.Label>
                   <Input
                     autoCorrect={ false }
                     autoCapitalize="none"
@@ -203,16 +206,16 @@ class CompleteTask extends Component {
                     onChangeText={ handleChange('contactName') }
                     onBlur={ handleBlur('contactName') }
                     defaultValue={ values.contactName } />
-                </Item>
+                </FormControl>
                 <Button block onPress={ handleSubmit }>
-                  <Text>{ this.props.t('SUBMIT') }</Text>
+                  { this.props.t('SUBMIT') }
                 </Button>
-              </Form>
+              </View>
               )}
             </Formik>
-          </View>
+          </Box>
         </Modal>
-      </Container>
+      </View>
     )
   }
 }
@@ -226,30 +229,6 @@ const styles = StyleSheet.create({
     paddingLeft: CONTENT_PADDING,
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
-  },
-  buttonContainer: {
-    ...StyleSheet.absoluteFillObject,
-  },
-  buttonTextContainer: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'row',
-  },
-  form: {
-    flex: 1,
-    marginBottom: 10,
-  },
-  addPoDButton: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingHorizontal: 15,
-    maxHeight: '15%',
-  },
-  addPoDButtonText: {
-    color: '#0074D9',
   },
   imagesContainer: {
     flex: 1,
@@ -273,17 +252,12 @@ const styles = StyleSheet.create({
     top: -16,
     right: -16,
   },
-  modalContent: {
-    backgroundColor: '#ffffff',
-    padding: 15,
-  },
   textInput: {
     paddingVertical: 5,
     paddingHorizontal: 10,
     borderWidth: 1,
     borderColor: '#ccc',
     borderRadius: 16,
-    color: '#000',
   },
 })
 

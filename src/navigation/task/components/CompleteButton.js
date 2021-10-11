@@ -3,6 +3,7 @@ import { Dimensions, StyleSheet, TouchableOpacity, View } from 'react-native'
 import { Text, Icon } from 'native-base'
 import { SwipeRow } from 'react-native-swipe-list-view'
 import { withTranslation } from 'react-i18next'
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
 import { greenColor, redColor } from '../../../styles/common'
 import {
@@ -12,13 +13,13 @@ import {
 
 const LeftButton = ({ width }) => (
   <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', width }}>
-    <Icon type="FontAwesome" name={ doneIconName } style={{ color: '#fff' }} />
+    <Icon as={FontAwesome} name={ doneIconName } style={{ color: '#fff' }} />
   </View>
 )
 
 const RightButton = ({ width }) => (
   <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', width }}>
-    <Icon type="FontAwesome" name={ failedIconName } style={{ color: '#fff' }} />
+    <Icon as={FontAwesome} name={ failedIconName } style={{ color: '#fff' }} />
   </View>
 )
 
@@ -33,7 +34,7 @@ const CompleteButton = React.forwardRef((props, ref) => {
     return (
       <View style={ [ styles.buttonContainer, { backgroundColor: greenColor } ] }>
         <View style={ styles.buttonTextContainer }>
-          <Icon type="FontAwesome" name={ doneIconName } style={{ color: '#fff', marginRight: 10 }} />
+          <Icon as={FontAwesome} name={ doneIconName } style={{ color: '#fff', marginRight: 10 }} />
           <Text style={{ color: '#fff' }}>{ t('COMPLETED') }</Text>
         </View>
       </View>
@@ -45,7 +46,7 @@ const CompleteButton = React.forwardRef((props, ref) => {
     return (
       <View style={ [ styles.buttonContainer, { backgroundColor: redColor } ] }>
         <View style={ styles.buttonTextContainer }>
-          <Icon type="FontAwesome" name={ failedIconName } style={{ color: '#fff', marginRight: 10 }} />
+          <Icon as={FontAwesome} name={ failedIconName } style={{ color: '#fff', marginRight: 10 }} />
           <Text style={{ color: '#fff' }}>{ t('FAILED') }</Text>
         </View>
       </View>

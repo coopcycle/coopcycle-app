@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { Platform, StyleSheet, View, TouchableOpacity } from 'react-native'
 import { Icon } from 'native-base'
 import { withTranslation } from 'react-i18next'
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 
 import AddressAutocomplete from './AddressAutocomplete'
 import AddressUtils from '../utils/Address'
@@ -50,11 +52,11 @@ class RestaurantSearch extends Component {
         <TouchableOpacity
           style={{ marginRight: 15 }}
           { ...touchableProps }>
-          <Icon type="FontAwesome5" name={ iconName } style={{ color: '#ffffff', fontSize: iconSize }} />
+          <Icon as={ FontAwesome5 } name={ iconName } style={{ color: '#ffffff', fontSize: iconSize }} />
         </TouchableOpacity>
         <TouchableOpacity
           onPress={ () => AddressUtils.getAddressFromCurrentPosition().then(address => this.props.onSelect(address)) }>
-          <Icon type="MaterialIcons" name="my-location" style={{ color: '#ffffff', fontSize: 24 }} />
+          <Icon as={ MaterialIcons } name="my-location" style={{ color: '#ffffff', fontSize: 24 }} />
         </TouchableOpacity>
       </View>
     )

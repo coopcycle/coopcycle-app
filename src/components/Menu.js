@@ -13,7 +13,6 @@ const styles = StyleSheet.create({
   sectionHeader: {
     paddingVertical: 10,
     paddingHorizontal: 15,
-    backgroundColor: '#f7f7f7',
   },
   sectionHeaderText: {
     color: '#3e3e3e',
@@ -34,7 +33,6 @@ const styles = StyleSheet.create({
     color: '#a7a7a7',
   },
   itemPrice: {
-    color: '#333',
     fontSize: 18,
     marginRight: 10,
   },

@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import {
   StyleSheet,
-  View,
   TouchableOpacity,
   FlatList,
   NativeModules,
@@ -10,11 +9,12 @@ import {
   Platform,
   PermissionsAndroid,
 } from 'react-native'
-import { Container, Icon, Text } from 'native-base'
+import { Center, Icon, Text } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import _ from 'lodash'
 import { connect } from 'react-redux'
 import BleManager from 'react-native-ble-manager'
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
 import { connectPrinter, bluetoothStartScan, disconnectPrinter } from '../../redux/Restaurant/actions'
 
@@ -90,7 +90,7 @@ class Printer extends Component {
         <Text>
           { item.name || (item.advertising && item.advertising.localName) || item.id }
         </Text>
-        <Icon type="FontAwesome" name={ item.isConnected ? 'close' : 'chevron-right' } />
+        <Icon as={ FontAwesome } name={ item.isConnected ? 'close' : 'chevron-right' } />
       </TouchableOpacity>
     )
   }
@@ -109,14 +109,8 @@ class Printer extends Component {
 
     const showList = !isScanning && items.length > 0
 
-    const contentStyle = []
-    if (!showList) {
-      contentStyle.push(styles.content)
-    }
-
     return (
-      <Container>
-        <View style={ contentStyle }>
+        <Center flex={ 1 }>
           { showList && (
             <FlatList
               data={ items }
@@ -125,23 +119,17 @@ class Printer extends Component {
           ) }
           { !showList && (
             <TouchableOpacity onPress={ () => this._onPressScan() } style={{ padding: 15, alignItems: 'center' }}>
-              <Icon type="FontAwesome" name="print" style={{ fontSize: 42 }} />
+              <Icon as={ FontAwesome } name="print" size="lg" />
               <Text>{ this.props.t('SCAN_FOR_PRINTERS') }</Text>
               { isScanning && <ActivityIndicator size="large" color="#c7c7c7" style={{ marginTop: 5 }} /> }
             </TouchableOpacity>
           ) }
-        </View>
-      </Container>
+        </Center>
     )
   }
 }
 
 const styles = StyleSheet.create({
-  content: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   item: {
     paddingVertical: 25,
     paddingHorizontal: 20,
