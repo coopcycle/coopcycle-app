@@ -51,7 +51,7 @@ class OrderScreen extends Component {
           <OrderHeading
             order={ order }
             isPrinterConnected={ this.props.isPrinterConnected }
-            onPrinterClick={ () => this.props.navigation.navigate('RestaurantPrinter') }
+            onPrinterClick={ () => this.props.navigation.navigate('RestaurantSettings', { screen: 'RestaurantPrinter' }) }
             printOrder={ () => this.props.printOrder(this.props.order) } />
           <OrderNotes order={ order } />
           <OrderItems order={ order } />
