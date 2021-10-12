@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
-import { StyleSheet, TouchableOpacity, TouchableHighlight, View, Dimensions } from 'react-native'
+import { StyleSheet, TouchableOpacity, TouchableHighlight, View, Dimensions, Appearance } from 'react-native'
 import { Icon, Text } from 'native-base'
 import { SwipeRow } from 'react-native-swipe-list-view'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 import { withTranslation } from 'react-i18next'
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
 import { greenColor, redColor } from '../styles/common'
 import {
@@ -16,13 +17,11 @@ import {
 import TaskTitle from './TaskTitle'
 
 const styles = StyleSheet.create({
-  itemContainer: {
-    backgroundColor: '#ffffff',
-  },
   item: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
+    paddingRight: 10,
   },
   itemIcon: {
     alignItems: 'center',
@@ -33,10 +32,6 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     paddingHorizontal: 5,
     flexGrow: 1,
-  },
-  itemNavigation: {
-    color: '#cccccc',
-    paddingRight: 15,
   },
   disabled: {
     opacity: 0.4,
@@ -70,7 +65,7 @@ const iconStyle = task => {
 }
 
 const TaskTypeIcon = ({ task }) => (
-  <Icon type="FontAwesome" style={ iconStyle(task) } name={ taskTypeIconName(task) } />
+  <Icon as={FontAwesome} style={ iconStyle(task) } name={ taskTypeIconName(task) } />
 )
 
 const TaskStatusIcon = ({ task }) => {
@@ -78,15 +73,15 @@ const TaskStatusIcon = ({ task }) => {
   switch (task.status) {
     case 'DOING':
       return (
-        <Icon type="FontAwesome" name={ doingIconName } style={ iconStyle(task) } />
+        <Icon as={FontAwesome} name={ doingIconName } style={ iconStyle(task) } />
       )
     case 'DONE':
       return (
-        <Icon type="FontAwesome" name={ doneIconName } style={ iconStyle(task) } />
+        <Icon as={FontAwesome} name={ doneIconName } style={ iconStyle(task) } />
       )
     case 'FAILED':
       return (
-        <Icon type="FontAwesome" name={ failedIconName } style={ iconStyle(task) } />
+        <Icon as={FontAwesome} name={ failedIconName } style={ iconStyle(task) } />
       )
     default:
       return (
@@ -113,7 +108,7 @@ const SwipeButtonContainer = props => {
 
 const SwipeButton = ({ iconName, width }) => (
   <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', width }}>
-    <Icon type="FontAwesome" name={ iconName } style={{ color: '#ffffff' }} />
+    <Icon as={FontAwesome} name={ iconName } style={{ color: '#ffffff' }} />
   </View>
 )
 
@@ -126,6 +121,7 @@ class TaskListItem extends Component {
 
   render() {
 
+    const colorScheme = Appearance.getColorScheme()
     const { color, task, index } = this.props
 
     const itemStyle = [ styles.item ]
@@ -174,7 +170,7 @@ class TaskListItem extends Component {
         </View>
         <TouchableHighlight
           onPress={ this.props.onPress }
-          style={ styles.itemContainer }
+          style={{ backgroundColor: colorScheme === 'dark' ? 'black' : 'white' }}
           underlayColor={ '#efefef' }
           testID={ `task:${index}` }>
           <View style={ itemStyle }>
@@ -188,9 +184,9 @@ class TaskListItem extends Component {
               { task.address.contactName ? (<Text style={ textStyle }>{ task.address.contactName }</Text>) : null }
               { task.address.name ? (<Text style={ textStyle }>{ task.address.name }</Text>) : null }
               <Text numberOfLines={ 1 } style={ textStyle }>{ task.address.streetAddress }</Text>
-              <Text style={ textStyle }>{ moment(task.doneAfter).format('LT') } - { moment(task.doneBefore).format('LT') }</Text>
+              <Text style={ textStyle }>{ moment(task.doneAfter).format('LT') } - { moment(task.doneBefore).format('LT') }</Text>
             </View>
-            <Icon style={ styles.itemNavigation } name="ios-arrow-forward" />
+            <Icon as={ FontAwesome } name="arrow-right" />
           </View>
         </TouchableHighlight>
       </SwipeRow>

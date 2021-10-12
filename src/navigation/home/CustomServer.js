@@ -2,9 +2,8 @@ import React, { Component } from 'react'
 import { InteractionManager, View } from 'react-native'
 import { connect } from 'react-redux'
 import {
-  Container, Content,
-  Button, Text, Icon,
-  Form, Item, Input,
+  Center, Button,
+  Stack, FormControl, Input,
 } from 'native-base'
 import { withTranslation } from 'react-i18next'
 
@@ -32,38 +31,35 @@ class CustomServer extends Component {
 
   render() {
 
-    const itemProps = { error: this.props.hasError }
+    const itemProps = { isInvalid: this.props.hasError }
 
     return (
-      <Container>
-        <Content padder scrollEnabled={ false } contentContainerStyle={{ flex: 1, justifyContent: 'center' }}>
-          <Form>
-            <Item last { ...itemProps }>
-              <Input
-                ref={(ref) => { this.input = ref }}
-                autoCapitalize={'none'}
-                autoCorrect={false}
-                placeholder={`${this.props.t('EXAMPLE')} : demo.coopcycle.org`}
-                onChangeText={(text) => this.setState({ text })}
-                returnKeyType="done"
-                onSubmitEditing={ this.handleForm.bind(this) }
-                testID="customServerURL"
-                autoCompleteType="off" />
-              { this.props.hasError && <Icon name="close-circle" /> }
-            </Item>
-            { this.props.hasError && (
-            <View style={{ paddingLeft: 15 }}>
-              <Text style={{ marginVertical: 5, color: '#ed2f2f' }}>{ this.props.message }</Text>
-            </View>
-            ) }
-            <View style={{ paddingVertical: 15 }}>
-              <Button block onPress={ this.handleForm.bind(this) } testID="submitCustomServer">
-                <Text>{ this.props.t('SUBMIT') }</Text>
-              </Button>
-            </View>
-          </Form>
-        </Content>
-      </Container>
+      <Center flex={1} px="3">
+        <FormControl { ...itemProps }>
+          <Stack>
+            <Input
+              ref={(ref) => { this.input = ref }}
+              autoCapitalize={'none'}
+              autoCorrect={false}
+              placeholder={`${this.props.t('EXAMPLE')} : demo.coopcycle.org`}
+              onChangeText={(text) => this.setState({ text })}
+              returnKeyType="done"
+              onSubmitEditing={ this.handleForm.bind(this) }
+              testID="customServerURL"
+              autoCompleteType="off" />
+          </Stack>
+          { this.props.hasError && (
+          <FormControl.ErrorMessage>
+            { this.props.message }
+          </FormControl.ErrorMessage>
+          ) }
+          <View style={{ paddingVertical: 15 }}>
+            <Button block onPress={ this.handleForm.bind(this) } testID="submitCustomServer">
+              { this.props.t('SUBMIT') }
+            </Button>
+          </View>
+        </FormControl>
+      </Center>
     )
   }
 }

@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
 import { StyleSheet, View } from 'react-native'
 import {
-  Container,
-  Text, Button, Footer, FooterTab,
+  Text, Button, HStack, VStack,
 } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
@@ -29,7 +28,7 @@ class Signature extends Component {
   render() {
 
     return (
-      <Container>
+      <VStack flex={ 1 }>
         <View style={ styles.content }>
           <Text note style={{ textAlign: 'center', marginBottom: 20 }}>
             { this.props.t('SIGNATURE_DISCLAIMER') }
@@ -37,24 +36,20 @@ class Signature extends Component {
           <View style={ styles.canvasContainer }>
             <SketchCanvas
               ref={ component => { this._sketchCanvas = component } }
-              style={{ flex: 1 }}
+              style={{ flex: 1, backgroundColor: 'white' }}
               strokeColor={ 'black' }
               strokeWidth={ 7 } />
           </View>
           <Button light block onPress={ this._clearCanvas.bind(this) }>
-            <Text>{ this.props.t('SIGNATURE_CLEAR') }</Text>
+            { this.props.t('SIGNATURE_CLEAR') }
           </Button>
         </View>
-        <Footer>
-          <FooterTab>
-            <Button full onPress={ this._saveImage.bind(this) }>
-              <Text style={{ color: '#ffffff' }}>
-                { this.props.t('SIGNATURE_ADD') }
-              </Text>
-            </Button>
-          </FooterTab>
-        </Footer>
-      </Container>
+        <HStack>
+          <Button full onPress={ this._saveImage.bind(this) }>
+            { this.props.t('SIGNATURE_ADD') }
+          </Button>
+        </HStack>
+      </VStack>
     )
   }
 }

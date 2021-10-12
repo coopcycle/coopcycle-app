@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { PhoneNumberUtil, PhoneNumberFormat } from 'google-libphonenumber'
 import { Icon, Text, Button } from 'native-base'
 import { phonecall } from 'react-native-communications'
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
 const phoneNumberUtil = PhoneNumberUtil.getInstance()
 
@@ -25,22 +26,21 @@ const Comp = ({ order, isPrinterConnected, onPrinterClick, printOrder }) => {
         { isPrinterConnected && (
         <Button small iconRight onPress={ printOrder }>
           <Text>{ t('RESTAURANT_ORDER_PRINT') }</Text>
-          <Icon type="FontAwesome" name="print" />
+          <Icon as={FontAwesome} name="print" />
         </Button>
         )}
         { !isPrinterConnected && (
-        <Button small light iconRight onPress={ onPrinterClick }>
-          <Text>{ t('RESTAURANT_ORDER_PRINT') }</Text>
-          <Icon type="FontAwesome" name="print" />
+        <Button endIcon={ <Icon as={FontAwesome} name="print" size="sm" /> }
+          onPress={ onPrinterClick }>
+          { t('RESTAURANT_ORDER_PRINT') }
         </Button>
         )}
       </View>
       <View style={{ width: '50%', paddingLeft: 5 }}>
         { isPhoneValid && (
-        <Button small iconLeft success
+        <Button startIcon={ <Icon as={FontAwesome} name="phone" size="sm" /> } success
           onPress={ () => phonecall(order.customer.telephone, true) }>
-          <Icon name="call" />
-          <Text>{ phoneNumberUtil.format(phoneNumber, PhoneNumberFormat.NATIONAL) }</Text>
+          { phoneNumberUtil.format(phoneNumber, PhoneNumberFormat.NATIONAL) }
         </Button>
         )}
       </View>

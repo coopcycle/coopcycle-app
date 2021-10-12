@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
 import { View } from 'react-native'
-import { Container, Text } from 'native-base'
+import { Center, Text } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 
 import BigButton from './components/BigButton'
 import { cancelOrder } from '../../redux/Restaurant/actions'
+import { resolveFulfillmentMethod } from '../../utils/order'
 
 class OrderCancelScreen extends Component {
 
@@ -19,8 +20,11 @@ class OrderCancelScreen extends Component {
 
   render() {
 
+    const order = this.props.route.params?.order
+    const fulfillmentMethod = resolveFulfillmentMethod(order)
+
     return (
-      <Container>
+      <Center flex={ 1 }>
         <View style={{ padding: 20 }}>
           <Text note>
             { this.props.t('RESTAURANT_ORDER_CANCEL_DISCLAIMER') }
@@ -39,20 +43,16 @@ class OrderCancelScreen extends Component {
             heading={ this.props.t('RESTAURANT_ORDER_REFUSE_REASON_RUSH_HOUR_HEADING') }
             text={ `${this.props.t('RESTAURANT_ORDER_REFUSE_REASON_ORDER_WILL_BE_REFUSED')}\n${this.props.t('RESTAURANT_ORDER_REFUSE_REASON_ORDER_CONTINUE_RECEIVING')}` }
             onPress={ () => this._cancelOrder('RUSH_HOUR') } />
+          { fulfillmentMethod === 'collection' && (
           <BigButton
             danger
             heading={ this.props.t('RESTAURANT_ORDER_REFUSE_REASON_NO_SHOW') }
             text={ this.props.t('RESTAURANT_ORDER_REFUSE_REASON_ORDER_WILL_BE_CAPTURED') }
-            onPress={ () => this._cancelOrder('NO_SHOW') } />
+            onPress={ () => this._cancelOrder('NO_SHOW') } />) }
         </View>
-      </Container>
+      </Center>
     )
   }
-}
-
-function mapStateToProps(state) {
-
-  return {}
 }
 
 function mapDispatchToProps(dispatch) {
@@ -62,4 +62,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(OrderCancelScreen))
+export default connect(() => ({}), mapDispatchToProps)(withTranslation()(OrderCancelScreen))

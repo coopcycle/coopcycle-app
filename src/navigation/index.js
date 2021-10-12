@@ -1,6 +1,5 @@
 import React from 'react'
 import HeaderButton from '../components/HeaderButton'
-import { primaryColor,  whiteColor, fontTitleName } from '../styles/common'
 import { DrawerActions } from '@react-navigation/native'
 
 import DispatchUnassignedTasks from './dispatch/UnassignedTasks'
@@ -121,27 +120,6 @@ export default {
   StoreDelivery,
   StoreNewDeliveryAddress,
   StoreNewDeliveryForm,
-}
-
-export const defaultNavigationOptions = {
-  headerStyle: {
-    backgroundColor: primaryColor,
-  },
-  headerBackTitleStyle: {
-    color: whiteColor,
-    fontWeight: 'normal',
-    fontFamily: fontTitleName,
-  },
-  headerTintColor: whiteColor,
-  headerTitleStyle: {
-    color: whiteColor,
-    // fontWeight needs to be defined or it doesn't work
-    // @see https://github.com/react-community/react-navigation/issues/542#issuecomment-345289122
-    fontWeight: 'normal',
-    fontFamily: fontTitleName,
-  },
-  headerTitleAlign: 'center',
-  headerBackTitleVisible: false,
 }
 
 export const headerLeft = (navigation, testID = 'menuBtn') => {

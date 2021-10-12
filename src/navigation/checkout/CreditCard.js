@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 import { connect } from 'react-redux'
-import { Content } from 'native-base';
+import { Center } from 'native-base';
 
 import CreditCardComp from './components/CreditCard'
 import CashComp from './components/CashOnDelivery'
@@ -54,7 +54,7 @@ class CreditCard extends Component {
     }
 
     return (
-      <Content contentContainerStyle={ styles.content }>
+      <Center flex={ 1 }>
         <PaymentMethodPicker
           methods={ paymentMethods }
           onSelect={ type => {
@@ -62,17 +62,10 @@ class CreditCard extends Component {
               'CheckoutPaymentMethodCashOnDelivery' : 'CheckoutPaymentMethodCard'
             this.props.navigation.navigate(routeName)
           }} />
-      </Content>
+      </Center>
     )
   }
 }
-
-const styles = StyleSheet.create({
-  content: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-})
 
 function mapStateToProps(state) {
   return {

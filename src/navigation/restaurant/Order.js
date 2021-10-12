@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import {
-  Container,
-  Left,
   Icon, Text,
-  Card, CardItem,
+  Box, HStack,
 } from 'native-base';
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
 import OrderItems from '../../components/OrderItems'
 import SwipeToAcceptOrRefuse from './components/SwipeToAcceptOrRefuse'
@@ -22,16 +21,10 @@ const OrderNotes = ({ order }) => {
   if (order.notes) {
 
     return (
-      <View style={{ paddingHorizontal: 20 }}>
-        <Card>
-          <CardItem>
-            <Left>
-              <Icon type="FontAwesome" name="exclamation-triangle" />
-              <Text>{ order.notes }</Text>
-            </Left>
-          </CardItem>
-        </Card>
-      </View>
+      <HStack p="2" alignItems="center">
+        <Icon as={FontAwesome} size="sm" name="exclamation-triangle" mr="2" />
+        <Text>{ order.notes }</Text>
+      </HStack>
     )
   }
 
@@ -51,12 +44,12 @@ class OrderScreen extends Component {
     const canEdit = !isMultiVendor(order)
 
     return (
-      <Container style={{ flex: 1, backgroundColor: '#ffffff' }}>
+      <Box flex={1}>
         <View style={{ flex: 1 }}>
           <OrderHeading
             order={ order }
             isPrinterConnected={ this.props.isPrinterConnected }
-            onPrinterClick={ () => this.props.navigation.navigate('RestaurantPrinter') }
+            onPrinterClick={ () => this.props.navigation.navigate('RestaurantSettings', { screen: 'RestaurantPrinter' }) }
             printOrder={ () => this.props.printOrder(this.props.order) } />
           <OrderNotes order={ order } />
           <OrderItems order={ order } />
@@ -73,7 +66,7 @@ class OrderScreen extends Component {
             onPressDelay={   () => this.props.navigation.navigate('RestaurantOrderDelay', { order }) }
             onPressFulfill={ () => this.fulfillOrder(order) } />
         }
-      </Container>
+      </Box>
     )
   }
 }

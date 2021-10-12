@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
 import { SectionList, View } from 'react-native'
 import {
-  Left, Right,
-  ListItem, Text, Switch,
+  HStack, Text, Switch, Heading,
 } from 'native-base'
 import _ from 'lodash'
 
@@ -10,11 +9,10 @@ import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 
 import { loadProductOptions, changeProductOptionValueEnabled } from '../../redux/Restaurant/actions'
+import ItemSeparator from '../../components/ItemSeparator'
 
 const SectionHeader = ({ section }) => (
-  <ListItem itemHeader>
-    <Text>{ section.title }</Text>
-  </ListItem>
+  <Heading p="3">{ section.title }</Heading>
 )
 
 class ProductOptions extends Component {
@@ -30,16 +28,12 @@ class ProductOptions extends Component {
   _renderItem(productOptionValue) {
 
     return (
-      <ListItem>
-        <Left>
-          <Text>{ productOptionValue.value }</Text>
-        </Left>
-        <Right>
-          <Switch
-            value={ productOptionValue.enabled }
-            onValueChange={ (value) => this._toggleProductEnabled(productOptionValue, value) } />
-        </Right>
-      </ListItem>
+      <HStack p="3" justifyContent="space-between">
+        <Text>{ productOptionValue.value }</Text>
+        <Switch
+          isChecked={ productOptionValue.enabled }
+          onToggle={ (value) => this._toggleProductEnabled(productOptionValue, value) } />
+      </HStack>
     );
   }
 
@@ -56,6 +50,7 @@ class ProductOptions extends Component {
           sections={ sections }
           renderItem={ ({ item }) => this._renderItem(item) }
           renderSectionHeader={ SectionHeader }
+          ItemSeparatorComponent={ ItemSeparator }
           keyExtractor={ (item, index) => index }
         />
       </View>

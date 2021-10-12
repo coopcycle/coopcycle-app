@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
 import { InteractionManager, SectionList, View } from 'react-native'
 import {
-  Right, Body,
-  ListItem, Text,
+  Pressable, HStack, Text, Heading,
 } from 'native-base'
 import _ from 'lodash'
 import moment from 'moment'
@@ -10,6 +9,7 @@ import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 import { formatPrice } from '../../utils/formatting'
 import { loadOrders } from '../../redux/Account/actions'
+import ItemSeparator from '../../components/ItemSeparator'
 
 class AccountOrdersPage extends Component {
 
@@ -24,18 +24,20 @@ class AccountOrdersPage extends Component {
     const { navigate } = this.props.navigation
 
     return (
-      <ListItem onPress={() => navigate('AccountOrder', { order }) }>
-        <Body><Text>{ order.restaurant.name }</Text></Body>
-        <Right><Text>{ formatPrice(order.total) }</Text></Right>
-      </ListItem>
+      <Pressable onPress={() => navigate('AccountOrder', { order }) }>
+        <HStack justifyContent="space-between" p="2">
+          <Text>{ order.restaurant.name }</Text>
+          <Text>{ formatPrice(order.total) }</Text>
+        </HStack>
+      </Pressable>
     );
   }
 
   _renderSectionHeader(section) {
     return (
-      <ListItem itemHeader>
-        <Text>{ moment(section.day).format('LL') }</Text>
-      </ListItem>
+      <Heading size="sm" p="2">
+        { moment(section.day).format('LL') }
+      </Heading>
     )
   }
 
@@ -59,6 +61,7 @@ class AccountOrdersPage extends Component {
           renderItem={ ({ item }) => this._renderItem(item) }
           renderSectionHeader={ ({ section }) => this._renderSectionHeader(section) }
           keyExtractor={ (item, index) => index }
+          ItemSeparatorComponent={ ItemSeparator }
         />
       </View>
     );

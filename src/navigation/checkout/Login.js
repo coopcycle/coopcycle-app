@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { StyleSheet, View } from 'react-native'
-import { Container, Content, Text } from 'native-base'
+import { Text, Center } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 
@@ -30,29 +30,27 @@ class Login extends Component {
   render() {
 
     return (
-      <Container>
+      <Center flex={ 1 }>
         <View style={{ padding: 20 }}>
           <Text style={{ textAlign: 'center' }} note>
             { this.props.t('CHECKOUT_LOGIN_DISCLAIMER') }
           </Text>
         </View>
-        <Content padder extraScrollHeight={64}>
-          { this.renderMessage() }
-          <AuthenticateForm
-            onLogin={(email, password) =>
-              this.props.login(email, password, false)
-            }
-            onRegister={data => this.props.register(data)}
-            onForgotPassword={() => {
-              this.props.forgotPassword()
-              this.props.navigation.navigate('CheckoutForgotPassword', {
-                checkEmailRouteName: 'CheckoutResetPasswordCheckEmail',
-                resumeCheckoutAfterActivation: true,
-              })
-            }}
-            registrationErrors={ this.props.registrationErrors } />
-        </Content>
-      </Container>
+        { this.renderMessage() }
+        <AuthenticateForm
+          onLogin={(email, password) =>
+            this.props.login(email, password, false)
+          }
+          onRegister={data => this.props.register(data)}
+          onForgotPassword={() => {
+            this.props.forgotPassword()
+            this.props.navigation.navigate('CheckoutForgotPassword', {
+              checkEmailRouteName: 'CheckoutResetPasswordCheckEmail',
+              resumeCheckoutAfterActivation: true,
+            })
+          }}
+          registrationErrors={ this.props.registrationErrors } />
+      </Center>
     )
   }
 }

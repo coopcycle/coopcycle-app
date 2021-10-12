@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { View } from 'react-native'
-import { Container, Text } from 'native-base'
+import { Center, Text } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 
@@ -20,7 +20,7 @@ class OrderRefuseScreen extends Component {
   render() {
 
     return (
-      <Container>
+      <Center flex={ 1 }>
         <View style={{ padding: 20 }}>
           <Text note>
             { this.props.t('RESTAURANT_ORDER_REFUSE_DISCLAIMER') }
@@ -40,7 +40,7 @@ class OrderRefuseScreen extends Component {
             text={ `${this.props.t('RESTAURANT_ORDER_REFUSE_REASON_ORDER_WILL_BE_REFUSED')}\n${this.props.t('RESTAURANT_ORDER_REFUSE_REASON_ORDER_STOP_RECEIVING')}` }
             onPress={ () => this._refuseOrder('CLOSING') } />
         </View>
-      </Container>
+      </Center>
     )
   }
 }

@@ -2,16 +2,15 @@ import React, { Component } from 'react'
 import { StyleSheet, TouchableOpacity, View, Platform } from 'react-native'
 import { connect } from 'react-redux'
 import {
-  Container, Content,
   Text, Button,
-  Form, Label, Textarea,
-  Footer, FooterTab,
-  Icon,
+  FormControl,
+  Icon, Box, VStack, TextArea, HStack,
 } from 'native-base'
 import DateTimePicker from 'react-native-modal-datetime-picker'
 import { withTranslation } from 'react-i18next'
 import _ from 'lodash'
 import moment from 'moment'
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
 import { createTask } from '../../redux/Dispatch/actions'
 import AddressAutocomplete from '../../components/AddressAutocomplete'
@@ -100,90 +99,88 @@ class AddTask extends Component {
 
     pickupBtnProps = {
       ...pickupBtnProps,
-      primary: type === 'PICKUP',
-      bordered: type !== 'PICKUP',
+      variant: type === 'PICKUP' ? 'solid' : 'outline',
     }
     dropoffBtnProps = {
       ...dropoffBtnProps,
-      primary: type === 'DROPOFF',
-      bordered: type !== 'DROPOFF',
+      variant: type === 'DROPOFF' ?  'solid' : 'outline',
     }
 
     return (
-      <Container>
-        <Content padder>
-          <Form>
-            <View style={ [ styles.formRow, { flexDirection: 'row' } ] }>
-              <Button { ...pickupBtnProps } onPress={ () => this.setState({ type: 'PICKUP' }) } style={{ flex: 1 }}>
-                <Text>Pickup</Text>
-              </Button>
-              <Button { ...dropoffBtnProps } onPress={ () => this.setState({ type: 'DROPOFF' }) } style={{ flex: 1 }}>
-                <Text>Dropoff</Text>
-              </Button>
-            </View>
-            <View style={ styles.formRow }>
-              <Label style={{ marginBottom: 50 }}>{ this.props.t('TASK_FORM_ADDRESS_LABEL') }</Label>
-            </View>
-            <View style={ [ styles.autocompleteContainer, { marginTop: 85 } ] }>
-                <AddressAutocomplete
-                  country={ this.props.country }
-                  location={ this.props.location }
-                  address={ address }
-                  inputContainerStyle={{
-                    flex: 1,
-                    justifyContent: 'center',
-                    borderWidth: 0,
-                  }}
-                  style={{ borderRadius: 0 }}
-                  onSelectAddress={ this._onSelectAddress.bind(this) }
-                  renderRight={ () => {
+      <Box p="3">
+        <VStack>
+          <FormControl style={ [ styles.formRow, { flexDirection: 'row' } ] }>
+            <Button flex={ 1 } mr="1" { ...pickupBtnProps } onPress={ () => this.setState({ type: 'PICKUP' }) }>
+              Pickup
+            </Button>
+            <Button flex={ 1 } ml="1" { ...dropoffBtnProps } onPress={ () => this.setState({ type: 'DROPOFF' }) }>
+              Dropoff
+            </Button>
+          </FormControl>
+          <FormControl style={ styles.formRow }>
+            <FormControl.Label style={{ marginBottom: 50 }}>{ this.props.t('TASK_FORM_ADDRESS_LABEL') }</FormControl.Label>
+          </FormControl>
+          <FormControl style={ [ styles.autocompleteContainer, { marginTop: 85 } ] }>
+            <AddressAutocomplete
+              country={ this.props.country }
+              location={ this.props.location }
+              address={ address }
+              inputContainerStyle={{
+                flex: 1,
+                justifyContent: 'center',
+                borderWidth: 0,
+              }}
+              style={{ borderRadius: 0 }}
+              onSelectAddress={ this._onSelectAddress.bind(this) }
+              renderRight={ () => {
 
-                    if (!address.streetAddress) {
-                      return null
-                    }
+                if (!address.streetAddress) {
+                  return null
+                }
 
-                    return (
-                      <TouchableOpacity style={ styles.editAddressBtn }
-                        onPress={ () => navigate('DispatchEditAddress', { address, onSubmit: this._onEditAddressSubmit.bind(this) }) }>
-                        <Icon type="FontAwesome" name="pencil" style={{ color: '#333333' }} />
-                      </TouchableOpacity>
-                    )
-                  } }
-                  />
-            </View>
-            <View style={ styles.formRow }>
-              <Label>{ this.props.t('TASK_FORM_DONE_AFTER_LABEL') }</Label>
+                return (
+                  <TouchableOpacity style={ styles.editAddressBtn }
+                    onPress={ () => navigate('DispatchEditAddress', { address, onSubmit: this._onEditAddressSubmit.bind(this) }) }>
+                    <Icon as={FontAwesome} name="pencil" />
+                  </TouchableOpacity>
+                )
+              } }
+              />
+          </FormControl>
+          <FormControl style={ styles.formRow }>
+            <FormControl.Label>{ this.props.t('TASK_FORM_DONE_AFTER_LABEL') }</FormControl.Label>
+            <HStack>
               <View style={ styles.datePickerRow }>
                 <Text>{ doneAfter.format('lll') }</Text>
-                <Button onPress={ () => this.setState({ isDoneAfterDateTimePickerVisible: true }) }>
-                  <Text>{ this.props.t('EDIT') }</Text>
+                <Button size="sm" onPress={ () => this.setState({ isDoneAfterDateTimePickerVisible: true }) }>
+                  { this.props.t('EDIT') }
                 </Button>
               </View>
-            </View>
-            <View style={ styles.formRow }>
-              <Label>{ this.props.t('TASK_FORM_DONE_BEFORE_LABEL') }</Label>
+            </HStack>
+          </FormControl>
+          <FormControl style={ styles.formRow }>
+            <FormControl.Label>{ this.props.t('TASK_FORM_DONE_BEFORE_LABEL') }</FormControl.Label>
+            <HStack>
               <View style={ styles.datePickerRow }>
                 <Text>{ doneBefore.format('lll') }</Text>
-                <Button onPress={ () => this.setState({ isDoneBeforeDateTimePickerVisible: true }) }>
-                  <Text>{ this.props.t('EDIT') }</Text>
+                <Button size="sm" onPress={ () => this.setState({ isDoneBeforeDateTimePickerVisible: true }) }>
+                  { this.props.t('EDIT') }
                 </Button>
               </View>
+            </HStack>
+          </FormControl>
+          <FormControl style={ styles.formRow }>
+            <FormControl.Label>{ this.props.t('TASK_FORM_COMMENTS_LABEL') }</FormControl.Label>
+            <View>
+              <TextArea rowSpan={ 5 } bordered onChangeText={text => this.setState({ comments: text })} />
             </View>
-            <View style={ styles.formRow }>
-              <Label>{ this.props.t('TASK_FORM_COMMENTS_LABEL') }</Label>
-              <View>
-                <Textarea rowSpan={ 5 } bordered onChangeText={text => this.setState({ comments: text })} />
-              </View>
-            </View>
-          </Form>
-        </Content>
-        <Footer style={{ backgroundColor: '#3498DB' }}>
-          <FooterTab style={{ backgroundColor: '#3498DB' }}>
-            <Button full onPress={ () => this._createTask() } testID="submitTaskForm">
-              <Text style={{ fontSize: 18, color: '#fff' }}>{ this.props.t('DISPATCH_ADD_TASK') }</Text>
-            </Button>
-          </FooterTab>
-        </Footer>
+          </FormControl>
+        </VStack>
+        <Box>
+          <Button onPress={ () => this._createTask() } testID="submitTaskForm">
+            { this.props.t('DISPATCH_ADD_TASK') }
+          </Button>
+        </Box>
         <DateTimePicker
           mode="datetime"
           date={ doneAfter.toDate() }
@@ -196,7 +193,7 @@ class AddTask extends Component {
           isVisible={ this.state.isDoneBeforeDateTimePickerVisible }
           onConfirm={ this._handleDoneBeforeDatePicked.bind(this) }
           onCancel={ this._hideDoneBeforeDateTimePicker.bind(this) } />
-      </Container>
+      </Box>
     )
   }
 }

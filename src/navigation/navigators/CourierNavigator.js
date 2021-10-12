@@ -3,6 +3,8 @@ import { View, TouchableOpacity, StyleSheet } from 'react-native'
 import { Icon } from 'native-base'
 import { createStackNavigator } from '@react-navigation/stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
+import Ionicons from 'react-native-vector-icons/Ionicons'
 
 import i18n from '../../i18n'
 import TrackingIcon from '../../components/TrackingIcon'
@@ -25,7 +27,7 @@ const Tabs = () => (
         tabBarTestID: 'messengerTabMap',
         tabBarIcon: ({ color }) => {
           return (
-            <Icon type="FontAwesome" name="map" style={{ color }} />
+            <Icon as={ FontAwesome } name="map" style={{ color }} />
           )
         },
       })}
@@ -38,7 +40,7 @@ const Tabs = () => (
         tabBarTestID: 'messengerTabList',
         tabBarIcon: ({ color }) => {
           return (
-            <Icon type="FontAwesome" name="list" style={{ color }} />
+            <Icon as={ FontAwesome } name="list" style={{ color }} />
           )
         },
       })}
@@ -62,7 +64,7 @@ const ButtonWithIcon = ({ name, onPress }) => {
 
   return (
     <TouchableOpacity onPress={ onPress } style={ styles.button }>
-      <Icon name={ name } style={{ color: 'white' }} />
+      <Icon as={ Ionicons } name={ name } style={{ color: 'white' }} />
     </TouchableOpacity>
   )
 }

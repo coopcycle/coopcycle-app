@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
 import { withTranslation } from 'react-i18next'
 import {
-  Container, Content,
-  Text, Button,
-  Footer, FooterTab,
+  Button,
+  VStack, HStack,
 } from 'native-base'
 
 import AddressForm from '../../components/DeliveryAddressForm'
@@ -32,26 +31,20 @@ class EditAddress extends Component {
     const { address } = this.props.route.params
 
     return (
-      <Container>
-        <Content>
-          <AddressForm
-            ref={ this.addressForm }
-            { ...address }
-            extended />
-        </Content>
-        <Footer style={{ backgroundColor: '#3498DB' }}>
-          <FooterTab style={{ backgroundColor: '#3498DB' }}>
-            <Button full onPress={ this._onCancel.bind(this) }>
-              <Text style={{ fontSize: 18, color: '#fff' }}>{ this.props.t('CANCEL') }</Text>
-            </Button>
-          </FooterTab>
-          <FooterTab style={{ backgroundColor: '#3498DB' }}>
-            <Button full onPress={ this._onSubmit.bind(this) }>
-              <Text style={{ fontSize: 18, color: '#fff' }}>{ this.props.t('SUBMIT') }</Text>
-            </Button>
-          </FooterTab>
-        </Footer>
-      </Container>
+      <VStack flex={ 1 } p="3" justifyContent="space-between">
+        <AddressForm
+          ref={ this.addressForm }
+          { ...address }
+          extended />
+        <HStack>
+          <Button flex={ 1 } onPress={ this._onCancel.bind(this) }>
+            { this.props.t('CANCEL') }
+          </Button>
+          <Button flex={ 1 } onPress={ this._onSubmit.bind(this) }>
+            { this.props.t('SUBMIT') }
+          </Button>
+        </HStack>
+      </VStack>
     );
   }
 }

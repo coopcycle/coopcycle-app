@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Form, Item, Input, Label } from 'native-base'
+import { Input, FormControl, VStack } from 'native-base'
 import _ from 'lodash'
 import { withTranslation } from 'react-i18next'
 
@@ -28,41 +28,41 @@ class DeliveryAddressForm extends Component {
   renderName() {
 
     return (
-      <Item stackedLabel>
-        <Label>{ this.props.t('NAME') }</Label>
+      <FormControl>
+        <FormControl.Label>{ this.props.t('NAME') }</FormControl.Label>
         <Input
           { ...inputProps }
           onChangeText={ name => this.setState({ name }) }
           value={ this.state.name } />
-      </Item>
+      </FormControl>
     )
   }
 
   renderDescription() {
 
     return (
-      <Item stackedLabel>
-        <Label>{ this.props.t('ADDRESS_DESCRIPTION') }</Label>
+      <FormControl>
+        <FormControl.Label>{ this.props.t('ADDRESS_DESCRIPTION') }</FormControl.Label>
         <Input
           { ...inputProps }
           multiline
           onChangeText={ description => this.setState({ description }) }
           value={ this.state.description }
           style={{ height: 5 * 25 }} />
-      </Item>
+      </FormControl>
     )
   }
 
   renderTelephone() {
 
     return (
-      <Item stackedLabel last>
-        <Label>{ this.props.t('TELEPHONE') }</Label>
+      <FormControl>
+        <FormControl.Label>{ this.props.t('TELEPHONE') }</FormControl.Label>
         <Input
           { ...inputProps }
           onChangeText={ telephone => this.setState({ telephone }) }
           value={ this.state.telephone } />
-      </Item>
+      </FormControl>
     )
   }
 
@@ -72,35 +72,34 @@ class DeliveryAddressForm extends Component {
     const extended = this.props.extended || false
 
     const postalCodeProps = _.includes(errors, 'postalCode') ? { error: true } : {}
-    const addressLocalityProps = extended ? {} : { last: true }
 
     return (
-      <Form>
-        <Item stackedLabel>
-          <Label>{this.props.t('ADDRESS')}</Label>
+      <VStack>
+        <FormControl>
+          <FormControl.Label>{this.props.t('ADDRESS')}</FormControl.Label>
           <Input
             { ...inputProps }
             onChangeText={ streetAddress => this.setState({ streetAddress }) }
             value={ this.state.streetAddress } />
-        </Item>
-        <Item stackedLabel { ...postalCodeProps }>
-          <Label>{this.props.t('POST_CODE')}</Label>
+        </FormControl>
+        <FormControl { ...postalCodeProps }>
+          <FormControl.Label>{this.props.t('POST_CODE')}</FormControl.Label>
           <Input
             { ...inputProps }
             onChangeText={ postalCode => this.setState({ postalCode }) }
             value={ this.state.postalCode } />
-        </Item>
-        <Item stackedLabel { ...addressLocalityProps }>
-          <Label>{this.props.t('CITY')}</Label>
+        </FormControl>
+        <FormControl>
+          <FormControl.Label>{this.props.t('CITY')}</FormControl.Label>
           <Input
             { ...inputProps }
             onChangeText={ addressLocality => this.setState({ addressLocality }) }
             value={ this.state.addressLocality } />
-        </Item>
+        </FormControl>
         { extended && this.renderName() }
         { extended && this.renderDescription() }
         { extended && this.renderTelephone() }
-      </Form>
+      </VStack>
     );
   }
 }

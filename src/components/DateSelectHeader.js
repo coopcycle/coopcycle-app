@@ -1,9 +1,9 @@
 import React from 'react'
-import { StyleSheet, View, Text, Animated } from 'react-native'
-import { Icon, Button } from 'native-base'
-import { Col, Row, Grid } from 'react-native-easy-grid'
+import { StyleSheet, View, Text, Animated, TouchableOpacity } from 'react-native'
+import { Icon } from 'native-base'
 import { Calendar } from 'react-native-calendars'
 import moment from 'moment'
+import Ionicons from 'react-native-vector-icons/Ionicons'
 
 import { primaryColor, whiteColor, dateSelectHeaderHeight, calendarHeight, headerFontSize } from '../styles/common'
 
@@ -17,6 +17,7 @@ let styles = StyleSheet.create({
     backgroundColor: primaryColor,
     height: dateSelectHeaderHeight,
     alignItems: 'center',
+    flexDirection: 'row',
   },
   dateHeaderText: {
     color: whiteColor,
@@ -48,6 +49,10 @@ class DateSelectHeader extends React.Component {
     super(props)
 
     this.initialCalendarTop = -1 * (dateSelectHeaderHeight + calendarHeight)
+
+    // FIXME
+    // We still need to add some more height
+    this.initialCalendarTop -= 30
 
     this.state = {
       height: dateSelectHeaderHeight,
@@ -112,9 +117,9 @@ class DateSelectHeader extends React.Component {
 
   renderButton(iconName, onPress, style) {
     return (
-      <Button block transparent onPress={ onPress }>
-        <Icon style={style} name={ iconName } />
-      </Button>
+      <TouchableOpacity block transparent onPress={ onPress }>
+        <Icon as={ Ionicons } name={ iconName } style={style} />
+      </TouchableOpacity>
     )
   }
 
@@ -141,21 +146,19 @@ class DateSelectHeader extends React.Component {
 
     return (
       <View style={[styles.container, {height: this.state.height}]}>
-        <Grid>
-          <Row style={ styles.dateHeader }>
-            <Col size={ 4 } style={ styles.button }>
-              { buttonsEnabled && this.renderButton('arrow-back', this.onPastPress, styles.icon) }
-            </Col>
-            <Col size={ 8 } style={ styles.body } onPress={ this.toggleCalendar }>
-              <Text numberOfLines={ 1 } style={styles.dateHeaderText}>
-                { moment(selectedDate).format('dddd Do MMM') }
-              </Text>
-            </Col>
-            <Col size={ 4 } style={ styles.button }>
-              { buttonsEnabled && this.renderButton('arrow-forward', this.onFuturePress, styles.icon) }
-            </Col>
-          </Row>
-        </Grid>
+        <View style={ styles.dateHeader }>
+          <View style={ [ styles.button, { width: '25%' } ] }>
+            { buttonsEnabled && this.renderButton('arrow-back', this.onPastPress, styles.icon) }
+          </View>
+          <TouchableOpacity style={ [ styles.body, { width: '50%' } ] } onPress={ this.toggleCalendar }>
+            <Text numberOfLines={ 1 } style={styles.dateHeaderText}>
+              { moment(selectedDate).format('dddd Do MMM') }
+            </Text>
+          </TouchableOpacity>
+          <View style={ [ styles.button, { width: '25%' } ] }>
+            { buttonsEnabled && this.renderButton('arrow-forward', this.onFuturePress, styles.icon) }
+          </View>
+        </View>
         <Animated.View style={[styles.calendarWidget, {top: this.state.slideCalendarAnim}]}>
           <Calendar
             current={selectedDate.format('YYYY-MM-DD')}

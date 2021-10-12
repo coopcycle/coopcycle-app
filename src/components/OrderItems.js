@@ -7,6 +7,8 @@ import { withTranslation } from 'react-i18next'
 import { formatPrice } from '../utils/formatting'
 import _ from 'lodash'
 
+import ItemSeparator from './ItemSeparator'
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -17,11 +19,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingVertical: 15,
     paddingHorizontal: 15,
-  },
-  itemSeparator: {
-    height: StyleSheet.hairlineWidth,
-    width: '100%',
-    backgroundColor: '#dddddd',
   },
   adjustmentText: {
     fontSize: 14,
@@ -41,10 +38,6 @@ const styles = StyleSheet.create({
     color: '#FF851B',
   },
 });
-
-const ItemSeparatorComponent = () => (
-  <View style={ styles.itemSeparator } />
-)
 
 const CartLine = (props) => {
 
@@ -184,7 +177,7 @@ class OrderItems extends Component {
               data={ items }
               keyExtractor={ (item, index) => `ITEM#${item.id}` }
               renderItem={ ({ item }) => this.renderItem(item) }
-              ItemSeparatorComponent={ ItemSeparatorComponent } />
+              ItemSeparatorComponent={ ItemSeparator } />
           )}
         </View>
         <View style={{ flex: 0, flexShrink: 1 }}>

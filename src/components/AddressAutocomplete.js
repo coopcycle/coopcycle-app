@@ -1,10 +1,10 @@
 // @see https://github.com/uuidjs/uuid#getrandomvalues-not-supported
 import 'react-native-get-random-values'
 import React, { Component } from 'react'
-import { Image, StyleSheet, TouchableOpacity, TextInput, View } from 'react-native'
+import { Image, StyleSheet, TouchableOpacity, TextInput, View, Appearance } from 'react-native'
 import PropTypes from 'prop-types'
 import _ from 'lodash'
-import { Icon, Text } from 'native-base'
+import { Icon, Text, useColorMode } from 'native-base'
 import qs from 'qs'
 import axios from 'axios'
 import { withTranslation } from 'react-i18next'
@@ -12,9 +12,11 @@ import Autocomplete from 'react-native-autocomplete-input'
 import Fuse from 'fuse.js'
 import { v4 as uuidv4 } from 'uuid'
 import Config from 'react-native-config'
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 
 import { localeDetector } from '../i18n'
 import AddressUtils from '../utils/Address'
+import ItemSeparator from './ItemSeparator'
 
 const fuseOptions = {
   shouldSort: true,
@@ -30,17 +32,21 @@ const fuseOptions = {
   ],
 }
 
-const ItemSeparatorComponent = () => (
-  <View style={ styles.itemSeparator } />
-)
+const PoweredByGoogle = () => {
 
-const PoweredByGoogle = () => (
-  <View style={ styles.poweredContainer }>
-    <Image
-      resizeMode="contain"
-      source={ require('../../assets/images/powered_by_google_on_white.png') } />
-  </View>
-)
+  const { colorMode } = useColorMode()
+
+  return (
+    <View style={ [ styles.poweredContainer, { backgroundColor: colorMode === 'dark' ? 'black' : 'white' }] }>
+      { colorMode !== 'dark' && <Image
+        resizeMode="contain"
+        source={ require('../../assets/images/powered_by_google_on_white.png') } /> }
+      { colorMode === 'dark' && <Image
+        resizeMode="contain"
+        source={ require('../../assets/images/powered_by_google_on_non_white.png') } /> }
+    </View>
+  )
+}
 
 const PoweredByIdealPostcodes = () => (
   <View style={ styles.poweredContainer }>
@@ -70,7 +76,7 @@ const PostCodeButton = ({ postcode, onPress }) => {
         color: 'white',
         fontFamily: 'RobotoMono-Regular',
       }}>{ postcode }</Text>
-      <Icon type="FontAwesome5" name="times" style={{ fontSize: 18, color: 'white' }} />
+      <Icon as={FontAwesome5} name="times" style={{ fontSize: 18, color: 'white' }} />
     </TouchableOpacity>
   )
 }
@@ -295,7 +301,7 @@ class AddressAutocomplete extends Component {
       <TouchableOpacity onPress={ () => this._onItemPress(item) } style={ itemStyle } { ...itemProps }>
         <Text style={{ fontSize: 14, flex: 1 }} numberOfLines={1} ellipsizeMode="tail">{ text }</Text>
         { item.type === 'fuse' && (
-          <Icon type="FontAwesome5" name="star" regular style={{ fontSize: 16, color: '#856404', paddingLeft: 5 }} />
+          <Icon as={FontAwesome5} name="star" regular style={{ fontSize: 16, color: '#856404', paddingLeft: 5 }} />
         ) }
       </TouchableOpacity>
     )
@@ -329,7 +335,7 @@ class AddressAutocomplete extends Component {
     return (
       <View style={ styles.textInput }>
         <View style={ styles.textInput }>
-          <TextInput { ...props } style={ [ props.style, { flex: 1 } ] } placeholderTextColor="#d0d0d0"
+          <TextInput { ...props } style={ [ props.style, { flex: 1 } ] }
             onFocus={ this.onTextInputFocus.bind(this) }
             onBlur={ this.onTextInputBlur.bind(this) } />
           { (this.props.country === 'gb' && this.state.postcode) && (
@@ -349,6 +355,7 @@ class AddressAutocomplete extends Component {
 
   render() {
 
+    const colorScheme = Appearance.getColorScheme()
     const { onSelectAddress, renderTextInput, placeholder, ...otherProps } = this.props
 
     let finalPlaceholder = placeholder || this.props.t('ENTER_ADDRESS')
@@ -369,15 +376,16 @@ class AddressAutocomplete extends Component {
         placeholder={ finalPlaceholder }
         onChangeText={ this._onChangeText.bind(this) }
         keyExtractor={ (item, i) => `prediction-${i}` }
-        flatListProps={{ ItemSeparatorComponent,
+        flatListProps={{
+          ItemSeparatorComponent: ItemSeparator,
           ListFooterComponent: (this.props.country === 'gb' ? PoweredByIdealPostcodes : PoweredByGoogle),
         }}
         renderTextInput={ props => this.renderTextInput(props) }
         listStyle={{
           margin: 0,
+          backgroundColor: colorScheme === 'dark' ? 'black' : 'white'
         }}
         style={{
-          backgroundColor: 'white',
           color: '#333',
           borderColor: '#b9b9b9',
           borderRadius: 20,
@@ -410,18 +418,11 @@ const styles = StyleSheet.create({
   poweredContainer: {
     justifyContent: 'flex-end',
     alignItems: 'center',
-    backgroundColor: '#FFFFFF',
     paddingVertical: 5,
   },
   item: {
     paddingVertical: 10,
     paddingHorizontal: 10,
-    backgroundColor: '#FFFFFF',
-  },
-  itemSeparator: {
-    height: StyleSheet.hairlineWidth,
-    width: '100%',
-    backgroundColor: '#333',
   },
   textInput: {
     flex: 1,

@@ -1,14 +1,12 @@
 import React, { Component } from 'react'
-import { FlatList, StyleSheet, TouchableOpacity, View, Image } from 'react-native'
-import { Text, Icon } from 'native-base'
+import { FlatList, StyleSheet, TouchableOpacity, View, Image, Appearance } from 'react-native'
+import { Text, Icon, HStack } from 'native-base'
 import { withTranslation } from 'react-i18next'
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
 import { getNextShippingTimeAsText, getRestaurantCaption } from '../utils/checkout'
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#fff',
-  },
   item: {
     flex: 1,
     flexDirection: 'row',
@@ -23,17 +21,11 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   badge: {
-    flex: 1,
-    flexDirection: 'row',
     alignItems: 'center',
     position: 'absolute',
     height: 30,
     alignSelf: 'center',
     bottom: -15,
-    paddingVertical: 5,
-    paddingLeft: 5,
-    paddingRight: 10,
-    backgroundColor: '#e5e5e5',
     borderRadius: 4,
   },
   badgeText: {
@@ -55,6 +47,8 @@ class RestaurantList extends Component {
 
   renderItem(restaurant, index) {
 
+    const colorScheme = Appearance.getColorScheme()
+
     return (
       <TouchableOpacity
         onPress={ () => this.props.onItemClick(restaurant) }
@@ -63,10 +57,10 @@ class RestaurantList extends Component {
           <View style={{ flex: 1, width: '66.6666%', padding: 15, paddingBottom: 25 }}>
             <OneLineText style={ [ styles.restaurantNameText ] }>{ restaurant.name }</OneLineText>
             <OneLineText note numberOfLines={ 2 }>{ getRestaurantCaption(restaurant) }</OneLineText>
-            <View style={ [ styles.badge ] }>
-              <Icon type="FontAwesome" name="clock-o" style={ [ styles.badgeText, { fontSize: 20, marginRight: 5 } ] } />
+            <HStack style={ [ styles.badge ] } bg={ colorScheme === 'dark' ? 'gray.800' : 'gray.200' } px="2">
+              <Icon as={FontAwesome} name="clock-o" size="xs" mr="1" />
               <Text style={ styles.badgeText }>{ getNextShippingTimeAsText(restaurant) }</Text>
-            </View>
+            </HStack>
           </View>
           <View style={{ width: '33.3333%' }}>
             <Image style={{ flex: 1, height: undefined, width: undefined }} resizeMode="cover" source={{ uri: restaurant.image }} />
@@ -97,13 +91,11 @@ class RestaurantList extends Component {
     })
 
     return (
-      <View style={ styles.container }>
-        <FlatList
-          testID="restaurantList"
-          data={ restaurantsWithTestIDs }
-          keyExtractor={ (item, index) => item['@id'] }
-          renderItem={ ({ item, index }) => this.renderItem(item, index) } />
-      </View>
+      <FlatList
+        testID="restaurantList"
+        data={ restaurantsWithTestIDs }
+        keyExtractor={ (item, index) => item['@id'] }
+        renderItem={ ({ item, index }) => this.renderItem(item, index) } />
     )
   }
 }

@@ -3,6 +3,7 @@ import { ActivityIndicator, StyleSheet, TouchableOpacity, View } from 'react-nat
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 import { Button, Icon, Text } from 'native-base'
+import Ionicons from 'react-native-vector-icons/Ionicons'
 
 import Server from '../Server'
 import AppUser from '../AppUser'
@@ -53,7 +54,7 @@ class Loading extends Component {
   renderError() {
     return (
       <View style={ styles.error }>
-        <Icon name="warning" />
+        <Icon as={Ionicons} name="warning" />
         <Text style={ styles.errorText }>
           { this.props.t('NET_FAILED') }
         </Text>

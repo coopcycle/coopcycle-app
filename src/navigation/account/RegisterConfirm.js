@@ -1,11 +1,9 @@
 import React, { Component } from 'react'
-import { StyleSheet } from 'react-native'
-import { Container, Content } from 'native-base'
+import { View } from 'react-native'
+import { Center } from 'native-base'
 import { connect } from 'react-redux'
-import { withTranslation } from 'react-i18next'
 
 import { confirmRegistration } from '../../redux/App/actions'
-import { selectIsAuthenticated } from '../../redux/App/selectors'
 
 class RegisterConfirm extends Component {
   componentDidMount() {
@@ -17,16 +15,10 @@ class RegisterConfirm extends Component {
 
   render() {
     return (
-      <Container>
-        <Content padder contentContainerStyle={ styles.content } />
-      </Container>
+      <Center>
+        <View />
+      </Center>
     );
-  }
-}
-
-function mapStateToProps(state) {
-  return {
-    isAuthenticated: selectIsAuthenticated(state),
   }
 }
 
@@ -36,15 +28,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-const styles = StyleSheet.create({
-  content: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  icon: {
-    marginBottom: 15,
-  },
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(RegisterConfirm))
+export default connect(() => ({}), mapDispatchToProps)(RegisterConfirm)

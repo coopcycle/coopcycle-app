@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { ActivityIndicator, Animated, View } from 'react-native'
-import { Text, Button } from 'native-base'
+import { Text, Button, HStack } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import PropTypes from 'prop-types'
 
@@ -39,12 +39,12 @@ class CartFooterButton extends Component {
   renderLeft() {
     if (this.props.loading) {
       return (
-        <ActivityIndicator size="small" color="#ffffff" style={{ position: 'absolute', left: 15 }} />
+        <ActivityIndicator size="small" color="#ffffff" />
       )
     }
 
     return (
-      <Text style={{ position: 'absolute', left: 0, fontWeight: 'bold', fontFamily: 'OpenSans-Regular' }}>
+      <Text style={{ fontWeight: 'bold', fontFamily: 'OpenSans-Regular' }}>
         { `[${this.props.cart.items.length}]` }
       </Text>
     )
@@ -53,7 +53,7 @@ class CartFooterButton extends Component {
   renderRight() {
 
     return (
-      <Animated.View style={{ position: 'absolute', right: 0, opacity: this.state.opacityAnim }}>
+      <Animated.View style={{ opacity: this.state.opacityAnim }}>
         <Text style={{ fontWeight: 'bold', fontFamily: 'OpenSans-Regular' }}>
           { `${formatPrice(this.props.cart.total)}` }
         </Text>
@@ -73,10 +73,16 @@ class CartFooterButton extends Component {
     }
 
     return (
-      <Button block onPress={ this.props.onPress } testID={ this.props.testID } disabled={ this.props.disabled }>
-        { this.renderLeft() }
-        <Text>{ this.props.t('ORDER') }</Text>
-        { this.renderRight() }
+      <Button onPress={ this.props.onPress } testID={ this.props.testID } disabled={ this.props.disabled }
+        _stack={{ w: '100%', justifyContent: 'center' }}
+      >
+        <HStack
+          alignItems="center"
+          justifyContent="space-between">
+          { this.renderLeft() }
+          <Text mx="8">{ this.props.t('ORDER') }</Text>
+          { this.renderRight() }
+        </HStack>
       </Button>
     )
   }

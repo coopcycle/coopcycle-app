@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { View } from 'react-native'
 import { connect } from 'react-redux'
-import { Form, Item, Input, Label, Button, Text } from 'native-base'
+import { Stack, FormControl, Input, Button, Text } from 'native-base'
 import { Formik } from 'formik'
 import _ from 'lodash'
 import { withTranslation } from 'react-i18next'
@@ -49,44 +49,42 @@ class LoginForm extends Component {
         validateOnBlur={ false }
         validateOnChange={ false }>
         {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
-        <View>
-          <Form>
-            <Item stackedLabel error={ (touched.email && errors.email) || this.props.hasErrors }>
-              <Label>{this.props.t('USERNAME')}</Label>
-              <Input
-                testID="loginUsername"
-                autoCorrect={ false }
-                autoCapitalize="none"
-                style={{ height: 40 }}
-                returnKeyType="next"
-                onChangeText={ handleChange('email') }
-                onBlur={ handleBlur('email') }
-                onSubmitEditing={ () => this._passwordInput._root.focus() } />
-            </Item>
-            <Item stackedLabel error={ (touched.password && errors.password) || this.props.hasErrors }>
-              <Label>{this.props.t('PASSWORD')}</Label>
-              <Input
-                testID="loginPassword"
-                ref={ component => { this._passwordInput = component } }
-                autoCorrect={ false }
-                autoCapitalize="none"
-                secureTextEntry={ true }
-                style={{ height: 40 }}
-                returnKeyType="done"
-                onChangeText={ handleChange('password') }
-                onBlur={ handleBlur('password') }
-                onSubmitEditing={ handleSubmit }/>
-            </Item>
-            <Button block transparent onPress={ () => this.props.onForgotPassword() }>
-              <Text>{this.props.t('FORGOT_PASSWORD')}</Text>
-            </Button>
-          </Form>
+        <Stack>
+          <FormControl error={ (touched.email && errors.email) || this.props.hasErrors }>
+            <FormControl.Label>{this.props.t('USERNAME')}</FormControl.Label>
+            <Input
+              testID="loginUsername"
+              autoCorrect={ false }
+              autoCapitalize="none"
+              style={{ height: 40 }}
+              returnKeyType="next"
+              onChangeText={ handleChange('email') }
+              onBlur={ handleBlur('email') }
+              onSubmitEditing={ () => this._passwordInput._root.focus() } />
+          </FormControl>
+          <FormControl error={ (touched.password && errors.password) || this.props.hasErrors }>
+            <FormControl.Label>{this.props.t('PASSWORD')}</FormControl.Label>
+            <Input
+              testID="loginPassword"
+              ref={ component => { this._passwordInput = component } }
+              autoCorrect={ false }
+              autoCapitalize="none"
+              secureTextEntry={ true }
+              style={{ height: 40 }}
+              returnKeyType="done"
+              onChangeText={ handleChange('password') }
+              onBlur={ handleBlur('password') }
+              onSubmitEditing={ handleSubmit }/>
+          </FormControl>
+          <Button size="sm" variant="link" onPress={ () => this.props.onForgotPassword() }>
+            {this.props.t('FORGOT_PASSWORD')}
+          </Button>
           <View style={{ marginTop: 20 }}>
             <Button block onPress={ handleSubmit } testID="loginSubmit">
-              <Text>{ this.props.t('SUBMIT') }</Text>
+              { this.props.t('SUBMIT') }
             </Button>
           </View>
-        </View>
+        </Stack>
         )}
       </Formik>
     )

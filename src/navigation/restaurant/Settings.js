@@ -1,15 +1,14 @@
 import React, { Component } from 'react'
-import { StyleSheet, View } from 'react-native'
+import { View } from 'react-native'
 import {
-  Container, Content,
-  Left, Right, Body,
-  List, ListItem, Icon, Text, Switch,
+  Box, Icon, Text, Switch, HStack, FlatList, Pressable,
 } from 'native-base'
-
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 
 import { changeStatus } from '../../redux/Restaurant/actions'
+import ItemSeparator from '../../components/ItemSeparator'
 
 class SettingsScreen extends Component {
 
@@ -37,7 +36,7 @@ class SettingsScreen extends Component {
 
     const items = [
       {
-        icon: 'flame',
+        icon: 'fire',
         label: this.props.t('RESTAURANT_SETTINGS_RUSH'),
         switch: (
           <Switch
@@ -46,13 +45,12 @@ class SettingsScreen extends Component {
         ),
       },
       {
-        icon: 'pricetag',
+        icon: 'tag',
         label: this.props.t('RESTAURANT_SETTINGS_MANAGE_PRODUCTS'),
         onPress: () => navigate('RestaurantProducts'),
       },
       {
         icon: 'sliders',
-        iconType: 'FontAwesome',
         label: this.props.t('RESTAURANT_SETTINGS_MANAGE_PRODUCT_OPTIONS'),
         onPress: () => navigate('RestaurantProductOptions'),
       },
@@ -63,7 +61,6 @@ class SettingsScreen extends Component {
       },
       {
         icon: 'list',
-        iconType: 'FontAwesome',
         label: this.props.t('RESTAURANT_SETTINGS_MENUS'),
         onPress: () => navigate('RestaurantMenus'),
       },
@@ -78,7 +75,6 @@ class SettingsScreen extends Component {
       items.push(
         {
           icon: 'refresh',
-          iconType: 'FontAwesome',
           label: this.props.t('RESTAURANT_SETTINGS_CHANGE_RESTAURANT'),
           onPress: () => navigate('RestaurantList'),
         }
@@ -87,65 +83,43 @@ class SettingsScreen extends Component {
     }
 
     return (
-      <Container>
+      <Box>
         <View style={{ paddingHorizontal: 10, paddingVertical: 20 }}>
           <Text style={{ textAlign: 'center' }}>
             { this.props.t('RESTAURANT_SETTINGS_HEADING', { name: this.props.restaurant.name }) }
           </Text>
         </View>
-        <Content style={ styles.content }>
-          <List>
-            { items.map((item, index) => {
+        <FlatList
+          data={ items }
+          keyExtractor={ (item, index) => `item-${index}` }
+          renderItem={ ({ item }) => {
 
-              let itemProps = {}
+            let itemProps = {}
 
-              if (index === (items.length - 1)) {
-                itemProps = {
-                  ...itemProps,
-                  last: true,
-                }
+            if (item.onPress) {
+              itemProps = {
+                ...itemProps,
+                onPress: item.onPress,
               }
+            }
 
-              if (index === 0) {
-                itemProps = {
-                  ...itemProps,
-                  first: true,
-                }
-              }
-
-              if (item.onPress) {
-                itemProps = {
-                  ...itemProps,
-                  onPress: item.onPress,
-                }
-              }
-
-              return (
-                <ListItem key={ `item-${index}` } icon { ...itemProps }>
-                  <Left>
-                    <Icon active name={ item.icon } type={ item.iconType || 'Ionicons' } />
-                  </Left>
-                  <Body>
+            return (
+              <Pressable { ...itemProps } py="3" px="2">
+                <HStack justifyContent="space-between">
+                  <HStack>
+                    <Icon name={ item.icon } as={FontAwesome} size="sm" mr="2" />
                     <Text>{ item.label }</Text>
-                  </Body>
-                  <Right>
-                    { item.switch && item.switch }
-                  </Right>
-                </ListItem>
-              )
-            }) }
-          </List>
-        </Content>
-      </Container>
+                  </HStack>
+                  { item.switch && item.switch }
+                </HStack>
+              </Pressable>
+            )
+          }}
+          ItemSeparatorComponent={ ItemSeparator } />
+      </Box>
     )
   }
 }
-
-const styles = StyleSheet.create({
-  content: {
-    paddingTop: 20,
-  },
-})
 
 function mapStateToProps(state) {
   return {

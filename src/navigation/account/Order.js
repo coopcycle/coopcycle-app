@@ -2,16 +2,18 @@ import React, { Component } from 'react'
 import {
   StyleSheet,
   View,
-  TouchableOpacity,
 } from 'react-native'
 import {
-  Container,
   Text,
-  Content,
   Icon,
+  VStack,
+  Box,
+  Center,
+  HStack,
 } from 'native-base'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
 import OrderItems from '../../components/OrderItems'
 import { subscribe, unsubscribe } from '../../redux/Account/actions'
@@ -47,7 +49,7 @@ class OrderTrackingPage extends Component {
 
     let stateText = ''
     let iconName = 'question-circle-o'
-    const headerContainerStyle = [ styles.headerContainer ]
+    const headerContainerStyle = []
 
     switch (order.state) {
       case 'new':
@@ -68,12 +70,12 @@ class OrderTrackingPage extends Component {
     }
 
     return (
-      <View style={ styles.header }>
-        <View style={ headerContainerStyle }>
-          <Icon style={ [ styles.headerText, { marginRight: 10 } ] } type="FontAwesome" name={ iconName } />
+      <Center style={ headerContainerStyle } p="2">
+        <HStack alignItems="center">
+          <Icon style={ [ styles.headerText, { marginRight: 10 } ] } as={ FontAwesome } name={ iconName } />
           <Text style={ styles.headerText }>{ stateText }</Text>
-        </View>
-      </View>
+        </HStack>
+      </Center>
     )
   }
 
@@ -84,11 +86,9 @@ class OrderTrackingPage extends Component {
     switch (order.state) {
       case 'new':
         return (
-          <View style={ styles.subHeader }>
-            <View style={ styles.subHeaderContainer }>
-              <Text note>{ this.props.t('ORDER_NEW_HELP') }</Text>
-            </View>
-          </View>
+          <Center py="1">
+            <Text note>{ this.props.t('ORDER_NEW_HELP') }</Text>
+          </Center>
         )
     }
 
@@ -102,34 +102,25 @@ class OrderTrackingPage extends Component {
     const { order } = this.props.route.params
 
     return (
-      <Container>
+      <VStack flex={ 1 }>
         { this.renderHeader() }
         { this.renderSubHeader() }
-        <Content padder testID="accountOrder">
-          <TouchableOpacity style={ styles.restaurantContainer }>
+        <VStack flex={ 1 } testID="accountOrder">
+          <Center mb="3" py="2">
             <Icon style={ styles.restaurantText }
-              type="FontAwesome" name="cutlery" />
+              as={ FontAwesome } name="cutlery" />
             <Text style={ styles.restaurantText }>
               { order.restaurant.name }
             </Text>
-          </TouchableOpacity>
+          </Center>
           <OrderItems order={ order } withDeliveryTotal={ true } />
-        </Content>
-      </Container>
+        </VStack>
+      </VStack>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  header: {
-    height: 64,
-  },
-  headerContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   headerText: {
     color: 'white',
   },
@@ -141,21 +132,6 @@ const styles = StyleSheet.create({
   },
   headerOrderFulfilled: {
     backgroundColor: '#2ECC71',
-  },
-  subHeader: {
-    height: 32,
-  },
-  subHeaderContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  restaurantContainer: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 25,
   },
   restaurantText: {
     color: '#cccccc',

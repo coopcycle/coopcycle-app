@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { FlatList, View, StyleSheet, TouchableOpacity } from 'react-native'
+import { FlatList, View, StyleSheet, TouchableOpacity, Appearance } from 'react-native'
 import { Icon, Text } from 'native-base'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
@@ -7,6 +7,8 @@ import Sound from 'react-native-sound'
 import moment from 'moment'
 import Modal from 'react-native-modal'
 import { CommonActions } from '@react-navigation/native'
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
+import Ionicons from 'react-native-vector-icons/Ionicons'
 
 import PushNotification from '../notifications'
 import NavigationHolder from '../NavigationHolder'
@@ -224,7 +226,7 @@ class NotificationHandler extends Component {
         <Text>
           { this.props.t('NOTIFICATION_ORDER_CREATED_TITLE') }
         </Text>
-        <Icon type="FontAwesome" name="chevron-right" />
+        <Icon as={FontAwesome} name="chevron-right" />
       </TouchableOpacity>
     )
   }
@@ -248,18 +250,20 @@ class NotificationHandler extends Component {
           </Text>
           ) }
         </View>
-        <Icon type="FontAwesome" name="chevron-right" />
+        <Icon as={FontAwesome} name="chevron-right" />
       </TouchableOpacity>
     )
   }
 
   renderModalContent() {
 
+    const colorScheme = Appearance.getColorScheme()
+
     return (
-      <View style={ styles.modalContent }>
+      <View style={ [ styles.modalContent, { backgroundColor: colorScheme === 'dark' ? 'black' : 'white' } ] }>
         <View>
           <View style={ styles.heading }>
-            <Icon name="notifications" style={{ color: 'white', marginRight: 10 }} />
+            <Icon as={Ionicons} name="notifications" style={{ color: 'white', marginRight: 10 }} />
             <Text style={{ color: 'white' }}>{ this.props.t('NEW_NOTIFICATION') }</Text>
           </View>
         </View>
@@ -300,7 +304,6 @@ const styles = StyleSheet.create({
     paddingVertical: 25,
   },
   modalContent: {
-    backgroundColor: 'white',
     borderRadius: 4,
     borderColor: 'rgba(0, 0, 0, 0.1)',
   },

@@ -96,7 +96,7 @@ class TasksMapView extends Component {
       marginBottom: 1,
       isModalVisible: false,
       modalMarkers: [],
-      mapHeight: null,
+      mapHeight: 0,
     }
 
     this.renderCluster = this.renderCluster.bind(this)
@@ -231,7 +231,7 @@ class TasksMapView extends Component {
 
     return (
       <View style={{ flex: 1 }} onLayout={ event => this.setState({ mapHeight: event.nativeEvent.layout.height }) }>
-        { (this.state.mapHeight && this.state.mapHeight > 0) && (
+        { (this.state.mapHeight && this.state.mapHeight > 0) ? (
           <ClusteredMapView
             data={ data }
             style={ [ styles.map, { marginBottom: this.state.marginBottom } ] }
@@ -253,7 +253,7 @@ class TasksMapView extends Component {
             { ...otherProps }>
             { this.props.children }
           </ClusteredMapView>
-        )}
+        ) : null }
         { this.renderModal() }
       </View>
     );

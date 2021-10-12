@@ -1,11 +1,12 @@
 import React from 'react'
+import { SectionList, TouchableOpacity } from 'react-native'
 import {
-  Container, Icon, Left, Right,
-  Body, Content, Text,
-  List, ListItem, Switch,
+  Icon, Text, Switch, Heading, HStack, Box,
 } from 'native-base'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
+import ItemSeparator from '../../components/ItemSeparator'
 
 import {
   filterTasks,
@@ -22,110 +23,108 @@ import {
 } from '../../redux/Courier'
 import {doneIconName, failedIconName} from '../task/styles/common'
 
-const Settings = ({
-    navigation,
-    areDoneTasksHidden,
-    areFailedTasksHidden,
-    tasksChangedAlertSound,
-    toggleDisplayDone,
-    toggleDisplayFailed,
-    toggleTasksChangedAlertSound,
-    setKeepAwakeDisabled,
-    setSignatureScreenFirst,
-    tags,
-    isKeepAwakeDisabled,
-    signatureScreenFirst,
-    t,
-  }) => (
-    <Container>
-      <Content>
-        <List>
-          <ListItem itemDivider first>
-            <Text>{ t('TASKS_FILTER') }</Text>
-          </ListItem>
-          <ListItem icon>
-            <Left>
-              <Icon type="FontAwesome" name={doneIconName} />
-            </Left>
-            <Body>
-              <Text>{ t('HIDE_DONE_TASKS') }</Text>
-            </Body>
-            <Right>
-              <Switch
-                onValueChange={ () => toggleDisplayDone(areDoneTasksHidden) }
-                value={ areDoneTasksHidden } />
-            </Right>
-          </ListItem>
-          <ListItem icon>
-            <Left>
-              <Icon type="FontAwesome" name={failedIconName} />
-            </Left>
-            <Body>
-              <Text>{ t('HIDE_FAILED_TASKS') }</Text>
-            </Body>
-            <Right>
-              <Switch
-                onValueChange={ () => toggleDisplayFailed(areFailedTasksHidden) }
-                value={ areFailedTasksHidden } />
-            </Right>
-          </ListItem>
-          <ListItem icon onPress={ () => navigation.navigate('CourierSettingsTags') }>
-            <Left>
-              <Icon active name="pricetag" />
-            </Left>
-            <Body>
-              <Text>{ t('HIDE_TASKS_TAGGED_WITH') }</Text>
-            </Body>
-            <Right>
-              <Icon active name="arrow-forward" />
-            </Right>
-          </ListItem>
-          <ListItem icon last>
-            <Left>
-              <Icon Icon type="FontAwesome" name="volume-up" style={{fontSize: 24}} />
-            </Left>
-            <Body>
-              <Text>{ t('TASKS_CHANGED_ALERT_SOUND') }</Text>
-            </Body>
-            <Right>
-              <Switch
-                onValueChange={ toggleTasksChangedAlertSound }
-                value={ tasksChangedAlertSound } />
-            </Right>
-          </ListItem>
-          <ListItem itemDivider>
-            <Text>{ t('SETTINGS') }</Text>
-          </ListItem>
-          <ListItem icon>
-            <Left>
-              <Icon Icon type="FontAwesome5" name="signature" />
-            </Left>
-            <Body>
-              <Text>{ t('SIGNATURE_SCREEN_FIRST') }</Text>
-            </Body>
-            <Right>
-              <Switch
-                onValueChange={ setSignatureScreenFirst }
-                value={ signatureScreenFirst } />
-            </Right>
-          </ListItem>
-          <ListItem icon last>
-            <Left>
-              <Icon active name="power" />
-            </Left>
-            <Body>
-              <Text>{ t('SETTING_KEEP_AWAKE') }</Text>
-            </Body>
-            <Right>
-              <Switch
-                onValueChange={ setKeepAwakeDisabled }
-                value={ isKeepAwakeDisabled } />
-            </Right>
-          </ListItem>
-        </List>
-      </Content>
-    </Container>
+const SettingsItemInner = ({ item }) => (
+  <HStack alignItems="center" justifyContent="space-between" py="3">
+    <HStack alignItems="center">
+      <Icon size="sm" mr="1" as={ FontAwesome } name={ item.icon } />
+      <Text>{ item.label }</Text>
+    </HStack>
+    { !item.onPress && <Switch onToggle={ item.onToggle } isChecked={ item.isChecked } /> }
+    { item.onPress && <Icon size="sm" as={ FontAwesome } name="arrow-right" /> }
+  </HStack>
 )
+
+const SettingsItem = ({ item }) => {
+
+  if (item.onPress) {
+
+    return (
+      <TouchableOpacity onPress={ item.onPress }>
+        <SettingsItemInner item={ item } />
+      </TouchableOpacity>
+    )
+  }
+
+  return (
+    <SettingsItemInner item={ item } />
+  )
+}
+
+const Settings = ({
+  navigation,
+  areDoneTasksHidden,
+  areFailedTasksHidden,
+  tasksChangedAlertSound,
+  toggleDisplayDone,
+  toggleDisplayFailed,
+  toggleTasksChangedAlertSound,
+  setKeepAwakeDisabled,
+  setSignatureScreenFirst,
+  tags,
+  isKeepAwakeDisabled,
+  signatureScreenFirst,
+  t,
+}) => {
+
+  const sections = [
+    {
+      title: t('TASKS_FILTER'),
+      data: [
+        {
+          icon: doneIconName,
+          label: t('HIDE_DONE_TASKS'),
+          onToggle: () => toggleDisplayDone(areDoneTasksHidden),
+          isChecked: areDoneTasksHidden,
+        },
+        {
+          icon: failedIconName,
+          label: t('HIDE_FAILED_TASKS'),
+          onToggle: () => toggleDisplayFailed(areFailedTasksHidden),
+          isChecked: areFailedTasksHidden,
+        },
+        {
+          icon: 'tag',
+          label: t('HIDE_TASKS_TAGGED_WITH'),
+          onPress: () => navigation.navigate('CourierSettingsTags')
+        },
+        {
+          icon: 'volume-up',
+          label: t('TASKS_CHANGED_ALERT_SOUND'),
+          onToggle: toggleTasksChangedAlertSound,
+          isChecked: tasksChangedAlertSound,
+        },
+      ]
+    },
+    {
+      title: t('SETTINGS'),
+      data: [
+        {
+          icon: 'hand-pointer-o',
+          label: t('SIGNATURE_SCREEN_FIRST'),
+          onToggle: setSignatureScreenFirst,
+          isChecked: signatureScreenFirst,
+        },
+        {
+          icon: 'power-off',
+          label: t('SETTING_KEEP_AWAKE'),
+          onToggle: setKeepAwakeDisabled,
+          isChecked: isKeepAwakeDisabled,
+        },
+      ]
+    }
+  ]
+
+  return (
+    <Box p="2">
+      <SectionList
+        sections={ sections }
+        keyExtractor={ (item, index) => `setting-${index}` }
+        renderItem={ ({ item }) => <SettingsItem item={ item } /> }
+        ItemSeparatorComponent={ ItemSeparator }
+        renderSectionHeader={ ({ section: { title } }) => <Heading size="md">{ title }</Heading> } />
+    </Box>
+  )
+}
 
 function mapStateToProps(state) {
   return {

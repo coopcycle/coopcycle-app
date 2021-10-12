@@ -1,6 +1,7 @@
 import React from 'react'
 import { StyleSheet, TouchableOpacity } from 'react-native'
 import { Icon } from 'native-base'
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
 const styles = StyleSheet.create({
   container: {
@@ -17,7 +18,7 @@ export default ({ children, ...props }) => {
   return (
     <TouchableOpacity iconLeft full { ...props } style={ styles.container }>
       { children }
-      <Icon type="FontAwesome" name="plus" style={{ fontSize: 24 }} />
+      <Icon as={ FontAwesome } name="plus" size="sm" />
     </TouchableOpacity>
   )
 }

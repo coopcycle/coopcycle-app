@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Container, Content } from 'native-base'
+import { Center } from 'native-base'
 
 import { Calendar } from 'react-native-calendars'
 import moment from 'moment'
@@ -19,18 +19,16 @@ class DateScreen extends Component {
   render() {
 
     return (
-      <Container>
-        <Content padder>
-          <Calendar
-            current={ this.props.date.format('YYYY-MM-DD') }
-            onDayPress={ ({ dateString }) => this.onDateChange(dateString) }
-            theme={{
-              textDayFontSize: 18,
-              textMonthFontSize: 18,
-              textDayHeaderFontSize: 18,
-            }} />
-        </Content>
-      </Container>
+      <Center flex={ 1 }>
+        <Calendar
+          current={ this.props.date.format('YYYY-MM-DD') }
+          onDayPress={ ({ dateString }) => this.onDateChange(dateString) }
+          theme={{
+            textDayFontSize: 18,
+            textMonthFontSize: 18,
+            textDayHeaderFontSize: 18,
+          }} />
+      </Center>
     )
   }
 }

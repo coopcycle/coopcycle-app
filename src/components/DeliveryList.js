@@ -5,8 +5,10 @@ import PropTypes from 'prop-types'
 import moment from 'moment'
 import _ from 'lodash'
 import { withTranslation } from 'react-i18next'
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 
 import { stateColor } from '../utils/delivery'
+import ItemSeparator from './ItemSeparator'
 
 const styles = StyleSheet.create({
   item: {
@@ -24,11 +26,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingRight: 15,
-  },
-  itemSeparator: {
-    height: StyleSheet.hairlineWidth,
-    width: '100%',
-    backgroundColor: '#CCCCCC',
   },
   textSmall: {
     fontSize: 12,
@@ -48,10 +45,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
 })
-
-const ItemSeparatorComponent = () => (
-  <View style={ styles.itemSeparator } />
-)
 
 const SectionHeaderComponent = ({ title }) => (
   <View style={ styles.header }>
@@ -97,7 +90,7 @@ class DeliveryList extends Component {
       <TouchableOpacity onPress={ () => this._onItemPress(item) } style={ styles.item }>
         <View style={ styles.itemBody }>
           <View style={{ flex: 1 }}>
-            <Icon type="FontAwesome5" name="circle" solid style={{ color: stateColor(item.state), fontSize: 14 }} />
+            <Icon as={FontAwesome5} name="circle" solid style={{ color: stateColor(item.state), fontSize: 14 }} />
           </View>
           <View style={{ flex: 1 }}>
             <Text style={ styles.textSmall }>{ `#${item.id}` }</Text>
@@ -111,7 +104,7 @@ class DeliveryList extends Component {
           </View>
         </View>
         <View >
-          <Icon type="FontAwesome5" name="chevron-right" style={{ color: '#DDDDDD', fontSize: 18 }} />
+          <Icon as={FontAwesome5} name="chevron-right" style={{ color: '#DDDDDD', fontSize: 18 }} />
         </View>
       </TouchableOpacity>
     )
@@ -160,7 +153,7 @@ class DeliveryList extends Component {
         refreshing={ this.props.refreshing }
         keyExtractor={ (item, index) => item['@id'] }
         renderItem={ ({ item }) => this.renderItem(item) }
-        ItemSeparatorComponent={ ItemSeparatorComponent }
+        ItemSeparatorComponent={ ItemSeparator }
         ListFooterComponent={ this.renderFooter.bind(this) }
         renderSectionHeader={ ({ section: { title } }) => (
           <SectionHeaderComponent title={ title } />

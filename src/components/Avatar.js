@@ -1,11 +1,11 @@
 import React from 'react'
-import { Thumbnail } from 'native-base'
+import { Avatar } from 'native-base'
 
 export default ({ baseURL, username }) => {
 
   const uri = `${baseURL}/images/avatars/${username}.png`
 
   return (
-    <Thumbnail small source={{ uri }} />
+    <Avatar size="sm" source={{ uri }} />
   )
 }

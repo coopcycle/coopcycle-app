@@ -199,7 +199,7 @@
         "CHECKOUT_PRODUCT_OPTIONS_TITLE": "Choix des options",
         "CHECKOUT_PRODUCT_OPTIONS_DISCLAIMER": "Choisissez les options pour le produit {{name}}",
         "CHECKOUT_LOGIN_TITLE": "Authentification",
-        "CHECKOUT_LOGIN_DISCLAIMER": "Veuillez vous indentifier pour poursuivre",
+        "CHECKOUT_LOGIN_DISCLAIMER": "Veuillez vous identifier pour poursuivre",
         "CHECKOUT_SHIPPING_DATE": "Choisissez une date",
         "CHECKOUT_PLEASE_ENTER_ADDRESS": "Veuillez entrer votre adresse",
         "CHECKOUT_ADDRESS_NOT_VALID": "Désolé, nous ne livrons pas à cette adresse",

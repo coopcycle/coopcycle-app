@@ -2,7 +2,8 @@ import React from 'react'
 import { View, StyleSheet } from 'react-native'
 import { useTranslation } from 'react-i18next'
 import moment from 'moment'
-import { Icon, Text } from 'native-base'
+import { Icon, Text, HStack } from 'native-base'
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
 import material from '../../../../native-base-theme/variables/material'
 import OrderButtons from './OrderButtons'
@@ -14,12 +15,6 @@ const fallbackFormat = 'dddd D MMM'
 const styles = StyleSheet.create({
   fulfillment: {
     backgroundColor: '#f9ca24',
-    paddingHorizontal: material.contentPadding,
-    paddingVertical: (material.contentPadding * 1.5),
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginBottom: 5,
   },
   timeline: {
     flexDirection: 'row',
@@ -39,7 +34,7 @@ const OrderHeading = ({ order, isPrinterConnected, onPrinterClick, printOrder })
 
   return (
     <View style={{ borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: '#CCCCCC' }}>
-      <View style={ styles.fulfillment }>
+      <HStack justifyContent="space-between" alignItems="center" style={ styles.fulfillment } p="2" mb="1">
         <OrderFulfillmentMethodIcon order={ order } />
         <Text style={{ fontWeight: '700' }}>{ moment(pickupExpectedAt).calendar(null, {
           lastDay : fallbackFormat,
@@ -50,9 +45,9 @@ const OrderHeading = ({ order, isPrinterConnected, onPrinterClick, printOrder })
           sameElse : fallbackFormat,
         }) }</Text>
         <Text>{ t(`FULFILLMENT_METHOD.${resolveFulfillmentMethod(order)}`) }</Text>
-      </View>
+      </HStack>
       <View style={ styles.timeline }>
-        <Icon type="FontAwesome" name="clock-o" />
+        <Icon as={FontAwesome} name="clock-o" />
         <View style={{ alignItems: 'flex-end' }}>
           <Text>{ t('RESTAURANT_ORDER_PREPARATION_EXPECTED_AT', { date: preparationExpectedAt.format('LT') }) }</Text>
           <Text>{ t('RESTAURANT_ORDER_PICKUP_EXPECTED_AT',      { date: pickupExpectedAt.format('LT') }) }</Text>
