@@ -189,7 +189,7 @@ class RegisterForm extends React.Component {
                     onSubmitEditing: event => {
                       const idx = inputs.findIndex((el) => el.name === input.name)
                       const nextInputName = inputs[idx + 1].name
-                      this._inputComponents.get(nextInputName)._root.focus()
+                      // this._inputComponents.get(nextInputName)._root.focus()
                     },
                   }
                 }
