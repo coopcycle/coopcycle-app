@@ -22,7 +22,7 @@ class CustomServer extends Component {
   }
 
   componentDidMount() {
-    InteractionManager.runAfterInteractions(_ => setTimeout(() => this.input._root.focus(), 500))
+    // InteractionManager.runAfterInteractions(_ => setTimeout(() => this.input._root.focus(), 500))
   }
 
   handleForm() {
