@@ -407,6 +407,15 @@ Client.prototype.uploadFile = function(uri, base64) {
   })
 }
 
+Client.prototype.loginWithFacebook = function(accessToken) {
+  return loginWithFacebook(this.httpBaseURL, accessToken)
+    .then(credentialsToUser)
+    .then(user => {
+      this.onCredentialsUpdated(user)
+      return user
+    })
+}
+
 function credentialsToUser(credentials) {
 
   const enabled = credentials.hasOwnProperty('enabled') ? credentials.enabled : true
@@ -494,6 +503,30 @@ var refreshToken = function(baseURL, refreshToken) {
     data: qs.stringify({
       'refresh_token': refreshToken,
     }),
+  })
+}
+
+var loginWithFacebook = function(baseURL, accessToken) {
+  const req = {
+    method: 'POST',
+    url: `${baseURL}/api/facebook/login`,
+    data: {
+      accessToken,
+    },
+  }
+
+  return new Promise((resolve, reject) => {
+    axios(req)
+      .then(response => {
+        resolve(response.data)
+      })
+      .catch(error => {
+        if (error.response) {
+          reject(error.response.data)
+        } else {
+          reject({ message: 'An error has occured' })
+        }
+      })
   })
 }
 

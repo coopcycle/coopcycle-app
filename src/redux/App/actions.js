@@ -525,3 +525,36 @@ export function resetServer() {
       dispatch(setBaseURL(null))
   }
 }
+
+export function loginWithFacebook(accessToken, navigate = true) {
+
+  return (dispatch, getState) => {
+
+    const { app } = getState()
+    const { httpClient } = app
+
+    dispatch(authenticationRequest())
+
+    httpClient.loginWithFacebook(accessToken)
+      .then(user => {
+
+        dispatch(authenticationSuccess(user));
+
+        if (navigate) {
+          // FIXME
+          // Use setTimeout() to let room for loader to hide
+          setTimeout(() => navigateToHome(dispatch, getState), 250)
+        }
+      })
+      .catch(err => {
+
+        let message = i18n.t('TRY_LATER')
+        if (err.hasOwnProperty('code') && err.code === 401) {
+          message = i18n.t('INVALID_USER_PASS')
+        }
+
+        dispatch(authenticationFailure(message))
+
+      })
+  }
+}

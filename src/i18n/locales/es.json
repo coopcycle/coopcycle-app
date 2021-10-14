@@ -382,6 +382,7 @@
             "cash_on_delivery": "Pago en efectivo"
         },
         "CASH_ON_DELIVERY_DISCLAIMER": "El pago se realizará contra reembolso. Por favor, prepare la cantidad exacta y asegúrese de estar al alcance.",
-        "STORES": "Tiendas"
+        "STORES": "Tiendas",
+        "CONNECT_WITH_FACEBOOK": "Conéctate con Facebook"
     }
 }
