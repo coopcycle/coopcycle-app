@@ -590,7 +590,7 @@ export function mercadopagoCheckout({payment, preferenceId}) {
   function handleError(dispatch, error) {
     dispatch(checkoutFailure(error))
     // We navigate back to the MoreInfos screen. Should we navigate to another screen?
-    // NavigationHolder.navigate('CheckoutMoreInfos', {});
+    NavigationHolder.navigate('CheckoutMoreInfos', {});
   }
 
   return (dispatch, getState) => {
@@ -604,18 +604,19 @@ export function mercadopagoCheckout({payment, preferenceId}) {
      */
     payment
     .then(({id, installments, paymentMethodId, paymentTypeId, status, statusDetail}) => {
-      console.log('1');
-      console.log(JSON.stringify(payment));
-
+      // https://www.mercadopago.com.ar/developers/es/guides/online-payments/checkout-api/handling-responses#bookmark_resultados_de_creaci%C3%B3n_de_un_cobro
+      // I'm not sure if we should accept "in process" payments
       if (!['approved', 'in_process'].includes(status)) {
-        console.log('B');
-        handleError(dispatch, {});
+        handleError(dispatch, {status, statusDetail});
         return;
       }
 
       const params = {
-        mercadopagoPreferenceId: preferenceId,
-        mercadopagoPaymentId: id,
+        preferenceId,
+        paymentId: id,
+        installments,
+        paymentMethodId,
+        paymentTypeId,
       }
 
       // TODO we need to fix how we are calling /pay endpoint
@@ -625,13 +626,12 @@ export function mercadopagoCheckout({payment, preferenceId}) {
         handleSuccessNav(dispatch, order);
       })
       .catch(orderUpdateError => {
-        console.log('2');
         handleError(dispatch, orderUpdateError)
       })
     })
     .catch(paymentError => {
-      console.log('3');
-      console.log(paymentError);
+      // TODO test what happen if user navigates back from MP screen
+      // dispatch(checkoutFailure(paymentError))
       handleError(dispatch, paymentError)
     })
   }

@@ -37,10 +37,6 @@ function Mercadopago({ cart, checkout, country, httpClient, restaurant, errors }
         preferenceId,
       })
     })
-    .catch((err) => {
-      console.log('5');
-      console.log(err);
-    })
   }, [cart, checkout, country, restaurant, httpClient])
 
   return (
