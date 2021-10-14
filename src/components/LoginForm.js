@@ -60,7 +60,8 @@ class LoginForm extends Component {
               returnKeyType="next"
               onChangeText={ handleChange('email') }
               onBlur={ handleBlur('email') }
-              onSubmitEditing={ () => this._passwordInput._root.focus() } />
+              onSubmitEditing={ () => this._passwordInput.focus() }
+            />
           </FormControl>
           <FormControl error={ (touched.password && errors.password) || this.props.hasErrors }>
             <FormControl.Label>{this.props.t('PASSWORD')}</FormControl.Label>
