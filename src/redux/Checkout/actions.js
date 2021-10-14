@@ -589,14 +589,8 @@ export function mercadopagoCheckout({payment, preferenceId}) {
    */
   function handleError(dispatch, error) {
     dispatch(checkoutFailure(error))
-    NavigationHolder.dispatch(NavigationActions.navigate({
-      routeName: 'CheckoutNav',
-      // We navigate back to the MoreInfos screen
-      action: NavigationActions.navigate({
-        routeName: 'CheckoutMoreInfos',
-        params: {},
-      }),
-    }))
+    // We navigate back to the MoreInfos screen. Should we navigate to another screen?
+    // NavigationHolder.navigate('CheckoutMoreInfos', {});
   }
 
   return (dispatch, getState) => {
@@ -609,10 +603,19 @@ export function mercadopagoCheckout({payment, preferenceId}) {
      * Starts a Mercadopago checkout
      */
     payment
-    .then(({id: paymentId}) => {
+    .then(({id, installments, paymentMethodId, paymentTypeId, status, statusDetail}) => {
+      console.log('1');
+      console.log(JSON.stringify(payment));
+
+      if (!['approved', 'in_process'].includes(status)) {
+        console.log('B');
+        handleError(dispatch, {});
+        return;
+      }
+
       const params = {
         mercadopagoPreferenceId: preferenceId,
-        mercadopagoPaymentId: paymentId,
+        mercadopagoPaymentId: id,
       }
 
       // TODO we need to fix how we are calling /pay endpoint
@@ -622,10 +625,13 @@ export function mercadopagoCheckout({payment, preferenceId}) {
         handleSuccessNav(dispatch, order);
       })
       .catch(orderUpdateError => {
+        console.log('2');
         handleError(dispatch, orderUpdateError)
       })
     })
     .catch(paymentError => {
+      console.log('3');
+      console.log(paymentError);
       handleError(dispatch, paymentError)
     })
   }

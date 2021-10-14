@@ -1,11 +1,12 @@
 import React from 'react'
 import { withTranslation } from 'react-i18next'
-import { Image, View } from 'react-native'
+import { Image, View, StyleSheet } from 'react-native'
+import { Text } from 'native-base';
 import { connect } from 'react-redux'
 import MercadoPagoCheckout from '@blackbox-vision/react-native-mercadopago-px'
 import { mercadopagoCheckout } from '../../redux/Checkout/actions'
 
-function Mercadopago({ cart, checkout, country, httpClient, restaurant }) {
+function Mercadopago({ cart, checkout, country, httpClient, restaurant, errors }) {
 
   React.useEffect(() => {
     async function fetchPreferenceId() {
@@ -36,18 +37,45 @@ function Mercadopago({ cart, checkout, country, httpClient, restaurant }) {
         preferenceId,
       })
     })
+    .catch((err) => {
+      console.log('5');
+      console.log(err);
+    })
   }, [cart, checkout, country, restaurant, httpClient])
 
   return (
-    <View style={{alignItems: 'center', justifyContent: 'center', flex: 1}}>
+    <View style={styles.container}>
+      { errors.length > 0 && (
+        <View style={ styles.errorsContainer }>
+          { errors.map((error, key) => (
+            <Text key={ key } style={ styles.errorText }>{ error }</Text>
+          )) }
+        </View>
+      ) }
       <Image source={require('../../../assets/images/powered_by_mercadopago.png')} />
     </View>
   )
 }
 
+const styles = StyleSheet.create({
+  container: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1,
+  },
+  errorsContainer: {
+    alignItems: 'center',
+    paddingVertical: 15,
+  },
+  errorText: {
+    textAlign: 'center',
+    color: '#ed2f2f',
+  },
+})
+
 function mapStateToProps(state) {
   const {
-    checkout: { cart, restaurant },
+    checkout: { cart, restaurant, errors },
     app: {
       httpClient,
       settings: {
@@ -56,7 +84,7 @@ function mapStateToProps(state) {
     },
   } = state
 
-  return { cart, country, httpClient, restaurant }
+  return { cart, country, httpClient, restaurant, errors }
 }
 
 function mapDispatchToProps(dispatch) {
