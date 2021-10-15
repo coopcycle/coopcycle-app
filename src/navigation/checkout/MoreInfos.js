@@ -26,7 +26,6 @@ class MoreInfos extends Component {
   }
 
   _submit(values) {
-    const { checkoutMethodScreen } = this.props
 
     const telephone =
       parsePhoneNumberFromString(values.telephone, this.props.country).format('E.164')
@@ -47,7 +46,7 @@ class MoreInfos extends Component {
       }
     }
 
-    this.props.updateCart(payload, () => this.props.navigation.navigate(checkoutMethodScreen))
+    this.props.updateCart(payload, () => this.props.navigation.navigate('CheckoutCreditCard'))
   }
 
   _validate(values) {
@@ -164,18 +163,12 @@ const styles = StyleSheet.create({
 })
 
 function mapStateToProps(state) {
-  const { app: { settings: { payment_gateway } } } = state
-
-  const checkoutMethodScreen = payment_gateway === 'mercadopago'
-    ? 'CheckoutMercadopago'
-    : 'CheckoutCreditCard'
 
   const fulfillmentMethod = selectCartFulfillmentMethod(state)
 
   return {
     country: state.app.settings.country.toUpperCase(),
     cart: state.checkout.cart,
-    checkoutMethodScreen,
     fulfillmentMethod,
     // FIXME
     // For click & collect, we need to retrieve the customer phone number

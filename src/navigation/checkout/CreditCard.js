@@ -26,9 +26,21 @@ class CreditCard extends Component {
     this.props.loadPaymentMethods()
   }
 
+  _onPaymentMethodSelected(type) {
+    const routesByCardGateway = {
+      'stripe': 'CheckoutPaymentMethodCard',
+      'mercadopago': 'CheckoutMercadopago',
+    };
+    const routesByMethod = {
+      'cash_on_delivery': 'CheckoutPaymentMethodCashOnDelivery',
+      'card': routesByCardGateway[this.props.paymentGateway],
+    };
+    this.props.navigation.navigate(routesByMethod[type]);
+  }
+
   render() {
 
-    const { cart, errors, paymentMethods } = this.props
+    const { cart, errors, paymentMethods, paymentGateway } = this.props
 
     if (!cart || paymentMethods.length === 0) {
 
@@ -38,7 +50,10 @@ class CreditCard extends Component {
     }
 
     if (paymentMethods.length === 1 && paymentMethods[0].type === 'card') {
-
+      if (paymentGateway === 'mercadopago') {
+        this.props.navigation.navigate('CheckoutMercadopago');
+        return null;
+      }
       return (
         <CreditCardComp cart={ cart } errors={ errors }
           onSubmit={ this._onSubmitCard.bind(this) } />
@@ -46,7 +61,6 @@ class CreditCard extends Component {
     }
 
     if (paymentMethods.length === 1 && paymentMethods[0].type === 'cash_on_delivery') {
-
       return (
         <CashComp
           onSubmit={ this._onSubmitCash.bind(this) } />
@@ -57,11 +71,7 @@ class CreditCard extends Component {
       <Center flex={ 1 }>
         <PaymentMethodPicker
           methods={ paymentMethods }
-          onSelect={ type => {
-            const routeName = type === 'cash_on_delivery' ?
-              'CheckoutPaymentMethodCashOnDelivery' : 'CheckoutPaymentMethodCard'
-            this.props.navigation.navigate(routeName)
-          }} />
+          onSelect={ this._onPaymentMethodSelected.bind(this) } />
       </Center>
     )
   }
@@ -72,6 +82,7 @@ function mapStateToProps(state) {
     cart: state.checkout.cart,
     errors: state.checkout.errors,
     paymentMethods: state.checkout.paymentMethods,
+    paymentGateway: state.app.settings.payment_gateway,
   }
 }
 
