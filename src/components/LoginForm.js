@@ -1,10 +1,14 @@
 import React, { Component } from 'react'
 import { View } from 'react-native'
 import { connect } from 'react-redux'
-import { Stack, FormControl, Input, Button, Text } from 'native-base'
+import { Stack, FormControl, Input, Button, Text, Box } from 'native-base'
 import { Formik } from 'formik'
 import _ from 'lodash'
 import { withTranslation } from 'react-i18next'
+import { AccessToken, LoginManager } from 'react-native-fbsdk-next'
+
+import FacebookButton from './FacebookButton'
+import { loginWithFacebook } from '../redux/App/actions'
 
 class LoginForm extends Component {
 
@@ -85,6 +89,30 @@ class LoginForm extends Component {
               { this.props.t('SUBMIT') }
             </Button>
           </View>
+          { this.props.withFacebook ? (
+            <Box mt="2">
+              <FacebookButton
+                onPress={ () => {
+                  LoginManager.logInWithPermissions(['public_profile', 'email']).then(
+                    (result) => {
+                      if (result.isCancelled) {
+                        console.log('Login cancelled')
+                      } else {
+                        // Cross-platform way of retrieving email
+                        // https://github.com/thebergamo/react-native-fbsdk-next#get-profile-information
+                        // https://github.com/thebergamo/react-native-fbsdk-next/issues/78#issuecomment-888085735
+                        AccessToken.getCurrentAccessToken().then(
+                          (data) => this.props.loginWithFacebook(data.accessToken.toString())
+                        )
+                      }
+                    },
+                    (error) => {
+                      console.log(error);
+                    }
+                  )
+                }} />
+            </Box>
+          ) : null }
         </Stack>
         )}
       </Formik>
@@ -99,5 +127,11 @@ function mapStateToProps(state) {
   }
 }
 
+function mapDispatchToProps(dispatch) {
+  return {
+    loginWithFacebook: (accessToken) => dispatch(loginWithFacebook(accessToken)),
+  }
+}
+
 export { LoginForm }
-export default connect(mapStateToProps)(withTranslation()(LoginForm))
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(LoginForm))
