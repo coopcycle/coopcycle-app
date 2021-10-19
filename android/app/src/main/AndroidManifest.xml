@@ -85,5 +85,8 @@
       <service android:name="com.transistorsoft.locationmanager.service.LocationRequestService" android:foregroundServiceType="location" />
       <meta-data android:name="com.transistorsoft.locationmanager.license" android:value="${transistorsoftLicenseKey}" />
 
+      <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/FACEBOOK_APP_ID"/>
+      <meta-data android:name="com.facebook.sdk.ClientToken" android:value="@string/FACEBOOK_CLIENT_TOKEN"/>
+
     </application>
 </manifest>

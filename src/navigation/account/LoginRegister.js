@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { View } from 'react-native'
 import {
-  Center, Text,
+  Center, Text, Icon,
 } from 'native-base'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
@@ -38,7 +38,8 @@ class LoginRegister extends Component {
               resumeCheckoutAfterActivation: false,
             })
           }}
-          registrationErrors={ this.props.registrationErrors } />
+          registrationErrors={ this.props.registrationErrors }
+          withFacebook={ true } />
       </Center>
     )
   }

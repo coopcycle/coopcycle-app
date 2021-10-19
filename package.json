@@ -69,6 +69,7 @@
     "react-native-dropdownalert": "^4.3.0",
     "react-native-easy-grid": "^0.2.2",
     "react-native-email-link": "^1.11.4",
+    "react-native-fbsdk-next": "^4.6.0",
     "react-native-gesture-handler": "^1.10.3",
     "react-native-get-random-values": "^1.7.0",
     "react-native-keyboard-manager": "^6.5.4-3",

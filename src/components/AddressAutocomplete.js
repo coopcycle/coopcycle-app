@@ -383,10 +383,10 @@ class AddressAutocomplete extends Component {
         renderTextInput={ props => this.renderTextInput(props) }
         listStyle={{
           margin: 0,
-          backgroundColor: colorScheme === 'dark' ? 'black' : 'white'
+          backgroundColor: colorScheme === 'dark' ? 'black' : 'white',
         }}
         style={{
-          color: '#333',
+          color: colorScheme === 'dark' ? 'white' : '#333',
           borderColor: '#b9b9b9',
           borderRadius: 20,
           paddingVertical: 8,

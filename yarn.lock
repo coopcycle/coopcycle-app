@@ -13436,6 +13436,11 @@ react-native-email-link@^1.11.4:
   resolved "https://registry.yarnpkg.com/react-native-email-link/-/react-native-email-link-1.11.4.tgz#c2015116be7ddec569ed1bbba337e2a645c0f585"
   integrity sha512-tP5AGLRj7jzN7ZGVcRd3ZB64USwX+oVNtAd50bbMDz3+/kA39Ty0KR/h2lUf1jOG1JJpC9stdYo5EYdKZlcgqQ==
 
+react-native-fbsdk-next@^4.6.0:
+  version "4.6.0"
+  resolved "https://registry.yarnpkg.com/react-native-fbsdk-next/-/react-native-fbsdk-next-4.6.0.tgz#0e70aa6d64e99762e6b22b1344eebae3f7fbfcb5"
+  integrity sha512-FPYLUFSWf7V4i084jKpSt8tc1DLkuBm38eYdq4RwpGcojxXIciQ8qQi9DRLNAxqNZHd0G/P6edSVEGsrjtvV7w==
+
 react-native-flip-card@^3.4.1:
   version "3.5.5"
   resolved "https://registry.yarnpkg.com/react-native-flip-card/-/react-native-flip-card-3.5.5.tgz#14f13d5178660e5365e7be4ed8dbb6ff289dd1e8"

@@ -369,6 +369,7 @@
         },
         "RESTAURANT_SETTINGS_MANAGE_PRODUCT_OPTIONS": "Gérer les options des produits",
         "STORES": "Magasins",
-        "FILTER_BY_TAGS": "Filtrer par tags"
+        "FILTER_BY_TAGS": "Filtrer par tags",
+        "CONNECT_WITH_FACEBOOK": "Se connecter avec Facebook"
     }
 }
