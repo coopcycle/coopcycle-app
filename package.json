@@ -13,7 +13,7 @@
   "dependencies": {
     "@mapbox/polyline": "^1.1.1",
     "@react-native-community/async-storage": "^1.12.1",
-    "@react-native-community/datetimepicker": "^3.0.2",
+    "@react-native-community/datetimepicker": "^3.5.2",
     "@react-native-community/masked-view": "^0.1.11",
     "@react-native-community/netinfo": "^6.0.2",
     "@react-native-community/push-notification-ios": "^1.10.1",
@@ -78,7 +78,7 @@
     "react-native-maps": "^0.27.1",
     "react-native-maps-super-cluster": "^1.6.0",
     "react-native-modal": "^12.1.0",
-    "react-native-modal-datetime-picker": "^10.2.0",
+    "react-native-modal-datetime-picker": "^12.0.0",
     "react-native-modal-selector": "^2.1.0",
     "react-native-pin-screen": "git+https://git@github.com/coopcycle/react-native-pin-screen.git#1.0.3",
     "react-native-reanimated": "^1.13.3",
