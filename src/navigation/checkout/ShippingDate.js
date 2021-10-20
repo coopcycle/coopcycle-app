@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { TouchableOpacity, View, StyleSheet } from 'react-native'
 import { Picker } from '@react-native-picker/picker'
-import { Text } from 'native-base'
+import { Text, Center, HStack, Heading } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 import _ from 'lodash'
@@ -120,10 +120,8 @@ class ShippingDate extends Component {
             isDeliveryEnabled={ this.props.isDeliveryEnabled }
             isCollectionEnabled={ this.props.isCollectionEnabled }
             setValue={ this.props.setFulfillmentMethod } />
-          <View style={{ alignItems: 'center', justifyContent: 'center', padding: 20, backgroundColor: '#ecf0f1' }}>
-            <Text>{ this.props.t('CHECKOUT_PICK_DATE') }</Text>
-          </View>
-          <View style={{ flex: 1, flexDirection: 'row' }}>
+          <Heading textAlign="center" size="md" p="2">{ this.props.t('CHECKOUT_PICK_DATE') }</Heading>
+          <HStack>
             <View style={{ flex: 1 }}>
               <Picker
                 selectedValue={ this.state.date }
@@ -144,7 +142,7 @@ class ShippingDate extends Component {
                 )) }
               </Picker>
             </View>
-          </View>
+          </HStack>
           <View style={{ flex: 0, paddingVertical: 30, justifyContent: 'center', alignItems: 'center' }}>
             <TouchableOpacity onPress={ this._onAsap.bind(this) }>
               <Text>{ this.props.t('DELIVERY_ASAP') }</Text>
