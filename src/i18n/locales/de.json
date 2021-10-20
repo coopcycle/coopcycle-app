@@ -314,7 +314,7 @@
             "GlutenFreeDiet": "glutenfrei",
             "DiabeticDiet": "diabetisch"
         },
-        "RECEIPT_HEADING_PICKUP_EXPECTED_AT": "voraussichtlich abgeholt um",
+        "RECEIPT_HEADING_PICKUP_EXPECTED_AT": "um",
         "RECEIPT_HEADING_PICKUP_EXPECTED_ON": "PICKUP EXPECTED ON {{time}}",
         "RECEIPT_HEADING_PICKUP_EXPECTED_TODAY": "PICKUP TODAY",
         "RECEIPT_HEADING_ORDER_NUMBER": "Bestellung {{number}} (#{{id}})",
