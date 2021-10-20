@@ -299,7 +299,8 @@ class AddressAutocomplete extends Component {
 
     return (
       <TouchableOpacity onPress={ () => this._onItemPress(item) } style={ itemStyle } { ...itemProps }>
-        <Text style={{ fontSize: 14, flex: 1 }} numberOfLines={1} ellipsizeMode="tail">{ text }</Text>
+        <Text style={{ fontSize: 14, flex: 1, color: '#856404' }} numberOfLines={1} ellipsizeMode="tail">
+          { text }</Text>
         { item.type === 'fuse' && (
           <Icon as={FontAwesome5} name="star" regular style={{ fontSize: 16, color: '#856404', paddingLeft: 5 }} />
         ) }
