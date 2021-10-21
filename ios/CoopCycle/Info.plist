@@ -30,11 +30,18 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>coopcycle</string>
+				<string>fb1303550106471840</string>
 			</array>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>118</string>
+	<key>FacebookAppID</key>
+	<string>1303550106471840</string>
+	<key>FacebookClientToken</key>
+	<string></string>
+	<key>FacebookDisplayName</key>
+	<string>CoopCycle</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>LSApplicationQueriesSchemes</key>
@@ -56,6 +63,21 @@
 		<string>inbox-gmail</string>
 		<string>ymail</string>
 		<string>superhuman</string>
+		<string>fbapi</string>
+		<string>fbapi20130214</string>
+		<string>fbapi20130410</string>
+		<string>fbapi20130702</string>
+		<string>fbapi20131010</string>
+		<string>fbapi20131219</string>
+		<string>fbapi20140410</string>
+		<string>fbapi20140116</string>
+		<string>fbapi20150313</string>
+		<string>fbapi20150629</string>
+		<string>fbapi20160328</string>
+		<string>fbauth</string>
+		<string>fb-messenger-share-api</string>
+		<string>fbauth2</string>
+		<string>fbshareextension</string>
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
