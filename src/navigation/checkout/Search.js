@@ -81,7 +81,7 @@ class RestaurantsPage extends Component {
   render() {
 
     return (
-      <View style={{ paddingTop: 54 }} testID="checkoutSearch"
+      <View style={{ flex: 1, paddingTop: 54 }} testID="checkoutSearch"
         onLayout={ event => this.setState({ width: event.nativeEvent.layout.width }) }
         >
         { this.renderContent() }

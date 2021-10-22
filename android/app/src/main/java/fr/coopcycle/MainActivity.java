@@ -16,7 +16,12 @@ import com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView;
 public class MainActivity extends ReactActivity {
 
   @Override protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
+
+    // On Android the View state is not persisted consistently across Activity restarts, which can lead to crashes in those cases.
+    // It is recommended to override the native Android method called on Activity restarts in your main Activity, to avoid these crashes.
+    // https://github.com/software-mansion/react-native-screens#android
+    // https://github.com/software-mansion/react-native-screens/issues/17#issuecomment-424704633
+    super.onCreate(null);
 
     // @see https://github.com/invertase/react-native-firebase/issues/2791
     // @see https://developer.android.com/training/notify-user/channels

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { SectionList, TouchableOpacity, View, StyleSheet } from 'react-native'
-import { Badge, Icon, Text, Heading, Box } from 'native-base'
+import { Badge, Icon, Text, Heading, Box, VStack } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
@@ -215,7 +215,7 @@ class ProductOptions extends Component {
     }))
 
     return (
-      <Box>
+      <VStack flex={ 1 }>
         <Box p="3">
           <Text note>
             { this.props.t('CHECKOUT_PRODUCT_OPTIONS_DISCLAIMER', { name: product.name }) }
@@ -230,7 +230,7 @@ class ProductOptions extends Component {
           ItemSeparatorComponent={ ItemSeparator }
         />
         { this.renderFooter() }
-      </Box>
+      </VStack>
     )
   }
 }
