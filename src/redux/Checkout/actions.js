@@ -583,7 +583,7 @@ export function init(restaurant) {
   }
 }
 
-export function mercadopagoCheckout({payment, preferenceId}) {
+export function mercadopagoCheckout(payment) {
   /**
    * Helper function to handle errors
    */
@@ -594,33 +594,22 @@ export function mercadopagoCheckout({payment, preferenceId}) {
   }
 
   return (dispatch, getState) => {
-    const { httpClient } = getState().app
-    const { cart } = getState().checkout
+    const { httpClient } = getState().app;
+    const { cart } = getState().checkout;
 
-    dispatch(checkoutRequest())
+    const {id, status, statusDetail} = payment;
 
-    /**
-     * Starts a Mercadopago checkout
-     */
-    payment
-    .then(({id, installments, paymentMethodId, paymentTypeId, status, statusDetail}) => {
-      // https://www.mercadopago.com.ar/developers/es/guides/online-payments/checkout-api/handling-responses#bookmark_resultados_de_creaci%C3%B3n_de_un_cobro
-      // I'm not sure if we should accept "in process" payments
-      if (!['approved', 'in_process'].includes(status)) {
-        handleError(dispatch, {status, statusDetail});
-        return;
-      }
+    if (status !== 'approved') {
+      handleError(dispatch, {status, statusDetail});
+      return;
+    }
 
-      const params = {
-        preferenceId,
-        paymentId: id,
-        installments,
-        paymentMethodId,
-        paymentTypeId,
-      }
+    const params = {
+      paymentId: id,
+      paymentMethodId: 'CARD',
+    }
 
-      // TODO we need to fix how we are calling /pay endpoint
-      httpClient
+    httpClient
       .put(cart['@id'] + '/pay', params)
       .then(order => {
         handleSuccessNav(dispatch, order);
@@ -628,12 +617,6 @@ export function mercadopagoCheckout({payment, preferenceId}) {
       .catch(orderUpdateError => {
         handleError(dispatch, orderUpdateError)
       })
-    })
-    .catch(paymentError => {
-      // TODO test what happen if user navigates back from MP screen
-      // dispatch(checkoutFailure(paymentError))
-      handleError(dispatch, paymentError)
-    })
   }
 }
 

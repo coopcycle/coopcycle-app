@@ -3,9 +3,9 @@ import { withTranslation } from 'react-i18next'
 import { Image, View, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
 import MercadoPagoCheckout from '@blackbox-vision/react-native-mercadopago-px'
-import { mercadopagoCheckout } from '../../redux/Checkout/actions'
+import { checkoutRequest, mercadopagoCheckout } from '../../redux/Checkout/actions'
 
-function Mercadopago({ cart, checkout, httpClient, restaurant }) {
+function Mercadopago({ cart, initCheckout, checkout, httpClient, restaurant }) {
 
   async function fetchPreferenceId() {
     const { ['@id']: namespace } = cart
@@ -28,17 +28,20 @@ function Mercadopago({ cart, checkout, httpClient, restaurant }) {
     })
   }
 
-  const loadMercadopago = () => {
-    cart && Promise.all([fetchPreferenceId(), fetchMercadopagoAccount()])
-    .then(([preferenceId, { public_key: publicKey }]) => {
-      checkout({
-        payment: createPayment({ preferenceId, publicKey }),
-        preferenceId,
-      })
-    })
+  const loadMercadopago = async () => {
+    try {
+      const preferenceId = await fetchPreferenceId();
+      const { public_key: publicKey } = await fetchMercadopagoAccount();
+      const payment = await createPayment({ preferenceId, publicKey });
+      checkout(payment);
+    } catch (err) {
+      console.err('There was an error creating the payment with MP SDK');
+      console.err(err);
+    }
   }
 
   useEffect(() => {
+    initCheckout();
     loadMercadopago();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -78,7 +81,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    checkout: ({payment, preferenceId}) => dispatch(mercadopagoCheckout({payment, preferenceId})),
+    initCheckout: () => dispatch(checkoutRequest()),
+    checkout: (payment) => dispatch(mercadopagoCheckout(payment)),
   }
 }
 
