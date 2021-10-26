@@ -3,9 +3,9 @@ import { withTranslation } from 'react-i18next'
 import { Image, View, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
 import MercadoPagoCheckout from '@blackbox-vision/react-native-mercadopago-px'
-import { checkoutRequest, mercadopagoCheckout } from '../../redux/Checkout/actions'
+import { checkoutRequest, checkoutFailure, mercadopagoCheckout } from '../../redux/Checkout/actions'
 
-function Mercadopago({ cart, initCheckout, checkout, httpClient, restaurant }) {
+function Mercadopago({ cart, initCheckout, failedCheckout, checkout, httpClient, restaurant, navigation }) {
 
   async function fetchPreferenceId() {
     const { ['@id']: namespace } = cart
@@ -35,8 +35,15 @@ function Mercadopago({ cart, initCheckout, checkout, httpClient, restaurant }) {
       const payment = await createPayment({ preferenceId, publicKey });
       checkout(payment);
     } catch (err) {
-      console.err('There was an error creating the payment with MP SDK');
-      console.err(err);
+      if (err.code && err.code === 'mp:payment_cancelled') {
+        // if user navigates back from MP screens we receive an error with this code
+        failedCheckout(err);
+        navigation.goBack();
+      } else {
+        // MP handles all payments errors on its screens, this handling is just for issues such as crashes
+        console.error(`[Error - Mercadopago] - ${err}`);
+        failedCheckout(err);
+      }
     }
   }
 
@@ -82,6 +89,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     initCheckout: () => dispatch(checkoutRequest()),
+    failedCheckout: (err) => dispatch(checkoutFailure(err)),
     checkout: (payment) => dispatch(mercadopagoCheckout(payment)),
   }
 }
