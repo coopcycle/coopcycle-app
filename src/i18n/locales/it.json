@@ -374,6 +374,15 @@
         "CART_COLLECTION_TIME": "Ritiro {{- fromNow}}",
         "RESTAURANT_ORDER_REFUSE_REASON_ORDER_WILL_BE_CAPTURED": "L'ordine sarà cancellato, ma non sarà rimborsato al cliente",
         "RESTAURANT_ORDER_REFUSE_REASON_NO_SHOW": "Il cliente non è arrivato",
-        "RESTAURANT_ORDER_BUTTON_FULFILL": "Completa"
+        "RESTAURANT_ORDER_BUTTON_FULFILL": "Completa",
+        "CONNECT_WITH_FACEBOOK": "Connettiti con Facebook",
+        "FILTER_BY_TAGS": "Filtra per tag",
+        "STORES": "Negozi",
+        "CASH_ON_DELIVERY_DISCLAIMER": "Pagherai in contanti. Per favore prepara l'importo esatto e assicurati di essere raggiungibile.",
+        "PAYMENT_METHOD": {
+            "cash_on_delivery": "In contanti",
+            "card": "Carta di credito"
+        },
+        "SELECT_PAYMENT_METHOD": "Seleziona un metodo di pagamento"
     }
 }
