@@ -13279,6 +13279,11 @@ react-fast-compare@^2.0.1:
   resolved "https://registry.yarnpkg.com/react-fast-compare/-/react-fast-compare-2.0.4.tgz#e84b4d455b0fec113e0402c329352715196f81f9"
   integrity sha512-suNP+J1VU1MWFKcyt7RtjiSWUjvidmQSlqu+eHslq+342xCbGTYmC0mEhPCOHxlW0CywylOC1u2DFAT+bv4dBw==
 
+react-freeze@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/react-freeze/-/react-freeze-1.0.0.tgz#b21c65fe1783743007c8c9a2952b1c8879a77354"
+  integrity sha512-yQaiOqDmoKqks56LN9MTgY06O0qQHgV4FUrikH357DydArSZHQhl0BJFqGKIZoTqi8JizF9Dxhuk1FIZD6qCaw==
+
 react-i18next@^11.13.0:
   version "11.13.0"
   resolved "https://registry.yarnpkg.com/react-i18next/-/react-i18next-11.13.0.tgz#7b6f23f717154a44cf3f70d62a9368152bf8a73f"
@@ -13353,10 +13358,10 @@ react-native-ble-manager@^7.6.3:
   resolved "https://registry.yarnpkg.com/react-native-ble-manager/-/react-native-ble-manager-7.6.3.tgz#f7e0dc1397cfa70153ad70807d81daa67fefcfa9"
   integrity sha512-cZqJ2apg9lk3MAqZAS43tpbVzVRO7zAyzeZb8FcyJqzMNEqC3CDAqWuV/QFRiqq219hIlJvwFD2ul7TwEB3ySg==
 
-react-native-calendars@^1.1267.0:
-  version "1.1267.0"
-  resolved "https://registry.yarnpkg.com/react-native-calendars/-/react-native-calendars-1.1267.0.tgz#178cc65e89be988cc2dda7c358282ade56f495e7"
-  integrity sha512-v20xNtBnB6U7hYprQHznmZHdyMm1u1GJGyd3EK/H6Ax4rqcA6L+KQQlSga9hCVtDfw872Jciw0hTpT3iAlCPgQ==
+react-native-calendars@^1.1268.0:
+  version "1.1268.0"
+  resolved "https://registry.yarnpkg.com/react-native-calendars/-/react-native-calendars-1.1268.0.tgz#6b4ea1c6c239be67bcc6dadb18178e97cc8a6379"
+  integrity sha512-aot8/D4zvLUcqOvfo4kZk5IS6gkpT+Ew37Ez035OI8EDx1GDJxkqfO44Nhai1yLnIuvuOfbSIuOD4lJNn8A7hw==
   dependencies:
     hoist-non-react-statics "^3.3.1"
     immutable "^4.0.0-rc.12"
@@ -13394,10 +13399,10 @@ react-native-communications@^2.2.1:
   resolved "https://registry.yarnpkg.com/react-native-communications/-/react-native-communications-2.2.1.tgz#7883b56b20a002eeb790c113f8616ea8692ca795"
   integrity sha1-eIO1ayCgAu63kMET+GFuqGksp5U=
 
-react-native-config@^1.4.4:
-  version "1.4.4"
-  resolved "https://registry.yarnpkg.com/react-native-config/-/react-native-config-1.4.4.tgz#e0e10802d1e61ef051040c84dfd19f85a5984620"
-  integrity sha512-bu47sJHn/HrB7COAWBI8DieAhrbFLINHFE2HBCcVkDu0Y5ScrMs6vL+jhIm+pMSgxouseLhXG8h7xYYpxE38PA==
+react-native-config@^1.4.5:
+  version "1.4.5"
+  resolved "https://registry.yarnpkg.com/react-native-config/-/react-native-config-1.4.5.tgz#6fe5895410b75e44fe4f4bf00caaf894a0981f3a"
+  integrity sha512-5oiAsoW88SOYDg/0cleJ2vJDqv98FJUbFQYEnH4sdMtEn3AAT3lb7BkTGW8HO/t3Vk9VOruwxUUnO4tzuxzCsw==
 
 react-native-credit-card-input@^0.4.1:
   version "0.4.1"
@@ -13483,10 +13488,10 @@ react-native-localize@^2.1.5:
   resolved "https://registry.yarnpkg.com/react-native-localize/-/react-native-localize-2.1.5.tgz#79b4cd39151d4f38f8d6602572b0cbf9d7e7578d"
   integrity sha512-1ADxILk78P1iA5vdhfD/UsrlliINA1iuExu0n7l+0XpYsNIo5S68HFAkhGiZqO8cZUPNlpx75klZkAu9c3iMXw==
 
-react-native-map-link@^2.8.0:
-  version "2.8.0"
-  resolved "https://registry.yarnpkg.com/react-native-map-link/-/react-native-map-link-2.8.0.tgz#021e6779a093ffa294d7ceb3ae6d09322f43096f"
-  integrity sha512-JQDOKPZcsB+3zE7LBOuo/VL3OnRVZWC8b5kX/OZaPEv0nb++7nd5sEmirEnq9ZoYVD1tewl5N6nC7PBPjmjwqA==
+react-native-map-link@^2.8.1:
+  version "2.8.1"
+  resolved "https://registry.yarnpkg.com/react-native-map-link/-/react-native-map-link-2.8.1.tgz#faa0a6bda48998f9401617f8acfe22c36e4971e1"
+  integrity sha512-P8zJ+bCBclDv5u5bFv2ycTsWubZR5QrglFlZhCU89uDOUDNZCF9++C6hQiexd33MsdeN/uWINt+CMHZRwQCBlA==
   dependencies:
     prop-types "^15.7.2"
     react-native-modal "^10.0.0"
@@ -13562,11 +13567,12 @@ react-native-safe-area-view@^0.14.9:
   dependencies:
     hoist-non-react-statics "^2.3.1"
 
-react-native-screens@^3.8.0:
-  version "3.8.0"
-  resolved "https://registry.yarnpkg.com/react-native-screens/-/react-native-screens-3.8.0.tgz#4ec84c55a7b4a4aa9405c812978ca2ba5c0242a4"
-  integrity sha512-lHrnB/elAoMJKv8O12U6BLgeup4lB6ZKJHEOVuG/D72nv/OE9wUusbou6YCB5tp3YbaSpHflPnkFmHA/vCejpw==
+react-native-screens@^3.9.0:
+  version "3.9.0"
+  resolved "https://registry.yarnpkg.com/react-native-screens/-/react-native-screens-3.9.0.tgz#39b79f0e50b9d68ec822d333bc76e7aaee90f3fd"
+  integrity sha512-TP/kASLQ/2iGCz4/n9CHeveKC9urzbfYXFH+1TfBnqaBwjIszhVuadiIOQ0qWKdSs6qnBR2xPTp9U18sNoc34A==
   dependencies:
+    react-freeze "^1.0.0"
     warn-once "^0.1.0"
 
 react-native-sound@^0.11.1:
