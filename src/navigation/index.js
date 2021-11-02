@@ -47,6 +47,7 @@ import CheckoutSummary from './checkout/Summary'
 import CheckoutShippingDate from './checkout/ShippingDate'
 import CheckoutCreditCard from './checkout/CreditCard'
 import CheckoutMoreInfos from './checkout/MoreInfos'
+import CheckoutMercadopago from './checkout/Mercadopago'
 
 import RestaurantsPage from './checkout/Search'
 import CheckoutRestaurant from './checkout/Restaurant'
@@ -84,6 +85,7 @@ export default {
   CheckoutSummary,
   CheckoutShippingDate,
   CheckoutCreditCard,
+  CheckoutMercadopago,
   CheckoutMoreInfos,
   CourierTasksPage,
   CourierTaskListPage,

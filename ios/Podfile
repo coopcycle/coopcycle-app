@@ -3,10 +3,15 @@ require_relative '../node_modules/@react-native-community/cli-platform-ios/nativ
 require_relative '../node_modules/react-native-unimodules/cocoapods.rb'
 
 platform :ios, '11.0'
+plugin 'cocoapods-user-defined-build-types'
+
+enable_user_defined_build_types!
 
 target 'CoopCycle' do
   use_unimodules!
   config = use_native_modules!
+
+  pod 'MercadoPagoSDK', :build_type => :dynamic_framework, :modular_headers => true
 
   use_react_native!(
     :path => config[:reactNativePath],
@@ -23,7 +28,7 @@ target 'CoopCycle' do
   #
   # Note that if you have use_frameworks! enabled, Flipper will not work and
   # you should disable the next line.
-  use_flipper!()
+  # use_flipper!()
   # https://github.com/facebook/react-native/issues/31480
   # use_flipper!({'Flipper' => '0.75.1', 'Flipper-Folly' => '2.5.3', 'Flipper-RSocket' => '1.3.1'})
 

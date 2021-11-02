@@ -1,5 +1,6 @@
 import { createAction } from 'redux-actions'
 import { StackActions, CommonActions } from '@react-navigation/native'
+import { NavigationActions } from 'react-navigation';
 import Stripe from 'tipsi-stripe'
 import _ from 'lodash'
 
@@ -578,6 +579,43 @@ export function init(restaurant) {
         }
 
         dispatch(initSuccess(...args))
+      })
+  }
+}
+
+export function mercadopagoCheckout(payment) {
+  /**
+   * Helper function to handle errors
+   */
+  function handleError(dispatch, error) {
+    dispatch(checkoutFailure(error))
+    // We navigate back to the MoreInfos screen. Should we navigate to another screen?
+    NavigationHolder.navigate('CheckoutMoreInfos', {});
+  }
+
+  return (dispatch, getState) => {
+    const { httpClient } = getState().app;
+    const { cart } = getState().checkout;
+
+    const {id, status, statusDetail} = payment;
+
+    if (status !== 'approved') {
+      handleError(dispatch, {status, statusDetail});
+      return;
+    }
+
+    const params = {
+      paymentId: id,
+      paymentMethodId: 'CARD',
+    }
+
+    httpClient
+      .put(cart['@id'] + '/pay', params)
+      .then(order => {
+        handleSuccessNav(dispatch, order);
+      })
+      .catch(orderUpdateError => {
+        handleError(dispatch, orderUpdateError)
       })
   }
 }

@@ -2964,6 +2964,11 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
+"@blackbox-vision/react-native-mercadopago-px@^0.7.2":
+  version "0.7.2"
+  resolved "https://registry.yarnpkg.com/@blackbox-vision/react-native-mercadopago-px/-/react-native-mercadopago-px-0.7.2.tgz#ebfdf79106bebc1ee4a97129322149ae3ec3c550"
+  integrity sha512-NOULPf0b3c8yws4YI8bXmp1ATkmPErk8sK4s+uMhxemAzNfq7If1y465CE2t3Ng6LKmpJZMw2K8A430piHaksQ==
+
 "@cnakazawa/watch@^1.0.3":
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/@cnakazawa/watch/-/watch-1.0.3.tgz#099139eaec7ebf07a27c1786a3ff64f39464d2ef"

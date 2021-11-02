@@ -51,6 +51,13 @@ const MainNavigator = () => (
         title: i18n.t('PAYMENT'),
       }}
     />
+    <MainStack.Screen
+      name="CheckoutMercadopago"
+      component={ screens.CheckoutMercadopago }
+      options={{
+        title: i18n.t('PAYMENT'),
+      }}
+    />
   </MainStack.Navigator>
 )
 
