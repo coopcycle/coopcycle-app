@@ -11,7 +11,7 @@ target 'CoopCycle' do
   use_unimodules!
   config = use_native_modules!
 
-  pod 'MercadoPagoSDK', :build_type => :dynamic_framework
+  pod 'MercadoPagoSDK', :build_type => :dynamic_framework, :modular_headers => true
 
   use_react_native!(
     :path => config[:reactNativePath],
