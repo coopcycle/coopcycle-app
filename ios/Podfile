@@ -34,5 +34,12 @@ target 'CoopCycle' do
 
   post_install do |installer|
     react_native_post_install(installer)
+    # Mixing Swift and Objective-C in a react-native project may be problematic.
+    # Workaround:  https://github.com/facebookarchive/react-native-fbsdk/issues/755#issuecomment-787488994
+    installer.aggregate_targets.first.user_project.native_targets.each do |target|
+      target.build_configurations.each do |config|
+        config.build_settings['LIBRARY_SEARCH_PATHS'] = ['$(inherited)', '$(SDKROOT)/usr/lib/swift']
+      end
+    end
   end
 end

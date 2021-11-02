@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
-import { View } from 'react-native'
+import { Platform, View } from 'react-native'
 import { connect } from 'react-redux'
 import { Stack, FormControl, Input, Button, Text, Box } from 'native-base'
 import { Formik } from 'formik'
 import _ from 'lodash'
 import { withTranslation } from 'react-i18next'
-import { AccessToken, LoginManager } from 'react-native-fbsdk-next'
+import { AccessToken, LoginManager, Settings } from 'react-native-fbsdk-next'
+import Config from 'react-native-config'
 
 import FacebookButton from './FacebookButton'
 import { loginWithFacebook } from '../redux/App/actions'
@@ -16,6 +17,12 @@ class LoginForm extends Component {
     super(props)
 
     this._passwordInput = null
+  }
+
+  componentDidMount() {
+    if (Platform.OS === 'ios') {
+      Settings.setAppID(Config.FACEBOOK_APP_ID)
+    }
   }
 
   _validate(values) {
