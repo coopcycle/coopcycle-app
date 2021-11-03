@@ -48,6 +48,8 @@ jobs:
           xmlstarlet ed --inplace --ps --update '//key[text()="STORAGE_BUCKET"]/following-sibling::string[1]'     -v '${{ secrets.FIREBASE_STORAGE_BUCKET }}'     ios/GoogleService-Info.plist
           xmlstarlet ed --inplace --ps --update '//key[text()="GOOGLE_APP_ID"]/following-sibling::string[1]'      -v '${{ secrets.FIREBASE_GOOGLE_APP_ID }}'      ios/GoogleService-Info.plist
           xmlstarlet ed --inplace --ps --update '//key[text()="DATABASE_URL"]/following-sibling::string[1]'       -v '${{ secrets.FIREBASE_DATABASE_URL }}'       ios/GoogleService-Info.plist
+      - name: Install CocoaPods plugins
+        run: gem install cocoapods-user-defined-build-types
       - name: Cache Pods
         uses: actions/cache@v2
         id: cache-pods
