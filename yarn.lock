@@ -3260,6 +3260,11 @@
   dependencies:
     "@babel/runtime" "^7.6.2"
 
+"@invertase/react-native-apple-authentication@^2.1.5":
+  version "2.1.5"
+  resolved "https://registry.yarnpkg.com/@invertase/react-native-apple-authentication/-/react-native-apple-authentication-2.1.5.tgz#a66d7a6185724ccf3c4dab8ecc7448164dc6c0ea"
+  integrity sha512-qX6Wm/F12pkzc95q6NHPtleA6tgWw1JLatAt/pbFhifxnMRgUU38/+JsLiDbtL7mzjtKAjWDETGYZ4dKGZQ8Wg==
+
 "@istanbuljs/load-nyc-config@^1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@istanbuljs/load-nyc-config/-/load-nyc-config-1.0.0.tgz#10602de5570baea82f8afbfa2630b24e7a8cfe5b"
