@@ -416,6 +416,15 @@ Client.prototype.loginWithFacebook = function(accessToken) {
     })
 }
 
+Client.prototype.signInWithApple = function(identityToken) {
+  return signInWithApple(this.httpBaseURL, identityToken)
+    .then(credentialsToUser)
+    .then(user => {
+      this.onCredentialsUpdated(user)
+      return user
+    })
+}
+
 function credentialsToUser(credentials) {
 
   const enabled = credentials.hasOwnProperty('enabled') ? credentials.enabled : true
@@ -512,6 +521,30 @@ var loginWithFacebook = function(baseURL, accessToken) {
     url: `${baseURL}/api/facebook/login`,
     data: {
       accessToken,
+    },
+  }
+
+  return new Promise((resolve, reject) => {
+    axios(req)
+      .then(response => {
+        resolve(response.data)
+      })
+      .catch(error => {
+        if (error.response) {
+          reject(error.response.data)
+        } else {
+          reject({ message: 'An error has occured' })
+        }
+      })
+  })
+}
+
+var signInWithApple = function(baseURL, identityToken) {
+  const req = {
+    method: 'POST',
+    url: `${baseURL}/api/sign_in_with_apple/login`,
+    data: {
+      identityToken,
     },
   }
 

@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@blackbox-vision/react-native-mercadopago-px": "^0.7.2",
+    "@invertase/react-native-apple-authentication": "^2.1.5",
     "@mapbox/polyline": "^1.1.1",
     "@react-native-community/async-storage": "^1.12.1",
     "@react-native-community/datetimepicker": "^3.5.2",

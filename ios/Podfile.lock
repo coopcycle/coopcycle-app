@@ -600,6 +600,8 @@ PODS:
     - React-RCTText
   - rn-fetch-blob (0.12.0):
     - React-Core
+  - RNAppleAuthentication (2.1.5):
+    - React-Core
   - RNBackgroundFetch (3.1.0):
     - React
   - RNBackgroundGeolocation (3.10.0):
@@ -723,6 +725,7 @@ DEPENDENCIES:
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - ReactNativeKeyboardManager (from `../node_modules/react-native-keyboard-manager`)
   - rn-fetch-blob (from `../node_modules/rn-fetch-blob`)
+  - "RNAppleAuthentication (from `../node_modules/@invertase/react-native-apple-authentication`)"
   - RNBackgroundFetch (from `../node_modules/react-native-background-fetch`)
   - RNBackgroundGeolocation (from `../node_modules/react-native-background-geolocation`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
@@ -878,6 +881,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-keyboard-manager"
   rn-fetch-blob:
     :path: "../node_modules/rn-fetch-blob"
+  RNAppleAuthentication:
+    :path: "../node_modules/@invertase/react-native-apple-authentication"
   RNBackgroundFetch:
     :path: "../node_modules/react-native-background-fetch"
   RNBackgroundGeolocation:
@@ -1004,6 +1009,7 @@ SPEC CHECKSUMS:
   ReactCommon: 149906e01aa51142707a10665185db879898e966
   ReactNativeKeyboardManager: 4fb4d82d670ec6c00e9a2d2cc576f7cbb14975d6
   rn-fetch-blob: f065bb7ab7fb48dd002629f8bdcb0336602d3cba
+  RNAppleAuthentication: 63c2127ace11985b94f852fc480eb84145653712
   RNBackgroundFetch: 8dbb63141792f1473e863a0797ffbd5d987af2fc
   RNBackgroundGeolocation: 1184aff02a730e243785482561d0b8d9649548a3
   RNCAsyncStorage: b03032fdbdb725bea0bd9e5ec5a7272865ae7398
@@ -1033,6 +1039,6 @@ SPEC CHECKSUMS:
   UMTaskManagerInterface: 2be431101b73604e64fbfffcf759336f9d8fccbb
   Yoga: 575c581c63e0d35c9a83f4b46d01d63abc1100ac
 
-PODFILE CHECKSUM: ec205f675e4dcf1d97abdd16001da28131bd2739
+PODFILE CHECKSUM: 141a7b7b279d969a4108726d14c1997098c09bf3
 
 COCOAPODS: 1.10.1
