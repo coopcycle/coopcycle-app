@@ -7,6 +7,7 @@ import _ from 'lodash'
 import { withTranslation } from 'react-i18next'
 import { AccessToken, LoginManager, Settings } from 'react-native-fbsdk-next'
 import Config from 'react-native-config'
+import { AppleButton, appleAuth } from '@invertase/react-native-apple-authentication'
 
 import FacebookButton from './FacebookButton'
 import { loginWithFacebook } from '../redux/App/actions'
@@ -118,6 +119,32 @@ class LoginForm extends Component {
                     }
                   )
                 }} />
+                <AppleButton
+                  buttonStyle={AppleButton.Style.WHITE}
+                  buttonType={AppleButton.Type.SIGN_IN}
+                  style={{
+                    width: 160, // You must specify a width
+                    height: 45, // You must specify a height
+                  }}
+                  onPress={ () => {
+                    appleAuth.performRequest({
+                      requestedOperation: appleAuth.Operation.LOGIN,
+                      requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
+                    }).then(appleAuthRequestResponse => {
+                      // get current authentication state for user
+                      // /!\ This method must be tested on a real device. On the iOS simulator it always throws an error.
+                      appleAuth
+                        .getCredentialStateForUser(appleAuthRequestResponse.user)
+                        .then(credentialState => {
+                          console.log('credentialState', credentialState)
+                          // use credentialState response to ensure the user is authenticated
+                          if (credentialState === appleAuth.State.AUTHORIZED) {
+                            // user is authenticated
+                          }
+                        })
+                    })
+                  }}
+                />
             </Box>
           ) : null }
         </Stack>
