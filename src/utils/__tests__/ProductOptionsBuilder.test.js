@@ -71,6 +71,7 @@ describe('ProductOptionsBuilder', () => {
       {
         code: '4363401d-e69e-4c75-9fed-f75e44540b5d',
         quantity: 1,
+        price: 0,
       },
     ])
 
@@ -79,9 +80,11 @@ describe('ProductOptionsBuilder', () => {
       {
         code: '4363401d-e69e-4c75-9fed-f75e44540b5d',
         quantity: 1,
+        price: 0,
       }, {
         code: '64b97ccc-0ff5-4577-a881-8a0a834fdf80',
         quantity: 1,
+        price: 0,
       },
     ])
   })
@@ -95,6 +98,7 @@ describe('ProductOptionsBuilder', () => {
       {
         code: '4363401d-e69e-4c75-9fed-f75e44540b5d',
         quantity: 1,
+        price: 0,
       },
     ])
 
@@ -103,6 +107,7 @@ describe('ProductOptionsBuilder', () => {
       {
         code: '4363401d-e69e-4c75-9fed-f75e44540b5d',
         quantity: 2,
+        price: 0,
       },
     ])
   })
@@ -117,6 +122,7 @@ describe('ProductOptionsBuilder', () => {
       {
         code: '4363401d-e69e-4c75-9fed-f75e44540b5d',
         quantity: 2,
+        price: 0,
       },
     ])
 
@@ -125,6 +131,7 @@ describe('ProductOptionsBuilder', () => {
       {
         code: '4363401d-e69e-4c75-9fed-f75e44540b5d',
         quantity: 1,
+        price: 0,
       },
     ])
 
@@ -141,6 +148,7 @@ describe('ProductOptionsBuilder', () => {
       {
         code: 'b3b58c52-5159-3173-96c2-24b5608acf37',
         quantity: 1,
+        price: 0,
       },
     ])
 
@@ -149,6 +157,7 @@ describe('ProductOptionsBuilder', () => {
       {
         code: 'e2855e88-64c4-343f-b70d-5579402cf14e',
         quantity: 1,
+        price: 0,
       },
     ])
   })
@@ -164,6 +173,7 @@ describe('ProductOptionsBuilder', () => {
       {
         code: '4363401d-e69e-4c75-9fed-f75e44540b5d',
         quantity: 1,
+        price: 0,
       },
     ])
     expect(optionsBuilder.isValid()).toBe(false)
@@ -173,9 +183,11 @@ describe('ProductOptionsBuilder', () => {
       {
         code: '4363401d-e69e-4c75-9fed-f75e44540b5d',
         quantity: 1,
+        price: 0,
       }, {
         code: 'b3b58c52-5159-3173-96c2-24b5608acf37',
         quantity: 1,
+        price: 0,
       },
     ])
     expect(optionsBuilder.isValid()).toBe(true)
@@ -197,6 +209,7 @@ describe('ProductOptionsBuilder', () => {
       {
         code: '4363401d-e69e-4c75-9fed-f75e44540b5d',
         quantity: 1,
+        price: 0,
       },
     ])
 
@@ -205,6 +218,39 @@ describe('ProductOptionsBuilder', () => {
       {
         code: '4363401d-e69e-4c75-9fed-f75e44540b5d',
         quantity: 2,
+        price: 0,
+      },
+    ])
+  })
+
+  it('adding twice or increment should not affect price', () => {
+
+    const optionsBuilder = new ProductOptionsBuilder(productOptions)
+
+    optionsBuilder.add({'@type':'MenuItem','name':'Bar','identifier':'4363401d-e69e-4c75-9fed-f75e44540b5d','offers':{'@type':'Offer','price':30}})
+    expect(optionsBuilder.getPayload()).toEqual([
+      {
+        code: '4363401d-e69e-4c75-9fed-f75e44540b5d',
+        quantity: 1,
+        price: 30,
+      },
+    ])
+
+    optionsBuilder.add({'@type':'MenuItem','name':'Bar','identifier':'4363401d-e69e-4c75-9fed-f75e44540b5d','offers':{'@type':'Offer','price':30}})
+    expect(optionsBuilder.getPayload()).toEqual([
+      {
+        code: '4363401d-e69e-4c75-9fed-f75e44540b5d',
+        quantity: 2,
+        price: 30,
+      },
+    ])
+
+    optionsBuilder.increment({'@type':'MenuItem','name':'Bar','identifier':'4363401d-e69e-4c75-9fed-f75e44540b5d','offers':{'@type':'Offer','price':30}})
+    expect(optionsBuilder.getPayload()).toEqual([
+      {
+        code: '4363401d-e69e-4c75-9fed-f75e44540b5d',
+        quantity: 3,
+        price: 30,
       },
     ])
   })
@@ -220,6 +266,7 @@ describe('ProductOptionsBuilder', () => {
       {
         code: '4363401d-e69e-4c75-9fed-f75e44540b5d',
         quantity: 2,
+        price: 0,
       },
     ])
 
@@ -230,9 +277,11 @@ describe('ProductOptionsBuilder', () => {
       {
         code: '4363401d-e69e-4c75-9fed-f75e44540b5d',
         quantity: 2,
+        price: 0,
       }, {
         code: '64b97ccc-0ff5-4577-a881-8a0a834fdf80',
         quantity: 2,
+        price: 0,
       },
     ])
 
@@ -242,9 +291,11 @@ describe('ProductOptionsBuilder', () => {
       {
         code: '4363401d-e69e-4c75-9fed-f75e44540b5d',
         quantity: 2,
+        price: 0,
       }, {
         code: '64b97ccc-0ff5-4577-a881-8a0a834fdf80',
         quantity: 2,
+        price: 0,
       },
     ])
   })
