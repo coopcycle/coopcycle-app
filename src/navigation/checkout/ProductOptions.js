@@ -5,10 +5,8 @@ import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
-import { addItemWithOptions } from '../../redux/Checkout/actions'
 import { formatPrice } from '../../utils/formatting'
 import ProductOptionsBuilder from '../../utils/ProductOptionsBuilder'
-import FooterButton from './components/FooterButton'
 import ItemSeparator from '../../components/ItemSeparator'
 
 const SimpleOption = ({ name, price, onPress, selected, index, sectionIndex }) => {
@@ -69,12 +67,12 @@ class ProductOptions extends Component {
     }
     this.list = React.createRef()
 
-    const product = props.route.params?.product
+    const product = props.product
     this.optionsBuilder = new ProductOptionsBuilder(product && product.menuAddOn)
   }
 
   componentDidMount() {
-    const product = this.props.route.params?.product
+    const product = this.props.product
     this.optionsBuilder = new ProductOptionsBuilder(product.menuAddOn)
   }
 
@@ -89,11 +87,15 @@ class ProductOptions extends Component {
         })
       }
     }
+    this.props.onChanges({
+      optionsPayload: this.state.payload,
+      optionsAreValid: this.state.isValid,
+    });
   }
 
   _getSectionIndex(section) {
 
-    const product = this.props.route.params?.product
+    const product = this.props.product
 
     for (let i = 0; i < product.menuAddOn.length; i++) {
       let menuSection = product.menuAddOn[i]
@@ -115,13 +117,6 @@ class ProductOptions extends Component {
     }, () => this._gotoNextOption())
   }
 
-  _onPressAddToCart() {
-    const product = this.props.route.params?.product
-
-    this.props.addItem(product, this.state.payload)
-    this.props.navigation.navigate('CheckoutRestaurant', { restaurant: this.props.restaurant })
-  }
-
   _increment(menuItem) {
     this.optionsBuilder.increment(menuItem)
 
@@ -138,17 +133,6 @@ class ProductOptions extends Component {
       payload: this.optionsBuilder.getPayload(),
       isValid: this.optionsBuilder.isValid(),
     }, () => this._gotoNextOption())
-  }
-
-  renderFooter() {
-    if (this.optionsBuilder.isValid()) {
-      return (
-        <FooterButton
-          testID="addProductWithOptions"
-          text={ this.props.t('ADD_TO_CART') }
-          onPress={ () => this._onPressAddToCart() } />
-      )
-    }
   }
 
   renderItem(menuItem, menuSection, index) {
@@ -186,7 +170,7 @@ class ProductOptions extends Component {
     const [ min, max ] = this.optionsBuilder.parseRange(menuSection.valuesRange)
 
     return (
-      <View style={{ paddingHorizontal: 15, paddingVertical: 5, backgroundColor: '#ffffff' }}>
+      <View style={{ paddingHorizontal: 15, paddingVertical: 5 }}>
         <Text style={{ textAlign: 'center' }} note>
           { this.props.t('CHECKOUT_PRODUCT_OPTIONS_CHOICES_BETWEEN', { min, max }) }
         </Text>
@@ -198,7 +182,7 @@ class ProductOptions extends Component {
 
     return (
       <Box p="3">
-        <Heading>{ menuSection.name }</Heading>
+        <Heading size="md" >{ menuSection.name }</Heading>
         { menuSection.valuesRange && this.renderSectionHelp(menuSection) }
       </Box>
     )
@@ -206,7 +190,7 @@ class ProductOptions extends Component {
 
   render() {
 
-    const product = this.props.route.params?.product
+    const product = this.props.product;
 
     const sections = product.menuAddOn.map((menuSection, index) => ({
       ...menuSection,
@@ -218,7 +202,7 @@ class ProductOptions extends Component {
       <VStack flex={ 1 }>
         <Box p="3">
           <Text note>
-            { this.props.t('CHECKOUT_PRODUCT_OPTIONS_DISCLAIMER', { name: product.name }) }
+            { this.props.t('CHECKOUT_PRODUCT_OPTIONS_TITLE') }
           </Text>
         </Box>
         <SectionList
@@ -229,7 +213,6 @@ class ProductOptions extends Component {
           keyExtractor={ (item, index) => index }
           ItemSeparatorComponent={ ItemSeparator }
         />
-        { this.renderFooter() }
       </VStack>
     )
   }
@@ -250,11 +233,4 @@ function mapStateToProps(state) {
   }
 }
 
-function mapDispatchToProps(dispatch) {
-
-  return {
-    addItem: (item, options) => dispatch(addItemWithOptions(item, options)),
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(ProductOptions))
+export default connect(mapStateToProps)(withTranslation()(ProductOptions))

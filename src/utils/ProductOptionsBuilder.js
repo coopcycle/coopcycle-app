@@ -96,6 +96,7 @@ class ProductOptionsBuilder {
         this.payload.splice(index, 1, {
           code: optionValue.identifier,
           quantity: quantity + 1,
+          price: optionValue.hasOwnProperty('offers') ? optionValue.offers.price : 0,
         })
 
       } else {
@@ -103,6 +104,7 @@ class ProductOptionsBuilder {
         this.payload.push({
           code: optionValue.identifier,
           quantity: 1,
+          price: optionValue.hasOwnProperty('offers') ? optionValue.offers.price : 0,
         })
 
       }
@@ -114,6 +116,7 @@ class ProductOptionsBuilder {
       this.payload.push({
         code: optionValue.identifier,
         quantity: 1,
+        price: optionValue.hasOwnProperty('offers') ? optionValue.offers.price : 0,
       })
     }
   }
@@ -132,6 +135,7 @@ class ProductOptionsBuilder {
         this.payload.splice(index, 1, {
           code: optionValue.identifier,
           quantity: nextQuantity,
+          price: optionValue.hasOwnProperty('offers') ? optionValue.offers.price : 0,
         })
       }
     }

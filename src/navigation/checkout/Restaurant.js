@@ -63,7 +63,7 @@ class Restaurant extends Component {
           <Menu
             restaurant={ restaurant }
             menu={ menu }
-            onItemClick={ menuItem => this.props.addItem(menuItem) }
+            onItemClick={ menuItem => navigate('CheckoutProductDetails', { product: menuItem }) }
             isItemLoading={ menuItem => {
               return _.includes(this.props.loadingItems, menuItem.identifier)
             } } />

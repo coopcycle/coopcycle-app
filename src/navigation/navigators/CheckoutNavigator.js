@@ -112,10 +112,10 @@ export default () => (
       }}
     />
     <RootStack.Screen
-      name="CheckoutProductOptions"
-      component={ screens.CheckoutProductOptions }
+      name="CheckoutProductDetails"
+      component={ screens.CheckoutProductDetails }
       options={{
-        title: i18n.t('CHECKOUT_PRODUCT_OPTIONS_TITLE'),
+        title: '',
       }}
     />
     <RootStack.Screen

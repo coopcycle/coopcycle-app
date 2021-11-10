@@ -41,7 +41,7 @@ import CourierTaskListPage from './courier/TaskListPage'
 import CourierSettings from './courier/Settings'
 import CourierSettingsTags from './courier/Tags'
 
-import CheckoutProductOptions from './checkout/ProductOptions'
+import CheckoutProductDetails from './checkout/ProductDetails'
 import CheckoutLogin from './checkout/Login'
 import CheckoutSummary from './checkout/Summary'
 import CheckoutShippingDate from './checkout/ShippingDate'
@@ -80,7 +80,7 @@ export default {
   RestaurantOpeningHours,
   RestaurantMenus,
   RestaurantPrinter,
-  CheckoutProductOptions,
+  CheckoutProductDetails,
   CheckoutLogin,
   CheckoutSummary,
   CheckoutShippingDate,
