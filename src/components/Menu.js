@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Animated, ActivityIndicator, SectionList, StyleSheet, TouchableOpacity, View } from 'react-native'
-import { Flex, Image, Text } from 'native-base';
+import { Flex, Image, Text, Column, Row } from 'native-base';
 import _ from 'lodash'
 import { AllergenList, RestrictedDietList } from './MenuBadges'
 
@@ -21,39 +21,12 @@ const styles = StyleSheet.create({
   itemContainer: {
     paddingVertical: 15,
   },
-  item: {
-    paddingHorizontal: 10,
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
   disabledText: {
     color: '#a7a7a7',
   },
   descriptionText: {
     fontSize: 14,
     color: '#777777',
-  },
-  itemPrice: {
-    fontSize: 18,
-  },
-  loadingIndicator: {
-    
-  },
-  leftCol: (hasImage) => {
-    return {
-      width: hasImage ? '75%' : '100%',
-    }
-  },
-  rightCol: {
-    width: '25%',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-  },
-  rightIcon: {
-    color: '#747474',
-    fontSize: 22,
   },
 });
 
@@ -74,7 +47,8 @@ class Menu extends Component {
 
     let itemProps = {}
     let itemNameStyle = []
-    let itemPriceStyle = [ styles.itemPrice ]
+    let itemDescriptionStyle = [ styles.descriptionText ]
+    let itemPriceStyle = []
 
     if (enabled) {
       itemProps = {
@@ -83,6 +57,7 @@ class Menu extends Component {
     } else {
       itemNameStyle.push(styles.disabledText)
       itemPriceStyle.push(styles.disabledText)
+      itemDescriptionStyle.push(styles.disabledText)
     }
 
     const isLoading = this.props.isItemLoading(item)
@@ -92,28 +67,28 @@ class Menu extends Component {
 
     return (
       <TouchableOpacity style={ styles.itemContainer } { ...itemProps } testID={ `menuItem:${section.index}:${index}` }>
-        <View style={ styles.item }>
-          <View style={ styles.leftCol(item.image_1x1) }>
+        <Flex mx="2" direction="row" justifyContent="space-between">
+          <Column flexShrink="1">
             <Text style={ itemNameStyle }>{ item.name }</Text>
-            { (item.description && item.description.length > 0) ? (
-              <Text style={ styles.descriptionText } note numberOfLines={ 2 } ellipsizeMode="tail">{ item.description }</Text>
-            ) : null }
-          </View>
-          { item.image_1x1 &&
-          <View style={ styles.rightCol }>
-            <Image size="md" resizeMode="cover" borderRadius={5} source={{ uri: item.image_1x1 }} alt="Product" />
-          </View>
-          }
-        </View>
-        { hasBadges && (
-          <View style={{ paddingHorizontal: 10, marginVertical: 5 }}>
-            { item.suitableForDiet && (<RestrictedDietList items={ item.suitableForDiet } />) }
-            { item.allergens && (<AllergenList items={ item.allergens } />) }
-          </View>
-        ) }
-        <Flex direction="row" px="2" align="center">
-          <Text style={ itemPriceStyle }>{ `${formatPrice(item.offers.price)}` }</Text>
-          { isLoading && <ActivityIndicator pl="2" color="#c7c7c7" size="small" style={ styles.loadingIndicator } /> }
+            { item.description && item.description.length > 0 &&
+              <Text style={ itemDescriptionStyle } note numberOfLines={ 2 } ellipsizeMode="tail">{ item.description }</Text>
+            }
+            { hasBadges &&
+              <Row my="1">
+                { item.suitableForDiet && (<RestrictedDietList items={ item.suitableForDiet } />) }
+                { item.allergens && (<AllergenList items={ item.allergens } />) }
+              </Row>
+            }
+            <Row>
+              <Text pr="2" fontSize="lg" style={ itemPriceStyle }>{ `${formatPrice(item.offers.price)}` }</Text>
+              { isLoading && <ActivityIndicator color="#c7c7c7" size="small" style={ styles.loadingIndicator } /> }
+            </Row>
+          </Column>
+            <Column>
+            { item.image_1x1 &&
+              <Image size="md" resizeMode="cover" borderRadius={5} source={{ uri: item.image_1x1 }} alt="Product" />
+            }
+          </Column>
         </Flex>
       </TouchableOpacity>
     )
