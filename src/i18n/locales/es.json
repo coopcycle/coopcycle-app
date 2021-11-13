@@ -186,7 +186,7 @@
         "CHECKOUT_PLEASE_ENTER_ADDRESS": "Por favor, introduzca su dirección",
         "CHECKOUT_ADDRESS_NOT_VALID": "Lo sentimos, no entregamos a esta dirección",
         "CHECKOUT_ORDER_ADDRESS_DESCRIPTION": "Información de acceso",
-        "CHECKOUT_ORDER_ADDRESS_DESCRIPTION_HELP": "Especifique cualquier información útil",
+        "CHECKOUT_ORDER_ADDRESS_DESCRIPTION_HELP": "Especifique cualquier información útil: piso, letra, escalera",
         "CHECKOUT_ORDER_PHONE_NUMBER_HELP": "Para contactar con usted si hay un problema",
         "CHECKOUT_ORDER_NOTES": "¿Un mensaje?",
         "CHECKOUT_ORDER_NOTES_HELP": "Este mensaje será transmitido al cocinero",
