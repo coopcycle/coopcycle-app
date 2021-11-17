@@ -374,6 +374,15 @@
         "NOT_AVAILABLE_ATM": "Ez dago eskuragarri momentuz",
         "RECEIPT_HEADING_PICKUP_EXPECTED_TODAY": "BILKETA GAUR",
         "RECEIPT_HEADING_PICKUP_EXPECTED_ON": "BILKETA {{time}}(E)TAN ESPERO DA",
-        "RECEIPT_CUSTOMER_NAME": "BEZEROA: {{customer}}"
+        "RECEIPT_CUSTOMER_NAME": "BEZEROA: {{customer}}",
+        "CONNECT_WITH_FACEBOOK": "Hasi saioa Facebook-ekin",
+        "FILTER_BY_TAGS": "Iragazi etiketen bidez",
+        "STORES": "Dendak",
+        "CASH_ON_DELIVERY_DISCLAIMER": "Eskaera jasotzean eskudiruz ordaintzeko aukeratu duzu. Mesedez, prestatu kantitate zehatza eta egon eskuragarri.",
+        "PAYMENT_METHOD": {
+            "cash_on_delivery": "Eskudirua",
+            "card": "Kreditu-txartela"
+        },
+        "SELECT_PAYMENT_METHOD": "Hautatu ordainketa metodo bat"
     }
 }
