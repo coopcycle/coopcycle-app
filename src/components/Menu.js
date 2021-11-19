@@ -63,7 +63,8 @@ class Menu extends Component {
     const isLoading = this.props.isItemLoading(item)
     const hasBadges = !!item.suitableForDiet || !!item.allergens
 
-    if (item.exception) {console.log(item.exception)}
+    const image1x1 = item.images && Array.isArray(item.images)
+      && _.find(item.images, image => image.ratio === '1:1')
 
     return (
       <TouchableOpacity style={ styles.itemContainer } { ...itemProps } testID={ `menuItem:${section.index}:${index}` }>
@@ -85,8 +86,8 @@ class Menu extends Component {
             </Row>
           </Column>
             <Column>
-            { item.image_1x1 &&
-              <Image size="md" resizeMode="cover" borderRadius={5} source={{ uri: item.image_1x1 }} alt="Product" />
+            { image1x1 &&
+              <Image size="md" resizeMode="cover" borderRadius={5} source={{ uri: image1x1.url }} alt="Product" />
             }
           </Column>
         </Flex>

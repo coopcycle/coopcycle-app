@@ -3,6 +3,7 @@ import { Box, Flex, Divider, Heading, Icon, Text, Pressable, VStack, Image } fro
 import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
+import _ from 'lodash'
 import ProductOptions from './ProductOptions'
 import FooterButton from './components/FooterButton'
 import { addItemWithOptions } from '../../redux/Checkout/actions'
@@ -77,10 +78,13 @@ class ProductDetails extends Component {
         const product = this.props.route.params?.product;
         const hasBadges = !!product.suitableForDiet || !!product.allergens;
 
+        const image16x9 = product.images && Array.isArray(product.images)
+            && _.find(product.images, image => image.ratio === '16:9')
+
         return (
             <VStack flex={ 1 }>
-                { product.image_16x9 &&
-                <Image size="md" style={{ width: '100%' }} resizeMode="cover" source={{ uri: product.image_16x9 }} alt="Product" />
+                { image16x9 &&
+                <Image size="md" style={{ width: '100%' }} resizeMode="cover" source={{ uri: image16x9.url }} alt="Product" />
                 }
                 <Box p="3">
                     <Heading size="lg" >
