@@ -149,7 +149,7 @@ function notifyListeners(address) {
 }
 
 // This action may be dispatched several times "recursively"
-export function addItem(item, options) {
+export function addItem(item, quantity = 1, options) {
 
   return (dispatch, getState) => {
 
@@ -165,7 +165,7 @@ export function addItem(item, options) {
       if (!address) {
         // When the address is set,
         // re-dispatch the same action
-        replaceListeners(() => dispatch(addItem(item, options)))
+        replaceListeners(() => dispatch(addItem(item, quantity, options)))
         dispatch(showAddressModal(i18n.t('CHECKOUT_PLEASE_ENTER_ADDRESS')))
         return
       }
@@ -185,7 +185,7 @@ export function addItem(item, options) {
 
             addListener(() => {
               dispatch(addItemRequestFinished(item))
-              dispatch(addItem(item, options))
+              dispatch(addItem(item, quantity, options))
             })
             dispatch(syncAddress())
           })
@@ -194,7 +194,7 @@ export function addItem(item, options) {
             dispatch(setAddressOK(false))
             dispatch(addItemRequestFinished(item))
 
-            replaceListeners(() => dispatch(addItem(item, options)))
+            replaceListeners(() => dispatch(addItem(item, quantity, options)))
             dispatch(showAddressModal(reason))
           })
 
@@ -205,19 +205,12 @@ export function addItem(item, options) {
       return
     }
 
-    if (item.hasOwnProperty('menuAddOn') && Array.isArray(item.menuAddOn) && item.menuAddOn.length > 0) {
-      if (options === undefined) {
-        NavigationHolder.navigate('CheckoutProductOptions', { product: item })
-        return
-      }
-    }
-
     dispatch(addItemRequest(item))
-    dispatch(queueAddItem(item, options))
+    dispatch(queueAddItem(item, quantity, options))
   }
 }
 
-function queueAddItem(item, options = []) {
+function queueAddItem(item, quantity = 1, options = []) {
 
   return {
     queue: 'ADD_ITEM',
@@ -231,6 +224,7 @@ function queueAddItem(item, options = []) {
       httpClient
         .post(`${cart['@id']}/items`, {
           product: item.identifier,
+          quantity,
           options,
         })
         .then(res => {
@@ -248,8 +242,8 @@ function queueAddItem(item, options = []) {
   }
 }
 
-export function addItemWithOptions(item, options = []) {
-  return addItem(item, options)
+export function addItemWithOptions(item, quantity = 1, options = []) {
+  return addItem(item, quantity, options)
 }
 
 const fetchValidation = _.throttle((dispatch, getState) => {

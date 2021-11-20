@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Animated, ActivityIndicator, SectionList, StyleSheet, TouchableOpacity, View } from 'react-native'
-import { Text } from 'native-base';
+import { Flex, Image, Text, Column, Row } from 'native-base';
 import _ from 'lodash'
 import { AllergenList, RestrictedDietList } from './MenuBadges'
 
@@ -15,39 +15,18 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
   },
   sectionHeaderText: {
-    color: '#3e3e3e',
     fontSize: 15,
     textAlign: 'center',
   },
   itemContainer: {
     paddingVertical: 15,
   },
-  item: {
-    paddingRight: 10,
-    paddingLeft: 25,
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
   disabledText: {
     color: '#a7a7a7',
   },
-  itemPrice: {
-    fontSize: 18,
-    marginRight: 10,
-  },
-  leftCol: {
-    width: '75%',
-  },
-  rightCol: {
-    width: '25%',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-  },
-  rightIcon: {
-    color: '#747474',
-    fontSize: 22,
+  descriptionText: {
+    fontSize: 14,
+    color: '#777777',
   },
 });
 
@@ -56,7 +35,7 @@ class Menu extends Component {
   renderSectionHeader(section) {
     return (
       <View style={ styles.sectionHeader }>
-        <Text style={ styles.sectionHeaderText }>{ section.title }</Text>
+        <Text _dark={{color: 'white'}} _light={{color: '#3e3e3e'}} bold style={ styles.sectionHeaderText }>{ section.title }</Text>
       </View>
     )
   }
@@ -68,7 +47,8 @@ class Menu extends Component {
 
     let itemProps = {}
     let itemNameStyle = []
-    let itemPriceStyle = [ styles.itemPrice ]
+    let itemDescriptionStyle = [ styles.descriptionText ]
+    let itemPriceStyle = []
 
     if (enabled) {
       itemProps = {
@@ -77,31 +57,40 @@ class Menu extends Component {
     } else {
       itemNameStyle.push(styles.disabledText)
       itemPriceStyle.push(styles.disabledText)
+      itemDescriptionStyle.push(styles.disabledText)
     }
 
     const isLoading = this.props.isItemLoading(item)
     const hasBadges = !!item.suitableForDiet || !!item.allergens
 
+    const image1x1 = item.images && Array.isArray(item.images)
+      && _.find(item.images, image => image.ratio === '1:1')
+
     return (
       <TouchableOpacity style={ styles.itemContainer } { ...itemProps } testID={ `menuItem:${section.index}:${index}` }>
-        <View style={ styles.item }>
-          <View style={ styles.leftCol }>
+        <Flex mx="2" direction="row" justifyContent="space-between">
+          <Column flexShrink="1">
             <Text style={ itemNameStyle }>{ item.name }</Text>
-            { (item.description && item.description.length > 0) ? (
-              <Text note numberOfLines={ 4 } ellipsizeMode="tail">{ item.description }</Text>
-            ) : null }
-          </View>
-          <View style={ styles.rightCol }>
-            <Text style={ itemPriceStyle }>{ `${formatPrice(item.offers.price)}` }</Text>
-            { isLoading && <ActivityIndicator size="small" style={{ position: 'absolute', right: 0 }} /> }
-          </View>
-        </View>
-        { hasBadges && (
-          <View style={{ paddingHorizontal: 25, marginVertical: 5 }}>
-            { item.suitableForDiet && (<RestrictedDietList items={ item.suitableForDiet } />) }
-            { item.allergens && (<AllergenList items={ item.allergens } />) }
-          </View>
-        ) }
+            { item.description && item.description.length > 0 &&
+              <Text style={ itemDescriptionStyle } note numberOfLines={ 2 } ellipsizeMode="tail">{ item.description }</Text>
+            }
+            { hasBadges &&
+              <Row my="1">
+                { item.suitableForDiet && (<RestrictedDietList items={ item.suitableForDiet } />) }
+                { item.allergens && (<AllergenList items={ item.allergens } />) }
+              </Row>
+            }
+            <Row>
+              <Text pr="2" fontSize="lg" style={ itemPriceStyle }>{ `${formatPrice(item.offers.price)}` }</Text>
+              { isLoading && <ActivityIndicator color="#c7c7c7" size="small" style={ styles.loadingIndicator } /> }
+            </Row>
+          </Column>
+            <Column>
+            { image1x1 &&
+              <Image size="md" resizeMode="cover" borderRadius={5} source={{ uri: image1x1.url }} alt="Product" />
+            }
+          </Column>
+        </Flex>
       </TouchableOpacity>
     )
   }
