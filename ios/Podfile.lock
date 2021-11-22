@@ -7,6 +7,11 @@ PODS:
     - PureLayout (= 3.1.2)
   - AndesUI/LocalIcons (3.46.0):
     - PureLayout (= 3.1.2)
+  - AppAuth (1.4.0):
+    - AppAuth/Core (= 1.4.0)
+    - AppAuth/ExternalUserAgent (= 1.4.0)
+  - AppAuth/Core (1.4.0)
+  - AppAuth/ExternalUserAgent (1.4.0)
   - blackbox-vision-react-native-mercadopago-px (0.7.2):
     - MercadoPagoSDK (= 4.32.4)
     - React
@@ -138,6 +143,10 @@ PODS:
     - GoogleUtilities/Environment (~> 7.2)
     - nanopb (~> 2.30908.0)
     - PromisesObjC (< 3.0, >= 1.2)
+  - GoogleSignIn (6.0.2):
+    - AppAuth (~> 1.4)
+    - GTMAppAuth (~> 1.0)
+    - GTMSessionFetcher/Core (~> 1.1)
   - GoogleUtilities/AppDelegateSwizzler (7.5.2):
     - GoogleUtilities/Environment
     - GoogleUtilities/Logger
@@ -157,6 +166,10 @@ PODS:
     - GoogleUtilities/Logger
   - GoogleUtilities/UserDefaults (7.5.2):
     - GoogleUtilities/Logger
+  - GTMAppAuth (1.2.2):
+    - AppAuth/Core (~> 1.4)
+    - GTMSessionFetcher/Core (~> 1.5)
+  - GTMSessionFetcher/Core (1.7.0)
   - IQKeyboardManagerSwift (6.5.4)
   - JRSwizzle (1.0)
   - MercadoPagoSDK (4.32.4):
@@ -630,6 +643,9 @@ PODS:
     - RNFBApp
   - RNGestureHandler (1.10.3):
     - React-Core
+  - RNGoogleSignin (7.0.1):
+    - GoogleSignIn (~> 6.0.0)
+    - React-Core
   - RNLocalize (2.1.5):
     - React-Core
   - RNReanimated (1.13.3):
@@ -737,6 +753,7 @@ DEPENDENCIES:
   - "RNFBApp (from `../node_modules/@react-native-firebase/app`)"
   - "RNFBCrashlytics (from `../node_modules/@react-native-firebase/crashlytics`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
+  - "RNGoogleSignin (from `../node_modules/@react-native-google-signin/google-signin`)"
   - RNLocalize (from `../node_modules/react-native-localize`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
@@ -755,6 +772,7 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - AndesUI
+    - AppAuth
     - boost-for-react-native
     - CocoaLumberjack
     - FBSDKCoreKit
@@ -769,7 +787,10 @@ SPEC REPOS:
     - FXBlurView
     - GoogleAppMeasurement
     - GoogleDataTransport
+    - GoogleSignIn
     - GoogleUtilities
+    - GTMAppAuth
+    - GTMSessionFetcher
     - IQKeyboardManagerSwift
     - JRSwizzle
     - MercadoPagoSDK
@@ -905,6 +926,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-firebase/crashlytics"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
+  RNGoogleSignin:
+    :path: "../node_modules/@react-native-google-signin/google-signin"
   RNLocalize:
     :path: "../node_modules/react-native-localize"
   RNReanimated:
@@ -936,6 +959,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   AndesUI: 391de76bf833821c71abefdfe5deb75221144000
+  AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
   blackbox-vision-react-native-mercadopago-px: 504d6e9018e19a6e3c818f4a7ae25403db96011c
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   CocoaLumberjack: bd155f2dd06c0e0b03f876f7a3ee55693122ec94
@@ -964,7 +988,10 @@ SPEC CHECKSUMS:
   glog: 73c2498ac6884b13ede40eda8228cb1eee9d9d62
   GoogleAppMeasurement: 2be61ce546ad074dbe4dd545f222ac6033bb1d9e
   GoogleDataTransport: 85fd18ff3019bb85d3f2c551d04c481dedf71fc9
+  GoogleSignIn: fd381840dbe7c1137aa6dc30849a5c3e070c034a
   GoogleUtilities: 8de2a97a17e15b6b98e38e8770e2d129a57c0040
+  GTMAppAuth: ad5c2b70b9a8689e1a04033c9369c4915bfcbe89
+  GTMSessionFetcher: 43748f93435c2aa068b1cbe39655aaf600652e91
   IQKeyboardManagerSwift: 2dde0fc70110e8eac7ccce2a46fdbec6a850b414
   JRSwizzle: dd5ead5d913a0f29e7f558200165849f006bb1e3
   MercadoPagoSDK: 634fc8a9fe7f99f4d73506659c68cdbb885407fc
@@ -1021,6 +1048,7 @@ SPEC CHECKSUMS:
   RNFBApp: b97d6654509a5852d49f0abf93be76b300fd2e2c
   RNFBCrashlytics: ec6152821499cc74aa5fba9f5016591a817c8451
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
+  RNGoogleSignin: a51c9c7419262c75748ddcee3f735bb42da5def1
   RNLocalize: 74b82db20cc3895ccc25af992c644879bcec2815
   RNReanimated: 514a11da3a2bcc6c3dfd9de32b38e2b9bf101926
   RNScreens: 4d79118be80f79fa1f4aa131909a1d6e86280af3

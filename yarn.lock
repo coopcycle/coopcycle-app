@@ -4132,6 +4132,11 @@
   resolved "https://registry.yarnpkg.com/@react-native-firebase/messaging/-/messaging-12.8.0.tgz#f601541be15e67678d6e44ff0a4f3fd9183142bb"
   integrity sha512-Lc6qxhSP7w7XHSPy9CKbIuRVqCk//G3dbMFr9Jq5jmRgbT4pr6tlsZVjMVU1Yx5OBJm8beB3RPWKjZhAsRxy7Q==
 
+"@react-native-google-signin/google-signin@^7.0.1":
+  version "7.0.1"
+  resolved "https://registry.yarnpkg.com/@react-native-google-signin/google-signin/-/google-signin-7.0.1.tgz#a03f1a3e43ddb1bb092679bfdd6e38ff6ed819a1"
+  integrity sha512-iG1OkFx1ohSupofWnlbV+Re74L2HF823SOL1KNl1gGDiVxzNKJTZm/wuaPuujzci4kr8GuwR9PRgxLShiAZwlg==
+
 "@react-native-picker/picker@^2.1.0":
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/@react-native-picker/picker/-/picker-2.1.0.tgz#1ef22d4e9b2e555d44b43453f51a46d8631f3182"

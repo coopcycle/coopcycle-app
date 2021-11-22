@@ -425,6 +425,15 @@ Client.prototype.signInWithApple = function(identityToken) {
     })
 }
 
+Client.prototype.googleSignIn = function(idToken) {
+  return googleSignIn(this.httpBaseURL, idToken)
+    .then(credentialsToUser)
+    .then(user => {
+      this.onCredentialsUpdated(user)
+      return user
+    })
+}
+
 function credentialsToUser(credentials) {
 
   const enabled = credentials.hasOwnProperty('enabled') ? credentials.enabled : true
@@ -545,6 +554,30 @@ var signInWithApple = function(baseURL, identityToken) {
     url: `${baseURL}/api/sign_in_with_apple/login`,
     data: {
       identityToken,
+    },
+  }
+
+  return new Promise((resolve, reject) => {
+    axios(req)
+      .then(response => {
+        resolve(response.data)
+      })
+      .catch(error => {
+        if (error.response) {
+          reject(error.response.data)
+        } else {
+          reject({ message: 'An error has occured' })
+        }
+      })
+  })
+}
+
+var googleSignIn = function(baseURL, idToken) {
+  const req = {
+    method: 'POST',
+    url: `${baseURL}/api/google_sign_in/login`,
+    data: {
+      idToken,
     },
   }
 
