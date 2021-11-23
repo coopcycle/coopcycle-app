@@ -13,6 +13,8 @@ target 'CoopCycle' do
 
   pod 'MercadoPagoSDK', :build_type => :dynamic_framework, :modular_headers => true
 
+  pod 'GoogleSignIn', '~> 6.0.2'
+
   use_react_native!(
     :path => config[:reactNativePath],
     # to enable hermes on iOS, change `false` to `true` and then install pods
