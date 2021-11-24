@@ -374,6 +374,15 @@
             "message": "Aby mohli dispečeři přesně přidělovat úlohy, umožněte aplikaci CoopCycle přístup k poloze tohoto zařízení, i když je aplikace zavřená nebo se nepoužívá.\n\nTato data budou nahrána do instance CoopCycle, ke které jste připojeni.",
             "title": "Použijte svou polohu"
         },
-        "NOT_AVAILABLE_ATM": "Momentálně není k dispozici"
+        "NOT_AVAILABLE_ATM": "Momentálně není k dispozici",
+        "CONNECT_WITH_FACEBOOK": "Přihlášení přes Facebook",
+        "FILTER_BY_TAGS": "Filtrovat podle značek",
+        "STORES": "Obchody",
+        "CASH_ON_DELIVERY_DISCLAIMER": "Budete platit na dobírku. Připravte si prosím přesnou částku a ujistěte se, že jste dosažitelní.",
+        "PAYMENT_METHOD": {
+            "cash_on_delivery": "V hotovosti při dodání",
+            "card": "Kreditní karta"
+        },
+        "SELECT_PAYMENT_METHOD": "Vybrat platební metodu"
     }
 }
