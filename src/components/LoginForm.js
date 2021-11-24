@@ -171,6 +171,7 @@ class LoginForm extends Component {
               )}
             </Box>
           ) : null }
+          { this.props.withGoogle ? (
           <GoogleSigninButton
             style={{
               width: '100%',
@@ -190,6 +191,7 @@ class LoginForm extends Component {
                 .catch(e => console.log(e))
             }}
             disabled={ false } />
+          ) : null }
         </Stack>
         )}
       </Formik>
