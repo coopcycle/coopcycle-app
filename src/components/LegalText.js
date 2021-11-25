@@ -21,11 +21,21 @@ class LegalText extends Component {
 
   componentDidMount() {
     axios
-      .get(`http://coopcycle.org/${this.props.type}/en.md`)
+      .get(`http://coopcycle.org/${this.props.type}/${this.props.language}.md`)
       .then((response) => {
         this.setState({ text: response.data })
       })
-      .catch(e => console.log(e))
+      .catch(e => {
+        if (error.response) {
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          axios
+            .get(`http://coopcycle.org/${this.props.type}/en.md`)
+            .then((response) => {
+              this.setState({ text: response.data })
+            })
+        }
+      })
   }
 
   render() {
