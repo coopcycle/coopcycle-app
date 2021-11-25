@@ -80,6 +80,7 @@
     "react-native-map-link": "^2.8.1",
     "react-native-maps": "^0.27.1",
     "react-native-maps-super-cluster": "^1.6.0",
+    "react-native-markdown-display": "^7.0.0-alpha.2",
     "react-native-modal": "^12.1.0",
     "react-native-modal-datetime-picker": "^12.0.0",
     "react-native-modal-selector": "^2.1.0",

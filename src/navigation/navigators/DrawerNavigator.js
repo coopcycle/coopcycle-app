@@ -17,6 +17,8 @@ import DispatchNavigator from './DispatchNavigator'
 import RestaurantNavigator from './RestaurantNavigator'
 import StoreNavigator from './StoreNavigator'
 import About from '../home/About'
+import Terms from '../home/Terms'
+import Privacy from '../home/Privacy'
 import AccountRegisterConfirm from '../account/RegisterConfirm'
 import AccountResetPasswordNewPassword from '../account/ResetPasswordNewPassword'
 
@@ -70,6 +72,38 @@ const AboutNavigator = () => (
   </AboutStack.Navigator>
 )
 
+const TermsStack = createStackNavigator()
+
+const TermsNavigator = () => (
+  <TermsStack.Navigator
+    screenOptions={ stackNavigatorScreenOptions }>
+    <TermsStack.Screen
+      name="TermsHome"
+      component={ Terms }
+      options={({ navigation }) => ({
+        title: i18n.t('TERMS_OF_SERVICE'),
+        headerLeft: headerLeft(navigation),
+      })}
+    />
+  </TermsStack.Navigator>
+)
+
+const PrivacyStack = createStackNavigator()
+
+const PrivacyNavigator = () => (
+  <PrivacyStack.Navigator
+    screenOptions={ stackNavigatorScreenOptions }>
+    <PrivacyStack.Screen
+      name="PrivacyHome"
+      component={ Privacy }
+      options={({ navigation }) => ({
+        title: i18n.t('PRIVACY'),
+        headerLeft: headerLeft(navigation),
+      })}
+    />
+  </PrivacyStack.Navigator>
+)
+
 function mapStateToProps(state) {
 
   const user = state.app.user
@@ -100,6 +134,12 @@ const DrawerNav = ({ initialRouteName, user, isAuthenticated, showRestaurantsDra
       <Drawer.Screen
         name="AboutNav"
         component={ AboutNavigator } />
+      <Drawer.Screen
+        name="TermsNav"
+        component={ TermsNavigator } />
+      <Drawer.Screen
+        name="PrivacyNav"
+        component={ PrivacyNavigator } />
       <Drawer.Screen
         name="RegisterConfirmNav"
         component={ RegisterConfirmNavigator } />

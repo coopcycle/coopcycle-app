@@ -4,7 +4,7 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native'
-import { Text, Icon } from 'native-base'
+import { Text, Icon, HStack, Pressable } from 'native-base'
 import _ from 'lodash'
 import { connect } from 'react-redux'
 import { withTranslation, useTranslation } from 'react-i18next'
@@ -85,6 +85,12 @@ class DrawerContent extends Component {
     const navigateToAbout = () =>
       this.props.navigation.navigate('AboutNav')
 
+    const navigateToTerms = () =>
+      this.props.navigation.navigate('TermsNav')
+
+    const navigateToPricacy = () =>
+      this.props.navigation.navigate('PrivacyNav')
+
     let phoneNumberText = this.props.phoneNumber
     if (this.props.phoneNumber) {
       try {
@@ -149,6 +155,16 @@ class DrawerContent extends Component {
             <View style={ styles.footerItem }>
               <Text note>{ VersionNumber.appVersion }</Text>
             </View>
+            <HStack w="100%" my="2" alignItems="center" justifyContent="space-between">
+              <Pressable w="50%"
+                onPress={ navigateToTerms }>
+                <Text p="2" textAlign="center" fontSize="sm">{ this.props.t('TERMS_OF_SERVICE') }</Text>
+              </Pressable>
+              <Pressable w="50%"
+                onPress={ navigateToPricacy }>
+                <Text p="2" textAlign="center" fontSize="sm">{ this.props.t('PRIVACY') }</Text>
+              </Pressable>
+            </HStack>
           </View>
         </View>
       </SafeAreaView>
