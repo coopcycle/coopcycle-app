@@ -19,15 +19,15 @@ PODS:
   - CocoaLumberjack (3.6.2):
     - CocoaLumberjack/Core (= 3.6.2)
   - CocoaLumberjack/Core (3.6.2)
-  - CountlyReactNative (20.11.7):
-    - CountlyReactNative/NotificationService (= 20.11.7)
+  - CountlyReactNative (20.11.10):
+    - CountlyReactNative/NotificationService (= 20.11.10)
     - React
-  - CountlyReactNative/NotificationService (20.11.7):
+  - CountlyReactNative/NotificationService (20.11.10):
     - React
   - DoubleConversion (1.1.6)
   - EXApplication (3.2.0):
     - UMCore
-  - EXConstants (11.0.1):
+  - EXConstants (11.0.2):
     - ExpoModulesCore
     - UMCore
   - EXErrorRecovery (2.2.0):
@@ -75,18 +75,18 @@ PODS:
     - FBSDKShareKit/Share (= 9.3.0)
   - FBSDKShareKit/Share (9.3.0):
     - FBSDKCoreKit (~> 9.3.0)
-  - Firebase/Analytics (8.7.0):
+  - Firebase/Analytics (8.8.0):
     - Firebase/Core
-  - Firebase/Core (8.7.0):
+  - Firebase/Core (8.8.0):
     - Firebase/CoreOnly
-    - FirebaseAnalytics (~> 8.7.0)
-  - Firebase/CoreOnly (8.7.0):
-    - FirebaseCore (= 8.7.0)
-  - Firebase/Crashlytics (8.7.0):
+    - FirebaseAnalytics (~> 8.8.0)
+  - Firebase/CoreOnly (8.8.0):
+    - FirebaseCore (= 8.8.0)
+  - Firebase/Crashlytics (8.8.0):
     - Firebase/CoreOnly
-    - FirebaseCrashlytics (~> 8.7.0)
-  - FirebaseAnalytics (8.7.0):
-    - FirebaseAnalytics/AdIdSupport (= 8.7.0)
+    - FirebaseCrashlytics (~> 8.8.0)
+  - FirebaseAnalytics (8.8.0):
+    - FirebaseAnalytics/AdIdSupport (= 8.8.0)
     - FirebaseCore (~> 8.0)
     - FirebaseInstallations (~> 8.0)
     - GoogleUtilities/AppDelegateSwizzler (~> 7.4)
@@ -94,16 +94,16 @@ PODS:
     - GoogleUtilities/Network (~> 7.4)
     - "GoogleUtilities/NSData+zlib (~> 7.4)"
     - nanopb (~> 2.30908.0)
-  - FirebaseAnalytics/AdIdSupport (8.7.0):
+  - FirebaseAnalytics/AdIdSupport (8.8.0):
     - FirebaseCore (~> 8.0)
     - FirebaseInstallations (~> 8.0)
-    - GoogleAppMeasurement (= 8.7.0)
+    - GoogleAppMeasurement (= 8.8.0)
     - GoogleUtilities/AppDelegateSwizzler (~> 7.4)
     - GoogleUtilities/MethodSwizzler (~> 7.4)
     - GoogleUtilities/Network (~> 7.4)
     - "GoogleUtilities/NSData+zlib (~> 7.4)"
     - nanopb (~> 2.30908.0)
-  - FirebaseCore (8.7.0):
+  - FirebaseCore (8.8.0):
     - FirebaseCoreDiagnostics (~> 8.0)
     - GoogleUtilities/Environment (~> 7.4)
     - GoogleUtilities/Logger (~> 7.4)
@@ -112,7 +112,7 @@ PODS:
     - GoogleUtilities/Environment (~> 7.6)
     - GoogleUtilities/Logger (~> 7.6)
     - nanopb (~> 2.30908.0)
-  - FirebaseCrashlytics (8.7.0):
+  - FirebaseCrashlytics (8.8.0):
     - FirebaseCore (~> 8.0)
     - FirebaseInstallations (~> 8.0)
     - GoogleDataTransport (~> 9.0)
@@ -127,14 +127,21 @@ PODS:
   - fmt (6.2.1)
   - FXBlurView (1.6.4)
   - glog (0.3.5)
-  - GoogleAppMeasurement (8.7.0):
-    - GoogleAppMeasurement/AdIdSupport (= 8.7.0)
+  - GoogleAppMeasurement (8.8.0):
+    - GoogleAppMeasurement/AdIdSupport (= 8.8.0)
     - GoogleUtilities/AppDelegateSwizzler (~> 7.4)
     - GoogleUtilities/MethodSwizzler (~> 7.4)
     - GoogleUtilities/Network (~> 7.4)
     - "GoogleUtilities/NSData+zlib (~> 7.4)"
     - nanopb (~> 2.30908.0)
-  - GoogleAppMeasurement/AdIdSupport (8.7.0):
+  - GoogleAppMeasurement/AdIdSupport (8.8.0):
+    - GoogleAppMeasurement/WithoutAdIdSupport (= 8.8.0)
+    - GoogleUtilities/AppDelegateSwizzler (~> 7.4)
+    - GoogleUtilities/MethodSwizzler (~> 7.4)
+    - GoogleUtilities/Network (~> 7.4)
+    - "GoogleUtilities/NSData+zlib (~> 7.4)"
+    - nanopb (~> 2.30908.0)
+  - GoogleAppMeasurement/WithoutAdIdSupport (8.8.0):
     - GoogleUtilities/AppDelegateSwizzler (~> 7.4)
     - GoogleUtilities/MethodSwizzler (~> 7.4)
     - GoogleUtilities/Network (~> 7.4)
@@ -536,11 +543,11 @@ PODS:
   - react-native-fbsdk-next/Share (4.6.0):
     - FBSDKShareKit (~> 9.3)
     - React-Core
-  - react-native-get-random-values (1.7.0):
+  - react-native-get-random-values (1.7.1):
     - React-Core
   - react-native-maps (0.27.1):
     - React
-  - react-native-netinfo (6.0.4):
+  - react-native-netinfo (6.2.1):
     - React-Core
   - react-native-safe-area-context (3.3.2):
     - React-Core
@@ -627,21 +634,21 @@ PODS:
     - React-Core
   - RNCMaskedView (0.1.11):
     - React
-  - RNCPicker (2.1.0):
+  - RNCPicker (2.2.1):
     - React-Core
   - RNCPushNotificationIOS (1.10.1):
     - React-Core
   - RNDateTimePicker (3.5.2):
     - React-Core
-  - RNFBAnalytics (12.8.0):
-    - Firebase/Analytics (= 8.7.0)
+  - RNFBAnalytics (12.9.3):
+    - Firebase/Analytics (= 8.8.0)
     - React-Core
     - RNFBApp
-  - RNFBApp (12.8.0):
-    - Firebase/CoreOnly (= 8.7.0)
+  - RNFBApp (12.9.3):
+    - Firebase/CoreOnly (= 8.8.0)
     - React-Core
-  - RNFBCrashlytics (12.8.0):
-    - Firebase/Crashlytics (= 8.7.0)
+  - RNFBCrashlytics (12.9.3):
+    - Firebase/Crashlytics (= 8.8.0)
     - React-Core
     - RNFBApp
   - RNGestureHandler (1.10.3):
@@ -656,9 +663,9 @@ PODS:
   - RNScreens (3.9.0):
     - React-Core
     - React-RCTImage
-  - RNSentry (2.6.0):
+  - RNSentry (2.6.2):
     - React-Core
-    - Sentry (= 7.0.0)
+    - Sentry (= 7.1.4)
   - RNSketchCanvas (0.8.0):
     - React
   - RNSound (0.11.1):
@@ -670,9 +677,9 @@ PODS:
     - React
   - RNVectorIcons (8.1.0):
     - React-Core
-  - Sentry (7.0.0):
-    - Sentry/Core (= 7.0.0)
-  - Sentry/Core (7.0.0)
+  - Sentry (7.1.4):
+    - Sentry/Core (= 7.1.4)
+  - Sentry/Core (7.1.4)
   - Stripe (21.9.0):
     - Stripe/Stripe3DS2 (= 21.9.0)
     - StripeCore (= 21.9.0)
@@ -687,8 +694,8 @@ PODS:
     - React
     - Stripe (>= 21.3.1)
   - UMAppLoader (2.2.0)
-  - UMCore (7.1.1)
-  - UMReactNativeAdapter (6.3.5):
+  - UMCore (7.1.2)
+  - UMReactNativeAdapter (6.3.9):
     - ExpoModulesCore
     - React-Core
     - UMCore
@@ -973,10 +980,10 @@ SPEC CHECKSUMS:
   blackbox-vision-react-native-mercadopago-px: 504d6e9018e19a6e3c818f4a7ae25403db96011c
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   CocoaLumberjack: bd155f2dd06c0e0b03f876f7a3ee55693122ec94
-  CountlyReactNative: 251d0aaca20510398d643fa354cf424c5e3709ba
+  CountlyReactNative: bcf583ee6e66d13088e3d402aea73728074e2dc6
   DoubleConversion: 831926d9b8bf8166fd87886c4abab286c2422662
   EXApplication: 9ff2a206009d6e55bca6c20b3f33d07986b51ef3
-  EXConstants: 3babb61f8f4bb7dffe85b8b7d6eaa31d903e4d7e
+  EXConstants: 4cb52b6d8f636c767104a44bf7db3873e9c01a6f
   EXErrorRecovery: 404d827bc7d42f306c062d58a60b06afc4d082b3
   EXFileSystem: 0a04aba8da751b9ac954065911bcf166503f8267
   EXFont: 9846ba1bb6f5f5aed44e20eea3ac70693323832d
@@ -988,16 +995,16 @@ SPEC CHECKSUMS:
   FBSDKCoreKit: 0d1ae58388a458b8222f72025804cdc84eb5d0c3
   FBSDKLoginKit: aea68df6121c5e165ccae2fabfdc83c4644ee40f
   FBSDKShareKit: 70889c97c62f0c6b3ccb8b999e73a85f19024001
-  Firebase: bc9325d5ee2041524bac78a5213d0e530c651309
-  FirebaseAnalytics: 52768800c2add1d84b751420cb4caaf8195f2c41
-  FirebaseCore: f4804c1d3f4bbbefc88904d15653038f2c99ddf7
+  Firebase: 629510f1a9ddb235f3a7c5c8ceb23ba887f0f814
+  FirebaseAnalytics: 5506ea8b867d8423485a84b4cd612d279f7b0b8a
+  FirebaseCore: 98b29e3828f0a53651c363937a7f7d92a19f1ba2
   FirebaseCoreDiagnostics: 5daa63f1c1409d981a2d5007daa100b36eac6a34
-  FirebaseCrashlytics: 6fac03d1eef054833b71c929c93ab95c12989728
+  FirebaseCrashlytics: 3660c045c8e45cc4276110562a0ef44cf43c8157
   FirebaseInstallations: caa7c8e0d3e2345b8829d2fa9ca1b4dfbf2fcc85
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
   FXBlurView: db786c2561cb49a09ae98407f52460096ab8a44f
   glog: 5337263514dd6f09803962437687240c5dc39aa4
-  GoogleAppMeasurement: 2be61ce546ad074dbe4dd545f222ac6033bb1d9e
+  GoogleAppMeasurement: 5ba1164e3c844ba84272555e916d0a6d3d977e91
   GoogleDataTransport: 629c20a4d363167143f30ea78320d5a7eb8bd940
   GoogleSignIn: fd381840dbe7c1137aa6dc30849a5c3e070c034a
   GoogleUtilities: 684ee790a24f73ebb2d1d966e9711c203f2a4237
@@ -1028,9 +1035,9 @@ SPEC CHECKSUMS:
   react-native-camera: b8cc03e2feec0c04403d0998e37cf519d8fd4c6f
   react-native-config: 6502b1879f97ed5ac570a029961fc35ea606cd14
   react-native-fbsdk-next: a0dd8905af573ec4d21b7bc398423ccaa2ce2b07
-  react-native-get-random-values: 237bffb1c7e05fb142092681531810a29ba53015
+  react-native-get-random-values: 2c4ff6b44cb71291dabe9a8ae87d3877dcf387da
   react-native-maps: f4b89da81626ad7f151a8bfcb79733295d31ce5c
-  react-native-netinfo: 1c7676413ab265759c7b3da205efab163f5366ef
+  react-native-netinfo: 3d3769f0d65de15c83a9bf1346f8be71de5a24bf
   react-native-safe-area-context: 584dc04881deb49474363f3be89e4ca0e854c057
   react-native-version-number: b415bbec6a13f2df62bf978e85bc0d699462f37f
   React-perflogger: 939564c838f8b6ec099b4f858559f0f406c99745
@@ -1052,33 +1059,33 @@ SPEC CHECKSUMS:
   RNBackgroundGeolocation: 1184aff02a730e243785482561d0b8d9649548a3
   RNCAsyncStorage: b03032fdbdb725bea0bd9e5ec5a7272865ae7398
   RNCMaskedView: 0e1bc4bfa8365eba5fbbb71e07fbdc0555249489
-  RNCPicker: f7a40b21b915b7a187624d52f52b7bc2f73ea413
+  RNCPicker: cb57c823d5ce8d2d0b5dfb45ad97b737260dc59e
   RNCPushNotificationIOS: 87b8d16d3ede4532745e05b03c42cff33a36cc45
   RNDateTimePicker: 7658208086d86d09e1627b5c34ba0cf237c60140
-  RNFBAnalytics: 3e6402bfe53d5c41abc7f36b1aa50ec71c6e1c89
-  RNFBApp: b97d6654509a5852d49f0abf93be76b300fd2e2c
-  RNFBCrashlytics: ec6152821499cc74aa5fba9f5016591a817c8451
+  RNFBAnalytics: f76bfa164ac235b00505deb9fc1776634056898c
+  RNFBApp: 729c0666395b1953198dc4a1ec6deb8fbe1c302e
+  RNFBCrashlytics: 2061ca863e8e2fa1aae9b12477d7dfa8e88ca0f9
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
   RNGoogleSignin: a51c9c7419262c75748ddcee3f735bb42da5def1
   RNLocalize: 74b82db20cc3895ccc25af992c644879bcec2815
   RNReanimated: 514a11da3a2bcc6c3dfd9de32b38e2b9bf101926
   RNScreens: 4d79118be80f79fa1f4aa131909a1d6e86280af3
-  RNSentry: a2b02b326ae4fce91ce7c57d3f7dcf8df4f72269
+  RNSentry: 68644ef607b780551cc555f084869764f2566652
   RNSketchCanvas: 9c28adb5381543ed55cc98ce6de46479cb3cb12c
   RNSound: 27e8268bdb0a1f191f219a33267f7e0445e8d62f
   RNSVG: 551acb6562324b1d52a4e0758f7ca0ec234e278f
   RNVectorIcons: 31cebfcf94e8cf8686eb5303ae0357da64d7a5a4
-  Sentry: 89d26e036063b9cb9caa59b6951dd2f8277aa13b
+  Sentry: 1d3eb1a25f8c5333c88dd5603904a6d461cd9fcf
   Stripe: 41c3d261501e1dc84755b1bdabdaae50ebf92b53
   StripeCore: 2ea9531e863ef20f191a0d61f00dedb7f061baef
   StripeUICore: a0f9e40520823d34c63baec0782fc4a0c7fb7484
   tipsi-stripe: 99e56364635799f223e017b5faa5b9d0d84601e0
   UMAppLoader: 21af63390e55c82e037fb9752d93114a80ecf16e
-  UMCore: 2f671796d7439604a1cf8ac7bbe5809cd5c50437
-  UMReactNativeAdapter: f808906d586a16cebdc3844d86e1bdb8f114a873
+  UMCore: ce3a4faa010239063b8343895b29a6d97b01069d
+  UMReactNativeAdapter: d03cefd0e4e4179ab8c490408589f1c8a6c8b785
   UMTaskManagerInterface: 2be431101b73604e64fbfffcf759336f9d8fccbb
   Yoga: e6db7a0be0e80eeb70c04663605e4f6a050ab013
 
 PODFILE CHECKSUM: b04fdffb56154391200e79cb5c56f06155dbe555
 
-COCOAPODS: 1.10.1
+COCOAPODS: 1.11.2
