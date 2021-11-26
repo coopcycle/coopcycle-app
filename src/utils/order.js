@@ -95,6 +95,12 @@ export function encodeForPrinter(order) {
       })
     }
 
+    if (item.adjustments.hasOwnProperty('reusable_packaging')) {
+      item.adjustments.reusable_packaging.forEach((adjustment) => {
+        encoder.line(`- ${adjustment.label}`)
+      })
+    }
+
     encoder.newline()
 
   })
