@@ -52,19 +52,29 @@ export function encodeForPrinter(order) {
     // @see https://github.com/NielsLeenheer/EscPosEncoder/pull/21
     .raw([ 0x1b, 0x21, 16 ])
     .line(hr)
-    .line(i18n.t('RECEIPT_HEADING_ORDER_NUMBER', { number: order.number, id: order.id }))
+    // Double width/height + emphasize
+    .raw([ 0x1b, 0x21, (16 + 32 + 8) ])
+    .line(`#${order.number}`)
+    .newline()
+    .raw([ 0x1b, 0x21, 16 ])
     .line(i18n.t('RECEIPT_CUSTOMER_NAME', {customer: order.customer.email}))
     .line(hr)
 
-    encoder
-      .align('center')
-      .line(pickupLineDate)
+  encoder
+    .align('center')
+    .line(pickupLineDate)
 
-    encoder
-      .align('center')
-      .line(pickupLineTime)
-      .line(hr)
-      .newline()
+  encoder.raw([ 0x1b, 0x21, (16 + 32 + 8) ])
+
+  encoder
+    .align('center')
+    .line(pickupLineTime)
+
+  encoder.raw([ 0x1b, 0x21, 16 ])
+
+  encoder
+    .line(hr)
+    .newline()
 
   order.items.forEach((item) => {
 
