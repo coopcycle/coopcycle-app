@@ -384,6 +384,8 @@
         "CASH_ON_DELIVERY_DISCLAIMER": "El pago se realizará contra reembolso. Por favor, prepare la cantidad exacta y asegúrese de estar al alcance.",
         "STORES": "Tiendas",
         "CONNECT_WITH_FACEBOOK": "Conéctate con Facebook",
-        "FILTER_BY_TAGS": "Filtrar por etiquetas"
+        "FILTER_BY_TAGS": "Filtrar por etiquetas",
+        "TERMS_OF_SERVICE": "Términos de Servicio",
+        "PRIVACY": "Privacidad"
     }
 }
