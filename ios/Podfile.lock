@@ -515,7 +515,7 @@ PODS:
     - React-jsi (= 0.65.2)
     - React-perflogger (= 0.65.2)
   - React-jsinspector (0.65.2)
-  - react-native-ble-manager (7.6.3):
+  - react-native-ble-manager (8.0.0):
     - React-Core
   - react-native-camera (3.44.3):
     - React-Core
@@ -1031,7 +1031,7 @@ SPEC CHECKSUMS:
   React-jsi: 29873f0fc48b330fbdd159f09df6d88e69c0f7dd
   React-jsiexecutor: 0fe3300621eb92ce5ae573560a88d24eb8818392
   React-jsinspector: d6addf5799e8dbf9d27b3191810225f0276dfb2d
-  react-native-ble-manager: 0a801bf5a08ed405da046aa155243a987d779c59
+  react-native-ble-manager: 5ec5228d922fdcee8300dc75034d19cbf4f43dfc
   react-native-camera: b8cc03e2feec0c04403d0998e37cf519d8fd4c6f
   react-native-config: 6502b1879f97ed5ac570a029961fc35ea606cd14
   react-native-fbsdk-next: a0dd8905af573ec4d21b7bc398423ccaa2ce2b07
