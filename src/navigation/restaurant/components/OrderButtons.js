@@ -24,9 +24,9 @@ const Comp = ({ order, isPrinterConnected, onPrinterClick, printOrder }) => {
     <View style={{ flexDirection: 'row', paddingHorizontal: 10 }}>
       <View style={{ width: '50%', paddingRight: 5 }}>
         { isPrinterConnected && (
-        <Button small iconRight onPress={ printOrder }>
-          <Text>{ t('RESTAURANT_ORDER_PRINT') }</Text>
-          <Icon as={FontAwesome} name="print" />
+        <Button endIcon={ <Icon as={FontAwesome} name="print" size="sm" /> }
+          onPress={ printOrder }>
+          { t('RESTAURANT_ORDER_PRINT') }
         </Button>
         )}
         { !isPrinterConnected && (
