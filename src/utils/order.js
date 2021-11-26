@@ -97,7 +97,9 @@ export function encodeForPrinter(order) {
 
     if (item.adjustments.hasOwnProperty('reusable_packaging')) {
       item.adjustments.reusable_packaging.forEach((adjustment) => {
-        encoder.line(`- ${adjustment.label}`)
+        // Hotfix x VS × encoding
+        const labelWithEncodingFix = adjustment.label.replace('×', 'x')
+        encoder.line(`- ${labelWithEncodingFix}`)
       })
     }
 
