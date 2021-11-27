@@ -120,13 +120,24 @@ export function encodeForPrinter(order) {
   encoder
     .line(hr)
 
-  let total = formatPriceWithCode(order.itemsTotal)
-  let totalLine = 'TOTAL '.padEnd((maxChars - total.length), ' ') + total
+  const total = formatPriceWithCode(order.itemsTotal)
+  const totalLine = i18n.t('TOTAL').padEnd((maxChars - total.length), ' ') + total
 
   encoder
     .align('left')
     .line(totalLine)
     .line(hr)
+
+  if (order.adjustments.hasOwnProperty('delivery') && Array.isArray(order.adjustments.delivery)) {
+    order.adjustments.delivery.forEach((adjustment) => {
+      const amount = formatPriceWithCode(adjustment.amount)
+      const line = i18n.t('TOTAL_DELIVERY').padEnd((maxChars - amount.length), ' ') + amount
+      encoder
+        .align('left')
+        .line(line)
+        .line(hr)
+    })
+  }
 
   if (order.notes) {
     let notes = diacritics.remove(order.notes)
