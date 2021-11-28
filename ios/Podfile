@@ -36,6 +36,7 @@ target 'CoopCycle' do
 
   post_install do |installer|
     react_native_post_install(installer)
+    __apply_Xcode_12_5_M1_post_install_workaround(installer)
     # Mixing Swift and Objective-C in a react-native project may be problematic.
     # Workaround:  https://github.com/facebookarchive/react-native-fbsdk/issues/755#issuecomment-787488994
     installer.aggregate_targets.first.user_project.native_targets.each do |target|
