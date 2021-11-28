@@ -178,3 +178,7 @@ export function isMultiVendor(order) {
 
   return _.size(itemsGroupedByVendor) > 1
 }
+
+export function isFree(order) {
+  return order.items.length > 0 && order.itemsTotal > 0 && order.total === 0
+}

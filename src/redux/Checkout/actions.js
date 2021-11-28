@@ -9,6 +9,7 @@ import i18n from '../../i18n'
 import { selectCartFulfillmentMethod } from './selectors'
 import { selectIsAuthenticated } from '../App/selectors'
 import { loadAddressesSuccess } from '../Account/actions'
+import { isFree } from '../../utils/order'
 
 /*
  * Action Types
@@ -652,11 +653,20 @@ export function checkout(number, expMonth, expYear, cvc, cardholderName) {
     const { httpClient, settings } = getState().app
     const { cart } = getState().checkout
 
+    dispatch(checkoutRequest())
+
+    if (isFree(cart)) {
+      httpClient
+        .put(cart['@id'] + '/pay', {})
+        .then(o => handleSuccessNav(dispatch, o))
+        .catch(e => dispatch(checkoutFailure(e)))
+
+      return
+    }
+
     Stripe.setOptions({
       publishableKey: settings.stripe_publishable_key,
     })
-
-    dispatch(checkoutRequest())
 
     httpClient
       .get(cart['@id'] + '/payment')
@@ -751,7 +761,7 @@ const doUpdateCart = (dispatch, httpClient, cart, payload, cb) => {
     .then(res => {
       dispatch(updateCartSuccess(res))
       dispatch(checkoutSuccess())
-      _.isFunction(cb) && cb()
+      _.isFunction(cb) && cb(res)
     })
     .catch(e => dispatch(checkoutFailure(e)))
 }

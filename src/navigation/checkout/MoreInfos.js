@@ -10,9 +10,10 @@ import {
   AsYouType,
 } from 'libphonenumber-js'
 
-import { assignCustomer, updateCart } from '../../redux/Checkout/actions'
+import { assignCustomer, updateCart, checkout } from '../../redux/Checkout/actions'
 import { selectCartFulfillmentMethod } from '../../redux/Checkout/selectors'
 import FooterButton from './components/FooterButton'
+import { isFree } from '../../utils/order'
 
 const hasPhoneNumberErrors = (errors, touched) => {
   return errors.telephone && touched.telephone
@@ -46,7 +47,13 @@ class MoreInfos extends Component {
       }
     }
 
-    this.props.updateCart(payload, () => this.props.navigation.navigate('CheckoutCreditCard'))
+    this.props.updateCart(payload, (order) => {
+      if (isFree(order)) {
+        this.props.checkout()
+      } else {
+        this.props.navigation.navigate('CheckoutCreditCard')
+      }
+    })
   }
 
   _validate(values) {
@@ -173,7 +180,7 @@ function mapStateToProps(state) {
     // FIXME
     // For click & collect, we need to retrieve the customer phone number
     // This needs a change server side
-    telephone: fulfillmentMethod === 'delivery' ? (state.checkout.cart.shippingAddress.telephone || '') : '',
+    telephone: fulfillmentMethod === 'delivery' ? (state.checkout.cart?.shippingAddress?.telephone || '') : '',
   }
 }
 
@@ -182,6 +189,7 @@ function mapDispatchToProps(dispatch) {
   return {
     updateCart: (cart, cb) => dispatch(updateCart(cart, cb)),
     assignCustomer: () => dispatch(assignCustomer()),
+    checkout: () => dispatch(checkout()),
   }
 }
 
