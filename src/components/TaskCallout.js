@@ -1,12 +1,13 @@
 import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
+import { Text } from 'native-base'
 
 import TaskTitle from './TaskTitle'
 
 const Recipient = ({ task }) => {
   if (task.address.contactName) {
     return (
-      <Text style={ styles.text }>{ task.address.contactName }</Text>
+      <Text color="black" style={ styles.text }>{ task.address.contactName }</Text>
     )
   }
 
@@ -22,7 +23,7 @@ const Address = ({ task }) => {
   }
 
   return (
-    <Text style={ styles.text } numberOfLines={ 3 }>
+    <Text color="black" style={ styles.text } numberOfLines={ 3 }>
       { parts.join(' - ') }
     </Text>
   )
@@ -36,7 +37,7 @@ export default ({ task }) => {
   return (
     <View>
       <View style={ styles.container }>
-        <Text><TaskTitle task={ task } /></Text>
+        <Text color="black"><TaskTitle task={ task } /></Text>
         <Recipient task={ task } />
         <Address task={ task } />
       </View>
