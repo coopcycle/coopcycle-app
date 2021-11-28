@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Box, Flex, Divider, Heading, Icon, Text, Pressable, VStack, Image } from 'native-base'
+import { Box, Flex, Divider, Heading, Icon, Text, Pressable, VStack, Image, ScrollView } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
@@ -83,15 +83,16 @@ class ProductDetails extends Component {
 
         return (
             <VStack flex={ 1 }>
+                <ScrollView>
                 { image16x9 &&
                 <Image size="md" style={{ width: '100%' }} resizeMode="cover" source={{ uri: image16x9.url }} alt="Product" />
                 }
                 <Box p="3">
-                    <Heading size="lg" >
+                    <Heading size="lg">
                         { product.name }
                     </Heading>
                     {product.description && product.description.length > 0 &&
-                    <Text mt="2" note>{ product.description }</Text>
+                    <Text mt="2">{ product.description }</Text>
                     }
                     { hasBadges && (
                     <Box mt="2">
@@ -118,6 +119,7 @@ class ProductDetails extends Component {
                 {this.state.shouldRenderOptions &&
                 <ProductOptions product={product} onChanges={(changes) => this.optionsHasChanged(changes)}/>
                 }
+                </ScrollView>
                 { this.renderFooter() }
             </VStack>
         )

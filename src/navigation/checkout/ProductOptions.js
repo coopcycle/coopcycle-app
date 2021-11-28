@@ -74,6 +74,10 @@ class ProductOptions extends Component {
   componentDidMount() {
     const product = this.props.product
     this.optionsBuilder = new ProductOptionsBuilder(product.menuAddOn)
+    this.props.onChanges({
+      optionsPayload: this.optionsBuilder.getPayload(),
+      optionsAreValid: this.optionsBuilder.isValid(),
+    });
   }
 
   _gotoNextOption() {
@@ -170,11 +174,9 @@ class ProductOptions extends Component {
     const [ min, max ] = this.optionsBuilder.parseRange(menuSection.valuesRange)
 
     return (
-      <View style={{ paddingHorizontal: 15, paddingVertical: 5 }}>
-        <Text style={{ textAlign: 'center' }} note>
-          { this.props.t('CHECKOUT_PRODUCT_OPTIONS_CHOICES_BETWEEN', { min, max }) }
-        </Text>
-      </View>
+      <Text sub>
+        { this.props.t('CHECKOUT_PRODUCT_OPTIONS_CHOICES_BETWEEN', { min, max }) }
+      </Text>
     )
   }
 
@@ -201,9 +203,9 @@ class ProductOptions extends Component {
     return (
       <VStack flex={ 1 }>
         <Box p="3">
-          <Text note>
+          <Heading size="lg">
             { this.props.t('CHECKOUT_PRODUCT_OPTIONS_TITLE') }
-          </Text>
+          </Heading>
         </Box>
         <SectionList
           ref={ this.list }
