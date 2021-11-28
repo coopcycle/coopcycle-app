@@ -1,5 +1,5 @@
-import React, { Component, createRef } from 'react'
-import { Platform, LogBox, Appearance } from 'react-native'
+import React, { createRef, useEffect } from 'react'
+import { Platform, LogBox, useColorScheme } from 'react-native'
 
 import { NativeBaseProvider, extendTheme } from 'native-base'
 import tracker from './analytics/Tracker'
@@ -94,52 +94,48 @@ const linking = {
   config,
 }
 
-class App extends Component {
+const App = () => {
 
-  componentDidMount() {
+  const colorScheme = useColorScheme()
+
+  const customTheme = extendTheme({
+    config: {
+      useSystemColorMode: true,
+    },
+  })
+
+  useEffect(() => {
     // https://support.count.ly/hc/en-us/articles/360037813231-React-Native-Bridge-#implementation
     // We will need to call two methods (init and start) in order to set up our SDK.
     // You may also like to specify other parameters at this step (i.e. whether logging will be used).
     // These methods should only be called once during the app's lifecycle and should be done as early as possible.
     // Your main App component's componentDidMountmethod may be a good place.
     tracker.init()
-  }
+  }, [])
 
-  render() {
-
-    const colorScheme = Appearance.getColorScheme()
-
-    const customTheme = extendTheme({
-      config: {
-        useSystemColorMode: true,
-      }
-    })
-
-    return (
-      <Provider store={ store }>
-        <PersistGate loading={ null } persistor={ persistor }>
-          <I18nextProvider i18n={ i18n }>
-            <NativeBaseProvider theme={customTheme}>
-              <SafeAreaProvider>
-                <Spinner />
-                <NavigationContainer
-                  ref={ navigationRef }
-                  linking={ linking }
-                  onReady={ () => (routeNameRef.current = navigationRef.current.getCurrentRoute()?.name) }
-                  onStateChange={ onNavigationStateChange }
-                  theme={ colorScheme === 'dark' ? DarkTheme : DefaultTheme }>
-                  <Root />
-                </NavigationContainer>
-                <DropdownAlert ref={ ref => { DropdownHolder.setDropdown(ref) } } />
-                <NotificationHandler />
-              </SafeAreaProvider>
-            </NativeBaseProvider>
-          </I18nextProvider>
-        </PersistGate>
-      </Provider>
-    )
-  }
-
+  return (
+    <Provider store={ store }>
+      <PersistGate loading={ null } persistor={ persistor }>
+        <I18nextProvider i18n={ i18n }>
+          <NativeBaseProvider theme={customTheme}>
+            <SafeAreaProvider>
+              <Spinner />
+              <NavigationContainer
+                ref={ navigationRef }
+                linking={ linking }
+                onReady={ () => (routeNameRef.current = navigationRef.current.getCurrentRoute()?.name) }
+                onStateChange={ onNavigationStateChange }
+                theme={ colorScheme === 'dark' ? DarkTheme : DefaultTheme }>
+                <Root />
+              </NavigationContainer>
+              <DropdownAlert ref={ ref => { DropdownHolder.setDropdown(ref) } } />
+              <NotificationHandler />
+            </SafeAreaProvider>
+          </NativeBaseProvider>
+        </I18nextProvider>
+      </PersistGate>
+    </Provider>
+  )
 }
 
 export default App
