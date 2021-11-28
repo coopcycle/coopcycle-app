@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { ActivityIndicator, View } from 'react-native'
 import { connect } from 'react-redux'
-import { Text, ScrollView } from 'native-base'
+import { Text, ScrollView, Center, Spinner } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import _ from 'lodash'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -26,15 +26,11 @@ class LegalText extends Component {
         this.setState({ text: response.data })
       })
       .catch(e => {
-        if (e.response) {
-          // The request was made and the server responded with a status code
-          // that falls out of the range of 2xx
-          axios
-            .get(`http://coopcycle.org/${this.props.type}/en.md`)
-            .then((response) => {
-              this.setState({ text: response.data })
-            })
-        }
+        axios
+          .get(`http://coopcycle.org/${this.props.type}/en.md`)
+          .then((response) => {
+            this.setState({ text: response.data })
+          })
       })
   }
 
@@ -42,7 +38,11 @@ class LegalText extends Component {
 
     if (!this.state.text) {
 
-      return null
+      return (
+        <Center flex={ 1 }>
+          <Spinner size="lg" />
+        </Center>
+      )
     }
 
     return (
