@@ -1,6 +1,6 @@
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
-import { Text } from 'native-base'
+import { Box, Text } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import _ from 'lodash'
 
@@ -13,9 +13,9 @@ const RestrictedDiet = ({ items, t }) => {
   return (
     <View style={ styles.container }>
       { items.map(item => (
-        <View key={ item } style={ [ styles.item, { backgroundColor: '#55efc4' } ] }>
-          <Text style={ styles.itemText }>{ t(`RESTRICTED_DIET.${item.replace('http://schema.org/', '')}`) }</Text>
-        </View>
+        <Box key={ item } style={ [ styles.item ] } bg="lightBlue.300">
+          <Text style={ styles.itemText } color="black">{ t(`RESTRICTED_DIET.${item.replace('http://schema.org/', '')}`) }</Text>
+        </Box>
       )) }
     </View>
   )
@@ -30,9 +30,9 @@ const Allergen = ({ items, t }) => {
   return (
     <View style={ styles.container }>
       { items.map(item => (
-        <View key={ item } style={ [ styles.item, { backgroundColor: '#fdcb6e' } ] }>
-          <Text style={ styles.itemText }>{ t(`ALLERGEN.${item}`) }</Text>
-        </View>
+        <Box key={ item } style={ [ styles.item ] } bg="amber.300">
+          <Text style={ styles.itemText } color="black">{ t(`ALLERGEN.${item}`) }</Text>
+        </Box>
       )) }
     </View>
   )
@@ -55,7 +55,6 @@ const styles = StyleSheet.create({
   },
   itemText: {
     fontSize: 10,
-    color: '#ffffff',
   },
 })
 
