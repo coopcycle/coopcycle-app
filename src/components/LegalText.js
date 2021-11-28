@@ -21,13 +21,13 @@ class LegalText extends Component {
 
   componentDidMount() {
     axios
-      .get(`http://coopcycle.org/${this.props.type}/${this.props.language}.md`)
+      .get(`https://coopcycle.org/${this.props.type}/${this.props.language}.md`)
       .then((response) => {
         this.setState({ text: response.data })
       })
       .catch(e => {
         axios
-          .get(`http://coopcycle.org/${this.props.type}/en.md`)
+          .get(`https://coopcycle.org/${this.props.type}/en.md`)
           .then((response) => {
             this.setState({ text: response.data })
           })
