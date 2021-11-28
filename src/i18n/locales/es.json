@@ -212,7 +212,7 @@
         "DISPATCH_ASSIGN_TASK": "Asignar una tarea",
         "DISPATCH_PICK_USER": "Elegir un usuario",
         "TASK_FORM_ADDRESS_LABEL": "Direccion",
-        "TASK_FORM_DONE_AFTER_LABEL": "Para hacer desde el",
+        "TASK_FORM_DONE_AFTER_LABEL": "Para hacer desde",
         "TASK_FORM_DONE_BEFORE_LABEL": "Para hacer antes del",
         "TASK_FORM_COMMENTS_LABEL": "Comentarios",
         "DISPATCH_DATE": "Elegir una fecha",
