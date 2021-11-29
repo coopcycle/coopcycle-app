@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import { Dimensions, Image, StyleSheet, View, TextInput, TouchableOpacity } from 'react-native'
+import { Dimensions, Image, StyleSheet, View, TouchableOpacity } from 'react-native'
 import {
   Icon, Text,
-  Button, FormControl, Input, VStack, HStack, Box,
+  Button, FormControl, Input, VStack, HStack, Box, Divider, TextArea,
 } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
@@ -128,9 +128,10 @@ class CompleteTask extends Component {
             ) }
             <FormControl p="3">
               <FormControl.Label>{ this.props.t('NOTES') }</FormControl.Label>
-              <TextInput multiline={ true } numberOfLines={ 3 }
-                onChangeText={ text => this.setState({ notes: text }) }
-                style={ styles.textInput } />
+              <TextArea
+                autoCorrect={ false }
+                totalLines={ 2 }
+                onChangeText={ text => this.setState({ notes: text }) } />
             </FormControl>
             <View style={ styles.content }>
               <View style={ styles.imagesContainer }>
@@ -163,7 +164,8 @@ class CompleteTask extends Component {
               </View>
             </View>
           </VStack>
-          <VStack borderTopWidth={ 1 } borderTopColor="gray.800">
+          <VStack>
+            <Divider />
             <TouchableOpacity
               onPress={ () => this.props.navigation.navigate('TaskCompleteProofOfDelivery', { task }) }>
               <HStack alignItems="center" justifyContent="space-between" p="3">
@@ -251,13 +253,6 @@ const styles = StyleSheet.create({
     borderColor: '#ffffff',
     top: -16,
     right: -16,
-  },
-  textInput: {
-    paddingVertical: 5,
-    paddingHorizontal: 10,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 16,
   },
 })
 
