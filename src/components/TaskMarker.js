@@ -97,7 +97,7 @@ export default ({ task, type }) => {
   return (
     <View style={ container }>
       <View style={ backgroundStyle(task) }/>
-      <Icon as={FontAwesome} name={ iconName(task, type) } style={ iconStyle(task) } size="18px"/>
+      <Icon as={FontAwesome} name={ iconName(task, type) } style={ iconStyle(task) } size="xs"/>
     </View>
   )
 }
