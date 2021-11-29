@@ -132,7 +132,7 @@ class CompleteTask extends Component {
                 onChangeText={ text => this.setState({ notes: text }) }
                 style={ styles.textInput } />
             </FormControl>
-            <View syle={ styles.content }>
+            <View style={ styles.content }>
               <View style={ styles.imagesContainer }>
               { this.props.signatures.map((base64, key) => (
                 <View key={ `signatures:${key}` }
