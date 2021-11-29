@@ -29,7 +29,7 @@ class Signature extends Component {
 
     return (
       <VStack flex={ 1 }>
-        <View style={ styles.content }>
+        <VStack flex={ 1 } p="2">
           <Text note style={{ textAlign: 'center', marginBottom: 20 }}>
             { this.props.t('SIGNATURE_DISCLAIMER') }
           </Text>
@@ -43,8 +43,8 @@ class Signature extends Component {
           <Button light block onPress={ this._clearCanvas.bind(this) }>
             { this.props.t('SIGNATURE_CLEAR') }
           </Button>
-        </View>
-        <HStack>
+        </VStack>
+        <HStack p="2">
           <Button full onPress={ this._saveImage.bind(this) }>
             { this.props.t('SIGNATURE_ADD') }
           </Button>
@@ -55,11 +55,6 @@ class Signature extends Component {
 }
 
 const styles = StyleSheet.create({
-  content: {
-    flex: 1,
-    flexDirection: 'column',
-    padding: 20,
-  },
   canvasContainer: {
     flex: 1,
     flexDirection: 'row',

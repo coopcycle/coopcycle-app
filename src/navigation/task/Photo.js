@@ -46,7 +46,7 @@ class Photo extends Component {
 
     return (
       <VStack flex={ 1 }>
-        <Box flex={ 1 }>
+        <VStack flex={ 1 } p="2">
           <Text note style={{ textAlign: 'center', marginBottom: 20 }}>
             { this.props.t('PHOTO_DISCLAIMER') }
           </Text>
@@ -71,7 +71,7 @@ class Photo extends Component {
               </View>
             </RNCamera>
           </View>
-        </Box>
+        </VStack>
         <HStack p="2">
           <Button full onPress={ this._saveImage.bind(this) }>
             { this.props.t('PHOTO_ADD') }
@@ -83,11 +83,6 @@ class Photo extends Component {
 }
 
 const styles = StyleSheet.create({
-  content: {
-    flex: 1,
-    flexDirection: 'column',
-    padding: 20,
-  },
   canvasContainer: {
     flex: 1,
     flexDirection: 'row',
