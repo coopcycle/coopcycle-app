@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import { Dimensions, Image, StyleSheet, View, TouchableOpacity } from 'react-native'
+import { Dimensions, Image, StyleSheet, View, TouchableOpacity, Platform, TouchableWithoutFeedback, Keyboard } from 'react-native'
 import {
   Icon, Text,
-  Button, FormControl, Input, VStack, HStack, Box, Divider, TextArea,
+  Button, FormControl, Input, VStack, HStack, Box, Divider, TextArea, KeyboardAvoidingView,
 } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
@@ -111,79 +111,84 @@ class CompleteTask extends Component {
     }
 
     return (
-      <View style={{ flex: 1 }}>
-        <VStack flex={1} justifyContent="space-between">
-          <VStack>
-            { task.type === 'DROPOFF' && (
-              <HStack justifyContent="space-between" alignItems="center" p="3"
-                borderBottomWidth={ 1 } borderBottomColor="gray.800">
-                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-                  <Icon as={ FontAwesome } name="user" style={{ marginRight: 10 }} />
-                  <Text numberOfLines={ 1 }>{ contactName }</Text>
+      <React.Fragment>
+        <KeyboardAvoidingView flex={ 1 }
+          behavior={ Platform.OS === 'ios' ? 'padding' : 'height' }>
+          <TouchableWithoutFeedback onPress={ Keyboard.dismiss }>
+            <VStack flex={ 1 } justifyContent="space-between">
+              <VStack>
+                { task.type === 'DROPOFF' && (
+                  <HStack justifyContent="space-between" alignItems="center" p="3"
+                    borderBottomWidth={ 1 } borderBottomColor="gray.800">
+                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                      <Icon as={ FontAwesome } name="user" style={{ marginRight: 10 }} />
+                      <Text numberOfLines={ 1 }>{ contactName }</Text>
+                    </View>
+                    <TouchableOpacity onPress={ () => this.setState({ isContactNameModalVisible: true }) }>
+                      <Text>{ this.props.t('EDIT') }</Text>
+                    </TouchableOpacity>
+                  </HStack>
+                ) }
+                <FormControl p="3">
+                  <FormControl.Label>{ this.props.t('NOTES') }</FormControl.Label>
+                  <TextArea
+                    autoCorrect={ false }
+                    totalLines={ 2 }
+                    onChangeText={ text => this.setState({ notes: text }) } />
+                </FormControl>
+                <View style={ styles.content }>
+                  <View style={ styles.imagesContainer }>
+                  { this.props.signatures.map((base64, key) => (
+                    <View key={ `signatures:${key}` }
+                      style={ [ styles.image, { width: imageSize, height: imageSize }] }>
+                      <Image
+                        source={{ uri: `data:image/jpeg;base64,${base64}` }}
+                        style={{ width: (imageSize - 2), height: (imageSize - 2) }} />
+                      <TouchableOpacity
+                        style={ styles.imageDelBtn }
+                        onPress={ () => this.props.deleteSignatureAt(key) }>
+                        <Icon as={ FontAwesome5 } name="times-circle" />
+                      </TouchableOpacity>
+                    </View>
+                  ))}
+                  { this.props.pictures.map((base64, key) => (
+                    <View key={ `pictures:${key}` }
+                      style={ [ styles.image, { width: imageSize, height: imageSize }] }>
+                      <Image
+                        source={{ uri: `data:image/jpeg;base64,${base64}` }}
+                        style={{ width: (imageSize - 2), height: (imageSize - 2) }} />
+                      <TouchableOpacity
+                        style={ styles.imageDelBtn }
+                        onPress={ () => this.props.deletePictureAt(key) }>
+                        <Icon as={ FontAwesome5 } name="times-circle" />
+                      </TouchableOpacity>
+                    </View>
+                  ))}
+                  </View>
                 </View>
-                <TouchableOpacity onPress={ () => this.setState({ isContactNameModalVisible: true }) }>
-                  <Text>{ this.props.t('EDIT') }</Text>
+              </VStack>
+              <VStack>
+                <Divider />
+                <TouchableOpacity
+                  onPress={ () => this.props.navigation.navigate('TaskCompleteProofOfDelivery', { task }) }>
+                  <HStack alignItems="center" justifyContent="space-between" p="3">
+                    <Icon as={ FontAwesome5 } name="signature" />
+                    <Text>
+                      { this.props.t('TASK_ADD_PROOF_OF_DELIVERY') }
+                    </Text>
+                    <Icon as={ FontAwesome5 } name="camera" />
+                  </HStack>
                 </TouchableOpacity>
-              </HStack>
-            ) }
-            <FormControl p="3">
-              <FormControl.Label>{ this.props.t('NOTES') }</FormControl.Label>
-              <TextArea
-                autoCorrect={ false }
-                totalLines={ 2 }
-                onChangeText={ text => this.setState({ notes: text }) } />
-            </FormControl>
-            <View style={ styles.content }>
-              <View style={ styles.imagesContainer }>
-              { this.props.signatures.map((base64, key) => (
-                <View key={ `signatures:${key}` }
-                  style={ [ styles.image, { width: imageSize, height: imageSize }] }>
-                  <Image
-                    source={{ uri: `data:image/jpeg;base64,${base64}` }}
-                    style={{ width: (imageSize - 2), height: (imageSize - 2) }} />
-                  <TouchableOpacity
-                    style={ styles.imageDelBtn }
-                    onPress={ () => this.props.deleteSignatureAt(key) }>
-                    <Icon as={ FontAwesome5 } name="times-circle" />
-                  </TouchableOpacity>
-                </View>
-              ))}
-              { this.props.pictures.map((base64, key) => (
-                <View key={ `pictures:${key}` }
-                  style={ [ styles.image, { width: imageSize, height: imageSize }] }>
-                  <Image
-                    source={{ uri: `data:image/jpeg;base64,${base64}` }}
-                    style={{ width: (imageSize - 2), height: (imageSize - 2) }} />
-                  <TouchableOpacity
-                    style={ styles.imageDelBtn }
-                    onPress={ () => this.props.deletePictureAt(key) }>
-                    <Icon as={ FontAwesome5 } name="times-circle" />
-                  </TouchableOpacity>
-                </View>
-              ))}
-              </View>
-            </View>
-          </VStack>
-          <VStack>
-            <Divider />
-            <TouchableOpacity
-              onPress={ () => this.props.navigation.navigate('TaskCompleteProofOfDelivery', { task }) }>
-              <HStack alignItems="center" justifyContent="space-between" p="3">
-                <Icon as={ FontAwesome5 } name="signature" />
-                <Text>
-                  { this.props.t('TASK_ADD_PROOF_OF_DELIVERY') }
-                </Text>
-                <Icon as={ FontAwesome5 } name="camera" />
-              </HStack>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={ onPress } style={{ alignItems: 'center', backgroundColor: footerBgColor }}>
-              <HStack py="3" alignItems="center">
-                <Icon as={ FontAwesome } name={ buttonIconName } style={{ color: '#fff', marginRight: 10 }} />
-                <Text>{ footerText }</Text>
-              </HStack>
-            </TouchableOpacity>
-          </VStack>
-        </VStack>
+                <TouchableOpacity onPress={ onPress } style={{ alignItems: 'center', backgroundColor: footerBgColor }}>
+                  <HStack py="3" alignItems="center">
+                    <Icon as={ FontAwesome } name={ buttonIconName } style={{ color: '#fff', marginRight: 10 }} />
+                    <Text>{ footerText }</Text>
+                  </HStack>
+                </TouchableOpacity>
+              </VStack>
+            </VStack>
+          </TouchableWithoutFeedback>
+        </KeyboardAvoidingView>
         <Modal
           isVisible={ this.state.isContactNameModalVisible }
           onSwipeComplete={ this.onSwipeComplete.bind(this) }
@@ -217,7 +222,7 @@ class CompleteTask extends Component {
             </Formik>
           </Box>
         </Modal>
-      </View>
+      </React.Fragment>
     )
   }
 }
@@ -229,8 +234,6 @@ const styles = StyleSheet.create({
     paddingRight: (CONTENT_PADDING + (CONTENT_PADDING - (DELETE_ICON_SIZE / 2))),
     paddingBottom: CONTENT_PADDING,
     paddingLeft: CONTENT_PADDING,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
   },
   imagesContainer: {
     flex: 1,
