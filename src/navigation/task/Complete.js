@@ -22,6 +22,7 @@ import {
   markTaskFailed } from '../../redux/Courier'
 import { greenColor, redColor } from '../../styles/common'
 import { doneIconName, failedIconName} from './styles/common'
+import ModalContent from '../../components/ModalContent'
 
 const DELETE_ICON_SIZE = 32
 const CONTENT_PADDING = 20
@@ -193,34 +194,36 @@ class CompleteTask extends Component {
           isVisible={ this.state.isContactNameModalVisible }
           onSwipeComplete={ this.onSwipeComplete.bind(this) }
           swipeDirection={ ['up', 'down'] }>
-          <Box p="3">
-            <Formik
-              initialValues={ initialValues }
-              validate={ this._validate.bind(this) }
-              onSubmit={ this._onSubmit.bind(this) }
-              validateOnBlur={ false }
-              validateOnChange={ false }>
-              {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
-              <View>
-                <FormControl error={ (touched.contactName && errors.contactName) } style={{ marginBottom: 15 }}>
-                  <FormControl.Label>{ this.props.t('DELIVERY_DETAILS_RECIPIENT') }</FormControl.Label>
-                  <Input
-                    autoCorrect={ false }
-                    autoCapitalize="none"
-                    autoCompleteType="off"
-                    style={{ height: 40 }}
-                    returnKeyType="done"
-                    onChangeText={ handleChange('contactName') }
-                    onBlur={ handleBlur('contactName') }
-                    defaultValue={ values.contactName } />
-                </FormControl>
-                <Button block onPress={ handleSubmit }>
-                  { this.props.t('SUBMIT') }
-                </Button>
-              </View>
-              )}
-            </Formik>
-          </Box>
+          <ModalContent>
+            <Box p="3">
+              <Formik
+                initialValues={ initialValues }
+                validate={ this._validate.bind(this) }
+                onSubmit={ this._onSubmit.bind(this) }
+                validateOnBlur={ false }
+                validateOnChange={ false }>
+                {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
+                <View>
+                  <FormControl error={ (touched.contactName && errors.contactName) } style={{ marginBottom: 15 }}>
+                    <FormControl.Label>{ this.props.t('DELIVERY_DETAILS_RECIPIENT') }</FormControl.Label>
+                    <Input
+                      autoCorrect={ false }
+                      autoCapitalize="none"
+                      autoCompleteType="off"
+                      style={{ height: 40 }}
+                      returnKeyType="done"
+                      onChangeText={ handleChange('contactName') }
+                      onBlur={ handleBlur('contactName') }
+                      defaultValue={ values.contactName } />
+                  </FormControl>
+                  <Button block onPress={ handleSubmit }>
+                    { this.props.t('SUBMIT') }
+                  </Button>
+                </View>
+                )}
+              </Formik>
+            </Box>
+          </ModalContent>
         </Modal>
       </React.Fragment>
     )
