@@ -27,6 +27,27 @@ import ModalContent from '../../components/ModalContent'
 const DELETE_ICON_SIZE = 32
 const CONTENT_PADDING = 20
 
+const AttachmentItem = ({ base64, onPressDelete }) => {
+
+  const { width } = Dimensions.get('window')
+
+  const imageSize = (width - 64) / 2
+
+  return (
+    <View
+      style={ [ styles.image, { width: imageSize, height: imageSize }] }>
+      <Image
+        source={{ uri: `data:image/jpeg;base64,${base64}` }}
+        style={{ width: (imageSize - 2), height: (imageSize - 2) }} />
+      <TouchableOpacity
+        style={ styles.imageDelBtn }
+        onPress={ onPressDelete }>
+        <Icon as={ FontAwesome5 } name="times-circle" />
+      </TouchableOpacity>
+    </View>
+  )
+}
+
 class CompleteTask extends Component {
 
   constructor(props) {
@@ -97,9 +118,7 @@ class CompleteTask extends Component {
     const success = Object.prototype.hasOwnProperty.call(this.props.route.params || {}, 'success') ?
       this.props.route.params?.success : true
 
-    const { width } = Dimensions.get('window')
 
-    const imageSize = (width - 64) / 2
     const buttonIconName = success ? doneIconName : failedIconName
     const footerBgColor = success ? greenColor : redColor
     const footerText = success ? this.props.t('VALIDATE') : this.props.t('MARK_FAILED')
@@ -140,30 +159,16 @@ class CompleteTask extends Component {
                 <View style={ styles.content }>
                   <View style={ styles.imagesContainer }>
                   { this.props.signatures.map((base64, key) => (
-                    <View key={ `signatures:${key}` }
-                      style={ [ styles.image, { width: imageSize, height: imageSize }] }>
-                      <Image
-                        source={{ uri: `data:image/jpeg;base64,${base64}` }}
-                        style={{ width: (imageSize - 2), height: (imageSize - 2) }} />
-                      <TouchableOpacity
-                        style={ styles.imageDelBtn }
-                        onPress={ () => this.props.deleteSignatureAt(key) }>
-                        <Icon as={ FontAwesome5 } name="times-circle" />
-                      </TouchableOpacity>
-                    </View>
+                    <AttachmentItem
+                      key={ `signatures:${key}` }
+                      base64={ base64 }
+                      onPressDelete={ () => this.props.deleteSignatureAt(key) } />
                   ))}
                   { this.props.pictures.map((base64, key) => (
-                    <View key={ `pictures:${key}` }
-                      style={ [ styles.image, { width: imageSize, height: imageSize }] }>
-                      <Image
-                        source={{ uri: `data:image/jpeg;base64,${base64}` }}
-                        style={{ width: (imageSize - 2), height: (imageSize - 2) }} />
-                      <TouchableOpacity
-                        style={ styles.imageDelBtn }
-                        onPress={ () => this.props.deletePictureAt(key) }>
-                        <Icon as={ FontAwesome5 } name="times-circle" />
-                      </TouchableOpacity>
-                    </View>
+                    <AttachmentItem
+                      key={ `pictures:${key}` }
+                      base64={ base64 }
+                      onPressDelete={ () => this.props.deletePictureAt(key) } />
                   ))}
                   </View>
                 </View>
