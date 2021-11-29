@@ -113,7 +113,7 @@ class CompleteTask extends Component {
     return (
       <View style={{ flex: 1 }}>
         <VStack flex={1} justifyContent="space-between">
-          <Box>
+          <VStack>
             { task.type === 'DROPOFF' && (
               <HStack justifyContent="space-between" alignItems="center" p="3"
                 borderBottomWidth={ 1 } borderBottomColor="gray.800">
@@ -162,8 +162,8 @@ class CompleteTask extends Component {
               ))}
               </View>
             </View>
-          </Box>
-          <Box borderTopWidth={ 1 } borderTopColor="gray.800">
+          </VStack>
+          <VStack borderTopWidth={ 1 } borderTopColor="gray.800">
             <TouchableOpacity
               onPress={ () => this.props.navigation.navigate('TaskCompleteProofOfDelivery', { task }) }>
               <HStack alignItems="center" justifyContent="space-between" p="3">
@@ -180,7 +180,7 @@ class CompleteTask extends Component {
                 <Text>{ footerText }</Text>
               </HStack>
             </TouchableOpacity>
-          </Box>
+          </VStack>
         </VStack>
         <Modal
           isVisible={ this.state.isContactNameModalVisible }
