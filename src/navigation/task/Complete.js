@@ -127,7 +127,7 @@ class CompleteTask extends Component {
               </HStack>
             ) }
             <FormControl p="3">
-              <FormControl.Label style={{ marginBottom: 5 }}>{ this.props.t('NOTES') }</FormControl.Label>
+              <FormControl.Label>{ this.props.t('NOTES') }</FormControl.Label>
               <TextInput multiline={ true } numberOfLines={ 3 }
                 onChangeText={ text => this.setState({ notes: text }) }
                 style={ styles.textInput } />
