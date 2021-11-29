@@ -383,6 +383,9 @@
             "cash_on_delivery": "V hotovosti při dodání",
             "card": "Kreditní karta"
         },
-        "SELECT_PAYMENT_METHOD": "Vybrat platební metodu"
+        "SELECT_PAYMENT_METHOD": "Vybrat platební metodu",
+        "PRIVACY": "Soukromí",
+        "TERMS_OF_SERVICE": "Podmínky poskytování služeb",
+        "CHECKOUT_UNITS": "Jednotky"
     }
 }
