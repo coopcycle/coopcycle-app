@@ -3,13 +3,14 @@ import _ from 'lodash';
 
 class AppUser {
 
-  constructor(username, email, token, roles, refreshToken, enabled = true) {
+  constructor(username, email, token, roles, refreshToken, enabled = true, guest = false) {
     this.username = username;
     this.email = email;
     this.token = token;
     this.roles = roles || [];
     this.refreshToken = refreshToken;
     this.enabled = enabled;
+    this.guest = guest;
   }
 
   save() {
@@ -67,6 +68,10 @@ class AppUser {
 
   isAuthenticated() {
     return this.username && this.token;
+  }
+
+  isGuest() {
+    return this.guest;
   }
 
   static load() {
