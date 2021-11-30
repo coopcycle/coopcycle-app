@@ -86,7 +86,14 @@ class OrderTrackingPage extends Component {
       case 'new':
         return (
           <Center py="1">
-            <Text note>{ this.props.t('ORDER_NEW_HELP') }</Text>
+            <Text py="2" note>{ this.props.t('ORDER_NEW_HELP') }</Text>
+            {this.props.user.isGuest() &&
+            <View style={ styles.guestSection }>
+              <Text note style={ styles.guestHelpText }>
+                { this.props.t('GUEST_CHECK_EMAIL_FOR_ORDER_UPDATES') }
+              </Text>
+            </View>
+            }
           </Center>
         )
     }
@@ -146,11 +153,20 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     color: 'white',
   },
+  guestSection: {
+    backgroundColor: '#cce5ff',
+    padding: 10,
+  },
+  guestHelpText: {
+    textAlign: 'center',
+    color: '#004085',
+  },
 })
 
 function mapStateToProps(state) {
 
   return {
+    user: state.app.user,
   }
 }
 
