@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import { StyleSheet, View } from 'react-native'
-import { Text, Center } from 'native-base'
+import { Button, Text, Center } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 
 import AuthenticateForm from '../../components/AuthenticateForm'
-import {forgotPassword, login, register} from '../../redux/App/actions'
+import {guestModeOn, forgotPassword, login, register} from '../../redux/App/actions'
 import { selectIsAuthenticated } from '../../redux/App/selectors'
 
 class Login extends Component {
@@ -31,6 +31,11 @@ class Login extends Component {
 
     return (
       <Center flex={ 1 }>
+        <Button w="55%" colorScheme="success" onPress={() => this.props.guestModeOn()}>
+          { this.props.t('CHECKOUT_AS_GUEST') }
+        </Button>
+        <Text mt="4">or</Text>
+
         <View style={{ padding: 20 }}>
           <Text style={{ textAlign: 'center' }} note>
             { this.props.t('CHECKOUT_LOGIN_DISCLAIMER') }
@@ -77,6 +82,7 @@ function mapDispatchToProps(dispatch) {
     login: (email, password, navigate) => dispatch(login(email, password, navigate)),
     register: data => dispatch(register(data, 'CheckoutCheckEmail', 'CheckoutLogin', true)),
     forgotPassword: () => dispatch(forgotPassword()),
+    guestModeOn: () => dispatch(guestModeOn()),
   }
 }
 
