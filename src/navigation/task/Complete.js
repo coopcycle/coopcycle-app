@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Dimensions, Image, StyleSheet, View, TouchableOpacity, Platform, TouchableWithoutFeedback, Keyboard } from 'react-native'
 import {
   Icon, Text,
-  Button, FormControl, Input, VStack, HStack, Box, Divider, TextArea, KeyboardAvoidingView,
+  Button, FormControl, Input, VStack, HStack, Box, Divider, TextArea, KeyboardAvoidingView, ScrollView
 } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
@@ -138,16 +138,18 @@ class CompleteTask extends Component {
             <VStack flex={ 1 } justifyContent="space-between">
               <VStack>
                 { task.type === 'DROPOFF' && (
-                  <HStack justifyContent="space-between" alignItems="center" p="3"
-                    borderBottomWidth={ 1 } borderBottomColor="gray.800">
-                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-                      <Icon as={ FontAwesome } name="user" style={{ marginRight: 10 }} />
-                      <Text numberOfLines={ 1 }>{ contactName }</Text>
-                    </View>
-                    <TouchableOpacity onPress={ () => this.setState({ isContactNameModalVisible: true }) }>
-                      <Text>{ this.props.t('EDIT') }</Text>
-                    </TouchableOpacity>
-                  </HStack>
+                  <VStack>
+                    <HStack justifyContent="space-between" alignItems="center" p="3">
+                      <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <Icon as={ FontAwesome } name="user" style={{ marginRight: 10 }} />
+                        <Text numberOfLines={ 1 }>{ contactName }</Text>
+                      </View>
+                      <TouchableOpacity onPress={ () => this.setState({ isContactNameModalVisible: true }) }>
+                        <Text>{ this.props.t('EDIT') }</Text>
+                      </TouchableOpacity>
+                    </HStack>
+                    <Divider />
+                  </VStack>
                 ) }
                 <FormControl p="3">
                   <FormControl.Label>{ this.props.t('NOTES') }</FormControl.Label>
@@ -156,21 +158,25 @@ class CompleteTask extends Component {
                     totalLines={ 2 }
                     onChangeText={ text => this.setState({ notes: text }) } />
                 </FormControl>
-                <View style={ styles.content }>
-                  <View style={ styles.imagesContainer }>
-                  { this.props.signatures.map((base64, key) => (
-                    <AttachmentItem
-                      key={ `signatures:${key}` }
-                      base64={ base64 }
-                      onPressDelete={ () => this.props.deleteSignatureAt(key) } />
-                  ))}
-                  { this.props.pictures.map((base64, key) => (
-                    <AttachmentItem
-                      key={ `pictures:${key}` }
-                      base64={ base64 }
-                      onPressDelete={ () => this.props.deletePictureAt(key) } />
-                  ))}
-                  </View>
+                <View onStartShouldSetResponder={ () => true }>
+                  <ScrollView style={{ height: '50%' }}>
+                    <View style={ styles.content }>
+                      <View style={ styles.imagesContainer }>
+                      { this.props.signatures.map((base64, key) => (
+                        <AttachmentItem
+                          key={ `signatures:${key}` }
+                          base64={ base64 }
+                          onPressDelete={ () => this.props.deleteSignatureAt(key) } />
+                      ))}
+                      { this.props.pictures.map((base64, key) => (
+                        <AttachmentItem
+                          key={ `pictures:${key}` }
+                          base64={ base64 }
+                          onPressDelete={ () => this.props.deletePictureAt(key) } />
+                      ))}
+                      </View>
+                    </View>
+                  </ScrollView>
                 </View>
               </VStack>
               <VStack>
