@@ -12,10 +12,9 @@ class CreditCard extends Component {
 
   _onSubmitCard(values) {
 
-    const { number, expiry, cvc, cardholderName } = values
-    const [ expMonth, expYear ] = expiry.split('/')
+    const { number, cvc, cardholderName } = values
 
-    this.props.checkout(number, expMonth, expYear, cvc, cardholderName)
+    this.props.checkout(number, '', '', cvc, cardholderName)
   }
 
   _onSubmitCash() {
@@ -54,6 +53,7 @@ class CreditCard extends Component {
         this.props.navigation.navigate('CheckoutMercadopago');
         return null;
       }
+
       return (
         <CreditCardComp cart={ cart } errors={ errors }
           onSubmit={ this._onSubmitCard.bind(this) } />

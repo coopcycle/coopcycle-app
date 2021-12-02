@@ -1,13 +1,12 @@
 import { createAction } from 'redux-actions'
 import { StackActions, CommonActions } from '@react-navigation/native'
-import { NavigationActions } from 'react-navigation';
-import Stripe from 'tipsi-stripe'
 import _ from 'lodash'
+import {  createPaymentMethod, handleCardAction } from '@stripe/stripe-react-native'
 
 import NavigationHolder from '../../NavigationHolder'
 import i18n from '../../i18n'
 import { selectCartFulfillmentMethod } from './selectors'
-import { selectIsAuthenticated } from '../App/selectors'
+import { selectIsAuthenticated, selectUser } from '../App/selectors'
 import { loadAddressesSuccess } from '../Account/actions'
 import { isFree } from '../../utils/order'
 
@@ -57,6 +56,10 @@ export const LOAD_PAYMENT_METHODS_REQUEST = '@checkout/LOAD_PAYMENT_METHODS_REQU
 export const LOAD_PAYMENT_METHODS_SUCCESS = '@checkout/LOAD_PAYMENT_METHODS_SUCCESS'
 export const LOAD_PAYMENT_METHODS_FAILURE = '@checkout/LOAD_PAYMENT_METHODS_FAILURE'
 
+export const LOAD_PAYMENT_DETAILS_REQUEST = '@checkout/LOAD_PAYMENT_DETAILS_REQUEST'
+export const LOAD_PAYMENT_DETAILS_SUCCESS = '@checkout/LOAD_PAYMENT_DETAILS_SUCCESS'
+export const LOAD_PAYMENT_DETAILS_FAILURE = '@checkout/LOAD_PAYMENT_DETAILS_FAILURE'
+
 /*
  * Action Creators
  */
@@ -101,6 +104,10 @@ export const setAddressModalMessage = createAction(SET_ADDRESS_MODAL_MESSAGE)
 export const loadPaymentMethodsRequest = createAction(LOAD_PAYMENT_METHODS_REQUEST)
 export const loadPaymentMethodsSuccess = createAction(LOAD_PAYMENT_METHODS_SUCCESS)
 export const loadPaymentMethodsFailure = createAction(LOAD_PAYMENT_METHODS_FAILURE)
+
+export const loadPaymentDetailsRequest = createAction(LOAD_PAYMENT_DETAILS_REQUEST)
+export const loadPaymentDetailsSuccess = createAction(LOAD_PAYMENT_DETAILS_SUCCESS)
+export const loadPaymentDetailsFailure = createAction(LOAD_PAYMENT_DETAILS_FAILURE)
 
 function validateAddress(httpClient, cart, address) {
 
@@ -644,14 +651,17 @@ function handleSuccess(dispatch, httpClient, cart, paymentIntentId) {
 }
 
 /**
- * @see https://gist.github.com/mindlapse/72139f022d6e620e4f0d59dc50c1797e
+ * @see https://stripe.com/docs/payments/accept-a-payment?platform=react-native&ui=custom
+ * @see https://stripe.com/docs/payments/accept-a-payment-synchronously?platform=react-native
+ * @see https://github.com/stripe/stripe-react-native/blob/master/example/src/screens/NoWebhookPaymentScreen.tsx
  */
 export function checkout(number, expMonth, expYear, cvc, cardholderName) {
 
   return (dispatch, getState) => {
 
-    const { httpClient, settings } = getState().app
+    const { httpClient } = getState().app
     const { cart } = getState().checkout
+    const user = selectUser(getState())
 
     dispatch(checkoutRequest())
 
@@ -664,58 +674,41 @@ export function checkout(number, expMonth, expYear, cvc, cardholderName) {
       return
     }
 
-    Stripe.setOptions({
-      publishableKey: settings.stripe_publishable_key,
+    createPaymentMethod({
+      type: 'Card',
+      billingDetails: {
+        email: user.email,
+        name: cardholderName,
+        phone: cart.fulfillmentMethod === 'delivery' ? cart.shippingAddress.telephone : '',
+      },
     })
-
-    httpClient
-      .get(cart['@id'] + '/payment')
-      .then(payment => {
-
-        if (payment.stripeAccount !== null) {
-          Stripe.setStripeAccount(payment.stripeAccount)
-        }
-
-        Stripe.createPaymentMethod({
-          card : {
-            number,
-            expMonth: parseInt(expMonth, 10),
-            expYear: parseInt(expYear, 10),
-            cvc,
-          },
-          billingDetails: {
-            name: cardholderName,
-          },
-        })
-        .then(paymentMethod => {
-          httpClient
-            .put(cart['@id'] + '/pay', { paymentMethodId: paymentMethod.id })
-            .then(stripeResponse => {
-
-              if (stripeResponse.requiresAction) {
-
-                // FIXME
-                // This method uses authenticatePayment on Android, which is deprecated
-                // @see https://github.com/stripe/stripe-android/blob/master/CHANGELOG.md#1230---2019-11-05
-                Stripe.authenticatePaymentIntent({ clientSecret: stripeResponse.paymentIntentClientSecret })
-                  .then(authenticatePaymentResult => {
-                    handleSuccess(dispatch, httpClient, cart, authenticatePaymentResult.paymentIntentId)
-                  })
-                  .catch(e => {
-                    dispatch(checkoutFailure(e))
-                  })
-
-              } else {
-                handleSuccess(dispatch, httpClient, cart, stripeResponse.paymentIntentId)
-              }
-
-            })
-            .catch(e => dispatch(checkoutFailure(e)))
-        })
-        .catch(e => dispatch(checkoutFailure(e)))
-
-      })
-      .catch(e => dispatch(checkoutFailure(e)))
+    .then(({ paymentMethod, error }) => {
+      if (error) {
+        dispatch(checkoutFailure(error))
+      } else {
+        httpClient
+          .put(cart['@id'] + '/pay', { paymentMethodId: paymentMethod.id })
+          .then(stripeResponse => {
+            if (stripeResponse.requiresAction) {
+              handleCardAction(stripeResponse.paymentIntentClientSecret)
+                .then(({ error, paymentIntent }) => {
+                  if (error) {
+                    dispatch(checkoutFailure(error))
+                  } else {
+                    handleSuccess(dispatch, httpClient, cart, paymentIntent.id)
+                  }
+                })
+                .catch(e => {
+                  dispatch(checkoutFailure(e))
+                })
+            } else {
+              handleSuccess(dispatch, httpClient, cart, stripeResponse.paymentIntentId)
+            }
+          })
+          .catch(e => dispatch(checkoutFailure(e)))
+      }
+    })
+    .catch(e => dispatch(checkoutFailure(e)))
   }
 }
 
@@ -932,5 +925,22 @@ export function checkoutWithCash() {
         handleSuccessNav(dispatch, order)
       })
       .catch(e => dispatch(checkoutFailure(e)))
+  }
+}
+
+export function loadPaymentDetails() {
+
+  return (dispatch, getState) => {
+
+    const httpClient = createHttpClient(getState())
+
+    const { cart } = getState().checkout
+
+    dispatch(loadPaymentDetailsRequest())
+
+    httpClient
+      .get(`${cart['@id']}/payment`)
+      .then(res => dispatch(loadPaymentDetailsSuccess(res)))
+      .catch(e => dispatch(loadPaymentDetailsFailure(e)))
   }
 }

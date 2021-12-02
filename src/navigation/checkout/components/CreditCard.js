@@ -6,14 +6,16 @@ import {
   Keyboard,
   Platform,
 } from 'react-native';
+import { connect } from 'react-redux'
 import { Center, Text, Input } from 'native-base';
 import _ from 'lodash'
-import { LiteCreditCardInput } from 'react-native-credit-card-input'
 import { withTranslation } from 'react-i18next'
 import { Formik } from 'formik'
+import { CardField, StripeProvider } from '@stripe/stripe-react-native'
 
 import { formatPrice } from '../../../utils/formatting'
 import FooterButton from './FooterButton'
+import { loadPaymentDetails } from '../../../redux/Checkout/actions'
 
 class CreditCard extends Component {
 
@@ -38,6 +40,8 @@ class CreditCard extends Component {
 
     this.keyboardWillShowSub = Keyboard.addListener(showEventName, this.keyboardWillShow.bind(this))
     this.keyboardWillHideSub = Keyboard.addListener(hideEventName, this.keyboardWillHide.bind(this))
+
+    this.props.loadPaymentDetails()
   }
 
   componentWillUnmount() {
@@ -65,18 +69,6 @@ class CreditCard extends Component {
     ]).start();
   }
 
-  _onChange(form, setFieldValue, setFieldTouched) {
-
-    _.each(form.values, (value, key) => {
-      setFieldValue(key, value)
-      setFieldTouched(key)
-    })
-
-    this.setState({
-      valid: form.valid,
-    })
-  }
-
   _validate(values) {
 
     let errors = {}
@@ -94,9 +86,9 @@ class CreditCard extends Component {
 
   render() {
 
-    const { cart } = this.props
+    const { cart, paymentDetailsLoaded } = this.props
 
-    if (!cart) {
+    if (!cart || !paymentDetailsLoaded) {
 
       return (
         <View />
@@ -114,7 +106,19 @@ class CreditCard extends Component {
     // @see https://medium.com/@devmrin/debouncing-touch-events-in-react-native-prevent-navigating-twice-or-more-times-when-button-is-90687e4a8113
     // @see https://snack.expo.io/@patwoz/withpreventdoubleclick
 
+    let stripeProviderProps = {
+      publishableKey: this.props.stripePublishableKey,
+    }
+
+    if (!_.isEmpty(this.props.paymentDetails.stripeAccount)) {
+      stripeProviderProps = {
+        ...stripeProviderProps,
+        stripeAccountId: this.props.paymentDetails.stripeAccount,
+      }
+    }
+
     return (
+      <StripeProvider { ...stripeProviderProps }>
       <Formik
         initialValues={ initialValues }
         validate={ this._validate.bind(this) }
@@ -138,20 +142,19 @@ class CreditCard extends Component {
                   onChangeText={ handleChange('cardholderName') }
                   onBlur={ handleBlur('cardholderName') } />
               </View>
-              <View style={[ styles.formInputContainer, { paddingHorizontal: 10, marginBottom: 15 } ] } testID="creditCardWrapper">
-                <LiteCreditCardInput
-                  additionalInputsProps={{
-                    number: {
-                      testID: 'creditCardNumber',
-                    },
-                    expiry: {
-                      testID: 'creditCardExpiry',
-                    },
-                    cvc: {
-                      testID: 'creditCardCvc',
-                    },
+              <View style={[ styles.formInputContainer, { paddingHorizontal: 20, marginBottom: 15 } ] } testID="creditCardWrapper">
+                <CardField
+                  postalCodeEnabled={ false }
+                  style={{
+                    width: '100%',
+                    height: 50,
                   }}
-                  onChange={ form => this._onChange(form, setFieldValue, setFieldTouched) } />
+                  onCardChange={ (cardDetails) => {
+                    this.setState({
+                      valid: cardDetails.complete,
+                    })
+                  }}
+                />
               </View>
             </View>
             { this.props.errors.length > 0 && (
@@ -169,6 +172,7 @@ class CreditCard extends Component {
         </Animated.View>
         )}
       </Formik>
+      </StripeProvider>
     )
   }
 }
@@ -194,4 +198,20 @@ const styles = StyleSheet.create({
   },
 })
 
-export default withTranslation()(CreditCard)
+function mapStateToProps(state) {
+
+  return {
+    stripePublishableKey: state.app.settings.stripe_publishable_key,
+    paymentDetails: state.checkout.paymentDetails,
+    paymentDetailsLoaded: state.checkout.paymentDetailsLoaded,
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+
+  return {
+    loadPaymentDetails: () => dispatch(loadPaymentDetails()),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(CreditCard))

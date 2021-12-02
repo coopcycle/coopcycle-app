@@ -30,6 +30,9 @@ import {
   LOAD_PAYMENT_METHODS_REQUEST,
   LOAD_PAYMENT_METHODS_SUCCESS,
   LOAD_PAYMENT_METHODS_FAILURE,
+  LOAD_PAYMENT_DETAILS_REQUEST,
+  LOAD_PAYMENT_DETAILS_SUCCESS,
+  LOAD_PAYMENT_DETAILS_FAILURE,
 } from './actions'
 
 import i18n from '../../i18n'
@@ -59,6 +62,8 @@ const initialState = {
   isExpiredSessionModalVisible: false,
   isSessionExpired: false,
   paymentMethods: [],
+  paymentDetails: {},
+  paymentDetailsLoaded: false,
 }
 
 export default (state = initialState, action = {}) => {
@@ -73,9 +78,17 @@ export default (state = initialState, action = {}) => {
         isFetching: true,
       }
 
+    case LOAD_PAYMENT_DETAILS_REQUEST:
+      return {
+        ...state,
+        paymentDetailsLoaded: false,
+        isFetching: true,
+      }
+
     case LOAD_RESTAURANTS_FAILURE:
     case INIT_FAILURE:
     case LOAD_PAYMENT_METHODS_FAILURE:
+    case LOAD_PAYMENT_DETAILS_FAILURE:
       return {
         ...state,
         isFetching: false,
@@ -298,6 +311,14 @@ export default (state = initialState, action = {}) => {
         ...state,
         isFetching: false,
         paymentMethods: action.payload.methods,
+      }
+
+    case LOAD_PAYMENT_DETAILS_SUCCESS:
+      return {
+        ...state,
+        isFetching: false,
+        paymentDetailsLoaded: true,
+        paymentDetails: action.payload,
       }
   }
 
