@@ -15,9 +15,25 @@ import { withTranslation } from 'react-i18next'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
 import OrderItems from '../../components/OrderItems'
-import { subscribe, unsubscribe } from '../../redux/Account/actions'
+import { loadOrder, subscribe, unsubscribe } from '../../redux/Account/actions'
 
 class OrderTrackingPage extends Component {
+
+  constructor(props) {
+    super(props)
+    this.onFocus = this.onFocus.bind(this)
+
+    props.navigation.addListener('focus', this.onFocus);
+  }
+
+  async onFocus() {
+    const { hashid } = this.props.route.params
+
+    if (hashid) {
+      // we want to get the last order state on each onfocus for this screen
+      await this.props.loadOrder(hashid)
+    }
+  }
 
   componentDidMount() {
     const { order } = this.props.route.params
@@ -42,9 +58,7 @@ class OrderTrackingPage extends Component {
     }
   }
 
-  renderHeader() {
-
-    const { order } = this.props.route.params
+  renderHeader(order) {
 
     let stateText = ''
     let iconName = 'question-circle-o'
@@ -78,9 +92,7 @@ class OrderTrackingPage extends Component {
     )
   }
 
-  renderSubHeader() {
-
-    const { order } = this.props.route.params
+  renderSubHeader(order) {
 
     switch (order.state) {
       case 'new':
@@ -103,25 +115,37 @@ class OrderTrackingPage extends Component {
     )
   }
 
+  renderDetail(order) {
+    return (
+      <VStack flex={ 1 } testID="accountOrder">
+        <Center mb="3" py="2">
+          <Icon style={ styles.restaurantText }
+            as={ FontAwesome } name="cutlery" />
+          <Text style={ styles.restaurantText }>
+            { order.restaurant.name }
+          </Text>
+        </Center>
+        <OrderItems order={ order } withDeliveryTotal={ true } />
+      </VStack>
+    )
+  }
+
   render() {
 
-    const { order } = this.props.route.params
+    const order = this.props.order || this.props.route.params.order;
+
+    if (!this.props.loading && order) {
+      return (
+        <VStack flex={ 1 }>
+          { this.renderHeader(order) }
+          { this.renderSubHeader(order) }
+          { this.renderDetail(order) }
+        </VStack>
+      )
+    }
 
     return (
-      <VStack flex={ 1 }>
-        { this.renderHeader() }
-        { this.renderSubHeader() }
-        <VStack flex={ 1 } testID="accountOrder">
-          <Center mb="3" py="2">
-            <Icon style={ styles.restaurantText }
-              as={ FontAwesome } name="cutlery" />
-            <Text style={ styles.restaurantText }>
-              { order.restaurant.name }
-            </Text>
-          </Center>
-          <OrderItems order={ order } withDeliveryTotal={ true } />
-        </VStack>
-      </VStack>
+        <View/>
     );
   }
 }
@@ -167,6 +191,8 @@ function mapStateToProps(state) {
 
   return {
     user: state.app.user,
+    order: state.account.order,
+    loading: state.app.loading,
   }
 }
 
@@ -175,6 +201,7 @@ function mapDispatchToProps(dispatch) {
   return {
     subscribe: (order, onMessage) => dispatch(subscribe(order, onMessage)),
     unsubscribe: (order) => dispatch(unsubscribe(order)),
+    loadOrder: (hashid) => dispatch(loadOrder(hashid)),
   }
 }
 

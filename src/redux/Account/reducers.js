@@ -1,5 +1,6 @@
 import {
   LOAD_ORDERS_SUCCESS,
+  LOAD_ORDER_SUCCESS,
   LOAD_ADDRESSES_SUCCESS,
   LOAD_PERSONAL_INFO_SUCCESS,
 } from './actions'
@@ -13,6 +14,7 @@ const initialState = {
   addresses: [],
   email: '',
   username: '',
+  order: null,
 }
 
 export default (state = initialState, action = {}) => {
@@ -23,6 +25,12 @@ export default (state = initialState, action = {}) => {
         ...state,
         orders: action.payload,
       }
+    case LOAD_ORDER_SUCCESS:
+
+        return {
+          ...state,
+          order: action.payload,
+        }
     case LOAD_ADDRESSES_SUCCESS:
 
       return {
