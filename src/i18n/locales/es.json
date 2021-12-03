@@ -389,6 +389,7 @@
         "PRIVACY": "Privacidad",
         "RESTAURANT_PRE_ORDER": "Reservar",
         "RESTAURANT_CLOSED_BUT_OPENS": "Éste restaurante se encuentra cerrado pero vuelve a abrir {{ datetime }}. Puedes programar tu pedido!",
-        "RESTAURANT_CLOSED_AND_NOT_AVAILABLE": "Éste restaurante se encuentra cerrado y no disponible hasta el {{ datetime }}."
+        "RESTAURANT_CLOSED_AND_NOT_AVAILABLE": "Éste restaurante se encuentra cerrado y no disponible hasta el {{ datetime }}.",
+        "MY_ORDER": "Mi pedido"
     }
 }

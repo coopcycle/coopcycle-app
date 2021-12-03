@@ -20,8 +20,8 @@ const OrderNavigator = () => (
     <OrderStack.Screen
       name="AccountOrder"
       component={ screens.AccountOrderPage }
-      options={ ({ navigation, route }) => ({
-        title: i18n.t('ORDER_NUMBER', { number: route.params.order.number }),
+      options={ ({ route }) => ({
+        title: route.params.order ? i18n.t('ORDER_NUMBER', { number: route.params.order.number }) : i18n.t('MY_ORDER'),
       })}
     />
   </OrderStack.Navigator>
