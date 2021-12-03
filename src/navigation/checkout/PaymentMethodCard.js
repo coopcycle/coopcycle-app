@@ -36,7 +36,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
 
   return {
-    checkout: (number, expMonth, expYear, cvc) => dispatch(checkout(number, expMonth, expYear, cvc)),
+    checkout: (number, expMonth, expYear, cvc, cardholderName) => dispatch(checkout(number, expMonth, expYear, cvc, cardholderName)),
   }
 }
 
