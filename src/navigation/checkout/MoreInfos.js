@@ -120,7 +120,6 @@ class MoreInfos extends Component {
     }
 
     return (
-      <ScrollView>
       <Formik
         initialValues={ initialValues }
         validate={ this._validate.bind(this) }
@@ -128,76 +127,78 @@ class MoreInfos extends Component {
         validateOnBlur={ false }
         validateOnChange={ false }>
         {({ handleChange, handleBlur, handleSubmit, values, errors, touched, setFieldValue, setFieldTouched }) => (
-          <VStack>
+          <VStack style={{flex: 1}}>
             <View style={{ backgroundColor: '#cce5ff', padding: 20 }}>
               <Text note style={{ textAlign: 'center', color: '#004085' }}>{ this.props.t('CHECKOUT_MORE_INFOS_DISCLAIMER') }</Text>
             </View>
-            <VStack p="2">
-              {!this.props.isAuthenticated && this.props.user.isGuest() &&
-              <FormControl mb="2">
-                  <FormControl.Label>Email</FormControl.Label>
+            <VStack p="2" style={{flexShrink: 1}}>
+              <ScrollView>
+                {!this.props.isAuthenticated && this.props.user.isGuest() &&
+                <FormControl mb="2">
+                    <FormControl.Label>Email</FormControl.Label>
+                    <Input
+                      testID="guestCheckoutEmail"
+                      autoCorrect={ false }
+                      keyboardType="email-address"
+                      returnKeyType="done"
+                      onChangeText={ handleChange('email') }
+                      onBlur={ handleBlur('email') }
+                      value={ values.email } />
+                    { hasErrors(errors, touched, 'email') && (
+                      <Text note style={ styles.errorText }>{ errors.email }</Text>
+                    ) }
+                    { !hasErrors(errors, touched, 'email') && (
+                      <FormControl.HelperText>{ this.props.t('GUEST_CHECKOUT_ORDER_EMAIL_HELP') }</FormControl.HelperText>
+                    ) }
+                </FormControl>
+                }
+                <FormControl mb="2">
+                  <FormControl.Label>{ this.props.t('STORE_NEW_DELIVERY_PHONE_NUMBER') }</FormControl.Label>
                   <Input
-                    testID="guestCheckoutEmail"
+                    testID="checkoutTelephone"
                     autoCorrect={ false }
-                    keyboardType="email-address"
+                    keyboardType="phone-pad"
                     returnKeyType="done"
-                    onChangeText={ handleChange('email') }
-                    onBlur={ handleBlur('email') }
-                    value={ values.email } />
-                  { hasErrors(errors, touched, 'email') && (
-                    <Text note style={ styles.errorText }>{ errors.email }</Text>
+                    onChangeText={ value => this._handleChangeTelephone(value, setFieldValue, setFieldTouched) }
+                    onBlur={ handleBlur('telephone') }
+                    value={ values.telephone } />
+                  { hasErrors(errors, touched, 'telephone') && (
+                    <Text note style={ styles.errorText }>{ errors.telephone }</Text>
                   ) }
-                  { !hasErrors(errors, touched, 'email') && (
-                    <FormControl.HelperText>{ this.props.t('GUEST_CHECKOUT_ORDER_EMAIL_HELP') }</FormControl.HelperText>
+                  { !hasErrors(errors, touched, 'telephone') && (
+                    <FormControl.HelperText>{ this.props.t('CHECKOUT_ORDER_PHONE_NUMBER_HELP') }</FormControl.HelperText>
                   ) }
-              </FormControl>
-              }
-              <FormControl mb="2">
-                <FormControl.Label>{ this.props.t('STORE_NEW_DELIVERY_PHONE_NUMBER') }</FormControl.Label>
-                <Input
-                  testID="checkoutTelephone"
-                  autoCorrect={ false }
-                  keyboardType="phone-pad"
-                  returnKeyType="done"
-                  onChangeText={ value => this._handleChangeTelephone(value, setFieldValue, setFieldTouched) }
-                  onBlur={ handleBlur('telephone') }
-                  value={ values.telephone } />
-                { hasErrors(errors, touched, 'telephone') && (
-                  <Text note style={ styles.errorText }>{ errors.telephone }</Text>
-                ) }
-                { !hasErrors(errors, touched, 'telephone') && (
-                  <FormControl.HelperText>{ this.props.t('CHECKOUT_ORDER_PHONE_NUMBER_HELP') }</FormControl.HelperText>
-                ) }
-              </FormControl>
-              { Object.prototype.hasOwnProperty.call(values, 'address') && (
-              <FormControl mb="2">
-                <FormControl.Label>{ this.props.t('CHECKOUT_ORDER_ADDRESS_DESCRIPTION') }</FormControl.Label>
-                <TextArea
-                  autoCorrect={ false }
-                  totalLines={ 3 }
-                  onChangeText={ handleChange('address.description') }
-                  onBlur={ handleBlur('address.description') } />
-                <FormControl.HelperText>{ this.props.t('CHECKOUT_ORDER_ADDRESS_DESCRIPTION_HELP') }</FormControl.HelperText>
-              </FormControl>
-              )}
-              <FormControl mb="2">
-                <FormControl.Label>{ this.props.t('CHECKOUT_ORDER_NOTES') }</FormControl.Label>
-                <TextArea
-                  autoCorrect={ false }
-                  totalLines={ 3 }
-                  onChangeText={ handleChange('notes') }
-                  onBlur={ handleBlur('notes') } />
-                <FormControl.HelperText>{ this.props.t('CHECKOUT_ORDER_NOTES_HELP') }</FormControl.HelperText>
-              </FormControl>
+                </FormControl>
+                { Object.prototype.hasOwnProperty.call(values, 'address') && (
+                <FormControl mb="2">
+                  <FormControl.Label>{ this.props.t('CHECKOUT_ORDER_ADDRESS_DESCRIPTION') }</FormControl.Label>
+                  <TextArea
+                    autoCorrect={ false }
+                    totalLines={ 3 }
+                    onChangeText={ handleChange('address.description') }
+                    onBlur={ handleBlur('address.description') } />
+                  <FormControl.HelperText>{ this.props.t('CHECKOUT_ORDER_ADDRESS_DESCRIPTION_HELP') }</FormControl.HelperText>
+                </FormControl>
+                )}
+                <FormControl mb="2">
+                  <FormControl.Label>{ this.props.t('CHECKOUT_ORDER_NOTES') }</FormControl.Label>
+                  <TextArea
+                    autoCorrect={ false }
+                    totalLines={ 3 }
+                    onChangeText={ handleChange('notes') }
+                    onBlur={ handleBlur('notes') } />
+                  <FormControl.HelperText>{ this.props.t('CHECKOUT_ORDER_NOTES_HELP') }</FormControl.HelperText>
+                </FormControl>
+              </ScrollView>
             </VStack>
             <FooterButton
+              style={{flex: 1}}
               testID="moreInfosSubmit"
               text={ this.props.t('SUBMIT') }
               onPress={ handleSubmit } />
           </VStack>
         )}
       </Formik>
-      </ScrollView>
     )
   }
 }

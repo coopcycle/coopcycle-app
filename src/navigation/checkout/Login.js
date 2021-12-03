@@ -31,10 +31,13 @@ class Login extends Component {
 
     return (
       <Center flex={ 1 }>
-        <Button w="55%" colorScheme="success" onPress={() => this.props.guestModeOn()}>
-          { this.props.t('CHECKOUT_AS_GUEST') }
-        </Button>
-        <Text mt="4">or</Text>
+        <View style={{ paddingHorizontal: 40, width: '100%' }}>
+          <Button colorScheme="success" onPress={() => this.props.guestModeOn()}>
+            { this.props.t('CHECKOUT_AS_GUEST') }
+          </Button>
+        </View>
+
+        <Text mt="4">{ this.props.t('OR') }</Text>
 
         <View style={{ padding: 20 }}>
           <Text style={{ textAlign: 'center' }} note>

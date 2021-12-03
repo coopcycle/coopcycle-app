@@ -393,6 +393,7 @@
         "CHECKOUT_AS_GUEST": "Checkout as guest",
         "GUEST_CHECKOUT_ORDER_EMAIL_HELP": "To send you updates about your order",
         "GUEST_CHECK_EMAIL_FOR_ORDER_UPDATES": "Because you chose to checkout as guest, please check your emails to follow your order",
-        "MY_ORDER": "My order"
+        "MY_ORDER": "My order",
+        "OR": "or"
     }
 }
