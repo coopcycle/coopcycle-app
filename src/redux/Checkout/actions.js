@@ -655,7 +655,7 @@ function handleSuccess(dispatch, httpClient, cart, paymentIntentId) {
  * @see https://stripe.com/docs/payments/accept-a-payment-synchronously?platform=react-native
  * @see https://github.com/stripe/stripe-react-native/blob/master/example/src/screens/NoWebhookPaymentScreen.tsx
  */
-export function checkout(number, expMonth, expYear, cvc, cardholderName) {
+export function checkout(cardholderName) {
 
   return (dispatch, getState) => {
 

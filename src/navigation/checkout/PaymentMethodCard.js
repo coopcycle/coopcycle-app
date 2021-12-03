@@ -8,10 +8,9 @@ class PaymentMethodCard extends Component {
 
   _onSubmit(values) {
 
-    const { number, expiry, cvc, cardholderName } = values
-    const [ expMonth, expYear ] = expiry.split('/')
+    const { cardholderName } = values
 
-    this.props.checkout(number, expMonth, expYear, cvc, cardholderName)
+    this.props.checkout(cardholderName)
   }
 
   render() {
@@ -36,7 +35,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
 
   return {
-    checkout: (number, expMonth, expYear, cvc, cardholderName) => dispatch(checkout(number, expMonth, expYear, cvc, cardholderName)),
+    checkout: (cardholderName) => dispatch(checkout(cardholderName)),
   }
 }
 

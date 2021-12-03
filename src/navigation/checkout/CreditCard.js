@@ -12,9 +12,9 @@ class CreditCard extends Component {
 
   _onSubmitCard(values) {
 
-    const { number, cvc, cardholderName } = values
+    const { cardholderName } = values
 
-    this.props.checkout(number, '', '', cvc, cardholderName)
+    this.props.checkout(cardholderName)
   }
 
   _onSubmitCash() {
@@ -88,7 +88,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    checkout: (number, expMonth, expYear, cvc, cardholderName) => dispatch(checkout(number, expMonth, expYear, cvc, cardholderName)),
+    checkout: (cardholderName) => dispatch(checkout(cardholderName)),
     loadPaymentMethods: () => dispatch(loadPaymentMethods()),
     checkoutWithCash: () => dispatch(checkoutWithCash()),
   }
