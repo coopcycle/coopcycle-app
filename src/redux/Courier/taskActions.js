@@ -102,7 +102,7 @@ export function loadTasks(selectedDate, refresh = false) {
 
   return function (dispatch, getState) {
 
-    const { httpClient } = getState().app
+    const { httpClient } = getState().app
 
     dispatch(loadTasksRequest(selectedDate, refresh))
 
