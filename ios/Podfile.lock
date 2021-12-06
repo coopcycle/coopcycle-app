@@ -19,10 +19,10 @@ PODS:
   - CocoaLumberjack (3.6.2):
     - CocoaLumberjack/Core (= 3.6.2)
   - CocoaLumberjack/Core (3.6.2)
-  - CountlyReactNative (20.11.10):
-    - CountlyReactNative/NotificationService (= 20.11.10)
+  - CountlyReactNative (20.11.11):
+    - CountlyReactNative/NotificationService (= 20.11.11)
     - React
-  - CountlyReactNative/NotificationService (20.11.10):
+  - CountlyReactNative/NotificationService (20.11.11):
     - React
   - DoubleConversion (1.1.6)
   - EXApplication (3.2.0):
@@ -664,7 +664,7 @@ PODS:
     - React-Core
   - RNReanimated (1.13.3):
     - React-Core
-  - RNScreens (3.9.0):
+  - RNScreens (3.10.0):
     - React-Core
     - React-RCTImage
   - RNSentry (2.6.2):
@@ -688,15 +688,15 @@ PODS:
     - Stripe/Stripe3DS2 (= 21.9.0)
     - StripeCore (= 21.9.0)
     - StripeUICore (= 21.9.0)
+  - stripe-react-native (0.2.3):
+    - React-Core
+    - Stripe (~> 21.9.0)
   - Stripe/Stripe3DS2 (21.9.0):
     - StripeCore (= 21.9.0)
     - StripeUICore (= 21.9.0)
   - StripeCore (21.9.0)
   - StripeUICore (21.9.0):
     - StripeCore (= 21.9.0)
-  - tipsi-stripe (9.1.4):
-    - React
-    - Stripe (>= 21.3.1)
   - UMAppLoader (2.2.0)
   - UMCore (7.1.2)
   - UMReactNativeAdapter (6.3.9):
@@ -783,7 +783,7 @@ DEPENDENCIES:
   - RNSound (from `../node_modules/react-native-sound`)
   - RNSVG (from `../node_modules/react-native-svg`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
-  - tipsi-stripe (from `../node_modules/tipsi-stripe`)
+  - "stripe-react-native (from `../node_modules/@stripe/stripe-react-native`)"
   - UMAppLoader (from `../node_modules/unimodules-app-loader/ios`)
   - "UMCore (from `../node_modules/@unimodules/core/ios`)"
   - "UMReactNativeAdapter (from `../node_modules/@unimodules/react-native-adapter/ios`)"
@@ -970,8 +970,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-svg"
   RNVectorIcons:
     :path: "../node_modules/react-native-vector-icons"
-  tipsi-stripe:
-    :path: "../node_modules/tipsi-stripe"
+  stripe-react-native:
+    :path: "../node_modules/@stripe/stripe-react-native"
   UMAppLoader:
     :path: "../node_modules/unimodules-app-loader/ios"
   UMCore:
@@ -989,7 +989,7 @@ SPEC CHECKSUMS:
   blackbox-vision-react-native-mercadopago-px: 504d6e9018e19a6e3c818f4a7ae25403db96011c
   boost: a7c83b31436843459a1961bfd74b96033dc77234
   CocoaLumberjack: bd155f2dd06c0e0b03f876f7a3ee55693122ec94
-  CountlyReactNative: bcf583ee6e66d13088e3d402aea73728074e2dc6
+  CountlyReactNative: f4aa7a03884702464446f60e8f78ae0345c01a6a
   DoubleConversion: 831926d9b8bf8166fd87886c4abab286c2422662
   EXApplication: 9ff2a206009d6e55bca6c20b3f33d07986b51ef3
   EXConstants: 4cb52b6d8f636c767104a44bf7db3873e9c01a6f
@@ -1079,7 +1079,7 @@ SPEC CHECKSUMS:
   RNGoogleSignin: a51c9c7419262c75748ddcee3f735bb42da5def1
   RNLocalize: 74b82db20cc3895ccc25af992c644879bcec2815
   RNReanimated: 514a11da3a2bcc6c3dfd9de32b38e2b9bf101926
-  RNScreens: 4d79118be80f79fa1f4aa131909a1d6e86280af3
+  RNScreens: 03ba504f8c98607ad1f07808e71040e0afa335ec
   RNSentry: 68644ef607b780551cc555f084869764f2566652
   RNSketchCanvas: 9c28adb5381543ed55cc98ce6de46479cb3cb12c
   RNSound: 27e8268bdb0a1f191f219a33267f7e0445e8d62f
@@ -1087,9 +1087,9 @@ SPEC CHECKSUMS:
   RNVectorIcons: 31cebfcf94e8cf8686eb5303ae0357da64d7a5a4
   Sentry: 1d3eb1a25f8c5333c88dd5603904a6d461cd9fcf
   Stripe: 41c3d261501e1dc84755b1bdabdaae50ebf92b53
+  stripe-react-native: 980f3d19f52a7dc4b373c6c20d30ebd760bc39e5
   StripeCore: 2ea9531e863ef20f191a0d61f00dedb7f061baef
   StripeUICore: a0f9e40520823d34c63baec0782fc4a0c7fb7484
-  tipsi-stripe: 99e56364635799f223e017b5faa5b9d0d84601e0
   UMAppLoader: 21af63390e55c82e037fb9752d93114a80ecf16e
   UMCore: ce3a4faa010239063b8343895b29a6d97b01069d
   UMReactNativeAdapter: d03cefd0e4e4179ab8c490408589f1c8a6c8b785

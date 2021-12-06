@@ -5373,12 +5373,12 @@ caseless@^0.12.0:
   resolved "https://registry.yarnpkg.com/caseless/-/caseless-0.12.0.tgz#1b681c21ff84033c826543090689420d187151dc"
   integrity sha1-G2gcIf+EAzyCZUMJBolCDRhxUdw=
 
-centrifuge@^2.8.2:
-  version "2.8.3"
-  resolved "https://registry.yarnpkg.com/centrifuge/-/centrifuge-2.8.3.tgz#c5154162138dd050642e94970da7d6203cfd71b8"
-  integrity sha512-yw9VDnSMl1XeJjfpUPVbXkVaL++Nw6jk/WbQmKKjPXpJ0rVwf21pT+ymo8FWvx1HBwfQxEsC0D/txodGpFYWDQ==
+centrifuge@^2.8.4:
+  version "2.8.4"
+  resolved "https://registry.yarnpkg.com/centrifuge/-/centrifuge-2.8.4.tgz#31a10eb4ee95d873193355d315d3af8e0a50dcea"
+  integrity sha512-G/MoyiGEjn4i56K9kZMlIXhYzJpmfs7MuwzVBAQFJEF9IVlXgMQZKz6GLvWbD4DLq9AIpdkxGmQn37HvdQD/qA==
   dependencies:
-    protobufjs "^6.10.2"
+    protobufjs "^6.11.2"
 
 chalk@^2.0.0, chalk@^2.0.1, chalk@^2.4.1, chalk@^2.4.2:
   version "2.4.2"
@@ -5760,10 +5760,10 @@ cosmiconfig@^5.0.5, cosmiconfig@^5.1.0:
     js-yaml "^3.13.1"
     parse-json "^4.0.0"
 
-countly-sdk-react-native-bridge@^20.11.7:
-  version "20.11.10"
-  resolved "https://registry.yarnpkg.com/countly-sdk-react-native-bridge/-/countly-sdk-react-native-bridge-20.11.10.tgz#6bad5599e8e6b14dae37aea271209eba93125797"
-  integrity sha512-GyfQ2Asv131tYAr+7KeGSpo8ZTXSM10ZnfXBQ7TWbtnF/tJdKKpzAR2sx4DUE1tM/ctHDIkzCEtRL1DHnoYkiw==
+countly-sdk-react-native-bridge@^20.11.11:
+  version "20.11.11"
+  resolved "https://registry.yarnpkg.com/countly-sdk-react-native-bridge/-/countly-sdk-react-native-bridge-20.11.11.tgz#a85292329840e6afb116a811dc87556c5297d3f8"
+  integrity sha512-EtQTMZC4UbxTNFMk9XYSg6JUTcyrrGg9WAmzZYZwhCrqvI7PnYsCFUlL2mpBgWrr/16TR/zTY9ojFFhAPGUzMQ==
 
 credit-card-type@^5.0.0:
   version "5.0.4"
@@ -10689,7 +10689,7 @@ proper-lockfile@^3.0.2:
     retry "^0.12.0"
     signal-exit "^3.0.2"
 
-protobufjs@^6.10.2:
+protobufjs@^6.11.2:
   version "6.11.2"
   resolved "https://registry.yarnpkg.com/protobufjs/-/protobufjs-6.11.2.tgz#de39fabd4ed32beaa08e9bb1e30d08544c1edf8b"
   integrity sha512-4BQJoPooKJl2G9j3XftkIXjoC9C0Av2NOrWmbLWT1vH32GcSUHjM0Arra6UfTsVyfMAuFzaLucXn1sadxJydAw==
@@ -10736,10 +10736,10 @@ punycode@^2.1.0, punycode@^2.1.1:
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-2.1.1.tgz#b58b010ac40c22c5657616c8d2c2c02c7bf479ec"
   integrity sha512-XRsRjdf+j5ml+y/6GKHPZbrF/8p2Yga0JPtdqTIY2Xe5ohJPD9saDJJLPvp9+NSBprVvevdXZybnj2cv8OEd0A==
 
-qs@^6.10.1:
-  version "6.10.1"
-  resolved "https://registry.yarnpkg.com/qs/-/qs-6.10.1.tgz#4931482fa8d647a5aab799c5271d2133b981fb6a"
-  integrity sha512-M528Hph6wsSVOBiYUnGf+K/7w0hNshs/duGsNXPUCLH5XAqjEtiPGwNONLV0tBH8NoGb0mvD5JubnUTrujKDTg==
+qs@^6.10.2:
+  version "6.10.2"
+  resolved "https://registry.yarnpkg.com/qs/-/qs-6.10.2.tgz#c1431bea37fc5b24c5bdbafa20f16bdf2a4b9ffe"
+  integrity sha512-mSIdjzqznWgfd4pMii7sHtaYF8rx8861hBO80SraY5GT0XQibWZWJSid0avzHGkDIZLImux2S5mXO0Hfct2QCw==
   dependencies:
     side-channel "^1.0.4"
 
@@ -10912,10 +10912,10 @@ react-native-ble-manager@^8.0.0:
   resolved "https://registry.yarnpkg.com/react-native-ble-manager/-/react-native-ble-manager-8.0.0.tgz#771ec4d1d583808b2c66311236f55d9ef42b5adc"
   integrity sha512-lpEeiLYPVpr7OF7YeA5DcYyXQGfAjXgSAGCGgopVPwNZD5nI9hbsjv5PpXEKAa0906LWxEqJSSsrSms7VsLvDQ==
 
-react-native-calendars@^1.1268.0:
-  version "1.1269.0"
-  resolved "https://registry.yarnpkg.com/react-native-calendars/-/react-native-calendars-1.1269.0.tgz#3692e5a1cf82a0f4efc89ab4ca63fa62224ad41f"
-  integrity sha512-jlltWzJXcjxigRrDcgR/aEiEqo0+z1cpkxZRlNiAw2TyRmw4wRtwGVGJFs2Bp63tQrXLh3Hm4nTjGvtSR4zwEg==
+react-native-calendars@^1.1270.0:
+  version "1.1270.0"
+  resolved "https://registry.yarnpkg.com/react-native-calendars/-/react-native-calendars-1.1270.0.tgz#4285bd7edc54fcea622783d79ef6bda4d4bf00ef"
+  integrity sha512-SVjQJpequuJoTSBUcQ1MKP98kZ0sSzy8Qywx1J5OM0mWXWxO+cgANIkb4maQkSLF2gBxUmVQExkGL7VduavmUA==
   dependencies:
     hoist-non-react-statics "^3.3.1"
     immutable "^4.0.0-rc.12"
@@ -11138,10 +11138,10 @@ react-native-safe-area-view@^0.14.9:
   dependencies:
     hoist-non-react-statics "^2.3.1"
 
-react-native-screens@^3.9.0:
-  version "3.9.0"
-  resolved "https://registry.yarnpkg.com/react-native-screens/-/react-native-screens-3.9.0.tgz#39b79f0e50b9d68ec822d333bc76e7aaee90f3fd"
-  integrity sha512-TP/kASLQ/2iGCz4/n9CHeveKC9urzbfYXFH+1TfBnqaBwjIszhVuadiIOQ0qWKdSs6qnBR2xPTp9U18sNoc34A==
+react-native-screens@^3.10.0:
+  version "3.10.0"
+  resolved "https://registry.yarnpkg.com/react-native-screens/-/react-native-screens-3.10.0.tgz#8780a6f13c1b28b2572401dcf6c1f72ab5fc7581"
+  integrity sha512-5mtpZo/bYdIOB6X0m+0fqGnBTYf9Nmf41AHrvtyOEm0yiY0T0gwhYPvdp1MUxsdD0eQy9Lm+FJiPn4txDrBKyw==
   dependencies:
     react-freeze "^1.0.0"
     warn-once "^0.1.0"
