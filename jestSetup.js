@@ -15,14 +15,6 @@ jest.mock('rn-fetch-blob', () => ({
   fetch: () => {}
 }));
 
-jest.mock('tipsi-stripe', () => ({
-  __esModule: true,
-  default: {
-    setOptions: () => {},
-    createTokenWithCard: params => {}
-  },
-}))
-
 jest.mock('@react-native-firebase/analytics', () => ({
   logEvent: jest.fn(),
   setUserProperty: jest.fn(),
