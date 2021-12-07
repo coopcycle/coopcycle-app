@@ -679,7 +679,7 @@ PODS:
     - React-Core
   - RNSVG (12.1.1):
     - React
-  - RNVectorIcons (8.1.0):
+  - RNVectorIcons (9.0.0):
     - React-Core
   - Sentry (7.1.4):
     - Sentry/Core (= 7.1.4)
@@ -1084,7 +1084,7 @@ SPEC CHECKSUMS:
   RNSketchCanvas: 9c28adb5381543ed55cc98ce6de46479cb3cb12c
   RNSound: 27e8268bdb0a1f191f219a33267f7e0445e8d62f
   RNSVG: 551acb6562324b1d52a4e0758f7ca0ec234e278f
-  RNVectorIcons: 31cebfcf94e8cf8686eb5303ae0357da64d7a5a4
+  RNVectorIcons: 4143ba35feebab8fdbe6bc43d1e776b393d47ac8
   Sentry: 1d3eb1a25f8c5333c88dd5603904a6d461cd9fcf
   Stripe: 41c3d261501e1dc84755b1bdabdaae50ebf92b53
   stripe-react-native: 980f3d19f52a7dc4b373c6c20d30ebd760bc39e5
