@@ -34,7 +34,7 @@
     "@stripe/stripe-react-native": "^0.2.3",
     "@terrylinla/react-native-sketch-canvas": "^0.8.0",
     "@turf/turf": "^6.5.0",
-    "axios": "^0.21.4",
+    "axios": "^0.24.0",
     "buffer": "^6.0.3",
     "centrifuge": "^2.8.4",
     "coopcycle-frontend-js": "git+https://git@github.com/coopcycle/coopcycle-frontend-js.git#3.0.0-beta.2",
