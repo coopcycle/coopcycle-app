@@ -101,8 +101,7 @@ const RootStack = createStackNavigator()
 
 export default () => (
   <RootStack.Navigator
-    mode="modal"
-    screenOptions={ stackNavigatorScreenOptions }>
+    screenOptions={{ ...stackNavigatorScreenOptions, presentation: 'modal' }}>
     <RootStack.Screen
       name="Main"
       component={ MainNavigator }
