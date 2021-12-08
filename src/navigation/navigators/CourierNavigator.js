@@ -16,11 +16,9 @@ const Tab = createBottomTabNavigator()
 
 const Tabs = () => (
   <Tab.Navigator
-    tabBarOptions={{
-      showLabel: false,
-    }}
     screenOptions={{
       headerShown: false,
+      tabBarShowLabel: false,
     }}
     >
     <Tab.Screen

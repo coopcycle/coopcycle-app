@@ -14,9 +14,9 @@ const Tab = createBottomTabNavigator()
 
 const Tabs = () => (
   <Tab.Navigator
-    tabBarOptions={{
-      showLabel: true,
-      showIcon: true,
+    screenOptions={{
+      headerShown: false,
+      tabBarShowIcon: true,
     }}>
     <Tab.Screen
       name="DispatchUnassignedTasks"
