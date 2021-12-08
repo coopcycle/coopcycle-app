@@ -5761,9 +5761,9 @@ cosmiconfig@^5.0.5, cosmiconfig@^5.1.0:
     parse-json "^4.0.0"
 
 countly-sdk-react-native-bridge@^20.11.11:
-  version "20.11.11"
-  resolved "https://registry.yarnpkg.com/countly-sdk-react-native-bridge/-/countly-sdk-react-native-bridge-20.11.11.tgz#a85292329840e6afb116a811dc87556c5297d3f8"
-  integrity sha512-EtQTMZC4UbxTNFMk9XYSg6JUTcyrrGg9WAmzZYZwhCrqvI7PnYsCFUlL2mpBgWrr/16TR/zTY9ojFFhAPGUzMQ==
+  version "20.11.12"
+  resolved "https://registry.yarnpkg.com/countly-sdk-react-native-bridge/-/countly-sdk-react-native-bridge-20.11.12.tgz#a96124eaedeb49ba03217dc0c384daf485b157e6"
+  integrity sha512-O3B85ehYArqS08/FJQsY4pBxEHxBHjLTonwrELQcGCi5OpRamrLrNZuFIM92Bp7IVx3oiTq0fy0ESD9sQoZAeA==
 
 credit-card-type@^5.0.0:
   version "5.0.4"
