@@ -19,10 +19,10 @@ PODS:
   - CocoaLumberjack (3.6.2):
     - CocoaLumberjack/Core (= 3.6.2)
   - CocoaLumberjack/Core (3.6.2)
-  - CountlyReactNative (20.11.11):
-    - CountlyReactNative/NotificationService (= 20.11.11)
+  - CountlyReactNative (20.11.12):
+    - CountlyReactNative/NotificationService (= 20.11.12)
     - React
-  - CountlyReactNative/NotificationService (20.11.11):
+  - CountlyReactNative/NotificationService (20.11.12):
     - React
   - DoubleConversion (1.1.6)
   - EXApplication (3.2.0):
@@ -550,7 +550,7 @@ PODS:
     - React-Core
   - react-native-maps (0.27.1):
     - React
-  - react-native-netinfo (7.1.3):
+  - react-native-netinfo (7.1.4):
     - React-Core
   - react-native-safe-area-context (3.3.2):
     - React-Core
@@ -664,7 +664,7 @@ PODS:
     - React-Core
   - RNReanimated (1.13.3):
     - React-Core
-  - RNScreens (3.10.0):
+  - RNScreens (3.10.1):
     - React-Core
     - React-RCTImage
   - RNSentry (2.6.2):
@@ -989,7 +989,7 @@ SPEC CHECKSUMS:
   blackbox-vision-react-native-mercadopago-px: 504d6e9018e19a6e3c818f4a7ae25403db96011c
   boost: a7c83b31436843459a1961bfd74b96033dc77234
   CocoaLumberjack: bd155f2dd06c0e0b03f876f7a3ee55693122ec94
-  CountlyReactNative: f4aa7a03884702464446f60e8f78ae0345c01a6a
+  CountlyReactNative: 3d1a485e3dc2aaa1c045402272b41c669410f896
   DoubleConversion: 831926d9b8bf8166fd87886c4abab286c2422662
   EXApplication: 9ff2a206009d6e55bca6c20b3f33d07986b51ef3
   EXConstants: 4cb52b6d8f636c767104a44bf7db3873e9c01a6f
@@ -1047,7 +1047,7 @@ SPEC CHECKSUMS:
   react-native-fbsdk-next: a0dd8905af573ec4d21b7bc398423ccaa2ce2b07
   react-native-get-random-values: 2c4ff6b44cb71291dabe9a8ae87d3877dcf387da
   react-native-maps: f4b89da81626ad7f151a8bfcb79733295d31ce5c
-  react-native-netinfo: 42c0965fca99069b92e3f7360ab2d425985e5104
+  react-native-netinfo: c9b0719bce3b436cd30a3c879fd59de3f6d72476
   react-native-safe-area-context: 584dc04881deb49474363f3be89e4ca0e854c057
   react-native-version-number: b415bbec6a13f2df62bf978e85bc0d699462f37f
   React-perflogger: 73732888d37d4f5065198727b167846743232882
@@ -1079,7 +1079,7 @@ SPEC CHECKSUMS:
   RNGoogleSignin: a51c9c7419262c75748ddcee3f735bb42da5def1
   RNLocalize: 74b82db20cc3895ccc25af992c644879bcec2815
   RNReanimated: 514a11da3a2bcc6c3dfd9de32b38e2b9bf101926
-  RNScreens: 03ba504f8c98607ad1f07808e71040e0afa335ec
+  RNScreens: 522705f2e5c9d27efb17f24aceb2bf8335bc7b8e
   RNSentry: 68644ef607b780551cc555f084869764f2566652
   RNSketchCanvas: 9c28adb5381543ed55cc98ce6de46479cb3cb12c
   RNSound: 27e8268bdb0a1f191f219a33267f7e0445e8d62f
