@@ -108,7 +108,7 @@ const SettingsNavigator = () => (
   <SettingsStack.Navigator
     screenOptions={ stackNavigatorScreenOptions }>
     <SettingsStack.Screen
-      name="CourierSettings"
+      name="CourierSettingsHome"
       component={ screens.CourierSettings }
       options={{
         title: i18n.t('SETTINGS'),
