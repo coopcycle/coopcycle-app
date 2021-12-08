@@ -87,6 +87,7 @@ export default () => (
       name="RestaurantSettings"
       component={ SettingsNavigator }
       options={{
+        headerShown: false,
         title: i18n.t('SETTINGS'),
       }}
     />
