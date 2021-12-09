@@ -1,11 +1,10 @@
 import React from 'react'
-import { FlatList, StyleSheet, View, TouchableOpacity } from 'react-native'
+import { FlatList, View, TouchableOpacity } from 'react-native'
 import { withTranslation } from 'react-i18next'
-import { Button, Icon, Text } from 'native-base'
+import { Button, Icon, Text, HStack, Box } from 'native-base'
 import { showLocation } from 'react-native-map-link'
 import { phonecall } from 'react-native-communications'
 import moment from 'moment'
-import { Col, Row } from 'react-native-easy-grid'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 
 import ItemSeparator from '../../../components/ItemSeparator'
@@ -20,24 +19,21 @@ const Detail = ({ item }) => {
   }
 
   const body = (
-    <Col size={ onPress ? 7 : 8 }>
-      { text ? (<Text style={ styles.taskDetailText }>{ text }</Text>) : null }
+    <Box flex={ 1 } p="2">
+      { text ? (<Text fontSize="xs">{ text }</Text>) : null }
       { component && component }
-    </Col>
+    </Box>
   )
 
   return (
-    <TouchableOpacity style={{ flex:  1 }} { ...touchableOpacityProps }>
-      <Row style={ styles.row }>
-        <Col size={ 2 } style={ styles.iconContainer }>
-          <Icon as={Ionicons} name={ iconName } style={{ color: '#ccc' }} />
-        </Col>
+    <TouchableOpacity style={{ flex: 1 }} { ...touchableOpacityProps }>
+      <HStack alignItems="center" justifyContent="center" p="2">
+        <Icon as={ Ionicons } name={ iconName } style={{ color: '#ccc' }} />
         { body }
         { onPress &&
-        <Col size={ 1 }>
-          <Icon as={Ionicons} name="arrow-forward" style={{ color: '#ccc' }} />
-        </Col> }
-      </Row>
+        <Icon as={ Ionicons } name="arrow-forward" style={{ color: '#ccc' }} />
+        }
+      </HStack>
     </TouchableOpacity>
   )
 }
@@ -112,23 +108,5 @@ const Details = ({ task, t }) => {
       ItemSeparatorComponent={ ItemSeparator } />
   )
 }
-
-const styles = StyleSheet.create({
-  taskDetailText: {
-    fontSize: 12,
-  },
-  iconContainer: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingHorizontal: 10,
-  },
-  row: {
-    padding: 10,
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-})
 
 export default withTranslation()(Details)
