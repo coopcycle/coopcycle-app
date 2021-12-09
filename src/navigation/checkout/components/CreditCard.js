@@ -5,6 +5,7 @@ import {
   Animated,
   Keyboard,
   Platform,
+  useColorScheme,
 } from 'react-native';
 import { connect } from 'react-redux'
 import { Center, Text, Input } from 'native-base';
@@ -16,6 +17,32 @@ import { CardField, StripeProvider } from '@stripe/stripe-react-native'
 import { formatPrice } from '../../../utils/formatting'
 import FooterButton from './FooterButton'
 import { loadPaymentDetails } from '../../../redux/Checkout/actions'
+
+const ColorSchemeAwareCardField = (props) => {
+
+  const colorScheme = useColorScheme()
+
+  return (
+    <CardField
+      postalCodeEnabled={ false }
+      cardStyle={{
+        // borderWidth?: number;
+        backgroundColor: colorScheme === 'dark' ? 'black' : 'white'
+        // borderColor?: string;
+        // cornerRadius?: number;
+        // textColor?: string;
+        // fontSize?: number;
+        // placeholderColor?: string;
+        // cursorColor?: string;
+        // textErrorColor?: string;
+      }}
+      style={{
+        width: '100%',
+        height: 50,
+      }}
+      { ...props } />
+  )
+}
 
 class CreditCard extends Component {
 
@@ -143,12 +170,7 @@ class CreditCard extends Component {
                   onBlur={ handleBlur('cardholderName') } />
               </View>
               <View style={[ styles.formInputContainer, { paddingHorizontal: 20, marginBottom: 15 } ] } testID="creditCardWrapper">
-                <CardField
-                  postalCodeEnabled={ false }
-                  style={{
-                    width: '100%',
-                    height: 50,
-                  }}
+                <ColorSchemeAwareCardField
                   onCardChange={ (cardDetails) => {
                     this.setState({
                       valid: cardDetails.complete,
