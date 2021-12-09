@@ -25,7 +25,7 @@ class Photo extends Component {
     const { image } = this.state
     if (image) {
       this.props.addPicture(task, image.base64)
-      this.props.navigation.navigate('TaskCompleteHome', { task })
+      this.props.navigation.navigate({ name: 'TaskCompleteHome', params: { task }, merge: true })
     }
   }
 
