@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
 import { FlatList, SectionList, StyleSheet, TouchableOpacity, View } from 'react-native'
 import PropTypes from 'prop-types'
-import { Text } from 'native-base'
-import { Col, Grid } from 'react-native-easy-grid'
+import { HStack, Text, Box } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import { formatPrice } from '../utils/formatting'
 import _ from 'lodash'
@@ -13,22 +12,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  item: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingVertical: 15,
-    paddingHorizontal: 15,
-  },
   adjustmentText: {
     fontSize: 14,
     color: '#999',
-  },
-  col: {
-    justifyContent: 'center',
-  },
-  colRight: {
-    alignItems: 'flex-end',
   },
   itemQuantity: {
     fontWeight: '600',
@@ -42,14 +28,10 @@ const styles = StyleSheet.create({
 const CartLine = (props) => {
 
   return (
-    <View style={ styles.item }>
-      <View style={ styles.col }>
-        <Text style={{ fontWeight: 'bold' }}>{ props.label }</Text>
-      </View>
-      <View style={ [ styles.col, styles.colRight ] }>
-        <Text style={{ fontWeight: 'bold' }}>{ props.value }</Text>
-      </View>
-    </View>
+    <HStack p="2" justifyContent="space-between">
+      <Text bold>{ props.label }</Text>
+      <Text bold>{ props.value }</Text>
+    </HStack>
   )
 }
 
@@ -91,23 +73,21 @@ class OrderItems extends Component {
     }
 
     return (
-      <TouchableOpacity style={ styles.item }>
-        <Grid>
-          <Col size={ 2 } style={ [ styles.col ] }>
-            <Text style={ itemQuantityStyle }>{ `${item.quantity} ×` }</Text>
-          </Col>
-          <Col size={ 7 } style={ styles.col }>
-            <Text>{ item.name }</Text>
-            { (item.adjustments && item.adjustments.hasOwnProperty('menu_item_modifier')) &&
-              this.renderItemAdjustments(item.adjustments.menu_item_modifier) }
-            { (item.adjustments && item.adjustments.hasOwnProperty('reusable_packaging')) &&
-              this.renderItemAdjustments(item.adjustments.reusable_packaging, true) }
-          </Col>
-          <Col size={ 3 } style={ [ styles.col, styles.colRight ] }>
-            <Text>{ `${formatPrice(item.total)}` }</Text>
-          </Col>
-        </Grid>
-      </TouchableOpacity>
+      <HStack p="2" justifyContent="space-between">
+        <Box w="15%">
+          <Text style={ itemQuantityStyle }>{ `${item.quantity} ×` }</Text>
+        </Box>
+        <Box w="70%">
+          <Text>{ item.name }</Text>
+          { (item.adjustments && item.adjustments.hasOwnProperty('menu_item_modifier')) &&
+            this.renderItemAdjustments(item.adjustments.menu_item_modifier) }
+          { (item.adjustments && item.adjustments.hasOwnProperty('reusable_packaging')) &&
+            this.renderItemAdjustments(item.adjustments.reusable_packaging, true) }
+        </Box>
+        <Box w="15%" alignItems="flex-end">
+          <Text>{ `${formatPrice(item.total)}` }</Text>
+        </Box>
+      </HStack>
     )
   }
 
