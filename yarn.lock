@@ -2358,10 +2358,10 @@
   resolved "https://registry.yarnpkg.com/@react-native-community/masked-view/-/masked-view-0.1.11.tgz#2f4c6e10bee0786abff4604e39a37ded6f3980ce"
   integrity sha512-rQfMIGSR/1r/SyN87+VD8xHHzDYeHaJq6elOSCAD+0iLagXkSI2pfA0LmSXP21uw5i3em7GkkRjfJ8wpqWXZNw==
 
-"@react-native-community/netinfo@^7.1.4":
-  version "7.1.4"
-  resolved "https://registry.yarnpkg.com/@react-native-community/netinfo/-/netinfo-7.1.4.tgz#611e4e0644d300e2e8b24f41cef05bdb26a078ad"
-  integrity sha512-78zQ4e9k36eGIityJCDd6W9bLg28QbHcbKyj/0vHU6rdUclCdeChZsCOtiLZ21l2q9j4F6bvoP8N5W53o3Jduw==
+"@react-native-community/netinfo@^7.1.5":
+  version "7.1.5"
+  resolved "https://registry.yarnpkg.com/@react-native-community/netinfo/-/netinfo-7.1.5.tgz#65c07505b1b211275b77879f4234c7a0ee67a2de"
+  integrity sha512-ang81EGRileiqrwWCHkrIBuxrhl0ocWIWYPMTHox3c6L1tDZkhtk8PkNRMWkDWsEQHLF/A0vR3DV4dSYCC/gxQ==
 
 "@react-native-community/push-notification-ios@^1.10.1":
   version "1.10.1"
@@ -10876,10 +10876,10 @@ react-native-background-geolocation@^3.10.0:
     react-native-background-fetch "~3.1.0"
     xcode "^0.9.1"
 
-react-native-ble-manager@^8.0.0:
-  version "8.0.0"
-  resolved "https://registry.yarnpkg.com/react-native-ble-manager/-/react-native-ble-manager-8.0.0.tgz#771ec4d1d583808b2c66311236f55d9ef42b5adc"
-  integrity sha512-lpEeiLYPVpr7OF7YeA5DcYyXQGfAjXgSAGCGgopVPwNZD5nI9hbsjv5PpXEKAa0906LWxEqJSSsrSms7VsLvDQ==
+react-native-ble-manager@^8.0.1:
+  version "8.0.1"
+  resolved "https://registry.yarnpkg.com/react-native-ble-manager/-/react-native-ble-manager-8.0.1.tgz#6eeaad01a6631f11c006932aeaceafd22f43239e"
+  integrity sha512-a7RCqXkxRPomENMNc04yOi/oJK0xfADg1p0PYln9dvkUdQ5aj12M0pMers/ldZP6BkuWMRcaxhV71jKD4MyvZg==
 
 react-native-calendars@^1.1271.0:
   version "1.1271.0"
