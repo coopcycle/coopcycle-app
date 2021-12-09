@@ -11209,10 +11209,10 @@ react-native@0.66.3:
     whatwg-fetch "^3.0.0"
     ws "^6.1.4"
 
-react-navigation-header-buttons@^7.0.2:
-  version "7.0.2"
-  resolved "https://registry.yarnpkg.com/react-navigation-header-buttons/-/react-navigation-header-buttons-7.0.2.tgz#2971aa6e9c927a8e9872afa9a394bdbb625cbe4a"
-  integrity sha512-9upSzWAaIYalBwwMDIUa9XtquVElFAfPStjzl4SvV7XE4HAIcnafDGcMApyxn5zf3N4VvDSRTB9xfEiDzr98jg==
+react-navigation-header-buttons@^9.0.1:
+  version "9.0.1"
+  resolved "https://registry.yarnpkg.com/react-navigation-header-buttons/-/react-navigation-header-buttons-9.0.1.tgz#ca0cdd5e816579158363162cbdb2a9cc84f87d20"
+  integrity sha512-FpzxpSca1UvctSn2SDAnwPIRCt9N3EnYkYDGb/fH5Ak3qnTV67WkyCa/8b8D5Pym3+2KiSXp/XuY3q66LoKNWg==
   dependencies:
     invariant ">=2"
 
