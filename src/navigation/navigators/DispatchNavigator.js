@@ -14,9 +14,9 @@ const Tab = createBottomTabNavigator()
 
 const Tabs = () => (
   <Tab.Navigator
-    tabBarOptions={{
-      showLabel: true,
-      showIcon: true,
+    screenOptions={{
+      headerShown: false,
+      tabBarShowIcon: true,
     }}>
     <Tab.Screen
       name="DispatchUnassignedTasks"
@@ -104,8 +104,7 @@ const RootStack = createStackNavigator()
 
 export default () => (
   <RootStack.Navigator
-    mode="modal"
-    screenOptions={ stackNavigatorScreenOptions }>
+    screenOptions={{ ...stackNavigatorScreenOptions, presentation: 'modal' }}>
     <RootStack.Screen
       name="Main"
       component={ MainNavigator }

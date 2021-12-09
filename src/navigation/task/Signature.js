@@ -16,7 +16,7 @@ class Signature extends Component {
     this._sketchCanvas.getBase64('jpg', false, true, true, true, (err, base64) => {
       if (!err) {
         this.props.addSignature(task, base64)
-        this.props.navigation.navigate('TaskCompleteHome', { task })
+        this.props.navigation.navigate({ name: 'TaskCompleteHome', params: { task }, merge: true })
       }
     })
   }

@@ -40,8 +40,7 @@ const RootStack = createStackNavigator()
 
 export default () => (
   <RootStack.Navigator
-    mode="modal"
-    screenOptions={ stackNavigatorScreenOptions }>
+    screenOptions={{ ...stackNavigatorScreenOptions, presentation: 'modal' }}>
     <RootStack.Screen
       name="Main"
       component={ MainNavigator }
@@ -88,6 +87,7 @@ export default () => (
       name="RestaurantSettings"
       component={ SettingsNavigator }
       options={{
+        headerShown: false,
         title: i18n.t('SETTINGS'),
       }}
     />

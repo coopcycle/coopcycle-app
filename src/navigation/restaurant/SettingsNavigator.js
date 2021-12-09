@@ -15,14 +15,13 @@ export default () => (
       name="RestaurantSettingsHome"
       component={ screens.RestaurantSettings }
       options={{
-        headerShown: false,
+        title: i18n.t('SETTINGS'),
       }}
     />
     <RootStack.Screen
       name="RestaurantProducts"
       component={ screens.RestaurantProducts }
       options={{
-        headerShown: false,
         title: i18n.t('RESTAURANT_PRODUCTS'),
       }}
     />
@@ -30,7 +29,6 @@ export default () => (
       name="RestaurantProductOptions"
       component={ ProductOptions }
       options={{
-        headerShown: false,
         title: i18n.t('RESTAURANT_PRODUCT_OPTIONS'),
       }}
     />
@@ -38,7 +36,6 @@ export default () => (
       name="RestaurantOpeningHours"
       component={ screens.RestaurantOpeningHours }
       options={{
-        headerShown: false,
         title: i18n.t('RESTAURANT_OPENING_HOURS'),
       }}
     />
@@ -46,16 +43,14 @@ export default () => (
       name="RestaurantMenus"
       component={ screens.RestaurantMenus }
       options={{
-        headerShown: false,
-        title: i18n.t('RESTAURANT_MENUS'),
+        title: i18n.t('RESTAURANT_SETTINGS_MENUS'),
       }}
     />
     <RootStack.Screen
       name="RestaurantPrinter"
       component={ screens.RestaurantPrinter }
       options={{
-        headerShown: false,
-        title: i18n.t('RESTAURANT_PRINTER'),
+        title: i18n.t('RESTAURANT_SETTINGS_PRINTER'),
       }}
     />
   </RootStack.Navigator>

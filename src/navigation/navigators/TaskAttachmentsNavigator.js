@@ -11,10 +11,12 @@ const Tab = createMaterialTopTabNavigator()
 
 const TabNavigator = ({ initialRouteName, initialParams }) => (
   <Tab.Navigator
-    screenOptions={ stackNavigatorScreenOptions }
+    screenOptions={{
+      ...stackNavigatorScreenOptions,
+      // Disable swipe to avoid swiping when signing
+      swipeEnabled: false,
+    }}
     backBehavior="history"
-    // Disable swipe to avoid swiping when signing
-    swipeEnabled={ false }
     initialRouteName={ initialRouteName }>
     <Tab.Screen
       name="TaskPhoto"

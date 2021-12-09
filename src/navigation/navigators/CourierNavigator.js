@@ -16,9 +16,11 @@ const Tab = createBottomTabNavigator()
 
 const Tabs = () => (
   <Tab.Navigator
-    tabBarOptions={{
-      showLabel: false,
-    }}>
+    screenOptions={{
+      headerShown: false,
+      tabBarShowLabel: false,
+    }}
+    >
     <Tab.Screen
       name="CourierTasks"
       component={ screens.CourierTasksPage }
@@ -106,7 +108,7 @@ const SettingsNavigator = () => (
   <SettingsStack.Navigator
     screenOptions={ stackNavigatorScreenOptions }>
     <SettingsStack.Screen
-      name="CourierSettings"
+      name="CourierSettingsHome"
       component={ screens.CourierSettings }
       options={{
         title: i18n.t('SETTINGS'),
@@ -126,8 +128,7 @@ const RootStack = createStackNavigator()
 
 export default () => (
   <RootStack.Navigator
-    mode="modal"
-    screenOptions={ stackNavigatorScreenOptions }>
+    screenOptions={{ ...stackNavigatorScreenOptions, presentation: 'modal' }}>
     <RootStack.Screen
       name="Main"
       component={ MainNavigator }
