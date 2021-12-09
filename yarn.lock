@@ -10947,13 +10947,6 @@ react-native-dropdownalert@^4.3.0:
   dependencies:
     prop-types "15.5.10"
 
-react-native-easy-grid@^0.2.2:
-  version "0.2.2"
-  resolved "https://registry.yarnpkg.com/react-native-easy-grid/-/react-native-easy-grid-0.2.2.tgz#f0be33620be1ebe2d2295918eb58b0a27e8272ab"
-  integrity sha512-MlYrNIldnEMKn6TVatQN1P64GoVlwGIuz+8ncdfJ0Wq/xtzUkQwlil8Uksyp7MhKfENE09MQnGNcba6Mx3oSAA==
-  dependencies:
-    lodash "^4.17.15"
-
 react-native-email-link@^1.12.2:
   version "1.12.2"
   resolved "https://registry.yarnpkg.com/react-native-email-link/-/react-native-email-link-1.12.2.tgz#61e8718dca98b362b3a847d7d05aa2b930ad7206"
