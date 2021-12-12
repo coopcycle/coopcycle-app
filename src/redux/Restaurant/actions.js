@@ -646,6 +646,28 @@ export function printOrder(order) {
 
         const encoded = encodeForPrinter(order)
 
+        writableCharacteristics.sort((a, b) => {
+
+          if (peripheralInfo.advertising.serviceUUIDs) {
+            const isAdvertisedA = _.includes(peripheralInfo.advertising.serviceUUIDs, a.service)
+            const isAdvertisedB = _.includes(peripheralInfo.advertising.serviceUUIDs, b.service)
+            if (isAdvertisedA !== isAdvertisedB) {
+              if (isAdvertisedA && !isAdvertisedB) {
+                return -1
+              }
+              if (isAdvertisedB && !isAdvertisedA) {
+                return 1
+              }
+            }
+          }
+
+          if (a.service.length === b.service.length) {
+            return 0
+          }
+
+          return a.service.length > b.service.length ? -1 : 1
+        })
+
         for (let i = 0; i < writableCharacteristics.length; i++) {
 
           const writableCharacteristic = writableCharacteristics[i]
