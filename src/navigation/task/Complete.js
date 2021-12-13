@@ -134,11 +134,11 @@ class CompleteTask extends Component {
       <React.Fragment>
         <KeyboardAvoidingView flex={ 1 }
           behavior={ Platform.OS === 'ios' ? 'padding' : 'height' }>
-          <TouchableWithoutFeedback onPress={ Keyboard.dismiss }>
-            <VStack flex={ 1 } justifyContent="space-between">
+          <VStack flex={ 1 }>
+            <TouchableWithoutFeedback onPress={ Keyboard.dismiss }>
               <VStack>
                 { task.type === 'DROPOFF' && (
-                  <VStack>
+                  <React.Fragment>
                     <HStack justifyContent="space-between" alignItems="center" p="3">
                       <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
                         <Icon as={ FontAwesome } name="user" style={{ marginRight: 10 }} />
@@ -149,7 +149,7 @@ class CompleteTask extends Component {
                       </TouchableOpacity>
                     </HStack>
                     <Divider />
-                  </VStack>
+                  </React.Fragment>
                 ) }
                 <FormControl p="3">
                   <FormControl.Label>{ this.props.t('NOTES') }</FormControl.Label>
@@ -179,27 +179,27 @@ class CompleteTask extends Component {
                   </ScrollView>
                 </View>
               </VStack>
-              <VStack>
-                <Divider />
-                <TouchableOpacity
-                  onPress={ () => this.props.navigation.navigate('TaskCompleteProofOfDelivery', { task }) }>
-                  <HStack alignItems="center" justifyContent="space-between" p="3">
-                    <Icon as={ FontAwesome5 } name="signature" />
-                    <Text>
-                      { this.props.t('TASK_ADD_PROOF_OF_DELIVERY') }
-                    </Text>
-                    <Icon as={ FontAwesome5 } name="camera" />
-                  </HStack>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={ onPress } style={{ alignItems: 'center', backgroundColor: footerBgColor }}>
-                  <HStack py="3" alignItems="center">
-                    <Icon as={ FontAwesome } name={ buttonIconName } style={{ color: '#fff', marginRight: 10 }} />
-                    <Text>{ footerText }</Text>
-                  </HStack>
-                </TouchableOpacity>
-              </VStack>
-            </VStack>
-          </TouchableWithoutFeedback>
+            </TouchableWithoutFeedback>
+          </VStack>
+          <Divider />
+          <VStack>
+            <TouchableOpacity
+              onPress={ () => this.props.navigation.navigate('TaskCompleteProofOfDelivery', { task }) }>
+              <HStack alignItems="center" justifyContent="space-between" p="3">
+                <Icon as={ FontAwesome5 } name="signature" />
+                <Text>
+                  { this.props.t('TASK_ADD_PROOF_OF_DELIVERY') }
+                </Text>
+                <Icon as={ FontAwesome5 } name="camera" />
+              </HStack>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={ onPress } style={{ alignItems: 'center', backgroundColor: footerBgColor }}>
+              <HStack py="3" alignItems="center">
+                <Icon as={ FontAwesome } name={ buttonIconName } style={{ color: '#fff', marginRight: 10 }} />
+                <Text>{ footerText }</Text>
+              </HStack>
+            </TouchableOpacity>
+          </VStack>
         </KeyboardAvoidingView>
         <Modal
           isVisible={ this.state.isContactNameModalVisible }
