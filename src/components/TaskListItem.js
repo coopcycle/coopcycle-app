@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { StyleSheet, TouchableOpacity, TouchableHighlight, View, Dimensions, Appearance } from 'react-native'
-import { Icon, Text } from 'native-base'
+import { Icon, Text, HStack, VStack, Box } from 'native-base'
 import { SwipeRow } from 'react-native-swipe-list-view'
 import PropTypes from 'prop-types'
 import moment from 'moment'
@@ -17,21 +17,10 @@ import {
 import TaskTitle from './TaskTitle'
 
 const styles = StyleSheet.create({
-  item: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingRight: 10,
-  },
   itemIcon: {
     alignItems: 'center',
     justifyContent: 'space-around',
     height: '100%',
-  },
-  itemBody: {
-    paddingVertical: 15,
-    paddingHorizontal: 5,
-    flexGrow: 1,
   },
   disabled: {
     opacity: 0.4,
@@ -124,7 +113,7 @@ class TaskListItem extends Component {
     const colorScheme = Appearance.getColorScheme()
     const { color, task, index } = this.props
 
-    const itemStyle = [ styles.item ]
+    const itemStyle = []
     const textStyle = [ styles.text ]
 
     if (task.status === 'DONE' || task.status === 'FAILED') {
@@ -173,21 +162,21 @@ class TaskListItem extends Component {
           style={{ backgroundColor: colorScheme === 'dark' ? 'black' : 'white' }}
           underlayColor={ '#efefef' }
           testID={ `task:${index}` }>
-          <View style={ itemStyle }>
+          <HStack flex={ 1 } alignItems="center" styles={ itemStyle } pr="3">
             <View style={{backgroundColor: color, width: 8, height: '100%', marginRight: 12}}/>
             <View style={ styles.itemIcon }>
               <TaskTypeIcon task={ task } />
               <TaskStatusIcon task={ task } />
             </View>
-            <View style={ styles.itemBody }>
+            <VStack flex={ 1 } py="3" px="1">
               <Text style={ textStyle }><TaskTitle task={ task } /></Text>
               { task.address.contactName ? (<Text style={ textStyle }>{ task.address.contactName }</Text>) : null }
               { task.address.name ? (<Text style={ textStyle }>{ task.address.name }</Text>) : null }
               <Text numberOfLines={ 1 } style={ textStyle }>{ task.address.streetAddress }</Text>
               <Text style={ textStyle }>{ moment(task.doneAfter).format('LT') } - { moment(task.doneBefore).format('LT') }</Text>
-            </View>
-            <Icon as={ FontAwesome } name="arrow-right" />
-          </View>
+            </VStack>
+            <Icon as={ FontAwesome } name="arrow-right" size="sm" />
+          </HStack>
         </TouchableHighlight>
       </SwipeRow>
     )
