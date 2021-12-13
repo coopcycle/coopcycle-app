@@ -57,6 +57,7 @@ class CompleteTask extends Component {
       notes: '',
       isContactNameModalVisible: false,
       contactName: '',
+      isKeyboardVisible: false,
     }
   }
 
@@ -112,6 +113,20 @@ class CompleteTask extends Component {
     return !_.isEmpty(task.address.contactName) ? task.address.contactName : ''
   }
 
+  componentDidMount() {
+    this.showSubscription = Keyboard.addListener('keyboardDidShow', () => {
+      this.setState({ isKeyboardVisible: true })
+    })
+    this.hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
+      this.setState({ isKeyboardVisible: false })
+    })
+  }
+
+  componentWillUnmount() {
+    this.showSubscription.remove()
+    this.hideSubscription.remove()
+  }
+
   render() {
 
     const task = this.props.route.params?.task
@@ -135,7 +150,12 @@ class CompleteTask extends Component {
         <KeyboardAvoidingView flex={ 1 }
           behavior={ Platform.OS === 'ios' ? 'padding' : 'height' }>
           <VStack flex={ 1 }>
-            <TouchableWithoutFeedback onPress={ Keyboard.dismiss }>
+            <TouchableWithoutFeedback
+              // We need to disable TouchableWithoutFeedback when keyboard is not visible,
+              // otherwise the ScrollView for proofs of delivery is not scrollable
+              disabled={ !this.state.isKeyboardVisible }
+              // This allows hiding the keyboard when touching anything on the screen
+              onPress={ Keyboard.dismiss }>
               <VStack>
                 { task.type === 'DROPOFF' && (
                   <React.Fragment>
@@ -158,7 +178,7 @@ class CompleteTask extends Component {
                     totalLines={ 2 }
                     onChangeText={ text => this.setState({ notes: text }) } />
                 </FormControl>
-                <View onStartShouldSetResponder={ () => true }>
+                <View>
                   <ScrollView style={{ height: '50%' }}>
                     <View style={ styles.content }>
                       <View style={ styles.imagesContainer }>
