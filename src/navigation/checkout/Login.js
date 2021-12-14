@@ -31,13 +31,17 @@ class Login extends Component {
 
     return (
       <Center flex={ 1 }>
-        <View style={{ paddingHorizontal: 40, width: '100%' }}>
-          <Button colorScheme="success" onPress={() => this.props.guestModeOn()}>
-            { this.props.t('CHECKOUT_AS_GUEST') }
-          </Button>
-        </View>
+        {this.props.guestCheckoutEnabled &&
+          <>
+            <View style={{ paddingHorizontal: 40, width: '100%' }}>
+              <Button colorScheme="success" onPress={() => this.props.guestModeOn()}>
+                { this.props.t('CHECKOUT_AS_GUEST') }
+              </Button>
+            </View>
 
-        <Text mt="4">{ this.props.t('OR') }</Text>
+            <Text mt="4">{ this.props.t('OR') }</Text>
+          </>
+        }
 
         <View style={{ padding: 20 }}>
           <Text style={{ textAlign: 'center' }} note>
@@ -76,6 +80,7 @@ function mapStateToProps(state) {
     message: state.app.lastAuthenticationError,
     isAuthenticated: selectIsAuthenticated(state),
     registrationErrors: state.app.registrationErrors,
+    guestCheckoutEnabled: state.app.settings.guest_checkout_enabled,
   }
 }
 
