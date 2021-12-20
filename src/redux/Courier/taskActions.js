@@ -2,6 +2,7 @@ import { Alert } from 'react-native'
 import { createAction } from 'redux-actions'
 import _ from 'lodash'
 import moment from 'moment'
+import axios from 'axios'
 
 import NavigationHolder from '../../NavigationHolder'
 import i18n from '../../i18n'
@@ -75,10 +76,12 @@ function showAlert(e) {
 
   let message = i18n.t('AN_ERROR_OCCURRED')
 
-  if (e.isAxiosError && e.response && e.response.data && e.response.data['hydra:description']) {
-    message = e.response.data['hydra:description']
-  } else if (e && e.hasOwnProperty('message')) {
-    message = e.message
+  if (e) {
+    if (axios.isAxiosError(e) && e.response && e.response.data && e.response.data['hydra:description']) {
+      message = e.response.data['hydra:description']
+    } else if (e.hasOwnProperty('message')) {
+      message = e.message
+    }
   }
 
   Alert.alert(
