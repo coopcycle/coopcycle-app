@@ -54,7 +54,7 @@
     "moment": "^2.29.1",
     "moment-business-days": "^1.2.0",
     "moment-range": "^4.0.2",
-    "native-base": "~3.1.0",
+    "native-base": "^3.2.2",
     "numbro": "^2.3.6",
     "prop-types": "^15.7.2",
     "qs": "^6.10.2",
