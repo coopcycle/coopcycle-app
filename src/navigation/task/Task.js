@@ -74,13 +74,13 @@ class Task extends Component {
           {
             text: this.props.t('CANCEL'),
             style: 'cancel',
-            onPress: () => this.swipeRow.current.closeRow(),
+            onPress: () => this.swipeRow.current?.closeRow(),
           },
           {
             text: this.props.t('TASK_COMPLETE_ALERT_NEGATIVE'),
             onPress: () => {
               this.props.startTask(task)
-              setTimeout(() => this.swipeRow.current.closeRow(), 250)
+              setTimeout(() => this.swipeRow.current?.closeRow(), 250)
             },
           },
           {
