@@ -67,7 +67,9 @@ class CompleteTask extends Component {
     const { notes } = this.state
 
     this.props.markTaskDone(this.props.httpClient, task, notes, () => {
-      this.props.navigation.navigate(this.props.route.params?.navigateAfter)
+      // Make sure to use merge = true, so that it doesn't break
+      // when navigating to DispatchTaskList
+      this.props.navigation.navigate({ name: this.props.route.params?.navigateAfter, merge: true })
     }, this.state.contactName)
   }
 
@@ -77,7 +79,9 @@ class CompleteTask extends Component {
     const { notes } = this.state
 
     this.props.markTaskFailed(this.props.httpClient, task, notes, () => {
-      this.props.navigation.navigate(this.props.route.params?.navigateAfter)
+      // Make sure to use merge = true, so that it doesn't break
+      // when navigating to DispatchTaskList
+      this.props.navigation.navigate({ name: this.props.route.params?.navigateAfter, merge: true })
     }, this.state.contactName)
   }
 
