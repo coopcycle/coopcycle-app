@@ -40,7 +40,7 @@ const Comp = ({ onAccept, onRefuse }) => {
     } else {
       onRefuse()
     }
-    setTimeout(() => swipeRow.current.closeRow(), 250)
+    setTimeout(() => swipeRow.current?.closeRow(), 250)
   }
 
   const [ openValue, setOpenValue ] = useState(0)
