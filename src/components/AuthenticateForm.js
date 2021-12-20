@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { StyleSheet, View } from 'react-native'
-import { Button, Text } from 'native-base'
+import { Button } from 'native-base'
 import { withTranslation } from 'react-i18next'
 
 import LoginForm from './LoginForm'

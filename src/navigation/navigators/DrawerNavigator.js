@@ -125,7 +125,7 @@ const DrawerNav = ({ initialRouteName, user, isAuthenticated, showRestaurantsDra
       drawerContent={ (props) => <DrawerContent { ...props } /> }
       initialRouteName={ initialRouteName }
       screenOptions={{
-        headerShown: false
+        headerShown: false,
       }}
       >
       <Drawer.Screen

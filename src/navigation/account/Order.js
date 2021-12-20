@@ -7,7 +7,6 @@ import {
   Text,
   Icon,
   VStack,
-  Box,
   Center,
   HStack,
 } from 'native-base'

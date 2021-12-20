@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { StyleSheet, TouchableOpacity, TouchableHighlight, View, Dimensions, Appearance } from 'react-native'
-import { Icon, Text, HStack, VStack, Box } from 'native-base'
+import { Icon, Text, HStack, VStack } from 'native-base'
 import { SwipeRow } from 'react-native-swipe-list-view'
 import PropTypes from 'prop-types'
 import moment from 'moment'

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Dimensions, Image, StyleSheet, View, TouchableOpacity, Platform, TouchableWithoutFeedback, Keyboard } from 'react-native'
 import {
   Icon, Text,
-  Button, FormControl, Input, VStack, HStack, Box, Divider, TextArea, KeyboardAvoidingView, ScrollView
+  Button, FormControl, Input, VStack, HStack, Box, Divider, TextArea, KeyboardAvoidingView, ScrollView,
 } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'

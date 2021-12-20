@@ -1,6 +1,6 @@
 import React from 'react'
 import { View } from 'react-native'
-import { Stack, FormControl, Input, Button, Text } from 'native-base'
+import { Stack, FormControl, Input, Button } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import validate from 'validate.js'
 import _ from 'lodash'

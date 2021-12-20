@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { StyleSheet, View, Image, Dimensions } from 'react-native'
 import {
-  Icon, Text, Button, HStack, Box, VStack,
+  Icon, Text, Button, HStack, VStack,
 } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'

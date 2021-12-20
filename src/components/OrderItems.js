@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { FlatList, SectionList, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { FlatList, SectionList, StyleSheet, View } from 'react-native'
 import PropTypes from 'prop-types'
 import { HStack, Text, Box } from 'native-base'
 import { withTranslation } from 'react-i18next'
