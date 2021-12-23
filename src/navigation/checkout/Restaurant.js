@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 import { Text } from 'native-base';
 import _ from 'lodash'
+import moment from 'moment'
 
 import CartFooter from './components/CartFooter'
 import AddressModal from './components/AddressModal'
@@ -12,6 +13,7 @@ import ExpiredSessionModal from './components/ExpiredSessionModal'
 import Menu from '../../components/Menu'
 
 import { init, addItem, hideAddressModal, resetRestaurant, setAddress } from '../../redux/Checkout/actions'
+import DangerAlert from '../../components/DangerAlert';
 
 const GroupImageHeader = ({ restaurant, scale }) => {
 
@@ -31,12 +33,17 @@ const GroupImageHeader = ({ restaurant, scale }) => {
   );
 };
 
+function hasValidTiming(timing) {
+  return timing !== null && timing.range[0] !== timing.range[1]
+}
 class Restaurant extends Component {
 
   constructor(props) {
     super(props)
     this.state = {
       scrollOffsetY: new Animated.Value(0),
+      isAvailable: (hasValidTiming(this.props.route.params?.restaurant.timing.collection)) ||
+        hasValidTiming(this.props.route.params?.restaurant.timing.delivery),
     }
     this.scrollOffsetY = new Animated.Value(0)
   }
@@ -48,11 +55,41 @@ class Restaurant extends Component {
     })
   }
 
+  renderNotAvailableWarning(restaurant) {
+    if (!this.state.isAvailable) {
+        return (
+          <DangerAlert
+            text={`${this.props.t('RESTAURANT_CLOSED_AND_NOT_AVAILABLE', {
+              datetime: moment(restaurant.nextOpeningDate).calendar(moment(), {
+                sameElse: 'llll',
+              }),
+            })}`}
+          />
+        )
+    }
+  }
+
+  renderClosedNowWarning(restaurant) {
+    if (this.state.isAvailable && !restaurant.isOpen) {
+      return (
+        <DangerAlert
+          text={`${this.props.t('RESTAURANT_CLOSED_BUT_OPENS', {
+            datetime: moment(restaurant.nextOpeningDate).calendar(moment(), {
+              sameElse: 'llll',
+            }),
+          })}`}
+        />
+      )
+    }
+  }
+
   render() {
 
     const { navigate } = this.props.navigation
     const restaurant = this.props.route.params?.restaurant
     const { isCartEmpty, menu } = this.props
+
+    restaurant.isAvailable = this.state.isAvailable
 
     return (
       <View style={{ flex: 1 }}>
@@ -60,6 +97,8 @@ class Restaurant extends Component {
           <View style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: 60 }}>
             <GroupImageHeader restaurant={ restaurant } />
           </View>
+          {this.renderNotAvailableWarning(restaurant)}
+          {this.renderClosedNowWarning(restaurant)}
           <Menu
             restaurant={ restaurant }
             menu={ menu }
