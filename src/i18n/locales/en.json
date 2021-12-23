@@ -389,6 +389,6 @@
         "RESTAURANT_PRODUCT_OPTIONS": "Product options",
         "RESTAURANT_CLOSED_NOW": "Closed now",
         "RESTAURANT_CLOSED_BUT_OPENS": "This restaurant is closed now but opens {{ datetime }}. You can still order for later on though!",
-        "RESTAURANT_CLOSED_AND_NOT_AVAILABLE": "This restaurant is closed and not available until <1>{{ datetime }}</1>."
+        "RESTAURANT_CLOSED_AND_NOT_AVAILABLE": "This restaurant is closed and not available until {{ datetime }}."
     }
 }
