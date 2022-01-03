@@ -546,7 +546,7 @@ PODS:
   - react-native-fbsdk-next/Share (4.6.0):
     - FBSDKShareKit (~> 9.3)
     - React-Core
-  - react-native-get-random-values (1.7.1):
+  - react-native-get-random-values (1.7.2):
     - React-Core
   - react-native-maps (0.27.1):
     - React
@@ -659,10 +659,10 @@ PODS:
     - RNFBApp
   - RNGestureHandler (1.10.3):
     - React-Core
-  - RNGoogleSignin (7.0.1):
+  - RNGoogleSignin (7.0.4):
     - GoogleSignIn (~> 6.0.0)
     - React-Core
-  - RNLocalize (2.1.6):
+  - RNLocalize (2.1.7):
     - React-Core
   - RNReanimated (1.13.3):
     - React-Core
@@ -1050,7 +1050,7 @@ SPEC CHECKSUMS:
   react-native-camera: b8cc03e2feec0c04403d0998e37cf519d8fd4c6f
   react-native-config: 6502b1879f97ed5ac570a029961fc35ea606cd14
   react-native-fbsdk-next: a0dd8905af573ec4d21b7bc398423ccaa2ce2b07
-  react-native-get-random-values: 2c4ff6b44cb71291dabe9a8ae87d3877dcf387da
+  react-native-get-random-values: 30b3f74ca34e30e2e480de48e4add2706a40ac8f
   react-native-maps: f4b89da81626ad7f151a8bfcb79733295d31ce5c
   react-native-netinfo: 27f287f2d191693f3b9d01a4273137fcf91c3b5d
   react-native-pager-view: 3ee7d4c7697fb3ef788346e834a60cca97ed8540
@@ -1082,8 +1082,8 @@ SPEC CHECKSUMS:
   RNFBApp: 729c0666395b1953198dc4a1ec6deb8fbe1c302e
   RNFBCrashlytics: 2061ca863e8e2fa1aae9b12477d7dfa8e88ca0f9
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
-  RNGoogleSignin: a51c9c7419262c75748ddcee3f735bb42da5def1
-  RNLocalize: f10d91c76a5692d4cf6f218c70f6e4d7dcb42d1c
+  RNGoogleSignin: c4381751eefd73c552b923ba347a9bfc6f18771c
+  RNLocalize: f567ea0e35116a641cdffe6683b0d212d568f32a
   RNReanimated: 514a11da3a2bcc6c3dfd9de32b38e2b9bf101926
   RNScreens: 522705f2e5c9d27efb17f24aceb2bf8335bc7b8e
   RNSentry: 68644ef607b780551cc555f084869764f2566652
