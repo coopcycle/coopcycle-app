@@ -387,7 +387,7 @@
         "FILTER_BY_TAGS": "Filtrar por etiquetas",
         "TERMS_OF_SERVICE": "Términos de Servicio",
         "PRIVACY": "Privacidad",
-        "RESTAURANT_CLOSED_NOW": "Cerrado ahora",
+        "RESTAURANT_PRE_ORDER": "Reservar",
         "RESTAURANT_CLOSED_BUT_OPENS": "Éste restaurante se encuentra cerrado pero vuelve a abrir {{ datetime }}. Puedes programar tu pedido!",
         "RESTAURANT_CLOSED_AND_NOT_AVAILABLE": "Éste restaurante se encuentra cerrado y no disponible hasta el {{ datetime }}."
     }

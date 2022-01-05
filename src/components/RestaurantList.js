@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { FlatList, StyleSheet, TouchableOpacity, View, Image, ImageBackground, useColorScheme } from 'react-native'
-import { Text, Icon, HStack, MoonIcon } from 'native-base'
+import { Text, Icon, HStack } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
@@ -90,8 +90,8 @@ class RestaurantList extends Component {
             <ImageBackground source={{ uri: restaurant.image }} style={{ width: '100%', height: '100%' }}>
               <View style={ styles.overlay }>
                 <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                  <MoonIcon size="4" color="white"/>
-                  <Text style={ styles.closedLabel } numberOfLines={ 1 }>{ this.props.t('RESTAURANT_CLOSED_NOW') }</Text>
+                  <Icon as={ FontAwesome } name="clock-o" size="4" color="white"/>
+                  <Text style={ styles.closedLabel } numberOfLines={ 1 }>{ this.props.t('RESTAURANT_PRE_ORDER') }</Text>
                 </View>
               </View>
             </ImageBackground>

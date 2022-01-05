@@ -370,6 +370,9 @@
         "RESTAURANT_SETTINGS_MANAGE_PRODUCT_OPTIONS": "Gérer les options des produits",
         "STORES": "Magasins",
         "FILTER_BY_TAGS": "Filtrer par tags",
-        "CONNECT_WITH_FACEBOOK": "Se connecter avec Facebook"
+        "CONNECT_WITH_FACEBOOK": "Se connecter avec Facebook",
+        "RESTAURANT_PRE_ORDER": "Pré-commander",
+        "RESTAURANT_CLOSED_BUT_OPENS": "Ce restaurant est fermé maintenant mais ouvre {{ date }}. Vous pouvez quand même commander pour plus tard !",
+        "RESTAURANT_CLOSED_AND_NOT_AVAILABLE": "Ce restaurant est fermé et non disponible jusqu'à {{ datetime }}."
     }
 }
