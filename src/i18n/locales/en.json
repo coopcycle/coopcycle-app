@@ -386,6 +386,9 @@
         "CONNECT_WITH_FACEBOOK": "Sign in with Facebook",
         "TERMS_OF_SERVICE": "Terms of service",
         "PRIVACY": "Privacy",
-        "RESTAURANT_PRODUCT_OPTIONS": "Product options"
+        "RESTAURANT_PRODUCT_OPTIONS": "Product options",
+        "RESTAURANT_PRE_ORDER": "Pre-order",
+        "RESTAURANT_CLOSED_BUT_OPENS": "This restaurant is closed now but opens {{ datetime }}. You can still order for later on though!",
+        "RESTAURANT_CLOSED_AND_NOT_AVAILABLE": "This restaurant is closed and not available until {{ datetime }}."
     }
 }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { FlatList, StyleSheet, TouchableOpacity, View, Image, useColorScheme } from 'react-native'
+import { FlatList, StyleSheet, TouchableOpacity, View, Image, ImageBackground, useColorScheme } from 'react-native'
 import { Text, Icon, HStack } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
@@ -30,6 +30,22 @@ const styles = StyleSheet.create({
   },
   badgeText: {
     fontSize: 12,
+  },
+  overlay: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    backgroundColor:'rgba(0,0,0,0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  restaurantName: {
+    color: '#ffffff',
+    fontFamily: 'Raleway-Regular',
+    fontWeight: 'bold',
+  },
+  closedLabel: {
+    color: '#ffffff',
   },
 })
 
@@ -70,7 +86,17 @@ class RestaurantList extends Component {
             <TimingBadge restaurant={ restaurant } />
           </View>
           <View style={{ width: '33.3333%' }}>
-            <Image style={{ flex: 1, height: undefined, width: undefined }} resizeMode="cover" source={{ uri: restaurant.image }} />
+            {!restaurant.isOpen &&
+            <ImageBackground source={{ uri: restaurant.image }} style={{ width: '100%', height: '100%' }}>
+              <View style={ styles.overlay }>
+                <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                  <Icon as={ FontAwesome } name="clock-o" size="4" color="white"/>
+                  <Text style={ styles.closedLabel } numberOfLines={ 1 }>{ this.props.t('RESTAURANT_PRE_ORDER') }</Text>
+                </View>
+              </View>
+            </ImageBackground>
+            }
+            {restaurant.isOpen && <Image style={{ flex: 1, height: undefined, width: undefined }} resizeMode="cover" source={{ uri: restaurant.image }} />}
           </View>
         </View>
       </TouchableOpacity>
