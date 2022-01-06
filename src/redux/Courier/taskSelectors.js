@@ -22,7 +22,6 @@ export const selectKeepAwake = state => state.ui.tasks.keepAwake
 export const selectSignatureScreenFirst = state => state.ui.tasks.signatureScreenFirst
 export const selectSignatures = state => state.entities.tasks.signatures
 export const selectPictures = state => state.entities.tasks.pictures
-export const selectShouldRefreshTasks = state => state.entities.tasks.shouldRefreshTasks
 
 /* Compound Selectors */
 

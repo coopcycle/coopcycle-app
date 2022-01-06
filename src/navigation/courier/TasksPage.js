@@ -13,7 +13,6 @@ import {
   selectFilteredTasks,
   selectTaskSelectedDate,
   selectKeepAwake,
-  selectShouldRefreshTasks,
 } from '../../redux/Courier'
 import { navigateToTask } from '../../navigation/utils'
 
@@ -65,13 +64,6 @@ class TasksPage extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-
-    if (prevState.isFocused !== this.state.isFocused) {
-      if (this.state.isFocused && this.props.shouldRefreshTasks) {
-        this._bootstrap()
-      }
-    }
-
     if (prevState.isFocused !== this.state.isFocused || prevProps.keepAwake !== this.props.keepAwake) {
       if (this.props.keepAwake && this.state.isFocused) {
         this.enableKeepAwake()
@@ -132,7 +124,6 @@ function mapStateToProps (state) {
     isCentrifugoConnected: selectIsCentrifugoConnected(state),
     httpClient: state.app.httpClient,
     mapCenter: state.app.settings.latlng.split(',').map(parseFloat),
-    shouldRefreshTasks: selectShouldRefreshTasks(state),
   }
 }
 

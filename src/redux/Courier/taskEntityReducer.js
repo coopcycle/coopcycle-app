@@ -53,7 +53,6 @@ const tasksEntityInitialState = {
   username: null,
   pictures: [], // Array of base64 encoded pictures
   signatures: [], // Array of base64 encoded signatures
-  shouldRefreshTasks: true,
 }
 
 function replaceItem(state, payload) {
@@ -122,7 +121,6 @@ export const tasksEntityReducer = (state = tasksEntityInitialState, action = {})
           ...state.items,
           [ action.payload.date ]: action.payload.items,
         },
-        shouldRefreshTasks: false,
       }
 
     case START_TASK_SUCCESS:
@@ -213,7 +211,6 @@ export const tasksEntityReducer = (state = tasksEntityInitialState, action = {})
       return {
         ...state,
         items: {},
-        shouldRefreshTasks: true,
       }
   }
 
