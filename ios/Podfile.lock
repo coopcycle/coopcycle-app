@@ -674,10 +674,10 @@ PODS:
     - Sentry (= 7.1.4)
   - RNSketchCanvas (0.8.0):
     - React
-  - RNSound (0.11.1):
+  - RNSound (0.11.2):
     - React-Core
-    - RNSound/Core (= 0.11.1)
-  - RNSound/Core (0.11.1):
+    - RNSound/Core (= 0.11.2)
+  - RNSound/Core (0.11.2):
     - React-Core
   - RNSVG (12.1.1):
     - React
@@ -1088,7 +1088,7 @@ SPEC CHECKSUMS:
   RNScreens: 522705f2e5c9d27efb17f24aceb2bf8335bc7b8e
   RNSentry: 68644ef607b780551cc555f084869764f2566652
   RNSketchCanvas: 9c28adb5381543ed55cc98ce6de46479cb3cb12c
-  RNSound: 27e8268bdb0a1f191f219a33267f7e0445e8d62f
+  RNSound: 6c156f925295bdc83e8e422e7d8b38d33bc71852
   RNSVG: 551acb6562324b1d52a4e0758f7ca0ec234e278f
   RNVectorIcons: 4143ba35feebab8fdbe6bc43d1e776b393d47ac8
   Sentry: 1d3eb1a25f8c5333c88dd5603904a6d461cd9fcf
