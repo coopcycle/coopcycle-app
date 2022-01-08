@@ -225,6 +225,7 @@ class ProductOptions extends Component {
           renderSectionHeader={ ({ section }) => this.renderSectionHeader(section) }
           keyExtractor={ (item, index) => index }
           ItemSeparatorComponent={ ItemSeparator }
+          stickySectionHeadersEnabled={ true }
         />
       </VStack>
     )

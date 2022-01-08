@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Animated, ActivityIndicator, SectionList, StyleSheet, TouchableOpacity, View } from 'react-native'
-import { Flex, Image, Text, Column, Row } from 'native-base';
+import { Flex, Image, Text, Column, Row, Heading } from 'native-base';
 import _ from 'lodash'
 import { AllergenList, RestrictedDietList } from './MenuBadges'
 
@@ -30,15 +30,19 @@ const styles = StyleSheet.create({
   },
 });
 
-class Menu extends Component {
+const SectionHeader = ({ section }) => {
 
-  renderSectionHeader(section) {
-    return (
-      <View style={ styles.sectionHeader }>
-        <Text _dark={{color: 'white'}} _light={{color: '#3e3e3e'}} bold style={ styles.sectionHeaderText }>{ section.title }</Text>
-      </View>
-    )
-  }
+  return (
+    <Heading
+      _dark={{ color: 'white', bg: 'black' }}
+      _light={{ color: '#3e3e3e', bg: 'white' }}
+      textAlign="center"
+      size="md"
+      py="2">{ section.title }</Heading>
+  )
+}
+
+class Menu extends Component {
 
   renderItem(item, index, section) {
 
@@ -115,10 +119,11 @@ class Menu extends Component {
         testID="menu"
         sections={ sections }
         renderItem={ ({ item, index, section }) => this.renderItem(item, index, section) }
-        renderSectionHeader={ ({ section }) => this.renderSectionHeader(section) }
+        renderSectionHeader={ ({ section }) => <SectionHeader section={ section } /> }
         keyExtractor={ (item, index) => index }
         initialNumToRender={ 15 }
-        ItemSeparatorComponent={ ItemSeparator } />
+        ItemSeparatorComponent={ ItemSeparator }
+        stickySectionHeadersEnabled={ true } />
     )
   }
 }
