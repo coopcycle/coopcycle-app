@@ -1,17 +1,34 @@
-import React, { Component } from 'react'
+import React, { Component, PureComponent } from 'react'
 import { connect } from 'react-redux'
-import { withTranslation } from 'react-i18next'
 import Spinner from 'react-native-loading-spinner-overlay'
 
-import { selectIsTasksLoading } from '../redux/Courier/'
-import { selectIsDispatchFetching } from '../redux/Dispatch/selectors'
+import { selectIsLoading } from '../redux/App/selectors'
 
-class SpinnerWrapper extends Component {
+class SpinnerWrapper extends PureComponent {
+
+  constructor(props) {
+
+    super(props)
+
+    this.state = {
+      isLoading: props.loading,
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.loading !== this.props.loading) {
+      if (prevProps.loading && !this.props.loading) {
+        // https://github.com/joinspontaneous/react-native-loading-spinner-overlay/issues/30
+        setTimeout(() => this.setState({ isLoading: this.props.loading }), 250)
+      } else {
+        this.setState({ isLoading: this.props.loading })
+      }
+    }
+  }
 
   render() {
-
     return (
-      <Spinner visible={ this.props.loading } />
+      <Spinner visible={ this.state.isLoading } />
     )
   }
 }
@@ -19,13 +36,8 @@ class SpinnerWrapper extends Component {
 function mapStateToProps(state) {
 
   return {
-    loading: state.app.loading
-      || selectIsTasksLoading(state)
-      || selectIsDispatchFetching(state)
-      || state.restaurant.isFetching
-      || state.checkout.isFetching
-      || false,
+    loading: selectIsLoading(state),
   }
 }
 
-export default connect(mapStateToProps)(withTranslation()(SpinnerWrapper))
+export default connect(mapStateToProps)(SpinnerWrapper)
