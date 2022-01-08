@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { SectionList, TouchableOpacity, View, StyleSheet } from 'react-native'
+import { SectionList, TouchableOpacity, View, StyleSheet, useColorScheme } from 'react-native'
 import { Badge, Icon, Text, Heading, Box, VStack } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
@@ -56,6 +56,17 @@ const RangeOption = ({ name, price, onPress, selected, onPressIncrement, onPress
     </View>
   </View>
 )
+
+const SectionHeader = ({ children }) => {
+
+  const colorScheme = useColorScheme()
+
+  return (
+    <Box p="3" bg={ colorScheme === 'dark' ? 'black' : 'white' }>
+      { children }
+    </Box>
+  )
+}
 
 class ProductOptions extends Component {
 
@@ -180,13 +191,13 @@ class ProductOptions extends Component {
     )
   }
 
-  renderSection(menuSection) {
+  renderSectionHeader(menuSection) {
 
     return (
-      <Box p="3">
+      <SectionHeader>
         <Heading size="md" >{ menuSection.name }</Heading>
         { menuSection.valuesRange && this.renderSectionHelp(menuSection) }
-      </Box>
+      </SectionHeader>
     )
   }
 
@@ -211,7 +222,7 @@ class ProductOptions extends Component {
           ref={ this.list }
           sections={ sections }
           renderItem={ ({ item, section, index }) => this.renderItem(item, section, index) }
-          renderSectionHeader={ ({ section }) => this.renderSection(section) }
+          renderSectionHeader={ ({ section }) => this.renderSectionHeader(section) }
           keyExtractor={ (item, index) => index }
           ItemSeparatorComponent={ ItemSeparator }
         />
