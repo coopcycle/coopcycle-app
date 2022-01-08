@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { ActivityIndicator, Dimensions, StyleSheet, View, Animated, Keyboard, Platform, TouchableOpacity, Appearance } from 'react-native'
+import { ActivityIndicator, Dimensions, StyleSheet, View, Animated, Keyboard, Platform, TouchableOpacity } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
@@ -11,6 +11,7 @@ import Modal from 'react-native-modal'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 
 import AddressAutocomplete from '../../../components/AddressAutocomplete'
+import ModalContent from '../../../components/ModalContent'
 import AddressUtils from '../../../utils/Address'
 
 import { setAddressModalHidden, hideAddressModal, setAddress, setFulfillmentMethod } from '../../../redux/Checkout/actions'
@@ -113,7 +114,6 @@ class AddressModal extends Component {
   render() {
 
     const { width, height } = Dimensions.get('window')
-    const colorScheme = Appearance.getColorScheme()
 
     const modalMessageTextStyle = [
       styles.modalMessageText,
@@ -131,7 +131,7 @@ class AddressModal extends Component {
         swipeDirection={ ['up', 'down'] }
         onModalWillShow={ () => this.props.setAddressModalHidden(false) }
         onModalHide={ () => this.props.setAddressModalHidden(true) }>
-        <SafeAreaView style={{ backgroundColor: colorScheme === 'dark' ? 'black' : 'white' }}>
+        <ModalContent as={ SafeAreaView }>
           <Animated.View style={ [ styles.modalContent, { paddingBottom: this.keyboardHeight } ] } testID="addressModal">
             <Text style={ modalMessageTextStyle }>{ this.props.message }</Text>
             <View style={{ width, height: height / 3 }}>
@@ -169,7 +169,7 @@ class AddressModal extends Component {
               </TouchableOpacity>
             ) }
           </Animated.View>
-        </SafeAreaView>
+        </ModalContent>
       </Modal>
     )
   }

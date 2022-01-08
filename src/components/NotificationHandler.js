@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { FlatList, View, StyleSheet, TouchableOpacity, Appearance } from 'react-native'
+import { FlatList, View, StyleSheet, TouchableOpacity } from 'react-native'
 import { Icon, Text } from 'native-base'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
@@ -19,6 +19,8 @@ import { loadOrderAndNavigate, loadOrderAndPushNotification, loadOrder } from '.
 import { message as wsMessage } from '../redux/middlewares/CentrifugoMiddleware/actions'
 import tracker from '../analytics/Tracker'
 import analyticsEvent from '../analytics/Event'
+
+import ModalContent from './ModalContent'
 
 // Make sure sound will play even when device is in silent mode
 Sound.setCategory('Playback')
@@ -257,10 +259,8 @@ class NotificationHandler extends Component {
 
   renderModalContent() {
 
-    const colorScheme = Appearance.getColorScheme()
-
     return (
-      <View style={ [ styles.modalContent, { backgroundColor: colorScheme === 'dark' ? 'black' : 'white' } ] }>
+      <ModalContent>
         <View>
           <View style={ styles.heading }>
             <Icon as={Ionicons} name="notifications" style={{ color: 'white', marginRight: 10 }} />
@@ -276,7 +276,7 @@ class NotificationHandler extends Component {
             { this.props.t('CLOSE') }
           </Text>
         </TouchableOpacity>
-      </View>
+      </ModalContent>
     )
   }
 
@@ -302,10 +302,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 25,
-  },
-  modalContent: {
-    borderRadius: 4,
-    borderColor: 'rgba(0, 0, 0, 0.1)',
   },
   item: {
     paddingVertical: 25,

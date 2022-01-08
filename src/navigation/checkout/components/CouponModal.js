@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, Appearance } from 'react-native'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
-import { FormControl, Input, Button, Text, VStack } from 'native-base'
+import { FormControl, Input, Button, Text, VStack, Box } from 'native-base'
 import { Formik } from 'formik'
 import PropTypes from 'prop-types'
 import Modal from 'react-native-modal'
+
+import ModalContent from '../../../components/ModalContent'
 
 class CouponModal extends Component {
 
@@ -19,8 +20,6 @@ class CouponModal extends Component {
 
   render() {
 
-    const colorScheme = Appearance.getColorScheme()
-
     const initialValues = {
       code: '',
     }
@@ -30,32 +29,34 @@ class CouponModal extends Component {
         isVisible={ this.props.isVisible }
         onSwipeComplete={ this.props.onSwipeComplete }
         swipeDirection={ ['up', 'down'] }>
-        <View style={ [ styles.modalContent, { backgroundColor: colorScheme === 'dark' ? 'black' : 'white' } ] }>
-          <Formik
-            initialValues={ initialValues }
-            validate={ this._validate.bind(this) }
-            onSubmit={ this._onSubmit.bind(this) }
-            validateOnBlur={ false }
-            validateOnChange={ false }>
-            {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
-            <VStack>
-              <FormControl error={ (touched.code && errors.code) } style={{ marginBottom: 15 }}>
-                <FormControl.Label>{this.props.t('VOUCHER_CODE')}</FormControl.Label>
-                <Input
-                  autoCorrect={ false }
-                  autoCapitalize="none"
-                  style={{ height: 40 }}
-                  returnKeyType="done"
-                  onChangeText={ handleChange('code') }
-                  onBlur={ handleBlur('code') } />
-              </FormControl>
-              <Button block onPress={ handleSubmit }>
-                <Text>{ this.props.t('SUBMIT') }</Text>
-              </Button>
-            </VStack>
-            )}
-          </Formik>
-        </View>
+        <ModalContent>
+          <Box p="4" borderWidth="1" borderColor="gray.700">
+            <Formik
+              initialValues={ initialValues }
+              validate={ this._validate.bind(this) }
+              onSubmit={ this._onSubmit.bind(this) }
+              validateOnBlur={ false }
+              validateOnChange={ false }>
+              {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
+              <VStack>
+                <FormControl error={ (touched.code && errors.code) } style={{ marginBottom: 15 }}>
+                  <FormControl.Label>{this.props.t('VOUCHER_CODE')}</FormControl.Label>
+                  <Input
+                    autoCorrect={ false }
+                    autoCapitalize="none"
+                    style={{ height: 40 }}
+                    returnKeyType="done"
+                    onChangeText={ handleChange('code') }
+                    onBlur={ handleBlur('code') } />
+                </FormControl>
+                <Button block onPress={ handleSubmit }>
+                  <Text>{ this.props.t('SUBMIT') }</Text>
+                </Button>
+              </VStack>
+              )}
+            </Formik>
+          </Box>
+        </ModalContent>
       </Modal>
     );
   }
@@ -65,12 +66,6 @@ CouponModal.propTypes = {
   onSwipeComplete: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
 }
-
-const styles = StyleSheet.create({
-  modalContent: {
-    padding: 15,
-  },
-})
 
 function mapStateToProps(state) {
   return {}

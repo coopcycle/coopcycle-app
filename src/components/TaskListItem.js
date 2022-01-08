@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, TouchableOpacity, TouchableHighlight, View, Dimensions, Appearance } from 'react-native'
+import { StyleSheet, TouchableOpacity, TouchableHighlight, View, Dimensions, Appearance, useColorScheme } from 'react-native'
 import { Icon, Text, HStack, VStack } from 'native-base'
 import { SwipeRow } from 'react-native-swipe-list-view'
 import PropTypes from 'prop-types'
@@ -101,6 +101,19 @@ const SwipeButton = ({ iconName, width }) => (
   </View>
 )
 
+const ItemTouchable = ({ children, ...otherProps }) => {
+
+  const colorScheme = useColorScheme()
+
+  return (
+    <TouchableHighlight
+      style={{ backgroundColor: colorScheme === 'dark' ? 'black' : 'white' }}
+      { ...otherProps }>
+      { children }
+    </TouchableHighlight>
+  )
+}
+
 class TaskListItem extends Component {
 
   constructor(props) {
@@ -157,10 +170,8 @@ class TaskListItem extends Component {
               width={ buttonWidth } />
           </SwipeButtonContainer>
         </View>
-        <TouchableHighlight
+        <ItemTouchable
           onPress={ this.props.onPress }
-          style={{ backgroundColor: colorScheme === 'dark' ? 'black' : 'white' }}
-          underlayColor={ '#efefef' }
           testID={ `task:${index}` }>
           <HStack flex={ 1 } alignItems="center" styles={ itemStyle } pr="3">
             <View style={{backgroundColor: color, width: 8, height: '100%', marginRight: 12}}/>
@@ -177,7 +188,7 @@ class TaskListItem extends Component {
             </VStack>
             <Icon as={ FontAwesome } name="arrow-right" size="sm" />
           </HStack>
-        </TouchableHighlight>
+        </ItemTouchable>
       </SwipeRow>
     )
   }
