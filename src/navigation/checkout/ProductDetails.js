@@ -103,7 +103,7 @@ class ProductDetails extends Component {
                     <Text mt="2" bold fontSize="xl">{ `${formatPrice(product.offers.price)}` }</Text>
                 </Box>
                 <Divider my="2" />
-                <Flex flexDirection="row" p="3" align="center" justify="space-between">
+                <Flex flexDirection="row" px="3" py="1" align="center" justify="space-between">
                     <Heading size="md">{ this.props.t('CHECKOUT_UNITS') }</Heading>
                     <Flex flexDirection="row" align="center">
                         <Pressable disabled={this.state.quantity <= 1} p="2" onPress={ () => { this._decrementQuantity() } }>
