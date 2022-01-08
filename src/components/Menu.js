@@ -68,7 +68,7 @@ class Menu extends Component {
 
     return (
       <TouchableOpacity style={ styles.itemContainer } disabled={!this.props.restaurant.isAvailable} { ...itemProps } testID={ `menuItem:${section.index}:${index}` }>
-        <Flex mx="2" direction="row" justifyContent="space-between">
+        <Flex mx="2" flexDirection="row" justifyContent="space-between">
           <Column flexShrink="1">
             <Text style={ itemNameStyle }>{ item.name }</Text>
             { item.description && item.description.length > 0 &&
@@ -85,7 +85,7 @@ class Menu extends Component {
               { isLoading && <ActivityIndicator color="#c7c7c7" size="small" style={ styles.loadingIndicator } /> }
             </Row>
           </Column>
-            <Column>
+          <Column>
             { image1x1 &&
               <Image size="md" resizeMode="cover" borderRadius={5} source={{ uri: image1x1.url }} alt="Product" />
             }
