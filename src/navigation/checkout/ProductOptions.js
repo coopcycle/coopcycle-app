@@ -195,7 +195,7 @@ class ProductOptions extends Component {
 
     return (
       <SectionHeader>
-        <Heading size="md" >{ menuSection.name }</Heading>
+        <Heading size="sm" >{ menuSection.name }</Heading>
         { menuSection.valuesRange && this.renderSectionHelp(menuSection) }
       </SectionHeader>
     )
@@ -214,7 +214,7 @@ class ProductOptions extends Component {
     return (
       <VStack flex={ 1 }>
         <Box p="3">
-          <Heading size="lg">
+          <Heading size="md">
             { this.props.t('CHECKOUT_PRODUCT_OPTIONS_TITLE') }
           </Heading>
         </Box>
