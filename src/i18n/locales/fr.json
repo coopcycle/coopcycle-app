@@ -373,6 +373,11 @@
         "CONNECT_WITH_FACEBOOK": "Se connecter avec Facebook",
         "RESTAURANT_PRE_ORDER": "Pré-commander",
         "RESTAURANT_CLOSED_BUT_OPENS": "Ce restaurant est fermé maintenant mais ouvre {{ date }}. Vous pouvez quand même commander pour plus tard !",
-        "RESTAURANT_CLOSED_AND_NOT_AVAILABLE": "Ce restaurant est fermé et non disponible jusqu'à {{ datetime }}."
+        "RESTAURANT_CLOSED_AND_NOT_AVAILABLE": "Ce restaurant est fermé et non disponible jusqu'à {{ datetime }}.",
+        "CHECKOUT_AS_GUEST": "Commander en tant qu'invité",
+        "GUEST_CHECKOUT_ORDER_EMAIL_HELP": "Pour vous envoyer des mises à jour à propos de votre commande",
+        "GUEST_CHECK_EMAIL_FOR_ORDER_UPDATES": "Comme vous avez choisi de commander en tant qu'invité, veuillez vérifier vos e-mails pour suivre votre commande",
+        "MY_ORDER": "Ma commande",
+        "OR": "ou"
     }
 }
