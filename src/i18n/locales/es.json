@@ -389,6 +389,11 @@
         "PRIVACY": "Privacidad",
         "RESTAURANT_PRE_ORDER": "Reservar",
         "RESTAURANT_CLOSED_BUT_OPENS": "Éste restaurante se encuentra cerrado pero vuelve a abrir {{ datetime }}. Puedes programar tu pedido!",
-        "RESTAURANT_CLOSED_AND_NOT_AVAILABLE": "Éste restaurante se encuentra cerrado y no disponible hasta el {{ datetime }}."
+        "RESTAURANT_CLOSED_AND_NOT_AVAILABLE": "Éste restaurante se encuentra cerrado y no disponible hasta el {{ datetime }}.",
+        "MY_ORDER": "Mi pedido",
+        "CHECKOUT_AS_GUEST": "Comprar como inivitado",
+        "OR": "o",
+        "GUEST_CHECKOUT_ORDER_EMAIL_HELP": "Para enviarle actualizaciones sobre su pedido",
+        "GUEST_CHECK_EMAIL_FOR_ORDER_UPDATES": "Como ha elegido comprar como invitado, por favor revise sus emails para seguir el estado de su pedido"
     }
 }

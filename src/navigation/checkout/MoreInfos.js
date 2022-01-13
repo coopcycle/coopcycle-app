@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, StyleSheet, InteractionManager } from 'react-native'
+import { View, StyleSheet, InteractionManager, ScrollView } from 'react-native'
 import { Text, VStack, FormControl, Input, TextArea } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
@@ -14,9 +14,11 @@ import { assignCustomer, updateCart, checkout } from '../../redux/Checkout/actio
 import { selectCartFulfillmentMethod } from '../../redux/Checkout/selectors'
 import FooterButton from './components/FooterButton'
 import { isFree } from '../../utils/order'
+import { selectIsAuthenticated } from '../../redux/App/selectors'
+import validate from 'validate.js'
 
-const hasPhoneNumberErrors = (errors, touched) => {
-  return errors.telephone && touched.telephone
+const hasErrors = (errors, touched, field) => {
+  return errors[field] && touched[field]
 }
 
 class MoreInfos extends Component {
@@ -24,6 +26,16 @@ class MoreInfos extends Component {
   _handleChangeTelephone(value, setFieldValue, setFieldTouched) {
     setFieldValue('telephone', new AsYouType(this.props.country).input(value))
     setFieldTouched('telephone')
+  }
+
+  _updateCart(payload) {
+    this.props.updateCart(payload, (order) => {
+      if (isFree(order)) {
+        this.props.checkout()
+      } else {
+        this.props.navigation.navigate('CheckoutCreditCard')
+      }
+    })
   }
 
   _submit(values) {
@@ -47,13 +59,18 @@ class MoreInfos extends Component {
       }
     }
 
-    this.props.updateCart(payload, (order) => {
-      if (isFree(order)) {
-        this.props.checkout()
-      } else {
-        this.props.navigation.navigate('CheckoutCreditCard')
-      }
-    })
+    if (this.props.user.isGuest()) {
+      return this.props.assignCustomer({email: values.email, telephone})
+        .then(() => {
+          this._updateCart(payload)
+        })
+        .catch((err) => {
+          console.error(err);
+        })
+    } else {
+      this._updateCart(payload)
+    }
+
   }
 
   _validate(values) {
@@ -68,13 +85,21 @@ class MoreInfos extends Component {
       }
     }
 
+    if (!this.props.isAuthenticated && this.props.user.isGuest()) {
+      if (validate.single(values.email, {presence: true, email: true})) {
+        errors.email = this.props.t('INVALID_EMAIL')
+      }
+    }
+
     return errors
   }
 
   componentDidMount() {
-    InteractionManager.runAfterInteractions(() => {
-      this.props.assignCustomer()
-    })
+    if (!this.props.user.isGuest()) {
+      InteractionManager.runAfterInteractions(() => {
+        this.props.assignCustomer({})
+      })
+    }
   }
 
   render() {
@@ -82,6 +107,7 @@ class MoreInfos extends Component {
     let initialValues = {
       telephone: this.props.telephone,
       notes: '',
+      email: this.props.email,
     }
 
     if (this.props.fulfillmentMethod === 'delivery') {
@@ -101,50 +127,72 @@ class MoreInfos extends Component {
         validateOnBlur={ false }
         validateOnChange={ false }>
         {({ handleChange, handleBlur, handleSubmit, values, errors, touched, setFieldValue, setFieldTouched }) => (
-          <VStack>
+          <VStack style={{flex: 1}}>
             <View style={{ backgroundColor: '#cce5ff', padding: 20 }}>
               <Text note style={{ textAlign: 'center', color: '#004085' }}>{ this.props.t('CHECKOUT_MORE_INFOS_DISCLAIMER') }</Text>
             </View>
-            <VStack p="2">
-              <FormControl mb="2">
-                <FormControl.Label>{ this.props.t('STORE_NEW_DELIVERY_PHONE_NUMBER') }</FormControl.Label>
-                <Input
-                  testID="checkoutTelephone"
-                  autoCorrect={ false }
-                  keyboardType="phone-pad"
-                  returnKeyType="done"
-                  onChangeText={ value => this._handleChangeTelephone(value, setFieldValue, setFieldTouched) }
-                  onBlur={ handleBlur('telephone') }
-                  value={ values.telephone } />
-                { hasPhoneNumberErrors(errors, touched) && (
-                  <Text note style={ styles.errorText }>{ errors.telephone }</Text>
-                ) }
-                { !hasPhoneNumberErrors(errors, touched) && (
-                  <FormControl.HelperText>{ this.props.t('CHECKOUT_ORDER_PHONE_NUMBER_HELP') }</FormControl.HelperText>
-                ) }
-              </FormControl>
-              { Object.prototype.hasOwnProperty.call(values, 'address') && (
-              <FormControl mb="2">
-                <FormControl.Label>{ this.props.t('CHECKOUT_ORDER_ADDRESS_DESCRIPTION') }</FormControl.Label>
-                <TextArea
-                  autoCorrect={ false }
-                  totalLines={ 3 }
-                  onChangeText={ handleChange('address.description') }
-                  onBlur={ handleBlur('address.description') } />
-                <FormControl.HelperText>{ this.props.t('CHECKOUT_ORDER_ADDRESS_DESCRIPTION_HELP') }</FormControl.HelperText>
-              </FormControl>
-              )}
-              <FormControl mb="2">
-                <FormControl.Label>{ this.props.t('CHECKOUT_ORDER_NOTES') }</FormControl.Label>
-                <TextArea
-                  autoCorrect={ false }
-                  totalLines={ 3 }
-                  onChangeText={ handleChange('notes') }
-                  onBlur={ handleBlur('notes') } />
-                <FormControl.HelperText>{ this.props.t('CHECKOUT_ORDER_NOTES_HELP') }</FormControl.HelperText>
-              </FormControl>
+            <VStack p="2" style={{flexShrink: 1}}>
+              <ScrollView>
+                {!this.props.isAuthenticated && this.props.user.isGuest() &&
+                <FormControl mb="2">
+                    <FormControl.Label>Email</FormControl.Label>
+                    <Input
+                      testID="guestCheckoutEmail"
+                      autoCorrect={ false }
+                      keyboardType="email-address"
+                      returnKeyType="done"
+                      onChangeText={ handleChange('email') }
+                      onBlur={ handleBlur('email') }
+                      value={ values.email } />
+                    { hasErrors(errors, touched, 'email') && (
+                      <Text note style={ styles.errorText }>{ errors.email }</Text>
+                    ) }
+                    { !hasErrors(errors, touched, 'email') && (
+                      <FormControl.HelperText>{ this.props.t('GUEST_CHECKOUT_ORDER_EMAIL_HELP') }</FormControl.HelperText>
+                    ) }
+                </FormControl>
+                }
+                <FormControl mb="2">
+                  <FormControl.Label>{ this.props.t('STORE_NEW_DELIVERY_PHONE_NUMBER') }</FormControl.Label>
+                  <Input
+                    testID="checkoutTelephone"
+                    autoCorrect={ false }
+                    keyboardType="phone-pad"
+                    returnKeyType="done"
+                    onChangeText={ value => this._handleChangeTelephone(value, setFieldValue, setFieldTouched) }
+                    onBlur={ handleBlur('telephone') }
+                    value={ values.telephone } />
+                  { hasErrors(errors, touched, 'telephone') && (
+                    <Text note style={ styles.errorText }>{ errors.telephone }</Text>
+                  ) }
+                  { !hasErrors(errors, touched, 'telephone') && (
+                    <FormControl.HelperText>{ this.props.t('CHECKOUT_ORDER_PHONE_NUMBER_HELP') }</FormControl.HelperText>
+                  ) }
+                </FormControl>
+                { Object.prototype.hasOwnProperty.call(values, 'address') && (
+                <FormControl mb="2">
+                  <FormControl.Label>{ this.props.t('CHECKOUT_ORDER_ADDRESS_DESCRIPTION') }</FormControl.Label>
+                  <TextArea
+                    autoCorrect={ false }
+                    totalLines={ 3 }
+                    onChangeText={ handleChange('address.description') }
+                    onBlur={ handleBlur('address.description') } />
+                  <FormControl.HelperText>{ this.props.t('CHECKOUT_ORDER_ADDRESS_DESCRIPTION_HELP') }</FormControl.HelperText>
+                </FormControl>
+                )}
+                <FormControl mb="2">
+                  <FormControl.Label>{ this.props.t('CHECKOUT_ORDER_NOTES') }</FormControl.Label>
+                  <TextArea
+                    autoCorrect={ false }
+                    totalLines={ 3 }
+                    onChangeText={ handleChange('notes') }
+                    onBlur={ handleBlur('notes') } />
+                  <FormControl.HelperText>{ this.props.t('CHECKOUT_ORDER_NOTES_HELP') }</FormControl.HelperText>
+                </FormControl>
+              </ScrollView>
             </VStack>
             <FooterButton
+              style={{flex: 1}}
               testID="moreInfosSubmit"
               text={ this.props.t('SUBMIT') }
               onPress={ handleSubmit } />
@@ -181,6 +229,9 @@ function mapStateToProps(state) {
     // For click & collect, we need to retrieve the customer phone number
     // This needs a change server side
     telephone: fulfillmentMethod === 'delivery' ? (state.checkout.cart?.shippingAddress?.telephone || '') : '',
+    email: state.checkout.guest ? state.checkout.guest.email : '',
+    user: state.app.user,
+    isAuthenticated: selectIsAuthenticated(state),
   }
 }
 
@@ -188,8 +239,8 @@ function mapDispatchToProps(dispatch) {
 
   return {
     updateCart: (cart, cb) => dispatch(updateCart(cart, cb)),
-    assignCustomer: () => dispatch(assignCustomer()),
     checkout: () => dispatch(checkout()),
+    assignCustomer: (payload) => dispatch(assignCustomer(payload)),
   }
 }
 

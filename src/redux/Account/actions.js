@@ -10,6 +10,7 @@ import { setLoading } from '../App/actions'
  */
 
 export const LOAD_ORDERS_SUCCESS = '@account/LOAD_ORDERS_SUCCESS'
+export const LOAD_ORDER_SUCCESS = '@account/LOAD_ORDER_SUCCESS'
 export const LOAD_ADDRESSES_SUCCESS = '@account/LOAD_ADDRESSES_SUCCESS'
 export const LOAD_PERSONAL_INFO_SUCCESS = '@account/LOAD_PERSONAL_INFO_SUCCESS'
 
@@ -21,6 +22,7 @@ export const DISCONNECTED = '@account/CENTRIFUGO_DISCONNECTED'
  */
 
 const loadOrdersSuccess = createAction(LOAD_ORDERS_SUCCESS)
+const loadOrderSuccess = createAction(LOAD_ORDER_SUCCESS)
 export const loadAddressesSuccess = createAction(LOAD_ADDRESSES_SUCCESS)
 const loadPersonalInfoSuccess = createAction(LOAD_PERSONAL_INFO_SUCCESS)
 
@@ -37,6 +39,25 @@ export function loadOrders() {
     httpClient.get('/api/me/orders')
       .then(res => {
         dispatch(loadOrdersSuccess(res['hydra:member']))
+        dispatch(setLoading(false))
+      })
+      .catch(e => {
+        console.log(e)
+        dispatch(setLoading(false))
+      })
+  }
+}
+
+export function loadOrder(hashid) {
+
+  return function (dispatch, getState) {
+
+    const httpClient = getState().app.httpClient
+    dispatch(setLoading(true))
+
+    return httpClient.get(`order/${hashid}/preview`)
+      .then(res => {
+        dispatch(loadOrderSuccess(res))
         dispatch(setLoading(false))
       })
       .catch(e => {

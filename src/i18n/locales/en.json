@@ -389,6 +389,11 @@
         "RESTAURANT_PRODUCT_OPTIONS": "Product options",
         "RESTAURANT_PRE_ORDER": "Pre-order",
         "RESTAURANT_CLOSED_BUT_OPENS": "This restaurant is closed now but opens {{ datetime }}. You can still order for later on though!",
-        "RESTAURANT_CLOSED_AND_NOT_AVAILABLE": "This restaurant is closed and not available until {{ datetime }}."
+        "RESTAURANT_CLOSED_AND_NOT_AVAILABLE": "This restaurant is closed and not available until {{ datetime }}.",
+        "CHECKOUT_AS_GUEST": "Checkout as guest",
+        "GUEST_CHECKOUT_ORDER_EMAIL_HELP": "To send you updates about your order",
+        "GUEST_CHECK_EMAIL_FOR_ORDER_UPDATES": "Because you chose to checkout as guest, please check your emails to follow your order",
+        "MY_ORDER": "My order",
+        "OR": "or"
     }
 }

@@ -86,6 +86,15 @@ const config = {
   screens: {
     RegisterConfirmNav: 'register/confirm/:token',
     ResetPasswordNav: 'resetting/reset/:token',
+    AccountNav: {
+      screens: {
+        AccountOrders: {
+          screens: {
+            AccountOrder: 'order/confirm/:hashid',
+          },
+        },
+      },
+    },
   },
 }
 

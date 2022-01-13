@@ -439,6 +439,23 @@ export function forgotPassword() {
   }
 }
 
+export function guestModeOn() {
+  return function (dispatch, getState) {
+    const user = new AppUser(
+      null, // username
+      null, // email
+      null, // token
+      null, // roles
+      null, // refresh token
+      true, // enabled
+      true, // guest
+    )
+    dispatch(setUser(user))
+    console.log('User is in guest mode')
+    NavigationHolder.navigate('CheckoutMoreInfos', {});
+  }
+}
+
 export function resumeCheckout() {
   return (dispatch, getState) => {
     dispatch(_resumeCheckoutAfterActivation(false))

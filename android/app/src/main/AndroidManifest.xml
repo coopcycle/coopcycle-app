@@ -160,6 +160,10 @@
                 android:pathPrefix="/resetting/reset" />
             <data
                 android:scheme="https"
+                android:host="*.coopcycle.org"
+                android:pathPrefix="/order/confirm" />
+            <data
+                android:scheme="https"
                 android:host="livraison.sicklo.fr"
                 android:pathPrefix="/register/confirm" />
             <data
@@ -168,12 +172,20 @@
                 android:pathPrefix="/resetting/reset" />
             <data
                 android:scheme="https"
+                android:host="livraison.sicklo.fr"
+                android:pathPrefix="/order/confirm" />
+            <data
+                android:scheme="https"
                 android:host="khora.berlin"
                 android:pathPrefix="/register/confirm" />
             <data
                 android:scheme="https"
                 android:host="khora.berlin"
                 android:pathPrefix="/resetting/reset" />
+            <data
+                android:scheme="https"
+                android:host="khora.berlin"
+                android:pathPrefix="/order/confirm" />
         </intent-filter>
         <intent-filter>
             <action android:name="android.intent.action.VIEW" />

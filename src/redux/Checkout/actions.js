@@ -60,6 +60,8 @@ export const LOAD_PAYMENT_DETAILS_REQUEST = '@checkout/LOAD_PAYMENT_DETAILS_REQU
 export const LOAD_PAYMENT_DETAILS_SUCCESS = '@checkout/LOAD_PAYMENT_DETAILS_SUCCESS'
 export const LOAD_PAYMENT_DETAILS_FAILURE = '@checkout/LOAD_PAYMENT_DETAILS_FAILURE'
 
+export const UPDATE_CUSTOMER_GUEST = '@checkout/UPDATE_CUSTOMER_GUEST'
+
 /*
  * Action Creators
  */
@@ -86,6 +88,7 @@ export const showAddressModal = createAction(SHOW_ADDRESS_MODAL)
 export const hideAddressModal = createAction(HIDE_ADDRESS_MODAL)
 
 export const updateCartSuccess = createAction(UPDATE_CART_SUCCESS)
+export const updateCustomerGuest = createAction(UPDATE_CUSTOMER_GUEST)
 
 export const setCheckoutLoading = createAction(SET_CHECKOUT_LOADING)
 
@@ -596,7 +599,6 @@ export function mercadopagoCheckout(payment) {
   }
 
   return (dispatch, getState) => {
-    const { httpClient } = getState().app;
     const { cart } = getState().checkout;
 
     const {id, status, statusDetail} = payment;
@@ -610,6 +612,8 @@ export function mercadopagoCheckout(payment) {
       paymentId: id,
       paymentMethodId: 'CARD',
     }
+
+    const httpClient = createHttpClient(getState())
 
     httpClient
       .put(cart['@id'] + '/pay', params)
@@ -661,9 +665,10 @@ export function checkout(cardholderName) {
 
   return (dispatch, getState) => {
 
-    const { httpClient } = getState().app
     const { cart } = getState().checkout
     const user = selectUser(getState())
+
+    const httpClient = createHttpClient(getState())
 
     dispatch(checkoutRequest())
 
@@ -714,11 +719,12 @@ export function checkout(cardholderName) {
   }
 }
 
-export function assignCustomer() {
+export function assignCustomer({email, telephone}) {
 
-  return (dispatch, getState) => {
+  return async (dispatch, getState) => {
 
     const { cart, token } = getState().checkout
+    const { user } = getState().app
 
     if (cart.customer) {
       return
@@ -728,13 +734,26 @@ export function assignCustomer() {
 
     dispatch(checkoutRequest())
 
-    httpClient
-      .put(cart['@id'] + '/assign', {}, {
+    let body = {}
+
+    if (user.isGuest()) {
+      body = {
+        guest: true,
+        email,
+        telephone,
+      };
+    }
+
+    return httpClient
+      .put(cart['@id'] + '/assign', body, {
         headers: {
           'X-CoopCycle-Session': `Bearer ${token}`,
         },
       })
       .then(res => {
+        if (user.isGuest()) {
+          dispatch(updateCustomerGuest({email, telephone}))
+        }
         dispatch(updateCartSuccess(res))
         dispatch(checkoutSuccess())
       })

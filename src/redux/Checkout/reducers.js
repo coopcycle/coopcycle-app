@@ -33,6 +33,7 @@ import {
   LOAD_PAYMENT_DETAILS_REQUEST,
   LOAD_PAYMENT_DETAILS_SUCCESS,
   LOAD_PAYMENT_DETAILS_FAILURE,
+  UPDATE_CUSTOMER_GUEST,
 } from './actions'
 
 import i18n from '../../i18n'
@@ -64,6 +65,7 @@ const initialState = {
   paymentMethods: [],
   paymentDetails: {},
   paymentDetailsLoaded: false,
+  guest: null,
 }
 
 export default (state = initialState, action = {}) => {
@@ -320,6 +322,13 @@ export default (state = initialState, action = {}) => {
         paymentDetailsLoaded: true,
         paymentDetails: action.payload,
       }
+
+    case UPDATE_CUSTOMER_GUEST:
+        return {
+          ...state,
+          guest: action.payload,
+        }
+
   }
 
   return state

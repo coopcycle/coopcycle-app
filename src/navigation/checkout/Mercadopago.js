@@ -75,15 +75,25 @@ const styles = StyleSheet.create({
   },
 })
 
-function mapStateToProps(state) {
-  const {
-    checkout: { cart, restaurant },
-    app: {
-      httpClient,
-    },
-  } = state
+function createHttpClient(state) {
+  const { httpClient } = state.app
+  if (httpClient.credentials.token && httpClient.credentials.refreshToken) {
+    return httpClient
+  }
 
-  return { cart, httpClient, restaurant }
+  const { token } = state.checkout
+
+  return httpClient.cloneWithToken(token)
+}
+
+function mapStateToProps(state) {
+  return {
+    cart: state.checkout.cart,
+    restaurant: state.checkout.restaurant,
+    token: state.checkout.token,
+    httpClient: createHttpClient(state),
+    user: state.app.user,
+  }
 }
 
 function mapDispatchToProps(dispatch) {
