@@ -3,8 +3,9 @@ import { FlatList, StyleSheet, TouchableOpacity, View, Image, ImageBackground, u
 import { Text, Icon, HStack } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
+import moment from 'moment'
 
-import { getNextShippingTimeAsText, getRestaurantCaption } from '../utils/checkout'
+import { getNextShippingTimeAsText, getRestaurantCaption, shouldShowPreOrder } from '../utils/checkout'
 
 const styles = StyleSheet.create({
   item: {
@@ -75,6 +76,8 @@ class RestaurantList extends Component {
 
   renderItem(restaurant, index) {
 
+    const showPreOrder = shouldShowPreOrder(restaurant)
+
     return (
       <TouchableOpacity
         onPress={ () => this.props.onItemClick(restaurant) }
@@ -86,7 +89,7 @@ class RestaurantList extends Component {
             <TimingBadge restaurant={ restaurant } />
           </View>
           <View style={{ width: '33.3333%' }}>
-            {!restaurant.isOpen &&
+            { showPreOrder &&
             <ImageBackground source={{ uri: restaurant.image }} style={{ width: '100%', height: '100%' }}>
               <View style={ styles.overlay }>
                 <View style={{ justifyContent: 'center', alignItems: 'center' }}>
@@ -96,7 +99,7 @@ class RestaurantList extends Component {
               </View>
             </ImageBackground>
             }
-            {restaurant.isOpen && <Image style={{ flex: 1, height: undefined, width: undefined }} resizeMode="cover" source={{ uri: restaurant.image }} />}
+            { !showPreOrder && <Image style={{ flex: 1, height: undefined, width: undefined }} resizeMode="cover" source={{ uri: restaurant.image }} />}
           </View>
         </View>
       </TouchableOpacity>
