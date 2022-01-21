@@ -22,9 +22,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     height: '100%',
   },
-  disabled: {
-    opacity: 0.4,
-  },
   text: {
     fontSize: 14,
   },
@@ -128,9 +125,10 @@ class TaskListItem extends Component {
 
     const itemStyle = []
     const textStyle = [ styles.text ]
+    const itemProps = {}
 
     if (task.status === 'DONE' || task.status === 'FAILED') {
-      itemStyle.push(styles.disabled)
+      itemProps.opacity = 0.4
     }
 
     if (task.status === 'FAILED') {
@@ -173,7 +171,7 @@ class TaskListItem extends Component {
         <ItemTouchable
           onPress={ this.props.onPress }
           testID={ `task:${index}` }>
-          <HStack flex={ 1 } alignItems="center" styles={ itemStyle } pr="3">
+          <HStack flex={ 1 } alignItems="center" styles={ itemStyle } pr="3" { ...itemProps }>
             <View style={{backgroundColor: color, width: 8, height: '100%', marginRight: 12}}/>
             <View style={ styles.itemIcon }>
               <TaskTypeIcon task={ task } />
