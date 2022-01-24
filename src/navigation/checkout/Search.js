@@ -17,8 +17,8 @@ import { selectRestaurants } from '../../redux/Checkout/selectors'
 
 class RestaurantsPage extends Component {
 
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.state = {
       width: Dimensions.get('window').width,
       searchText: '',
