@@ -82,6 +82,7 @@ class RestaurantsPage extends Component {
             return (
               <Pressable w="33.3333%" p="3"
                 onPress={ () => this.setState({ baseURL: otherServer.coopcycle_url }) }
+                key={ otherServer.coopcycle_url }
               >
                 <Text isTruncated
                   fontWeight={ this.state.baseURL === otherServer.coopcycle_url ? 'bold' : 'normal' }>{ otherServer.name }</Text>
