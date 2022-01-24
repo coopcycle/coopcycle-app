@@ -81,3 +81,23 @@ export const selectServersWithURL = createSelector(
     return serversWithURL.sort((a, b) => a.city < b.city ? -1 : 1)
   }
 )
+
+export const selectServersInSameCity = createSelector(
+  selectServersWithURL,
+  state => state.app.baseURL,
+  (servers, baseURL) => {
+    if (!baseURL) {
+      return []
+    }
+
+    const currentServer = _.find(servers, (server) => server.coopcycle_url === baseURL)
+
+    if (!currentServer) {
+      return []
+    }
+
+    return _.filter(servers, (server) => {
+      return server.city === currentServer.city
+    })
+  }
+)
