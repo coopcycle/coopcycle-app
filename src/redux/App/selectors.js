@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import { createSelector } from 'reselect'
 
 import { selectIsTasksLoading } from '../Courier/taskSelectors'
@@ -70,4 +71,13 @@ export const selectShowRestaurantsDrawerItem = createSelector(
   state => state.restaurant.myRestaurants,
   (user, isAuthenticated, restaurants) =>
     isAuthenticated && (user.hasRole('ROLE_ADMIN') || user.hasRole('ROLE_RESTAURANT')) && restaurants.length > 0
+)
+
+export const selectServersWithURL = createSelector(
+  state => state.app.servers,
+  (servers) => {
+    const serversWithURL = _.filter(servers, server => server.hasOwnProperty('coopcycle_url'))
+
+    return serversWithURL.sort((a, b) => a.city < b.city ? -1 : 1)
+  }
 )
