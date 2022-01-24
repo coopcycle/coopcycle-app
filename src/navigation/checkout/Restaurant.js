@@ -14,6 +14,7 @@ import Menu from '../../components/Menu'
 
 import { init, addItem, hideAddressModal, resetRestaurant, setAddress } from '../../redux/Checkout/actions'
 import DangerAlert from '../../components/DangerAlert';
+import { shouldShowPreOrder } from '../../utils/checkout'
 
 const GroupImageHeader = ({ restaurant, scale }) => {
 
@@ -70,7 +71,7 @@ class Restaurant extends Component {
   }
 
   renderClosedNowWarning(restaurant) {
-    if (this.state.isAvailable && !restaurant.isOpen) {
+    if (this.state.isAvailable && shouldShowPreOrder(restaurant)) {
       return (
         <DangerAlert
           text={`${this.props.t('RESTAURANT_CLOSED_BUT_OPENS', {
@@ -88,8 +89,6 @@ class Restaurant extends Component {
     const { navigate } = this.props.navigation
     const restaurant = this.props.route.params?.restaurant
     const { isCartEmpty, menu } = this.props
-
-    restaurant.isAvailable = this.state.isAvailable
 
     return (
       <View style={{ flex: 1 }}>
