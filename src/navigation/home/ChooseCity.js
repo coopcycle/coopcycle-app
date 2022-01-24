@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { FlatList, StyleSheet, TouchableOpacity, View, Linking, Platform } from 'react-native'
 import { connect } from 'react-redux'
-import { Button, Icon, Text } from 'native-base'
+import { Button, Icon, Text, Box } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import _ from 'lodash'
 import Modal from 'react-native-modal'
@@ -11,6 +11,7 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 
 import { selectServer } from '../../redux/App/actions'
 import ItemSeparator from '../../components/ItemSeparator'
+import ModalContent from '../../components/ModalContent'
 
 const CONTACT_EMAIL = 'contact@coopcycle.org'
 
@@ -78,17 +79,16 @@ class ChooseCity extends Component {
           onSwipeComplete={ () => this.setState({ isModalVisible: false }) }
           swipeDirection={ ['up', 'down'] }>
           <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', padding: 20 }}>
-            <View style={{ backgroundColor: '#ffffff', padding: 20 }}>
-              <Text style={{ marginBottom: 20, fontSize: 14 }}>{ this.props.t('ABOUT_COOPCYCLE') }</Text>
-              <Button iconLeft transparent block
-                onPress={ () => this.openEmail() }
-                style={{ marginVertical: 0 }}>
-                <Icon as={FontAwesome5} name="envelope" style={{ color: '#62B1F6' }} />
-                <Text>
+            <ModalContent>
+              <Box p="4">
+                <Text style={{ marginBottom: 20, fontSize: 14 }}>{ this.props.t('ABOUT_COOPCYCLE') }</Text>
+                <Button
+                  leftIcon={ <Icon as={FontAwesome5} name="envelope" size="sm" /> }
+                  onPress={ () => this.openEmail() }>
                   { this.props.t('CONTACT_US') }
-                </Text>
-              </Button>
-            </View>
+                </Button>
+              </Box>
+            </ModalContent>
           </View>
         </Modal>
       </SafeAreaView>
