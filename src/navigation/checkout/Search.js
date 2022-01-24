@@ -118,7 +118,7 @@ function mapStateToProps(state, ownProps) {
 function mapDispatchToProps(dispatch) {
 
   return {
-    searchRestaurants: (latitude, longitude) => dispatch(searchRestaurants(latitude, longitude)),
+    searchRestaurants: (options) => dispatch(searchRestaurants(options)),
     searchRestaurantsForAddress: address => dispatch(searchRestaurantsForAddress(address)),
     resetSearch: () => dispatch(resetSearch()),
   }

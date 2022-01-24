@@ -517,15 +517,10 @@ export function searchRestaurants(options = {}) {
 
     const { httpClient } = getState().app
 
-    let queryString = ''
-    if (options && options.hasOwnProperty('latitude') && options.hasOwnProperty('longitude')) {
-      queryString = `coordinate=${options.latitude},${options.longitude}`
-    }
-
     dispatch(loadRestaurantsRequest())
 
     const reqs = [
-      httpClient.get('/api/restaurants' + (queryString ? `?${queryString}` : ''), {}, { anonymous: true }),
+      httpClient.get('/api/restaurants', {}, { anonymous: true }),
     ]
 
     if (selectIsAuthenticated(getState())) {
