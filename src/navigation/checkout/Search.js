@@ -5,7 +5,7 @@ import {
   Dimensions,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { Icon, Text, Center } from 'native-base';
+import { Icon, Text, Center, HStack, Box, Pressable } from 'native-base';
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 import Ionicons from 'react-native-vector-icons/Ionicons'
@@ -14,6 +14,7 @@ import RestaurantSearch from '../../components/RestaurantSearch'
 import RestaurantList from '../../components/RestaurantList'
 import { searchRestaurants, searchRestaurantsForAddress, resetSearch } from '../../redux/Checkout/actions'
 import { selectRestaurants } from '../../redux/Checkout/selectors'
+import { selectServersInSameCity } from '../../redux/App/selectors'
 
 class RestaurantsPage extends Component {
 
@@ -71,6 +72,18 @@ class RestaurantsPage extends Component {
 
     return (
       <SafeAreaView edges={ [ 'right', 'bottom', 'left' ] }>
+        <HStack>
+          { this.props.otherServers.map((otherServer) => {
+            return (
+              <Pressable w="33.3333%" p="3"
+                onPress={ () => console.log(otherServer) }
+              >
+                <Text isTruncated
+                  fontWeight={ this.props.baseURL === otherServer.coopcycle_url ? 'bold' : 'normal' }>{ otherServer.name }</Text>
+              </Pressable>
+            )
+          }) }
+        </HStack>
         <RestaurantList
           restaurants={ restaurants }
           onItemClick={ restaurant => this.props.navigation.navigate('CheckoutRestaurant', { restaurant }) } />
@@ -112,6 +125,8 @@ function mapStateToProps(state, ownProps) {
     address: state.checkout.address,
     addressAsText: state.checkout.address ? state.checkout.address.streetAddress : '',
     savedAddresses: state.account.addresses.slice(0, 3),
+    baseURL: state.app.baseURL,
+    otherServers: selectServersInSameCity(state)
   }
 }
 
