@@ -54,7 +54,7 @@ class Menu extends Component {
     let itemDescriptionStyle = [ styles.descriptionText ]
     let itemPriceStyle = []
 
-    if (this.props.restaurant.isAvailable && enabled) {
+    if (enabled) {
       itemProps = {
         onPress: () => this.props.onItemClick(item),
       }
@@ -71,7 +71,7 @@ class Menu extends Component {
       && _.find(item.images, image => image.ratio === '1:1')
 
     return (
-      <TouchableOpacity style={ styles.itemContainer } disabled={!this.props.restaurant.isAvailable} { ...itemProps } testID={ `menuItem:${section.index}:${index}` }>
+      <TouchableOpacity style={ styles.itemContainer } { ...itemProps } testID={ `menuItem:${section.index}:${index}` }>
         <Flex mx="2" flexDirection="row" justifyContent="space-between">
           <Column flexShrink="1">
             <Text style={ itemNameStyle }>{ item.name }</Text>
