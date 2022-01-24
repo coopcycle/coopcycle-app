@@ -23,6 +23,7 @@ class RestaurantsPage extends Component {
     this.state = {
       width: Dimensions.get('window').width,
       searchText: '',
+      baseURL: props.baseURL,
     }
   }
 
@@ -43,6 +44,10 @@ class RestaurantsPage extends Component {
 
     if (addressAsParam && prevAddress !== addressAsParam) {
       InteractionManager.runAfterInteractions(() => this._onAddressSelect(addressAsParam))
+    }
+
+    if (this.state.baseURL !== prevState.baseURL) {
+      this.props.searchRestaurants({ baseURL: this.state.baseURL })
     }
   }
 
@@ -76,10 +81,10 @@ class RestaurantsPage extends Component {
           { this.props.otherServers.map((otherServer) => {
             return (
               <Pressable w="33.3333%" p="3"
-                onPress={ () => console.log(otherServer) }
+                onPress={ () => this.setState({ baseURL: otherServer.coopcycle_url }) }
               >
                 <Text isTruncated
-                  fontWeight={ this.props.baseURL === otherServer.coopcycle_url ? 'bold' : 'normal' }>{ otherServer.name }</Text>
+                  fontWeight={ this.state.baseURL === otherServer.coopcycle_url ? 'bold' : 'normal' }>{ otherServer.name }</Text>
               </Pressable>
             )
           }) }
