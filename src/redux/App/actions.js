@@ -254,7 +254,7 @@ export function selectServer(server) {
     dispatch(setLoading(true))
     dispatch(_clearSelectServerError())
 
-    API.checkServer(server)
+    return API.checkServer(server)
       .then(baseURL =>
         Settings.synchronize(baseURL)
           .then((settings) => {

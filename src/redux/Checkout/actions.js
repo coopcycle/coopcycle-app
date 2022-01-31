@@ -519,10 +519,8 @@ export function searchRestaurants(options = {}) {
 
     dispatch(loadRestaurantsRequest())
 
-    const uri = options && options.baseURL ? `${options.baseURL}/api/restaurants` : '/api/restaurants'
-
     const reqs = [
-      httpClient.get(uri, {}, { anonymous: true }),
+      httpClient.get('/api/restaurants', {}, { anonymous: true }),
     ]
 
     if (selectIsAuthenticated(getState())) {
