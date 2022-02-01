@@ -502,7 +502,9 @@ export function searchRestaurantsForAddress(address, options = {}) {
     let queryString = `coordinate=${address.geo.latitude},${address.geo.longitude}`
     dispatch(loadRestaurantsRequest())
 
-    httpClient.get('/api/restaurants' + (queryString ? `?${queryString}` : ''), {}, { anonymous: true })
+    const uri = options && options.baseURL ? `${options.baseURL}/api/restaurants` : '/api/restaurants'
+
+    httpClient.get(uri + (queryString ? `?${queryString}` : ''), {}, { anonymous: true })
       .then(res => {
         dispatch(_setAddress(address))
         dispatch(wrapRestaurantsWithTiming(res['hydra:member']))
@@ -519,8 +521,10 @@ export function searchRestaurants(options = {}) {
 
     dispatch(loadRestaurantsRequest())
 
+    const uri = options && options.baseURL ? `${options.baseURL}/api/restaurants` : '/api/restaurants'
+
     const reqs = [
-      httpClient.get('/api/restaurants', {}, { anonymous: true }),
+      httpClient.get(uri, {}, { anonymous: true }),
     ]
 
     if (selectIsAuthenticated(getState())) {
@@ -756,11 +760,11 @@ export function assignCustomer({email, telephone}) {
   }
 }
 
-export function resetSearch() {
+export function resetSearch(options = {}) {
 
   return (dispatch, getState) => {
     dispatch(_setAddress(''))
-    dispatch(searchRestaurants())
+    dispatch(searchRestaurants(options))
   }
 }
 

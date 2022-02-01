@@ -49,16 +49,20 @@ class RestaurantsPage extends Component {
     }
 
     if (this.state.baseURL !== prevState.baseURL) {
-      this.props.selectServer(this.state.baseURL)
-        .then(() => {
-          const { address } = this.props
-          if (address) {
-            this.props.searchRestaurantsForAddress(address)
-          } else {
-            this.props.searchRestaurants()
-          }
-        })
+      const { address } = this.props
+      if (address) {
+        this.props.searchRestaurantsForAddress(address, { baseURL: this.state.baseURL })
+      } else {
+        this.props.searchRestaurants({ baseURL: this.state.baseURL })
+      }
     }
+  }
+
+  _onRestaurantSelectedInTab(restaurant) {
+    this.props.selectServer(this.state.baseURL)
+      .then(() => {
+        this.props.navigation.navigate('CheckoutRestaurant', { restaurant })
+      })
   }
 
   _mapServersForTabs() {
@@ -73,7 +77,7 @@ class RestaurantsPage extends Component {
             restaurants={ this.props.isFetching ? [] : restaurants }
             addressAsText={addressAsText}
             isFetching={isFetching}
-            onItemClick={ restaurant => this.props.navigation.navigate('CheckoutRestaurant', { restaurant }) }
+            onItemClick={ restaurant => this._onRestaurantSelectedInTab(restaurant) }
           />
         ),
       }
@@ -168,7 +172,7 @@ class RestaurantsPage extends Component {
           country={ this.props.country }
           onSelect={ address => this._onAddressSelect(address) }
           onReset={ () => {
-            this.props.resetSearch()
+            this.props.resetSearch({ baseURL: this.state.baseURL })
           } }
           defaultValue={ this.props.address }
           width={ this.state.width }
@@ -197,9 +201,9 @@ function mapStateToProps(state, ownProps) {
 function mapDispatchToProps(dispatch) {
 
   return {
-    searchRestaurants: () => dispatch(searchRestaurants()),
-    searchRestaurantsForAddress: address => dispatch(searchRestaurantsForAddress(address)),
-    resetSearch: () => dispatch(resetSearch()),
+    searchRestaurants: (options) => dispatch(searchRestaurants(options)),
+    searchRestaurantsForAddress: (address, options) => dispatch(searchRestaurantsForAddress(address, options)),
+    resetSearch: (options) => dispatch(resetSearch(options)),
     loadRestaurantsSuccess: (restaurants) => dispatch(loadRestaurantsSuccess(restaurants)),
     selectServer: (serverURL) => dispatch(selectServer(serverURL)),
   }
