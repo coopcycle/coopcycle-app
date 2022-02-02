@@ -16,6 +16,7 @@ import { selectServer } from '../../redux/App/actions'
 import { selectRestaurants } from '../../redux/Checkout/selectors'
 import { selectServersInSameCity } from '../../redux/App/selectors'
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view'
+import MultipleServersInSameCityModal from './components/MultipleServersInSameCityModal';
 
 class RestaurantsPage extends Component {
 
@@ -178,6 +179,9 @@ class RestaurantsPage extends Component {
           width={ this.state.width }
           key={ this.props.addressAsText }
           savedAddresses={ this.props.savedAddresses } />
+
+        <MultipleServersInSameCityModal
+          multipleServers={this.props.otherServers.length > 1} />
       </View>
     );
   }

@@ -141,6 +141,12 @@ const appPersistConfig = {
   },
 }
 
+const checkoutPersisteConfig = {
+  key: 'checkout',
+  storage: AsyncStorage,
+  whitelist: ['showMultipleServersInSameCityModal'],
+}
+
 export default combineReducers({
   entities: combineReducers({
     tasks: persistReducer(taskEntitiesPersistConfig, tasksEntityReducer),
@@ -149,7 +155,7 @@ export default combineReducers({
   account: accountReducer,
   restaurant: persistReducer(restaurantPersistConfig, restaurantReducer),
   store: storeReducer,
-  checkout: checkoutReducer,
+  checkout: persistReducer(checkoutPersisteConfig, checkoutReducer),
   ui: combineReducers({
     tasks: persistReducer(tasksUiPersistConfig, tasksUiReducer),
   }),
