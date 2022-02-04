@@ -37,7 +37,14 @@ class RestaurantsPage extends Component {
   }
 
   componentDidMount() {
-    this.props.searchRestaurants()
+    const firstServer = this.props.otherServers[0]
+    if (firstServer && firstServer.coopcycle_url !== this.props.baseURL) {
+      // the servers are randomly ordered to avoid same server as the first option
+      // so we select the new first server if it is different to the selected in a previous usage of the app
+      this._renderRestaurantsForTab({index: 0, url: firstServer.coopcycle_url})
+    } else {
+      this.props.searchRestaurants()
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -122,11 +129,11 @@ class RestaurantsPage extends Component {
     )
   }
 
-  _renderRestaurantsForTab(routes, serverIndex) {
+  _renderRestaurantsForTab({index, url}) {
     this.props.loadRestaurantsSuccess([])
     this.setState({
-      baseURL: routes[serverIndex].key,
-      index: serverIndex,
+      baseURL: url,
+      index,
     })
   }
 
@@ -140,7 +147,7 @@ class RestaurantsPage extends Component {
           renderTabBar={this._renderServersTabs}
           navigationState={{ index: this.state.index, routes }}
           renderScene={sceneMap}
-          onIndexChange={(index) => this._renderRestaurantsForTab(routes, index)}
+          onIndexChange={(index) => this._renderRestaurantsForTab({index, url: routes[index].key})}
           initialLayout={{ width: this.state.width }}
           lazy
         />

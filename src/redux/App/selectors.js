@@ -96,8 +96,25 @@ export const selectServersInSameCity = createSelector(
       return []
     }
 
-    return _.filter(servers, (server) => {
+    const serversInSameCity = _.filter(servers, (server) => {
       return server.city === currentServer.city
     })
+
+    // order servers randomly to avoid always same server as the first option
+    return _.shuffle(serversInSameCity)
+  }
+)
+
+export const selectServersWithoutRepeats = createSelector(
+  selectServersWithURL,
+  (servers) => {
+    console.log(servers)
+    return servers.reduce((withoutRepeatsAcc, server) => {
+        const serverCityAlreadyExist = withoutRepeatsAcc.some((nonRepeatedServer) => nonRepeatedServer.city === server.city)
+        if (!serverCityAlreadyExist) {
+            withoutRepeatsAcc.push(server)
+        }
+        return withoutRepeatsAcc;
+    }, [])
   }
 )
