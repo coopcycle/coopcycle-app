@@ -7327,6 +7327,11 @@ fs.realpath@^1.0.0:
   resolved "https://registry.yarnpkg.com/fs.realpath/-/fs.realpath-1.0.0.tgz#1504ad2523158caa40db4a2787cb01411994ea4f"
   integrity sha1-FQStJSMVjKpA20onh8sBQRmU6k8=
 
+fs@^0.0.1-security:
+  version "0.0.1-security"
+  resolved "https://registry.yarnpkg.com/fs/-/fs-0.0.1-security.tgz#8a7bd37186b6dddf3813f23858b57ecaaf5e41d4"
+  integrity sha1-invTcYa23d84E/I4WLV+yq9eQdQ=
+
 fsevents@^2.1.2:
   version "2.3.2"
   resolved "https://registry.yarnpkg.com/fsevents/-/fsevents-2.3.2.tgz#8a526f78b8fdf4623b709e0b975c52c24c02fd1a"
@@ -7548,10 +7553,10 @@ globals@^12.1.0:
   dependencies:
     type-fest "^0.8.1"
 
-google-libphonenumber@^3.2.26:
-  version "3.2.26"
-  resolved "https://registry.yarnpkg.com/google-libphonenumber/-/google-libphonenumber-3.2.26.tgz#c5fcaf793892cd079edb5a3df191fdc955fb9587"
-  integrity sha512-qyjAKef1oC2vG81RNy1f5Mk9lYE/H3HC885DCOlFs9ca3QfsqEUnXWOTPXTgEtHnTq1x3vpQgtDbX3Vba/o2ow==
+google-libphonenumber@^3.2.27:
+  version "3.2.27"
+  resolved "https://registry.yarnpkg.com/google-libphonenumber/-/google-libphonenumber-3.2.27.tgz#06a0c1d42be712a6fd4189e2e3b07fc36cacee01"
+  integrity sha512-et3QlrfWemNPhyUfXZmJG8TfzitfAN71ygNI15+B35zNge/7vyZxkpDsc13oninkf8RAtN2kNEzvMr4L1n3vfQ==
 
 graceful-fs@^4.1.11, graceful-fs@^4.1.2, graceful-fs@^4.1.3, graceful-fs@^4.1.6, graceful-fs@^4.1.9, graceful-fs@^4.2.0, graceful-fs@^4.2.4:
   version "4.2.8"
@@ -8953,10 +8958,10 @@ levn@~0.3.0:
     prelude-ls "~1.1.2"
     type-check "~0.3.2"
 
-libphonenumber-js@^1.9.44:
-  version "1.9.44"
-  resolved "https://registry.yarnpkg.com/libphonenumber-js/-/libphonenumber-js-1.9.44.tgz#d036364fe4c1e27205d1d283c7bf8fc25625200b"
-  integrity sha512-zhw8nUMJuQf7jG1dZfEOKKOS6M3QYIv3HnvB/vGohNd0QfxIQcObH3a6Y6s350H+9xgBeOXClOJkS0hJ0yvS3g==
+libphonenumber-js@^1.9.48:
+  version "1.9.48"
+  resolved "https://registry.yarnpkg.com/libphonenumber-js/-/libphonenumber-js-1.9.48.tgz#b667161600cf2cfd7af0448e857344616fdb6fb4"
+  integrity sha512-2aiDGkr5Ty7LZRhKhnMeV9tfRbzd2zahgF12I0v11AFwEelSdiu5t8/Npf3UejKcuoO4anqTdjnIW3dEtj1xYQ==
 
 lie@3.1.1:
   version "3.1.1"
@@ -9039,7 +9044,7 @@ lodash.compact@^3.0.1:
   resolved "https://registry.yarnpkg.com/lodash.compact/-/lodash.compact-3.0.1.tgz#540ce3837745975807471e16b4a2ba21e7256ca5"
   integrity sha1-VAzjg3dFl1gHRx4WtKK6IeclbKU=
 
-lodash.debounce@^4.0.8:
+lodash.debounce@4.0.8, lodash.debounce@^4.0.8:
   version "4.0.8"
   resolved "https://registry.yarnpkg.com/lodash.debounce/-/lodash.debounce-4.0.8.tgz#82d79bff30a67c4005ffd5e2515300ad9ca4d7af"
   integrity sha1-gteb/zCmfEAF/9XiUVMArZyk168=
@@ -10695,6 +10700,13 @@ prop-types@15.5.10:
     fbjs "^0.8.9"
     loose-envify "^1.3.1"
 
+prop-types@15.5.8:
+  version "15.5.8"
+  resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.5.8.tgz#6b7b2e141083be38c8595aa51fc55775c7199394"
+  integrity sha1-a3suFBCDvjjIWVqlH8VXdccZk5Q=
+  dependencies:
+    fbjs "^0.8.9"
+
 prop-types@^15.5.10, prop-types@^15.6.0, prop-types@^15.6.2, prop-types@^15.7.2:
   version "15.7.2"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
@@ -10886,10 +10898,10 @@ react-freeze@^1.0.0:
   resolved "https://registry.yarnpkg.com/react-freeze/-/react-freeze-1.0.0.tgz#b21c65fe1783743007c8c9a2952b1c8879a77354"
   integrity sha512-yQaiOqDmoKqks56LN9MTgY06O0qQHgV4FUrikH357DydArSZHQhl0BJFqGKIZoTqi8JizF9Dxhuk1FIZD6qCaw==
 
-react-i18next@^11.15.3:
-  version "11.15.3"
-  resolved "https://registry.yarnpkg.com/react-i18next/-/react-i18next-11.15.3.tgz#7608fb3cacc02ac75a62fc2d68b579f140b198dd"
-  integrity sha512-RSUEM4So3Tu2JHV0JsZ5Yje+4nz66YViMfPZoywxOy0xyn3L7tE2CHvJ7Y9LUsrTU7vGmZ5bwb8PpjnkatdIxg==
+react-i18next@^11.15.4:
+  version "11.15.4"
+  resolved "https://registry.yarnpkg.com/react-i18next/-/react-i18next-11.15.4.tgz#fe0c792ea93f038548e838cecae3ed4173822937"
+  integrity sha512-jKJNAcVcbPGK+yrTcXhLblgPY16n6NbpZZL3Mk8nswj1v3ayIiUBVDU09SgqnT+DluyQBS97hwSvPU5yVFG0yg==
   dependencies:
     "@babel/runtime" "^7.14.5"
     html-escaper "^2.0.2"
@@ -10941,17 +10953,19 @@ react-native-ble-manager@^8.0.1:
   resolved "https://registry.yarnpkg.com/react-native-ble-manager/-/react-native-ble-manager-8.0.1.tgz#6eeaad01a6631f11c006932aeaceafd22f43239e"
   integrity sha512-a7RCqXkxRPomENMNc04yOi/oJK0xfADg1p0PYln9dvkUdQ5aj12M0pMers/ldZP6BkuWMRcaxhV71jKD4MyvZg==
 
-react-native-calendars@^1.1275.0:
-  version "1.1275.0"
-  resolved "https://registry.yarnpkg.com/react-native-calendars/-/react-native-calendars-1.1275.0.tgz#09af9ddf4add11c6a8648bd173b1992915a6b81e"
-  integrity sha512-3/3VX1WMUXi6kzsM2HLodLKVKXqiSlxbhhwDt5Ke+WgEVsr5stdyKK4JDZwJKOEEEqlHbRl+AMBgNBmof2/cyw==
+react-native-calendars@^1.1277.0:
+  version "1.1277.0"
+  resolved "https://registry.yarnpkg.com/react-native-calendars/-/react-native-calendars-1.1277.0.tgz#a04d20b50ce1d95bb03eb438b1fef9afe74cca84"
+  integrity sha512-SRpwv7uSv51WIhqHR5HHMtr8gZO3nQA+ncSmmt6JecinJPVp5kH9FFel+yTYI7hFxfWRaCf8J5Y7ZPb1Znz9yQ==
   dependencies:
+    fs "^0.0.1-security"
     hoist-non-react-statics "^3.3.1"
     immutable "^4.0.0-rc.12"
     lodash "^4.17.15"
     memoize-one "^5.2.1"
     prop-types "^15.5.10"
     react-native-swipe-gestures "^1.0.5"
+    recyclerlistview "^3.0.5"
     xdate "^0.8.0"
   optionalDependencies:
     moment "^2.24.0"
@@ -11007,10 +11021,10 @@ react-native-dropdownalert@^4.5.1:
   dependencies:
     prop-types "15.5.10"
 
-react-native-email-link@^1.12.2:
-  version "1.12.2"
-  resolved "https://registry.yarnpkg.com/react-native-email-link/-/react-native-email-link-1.12.2.tgz#61e8718dca98b362b3a847d7d05aa2b930ad7206"
-  integrity sha512-tr/Md3J0YuR7RO7R7c/N6bmM5r/44ZEUnbeJVO69/X4kTfvTUbCaAwNChqSRLnr2nXAtdTbaap0lBnHu2uyy8w==
+react-native-email-link@^1.13.1:
+  version "1.13.1"
+  resolved "https://registry.yarnpkg.com/react-native-email-link/-/react-native-email-link-1.13.1.tgz#7c393d47bf2d82476a45c790d67e2400ded5eb37"
+  integrity sha512-x40P9DjooTJ/bYKjCZAOrWs0prDNPrg/tcjyr29W1roCYG8BqHhbYcaq0wS/SKkkUc3+/xrbmzm4NeANgvD7iA==
 
 react-native-fbsdk-next@^4.6.0:
   version "4.6.0"
@@ -11066,10 +11080,10 @@ react-native-localize@^2.1.7:
   resolved "https://registry.yarnpkg.com/react-native-localize/-/react-native-localize-2.1.7.tgz#f1dda0c6fd58ab06b5b119cb4a507ab8800b9823"
   integrity sha512-phimOUtDLiqY2ba7Rjk9KpuaVSo7iGMNnwr7rjBVqlhmtTF3ShQ1FPFPxOyUrzDU9jLtj1xMi7MXWYuiVg660Q==
 
-react-native-map-link@^2.8.2:
-  version "2.8.2"
-  resolved "https://registry.yarnpkg.com/react-native-map-link/-/react-native-map-link-2.8.2.tgz#4cf2ad44e7ee1b932e31c3b2c8a597cb99d7906f"
-  integrity sha512-kyz/Bx3uwBP6ugNIKMUK9QumqsX180K2eBCyJ5kCiVIbl7C8XhrM4uWZv1yWJIWpmSf4dGWf9sIHBg14NDWhHw==
+react-native-map-link@^2.8.3:
+  version "2.8.3"
+  resolved "https://registry.yarnpkg.com/react-native-map-link/-/react-native-map-link-2.8.3.tgz#97568f4fd05b1474a1c45a10e8f31030555c9b31"
+  integrity sha512-09r4TZasSouOd6ksq3vVNRtnFgcGtzKGT/9i44fMaRzjjhj7xw0SO+ZpxgMerbv2O0TnHU3S24bncrWyjzHGIA==
   dependencies:
     prop-types "^15.7.2"
     react-native-modal "^10.0.0"
@@ -11384,6 +11398,15 @@ recast@^0.20.3:
     esprima "~4.0.0"
     source-map "~0.6.1"
     tslib "^2.0.1"
+
+recyclerlistview@^3.0.5:
+  version "3.0.5"
+  resolved "https://registry.yarnpkg.com/recyclerlistview/-/recyclerlistview-3.0.5.tgz#50bf5bcaa401d56bb6bb264354083f4d424408eb"
+  integrity sha512-JVHz13u520faEsbVqFrJOMuJjc4mJlOXODe5QdqAJHdl5/IpyYeo83uiHrpzxyLb8QtJ0889JMlDik+Z1Ed0QQ==
+  dependencies:
+    lodash.debounce "4.0.8"
+    prop-types "15.5.8"
+    ts-object-utils "0.0.5"
 
 redent@^3.0.0:
   version "3.0.0"
@@ -12728,6 +12751,11 @@ ts-interface-checker@^0.1.9:
   version "0.1.13"
   resolved "https://registry.yarnpkg.com/ts-interface-checker/-/ts-interface-checker-0.1.13.tgz#784fd3d679722bc103b1b4b8030bcddb5db2a699"
   integrity sha512-Y/arvbn+rrz3JCKl9C4kVNfTfSm2/mEp5FSz5EsZSANGPSlQrpRI5M4PKF+mJnE52jOO90PnPSc3Ur3bTQw0gA==
+
+ts-object-utils@0.0.5:
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/ts-object-utils/-/ts-object-utils-0.0.5.tgz#95361cdecd7e52167cfc5e634c76345e90a26077"
+  integrity sha1-lTYc3s1+UhZ8/F5jTHY0XpCiYHc=
 
 tslib@^1.10.0, tslib@^1.8.1, tslib@^1.9.0, tslib@^1.9.3:
   version "1.14.1"
