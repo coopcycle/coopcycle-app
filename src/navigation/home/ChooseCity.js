@@ -10,6 +10,7 @@ import { openComposer } from 'react-native-email-link'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 
 import { selectServer } from '../../redux/App/actions'
+import { selectServersWithoutRepeats } from '../../redux/App/selectors'
 import ItemSeparator from '../../components/ItemSeparator'
 import ModalContent from '../../components/ModalContent'
 
@@ -107,12 +108,8 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
 
-  const serversWithURL = _.filter(state.app.servers, server => server.hasOwnProperty('coopcycle_url'))
-
-  serversWithURL.sort((a, b) => a.city < b.city ? -1 : 1)
-
   return {
-    servers: serversWithURL,
+    servers: selectServersWithoutRepeats(state),
     hasError: !!state.app.selectServerError,
     message: state.app.selectServerError,
   }

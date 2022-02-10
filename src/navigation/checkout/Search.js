@@ -2,18 +2,21 @@ import React, { Component } from 'react';
 import {
   InteractionManager,
   View,
-  Dimensions,
+  Dimensions
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { Icon, Text, Center } from 'native-base';
+import { Text } from 'native-base';
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
-import Ionicons from 'react-native-vector-icons/Ionicons'
 
 import RestaurantSearch from '../../components/RestaurantSearch'
 import RestaurantList from '../../components/RestaurantList'
-import { searchRestaurants, searchRestaurantsForAddress, resetSearch } from '../../redux/Checkout/actions'
+import { searchRestaurants, searchRestaurantsForAddress, resetSearch, loadRestaurantsSuccess } from '../../redux/Checkout/actions'
+import { selectServer } from '../../redux/App/actions'
 import { selectRestaurants } from '../../redux/Checkout/selectors'
+import { selectServersInSameCity } from '../../redux/App/selectors'
+import { TabView, SceneMap, TabBar } from 'react-native-tab-view'
+import MultipleServersInSameCityModal from './components/MultipleServersInSameCityModal';
 
 class RestaurantsPage extends Component {
 
@@ -22,6 +25,8 @@ class RestaurantsPage extends Component {
     this.state = {
       width: Dimensions.get('window').width,
       searchText: '',
+      baseURL: props.baseURL,
+      index: 0,
     }
   }
 
@@ -32,7 +37,14 @@ class RestaurantsPage extends Component {
   }
 
   componentDidMount() {
-    this.props.searchRestaurants()
+    const firstServer = this.props.otherServers[0]
+    if (firstServer && firstServer.coopcycle_url !== this.props.baseURL) {
+      // the servers are randomly ordered to avoid same server as the first option
+      // so we select the new first server if it is different to the selected in a previous usage of the app
+      this._renderRestaurantsForTab({index: 0, url: firstServer.coopcycle_url})
+    } else {
+      this.props.searchRestaurants()
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -43,39 +55,115 @@ class RestaurantsPage extends Component {
     if (addressAsParam && prevAddress !== addressAsParam) {
       InteractionManager.runAfterInteractions(() => this._onAddressSelect(addressAsParam))
     }
+
+    if (this.state.baseURL !== prevState.baseURL) {
+      const { address } = this.props
+      if (address) {
+        this.props.searchRestaurantsForAddress(address, { baseURL: this.state.baseURL })
+      } else {
+        this.props.searchRestaurants({ baseURL: this.state.baseURL })
+      }
+    }
+  }
+
+  _onRestaurantSelectedInTab(restaurant) {
+    this.props.selectServer(this.state.baseURL)
+      .then(() => {
+        this.props.navigation.navigate('CheckoutRestaurant', { restaurant })
+      })
+  }
+
+  _mapServersForTabs() {
+    const { restaurants, addressAsText, isFetching } = this.props
+
+    return this.props.otherServers.map((otherServer) => {
+      return {
+        key: otherServer.coopcycle_url,
+        title: otherServer.name,
+        list: () => (
+          <RestaurantList
+            restaurants={ this.props.isFetching ? [] : restaurants }
+            addressAsText={addressAsText}
+            isFetching={isFetching}
+            onItemClick={ restaurant => this._onRestaurantSelectedInTab(restaurant) }
+          />
+        ),
+      }
+    })
+  }
+
+  _loadTabsRoutesAndScenes() {
+    const serversMapped = this._mapServersForTabs()
+
+    const routes = serversMapped.map(({key, title}) => {
+      return {key, title}
+    })
+
+    let scenes = {}
+
+    serversMapped.forEach(({key, list}) => {
+      scenes = {
+        [key]: list,
+        ...scenes,
+      }
+    })
+
+    const sceneMap = SceneMap(scenes)
+
+    return { routes, sceneMap }
+  }
+
+  _renderServersTabs(props) {
+    return (
+      <TabBar
+        {...props}
+        scrollEnabled={true}
+        renderLabel={({ route, focused, color }) => (
+          <Text numberOfLines={2} style={{ textAlign: 'center', color, margin: 4 }} fontWeight={ focused ? 'bold' : 'normal' }>
+            {route.title}
+          </Text>
+        )}
+        indicatorStyle={{ backgroundColor: 'red' }}
+        style={{ backgroundColor: 'white'  }}
+        labelStyle={{ color: 'black' }} />
+    )
+  }
+
+  _renderRestaurantsForTab({index, url}) {
+    this.props.loadRestaurantsSuccess([])
+    this.setState({
+      baseURL: url,
+      index,
+    })
   }
 
   renderContent() {
-    const { restaurants, addressAsText } = this.props
+    const { restaurants, addressAsText, isFetching, otherServers } = this.props
 
-    if (restaurants.length === 0) {
-
-      if (addressAsText) {
-
-        return (
-          <Center flex={ 1 } px="2">
-            <Text note style={{ textAlign: 'center' }}>
-              {this.props.t('NO_RESTAURANTS')}
-            </Text>
-          </Center>
-        )
-      }
-
+    if (otherServers.length > 1) {
+      const { routes, sceneMap } = this._loadTabsRoutesAndScenes();
       return (
-        <Center flex={ 1 } testID="checkoutSearchContent">
-          <Icon as={Ionicons} name="search" style={{ color: '#cccccc' }} />
-          <Text note>{ this.props.t('ENTER_ADDRESS') }</Text>
-        </Center>
+        <TabView
+          renderTabBar={this._renderServersTabs}
+          navigationState={{ index: this.state.index, routes }}
+          renderScene={sceneMap}
+          onIndexChange={(index) => this._renderRestaurantsForTab({index, url: routes[index].key})}
+          initialLayout={{ width: this.state.width }}
+          lazy
+        />
+      )
+    } else {
+      return (
+        <SafeAreaView edges={ [ 'right', 'bottom', 'left' ] } style={{flexGrow: 1}}>
+          <RestaurantList
+            restaurants={ restaurants }
+            addressAsText={addressAsText}
+            isFetching={isFetching}
+            onItemClick={ restaurant => this.props.navigation.navigate('CheckoutRestaurant', { restaurant }) } />
+        </SafeAreaView>
       )
     }
 
-    return (
-      <SafeAreaView edges={ [ 'right', 'bottom', 'left' ] }>
-        <RestaurantList
-          restaurants={ restaurants }
-          onItemClick={ restaurant => this.props.navigation.navigate('CheckoutRestaurant', { restaurant }) } />
-      </SafeAreaView>
-    )
   }
 
   render() {
@@ -92,12 +180,15 @@ class RestaurantsPage extends Component {
           country={ this.props.country }
           onSelect={ address => this._onAddressSelect(address) }
           onReset={ () => {
-            this.props.resetSearch()
+            this.props.resetSearch({ baseURL: this.state.baseURL })
           } }
           defaultValue={ this.props.address }
           width={ this.state.width }
           key={ this.props.addressAsText }
           savedAddresses={ this.props.savedAddresses } />
+
+        <MultipleServersInSameCityModal
+          multipleServers={this.props.otherServers.length > 1} />
       </View>
     );
   }
@@ -112,6 +203,9 @@ function mapStateToProps(state, ownProps) {
     address: state.checkout.address,
     addressAsText: state.checkout.address ? state.checkout.address.streetAddress : '',
     savedAddresses: state.account.addresses.slice(0, 3),
+    baseURL: state.app.baseURL,
+    otherServers: selectServersInSameCity(state),
+    isFetching: state.checkout.isFetching || state.app.loading,
   }
 }
 
@@ -119,8 +213,10 @@ function mapDispatchToProps(dispatch) {
 
   return {
     searchRestaurants: (options) => dispatch(searchRestaurants(options)),
-    searchRestaurantsForAddress: address => dispatch(searchRestaurantsForAddress(address)),
-    resetSearch: () => dispatch(resetSearch()),
+    searchRestaurantsForAddress: (address, options) => dispatch(searchRestaurantsForAddress(address, options)),
+    resetSearch: (options) => dispatch(resetSearch(options)),
+    loadRestaurantsSuccess: (restaurants) => dispatch(loadRestaurantsSuccess(restaurants)),
+    selectServer: (serverURL) => dispatch(selectServer(serverURL)),
   }
 }
 

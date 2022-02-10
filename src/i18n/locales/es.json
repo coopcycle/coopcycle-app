@@ -394,6 +394,8 @@
         "CHECKOUT_AS_GUEST": "Comprar como inivitado",
         "OR": "o",
         "GUEST_CHECKOUT_ORDER_EMAIL_HELP": "Para enviarle actualizaciones sobre su pedido",
-        "GUEST_CHECK_EMAIL_FOR_ORDER_UPDATES": "Como ha elegido comprar como invitado, por favor revise sus emails para seguir el estado de su pedido"
+        "GUEST_CHECK_EMAIL_FOR_ORDER_UPDATES": "Como ha elegido comprar como invitado, por favor revise sus emails para seguir el estado de su pedido",
+        "MULTIPLE_SERVERS_IN_SAME_CITY_MODAL_TEXT": "Hay más de una cooperativa en tu ciudad, puedes navegar entre ellas utilizando las tabs o deslizando hacia la derecha o izquierda.",
+        "DO_NOT_SHOW_IT_AGAIN": "No volver a mostrar"
     }
 }

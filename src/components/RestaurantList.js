@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import { FlatList, StyleSheet, TouchableOpacity, View, Image, ImageBackground, useColorScheme } from 'react-native'
-import { Text, Icon, HStack } from 'native-base'
+import { Text, Icon, HStack, Center } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
-import moment from 'moment'
+import Ionicons from 'react-native-vector-icons/Ionicons'
 
 import { getNextShippingTimeAsText, getRestaurantCaption, shouldShowPreOrder } from '../utils/checkout'
 
@@ -72,6 +72,7 @@ class RestaurantList extends Component {
 
   constructor(props) {
     super(props)
+    this._renderEmptyState = this._renderEmptyState.bind(this)
   }
 
   renderItem(restaurant, index) {
@@ -106,6 +107,31 @@ class RestaurantList extends Component {
     )
   }
 
+  _renderEmptyState() {
+    const { addressAsText, isFetching } = this.props
+
+    if (isFetching) {
+      return null;
+    }
+
+    if (addressAsText) {
+      return (
+        <Center flex={ 1 } justifyContent="center" alignItems="center" px="2">
+          <Text note style={{ textAlign: 'center' }}>
+            {this.props.t('NO_RESTAURANTS')}
+          </Text>
+        </Center>
+      )
+    }
+
+    return (
+      <Center flex={ 1 } justifyContent="center" alignItems="center" testID="checkoutSearchContent">
+        <Icon as={Ionicons} name="search" style={{ color: '#cccccc' }} />
+        <Text note>{ this.props.t('ENTER_ADDRESS') }</Text>
+      </Center>
+    )
+  }
+
   render() {
 
     let matchingCounter = 0
@@ -127,11 +153,13 @@ class RestaurantList extends Component {
     })
 
     return (
-      <FlatList
-        testID="restaurantList"
-        data={ restaurantsWithTestIDs }
-        keyExtractor={ (item, index) => item['@id'] }
-        renderItem={ ({ item, index }) => this.renderItem(item, index) } />
+        <FlatList
+          contentContainerStyle={{ flexGrow: 1 }}
+          testID="restaurantList"
+          data={ restaurantsWithTestIDs }
+          keyExtractor={ (item, index) => item['@id'] }
+          renderItem={ ({ item, index }) => this.renderItem(item, index) }
+          ListEmptyComponent={this._renderEmptyState} />
     )
   }
 }

@@ -34,6 +34,7 @@ import {
   LOAD_PAYMENT_DETAILS_SUCCESS,
   LOAD_PAYMENT_DETAILS_FAILURE,
   UPDATE_CUSTOMER_GUEST,
+  HIDE_MULTIPLE_SERVERS_IN_SAME_CITY_MODAL,
 } from './actions'
 
 import i18n from '../../i18n'
@@ -66,6 +67,7 @@ const initialState = {
   paymentDetails: {},
   paymentDetailsLoaded: false,
   guest: null,
+  showMultipleServersInSameCityModal: true,
 }
 
 export default (state = initialState, action = {}) => {
@@ -328,6 +330,13 @@ export default (state = initialState, action = {}) => {
           ...state,
           guest: action.payload,
         }
+
+    case HIDE_MULTIPLE_SERVERS_IN_SAME_CITY_MODAL:
+
+      return {
+        ...state,
+        showMultipleServersInSameCityModal: false,
+      }
 
   }
 
