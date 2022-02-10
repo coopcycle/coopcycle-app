@@ -108,7 +108,6 @@ export const selectServersInSameCity = createSelector(
 export const selectServersWithoutRepeats = createSelector(
   selectServersWithURL,
   (servers) => {
-    console.log(servers)
     return servers.reduce((withoutRepeatsAcc, server) => {
         const serverCityAlreadyExist = withoutRepeatsAcc.some((nonRepeatedServer) => nonRepeatedServer.city === server.city)
         if (!serverCityAlreadyExist) {

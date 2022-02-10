@@ -141,7 +141,7 @@ const appPersistConfig = {
   },
 }
 
-const checkoutPersisteConfig = {
+const checkoutPersistConfig = {
   key: 'checkout',
   storage: AsyncStorage,
   whitelist: ['showMultipleServersInSameCityModal'],
@@ -155,7 +155,7 @@ export default combineReducers({
   account: accountReducer,
   restaurant: persistReducer(restaurantPersistConfig, restaurantReducer),
   store: storeReducer,
-  checkout: persistReducer(checkoutPersisteConfig, checkoutReducer),
+  checkout: persistReducer(checkoutPersistConfig, checkoutReducer),
   ui: combineReducers({
     tasks: persistReducer(tasksUiPersistConfig, tasksUiReducer),
   }),
