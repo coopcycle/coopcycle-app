@@ -6,12 +6,13 @@ import { showLocation } from 'react-native-map-link'
 import { phonecall } from 'react-native-communications'
 import moment from 'moment'
 import Ionicons from 'react-native-vector-icons/Ionicons'
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 
 import ItemSeparator from '../../../components/ItemSeparator'
 
 const Detail = ({ item }) => {
 
-  const { iconName, text, component, onPress } = item
+  const { iconType, iconName, text, component, onPress } = item
 
   let touchableOpacityProps = {}
   if (onPress) {
@@ -28,7 +29,7 @@ const Detail = ({ item }) => {
   return (
     <TouchableOpacity style={{ flex: 1 }} { ...touchableOpacityProps }>
       <HStack alignItems="center" justifyContent="center" p="2">
-        <Icon as={ Ionicons } name={ iconName } style={{ color: '#ccc' }} />
+        <Icon as={ iconType ? iconType : Ionicons } name={ iconName } style={{ color: '#ccc' }} />
         { body }
         { onPress &&
         <Icon as={ Ionicons } name="arrow-forward" style={{ color: '#ccc' }} />
@@ -97,6 +98,28 @@ const Details = ({ task, t }) => {
         )) }
         </View>
       ),
+    })
+  }
+
+  if (task.packages && task.packages.length) {
+    const packagesSummary = task.packages.reduce(({text, totalQuantity}, p) => {
+      const packageText = `${p.quantity} × ${p.package.name}`;
+      text = text.length ? `${text}\n${packageText}` : packageText;
+      totalQuantity += p.quantity;
+      return {text, totalQuantity};
+    }, {text: '', totalQuantity: 0});
+    items.push({
+      iconName: 'cube',
+      text: `${packagesSummary.text}`,
+      component: <Text fontWeight="bold">{t('total_packages', {count: packagesSummary.totalQuantity})}</Text>,
+    })
+  }
+
+  if (task.weight) {
+    items.push({
+      iconName: 'scale',
+      iconType: MaterialCommunityIcons,
+      text: `${(Number(task.weight) / 1000).toFixed(2)} kg`,
     })
   }
 
