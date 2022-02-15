@@ -664,7 +664,7 @@ PODS:
     - React-Core
   - RNLocalize (2.1.9):
     - React-Core
-  - RNReanimated (1.13.3):
+  - RNReanimated (1.13.4):
     - React-Core
   - RNScreens (3.11.1):
     - React-Core
@@ -1084,7 +1084,7 @@ SPEC CHECKSUMS:
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
   RNGoogleSignin: c4381751eefd73c552b923ba347a9bfc6f18771c
   RNLocalize: 291e5e21b53cd30b5205c10ed95d31b0dc9b8d63
-  RNReanimated: 514a11da3a2bcc6c3dfd9de32b38e2b9bf101926
+  RNReanimated: c1b56d030d1616239861534d9adb531f8cffab68
   RNScreens: 4d83613b50b74ed277026375dc0810893b0c347f
   RNSentry: 68644ef607b780551cc555f084869764f2566652
   RNSketchCanvas: 9c28adb5381543ed55cc98ce6de46479cb3cb12c
