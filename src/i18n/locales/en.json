@@ -396,6 +396,8 @@
         "MY_ORDER": "My order",
         "OR": "or",
         "MULTIPLE_SERVERS_IN_SAME_CITY_MODAL_TEXT": "There are more than one cooperative in your city, you can navigate between them using the tabs or by swiping left or right.",
-        "DO_NOT_SHOW_IT_AGAIN": "Don't show it again"
+        "DO_NOT_SHOW_IT_AGAIN": "Don't show it again",
+        "total_packages": "Total: {{count}} package",
+        "total_packages_plural": "Total: {{count}} packages"
     }
 }
