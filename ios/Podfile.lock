@@ -552,7 +552,7 @@ PODS:
     - React
   - react-native-netinfo (7.1.12):
     - React-Core
-  - react-native-pager-view (5.4.9):
+  - react-native-pager-view (5.4.11):
     - React-Core
   - react-native-safe-area-context (3.3.2):
     - React-Core
@@ -666,7 +666,7 @@ PODS:
     - React-Core
   - RNReanimated (1.13.3):
     - React-Core
-  - RNScreens (3.11.0):
+  - RNScreens (3.11.1):
     - React-Core
     - React-RCTImage
   - RNSentry (2.6.2):
@@ -681,7 +681,7 @@ PODS:
     - React-Core
   - RNSVG (12.1.1):
     - React
-  - RNVectorIcons (9.0.0):
+  - RNVectorIcons (9.1.0):
     - React-Core
   - Sentry (7.1.4):
     - Sentry/Core (= 7.1.4)
@@ -1053,7 +1053,7 @@ SPEC CHECKSUMS:
   react-native-get-random-values: 30b3f74ca34e30e2e480de48e4add2706a40ac8f
   react-native-maps: f4b89da81626ad7f151a8bfcb79733295d31ce5c
   react-native-netinfo: c023b7c36ff34e3b607d1446002b5b39089a860b
-  react-native-pager-view: 3ee7d4c7697fb3ef788346e834a60cca97ed8540
+  react-native-pager-view: 7f00d63688f7df9fad86dfb0154814419cc5eb8d
   react-native-safe-area-context: 584dc04881deb49474363f3be89e4ca0e854c057
   react-native-version-number: b415bbec6a13f2df62bf978e85bc0d699462f37f
   React-perflogger: 93075d8931c32cd1fce8a98c15d2d5ccc4d891bd
@@ -1085,12 +1085,12 @@ SPEC CHECKSUMS:
   RNGoogleSignin: c4381751eefd73c552b923ba347a9bfc6f18771c
   RNLocalize: 291e5e21b53cd30b5205c10ed95d31b0dc9b8d63
   RNReanimated: 514a11da3a2bcc6c3dfd9de32b38e2b9bf101926
-  RNScreens: fd535547baa4ef8aeaee1a8b1e3ffd17b8df44a4
+  RNScreens: 4d83613b50b74ed277026375dc0810893b0c347f
   RNSentry: 68644ef607b780551cc555f084869764f2566652
   RNSketchCanvas: 9c28adb5381543ed55cc98ce6de46479cb3cb12c
   RNSound: 6c156f925295bdc83e8e422e7d8b38d33bc71852
   RNSVG: 551acb6562324b1d52a4e0758f7ca0ec234e278f
-  RNVectorIcons: 4143ba35feebab8fdbe6bc43d1e776b393d47ac8
+  RNVectorIcons: 7923e585eaeb139b9f4531d25a125a1500162a0b
   Sentry: 1d3eb1a25f8c5333c88dd5603904a6d461cd9fcf
   Stripe: 41c3d261501e1dc84755b1bdabdaae50ebf92b53
   stripe-react-native: 980f3d19f52a7dc4b373c6c20d30ebd760bc39e5
