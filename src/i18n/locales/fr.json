@@ -378,6 +378,8 @@
         "GUEST_CHECKOUT_ORDER_EMAIL_HELP": "Pour vous envoyer des mises à jour à propos de votre commande",
         "GUEST_CHECK_EMAIL_FOR_ORDER_UPDATES": "Comme vous avez choisi de commander en tant qu'invité, veuillez vérifier vos e-mails pour suivre votre commande",
         "MY_ORDER": "Ma commande",
-        "OR": "ou"
+        "OR": "ou",
+        "total_packages": "Total : {{count}} paquet",
+        "total_packages_plural": "Total : {{count}} paquets"
     }
 }
