@@ -8959,10 +8959,10 @@ levn@~0.3.0:
     prelude-ls "~1.1.2"
     type-check "~0.3.2"
 
-libphonenumber-js@^1.9.48:
-  version "1.9.48"
-  resolved "https://registry.yarnpkg.com/libphonenumber-js/-/libphonenumber-js-1.9.48.tgz#b667161600cf2cfd7af0448e857344616fdb6fb4"
-  integrity sha512-2aiDGkr5Ty7LZRhKhnMeV9tfRbzd2zahgF12I0v11AFwEelSdiu5t8/Npf3UejKcuoO4anqTdjnIW3dEtj1xYQ==
+libphonenumber-js@^1.9.49:
+  version "1.9.49"
+  resolved "https://registry.yarnpkg.com/libphonenumber-js/-/libphonenumber-js-1.9.49.tgz#d431703cd699be2ccced5b95f26182a7c50a9227"
+  integrity sha512-/wEOIONcVboFky+lWlCaF7glm1FhBz11M5PHeCApA+xDdVfmhKjHktHS8KjyGxouV5CSXIr4f3GvLSpJa4qMSg==
 
 lie@3.1.1:
   version "3.1.1"
@@ -11142,19 +11142,19 @@ react-native-modal@^13.0.0:
     prop-types "^15.6.2"
     react-native-animatable "1.3.3"
 
-react-native-pager-view@^5.4.9:
-  version "5.4.9"
-  resolved "https://registry.yarnpkg.com/react-native-pager-view/-/react-native-pager-view-5.4.9.tgz#c0d40847cfeda5a4e729b53271b0ee0fedff3eb5"
-  integrity sha512-D6tzxpwMGdl6CXgtskGWhKRc5cJakCazESRGt7PkqnpyiH3N35ft1KmR82pCSQetAFlytFiToeu3a/dG5CELvA==
+react-native-pager-view@^5.4.11:
+  version "5.4.11"
+  resolved "https://registry.yarnpkg.com/react-native-pager-view/-/react-native-pager-view-5.4.11.tgz#677540293c7b4e0e022efb45727ef9b4efa35409"
+  integrity sha512-4QlBL5W8yVjeYwrw89oCdABI7sDxIGapFQvIbukfB5mAj1Zn1IQPkBqROLblNFtQ8PbAeexXRgDT1ENWygiJ7A==
 
 "react-native-pin-screen@git+https://git@github.com/coopcycle/react-native-pin-screen.git#1.0.3":
   version "1.0.3"
   resolved "git+https://git@github.com/coopcycle/react-native-pin-screen.git#2c7bb40caec4478d3e600fb2b9c69e71b09843e5"
 
 react-native-reanimated@^1.13.3:
-  version "1.13.3"
-  resolved "https://registry.yarnpkg.com/react-native-reanimated/-/react-native-reanimated-1.13.3.tgz#fb0e1d582c8866015140f2159e147ffe6e798a3a"
-  integrity sha512-i714H24dv6ncpFO7/SZ0PfAMbvjgVbF8Ow2NPtowoZAz8osS54DmTMrkgJ9Za+uEku/s0AEaxqiXG2Xgntvv2g==
+  version "1.13.4"
+  resolved "https://registry.yarnpkg.com/react-native-reanimated/-/react-native-reanimated-1.13.4.tgz#f57c65e80ab5d2f60bf7dd21716c0bad8108b84e"
+  integrity sha512-sFbZFh0WanKTa0Fz7GXCZUjWpk/u04ytprcIs4Kb+ijfQHChXva3m3yQZfvbrhRbABJNHrdeuyDgJxDM2mcBgw==
   dependencies:
     fbjs "^1.0.0"
 
@@ -11168,10 +11168,10 @@ react-native-safe-area-context@^3.3.2:
   resolved "https://registry.yarnpkg.com/react-native-safe-area-context/-/react-native-safe-area-context-3.3.2.tgz#9549a2ce580f2374edb05e49d661258d1b8bcaed"
   integrity sha512-yOwiiPJ1rk+/nfK13eafbpW6sKW0jOnsRem2C1LPJjM3tfTof6hlvV5eWHATye3XOpu2cJ7N+HdkUvUDGwFD2Q==
 
-react-native-screens@^3.11.0:
-  version "3.11.0"
-  resolved "https://registry.yarnpkg.com/react-native-screens/-/react-native-screens-3.11.0.tgz#eeece4a1ba10ce1bfe15160f4ae4073cad34535f"
-  integrity sha512-4ml42gzxqcjIoPr0zNeN9AHNRK06v2VrF5McT+QpU1GXipehycJ1BBWfziMEsMKZiUeVy4TU7qFlHUuys2mlzw==
+react-native-screens@^3.11.1:
+  version "3.11.1"
+  resolved "https://registry.yarnpkg.com/react-native-screens/-/react-native-screens-3.11.1.tgz#9bca9968986ca9195cb1e7e6fca37543bde64ecb"
+  integrity sha512-ziQqVm97tNtovacyHwNmDwJPb8n9CqwsfttXx2p5Hk7wUWemDcPAX0ZJ/nNnGMSq2p2QPhPjjUpr3qKXuES0sQ==
   dependencies:
     react-freeze "^1.0.0"
     warn-once "^0.1.0"
@@ -11221,17 +11221,11 @@ react-native-unimodules@^0.14.6:
     unimodules-app-loader "~2.2.0"
     unimodules-task-manager-interface "~6.2.0"
 
-react-native-vector-icons@^9.0.0:
-  version "9.0.0"
-  resolved "https://registry.yarnpkg.com/react-native-vector-icons/-/react-native-vector-icons-9.0.0.tgz#ab38ec6941f3f340d39846f1e8300e59863e2fb1"
-  integrity sha512-qKX5d5/TafHmI4B7UOSZCL3BAGh7ZfF30iLwRgxBkKfZl2lKSuHp8Ottj9OyWh9b5fFtlg+LtyvZrns3g2kh+w==
+react-native-vector-icons@^9.1.0:
+  version "9.1.0"
+  resolved "https://registry.yarnpkg.com/react-native-vector-icons/-/react-native-vector-icons-9.1.0.tgz#52eaa205f5954d567b7048eb93d58ac854a2c59e"
+  integrity sha512-2AHZ/h9d/+rC0odz+OwbGNlc1Lik/pHhSixn4HfC8RtQ8CxfSBZ6gg7bTLcZhdSvZN+ZEGi30Fj+ZnOSQy+smg==
   dependencies:
-    lodash.frompairs "^4.0.1"
-    lodash.isequal "^4.5.0"
-    lodash.isstring "^4.0.1"
-    lodash.omit "^4.5.0"
-    lodash.pick "^4.4.0"
-    lodash.template "^4.5.0"
     prop-types "^15.7.2"
     yargs "^16.1.1"
 
@@ -12970,10 +12964,10 @@ url-parse@^1.4.4:
     querystringify "^2.1.1"
     requires-port "^1.0.0"
 
-url-parse@^1.5.4:
-  version "1.5.4"
-  resolved "https://registry.yarnpkg.com/url-parse/-/url-parse-1.5.4.tgz#e4f645a7e2a0852cc8a66b14b292a3e9a11a97fd"
-  integrity sha512-ITeAByWWoqutFClc/lRZnFplgXgEZr3WJ6XngMM/N9DMIm4K8zXPCZ1Jdu0rERwO84w1WC5wkle2ubwTA4NTBg==
+url-parse@^1.5.6:
+  version "1.5.6"
+  resolved "https://registry.yarnpkg.com/url-parse/-/url-parse-1.5.6.tgz#b2a41d5a233645f3c31204cc8be60e76a15230a2"
+  integrity sha512-xj3QdUJ1DttD1LeSfvJlU1eiF1RvBSBfUu8GplFGdUzSO28y5yUtEl7wb//PI4Af6qh0o/K8545vUmucRrfWsw==
   dependencies:
     querystringify "^2.1.1"
     requires-port "^1.0.0"
