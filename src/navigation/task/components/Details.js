@@ -103,7 +103,7 @@ const Details = ({ task, t }) => {
 
   if (task.packages && task.packages.length) {
     const packagesSummary = task.packages.reduce(({text, totalQuantity}, p) => {
-      const packageText = `${p.quantity} × ${p.package.name}`;
+      const packageText = `${p.quantity} × ${p.name}`;
       text = text.length ? `${text}\n${packageText}` : packageText;
       totalQuantity += p.quantity;
       return {text, totalQuantity};
