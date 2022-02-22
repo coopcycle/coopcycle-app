@@ -54,6 +54,7 @@ import {
   CHANGE_PRODUCT_OPTION_VALUE_ENABLED_REQUEST,
   CHANGE_PRODUCT_OPTION_VALUE_ENABLED_SUCCESS,
   CHANGE_PRODUCT_OPTION_VALUE_ENABLED_FAILURE,
+  SUNMI_PRINTER_DETECTED,
 } from './actions'
 
 import {
@@ -85,6 +86,7 @@ const initialState = {
   isScanningBluetooth: false,
   printer: null,
   productOptions: [],
+  isSunmiPrinter: false,
 }
 
 const spliceOrders = (state, payload) => {
@@ -440,6 +442,13 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         isScanningBluetooth: false,
+      }
+
+    case SUNMI_PRINTER_DETECTED:
+
+      return {
+        ...state,
+        isSunmiPrinter: true,
       }
 
     case MESSAGE:
