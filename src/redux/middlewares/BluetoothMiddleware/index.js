@@ -1,6 +1,7 @@
 import BleManager from 'react-native-ble-manager'
 import { NativeModules, NativeEventEmitter } from 'react-native'
-import { bluetoothEnabled, bluetoothDisabled, bluetoothStopScan } from '../../Restaurant/actions'
+import SunmiPrinter from '@heasy/react-native-sunmi-printer'
+import { bluetoothEnabled, bluetoothDisabled, bluetoothStopScan, sunmiPrinterDetected } from '../../Restaurant/actions'
 
 const BleManagerModule = NativeModules.BleManager
 const bleManagerEmitter = new NativeEventEmitter(BleManagerModule)
@@ -36,6 +37,13 @@ export default ({ dispatch }) => {
         // We need to reconnect them anyways
         .then(devices => devices.forEach(device => BleManager.connect(device.id)))
 
+    })
+
+  SunmiPrinter.hasPrinter()
+    .then(hasPrinter => {
+      if (hasPrinter) {
+        dispatch(sunmiPrinterDetected())
+      }
     })
 
   return (next) => (action) => next(action)

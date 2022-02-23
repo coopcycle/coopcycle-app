@@ -2,12 +2,14 @@ import { createAction } from 'redux-actions'
 import { CommonActions } from '@react-navigation/native'
 import BleManager from 'react-native-ble-manager'
 import _ from 'lodash'
+import { Buffer } from 'buffer'
 
 import DropdownHolder from '../../DropdownHolder'
 import NavigationHolder from '../../NavigationHolder'
 
 import { pushNotification } from '../App/actions'
 import { encodeForPrinter } from '../../utils/order'
+import SunmiPrinter from '@heasy/react-native-sunmi-printer'
 
 import i18n from '../../i18n'
 
@@ -95,6 +97,8 @@ export const BLUETOOTH_DISABLED = '@restaurant/BLUETOOTH_DISABLED'
 export const BLUETOOTH_START_SCAN = '@restaurant/BLUETOOTH_START_SCAN'
 export const BLUETOOTH_STOP_SCAN = '@restaurant/BLUETOOTH_STOP_SCAN'
 
+export const SUNMI_PRINTER_DETECTED = '@restaurant/SUNMI_PRINTER_DETECTED'
+
 /*
  * Action Creators
  */
@@ -176,6 +180,8 @@ export const bluetoothEnabled = createAction(BLUETOOTH_ENABLED)
 export const bluetoothDisabled = createAction(BLUETOOTH_DISABLED)
 export const bluetoothStartScan = createAction(BLUETOOTH_START_SCAN)
 export const bluetoothStopScan = createAction(BLUETOOTH_STOP_SCAN)
+
+export const sunmiPrinterDetected = createAction(SUNMI_PRINTER_DETECTED)
 
 /*
  * Thunk Creators
@@ -596,7 +602,21 @@ export function printOrder(order) {
 
   return async (dispatch, getState) => {
 
-    const { printer } = getState().restaurant
+    const { printer, isSunmiPrinter } = getState().restaurant
+
+    try {
+
+      if (isSunmiPrinter) {
+        await SunmiPrinter.printerInit()
+        SunmiPrinter.sendRAWData(
+          Buffer.from(encodeForPrinter(order)).toString('base64')
+        )
+        return
+      }
+
+    } catch (e) {
+      console.log(e)
+    }
 
     if (!printer) {
       return

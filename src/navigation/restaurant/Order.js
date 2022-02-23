@@ -75,7 +75,7 @@ function mapStateToProps(state, ownProps) {
 
   return {
     order: ownProps.route.params?.order,
-    isPrinterConnected: !!state.restaurant.printer,
+    isPrinterConnected: !!state.restaurant.printer || state.restaurant.isSunmiPrinter,
     printer: state.restaurant.printer,
   }
 }
