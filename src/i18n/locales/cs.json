@@ -386,6 +386,20 @@
         "SELECT_PAYMENT_METHOD": "Vybrat platební metodu",
         "PRIVACY": "Soukromí",
         "TERMS_OF_SERVICE": "Podmínky poskytování služeb",
-        "CHECKOUT_UNITS": "Jednotky"
+        "CHECKOUT_UNITS": "Jednotky",
+        "RESTAURANT_PRODUCT_OPTIONS": "Možnosti produktu",
+        "RESTAURANT_PRE_ORDER": "Předobjednávka",
+        "RESTAURANT_CLOSED_AND_NOT_AVAILABLE": "Tato restaurace je uzavřena a není k dispozici do {{ datetime }}.",
+        "CHECKOUT_AS_GUEST": "Odhlásit se jako host",
+        "GUEST_CHECKOUT_ORDER_EMAIL_HELP": "Zasílání aktuálních informací o vaší objednávce",
+        "GUEST_CHECK_EMAIL_FOR_ORDER_UPDATES": "Protože jste se rozhodli provést objednávku jako host, zkontrolujte prosím své e-maily a sledujte svou objednávku",
+        "MY_ORDER": "Moje objednávka",
+        "OR": "nebo",
+        "DO_NOT_SHOW_IT_AGAIN": "Už to neukazujte",
+        "total_packages_0": "Celkem: {{count}} balíček",
+        "total_packages_1": "Celkem: {{count}} balíčky",
+        "total_packages_2": "Celkem: {{count}} balíčků",
+        "RESTAURANT_CLOSED_BUT_OPENS": "Tato restaurace je nyní zavřená, ale otevírá se {{ datetime }}. Stále si však můžete objednat na později!",
+        "MULTIPLE_SERVERS_IN_SAME_CITY_MODAL_TEXT": "Ve vašem městě je více družstev, můžete mezi nimi přecházet pomocí karet nebo přejetím doleva či doprava."
     }
 }
