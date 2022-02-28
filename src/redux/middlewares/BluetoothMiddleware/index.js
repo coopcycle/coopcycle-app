@@ -1,7 +1,7 @@
 import BleManager from 'react-native-ble-manager'
 import { NativeModules, NativeEventEmitter } from 'react-native'
 import SunmiPrinter from '@heasy/react-native-sunmi-printer'
-import { bluetoothEnabled, bluetoothDisabled, bluetoothStopScan, sunmiPrinterDetected } from '../../Restaurant/actions'
+import { bluetoothEnabled, bluetoothDisabled, bluetoothStopScan, sunmiPrinterDetected, printerConnected } from '../../Restaurant/actions'
 
 const BleManagerModule = NativeModules.BleManager
 const bleManagerEmitter = new NativeEventEmitter(BleManagerModule)
@@ -35,7 +35,12 @@ export default ({ dispatch }) => {
         // Even if the method is named "getConnectedPeripherals",
         // the peripherals are actually not connected (?)
         // We need to reconnect them anyways
-        .then(devices => devices.forEach(device => BleManager.connect(device.id)))
+        .then(devices =>
+          devices.forEach(device =>
+            BleManager.connect(device.id)
+              .then(() => dispatch(printerConnected(device)))
+          )
+        )
 
     })
 
