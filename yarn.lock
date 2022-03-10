@@ -1466,10 +1466,9 @@
   dependencies:
     "@hapi/hoek" "^9.0.0"
 
-"@heasy/react-native-sunmi-printer@^1.5.2":
+"@heasy/react-native-sunmi-printer@git+https://github.com/alexsegura/react-native-sunmi-printer#fix-stripe":
   version "1.5.2"
-  resolved "https://registry.yarnpkg.com/@heasy/react-native-sunmi-printer/-/react-native-sunmi-printer-1.5.2.tgz#ef72a81e1f626d558135c5a0fa6351720e5243b0"
-  integrity sha512-X5lTuusprerGV4XIg8fDSvhsf1Xiwq3M68yVXBQwlPlzK19AW5aWQZ+W0Sev0Tp8jx+iGKtxL35Pnu1It5/9Rw==
+  resolved "git+https://github.com/alexsegura/react-native-sunmi-printer#243c96e54986fb98a8265798e9fbd7f0bfb8f7a9"
 
 "@internationalized/date@3.0.0-alpha.1":
   version "3.0.0-alpha.1"
