@@ -756,7 +756,11 @@ export function disconnectPrinter(device, cb) {
 
   return function (dispatch, getState) {
     BleManager.disconnect(device.id)
-      .then(() => {
+      // We use Promose.finally because if the state
+      // contains a saved printer which is not connected anymore,
+      // BleManager.disconnect will return an error
+      .catch(e => console.log(e))
+      .finally(() => {
 
         dispatch(printerDisconnected())
 
@@ -770,9 +774,6 @@ export function disconnectPrinter(device, cb) {
 
         cb && cb()
 
-      })
-      .catch(e => {
-        console.log(e)
       })
   }
 }
