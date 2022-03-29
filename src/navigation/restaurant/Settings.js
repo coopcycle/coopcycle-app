@@ -40,8 +40,8 @@ class SettingsScreen extends Component {
         label: this.props.t('RESTAURANT_SETTINGS_RUSH'),
         switch: (
           <Switch
-            value={ this.state.restaurantState === 'rush' }
-            onValueChange={ this._onRushValueChange.bind(this) } />
+            isChecked={ this.state.restaurantState === 'rush' }
+            onToggle={ this._onRushValueChange.bind(this) } />
         ),
       },
       {
