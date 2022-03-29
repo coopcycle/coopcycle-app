@@ -70,8 +70,11 @@ class AccountOrdersPage extends Component {
 
 function mapStateToProps(state) {
 
+  // At the moment, we only show foodtech orders
+  const orders = _.filter(state.account.orders, o => !!o.restaurant)
+
   return {
-    orders: state.account.orders,
+    orders,
   }
 }
 
