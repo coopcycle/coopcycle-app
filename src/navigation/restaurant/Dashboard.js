@@ -155,7 +155,7 @@ class DashboardPage extends Component {
     const { date, restaurant, specialOpeningHoursSpecification } = this.props
 
     return (
-      <View>
+      <VStack flex={ 1 }>
         { restaurant.state === 'rush' && (
           <DangerAlert
             text={ this.props.t('RESTAURANT_ALERT_RUSH_MODE_ON') }
@@ -167,7 +167,6 @@ class DashboardPage extends Component {
             onClose={ () => this.props.deleteOpeningHoursSpecification(specialOpeningHoursSpecification) } />
         )}
         <WebSocketIndicator connected={ this.props.isCentrifugoConnected } />
-        <VStack>
           <DatePickerHeader
             date={ date }
             onCalendarClick={ () => navigate('RestaurantDate') }
@@ -180,8 +179,7 @@ class DashboardPage extends Component {
             cancelledOrders={ this.props.cancelledOrders }
             fulfilledOrders={ this.props.fulfilledOrders }
             onItemClick={ order => navigate('RestaurantOrder', { order }) } />
-        </VStack>
-      </View>
+      </VStack>
     )
   }
 
