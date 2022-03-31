@@ -1,5 +1,5 @@
 import BleManager from 'react-native-ble-manager'
-import { NativeModules, NativeEventEmitter } from 'react-native'
+import { NativeModules, NativeEventEmitter, Platform } from 'react-native'
 import SunmiPrinter from '@heasy/react-native-sunmi-printer'
 import { bluetoothEnabled, bluetoothDisabled, bluetoothStopScan, sunmiPrinterDetected, printerConnected } from '../../Restaurant/actions'
 
@@ -44,12 +44,14 @@ export default ({ dispatch }) => {
 
     })
 
-  SunmiPrinter.hasPrinter()
-    .then(hasPrinter => {
-      if (hasPrinter) {
-        dispatch(sunmiPrinterDetected())
-      }
-    })
+  if (Platform.OS === 'android') {
+    SunmiPrinter.hasPrinter()
+      .then(hasPrinter => {
+        if (hasPrinter) {
+          dispatch(sunmiPrinterDetected())
+        }
+      })
+  }
 
   return (next) => (action) => next(action)
 }
