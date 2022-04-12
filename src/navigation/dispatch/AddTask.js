@@ -122,6 +122,7 @@ class AddTask extends Component {
           </FormControl>
           <FormControl style={ [ styles.autocompleteContainer, { marginTop: 85 } ] }>
             <AddressAutocomplete
+              testID="taskFormTypeahead"
               country={ this.props.country }
               location={ this.props.location }
               address={ address }
