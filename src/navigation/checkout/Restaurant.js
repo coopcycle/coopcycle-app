@@ -71,7 +71,7 @@ class Restaurant extends Component {
   }
 
   renderClosedNowWarning(restaurant) {
-    if (this.state.isAvailable && shouldShowPreOrder(restaurant)) {
+    if (this.state.isAvailable && shouldShowPreOrder(restaurant) && restaurant.nextOpeningDate) {
       return (
         <DangerAlert
           adjustsFontSizeToFit={true}
