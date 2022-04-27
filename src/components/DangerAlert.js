@@ -17,7 +17,7 @@ class DangerAlert extends Component {
     return (
       <View style={ styles.container }>
         <View style={ rowStyle }>
-          <Text style={ styles.text }>{ this.props.text }</Text>
+          <Text style={ styles.text } adjustsFontSizeToFit={this.props.adjustsFontSizeToFit}>{ this.props.text }</Text>
           { this.props.onClose && (
             <TouchableOpacity onPress={ () => this.props.onClose() }>
               <Icon as={Ionicons} name="close" style={{ color: '#a94442' }} />
@@ -32,7 +32,7 @@ class DangerAlert extends Component {
 const styles = StyleSheet.create({
   container: {
     height: 60,
-    paddingHorizontal: 20,
+    paddingHorizontal: 8,
     backgroundColor: '#f2dede',
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderBottomColor: '#a94442',
@@ -47,6 +47,7 @@ const styles = StyleSheet.create({
     color: '#a94442',
     textAlign: 'center',
     fontSize: 14,
+    lineHeight: 18,
   },
 })
 

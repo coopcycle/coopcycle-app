@@ -71,9 +71,10 @@ class Restaurant extends Component {
   }
 
   renderClosedNowWarning(restaurant) {
-    if (this.state.isAvailable && shouldShowPreOrder(restaurant)) {
+    if (this.state.isAvailable && shouldShowPreOrder(restaurant) && restaurant.nextOpeningDate) {
       return (
         <DangerAlert
+          adjustsFontSizeToFit={true}
           text={`${this.props.t('RESTAURANT_CLOSED_BUT_OPENS', {
             datetime: moment(restaurant.nextOpeningDate).calendar(moment(), {
               sameElse: 'llll',
