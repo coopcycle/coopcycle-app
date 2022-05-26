@@ -11139,9 +11139,9 @@ react-native-modal@^13.0.1:
     react-native-animatable "1.3.3"
 
 react-native-pager-view@^5.4.11:
-  version "5.4.11"
-  resolved "https://registry.yarnpkg.com/react-native-pager-view/-/react-native-pager-view-5.4.11.tgz#677540293c7b4e0e022efb45727ef9b4efa35409"
-  integrity sha512-4QlBL5W8yVjeYwrw89oCdABI7sDxIGapFQvIbukfB5mAj1Zn1IQPkBqROLblNFtQ8PbAeexXRgDT1ENWygiJ7A==
+  version "5.4.23"
+  resolved "https://registry.yarnpkg.com/react-native-pager-view/-/react-native-pager-view-5.4.23.tgz#6ff771a680eef64c7f339ec9df914c38002ec67a"
+  integrity sha512-A7Ylb8uaTcrFrVRLSqDrkAB3ReDv6CRq+VxoBJX7WPg6bQBl+sk5V3zpw6esGV8myn8yYI1Czo5m8GDIUxQqEw==
 
 "react-native-pin-screen@git+https://git@github.com/coopcycle/react-native-pin-screen.git#1.0.3":
   version "1.0.3"
