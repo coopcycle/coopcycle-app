@@ -179,6 +179,7 @@ class TaskListItem extends Component {
             </View>
             <VStack flex={ 1 } py="3" px="1">
               <Text style={ textStyle }><TaskTitle task={ task } /></Text>
+              { task.orgName ? (<Text style={ textStyle }>{ task.orgName }</Text>) : null }
               { task.address.contactName ? (<Text style={ textStyle }>{ task.address.contactName }</Text>) : null }
               { task.address.name ? (<Text style={ textStyle }>{ task.address.name }</Text>) : null }
               <Text numberOfLines={ 1 } style={ textStyle }>{ task.address.streetAddress }</Text>
