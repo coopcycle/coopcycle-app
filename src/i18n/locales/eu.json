@@ -386,6 +386,19 @@
         "SELECT_PAYMENT_METHOD": "Hautatu ordainketa metodo bat",
         "PRIVACY": "Pribatutasuna",
         "TERMS_OF_SERVICE": "Zerbitzu-baldintzak",
-        "CHECKOUT_UNITS": "Unitateak"
+        "CHECKOUT_UNITS": "Unitateak",
+        "RESTAURANT_PRODUCT_OPTIONS": "Produktu aukerak",
+        "RESTAURANT_PRE_ORDER": "Erreserbatu",
+        "RESTAURANT_CLOSED_BUT_OPENS": "Jatetxe hau itxita dago baina {{ datetime }} irekiko du. Dena den geroagorako eskatu dezakezu!",
+        "CHECKOUT_AS_GUEST": "Erosi gonbidatu bezala",
+        "GUEST_CHECKOUT_ORDER_EMAIL_HELP": "Zure eskaerari buruzko eguneraketak bidaltzeko",
+        "GUEST_CHECK_EMAIL_FOR_ORDER_UPDATES": "Gonbidatu bezala erostea aukeratu duzunez, mesedez, egiaztatu zure e-postak eskaera jarraitzeko",
+        "MY_ORDER": "Nire eskaera",
+        "OR": "edo",
+        "DO_NOT_SHOW_IT_AGAIN": "Ez erakutsi berriro",
+        "total_packages": "Totala: pakete {{count}}",
+        "total_packages_plural": "Totala: {{count}} pakete",
+        "RESTAURANT_CLOSED_AND_NOT_AVAILABLE": "Jatetxe hau itxita dago eta ez dago eskuragarri {{ datetime }} arte.",
+        "MULTIPLE_SERVERS_IN_SAME_CITY_MODAL_TEXT": "Kooperatiba bat baino gehiago dago zure hirian, haien artean nabigatu dezakezu erlaitzak erabiliz edo ezker-eskuinera lerratuz."
     }
 }
