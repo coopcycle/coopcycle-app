@@ -92,7 +92,7 @@ class ProductDetails extends Component {
                         { product.name }
                     </Heading>
                     {product.description && product.description.length > 0 &&
-                    <View style={{ height: 90 }}>
+                    <View style={{ maxHeight: 90 }}>
                         <ScrollView>
                             <Text mt="2">{ product.description }</Text>
                         </ScrollView>
