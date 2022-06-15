@@ -67,3 +67,8 @@ jobs:
           ANDROID_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
           ANDROID_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
           ANDROID_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
+      - name: Upload AAB artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: release
+          path: app/build/outputs/bundle/release/app-release.aab
