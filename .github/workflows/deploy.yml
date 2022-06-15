@@ -12,6 +12,8 @@ jobs:
       - run: yarn install
       # - run: cp GoogleService-Info.plist.dist ios/GoogleService-Info.plist
       - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.1'
       - name: Install RubyGems
         run: |
           cd android/
