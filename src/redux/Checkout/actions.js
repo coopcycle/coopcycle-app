@@ -1,5 +1,5 @@
 import { createAction } from 'redux-actions'
-import { CommonActions, StackActions } from '@react-navigation/native'
+import { StackActions, CommonActions } from '@react-navigation/native'
 import _ from 'lodash'
 import {  createPaymentMethod, handleCardAction } from '@stripe/stripe-react-native'
 
@@ -9,7 +9,7 @@ import { selectCartFulfillmentMethod } from './selectors'
 import { selectIsAuthenticated, selectUser } from '../App/selectors'
 import { loadAddressesSuccess } from '../Account/actions'
 import { isFree } from '../../utils/order'
-import { setModal } from '../App/actions';
+import {setModal} from '../App/actions';
 
 /*
  * Action Types
@@ -24,10 +24,16 @@ export const SET_TIMING = '@checkout/SET_TIMING'
 export const SET_CART_VALIDATION = '@checkout/SET_CART_VALIDATION'
 export const CLEAR = '@checkout/CLEAR'
 export const RESET_RESTAURANT = '@checkout/RESET_RESTAURANT'
+export const SET_RESTAURANT = '@checkout/SET_RESTAURANT'
+export const SET_TOKEN = '@checkout/SET_TOKEN'
 
 export const INIT_REQUEST = '@checkout/INIT_REQUEST'
 export const INIT_SUCCESS = '@checkout/INIT_SUCCESS'
 export const INIT_FAILURE = '@checkout/INIT_FAILURE'
+export const INIT_CART_REQUEST = '@checkout/INIT_CART_REQUEST'
+export const INIT_CART_SUCCESS = '@checkout/INIT_CART_SUCCESS'
+export const INIT_CART_FAILURE = '@checkout/INIT_CART_FAILURE'
+export const UPDATE_CARTS = '@checkout/UPDATE_CARTS'
 
 export const LOAD_RESTAURANTS_REQUEST = '@checkout/LOAD_RESTAURANTS_REQUEST'
 export const LOAD_RESTAURANTS_SUCCESS = '@checkout/LOAD_RESTAURANTS_SUCCESS'
@@ -63,6 +69,9 @@ export const LOAD_PAYMENT_DETAILS_FAILURE = '@checkout/LOAD_PAYMENT_DETAILS_FAIL
 
 export const UPDATE_CUSTOMER_GUEST = '@checkout/UPDATE_CUSTOMER_GUEST'
 
+export const APPLY_RESTAURANTS_FILTERS = '@checkout/APPLY_RESTAURANTS_FILTERS'
+export const CLEAR_RESTAURANTS_FILTERS = '@checkout/CLEAR_RESTAURANTS_FILTERS'
+
 export const HIDE_MULTIPLE_SERVERS_IN_SAME_CITY_MODAL = '@checkout/HIDE_MULTIPLE_SERVERS_IN_SAME_CITY_MODAL'
 
 /*
@@ -75,9 +84,15 @@ export const setTiming = createAction(SET_TIMING)
 export const setCartValidation = createAction(SET_CART_VALIDATION, (isValid, violations = []) => ({ isValid, violations }))
 
 export const initRequest = createAction(INIT_REQUEST)
-export const initSuccess = createAction(INIT_SUCCESS, (cart, token, restaurant = null) => ({ cart, token, restaurant }))
+export const initSuccess = createAction(INIT_SUCCESS, (restaurant = null) => ({ restaurant }))
 export const initFailure = createAction(INIT_FAILURE)
+export const initCartRequest = createAction(INIT_CART_REQUEST)
+export const initCartSuccess = createAction(INIT_CART_SUCCESS)
+export const initCartFailure = createAction(INIT_CART_FAILURE)
+export const updateCarts = createAction(UPDATE_CARTS)
 export const resetRestaurant = createAction(RESET_RESTAURANT)
+export const setRestaurant = createAction(SET_RESTAURANT)
+export const setToken = createAction(SET_TOKEN)
 
 export const loadRestaurantsRequest = createAction(LOAD_RESTAURANTS_REQUEST)
 export const loadRestaurantsSuccess = createAction(LOAD_RESTAURANTS_SUCCESS)
@@ -115,6 +130,9 @@ export const loadPaymentDetailsRequest = createAction(LOAD_PAYMENT_DETAILS_REQUE
 export const loadPaymentDetailsSuccess = createAction(LOAD_PAYMENT_DETAILS_SUCCESS)
 export const loadPaymentDetailsFailure = createAction(LOAD_PAYMENT_DETAILS_FAILURE)
 
+export const applyRestaurantsFilters = createAction(APPLY_RESTAURANTS_FILTERS, (filter) => ({filter}))
+export const clearRestaurantsFilters = createAction(CLEAR_RESTAURANTS_FILTERS)
+
 export const hideMultipleServersInSameCityModal = createAction(HIDE_MULTIPLE_SERVERS_IN_SAME_CITY_MODAL)
 
 function validateAddress(httpClient, cart, address) {
@@ -148,7 +166,7 @@ function createHttpClient(state) {
 let listeners = []
 
 function replaceListeners(cb) {
-  listeners = [cb]
+  listeners = [ cb ]
 }
 
 function addListener(cb) {
@@ -162,6 +180,50 @@ function notifyListeners(address) {
     }
   })
   listeners = []
+}
+
+export function addItemV2(item, quantity = 1, restaurant, options) {
+
+  return async (dispatch, getState) => {
+
+    const { carts, address } = getState().checkout
+    let httpClient = createHttpClient(getState())
+
+    dispatch(addItemRequest(item))
+    if (!_.has(carts, restaurant['@id'])) {
+      dispatch(initCartRequest(restaurant['@id']))
+      dispatch(setToken(null))
+      httpClient = createHttpClient(getState())
+      try {
+        const response = await httpClient.post('/api/carts/session', {
+          restaurant: restaurant['@id'],
+        })
+        const data = {
+          restaurant,
+          ...response,
+        }
+        dispatch(initCartSuccess(data))
+      } catch (e) {
+        dispatch(initCartFailure(e))
+      }
+    }
+    const { cart, token } = getState().checkout.carts[restaurant['@id']]
+    dispatch(setToken(token))
+    // Reload httpclient with new token
+    httpClient = createHttpClient(getState())
+    const response = await httpClient
+      .post(`${cart['@id']}/items`, {
+        product: item.identifier,
+        quantity,
+        options,
+      })
+      dispatch(addItemRequestFinished(item))
+      dispatch(updateCartSuccess(response))
+  }
+  // Check if address is valid ?
+  // Check if cart for this restaurant isset, else init it
+  // Add the item to the cart
+
 }
 
 // This action may be dispatched several times "recursively"
@@ -271,10 +333,10 @@ function queueAddItem(item, quantity = 1, options = []) {
   }
 }
 
-const fetchValidation = _.throttle((dispatch, getState) => {
+const fetchValidation = _.throttle((dispatch, getState, cart) => {
 
+  console.log(cart)
   const httpClient = createHttpClient(getState())
-  const { cart } = getState().checkout
 
   // No need to validate when cart is empty
   if (cart.items.length === 0) {
@@ -297,7 +359,7 @@ const fetchValidation = _.throttle((dispatch, getState) => {
         if (error.response && error.response.status === 400) {
           dispatch(setCartValidation(false, error.response.data.violations))
         } else {
-          dispatch(setCartValidation(false, [{ message: i18n.t('TRY_LATER') }]))
+          dispatch(setCartValidation(false, [ { message: i18n.t('TRY_LATER') } ]))
         }
       })
       .finally(resolve)
@@ -313,13 +375,13 @@ const fetchValidation = _.throttle((dispatch, getState) => {
 const updateItemQuantity = createAction(UPDATE_ITEM_QUANTITY, (item, quantity) => ({ item, quantity }))
 
 function syncItem(item) {
-
   return {
     queue: 'UPDATE_CART',
     callback: (next, dispatch, getState) => {
 
+      const { cart, token } = getState().checkout.carts[item.vendor['@id']]
+      dispatch(setToken(token))
       const httpClient = createHttpClient(getState())
-      const { cart } = getState().checkout
 
       // We make sure to get item from state,
       // because it may have been updated
@@ -341,7 +403,7 @@ function syncItem(item) {
           dispatch(setCheckoutLoading(false))
 
           fetchValidation.cancel()
-          fetchValidation(dispatch, getState)
+          fetchValidation(dispatch, getState, res)
         })
         .catch(e => {
           dispatch(setCheckoutLoading(false))
@@ -352,7 +414,7 @@ function syncItem(item) {
   }
 }
 
-const syncItemDebounced = _.debounce((dispatch, item) => dispatch(syncItem(item)), 350)
+const syncItemDebounced = _.debounce((dispatch, item) => dispatch(syncItem(item)), 450)
 
 export function incrementItem(item) {
 
@@ -366,7 +428,6 @@ export function incrementItem(item) {
 }
 
 export function decrementItem(item) {
-
   return (dispatch, getState) => {
     const quantity = item.quantity - 1
     // Dispatch an action to "virtually" change the item quantity,
@@ -382,8 +443,9 @@ function queueRemoveItem(item) {
     queue: 'UPDATE_CART',
     callback: (next, dispatch, getState) => {
 
+      const { cart, token } = getState().checkout.carts[item.vendor['@id']]
+      dispatch(setToken(token))
       const httpClient = createHttpClient(getState())
-      const { cart } = getState().checkout
 
       dispatch(setCheckoutLoading(true))
 
@@ -395,7 +457,7 @@ function queueRemoveItem(item) {
           dispatch(setCheckoutLoading(false))
 
           fetchValidation.cancel()
-          fetchValidation(dispatch, getState)
+          fetchValidation(dispatch, getState, res)
         })
         .catch(e => {
           dispatch(setCheckoutLoading(false))
@@ -403,6 +465,17 @@ function queueRemoveItem(item) {
         })
         .finally(next)
     },
+  }
+}
+
+export function deleteCart(restaurantID) {
+  return (dispatch, getState) => {
+    const { carts } = getState().checkout
+
+    const newCarts = _.omit(carts, restaurantID)
+
+    dispatch(setToken(null))
+    dispatch(updateCarts(newCarts))
   }
 }
 
@@ -417,30 +490,34 @@ export function removeItem(item) {
   }
 }
 
-export function validate() {
+export function validate(cart) {
 
   return (dispatch, getState) => {
+    const { shippingAddress } = cart
+    const { address } = getState().checkout
+
     replaceListeners(() => {
-      fetchValidation(dispatch, getState)
+      fetchValidation(dispatch, getState, cart)
     })
-    dispatch(syncAddress())
+
+      dispatch(syncAddress(cart, shippingAddress ?? address))
   }
 }
 
-const _setAddress = createAction(SET_ADDRESS)
+// TODO: Create a specific action
+export const _setAddress = createAction(SET_ADDRESS)
 
-function syncAddress() {
+function syncAddress(cart, address) {
 
   return {
     queue: 'UPDATE_CART',
     callback: (next, dispatch, getState) => {
 
+      const { carts } = getState().checkout
+      dispatch(setToken(carts[cart.restaurant].token))
       const httpClient = createHttpClient(getState())
-      const { address, cart } = getState().checkout
 
-      dispatch(setCheckoutLoading(true))
-
-      httpClient.put(cart['@id'], { shippingAddress: address })
+      httpClient.put(carts[cart.restaurant].cart['@id'], { shippingAddress: address })
         .then(res => {
           dispatch(updateCartSuccess(res))
           dispatch(setCheckoutLoading(false))
@@ -457,12 +534,11 @@ function syncAddress() {
   }
 }
 
-export function setAddress(address) {
+export function setAddress(address, cart) {
 
   return (dispatch, getState) => {
 
     const { httpClient } = getState().app
-    const { cart } = getState().checkout
 
     if (cart?.restaurant) {
 
@@ -472,11 +548,17 @@ export function setAddress(address) {
         .then(() => {
           dispatch(_setAddress(address))
           dispatch(setAddressOK(true))
-          dispatch(syncAddress())
+          dispatch(syncAddress(cart, address))
         })
         .catch((reason) => {
           dispatch(setAddressOK(false))
           dispatch(setAddressModalMessage(reason))
+          dispatch(setModal({
+            show: true,
+            skippable: true,
+            content: reason,
+            type: 'error',
+          }))
           dispatch(setCheckoutLoading(false))
         })
     } else {
@@ -594,10 +676,10 @@ export function mercadopagoCheckout(payment) {
   return (dispatch, getState) => {
     const { cart } = getState().checkout;
 
-    const { id, status, statusDetail } = payment;
+    const {id, status, statusDetail} = payment;
 
     if (status !== 'approved') {
-      handleError(dispatch, { status, statusDetail });
+      handleError(dispatch, {status, statusDetail});
       return;
     }
 
@@ -620,8 +702,10 @@ export function mercadopagoCheckout(payment) {
 }
 
 function handleSuccessNav(dispatch, order) {
+
   // First, reset checkout stack
   NavigationHolder.dispatch(StackActions.popToTop())
+
   // Then, navigate to order screen
   NavigationHolder.dispatch(CommonActions.navigate({
     name: 'AccountNav',
@@ -637,8 +721,6 @@ function handleSuccessNav(dispatch, order) {
     },
   }))
 
-  // Make sure to clear AFTER navigation has been reset
-  dispatch(clear())
   dispatch(checkoutSuccess(order))
 }
 
@@ -658,7 +740,9 @@ export function checkout(cardholderName) {
 
   return (dispatch, getState) => {
 
-    const { cart } = getState().checkout
+    const { restaurant } = getState().checkout
+    const { cart, token } = getState().checkout.carts[restaurant]
+
     const user = selectUser(getState())
 
     const httpClient = createHttpClient(getState())
@@ -712,11 +796,21 @@ export function checkout(cardholderName) {
   }
 }
 
-export function assignCustomer({ email, telephone }) {
-
+export function assignAllCarts() {
   return async (dispatch, getState) => {
 
-    const { cart, token } = getState().checkout
+    const { carts } = getState().checkout
+
+    _.forEach(carts, cartContainer => dispatch(assignCustomer({}, cartContainer)))
+  }
+}
+
+export function assignCustomer({email, telephone}, cartContainer = null) {
+  console.log(cartContainer)
+  return async (dispatch, getState) => {
+
+    const { restaurant } = getState().checkout
+    const { cart, token } = cartContainer || getState().checkout.carts[restaurant]
     const { user } = getState().app
 
     if (cart.customer) {
@@ -745,7 +839,7 @@ export function assignCustomer({ email, telephone }) {
       })
       .then(res => {
         if (user.isGuest()) {
-          dispatch(updateCustomerGuest({ email, telephone }))
+          dispatch(updateCustomerGuest({email, telephone}))
         }
         dispatch(updateCartSuccess(res))
         dispatch(checkoutSuccess())
@@ -777,9 +871,13 @@ export function updateCart(payload, cb) {
 
   return (dispatch, getState) => {
 
+
+    const { restaurant } = getState().checkout
+    const { cart, token } = getState().checkout.carts[restaurant]
+
     const httpClient = createHttpClient(getState())
 
-    const { cart } = getState().checkout
+
 
     if (payload.shippingAddress) {
       const shippingAddress = {
@@ -811,13 +909,14 @@ export function updateCart(payload, cb) {
   }
 }
 
-export function setDate(shippingTimeRange, cb) {
+// FEAT: add a way to precise id
+export function setDate(shippingTimeRange, cart, cb) {
 
   return (dispatch, getState) => {
 
     const httpClient = createHttpClient(getState())
 
-    const { cart } = getState().checkout
+    //const { cart } = getState().checkout
 
     dispatch(checkoutRequest())
 
@@ -836,13 +935,13 @@ export function setDate(shippingTimeRange, cb) {
   }
 }
 
-export function setDateAsap(cb) {
+export function setDateAsap(cart, cb) {
 
   return (dispatch, getState) => {
 
     const httpClient = createHttpClient(getState())
 
-    const { cart } = getState().checkout
+    //const { cart } = getState().checkout
 
     dispatch(checkoutRequest())
 
@@ -861,15 +960,18 @@ export function setDateAsap(cb) {
   }
 }
 
-export function setFulfillmentMethod(method) {
+export function setFulfillmentMethod(method, cart) {
 
   return (dispatch, getState) => {
 
+    const { address, carts } = getState().checkout
+
+    //dispatch(checkoutRequest())
+    console.log(method, cart)
+    console.log(carts[cart.restaurant].token)
+    dispatch(setToken(carts[cart.restaurant].token))
+
     const httpClient = createHttpClient(getState())
-
-    const { address, cart } = getState().checkout
-
-    dispatch(checkoutRequest())
 
     httpClient
       .put(cart['@id'], {
@@ -911,9 +1013,11 @@ export function loadPaymentMethods(method) {
 
   return (dispatch, getState) => {
 
-    const httpClient = createHttpClient(getState())
 
-    const { cart } = getState().checkout
+    const { restaurant } = getState().checkout
+    const { cart, token } = getState().checkout.carts[restaurant]
+
+    const httpClient = createHttpClient(getState())
 
     dispatch(loadPaymentMethodsRequest())
 
@@ -928,8 +1032,10 @@ export function checkoutWithCash() {
 
   return (dispatch, getState) => {
 
-    const { httpClient } = getState().app
-    const { cart } = getState().checkout
+
+    const { restaurant } = getState().checkout
+    const { cart, token } = getState().checkout.carts[restaurant]
+    const httpClient = createHttpClient(getState())
 
     dispatch(checkoutRequest())
 
@@ -946,9 +1052,11 @@ export function loadPaymentDetails() {
 
   return (dispatch, getState) => {
 
+    const { restaurant } = getState().checkout
+    const { cart, token } = getState().checkout.carts[restaurant]
     const httpClient = createHttpClient(getState())
 
-    const { cart } = getState().checkout
+
 
     dispatch(loadPaymentDetailsRequest())
 

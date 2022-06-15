@@ -1,22 +1,25 @@
-import React, { Component } from 'react';
-import {
-  Dimensions,
-  InteractionManager,
-  View,
-} from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context'
-import { Text } from 'native-base';
-import { connect } from 'react-redux'
-import { withTranslation } from 'react-i18next'
+import React, {Component} from 'react';
+import {Dimensions, InteractionManager, View} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context'
+import {Text} from 'native-base';
+import {connect} from 'react-redux'
+import {withTranslation} from 'react-i18next'
 
 import RestaurantSearch from '../../components/RestaurantSearch'
 import RestaurantList from '../../components/RestaurantList'
-import { loadRestaurantsSuccess, resetSearch, searchRestaurants, searchRestaurantsForAddress } from '../../redux/Checkout/actions'
-import { selectServer } from '../../redux/App/actions'
-import { selectRestaurants } from '../../redux/Checkout/selectors'
-import { selectServersInSameCity } from '../../redux/App/selectors'
-import { SceneMap, TabBar, TabView } from 'react-native-tab-view'
+import {
+  loadRestaurantsSuccess,
+  resetSearch,
+  searchRestaurants,
+  searchRestaurantsForAddress,
+  setRestaurant,
+} from '../../redux/Checkout/actions'
+import {selectServer} from '../../redux/App/actions'
+import {selectRestaurants} from '../../redux/Checkout/selectors'
+import {selectServersInSameCity} from '../../redux/App/selectors'
+import {SceneMap, TabBar, TabView} from 'react-native-tab-view'
 import MultipleServersInSameCityModal from './components/MultipleServersInSameCityModal';
+import Address from '../../utils/Address'
 
 class RestaurantsPage extends Component {
 
@@ -41,10 +44,14 @@ class RestaurantsPage extends Component {
     if (firstServer && firstServer.coopcycle_url !== this.props.baseURL) {
       // the servers are randomly ordered to avoid same server as the first option
       // so we select the new first server if it is different to the selected in a previous usage of the app
-      this._renderRestaurantsForTab({ index: 0, url: firstServer.coopcycle_url })
+      this._renderRestaurantsForTab({index: 0, url: firstServer.coopcycle_url})
     } else {
       this.props.searchRestaurants()
     }
+  }
+
+  shouldComponentUpdate(nextProps: Readonly<P>, nextState: Readonly<S>, nextContext: any): boolean {
+    return Address.geoDiff(this.props.address, nextProps.address)
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -95,13 +102,13 @@ class RestaurantsPage extends Component {
   _loadTabsRoutesAndScenes() {
     const serversMapped = this._mapServersForTabs()
 
-    const routes = serversMapped.map(({ key, title }) => {
-      return { key, title }
+    const routes = serversMapped.map(({key, title}) => {
+      return {key, title}
     })
 
     let scenes = {}
 
-    serversMapped.forEach(({ key, list }) => {
+    serversMapped.forEach(({key, list}) => {
       scenes = {
         [key]: list,
         ...scenes,
@@ -129,7 +136,7 @@ class RestaurantsPage extends Component {
     )
   }
 
-  _renderRestaurantsForTab({ index, url }) {
+  _renderRestaurantsForTab({index, url}) {
     this.props.loadRestaurantsSuccess([])
     this.setState({
       baseURL: url,
@@ -139,6 +146,9 @@ class RestaurantsPage extends Component {
 
   renderContent() {
     const { restaurants, addressAsText, isFetching, otherServers } = this.props
+    const restaurantList = (this.props.restaurantsFilter !== null) ?
+      restaurants.filter((restaurant) => restaurant.name.includes(this.props.restaurantsFilter.query)) :
+      restaurants
 
     if (otherServers.length > 1) {
       const { routes, sceneMap } = this._loadTabsRoutesAndScenes();
@@ -147,19 +157,22 @@ class RestaurantsPage extends Component {
           renderTabBar={this._renderServersTabs}
           navigationState={{ index: this.state.index, routes }}
           renderScene={sceneMap}
-          onIndexChange={(index) => this._renderRestaurantsForTab({ index, url: routes[index].key })}
+          onIndexChange={(index) => this._renderRestaurantsForTab({index, url: routes[index].key})}
           initialLayout={{ width: this.state.width }}
           lazy
         />
       )
     } else {
       return (
-        <SafeAreaView edges={ [ 'right', 'bottom', 'left' ] } style={{ flexGrow: 1 }}>
+        <SafeAreaView edges={ [ 'right', 'bottom', 'left' ] } style={{flexGrow: 1}}>
           <RestaurantList
-            restaurants={ restaurants }
+            restaurants={ restaurantList }
             addressAsText={addressAsText}
             isFetching={isFetching}
-            onItemClick={ restaurant => this.props.navigation.navigate('CheckoutRestaurant', { restaurant }) } />
+            onItemClick={ restaurant => {
+              this.props.setRestaurant(restaurant['@id'])
+              this.props.navigation.navigate('CheckoutRestaurant', { restaurant })
+            } } />
         </SafeAreaView>
       )
     }
@@ -168,11 +181,16 @@ class RestaurantsPage extends Component {
 
   render() {
 
-    return (
-      <View style={{ flex: 1, paddingTop: 54 }} testID="checkoutSearch"
-        onLayout={ event => this.setState({ width: event.nativeEvent.layout.width }) }
+    const {navigate} = this.props.navigation
+    return <>
+
+    <View style={{ flex: 1, paddingTop: 54 }} testID="checkoutSearch"
+
+      onLayout={ event => this.setState({ width: event.nativeEvent.layout.width }) }
         >
-        { this.renderContent() }
+
+
+      { this.renderContent() }
         { /* This component needs to be rendered *ABOVE* the list */ }
         { /* This is why it should be the last child component */ }
         { /* Use a "key" prop to make sure component renders */ }
@@ -185,12 +203,13 @@ class RestaurantsPage extends Component {
           defaultValue={ this.props.address }
           width={ this.state.width }
           key={ this.props.addressAsText }
-          savedAddresses={ this.props.savedAddresses } />
+          savedAddresses={ this.props.savedAddresses }
+        />
 
         <MultipleServersInSameCityModal
           multipleServers={this.props.otherServers.length > 1} />
       </View>
-    );
+    </>;
   }
 }
 
@@ -206,6 +225,7 @@ function mapStateToProps(state, ownProps) {
     baseURL: state.app.baseURL,
     otherServers: selectServersInSameCity(state),
     isFetching: state.checkout.isFetching || state.app.loading,
+    restaurantsFilter: state.checkout.restaurantsFilter,
   }
 }
 
@@ -214,6 +234,7 @@ function mapDispatchToProps(dispatch) {
   return {
     searchRestaurants: (options) => dispatch(searchRestaurants(options)),
     searchRestaurantsForAddress: (address, options) => dispatch(searchRestaurantsForAddress(address, options)),
+    setRestaurant: id => dispatch(setRestaurant(id)),
     resetSearch: (options) => dispatch(resetSearch(options)),
     loadRestaurantsSuccess: (restaurants) => dispatch(loadRestaurantsSuccess(restaurants)),
     selectServer: (serverURL) => dispatch(selectServer(serverURL)),

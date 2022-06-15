@@ -43,20 +43,20 @@ const taskEntitiesPersistConfig = {
   key: 'entities.items',
   storage: AsyncStorage,
   whitelist: ['items'],
-  transforms: [createTaskItemsTransform()],
+  transforms: [ createTaskItemsTransform() ],
 }
 
 const restaurantPersistConfig = {
   key: 'restaurant',
   storage: AsyncStorage,
-  whitelist: [ 'myRestaurants', 'restaurant', 'printer' ],
+  whitelist: ['myRestaurants', 'restaurant', 'printer'],
 }
 
 const tasksUiPersistConfig = {
   key: 'ui.tasks',
   version: 0,
   storage: AsyncStorage,
-  whitelist: [ 'excludeFilters', 'tasksChangedAlertSound', 'keepAwake', 'signatureScreenFirst' ],
+  whitelist: ['excludeFilters', 'tasksChangedAlertSound', 'keepAwake', 'signatureScreenFirst'],
   migrate: (state) => {
 
     if (!state) {
@@ -107,7 +107,7 @@ const appPersistConfig = {
   key: 'app',
   version: 0,
   storage: AsyncStorage,
-  whitelist: [ 'baseURL', 'settings', 'pushNotificationToken', 'hasDisclosedBackgroundPermission' ],
+  whitelist: ['baseURL', 'settings', 'pushNotificationToken', 'hasDisclosedBackgroundPermission', 'firstRun'],
   migrate: (state) => {
 
     if (!state) {
@@ -144,7 +144,7 @@ const appPersistConfig = {
 const checkoutPersistConfig = {
   key: 'checkout',
   storage: AsyncStorage,
-  whitelist: ['showMultipleServersInSameCityModal'],
+  whitelist: ['showMultipleServersInSameCityModal', 'carts', 'address'],
 }
 
 export default combineReducers({

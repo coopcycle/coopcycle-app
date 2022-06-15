@@ -1,40 +1,42 @@
 /*
+/*
  * App reducer, dealing with non-domain specific state
  */
 import { CONNECTED, DISCONNECTED } from '../middlewares/CentrifugoMiddleware'
 import {
-  AUTHENTICATION_FAILURE,
+  SET_BASE_URL,
+  SET_HTTP_CLIENT,
+  SET_USER,
+  SET_CURRENT_ROUTE,
+  SET_LOADING,
+  REGISTER_PUSH_NOTIFICATION_TOKEN,
+  SAVE_PUSH_NOTIFICATION_TOKEN_SUCCESS,
+  DELETE_PUSH_NOTIFICATION_TOKEN_SUCCESS,
+  PUSH_NOTIFICATION,
+  CLEAR_NOTIFICATIONS,
   AUTHENTICATION_REQUEST,
   AUTHENTICATION_SUCCESS,
-  BACKGROUND_PERMISSION_DISCLOSED,
-  CLEAR_NOTIFICATIONS,
-  CLEAR_SELECT_SERVER_ERROR,
-  CLOSE_MODAL,
-  DELETE_PUSH_NOTIFICATION_TOKEN_SUCCESS,
+  AUTHENTICATION_FAILURE,
   LOGOUT_SUCCESS,
-  PUSH_NOTIFICATION,
-  REGISTER_PUSH_NOTIFICATION_TOKEN,
-  REGISTRATION_ERRORS,
-  RESET_MODAL,
+  RESUME_CHECKOUT_AFTER_ACTIVATION,
   RESET_PASSWORD_INIT,
   RESET_PASSWORD_REQUEST,
-  RESET_PASSWORD_REQUEST_FAILURE,
   RESET_PASSWORD_REQUEST_SUCCESS,
-  RESUME_CHECKOUT_AFTER_ACTIVATION,
-  SAVE_PUSH_NOTIFICATION_TOKEN_SUCCESS,
-  SET_BACKGROUND_GEOLOCATION_ENABLED,
-  SET_BASE_URL,
-  SET_CURRENT_ROUTE,
-  SET_HTTP_CLIENT,
+  RESET_PASSWORD_REQUEST_FAILURE,
+  SET_SERVERS,
+  SET_SELECT_SERVER_ERROR,
+  CLEAR_SELECT_SERVER_ERROR,
+  SET_SETTINGS,
   SET_INTERNET_REACHABLE,
-  SET_LOADING,
-  SET_MODAL,
-  SET_SELECT_SERVER_ERROR, SET_SERVERS, SET_SETTINGS, SET_USER,
+  REGISTRATION_ERRORS,
+  SET_BACKGROUND_GEOLOCATION_ENABLED,
+  BACKGROUND_PERMISSION_DISCLOSED, SET_MODAL, RESET_MODAL, CLOSE_MODAL, ONBOARDED,
 } from './actions'
 import Config from 'react-native-config';
 
 const initialState = {
   customBuild: !!Config.DEFAULT_SERVER,
+  firstRun: true,
   isWsOpen: false,
   baseURL: null,
   httpClient: null,
@@ -118,7 +120,7 @@ export default (state = initialState, action = {}) => {
     case PUSH_NOTIFICATION:
       return {
         ...state,
-        notifications: state.notifications.concat([action.payload]),
+        notifications: state.notifications.concat([ action.payload ]),
       }
 
     case CLEAR_NOTIFICATIONS:
@@ -292,6 +294,12 @@ export default (state = initialState, action = {}) => {
           ...state.modal,
           show: false,
         },
+    }
+
+    case ONBOARDED:
+      return {
+        ...state,
+        firstRun: false,
       }
   }
 

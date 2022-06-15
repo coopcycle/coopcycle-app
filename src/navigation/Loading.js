@@ -12,6 +12,7 @@ import { bootstrap, closeModal, resetModal, resetServer, setServers } from '../r
 import HomeNavigator from './navigators/HomeNavigator'
 import DrawerNavigator from './navigators/DrawerNavigator'
 import Modal from 'react-native-modal';
+import CustomOnboarding from './home/CustomOnboarding';
 import Config from 'react-native-config';
 
 class Loading extends Component {
@@ -100,6 +101,10 @@ class Loading extends Component {
       return this.renderError()
     }
 
+    if (this.props.customBuild && this.props.firstRun) {
+      return <CustomOnboarding/>
+    }
+
     if (this.state.ready) {
       // We need to check if httpClient is defined, because it is managed by a middleware.
       // So, when dispatching a Redux action that triggers the middleware,
@@ -172,6 +177,9 @@ function mapStateToProps(state) {
     httpClient: state.app.httpClient,
     modal: state.app.modal,
     customBuild: state.app.customBuild,
+    firstRun: state.app.firstRun,
+    addresses: state.account.addresses,
+    address: state.checkout.address,
   }
 }
 

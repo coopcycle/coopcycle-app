@@ -2,14 +2,14 @@ import React, { Component } from 'react';
 import {
   Animated,
   Dimensions,
-  FlatList,
+  FlatList, ImageBackground,
   InteractionManager,
   StyleSheet,
   TouchableOpacity,
   View,
 } from 'react-native'
 import {
-  Center, Icon, Text,
+  Icon, Text, Center,
 } from 'native-base';
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
@@ -19,13 +19,24 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
 import DangerAlert from '../../components/DangerAlert'
 import { formatPrice } from '../../utils/formatting'
-import { decrementItem, hideAddressModal, incrementItem, removeItem, showAddressModal, updateCart, validate } from '../../redux/Checkout/actions'
-import { selectCartFulfillmentMethod, selectDeliveryTotal, selectShippingTimeRangeLabel } from '../../redux/Checkout/selectors'
+import {
+  incrementItem,
+  decrementItem,
+  removeItem,
+  validate,
+  showAddressModal,
+  hideAddressModal,
+  updateCart,
+  setAddress,
+} from '../../redux/Checkout/actions'
+import { selectDeliveryTotal } from '../../redux/Checkout/selectors'
 import { selectIsAuthenticated } from '../../redux/App/selectors'
 import CartFooter from './components/CartFooter'
 import AddressModal from './components/AddressModal'
 import ExpiredSessionModal from './components/ExpiredSessionModal'
 import CouponModal from './components/CouponModal'
+import {selectCartFulfillmentMethod, selectShippingTimeRangeLabel} from '../../utils/checkout';
+import {darkGreyColor, greyColor, lightGreyColor, primaryColor} from '../../styles/common';
 
 const BottomLine = ({ label, value }) => (
   <View style={ styles.line }>
@@ -40,15 +51,15 @@ const mapAdjustments = (adjustments, type) => _.map(adjustments, (adjustment, in
 ))
 
 const CollectionDisclaimerModal = withTranslation()(({ isVisible, onSwipeComplete, t, restaurant }) => {
-
+//<Text style={{ fontSize: 14 }}>{ t('CART_COLLECTION_DISCLAIMER', { telephone: restaurant.telephone }) }</Text>
   return (
     <Modal
       isVisible={ isVisible }
       onSwipeComplete={ onSwipeComplete }
-      swipeDirection={ [ 'up', 'down' ] }>
+      swipeDirection={ ['up', 'down'] }>
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', padding: 20 }}>
         <View style={{ backgroundColor: '#ffffff', paddingHorizontal: 20, paddingVertical: 30 }}>
-          <Text style={{ fontSize: 14 }}>{ t('CART_COLLECTION_DISCLAIMER', { telephone: restaurant.telephone }) }</Text>
+
         </View>
       </View>
     </Modal>
@@ -67,6 +78,24 @@ const ActionButton = withTranslation()(({ isLoading, onPress, iconName, children
   )
 })
 
+const GroupImageHeader = ({ restaurant, scale }) => {
+
+  return (
+    <Animated.View style={{
+      width: '100%',
+      height: '100%',
+    }}>
+      <ImageBackground source={{ uri: restaurant.image }} style={{ width: '100%', height: '100%' }}>
+        <View style={ styles.overlay }>
+          <View style={{ height: 60, justifyContent: 'center' }}>
+            <Text style={ styles.restaurantName } numberOfLines={ 1 }>{ restaurant.name }</Text>
+          </View>
+        </View>
+      </ImageBackground>
+    </Animated.View>
+  );
+};
+
 class Summary extends Component {
 
   constructor(props) {
@@ -80,7 +109,7 @@ class Summary extends Component {
 
   componentDidMount() {
     InteractionManager.runAfterInteractions(() => {
-      this.props.validate()
+      this.props.validate(this.props.cart)
     })
   }
 
@@ -97,10 +126,10 @@ class Summary extends Component {
     }
   }
 
-  _navigate(routeName) {
+  _navigate(routeName, cart = {}) {
     // Set edit = false before navigating
     this.props.navigation.setParams({ 'edit': false })
-    this.props.navigation.navigate(routeName)
+    this.props.navigation.navigate(routeName, cart)
   }
 
   _renderItemAdjustments(item, index) {
@@ -108,17 +137,17 @@ class Summary extends Component {
     const adjustmentsWithoutTax = _.pickBy(item.adjustments, (value, key) => key !== 'tax')
 
     return (
-      <View>
+      <View style={{paddingLeft: 5}}>
       { _.map(adjustmentsWithoutTax, (adjustments, type) => {
         return _.map(adjustments, (adj, i) => {
 
-          const label = [adj.label]
+          const label = [ adj.label ]
           if (adj.amount > 0) {
             label.push(formatPrice(adj.amount))
           }
 
           return (
-            <Text note key={ `item:${index}:adjustments:${i}` }>{ label.join(' ') }</Text>
+            <Text color="#757575" note key={ `item:${index}:adjustments:${i}` }>{ label.join(' ') }</Text>
           )
         })
       }) }
@@ -127,8 +156,13 @@ class Summary extends Component {
   }
 
   onSubmit() {
+    //FEAT: Pass cart and/or restaurant to componant here
+    const { cart } = this.props
+
+    //FEAT: Set the cart into the Redux state
+
     if (this.props.isAuthenticated) {
-      this._navigate('CheckoutMoreInfos')
+      this._navigate('CheckoutMoreInfos', { cart })
     } else {
       this._navigate('CheckoutLogin')
     }
@@ -220,7 +254,7 @@ class Summary extends Component {
 
   render() {
 
-    const { cart } = this.props
+    const { cart, restaurant } = this.props
 
     if (!cart || cart.items.length === 0) {
 
@@ -249,7 +283,7 @@ class Summary extends Component {
         </View>
         <View style={{ flex: 0 }}>
           { this.props.fulfillmentMethod === 'collection' && (
-          <TouchableOpacity style={ [styles.btn]  }
+          <TouchableOpacity style={ [ styles.btn ]  }
             // Disable interaction while loading
             onPress={ () => !this.props.isLoading && this.setState({ isCollectionDisclaimerModalVisible: true }) }>
             <Icon as={FontAwesome} name="info-circle" style={{ fontSize: 22, marginRight: 15, color: '#3498db' }} />
@@ -258,14 +292,14 @@ class Summary extends Component {
           </TouchableOpacity>
           )}
           <ActionButton
-            onPress={ () => this._navigate('CheckoutShippingDate') }
+            onPress={ () => this._navigate('CheckoutShippingDate', {cart, restaurant}) }
             iconName="clock-o">
             <Text style={{ flex: 2, fontSize: 14 }}>{ this.props.timeAsText }</Text>
             <Text note style={{ flex: 1, textAlign: 'right' }}>{ this.props.t('EDIT') }</Text>
           </ActionButton>
           { (this.props.fulfillmentMethod === 'delivery' && this.props.cart.shippingAddress) && (
           <ActionButton
-            onPress={ () => this.props.showAddressModal() }
+            onPress={ () => this.props.navigation.navigate('AccountAddresses', {action: 'cart', cart}) }
             iconName="map-marker">
             <Text numberOfLines={ 2 } ellipsizeMode="tail" style={{ flex: 2, fontSize: 14 }}>
               { this.props.cart.shippingAddress.streetAddress }
@@ -286,7 +320,8 @@ class Summary extends Component {
           </ActionButton>
           )}
         </View>
-        <View style={{ flex: 0, backgroundColor: '#e4022d' }}>
+
+        <View style={{ flex: 0, backgroundColor: primaryColor }}>
           <BottomLine label={ this.props.t('TOTAL_ITEMS') } value={ cart.itemsTotal } />
           { this.props.fulfillmentMethod === 'delivery' && (
           <BottomLine label={ this.props.t('TOTAL_DELIVERY') } value={ this.props.deliveryTotal } />
@@ -296,10 +331,6 @@ class Summary extends Component {
           { mapAdjustments(reusablePackagings, 'reusable_packaging') }
         </View>
         { this.renderFooter() }
-        <AddressModal onGoBack={ () => {
-          this.props.hideAddressModal()
-          this.props.navigation.navigate('CheckoutSummary')
-        }} />
         <ExpiredSessionModal
           onModalHide={ () => this.props.navigation.navigate('CheckoutHome') } />
         <CouponModal
@@ -309,7 +340,7 @@ class Summary extends Component {
         <CollectionDisclaimerModal
           isVisible={ this.state.isCollectionDisclaimerModalVisible }
           onSwipeComplete={ () => this.setState({ isCollectionDisclaimerModalVisible: false }) }
-          restaurant={ this.props.restaurant } />
+          restaurant={ restaurant } />
       </View>
     );
   }
@@ -347,17 +378,20 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state, ownProps) {
 
+
+  const restaurant = ownProps.route.params?.restaurant
+  const cart = state.checkout.carts[restaurant['@id']].cart || ownProps.route.params?.cart || state.checkout.cart
   return {
-    cart: state.checkout.cart,
+    cart,
+    restaurant,
     edit: ownProps.route.params?.edit || false,
     isAuthenticated: selectIsAuthenticated(state),
     deliveryTotal: selectDeliveryTotal(state),
-    timeAsText: selectShippingTimeRangeLabel(state),
+    timeAsText: selectShippingTimeRangeLabel(restaurant, cart, {}),
     isLoading: state.checkout.isLoading,
     isValid: state.checkout.isValid,
     alertMessage: _.first(state.checkout.violations.map(v => v.message)),
-    fulfillmentMethod: selectCartFulfillmentMethod(state),
-    restaurant: state.checkout.restaurant,
+    fulfillmentMethod: selectCartFulfillmentMethod(restaurant, cart),
   }
 }
 
@@ -366,10 +400,11 @@ function mapDispatchToProps(dispatch) {
     incrementItem: item => dispatch(incrementItem(item)),
     decrementItem: item => dispatch(decrementItem(item)),
     removeItem: item => dispatch(removeItem(item)),
-    validate: () => dispatch(validate()),
+    validate: cart => dispatch(validate(cart)),
     showAddressModal: () => dispatch(showAddressModal()),
     hideAddressModal: () => dispatch(hideAddressModal()),
     updateCart: (cart, cb) => dispatch(updateCart(cart, cb)),
+    setAddress: (address, cart) => dispatch(setAddress(address, cart)),
   }
 }
 

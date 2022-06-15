@@ -1,52 +1,61 @@
 import {
-  ADD_ITEM_REQUEST,
-  ADD_ITEM_REQUEST_FINISHED,
-  CHECKOUT_FAILURE,
-  CHECKOUT_REQUEST,
-  CHECKOUT_SUCCESS,
-  CLEAR,
-  HIDE_ADDRESS_MODAL,
-  HIDE_EXPIRED_SESSION_MODAL,
-  HIDE_MULTIPLE_SERVERS_IN_SAME_CITY_MODAL,
-  INIT_FAILURE,
   INIT_REQUEST,
   INIT_SUCCESS,
-  LOAD_PAYMENT_DETAILS_FAILURE,
-  LOAD_PAYMENT_DETAILS_REQUEST,
-  LOAD_PAYMENT_DETAILS_SUCCESS,
-  LOAD_PAYMENT_METHODS_FAILURE,
-  LOAD_PAYMENT_METHODS_REQUEST,
-  LOAD_PAYMENT_METHODS_SUCCESS,
-  LOAD_RESTAURANTS_FAILURE,
+  INIT_FAILURE,
+  REMOVE_ITEM,
+  UPDATE_ITEM_QUANTITY,
+  SET_ADDRESS,
+  SET_ADDRESS_OK,
+  SET_TIMING,
+  CLEAR,
+  RESET_RESTAURANT,
   LOAD_RESTAURANTS_REQUEST,
   LOAD_RESTAURANTS_SUCCESS,
-  REMOVE_ITEM,
-  RESET_RESTAURANT,
+  LOAD_RESTAURANTS_FAILURE,
+  CHECKOUT_REQUEST,
+  CHECKOUT_SUCCESS,
+  CHECKOUT_FAILURE,
+  SHOW_ADDRESS_MODAL,
+  HIDE_ADDRESS_MODAL,
+  UPDATE_CART_SUCCESS,
+  SET_CHECKOUT_LOADING,
+  ADD_ITEM_REQUEST,
+  ADD_ITEM_REQUEST_FINISHED,
+  SET_CART_VALIDATION,
+  SHOW_EXPIRED_SESSION_MODAL,
+  HIDE_EXPIRED_SESSION_MODAL,
   SESSION_EXPIRED,
-  SET_ADDRESS,
   SET_ADDRESS_MODAL_HIDDEN,
   SET_ADDRESS_MODAL_MESSAGE,
-  SET_ADDRESS_OK,
-  SET_CART_VALIDATION,
-  SET_CHECKOUT_LOADING,
-  SET_TIMING,
-  SHOW_ADDRESS_MODAL,
-  SHOW_EXPIRED_SESSION_MODAL,
-  UPDATE_CART_SUCCESS,
+  LOAD_PAYMENT_METHODS_REQUEST,
+  LOAD_PAYMENT_METHODS_SUCCESS,
+  LOAD_PAYMENT_METHODS_FAILURE,
+  LOAD_PAYMENT_DETAILS_REQUEST,
+  LOAD_PAYMENT_DETAILS_SUCCESS,
+  LOAD_PAYMENT_DETAILS_FAILURE,
   UPDATE_CUSTOMER_GUEST,
-  UPDATE_ITEM_QUANTITY,
+  HIDE_MULTIPLE_SERVERS_IN_SAME_CITY_MODAL,
+  APPLY_RESTAURANTS_FILTERS,
+  CLEAR_RESTAURANTS_FILTERS,
+  INIT_CART_SUCCESS,
+  SET_TOKEN,
+  SET_RESTAURANT,
+  UPDATE_CARTS,
+  INIT_CART_REQUEST,
 } from './actions'
 
 import i18n from '../../i18n'
 import _ from 'lodash'
 
 const initialState = {
-  cart: null,
+  loadingCarts: [],
+  carts: {},
   address: null,
   isAddressOK: null,
   addressModalMessage: '',
   date: null,
   restaurants: [],
+  restaurant: null,
   menu: null,
   isFetching: false,
   errors: [],
@@ -68,6 +77,7 @@ const initialState = {
   paymentDetailsLoaded: false,
   guest: null,
   showMultipleServersInSameCityModal: true,
+  restaurantsFilter: null,
 }
 
 export default (state = initialState, action = {}) => {
@@ -100,7 +110,7 @@ export default (state = initialState, action = {}) => {
 
     case CHECKOUT_FAILURE:
 
-      let errors = [i18n.t('TRY_LATER')]
+      let errors = [ i18n.t('TRY_LATER') ]
 
       if (action.payload.hasOwnProperty('@context')
         && action.payload.hasOwnProperty('@type')
@@ -139,12 +149,42 @@ export default (state = initialState, action = {}) => {
 
       return {
         ...state,
+        cart: state.carts[action.payload.restaurant['@id']].cart,
+        token: state.carts[action.payload.restaurant['@id']].token,
         isFetching: false,
         restaurant: action.payload.restaurant,
-        cart: action.payload.cart,
-        token: action.payload.token,
         isAddressOK: null, // We don't know if it's valid
         itemRequestStack: [],
+      }
+
+    case SET_RESTAURANT:
+      return {
+        ...state,
+        restaurant: action.payload,
+      }
+
+    case SET_TOKEN:
+      return {
+        ...state,
+        token: action.payload,
+      }
+
+    case INIT_CART_REQUEST:
+      return {
+        ...state,
+        loadingCarts: [...state.loadingCarts, action.payload],
+        carts: {
+          ...state.carts,
+        },
+      }
+
+    case INIT_CART_SUCCESS:
+      return {
+        ...state,
+        carts: {
+          ...state.carts,
+          [action.payload.cart.restaurant]: action.payload,
+        },
       }
 
     case CLEAR:
@@ -156,32 +196,42 @@ export default (state = initialState, action = {}) => {
       }
 
     case REMOVE_ITEM:
-
       return {
         ...state,
-        cart: {
-          ...state.cart,
-          items: _.filter(state.cart.items, item => item.id !== action.payload.id),
+        carts: {
+          ...state.carts,
+          [action.payload.vendor['@id']]: {
+            ...state.carts[action.payload.vendor['@id']],
+            cart: {
+              ...state.carts[action.payload.vendor['@id']].cart,
+              items: _.filter(state.carts[action.payload.vendor['@id']].cart.items, item => item.id !== action.payload.id),
+            },
+          },
         },
       }
 
     case UPDATE_ITEM_QUANTITY:
-
       return {
         ...state,
-        cart: {
-          ...state.cart,
-          items: _.map(state.cart.items, item => {
-            if (item.id === action.payload.item.id) {
+        carts: {
+          ...state.carts,
+          [action.payload.item.vendor['@id']]: {
+            ...state.carts[action.payload.item.vendor['@id']],
+            cart: {
+              ...state.carts[action.payload.item.vendor['@id']].cart,
+              items: _.map(state.carts[action.payload.item.vendor['@id']].cart.items, item => {
+                if (item.id === action.payload.item.id) {
 
-              return {
-                ...item,
-                quantity: action.payload.quantity,
-              }
-            }
+                  return {
+                    ...item,
+                    quantity: action.payload.quantity,
+                  }
+                }
 
-            return item
-          }),
+                return item
+              }),
+            },
+          },
         },
       }
 
@@ -247,8 +297,23 @@ export default (state = initialState, action = {}) => {
     case UPDATE_CART_SUCCESS:
       return {
         ...state,
-        cart: action.payload,
+        loadingCarts: _.filter(state.loadingCarts, action.payload.restaurant),
+        carts: {
+          ...state.carts,
+          [action.payload.restaurant]:
+            {
+              ...state.carts[action.payload.restaurant],
+              cart: action.payload,
+            },
+        },
+        //cart: action.payload,
         isFetching: false,
+      }
+
+    case UPDATE_CARTS:
+      return {
+        ...state,
+        carts: action.payload,
       }
 
     case SET_CHECKOUT_LOADING:
@@ -334,6 +399,18 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         showMultipleServersInSameCityModal: false,
+      }
+
+    case APPLY_RESTAURANTS_FILTERS:
+      return {
+        ...state,
+        restaurantsFilter: action.payload.filter,
+      }
+
+    case CLEAR_RESTAURANTS_FILTERS:
+      return {
+        ...state,
+        restaurantsFilter: null,
       }
 
   }

@@ -66,6 +66,8 @@ import RestaurantOpeningHours from './restaurant/OpeningHours'
 import RestaurantMenus from './restaurant/Menus'
 import RestaurantPrinter from './restaurant/Printer'
 import SearchResults from './checkout/components/SearchResults';
+import Carts from './checkout/Carts';
+import AddressDetails from './account/AddressDetails';
 
 export default {
   RestaurantsPage,
@@ -124,6 +126,8 @@ export default {
   StoreNewDeliveryForm,
   SearchForm,
   SearchResults,
+  Carts,
+  AddressDetails,
 }
 
 export const headerLeft = (navigation, testID = 'menuBtn') => {

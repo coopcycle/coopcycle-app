@@ -150,13 +150,12 @@ function Restaurant(props) {
 function mapStateToProps(state, ownProps) {
 
   const restaurant = ownProps.route.params?.restaurant
-  const cart = state.checkout.cart
-  const cartLoading = state.checkout.isLoading
-  const isCartEmpty = !state.checkout.cart ? true : state.checkout.cart.items.length === 0
-  const isSameRestaurant = restaurant['@id'] === cart?.restaurant
+  const cart = state.checkout.carts[restaurant['@id']]?.cart
+  const cartLoading = _.includes(state.checkout.loadingCarts, restaurant['@id'])
+  const isCartEmpty = !state.checkout.carts[restaurant['@id']] ? true : cart.items.length === 0
 
   return {
-    showFooter: isSameRestaurant && (cartLoading || !isCartEmpty),
+    showFooter: cartLoading || !isCartEmpty,
     cartLoading,
     restaurant,
     cart,

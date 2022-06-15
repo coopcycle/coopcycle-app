@@ -16,6 +16,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
 import OrderItems from '../../components/OrderItems'
 import { loadOrder, subscribe, unsubscribe } from '../../redux/Account/actions'
+import {deleteCart} from '../../redux/Checkout/actions';
 
 class OrderTrackingPage extends Component {
 
@@ -56,6 +57,7 @@ class OrderTrackingPage extends Component {
     if (order) {
       this.props.unsubscribe(order)
     }
+    this.props.deleteCart(order.restaurant['@id'])
   }
 
   renderHeader(order) {
@@ -202,6 +204,7 @@ function mapDispatchToProps(dispatch) {
     subscribe: (order, onMessage) => dispatch(subscribe(order, onMessage)),
     unsubscribe: (order) => dispatch(unsubscribe(order)),
     loadOrder: (hashid) => dispatch(loadOrder(hashid)),
+    deleteCart: id => dispatch(deleteCart(id)),
   }
 }
 

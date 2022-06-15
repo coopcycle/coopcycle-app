@@ -1,18 +1,15 @@
 import React, { Component } from 'react'
-import { StyleSheet, TouchableOpacity, View } from 'react-native'
+import { TouchableOpacity, View, StyleSheet } from 'react-native'
 import { Picker } from '@react-native-picker/picker'
-import { HStack, Heading, Text } from 'native-base'
+import { Text, HStack, Heading } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 import _ from 'lodash'
 import moment from 'moment'
 
 import { setDate, setDateAsap, setFulfillmentMethod } from '../../redux/Checkout/actions'
-import {
-  selectCartFulfillmentMethod,
-  selectIsCollectionEnabled,
-  selectIsDeliveryEnabled } from '../../redux/Checkout/selectors'
 import FooterButton from './components/FooterButton'
+import {selectCartFulfillmentMethod, selectIsCollectionEnabled, selectIsDeliveryEnabled} from '../../utils/checkout';
 
 const FulfillmentMethodButton = withTranslation()(({ type, enabled, active, onPress, t }) => {
 
@@ -25,7 +22,7 @@ const FulfillmentMethodButton = withTranslation()(({ type, enabled, active, onPr
   }
 
   return (
-    <TouchableOpacity style={ [ styles.fmBtn, { backgroundColor: active ? '#3498db' : 'transparent' }] }
+    <TouchableOpacity style={ [ styles.fmBtn, { backgroundColor: active ? '#3498db' : 'transparent' } ] }
       onPress={ () => (enabled && !active) ? onPress() : null }>
       <Text style={ titleStyle }>
         { t(`FULFILLMENT_METHOD.${type}`) }
@@ -40,7 +37,7 @@ const FulfillmentMethodButton = withTranslation()(({ type, enabled, active, onPr
 const FulfillmentMethodButtons = withTranslation()(({ fulfillmentMethod, isDeliveryEnabled, isCollectionEnabled, setValue }) => {
 
   const types = (isCollectionEnabled && !isDeliveryEnabled) ?
-    [ 'collection', 'delivery' ] : [ 'delivery', 'collection' ]
+    ['collection', 'delivery'] : ['delivery', 'collection']
 
   const enabled = {
     delivery: isDeliveryEnabled,
@@ -95,18 +92,20 @@ class ShippingDate extends Component {
   }
 
   _onSubmit() {
-    this.props.setDate(stringAsRange(this.state.time), () => {
+    this.props.setDate(stringAsRange(this.state.time), this.props.cart, () => {
       this.props.navigation.goBack()
     })
   }
 
   _onAsap() {
-    this.props.setDateAsap(() => {
+    this.props.setDateAsap(this.props.cart, () => {
       this.props.navigation.goBack()
     })
   }
 
   render() {
+
+    console.log(this.props)
 
     const { dates } = this.props
 
@@ -119,7 +118,10 @@ class ShippingDate extends Component {
             fulfillmentMethod={ this.props.fulfillmentMethod }
             isDeliveryEnabled={ this.props.isDeliveryEnabled }
             isCollectionEnabled={ this.props.isCollectionEnabled }
-            setValue={ this.props.setFulfillmentMethod } />
+            setValue={ method => {
+              //console.log(method, this.props.cart)
+              this.props.setFulfillmentMethod(method, this.props.cart)
+            } } />
           <Heading textAlign="center" size="md" p="2">{ this.props.t('CHECKOUT_PICK_DATE') }</Heading>
           <HStack>
             <View style={{ flex: 1 }}>
@@ -165,8 +167,9 @@ const styles = StyleSheet.create({
   },
 })
 
-function mapStateToProps(state) {
-
+function mapStateToProps(state, ownProps) {
+  const cart = ownProps.route.params?.cart || state.checkout.cart
+  const restaurant = ownProps.route.params?.restaurant
   const ranges = state.checkout.timing.ranges
   const groupBy = _.groupBy(ranges, item => rangeAsDateLabel(item))
   const timesByDate = _.mapValues(groupBy, items => _.map(items, item => ({
@@ -175,21 +178,23 @@ function mapStateToProps(state) {
   })))
 
   return {
+    cart,
+    restaurant,
     dates: _.keys(groupBy),
     timesByDate,
-    shippingTimeRange: state.checkout.cart.shippingTimeRange,
-    fulfillmentMethod: selectCartFulfillmentMethod(state),
-    isDeliveryEnabled: selectIsDeliveryEnabled(state),
-    isCollectionEnabled: selectIsCollectionEnabled(state),
+    shippingTimeRange: cart.shippingTimeRange,
+    fulfillmentMethod: selectCartFulfillmentMethod(restaurant, cart),
+    isDeliveryEnabled: selectIsDeliveryEnabled(restaurant),
+    isCollectionEnabled: selectIsCollectionEnabled(restaurant),
   }
 }
 
 function mapDispatchToProps(dispatch) {
 
   return {
-    setDate: (date, cb) => dispatch(setDate(date, cb)),
-    setDateAsap: (cb) => dispatch(setDateAsap(cb)),
-    setFulfillmentMethod: (method) => dispatch(setFulfillmentMethod(method)),
+    setDate: (date, cart, cb) => dispatch(setDate(date, cart, cb)),
+    setDateAsap: (cart, cb) => dispatch(setDateAsap(cart, cb)),
+    setFulfillmentMethod: (method, cart) => dispatch(setFulfillmentMethod(method, cart)),
   }
 }
 
