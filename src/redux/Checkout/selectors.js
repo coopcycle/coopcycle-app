@@ -5,7 +5,7 @@ import moment from 'moment'
 import i18n from '../../i18n'
 
 export const selectDeliveryTotal = createSelector(
-  state => state.checkout.cart,
+  state => state.checkout.carts[state.checkout.restaurant].cart,
   (cart) => {
 
     if (!cart || !cart.adjustments) {
@@ -46,7 +46,7 @@ export const selectIsCollectionEnabled = createSelector(
 )
 
 export const selectCartFulfillmentMethod = createSelector(
-  state => state.checkout.cart,
+  state => state.checkout.carts[state.checkout.restaurant].cart,
   selectIsDeliveryEnabled,
   selectIsCollectionEnabled,
   (cart, isDeliveryEnabled, isCollectionEnabled) => {
@@ -127,7 +127,6 @@ export const selectRestaurants = createSelector(
   state => state.checkout.restaurants,
   restaurants => _.sortBy(restaurants, [
     restaurant => {
-
       if (restaurant.timing.delivery) {
 
         return timingToInteger(restaurant.timing.delivery)
@@ -141,4 +140,14 @@ export const selectRestaurants = createSelector(
       return NEXT_YEAR
     },
   ])
+)
+
+export const filterActive = createSelector(
+  state => state.checkout.restaurantsFilter,
+  restaurantsFilter => restaurantsFilter !== null
+)
+
+export const cartItemsCountBadge = createSelector(
+  state => Object.keys(state.checkout.carts),
+  items => items.length
 )

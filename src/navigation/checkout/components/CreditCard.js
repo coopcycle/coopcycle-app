@@ -27,10 +27,10 @@ const ColorSchemeAwareCardField = (props) => {
       postalCodeEnabled={ false }
       cardStyle={{
         // borderWidth?: number;
-        backgroundColor: colorScheme === 'dark' ? 'black' : 'white'
+        backgroundColor: colorScheme === 'dark' ? 'black' : 'white',
         // borderColor?: string;
         // cornerRadius?: number;
-        // textColor?: string;
+        textColor: colorScheme === 'dark' ? 'white' : 'black',
         // fontSize?: number;
         // placeholderColor?: string;
         // cursorColor?: string;

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { ActivityIndicator, StyleSheet, TouchableOpacity, View } from 'react-native'
+import {ActivityIndicator, InteractionManager, StyleSheet, TouchableOpacity, View} from 'react-native'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 import { Button, Icon, Text } from 'native-base'
@@ -11,6 +11,12 @@ import { bootstrap, resetServer, setServers } from '../redux/App/actions'
 
 import HomeNavigator from './navigators/HomeNavigator'
 import DrawerNavigator from './navigators/DrawerNavigator'
+import CustomOnboarding from './home/CustomOnboarding';
+import {primaryColor, whiteColor} from '../styles/common';
+import Autocomplete from 'react-native-autocomplete-input';
+import AddressAutocomplete from '../components/AddressAutocomplete';
+import AskAddress from './home/AskAddress';
+import Config from 'react-native-config';
 
 class Loading extends Component {
 
@@ -24,31 +30,40 @@ class Loading extends Component {
 
   async load() {
 
+    try {
+      const user = await AppUser.load()
+
+    if (this.props.customBuild) {
+      this.setState({ready: true})
+      await this.props.bootstrap(Config.DEFAULT_SERVER, user, false);
+    } else {
+      await this.loadServers(user);
+    }
+    } catch (e) {
+      this.setState({error: true})
+    }
+  }
+
+  async loadServers(user) {
     const servers = await Server.loadAll()
 
     this.props.setServers(servers)
 
     if (this.props.baseURL) {
 
-      try {
+        await this.props.bootstrap(this.props.baseURL, user, true)
 
-        const user = await AppUser.load()
-
-        await this.props.bootstrap(this.props.baseURL, user)
-
-        this.setState({ ready: true })
-
-      } catch (e) {
-        this.setState({ error: true })
-      }
+        this.setState({ready: true})
 
     } else {
-      this.setState({ ready: true })
+      this.setState({ready: true})
     }
   }
 
   componentDidMount() {
-    this.load()
+    InteractionManager.runAfterInteractions(() => {
+      this.load()
+    })
   }
 
   renderError() {
@@ -74,6 +89,14 @@ class Loading extends Component {
 
     if (this.state.error) {
       return this.renderError()
+    }
+
+    if (this.props.customBuild && this.props.firstRun) {
+      return <CustomOnboarding/>
+    }
+
+    if (this.props.address == null) {
+      return <AskAddress/>
     }
 
     if (this.state.ready) {
@@ -117,13 +140,17 @@ function mapStateToProps(state) {
     loading: state.app.loading,
     baseURL: state.app.baseURL,
     httpClient: state.app.httpClient,
+    customBuild: state.app.customBuild,
+    firstRun: state.app.firstRun,
+    addresses: state.account.addresses,
+    address: state.checkout.address,
   }
 }
 
 function mapDispatchToProps(dispatch) {
 
   return {
-    bootstrap: (baseURL, user) => dispatch(bootstrap(baseURL, user)),
+    bootstrap: (baseURL, user, loader = true) => dispatch(bootstrap(baseURL, user, loader)),
     setServers: servers => dispatch(setServers(servers)),
     resetServer: () => dispatch(resetServer()),
   }

@@ -1,11 +1,78 @@
 import React from 'react'
 import {TouchableOpacity} from 'react-native'
-import {Text} from 'native-base'
-import { createStackNavigator } from '@react-navigation/stack'
-
+import {Icon, Text} from 'native-base'
+import {createStackNavigator, TransitionPresets} from '@react-navigation/stack'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import i18n from '../../i18n'
 import screens, { headerLeft } from '..'
 import { stackNavigatorScreenOptions } from '../styles'
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import {primaryColor} from '../../styles/common';
+import store from '../../redux/store'
+import {cartItemsCountBadge, filterActive} from '../../redux/Checkout/selectors';
+import {getFocusedRouteNameFromRoute} from '@react-navigation/native';
+import {selectIsAuthenticated} from '../../redux/App/selectors';
+import CartsBadge from '../checkout/components/CartsBadge';
+
+
+
+function getNestedOptions(navigation, route) {
+  const routeName = getFocusedRouteNameFromRoute(route) ?? 'Feed';
+
+  switch (routeName) {
+    case 'Home':
+      return {};
+    case 'Search':
+      return {};
+    case 'Cart':
+      return {
+        title: i18n.t('CART'),
+        headerRight: () => {
+          if (selectIsAuthenticated(store.getState())) {
+          return (
+            <TouchableOpacity style={{paddingHorizontal: 10}} onPress={() => { navigation.navigate('AccountOrders') }}>
+              <Text style={{color: 'white'}}>
+                {i18n.t('MY_ORDERS')}
+              </Text>
+            </TouchableOpacity>)
+          }
+        },
+      };
+    case 'Account':
+      return {};
+    default:
+      return {};
+  }
+}
+
+const Tab = createBottomTabNavigator();
+
+function Tabs({rootNavigation: navigation}) {
+  return (
+    <Tab.Navigator
+      screenOptions={{
+        headerShown: false,
+        tabBarActiveTintColor: primaryColor,
+      }}
+    >
+      <Tab.Screen name="Home" options={{
+        tabBarIcon: ({ color, size }) => <Icon as={FontAwesome5} name="home" size={size} color={color} />,
+      }} component={screens.RestaurantsPage} />
+      <Tab.Screen name="Search" options={{
+        tabBarBadge: filterActive(store.getState()) ? true : null,
+        tabBarIcon: ({ color, size }) => <Icon as={FontAwesome5} name="search" size={size} color={color} />,
+      }} component={screens.SearchForm} />
+      <Tab.Screen name="Cart" options={{
+        tabBarBadge: <CartsBadge/>,
+        tabBarIcon: ({ color, size }) => <Icon as={FontAwesome5} name="shopping-cart" size={size} color={color} />,
+        title: i18n.t('CART'),
+      }} component={screens.Carts} />
+      <Tab.Screen name="Account" options={{
+        tabBarIcon: ({ color, size }) => <Icon as={FontAwesome5} name="user-alt" size={size} color={color} />,
+      }} component={screens.AccountHome} />
+    </Tab.Navigator>
+  );
+}
 
 const MainStack = createStackNavigator()
 
@@ -14,10 +81,11 @@ const MainNavigator = () => (
     screenOptions={ stackNavigatorScreenOptions }>
     <MainStack.Screen
       name="CheckoutHome"
-      component={ screens.RestaurantsPage }
-      options={ ({ navigation }) => ({
+      component={ Tabs }
+      options={ ({ navigation, route }) => ({
         title: i18n.t('RESTAURANTS'),
         headerLeft: headerLeft(navigation),
+        ...getNestedOptions(navigation, route),
       })}
     />
     <MainStack.Screen
@@ -58,6 +126,38 @@ const MainNavigator = () => (
         title: i18n.t('PAYMENT'),
       }}
     />
+    <MainStack.Screen name="SearchResults"
+  component={screens.SearchResults}
+  options={{
+    title: i18n.t('SEARCH'),
+    ...TransitionPresets.ModalTransition,
+  }}/>
+
+    <MainStack.Screen
+      name="AccountOrders"
+      component={ screens.AccountOrdersPage }
+      options={{
+        title: i18n.t('MY_ORDERS'),
+        ...TransitionPresets.ModalTransition,
+      }}
+    />
+
+    <MainStack.Screen
+      name="AccountAddresses"
+      component={ screens.AccountAddressesPage }
+      options={{
+        title: i18n.t('MY_ADDRESSES'),
+      }}
+    />
+
+    <MainStack.Screen
+      name="AddressDetails"
+      component={ screens.AddressDetails }
+      options={{
+        title: i18n.t('MY_ADDRESSES'),
+      }}
+    />
+
   </MainStack.Navigator>
 )
 

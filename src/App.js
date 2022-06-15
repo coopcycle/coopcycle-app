@@ -46,6 +46,7 @@ import DropdownAlert from 'react-native-dropdownalert'
 import DropdownHolder from './DropdownHolder'
 
 import NavigationHolder from './NavigationHolder'
+import {QueryClient, QueryClientProvider} from 'react-query';
 
 LogBox.ignoreLogs([
   'Warning: isMounted(...) is deprecated in plain JavaScript React classes.',
@@ -113,6 +114,8 @@ const App = () => {
     },
   })
 
+  const queryClient = new QueryClient()
+
   useEffect(() => {
     // https://support.count.ly/hc/en-us/articles/360037813231-React-Native-Bridge-#implementation
     // We will need to call two methods (init and start) in order to set up our SDK.
@@ -126,21 +129,23 @@ const App = () => {
     <Provider store={ store }>
       <PersistGate loading={ null } persistor={ persistor }>
         <I18nextProvider i18n={ i18n }>
-          <NativeBaseProvider theme={customTheme}>
-            <SafeAreaProvider>
-              <Spinner />
-              <NavigationContainer
-                ref={ navigationRef }
-                linking={ linking }
-                onReady={ () => (routeNameRef.current = navigationRef.current.getCurrentRoute()?.name) }
-                onStateChange={ onNavigationStateChange }
-                theme={ colorScheme === 'dark' ? DarkTheme : DefaultTheme }>
-                <Root />
-              </NavigationContainer>
-              <DropdownAlert ref={ ref => { DropdownHolder.setDropdown(ref) } } />
-              <NotificationHandler />
-            </SafeAreaProvider>
-          </NativeBaseProvider>
+          <QueryClientProvider client={queryClient}>
+            <NativeBaseProvider theme={customTheme}>
+              <SafeAreaProvider>
+                <Spinner />
+                <NavigationContainer
+                  ref={ navigationRef }
+                  linking={ linking }
+                  onReady={ () => (routeNameRef.current = navigationRef.current.getCurrentRoute()?.name) }
+                  onStateChange={ onNavigationStateChange }
+                  theme={ colorScheme === 'dark' ? DarkTheme : DefaultTheme }>
+                  <Root />
+                </NavigationContainer>
+                <DropdownAlert ref={ ref => { DropdownHolder.setDropdown(ref) } } />
+                <NotificationHandler />
+              </SafeAreaProvider>
+            </NativeBaseProvider>
+          </QueryClientProvider>
         </I18nextProvider>
       </PersistGate>
     </Provider>

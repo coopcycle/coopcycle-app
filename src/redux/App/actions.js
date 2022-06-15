@@ -11,6 +11,8 @@ import NavigationHolder from '../../NavigationHolder'
 import i18n from '../../i18n'
 import { setCurrencyCode } from '../../utils/formatting'
 import { selectInitialRouteName } from './selectors'
+import {assignAllCarts, updateCarts} from '../Checkout/actions';
+import {loadAddresses} from '../Account/actions';
 
 /*
  * Action Types
@@ -56,6 +58,8 @@ export const REGISTRATION_ERRORS = '@app/REGISTRATION_ERRORS'
 
 export const SET_BACKGROUND_GEOLOCATION_ENABLED = '@app/SET_BACKGROUND_GEOLOCATION_ENABLED'
 export const BACKGROUND_PERMISSION_DISCLOSED = '@app/BACKGROUND_PERMISSION_DISCLOSED'
+
+export const ONBOARDED = '@app/ONBOARDED'
 
 /*
  * Action Creators
@@ -103,6 +107,8 @@ export const setInternetReachable = createAction(SET_INTERNET_REACHABLE)
 export const setBackgroundGeolocationEnabled = createAction(SET_BACKGROUND_GEOLOCATION_ENABLED)
 export const backgroundPermissionDisclosed = createAction(BACKGROUND_PERMISSION_DISCLOSED)
 
+export const onboarded = createAction(ONBOARDED)
+
 const registrationErrors = createAction(REGISTRATION_ERRORS)
 
 function setBaseURL(baseURL) {
@@ -125,7 +131,11 @@ function authenticationRequest() {
 
 function authenticationSuccess(user) {
   return (dispatch, getState) => {
+    dispatch(setLoading(true))
     dispatch(_authenticationSuccess())
+    dispatch(loadAddresses())
+    dispatch(assignAllCarts())
+    dispatch(setLoading(false))
     setRolesProperty(user)
     tracker.logEvent(
       analyticsEvent.user.login._category,
@@ -145,6 +155,7 @@ function authenticationFailure(message) {
 function logoutSuccess() {
   return (dispatch, getState) => {
     dispatch(_logoutSuccess())
+    dispatch(updateCarts({}))
     setRolesProperty(null)
   }
 }
@@ -291,7 +302,7 @@ export function selectServer(server) {
   }
 }
 
-export function bootstrap(baseURL, user) {
+export function bootstrap(baseURL, user, loader = true) {
 
   return async (dispatch, getState) => {
 
@@ -305,8 +316,11 @@ export function bootstrap(baseURL, user) {
     dispatch(setUser(user))
     dispatch(setBaseURL(baseURL))
     setRolesProperty(user)
+    dispatch(loadAddresses())
 
-    dispatch(loadMyRestaurantsRequest())
+    if (loader) {
+      dispatch(loadMyRestaurantsRequest())
+    }
 
     const values = await loadAll(getState)
 
@@ -339,7 +353,6 @@ export function login(email, password, navigate = true) {
     httpClient.login(email, password)
       .then(user => {
         dispatch(authenticationSuccess(user));
-
         if (navigate) {
           // FIXME
           // Use setTimeout() to let room for loader to hide

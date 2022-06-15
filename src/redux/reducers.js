@@ -107,7 +107,7 @@ const appPersistConfig = {
   key: 'app',
   version: 0,
   storage: AsyncStorage,
-  whitelist: ['baseURL', 'settings', 'pushNotificationToken', 'hasDisclosedBackgroundPermission'],
+  whitelist: ['baseURL', 'settings', 'pushNotificationToken', 'hasDisclosedBackgroundPermission', 'firstRun'],
   migrate: (state) => {
 
     if (!state) {
@@ -144,7 +144,7 @@ const appPersistConfig = {
 const checkoutPersistConfig = {
   key: 'checkout',
   storage: AsyncStorage,
-  whitelist: ['showMultipleServersInSameCityModal'],
+  whitelist: ['showMultipleServersInSameCityModal', 'carts', 'address'],
 }
 
 export default combineReducers({

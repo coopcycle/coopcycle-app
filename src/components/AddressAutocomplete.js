@@ -183,6 +183,7 @@ class AddressAutocomplete extends Component {
     }
 
     if (text.length < this.props.minChars) {
+      this.setState({ results: [] })
       return
     }
 

@@ -399,6 +399,11 @@
         "DO_NOT_SHOW_IT_AGAIN": "Don't show it again",
         "total_packages": "Total: {{count}} package",
         "total_packages_plural": "Total: {{count}} packages",
+        "EMPTY_CARTS_TITLE": "Add items to start a cart",
+        "EMPTY_CARTS_SUBTITLE": "One you add items from a restaurant or store, your cart will appear here.",
+        "GO_TO_SHOPPING": "Start shopping",
+        "SAVE_AND_CONTINUE": "Save and continue",
+        "ENTER_NEW_ADDRESS": "Enter a new address",
         "OPTION_REQUIRED": "Mandatory",
         "SOME_OPTION_IS_REQUIRED_SELECT_ONE_VALUE": "There are mandatory options, select a value from them to continue"
     }

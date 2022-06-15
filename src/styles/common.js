@@ -1,6 +1,7 @@
 // Source file for common CSS
+//TODO: color
 
-let primaryColor = '#e4022d',
+let primaryColor = '#f8781f',
     whiteColor = '#fff',
     darkGreyColor = '#424242',
     greyColor = '#95A5A6',

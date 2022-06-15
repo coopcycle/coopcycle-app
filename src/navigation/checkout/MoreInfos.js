@@ -217,13 +217,15 @@ const styles = StyleSheet.create({
   },
 })
 
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
 
   const fulfillmentMethod = selectCartFulfillmentMethod(state)
+  const restaurantID = state.checkout.restaurant;
+  const cart = state.checkout.carts[restaurantID].cart || ownProps.route.params?.cart || state.checkout.cart
 
   return {
     country: state.app.settings.country.toUpperCase(),
-    cart: state.checkout.cart,
+    cart,
     fulfillmentMethod,
     // FIXME
     // For click & collect, we need to retrieve the customer phone number

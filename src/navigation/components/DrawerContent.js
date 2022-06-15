@@ -4,7 +4,7 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native'
-import { Text, Icon, HStack, Pressable } from 'native-base'
+import {Text, Icon, HStack, Pressable, Center, Box} from 'native-base'
 import _ from 'lodash'
 import { connect } from 'react-redux'
 import { withTranslation, useTranslation } from 'react-i18next'
@@ -20,6 +20,9 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 
 import Mailto from '../../components/Mailto'
 import { selectIsAuthenticated, selectShowRestaurantsDrawerItem } from '../../redux/App/selectors'
+import {NativeBaseProvider} from 'native-base/src/core/NativeBaseProvider';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 const phoneNumberUtil = PhoneNumberUtil.getInstance()
 
@@ -101,7 +104,7 @@ class DrawerContent extends Component {
       } catch (e) {}
     }
 
-    return (
+    return <>
       <SafeAreaView style={ styles.container } forceInset={{ top: 'always', horizontal: 'never' }}>
         <TouchableOpacity style={ styles.header } onPress={ navigateToAccount } testID="drawerAccountBtn">
           <Icon as={ Ionicons } name="person" />
@@ -168,7 +171,7 @@ class DrawerContent extends Component {
           </View>
         </View>
       </SafeAreaView>
-    )
+    </>
   }
 }
 

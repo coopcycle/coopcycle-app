@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { FlatList, StyleSheet, TouchableOpacity, View, Image, ImageBackground, useColorScheme } from 'react-native'
-import { Text, Icon, HStack, Center } from 'native-base'
+import {Text, Icon, HStack, Center, Skeleton} from 'native-base'
 import { withTranslation } from 'react-i18next'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import Ionicons from 'react-native-vector-icons/Ionicons'
@@ -59,10 +59,16 @@ const OneLineText = (props) => (
 const TimingBadge = ({ restaurant }) => {
 
   const colorScheme = useColorScheme()
-
+  if (0) {
+    return (
+      <HStack style={[styles.badge]} px="2">
+        <Skeleton h={30} w={130} borderRadius={4} />
+      </HStack>
+    )
+  }
   return (
     <HStack style={ [ styles.badge ] } bg={ colorScheme === 'dark' ? 'gray.800' : 'gray.200' } px="2">
-      <Icon as={ FontAwesome } name="clock-o" size="xs" mr="1" />
+      <Icon as={ FontAwesome } name="clock-o" size="xs" mr="1"  />
       <Text style={ styles.badgeText }>{ getNextShippingTimeAsText(restaurant) }</Text>
     </HStack>
   )
@@ -84,23 +90,23 @@ class RestaurantList extends Component {
         onPress={ () => this.props.onItemClick(restaurant) }
         testID={ restaurant.testID }>
         <View style={ styles.item }>
+          <View style={{ width: '33.3333%' }}>
+            { showPreOrder &&
+              <ImageBackground source={{ uri: restaurant.image }} style={{ width: '100%', height: '100%' }}>
+                <View style={ styles.overlay }>
+                  <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                    <Icon as={ FontAwesome } name="clock-o" size="4" color="white"/>
+                    <Text style={ styles.closedLabel } numberOfLines={ 1 }>{ this.props.t('RESTAURANT_PRE_ORDER') }</Text>
+                  </View>
+                </View>
+              </ImageBackground>
+            }
+            { !showPreOrder && <Image style={{ flex: 1, height: undefined, width: undefined }} resizeMode="cover" source={{ uri: restaurant.image }} />}
+          </View>
           <View style={{ flex: 1, width: '66.6666%', padding: 15, paddingBottom: 25 }}>
             <OneLineText style={ [ styles.restaurantNameText ] }>{ restaurant.name }</OneLineText>
             <OneLineText note numberOfLines={ 2 }>{ getRestaurantCaption(restaurant) }</OneLineText>
             <TimingBadge restaurant={ restaurant } />
-          </View>
-          <View style={{ width: '33.3333%' }}>
-            { showPreOrder &&
-            <ImageBackground source={{ uri: restaurant.image }} style={{ width: '100%', height: '100%' }}>
-              <View style={ styles.overlay }>
-                <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                  <Icon as={ FontAwesome } name="clock-o" size="4" color="white"/>
-                  <Text style={ styles.closedLabel } numberOfLines={ 1 }>{ this.props.t('RESTAURANT_PRE_ORDER') }</Text>
-                </View>
-              </View>
-            </ImageBackground>
-            }
-            { !showPreOrder && <Image style={{ flex: 1, height: undefined, width: undefined }} resizeMode="cover" source={{ uri: restaurant.image }} />}
           </View>
         </View>
       </TouchableOpacity>

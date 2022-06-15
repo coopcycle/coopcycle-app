@@ -42,7 +42,7 @@ class AccountHome extends Component {
 
     return (
       <View style={{ flex: 1 }}>
-        <Server />
+        { this.props.customBuild ? null : <Server /> }
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', marginBottom: 15 }}>
           <Icon as={Ionicons} name="person" />
           <Text style={{ textAlign: 'center', fontWeight: 'bold', fontSize: 18 }}>
@@ -85,6 +85,7 @@ function mapStateToProps(state) {
     user: state.app.user,
     message: state.app.lastAuthenticationError,
     isAuthenticated: selectIsAuthenticated(state),
+    customBuild: state.app.customBuild,
   }
 }
 

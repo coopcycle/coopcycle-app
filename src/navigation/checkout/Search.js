@@ -5,18 +5,29 @@ import {
   Dimensions
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { Text } from 'native-base';
+import {Box, Center, Fab, HStack, Icon, Pressable, Text} from 'native-base';
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 
 import RestaurantSearch from '../../components/RestaurantSearch'
 import RestaurantList from '../../components/RestaurantList'
-import { searchRestaurants, searchRestaurantsForAddress, resetSearch, loadRestaurantsSuccess } from '../../redux/Checkout/actions'
+import {
+  searchRestaurants,
+  searchRestaurantsForAddress,
+  resetSearch,
+  loadRestaurantsSuccess,
+  initOrSelectCart, setRestaurant,
+} from '../../redux/Checkout/actions'
 import { selectServer } from '../../redux/App/actions'
 import { selectRestaurants } from '../../redux/Checkout/selectors'
 import { selectServersInSameCity } from '../../redux/App/selectors'
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view'
 import MultipleServersInSameCityModal from './components/MultipleServersInSameCityModal';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import {NativeBaseProvider} from 'native-base/src/core/NativeBaseProvider';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import Address from '../../utils/Address'
 
 class RestaurantsPage extends Component {
 
@@ -45,6 +56,10 @@ class RestaurantsPage extends Component {
     } else {
       this.props.searchRestaurants()
     }
+  }
+
+  shouldComponentUpdate(nextProps: Readonly<P>, nextState: Readonly<S>, nextContext: any): boolean {
+    return Address.geoDiff(this.props.address, nextProps.address)
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -139,6 +154,9 @@ class RestaurantsPage extends Component {
 
   renderContent() {
     const { restaurants, addressAsText, isFetching, otherServers } = this.props
+    const restaurantList = (this.props.restaurantsFilter !== null) ?
+      restaurants.filter((restaurant) => restaurant.name.includes(this.props.restaurantsFilter.query)) :
+      restaurants
 
     if (otherServers.length > 1) {
       const { routes, sceneMap } = this._loadTabsRoutesAndScenes();
@@ -156,10 +174,13 @@ class RestaurantsPage extends Component {
       return (
         <SafeAreaView edges={ [ 'right', 'bottom', 'left' ] } style={{flexGrow: 1}}>
           <RestaurantList
-            restaurants={ restaurants }
+            restaurants={ restaurantList }
             addressAsText={addressAsText}
             isFetching={isFetching}
-            onItemClick={ restaurant => this.props.navigation.navigate('CheckoutRestaurant', { restaurant }) } />
+            onItemClick={ restaurant => {
+              this.props.setRestaurant(restaurant['@id'])
+              this.props.navigation.navigate('CheckoutRestaurant', { restaurant })
+            } } />
         </SafeAreaView>
       )
     }
@@ -168,11 +189,16 @@ class RestaurantsPage extends Component {
 
   render() {
 
-    return (
-      <View style={{ flex: 1, paddingTop: 54 }} testID="checkoutSearch"
-        onLayout={ event => this.setState({ width: event.nativeEvent.layout.width }) }
+    const {navigate} = this.props.navigation
+    return <>
+
+    <View style={{ flex: 1, paddingTop: 54 }} testID="checkoutSearch"
+
+      onLayout={ event => this.setState({ width: event.nativeEvent.layout.width }) }
         >
-        { this.renderContent() }
+
+
+      { this.renderContent() }
         { /* This component needs to be rendered *ABOVE* the list */ }
         { /* This is why it should be the last child component */ }
         { /* Use a "key" prop to make sure component renders */ }
@@ -185,12 +211,13 @@ class RestaurantsPage extends Component {
           defaultValue={ this.props.address }
           width={ this.state.width }
           key={ this.props.addressAsText }
-          savedAddresses={ this.props.savedAddresses } />
+          savedAddresses={ this.props.savedAddresses }
+        />
 
         <MultipleServersInSameCityModal
           multipleServers={this.props.otherServers.length > 1} />
       </View>
-    );
+    </>;
   }
 }
 
@@ -206,6 +233,7 @@ function mapStateToProps(state, ownProps) {
     baseURL: state.app.baseURL,
     otherServers: selectServersInSameCity(state),
     isFetching: state.checkout.isFetching || state.app.loading,
+    restaurantsFilter: state.checkout.restaurantsFilter,
   }
 }
 
@@ -214,9 +242,11 @@ function mapDispatchToProps(dispatch) {
   return {
     searchRestaurants: (options) => dispatch(searchRestaurants(options)),
     searchRestaurantsForAddress: (address, options) => dispatch(searchRestaurantsForAddress(address, options)),
+    setRestaurant: id => dispatch(setRestaurant(id)),
     resetSearch: (options) => dispatch(resetSearch(options)),
     loadRestaurantsSuccess: (restaurants) => dispatch(loadRestaurantsSuccess(restaurants)),
     selectServer: (serverURL) => dispatch(selectServer(serverURL)),
+    initOrSelectCart: restaurant => dispatch(initOrSelectCart(restaurant)),
   }
 }
 

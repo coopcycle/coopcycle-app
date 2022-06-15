@@ -7,7 +7,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import _ from 'lodash'
 import ProductOptions from './ProductOptions'
 import FooterButton from './components/FooterButton'
-import { addItemWithOptions } from '../../redux/Checkout/actions'
+import {addItem, addItemV2, addItemWithOptions} from '../../redux/Checkout/actions'
 import { formatPrice } from '../../utils/formatting'
 import { AllergenList, RestrictedDietList } from '../../components/MenuBadges'
 
@@ -37,10 +37,11 @@ class ProductDetails extends Component {
     }
 
     _onPressAddToCart() {
-        const product = this.props.route.params?.product;
+      const product = this.props.route.params?.product;
+      const restaurant = this.props.route.params?.restaurant;
 
-        this.props.addItem(product, this.state.quantity, this.state.optionsPayload);
-        this.props.navigation.navigate('CheckoutRestaurant', { restaurant: this.props.restaurant });
+      this.props.addItem(product, this.state.quantity, restaurant, this.state.optionsPayload);
+      this.props.navigation.navigate('CheckoutRestaurant', { restaurant });
     }
 
     optionsHasChanged({optionsPayload, optionsAreValid}) {
@@ -132,13 +133,13 @@ class ProductDetails extends Component {
 
 function mapStateToProps(state) {
     return {
-        restaurant: state.checkout.restaurant,
+
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        addItem: (item, quantity, options) => dispatch(addItemWithOptions(item, quantity, options)),
+        addItem: (item, quantity, restaurant, options) => dispatch(addItemV2(item, quantity, restaurant, options)),
     }
 }
 

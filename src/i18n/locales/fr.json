@@ -6,6 +6,8 @@
         "COURIER": "Coursier",
         "TASK": "Tâche",
         "TASKS": "Tâches",
+        "ITEM": "Article",
+        "ITEMS": "Articles",
         "TASK_LIST": "Liste des tâches",
         "WS_NOT_CONNECTED_WARNING": "Refresh automatique désactivé. Reconnexion..",
         "DISPATCH": "Dispatch",
@@ -381,6 +383,11 @@
         "OR": "ou",
         "total_packages": "Total : {{count}} paquet",
         "total_packages_plural": "Total : {{count}} paquets",
+        "EMPTY_CARTS_TITLE": "Ajoutez des articles pour commencer un panier",
+        "EMPTY_CARTS_SUBTITLE": "Une fois que vous avez ajouté des articles, votre panier s'affiche ici.",
+        "GO_TO_SHOPPING": "Commander",
+        "SAVE_AND_CONTINUE": "Enregistrer et continuer",
+        "ENTER_NEW_ADDRESS": "Entrez votre nouvelle adresse",
         "OPTION_REQUIRED": "Obligatoire",
         "SOME_OPTION_IS_REQUIRED_SELECT_ONE_VALUE": "Il y a des options obligatoires, sélectionnez une valeur parmi celles-ci pour continuer"
     }

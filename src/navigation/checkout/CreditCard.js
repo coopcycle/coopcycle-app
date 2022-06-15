@@ -77,9 +77,11 @@ class CreditCard extends Component {
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
+  const restaurantID = state.checkout.restaurant;
+  const cart = state.checkout.carts[restaurantID].cart || ownProps.route.params?.cart || state.checkout.cart
   return {
-    cart: state.checkout.cart,
+    cart,
     errors: state.checkout.errors,
     paymentMethods: state.checkout.paymentMethods,
     paymentGateway: state.app.settings.payment_gateway,

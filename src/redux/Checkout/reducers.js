@@ -35,18 +35,30 @@ import {
   LOAD_PAYMENT_DETAILS_FAILURE,
   UPDATE_CUSTOMER_GUEST,
   HIDE_MULTIPLE_SERVERS_IN_SAME_CITY_MODAL,
+  APPLY_RESTAURANTS_FILTERS,
+  CLEAR_RESTAURANTS_FILTERS,
+  INIT_CART_SUCCESS,
+  SET_TOKEN,
+  SET_CART_POINTER,
+  SET_RESTAURANT,
+  UPDATE_CARTS,
+  INIT_CART_REQUEST,
 } from './actions'
 
 import i18n from '../../i18n'
 import _ from 'lodash'
 
 const initialState = {
-  cart: null,
+  _cart: null,
+  cartPointer: null,
+  loadingCarts: [],
+  carts: {},
   address: null,
   isAddressOK: null,
   addressModalMessage: '',
   date: null,
   restaurants: [],
+  restaurant: null,
   menu: null,
   isFetching: false,
   errors: [],
@@ -68,6 +80,7 @@ const initialState = {
   paymentDetailsLoaded: false,
   guest: null,
   showMultipleServersInSameCityModal: true,
+  restaurantsFilter: null,
 }
 
 export default (state = initialState, action = {}) => {
@@ -139,13 +152,49 @@ export default (state = initialState, action = {}) => {
 
       return {
         ...state,
+        cart: state.carts[action.payload.restaurant['@id']].cart,
+        token: state.carts[action.payload.restaurant['@id']].token,
         isFetching: false,
         restaurant: action.payload.restaurant,
-        cart: action.payload.cart,
         menu: action.payload.restaurant.hasMenu,
-        token: action.payload.token,
         isAddressOK: null, // We don't know if it's valid
         itemRequestStack: [],
+      }
+
+    case SET_RESTAURANT:
+      return {
+        ...state,
+        restaurant: action.payload,
+      }
+
+    case SET_TOKEN:
+      return {
+        ...state,
+        token: action.payload,
+      }
+
+    case SET_CART_POINTER:
+      return {
+        ...state,
+        cartPointer: action.payload,
+      }
+
+    case INIT_CART_REQUEST:
+      return {
+        ...state,
+        loadingCarts: [...state.loadingCarts, action.payload],
+        carts: {
+          ...state.carts,
+        },
+      }
+
+    case INIT_CART_SUCCESS:
+      return {
+        ...state,
+        carts: {
+          ...state.carts,
+          [action.payload.cart.restaurant]: action.payload,
+        },
       }
 
     case CLEAR:
@@ -158,32 +207,43 @@ export default (state = initialState, action = {}) => {
       }
 
     case REMOVE_ITEM:
-
+console.log(action.payload)
       return {
         ...state,
-        cart: {
-          ...state.cart,
-          items: _.filter(state.cart.items, item => item.id !== action.payload.id),
+        carts: {
+          ...state.carts,
+          [action.payload.vendor['@id']]: {
+            ...state.carts[action.payload.vendor['@id']],
+            cart: {
+              ...state.carts[action.payload.vendor['@id']].cart,
+              items: _.filter(state.carts[action.payload.vendor['@id']].cart.items, item => item.id !== action.payload.id),
+            },
+          },
         },
       }
 
     case UPDATE_ITEM_QUANTITY:
-
       return {
         ...state,
-        cart: {
-          ...state.cart,
-          items: _.map(state.cart.items, item => {
-            if (item.id === action.payload.item.id) {
+        carts: {
+          ...state.carts,
+          [action.payload.item.vendor['@id']]: {
+            ...state.carts[action.payload.item.vendor['@id']],
+            cart: {
+              ...state.carts[action.payload.item.vendor['@id']].cart,
+              items: _.map(state.carts[action.payload.item.vendor['@id']].cart.items, item => {
+                if (item.id === action.payload.item.id) {
 
-              return {
-                ...item,
-                quantity: action.payload.quantity,
-              }
-            }
+                  return {
+                    ...item,
+                    quantity: action.payload.quantity,
+                  }
+                }
 
-            return item
-          }),
+                return item
+              }),
+            },
+          },
         },
       }
 
@@ -249,8 +309,23 @@ export default (state = initialState, action = {}) => {
     case UPDATE_CART_SUCCESS:
       return {
         ...state,
-        cart: action.payload,
+        loadingCarts: _.filter(state.loadingCarts, action.payload.restaurant),
+        carts: {
+          ...state.carts,
+          [action.payload.restaurant]:
+            {
+              ...state.carts[action.payload.restaurant],
+              cart: action.payload,
+            },
+        },
+        //cart: action.payload,
         isFetching: false,
+      }
+
+    case UPDATE_CARTS:
+      return {
+        ...state,
+        carts: action.payload,
       }
 
     case SET_CHECKOUT_LOADING:
@@ -336,6 +411,18 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         showMultipleServersInSameCityModal: false,
+      }
+
+    case APPLY_RESTAURANTS_FILTERS:
+      return {
+        ...state,
+        restaurantsFilter: action.payload.filter,
+      }
+
+    case CLEAR_RESTAURANTS_FILTERS:
+      return {
+        ...state,
+        restaurantsFilter: null,
       }
 
   }

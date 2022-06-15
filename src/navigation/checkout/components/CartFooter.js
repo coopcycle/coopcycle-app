@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 import { Animated, View } from 'react-native'
-import { HStack } from 'native-base'
+import {HStack, Skeleton} from 'native-base'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 import PropTypes from 'prop-types'
+import _ from 'lodash'
 
 import CartFooterButton from './CartFooterButton'
 
@@ -17,7 +18,7 @@ class CartFooter extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (this.props.cart.total !== prevProps.cart.total) {
+    if (this.props.cart?.total !== prevProps.cart?.total) {
       this.animate()
     }
   }
@@ -39,17 +40,19 @@ class CartFooter extends Component {
 
   render() {
 
-    const { cart } = this.props
+    const { cart, initLoading } = this.props
 
     return (
       <HStack testID="cartFooter">
         <View style={{ flex: 1, alignItems: 'center', paddingHorizontal: 5, paddingVertical: 5 }}>
-          <CartFooterButton
+          {initLoading && <Skeleton h="10" w={'100%'} startColor={'cyan.500'} />}
+          {!initLoading && <CartFooterButton
             cart={ cart }
             onPress={ () => this.props.onSubmit() }
             loading={ this.props.isLoading }
             testID={ this.props.testID }
             disabled={  this.props.disabled } />
+          }
         </View>
       </HStack>
     )
@@ -65,11 +68,9 @@ CartFooter.propTypes = {
   disabled: PropTypes.bool,
 }
 
-function mapStateToProps(state) {
-
+function mapStateToProps(state, ownProps) {
   return {
     isLoading: state.checkout.isLoading,
-    cart: state.checkout.cart,
   }
 }
 
