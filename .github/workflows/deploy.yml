@@ -18,6 +18,7 @@ jobs:
         with:
          fileName: "android/sentry.properties"
          encodedString: ${{ secrets.SENTRY_PROPERTIES_BASE64 }}
+      - run: ls -la android/sentry.properties
       - name: Install RubyGems
         run: |
           cd android/
