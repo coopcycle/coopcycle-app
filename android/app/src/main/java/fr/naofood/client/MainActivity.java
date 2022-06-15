@@ -1,4 +1,4 @@
-package fr.coopcycle;
+package fr.naofood.client;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -32,7 +32,7 @@ public class MainActivity extends ReactActivity {
         "Service Updates",
         NotificationManager.IMPORTANCE_HIGH
       );
-      notificationChannel.setDescription("CoopCycle Service Updates");
+      notificationChannel.setDescription("Naofood Service Updates");
 
       NotificationManager notificationManager = (NotificationManager) getSystemService(NotificationManager.class);
       notificationManager.createNotificationChannel(notificationChannel);
@@ -45,7 +45,7 @@ public class MainActivity extends ReactActivity {
    */
   @Override
   protected String getMainComponentName() {
-    return "CoopCycle";
+    return "Naofood";
   }
 
   @Override
