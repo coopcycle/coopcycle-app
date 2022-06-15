@@ -12,13 +12,38 @@ jobs:
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.1'
-      - run: cp .env.dist .env
+      - name: Create .env file
+        env:
+          SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+          GOOGLE_MAPS_BROWSER_KEY: ${{ secrets.GOOGLE_MAPS_BROWSER_KEY }}
+          GOOGLE_MAPS_ANDROID_KEY: ${{ secrets.GOOGLE_MAPS_ANDROID_KEY }}
+          TRANSISTORSOFT_LICENSE_KEY: ${{ secrets.TRANSISTORSOFT_LICENSE_KEY }}
+          FACEBOOK_APP_ID: ${{ secrets.FACEBOOK_APP_ID }}
+          GOOGLE_SIGN_IN_CLIENT_ID: ${{ secrets.GOOGLE_SIGN_IN_CLIENT_ID }}
+        run: |
+          touch .env
+          echo COUNTLY_SERVER_URL= >> .env
+          echo COUNTLY_APP_KEY= >> .env
+          echo COUNTLY_SALT= >> .env
+          echo SENTRY_DSN="$SENTRY_DSN" >> .env
+          echo GOOGLE_MAPS_BROWSER_KEY="$GOOGLE_MAPS_BROWSER_KEY" >> .env
+          echo GOOGLE_MAPS_ANDROID_KEY="$GOOGLE_MAPS_ANDROID_KEY" >> .env
+          echo TRANSISTORSOFT_LICENSE_KEY="$TRANSISTORSOFT_LICENSE_KEY" >> .env
+          echo FACEBOOK_APP_ID="$FACEBOOK_APP_ID" >> .env
+          echo FACEBOOK_CLIENT_TOKEN= >> .env
+          echo GOOGLE_SIGN_IN_CLIENT_ID="$GOOGLE_SIGN_IN_CLIENT_ID" >> .env
       - name: Decode sentry.properties file
         uses: timheuer/base64-to-file@v1.1
         with:
           fileDir: "./android/"
           fileName: "sentry.properties"
           encodedString: ${{ secrets.SENTRY_PROPERTIES_BASE64 }}
+      - name: Decode Android keystore file
+        uses: timheuer/base64-to-file@v1.1
+        id: android_keystore
+        with:
+          fileName: "android_keystore.kjs"
+          encodedString: ${{ secrets.SIGNING_STORE_FILE_BASE64 }}
       - name: Decode google-services.json file
         uses: timheuer/base64-to-file@v1.1
         with:
@@ -37,3 +62,8 @@ jobs:
           cd android/
           bundle exec fastlane deploy
           cd ..
+        env:
+          ANDROID_STORE_FILE: ${{ steps.android_keystore.outputs.filePath }}
+          ANDROID_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
