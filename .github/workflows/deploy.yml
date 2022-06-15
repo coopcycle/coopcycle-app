@@ -19,6 +19,7 @@ jobs:
           cd android/
           bundle install
           cd ..
+      - run: cp .env.dist .env
       - name: Decode sentry.properties file
         uses: timheuer/base64-to-file@v1
         with:
