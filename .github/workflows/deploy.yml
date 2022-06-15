@@ -17,7 +17,7 @@ jobs:
           cd android/
           bundle install
           cd ..
-      - name: Create screenshots with Fastlane
+      - name: Run Fastlane
         run: |
           cd android/
           bundle exec fastlane deploy
