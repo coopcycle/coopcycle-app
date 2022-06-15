@@ -7,20 +7,20 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		00E356F31AD99517003FC87E /* CoopCycleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* CoopCycleTests.m */; };
+		00E356F31AD99517003FC87E /* NaofoodTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* NaofoodTests.m */; };
 		0FFE751F8FDF4AFD96542CB7 /* RobotoMono-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5654BC430BE34AEAAF13CA9E /* RobotoMono-Bold.ttf */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		346F3EAE31674113876BFD7C /* OpenSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2FBFC77D749D4E7DB675EAD8 /* OpenSans-Regular.ttf */; };
-		5B2EC57EB037800C69F0C56A /* libPods-CoopCycle.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B9CB753F143632354764D85 /* libPods-CoopCycle.a */; };
+		5B2EC57EB037800C69F0C56A /* libPods-Naofood.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B9CB753F143632354764D85 /* libPods-Naofood.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		845246CF2344832500A3A1B2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 845246CE2344832500A3A1B2 /* GoogleService-Info.plist */; };
-		84A98B1223D8DA2000EFF666 /* CoopCycleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A98B1123D8DA2000EFF666 /* CoopCycleUITests.swift */; };
+		84A98B1223D8DA2000EFF666 /* NaofoodUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A98B1123D8DA2000EFF666 /* NaofoodUITests.swift */; };
 		84A98B1A23D8DB6500EFF666 /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A98B1923D8DB6500EFF666 /* SnapshotHelper.swift */; };
 		84E9E2D424E3EA5B00740A6D /* Infoplist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 84E9E2D624E3EA5B00740A6D /* Infoplist.strings */; };
 		96AE515DDEA1498E89D89F8F /* RobotoMono-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 767153BC6E2E4B5A88732015 /* RobotoMono-Regular.ttf */; };
-		980C7214FC0F2A313B8903B1 /* libPods-CoopCycle-CoopCycleTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 273610F0D6D85E77FDEEB8FF /* libPods-CoopCycle-CoopCycleTests.a */; };
+		980C7214FC0F2A313B8903B1 /* libPods-Naofood-NaofoodTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 273610F0D6D85E77FDEEB8FF /* libPods-Naofood-NaofoodTests.a */; };
 		A9C30BD9D63F45FEB1FD9DEC /* OpenSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 961D84324BE84213A85D9C7D /* OpenSans-Bold.ttf */; };
 		E4A95D69133B4C1B8FD304BA /* Raleway-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CA8DA506BADD462E8A4B68B4 /* Raleway-Regular.ttf */; };
 		ED297163215061F000B7C4FE /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED297162215061F000B7C4FE /* JavaScriptCore.framework */; };
@@ -34,52 +34,52 @@
 			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
-			remoteInfo = CoopCycle;
+			remoteInfo = Naofood;
 		};
 		84A98B1423D8DA2000EFF666 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
-			remoteInfo = CoopCycle;
+			remoteInfo = Naofood;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
-		00E356EE1AD99517003FC87E /* CoopCycleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CoopCycleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		00E356EE1AD99517003FC87E /* NaofoodTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NaofoodTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		00E356F21AD99517003FC87E /* CoopCycleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CoopCycleTests.m; sourceTree = "<group>"; };
-		13B07F961A680F5B00A75B9A /* CoopCycle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CoopCycle.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = CoopCycle/AppDelegate.h; sourceTree = "<group>"; };
-		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = CoopCycle/AppDelegate.m; sourceTree = "<group>"; };
-		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = CoopCycle/Images.xcassets; sourceTree = "<group>"; };
-		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = CoopCycle/Info.plist; sourceTree = "<group>"; };
-		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = CoopCycle/main.m; sourceTree = "<group>"; };
-		273610F0D6D85E77FDEEB8FF /* libPods-CoopCycle-CoopCycleTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-CoopCycle-CoopCycleTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		00E356F21AD99517003FC87E /* NaofoodTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NaofoodTests.m; sourceTree = "<group>"; };
+		13B07F961A680F5B00A75B9A /* Naofood.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Naofood.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Naofood/AppDelegate.h; sourceTree = "<group>"; };
+		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = Naofood/AppDelegate.m; sourceTree = "<group>"; };
+		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = Naofood/Images.xcassets; sourceTree = "<group>"; };
+		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Naofood/Info.plist; sourceTree = "<group>"; };
+		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Naofood/main.m; sourceTree = "<group>"; };
+		273610F0D6D85E77FDEEB8FF /* libPods-Naofood-NaofoodTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Naofood-NaofoodTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D16E6891FA4F8E400B85C8A /* libReact.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libReact.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		2FBFC77D749D4E7DB675EAD8 /* OpenSans-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-Regular.ttf"; path = "../assets/fonts/OpenSans-Regular.ttf"; sourceTree = "<group>"; };
-		4950D879877C4AFABC75A2ED /* Pods-CoopCycle.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CoopCycle.debug.xcconfig"; path = "Target Support Files/Pods-CoopCycle/Pods-CoopCycle.debug.xcconfig"; sourceTree = "<group>"; };
-		4B9CB753F143632354764D85 /* libPods-CoopCycle.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-CoopCycle.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		4950D879877C4AFABC75A2ED /* Pods-Naofood.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Naofood.debug.xcconfig"; path = "Target Support Files/Pods-Naofood/Pods-Naofood.debug.xcconfig"; sourceTree = "<group>"; };
+		4B9CB753F143632354764D85 /* libPods-Naofood.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Naofood.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5654BC430BE34AEAAF13CA9E /* RobotoMono-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "RobotoMono-Bold.ttf"; path = "../assets/fonts/RobotoMono-Bold.ttf"; sourceTree = "<group>"; };
 		767153BC6E2E4B5A88732015 /* RobotoMono-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "RobotoMono-Regular.ttf"; path = "../assets/fonts/RobotoMono-Regular.ttf"; sourceTree = "<group>"; };
-		774F2E083718E7A94D1D3D83 /* Pods-CoopCycle.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CoopCycle.release.xcconfig"; path = "Target Support Files/Pods-CoopCycle/Pods-CoopCycle.release.xcconfig"; sourceTree = "<group>"; };
-		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = CoopCycle/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		774F2E083718E7A94D1D3D83 /* Pods-Naofood.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Naofood.release.xcconfig"; path = "Target Support Files/Pods-Naofood/Pods-Naofood.release.xcconfig"; sourceTree = "<group>"; };
+		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = Naofood/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		845246CE2344832500A3A1B2 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		84A98B0F23D8DA2000EFF666 /* CoopCycleUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CoopCycleUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		84A98B1123D8DA2000EFF666 /* CoopCycleUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoopCycleUITests.swift; sourceTree = "<group>"; };
+		84A98B0F23D8DA2000EFF666 /* NaofoodUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NaofoodUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		84A98B1123D8DA2000EFF666 /* NaofoodUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaofoodUITests.swift; sourceTree = "<group>"; };
 		84A98B1323D8DA2000EFF666 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		84A98B1923D8DB6500EFF666 /* SnapshotHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnapshotHelper.swift; sourceTree = "<group>"; };
 		84E9E2D524E3EA5B00740A6D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Infoplist.strings; sourceTree = "<group>"; };
 		84E9E2D724E3EA7100740A6D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Infoplist.strings; sourceTree = "<group>"; };
-		87F2E4E6C4448C00269C858D /* Pods-CoopCycle-CoopCycleTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CoopCycle-CoopCycleTests.debug.xcconfig"; path = "Target Support Files/Pods-CoopCycle-CoopCycleTests/Pods-CoopCycle-CoopCycleTests.debug.xcconfig"; sourceTree = "<group>"; };
+		87F2E4E6C4448C00269C858D /* Pods-Naofood-NaofoodTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Naofood-NaofoodTests.debug.xcconfig"; path = "Target Support Files/Pods-Naofood-NaofoodTests/Pods-Naofood-NaofoodTests.debug.xcconfig"; sourceTree = "<group>"; };
 		961D84324BE84213A85D9C7D /* OpenSans-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-Bold.ttf"; path = "../assets/fonts/OpenSans-Bold.ttf"; sourceTree = "<group>"; };
-		AAEBEBD0F5CFBCC5A75A55AF /* Pods-CoopCycle-CoopCycleTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CoopCycle-CoopCycleTests.release.xcconfig"; path = "Target Support Files/Pods-CoopCycle-CoopCycleTests/Pods-CoopCycle-CoopCycleTests.release.xcconfig"; sourceTree = "<group>"; };
+		AAEBEBD0F5CFBCC5A75A55AF /* Pods-Naofood-NaofoodTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Naofood-NaofoodTests.release.xcconfig"; path = "Target Support Files/Pods-Naofood-NaofoodTests/Pods-Naofood-NaofoodTests.release.xcconfig"; sourceTree = "<group>"; };
 		CA8DA506BADD462E8A4B68B4 /* Raleway-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Raleway-Regular.ttf"; path = "../assets/fonts/Raleway-Regular.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		FA2E390B2225DD32002BBCB4 /* Empty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Empty.swift; sourceTree = "<group>"; };
-		FA4FE0642225CF1000AB66C4 /* CoopCycle-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CoopCycle-Bridging-Header.h"; sourceTree = "<group>"; };
-		FA53F9442047D093004395DF /* CoopCycle.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = CoopCycle.entitlements; path = CoopCycle/CoopCycle.entitlements; sourceTree = "<group>"; };
+		FA4FE0642225CF1000AB66C4 /* Naofood-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Naofood-Bridging-Header.h"; sourceTree = "<group>"; };
+		FA53F9442047D093004395DF /* Naofood.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Naofood.entitlements; path = Naofood/Naofood.entitlements; sourceTree = "<group>"; };
 		FAC644352166467B00D1DA52 /* misstickle__indian_bell_chime.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = misstickle__indian_bell_chime.wav; path = ../android/app/src/main/res/raw/misstickle__indian_bell_chime.wav; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -88,7 +88,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				980C7214FC0F2A313B8903B1 /* libPods-CoopCycle-CoopCycleTests.a in Frameworks */,
+				980C7214FC0F2A313B8903B1 /* libPods-Naofood-NaofoodTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -97,7 +97,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				ED297163215061F000B7C4FE /* JavaScriptCore.framework in Frameworks */,
-				5B2EC57EB037800C69F0C56A /* libPods-CoopCycle.a in Frameworks */,
+				5B2EC57EB037800C69F0C56A /* libPods-Naofood.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -111,13 +111,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		00E356EF1AD99517003FC87E /* CoopCycleTests */ = {
+		00E356EF1AD99517003FC87E /* NaofoodTests */ = {
 			isa = PBXGroup;
 			children = (
-				00E356F21AD99517003FC87E /* CoopCycleTests.m */,
+				00E356F21AD99517003FC87E /* NaofoodTests.m */,
 				00E356F01AD99517003FC87E /* Supporting Files */,
 			);
-			path = CoopCycleTests;
+			path = NaofoodTests;
 			sourceTree = "<group>";
 		};
 		00E356F01AD99517003FC87E /* Supporting Files */ = {
@@ -128,10 +128,10 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		13B07FAE1A68108700A75B9A /* CoopCycle */ = {
+		13B07FAE1A68108700A75B9A /* Naofood */ = {
 			isa = PBXGroup;
 			children = (
-				FA53F9442047D093004395DF /* CoopCycle.entitlements */,
+				FA53F9442047D093004395DF /* Naofood.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -141,7 +141,7 @@
 				13B07FB71A68108700A75B9A /* main.m */,
 				84E9E2D624E3EA5B00740A6D /* Infoplist.strings */,
 			);
-			name = CoopCycle;
+			name = Naofood;
 			sourceTree = "<group>";
 		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
@@ -149,8 +149,8 @@
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				2D16E6891FA4F8E400B85C8A /* libReact.a */,
-				4B9CB753F143632354764D85 /* libPods-CoopCycle.a */,
-				273610F0D6D85E77FDEEB8FF /* libPods-CoopCycle-CoopCycleTests.a */,
+				4B9CB753F143632354764D85 /* libPods-Naofood.a */,
+				273610F0D6D85E77FDEEB8FF /* libPods-Naofood-NaofoodTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -161,14 +161,14 @@
 				845246CE2344832500A3A1B2 /* GoogleService-Info.plist */,
 				FA2E390B2225DD32002BBCB4 /* Empty.swift */,
 				FAC644352166467B00D1DA52 /* misstickle__indian_bell_chime.wav */,
-				13B07FAE1A68108700A75B9A /* CoopCycle */,
-				00E356EF1AD99517003FC87E /* CoopCycleTests */,
-				84A98B1023D8DA2000EFF666 /* CoopCycleUITests */,
+				13B07FAE1A68108700A75B9A /* Naofood */,
+				00E356EF1AD99517003FC87E /* NaofoodTests */,
+				84A98B1023D8DA2000EFF666 /* NaofoodUITests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				DA42ACD0A9A4459FA4BF1E57 /* Resources */,
 				FACC77CC1FE0D05C00B54C2A /* Recovered References */,
-				FA4FE0642225CF1000AB66C4 /* CoopCycle-Bridging-Header.h */,
+				FA4FE0642225CF1000AB66C4 /* Naofood-Bridging-Header.h */,
 				C960062D6E6263C103A6D2A6 /* Pods */,
 			);
 			indentWidth = 2;
@@ -179,30 +179,30 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				13B07F961A680F5B00A75B9A /* CoopCycle.app */,
-				00E356EE1AD99517003FC87E /* CoopCycleTests.xctest */,
-				84A98B0F23D8DA2000EFF666 /* CoopCycleUITests.xctest */,
+				13B07F961A680F5B00A75B9A /* Naofood.app */,
+				00E356EE1AD99517003FC87E /* NaofoodTests.xctest */,
+				84A98B0F23D8DA2000EFF666 /* NaofoodUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		84A98B1023D8DA2000EFF666 /* CoopCycleUITests */ = {
+		84A98B1023D8DA2000EFF666 /* NaofoodUITests */ = {
 			isa = PBXGroup;
 			children = (
 				84A98B1923D8DB6500EFF666 /* SnapshotHelper.swift */,
-				84A98B1123D8DA2000EFF666 /* CoopCycleUITests.swift */,
+				84A98B1123D8DA2000EFF666 /* NaofoodUITests.swift */,
 				84A98B1323D8DA2000EFF666 /* Info.plist */,
 			);
-			path = CoopCycleUITests;
+			path = NaofoodUITests;
 			sourceTree = "<group>";
 		};
 		C960062D6E6263C103A6D2A6 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				4950D879877C4AFABC75A2ED /* Pods-CoopCycle.debug.xcconfig */,
-				774F2E083718E7A94D1D3D83 /* Pods-CoopCycle.release.xcconfig */,
-				87F2E4E6C4448C00269C858D /* Pods-CoopCycle-CoopCycleTests.debug.xcconfig */,
-				AAEBEBD0F5CFBCC5A75A55AF /* Pods-CoopCycle-CoopCycleTests.release.xcconfig */,
+				4950D879877C4AFABC75A2ED /* Pods-Naofood.debug.xcconfig */,
+				774F2E083718E7A94D1D3D83 /* Pods-Naofood.release.xcconfig */,
+				87F2E4E6C4448C00269C858D /* Pods-Naofood-NaofoodTests.debug.xcconfig */,
+				AAEBEBD0F5CFBCC5A75A55AF /* Pods-Naofood-NaofoodTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -229,9 +229,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		00E356ED1AD99517003FC87E /* CoopCycleTests */ = {
+		00E356ED1AD99517003FC87E /* NaofoodTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "CoopCycleTests" */;
+			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "NaofoodTests" */;
 			buildPhases = (
 				27E5D4BF0030C7840B1DA4A1 /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
@@ -245,14 +245,14 @@
 			dependencies = (
 				00E356F51AD99517003FC87E /* PBXTargetDependency */,
 			);
-			name = CoopCycleTests;
-			productName = CoopCycleTests;
-			productReference = 00E356EE1AD99517003FC87E /* CoopCycleTests.xctest */;
+			name = NaofoodTests;
+			productName = NaofoodTests;
+			productReference = 00E356EE1AD99517003FC87E /* NaofoodTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		13B07F861A680F5B00A75B9A /* CoopCycle */ = {
+		13B07F861A680F5B00A75B9A /* Naofood */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "CoopCycle" */;
+			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "Naofood" */;
 			buildPhases = (
 				5A382C359BA76A2EB098861D /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
@@ -270,14 +270,14 @@
 			);
 			dependencies = (
 			);
-			name = CoopCycle;
+			name = Naofood;
 			productName = "Hello World";
-			productReference = 13B07F961A680F5B00A75B9A /* CoopCycle.app */;
+			productReference = 13B07F961A680F5B00A75B9A /* Naofood.app */;
 			productType = "com.apple.product-type.application";
 		};
-		84A98B0E23D8DA2000EFF666 /* CoopCycleUITests */ = {
+		84A98B0E23D8DA2000EFF666 /* NaofoodUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 84A98B1823D8DA2000EFF666 /* Build configuration list for PBXNativeTarget "CoopCycleUITests" */;
+			buildConfigurationList = 84A98B1823D8DA2000EFF666 /* Build configuration list for PBXNativeTarget "NaofoodUITests" */;
 			buildPhases = (
 				84A98B0B23D8DA2000EFF666 /* Sources */,
 				84A98B0C23D8DA2000EFF666 /* Frameworks */,
@@ -288,9 +288,9 @@
 			dependencies = (
 				84A98B1523D8DA2000EFF666 /* PBXTargetDependency */,
 			);
-			name = CoopCycleUITests;
-			productName = CoopCycleUITests;
-			productReference = 84A98B0F23D8DA2000EFF666 /* CoopCycleUITests.xctest */;
+			name = NaofoodUITests;
+			productName = NaofoodUITests;
+			productReference = 84A98B0F23D8DA2000EFF666 /* NaofoodUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
@@ -301,7 +301,7 @@
 			attributes = {
 				LastSwiftUpdateCheck = 1030;
 				LastUpgradeCheck = 1210;
-				ORGANIZATIONNAME = CoopCycle;
+				ORGANIZATIONNAME = Naofood;
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
 						CreatedOnToolsVersion = 6.2;
@@ -330,7 +330,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "CoopCycle" */;
+			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "Naofood" */;
 			compatibilityVersion = "Xcode 12.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -344,9 +344,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				13B07F861A680F5B00A75B9A /* CoopCycle */,
-				00E356ED1AD99517003FC87E /* CoopCycleTests */,
-				84A98B0E23D8DA2000EFF666 /* CoopCycleUITests */,
+				13B07F861A680F5B00A75B9A /* Naofood */,
+				00E356ED1AD99517003FC87E /* NaofoodTests */,
+				84A98B0E23D8DA2000EFF666 /* NaofoodUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -406,15 +406,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-CoopCycle-CoopCycleTests/Pods-CoopCycle-CoopCycleTests-resources-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Naofood-NaofoodTests/Pods-Naofood-NaofoodTests-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-CoopCycle-CoopCycleTests/Pods-CoopCycle-CoopCycleTests-resources-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Naofood-NaofoodTests/Pods-Naofood-NaofoodTests-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-CoopCycle-CoopCycleTests/Pods-CoopCycle-CoopCycleTests-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Naofood-NaofoodTests/Pods-Naofood-NaofoodTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		0BC4F3756B0CAE18E63671C2 /* [CP] Embed Pods Frameworks */ = {
@@ -423,15 +423,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-CoopCycle/Pods-CoopCycle-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Naofood/Pods-Naofood-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-CoopCycle/Pods-CoopCycle-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Naofood/Pods-Naofood-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-CoopCycle/Pods-CoopCycle-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Naofood/Pods-Naofood-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		11A1FD8F8A6735CAA371903F /* [CP-User] [RNFB] Core Configuration */ = {
@@ -453,15 +453,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-CoopCycle/Pods-CoopCycle-resources-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Naofood/Pods-Naofood-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-CoopCycle/Pods-CoopCycle-resources-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Naofood/Pods-Naofood-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-CoopCycle/Pods-CoopCycle-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Naofood/Pods-Naofood-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		27E5D4BF0030C7840B1DA4A1 /* [CP] Check Pods Manifest.lock */ = {
@@ -479,7 +479,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-CoopCycle-CoopCycleTests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-Naofood-NaofoodTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -501,7 +501,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-CoopCycle-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-Naofood-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -528,15 +528,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-CoopCycle-CoopCycleTests/Pods-CoopCycle-CoopCycleTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Naofood-NaofoodTests/Pods-Naofood-NaofoodTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-CoopCycle-CoopCycleTests/Pods-CoopCycle-CoopCycleTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Naofood-NaofoodTests/Pods-Naofood-NaofoodTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-CoopCycle-CoopCycleTests/Pods-CoopCycle-CoopCycleTests-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Naofood-NaofoodTests/Pods-Naofood-NaofoodTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		9C6F293E02D3400EAE345918 /* Upload Debug Symbols to Sentry */ = {
@@ -579,7 +579,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				00E356F31AD99517003FC87E /* CoopCycleTests.m in Sources */,
+				00E356F31AD99517003FC87E /* NaofoodTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -597,7 +597,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				84A98B1223D8DA2000EFF666 /* CoopCycleUITests.swift in Sources */,
+				84A98B1223D8DA2000EFF666 /* NaofoodUITests.swift in Sources */,
 				84A98B1A23D8DB6500EFF666 /* SnapshotHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -607,12 +607,12 @@
 /* Begin PBXTargetDependency section */
 		00E356F51AD99517003FC87E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 13B07F861A680F5B00A75B9A /* CoopCycle */;
+			target = 13B07F861A680F5B00A75B9A /* Naofood */;
 			targetProxy = 00E356F41AD99517003FC87E /* PBXContainerItemProxy */;
 		};
 		84A98B1523D8DA2000EFF666 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 13B07F861A680F5B00A75B9A /* CoopCycle */;
+			target = 13B07F861A680F5B00A75B9A /* Naofood */;
 			targetProxy = 84A98B1423D8DA2000EFF666 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -632,7 +632,7 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 87F2E4E6C4448C00269C858D /* Pods-CoopCycle-CoopCycleTests.debug.xcconfig */;
+			baseConfigurationReference = 87F2E4E6C4448C00269C858D /* Pods-Naofood-NaofoodTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -645,7 +645,7 @@
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-locale-detector/RNI18n",
 				);
-				INFOPLIST_FILE = CoopCycleTests/Info.plist;
+				INFOPLIST_FILE = NaofoodTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -663,13 +663,13 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CoopCycle.app/CoopCycle";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Naofood.app/Naofood";
 			};
 			name = Debug;
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = AAEBEBD0F5CFBCC5A75A55AF /* Pods-CoopCycle-CoopCycleTests.release.xcconfig */;
+			baseConfigurationReference = AAEBEBD0F5CFBCC5A75A55AF /* Pods-Naofood-NaofoodTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -679,7 +679,7 @@
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-locale-detector/RNI18n",
 				);
-				INFOPLIST_FILE = CoopCycleTests/Info.plist;
+				INFOPLIST_FILE = NaofoodTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -697,17 +697,17 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CoopCycle.app/CoopCycle";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Naofood.app/Naofood";
 			};
 			name = Release;
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4950D879877C4AFABC75A2ED /* Pods-CoopCycle.debug.xcconfig */;
+			baseConfigurationReference = 4950D879877C4AFABC75A2ED /* Pods-Naofood.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = CoopCycle/CoopCycle.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Naofood/Naofood.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 66HUGQ2V5L;
@@ -716,7 +716,7 @@
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-locale-detector/RNI18n",
 				);
-				INFOPLIST_FILE = CoopCycle/Info.plist;
+				INFOPLIST_FILE = Naofood/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -732,8 +732,8 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.coopcycle.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = CoopCycle;
-				SWIFT_OBJC_BRIDGING_HEADER = "CoopCycle-Bridging-Header.h";
+				PRODUCT_NAME = Naofood;
+				SWIFT_OBJC_BRIDGING_HEADER = "Naofood-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -743,11 +743,11 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 774F2E083718E7A94D1D3D83 /* Pods-CoopCycle.release.xcconfig */;
+			baseConfigurationReference = 774F2E083718E7A94D1D3D83 /* Pods-Naofood.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = CoopCycle/CoopCycle.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Naofood/Naofood.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 66HUGQ2V5L;
@@ -755,7 +755,7 @@
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-locale-detector/RNI18n",
 				);
-				INFOPLIST_FILE = CoopCycle/Info.plist;
+				INFOPLIST_FILE = Naofood/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -771,8 +771,8 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.coopcycle.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = CoopCycle;
-				SWIFT_OBJC_BRIDGING_HEADER = "CoopCycle-Bridging-Header.h";
+				PRODUCT_NAME = Naofood;
+				SWIFT_OBJC_BRIDGING_HEADER = "Naofood-Bridging-Header.h";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -900,7 +900,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
-				INFOPLIST_FILE = CoopCycleUITests/Info.plist;
+				INFOPLIST_FILE = NaofoodUITests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -913,13 +913,13 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = org.coopcycle.CoopCycleUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = org.coopcycle.NaofoodUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = CoopCycle;
+				TEST_TARGET_NAME = Naofood;
 			};
 			name = Debug;
 		};
@@ -939,7 +939,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
-				INFOPLIST_FILE = CoopCycleUITests/Info.plist;
+				INFOPLIST_FILE = NaofoodUITests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -951,20 +951,20 @@
 					"$(SDKROOT)/usr/lib/swift",
 				);
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = org.coopcycle.CoopCycleUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = org.coopcycle.NaofoodUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = CoopCycle;
+				TEST_TARGET_NAME = Naofood;
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "CoopCycleTests" */ = {
+		00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "NaofoodTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				00E356F61AD99517003FC87E /* Debug */,
@@ -973,7 +973,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "CoopCycle" */ = {
+		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "Naofood" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				13B07F941A680F5B00A75B9A /* Debug */,
@@ -982,7 +982,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "CoopCycle" */ = {
+		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "Naofood" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,
@@ -991,7 +991,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		84A98B1823D8DA2000EFF666 /* Build configuration list for PBXNativeTarget "CoopCycleUITests" */ = {
+		84A98B1823D8DA2000EFF666 /* Build configuration list for PBXNativeTarget "NaofoodUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				84A98B1623D8DA2000EFF666 /* Debug */,

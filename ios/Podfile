@@ -7,7 +7,7 @@ plugin 'cocoapods-user-defined-build-types'
 
 enable_user_defined_build_types!
 
-target 'CoopCycle' do
+target 'Naofood' do
   use_unimodules!
   config = use_native_modules!
 
@@ -21,7 +21,7 @@ target 'CoopCycle' do
     :hermes_enabled => false
   )
 
-  target 'CoopCycleTests' do
+  target 'NaofoodTests' do
     inherit! :complete
     # Pods for testing
   end

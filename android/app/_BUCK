@@ -35,12 +35,12 @@ android_library(
 
 android_build_config(
     name = "build_config",
-    package = "fr.coopcycle",
+    package = "fr.naofood.client",
 )
 
 android_resource(
     name = "res",
-    package = "fr.coopcycle",
+    package = "fr.naofood.client",
     res = "src/main/res",
 )
 

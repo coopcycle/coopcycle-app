@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "CoopCycle.app"
-               BlueprintName = "CoopCycle"
-               ReferencedContainer = "container:CoopCycle.xcodeproj">
+               BuildableName = "Naofood.app"
+               BlueprintName = "Naofood"
+               ReferencedContainer = "container:Naofood.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "CoopCycleTests.xctest"
-               BlueprintName = "CoopCycleTests"
-               ReferencedContainer = "container:CoopCycle.xcodeproj">
+               BuildableName = "NaofoodTests.xctest"
+               BlueprintName = "NaofoodTests"
+               ReferencedContainer = "container:Naofood.xcodeproj">
             </BuildableReference>
          </TestableReference>
          <TestableReference
@@ -43,9 +43,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "84A98B0E23D8DA2000EFF666"
-               BuildableName = "CoopCycleUITests.xctest"
-               BlueprintName = "CoopCycleUITests"
-               ReferencedContainer = "container:CoopCycle.xcodeproj">
+               BuildableName = "NaofoodUITests.xctest"
+               BlueprintName = "NaofoodUITests"
+               ReferencedContainer = "container:Naofood.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -65,9 +65,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "CoopCycle.app"
-            BlueprintName = "CoopCycle"
-            ReferencedContainer = "container:CoopCycle.xcodeproj">
+            BuildableName = "Naofood.app"
+            BlueprintName = "Naofood"
+            ReferencedContainer = "container:Naofood.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -82,9 +82,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "CoopCycle.app"
-            BlueprintName = "CoopCycle"
-            ReferencedContainer = "container:CoopCycle.xcodeproj">
+            BuildableName = "Naofood.app"
+            BlueprintName = "Naofood"
+            ReferencedContainer = "container:Naofood.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
