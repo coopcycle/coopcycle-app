@@ -1,0 +1,24 @@
+name: Deploy
+on: [workflow_dispatch]
+jobs:
+  FASTLANE_ANDROID:
+    name: Fastlane Deploy Android
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '16.x'
+      - run: yarn install
+      # - run: cp GoogleService-Info.plist.dist ios/GoogleService-Info.plist
+      - uses: ruby/setup-ruby@v1
+      - name: Install RubyGems
+        run: |
+          cd android/
+          bundle install
+          cd ..
+      - name: Create screenshots with Fastlane
+        run: |
+          cd android/
+          bundle exec fastlane deploy
+          cd ..
