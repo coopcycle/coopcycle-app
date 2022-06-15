@@ -19,6 +19,11 @@ jobs:
           cd android/
           bundle install
           cd ..
+      - name: Decode sentry.properties file
+        uses: timheuer/base64-to-file@v1
+        with:
+         fileName: "android/sentry.properties"
+         encodedString: ${{ secrets.SENTRY_PROPERTIES_BASE64 }}
       - name: Run Fastlane
         run: |
           cd android/
