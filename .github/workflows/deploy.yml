@@ -17,7 +17,7 @@ jobs:
         uses: timheuer/base64-to-file@v1.1
         with:
           fileDir: "./android/"
-          fileName: "sentry.properties.txt"
+          fileName: "sentry.properties"
           encodedString: ${{ secrets.SENTRY_PROPERTIES_BASE64 }}
       - run: ls -la android/sentry.properties
       - name: Install RubyGems
