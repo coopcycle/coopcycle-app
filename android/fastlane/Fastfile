@@ -31,8 +31,9 @@ platform :android do
 
   desc "Deploy a new version to the Google Play"
   lane :deploy do
-    gradle(task: "clean assembleRelease")
-    upload_to_play_store
+    gradle(task: "clean bundleRelease")
+    # At the moment, we don't upload
+    # upload_to_play_store(skip_upload_apk: true)
   end
 
   desc "Build a new Debug build"
@@ -40,21 +41,14 @@ platform :android do
     gradle(task: "clean assembleDebug")
   end
 
-lane :upload do
-  upload_to_play_store(
-  skip_upload_apk: true,
-  track_promote_to: 'internal',
-  aab: 'app/build/outputs/bundle/release/app-release.aab',
-  )
+  desc "Upload a previously built version to the Google Play"
+  lane :upload do
+    upload_to_play_store(
+      skip_upload_apk: true,
+      track_promote_to: "internal",
+      aab: "app/build/outputs/bundle/release/app-release.aab",
+    )
   end
 
-
-  lane :playstore do
-  gradle(
-      task: 'bundle',
-      build_type: 'Release'
-      )
-  upload_to_play_store(skip_upload_apk: true)
-  end
 end
 
