@@ -64,9 +64,11 @@ allprojects {
             // react-native-background-fetch
             url("${project(':react-native-background-fetch').projectDir}/libs")
         }
-        maven {
-            // Required for react-native-background-geolocation
-            url("${project(':react-native-background-geolocation').projectDir}/libs")
+        if (findProject(':react-native-background-geolocation') != null) {
+          maven {
+              // Required for react-native-background-geolocation
+              url("${project(':react-native-background-geolocation').projectDir}/libs")
+          }
         }
         google()
         // Add jitpack repository (added by tipsi-stripe)
