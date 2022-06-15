@@ -9,22 +9,21 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: '16.x'
-      - run: yarn install
-      # - run: cp GoogleService-Info.plist.dist ios/GoogleService-Info.plist
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.1'
-      - name: Install RubyGems
-        run: |
-          cd android/
-          bundle install
-          cd ..
       - run: cp .env.dist .env
       - name: Decode sentry.properties file
         uses: timheuer/base64-to-file@v1
         with:
          fileName: "android/sentry.properties"
          encodedString: ${{ secrets.SENTRY_PROPERTIES_BASE64 }}
+      - name: Install RubyGems
+        run: |
+          cd android/
+          bundle install
+          cd ..
+      - run: yarn install
       - name: Run Fastlane
         run: |
           cd android/
