@@ -49,8 +49,9 @@ platform :android do
       apk_output_path: "app/build/outputs/apk/release/app-release.apk",
       verbose: true
     )
-    # At the moment, we don't upload
-    # upload_to_play_store(skip_upload_apk: true)
+    upload_to_play_store(
+      skip_upload_apk: true,
+    )
   end
 
   desc "Build a new Debug build"
