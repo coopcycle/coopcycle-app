@@ -3,6 +3,7 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import { Icon, Text } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import Ionicons from 'react-native-vector-icons/Ionicons'
+import {blueColor} from '../styles/common';
 
 class DangerAlert extends Component {
   render() {
@@ -20,7 +21,7 @@ class DangerAlert extends Component {
           <Text style={ styles.text } adjustsFontSizeToFit={this.props.adjustsFontSizeToFit}>{ this.props.text }</Text>
           { this.props.onClose && (
             <TouchableOpacity onPress={ () => this.props.onClose() }>
-              <Icon as={Ionicons} name="close" style={{ color: '#a94442' }} />
+              <Icon as={Ionicons} name="close" style={{ color: blueColor }} />
             </TouchableOpacity>
           )}
         </View>
@@ -33,9 +34,9 @@ const styles = StyleSheet.create({
   container: {
     height: 60,
     paddingHorizontal: 8,
-    backgroundColor: '#f2dede',
+    backgroundColor: '#d9edf7',
     borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: '#a94442',
+    borderBottomColor: '#bce8f1',
   },
   row: {
     flex: 1,
@@ -44,7 +45,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   text: {
-    color: '#a94442',
+    color: '#31708f',
     textAlign: 'center',
     fontSize: 14,
     lineHeight: 18,
