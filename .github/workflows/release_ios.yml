@@ -1,9 +1,9 @@
-name: Deploy
+name: Release iOS
 on: [workflow_dispatch]
 jobs:
-  FASTLANE_ANDROID:
-    name: Fastlane Deploy Android
-    runs-on: ubuntu-latest
+  FASTLANE:
+    name: Release iOS app with Fastlane
+    runs-on: macOS-latest
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
@@ -35,51 +35,34 @@ jobs:
       - name: Decode sentry.properties file
         uses: timheuer/base64-to-file@v1.1
         with:
-          fileDir: "./android/"
+          fileDir: "./ios/"
           fileName: "sentry.properties"
           encodedString: ${{ secrets.SENTRY_PROPERTIES_BASE64 }}
-      - name: Decode Android keystore file
-        uses: timheuer/base64-to-file@v1.1
-        id: android_keystore
-        with:
-          fileName: "android_keystore.kjs"
-          encodedString: ${{ secrets.SIGNING_STORE_FILE_BASE64 }}
       - name: Decode google-services.json file
         uses: timheuer/base64-to-file@v1.1
         with:
-          fileDir: "./android/app/"
-          fileName: "google-services.json"
-          encodedString: ${{ secrets.GOOGLE_SERVICES_JSON_BASE64 }}
-      - name: Decode play-store-credentials.json file
-        uses: timheuer/base64-to-file@v1.1
-        id: android_play_store_credentials
-        with:
-          fileName: "play-store-credentials.json"
-          encodedString: ${{ secrets.GOOGLE_JSON_KEY_FILE_BASE64 }}
+          fileDir: "./ios/"
+          fileName: "GoogleService-Info.plist"
+          encodedString: ${{ secrets.GOOGLE_SERVICE_INFO_PLIST_BASE64 }}
       - name: Install RubyGems
         run: |
           cd android/
           bundle install
           cd ..
-      - run: yarn install
+      - name: Install dependencies
+        run: yarn install
+      - name: Install CocoaPods plugins
+        run: gem install cocoapods-user-defined-build-types
+      - name: Cache Pods
+        uses: actions/cache@v2
+        id: cache-pods
+        with:
+          path: ios/Pods
+          key: pods-${{ hashFiles('**/Podfile.lock') }}
+      - run: cd ios/ && pod install --repo-update && cd ..
       - name: Run Fastlane
         run: |
-          cd android/
+          cd ios/
           bundle exec fastlane deploy
           cd ..
-        env:
-          ANDROID_STORE_FILE: ${{ steps.android_keystore.outputs.filePath }}
-          ANDROID_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
-          ANDROID_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
-          ANDROID_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
-          ANDROID_JSON_KEY_FILE: ${{ steps.android_play_store_credentials.outputs.filePath }}
-      - name: Upload AAB artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: release.aab
-          path: android/app/build/outputs/bundle/release/app-release.aab
-      - name: Upload APK artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: release.apk
-          path: android/app/build/outputs/apk/release/app-release.apk
+      - run: ls -l *.ipa
