@@ -70,5 +70,10 @@ jobs:
       - name: Upload AAB artifact
         uses: actions/upload-artifact@v3
         with:
-          name: release
+          name: release.aab
           path: android/app/build/outputs/bundle/release/app-release.aab
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: release.apk
+          path: android/app/build/outputs/apk/release/app-release.apk
