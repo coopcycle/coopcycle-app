@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { SectionList, TouchableOpacity, View, StyleSheet, useColorScheme } from 'react-native'
-import { Badge, Icon, Text, Heading, Box, VStack } from 'native-base'
+import { Flex, Badge, Icon, Text, Heading, Box, VStack } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
@@ -184,18 +184,28 @@ class ProductOptions extends Component {
   renderSectionHelp(menuSection) {
     const [ min, max ] = this.optionsBuilder.parseRange(menuSection.valuesRange)
 
-    return (
-      <Text sub>
-        { this.props.t('CHECKOUT_PRODUCT_OPTIONS_CHOICES_BETWEEN', { min, max }) }
-      </Text>
-    )
+    if (min && max) {
+      return (
+        <Text sub>
+          { this.props.t('CHECKOUT_PRODUCT_OPTIONS_CHOICES_BETWEEN', { min, max }) }
+        </Text>
+      )
+    }
+
   }
 
   renderSectionHeader(menuSection) {
 
     return (
       <SectionHeader>
-        <Heading size="sm" >{ menuSection.name }</Heading>
+        <Flex direction="row" alignItems="center">
+          <Heading size="sm" >{ menuSection.name }</Heading>
+          { !menuSection.additional &&
+            <Text sub ml={1}>
+              ({ this.props.t('OPTION_REQUIRED') })
+            </Text>
+          }
+        </Flex>
         { menuSection.valuesRange && this.renderSectionHelp(menuSection) }
       </SectionHeader>
     )
@@ -211,12 +221,19 @@ class ProductOptions extends Component {
       index,
     }))
 
+    const someSectionIsMandatory = sections.some((section) => !section.additional)
+
     return (
       <VStack flex={ 1 }>
         <Box p="3">
           <Heading size="md">
             { this.props.t('CHECKOUT_PRODUCT_OPTIONS_TITLE') }
           </Heading>
+          { someSectionIsMandatory &&
+            <Text sub>
+              { this.props.t('SOME_OPTION_IS_REQUIRED_SELECT_ONE_VALUE') }
+            </Text>
+          }
         </Box>
         <SectionList
           ref={ this.list }

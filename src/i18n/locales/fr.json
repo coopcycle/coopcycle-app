@@ -380,6 +380,8 @@
         "MY_ORDER": "Ma commande",
         "OR": "ou",
         "total_packages": "Total : {{count}} paquet",
-        "total_packages_plural": "Total : {{count}} paquets"
+        "total_packages_plural": "Total : {{count}} paquets",
+        "OPTION_REQUIRED": "Obligatoire",
+        "SOME_OPTION_IS_REQUIRED_SELECT_ONE_VALUE": "Il y a des options obligatoires, sélectionnez une valeur parmi celles-ci pour continuer"
     }
 }

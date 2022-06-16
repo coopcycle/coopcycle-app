@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Animated, ActivityIndicator, SectionList, StyleSheet, TouchableOpacity, View } from 'react-native'
-import { Flex, Image, Text, Column, Row, Heading } from 'native-base';
+import { Box, Flex, Image, Text, Column, Row, Heading } from 'native-base';
 import _ from 'lodash'
 import { AllergenList, RestrictedDietList } from './MenuBadges'
 
@@ -79,10 +79,18 @@ class Menu extends Component {
               <Text style={ itemDescriptionStyle } note numberOfLines={ 2 } ellipsizeMode="tail">{ item.description }</Text>
             }
             { hasBadges &&
-              <Row my="1">
-                { item.suitableForDiet && (<RestrictedDietList items={ item.suitableForDiet } />) }
-                { item.allergens && (<AllergenList items={ item.allergens } />) }
-              </Row>
+              <Box my="1">
+                { item.suitableForDiet &&
+                  <Row>
+                    <RestrictedDietList items={ item.suitableForDiet } />
+                  </Row>
+                }
+                { item.allergens &&
+                  <Row>
+                    <AllergenList items={ item.allergens } />
+                  </Row>
+                }
+              </Box>
             }
             <Row>
               <Text pr="2" fontSize="lg" style={ itemPriceStyle }>{ `${formatPrice(item.offers.price)}` }</Text>
