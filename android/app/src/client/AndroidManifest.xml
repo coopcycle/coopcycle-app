@@ -1,0 +1,22 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
+    package="fr.naofood.client">
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" tools:node="remove" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" tools:node="remove" />
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" tools:node="remove" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" tools:node="remove" />
+
+  <application
+      android:name=".MainApplication"
+      android:label="@string/app_name"
+      android:icon="@mipmap/ic_launcher"
+      android:roundIcon="@mipmap/ic_launcher_round"
+      android:allowBackup="false"
+      android:theme="@style/AppTheme">
+      <service android:name="com.transistorsoft.locationmanager.service.TrackingService" android:foregroundServiceType="location" android:enabled="false" />
+      <service android:name="com.transistorsoft.locationmanager.service.LocationRequestService" android:foregroundServiceType="location" android:enabled="false" />
+      <meta-data android:name="com.transistorsoft.locationmanager.license" android:value="${transistorsoftLicenseKey}" tools:node="remove" />
+
+    </application>
+</manifest>
