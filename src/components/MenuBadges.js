@@ -13,7 +13,7 @@ const RestrictedDiet = ({ items, t }) => {
   return (
     <View style={ styles.container }>
       { items.map(item => (
-        <Box key={ item } style={ [ styles.item ] } bg="lightBlue.300">
+        <Box key={ item } style={ [ styles.item ] } bg="lightBlue.200">
           <Text style={ styles.itemText } color="black">{ t(`RESTRICTED_DIET.${item.replace('http://schema.org/', '')}`) }</Text>
         </Box>
       )) }
@@ -30,7 +30,7 @@ const Allergen = ({ items, t }) => {
   return (
     <View style={ styles.container }>
       { items.map(item => (
-        <Box key={ item } style={ [ styles.item ] } bg="amber.300">
+        <Box key={ item } style={ [ styles.item ] } bg="amber.200">
           <Text style={ styles.itemText } color="black">{ t(`ALLERGEN.${item}`) }</Text>
         </Box>
       )) }
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingVertical: 2,
     paddingHorizontal: 8,
-    borderRadius: 12,
+    borderRadius: 4,
     marginRight: 4,
     marginVertical: 2,
   },
