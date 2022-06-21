@@ -29,7 +29,7 @@ import {
   SET_INTERNET_REACHABLE,
   REGISTRATION_ERRORS,
   SET_BACKGROUND_GEOLOCATION_ENABLED,
-  BACKGROUND_PERMISSION_DISCLOSED,
+  BACKGROUND_PERMISSION_DISCLOSED, SET_MODAL, RESET_MODAL, CLOSE_MODAL,
 } from './actions'
 
 const initialState = {
@@ -65,6 +65,11 @@ const initialState = {
   isBackgroundGeolocationEnabled: false,
   hasDisclosedBackgroundPermission: false,
   isCentrifugoConnected: false,
+  modal: {
+    show: false,
+    skippable: false,
+    content: null,
+  },
 }
 
 export default (state = initialState, action = {}) => {
@@ -259,6 +264,27 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         hasDisclosedBackgroundPermission: true,
+      }
+
+    case SET_MODAL:
+      return {
+        ...state,
+        modal: action.payload,
+      }
+
+    case RESET_MODAL:
+      return {
+        ...state,
+        modal: initialState.modal,
+      }
+
+    case CLOSE_MODAL:
+      return {
+        ...state,
+        modal: {
+          ...state.modal,
+          show: false,
+        }
       }
   }
 

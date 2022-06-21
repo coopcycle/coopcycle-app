@@ -57,6 +57,10 @@ export const REGISTRATION_ERRORS = '@app/REGISTRATION_ERRORS'
 export const SET_BACKGROUND_GEOLOCATION_ENABLED = '@app/SET_BACKGROUND_GEOLOCATION_ENABLED'
 export const BACKGROUND_PERMISSION_DISCLOSED = '@app/BACKGROUND_PERMISSION_DISCLOSED'
 
+export const SET_MODAL = '@app/SET_MODAL'
+export const CLOSE_MODAL = '@app/CLOSE_MODAL'
+export const RESET_MODAL = '@app/RESET_MODAL'
+
 /*
  * Action Creators
  */
@@ -102,6 +106,10 @@ export const setInternetReachable = createAction(SET_INTERNET_REACHABLE)
 
 export const setBackgroundGeolocationEnabled = createAction(SET_BACKGROUND_GEOLOCATION_ENABLED)
 export const backgroundPermissionDisclosed = createAction(BACKGROUND_PERMISSION_DISCLOSED)
+
+export const setModal = createAction(SET_MODAL)
+export const resetModal = createAction(RESET_MODAL)
+export const closeModal = createAction(CLOSE_MODAL)
 
 const registrationErrors = createAction(REGISTRATION_ERRORS)
 

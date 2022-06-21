@@ -7,10 +7,11 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 
 import Server from '../Server'
 import AppUser from '../AppUser'
-import { bootstrap, resetServer, setServers } from '../redux/App/actions'
+import {bootstrap, closeModal, resetModal, resetServer, setServers} from '../redux/App/actions'
 
 import HomeNavigator from './navigators/HomeNavigator'
 import DrawerNavigator from './navigators/DrawerNavigator'
+import Modal from 'react-native-modal';
 
 class Loading extends Component {
 
@@ -71,6 +72,19 @@ class Loading extends Component {
   }
 
   render() {
+    const close = () => this.props.modal.skippable && this.props.closeModal()
+    const swipeDirection = this.props.modal.skippable ? ['down', 'up', 'left', 'right'] : []
+
+    return <>{this.bodyRender()}
+      <Modal isVisible={this.props.modal.show} onSwipeComplete={close} swipeDirection={swipeDirection} onBackdropPress={close}>
+        <View style={styles.content}>
+          <Text>{this.props.modal.content}</Text>
+        </View>
+      </Modal>
+    </>
+  }
+
+  bodyRender() {
 
     if (this.state.error) {
       return this.renderError()
@@ -109,6 +123,18 @@ const styles = StyleSheet.create({
   errorText: {
     marginBottom: 10,
   },
+  content: {
+    backgroundColor: 'white',
+    padding: 22,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 4,
+    borderColor: 'rgba(0, 0, 0, 0.1)',
+  },
+  contentTitle: {
+    fontSize: 20,
+    marginBottom: 12,
+  },
 })
 
 function mapStateToProps(state) {
@@ -117,6 +143,7 @@ function mapStateToProps(state) {
     loading: state.app.loading,
     baseURL: state.app.baseURL,
     httpClient: state.app.httpClient,
+    modal: state.app.modal,
   }
 }
 
@@ -126,6 +153,7 @@ function mapDispatchToProps(dispatch) {
     bootstrap: (baseURL, user) => dispatch(bootstrap(baseURL, user)),
     setServers: servers => dispatch(setServers(servers)),
     resetServer: () => dispatch(resetServer()),
+    closeModal: () => dispatch(closeModal()),
   }
 }
 
