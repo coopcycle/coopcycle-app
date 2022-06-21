@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Animated, ActivityIndicator, SectionList, StyleSheet, TouchableOpacity, View } from 'react-native'
-import { Box, Flex, Image, Text, Column, Row, Heading } from 'native-base';
+import {Box, Flex, Image, Text, Column, Row, Heading, Icon} from 'native-base';
 import _ from 'lodash'
 import { AllergenList, RestrictedDietList } from './MenuBadges'
 
@@ -8,6 +8,7 @@ const AnimatedSectionList = Animated.createAnimatedComponent(SectionList);
 
 import { formatPrice } from '../utils/formatting'
 import ItemSeparator from './ItemSeparator'
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 const styles = StyleSheet.create({
   sectionHeader: {
@@ -32,6 +33,10 @@ const styles = StyleSheet.create({
 
 const SectionHeader = ({ section }) => {
 
+  if (section.data.length === 0) {
+    return <></>
+  }
+
   return (
     <Heading
       _dark={{ color: 'white', bg: 'black' }}
@@ -50,9 +55,9 @@ class Menu extends Component {
     const enabled = item.hasOwnProperty('enabled') ? item.enabled : true
 
     let itemProps = {}
-    let itemNameStyle = []
+    let itemNameStyle = [ {fontSize: 16} ]
     let itemDescriptionStyle = [ styles.descriptionText ]
-    let itemPriceStyle = []
+    let itemPriceStyle = [ {paddingTop: 3} ]
 
     if (enabled) {
       itemProps = {
@@ -65,7 +70,6 @@ class Menu extends Component {
     }
 
     const isLoading = this.props.isItemLoading(item)
-    const hasBadges = !!item.suitableForDiet || !!item.allergens
 
     const image1x1 = item.images && Array.isArray(item.images)
       && _.find(item.images, image => image.ratio === '1:1')
@@ -76,21 +80,7 @@ class Menu extends Component {
           <Column flexShrink="1">
             <Text style={ itemNameStyle }>{ item.name }</Text>
             { item.description && item.description.length > 0 &&
-              <Text style={ itemDescriptionStyle } note numberOfLines={ 2 } ellipsizeMode="tail">{ item.description }</Text>
-            }
-            { hasBadges &&
-              <Box my="1">
-                { item.suitableForDiet &&
-                  <Row>
-                    <RestrictedDietList items={ item.suitableForDiet } />
-                  </Row>
-                }
-                { item.allergens &&
-                  <Row>
-                    <AllergenList items={ item.allergens } />
-                  </Row>
-                }
-              </Box>
+              <Text style={ itemDescriptionStyle } note numberOfLines={ 3 } ellipsizeMode="tail">{ item.description }</Text>
             }
             <Row>
               <Text pr="2" fontSize="lg" style={ itemPriceStyle }>{ `${formatPrice(item.offers.price)}` }</Text>
@@ -99,7 +89,7 @@ class Menu extends Component {
           </Column>
           <Column>
             { image1x1 &&
-              <Image size="md" resizeMode="cover" borderRadius={5} source={{ uri: image1x1.url }} alt="Product" />
+              <Image size="lg" resizeMode="cover" borderRadius={5} source={{ uri: image1x1.url }} alt="Product" />
             }
           </Column>
         </Flex>
