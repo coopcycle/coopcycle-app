@@ -1,15 +1,14 @@
-import React, { Component } from 'react'
-import { StyleSheet, TouchableOpacity, View } from 'react-native'
-import { Icon, Text } from 'native-base'
-import { withTranslation } from 'react-i18next'
+import React from 'react'
+import {StyleSheet, TouchableOpacity, View} from 'react-native'
+import {Icon, Text} from 'native-base'
+import {withTranslation} from 'react-i18next'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import {blueColor} from '../styles/common';
 
-class DangerAlert extends Component {
-  render() {
+const DangerAlert = (props) => {
 
     const rowStyle = [ styles.row ]
-    if (!this.props.onClose) {
+    if (!props.onClose) {
       rowStyle.push({
         justifyContent: 'center',
       })
@@ -18,16 +17,15 @@ class DangerAlert extends Component {
     return (
       <View style={ styles.container }>
         <View style={ rowStyle }>
-          <Text style={ styles.text } adjustsFontSizeToFit={this.props.adjustsFontSizeToFit}>{ this.props.text }</Text>
-          { this.props.onClose && (
-            <TouchableOpacity onPress={ () => this.props.onClose() }>
+          <Text style={ styles.text } adjustsFontSizeToFit={props.adjustsFontSizeToFit}>{ props.text }</Text>
+          { props.onClose && (
+            <TouchableOpacity onPress={ () => props.onClose() }>
               <Icon as={Ionicons} name="close" style={{ color: blueColor }} />
             </TouchableOpacity>
           )}
         </View>
       </View>
     )
-  }
 }
 
 const styles = StyleSheet.create({
