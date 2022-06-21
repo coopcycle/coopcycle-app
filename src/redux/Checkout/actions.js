@@ -9,6 +9,7 @@ import { selectCartFulfillmentMethod } from './selectors'
 import { selectIsAuthenticated, selectUser } from '../App/selectors'
 import { loadAddressesSuccess } from '../Account/actions'
 import { isFree } from '../../utils/order'
+import {setModal} from '../App/actions';
 
 /*
  * Action Types
@@ -497,6 +498,19 @@ function wrapRestaurantsWithTiming(restaurants) {
   }
 }
 
+function _maintenanceModeHandler(error, dispatch) {
+  if (error.response.status === 503) {
+    const message = error.response?.data?.message
+    if (message) {
+      dispatch(setModal({
+        show: true,
+        skippable: false,
+        content: message,
+      }))
+    }
+  }
+}
+
 export function searchRestaurantsForAddress(address, options = {}) {
 
   return (dispatch, getState) => {
@@ -513,7 +527,10 @@ export function searchRestaurantsForAddress(address, options = {}) {
         dispatch(_setAddress(address))
         dispatch(wrapRestaurantsWithTiming(res['hydra:member']))
       })
-      .catch(e => dispatch(loadRestaurantsFailure(e)))
+      .catch(e => {
+        _maintenanceModeHandler(e, dispatch)
+        dispatch(loadRestaurantsFailure(e))
+      })
   }
 }
 
@@ -546,7 +563,10 @@ export function searchRestaurants(options = {}) {
         }
         dispatch(wrapRestaurantsWithTiming(values[0]['hydra:member']))
       })
-      .catch(e => dispatch(loadRestaurantsFailure(e)))
+      .catch(e => {
+        _maintenanceModeHandler(e, dispatch)
+        dispatch(loadRestaurantsFailure(e))
+      })
   }
 }
 
