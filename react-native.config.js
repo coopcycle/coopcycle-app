@@ -6,5 +6,10 @@ module.exports = {
         ios: null,
       },
     },
+    'react-native-background-geolocation': {
+      platforms: {
+        android: null,
+      },
+    },
   },
 };

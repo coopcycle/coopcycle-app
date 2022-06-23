@@ -79,5 +79,31 @@ platform :android do
     )
   end
 
+  desc "Deploy a new version of Naofood to the Google Play Internal test"
+  lane :deployNaofoodInternal do
+    gradle(
+      task: "clean bundleClientRelease",
+      properties: {
+        "android.injected.signing.store.file" => ENV["ANDROID_STORE_FILE"],
+        "android.injected.signing.store.password" => ENV["ANDROID_STORE_PASSWORD"],
+        "android.injected.signing.key.alias" => ENV["ANDROID_KEY_ALIAS"],
+        "android.injected.signing.key.password" => ENV["ANDROID_KEY_PASSWORD"],
+      }
+    )
+    bundletool(
+      ks_path: ENV["ANDROID_STORE_FILE"],
+      ks_password: ENV["ANDROID_STORE_PASSWORD"],
+      ks_key_alias: ENV["ANDROID_KEY_ALIAS"],
+      ks_key_alias_password: ENV["ANDROID_KEY_PASSWORD"],
+      aab_path: "app/build/outputs/bundle/clientRelease/app-client-release.aab",
+      apk_output_path: "app/build/outputs/apk/clientRelease/app-client-release.apk",
+      verbose: true
+    )
+    upload_to_play_store(
+      skip_upload_apk: true,
+      track: "internal",
+    )
+  end
+
 end
 
