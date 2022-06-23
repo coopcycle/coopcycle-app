@@ -53,15 +53,15 @@ Build a new Debug build
 [bundle exec] fastlane android upload
 ```
 
+Upload a previously built version to the Google Play
 
-
-### android playstore
+### android deployNaofoodInternal
 
 ```sh
-[bundle exec] fastlane android playstore
+[bundle exec] fastlane android deployNaofoodInternal
 ```
 
-
+Deploy a new version of Naofood to the Google Play Internal test
 
 ----
 
