@@ -1,5 +1,24 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
+import java.util.regex.Matcher
+import java.util.regex.Pattern
+
+
+def buildWithRNBGeolocation() {
+    Gradle gradle = getGradle()
+    String tskReqStr = gradle.getStartParameter().getTaskRequests().toString()
+    Pattern pattern = Pattern.compile("(bundle|assemble|generate)(\\w+)(Release|Debug)")
+    Matcher matcher = pattern.matcher(tskReqStr)
+
+    if(matcher.find()) {
+      return !matcher.group(2).toLowerCase().equals("client")
+    }
+
+    return false
+}
+
+project.ext.set("buildWithRNBGeolocation", buildWithRNBGeolocation())
+
 buildscript {
     ext {
         buildToolsVersion = "30.0.2"
@@ -64,9 +83,11 @@ allprojects {
             // react-native-background-fetch
             url("${project(':react-native-background-fetch').projectDir}/libs")
         }
-        maven {
-            // Required for react-native-background-geolocation
-            url("${project(':react-native-background-geolocation').projectDir}/libs")
+        if (project.buildWithRNBGeolocation) {
+          maven {
+              // Required for react-native-background-geolocation
+              url("${project(':react-native-background-geolocation').projectDir}/libs")
+          }
         }
         google()
         // Add jitpack repository (added by tipsi-stripe)

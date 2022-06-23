@@ -80,7 +80,6 @@ import com.android.build.OutputFile
  *   extraPackagerArgs: []
  * ]
  */
-
 project.ext.react = [
     enableHermes: false,  // clean and rebuild if changing
 ]
@@ -88,8 +87,9 @@ project.ext.react = [
 apply from: "../../node_modules/react-native/react.gradle"
 apply from: "../../node_modules/@sentry/react-native/sentry.gradle"
 
-Project background_geolocation = project(':react-native-background-geolocation')
-apply from: "${background_geolocation.projectDir}/app.gradle"
+if (project.buildWithRNBGeolocation) {
+  apply from: "${project(':react-native-background-geolocation').projectDir}/app.gradle"
+}
 
 /**
  * Set this to true to create two separate APKs instead of one:
@@ -139,13 +139,15 @@ android {
     compileSdkVersion rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
 
+    flavorDimensions "default"
+
     defaultConfig {
         applicationId "fr.naofood.client"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         multiDexEnabled true
-        versionCode 171
-        versionName "2.2.0"
+        versionCode 1208
+        versionName "1.20.8"
         ndk {
             abiFilters "armeabi-v7a", "x86", "arm64-v8a", "x86_64"
         }
@@ -204,7 +206,9 @@ android {
                 minifyEnabled enableProguardInReleaseBuilds
             }
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro', "${rootProject.projectDir}/../node_modules/detox/android/detox/proguard-rules-app.pro"
-            proguardFiles "${background_geolocation.projectDir}/proguard-rules.pro"
+            if (project.buildWithRNBGeolocation) {
+              proguardFiles "${project(':react-native-background-geolocation').projectDir}/proguard-rules.pro"
+            }
             if (System.getProperty('useDebugCertificate', 'no') == 'yes') {
                 signingConfig signingConfigs.debug
             } else {
@@ -215,7 +219,9 @@ android {
             }
         }
     }
-
+   productFlavors {
+      client { }
+    }
     // applicationVariants are e.g. debug, release
     applicationVariants.all { variant ->
         variant.outputs.each { output ->
