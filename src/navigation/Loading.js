@@ -77,8 +77,8 @@ class Loading extends Component {
 
     return <>{this.bodyRender()}
       <Modal isVisible={this.props.modal.show} onSwipeComplete={close} swipeDirection={swipeDirection} onBackdropPress={close}>
-        <View style={styles.content}>
-          <Text>{this.props.modal.content}</Text>
+        <View style={{...styles.content, ...styles[`${this.props.modal.type}Modal`]}}>
+          <Text style={styles[`${this.props.modal.type}Modal`]}>{this.props.modal.content}</Text>
         </View>
       </Modal>
     </>
@@ -130,6 +130,23 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 4,
     borderColor: 'rgba(0, 0, 0, 0.1)',
+    borderWidth: 1,
+  },
+  defaultModal: {},
+  successModal: {
+    color: '#0f5132',
+    backgroundColor: '#d1e7dd',
+    borderColor: '#badbcc',
+  },
+  warningModal: {
+    color: '#664d03',
+    backgroundColor: '#fff3cd',
+    borderColor: '#ffecb5',
+  },
+  errorModal: {
+    color: '#842029',
+    backgroundColor: '#f8d7da',
+    borderColor: '#f5c2c7',
   },
   contentTitle: {
     fontSize: 20,

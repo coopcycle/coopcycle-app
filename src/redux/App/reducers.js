@@ -69,6 +69,7 @@ const initialState = {
     show: false,
     skippable: false,
     content: null,
+    type: 'default',
   },
 }
 
@@ -269,7 +270,11 @@ export default (state = initialState, action = {}) => {
     case SET_MODAL:
       return {
         ...state,
-        modal: action.payload,
+        modal: {
+          ...initialState.modal,
+          show: true,
+          ...action.payload,
+        },
       }
 
     case RESET_MODAL:
@@ -284,7 +289,7 @@ export default (state = initialState, action = {}) => {
         modal: {
           ...state.modal,
           show: false,
-        }
+        },
       }
   }
 
