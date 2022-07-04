@@ -299,7 +299,7 @@ export function selectServer(server) {
   }
 }
 
-export function bootstrap(baseURL, user) {
+export function bootstrap(baseURL, user, loader = true) {
 
   return async (dispatch, getState) => {
 
@@ -314,7 +314,9 @@ export function bootstrap(baseURL, user) {
     dispatch(setBaseURL(baseURL))
     setRolesProperty(user)
 
-    dispatch(loadMyRestaurantsRequest())
+    if (loader) {
+      dispatch(loadMyRestaurantsRequest())
+    }
 
     const values = await loadAll(getState)
 
@@ -347,7 +349,6 @@ export function login(email, password, navigate = true) {
     httpClient.login(email, password)
       .then(user => {
         dispatch(authenticationSuccess(user));
-
         if (navigate) {
           // FIXME
           // Use setTimeout() to let room for loader to hide

@@ -26,7 +26,7 @@ class LoginRegister extends Component {
   render() {
     return (
       <Center flex={1} px="2">
-        <Server />
+        { this.props.customBuild ? null : <Server /> }
         { this.renderMessage() }
         <AuthenticateForm
           onLogin={(email, password) => this.props.login(email, password)}
@@ -50,6 +50,7 @@ function mapStateToProps(state) {
   return {
     message: state.app.lastAuthenticationError,
     registrationErrors: state.app.registrationErrors,
+    customBuild: state.app.customBuild,
   }
 }
 

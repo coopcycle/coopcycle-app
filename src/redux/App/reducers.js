@@ -31,8 +31,10 @@ import {
   SET_BACKGROUND_GEOLOCATION_ENABLED,
   BACKGROUND_PERMISSION_DISCLOSED, SET_MODAL, RESET_MODAL, CLOSE_MODAL,
 } from './actions'
+import Config from 'react-native-config';
 
 const initialState = {
+  customBuild: !!Config.DEFAULT_SERVER,
   isWsOpen: false,
   baseURL: null,
   httpClient: null,

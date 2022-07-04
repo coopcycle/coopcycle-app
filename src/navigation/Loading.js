@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { ActivityIndicator, StyleSheet, TouchableOpacity, View } from 'react-native'
+import {ActivityIndicator, InteractionManager, StyleSheet, TouchableOpacity, View} from 'react-native'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 import { Button, Icon, Text } from 'native-base'
@@ -12,6 +12,7 @@ import {bootstrap, closeModal, resetModal, resetServer, setServers} from '../red
 import HomeNavigator from './navigators/HomeNavigator'
 import DrawerNavigator from './navigators/DrawerNavigator'
 import Modal from 'react-native-modal';
+import Config from 'react-native-config';
 
 class Loading extends Component {
 
@@ -25,23 +26,30 @@ class Loading extends Component {
 
   async load() {
 
+    try {
+      const user = await AppUser.load()
+
+      if (this.props.customBuild) {
+        this.setState({ ready: true })
+        await this.props.bootstrap(Config.DEFAULT_SERVER, user, false);
+      } else {
+        await this.loadServers(user);
+      }
+    } catch (e) {
+      this.setState({ error: true })
+    }
+  }
+
+  async loadServers(user) {
     const servers = await Server.loadAll()
 
     this.props.setServers(servers)
 
     if (this.props.baseURL) {
 
-      try {
-
-        const user = await AppUser.load()
-
-        await this.props.bootstrap(this.props.baseURL, user)
+        await this.props.bootstrap(this.props.baseURL, user, true)
 
         this.setState({ ready: true })
-
-      } catch (e) {
-        this.setState({ error: true })
-      }
 
     } else {
       this.setState({ ready: true })
@@ -49,7 +57,9 @@ class Loading extends Component {
   }
 
   componentDidMount() {
-    this.load()
+    InteractionManager.runAfterInteractions(() => {
+      this.load()
+    })
   }
 
   renderError() {
@@ -161,13 +171,14 @@ function mapStateToProps(state) {
     baseURL: state.app.baseURL,
     httpClient: state.app.httpClient,
     modal: state.app.modal,
+    customBuild: state.app.customBuild,
   }
 }
 
 function mapDispatchToProps(dispatch) {
 
   return {
-    bootstrap: (baseURL, user) => dispatch(bootstrap(baseURL, user)),
+    bootstrap: (baseURL, user, loader = true) => dispatch(bootstrap(baseURL, user, loader)),
     setServers: servers => dispatch(setServers(servers)),
     resetServer: () => dispatch(resetServer()),
     closeModal: () => dispatch(closeModal()),
