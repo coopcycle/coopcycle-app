@@ -381,6 +381,9 @@
         "OR": "ou",
         "total_packages": "Total : {{count}} paquet",
         "total_packages_plural": "Total : {{count}} paquets",
+        "SAVE_AND_CONTINUE": "Enregistrer et continuer",
+        "ENTER_NEW_ADDRESS": "Entrez votre nouvelle adresse",
+        "NO_ADDRESS_SAVED_YET": "Vous n'avez pas encore d'adresse enregistrée",
         "OPTION_REQUIRED": "Obligatoire",
         "SOME_OPTION_IS_REQUIRED_SELECT_ONE_VALUE": "Il y a des options obligatoires, sélectionnez une valeur parmi celles-ci pour continuer"
     }

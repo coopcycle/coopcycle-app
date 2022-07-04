@@ -399,6 +399,9 @@
         "DO_NOT_SHOW_IT_AGAIN": "Don't show it again",
         "total_packages": "Total: {{count}} package",
         "total_packages_plural": "Total: {{count}} packages",
+        "SAVE_AND_CONTINUE": "Save and continue",
+        "ENTER_NEW_ADDRESS": "Enter a new address",
+        "NO_ADDRESS_SAVED_YET": "You don't have any saved address yet",
         "OPTION_REQUIRED": "Mandatory",
         "SOME_OPTION_IS_REQUIRED_SELECT_ONE_VALUE": "There are mandatory options, select a value from them to continue"
     }

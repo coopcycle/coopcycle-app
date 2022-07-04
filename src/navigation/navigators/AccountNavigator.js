@@ -83,5 +83,12 @@ export default () => (
         title: i18n.t('RESET_PASSWORD_CHECK_EMAIL'),
       }}
     />
+    <Stack.Screen
+      name="AddressDetails"
+      component={ screens.AddressDetails }
+      options={{
+        title: i18n.t('MY_ADDRESSES'),
+      }}
+    />
   </Stack.Navigator>
 )

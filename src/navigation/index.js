@@ -35,6 +35,7 @@ import AccountRegisterConfirm from './account/RegisterConfirm'
 import AccountForgotPassword from './account/ForgotPassword'
 import AccountResetPasswordCheckEmail from './account/ResetPasswordCheckEmail'
 import AccountResetPasswordNewPassword from './account/ResetPasswordNewPassword'
+import AddressDetails from './account/AddressDetails';
 
 import CourierTasksPage from './courier/TasksPage'
 import CourierTaskListPage from './courier/TaskListPage'
@@ -120,6 +121,7 @@ export default {
   StoreDelivery,
   StoreNewDeliveryAddress,
   StoreNewDeliveryForm,
+  AddressDetails,
 }
 
 export const headerLeft = (navigation, testID = 'menuBtn') => {

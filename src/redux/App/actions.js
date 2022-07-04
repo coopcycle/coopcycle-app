@@ -11,6 +11,7 @@ import NavigationHolder from '../../NavigationHolder'
 import i18n from '../../i18n'
 import { setCurrencyCode } from '../../utils/formatting'
 import { selectInitialRouteName } from './selectors'
+import {loadAddresses} from '../Account/actions';
 
 /*
  * Action Types
@@ -133,7 +134,10 @@ function authenticationRequest() {
 
 function authenticationSuccess(user) {
   return (dispatch, getState) => {
+    dispatch(setLoading(true))
     dispatch(_authenticationSuccess())
+    dispatch(loadAddresses())
+    dispatch(setLoading(false))
     setRolesProperty(user)
     tracker.logEvent(
       analyticsEvent.user.login._category,
@@ -313,6 +317,7 @@ export function bootstrap(baseURL, user, loader = true) {
     dispatch(setUser(user))
     dispatch(setBaseURL(baseURL))
     setRolesProperty(user)
+    dispatch(loadAddresses())
 
     if (loader) {
       dispatch(loadMyRestaurantsRequest())
