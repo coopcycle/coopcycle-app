@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Animated, View } from 'react-native'
+import { View } from 'react-native'
 import { HStack } from 'native-base'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
@@ -8,34 +8,6 @@ import PropTypes from 'prop-types'
 import CartFooterButton from './CartFooterButton'
 
 class CartFooter extends Component {
-
-  constructor(props) {
-    super(props)
-    this.state = {
-      opacityAnim: new Animated.Value(1),
-    }
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    if (this.props.cart.total !== prevProps.cart.total) {
-      this.animate()
-    }
-  }
-
-  animate() {
-    Animated.sequence([
-      Animated.timing(this.state.opacityAnim, {
-        toValue: 0.4,
-        duration: 300,
-        useNativeDriver: false,
-      }),
-      Animated.timing(this.state.opacityAnim, {
-        toValue: 1,
-        duration: 200,
-        useNativeDriver: false,
-      }),
-    ]).start()
-  }
 
   render() {
 
