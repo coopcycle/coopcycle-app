@@ -7,7 +7,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import _ from 'lodash'
 import ProductOptions from './ProductOptions'
 import FooterButton from './components/FooterButton'
-import { addItemWithOptions } from '../../redux/Checkout/actions'
+import { addItem } from '../../redux/Checkout/actions'
 import { formatPrice } from '../../utils/formatting'
 import { AllergenList, RestrictedDietList } from '../../components/MenuBadges'
 
@@ -138,7 +138,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        addItem: (item, quantity, options) => dispatch(addItemWithOptions(item, quantity, options)),
+        addItem: (item, quantity, options) => dispatch(addItem(item, quantity, options)),
     }
 }
 

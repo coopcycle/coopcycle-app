@@ -258,10 +258,6 @@ function queueAddItem(item, quantity = 1, options = []) {
   }
 }
 
-export function addItemWithOptions(item, quantity = 1, options = []) {
-  return addItem(item, quantity, options)
-}
-
 const fetchValidation = _.throttle((dispatch, getState) => {
 
   const httpClient = createHttpClient(getState())
