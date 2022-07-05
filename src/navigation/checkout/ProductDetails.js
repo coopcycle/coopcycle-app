@@ -38,9 +38,10 @@ class ProductDetails extends Component {
 
     _onPressAddToCart() {
         const product = this.props.route.params?.product;
+        const restaurant = this.props.route.params?.restaurant;
 
-        this.props.addItem(product, this.state.quantity, this.state.optionsPayload);
-        this.props.navigation.navigate('CheckoutRestaurant', { restaurant: this.props.restaurant });
+        this.props.addItem(restaurant, product, this.state.quantity, this.state.optionsPayload);
+        this.props.navigation.navigate('CheckoutRestaurant', { restaurant });
     }
 
     optionsHasChanged({optionsPayload, optionsAreValid}) {
@@ -132,13 +133,13 @@ class ProductDetails extends Component {
 
 function mapStateToProps(state) {
     return {
-        restaurant: state.checkout.restaurant,
+
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        addItem: (item, quantity, options) => dispatch(addItem(item, quantity, options)),
+        addItem: (restaurant, item, quantity, options) => dispatch(addItem(restaurant, item, quantity, options)),
     }
 }
 

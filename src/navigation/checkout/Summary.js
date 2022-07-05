@@ -203,6 +203,7 @@ class Summary extends Component {
     return (
       <CartFooter
         onSubmit={ this.onSubmit.bind(this) }
+        cart={ cart }
         testID="cartSummarySubmit"
         disabled={ this.props.isValid !== true || this.props.isLoading } />
     )

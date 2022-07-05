@@ -142,7 +142,6 @@ export default (state = initialState, action = {}) => {
         isFetching: false,
         restaurant: action.payload.restaurant,
         cart: action.payload.cart,
-        menu: action.payload.restaurant.hasMenu,
         token: action.payload.token,
         isAddressOK: null, // We don't know if it's valid
         itemRequestStack: [],
