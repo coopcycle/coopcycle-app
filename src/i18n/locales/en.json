@@ -400,6 +400,8 @@
         "total_packages": "Total: {{count}} package",
         "total_packages_plural": "Total: {{count}} packages",
         "OPTION_REQUIRED": "Mandatory",
-        "SOME_OPTION_IS_REQUIRED_SELECT_ONE_VALUE": "There are mandatory options, select a value from them to continue"
+        "SOME_OPTION_IS_REQUIRED_SELECT_ONE_VALUE": "There are mandatory options, select a value from them to continue",
+        "WHERE_ARE_YOU": "Where are you?",
+        "ASK_ADDRESS_DISCLAIMER": "We use your address to help you find the best businesses nearby"
     }
 }

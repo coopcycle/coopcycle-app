@@ -1,7 +1,9 @@
 import React from 'react'
 import {TouchableOpacity} from 'react-native'
 import {Text} from 'native-base'
+import { connect } from 'react-redux'
 import { createStackNavigator } from '@react-navigation/stack'
+import AskAddress from '../home/AskAddress';
 
 import i18n from '../../i18n'
 import screens, { headerLeft } from '..'
@@ -99,7 +101,7 @@ const LoginRegisterNavigator = () => (
 
 const RootStack = createStackNavigator()
 
-export default () => (
+const DefaultNav = () => (
   <RootStack.Navigator
     screenOptions={{ ...stackNavigatorScreenOptions, presentation: 'modal' }}>
     <RootStack.Screen
@@ -107,7 +109,6 @@ export default () => (
       component={ MainNavigator }
       options={{
         headerShown: false,
-        title: i18n.t('RESTAURANT'),
       }}
     />
     <RootStack.Screen
@@ -154,3 +155,35 @@ export default () => (
     />
   </RootStack.Navigator>
 )
+
+const CheckoutNav = ({ address }) => {
+
+  if (!address) {
+
+    return (
+      <RootStack.Navigator
+        screenOptions={{ ...stackNavigatorScreenOptions, presentation: 'modal' }}
+        initialRouteName="CheckoutAskAddress">
+        <RootStack.Screen
+          name="CheckoutAskAddress"
+          component={ AskAddress }
+          options={ ({ navigation }) => ({
+            title: i18n.t('WHERE_ARE_YOU'),
+            headerLeft: headerLeft(navigation),
+          })}
+        />
+      </RootStack.Navigator>
+    )
+  }
+
+  return <DefaultNav />
+}
+
+function mapStateToProps(state) {
+
+  return {
+    address: state.checkout.address,
+  }
+}
+
+export default connect(mapStateToProps)(CheckoutNav)
