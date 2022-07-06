@@ -165,14 +165,27 @@ function notifyListeners(address) {
 }
 
 // This action may be dispatched several times "recursively"
-export function addItem(item, quantity = 1, options) {
+export function addItem(restaurant, item, quantity = 1, options) {
 
   return (dispatch, getState) => {
 
     const { httpClient } = getState().app
-    const { address, cart, isAddressOK } = getState().checkout
+    const { address, cart, token, isAddressOK } = getState().checkout
 
     const fulfillmentMethod = selectCartFulfillmentMethod(getState())
+
+    if (!token || cart?.restaurant !== restaurant['@id']) {
+
+      httpClient.post('/api/carts/session', {
+        restaurant: restaurant['@id'],
+      })
+      .then((res) => {
+        dispatch(initSuccess(res.cart, res.token, restaurant))
+        dispatch(addItem(restaurant, item, quantity, options))
+      })
+
+      return
+    }
 
     if (fulfillmentMethod === 'delivery' && (!address || !isAddressOK)) {
 
@@ -181,7 +194,7 @@ export function addItem(item, quantity = 1, options) {
       if (!address) {
         // When the address is set,
         // re-dispatch the same action
-        replaceListeners(() => dispatch(addItem(item, quantity, options)))
+        replaceListeners(() => dispatch(addItem(restaurant, item, quantity, options)))
         dispatch(showAddressModal(i18n.t('CHECKOUT_PLEASE_ENTER_ADDRESS')))
         return
       }
@@ -201,7 +214,7 @@ export function addItem(item, quantity = 1, options) {
 
             addListener(() => {
               dispatch(addItemRequestFinished(item))
-              dispatch(addItem(item, quantity, options))
+              dispatch(addItem(restaurant, item, quantity, options))
             })
             dispatch(syncAddress())
           })
@@ -210,7 +223,7 @@ export function addItem(item, quantity = 1, options) {
             dispatch(setAddressOK(false))
             dispatch(addItemRequestFinished(item))
 
-            replaceListeners(() => dispatch(addItem(item, quantity, options)))
+            replaceListeners(() => dispatch(addItem(restaurant, item, quantity, options)))
             dispatch(showAddressModal(reason))
           })
 
@@ -562,47 +575,6 @@ export function searchRestaurants(options = {}) {
       .catch(e => {
         _maintenanceModeHandler(e, dispatch)
         dispatch(loadRestaurantsFailure(e))
-      })
-  }
-}
-
-export function init(restaurant) {
-
-  return (dispatch, getState) => {
-
-    const { httpClient } = getState().app
-
-    dispatch(initRequest(restaurant))
-
-    const reqs = []
-
-    reqs.push(httpClient.post('/api/carts/session', {
-      restaurant: restaurant['@id'],
-    }))
-
-    if (typeof restaurant.hasMenu === 'string') {
-      reqs.push(httpClient.get(restaurant.hasMenu, {}, { anonymous: true }))
-    }
-
-    Promise.all(reqs)
-      .then(values => {
-        const session = values[0]
-
-        const args = [
-          session.cart,
-          session.token,
-        ]
-
-        if (values.length === 2) {
-          const menu = values[1]
-          const restaurantWithMenu = {
-            ...restaurant,
-            hasMenu: menu,
-          }
-          args.push(restaurantWithMenu)
-        }
-
-        dispatch(initSuccess(...args))
       })
   }
 }
