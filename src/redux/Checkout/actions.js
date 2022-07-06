@@ -464,7 +464,7 @@ export function setAddress(address) {
     const { httpClient } = getState().app
     const { cart } = getState().checkout
 
-    if (cart.restaurant) {
+    if (cart?.restaurant) {
 
       dispatch(setCheckoutLoading(true))
 
@@ -479,7 +479,9 @@ export function setAddress(address) {
           dispatch(setAddressModalMessage(reason))
           dispatch(setCheckoutLoading(false))
         })
-      }
+    } else {
+      dispatch(_setAddress(address))
+    }
   }
 }
 
