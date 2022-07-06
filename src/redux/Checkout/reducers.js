@@ -151,7 +151,6 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         cart: null,
-        address: null,
         date: null,
         itemRequestStack: [],
       }
