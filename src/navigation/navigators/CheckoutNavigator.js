@@ -165,13 +165,6 @@ const CheckoutNav = ({ address }) => {
         screenOptions={{ ...stackNavigatorScreenOptions, presentation: 'modal' }}
         initialRouteName="CheckoutAskAddress">
         <RootStack.Screen
-          name="Main"
-          component={ MainNavigator }
-          options={{
-            headerShown: false,
-          }}
-        />
-        <RootStack.Screen
           name="CheckoutAskAddress"
           component={ AskAddress }
           options={ ({ navigation }) => ({
