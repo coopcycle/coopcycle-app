@@ -402,6 +402,8 @@
         "OPTION_REQUIRED": "Mandatory",
         "SOME_OPTION_IS_REQUIRED_SELECT_ONE_VALUE": "There are mandatory options, select a value from them to continue",
         "WHERE_ARE_YOU": "Where are you?",
-        "ASK_ADDRESS_DISCLAIMER": "We use your address to help you find the best businesses nearby"
+        "ASK_ADDRESS_DISCLAIMER": "We use your address to help you find the best businesses nearby",
+        "TOP_RESULTS": "Top results",
+        "OTHER_RESULTS": "Other results"
     }
 }

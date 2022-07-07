@@ -47,7 +47,7 @@
     "expo": "^42.0.3",
     "expo-keep-awake": "~9.2.0",
     "formik": "^2.2.9",
-    "fuse.js": "^3.6.1",
+    "fuse.js": "^6.6.2",
     "google-libphonenumber": "^3.2.27",
     "i18next": "^20.6.1",
     "libphonenumber-js": "^1.9.50",

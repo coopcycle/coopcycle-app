@@ -51,6 +51,7 @@ import CheckoutMercadopago from './checkout/Mercadopago'
 
 import RestaurantsPage from './checkout/Search'
 import CheckoutRestaurant from './checkout/Restaurant'
+import SearchForm from './checkout/SearchForm'
 
 import RestaurantList from './restaurant/List'
 import RestaurantDashboard from './restaurant/Dashboard'
@@ -64,6 +65,7 @@ import RestaurantProducts from './restaurant/Products'
 import RestaurantOpeningHours from './restaurant/OpeningHours'
 import RestaurantMenus from './restaurant/Menus'
 import RestaurantPrinter from './restaurant/Printer'
+import SearchResults from './checkout/components/SearchResults';
 
 export default {
   RestaurantsPage,
@@ -120,6 +122,8 @@ export default {
   StoreDelivery,
   StoreNewDeliveryAddress,
   StoreNewDeliveryForm,
+  SearchForm,
+  SearchResults,
 }
 
 export const headerLeft = (navigation, testID = 'menuBtn') => {
