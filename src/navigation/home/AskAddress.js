@@ -1,7 +1,7 @@
-import {fontTitleName, lightGreyColor, primaryColor, whiteColor} from '../../styles/common';
+import {darkGreyColor, fontTitleName, lightGreyColor, primaryColor, whiteColor} from '../../styles/common';
 import {Box, Center, Heading, Text} from 'native-base';
 import AddressAutocomplete from '../../components/AddressAutocomplete';
-import {Image, View} from 'react-native';
+import {Appearance, Image, View} from 'react-native';
 import React from 'react';
 import {_setAddress} from '../../redux/Checkout/actions';
 import {loadAddresses, newAddress} from '../../redux/Account/actions';
@@ -12,6 +12,7 @@ const textInputContainerHeight = 54
 
 const AskAddress = (props) => {
 
+  const colorScheme = Appearance.getColorScheme()
   return <View style={{backgroundColor: primaryColor, flex: 1, padding: 20}}>
     <Box style={{flex: 1, justifyContent: 'flex-end', marginBottom: 20 }}>
       <Heading color={whiteColor}>{ props.t('WHERE_ARE_YOU') }</Heading>
@@ -28,7 +29,7 @@ const AskAddress = (props) => {
           height: (textInputContainerHeight * 0.7),
           borderRadius: 3,
           borderWidth: 0,
-          backgroundColor: whiteColor,
+          backgroundColor: colorScheme === 'dark' ? darkGreyColor : whiteColor,
         }}
         country={ props.country }
         location={ props.location }
