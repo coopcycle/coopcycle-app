@@ -384,6 +384,8 @@
         "OPTION_REQUIRED": "Obligatoire",
         "SOME_OPTION_IS_REQUIRED_SELECT_ONE_VALUE": "Il y a des options obligatoires, sélectionnez une valeur parmi celles-ci pour continuer",
         "WHERE_ARE_YOU": "Où êtes vous ?",
-        "ASK_ADDRESS_DISCLAIMER": "Nous utilisons votre adresse pour vous aider à trouver les meilleurs commerces à proximité."
+        "ASK_ADDRESS_DISCLAIMER": "Nous utilisons votre adresse pour vous aider à trouver les meilleurs commerces à proximité.",
+        "TOP_RESULTS": "Top résultats",
+        "OTHER_RESULTS": "Autres résultats"
     }
 }

@@ -16,6 +16,7 @@ import SentryMiddleware from './middlewares/SentryMiddleware'
 import { ringOnNewOrderCreated } from './Restaurant/middlewares'
 import { ringOnTaskListUpdated } from './Courier/taskMiddlewares'
 import CentrifugoMiddleware from './middlewares/CentrifugoMiddleware'
+import {restaurantsSearchIndex} from './Checkout/middlewares';
 
 const middlewares = [
   thunk,
@@ -24,11 +25,8 @@ const middlewares = [
   HttpMiddleware,
   PushNotificationMiddleware,
   CentrifugoMiddleware,
-  GeolocationMiddleware,
-  BluetoothMiddleware,
-  ringOnNewOrderCreated,
-  ringOnTaskListUpdated,
   SentryMiddleware,
+  restaurantsSearchIndex,
 ]
 
 if (process.env.NODE_ENV === 'development') {
