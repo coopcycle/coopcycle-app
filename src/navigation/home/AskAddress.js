@@ -1,10 +1,10 @@
-import {darkGreyColor, fontTitleName, lightGreyColor, primaryColor, whiteColor} from '../../styles/common';
-import {Box, Center, Heading, Text} from 'native-base';
+import {darkGreyColor, lightGreyColor, primaryColor, whiteColor} from '../../styles/common';
+import {Box, Heading, Text} from 'native-base';
 import AddressAutocomplete from '../../components/AddressAutocomplete';
-import {Appearance, Image, View} from 'react-native';
+import {Appearance, View} from 'react-native';
 import React from 'react';
-import {_setAddress} from '../../redux/Checkout/actions';
-import {loadAddresses, newAddress} from '../../redux/Account/actions';
+import {searchRestaurantsForAddress} from '../../redux/Checkout/actions';
+import {newAddress} from '../../redux/Account/actions';
 import {connect} from 'react-redux';
 import {withTranslation} from 'react-i18next';
 
@@ -35,7 +35,7 @@ const AskAddress = (props) => {
         location={ props.location }
         onSelectAddress={ (address) => {
           props.newAddress(address)
-          props.setAddress(address)
+          props.searchRestaurantsForAddress(address)
         }}
       />
     </Box>
@@ -55,7 +55,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
 
   return {
-    setAddress: address => dispatch(_setAddress(address)),
+    searchRestaurantsForAddress: address => dispatch(searchRestaurantsForAddress(address)),
     newAddress: address => dispatch(newAddress(address)),
   }
 }

@@ -7,7 +7,7 @@ import {loadAddresses, newAddress} from '../../redux/Account/actions'
 import ItemSeparator from '../../components/ItemSeparator'
 import AddressAutocomplete from '../../components/AddressAutocomplete';
 import {blueColor, darkGreyColor, greyColor, lightGreyColor, primaryColor} from '../../styles/common';
-import {_setAddress, searchRestaurantsForAddress, setAddress} from '../../redux/Checkout/actions';
+import {searchRestaurantsForAddress, setAddress} from '../../redux/Checkout/actions';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import address from '../../utils/Address';
 import i18n from '../../i18n';
@@ -30,6 +30,7 @@ class AccountAddressesPage extends Component {
     return (
       <TouchableOpacity onPress={() => {
         this.props.setAddress(item)
+        //TODO: Need to be more robust that a simple goBack()
         this.props.navigation.goBack()
       }}><HStack px="2" py="3" space={2} style={{backgroundColor: color}} justifyContent="space-between">
         <Text>{ item.streetAddress }</Text><Text>{ item.name }</Text>
@@ -127,7 +128,7 @@ function mapDispatchToProps(dispatch, ownProps) {
       case 'cart':
         return dispatch(setAddress(addressPrecise, ownProps.route.params.cart))
       default:
-        dispatch(_setAddress(addressPrecise))
+        dispatch(setAddress(addressPrecise))
     }
   }
   return {

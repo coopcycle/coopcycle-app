@@ -504,8 +504,7 @@ export function validate(cart) {
   }
 }
 
-// TODO: Create a specific action
-export const _setAddress = createAction(SET_ADDRESS)
+const _setAddress = createAction(SET_ADDRESS)
 
 function syncAddress(cart, address) {
 
@@ -534,7 +533,7 @@ function syncAddress(cart, address) {
   }
 }
 
-export function setAddress(address, cart) {
+export function setAddress(address, cart = null) {
 
   return (dispatch, getState) => {
 
