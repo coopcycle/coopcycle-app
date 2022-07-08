@@ -41,12 +41,17 @@ class RestaurantsPage extends Component {
 
   componentDidMount() {
     const firstServer = this.props.otherServers[0]
+    const { address } = this.props
+
     if (firstServer && firstServer.coopcycle_url !== this.props.baseURL) {
       // the servers are randomly ordered to avoid same server as the first option
       // so we select the new first server if it is different to the selected in a previous usage of the app
-      this._renderRestaurantsForTab({index: 0, url: firstServer.coopcycle_url})
+      return this._renderRestaurantsForTab({index: 0, url: firstServer.coopcycle_url})
+    }
+    if (address) {
+      this.props.searchRestaurantsForAddress(address, { baseURL: this.state.baseURL })
     } else {
-      this.props.searchRestaurants()
+      this.props.searchRestaurants({ baseURL: this.state.baseURL })
     }
   }
 
@@ -146,9 +151,6 @@ class RestaurantsPage extends Component {
 
   renderContent() {
     const { restaurants, addressAsText, isFetching, otherServers } = this.props
-    const restaurantList = (this.props.restaurantsFilter !== null) ?
-      restaurants.filter((restaurant) => restaurant.name.includes(this.props.restaurantsFilter.query)) :
-      restaurants
 
     if (otherServers.length > 1) {
       const { routes, sceneMap } = this._loadTabsRoutesAndScenes();
@@ -166,7 +168,7 @@ class RestaurantsPage extends Component {
       return (
         <SafeAreaView edges={ [ 'right', 'bottom', 'left' ] } style={{flexGrow: 1}}>
           <RestaurantList
-            restaurants={ restaurantList }
+            restaurants={ restaurants }
             addressAsText={addressAsText}
             isFetching={isFetching}
             onItemClick={ restaurant => {
@@ -225,7 +227,6 @@ function mapStateToProps(state, ownProps) {
     baseURL: state.app.baseURL,
     otherServers: selectServersInSameCity(state),
     isFetching: state.checkout.isFetching || state.app.loading,
-    restaurantsFilter: state.checkout.restaurantsFilter,
   }
 }
 
