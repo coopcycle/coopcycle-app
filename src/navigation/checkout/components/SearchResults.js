@@ -54,10 +54,6 @@ const SearchForm = (props) => {
 
   const { query: {name, image} } = props.route.params
 
-  if (name === "Exclusivités") {
-    console.log(SearchEngine.getExclusives())
-  }
-
   const topResults = SearchEngine.search(`=${name}`)
   const topIndex = _.map(topResults, 'refIndex')
   const altResults = SearchEngine.search(name)

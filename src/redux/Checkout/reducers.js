@@ -77,7 +77,6 @@ const initialState = {
   paymentDetailsLoaded: false,
   guest: null,
   showMultipleServersInSameCityModal: true,
-  restaurantsFilter: null,
 }
 
 export default (state = initialState, action = {}) => {
@@ -400,19 +399,6 @@ export default (state = initialState, action = {}) => {
         ...state,
         showMultipleServersInSameCityModal: false,
       }
-
-    case APPLY_RESTAURANTS_FILTERS:
-      return {
-        ...state,
-        restaurantsFilter: action.payload.filter,
-      }
-
-    case CLEAR_RESTAURANTS_FILTERS:
-      return {
-        ...state,
-        restaurantsFilter: null,
-      }
-
   }
 
   return state

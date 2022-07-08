@@ -11,7 +11,6 @@ import { stackNavigatorScreenOptions } from '../styles'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {primaryColor} from '../../styles/common';
 import store from '../../redux/store'
-import {cartItemsCountBadge, filterActive} from '../../redux/Checkout/selectors';
 import {getFocusedRouteNameFromRoute} from '@react-navigation/native';
 import {selectIsAuthenticated} from '../../redux/App/selectors';
 import CartsBadge from '../checkout/components/CartsBadge';
@@ -59,7 +58,6 @@ function Tabs({rootNavigation: navigation}) {
         tabBarIcon: ({ color, size }) => <Icon as={FontAwesome5} name="home" size={size} color={color} />,
       }} component={screens.RestaurantsPage} />
       <Tab.Screen name="Search" options={{
-        tabBarBadge: filterActive(store.getState()) ? true : null,
         tabBarIcon: ({ color, size }) => <Icon as={FontAwesome5} name="search" size={size} color={color} />,
       }} component={screens.SearchForm} />
       <Tab.Screen name="Cart" options={{

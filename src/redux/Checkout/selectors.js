@@ -142,11 +142,6 @@ export const selectRestaurants = createSelector(
   ])
 )
 
-export const filterActive = createSelector(
-  state => state.checkout.restaurantsFilter,
-  restaurantsFilter => restaurantsFilter !== null
-)
-
 export const cartItemsCountBadge = createSelector(
   state => Object.keys(state.checkout.carts),
   items => items.length

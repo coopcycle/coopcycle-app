@@ -16,7 +16,6 @@ import {withTranslation} from 'react-i18next';
 import i18n from '../../i18n';
 import {applyRestaurantsFilters, clearRestaurantsFilters, setRestaurant} from '../../redux/Checkout/actions';
 import {connect} from 'react-redux';
-import {filterActive} from '../../redux/Checkout/selectors';
 import FacetCard from './components/FacetCard';
 import {Spacer} from 'native-base/src/components/primitives/Flex';
 import SearchEngine from '../../utils/searchEngine';
@@ -122,20 +121,6 @@ class SearchForm extends Component {
       this.props.clearRestaurantsFilters()
       this.props.navigation.goBack()
     }
-/*
-
- <HStack alignItems="center" space={4}>
-          <Switch size="md" />
-          <Text>Végan</Text>
-        </HStack>
-        <HStack alignItems="center" space={4}>
-          <Switch size="md" />
-          <Text>Sans arachides</Text>
-        </HStack>
-
-                <VStack><Button onPress={this._clearFilter} isDisabled={!this.props.filterActive} colorScheme="success">{i18n.t('RESET')}</Button></VStack>
-
- */
 
   _onChange = (q = null) => {
     if (q === null || q.length === 0) {
@@ -176,17 +161,13 @@ class SearchForm extends Component {
 function mapStateToProps(state) {
 
   return {
-    restaurantsFilter: state.checkout.restaurantsFilter,
-    filterActive: filterActive(state),
   }
 }
 
 function mapDispatchToProps(dispatch) {
 
   return {
-    applyRestaurantsFilters: (filter) => dispatch(applyRestaurantsFilters(filter)),
     setRestaurant: id => dispatch(setRestaurant(id)),
-    clearRestaurantsFilters: () => dispatch(clearRestaurantsFilters()),
   }
 }
 
