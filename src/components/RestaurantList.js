@@ -59,13 +59,7 @@ const OneLineText = (props) => (
 const TimingBadge = ({ restaurant }) => {
 
   const colorScheme = useColorScheme()
-  if (0) {
-    return (
-      <HStack style={[styles.badge]} px="2">
-        <Skeleton h={30} w={130} borderRadius={4} />
-      </HStack>
-    )
-  }
+
   return (
     <HStack style={ [ styles.badge ] } bg={ colorScheme === 'dark' ? 'gray.800' : 'gray.200' } px="2">
       <Icon as={ FontAwesome } name="clock-o" size="xs" mr="1"  />
