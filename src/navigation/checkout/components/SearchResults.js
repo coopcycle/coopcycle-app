@@ -58,15 +58,11 @@ const SearchForm = (props) => {
   const topIndex = _.map(topResults, 'refIndex')
   const altResults = SearchEngine.search(name)
     .filter(value => !topIndex.includes(value.refIndex))
-  //TODO: i18n
-  const DATA = _.reduce({
-        'Top résultats': topResults, 'Autres résultats': altResults,
-      }, (acc, value, key) => {
-    if (value.length > 0) {
-      acc.push({title: key, data: value})
-    }
-    return acc
-  }, [])
+
+  const DATA = _.filter([
+    {title: i18n.t('TOP_RESULTS'), data: topResults,}, {title: i18n.t('OTHER_RESULTS'), data: altResults}
+  ], value => value.data.length > 0)
+
   const showHeaders = DATA.length > 1
 
   return <View style={{ flex: 1 }}>
@@ -75,7 +71,7 @@ const SearchForm = (props) => {
         <GroupImageHeader image={image} text={name} />
       </View>
       <View padding={5}>
-        <Heading paddingLeft={5} color={darkGreyColor}>{altResults.length + topResults.length} résultats</Heading>
+        <Heading paddingLeft={5} color={darkGreyColor}>{i18n.t('RESULT', {count: altResults.length + topResults.length})}</Heading>
         <SectionList
           sections={DATA}
           initialNumToRender={ 15 }

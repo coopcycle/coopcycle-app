@@ -395,6 +395,8 @@
         "ASK_ADDRESS_DISCLAIMER": "Nous utilisons votre adresse pour vous aider à trouver les meilleurs commerces à proximité.",
         "TOP_RESULTS": "Top résultats",
         "OTHER_RESULTS": "Autres résultats",
+        "RESULT": "{{count}} résultat",
+        "RESULT_plural": "{{count}} résultats",
         "EMPTY_HERE": "C'est complètement vide par ici"
     }
 }
