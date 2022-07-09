@@ -9,6 +9,7 @@ module.exports = {
     // https://itnext.io/how-to-replace-prettier-by-eslint-rules-21574359e041
     'prettier/prettier': 'off',
     // Allow inline styles (should be removed at some point)
-    'react-native/no-inline-styles': 'off'
-  }
+    'react-native/no-inline-styles': 'off',
+    'object-curly-spacing': ['error', 'always'],
+  },
 };
