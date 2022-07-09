@@ -67,7 +67,7 @@ class Carts extends Component {
     </>
 
   render() {
-    return <FlatList data={_.values(this.props.carts)} renderItem={({ item, index }) => this._renderItem(item, index) } ListEmptyComponent={this.emptyList} />
+    return <FlatList data={_.values(this.props.carts)} keyExtractor={(item, index) => index} renderItem={({ item, index }) => this._renderItem(item, index) } ListEmptyComponent={this.emptyList} />
   }
 }
 
