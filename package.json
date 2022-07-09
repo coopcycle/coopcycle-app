@@ -36,6 +36,7 @@
     "@stripe/stripe-react-native": "^0.2.3",
     "@terrylinla/react-native-sketch-canvas": "^0.8.0",
     "@turf/turf": "^6.5.0",
+    "abortcontroller-polyfill": "^1.7.3",
     "axios": "^0.26.1",
     "buffer": "^6.0.3",
     "centrifuge": "^2.8.4",
