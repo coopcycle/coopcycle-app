@@ -1,52 +1,14 @@
-import {SectionList, TouchableOpacity, View} from 'react-native';
+import {SectionList, View} from 'react-native';
 import GroupImageHeader from './GroupImageHeader';
 import React from 'react';
-import {Avatar, Box, ChevronRightIcon, Heading, HStack, Icon, Image, Text, VStack} from 'native-base';
+import {Heading} from 'native-base';
 import SearchEngine from '../../../utils/searchEngine';
-import {darkGreyColor, greyColor} from '../../../styles/common';
 import _ from 'lodash';
-import {Spacer} from 'native-base/src/components/primitives/Flex';
 import i18n from '../../../i18n';
-import moment from 'moment';
-import {getNextShippingTimeAsText} from '../../../utils/checkout';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import {filterActive} from '../../../redux/Checkout/selectors';
-import {applyRestaurantsFilters, clearRestaurantsFilters, setRestaurant} from '../../../redux/Checkout/actions';
+import {setRestaurant} from '../../../redux/Checkout/actions';
 import {connect} from 'react-redux';
 import {withTranslation} from 'react-i18next';
-
-const autocompleteItem = (restaurant, onPress) => {
-  const AltText = () => {
-    let text;
-    if (restaurant.facets.cuisine.length > 0) {
-      text = restaurant.facets.cuisine.join(' ∙ ');
-    } else {
-      text = restaurant.address.streetAddress;
-    }
-
-    return <Text color={darkGreyColor}>{text}</Text>
-
-  }
-  return (
-    <><TouchableOpacity onPress={() => onPress(restaurant) }>
-      <HStack space={4} padding={2}>
-        <Image size="sm" source={{uri: restaurant.image}} alt={restaurant.name} />
-        <VStack>
-          <Text bold>{restaurant.name}</Text>
-          <AltText/>
-          <Text>{getNextShippingTimeAsText(restaurant)}</Text>
-        </VStack>
-        <Spacer/>
-        <View style={{flexGrow: 1, justifyContent:'center', alignItems: 'flex-end'}}>
-          <ChevronRightIcon />
-        </View>
-      </HStack>
-    </TouchableOpacity>
-      <Box marginLeft={5} marginRight={5} borderBottomWidth={1} borderColor={greyColor} />
-    </>
-  )
-}
-
+import RestaurantSmallCard from './RestaurantSmallCard';
 
 
 //FEAT: No results
@@ -71,17 +33,15 @@ const SearchForm = (props) => {
         <GroupImageHeader image={image} text={name} />
       </View>
       <View padding={5}>
-        <Heading paddingLeft={5} color={darkGreyColor}>{i18n.t('RESULT', {count: altResults.length + topResults.length})}</Heading>
+        <Heading paddingLeft={5}>{i18n.t('RESULT', {count: altResults.length + topResults.length})}</Heading>
         <SectionList
           sections={DATA}
           initialNumToRender={ 15 }
           keyExtractor={(item, index) => item + index}
-          renderItem={({item: {item}}) => {
-            return autocompleteItem(item, () => {
-              props.setRestaurant(item['@id'])
-              props.navigation.navigate('CheckoutRestaurant', { restaurant: item })
-            })
-          } }
+          renderItem={({item: {item}}) => <RestaurantSmallCard restaurant={item} onPress={() => {
+            props.setRestaurant(item['@id'])
+            props.navigation.navigate('CheckoutRestaurant', { restaurant: item })
+          }} shippingTime={true} />}
           renderSectionHeader={({ section: {title} }) => {
               return showHeaders ? <Heading size={'md'} padding={2}>{title}</Heading> : <></>
           }}

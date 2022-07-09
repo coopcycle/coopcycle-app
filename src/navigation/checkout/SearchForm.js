@@ -23,6 +23,7 @@ import {FlatList, TouchableOpacity} from 'react-native';
 import {darkGreyColor, greyColor} from '../../styles/common';
 import _ from 'lodash';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import RestaurantSmallCard from './components/RestaurantSmallCard';
 
 
 const DATA = [
@@ -55,44 +56,12 @@ const Facets = (props) => <FlatList data={DATA} columnWrapperStyle={{
 }} numColumns={2} renderItem={({item}) => <FacetCard name={item.name} onPress={props.onPress}
                                       image={item.image} />} />
 
-
-const autocompleteItem = (restaurant, onPress) => {
-  const AltText = () => {
-    let text;
-    if (restaurant.facets.cuisine.length > 0) {
-      text = restaurant.facets.cuisine.join(' ∙ ');
-    } else {
-      text = restaurant.address.streetAddress;
-    }
-
-    return <Text color={darkGreyColor}>{text}</Text>
-
-  }
-  return (
-    <><TouchableOpacity onPress={() => onPress(restaurant) }>
-      <HStack space={4} padding={3}>
-        <Image size="xs" source={{uri: restaurant.image}} alt={restaurant.name} />
-        <VStack>
-          <Text bold>{restaurant.name}</Text>
-          <AltText/>
-        </VStack>
-        <Spacer/>
-        <View style={{flexGrow: 1, justifyContent:'center', alignItems: 'flex-end'}}>
-          <ChevronRightIcon />
-        </View>
-      </HStack>
-    </TouchableOpacity>
-      <Box marginLeft={5} marginRight={5} borderBottomWidth={1} borderColor={greyColor} />
-    </>
-  )
-}
-
 const Autocomplete = (props) => {
 
   return <FlatList
     data={props.restaurants}
     initialNumToRender={ 15 }
-    renderItem={({item}) => autocompleteItem(item.item, props.onPress)}
+    renderItem={({item}) => <RestaurantSmallCard restaurant={item.item} onPress={props.onPress} />}
    />
 }
 
