@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { FlatList, Image, ImageBackground, StyleSheet, TouchableOpacity, View, useColorScheme } from 'react-native'
-import { Center, HStack, Icon, Skeleton, Text } from 'native-base'
+import { Center, HStack, Icon, Text } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import Ionicons from 'react-native-vector-icons/Ionicons'
@@ -117,6 +117,7 @@ class RestaurantList extends Component {
     if (addressAsText) {
       return (
         <Center flex={ 1 } justifyContent="center" alignItems="center" px="2">
+          <Image style={{ maxWidth: '40%', maxHeight: '30%', marginVertical: '5%', margin: 'auto' }} source={require('../assets/images/no_addresses.png')} resizeMode={'contain'} />
           <Text note style={{ textAlign: 'center' }}>
             {this.props.t('NO_RESTAURANTS')}
           </Text>
@@ -124,6 +125,7 @@ class RestaurantList extends Component {
       )
     }
 
+    //FIXME: This code is maybe unreachable
     return (
       <Center flex={ 1 } justifyContent="center" alignItems="center" testID="checkoutSearchContent">
         <Icon as={Ionicons} name="search" style={{ color: '#cccccc' }} />

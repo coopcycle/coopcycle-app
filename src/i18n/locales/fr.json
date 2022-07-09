@@ -80,7 +80,7 @@
         "ABOUT_COOPCYCLE": "À l'inverse des grandes plateformes, avec CoopCycle la mise en place d'un service de livraison de repas est à l'initiative des livreuses et des livreurs, qui décident de se constituer en coopérative à l'échelle locale. \n\nSi votre ville n'est pas listée, c'est qu'il n'y a pas (encore) de projet. \n\nSi vous êtes un groupe de livreuses et de livreurs, contactez-nous pour savoir comment nous pouvons vous aider à monter votre projet en coopérative.",
         "ABOUT": "À propos",
         "ABOUT_INSTANCE": "À propos de {{name}}",
-        "NO_RESTAURANTS": "Désolé, nous n'avons pas trouvé de restaurant ouvert",
+        "NO_RESTAURANTS": "Désolé, nous ne sommes pas disponibles à cet emplacement pour le moment",
         "SEARCH_WITHOUT_DATE": "Voulez-vous relancer la recherche sans inclure de date",
         "SEARCH_AGAIN": "Relancer la recherche",
         "ENTER_ADDRESS": "Entrez votre adresse",
