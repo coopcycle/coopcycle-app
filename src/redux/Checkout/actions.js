@@ -184,6 +184,13 @@ export function addItemV2(item, quantity = 1, restaurant, options) {
     const { carts, address } = getState().checkout
     let httpClient = createHttpClient(getState())
 
+    const requestAddress = (closureAddress) => {
+      if (_.has(closureAddress, '@id')) {
+        return closureAddress['@id']
+      }
+      return closureAddress
+    }
+
     dispatch(addItemRequest(item))
     if (!_.has(carts, restaurant['@id'])) {
       dispatch(initCartRequest(restaurant['@id']))
@@ -192,6 +199,7 @@ export function addItemV2(item, quantity = 1, restaurant, options) {
       try {
         const response = await httpClient.post('/api/carts/session', {
           restaurant: restaurant['@id'],
+          shippingAddress: requestAddress(address),
         })
         const data = {
           restaurant,
