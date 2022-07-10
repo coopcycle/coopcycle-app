@@ -10,6 +10,12 @@ module.exports = {
     'prettier/prettier': 'off',
     // Allow inline styles (should be removed at some point)
     'react-native/no-inline-styles': 'off',
+    'sort-imports': ['error', {
+        'ignoreCase': false,
+        'ignoreDeclarationSort': true,
+        'ignoreMemberSort': false,
+        'allowSeparatedGroups': true
+    }],
     'object-curly-spacing': ['error', 'always'],
   },
 };
