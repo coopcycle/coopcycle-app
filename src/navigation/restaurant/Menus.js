@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { FlatList, InteractionManager, StyleSheet, View } from 'react-native'
 import {
-  Icon, Text, Button, HStack, Pressable,
+  Button, HStack, Icon, Pressable, Text,
 } from 'native-base'
 import Modal from 'react-native-modal'
 
@@ -9,7 +9,7 @@ import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
-import { loadMenus, activateMenu } from '../../redux/Restaurant/actions'
+import { activateMenu, loadMenus } from '../../redux/Restaurant/actions'
 
 class Menus extends Component {
 

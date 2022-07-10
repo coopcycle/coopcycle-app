@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
-import {Center, Text, Button, Icon} from 'native-base';
-import {withTranslation} from 'react-i18next';
+import React, { Component } from 'react';
+import { Button, Center, Icon, Text } from 'native-base';
+import { withTranslation } from 'react-i18next';
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
 class ResetPasswordCheckEmail extends Component {
@@ -14,11 +14,11 @@ class ResetPasswordCheckEmail extends Component {
     return (
       <Center flex={ 1 } testID="registerCheckEmail">
         <Icon as={ FontAwesome } name="envelope-o" mb="3" />
-        <Text style={{textAlign: 'center'}}>
-          {this.props.t('RESET_PASSWORD_CHECK_EMAIL_DISCLAIMER', {email})}
+        <Text style={{ textAlign: 'center' }}>
+          {this.props.t('RESET_PASSWORD_CHECK_EMAIL_DISCLAIMER', { email })}
         </Text>
         <Button
-          style={{marginTop: 20}}
+          style={{ marginTop: 20 }}
           block
           transparent
           onPress={() => this._onPressClose()}>

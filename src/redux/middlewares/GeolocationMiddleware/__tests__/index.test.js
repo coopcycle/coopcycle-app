@@ -1,4 +1,4 @@
-import { createStore, applyMiddleware, combineReducers } from 'redux'
+import { applyMiddleware, combineReducers, createStore } from 'redux'
 import { createAction } from 'redux-actions'
 import BackgroundGeolocation from 'react-native-background-geolocation'
 import thunk from 'redux-thunk'

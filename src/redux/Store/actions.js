@@ -2,7 +2,7 @@ import { createAction } from 'redux-actions'
 import _ from 'lodash'
 
 import { setLoading } from '../App/actions'
-import { selectTimeSlots, selectStore } from './selectors'
+import { selectStore, selectTimeSlots } from './selectors'
 
 export const LOAD_DELIVERIES_SUCCESS = '@store/LOAD_DELIVERIES_SUCCESS'
 export const CREATE_DELIVERY_SUCCESS = '@store/CREATE_DELIVERY_SUCCESS'

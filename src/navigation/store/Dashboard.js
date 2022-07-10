@@ -8,7 +8,7 @@ import DeliveryList from '../../components/DeliveryList'
 
 import variables from '../../../native-base-theme/variables/platform'
 
-import { loadDeliveries, loadAddresses, loadMoreDeliveries, init } from '../../redux/Store/actions'
+import { init, loadAddresses, loadDeliveries, loadMoreDeliveries } from '../../redux/Store/actions'
 
 class StoreDashboard extends Component {
 

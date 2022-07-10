@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
-import { FormControl, Input, Button, Text, VStack, Box } from 'native-base'
+import { Box, Button, FormControl, Input, Text, VStack } from 'native-base'
 import { Formik } from 'formik'
 import PropTypes from 'prop-types'
 import Modal from 'react-native-modal'

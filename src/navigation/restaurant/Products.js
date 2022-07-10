@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
 import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native'
 import {
-  Text, Switch, HStack,
+  HStack, Switch, Text,
 } from 'native-base'
 
 import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 
-import { loadProducts, loadMoreProducts, changeProductEnabled } from '../../redux/Restaurant/actions'
+import { changeProductEnabled, loadMoreProducts, loadProducts } from '../../redux/Restaurant/actions'
 import ItemSeparator from '../../components/ItemSeparator'
 
 class ProductsScreen extends Component {

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { withTranslation } from 'react-i18next'
 import {
   Button,
-  VStack, HStack,
+  HStack, VStack,
 } from 'native-base'
 
 import AddressForm from '../../components/DeliveryAddressForm'

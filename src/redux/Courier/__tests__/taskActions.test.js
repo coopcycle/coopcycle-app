@@ -3,16 +3,16 @@ import thunk from 'redux-thunk'
 import moment from 'moment'
 
 import {
-  LOAD_TASKS_REQUEST, LOAD_TASKS_SUCCESS, LOAD_TASKS_FAILURE,
-  MARK_TASK_DONE_REQUEST, MARK_TASK_DONE_SUCCESS, MARK_TASK_DONE_FAILURE,
-  MARK_TASK_FAILED_REQUEST, MARK_TASK_FAILED_SUCCESS, MARK_TASK_FAILED_FAILURE,
+  LOAD_TASKS_FAILURE, LOAD_TASKS_REQUEST, LOAD_TASKS_SUCCESS,
+  MARK_TASK_DONE_FAILURE, MARK_TASK_DONE_REQUEST, MARK_TASK_DONE_SUCCESS,
+  MARK_TASK_FAILED_FAILURE, MARK_TASK_FAILED_REQUEST, MARK_TASK_FAILED_SUCCESS,
 
-  loadTasksRequest, loadTasksSuccess, loadTasksFailure,
-  markTaskDoneRequest, markTaskDoneSuccess, markTaskDoneFailure,
-  markTaskFailedRequest, markTaskFailedSuccess, markTaskFailedFailure,
-  clearFiles,
+  clearFiles, loadTasks, loadTasksFailure,
+  loadTasksRequest, loadTasksSuccess, markTaskDone,
+  markTaskDoneFailure, markTaskDoneRequest, markTaskDoneSuccess,
+  markTaskFailed,
 
-  loadTasks, markTaskDone, markTaskFailed,
+  markTaskFailedFailure, markTaskFailedRequest, markTaskFailedSuccess,
 } from '../taskActions'
 
 // As we may be using setTimeout(), we need to mock timers
@@ -103,8 +103,8 @@ describe('Redux | Tasks | Actions', () => {
         payload: expect.objectContaining({
           date: date.format('YYYY-MM-DD'),
           items: resolveValue['hydra:member'],
-          updatedAt: expect.any(moment)
-        })
+          updatedAt: expect.any(moment),
+        }),
       }))
     })
   })
@@ -116,9 +116,9 @@ describe('Redux | Tasks | Actions', () => {
     const resolveValue = {
       '@type': 'TaskList',
       'items': [
-        { '@id': '/api/tasks/1' }
+        { '@id': '/api/tasks/1' },
       ],
-      updatedAt: moment().format()
+      updatedAt: moment().format(),
     }
 
     client.get.mockResolvedValue(resolveValue)
@@ -141,9 +141,9 @@ describe('Redux | Tasks | Actions', () => {
         type: LOAD_TASKS_SUCCESS,
         payload: expect.objectContaining({
           date: date.format('YYYY-MM-DD'),
-          items: resolveValue['items'],
-          updatedAt: expect.any(moment)
-        })
+          items: resolveValue.items,
+          updatedAt: expect.any(moment),
+        }),
       }))
     })
   })

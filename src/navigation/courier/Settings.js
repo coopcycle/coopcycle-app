@@ -1,7 +1,7 @@
 import React from 'react'
 import { SectionList, TouchableOpacity } from 'react-native'
 import {
-  Icon, Text, Switch, Heading, HStack, Box,
+  Box, HStack, Heading, Icon, Switch, Text,
 } from 'native-base'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
@@ -9,19 +9,19 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import ItemSeparator from '../../components/ItemSeparator'
 
 import {
-  filterTasks,
   clearTasksFilter,
-  setTasksChangedAlertSound,
-  setKeepAwake,
-  setSignatureScreenFirst,
+  filterTasks,
   selectAreDoneTasksHidden,
   selectAreFailedTasksHidden,
-  selectTasksChangedAlertSound,
-  selectTagNames,
   selectKeepAwake,
   selectSignatureScreenFirst,
+  selectTagNames,
+  selectTasksChangedAlertSound,
+  setKeepAwake,
+  setSignatureScreenFirst,
+  setTasksChangedAlertSound,
 } from '../../redux/Courier'
-import {doneIconName, failedIconName} from '../task/styles/common'
+import { doneIconName, failedIconName } from '../task/styles/common'
 
 const SettingsItemInner = ({ item }) => (
   <HStack alignItems="center" justifyContent="space-between" py="3">
@@ -85,7 +85,7 @@ const Settings = ({
         {
           icon: 'tag',
           label: t('HIDE_TASKS_TAGGED_WITH'),
-          onPress: () => navigation.navigate('CourierSettingsTags')
+          onPress: () => navigation.navigate('CourierSettingsTags'),
         },
         {
           icon: 'volume-up',
@@ -93,7 +93,7 @@ const Settings = ({
           onToggle: toggleTasksChangedAlertSound,
           isChecked: tasksChangedAlertSound,
         },
-      ]
+      ],
     },
     {
       title: t('SETTINGS'),
@@ -110,8 +110,8 @@ const Settings = ({
           onToggle: setKeepAwakeDisabled,
           isChecked: isKeepAwakeDisabled,
         },
-      ]
-    }
+      ],
+    },
   ]
 
   return (

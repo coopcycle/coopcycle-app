@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { TouchableOpacity, View } from 'react-native'
 import {
-  Icon, Text, Button, FlatList, Box, HStack,
+  Box, Button, FlatList, HStack, Icon, Text,
 } from 'native-base'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
@@ -28,15 +28,15 @@ class AccountHome extends Component {
     const data = [
       {
         label: this.props.t('DETAILS'),
-        onPress: () => navigate('AccountDetails')
+        onPress: () => navigate('AccountDetails'),
       },
       {
         label: this.props.t('ADDRESSES'),
-        onPress: () => navigate('AccountAddresses')
+        onPress: () => navigate('AccountAddresses'),
       },
       {
         label: this.props.t('ORDERS'),
-        onPress: () => navigate('AccountOrders', { screen: 'AccountOrdersList' })
+        onPress: () => navigate('AccountOrders', { screen: 'AccountOrdersList' }),
       },
     ]
 

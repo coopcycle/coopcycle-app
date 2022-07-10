@@ -8,7 +8,7 @@ import { withTranslation } from 'react-i18next'
 
 import Server from './components/Server'
 import AuthenticateForm from '../../components/AuthenticateForm'
-import { login, register, forgotPassword } from '../../redux/App/actions'
+import { forgotPassword, login, register } from '../../redux/App/actions'
 import { redColor } from '../../styles/common'
 
 class LoginRegister extends Component {

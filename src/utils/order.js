@@ -57,7 +57,7 @@ export function encodeForPrinter(order) {
     .line(`#${order.number}`)
     .newline()
     .raw([ 0x1b, 0x21, 16 ])
-    .line(i18n.t('RECEIPT_CUSTOMER_NAME', {customer: order.customer.fullName || order.customer.email}))
+    .line(i18n.t('RECEIPT_CUSTOMER_NAME', { customer: order.customer.fullName || order.customer.email }))
     .line(hr)
 
   encoder

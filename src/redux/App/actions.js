@@ -199,7 +199,7 @@ function navigateToHome(dispatch, getState) {
 function loadAll(getState) {
 
   const defaultValues = [
-    [], []
+    [], [],
   ]
 
   return new Promise((resolve) => {
@@ -479,8 +479,8 @@ export function resumeCheckout() {
 
 export function resetPassword(username, checkEmailRouteName, resumeCheckoutAfterActivation) {
   return (dispatch, getState) => {
-    const {app} = getState();
-    const {httpClient} = app;
+    const { app } = getState();
+    const { httpClient } = app;
 
     dispatch(resetPasswordRequest())
 
@@ -490,7 +490,7 @@ export function resetPassword(username, checkEmailRouteName, resumeCheckoutAfter
         dispatch(resetPasswordRequestSuccess());
         dispatch(_resumeCheckoutAfterActivation(resumeCheckoutAfterActivation));
 
-        NavigationHolder.navigate(checkEmailRouteName, {email: username});
+        NavigationHolder.navigate(checkEmailRouteName, { email: username });
       })
       .catch(err => {
         let message = i18n.t('TRY_LATER');
@@ -501,8 +501,8 @@ export function resetPassword(username, checkEmailRouteName, resumeCheckoutAfter
 
 export function setNewPassword(token, password) {
   return (dispatch, getState) => {
-    const {app} = getState();
-    const {httpClient, resumeCheckoutAfterActivation} = app;
+    const { app } = getState();
+    const { httpClient, resumeCheckoutAfterActivation } = app;
 
     dispatch(authenticationRequest());
 

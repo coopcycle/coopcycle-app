@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
-import { ActivityIndicator, Dimensions, StyleSheet, View, Animated, Keyboard, Platform, TouchableOpacity } from 'react-native'
+import { ActivityIndicator, Animated, Dimensions, Keyboard, Platform, StyleSheet, TouchableOpacity, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 import {
-  Text, Button, Icon,
+  Button, Icon, Text,
 } from 'native-base'
 import Modal from 'react-native-modal'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
@@ -14,7 +14,7 @@ import AddressAutocomplete from '../../../components/AddressAutocomplete'
 import ModalContent from '../../../components/ModalContent'
 import AddressUtils from '../../../utils/Address'
 
-import { setAddressModalHidden, hideAddressModal, setAddress, setFulfillmentMethod } from '../../../redux/Checkout/actions'
+import { hideAddressModal, setAddress, setAddressModalHidden, setFulfillmentMethod } from '../../../redux/Checkout/actions'
 import { selectIsCollectionEnabled } from '../../../redux/Checkout/selectors'
 
 class AddressModal extends Component {

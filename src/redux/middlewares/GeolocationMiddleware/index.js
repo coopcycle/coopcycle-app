@@ -2,7 +2,7 @@ import { Alert, Platform } from 'react-native'
 import BackgroundGeolocation from 'react-native-background-geolocation'
 
 import i18n from '../../../i18n'
-import { setBackgroundGeolocationEnabled, backgroundPermissionDisclosed } from '../../App/actions'
+import { backgroundPermissionDisclosed, setBackgroundGeolocationEnabled } from '../../App/actions'
 import { selectIsAuthenticated } from '../../App/selectors'
 
 // https://github.com/transistorsoft/rn-background-geolocation-demo/blob/1e63c8b5162c123c4961710d339bf9f9507a6893/src/home/HomeView.tsx#L156-L182

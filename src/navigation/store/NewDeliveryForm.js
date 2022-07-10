@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { InteractionManager, Platform, StyleSheet, TextInput, View } from 'react-native'
 import {
-  Text, Button, Box, HStack, VStack,
+  Box, Button, HStack, Text, VStack,
 } from 'native-base'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
@@ -11,8 +11,8 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker'
 import { Formik } from 'formik'
 import _ from 'lodash'
 import {
-  parsePhoneNumberFromString,
   AsYouType,
+  parsePhoneNumberFromString,
 } from 'libphonenumber-js'
 import KeyboardManager from 'react-native-keyboard-manager'
 

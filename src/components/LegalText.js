@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { ScrollView, Center, Spinner } from 'native-base'
+import { Center, ScrollView, Spinner } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import axios from 'axios'

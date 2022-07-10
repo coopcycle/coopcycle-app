@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import { InteractionManager, View } from 'react-native'
 import { connect } from 'react-redux'
 import {
-  Center, Button,
-  Stack, FormControl, Input,
+  Button, Center,
+  FormControl, Input, Stack,
 } from 'native-base'
 import { withTranslation } from 'react-i18next'
 

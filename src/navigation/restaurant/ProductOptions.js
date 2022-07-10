@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
 import { SectionList, View } from 'react-native'
 import {
-  HStack, Text, Switch, Heading,
+  HStack, Heading, Switch, Text,
 } from 'native-base'
 import _ from 'lodash'
 
 import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 
-import { loadProductOptions, changeProductOptionValueEnabled } from '../../redux/Restaurant/actions'
+import { changeProductOptionValueEnabled, loadProductOptions } from '../../redux/Restaurant/actions'
 import ItemSeparator from '../../components/ItemSeparator'
 
 const SectionHeader = ({ section }) => (

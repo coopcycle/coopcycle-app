@@ -14,16 +14,16 @@ import DatePickerHeader from './components/DatePickerHeader'
 import WebSocketIndicator from './components/WebSocketIndicator'
 
 import {
-  changeStatus, loadOrders, changeDate, deleteOpeningHoursSpecification, loadOrderAndNavigate } from '../../redux/Restaurant/actions'
+  changeDate, changeStatus, deleteOpeningHoursSpecification, loadOrderAndNavigate, loadOrders } from '../../redux/Restaurant/actions'
 import { connect as connectCentrifugo } from '../../redux/middlewares/CentrifugoMiddleware/actions'
 import {
-  selectSpecialOpeningHoursSpecificationForToday,
-  selectNewOrders,
   selectAcceptedOrders,
-  selectPickedOrders,
   selectCancelledOrders,
-  selectFulfilledOrders } from '../../redux/Restaurant/selectors'
-import { selectIsLoading, selectIsCentrifugoConnected } from '../../redux/App/selectors'
+  selectFulfilledOrders,
+  selectNewOrders,
+  selectPickedOrders,
+  selectSpecialOpeningHoursSpecificationForToday } from '../../redux/Restaurant/selectors'
+import { selectIsCentrifugoConnected, selectIsLoading } from '../../redux/App/selectors'
 import PushNotification from '../../notifications'
 
 const RNSound = NativeModules.RNSound

@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react'
 import { withTranslation } from 'react-i18next'
-import { Image, View, StyleSheet } from 'react-native'
+import { Image, StyleSheet, View } from 'react-native'
 import { connect } from 'react-redux'
 import MercadoPagoCheckout from '@blackbox-vision/react-native-mercadopago-px'
-import { checkoutRequest, checkoutFailure, mercadopagoCheckout } from '../../redux/Checkout/actions'
+import { checkoutFailure, checkoutRequest, mercadopagoCheckout } from '../../redux/Checkout/actions'
 
 function Mercadopago({ cart, initCheckout, failedCheckout, checkout, httpClient, restaurant, navigation }) {
 

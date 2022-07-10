@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import {
   Dimensions,
   Image,
-  View,
   StyleSheet,
+  View,
 } from 'react-native'
 import {
   Button, Text,

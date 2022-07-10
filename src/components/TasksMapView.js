@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import {
   Dimensions,
   FlatList,
@@ -7,16 +7,16 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native'
-import {Callout, Marker} from 'react-native-maps'
+import { Callout, Marker } from 'react-native-maps'
 import ClusteredMapView from 'react-native-maps-super-cluster'
 import Modal from 'react-native-modal'
-import {withTranslation} from 'react-i18next'
+import { withTranslation } from 'react-i18next'
 
 import {
   greyColor,
   whiteColor,
 } from '../styles/common'
-import {uniq} from 'lodash'
+import { uniq } from 'lodash'
 import TaskMarker from './TaskMarker'
 import TaskCallout from './TaskCallout'
 

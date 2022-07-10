@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { FlatList, StyleSheet, TouchableOpacity, View, Image, ImageBackground, useColorScheme } from 'react-native'
-import { Text, Icon, HStack, Center } from 'native-base'
+import { FlatList, Image, ImageBackground, StyleSheet, TouchableOpacity, View, useColorScheme } from 'react-native'
+import { Center, HStack, Icon, Text } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import Ionicons from 'react-native-vector-icons/Ionicons'

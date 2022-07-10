@@ -7,17 +7,17 @@ import i18n from '../../i18n'
 import NavigationHolder from '../../NavigationHolder'
 
 import {
+  createTaskListFailure,
   createTaskListRequest,
   createTaskListSuccess,
-  createTaskListFailure,
 
   selectSelectedDate,
 } from '../../coopcycle-frontend-js/logistics/redux'
 
 import {
-  startTaskSuccess,
   markTaskDoneSuccess,
   markTaskFailedSuccess,
+  startTaskSuccess,
 } from '../Courier';
 
 import { isSameDate } from './utils';

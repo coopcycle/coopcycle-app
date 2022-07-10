@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import {
-  Text, Button, Box,
+  Box, Button, Text,
 } from 'native-base'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'

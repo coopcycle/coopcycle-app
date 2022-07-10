@@ -53,7 +53,7 @@ function overrideCity(values) {
     if (value.city.startsWith('Ciudad de México')) {
       return {
         ...value,
-        city: 'Ciudad de México'
+        city: 'Ciudad de México',
       }
     }
 

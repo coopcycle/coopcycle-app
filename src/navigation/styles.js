@@ -1,4 +1,4 @@
-import { primaryColor,  whiteColor, fontTitleName } from '../styles/common'
+import { fontTitleName,  primaryColor, whiteColor } from '../styles/common'
 
 export const stackNavigatorScreenOptions = {
   headerStyle: {

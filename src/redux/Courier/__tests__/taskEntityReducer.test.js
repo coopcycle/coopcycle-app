@@ -2,12 +2,12 @@ import moment from 'moment'
 import { omit } from 'lodash'
 import { tasksEntityReducer } from '../taskEntityReducer'
 import {
-  loadTasksRequest, loadTasksFailure, loadTasksSuccess,
-  markTaskDoneRequest, markTaskDoneFailure, markTaskDoneSuccess,
-  markTaskFailedRequest, markTaskFailedFailure, markTaskFailedSuccess,
+  loadTasksFailure, loadTasksRequest, loadTasksSuccess,
+  markTaskDoneFailure, markTaskDoneRequest, markTaskDoneSuccess,
+  markTaskFailedFailure, markTaskFailedRequest, markTaskFailedSuccess,
 } from '../taskActions'
 import {
-  selectIsTasksLoading, selectIsTasksLoadingFailure, selectIsTaskCompleteFailure,
+  selectIsTaskCompleteFailure, selectIsTasksLoading, selectIsTasksLoadingFailure,
   selectTasks,
 } from '../taskSelectors';
 import { _message } from '../../middlewares/CentrifugoMiddleware/actions'
@@ -145,8 +145,8 @@ describe('Redux | Tasks | Reducers', () => {
         items: {
           [ date ]: [
             { '@id': '/api/tasks/1' },
-            { '@id': '/api/tasks/2' }
-          ]
+            { '@id': '/api/tasks/2' },
+          ],
         },
       }
 
@@ -164,28 +164,28 @@ describe('Redux | Tasks | Reducers', () => {
 
       const oldTasks = [
         { '@id': '/api/tasks/1' },
-        { '@id': '/api/tasks/2' }
+        { '@id': '/api/tasks/2' },
       ]
       const newTasks = [
         { '@id': '/api/tasks/1' },
         { '@id': '/api/tasks/2' },
-        { '@id': '/api/tasks/3' }
+        { '@id': '/api/tasks/3' },
       ]
       const wsMsg = {
         name: 'task_list:updated',
         data: {
           task_list: {
             date,
-            items: newTasks
-          }
-        }
+            items: newTasks,
+          },
+        },
       }
 
       const prevState = {
         ...initialState,
         date,
         items: {
-          [ date ]: oldTasks
+          [ date ]: oldTasks,
         },
       }
 

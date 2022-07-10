@@ -1,16 +1,16 @@
 import React, { Component } from 'react'
-import { View, StyleSheet, InteractionManager, ScrollView } from 'react-native'
-import { Text, VStack, FormControl, Input, TextArea } from 'native-base'
+import { InteractionManager, ScrollView, StyleSheet, View } from 'react-native'
+import { FormControl, Input, Text, TextArea, VStack } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 import { Formik } from 'formik'
 import _ from 'lodash'
 import {
-  parsePhoneNumberFromString,
   AsYouType,
+  parsePhoneNumberFromString,
 } from 'libphonenumber-js'
 
-import { assignCustomer, updateCart, checkout } from '../../redux/Checkout/actions'
+import { assignCustomer, checkout, updateCart } from '../../redux/Checkout/actions'
 import { selectCartFulfillmentMethod } from '../../redux/Checkout/selectors'
 import FooterButton from './components/FooterButton'
 import { isFree } from '../../utils/order'
@@ -60,7 +60,7 @@ class MoreInfos extends Component {
     }
 
     if (this.props.user.isGuest()) {
-      return this.props.assignCustomer({email: values.email, telephone})
+      return this.props.assignCustomer({ email: values.email, telephone })
         .then(() => {
           this._updateCart(payload)
         })
@@ -86,7 +86,7 @@ class MoreInfos extends Component {
     }
 
     if (!this.props.isAuthenticated && this.props.user.isGuest()) {
-      if (validate.single(values.email, {presence: true, email: true})) {
+      if (validate.single(values.email, { presence: true, email: true })) {
         errors.email = this.props.t('INVALID_EMAIL')
       }
     }
@@ -127,11 +127,11 @@ class MoreInfos extends Component {
         validateOnBlur={ false }
         validateOnChange={ false }>
         {({ handleChange, handleBlur, handleSubmit, values, errors, touched, setFieldValue, setFieldTouched }) => (
-          <VStack style={{flex: 1}}>
+          <VStack style={{ flex: 1 }}>
             <View style={{ backgroundColor: '#cce5ff', padding: 20 }}>
               <Text note style={{ textAlign: 'center', color: '#004085' }}>{ this.props.t('CHECKOUT_MORE_INFOS_DISCLAIMER') }</Text>
             </View>
-            <VStack p="2" style={{flexShrink: 1}}>
+            <VStack p="2" style={{ flexShrink: 1 }}>
               <ScrollView>
                 {!this.props.isAuthenticated && this.props.user.isGuest() &&
                 <FormControl mb="2">
@@ -192,7 +192,7 @@ class MoreInfos extends Component {
               </ScrollView>
             </VStack>
             <FooterButton
-              style={{flex: 1}}
+              style={{ flex: 1 }}
               testID="moreInfosSubmit"
               text={ this.props.t('SUBMIT') }
               onPress={ handleSubmit } />

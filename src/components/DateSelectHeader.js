@@ -1,11 +1,11 @@
 import React from 'react'
-import { StyleSheet, View, Text, Animated, TouchableOpacity } from 'react-native'
+import { Animated, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { Icon } from 'native-base'
 import { Calendar } from 'react-native-calendars'
 import moment from 'moment'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 
-import { primaryColor, whiteColor, dateSelectHeaderHeight, calendarHeight, headerFontSize } from '../styles/common'
+import { calendarHeight, dateSelectHeaderHeight, headerFontSize, primaryColor, whiteColor } from '../styles/common'
 
 let styles = StyleSheet.create({
   container: {
@@ -145,7 +145,7 @@ class DateSelectHeader extends React.Component {
     const { selectedDate, buttonsEnabled } = this.props
 
     return (
-      <View style={[styles.container, {height: this.state.height}]}>
+      <View style={[styles.container, { height: this.state.height }]}>
         <View style={ styles.dateHeader }>
           <View style={ [ styles.button, { width: '25%' } ] }>
             { buttonsEnabled && this.renderButton('arrow-back', this.onPastPress, styles.icon) }
@@ -159,11 +159,11 @@ class DateSelectHeader extends React.Component {
             { buttonsEnabled && this.renderButton('arrow-forward', this.onFuturePress, styles.icon) }
           </View>
         </View>
-        <Animated.View style={[styles.calendarWidget, {top: this.state.slideCalendarAnim}]}>
+        <Animated.View style={[styles.calendarWidget, { top: this.state.slideCalendarAnim }]}>
           <Calendar
             current={selectedDate.format('YYYY-MM-DD')}
             // Handler which gets executed on day press. Default = undefined
-            onDayPress={({dateString}) => {this.onDateSelect(moment(dateString))}}
+            onDayPress={({ dateString }) => {this.onDateSelect(moment(dateString))}}
             theme={{
               textSectionTitleColor: primaryColor,
               selectedDayBackgroundColor: primaryColor,

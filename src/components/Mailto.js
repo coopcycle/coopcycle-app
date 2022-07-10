@@ -1,5 +1,5 @@
 import React from 'react'
-import { TouchableOpacity, Linking, Platform } from 'react-native'
+import { Linking, Platform, TouchableOpacity } from 'react-native'
 import { openComposer } from 'react-native-email-link'
 
 function openEmail(email) {

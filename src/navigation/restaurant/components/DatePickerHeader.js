@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Dimensions } from 'react-native'
-import { Icon, Text, HStack, Pressable } from 'native-base'
+import { HStack, Icon, Pressable, Text } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 

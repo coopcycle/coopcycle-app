@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Platform, View } from 'react-native'
 import { connect } from 'react-redux'
-import { Stack, FormControl, Input, Button, Text, Box } from 'native-base'
+import { Box, Button, FormControl, Input, Stack, Text } from 'native-base'
 import { Formik } from 'formik'
 import _ from 'lodash'
 import { withTranslation } from 'react-i18next'
@@ -11,7 +11,7 @@ import { AppleButton, appleAuth } from '@invertase/react-native-apple-authentica
 import { GoogleSignin, GoogleSigninButton } from '@react-native-google-signin/google-signin'
 
 import FacebookButton from './FacebookButton'
-import { loginWithFacebook, signInWithApple, googleSignIn } from '../redux/App/actions'
+import { googleSignIn, loginWithFacebook, signInWithApple } from '../redux/App/actions'
 
 class LoginForm extends Component {
 

@@ -6,7 +6,7 @@ import axios from 'axios'
 
 import NavigationHolder from '../../NavigationHolder'
 import i18n from '../../i18n'
-import { selectSignatures, selectPictures } from './taskSelectors'
+import { selectPictures, selectSignatures } from './taskSelectors'
 import tracker from '../../analytics/Tracker'
 import analyticsEvent from '../../analytics/Event'
 

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { StyleSheet, View } from 'react-native'
 import MapView from 'react-native-maps'
-import { featureCollection, center, point } from '@turf/turf'
+import { center, featureCollection, point } from '@turf/turf'
 import _ from 'lodash'
 
 class NavigationAwareMap extends Component {

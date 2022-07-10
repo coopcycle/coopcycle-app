@@ -4,7 +4,7 @@ import {
 } from 'react-native'
 import { CommonActions } from '@react-navigation/native'
 import {
-  Center, Text, Button, Icon,
+  Button, Center, Icon, Text,
 } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'

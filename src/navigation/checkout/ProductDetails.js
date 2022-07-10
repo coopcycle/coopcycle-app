@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Box, Flex, Divider, Heading, Icon, Text, Pressable, VStack, Image, ScrollView } from 'native-base'
+import { Box, Divider, Flex, Heading, Icon, Image, Pressable, ScrollView, Text, VStack } from 'native-base'
 import { View } from 'react-native'
 import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
@@ -44,8 +44,8 @@ class ProductDetails extends Component {
         this.props.navigation.navigate('CheckoutRestaurant', { restaurant });
     }
 
-    optionsHasChanged({optionsPayload, optionsAreValid}) {
-        this.setState({optionsPayload, optionsAreValid});
+    optionsHasChanged({ optionsPayload, optionsAreValid }) {
+        this.setState({ optionsPayload, optionsAreValid });
     }
 
     _calculateTotalPrice() {
@@ -112,11 +112,11 @@ class ProductDetails extends Component {
                     <Heading size="md">{ this.props.t('CHECKOUT_UNITS') }</Heading>
                     <Flex flexDirection="row" align="center">
                         <Pressable disabled={this.state.quantity <= 1} p="2" onPress={ () => { this._decrementQuantity() } }>
-                            <Icon as={ FontAwesome } style={{opacity: this.state.quantity <= 1 ? 0.5 : 1}} name="minus-circle" size="sm" />
+                            <Icon as={ FontAwesome } style={{ opacity: this.state.quantity <= 1 ? 0.5 : 1 }} name="minus-circle" size="sm" />
                         </Pressable>
                         <Text mx="2" bold>{ this.state.quantity }</Text>
                         <Pressable p="2" onPress={ () => { this._incrementQuantity() } }>
-                            <Icon as={ FontAwesome } style={{opacity: 1}} name="plus-circle" size="sm" />
+                            <Icon as={ FontAwesome } style={{ opacity: 1 }} name="plus-circle" size="sm" />
                         </Pressable>
                     </Flex>
                 </Flex>

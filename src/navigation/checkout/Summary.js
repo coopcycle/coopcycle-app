@@ -9,7 +9,7 @@ import {
   View,
 } from 'react-native'
 import {
-  Icon, Text, Center,
+  Center, Icon, Text,
 } from 'native-base';
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
@@ -19,8 +19,8 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
 import DangerAlert from '../../components/DangerAlert'
 import { formatPrice } from '../../utils/formatting'
-import { incrementItem, decrementItem, removeItem, validate, showAddressModal, hideAddressModal, updateCart } from '../../redux/Checkout/actions'
-import { selectDeliveryTotal, selectShippingTimeRangeLabel, selectCartFulfillmentMethod } from '../../redux/Checkout/selectors'
+import { decrementItem, hideAddressModal, incrementItem, removeItem, showAddressModal, updateCart, validate } from '../../redux/Checkout/actions'
+import { selectCartFulfillmentMethod, selectDeliveryTotal, selectShippingTimeRangeLabel } from '../../redux/Checkout/selectors'
 import { selectIsAuthenticated } from '../../redux/App/selectors'
 import CartFooter from './components/CartFooter'
 import AddressModal from './components/AddressModal'

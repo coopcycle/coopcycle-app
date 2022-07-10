@@ -1,8 +1,8 @@
 import moment from 'moment'
-import { merge, cloneDeep } from 'lodash'
+import { cloneDeep, merge } from 'lodash'
 import {
-  selectFilteredTasks, selectAreDoneTasksHidden, selectAreFailedTasksHidden,
-  selectTags, selectTagNames, selectIsTagHidden,
+  selectAreDoneTasksHidden, selectAreFailedTasksHidden, selectFilteredTasks,
+  selectIsTagHidden, selectTagNames, selectTags,
 } from '../taskSelectors'
 
 

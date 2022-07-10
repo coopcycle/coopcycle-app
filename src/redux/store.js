@@ -1,4 +1,4 @@
-import { createStore, applyMiddleware } from 'redux'
+import { applyMiddleware, createStore } from 'redux'
 import thunk from 'redux-thunk'
 import ReduxAsyncQueue from 'redux-async-queue'
 import { composeWithDevTools } from 'redux-devtools-extension'

@@ -1,13 +1,13 @@
 import React from 'react';
-import {View} from 'react-native';
-import {FormControl, Input, Button, Text, VStack} from 'native-base';
+import { View } from 'react-native';
+import { Button, FormControl, Input, Text, VStack } from 'native-base';
 import material from '../../native-base-theme/variables/material';
-import {withTranslation} from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import validate from 'validate.js';
 import _ from 'lodash';
 
 import i18n from '../i18n';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 
 // Custom validator for matches
 // Checks whether the given value matches another value in the object under validation
@@ -23,7 +23,7 @@ const inputs = [
       secureTextEntry: true,
     },
     constraints: {
-      presence: {message: i18n.t('INVALID_PASSWORD')},
+      presence: { message: i18n.t('INVALID_PASSWORD') },
       // https://github.com/FriendsOfSymfony/FOSUserBundle/blob/ee76c57c6a0966c24f4f9a693790ecd61bf2ddce/Resources/config/validation.xml#L65-L75
       length: {
         minimum: 8,
@@ -39,7 +39,7 @@ const inputs = [
       secureTextEntry: true,
     },
     constraints: {
-      presence: {message: i18n.t('INVALID_PASSWORD_CONFIRMATION')},
+      presence: { message: i18n.t('INVALID_PASSWORD_CONFIRMATION') },
       matches: {
         key: 'password',
         message: i18n.t('INVALID_PASSWORD_CONFIRMATION'),
@@ -50,7 +50,7 @@ const inputs = [
 
 const CONSTRAINTS = _.reduce(
   inputs,
-  (acc, {name, constraints}) => ({...acc, [name]: constraints}),
+  (acc, { name, constraints }) => ({ ...acc, [name]: constraints }),
   {},
 );
 
@@ -69,8 +69,8 @@ class NewPasswordForm extends React.Component {
   }
 
   _onSubmit() {
-    const {errors, ...data} = this.state;
-    const newErrors = validate(data, CONSTRAINTS, {fullMessages: false});
+    const { errors, ...data } = this.state;
+    const newErrors = validate(data, CONSTRAINTS, { fullMessages: false });
 
     if (newErrors) {
       this.setState({
@@ -90,7 +90,7 @@ class NewPasswordForm extends React.Component {
           <Text
             key={key}
             note
-            style={{marginLeft: 15, color: material.inputErrorBorderColor}}>
+            style={{ marginLeft: 15, color: material.inputErrorBorderColor }}>
             {message}
           </Text>
         ))}
@@ -99,14 +99,14 @@ class NewPasswordForm extends React.Component {
   }
 
   render() {
-    const {errors} = this.state;
+    const { errors } = this.state;
 
     return (
       <View>
         <VStack>
           {inputs.map(input => {
             const hasErrors = errors.hasOwnProperty(input.name);
-            const itemProps = hasErrors ? {error: true} : {};
+            const itemProps = hasErrors ? { error: true } : {};
 
             return (
               <View key={input.name}>
@@ -119,8 +119,8 @@ class NewPasswordForm extends React.Component {
                     defaultValue={this.state[input.name]}
                     autoCorrect={false}
                     autoCapitalize="none"
-                    style={{height: 40}}
-                    onChangeText={value => this.setState({[input.name]: value})}
+                    style={{ height: 40 }}
+                    onChangeText={value => this.setState({ [input.name]: value })}
                     {...input.props}
                     returnKeyType="next"
                     onSubmitEditing={event => {
@@ -135,7 +135,7 @@ class NewPasswordForm extends React.Component {
             );
           })}
         </VStack>
-        <View style={{marginTop: 20}}>
+        <View style={{ marginTop: 20 }}>
           <Button block onPress={() => this._onSubmit()}>
             {this.props.t('SUBMIT')}
           </Button>

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import { TouchableOpacity, View, StyleSheet } from 'react-native'
+import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import { Picker } from '@react-native-picker/picker'
-import { Text, HStack, Heading } from 'native-base'
+import { HStack, Heading, Text } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 import _ from 'lodash'
@@ -10,8 +10,8 @@ import moment from 'moment'
 import { setDate, setDateAsap, setFulfillmentMethod } from '../../redux/Checkout/actions'
 import {
   selectCartFulfillmentMethod,
-  selectIsDeliveryEnabled,
-  selectIsCollectionEnabled } from '../../redux/Checkout/selectors'
+  selectIsCollectionEnabled,
+  selectIsDeliveryEnabled } from '../../redux/Checkout/selectors'
 import FooterButton from './components/FooterButton'
 
 const FulfillmentMethodButton = withTranslation()(({ type, enabled, active, onPress, t }) => {

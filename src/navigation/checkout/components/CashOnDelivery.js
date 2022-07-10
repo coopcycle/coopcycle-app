@@ -1,6 +1,6 @@
 import React from 'react'
-import { View, StyleSheet } from 'react-native'
-import { Text, Center, Icon } from 'native-base'
+import { StyleSheet, View } from 'react-native'
+import { Center, Icon, Text } from 'native-base'
 import { useTranslation } from 'react-i18next'
 import Foundation from 'react-native-vector-icons/Foundation'
 

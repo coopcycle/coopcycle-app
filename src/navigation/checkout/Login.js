@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import { StyleSheet, View } from 'react-native'
-import { Button, Text, Center } from 'native-base'
+import { Button, Center, Text } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 
 import AuthenticateForm from '../../components/AuthenticateForm'
-import {guestModeOn, forgotPassword, login, register} from '../../redux/App/actions'
+import { forgotPassword, guestModeOn, login, register } from '../../redux/App/actions'
 import { selectIsAuthenticated } from '../../redux/App/selectors'
 
 class Login extends Component {

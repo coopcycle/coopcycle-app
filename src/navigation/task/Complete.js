@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import { Dimensions, Image, StyleSheet, View, TouchableOpacity, Platform, TouchableWithoutFeedback, Keyboard } from 'react-native'
+import { Dimensions, Image, Keyboard, Platform, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
 import {
-  Icon, Text,
-  Button, FormControl, Input, VStack, HStack, Box, Divider, TextArea, KeyboardAvoidingView, ScrollView,
+  Box, Button,
+  Divider, FormControl, HStack, Icon, Input, KeyboardAvoidingView, ScrollView, Text, TextArea, VStack,
 } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
@@ -13,15 +13,15 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 
 import {
-  selectIsTaskCompleteFailure,
-  selectSignatures,
-  selectPictures,
-  deleteSignatureAt,
   deletePictureAt,
+  deleteSignatureAt,
   markTaskDone,
-  markTaskFailed } from '../../redux/Courier'
+  markTaskFailed,
+  selectIsTaskCompleteFailure,
+  selectPictures,
+  selectSignatures } from '../../redux/Courier'
 import { greenColor, redColor } from '../../styles/common'
-import { doneIconName, failedIconName} from './styles/common'
+import { doneIconName, failedIconName } from './styles/common'
 import ModalContent from '../../components/ModalContent'
 
 const DELETE_ICON_SIZE = 32

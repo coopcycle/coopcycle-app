@@ -47,7 +47,7 @@ CountlyTracker.prototype.logEvent = function(category, action, text, number) {
       eventName = `${category}_${action}`;
     }
 
-    let event = {'eventName': eventName};
+    let event = { 'eventName': eventName };
 
     if (number != null) {
       event.eventCount = number

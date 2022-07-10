@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { InteractionManager, View, FlatList } from 'react-native';
+import { FlatList, InteractionManager, View } from 'react-native';
 import {
   Box, Text,
 } from 'native-base';

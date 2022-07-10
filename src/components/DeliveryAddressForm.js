@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Input, FormControl, VStack } from 'native-base'
+import { FormControl, Input, VStack } from 'native-base'
 import _ from 'lodash'
 import { withTranslation } from 'react-i18next'
 

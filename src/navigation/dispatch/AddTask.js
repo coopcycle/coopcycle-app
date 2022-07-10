@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
-import { StyleSheet, TouchableOpacity, View, Platform } from 'react-native'
+import { Platform, StyleSheet, TouchableOpacity, View } from 'react-native'
 import { connect } from 'react-redux'
 import {
-  Text, Button,
+  Box, Button,
   FormControl,
-  Icon, Box, VStack, TextArea, HStack,
+  HStack, Icon, Text, TextArea, VStack,
 } from 'native-base'
 import DateTimePicker from 'react-native-modal-datetime-picker'
 import { withTranslation } from 'react-i18next'

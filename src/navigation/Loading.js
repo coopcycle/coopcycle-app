@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {ActivityIndicator, InteractionManager, StyleSheet, TouchableOpacity, View} from 'react-native'
+import { ActivityIndicator, InteractionManager, StyleSheet, TouchableOpacity, View } from 'react-native'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 import { Button, Icon, Text } from 'native-base'
@@ -7,7 +7,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 
 import Server from '../Server'
 import AppUser from '../AppUser'
-import {bootstrap, closeModal, resetModal, resetServer, setServers} from '../redux/App/actions'
+import { bootstrap, closeModal, resetModal, resetServer, setServers } from '../redux/App/actions'
 
 import HomeNavigator from './navigators/HomeNavigator'
 import DrawerNavigator from './navigators/DrawerNavigator'
@@ -87,7 +87,7 @@ class Loading extends Component {
 
     return <>{this.bodyRender()}
       <Modal isVisible={this.props.modal.show} onSwipeComplete={close} swipeDirection={swipeDirection} onBackdropPress={close}>
-        <View style={{...styles.content, ...styles[`${this.props.modal.type}Modal`]}}>
+        <View style={{ ...styles.content, ...styles[`${this.props.modal.type}Modal`] }}>
           <Text style={styles[`${this.props.modal.type}Modal`]}>{this.props.modal.content}</Text>
         </View>
       </Modal>

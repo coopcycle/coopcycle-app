@@ -1,5 +1,5 @@
-import {Animated, ImageBackground, StyleSheet, View} from 'react-native';
-import {Text} from 'native-base';
+import { Animated, ImageBackground, StyleSheet, View } from 'react-native';
+import { Text } from 'native-base';
 import React from 'react';
 const styles = StyleSheet.create({
   overlay: {

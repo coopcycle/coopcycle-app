@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { SectionList, TouchableOpacity, View, StyleSheet, useColorScheme } from 'react-native'
-import { Flex, Badge, Icon, Text, Heading, Box, VStack } from 'native-base'
+import { SectionList, StyleSheet, TouchableOpacity, View, useColorScheme } from 'react-native'
+import { Badge, Box, Flex, Heading, Icon, Text, VStack } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { TouchableOpacity, StyleSheet } from 'react-native'
-import { Text, Icon } from 'native-base'
+import { StyleSheet, TouchableOpacity } from 'react-native'
+import { Icon, Text } from 'native-base'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'

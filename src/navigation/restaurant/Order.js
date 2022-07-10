@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import {
-  Icon, Text,
   Box, HStack,
+  Icon, Text,
 } from 'native-base';
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
@@ -13,7 +13,7 @@ import SwipeToAcceptOrRefuse from './components/SwipeToAcceptOrRefuse'
 import OrderHeading from './components/OrderHeading'
 import OrderAcceptedFooter from './components/OrderAcceptedFooter'
 
-import { acceptOrder, printOrder, fulfillOrder } from '../../redux/Restaurant/actions'
+import { acceptOrder, fulfillOrder, printOrder } from '../../redux/Restaurant/actions'
 import { isMultiVendor } from '../../utils/order'
 
 const OrderNotes = ({ order }) => {

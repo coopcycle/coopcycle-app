@@ -1,8 +1,8 @@
-import React, {Component} from 'react'
-import {StyleSheet, View} from 'react-native'
-import {connect} from 'react-redux'
-import {withTranslation} from 'react-i18next'
-import {resetPassword} from '../../redux/App/actions'
+import React, { Component } from 'react'
+import { StyleSheet, View } from 'react-native'
+import { connect } from 'react-redux'
+import { withTranslation } from 'react-i18next'
+import { resetPassword } from '../../redux/App/actions'
 import ForgotPasswordForm from '../../components/ForgotPasswordForm'
 
 class ForgotPassword extends Component {

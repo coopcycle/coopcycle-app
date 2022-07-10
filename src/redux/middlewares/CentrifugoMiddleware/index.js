@@ -6,15 +6,15 @@ import {
   CONNECTED,
   DISCONNECTED,
   MESSAGE,
-  message,
   connected,
   disconnected,
+  message,
 } from './actions'
 
 import {
-  selectIsAuthenticated,
   selectHttpClient,
   selectHttpClientHasCredentials,
+  selectIsAuthenticated,
   selectUser,
 } from '../../App/selectors'
 

@@ -24,7 +24,7 @@ describe('HTTP client', () => {
     })
 
     mock.onGet('/api/orders').reply(function (config) {
-      if (config.headers['Authorization'] === `Bearer ${validToken}`) {
+      if (config.headers.Authorization === `Bearer ${validToken}`) {
         return [ 200, {} ]
       }
 
@@ -37,7 +37,7 @@ describe('HTTP client', () => {
       onTokenRefreshed: (token, refreshToken) => {
         expect(token).toEqual(validToken)
         expect(refreshToken).toEqual('123456')
-      }
+      },
     })
 
     return client.get('/api/orders')
@@ -49,7 +49,7 @@ describe('HTTP client', () => {
     mock.onPost('http://demo.coopcycle.org/api/token/refresh').reply(401, {})
 
     mock.onGet('/api/orders').reply(function (config) {
-      if (config.headers['Authorization'] === `Bearer ${validToken}`) {
+      if (config.headers.Authorization === `Bearer ${validToken}`) {
         return [ 200, {} ]
       }
 
@@ -58,7 +58,7 @@ describe('HTTP client', () => {
 
     const client = createClient('http://demo.coopcycle.org', {
       token: expiredToken,
-      refreshToken: '123456'
+      refreshToken: '123456',
     })
 
     return new Promise(resolve => {
@@ -80,7 +80,7 @@ describe('HTTP client', () => {
     mock.onPost('http://demo.coopcycle.org/api/token/refresh').reply(401, {})
 
     mock.onGet('/api/orders').reply(function (config) {
-      if (config.headers['Authorization'] === `Bearer ${validToken}`) {
+      if (config.headers.Authorization === `Bearer ${validToken}`) {
         return [ 200, {} ]
       }
 
@@ -98,14 +98,14 @@ describe('HTTP client', () => {
 
     const client = createClient('http://demo.coopcycle.org', {
       token: expiredToken,
-      refreshToken: '123456'
+      refreshToken: '123456',
     })
 
     return new Promise((resolve, reject) => {
 
       allSettled([
         client.get('/api/orders'),
-        client.get('/api/restaurants')
+        client.get('/api/restaurants'),
       ])
         .then(function (results) {
 
@@ -139,7 +139,7 @@ describe('HTTP client', () => {
 
     const client = createClient('http://demo.coopcycle.org', {
       token: expiredToken,
-      refreshToken: '123456'
+      refreshToken: '123456',
     })
 
     return new Promise((resolve, reject) => {

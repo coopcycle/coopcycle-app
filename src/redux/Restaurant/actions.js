@@ -14,9 +14,9 @@ import SunmiPrinter from '@heasy/react-native-sunmi-printer'
 import i18n from '../../i18n'
 
 import {
+  LOAD_MY_RESTAURANTS_FAILURE,
   LOAD_MY_RESTAURANTS_REQUEST,
   LOAD_MY_RESTAURANTS_SUCCESS,
-  LOAD_MY_RESTAURANTS_FAILURE,
 } from '../App/actions'
 
 /*

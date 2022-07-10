@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { Animated, ActivityIndicator, SectionList, StyleSheet, TouchableOpacity, View } from 'react-native'
-import {Box, Flex, Image, Text, Column, Row, Heading, Icon} from 'native-base';
+import { ActivityIndicator, Animated, SectionList, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { Box, Column, Flex, Heading, Icon, Image, Row, Text } from 'native-base';
 import _ from 'lodash'
 import { AllergenList, RestrictedDietList } from './MenuBadges'
 
@@ -55,9 +55,9 @@ class Menu extends Component {
     const enabled = item.hasOwnProperty('enabled') ? item.enabled : true
 
     let itemProps = {}
-    let itemNameStyle = [ {fontSize: 16} ]
+    let itemNameStyle = [ { fontSize: 16 } ]
     let itemDescriptionStyle = [ styles.descriptionText ]
-    let itemPriceStyle = [ {paddingTop: 3} ]
+    let itemPriceStyle = [ { paddingTop: 3 } ]
 
     if (enabled) {
       itemProps = {

@@ -4,11 +4,11 @@ import {
   View,
 } from 'react-native'
 import {
-  Text,
-  Icon,
-  VStack,
   Center,
   HStack,
+  Icon,
+  Text,
+  VStack,
 } from 'native-base'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
