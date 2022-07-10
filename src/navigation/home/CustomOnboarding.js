@@ -1,9 +1,9 @@
-import React, {Component} from 'react';
-import {Button, Text} from 'native-base';
-import {connect} from 'react-redux';
-import {withTranslation} from 'react-i18next';
-import {Dimensions, Image, ScrollView, StyleSheet, View} from 'react-native';
-import {onboarded} from '../../redux/App/actions';
+import React, { Component } from 'react';
+import { Button, Text } from 'native-base';
+import { connect } from 'react-redux';
+import { withTranslation } from 'react-i18next';
+import { Dimensions, Image, ScrollView, StyleSheet, View } from 'react-native';
+import { onboarded } from '../../redux/App/actions';
 
 class CustomOnboarding extends Component {
   render() {
@@ -14,7 +14,7 @@ class CustomOnboarding extends Component {
         <Image
           style={{ width: width, height: (width / 2.25) }}
           source={require('../../assets/images/home-bg.png')} />
-        <ScrollView contentContainerStyle={{marginHorizontal: '10%'}}>
+        <ScrollView contentContainerStyle={{ marginHorizontal: '10%' }}>
             <Text style={ styles.disclaimerText }>{`Hello :D
 Bienvenue sur l’application Naofood !
 

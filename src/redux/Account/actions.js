@@ -4,7 +4,7 @@ import parseUrl from 'url-parse'
 import _ from 'lodash'
 
 import { setLoading } from '../App/actions'
-import {selectIsAuthenticated} from '../App/selectors';
+import { selectIsAuthenticated } from '../App/selectors';
 
 /*
  * Action Types
@@ -97,10 +97,10 @@ export function newAddress(address) {
 
     if (selectIsAuthenticated(getState())) {
       httpClient.post('/api/me/addresses', address).then(res => {
-        dispatch(loadAddressesSuccess([res, ...getState().account.addresses]))
+        dispatch(loadAddressesSuccess([ res, ...getState().account.addresses ]))
       }).catch(console.log)
     } else {
-      dispatch(loadAddressesSuccess([address, ...getState().account.addresses]))
+      dispatch(loadAddressesSuccess([ address, ...getState().account.addresses ]))
     }
 
   }

@@ -9,7 +9,7 @@ import {
   View,
 } from 'react-native'
 import {
-  Icon, Text, Center,
+  Center, Icon, Text,
 } from 'native-base';
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
@@ -20,14 +20,14 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import DangerAlert from '../../components/DangerAlert'
 import { formatPrice } from '../../utils/formatting'
 import {
-  incrementItem,
   decrementItem,
-  removeItem,
-  validate,
-  showAddressModal,
   hideAddressModal,
-  updateCart,
+  incrementItem,
+  removeItem,
   setAddress,
+  showAddressModal,
+  updateCart,
+  validate,
 } from '../../redux/Checkout/actions'
 import { selectDeliveryTotal } from '../../redux/Checkout/selectors'
 import { selectIsAuthenticated } from '../../redux/App/selectors'
@@ -35,8 +35,8 @@ import CartFooter from './components/CartFooter'
 import AddressModal from './components/AddressModal'
 import ExpiredSessionModal from './components/ExpiredSessionModal'
 import CouponModal from './components/CouponModal'
-import {selectCartFulfillmentMethod, selectShippingTimeRangeLabel} from '../../utils/checkout';
-import {darkGreyColor, greyColor, lightGreyColor, primaryColor} from '../../styles/common';
+import { selectCartFulfillmentMethod, selectShippingTimeRangeLabel } from '../../utils/checkout';
+import { darkGreyColor, greyColor, lightGreyColor, primaryColor } from '../../styles/common';
 
 const BottomLine = ({ label, value }) => (
   <View style={ styles.line }>
@@ -56,11 +56,9 @@ const CollectionDisclaimerModal = withTranslation()(({ isVisible, onSwipeComplet
     <Modal
       isVisible={ isVisible }
       onSwipeComplete={ onSwipeComplete }
-      swipeDirection={ ['up', 'down'] }>
+      swipeDirection={ [ 'up', 'down' ] }>
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', padding: 20 }}>
-        <View style={{ backgroundColor: '#ffffff', paddingHorizontal: 20, paddingVertical: 30 }}>
-
-        </View>
+        <View style={{ backgroundColor: '#ffffff', paddingHorizontal: 20, paddingVertical: 30 }} />
       </View>
     </Modal>
   )
@@ -137,11 +135,11 @@ class Summary extends Component {
     const adjustmentsWithoutTax = _.pickBy(item.adjustments, (value, key) => key !== 'tax')
 
     return (
-      <View style={{paddingLeft: 5}}>
+      <View style={{ paddingLeft: 5 }}>
       { _.map(adjustmentsWithoutTax, (adjustments, type) => {
         return _.map(adjustments, (adj, i) => {
 
-          const label = [ adj.label ]
+          const label = [adj.label]
           if (adj.amount > 0) {
             label.push(formatPrice(adj.amount))
           }
@@ -283,7 +281,7 @@ class Summary extends Component {
         </View>
         <View style={{ flex: 0 }}>
           { this.props.fulfillmentMethod === 'collection' && (
-          <TouchableOpacity style={ [ styles.btn ]  }
+          <TouchableOpacity style={ [styles.btn]  }
             // Disable interaction while loading
             onPress={ () => !this.props.isLoading && this.setState({ isCollectionDisclaimerModalVisible: true }) }>
             <Icon as={FontAwesome} name="info-circle" style={{ fontSize: 22, marginRight: 15, color: '#3498db' }} />
@@ -292,14 +290,14 @@ class Summary extends Component {
           </TouchableOpacity>
           )}
           <ActionButton
-            onPress={ () => this._navigate('CheckoutShippingDate', {cart, restaurant}) }
+            onPress={ () => this._navigate('CheckoutShippingDate', { cart, restaurant }) }
             iconName="clock-o">
             <Text style={{ flex: 2, fontSize: 14 }}>{ this.props.timeAsText }</Text>
             <Text note style={{ flex: 1, textAlign: 'right' }}>{ this.props.t('EDIT') }</Text>
           </ActionButton>
           { (this.props.fulfillmentMethod === 'delivery' && this.props.cart.shippingAddress) && (
           <ActionButton
-            onPress={ () => this.props.navigation.navigate('AccountAddresses', {action: 'cart', cart}) }
+            onPress={ () => this.props.navigation.navigate('AccountAddresses', { action: 'cart', cart }) }
             iconName="map-marker">
             <Text numberOfLines={ 2 } ellipsizeMode="tail" style={{ flex: 2, fontSize: 14 }}>
               { this.props.cart.shippingAddress.streetAddress }

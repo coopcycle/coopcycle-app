@@ -1,4 +1,4 @@
-import {LOAD_RESTAURANTS_SUCCESS} from './actions';
+import { LOAD_RESTAURANTS_SUCCESS } from './actions';
 import SearchEngine from '../../utils/searchEngine';
 import jwtDecode from 'jwt-decode';
 import _ from 'lodash';

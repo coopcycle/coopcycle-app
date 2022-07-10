@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { FlatList, StyleSheet, TouchableOpacity, View, Image, ImageBackground, useColorScheme } from 'react-native'
-import {Text, Icon, HStack, Center, Skeleton} from 'native-base'
+import { FlatList, Image, ImageBackground, StyleSheet, TouchableOpacity, View, useColorScheme } from 'react-native'
+import { Center, HStack, Icon, Skeleton, Text } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import Ionicons from 'react-native-vector-icons/Ionicons'
@@ -61,7 +61,7 @@ const TimingBadge = ({ restaurant }) => {
   const colorScheme = useColorScheme()
 
   return (
-    <HStack style={ [ styles.badge ] } bg={ colorScheme === 'dark' ? 'gray.800' : 'gray.200' } px="2">
+    <HStack style={ [styles.badge] } bg={ colorScheme === 'dark' ? 'gray.800' : 'gray.200' } px="2">
       <Icon as={ FontAwesome } name="clock-o" size="xs" mr="1"  />
       <Text style={ styles.badgeText }>{ getNextShippingTimeAsText(restaurant) }</Text>
     </HStack>
@@ -98,7 +98,7 @@ class RestaurantList extends Component {
             { !showPreOrder && <Image style={{ flex: 1, height: undefined, width: undefined }} resizeMode="cover" source={{ uri: restaurant.image }} />}
           </View>
           <View style={{ flex: 1, width: '66.6666%', padding: 15, paddingBottom: 25 }}>
-            <OneLineText style={ [ styles.restaurantNameText ] }>{ restaurant.name }</OneLineText>
+            <OneLineText style={ [styles.restaurantNameText] }>{ restaurant.name }</OneLineText>
             <OneLineText note numberOfLines={ 2 }>{ getRestaurantCaption(restaurant) }</OneLineText>
             <TimingBadge restaurant={ restaurant } />
           </View>

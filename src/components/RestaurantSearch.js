@@ -1,15 +1,15 @@
 import React, { Component } from 'react'
-import { Platform, StyleSheet, View, TouchableOpacity } from 'react-native'
-import {Center, ChevronDownIcon, Heading, Icon, Text} from 'native-base'
+import { Platform, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { Center, ChevronDownIcon, Heading, Icon, Text } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 
 import AddressAutocomplete from './AddressAutocomplete'
 import AddressUtils from '../utils/Address'
-import {primaryColor, whiteColor} from '../styles/common';
-import {TouchableNativeFeedback} from 'react-native-gesture-handler';
-import {useNavigation} from '@react-navigation/native';
+import { primaryColor, whiteColor } from '../styles/common';
+import { TouchableNativeFeedback } from 'react-native-gesture-handler';
+import { useNavigation } from '@react-navigation/native';
 
 const textInputContainerHeight = 54
 
@@ -71,9 +71,9 @@ function RestaurantSearch(props) {
     //this.props.onSelect
 
     return (
-      <View style={ [ styles.container, { width: props.width } ] }>
+      <View style={ [ styles.container, { width: props.width }] }>
           <TouchableNativeFeedback onPress={() => {
-            navigation.navigate('AccountAddresses', {action: 'search'})
+            navigation.navigate('AccountAddresses', { action: 'search' })
           }}>
             <Center>
 

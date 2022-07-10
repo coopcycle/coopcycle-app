@@ -1,26 +1,26 @@
 import React, { Component } from 'react'
 import {
-  View,
   StyleSheet,
   TouchableOpacity,
+  View,
 } from 'react-native'
-import {Text, Icon, HStack, Pressable, Center, Box} from 'native-base'
+import { Box, Center, HStack, Icon, Pressable, Text } from 'native-base'
 import _ from 'lodash'
 import { connect } from 'react-redux'
-import { withTranslation, useTranslation } from 'react-i18next'
+import { useTranslation, withTranslation } from 'react-i18next'
 import {
   DrawerContentScrollView,
   DrawerItem,
 } from '@react-navigation/drawer'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import VersionNumber from 'react-native-version-number'
-import { PhoneNumberUtil, PhoneNumberFormat } from 'google-libphonenumber'
+import { PhoneNumberFormat, PhoneNumberUtil } from 'google-libphonenumber'
 import { phonecall } from 'react-native-communications'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 
 import Mailto from '../../components/Mailto'
 import { selectIsAuthenticated, selectShowRestaurantsDrawerItem } from '../../redux/App/selectors'
-import {NativeBaseProvider} from 'native-base/src/core/NativeBaseProvider';
+import { NativeBaseProvider } from 'native-base/src/core/NativeBaseProvider';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
@@ -219,9 +219,9 @@ function mapStateToProps(state) {
     isAuthenticated: selectIsAuthenticated(state),
     restaurants: state.restaurant.myRestaurants,
     stores: state.store.myStores,
-    brandName: state.app.settings['brand_name'],
-    phoneNumber: state.app.settings['phone_number'],
-    email: state.app.settings['administrator_email'],
+    brandName: state.app.settings.brand_name,
+    phoneNumber: state.app.settings.phone_number,
+    email: state.app.settings.administrator_email,
     showAbout,
     showRestaurantsDrawerItem: selectShowRestaurantsDrawerItem(state),
   }

@@ -1,5 +1,5 @@
-import {Animated, ImageBackground, StyleSheet, View} from 'react-native';
-import {HStack, Icon, IconButton, Text} from 'native-base';
+import { Animated, ImageBackground, StyleSheet, View } from 'react-native';
+import { HStack, Icon, IconButton, Text } from 'native-base';
 import React from 'react';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import FontAwesome5Pro from 'react-native-vector-icons/FontAwesome5Pro';
@@ -29,7 +29,7 @@ export default (props) => {
         <View style={{ height: 60, justifyContent: 'center' }}>
           <Text style={ styles.restaurantName } numberOfLines={ 1 }>{ props.text }</Text>
         </View>
-        {props.onInfo && <IconButton onPress={props.onInfo} _icon={{as: FontAwesome5, name: 'info-circle', size: 'xs', color:'white'}} />}
+        {props.onInfo && <IconButton onPress={props.onInfo} _icon={{ as: FontAwesome5, name: 'info-circle', size: 'xs', color:'white' }} />}
       </HStack>
     </ImageBackground>
   </Animated.View>

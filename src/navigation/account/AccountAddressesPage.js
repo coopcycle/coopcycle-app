@@ -1,13 +1,13 @@
-import React, {Component} from 'react';
-import {FlatList, Image, InteractionManager, TouchableOpacity, View} from 'react-native';
-import {Box, Button, Divider, Heading, HStack, IconButton, Text, VStack} from 'native-base';
-import {connect} from 'react-redux'
-import {withTranslation} from 'react-i18next'
-import {loadAddresses, newAddress} from '../../redux/Account/actions'
+import React, { Component } from 'react';
+import { FlatList, Image, InteractionManager, TouchableOpacity, View } from 'react-native';
+import { Box, Button, Divider, HStack, Heading, IconButton, Text, VStack } from 'native-base';
+import { connect } from 'react-redux'
+import { withTranslation } from 'react-i18next'
+import { loadAddresses, newAddress } from '../../redux/Account/actions'
 import ItemSeparator from '../../components/ItemSeparator'
 import AddressAutocomplete from '../../components/AddressAutocomplete';
-import {blueColor, darkGreyColor, greyColor, lightGreyColor, primaryColor} from '../../styles/common';
-import {searchRestaurantsForAddress, setAddress} from '../../redux/Checkout/actions';
+import { blueColor, darkGreyColor, greyColor, lightGreyColor, primaryColor } from '../../styles/common';
+import { searchRestaurantsForAddress, setAddress } from '../../redux/Checkout/actions';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import address from '../../utils/Address';
 import i18n from '../../i18n';
@@ -32,7 +32,7 @@ class AccountAddressesPage extends Component {
         this.props.setAddress(item)
         //TODO: Need to be more robust that a simple goBack()
         this.props.navigation.goBack()
-      }}><HStack px="2" py="3" space={2} style={{backgroundColor: color}} justifyContent="space-between">
+      }}><HStack px="2" py="3" space={2} style={{ backgroundColor: color }} justifyContent="space-between">
         <Text>{ item.streetAddress }</Text><Text>{ item.name }</Text>
       </HStack></TouchableOpacity>
     );
@@ -60,11 +60,11 @@ class AccountAddressesPage extends Component {
         country={ this.props.country }
         placeholder={ i18n.t('ENTER_NEW_ADDRESS') }
         location={ this.props.location }
-        onChangeText={ (text) => this.setState({focused: text.length >= 3}) }
+        onChangeText={ (text) => this.setState({ focused: text.length >= 3 }) }
         onSelectAddress={ (address) => {
-          this.props.navigation.navigate('AddressDetails', {address})
+          this.props.navigation.navigate('AddressDetails', { address })
         }}
-        onBlur={ () => this.setState({focused: false}) }
+        onBlur={ () => this.setState({ focused: false }) }
       />
         {!this.state.focused && <View style={{ flex: 4 }}>
           <Divider/>
@@ -74,9 +74,9 @@ class AccountAddressesPage extends Component {
           data={ addresses }
           refreshing={this.state.refreshing}
           onRefresh={async () => {
-            this.setState({refreshing: true})
+            this.setState({ refreshing: true })
             await this.props.loadAddresses()
-            this.setState({refreshing: false})
+            this.setState({ refreshing: false })
           }}
           ItemSeparatorComponent={ ItemSeparator }
           ListEmptyComponent={ <View style={{
@@ -121,7 +121,7 @@ function mapStateToProps(state, ownProps) {
 function mapDispatchToProps(dispatch, ownProps) {
 
   const fnSelect = (address) => {
-    const addressPrecise = {...address, isPrecise: true}
+    const addressPrecise = { ...address, isPrecise: true }
     switch (ownProps.route.params?.action) {
       case 'search':
         return dispatch(searchRestaurantsForAddress(addressPrecise))

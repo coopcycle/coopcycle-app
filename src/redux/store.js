@@ -1,10 +1,10 @@
-import {applyMiddleware, createStore} from 'redux'
+import { applyMiddleware, createStore } from 'redux'
 import thunk from 'redux-thunk'
 import ReduxAsyncQueue from 'redux-async-queue'
-import {composeWithDevTools} from 'redux-devtools-extension'
-import {createLogger} from 'redux-logger'
+import { composeWithDevTools } from 'redux-devtools-extension'
+import { createLogger } from 'redux-logger'
 
-import {persistStore} from 'redux-persist'
+import { persistStore } from 'redux-persist'
 
 import reducers from './reducers'
 import GeolocationMiddleware from './middlewares/GeolocationMiddleware'
@@ -13,10 +13,10 @@ import HttpMiddleware from './middlewares/HttpMiddleware'
 import NetInfoMiddleware from './middlewares/NetInfoMiddleware'
 import PushNotificationMiddleware from './middlewares/PushNotificationMiddleware'
 import SentryMiddleware from './middlewares/SentryMiddleware'
-import {ringOnNewOrderCreated} from './Restaurant/middlewares'
-import {ringOnTaskListUpdated} from './Courier/taskMiddlewares'
+import { ringOnNewOrderCreated } from './Restaurant/middlewares'
+import { ringOnTaskListUpdated } from './Courier/taskMiddlewares'
 import CentrifugoMiddleware from './middlewares/CentrifugoMiddleware'
-import {filterExpiredCarts, restaurantsSearchIndex} from './Checkout/middlewares';
+import { filterExpiredCarts, restaurantsSearchIndex } from './Checkout/middlewares';
 import Config from 'react-native-config';
 
 const middlewares = [

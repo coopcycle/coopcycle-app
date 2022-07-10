@@ -1,14 +1,14 @@
-import {Dimensions, TouchableOpacity, View} from 'react-native';
-import {Box, ChevronRightIcon, HStack, Image, Text, VStack} from 'native-base';
-import {getNextShippingTimeAsText} from '../../../utils/checkout';
-import {greyColor} from '../../../styles/common';
+import { Dimensions, TouchableOpacity, View } from 'react-native';
+import { Box, ChevronRightIcon, HStack, Image, Text, VStack } from 'native-base';
+import { getNextShippingTimeAsText } from '../../../utils/checkout';
+import { greyColor } from '../../../styles/common';
 import React from 'react';
-import {withTranslation} from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 
 const { width } = Dimensions.get('window')
 
 const RestaurantSmallCard = (props) => {
-  const {restaurant, onPress, shippingTime} = props
+  const { restaurant, onPress, shippingTime } = props
   const AltText = () => {
     let text;
     if (restaurant.facets.cuisine.length > 0) {
@@ -24,13 +24,13 @@ const RestaurantSmallCard = (props) => {
   return (
     <><TouchableOpacity onPress={() => onPress(restaurant) }>
       <HStack space={4} padding={2}>
-        <Image size={shippingTime ? "sm": "xs"} source={{uri: restaurant.image}} alt={restaurant.name} />
+        <Image size={shippingTime ? 'sm' : 'xs'} source={{ uri: restaurant.image }} alt={restaurant.name} />
         <VStack>
           <Text bold>{restaurant.name}</Text>
           <AltText/>
           {shippingTime && <Text>{getNextShippingTimeAsText(restaurant)}</Text>}
         </VStack>
-        <View style={{flexGrow: 1, justifyContent:'center', alignItems: 'flex-end'}}>
+        <View style={{ flexGrow: 1, justifyContent:'center', alignItems: 'flex-end' }}>
           <ChevronRightIcon />
         </View>
       </HStack>

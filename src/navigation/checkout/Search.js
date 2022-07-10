@@ -1,9 +1,9 @@
-import React, {Component} from 'react';
-import {Dimensions, InteractionManager, View} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context'
-import {Text} from 'native-base';
-import {connect} from 'react-redux'
-import {withTranslation} from 'react-i18next'
+import React, { Component } from 'react';
+import { Dimensions, InteractionManager, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context'
+import { Text } from 'native-base';
+import { connect } from 'react-redux'
+import { withTranslation } from 'react-i18next'
 
 import RestaurantSearch from '../../components/RestaurantSearch'
 import RestaurantList from '../../components/RestaurantList'
@@ -14,10 +14,10 @@ import {
   searchRestaurantsForAddress,
   setRestaurant,
 } from '../../redux/Checkout/actions'
-import {selectServer} from '../../redux/App/actions'
-import {selectRestaurants} from '../../redux/Checkout/selectors'
-import {selectServersInSameCity} from '../../redux/App/selectors'
-import {SceneMap, TabBar, TabView} from 'react-native-tab-view'
+import { selectServer } from '../../redux/App/actions'
+import { selectRestaurants } from '../../redux/Checkout/selectors'
+import { selectServersInSameCity } from '../../redux/App/selectors'
+import { SceneMap, TabBar, TabView } from 'react-native-tab-view'
 import MultipleServersInSameCityModal from './components/MultipleServersInSameCityModal';
 import Address from '../../utils/Address'
 
@@ -46,7 +46,7 @@ class RestaurantsPage extends Component {
     if (firstServer && firstServer.coopcycle_url !== this.props.baseURL) {
       // the servers are randomly ordered to avoid same server as the first option
       // so we select the new first server if it is different to the selected in a previous usage of the app
-      return this._renderRestaurantsForTab({index: 0, url: firstServer.coopcycle_url})
+      return this._renderRestaurantsForTab({ index: 0, url: firstServer.coopcycle_url })
     }
     if (address) {
       this.props.searchRestaurantsForAddress(address, { baseURL: this.state.baseURL })
@@ -107,13 +107,13 @@ class RestaurantsPage extends Component {
   _loadTabsRoutesAndScenes() {
     const serversMapped = this._mapServersForTabs()
 
-    const routes = serversMapped.map(({key, title}) => {
-      return {key, title}
+    const routes = serversMapped.map(({ key, title }) => {
+      return { key, title }
     })
 
     let scenes = {}
 
-    serversMapped.forEach(({key, list}) => {
+    serversMapped.forEach(({ key, list }) => {
       scenes = {
         [key]: list,
         ...scenes,
@@ -141,7 +141,7 @@ class RestaurantsPage extends Component {
     )
   }
 
-  _renderRestaurantsForTab({index, url}) {
+  _renderRestaurantsForTab({ index, url }) {
     this.props.loadRestaurantsSuccess([])
     this.setState({
       baseURL: url,
@@ -159,14 +159,14 @@ class RestaurantsPage extends Component {
           renderTabBar={this._renderServersTabs}
           navigationState={{ index: this.state.index, routes }}
           renderScene={sceneMap}
-          onIndexChange={(index) => this._renderRestaurantsForTab({index, url: routes[index].key})}
+          onIndexChange={(index) => this._renderRestaurantsForTab({ index, url: routes[index].key })}
           initialLayout={{ width: this.state.width }}
           lazy
         />
       )
     } else {
       return (
-        <SafeAreaView edges={ [ 'right', 'bottom', 'left' ] } style={{flexGrow: 1}}>
+        <SafeAreaView edges={ [ 'right', 'bottom', 'left' ] } style={{ flexGrow: 1 }}>
           <RestaurantList
             restaurants={ restaurants }
             addressAsText={addressAsText}
@@ -183,7 +183,7 @@ class RestaurantsPage extends Component {
 
   render() {
 
-    const {navigate} = this.props.navigation
+    const { navigate } = this.props.navigation
     return <>
 
     <View style={{ flex: 1, paddingTop: 54 }} testID="checkoutSearch"

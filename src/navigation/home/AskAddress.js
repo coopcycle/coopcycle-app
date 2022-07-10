@@ -1,24 +1,24 @@
-import {darkGreyColor, lightGreyColor, primaryColor, whiteColor} from '../../styles/common';
-import {Box, Heading, Text} from 'native-base';
+import { darkGreyColor, lightGreyColor, primaryColor, whiteColor } from '../../styles/common';
+import { Box, Heading, Text } from 'native-base';
 import AddressAutocomplete from '../../components/AddressAutocomplete';
-import {Appearance, View} from 'react-native';
+import { Appearance, View } from 'react-native';
 import React from 'react';
-import {searchRestaurantsForAddress} from '../../redux/Checkout/actions';
-import {newAddress} from '../../redux/Account/actions';
-import {connect} from 'react-redux';
-import {withTranslation} from 'react-i18next';
+import { searchRestaurantsForAddress } from '../../redux/Checkout/actions';
+import { newAddress } from '../../redux/Account/actions';
+import { connect } from 'react-redux';
+import { withTranslation } from 'react-i18next';
 
 const textInputContainerHeight = 54
 
 const AskAddress = (props) => {
 
   const colorScheme = Appearance.getColorScheme()
-  return <View style={{backgroundColor: primaryColor, flex: 1, padding: 20}}>
-    <Box style={{flex: 1, justifyContent: 'flex-end', marginBottom: 20 }}>
+  return <View style={{ backgroundColor: primaryColor, flex: 1, padding: 20 }}>
+    <Box style={{ flex: 1, justifyContent: 'flex-end', marginBottom: 20 }}>
       <Heading color={whiteColor}>{ props.t('WHERE_ARE_YOU') }</Heading>
       <Text color={lightGreyColor}>{ props.t('ASK_ADDRESS_DISCLAIMER') }</Text>
     </Box>
-    <Box style={{flex:2}}>
+    <Box style={{ flex:2 }}>
       <AddressAutocomplete
         inputContainerStyle={{
           justifyContent: 'center',

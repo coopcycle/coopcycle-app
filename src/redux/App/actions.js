@@ -11,8 +11,8 @@ import NavigationHolder from '../../NavigationHolder'
 import i18n from '../../i18n'
 import { setCurrencyCode } from '../../utils/formatting'
 import { selectInitialRouteName } from './selectors'
-import {assignAllCarts, updateCarts} from '../Checkout/actions';
-import {loadAddresses} from '../Account/actions';
+import { assignAllCarts, updateCarts } from '../Checkout/actions';
+import { loadAddresses } from '../Account/actions';
 
 /*
  * Action Types

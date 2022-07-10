@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import { TouchableOpacity, View, StyleSheet } from 'react-native'
+import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import { Picker } from '@react-native-picker/picker'
-import { Text, HStack, Heading } from 'native-base'
+import { HStack, Heading, Text } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 import _ from 'lodash'
@@ -9,7 +9,7 @@ import moment from 'moment'
 
 import { setDate, setDateAsap, setFulfillmentMethod } from '../../redux/Checkout/actions'
 import FooterButton from './components/FooterButton'
-import {selectCartFulfillmentMethod, selectIsCollectionEnabled, selectIsDeliveryEnabled} from '../../utils/checkout';
+import { selectCartFulfillmentMethod, selectIsCollectionEnabled, selectIsDeliveryEnabled } from '../../utils/checkout';
 
 const FulfillmentMethodButton = withTranslation()(({ type, enabled, active, onPress, t }) => {
 
@@ -22,7 +22,7 @@ const FulfillmentMethodButton = withTranslation()(({ type, enabled, active, onPr
   }
 
   return (
-    <TouchableOpacity style={ [ styles.fmBtn, { backgroundColor: active ? '#3498db' : 'transparent' } ] }
+    <TouchableOpacity style={ [ styles.fmBtn, { backgroundColor: active ? '#3498db' : 'transparent' }] }
       onPress={ () => (enabled && !active) ? onPress() : null }>
       <Text style={ titleStyle }>
         { t(`FULFILLMENT_METHOD.${type}`) }
@@ -37,7 +37,7 @@ const FulfillmentMethodButton = withTranslation()(({ type, enabled, active, onPr
 const FulfillmentMethodButtons = withTranslation()(({ fulfillmentMethod, isDeliveryEnabled, isCollectionEnabled, setValue }) => {
 
   const types = (isCollectionEnabled && !isDeliveryEnabled) ?
-    ['collection', 'delivery'] : ['delivery', 'collection']
+    [ 'collection', 'delivery' ] : [ 'delivery', 'collection' ]
 
   const enabled = {
     delivery: isDeliveryEnabled,

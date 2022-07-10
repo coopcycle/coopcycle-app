@@ -1,15 +1,15 @@
-import React, {Component} from 'react'
-import {Animated, FlatList, Image} from 'react-native'
-import {Avatar, Box, Button, Center, ChevronRightIcon, Heading, HStack, Icon, Text, View, VStack} from 'native-base'
-import {withTranslation} from 'react-i18next'
-import {connect} from 'react-redux'
-import {Spacer} from 'native-base/src/components/primitives/Flex';
-import {darkGreyColor, greyColor, primaryColor} from '../../styles/common';
-import {RectButton, Swipeable, TouchableOpacity} from 'react-native-gesture-handler';
+import React, { Component } from 'react'
+import { Animated, FlatList, Image } from 'react-native'
+import { Avatar, Box, Button, Center, ChevronRightIcon, HStack, Heading, Icon, Text, VStack, View } from 'native-base'
+import { withTranslation } from 'react-i18next'
+import { connect } from 'react-redux'
+import { Spacer } from 'native-base/src/components/primitives/Flex';
+import { darkGreyColor, greyColor, primaryColor } from '../../styles/common';
+import { RectButton, Swipeable, TouchableOpacity } from 'react-native-gesture-handler';
 import i18n from '../../i18n';
 import _ from 'lodash'
-import {formatPrice} from '../../utils/formatting';
-import {deleteCart, setRestaurant} from '../../redux/Checkout/actions';
+import { formatPrice } from '../../utils/formatting';
+import { deleteCart, setRestaurant } from '../../redux/Checkout/actions';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const AnimatedView = Animated.createAnimatedComponent(View);
@@ -19,13 +19,13 @@ class Carts extends Component {
 
   renderRightActions = (progress, dragX, restaurantID) => {
     const scale = dragX.interpolate({
-      inputRange: [-80, 0],
-      outputRange: [1, 0],
+      inputRange: [ -80, 0 ],
+      outputRange: [ 1, 0 ],
       extrapolate: 'clamp',
     });
     //FIXME: Close Swipeable on delete
     return (
-      <AnimatedView style={{...styles.animatedView, transform: [{ scale }] }}>
+      <AnimatedView style={{ ...styles.animatedView, transform: [{ scale }] }}>
       <RectButton style={ styles.deleteButton } onPress={() => this.props.deleteCart(restaurantID)}>
           <Icon as={Ionicons} name="trash" size={5} style={{ color: '#ff0000' }} />
       </RectButton>
@@ -51,14 +51,14 @@ class Carts extends Component {
       this.props.navigation.navigate('CheckoutSummary', { cart: item.cart, restaurant: item.restaurant })
     } }>
         <HStack space={4} padding={2}>
-        <Avatar size="lg" resizeMode="contain" borderRadius="full" source={{uri: item.restaurant.image}} alt={item.restaurant.name} />
+        <Avatar size="lg" resizeMode="contain" borderRadius="full" source={{ uri: item.restaurant.image }} alt={item.restaurant.name} />
         <VStack>
           <Text bold>{item.restaurant.name}</Text>
-          <Text color={darkGreyColor}>{i18n.t('ITEM', {count: item.cart.items.length})} • {formatPrice(item.cart.total)}</Text>
+          <Text color={darkGreyColor}>{i18n.t('ITEM', { count: item.cart.items.length })} • {formatPrice(item.cart.total)}</Text>
           <Text color={darkGreyColor}>{item.cart.shippingAddress?.streetAddress}</Text>
         </VStack>
         <Spacer/>
-          <View style={{flexGrow: 1, justifyContent:'center', alignItems: 'flex-end'}}>
+          <View style={{ flexGrow: 1, justifyContent:'center', alignItems: 'flex-end' }}>
           <ChevronRightIcon />
           </View>
         </HStack>

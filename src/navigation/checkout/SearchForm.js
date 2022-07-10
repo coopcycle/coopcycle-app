@@ -1,26 +1,12 @@
-import React, {Component} from 'react';
-import {
-  Box,
-  ChevronRightIcon,
-  FormControl,
-  HStack,
-  IconButton,
-  Image,
-  Input, ScrollView,
-  Stack,
-  Text,
-  View,
-  VStack,
-} from 'native-base';
-import {withTranslation} from 'react-i18next';
+import React, { Component } from 'react';
+import { Box, FormControl, IconButton, Input, Stack } from 'native-base';
+import { withTranslation } from 'react-i18next';
 import i18n from '../../i18n';
-import {applyRestaurantsFilters, clearRestaurantsFilters, setRestaurant} from '../../redux/Checkout/actions';
-import {connect} from 'react-redux';
+import { setRestaurant } from '../../redux/Checkout/actions';
+import { connect } from 'react-redux';
 import FacetCard from './components/FacetCard';
-import {Spacer} from 'native-base/src/components/primitives/Flex';
 import SearchEngine from '../../utils/searchEngine';
-import {FlatList, TouchableOpacity} from 'react-native';
-import {darkGreyColor, greyColor} from '../../styles/common';
+import { FlatList } from 'react-native';
 import _ from 'lodash';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import RestaurantSmallCard from './components/RestaurantSmallCard';
@@ -53,7 +39,7 @@ const Facets = (props) => <FlatList data={DATA} columnWrapperStyle={{
   flexGrow: 1,
   flexDirection: 'row',
   justifyContent: 'center',
-}} numColumns={2} renderItem={({item}) => <FacetCard name={item.name} onPress={props.onPress}
+}} numColumns={2} renderItem={({ item }) => <FacetCard name={item.name} onPress={props.onPress}
                                       image={item.image} />} />
 
 const Autocomplete = (props) => {
@@ -61,7 +47,7 @@ const Autocomplete = (props) => {
   return <FlatList
     data={props.restaurants}
     initialNumToRender={ 15 }
-    renderItem={({item}) => <RestaurantSmallCard restaurant={item.item} onPress={props.onPress} />}
+    renderItem={({ item }) => <RestaurantSmallCard restaurant={item.item} onPress={props.onPress} />}
    />
 }
 
@@ -78,12 +64,12 @@ class SearchForm extends Component {
     }
 
     _setFilter = () => {
-      this.setState({loading: true})
+      this.setState({ loading: true })
       this.props.applyRestaurantsFilters({
         query: this.state.query,
       })
       this.props.navigation.goBack()
-      this.setState({loading: false})
+      this.setState({ loading: false })
     }
 
     _clearFilter = () => {
@@ -93,10 +79,10 @@ class SearchForm extends Component {
 
   _onChange = (q = null) => {
     if (q === null || q.length === 0) {
-      this.setState({autocomplete: null})
+      this.setState({ autocomplete: null })
       return;
     }
-    this.setState({autocomplete: SearchEngine.search(q)})
+    this.setState({ autocomplete: SearchEngine.search(q) })
   }
 
   render() {
@@ -107,15 +93,15 @@ class SearchForm extends Component {
                  keyboardType="web-search"
                  blurOnSubmit={true}
                  autoCorrect={false}
-                 InputRightElement={<IconButton _icon={{as: FontAwesome5, name: 'times'}} onPress={() => {this._onChange(); this.textInput.clear(); this.textInput.blur()}} />}
-                 onChangeText={_.debounce(this._onChange, 350)} onSubmitEditing={({ nativeEvent: { text }}) => {
+                 InputRightElement={<IconButton _icon={{ as: FontAwesome5, name: 'times' }} onPress={() => {this._onChange(); this.textInput.clear(); this.textInput.blur()}} />}
+                 onChangeText={_.debounce(this._onChange, 350)} onSubmitEditing={({ nativeEvent: { text } }) => {
                     console.log(text)
                     console.log(SearchEngine.search(text))
           }} placeholder={i18n.t('SEARCH')} />
        </Stack>
     </FormControl>
       {!this.state.autocomplete && <Facets onPress={(query) => {
-        this.props.navigation.navigate('SearchResults', {query})
+        this.props.navigation.navigate('SearchResults', { query })
       }} />}
       {this.state.autocomplete && <Autocomplete restaurants={this.state.autocomplete} onPress={(restaurant) => {
         this.props.setRestaurant(restaurant['@id'])

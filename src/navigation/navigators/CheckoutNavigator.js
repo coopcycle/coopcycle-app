@@ -1,18 +1,18 @@
 import React from 'react'
-import {TouchableOpacity} from 'react-native'
-import {Icon, Text} from 'native-base'
+import { TouchableOpacity } from 'react-native'
+import { Icon, Text } from 'native-base'
 import { connect } from 'react-redux'
-import { createStackNavigator, TransitionPresets } from '@react-navigation/stack'
+import { TransitionPresets, createStackNavigator } from '@react-navigation/stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import AskAddress from '../home/AskAddress';
 import i18n from '../../i18n'
 import screens, { headerLeft } from '..'
 import { stackNavigatorScreenOptions } from '../styles'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import {primaryColor} from '../../styles/common';
+import { primaryColor } from '../../styles/common';
 import store from '../../redux/store'
-import {getFocusedRouteNameFromRoute} from '@react-navigation/native';
-import {selectIsAuthenticated} from '../../redux/App/selectors';
+import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
+import { selectIsAuthenticated } from '../../redux/App/selectors';
 import CartsBadge from '../checkout/components/CartsBadge';
 
 function getNestedOptions(navigation, route) {
@@ -29,8 +29,8 @@ function getNestedOptions(navigation, route) {
         headerRight: () => {
           if (selectIsAuthenticated(store.getState())) {
           return (
-            <TouchableOpacity style={{paddingHorizontal: 10}} onPress={() => { navigation.navigate('AccountOrders') }}>
-              <Text style={{color: 'white'}}>
+            <TouchableOpacity style={{ paddingHorizontal: 10 }} onPress={() => { navigation.navigate('AccountOrders') }}>
+              <Text style={{ color: 'white' }}>
                 {i18n.t('MY_ORDERS')}
               </Text>
             </TouchableOpacity>)
@@ -46,7 +46,7 @@ function getNestedOptions(navigation, route) {
 
 const Tab = createBottomTabNavigator();
 
-function Tabs({rootNavigation: navigation}) {
+function Tabs({ rootNavigation: navigation }) {
   return (
     <Tab.Navigator
       screenOptions={{

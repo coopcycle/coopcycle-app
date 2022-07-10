@@ -16,7 +16,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
 import OrderItems from '../../components/OrderItems'
 import { loadOrder, subscribe, unsubscribe } from '../../redux/Account/actions'
-import {deleteCart} from '../../redux/Checkout/actions';
+import { deleteCart } from '../../redux/Checkout/actions';
 
 class OrderTrackingPage extends Component {
 

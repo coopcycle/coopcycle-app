@@ -1,13 +1,13 @@
-import {AspectRatio, Box, Heading, Image, Stack} from 'native-base';
+import { AspectRatio, Box, Heading, Image, Stack } from 'native-base';
 import React from 'react';
-import {withTranslation} from 'react-i18next';
-import {Dimensions, TouchableOpacity} from 'react-native';
+import { withTranslation } from 'react-i18next';
+import { Dimensions, TouchableOpacity } from 'react-native';
 
 function FacetCard(props) {
   const windowWidth = Dimensions.get('window').width * 0.42;
   return <TouchableOpacity alignItems="center" style={{
     margin: 5,
-  }} onPress={() => props.onPress({name: props.name, image: props.image})}>
+  }} onPress={() => props.onPress({ name: props.name, image: props.image })}>
     <Box width={windowWidth} rounded="lg" overflow="hidden" borderColor="coolGray.200" borderWidth="1" _dark={{
       borderColor: 'coolGray.600',
       backgroundColor: 'gray.700',
