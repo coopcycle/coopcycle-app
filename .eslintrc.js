@@ -11,12 +11,16 @@ module.exports = {
     // Allow inline styles (should be removed at some point)
     'react-native/no-inline-styles': 'off',
     'sort-imports': ['warn', {
-        'ignoreCase': false,
-        'ignoreDeclarationSort': true,
-        'ignoreMemberSort': false,
-        'allowSeparatedGroups': true
+      'ignoreCase': false,
+      'ignoreDeclarationSort': true,
+      'ignoreMemberSort': false,
+      'allowSeparatedGroups': true
     }],
     'object-curly-spacing': ['warn', 'always'],
-    'array-bracket-spacing': [ 'warn', 'always' ],
+    'array-bracket-spacing': ['warn', 'always', {
+      'singleValue': false,
+      'objectsInArrays': false,
+      'arraysInArrays': false,
+    }],
   },
 };
