@@ -265,13 +265,13 @@ class AddressAutocomplete extends Component {
 
   renderItem({ item, i }) {
 
-    const itemStyle = [ styles.item ]
+    const itemStyle = [styles.item]
 
     let text = item.description
 
     if (item.type === 'fuse') {
 
-      const parts = [ item.streetAddress ]
+      const parts = [item.streetAddress]
       if (item.contactName && item.contactName.length > 0) {
         parts.unshift(item.contactName)
       }
@@ -336,7 +336,7 @@ class AddressAutocomplete extends Component {
     return (
       <View style={ styles.textInput }>
         <View style={ styles.textInput }>
-          <TextInput { ...props } style={ [ props.style, { flex: 1 } ] }
+          <TextInput { ...props } style={ [ props.style, { flex: 1 }] }
             onFocus={ this.onTextInputFocus.bind(this) }
             onBlur={ this.onTextInputBlur.bind(this) } />
           { (this.props.country === 'gb' && this.state.postcode) && (

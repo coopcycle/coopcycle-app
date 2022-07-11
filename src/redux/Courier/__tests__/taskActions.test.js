@@ -80,7 +80,7 @@ describe('Redux | Tasks | Actions', () => {
     const date = moment()
     const client = { get: jest.fn() }
     const dispatch = jest.fn()
-    const resolveValue = { '@type': 'hydra:Collection', 'hydra:member': [ { '@id': '/api/tasks/1' } ] }
+    const resolveValue = { '@type': 'hydra:Collection', 'hydra:member': [{ '@id': '/api/tasks/1' }] }
 
     client.get.mockResolvedValue(resolveValue)
 

@@ -109,7 +109,7 @@ class AddTask extends Component {
     return (
       <Box p="3">
         <VStack>
-          <FormControl style={ [ styles.formRow, { flexDirection: 'row' } ] }>
+          <FormControl style={ [ styles.formRow, { flexDirection: 'row' }] }>
             <Button flex={ 1 } mr="1" { ...pickupBtnProps } onPress={ () => this.setState({ type: 'PICKUP' }) }>
               Pickup
             </Button>
@@ -120,7 +120,7 @@ class AddTask extends Component {
           <FormControl style={ styles.formRow }>
             <FormControl.Label style={{ marginBottom: 50 }}>{ this.props.t('TASK_FORM_ADDRESS_LABEL') }</FormControl.Label>
           </FormControl>
-          <FormControl style={ [ styles.autocompleteContainer, { marginTop: 85 } ] }>
+          <FormControl style={ [ styles.autocompleteContainer, { marginTop: 85 }] }>
             <AddressAutocomplete
               testID="taskFormTypeahead"
               country={ this.props.country }

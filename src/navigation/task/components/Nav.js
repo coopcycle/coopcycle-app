@@ -10,7 +10,7 @@ import { navigateToTask } from '../../../navigation/utils'
 
 const NavButton = ({ disabled, left, right, onPress, t, task }) => {
 
-  const buttonStyle = [ styles.button ]
+  const buttonStyle = [styles.button]
   if (right) {
     buttonStyle.push(styles.buttonRight)
   }

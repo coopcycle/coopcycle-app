@@ -148,7 +148,7 @@ function createHttpClient(state) {
 let listeners = []
 
 function replaceListeners(cb) {
-  listeners = [ cb ]
+  listeners = [cb]
 }
 
 function addListener(cb) {
@@ -297,7 +297,7 @@ const fetchValidation = _.throttle((dispatch, getState) => {
         if (error.response && error.response.status === 400) {
           dispatch(setCartValidation(false, error.response.data.violations))
         } else {
-          dispatch(setCartValidation(false, [ { message: i18n.t('TRY_LATER') } ]))
+          dispatch(setCartValidation(false, [{ message: i18n.t('TRY_LATER') }]))
         }
       })
       .finally(resolve)

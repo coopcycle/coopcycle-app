@@ -38,7 +38,7 @@ class NavigationAwareMap extends Component {
     if (!canRenderMap) {
 
       return (
-        <View style={ [ styles.map, { backgroundColor: '#eeeeee' } ] } />
+        <View style={ [ styles.map, { backgroundColor: '#eeeeee' }] } />
       )
     }
 

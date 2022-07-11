@@ -6,8 +6,8 @@ import material from '../../../../native-base-theme/variables/material'
 
 export default ({ heading, text, onPress, danger }) => {
 
-  const btnStyles = [ styles.btn ]
-  const btnTextHeadingStyles = [ styles.btnTextHeading ]
+  const btnStyles = [styles.btn]
+  const btnTextHeadingStyles = [styles.btnTextHeading]
   const btnTextNoteStyles = []
 
   if (danger) {

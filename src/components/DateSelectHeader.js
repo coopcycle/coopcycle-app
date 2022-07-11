@@ -145,21 +145,21 @@ class DateSelectHeader extends React.Component {
     const { selectedDate, buttonsEnabled } = this.props
 
     return (
-      <View style={[styles.container, { height: this.state.height }]}>
+      <View style={[ styles.container, { height: this.state.height }]}>
         <View style={ styles.dateHeader }>
-          <View style={ [ styles.button, { width: '25%' } ] }>
+          <View style={ [ styles.button, { width: '25%' }] }>
             { buttonsEnabled && this.renderButton('arrow-back', this.onPastPress, styles.icon) }
           </View>
-          <TouchableOpacity style={ [ styles.body, { width: '50%' } ] } onPress={ this.toggleCalendar }>
+          <TouchableOpacity style={ [ styles.body, { width: '50%' }] } onPress={ this.toggleCalendar }>
             <Text numberOfLines={ 1 } style={styles.dateHeaderText}>
               { moment(selectedDate).format('dddd Do MMM') }
             </Text>
           </TouchableOpacity>
-          <View style={ [ styles.button, { width: '25%' } ] }>
+          <View style={ [ styles.button, { width: '25%' }] }>
             { buttonsEnabled && this.renderButton('arrow-forward', this.onFuturePress, styles.icon) }
           </View>
         </View>
-        <Animated.View style={[styles.calendarWidget, { top: this.state.slideCalendarAnim }]}>
+        <Animated.View style={[ styles.calendarWidget, { top: this.state.slideCalendarAnim }]}>
           <Calendar
             current={selectedDate.format('YYYY-MM-DD')}
             // Handler which gets executed on day press. Default = undefined

@@ -100,7 +100,7 @@ export default (state = initialState, action = {}) => {
 
     case CHECKOUT_FAILURE:
 
-      let errors = [ i18n.t('TRY_LATER') ]
+      let errors = [i18n.t('TRY_LATER')]
 
       if (action.payload.hasOwnProperty('@context')
         && action.payload.hasOwnProperty('@type')

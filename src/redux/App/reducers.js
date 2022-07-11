@@ -118,7 +118,7 @@ export default (state = initialState, action = {}) => {
     case PUSH_NOTIFICATION:
       return {
         ...state,
-        notifications: state.notifications.concat([ action.payload ]),
+        notifications: state.notifications.concat([action.payload]),
       }
 
     case CLEAR_NOTIFICATIONS:

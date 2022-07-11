@@ -20,12 +20,12 @@ class HeaderButton extends Component {
 
   render() {
 
-    const containerStyles = [ styles.base ]
+    const containerStyles = [styles.base]
     if (this.props.textLeft) {
       containerStyles.push(styles.withText)
     }
 
-    let iconStyle = [ { color: '#fff' } ]
+    let iconStyle = [{ color: '#fff' }]
     if (this.props.iconStyle) {
       iconStyle.push(this.props.iconStyle)
     }

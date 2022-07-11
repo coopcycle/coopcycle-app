@@ -159,7 +159,7 @@ class CreditCard extends Component {
               { this.props.t('ENTER_PAY_DETAILS') }
             </Text>
             <View style={ styles.creditCardInputContainer }>
-              <View style={ [ styles.formInputContainer, { paddingHorizontal: 20, marginBottom: 15 } ] }>
+              <View style={ [ styles.formInputContainer, { paddingHorizontal: 20, marginBottom: 15 }] }>
                 <Input
                   testID="cardholderName"
                   autoCorrect={ false }
@@ -169,7 +169,7 @@ class CreditCard extends Component {
                   onChangeText={ handleChange('cardholderName') }
                   onBlur={ handleBlur('cardholderName') } />
               </View>
-              <View style={[ styles.formInputContainer, { paddingHorizontal: 20, marginBottom: 15 } ] } testID="creditCardWrapper">
+              <View style={[ styles.formInputContainer, { paddingHorizontal: 20, marginBottom: 15 }] } testID="creditCardWrapper">
                 <ColorSchemeAwareCardField
                   onCardChange={ (cardDetails) => {
                     this.setState({

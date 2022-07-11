@@ -100,7 +100,7 @@ function Restaurant(props) {
   const isAvailable = (hasValidTiming(restaurant.timing.collection)) ||
   hasValidTiming(restaurant.timing.delivery)
 
-  const { isLoading, isError, data } = useQuery(['menus', restaurant.hasMenu], async () => {
+  const { isLoading, isError, data } = useQuery([ 'menus', restaurant.hasMenu ], async () => {
     return await httpClient.get(restaurant.hasMenu, {}, { anonymous: true })
   })
 

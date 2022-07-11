@@ -60,7 +60,7 @@ const Comp = ({ onAccept, onRefuse }) => {
             <Text>{ t('RESTAURANT_ORDER_BUTTON_ACCEPT') }</Text>
             <Text>{ t('RESTAURANT_ORDER_BUTTON_REFUSE') }</Text>
           </View>
-          <View style={ [ styles.swipeFg, { backgroundColor: colorMode === 'dark' ? 'black' : 'white' } ] }>
+          <View style={ [ styles.swipeFg, { backgroundColor: colorMode === 'dark' ? 'black' : 'white' }] }>
             <Icon as={FontAwesome} name="angle-double-left" />
             <Icon as={FontAwesome} name="angle-double-right" />
           </View>

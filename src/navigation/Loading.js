@@ -83,7 +83,7 @@ class Loading extends Component {
 
   render() {
     const close = () => this.props.modal.skippable && this.props.closeModal()
-    const swipeDirection = this.props.modal.skippable ? ['down', 'up', 'left', 'right'] : []
+    const swipeDirection = this.props.modal.skippable ? [ 'down', 'up', 'left', 'right' ] : []
 
     return <>{this.bodyRender()}
       <Modal isVisible={this.props.modal.show} onSwipeComplete={close} swipeDirection={swipeDirection} onBackdropPress={close}>

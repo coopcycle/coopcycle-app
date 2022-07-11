@@ -49,7 +49,7 @@ class OrderItems extends Component {
 
   renderItemAdjustments(adjustments, important = false) {
 
-    const textStyle = [ styles.adjustmentText ]
+    const textStyle = [styles.adjustmentText]
     if (important) {
       textStyle.push(styles.textHighlight)
     }
@@ -67,7 +67,7 @@ class OrderItems extends Component {
 
   renderItem(item) {
 
-    const itemQuantityStyle = [ styles.itemQuantity ]
+    const itemQuantityStyle = [styles.itemQuantity]
     if (item.quantity > 1) {
       itemQuantityStyle.push(styles.textHighlight)
     }

@@ -124,7 +124,7 @@ Client.prototype.createRequest = function(method, url, data) {
     headers,
   }
 
-  if (data && _.size(data) > 0 && ['POST', 'PUT'].includes(method.toUpperCase())) {
+  if (data && _.size(data) > 0 && [ 'POST', 'PUT' ].includes(method.toUpperCase())) {
     req.data = data
   }
 
@@ -155,7 +155,7 @@ Client.prototype.createAuthorizedRequest = function(method, url, data, options =
   }
 
   // Make sure the request body is not empty for POST/PUT
-  if (['POST', 'PUT'].includes(method.toUpperCase()) && !data) {
+  if ([ 'POST', 'PUT' ].includes(method.toUpperCase()) && !data) {
     data = {}
   }
 

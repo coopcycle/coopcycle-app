@@ -71,7 +71,7 @@ class AddressModal extends Component {
     const { width } = Dimensions.get('window')
 
     return (
-      <View style={ [ styles.goBackContainer, { width } ] }>
+      <View style={ [ styles.goBackContainer, { width }] }>
         <Button bordered info block
           onPress={ () => this.props.onGoBack(this.state.address) }>
           <Text>{ this.props.t('SEARCH_WITH_ADDRESS', { address: this.state.address.streetAddress }) }</Text>
@@ -90,7 +90,7 @@ class AddressModal extends Component {
     const { width } = Dimensions.get('window')
 
     return (
-      <View style={ [ styles.goBackContainer, { width } ] }>
+      <View style={ [ styles.goBackContainer, { width }] }>
         <ActivityIndicator size="small" />
       </View>
     )
@@ -128,11 +128,11 @@ class AddressModal extends Component {
         style={ styles.bottomModal }
         onSwipeComplete={ this.props.hideAddressModal }
         onBackdropPress={ this.props.hideAddressModal }
-        swipeDirection={ ['up', 'down'] }
+        swipeDirection={ [ 'up', 'down' ] }
         onModalWillShow={ () => this.props.setAddressModalHidden(false) }
         onModalHide={ () => this.props.setAddressModalHidden(true) }>
         <ModalContent as={ SafeAreaView }>
-          <Animated.View style={ [ styles.modalContent, { paddingBottom: this.keyboardHeight } ] } testID="addressModal">
+          <Animated.View style={ [ styles.modalContent, { paddingBottom: this.keyboardHeight }] } testID="addressModal">
             <Text style={ modalMessageTextStyle }>{ this.props.message }</Text>
             <View style={{ width, height: height / 3 }}>
               <View style={ styles.autocompleteContainer }>

@@ -65,7 +65,7 @@ class Photo extends Component {
               <Button style={ styles.takePictureBtn } light onPress={ this._takePicture.bind(this) }>
                 <Icon as={ FontAwesome } name="camera" />
               </Button>
-              <View style={ [ styles.preview, { width: previewSize, height: previewSize } ] }>
+              <View style={ [ styles.preview, { width: previewSize, height: previewSize }] }>
                 { !image && ( <Icon as={ FontAwesome } name="picture-o" size="sm" /> ) }
                 { image && ( <Image style={{ width: previewSize, height: previewSize }} source={{ uri: image.uri }} /> ) }
               </View>

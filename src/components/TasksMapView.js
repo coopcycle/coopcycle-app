@@ -184,7 +184,7 @@ class TasksMapView extends Component {
         tracksViewChanges={ false }>
         <TaskMarker task={ task } type="status" />
         <Callout onPress={ () => this.onCalloutPress(task) }
-          style={ [ styles.markerCallout, { width: Math.floor(width * 0.6666) } ] }>
+          style={ [ styles.markerCallout, { width: Math.floor(width * 0.6666) }] }>
           <TaskCallout task={ task } />
         </Callout>
       </Marker>
@@ -234,7 +234,7 @@ class TasksMapView extends Component {
         { (this.state.mapHeight && this.state.mapHeight > 0) ? (
           <ClusteredMapView
             data={ data }
-            style={ [ styles.map, { marginBottom: this.state.marginBottom } ] }
+            style={ [ styles.map, { marginBottom: this.state.marginBottom }] }
             width={ width }
             height={ this.state.mapHeight }
             initialRegion={ this.initialRegion }

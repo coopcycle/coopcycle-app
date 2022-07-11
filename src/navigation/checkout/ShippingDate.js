@@ -25,7 +25,7 @@ const FulfillmentMethodButton = withTranslation()(({ type, enabled, active, onPr
   }
 
   return (
-    <TouchableOpacity style={ [ styles.fmBtn, { backgroundColor: active ? '#3498db' : 'transparent' } ] }
+    <TouchableOpacity style={ [ styles.fmBtn, { backgroundColor: active ? '#3498db' : 'transparent' }] }
       onPress={ () => (enabled && !active) ? onPress() : null }>
       <Text style={ titleStyle }>
         { t(`FULFILLMENT_METHOD.${type}`) }
@@ -40,7 +40,7 @@ const FulfillmentMethodButton = withTranslation()(({ type, enabled, active, onPr
 const FulfillmentMethodButtons = withTranslation()(({ fulfillmentMethod, isDeliveryEnabled, isCollectionEnabled, setValue }) => {
 
   const types = (isCollectionEnabled && !isDeliveryEnabled) ?
-    ['collection', 'delivery'] : ['delivery', 'collection']
+    [ 'collection', 'delivery' ] : [ 'delivery', 'collection' ]
 
   const enabled = {
     delivery: isDeliveryEnabled,

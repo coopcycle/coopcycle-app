@@ -25,10 +25,10 @@ describe('HTTP client', () => {
 
     mock.onGet('/api/orders').reply(function (config) {
       if (config.headers.Authorization === `Bearer ${validToken}`) {
-        return [ 200, {} ]
+        return [ 200, {}]
       }
 
-      return [ 401 ]
+      return [401]
     })
 
     const client = createClient('http://demo.coopcycle.org', {
@@ -50,10 +50,10 @@ describe('HTTP client', () => {
 
     mock.onGet('/api/orders').reply(function (config) {
       if (config.headers.Authorization === `Bearer ${validToken}`) {
-        return [ 200, {} ]
+        return [ 200, {}]
       }
 
-      return [ 401, { message: 'This is original response' } ]
+      return [ 401, { message: 'This is original response' }]
     })
 
     const client = createClient('http://demo.coopcycle.org', {
@@ -81,17 +81,17 @@ describe('HTTP client', () => {
 
     mock.onGet('/api/orders').reply(function (config) {
       if (config.headers.Authorization === `Bearer ${validToken}`) {
-        return [ 200, {} ]
+        return [ 200, {}]
       }
 
-      return [ 401, { message: 'This is original A response' } ]
+      return [ 401, { message: 'This is original A response' }]
     })
 
     // This will complete 500ms later
     mock.onGet('/api/restaurants').reply(function(config) {
       return new Promise((resolve) => {
         setTimeout(function() {
-          resolve([ 401, { message: 'This is original B response' } ])
+          resolve([ 401, { message: 'This is original B response' }])
         }, 500)
       })
     })

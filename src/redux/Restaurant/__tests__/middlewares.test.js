@@ -44,7 +44,7 @@ describe('ringOnNewOrderCreated', () => {
         notifications: [],
       },
       restaurant: {
-        orders: [ { '@id': '/api/orders/1', state: 'new' } ],
+        orders: [{ '@id': '/api/orders/1', state: 'new' }],
       },
     })
   })
@@ -86,7 +86,7 @@ describe('ringOnNewOrderCreated', () => {
         ],
       },
       restaurant: {
-        orders: [ { '@id': '/api/orders/1', state: 'new' } ],
+        orders: [{ '@id': '/api/orders/1', state: 'new' }],
       },
     })
   })
@@ -131,7 +131,7 @@ describe('ringOnNewOrderCreated', () => {
         ],
       },
       restaurant: {
-        orders: [ { '@id': '/api/orders/1', state: 'new' } ],
+        orders: [{ '@id': '/api/orders/1', state: 'new' }],
       },
     })
   })
@@ -167,7 +167,7 @@ describe('ringOnNewOrderCreated', () => {
         notifications: [],
       },
       restaurant: {
-        orders: [ { '@id': '/api/orders/1', state: 'new' } ],
+        orders: [{ '@id': '/api/orders/1', state: 'new' }],
       },
     })
   })

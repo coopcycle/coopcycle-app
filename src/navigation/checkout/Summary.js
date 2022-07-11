@@ -45,7 +45,7 @@ const CollectionDisclaimerModal = withTranslation()(({ isVisible, onSwipeComplet
     <Modal
       isVisible={ isVisible }
       onSwipeComplete={ onSwipeComplete }
-      swipeDirection={ ['up', 'down'] }>
+      swipeDirection={ [ 'up', 'down' ] }>
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', padding: 20 }}>
         <View style={{ backgroundColor: '#ffffff', paddingHorizontal: 20, paddingVertical: 30 }}>
           <Text style={{ fontSize: 14 }}>{ t('CART_COLLECTION_DISCLAIMER', { telephone: restaurant.telephone }) }</Text>
@@ -112,7 +112,7 @@ class Summary extends Component {
       { _.map(adjustmentsWithoutTax, (adjustments, type) => {
         return _.map(adjustments, (adj, i) => {
 
-          const label = [ adj.label ]
+          const label = [adj.label]
           if (adj.amount > 0) {
             label.push(formatPrice(adj.amount))
           }
@@ -249,7 +249,7 @@ class Summary extends Component {
         </View>
         <View style={{ flex: 0 }}>
           { this.props.fulfillmentMethod === 'collection' && (
-          <TouchableOpacity style={ [ styles.btn ]  }
+          <TouchableOpacity style={ [styles.btn]  }
             // Disable interaction while loading
             onPress={ () => !this.props.isLoading && this.setState({ isCollectionDisclaimerModalVisible: true }) }>
             <Icon as={FontAwesome} name="info-circle" style={{ fontSize: 22, marginRight: 15, color: '#3498db' }} />

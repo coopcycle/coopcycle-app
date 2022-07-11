@@ -160,14 +160,14 @@ export const tasksEntityReducer = (state = tasksEntityInitialState, action = {})
 
       return {
         ...state,
-        signatures: state.signatures.slice(0).concat([ action.payload.base64 ]),
+        signatures: state.signatures.slice(0).concat([action.payload.base64]),
       }
 
     case ADD_PICTURE:
 
       return {
         ...state,
-        pictures: state.pictures.slice(0).concat([ action.payload.base64 ]),
+        pictures: state.pictures.slice(0).concat([action.payload.base64]),
       }
 
     case DELETE_SIGNATURE:

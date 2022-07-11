@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
 })
 
 const iconStyle = task => {
-  const style = [ styles.icon ]
+  const style = [styles.icon]
   if (task.status === 'FAILED') {
     style.push(styles.iconDanger)
   }
@@ -124,7 +124,7 @@ class TaskListItem extends Component {
     const { color, task, index } = this.props
 
     const itemStyle = []
-    const textStyle = [ styles.text ]
+    const textStyle = [styles.text]
     const itemProps = {}
 
     if (task.status === 'DONE' || task.status === 'FAILED') {
@@ -210,4 +210,4 @@ TaskListItem.propTypes = {
 
 // We need to use "withRef" prop,
 // for react-native-swipe-list-view CellRenderer to not trigger a warning
-export default withTranslation([ 'common' ], { withRef: true })(TaskListItem)
+export default withTranslation(['common'], { withRef: true })(TaskListItem)

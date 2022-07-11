@@ -78,7 +78,7 @@ class ChooseCity extends Component {
         <Modal
           isVisible={ this.state.isModalVisible }
           onSwipeComplete={ () => this.setState({ isModalVisible: false }) }
-          swipeDirection={ ['up', 'down'] }>
+          swipeDirection={ [ 'up', 'down' ] }>
           <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', padding: 20 }}>
             <ModalContent>
               <Box p="4">

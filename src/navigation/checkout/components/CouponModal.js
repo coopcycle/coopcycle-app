@@ -28,7 +28,7 @@ class CouponModal extends Component {
       <Modal
         isVisible={ this.props.isVisible }
         onSwipeComplete={ this.props.onSwipeComplete }
-        swipeDirection={ ['up', 'down'] }>
+        swipeDirection={ [ 'up', 'down' ] }>
         <ModalContent>
           <Box p="4" borderWidth="1" borderColor="gray.700">
             <Formik

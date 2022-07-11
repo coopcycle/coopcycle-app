@@ -228,7 +228,7 @@ class CompleteTask extends Component {
         <Modal
           isVisible={ this.state.isContactNameModalVisible }
           onSwipeComplete={ this.onSwipeComplete.bind(this) }
-          swipeDirection={ ['up', 'down'] }>
+          swipeDirection={ [ 'up', 'down' ] }>
           <ModalContent>
             <Box p="3">
               <Formik

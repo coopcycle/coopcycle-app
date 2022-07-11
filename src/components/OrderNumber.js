@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
 
 export default ({ order, color }) => {
 
-  const textStyle = [ styles.orderNumber ]
+  const textStyle = [styles.orderNumber]
   if (color) {
     textStyle.push({ color })
   }

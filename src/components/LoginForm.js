@@ -119,7 +119,7 @@ class LoginForm extends Component {
               <Box mb="2">
                 <FacebookButton
                   onPress={ () => {
-                    LoginManager.logInWithPermissions(['public_profile', 'email']).then(
+                    LoginManager.logInWithPermissions([ 'public_profile', 'email' ]).then(
                       (result) => {
                         if (result.isCancelled) {
                           console.log('Login cancelled')
@@ -149,7 +149,7 @@ class LoginForm extends Component {
                 onPress={ () => {
                   appleAuth.performRequest({
                     requestedOperation: appleAuth.Operation.LOGIN,
-                    requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
+                    requestedScopes: [ appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME ],
                   }).then(appleAuthRequestResponse => {
 
                     const identityToken = appleAuthRequestResponse.identityToken

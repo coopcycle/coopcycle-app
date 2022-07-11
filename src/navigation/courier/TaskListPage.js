@@ -37,7 +37,7 @@ class TaskListPage extends Component {
 
     const { tasks, tasksWithColor, selectedDate } = this.props
 
-    const containerStyle = [ styles.container ]
+    const containerStyle = [styles.container]
     if (tasks.length === 0) {
       containerStyle.push(styles.containerEmpty)
     }

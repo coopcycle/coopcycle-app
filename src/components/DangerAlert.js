@@ -7,7 +7,7 @@ import { blueColor } from '../styles/common';
 
 const DangerAlert = (props) => {
 
-    const rowStyle = [ styles.row ]
+    const rowStyle = [styles.row]
     if (!props.onClose) {
       rowStyle.push({
         justifyContent: 'center',

@@ -114,7 +114,7 @@ const addOrReplace = (state, payload) => {
     return newOrders
   }
 
-  return newOrders.concat([ payload ])
+  return newOrders.concat([payload])
 }
 
 const spliceProducts = (state, payload) => {

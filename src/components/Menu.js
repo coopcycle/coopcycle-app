@@ -55,9 +55,9 @@ class Menu extends Component {
     const enabled = item.hasOwnProperty('enabled') ? item.enabled : true
 
     let itemProps = {}
-    let itemNameStyle = [ { fontSize: 16 } ]
-    let itemDescriptionStyle = [ styles.descriptionText ]
-    let itemPriceStyle = [ { paddingTop: 3 } ]
+    let itemNameStyle = [{ fontSize: 16 }]
+    let itemDescriptionStyle = [styles.descriptionText]
+    let itemPriceStyle = [{ paddingTop: 3 }]
 
     if (enabled) {
       itemProps = {

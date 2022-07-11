@@ -65,7 +65,7 @@ class RestaurantSearch extends Component {
   render() {
 
     return (
-      <View style={ [ styles.container, { width: this.props.width } ] }>
+      <View style={ [ styles.container, { width: this.props.width }] }>
         <AddressAutocomplete
           location={ this.props.location }
           country={ this.props.country }

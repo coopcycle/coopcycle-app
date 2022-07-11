@@ -54,12 +54,12 @@ class NewDelivery extends Component {
       })
     }
 
-    const stateStyle = [ styles.state, { backgroundColor: stateColor(delivery.state) } ]
+    const stateStyle = [ styles.state, { backgroundColor: stateColor(delivery.state) }]
 
     return (
       <View style={ styles.content }>
         <View style={ stateStyle }>
-          <Text style={ [ styles.stateText ] }>
+          <Text style={ [styles.stateText] }>
             { this.props.t(`DELIVERY_STATE.${delivery.state}`) }
           </Text>
         </View>
