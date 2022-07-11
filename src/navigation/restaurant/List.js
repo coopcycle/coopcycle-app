@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { FlatList, StyleSheet, TouchableOpacity } from 'react-native'
 import {
-  Text, Box, Icon, HStack,
+  Box, HStack, Icon, Text,
 } from 'native-base'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'

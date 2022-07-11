@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, StyleSheet } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { withTranslation } from 'react-i18next'
 import { Icon, Text } from 'native-base'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'

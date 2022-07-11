@@ -41,7 +41,7 @@ export const selectNewOrders = createSelector(
   _selectOrders,
   (date, orders) => _.sortBy(
     _.filter(orders, o => matchesDate(o, date) && o.state === 'new'),
-    [ o => moment.parseZone(o.pickupExpectedAt) ]
+    [o => moment.parseZone(o.pickupExpectedAt)]
   )
 )
 
@@ -50,7 +50,7 @@ export const selectAcceptedOrders = createSelector(
   _selectOrders,
   (date, orders) => _.sortBy(
     _.filter(orders, o => matchesDate(o, date) && o.state === 'accepted' && !o.assignedTo),
-    [ o => moment.parseZone(o.pickupExpectedAt) ]
+    [o => moment.parseZone(o.pickupExpectedAt)]
   )
 )
 
@@ -59,7 +59,7 @@ export const selectPickedOrders = createSelector(
   _selectOrders,
   (date, orders) => _.sortBy(
     _.filter(orders, o => matchesDate(o, date) && o.state === 'accepted' && !!o.assignedTo),
-    [ o => moment.parseZone(o.pickupExpectedAt) ]
+    [o => moment.parseZone(o.pickupExpectedAt)]
   )
 )
 
@@ -68,7 +68,7 @@ export const selectCancelledOrders = createSelector(
   _selectOrders,
   (date, orders) => _.sortBy(
     _.filter(orders, o => matchesDate(o, date) && (o.state === 'refused' || o.state === 'cancelled')),
-    [ o => moment.parseZone(o.pickupExpectedAt) ]
+    [o => moment.parseZone(o.pickupExpectedAt)]
   )
 )
 

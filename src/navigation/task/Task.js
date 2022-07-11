@@ -108,7 +108,7 @@ class Task extends Component {
     if (!this.state.canRenderMap) {
 
       return (
-        <View style={ [ styles.map, { backgroundColor: '#eeeeee' } ] } />
+        <View style={ [ styles.map, { backgroundColor: '#eeeeee' }] } />
       )
     }
 

@@ -1,5 +1,5 @@
 import { createAction } from 'redux-actions'
-import { StackActions, CommonActions } from '@react-navigation/native'
+import { CommonActions, StackActions } from '@react-navigation/native'
 import _ from 'lodash'
 import {  createPaymentMethod, handleCardAction } from '@stripe/stripe-react-native'
 
@@ -9,7 +9,7 @@ import { selectCartFulfillmentMethod } from './selectors'
 import { selectIsAuthenticated, selectUser } from '../App/selectors'
 import { loadAddressesSuccess } from '../Account/actions'
 import { isFree } from '../../utils/order'
-import {setModal} from '../App/actions';
+import { setModal } from '../App/actions';
 
 /*
  * Action Types
@@ -148,7 +148,7 @@ function createHttpClient(state) {
 let listeners = []
 
 function replaceListeners(cb) {
-  listeners = [ cb ]
+  listeners = [cb]
 }
 
 function addListener(cb) {
@@ -297,7 +297,7 @@ const fetchValidation = _.throttle((dispatch, getState) => {
         if (error.response && error.response.status === 400) {
           dispatch(setCartValidation(false, error.response.data.violations))
         } else {
-          dispatch(setCartValidation(false, [ { message: i18n.t('TRY_LATER') } ]))
+          dispatch(setCartValidation(false, [{ message: i18n.t('TRY_LATER') }]))
         }
       })
       .finally(resolve)
@@ -594,10 +594,10 @@ export function mercadopagoCheckout(payment) {
   return (dispatch, getState) => {
     const { cart } = getState().checkout;
 
-    const {id, status, statusDetail} = payment;
+    const { id, status, statusDetail } = payment;
 
     if (status !== 'approved') {
-      handleError(dispatch, {status, statusDetail});
+      handleError(dispatch, { status, statusDetail });
       return;
     }
 
@@ -712,7 +712,7 @@ export function checkout(cardholderName) {
   }
 }
 
-export function assignCustomer({email, telephone}) {
+export function assignCustomer({ email, telephone }) {
 
   return async (dispatch, getState) => {
 
@@ -745,7 +745,7 @@ export function assignCustomer({email, telephone}) {
       })
       .then(res => {
         if (user.isGuest()) {
-          dispatch(updateCustomerGuest({email, telephone}))
+          dispatch(updateCustomerGuest({ email, telephone }))
         }
         dispatch(updateCartSuccess(res))
         dispatch(checkoutSuccess())

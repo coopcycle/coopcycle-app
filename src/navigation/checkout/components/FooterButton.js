@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { HStack, Button } from 'native-base'
+import { Button, HStack } from 'native-base'
 import PropTypes from 'prop-types'
 
 class FooterButton extends Component {

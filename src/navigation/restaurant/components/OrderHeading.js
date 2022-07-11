@@ -1,8 +1,8 @@
 import React from 'react'
-import { View, StyleSheet } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { useTranslation } from 'react-i18next'
 import moment from 'moment'
-import { Icon, Text, HStack } from 'native-base'
+import { HStack, Icon, Text } from 'native-base'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
 import material from '../../../../native-base-theme/variables/material'

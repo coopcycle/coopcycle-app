@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
-import { ActivityIndicator, Dimensions, StyleSheet, View, Animated, Keyboard, Platform, TouchableOpacity } from 'react-native'
+import { ActivityIndicator, Animated, Dimensions, Keyboard, Platform, StyleSheet, TouchableOpacity, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 import {
-  Text, Button, Icon,
+  Button, Icon, Text,
 } from 'native-base'
 import Modal from 'react-native-modal'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
@@ -14,7 +14,7 @@ import AddressAutocomplete from '../../../components/AddressAutocomplete'
 import ModalContent from '../../../components/ModalContent'
 import AddressUtils from '../../../utils/Address'
 
-import { setAddressModalHidden, hideAddressModal, setAddress, setFulfillmentMethod } from '../../../redux/Checkout/actions'
+import { hideAddressModal, setAddress, setAddressModalHidden, setFulfillmentMethod } from '../../../redux/Checkout/actions'
 import { selectIsCollectionEnabled } from '../../../redux/Checkout/selectors'
 
 class AddressModal extends Component {
@@ -71,7 +71,7 @@ class AddressModal extends Component {
     const { width } = Dimensions.get('window')
 
     return (
-      <View style={ [ styles.goBackContainer, { width } ] }>
+      <View style={ [ styles.goBackContainer, { width }] }>
         <Button bordered info block
           onPress={ () => this.props.onGoBack(this.state.address) }>
           <Text>{ this.props.t('SEARCH_WITH_ADDRESS', { address: this.state.address.streetAddress }) }</Text>
@@ -90,7 +90,7 @@ class AddressModal extends Component {
     const { width } = Dimensions.get('window')
 
     return (
-      <View style={ [ styles.goBackContainer, { width } ] }>
+      <View style={ [ styles.goBackContainer, { width }] }>
         <ActivityIndicator size="small" />
       </View>
     )
@@ -128,11 +128,11 @@ class AddressModal extends Component {
         style={ styles.bottomModal }
         onSwipeComplete={ this.props.hideAddressModal }
         onBackdropPress={ this.props.hideAddressModal }
-        swipeDirection={ ['up', 'down'] }
+        swipeDirection={ [ 'up', 'down' ] }
         onModalWillShow={ () => this.props.setAddressModalHidden(false) }
         onModalHide={ () => this.props.setAddressModalHidden(true) }>
         <ModalContent as={ SafeAreaView }>
-          <Animated.View style={ [ styles.modalContent, { paddingBottom: this.keyboardHeight } ] } testID="addressModal">
+          <Animated.View style={ [ styles.modalContent, { paddingBottom: this.keyboardHeight }] } testID="addressModal">
             <Text style={ modalMessageTextStyle }>{ this.props.message }</Text>
             <View style={{ width, height: height / 3 }}>
               <View style={ styles.autocompleteContainer }>

@@ -1,7 +1,7 @@
 import { AppState } from 'react-native'
 import _ from 'lodash'
 
-import { pushNotification, LOGOUT_SUCCESS } from '../App/actions'
+import { LOGOUT_SUCCESS, pushNotification } from '../App/actions'
 import { LOAD_TASKS_SUCCESS } from './taskActions'
 import { selectTasks } from './taskSelectors'
 

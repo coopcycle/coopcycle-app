@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { SectionList, StyleSheet, TouchableOpacity, View } from 'react-native'
-import { Icon, Text, HStack } from 'native-base'
+import { HStack, Icon, Text } from 'native-base'
 import moment from 'moment'
 import { withTranslation } from 'react-i18next'
 import Ionicons from 'react-native-vector-icons/Ionicons'

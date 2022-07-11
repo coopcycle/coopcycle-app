@@ -70,7 +70,7 @@ function Client(httpBaseURL, options = {}) {
 
             addSubscriber(token => {
               console.log('Retrying request…')
-              req.headers['Authorization'] = `Bearer ${token}`
+              req.headers.Authorization = `Bearer ${token}`
               resolve(axios(req))
             })
 
@@ -124,8 +124,8 @@ Client.prototype.createRequest = function(method, url, data) {
     headers,
   }
 
-  if (data && _.size(data) > 0 && ['POST', 'PUT'].includes(method.toUpperCase())) {
-    req['data'] = data
+  if (data && _.size(data) > 0 && [ 'POST', 'PUT' ].includes(method.toUpperCase())) {
+    req.data = data
   }
 
   return req
@@ -138,7 +138,7 @@ Client.prototype.createAuthorizedRequest = function(method, url, data, options =
   }
 
   if (this.credentials.token) {
-    headers['Authorization'] = `Bearer ${this.credentials.token}`
+    headers.Authorization = `Bearer ${this.credentials.token}`
   }
 
   if (options.headers) {
@@ -155,15 +155,15 @@ Client.prototype.createAuthorizedRequest = function(method, url, data, options =
   }
 
   // Make sure the request body is not empty for POST/PUT
-  if (['POST', 'PUT'].includes(method.toUpperCase()) && !data) {
+  if ([ 'POST', 'PUT' ].includes(method.toUpperCase()) && !data) {
     data = {}
   }
 
   if (data && typeof data === 'object') {
-    req['data'] = JSON.stringify(data)
+    req.data = JSON.stringify(data)
   }
   if (data && typeof data === 'string') {
-    req['data'] = data
+    req.data = data
   }
 
   return req
@@ -301,9 +301,9 @@ Client.prototype.resetPassword = function(username) {
       .then(response => resolve(response.data))
       .catch(error => {
         if (error.response) {
-          reject({status: error.response.status})
+          reject({ status: error.response.status })
         } else {
-          reject({status: 500})
+          reject({ status: 500 })
         }
       })
   })
@@ -323,9 +323,9 @@ Client.prototype.setNewPassword = function(token, password) {
       .then(response => resolve(response.data))
       .catch(error => {
         if (error.response) {
-          reject({status: error.response.status})
+          reject({ status: error.response.status })
         } else {
-          reject({status: 500})
+          reject({ status: 500 })
         }
       })
   })

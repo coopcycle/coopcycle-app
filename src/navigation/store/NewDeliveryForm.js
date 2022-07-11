@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { InteractionManager, Platform, StyleSheet, TextInput, View } from 'react-native'
 import {
-  Text, Button, Box, HStack, VStack,
+  Box, Button, HStack, Text, VStack,
 } from 'native-base'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
@@ -11,8 +11,8 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker'
 import { Formik } from 'formik'
 import _ from 'lodash'
 import {
-  parsePhoneNumberFromString,
   AsYouType,
+  parsePhoneNumberFromString,
 } from 'libphonenumber-js'
 import KeyboardManager from 'react-native-keyboard-manager'
 
@@ -115,7 +115,7 @@ class NewDelivery extends Component {
   renderTimeSlotSelector(errors, touched, setFieldValue, setFieldTouched) {
 
     return (
-      <View style={ [ styles.formGroup ] }>
+      <View style={ [styles.formGroup] }>
         <Text style={ styles.label }>{ this.props.t('STORE_NEW_DELIVERY_TIME_SLOT') }</Text>
         <ModalSelector
           data={ this.props.timeSlotChoices }
@@ -206,18 +206,18 @@ class NewDelivery extends Component {
         {({ handleChange, handleBlur, handleSubmit, values, errors, touched, setFieldValue, setFieldTouched }) => (
           <VStack flex={ 1 } justifyContent="space-between">
             <Box p="3">
-              <View style={ [ styles.formGroup ] }>
+              <View style={ [styles.formGroup] }>
                 <Text style={ styles.label }>{ this.props.t('STORE_NEW_DELIVERY_ADDRESS') }</Text>
                 <TextInput
                   autoCorrect={ false }
-                  style={ [ styles.textInput ] }
+                  style={ [styles.textInput] }
                   value={ address.streetAddress }
                   editable={ false } />
               </View>
-              <View style={ [ styles.formGroup ] }>
+              <View style={ [styles.formGroup] }>
                 <Text style={ styles.label }>{ this.props.t('STORE_NEW_DELIVERY_PHONE_NUMBER') }</Text>
                 <TextInput
-                  style={ [ styles.textInput ] }
+                  style={ [styles.textInput] }
                   autoCorrect={ false }
                   keyboardType="phone-pad"
                   returnKeyType="done"
@@ -228,10 +228,10 @@ class NewDelivery extends Component {
                   <Text note style={ styles.errorText }>{ errors.address.telephone }</Text>
                 ) }
               </View>
-              <View style={ [ styles.formGroup ] }>
+              <View style={ [styles.formGroup] }>
                 <Text style={ styles.label }>{ this.props.t('STORE_NEW_DELIVERY_CONTACT_NAME') }</Text>
                 <TextInput
-                  style={ [ styles.textInput ] }
+                  style={ [styles.textInput] }
                   autoCorrect={ false }
                   returnKeyType="done"
                   onChangeText={ handleChange('address.contactName') }
@@ -241,7 +241,7 @@ class NewDelivery extends Component {
                   <Text note style={ styles.errorText }>{ errors.address.contactName }</Text>
                 ) }
               </View>
-              <View style={ [ styles.formGroup ] }>
+              <View style={ [styles.formGroup] }>
                 <Text style={ styles.label }>{ this.props.t('STORE_NEW_DELIVERY_COMMENTS') }</Text>
                 <TextInput
                   style={ [ styles.textInput, styles.textarea ] }

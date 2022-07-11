@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { FlatList } from 'react-native'
 import {
-  Icon, Text, HStack, Box, Heading, Pressable,
+  Box, HStack, Heading, Icon, Pressable, Text,
 } from 'native-base'
 import _ from 'lodash'
 import moment from 'moment'

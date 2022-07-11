@@ -10,12 +10,12 @@ import { dateSelectHeaderHeight } from '../../styles/common'
 import { withTranslation } from 'react-i18next'
 import {
   loadTasks,
-  selectTaskSelectedDate,
   selectFilteredTasks,
   selectIsTasksRefreshing,
+  selectTaskSelectedDate,
   selectTasksWithColor,
 } from '../../redux/Courier'
-import { navigateToTask, navigateToCompleteTask } from '../../navigation/utils'
+import { navigateToCompleteTask, navigateToTask } from '../../navigation/utils'
 
 const styles = StyleSheet.create({
   containerEmpty: {
@@ -37,7 +37,7 @@ class TaskListPage extends Component {
 
     const { tasks, tasksWithColor, selectedDate } = this.props
 
-    const containerStyle = [ styles.container ]
+    const containerStyle = [styles.container]
     if (tasks.length === 0) {
       containerStyle.push(styles.containerEmpty)
     }

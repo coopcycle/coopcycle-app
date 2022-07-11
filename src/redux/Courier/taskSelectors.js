@@ -7,7 +7,7 @@
  */
 import moment from 'moment'
 import { createSelector } from 'reselect'
-import { reject, isEqual, uniqWith } from 'lodash'
+import { isEqual, reject, uniqWith } from 'lodash'
 import { taskUtils } from '../../coopcycle-frontend-js/logistics/redux'
 
 /* Simple Selectors */

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Platform, StyleSheet, View, TouchableOpacity } from 'react-native'
+import { Platform, StyleSheet, TouchableOpacity, View } from 'react-native'
 import { Icon } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
@@ -65,7 +65,7 @@ class RestaurantSearch extends Component {
   render() {
 
     return (
-      <View style={ [ styles.container, { width: this.props.width } ] }>
+      <View style={ [ styles.container, { width: this.props.width }] }>
         <AddressAutocomplete
           location={ this.props.location }
           country={ this.props.country }

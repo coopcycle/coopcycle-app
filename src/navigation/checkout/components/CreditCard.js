@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import {
-  StyleSheet,
-  View,
   Animated,
   Keyboard,
   Platform,
+  StyleSheet,
+  View,
   useColorScheme,
 } from 'react-native';
 import { connect } from 'react-redux'
-import { Center, Text, Input } from 'native-base';
+import { Center, Input, Text } from 'native-base';
 import _ from 'lodash'
 import { withTranslation } from 'react-i18next'
 import { Formik } from 'formik'
@@ -27,7 +27,7 @@ const ColorSchemeAwareCardField = (props) => {
       postalCodeEnabled={ false }
       cardStyle={{
         // borderWidth?: number;
-        backgroundColor: colorScheme === 'dark' ? 'black' : 'white'
+        backgroundColor: colorScheme === 'dark' ? 'black' : 'white',
         // borderColor?: string;
         // cornerRadius?: number;
         // textColor?: string;
@@ -159,7 +159,7 @@ class CreditCard extends Component {
               { this.props.t('ENTER_PAY_DETAILS') }
             </Text>
             <View style={ styles.creditCardInputContainer }>
-              <View style={ [ styles.formInputContainer, { paddingHorizontal: 20, marginBottom: 15 } ] }>
+              <View style={ [ styles.formInputContainer, { paddingHorizontal: 20, marginBottom: 15 }] }>
                 <Input
                   testID="cardholderName"
                   autoCorrect={ false }
@@ -169,7 +169,7 @@ class CreditCard extends Component {
                   onChangeText={ handleChange('cardholderName') }
                   onBlur={ handleBlur('cardholderName') } />
               </View>
-              <View style={[ styles.formInputContainer, { paddingHorizontal: 20, marginBottom: 15 } ] } testID="creditCardWrapper">
+              <View style={[ styles.formInputContainer, { paddingHorizontal: 20, marginBottom: 15 }] } testID="creditCardWrapper">
                 <ColorSchemeAwareCardField
                   onCardChange={ (cardDetails) => {
                     this.setState({

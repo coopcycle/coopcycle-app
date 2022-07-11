@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { StyleSheet, TouchableOpacity, TouchableHighlight, View, Dimensions, Appearance, useColorScheme } from 'react-native'
-import { Icon, Text, HStack, VStack } from 'native-base'
+import { Appearance, Dimensions, StyleSheet, TouchableHighlight, TouchableOpacity, View, useColorScheme } from 'react-native'
+import { HStack, Icon, Text, VStack } from 'native-base'
 import { SwipeRow } from 'react-native-swipe-list-view'
 import PropTypes from 'prop-types'
 import moment from 'moment'
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
 })
 
 const iconStyle = task => {
-  const style = [ styles.icon ]
+  const style = [styles.icon]
   if (task.status === 'FAILED') {
     style.push(styles.iconDanger)
   }
@@ -124,7 +124,7 @@ class TaskListItem extends Component {
     const { color, task, index } = this.props
 
     const itemStyle = []
-    const textStyle = [ styles.text ]
+    const textStyle = [styles.text]
     const itemProps = {}
 
     if (task.status === 'DONE' || task.status === 'FAILED') {
@@ -172,7 +172,7 @@ class TaskListItem extends Component {
           onPress={ this.props.onPress }
           testID={ `task:${index}` }>
           <HStack flex={ 1 } alignItems="center" styles={ itemStyle } pr="3" { ...itemProps }>
-            <View style={{backgroundColor: color, width: 8, height: '100%', marginRight: 12}}/>
+            <View style={{ backgroundColor: color, width: 8, height: '100%', marginRight: 12 }}/>
             <View style={ styles.itemIcon }>
               <TaskTypeIcon task={ task } />
               <TaskStatusIcon task={ task } />
@@ -210,4 +210,4 @@ TaskListItem.propTypes = {
 
 // We need to use "withRef" prop,
 // for react-native-swipe-list-view CellRenderer to not trigger a warning
-export default withTranslation([ 'common' ], { withRef: true })(TaskListItem)
+export default withTranslation(['common'], { withRef: true })(TaskListItem)

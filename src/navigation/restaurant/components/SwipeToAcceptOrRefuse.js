@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, StyleSheet } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { useTranslation } from 'react-i18next'
 import { Icon, Text, useColorMode } from 'native-base'
 import { SwipeRow } from 'react-native-swipe-list-view'
@@ -60,7 +60,7 @@ const Comp = ({ onAccept, onRefuse }) => {
             <Text>{ t('RESTAURANT_ORDER_BUTTON_ACCEPT') }</Text>
             <Text>{ t('RESTAURANT_ORDER_BUTTON_REFUSE') }</Text>
           </View>
-          <View style={ [ styles.swipeFg, { backgroundColor: colorMode === 'dark' ? 'black' : 'white' } ] }>
+          <View style={ [ styles.swipeFg, { backgroundColor: colorMode === 'dark' ? 'black' : 'white' }] }>
             <Icon as={FontAwesome} name="angle-double-left" />
             <Icon as={FontAwesome} name="angle-double-right" />
           </View>

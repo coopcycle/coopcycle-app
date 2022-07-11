@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, Platform, InteractionManager, View } from 'react-native'
+import { InteractionManager, Platform, StyleSheet, View } from 'react-native'
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake'
 import RNPinScreen from 'react-native-pin-screen'
 import { connect } from 'react-redux'
@@ -11,8 +11,8 @@ import TasksMapView from '../../components/TasksMapView'
 import {
   loadTasks,
   selectFilteredTasks,
-  selectTaskSelectedDate,
   selectKeepAwake,
+  selectTaskSelectedDate,
 } from '../../redux/Courier'
 import { navigateToTask } from '../../navigation/utils'
 

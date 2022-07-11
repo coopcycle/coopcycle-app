@@ -1,6 +1,6 @@
 import React from 'react'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
-import { Text, Icon } from 'native-base'
+import { Icon, Text } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import _ from 'lodash'
@@ -10,7 +10,7 @@ import { navigateToTask } from '../../../navigation/utils'
 
 const NavButton = ({ disabled, left, right, onPress, t, task }) => {
 
-  const buttonStyle = [ styles.button ]
+  const buttonStyle = [styles.button]
   if (right) {
     buttonStyle.push(styles.buttonRight)
   }

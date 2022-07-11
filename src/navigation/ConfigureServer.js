@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import {
   Dimensions,
   Image,
-  View,
   StyleSheet,
+  View,
 } from 'react-native'
 import {
   Button, Text,
@@ -23,7 +23,7 @@ class ConfigureServer extends Component {
           source={require('../assets/images/home-bg.png')} />
         <View style={{ paddingHorizontal: '10%', width: '100%' }}>
           <View style={{ marginBottom: 20 }}>
-            <Text style={ [ styles.disclaimerText, { fontWeight: 'bold', fontSize: 18 } ] }>
+            <Text style={ [ styles.disclaimerText, { fontWeight: 'bold', fontSize: 18 }] }>
               { this.props.t('WELCOME') }
             </Text>
             <Text style={ styles.disclaimerText }>

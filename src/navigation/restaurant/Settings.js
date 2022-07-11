@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { View } from 'react-native'
 import {
-  Box, Icon, Text, Switch, HStack, FlatList, Pressable,
+  Box, FlatList, HStack, Icon, Pressable, Switch, Text,
 } from 'native-base'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import { withTranslation } from 'react-i18next'

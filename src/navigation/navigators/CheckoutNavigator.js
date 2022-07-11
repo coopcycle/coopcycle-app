@@ -1,6 +1,6 @@
 import React from 'react'
-import {TouchableOpacity} from 'react-native'
-import {Text} from 'native-base'
+import { TouchableOpacity } from 'react-native'
+import { Text } from 'native-base'
 import { connect } from 'react-redux'
 import { createStackNavigator } from '@react-navigation/stack'
 import AskAddress from '../home/AskAddress';

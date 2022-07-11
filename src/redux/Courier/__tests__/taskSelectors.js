@@ -1,8 +1,8 @@
 import moment from 'moment'
-import { merge, cloneDeep } from 'lodash'
+import { cloneDeep, merge } from 'lodash'
 import {
-  selectFilteredTasks, selectAreDoneTasksHidden, selectAreFailedTasksHidden,
-  selectTags, selectTagNames, selectIsTagHidden,
+  selectAreDoneTasksHidden, selectAreFailedTasksHidden, selectFilteredTasks,
+  selectIsTagHidden, selectTagNames, selectTags,
 } from '../taskSelectors'
 
 
@@ -36,7 +36,7 @@ describe('Task Selectors', () => {
         cloneDeep(baseState),
         { ui: { tasks: { excludeFilters: [{ status: 'DONE' }] } } }
       )
-      expect(selectFilteredTasks(state)).toEqual([ state.entities.tasks.items[date][1] ])
+      expect(selectFilteredTasks(state)).toEqual([state.entities.tasks.items[date][1]])
     })
 
     test('returns correctly filtered list for multiple filters', () => {
@@ -52,7 +52,7 @@ describe('Task Selectors', () => {
         cloneDeep(baseState),
         { ui: { tasks: { excludeFilters: [{ tags: 'foo' }] } } }
       )
-      expect(selectFilteredTasks(state)).toEqual([ state.entities.tasks.items[date][0] ])
+      expect(selectFilteredTasks(state)).toEqual([state.entities.tasks.items[date][0]])
     })
   })
 
@@ -141,7 +141,7 @@ describe('Task Selectors', () => {
         }
       )
 
-      expect(selectTagNames(state)).toEqual(['foo', 'bar'])
+      expect(selectTagNames(state)).toEqual([ 'foo', 'bar' ])
     })
   })
 

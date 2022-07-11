@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import {
   Dimensions,
   FlatList,
@@ -7,16 +7,16 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native'
-import {Callout, Marker} from 'react-native-maps'
+import { Callout, Marker } from 'react-native-maps'
 import ClusteredMapView from 'react-native-maps-super-cluster'
 import Modal from 'react-native-modal'
-import {withTranslation} from 'react-i18next'
+import { withTranslation } from 'react-i18next'
 
 import {
   greyColor,
   whiteColor,
 } from '../styles/common'
-import {uniq} from 'lodash'
+import { uniq } from 'lodash'
 import TaskMarker from './TaskMarker'
 import TaskCallout from './TaskCallout'
 
@@ -184,7 +184,7 @@ class TasksMapView extends Component {
         tracksViewChanges={ false }>
         <TaskMarker task={ task } type="status" />
         <Callout onPress={ () => this.onCalloutPress(task) }
-          style={ [ styles.markerCallout, { width: Math.floor(width * 0.6666) } ] }>
+          style={ [ styles.markerCallout, { width: Math.floor(width * 0.6666) }] }>
           <TaskCallout task={ task } />
         </Callout>
       </Marker>
@@ -234,7 +234,7 @@ class TasksMapView extends Component {
         { (this.state.mapHeight && this.state.mapHeight > 0) ? (
           <ClusteredMapView
             data={ data }
-            style={ [ styles.map, { marginBottom: this.state.marginBottom } ] }
+            style={ [ styles.map, { marginBottom: this.state.marginBottom }] }
             width={ width }
             height={ this.state.mapHeight }
             initialRegion={ this.initialRegion }

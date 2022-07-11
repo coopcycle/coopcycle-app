@@ -1,15 +1,15 @@
 import React from 'react'
 import { FlatList, TouchableOpacity } from 'react-native'
 import {
-  Text, Icon, HStack,
+  HStack, Icon, Text,
 } from 'native-base'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
 import {
-  filterTasks,
   clearTasksFilter,
+  filterTasks,
   selectIsTagHidden,
   selectTagNames,
 } from '../../redux/Courier'

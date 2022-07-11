@@ -1,13 +1,13 @@
 import React from 'react'
-import { StyleSheet, View, TouchableOpacity } from 'react-native'
+import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import { Icon, Text } from 'native-base'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import material from '../../../../native-base-theme/variables/material'
 
 export default ({ heading, text, onPress, danger }) => {
 
-  const btnStyles = [ styles.btn ]
-  const btnTextHeadingStyles = [ styles.btnTextHeading ]
+  const btnStyles = [styles.btn]
+  const btnTextHeadingStyles = [styles.btnTextHeading]
   const btnTextNoteStyles = []
 
   if (danger) {

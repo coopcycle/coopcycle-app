@@ -17,7 +17,7 @@ export default ({ order, small }) => {
 
   return (
     <Icon as={FontAwesome}
-      style={ small ? [ styles.small ] : [] }
+      style={ small ? [styles.small] : [] }
       name={ fulfillmentMethod === 'collection' ? 'cube' : 'bicycle' } />
   )
 }

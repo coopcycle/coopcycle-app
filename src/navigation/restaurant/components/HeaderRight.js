@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Alert } from 'react-native'
 import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
-import { HeaderButtons, HeaderButton, Item } from 'react-navigation-header-buttons'
+import { HeaderButton, HeaderButtons, Item } from 'react-navigation-header-buttons'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
 import { closeRestaurant } from '../../../redux/Restaurant/actions'

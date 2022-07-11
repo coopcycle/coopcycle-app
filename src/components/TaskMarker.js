@@ -4,10 +4,10 @@ import {
   failedIconName,
   taskTypeIconName,
 } from '../navigation/task/styles/common'
-import {View} from 'react-native'
-import {Icon} from 'native-base'
+import { View } from 'react-native'
+import { Icon } from 'native-base'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
-import {darkGreyColor, redColor, whiteColor} from '../styles/common'
+import { darkGreyColor, redColor, whiteColor } from '../styles/common'
 
 const container = {
   margin: 10,
@@ -60,7 +60,7 @@ const backgroundStyle = task => {
     borderBottomLeftRadius: containerSize / 2,
     borderBottomRightRadius: 0,
     transform: [
-      {rotate: '45deg'},
+      { rotate: '45deg' },
     ],
   }
 }

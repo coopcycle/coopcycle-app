@@ -1,7 +1,7 @@
 import { omit } from 'lodash'
 import moment from 'moment'
 import { tasksUiReducer } from '../taskUiReducer'
-import { loadTasksRequest, filterTasks, clearTasksFilter } from '../taskActions'
+import { clearTasksFilter, filterTasks, loadTasksRequest } from '../taskActions'
 
 describe('Redux | Tasks | Reducers', () => {
   describe('tasksUiReducer', () => {

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { InteractionManager, SectionList, View } from 'react-native'
 import {
-  Pressable, HStack, Text, Heading,
+  HStack, Heading, Pressable, Text,
 } from 'native-base'
 import _ from 'lodash'
 import moment from 'moment'

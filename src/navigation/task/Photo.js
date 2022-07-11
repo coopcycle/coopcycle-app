@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, Image, Dimensions } from 'react-native'
+import { Dimensions, Image, StyleSheet, View } from 'react-native'
 import {
-  Icon, Text, Button, HStack, VStack,
+  Button, HStack, Icon, Text, VStack,
 } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
@@ -65,7 +65,7 @@ class Photo extends Component {
               <Button style={ styles.takePictureBtn } light onPress={ this._takePicture.bind(this) }>
                 <Icon as={ FontAwesome } name="camera" />
               </Button>
-              <View style={ [ styles.preview, { width: previewSize, height: previewSize } ] }>
+              <View style={ [ styles.preview, { width: previewSize, height: previewSize }] }>
                 { !image && ( <Icon as={ FontAwesome } name="picture-o" size="sm" /> ) }
                 { image && ( <Image style={{ width: previewSize, height: previewSize }} source={{ uri: image.uri }} /> ) }
               </View>

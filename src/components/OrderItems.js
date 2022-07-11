@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { FlatList, SectionList, StyleSheet, View } from 'react-native'
 import PropTypes from 'prop-types'
-import { HStack, Text, Box } from 'native-base'
+import { Box, HStack, Text } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import { formatPrice } from '../utils/formatting'
 import _ from 'lodash'
@@ -49,7 +49,7 @@ class OrderItems extends Component {
 
   renderItemAdjustments(adjustments, important = false) {
 
-    const textStyle = [ styles.adjustmentText ]
+    const textStyle = [styles.adjustmentText]
     if (important) {
       textStyle.push(styles.textHighlight)
     }
@@ -67,7 +67,7 @@ class OrderItems extends Component {
 
   renderItem(item) {
 
-    const itemQuantityStyle = [ styles.itemQuantity ]
+    const itemQuantityStyle = [styles.itemQuantity]
     if (item.quantity > 1) {
       itemQuantityStyle.push(styles.textHighlight)
     }

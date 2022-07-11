@@ -1,9 +1,9 @@
-import React, {Component} from 'react';
-import {View} from 'react-native';
-import {connect} from 'react-redux';
+import React, { Component } from 'react';
+import { View } from 'react-native';
+import { connect } from 'react-redux';
 import { Formik } from 'formik'
-import {withTranslation} from 'react-i18next'
-import {FormControl, Input, Button, Text} from 'native-base';
+import { withTranslation } from 'react-i18next'
+import { Button, FormControl, Input, Text } from 'native-base';
 import _ from 'lodash'
 
 import material from '../../native-base-theme/variables/material';
@@ -29,7 +29,7 @@ class ForgotPasswordForm extends Component {
   }
 
   _onSubmit(values) {
-    const {username} = values
+    const { username } = values
     this.props.onSubmit(username);
   }
 
@@ -60,7 +60,7 @@ class ForgotPasswordForm extends Component {
               onSubmitEditing={ handleSubmit }
             />
           </FormControl>
-          <View style={{marginTop: 20}}>
+          <View style={{ marginTop: 20 }}>
             <Button block onPress={ handleSubmit }>
               <Text>{this.props.t('SUBMIT')}</Text>
             </Button>

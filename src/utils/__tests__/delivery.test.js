@@ -1,4 +1,4 @@
-import { resolveState, composeWithState } from '../delivery'
+import { composeWithState, resolveState } from '../delivery'
 
 describe('resolveState', () => {
 

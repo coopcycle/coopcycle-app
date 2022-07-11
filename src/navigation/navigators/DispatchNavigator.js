@@ -1,5 +1,5 @@
 import React from 'react'
-import { Icon} from 'native-base'
+import { Icon } from 'native-base'
 import { createStackNavigator } from '@react-navigation/stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'

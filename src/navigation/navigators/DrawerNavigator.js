@@ -4,7 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack'
 import { connect } from 'react-redux'
 
 import i18n from '../../i18n'
-import { selectIsAuthenticated, selectInitialRouteName, selectShowRestaurantsDrawerItem } from '../../redux/App/selectors'
+import { selectInitialRouteName, selectIsAuthenticated, selectShowRestaurantsDrawerItem } from '../../redux/App/selectors'
 import { headerLeft } from '..'
 import { stackNavigatorScreenOptions } from '../styles'
 

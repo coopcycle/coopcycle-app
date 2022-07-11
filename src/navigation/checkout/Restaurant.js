@@ -1,8 +1,8 @@
 import React from 'react'
-import {View} from 'react-native'
-import {connect} from 'react-redux'
-import {withTranslation} from 'react-i18next'
-import {Button, Center, Heading, HStack, Skeleton, Text, VStack} from 'native-base';
+import { View } from 'react-native'
+import { connect } from 'react-redux'
+import { withTranslation } from 'react-i18next'
+import { Button, Center, HStack, Heading, Skeleton, Text, VStack } from 'native-base';
 import _ from 'lodash'
 import moment from 'moment'
 
@@ -13,8 +13,8 @@ import Menu from '../../components/Menu'
 
 import { hideAddressModal, setAddress } from '../../redux/Checkout/actions'
 import DangerAlert from '../../components/DangerAlert';
-import {shouldShowPreOrder} from '../../utils/checkout'
-import {useQuery} from 'react-query';
+import { shouldShowPreOrder } from '../../utils/checkout'
+import { useQuery } from 'react-query';
 import i18n from '../../i18n';
 import GroupImageHeader from './components/GroupImageHeader';
 import AddressModal from './components/AddressModal';
@@ -100,7 +100,7 @@ function Restaurant(props) {
   const isAvailable = (hasValidTiming(restaurant.timing.collection)) ||
   hasValidTiming(restaurant.timing.delivery)
 
-  const { isLoading, isError, data } = useQuery(['menus', restaurant.hasMenu], async () => {
+  const { isLoading, isError, data } = useQuery([ 'menus', restaurant.hasMenu ], async () => {
     return await httpClient.get(restaurant.hasMenu, {}, { anonymous: true })
   })
 

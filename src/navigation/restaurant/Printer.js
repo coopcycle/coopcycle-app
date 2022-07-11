@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
 import {
+  ActivityIndicator,
+  FlatList,
+  NativeEventEmitter,
+  NativeModules,
+  PermissionsAndroid,
+  Platform,
   StyleSheet,
   TouchableOpacity,
-  FlatList,
-  NativeModules,
-  NativeEventEmitter,
-  ActivityIndicator,
-  Platform,
-  PermissionsAndroid,
 } from 'react-native'
 import { Center, Icon, Text } from 'native-base'
 import { withTranslation } from 'react-i18next'
@@ -16,7 +16,7 @@ import { connect } from 'react-redux'
 import BleManager from 'react-native-ble-manager'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
-import { connectPrinter, bluetoothStartScan, disconnectPrinter } from '../../redux/Restaurant/actions'
+import { bluetoothStartScan, connectPrinter, disconnectPrinter } from '../../redux/Restaurant/actions'
 import ItemSeparator from '../../components/ItemSeparator'
 
 const BleManagerModule = NativeModules.BleManager

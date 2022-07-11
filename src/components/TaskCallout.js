@@ -16,7 +16,7 @@ const Recipient = ({ task }) => {
 
 const Address = ({ task }) => {
 
-  const parts = [ task.address.streetAddress ]
+  const parts = [task.address.streetAddress]
 
   if (task.address.name) {
     parts.unshift(task.address.name)
@@ -30,7 +30,7 @@ const Address = ({ task }) => {
 }
 
 const Tag = ({ tag }) => (
-  <View style={ [ styles.tag, { backgroundColor: tag.color } ] } />
+  <View style={ [ styles.tag, { backgroundColor: tag.color }] } />
 )
 
 export default ({ task }) => {

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import { FlatList, StyleSheet, TouchableOpacity, View, Linking, Platform } from 'react-native'
+import { FlatList, Linking, Platform, StyleSheet, TouchableOpacity, View } from 'react-native'
 import { connect } from 'react-redux'
-import { Button, Icon, Text, Box } from 'native-base'
+import { Box, Button, Icon, Text } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import _ from 'lodash'
 import Modal from 'react-native-modal'
@@ -78,7 +78,7 @@ class ChooseCity extends Component {
         <Modal
           isVisible={ this.state.isModalVisible }
           onSwipeComplete={ () => this.setState({ isModalVisible: false }) }
-          swipeDirection={ ['up', 'down'] }>
+          swipeDirection={ [ 'up', 'down' ] }>
           <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', padding: 20 }}>
             <ModalContent>
               <Box p="4">

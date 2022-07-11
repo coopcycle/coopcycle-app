@@ -1,10 +1,10 @@
 import React, { createRef, useEffect } from 'react'
-import { Platform, LogBox, useColorScheme } from 'react-native'
+import { LogBox, Platform, useColorScheme } from 'react-native'
 
 import { NativeBaseProvider, extendTheme } from 'native-base'
 import tracker from './analytics/Tracker'
 
-import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native'
+import { DarkTheme, DefaultTheme, NavigationContainer } from '@react-navigation/native'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 
 import { Provider } from 'react-redux'
@@ -46,7 +46,7 @@ import DropdownAlert from 'react-native-dropdownalert'
 import DropdownHolder from './DropdownHolder'
 
 import NavigationHolder from './NavigationHolder'
-import {QueryClient, QueryClientProvider} from 'react-query';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
 LogBox.ignoreLogs([
   'Warning: isMounted(...) is deprecated in plain JavaScript React classes.',

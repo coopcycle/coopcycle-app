@@ -1,6 +1,6 @@
 import moment from 'moment'
 import { Buffer } from 'buffer'
-import { encodeForPrinter, resolveFulfillmentMethod, matchesDate, isFree } from '../order'
+import { encodeForPrinter, isFree, matchesDate, resolveFulfillmentMethod } from '../order'
 
 describe('encodeForPrinter', () => {
 
@@ -184,7 +184,7 @@ describe('isFree', () => {
       isFree({
         items: [{ name: 'Burger' }],
         itemsTotal: 3000,
-        total: 0
+        total: 0,
       })
     ).toBe(true)
 
@@ -192,7 +192,7 @@ describe('isFree', () => {
       isFree({
         items: [{ name: 'Burger' }],
         itemsTotal: 3000,
-        total: 3350
+        total: 3350,
       })
     ).toBe(false)
 
@@ -200,7 +200,7 @@ describe('isFree', () => {
       isFree({
         items: [],
         itemsTotal: 0,
-        total: 0
+        total: 0,
       })
     ).toBe(false)
 

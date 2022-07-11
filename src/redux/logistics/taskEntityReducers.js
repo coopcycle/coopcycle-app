@@ -1,21 +1,21 @@
 import {
+  ASSIGN_TASK_SUCCESS,
+  CANCEL_TASK_SUCCESS,
   CHANGE_DATE,
+  CREATE_TASK_SUCCESS,
   LOAD_TASK_LISTS_SUCCESS,
   LOAD_UNASSIGNED_TASKS_SUCCESS,
-  CREATE_TASK_SUCCESS,
-  CANCEL_TASK_SUCCESS,
-  ASSIGN_TASK_SUCCESS,
   UNASSIGN_TASK_SUCCESS,
 } from '../Dispatch/actions';
 import {
-  START_TASK_SUCCESS,
   MARK_TASK_DONE_SUCCESS,
   MARK_TASK_FAILED_SUCCESS,
+  START_TASK_SUCCESS,
 } from '../Courier';
 
 import {
-  taskUtils,
   taskListUtils,
+  taskUtils,
 } from '../../coopcycle-frontend-js/logistics/redux'
 
 const initialState = {

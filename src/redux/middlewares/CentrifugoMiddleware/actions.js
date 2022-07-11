@@ -19,7 +19,7 @@ export function message(payload) {
   return function (dispatch, getState) {
     if (payload.name && payload.data) {
 
-      const {name, data} = payload
+      const { name, data } = payload
 
       switch (name) {
         case 'task:created':

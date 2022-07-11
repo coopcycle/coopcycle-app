@@ -1,9 +1,9 @@
 import { Platform } from 'react-native'
-import { deletePushNotificationTokenSuccess, savePushNotificationTokenSuccess, LOGOUT_REQUEST } from '../../App/actions'
+import { LOGOUT_REQUEST, deletePushNotificationTokenSuccess, savePushNotificationTokenSuccess } from '../../App/actions'
 import {
-  selectIsAuthenticated,
   selectHttpClient,
   selectHttpClientHasCredentials,
+  selectIsAuthenticated,
 } from '../../App/selectors'
 
 let isFetching = false

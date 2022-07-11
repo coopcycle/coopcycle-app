@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next'
-import { VStack, Text, Button, Checkbox } from 'native-base'
+import { Button, Checkbox, Text, VStack } from 'native-base'
 import Modal from 'react-native-modal'
 import { connect } from 'react-redux'
 import ModalContent from '../../../components/ModalContent'
@@ -20,14 +20,14 @@ class MultipleServersInSameCityModal extends Component {
   }
 
   _onChange(isSelected) {
-    this.setState({doNotShowAgain: isSelected})
+    this.setState({ doNotShowAgain: isSelected })
   }
 
   _onClose() {
     if (this.state.doNotShowAgain) {
       this.props.hideMultipleServersInSameCityModal()
     }
-    this.setState({isVisible: false})
+    this.setState({ isVisible: false })
   }
 
   render() {

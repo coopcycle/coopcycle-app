@@ -4,11 +4,11 @@ import {
   View,
 } from 'react-native'
 import {
-  Text,
-  Icon,
-  VStack,
   Center,
   HStack,
+  Icon,
+  Text,
+  VStack,
 } from 'native-base'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
@@ -85,7 +85,7 @@ class OrderTrackingPage extends Component {
     return (
       <Center style={ headerContainerStyle } p="2">
         <HStack alignItems="center">
-          <Icon style={ [ styles.headerText, { marginRight: 10 } ] } as={ FontAwesome } name={ iconName } />
+          <Icon style={ [ styles.headerText, { marginRight: 10 }] } as={ FontAwesome } name={ iconName } />
           <Text style={ styles.headerText }>{ stateText }</Text>
         </HStack>
       </Center>

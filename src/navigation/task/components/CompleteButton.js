@@ -1,6 +1,6 @@
 import React from 'react'
 import { Dimensions, StyleSheet, TouchableOpacity, View } from 'react-native'
-import { Text, Icon } from 'native-base'
+import { Icon, Text } from 'native-base'
 import { SwipeRow } from 'react-native-swipe-list-view'
 import { withTranslation } from 'react-i18next'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
@@ -32,7 +32,7 @@ const CompleteButton = React.forwardRef((props, ref) => {
   if (task.status === 'DONE') {
 
     return (
-      <View style={ [ styles.buttonContainer, { backgroundColor: greenColor } ] }>
+      <View style={ [ styles.buttonContainer, { backgroundColor: greenColor }] }>
         <View style={ styles.buttonTextContainer }>
           <Icon as={FontAwesome} name={ doneIconName } style={{ color: '#fff', marginRight: 10 }} />
           <Text style={{ color: '#fff' }}>{ t('COMPLETED') }</Text>
@@ -44,7 +44,7 @@ const CompleteButton = React.forwardRef((props, ref) => {
   if (task.status === 'FAILED') {
 
     return (
-      <View style={ [ styles.buttonContainer, { backgroundColor: redColor } ] }>
+      <View style={ [ styles.buttonContainer, { backgroundColor: redColor }] }>
         <View style={ styles.buttonTextContainer }>
           <Icon as={FontAwesome} name={ failedIconName } style={{ color: '#fff', marginRight: 10 }} />
           <Text style={{ color: '#fff' }}>{ t('FAILED') }</Text>
@@ -118,4 +118,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default withTranslation([ 'common' ], { withRef: true })(CompleteButton)
+export default withTranslation(['common'], { withRef: true })(CompleteButton)

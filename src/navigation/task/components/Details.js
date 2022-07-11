@@ -1,7 +1,7 @@
 import React from 'react'
-import { FlatList, View, TouchableOpacity } from 'react-native'
+import { FlatList, TouchableOpacity, View } from 'react-native'
 import { withTranslation } from 'react-i18next'
-import { Button, Icon, Text, HStack, Box } from 'native-base'
+import { Box, Button, HStack, Icon, Text } from 'native-base'
 import { showLocation } from 'react-native-map-link'
 import { phonecall } from 'react-native-communications'
 import moment from 'moment'
@@ -102,16 +102,16 @@ const Details = ({ task, t }) => {
   }
 
   if (task.packages && task.packages.length) {
-    const packagesSummary = task.packages.reduce(({text, totalQuantity}, p) => {
+    const packagesSummary = task.packages.reduce(({ text, totalQuantity }, p) => {
       const packageText = `${p.quantity} × ${p.name}`;
       text = text.length ? `${text}\n${packageText}` : packageText;
       totalQuantity += p.quantity;
-      return {text, totalQuantity};
-    }, {text: '', totalQuantity: 0});
+      return { text, totalQuantity };
+    }, { text: '', totalQuantity: 0 });
     items.push({
       iconName: 'cube',
       text: `${packagesSummary.text}`,
-      component: <Text fontWeight="bold">{t('total_packages', {count: packagesSummary.totalQuantity})}</Text>,
+      component: <Text fontWeight="bold">{t('total_packages', { count: packagesSummary.totalQuantity })}</Text>,
     })
   }
 

@@ -1,7 +1,7 @@
-import { createStore, applyMiddleware, combineReducers } from 'redux'
+import { applyMiddleware, combineReducers, createStore } from 'redux'
 import thunk from 'redux-thunk'
 import { ringOnNewOrderCreated } from '../middlewares'
-import { loadOrdersSuccess, loadOrderSuccess } from '../actions'
+import { loadOrderSuccess, loadOrdersSuccess } from '../actions'
 import { message as wsMessage } from '../../middlewares/CentrifugoMiddleware/actions'
 import restaurantReducer from '../reducers'
 import appReducer from '../../App/reducers'
@@ -44,7 +44,7 @@ describe('ringOnNewOrderCreated', () => {
         notifications: [],
       },
       restaurant: {
-        orders: [ { '@id': '/api/orders/1', state: 'new' } ],
+        orders: [{ '@id': '/api/orders/1', state: 'new' }],
       },
     })
   })
@@ -86,7 +86,7 @@ describe('ringOnNewOrderCreated', () => {
         ],
       },
       restaurant: {
-        orders: [ { '@id': '/api/orders/1', state: 'new' } ],
+        orders: [{ '@id': '/api/orders/1', state: 'new' }],
       },
     })
   })
@@ -131,7 +131,7 @@ describe('ringOnNewOrderCreated', () => {
         ],
       },
       restaurant: {
-        orders: [ { '@id': '/api/orders/1', state: 'new' } ],
+        orders: [{ '@id': '/api/orders/1', state: 'new' }],
       },
     })
   })
@@ -167,7 +167,7 @@ describe('ringOnNewOrderCreated', () => {
         notifications: [],
       },
       restaurant: {
-        orders: [ { '@id': '/api/orders/1', state: 'new' } ],
+        orders: [{ '@id': '/api/orders/1', state: 'new' }],
       },
     })
   })
