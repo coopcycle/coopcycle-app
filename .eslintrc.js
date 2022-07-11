@@ -10,14 +10,14 @@ module.exports = {
     'prettier/prettier': 'off',
     // Allow inline styles (should be removed at some point)
     'react-native/no-inline-styles': 'off',
-    'sort-imports': ['warn', {
+    'sort-imports': [ 'warn', {
       'ignoreCase': false,
       'ignoreDeclarationSort': true,
       'ignoreMemberSort': false,
-      'allowSeparatedGroups': true
+      'allowSeparatedGroups': true,
     }],
-    'object-curly-spacing': ['warn', 'always'],
-    'array-bracket-spacing': ['warn', 'always', {
+    'object-curly-spacing': [ 'warn', 'always' ],
+    'array-bracket-spacing': [ 'warn', 'always', {
       'singleValue': false,
       'objectsInArrays': false,
       'arraysInArrays': false,
