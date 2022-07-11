@@ -413,6 +413,7 @@
         "TOP_RESULTS": "Top results",
         "OTHER_RESULTS": "Other results",
         "RESULT": "{{count}} result",
-        "RESULT_plural": "{{count}} results"
+        "RESULT_plural": "{{count}} results",
+        "CALL": "Call"
     }
 }

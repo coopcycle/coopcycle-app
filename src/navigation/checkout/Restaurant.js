@@ -1,8 +1,8 @@
-import React from 'react'
-import { View } from 'react-native'
+import React, { useState } from 'react'
+import { Pressable, StyleSheet, View } from 'react-native'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
-import { Button, Center, HStack, Heading, Skeleton, Text, VStack } from 'native-base';
+import { Box, Button, Center, HStack, Heading, Icon, Skeleton, Text, VStack } from 'native-base';
 import _ from 'lodash'
 import moment from 'moment'
 
@@ -17,7 +17,11 @@ import { shouldShowPreOrder } from '../../utils/checkout'
 import { useQuery } from 'react-query';
 import i18n from '../../i18n';
 import GroupImageHeader from './components/GroupImageHeader';
-import AddressModal from './components/AddressModal';
+import OpeningHours from './components/OpeningHours';
+import Modal from 'react-native-modal';
+import { phonecall } from 'react-native-communications';
+import AddressUtils from '../../utils/Address';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 // Fix: key prop warning
 // https://github.com/GeekyAnts/NativeBase/issues/4473
@@ -100,6 +104,8 @@ function Restaurant(props) {
   const isAvailable = (hasValidTiming(restaurant.timing.collection)) ||
   hasValidTiming(restaurant.timing.delivery)
 
+  const [ infoModal, setInfoModal ] = useState(false)
+
   const { isLoading, isError, data } = useQuery([ 'menus', restaurant.hasMenu ], async () => {
     return await httpClient.get(restaurant.hasMenu, {}, { anonymous: true })
   })
@@ -117,7 +123,7 @@ function Restaurant(props) {
     <View style={{ flex: 1 }}>
       <View style={{ flex: 1, paddingTop: 60 }}>
         <View style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: 60 }}>
-          <GroupImageHeader image={ restaurant.image } text={restaurant.name} />
+          <GroupImageHeader image={ restaurant.image } text={restaurant.name} onInfo={() => setInfoModal(true)} />
         </View>
         { nextOpeningDateCheck && renderNotAvailableWarning(restaurant, isAvailable) }
         { nextOpeningDateCheck && renderClosedNowWarning(restaurant, isAvailable) }
@@ -136,16 +142,65 @@ function Restaurant(props) {
           testID="cartSubmit"
           disabled={ isLoading } />
       ) }
-      <AddressModal
-        onGoBack={ (address) => {
-          this.props.hideAddressModal()
-          navigate('CheckoutHome', { address })
-        }} />
+
+
+      <Modal
+        testID={'modal'}
+        isVisible={infoModal}
+        onBackdropPress={() => setInfoModal(false)}
+        style={styles.view}>
+        <VStack style={styles.content} space={3}>
+          <Box style={styles.center}>
+            <Heading>{restaurant.name}</Heading>
+            <Text>{restaurant.description}</Text>
+            <Text bold padding={3}>{i18n.t('RESTAURANT_OPENING_HOURS')}</Text>
+            <OpeningHours restaurant={restaurant} />
+          </Box>
+          <Pressable onPress={() => { AddressUtils.openMap(restaurant.address, restaurant.name) }} >
+            <HStack space={3} style={styles.card}>
+              <Icon as={Ionicons} name="map" size={5} color={'blueGray.600'} />
+              <Text>{restaurant.address.streetAddress}</Text>
+            </HStack>
+          </Pressable>
+          <Pressable onPress={ () => { phonecall(restaurant.telephone, true) } }>
+            <HStack space={3} style={styles.card}>
+              <Icon as={Ionicons} name="call" size={5} color={'blueGray.600'} />
+              <Text>{i18n.t('CALL')} {restaurant.name}</Text>
+            </HStack>
+          </Pressable>
+        </VStack>
+      </Modal>
+
       <ExpiredSessionModal
         onModalHide={ () => navigate('CheckoutHome') } />
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  content: {
+    backgroundColor: 'white',
+    padding: 22,
+    borderTopStartRadius: 4,
+    borderTopRightRadius: 4,
+    borderColor: 'rgba(0, 0, 0, 0.1)',
+  },
+  center: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  card: {
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    borderColor: 'rgba(0, 0, 0, 0.1)',
+    backgroundColor: 'rgba(0, 0, 0, 0.02)',
+    padding: 12,
+  },
+  view: {
+    justifyContent: 'flex-end',
+    margin: 0,
+  },
+});
 
 function mapStateToProps(state, ownProps) {
 
