@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Dimensions, Pressable, StyleSheet, View } from 'react-native'
+import { Dimensions, Pressable, StyleSheet, View, useColorScheme } from 'react-native'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 import { Box, Button, Center, HStack, Heading, Icon, ScrollView, Skeleton, Text, VStack } from 'native-base';
@@ -100,6 +100,7 @@ function renderClosedNowWarning(restaurant, isAvailable) {
 function Restaurant(props) {
   const { navigate } = props.navigation
   const { height } = Dimensions.get('window')
+  const colorScheme = useColorScheme()
   const [ infoModal, setInfoModal ] = useState(false)
   const { showFooter, httpClient, restaurant } = props
 
@@ -118,6 +119,12 @@ function Restaurant(props) {
       <Text>{i18n.t('TRY_LATER')}</Text>
       <Button>{i18n.t('RETRY')}</Button>
     </Center>
+  }
+
+  const cardStyle = {
+    ...styles.card,
+    backgroundColor: colorScheme === 'dark' ? 'rgba(255, 255, 255, 0.04)' : 'rgba(0, 0, 0, 0.02)',
+    borderColor: colorScheme === 'dark' ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.1)',
   }
 
   return (
@@ -151,9 +158,9 @@ function Restaurant(props) {
         onBackdropPress={() => setInfoModal(false)}
         style={styles.view}
       >
-        <View height={height * 0.7}>
+        <View maxHeight={height * 0.7}>
         <ScrollView>
-        <VStack style={styles.content} space={3}>
+        <VStack style={styles.content} backgroundColor={colorScheme === 'dark' ? 'dark.100' : 'white'} space={3}>
           <Box style={styles.center}>
             <Heading>{restaurant.name}</Heading>
             <Text>{restaurant.description}</Text>
@@ -161,13 +168,13 @@ function Restaurant(props) {
             <OpeningHours restaurant={restaurant} />
           </Box>
           <Pressable onPress={() => { AddressUtils.openMap(restaurant.address, restaurant.name) }} >
-            <HStack space={3} style={styles.card}>
+            <HStack space={3} style={cardStyle}>
               <Icon as={Ionicons} name="map" size={5} color={'blueGray.600'} />
               <Text>{restaurant.address.streetAddress}</Text>
             </HStack>
           </Pressable>
           <Pressable onPress={ () => { phonecall(restaurant.telephone, true) } }>
-            <HStack space={3} style={styles.card}>
+            <HStack space={3} style={cardStyle}>
               <Icon as={Ionicons} name="call" size={5} color={'blueGray.600'} />
               <Text>{i18n.t('CALL')} {restaurant.name}</Text>
             </HStack>
@@ -185,11 +192,9 @@ function Restaurant(props) {
 
 const styles = StyleSheet.create({
   content: {
-    backgroundColor: 'white',
     padding: 22,
     borderTopStartRadius: 4,
     borderTopRightRadius: 4,
-    borderColor: 'rgba(0, 0, 0, 0.1)',
   },
   center: {
     justifyContent: 'center',
@@ -198,8 +203,6 @@ const styles = StyleSheet.create({
   card: {
     borderTopWidth: 1,
     borderBottomWidth: 1,
-    borderColor: 'rgba(0, 0, 0, 0.1)',
-    backgroundColor: 'rgba(0, 0, 0, 0.02)',
     padding: 12,
   },
   view: {
