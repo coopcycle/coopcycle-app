@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
-import { Pressable, StyleSheet, View } from 'react-native'
+import { Dimensions, Pressable, StyleSheet, View } from 'react-native'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
-import { Box, Button, Center, HStack, Heading, Icon, Skeleton, Text, VStack } from 'native-base';
+import { Box, Button, Center, HStack, Heading, Icon, ScrollView, Skeleton, Text, VStack } from 'native-base';
 import _ from 'lodash'
 import moment from 'moment'
 
@@ -99,12 +99,13 @@ function renderClosedNowWarning(restaurant, isAvailable) {
 
 function Restaurant(props) {
   const { navigate } = props.navigation
+  const { height } = Dimensions.get('window')
+  const [ infoModal, setInfoModal ] = useState(false)
   const { showFooter, httpClient, restaurant } = props
+
   const nextOpeningDateCheck = _.has(restaurant, 'nextOpeningDate')
   const isAvailable = (hasValidTiming(restaurant.timing.collection)) ||
   hasValidTiming(restaurant.timing.delivery)
-
-  const [ infoModal, setInfoModal ] = useState(false)
 
   const { isLoading, isError, data } = useQuery([ 'menus', restaurant.hasMenu ], async () => {
     return await httpClient.get(restaurant.hasMenu, {}, { anonymous: true })
@@ -148,7 +149,10 @@ function Restaurant(props) {
         testID={'modal'}
         isVisible={infoModal}
         onBackdropPress={() => setInfoModal(false)}
-        style={styles.view}>
+        style={styles.view}
+      >
+        <View height={height * 0.7}>
+        <ScrollView>
         <VStack style={styles.content} space={3}>
           <Box style={styles.center}>
             <Heading>{restaurant.name}</Heading>
@@ -169,6 +173,8 @@ function Restaurant(props) {
             </HStack>
           </Pressable>
         </VStack>
+        </ScrollView>
+        </View>
       </Modal>
 
       <ExpiredSessionModal
