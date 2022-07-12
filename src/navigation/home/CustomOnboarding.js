@@ -8,7 +8,7 @@ import Config from 'react-native-config';
 
 const onboardingParams = {
   'https://naofood.coopcycle.org': {
-    backgroundImage: '../../assets/images/naofood.png',
+    backgroundImage: require('../../assets/images/naofood.png'),
     text: `Hello :D
 Bienvenue sur l’application Naofood !
 
@@ -28,7 +28,7 @@ class CustomOnboarding extends Component {
     const { width } = Dimensions.get('window')
 
     const imgSource = this.props.customBuild && onboardingParams.hasOwnProperty(Config.DEFAULT_SERVER) ?
-      onboardingParams[Config.DEFAULT_SERVER].backgroundImage : '../../assets/images/home-bg.png'
+      onboardingParams[Config.DEFAULT_SERVER].backgroundImage : require('../../assets/images/home-bg.png')
 
     const text = this.props.customBuild && onboardingParams.hasOwnProperty(Config.DEFAULT_SERVER) ?
       onboardingParams[Config.DEFAULT_SERVER].text : 'Lorem ipsum'
@@ -37,7 +37,7 @@ class CustomOnboarding extends Component {
       <View style={ styles.container }>
         <Image
           style={{ width: width, height: (width / 2.25) }}
-          source={ require(imgSource) } />
+          source={ imgSource } />
         <ScrollView contentContainerStyle={{ marginHorizontal: '10%' }}>
             <Text style={ styles.disclaimerText }>{ text }</Text>
           <View>
