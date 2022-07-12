@@ -1,11 +1,11 @@
 import material from './material'
-//TODO: color
+import Config from 'react-native-config'
 
 export default {
   ...material,
   fontFamily: 'OpenSans-Regular',
-  footerDefaultBg: '#f8781f',
-  toolbarDefaultBg: '#f8781f',
+  footerDefaultBg: Config.PRIMARY_COLOR || '#e4022d',
+  toolbarDefaultBg: Config.PRIMARY_COLOR || '#e4022d',
   titleFontfamily: 'Raleway-Regular',
   buttonFontFamily: 'Raleway-Regular',
   buttonUppercaseAndroidText: false,
