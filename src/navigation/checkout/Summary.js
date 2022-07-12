@@ -76,24 +76,6 @@ const ActionButton = withTranslation()(({ isLoading, onPress, iconName, children
   )
 })
 
-const GroupImageHeader = ({ restaurant, scale }) => {
-
-  return (
-    <Animated.View style={{
-      width: '100%',
-      height: '100%',
-    }}>
-      <ImageBackground source={{ uri: restaurant.image }} style={{ width: '100%', height: '100%' }}>
-        <View style={ styles.overlay }>
-          <View style={{ height: 60, justifyContent: 'center' }}>
-            <Text style={ styles.restaurantName } numberOfLines={ 1 }>{ restaurant.name }</Text>
-          </View>
-        </View>
-      </ImageBackground>
-    </Animated.View>
-  );
-};
-
 class Summary extends Component {
 
   constructor(props) {
