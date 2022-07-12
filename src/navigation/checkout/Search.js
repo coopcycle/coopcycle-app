@@ -183,16 +183,11 @@ class RestaurantsPage extends Component {
 
   render() {
 
-    const { navigate } = this.props.navigation
-    return <>
-
-    <View style={{ flex: 1, paddingTop: 54 }} testID="checkoutSearch"
-
-      onLayout={ event => this.setState({ width: event.nativeEvent.layout.width }) }
+    return (
+      <View style={{ flex: 1, paddingTop: 54 }} testID="checkoutSearch"
+        onLayout={ event => this.setState({ width: event.nativeEvent.layout.width }) }
         >
-
-
-      { this.renderContent() }
+        { this.renderContent() }
         { /* This component needs to be rendered *ABOVE* the list */ }
         { /* This is why it should be the last child component */ }
         { /* Use a "key" prop to make sure component renders */ }
@@ -205,13 +200,12 @@ class RestaurantsPage extends Component {
           defaultValue={ this.props.address }
           width={ this.state.width }
           key={ this.props.addressAsText }
-          savedAddresses={ this.props.savedAddresses }
-        />
+          savedAddresses={ this.props.savedAddresses } />
 
         <MultipleServersInSameCityModal
           multipleServers={this.props.otherServers.length > 1} />
       </View>
-    </>;
+    );
   }
 }
 
