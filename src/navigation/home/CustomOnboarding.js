@@ -4,16 +4,26 @@ import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
 import { Dimensions, Image, ScrollView, StyleSheet, View } from 'react-native';
 import { onboarded } from '../../redux/App/actions';
+import Config from 'react-native-config';
+
+const onboardingParams = {
+  'https://naofood.coopcycle.org': {
+    backgroundImage: '../../assets/images/naofood.png'
+  }
+}
 
 class CustomOnboarding extends Component {
   render() {
     const { width } = Dimensions.get('window')
 
+    const imgSource = this.props.customBuild && onboardingParams.hasOwnProperty(Config.DEFAULT_SERVER) ?
+      onboardingParams[Config.DEFAULT_SERVER] : '../../assets/images/home-bg.png'
+
     return (
       <View style={ styles.container }>
         <Image
           style={{ width: width, height: (width / 2.25) }}
-          source={require('../../assets/images/home-bg.png')} />
+          source={ require(imgSource) } />
         <ScrollView contentContainerStyle={{ marginHorizontal: '10%' }}>
             <Text style={ styles.disclaimerText }>{`Hello :D
 Bienvenue sur l’application Naofood !
@@ -60,6 +70,7 @@ const styles = StyleSheet.create({
 function mapStateToProps(state) {
 
   return {
+    customBuild: state.app.customBuild,
   }
 }
 
