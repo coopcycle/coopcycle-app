@@ -51,14 +51,16 @@ const mapAdjustments = (adjustments, type) => _.map(adjustments, (adjustment, in
 ))
 
 const CollectionDisclaimerModal = withTranslation()(({ isVisible, onSwipeComplete, t, restaurant }) => {
-//<Text style={{ fontSize: 14 }}>{ t('CART_COLLECTION_DISCLAIMER', { telephone: restaurant.telephone }) }</Text>
+
   return (
     <Modal
       isVisible={ isVisible }
       onSwipeComplete={ onSwipeComplete }
       swipeDirection={ [ 'up', 'down' ] }>
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', padding: 20 }}>
-        <View style={{ backgroundColor: '#ffffff', paddingHorizontal: 20, paddingVertical: 30 }} />
+        <View style={{ backgroundColor: '#ffffff', paddingHorizontal: 20, paddingVertical: 30 }}>
+          <Text style={{ fontSize: 14 }}>{ t('CART_COLLECTION_DISCLAIMER', { telephone: restaurant.telephone }) }</Text>
+        </View>
       </View>
     </Modal>
   )
