@@ -14,6 +14,7 @@ import store from '../../redux/store'
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { selectIsAuthenticated } from '../../redux/App/selectors';
 import CartsBadge from '../checkout/components/CartsBadge';
+import Config from 'react-native-config';
 
 function getNestedOptions(navigation, route) {
   const routeName = getFocusedRouteNameFromRoute(route) ?? 'Feed';
@@ -57,9 +58,10 @@ function Tabs({ rootNavigation: navigation }) {
       <Tab.Screen name="Home" options={{
         tabBarIcon: ({ color, size }) => <Icon as={FontAwesome5} name="home" size={size} color={color} />,
       }} component={screens.RestaurantsPage} />
+      { Config.CHECKOUT_SEARCH_ENABLED &&
       <Tab.Screen name="Search" options={{
         tabBarIcon: ({ color, size }) => <Icon as={FontAwesome5} name="search" size={size} color={color} />,
-      }} component={screens.SearchForm} />
+      }} component={screens.SearchForm} /> }
       <Tab.Screen name="Cart" options={{
         tabBarBadge: <CartsBadge/>,
         tabBarIcon: ({ color, size }) => <Icon as={FontAwesome5} name="shopping-cart" size={size} color={color} />,
