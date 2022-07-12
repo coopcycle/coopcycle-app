@@ -178,8 +178,6 @@ function mapStateToProps(state) {
     modal: state.app.modal,
     customBuild: state.app.customBuild,
     firstRun: state.app.firstRun,
-    addresses: state.account.addresses,
-    address: state.checkout.address,
   }
 }
 
