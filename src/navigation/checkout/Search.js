@@ -1,9 +1,5 @@
 import React, { Component } from 'react';
-import {
-  Dimensions,
-  InteractionManager,
-  View,
-} from 'react-native';
+import { Dimensions, InteractionManager, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Text } from 'native-base';
 import { connect } from 'react-redux'
@@ -11,12 +7,19 @@ import { withTranslation } from 'react-i18next'
 
 import RestaurantSearch from '../../components/RestaurantSearch'
 import RestaurantList from '../../components/RestaurantList'
-import { loadRestaurantsSuccess, resetSearch, searchRestaurants, searchRestaurantsForAddress } from '../../redux/Checkout/actions'
+import {
+  loadRestaurantsSuccess,
+  resetSearch,
+  searchRestaurants,
+  searchRestaurantsForAddress,
+  setRestaurant,
+} from '../../redux/Checkout/actions'
 import { selectServer } from '../../redux/App/actions'
 import { selectRestaurants } from '../../redux/Checkout/selectors'
 import { selectServersInSameCity } from '../../redux/App/selectors'
 import { SceneMap, TabBar, TabView } from 'react-native-tab-view'
 import MultipleServersInSameCityModal from './components/MultipleServersInSameCityModal';
+import Address from '../../utils/Address'
 
 class RestaurantsPage extends Component {
 
@@ -38,13 +41,22 @@ class RestaurantsPage extends Component {
 
   componentDidMount() {
     const firstServer = this.props.otherServers[0]
+    const { address } = this.props
+
     if (firstServer && firstServer.coopcycle_url !== this.props.baseURL) {
       // the servers are randomly ordered to avoid same server as the first option
       // so we select the new first server if it is different to the selected in a previous usage of the app
-      this._renderRestaurantsForTab({ index: 0, url: firstServer.coopcycle_url })
-    } else {
-      this.props.searchRestaurants()
+      return this._renderRestaurantsForTab({ index: 0, url: firstServer.coopcycle_url })
     }
+    if (address) {
+      this.props.searchRestaurantsForAddress(address, { baseURL: this.state.baseURL })
+    } else {
+      this.props.searchRestaurants({ baseURL: this.state.baseURL })
+    }
+  }
+
+  shouldComponentUpdate(nextProps: Readonly<P>, nextState: Readonly<S>, nextContext: any): boolean {
+    return Address.geoDiff(this.props.address, nextProps.address)
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -159,7 +171,10 @@ class RestaurantsPage extends Component {
             restaurants={ restaurants }
             addressAsText={addressAsText}
             isFetching={isFetching}
-            onItemClick={ restaurant => this.props.navigation.navigate('CheckoutRestaurant', { restaurant }) } />
+            onItemClick={ restaurant => {
+              this.props.setRestaurant(restaurant['@id'])
+              this.props.navigation.navigate('CheckoutRestaurant', { restaurant })
+            } } />
         </SafeAreaView>
       )
     }
@@ -214,6 +229,7 @@ function mapDispatchToProps(dispatch) {
   return {
     searchRestaurants: (options) => dispatch(searchRestaurants(options)),
     searchRestaurantsForAddress: (address, options) => dispatch(searchRestaurantsForAddress(address, options)),
+    setRestaurant: id => dispatch(setRestaurant(id)),
     resetSearch: (options) => dispatch(resetSearch(options)),
     loadRestaurantsSuccess: (restaurants) => dispatch(loadRestaurantsSuccess(restaurants)),
     selectServer: (serverURL) => dispatch(selectServer(serverURL)),

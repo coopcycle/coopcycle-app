@@ -1,4 +1,5 @@
 /*
+/*
  * App reducer, dealing with non-domain specific state
  */
 import { CONNECTED, DISCONNECTED } from '../middlewares/CentrifugoMiddleware'
@@ -12,6 +13,7 @@ import {
   CLOSE_MODAL,
   DELETE_PUSH_NOTIFICATION_TOKEN_SUCCESS,
   LOGOUT_SUCCESS,
+  ONBOARDED,
   PUSH_NOTIFICATION,
   REGISTER_PUSH_NOTIFICATION_TOKEN,
   REGISTRATION_ERRORS,
@@ -28,13 +30,13 @@ import {
   SET_HTTP_CLIENT,
   SET_INTERNET_REACHABLE,
   SET_LOADING,
-  SET_MODAL,
-  SET_SELECT_SERVER_ERROR, SET_SERVERS, SET_SETTINGS, SET_USER,
+  SET_MODAL, SET_SELECT_SERVER_ERROR, SET_SERVERS, SET_SETTINGS, SET_USER,
 } from './actions'
 import Config from 'react-native-config';
 
 const initialState = {
   customBuild: !!Config.DEFAULT_SERVER,
+  firstRun: true,
   isWsOpen: false,
   baseURL: null,
   httpClient: null,
@@ -292,6 +294,12 @@ export default (state = initialState, action = {}) => {
           ...state.modal,
           show: false,
         },
+    }
+
+    case ONBOARDED:
+      return {
+        ...state,
+        firstRun: false,
       }
   }
 

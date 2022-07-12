@@ -24,7 +24,7 @@ class AccountOrdersPage extends Component {
     const { navigate } = this.props.navigation
 
     return (
-      <Pressable onPress={() => navigate('AccountOrder', { order }) }>
+      <Pressable onPress={() => navigate('AccountOrders', { screen: 'AccountOrder', params: { order } }) }>
         <HStack justifyContent="space-between" p="2">
           <Text>{ order.restaurant.name }</Text>
           <Text>{ formatPrice(order.total) }</Text>

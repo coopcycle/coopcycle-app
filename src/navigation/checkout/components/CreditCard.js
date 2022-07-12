@@ -30,7 +30,7 @@ const ColorSchemeAwareCardField = (props) => {
         backgroundColor: colorScheme === 'dark' ? 'black' : 'white',
         // borderColor?: string;
         // cornerRadius?: number;
-        // textColor?: string;
+        textColor: colorScheme === 'dark' ? 'white' : 'black',
         // fontSize?: number;
         // placeholderColor?: string;
         // cursorColor?: string;

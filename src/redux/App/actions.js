@@ -11,6 +11,8 @@ import NavigationHolder from '../../NavigationHolder'
 import i18n from '../../i18n'
 import { setCurrencyCode } from '../../utils/formatting'
 import { selectInitialRouteName } from './selectors'
+import { assignAllCarts, updateCarts } from '../Checkout/actions';
+import { loadAddresses } from '../Account/actions';
 
 /*
  * Action Types
@@ -60,6 +62,7 @@ export const BACKGROUND_PERMISSION_DISCLOSED = '@app/BACKGROUND_PERMISSION_DISCL
 export const SET_MODAL = '@app/SET_MODAL'
 export const CLOSE_MODAL = '@app/CLOSE_MODAL'
 export const RESET_MODAL = '@app/RESET_MODAL'
+export const ONBOARDED = '@app/ONBOARDED'
 
 /*
  * Action Creators
@@ -110,6 +113,7 @@ export const backgroundPermissionDisclosed = createAction(BACKGROUND_PERMISSION_
 export const setModal = createAction(SET_MODAL)
 export const resetModal = createAction(RESET_MODAL)
 export const closeModal = createAction(CLOSE_MODAL)
+export const onboarded = createAction(ONBOARDED)
 
 const registrationErrors = createAction(REGISTRATION_ERRORS)
 
@@ -133,7 +137,11 @@ function authenticationRequest() {
 
 function authenticationSuccess(user) {
   return (dispatch, getState) => {
+    dispatch(setLoading(true))
     dispatch(_authenticationSuccess())
+    dispatch(loadAddresses())
+    dispatch(assignAllCarts())
+    dispatch(setLoading(false))
     setRolesProperty(user)
     tracker.logEvent(
       analyticsEvent.user.login._category,
@@ -153,6 +161,7 @@ function authenticationFailure(message) {
 function logoutSuccess() {
   return (dispatch, getState) => {
     dispatch(_logoutSuccess())
+    dispatch(updateCarts({}))
     setRolesProperty(null)
   }
 }
@@ -313,6 +322,7 @@ export function bootstrap(baseURL, user, loader = true) {
     dispatch(setUser(user))
     dispatch(setBaseURL(baseURL))
     setRolesProperty(user)
+    dispatch(loadAddresses())
 
     if (loader) {
       dispatch(loadMyRestaurantsRequest())

@@ -13,6 +13,7 @@ import Fuse from 'fuse.js'
 import { v4 as uuidv4 } from 'uuid'
 import Config from 'react-native-config'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
+import { AbortController } from 'abortcontroller-polyfill/dist/cjs-ponyfill'
 
 import { localeDetector } from '../i18n'
 import AddressUtils from '../utils/Address'
@@ -92,12 +93,14 @@ class AddressAutocomplete extends Component {
       results: [],
       postcode: _.isObject(props.value) ? { postcode: props.value.postalCode } : null,
       sessionToken: null,
+      controller: null,
     }
     this.fuse = new Fuse(this.props.addresses, fuseOptions)
   }
 
   _autocomplete = _.debounce((text, query) => {
 
+    this.setState({ controller: new AbortController() })
     const fuseResults = this.fuse.search(text, {
       limit: 2,
     })
@@ -106,9 +109,8 @@ class AddressAutocomplete extends Component {
 
       if (!this.state.postcode) {
 
-        axios({
-          method: 'get',
-          url: `https://api.postcodes.io/postcodes/${text.replace(/\s/g, '')}/autocomplete`,
+        axios.get(`https://api.postcodes.io/postcodes/${text.replace(/\s/g, '')}/autocomplete`, {
+          signal: this.state.controller.signal,
         })
           .then(response => {
             if (response.data.status === 200 && Array.isArray(response.data.result)) {
@@ -135,7 +137,9 @@ class AddressAutocomplete extends Component {
 
       // @see https://developers.google.com/places/web-service/autocomplete
       axios
-        .get(`https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${encodeURIComponent(text)}&${qs.stringify(query)}`)
+        .get(`https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${encodeURIComponent(text)}&${qs.stringify(query)}`, {
+          signal: this.state.controller.signal,
+        })
         .then(response => {
 
           const normalizedResults =
@@ -167,6 +171,8 @@ class AddressAutocomplete extends Component {
 
     let newState = { query: text }
 
+    this.state.controller?.abort()
+
     // @see https://developers.google.com/places/web-service/autocomplete#session_tokens
     let sessionToken = ''
     if (!this.state.sessionToken) {
@@ -183,6 +189,7 @@ class AddressAutocomplete extends Component {
     }
 
     if (text.length < this.props.minChars) {
+      this.setState({ results: [] })
       return
     }
 

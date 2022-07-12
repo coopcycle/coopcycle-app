@@ -1,6 +1,8 @@
 // Source file for common CSS
 
-let primaryColor = '#e4022d',
+import Config from 'react-native-config'
+
+let primaryColor = Config.PRIMARY_COLOR || '#e4022d',
     whiteColor = '#fff',
     darkGreyColor = '#424242',
     greyColor = '#95A5A6',

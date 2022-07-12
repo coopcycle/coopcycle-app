@@ -16,6 +16,8 @@ import SentryMiddleware from './middlewares/SentryMiddleware'
 import { ringOnNewOrderCreated } from './Restaurant/middlewares'
 import { ringOnTaskListUpdated } from './Courier/taskMiddlewares'
 import CentrifugoMiddleware from './middlewares/CentrifugoMiddleware'
+import { filterExpiredCarts, restaurantsSearchIndex } from './Checkout/middlewares';
+import Config from 'react-native-config';
 
 const middlewares = [
   thunk,
@@ -24,20 +26,35 @@ const middlewares = [
   HttpMiddleware,
   PushNotificationMiddleware,
   CentrifugoMiddleware,
-  GeolocationMiddleware,
-  BluetoothMiddleware,
-  ringOnNewOrderCreated,
-  ringOnTaskListUpdated,
   SentryMiddleware,
+  restaurantsSearchIndex,
+  filterExpiredCarts,
 ]
+
+if (!Config.DEFAULT_SERVER) {
+  middlewares.push(...[
+    GeolocationMiddleware,
+    BluetoothMiddleware,
+    ringOnNewOrderCreated,
+    ringOnTaskListUpdated,
+  ])
+}
 
 if (process.env.NODE_ENV === 'development') {
   middlewares.push(createLogger({ collapsed: true }))
 }
 
+const middlewaresProxy = (middlewaresList) => {
+  if (process.env.NODE_ENV === 'development') {
+    return composeWithDevTools(applyMiddleware(...middlewaresList))
+  } else {
+    return applyMiddleware(...middlewaresList)
+  }
+}
+
 const store = createStore(
   reducers,
-  composeWithDevTools(applyMiddleware(...middlewares))
+  middlewaresProxy(middlewares)
 )
 
 export default store

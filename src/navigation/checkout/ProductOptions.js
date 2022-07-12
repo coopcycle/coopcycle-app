@@ -39,13 +39,13 @@ const RangeOption = ({ name, price, onPress, selected, onPressIncrement, onPress
         style={{ flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around' }}>
         <TouchableOpacity
           style={{ flex: 1, alignItems: 'center' }}
-          onPress={ onPressIncrement }>
-          <Icon as={ FontAwesome } name="plus-circle" />
+          onPress={ onPressDecrement }>
+          <Icon as={ FontAwesome } name="minus-circle" />
         </TouchableOpacity>
         <TouchableOpacity
           style={{ flex: 1, alignItems: 'center' }}
-          onPress={ onPressDecrement }>
-          <Icon as={ FontAwesome } name="minus-circle" />
+          onPress={ onPressIncrement }>
+          <Icon as={ FontAwesome } name="plus-circle" />
         </TouchableOpacity>
         <View style={{ flex: 1, alignItems: 'center' }}>
           <Badge info style={{ alignSelf: 'center' }}>

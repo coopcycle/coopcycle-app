@@ -8,6 +8,8 @@ import {
   HIDE_ADDRESS_MODAL,
   HIDE_EXPIRED_SESSION_MODAL,
   HIDE_MULTIPLE_SERVERS_IN_SAME_CITY_MODAL,
+  INIT_CART_REQUEST,
+  INIT_CART_SUCCESS,
   INIT_FAILURE,
   INIT_REQUEST,
   INIT_SUCCESS,
@@ -29,9 +31,12 @@ import {
   SET_ADDRESS_OK,
   SET_CART_VALIDATION,
   SET_CHECKOUT_LOADING,
+  SET_RESTAURANT,
   SET_TIMING,
+  SET_TOKEN,
   SHOW_ADDRESS_MODAL,
   SHOW_EXPIRED_SESSION_MODAL,
+  UPDATE_CARTS,
   UPDATE_CART_SUCCESS,
   UPDATE_CUSTOMER_GUEST,
   UPDATE_ITEM_QUANTITY,
@@ -41,12 +46,14 @@ import i18n from '../../i18n'
 import _ from 'lodash'
 
 const initialState = {
-  cart: null,
+  loadingCarts: [],
+  carts: {},
   address: null,
   isAddressOK: null,
   addressModalMessage: '',
   date: null,
   restaurants: [],
+  restaurant: null,
   menu: null,
   isFetching: false,
   errors: [],
@@ -139,12 +146,42 @@ export default (state = initialState, action = {}) => {
 
       return {
         ...state,
+        cart: state.carts[action.payload.restaurant['@id']].cart,
+        token: state.carts[action.payload.restaurant['@id']].token,
         isFetching: false,
         restaurant: action.payload.restaurant,
-        cart: action.payload.cart,
-        token: action.payload.token,
         isAddressOK: null, // We don't know if it's valid
         itemRequestStack: [],
+      }
+
+    case SET_RESTAURANT:
+      return {
+        ...state,
+        restaurant: action.payload,
+      }
+
+    case SET_TOKEN:
+      return {
+        ...state,
+        token: action.payload,
+      }
+
+    case INIT_CART_REQUEST:
+      return {
+        ...state,
+        loadingCarts: [ ...state.loadingCarts, action.payload ],
+        carts: {
+          ...state.carts,
+        },
+      }
+
+    case INIT_CART_SUCCESS:
+      return {
+        ...state,
+        carts: {
+          ...state.carts,
+          [action.payload.cart.restaurant]: action.payload,
+        },
       }
 
     case CLEAR:
@@ -156,32 +193,42 @@ export default (state = initialState, action = {}) => {
       }
 
     case REMOVE_ITEM:
-
       return {
         ...state,
-        cart: {
-          ...state.cart,
-          items: _.filter(state.cart.items, item => item.id !== action.payload.id),
+        carts: {
+          ...state.carts,
+          [action.payload.vendor['@id']]: {
+            ...state.carts[action.payload.vendor['@id']],
+            cart: {
+              ...state.carts[action.payload.vendor['@id']].cart,
+              items: _.filter(state.carts[action.payload.vendor['@id']].cart.items, item => item.id !== action.payload.id),
+            },
+          },
         },
       }
 
     case UPDATE_ITEM_QUANTITY:
-
       return {
         ...state,
-        cart: {
-          ...state.cart,
-          items: _.map(state.cart.items, item => {
-            if (item.id === action.payload.item.id) {
+        carts: {
+          ...state.carts,
+          [action.payload.item.vendor['@id']]: {
+            ...state.carts[action.payload.item.vendor['@id']],
+            cart: {
+              ...state.carts[action.payload.item.vendor['@id']].cart,
+              items: _.map(state.carts[action.payload.item.vendor['@id']].cart.items, item => {
+                if (item.id === action.payload.item.id) {
 
-              return {
-                ...item,
-                quantity: action.payload.quantity,
-              }
-            }
+                  return {
+                    ...item,
+                    quantity: action.payload.quantity,
+                  }
+                }
 
-            return item
-          }),
+                return item
+              }),
+            },
+          },
         },
       }
 
@@ -247,8 +294,23 @@ export default (state = initialState, action = {}) => {
     case UPDATE_CART_SUCCESS:
       return {
         ...state,
-        cart: action.payload,
+        loadingCarts: _.filter(state.loadingCarts, action.payload.restaurant),
+        carts: {
+          ...state.carts,
+          [action.payload.restaurant]:
+            {
+              ...state.carts[action.payload.restaurant],
+              cart: action.payload,
+            },
+        },
+        //cart: action.payload,
         isFetching: false,
+      }
+
+    case UPDATE_CARTS:
+      return {
+        ...state,
+        carts: action.payload,
       }
 
     case SET_CHECKOUT_LOADING:
@@ -335,7 +397,6 @@ export default (state = initialState, action = {}) => {
         ...state,
         showMultipleServersInSameCityModal: false,
       }
-
   }
 
   return state

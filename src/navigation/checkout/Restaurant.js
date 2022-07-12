@@ -1,8 +1,8 @@
-import React from 'react'
-import { View } from 'react-native'
+import React, { useState } from 'react'
+import { Dimensions, Pressable, StyleSheet, View, useColorScheme } from 'react-native'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
-import { Button, Center, HStack, Heading, Skeleton, Text, VStack } from 'native-base';
+import { Box, Button, Center, HStack, Heading, Icon, ScrollView, Skeleton, Text, VStack } from 'native-base';
 import _ from 'lodash'
 import moment from 'moment'
 
@@ -17,7 +17,11 @@ import { shouldShowPreOrder } from '../../utils/checkout'
 import { useQuery } from 'react-query';
 import i18n from '../../i18n';
 import GroupImageHeader from './components/GroupImageHeader';
-import AddressModal from './components/AddressModal';
+import OpeningHours from './components/OpeningHours';
+import Modal from 'react-native-modal';
+import { phonecall } from 'react-native-communications';
+import AddressUtils from '../../utils/Address';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 // Fix: key prop warning
 // https://github.com/GeekyAnts/NativeBase/issues/4473
@@ -95,7 +99,11 @@ function renderClosedNowWarning(restaurant, isAvailable) {
 
 function Restaurant(props) {
   const { navigate } = props.navigation
+  const { height } = Dimensions.get('window')
+  const colorScheme = useColorScheme()
+  const [ infoModal, setInfoModal ] = useState(false)
   const { showFooter, httpClient, restaurant } = props
+
   const nextOpeningDateCheck = _.has(restaurant, 'nextOpeningDate')
   const isAvailable = (hasValidTiming(restaurant.timing.collection)) ||
   hasValidTiming(restaurant.timing.delivery)
@@ -113,11 +121,17 @@ function Restaurant(props) {
     </Center>
   }
 
+  const cardStyle = {
+    ...styles.card,
+    backgroundColor: colorScheme === 'dark' ? 'rgba(255, 255, 255, 0.04)' : 'rgba(0, 0, 0, 0.02)',
+    borderColor: colorScheme === 'dark' ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.1)',
+  }
+
   return (
     <View style={{ flex: 1 }}>
       <View style={{ flex: 1, paddingTop: 60 }}>
         <View style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: 60 }}>
-          <GroupImageHeader image={ restaurant.image } text={restaurant.name} />
+          <GroupImageHeader image={ restaurant.image } text={restaurant.name} onInfo={() => setInfoModal(true)} />
         </View>
         { nextOpeningDateCheck && renderNotAvailableWarning(restaurant, isAvailable) }
         { nextOpeningDateCheck && renderClosedNowWarning(restaurant, isAvailable) }
@@ -136,27 +150,76 @@ function Restaurant(props) {
           testID="cartSubmit"
           disabled={ isLoading } />
       ) }
-      <AddressModal
-        onGoBack={ (address) => {
-          this.props.hideAddressModal()
-          navigate('CheckoutHome', { address })
-        }} />
+
+
+      <Modal
+        testID={'modal'}
+        isVisible={infoModal}
+        onBackdropPress={() => setInfoModal(false)}
+        style={styles.view}
+      >
+        <View maxHeight={height * 0.7}>
+        <ScrollView>
+        <VStack style={styles.content} backgroundColor={colorScheme === 'dark' ? 'dark.100' : 'white'} space={3}>
+          <Box style={styles.center}>
+            <Heading>{restaurant.name}</Heading>
+            <Text>{restaurant.description}</Text>
+            <Text bold padding={3}>{i18n.t('RESTAURANT_OPENING_HOURS')}</Text>
+            <OpeningHours restaurant={restaurant} />
+          </Box>
+          <Pressable onPress={() => { AddressUtils.openMap(restaurant.address, restaurant.name) }} >
+            <HStack space={3} style={cardStyle}>
+              <Icon as={Ionicons} name="map" size={5} color={'blueGray.600'} />
+              <Text>{restaurant.address.streetAddress}</Text>
+            </HStack>
+          </Pressable>
+          <Pressable onPress={ () => { phonecall(restaurant.telephone, true) } }>
+            <HStack space={3} style={cardStyle}>
+              <Icon as={Ionicons} name="call" size={5} color={'blueGray.600'} />
+              <Text>{i18n.t('CALL')} {restaurant.name}</Text>
+            </HStack>
+          </Pressable>
+        </VStack>
+        </ScrollView>
+        </View>
+      </Modal>
+
       <ExpiredSessionModal
         onModalHide={ () => navigate('CheckoutHome') } />
     </View>
   )
 }
 
+const styles = StyleSheet.create({
+  content: {
+    padding: 22,
+    borderTopStartRadius: 4,
+    borderTopRightRadius: 4,
+  },
+  center: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  card: {
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    padding: 12,
+  },
+  view: {
+    justifyContent: 'flex-end',
+    margin: 0,
+  },
+});
+
 function mapStateToProps(state, ownProps) {
 
   const restaurant = ownProps.route.params?.restaurant
-  const cart = state.checkout.cart
-  const cartLoading = state.checkout.isLoading
-  const isCartEmpty = !state.checkout.cart ? true : state.checkout.cart.items.length === 0
-  const isSameRestaurant = restaurant['@id'] === cart?.restaurant
+  const cart = state.checkout.carts[restaurant['@id']]?.cart
+  const cartLoading = _.includes(state.checkout.loadingCarts, restaurant['@id'])
+  const isCartEmpty = !state.checkout.carts[restaurant['@id']] ? true : cart.items.length === 0
 
   return {
-    showFooter: isSameRestaurant && (cartLoading || !isCartEmpty),
+    showFooter: cartLoading || !isCartEmpty,
     cartLoading,
     restaurant,
     cart,

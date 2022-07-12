@@ -3,6 +3,7 @@ import BackgroundGeolocation from 'react-native-background-geolocation'
 import Config from 'react-native-config'
 import axios from 'axios'
 import qs from 'qs'
+import { Linking, Platform } from 'react-native';
 
 class AddressUtils {
 
@@ -78,6 +79,28 @@ class AddressUtils {
       })
     })
   }
+
+  static geoDiff({ geo: { latitude, longitude } }, { geo: { latitude: latitude2, longitude: longitude2 } }): boolean {
+    return latitude === latitude2 && longitude === longitude2
+  }
+
+  static openMap({ latitude, longitude }, label) {
+
+    const url = Platform.select({
+      ios: `maps:${latitude},${longitude}?q=${label}`,
+      android: `geo:${latitude},${longitude}?q=${label}`,
+    });
+
+    Linking.canOpenURL(url).then(supported => {
+      if (supported) {
+        return Linking.openURL(url)
+      } else {
+        const browser_url = `https://www.google.de/maps/@${latitude},${longitude}?q=${label}`
+        return Linking.openURL(browser_url);
+      }
+    });
+  }
+
 }
 
 export default AddressUtils

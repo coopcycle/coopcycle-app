@@ -113,6 +113,7 @@ i18next
     ns: ['common'],
     defaultNS: 'common',
     debug: process.env.DEBUG,
+    compatibilityJSON: 'v3',
   })
 
 export default i18next

@@ -62,7 +62,7 @@ const TimingBadge = ({ restaurant }) => {
 
   return (
     <HStack style={ [styles.badge] } bg={ colorScheme === 'dark' ? 'gray.800' : 'gray.200' } px="2">
-      <Icon as={ FontAwesome } name="clock-o" size="xs" mr="1" />
+      <Icon as={ FontAwesome } name="clock-o" size="xs" mr="1"  />
       <Text style={ styles.badgeText }>{ getNextShippingTimeAsText(restaurant) }</Text>
     </HStack>
   )
@@ -84,23 +84,23 @@ class RestaurantList extends Component {
         onPress={ () => this.props.onItemClick(restaurant) }
         testID={ restaurant.testID }>
         <View style={ styles.item }>
+          <View style={{ width: '33.3333%' }}>
+            { showPreOrder &&
+              <ImageBackground source={{ uri: restaurant.image }} style={{ width: '100%', height: '100%' }}>
+                <View style={ styles.overlay }>
+                  <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                    <Icon as={ FontAwesome } name="clock-o" size="4" color="white"/>
+                    <Text style={ styles.closedLabel } numberOfLines={ 1 }>{ this.props.t('RESTAURANT_PRE_ORDER') }</Text>
+                  </View>
+                </View>
+              </ImageBackground>
+            }
+            { !showPreOrder && <Image style={{ flex: 1, height: undefined, width: undefined }} resizeMode="cover" source={{ uri: restaurant.image }} />}
+          </View>
           <View style={{ flex: 1, width: '66.6666%', padding: 15, paddingBottom: 25 }}>
             <OneLineText style={ [styles.restaurantNameText] }>{ restaurant.name }</OneLineText>
             <OneLineText note numberOfLines={ 2 }>{ getRestaurantCaption(restaurant) }</OneLineText>
             <TimingBadge restaurant={ restaurant } />
-          </View>
-          <View style={{ width: '33.3333%' }}>
-            { showPreOrder &&
-            <ImageBackground source={{ uri: restaurant.image }} style={{ width: '100%', height: '100%' }}>
-              <View style={ styles.overlay }>
-                <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                  <Icon as={ FontAwesome } name="clock-o" size="4" color="white"/>
-                  <Text style={ styles.closedLabel } numberOfLines={ 1 }>{ this.props.t('RESTAURANT_PRE_ORDER') }</Text>
-                </View>
-              </View>
-            </ImageBackground>
-            }
-            { !showPreOrder && <Image style={{ flex: 1, height: undefined, width: undefined }} resizeMode="cover" source={{ uri: restaurant.image }} />}
           </View>
         </View>
       </TouchableOpacity>
@@ -117,6 +117,7 @@ class RestaurantList extends Component {
     if (addressAsText) {
       return (
         <Center flex={ 1 } justifyContent="center" alignItems="center" px="2">
+          <Image style={{ maxWidth: '40%', maxHeight: '30%', marginVertical: '5%', margin: 'auto' }} source={require('../assets/images/no_addresses.png')} resizeMode={'contain'} />
           <Text note style={{ textAlign: 'center' }}>
             {this.props.t('NO_RESTAURANTS')}
           </Text>
@@ -124,6 +125,7 @@ class RestaurantList extends Component {
       )
     }
 
+    //FIXME: This code is maybe unreachable
     return (
       <Center flex={ 1 } justifyContent="center" alignItems="center" testID="checkoutSearchContent">
         <Icon as={Ionicons} name="search" style={{ color: '#cccccc' }} />

@@ -141,7 +141,7 @@ class AddressModal extends Component {
                   location={ this.props.location }
                   testID="addressModalTypeahead"
                   onSelectAddress={ (address) => {
-                    this.props.setAddress(address)
+                    this.props.setAddress(address, this.props.cart)
                     this.setState({ address })
                   }}
                   value={ this.props.address && this.props.address.streetAddress }
@@ -244,7 +244,7 @@ function mapStateToProps(state, ownProps) {
 function mapDispatchToProps(dispatch) {
 
   return {
-    setAddress: address => dispatch(setAddress(address)),
+    setAddress: (address, cart) => dispatch(setAddress(address, cart)),
     hideAddressModal: () => dispatch(hideAddressModal()),
     setAddressModalHidden: (isHidden) => dispatch(setAddressModalHidden(isHidden)),
     setFulfillmentMethod: (method) => dispatch(setFulfillmentMethod(method)),
