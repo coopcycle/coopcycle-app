@@ -51,6 +51,7 @@ function Tabs({ rootNavigation: navigation }) {
   return (
     <Tab.Navigator
       screenOptions={{
+        ...stackNavigatorScreenOptions,
         headerShown: false,
         tabBarActiveTintColor: primaryColor,
       }}
@@ -58,7 +59,7 @@ function Tabs({ rootNavigation: navigation }) {
       <Tab.Screen name="Home" options={{
         tabBarIcon: ({ color, size }) => <Icon as={FontAwesome5} name="home" size={size} color={color} />,
       }} component={screens.RestaurantsPage} />
-      { Config.CHECKOUT_SEARCH_ENABLED &&
+      { Config.CHECKOUT_SEARCH_ENABLED === '1' &&
       <Tab.Screen name="Search" options={{
         tabBarIcon: ({ color, size }) => <Icon as={FontAwesome5} name="search" size={size} color={color} />,
       }} component={screens.SearchForm} /> }
