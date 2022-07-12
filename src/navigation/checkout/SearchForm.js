@@ -63,20 +63,6 @@ class SearchForm extends Component {
       };
     }
 
-    _setFilter = () => {
-      this.setState({ loading: true })
-      this.props.applyRestaurantsFilters({
-        query: this.state.query,
-      })
-      this.props.navigation.goBack()
-      this.setState({ loading: false })
-    }
-
-    _clearFilter = () => {
-      this.props.clearRestaurantsFilters()
-      this.props.navigation.goBack()
-    }
-
   _onChange = (q = null) => {
     if (q === null || q.length === 0) {
       this.setState({ autocomplete: null })
