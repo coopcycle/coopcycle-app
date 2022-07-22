@@ -7,6 +7,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   View,
+  SafeAreaView
 } from 'react-native'
 import {
   Center, Icon, Text,
@@ -251,7 +252,7 @@ class Summary extends Component {
       _.find(cart.potentialAction, action => action['@type'] === 'EnableReusablePackagingAction')
 
     return (
-      <View style={{ flex: 1 }} onLayout={ () => {
+      <SafeAreaView style={{ flex: 1 }} onLayout={ () => {
           const { width } = Dimensions.get('window')
           this.setState({
             translateXValue: new Animated.Value(width),
@@ -323,7 +324,7 @@ class Summary extends Component {
           isVisible={ this.state.isCollectionDisclaimerModalVisible }
           onSwipeComplete={ () => this.setState({ isCollectionDisclaimerModalVisible: false }) }
           restaurant={ restaurant } />
-      </View>
+      </SafeAreaView>
     );
   }
 }

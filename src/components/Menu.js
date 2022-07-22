@@ -1,14 +1,11 @@
 import React, { Component } from 'react'
-import { ActivityIndicator, Animated, SectionList, StyleSheet, TouchableOpacity, View } from 'react-native'
-import { Box, Column, Flex, Heading, Icon, Image, Row, Text } from 'native-base';
+import { ActivityIndicator, SectionList, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { Column, Flex, Heading, Image, Row, Text } from 'native-base';
 import _ from 'lodash'
-import { AllergenList, RestrictedDietList } from './MenuBadges'
 
-const AnimatedSectionList = Animated.createAnimatedComponent(SectionList);
 
 import { formatPrice } from '../utils/formatting'
 import ItemSeparator from './ItemSeparator'
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 const styles = StyleSheet.create({
   sectionHeader: {
@@ -117,7 +114,7 @@ class Menu extends Component {
     }
 
     return (
-      <AnimatedSectionList
+      <SectionList
         testID="menu"
         sections={ sections }
         renderItem={ ({ item, index, section }) => this.renderItem(item, index, section) }

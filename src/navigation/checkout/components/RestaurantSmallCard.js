@@ -1,4 +1,4 @@
-import { Dimensions, TouchableOpacity, View } from 'react-native';
+import { Dimensions, Pressable, View } from 'react-native';
 import { Box, ChevronRightIcon, HStack, Image, Text, VStack } from 'native-base';
 import { getNextShippingTimeAsText } from '../../../utils/checkout';
 import { greyColor } from '../../../styles/common';
@@ -22,7 +22,7 @@ const RestaurantSmallCard = (props) => {
 
   }
   return (
-    <><TouchableOpacity onPress={() => onPress(restaurant) }>
+    <><Pressable onPress={() => onPress(restaurant) }>
       <HStack space={4} padding={2}>
         <Image size={shippingTime ? 'sm' : 'xs'} source={{ uri: restaurant.image }} alt={restaurant.name} />
         <VStack>
@@ -34,7 +34,7 @@ const RestaurantSmallCard = (props) => {
           <ChevronRightIcon />
         </View>
       </HStack>
-    </TouchableOpacity>
+    </Pressable>
       <Box marginLeft={5} marginRight={5} borderBottomWidth={1} borderColor={greyColor} />
     </>
   )

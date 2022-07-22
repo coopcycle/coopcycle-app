@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Dimensions, InteractionManager, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context'
 import { Text } from 'native-base';
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
@@ -166,7 +165,7 @@ class RestaurantsPage extends Component {
       )
     } else {
       return (
-        <SafeAreaView edges={ [ 'right', 'bottom', 'left' ] } style={{ flexGrow: 1 }}>
+        <View edges={ [ 'right', 'bottom', 'left' ] } style={{ flexGrow: 1 }}>
           <RestaurantList
             restaurants={ restaurants }
             addressAsText={addressAsText}
@@ -175,7 +174,7 @@ class RestaurantsPage extends Component {
               this.props.setRestaurant(restaurant['@id'])
               this.props.navigation.navigate('CheckoutRestaurant', { restaurant })
             } } />
-        </SafeAreaView>
+        </View>
       )
     }
 

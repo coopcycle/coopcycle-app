@@ -10,13 +10,10 @@ import CartFooterButton from './CartFooterButton'
 class CartFooter extends Component {
 
   render() {
-
     const { cart, initLoading } = this.props
-
     return (
-      <HStack testID="cartFooter">
-        <View style={{ flex: 1, alignItems: 'center', paddingHorizontal: 5, paddingVertical: 5 }}>
-          {initLoading && <Skeleton h="10" w={'100%'} startColor={'cyan.500'} />}
+      <View style={{ alignItems: 'center'}}>
+      {initLoading && <Skeleton h="10" w={'100%'} startColor={'cyan.500'} />}
           {!initLoading && <CartFooterButton
             cart={ cart }
             onPress={ () => this.props.onSubmit() }
@@ -25,7 +22,6 @@ class CartFooter extends Component {
             disabled={  this.props.disabled } />
           }
         </View>
-      </HStack>
     )
   }
 }
