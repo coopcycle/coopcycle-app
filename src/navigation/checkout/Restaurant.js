@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Dimensions, Pressable, StyleSheet, View, useColorScheme } from 'react-native'
+import { Dimensions, Pressable, StyleSheet, View, useColorScheme, SafeAreaView } from 'react-native'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 import { Box, Button, Center, HStack, Heading, Icon, ScrollView, Skeleton, Text, VStack } from 'native-base';
@@ -25,40 +25,25 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 // Fix: key prop warning
 // https://github.com/GeekyAnts/NativeBase/issues/4473
-const LoadingPhantom = () => <Center w="100%">
-  <HStack w="95%" space={8} p="4">
+const LoadingPhantom = () => <Center>
+  <HStack space={8} p="6">
     <VStack flex="3" space="4">
-      <Skeleton flex={1} />
+      <Skeleton flex={1} rounded="md"  />
       <Skeleton.Text flex={1} noOfLines={2} lineHeight={2} />
-      <HStack space="2" alignItems="center">
-        <Skeleton size="4" rounded="full" />
-        <Skeleton h="3" flex="2" rounded="full" />
-        <Skeleton h="3" flex="1" rounded="full" startColor="cyan.300" />
-      </HStack>
     </VStack>
     <Skeleton flex="1" h="100" w="100" rounded="md" />
   </HStack>
-  <HStack w="95%" space={8} p="4">
+  <HStack space={8} p="6">
     <VStack flex="3" space="4">
-      <Skeleton flex={1} />
+      <Skeleton flex={1} rounded="md" />
       <Skeleton.Text flex={1} noOfLines={2} lineHeight={2} />
-      <HStack space="2" alignItems="center">
-        <Skeleton size="4" rounded="full" />
-        <Skeleton h="3" flex="2" rounded="full" />
-        <Skeleton h="3" flex="1" rounded="full" />
-      </HStack>
     </VStack>
     <Skeleton flex="1" h="100" w="100" rounded="md" />
   </HStack>
-  <HStack w="95%" space={8} p="4">
+  <HStack space={8} p="6">
     <VStack flex="3" space="4">
-      <Skeleton flex={1} />
+      <Skeleton flex={1} rounded="md" />
       <Skeleton.Text flex={1} noOfLines={2} lineHeight={2} />
-      <HStack space="2" alignItems="center">
-        <Skeleton size="4" rounded="full" />
-        <Skeleton h="3" flex="2" rounded="full" />
-        <Skeleton h="3" flex="1" rounded="full" startColor="amber.300" />
-      </HStack>
     </VStack>
     <Skeleton flex="1" h="100" w="100" rounded="md" />
   </HStack>
