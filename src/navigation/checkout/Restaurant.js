@@ -113,7 +113,7 @@ function Restaurant(props) {
   }
 
   return (
-    <View style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1 }}>
       <View style={{ flex: 1, paddingTop: 60 }}>
         <View style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: 60 }}>
           <GroupImageHeader image={ restaurant.image } text={restaurant.name} onInfo={() => setInfoModal(true)} />
@@ -171,7 +171,7 @@ function Restaurant(props) {
 
       <ExpiredSessionModal
         onModalHide={ () => navigate('CheckoutHome') } />
-    </View>
+    </SafeAreaView>
   )
 }
 

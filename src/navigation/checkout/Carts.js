@@ -27,7 +27,7 @@ class Carts extends Component {
     return (
       <AnimatedView style={{ ...styles.animatedView, transform: [{ scale }] }}>
       <RectButton style={ styles.deleteButton } onPress={() => this.props.deleteCart(restaurantID)}>
-          <Icon as={Ionicons} name="trash" size={5} style={{ color: '#ff0000' }} />
+          <Icon as={Ionicons} name="trash" size={8} style={{ color: '#ff0000'}} />
       </RectButton>
       </AnimatedView>
     );
