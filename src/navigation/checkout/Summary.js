@@ -154,6 +154,7 @@ class Summary extends Component {
     return (
       <FlatList
         data={ this.props.cart.items }
+        alwaysBounceVertical={false}
         keyExtractor={ (item, index) => `item:${index}` }
         renderItem={ ({ item, index }) => this.renderItem(item, index) }
         extraData={{ edit: this.props.edit }} />
