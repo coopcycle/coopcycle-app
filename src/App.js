@@ -1,5 +1,5 @@
 import React, { createRef, useEffect } from 'react'
-import { LogBox, Platform, useColorScheme } from 'react-native'
+import { LogBox, Platform, useColorScheme, SafeAreaView } from 'react-native'
 
 import { NativeBaseProvider, extendTheme } from 'native-base'
 import tracker from './analytics/Tracker'
