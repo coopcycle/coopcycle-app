@@ -175,7 +175,6 @@ class LoginForm extends Component {
           <GoogleSigninButton
             style={{
               width: '100%',
-              height: 40,
             }}
             size={ GoogleSigninButton.Size.Wide }
             color={ GoogleSigninButton.Color.Dark }
