@@ -13,7 +13,7 @@ target 'Naofood' do
 
   pod 'MercadoPagoSDK', :build_type => :dynamic_framework, :modular_headers => true
 
-  pod 'GoogleSignIn', '~> 6.0.2'
+  pod 'GoogleSignIn', '~> 6.1.0'
 
   use_react_native!(
     :path => config[:reactNativePath],
