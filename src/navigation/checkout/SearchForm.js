@@ -16,22 +16,22 @@ const DATA = [
   {
     name: 'Exclusivités',
     color: 'yellow',
-    image: 'https://i.imgur.com/lQ1pvGr.png',
+    image: 'https://i.imgur.com/hruOumq.jpg',
   },
   {
     name: 'Burgers',
     color: 'brown',
-    image: 'https://i.imgur.com/guWCeLZ.png',
+    image: 'https://i.imgur.com/WoaZj8G.jpg',
   },
   {
     name: 'Asiatique',
     color: 'blue',
-    image: 'https://i.imgur.com/IPC9Q6Q.png',
+    image: 'https://i.imgur.com/dxYWsIC.jpg',
   },
   {
     name: 'Pizza',
     color: 'red',
-    image: 'https://i.imgur.com/ywBdBfw.png',
+    image: 'https://i.imgur.com/NzznMNq.jpg',
   },
 ]
 
@@ -46,6 +46,7 @@ const Autocomplete = (props) => {
 
   return <FlatList
     data={props.restaurants}
+    alwaysBounceVertical={false}
     initialNumToRender={ 15 }
     renderItem={({ item }) => <RestaurantSmallCard restaurant={item.item} onPress={props.onPress} />}
    />
