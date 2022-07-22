@@ -3,7 +3,7 @@ import { loadAddresses, newAddress } from '../../redux/Account/actions';
 import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
 import { Dimensions, KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
-import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
+import MapView, { Marker } from 'react-native-maps';
 import { Button, Divider, FormControl, Heading, Input } from 'native-base';
 
 class AddressDetails extends Component {
@@ -30,7 +30,6 @@ class AddressDetails extends Component {
         height: width * 0.55,
         width: width,
       }}
-      provider={PROVIDER_GOOGLE}
       liteMode={true}
       initialRegion={{
         latitude,
