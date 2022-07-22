@@ -131,14 +131,12 @@ const MainNavigator = () => (
       component={screens.SearchResults}
       options={{
         title: i18n.t('SEARCH'),
-        ...TransitionPresets.ModalTransition,
       }}/>
     <MainStack.Screen
       name="AccountOrders"
       component={ screens.AccountOrdersPage }
       options={{
         title: i18n.t('MY_ORDERS'),
-        ...TransitionPresets.ModalTransition,
       }}
     />
     <MainStack.Screen
