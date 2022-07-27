@@ -48,7 +48,7 @@ function RestaurantSearch(props) {
         <Center>
           <Text fontSize={'md'} style={{
             color: whiteColor,
-          }}>{ props.defaultValue?.streetAddress }</Text>
+          }} numberOfLines={1}>{ props.defaultValue?.streetAddress }</Text>
           <ChevronDownIcon color={ whiteColor }/>
         </Center>
       </TouchableNativeFeedback>
