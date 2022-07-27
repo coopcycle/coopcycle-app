@@ -102,7 +102,7 @@ function Restaurant(props) {
   const { height } = Dimensions.get('window')
   const colorScheme = useColorScheme()
   const [ infoModal, setInfoModal ] = useState(false)
-  const { showFooter, httpClient, restaurant } = props
+  const { showFooter, httpClient, restaurant, cart } = props
 
   const nextOpeningDateCheck = _.has(restaurant, 'nextOpeningDate')
   const isAvailable = (hasValidTiming(restaurant.timing.collection)) ||
@@ -144,7 +144,7 @@ function Restaurant(props) {
       </View>
       { showFooter && (
         <CartFooter
-          onSubmit={ () => navigate('CheckoutSummary', { restaurant }) }
+          onSubmit={ () => navigate('CheckoutSummary', { cart, restaurant }) }
           cart={props.cart}
           initLoading={props.cartLoading}
           testID="cartSubmit"
@@ -214,9 +214,10 @@ const styles = StyleSheet.create({
 function mapStateToProps(state, ownProps) {
 
   const restaurant = ownProps.route.params?.restaurant
-  const cart = state.checkout.carts[restaurant['@id']]?.cart
-  const cartLoading = _.includes(state.checkout.loadingCarts, restaurant['@id'])
-  const isCartEmpty = !state.checkout.carts[restaurant['@id']] ? true : cart.items.length === 0
+  const restaurantKey = `${state.app.baseURL}${restaurant['@id']}`
+  const cart = state.checkout.carts[restaurantKey]?.cart
+  const cartLoading = _.includes(state.checkout.loadingCarts, restaurantKey)
+  const isCartEmpty = !state.checkout.carts[restaurantKey] ? true : cart.items.length === 0
 
   return {
     showFooter: cartLoading || !isCartEmpty,

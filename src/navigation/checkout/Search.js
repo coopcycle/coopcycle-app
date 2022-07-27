@@ -81,6 +81,7 @@ class RestaurantsPage extends Component {
   _onRestaurantSelectedInTab(restaurant) {
     this.props.selectServer(this.state.baseURL)
       .then(() => {
+        this.props.setRestaurant(restaurant['@id'])
         this.props.navigation.navigate('CheckoutRestaurant', { restaurant })
       })
   }

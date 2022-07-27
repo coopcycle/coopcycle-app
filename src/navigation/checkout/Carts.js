@@ -17,7 +17,7 @@ const AnimatedView = Animated.createAnimatedComponent(View);
 
 class Carts extends Component {
 
-  renderRightActions = (progress, dragX, restaurantID) => {
+  renderRightActions = (progress, dragX, restaurantKey) => {
     const scale = dragX.interpolate({
       inputRange: [ -80, 0 ],
       outputRange: [ 1, 0 ],
@@ -26,7 +26,7 @@ class Carts extends Component {
     //FIXME: Close Swipeable on delete
     return (
       <AnimatedView style={{ ...styles.animatedView, transform: [{ scale }] }}>
-      <RectButton style={ styles.deleteButton } onPress={() => this.props.deleteCart(restaurantID)}>
+      <RectButton style={ styles.deleteButton } onPress={() => this.props.deleteCart(restaurantKey)}>
           <Icon as={Ionicons} name="trash" size={5} style={{ color: '#ff0000' }} />
       </RectButton>
       </AnimatedView>
@@ -45,7 +45,7 @@ class Carts extends Component {
 
   _renderItem = (item, index) =>
     <><Swipeable
-      renderRightActions={(progress, dragX) => this.renderRightActions(progress, dragX, item.restaurant['@id'])}
+      renderRightActions={(progress, dragX) => this.renderRightActions(progress, dragX, item.cart.restaurantKey)}
     ><TouchableOpacity onPress={() => {
       this.props.setRestaurant(item.restaurant['@id'])
       this.props.navigation.navigate('CheckoutSummary', { cart: item.cart, restaurant: item.restaurant })
@@ -67,7 +67,7 @@ class Carts extends Component {
     </>
 
   render() {
-    return <FlatList data={_.values(this.props.carts)} keyExtractor={(item, index) => index} renderItem={({ item, index }) => this._renderItem(item, index) } ListEmptyComponent={this.emptyList} />
+    return <FlatList data={_.values(this.props.carts)} keyExtractor={(item, index) => index} renderItem={({ item, index }) => item && this._renderItem(item, index) } ListEmptyComponent={this.emptyList} />
   }
 }
 
