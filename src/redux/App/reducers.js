@@ -237,7 +237,8 @@ export default (state = initialState, action = {}) => {
     case SET_SETTINGS:
       return {
         ...state,
-        settings: action.payload,
+        settings:
+          { ...action.payload, guest_checkout_enabled: false },
       }
 
     case SET_INTERNET_REACHABLE:
