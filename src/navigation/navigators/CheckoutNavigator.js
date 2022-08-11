@@ -16,6 +16,28 @@ import { selectIsAuthenticated } from '../../redux/App/selectors';
 import CartsBadge from '../checkout/components/CartsBadge';
 import Config from 'react-native-config';
 
+const OrderStack = createStackNavigator()
+
+const OrderNavigator = () => (
+  <OrderStack.Navigator
+    screenOptions={ stackNavigatorScreenOptions }>
+    <OrderStack.Screen
+      name="AccountOrdersList"
+      component={ screens.AccountOrdersPage }
+      options={{
+        title: i18n.t('MY_ORDERS'),
+      }}
+    />
+    <OrderStack.Screen
+      name="AccountOrder"
+      component={ screens.AccountOrderPage }
+      options={ ({ route }) => ({
+        title: route.params.order ? i18n.t('ORDER_NUMBER', { number: route.params.order.number }) : i18n.t('MY_ORDER'),
+      })}
+    />
+  </OrderStack.Navigator>
+)
+
 function getNestedOptions(navigation, route) {
   const routeName = getFocusedRouteNameFromRoute(route) ?? 'Feed';
 
@@ -133,14 +155,7 @@ const MainNavigator = () => (
         title: i18n.t('SEARCH'),
         ...TransitionPresets.ModalTransition,
       }}/>
-    <MainStack.Screen
-      name="AccountOrders"
-      component={ screens.AccountOrdersPage }
-      options={{
-        title: i18n.t('MY_ORDERS'),
-        ...TransitionPresets.ModalTransition,
-      }}
-    />
+
     <MainStack.Screen
       name="AccountAddresses"
       component={ screens.AccountAddressesPage }
@@ -155,29 +170,20 @@ const MainNavigator = () => (
         title: i18n.t('MY_ADDRESSES'),
       }}
     />
-
-    <MainStack.Screen
-      name="AccountOrdersList"
-      component={ screens.AccountOrdersPage }
-      options={{
-        title: i18n.t('MY_ORDERS'),
-      }}
-    />
-    <MainStack.Screen
-      name="AccountOrder"
-      component={ screens.AccountOrderPage }
-      options={ ({ route }) => ({
-        title: route.params.order ? i18n.t('ORDER_NUMBER', { number: route.params.order.number }) : i18n.t('MY_ORDER'),
-        ...TransitionPresets.ModalTransition,
-      })}
-    />
-
     <MainStack.Screen
       name="OrderTracking"
       component={ screens.OrderTrackingPage }
       options={ ({ route }) => ({
         title: route.params.order ? i18n.t('ORDER_NUMBER', { number: route.params.order.number }) : i18n.t('MY_ORDER'),
       })}
+    />
+    <MainStack.Screen
+      name="AccountOrders"
+      component={ OrderNavigator }
+      options={{
+        title: i18n.t('MY_ORDERS'),
+        headerShown: false,
+      }}
     />
   </MainStack.Navigator>
 )
@@ -279,6 +285,18 @@ const CheckoutNav = ({ address }) => {
 
   if (!address) {
 
+    const showHelp = (navigation, route) => () => {
+      if (!route.params?.help) {
+        return <></>
+      }
+      return <TouchableOpacity style={{ paddingHorizontal: 10 }}
+                        onPress={ () => {
+                          navigation.setParams({ help: !(route.params?.help || false) })
+                        }}>
+        <Text style={{ color: 'white' }}>{i18n.t('CLOSE')}</Text>
+      </TouchableOpacity>
+    }
+
     return (
       <RootStack.Navigator
         screenOptions={{ ...stackNavigatorScreenOptions, presentation: 'modal' }}
@@ -286,9 +304,10 @@ const CheckoutNav = ({ address }) => {
         <RootStack.Screen
           name="CheckoutAskAddress"
           component={ AskAddress }
-          options={ ({ navigation }) => ({
-            title: i18n.t('WHERE_ARE_YOU'),
+          options={ ({ navigation, route }) => ({
+            title: false,
             headerLeft: headerLeft(navigation),
+            headerRight: showHelp(navigation, route),
           })}
         />
       </RootStack.Navigator>
