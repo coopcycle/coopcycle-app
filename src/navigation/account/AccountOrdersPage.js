@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
 import { InteractionManager, SectionList, View } from 'react-native'
-import {
-  HStack, Heading, Pressable, Text,
-} from 'native-base'
+import { HStack, Heading, Text } from 'native-base'
 import _ from 'lodash'
 import moment from 'moment'
 import { connect } from 'react-redux'
@@ -10,6 +8,7 @@ import { withTranslation } from 'react-i18next'
 import { formatPrice } from '../../utils/formatting'
 import { loadOrders } from '../../redux/Account/actions'
 import ItemSeparator from '../../components/ItemSeparator'
+import { TouchableNativeFeedback } from 'react-native-gesture-handler';
 
 class AccountOrdersPage extends Component {
 
@@ -24,12 +23,12 @@ class AccountOrdersPage extends Component {
     const { navigate } = this.props.navigation
 
     return (
-      <Pressable onPress={() => navigate('AccountOrders', { screen: 'AccountOrder', params: { order } }) }>
+      <TouchableNativeFeedback onPress={() => navigate('AccountOrders', { screen: 'AccountOrder', params: { order, tracking: false } }) }>
         <HStack justifyContent="space-between" p="2">
           <Text>{ order.restaurant.name }</Text>
           <Text>{ formatPrice(order.total) }</Text>
         </HStack>
-      </Pressable>
+      </TouchableNativeFeedback>
     );
   }
 

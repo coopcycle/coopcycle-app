@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { Animated, FlatList, Image } from 'react-native'
-import { Avatar, Box, Button, Center, ChevronRightIcon, HStack, Heading, Icon, Text, VStack, View } from 'native-base'
+import { Animated, Dimensions, FlatList, Image } from 'react-native'
+import { Avatar, Box, Button, ChevronRightIcon, HStack, Heading, Icon, Text, VStack, View } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 import { Spacer } from 'native-base/src/components/primitives/Flex';
@@ -13,7 +13,7 @@ import { deleteCart, setRestaurant } from '../../redux/Checkout/actions';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const AnimatedView = Animated.createAnimatedComponent(View);
-
+const { width } = Dimensions.get('window')
 
 class Carts extends Component {
 
@@ -55,7 +55,7 @@ class Carts extends Component {
         <VStack>
           <Text bold>{item.restaurant.name}</Text>
           <Text color={darkGreyColor}>{i18n.t('ITEM', { count: item.cart.items.length })} • {formatPrice(item.cart.total)}</Text>
-          <Text color={darkGreyColor}>{item.cart.shippingAddress?.streetAddress}</Text>
+          <Text noOfLines={1} maxWidth={width - 170} color={darkGreyColor}>{item.cart.shippingAddress?.streetAddress}</Text>
         </VStack>
         <Spacer/>
           <View style={{ flexGrow: 1, justifyContent:'center', alignItems: 'flex-end' }}>
