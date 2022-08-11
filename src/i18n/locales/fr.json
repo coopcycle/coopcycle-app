@@ -398,6 +398,7 @@
         "RESULT": "{{count}} résultat",
         "RESULT_plural": "{{count}} résultats",
         "EMPTY_HERE": "C'est complètement vide par ici",
-        "CALL": "Appeler"
+        "CALL": "Appeler",
+        "SHOW_DELIVERY_ZONE": "Afficher la zone de livraison"
     }
 }

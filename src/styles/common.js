@@ -3,7 +3,7 @@
 import Config from 'react-native-config'
 
 let primaryColor = Config.PRIMARY_COLOR || '#e4022d',
-    whiteColor = '#fff',
+    whiteColor = '#ffffff',
     darkGreyColor = '#424242',
     greyColor = '#95A5A6',
     lightGreyColor = '#ECF0F1',

@@ -414,6 +414,7 @@
         "OTHER_RESULTS": "Other results",
         "RESULT": "{{count}} result",
         "RESULT_plural": "{{count}} results",
-        "CALL": "Call"
+        "CALL": "Call",
+        "SHOW_DELIVERY_ZONE": "Display the delivery zone"
     }
 }
