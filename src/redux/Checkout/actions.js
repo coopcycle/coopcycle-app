@@ -710,16 +710,12 @@ function handleSuccessNav(dispatch, order) {
 
   // Then, navigate to order screen
   NavigationHolder.dispatch(CommonActions.navigate({
-    name: 'AccountNav',
+    name: 'AccountOrders',
     // We skip the AccountOrders screen
     params: {
-      screen: 'AccountOrders',
+      screen: 'AccountOrder',
       initial: false,
-      params: {
-        screen: 'AccountOrder',
-        initial: false,
-        params: { order },
-      },
+      params: { order },
     },
   }))
 

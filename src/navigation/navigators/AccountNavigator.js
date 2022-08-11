@@ -5,28 +5,6 @@ import screens, { headerLeft } from '..'
 import { stackNavigatorScreenOptions } from '../styles'
 import i18n from '../../i18n'
 
-const OrderStack = createStackNavigator()
-
-const OrderNavigator = () => (
-  <OrderStack.Navigator
-    screenOptions={ stackNavigatorScreenOptions }>
-    <OrderStack.Screen
-      name="AccountOrdersList"
-      component={ screens.AccountOrdersPage }
-      options={{
-        title: i18n.t('MY_ORDERS'),
-      }}
-    />
-    <OrderStack.Screen
-      name="AccountOrder"
-      component={ screens.AccountOrderPage }
-      options={ ({ route }) => ({
-        title: route.params.order ? i18n.t('ORDER_NUMBER', { number: route.params.order.number }) : i18n.t('MY_ORDER'),
-      })}
-    />
-  </OrderStack.Navigator>
-)
-
 const Stack = createStackNavigator()
 
 export default () => (
@@ -45,14 +23,6 @@ export default () => (
       component={ screens.AccountAddressesPage }
       options={{
         title: i18n.t('MY_ADDRESSES'),
-      }}
-    />
-    <Stack.Screen
-      name="AccountOrders"
-      component={ OrderNavigator }
-      options={{
-        title: i18n.t('MY_ORDERS'),
-        headerShown: false,
       }}
     />
     <Stack.Screen
