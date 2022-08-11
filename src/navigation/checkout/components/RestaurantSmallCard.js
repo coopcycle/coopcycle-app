@@ -18,7 +18,7 @@ const RestaurantSmallCard = (props) => {
     }
 
     //FIXME: See if there is an other way to prevent long text to push element out of the screen
-    return <Text noOfLines={1} maxWidth={width - 160} >{text}</Text>
+    return <Text noOfLines={1} maxWidth={width - 170} >{text}</Text>
 
   }
   return (
