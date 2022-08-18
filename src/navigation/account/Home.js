@@ -36,7 +36,7 @@ class AccountHome extends Component {
       },
       {
         label: this.props.t('ORDERS'),
-        onPress: () => navigate('AccountOrders', { screen: 'AccountOrdersList' }),
+        onPress: () => navigate('AccountOrdersList'),
       },
     ]
 

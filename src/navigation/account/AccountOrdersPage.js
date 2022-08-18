@@ -22,8 +22,19 @@ class AccountOrdersPage extends Component {
 
     const { navigate } = this.props.navigation
 
+    const stateToRoute = state => {
+      //TODO: improve state handling
+      switch (state) {
+        case 'fulfilled':
+        case 'cancelled':
+        case 'refused':
+          return 'AccountOrder';
+        default:
+          return 'OrderTracking';
+      }
+    }
     return (
-      <TouchableNativeFeedback onPress={() => navigate('AccountOrders', { screen: 'AccountOrder', params: { order, tracking: false } }) }>
+        <TouchableNativeFeedback onPress={() => navigate(stateToRoute(order.state),  { order }) }>
         <HStack justifyContent="space-between" p="2">
           <Text>{ order.restaurant.name }</Text>
           <Text>{ formatPrice(order.total) }</Text>

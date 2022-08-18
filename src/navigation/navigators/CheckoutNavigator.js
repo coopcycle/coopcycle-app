@@ -155,6 +155,30 @@ const MainNavigator = () => (
         title: i18n.t('MY_ADDRESSES'),
       }}
     />
+
+    <MainStack.Screen
+      name="AccountOrdersList"
+      component={ screens.AccountOrdersPage }
+      options={{
+        title: i18n.t('MY_ORDERS'),
+      }}
+    />
+    <MainStack.Screen
+      name="AccountOrder"
+      component={ screens.AccountOrderPage }
+      options={ ({ route }) => ({
+        title: route.params.order ? i18n.t('ORDER_NUMBER', { number: route.params.order.number }) : i18n.t('MY_ORDER'),
+        ...TransitionPresets.ModalTransition,
+      })}
+    />
+
+    <MainStack.Screen
+      name="OrderTracking"
+      component={ screens.OrderTrackingPage }
+      options={ ({ route }) => ({
+        title: route.params.order ? i18n.t('ORDER_NUMBER', { number: route.params.order.number }) : i18n.t('MY_ORDER'),
+      })}
+    />
   </MainStack.Navigator>
 )
 

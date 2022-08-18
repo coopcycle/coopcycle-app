@@ -160,11 +160,11 @@ class OrderItems extends Component {
               ItemSeparatorComponent={ ItemSeparator } />
           )}
         </View>
-        <View style={{ flex: 0, flexShrink: 1 }}>
+        {this.props.withTotals && <View style={{ flex: 0, flexShrink: 1 }}>
           { this.renderItemsTotal() }
           { this.props.withDeliveryTotal === true && this.renderAdjustments() }
           { this.props.withDeliveryTotal === true && this.renderTotal() }
-        </View>
+        </View>}
       </View>
     )
   }
@@ -172,10 +172,12 @@ class OrderItems extends Component {
 
 OrderItems.defaultProps = {
   withDeliveryTotal: false,
+  withTotals: true,
 }
 
 OrderItems.propTypes = {
   withDeliveryTotal: PropTypes.bool,
+  withTotals: PropTypes.bool,
 }
 
 export default withTranslation()(OrderItems)
