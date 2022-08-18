@@ -399,6 +399,24 @@
         "RESULT_plural": "{{count}} résultats",
         "EMPTY_HERE": "C'est complètement vide par ici",
         "CALL": "Appeler",
-        "SHOW_DELIVERY_ZONE": "Afficher la zone de livraison"
+        "HELP": "Aide",
+        "SHOW_DELIVERY_ZONE": "Afficher la zone de livraison",
+        "ORDER_TIMELINE_CREATED_TITLE": "Commande créée",
+        "ORDER_TIMELINE_ACCEPTED_TITLE": "Commande confirmée",
+        "ORDER_TIMELINE_REFUSED_TITLE": "Commande refusée",
+        "ORDER_TIMELINE_REFUSED_DESCRIPTION": "Votre commande ne peut pas être préparée par le restaurant",
+        "ORDER_TIMELINE_PICKED_TITLE": "Commande récupérée",
+        "ORDER_TIMELINE_DROPPED_TITLE": "Commande livrée",
+        "ORDER_TIMELINE_CANCELLED_TITLE": "Commande annulée",
+        "ORDER_TIMELINE_AFTER_ACCEPTED_TITLE": "Le restaurant prépare votre commande",
+        "ORDER_TIMELINE_AFTER_ACCEPTED_DESCRIPTION": "Nous vous tiendrons informé quand le livreur aura récupéré votre commande",
+        "ORDER_TIMELINE_AFTER_CREATED_TITLE": "Commande en attente de validation",
+        "ORDER_TIMELINE_AFTER_CREATED_DESCRIPTION": "Le restaurateur doit valider votre commande. Dans le cas où votre commande serait refusée vous ne serez pas débité",
+        "ORDER_TIMELINE_AFTER_PICKED_TITLE": "Votre livreur arrive !",
+        "ORDER_TIMELINE_AFTER_PICKED_DESCRIPTION": "Préparez-vous pour l'accueillir !",
+        "ORDER_ETA": "Arrivée estimée entre {{start}} et {{end}}",
+        "ORDER_ABOUT": "Informations de la commande",
+        "SHOW_ORDER_DETAILS": "Afficher le détail de la commande"
+
     }
 }

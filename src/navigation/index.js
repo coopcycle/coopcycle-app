@@ -68,6 +68,7 @@ import RestaurantPrinter from './restaurant/Printer'
 import SearchResults from './checkout/components/SearchResults';
 import Carts from './checkout/Carts';
 import AddressDetails from './account/AddressDetails';
+import OrderTrackingPage from './checkout/OrderTracking';
 
 export default {
   RestaurantsPage,
@@ -128,6 +129,7 @@ export default {
   SearchResults,
   Carts,
   AddressDetails,
+  OrderTrackingPage,
 }
 
 export const headerLeft = (navigation, testID = 'menuBtn') => {

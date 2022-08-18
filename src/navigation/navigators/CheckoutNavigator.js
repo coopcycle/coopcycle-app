@@ -16,28 +16,6 @@ import { selectIsAuthenticated } from '../../redux/App/selectors';
 import CartsBadge from '../checkout/components/CartsBadge';
 import Config from 'react-native-config';
 
-const OrderStack = createStackNavigator()
-
-const OrderNavigator = () => (
-  <OrderStack.Navigator
-    screenOptions={ stackNavigatorScreenOptions }>
-    <OrderStack.Screen
-      name="AccountOrdersList"
-      component={ screens.AccountOrdersPage }
-      options={{
-        title: i18n.t('MY_ORDERS'),
-      }}
-    />
-    <OrderStack.Screen
-      name="AccountOrder"
-      component={ screens.AccountOrderPage }
-      options={ ({ route }) => ({
-        title: route.params.order ? i18n.t('ORDER_NUMBER', { number: route.params.order.number }) : i18n.t('MY_ORDER'),
-      })}
-    />
-  </OrderStack.Navigator>
-)
-
 function getNestedOptions(navigation, route) {
   const routeName = getFocusedRouteNameFromRoute(route) ?? 'Feed';
 
@@ -172,12 +150,27 @@ const MainNavigator = () => (
     />
 
     <MainStack.Screen
-      name="AccountOrders"
-      component={ OrderNavigator }
+      name="AccountOrdersList"
+      component={ screens.AccountOrdersPage }
       options={{
         title: i18n.t('MY_ORDERS'),
-        headerShown: false,
       }}
+    />
+    <MainStack.Screen
+      name="AccountOrder"
+      component={ screens.AccountOrderPage }
+      options={ ({ route }) => ({
+        title: route.params.order ? i18n.t('ORDER_NUMBER', { number: route.params.order.number }) : i18n.t('MY_ORDER'),
+        ...TransitionPresets.ModalTransition,
+      })}
+    />
+
+    <MainStack.Screen
+      name="OrderTracking"
+      component={ screens.OrderTrackingPage }
+      options={ ({ route }) => ({
+        title: route.params.order ? i18n.t('ORDER_NUMBER', { number: route.params.order.number }) : i18n.t('MY_ORDER'),
+      })}
     />
   </MainStack.Navigator>
 )

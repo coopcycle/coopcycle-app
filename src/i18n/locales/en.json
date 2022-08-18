@@ -415,6 +415,23 @@
         "RESULT": "{{count}} result",
         "RESULT_plural": "{{count}} results",
         "CALL": "Call",
-        "SHOW_DELIVERY_ZONE": "Display the delivery zone"
+        "HELP": "Help",
+        "SHOW_DELIVERY_ZONE": "Display the delivery zone",
+        "ORDER_TIMELINE_CREATED_TITLE": "Order created",
+        "ORDER_TIMELINE_ACCEPTED_TITLE": "Order confirmed",
+        "ORDER_TIMELINE_REFUSED_TITLE": "Order refused",
+        "ORDER_TIMELINE_REFUSED_DESCRIPTION": "Your order cannot be prepared by the restaurant",
+        "ORDER_TIMELINE_PICKED_TITLE": "Order picked",
+        "ORDER_TIMELINE_DROPPED_TITLE": "Order delivered",
+        "ORDER_TIMELINE_CANCELLED_TITLE": "Order cancelled",
+        "ORDER_TIMELINE_AFTER_ACCEPTED_TITLE": "The restaurant now needs to prepare your order",
+        "ORDER_TIMELINE_AFTER_ACCEPTED_DESCRIPTION": "We will keep you updated when the courier picks your order",
+        "ORDER_TIMELINE_AFTER_CREATED_TITLE": "Order is waiting for confirmation",
+        "ORDER_TIMELINE_AFTER_CREATED_DESCRIPTION": "The restaurant has to confirm your order. In case of refusal no amount will be debited from your card",
+        "ORDER_TIMELINE_AFTER_PICKED_TITLE": "The courier is coming!",
+        "ORDER_TIMELINE_AFTER_PICKED_DESCRIPTION": "Get ready!",
+        "ORDER_ETA": "Estimated arrival between {{start}} and {{end}}",
+        "ORDER_ABOUT": "Order Information",
+        "SHOW_ORDER_DETAILS": "Show order details"
     }
 }
