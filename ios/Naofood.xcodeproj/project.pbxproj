@@ -709,7 +709,7 @@
 				CODE_SIGN_ENTITLEMENTS = Naofood/Naofood.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = LKV8P3U392;
+				DEVELOPMENT_TEAM = 66HUGQ2V5L;
 				ENABLE_BITCODE = NO;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -749,7 +749,7 @@
 				CODE_SIGN_ENTITLEMENTS = Naofood/Naofood.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = LKV8P3U392;
+				DEVELOPMENT_TEAM = 66HUGQ2V5L;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-locale-detector/RNI18n",
