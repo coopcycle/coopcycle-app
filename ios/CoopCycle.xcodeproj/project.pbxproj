@@ -50,7 +50,7 @@
 		00E356EE1AD99517003FC87E /* CoopCycleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CoopCycleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* CoopCycleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CoopCycleTests.m; sourceTree = "<group>"; };
-		13B07F961A680F5B00A75B9A /* CoopCycle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CoopCycle.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07F961A680F5B00A75B9A /* Naofood.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Naofood.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = CoopCycle/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = CoopCycle/AppDelegate.m; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = CoopCycle/Images.xcassets; sourceTree = "<group>"; };
@@ -179,7 +179,7 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				13B07F961A680F5B00A75B9A /* CoopCycle.app */,
+				13B07F961A680F5B00A75B9A /* Naofood.app */,
 				00E356EE1AD99517003FC87E /* CoopCycleTests.xctest */,
 				84A98B0F23D8DA2000EFF666 /* CoopCycleUITests.xctest */,
 			);
@@ -272,7 +272,7 @@
 			);
 			name = CoopCycle;
 			productName = "Hello World";
-			productReference = 13B07F961A680F5B00A75B9A /* CoopCycle.app */;
+			productReference = 13B07F961A680F5B00A75B9A /* Naofood.app */;
 			productType = "com.apple.product-type.application";
 		};
 		84A98B0E23D8DA2000EFF666 /* CoopCycleUITests */ = {
@@ -733,7 +733,7 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.coopcycle.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = CoopCycle;
+				PRODUCT_NAME = Naofood;
 				PROVISIONING_PROFILE_SPECIFIER = Fastlane;
 				SWIFT_OBJC_BRIDGING_HEADER = "CoopCycle-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -775,7 +775,7 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.coopcycle.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = CoopCycle;
+				PRODUCT_NAME = Naofood;
 				PROVISIONING_PROFILE_SPECIFIER = Fastlane;
 				SWIFT_OBJC_BRIDGING_HEADER = "CoopCycle-Bridging-Header.h";
 				SWIFT_VERSION = 4.2;
