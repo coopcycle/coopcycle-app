@@ -12,7 +12,7 @@ const onboardingParams = {
     text: `Hello :D
 Bienvenue sur l’application Naofood !
 
-Nous sommes sur la version Beta Test, vous pouvez donc nous faire tous les retours que vous jugerez utiles sur contact@naofood.fr.
+Vous pouvez nous faire tous les retours que vous jugerez utiles sur contact@naofood.fr.
 Comme depuis le début de l’aventure, on adore avancer avec vous et lire vos retours.
 Alors ne soyez pas timides !
 
