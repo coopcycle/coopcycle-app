@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "CoopCycle.app"
+               BuildableName = "Naofood.app"
                BlueprintName = "CoopCycle"
                ReferencedContainer = "container:CoopCycle.xcodeproj">
             </BuildableReference>
@@ -65,7 +65,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "CoopCycle.app"
+            BuildableName = "Naofood.app"
             BlueprintName = "CoopCycle"
             ReferencedContainer = "container:CoopCycle.xcodeproj">
          </BuildableReference>
@@ -82,7 +82,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "CoopCycle.app"
+            BuildableName = "Naofood.app"
             BlueprintName = "CoopCycle"
             ReferencedContainer = "container:CoopCycle.xcodeproj">
          </BuildableReference>
