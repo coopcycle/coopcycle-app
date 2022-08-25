@@ -81,3 +81,9 @@ buck-out/
 /src/shared-js-lib-local
 
 sentry.properties
+
+*/fastlane/.env.default
+ios/*.cer
+ios/*.certSigningRequest
+ios/*.p12
+ios/*.mobileprovision

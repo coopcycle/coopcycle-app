@@ -12,6 +12,7 @@ jobs:
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.1'
+          bundler-cache: true
       - name: Create .env file
         env:
           SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
@@ -49,6 +50,17 @@ jobs:
           cd ios/
           bundle install
           cd ..
+      # https://github.com/actions/cache/blob/main/examples.md#node---yarn
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+      - uses: actions/cache@v3
+        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
       - name: Install dependencies
         run: yarn install
       - name: Install CocoaPods plugins
@@ -60,9 +72,20 @@ jobs:
           path: ios/Pods
           key: pods-${{ hashFiles('**/Podfile.lock') }}
       - run: cd ios/ && pod install && cd ..
+      - name: Import Code-Signing Certificates
+        uses: Apple-Actions/import-codesign-certs@v1
+        with:
+          p12-file-base64: ${{ secrets.IOS_DIST_SIGNING_KEY }}
+          p12-password: ${{ secrets.IOS_DIST_SIGNING_KEY_PASSWORD }}
       - name: Run Fastlane
         run: |
           cd ios/
-          bundle exec fastlane deploy
+          bundle exec fastlane build_upload_testflight
           cd ..
-      - run: ls -l *.ipa
+        env:
+          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+          ASC_KEY: ${{ secrets.ASC_KEY }}
+          # https://github.com/fastlane/fastlane/issues/14418
+          # KEYCHAIN_PATH: /Users/runner/Library/Keychains/signing_temp.keychain-db
+          KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
