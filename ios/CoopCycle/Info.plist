@@ -36,7 +36,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>127</string>
+	<string>129</string>
 	<key>FacebookAppID</key>
 	<string>1303550106471840</string>
 	<key>FacebookClientToken</key>
@@ -151,7 +151,7 @@
 		<string>remote-notification</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
-	<string>LaunchScreen</string>
+	<string>Naofood</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>
