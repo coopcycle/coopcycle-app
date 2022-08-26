@@ -2,7 +2,7 @@ import {
   LOAD_ADDRESSES_SUCCESS,
   LOAD_ORDERS_SUCCESS,
   LOAD_ORDER_SUCCESS,
-  LOAD_PERSONAL_INFO_SUCCESS,
+  LOAD_PERSONAL_INFO_SUCCESS, UPDATE_ORDER_SUCCESS,
 } from './actions'
 
 import {
@@ -50,6 +50,18 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         ...initialState,
+      }
+
+    case UPDATE_ORDER_SUCCESS:
+      return {
+        ...state,
+        orders: state.orders.reduce((acc, order) => {
+          if (order['@id'] === action.payload['@id']) {
+            order = action.payload
+          }
+          acc.push(order)
+          return acc
+        }, []),
       }
   }
 

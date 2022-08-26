@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { InteractionManager, SectionList, View } from 'react-native'
-import { HStack, Heading, Text } from 'native-base'
+import { InteractionManager, SectionList, StyleSheet, View } from 'react-native'
+import { Badge, Box, HStack, Heading, Text, VStack } from 'native-base'
 import _ from 'lodash'
 import moment from 'moment'
 import { connect } from 'react-redux'
@@ -9,6 +9,8 @@ import { formatPrice } from '../../utils/formatting'
 import { loadOrders } from '../../redux/Account/actions'
 import ItemSeparator from '../../components/ItemSeparator'
 import { TouchableNativeFeedback } from 'react-native-gesture-handler';
+import { blueColor, greenColor, greyColor, redColor } from '../../styles/common';
+import i18n from '../../i18n';
 
 class AccountOrdersPage extends Component {
 
@@ -22,21 +24,33 @@ class AccountOrdersPage extends Component {
 
     const { navigate } = this.props.navigation
 
-    const stateToRoute = state => {
-      //TODO: improve state handling
+    const stateToRender = state => {
       switch (state) {
         case 'fulfilled':
+          return { text: i18n.t('ORDER_FULFILLED'), style: styles.fulfilled, route: 'AccountOrder' }
         case 'cancelled':
         case 'refused':
-          return 'AccountOrder';
+          return { text: i18n.t('ORDER_CANCELLED'), style: styles.cancelled, route: 'AccountOrder' }
         default:
-          return 'OrderTracking';
+          return { text: i18n.t('ORDER_NEW'), style: styles.new, route: 'OrderTracking' }
       }
     }
+    const state = stateToRender(order.state)
     return (
-        <TouchableNativeFeedback onPress={() => navigate(stateToRoute(order.state),  { order }) }>
+        <TouchableNativeFeedback onPress={() => navigate(state.route,  { order }) }>
         <HStack justifyContent="space-between" p="2">
-          <Text>{ order.restaurant.name }</Text>
+          <VStack>
+            <Text fontSize={16} paddingBottom={1}>{ order.restaurant.name }</Text>
+            <HStack space={2}>
+              <Text fontFamily={'monospace'} style={styles.badge} >{order.number}</Text>
+              <Box style={{
+                ...styles.badge,
+                ...state.style,
+              }}>
+                <Text>{state.text}</Text>
+              </Box>
+            </HStack>
+          </VStack>
           <Text>{ formatPrice(order.total) }</Text>
         </HStack>
       </TouchableNativeFeedback>
@@ -77,6 +91,25 @@ class AccountOrdersPage extends Component {
     );
   }
 }
+
+
+const styles = StyleSheet.create({
+  badge: {
+    backgroundColor: '#00000011',
+    borderRadius: 3,
+    paddingHorizontal:3,
+  },
+  new: {
+    backgroundColor: blueColor + '44',
+  },
+  cancelled: {
+    backgroundColor: redColor + '44',
+  },
+  fulfilled: {
+    backgroundColor: greenColor + '44',
+  },
+})
+
 
 function mapStateToProps(state) {
 

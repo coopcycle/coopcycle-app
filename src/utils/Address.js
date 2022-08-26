@@ -95,7 +95,7 @@ class AddressUtils {
       if (supported) {
         return Linking.openURL(url)
       } else {
-        const browser_url = `https://www.google.de/maps/@${latitude},${longitude}?q=${label}`
+        const browser_url = `https://google.com/maps/@${latitude},${longitude}?q=${label}`
         return Linking.openURL(browser_url);
       }
     });

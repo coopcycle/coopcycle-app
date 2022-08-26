@@ -1,15 +1,16 @@
 import { createAction } from 'redux-actions'
 import { CommonActions, StackActions } from '@react-navigation/native'
 import _ from 'lodash'
-import {  createPaymentMethod, handleCardAction } from '@stripe/stripe-react-native'
+import { createPaymentMethod, handleCardAction } from '@stripe/stripe-react-native'
 
 import NavigationHolder from '../../NavigationHolder'
 import i18n from '../../i18n'
 import { selectCartFulfillmentMethod } from './selectors'
 import { selectIsAuthenticated, selectUser } from '../App/selectors'
-import { loadAddressesSuccess } from '../Account/actions'
+import { loadAddressesSuccess, updateOrderSuccess } from '../Account/actions'
 import { isFree } from '../../utils/order'
-import { setModal } from '../App/actions';
+import { setLoading, setModal } from '../App/actions';
+import Share from 'react-native-share';
 
 /*
  * Action Types
@@ -34,6 +35,7 @@ export const INIT_CART_REQUEST = '@checkout/INIT_CART_REQUEST'
 export const INIT_CART_SUCCESS = '@checkout/INIT_CART_SUCCESS'
 export const INIT_CART_FAILURE = '@checkout/INIT_CART_FAILURE'
 export const UPDATE_CARTS = '@checkout/UPDATE_CARTS'
+export const DELETE_CART_REQUEST = '@checkout/DELETE_CART_REQUEST'
 
 export const LOAD_RESTAURANTS_REQUEST = '@checkout/LOAD_RESTAURANTS_REQUEST'
 export const LOAD_RESTAURANTS_SUCCESS = '@checkout/LOAD_RESTAURANTS_SUCCESS'
@@ -88,6 +90,7 @@ export const initCartRequest = createAction(INIT_CART_REQUEST)
 export const initCartSuccess = createAction(INIT_CART_SUCCESS)
 export const initCartFailure = createAction(INIT_CART_FAILURE)
 export const updateCarts = createAction(UPDATE_CARTS)
+export const deleteCartRequest = createAction(DELETE_CART_REQUEST)
 export const resetRestaurant = createAction(RESET_RESTAURANT)
 export const setRestaurant = createAction(SET_RESTAURANT)
 export const setToken = createAction(SET_TOKEN)
@@ -338,7 +341,6 @@ function queueAddItem(item, quantity = 1, options = []) {
 
 const fetchValidation = _.throttle((dispatch, getState, cart) => {
 
-  console.log(cart)
   const httpClient = createHttpClient(getState())
 
   // No need to validate when cart is empty
@@ -460,6 +462,9 @@ function queueRemoveItem(item) {
           dispatch(setCheckoutLoading(false))
 
           fetchValidation.cancel()
+          if (res.items.length === 0) {
+            return dispatch(deleteCart(res.restaurant))
+          }
           fetchValidation(dispatch, getState, res)
         })
         .catch(e => {
@@ -483,11 +488,15 @@ export function deleteCart(restaurantID) {
 }
 
 export function removeItem(item) {
-
   return (dispatch, getState) => {
     // Dispatch an action to "virtually" remove the item,
     // so that the user has a UI feedback
     dispatch(removeItemRequest(item))
+    const { items } = getState().checkout.carts[item.vendor['@id']].cart
+    if (items.length === 0) {
+      dispatch(deleteCartRequest(item.vendor['@id']))
+      NavigationHolder.goBack()
+    }
 
     dispatch(queueRemoveItem(item))
   }
@@ -710,13 +719,8 @@ function handleSuccessNav(dispatch, order) {
 
   // Then, navigate to order screen
   NavigationHolder.dispatch(CommonActions.navigate({
-    name: 'AccountOrders',
-    // We skip the AccountOrders screen
-    params: {
-      screen: 'AccountOrder',
-      initial: false,
-      params: { order },
-    },
+    name: 'OrderTracking',
+    params: { order },
   }))
 
   dispatch(checkoutSuccess(order))
@@ -1062,5 +1066,47 @@ export function loadPaymentDetails() {
       .get(`${cart['@id']}/payment`)
       .then(res => dispatch(loadPaymentDetailsSuccess(res)))
       .catch(e => dispatch(loadPaymentDetailsFailure(e)))
+  }
+}
+
+export function generateInvoice(order, address, updateRoute) {
+
+  return (dispatch, getState) => {
+    const httpClient = createHttpClient(getState())
+    const { streetAddress: billingAddress } = address
+
+    dispatch(setLoading(true))
+    httpClient.post(`${order['@id']}/invoice`, {
+      billingAddress,
+    })
+      .then(res => {
+        if (updateRoute) {
+          NavigationHolder.dispatch(CommonActions.setParams({ order: res }))
+        }
+        dispatch(updateOrderSuccess(res))
+      })
+      .catch(e => {
+        console.log(e)
+      }).finally(() => {
+      dispatch(setLoading(false))
+    })
+  }
+}
+
+export function shareInvoice(order) {
+
+  return (dispatch, getState) => {
+    const httpClient = createHttpClient(getState())
+    const settings = getState().app.settings
+    const { number } = order
+
+    httpClient.get(`${order['@id']}/invoice`, {})
+      .then(async (res) => {
+        Share.open({
+          title: [ 'Invoice', settings.brand_name, number ].join(' '),
+          url: `data:application/pdf;base64,${res.invoice}`,
+          filename: [ settings.brand_name, number ].join('_'),
+          type: 'application/pdf',
+        })}).catch(err => {err && console.log(err)})
   }
 }

@@ -5,6 +5,7 @@ import {
   CHECKOUT_REQUEST,
   CHECKOUT_SUCCESS,
   CLEAR,
+  DELETE_CART_REQUEST,
   HIDE_ADDRESS_MODAL,
   HIDE_EXPIRED_SESSION_MODAL,
   HIDE_MULTIPLE_SERVERS_IN_SAME_CITY_MODAL,
@@ -38,8 +39,7 @@ import {
   SHOW_EXPIRED_SESSION_MODAL,
   UPDATE_CARTS,
   UPDATE_CART_SUCCESS,
-  UPDATE_CUSTOMER_GUEST,
-  UPDATE_ITEM_QUANTITY,
+  UPDATE_CUSTOMER_GUEST, UPDATE_ITEM_QUANTITY,
 } from './actions'
 
 import i18n from '../../i18n'
@@ -311,6 +311,19 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         carts: action.payload,
+      }
+
+    case DELETE_CART_REQUEST:
+      return {
+        ...state,
+        carts: {
+          ...state.carts,
+          [action.payload]:
+            {
+              ...state.carts[action.payload],
+              softDelete: true,
+            },
+        },
       }
 
     case SET_CHECKOUT_LOADING:
