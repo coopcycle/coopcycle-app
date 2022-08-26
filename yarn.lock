@@ -11245,6 +11245,11 @@ react-native-screens@^3.11.1:
     react-freeze "^1.0.0"
     warn-once "^0.1.0"
 
+react-native-share@^7.8.0:
+  version "7.8.0"
+  resolved "https://registry.yarnpkg.com/react-native-share/-/react-native-share-7.8.0.tgz#93d72202a2ace920e21a1179bc2e0d807c9c71c3"
+  integrity sha512-xD05WIL+F4/sa6AHayeOn+mx7IHHqYhucyehIhzi6SypnzMh69fdg0BBOX9EW3nj0G6cn/mNm0Nbu9on9rP6PA==
+
 react-native-sound@^0.11.2:
   version "0.11.2"
   resolved "https://registry.yarnpkg.com/react-native-sound/-/react-native-sound-0.11.2.tgz#e542dc5b9e16ab4b3ac7e6eaddb1fc8d98da9038"

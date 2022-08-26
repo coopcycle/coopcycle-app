@@ -249,6 +249,7 @@
         "ORDER_NEW_HELP": "The restaurant has to confirm your order",
         "ORDER_ACCEPTED": "Accepted",
         "ORDER_FULFILLED": "Fulfilled",
+        "ORDER_CANCELLED": "Cancelled",
         "ORDER_NUMBER": "Order {{number}}",
         "ADDRESS_NOT_PRECISE_ENOUGH": "This address is not precise enough",
         "REGISTER_CHECK_EMAIL": "Activation",
@@ -433,6 +434,9 @@
         "ORDER_TIMELINE_AFTER_PICKED_DESCRIPTION": "Get ready!",
         "ORDER_ETA": "Estimated arrival between {{start}} and {{end}}",
         "ORDER_ABOUT": "Order Information",
-        "SHOW_ORDER_DETAILS": "Show order details"
+        "SHOW_ORDER_DETAILS": "Show order details",
+        "SHARE_INVOICE": "Share the invoice",
+        "GENERATE_INVOICE": "Edit your invoice",
+        "BILLING_ADDRESS": "Billing address"
     }
 }

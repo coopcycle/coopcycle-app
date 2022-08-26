@@ -9,7 +9,7 @@ import {
   View,
 } from 'react-native'
 import {
-  Center, Icon, Text,
+  Center, Icon, Pressable, Text,
 } from 'native-base';
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
@@ -184,16 +184,17 @@ class Summary extends Component {
         <Animated.View
           style={{ flex: 1, flexDirection: 'row', transform: [{ translateX: this.state.translateXValue }] }}>
           <View style={{ flex: 1, flexDirection: 'column' }}>
-            <TouchableOpacity
+            <Pressable
               style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
               onPress={ () => this.props.incrementItem(item) }>
               <Icon as={ FontAwesome } name="plus-circle" size="sm" />
-            </TouchableOpacity>
-            <TouchableOpacity
+            </Pressable>
+            <Pressable
+              disabled={item.quantity <= 1}
               style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
               onPress={ () => this.props.decrementItem(item) }>
-              <Icon as={ FontAwesome } name="minus-circle" size="sm" />
-            </TouchableOpacity>
+              <Icon as={ FontAwesome } name="minus-circle" size="sm" style={{ opacity: item.quantity <= 1 ? 0.5 : 1 }} />
+            </Pressable>
           </View>
           <TouchableOpacity
             style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}

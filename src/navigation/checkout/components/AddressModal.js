@@ -16,6 +16,7 @@ import AddressUtils from '../../../utils/Address'
 
 import { hideAddressModal, setAddress, setAddressModalHidden, setFulfillmentMethod } from '../../../redux/Checkout/actions'
 import { selectIsCollectionEnabled } from '../../../redux/Checkout/selectors'
+import i18n from '../../../i18n';
 
 class AddressModal extends Component {
 
@@ -24,6 +25,7 @@ class AddressModal extends Component {
     this.state = {
       shouldShowBackBtn: false,
       address: '',
+      disableDefaultBtn: false,
     }
     this.keyboardHeight = new Animated.Value(0)
   }
@@ -58,28 +60,6 @@ class AddressModal extends Component {
     ]).start();
   }
 
-  renderBackBtn() {
-
-    const shouldShowBackBtn = this.props.isAddressOK === false && !this.props.isLoading && this.state.shouldShowBackBtn
-
-    if (!shouldShowBackBtn) {
-      return (
-        <View />
-      )
-    }
-
-    const { width } = Dimensions.get('window')
-
-    return (
-      <View style={ [ styles.goBackContainer, { width }] }>
-        <Button bordered info block
-          onPress={ () => this.props.onGoBack(this.state.address) }>
-          <Text>{ this.props.t('SEARCH_WITH_ADDRESS', { address: this.state.address.streetAddress }) }</Text>
-        </Button>
-      </View>
-    )
-  }
-
   renderLoader() {
     if (!this.props.isLoading) {
       return (
@@ -92,21 +72,6 @@ class AddressModal extends Component {
     return (
       <View style={ [ styles.goBackContainer, { width }] }>
         <ActivityIndicator size="small" />
-      </View>
-    )
-  }
-
-  renderAutocompleteButton() {
-
-    return (
-      <View style={{ alignItems: 'center', paddingHorizontal: 10 }}>
-        <TouchableOpacity
-          onPress={ () => AddressUtils.getAddressFromCurrentPosition().then(address => {
-            this.props.setAddress(address)
-            this.setState({ address })
-          }) }>
-          <Icon as={ MaterialIcons } name="my-location" style={{ color: '#b9b9b9', fontSize: 24 }} />
-        </TouchableOpacity>
       </View>
     )
   }
@@ -140,34 +105,25 @@ class AddressModal extends Component {
                   country={ this.props.country }
                   location={ this.props.location }
                   testID="addressModalTypeahead"
-                  onSelectAddress={ (address) => {
-                    this.props.setAddress(address, this.props.cart)
-                    this.setState({ address })
-                  }}
-                  value={ this.props.address && this.props.address.streetAddress }
+                  onSelectAddress={this.props.onSelect}
+                  value={ this.props.value?.streetAddress }
                   inputContainerStyle={{
                     justifyContent: 'center',
                     borderWidth: 0,
                     paddingHorizontal: 10,
                   }}
+                  style={{
+                    borderRadius: 3,
+                  }}
                   autoFocus={ true }
                   onFocus={ () => this.setState({ shouldShowBackBtn: false }) }
                   onBlur={ () => this.setState({ shouldShowBackBtn: true }) }
-                  addresses={ this.props.savedAddresses }
-                  renderRight={ this.renderAutocompleteButton.bind(this) }
+                  onChangeText={() => this.setState({ disableDefaultBtn: true })}
+                  addresses={this.props.savedAddresses}
                   />
               </View>
             </View>
-            { this.renderBackBtn() }
             { this.renderLoader() }
-            { this.props.isCollectionEnabled && (
-              <TouchableOpacity style={{ justifySelf: 'flex-end', backgroundColor: '#dedede', padding: 15 }}
-                onPress={ () => this.props.setFulfillmentMethod('collection') }>
-                <Text style={{ textAlign: 'center' }}>
-                  { this.props.t('FULFILLMENT_METHOD.collection') }
-                </Text>
-              </TouchableOpacity>
-            ) }
           </Animated.View>
         </ModalContent>
       </Modal>
@@ -175,8 +131,13 @@ class AddressModal extends Component {
   }
 }
 
+AddressModal.defaultProps = {
+  value: null,
+}
+
 AddressModal.propTypes = {
-  onGoBack: PropTypes.func.isRequired,
+  onSelect: PropTypes.func.isRequired,
+  value: PropTypes.object,
 }
 
 const styles = StyleSheet.create({
@@ -227,6 +188,15 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(state, ownProps) {
+  let savedAddresses;
+  if (ownProps.value !== null) {
+    savedAddresses = [
+      ownProps.value,
+      ...state.account.addresses.slice(0, 2),
+    ]
+  } else {
+    savedAddresses = state.account.addresses.slice(0, 3)
+  }
 
   return {
     location: state.app.settings.latlng,
@@ -237,7 +207,7 @@ function mapStateToProps(state, ownProps) {
     isLoading: state.checkout.isLoading,
     message: state.checkout.isLoading ? ownProps.t('LOADING') : state.checkout.addressModalMessage,
     isCollectionEnabled: selectIsCollectionEnabled(state),
-    savedAddresses: state.account.addresses.slice(0, 3),
+    savedAddresses,
   }
 }
 

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Animated, Dimensions, FlatList, Image } from 'react-native'
-import { Avatar, Box, Button, ChevronRightIcon, HStack, Heading, Icon, Text, VStack, View } from 'native-base'
+import { Avatar, Box, Button, ChevronRightIcon, HStack, Heading, Icon, Skeleton, Text, VStack, View } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 import { Spacer } from 'native-base/src/components/primitives/Flex';
@@ -44,18 +44,22 @@ class Carts extends Component {
     </View>
 
   _renderItem = (item, index) =>
-    <><Swipeable
+    <><Swipeable enabled={!item?.softDelete}
       renderRightActions={(progress, dragX) => this.renderRightActions(progress, dragX, item.restaurant['@id'])}
-    ><TouchableOpacity onPress={() => {
+    ><TouchableOpacity disabled={item?.softDelete} onPress={() => {
       this.props.setRestaurant(item.restaurant['@id'])
       this.props.navigation.navigate('CheckoutSummary', { cart: item.cart, restaurant: item.restaurant })
     } }>
         <HStack space={4} padding={2}>
-        <Avatar size="lg" resizeMode="contain" borderRadius="full" source={{ uri: item.restaurant.image }} alt={item.restaurant.name} />
+        <Skeleton width="64px" borderRadius="full" isLoaded={!item?.softDelete}>
+          <Avatar size="lg" resizeMode="contain" borderRadius="full" source={{ uri: item.restaurant.image }} alt={item.restaurant.name} />
+        </Skeleton>
         <VStack>
-          <Text bold>{item.restaurant.name}</Text>
-          <Text color={darkGreyColor}>{i18n.t('ITEM', { count: item.cart.items.length })} • {formatPrice(item.cart.total)}</Text>
-          <Text noOfLines={1} maxWidth={width - 170} color={darkGreyColor}>{item.cart.shippingAddress?.streetAddress}</Text>
+          <Skeleton.Text noOfLines={3} lineHeight={4} isLoaded={!item?.softDelete}>
+            <Text bold>{item.restaurant.name}</Text>
+            <Text color={darkGreyColor}>{i18n.t('ITEM', { count: item.cart.items.length })} • {formatPrice(item.cart.total)}</Text>
+            <Text noOfLines={1} maxWidth={width - 170} color={darkGreyColor}>{item.cart.shippingAddress?.streetAddress}</Text>
+          </Skeleton.Text>
         </VStack>
         <Spacer/>
           <View style={{ flexGrow: 1, justifyContent:'center', alignItems: 'flex-end' }}>
@@ -67,7 +71,12 @@ class Carts extends Component {
     </>
 
   render() {
-    return <FlatList data={_.values(this.props.carts)} keyExtractor={(item, index) => index} renderItem={({ item, index }) => this._renderItem(item, index) } ListEmptyComponent={this.emptyList} />
+    return <FlatList
+      data={_.values(this.props.carts)}
+      alwaysBounceVertical={false}
+      keyExtractor={(item, index) => index}
+      renderItem={({ item, index }) => this._renderItem(item, index) }
+      ListEmptyComponent={this.emptyList} />
   }
 }
 

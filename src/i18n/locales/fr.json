@@ -247,6 +247,7 @@
         "ORDER_ACCEPTED": "Acceptée",
         "ORDER_FULFILLED": "Terminée",
         "ORDER_NUMBER": "Commande {{number}}",
+        "ORDER_CANCELLED": "Annulée",
         "ADDRESS_NOT_PRECISE_ENOUGH": "Cette adresse n'est pas assez précise",
         "REGISTER_CHECK_EMAIL": "Activation",
         "REGISTER_CHECK_EMAIL_DISCLAIMER": "Un e-mail a été envoyé à l‘adresse {{email}}. Il contient un lien d‘activation sur lequel il vous faudra cliquer afin d‘activer votre compte.",
@@ -416,6 +417,9 @@
         "ORDER_TIMELINE_AFTER_PICKED_DESCRIPTION": "Préparez-vous pour l'accueillir !",
         "ORDER_ETA": "Arrivée estimée entre {{start}} et {{end}}",
         "ORDER_ABOUT": "Informations de la commande",
-        "SHOW_ORDER_DETAILS": "Afficher le détail de la commande"
+        "SHOW_ORDER_DETAILS": "Afficher le détail de la commande",
+        "SHARE_INVOICE": "Partager la facture",
+        "GENERATE_INVOICE": "Éditer la facture",
+        "BILLING_ADDRESS": "Adresse de facturation"
     }
 }

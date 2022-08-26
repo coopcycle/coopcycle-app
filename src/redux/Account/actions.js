@@ -12,6 +12,7 @@ import { selectIsAuthenticated } from '../App/selectors';
 
 export const LOAD_ORDERS_SUCCESS = '@account/LOAD_ORDERS_SUCCESS'
 export const LOAD_ORDER_SUCCESS = '@account/LOAD_ORDER_SUCCESS'
+export const UPDATE_ORDER_SUCCESS = '@account/UPDATE_ORDER_SUCCESS'
 export const LOAD_ADDRESSES_SUCCESS = '@account/LOAD_ADDRESSES_SUCCESS'
 export const LOAD_PERSONAL_INFO_SUCCESS = '@account/LOAD_PERSONAL_INFO_SUCCESS'
 
@@ -26,6 +27,7 @@ const loadOrdersSuccess = createAction(LOAD_ORDERS_SUCCESS)
 const loadOrderSuccess = createAction(LOAD_ORDER_SUCCESS)
 export const loadAddressesSuccess = createAction(LOAD_ADDRESSES_SUCCESS)
 const loadPersonalInfoSuccess = createAction(LOAD_PERSONAL_INFO_SUCCESS)
+export const updateOrderSuccess = createAction(UPDATE_ORDER_SUCCESS)
 
 const connected = createAction(CONNECTED)
 const disconnected = createAction(DISCONNECTED)

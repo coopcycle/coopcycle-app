@@ -131,7 +131,9 @@ class OrderTrackingPage extends Component {
             hide={!!step.error && step.error < 3}
           />
         </View>
-        {step.index <= 2 && <Text style={styles.trackerDescription}>{stateDescription[step.index]}</Text>}
+        {(!step.error && step.index <= 2) && <Text style={styles.trackerDescription}>
+          {stateDescription[step.index]}
+        </Text>}
       </View>
 
       <View style={styles.tracker}>
@@ -142,11 +144,11 @@ class OrderTrackingPage extends Component {
         </HStack>
         <HStack padding={2} space={3}>
           <Icon as={Ionicons} name="location-outline" size={5} color={'blueGray.600'} />
-          <Text style={{ textAlign: 'center', lineHeight: 18 }}>{order.shippingAddress.streetAddress}</Text>
+          <Text style={{ textAlign: 'center', lineHeight: 18 }}>{order.shippingAddress?.streetAddress || i18n.t('FULFILLMENT_METHOD.collection')}</Text>
         </HStack>
         <HStack padding={2} space={3}>
           <Icon as={Ionicons} name="time-outline" size={5} color={'blueGray.600'} />
-          <Text style={{ textAlign: 'center', lineHeight: 18 }} >{moment(order.shippedAt).format('ll')} entre {timeRange[0]} et {timeRange[1]}</Text>
+          <Text style={{ textAlign: 'center', lineHeight: 18 }} >{moment(order.shippedAt).format('ll')} {timeRange[0]} - {timeRange[1]}</Text>
         </HStack>
       </View>
 
@@ -198,7 +200,6 @@ function mapStateToProps(state, ownProps) {
     phoneNumber: state.app.settings.phone_number,
     order: state.account.order,
     loading: state.app.loading,
-    tracking: ownProps.route.params?.tracking ?? true,
   }
 }
 
