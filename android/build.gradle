@@ -17,6 +17,7 @@ buildscript {
         androidXCore = "1.0.2"
         googlePlayServicesLocationVersion = "17.1.0"
         appCompatVersion = "1.2.0"
+        mercadoPagoPxVersion = "4.53.2"
     }
     repositories {
         // Gradle 4.1 and higher include support for Google's Maven repo using
