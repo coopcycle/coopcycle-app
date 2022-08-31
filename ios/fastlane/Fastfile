@@ -27,6 +27,17 @@ platform :ios do
     build_app(workspace: "CoopCycle.xcworkspace", scheme: "CoopCycle")
   end
 
+  desc "Generate icons"
+  lane :generate_icons do
+    appicon(
+      # FIXME Should be passed via env var APPICON_IMAGE_FILE
+      # https://github.com/fastlane-community/fastlane-plugin-appicon/blob/master/lib/fastlane/plugin/appicon/actions/appicon_action.rb
+      appicon_image_file: 'metadata-naofood/app_icon.png',
+      appicon_devices: [:iphone, :ipad, :ios_marketing],
+      appicon_path: 'CoopCycle/Images.xcassets',
+    )
+  end
+
   desc "Load ASC API Key information to use in subsequent lanes"
   lane :load_asc_api_key do
     app_store_connect_api_key(
