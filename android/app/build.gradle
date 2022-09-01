@@ -160,6 +160,9 @@ android {
 
         testBuildType System.getProperty('testBuildType', 'debug')  // This will later be used to control the test apk build type
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+
+        // https://github.com/luggit/react-native-config#advanced-android-setup
+        resValue "string", "build_config_package", "fr.coopcycle"
     }
     signingConfigs {
         release {
