@@ -32,7 +32,7 @@ platform :ios do
     appicon(
       # FIXME Should be passed via env var APPICON_IMAGE_FILE
       # https://github.com/fastlane-community/fastlane-plugin-appicon/blob/master/lib/fastlane/plugin/appicon/actions/appicon_action.rb
-      appicon_image_file: 'metadata-naofood/app_icon.png',
+      # appicon_image_file: 'metadata-naofood/app_icon.png',
       appicon_devices: [:iphone, :ipad, :ios_marketing],
       appicon_path: 'CoopCycle/Images.xcassets',
     )

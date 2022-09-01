@@ -51,3 +51,5 @@ jobs:
       - name: Generate icons
         if: ${{ inputs.instance != '' }}
         run: bundle exec fastlane generate_icons
+        env:
+          APPICON_IMAGE_FILE: "metadata-${{ inputs.instance }}/app_icon.png"
