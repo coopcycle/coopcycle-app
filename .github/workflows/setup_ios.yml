@@ -1,6 +1,10 @@
 name: Setup iOS
 on:
   workflow_call:
+    inputs:
+      instance:
+        required: true
+        type: string
 jobs:
   SETUP_IOS:
     name: Setup for iOS
@@ -41,3 +45,6 @@ jobs:
       - name: Install Pods
         working-directory: ios/
         run: pod install
+      - name: Generate icons
+        if: ${{ inputs.instance != '' }}
+        run: echo "Generate icons"
