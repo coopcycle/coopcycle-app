@@ -1,6 +1,6 @@
-package fr.naofood.client;
+package fr.coopcycle;
 
-import fr.naofood.client.generated.BasePackageList;
+import fr.coopcycle.generated.BasePackageList;
 
 import android.content.Context;
 import android.content.Intent;
@@ -102,7 +102,7 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
          We use reflection here to pick up the class that initializes Flipper,
         since Flipper library is not available in release mode
         */
-        Class<?> aClass = Class.forName("fr.naofood.client.ReactNativeFlipper");
+        Class<?> aClass = Class.forName("fr.coopcycle.ReactNativeFlipper");
         aClass
             .getMethod("initializeFlipper", Context.class, ReactInstanceManager.class)
             .invoke(null, context, reactInstanceManager);

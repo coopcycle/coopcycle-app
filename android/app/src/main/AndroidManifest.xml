@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="fr.naofood.client">
+    package="fr.coopcycle">
 
     <queries>
         <!-- needed for react-native-map-link and Android 11/Android SDK 30 -->

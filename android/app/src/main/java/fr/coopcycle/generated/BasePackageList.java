@@ -1,4 +1,4 @@
-package fr.naofood.client.generated;
+package fr.coopcycle.generated;
 
 import java.util.Arrays;
 import java.util.List;
