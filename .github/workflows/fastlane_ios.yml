@@ -10,3 +10,4 @@ jobs:
     with:
       instance: naofood
       instance_url: https://naofood.coopcycle.org
+      app_name: Naofood

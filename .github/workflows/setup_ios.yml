@@ -8,6 +8,9 @@ on:
       instance_url:
         type: string
         required: false
+      app_name:
+        type: string
+        required: false
 jobs:
   SETUP_IOS:
     name: Setup for iOS
@@ -54,3 +57,10 @@ jobs:
         run: bundle exec fastlane generate_icons
         env:
           APPICON_IMAGE_FILE: "fastlane/metadata-${{ inputs.instance }}/app_icon.png"
+      - name: Rename app
+        if: ${{ inputs.app_name != '' }}
+        working-directory: ios/
+        run: bundle exec fastlane rename_app
+        env:
+          COOPCYCLE_APP_NAME: ${{ inputs.app_name }}
+      - run: git status
