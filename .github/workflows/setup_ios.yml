@@ -3,8 +3,11 @@ on:
   workflow_call:
     inputs:
       instance:
-        required: true
         type: string
+        required: false
+      instance_url:
+        type: string
+        required: false
 jobs:
   SETUP_IOS:
     name: Setup for iOS

@@ -1,8 +1,12 @@
 name: Fastlane iOS
 on: [workflow_dispatch]
 jobs:
-  FASTLANE_IOS:
-    name: Fastlane for iOS
+  default:
+    name: Build default app
+    uses: ./.github/workflows/setup_ios.yml
+  naofood:
+    name: Build Naofood app
     uses: ./.github/workflows/setup_ios.yml
     with:
       instance: naofood
+      instance_url: https://naofood.coopcycle.org
