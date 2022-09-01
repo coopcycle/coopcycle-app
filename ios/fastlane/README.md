@@ -39,6 +39,14 @@ Generate new localized screenshots
 
 Generate icons
 
+### ios rename_app
+
+```sh
+[bundle exec] fastlane ios rename_app
+```
+
+Rename app
+
 ### ios load_asc_api_key
 
 ```sh
