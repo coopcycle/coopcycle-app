@@ -91,7 +91,10 @@ allprojects {
         }
         google()
         // Add jitpack repository (added by tipsi-stripe)
-        maven { url 'https://www.jitpack.io' }
+        maven { url 'https://jitpack.io' }
+        maven {
+          url 'https://artifacts.mercadolibre.com/repository/android-releases/'
+        }
         jcenter()
     }
 }
