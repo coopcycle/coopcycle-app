@@ -50,4 +50,4 @@ jobs:
         run: pod install
       - name: Generate icons
         if: ${{ inputs.instance != '' }}
-        run: echo "Generate icons"
+        run: bundle exec fastlane generate_icons
