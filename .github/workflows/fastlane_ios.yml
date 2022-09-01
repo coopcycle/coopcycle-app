@@ -2,4 +2,5 @@ name: Fastlane iOS
 on: [workflow_dispatch]
 jobs:
   FASTLANE_IOS:
+    name: Fastlane for iOS
     uses: ./.github/workflows/setup_ios.yml@master
