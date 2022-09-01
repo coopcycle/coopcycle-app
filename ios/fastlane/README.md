@@ -31,6 +31,14 @@ Generate new localized screenshots
 
 
 
+### ios generate_icons
+
+```sh
+[bundle exec] fastlane ios generate_icons
+```
+
+Generate icons
+
 ### ios load_asc_api_key
 
 ```sh
@@ -62,6 +70,14 @@ Bump build number based on most recent TestFlight build number
 ```
 
 Build the iOS app for release
+
+### ios upload_release
+
+```sh
+[bundle exec] fastlane ios upload_release
+```
+
+Upload to TestFlight / ASC
 
 ### ios build_upload_testflight
 
