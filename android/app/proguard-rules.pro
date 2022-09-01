@@ -22,7 +22,7 @@
 -keep class com.transistorsoft.rnbackgroundfetch.HeadlessTask { *; }
 
 # https://github.com/luggit/react-native-config#problems-with-proguard
--keep class fr.naofood.client.BuildConfig { *; }
+-keep class fr.coopcycle.BuildConfig { *; }
 
 # https://github.com/react-native-svg/react-native-svg/issues/1061
 -keep public class com.horcrux.svg.** {*;}
