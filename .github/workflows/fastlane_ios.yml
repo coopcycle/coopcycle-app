@@ -2,7 +2,4 @@ name: Fastlane iOS
 on: [workflow_dispatch]
 jobs:
   FASTLANE_IOS:
-    name: Setup for iOS
-    runs-on: macOS-latest
-    steps:
-      - uses: ./.github/workflows/setup_ios.yml@master
+    uses: ./.github/workflows/setup_ios.yml@master
