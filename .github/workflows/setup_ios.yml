@@ -53,4 +53,4 @@ jobs:
         working-directory: ios/
         run: bundle exec fastlane generate_icons
         env:
-          APPICON_IMAGE_FILE: "metadata-${{ inputs.instance }}/app_icon.png"
+          APPICON_IMAGE_FILE: "fastlane/metadata-${{ inputs.instance }}/app_icon.png"
