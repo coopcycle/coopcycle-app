@@ -6,4 +6,4 @@ import bgMessaging from './src/notifications/bgMessaging';
 
 bgMessaging();
 
-AppRegistry.registerComponent('Naofood', () => App);
+AppRegistry.registerComponent('CoopCycle', () => App);
