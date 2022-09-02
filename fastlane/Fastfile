@@ -34,7 +34,7 @@ platform :ios do
       # https://github.com/fastlane-community/fastlane-plugin-appicon/blob/master/lib/fastlane/plugin/appicon/actions/appicon_action.rb
       # appicon_image_file: 'metadata-naofood/app_icon.png',
       appicon_devices: [:iphone, :ipad, :ios_marketing],
-      appicon_path: 'CoopCycle/Images.xcassets',
+      appicon_path: 'ios/CoopCycle/Images.xcassets',
     )
   end
 
@@ -54,7 +54,7 @@ platform :ios do
     #   app_identifier: "org.coopcycle.Naofood" # The App Identifier
     # )
 
-    project = Xcodeproj::Project.open("../CoopCycle.xcodeproj")
+    project = Xcodeproj::Project.open("../ios/CoopCycle.xcodeproj")
 
     project.targets.each do |target|
       target.build_configurations.each do |config|
@@ -73,6 +73,7 @@ platform :ios do
     project.save
 
     update_info_plist(
+      xcodeproj: "ios/CoopCycle.xcodeproj",
       plist_path: "CoopCycle/Info.plist",
       display_name: app_name
     )
@@ -110,8 +111,8 @@ platform :ios do
 
     cert(
       api_key: api_key,
-      keychain_path: "/Users/runner/Library/Keychains/signing_temp.keychain-db", # the path to the keychain where your certificates are stored
-      keychain_password: ENV["KEYCHAIN_PASSWORD"]
+      keychain_path: "~/Library/Keychains/signing_temp.keychain-db", # the path to the keychain where your certificates are stored
+      # keychain_password: ENV["KEYCHAIN_PASSWORD"]
     )
 
     # main app profile
@@ -130,6 +131,7 @@ platform :ios do
     api_key = lane_context[SharedValues::APP_STORE_CONNECT_API_KEY]
 
     current_version = get_version_number(
+      xcodeproj: "ios/CoopCycle.xcodeproj",
       target: "CoopCycle" # replace with your main target, required if you have more than one non-test target
     )
     latest_build_number = latest_testflight_build_number(
@@ -139,7 +141,8 @@ platform :ios do
     )
 
     increment_build_number(
-     build_number: (latest_build_number + 1),
+      xcodeproj: "ios/CoopCycle.xcodeproj",
+      build_number: (latest_build_number + 1),
     )
 
     # increment_version_number(
@@ -159,6 +162,7 @@ platform :ios do
 
     # turn off automatic signing during build so correct code signing identity is guaranteed to be used
     update_code_signing_settings(
+      path: "ios/CoopCycle.xcodeproj",
       use_automatic_signing: false,
       targets: ["CoopCycle"], # specify which targets to update code signing settings for
       code_sign_identity: "Apple Distribution", # replace with name of code signing identity if different
@@ -169,6 +173,7 @@ platform :ios do
 
     # build the app
     gym(
+      workspace: "ios/CoopCycle.xcworkspace",
       scheme: "CoopCycle", # replace with name of your project’s scheme
       output_name: output_name,
       configuration: "Release",
@@ -186,7 +191,7 @@ platform :ios do
   lane :upload_release do
     api_key = lane_context[SharedValues::APP_STORE_CONNECT_API_KEY]
 
-    deliver(
+    upload_to_app_store(
       api_key: api_key,
       skip_screenshots: true,
       skip_metadata: true,
