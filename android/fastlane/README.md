@@ -53,15 +53,15 @@ Build a new Debug build
 [bundle exec] fastlane android upload
 ```
 
+Upload a previously built version to the Google Play
 
-
-### android playstore
+### android generate_icons
 
 ```sh
-[bundle exec] fastlane android playstore
+[bundle exec] fastlane android generate_icons
 ```
 
-
+Generate icons
 
 ----
 

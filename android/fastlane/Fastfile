@@ -68,5 +68,16 @@ platform :android do
     )
   end
 
+  desc "Generate icons"
+  lane :generate_icons do
+    android_appicon(
+      # Should be passed via env var APPICON_IMAGE_FILE
+      # appicon_image_file: 'fastlane/metadata-naofood/app_icon.png',
+      appicon_icon_types: [:launcher],
+      appicon_path: 'app/src/main/res/mipmap',
+      generate_rounded: true
+    )
+  end
+
 end
 
