@@ -25,7 +25,6 @@ jobs:
           ruby-version: '3.1'
           bundler-cache: true
       - name: Install RubyGems
-        working-directory: ios/
         run: bundle install
       # https://github.com/actions/cache/blob/main/examples.md#node---yarn
       - name: Get yarn cache directory path
@@ -53,14 +52,12 @@ jobs:
         run: pod install
       - name: Generate icons
         if: ${{ inputs.instance != '' }}
-        working-directory: ios/
-        run: bundle exec fastlane generate_icons
+        run: bundle exec ios fastlane generate_icons
         env:
           APPICON_IMAGE_FILE: "fastlane/metadata-${{ inputs.instance }}/app_icon.png"
       - name: Rename app
         if: ${{ inputs.app_name != '' }}
-        working-directory: ios/
-        run: bundle exec fastlane rename_app
+        run: bundle exec ios fastlane rename_app
         env:
           COOPCYCLE_APP_NAME: ${{ inputs.app_name }}
       - run: git status
