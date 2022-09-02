@@ -146,8 +146,8 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         multiDexEnabled true
-        versionCode 1208
-        versionName "1.20.8"
+        versionCode 12018
+        versionName "1.20.18"
         ndk {
             abiFilters "armeabi-v7a", "x86", "arm64-v8a", "x86_64"
         }
@@ -220,7 +220,13 @@ android {
         }
     }
    productFlavors {
-      client { }
+      client {
+        dimension "default"
+      }
+      main {
+        dimension "default"
+        isDefault true
+      }
     }
     // applicationVariants are e.g. debug, release
     applicationVariants.all { variant ->
@@ -249,8 +255,6 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.1.0-rc01'
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0-alpha02'
 
-    implementation project(':react-native-share')
-
     addUnimodulesDependencies()
 
     implementation fileTree(dir: "libs", include: ["*.jar"])
@@ -259,7 +263,7 @@ dependencies {
     implementation "com.google.android.gms:play-services-basement:$playServicesVersion"
     implementation "com.google.android.gms:play-services-base:$playServicesVersion"
 
-    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
         exclude group:'com.facebook.fbjni'
     }
