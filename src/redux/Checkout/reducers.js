@@ -180,7 +180,7 @@ export default (state = initialState, action = {}) => {
         ...state,
         carts: {
           ...state.carts,
-          [action.payload.cart.restaurant]: action.payload,
+          [action.payload.restaurantKey]: action.payload,
         },
       }
 
@@ -197,11 +197,11 @@ export default (state = initialState, action = {}) => {
         ...state,
         carts: {
           ...state.carts,
-          [action.payload.vendor['@id']]: {
-            ...state.carts[action.payload.vendor['@id']],
+          [action.payload.cart.restaurantKey]: {
+            ...state.carts[action.payload.cart.restaurantKey],
             cart: {
-              ...state.carts[action.payload.vendor['@id']].cart,
-              items: _.filter(state.carts[action.payload.vendor['@id']].cart.items, item => item.id !== action.payload.id),
+              ...state.carts[action.payload.cart.restaurantKey].cart,
+              items: _.filter(state.carts[action.payload.cart.restaurantKey].cart.items, item => item.id !== action.payload.item.id),
             },
           },
         },
@@ -212,11 +212,11 @@ export default (state = initialState, action = {}) => {
         ...state,
         carts: {
           ...state.carts,
-          [action.payload.item.vendor['@id']]: {
-            ...state.carts[action.payload.item.vendor['@id']],
+          [action.payload.cart.restaurantKey]: {
+            ...state.carts[action.payload.cart.restaurantKey],
             cart: {
-              ...state.carts[action.payload.item.vendor['@id']].cart,
-              items: _.map(state.carts[action.payload.item.vendor['@id']].cart.items, item => {
+              ...state.carts[action.payload.cart.restaurantKey].cart,
+              items: _.map(state.carts[action.payload.cart.restaurantKey].cart.items, item => {
                 if (item.id === action.payload.item.id) {
 
                   return {
@@ -294,12 +294,12 @@ export default (state = initialState, action = {}) => {
     case UPDATE_CART_SUCCESS:
       return {
         ...state,
-        loadingCarts: _.filter(state.loadingCarts, action.payload.restaurant),
+        loadingCarts: _.filter(state.loadingCarts, action.payload.restaurantKey),
         carts: {
           ...state.carts,
-          [action.payload.restaurant]:
+          [action.payload.restaurantKey]:
             {
-              ...state.carts[action.payload.restaurant],
+              ...state.carts[action.payload.restaurantKey],
               cart: action.payload,
             },
         },

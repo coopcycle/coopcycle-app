@@ -191,9 +191,11 @@ export function addItemV2(item, quantity = 1, restaurant, options) {
       return closureAddress
     }
 
+    const restaurantKey = `${getState().app.baseURL}${restaurant['@id']}`
+
     dispatch(addItemRequest(item))
-    if (!_.has(carts, restaurant['@id'])) {
-      dispatch(initCartRequest(restaurant['@id']))
+    if (!_.has(carts, restaurantKey)) {
+      dispatch(initCartRequest(restaurantKey))
       dispatch(setToken(null))
       httpClient = createHttpClient(getState())
       try {
@@ -203,6 +205,7 @@ export function addItemV2(item, quantity = 1, restaurant, options) {
         })
         const data = {
           restaurant,
+          restaurantKey,
           ...response,
         }
         dispatch(initCartSuccess(data))
@@ -210,7 +213,7 @@ export function addItemV2(item, quantity = 1, restaurant, options) {
         dispatch(initCartFailure(e))
       }
     }
-    const { cart, token } = getState().checkout.carts[restaurant['@id']]
+    const { cart, token } = getState().checkout.carts[restaurantKey]
     dispatch(setToken(token))
     // Reload httpclient with new token
     httpClient = createHttpClient(getState())
@@ -220,8 +223,11 @@ export function addItemV2(item, quantity = 1, restaurant, options) {
         quantity,
         options,
       })
-      dispatch(addItemRequestFinished(item))
-      dispatch(updateCartSuccess(response))
+    dispatch(addItemRequestFinished(item))
+    dispatch(updateCartSuccess({
+      restaurantKey,
+      ...response,
+    }))
   }
   // Check if address is valid ?
   // Check if cart for this restaurant isset, else init it
@@ -375,14 +381,15 @@ const fetchValidation = _.throttle((dispatch, getState, cart) => {
 
 }, 500)
 
-const updateItemQuantity = createAction(UPDATE_ITEM_QUANTITY, (item, quantity) => ({ item, quantity }))
+const updateItemQuantity = createAction(UPDATE_ITEM_QUANTITY, (cart, item, quantity) => ({ cart, item, quantity }))
 
 function syncItem(item) {
   return {
     queue: 'UPDATE_CART',
     callback: (next, dispatch, getState) => {
 
-      const { cart, token } = getState().checkout.carts[item.vendor['@id']]
+      const restaurantKey = `${getState().app.baseURL}${item.vendor['@id']}`
+      const { cart, token } = getState().checkout.carts[restaurantKey]
       dispatch(setToken(token))
       const httpClient = createHttpClient(getState())
 
@@ -402,7 +409,10 @@ function syncItem(item) {
           quantity: itemFromState.quantity,
         })
         .then(res => {
-          dispatch(updateCartSuccess(res))
+          dispatch(updateCartSuccess({
+            ...res,
+            restaurantKey,
+          }))
           dispatch(setCheckoutLoading(false))
 
           fetchValidation.cancel()
@@ -419,34 +429,33 @@ function syncItem(item) {
 
 const syncItemDebounced = _.debounce((dispatch, item) => dispatch(syncItem(item)), 450)
 
-export function incrementItem(item) {
+export function incrementItem(item, cart) {
 
   return (dispatch, getState) => {
     const quantity = item.quantity + 1
     // Dispatch an action to "virtually" change the item quantity,
     // so that the user has a UI feedback
-    dispatch(updateItemQuantity(item, quantity))
+    dispatch(updateItemQuantity(cart, item, quantity))
     syncItemDebounced(dispatch, item)
   }
 }
 
-export function decrementItem(item) {
+export function decrementItem(item, cart) {
   return (dispatch, getState) => {
     const quantity = item.quantity - 1
     // Dispatch an action to "virtually" change the item quantity,
     // so that the user has a UI feedback
-    dispatch(updateItemQuantity(item, quantity))
+    dispatch(updateItemQuantity(cart, item, quantity))
     syncItemDebounced(dispatch, item)
   }
 }
 
-function queueRemoveItem(item) {
+function queueRemoveItem(cart, token, item) {
 
   return {
     queue: 'UPDATE_CART',
     callback: (next, dispatch, getState) => {
 
-      const { cart, token } = getState().checkout.carts[item.vendor['@id']]
       dispatch(setToken(token))
       const httpClient = createHttpClient(getState())
 
@@ -456,7 +465,10 @@ function queueRemoveItem(item) {
         // FIXME We should have the "@id" property
         .delete(`${cart['@id']}/items/${item.id}`)
         .then(res => {
-          dispatch(updateCartSuccess(res))
+          dispatch(updateCartSuccess({
+            ...res,
+            restaurantKey: cart.restaurantKey,
+          }))
           dispatch(setCheckoutLoading(false))
 
           fetchValidation.cancel()
@@ -471,11 +483,11 @@ function queueRemoveItem(item) {
   }
 }
 
-export function deleteCart(restaurantID) {
+export function deleteCart(restaurantKey) {
   return (dispatch, getState) => {
     const { carts } = getState().checkout
 
-    const newCarts = _.omit(carts, restaurantID)
+    const newCarts = _.omit(carts, restaurantKey)
 
     dispatch(setToken(null))
     dispatch(updateCarts(newCarts))
@@ -485,11 +497,13 @@ export function deleteCart(restaurantID) {
 export function removeItem(item) {
 
   return (dispatch, getState) => {
+    const restaurantKey = `${getState().app.baseURL}${item.vendor['@id']}`
+    const { cart, token } = getState().checkout.carts[restaurantKey]
     // Dispatch an action to "virtually" remove the item,
     // so that the user has a UI feedback
-    dispatch(removeItemRequest(item))
+    dispatch(removeItemRequest({ cart, item }))
 
-    dispatch(queueRemoveItem(item))
+    dispatch(queueRemoveItem(cart, token, item))
   }
 }
 
@@ -516,12 +530,16 @@ function syncAddress(cart, address) {
     callback: (next, dispatch, getState) => {
 
       const { carts } = getState().checkout
-      dispatch(setToken(carts[cart.restaurant].token))
+      const restaurantKey = cart.restaurantKey
+      dispatch(setToken(carts[restaurantKey].token))
       const httpClient = createHttpClient(getState())
 
-      httpClient.put(carts[cart.restaurant].cart['@id'], { shippingAddress: address })
+      httpClient.put(carts[restaurantKey].cart['@id'], { shippingAddress: address })
         .then(res => {
-          dispatch(updateCartSuccess(res))
+          dispatch(updateCartSuccess({
+            ...res,
+            restaurantKey,
+          }))
           dispatch(setCheckoutLoading(false))
           dispatch(hideAddressModal())
           notifyListeners(address)
@@ -812,7 +830,8 @@ export function assignCustomer({ email, telephone }, cartContainer = null) {
   return async (dispatch, getState) => {
 
     const { restaurant } = getState().checkout
-    const { cart, token } = cartContainer || getState().checkout.carts[restaurant]
+    const restaurantKey = `${getState().app.baseURL}${restaurant}`
+    const { cart, token } = cartContainer || getState().checkout.carts[restaurantKey]
     const { user } = getState().app
 
     if (cart.customer) {
@@ -843,7 +862,10 @@ export function assignCustomer({ email, telephone }, cartContainer = null) {
         if (user.isGuest()) {
           dispatch(updateCustomerGuest({ email, telephone }))
         }
-        dispatch(updateCartSuccess(res))
+        dispatch(updateCartSuccess({
+          ...res,
+          restaurantKey,
+        }))
         dispatch(checkoutSuccess())
       })
       .catch(e => dispatch(checkoutFailure(e)))
@@ -862,7 +884,10 @@ const doUpdateCart = (dispatch, httpClient, cart, payload, cb) => {
   httpClient
     .put(cart['@id'], payload)
     .then(res => {
-      dispatch(updateCartSuccess(res))
+      dispatch(updateCartSuccess({
+        ...res,
+        restaurantKey: cart.restaurantKey,
+      }))
       dispatch(checkoutSuccess())
       _.isFunction(cb) && cb(res)
     })
@@ -875,7 +900,8 @@ export function updateCart(payload, cb) {
 
 
     const { restaurant } = getState().checkout
-    const { cart, token } = getState().checkout.carts[restaurant]
+    const restaurantKey = `${getState().app.baseURL}${restaurant}`
+    const { cart, token } = getState().checkout.carts[restaurantKey]
 
     const httpClient = createHttpClient(getState())
 
@@ -927,7 +953,10 @@ export function setDate(shippingTimeRange, cart, cb) {
         shippingTimeRange,
       })
       .then(res => {
-        dispatch(updateCartSuccess(res))
+        dispatch(updateCartSuccess({
+          ...res,
+          restaurantKey: cart.restaurantKey,
+        }))
         setTimeout(() => {
           dispatch(checkoutSuccess())
           _.isFunction(cb) && cb()
@@ -952,7 +981,10 @@ export function setDateAsap(cart, cb) {
         shippingTimeRange: null,
       })
       .then(res => {
-        dispatch(updateCartSuccess(res))
+        dispatch(updateCartSuccess({
+          ...res,
+          restaurantKey: cart.restaurantKey,
+        }))
         setTimeout(() => {
           dispatch(checkoutSuccess())
           _.isFunction(cb) && cb()
@@ -967,11 +999,11 @@ export function setFulfillmentMethod(method, cart) {
   return (dispatch, getState) => {
 
     const { address, carts } = getState().checkout
+    const restaurantKey = `${getState().app.baseURL}${cart.restaurant}`
 
     //dispatch(checkoutRequest())
     console.log(method, cart)
-    console.log(carts[cart.restaurant].token)
-    dispatch(setToken(carts[cart.restaurant].token))
+    dispatch(setToken(carts[restaurantKey].token))
 
     const httpClient = createHttpClient(getState())
 
@@ -985,7 +1017,10 @@ export function setFulfillmentMethod(method, cart) {
           .then(timing => {
             dispatch(setCheckoutLoading(false))
             dispatch(setTiming(timing))
-            dispatch(updateCartSuccess(res))
+            dispatch(updateCartSuccess({
+              ...res,
+              restaurantKey,
+            }))
 
             if (method === 'delivery') {
               if (!cart.shippingAddress) {
@@ -995,6 +1030,7 @@ export function setFulfillmentMethod(method, cart) {
                   dispatch(updateCartSuccess({
                     ...res,
                     shippingAddress: address,
+                    restaurantKey,
                   }))
                 }
               }

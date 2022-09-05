@@ -5,8 +5,16 @@ import moment from 'moment'
 import i18n from '../../i18n'
 
 export const selectDeliveryTotal = createSelector(
-  state => state.checkout.carts[state.checkout.restaurant].cart,
-  (cart) => {
+  state => state.checkout.carts,
+  state => state.app.baseURL,
+  state => state.checkout.restaurant,
+  (carts, baseURL, restaurant) => {
+    const restaurantKey = `${baseURL}${restaurant}`
+    if (!carts[restaurantKey] || !carts[restaurantKey].cart) {
+      return 0
+    }
+
+    const cart = carts[restaurantKey].cart
 
     if (!cart || !cart.adjustments) {
       return 0

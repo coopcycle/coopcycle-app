@@ -25,10 +25,12 @@ import {
   incrementItem,
   removeItem,
   setAddress,
+  setCheckoutLoading,
   showAddressModal,
   updateCart,
   validate,
 } from '../../redux/Checkout/actions'
+import { selectServer } from '../../redux/App/actions'
 import { selectDeliveryTotal } from '../../redux/Checkout/selectors'
 import { selectIsAuthenticated } from '../../redux/App/selectors'
 import CartFooter from './components/CartFooter'
@@ -90,7 +92,18 @@ class Summary extends Component {
   }
 
   componentDidMount() {
-    InteractionManager.runAfterInteractions(() => {
+    const { cart, baseURL } = this.props
+
+    InteractionManager.runAfterInteractions(async () => {
+      if (cart.restaurantKey) {
+        // for multiple instances maybe we have to switch server if user is navigating between carts of different instances
+        const restaurantBaseURL = cart.restaurantKey.split('/api')[0]
+        if (baseURL !== restaurantBaseURL) {
+          await this.props.selectServer(restaurantBaseURL)
+        }
+      }
+
+      this.props.setCheckoutLoading(true)
       this.props.validate(this.props.cart)
     })
   }
@@ -186,12 +199,12 @@ class Summary extends Component {
           <View style={{ flex: 1, flexDirection: 'column' }}>
             <TouchableOpacity
               style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
-              onPress={ () => this.props.incrementItem(item) }>
+              onPress={ () => this.props.incrementItem(item, this.props.cart) }>
               <Icon as={ FontAwesome } name="plus-circle" size="sm" />
             </TouchableOpacity>
             <TouchableOpacity
               style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
-              onPress={ () => this.props.decrementItem(item) }>
+              onPress={ () => this.props.decrementItem(item, this.props.cart) }>
               <Icon as={ FontAwesome } name="minus-circle" size="sm" />
             </TouchableOpacity>
           </View>
@@ -207,7 +220,7 @@ class Summary extends Component {
 
   renderFooter() {
 
-    const { cart } = this.props
+    const { cart, cartLoading } = this.props
 
     if (!cart || cart.items.length === 0) {
 
@@ -221,7 +234,8 @@ class Summary extends Component {
         onSubmit={ this.onSubmit.bind(this) }
         cart={ cart }
         testID="cartSummarySubmit"
-        disabled={ this.props.isValid !== true || this.props.isLoading } />
+        disabled={ this.props.isValid !== true || this.props.isLoading }
+        initLoading={cartLoading} />
     )
   }
 
@@ -362,9 +376,13 @@ function mapStateToProps(state, ownProps) {
 
 
   const restaurant = ownProps.route.params?.restaurant
-  const cart = state.checkout.carts[restaurant['@id']].cart || ownProps.route.params?.cart || state.checkout.cart
+  const restaurantKey = `${state.app.baseURL}${restaurant['@id']}`
+  const cart = state.checkout.carts[restaurantKey]?.cart || ownProps.route.params?.cart || state.checkout.cart
+  const cartLoading = _.includes(state.checkout.loadingCarts, restaurantKey)
+
   return {
     cart,
+    cartLoading,
     restaurant,
     edit: ownProps.route.params?.edit || false,
     isAuthenticated: selectIsAuthenticated(state),
@@ -374,19 +392,22 @@ function mapStateToProps(state, ownProps) {
     isValid: state.checkout.isValid,
     alertMessage: _.first(state.checkout.violations.map(v => v.message)),
     fulfillmentMethod: selectCartFulfillmentMethod(restaurant, cart),
+    baseURL: state.app.baseURL,
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    incrementItem: item => dispatch(incrementItem(item)),
-    decrementItem: item => dispatch(decrementItem(item)),
+    incrementItem: (item, cart) => dispatch(incrementItem(item, cart)),
+    decrementItem: (item, cart) => dispatch(decrementItem(item, cart)),
     removeItem: item => dispatch(removeItem(item)),
     validate: cart => dispatch(validate(cart)),
+    setCheckoutLoading: loading => dispatch(setCheckoutLoading(loading)),
     showAddressModal: () => dispatch(showAddressModal()),
     hideAddressModal: () => dispatch(hideAddressModal()),
     updateCart: (cart, cb) => dispatch(updateCart(cart, cb)),
     setAddress: (address, cart) => dispatch(setAddress(address, cart)),
+    selectServer: (serverURL) => dispatch(selectServer(serverURL)),
   }
 }
 
