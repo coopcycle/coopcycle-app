@@ -8,6 +8,7 @@ on:
       instance_url:
         type: string
         required: false
+        default: ""
       app_name:
         type: string
         required: false
@@ -15,6 +16,10 @@ on:
         type: string
         required: false
         default: org.coopcycle.CoopCycle
+      primary_color:
+        type: string
+        required: false
+        default: ""
 jobs:
   FASTLANE_IOS:
     name: Build for iOS
@@ -67,4 +72,55 @@ jobs:
         run: bundle exec fastlane rename_app
         env:
           COOPCYCLE_APP_NAME: ${{ inputs.app_name }}
-      - run: git status
+      - name: Decode sentry.properties file
+        uses: timheuer/base64-to-file@v1.1
+        with:
+          fileDir: "./ios/"
+          fileName: "sentry.properties"
+          encodedString: ${{ secrets.SENTRY_PROPERTIES_BASE64 }}
+      - name: Decode google-services.json file
+        uses: timheuer/base64-to-file@v1.1
+        with:
+          fileDir: "./ios/"
+          fileName: "GoogleService-Info.plist"
+          encodedString: ${{ secrets.GOOGLE_SERVICE_INFO_PLIST_BASE64 }}
+      - name: Create .env file
+        env:
+          SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+          GOOGLE_MAPS_BROWSER_KEY: ${{ secrets.GOOGLE_MAPS_BROWSER_KEY }}
+          GOOGLE_MAPS_ANDROID_KEY: ${{ secrets.GOOGLE_MAPS_ANDROID_KEY }}
+          TRANSISTORSOFT_LICENSE_KEY: ${{ secrets.TRANSISTORSOFT_LICENSE_KEY }}
+          FACEBOOK_APP_ID: ${{ secrets.FACEBOOK_APP_ID }}
+          GOOGLE_SIGN_IN_CLIENT_ID: ${{ secrets.GOOGLE_SIGN_IN_CLIENT_ID }}
+          DEFAULT_SERVER: ${{ inputs.instance_url }}
+          PRIMARY_COLOR: ${{ inputs.primary_color }}
+        run: |
+          touch .env
+          echo COUNTLY_SERVER_URL= >> .env
+          echo COUNTLY_APP_KEY= >> .env
+          echo COUNTLY_SALT= >> .env
+          echo SENTRY_DSN="$SENTRY_DSN" >> .env
+          echo GOOGLE_MAPS_BROWSER_KEY="$GOOGLE_MAPS_BROWSER_KEY" >> .env
+          echo GOOGLE_MAPS_ANDROID_KEY="$GOOGLE_MAPS_ANDROID_KEY" >> .env
+          echo TRANSISTORSOFT_LICENSE_KEY="$TRANSISTORSOFT_LICENSE_KEY" >> .env
+          echo FACEBOOK_APP_ID="$FACEBOOK_APP_ID" >> .env
+          echo FACEBOOK_CLIENT_TOKEN= >> .env
+          echo GOOGLE_SIGN_IN_CLIENT_ID="$GOOGLE_SIGN_IN_CLIENT_ID" >> .env
+          echo DEFAULT_SERVER="$DEFAULT_SERVER" >> .env
+          echo PRIMARY_COLOR="$PRIMARY_COLOR" >> .env
+      - name: Import Code-Signing Certificates
+        uses: Apple-Actions/import-codesign-certs@v1
+        with:
+          p12-file-base64: ${{ secrets.IOS_DIST_SIGNING_KEY }}
+          p12-password: ${{ secrets.IOS_DIST_SIGNING_KEY_PASSWORD }}
+      - name: Run Fastlane
+        working-directory: ios/
+        run: bundle exec fastlane build_upload_testflight
+        env:
+          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+          ASC_KEY: ${{ secrets.ASC_KEY }}
+          # https://github.com/fastlane/fastlane/issues/14418
+          # KEYCHAIN_PATH: /Users/runner/Library/Keychains/signing_temp.keychain-db
+          KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
+          COOPCYCLE_APP_IDENTIFIER: ${{ inputs.app_id }}
