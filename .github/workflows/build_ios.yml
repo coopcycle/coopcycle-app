@@ -4,6 +4,7 @@ jobs:
   default:
     name: Build default app
     uses: ./.github/workflows/fastlane_ios.yml
+    secrets: inherit
   naofood:
     name: Build Naofood app
     uses: ./.github/workflows/fastlane_ios.yml
@@ -13,3 +14,4 @@ jobs:
       app_name: Naofood
       app_id: org.coopcycle.Naofood
       primary_color: "#f8781f"
+    secrets: inherit
