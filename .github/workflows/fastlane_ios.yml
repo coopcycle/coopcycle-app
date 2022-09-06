@@ -11,6 +11,10 @@ on:
       app_name:
         type: string
         required: false
+      app_id:
+        type: string
+        required: false
+        default: org.coopcycle.CoopCycle
 jobs:
   FASTLANE_IOS:
     name: Build for iOS
