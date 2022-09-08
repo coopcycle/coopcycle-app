@@ -29,103 +29,103 @@ jobs:
     runs-on: macOS-latest
     steps:
       - uses: actions/checkout@v2
-      # - uses: actions/setup-node@v1
-      #   with:
-      #     node-version: '16.x'
-      # - uses: ruby/setup-ruby@v1
-      #   with:
-      #     ruby-version: '3.1'
-      #     bundler-cache: true
-      # - name: Install RubyGems
-      #   working-directory: ios/
-      #   run: bundle install
-      # # https://github.com/actions/cache/blob/main/examples.md#node---yarn
-      # - name: Get yarn cache directory path
-      #   id: yarn-cache-dir-path
-      #   run: echo "::set-output name=dir::$(yarn cache dir)"
-      # - uses: actions/cache@v3
-      #   id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
-      #   with:
-      #     path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-      #     key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-      #     restore-keys: |
-      #       ${{ runner.os }}-yarn-
-      # - name: Install dependencies
-      #   run: yarn install
-      # - name: Install CocoaPods plugins
-      #   run: gem install cocoapods-user-defined-build-types
-      # - name: Cache Pods
-      #   uses: actions/cache@v2
-      #   id: cache-pods
-      #   with:
-      #     path: ios/Pods
-      #     key: pods-${{ hashFiles('**/Podfile.lock') }}
-      # - name: Install Pods
-      #   working-directory: ios/
-      #   run: pod install
-      # - name: Generate icons
-      #   if: ${{ inputs.instance != '' }}
-      #   working-directory: ios/
-      #   run: bundle exec fastlane generate_icons
-      #   env:
-      #     APPICON_IMAGE_FILE: "fastlane/metadata-${{ inputs.instance }}/app_icon.png"
-      # - name: Rename app
-      #   if: ${{ inputs.app_name != '' }}
-      #   working-directory: ios/
-      #   run: bundle exec fastlane rename_app
-      #   env:
-      #     COOPCYCLE_APP_NAME: ${{ inputs.app_name }}
-      # - name: Decode sentry.properties file
-      #   uses: timheuer/base64-to-file@v1.1
-      #   with:
-      #     fileDir: "./ios/"
-      #     fileName: "sentry.properties"
-      #     encodedString: ${{ secrets.SENTRY_PROPERTIES_BASE64 }}
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '16.x'
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.1'
+          bundler-cache: true
+      - name: Install RubyGems
+        working-directory: ios/
+        run: bundle install
+      # https://github.com/actions/cache/blob/main/examples.md#node---yarn
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+      - uses: actions/cache@v3
+        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+      - name: Install dependencies
+        run: yarn install
+      - name: Install CocoaPods plugins
+        run: gem install cocoapods-user-defined-build-types
+      - name: Cache Pods
+        uses: actions/cache@v2
+        id: cache-pods
+        with:
+          path: ios/Pods
+          key: pods-${{ hashFiles('**/Podfile.lock') }}
+      - name: Install Pods
+        working-directory: ios/
+        run: pod install
+      - name: Generate icons
+        if: ${{ inputs.instance != '' }}
+        working-directory: ios/
+        run: bundle exec fastlane generate_icons
+        env:
+          APPICON_IMAGE_FILE: "fastlane/metadata-${{ inputs.instance }}/app_icon.png"
+      - name: Rename app
+        if: ${{ inputs.app_name != '' }}
+        working-directory: ios/
+        run: bundle exec fastlane rename_app
+        env:
+          COOPCYCLE_APP_NAME: ${{ inputs.app_name }}
+      - name: Decode sentry.properties file
+        uses: timheuer/base64-to-file@v1.1
+        with:
+          fileDir: "./ios/"
+          fileName: "sentry.properties"
+          encodedString: ${{ secrets.SENTRY_PROPERTIES_BASE64 }}
       - name: Decode google-services.json file
         uses: timheuer/base64-to-file@v1.1
         with:
           fileDir: "./ios/"
           fileName: "GoogleService-Info.plist"
           encodedString: ${{ secrets[inputs.google_service_info_plist_base64] }}
-      # - name: Create .env file
-      #   env:
-      #     SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
-      #     GOOGLE_MAPS_BROWSER_KEY: ${{ secrets.GOOGLE_MAPS_BROWSER_KEY }}
-      #     GOOGLE_MAPS_ANDROID_KEY: ${{ secrets.GOOGLE_MAPS_ANDROID_KEY }}
-      #     TRANSISTORSOFT_LICENSE_KEY: ${{ secrets.TRANSISTORSOFT_LICENSE_KEY }}
-      #     FACEBOOK_APP_ID: ${{ secrets.FACEBOOK_APP_ID }}
-      #     GOOGLE_SIGN_IN_CLIENT_ID: ${{ secrets.GOOGLE_SIGN_IN_CLIENT_ID }}
-      #     DEFAULT_SERVER: ${{ inputs.instance_url }}
-      #     PRIMARY_COLOR: ${{ inputs.primary_color }}
-      #   run: |
-      #     touch .env
-      #     echo COUNTLY_SERVER_URL= >> .env
-      #     echo COUNTLY_APP_KEY= >> .env
-      #     echo COUNTLY_SALT= >> .env
-      #     echo SENTRY_DSN="$SENTRY_DSN" >> .env
-      #     echo GOOGLE_MAPS_BROWSER_KEY="$GOOGLE_MAPS_BROWSER_KEY" >> .env
-      #     echo GOOGLE_MAPS_ANDROID_KEY="$GOOGLE_MAPS_ANDROID_KEY" >> .env
-      #     echo TRANSISTORSOFT_LICENSE_KEY="$TRANSISTORSOFT_LICENSE_KEY" >> .env
-      #     echo FACEBOOK_APP_ID="$FACEBOOK_APP_ID" >> .env
-      #     echo FACEBOOK_CLIENT_TOKEN= >> .env
-      #     echo GOOGLE_SIGN_IN_CLIENT_ID="$GOOGLE_SIGN_IN_CLIENT_ID" >> .env
-      #     echo DEFAULT_SERVER="$DEFAULT_SERVER" >> .env
-      #     echo PRIMARY_COLOR="$PRIMARY_COLOR" >> .env
-      # # - name: Import Code-Signing Certificates
-      # #   uses: Apple-Actions/import-codesign-certs@v1
-      # #   with:
-      # #     p12-file-base64: ${{ secrets.IOS_DIST_SIGNING_KEY }}
-      # #     p12-password: ${{ secrets.IOS_DIST_SIGNING_KEY_PASSWORD }}
-      # - name: Run Fastlane
-      #   working-directory: ios/
-      #   run: bundle exec fastlane build_upload_testflight
-      #   env:
-      #     ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
-      #     ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
-      #     ASC_KEY: ${{ secrets.ASC_KEY }}
-      #     # https://github.com/fastlane/fastlane/issues/14418
-      #     # KEYCHAIN_PATH: /Users/runner/Library/Keychains/signing_temp.keychain-db
-      #     KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
-      #     COOPCYCLE_APP_IDENTIFIER: ${{ inputs.app_id }}
-      #     GIT_AUTHORIZATION: ${{ secrets.GIT_AUTHORIZATION }}
-      #     MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+      - name: Create .env file
+        env:
+          SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+          GOOGLE_MAPS_BROWSER_KEY: ${{ secrets.GOOGLE_MAPS_BROWSER_KEY }}
+          GOOGLE_MAPS_ANDROID_KEY: ${{ secrets.GOOGLE_MAPS_ANDROID_KEY }}
+          TRANSISTORSOFT_LICENSE_KEY: ${{ secrets.TRANSISTORSOFT_LICENSE_KEY }}
+          FACEBOOK_APP_ID: ${{ secrets.FACEBOOK_APP_ID }}
+          GOOGLE_SIGN_IN_CLIENT_ID: ${{ secrets.GOOGLE_SIGN_IN_CLIENT_ID }}
+          DEFAULT_SERVER: ${{ inputs.instance_url }}
+          PRIMARY_COLOR: ${{ inputs.primary_color }}
+        run: |
+          touch .env
+          echo COUNTLY_SERVER_URL= >> .env
+          echo COUNTLY_APP_KEY= >> .env
+          echo COUNTLY_SALT= >> .env
+          echo SENTRY_DSN="$SENTRY_DSN" >> .env
+          echo GOOGLE_MAPS_BROWSER_KEY="$GOOGLE_MAPS_BROWSER_KEY" >> .env
+          echo GOOGLE_MAPS_ANDROID_KEY="$GOOGLE_MAPS_ANDROID_KEY" >> .env
+          echo TRANSISTORSOFT_LICENSE_KEY="$TRANSISTORSOFT_LICENSE_KEY" >> .env
+          echo FACEBOOK_APP_ID="$FACEBOOK_APP_ID" >> .env
+          echo FACEBOOK_CLIENT_TOKEN= >> .env
+          echo GOOGLE_SIGN_IN_CLIENT_ID="$GOOGLE_SIGN_IN_CLIENT_ID" >> .env
+          echo DEFAULT_SERVER="$DEFAULT_SERVER" >> .env
+          echo PRIMARY_COLOR="$PRIMARY_COLOR" >> .env
+      # - name: Import Code-Signing Certificates
+      #   uses: Apple-Actions/import-codesign-certs@v1
+      #   with:
+      #     p12-file-base64: ${{ secrets.IOS_DIST_SIGNING_KEY }}
+      #     p12-password: ${{ secrets.IOS_DIST_SIGNING_KEY_PASSWORD }}
+      - name: Run Fastlane
+        working-directory: ios/
+        run: bundle exec fastlane build_upload_testflight
+        env:
+          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+          ASC_KEY: ${{ secrets.ASC_KEY }}
+          # https://github.com/fastlane/fastlane/issues/14418
+          # KEYCHAIN_PATH: /Users/runner/Library/Keychains/signing_temp.keychain-db
+          KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
+          COOPCYCLE_APP_IDENTIFIER: ${{ inputs.app_id }}
+          GIT_AUTHORIZATION: ${{ secrets.GIT_AUTHORIZATION }}
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
