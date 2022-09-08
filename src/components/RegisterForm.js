@@ -1,11 +1,13 @@
 import React from 'react'
 import { View } from 'react-native'
-import { Button, FormControl, Input, Stack } from 'native-base'
+import { Button, Checkbox, FormControl, Input, ScrollView, Text } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import validate from 'validate.js'
 import _ from 'lodash'
 import { Formik } from 'formik'
+import { connect } from 'react-redux'
 
+import { navigate } from '../App'
 import i18n from '../i18n'
 
 // Custom validator for matches
@@ -101,7 +103,7 @@ const inputs = [
   },
 ]
 
-const CONSTRAINTS = _.reduce(
+let CONSTRAINTS = _.reduce(
   inputs,
   (acc, { name, constraints }) => ({ ...acc, [name]: constraints }),
   {}
@@ -136,6 +138,112 @@ class RegisterForm extends React.Component {
     this.props.onSubmit(values)
   }
 
+  _renderLegalTexts(values, allErrors, setFieldValue, handleBlur) {
+    if (this.props.splitTermsAndConditionsAndPrivacyPolicy) {
+      return this._renderTermsAndPrivacyPolicyTexts(values, allErrors, setFieldValue, handleBlur)
+    }
+    return this._renderLegalField(
+      'legal',
+      this.props.t('LEGAL_TEXTS_LABEL'),
+      this.props.t('LEGAL_TEXTS_ERROR_MESSAGE'),
+      values,
+      allErrors,
+      setFieldValue,
+      handleBlur
+    )
+  }
+
+  _renderTermsAndPrivacyPolicyTexts(values, allErrors, setFieldValue, handleBlur) {
+    const termsAndConditionsField = this._renderLegalField(
+      'termsAndConditions',
+      this.props.t('TERMS_AND_CONDITIONS_LABEL'),
+      this.props.t('TERMS_AND_CONDITIONS_ERROR_MESSAGE'),
+      values,
+      allErrors,
+      setFieldValue,
+      handleBlur,
+      this.props.t('TERMS_AND_CONDITIONS_BUTTON_LABEL')
+    )
+
+    const privacyPolicyField = this._renderLegalField(
+      'privacyPolicy',
+      this.props.t('PRIVACY_POLICY_LABEL'),
+      this.props.t('PRIVACY_POLICY_ERROR_MESSAGE'),
+      values,
+      allErrors,
+      setFieldValue,
+      handleBlur,
+      this.props.t('PRIVACY_POLICY_BUTTON_LABEL')
+    )
+
+    return (
+      <>
+        { termsAndConditionsField }
+        { privacyPolicyField }
+      </>
+    )
+  }
+
+  _renderLegalField(fieldName, label, errorMessage, values, allErrors,
+    setFieldValue, handleBlur, buttonLabel, buttonNavigation) {
+    const constraints = {
+      presence: { message: errorMessage },
+      inclusion: {
+        within: [true],
+        message: errorMessage,
+      },
+    }
+
+    inputs.push({
+      name: fieldName,
+      constraints,
+      notRender: true,
+    })
+
+    CONSTRAINTS = {
+      ...CONSTRAINTS,
+      [fieldName]: constraints,
+    }
+
+    const hasError = allErrors.hasOwnProperty(fieldName)
+
+    return (
+      <FormControl my="2" isInvalid={hasError}>
+        <Checkbox size="sm" mr="4"
+          name={fieldName}
+          onChange={ (checked) => setFieldValue(fieldName, checked) }
+          onBlur={ handleBlur(fieldName) }
+          testID={ `registerForm.${fieldName}` }
+          ref={ component => this._inputComponents.set(fieldName, component) }
+          defaultValue={ values[fieldName] }>
+          <Text px={2} fontSize="sm">{ label }</Text>
+        </Checkbox>
+        { hasError && this.renderError(errorMessage) }
+        {
+          this.props.splitTermsAndConditionsAndPrivacyPolicy
+          ?
+            <FormControl.HelperText>
+              <Button size="sm" variant="link" testID={`${fieldName}Link`}
+                onPress={ () => navigate(buttonNavigation) }>
+                { buttonLabel }
+              </Button>
+            </FormControl.HelperText>
+          :
+            <FormControl.HelperText>
+              <Button size="sm" variant="link" testID="termsAndConditionsLink"
+                onPress={ () => navigate('TermsNav') }>
+                { this.props.t('TERMS_AND_CONDITIONS_BUTTON_LABEL') }
+              </Button>
+              <Button size="sm" variant="link" testID="privacyPolicyLink"
+                onPress={ () => navigate('PrivacyNav') }>
+                { this.props.t('PRIVACY_POLICY_BUTTON_LABEL') }
+              </Button>
+            </FormControl.HelperText>
+        }
+      </FormControl>
+    )
+  }
+
   render() {
 
     const initialValues = {
@@ -145,6 +253,9 @@ class RegisterForm extends React.Component {
       passwordConfirmation: this.props.prefill === true ? '12345678' : '',
       givenName: this.props.prefill === true ? 'John' : '',
       familyName: this.props.prefill === true ? 'Doe' : '',
+      legal: false,
+      termsAndConditions: false,
+      privacyPolicy: false,
     }
 
     return (
@@ -154,7 +265,7 @@ class RegisterForm extends React.Component {
         onSubmit={ this._onSubmit.bind(this) }
         validateOnBlur={ false }
         validateOnChange={ false }>
-        {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => {
+        {({ handleChange, handleBlur, handleSubmit, values, errors, setFieldValue }) => {
 
           const allErrors = {
             ...errors,
@@ -162,8 +273,11 @@ class RegisterForm extends React.Component {
           }
 
           return (
-            <Stack>
+            <ScrollView showsVerticalScrollIndicator={true} persistentScrollbar={true}>
               { inputs.map((input, index) => {
+                if (input.notRender) {
+                  return
+                }
 
                 const hasError = allErrors.hasOwnProperty(input.name)
                 const itemProps = hasError ? { error: true } : {}
@@ -195,7 +309,7 @@ class RegisterForm extends React.Component {
                 }
 
                 return (
-                  <FormControl { ...itemProps } key={ input.name }>
+                  <FormControl { ...itemProps } key={ input.name } isInvalid={ hasError }>
                     <FormControl.Label>{ input.label }</FormControl.Label>
                     <Input
                       testID={ `registerForm.${input.name}` }
@@ -209,12 +323,15 @@ class RegisterForm extends React.Component {
                   </FormControl>
                 )
               }) }
+
+              { this._renderLegalTexts(values, allErrors, setFieldValue, handleBlur) }
+
               <View style={{ marginTop: 20 }}>
                 <Button block onPress={ handleSubmit } testID="submitRegister">
                   {this.props.t('SUBMIT')}
                 </Button>
               </View>
-            </Stack>
+            </ScrollView>
           )
         }}
       </Formik>
@@ -222,4 +339,10 @@ class RegisterForm extends React.Component {
   }
 }
 
-export default withTranslation()(RegisterForm)
+function mapStateToProps(state) {
+  return {
+    splitTermsAndConditionsAndPrivacyPolicy: state.app.settings.split_terms_and_conditions_and_privacy_policy,
+  }
+}
+
+export default connect(mapStateToProps)(withTranslation()(RegisterForm))

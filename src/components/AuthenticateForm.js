@@ -44,7 +44,7 @@ class AuthenticateForm extends Component {
     const btnLabel = formToDisplay === 'login' ? 'OR_REGISTER' : 'OR_LOGIN'
 
     return (
-      <View>
+      <View flex={1} style={{ width: '80%' }} justifyContent="center">
         { this.renderForm() }
         <View style={{ marginTop: 10 }}>
           <Button size="sm" variant="link" onPress={() => this.setState({ formToDisplay: alternateForm, message: '' })} testID="loginOrRegister">

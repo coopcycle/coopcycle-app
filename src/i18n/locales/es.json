@@ -401,6 +401,14 @@
         "total_packages_plural": "Total: {{count}} paquetes",
         "RESTAURANT_PRODUCT_OPTIONS": "Opciones de producto",
         "OPTION_REQUIRED": "Obligatorio",
-        "SOME_OPTION_IS_REQUIRED_SELECT_ONE_VALUE": "Hay opciones obligatorias, seleccione un valor en ellas para continuar"
+        "SOME_OPTION_IS_REQUIRED_SELECT_ONE_VALUE": "Hay opciones obligatorias, seleccione un valor en ellas para continuar",
+        "LEGAL_TEXTS_LABEL": "Acepto los Términos y Condiciones y la Política de Privacidad",
+        "LEGAL_TEXTS_ERROR_MESSAGE": "Debe aceptar los Términos y Condiciones y la Política de Privacidad",
+        "TERMS_AND_CONDITIONS_BUTTON_LABEL": "Leer Términos y Condiciones",
+        "PRIVACY_POLICY_BUTTON_LABEL": "Leer Política de Privacidad",
+        "TERMS_AND_CONDITIONS_LABEL": "Acepto los Términos y Condiciones",
+        "TERMS_AND_CONDITIONS_ERROR_MESSAGE": "Debe aceptar los Términos y Condiciones",
+        "PRIVACY_POLICY_LABEL": "Acepto la Política de Privacidad",
+        "PRIVACY_POLICY_ERROR_MESSAGE": "Debe aceptar la Política de Privacidad"
     }
 }
