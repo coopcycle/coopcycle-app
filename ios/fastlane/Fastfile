@@ -204,6 +204,22 @@ platform :ios do
       build_configurations: ["Release"] # only toggle code signing settings for Release configurations
     )
 
+    profile_type = lane_context[SharedValues::SIGH_PROFILE_TYPE]
+    puts profile_type
+
+    profile_path = "sigh_#{app_identifier}_appstore_profile-path"
+    puts profile_path
+
+    # https://github.com/fastlane/fastlane/issues/15926
+    # https://github.com/fastlane/fastlane/issues/15926#issuecomment-578074300
+    # https://github.com/fastlane/fastlane/issues/15338
+    update_project_provisioning(
+      xcodeproj: "CoopCycle.xcodeproj",
+      profile: ENV[profile_path],
+      target_filter: "CoopCycle", # matches name or type of a target
+      build_configuration: "Release"
+    )
+
     # build the app
     gym(
       scheme: "CoopCycle", # replace with name of your project’s scheme
