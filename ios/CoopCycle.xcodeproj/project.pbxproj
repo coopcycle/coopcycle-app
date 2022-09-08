@@ -734,7 +734,6 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.coopcycle.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = CoopCycle;
-				PROVISIONING_PROFILE_SPECIFIER = Fastlane;
 				SWIFT_OBJC_BRIDGING_HEADER = "CoopCycle-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.2;
@@ -776,7 +775,6 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.coopcycle.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = CoopCycle;
-				PROVISIONING_PROFILE_SPECIFIER = Fastlane;
 				SWIFT_OBJC_BRIDGING_HEADER = "CoopCycle-Bridging-Header.h";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
