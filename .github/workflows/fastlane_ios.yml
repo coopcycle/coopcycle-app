@@ -124,3 +124,5 @@ jobs:
           # KEYCHAIN_PATH: /Users/runner/Library/Keychains/signing_temp.keychain-db
           KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
           COOPCYCLE_APP_IDENTIFIER: ${{ inputs.app_id }}
+          GIT_AUTHORIZATION: ${{ secrets.GIT_AUTHORIZATION }}
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
