@@ -20,6 +20,9 @@ on:
         type: string
         required: false
         default: ""
+      google_service_info_plist_base64:
+        type: string
+        required: true
 jobs:
   FASTLANE_IOS:
     name: Build for iOS
@@ -83,7 +86,7 @@ jobs:
         with:
           fileDir: "./ios/"
           fileName: "GoogleService-Info.plist"
-          encodedString: ${{ secrets.GOOGLE_SERVICE_INFO_PLIST_BASE64 }}
+          encodedString: ${{ inputs.google_service_info_plist_base64 }}
       - name: Create .env file
         env:
           SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
@@ -108,11 +111,11 @@ jobs:
           echo GOOGLE_SIGN_IN_CLIENT_ID="$GOOGLE_SIGN_IN_CLIENT_ID" >> .env
           echo DEFAULT_SERVER="$DEFAULT_SERVER" >> .env
           echo PRIMARY_COLOR="$PRIMARY_COLOR" >> .env
-      - name: Import Code-Signing Certificates
-        uses: Apple-Actions/import-codesign-certs@v1
-        with:
-          p12-file-base64: ${{ secrets.IOS_DIST_SIGNING_KEY }}
-          p12-password: ${{ secrets.IOS_DIST_SIGNING_KEY_PASSWORD }}
+      # - name: Import Code-Signing Certificates
+      #   uses: Apple-Actions/import-codesign-certs@v1
+      #   with:
+      #     p12-file-base64: ${{ secrets.IOS_DIST_SIGNING_KEY }}
+      #     p12-password: ${{ secrets.IOS_DIST_SIGNING_KEY_PASSWORD }}
       - name: Run Fastlane
         working-directory: ios/
         run: bundle exec fastlane build_upload_testflight
