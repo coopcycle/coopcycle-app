@@ -1,4 +1,4 @@
-git_url("git@github.com:coopcycle/fastlane-certificates.git")
+git_url("https://github.com/coopcycle/fastlane-certificates.git")
 
 storage_mode("git")
 
