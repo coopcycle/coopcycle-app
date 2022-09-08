@@ -17,6 +17,26 @@
 
 default_platform(:ios)
 
+def delete_temp_keychain(name)
+  delete_keychain(
+    name: name
+  ) if File.exist? File.expand_path("~/Library/Keychains/#{name}-db")
+end
+
+def create_temp_keychain(name, password)
+  create_keychain(
+    name: name,
+    password: password,
+    unlock: false,
+    timeout: 0
+  )
+end
+
+def ensure_temp_keychain(name, password)
+  delete_temp_keychain(name)
+  create_temp_keychain(name, password)
+end
+
 platform :ios do
 
   desc "Generate new localized screenshots"
@@ -95,32 +115,47 @@ platform :ios do
     app_id = CredentialsManager::AppfileConfig.try_fetch_value(:app_identifier)
     api_key = lane_context[SharedValues::APP_STORE_CONNECT_API_KEY]
 
-    profile_name = "Fastlane" # replace with the name of your existing profile, or define a name for the profile that fastlane will create if it’s not found
+    # profile_name = "Fastlane" # replace with the name of your existing profile, or define a name for the profile that fastlane will create if it’s not found
 
-    # delete_keychain(name: "signing_app_temp.keychain-db")
+    # # delete_keychain(name: "signing_app_temp.keychain-db")
 
-    # create_keychain(
-    #   # path: ENV["KEYCHAIN_PATH"],
-    #   name: "signing_app_temp.keychain-db",
-    #   password: ENV["KEYCHAIN_PASSWORD"],
-    #   unlock: true
+    # # create_keychain(
+    # #   # path: ENV["KEYCHAIN_PATH"],
+    # #   name: "signing_app_temp.keychain-db",
+    # #   password: ENV["KEYCHAIN_PASSWORD"],
+    # #   unlock: true
+    # # )
+
+    # # keychain_path = lane_context[SharedValues::KEYCHAIN_PATH]
+
+    # cert(
+    #   api_key: api_key,
+    #   keychain_path: "/Users/runner/Library/Keychains/signing_temp.keychain-db", # the path to the keychain where your certificates are stored
+    #   keychain_password: ENV["KEYCHAIN_PASSWORD"]
     # )
 
-    # keychain_path = lane_context[SharedValues::KEYCHAIN_PATH]
+    # # main app profile
+    # sigh(
+    #   api_key: api_key,
+    #   app_identifier: app_id,
+    #   provisioning_name: profile_name,
+    #   force: true # always recreate this exact profile to ensure it's valid and not expired
+    # )
 
-    cert(
-      api_key: api_key,
-      keychain_path: "/Users/runner/Library/Keychains/signing_temp.keychain-db", # the path to the keychain where your certificates are stored
-      keychain_password: ENV["KEYCHAIN_PASSWORD"]
-    )
+    keychain_name = "signing_temp.keychain"
 
-    # main app profile
-    sigh(
-      api_key: api_key,
+    ensure_temp_keychain(keychain_name, ENV["KEYCHAIN_PASSWORD"])
+
+    match(
+      type: 'appstore',
       app_identifier: app_id,
-      provisioning_name: profile_name,
-      force: true # always recreate this exact profile to ensure it's valid and not expired
+      git_basic_authorization: Base64.strict_encode64(ENV["GIT_AUTHORIZATION"]),
+      readonly: true,
+      keychain_name: keychain_name,
+      keychain_password: ENV["KEYCHAIN_PASSWORD"],
+      api_key: api_key
     )
+
   end
 
   desc "Bump build number based on most recent TestFlight build number"
@@ -200,9 +235,9 @@ platform :ios do
   lane :build_upload_testflight do
     load_asc_api_key
     prepare_signing
-    fetch_and_increment_build_number
-    build_release
-    upload_release
+    # fetch_and_increment_build_number
+    # build_release
+    # upload_release
   end
 
 end
