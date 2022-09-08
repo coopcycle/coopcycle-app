@@ -13,7 +13,9 @@
 # Uncomment the line if you want fastlane to automatically update itself
 # update_fastlane
 
-# Inpired by https://www.runway.team/blog/how-to-set-up-a-ci-cd-pipeline-for-your-ios-app-fastlane-github-actions
+# Inpired by
+# - https://www.runway.team/blog/how-to-set-up-a-ci-cd-pipeline-for-your-ios-app-fastlane-github-actions
+# - https://litoarias.medium.com/continuous-delivery-for-ios-using-fastlane-and-github-actions-edf62ee68ecc
 
 default_platform(:ios)
 
@@ -207,6 +209,7 @@ platform :ios do
       scheme: "CoopCycle", # replace with name of your project’s scheme
       output_name: output_name,
       configuration: "Release",
+      skip_profile_detection: true,
       export_options: {
         method: export_method,
         # provisioningProfiles: {
