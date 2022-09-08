@@ -18,5 +18,3 @@ jobs:
       primary_color: "#f8781f"
       google_service_info_plist_base64: GOOGLE_SERVICE_INFO_PLIST_BASE64_NAOFOOD
     secrets: inherit
-
-    ${{ secrets[format('{0}_A', github.event.inputs.env)] }}
