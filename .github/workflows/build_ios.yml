@@ -5,7 +5,7 @@ jobs:
     name: Build default app
     uses: ./.github/workflows/fastlane_ios.yml
     with:
-      google_service_info_plist_base64: ${{ secrets.GOOGLE_SERVICE_INFO_PLIST_BASE64 }}
+      google_service_info_plist_base64: GOOGLE_SERVICE_INFO_PLIST_BASE64
     secrets: inherit
   naofood:
     name: Build Naofood app
@@ -16,5 +16,7 @@ jobs:
       app_name: Naofood
       app_id: org.coopcycle.Naofood
       primary_color: "#f8781f"
-      google_service_info_plist_base64: ${{ secrets.GOOGLE_SERVICE_INFO_PLIST_BASE64_NAOFOOD }}
+      google_service_info_plist_base64: GOOGLE_SERVICE_INFO_PLIST_BASE64_NAOFOOD
     secrets: inherit
+
+    ${{ secrets[format('{0}_A', github.event.inputs.env)] }}
