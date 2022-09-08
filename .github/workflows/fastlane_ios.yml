@@ -86,7 +86,7 @@ jobs:
         with:
           fileDir: "./ios/"
           fileName: "GoogleService-Info.plist"
-          encodedString: ${{ secrets[github.event.inputs.google_service_info_plist_base64] }}
+          encodedString: ${{ secrets[inputs.google_service_info_plist_base64] }}
       - name: Create .env file
         env:
           SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
