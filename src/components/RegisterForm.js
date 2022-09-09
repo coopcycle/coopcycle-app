@@ -7,7 +7,7 @@ import _ from 'lodash'
 import { Formik } from 'formik'
 import { connect } from 'react-redux'
 
-import { navigate } from '../App'
+import NavigationHolder from '../NavigationHolder'
 import i18n from '../i18n'
 
 // Custom validator for matches
@@ -162,7 +162,8 @@ class RegisterForm extends React.Component {
       allErrors,
       setFieldValue,
       handleBlur,
-      this.props.t('TERMS_AND_CONDITIONS_BUTTON_LABEL')
+      this.props.t('TERMS_AND_CONDITIONS_BUTTON_LABEL'),
+      'TermsNav'
     )
 
     const privacyPolicyField = this._renderLegalField(
@@ -173,7 +174,8 @@ class RegisterForm extends React.Component {
       allErrors,
       setFieldValue,
       handleBlur,
-      this.props.t('PRIVACY_POLICY_BUTTON_LABEL')
+      this.props.t('PRIVACY_POLICY_BUTTON_LABEL'),
+      'PrivacyNav'
     )
 
     return (
@@ -224,18 +226,18 @@ class RegisterForm extends React.Component {
           ?
             <FormControl.HelperText>
               <Button size="sm" variant="link" testID={`${fieldName}Link`}
-                onPress={ () => navigate(buttonNavigation) }>
+                onPress={ () => NavigationHolder.navigate(buttonNavigation) }>
                 { buttonLabel }
               </Button>
             </FormControl.HelperText>
           :
             <FormControl.HelperText>
               <Button size="sm" variant="link" testID="termsAndConditionsLink"
-                onPress={ () => navigate('TermsNav') }>
+                onPress={ () => NavigationHolder.navigate('TermsNav') }>
                 { this.props.t('TERMS_AND_CONDITIONS_BUTTON_LABEL') }
               </Button>
               <Button size="sm" variant="link" testID="privacyPolicyLink"
-                onPress={ () => navigate('PrivacyNav') }>
+                onPress={ () => NavigationHolder.navigate('PrivacyNav') }>
                 { this.props.t('PRIVACY_POLICY_BUTTON_LABEL') }
               </Button>
             </FormControl.HelperText>
