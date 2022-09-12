@@ -94,6 +94,19 @@ platform :ios do
 
     project.save
 
+    sch = Xcodeproj::XCScheme.new("../CoopCycle.xcodeproj/xcshareddata/xcschemes/CoopCycle.xcscheme")
+
+    sch.build_action.entries.each do |entry|
+      entry.buildable_references.each do |buildable_ref|
+        buildable_ref.buildable_name = app_name + '.app'
+      end
+    end
+
+    sch.launch_action.buildable_product_runnable.buildable_reference.buildable_name = app_name + '.app'
+    sch.profile_action.buildable_product_runnable.buildable_reference.buildable_name = app_name + '.app'
+
+    sch.save!
+
     update_info_plist(
       plist_path: "CoopCycle/Info.plist",
       display_name: app_name
