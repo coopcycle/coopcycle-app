@@ -4,6 +4,7 @@
  */
 import { CONNECTED, DISCONNECTED } from '../middlewares/CentrifugoMiddleware'
 import {
+  ACCEPT_PRIVACY_POLICY, ACCEPT_TERMS_AND_CONDITIONS,
   AUTHENTICATION_FAILURE,
   AUTHENTICATION_REQUEST,
   AUTHENTICATION_SUCCESS,
@@ -75,6 +76,8 @@ const initialState = {
     content: null,
     type: 'default',
   },
+  termsAndConditionsAccepted: false,
+  privacyPolicyAccepted: false,
 }
 
 export default (state = initialState, action = {}) => {
@@ -300,6 +303,18 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         firstRun: false,
+      }
+
+    case ACCEPT_TERMS_AND_CONDITIONS:
+      return {
+        ...state,
+        termsAndConditionsAccepted: action.payload,
+      }
+
+    case ACCEPT_PRIVACY_POLICY:
+      return {
+        ...state,
+        privacyPolicyAccepted: action.payload,
       }
   }
 

@@ -9,6 +9,7 @@ import { connect } from 'react-redux'
 
 import NavigationHolder from '../NavigationHolder'
 import i18n from '../i18n'
+import { acceptPrivacyPolicy, acceptTermsAndConditions } from '../redux/App/actions'
 
 // Custom validator for matches
 // Checks whether the given value matches another value in the object under validation
@@ -163,7 +164,7 @@ class RegisterForm extends React.Component {
       setFieldValue,
       handleBlur,
       this.props.t('TERMS_AND_CONDITIONS_BUTTON_LABEL'),
-      'TermsNav'
+      'Terms'
     )
 
     const privacyPolicyField = this._renderLegalField(
@@ -175,7 +176,7 @@ class RegisterForm extends React.Component {
       setFieldValue,
       handleBlur,
       this.props.t('PRIVACY_POLICY_BUTTON_LABEL'),
-      'PrivacyNav'
+      'Privacy'
     )
 
     return (
@@ -187,7 +188,7 @@ class RegisterForm extends React.Component {
   }
 
   _renderLegalField(fieldName, label, errorMessage, values, allErrors,
-    setFieldValue, handleBlur, buttonLabel, buttonNavigation) {
+    setFieldValue, handleBlur, buttonLabel, buttonNav) {
     const constraints = {
       presence: { message: errorMessage },
       inclusion: {
@@ -209,11 +210,43 @@ class RegisterForm extends React.Component {
 
     const hasError = allErrors.hasOwnProperty(fieldName)
 
+    const _handleChange = (checked) => {
+      setFieldValue(fieldName, checked)
+
+      if (this.props.splitTermsAndConditionsAndPrivacyPolicy) {
+        if (fieldName === 'termsAndConditions') {
+          this.props.acceptTermsAndConditions(checked)
+        } else if (fieldName === 'privacyPolicy') {
+          this.props.acceptPrivacyPolicy(checked)
+        }
+
+        if (checked) {
+          _handleNavPress()
+        }
+      }
+    }
+
+    const _handleNavPress = () => {
+      return NavigationHolder.navigate(`${buttonNav}Nav`,
+        { screen: `${buttonNav}Home`, params: { showConfirmationButtons: true, previousNav: 'AccountNav', previousScreen: 'AccountHome' } }
+      )
+    }
+
+    const _isChecked = () => {
+      if (fieldName === 'termsAndConditions') {
+        return this.props.termsAndConditionsAccepted
+      } else if (fieldName === 'privacyPolicy') {
+        return this.props.privacyPolicyAccepted
+      }
+      return false
+    }
+
     return (
       <FormControl my="2" isInvalid={hasError}>
         <Checkbox size="sm" mr="4"
           name={fieldName}
-          onChange={ (checked) => setFieldValue(fieldName, checked) }
+          isChecked={ _isChecked() }
+          onChange={ (checked) => _handleChange(checked) }
           onBlur={ handleBlur(fieldName) }
           testID={ `registerForm.${fieldName}` }
           ref={ component => this._inputComponents.set(fieldName, component) }
@@ -226,18 +259,18 @@ class RegisterForm extends React.Component {
           ?
             <FormControl.HelperText>
               <Button size="sm" variant="link" testID={`${fieldName}Link`}
-                onPress={ () => NavigationHolder.navigate(buttonNavigation) }>
+                onPress={ () => _handleNavPress() }>
                 { buttonLabel }
               </Button>
             </FormControl.HelperText>
           :
             <FormControl.HelperText>
               <Button size="sm" variant="link" testID="termsAndConditionsLink"
-                onPress={ () => NavigationHolder.navigate('TermsNav') }>
+                onPress={ () => _handleNavPress() }>
                 { this.props.t('TERMS_AND_CONDITIONS_BUTTON_LABEL') }
               </Button>
               <Button size="sm" variant="link" testID="privacyPolicyLink"
-                onPress={ () => NavigationHolder.navigate('PrivacyNav') }>
+                onPress={ () => _handleNavPress() }>
                 { this.props.t('PRIVACY_POLICY_BUTTON_LABEL') }
               </Button>
             </FormControl.HelperText>
@@ -256,8 +289,8 @@ class RegisterForm extends React.Component {
       givenName: this.props.prefill === true ? 'John' : '',
       familyName: this.props.prefill === true ? 'Doe' : '',
       legal: false,
-      termsAndConditions: false,
-      privacyPolicy: false,
+      termsAndConditions: this.props.termsAndConditionsAccepted,
+      privacyPolicy: this.props.privacyPolicyAccepted,
     }
 
     return (
@@ -344,7 +377,16 @@ class RegisterForm extends React.Component {
 function mapStateToProps(state) {
   return {
     splitTermsAndConditionsAndPrivacyPolicy: state.app.settings.split_terms_and_conditions_and_privacy_policy,
+    termsAndConditionsAccepted: state.app.termsAndConditionsAccepted,
+    privacyPolicyAccepted: state.app.privacyPolicyAccepted,
   }
 }
 
-export default connect(mapStateToProps)(withTranslation()(RegisterForm))
+function mapDispatchToProps(dispatch) {
+  return {
+    acceptTermsAndConditions: (accepted) => dispatch(acceptTermsAndConditions(accepted)),
+    acceptPrivacyPolicy: (accepted) => dispatch(acceptPrivacyPolicy(accepted)),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(RegisterForm))

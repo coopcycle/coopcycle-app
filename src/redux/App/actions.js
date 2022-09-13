@@ -64,6 +64,9 @@ export const CLOSE_MODAL = '@app/CLOSE_MODAL'
 export const RESET_MODAL = '@app/RESET_MODAL'
 export const ONBOARDED = '@app/ONBOARDED'
 
+export const ACCEPT_TERMS_AND_CONDITIONS = '@app/ACCEPT_TERMS_AND_CONDITIONS'
+export const ACCEPT_PRIVACY_POLICY = '@app/ACCEPT_PRIVACY_POLICY'
+
 /*
  * Action Creators
  */
@@ -114,6 +117,9 @@ export const setModal = createAction(SET_MODAL)
 export const resetModal = createAction(RESET_MODAL)
 export const closeModal = createAction(CLOSE_MODAL)
 export const onboarded = createAction(ONBOARDED)
+
+export const acceptTermsAndConditions = createAction(ACCEPT_TERMS_AND_CONDITIONS)
+export const acceptPrivacyPolicy = createAction(ACCEPT_PRIVACY_POLICY)
 
 const registrationErrors = createAction(REGISTRATION_ERRORS)
 

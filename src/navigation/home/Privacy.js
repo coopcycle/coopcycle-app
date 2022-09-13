@@ -5,7 +5,9 @@ class Privacy extends Component {
 
   render() {
     return (
-      <LegalText type="privacy" />
+      <LegalText
+        type="privacy"
+        showConfirmationButtons={this.props.route.params?.showConfirmationButtons} />
     )
   }
 }

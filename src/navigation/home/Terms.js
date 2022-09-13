@@ -5,7 +5,9 @@ class Terms extends Component {
 
   render() {
     return (
-      <LegalText type="terms" />
+      <LegalText
+        type="terms"
+        showConfirmationButtons={this.props.route.params?.showConfirmationButtons} />
     )
   }
 }
