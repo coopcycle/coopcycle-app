@@ -116,8 +116,8 @@ class RegisterForm extends React.Component {
     super(props)
 
     this.state = {
-      termsAndConditionsAccepted: false,
-      privacyPolicyAccepted: false,
+      openTermsAndConditions: false,
+      openPrivacyPolicy: false,
     }
 
     this._inputComponents = new Map()
@@ -126,26 +126,12 @@ class RegisterForm extends React.Component {
     this._setPrivacyPolicyValue = null
   }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.termsAndConditionsAccepted !== prevState.termsAndConditionsAccepted) {
-      return {
-        ...prevState,
-        termsAndConditionsAccepted: nextProps.termsAndConditionsAccepted,
-      }
-    } else if (nextProps.privacyPolicyAccepted !== prevState.privacyPolicyAccepted) {
-      return {
-        ...prevState,
-        privacyPolicyAccepted: nextProps.privacyPolicyAccepted,
-      }
-    }
-    return prevState;
-  }
 
   componentDidUpdate() {
-    if (this.props.termsAndConditionsAccepted !== this.state.termsAndConditionsAccepted) {
+    if (this.state.openTermsAndConditions) {
       this._setTermsAndConditionsValue(this.props.termsAndConditionsAccepted)
     }
-    if (this.props.privacyPolicyAccepted !== this.state.privacyPolicyAccepted) {
+    if (this.state.openPrivacyPolicy) {
       this._setPrivacyPolicyValue(this.props.privacyPolicyAccepted)
     }
   }
@@ -186,6 +172,28 @@ class RegisterForm extends React.Component {
     )
   }
 
+  _onTermsAndConditionsChanged = (checked) => {
+    if (checked) {
+      this.setState({ openTermsAndConditions: true })
+      return NavigationHolder.navigate('TermsNav',
+        { screen: 'TermsHome', params: { showConfirmationButtons: true } }
+      )
+    } else {
+      this.props.acceptTermsAndConditions(false)
+    }
+  }
+
+  _onPrivacyPolicyChanged = (checked) => {
+    if (checked) {
+      this.setState({ openPrivacyPolicy: true })
+      return NavigationHolder.navigate('PrivacyNav',
+        { screen: 'PrivacyHome', params: { showConfirmationButtons: true } }
+      )
+    } else {
+      this.props.acceptPrivacyPolicy(false)
+    }
+  }
+
   _renderTermsAndPrivacyPolicyTexts(values, allErrors, setFieldValue, handleBlur) {
     const termsAndConditionsField = this._renderLegalField(
       'termsAndConditions',
@@ -196,7 +204,7 @@ class RegisterForm extends React.Component {
       setFieldValue,
       handleBlur,
       this.props.t('TERMS_AND_CONDITIONS_BUTTON_LABEL'),
-      'Terms'
+      this._onTermsAndConditionsChanged
     )
 
     const privacyPolicyField = this._renderLegalField(
@@ -208,7 +216,7 @@ class RegisterForm extends React.Component {
       setFieldValue,
       handleBlur,
       this.props.t('PRIVACY_POLICY_BUTTON_LABEL'),
-      'Privacy'
+      this._onPrivacyPolicyChanged
     )
 
     this._setTermsAndConditionsValue = (value) => {
@@ -228,7 +236,7 @@ class RegisterForm extends React.Component {
   }
 
   _renderLegalField(fieldName, label, errorMessage, values, allErrors,
-    setFieldValue, handleBlur, buttonLabel, buttonNav) {
+    setFieldValue, handleBlur, buttonLabel, _onChangeCB) {
     const constraints = {
       presence: { message: errorMessage },
       inclusion: {
@@ -254,33 +262,25 @@ class RegisterForm extends React.Component {
       setFieldValue(fieldName, checked)
 
       if (this.props.splitTermsAndConditionsAndPrivacyPolicy) {
-        if (fieldName === 'termsAndConditions') {
-          this.setState({ termsAndConditionsAccepted: checked })
-          this.props.acceptTermsAndConditions(checked)
-        } else if (fieldName === 'privacyPolicy') {
-          this.setState({ privacyPolicyAccepted: checked })
-          this.props.acceptPrivacyPolicy(checked)
-        }
-
-        if (checked) {
-          _handleNavPress()
-        }
+        _onChangeCB(checked)
       }
     }
 
-    const _handleNavPress = () => {
+    const _handleNavPress = (buttonNav) => {
       return NavigationHolder.navigate(`${buttonNav}Nav`,
-        { screen: `${buttonNav}Home`, params: { showConfirmationButtons: true, previousNav: 'AccountNav', previousScreen: 'AccountHome' } }
+        { screen: `${buttonNav}Home`, params: { showConfirmationButtons: false } }
       )
     }
 
     const _isChecked = () => {
-      if (fieldName === 'termsAndConditions') {
-        return this.props.termsAndConditionsAccepted
-      } else if (fieldName === 'privacyPolicy') {
-        return this.props.privacyPolicyAccepted
+      if (this.props.splitTermsAndConditionsAndPrivacyPolicy) {
+        if (fieldName === 'termsAndConditions') {
+          return this.props.termsAndConditionsAccepted
+        } else if (fieldName === 'privacyPolicy') {
+          return this.props.privacyPolicyAccepted
+        }
       }
-      return false
+      return values[fieldName]
     }
 
     return (
@@ -301,18 +301,18 @@ class RegisterForm extends React.Component {
           ?
             <FormControl.HelperText>
               <Button size="sm" variant="link" testID={`${fieldName}Link`}
-                onPress={ () => _handleNavPress() }>
+                onPress={ () => _handleChange(true) }>
                 { buttonLabel }
               </Button>
             </FormControl.HelperText>
           :
             <FormControl.HelperText>
               <Button size="sm" variant="link" testID="termsAndConditionsLink"
-                onPress={ () => _handleNavPress() }>
+                onPress={ () => _handleNavPress('Terms') }>
                 { this.props.t('TERMS_AND_CONDITIONS_BUTTON_LABEL') }
               </Button>
               <Button size="sm" variant="link" testID="privacyPolicyLink"
-                onPress={ () => _handleNavPress() }>
+                onPress={ () => _handleNavPress('Privacy') }>
                 { this.props.t('PRIVACY_POLICY_BUTTON_LABEL') }
               </Button>
             </FormControl.HelperText>
