@@ -115,7 +115,39 @@ class RegisterForm extends React.Component {
   constructor(props) {
     super(props)
 
+    this.state = {
+      termsAndConditionsAccepted: false,
+      privacyPolicyAccepted: false,
+    }
+
     this._inputComponents = new Map()
+
+    this._setTermsAndConditionsValue = null
+    this._setPrivacyPolicyValue = null
+  }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.termsAndConditionsAccepted !== prevState.termsAndConditionsAccepted) {
+      return {
+        ...prevState,
+        termsAndConditionsAccepted: nextProps.termsAndConditionsAccepted,
+      }
+    } else if (nextProps.privacyPolicyAccepted !== prevState.privacyPolicyAccepted) {
+      return {
+        ...prevState,
+        privacyPolicyAccepted: nextProps.privacyPolicyAccepted,
+      }
+    }
+    return prevState;
+  }
+
+  componentDidUpdate() {
+    if (this.props.termsAndConditionsAccepted !== this.state.termsAndConditionsAccepted) {
+      this._setTermsAndConditionsValue(this.props.termsAndConditionsAccepted)
+    }
+    if (this.props.privacyPolicyAccepted !== this.state.privacyPolicyAccepted) {
+      this._setPrivacyPolicyValue(this.props.privacyPolicyAccepted)
+    }
   }
 
   renderError(message) {
@@ -179,6 +211,14 @@ class RegisterForm extends React.Component {
       'Privacy'
     )
 
+    this._setTermsAndConditionsValue = (value) => {
+      setFieldValue('termsAndConditions', value)
+    }
+
+    this._setPrivacyPolicyValue = (value) => {
+      setFieldValue('privacyPolicy', value)
+    }
+
     return (
       <>
         { termsAndConditionsField }
@@ -215,8 +255,10 @@ class RegisterForm extends React.Component {
 
       if (this.props.splitTermsAndConditionsAndPrivacyPolicy) {
         if (fieldName === 'termsAndConditions') {
+          this.setState({ termsAndConditionsAccepted: checked })
           this.props.acceptTermsAndConditions(checked)
         } else if (fieldName === 'privacyPolicy') {
+          this.setState({ privacyPolicyAccepted: checked })
           this.props.acceptPrivacyPolicy(checked)
         }
 
