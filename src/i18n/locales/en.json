@@ -414,6 +414,7 @@
         "OTHER_RESULTS": "Other results",
         "RESULT": "{{count}} result",
         "RESULT_plural": "{{count}} results",
-        "CALL": "Call"
+        "CALL": "Call",
+        "EMPTY_HERE": "It's completely empty over here"
     }
 }
