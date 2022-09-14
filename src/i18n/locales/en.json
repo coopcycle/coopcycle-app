@@ -436,6 +436,7 @@
         "SHOW_ORDER_DETAILS": "Show order details",
         "SHARE_INVOICE": "Share the invoice",
         "GENERATE_INVOICE": "Edit your invoice",
-        "BILLING_ADDRESS": "Billing address"
+        "BILLING_ADDRESS": "Billing address",
+        "TIP": "Tip"
     }
 }

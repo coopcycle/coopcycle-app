@@ -420,7 +420,7 @@
         "SHOW_ORDER_DETAILS": "Afficher le détail de la commande",
         "SHARE_INVOICE": "Partager la facture",
         "GENERATE_INVOICE": "Éditer la facture",
-        "BILLING_ADDRESS": "Adresse de facturation"
-
+        "BILLING_ADDRESS": "Adresse de facturation",
+        "TIP": "Pourboire"
     }
 }
