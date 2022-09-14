@@ -1,22 +1,15 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
 import { Button, Center, Row, ScrollView, Spinner } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import axios from 'axios'
 import Markdown from 'react-native-markdown-display'
 
-import { localeDetector } from '../i18n'
 import NavigationHolder from '../NavigationHolder'
-import { acceptPrivacyPolicy, acceptTermsAndConditions } from '../redux/App/actions'
 
 class LegalText extends Component {
 
   constructor(props) {
     super(props)
-    this.state = {
-      showConfirmationButtons: this.props.showConfirmationButtons,
-    }
 
     this.scrollRef = React.createRef()
 
@@ -27,24 +20,8 @@ class LegalText extends Component {
     this.scrollRef?.current?.scrollTo({ x: 0, y: 0, animated: false });
   }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.showConfirmationButtons !== prevState.showConfirmationButtons) {
-      // reload component data if prop has changed
-      return {
-        ...prevState,
-        showConfirmationButtons: nextProps.showConfirmationButtons,
-      }
-    }
-    return prevState;
-  }
-
   _handleNav({ legalTextAccepted }) {
-    // we should call to a prop function and component using this should determine which dispatch execute
-    if (this.props.type === 'terms') {
-      this.props.acceptTermsAndConditions(legalTextAccepted)
-    } else if (this.props.type === 'privacy') {
-      this.props.acceptPrivacyPolicy(legalTextAccepted)
-    }
+    this.props.dispatchAccept(legalTextAccepted)
     NavigationHolder.goBack()
   }
 
@@ -87,11 +64,4 @@ class LegalText extends Component {
   }
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    acceptTermsAndConditions: (accepted) => dispatch(acceptTermsAndConditions(accepted)),
-    acceptPrivacyPolicy: (accepted) => dispatch(acceptPrivacyPolicy(accepted)),
-  }
-}
-
-export default connect(() => ({}), mapDispatchToProps)(withTranslation()(LegalText))
+export default withTranslation()(LegalText)

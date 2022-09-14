@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import LegalText from '../../components/LegalText'
 import { localeDetector } from '../../i18n'
-import { loadPrivacyPolicy } from '../../redux/App/actions'
+import { acceptPrivacyPolicy, loadPrivacyPolicy } from '../../redux/App/actions'
 
 class Privacy extends Component {
 
@@ -18,7 +18,8 @@ class Privacy extends Component {
         type="privacy"
         loading={ this.props.loadingPrivacyPolicy }
         text={ this.props.privacyPolicyText }
-        showConfirmationButtons={this.props.route.params?.showConfirmationButtons} />
+        showConfirmationButtons={this.props.route.params?.showConfirmationButtons}
+        dispatchAccept={ (accepted) => this.props.acceptPrivacyPolicy(accepted) } />
     )
   }
 }
@@ -34,6 +35,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     loadPrivacyPolicy: (lang) => dispatch(loadPrivacyPolicy(lang)),
+    acceptPrivacyPolicy: (accepted) => dispatch(acceptPrivacyPolicy(accepted)),
   }
 }
 

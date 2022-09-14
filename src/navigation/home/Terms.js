@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import LegalText from '../../components/LegalText'
 import { localeDetector } from '../../i18n'
-import { loadTermsAndConditions } from '../../redux/App/actions'
+import { acceptTermsAndConditions, loadTermsAndConditions } from '../../redux/App/actions'
 
 class Terms extends Component {
 
@@ -18,7 +18,8 @@ class Terms extends Component {
         type="terms"
         loading={ this.props.loadingTerms }
         text={ this.props.termsAndConditionsText }
-        showConfirmationButtons={ this.props.route.params?.showConfirmationButtons } />
+        showConfirmationButtons={ this.props.route.params?.showConfirmationButtons }
+        dispatchAccept={ (accepted) => this.props.acceptTermsAndConditions(accepted) } />
     )
   }
 }
@@ -34,6 +35,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     loadTermsAndConditions: (lang) => dispatch(loadTermsAndConditions(lang)),
+    acceptTermsAndConditions: (accepted) => dispatch(acceptTermsAndConditions(accepted)),
   }
 }
 
