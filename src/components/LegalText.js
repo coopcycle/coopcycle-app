@@ -15,28 +15,12 @@ class LegalText extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      text: null,
       showConfirmationButtons: this.props.showConfirmationButtons,
     }
 
     this.scrollRef = React.createRef()
 
     this._handleNav = this._handleNav.bind(this)
-  }
-
-  componentDidMount() {
-    axios
-      .get(`https://coopcycle.org/${this.props.type}/${this.props.language}.md`)
-      .then((response) => {
-        this.setState({ text: response.data })
-      })
-      .catch(e => {
-        axios
-          .get(`https://coopcycle.org/${this.props.type}/en.md`)
-          .then((response) => {
-            this.setState({ text: response.data })
-          })
-      })
   }
 
   componentDidUpdate() {
@@ -47,7 +31,7 @@ class LegalText extends Component {
     if (nextProps.showConfirmationButtons !== prevState.showConfirmationButtons) {
       // reload component data if prop has changed
       return {
-        text: prevState.text, // keep text to avoid a new api call
+        ...prevState,
         showConfirmationButtons: nextProps.showConfirmationButtons,
       }
     }
@@ -55,6 +39,7 @@ class LegalText extends Component {
   }
 
   _handleNav({ legalTextAccepted }) {
+    // we should call to a prop function and component using this should determine which dispatch execute
     if (this.props.type === 'terms') {
       this.props.acceptTermsAndConditions(legalTextAccepted)
     } else if (this.props.type === 'privacy') {
@@ -65,7 +50,7 @@ class LegalText extends Component {
 
   render() {
 
-    if (!this.state.text) {
+    if (this.props.loading) {
 
       return (
         <Center flex={1}>
@@ -83,7 +68,7 @@ class LegalText extends Component {
           px="4"
         >
           <Markdown>
-            {this.state.text}
+            {this.props.text}
           </Markdown>
           {
             this.props.showConfirmationButtons &&
@@ -102,13 +87,6 @@ class LegalText extends Component {
   }
 }
 
-function mapStateToProps(state) {
-
-  return {
-    language: localeDetector(),
-  }
-}
-
 function mapDispatchToProps(dispatch) {
   return {
     acceptTermsAndConditions: (accepted) => dispatch(acceptTermsAndConditions(accepted)),
@@ -116,4 +94,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(LegalText))
+export default connect(() => ({}), mapDispatchToProps)(withTranslation()(LegalText))

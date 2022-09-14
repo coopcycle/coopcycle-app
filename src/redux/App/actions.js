@@ -67,6 +67,14 @@ export const ONBOARDED = '@app/ONBOARDED'
 export const ACCEPT_TERMS_AND_CONDITIONS = '@app/ACCEPT_TERMS_AND_CONDITIONS'
 export const ACCEPT_PRIVACY_POLICY = '@app/ACCEPT_PRIVACY_POLICY'
 
+export const LOAD_TERMS_AND_CONDITIONS_REQUEST = '@app/LOAD_TERMS_AND_CONDITIONS_REQUEST'
+export const LOAD_TERMS_AND_CONDITIONS_SUCCESS = '@app/LOAD_TERMS_AND_CONDITIONS_SUCCESS'
+export const LOAD_TERMS_AND_CONDITIONS_FAILURE = '@app/LOAD_TERMS_AND_CONDITIONS_FAILURE'
+
+export const LOAD_PRIVACY_POLICY_REQUEST = '@app/LOAD_PRIVACY_POLICY_REQUEST'
+export const LOAD_PRIVACY_POLICY_SUCCESS = '@app/LOAD_PRIVACY_POLICY_SUCCESS'
+export const LOAD_PRIVACY_POLICY_FAILURE = '@app/LOAD_PRIVACY_POLICY_FAILURE'
+
 /*
  * Action Creators
  */
@@ -120,6 +128,14 @@ export const onboarded = createAction(ONBOARDED)
 
 export const acceptTermsAndConditions = createAction(ACCEPT_TERMS_AND_CONDITIONS)
 export const acceptPrivacyPolicy = createAction(ACCEPT_PRIVACY_POLICY)
+
+const loadTermsAndConditionsRequest = createAction(LOAD_TERMS_AND_CONDITIONS_REQUEST)
+const loadTermsAndConditionsSuccess = createAction(LOAD_TERMS_AND_CONDITIONS_SUCCESS)
+const loadTermsAndConditionsFailure = createAction(LOAD_TERMS_AND_CONDITIONS_FAILURE)
+
+const loadPrivacyPolicyRequest = createAction(LOAD_PRIVACY_POLICY_REQUEST)
+const loadPrivacyPolicySuccess = createAction(LOAD_PRIVACY_POLICY_SUCCESS)
+const loadPrivacyPolicyFailure = createAction(LOAD_PRIVACY_POLICY_FAILURE)
 
 const registrationErrors = createAction(REGISTRATION_ERRORS)
 
@@ -663,6 +679,44 @@ export function googleSignIn(idToken, navigate = true) {
 
         dispatch(authenticationFailure(message))
 
+      })
+  }
+}
+
+export function loadTermsAndConditions(lang) {
+
+  return (dispatch, getState) => {
+    const { app } = getState()
+    const { httpClient } = app
+
+    dispatch(loadTermsAndConditionsRequest())
+
+    httpClient.get(`/${lang}/terms-text`)
+      .then((res) => {
+        dispatch(loadTermsAndConditionsSuccess(res.text))
+      })
+      .catch(_ => {
+        const message = i18n.t('TRY_LATER')
+        dispatch(loadTermsAndConditionsFailure(message))
+      })
+  }
+}
+
+export function loadPrivacyPolicy(lang) {
+
+  return (dispatch, getState) => {
+    const { app } = getState()
+    const { httpClient } = app
+
+    dispatch(loadPrivacyPolicyRequest())
+
+    httpClient.get(`/${lang}/privacy-text`)
+      .then((res) => {
+        dispatch(loadPrivacyPolicySuccess(res.text))
+      })
+      .catch(_ => {
+        const message = i18n.t('TRY_LATER')
+        dispatch(loadPrivacyPolicyFailure(message))
       })
   }
 }
