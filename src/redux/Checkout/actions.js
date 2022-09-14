@@ -502,6 +502,24 @@ export function removeItem(item) {
   }
 }
 
+export function setTip(order, tipAmount) {
+  return (dispatch, getState) => {
+    const httpClient = createHttpClient(getState())
+
+    dispatch(checkoutRequest())
+    httpClient.put(`${order['@id']}/tip`, { tipAmount })
+      .then(res => {
+        dispatch(updateCartSuccess(res))
+        dispatch(checkoutSuccess())
+      })
+      .catch(e => {
+        dispatch(checkoutFailure(e))
+      }).finally(() => {
+      dispatch(setLoading(false))
+    })
+  }
+}
+
 export function validate(cart) {
 
   return (dispatch, getState) => {

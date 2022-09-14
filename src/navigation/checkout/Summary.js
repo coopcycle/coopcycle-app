@@ -1,16 +1,6 @@
 import React, { Component } from 'react';
-import {
-  Animated,
-  Dimensions,
-  FlatList, ImageBackground,
-  InteractionManager,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-} from 'react-native'
-import {
-  Center, Icon, Pressable, Text,
-} from 'native-base';
+import { Animated, Dimensions, FlatList, InteractionManager, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { Center, Icon, Pressable, Text } from 'native-base';
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 import _ from 'lodash'
@@ -32,11 +22,11 @@ import {
 import { selectCart, selectDeliveryTotal } from '../../redux/Checkout/selectors'
 import { selectIsAuthenticated } from '../../redux/App/selectors'
 import CartFooter from './components/CartFooter'
-import AddressModal from './components/AddressModal'
 import ExpiredSessionModal from './components/ExpiredSessionModal'
 import CouponModal from './components/CouponModal'
 import { selectCartFulfillmentMethod, selectShippingTimeRangeLabel } from '../../utils/checkout';
-import { darkGreyColor, greyColor, lightGreyColor, primaryColor } from '../../styles/common';
+import { primaryColor } from '../../styles/common';
+import Tips from './components/Tips';
 
 const BottomLine = ({ label, value }) => (
   <View style={ styles.line }>
@@ -246,6 +236,7 @@ class Summary extends Component {
 
     const deliveryPromotions = cart.adjustments.delivery_promotion || []
     const orderPromotions = cart.adjustments.order_promotion || []
+    const tip = cart.adjustments.tip || []
     const reusablePackagings = cart.adjustments.reusable_packaging || []
 
     const reusablePackagingAction = cart.potentialAction &&
@@ -274,6 +265,7 @@ class Summary extends Component {
             <Text note style={{ flex: 1, textAlign: 'right' }}>{ this.props.t('LEARN_MORE') }</Text>
           </TouchableOpacity>
           )}
+          <Tips order={cart} />
           <ActionButton
             onPress={ () => this._navigate('CheckoutShippingDate', { cart, restaurant }) }
             iconName="clock-o">
@@ -309,6 +301,7 @@ class Summary extends Component {
           { this.props.fulfillmentMethod === 'delivery' && (
           <BottomLine label={ this.props.t('TOTAL_DELIVERY') } value={ this.props.deliveryTotal } />
           )}
+          { mapAdjustments(tip, 'tip') }
           { mapAdjustments(deliveryPromotions, 'delivery_promotion') }
           { mapAdjustments(orderPromotions, 'order_promotion') }
           { mapAdjustments(reusablePackagings, 'reusable_packaging') }

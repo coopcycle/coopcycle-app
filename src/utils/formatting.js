@@ -9,12 +9,12 @@ export function setCurrencyCode(currencyCode) {
   CURRENCY_SYMBOL = getSymbolFromCurrency(currencyCode.toUpperCase()) || ''
 }
 
-export function formatPrice(price) {
+export function formatPrice(price, options = {}) {
 
-  return numbro(price / 100).formatCurrency({ mantissa: 2, currencySymbol: CURRENCY_SYMBOL })
+  return numbro(price / 100).formatCurrency({ mantissa: 2, currencySymbol: CURRENCY_SYMBOL, ...options })
 }
 
-export function formatPriceWithCode(price) {
+export function formatPriceWithCode(price, options = {}) {
 
-  return numbro(price / 100).formatCurrency({ mantissa: 2, currencySymbol: CURRENCY_CODE.toUpperCase() })
+  return numbro(price / 100).formatCurrency({ mantissa: 2, currencySymbol: CURRENCY_CODE.toUpperCase(), ...options })
 }

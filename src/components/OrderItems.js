@@ -107,11 +107,14 @@ class OrderItems extends Component {
 
   renderAdjustments() {
 
-    return (
+    return <>
       <CartLine
         label={ this.props.t('TOTAL_DELIVERY') }
         value={ `${formatPrice(this._deliveryTotal(this.props.order))}` } />
-    )
+      <CartLine
+        label={ this.props.t('TIP') }
+        value={ `${formatPrice(this.props.order.adjustments.tip[0]?.amount || 0)}` } />
+    </>
   }
 
   renderItemsTotal() {
