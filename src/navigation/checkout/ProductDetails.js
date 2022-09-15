@@ -83,7 +83,7 @@ class ProductDetails extends Component {
         const image16x9 = product.images && Array.isArray(product.images)
             && _.find(product.images, image => image.ratio === '16:9')
 
-        return (
+        return <>
             <VStack flex={ 1 }>
                 { image16x9 &&
                 <Image size="md" style={{ width: '100%' }} resizeMode="cover" source={{ uri: image16x9.url }} alt="Product" />
@@ -124,9 +124,9 @@ class ProductDetails extends Component {
                 {this.state.shouldRenderOptions &&
                 <ProductOptions product={product} onChanges={(changes) => this.optionsHasChanged(changes)}/>
                 }
-                { this.renderFooter() }
             </VStack>
-        )
+            { this.renderFooter() }
+        </>
     }
 
 }
