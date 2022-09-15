@@ -506,20 +506,17 @@ export function setTip(order, tipAmount) {
   return (dispatch, getState) => {
     const httpClient = createHttpClient(getState())
 
-    dispatch(setLoading(true))
-    httpClient.put(`${order['@id']}/tip`, {
-      tipAmount,
-    })
+    dispatch(checkoutRequest())
+    httpClient.put(`${order['@id']}/tip`, { tipAmount })
       .then(res => {
-        dispatch(updateOrderSuccess(res))
+        dispatch(updateCartSuccess(res))
+        dispatch(checkoutSuccess())
       })
       .catch(e => {
-        console.log(e)
+        dispatch(checkoutFailure(e))
       }).finally(() => {
-      dispatch(validate(order))
       dispatch(setLoading(false))
     })
-
   }
 }
 
