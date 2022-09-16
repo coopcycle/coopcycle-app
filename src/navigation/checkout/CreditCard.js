@@ -7,6 +7,7 @@ import CreditCardComp from './components/CreditCard'
 import CashComp from './components/CashOnDelivery'
 import PaymentMethodPicker from './components/PaymentMethodPicker'
 import { checkout, checkoutWithCash, loadPaymentMethods } from '../../redux/Checkout/actions'
+import { selectCart } from '../../redux/Checkout/selectors';
 
 class CreditCard extends Component {
 
@@ -78,8 +79,7 @@ class CreditCard extends Component {
 }
 
 function mapStateToProps(state, ownProps) {
-  const restaurantID = state.checkout.restaurant;
-  const cart = state.checkout.carts[restaurantID].cart || ownProps.route.params?.cart || state.checkout.cart
+  const cart = selectCart(state)?.cart
   return {
     cart,
     errors: state.checkout.errors,

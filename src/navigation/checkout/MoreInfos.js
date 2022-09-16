@@ -11,7 +11,7 @@ import {
 } from 'libphonenumber-js'
 
 import { assignCustomer, checkout, updateCart } from '../../redux/Checkout/actions'
-import { selectCartFulfillmentMethod } from '../../redux/Checkout/selectors'
+import { selectCart, selectCartFulfillmentMethod } from '../../redux/Checkout/selectors'
 import FooterButton from './components/FooterButton'
 import { isFree } from '../../utils/order'
 import { selectIsAuthenticated } from '../../redux/App/selectors'
@@ -220,8 +220,7 @@ const styles = StyleSheet.create({
 function mapStateToProps(state, ownProps) {
 
   const fulfillmentMethod = selectCartFulfillmentMethod(state)
-  const restaurantID = state.checkout.restaurant;
-  const cart = state.checkout.carts[restaurantID].cart || ownProps.route.params?.cart || state.checkout.cart
+  const cart = selectCart(state)?.cart || ownProps.route.params?.cart
 
   return {
     country: state.app.settings.country.toUpperCase(),

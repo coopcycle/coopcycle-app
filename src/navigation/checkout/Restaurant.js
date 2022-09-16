@@ -22,6 +22,7 @@ import Modal from 'react-native-modal';
 import { phonecall } from 'react-native-communications';
 import AddressUtils from '../../utils/Address';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { selectCart } from '../../redux/Checkout/selectors';
 
 // Fix: key prop warning
 // https://github.com/GeekyAnts/NativeBase/issues/4473
@@ -214,9 +215,9 @@ const styles = StyleSheet.create({
 function mapStateToProps(state, ownProps) {
 
   const restaurant = ownProps.route.params?.restaurant
-  const cart = state.checkout.carts[restaurant['@id']]?.cart
+  const cart = selectCart(state)?.cart
   const cartLoading = _.includes(state.checkout.loadingCarts, restaurant['@id'])
-  const isCartEmpty = !state.checkout.carts[restaurant['@id']] ? true : cart.items.length === 0
+  const isCartEmpty = !selectCart(state) ? true : cart.items.length === 0
 
   return {
     showFooter: cartLoading || !isCartEmpty,

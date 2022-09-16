@@ -29,7 +29,7 @@ import {
   updateCart,
   validate,
 } from '../../redux/Checkout/actions'
-import { selectDeliveryTotal } from '../../redux/Checkout/selectors'
+import { selectCart, selectDeliveryTotal } from '../../redux/Checkout/selectors'
 import { selectIsAuthenticated } from '../../redux/App/selectors'
 import CartFooter from './components/CartFooter'
 import AddressModal from './components/AddressModal'
@@ -363,7 +363,7 @@ function mapStateToProps(state, ownProps) {
 
 
   const restaurant = ownProps.route.params?.restaurant
-  const cart = state.checkout.carts[restaurant['@id']].cart || ownProps.route.params?.cart || state.checkout.cart
+  const cart = selectCart(state)?.cart
   return {
     cart,
     restaurant,
