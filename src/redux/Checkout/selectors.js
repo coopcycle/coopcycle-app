@@ -4,9 +4,22 @@ import moment from 'moment'
 
 import i18n from '../../i18n'
 
+export const selectCart = createSelector(
+  state => state.checkout.carts,
+  state => state.checkout.restaurant,
+  (carts, restaurant) => {
+    if (carts.hasOwnProperty(restaurant)) {
+      return carts[restaurant]
+    }
+    return null
+  }
+)
+
+
 export const selectDeliveryTotal = createSelector(
-  state => state.checkout.carts[state.checkout.restaurant].cart,
+  selectCart,
   (cart) => {
+    cart = cart?.cart
 
     if (!cart || !cart.adjustments) {
       return 0
@@ -46,10 +59,11 @@ export const selectIsCollectionEnabled = createSelector(
 )
 
 export const selectCartFulfillmentMethod = createSelector(
-  state => state.checkout.carts[state.checkout.restaurant].cart,
+  selectCart,
   selectIsDeliveryEnabled,
   selectIsCollectionEnabled,
   (cart, isDeliveryEnabled, isCollectionEnabled) => {
+    cart = cart?.cart
 
     if (!cart) {
       return 'delivery'
