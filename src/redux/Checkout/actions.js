@@ -741,6 +741,7 @@ function handleSuccessNav(dispatch, order) {
     params: { order },
   }))
 
+  dispatch(deleteCart(order.restaurant['@id']))
   dispatch(checkoutSuccess(order))
 }
 
@@ -1061,9 +1062,7 @@ export function checkoutWithCash() {
 
     httpClient
       .put(cart['@id'] + '/pay', { cashOnDelivery: true })
-      .then(order => {
-        handleSuccessNav(dispatch, order)
-      })
+      .then(order => handleSuccessNav(dispatch, order))
       .catch(e => dispatch(checkoutFailure(e)))
   }
 }

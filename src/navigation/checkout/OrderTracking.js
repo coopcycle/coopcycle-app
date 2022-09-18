@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native'
 import { Button, HStack, Icon, ScrollView, Text, View } from 'native-base';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import moment from 'moment';
-import { lightGreyColor, primaryColor } from '../../styles/common';
+import { primaryColor } from '../../styles/common';
 import { loadOrder, subscribe, unsubscribe } from '../../redux/Account/actions';
 import { deleteCart } from '../../redux/Checkout/actions';
 import { connect } from 'react-redux';
@@ -59,10 +59,8 @@ class OrderTrackingPage extends Component {
 
   componentDidMount() {
     const { order } = this.props.route.params
-    console.log(order)
     if (order) {
       this.props.subscribe(order, (event) => {
-        console.log(event)
         switch (event.name) {
           case 'order:accepted':
             this.props.navigation.setParams({ order: { ...event.data.order, state: 'accepted' } })
@@ -198,7 +196,6 @@ function mapStateToProps(state, ownProps) {
   return {
     user: state.app.user,
     phoneNumber: state.app.settings.phone_number,
-    order: state.account.order,
     loading: state.app.loading,
   }
 }
