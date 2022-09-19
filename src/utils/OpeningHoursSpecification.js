@@ -1,4 +1,5 @@
 import moment from 'moment'
+import Moment from 'moment'
 
 const WEEKDAYS = {
   'Monday': 0,
@@ -9,7 +10,14 @@ const WEEKDAYS = {
   'Saturday': 5,
   'Sunday': 6,
 }
+
 export default class OpeningHoursSpecification {
+
+  static STATE = {
+    'Opened': 1,
+    'Closed': 0,
+  }
+
 
   #state: Array = []
 
@@ -54,6 +62,44 @@ export default class OpeningHoursSpecification {
 
   get state() {
     return this.#state
+  }
+
+  get currentTimeSlot() {
+    const today = this.state.filter(day => day.today)[0]
+
+    for (let slot of today.ranges) {
+      const [ hourOpens, minuteOpens ] = slot[0].split(':');
+      const [ hourCloses, minuteCloses ] = slot[1].split(':');
+      const opens = today.moment.clone().set({ hour: hourOpens, minute: minuteOpens })
+      const closes = today.moment.clone().set({ hour: hourCloses, minute: minuteCloses })
+
+      if (closes.isBefore(opens)) {
+        closes.add(1, 'd')
+      }
+
+      if (moment().isBetween(opens, closes, 'minute')) {
+        return {
+          state: OpeningHoursSpecification.STATE.Opened,
+          timeSlot: [ opens, closes ],
+        }
+      }
+    }
+    return {
+      state: OpeningHoursSpecification.STATE.Closed,
+      timeSlot: null,
+    }
+  }
+
+  static closesSoon(timeSlot: Moment[] = null, minutes = 15, compareWith = moment()): boolean
+  {
+    if (timeSlot === null) {
+      return null
+    }
+    if (timeSlot.length !== 2) {
+      throw new Error('A timeSlot array must contains only two instance of Moment')
+    }
+
+    return timeSlot[1].diff(compareWith, 'minute') <= minutes
   }
 
 }
