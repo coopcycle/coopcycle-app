@@ -77,16 +77,6 @@ class Carts extends Component {
       keyExtractor={(item, index) => index}
       renderItem={({ item, index }) => this._renderItem(item, index) }
       ListEmptyComponent={this.emptyList} />
-    return <HStack space={4} padding={2}>
-      <Avatar size="lg" resizeMode="contain" borderRadius="full" />
-      <VStack>
-        <Skeleton.Text lines={3} alignItems="center" px="12" />
-      </VStack>
-      <Spacer/>
-      <View style={{ flexGrow: 1, justifyContent:'center', alignItems: 'flex-end' }}>
-        <ChevronRightIcon />
-      </View>
-    </HStack>
   }
 }
 
