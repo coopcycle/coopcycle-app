@@ -27,6 +27,7 @@ import CouponModal from './components/CouponModal'
 import { selectCartFulfillmentMethod, selectShippingTimeRangeLabel } from '../../utils/checkout';
 import { primaryColor } from '../../styles/common';
 import Tips from './components/Tips';
+import TimingModal from './components/TimingModal';
 
 const BottomLine = ({ label, value }) => (
   <View style={ styles.line }>
@@ -76,6 +77,7 @@ class Summary extends Component {
       translateXValue: new Animated.Value(500),
       isCouponModalVisible: false,
       isCollectionDisclaimerModalVisible: false,
+      disabled: false,
     }
   }
 
@@ -200,6 +202,8 @@ class Summary extends Component {
   renderFooter() {
 
     const { cart } = this.props
+    const { disabled } = this.state
+
 
     if (!cart || cart.items.length === 0) {
 
@@ -213,7 +217,7 @@ class Summary extends Component {
         onSubmit={ this.onSubmit.bind(this) }
         cart={ cart }
         testID="cartSummarySubmit"
-        disabled={ this.props.isValid !== true || this.props.isLoading } />
+        disabled={ disabled || this.props.isValid !== true || this.props.isLoading } />
     )
   }
 
@@ -318,6 +322,10 @@ class Summary extends Component {
           isVisible={ this.state.isCollectionDisclaimerModalVisible }
           onSwipeComplete={ () => this.setState({ isCollectionDisclaimerModalVisible: false }) }
           restaurant={ restaurant } />
+        <TimingModal restaurant={restaurant}
+         onOpen={() => this.setState({ disabled:false })}
+         onClose={() => this.setState({ disabled:true })}
+        />
       </View>
     );
   }

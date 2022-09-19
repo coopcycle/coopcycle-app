@@ -15,6 +15,14 @@ export const selectCart = createSelector(
   }
 )
 
+export const selectRestaurant = createSelector(
+  state => state.checkout.restaurants,
+  state => state.checkout.restaurant,
+  (restaurants, restaurant) => {
+    return _.find(restaurants, { '@id': restaurant })
+  }
+)
+
 
 export const selectDeliveryTotal = createSelector(
   selectCart,

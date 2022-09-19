@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Dimensions, Pressable, StyleSheet, View, useColorScheme } from 'react-native'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
-import { Box, Button, Center, HStack, Heading, Icon, ScrollView, Skeleton, Text, VStack } from 'native-base';
+import { Box, Button, Center, HStack, Heading, Icon, ScrollView, Skeleton, Text, VStack, useToast } from 'native-base';
 import _ from 'lodash'
 import moment from 'moment'
 
@@ -23,6 +23,7 @@ import { phonecall } from 'react-native-communications';
 import AddressUtils from '../../utils/Address';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { selectCart } from '../../redux/Checkout/selectors';
+import TimingModal from './components/TimingModal';
 
 // Fix: key prop warning
 // https://github.com/GeekyAnts/NativeBase/issues/4473
@@ -102,6 +103,7 @@ function Restaurant(props) {
   const { navigate } = props.navigation
   const { height } = Dimensions.get('window')
   const colorScheme = useColorScheme()
+  const toast = useToast();
   const [ infoModal, setInfoModal ] = useState(false)
   const { showFooter, httpClient, restaurant } = props
 
@@ -187,6 +189,18 @@ function Restaurant(props) {
 
       <ExpiredSessionModal
         onModalHide={ () => navigate('CheckoutHome') } />
+      <TimingModal restaurant={restaurant} onClosesSoon={() => {
+        toast.show({
+          description: 'ça ferme bientot',
+        })
+      }}
+      onClose={() => {
+        toast.show({
+          description: "C'est fermé",
+          placement: 'top',
+        })
+      }}
+      />
     </View>
   )
 }
