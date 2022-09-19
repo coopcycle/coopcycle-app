@@ -107,6 +107,10 @@ platform :ios do
 
     sch.save!
 
+    # TODO
+    # Modify UIBackgroundModes
+    # Remove fetch & location
+
     update_info_plist(
       plist_path: "CoopCycle/Info.plist",
       display_name: app_name
