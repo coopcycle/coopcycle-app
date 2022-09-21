@@ -438,6 +438,15 @@
         "SHARE_INVOICE": "Share the invoice",
         "GENERATE_INVOICE": "Edit your invoice",
         "BILLING_ADDRESS": "Billing address",
-        "TIP": "Tip"
+        "TIP": "Tip",
+        "LEGAL_TEXTS_LABEL": "I accept the Terms and Conditions and the Privacy Policy",
+        "LEGAL_TEXTS_ERROR_MESSAGE": "You must accept the Terms and Conditions and Privacy Policy",
+        "TERMS_AND_CONDITIONS_BUTTON_LABEL": "Read Terms and Conditions",
+        "PRIVACY_POLICY_BUTTON_LABEL": "Read Privacy Policy",
+        "TERMS_AND_CONDITIONS_LABEL": "I accept the Terms and Conditions",
+        "TERMS_AND_CONDITIONS_ERROR_MESSAGE": "You must accept the Terms and Conditions",
+        "PRIVACY_POLICY_LABEL": "I accept the Privacy Policy",
+        "PRIVACY_POLICY_ERROR_MESSAGE": "You must accept the Privacy Policy",
+        "AGREE": "I accept"
     }
 }

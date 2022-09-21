@@ -421,6 +421,15 @@
         "SHARE_INVOICE": "Partager la facture",
         "GENERATE_INVOICE": "Éditer la facture",
         "BILLING_ADDRESS": "Adresse de facturation",
-        "TIP": "Pourboire"
+        "TIP": "Pourboire",
+        "LEGAL_TEXTS_LABEL": "J'accepte les conditions générales et la politique de confidentialité",
+        "LEGAL_TEXTS_ERROR_MESSAGE": "Vous devez accepter les conditions générales et la politique de confidentialité",
+        "TERMS_AND_CONDITIONS_BUTTON_LABEL": "Lire les conditions générales",
+        "PRIVACY_POLICY_BUTTON_LABEL": "Lire la politique de confidentialité",
+        "TERMS_AND_CONDITIONS_LABEL": "J'accepte les conditions générales",
+        "TERMS_AND_CONDITIONS_ERROR_MESSAGE": "Vous devez accepter les conditions générales",
+        "PRIVACY_POLICY_LABEL": "J'accepte la politique de confidentialité",
+        "PRIVACY_POLICY_ERROR_MESSAGE": "Vous devez accepter la politique de confidentialité", "PRIVACY_POLICY_ERROR_MESSAGE" : "Vous devez accepter la politique de confidentialité",
+        "AGREE" : "J'accepte"
     }
 }
