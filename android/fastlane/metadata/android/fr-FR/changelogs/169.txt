@@ -1,0 +1,6 @@
+Améliorations et nouvelles fonctionnalités.
+
+- Permet d'ajouter des pourboires.
+- Force l'acceptation des textes légaux.
+- Permet le téléchargement des factures.
+- Améliore le suivi des commandes.
