@@ -4,3 +4,4 @@
 
 gem 'fastlane-plugin-bundletool'
 gem 'fastlane-plugin-appicon'
+gem 'fastlane-plugin-increment_version_code'
