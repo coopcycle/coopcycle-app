@@ -11148,9 +11148,9 @@ react-native-keyboard-aware-scroll-view@^0.9.5:
     react-native-iphone-x-helper "^1.0.3"
 
 react-native-keyboard-manager@^6.5.4-3:
-  version "6.5.4-3"
-  resolved "https://registry.yarnpkg.com/react-native-keyboard-manager/-/react-native-keyboard-manager-6.5.4-3.tgz#0e6e1da9fa52f982c715456cd9473e798fe1b31a"
-  integrity sha512-EcwGcAVzvPe6HIIzcVOFX7JksvuiemxW44EwbI71CAZhnsjRpkRsK0rDg8HJOljCiLu4UjC5YYX2EeLMTDQ0kA==
+  version "6.5.4-4"
+  resolved "https://registry.yarnpkg.com/react-native-keyboard-manager/-/react-native-keyboard-manager-6.5.4-4.tgz#fab84e8bc1a98799d718813a903c21c932e64623"
+  integrity sha512-wQlBnl2HWINGHzH48yvrvBHCJo6lWfrRPtD3JV3KEli6aEwHoW/28jjS7u6551uIaprlLY10b78ufGTtvtKJkw==
 
 react-native-loading-spinner-overlay@^2.0.0:
   version "2.0.0"
