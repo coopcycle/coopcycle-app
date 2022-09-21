@@ -57,16 +57,12 @@ jobs:
           fileName: "play-store-credentials.json"
           encodedString: ${{ secrets.GOOGLE_JSON_KEY_FILE_BASE64 }}
       - name: Install RubyGems
-        run: |
-          cd android/
-          bundle install
-          cd ..
+        working-directory: android/
+        run: bundle install
       - run: yarn install
       - name: Run Fastlane
-        run: |
-          cd android/
-          bundle exec fastlane deploy
-          cd ..
+        working-directory: android/
+        run: bundle exec fastlane deploy
         env:
           ANDROID_STORE_FILE: ${{ steps.android_keystore.outputs.filePath }}
           ANDROID_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
