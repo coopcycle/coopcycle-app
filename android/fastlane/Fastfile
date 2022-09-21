@@ -81,6 +81,15 @@ platform :android do
 
   desc "Deploy a new version of Naofood to the Google Play Internal test"
   lane :deployNaofoodInternal do
+
+    previous_build_number = google_play_track_version_codes(
+      track: "internal",
+    )[0]
+    current_build_number = previous_build_number + 1
+    increment_version_code(
+      version_code: current_build_number
+    )
+
     gradle(
       task: "clean bundleClientRelease",
       properties: {
@@ -101,6 +110,7 @@ platform :android do
     )
     upload_to_play_store(
       skip_upload_apk: true,
+      skip_upload_metadata: true,
       track: "internal",
     )
   end
