@@ -21,6 +21,7 @@ import Terms from '../home/Terms'
 import Privacy from '../home/Privacy'
 import AccountRegisterConfirm from '../account/RegisterConfirm'
 import AccountResetPasswordNewPassword from '../account/ResetPasswordNewPassword'
+import { HeaderBackButton } from '@react-navigation/elements'
 
 const RegisterConfirmStack = createStackNavigator()
 
@@ -82,7 +83,7 @@ const TermsNavigator = () => (
       component={ Terms }
       options={({ navigation }) => ({
         title: i18n.t('TERMS_OF_SERVICE'),
-        headerLeft: headerLeft(navigation),
+        headerLeft: (props) => <HeaderBackButton { ...props } onPress={ () => navigation.goBack() } />,
       })}
     />
   </TermsStack.Navigator>
@@ -98,7 +99,7 @@ const PrivacyNavigator = () => (
       component={ Privacy }
       options={({ navigation }) => ({
         title: i18n.t('PRIVACY'),
-        headerLeft: headerLeft(navigation),
+        headerLeft: (props) => <HeaderBackButton { ...props } onPress={ () => navigation.goBack() } />,
       })}
     />
   </PrivacyStack.Navigator>

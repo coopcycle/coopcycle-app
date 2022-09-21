@@ -4,6 +4,7 @@
  */
 import { CONNECTED, DISCONNECTED } from '../middlewares/CentrifugoMiddleware'
 import {
+  ACCEPT_PRIVACY_POLICY, ACCEPT_TERMS_AND_CONDITIONS,
   AUTHENTICATION_FAILURE,
   AUTHENTICATION_REQUEST,
   AUTHENTICATION_SUCCESS,
@@ -12,6 +13,12 @@ import {
   CLEAR_SELECT_SERVER_ERROR,
   CLOSE_MODAL,
   DELETE_PUSH_NOTIFICATION_TOKEN_SUCCESS,
+  LOAD_PRIVACY_POLICY_FAILURE,
+  LOAD_PRIVACY_POLICY_REQUEST,
+  LOAD_PRIVACY_POLICY_SUCCESS,
+  LOAD_TERMS_AND_CONDITIONS_FAILURE,
+  LOAD_TERMS_AND_CONDITIONS_REQUEST,
+  LOAD_TERMS_AND_CONDITIONS_SUCCESS,
   LOGOUT_SUCCESS,
   ONBOARDED,
   PUSH_NOTIFICATION,
@@ -75,6 +82,12 @@ const initialState = {
     content: null,
     type: 'default',
   },
+  termsAndConditionsAccepted: false,
+  privacyPolicyAccepted: false,
+  loadingTerms: false,
+  loadingPrivacyPolicy: false,
+  termsAndConditionsText: '',
+  privacyPolicyText: '',
 }
 
 export default (state = initialState, action = {}) => {
@@ -300,6 +313,56 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         firstRun: false,
+      }
+
+    case ACCEPT_TERMS_AND_CONDITIONS:
+      return {
+        ...state,
+        termsAndConditionsAccepted: action.payload,
+      }
+
+    case ACCEPT_PRIVACY_POLICY:
+      return {
+        ...state,
+        privacyPolicyAccepted: action.payload,
+      }
+
+    case LOAD_PRIVACY_POLICY_REQUEST:
+      return {
+        ...state,
+        loadingPrivacyPolicy: true,
+      }
+
+    case LOAD_PRIVACY_POLICY_SUCCESS:
+      return {
+        ...state,
+        privacyPolicyText: action.payload,
+        loadingPrivacyPolicy: false,
+      }
+
+    case LOAD_PRIVACY_POLICY_FAILURE:
+      return {
+        ...state,
+        loadingPrivacyPolicy: false,
+      }
+
+    case LOAD_TERMS_AND_CONDITIONS_REQUEST:
+      return {
+        ...state,
+        loadingTerms: true,
+      }
+
+    case LOAD_TERMS_AND_CONDITIONS_SUCCESS:
+      return {
+        ...state,
+        termsAndConditionsText: action.payload,
+        loadingTerms: false,
+      }
+
+    case LOAD_TERMS_AND_CONDITIONS_FAILURE:
+      return {
+        ...state,
+        loadingTerms: false,
       }
   }
 
