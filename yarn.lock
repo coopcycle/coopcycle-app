@@ -2391,10 +2391,10 @@
   resolved "https://registry.yarnpkg.com/@react-native-community/masked-view/-/masked-view-0.1.11.tgz#2f4c6e10bee0786abff4604e39a37ded6f3980ce"
   integrity sha512-rQfMIGSR/1r/SyN87+VD8xHHzDYeHaJq6elOSCAD+0iLagXkSI2pfA0LmSXP21uw5i3em7GkkRjfJ8wpqWXZNw==
 
-"@react-native-community/netinfo@^7.1.12":
-  version "7.1.12"
-  resolved "https://registry.yarnpkg.com/@react-native-community/netinfo/-/netinfo-7.1.12.tgz#3f314e1184cbc40054621a7c51ed84095b8aa245"
-  integrity sha512-fkCRkOgzfdD0sr8JTasDgm716l8bJPkCNjXIyllG8K+UyixVa68lroQmgW9pewE5G5p43I9MWPtGZR/kVowBzg==
+"@react-native-community/netinfo@^9.3.1":
+  version "9.3.1"
+  resolved "https://registry.yarnpkg.com/@react-native-community/netinfo/-/netinfo-9.3.1.tgz#a54e6d85e169e3c7855d61c3af0633ca35dba470"
+  integrity sha512-bGw//qiAuBEUKWBxF8NBNbxUsFUgLSDktmMRAHhTQU4cd0T6hda0Pd06OSrQZ5bfCmz4Hwn2ETN9+IytKnHZ9A==
 
 "@react-native-community/push-notification-ios@^1.10.1":
   version "1.10.1"
@@ -11162,10 +11162,10 @@ react-native-loading-spinner-overlay@^3.0.1:
   resolved "https://registry.yarnpkg.com/react-native-loading-spinner-overlay/-/react-native-loading-spinner-overlay-3.0.1.tgz#092481b8cce157d3af5ef942f845ad981f96bd36"
   integrity sha512-4GdR54HQnKg2HPSSisVizfTLuyhSh4splY9eb8mKiYF1Ihjn/5EmdNo5bN3S7uKPFRC3WLzIZIouX6G6fXfnjw==
 
-react-native-localize@^2.1.9:
-  version "2.1.9"
-  resolved "https://registry.yarnpkg.com/react-native-localize/-/react-native-localize-2.1.9.tgz#47b13b2d7f8fea95a0e784cdc0269e2028c88857"
-  integrity sha512-n2Bi5P0cII8BrnG23Fs9PmpYcufD3JRbr1IBn3ArIA3Z3cGWg4eebv6am+CgdFC4kTPWUlVzX9fEgEMA+X8d6w==
+react-native-localize@^2.2.3:
+  version "2.2.3"
+  resolved "https://registry.yarnpkg.com/react-native-localize/-/react-native-localize-2.2.3.tgz#9666becaea5d6b8d968f037d82b2220ba52c463b"
+  integrity sha512-DoEEk7s4p0BnCU2zS2yzC+bEUWSFhcuXoLidgHag1EQkaXJLiNos661h8nGZvWWrVK6zE+Cl2319bqG3FidkJQ==
 
 react-native-map-link@^2.10.2:
   version "2.10.2"
