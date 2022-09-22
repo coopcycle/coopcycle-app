@@ -87,7 +87,7 @@ project.ext.react = [
 apply from: "../../node_modules/react-native/react.gradle"
 apply from: "../../node_modules/@sentry/react-native/sentry.gradle"
 
-if (project.buildWithRNBGeolocation) {
+if (findProject(':react-native-background-geolocation') != null) {
   apply from: "${project(':react-native-background-geolocation').projectDir}/app.gradle"
 }
 
@@ -206,7 +206,7 @@ android {
                 minifyEnabled enableProguardInReleaseBuilds
             }
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro', "${rootProject.projectDir}/../node_modules/detox/android/detox/proguard-rules-app.pro"
-            if (project.buildWithRNBGeolocation) {
+            if (findProject(':react-native-background-geolocation') != null) {
               proguardFiles "${project(':react-native-background-geolocation').projectDir}/proguard-rules.pro"
             }
             if (System.getProperty('useDebugCertificate', 'no') == 'yes') {
