@@ -749,7 +749,7 @@ DEPENDENCIES:
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
   - FBReactNativeSpec (from `../node_modules/react-native/React/FBReactNativeSpec`)
   - Firebase
-  - FirebaseCoreInternal
+  - FirebaseCore
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - GoogleSignIn (~> 6.0.2)
   - GoogleUtilities
@@ -1137,6 +1137,6 @@ SPEC CHECKSUMS:
   UMTaskManagerInterface: 2be431101b73604e64fbfffcf759336f9d8fccbb
   Yoga: e7dc4e71caba6472ff48ad7d234389b91dadc280
 
-PODFILE CHECKSUM: 27e35bf00bd936c858b632852b3fe5ee0c070c37
+PODFILE CHECKSUM: 63790460571ba9c66ae879d226638e2c09df5c39
 
 COCOAPODS: 1.11.3
