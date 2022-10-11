@@ -143,7 +143,8 @@ class MoreInfos extends Component {
                       returnKeyType="done"
                       onChangeText={ handleChange('email') }
                       onBlur={ handleBlur('email') }
-                      value={ values.email } />
+                      value={ values.email }
+                      autoCapitalize="none" />
                     { hasErrors(errors, touched, 'email') && (
                       <Text note style={ styles.errorText }>{ errors.email }</Text>
                     ) }
