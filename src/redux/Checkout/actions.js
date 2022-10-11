@@ -834,7 +834,7 @@ export function assignCustomer({ email, telephone }, cartContainer = null) {
     const { cart, token } = cartContainer || getState().checkout.carts[restaurant]
     const { user } = getState().app
 
-    if (cart.customer) {
+    if (!user.isGuest() && cart.customer) {
       return
     }
 
