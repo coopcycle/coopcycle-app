@@ -42,7 +42,7 @@ class AccountOrdersPage extends Component {
           <VStack>
             <Text fontSize={16} paddingBottom={1}>{ order.restaurant.name }</Text>
             <HStack space={2}>
-              <Text fontFamily={'monospace'} style={styles.badge} >{order.number}</Text>
+              <Text fontFamily={'RobotoMono-Regular'} style={styles.badge} >{order.number}</Text>
               <Box style={{
                 ...styles.badge,
                 ...state.style,

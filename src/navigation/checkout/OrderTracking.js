@@ -138,7 +138,7 @@ class OrderTrackingPage extends Component {
         <Text style={styles.trackerLabel}>{i18n.t('ORDER_ABOUT')}</Text>
         <HStack padding={2} space={3}>
           <Icon as={Ionicons} name="pricetag-outline" size={5} color={'blueGray.600'} />
-          <Text style={{ textAlign: 'center', lineHeight: 18, fontFamily: 'monospace' }}>{order.number}</Text>
+          <Text style={{ textAlign: 'center', lineHeight: 18, fontFamily: 'RobotoMono-Regular' }}>{order.number}</Text>
         </HStack>
         <HStack padding={2} space={3}>
           <Icon as={Ionicons} name="location-outline" size={5} color={'blueGray.600'} />
