@@ -5,7 +5,7 @@ import { createPaymentMethod, handleCardAction } from '@stripe/stripe-react-nati
 
 import NavigationHolder from '../../NavigationHolder'
 import i18n from '../../i18n'
-import { selectCartFulfillmentMethod } from './selectors'
+import { selectCartFulfillmentMethod, selectBillingEmail } from './selectors'
 import { selectIsAuthenticated, selectUser } from '../App/selectors'
 import { loadAddressesSuccess, updateOrderSuccess } from '../Account/actions'
 import { isFree } from '../../utils/order'
@@ -764,7 +764,7 @@ export function checkout(cardholderName) {
     const { restaurant } = getState().checkout
     const { cart, token } = getState().checkout.carts[restaurant]
 
-    const user = selectUser(getState())
+    const billingEmail = selectBillingEmail(getState())
 
     const httpClient = createHttpClient(getState())
 
@@ -782,7 +782,7 @@ export function checkout(cardholderName) {
     createPaymentMethod({
       type: 'Card',
       billingDetails: {
-        email: user.email,
+        email: billingEmail,
         name: cardholderName,
         phone: cart.fulfillmentMethod === 'delivery' ? cart.shippingAddress.telephone : '',
       },
@@ -827,7 +827,7 @@ export function assignAllCarts() {
 }
 
 export function assignCustomer({ email, telephone }, cartContainer = null) {
-  console.log(cartContainer)
+
   return async (dispatch, getState) => {
 
     const { restaurant } = getState().checkout

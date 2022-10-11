@@ -3,6 +3,7 @@ import _ from 'lodash'
 import moment from 'moment'
 
 import i18n from '../../i18n'
+import { selectIsAuthenticated, selectUser } from '../App/selectors'
 
 export const selectCart = createSelector(
   state => state.checkout.carts,
@@ -159,4 +160,17 @@ export const selectRestaurants = createSelector(
 export const cartItemsCountBadge = createSelector(
   state => Object.keys(state.checkout.carts),
   items => items.length
+)
+
+export const selectBillingEmail = createSelector(
+  selectIsAuthenticated,
+  selectUser,
+  state => state.checkout.guest,
+  (isAuthenticated, user, guest) => {
+    if (isAuthenticated) {
+      return user.email
+    }
+
+    return guest.email
+  }
 )
