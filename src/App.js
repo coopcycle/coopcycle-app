@@ -60,6 +60,7 @@ LogBox.ignoreLogs([
   'Warning: componentWillUpdate has been renamed',
   'Accessing view manager configs directly off UIManager',
   'VirtualizedLists should never be nested',
+  'When server rendering, you must wrap your application in an <SSRProvider> to ensure consistent ids are generated between the client and server.'
 ])
 
 const navigationRef = createRef()
