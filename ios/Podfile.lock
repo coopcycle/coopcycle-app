@@ -1,18 +1,17 @@
 PODS:
-  - AndesUI (3.74.1):
-    - AndesUI/Core (= 3.74.1)
+  - AndesUI (3.49.0):
+    - AndesUI/Core (= 3.49.0)
     - PureLayout (= 3.1.2)
-  - AndesUI/Core (3.74.1):
+  - AndesUI/Core (3.49.0):
     - AndesUI/LocalIcons
     - PureLayout (= 3.1.2)
-  - AndesUI/LocalIcons (3.74.1):
+  - AndesUI/LocalIcons (3.49.0):
     - PureLayout (= 3.1.2)
-  - AppAuth (1.6.0):
-    - AppAuth/Core (= 1.6.0)
-    - AppAuth/ExternalUserAgent (= 1.6.0)
-  - AppAuth/Core (1.6.0)
-  - AppAuth/ExternalUserAgent (1.6.0):
-    - AppAuth/Core
+  - AppAuth (1.4.0):
+    - AppAuth/Core (= 1.4.0)
+    - AppAuth/ExternalUserAgent (= 1.4.0)
+  - AppAuth/Core (1.4.0)
+  - AppAuth/ExternalUserAgent (1.4.0)
   - blackbox-vision-react-native-mercadopago-px (0.7.2):
     - MercadoPagoSDK (= 4.32.4)
     - React
@@ -196,10 +195,10 @@ PODS:
     - GoogleUtilities/MethodSwizzler
   - GoogleUtilities/UserDefaults (7.8.0):
     - GoogleUtilities/Logger
-  - GTMAppAuth (1.3.1):
-    - AppAuth/Core (~> 1.6)
-    - GTMSessionFetcher/Core (< 3.0, >= 1.5)
-  - GTMSessionFetcher/Core (1.7.2)
+  - GTMAppAuth (1.2.2):
+    - AppAuth/Core (~> 1.4)
+    - GTMSessionFetcher/Core (~> 1.5)
+  - GTMSessionFetcher/Core (1.7.0)
   - IQKeyboardManagerSwift (6.5.4)
   - JRSwizzle (1.0)
   - MercadoPagoSDK (4.32.4):
@@ -211,20 +210,20 @@ PODS:
     - MLCardDrawer (~> 1.0)
     - MLCardForm (~> 0.1)
     - MLUI (~> 5.0)
-  - MLBusinessComponents (1.43.1):
-    - MLBusinessComponents/Default (= 1.43.1)
+  - MLBusinessComponents (1.34.1):
+    - MLBusinessComponents/Default (= 1.34.1)
     - MLUI (~> 5.0)
-  - MLBusinessComponents/Default (1.43.1):
+  - MLBusinessComponents/Default (1.34.1):
     - MLUI (~> 5.0)
-  - MLCardDrawer (1.8.5):
-    - MLCardDrawer/Default (= 1.8.5)
-  - MLCardDrawer/Default (1.8.5)
-  - MLCardForm (0.10.0):
+  - MLCardDrawer (1.7.2):
+    - MLCardDrawer/Default (= 1.7.2)
+  - MLCardDrawer/Default (1.7.2)
+  - MLCardForm (0.9.16):
     - AndesUI (~> 3.0)
     - MLCardDrawer (~> 1.0)
-    - MLCardForm/Default (= 0.10.0)
+    - MLCardForm/Default (= 0.9.16)
     - MLUI (~> 5.0)
-  - MLCardForm/Default (0.10.0):
+  - MLCardForm/Default (0.9.16):
     - AndesUI (~> 3.0)
     - MLCardDrawer (~> 1.0)
     - MLUI (~> 5.0)
@@ -711,19 +710,19 @@ PODS:
   - Sentry (7.1.4):
     - Sentry/Core (= 7.1.4)
   - Sentry/Core (7.1.4)
-  - Stripe (21.9.1):
-    - Stripe/Stripe3DS2 (= 21.9.1)
-    - StripeCore (= 21.9.1)
-    - StripeUICore (= 21.9.1)
+  - Stripe (21.9.0):
+    - Stripe/Stripe3DS2 (= 21.9.0)
+    - StripeCore (= 21.9.0)
+    - StripeUICore (= 21.9.0)
   - stripe-react-native (0.2.3):
     - React-Core
     - Stripe (~> 21.9.0)
-  - Stripe/Stripe3DS2 (21.9.1):
-    - StripeCore (= 21.9.1)
-    - StripeUICore (= 21.9.1)
-  - StripeCore (21.9.1)
-  - StripeUICore (21.9.1):
-    - StripeCore (= 21.9.1)
+  - Stripe/Stripe3DS2 (21.9.0):
+    - StripeCore (= 21.9.0)
+    - StripeUICore (= 21.9.0)
+  - StripeCore (21.9.0)
+  - StripeUICore (21.9.0):
+    - StripeCore (= 21.9.0)
   - UMAppLoader (2.2.0)
   - UMCore (7.1.2)
   - UMReactNativeAdapter (6.3.9):
@@ -1022,8 +1021,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
-  AndesUI: b3abc9c213262be66585e749af4dd292239e92b4
-  AppAuth: 8fca6b5563a5baef2c04bee27538025e4ceb2add
+  AndesUI: 464b245bdfa37537040328f70416374773f6b512
+  AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
   blackbox-vision-react-native-mercadopago-px: 504d6e9018e19a6e3c818f4a7ae25403db96011c
   boost: a7c83b31436843459a1961bfd74b96033dc77234
   CocoaLumberjack: bd155f2dd06c0e0b03f876f7a3ee55693122ec94
@@ -1057,14 +1056,14 @@ SPEC CHECKSUMS:
   GoogleDataTransport: 1c8145da7117bd68bbbed00cf304edb6a24de00f
   GoogleSignIn: fd381840dbe7c1137aa6dc30849a5c3e070c034a
   GoogleUtilities: 1d20a6ad97ef46f67bbdec158ce00563a671ebb7
-  GTMAppAuth: 0ff230db599948a9ad7470ca667337803b3fc4dd
-  GTMSessionFetcher: 5595ec75acf5be50814f81e9189490412bad82ba
+  GTMAppAuth: ad5c2b70b9a8689e1a04033c9369c4915bfcbe89
+  GTMSessionFetcher: 43748f93435c2aa068b1cbe39655aaf600652e91
   IQKeyboardManagerSwift: 2dde0fc70110e8eac7ccce2a46fdbec6a850b414
   JRSwizzle: dd5ead5d913a0f29e7f558200165849f006bb1e3
   MercadoPagoSDK: 634fc8a9fe7f99f4d73506659c68cdbb885407fc
-  MLBusinessComponents: c98a2b0bcc88462652730a310de98bf0c7f32265
-  MLCardDrawer: 7a49dff578ad5249cbf2b7e28236601647354d11
-  MLCardForm: 917bd5ae0b1828494d078e5622f49206f71177d3
+  MLBusinessComponents: 32842e2399f18648242a5cb0f3e7d8f009a63aec
+  MLCardDrawer: 044e4c99ee8e3a95fd51cb5b1fe8f912458ffc53
+  MLCardForm: f2516996c00f1695cfa69100746a5951c40aa6d0
   MLUI: db4e5bb3aae6884212dcf1213d76b65c5cd26464
   nanopb: b552cce312b6c8484180ef47159bc0f65a1f0431
   PromisesObjC: ab77feca74fa2823e7af4249b8326368e61014cb
@@ -1128,10 +1127,10 @@ SPEC CHECKSUMS:
   RNSVG: 551acb6562324b1d52a4e0758f7ca0ec234e278f
   RNVectorIcons: 7923e585eaeb139b9f4531d25a125a1500162a0b
   Sentry: 1d3eb1a25f8c5333c88dd5603904a6d461cd9fcf
-  Stripe: 22c1b8da5ee20a1aaf40fd198160efa72e71644a
+  Stripe: 41c3d261501e1dc84755b1bdabdaae50ebf92b53
   stripe-react-native: 980f3d19f52a7dc4b373c6c20d30ebd760bc39e5
-  StripeCore: 91ea038ac0abbb72f11014044dfd1e5d39089714
-  StripeUICore: 7edf64b24c9c178bfd97e988f2cffdbb7a7628b0
+  StripeCore: 2ea9531e863ef20f191a0d61f00dedb7f061baef
+  StripeUICore: a0f9e40520823d34c63baec0782fc4a0c7fb7484
   UMAppLoader: 21af63390e55c82e037fb9752d93114a80ecf16e
   UMCore: ce3a4faa010239063b8343895b29a6d97b01069d
   UMReactNativeAdapter: d03cefd0e4e4179ab8c490408589f1c8a6c8b785
