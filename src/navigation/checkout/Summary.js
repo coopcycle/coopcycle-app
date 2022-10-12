@@ -15,7 +15,9 @@ import {
   incrementItem,
   removeItem,
   setAddress,
+  setDate,
   showAddressModal,
+  showTimingModal,
   updateCart,
   validate,
 } from '../../redux/Checkout/actions'
@@ -27,6 +29,8 @@ import CouponModal from './components/CouponModal'
 import { selectCartFulfillmentMethod, selectShippingTimeRangeLabel } from '../../utils/checkout';
 import { primaryColor } from '../../styles/common';
 import Tips from './components/Tips';
+import TimingModal from './components/TimingModal';
+import { isCartTimingValid } from '../../utils/time-slots';
 
 const BottomLine = ({ label, value }) => (
   <View style={ styles.line }>
@@ -76,6 +80,7 @@ class Summary extends Component {
       translateXValue: new Animated.Value(500),
       isCouponModalVisible: false,
       isCollectionDisclaimerModalVisible: false,
+      disabled: false,
     }
   }
 
@@ -86,6 +91,10 @@ class Summary extends Component {
   }
 
   componentDidUpdate(prevProps) {
+    if (this.props.shippingTimeError !== prevProps.shippingTimeError
+      && this.props.shippingTimeError) {
+      this.props.showTimingModal(true)
+    }
     if (this.props.edit !== prevProps.edit) {
       Animated.timing(
         this.state.translateXValue,
@@ -200,6 +209,8 @@ class Summary extends Component {
   renderFooter() {
 
     const { cart } = this.props
+    const { disabled } = this.state
+
 
     if (!cart || cart.items.length === 0) {
 
@@ -213,7 +224,7 @@ class Summary extends Component {
         onSubmit={ this.onSubmit.bind(this) }
         cart={ cart }
         testID="cartSummarySubmit"
-        disabled={ this.props.isValid !== true || this.props.isLoading } />
+        disabled={ disabled || this.props.isValid !== true || this.props.isLoading } />
     )
   }
 
@@ -268,7 +279,7 @@ class Summary extends Component {
           )}
           <Tips order={cart} />
           <ActionButton
-            onPress={ () => this._navigate('CheckoutShippingDate', { cart, restaurant }) }
+            onPress={ () => this.props.showTimingModal(true) }
             iconName="clock-o">
             <Text style={{ flex: 2, fontSize: 14 }}>{ this.props.timeAsText }</Text>
             <Text note style={{ flex: 1, textAlign: 'right' }}>{ this.props.t('EDIT') }</Text>
@@ -318,6 +329,22 @@ class Summary extends Component {
           isVisible={ this.state.isCollectionDisclaimerModalVisible }
           onSwipeComplete={ () => this.setState({ isCollectionDisclaimerModalVisible: false }) }
           restaurant={ restaurant } />
+        <TimingModal openingHoursSpecification={this.props.openingHoursSpecification}
+                     cart={this.props.cartContainer}
+                     onSchedule={({ value, showModal }) =>
+                       this.props.setDate(value, cart, () => {
+                         this.props.validate(cart)
+                         showModal(false)
+                       })}
+                     onRefresh={({ showModal, cart, openingHoursSpecification, timeSlot }) => {
+                       if (!isCartTimingValid({ cart, openingHoursSpecification, timeSlot })) {
+                         showModal({
+                           displayed: true,
+                           message: this.props.t('CHECKOUT_PICK_DATE'),
+                         })
+                       }
+                     }}
+        />
       </View>
     );
   }
@@ -354,13 +381,23 @@ const styles = StyleSheet.create({
 })
 
 function mapStateToProps(state, ownProps) {
+  const cartContainer = selectCart(state)
+  const { cart, restaurant, openingHoursSpecification } = cartContainer
+
+  const shippingTimeError = state.checkout.violations.filter(v =>
+    [
+      'Order::SHIPPED_AT_EXPIRED',
+      'Order::SHIPPED_AT_NOT_AVAILABLE',
+      'Order::SHIPPING_TIME_RANGE_NOT_AVAILABLE',
+    ].includes(v.code)
+  ).length !== 0
 
 
-  const restaurant = ownProps.route.params?.restaurant
-  const cart = selectCart(state)?.cart
   return {
     cart,
+    cartContainer,
     restaurant,
+    openingHoursSpecification,
     edit: ownProps.route.params?.edit || false,
     isAuthenticated: selectIsAuthenticated(state),
     deliveryTotal: selectDeliveryTotal(state),
@@ -369,6 +406,7 @@ function mapStateToProps(state, ownProps) {
     isValid: state.checkout.isValid,
     alertMessage: _.first(state.checkout.violations.map(v => v.message)),
     fulfillmentMethod: selectCartFulfillmentMethod(restaurant, cart),
+    shippingTimeError,
   }
 }
 
@@ -382,6 +420,8 @@ function mapDispatchToProps(dispatch) {
     hideAddressModal: () => dispatch(hideAddressModal()),
     updateCart: (cart, cb) => dispatch(updateCart(cart, cb)),
     setAddress: (address, cart) => dispatch(setAddress(address, cart)),
+    setDate: (date, cart, cb) => dispatch(setDate(date, cart, cb)),
+    showTimingModal: show => dispatch(showTimingModal(show)),
   }
 }
 

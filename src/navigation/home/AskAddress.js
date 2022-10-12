@@ -13,7 +13,7 @@ import i18n from '../../i18n';
 
 const textInputContainerHeight = 62
 
-const myPlace = {
+const deliveryZone = {
   type: 'FeatureCollection',
   features: [
     {
@@ -23,7 +23,7 @@ const myPlace = {
     },
   ],
 };
-
+//TODO: Naofood dynamic rendering
 const Map = props => (
   <MapView
     style={{
@@ -38,7 +38,7 @@ const Map = props => (
     }}
   >
     <Geojson
-      geojson={myPlace}
+      geojson={deliveryZone}
       strokeColor={primaryColor}
       fillColor={primaryColor + '2a'}
       strokeWidth={2}

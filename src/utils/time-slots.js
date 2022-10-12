@@ -1,10 +1,10 @@
 import Moment from 'moment-business-days'
 import { extendMoment } from 'moment-range'
 import _ from 'lodash'
+import i18n from '../i18n'
+import OpeningHoursSpecification from './OpeningHoursSpecification';
 
 const moment = extendMoment(Moment)
-
-import i18n from '../i18n'
 
 const isoWeekDayMap = {
   'Monday': 1,
@@ -153,4 +153,30 @@ export function humanizeTaskTime(task, now) {
   )
 
   return makeLabel(range, now)
+}
+
+export function isCartTimingValid({ cart, openingHoursSpecification, timeSlot }) {
+  let { cart: { shippedAt } } = cart
+  if (timeSlot.state === OpeningHoursSpecification.STATE.Closed &&
+    shippedAt === null) {
+    console.log('[isCartTimingValid]: shippedAt is null & store is closed')
+    return false
+  }
+
+  if (shippedAt === null) {
+    return true
+  }
+  shippedAt = moment(shippedAt)
+
+  if (shippedAt.isBefore(moment(), 'minute')) {
+    console.log('[isCartTimingValid]: shippedAt is defined to a passed date')
+    return false
+  }
+
+  if (!openingHoursSpecification.isOpen(shippedAt)) {
+    console.log('[isCartTimingValid]: shippedAt is defined on a closed schedule')
+    return false
+  }
+
+  return true
 }
