@@ -6,14 +6,27 @@ import {
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 import Ionicons from 'react-native-vector-icons/Ionicons'
+import Modal from 'react-native-modal'
 
 import Server from './components/Server'
 import { logout } from '../../redux/App/actions'
+import { deleteUser } from '../../redux/Account/actions'
 import { selectIsAuthenticated } from '../../redux/App/selectors'
 import ItemSeparator from '../../components/ItemSeparator'
 import LoginRegister from './LoginRegister'
 
 class AccountHome extends Component {
+
+  constructor(props) {
+    super(props)
+    this.state = {
+      isModalVisible: false,
+    }
+  }
+
+  closeModal() {
+    this.setState({ isModalVisible: false })
+  }
 
   render() {
 
@@ -38,6 +51,13 @@ class AccountHome extends Component {
         label: this.props.t('ORDERS'),
         onPress: () => navigate('AccountOrdersList'),
       },
+      {
+        label: this.props.t('DELETE_ACCOUNT'),
+        onPress: () => this.setState({ isModalVisible: true }),
+        textProps: {
+          color: 'danger.700',
+        }
+      },
     ]
 
     return (
@@ -60,7 +80,7 @@ class AccountHome extends Component {
                 py="3"
               >
                 <HStack space={3} justifyContent="space-between">
-                  <Text>
+                  <Text { ...item.textProps }>
                     { item.label }
                   </Text>
                   <Icon as={ Ionicons } name="arrow-forward" />
@@ -74,6 +94,23 @@ class AccountHome extends Component {
             {this.props.t('SIGN_OUT')}
           </Button>
         </Box>
+        <Modal
+          isVisible={ this.state.isModalVisible }
+          onSwipeComplete={ () => this.closeModal() }
+          swipeDirection={ [ 'down', 'up', 'left', 'right' ] }
+          onBackdropPress={ () => this.closeModal() }>
+          <View style={{ backgroundColor: 'white' }}>
+            <Box p="4">
+              <Text mb="3">{ this.props.t('DELETE_ACCOUNT_DISCLAIMER') }</Text>
+              <Button colorScheme="secondary" onPress={ () => {
+                this.props.deleteUser()
+                this.closeModal()
+              } }>
+                { this.props.t('DELETE_ACCOUNT') }
+              </Button>
+            </Box>
+          </View>
+        </Modal>
       </View>
     )
   }
@@ -93,6 +130,7 @@ function mapDispatchToProps(dispatch) {
 
   return {
     logout: () => dispatch(logout()),
+    deleteUser: () => dispatch(deleteUser()),
   }
 }
 

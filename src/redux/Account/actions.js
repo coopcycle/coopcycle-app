@@ -3,7 +3,7 @@ import Centrifuge from 'centrifuge'
 import parseUrl from 'url-parse'
 import _ from 'lodash'
 
-import { setLoading } from '../App/actions'
+import { setLoading, logout } from '../App/actions'
 import { selectIsAuthenticated } from '../App/selectors';
 
 /*
@@ -189,5 +189,25 @@ export function unsubscribe(order) {
   return function (dispatch, getState) {
 
     applyCallback(order)
+  }
+}
+
+export function deleteUser() {
+
+  return function (dispatch, getState) {
+
+    const httpClient = getState().app.httpClient
+
+    dispatch(setLoading(true))
+
+    httpClient.delete('/api/me')
+      .then(res => {
+        dispatch(logout())
+        dispatch(setLoading(false))
+      })
+      .catch(e => {
+        console.log(e)
+        dispatch(setLoading(false))
+      })
   }
 }

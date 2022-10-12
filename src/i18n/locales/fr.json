@@ -430,6 +430,8 @@
         "TERMS_AND_CONDITIONS_ERROR_MESSAGE": "Vous devez accepter les conditions générales",
         "PRIVACY_POLICY_LABEL": "J'accepte la politique de confidentialité",
         "PRIVACY_POLICY_ERROR_MESSAGE": "Vous devez accepter la politique de confidentialité", "PRIVACY_POLICY_ERROR_MESSAGE" : "Vous devez accepter la politique de confidentialité",
-        "AGREE" : "J'accepte"
+        "AGREE" : "J'accepte",
+        "DELETE_ACCOUNT": "Supprimer mon compte",
+        "DELETE_ACCOUNT_DISCLAIMER": "En cliquant sur le bouton ci-dessous, vous allez supprimer votre compte. Vous êtes sûr·e ?"
     }
 }

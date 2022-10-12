@@ -447,6 +447,8 @@
         "TERMS_AND_CONDITIONS_ERROR_MESSAGE": "You must accept the Terms and Conditions",
         "PRIVACY_POLICY_LABEL": "I accept the Privacy Policy",
         "PRIVACY_POLICY_ERROR_MESSAGE": "You must accept the Privacy Policy",
-        "AGREE": "I accept"
+        "AGREE": "I accept",
+        "DELETE_ACCOUNT": "Delete my account",
+        "DELETE_ACCOUNT_DISCLAIMER": "By clicking the button below, you are going to delete your account. Are you sure?"
     }
 }
