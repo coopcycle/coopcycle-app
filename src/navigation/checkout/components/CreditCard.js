@@ -113,7 +113,7 @@ class CreditCard extends Component {
 
   render() {
 
-    const { cart, paymentDetailsLoaded } = this.props
+    const { cart, paymentDetailsLoaded, disabled } = this.props
 
     if (!cart || !paymentDetailsLoaded) {
 
@@ -188,6 +188,7 @@ class CreditCard extends Component {
             ) }
           </Center>
           <FooterButton
+            idDisabled={disabled}
             testID="creditCardSubmit"
             text={ this.props.t('PAY_AMOUNT', { amount: formatPrice(cart.total) }) }
             onPress={ _.debounce(handleSubmit, 1000, { leading: true, trailing: false }) } />

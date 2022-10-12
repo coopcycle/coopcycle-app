@@ -1,16 +1,25 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux'
-import { Center } from 'native-base';
+import { Center, Toast } from 'native-base';
 
 import CreditCardComp from './components/CreditCard'
 import CashComp from './components/CashOnDelivery'
 import PaymentMethodPicker from './components/PaymentMethodPicker'
 import { checkout, checkoutWithCash, loadPaymentMethods } from '../../redux/Checkout/actions'
-import { selectCart } from '../../redux/Checkout/selectors';
+import { selectCart, selectRestaurant } from '../../redux/Checkout/selectors';
+import TimingModal from './components/TimingModal';
+import { isCartTimingValid } from '../../utils/time-slots';
+import i18n from '../../i18n';
 
 class CreditCard extends Component {
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      disabled: false,
+    }
+  }
   _onSubmitCard(values) {
 
     const { cardholderName } = values
@@ -38,9 +47,10 @@ class CreditCard extends Component {
     this.props.navigation.navigate(routesByMethod[type]);
   }
 
-  render() {
+  _renderPaymentForm() {
 
     const { cart, errors, paymentMethods, paymentGateway } = this.props
+    const { disabled } = this.state
 
     if (!cart || paymentMethods.length === 0) {
 
@@ -56,7 +66,7 @@ class CreditCard extends Component {
       }
 
       return (
-        <CreditCardComp cart={ cart } errors={ errors }
+        <CreditCardComp disabled={disabled} cart={ cart } errors={ errors }
           onSubmit={ this._onSubmitCard.bind(this) } />
       )
     }
@@ -64,6 +74,7 @@ class CreditCard extends Component {
     if (paymentMethods.length === 1 && paymentMethods[0].type === 'cash_on_delivery') {
       return (
         <CashComp
+          disabled={disabled}
           onSubmit={ this._onSubmitCash.bind(this) } />
       )
     }
@@ -71,17 +82,47 @@ class CreditCard extends Component {
     return (
       <Center flex={ 1 }>
         <PaymentMethodPicker
+          disabled={disabled}
           methods={ paymentMethods }
           onSelect={ this._onPaymentMethodSelected.bind(this) } />
       </Center>
     )
   }
+
+  render() {
+    return <>
+      {this._renderPaymentForm()}
+      <TimingModal
+        openingHoursSpecification={this.props.openingHoursSpecification}
+        cart={this.props.cartContainer}
+        modalEnabled={false}
+        onClosesSoon={({ timeSlot: { timeSlot } }) => {
+          const diff = timeSlot[1].fromNow(false)
+          Toast.show({
+            description: i18n.t('NOTIFICATION_CLOSES_SOON', { diff }),
+            placement: 'top',
+          })
+        }}
+        onRefresh={({ cart, openingHoursSpecification, timeSlot }) => {
+          if (!isCartTimingValid({ cart, openingHoursSpecification, timeSlot })) {
+            this.setState({ disabled: true })
+            this.props.navigation.navigate('Cart')
+          }
+        }}
+      />
+    </>
+  }
 }
 
 function mapStateToProps(state, ownProps) {
-  const cart = selectCart(state)?.cart
+  const cartContainer = selectCart(state)
+  const cart = cartContainer?.cart
+  const { restaurant, openingHoursSpecification } = selectRestaurant(state)
   return {
     cart,
+    cartContainer,
+    restaurant,
+    openingHoursSpecification,
     errors: state.checkout.errors,
     paymentMethods: state.checkout.paymentMethods,
     paymentGateway: state.app.settings.payment_gateway,
