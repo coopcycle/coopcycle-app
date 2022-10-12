@@ -10,9 +10,9 @@ import Settings from '../../Settings'
 import NavigationHolder from '../../NavigationHolder'
 import i18n from '../../i18n'
 import { setCurrencyCode } from '../../utils/formatting'
-import { selectInitialRouteName } from './selectors'
+import { selectInitialRouteName, selectIsAuthenticated } from './selectors'
 import { assignAllCarts, updateCarts } from '../Checkout/actions';
-import { loadAddresses } from '../Account/actions';
+import { loadAddresses, loadAddressesSuccess } from '../Account/actions';
 
 /*
  * Action Types
@@ -344,19 +344,33 @@ export function bootstrap(baseURL, user, loader = true) {
     dispatch(setUser(user))
     dispatch(setBaseURL(baseURL))
     setRolesProperty(user)
-    dispatch(loadAddresses())
 
-    if (loader) {
-      dispatch(loadMyRestaurantsRequest())
-    }
+    const httpClient = getState().app.httpClient
 
-    const values = await loadAll(getState)
+    try {
 
-    const [ restaurants, stores ] = values
+      // We check if the token is still valid
+      // If not, the user will be disconnected
+      if (selectIsAuthenticated(getState())) {
+        const me = await httpClient.get('/api/me')
+        dispatch(loadAddressesSuccess(me.addresses))
+      }
 
-    dispatch(loadMyRestaurantsSuccess(restaurants))
-    if (stores) {
-      dispatch(_loadMyStoresSuccess(stores))
+      if (loader) {
+        dispatch(loadMyRestaurantsRequest())
+      }
+
+      const values = await loadAll(getState)
+
+      const [ restaurants, stores ] = values
+
+      dispatch(loadMyRestaurantsSuccess(restaurants))
+      if (stores) {
+        dispatch(_loadMyStoresSuccess(stores))
+      }
+
+    } catch (e) {
+      dispatch(logout())
     }
   }
 }
