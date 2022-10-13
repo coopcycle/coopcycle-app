@@ -13,13 +13,12 @@ import { groupBy, map, reduce } from 'lodash';
 import moment from 'moment';
 import { showTimingModal } from '../../../redux/Checkout/actions';
 import { InteractionManager } from 'react-native';
-import { t } from 'i18next';
 
 
-const TimingCartSelect = ({ cart: { cart, token }, httpClient, onValueChange }) => {
+const TimingCartSelect = ({ cart: { cart, token }, httpClient, onValueChange, cartFulfillmentMethod }) => {
 
   httpClient = httpClient.cloneWithToken(token)
-  const { data, isSuccess } = useQuery([ 'cart', 'timing', cart['@id'] ], async () => {
+  const { data, isSuccess } = useQuery([ 'cart', 'timing', cartFulfillmentMethod, cart['@id'] ], async () => {
     return await httpClient.get(`${cart['@id']}/timing`)
   })
 
@@ -90,6 +89,21 @@ class TimingModal extends Component{
     }
   }
   showModal = show => this.props.showTimingModal(show)
+
+  FulFillementButtons = () => <Button.Group isAttached colorScheme="orange" mx={{
+    base: 'auto',
+    md: 0,
+  }} size="sm">
+    <Button flex={1}
+            onPress={() => this.props.onFulfillmentMethodChange('delivery')}
+            variant={this.props.cartFulfillmentMethod === 'delivery' ? 'solid' : 'outline'}>
+      {this.props.t('FULFILLMENT_METHOD.delivery')}</Button>
+    <Button flex={1}
+            onPress={() => this.props.onFulfillmentMethodChange('collection')}
+            variant={this.props.cartFulfillmentMethod === 'collection' ? 'solid' : 'outline'}>
+      {this.props.t('FULFILLMENT_METHOD.collection')}</Button>
+  </Button.Group>
+
   componentDidUpdate(prevProps: Readonly<P>, prevState: Readonly<S>, snapshot: SS) {
     const timeSlot = this.props.openingHoursSpecification.currentTimeSlot
     const { showModal } = this
@@ -148,11 +162,13 @@ class TimingModal extends Component{
       onBackdropPress={() => this.showModal(false)}
       onBackButtonPress={() => this.showModal(false)}
     >
-      <Heading size={'sm'}>{t('CHECKOUT_SCHEDULE_ORDER')}</Heading>
+      <Heading size={'sm'}>{this.props.t('CHECKOUT_SCHEDULE_ORDER')}</Heading>
       <Divider />
+      {this.props.fulfillmentMethods.length > 1 && this.FulFillementButtons()}
       {this.props.message && <Text marginBottom={50}>{this.props.message}</Text>}
       {!this.props.message && <View marginBottom={30} />}
       <TimingCartSelect cart={this.props.cart}
+                        cartFulfillmentMethod={this.props.cartFulfillmentMethod}
                      httpClient={this.props.httpClient}
                      onValueChange={(value) => this.setState({ value })}
       />
@@ -161,17 +177,20 @@ class TimingModal extends Component{
                 value: this.state.value,
                 showModal: this.showModal,
               })}
-      >{t('SCHEDULE')}</Button>
+      >{this.props.t('SCHEDULE')}</Button>
       <Button colorScheme={'orange'} variant={'subtle'}
               onPress={() => this.showModal(false)}
-      >{t('IGNORE')}</Button>
+      >{this.props.t('IGNORE')}</Button>
     </BottomModal>}
     </>
 }
 
 TimingModal.defaultProps = {
   modalEnabled: true,
+  fulfillmentMethods: [],
+  cartFulfillmentMethod: null,
   cart: null,
+  onFulfillmentMethodChange: () => {},
   onClosesSoon: () => {},
   onOpensSoon: () => {},
   onClose: () => {},
@@ -183,6 +202,9 @@ TimingModal.defaultProps = {
 
 TimingModal.propTypes = {
   openingHoursSpecification: PropTypes.object.isRequired,
+  fulfillmentMethods: PropTypes.arrayOf(PropTypes.string),
+  cartFulfillmentMethod: PropTypes.string,
+  onFulfillmentMethodChange: PropTypes.func,
   cart: PropTypes.object,
   modalEnabled: PropTypes.bool,
   onClosesSoon: PropTypes.func,

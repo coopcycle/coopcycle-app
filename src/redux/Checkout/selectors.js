@@ -19,7 +19,12 @@ export const selectCart = createSelector(
         ...cartContainer,
       }
     }
-    return null
+    return {
+      cart: null,
+      restaurant: null,
+      token: null,
+      openingHoursSpecification: null,
+    }
   }
 )
 
@@ -40,8 +45,7 @@ export const selectRestaurant = createSelector(
 
 export const selectDeliveryTotal = createSelector(
   selectCart,
-  (cart) => {
-    cart = cart?.cart
+  ({ cart }) => {
 
     if (!cart || !cart.adjustments) {
       return 0
@@ -58,9 +62,8 @@ export const selectDeliveryTotal = createSelector(
 )
 
 export const selectFulfillmentMethods = createSelector(
-  state => state.checkout.restaurant,
-  (restaurant) => {
-
+  selectRestaurant,
+  ({ restaurant }) => {
     if (restaurant && restaurant.fulfillmentMethods && Array.isArray(restaurant.fulfillmentMethods)) {
       const enabled = _.filter(restaurant.fulfillmentMethods, fm => fm.enabled)
       return _.map(enabled, fm => fm.type)
@@ -84,8 +87,7 @@ export const selectCartFulfillmentMethod = createSelector(
   selectCart,
   selectIsDeliveryEnabled,
   selectIsCollectionEnabled,
-  (cart, isDeliveryEnabled, isCollectionEnabled) => {
-    cart = cart?.cart
+  ({ cart }, isDeliveryEnabled, isCollectionEnabled) => {
 
     if (!cart) {
       return 'delivery'
@@ -110,11 +112,15 @@ export const selectCartFulfillmentMethod = createSelector(
 export const selectShippingTimeRangeLabel = createSelector(
   selectCartFulfillmentMethod,
   state => state.checkout.timing,
-  state => state.checkout.cart,
-  (fulfillmentMethod, timing, cart) => {
+  selectCart,
+  (fulfillmentMethod, timing, { cart }) => {
 
     if (_.size(timing) === 0 || !cart) {
       return i18n.t('LOADING')
+    }
+
+    if (cart?.shippedAt === null) {
+      return i18n.t('DELIVERY_ASAP')
     }
 
     if (!timing.range || !Array.isArray(timing.range)) {
