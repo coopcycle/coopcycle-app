@@ -12,7 +12,7 @@ import ExpiredSessionModal from './components/ExpiredSessionModal'
 
 import Menu from '../../components/Menu'
 
-import { setDate, showTimingModal } from '../../redux/Checkout/actions'
+import { setDate, setFulfillmentMethod, showTimingModal } from '../../redux/Checkout/actions'
 import { useQuery } from 'react-query';
 import i18n from '../../i18n';
 import GroupImageHeader from './components/GroupImageHeader';
@@ -20,10 +20,16 @@ import OpeningHours from './components/OpeningHours';
 import { phonecall } from 'react-native-communications';
 import AddressUtils from '../../utils/Address';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { selectCart, selectRestaurant } from '../../redux/Checkout/selectors';
+import {
+  selectCart,
+  selectCartFulfillmentMethod,
+  selectFulfillmentMethods,
+  selectRestaurant,
+} from '../../redux/Checkout/selectors';
 import TimingModal from './components/TimingModal';
 import BottomModal from '../../components/BottomModal';
 import OpeningHoursSpecification from '../../utils/OpeningHoursSpecification';
+import { isCartTimingValid } from '../../utils/time-slots';
 
 const LoadingPhantom = (props) =>
   <HStack w="95%" space={6} p="4">
@@ -63,8 +69,11 @@ function Restaurant(props) {
       return
     }
     if (
-      openingHoursSpecification.currentTimeSlot.state === OpeningHoursSpecification.STATE.Closed &&
-      cart?.shippedAt === null
+      !isCartTimingValid({
+        cart: props.cartContainer,
+        openingHoursSpecification,
+        timeSlot: openingHoursSpecification.currentTimeSlot,
+      })
     ) {
       props.showTimingModal({
         displayed: true,
@@ -143,6 +152,9 @@ function Restaurant(props) {
 
       <TimingModal
         openingHoursSpecification={props.openingHoursSpecification}
+        fulfillmentMethods={props.fulfillmentMethods}
+        cartFulfillmentMethod={props.fulfillmentMethod}
+        onFulfillmentMethodChange={props.setFulfillmentMethod}
         modalEnabled={showFooter}
         cart={props.cartContainer}
         onClosesSoon={({ timeSlot: { timeSlot } }) => {
@@ -153,7 +165,7 @@ function Restaurant(props) {
           })
         }}
        onSchedule={({ value, showModal }) => {
-         props.setDate(value, props.cart, () => showModal(false))
+         props.setDate(value, () => showModal(false))
        }}
       />
     </View>
@@ -178,7 +190,7 @@ function mapStateToProps(state, ownProps) {
   const cartContainer = selectCart(state)
   const cart = cartContainer?.cart
   const cartLoading = _.includes(state.checkout.loadingCarts, restaurant)
-  const isCartEmpty = !selectCart(state) ? true : cart.items.length === 0
+  const isCartEmpty = !selectCart(state).cart ? true : cart.items.length === 0
 
   return {
     showFooter: cartLoading || !isCartEmpty,
@@ -191,12 +203,15 @@ function mapStateToProps(state, ownProps) {
     loadingItems: state.checkout.itemRequestStack,
     isExpiredSessionModalVisible: state.checkout.isExpiredSessionModalVisible,
     httpClient: state.app.httpClient,
+    fulfillmentMethods: selectFulfillmentMethods(state),
+    fulfillmentMethod: selectCartFulfillmentMethod(state),
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    setDate: (date, cart, cb) => dispatch(setDate(date, cart, cb)),
+    setDate: (date, cb) => dispatch(setDate(date, cb)),
+    setFulfillmentMethod: method => dispatch(setFulfillmentMethod(method)),
     showTimingModal: show => dispatch(showTimingModal(show)),
   }
 }
