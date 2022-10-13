@@ -157,8 +157,11 @@ export function humanizeTaskTime(task, now) {
 
 export function isCartTimingValid({ cart, openingHoursSpecification, timeSlot }) {
   let { cart: { shippedAt } } = cart
-  if (timeSlot.state === OpeningHoursSpecification.STATE.Closed &&
-    shippedAt === null) {
+  if (
+    timeSlot.state === OpeningHoursSpecification.STATE.Closed &&
+    !OpeningHoursSpecification.opensSoon(timeSlot.timeSlot) &&
+    shippedAt === null
+  ) {
     console.log('[isCartTimingValid]: shippedAt is null & store is closed')
     return false
   }
