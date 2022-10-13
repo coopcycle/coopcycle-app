@@ -15,18 +15,22 @@ import {
   incrementItem,
   removeItem,
   setAddress,
-  setDate,
+  setDate, setFulfillmentMethod,
   showAddressModal,
   showTimingModal,
   updateCart,
   validate,
 } from '../../redux/Checkout/actions'
-import { selectCart, selectDeliveryTotal } from '../../redux/Checkout/selectors'
+import {
+  selectCart,
+  selectCartFulfillmentMethod,
+  selectDeliveryTotal, selectFulfillmentMethods,
+  selectShippingTimeRangeLabel,
+} from '../../redux/Checkout/selectors'
 import { selectIsAuthenticated } from '../../redux/App/selectors'
 import CartFooter from './components/CartFooter'
 import ExpiredSessionModal from './components/ExpiredSessionModal'
 import CouponModal from './components/CouponModal'
-import { selectCartFulfillmentMethod, selectShippingTimeRangeLabel } from '../../utils/checkout';
 import { primaryColor } from '../../styles/common';
 import Tips from './components/Tips';
 import TimingModal from './components/TimingModal';
@@ -266,6 +270,7 @@ class Summary extends Component {
         <View style={{ flex: 1, paddingTop: 30 }}>
           { this.renderItems() }
         </View>
+        <Tips order={cart} />
         <View style={{ flex: 0 }}>
           { this.props.fulfillmentMethod === 'collection' && (
           <TouchableOpacity style={ [styles.btn]  }
@@ -276,7 +281,6 @@ class Summary extends Component {
             <Text note style={{ flex: 1, textAlign: 'right' }}>{ this.props.t('LEARN_MORE') }</Text>
           </TouchableOpacity>
           )}
-          <Tips order={cart} />
           <ActionButton
             onPress={ () => this.props.showTimingModal(true) }
             iconName="clock-o">
@@ -329,9 +333,12 @@ class Summary extends Component {
           onSwipeComplete={ () => this.setState({ isCollectionDisclaimerModalVisible: false }) }
           restaurant={ restaurant } />
         <TimingModal openingHoursSpecification={this.props.openingHoursSpecification}
+                     fulfillmentMethods={this.props.fulfillmentMethods}
+                     cartFulfillmentMethod={this.props.fulfillmentMethod}
+                     onFulfillmentMethodChange={this.props.setFulfillmentMethod}
                      cart={this.props.cartContainer}
                      onSchedule={({ value, showModal }) =>
-                       this.props.setDate(value, cart, () => {
+                       this.props.setDate(value, () => {
                          this.props.validate(cart)
                          showModal(false)
                        })}
@@ -400,11 +407,12 @@ function mapStateToProps(state, ownProps) {
     edit: ownProps.route.params?.edit || false,
     isAuthenticated: selectIsAuthenticated(state),
     deliveryTotal: selectDeliveryTotal(state),
-    timeAsText: selectShippingTimeRangeLabel(restaurant, cart, {}),
+    timeAsText: selectShippingTimeRangeLabel(state),
     isLoading: state.checkout.isLoading,
     isValid: state.checkout.isValid,
     alertMessage: _.first(state.checkout.violations.map(v => v.message)),
-    fulfillmentMethod: selectCartFulfillmentMethod(restaurant, cart),
+    fulfillmentMethods: selectFulfillmentMethods(state),
+    fulfillmentMethod: selectCartFulfillmentMethod(state),
     shippingTimeError,
   }
 }
@@ -419,7 +427,8 @@ function mapDispatchToProps(dispatch) {
     hideAddressModal: () => dispatch(hideAddressModal()),
     updateCart: (cart, cb) => dispatch(updateCart(cart, cb)),
     setAddress: (address, cart) => dispatch(setAddress(address, cart)),
-    setDate: (date, cart, cb) => dispatch(setDate(date, cart, cb)),
+    setDate: (date, cb) => dispatch(setDate(date, cb)),
+    setFulfillmentMethod: method => dispatch(setFulfillmentMethod(method)),
     showTimingModal: show => dispatch(showTimingModal(show)),
   }
 }
