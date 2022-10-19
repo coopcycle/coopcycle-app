@@ -62,7 +62,7 @@
     "qs": "^6.11.0",
     "react": "17.0.2",
     "react-i18next": "^11.18.6",
-    "react-native": "0.66.4",
+    "react-native": "0.67.4",
     "react-native-autocomplete-input": "^4.2.0",
     "react-native-background-fetch": "^3.1.0",
     "react-native-background-geolocation": "^3.10.0",
