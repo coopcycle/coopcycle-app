@@ -1,28 +1,53 @@
 import React, { Component } from 'react'
 import { StyleSheet, View } from 'react-native'
 import {
-  Button, HStack, Text, VStack,
+  Button, Text, VStack,
 } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
-import { SketchCanvas } from '@terrylinla/react-native-sketch-canvas';
+import SignatureScreen from 'react-native-signature-canvas'
 
 import { addSignature } from '../../redux/Courier'
 
+// Hide footer
+// https://github.com/YanYuanFE/react-native-signature-canvas#basic-parameters
+const signatureStyle = `
+body,html {
+  height: 100%;
+}
+.m-signature-pad {
+  box-shadow: none;
+  border: none;
+}
+.m-signature-pad--body {
+  border: none;
+}
+.m-signature-pad--footer {
+  display: none;
+  margin: 0px;
+}
+`
+
 class Signature extends Component {
 
+  constructor(props) {
+    super(props)
+    this.signatureRef = React.createRef()
+  }
+
   _saveImage() {
+    this.signatureRef.current?.readSignature();
+  }
+
+  handleOK(base64) {
+    base64 = base64.replace('data:image/jpeg;base64,', '')
     const task = this.props.route.params?.task
-    this._sketchCanvas.getBase64('jpg', false, true, true, true, (err, base64) => {
-      if (!err) {
-        this.props.addSignature(task, base64)
-        this.props.navigation.navigate({ name: 'TaskCompleteHome', params: { task }, merge: true })
-      }
-    })
+    this.props.addSignature(task, base64)
+    this.props.navigation.navigate({ name: 'TaskCompleteHome', params: { task }, merge: true })
   }
 
   _clearCanvas() {
-    this._sketchCanvas.clear()
+    this.signatureRef.current?.clearSignature()
   }
 
   render() {
@@ -34,21 +59,22 @@ class Signature extends Component {
             { this.props.t('SIGNATURE_DISCLAIMER') }
           </Text>
           <View style={ styles.canvasContainer }>
-            <SketchCanvas
-              ref={ component => { this._sketchCanvas = component } }
-              style={{ flex: 1, backgroundColor: 'white' }}
-              strokeColor={ 'black' }
-              strokeWidth={ 7 } />
+            <SignatureScreen
+              ref={ this.signatureRef }
+              imageType="image/jpeg"
+              backgroundColor='rgba(255, 255, 255)'
+              onOK={this.handleOK.bind(this)}
+              webStyle={signatureStyle} />
           </View>
-          <Button light block onPress={ this._clearCanvas.bind(this) }>
+          <Button variant="outline" size="sm" onPress={ this._clearCanvas.bind(this) }>
             { this.props.t('SIGNATURE_CLEAR') }
           </Button>
         </VStack>
-        <HStack p="2">
-          <Button full onPress={ this._saveImage.bind(this) }>
+        <VStack p="2">
+          <Button size="lg" onPress={ this._saveImage.bind(this) }>
             { this.props.t('SIGNATURE_ADD') }
           </Button>
-        </HStack>
+        </VStack>
       </VStack>
     )
   }
