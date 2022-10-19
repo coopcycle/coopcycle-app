@@ -1,0 +1,3 @@
+Bugfixes:
+
+- Fix on/off toggling issues.
