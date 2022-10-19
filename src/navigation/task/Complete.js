@@ -33,11 +33,15 @@ const AttachmentItem = ({ base64, onPressDelete }) => {
 
   const imageSize = (width - 64) / 2
 
+  if (!base64.startsWith('data:image/jpeg;base64')) {
+    base64 = `data:image/jpeg;base64,${base64}`
+  }
+
   return (
     <View
       style={ [ styles.image, { width: imageSize, height: imageSize }] }>
       <Image
-        source={{ uri: `data:image/jpeg;base64,${base64}` }}
+        source={{ uri: base64 }}
         style={{ width: (imageSize - 2), height: (imageSize - 2) }} />
       <TouchableOpacity
         style={ styles.imageDelBtn }

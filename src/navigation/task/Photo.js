@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Dimensions, Image, StyleSheet, View } from 'react-native'
 import {
-  Button, HStack, Icon, Text, VStack,
+  Button, Icon, Text, VStack,
 } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
@@ -72,11 +72,11 @@ class Photo extends Component {
             </RNCamera>
           </View>
         </VStack>
-        <HStack p="2">
-          <Button full onPress={ this._saveImage.bind(this) }>
+        <VStack p="2">
+          <Button size="lg" onPress={ this._saveImage.bind(this) }>
             { this.props.t('PHOTO_ADD') }
           </Button>
-        </HStack>
+        </VStack>
       </VStack>
     )
   }
