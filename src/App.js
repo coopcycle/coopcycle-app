@@ -1,7 +1,7 @@
 import React, { createRef, useEffect } from 'react'
 import { LogBox, Platform, useColorScheme } from 'react-native'
 
-import { NativeBaseProvider, extendTheme } from 'native-base'
+import { NativeBaseProvider, extendTheme, v33xTheme } from 'native-base'
 import tracker from './analytics/Tracker'
 
 import { DarkTheme, DefaultTheme, NavigationContainer } from '@react-navigation/native'
@@ -109,7 +109,7 @@ const App = () => {
 
   const colorScheme = useColorScheme()
 
-  const customTheme = extendTheme({
+  const customTheme = extendTheme(v33xTheme, {
     config: {
       useSystemColorMode: true,
     },
