@@ -1,9 +1,9 @@
 #import <UserNotifications/UNUserNotificationCenter.h>
+#import <Expo/Expo.h>
 #import <React/RCTBridgeDelegate.h>
 #import <UIKit/UIKit.h>
-#import <UMCore/UMAppDelegateWrapper.h>
 
-@interface AppDelegate : UMAppDelegateWrapper <UIApplicationDelegate, UNUserNotificationCenterDelegate>
+@interface AppDelegate : EXAppDelegateWrapper <UIApplicationDelegate, RCTBridgeDelegate, UNUserNotificationCenterDelegate>
 
 @property (nonatomic, strong) UIWindow *window;
 

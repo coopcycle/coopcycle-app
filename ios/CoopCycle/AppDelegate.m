@@ -14,9 +14,6 @@
 #import <UserNotifications/UserNotifications.h>
 #import <React/RCTLinkingManager.h>
 #import <Firebase.h>
-#import <UMCore/UMModuleRegistry.h>
-#import <UMReactNativeAdapter/UMNativeModulesProxy.h>
-#import <UMReactNativeAdapter/UMModuleRegistryAdapter.h>
 #import <FBSDKCoreKit/FBSDKApplicationDelegate.h>
 
 #ifdef FB_SONARKIT_ENABLED
@@ -38,12 +35,6 @@ static void InitializeFlipper(UIApplication *application) {
 }
 #endif
 
-@interface AppDelegate () <RCTBridgeDelegate>
-
-@property (nonatomic, strong) UMModuleRegistryAdapter *moduleRegistryAdapter;
-
-@end
-
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -57,8 +48,8 @@ static void InitializeFlipper(UIApplication *application) {
   if ([FIRApp defaultApp] == nil) {
     [FIRApp configure];
   }
-  RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
-  RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
+  RCTBridge *bridge = [self.reactDelegate createBridgeWithDelegate:self launchOptions:launchOptions];
+  RCTRootView *rootView = [self.reactDelegate createRootViewWithBridge:bridge
                                                    moduleName:@"CoopCycle"
                                             initialProperties:nil];
 
@@ -72,7 +63,7 @@ static void InitializeFlipper(UIApplication *application) {
     didFinishLaunchingWithOptions:launchOptions];
 
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-  UIViewController *rootViewController = [UIViewController new];
+  UIViewController *rootViewController = [self.reactDelegate createRootViewController];
   rootViewController.view = rootView;
 
   UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:rootViewController];
@@ -123,13 +114,6 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
 {
   [RNCPushNotificationIOS didReceiveNotificationResponse:response];
   completionHandler();
-}
-
-- (NSArray<id<RCTBridgeModule>> *)extraModulesForBridge:(RCTBridge *)bridge
-{
-  NSArray<id<RCTBridgeModule>> *extraModules = [_moduleRegistryAdapter extraModulesForBridge:bridge];
-  // If you'd like to export some custom RCTBridgeModules that are not Expo modules, add them here!
-  return extraModules;
 }
 
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
