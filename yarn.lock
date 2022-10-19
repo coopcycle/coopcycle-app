@@ -3259,9 +3259,9 @@
     "@sinonjs/commons" "^1.7.0"
 
 "@stripe/stripe-react-native@^0.2.3":
-  version "0.2.3"
-  resolved "https://registry.yarnpkg.com/@stripe/stripe-react-native/-/stripe-react-native-0.2.3.tgz#c0570d6afa30ab432983cea03ccf532c1f8d731a"
-  integrity sha512-UugLDeJEHAbrHDj5OcwhD5Za96pTwXr2sCfvO6UrGzH71HZ7vzBSq+/Cckm2HJFmkC4JqamGjTxy/pI6pqZ4ng==
+  version "0.2.4"
+  resolved "https://registry.yarnpkg.com/@stripe/stripe-react-native/-/stripe-react-native-0.2.4.tgz#0a3b36b301ca5c83464fcf502b96062642cd223b"
+  integrity sha512-NT6Gq4TNb0BDB7GTxRFEWX4lmvdKEi8+W3tntSWwRXEj8z9ioH7n2aT9EdjwWNJW4991fg3klUo+6a1miK5P7g==
   dependencies:
     "@expo/config-plugins" "^3.0.5"
 
