@@ -42,6 +42,12 @@ jest.mock('react-native-background-geolocation', () => ({
   changePace: jest.fn(),
 }))
 
+jest.mock('@stripe/stripe-react-native', () => ({
+}))
+
+jest.mock('react-native-share', () => ({
+}))
+
 const fakeNavigator = {
   current: {
     dispatch: (action) => {}

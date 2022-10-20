@@ -24,11 +24,17 @@ describe('Redux | Checkout | Selectors', () => {
         cart: {
           shippingTimeRange: null,
         },
+        carts: {
+          '/api/restaurants/1': {
+            shippingTimeRange: null
+          },
+        },
       },
     })).toEqual('Loading')
 
     expect(selectShippingTimeRangeLabel({
       checkout: {
+        restaurant: '/api/restaurants/1',
         timing: {
           today: true,
           fast: true,
@@ -41,11 +47,17 @@ describe('Redux | Checkout | Selectors', () => {
         cart: {
           shippingTimeRange: null,
         },
+        carts: {
+          '/api/restaurants/1': {
+            shippingTimeRange: null,
+          }
+        },
       },
     })).toEqual('Delivery in 35 - 45 minutes')
 
     expect(selectShippingTimeRangeLabel({
       checkout: {
+        restaurant: '/api/restaurants/1',
         timing: {
           today: false,
           fast: false,
@@ -57,11 +69,17 @@ describe('Redux | Checkout | Selectors', () => {
         cart: {
           shippingTimeRange: null,
         },
+        carts: {
+          '/api/restaurants/1': {
+            shippingTimeRange: null,
+          }
+        },
       },
     })).toEqual('Delivery friday at 12:20 pm')
 
     expect(selectShippingTimeRangeLabel({
       checkout: {
+        restaurant: '/api/restaurants/1',
         timing: {
           today: true,
           fast: false,
@@ -73,11 +91,17 @@ describe('Redux | Checkout | Selectors', () => {
         cart: {
           shippingTimeRange: null,
         },
+        carts: {
+          '/api/restaurants/1': {
+            shippingTimeRange: null,
+          }
+        },
       },
     })).toEqual('Delivery today at 1:30 pm')
 
     expect(selectShippingTimeRangeLabel({
       checkout: {
+        restaurant: '/api/restaurants/1',
         timing: {
           today: true,
           fast: false,
@@ -92,6 +116,14 @@ describe('Redux | Checkout | Selectors', () => {
             '2021-01-26T14:40:00+01:00',
           ],
         },
+        carts: {
+          '/api/restaurants/1': {
+            shippingTimeRange: [
+              '2021-01-26T14:30:00+01:00',
+              '2021-01-26T14:40:00+01:00',
+            ],
+          }
+        }
       },
     })).toEqual('Delivery today at 2:30 pm')
 
