@@ -3178,32 +3178,32 @@
   dependencies:
     invariant "^2.2.4"
 
-"@react-native-firebase/analytics@^15.6.0":
-  version "15.6.0"
-  resolved "https://registry.yarnpkg.com/@react-native-firebase/analytics/-/analytics-15.6.0.tgz#dfebc9b36bd07bcd71fe418549502d3866ad8c8b"
-  integrity sha512-hfqqOYebajahqZuvPWfsa8fvkEHnSoi31L7q/HOA0x0gALSNMf39F0ficL77WtpzkYYMAgvLpeRYviwxyoLLOA==
+"@react-native-firebase/analytics@^16.0.0":
+  version "16.0.0"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/analytics/-/analytics-16.0.0.tgz#91b0663f71cc69b1db156b1c57394d5f50d5993d"
+  integrity sha512-54eN1lGLVtDcWaryt4muSx8k/e1DEg7VNxy6EDcpZMIKjdHM1fL3aBQvR6vbnloMjhLi0EY51XOV+I2doDoz3g==
 
-"@react-native-firebase/app@^15.6.0":
-  version "15.6.0"
-  resolved "https://registry.yarnpkg.com/@react-native-firebase/app/-/app-15.6.0.tgz#3fb00ab92fd269fe411cd1cc88f27e785e1bd0b2"
-  integrity sha512-Lae6GL79y4FVN7E8uQXUbUW+3KzJvhKdBQoVnjMZukodWDRtLifr1DDykuICFlYL1/Pjr1AWxfcZAgwt/zo5Iw==
+"@react-native-firebase/app@^16.0.0":
+  version "16.0.0"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/app/-/app-16.0.0.tgz#4dfb108e998629604e58c26c323602aa4630fa14"
+  integrity sha512-aetICzDF9XbBdGEY4tIKkA1sbWVz6l6TYv3JhreloQfEAFtq1UKvznudtrj3IdK0vVDnZlfIZDW96HVIv10wTw==
   dependencies:
     "@expo/config-plugins" "^5.0.1"
     opencollective-postinstall "^2.0.1"
     superstruct "^0.6.2"
 
-"@react-native-firebase/crashlytics@^15.6.0":
-  version "15.6.0"
-  resolved "https://registry.yarnpkg.com/@react-native-firebase/crashlytics/-/crashlytics-15.6.0.tgz#4adcbd9286ca1213e2b75bf4ff4ac11f22bc5f9e"
-  integrity sha512-1lnJsJ8mE59QOSMlwdOqQl8jKBvdHbuXp2EwaDKmFq9oPnmc7JOtEVrHNRFKacyTKkivwNgeWmrbJf8FPi0PJA==
+"@react-native-firebase/crashlytics@^16.0.0":
+  version "16.0.0"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/crashlytics/-/crashlytics-16.0.0.tgz#0e4214c22a56a67a917615abd06bea73b6100842"
+  integrity sha512-/QsNkye1mYi+2p1WPP7EwHtRw3wOVHqzlfGnEftYQMMrSVN63j8cMJ/tHR967O88Y9BJf1aDvNObj8I6SVxSiw==
   dependencies:
     "@expo/config-plugins" "^5.0.1"
     stacktrace-js "^2.0.0"
 
-"@react-native-firebase/messaging@^15.6.0":
-  version "15.6.0"
-  resolved "https://registry.yarnpkg.com/@react-native-firebase/messaging/-/messaging-15.6.0.tgz#94f178708384478f18d1940be1d3037deb3b608c"
-  integrity sha512-wm9LT6ndxbTenjIjPUJoF+qlo+rrKZCtF7D9vLLpUWY+w1QjCEhR2mlly5fxLrsOpkS2hgaB6NGEnxAmKurquQ==
+"@react-native-firebase/messaging@^16.0.0":
+  version "16.0.0"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/messaging/-/messaging-16.0.0.tgz#3001a3a5cc1964f6ca706081032825e3ebb72d32"
+  integrity sha512-Ohm943ZIpsW+E9Pt/dH75a3FSNyuaSl208oBVSVIWbTf3epm+vgv/ebShhPUM3uXy08iSweuT1byWtlF/d0S1Q==
 
 "@react-native-google-signin/google-signin@^7.0.4":
   version "7.0.4"
