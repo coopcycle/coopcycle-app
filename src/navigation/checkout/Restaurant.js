@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react'
+import React, { useEffect, useState, useCallback, useMemo } from 'react'
 import { Pressable, StyleSheet, View, useColorScheme } from 'react-native'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
@@ -28,8 +28,10 @@ import {
 } from '../../redux/Checkout/selectors';
 import TimingModal from './components/TimingModal';
 import BottomModal from '../../components/BottomModal';
-import OpeningHoursSpecification from '../../utils/OpeningHoursSpecification';
 import { isCartTimingValid } from '../../utils/time-slots';
+import DangerAlert from '../../components/DangerAlert';
+import moment from 'moment';
+import OpeningHoursSpecification from '../../utils/OpeningHoursSpecification';
 
 const LoadingPhantom = (props) =>
   <HStack w="95%" space={6} p="4">
@@ -49,7 +51,7 @@ function Restaurant(props) {
   const { navigate } = props.navigation
   const colorScheme = useColorScheme()
   const [ infoModal, setInfoModal ] = useState(false)
-  const { showFooter, httpClient, restaurant, cart, openingHoursSpecification } = props
+  const { showFooter, httpClient, restaurant, openingHoursSpecification, cartContainer, showTimingModal } = props
 
   useFocusEffect(
     useCallback(() => {
@@ -64,23 +66,28 @@ function Restaurant(props) {
     return await httpClient.get(restaurant.hasMenu, {}, { anonymous: true })
   })
 
+  const currentTimeSlot = useMemo(
+    () => openingHoursSpecification.currentTimeSlot,
+    [openingHoursSpecification]
+  )
+
   useEffect(() => {
-    if (!cart) {
+    if (!cartContainer?.cart) {
       return
     }
     if (
       !isCartTimingValid({
-        cart: props.cartContainer,
+        cart: cartContainer,
         openingHoursSpecification,
-        timeSlot: openingHoursSpecification.currentTimeSlot,
+        timeSlot: currentTimeSlot,
       })
     ) {
-      props.showTimingModal({
+      showTimingModal({
         displayed: true,
-        message: props.t('CHECKOUT_PICK_DATE'),
+        message: i18n.t('CHECKOUT_PICK_DATE'),
       })
     }
-  }, [cart])
+  }, [ cartContainer, currentTimeSlot, openingHoursSpecification, showTimingModal ])
 
   //TODO: improve failed view
   if (isError) {
@@ -96,12 +103,46 @@ function Restaurant(props) {
     borderColor: colorScheme === 'dark' ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.1)',
   }
 
+  function renderNotAvailableWarning() {
+    if (currentTimeSlot.state === OpeningHoursSpecification.STATE.Closed) {
+      return (
+        <DangerAlert
+          text={`${i18n.t('RESTAURANT_CLOSED_AND_NOT_AVAILABLE', {
+            datetime: moment(currentTimeSlot.timeSlot[0]).calendar(moment(), {
+              sameElse: 'llll',
+            }),
+          })}`}
+        />
+      )
+    }
+  }
+
+  function renderClosedNowWarning() {
+    if (
+      currentTimeSlot.state === OpeningHoursSpecification.STATE.Closed &&
+      !OpeningHoursSpecification.opensSoon(currentTimeSlot.timeSlot, 60)
+    ) {
+      return (
+        <DangerAlert
+          adjustsFontSizeToFit={true}
+          text={`${i18n.t('RESTAURANT_CLOSED_BUT_OPENS', {
+            datetime: moment(currentTimeSlot.timeSlot[0]).calendar(moment(), {
+              sameElse: 'llll',
+            }),
+          })}`}
+        />
+      )
+    }
+  }
+
   return (
     <View style={{ flex: 1 }}>
       <View style={{ flex: 1, paddingTop: 60 }}>
         <View style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: 60 }}>
           <GroupImageHeader image={ restaurant.image } text={restaurant.name} onInfo={() => setInfoModal(true)} />
         </View>
+        {renderNotAvailableWarning()}
+        {renderClosedNowWarning()}
         { isLoading && <Center w="100%">
           <LoadingPhantom color={'cyan.200'} />
           <LoadingPhantom color={'gray.200'} />
