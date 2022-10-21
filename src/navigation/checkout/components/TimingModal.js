@@ -113,20 +113,6 @@ class TimingModal extends Component{
   showModal = show => this.props.showTimingModal(show)
   setValue = value => this.setState({ value })
 
-  FulFillementButtons = () => <Button.Group isAttached colorScheme="orange" mx={{
-    base: 'auto',
-    md: 0,
-  }} size="sm">
-    <Button flex={1}
-            onPress={() => this.props.onFulfillmentMethodChange('delivery')}
-            variant={this.props.cartFulfillmentMethod === 'delivery' ? 'solid' : 'outline'}>
-      {this.props.t('FULFILLMENT_METHOD.delivery')}</Button>
-    <Button flex={1}
-            onPress={() => this.props.onFulfillmentMethodChange('collection')}
-            variant={this.props.cartFulfillmentMethod === 'collection' ? 'solid' : 'outline'}>
-      {this.props.t('FULFILLMENT_METHOD.collection')}</Button>
-  </Button.Group>
-
   componentDidUpdate(prevProps: Readonly<P>, prevState: Readonly<S>, snapshot: SS) {
     const timeSlot = this.props.openingHoursSpecification.currentTimeSlot
     const { showModal } = this
@@ -187,7 +173,20 @@ class TimingModal extends Component{
     >
       <Heading size={'sm'}>{this.props.t('CHECKOUT_SCHEDULE_ORDER')}</Heading>
       <Divider />
-      {this.props.fulfillmentMethods.length > 1 && this.FulFillementButtons()}
+      {this.props.fulfillmentMethods.length > 1 &&
+        <Button.Group isAttached colorScheme="orange" mx={{
+        base: 'auto',
+        md: 0,
+      }} size="sm">
+        <Button flex={1}
+                onPress={() => this.props.onFulfillmentMethodChange('delivery')}
+                variant={this.props.cartFulfillmentMethod === 'delivery' ? 'solid' : 'outline'}>
+          {this.props.t('FULFILLMENT_METHOD.delivery')}</Button>
+        <Button flex={1}
+                onPress={() => this.props.onFulfillmentMethodChange('collection')}
+                variant={this.props.cartFulfillmentMethod === 'collection' ? 'solid' : 'outline'}>
+          {this.props.t('FULFILLMENT_METHOD.collection')}</Button>
+      </Button.Group>}
       {this.props.message && <Text marginBottom={50}>{this.props.message}</Text>}
       {!this.props.message && <View marginBottom={30} />}
       <TimingCartSelect cart={this.props.cart}
