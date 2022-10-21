@@ -22,6 +22,14 @@ const TimingCartSelect = ({ cart: { cart, token }, httpClient, onValueChange, ca
     return await httpClient.get(`${cart['@id']}/timing`)
   })
 
+  const [ selectedDay, setSelectedDay ] = useState(0)
+  const [ selectedRange, setSelectedRange ] = useState(0)
+
+  useEffect(() => {
+    setSelectedRange(0)
+    setSelectedDay(0)
+  }, [cartFulfillmentMethod])
+
   const values = useMemo(() => {
     if (!isSuccess)
       {return null}
@@ -38,14 +46,31 @@ const TimingCartSelect = ({ cart: { cart, token }, httpClient, onValueChange, ca
       }, [])
   }, [ data, isSuccess ])
 
-  const [ selectedDay, setSelectedDay ] = useState(0)
-  const [ selectedRange, setSelectedRange ] = useState(0)
-
   useEffect(() => {
-    if (isSuccess) {
-      onValueChange(values[selectedDay].values[selectedRange].value)
-    }
-  }, [ selectedDay, selectedRange, values, isSuccess ])
+    if (!isSuccess)
+    {return}
+    if (values.length < selectedDay)
+    {return}
+
+    onValueChange(values[selectedDay].values[selectedRange].value)
+  }, [ selectedDay, selectedRange, values, isSuccess, onValueChange ])
+
+  const dayItems = useMemo(() => {
+    return isSuccess && values.map((day, index) =>
+      <Picker.Item value={index} label={day.day.format('ddd DD MMMM')} key={index} />
+    )
+  }, [ isSuccess, values ])
+
+  const slotItems = useMemo(() => {
+    if (!isSuccess)
+    {return null}
+    if (values.length < selectedDay)
+    {return null}
+
+    return values[selectedDay].values.map((range, index) =>
+      <Picker.Item value={index} label={range.label} key={index} />
+    )
+  }, [ isSuccess, selectedDay, values ])
 
   return <HStack justifyContent={'space-around'} alignItems={'center'} space={isSuccess ? 0 : 4}>
       <Skeleton flex={1} isLoaded={isSuccess} rounded={2}>
@@ -53,13 +78,11 @@ const TimingCartSelect = ({ cart: { cart, token }, httpClient, onValueChange, ca
         <Picker style={{ height: 50 }}
               selectedValue={selectedDay}
               onValueChange={(v) => {
-                setSelectedDay(v)
                 setSelectedRange(0)
+                setSelectedDay(v)
               }}
       >
-          {isSuccess && values.map((day, index) =>
-            <Picker.Item value={index} label={day.day.format('ddd DD MMMM')} key={index} />
-          )}
+          {dayItems}
         </Picker></View></Skeleton>
       <Skeleton flex={1} isLoaded={isSuccess} rounded={2}>
       <View flex={1}>
@@ -67,9 +90,7 @@ const TimingCartSelect = ({ cart: { cart, token }, httpClient, onValueChange, ca
               selectedValue={selectedRange}
               onValueChange={setSelectedRange}
       >
-          {isSuccess && values[selectedDay].values.map((range, index) =>
-            <Picker.Item value={index} label={range.label} key={index} />
-          )}
+          {slotItems}
         </Picker></View></Skeleton>
   </HStack>
 }
@@ -88,7 +109,9 @@ class TimingModal extends Component{
       valid: true,
     }
   }
+
   showModal = show => this.props.showTimingModal(show)
+  setValue = value => this.setState({ value })
 
   FulFillementButtons = () => <Button.Group isAttached colorScheme="orange" mx={{
     base: 'auto',
@@ -170,7 +193,7 @@ class TimingModal extends Component{
       <TimingCartSelect cart={this.props.cart}
                         cartFulfillmentMethod={this.props.cartFulfillmentMethod}
                      httpClient={this.props.httpClient}
-                     onValueChange={(value) => this.setState({ value })}
+                     onValueChange={this.setValue}
       />
         <Button flex={4} colorScheme={'orange'}
               onPress={() => this.props.onSchedule({
