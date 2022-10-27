@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Animated, Dimensions, FlatList, InteractionManager, StyleSheet, TouchableOpacity, View } from 'react-native'
-import { Center, Icon, Pressable, Text } from 'native-base';
+import { Center, HStack, Icon, Pressable, Text } from 'native-base';
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 import _ from 'lodash'
@@ -15,7 +15,9 @@ import {
   incrementItem,
   removeItem,
   setAddress,
-  setDate, setFulfillmentMethod,
+  setDate,
+  setFulfillmentMethod,
+  setTip,
   showAddressModal,
   showTimingModal,
   updateCart,
@@ -24,7 +26,8 @@ import {
 import {
   selectCart,
   selectCartFulfillmentMethod,
-  selectDeliveryTotal, selectFulfillmentMethods,
+  selectDeliveryTotal,
+  selectFulfillmentMethods,
   selectShippingTimeRangeLabel,
 } from '../../redux/Checkout/selectors'
 import { selectIsAuthenticated } from '../../redux/App/selectors'
@@ -35,6 +38,7 @@ import { primaryColor } from '../../styles/common';
 import Tips from './components/Tips';
 import TimingModal from './components/TimingModal';
 import { isCartTimingValid } from '../../utils/time-slots';
+import BottomModal from '../../components/BottomModal';
 
 const BottomLine = ({ label, value }) => (
   <View style={ styles.line }>
@@ -85,6 +89,7 @@ class Summary extends Component {
       isCouponModalVisible: false,
       isCollectionDisclaimerModalVisible: false,
       disabled: false,
+      showTipModal: false,
     }
   }
 
@@ -252,6 +257,8 @@ class Summary extends Component {
       return this.renderEmpty()
     }
 
+    const tipAmount = cart.adjustments.tip[0]?.amount || 0
+
     const deliveryPromotions = cart.adjustments.delivery_promotion || []
     const orderPromotions = cart.adjustments.order_promotion || []
     const tip = cart.adjustments.tip || []
@@ -273,7 +280,6 @@ class Summary extends Component {
         <View style={{ flex: 1, paddingTop: 30 }}>
           { this.renderItems() }
         </View>
-        <Tips order={cart} />
         <View style={{ flex: 0 }}>
           { this.props.fulfillmentMethod === 'collection' && (
           <TouchableOpacity style={ [styles.btn]  }
@@ -300,11 +306,17 @@ class Summary extends Component {
             <Text note style={{ flex: 1, textAlign: 'right' }}>{ this.props.t('EDIT') }</Text>
           </ActionButton>
           )}
-          <ActionButton
+          <HStack><View flex={1} style={styles.rightBorder} >
+            <ActionButton
+            onPress={ () => this.setState({ showTipModal: true }) }
+            iconName="heart">
+            <Text style={{ flex: 2, fontSize: 14 }}>{this.props.t('TIP')}: {formatPrice(tipAmount , { mantissa:0 })}</Text>
+          </ActionButton></View>
+            <View flex={1}><ActionButton
             onPress={ () => this.setState({ isCouponModalVisible: true }) }
             iconName="tag">
             <Text note style={{ flex: 1, textAlign: 'right' }}>{ this.props.t('ADD_COUPON') }</Text>
-          </ActionButton>
+          </ActionButton></View></HStack>
           { reusablePackagingAction && (
           <ActionButton
             onPress={ () => this.toggleReusablePackaging() }
@@ -354,6 +366,13 @@ class Summary extends Component {
                        }
                      }}
         />
+        <BottomModal isVisible={this.state.showTipModal}
+                     onBackdropPress={() => this.setState({ showTipModal: false })}
+                     onBackButtonPress={() => this.setState({ showTipModal: false })}
+        ><Tips value={tipAmount} onTip={(amount) => {
+          this.props.setTip(cart, amount)
+          this.setState({ showTipModal: false })
+        }} /></BottomModal>
       </View>
     );
   }
@@ -369,6 +388,10 @@ const styles = StyleSheet.create({
   btnGrey: {
     borderTopColor: '#d7d7d7',
     borderTopWidth: StyleSheet.hairlineWidth,
+  },
+  rightBorder: {
+    borderRightColor: '#d7d7d7',
+    borderRightWidth: StyleSheet.hairlineWidth,
   },
   line: {
     flexDirection: 'row',
@@ -433,6 +456,7 @@ function mapDispatchToProps(dispatch) {
     setDate: (date, cb) => dispatch(setDate(date, cb)),
     setFulfillmentMethod: method => dispatch(setFulfillmentMethod(method)),
     showTimingModal: show => dispatch(showTimingModal(show)),
+    setTip: (order, tipAmout) => dispatch(setTip(order, tipAmout)),
   }
 }
 
