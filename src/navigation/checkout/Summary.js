@@ -97,7 +97,10 @@ class Summary extends Component {
   componentDidUpdate(prevProps) {
     if (this.props.shippingTimeError !== prevProps.shippingTimeError
       && this.props.shippingTimeError) {
-      this.props.showTimingModal(true)
+      this.props.showTimingModal({
+        displayed: true,
+        message: this.props.t('CHECKOUT_PICK_DATE'),
+      })
     }
     if (this.props.edit !== prevProps.edit) {
       Animated.timing(
