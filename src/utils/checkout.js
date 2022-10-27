@@ -1,6 +1,5 @@
 import moment from 'moment'
 import i18n from '../i18n'
-import _ from 'lodash';
 
 const DIFF_REGEXP = /^(?<min>[0-9]+) - (?<max>[0-9]+)$/
 
@@ -71,81 +70,4 @@ export function shouldShowPreOrder(restaurant) {
   }
 
   return false
-}
-
-
-export function selectFulfillmentMethods(restaurant) {
-
-    if (restaurant && restaurant.fulfillmentMethods && Array.isArray(restaurant.fulfillmentMethods)) {
-      const enabled = _.filter(restaurant.fulfillmentMethods, fm => fm.enabled)
-      return _.map(enabled, fm => fm.type)
-    }
-
-    return []
-  }
-
-
-export function selectIsDeliveryEnabled(restaurant) {
-  return _.includes(selectFulfillmentMethods(restaurant), 'delivery')
-}
-
-export function selectIsCollectionEnabled(restaurant) {
-  return _.includes(selectFulfillmentMethods(restaurant), 'collection')
-}
-
-export function selectCartFulfillmentMethod(restaurant, cart) {
-
-    const isDeliveryEnabled = selectIsDeliveryEnabled(restaurant)
-    const isCollectionEnabled = selectIsCollectionEnabled(restaurant)
-
-    if (!cart) {
-      return 'delivery'
-    }
-
-    if (cart.fulfillmentMethod) {
-      return cart.fulfillmentMethod
-    }
-
-    if (isDeliveryEnabled && isCollectionEnabled) {
-      return 'delivery'
-    }
-
-    if (isCollectionEnabled && !isDeliveryEnabled) {
-      return 'collection'
-    }
-
-    return 'delivery'
-}
-
-export function selectShippingTimeRangeLabel(restaurant, cart){
-
-  const fulfillmentMethod = selectCartFulfillmentMethod(restaurant, cart)
-  const timing = restaurant.timing[fulfillmentMethod]
-
-    if (_.size(timing) === 0 || !cart) {
-      return i18n.t('LOADING')
-    }
-
-    if (!timing.range || !Array.isArray(timing.range)) {
-      return i18n.t('NOT_AVAILABLE_ATM')
-    }
-
-    if (!cart.shippingTimeRange) {
-
-      if (timing.today && timing.fast) {
-        return i18n.t(`CART_${fulfillmentMethod.toUpperCase()}_TIME_DIFF`, { diff: timing.diff })
-      }
-
-      let fromNow = moment
-        .parseZone(timing.range[0])
-        .calendar(null, { sameElse: 'LLLL' }).toLowerCase()
-
-      return i18n.t(`CART_${fulfillmentMethod.toUpperCase()}_TIME`, { fromNow })
-    }
-
-    let fromNow = moment
-      .parseZone(cart.shippingTimeRange[0])
-      .calendar(null, { sameElse: 'LLLL' }).toLowerCase()
-
-    return i18n.t(`CART_${fulfillmentMethod.toUpperCase()}_TIME`, { fromNow })
 }

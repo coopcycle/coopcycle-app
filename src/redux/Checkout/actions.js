@@ -5,7 +5,7 @@ import { createPaymentMethod, handleCardAction } from '@stripe/stripe-react-nati
 
 import NavigationHolder from '../../NavigationHolder'
 import i18n from '../../i18n'
-import { selectCartFulfillmentMethod, selectBillingEmail } from './selectors'
+import { selectCart, selectCartFulfillmentMethod, selectBillingEmail } from './selectors'
 import { selectIsAuthenticated, selectUser } from '../App/selectors'
 import { loadAddressesSuccess, updateOrderSuccess } from '../Account/actions'
 import { isFree } from '../../utils/order'
@@ -71,6 +71,8 @@ export const LOAD_PAYMENT_DETAILS_FAILURE = '@checkout/LOAD_PAYMENT_DETAILS_FAIL
 
 export const UPDATE_CUSTOMER_GUEST = '@checkout/UPDATE_CUSTOMER_GUEST'
 
+export const SHOW_TIMING_MODAL = '@checkout/SHOW_TIMING_MODAL'
+
 
 export const HIDE_MULTIPLE_SERVERS_IN_SAME_CITY_MODAL = '@checkout/HIDE_MULTIPLE_SERVERS_IN_SAME_CITY_MODAL'
 
@@ -130,6 +132,8 @@ export const loadPaymentMethodsFailure = createAction(LOAD_PAYMENT_METHODS_FAILU
 export const loadPaymentDetailsRequest = createAction(LOAD_PAYMENT_DETAILS_REQUEST)
 export const loadPaymentDetailsSuccess = createAction(LOAD_PAYMENT_DETAILS_SUCCESS)
 export const loadPaymentDetailsFailure = createAction(LOAD_PAYMENT_DETAILS_FAILURE)
+
+export const showTimingModal = createAction(SHOW_TIMING_MODAL)
 
 export const hideMultipleServersInSameCityModal = createAction(HIDE_MULTIPLE_SERVERS_IN_SAME_CITY_MODAL)
 
@@ -931,13 +935,12 @@ export function updateCart(payload, cb) {
 }
 
 // FEAT: add a way to precise id
-export function setDate(shippingTimeRange, cart, cb) {
+export function setDate(shippingTimeRange, cb) {
 
   return (dispatch, getState) => {
 
+    const { cart } = selectCart(getState())
     const httpClient = createHttpClient(getState())
-
-    //const { cart } = getState().checkout
 
     dispatch(checkoutRequest())
 
@@ -981,16 +984,15 @@ export function setDateAsap(cart, cb) {
   }
 }
 
-export function setFulfillmentMethod(method, cart) {
+export function setFulfillmentMethod(method) {
 
   return (dispatch, getState) => {
 
-    const { address, carts } = getState().checkout
+    const { address } = getState().checkout
+    const { cart, token } = selectCart(getState())
 
     //dispatch(checkoutRequest())
-    console.log(method, cart)
-    console.log(carts[cart.restaurant].token)
-    dispatch(setToken(carts[cart.restaurant].token))
+    dispatch(setToken(token))
 
     const httpClient = createHttpClient(getState())
 
@@ -1035,8 +1037,7 @@ export function loadPaymentMethods(method) {
   return (dispatch, getState) => {
 
 
-    const { restaurant } = getState().checkout
-    const { cart, token } = getState().checkout.carts[restaurant]
+    const { cart } = selectCart(getState())
 
     const httpClient = createHttpClient(getState())
 
@@ -1053,9 +1054,7 @@ export function checkoutWithCash() {
 
   return (dispatch, getState) => {
 
-
-    const { restaurant } = getState().checkout
-    const { cart, token } = getState().checkout.carts[restaurant]
+    const { cart } = selectCart(getState())
     const httpClient = createHttpClient(getState())
 
     dispatch(checkoutRequest())
@@ -1071,8 +1070,7 @@ export function loadPaymentDetails() {
 
   return (dispatch, getState) => {
 
-    const { restaurant } = getState().checkout
-    const { cart, token } = getState().checkout.carts[restaurant]
+    const { cart } = selectCart(getState())
     const httpClient = createHttpClient(getState())
 
 

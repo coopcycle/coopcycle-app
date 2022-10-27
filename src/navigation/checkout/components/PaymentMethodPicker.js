@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, TouchableOpacity, View } from 'react-native'
+import { Pressable, StyleSheet, TouchableOpacity, View } from 'react-native'
 import { useTranslation } from 'react-i18next'
 import { Icon, Text, useColorMode } from 'native-base'
 import Foundation from 'react-native-vector-icons/Foundation'
@@ -26,7 +26,7 @@ const icons = {
   cash_on_delivery: 'dollar-bill',
 }
 
-const PaymentMethodPicker = ({ methods, onSelect }) => {
+const PaymentMethodPicker = ({ methods, onSelect, disabled }) => {
 
   const { t } = useTranslation()
   const { colorMode } = useColorMode()
@@ -36,12 +36,12 @@ const PaymentMethodPicker = ({ methods, onSelect }) => {
       <Text style={ styles.heading }>{ t('SELECT_PAYMENT_METHOD') }</Text>
       <View>
         { methods.map(method => (
-          <TouchableOpacity key={ method.type }
+          <Pressable disabled={disabled} key={ method.type }
             style={ [ styles.button, { backgroundColor: colorMode === 'dark' ? '#3f3f3f' : '#f7f7f7' }] }
             onPress={ () => onSelect(method.type) }>
             <Icon as={Foundation} name={ icons[method.type] } style={ styles.buttonIcon } />
             <Text>{ t(`PAYMENT_METHOD.${method.type}`) }</Text>
-          </TouchableOpacity>
+          </Pressable>
         )) }
       </View>
     </View>
