@@ -63,7 +63,21 @@ Upload a previously built version to the Google Play
 
 Generate icons
 
-----
+### android rename_app
+
+```sh
+[bundle exec] fastlane android rename_app
+```
+
+Rename app
+
+### android deployNaofoodInternal
+
+```sh
+[bundle exec] fastlane android deployNaofoodInternal
+```
+
+Deploy a new version of Naofood to the Google Play Internal test
 
 This README.md is auto-generated and will be re-generated every time [_fastlane_](https://fastlane.tools) is run.
 
