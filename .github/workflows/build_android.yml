@@ -1,0 +1,17 @@
+name: Build Android
+on: [workflow_dispatch]
+jobs:
+  default:
+    if: false
+    name: Build default app
+    uses: ./.github/workflows/fastlane_android.yml
+    secrets: inherit
+  naofood:
+    name: Build Naofood app
+    uses: ./.github/workflows/fastlane_android.yml
+    with:
+      instance: naofood
+      instance_url: https://naofood.coopcycle.org
+      primary_color: "#f8781f"
+      checkout_search_enabled: '1'
+    secrets: inherit

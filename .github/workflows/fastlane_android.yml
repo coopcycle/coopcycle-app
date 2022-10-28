@@ -1,0 +1,60 @@
+name: Fastlane Android
+on:
+  workflow_call:
+    inputs:
+      instance:
+        type: string
+        required: false
+      instance_url:
+        type: string
+        required: false
+        default: ""
+      app_name:
+        type: string
+        required: false
+      primary_color:
+        type: string
+        required: false
+        default: ""
+      checkout_search_enabled:
+        type: string
+        required: false
+        default: "0"
+jobs:
+  FASTLANE:
+    name: Release Android app with Fastlane
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '16.x'
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.1'
+      - name: Create .env file
+        env:
+          SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+          GOOGLE_MAPS_BROWSER_KEY: ${{ secrets.GOOGLE_MAPS_BROWSER_KEY }}
+          GOOGLE_MAPS_ANDROID_KEY: ${{ secrets.GOOGLE_MAPS_ANDROID_KEY }}
+          TRANSISTORSOFT_LICENSE_KEY: ${{ secrets.TRANSISTORSOFT_LICENSE_KEY }}
+          FACEBOOK_APP_ID: ${{ secrets.FACEBOOK_APP_ID }}
+          GOOGLE_SIGN_IN_CLIENT_ID: ${{ secrets.GOOGLE_SIGN_IN_CLIENT_ID }}
+          DEFAULT_SERVER: ${{ inputs.instance_url }}
+          PRIMARY_COLOR: ${{ inputs.primary_color }}
+          CHECKOUT_SEARCH_ENABLED: ${{ inputs.checkout_search_enabled }}
+        run: |
+          touch .env
+          echo COUNTLY_SERVER_URL= >> .env
+          echo COUNTLY_APP_KEY= >> .env
+          echo COUNTLY_SALT= >> .env
+          echo SENTRY_DSN="$SENTRY_DSN" >> .env
+          echo GOOGLE_MAPS_BROWSER_KEY="$GOOGLE_MAPS_BROWSER_KEY" >> .env
+          echo GOOGLE_MAPS_ANDROID_KEY="$GOOGLE_MAPS_ANDROID_KEY" >> .env
+          echo TRANSISTORSOFT_LICENSE_KEY="$TRANSISTORSOFT_LICENSE_KEY" >> .env
+          echo FACEBOOK_APP_ID="$FACEBOOK_APP_ID" >> .env
+          echo FACEBOOK_CLIENT_TOKEN= >> .env
+          echo GOOGLE_SIGN_IN_CLIENT_ID="$GOOGLE_SIGN_IN_CLIENT_ID" >> .env
+          echo DEFAULT_SERVER="$DEFAULT_SERVER" >> .env
+          echo PRIMARY_COLOR="$PRIMARY_COLOR" >> .env
+          echo CHECKOUT_SEARCH_ENABLED="$CHECKOUT_SEARCH_ENABLED" >> .env
