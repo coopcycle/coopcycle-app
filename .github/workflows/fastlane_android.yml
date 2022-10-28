@@ -58,3 +58,27 @@ jobs:
           echo DEFAULT_SERVER="$DEFAULT_SERVER" >> .env
           echo PRIMARY_COLOR="$PRIMARY_COLOR" >> .env
           echo CHECKOUT_SEARCH_ENABLED="$CHECKOUT_SEARCH_ENABLED" >> .env
+      - name: Decode sentry.properties file
+        uses: timheuer/base64-to-file@v1.1
+        with:
+          fileDir: "./android/"
+          fileName: "sentry.properties"
+          encodedString: ${{ secrets.SENTRY_PROPERTIES_BASE64 }}
+      - name: Decode Android keystore file
+        uses: timheuer/base64-to-file@v1.1
+        id: android_keystore
+        with:
+          fileName: "android_keystore.kjs"
+          encodedString: ${{ secrets.SIGNING_STORE_FILE_BASE64 }}
+      - name: Decode google-services.json file
+        uses: timheuer/base64-to-file@v1.1
+        with:
+          fileDir: "./android/app/"
+          fileName: "google-services.json"
+          encodedString: ${{ secrets.GOOGLE_SERVICES_JSON_BASE64 }}
+      - name: Decode play-store-credentials.json file
+        uses: timheuer/base64-to-file@v1.1
+        id: android_play_store_credentials
+        with:
+          fileName: "play-store-credentials.json"
+          encodedString: ${{ secrets.GOOGLE_JSON_KEY_FILE_BASE64 }}
