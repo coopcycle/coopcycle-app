@@ -45,8 +45,8 @@ function RestaurantSearch(props) {
       <TouchableNativeFeedback onPress={() => {
         navigation.navigate('AccountAddresses', { action: 'search' })
       }}>
-        <Center>
-          <Text fontSize={'md'} style={{
+        <Center px="2">
+          <Text fontSize={'md'} numberOfLines={ 1 } style={{
             color: whiteColor,
           }}>{ props.defaultValue?.streetAddress }</Text>
           <ChevronDownIcon color={ whiteColor }/>
