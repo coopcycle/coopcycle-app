@@ -9,7 +9,7 @@ let dependencies = {
   },
 };
 
-if (process.env.DEFAULT_SERVER !== '') {
+if (!!process.env.DEFAULT_SERVER) {
   // We disable react-native-background-geolocation auto-linking for custom apps
   dependencies = Object.assign(dependencies, {
     'react-native-background-geolocation': {
