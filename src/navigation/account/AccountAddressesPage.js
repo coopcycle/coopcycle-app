@@ -70,7 +70,7 @@ class AccountAddressesPage extends Component {
           <Divider/>
           <Heading margin={3}>{ i18n.t('MY_ADDRESSES') }</Heading>
         <FlatList
-          keyExtractor={ (item) => item['@id'] }
+          keyExtractor={ (item, index) => `address-${index}` }
           data={ addresses }
           refreshing={this.state.refreshing}
           onRefresh={async () => {
