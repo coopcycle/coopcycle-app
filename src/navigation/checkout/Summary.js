@@ -90,6 +90,7 @@ class Summary extends Component {
       isCollectionDisclaimerModalVisible: false,
       disabled: false,
       showTipModal: false,
+      modalSkipped: false,
     }
   }
 
@@ -251,6 +252,7 @@ class Summary extends Component {
   render() {
 
     const { cart, restaurant } = this.props
+    const { modalSkipped } = this.state
 
     if (!cart || cart.items.length === 0) {
 
@@ -351,6 +353,7 @@ class Summary extends Component {
                      fulfillmentMethods={this.props.fulfillmentMethods}
                      cartFulfillmentMethod={this.props.fulfillmentMethod}
                      onFulfillmentMethodChange={this.props.setFulfillmentMethod}
+                     onSkip={() => this.setState({ modalSkipped: true })}
                      cart={this.props.cartContainer}
                      onSchedule={({ value, showModal }) =>
                        this.props.setDate(value, () => {
@@ -358,7 +361,8 @@ class Summary extends Component {
                          showModal(false)
                        })}
                      onRefresh={({ showModal, cart, openingHoursSpecification, timeSlot }) => {
-                       if (!isCartTimingValid({ cart, openingHoursSpecification, timeSlot })) {
+                       if (!isCartTimingValid({ cart, openingHoursSpecification, timeSlot })
+                            && !modalSkipped) {
                          showModal({
                            displayed: true,
                            message: this.props.t('CHECKOUT_PICK_DATE'),
