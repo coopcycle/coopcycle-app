@@ -15,6 +15,7 @@ import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { selectIsAuthenticated } from '../../redux/App/selectors';
 import CartsBadge from '../checkout/components/CartsBadge';
 import Config from 'react-native-config';
+import AccountNavigator from './AccountNavigator';
 
 const OrderStack = createStackNavigator()
 
@@ -61,7 +62,9 @@ function getNestedOptions(navigation, route) {
         },
       };
     case 'Account':
-      return {};
+      return {
+        headerShown: false,
+      };
     default:
       return {};
   }
@@ -92,7 +95,7 @@ function Tabs({ rootNavigation: navigation }) {
       }} component={screens.Carts} />
       <Tab.Screen name="Account" options={{
         tabBarIcon: ({ color, size }) => <Icon as={FontAwesome5} name="user-alt" size={size} color={color} />,
-      }} component={screens.AccountHome} />
+      }} component={AccountNavigator} />
     </Tab.Navigator>
   );
 }

@@ -49,14 +49,14 @@ class AccountHome extends Component {
       },
       {
         label: this.props.t('ORDERS'),
-        onPress: () => navigate('AccountOrdersList'),
+        onPress: () => navigate('AccountOrders'),
       },
       {
         label: this.props.t('DELETE_ACCOUNT'),
         onPress: () => this.setState({ isModalVisible: true }),
         textProps: {
           color: 'danger.700',
-        }
+        },
       },
     ]
 
