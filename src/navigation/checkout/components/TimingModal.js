@@ -168,8 +168,14 @@ class TimingModal extends Component{
   />
     {this.props.modalEnabled && <BottomModal
       isVisible={this.props.timingModal}
-      onBackdropPress={() => this.showModal(false)}
-      onBackButtonPress={() => this.showModal(false)}
+      onBackdropPress={() => {
+        this.showModal(false)
+        this.props.onSkip()
+      }}
+      onBackButtonPress={() => {
+        this.showModal(false)
+        this.props.onSkip()
+      }}
     >
       <Heading size={'sm'}>{this.props.t('CHECKOUT_SCHEDULE_ORDER')}</Heading>
       <Divider />
@@ -201,7 +207,10 @@ class TimingModal extends Component{
               })}
       >{this.props.t('SCHEDULE')}</Button>
       <Button colorScheme={'orange'} variant={'subtle'}
-              onPress={() => this.showModal(false)}
+              onPress={() => {
+                this.showModal(false)
+                this.props.onSkip()
+              }}
       >{this.props.t('IGNORE')}</Button>
     </BottomModal>}
     </>
@@ -219,6 +228,7 @@ TimingModal.defaultProps = {
   onOpen: () => {},
   onSchedule: () => {},
   onRefresh: () => {},
+  onSkip: () => {},
 }
 
 
@@ -235,6 +245,7 @@ TimingModal.propTypes = {
   onOpen: PropTypes.func,
   onSchedule: PropTypes.func,
   onRefresh: PropTypes.func,
+  onSkip: PropTypes.func,
 }
 
 function mapStateToProps(state) {
