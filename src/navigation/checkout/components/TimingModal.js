@@ -163,7 +163,7 @@ class TimingModal extends Component{
 
   render = () => <>
     <FocusHandler
-    onFocus={() => setInterval(() => this.refreshState(), 15_000)}
+    onFocus={() => setInterval(() => this.refreshState(), 15000)}
     onBlur={data => clearInterval(data)}
   />
     {this.props.modalEnabled && <BottomModal
