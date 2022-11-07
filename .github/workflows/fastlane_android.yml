@@ -16,6 +16,10 @@ on:
         type: string
         required: false
         default: ""
+      package_name:
+        type: string
+        required: false
+        default: ""
       checkout_search_enabled:
         type: string
         required: false
@@ -82,3 +86,21 @@ jobs:
         with:
           fileName: "play-store-credentials.json"
           encodedString: ${{ secrets.GOOGLE_JSON_KEY_FILE_BASE64 }}
+      - name: Install RubyGems
+        working-directory: android/
+        run: bundle install
+      - run: yarn install
+      - name: Generate icons
+        if: ${{ inputs.instance != '' }}
+        working-directory: android/
+        run: bundle exec fastlane generate_icons
+        env:
+          APPICON_IMAGE_FILE: "fastlane/metadata-${{ inputs.instance }}/app_icon.png"
+      - name: Rename app
+        if: ${{ inputs.app_name != '' }}
+        working-directory: android/
+        run: bundle exec fastlane rename_app
+        env:
+          COOPCYCLE_APP_NAME: ${{ inputs.app_name }}
+          COOPCYCLE_PACKAGE_NAME: ${{ inputs.package_name }}
+      - run: git status

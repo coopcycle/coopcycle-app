@@ -12,6 +12,8 @@ jobs:
     with:
       instance: naofood
       instance_url: https://naofood.coopcycle.org
+      app_name: Naofood
       primary_color: "#f8781f"
+      package_name: fr.naofood.client
       checkout_search_enabled: '1'
     secrets: inherit
