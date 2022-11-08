@@ -1,10 +1,9 @@
-import React, { useState, useCallback } from 'react'
-import { Dimensions, Pressable, StyleSheet, View, useColorScheme } from 'react-native'
+import React, { useEffect, useState, useCallback } from 'react'
+import { Pressable, StyleSheet, View, useColorScheme } from 'react-native'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
-import { Box, Button, Center, HStack, Heading, Icon, ScrollView, Skeleton, Text, VStack } from 'native-base';
+import { Box, Center, HStack, Heading, Icon, Skeleton, Text, Toast, VStack } from 'native-base';
 import _ from 'lodash'
-import moment from 'moment'
 import { useFocusEffect } from '@react-navigation/native'
 import Smartlook from 'react-native-smartlook-analytics'
 
@@ -13,99 +12,38 @@ import ExpiredSessionModal from './components/ExpiredSessionModal'
 
 import Menu from '../../components/Menu'
 
-import { hideAddressModal, setAddress } from '../../redux/Checkout/actions'
-import DangerAlert from '../../components/DangerAlert';
-import { shouldShowPreOrder } from '../../utils/checkout'
+import { setDate, showTimingModal } from '../../redux/Checkout/actions'
 import { useQuery } from 'react-query';
 import i18n from '../../i18n';
 import GroupImageHeader from './components/GroupImageHeader';
 import OpeningHours from './components/OpeningHours';
-import Modal from 'react-native-modal';
 import { phonecall } from 'react-native-communications';
 import AddressUtils from '../../utils/Address';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { selectCart } from '../../redux/Checkout/selectors';
+import { selectCart, selectRestaurant } from '../../redux/Checkout/selectors';
+import TimingModal from './components/TimingModal';
+import BottomModal from '../../components/BottomModal';
+import OpeningHoursSpecification from '../../utils/OpeningHoursSpecification';
 
-// Fix: key prop warning
-// https://github.com/GeekyAnts/NativeBase/issues/4473
-const LoadingPhantom = () => <Center w="100%">
-  <HStack w="95%" space={8} p="4">
-    <VStack flex="3" space="4">
+const LoadingPhantom = (props) =>
+  <HStack w="95%" space={6} p="4">
+    <VStack flex="3" space="3">
       <Skeleton flex={1} />
-      <Skeleton.Text flex={1} noOfLines={2} lineHeight={2} />
-      <HStack space="2" alignItems="center">
+      <Skeleton.Text flex={1} lines={2} />
+      <HStack flex={1} space="2" alignItems="center">
         <Skeleton size="4" rounded="full" />
         <Skeleton h="3" flex="2" rounded="full" />
-        <Skeleton h="3" flex="1" rounded="full" startColor="cyan.300" />
+        <Skeleton h="3" flex="1" rounded="full" startColor={props.color} />
       </HStack>
     </VStack>
     <Skeleton flex="1" h="100" w="100" rounded="md" />
   </HStack>
-  <HStack w="95%" space={8} p="4">
-    <VStack flex="3" space="4">
-      <Skeleton flex={1} />
-      <Skeleton.Text flex={1} noOfLines={2} lineHeight={2} />
-      <HStack space="2" alignItems="center">
-        <Skeleton size="4" rounded="full" />
-        <Skeleton h="3" flex="2" rounded="full" />
-        <Skeleton h="3" flex="1" rounded="full" />
-      </HStack>
-    </VStack>
-    <Skeleton flex="1" h="100" w="100" rounded="md" />
-  </HStack>
-  <HStack w="95%" space={8} p="4">
-    <VStack flex="3" space="4">
-      <Skeleton flex={1} />
-      <Skeleton.Text flex={1} noOfLines={2} lineHeight={2} />
-      <HStack space="2" alignItems="center">
-        <Skeleton size="4" rounded="full" />
-        <Skeleton h="3" flex="2" rounded="full" />
-        <Skeleton h="3" flex="1" rounded="full" startColor="amber.300" />
-      </HStack>
-    </VStack>
-    <Skeleton flex="1" h="100" w="100" rounded="md" />
-  </HStack>
-</Center>
-
-function hasValidTiming(timing) {
-  return timing !== null && timing.range[0] !== timing.range[1]
-}
-
-function renderNotAvailableWarning(restaurant, isAvailable) {
-  if (isAvailable) {
-    return (
-      <DangerAlert
-        text={`${i18n.t('RESTAURANT_CLOSED_AND_NOT_AVAILABLE', {
-          datetime: moment(restaurant.nextOpeningDate).calendar(moment(), {
-            sameElse: 'llll',
-          }),
-        })}`}
-      />
-    )
-  }
-}
-
-function renderClosedNowWarning(restaurant, isAvailable) {
-  if (isAvailable && shouldShowPreOrder(restaurant) && restaurant.nextOpeningDate) {
-    return (
-      <DangerAlert
-        adjustsFontSizeToFit={true}
-        text={`${i18n.t('RESTAURANT_CLOSED_BUT_OPENS', {
-          datetime: moment(restaurant.nextOpeningDate).calendar(moment(), {
-            sameElse: 'llll',
-          }),
-        })}`}
-      />
-    )
-  }
-}
 
 function Restaurant(props) {
   const { navigate } = props.navigation
-  const { height } = Dimensions.get('window')
   const colorScheme = useColorScheme()
   const [ infoModal, setInfoModal ] = useState(false)
-  const { showFooter, httpClient, restaurant } = props
+  const { showFooter, httpClient, restaurant, cart, openingHoursSpecification } = props
 
   useFocusEffect(
     useCallback(() => {
@@ -116,20 +54,30 @@ function Restaurant(props) {
     }, [])
   );
 
-  const nextOpeningDateCheck = _.has(restaurant, 'nextOpeningDate')
-  const isAvailable = (hasValidTiming(restaurant.timing.collection)) ||
-  hasValidTiming(restaurant.timing.delivery)
-
   const { isLoading, isError, data } = useQuery([ 'menus', restaurant.hasMenu ], async () => {
     return await httpClient.get(restaurant.hasMenu, {}, { anonymous: true })
   })
+
+  useEffect(() => {
+    if (!cart) {
+      return
+    }
+    if (
+      openingHoursSpecification.currentTimeSlot.state === OpeningHoursSpecification.STATE.Closed &&
+      cart?.shippedAt === null
+    ) {
+      props.showTimingModal({
+        displayed: true,
+        message: props.t('CHECKOUT_PICK_DATE'),
+      })
+    }
+  }, [cart])
 
   //TODO: improve failed view
   if (isError) {
     return <Center w="95%">
       <Heading>{i18n.t('AN_ERROR_OCCURRED')} </Heading>
       <Text>{i18n.t('TRY_LATER')}</Text>
-      <Button>{i18n.t('RETRY')}</Button>
     </Center>
   }
 
@@ -145,9 +93,11 @@ function Restaurant(props) {
         <View style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: 60 }}>
           <GroupImageHeader image={ restaurant.image } text={restaurant.name} onInfo={() => setInfoModal(true)} />
         </View>
-        { nextOpeningDateCheck && renderNotAvailableWarning(restaurant, isAvailable) }
-        { nextOpeningDateCheck && renderClosedNowWarning(restaurant, isAvailable) }
-        { isLoading && LoadingPhantom() }
+        { isLoading && <Center w="100%">
+          <LoadingPhantom color={'cyan.200'} />
+          <LoadingPhantom color={'gray.200'} />
+          <LoadingPhantom color={'amber.200'} />
+        </Center> }
         { !isLoading && <Menu
           restaurant={ restaurant }
           menu={ data }
@@ -164,20 +114,15 @@ function Restaurant(props) {
       ) }
 
 
-      <Modal
-        testID={'modal'}
-        isVisible={infoModal}
-        onBackdropPress={() => setInfoModal(false)}
-        style={styles.view}
+      <BottomModal isVisible={infoModal}
+                   onBackdropPress={() => setInfoModal(false)}
+                   onBackButtonPress={() => setInfoModal(false)}
       >
-        <View maxHeight={height * 0.7}>
-        <ScrollView>
-        <VStack style={styles.content} backgroundColor={colorScheme === 'dark' ? 'dark.100' : 'white'} space={3}>
           <Box style={styles.center}>
             <Heading>{restaurant.name}</Heading>
             <Text>{restaurant.description}</Text>
             <Text bold padding={3}>{i18n.t('RESTAURANT_OPENING_HOURS')}</Text>
-            <OpeningHours restaurant={restaurant} />
+            <OpeningHours openingHoursSpecification={props.openingHoursSpecification} />
           </Box>
           <Pressable onPress={() => { AddressUtils.openMap(restaurant.address, restaurant.name) }} >
             <HStack space={3} style={cardStyle}>
@@ -191,23 +136,31 @@ function Restaurant(props) {
               <Text>{i18n.t('CALL')} {restaurant.name}</Text>
             </HStack>
           </Pressable>
-        </VStack>
-        </ScrollView>
-        </View>
-      </Modal>
+      </BottomModal>
 
       <ExpiredSessionModal
         onModalHide={ () => navigate('CheckoutHome') } />
+
+      <TimingModal
+        openingHoursSpecification={props.openingHoursSpecification}
+        modalEnabled={showFooter}
+        cart={props.cartContainer}
+        onClosesSoon={({ timeSlot: { timeSlot } }) => {
+          const diff = timeSlot[1].fromNow(false)
+          Toast.show({
+            description: i18n.t('NOTIFICATION_CLOSES_SOON', { diff }),
+            placement: 'top',
+          })
+        }}
+       onSchedule={({ value, showModal }) => {
+         props.setDate(value, props.cart, () => showModal(false))
+       }}
+      />
     </View>
   )
 }
 
 const styles = StyleSheet.create({
-  content: {
-    padding: 22,
-    borderTopStartRadius: 4,
-    borderTopRightRadius: 4,
-  },
   center: {
     justifyContent: 'center',
     alignItems: 'center',
@@ -217,23 +170,22 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     padding: 12,
   },
-  view: {
-    justifyContent: 'flex-end',
-    margin: 0,
-  },
 });
 
 function mapStateToProps(state, ownProps) {
 
-  const restaurant = ownProps.route.params?.restaurant
-  const cart = selectCart(state)?.cart
-  const cartLoading = _.includes(state.checkout.loadingCarts, restaurant['@id'])
+  const { restaurant, openingHoursSpecification } = selectRestaurant(state)
+  const cartContainer = selectCart(state)
+  const cart = cartContainer?.cart
+  const cartLoading = _.includes(state.checkout.loadingCarts, restaurant)
   const isCartEmpty = !selectCart(state) ? true : cart.items.length === 0
 
   return {
     showFooter: cartLoading || !isCartEmpty,
     cartLoading,
     restaurant,
+    openingHoursSpecification,
+    cartContainer,
     cart,
     address: state.checkout.address,
     loadingItems: state.checkout.itemRequestStack,
@@ -244,8 +196,8 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    setAddress: address => dispatch(setAddress(address)),
-    hideAddressModal: () => dispatch(hideAddressModal()),
+    setDate: (date, cart, cb) => dispatch(setDate(date, cart, cb)),
+    showTimingModal: show => dispatch(showTimingModal(show)),
   }
 }
 

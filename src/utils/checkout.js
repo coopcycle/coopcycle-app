@@ -121,11 +121,16 @@ export function selectCartFulfillmentMethod(restaurant, cart) {
 
 export function selectShippingTimeRangeLabel(restaurant, cart){
 
+  const { shippedAt } = cart
   const fulfillmentMethod = selectCartFulfillmentMethod(restaurant, cart)
   const timing = restaurant.timing[fulfillmentMethod]
 
     if (_.size(timing) === 0 || !cart) {
       return i18n.t('LOADING')
+    }
+
+    if (shippedAt === null) {
+      return i18n.t('DELIVERY_ASAP')
     }
 
     if (!timing.range || !Array.isArray(timing.range)) {

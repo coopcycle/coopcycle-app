@@ -71,6 +71,8 @@ export const LOAD_PAYMENT_DETAILS_FAILURE = '@checkout/LOAD_PAYMENT_DETAILS_FAIL
 
 export const UPDATE_CUSTOMER_GUEST = '@checkout/UPDATE_CUSTOMER_GUEST'
 
+export const SHOW_TIMING_MODAL = '@checkout/SHOW_TIMING_MODAL'
+
 
 export const HIDE_MULTIPLE_SERVERS_IN_SAME_CITY_MODAL = '@checkout/HIDE_MULTIPLE_SERVERS_IN_SAME_CITY_MODAL'
 
@@ -130,6 +132,8 @@ export const loadPaymentMethodsFailure = createAction(LOAD_PAYMENT_METHODS_FAILU
 export const loadPaymentDetailsRequest = createAction(LOAD_PAYMENT_DETAILS_REQUEST)
 export const loadPaymentDetailsSuccess = createAction(LOAD_PAYMENT_DETAILS_SUCCESS)
 export const loadPaymentDetailsFailure = createAction(LOAD_PAYMENT_DETAILS_FAILURE)
+
+export const showTimingModal = createAction(SHOW_TIMING_MODAL)
 
 export const hideMultipleServersInSameCityModal = createAction(HIDE_MULTIPLE_SERVERS_IN_SAME_CITY_MODAL)
 
