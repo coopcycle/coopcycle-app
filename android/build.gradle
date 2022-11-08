@@ -24,7 +24,6 @@ buildscript {
         // the google() method. And you need to include this repo to download
         // Android plugin 3.0.0 or higher.
         google()
-        jcenter()
         mavenCentral()
         maven {
             url 'https://maven.google.com/'
@@ -74,7 +73,6 @@ allprojects {
         maven {
           url 'https://artifacts.mercadolibre.com/repository/android-releases/'
         }
-        jcenter()
     }
 }
 
