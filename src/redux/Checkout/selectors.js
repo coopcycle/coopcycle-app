@@ -4,15 +4,36 @@ import moment from 'moment'
 
 import i18n from '../../i18n'
 import { selectIsAuthenticated, selectUser } from '../App/selectors'
+import OpeningHoursSpecification from '../../utils/OpeningHoursSpecification';
 
 export const selectCart = createSelector(
   state => state.checkout.carts,
   state => state.checkout.restaurant,
   (carts, restaurant) => {
     if (carts.hasOwnProperty(restaurant)) {
-      return carts[restaurant]
+      const cartContainer = carts[restaurant]
+      const openingHoursSpecification = new OpeningHoursSpecification()
+      openingHoursSpecification.openingHours = cartContainer.restaurant.openingHoursSpecification
+      return {
+        openingHoursSpecification,
+        ...cartContainer,
+      }
     }
     return null
+  }
+)
+
+export const selectRestaurant = createSelector(
+  state => state.checkout.restaurants,
+  state => state.checkout.restaurant,
+  (restaurants, restaurant) => {
+    const selected_restaurant = _.find(restaurants, { '@id': restaurant })
+    const openingHoursSpecification = new OpeningHoursSpecification()
+    openingHoursSpecification.openingHours = selected_restaurant.openingHoursSpecification
+    return {
+      restaurant: selected_restaurant,
+      openingHoursSpecification,
+    }
   }
 )
 
@@ -160,6 +181,18 @@ export const selectRestaurants = createSelector(
 export const cartItemsCountBadge = createSelector(
   state => Object.keys(state.checkout.carts),
   items => items.length
+)
+
+export const selectCarts = createSelector(
+  state => state.checkout.carts,
+  carts => _.map(carts, (value, key) => {
+    const openingHoursSpecification = new OpeningHoursSpecification()
+    openingHoursSpecification.openingHours = value.restaurant.openingHoursSpecification
+    return {
+      ...value,
+      openingHoursSpecification,
+    }
+  })
 )
 
 export const selectBillingEmail = createSelector(
