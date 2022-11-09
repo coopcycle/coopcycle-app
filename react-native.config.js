@@ -1,4 +1,6 @@
-require('dotenv').config()
+// Specify a custom path, to make sure it loads the expected .env file
+// https://github.com/motdotla/dotenv#path
+require('dotenv').config({ path: __dirname + '/.env' })
 
 let dependencies = {
   // We disable @react-native-firebase/messaging auto-linking on iOS
@@ -14,7 +16,6 @@ if (!!process.env.DEFAULT_SERVER) {
   dependencies = Object.assign(dependencies, {
     'react-native-background-geolocation': {
       platforms: {
-        ios: null,
         android: null,
       },
     },
