@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { InteractionManager, SectionList, StyleSheet, View } from 'react-native'
-import { Badge, Box, HStack, Heading, Text, VStack } from 'native-base'
+import { InteractionManager, RefreshControl, SectionList, StyleSheet, View } from 'react-native'
+import { Box, HStack, Heading, Text, VStack } from 'native-base'
 import _ from 'lodash'
 import moment from 'moment'
 import { connect } from 'react-redux'
@@ -9,14 +9,25 @@ import { formatPrice } from '../../utils/formatting'
 import { loadOrders } from '../../redux/Account/actions'
 import ItemSeparator from '../../components/ItemSeparator'
 import { TouchableNativeFeedback } from 'react-native-gesture-handler';
-import { blueColor, greenColor, greyColor, redColor } from '../../styles/common';
+import { blueColor, greenColor, redColor } from '../../styles/common';
 import i18n from '../../i18n';
 
 class AccountOrdersPage extends Component {
 
+
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      refreshing: false,
+    }
+  }
+
   componentDidMount() {
     InteractionManager.runAfterInteractions(() => {
-      this.props.loadOrders()
+      if (this.props.orders.length === 0) {
+        this._refresh()
+      }
     })
   }
 
@@ -37,7 +48,7 @@ class AccountOrdersPage extends Component {
     }
     const state = stateToRender(order.state)
     return (
-        <TouchableNativeFeedback onPress={() => navigate(state.route,  { order }) }>
+        <TouchableNativeFeedback onPress={() => navigate(state.route,  { order: order.number }) }>
         <HStack justifyContent="space-between" p="2">
           <VStack>
             <Text fontSize={16} paddingBottom={1}>{ order.restaurant.name }</Text>
@@ -65,6 +76,12 @@ class AccountOrdersPage extends Component {
     )
   }
 
+  _refresh() {
+    this.setState({ refreshing: true })
+    this.props.loadOrders(() => this.setState({ refreshing: false }))
+  }
+
+
   render() {
 
     const ordersByDay =
@@ -81,6 +98,13 @@ class AccountOrdersPage extends Component {
     return (
       <View style={{ flex: 1 }}>
         <SectionList
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={() => this._refresh()}
+             />
+          }
+          initialNumToRender={15}
           sections={ sections }
           renderItem={ ({ item }) => this._renderItem(item) }
           renderSectionHeader={ ({ section }) => this._renderSectionHeader(section) }
@@ -124,7 +148,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
 
   return {
-    loadOrders: () => dispatch(loadOrders()),
+    loadOrders: cb => dispatch(loadOrders(cb)),
   }
 }
 
