@@ -3,8 +3,8 @@ import Centrifuge from 'centrifuge'
 import parseUrl from 'url-parse'
 import _ from 'lodash'
 
-import { setLoading, logout } from '../App/actions'
-import { selectIsAuthenticated } from '../App/selectors';
+import { logout, setLoading } from '../App/actions'
+import { selectHttpClient, selectIsAuthenticated } from '../App/selectors';
 
 /*
  * Action Types
@@ -32,43 +32,38 @@ export const updateOrderSuccess = createAction(UPDATE_ORDER_SUCCESS)
 const connected = createAction(CONNECTED)
 const disconnected = createAction(DISCONNECTED)
 
-export function loadOrders() {
+export function loadOrders(cb) {
 
   return function (dispatch, getState) {
 
-    const httpClient = getState().app.httpClient
-    dispatch(setLoading(true))
+    const httpClient = selectHttpClient(getState())
 
     httpClient.get('/api/me/orders')
       .then(res => {
         dispatch(loadOrdersSuccess(res['hydra:member']))
-        dispatch(setLoading(false))
+        if (cb) { cb() }
       })
       .catch(e => {
-        console.log(e)
-        dispatch(setLoading(false))
+        if (cb) { cb(e) }
       })
   }
 }
 
-export function loadOrder(hashid) {
+export function loadOrder(order, cb) {
+  return (dispatch, getState) => {
+    const httpClient = selectHttpClient(getState())
 
-  return function (dispatch, getState) {
-
-    const httpClient = getState().app.httpClient
-    dispatch(setLoading(true))
-
-    return httpClient.get(`order/${hashid}/preview`)
+    httpClient.get(order['@id'])
       .then(res => {
-        dispatch(loadOrderSuccess(res))
-        dispatch(setLoading(false))
+        dispatch(updateOrderSuccess(res))
+        if (cb) { cb() }
       })
       .catch(e => {
-        console.log(e)
-        dispatch(setLoading(false))
+        if (cb) { cb(e) }
       })
   }
 }
+
 
 export function loadAddresses() {
 
@@ -151,8 +146,6 @@ export function subscribe(order, onMessage) {
 
     const baseURL = getState().app.baseURL
     const httpClient = getState().app.httpClient
-
-    dispatch(setLoading(true))
 
     httpClient.get(`${order['@id']}/centrifugo`)
       .then(res => {
