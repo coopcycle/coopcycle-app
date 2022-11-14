@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
   },
 })
 
-const CashOnDelivery = ({ onSubmit }) => {
+const CashOnDelivery = ({ onSubmit, disabled }) => {
 
   const { t } = useTranslation()
 
@@ -31,6 +31,7 @@ const CashOnDelivery = ({ onSubmit }) => {
         <Text>{ t('CASH_ON_DELIVERY_DISCLAIMER') }</Text>
       </View>
       <FooterButton
+        isDisabled={disabled}
         text={ t('SUBMIT') }
         onPress={ onSubmit } />
     </Center>

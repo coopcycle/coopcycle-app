@@ -1,71 +1,42 @@
-import { Avatar, HStack, Heading, View } from 'native-base';
-import React, { Component } from 'react';
+import { Avatar, Button, HStack, Heading, View } from 'native-base';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import _ from 'lodash';
-import { setTip } from '../../../redux/Checkout/actions';
-import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import { formatPrice } from '../../../utils/formatting';
-import i18n from '../../../i18n';
+import { Pressable } from 'react-native';
 
 const tipColor = 'blueGray.200'
 const pressedTipColor = 'blueGray.600'
 
-const TipCart = props => <TouchableOpacity disabled={props.disabled} onPress={props.onPress}>
-    <Avatar bg={props.bg} mr="1">
+const TipCart = props => <Pressable disabled={props.disabled} onPress={props.onPress}>
+    <Avatar bg={props.bg} size={'md'} mr="1">
       {props.text}
     </Avatar>
-  </TouchableOpacity>
+  </Pressable>
 
-class Tips extends Component {
+function Tips(props) {
 
-  constructor(props) {
-    super(props);
-    const tip = props.order.adjustments.tip[0]?.amount || 0
-    this.state = {
-      tip,
-      advancedView: !props.values.includes(tip),
-    }
-  }
+  const [ tip, setTip ] = useState(props.value)
+  const [ advancedView, setAdvancedView ] = useState(!props.values.includes(tip))
 
-  #setTipDebounce = _.debounce(tip => {
-    this.props.setTip(this.props.order, tip)
-  }, 350)
-
-  setTip(tip, debounced = false) {
-  if (this.state.tip === tip) {
-      return
-    }
-    this.setState({ tip })
-    if (debounced) {
-      this.#setTipDebounce(tip)
-    } else {
-      this.props.setTip(this.props.order, tip)
-    }
-  }
-
-  defaultView(values) {
+  const defaultView = (values) => {
     return values.map((value, index) => <TipCart
       key={index}
       text={formatPrice(value , { mantissa:0 })}
-      onPress={() => this.setTip(value)}
-      bg={this.state.tip === value ? pressedTipColor : tipColor} />)
+      onPress={() => setTip(value)}
+      bg={tip === value ? pressedTipColor : tipColor} />)
   }
 
-  render() {
-    const { advancedView, tip } = this.state
-
     return <View padding={2}>
-      <Heading size={'xs'}>{i18n.t('TIP')}</Heading>
-      <HStack justifyContent="center">
+      <Heading size={'xs'}>{props.t('TIP')}</Heading>
+      <HStack justifyContent="center" paddingBottom={5}>
 
-        {!advancedView && this.defaultView(this.props.values)}
+        {!advancedView && defaultView(props.values)}
 
         {advancedView && <TipCart
           text={'-'}
           disabled={tip <= 0}
-          onPress={() => this.setTip(tip - 100, true)}
+          onPress={() => setTip(tip - 100, true)}
           bg={tipColor} />}
 
         {advancedView && <TipCart
@@ -76,34 +47,28 @@ class Tips extends Component {
         <TipCart
           text={'+'}
           onPress={() => {
-            if (!this.state.advancedView) {
-              return this.setState({ advancedView: true })
+            if (!advancedView) {
+              return setAdvancedView(true)
             }
-            this.setTip(tip + 100, true)
+            setTip(tip + 100, true)
           }}
           bg={tipColor} />
       </HStack>
+      <Button
+        onPress={() => props.onTip(tip)}
+      >{props.t('VALIDATE')}</Button>
     </View>
-  }
 }
 
 Tips.defaultProps = {
-  values: [ 0, 200, 300, 500 ],
+  value: 0,
+  values: [ 0, 100, 200, 400 ],
 }
 
 Tips.propTypes = {
-  order: PropTypes.object.isRequired,
+  onTip: PropTypes.func.isRequired,
+  value: PropTypes.number,
   values: PropTypes.arrayOf(PropTypes.number),
 }
 
-function mapStateToProps(state) {
-  return {}
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    setTip: (order, amount) => dispatch(setTip(order, amount)),
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(Tips))
+export default (withTranslation()(Tips))

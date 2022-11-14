@@ -37,12 +37,6 @@ class CartFooterButton extends Component {
   }
 
   renderLeft() {
-    if (this.props.loading) {
-      return (
-        <ActivityIndicator size="small" color="#ffffff" />
-      )
-    }
-
     return (
       <Text style={{ fontWeight: 'bold', fontFamily: 'OpenSans-Regular' }}>
         { `[${this.props.cart.items.length}]` }
@@ -73,7 +67,8 @@ class CartFooterButton extends Component {
     }
 
     return (
-      <Button onPress={ this.props.onPress } testID={ this.props.testID } disabled={ this.props.disabled }
+      <Button onPress={ this.props.onPress } testID={ this.props.testID }
+        isLoading={this.props.loading} isDisabled={ this.props.disabled }
         _stack={{ w: '100%', justifyContent: 'center' }}
       >
         <HStack

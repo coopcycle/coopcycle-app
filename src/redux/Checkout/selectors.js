@@ -4,23 +4,48 @@ import moment from 'moment'
 
 import i18n from '../../i18n'
 import { selectIsAuthenticated, selectUser } from '../App/selectors'
+import OpeningHoursSpecification from '../../utils/OpeningHoursSpecification';
 
 export const selectCart = createSelector(
   state => state.checkout.carts,
   state => state.checkout.restaurant,
   (carts, restaurant) => {
     if (carts.hasOwnProperty(restaurant)) {
-      return carts[restaurant]
+      const cartContainer = carts[restaurant]
+      const openingHoursSpecification = new OpeningHoursSpecification()
+      openingHoursSpecification.openingHours = cartContainer.restaurant.openingHoursSpecification
+      return {
+        openingHoursSpecification,
+        ...cartContainer,
+      }
     }
-    return null
+    return {
+      cart: null,
+      restaurant: null,
+      token: null,
+      openingHoursSpecification: null,
+    }
+  }
+)
+
+export const selectRestaurant = createSelector(
+  state => state.checkout.restaurants,
+  state => state.checkout.restaurant,
+  (restaurants, restaurant) => {
+    const selected_restaurant = _.find(restaurants, { '@id': restaurant })
+    const openingHoursSpecification = new OpeningHoursSpecification()
+    openingHoursSpecification.openingHours = selected_restaurant.openingHoursSpecification
+    return {
+      restaurant: selected_restaurant,
+      openingHoursSpecification,
+    }
   }
 )
 
 
 export const selectDeliveryTotal = createSelector(
   selectCart,
-  (cart) => {
-    cart = cart?.cart
+  ({ cart }) => {
 
     if (!cart || !cart.adjustments) {
       return 0
@@ -37,9 +62,8 @@ export const selectDeliveryTotal = createSelector(
 )
 
 export const selectFulfillmentMethods = createSelector(
-  state => state.checkout.restaurant,
-  (restaurant) => {
-
+  selectRestaurant,
+  ({ restaurant }) => {
     if (restaurant && restaurant.fulfillmentMethods && Array.isArray(restaurant.fulfillmentMethods)) {
       const enabled = _.filter(restaurant.fulfillmentMethods, fm => fm.enabled)
       return _.map(enabled, fm => fm.type)
@@ -63,8 +87,7 @@ export const selectCartFulfillmentMethod = createSelector(
   selectCart,
   selectIsDeliveryEnabled,
   selectIsCollectionEnabled,
-  (cart, isDeliveryEnabled, isCollectionEnabled) => {
-    cart = cart?.cart
+  ({ cart }, isDeliveryEnabled, isCollectionEnabled) => {
 
     if (!cart) {
       return 'delivery'
@@ -89,11 +112,15 @@ export const selectCartFulfillmentMethod = createSelector(
 export const selectShippingTimeRangeLabel = createSelector(
   selectCartFulfillmentMethod,
   state => state.checkout.timing,
-  state => state.checkout.cart,
-  (fulfillmentMethod, timing, cart) => {
+  selectCart,
+  (fulfillmentMethod, timing, { cart }) => {
 
     if (_.size(timing) === 0 || !cart) {
       return i18n.t('LOADING')
+    }
+
+    if (cart?.shippedAt === null) {
+      return i18n.t('DELIVERY_ASAP')
     }
 
     if (!timing.range || !Array.isArray(timing.range)) {
@@ -160,6 +187,18 @@ export const selectRestaurants = createSelector(
 export const cartItemsCountBadge = createSelector(
   state => Object.keys(state.checkout.carts),
   items => items.length
+)
+
+export const selectCarts = createSelector(
+  state => state.checkout.carts,
+  carts => _.map(carts, (value, key) => {
+    const openingHoursSpecification = new OpeningHoursSpecification()
+    openingHoursSpecification.openingHours = value.restaurant.openingHoursSpecification
+    return {
+      ...value,
+      openingHoursSpecification,
+    }
+  })
 )
 
 export const selectBillingEmail = createSelector(

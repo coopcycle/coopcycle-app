@@ -11,6 +11,7 @@ import _ from 'lodash'
 import { formatPrice } from '../../utils/formatting';
 import { deleteCart, setRestaurant } from '../../redux/Checkout/actions';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { selectCarts } from '../../redux/Checkout/selectors';
 
 const AnimatedView = Animated.createAnimatedComponent(View);
 const { width } = Dimensions.get('window')
@@ -99,7 +100,7 @@ const styles = {
 function mapStateToProps(state) {
 
   return {
-    carts: state.checkout.carts,
+    carts: selectCarts(state),
   }
 }
 

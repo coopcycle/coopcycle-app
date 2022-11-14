@@ -105,8 +105,6 @@ class ShippingDate extends Component {
 
   render() {
 
-    console.log(this.props)
-
     const { dates } = this.props
 
     const times = this.props.timesByDate[this.state.date] || this.props.timesByDate[dates[0]]
