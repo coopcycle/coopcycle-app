@@ -4,6 +4,7 @@ import moment from 'moment'
 
 import i18n from '../../i18n'
 import { selectIsAuthenticated, selectUser } from '../App/selectors'
+import Address from '../../utils/Address';
 import OpeningHoursSpecification from '../../utils/OpeningHoursSpecification';
 import Address from '../../utils/Address';
 
