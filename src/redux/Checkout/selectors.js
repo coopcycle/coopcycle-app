@@ -4,6 +4,7 @@ import moment from 'moment'
 
 import i18n from '../../i18n'
 import { selectIsAuthenticated, selectUser } from '../App/selectors'
+import Address from '../../utils/Address';
 
 export const selectCart = createSelector(
   state => state.checkout.carts,
@@ -174,3 +175,9 @@ export const selectBillingEmail = createSelector(
     return guest.email
   }
 )
+
+export const selectAddresses = createSelector(
+  state => state.account.addresses,
+  (addresses) => _.uniqWith(addresses, (o, ov) => Address.geoDiff(o, ov))
+)
+
