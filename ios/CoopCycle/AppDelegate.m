@@ -14,9 +14,6 @@
 #import <UserNotifications/UserNotifications.h>
 #import <React/RCTLinkingManager.h>
 #import <Firebase.h>
-#import <UMCore/UMModuleRegistry.h>
-#import <UMReactNativeAdapter/UMNativeModulesProxy.h>
-#import <UMReactNativeAdapter/UMModuleRegistryAdapter.h>
 #import <FBSDKCoreKit/FBSDKApplicationDelegate.h>
 
 #ifdef FB_SONARKIT_ENABLED
@@ -40,8 +37,6 @@ static void InitializeFlipper(UIApplication *application) {
 
 @interface AppDelegate () <RCTBridgeDelegate>
 
-@property (nonatomic, strong) UMModuleRegistryAdapter *moduleRegistryAdapter;
-
 @end
 
 @implementation AppDelegate
@@ -51,8 +46,6 @@ static void InitializeFlipper(UIApplication *application) {
 #ifdef FB_SONARKIT_ENABLED
   InitializeFlipper(application);
 #endif
-
-  self.moduleRegistryAdapter = [[UMModuleRegistryAdapter alloc] initWithModuleRegistryProvider:[[UMModuleRegistryProvider alloc] init]];
 
   if ([FIRApp defaultApp] == nil) {
     [FIRApp configure];
@@ -123,13 +116,6 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
 {
   [RNCPushNotificationIOS didReceiveNotificationResponse:response];
   completionHandler();
-}
-
-- (NSArray<id<RCTBridgeModule>> *)extraModulesForBridge:(RCTBridge *)bridge
-{
-  NSArray<id<RCTBridgeModule>> *extraModules = [_moduleRegistryAdapter extraModulesForBridge:bridge];
-  // If you'd like to export some custom RCTBridgeModules that are not Expo modules, add them here!
-  return extraModules;
 }
 
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
