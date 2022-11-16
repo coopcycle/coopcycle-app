@@ -1,4 +1,7 @@
 package fr.coopcycle;
+import android.content.res.Configuration;
+import expo.modules.ApplicationLifecycleDispatcher;
+import expo.modules.ReactNativeHostWrapper;
 
 import android.content.Context;
 import android.content.Intent;
@@ -25,7 +28,7 @@ import androidx.multidex.MultiDexApplication;
 public class MainApplication extends MultiDexApplication implements ReactApplication {
 
   private final ReactNativeHost mReactNativeHost =
-      new ReactNativeHost(this) {
+      new ReactNativeHostWrapper(this, new ReactNativeHost(this) {
         @Override
         public boolean getUseDeveloperSupport() {
           return BuildConfig.DEBUG;
@@ -45,7 +48,7 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
         protected String getJSMainModuleName() {
           return "index";
         }
-      };
+      });
 
 
   @Override
@@ -59,6 +62,7 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
     upgradeSecurityProvider();
     SoLoader.init(this, /* native exopackage */ false);
     initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
+    ApplicationLifecycleDispatcher.onApplicationCreate(this);
   }
 
   private void upgradeSecurityProvider() {
@@ -102,5 +106,11 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
         e.printStackTrace();
       }
     }
+  }
+
+  @Override
+  public void onConfigurationChanged(Configuration newConfig) {
+    super.onConfigurationChanged(newConfig);
+    ApplicationLifecycleDispatcher.onConfigurationChanged(this, newConfig);
   }
 }
