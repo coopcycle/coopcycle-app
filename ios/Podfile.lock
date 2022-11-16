@@ -699,27 +699,19 @@ PODS:
   - Sentry (7.1.4):
     - Sentry/Core (= 7.1.4)
   - Sentry/Core (7.1.4)
-  - Stripe (22.5.1):
-    - Stripe/Stripe3DS2 (= 22.5.1)
-    - StripeApplePay (= 22.5.1)
-    - StripeCore (= 22.5.1)
-    - StripeUICore (= 22.5.1)
-  - stripe-react-native (0.14.0):
+  - Stripe (21.9.1):
+    - Stripe/Stripe3DS2 (= 21.9.1)
+    - StripeCore (= 21.9.1)
+    - StripeUICore (= 21.9.1)
+  - stripe-react-native (0.2.3):
     - React-Core
-    - Stripe (~> 22.5.1)
-    - StripeFinancialConnections (~> 22.5.1)
-  - Stripe/Stripe3DS2 (22.5.1):
-    - StripeApplePay (= 22.5.1)
-    - StripeCore (= 22.5.1)
-    - StripeUICore (= 22.5.1)
-  - StripeApplePay (22.5.1):
-    - StripeCore (= 22.5.1)
-  - StripeCore (22.5.1)
-  - StripeFinancialConnections (22.5.1):
-    - StripeCore (= 22.5.1)
-    - StripeUICore (= 22.5.1)
-  - StripeUICore (22.5.1):
-    - StripeCore (= 22.5.1)
+    - Stripe (~> 21.9.0)
+  - Stripe/Stripe3DS2 (21.9.1):
+    - StripeCore (= 21.9.1)
+    - StripeUICore (= 21.9.1)
+  - StripeCore (21.9.1)
+  - StripeUICore (21.9.1):
+    - StripeCore (= 21.9.1)
   - Yoga (1.14.0)
 
 DEPENDENCIES:
@@ -842,9 +834,7 @@ SPEC REPOS:
     - PureLayout
     - Sentry
     - Stripe
-    - StripeApplePay
     - StripeCore
-    - StripeFinancialConnections
     - StripeUICore
 
 EXTERNAL SOURCES:
@@ -1106,12 +1096,10 @@ SPEC CHECKSUMS:
   RNSVG: 551acb6562324b1d52a4e0758f7ca0ec234e278f
   RNVectorIcons: 7923e585eaeb139b9f4531d25a125a1500162a0b
   Sentry: 1d3eb1a25f8c5333c88dd5603904a6d461cd9fcf
-  Stripe: 2b2decd03146e08a350960966d41f3028c2eac29
-  stripe-react-native: c90947c1f02761d11622dcb3cd3bd8683916b36b
-  StripeApplePay: b14f06ac6fc24b56704c1e598149ed0cc45e166f
-  StripeCore: 4833738f2ca4336712f279f3c2867a0a7eb67c93
-  StripeFinancialConnections: 982115b82af429968d8aa78d329a42ed7ba3feab
-  StripeUICore: 08c1efbd7e3c54ee7fa74334a37a1d4c08ba944d
+  Stripe: 22c1b8da5ee20a1aaf40fd198160efa72e71644a
+  stripe-react-native: 980f3d19f52a7dc4b373c6c20d30ebd760bc39e5
+  StripeCore: 91ea038ac0abbb72f11014044dfd1e5d39089714
+  StripeUICore: 7edf64b24c9c178bfd97e988f2cffdbb7a7628b0
   Yoga: b316a990bb6d115afa1b436b5626ac7c61717d17
 
 PODFILE CHECKSUM: 0fb88ebe750af8489e96099c54487d98f99e962a
