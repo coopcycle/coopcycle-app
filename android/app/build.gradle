@@ -343,8 +343,8 @@ dependencies {
     implementation "com.jakewharton.timber:timber:${rootProject.ext.timberVersion}"
 
     // See https://github.com/coopcycle/coopcycle-app/commit/f3b037d36fd0a34e46e86164ea9f8be528172416
-    implementation "com.google.android.gms:play-services-basement:$playServicesVersion"
-    implementation "com.google.android.gms:play-services-base:$playServicesVersion"
+    implementation "com.google.android.gms:play-services-basement:$googlePlayServicesVersion"
+    implementation "com.google.android.gms:play-services-base:$googlePlayServicesVersion"
 }
 
 if (isNewArchitectureEnabled()) {
