@@ -780,12 +780,14 @@ export function checkout(cardholderName) {
     }
 
     createPaymentMethod({
-      type: 'Card',
-      billingDetails: {
-        email: billingEmail,
-        name: cardholderName,
-        phone: cart.fulfillmentMethod === 'delivery' ? cart.shippingAddress.telephone : '',
-      },
+      paymentMethodType: 'Card',
+      paymentMethodData: {
+        billingDetails: {
+          email: billingEmail,
+          name: cardholderName,
+          phone: cart.fulfillmentMethod === 'delivery' ? cart.shippingAddress.telephone : '',
+        },
+      }
     })
     .then(({ paymentMethod, error }) => {
       if (error) {
