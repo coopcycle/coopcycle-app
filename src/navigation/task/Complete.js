@@ -11,6 +11,7 @@ import Modal from 'react-native-modal'
 import { Formik } from 'formik'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
+import { WebView } from 'react-native-webview'
 
 import {
   deletePictureAt,
@@ -52,6 +53,26 @@ const AttachmentItem = ({ base64, onPressDelete }) => {
   )
 }
 
+const impecHtml = `
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>IMPEC demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+  </head>
+  <body>
+    <button type="button" class="btn btn-primary" id="myBtn">Click here</button>
+    <script>
+      document.getElementById('myBtn').addEventListener('click', function() {
+        window.ReactNativeWebView.postMessage(JSON.stringify({ data: { message: 'IT WORKS' } }))
+      });
+    </script>
+  </body>
+</html>
+`
+
 class CompleteTask extends Component {
 
   constructor(props) {
@@ -62,6 +83,7 @@ class CompleteTask extends Component {
       isContactNameModalVisible: false,
       contactName: '',
       isKeyboardVisible: false,
+      isImpecModalVisible: false,
     }
   }
 
@@ -91,6 +113,10 @@ class CompleteTask extends Component {
 
   onSwipeComplete() {
     this.setState({ isContactNameModalVisible: false })
+  }
+
+  onImpectSwipeComplete() {
+    this.setState({ isImpecModalVisible: false })
   }
 
   _validate(values) {
@@ -186,6 +212,9 @@ class CompleteTask extends Component {
                     totalLines={ 2 }
                     onChangeText={ text => this.setState({ notes: text }) } />
                 </FormControl>
+                <Button onPress={ () => this.setState({ isImpecModalVisible: true }) }>
+                  TEST IMPEC
+                </Button>
                 <View>
                   <ScrollView style={{ height: '50%' }}>
                     <View style={ styles.content }>
@@ -263,6 +292,36 @@ class CompleteTask extends Component {
               </Formik>
             </Box>
           </ModalContent>
+        </Modal>
+        <Modal
+          isVisible={ this.state.isImpecModalVisible }
+          onSwipeComplete={ this.onImpectSwipeComplete.bind(this) }
+          swipeDirection={ [ 'up', 'down' ] }
+          style={{
+            justifyContent: 'flex-end',
+            margin: 0,
+          }}>
+          <VStack px="3" py="3" bg="white" style={{ height: 300 }}>
+            <WebView
+              bounces={false}
+              style={{
+                width: '100%',
+                height: 250,
+                borderWidth: 1,
+                borderColor: 'red'
+              }}
+              scrollEnabled={ true }
+              originWhitelist={['*']}
+              source={{
+                html: impecHtml
+              }}
+              onMessage={(event) => {
+                this.setState({ isImpecModalVisible: false })
+                alert(event.nativeEvent.data);
+              }}
+              javaScriptEnabled={true}
+            />
+          </VStack>
         </Modal>
       </React.Fragment>
     )
