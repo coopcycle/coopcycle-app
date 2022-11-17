@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { StyleSheet, View } from 'react-native'
-import MapView from 'react-native-maps'
+import MapView, { Marker } from 'react-native-maps'
 import { center, featureCollection, point } from '@turf/turf'
 import _ from 'lodash'
 
@@ -54,7 +54,7 @@ class NavigationAwareMap extends Component {
 
     let otherProps = {}
 
-    const markers = _.filter(React.Children.toArray(this.props.children), child => child.type === MapView.Marker)
+    const markers = _.filter(React.Children.toArray(this.props.children), child => child.type === Marker)
 
     if (markers.length > 1) {
 

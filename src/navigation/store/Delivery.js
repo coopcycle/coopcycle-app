@@ -5,7 +5,7 @@ import {
 } from 'native-base'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
-import MapView from 'react-native-maps'
+import MapView, { Marker } from 'react-native-maps'
 import { parsePhoneNumberFromString } from 'libphonenumber-js'
 import _ from 'lodash'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
@@ -66,7 +66,7 @@ class NewDelivery extends Component {
         <View style={{ flex: 1 }}>
           <NavigationAwareMap navigation={ this.props.navigation }>
             { markers.map((marker, index) => (
-              <MapView.Marker
+              <Marker
                 { ...marker }
                 key={ `marker-${index}` }
                 flat={ true } />

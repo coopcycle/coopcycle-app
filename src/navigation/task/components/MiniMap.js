@@ -1,6 +1,6 @@
 import React from 'react'
-import { StyleSheet } from 'react-native'
-import MapView from 'react-native-maps'
+import { StyleSheet, View } from 'react-native'
+import MapView, { Marker } from 'react-native-maps'
 
 import TaskMarker from '../../../components/TaskMarker'
 
@@ -29,13 +29,13 @@ const MiniMap = ({ task, onLayout, aspectRatio }) => {
       initialRegion={ region }
       region={ region }
       onLayout={ onLayout }>
-      <MapView.Marker
+      <Marker
         identifier={ task['@id'] }
         key={ task['@id'] }
         coordinate={ task.address.geo }
         flat={ true }>
         <TaskMarker task={ task } />
-      </MapView.Marker>
+      </Marker>
     </MapView>
   )
 }
