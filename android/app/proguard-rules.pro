@@ -31,6 +31,10 @@
 -keep class com.swmansion.reanimated.** { *; }
 -keep class com.facebook.react.turbomodule.** { *; }
 
+# https://github.com/stripe/stripe-android/issues/5090
+-dontwarn com.stripe.android.financialconnections.**
+-dontwarn com.stripe.android.stripecardscan.**
+
 # https://reactnative.dev/docs/hermes
 -keep class com.facebook.hermes.unicode.** { *; }
 -keep class com.facebook.jni.** { *; }
