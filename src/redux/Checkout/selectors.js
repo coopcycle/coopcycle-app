@@ -6,7 +6,6 @@ import i18n from '../../i18n'
 import { selectIsAuthenticated, selectUser } from '../App/selectors'
 import Address from '../../utils/Address';
 import OpeningHoursSpecification from '../../utils/OpeningHoursSpecification';
-import Address from '../../utils/Address';
 
 export const selectCart = createSelector(
   state => state.checkout.carts,
@@ -119,10 +118,6 @@ export const selectShippingTimeRangeLabel = createSelector(
 
     if (_.size(timing) === 0 || !cart) {
       return i18n.t('LOADING')
-    }
-
-    if (cart?.shippedAt === null) {
-      return i18n.t('DELIVERY_ASAP')
     }
 
     if (!timing.range || !Array.isArray(timing.range)) {
