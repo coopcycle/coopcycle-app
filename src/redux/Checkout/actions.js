@@ -5,9 +5,9 @@ import { createPaymentMethod, handleNextAction } from '@stripe/stripe-react-nati
 
 import NavigationHolder from '../../NavigationHolder'
 import i18n from '../../i18n'
-import { selectCart, selectCartFulfillmentMethod, selectBillingEmail } from './selectors'
-import { selectIsAuthenticated, selectUser } from '../App/selectors'
-import { loadAddressesSuccess, updateOrderSuccess } from '../Account/actions'
+import { selectBillingEmail, selectCart, selectCartFulfillmentMethod } from './selectors'
+import { selectIsAuthenticated } from '../App/selectors'
+import { loadAddressesSuccess, setNewOrder, updateOrderSuccess } from '../Account/actions'
 import { isFree } from '../../utils/order'
 import { setLoading, setModal } from '../App/actions';
 import Share from 'react-native-share';
@@ -736,13 +736,14 @@ export function mercadopagoCheckout(payment) {
 
 function handleSuccessNav(dispatch, order) {
 
+  dispatch(setNewOrder(order))
   // First, reset checkout stack
   NavigationHolder.dispatch(StackActions.popToTop())
 
   // Then, navigate to order screen
   NavigationHolder.dispatch(CommonActions.navigate({
     name: 'OrderTracking',
-    params: { order },
+    params: { order: order.number },
   }))
 
   dispatch(deleteCart(order.restaurant['@id']))
@@ -791,7 +792,7 @@ export function checkout(cardholderName) {
           name: cardholderName,
           phone: cart.fulfillmentMethod === 'delivery' ? cart.shippingAddress.telephone : '',
         },
-      }
+      },
     })
     .then(({ paymentMethod, error }) => {
       if (error) {

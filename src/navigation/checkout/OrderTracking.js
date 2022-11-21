@@ -178,7 +178,6 @@ class OrderTrackingPage extends Component {
         <Button onPress={()=>phonecall(this.props.phoneNumber, true)} size={'sm'} variant="link" leftIcon={<Icon as={Ionicons} name="help-buoy-outline" size="xs" />}>
           {i18n.t('HELP')}
         </Button>
-²
       </View>
     </ScrollView>
   }

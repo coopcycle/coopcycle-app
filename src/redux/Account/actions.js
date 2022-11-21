@@ -64,6 +64,16 @@ export function loadOrder(order, cb) {
   }
 }
 
+export function setNewOrder(order) {
+  return (dispatch, getState) => {
+    const { orders } = getState().account
+    dispatch(loadOrdersSuccess([
+      order,
+      ...orders,
+    ]))
+  }
+}
+
 
 export function loadAddresses() {
 
