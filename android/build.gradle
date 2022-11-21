@@ -18,9 +18,9 @@ buildscript {
         firebaseVersion = "17.2.1"
         timberVersion = "4.7.1"
         kotlinVersion = "1.6.10"
-        androidXCore = "1.9.0"
+        androidXCore = "1.0.2"
         googlePlayServicesLocationVersion = "21.0.1"
-        appCompatVersion = "1.5.1"
+        appCompatVersion = "1.4.2"
         mercadoPagoPxVersion = "4.53.2"
         reactNativeVersion = "0.70.6" // https://github.com/expo/expo/issues/18129
     }
