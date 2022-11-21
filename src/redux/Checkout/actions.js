@@ -837,8 +837,7 @@ export function assignCustomer({ email, telephone }, cartContainer = null) {
 
   return async (dispatch, getState) => {
 
-    const { restaurant } = getState().checkout
-    const { cart, token } = cartContainer || getState().checkout.carts[restaurant]
+    const { cart, token } = cartContainer
     const { user } = getState().app
 
     if (!user.isGuest() && cart.customer) {
