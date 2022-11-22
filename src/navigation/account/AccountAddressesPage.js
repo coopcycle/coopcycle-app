@@ -13,6 +13,7 @@ import address from '../../utils/Address';
 import i18n from '../../i18n';
 import PropTypes from 'prop-types';
 import Address from '../../utils/Address'
+import { selectAddresses } from '../../redux/Checkout/selectors';
 
 
 class AccountAddressesPage extends Component {
@@ -113,7 +114,7 @@ function mapStateToProps(state, ownProps) {
   return {
     location: state.app.settings.latlng,
     country: state.app.settings.country,
-    addresses: state.account.addresses,
+    addresses: selectAddresses(state),
     address: fnSelect(),
   }
 }
