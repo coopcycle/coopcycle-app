@@ -101,6 +101,7 @@ const inputs = [
         message: i18n.t('INVALID_FAMILY_NAME'),
       },
     },
+    isLast: true,
   },
 ]
 
@@ -365,9 +366,7 @@ class RegisterForm extends React.Component {
                   onBlur: handleBlur(input.name),
                 }
 
-                const isLast = index === (inputs.length - 1)
-
-                if (isLast) {
+                if (input.isLast) {
                   inputProps = {
                     ...inputProps,
                     returnKeyType: 'done',
@@ -380,7 +379,10 @@ class RegisterForm extends React.Component {
                     onSubmitEditing: event => {
                       const idx = inputs.findIndex((el) => el.name === input.name)
                       const nextInputName = inputs[idx + 1].name
-                      this._inputComponents.get(nextInputName).focus()
+                      const nextInput = this._inputComponents.get(nextInputName)
+                      if (nextInput) {
+                        nextInput.focus()
+                      }
                     },
                   }
                 }
