@@ -145,6 +145,9 @@ platform :android do
   desc "Deploy a new version of Naofood to the Google Play Internal test"
   lane :deployNaofoodInternal do
 
+  rename_app
+  generate_icons
+
     previous_build_number = google_play_track_version_codes(
       track: "internal",
     )[0]
@@ -174,7 +177,6 @@ platform :android do
     upload_to_play_store(
       skip_upload_apk: true,
       skip_upload_metadata: true,
-      package_name: "fr.client.naofood",
       track: "internal",
     )
   end
