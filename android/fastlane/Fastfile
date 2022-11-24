@@ -29,8 +29,8 @@ platform :android do
     # You can also use other beta testing services here
   end
 
-  desc "Deploy a new version to the Google Play"
-  lane :deploy do
+  desc "Build a new version for the Google Play"
+  lane :build do
     gradle(
       task: "clean bundleOfficialRelease",
       properties: {
@@ -45,10 +45,15 @@ platform :android do
       ks_password: ENV["ANDROID_STORE_PASSWORD"],
       ks_key_alias: ENV["ANDROID_KEY_ALIAS"],
       ks_key_alias_password: ENV["ANDROID_KEY_PASSWORD"],
-      aab_path: "android/app/build/outputs/bundle/officialRelease/app-official-release.aab",
+      aab_path: "app/build/outputs/bundle/officialRelease/app-official-release.aab",
       apk_output_path: "app/build/outputs/apk/officialRelease/app-official-release.apk",
       verbose: true
     )
+  end
+
+  desc "Deploy a new version to the Google Play"
+  lane :deploy do
+    build()
     upload_to_play_store(
       skip_upload_apk: true,
     )
