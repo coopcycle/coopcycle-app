@@ -370,7 +370,12 @@ export function bootstrap(baseURL, user, loader = true) {
       }
 
     } catch (e) {
-      dispatch(logout())
+      // Make sure it's actually a HTTP 401 error,
+      // to avoid disconnecting users with other issues (network issues...)
+      // https://axios-http.com/docs/handling_errors
+      if (e.response && e.response.status === 401) {
+        dispatch(logout())
+      }
     }
   }
 }
