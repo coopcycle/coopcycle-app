@@ -83,7 +83,7 @@ buck-out/
 
 sentry.properties
 
-*/fastlane/.env.default
+*/fastlane/.env.*
 ios/*.cer
 ios/*.certSigningRequest
 ios/*.p12
