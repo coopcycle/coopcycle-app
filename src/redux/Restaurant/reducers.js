@@ -55,6 +55,7 @@ import {
   SET_HAS_MORE_PRODUCTS,
   SET_NEXT_PRODUCTS_PAGE,
   SUNMI_PRINTER_DETECTED,
+  BLUETOOTH_STARTED,
 } from './actions'
 
 import {
@@ -87,6 +88,7 @@ const initialState = {
   printer: null,
   productOptions: [],
   isSunmiPrinter: false,
+  bluetoothStarted: false,
 }
 
 const spliceOrders = (state, payload) => {
@@ -489,6 +491,13 @@ export default (state = initialState, action = {}) => {
       }
 
       return state
+
+    case BLUETOOTH_STARTED:
+
+      return {
+        ...state,
+        bluetoothStarted: true,
+      }
   }
 
   return state

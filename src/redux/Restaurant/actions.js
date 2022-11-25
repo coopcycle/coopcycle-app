@@ -96,6 +96,7 @@ export const BLUETOOTH_ENABLED = '@restaurant/BLUETOOTH_ENABLED'
 export const BLUETOOTH_DISABLED = '@restaurant/BLUETOOTH_DISABLED'
 export const BLUETOOTH_START_SCAN = '@restaurant/BLUETOOTH_START_SCAN'
 export const BLUETOOTH_STOP_SCAN = '@restaurant/BLUETOOTH_STOP_SCAN'
+export const BLUETOOTH_STARTED = '@restaurant/BLUETOOTH_STARTED'
 
 export const SUNMI_PRINTER_DETECTED = '@restaurant/SUNMI_PRINTER_DETECTED'
 
@@ -178,8 +179,9 @@ export const printerDisconnected = createAction(PRINTER_DISCONNECTED)
 
 export const bluetoothEnabled = createAction(BLUETOOTH_ENABLED)
 export const bluetoothDisabled = createAction(BLUETOOTH_DISABLED)
-export const bluetoothStartScan = createAction(BLUETOOTH_START_SCAN)
+const _bluetoothStartScan = createAction(BLUETOOTH_START_SCAN)
 export const bluetoothStopScan = createAction(BLUETOOTH_STOP_SCAN)
+export const bluetoothStarted = createAction(BLUETOOTH_STARTED)
 
 export const sunmiPrinterDetected = createAction(SUNMI_PRINTER_DETECTED)
 
@@ -807,5 +809,25 @@ export function changeProductOptionValueEnabled(productOptionValue, enabled) {
     httpClient.put(productOptionValue['@id'], { enabled })
       .then(res => dispatch(changeProductOptionValueEnabledSuccess(productOptionValue, res.enabled)))
       .catch(e => dispatch(changeProductOptionValueEnabledSuccess(e, productOptionValue, !enabled)))
+  }
+}
+
+export function bluetoothStartScan() {
+
+  return function (dispatch, getState) {
+
+    if (!getState().restaurant.bluetoothStarted) {
+      BleManager.start({ showAlert: false })
+      .then(() => {
+        dispatch(bluetoothStarted())
+        BleManager.scan([], 30, true).then(() => {
+          dispatch(_bluetoothStartScan())
+        })
+      })
+    } else {
+      BleManager.scan([], 30, true).then(() => {
+        dispatch(_bluetoothStartScan())
+      })
+    }
   }
 }

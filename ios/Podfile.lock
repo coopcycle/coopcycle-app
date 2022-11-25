@@ -538,7 +538,7 @@ PODS:
   - React-jsinspector (0.68.5)
   - React-logger (0.68.5):
     - glog
-  - react-native-ble-manager (8.0.2):
+  - react-native-ble-manager (8.4.4):
     - React-Core
   - react-native-camera (3.44.3):
     - React-Core
@@ -1098,7 +1098,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 45c0496ca8cef6b02d9fa0274c25cf458fe91a56
   React-jsinspector: eb202e43b3879aba9a14f3f65788aec85d4e1ea9
   React-logger: 98f663b292a60967ebbc6d803ae96c1381183b6d
-  react-native-ble-manager: 2d49a9a94b8a1fb548a5239b0969703282a3545f
+  react-native-ble-manager: 5a36276ae7bdc382c6a0716c939024ffeb4e0a48
   react-native-camera: b8cc03e2feec0c04403d0998e37cf519d8fd4c6f
   react-native-config: bcafda5b4c51491ee1b0e1d0c4e3905bc7b56c1b
   react-native-fbsdk-next: a0dd8905af573ec4d21b7bc398423ccaa2ce2b07

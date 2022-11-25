@@ -18,6 +18,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
 import { bluetoothStartScan, connectPrinter, disconnectPrinter } from '../../redux/Restaurant/actions'
 import ItemSeparator from '../../components/ItemSeparator'
+import { getMissingAndroidPermissions } from '../../utils/bluetooth'
 
 const BleManagerModule = NativeModules.BleManager
 const bleManagerEmitter = new NativeEventEmitter(BleManagerModule)
@@ -60,26 +61,21 @@ class Printer extends Component {
       return
     }
 
-    // Make sure we have "ACCESS_COARSE_LOCATION " or "ACCESS_FINE_LOCATION" permission or scan won't work
-    if (Platform.OS === 'android' && Platform.Version >= 23) {
+    if (Platform.OS === 'android') {
 
-      const wantedPermission = Platform.Version >= 29 ?
-        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION : PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION
+      const missingPermissions = await getMissingAndroidPermissions()
 
-      const isGranted = await PermissionsAndroid.check(wantedPermission)
-      if (!isGranted) {
-        const granted = await PermissionsAndroid.request(wantedPermission)
-        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-          await BleManager.scan([], 30, true)
+      if (missingPermissions.length > 0) {
+        const granted = await PermissionsAndroid.requestMultiple(missingPermissions)
+        const allPermissionsGranted = _.values(granted).every(value => value === PermissionsAndroid.RESULTS.GRANTED)
+        if (allPermissionsGranted) {
           this.props.bluetoothStartScan()
         }
       } else {
-        await BleManager.scan([], 30, true)
         this.props.bluetoothStartScan()
       }
 
     } else {
-      await BleManager.scan([], 30, true)
       this.props.bluetoothStartScan()
     }
   }

@@ -1,48 +1,58 @@
 import BleManager from 'react-native-ble-manager'
 import { NativeEventEmitter, NativeModules, Platform } from 'react-native'
 import SunmiPrinter from '@heasy/react-native-sunmi-printer'
-import { bluetoothDisabled, bluetoothEnabled, bluetoothStopScan, printerConnected, sunmiPrinterDetected } from '../../Restaurant/actions'
+import { bluetoothDisabled, bluetoothEnabled, bluetoothStopScan, printerConnected, sunmiPrinterDetected, bluetoothStarted } from '../../Restaurant/actions'
+import { canStartBluetooth } from '../../../utils/bluetooth'
 
 const BleManagerModule = NativeModules.BleManager
 const bleManagerEmitter = new NativeEventEmitter(BleManagerModule)
 
 export default ({ dispatch }) => {
 
-  BleManager.start({ showAlert: false })
-    .then(() => {
+  const didUpdateState = bleManagerEmitter.addListener('BleManagerDidUpdateState', ({ state }) => {
+    if (state === 'on') {
+      dispatch(bluetoothEnabled())
+    } else {
+      dispatch(bluetoothDisabled())
+    }
+  })
 
-      const didUpdateState = bleManagerEmitter.addListener('BleManagerDidUpdateState', ({ state }) => {
-        if (state === 'on') {
-          dispatch(bluetoothEnabled())
-        } else {
-          dispatch(bluetoothDisabled())
-        }
-      })
+  const connectPeripheral = bleManagerEmitter.addListener('BleManagerConnectPeripheral', (peripheral) => {
+    // TODO Dispatch action
+  })
 
-      const connectPeripheral = bleManagerEmitter.addListener('BleManagerConnectPeripheral', (peripheral) => {
-        // TODO Dispatch action
-      })
+  const stopScan = bleManagerEmitter.addListener('BleManagerStopScan', ({ state }) => {
+    dispatch(bluetoothStopScan())
+  })
 
-      const stopScan = bleManagerEmitter.addListener('BleManagerStopScan', ({ state }) => {
-        dispatch(bluetoothStopScan())
-      })
+  canStartBluetooth().then(canStart => {
 
-      // Check state on startup
-      BleManager.checkState()
+    if (!canStart) {
+      return
+    }
 
-      BleManager
-        .getConnectedPeripherals([])
-        // Even if the method is named "getConnectedPeripherals",
-        // the peripherals are actually not connected (?)
-        // We need to reconnect them anyways
-        .then(devices =>
-          devices.forEach(device =>
-            BleManager.connect(device.id)
-              .then(() => dispatch(printerConnected(device)))
+    BleManager.start({ showAlert: false })
+      .then(() => {
+
+        dispatch(bluetoothStarted())
+
+        // Check state on startup
+        BleManager.checkState()
+
+        BleManager
+          .getConnectedPeripherals([])
+          // Even if the method is named "getConnectedPeripherals",
+          // the peripherals are actually not connected (?)
+          // We need to reconnect them anyways
+          .then(devices =>
+            devices.forEach(device =>
+              BleManager.connect(device.id)
+                .then(() => dispatch(printerConnected(device)))
+            )
           )
-        )
 
-    })
+      })
+  })
 
   if (Platform.OS === 'android') {
     SunmiPrinter.hasPrinter()

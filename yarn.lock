@@ -12765,10 +12765,10 @@ react-native-background-geolocation@^4.9.3:
   dependencies:
     react-native-background-fetch "~4.1.5"
 
-react-native-ble-manager@^8.0.2:
-  version "8.0.2"
-  resolved "https://registry.yarnpkg.com/react-native-ble-manager/-/react-native-ble-manager-8.0.2.tgz#1fb7f00fabb412e563b903ee2c12df1736d52c3b"
-  integrity sha512-SCtuLFkBwKyPY0er3uKPcZaWUdSjJ3koDUlBvO/nS/WPbBBa2CJn+at/IXPolnxlV++jZqrOGV2qmENrq7ppZA==
+react-native-ble-manager@^8.4.4:
+  version "8.4.4"
+  resolved "https://registry.yarnpkg.com/react-native-ble-manager/-/react-native-ble-manager-8.4.4.tgz#954c7a7fa7187186d0b6dd72cfe15a7f7be6c4c0"
+  integrity sha512-C9cvP8BvpUAUU8cPuwJD/UEwIqcPqG4frUIWVKkEtBmQok3JcXedHC/po5BpHXOXKhSbLqUtqiQmDuh+FL3T/g==
 
 react-native-calendars@^1.1291.1:
   version "1.1291.1"
