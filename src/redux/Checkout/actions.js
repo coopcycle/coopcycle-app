@@ -1,7 +1,7 @@
 import { createAction } from 'redux-actions'
 import { CommonActions, StackActions } from '@react-navigation/native'
 import _ from 'lodash'
-import { createPaymentMethod, handleCardAction } from '@stripe/stripe-react-native'
+import { createPaymentMethod, handleNextAction } from '@stripe/stripe-react-native'
 
 import NavigationHolder from '../../NavigationHolder'
 import i18n from '../../i18n'
@@ -797,7 +797,7 @@ export function checkout(cardholderName) {
           .put(cart['@id'] + '/pay', { paymentMethodId: paymentMethod.id })
           .then(stripeResponse => {
             if (stripeResponse.requiresAction) {
-              handleCardAction(stripeResponse.paymentIntentClientSecret)
+              handleNextAction(stripeResponse.paymentIntentClientSecret)
                 .then(({ error, paymentIntent }) => {
                   if (error) {
                     dispatch(checkoutFailure(error))
