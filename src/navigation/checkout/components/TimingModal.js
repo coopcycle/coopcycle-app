@@ -179,6 +179,8 @@ class TimingModal extends Component{
     >
       <Heading size={'sm'}>{this.props.t('CHECKOUT_SCHEDULE_ORDER')}</Heading>
       <Divider />
+      {this.props.message && <Text marginBottom={50}>{this.props.message}</Text>}
+      {!this.props.message && <View marginBottom={30} />}
       {this.props.fulfillmentMethods.length > 1 &&
         <Button.Group isAttached colorScheme="orange" mx={{
         base: 'auto',
@@ -193,8 +195,6 @@ class TimingModal extends Component{
                 variant={this.props.cartFulfillmentMethod === 'collection' ? 'solid' : 'outline'}>
           {this.props.t('FULFILLMENT_METHOD.collection')}</Button>
       </Button.Group>}
-      {this.props.message && <Text marginBottom={50}>{this.props.message}</Text>}
-      {!this.props.message && <View marginBottom={30} />}
       <TimingCartSelect cart={this.props.cart}
                         cartFulfillmentMethod={this.props.cartFulfillmentMethod}
                      httpClient={this.props.httpClient}
