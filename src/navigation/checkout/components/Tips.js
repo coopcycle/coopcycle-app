@@ -9,7 +9,7 @@ const tipColor = 'blueGray.200'
 const pressedTipColor = 'blueGray.600'
 
 const TipCart = props => <Pressable disabled={props.disabled} onPress={props.onPress}>
-    <Avatar bg={props.bg} size={'md'} mr="1">
+    <Avatar bg={props.bg} size={'md'} mr="1" _text={{ color: props.textColor }}>
       {props.text}
     </Avatar>
   </Pressable>
@@ -24,7 +24,8 @@ function Tips(props) {
       key={index}
       text={formatPrice(value , { mantissa:0 })}
       onPress={() => setTip(value)}
-      bg={tip === value ? pressedTipColor : tipColor} />)
+      bg={tip === value ? pressedTipColor : tipColor}
+      textColor={tip !== value ? pressedTipColor : tipColor} />)
   }
 
     return <View padding={2}>
@@ -37,12 +38,16 @@ function Tips(props) {
           text={'-'}
           disabled={tip <= 0}
           onPress={() => setTip(tip - 100, true)}
-          bg={tipColor} />}
+          bg={tipColor}
+          textColor={pressedTipColor}
+        />}
 
         {advancedView && <TipCart
           disabled={true}
           text={formatPrice(tip, { mantissa: 0 })}
-          bg={pressedTipColor} />}
+          bg={pressedTipColor}
+          textColor={tipColor}
+        />}
 
         <TipCart
           text={'+'}
@@ -52,7 +57,9 @@ function Tips(props) {
             }
             setTip(tip + 100, true)
           }}
-          bg={tipColor} />
+          bg={tipColor}
+          textColor={pressedTipColor}
+        />
       </HStack>
       <Button
         onPress={() => props.onTip(tip)}
