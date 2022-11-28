@@ -9,19 +9,17 @@ export function getMissingAndroidPermissions() {
       return
     }
 
-    let wantedPermissions = []
+    let wantedPermissions = [
+      // Make sure we have "ACCESS_COARSE_LOCATION " or "ACCESS_FINE_LOCATION" permission or scan won't work
+      Platform.Version >= 29 ?
+          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION : PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION
+    ]
 
     if (Platform.Version >= 31) {
-      wantedPermissions = [
+      wantedPermissions.push(
         PermissionsAndroid.PERMISSIONS.BLUETOOTH_CONNECT,
         PermissionsAndroid.PERMISSIONS.BLUETOOTH_SCAN,
-      ];
-    } else {
-      // Make sure we have "ACCESS_COARSE_LOCATION " or "ACCESS_FINE_LOCATION" permission or scan won't work
-      wantedPermissions = [
-        Platform.Version >= 29 ?
-          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION : PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION
-      ]
+      );
     }
 
     Promise.all(
