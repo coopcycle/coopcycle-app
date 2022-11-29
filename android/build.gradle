@@ -88,6 +88,10 @@ allprojects {
           url 'https://artifacts.mercadolibre.com/repository/android-releases/'
         }
         jcenter()
+        maven {
+            // expo-camera bundles a custom com.google.android:cameraview
+            url "$rootDir/../node_modules/expo-camera/android/maven"
+        }
     }
 }
 

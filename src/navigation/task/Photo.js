@@ -1,12 +1,14 @@
 import React, { Component } from 'react'
 import { Dimensions, Image, StyleSheet, View } from 'react-native'
 import {
-  Button, Icon, Text, VStack,
+  Button, Icon, Text, VStack, IconButton,
 } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
-import { RNCamera } from 'react-native-camera'
+import { Camera, CameraType } from 'expo-camera'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
+import Ionicons from 'react-native-vector-icons/Ionicons'
+import AntDesign from 'react-native-vector-icons/AntDesign'
 
 import { addPicture } from '../../redux/Courier'
 
@@ -17,7 +19,38 @@ class Photo extends Component {
 
     this.state = {
       image: null,
+      canStartCamera: false,
+      canMountCamera: false,
+      flash: false,
     }
+
+    this.camera = React.createRef()
+  }
+
+  componentDidMount() {
+    this.unsubscribeFromFocusListener = this.props.navigation.addListener(
+      'focus',
+      () => {
+        this.setState({ canMountCamera: true })
+      }
+    )
+    this.unsubscribeFromBlurListener = this.props.navigation.addListener(
+      'blur',
+      () => {
+        this.setState({ canMountCamera: false })
+      }
+    )
+    Camera.requestCameraPermissionsAsync()
+      .then((permissionResponse) => {
+        if (permissionResponse.granted) {
+          this.setState({ canStartCamera: true })
+        }
+      })
+  }
+
+  componentWillUnmount() {
+    this.unsubscribeFromFocusListener()
+    this.unsubscribeFromBlurListener()
   }
 
   _saveImage() {
@@ -30,12 +63,16 @@ class Photo extends Component {
   }
 
   _takePicture() {
-    if (this.camera) {
+    if (this.camera.current) {
       const options = { quality: 0.5, base64: true };
-      this.camera.takePictureAsync(options).then(data => {
+      this.camera.current.takePictureAsync(options).then(data => {
         this.setState({ image: data })
       })
     }
+  }
+
+  toggleFlash() {
+    this.setState({ flash: !this.state.flash })
   }
 
   render() {
@@ -51,25 +88,29 @@ class Photo extends Component {
             { this.props.t('PHOTO_DISCLAIMER') }
           </Text>
           <View style={ styles.canvasContainer }>
-            <RNCamera
-              ref={ (ref) => { this.camera = ref }}
+            {/*
+            // Only one Camera preview can be active at any given time.
+            // If you have multiple screens in your app, you should unmount Camera components whenever a screen is unfocused.
+            */}
+            { (this.state.canMountCamera && this.state.canStartCamera) ? (
+            <Camera
+              ref={ this.camera }
               style={ styles.camera }
-              type={ RNCamera.Constants.Type.back }
-              androidCameraPermissionOptions={{
-                title: 'Permission to use camera',
-                message: 'We need your permission to use your camera',
-                buttonPositive: 'Ok',
-                buttonNegative: 'Cancel',
-              }}
-              captureAudio={ false }>
-              <Button style={ styles.takePictureBtn } light onPress={ this._takePicture.bind(this) }>
-                <Icon as={ FontAwesome } name="camera" />
-              </Button>
+              flashMode={ this.state.flash ? 'on' : 'off' }>
+              <IconButton onPress={ this.toggleFlash.bind(this) } variant="ghost" colorScheme="yellow" _icon={{
+                as: Ionicons,
+                name: this.state.flash ? "flash" : "flash-off"
+              }} style={ styles.flash } />
+              <IconButton onPress={ this._takePicture.bind(this) } size="lg" variant="solid" _icon={{
+                as: Ionicons,
+                name: "camera"
+              }} />
               <View style={ [ styles.preview, { width: previewSize, height: previewSize }] }>
-                { !image && ( <Icon as={ FontAwesome } name="picture-o" size="sm" /> ) }
+                { !image && ( <Icon as={ AntDesign } name="picture" size="lg" /> ) }
                 { image && ( <Image style={{ width: previewSize, height: previewSize }} source={{ uri: image.uri }} /> ) }
               </View>
-            </RNCamera>
+              </Camera>
+            ) : null }
           </View>
         </VStack>
         <VStack p="2">
@@ -97,11 +138,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 15,
   },
-  takePictureBtn: {
-    flex: 0,
-    alignSelf: 'center',
-    padding: 20,
-  },
   preview: {
     flex: 1,
     alignItems: 'center',
@@ -113,6 +149,11 @@ const styles = StyleSheet.create({
     top: 15,
     right: 15,
   },
+  flash: {
+    position: 'absolute',
+    top: 15,
+    left: 15,
+  }
 })
 
 function mapStateToProps (state) {
