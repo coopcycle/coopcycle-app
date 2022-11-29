@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Appearance, Dimensions, StyleSheet, TouchableHighlight, TouchableOpacity, View, useColorScheme } from 'react-native'
-import { HStack, Icon, Text, VStack } from 'native-base'
+import { HStack, Icon, Text, VStack, useTheme } from 'native-base'
 import { SwipeRow } from 'react-native-swipe-list-view'
 import PropTypes from 'prop-types'
 import moment from 'moment'
@@ -101,10 +101,12 @@ const SwipeButton = ({ iconName, width }) => (
 const ItemTouchable = ({ children, ...otherProps }) => {
 
   const colorScheme = useColorScheme()
+  const { colors } = useTheme()
 
   return (
     <TouchableHighlight
       style={{ backgroundColor: colorScheme === 'dark' ? 'black' : 'white' }}
+      underlayColor={ colorScheme === 'dark' ? colors.gray['700'] : colors.gray['200'] }
       { ...otherProps }>
       { children }
     </TouchableHighlight>
