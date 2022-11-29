@@ -378,17 +378,21 @@ class AddressAutocomplete extends Component {
         autoCorrect={ false }
         clearButtonMode="while-editing"
         { ...otherProps }
-        renderItem={ this.renderItem.bind(this) }
         data={ this.state.results }
         value={ this.state.query }
         placeholder={ finalPlaceholder }
         onChangeText={ this._onChangeText.bind(this) }
-        keyExtractor={ (item, i) => `prediction-${i}` }
         flatListProps={{
+          keyboardShouldPersistTaps: 'always',
+          keyExtractor: (item, i) => `prediction-${i}`,
+          renderItem: this.renderItem.bind(this),
           ItemSeparatorComponent: ItemSeparator,
           ListFooterComponent: (this.props.country === 'gb' ? PoweredByIdealPostcodes : PoweredByGoogle),
         }}
         renderTextInput={ props => this.renderTextInput(props) }
+        listContainerStyle={{
+          backgroundColor: colorScheme === 'dark' ? 'black' : 'white',
+        }}
         listStyle={{
           margin: 0,
           backgroundColor: colorScheme === 'dark' ? 'black' : 'white',
