@@ -15,7 +15,7 @@
     "@heasy/react-native-sunmi-printer": "^1.5.3",
     "@invertase/react-native-apple-authentication": "^2.1.5",
     "@mapbox/polyline": "^1.1.1",
-    "@react-native-community/async-storage": "^1.12.1",
+    "@react-native-async-storage/async-storage": "^1.17.11",
     "@react-native-community/datetimepicker": "^6.7.1",
     "@react-native-community/netinfo": "^9.3.4",
     "@react-native-community/push-notification-ios": "^1.10.1",
