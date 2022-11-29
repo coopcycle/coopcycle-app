@@ -92,7 +92,7 @@ function mapDispatchToProps(dispatch) {
   return {
     showAddressModal: reason => dispatch(showAddressModal(reason)),
     hideAddressModal: () => dispatch(hideAddressModal()),
-    generateInvoice: (order, address) => dispatch(generateInvoice(order, address, true)),
+    generateInvoice: (order, address) => dispatch(generateInvoice(order, address)),
     shareInvoice: order => dispatch(shareInvoice(order)),
   }
 }
