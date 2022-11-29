@@ -174,7 +174,7 @@ class OrderTrackingPage extends Component {
         padding: 5,
         marginBottom: 20,
       }}>
-        <Button onPress={()=>this.props.navigation.navigate('AccountOrder', { order }) }>{i18n.t('SHOW_ORDER_DETAILS')}</Button>
+        <Button onPress={()=>this.props.navigation.navigate('AccountOrder', { order: order.number }) }>{i18n.t('SHOW_ORDER_DETAILS')}</Button>
         <Button onPress={()=>phonecall(this.props.phoneNumber, true)} size={'sm'} variant="link" leftIcon={<Icon as={Ionicons} name="help-buoy-outline" size="xs" />}>
           {i18n.t('HELP')}
         </Button>
