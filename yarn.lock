@@ -1684,10 +1684,10 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@blackbox-vision/react-native-mercadopago-px@^0.7.2":
-  version "0.7.2"
-  resolved "https://registry.yarnpkg.com/@blackbox-vision/react-native-mercadopago-px/-/react-native-mercadopago-px-0.7.2.tgz#ebfdf79106bebc1ee4a97129322149ae3ec3c550"
-  integrity sha512-NOULPf0b3c8yws4YI8bXmp1ATkmPErk8sK4s+uMhxemAzNfq7If1y465CE2t3Ng6LKmpJZMw2K8A430piHaksQ==
+"@blackbox-vision/react-native-mercadopago-px@^0.8.0":
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/@blackbox-vision/react-native-mercadopago-px/-/react-native-mercadopago-px-0.8.0.tgz#143ba860f11cfd1a79baf0baf4b00172bf7b699b"
+  integrity sha512-ku6hhEmdxljGkJVXJMuYlb5ZG5QKpqSxyADLcllq0a/c1KZ5O4/5U4wPesRgeKOilFey9hiQIWthORUhu6rJGw==
 
 "@cnakazawa/watch@^1.0.3":
   version "1.0.4"
@@ -12755,13 +12755,6 @@ react-native-calendars@^1.1291.1:
   optionalDependencies:
     moment "^2.24.0"
 
-react-native-camera@^3.44.3:
-  version "3.44.3"
-  resolved "https://registry.yarnpkg.com/react-native-camera/-/react-native-camera-3.44.3.tgz#f8f35f2484e508b0694dee54a8801a1e0833d851"
-  integrity sha512-Efb5aKhFsE7qnqvTnbSEwFAom79L5BT4jMn+B2wYVUnZeRgWh45gNSG7Ou3MQ6zU2DpUHBPlBFKGVS5yOSfSZQ==
-  dependencies:
-    prop-types "^15.6.2"
-
 react-native-clean-project@^3.6.7:
   version "3.6.7"
   resolved "https://registry.yarnpkg.com/react-native-clean-project/-/react-native-clean-project-3.6.7.tgz#6d22ad22fe3a1e6efdb040eb66f9bdfb2273ac2e"
@@ -13004,6 +12997,11 @@ react-native-version-number@^0.3.6:
   version "0.3.6"
   resolved "https://registry.yarnpkg.com/react-native-version-number/-/react-native-version-number-0.3.6.tgz#dd8b1435fc217df0a166d7e4a61fdc993f3e7437"
   integrity sha512-TdyXiK90NiwmSbmAUlUBOV6WI1QGoqtvZZzI5zQY4fKl67B3ZrZn/h+Wy/OYIKKFMfePSiyfeIs8LtHGOZ/NgA==
+
+react-native-vision-camera@^2.15.2:
+  version "2.15.2"
+  resolved "https://registry.yarnpkg.com/react-native-vision-camera/-/react-native-vision-camera-2.15.2.tgz#96a17c8b4e557df317734897853a861e0cfbc3ed"
+  integrity sha512-pkVj0r2nbZaj3+bB9CGPNistCUyoCgS2SmawzugrZs5oMlFWlgZYuJj+6s3Q98xTGgV/8/ST0njohB6soDi0VA==
 
 react-native-webview@^11.23.1:
   version "11.23.1"

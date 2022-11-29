@@ -186,7 +186,6 @@ android {
             googleMapsApiKey: project.env.get("GOOGLE_MAPS_ANDROID_KEY"),
             transistorsoftLicenseKey: project.env.get("TRANSISTORSOFT_LICENSE_KEY")
         ]
-        missingDimensionStrategy 'react-native-camera', 'general'
 
         testBuildType System.getProperty('testBuildType', 'debug')  // This will later be used to control the test apk build type
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'

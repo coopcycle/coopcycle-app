@@ -17,7 +17,7 @@ buildscript {
         googlePlayServicesVisionVersion = "17.0.2"
         firebaseVersion = "17.2.1"
         timberVersion = "4.7.1"
-        kotlinVersion = "1.6.10"
+        kotlinVersion = "1.7.21"
         androidXCore = "1.0.2"
         googlePlayServicesLocationVersion = "21.0.1"
         appCompatVersion = "1.4.2"

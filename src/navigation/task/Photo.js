@@ -5,7 +5,7 @@ import {
 } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
-import { RNCamera } from 'react-native-camera'
+// import { RNCamera } from 'react-native-camera'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
 import { addPicture } from '../../redux/Courier'
@@ -51,6 +51,7 @@ class Photo extends Component {
             { this.props.t('PHOTO_DISCLAIMER') }
           </Text>
           <View style={ styles.canvasContainer }>
+            {/*
             <RNCamera
               ref={ (ref) => { this.camera = ref }}
               style={ styles.camera }
@@ -70,6 +71,7 @@ class Photo extends Component {
                 { image && ( <Image style={{ width: previewSize, height: previewSize }} source={{ uri: image.uri }} /> ) }
               </View>
             </RNCamera>
+            */}
           </View>
         </VStack>
         <VStack p="2">

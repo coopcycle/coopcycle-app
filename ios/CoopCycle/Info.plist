@@ -109,7 +109,7 @@
 	<key>NSBluetoothPeripheralUsageDescription</key>
 	<string>App would like to use bluetooth</string>
 	<key>NSCameraUsageDescription</key>
-	<string>App requires access to camera</string>
+	<string>$(PRODUCT_NAME) requires access to camera</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>This allows us to track your location in realtime while delivering, to be visible by dispatchers</string>
 	<key>NSLocationAlwaysUsageDescription</key>
