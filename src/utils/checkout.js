@@ -2,7 +2,9 @@ import moment from 'moment'
 import i18n from '../i18n'
 import _ from 'lodash';
 
-const DIFF_REGEXP = /^(?<min>[0-9]+) - (?<max>[0-9]+)$/
+// Do not use named capturing groups as it's not supported by Hermes
+// https://github.com/facebook/hermes/issues/46
+const DIFF_REGEXP = /^([0-9]+) - ([0-9]+)$/
 
 function round5(x) {
   return Math.ceil(x / 5) * 5
@@ -22,9 +24,9 @@ function timingAsText(timing, now) {
   if (timing.fast) {
 
     if (timing.diff && DIFF_REGEXP.test(timing.diff)) {
-      const { groups: { min, max } } = DIFF_REGEXP.exec(timing.diff)
+      const result = DIFF_REGEXP.exec(timing.diff)
 
-      return i18n.t('TIME_DIFF_SHORT', { min, max })
+      return i18n.t('TIME_DIFF_SHORT', { min: result[1], max: result[2] })
     }
 
     const diffMinutes = lower.diff(now, 'minutes')
