@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Appearance, Dimensions, StyleSheet, TouchableHighlight, TouchableOpacity, View, useColorScheme } from 'react-native'
+import { Dimensions, StyleSheet, TouchableHighlight, TouchableOpacity, View, useColorScheme } from 'react-native'
 import { HStack, Icon, Text, VStack, useTheme } from 'native-base'
 import { SwipeRow } from 'react-native-swipe-list-view'
 import PropTypes from 'prop-types'
@@ -122,7 +122,6 @@ class TaskListItem extends Component {
 
   render() {
 
-    const colorScheme = Appearance.getColorScheme()
     const { color, task, index } = this.props
 
     const itemStyle = []

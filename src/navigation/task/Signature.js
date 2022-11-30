@@ -62,7 +62,7 @@ class Signature extends Component {
             <SignatureScreen
               ref={ this.signatureRef }
               imageType="image/jpeg"
-              backgroundColor='rgba(255, 255, 255)'
+              backgroundColor="rgba(255, 255, 255)"
               onOK={this.handleOK.bind(this)}
               webStyle={signatureStyle} />
           </View>
