@@ -1,6 +1,6 @@
 import React from 'react'
 import { Dimensions, StyleSheet, TouchableOpacity, View } from 'react-native'
-import { Icon, Text } from 'native-base'
+import { Icon, Text, HStack, useTheme } from 'native-base'
 import { SwipeRow } from 'react-native-swipe-list-view'
 import { withTranslation } from 'react-i18next'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
@@ -26,6 +26,7 @@ const RightButton = ({ width }) => (
 const CompleteButton = React.forwardRef((props, ref) => {
 
   const { task, onPressSuccess, onPressFailure, t } = props
+  const { colors } = useTheme()
 
   const { width } = Dimensions.get('window')
 
@@ -57,9 +58,9 @@ const CompleteButton = React.forwardRef((props, ref) => {
 
   return (
     <View>
-      <View style={{ paddingVertical: 10, paddingHorizontal: 15 }}>
-        <Text style={styles.swipeOutHelpText}>{ t('SWIPE_TO_END') }</Text>
-      </View>
+      <HStack px="3" py="2">
+        <Text fontSize="xs" color="muted.500">{ t('SWIPE_TO_END') }</Text>
+      </HStack>
       <SwipeRow
         leftOpenValue={ buttonWidth }
         stopLeftSwipe={ buttonWidth + 25 }
@@ -79,8 +80,8 @@ const CompleteButton = React.forwardRef((props, ref) => {
             <RightButton width={ buttonWidth } />
           </TouchableOpacity>
         </View>
-        <View style={{ padding: 28, width, backgroundColor: '#dedede' }} testID="task:completeButton">
-          <Text style={{ fontSize: 20, textAlign: 'center', color: '#fff', fontFamily: 'Raleway-Regular' }}>
+        <View style={{ padding: 28, width, backgroundColor: colors.muted['400'] }} testID="task:completeButton">
+          <Text style={{ fontSize: 20, textAlign: 'center', color: '#fff' }}>
             { t('COMPLETE_TASK') }
           </Text>
         </View>
@@ -98,18 +99,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'row',
-  },
-  swipeOutHelpContainer: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderTopColor: '#ccc',
-    borderTopWidth: StyleSheet.hairlineWidth,
-  },
-  swipeOutHelpText: {
-    fontSize: 12,
-    textAlign: 'center',
-    color: '#ccc',
   },
   rowBack: {
     flex: 1,
