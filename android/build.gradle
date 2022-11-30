@@ -22,6 +22,7 @@ buildscript {
         googlePlayServicesLocationVersion = "21.0.1"
         appCompatVersion = "1.4.2"
         mercadoPagoPxVersion = "4.53.2"
+        reactNativeVersion = "0.70.6" // https://github.com/expo/expo/issues/18129
     }
     repositories {
         // Gradle 4.1 and higher include support for Google's Maven repo using
