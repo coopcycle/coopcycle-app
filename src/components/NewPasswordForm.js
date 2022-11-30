@@ -125,8 +125,12 @@ class NewPasswordForm extends React.Component {
                     returnKeyType="next"
                     onSubmitEditing={event => {
                       let index = inputs.findIndex(el => el.name === input.name);
-                      let nextInputName = inputs[index + 1].name;
-                      this._inputComponents.get(nextInputName).focus();
+                      if (inputs.length >= (index + 2)) {
+                        let nextInputName = inputs[index + 1].name;
+                        this._inputComponents.get(nextInputName).focus();
+                      } else {
+                        this._onSubmit()
+                      }
                     }}
                   />
                 </FormControl>
