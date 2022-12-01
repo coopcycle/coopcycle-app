@@ -17,7 +17,7 @@ import {
 
 // As we may be using setTimeout(), we need to mock timers
 // @see https://jestjs.io/docs/en/timer-mocks.html
-jest.useFakeTimers();
+jest.useFakeTimers({ legacyFakeTimers: true });
 
 // https://github.com/dmitry-zaets/redux-mock-store#asynchronous-actions
 const middlewares = [thunk]

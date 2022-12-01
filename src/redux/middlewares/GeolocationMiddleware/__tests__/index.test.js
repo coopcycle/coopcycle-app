@@ -17,6 +17,10 @@ BackgroundGeolocation.onEnabledChange.mockImplementation((callback) => {
   onEnabledChangeCallback = callback
 })
 
+// As we may be using setTimeout(), we need to mock timers
+// @see https://jestjs.io/docs/en/timer-mocks.html
+jest.useFakeTimers({ legacyFakeTimers: true });
+
 describe('GeolocationMiddleware', () => {
 
   afterEach(() => {
@@ -82,6 +86,7 @@ describe('GeolocationMiddleware', () => {
       BackgroundGeolocation.start.mockImplementation((callback) => {
         onEnabledChangeCallback(true)
         callback()
+        jest.runAllTimers()
       })
       BackgroundGeolocation.changePace.mockImplementation((moving) => {
         resolve()
