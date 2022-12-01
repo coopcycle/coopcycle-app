@@ -34,3 +34,16 @@
 # https://reactnative.dev/docs/hermes
 -keep class com.facebook.hermes.unicode.** { *; }
 -keep class com.facebook.jni.** { *; }
+
+# https://github.com/expo/expo/issues/20122
+# https://github.com/expo/expo/pull/20197
+-keepclassmembers class * implements expo.modules.kotlin.views.ExpoView {
+  public <init>(android.content.Context);
+  public <init>(android.content.Context, expo.modules.kotlin.AppContext);
+}
+-keepclassmembers class * {
+  expo.modules.kotlin.viewevent.ViewEventCallback *;
+}
+-keepclassmembers class * {
+  expo.modules.kotlin.viewevent.ViewEventDelegate *;
+}
