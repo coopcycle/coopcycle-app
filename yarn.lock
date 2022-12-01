@@ -6772,9 +6772,9 @@ caseless@^0.12.0:
   integrity sha1-G2gcIf+EAzyCZUMJBolCDRhxUdw=
 
 centrifuge@^2.8.4:
-  version "2.8.4"
-  resolved "https://registry.yarnpkg.com/centrifuge/-/centrifuge-2.8.4.tgz#31a10eb4ee95d873193355d315d3af8e0a50dcea"
-  integrity sha512-G/MoyiGEjn4i56K9kZMlIXhYzJpmfs7MuwzVBAQFJEF9IVlXgMQZKz6GLvWbD4DLq9AIpdkxGmQn37HvdQD/qA==
+  version "2.8.5"
+  resolved "https://registry.yarnpkg.com/centrifuge/-/centrifuge-2.8.5.tgz#94accdd105ddffe026f05994eaedc21e1ba82339"
+  integrity sha512-t06HyieeB2k7uSJSbVM4e7xMF+mfY8xvDtTJLF95ho0ba/X4MSoZcisi2PBzdCLyxG2BhkYW1Wcg6RUiPYTIlQ==
   dependencies:
     protobufjs "^6.11.2"
 
