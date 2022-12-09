@@ -96,11 +96,6 @@ platform :android do
     # but Supply.config is not initialized here
     supply_config = FastlaneCore::Configuration.create(Supply::Options.available_options, {})
 
-    if not ENV.has_key?("COOPCYCLE_PACKAGE_NAME")
-      puts "No custom package name, skipping. You should define the COOPCYCLE_PACKAGE_NAME env var."
-      next
-    end
-
     app_name = ENV["COOPCYCLE_APP_NAME"]
     package_name = supply_config[:package_name]
 
