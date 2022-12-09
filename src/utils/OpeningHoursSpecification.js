@@ -213,9 +213,10 @@ export default class OpeningHoursSpecification {
   /**
    * Check if the store is open at the given time
    * @param date
+   * @param offset
    * @returns {null|{allOpens: boolean, days}|boolean}
    */
-  isOpen(date: Moment[]|Moment|string|string[]|null): boolean[]|boolean|null {
+  isOpen(date: Moment[]|Moment|string|string[]|null, offset: Number|null = null): boolean[]|boolean|null {
     if (date === null) {
       return null
     }
@@ -234,6 +235,10 @@ export default class OpeningHoursSpecification {
     const day = this.forDay(date)
     for (let slot of day.ranges) {
       const { opens, closes } = OpeningHoursSpecification.parseRange(slot, day.moment)
+      if (offset !== null) {
+        opens.add(offset * -1, 'minute')
+        closes.add(offset, 'minute')
+      }
 
       if (date.isBetween(opens, closes, 'minute')) {
         return true

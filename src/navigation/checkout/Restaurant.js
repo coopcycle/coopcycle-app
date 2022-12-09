@@ -51,7 +51,7 @@ function Restaurant(props) {
   const { navigate } = props.navigation
   const colorScheme = useColorScheme()
   const [ infoModal, setInfoModal ] = useState(false)
-  const { showFooter, httpClient, restaurant, openingHoursSpecification, cartContainer, showTimingModal } = props
+  const { showFooter, httpClient, restaurant, openingHoursSpecification, cartContainer, showTimingModal, offset } = props
 
   useFocusEffect(
     useCallback(() => {
@@ -80,6 +80,7 @@ function Restaurant(props) {
         cart: cartContainer,
         openingHoursSpecification,
         timeSlot: currentTimeSlot,
+        offset,
       })
     ) {
       showTimingModal({
@@ -87,7 +88,7 @@ function Restaurant(props) {
         message: i18n.t('CHECKOUT_PICK_DATE'),
       })
     }
-  }, [ cartContainer, currentTimeSlot, openingHoursSpecification, showTimingModal ])
+  }, [ cartContainer, currentTimeSlot, openingHoursSpecification, showTimingModal, offset ])
 
   //TODO: improve failed view
   if (isError) {
@@ -230,6 +231,7 @@ function mapStateToProps(state, ownProps) {
   const { restaurant, openingHoursSpecification } = selectRestaurant(state)
   const cartContainer = selectCart(state)
   const cart = cartContainer?.cart
+  const { average_preparation_time, average_shipping_time } = state.app.settings
   const cartLoading = _.includes(state.checkout.loadingCarts, restaurant)
   const isCartEmpty = !selectCart(state).cart ? true : cart.items.length === 0
 
@@ -246,6 +248,7 @@ function mapStateToProps(state, ownProps) {
     httpClient: state.app.httpClient,
     fulfillmentMethods: selectFulfillmentMethods(state),
     fulfillmentMethod: selectCartFulfillmentMethod(state),
+    offset: average_preparation_time + average_shipping_time,
   }
 }
 

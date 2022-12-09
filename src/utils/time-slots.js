@@ -155,7 +155,7 @@ export function humanizeTaskTime(task, now) {
   return makeLabel(range, now)
 }
 
-export function isCartTimingValid({ cart, openingHoursSpecification, timeSlot }) {
+export function isCartTimingValid({ cart, openingHoursSpecification, timeSlot, offset }) {
   let { cart: { shippedAt } } = cart
   if (
     timeSlot.state === OpeningHoursSpecification.STATE.Closed &&
@@ -171,12 +171,12 @@ export function isCartTimingValid({ cart, openingHoursSpecification, timeSlot })
   }
   shippedAt = moment(shippedAt)
 
-  if (shippedAt.isBefore(moment(), 'minute')) {
+  if (shippedAt.isBefore(moment().add(offset * -1, 'minute'), 'minute')) {
     console.log('[isCartTimingValid]: shippedAt is defined to a passed date')
     return false
   }
 
-  if (!openingHoursSpecification.isOpen(shippedAt)) {
+  if (!openingHoursSpecification.isOpen(shippedAt, offset)) {
     console.log('[isCartTimingValid]: shippedAt is defined on a closed schedule')
     return false
   }

@@ -360,8 +360,8 @@ class Summary extends Component {
                          this.props.validate(cart)
                          showModal(false)
                        })}
-                     onRefresh={({ showModal, cart, openingHoursSpecification, timeSlot }) => {
-                       if (!isCartTimingValid({ cart, openingHoursSpecification, timeSlot })
+                     onRefresh={({ showModal, cart, openingHoursSpecification, timeSlot, offset }) => {
+                       if (!isCartTimingValid({ cart, openingHoursSpecification, timeSlot, offset })
                             && !modalSkipped) {
                          showModal({
                            displayed: true,

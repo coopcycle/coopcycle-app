@@ -103,8 +103,8 @@ class CreditCard extends Component {
             placement: 'top',
           })
         }}
-        onRefresh={({ cart, openingHoursSpecification, timeSlot }) => {
-          if (!isCartTimingValid({ cart, openingHoursSpecification, timeSlot })) {
+        onRefresh={({ cart, openingHoursSpecification, timeSlot, offset }) => {
+          if (!isCartTimingValid({ cart, openingHoursSpecification, timeSlot, offset })) {
             this.setState({ disabled: true })
             this.props.navigation.navigate('Cart')
           }

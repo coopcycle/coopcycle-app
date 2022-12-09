@@ -145,6 +145,7 @@ class TimingModal extends Component{
       openingHoursSpecification: this.props.openingHoursSpecification,
       cart: this.props.cart,
       showModal: this.showModal,
+      offset: this.props.offset,
     })
 
     this.setState({
@@ -250,10 +251,12 @@ TimingModal.propTypes = {
 
 function mapStateToProps(state) {
   const { displayed, message } = state.checkout.timingModal
+  const { average_preparation_time, average_shipping_time } = state.app.settings
   return {
     httpClient: selectHttpClient(state),
     timingModal: displayed,
     message,
+    offset: average_preparation_time + average_shipping_time,
   }
 }
 
