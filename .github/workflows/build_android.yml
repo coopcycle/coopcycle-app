@@ -7,6 +7,7 @@ jobs:
     uses: ./.github/workflows/fastlane_android.yml
     secrets: inherit
   naofood:
+    if: false
     name: Build Naofood app
     uses: ./.github/workflows/fastlane_android.yml
     with:
@@ -16,4 +17,16 @@ jobs:
       primary_color: "#f8781f"
       package_name: fr.naofood.client
       checkout_search_enabled: '1'
+    secrets: inherit
+  zampate:
+    if: false
+    name: Build Zampate app
+    uses: ./.github/workflows/fastlane_android.yml
+    with:
+      instance: zampate
+      instance_url: https://zampate.coopcycle.org
+      app_name: Zampate
+      primary_color: "#d02e26"
+      package_name: fr.coopcycle.zampate
+      checkout_search_enabled: '0'
     secrets: inherit
