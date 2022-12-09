@@ -31,8 +31,26 @@ platform :android do
 
   desc "Build a new version for the Google Play"
   lane :build do
+
+    # Not sure it's the best way to retrieve resolved config...
+    # but Supply.config is not initialized here
+    supply_config = FastlaneCore::Configuration.create(Supply::Options.available_options, {})
+
+    default_package_name = CredentialsManager::AppfileConfig.try_fetch_value(:package_name)
+    package_name = supply_config[:package_name]
+
+    gradle_task = "bundleOfficialRelease"
+    artifact_filepath = "officialRelease/app-official-release"
+
+    if package_name != default_package_name
+      generate_icons
+      rename_app
+      gradle_task = "bundleInstanceRelease"
+      artifact_filepath = "instanceRelease/app-instance-release"
+    end
+
     gradle(
-      task: "clean bundleOfficialRelease",
+      task: "clean #{gradle_task}",
       properties: {
         "android.injected.signing.store.file" => ENV["ANDROID_STORE_FILE"],
         "android.injected.signing.store.password" => ENV["ANDROID_STORE_PASSWORD"],
@@ -45,8 +63,8 @@ platform :android do
       ks_password: ENV["ANDROID_STORE_PASSWORD"],
       ks_key_alias: ENV["ANDROID_KEY_ALIAS"],
       ks_key_alias_password: ENV["ANDROID_KEY_PASSWORD"],
-      aab_path: "app/build/outputs/bundle/officialRelease/app-official-release.aab",
-      apk_output_path: "app/build/outputs/apk/officialRelease/app-official-release.apk",
+      aab_path: "app/build/outputs/bundle/#{artifact_filepath}.aab",
+      apk_output_path: "app/build/outputs/apk/#{artifact_filepath}.apk",
       verbose: true
     )
   end
