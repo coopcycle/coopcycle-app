@@ -80,7 +80,10 @@ platform :android do
     build()
     upload_to_play_store(
       skip_upload_apk: true,
-      skip_upload_metadata: true
+      skip_upload_metadata: true,
+      skip_upload_changelogs: true,
+      skip_upload_images: true,
+      skip_upload_screenshots: true
     )
   end
 
