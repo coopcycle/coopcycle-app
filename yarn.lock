@@ -12440,15 +12440,20 @@ react-native-autocomplete-input@^5.2.0:
   dependencies:
     deprecated-react-native-prop-types "^2.3.0"
 
-react-native-background-fetch@^4.1.5, react-native-background-fetch@~4.1.5:
+react-native-background-fetch@^4.1.6:
+  version "4.1.6"
+  resolved "https://registry.yarnpkg.com/react-native-background-fetch/-/react-native-background-fetch-4.1.6.tgz#f31b371a018a292c9b24354e0f698b3c0ac687e9"
+  integrity sha512-vnQOLcPnyuu0sMUZ+JuIsJmBrvPzar1p9ZT4sO+bYViEtr+lSHrnBZRTV7lpAAtlhtZaefKIhKrmDt173Dktsw==
+
+react-native-background-fetch@~4.1.5:
   version "4.1.5"
   resolved "https://registry.yarnpkg.com/react-native-background-fetch/-/react-native-background-fetch-4.1.5.tgz#1ada72e5ea4e77539338a633f5eca5f8fd6a7a65"
   integrity sha512-fi1fE59lw2pMkhy8O2svpo21AkaUnkuP8/8Ru2FrzJ+oJ9Qe8uh9Lh96caN75Bax06sLmR4WkhP0cRHcUp/wpQ==
 
-react-native-background-geolocation@^4.9.3:
-  version "4.9.3"
-  resolved "https://registry.yarnpkg.com/react-native-background-geolocation/-/react-native-background-geolocation-4.9.3.tgz#a7d33e549b3a67044717c0ae4fbe86f560ea542e"
-  integrity sha512-AlAuqNfHHJJ3x+vxtgNaFjC8tN1sVj1yPqcU5FQ4GamZDkrqE6hlfhGAnyHSR95jfn6rsL13LiyKSQaJt5HGSQ==
+react-native-background-geolocation@^4.9.4:
+  version "4.9.4"
+  resolved "https://registry.yarnpkg.com/react-native-background-geolocation/-/react-native-background-geolocation-4.9.4.tgz#7e5ae40b13a25a0080ac87b3e3256522638bb24c"
+  integrity sha512-Pf2MfnrZhpVTcK868SmevIQLLxse76Q5QREQhFdCkzje70i+zissosKIRtf5uh4gsLpBM+RBeSuIMfQhY7iL2A==
   dependencies:
     react-native-background-fetch "~4.1.5"
 

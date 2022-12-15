@@ -736,9 +736,9 @@ PODS:
     - React-Core
   - RNAppleAuthentication (2.1.5):
     - React-Core
-  - RNBackgroundFetch (4.1.5):
+  - RNBackgroundFetch (4.1.6):
     - React-Core
-  - RNBackgroundGeolocation (4.9.3):
+  - RNBackgroundGeolocation (4.9.4):
     - CocoaLumberjack (~> 3.7.2)
     - React-Core
   - RNCAsyncStorage (1.17.11):
@@ -1271,8 +1271,8 @@ SPEC CHECKSUMS:
   ReactNativeKeyboardManager: f82a63e0982254fb0f6a17ba327fac575a46f1e9
   rn-fetch-blob: f065bb7ab7fb48dd002629f8bdcb0336602d3cba
   RNAppleAuthentication: 63c2127ace11985b94f852fc480eb84145653712
-  RNBackgroundFetch: 0d378f04faa1244f6eb3787f51f7d99520c1fe5e
-  RNBackgroundGeolocation: 6257657303021fb42a023af00426579bf996f7a4
+  RNBackgroundFetch: aec9df762e78197009b89fe96f9ba3e2eb3268b3
+  RNBackgroundGeolocation: 8f64068cbcd2b249ca6f57cde9557c50480a9b8b
   RNCAsyncStorage: 8616bd5a58af409453ea4e1b246521bb76578d60
   RNCMaskedView: bc0170f389056201c82a55e242e5d90070e18e5a
   RNCPicker: cb57c823d5ce8d2d0b5dfb45ad97b737260dc59e
@@ -1302,6 +1302,6 @@ SPEC CHECKSUMS:
   Yoga: 99caf8d5ab45e9d637ee6e0174ec16fbbb01bcfc
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: a70cd97249bee7e08c66aa5d8faeabee33d0bce9
+PODFILE CHECKSUM: 795306e9102692b6e9413c39c67e29c601ad3f2b
 
 COCOAPODS: 1.11.3
