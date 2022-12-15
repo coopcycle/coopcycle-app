@@ -12,6 +12,7 @@ on:
       app_name:
         type: string
         required: false
+        default: "CoopCycle"
       primary_color:
         type: string
         required: false
@@ -19,11 +20,19 @@ on:
       package_name:
         type: string
         required: false
-        default: ""
+        default: "fr.coopcycle"
       checkout_search_enabled:
         type: string
         required: false
         default: "0"
+      keystore_key_alias:
+        type: string
+        required: false
+        default: "coopcycle"
+      keystore_key_password_secret:
+        type: string
+        required: false
+        default: "SIGNING_KEY_PASSWORD"
 jobs:
   FASTLANE:
     name: Release Android app with Fastlane
@@ -90,17 +99,15 @@ jobs:
         working-directory: android/
         run: bundle install
       - run: yarn install
-      - name: Generate icons
-        if: ${{ inputs.instance != '' }}
+      - name: Run Fastlane
         working-directory: android/
-        run: bundle exec fastlane generate_icons
+        run: bundle exec fastlane build
         env:
+          ANDROID_STORE_FILE: ${{ steps.android_keystore.outputs.filePath }}
+          ANDROID_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ inputs.keystore_key_alias }}
+          ANDROID_KEY_PASSWORD: ${{ secrets[inputs.keystore_key_password_secret] }}
+          ANDROID_JSON_KEY_FILE: ${{ steps.android_play_store_credentials.outputs.filePath }}
           APPICON_IMAGE_FILE: "fastlane/metadata-${{ inputs.instance }}/app_icon.png"
-      - name: Rename app
-        if: ${{ inputs.app_name != '' }}
-        working-directory: android/
-        run: bundle exec fastlane rename_app
-        env:
+          SUPPLY_PACKAGE_NAME: ${{ inputs.package_name }}
           COOPCYCLE_APP_NAME: ${{ inputs.app_name }}
-          COOPCYCLE_PACKAGE_NAME: ${{ inputs.package_name }}
-      - run: git status

@@ -17,9 +17,11 @@ jobs:
       primary_color: "#f8781f"
       package_name: fr.naofood.client
       checkout_search_enabled: '1'
+      keystore_key_alias: naofood
+      keystore_key_password_secret: SIGNING_KEY_PASSWORD_NAOFOOD
     secrets: inherit
   zampate:
-    if: false
+    if: true
     name: Build Zampate app
     uses: ./.github/workflows/fastlane_android.yml
     with:
@@ -29,4 +31,6 @@ jobs:
       primary_color: "#d02e26"
       package_name: fr.coopcycle.zampate
       checkout_search_enabled: '0'
+      keystore_key_alias: instance
+      keystore_key_password_secret: SIGNING_KEY_PASSWORD_INSTANCE
     secrets: inherit
