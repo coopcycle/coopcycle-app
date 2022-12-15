@@ -12,7 +12,7 @@ import { bootstrap, closeModal, resetModal, resetServer, setServers } from '../r
 import HomeNavigator from './navigators/HomeNavigator'
 import DrawerNavigator from './navigators/DrawerNavigator'
 import Modal from 'react-native-modal';
-import CustomOnboarding from './home/CustomOnboarding';
+import CustomOnboarding, { hasCustomOnboarding } from './home/CustomOnboarding';
 import Config from 'react-native-config';
 
 class Loading extends Component {
@@ -101,7 +101,7 @@ class Loading extends Component {
       return this.renderError()
     }
 
-    if (this.props.customBuild && this.props.firstRun) {
+    if (this.props.customBuild && this.props.firstRun && hasCustomOnboarding()) {
       return <CustomOnboarding/>
     }
 

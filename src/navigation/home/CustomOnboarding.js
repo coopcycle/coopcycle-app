@@ -85,4 +85,9 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
+export function hasCustomOnboarding() {
+
+  return onboardingParams.hasOwnProperty(Config.DEFAULT_SERVER)
+}
+
 export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(CustomOnboarding))
