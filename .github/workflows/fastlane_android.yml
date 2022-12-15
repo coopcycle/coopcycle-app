@@ -111,3 +111,8 @@ jobs:
           APPICON_IMAGE_FILE: "fastlane/metadata-${{ inputs.instance }}/app_icon.png"
           SUPPLY_PACKAGE_NAME: ${{ inputs.package_name }}
           COOPCYCLE_APP_NAME: ${{ inputs.app_name }}
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: release.apk
+          path: android/app/build/outputs/apk/**/*.apk
