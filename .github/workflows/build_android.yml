@@ -19,6 +19,7 @@ jobs:
       checkout_search_enabled: '1'
       keystore_key_alias: naofood
       keystore_key_password_secret: SIGNING_KEY_PASSWORD_NAOFOOD
+      google_play_track: internal
     secrets: inherit
   zampate:
     if: true
@@ -33,4 +34,5 @@ jobs:
       checkout_search_enabled: '0'
       keystore_key_alias: instance
       keystore_key_password_secret: SIGNING_KEY_PASSWORD_INSTANCE
+      google_play_track: beta
     secrets: inherit

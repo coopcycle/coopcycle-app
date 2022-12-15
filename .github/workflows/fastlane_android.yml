@@ -33,6 +33,10 @@ on:
         type: string
         required: false
         default: "SIGNING_KEY_PASSWORD"
+      google_play_track:
+        type: string
+        required: false
+        default: "production"
 jobs:
   FASTLANE:
     name: Release Android app with Fastlane
@@ -110,6 +114,7 @@ jobs:
           ANDROID_JSON_KEY_FILE: ${{ steps.android_play_store_credentials.outputs.filePath }}
           APPICON_IMAGE_FILE: "fastlane/metadata-${{ inputs.instance }}/app_icon.png"
           SUPPLY_PACKAGE_NAME: ${{ inputs.package_name }}
+          SUPPLY_TRACK: ${{ inputs.google_play_track }}
           COOPCYCLE_APP_NAME: ${{ inputs.app_name }}
       - name: Upload APK artifact
         uses: actions/upload-artifact@v3
