@@ -49,6 +49,12 @@ platform :android do
       artifact_filepath = "instanceRelease/app-instance-release"
     end
 
+    previous_build_number = google_play_track_version_codes()[0]
+    current_build_number = previous_build_number + 1
+    increment_version_code(
+      version_code: current_build_number
+    )
+
     gradle(
       task: "clean #{gradle_task}",
       properties: {
@@ -71,11 +77,6 @@ platform :android do
 
   desc "Deploy a new version to the Google Play"
   lane :deploy do
-    previous_build_number = google_play_track_version_codes()[0]
-    current_build_number = previous_build_number + 1
-    increment_version_code(
-      version_code: current_build_number
-    )
     build()
     upload_to_play_store(
       skip_upload_apk: true,
