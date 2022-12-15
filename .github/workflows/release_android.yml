@@ -5,8 +5,8 @@ jobs:
     name: Release Android app with Fastlane
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
           node-version: '16.x'
       - uses: ruby/setup-ruby@v1
@@ -33,25 +33,25 @@ jobs:
           echo FACEBOOK_CLIENT_TOKEN= >> .env
           echo GOOGLE_SIGN_IN_CLIENT_ID="$GOOGLE_SIGN_IN_CLIENT_ID" >> .env
       - name: Decode sentry.properties file
-        uses: timheuer/base64-to-file@v1.1
+        uses: timheuer/base64-to-file@v1.2
         with:
           fileDir: "./android/"
           fileName: "sentry.properties"
           encodedString: ${{ secrets.SENTRY_PROPERTIES_BASE64 }}
       - name: Decode Android keystore file
-        uses: timheuer/base64-to-file@v1.1
+        uses: timheuer/base64-to-file@v1.2
         id: android_keystore
         with:
           fileName: "android_keystore.kjs"
           encodedString: ${{ secrets.SIGNING_STORE_FILE_BASE64 }}
       - name: Decode google-services.json file
-        uses: timheuer/base64-to-file@v1.1
+        uses: timheuer/base64-to-file@v1.2
         with:
           fileDir: "./android/app/"
           fileName: "google-services.json"
           encodedString: ${{ secrets.GOOGLE_SERVICES_JSON_BASE64 }}
       - name: Decode play-store-credentials.json file
-        uses: timheuer/base64-to-file@v1.1
+        uses: timheuer/base64-to-file@v1.2
         id: android_play_store_credentials
         with:
           fileName: "play-store-credentials.json"

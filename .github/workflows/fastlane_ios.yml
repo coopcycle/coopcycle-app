@@ -28,11 +28,11 @@ jobs:
     name: Build for iOS
     runs-on: macOS-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       # - uses: maxim-lobanov/setup-xcode@v1
       #   with:
       #     xcode-version: '12.5.1'
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v3
         with:
           node-version: '16.x'
       - uses: ruby/setup-ruby@v1
@@ -79,13 +79,13 @@ jobs:
         env:
           COOPCYCLE_APP_NAME: ${{ inputs.app_name }}
       - name: Decode sentry.properties file
-        uses: timheuer/base64-to-file@v1.1
+        uses: timheuer/base64-to-file@v1.2
         with:
           fileDir: "./ios/"
           fileName: "sentry.properties"
           encodedString: ${{ secrets.SENTRY_PROPERTIES_BASE64 }}
       - name: Decode google-services.json file
-        uses: timheuer/base64-to-file@v1.1
+        uses: timheuer/base64-to-file@v1.2
         with:
           fileDir: "./ios/"
           fileName: "GoogleService-Info.plist"
