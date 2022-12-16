@@ -36,3 +36,18 @@ jobs:
       keystore_key_password_secret: SIGNING_KEY_PASSWORD_INSTANCE
       google_play_track: beta
     secrets: inherit
+  coursiers_stephanois:
+    if: false
+    name: Build Les Coursiers Stéphanois app
+    uses: ./.github/workflows/fastlane_android.yml
+    with:
+      instance: coursiers_stephanois
+      instance_url: https://coursiers-stephanois.coopcycle.org
+      app_name: Les Coursiers Stéphanois
+      primary_color: "#85b544"
+      package_name: fr.coopcycle.coursiers_stephanois
+      checkout_search_enabled: '0'
+      keystore_key_alias: instance
+      keystore_key_password_secret: SIGNING_KEY_PASSWORD_INSTANCE
+      google_play_track: beta
+    secrets: inherit
