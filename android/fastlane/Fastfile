@@ -49,11 +49,16 @@ platform :android do
       artifact_filepath = "instanceRelease/app-instance-release"
     end
 
-    previous_build_number = google_play_track_version_codes()[0]
-    current_build_number = previous_build_number + 1
-    increment_version_code(
-      version_code: current_build_number
-    )
+    begin
+      previous_build_number = google_play_track_version_codes()[0]
+      current_build_number = previous_build_number + 1
+      increment_version_code(
+        version_code: current_build_number
+      )
+    rescue FastlaneCore::Interface::FastlaneError => e
+      # Google Api Error: Invalid request - Package not found
+      # This can happen when building the app for the first time
+    end
 
     gradle(
       task: "clean #{gradle_task}",
@@ -170,6 +175,18 @@ platform :android do
       skip_upload_apk: true,
       skip_upload_metadata: true,
       track: "internal",
+    )
+  end
+
+  desc "Upload metadata to Google Play"
+  lane :upload_metadata do
+    upload_to_play_store(
+      skip_upload_apk: true,
+      skip_upload_aab: true,
+      skip_upload_metadata: false,
+      skip_upload_changelogs: true,
+      skip_upload_images: false,
+      skip_upload_screenshots: false
     )
   end
 

@@ -87,6 +87,14 @@ Rename app
 
 Deploy a new version of Naofood to the Google Play Internal test
 
+### android upload_metadata
+
+```sh
+[bundle exec] fastlane android upload_metadata
+```
+
+Upload metadata to Google Play
+
 ----
 
 This README.md is auto-generated and will be re-generated every time [_fastlane_](https://fastlane.tools) is run.
