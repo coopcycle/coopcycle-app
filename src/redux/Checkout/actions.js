@@ -78,6 +78,10 @@ export const GET_RESTAURANT_REQUEST = '@checkout/GET_RESTAURANT_REQUEST'
 export const GET_RESTAURANT_SUCCESS = '@checkout/GET_RESTAURANT_SUCCESS'
 export const GET_RESTAURANT_FAILURE = '@checkout/GET_RESTAURANT_FAILURE'
 
+export const LOAD_STRIPE_SAVED_PAYMENT_METHODS_REQUEST = '@checkout/LOAD_STRIPE_SAVED_PAYMENT_METHODS_REQUEST'
+export const LOAD_STRIPE_SAVED_PAYMENT_METHODS_SUCCESS = '@checkout/LOAD_STRIPE_SAVED_PAYMENT_METHODS_SUCCESS'
+export const LOAD_STRIPE_SAVED_PAYMENT_METHODS_FAILURE = '@checkout/LOAD_STRIPE_SAVED_PAYMENT_METHODS_FAILURE'
+
 export const UPDATE_CUSTOMER_GUEST = '@checkout/UPDATE_CUSTOMER_GUEST'
 
 
@@ -148,6 +152,10 @@ export const getRestaurantFailure = createAction(GET_RESTAURANT_FAILURE)
 export const getRestaurantRequest = createAction(GET_RESTAURANT_REQUEST)
 export const getRestaurantSuccess = createAction(GET_RESTAURANT_SUCCESS)
 export const clearSearchResults = createAction(CLEAR_SEARCH_RESULTS)
+
+export const loadStripeSavedPaymentMethodsRequest = createAction(LOAD_STRIPE_SAVED_PAYMENT_METHODS_REQUEST)
+export const loadStripeSavedPaymentMethodsSuccess = createAction(LOAD_STRIPE_SAVED_PAYMENT_METHODS_SUCCESS)
+export const loadStripeSavedPaymentMethodsFailure = createAction(LOAD_STRIPE_SAVED_PAYMENT_METHODS_FAILURE)
 
 export const hideMultipleServersInSameCityModal = createAction(HIDE_MULTIPLE_SERVERS_IN_SAME_CITY_MODAL)
 
@@ -1103,6 +1111,20 @@ export function loadPaymentDetails() {
       .get(`${cart['@id']}/payment`)
       .then(res => dispatch(loadPaymentDetailsSuccess(res)))
       .catch(e => dispatch(loadPaymentDetailsFailure(e)))
+  }
+}
+
+export function loadStripeSavedPaymentMethods() {
+  return (dispatch, getState) => {
+
+    const httpClient = createHttpClient(getState())
+
+    dispatch(loadStripeSavedPaymentMethodsRequest())
+
+    httpClient
+      .get('/api/me/stripe-payment-methods')
+      .then(res => dispatch(loadStripeSavedPaymentMethodsSuccess(res)))
+      .catch(e => dispatch(loadStripeSavedPaymentMethodsFailure(e)))
   }
 }
 
