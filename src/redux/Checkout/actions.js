@@ -771,11 +771,58 @@ function handleSuccessNav(dispatch, order) {
   dispatch(checkoutSuccess(order))
 }
 
-function handleSuccess(dispatch, httpClient, cart, paymentIntentId) {
+function handleSaveOfPaymentMethod(saveCard) {
+  return new Promise((resolve, reject) => {
+    if (saveCard) {
+      reject('Method "handleSaveOfPaymentMethod" not yet implemented')
+    } else {
+      resolve()
+    }
+  })
+}
+
+function handleSuccess(dispatch, httpClient, cart, paymentIntentId, saveCard = false) {
   httpClient
     .put(cart['@id'] + '/pay', { paymentIntentId })
-    .then(o => handleSuccessNav(dispatch, o))
+    .then(o => {
+      handleSaveOfPaymentMethod()
+        .then(() => handleSuccessNav(dispatch, o))
+    })
     .catch(e => dispatch(checkoutFailure(e)))
+}
+
+function getPaymentMethod(cardholderName, billingEmail, paymentDetails, cart, savedCardSelected, httpClient) {
+
+  return new Promise((resolve, reject) => {
+    if (savedCardSelected) {
+      if (paymentDetails.stripeAccount) {
+        return httpClient
+            .get(`${cart['@id']}/stripe/clone-payment-method/${savedCardSelected}`)
+            .then(res => {
+              resolve(res)
+            })
+      } else {
+        resolve(savedCardSelected)
+      }
+    } else {
+      return createPaymentMethod({
+        paymentMethodType: 'Card',
+        paymentMethodData: {
+          billingDetails: {
+            email: billingEmail,
+            name: cardholderName,
+            phone: cart.fulfillmentMethod === 'delivery' ? cart.shippingAddress.telephone : '',
+          },
+        },
+      }).then(({ paymentMethod, error }) => {
+        if (error) {
+          reject(error)
+        } else {
+          resolve(paymentMethod)
+        }
+      })
+    }
+  })
 }
 
 /**
@@ -783,12 +830,12 @@ function handleSuccess(dispatch, httpClient, cart, paymentIntentId) {
  * @see https://stripe.com/docs/payments/accept-a-payment-synchronously?platform=react-native
  * @see https://github.com/stripe/stripe-react-native/blob/master/example/src/screens/NoWebhookPaymentScreen.tsx
  */
-export function checkout(cardholderName) {
+export function checkout(cardholderName, savedCardSelected = null) {
 
   return (dispatch, getState) => {
 
-    const { restaurant } = getState().checkout
-    const { cart, token } = getState().checkout.carts[restaurant]
+    const { restaurant, paymentDetails } = getState().checkout
+    const { cart } = getState().checkout.carts[restaurant]
 
     const billingEmail = selectBillingEmail(getState())
 
@@ -805,43 +852,33 @@ export function checkout(cardholderName) {
       return
     }
 
-    createPaymentMethod({
-      paymentMethodType: 'Card',
-      paymentMethodData: {
-        billingDetails: {
-          email: billingEmail,
-          name: cardholderName,
-          phone: cart.fulfillmentMethod === 'delivery' ? cart.shippingAddress.telephone : '',
-        },
-      }
-    })
-    .then(({ paymentMethod, error }) => {
-      if (error) {
-        dispatch(checkoutFailure(error))
-      } else {
+    getPaymentMethod(cardholderName, billingEmail, paymentDetails, cart, savedCardSelected, httpClient)
+      .then((paymentMethod) => {
         httpClient
-          .put(cart['@id'] + '/pay', { paymentMethodId: paymentMethod.id })
-          .then(stripeResponse => {
-            if (stripeResponse.requiresAction) {
-              handleNextAction(stripeResponse.paymentIntentClientSecret)
-                .then(({ error, paymentIntent }) => {
-                  if (error) {
-                    dispatch(checkoutFailure(error))
-                  } else {
-                    handleSuccess(dispatch, httpClient, cart, paymentIntent.id)
-                  }
-                })
-                .catch(e => {
-                  dispatch(checkoutFailure(e))
-                })
-            } else {
-              handleSuccess(dispatch, httpClient, cart, stripeResponse.paymentIntentId)
-            }
+          .put(cart['@id'] + '/pay', {
+            paymentMethodId: paymentMethod.id,
+            saveCard: false,
           })
-          .catch(e => dispatch(checkoutFailure(e)))
-      }
-    })
-    .catch(e => dispatch(checkoutFailure(e)))
+            .then(stripeResponse => {
+              if (stripeResponse.requiresAction) {
+                handleNextAction(stripeResponse.paymentIntentClientSecret)
+                  .then(({ error, paymentIntent }) => {
+                    if (error) {
+                      dispatch(checkoutFailure(error))
+                    } else {
+                      handleSuccess(dispatch, httpClient, cart, paymentIntent.id, false)
+                    }
+                  })
+                  .catch(e => {
+                    dispatch(checkoutFailure(e))
+                  })
+              } else {
+                handleSuccess(dispatch, httpClient, cart, stripeResponse.paymentIntentId, false)
+              }
+            })
+            .catch(e => dispatch(checkoutFailure(e)))
+      })
+      .catch(e => dispatch(checkoutFailure(e)))
   }
 }
 

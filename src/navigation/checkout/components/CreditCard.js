@@ -147,15 +147,8 @@ class CreditCard extends Component {
     // @see https://medium.com/@devmrin/debouncing-touch-events-in-react-native-prevent-navigating-twice-or-more-times-when-button-is-90687e4a8113
     // @see https://snack.expo.io/@patwoz/withpreventdoubleclick
 
-    let stripeProviderProps = {
+    const stripeProviderProps = {
       publishableKey: this.props.stripePublishableKey,
-    }
-
-    if (!_.isEmpty(this.props.paymentDetails.stripeAccount)) {
-      stripeProviderProps = {
-        ...stripeProviderProps,
-        stripeAccountId: this.props.paymentDetails.stripeAccount,
-      }
     }
 
     return (
@@ -175,11 +168,7 @@ class CreditCard extends Component {
                 </Text>
                 <Radio.Group name="savedCardSelected" accessibilityLabel="saved credit cards"
                   defaultValue={initialValues.savedCardSelected}
-                  onChange={ () => {
-                    this.setState({ addNewCard: false }, () => {
-                      handleChange('savedCardSelected')
-                    })
-                  } }>
+                  onChange={ handleChange('savedCardSelected') }>
                   {
                     this.props.stripePaymentMethods.map((card) => {
                       return (
@@ -287,7 +276,6 @@ function mapStateToProps(state) {
 
   return {
     stripePublishableKey: state.app.settings.stripe_publishable_key,
-    paymentDetails: state.checkout.paymentDetails,
     paymentDetailsLoaded: state.checkout.paymentDetailsLoaded,
     stripePaymentMethods: state.checkout.stripePaymentMethods,
     stripePaymentMethodsLoaded: state.checkout.stripePaymentMethodsLoaded,
