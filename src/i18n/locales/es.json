@@ -423,6 +423,7 @@
         "PAY_WITH_SAVED_CREDIT_CARD": "Pagar con una tarjeta de crédito guardada",
         "CREDIT_CARD_EXPIRATION": "Expiración",
         "ADD_NEW_CREDIT_CARD": "Ingresar nueva tarjeta de crédito",
-        "SELECT_SAVED_CARD": "Seleccionar una tarjeta de crédito guardada"
+        "SELECT_SAVED_CARD": "Seleccionar una tarjeta de crédito guardada",
+        "SAVE_CARD": "Guardar tarjeta de crédito"
     }
 }

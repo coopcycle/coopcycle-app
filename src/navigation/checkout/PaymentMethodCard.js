@@ -10,6 +10,7 @@ class PaymentMethodCard extends Component {
 
     const { cardholderName } = values
 
+    // TODO check this submit
     this.props.checkout(cardholderName)
   }
 

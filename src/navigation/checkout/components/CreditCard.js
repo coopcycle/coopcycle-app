@@ -8,7 +8,7 @@ import {
   useColorScheme,
 } from 'react-native';
 import { connect } from 'react-redux'
-import { Button, Center, Flex, Input, Radio, Text } from 'native-base';
+import { Button, Center, Checkbox, Flex, Input, Radio, Text } from 'native-base';
 import _ from 'lodash'
 import { withTranslation } from 'react-i18next'
 import { Formik } from 'formik'
@@ -141,6 +141,7 @@ class CreditCard extends Component {
       expiry: '',
       cvc: '',
       savedCardSelected: null,
+      saveCard: false,
     }
 
     // Make sure button can't be tapped twice
@@ -177,7 +178,7 @@ class CreditCard extends Component {
                     })
                   }
                 </Radio.Group>
-                <Button mt={2} onPress={ () => {
+                <Button mt={4} onPress={ () => {
                   this.setState({ addNewCard: true }, () => {
                     setFieldValue('savedCardSelected', null)
                   })
@@ -222,6 +223,15 @@ class CreditCard extends Component {
                   ) }
                 </View>
               </View>
+              {
+                !user.isGuest() &&
+                <Checkbox name="saveCard" mb={4}
+                  accessibilityLabel="save credit card"
+                  defaultValue={ initialValues.saveCard }
+                  onChange={ (checked) => setFieldValue('saveCard', checked) }>
+                  { this.props.t('SAVE_CARD') }
+                </Checkbox>
+              }
               {
                 stripePaymentMethods.length &&
                 <Button mt={2} onPress={ () => {

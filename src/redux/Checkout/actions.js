@@ -771,21 +771,47 @@ function handleSuccessNav(dispatch, order) {
   dispatch(checkoutSuccess(order))
 }
 
-function handleSaveOfPaymentMethod(saveCard) {
-  return new Promise((resolve, reject) => {
-    if (saveCard) {
-      reject('Method "handleSaveOfPaymentMethod" not yet implemented')
-    } else {
-      resolve()
+function handleSaveOfPaymentMethod(saveCard, paymentDetails, billingEmail, cardholderName, cart, httpClient) {
+  return new Promise((resolve) => {
+    if (saveCard && paymentDetails.stripeAccount) {
+      return createPaymentMethod({
+        paymentMethodType: 'Card',
+        paymentMethodData: {
+          billingDetails: {
+            email: billingEmail,
+            name: cardholderName,
+            phone: cart.fulfillmentMethod === 'delivery' ? cart.shippingAddress.telephone : '',
+          },
+        },
+      }).then(({ paymentMethod, error }) => {
+        if (error) {
+          resolve()
+        } else {
+          httpClient
+            .post(cart['@id'] + '/stripe/create-setup-intent-or-attach-pm', {
+              payment_method_to_save: paymentMethod.id,
+             })
+              .then(() => resolve())
+              .catch(e => {
+                  // do not interrupt flow if there is an error with this
+                  if (e.response) {
+                      console.log(e.response)
+                  } else {
+                      console.log('An unexpected error occurred while trying to create a SetupIntent')
+                  }
+                  resolve()
+              })
+        }
+      })
     }
   })
 }
 
-function handleSuccess(dispatch, httpClient, cart, paymentIntentId, saveCard = false) {
+function handleSuccess(dispatch, httpClient, cart, paymentIntentId, saveCard = false, paymentDetails, billingEmail, cardholderName) {
   httpClient
     .put(cart['@id'] + '/pay', { paymentIntentId })
     .then(o => {
-      handleSaveOfPaymentMethod()
+      handleSaveOfPaymentMethod(saveCard, paymentDetails, billingEmail, cardholderName, cart, httpClient)
         .then(() => handleSuccessNav(dispatch, o))
     })
     .catch(e => dispatch(checkoutFailure(e)))
@@ -830,7 +856,7 @@ function getPaymentMethod(cardholderName, billingEmail, paymentDetails, cart, sa
  * @see https://stripe.com/docs/payments/accept-a-payment-synchronously?platform=react-native
  * @see https://github.com/stripe/stripe-react-native/blob/master/example/src/screens/NoWebhookPaymentScreen.tsx
  */
-export function checkout(cardholderName, savedCardSelected = null) {
+export function checkout(cardholderName, savedCardSelected = null, saveCard = false) {
 
   return (dispatch, getState) => {
 
@@ -854,10 +880,23 @@ export function checkout(cardholderName, savedCardSelected = null) {
 
     getPaymentMethod(cardholderName, billingEmail, paymentDetails, cart, savedCardSelected, httpClient)
       .then((paymentMethod) => {
+        if (paymentDetails.stripeAccount) {
+          // for connected account we have to clone the platform payment method
+          return httpClient
+            .get(`${cart['@id']}/stripe/clone-payment-method/${paymentMethod.id}`)
+            .then(clonnedPaymentMethod => {
+              return [ paymentMethod.id, clonnedPaymentMethod.id ]
+            })
+        } else {
+          // use the platform payment method
+          return [paymentMethod.id]
+        }
+      })
+      .then(([ platformAccountPaymentMethodId, clonnedPaymentMethodId ] ) => {
         httpClient
           .put(cart['@id'] + '/pay', {
-            paymentMethodId: paymentMethod.id,
-            saveCard: false,
+            paymentMethodId: clonnedPaymentMethodId || platformAccountPaymentMethodId,
+            saveCard,
           })
             .then(stripeResponse => {
               if (stripeResponse.requiresAction) {
@@ -866,14 +905,14 @@ export function checkout(cardholderName, savedCardSelected = null) {
                     if (error) {
                       dispatch(checkoutFailure(error))
                     } else {
-                      handleSuccess(dispatch, httpClient, cart, paymentIntent.id, false)
+                      handleSuccess(dispatch, httpClient, cart, paymentIntent.id, saveCard, paymentDetails, billingEmail, cardholderName)
                     }
                   })
                   .catch(e => {
                     dispatch(checkoutFailure(e))
                   })
               } else {
-                handleSuccess(dispatch, httpClient, cart, stripeResponse.paymentIntentId, false)
+                handleSuccess(dispatch, httpClient, cart, stripeResponse.paymentIntentId, saveCard, paymentDetails, billingEmail, cardholderName)
               }
             })
             .catch(e => dispatch(checkoutFailure(e)))
