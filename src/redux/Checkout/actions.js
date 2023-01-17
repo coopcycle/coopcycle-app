@@ -819,19 +819,11 @@ function handleSuccess(dispatch, httpClient, cart, paymentIntentId, saveCard = f
     .catch(e => dispatch(checkoutFailure(e)))
 }
 
-function getPaymentMethod(cardholderName, billingEmail, paymentDetails, cart, savedPaymentMethodId, httpClient) {
+function getPaymentMethod(cardholderName, billingEmail, cart, savedPaymentMethodId) {
 
   return new Promise((resolve, reject) => {
     if (savedPaymentMethodId) {
-      if (paymentDetails.stripeAccount) {
-        return httpClient
-            .get(`${cart['@id']}/stripe/clone-payment-method/${savedPaymentMethodId}`)
-            .then(clonnedPaymentMethod => {
-              resolve(clonnedPaymentMethod.id)
-            })
-      } else {
-        resolve(savedPaymentMethodId)
-      }
+      resolve(savedPaymentMethodId)
     } else {
       return createPaymentMethod({
         paymentMethodType: 'Card',
@@ -880,7 +872,7 @@ export function checkout(cardholderName, savedPaymentMethodId = null, saveCard =
       return
     }
 
-    getPaymentMethod(cardholderName, billingEmail, paymentDetails, cart, savedPaymentMethodId, httpClient)
+    getPaymentMethod(cardholderName, billingEmail, cart, savedPaymentMethodId)
       .then((paymentMethodId) => {
         if (paymentDetails.stripeAccount) {
           // for connected account we have to clone the platform payment method
