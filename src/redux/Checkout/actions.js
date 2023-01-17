@@ -1,7 +1,7 @@
 import { createAction } from 'redux-actions'
 import { CommonActions, StackActions } from '@react-navigation/native'
 import _ from 'lodash'
-import { createPaymentMethod, handleNextAction } from '@stripe/stripe-react-native'
+import { createPaymentMethod, handleNextAction, initStripe } from '@stripe/stripe-react-native'
 
 import NavigationHolder from '../../NavigationHolder'
 import i18n from '../../i18n'
@@ -771,9 +771,16 @@ function handleSuccessNav(dispatch, order) {
   dispatch(checkoutSuccess(order))
 }
 
-function handleSaveOfPaymentMethod(saveCard, paymentDetails, billingEmail, cardholderName, cart, httpClient) {
+function handleSaveOfPaymentMethod(saveCard, cardholderName, httpClient, state) {
   return new Promise((resolve) => {
+    const { restaurant, paymentDetails } = state.checkout
+
     if (saveCard && paymentDetails.stripeAccount) {
+      const { cart } = state.checkout.carts[restaurant]
+
+      const billingEmail = selectBillingEmail(state)
+
+      configureStripe(state)
       return createPaymentMethod({
         paymentMethodType: 'Card',
         paymentMethodData: {
@@ -809,14 +816,16 @@ function handleSaveOfPaymentMethod(saveCard, paymentDetails, billingEmail, cardh
   })
 }
 
-function handleSuccess(dispatch, httpClient, cart, paymentIntentId, saveCard = false, paymentDetails, billingEmail, cardholderName) {
-  httpClient
-    .put(cart['@id'] + '/pay', { paymentIntentId })
-    .then(o => {
-      handleSaveOfPaymentMethod(saveCard, paymentDetails, billingEmail, cardholderName, cart, httpClient)
-        .then(() => handleSuccessNav(dispatch, o))
+function handleSuccess(dispatch, httpClient, cart, paymentIntentId, saveCard = false, cardholderName, state) {
+  handleSaveOfPaymentMethod(saveCard, cardholderName, httpClient, state)
+    .then(() => {
+      httpClient
+        .put(cart['@id'] + '/pay', { paymentIntentId })
+        .then(o => {
+          handleSuccessNav(dispatch, o)
+        })
+        .catch(e => dispatch(checkoutFailure(e)))
     })
-    .catch(e => dispatch(checkoutFailure(e)))
 }
 
 function getPaymentMethod(cardholderName, billingEmail, cart, savedPaymentMethodId) {
@@ -838,11 +847,26 @@ function getPaymentMethod(cardholderName, billingEmail, cart, savedPaymentMethod
         if (error) {
           reject(error)
         } else {
-          resolve(paymentMethod)
+          resolve(paymentMethod.id)
         }
       })
     }
   })
+}
+
+function configureStripe(state, paymentDetails = null) {
+  let stripeProps = {
+    publishableKey: state.app.settings.stripe_publishable_key,
+  }
+
+  if (paymentDetails && paymentDetails.stripeAccount) {
+    stripeProps = {
+      ...stripeProps,
+      stripeAccountId: paymentDetails.stripeAccount,
+    }
+  }
+
+  initStripe(stripeProps)
 }
 
 /**
@@ -895,19 +919,20 @@ export function checkout(cardholderName, savedPaymentMethodId = null, saveCard =
           })
             .then(stripeResponse => {
               if (stripeResponse.requiresAction) {
+                configureStripe(getState(), paymentDetails)
                 handleNextAction(stripeResponse.paymentIntentClientSecret)
                   .then(({ error, paymentIntent }) => {
                     if (error) {
                       dispatch(checkoutFailure(error))
                     } else {
-                      handleSuccess(dispatch, httpClient, cart, paymentIntent.id, saveCard, paymentDetails, billingEmail, cardholderName)
+                      handleSuccess(dispatch, httpClient, cart, paymentIntent.id, saveCard, cardholderName, getState())
                     }
                   })
                   .catch(e => {
                     dispatch(checkoutFailure(e))
                   })
               } else {
-                handleSuccess(dispatch, httpClient, cart, stripeResponse.paymentIntentId, saveCard, paymentDetails, billingEmail, cardholderName)
+                handleSuccess(dispatch, httpClient, cart, stripeResponse.paymentIntentId, saveCard, cardholderName, getState())
               }
             })
             .catch(e => dispatch(checkoutFailure(e)))
