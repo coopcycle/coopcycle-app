@@ -803,6 +803,8 @@ function handleSaveOfPaymentMethod(saveCard, paymentDetails, billingEmail, cardh
               })
         }
       })
+    } else {
+      resolve()
     }
   })
 }
@@ -817,18 +819,18 @@ function handleSuccess(dispatch, httpClient, cart, paymentIntentId, saveCard = f
     .catch(e => dispatch(checkoutFailure(e)))
 }
 
-function getPaymentMethod(cardholderName, billingEmail, paymentDetails, cart, savedCardSelected, httpClient) {
+function getPaymentMethod(cardholderName, billingEmail, paymentDetails, cart, savedPaymentMethodId, httpClient) {
 
   return new Promise((resolve, reject) => {
-    if (savedCardSelected) {
+    if (savedPaymentMethodId) {
       if (paymentDetails.stripeAccount) {
         return httpClient
-            .get(`${cart['@id']}/stripe/clone-payment-method/${savedCardSelected}`)
-            .then(res => {
-              resolve(res)
+            .get(`${cart['@id']}/stripe/clone-payment-method/${savedPaymentMethodId}`)
+            .then(clonnedPaymentMethod => {
+              resolve(clonnedPaymentMethod.id)
             })
       } else {
-        resolve(savedCardSelected)
+        resolve(savedPaymentMethodId)
       }
     } else {
       return createPaymentMethod({
@@ -856,7 +858,7 @@ function getPaymentMethod(cardholderName, billingEmail, paymentDetails, cart, sa
  * @see https://stripe.com/docs/payments/accept-a-payment-synchronously?platform=react-native
  * @see https://github.com/stripe/stripe-react-native/blob/master/example/src/screens/NoWebhookPaymentScreen.tsx
  */
-export function checkout(cardholderName, savedCardSelected = null, saveCard = false) {
+export function checkout(cardholderName, savedPaymentMethodId = null, saveCard = false) {
 
   return (dispatch, getState) => {
 
@@ -878,24 +880,25 @@ export function checkout(cardholderName, savedCardSelected = null, saveCard = fa
       return
     }
 
-    getPaymentMethod(cardholderName, billingEmail, paymentDetails, cart, savedCardSelected, httpClient)
-      .then((paymentMethod) => {
+    getPaymentMethod(cardholderName, billingEmail, paymentDetails, cart, savedPaymentMethodId, httpClient)
+      .then((paymentMethodId) => {
         if (paymentDetails.stripeAccount) {
           // for connected account we have to clone the platform payment method
           return httpClient
-            .get(`${cart['@id']}/stripe/clone-payment-method/${paymentMethod.id}`)
+            .get(`${cart['@id']}/stripe/clone-payment-method/${paymentMethodId}`)
             .then(clonnedPaymentMethod => {
-              return [ paymentMethod.id, clonnedPaymentMethod.id ]
+              return [ paymentMethodId, clonnedPaymentMethod.id ]
             })
         } else {
           // use the platform payment method
-          return [paymentMethod.id]
+          return [paymentMethodId]
         }
       })
       .then(([ platformAccountPaymentMethodId, clonnedPaymentMethodId ] ) => {
         httpClient
           .put(cart['@id'] + '/pay', {
             paymentMethodId: clonnedPaymentMethodId || platformAccountPaymentMethodId,
+            usingCustomerPaymentMethodFromPlatformAccount: savedPaymentMethodId && !paymentDetails.stripeAccount,
             saveCard,
           })
             .then(stripeResponse => {
