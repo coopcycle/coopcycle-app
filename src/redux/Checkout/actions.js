@@ -914,7 +914,6 @@ export function checkout(cardholderName, savedPaymentMethodId = null, saveCard =
         httpClient
           .put(cart['@id'] + '/pay', {
             paymentMethodId: clonnedPaymentMethodId || platformAccountPaymentMethodId,
-            usingCustomerPaymentMethodFromPlatformAccount: savedPaymentMethodId && !paymentDetails.stripeAccount,
             saveCard,
           })
             .then(stripeResponse => {
