@@ -162,7 +162,7 @@ class CreditCard extends Component {
         validateOnChange={ false }>
         {({ handleChange, handleBlur, handleSubmit, values, errors, touched, setFieldValue, setFieldTouched }) => (
         <Animated.View style={{ flex: 1, paddingBottom: this.keyboardHeight }}>
-          { (stripePaymentMethods.length && !this.state.addNewCard) &&
+          { (stripePaymentMethods.length && !this.state.addNewCard) ?
               <Center flex={1} >
                 <Text mb={2} bold>
                   { this.props.t('PAY_WITH_SAVED_CREDIT_CARD') }
@@ -189,9 +189,10 @@ class CreditCard extends Component {
                     <Text m={4} textAlign="center" color="#ed2f2f">{ errors.selectCard }</Text>
                 ) }
               </Center>
+              : null
           }
           {
-            (this.state.addNewCard || !stripePaymentMethods.length) &&
+            (this.state.addNewCard || !stripePaymentMethods.length) ?
             <Center flex={ 1 } >
               <Text style={ styles.creditCardLabel }>
                 { this.props.t('ENTER_PAY_DETAILS') }
@@ -224,21 +225,23 @@ class CreditCard extends Component {
                 </View>
               </View>
               {
-                !user.isGuest() &&
+                !user.isGuest() ?
                 <Checkbox name="saveCard" mb={4}
                   accessibilityLabel="save credit card"
                   defaultValue={ initialValues.saveCard }
                   onChange={ (checked) => setFieldValue('saveCard', checked) }>
                   { this.props.t('SAVE_CARD') }
                 </Checkbox>
+                : null
               }
               {
-                stripePaymentMethods.length &&
+                stripePaymentMethods.length ?
                 <Button mt={2} onPress={ () => {
                     this.setState({ addNewCard: false })
                   }}>
                     { this.props.t('SELECT_SAVED_CARD') }
                 </Button>
+                : null
               }
               { this.props.errors.length > 0 && (
                 <View style={ styles.errorsContainer }>
@@ -248,6 +251,7 @@ class CreditCard extends Component {
                 </View>
               ) }
             </Center>
+            : null
           }
           <FooterButton
             testID="creditCardSubmit"
