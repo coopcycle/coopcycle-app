@@ -144,7 +144,7 @@ const appPersistConfig = {
 const checkoutPersistConfig = {
   key: 'checkout',
   storage: AsyncStorage,
-  whitelist: [ 'showMultipleServersInSameCityModal', 'carts', 'address' ],
+  whitelist: [ 'showMultipleServersInSameCityModal', 'carts', 'address', 'stripePaymentMethods' ],
 }
 
 export default combineReducers({
