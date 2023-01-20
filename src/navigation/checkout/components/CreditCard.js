@@ -13,7 +13,6 @@ import _ from 'lodash'
 import { withTranslation } from 'react-i18next'
 import { Formik } from 'formik'
 import { CardField, StripeProvider } from '@stripe/stripe-react-native'
-import { PaymentIcon } from 'react-native-payment-icons'
 
 import { formatPrice } from '../../../utils/formatting'
 import FooterButton from './FooterButton'
@@ -124,6 +123,12 @@ class CreditCard extends Component {
     return errors
   }
 
+  shouldRenderStripePaymentMethods() {
+    const { stripePaymentMethodsLoaded, stripePaymentMethods, user } = this.props
+
+    return !user.isGuest() && stripePaymentMethodsLoaded && stripePaymentMethods.length
+  }
+
   render() {
 
     const { cart, paymentDetailsLoaded, stripePaymentMethodsLoaded, stripePaymentMethods, user } = this.props
@@ -162,7 +167,7 @@ class CreditCard extends Component {
         validateOnChange={ false }>
         {({ handleChange, handleBlur, handleSubmit, values, errors, touched, setFieldValue, setFieldTouched }) => (
         <Animated.View style={{ flex: 1, paddingBottom: this.keyboardHeight }}>
-          { (stripePaymentMethods.length && !this.state.addNewCard) ?
+          { (this.shouldRenderStripePaymentMethods() && !this.state.addNewCard) ?
               <Center flex={1} >
                 <Text mb={2} bold>
                   { this.props.t('PAY_WITH_SAVED_CREDIT_CARD') }
@@ -171,7 +176,7 @@ class CreditCard extends Component {
                   defaultValue={initialValues.savedCardSelected}
                   onChange={ handleChange('savedCardSelected') }>
                   {
-                    this.props.stripePaymentMethods.map((card) => {
+                    stripePaymentMethods.map((card) => {
                       return (
                         <SavedCreditCard card={card} key={card.id} />
                       )
@@ -192,7 +197,7 @@ class CreditCard extends Component {
               : null
           }
           {
-            (this.state.addNewCard || !stripePaymentMethods.length) ?
+            (this.state.addNewCard || !this.shouldRenderStripePaymentMethods()) ?
             <Center flex={ 1 } >
               <Text style={ styles.creditCardLabel }>
                 { this.props.t('ENTER_PAY_DETAILS') }
@@ -235,7 +240,7 @@ class CreditCard extends Component {
                 : null
               }
               {
-                stripePaymentMethods.length ?
+                this.shouldRenderStripePaymentMethods() ?
                 <Button mt={2} onPress={ () => {
                     this.setState({ addNewCard: false })
                   }}>
@@ -291,7 +296,7 @@ function mapStateToProps(state) {
   return {
     stripePublishableKey: state.app.settings.stripe_publishable_key,
     paymentDetailsLoaded: state.checkout.paymentDetailsLoaded,
-    stripePaymentMethods: state.checkout.stripePaymentMethods,
+    stripePaymentMethods: state.checkout.stripePaymentMethods || [],
     stripePaymentMethodsLoaded: state.checkout.stripePaymentMethodsLoaded,
     user: state.app.user,
   }
