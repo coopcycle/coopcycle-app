@@ -111,6 +111,8 @@ platform :ios do
     # Modify UIBackgroundModes
     # Remove fetch & location
 
+    # Change PROVISIONING_PROFILE_SPECIFIER to "match AppStore $DELIVER_APP_IDENTIFIER"
+
     update_info_plist(
       plist_path: "CoopCycle/Info.plist",
       display_name: app_name
