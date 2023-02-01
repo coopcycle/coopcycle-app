@@ -12678,6 +12678,11 @@ react-native-signature-canvas@^4.4.1:
   resolved "https://registry.yarnpkg.com/react-native-signature-canvas/-/react-native-signature-canvas-4.4.1.tgz#cb320dcf14b128ba58c299d52c7fb8ea6ee10ba9"
   integrity sha512-2FMo88796tnRnQ8uN+dLpBRYcpzr08kcOqkVOVxE3TVvBUAIeEoSbCPa3URHkApMXLLDADU8dpXJK3eTpCeBEA==
 
+react-native-smartlook-analytics@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/react-native-smartlook-analytics/-/react-native-smartlook-analytics-2.1.1.tgz#60c228506b00c72f215e091439fabc9843ec1130"
+  integrity sha512-LLrXXYfzVkymCep8Tb3RfOZSDouof/Y66an8wexJUpo1rCJyr92tVO9gy6o/C35y9RjlWaylX1NYf9lM45fH4A==
+
 react-native-sound@^0.11.2:
   version "0.11.2"
   resolved "https://registry.yarnpkg.com/react-native-sound/-/react-native-sound-0.11.2.tgz#e542dc5b9e16ab4b3ac7e6eaddb1fc8d98da9038"

@@ -658,6 +658,8 @@ PODS:
     - RCTTypeSafety
     - React-Core
     - ReactCommon/turbomodule/core
+  - react-native-smartlook-analytics (2.1.1):
+    - React-Core
   - react-native-version-number (0.3.6):
     - React
   - react-native-webview (11.23.1):
@@ -914,6 +916,7 @@ DEPENDENCIES:
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
   - react-native-pager-view (from `../node_modules/react-native-pager-view`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
+  - react-native-smartlook-analytics (from `../node_modules/react-native-smartlook-analytics`)
   - react-native-version-number (from `../node_modules/react-native-version-number`)
   - react-native-webview (from `../node_modules/react-native-webview`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
@@ -1090,6 +1093,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-pager-view"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
+  react-native-smartlook-analytics:
+    :path: "../node_modules/react-native-smartlook-analytics"
   react-native-version-number:
     :path: "../node_modules/react-native-version-number"
   react-native-webview:
@@ -1254,6 +1259,7 @@ SPEC CHECKSUMS:
   react-native-netinfo: 6ac9bcc7c88dc51717bda3484eb99093acb755e0
   react-native-pager-view: da490aa1f902c9a5aeecf0909cc975ad0e92e53e
   react-native-safe-area-context: 99b24a0c5acd0d5dcac2b1a7f18c49ea317be99a
+  react-native-smartlook-analytics: b44e2567970e9d53c1f202a65a18f13631237650
   react-native-version-number: b415bbec6a13f2df62bf978e85bc0d699462f37f
   react-native-webview: d33e2db8925d090871ffeb232dfa50cb3a727581
   React-perflogger: 8c79399b0500a30ee8152d0f9f11beae7fc36595
