@@ -305,7 +305,7 @@
         "OTHER_DAY_BETWEEN_START_AND_END": "{{date}} between {{start}} and {{end}}",
         "SIGNATURE_SCREEN_FIRST": "Signature screen as default",
         "FINISHED": "Finished",
-        "SEARCH": "Find restaurants...",
+        "SEARCH": "A shop, a dish...",
         "GO_BACK_TO_RESTAURANTS": "Start again",
         "SESSION_EXPIRED": "You session has expired",
         "TOUCH_TO_RELOAD": "Touch to reload",
@@ -449,6 +449,10 @@
         "PRIVACY_POLICY_ERROR_MESSAGE": "You must accept the Privacy Policy",
         "AGREE": "I accept",
         "DELETE_ACCOUNT": "Delete my account",
-        "DELETE_ACCOUNT_DISCLAIMER": "By clicking the button below, you are going to delete your account. Are you sure?"
+        "DELETE_ACCOUNT_DISCLAIMER": "By clicking the button below, you are going to delete your account. Are you sure?",
+        "SEARCH_SHOPS": "Shops",
+        "SEARCH_PRODUCTS": "Products",
+        "SEARCH_PRODUCT_ITEM_SUBTITLE": "In {{shop}}",
+        "SEARCH_WITHOUT_RESULTS": "No results found. Please try again with another search."
     }
 }

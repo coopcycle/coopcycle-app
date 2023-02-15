@@ -5,7 +5,11 @@ import {
   CHECKOUT_REQUEST,
   CHECKOUT_SUCCESS,
   CLEAR,
+  CLEAR_SEARCH_RESULTS,
   DELETE_CART_REQUEST,
+  GET_RESTAURANT_FAILURE,
+  GET_RESTAURANT_REQUEST,
+  GET_RESTAURANT_SUCCESS,
   HIDE_ADDRESS_MODAL,
   HIDE_EXPIRED_SESSION_MODAL,
   HIDE_MULTIPLE_SERVERS_IN_SAME_CITY_MODAL,
@@ -25,6 +29,9 @@ import {
   LOAD_RESTAURANTS_SUCCESS,
   REMOVE_ITEM,
   RESET_RESTAURANT,
+  SEARCH_FAILURE,
+  SEARCH_REQUEST,
+  SEARCH_SUCCESS,
   SESSION_EXPIRED,
   SET_ADDRESS,
   SET_ADDRESS_MODAL_HIDDEN,
@@ -75,6 +82,8 @@ const initialState = {
   paymentDetailsLoaded: false,
   guest: null,
   showMultipleServersInSameCityModal: true,
+  searchResultsLoaded: false,
+  searchResults: null,
 }
 
 export default (state = initialState, action = {}) => {
@@ -100,6 +109,8 @@ export default (state = initialState, action = {}) => {
     case INIT_FAILURE:
     case LOAD_PAYMENT_METHODS_FAILURE:
     case LOAD_PAYMENT_DETAILS_FAILURE:
+    case SEARCH_FAILURE:
+    case GET_RESTAURANT_FAILURE:
       return {
         ...state,
         isFetching: false,
@@ -409,6 +420,39 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         showMultipleServersInSameCityModal: false,
+      }
+
+    case SEARCH_REQUEST:
+      return {
+        ...state,
+        searchResultsLoaded: false,
+        isFetching: true,
+      }
+
+    case SEARCH_SUCCESS:
+      return {
+        ...state,
+        isFetching: false,
+        searchResultsLoaded: true,
+        searchResults: action.payload,
+      }
+
+    case CLEAR_SEARCH_RESULTS:
+      return {
+        ...state,
+        searchResults: null,
+      }
+
+    case GET_RESTAURANT_REQUEST:
+      return {
+        ...state,
+        isFetching: true,
+      }
+
+    case GET_RESTAURANT_SUCCESS:
+      return {
+        ...state,
+        isFetching: false,
       }
   }
 

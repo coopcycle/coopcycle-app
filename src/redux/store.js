@@ -16,7 +16,7 @@ import SentryMiddleware from './middlewares/SentryMiddleware'
 import { ringOnNewOrderCreated } from './Restaurant/middlewares'
 import { ringOnTaskListUpdated } from './Courier/taskMiddlewares'
 import CentrifugoMiddleware from './middlewares/CentrifugoMiddleware'
-import { filterExpiredCarts, restaurantsSearchIndex } from './Checkout/middlewares';
+import { filterExpiredCarts } from './Checkout/middlewares';
 import Config from 'react-native-config';
 
 const middlewares = [
@@ -27,7 +27,6 @@ const middlewares = [
   PushNotificationMiddleware,
   CentrifugoMiddleware,
   SentryMiddleware,
-  restaurantsSearchIndex,
   filterExpiredCarts,
 ]
 

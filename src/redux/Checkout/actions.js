@@ -69,6 +69,15 @@ export const LOAD_PAYMENT_DETAILS_REQUEST = '@checkout/LOAD_PAYMENT_DETAILS_REQU
 export const LOAD_PAYMENT_DETAILS_SUCCESS = '@checkout/LOAD_PAYMENT_DETAILS_SUCCESS'
 export const LOAD_PAYMENT_DETAILS_FAILURE = '@checkout/LOAD_PAYMENT_DETAILS_FAILURE'
 
+export const SEARCH_REQUEST = '@checkout/SEARCH_REQUEST'
+export const SEARCH_SUCCESS = '@checkout/SEARCH_SUCCESS'
+export const SEARCH_FAILURE = '@checkout/SEARCH_FAILURE'
+export const CLEAR_SEARCH_RESULTS = '@checkout/CLEAR_SEARCH_RESULTS'
+
+export const GET_RESTAURANT_REQUEST = '@checkout/GET_RESTAURANT_REQUEST'
+export const GET_RESTAURANT_SUCCESS = '@checkout/GET_RESTAURANT_SUCCESS'
+export const GET_RESTAURANT_FAILURE = '@checkout/GET_RESTAURANT_FAILURE'
+
 export const UPDATE_CUSTOMER_GUEST = '@checkout/UPDATE_CUSTOMER_GUEST'
 
 
@@ -130,6 +139,15 @@ export const loadPaymentMethodsFailure = createAction(LOAD_PAYMENT_METHODS_FAILU
 export const loadPaymentDetailsRequest = createAction(LOAD_PAYMENT_DETAILS_REQUEST)
 export const loadPaymentDetailsSuccess = createAction(LOAD_PAYMENT_DETAILS_SUCCESS)
 export const loadPaymentDetailsFailure = createAction(LOAD_PAYMENT_DETAILS_FAILURE)
+
+export const searchRequest = createAction(SEARCH_REQUEST)
+export const searchSuccess = createAction(SEARCH_SUCCESS)
+export const searchFailure = createAction(SEARCH_FAILURE)
+export const getRestaurantFailure = createAction(GET_RESTAURANT_FAILURE)
+
+export const getRestaurantRequest = createAction(GET_RESTAURANT_REQUEST)
+export const getRestaurantSuccess = createAction(GET_RESTAURANT_SUCCESS)
+export const clearSearchResults = createAction(CLEAR_SEARCH_RESULTS)
 
 export const hideMultipleServersInSameCityModal = createAction(HIDE_MULTIPLE_SERVERS_IN_SAME_CITY_MODAL)
 
@@ -1127,5 +1145,47 @@ export function shareInvoice(order) {
           filename: [ settings.brand_name, number ].join('_'),
           type: 'application/pdf',
         })}).catch(err => {err && console.log(err)})
+  }
+}
+
+export function search(q) {
+
+  return (dispatch, getState) => {
+
+    const httpClient = createHttpClient(getState())
+
+    dispatch(searchRequest())
+
+    httpClient
+      .get(`/api/search/shops_products?q=${q}`)
+      .then(res => dispatch(searchSuccess(res['hydra:member'])))
+      .catch(e => dispatch(searchFailure(e)))
+  }
+}
+
+export function loadAndNavigateToRestaurante(id) {
+
+  return (dispatch, getState) => {
+
+    const httpClient = createHttpClient(getState())
+
+    dispatch(getRestaurantRequest())
+
+    return httpClient
+      .get(`/api/restaurants/${id}`)
+      .then(restaurant => {
+        return httpClient.get(restaurant['@id'] + '/timing', {}, { anonymous: true })
+        .then(timing => {
+          restaurant.timing = timing
+          return restaurant
+        })
+        .catch(() => {return restaurant})
+      })
+      .then(restaurantWithTiming => {
+        dispatch(setRestaurant(restaurantWithTiming['@id']))
+        dispatch(getRestaurantSuccess())
+        NavigationHolder.navigate('CheckoutRestaurant', { restaurant: restaurantWithTiming });
+      })
+      .catch(e => dispatch(getRestaurantFailure(e)))
   }
 }
