@@ -27,7 +27,9 @@ class AccountAddressesPage extends Component {
   }
 
   _renderRow({ item }) {
-    const color = Address.geoDiff(this.props.address, item) ? greyColor : ''
+    const color = this.props.address ?
+      (Address.geoDiff(this.props.address, item) ? greyColor : 'transparent') : 'transparent'
+
     return (
       <TouchableOpacity onPress={() => {
         this.props.setAddress(item)
