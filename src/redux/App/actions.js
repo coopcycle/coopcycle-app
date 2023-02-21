@@ -659,7 +659,7 @@ export function signInWithApple(identityToken, navigate = true) {
       .catch(err => {
 
         let message = i18n.t('TRY_LATER')
-        if (err.hasOwnProperty('code') && err.code === 401) {
+        if (err.hasOwnProperty('status') && err.status === 403) {
           message = i18n.t('INVALID_USER_PASS')
         }
 
