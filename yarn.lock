@@ -8924,10 +8924,10 @@ globby@^11.0.1, globby@^11.1.0:
     merge2 "^1.4.1"
     slash "^3.0.0"
 
-google-libphonenumber@^3.2.31:
-  version "3.2.31"
-  resolved "https://registry.yarnpkg.com/google-libphonenumber/-/google-libphonenumber-3.2.31.tgz#d2c4d4c8d7385be70b515086e4d28dd20da50600"
-  integrity sha512-l3bzAkfN4ITICKvuqEiY7JN06RxDAviOoKMtD2KfGYjGK3btPO8Xav7k0fgmf1Ud/pEm523yBh1/s/xDtKEvnw==
+google-libphonenumber@^3.2.32:
+  version "3.2.32"
+  resolved "https://registry.yarnpkg.com/google-libphonenumber/-/google-libphonenumber-3.2.32.tgz#63c48a9c247b64a3bc2eec21bdf3fcfbf2e148c0"
+  integrity sha512-mcNgakausov/B/eTgVeX8qc8IwWjRrupk9UzZZ/QDEvdh5fAjE7Aa211bkZpZj42zKkeS6MTT8avHUwjcLxuGQ==
 
 graceful-fs@^4.1.11, graceful-fs@^4.1.2, graceful-fs@^4.1.3, graceful-fs@^4.1.6, graceful-fs@^4.1.9, graceful-fs@^4.2.0, graceful-fs@^4.2.4:
   version "4.2.8"
@@ -10474,10 +10474,10 @@ levn@^0.4.1:
     prelude-ls "^1.2.1"
     type-check "~0.4.0"
 
-libphonenumber-js@^1.10.18:
-  version "1.10.18"
-  resolved "https://registry.yarnpkg.com/libphonenumber-js/-/libphonenumber-js-1.10.18.tgz#657c419071c8a02c638c0e80d9ee1232f152f280"
-  integrity sha512-NS4ZEgNhwbcPz1gfSXCGFnQm0xEiyTSPRthIuWytDzOiEG9xnZ2FbLyfJC4tI2BMAAXpoWbNxHYH75pa3Dq9og==
+libphonenumber-js@^1.10.20:
+  version "1.10.20"
+  resolved "https://registry.yarnpkg.com/libphonenumber-js/-/libphonenumber-js-1.10.20.tgz#03c310adf83381eeceb4bd6830442fd14e64964d"
+  integrity sha512-kQovlKNdLcVzerbTPmJ+Fx4R+7/pYXmPDIllHjg7IxL4X6MsMG7jaT5opfYrBok0uqkByVif//JUR8e11l/V7w==
 
 lie@3.1.1:
   version "3.1.1"
@@ -12510,10 +12510,10 @@ react-native-dropdownalert@^4.5.1:
   dependencies:
     prop-types "15.5.10"
 
-react-native-email-link@^1.14.3:
-  version "1.14.3"
-  resolved "https://registry.yarnpkg.com/react-native-email-link/-/react-native-email-link-1.14.3.tgz#188d501ab9cbbee9c6aa5d1190149b071f7c51d2"
-  integrity sha512-3biiaDKjJft6/13cYQkh/CmVae+pU7j+ThX7lFDu7eR6iRrMf9mTXyjejSboWr/M+xE34Vm0bKy8R1tXKjC2zQ==
+react-native-email-link@^1.14.4:
+  version "1.14.4"
+  resolved "https://registry.yarnpkg.com/react-native-email-link/-/react-native-email-link-1.14.4.tgz#c069b8075d883769e08eacc6e51f4d09ec52984e"
+  integrity sha512-ReBN22Q56AkFF6J4jjKk7roACiB9xK1SOw6DG0O0Gef1dErYht77uFJbU0DVD4c1MBw4S7UrR45XxcXaZjuncQ==
 
 react-native-fbsdk-next@^4.6.0:
   version "4.6.0"
@@ -12779,10 +12779,10 @@ react-navigation-header-buttons@^10.0.0:
   dependencies:
     invariant ">=2"
 
-react-query@^3.39.2:
-  version "3.39.2"
-  resolved "https://registry.yarnpkg.com/react-query/-/react-query-3.39.2.tgz#9224140f0296f01e9664b78ed6e4f69a0cc9216f"
-  integrity sha512-F6hYDKyNgDQfQOuR1Rsp3VRzJnWHx6aRnnIZHMNGGgbL3SBgpZTDg8MQwmxOgpCAoqZJA+JSNCydF1xGJqKOCA==
+react-query@^3.39.3:
+  version "3.39.3"
+  resolved "https://registry.yarnpkg.com/react-query/-/react-query-3.39.3.tgz#4cea7127c6c26bdea2de5fb63e51044330b03f35"
+  integrity sha512-nLfLz7GiohKTJDuT4us4X3h/8unOh+00MLb2yJoGTPjxKs2bc1iDhkNx2bd5MKklXnOD3NrVZ+J2UXujA5In4g==
   dependencies:
     "@babel/runtime" "^7.5.5"
     broadcast-channel "^3.4.1"
@@ -12971,10 +12971,10 @@ redux@^4.0.0, redux@^4.0.5:
   dependencies:
     "@babel/runtime" "^7.9.2"
 
-redux@^4.2.0:
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/redux/-/redux-4.2.0.tgz#46f10d6e29b6666df758780437651eeb2b969f13"
-  integrity sha512-oSBmcKKIuIR4ME29/AeNUnl5L+hvBq7OaJWzaptTQJAntaPvxIJqfnjbaEiCzzaIz+XmVILfqAM3Ob0aXLPfjA==
+redux@^4.2.1:
+  version "4.2.1"
+  resolved "https://registry.yarnpkg.com/redux/-/redux-4.2.1.tgz#c08f4306826c49b5e9dc901dee0452ea8fce6197"
+  integrity sha512-LAUYz4lc+Do8/g7aeRa8JkyDErK6ekstQaqWQrNRW//MY1TvCEpMtpTWvlQ+FPbWCx+Xixu/6SHt5N0HR+SB4w==
   dependencies:
     "@babel/runtime" "^7.9.2"
 
