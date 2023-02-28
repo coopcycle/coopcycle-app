@@ -60,6 +60,7 @@ jobs:
           DEFAULT_SERVER: ${{ inputs.instance_url }}
           PRIMARY_COLOR: ${{ inputs.primary_color }}
           CHECKOUT_SEARCH_ENABLED: ${{ inputs.checkout_search_enabled }}
+          SMARTLOOK_PROJECT_KEY: ${{ secrets.SMARTLOOK_PROJECT_KEY }}
         run: |
           touch .env
           echo COUNTLY_SERVER_URL= >> .env
@@ -75,6 +76,7 @@ jobs:
           echo DEFAULT_SERVER="$DEFAULT_SERVER" >> .env
           echo PRIMARY_COLOR="$PRIMARY_COLOR" >> .env
           echo CHECKOUT_SEARCH_ENABLED="$CHECKOUT_SEARCH_ENABLED" >> .env
+          echo SMARTLOOK_PROJECT_KEY="$SMARTLOOK_PROJECT_KEY" >> .env
       - name: Decode sentry.properties file
         uses: timheuer/base64-to-file@v1.2
         with:
