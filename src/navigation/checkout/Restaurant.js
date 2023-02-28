@@ -1,10 +1,12 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
 import { Dimensions, Pressable, StyleSheet, View, useColorScheme } from 'react-native'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 import { Box, Button, Center, HStack, Heading, Icon, ScrollView, Skeleton, Text, VStack } from 'native-base';
 import _ from 'lodash'
 import moment from 'moment'
+import { useFocusEffect } from '@react-navigation/native'
+import Smartlook from 'react-native-smartlook-analytics'
 
 import CartFooter from './components/CartFooter'
 import ExpiredSessionModal from './components/ExpiredSessionModal'
@@ -104,6 +106,15 @@ function Restaurant(props) {
   const colorScheme = useColorScheme()
   const [ infoModal, setInfoModal ] = useState(false)
   const { showFooter, httpClient, restaurant } = props
+
+  useFocusEffect(
+    useCallback(() => {
+      // Start screen recording
+      if (!__DEV__) {
+        Smartlook.instance.start()
+      }
+    }, [])
+  );
 
   const nextOpeningDateCheck = _.has(restaurant, 'nextOpeningDate')
   const isAvailable = (hasValidTiming(restaurant.timing.collection)) ||

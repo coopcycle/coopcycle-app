@@ -39,10 +39,6 @@ Smartlook.instance.eventListeners.registerSessionChangedListener(
   sessionUrlChangedCallback
 );
 
-if (!__DEV__) {
-  Smartlook.instance.start()
-}
-
 if (Platform.OS === 'ios') {
     KeyboardManager.setEnable(false)
     KeyboardManager.setEnableAutoToolbar(false)
