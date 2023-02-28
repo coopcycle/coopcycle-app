@@ -1,5 +1,15 @@
 name: Build Android
-on: [workflow_dispatch]
+on:
+  workflow_dispatch:
+    inputs:
+      build_zampate:
+        description: 'Build Zampate app'
+        required: true
+        type: boolean
+      build_coursiers_stephanois:
+        description: 'Build Coursiers Stéphanois app'
+        required: true
+        type: boolean
 jobs:
   default:
     if: false
@@ -22,7 +32,7 @@ jobs:
       google_play_track: internal
     secrets: inherit
   zampate:
-    if: true
+    if: ${{ inputs.build_zampate }}
     name: Build Zampate app
     uses: ./.github/workflows/fastlane_android.yml
     with:
@@ -37,7 +47,7 @@ jobs:
       google_play_track: beta
     secrets: inherit
   coursiers_stephanois:
-    if: true
+    if: ${{ inputs.build_coursiers_stephanois }}
     name: Build Les Coursiers Stéphanois app
     uses: ./.github/workflows/fastlane_android.yml
     with:
