@@ -54,7 +54,9 @@ class TaskList extends Component {
         disableRightSwipe={ !hasOnSwipeLeft }
         disableLeftSwipe={ !hasOnSwipeRight }
         swipeOutLeftIconName={ this.props.swipeOutLeftIconName }
-        swipeOutRightIconName={ this.props.swipeOutRightIconName } />
+        swipeOutRightIconName={ this.props.swipeOutRightIconName }
+        isSelectable={ this.props.allowTaskSelection }
+        toggleItemSelection={ (isSelected) => this.props.toggleTaskSelection ? this.props.toggleTaskSelection(task, isSelected) : null } />
     )
   }
 

@@ -9,6 +9,7 @@ import {
 } from './taskActions'
 import {
   ASSIGN_TASK_SUCCESS,
+  BULK_ASSIGNMENT_TASKS_SUCCESS,
   UNASSIGN_TASK_SUCCESS,
 } from '../Dispatch/actions'
 import {
@@ -67,6 +68,16 @@ function replaceItem(state, payload) {
   }
 
   return state
+}
+
+function replaceItems(prevItems, items) {
+  return prevItems.map((prevItem) => {
+    const toReplace = items.find( i => i['@id'] === prevItem['@id'])
+    if (toReplace) {
+      return toReplace
+    }
+    return prevItem
+  })
 }
 
 export const tasksEntityReducer = (state = tasksEntityInitialState, action = {}) => {
@@ -141,6 +152,16 @@ export const tasksEntityReducer = (state = tasksEntityInitialState, action = {})
         }
       }
       return state
+
+    case BULK_ASSIGNMENT_TASKS_SUCCESS:
+        if (action.payload[0].assignedTo === state.username) {
+
+          return {
+            ...state,
+            items: _.mapValues(state.items, tasks => replaceItems(tasks, action.payload)),
+          }
+        }
+        return state
 
     case UNASSIGN_TASK_SUCCESS:
       let task = _.find(state.items, item => item['@id'] === action.payload['@id'])
