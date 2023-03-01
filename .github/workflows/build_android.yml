@@ -2,22 +2,30 @@ name: Build Android
 on:
   workflow_dispatch:
     inputs:
-      build_zampate:
-        description: 'Build Zampate app'
+      build_official:
+        description: 'Build official app'
         required: true
         type: boolean
       build_coursiers_stephanois:
         description: 'Build Coursiers Stéphanois app'
         required: true
         type: boolean
+      build_naofood:
+        description: 'Build Naofood app'
+        required: true
+        type: boolean
+      build_zampate:
+        description: 'Build Zampate app'
+        required: true
+        type: boolean
 jobs:
   default:
-    if: false
+    if: ${{ inputs.build_official }}
     name: Build default app
     uses: ./.github/workflows/fastlane_android.yml
     secrets: inherit
   naofood:
-    if: false
+    if: ${{ inputs.build_naofood }}
     name: Build Naofood app
     uses: ./.github/workflows/fastlane_android.yml
     with:
