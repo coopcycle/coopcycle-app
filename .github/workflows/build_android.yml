@@ -38,6 +38,7 @@ jobs:
       keystore_key_alias: naofood
       keystore_key_password_secret: SIGNING_KEY_PASSWORD_NAOFOOD
       google_play_track: internal
+      branch: beta
     secrets: inherit
   zampate:
     if: ${{ inputs.build_zampate }}

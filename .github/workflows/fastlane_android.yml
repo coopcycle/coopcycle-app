@@ -37,12 +37,18 @@ on:
         type: string
         required: false
         default: "production"
+      branch:
+        type: string
+        required: false
+        default: "master"
 jobs:
   FASTLANE:
     name: Release Android app with Fastlane
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.branch }}
       - uses: actions/setup-node@v3
         with:
           node-version: '16.x'
