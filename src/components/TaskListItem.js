@@ -98,7 +98,7 @@ const SwipeButton = ({ iconName, width }) => (
   </View>
 )
 
-const ItemTouchable = ({ children, onLongPress, isSelectable, ...otherProps }) => {
+const ItemTouchable = ({ children, onLongPress, ...otherProps }) => {
 
   const colorScheme = useColorScheme()
   const { colors } = useTheme()
@@ -112,7 +112,7 @@ const ItemTouchable = ({ children, onLongPress, isSelectable, ...otherProps }) =
   }
 
   const _onLongPress = () => {
-    if (isSelectable) {
+    if (onLongPress) {
       onLongPress(!isSelected)
       setIsSelected(!isSelected)
     }
@@ -188,7 +188,6 @@ class TaskListItem extends Component {
         <ItemTouchable
           onPress={ this.props.onPress }
           onLongPress={ this.props.toggleItemSelection }
-          isSelectable={ this.props.isSelectable }
           testID={ `task:${index}` }>
           <HStack flex={ 1 } alignItems="center" styles={ itemStyle } pr="3" { ...itemProps }>
             <View style={{ backgroundColor: color, width: 8, height: '100%', marginRight: 12 }}/>
