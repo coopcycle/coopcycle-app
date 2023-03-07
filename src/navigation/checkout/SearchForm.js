@@ -25,7 +25,7 @@ class SearchForm extends Component {
   }
 
   _onChange = (q = null) => {
-    if (q !== null || q > 2) {
+    if (q !== null && q.length > 2) {
       return this.props.search(q)
     }
     return;
@@ -69,7 +69,7 @@ class SearchForm extends Component {
             autoCorrect={false}
             InputRightElement={<IconButton _icon={{ as: FontAwesome5, name: 'times' }} onPress={() => {this._clearList(); this.textInput.clear(); this.textInput.blur()}} />}
             onChangeText={_.debounce(this._onChange, 350)}
-            placeholder={i18n.t('SEARCH')} />
+            placeholder={i18n.t('SEARCH_INPUT_PLACEHOLDER')} />
         </FormControl>
         {
           !isLoading && searchResultsLoaded && searchResults  ?
