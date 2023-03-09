@@ -55,10 +55,11 @@ class Photo extends Component {
 
   _saveImage() {
     const task = this.props.route.params?.task
+    const tasks = this.props.route.params?.tasks
     const { image } = this.state
     if (image) {
       this.props.addPicture(task, image.base64)
-      this.props.navigation.navigate({ name: 'TaskCompleteHome', params: { task }, merge: true })
+      this.props.navigation.navigate({ name: 'TaskCompleteHome', params: { task, tasks }, merge: true })
     }
   }
 

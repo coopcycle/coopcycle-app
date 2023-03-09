@@ -2,9 +2,10 @@ import moment from 'moment'
 import {
   ADD_PICTURE, ADD_SIGNATURE, CLEAR_FILES,
   DELETE_PICTURE, DELETE_SIGNATURE, LOAD_TASKS_FAILURE,
-  LOAD_TASKS_REQUEST, LOAD_TASKS_SUCCESS, MARK_TASK_DONE_FAILURE,
-  MARK_TASK_DONE_REQUEST, MARK_TASK_DONE_SUCCESS, MARK_TASK_FAILED_FAILURE,
-  MARK_TASK_FAILED_REQUEST, MARK_TASK_FAILED_SUCCESS,
+  LOAD_TASKS_REQUEST, LOAD_TASKS_SUCCESS, MARK_TASKS_DONE_FAILURE,
+  MARK_TASKS_DONE_REQUEST, MARK_TASKS_DONE_SUCCESS, MARK_TASK_DONE_FAILURE,
+  MARK_TASK_DONE_REQUEST, MARK_TASK_DONE_SUCCESS,
+  MARK_TASK_FAILED_FAILURE, MARK_TASK_FAILED_REQUEST, MARK_TASK_FAILED_SUCCESS,
   START_TASK_FAILURE, START_TASK_REQUEST, START_TASK_SUCCESS,
 } from './taskActions'
 import {
@@ -85,6 +86,7 @@ export const tasksEntityReducer = (state = tasksEntityInitialState, action = {})
     case START_TASK_REQUEST:
     case MARK_TASK_DONE_REQUEST:
     case MARK_TASK_FAILED_REQUEST:
+    case MARK_TASKS_DONE_REQUEST:
       return {
         ...state,
         loadTasksFetchError: false,
@@ -121,6 +123,12 @@ export const tasksEntityReducer = (state = tasksEntityInitialState, action = {})
         isFetching: false,
       }
 
+    case MARK_TASKS_DONE_FAILURE:
+      return {
+        ...state,
+        isFetching: false,
+      }
+
     case LOAD_TASKS_SUCCESS:
       return {
         ...state,
@@ -141,6 +149,13 @@ export const tasksEntityReducer = (state = tasksEntityInitialState, action = {})
         ...state,
         isFetching: false,
         items: _.mapValues(state.items, tasks => replaceItem(tasks, action.payload)),
+      }
+
+    case MARK_TASKS_DONE_SUCCESS:
+      return {
+        ...state,
+        isFetching: false,
+        items: _.mapValues(state.items, tasks => replaceItems(tasks, action.payload)),
       }
 
     case ASSIGN_TASK_SUCCESS:

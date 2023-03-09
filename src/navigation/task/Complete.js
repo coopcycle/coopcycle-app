@@ -17,6 +17,7 @@ import {
   deleteSignatureAt,
   markTaskDone,
   markTaskFailed,
+  markTasksDone,
   selectIsTaskCompleteFailure,
   selectPictures,
   selectSignatures } from '../../redux/Courier'
@@ -68,13 +69,21 @@ class CompleteTask extends Component {
   markTaskDone() {
 
     const task = this.props.route.params?.task
+    const tasks = this.props.route.params?.tasks
     const { notes } = this.state
 
-    this.props.markTaskDone(this.props.httpClient, task, notes, () => {
-      // Make sure to use merge = true, so that it doesn't break
-      // when navigating to DispatchTaskList
-      this.props.navigation.navigate({ name: this.props.route.params?.navigateAfter, merge: true })
-    }, this.state.contactName)
+    if (tasks && tasks.length) {
+      this.props.markTasksDone(this.props.httpClient, tasks, notes, () => {
+        this.props.navigation.navigate({ name: this.props.route.params?.navigateAfter, merge: true })
+      }, this.state.contactName)
+    } else {
+      this.props.markTaskDone(this.props.httpClient, task, notes, () => {
+        // Make sure to use merge = true, so that it doesn't break
+        // when navigating to DispatchTaskList
+        this.props.navigation.navigate({ name: this.props.route.params?.navigateAfter, merge: true })
+      }, this.state.contactName)
+    }
+
   }
 
   markTaskFailed() {
@@ -112,7 +121,12 @@ class CompleteTask extends Component {
   }
 
   resolveContactName() {
-    const task = this.props.route.params?.task
+    let task = this.props.route.params?.task
+    const tasks = this.props.route.params?.tasks
+
+    if (!task && tasks && tasks.length) {
+      task = tasks[0]
+    }
 
     if (!_.isEmpty(this.state.contactName)) {
       return this.state.contactName
@@ -138,6 +152,7 @@ class CompleteTask extends Component {
   render() {
 
     const task = this.props.route.params?.task
+    const tasks = this.props.route.params?.tasks
     const success = Object.prototype.hasOwnProperty.call(this.props.route.params || {}, 'success') ?
       this.props.route.params?.success : true
 
@@ -212,7 +227,7 @@ class CompleteTask extends Component {
           <Divider />
           <VStack>
             <TouchableOpacity
-              onPress={ () => this.props.navigation.navigate('TaskCompleteProofOfDelivery', { task }) }>
+              onPress={ () => this.props.navigation.navigate('TaskCompleteProofOfDelivery', { task, tasks }) }>
               <HStack alignItems="center" justifyContent="space-between" p="3">
                 <Icon as={ FontAwesome5 } name="signature" />
                 <Text>
@@ -314,6 +329,7 @@ function mapDispatchToProps (dispatch) {
   return {
     markTaskFailed: (client, task, notes, onSuccess, contactName) => dispatch(markTaskFailed(client, task, notes, onSuccess, contactName)),
     markTaskDone: (client, task, notes, onSuccess, contactName) => dispatch(markTaskDone(client, task, notes, onSuccess, contactName)),
+    markTasksDone: (client, tasks, notes, onSuccess, contactName) => dispatch(markTasksDone(client, tasks, notes, onSuccess, contactName)),
     deleteSignatureAt: index => dispatch(deleteSignatureAt(index)),
     deletePictureAt: index => dispatch(deletePictureAt(index)),
   }

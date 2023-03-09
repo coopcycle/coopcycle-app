@@ -42,8 +42,9 @@ class Signature extends Component {
   handleOK(base64) {
     base64 = base64.replace('data:image/jpeg;base64,', '')
     const task = this.props.route.params?.task
+    const tasks = this.props.route.params?.tasks
     this.props.addSignature(task, base64)
-    this.props.navigation.navigate({ name: 'TaskCompleteHome', params: { task }, merge: true })
+    this.props.navigation.navigate({ name: 'TaskCompleteHome', params: { task, tasks }, merge: true })
   }
 
   _clearCanvas() {

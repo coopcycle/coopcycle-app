@@ -22,6 +22,7 @@ export const navigateToCompleteTask = (navigation, route, task, tasks = [], succ
 
   const params = {
     task,
+    tasks,
     navigateAfter: route.name,
   }
 
