@@ -415,6 +415,7 @@
         "SEARCH_SHOPS": "Restaurantes",
         "SEARCH_PRODUCTS": "Productos",
         "SEARCH_PRODUCT_ITEM_SUBTITLE": "En {{shop}}",
-        "SEARCH_WITHOUT_RESULTS": "No se encontraron resultados. Intente nuevamente con otra búsqueda."
+        "SEARCH_WITHOUT_RESULTS": "No se encontraron resultados. Intente nuevamente con otra búsqueda.",
+        "COMPLETE_TASKS": "Completar tareas"
     }
 }

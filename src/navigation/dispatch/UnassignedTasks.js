@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import { InteractionManager, View } from 'react-native';
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
-import { Fab, Icon, Text } from 'native-base';
-import FontAwesome from 'react-native-vector-icons/FontAwesome'
+import { Text } from 'native-base';
 
 import TaskList from '../../components/TaskList'
 import TapToRefresh from '../../components/TapToRefresh'
@@ -13,17 +12,8 @@ import { selectUnassignedTasksNotCancelled } from '../../redux/Dispatch/selector
 import { selectSelectedDate, selectTasksWithColor } from '../../coopcycle-frontend-js/logistics/redux'
 
 import { navigateToTask } from '../../navigation/utils'
-import { greenColor } from '../../styles/common';
 
 class UnassignedTasks extends Component {
-
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      selectedTasks: [],
-    }
-  }
 
   componentDidMount() {
     InteractionManager.runAfterInteractions(() => {
@@ -36,29 +26,18 @@ class UnassignedTasks extends Component {
     this.props.assignTask(task, user.username)
   }
 
-  _toggleTaskSelection(task, isSelected) {
-    if (isSelected) {
-      this.setState({
-        selectedTasks: [ ...this.state.selectedTasks, task ],
-      })
-    } else {
-      this.setState({
-        selectedTasks: this.state.selectedTasks.filter((t) => t.id !== task.id),
-      })
-    }
-  }
-
-  assignSelectedTasks() {
+  assignSelectedTasks(selectedTasks) {
     this.props.navigation.navigate('DispatchPickUser',
-      { onItemPress: user => this._bulkAssign(user) })
+      { onItemPress: user => this._bulkAssign(user, selectedTasks) })
   }
 
-  _bulkAssign(user) {
+  _bulkAssign(user, tasks) {
     this.props.navigation.navigate('DispatchUnassignedTasks')
-    this.props.bulkAssignmentTasks(this.state.selectedTasks, user.username)
-      .then(() => {
-        this.setState({ selectedTasks: [] })
-      })
+    this.props.bulkAssignmentTasks(tasks, user.username)
+  }
+
+  allowToSelect(task) {
+    return task.status !== 'DONE'
   }
 
   render() {
@@ -86,15 +65,10 @@ class UnassignedTasks extends Component {
               onSwipeLeft={ task => navigate('DispatchPickUser', { onItemPress: user => this._assignTask(task, user) }) }
               swipeOutLeftIconName="user"
               onTaskClick={ task => navigateToTask(this.props.navigation, this.props.route, task, this.props.unassignedTasks) }
-              allowTaskSelection={ true }
-              toggleTaskSelection={ (task, isSelected) =>  this._toggleTaskSelection(task, isSelected) } />
+              allowMultipleSelection={ task => this.allowToSelect(task) }
+              multipleSelectionIcon="user"
+              onMultipleSelectionAction={ (selectedTasks) => this.assignSelectedTasks(selectedTasks) } />
           ) }
-          {
-            this.state.selectedTasks.length ?
-            <Fab renderInPortal={false} shadow={2} size="sm" backgroundColor={ greenColor }
-              icon={<Icon color="white" as={FontAwesome} name="user" size="sm" paddingLeft={1}
-              onPress={ () => this.assignSelectedTasks() } />} /> : null
-          }
         </View>
       </View>
     );

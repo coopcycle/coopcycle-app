@@ -454,6 +454,7 @@
         "SEARCH_SHOPS": "Shops",
         "SEARCH_PRODUCTS": "Products",
         "SEARCH_PRODUCT_ITEM_SUBTITLE": "In {{shop}}",
-        "SEARCH_WITHOUT_RESULTS": "No results found. Please try again with another search."
+        "SEARCH_WITHOUT_RESULTS": "No results found. Please try again with another search.",
+        "COMPLETE_TASKS": "Complete tasks"
     }
 }

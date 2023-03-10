@@ -1,12 +1,11 @@
 import React, { Component } from 'react'
 import { StyleSheet, View } from 'react-native'
-import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import { connect } from 'react-redux'
 
 import TaskList from '../../components/TaskList'
 import TapToRefresh from '../../components/TapToRefresh'
 import DateSelectHeader from '../../components/DateSelectHeader'
-import { dateSelectHeaderHeight, greenColor } from '../../styles/common'
+import { dateSelectHeaderHeight } from '../../styles/common'
 import { withTranslation } from 'react-i18next'
 import {
   loadTasks,
@@ -16,7 +15,6 @@ import {
   selectTasksWithColor,
 } from '../../redux/Courier'
 import { navigateToCompleteTask, navigateToTask } from '../../navigation/utils'
-import { Fab, Icon } from 'native-base'
 import { doneIconName } from '../task/styles/common'
 
 const styles = StyleSheet.create({
@@ -35,39 +33,16 @@ const styles = StyleSheet.create({
 
 class TaskListPage extends Component {
 
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      selectedTasks: [],
-    }
-
-    this.onFocus = this.onFocus.bind(this);
-
-    props.navigation.addListener('focus', this.onFocus);
-  }
-
-  onFocus() {
-    if (this.state.selectedTasks.length) {
-      this.setState({ selectedTasks: [] })
+  completeSelectedTasks(selectedTasks) {
+    if (selectedTasks.length > 1) {
+      navigateToCompleteTask(this.props.navigation, this.props.route, null, selectedTasks, true)
+    } else  if (selectedTasks.length === 1) {
+      navigateToCompleteTask(this.props.navigation, this.props.route, selectedTasks[0], [], true)
     }
   }
 
-  _toggleTaskSelection(task, isSelected) {
-    if (isSelected) {
-      this.setState({
-        selectedTasks: [ ...this.state.selectedTasks, task ],
-      })
-    } else {
-      this.setState({
-        selectedTasks: this.state.selectedTasks.filter((t) => t.id !== task.id),
-      })
-    }
-  }
-
-  completeSelectedTasks() {
-    navigateToCompleteTask(this.props.navigation, this.props.route, null, this.state.selectedTasks, true)
-    this.setState({ selectedTasks: [] })
+  allowToSelect(task) {
+    return task.status !== 'DONE'
   }
 
   render() {
@@ -93,19 +68,14 @@ class TaskListPage extends Component {
             onTaskClick={ task => navigateToTask(this.props.navigation, this.props.route, task, tasks) }
             refreshing={ this.props.isRefreshing }
             onRefresh={ () => this.props.refreshTasks(selectedDate) }
-            toggleTaskSelection={ (task, isSelected) =>  this._toggleTaskSelection(task, isSelected) }
-          />
+            allowMultipleSelection={ task => this.allowToSelect(task) }
+            multipleSelectionIcon={ doneIconName }
+            onMultipleSelectionAction={ (selectedTasks) => this.completeSelectedTasks(selectedTasks) } />
         }
         {
           tasks.length === 0 &&
             <TapToRefresh
               onPress={ () => this.props.loadTasks(selectedDate) } />
-        }
-        {
-          this.state.selectedTasks.length ?
-          <Fab renderInPortal={false} shadow={2} size="sm" backgroundColor={ greenColor }
-            icon={<Icon color="white" as={FontAwesome} name={doneIconName} size="sm"
-            onPress={ () => this.completeSelectedTasks() } />} /> : null
         }
         <DateSelectHeader
           buttonsEnabled={true}

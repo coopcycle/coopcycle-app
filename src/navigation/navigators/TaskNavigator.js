@@ -10,6 +10,17 @@ import ProofOfDeliveryTabs from './TaskAttachmentsNavigator'
 
 const CompleteStack = createStackNavigator()
 
+const completeTitle = (routeParams) => {
+  if (routeParams) {
+    if (routeParams.task) {
+      return `${i18n.t('TASK')} #${routeParams.task.id}`
+    }
+    if (routeParams.tasks) {
+      return i18n.t('COMPLETE_TASKS')
+    }
+  }
+}
+
 const CompleteNavigator = () => (
   <CompleteStack.Navigator
     screenOptions={ stackNavigatorScreenOptions }>
@@ -17,7 +28,7 @@ const CompleteNavigator = () => (
       name="TaskCompleteHome"
       component={ screens.TaskComplete }
       options={ ({ navigation, route }) => ({
-        title: `${i18n.t('TASK')} #${route.params?.task.id}`,
+        title: completeTitle(route.params),
         headerLeft: (props) => <HeaderBackButton { ...props }
           onPress={ () => navigation.goBack() } />,
       })}
@@ -26,7 +37,7 @@ const CompleteNavigator = () => (
       name="TaskCompleteProofOfDelivery"
       component={ ProofOfDeliveryTabs }
       options={ ({ route }) => ({
-        title: `${i18n.t('TASK')} #${route.params?.task.id}`,
+        title: completeTitle(route.params),
       })}
     />
   </CompleteStack.Navigator>

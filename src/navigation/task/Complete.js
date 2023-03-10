@@ -149,6 +149,24 @@ class CompleteTask extends Component {
     this.hideSubscription.remove()
   }
 
+  multipleTasksLabel(tasks) {
+    return tasks.reduce((label, task, idx) => {
+      return `${label}${idx !== 0 ? ',' : ''} #${task.id}`
+    }, `${this.props.t('COMPLETE_TASKS')}: `)
+  }
+
+  isDropoff() {
+    const task = this.props.route.params?.task
+    const tasks = this.props.route.params?.tasks
+
+    if (tasks && tasks.length > 1) {
+      return tasks.every(t => t.type === 'DROPOFF')
+    } else if (tasks && tasks.length === 1) {
+      return tasks[0].type === 'DROPOFF'
+    }
+    return task && task.type === 'DROPOFF'
+  }
+
   render() {
 
     const task = this.props.route.params?.task
@@ -173,6 +191,11 @@ class CompleteTask extends Component {
         <KeyboardAvoidingView flex={ 1 }
           behavior={ Platform.OS === 'ios' ? 'padding' : 'height' }>
           <VStack flex={ 1 }>
+            {
+              tasks && tasks.length ?
+              <Text mt={2} ml={3}>{this.multipleTasksLabel(tasks)}</Text>
+              : null
+            }
             <TouchableWithoutFeedback
               // We need to disable TouchableWithoutFeedback when keyboard is not visible,
               // otherwise the ScrollView for proofs of delivery is not scrollable
@@ -180,7 +203,7 @@ class CompleteTask extends Component {
               // This allows hiding the keyboard when touching anything on the screen
               onPress={ Keyboard.dismiss }>
               <VStack>
-                { task.type === 'DROPOFF' && (
+                { this.isDropoff() && (
                   <React.Fragment>
                     <HStack justifyContent="space-between" alignItems="center" p="3">
                       <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>

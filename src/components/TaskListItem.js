@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react'
+import React, { Component, useEffect, useState } from 'react'
 import { Dimensions, StyleSheet, TouchableHighlight, TouchableOpacity, View, useColorScheme } from 'react-native'
 import { HStack, Icon, Text, VStack, useTheme } from 'native-base'
 import { SwipeRow } from 'react-native-swipe-list-view'
@@ -98,11 +98,10 @@ const SwipeButton = ({ iconName, width }) => (
   </View>
 )
 
-const ItemTouchable = ({ children, onLongPress, ...otherProps }) => {
+const ItemTouchable = ({ children, isSelected, onLongPress, ...otherProps }) => {
 
   const colorScheme = useColorScheme()
   const { colors } = useTheme()
-  const [ isSelected, setIsSelected ] = useState(false)
 
   const backgroundColor = () => {
     if (isSelected) {
@@ -114,9 +113,9 @@ const ItemTouchable = ({ children, onLongPress, ...otherProps }) => {
   const _onLongPress = () => {
     if (onLongPress) {
       onLongPress(!isSelected)
-      setIsSelected(!isSelected)
     }
   }
+
 
   return (
     <TouchableHighlight
@@ -188,6 +187,7 @@ class TaskListItem extends Component {
         <ItemTouchable
           onPress={ this.props.onPress }
           onLongPress={ this.props.toggleItemSelection }
+          isSelected={this.props.isSelected}
           testID={ `task:${index}` }>
           <HStack flex={ 1 } alignItems="center" styles={ itemStyle } pr="3" { ...itemProps }>
             <View style={{ backgroundColor: color, width: 8, height: '100%', marginRight: 12 }}/>

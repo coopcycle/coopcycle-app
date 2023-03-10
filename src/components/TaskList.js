@@ -1,14 +1,37 @@
 import React, { Component } from 'react'
 import { SwipeListView } from 'react-native-swipe-list-view'
 import PropTypes from 'prop-types'
+import { Fab, Icon } from 'native-base'
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
 import ItemSeparatorComponent from './ItemSeparator'
 import TaskListItem from './TaskListItem'
+import { greenColor, whiteColor } from '../styles/common'
 
 class TaskList extends Component {
 
   constructor(props) {
     super(props)
+
+    this.state = {
+      selectedTasks: [],
+    }
+
+    this.onFabButtonPressed = this.onFabButtonPressed.bind(this)
+  }
+
+  _toggleTaskSelection(task, isSelected) {
+    if (this.props.allowMultipleSelection(task)) {
+      if (isSelected) {
+        this.setState({
+          selectedTasks: [ ...this.state.selectedTasks, task ],
+        },)
+      } else {
+        this.setState({
+          selectedTasks: this.state.selectedTasks.filter((t) => t.id !== task.id),
+        },)
+      }
+    }
   }
 
   _onTaskClick(task) {
@@ -55,8 +78,14 @@ class TaskList extends Component {
         disableLeftSwipe={ !hasOnSwipeRight }
         swipeOutLeftIconName={ this.props.swipeOutLeftIconName }
         swipeOutRightIconName={ this.props.swipeOutRightIconName }
-        toggleItemSelection={ this.props.toggleTaskSelection ? (isSelected) =>  this.props.toggleTaskSelection(task, isSelected) : null } />
+        isSelected={ this.state.selectedTasks.findIndex(t => t.id === task.id) !== -1 }
+        toggleItemSelection={ this.props.allowMultipleSelection && this.props.allowMultipleSelection(task) ? (isSelected) => this._toggleTaskSelection(task, isSelected) : null } />
     )
+  }
+
+  onFabButtonPressed() {
+    this.props.onMultipleSelectionAction(this.state.selectedTasks)
+    this.setState({ selectedTasks: [] })
   }
 
   render() {
@@ -64,13 +93,21 @@ class TaskList extends Component {
     const { refreshing, onRefresh } = this.props
 
     return (
-      <SwipeListView
-        data={ this.props.tasks }
-        keyExtractor={ (item, index) => item['@id'] }
-        renderItem={({ item, index }) => this.renderItem(item, index)}
-        refreshing={ refreshing }
-        onRefresh={ onRefresh }
-        ItemSeparatorComponent={ ItemSeparatorComponent } />
+      <>
+        <SwipeListView
+          data={ this.props.tasks }
+          keyExtractor={ (item, index) => item['@id'] }
+          renderItem={({ item, index }) => this.renderItem(item, index)}
+          refreshing={ refreshing }
+          onRefresh={ onRefresh }
+          ItemSeparatorComponent={ ItemSeparatorComponent } />
+        {
+          this.state.selectedTasks.length ?
+          <Fab renderInPortal={false} shadow={2} size="sm" backgroundColor={ greenColor }
+            icon={<Icon color={ whiteColor } as={FontAwesome} name={this.props.multipleSelectionIcon} size="sm"
+            onPress={ () => this.onFabButtonPressed() } />} /> : null
+        }
+      </>
     )
   }
 }
