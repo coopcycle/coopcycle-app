@@ -440,6 +440,12 @@
         "CREDIT_CARD_EXPIRATION": "Expiration",
         "ADD_NEW_CREDIT_CARD": "Ajouter une nouvelle carte bancaire",
         "SELECT_SAVED_CARD": "Sélectionner une carte bancaire sauvegardée",
-        "SAVE_CARD": "Sauvegarder cette carte bancaire"
+        "SAVE_CARD": "Sauvegarder cette carte bancaire",
+        "SEARCH_TAB": "Rechercher",
+        "SEARCH_INPUT_PLACEHOLDER": "Une boutique, un plat…",
+        "SEARCH_SHOPS": "Boutiques",
+        "SEARCH_PRODUCTS": "Produits",
+        "SEARCH_PRODUCT_ITEM_SUBTITLE": "Dans {{shop}}",
+        "SEARCH_WITHOUT_RESULTS": "Aucun résultat. Essayez de chercher autre chose."
     }
 }

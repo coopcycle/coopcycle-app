@@ -64,6 +64,7 @@ function Tabs({ rootNavigation: navigation }) {
       }} component={screens.RestaurantsPage} />
       <Tab.Screen name="Search" options={{
         tabBarIcon: ({ color, size }) => <Icon as={FontAwesome5} name="search" size={size} color={color} />,
+        title: i18n.t('SEARCH_TAB'),
       }} component={screens.SearchForm} />
       <Tab.Screen name="Cart" options={{
         tabBarBadge: <CartsBadge/>,
@@ -72,6 +73,7 @@ function Tabs({ rootNavigation: navigation }) {
       }} component={screens.Carts} />
       <Tab.Screen name="Account" options={{
         tabBarIcon: ({ color, size }) => <Icon as={FontAwesome5} name="user-alt" size={size} color={color} />,
+        title: i18n.t('MY_ACCOUNT'),
       }} component={AccountNavigator} />
     </Tab.Navigator>
   );
