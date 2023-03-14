@@ -1,5 +1,4 @@
 import { LOAD_RESTAURANTS_SUCCESS } from './actions';
-import SearchEngine from '../../utils/searchEngine';
 import jwtDecode from 'jwt-decode';
 import _ from 'lodash';
 
@@ -19,19 +18,6 @@ export const filterExpiredCarts = () => {
         return acc
       }, {})
     }
-
-    return next(action)
-  }
-}
-
-export const restaurantsSearchIndex = () => {
-  return (next) => (action) => {
-
-    if (action.type !== LOAD_RESTAURANTS_SUCCESS) {
-      return next(action)
-    }
-
-    SearchEngine.setRestaurants(action.payload)
 
     return next(action)
   }

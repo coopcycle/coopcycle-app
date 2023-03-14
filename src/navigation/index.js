@@ -65,7 +65,6 @@ import RestaurantProducts from './restaurant/Products'
 import RestaurantOpeningHours from './restaurant/OpeningHours'
 import RestaurantMenus from './restaurant/Menus'
 import RestaurantPrinter from './restaurant/Printer'
-import SearchResults from './checkout/components/SearchResults';
 import Carts from './checkout/Carts';
 import AddressDetails from './account/AddressDetails';
 import OrderTrackingPage from './checkout/OrderTracking';
@@ -126,7 +125,6 @@ export default {
   StoreNewDeliveryAddress,
   StoreNewDeliveryForm,
   SearchForm,
-  SearchResults,
   Carts,
   AddressDetails,
   OrderTrackingPage,
