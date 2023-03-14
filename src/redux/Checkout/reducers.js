@@ -27,6 +27,9 @@ import {
   LOAD_RESTAURANTS_FAILURE,
   LOAD_RESTAURANTS_REQUEST,
   LOAD_RESTAURANTS_SUCCESS,
+  LOAD_STRIPE_SAVED_PAYMENT_METHODS_FAILURE,
+  LOAD_STRIPE_SAVED_PAYMENT_METHODS_REQUEST,
+  LOAD_STRIPE_SAVED_PAYMENT_METHODS_SUCCESS,
   REMOVE_ITEM,
   RESET_RESTAURANT,
   SEARCH_FAILURE,
@@ -84,6 +87,8 @@ const initialState = {
   showMultipleServersInSameCityModal: true,
   searchResultsLoaded: false,
   searchResults: null,
+  stripePaymentMethodsLoaded: false,
+  stripePaymentMethods: [],
 }
 
 export default (state = initialState, action = {}) => {
@@ -111,6 +116,7 @@ export default (state = initialState, action = {}) => {
     case LOAD_PAYMENT_DETAILS_FAILURE:
     case SEARCH_FAILURE:
     case GET_RESTAURANT_FAILURE:
+    case LOAD_STRIPE_SAVED_PAYMENT_METHODS_FAILURE:
       return {
         ...state,
         isFetching: false,
@@ -453,6 +459,21 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         isFetching: false,
+      }
+
+    case LOAD_STRIPE_SAVED_PAYMENT_METHODS_REQUEST:
+      return {
+        ...state,
+        stripePaymentMethodsLoaded: false,
+        isFetching: true,
+      }
+
+    case LOAD_STRIPE_SAVED_PAYMENT_METHODS_SUCCESS:
+      return {
+        ...state,
+        isFetching: false,
+        stripePaymentMethodsLoaded: true,
+        stripePaymentMethods: action.payload.methods,
       }
   }
 

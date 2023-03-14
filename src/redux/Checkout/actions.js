@@ -1,7 +1,7 @@
 import { createAction } from 'redux-actions'
 import { CommonActions, StackActions } from '@react-navigation/native'
 import _ from 'lodash'
-import { createPaymentMethod, handleNextAction } from '@stripe/stripe-react-native'
+import { createPaymentMethod, handleNextAction, initStripe } from '@stripe/stripe-react-native'
 
 import NavigationHolder from '../../NavigationHolder'
 import i18n from '../../i18n'
@@ -78,6 +78,10 @@ export const GET_RESTAURANT_REQUEST = '@checkout/GET_RESTAURANT_REQUEST'
 export const GET_RESTAURANT_SUCCESS = '@checkout/GET_RESTAURANT_SUCCESS'
 export const GET_RESTAURANT_FAILURE = '@checkout/GET_RESTAURANT_FAILURE'
 
+export const LOAD_STRIPE_SAVED_PAYMENT_METHODS_REQUEST = '@checkout/LOAD_STRIPE_SAVED_PAYMENT_METHODS_REQUEST'
+export const LOAD_STRIPE_SAVED_PAYMENT_METHODS_SUCCESS = '@checkout/LOAD_STRIPE_SAVED_PAYMENT_METHODS_SUCCESS'
+export const LOAD_STRIPE_SAVED_PAYMENT_METHODS_FAILURE = '@checkout/LOAD_STRIPE_SAVED_PAYMENT_METHODS_FAILURE'
+
 export const UPDATE_CUSTOMER_GUEST = '@checkout/UPDATE_CUSTOMER_GUEST'
 
 
@@ -148,6 +152,10 @@ export const getRestaurantFailure = createAction(GET_RESTAURANT_FAILURE)
 export const getRestaurantRequest = createAction(GET_RESTAURANT_REQUEST)
 export const getRestaurantSuccess = createAction(GET_RESTAURANT_SUCCESS)
 export const clearSearchResults = createAction(CLEAR_SEARCH_RESULTS)
+
+export const loadStripeSavedPaymentMethodsRequest = createAction(LOAD_STRIPE_SAVED_PAYMENT_METHODS_REQUEST)
+export const loadStripeSavedPaymentMethodsSuccess = createAction(LOAD_STRIPE_SAVED_PAYMENT_METHODS_SUCCESS)
+export const loadStripeSavedPaymentMethodsFailure = createAction(LOAD_STRIPE_SAVED_PAYMENT_METHODS_FAILURE)
 
 export const hideMultipleServersInSameCityModal = createAction(HIDE_MULTIPLE_SERVERS_IN_SAME_CITY_MODAL)
 
@@ -763,11 +771,102 @@ function handleSuccessNav(dispatch, order) {
   dispatch(checkoutSuccess(order))
 }
 
-function handleSuccess(dispatch, httpClient, cart, paymentIntentId) {
-  httpClient
-    .put(cart['@id'] + '/pay', { paymentIntentId })
-    .then(o => handleSuccessNav(dispatch, o))
-    .catch(e => dispatch(checkoutFailure(e)))
+function handleSaveOfPaymentMethod(saveCard, cardholderName, httpClient, state) {
+  return new Promise((resolve) => {
+    const { restaurant, paymentDetails } = state.checkout
+
+    if (saveCard && paymentDetails.stripeAccount) {
+      const { cart } = state.checkout.carts[restaurant]
+
+      const billingEmail = selectBillingEmail(state)
+
+      configureStripe(state)
+      return createPaymentMethod({
+        paymentMethodType: 'Card',
+        paymentMethodData: {
+          billingDetails: {
+            email: billingEmail,
+            name: cardholderName,
+            phone: cart.fulfillmentMethod === 'delivery' ? cart.shippingAddress.telephone : '',
+          },
+        },
+      }).then(({ paymentMethod, error }) => {
+        if (error) {
+          resolve()
+        } else {
+          httpClient
+            .post(cart['@id'] + '/stripe/create-setup-intent-or-attach-pm', {
+              payment_method_to_save: paymentMethod.id,
+             })
+              .then(() => resolve())
+              .catch(e => {
+                  // do not interrupt flow if there is an error with this
+                  if (e.response) {
+                      console.log(e.response)
+                  } else {
+                      console.log('An unexpected error occurred while trying to create a SetupIntent')
+                  }
+                  resolve()
+              })
+        }
+      })
+    } else {
+      resolve()
+    }
+  })
+}
+
+function handleSuccess(dispatch, httpClient, cart, paymentIntentId, saveCard = false, cardholderName, state) {
+  handleSaveOfPaymentMethod(saveCard, cardholderName, httpClient, state)
+    .then(() => {
+      httpClient
+        .put(cart['@id'] + '/pay', { paymentIntentId })
+        .then(o => {
+          handleSuccessNav(dispatch, o)
+        })
+        .catch(e => dispatch(checkoutFailure(e)))
+    })
+}
+
+function getPaymentMethod(cardholderName, billingEmail, cart, savedPaymentMethodId) {
+
+  return new Promise((resolve, reject) => {
+    if (savedPaymentMethodId) {
+      resolve(savedPaymentMethodId)
+    } else {
+      return createPaymentMethod({
+        paymentMethodType: 'Card',
+        paymentMethodData: {
+          billingDetails: {
+            email: billingEmail,
+            name: cardholderName,
+            phone: cart.fulfillmentMethod === 'delivery' ? cart.shippingAddress.telephone : '',
+          },
+        },
+      }).then(({ paymentMethod, error }) => {
+        if (error) {
+          reject(error)
+        } else {
+          resolve(paymentMethod.id)
+        }
+      })
+    }
+  })
+}
+
+function configureStripe(state, paymentDetails = null) {
+  let stripeProps = {
+    publishableKey: state.app.settings.stripe_publishable_key,
+  }
+
+  if (paymentDetails && paymentDetails.stripeAccount) {
+    stripeProps = {
+      ...stripeProps,
+      stripeAccountId: paymentDetails.stripeAccount,
+    }
+  }
+
+  initStripe(stripeProps)
 }
 
 /**
@@ -775,12 +874,12 @@ function handleSuccess(dispatch, httpClient, cart, paymentIntentId) {
  * @see https://stripe.com/docs/payments/accept-a-payment-synchronously?platform=react-native
  * @see https://github.com/stripe/stripe-react-native/blob/master/example/src/screens/NoWebhookPaymentScreen.tsx
  */
-export function checkout(cardholderName) {
+export function checkout(cardholderName, savedPaymentMethodId = null, saveCard = false) {
 
   return (dispatch, getState) => {
 
-    const { restaurant } = getState().checkout
-    const { cart, token } = getState().checkout.carts[restaurant]
+    const { restaurant, paymentDetails } = getState().checkout
+    const { cart } = getState().checkout.carts[restaurant]
 
     const billingEmail = selectBillingEmail(getState())
 
@@ -797,43 +896,47 @@ export function checkout(cardholderName) {
       return
     }
 
-    createPaymentMethod({
-      paymentMethodType: 'Card',
-      paymentMethodData: {
-        billingDetails: {
-          email: billingEmail,
-          name: cardholderName,
-          phone: cart.fulfillmentMethod === 'delivery' ? cart.shippingAddress.telephone : '',
-        },
-      }
-    })
-    .then(({ paymentMethod, error }) => {
-      if (error) {
-        dispatch(checkoutFailure(error))
-      } else {
+    getPaymentMethod(cardholderName, billingEmail, cart, savedPaymentMethodId)
+      .then((paymentMethodId) => {
+        if (paymentDetails.stripeAccount) {
+          // for connected account we have to clone the platform payment method
+          return httpClient
+            .get(`${cart['@id']}/stripe/clone-payment-method/${paymentMethodId}`)
+            .then(clonnedPaymentMethod => {
+              return [ paymentMethodId, clonnedPaymentMethod.id ]
+            })
+        } else {
+          // use the platform payment method
+          return [paymentMethodId]
+        }
+      })
+      .then(([ platformAccountPaymentMethodId, clonnedPaymentMethodId ] ) => {
         httpClient
-          .put(cart['@id'] + '/pay', { paymentMethodId: paymentMethod.id })
-          .then(stripeResponse => {
-            if (stripeResponse.requiresAction) {
-              handleNextAction(stripeResponse.paymentIntentClientSecret)
-                .then(({ error, paymentIntent }) => {
-                  if (error) {
-                    dispatch(checkoutFailure(error))
-                  } else {
-                    handleSuccess(dispatch, httpClient, cart, paymentIntent.id)
-                  }
-                })
-                .catch(e => {
-                  dispatch(checkoutFailure(e))
-                })
-            } else {
-              handleSuccess(dispatch, httpClient, cart, stripeResponse.paymentIntentId)
-            }
+          .put(cart['@id'] + '/pay', {
+            paymentMethodId: clonnedPaymentMethodId || platformAccountPaymentMethodId,
+            saveCard,
           })
-          .catch(e => dispatch(checkoutFailure(e)))
-      }
-    })
-    .catch(e => dispatch(checkoutFailure(e)))
+            .then(stripeResponse => {
+              if (stripeResponse.requiresAction) {
+                configureStripe(getState(), paymentDetails)
+                handleNextAction(stripeResponse.paymentIntentClientSecret)
+                  .then(({ error, paymentIntent }) => {
+                    if (error) {
+                      dispatch(checkoutFailure(error))
+                    } else {
+                      handleSuccess(dispatch, httpClient, cart, paymentIntent.id, saveCard, cardholderName, getState())
+                    }
+                  })
+                  .catch(e => {
+                    dispatch(checkoutFailure(e))
+                  })
+              } else {
+                handleSuccess(dispatch, httpClient, cart, stripeResponse.paymentIntentId, saveCard, cardholderName, getState())
+              }
+            })
+            .catch(e => dispatch(checkoutFailure(e)))
+      })
+      .catch(e => dispatch(checkoutFailure(e)))
   }
 }
 
@@ -1103,6 +1206,20 @@ export function loadPaymentDetails() {
       .get(`${cart['@id']}/payment`)
       .then(res => dispatch(loadPaymentDetailsSuccess(res)))
       .catch(e => dispatch(loadPaymentDetailsFailure(e)))
+  }
+}
+
+export function loadStripeSavedPaymentMethods() {
+  return (dispatch, getState) => {
+
+    const httpClient = createHttpClient(getState())
+
+    dispatch(loadStripeSavedPaymentMethodsRequest())
+
+    httpClient
+      .get('/api/me/stripe-payment-methods')
+      .then(res => dispatch(loadStripeSavedPaymentMethodsSuccess(res)))
+      .catch(e => dispatch(loadStripeSavedPaymentMethodsFailure(e)))
   }
 }
 

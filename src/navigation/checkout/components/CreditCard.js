@@ -8,7 +8,7 @@ import {
   useColorScheme,
 } from 'react-native';
 import { connect } from 'react-redux'
-import { Center, Input, Text } from 'native-base';
+import { Button, Center, Checkbox, Flex, Input, Radio, Text } from 'native-base';
 import _ from 'lodash'
 import { withTranslation } from 'react-i18next'
 import { Formik } from 'formik'
@@ -16,7 +16,8 @@ import { CardField, StripeProvider } from '@stripe/stripe-react-native'
 
 import { formatPrice } from '../../../utils/formatting'
 import FooterButton from './FooterButton'
-import { loadPaymentDetails } from '../../../redux/Checkout/actions'
+import { loadPaymentDetails, loadStripeSavedPaymentMethods } from '../../../redux/Checkout/actions'
+import SavedCreditCard from './SavedCreditCard';
 
 const ColorSchemeAwareCardField = (props) => {
 
@@ -54,6 +55,7 @@ class CreditCard extends Component {
     this.state = {
       valid: false,
       form: {},
+      addNewCard: false,
     }
   }
 
@@ -69,6 +71,10 @@ class CreditCard extends Component {
     this.keyboardWillHideSub = Keyboard.addListener(hideEventName, this.keyboardWillHide.bind(this))
 
     this.props.loadPaymentDetails()
+
+    if (!this.props.user.isGuest()) {
+      this.props.loadStripeSavedPaymentMethods()
+    }
   }
 
   componentWillUnmount() {
@@ -100,22 +106,34 @@ class CreditCard extends Component {
 
     let errors = {}
 
-    if (!this.state.valid) {
-      errors.card = true
+    if (this.props.stripePaymentMethods.length && !values.savedCardSelected && !this.state.addNewCard) {
+      errors.selectCard = this.props.t('SELECT_SAVED_CARD_ERROR')
     }
 
-    if (_.isEmpty(values.cardholderName)) {
-      errors.cardholderName = true
+    if (this.state.addNewCard) {
+      if (!this.state.valid) {
+        errors.card = this.props.t('INVALID_CREDIT_CARD_ERROR')
+      }
+
+      if (_.isEmpty(values.cardholderName)) {
+        errors.cardholderName = this.props.t('INVALID_CARD_HOLDER_NAME_ERROR')
+      }
     }
 
     return errors
   }
 
+  shouldRenderStripePaymentMethods() {
+    const { stripePaymentMethodsLoaded, stripePaymentMethods, user } = this.props
+
+    return !user.isGuest() && stripePaymentMethodsLoaded && stripePaymentMethods.length
+  }
+
   render() {
 
-    const { cart, paymentDetailsLoaded } = this.props
+    const { cart, paymentDetailsLoaded, stripePaymentMethodsLoaded, stripePaymentMethods, user } = this.props
 
-    if (!cart || !paymentDetailsLoaded) {
+    if (!cart || !paymentDetailsLoaded || (!user.isGuest() && !stripePaymentMethodsLoaded)) {
 
       return (
         <View />
@@ -127,21 +145,16 @@ class CreditCard extends Component {
       number: '',
       expiry: '',
       cvc: '',
+      savedCardSelected: null,
+      saveCard: false,
     }
 
     // Make sure button can't be tapped twice
     // @see https://medium.com/@devmrin/debouncing-touch-events-in-react-native-prevent-navigating-twice-or-more-times-when-button-is-90687e4a8113
     // @see https://snack.expo.io/@patwoz/withpreventdoubleclick
 
-    let stripeProviderProps = {
+    const stripeProviderProps = {
       publishableKey: this.props.stripePublishableKey,
-    }
-
-    if (!_.isEmpty(this.props.paymentDetails.stripeAccount)) {
-      stripeProviderProps = {
-        ...stripeProviderProps,
-        stripeAccountId: this.props.paymentDetails.stripeAccount,
-      }
     }
 
     return (
@@ -154,39 +167,97 @@ class CreditCard extends Component {
         validateOnChange={ false }>
         {({ handleChange, handleBlur, handleSubmit, values, errors, touched, setFieldValue, setFieldTouched }) => (
         <Animated.View style={{ flex: 1, paddingBottom: this.keyboardHeight }}>
-          <Center flex={ 1 }>
-            <Text style={ styles.creditCardLabel }>
-              { this.props.t('ENTER_PAY_DETAILS') }
-            </Text>
-            <View style={ styles.creditCardInputContainer }>
-              <View style={ [ styles.formInputContainer, { paddingHorizontal: 20, marginBottom: 15 }] }>
-                <Input
-                  testID="cardholderName"
-                  autoCorrect={ false }
-                  autoCapitalize="none"
-                  style={{ height: 40 }}
-                  placeholder={ this.props.t('CARDHOLDER_NAME') }
-                  onChangeText={ handleChange('cardholderName') }
-                  onBlur={ handleBlur('cardholderName') } />
-              </View>
-              <View style={[ styles.formInputContainer, { paddingHorizontal: 20, marginBottom: 15 }] } testID="creditCardWrapper">
-                <ColorSchemeAwareCardField
-                  onCardChange={ (cardDetails) => {
-                    this.setState({
-                      valid: cardDetails.complete,
+          { (this.shouldRenderStripePaymentMethods() && !this.state.addNewCard) ?
+              <Center flex={1} >
+                <Text mb={2} bold>
+                  { this.props.t('PAY_WITH_SAVED_CREDIT_CARD') }
+                </Text>
+                <Radio.Group name="savedCardSelected" accessibilityLabel="saved credit cards"
+                  defaultValue={initialValues.savedCardSelected}
+                  onChange={ handleChange('savedCardSelected') }>
+                  {
+                    stripePaymentMethods.map((card) => {
+                      return (
+                        <SavedCreditCard card={card} key={card.id} />
+                      )
                     })
-                  }}
-                />
+                  }
+                </Radio.Group>
+                <Button mt={4} onPress={ () => {
+                  this.setState({ addNewCard: true }, () => {
+                    setFieldValue('savedCardSelected', null)
+                  })
+                }}>
+                  { this.props.t('ADD_NEW_CREDIT_CARD') }
+                </Button>
+                { errors.selectCard && (
+                    <Text m={4} textAlign="center" color="#ed2f2f">{ errors.selectCard }</Text>
+                ) }
+              </Center>
+              : null
+          }
+          {
+            (this.state.addNewCard || !this.shouldRenderStripePaymentMethods()) ?
+            <Center flex={ 1 } >
+              <Text style={ styles.creditCardLabel }>
+                { this.props.t('ENTER_PAY_DETAILS') }
+              </Text>
+              <View style={ styles.creditCardInputContainer }>
+                <View style={ [ styles.formInputContainer, { paddingHorizontal: 20, marginBottom: 15 }] }>
+                  <Input
+                    testID="cardholderName"
+                    autoCorrect={ false }
+                    autoCapitalize="none"
+                    style={{ height: 40 }}
+                    placeholder={ this.props.t('CARDHOLDER_NAME') }
+                    onChangeText={ handleChange('cardholderName') }
+                    onBlur={ handleBlur('cardholderName') } />
+                  { errors.cardholderName && (
+                    <Text mt={2} color="#ed2f2f">{ errors.cardholderName }</Text>
+                  ) }
+                </View>
+                <View style={[ styles.formInputContainer, { paddingHorizontal: 20, marginBottom: 15 }] } testID="creditCardWrapper">
+                  <ColorSchemeAwareCardField
+                    onCardChange={ (cardDetails) => {
+                      this.setState({
+                        valid: cardDetails.complete,
+                      })
+                    }}
+                  />
+                  { errors.card && (
+                    <Text mt={2} color="#ed2f2f">{ errors.card }</Text>
+                  ) }
+                </View>
               </View>
-            </View>
-            { this.props.errors.length > 0 && (
-            <View style={ styles.errorsContainer }>
-              { this.props.errors.map((error, key) => (
-              <Text key={ key } style={ styles.errorText }>{ error }</Text>
-              )) }
-            </View>
-            ) }
-          </Center>
+              {
+                !user.isGuest() ?
+                <Checkbox name="saveCard" mb={4}
+                  accessibilityLabel="save credit card"
+                  defaultValue={ initialValues.saveCard }
+                  onChange={ (checked) => setFieldValue('saveCard', checked) }>
+                  { this.props.t('SAVE_CARD') }
+                </Checkbox>
+                : null
+              }
+              {
+                this.shouldRenderStripePaymentMethods() ?
+                <Button mt={2} onPress={ () => {
+                    this.setState({ addNewCard: false })
+                  }}>
+                    { this.props.t('SELECT_SAVED_CARD') }
+                </Button>
+                : null
+              }
+              { this.props.errors.length > 0 && (
+                <View style={ styles.errorsContainer }>
+                  { this.props.errors.map((error, key) => (
+                  <Text key={ key } style={ styles.errorText }>{ error }</Text>
+                  )) }
+                </View>
+              ) }
+            </Center>
+            : null
+          }
           <FooterButton
             testID="creditCardSubmit"
             text={ this.props.t('PAY_AMOUNT', { amount: formatPrice(cart.total) }) }
@@ -224,8 +295,10 @@ function mapStateToProps(state) {
 
   return {
     stripePublishableKey: state.app.settings.stripe_publishable_key,
-    paymentDetails: state.checkout.paymentDetails,
     paymentDetailsLoaded: state.checkout.paymentDetailsLoaded,
+    stripePaymentMethods: state.checkout.stripePaymentMethods || [],
+    stripePaymentMethodsLoaded: state.checkout.stripePaymentMethodsLoaded,
+    user: state.app.user,
   }
 }
 
@@ -233,6 +306,7 @@ function mapDispatchToProps(dispatch) {
 
   return {
     loadPaymentDetails: () => dispatch(loadPaymentDetails()),
+    loadStripeSavedPaymentMethods: () => dispatch(loadStripeSavedPaymentMethods()),
   }
 }
 

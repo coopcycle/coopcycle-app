@@ -2,15 +2,16 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
 import { checkout } from '../../redux/Checkout/actions'
+import { selectCart } from '../../redux/Checkout/selectors'
 import CreditCard from './components/CreditCard'
 
 class PaymentMethodCard extends Component {
 
   _onSubmit(values) {
 
-    const { cardholderName } = values
+    const { cardholderName, savedCardSelected, saveCard } = values
 
-    this.props.checkout(cardholderName)
+    this.props.checkout(cardholderName, savedCardSelected, saveCard)
   }
 
   render() {
@@ -25,9 +26,9 @@ class PaymentMethodCard extends Component {
 }
 
 function mapStateToProps(state) {
-
+  const cart = selectCart(state)?.cart
   return {
-    cart: state.checkout.cart,
+    cart,
     errors: state.checkout.errors,
   }
 }
@@ -35,7 +36,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
 
   return {
-    checkout: (cardholderName) => dispatch(checkout(cardholderName)),
+    checkout: (cardholderName, savedCardSelected, saveCard) => dispatch(checkout(cardholderName, savedCardSelected, saveCard)),
   }
 }
 
