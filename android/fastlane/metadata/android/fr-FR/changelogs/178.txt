@@ -1,0 +1,5 @@
+Améliorations :
+
+- Permet de sauvegarder les cartes bancaires.
+- Permet de rechercher les boutiques et les produits.
+- Permet de compléter de multiples tâches d'un seul coup.
