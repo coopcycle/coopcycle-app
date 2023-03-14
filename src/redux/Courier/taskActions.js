@@ -19,6 +19,9 @@ export const LOAD_TASKS_FAILURE = 'LOAD_TASKS_FAILURE'
 export const MARK_TASK_DONE_REQUEST = 'MARK_TASK_DONE_REQUEST'
 export const MARK_TASK_DONE_SUCCESS = 'MARK_TASK_DONE_SUCCESS'
 export const MARK_TASK_DONE_FAILURE = 'MARK_TASK_DONE_FAILURE'
+export const MARK_TASKS_DONE_REQUEST = 'MARK_TASKS_DONE_REQUEST'
+export const MARK_TASKS_DONE_SUCCESS = 'MARK_TASKS_DONE_SUCCESS'
+export const MARK_TASKS_DONE_FAILURE = 'MARK_TASKS_DONE_FAILURE'
 export const MARK_TASK_FAILED_REQUEST = 'MARK_TASK_FAILED_REQUEST'
 export const MARK_TASK_FAILED_SUCCESS = 'MARK_TASK_FAILED_SUCCESS'
 export const MARK_TASK_FAILED_FAILURE = 'MARK_TASK_FAILED_FAILURE'
@@ -48,6 +51,9 @@ export const loadTasksFailure = createAction(LOAD_TASKS_FAILURE)
 export const markTaskDoneRequest = createAction(MARK_TASK_DONE_REQUEST)
 export const markTaskDoneSuccess = createAction(MARK_TASK_DONE_SUCCESS)
 export const markTaskDoneFailure = createAction(MARK_TASK_DONE_FAILURE)
+export const markTasksDoneRequest = createAction(MARK_TASKS_DONE_REQUEST)
+export const markTasksDoneSuccess = createAction(MARK_TASKS_DONE_SUCCESS)
+export const markTasksDoneFailure = createAction(MARK_TASKS_DONE_FAILURE)
 export const markTaskFailedRequest = createAction(MARK_TASK_FAILED_REQUEST)
 export const markTaskFailedSuccess = createAction(MARK_TASK_FAILED_SUCCESS)
 export const markTaskFailedFailure = createAction(MARK_TASK_FAILED_FAILURE)
@@ -151,6 +157,32 @@ function uploadTaskImages(task, state) {
     })
 }
 
+function uploadTasksImages(tasks, state) {
+
+  const signatures = selectSignatures(state)
+  const pictures = selectPictures(state)
+
+  const files = signatures.concat(pictures)
+
+  if (!files.length) {
+    return Promise.resolve()
+  }
+
+  const promises = files.map(file => uploadTaskImage(state.app.httpClient, file))
+
+  return Promise.all(promises)
+    .then(values => {
+      if (values.length === 0) {
+        return tasks
+      }
+      // Associate images with task
+      return state.app.httpClient.put('/api/tasks/images', {
+        images: values.map(image => image['@id']),
+        tasks: tasks.map(task => task['@id']),
+      })
+    })
+}
+
 export function markTaskFailed(httpClient, task, notes = '', onSuccess, contactName = '') {
 
   return function (dispatch, getState) {
@@ -220,6 +252,42 @@ export function markTaskDone(httpClient, task, notes = '', onSuccess, contactNam
       })
       .catch(e => {
         dispatch(markTaskDoneFailure(e))
+        setTimeout(() => showAlert(e), 100)
+      })
+  }
+}
+
+export function markTasksDone(httpClient, tasks, notes = '', onSuccess, contactName = '') {
+
+  return function (dispatch, getState) {
+
+    dispatch(markTasksDoneRequest())
+
+    let payload = {
+      tasks: tasks.map(t => t['@id']),
+      notes,
+    }
+
+    if (!_.isEmpty(contactName)) {
+      payload = {
+        ...payload,
+        contactName,
+      }
+    }
+
+    return uploadTasksImages(tasks, getState())
+      .then(() => {
+        return httpClient.put('/api/tasks/done', payload)
+          .then(res => {
+            dispatch(clearFiles())
+            dispatch(markTasksDoneSuccess(res['hydra:member']))
+            if (typeof onSuccess === 'function') {
+              setTimeout(() => onSuccess(), 100)
+            }
+          })
+      })
+      .catch(e => {
+        dispatch(markTasksDoneFailure(e))
         setTimeout(() => showAlert(e), 100)
       })
   }

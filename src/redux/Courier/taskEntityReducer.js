@@ -2,13 +2,15 @@ import moment from 'moment'
 import {
   ADD_PICTURE, ADD_SIGNATURE, CLEAR_FILES,
   DELETE_PICTURE, DELETE_SIGNATURE, LOAD_TASKS_FAILURE,
-  LOAD_TASKS_REQUEST, LOAD_TASKS_SUCCESS, MARK_TASK_DONE_FAILURE,
-  MARK_TASK_DONE_REQUEST, MARK_TASK_DONE_SUCCESS, MARK_TASK_FAILED_FAILURE,
-  MARK_TASK_FAILED_REQUEST, MARK_TASK_FAILED_SUCCESS,
+  LOAD_TASKS_REQUEST, LOAD_TASKS_SUCCESS, MARK_TASKS_DONE_FAILURE,
+  MARK_TASKS_DONE_REQUEST, MARK_TASKS_DONE_SUCCESS, MARK_TASK_DONE_FAILURE,
+  MARK_TASK_DONE_REQUEST, MARK_TASK_DONE_SUCCESS,
+  MARK_TASK_FAILED_FAILURE, MARK_TASK_FAILED_REQUEST, MARK_TASK_FAILED_SUCCESS,
   START_TASK_FAILURE, START_TASK_REQUEST, START_TASK_SUCCESS,
 } from './taskActions'
 import {
   ASSIGN_TASK_SUCCESS,
+  BULK_ASSIGNMENT_TASKS_SUCCESS,
   UNASSIGN_TASK_SUCCESS,
 } from '../Dispatch/actions'
 import {
@@ -69,11 +71,22 @@ function replaceItem(state, payload) {
   return state
 }
 
+function replaceItems(prevItems, items) {
+  return prevItems.map((prevItem) => {
+    const toReplace = items.find( i => i['@id'] === prevItem['@id'])
+    if (toReplace) {
+      return toReplace
+    }
+    return prevItem
+  })
+}
+
 export const tasksEntityReducer = (state = tasksEntityInitialState, action = {}) => {
   switch (action.type) {
     case START_TASK_REQUEST:
     case MARK_TASK_DONE_REQUEST:
     case MARK_TASK_FAILED_REQUEST:
+    case MARK_TASKS_DONE_REQUEST:
       return {
         ...state,
         loadTasksFetchError: false,
@@ -110,6 +123,12 @@ export const tasksEntityReducer = (state = tasksEntityInitialState, action = {})
         isFetching: false,
       }
 
+    case MARK_TASKS_DONE_FAILURE:
+      return {
+        ...state,
+        isFetching: false,
+      }
+
     case LOAD_TASKS_SUCCESS:
       return {
         ...state,
@@ -132,6 +151,13 @@ export const tasksEntityReducer = (state = tasksEntityInitialState, action = {})
         items: _.mapValues(state.items, tasks => replaceItem(tasks, action.payload)),
       }
 
+    case MARK_TASKS_DONE_SUCCESS:
+      return {
+        ...state,
+        isFetching: false,
+        items: _.mapValues(state.items, tasks => replaceItems(tasks, action.payload)),
+      }
+
     case ASSIGN_TASK_SUCCESS:
       if (action.payload.assignedTo === state.username) {
 
@@ -141,6 +167,16 @@ export const tasksEntityReducer = (state = tasksEntityInitialState, action = {})
         }
       }
       return state
+
+    case BULK_ASSIGNMENT_TASKS_SUCCESS:
+        if (action.payload[0].assignedTo === state.username) {
+
+          return {
+            ...state,
+            items: _.mapValues(state.items, tasks => replaceItems(tasks, action.payload)),
+          }
+        }
+        return state
 
     case UNASSIGN_TASK_SUCCESS:
       let task = _.find(state.items, item => item['@id'] === action.payload['@id'])

@@ -52,6 +52,10 @@ export const ASSIGN_TASK_REQUEST = 'ASSIGN_TASK_REQUEST'
 export const ASSIGN_TASK_SUCCESS = 'ASSIGN_TASK_SUCCESS'
 export const ASSIGN_TASK_FAILURE = 'ASSIGN_TASK_FAILURE'
 
+export const BULK_ASSIGNMENT_TASKS_REQUEST = 'BULK_ASSIGNMENT_TASKS_REQUEST'
+export const BULK_ASSIGNMENT_TASKS_SUCCESS = 'BULK_ASSIGNMENT_TASKS_SUCCESS'
+export const BULK_ASSIGNMENT_TASKS_FAILURE = 'BULK_ASSIGNMENT_TASKS_FAILURE'
+
 export const UNASSIGN_TASK_REQUEST = 'UNASSIGN_TASK_REQUEST'
 export const UNASSIGN_TASK_SUCCESS = 'UNASSIGN_TASK_SUCCESS'
 export const UNASSIGN_TASK_FAILURE = 'UNASSIGN_TASK_FAILURE'
@@ -85,6 +89,10 @@ export const cancelTaskFailure = createAction(CANCEL_TASK_FAILURE)
 export const assignTaskRequest = createAction(ASSIGN_TASK_REQUEST)
 export const assignTaskSuccess = createAction(ASSIGN_TASK_SUCCESS)
 export const assignTaskFailure = createAction(ASSIGN_TASK_FAILURE)
+
+export const bulkAssignmentTasksRequest = createAction(BULK_ASSIGNMENT_TASKS_REQUEST)
+export const bulkAssignmentTasksSuccess = createAction(BULK_ASSIGNMENT_TASKS_SUCCESS)
+export const bulkAssignmentTasksFailure = createAction(BULK_ASSIGNMENT_TASKS_FAILURE)
 
 export const unassignTaskRequest = createAction(UNASSIGN_TASK_REQUEST)
 export const unassignTaskSuccess = createAction(UNASSIGN_TASK_SUCCESS)
@@ -297,6 +305,23 @@ export function assignTask(task, username) {
     return httpClient.put(`${task['@id']}/assign`, { username })
       .then(res => dispatch(assignTaskSuccess(res)))
       .catch(e => dispatch(assignTaskFailure(e)))
+  }
+}
+
+export function bulkAssignmentTasks(tasks, username) {
+
+  return function (dispatch, getState) {
+
+    const httpClient = getState().app.httpClient
+
+    dispatch(bulkAssignmentTasksRequest())
+
+    return httpClient.put('/api/tasks/assign', {
+      username,
+      tasks: tasks.map(t => t['@id']),
+    })
+      .then((responses) => dispatch(bulkAssignmentTasksSuccess(responses)))
+      .catch(e => dispatch(bulkAssignmentTasksFailure(e)))
   }
 }
 

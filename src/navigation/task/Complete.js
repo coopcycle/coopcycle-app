@@ -17,6 +17,7 @@ import {
   deleteSignatureAt,
   markTaskDone,
   markTaskFailed,
+  markTasksDone,
   selectIsTaskCompleteFailure,
   selectPictures,
   selectSignatures } from '../../redux/Courier'
@@ -68,13 +69,21 @@ class CompleteTask extends Component {
   markTaskDone() {
 
     const task = this.props.route.params?.task
+    const tasks = this.props.route.params?.tasks
     const { notes } = this.state
 
-    this.props.markTaskDone(this.props.httpClient, task, notes, () => {
-      // Make sure to use merge = true, so that it doesn't break
-      // when navigating to DispatchTaskList
-      this.props.navigation.navigate({ name: this.props.route.params?.navigateAfter, merge: true })
-    }, this.state.contactName)
+    if (tasks && tasks.length) {
+      this.props.markTasksDone(this.props.httpClient, tasks, notes, () => {
+        this.props.navigation.navigate({ name: this.props.route.params?.navigateAfter, merge: true })
+      }, this.state.contactName)
+    } else {
+      this.props.markTaskDone(this.props.httpClient, task, notes, () => {
+        // Make sure to use merge = true, so that it doesn't break
+        // when navigating to DispatchTaskList
+        this.props.navigation.navigate({ name: this.props.route.params?.navigateAfter, merge: true })
+      }, this.state.contactName)
+    }
+
   }
 
   markTaskFailed() {
@@ -112,7 +121,12 @@ class CompleteTask extends Component {
   }
 
   resolveContactName() {
-    const task = this.props.route.params?.task
+    let task = this.props.route.params?.task
+    const tasks = this.props.route.params?.tasks
+
+    if (!task && tasks && tasks.length) {
+      task = tasks[0]
+    }
 
     if (!_.isEmpty(this.state.contactName)) {
       return this.state.contactName
@@ -135,9 +149,26 @@ class CompleteTask extends Component {
     this.hideSubscription.remove()
   }
 
+  multipleTasksLabel(tasks) {
+    return tasks.reduce((label, task, idx) => {
+      return `${label}${idx !== 0 ? ',' : ''} #${task.id}`
+    }, `${this.props.t('COMPLETE_TASKS')}: `)
+  }
+
+  isDropoff() {
+    const task = this.props.route.params?.task
+    const tasks = this.props.route.params?.tasks
+
+    if (tasks && tasks.length) {
+      return tasks.every(t => t.type === 'DROPOFF')
+    }
+    return task && task.type === 'DROPOFF'
+  }
+
   render() {
 
     const task = this.props.route.params?.task
+    const tasks = this.props.route.params?.tasks
     const success = Object.prototype.hasOwnProperty.call(this.props.route.params || {}, 'success') ?
       this.props.route.params?.success : true
 
@@ -158,6 +189,11 @@ class CompleteTask extends Component {
         <KeyboardAvoidingView flex={ 1 }
           behavior={ Platform.OS === 'ios' ? 'padding' : 'height' }>
           <VStack flex={ 1 }>
+            {
+              tasks && tasks.length ?
+              <Text mt={2} ml={3}>{this.multipleTasksLabel(tasks)}</Text>
+              : null
+            }
             <TouchableWithoutFeedback
               // We need to disable TouchableWithoutFeedback when keyboard is not visible,
               // otherwise the ScrollView for proofs of delivery is not scrollable
@@ -165,7 +201,7 @@ class CompleteTask extends Component {
               // This allows hiding the keyboard when touching anything on the screen
               onPress={ Keyboard.dismiss }>
               <VStack>
-                { task.type === 'DROPOFF' && (
+                { this.isDropoff() && (
                   <React.Fragment>
                     <HStack justifyContent="space-between" alignItems="center" p="3">
                       <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -212,7 +248,7 @@ class CompleteTask extends Component {
           <Divider />
           <VStack>
             <TouchableOpacity
-              onPress={ () => this.props.navigation.navigate('TaskCompleteProofOfDelivery', { task }) }>
+              onPress={ () => this.props.navigation.navigate('TaskCompleteProofOfDelivery', { task, tasks }) }>
               <HStack alignItems="center" justifyContent="space-between" p="3">
                 <Icon as={ FontAwesome5 } name="signature" />
                 <Text>
@@ -314,6 +350,7 @@ function mapDispatchToProps (dispatch) {
   return {
     markTaskFailed: (client, task, notes, onSuccess, contactName) => dispatch(markTaskFailed(client, task, notes, onSuccess, contactName)),
     markTaskDone: (client, task, notes, onSuccess, contactName) => dispatch(markTaskDone(client, task, notes, onSuccess, contactName)),
+    markTasksDone: (client, tasks, notes, onSuccess, contactName) => dispatch(markTasksDone(client, tasks, notes, onSuccess, contactName)),
     deleteSignatureAt: index => dispatch(deleteSignatureAt(index)),
     deletePictureAt: index => dispatch(deletePictureAt(index)),
   }

@@ -7,7 +7,7 @@ import { Text } from 'native-base';
 import TaskList from '../../components/TaskList'
 import TapToRefresh from '../../components/TapToRefresh'
 import AddButton from './components/AddButton'
-import { assignTask, initialize, loadUnassignedTasks } from '../../redux/Dispatch/actions'
+import { assignTask, bulkAssignmentTasks, initialize, loadUnassignedTasks } from '../../redux/Dispatch/actions'
 import { selectUnassignedTasksNotCancelled } from '../../redux/Dispatch/selectors'
 import { selectSelectedDate, selectTasksWithColor } from '../../coopcycle-frontend-js/logistics/redux'
 
@@ -24,6 +24,20 @@ class UnassignedTasks extends Component {
   _assignTask(task, user) {
     this.props.navigation.navigate('DispatchUnassignedTasks')
     this.props.assignTask(task, user.username)
+  }
+
+  assignSelectedTasks(selectedTasks) {
+    this.props.navigation.navigate('DispatchPickUser',
+      { onItemPress: user => this._bulkAssign(user, selectedTasks) })
+  }
+
+  _bulkAssign(user, tasks) {
+    this.props.navigation.navigate('DispatchUnassignedTasks')
+    this.props.bulkAssignmentTasks(tasks, user.username)
+  }
+
+  allowToSelect(task) {
+    return task.status !== 'DONE'
   }
 
   render() {
@@ -50,7 +64,10 @@ class UnassignedTasks extends Component {
               swipeOutLeftEnabled={ task => !task.isAssigned }
               onSwipeLeft={ task => navigate('DispatchPickUser', { onItemPress: user => this._assignTask(task, user) }) }
               swipeOutLeftIconName="user"
-              onTaskClick={ task => navigateToTask(this.props.navigation, this.props.route, task, this.props.unassignedTasks) } />
+              onTaskClick={ task => navigateToTask(this.props.navigation, this.props.route, task, this.props.unassignedTasks) }
+              allowMultipleSelection={ task => this.allowToSelect(task) }
+              multipleSelectionIcon="user"
+              onMultipleSelectionAction={ (selectedTasks) => this.assignSelectedTasks(selectedTasks) } />
           ) }
         </View>
       </View>
@@ -73,6 +90,7 @@ function mapDispatchToProps(dispatch) {
     assignTask: (task, username) => dispatch(assignTask(task, username)),
     initialize: () => dispatch(initialize()),
     loadUnassignedTasks: () => dispatch(loadUnassignedTasks()),
+    bulkAssignmentTasks: (tasks, username) => dispatch(bulkAssignmentTasks(tasks, username)),
   }
 }
 
