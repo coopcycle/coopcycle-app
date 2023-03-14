@@ -244,6 +244,7 @@
         "AN_ERROR_OCCURRED": "Se ha producido un error",
         "TASK_ADD_PROOF_OF_DELIVERY": "Añadir una prueba de entrega",
         "SEARCH": "Buscar restaurantes...",
+        "SEARCH_INPUT_PLACEHOLDER": "Un restaurante, un plato...",
         "GO_BACK_TO_RESTAURANTS": "Empezar de nuevo",
         "SESSION_EXPIRED": "Tu sesión ha expirado",
         "TOUCH_TO_RELOAD": "Toca para intentar de nuevo",
@@ -410,6 +411,10 @@
         "TERMS_AND_CONDITIONS_ERROR_MESSAGE": "Debe aceptar los Términos y Condiciones",
         "PRIVACY_POLICY_LABEL": "Acepto la Política de Privacidad",
         "PRIVACY_POLICY_ERROR_MESSAGE": "Debe aceptar la Política de Privacidad",
-        "AGREE": "Acepto"
+        "AGREE": "Acepto",
+        "SEARCH_SHOPS": "Restaurantes",
+        "SEARCH_PRODUCTS": "Productos",
+        "SEARCH_PRODUCT_ITEM_SUBTITLE": "En {{shop}}",
+        "SEARCH_WITHOUT_RESULTS": "No se encontraron resultados. Intente nuevamente con otra búsqueda."
     }
 }

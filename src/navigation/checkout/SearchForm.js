@@ -1,100 +1,93 @@
 import React, { Component } from 'react';
-import { Box, FormControl, IconButton, Input, Stack } from 'native-base';
+import { FormControl, IconButton, Input, Text } from 'native-base';
 import { withTranslation } from 'react-i18next';
 import i18n from '../../i18n';
-import { setRestaurant } from '../../redux/Checkout/actions';
+import { clearSearchResults, loadAndNavigateToRestaurante, search } from '../../redux/Checkout/actions';
 import { connect } from 'react-redux';
-import FacetCard from './components/FacetCard';
-import SearchEngine from '../../utils/searchEngine';
-import { FlatList } from 'react-native';
+import { SectionList } from 'react-native';
 import _ from 'lodash';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import RestaurantSmallCard from './components/RestaurantSmallCard';
+import { t } from 'i18next';
+import SearchItemSmallCard from './components/SearchItemSmallCard';
 
-
-const DATA = [
-  {
-    name: 'Exclusivités',
-    color: 'yellow',
-    image: 'https://i.imgur.com/lQ1pvGr.png',
-  },
-  {
-    name: 'Burgers',
-    color: 'brown',
-    image: 'https://i.imgur.com/guWCeLZ.png',
-  },
-  {
-    name: 'Asiatique',
-    color: 'blue',
-    image: 'https://i.imgur.com/IPC9Q6Q.png',
-  },
-  {
-    name: 'Pizza',
-    color: 'red',
-    image: 'https://i.imgur.com/ywBdBfw.png',
-  },
-]
-
-const Facets = (props) => <FlatList data={DATA} columnWrapperStyle={{
-  flexGrow: 1,
-  flexDirection: 'row',
-  justifyContent: 'center',
-}} numColumns={2} renderItem={({ item }) => <FacetCard name={item.name} onPress={props.onPress}
-                                      image={item.image} />} />
-
-const Autocomplete = (props) => {
-
-  return <FlatList
-    data={props.restaurants}
-    initialNumToRender={ 15 }
-    renderItem={({ item }) => <RestaurantSmallCard restaurant={item.item} onPress={props.onPress} />}
-   />
+const TITLES = {
+  'shop': 'SEARCH_SHOPS',
+  'product': 'SEARCH_PRODUCTS',
 }
 
 class SearchForm extends Component {
 
-    constructor(props) {
-      super(props);
-      this.textInput = React.createRef()
-      this.state = {
-        autocomplete: null,
-        loading: false,
-        query: null,
-      };
-    }
+  constructor(props) {
+    super(props);
+    this.textInput = React.createRef()
+
+    this._onSearchItemPressed = this._onSearchItemPressed.bind(this)
+  }
 
   _onChange = (q = null) => {
-    if (q === null || q.length === 0) {
-      this.setState({ autocomplete: null })
-      return;
+    if (q !== null && q.length > 2) {
+      return this.props.search(q)
     }
-    this.setState({ autocomplete: SearchEngine.search(q) })
+    return;
+  }
+
+  _clearList = () => {
+    this.props.clearSearchResults()
+  }
+
+  _parseResultsToSectionListData(results) {
+    return results.reduce((groupedList, item) => {
+      const existingGroup = groupedList.find((dataItem) => dataItem.type === item.result_type)
+      if (!existingGroup) {
+        groupedList.push({
+          type: item.result_type,
+          data: [item],
+        })
+      } else {
+        existingGroup.data.push(item)
+      }
+      return groupedList
+    }, [])
+  }
+
+  _onSearchItemPressed(item) {
+    const shopId = item.result_type === 'product' ? item.shop_id : item.id
+    return this.props.loadAndNavigateToRestaurante(shopId)
   }
 
   render() {
-    return <Box><FormControl>
-      <Stack space={5}>
-          <Input size="xl" margin={5} p={2}
-                 ref={input => { this.textInput = input }}
-                 keyboardType="web-search"
-                 blurOnSubmit={true}
-                 autoCorrect={false}
-                 InputRightElement={<IconButton _icon={{ as: FontAwesome5, name: 'times' }} onPress={() => {this._onChange(); this.textInput.clear(); this.textInput.blur()}} />}
-                 onChangeText={_.debounce(this._onChange, 350)} onSubmitEditing={({ nativeEvent: { text } }) => {
-                    console.log(text)
-                    console.log(SearchEngine.search(text))
-          }} placeholder={i18n.t('SEARCH')} />
-       </Stack>
-    </FormControl>
-      {!this.state.autocomplete && <Facets onPress={(query) => {
-        this.props.navigation.navigate('SearchResults', { query })
-      }} />}
-      {this.state.autocomplete && <Autocomplete restaurants={this.state.autocomplete} onPress={(restaurant) => {
-        this.props.setRestaurant(restaurant['@id'])
-        this.props.navigation.navigate('CheckoutRestaurant', { restaurant })
-      }} />}
-    </Box>
 
+    const { isLoading, searchResults, searchResultsLoaded } = this.props
+
+    return (
+      <>
+        <FormControl>
+          <Input size="md" m={4} p={2}
+            ref={input => { this.textInput = input }}
+            keyboardType="web-search"
+            blurOnSubmit={true}
+            autoCorrect={false}
+            InputRightElement={<IconButton _icon={{ as: FontAwesome5, name: 'times' }} onPress={() => {this._clearList(); this.textInput.clear(); this.textInput.blur()}} />}
+            onChangeText={_.debounce(this._onChange, 350)}
+            placeholder={i18n.t('SEARCH_INPUT_PLACEHOLDER')} />
+        </FormControl>
+        {
+          !isLoading && searchResultsLoaded && searchResults  ?
+          <SectionList
+            marginLeft={4}
+            sections={this._parseResultsToSectionListData(searchResults)}
+            initialNumToRender={15}
+            ListEmptyComponent={ <Text textAlign={'center'} mx={4}>{ t('SEARCH_WITHOUT_RESULTS') }</Text> }
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => <SearchItemSmallCard item={item} onPress={ (pressedItem) => this._onSearchItemPressed(pressedItem)} />}
+            renderSectionHeader={({ section: { type } }) => (
+              <Text ml={2} bold>{ t(TITLES[type]) }</Text>
+            )}
+          />
+          : null
+        }
+      </>
+    )
   }
 }
 
@@ -102,13 +95,18 @@ class SearchForm extends Component {
 function mapStateToProps(state) {
 
   return {
+    isLoading: state.checkout.isLoading,
+    searchResults: state.checkout.searchResults,
+    searchResultsLoaded: state.checkout.searchResultsLoaded,
   }
 }
 
 function mapDispatchToProps(dispatch) {
 
   return {
-    setRestaurant: id => dispatch(setRestaurant(id)),
+    search: q => dispatch(search(q)),
+    loadAndNavigateToRestaurante: (id) => dispatch(loadAndNavigateToRestaurante(id)),
+    clearSearchResults: () => dispatch(clearSearchResults()),
   }
 }
 
