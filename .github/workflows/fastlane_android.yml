@@ -21,10 +21,6 @@ on:
         type: string
         required: false
         default: "fr.coopcycle"
-      checkout_search_enabled:
-        type: string
-        required: false
-        default: "0"
       keystore_key_alias:
         type: string
         required: false
@@ -65,7 +61,6 @@ jobs:
           GOOGLE_SIGN_IN_CLIENT_ID: ${{ secrets.GOOGLE_SIGN_IN_CLIENT_ID }}
           DEFAULT_SERVER: ${{ inputs.instance_url }}
           PRIMARY_COLOR: ${{ inputs.primary_color }}
-          CHECKOUT_SEARCH_ENABLED: ${{ inputs.checkout_search_enabled }}
           SMARTLOOK_PROJECT_KEY: ${{ secrets.SMARTLOOK_PROJECT_KEY }}
         run: |
           touch .env
