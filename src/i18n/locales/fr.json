@@ -432,6 +432,14 @@
         "PRIVACY_POLICY_ERROR_MESSAGE": "Vous devez accepter la politique de confidentialité", "PRIVACY_POLICY_ERROR_MESSAGE" : "Vous devez accepter la politique de confidentialité",
         "AGREE" : "J'accepte",
         "DELETE_ACCOUNT": "Supprimer mon compte",
-        "DELETE_ACCOUNT_DISCLAIMER": "En cliquant sur le bouton ci-dessous, vous allez supprimer votre compte. Vous êtes sûr·e ?"
+        "DELETE_ACCOUNT_DISCLAIMER": "En cliquant sur le bouton ci-dessous, vous allez supprimer votre compte. Vous êtes sûr·e ?",
+        "PAY_WITH_SAVED_CREDIT_CARD": "Payer avec une carte bancaire sauvegardée",
+        "SELECT_SAVED_CARD_ERROR": "Veuillez sélectionner une carte bancaire pour payer",
+        "INVALID_CREDIT_CARD_ERROR": "Veuillez entrer des données de carte bancaire valides",
+        "INVALID_CARD_HOLDER_NAME_ERROR": "Veuillez entrer un titulaire de carte bancaire valide",
+        "CREDIT_CARD_EXPIRATION": "Expiration",
+        "ADD_NEW_CREDIT_CARD": "Ajouter une nouvelle carte bancaire",
+        "SELECT_SAVED_CARD": "Sélectionner une carte bancaire sauvegardée",
+        "SAVE_CARD": "Sauvegarder cette carte bancaire"
     }
 }
