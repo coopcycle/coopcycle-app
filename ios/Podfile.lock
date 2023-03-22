@@ -736,7 +736,7 @@ PODS:
     - React-RCTText
   - rn-fetch-blob (0.12.0):
     - React-Core
-  - RNAppleAuthentication (2.1.5):
+  - RNAppleAuthentication (2.2.2):
     - React-Core
   - RNBackgroundFetch (4.1.6):
     - React-Core
@@ -1276,7 +1276,7 @@ SPEC CHECKSUMS:
   ReactCommon: 349be31adeecffc7986a0de875d7fb0dcf4e251c
   ReactNativeKeyboardManager: f82a63e0982254fb0f6a17ba327fac575a46f1e9
   rn-fetch-blob: f065bb7ab7fb48dd002629f8bdcb0336602d3cba
-  RNAppleAuthentication: 63c2127ace11985b94f852fc480eb84145653712
+  RNAppleAuthentication: 0571c08da8c327ae2afc0261b48b4a515b0286a6
   RNBackgroundFetch: aec9df762e78197009b89fe96f9ba3e2eb3268b3
   RNBackgroundGeolocation: 8f64068cbcd2b249ca6f57cde9557c50480a9b8b
   RNCAsyncStorage: 8616bd5a58af409453ea4e1b246521bb76578d60
