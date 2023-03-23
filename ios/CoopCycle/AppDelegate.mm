@@ -10,7 +10,7 @@
 #import <UserNotifications/UserNotifications.h>
 #import <React/RCTLinkingManager.h>
 #import <Firebase.h>
-#import <FBSDKCoreKit/FBSDKApplicationDelegate.h>
+#import <FBSDKCoreKit/FBSDKCoreKit-swift.h>
 
 #if RCT_NEW_ARCH_ENABLED
 #import <React/CoreModulesPlugins.h>

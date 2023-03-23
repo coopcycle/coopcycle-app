@@ -12509,10 +12509,13 @@ react-native-email-link@^1.14.5:
   resolved "https://registry.yarnpkg.com/react-native-email-link/-/react-native-email-link-1.14.5.tgz#05e13002bd850ebaf98477b4cfbfdfa972a57608"
   integrity sha512-TNi9OeGcJlw6FXl1dWAKEBGJEgKPBfsiB3v8GaHqqCtzmWnKE+8y1Wfhaaloh37OJb2vqp1cwDpW5m6PiTXazA==
 
-react-native-fbsdk-next@^4.6.0:
-  version "4.6.0"
-  resolved "https://registry.yarnpkg.com/react-native-fbsdk-next/-/react-native-fbsdk-next-4.6.0.tgz#0e70aa6d64e99762e6b22b1344eebae3f7fbfcb5"
-  integrity sha512-FPYLUFSWf7V4i084jKpSt8tc1DLkuBm38eYdq4RwpGcojxXIciQ8qQi9DRLNAxqNZHd0G/P6edSVEGsrjtvV7w==
+react-native-fbsdk-next@^11.1.0:
+  version "11.1.0"
+  resolved "https://registry.yarnpkg.com/react-native-fbsdk-next/-/react-native-fbsdk-next-11.1.0.tgz#d0a321c5daea068bce933ee3b9bec5469f176975"
+  integrity sha512-fLKaR1OWPufX81Ks7uuWX0+7jUw4mXKKQ4J3gWYXmAjXYk/Fp10UqZBOqkQ4TE78EP7baB2Qw8ZIcl2dvyQS2Q==
+  dependencies:
+    "@expo/config-plugins" "^5.0.1"
+    xml2js "^0.4.23"
 
 react-native-fit-image@^1.5.5:
   version "1.5.5"
@@ -14978,7 +14981,7 @@ xdate@^0.8.0:
   resolved "https://registry.yarnpkg.com/xdate/-/xdate-0.8.2.tgz#d7b033c00485d02695baf0044f4eacda3fc961a3"
   integrity sha1-17AzwASF0CaVuvAET06s2j/JYaM=
 
-xml2js@0.4.23:
+xml2js@0.4.23, xml2js@^0.4.23:
   version "0.4.23"
   resolved "https://registry.yarnpkg.com/xml2js/-/xml2js-0.4.23.tgz#a0c69516752421eb2ac758ee4d4ccf58843eac66"
   integrity sha512-ySPiMjM0+pLDftHgXY4By0uswI3SPKLDw/i3UXbnO8M/p28zqexCUoPmQFrYD+/1BzhGJSs2i1ERWKJAtiLrug==
