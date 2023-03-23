@@ -72,7 +72,7 @@ jobs:
           echo GOOGLE_MAPS_ANDROID_KEY="$GOOGLE_MAPS_ANDROID_KEY" >> .env
           echo TRANSISTORSOFT_LICENSE_KEY="$TRANSISTORSOFT_LICENSE_KEY" >> .env
           echo FACEBOOK_APP_ID="$FACEBOOK_APP_ID" >> .env
-          echo FACEBOOK_CLIENT_TOKEN= >> .env
+          echo FACEBOOK_CLIENT_TOKEN="$FACEBOOK_CLIENT_TOKEN" >> .env
           echo GOOGLE_SIGN_IN_CLIENT_ID="$GOOGLE_SIGN_IN_CLIENT_ID" >> .env
           echo DEFAULT_SERVER="$DEFAULT_SERVER" >> .env
           echo PRIMARY_COLOR="$PRIMARY_COLOR" >> .env
