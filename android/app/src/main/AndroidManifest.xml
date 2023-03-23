@@ -222,4 +222,9 @@
       <meta-data android:name="com.facebook.sdk.ClientToken" android:value="@string/FACEBOOK_CLIENT_TOKEN"/>
 
     </application>
+    <!--
+    Opt out of the Advertising ID Permission
+    https://developers.facebook.com/docs/android/getting-started/#add-app_id
+    -->
+    <uses-permission android:name="com.google.android.gms.permission.AD_ID" tools:node="remove"/>
 </manifest>
