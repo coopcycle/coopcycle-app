@@ -627,7 +627,7 @@ export function loginWithFacebook(accessToken, navigate = true) {
 
         let message = i18n.t('TRY_LATER')
         if (err.hasOwnProperty('status') && err.status === 403) {
-          message = i18n.t('INVALID_USER_PASS')
+          message = i18n.t('SOCIAL_SIGN_IN_UNKNOWN_EMAIL', { provider: 'Facebook' })
         }
 
         dispatch(authenticationFailure(message))
@@ -660,7 +660,7 @@ export function signInWithApple(identityToken, navigate = true) {
 
         let message = i18n.t('TRY_LATER')
         if (err.hasOwnProperty('status') && err.status === 403) {
-          message = i18n.t('INVALID_USER_PASS')
+          message = i18n.t('SOCIAL_SIGN_IN_UNKNOWN_EMAIL', { provider: 'Apple' })
         }
 
         dispatch(authenticationFailure(message))
@@ -692,8 +692,8 @@ export function googleSignIn(idToken, navigate = true) {
       .catch(err => {
 
         let message = i18n.t('TRY_LATER')
-        if (err.hasOwnProperty('code') && err.code === 401) {
-          message = i18n.t('INVALID_USER_PASS')
+        if (err.hasOwnProperty('status') && err.status === 403) {
+          message = i18n.t('SOCIAL_SIGN_IN_UNKNOWN_EMAIL', { provider: 'Google' })
         }
 
         dispatch(authenticationFailure(message))

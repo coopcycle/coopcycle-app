@@ -465,6 +465,7 @@
         "SELECT_SAVED_CARD": "Select a saved credit card",
         "SAVE_CARD": "Save credit card",
         "SEARCH_TAB": "Search",
-        "APPLE_SIGN_IN_HIDE_MY_EMAIL_ERROR": "Sorry, we canʼt authenticate your account if you choose to hide your email"
+        "APPLE_SIGN_IN_HIDE_MY_EMAIL_ERROR": "Sorry, we canʼt authenticate your account if you choose to hide your email",
+        "SOCIAL_SIGN_IN_UNKNOWN_EMAIL": "Sorry, we couldnʼt find an account matching the e-mail associated with your {{provider}} account."
     }
 }
