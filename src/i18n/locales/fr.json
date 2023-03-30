@@ -446,6 +446,7 @@
         "SEARCH_SHOPS": "Boutiques",
         "SEARCH_PRODUCTS": "Produits",
         "SEARCH_PRODUCT_ITEM_SUBTITLE": "Dans {{shop}}",
-        "SEARCH_WITHOUT_RESULTS": "Aucun résultat. Essayez de chercher autre chose."
+        "SEARCH_WITHOUT_RESULTS": "Aucun résultat. Essayez de chercher autre chose.",
+        "APPLE_SIGN_IN_HIDE_MY_EMAIL_ERROR": "Désolé, nous ne pouvons pas vous authentifier si vous choisissez de masquer votre e-mail"
     }
 }

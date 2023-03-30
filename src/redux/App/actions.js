@@ -85,7 +85,7 @@ export const clearNotifications = createAction(CLEAR_NOTIFICATIONS)
 
 export const _authenticationRequest = createAction(AUTHENTICATION_REQUEST)
 export const _authenticationSuccess = createAction(AUTHENTICATION_SUCCESS)
-export const _authenticationFailure = createAction(AUTHENTICATION_FAILURE)
+const _authenticationFailure = createAction(AUTHENTICATION_FAILURE)
 
 const resetPasswordInit = createAction(RESET_PASSWORD_INIT)
 const resetPasswordRequest = createAction(RESET_PASSWORD_REQUEST)
@@ -171,7 +171,7 @@ function authenticationSuccess(user) {
   }
 }
 
-function authenticationFailure(message) {
+export function authenticationFailure(message) {
   return (dispatch, getState) => {
     dispatch(_authenticationFailure(message))
     tracker.logEvent(

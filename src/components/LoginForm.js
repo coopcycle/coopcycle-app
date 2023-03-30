@@ -9,9 +9,10 @@ import { AccessToken, LoginManager, Settings } from 'react-native-fbsdk-next'
 import Config from 'react-native-config'
 import { AppleButton, appleAuth } from '@invertase/react-native-apple-authentication'
 import { GoogleSignin, GoogleSigninButton } from '@react-native-google-signin/google-signin'
+import jwtDecode from 'jwt-decode'
 
 import FacebookButton from './FacebookButton'
-import { googleSignIn, loginWithFacebook, signInWithApple } from '../redux/App/actions'
+import { googleSignIn, loginWithFacebook, signInWithApple, authenticationFailure } from '../redux/App/actions'
 
 class LoginForm extends Component {
 
@@ -154,6 +155,23 @@ class LoginForm extends Component {
 
                     const identityToken = appleAuthRequestResponse.identityToken
 
+                    // The var appleAuthRequestResponse will contain the email only on the fist login
+                    // This is why we always decode the identityToken, that always contains the email
+                    // https://github.com/invertase/react-native-apple-authentication#faqs
+                    const tokenData = jwtDecode(identityToken)
+
+                    // If the user has chosen "Hide my email",
+                    // we will receive an email address like "sdfsdf@privaterelay.appleid.com"
+                    // We can't identify the user with such an email
+                    // https://sarunw.com/posts/sign-in-with-apple-2/
+                    // https://developer.apple.com/documentation/sign_in_with_apple/sign_in_with_apple_rest_api/authenticating_users_with_sign_in_with_apple
+                    const hasHiddenEmail = (true === tokenData.is_private_email || tokenData.email.endsWith('privaterelay.appleid.com'))
+
+                    if (hasHiddenEmail) {
+                      this.props.authenticationFailure(this.props.t('APPLE_SIGN_IN_HIDE_MY_EMAIL_ERROR'))
+                      return
+                    }
+
                     // get current authentication state for user
                     // /!\ This method must be tested on a real device. On the iOS simulator it always throws an error.
                     appleAuth
@@ -210,6 +228,7 @@ function mapDispatchToProps(dispatch) {
     loginWithFacebook: (accessToken) => dispatch(loginWithFacebook(accessToken)),
     signInWithApple: (identityToken) => dispatch(signInWithApple(identityToken)),
     googleSignIn: (idToken) => dispatch(googleSignIn(idToken)),
+    authenticationFailure: (message) => dispatch(authenticationFailure(message)),
   }
 }
 
