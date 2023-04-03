@@ -5,12 +5,13 @@ import { createPaymentMethod, handleNextAction, initStripe } from '@stripe/strip
 
 import NavigationHolder from '../../NavigationHolder'
 import i18n from '../../i18n'
-import { selectCartFulfillmentMethod, selectBillingEmail } from './selectors'
-import { selectIsAuthenticated, selectUser } from '../App/selectors'
-import { loadAddressesSuccess, updateOrderSuccess } from '../Account/actions'
+import { selectBillingEmail, selectCart, selectCartFulfillmentMethod } from './selectors'
+import { selectIsAuthenticated } from '../App/selectors'
+import { loadAddressesSuccess, setNewOrder, updateOrderSuccess } from '../Account/actions'
 import { isFree } from '../../utils/order'
 import { setLoading, setModal } from '../App/actions';
 import Share from 'react-native-share';
+import i18next from 'i18next';
 
 /*
  * Action Types
@@ -758,13 +759,14 @@ export function mercadopagoCheckout(payment) {
 
 function handleSuccessNav(dispatch, order) {
 
+  dispatch(setNewOrder(order))
   // First, reset checkout stack
   NavigationHolder.dispatch(StackActions.popToTop())
 
   // Then, navigate to order screen
   NavigationHolder.dispatch(CommonActions.navigate({
     name: 'OrderTracking',
-    params: { order },
+    params: { order: order.number },
   }))
 
   dispatch(deleteCart(order.restaurant['@id']))
@@ -1223,7 +1225,7 @@ export function loadStripeSavedPaymentMethods() {
   }
 }
 
-export function generateInvoice(order, address, updateRoute) {
+export function generateInvoice(order, address) {
 
   return (dispatch, getState) => {
     const httpClient = createHttpClient(getState())
@@ -1234,13 +1236,15 @@ export function generateInvoice(order, address, updateRoute) {
       billingAddress,
     })
       .then(res => {
-        if (updateRoute) {
-          NavigationHolder.dispatch(CommonActions.setParams({ order: res }))
-        }
         dispatch(updateOrderSuccess(res))
       })
       .catch(e => {
-        console.log(e)
+        dispatch(setModal({
+          show: true,
+          skippable: true,
+          content: i18next.t('NET_FAILED'),
+          type: 'error',
+        }))
       }).finally(() => {
       dispatch(setLoading(false))
     })

@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
-import { StyleSheet } from 'react-native'
+import { RefreshControl, StyleSheet } from 'react-native'
 import { Button, HStack, Icon, ScrollView, Text, View } from 'native-base';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import moment from 'moment';
 import { primaryColor } from '../../styles/common';
-import { loadOrder, subscribe, unsubscribe } from '../../redux/Account/actions';
+import { loadOrder, subscribe, unsubscribe, updateOrderSuccess } from '../../redux/Account/actions';
 import { deleteCart } from '../../redux/Checkout/actions';
 import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
 import i18n from '../../i18n';
 import { phonecall } from 'react-native-communications';
 import Step from './components/Step';
+import { find } from 'lodash'
 
 
 function stateToStep(state) {
@@ -47,53 +48,68 @@ class OrderTrackingPage extends Component {
     super(props)
     this.state = {
       step: 0,
+      refreshing: false,
     }
   }
 
   componentWillUnmount() {
-    const { order } = this.props.route.params
+    const { order } = this.props
     if (order) {
       this.props.unsubscribe(order)
+      clearInterval(this.interval)
     }
   }
 
   componentDidMount() {
-    const { order } = this.props.route.params
+    const { order } = this.props
     if (order) {
       this.props.subscribe(order, (event) => {
         switch (event.name) {
           case 'order:accepted':
-            this.props.navigation.setParams({ order: { ...event.data.order, state: 'accepted' } })
+            this.props.updateOrder({ ...event.data.order, state: 'accepted' })
             break;
           case 'order:picked':
-            this.props.navigation.setParams({ order: { ...event.data.order, state: 'picked' } })
+            this.props.updateOrder({ ...event.data.order, state: 'picked' })
             break;
           case 'order:fulfilled':
-            this.props.navigation.setParams({ order: { ...event.data.order, state: 'fulfilled' } })
+            this.props.updateOrder({ ...event.data.order, state: 'fulfilled' })
             break;
           case 'order:cancelled':
-            this.props.navigation.setParams({ order: { ...event.data.order, state: 'cancelled' } })
+            this.props.updateOrder({ ...event.data.order, state: 'cancelled' })
             break;
           case 'order:refused':
-            this.props.navigation.setParams({ order: { ...event.data.order, state: 'refused' } })
+            this.props.updateOrder({ ...event.data.order, state: 'refused' })
             break;
           case 'order:delayed':
-            this.props.navigation.setParams({ order: event.data.order })
+            this.props.updateOrder(event.data.order)
             break;
         }
       })
+      this.interval = setInterval(() => this._refresh(), 60000)
     }
   }
 
+  _refresh() {
+    this.setState({ refreshing: true })
+    this.props.loadOrder(this.props.order, () => this.setState({ refreshing: false }))
+  }
+
   render() {
-    const order = this.props.order || this.props.route.params.order;
+    const { order } = this.props
     const timeRange = [
       moment(order.shippingTimeRange[0]).format('HH:mm'),
       moment(order.shippingTimeRange[1]).format('HH:mm'),
   ]
 
     const step = stateToStep(order.state)
-    return <ScrollView>
+    return <ScrollView
+      refreshControl={
+        <RefreshControl
+          refreshing={this.state.refreshing}
+          onRefresh={() => this._refresh()}
+        />
+      }
+    >
       <View style={styles.tracker} >
         <Text style={styles.trackerLabel}>{i18n.t('ORDER_ETA', { start: timeRange[0], end: timeRange[1] })}</Text>
         <View padding={3}>
@@ -158,11 +174,10 @@ class OrderTrackingPage extends Component {
         padding: 5,
         marginBottom: 20,
       }}>
-        <Button onPress={()=>this.props.navigation.navigate('AccountOrder', { order }) }>{i18n.t('SHOW_ORDER_DETAILS')}</Button>
+        <Button onPress={()=>this.props.navigation.navigate('AccountOrder', { order: order.number }) }>{i18n.t('SHOW_ORDER_DETAILS')}</Button>
         <Button onPress={()=>phonecall(this.props.phoneNumber, true)} size={'sm'} variant="link" leftIcon={<Icon as={Ionicons} name="help-buoy-outline" size="xs" />}>
           {i18n.t('HELP')}
         </Button>
-
       </View>
     </ScrollView>
   }
@@ -194,6 +209,7 @@ const styles = StyleSheet.create({
 function mapStateToProps(state, ownProps) {
 
   return {
+    order: find(state.account.orders, o => o.number === ownProps.route.params.order),
     user: state.app.user,
     phoneNumber: state.app.settings.phone_number,
     loading: state.app.loading,
@@ -205,8 +221,9 @@ function mapDispatchToProps(dispatch) {
   return {
     subscribe: (order, onMessage) => dispatch(subscribe(order, onMessage)),
     unsubscribe: (order) => dispatch(unsubscribe(order)),
-    loadOrder: (hashid) => dispatch(loadOrder(hashid)),
     deleteCart: id => dispatch(deleteCart(id)),
+    loadOrder: (order, cb) => dispatch(loadOrder(order, cb)),
+    updateOrder: order => dispatch(updateOrderSuccess(order)),
   }
 }
 

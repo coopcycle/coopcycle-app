@@ -10,6 +10,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import i18n from '../../i18n';
 import AddressModal from '../checkout/components/AddressModal';
 import { generateInvoice, hideAddressModal, shareInvoice, showAddressModal } from '../../redux/Checkout/actions';
+import { find } from 'lodash';
 
 class OrderPage extends Component {
 
@@ -78,7 +79,7 @@ const styles = StyleSheet.create({
 function mapStateToProps(state, ownProps) {
 
   return {
-    order: ownProps.route.params.order,
+    order: find(state.account.orders, o => o.number === ownProps.route.params.order),
     loading: state.app.loading,
     location: state.app.settings.latlng,
     country: state.app.settings.country,
@@ -91,7 +92,7 @@ function mapDispatchToProps(dispatch) {
   return {
     showAddressModal: reason => dispatch(showAddressModal(reason)),
     hideAddressModal: () => dispatch(hideAddressModal()),
-    generateInvoice: (order, address) => dispatch(generateInvoice(order, address, true)),
+    generateInvoice: (order, address) => dispatch(generateInvoice(order, address)),
     shareInvoice: order => dispatch(shareInvoice(order)),
   }
 }
