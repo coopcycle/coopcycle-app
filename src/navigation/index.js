@@ -71,6 +71,8 @@ import Carts from './checkout/Carts';
 import AddressDetails from './account/AddressDetails';
 import OrderTrackingPage from './checkout/OrderTracking';
 
+import Delivery from './delivery/Delivery';
+
 export default {
   RestaurantsPage,
   CheckoutRestaurant,
@@ -132,6 +134,7 @@ export default {
   Carts,
   AddressDetails,
   OrderTrackingPage,
+  Delivery,
 }
 
 export const headerLeft = (navigation, testID = 'menuBtn') => {

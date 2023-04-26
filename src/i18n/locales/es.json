@@ -392,7 +392,7 @@
         "RESTAURANT_CLOSED_BUT_OPENS": "Este comercio se encuentra cerrado pero vuelve a abrir {{ datetime }}. Puedes programar tu pedido!",
         "RESTAURANT_CLOSED_AND_NOT_AVAILABLE": "Este comercio se encuentra cerrado y no disponible hasta el {{ datetime }}.",
         "MY_ORDER": "Mi pedido",
-        "CHECKOUT_AS_GUEST": "Comprar como inivitado",
+        "CHECKOUT_AS_GUEST": "Comprar como invitado",
         "OR": "o",
         "GUEST_CHECKOUT_ORDER_EMAIL_HELP": "Para enviarle actualizaciones sobre su pedido",
         "GUEST_CHECK_EMAIL_FOR_ORDER_UPDATES": "Como ha elegido comprar como invitado, por favor revise sus emails para seguir el estado de su pedido",
@@ -427,6 +427,8 @@
         "SAVE_CARD": "Guardar tarjeta de crédito",
         "SEARCH_TAB": "Buscar",
         "COMPLETE_TASKS": "Completar tareas",
-        "SESSION_ERROR_TRY_AGAIN": "Ocurrió un error con la sesión, por favor inicie sesión nuevamente y vuelva a intentarlo."
+        "SESSION_ERROR_TRY_AGAIN": "Ocurrió un error con la sesión, por favor inicie sesión nuevamente y vuelva a intentarlo.",
+        "DELIVERY": "Entrega",
+        "DELIVERIES": "Entregas"
     }
 }

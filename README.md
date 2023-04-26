@@ -56,7 +56,7 @@ Setup - Linux
 Setup - Android
 ---------------
 
-### Get a Google Maps API Key
+### Get a Google Maps API Key
 
 A Google Maps API Key is needed at compilation time for Android (see `AndroidManifest.xml`).
 
