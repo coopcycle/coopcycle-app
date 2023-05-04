@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { InteractionManager, ScrollView, StyleSheet, View } from 'react-native'
+import {InteractionManager, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View} from 'react-native'
 import { FormControl, Input, Text, TextArea, VStack } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
@@ -120,6 +120,7 @@ class MoreInfos extends Component {
     }
 
     return (
+      <KeyboardAvoidingView style={{ flex: 1 }} keyboardVerticalOffset={40} enabled={true} behavior={Platform.OS === 'ios' ? 'position' : 'padding'}>
       <Formik
         initialValues={ initialValues }
         validate={ this._validate.bind(this) }
@@ -200,6 +201,7 @@ class MoreInfos extends Component {
           </VStack>
         )}
       </Formik>
+      </KeyboardAvoidingView>
     )
   }
 }
