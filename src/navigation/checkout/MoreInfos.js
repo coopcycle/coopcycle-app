@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { InteractionManager, ScrollView, StyleSheet, View } from 'react-native'
-import { FormControl, Input, Text, TextArea, VStack } from 'native-base'
+import {InteractionManager, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View} from 'react-native'
+import { FormControl, Input, Text, TextArea, VStack, HStack } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 import { Formik } from 'formik'
@@ -120,6 +120,7 @@ class MoreInfos extends Component {
     }
 
     return (
+      <KeyboardAvoidingView style={{ flex: 1 }} keyboardVerticalOffset={Platform.select({ios: 55, android: 85})} enabled={true} behavior={Platform.OS === 'ios' ? 'position' : 'padding'}>
       <Formik
         initialValues={ initialValues }
         validate={ this._validate.bind(this) }
@@ -127,10 +128,10 @@ class MoreInfos extends Component {
         validateOnBlur={ false }
         validateOnChange={ false }>
         {({ handleChange, handleBlur, handleSubmit, values, errors, touched, setFieldValue, setFieldTouched }) => (
-          <VStack style={{ flex: 1 }}>
-            <View style={{ backgroundColor: '#cce5ff', padding: 20 }}>
-              <Text note style={{ textAlign: 'center', color: '#004085' }}>{ this.props.t('CHECKOUT_MORE_INFOS_DISCLAIMER') }</Text>
-            </View>
+          <VStack style={Platform.select({ios: {}, android: {flex:1}})}>
+            <HStack bgColor="info.200" justifyContent="center" p="4">
+              <Text>{ this.props.t('CHECKOUT_MORE_INFOS_DISCLAIMER') }</Text>
+            </HStack>
             <VStack p="2" style={{ flexShrink: 1 }}>
               <ScrollView>
                 {!this.props.isAuthenticated && this.props.user.isGuest() &&
@@ -200,6 +201,7 @@ class MoreInfos extends Component {
           </VStack>
         )}
       </Formik>
+      </KeyboardAvoidingView>
     )
   }
 }
