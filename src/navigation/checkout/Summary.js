@@ -6,6 +6,7 @@ import { withTranslation } from 'react-i18next'
 import _ from 'lodash'
 import Modal from 'react-native-modal'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 import DangerAlert from '../../components/DangerAlert'
 import { formatPrice } from '../../utils/formatting'
@@ -243,7 +244,7 @@ class Summary extends Component {
       _.find(cart.potentialAction, action => action['@type'] === 'EnableReusablePackagingAction')
 
     return (
-      <View style={{ flex: 1 }} onLayout={ () => {
+      <SafeAreaView style={{ flex: 1 }} edges={[ 'bottom' ]} onLayout={ () => {
           const { width } = Dimensions.get('window')
           this.setState({
             translateXValue: new Animated.Value(width),
@@ -317,7 +318,7 @@ class Summary extends Component {
           isVisible={ this.state.isCollectionDisclaimerModalVisible }
           onSwipeComplete={ () => this.setState({ isCollectionDisclaimerModalVisible: false }) }
           restaurant={ restaurant } />
-      </View>
+      </SafeAreaView>
     );
   }
 }

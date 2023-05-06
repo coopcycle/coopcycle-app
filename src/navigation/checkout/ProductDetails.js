@@ -5,6 +5,7 @@ import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import _ from 'lodash'
+import { SafeAreaView } from 'react-native-safe-area-context'
 import ProductOptions from './ProductOptions'
 import FooterButton from './components/FooterButton'
 import { addItemV2 } from '../../redux/Checkout/actions'
@@ -83,7 +84,7 @@ class ProductDetails extends Component {
         const image16x9 = product.images && Array.isArray(product.images)
             && _.find(product.images, image => image.ratio === '16:9')
 
-        return <>
+        return <SafeAreaView style={{ flex: 1 }} edges={[ 'bottom' ]}>
             <VStack flex={ 1 }>
                 { image16x9 &&
                 <Image size="md" style={{ width: '100%' }} resizeMode="cover" source={{ uri: image16x9.url }} alt="Product" />
@@ -126,7 +127,7 @@ class ProductDetails extends Component {
                 }
             </VStack>
             { this.renderFooter() }
-        </>
+        </SafeAreaView>
     }
 
 }

@@ -7,6 +7,7 @@ import _ from 'lodash'
 import moment from 'moment'
 import { useFocusEffect } from '@react-navigation/native'
 import Smartlook from 'react-native-smartlook-analytics'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 import CartFooter from './components/CartFooter'
 import ExpiredSessionModal from './components/ExpiredSessionModal'
@@ -140,7 +141,7 @@ function Restaurant(props) {
   }
 
   return (
-    <View style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1 }} edges={[ 'bottom' ]}>
       <View style={{ flex: 1, paddingTop: 60 }}>
         <View style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: 60 }}>
           <GroupImageHeader image={ restaurant.image } text={restaurant.name} onInfo={() => setInfoModal(true)} />
@@ -198,7 +199,7 @@ function Restaurant(props) {
 
       <ExpiredSessionModal
         onModalHide={ () => navigate('CheckoutHome') } />
-    </View>
+    </SafeAreaView>
   )
 }
 
