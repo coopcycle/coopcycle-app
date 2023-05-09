@@ -34,7 +34,7 @@ const AttachmentItem = ({ base64, onPressDelete }) => {
 
   const imageSize = (width - 64) / 2
 
-  if (!base64.startsWith('data:image/jpeg;base64')) {
+  if (!base64.startsWith('file://') && !base64.startsWith('data:image/jpeg;base64')) {
     base64 = `data:image/jpeg;base64,${base64}`
   }
 

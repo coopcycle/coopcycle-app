@@ -630,6 +630,8 @@ PODS:
     - glog
   - react-native-ble-manager (8.4.4):
     - React-Core
+  - react-native-blob-util (0.17.3):
+    - React-Core
   - react-native-config (1.4.11):
     - react-native-config/App (= 1.4.11)
   - react-native-config/App (1.4.11):
@@ -739,8 +741,6 @@ PODS:
     - IQKeyboardManagerSwift (= 6.5.4)
     - React-Core
     - React-RCTText
-  - rn-fetch-blob (0.12.0):
-    - React-Core
   - RNAppleAuthentication (2.2.2):
     - React-Core
   - RNBackgroundFetch (4.1.6):
@@ -915,6 +915,7 @@ DEPENDENCIES:
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
   - react-native-ble-manager (from `../node_modules/react-native-ble-manager`)
+  - react-native-blob-util (from `../node_modules/react-native-blob-util`)
   - react-native-config (from `../node_modules/react-native-config`)
   - react-native-fbsdk-next (from `../node_modules/react-native-fbsdk-next`)
   - react-native-get-random-values (from `../node_modules/react-native-get-random-values`)
@@ -938,7 +939,6 @@ DEPENDENCIES:
   - React-runtimeexecutor (from `../node_modules/react-native/ReactCommon/runtimeexecutor`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - ReactNativeKeyboardManager (from `../node_modules/react-native-keyboard-manager`)
-  - rn-fetch-blob (from `../node_modules/rn-fetch-blob`)
   - "RNAppleAuthentication (from `../node_modules/@invertase/react-native-apple-authentication`)"
   - RNBackgroundFetch (from `../node_modules/react-native-background-fetch`)
   - RNBackgroundGeolocation (from `../node_modules/react-native-background-geolocation`)
@@ -1090,6 +1090,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/logger"
   react-native-ble-manager:
     :path: "../node_modules/react-native-ble-manager"
+  react-native-blob-util:
+    :path: "../node_modules/react-native-blob-util"
   react-native-config:
     :path: "../node_modules/react-native-config"
   react-native-fbsdk-next:
@@ -1136,8 +1138,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon"
   ReactNativeKeyboardManager:
     :path: "../node_modules/react-native-keyboard-manager"
-  rn-fetch-blob:
-    :path: "../node_modules/rn-fetch-blob"
   RNAppleAuthentication:
     :path: "../node_modules/@invertase/react-native-apple-authentication"
   RNBackgroundFetch:
@@ -1267,6 +1267,7 @@ SPEC CHECKSUMS:
   React-jsinspector: 60769e5a0a6d4b32294a2456077f59d0266f9a8b
   React-logger: 1623c216abaa88974afce404dc8f479406bbc3a0
   react-native-ble-manager: 5a36276ae7bdc382c6a0716c939024ffeb4e0a48
+  react-native-blob-util: 99f4d79189252f597fe0d810c57a3733b1b1dea6
   react-native-config: bcafda5b4c51491ee1b0e1d0c4e3905bc7b56c1b
   react-native-fbsdk-next: c78dede90e3c50ab6936a7d56c43e1a9eb37e25a
   react-native-get-random-values: a6ea6a8a65dc93e96e24a11105b1a9c8cfe1d72a
@@ -1290,7 +1291,6 @@ SPEC CHECKSUMS:
   React-runtimeexecutor: 15437b576139df27635400de0599d9844f1ab817
   ReactCommon: 349be31adeecffc7986a0de875d7fb0dcf4e251c
   ReactNativeKeyboardManager: f82a63e0982254fb0f6a17ba327fac575a46f1e9
-  rn-fetch-blob: f065bb7ab7fb48dd002629f8bdcb0336602d3cba
   RNAppleAuthentication: 0571c08da8c327ae2afc0261b48b4a515b0286a6
   RNBackgroundFetch: aec9df762e78197009b89fe96f9ba3e2eb3268b3
   RNBackgroundGeolocation: 8f64068cbcd2b249ca6f57cde9557c50480a9b8b

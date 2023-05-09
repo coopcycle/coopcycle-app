@@ -6,7 +6,7 @@ jest.mock('react-native-localize', () => ({
   findBestAvailableLanguage: () => ({ languageTag: 'en' }),
 }));
 
-jest.mock('rn-fetch-blob', () => ({
+jest.mock('react-native-blob-util', () => ({
   fetch: () => {}
 }));
 

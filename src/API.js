@@ -2,7 +2,7 @@ import i18n from './i18n'
 import axios from 'axios'
 import qs from 'qs'
 import _ from 'lodash'
-import RNFetchBlob from 'rn-fetch-blob'
+import ReactNativeBlobUtil from 'react-native-blob-util'
 
 let subscribers = []
 let errorSubscribers = []
@@ -342,9 +342,6 @@ Client.prototype.cloneWithToken = function(token) {
 
 Client.prototype.uploadFile = function(uri, base64) {
 
-  // Remove line breaks from Base64 string
-  const base64AsString = base64.replace(/(\r\n|\n|\r)/gm, '')
-
   const headers = {
     'Authorization' : `Bearer ${this.getToken()}`,
     'Content-Type' : 'multipart/form-data',
@@ -353,15 +350,15 @@ Client.prototype.uploadFile = function(uri, base64) {
   const body = [{
     name : 'file',
     filename: 'filename.jpg', // This is needed to work
-    data: base64AsString,
+    data: ReactNativeBlobUtil.wrap(base64.replace('file://', '')),
   }]
 
   return new Promise((resolve, reject) => {
 
-    RNFetchBlob
+    ReactNativeBlobUtil
       .fetch('POST', `${this.getBaseURL()}${uri}`, headers, body)
       // Warning: this is not a standard fetch respone
-      // @see https://github.com/joltup/rn-fetch-blob/wiki/Classes#rnfetchblobresponse
+      // @see https://github.com/RonRadtke/react-native-blob-util/wiki/Classes#rnfetchblobresponse
       .then(fetchBlobResponse => {
 
         const fetchBlobResponseInfo = fetchBlobResponse.info()
