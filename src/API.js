@@ -350,7 +350,11 @@ Client.prototype.uploadFile = function(uri, base64) {
   const body = [{
     name : 'file',
     filename: 'filename.jpg', // This is needed to work
-    data: ReactNativeBlobUtil.wrap(base64.replace('file://', '')),
+    data: base64.startsWith('file://') ?
+      ReactNativeBlobUtil.wrap(base64.replace('file://', ''))
+      :
+      // Remove line breaks from Base64 string
+      base64.replace(/(\r\n|\n|\r)/gm, ''),
   }]
 
   return new Promise((resolve, reject) => {
