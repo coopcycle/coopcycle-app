@@ -7,7 +7,8 @@ jest.mock('react-native-localize', () => ({
 }));
 
 jest.mock('react-native-blob-util', () => ({
-  fetch: () => {}
+  fetch: () => {},
+  wrap: () => {}
 }));
 
 jest.mock('@react-native-firebase/analytics', () => ({
