@@ -3,6 +3,8 @@ import axios from 'axios'
 import qs from 'qs'
 import _ from 'lodash'
 import ReactNativeBlobUtil from 'react-native-blob-util'
+import Upload from 'react-native-background-upload'
+import { Platform } from 'react-native';
 
 let subscribers = []
 let errorSubscribers = []
@@ -338,6 +340,39 @@ Client.prototype.setNewPassword = function(token, password) {
 
 Client.prototype.cloneWithToken = function(token) {
   return new Client(this.getBaseURL(), { token })
+}
+
+Client.prototype.uploadFileAsync = function (uri, base64, options = {}) {
+
+  options = {
+    headers: {},
+    parameters: {},
+    ...options,
+  }
+  base64 = Platform.select({
+    'ios': () => base64,
+    'android': () => base64.replace('file://', ''),
+  })()
+  const request = {
+    url: `${this.getBaseURL()}${uri}`,
+    path: base64,
+    field: 'file',
+    method: 'POST',
+    type: 'multipart',
+    maxRetries: 3,
+    parameters: options.parameters,
+    headers: {
+      'Authorization' : `Bearer ${this.getToken()}`,
+      ...options.headers,
+    },
+    notification: {
+      enabled: true,
+      autoclear: true,
+    },
+    useUtf8Charset: true,
+  }
+
+  return Upload.startUpload(request)
 }
 
 Client.prototype.uploadFile = function(uri, base64) {
