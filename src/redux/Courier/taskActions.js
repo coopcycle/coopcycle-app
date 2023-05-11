@@ -143,18 +143,13 @@ function uploadTaskImages(task, state) {
 
   const files = signatures.concat(pictures)
 
-  const promises = files.map(file => uploadTaskImage(state.app.httpClient, file))
+  const promises = files.map(file => uploadTaskImage(state.app.httpClient, file, {
+    headers: {
+      'X-Attach-To': task['@id'],
+    },
+  }))
 
   return Promise.all(promises)
-    .then(values => {
-      if (values.length === 0) {
-        return task
-      }
-      // Associates images with task
-      return state.app.httpClient.put(task['@id'], {
-        images: values.map(image => image['@id']),
-      })
-    })
 }
 
 function uploadTasksImages(tasks, state) {
@@ -313,9 +308,8 @@ export function startTask(task, cb) {
   }
 }
 
-function uploadTaskImage(httpClient, base64) {
-
-  return httpClient.uploadFile('/api/task_images', base64)
+function uploadTaskImage(httpClient, file, options) {
+  return httpClient.uploadFileAsync('/api/task_images', file, options)
 }
 
 export function setTasksChangedAlertSound(enabled) {
