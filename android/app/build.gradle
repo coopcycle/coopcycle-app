@@ -324,6 +324,7 @@ dependencies {
     }
 
     androidTestImplementation('com.wix:detox:+')
+    implementation project(':react-native-background-upload')
 
     // This is needed to enable multidex on API Level < 21
     // https://developer.android.com/studio/build/multidex.html

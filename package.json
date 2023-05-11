@@ -66,6 +66,7 @@
     "react-native-autocomplete-input": "^5.2.0",
     "react-native-background-fetch": "^4.1.6",
     "react-native-background-geolocation": "^4.9.4",
+    "react-native-background-upload": "^6.6.0",
     "react-native-ble-manager": "^8.4.4",
     "react-native-blob-util": "^0.17.3",
     "react-native-calendars": "^1.1294.0",

@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Arrays;
 
 import androidx.multidex.MultiDexApplication;
+import com.vydia.RNUploader.UploaderReactPackage;
 
 // To enable multidex on API Level < 21,
 // we need to extend android.support.multidex.MultiDexApplication instead of android.app.Application
