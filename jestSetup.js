@@ -6,8 +6,9 @@ jest.mock('react-native-localize', () => ({
   findBestAvailableLanguage: () => ({ languageTag: 'en' }),
 }));
 
-jest.mock('rn-fetch-blob', () => ({
-  fetch: () => {}
+jest.mock('react-native-blob-util', () => ({
+  fetch: () => {},
+  wrap: () => {}
 }));
 
 jest.mock('@react-native-firebase/analytics', () => ({

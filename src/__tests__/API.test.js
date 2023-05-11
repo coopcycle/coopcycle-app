@@ -1,7 +1,7 @@
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 import allSettled from 'promise.allsettled'
-import RNFetchBlob from 'rn-fetch-blob'
+import ReactNativeBlobUtil from 'react-native-blob-util'
 
 import { createClient } from '../API'
 
@@ -127,12 +127,12 @@ describe('HTTP client', () => {
       refresh_token: '123456',
     })
 
-    RNFetchBlob.fetch = jest.fn()
-    RNFetchBlob.fetch.mockResolvedValueOnce({
+    ReactNativeBlobUtil.fetch = jest.fn()
+    ReactNativeBlobUtil.fetch.mockResolvedValueOnce({
       info: () => ({ status: 401 }),
       json: () => ({}),
     })
-    RNFetchBlob.fetch.mockResolvedValueOnce({
+    ReactNativeBlobUtil.fetch.mockResolvedValueOnce({
       info: () => ({ status: 201 }),
       json: () => ({ '@id': '/api/task_images/1' }),
     })
@@ -148,7 +148,7 @@ describe('HTTP client', () => {
         .then(response => {
 
           expect(response).toEqual({ '@id': '/api/task_images/1' })
-          expect(RNFetchBlob.fetch).toHaveBeenCalledTimes(2)
+          expect(ReactNativeBlobUtil.fetch).toHaveBeenCalledTimes(2)
 
           resolve()
 

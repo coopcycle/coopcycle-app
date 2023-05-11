@@ -58,14 +58,14 @@ class Photo extends Component {
     const tasks = this.props.route.params?.tasks
     const { image } = this.state
     if (image) {
-      this.props.addPicture(task, image.base64)
+      this.props.addPicture(task, image.uri)
       this.props.navigation.navigate({ name: 'TaskCompleteHome', params: { task, tasks }, merge: true })
     }
   }
 
   _takePicture() {
     if (this.camera.current) {
-      const options = { quality: 0.5, base64: true };
+      const options = { quality: 0.5, base64: false };
       this.camera.current.takePictureAsync(options).then(data => {
         this.setState({ image: data })
       })
