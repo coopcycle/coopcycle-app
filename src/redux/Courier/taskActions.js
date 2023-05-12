@@ -215,6 +215,14 @@ export function markTaskFailed(httpClient, task, notes = '', onSuccess, contactN
   }
 }
 
+function execUploadTask(uploadTasks) {
+  if (_.isArray(uploadTasks)) {
+    return uploadTasks.forEach(uploadTask => execUploadTask(uploadTask))
+  }
+  console.log(`exec job: ${uploadTasks._uuid}`)
+  uploadTasks.uploadAsync()
+}
+
 export function markTaskDone(httpClient, task, notes = '', onSuccess, contactName = '') {
 
   return function (dispatch, getState) {
@@ -234,10 +242,11 @@ export function markTaskDone(httpClient, task, notes = '', onSuccess, contactNam
 
     // Make sure to return a promise for testing
     return uploadTaskImages(task, getState())
-      .then(() => {
+      .then(uploadTasks => {
         return httpClient
           .put(task['@id'] + '/done', payload)
           .then(savedTask => {
+            execUploadTask(uploadTasks)
             dispatch(clearFiles())
             dispatch(markTaskDoneSuccess(savedTask))
             if (typeof onSuccess === 'function') {
@@ -271,9 +280,10 @@ export function markTasksDone(httpClient, tasks, notes = '', onSuccess, contactN
     }
 
     return uploadTasksImages(tasks, getState())
-      .then(() => {
+      .then(uploadTasks => {
         return httpClient.put('/api/tasks/done', payload)
           .then(res => {
+            execUploadTask(uploadTasks)
             dispatch(clearFiles())
             dispatch(markTasksDoneSuccess(res['hydra:member']))
             if (typeof onSuccess === 'function') {

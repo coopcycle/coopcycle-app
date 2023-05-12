@@ -350,7 +350,7 @@ Client.prototype.uploadFileAsync = function (uri, file, options = {}) {
     ...options,
   }
 
-  return FileSystem.uploadAsync(`${this.getBaseURL()}${uri}`, file, {
+  return FileSystem.createUploadTask(`${this.getBaseURL()}${uri}`, file, {
     fieldName: 'file',
     httpMethod: 'POST',
     headers: {
