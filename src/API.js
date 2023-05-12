@@ -3,6 +3,8 @@ import axios from 'axios'
 import qs from 'qs'
 import _ from 'lodash'
 import ReactNativeBlobUtil from 'react-native-blob-util'
+import * as FileSystem from 'expo-file-system'
+
 
 let subscribers = []
 let errorSubscribers = []
@@ -338,6 +340,27 @@ Client.prototype.setNewPassword = function(token, password) {
 
 Client.prototype.cloneWithToken = function(token) {
   return new Client(this.getBaseURL(), { token })
+}
+
+Client.prototype.uploadFileAsync = function (uri, file, options = {}) {
+
+  options = {
+    headers: {},
+    parameters: {},
+    ...options,
+  }
+
+  return FileSystem.uploadAsync(`${this.getBaseURL()}${uri}`, file, {
+    fieldName: 'file',
+    httpMethod: 'POST',
+    headers: {
+      'Authorization' : `Bearer ${this.getToken()}`,
+      ...options.headers,
+    },
+    parameters: options.parameters,
+    uploadType: FileSystem.FileSystemUploadType.MULTIPART,
+    sessionType: FileSystem.FileSystemSessionType.BACKGROUND,
+  })
 }
 
 Client.prototype.uploadFile = function(uri, base64) {
