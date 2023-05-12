@@ -366,13 +366,20 @@ Client.prototype.uploadFileAsync = function (uri, base64, options = {}) {
       ...options.headers,
     },
     notification: {
-      enabled: true,
+      enabled: false,
       autoclear: true,
     },
     useUtf8Charset: true,
   }
 
-  return Upload.startUpload(request)
+  return startUpload(request)
+}
+
+function startUpload(request) {
+  return new Promise((resolve, reject) => Upload.startUpload(request).then(uploadId => {
+    Upload.addListener('completed', uploadId, data => resolve({ request, data }))
+    Upload.addListener('error', uploadId, error => reject({ request, error }))
+  }).catch(error => reject({ request, error })))
 }
 
 Client.prototype.uploadFile = function(uri, base64) {
