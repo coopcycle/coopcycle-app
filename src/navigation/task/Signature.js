@@ -6,6 +6,7 @@ import {
 import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 import SignatureScreen from 'react-native-signature-canvas'
+import * as FileSystem from 'expo-file-system'
 
 import { addSignature } from '../../redux/Courier'
 
@@ -40,10 +41,12 @@ class Signature extends Component {
   }
 
   handleOK(base64) {
+    const path = FileSystem.cacheDirectory + 'sign.png'
     base64 = base64.replace('data:image/jpeg;base64,', '')
+    FileSystem.writeAsStringAsync(path, base64, { encoding: FileSystem.EncodingType.Base64 })
     const task = this.props.route.params?.task
     const tasks = this.props.route.params?.tasks
-    this.props.addSignature(task, base64)
+    this.props.addSignature(task, path)
     this.props.navigation.navigate({ name: 'TaskCompleteHome', params: { task, tasks }, merge: true })
   }
 
