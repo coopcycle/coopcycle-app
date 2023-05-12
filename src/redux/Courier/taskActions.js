@@ -143,6 +143,10 @@ function uploadTaskImages(task, state) {
 
   const files = signatures.concat(pictures)
 
+  if (!files.length) {
+    return Promise.resolve()
+  }
+
   const promises = files.map(file => uploadTaskImage(state.app.httpClient, file, {
     headers: {
       'X-Attach-To': task['@id'],
@@ -163,19 +167,13 @@ function uploadTasksImages(tasks, state) {
     return Promise.resolve()
   }
 
-  const promises = files.map(file => uploadTaskImage(state.app.httpClient, file))
+  const promises = files.map(file => uploadTaskImage(state.app.httpClient, file, {
+    headers: {
+      'X-Attach-To': tasks.map(task => task['@id']).join(';'),
+    },
+  }))
 
   return Promise.all(promises)
-    .then(values => {
-      if (values.length === 0) {
-        return tasks
-      }
-      // Associate images with task
-      return state.app.httpClient.put('/api/tasks/images', {
-        images: values.map(image => image['@id']),
-        tasks: tasks.map(task => task['@id']),
-      })
-    })
 }
 
 export function markTaskFailed(httpClient, task, notes = '', onSuccess, contactName = '') {
