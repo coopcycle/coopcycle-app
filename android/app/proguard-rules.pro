@@ -47,6 +47,3 @@
 -keepclassmembers class * {
   expo.modules.kotlin.viewevent.ViewEventDelegate *;
 }
-
-# https://github.com/Vydia/react-native-background-upload
--keep class net.gotev.uploadservice.** { *; }
