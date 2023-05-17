@@ -14,37 +14,22 @@ import {
 } from '../Courier';
 
 import {
+  taskAdapter,
   taskListUtils,
-  taskUtils,
 } from '../../coopcycle-frontend-js/logistics/redux'
 
-const initialState = {
-  byId: {},
-}
+const initialState = taskAdapter.getInitialState()
 
 export default (state = initialState, action) => {
   switch (action.type) {
     case CHANGE_DATE:
-      return {
-        ...state,
-        byId: {},
-      }
+      return initialState
     case LOAD_UNASSIGNED_TASKS_SUCCESS: {
-      let newItems = taskUtils.addOrReplaceTasks(state.byId, action.payload)
-
-      return {
-        ...state,
-        byId: newItems,
-      }
+      return taskAdapter.upsertMany(state, action.payload)
     }
     case LOAD_TASK_LISTS_SUCCESS: {
       let assignedTasks = taskListUtils.assignedTasks(action.payload)
-      let newItems = taskUtils.addOrReplaceTasks(state.byId, assignedTasks)
-
-      return {
-        ...state,
-        byId: newItems,
-      }
+      return taskAdapter.upsertMany(state,assignedTasks)
     }
     case CREATE_TASK_SUCCESS:
     case CANCEL_TASK_SUCCESS:
@@ -54,12 +39,7 @@ export default (state = initialState, action) => {
     case MARK_TASK_DONE_SUCCESS:
     case MARK_TASK_FAILED_SUCCESS: {
       let task = action.payload
-      let newItems = taskUtils.addOrReplaceTasks(state.byId, [task])
-
-      return {
-        ...state,
-        byId: newItems,
-      }
+      return taskAdapter.upsertOne(state, task)
     }
     default:
       return state

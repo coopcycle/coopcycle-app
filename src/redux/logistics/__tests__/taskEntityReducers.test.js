@@ -5,7 +5,8 @@ describe('taskEntityReducers', () => {
     it('should remove old items when the date is selected', () => {
       expect(taskEntityReducers(
         {
-          byId: {
+          ids: ['/api/tasks/1'],
+          entities: {
             '/api/tasks/1': {
               '@id': '/api/tasks/1',
               id : 1,
@@ -18,7 +19,8 @@ describe('taskEntityReducers', () => {
           payload: '2020-11-03T23:00:00.000Z',
         }
       )).toEqual({
-        byId: {},
+        ids: [],
+        entities: {},
       })
     })
   })
@@ -27,7 +29,8 @@ describe('taskEntityReducers', () => {
     it('should add items', () => {
       expect(taskEntityReducers(
         {
-          byId: {},
+          ids: [],
+          entities: {},
         },
         {
           type: 'LOAD_UNASSIGNED_TASKS_SUCCESS',
@@ -45,7 +48,8 @@ describe('taskEntityReducers', () => {
           ],
         }
       )).toEqual({
-        byId: {
+        ids: ['/api/tasks/1', '/api/tasks/2'],
+        entities: {
           '/api/tasks/1': {
             '@id': '/api/tasks/1',
             id : 1,
@@ -63,7 +67,8 @@ describe('taskEntityReducers', () => {
     it('should update items', () => {
       expect(taskEntityReducers(
         {
-          byId: {
+          ids: ['/api/tasks/1'],
+          entities: {
             '/api/tasks/1': {
               '@id': '/api/tasks/1',
               id : 1,
@@ -89,7 +94,8 @@ describe('taskEntityReducers', () => {
           ],
         }
       )).toEqual({
-        byId: {
+        ids: ['/api/tasks/1', '/api/tasks/2'],
+        entities: {
           '/api/tasks/1': {
             '@id': '/api/tasks/1',
             id : 1,
@@ -111,7 +117,8 @@ describe('taskEntityReducers', () => {
     it('should add items', () => {
       expect(taskEntityReducers(
         {
-          byId: {},
+          ids: [],
+          entities: {},
         },
         {
           type: 'LOAD_TASK_LISTS_SUCCESS',
@@ -144,7 +151,8 @@ describe('taskEntityReducers', () => {
           ],
         }
       )).toEqual({
-        byId: {
+        ids: ['/api/tasks/1', '/api/tasks/2'],
+        entities: {
           '/api/tasks/1': {
             '@id': '/api/tasks/1',
             id : 1,
@@ -166,7 +174,8 @@ describe('taskEntityReducers', () => {
     it('should add item', () => {
       expect(taskEntityReducers(
         {
-          byId: {},
+          ids: [],
+          entities: {},
         },
         {
           type: 'CREATE_TASK_SUCCESS',
@@ -177,7 +186,8 @@ describe('taskEntityReducers', () => {
           },
         }
       )).toEqual({
-        byId: {
+        ids: ['/api/tasks/1'],
+        entities: {
           '/api/tasks/1': {
             '@id': '/api/tasks/1',
             id : 1,
