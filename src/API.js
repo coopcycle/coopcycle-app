@@ -342,6 +342,35 @@ Client.prototype.cloneWithToken = function(token) {
   return new Client(this.getBaseURL(), { token })
 }
 
+Client.prototype.execUploadTask = function(uploadTasks, retry = 0) {
+  if (_.isArray(uploadTasks)) {
+    return Promise.all(uploadTasks.map(uploadTask => this.execUploadTask(uploadTask)))
+  }
+
+  return new Promise(async (resolve, reject) => {
+    try {
+    const data = await uploadTasks.uploadAsync()
+    switch (data.status) {
+      case 401:
+        if (retry < 2) {    
+          const token = await this.refreshToken()
+          _.set(uploadTasks, 'options.headers.Authorization', `Bearer ${token}`)
+          resolve(await this.execUploadTask(uploadTasks, ++retry))
+        }
+        reject(new Error("Too many retries"))
+          break
+        case 201:
+          resolve(data)
+          break
+        default:
+          reject(new Error(`Unhandled status code: ${data.status}`))
+    }
+  } catch(e) {
+    reject(e)
+  }
+  })
+}
+
 Client.prototype.uploadFileAsync = function (uri, file, options = {}) {
 
   options = {

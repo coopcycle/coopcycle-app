@@ -220,6 +220,8 @@ describe('Redux | Tasks | Actions', () => {
       getToken: () => '123456',
       getBaseURL: () => 'https://test.coopcycle.org',
       uploadFile: jest.fn(),
+      uploadFileAsync: jest.fn(),
+      execUploadTask: jest.fn(),
     }
     client.put.mockResolvedValue(resolveValue)
     client.put.mockResolvedValue(resolveValue)
