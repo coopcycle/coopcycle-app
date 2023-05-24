@@ -181,6 +181,7 @@ describe('Redux | Tasks | Actions', () => {
 
     const client = {
       put: jest.fn(),
+      execUploadTask: jest.fn(),
     }
     client.put.mockResolvedValue(resolveValue)
     client.put.mockResolvedValue(resolveValue)
@@ -225,7 +226,7 @@ describe('Redux | Tasks | Actions', () => {
     }
     client.put.mockResolvedValue(resolveValue)
     client.put.mockResolvedValue(resolveValue)
-    client.uploadFile.mockResolvedValue({ '@id': '/api/task_images/1' })
+    client.uploadFileAsync.mockResolvedValue()
 
     const store = mockStore({
       app: { httpClient: client },
@@ -248,10 +249,13 @@ describe('Redux | Tasks | Actions', () => {
         expect(actions).toContainEqual(clearFiles())
         expect(actions).toContainEqual(markTaskDoneSuccess(resolveValue))
 
-        expect(client.put).toHaveBeenCalledTimes(2)
-        expect(client.put).toHaveBeenCalledWith(task['@id'], { images: [
-          '/api/task_images/1',
-        ] })
+        expect(client.put).toHaveBeenCalledTimes(1)
+        expect(client.uploadFileAsync).toHaveBeenCalledTimes(1)
+        expect(client.uploadFileAsync).toHaveBeenCalledWith(
+          "/api/task_images",
+          "123456",
+          {"headers": {"X-Attach-To": "/api/tasks/1"}}
+        )
         expect(client.put).toHaveBeenCalledWith(`${task['@id']}/done`, { notes })
       })
   })
@@ -263,6 +267,7 @@ describe('Redux | Tasks | Actions', () => {
 
     const client = {
       put: jest.fn(),
+      execUploadTask: jest.fn(),
     }
     client.put.mockRejectedValue(rejectValue)
 
@@ -297,6 +302,7 @@ describe('Redux | Tasks | Actions', () => {
 
     const client = {
       put: jest.fn(),
+      execUploadTask: jest.fn(),
     }
     client.put.mockResolvedValue(resolveValue)
     client.put.mockResolvedValue(resolveValue)
