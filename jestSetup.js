@@ -11,6 +11,16 @@ jest.mock('react-native-blob-util', () => ({
   wrap: () => {}
 }));
 
+jest.mock('expo-file-system', () => ({
+  createUploadTask: jest.fn(),
+  FileSystemUploadType: {
+    MULTIPART: 1
+  },
+  FileSystemSessionType: {
+    BACKGROUND: 0
+  }
+}));
+
 jest.mock('@react-native-firebase/analytics', () => ({
   logEvent: jest.fn(),
   setUserProperty: jest.fn(),
