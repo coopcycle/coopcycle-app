@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useState } from 'react'
+import React, { Component } from 'react'
 import { Dimensions, StyleSheet, TouchableHighlight, TouchableOpacity, View, useColorScheme } from 'react-native'
 import { HStack, Icon, Text, VStack, useTheme } from 'native-base'
 import { SwipeRow } from 'react-native-swipe-list-view'
@@ -98,29 +98,14 @@ const SwipeButton = ({ iconName, width }) => (
   </View>
 )
 
-const ItemTouchable = ({ children, isSelected, onLongPress, ...otherProps }) => {
+const ItemTouchable = ({ children, ...otherProps }) => {
 
   const colorScheme = useColorScheme()
   const { colors } = useTheme()
 
-  const backgroundColor = () => {
-    if (isSelected) {
-      return colorScheme === 'dark' ? colors.gray['700'] : colors.gray['200']
-    }
-    return colorScheme === 'dark' ? 'black' : 'white'
-  }
-
-  const _onLongPress = () => {
-    if (onLongPress) {
-      onLongPress(!isSelected)
-    }
-  }
-
-
   return (
     <TouchableHighlight
-      onLongPress={ () => _onLongPress() }
-      style={{ backgroundColor: backgroundColor() }}
+      style={{ backgroundColor: colorScheme === 'dark' ? 'black' : 'white' }}
       underlayColor={ colorScheme === 'dark' ? colors.gray['700'] : colors.gray['200'] }
       { ...otherProps }>
       { children }
@@ -133,6 +118,31 @@ class TaskListItem extends Component {
   constructor(props) {
     super(props)
     this.swipeRow = React.createRef()
+
+    this._onRowOpen = this._onRowOpen.bind(this)
+    this._onRowClose = this._onRowClose.bind(this)
+  }
+
+  _onRowOpen(toValue) {
+    if (toValue > 0 && this.props.onSwipedToLeft) {
+      this.props.onSwipedToLeft()
+    } else if (toValue < 0 && this.props.onSwipedToRight) {
+      this.props.onSwipedToRight()
+    }
+  }
+
+  _onRowClose() {
+    if (this.props.onSwipeClosed) {
+      this.props.onSwipeClosed()
+    }
+  }
+
+  componentDidUpdate() {
+    const { task } = this.props
+
+    if (task.status === 'DONE') {
+      this.swipeRow.current?.closeRow()
+    }
   }
 
   render() {
@@ -162,6 +172,8 @@ class TaskListItem extends Component {
         stopLeftSwipe={ buttonWidth + 25 }
         rightOpenValue={ buttonWidth * -1 }
         stopRightSwipe={ (buttonWidth + 25) * -1 }
+        onRowOpen={(toValue) => this._onRowOpen(toValue)}
+        onRowClose={this._onRowClose}
         ref={ this.swipeRow }>
         <View style={ styles.rowBack }>
           <SwipeButtonContainer left
@@ -186,8 +198,6 @@ class TaskListItem extends Component {
         </View>
         <ItemTouchable
           onPress={ this.props.onPress }
-          onLongPress={ this.props.toggleItemSelection }
-          isSelected={this.props.isSelected}
           testID={ `task:${index}` }>
           <HStack flex={ 1 } alignItems="center" styles={ itemStyle } pr="3" { ...itemProps }>
             <View style={{ backgroundColor: color, width: 8, height: '100%', marginRight: 12 }}/>

@@ -103,6 +103,33 @@ function showAlert(e) {
   )
 }
 
+function showAlertAfterBulk(messages) {
+
+  let message = i18n.t('AN_ERROR_OCCURRED')
+
+  if (messages.length) {
+    messages.forEach((m, index) => {
+      if (index === 0) {
+        message = m
+      } else {
+        message += `\n\n${m}`
+      }
+    })
+  }
+
+  Alert.alert(
+    i18n.t('FAILED_TASK_COMPLETE'),
+    message,
+    [
+      {
+        text: 'OK',
+        onPress: () => {},
+      },
+    ],
+    { cancelable: false }
+  )
+}
+
 /**
  * Thunk Creators
  */
@@ -273,11 +300,19 @@ export function markTasksDone(httpClient, tasks, notes = '', onSuccess, contactN
       .then(uploadTasks => {
         return httpClient.put('/api/tasks/done', payload)
           .then(res => {
-            httpClient.execUploadTask(uploadTasks)
-            dispatch(clearFiles())
-            dispatch(markTasksDoneSuccess(res['hydra:member']))
-            if (typeof onSuccess === 'function') {
-              setTimeout(() => onSuccess(), 100)
+            if (res['failed'] && Object.keys(res['failed']).length) {
+              showAlertAfterBulk(Object.values(res['failed']))
+              if (!res['success'] || !res['success'].length) {
+                dispatch(markTasksDoneFailure())
+              }
+            }
+            if (res['success'] && res['success'].length) {
+              httpClient.execUploadTask(uploadTasks)
+              dispatch(clearFiles())
+              dispatch(markTasksDoneSuccess(res['success']))
+              if (typeof onSuccess === 'function') {
+                setTimeout(() => onSuccess(), 100)
+              }
             }
           })
       })

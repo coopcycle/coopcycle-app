@@ -159,8 +159,10 @@ class CompleteTask extends Component {
     const task = this.props.route.params?.task
     const tasks = this.props.route.params?.tasks
 
-    if (tasks && tasks.length) {
+    if (tasks && tasks.length > 1) {
       return tasks.every(t => t.type === 'DROPOFF')
+    } else if (tasks && tasks.length === 1) {
+      return tasks[0].type === 'DROPOFF'
     }
     return task && task.type === 'DROPOFF'
   }
