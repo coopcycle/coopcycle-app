@@ -39,8 +39,8 @@ class LoginRegister extends Component {
             })
           }}
           registrationErrors={ this.props.registrationErrors }
-          withFacebook={ true }
-          withGoogle={ true } />
+          withFacebook={ !this.props.customBuild }
+          withGoogle={ !this.props.customBuild } />
       </Center>
     )
   }
