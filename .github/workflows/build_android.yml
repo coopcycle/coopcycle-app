@@ -24,6 +24,7 @@ jobs:
     name: Build default app
     uses: ./.github/workflows/fastlane_android.yml
     secrets: inherit
+    google_play_track: internal
   naofood:
     if: ${{ inputs.build_naofood }}
     name: Build Naofood app
