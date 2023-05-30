@@ -39,7 +39,7 @@ PODS:
     - ExpoModulesCore
   - EXFont (11.0.1):
     - ExpoModulesCore
-  - Expo (47.0.8):
+  - Expo (47.0.14):
     - ExpoModulesCore
   - ExpoAdapterFBSDKNext (11.1.0):
     - ExpoModulesCore
@@ -47,7 +47,7 @@ PODS:
     - React-Core
   - ExpoKeepAwake (11.0.1):
     - ExpoModulesCore
-  - ExpoModulesCore (1.0.3):
+  - ExpoModulesCore (1.1.1):
     - React-Core
     - ReactCommon/turbomodule/core
   - FBAEMKit (15.0.0):
@@ -1200,10 +1200,10 @@ SPEC CHECKSUMS:
   EXErrorRecovery: ae43433feb0608a64dc5b1c8363b3e7769a9ea24
   EXFileSystem: ed61548927905e157b95b3b49bd83a26ff24e1ce
   EXFont: 319606bfe48c33b5b5063fb0994afdc496befe80
-  Expo: 36b5f625d36728adbdd1934d4d57182f319ab832
+  Expo: 5f4240506a147162542178989696e56e3dd72924
   ExpoAdapterFBSDKNext: cb13ee1823c70383d17a82e7e2385053fa917d01
   ExpoKeepAwake: 69b59d0a8d2b24de9f82759c39b3821fec030318
-  ExpoModulesCore: b5d21c8880afda6fb6ee95469f9ac2ec9b98e995
+  ExpoModulesCore: 485dff3a59b036a33b6050c0a5aea3cf1037fdd1
   FBAEMKit: d8312d8451ead46282adc7f3565ffc4965e3a4a7
   FBLazyVector: 48289402952f4f7a4e235de70a9a590aa0b79ef4
   FBReactNativeSpec: dd1186fd05255e3457baa2f4ca65e94c2cd1e3ac
