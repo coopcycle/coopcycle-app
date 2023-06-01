@@ -1,22 +1,15 @@
-import React, { Component } from 'react';
-import {
-  Animated,
-  Keyboard,
-  Platform,
-  StyleSheet,
-  View,
-  useColorScheme,
-} from 'react-native';
-import { connect } from 'react-redux'
-import { Button, Center, Checkbox, Flex, Input, Radio, Text } from 'native-base';
+import React, {Component} from 'react';
+import {Animated, Keyboard, Platform, StyleSheet, useColorScheme, View,} from 'react-native';
+import {connect} from 'react-redux'
+import {Button, Center, Checkbox, Input, Radio, Text} from 'native-base';
 import _ from 'lodash'
-import { withTranslation } from 'react-i18next'
-import { Formik } from 'formik'
-import { CardField, StripeProvider } from '@stripe/stripe-react-native'
+import {withTranslation} from 'react-i18next'
+import {Formik} from 'formik'
+import {CardField, StripeProvider} from '@stripe/stripe-react-native'
 
-import { formatPrice } from '../../../utils/formatting'
+import {formatPrice} from '../../../utils/formatting'
 import FooterButton from './FooterButton'
-import { loadPaymentDetails, loadStripeSavedPaymentMethods } from '../../../redux/Checkout/actions'
+import {loadPaymentDetails, loadStripeSavedPaymentMethods} from '../../../redux/Checkout/actions'
 import SavedCreditCard from './SavedCreditCard';
 
 const ColorSchemeAwareCardField = (props) => {
@@ -131,7 +124,7 @@ class CreditCard extends Component {
 
   render() {
 
-    const { cart, paymentDetailsLoaded, stripePaymentMethodsLoaded, stripePaymentMethods, user } = this.props
+    const { cart, paymentDetailsLoaded, disabled, stripePaymentMethodsLoaded, stripePaymentMethods, user } = this.props
 
     if (!cart || !paymentDetailsLoaded || (!user.isGuest() && !stripePaymentMethodsLoaded)) {
 
@@ -259,6 +252,7 @@ class CreditCard extends Component {
             : null
           }
           <FooterButton
+            idDisabled={disabled}
             testID="creditCardSubmit"
             text={ this.props.t('PAY_AMOUNT', { amount: formatPrice(cart.total) }) }
             onPress={ _.debounce(handleSubmit, 1000, { leading: true, trailing: false }) } />

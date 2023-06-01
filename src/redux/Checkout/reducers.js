@@ -47,9 +47,11 @@ import {
   SET_TOKEN,
   SHOW_ADDRESS_MODAL,
   SHOW_EXPIRED_SESSION_MODAL,
+  SHOW_TIMING_MODAL,
   UPDATE_CARTS,
   UPDATE_CART_SUCCESS,
-  UPDATE_CUSTOMER_GUEST, UPDATE_ITEM_QUANTITY,
+  UPDATE_CUSTOMER_GUEST,
+  UPDATE_ITEM_QUANTITY,
 } from './actions'
 
 import i18n from '../../i18n'
@@ -84,6 +86,10 @@ const initialState = {
   paymentDetails: {},
   paymentDetailsLoaded: false,
   guest: null,
+  timingModal: {
+    displayed: false,
+    message: null,
+  },
   showMultipleServersInSameCityModal: true,
   searchResultsLoaded: false,
   searchResults: null,
@@ -157,6 +163,7 @@ export default (state = initialState, action = {}) => {
         restaurant: action.payload.restaurant,
         cart: null,
         menu: null, // For better navigation through restaurants
+        timingModal: initialState.timingModal, // Be sure to reset the timingModal
       }
 
     case INIT_SUCCESS:
@@ -175,6 +182,9 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         restaurant: action.payload,
+        timingModal: initialState.timingModal, // Be sure to reset the timingModal
+        isValid: null,
+        violations: [],
       }
 
     case SET_TOKEN:
@@ -420,6 +430,26 @@ export default (state = initialState, action = {}) => {
           ...state,
           guest: action.payload,
         }
+
+    case SHOW_TIMING_MODAL:
+      if (typeof action.payload === 'boolean') {
+        return {
+          ...state,
+          timingModal: {
+            displayed: action.payload,
+          },
+        }
+      }
+      if (typeof action.payload === 'object') {
+        return {
+          ...state,
+          timingModal: {
+            ...initialState.timingModal,
+            ...action.payload,
+          },
+        }
+      }
+        break
 
     case HIDE_MULTIPLE_SERVERS_IN_SAME_CITY_MODAL:
 
