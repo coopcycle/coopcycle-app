@@ -1,9 +1,7 @@
 import React, { Component, useEffect, useMemo, useState } from 'react';
-import OpeningHoursSpecification from '../../../utils/OpeningHoursSpecification';
 import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
-import FocusHandler from '../../../components/FocusHandler';
 import BottomModal from '../../../components/BottomModal';
 import { Button, Divider, HStack, Heading, Skeleton, Text, View } from 'native-base';
 import { Picker } from '@react-native-picker/picker';
@@ -12,7 +10,6 @@ import { selectHttpClient } from '../../../redux/App/selectors';
 import { groupBy, map, reduce } from 'lodash';
 import moment from 'moment';
 import { showTimingModal } from '../../../redux/Checkout/actions';
-import { InteractionManager } from 'react-native';
 
 
 const TimingCartSelect = ({ cart: { cart, token }, httpClient, onValueChange, cartFulfillmentMethod }) => {
@@ -95,11 +92,10 @@ const TimingCartSelect = ({ cart: { cart, token }, httpClient, onValueChange, ca
   </HStack>
 }
 
-class TimingModal extends Component{
+class TimingModal extends Component {
 
   constructor(props) {
     super(props);
-
     this.state = {
       timeSlot: {},
       closed: false,
@@ -113,60 +109,8 @@ class TimingModal extends Component{
   showModal = show => this.props.showTimingModal(show)
   setValue = value => this.setState({ value })
 
-  componentDidUpdate(prevProps: Readonly<P>, prevState: Readonly<S>, snapshot: SS) {
-    const timeSlot = this.props.openingHoursSpecification.currentTimeSlot
-    const { showModal } = this
-    if (this.state.closed && !prevState.closed) {
-      this.props.onClose({ timeSlot, showModal })
-    }
-
-    if (!this.state.closed && prevState.closed) {
-      this.props.onOpen({ timeSlot })
-    }
-
-    if (this.state.closesSoon && !prevState.closesSoon) {
-      this.props.onClosesSoon({ timeSlot, showModal })
-    }
-
-    if (this.state.opensSoon && !prevState.opensSoon) {
-      this.props.onOpensSoon({ timeSlot, showModal })
-    }
-  }
-
-  refreshState() {
-    const timeSlot = this.props.openingHoursSpecification.currentTimeSlot
-    const closed = timeSlot.state === OpeningHoursSpecification.STATE.Closed
-    const closesSoon = OpeningHoursSpecification.closesSoon(timeSlot.timeSlot)
-    const opensSoon = OpeningHoursSpecification.opensSoon(timeSlot.timeSlot)
-
-    this.props.onRefresh({
-      timeSlot,
-      moment: moment(),
-      openingHoursSpecification: this.props.openingHoursSpecification,
-      cart: this.props.cart,
-      showModal: this.showModal,
-    })
-
-    this.setState({
-      timeSlot,
-      closed,
-      closesSoon,
-      opensSoon,
-    })
-  }
-
-  componentDidMount() {
-    InteractionManager.runAfterInteractions(() => {
-      this.refreshState()
-    })
-  }
-
-  render = () => <>
-    <FocusHandler
-    onFocus={() => setInterval(() => this.refreshState(), 15000)}
-    onBlur={data => clearInterval(data)}
-  />
-    {this.props.modalEnabled && <BottomModal
+  render() {
+    return <>{this.props.modalEnabled && <BottomModal
       isVisible={this.props.timingModal}
       onBackdropPress={() => {
         this.showModal(false)
@@ -178,32 +122,32 @@ class TimingModal extends Component{
       }}
     >
       <Heading size={'sm'}>{this.props.t('CHECKOUT_SCHEDULE_ORDER')}</Heading>
-      <Divider />
+      <Divider/>
       {this.props.fulfillmentMethods.length > 1 &&
         <Button.Group isAttached mx={{
-        base: 'auto',
-        md: 0,
-      }} size="sm">
-        <Button flex={1}
-                onPress={() => this.props.onFulfillmentMethodChange('delivery')}
-                variant={this.props.cartFulfillmentMethod === 'delivery' ? 'solid' : 'outline'}>
-          {this.props.t('FULFILLMENT_METHOD.delivery')}</Button>
-        <Button flex={1}
-                onPress={() => this.props.onFulfillmentMethodChange('collection')}
-                variant={this.props.cartFulfillmentMethod === 'collection' ? 'solid' : 'outline'}>
-          {this.props.t('FULFILLMENT_METHOD.collection')}</Button>
-      </Button.Group>}
+          base: 'auto',
+          md: 0,
+        }} size="sm">
+          <Button flex={1}
+                  onPress={() => this.props.onFulfillmentMethodChange('delivery')}
+                  variant={this.props.cartFulfillmentMethod === 'delivery' ? 'solid' : 'outline'}>
+            {this.props.t('FULFILLMENT_METHOD.delivery')}</Button>
+          <Button flex={1}
+                  onPress={() => this.props.onFulfillmentMethodChange('collection')}
+                  variant={this.props.cartFulfillmentMethod === 'collection' ? 'solid' : 'outline'}>
+            {this.props.t('FULFILLMENT_METHOD.collection')}</Button>
+        </Button.Group>}
       {this.props.message && <Text marginBottom={50}>{this.props.message}</Text>}
-      {!this.props.message && <View marginBottom={30} />}
+      {!this.props.message && <View marginBottom={30}/>}
       <TimingCartSelect cart={this.props.cart}
                         cartFulfillmentMethod={this.props.cartFulfillmentMethod}
-                     httpClient={this.props.httpClient}
-                     onValueChange={this.setValue}
+                        httpClient={this.props.httpClient}
+                        onValueChange={this.setValue}
       />
-        <Button flex={4} onPress={() => this.props.onSchedule({
-                value: this.state.value,
-                showModal: this.showModal,
-              })}
+      <Button flex={4} onPress={() => this.props.onSchedule({
+        value: this.state.value,
+        showModal: this.showModal,
+      })}
       >{this.props.t('SCHEDULE')}</Button>
       <Button variant={'subtle'}
               onPress={() => {
@@ -211,8 +155,10 @@ class TimingModal extends Component{
                 this.props.onSkip()
               }}
       >{this.props.t('IGNORE')}</Button>
-    </BottomModal>}
+    </BottomModal>
+    }
     </>
+  }
 }
 
 TimingModal.defaultProps = {
@@ -221,12 +167,7 @@ TimingModal.defaultProps = {
   cartFulfillmentMethod: null,
   cart: null,
   onFulfillmentMethodChange: () => {},
-  onClosesSoon: () => {},
-  onOpensSoon: () => {},
-  onClose: () => {},
-  onOpen: () => {},
   onSchedule: () => {},
-  onRefresh: () => {},
   onSkip: () => {},
 }
 
@@ -238,12 +179,7 @@ TimingModal.propTypes = {
   onFulfillmentMethodChange: PropTypes.func,
   cart: PropTypes.object,
   modalEnabled: PropTypes.bool,
-  onClosesSoon: PropTypes.func,
-  onOpensSoon: PropTypes.func,
-  onClose: PropTypes.func,
-  onOpen: PropTypes.func,
   onSchedule: PropTypes.func,
-  onRefresh: PropTypes.func,
   onSkip: PropTypes.func,
 }
 

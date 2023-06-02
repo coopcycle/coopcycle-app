@@ -12,7 +12,19 @@ export const selectCart = createSelector(
   state => state.checkout.restaurant,
   (carts, restaurant) => {
     if (carts.hasOwnProperty(restaurant)) {
-      const cartContainer = carts[restaurant]
+      return carts[restaurant]
+    }
+    return {
+      cart: null,
+      restaurant: null,
+      token: null,
+    }
+  }
+)
+export const selectCartWithHours = createSelector(
+  selectCart,
+  (cartContainer) => {
+    if (cartContainer.cart != null) {
       const openingHoursSpecification = new OpeningHoursSpecification()
       openingHoursSpecification.openingHours = cartContainer.restaurant.openingHoursSpecification
       return {
@@ -21,9 +33,7 @@ export const selectCart = createSelector(
       }
     }
     return {
-      cart: null,
-      restaurant: null,
-      token: null,
+      ...cartContainer,
       openingHoursSpecification: null,
     }
   }
@@ -33,7 +43,18 @@ export const selectRestaurant = createSelector(
   state => state.checkout.restaurants,
   state => state.checkout.restaurant,
   (restaurants, restaurant) => {
-    const selected_restaurant = _.find(restaurants, { '@id': restaurant })
+    return _.find(restaurants, { '@id': restaurant }) ?? null
+  }
+)
+export const selectRestaurantWithHours = createSelector(
+  selectRestaurant,
+  (selected_restaurant) => {
+    if (selected_restaurant === null) {
+      return {
+        restaurant: null,
+        openingHoursSpecification: null,
+      }
+    }
     const openingHoursSpecification = new OpeningHoursSpecification()
     openingHoursSpecification.openingHours = selected_restaurant.openingHoursSpecification
     return {
@@ -64,7 +85,7 @@ export const selectDeliveryTotal = createSelector(
 
 export const selectFulfillmentMethods = createSelector(
   selectRestaurant,
-  ({ restaurant }) => {
+  (restaurant) => {
     if (restaurant && restaurant.fulfillmentMethods && Array.isArray(restaurant.fulfillmentMethods)) {
       const enabled = _.filter(restaurant.fulfillmentMethods, fm => fm.enabled)
       return _.map(enabled, fm => fm.type)

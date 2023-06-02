@@ -1,15 +1,15 @@
-import React, {Component} from 'react';
-import {Animated, Dimensions, FlatList, InteractionManager, StyleSheet, TouchableOpacity, View} from 'react-native'
-import {Center, HStack, Icon, Pressable, Text} from 'native-base';
-import {connect} from 'react-redux'
-import {withTranslation} from 'react-i18next'
+import React, { Component } from 'react';
+import { Animated, Dimensions, FlatList, InteractionManager, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { Center, HStack, Icon, Pressable, Text } from 'native-base';
+import { connect } from 'react-redux'
+import { withTranslation } from 'react-i18next'
 import _ from 'lodash'
 import Modal from 'react-native-modal'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
-import {SafeAreaView} from 'react-native-safe-area-context'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 import DangerAlert from '../../components/DangerAlert'
-import {formatPrice} from '../../utils/formatting'
+import { formatPrice } from '../../utils/formatting'
 import {
   decrementItem,
   hideAddressModal,
@@ -25,20 +25,19 @@ import {
   validate,
 } from '../../redux/Checkout/actions'
 import {
-  selectCart,
   selectCartFulfillmentMethod,
+  selectCartWithHours,
   selectDeliveryTotal,
   selectFulfillmentMethods,
   selectShippingTimeRangeLabel,
 } from '../../redux/Checkout/selectors'
-import {selectIsAuthenticated} from '../../redux/App/selectors'
+import { selectIsAuthenticated } from '../../redux/App/selectors'
 import CartFooter from './components/CartFooter'
 import ExpiredSessionModal from './components/ExpiredSessionModal'
 import CouponModal from './components/CouponModal'
-import {primaryColor} from '../../styles/common';
+import { primaryColor } from '../../styles/common';
 import Tips from './components/Tips';
 import TimingModal from './components/TimingModal';
-import {isCartTimingValid} from '../../utils/time-slots';
 import BottomModal from '../../components/BottomModal';
 
 const BottomLine = ({ label, value }) => (
@@ -262,7 +261,7 @@ class Summary extends Component {
       _.find(cart.potentialAction, action => action['@type'] === 'EnableReusablePackagingAction')
 
     return (
-      <SafeAreaView style={{ flex: 1 }} edges={[ 'bottom' ]} onLayout={ () => {
+      <SafeAreaView style={{ flex: 1 }} edges={['bottom']} onLayout={ () => {
           const { width } = Dimensions.get('window')
           this.setState({
             translateXValue: new Animated.Value(width),
@@ -400,7 +399,7 @@ const styles = StyleSheet.create({
 })
 
 function mapStateToProps(state, ownProps) {
-  const cartContainer = selectCart(state)
+  const cartContainer = selectCartWithHours(state)
   const { cart, restaurant, openingHoursSpecification } = cartContainer
 
 

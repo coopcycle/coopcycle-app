@@ -23,10 +23,10 @@ import { phonecall } from 'react-native-communications';
 import AddressUtils from '../../utils/Address';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {
-  selectCart,
+  selectCartWithHours,
   selectCartFulfillmentMethod,
   selectFulfillmentMethods,
-  selectRestaurant,
+  selectRestaurantWithHours,
 } from '../../redux/Checkout/selectors';
 import BottomModal from '../../components/BottomModal';
 import DangerAlert from '../../components/DangerAlert';
@@ -189,11 +189,11 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state, ownProps) {
 
-  const { restaurant, openingHoursSpecification } = selectRestaurant(state)
-  const cartContainer = selectCart(state)
+  const { restaurant, openingHoursSpecification } = selectRestaurantWithHours(state)
+  const cartContainer = selectCartWithHours(state)
   const cart = cartContainer?.cart
   const cartLoading = _.includes(state.checkout.loadingCarts, restaurant['@id'])
-  const isCartEmpty = !selectCart(state).cart ? true : cart.items.length === 0
+  const isCartEmpty = !selectCartWithHours(state).cart ? true : cart.items.length === 0
 
   return {
     showFooter: !isCartEmpty || cartLoading,

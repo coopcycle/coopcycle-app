@@ -5,7 +5,7 @@ import {createPaymentMethod, handleNextAction, initStripe} from '@stripe/stripe-
 
 import NavigationHolder from '../../NavigationHolder'
 import i18n from '../../i18n'
-import {selectBillingEmail, selectCart, selectCartFulfillmentMethod} from './selectors'
+import {selectBillingEmail, selectCartWithHours, selectCartFulfillmentMethod} from './selectors'
 import {selectIsAuthenticated} from '../App/selectors'
 import {loadAddressesSuccess, setNewOrder, updateOrderSuccess} from '../Account/actions'
 import {isFree} from '../../utils/order'
@@ -1064,7 +1064,7 @@ export function setDate(shippingTimeRange, cb) {
 
   return (dispatch, getState) => {
 
-    const { cart } = selectCart(getState())
+    const { cart } = selectCartWithHours(getState())
     const httpClient = createHttpClient(getState())
 
     dispatch(checkoutRequest())
@@ -1114,7 +1114,7 @@ export function setFulfillmentMethod(method) {
   return (dispatch, getState) => {
 
     const { address } = getState().checkout
-    const { cart, token } = selectCart(getState())
+    const { cart, token } = selectCartWithHours(getState())
 
     //dispatch(checkoutRequest())
     dispatch(setToken(token))
@@ -1162,7 +1162,7 @@ export function loadPaymentMethods(method) {
   return (dispatch, getState) => {
 
 
-    const { cart } = selectCart(getState())
+    const { cart } = selectCartWithHours(getState())
 
     const httpClient = createHttpClient(getState())
 
@@ -1179,7 +1179,7 @@ export function checkoutWithCash() {
 
   return (dispatch, getState) => {
 
-    const { cart } = selectCart(getState())
+    const { cart } = selectCartWithHours(getState())
     const httpClient = createHttpClient(getState())
 
     dispatch(checkoutRequest())
@@ -1195,7 +1195,7 @@ export function loadPaymentDetails() {
 
   return (dispatch, getState) => {
 
-    const { cart } = selectCart(getState())
+    const { cart } = selectCartWithHours(getState())
     const httpClient = createHttpClient(getState())
 
 
