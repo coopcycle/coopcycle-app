@@ -5,7 +5,7 @@ import {
   taskTypeIconName,
 } from '../navigation/task/styles/common'
 import { View } from 'react-native'
-import { Icon } from 'native-base'
+import { Icon, Text } from 'native-base'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import { darkGreyColor, redColor, whiteColor } from '../styles/common'
 
@@ -92,11 +92,22 @@ const iconName = (task, type = 'type') => {
   }
 }
 
-export default ({ task, type }) => {
+const warnIconStyle = () => {
+  return {
+    position: 'absolute',
+    right: 0,
+    top: -3,
+    color: 'red',
+    fontSize: 38,
+  }
+}
+
+export default ({ task, type, hasWarnings }) => {
 
   return (
     <View style={ container }>
       <View style={ backgroundStyle(task) }/>
+      { hasWarnings ? <Text bold style={ warnIconStyle() }>.</Text> : null }
       <Icon as={FontAwesome} name={ iconName(task, type) } style={ iconStyle(task) } size="xs"/>
     </View>
   )
