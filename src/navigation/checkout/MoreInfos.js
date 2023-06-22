@@ -1,14 +1,11 @@
 import React, { Component } from 'react'
-import {InteractionManager, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View} from 'react-native'
-import { FormControl, Input, Text, TextArea, VStack, HStack } from 'native-base'
+import { InteractionManager, KeyboardAvoidingView, Platform, ScrollView, StyleSheet } from 'react-native'
+import { FormControl, HStack, Input, Text, TextArea, VStack } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 import { Formik } from 'formik'
 import _ from 'lodash'
-import {
-  AsYouType,
-  parsePhoneNumberFromString,
-} from 'libphonenumber-js'
+import { AsYouType, parsePhoneNumberFromString } from 'libphonenumber-js'
 
 import { assignCustomer, checkout, updateCart } from '../../redux/Checkout/actions'
 import { selectCart, selectCartFulfillmentMethod } from '../../redux/Checkout/selectors'
@@ -120,7 +117,7 @@ class MoreInfos extends Component {
     }
 
     return (
-      <KeyboardAvoidingView style={{ flex: 1 }} keyboardVerticalOffset={Platform.select({ios: 55, android: 85})} enabled={true} behavior={Platform.OS === 'ios' ? 'position' : 'padding'}>
+      <KeyboardAvoidingView style={{ flex: 1 }} keyboardVerticalOffset={Platform.select({ ios: 55, android: 85 })} enabled={true} behavior={Platform.OS === 'ios' ? 'position' : 'padding'}>
       <Formik
         initialValues={ initialValues }
         validate={ this._validate.bind(this) }
@@ -128,7 +125,7 @@ class MoreInfos extends Component {
         validateOnBlur={ false }
         validateOnChange={ false }>
         {({ handleChange, handleBlur, handleSubmit, values, errors, touched, setFieldValue, setFieldTouched }) => (
-          <VStack style={Platform.select({ios: {}, android: {flex:1}})}>
+          <VStack style={Platform.select({ ios: {}, android: { flex:1 } })}>
             <HStack bgColor="info.200" justifyContent="center" p="4">
               <Text>{ this.props.t('CHECKOUT_MORE_INFOS_DISCLAIMER') }</Text>
             </HStack>

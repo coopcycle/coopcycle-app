@@ -1,8 +1,8 @@
 import { Animated, ImageBackground, StyleSheet, View } from 'react-native';
-import { HStack, Icon, IconButton, Text } from 'native-base';
+import { HStack, IconButton, Text } from 'native-base';
 import React from 'react';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import FontAwesome5Pro from 'react-native-vector-icons/FontAwesome5Pro';
+
 const styles = StyleSheet.create({
   overlay: {
     position: 'absolute',

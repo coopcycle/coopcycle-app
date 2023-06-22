@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Animated, Dimensions, FlatList, InteractionManager, StyleSheet, TouchableOpacity, View } from 'react-native'
-import { Center, Icon, Pressable, Text } from 'native-base';
+import { Center, HStack, Icon, Pressable, Text } from 'native-base';
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 import _ from 'lodash'
@@ -16,18 +16,29 @@ import {
   incrementItem,
   removeItem,
   setAddress,
+  setDate,
+  setFulfillmentMethod,
+  setTip,
   showAddressModal,
+  showTimingModal,
   updateCart,
   validate,
 } from '../../redux/Checkout/actions'
-import { selectCart, selectDeliveryTotal } from '../../redux/Checkout/selectors'
+import {
+  selectCartFulfillmentMethod,
+  selectCartWithHours,
+  selectDeliveryTotal,
+  selectFulfillmentMethods,
+  selectShippingTimeRangeLabel,
+} from '../../redux/Checkout/selectors'
 import { selectIsAuthenticated } from '../../redux/App/selectors'
 import CartFooter from './components/CartFooter'
 import ExpiredSessionModal from './components/ExpiredSessionModal'
 import CouponModal from './components/CouponModal'
-import { selectCartFulfillmentMethod, selectShippingTimeRangeLabel } from '../../utils/checkout';
 import { primaryColor } from '../../styles/common';
 import Tips from './components/Tips';
+import TimingModal from './components/TimingModal';
+import BottomModal from '../../components/BottomModal';
 
 const BottomLine = ({ label, value }) => (
   <View style={ styles.line }>
@@ -77,6 +88,8 @@ class Summary extends Component {
       translateXValue: new Animated.Value(500),
       isCouponModalVisible: false,
       isCollectionDisclaimerModalVisible: false,
+      disabled: false,
+      showTipModal: false,
     }
   }
 
@@ -200,6 +213,8 @@ class Summary extends Component {
   renderFooter() {
 
     const { cart } = this.props
+    const { disabled } = this.state
+
 
     if (!cart || cart.items.length === 0) {
 
@@ -213,7 +228,7 @@ class Summary extends Component {
         onSubmit={ this.onSubmit.bind(this) }
         cart={ cart }
         testID="cartSummarySubmit"
-        disabled={ this.props.isValid !== true || this.props.isLoading } />
+        disabled={ disabled || this.props.isValid !== true || this.props.isLoading } />
     )
   }
 
@@ -235,6 +250,8 @@ class Summary extends Component {
       return this.renderEmpty()
     }
 
+    const tipAmount = cart.adjustments.tip[0]?.amount || 0
+
     const deliveryPromotions = cart.adjustments.delivery_promotion || []
     const orderPromotions = cart.adjustments.order_promotion || []
     const tip = cart.adjustments.tip || []
@@ -244,7 +261,7 @@ class Summary extends Component {
       _.find(cart.potentialAction, action => action['@type'] === 'EnableReusablePackagingAction')
 
     return (
-      <SafeAreaView style={{ flex: 1 }} edges={[ 'bottom' ]} onLayout={ () => {
+      <SafeAreaView style={{ flex: 1 }} edges={['bottom']} onLayout={ () => {
           const { width } = Dimensions.get('window')
           this.setState({
             translateXValue: new Animated.Value(width),
@@ -266,9 +283,8 @@ class Summary extends Component {
             <Text note style={{ flex: 1, textAlign: 'right' }}>{ this.props.t('LEARN_MORE') }</Text>
           </TouchableOpacity>
           )}
-          <Tips order={cart} />
           <ActionButton
-            onPress={ () => this._navigate('CheckoutShippingDate', { cart, restaurant }) }
+            onPress={ () => this.props.showTimingModal(true) }
             iconName="clock-o">
             <Text style={{ flex: 2, fontSize: 14 }}>{ this.props.timeAsText }</Text>
             <Text note style={{ flex: 1, textAlign: 'right' }}>{ this.props.t('EDIT') }</Text>
@@ -283,11 +299,17 @@ class Summary extends Component {
             <Text note style={{ flex: 1, textAlign: 'right' }}>{ this.props.t('EDIT') }</Text>
           </ActionButton>
           )}
-          <ActionButton
+          <HStack><View flex={1} style={styles.rightBorder} >
+            <ActionButton
+            onPress={ () => this.setState({ showTipModal: true }) }
+            iconName="heart">
+            <Text style={{ flex: 2, fontSize: 14 }}>{this.props.t('TIP')}: {formatPrice(tipAmount , { mantissa:0 })}</Text>
+          </ActionButton></View>
+            <View flex={1}><ActionButton
             onPress={ () => this.setState({ isCouponModalVisible: true }) }
             iconName="tag">
             <Text note style={{ flex: 1, textAlign: 'right' }}>{ this.props.t('ADD_COUPON') }</Text>
-          </ActionButton>
+          </ActionButton></View></HStack>
           { reusablePackagingAction && (
           <ActionButton
             onPress={ () => this.toggleReusablePackaging() }
@@ -318,6 +340,25 @@ class Summary extends Component {
           isVisible={ this.state.isCollectionDisclaimerModalVisible }
           onSwipeComplete={ () => this.setState({ isCollectionDisclaimerModalVisible: false }) }
           restaurant={ restaurant } />
+        <TimingModal openingHoursSpecification={this.props.openingHoursSpecification}
+                     fulfillmentMethods={this.props.fulfillmentMethods}
+                     cartFulfillmentMethod={this.props.fulfillmentMethod}
+                     onFulfillmentMethodChange={this.props.setFulfillmentMethod}
+                     onSkip={() => this.setState({ modalSkipped: true })}
+                     cart={this.props.cartContainer}
+                     onSchedule={({ value, showModal }) =>
+                       this.props.setDate(value, () => {
+                         this.props.validate(cart)
+                         showModal(false)
+                       })}
+        />
+        <BottomModal isVisible={this.state.showTipModal}
+                     onBackdropPress={() => this.setState({ showTipModal: false })}
+                     onBackButtonPress={() => this.setState({ showTipModal: false })}
+        ><Tips value={tipAmount} onTip={(amount) => {
+          this.props.setTip(cart, amount)
+          this.setState({ showTipModal: false })
+        }} /></BottomModal>
       </SafeAreaView>
     );
   }
@@ -333,6 +374,10 @@ const styles = StyleSheet.create({
   btnGrey: {
     borderTopColor: '#d7d7d7',
     borderTopWidth: StyleSheet.hairlineWidth,
+  },
+  rightBorder: {
+    borderRightColor: '#d7d7d7',
+    borderRightWidth: StyleSheet.hairlineWidth,
   },
   line: {
     flexDirection: 'row',
@@ -354,21 +399,24 @@ const styles = StyleSheet.create({
 })
 
 function mapStateToProps(state, ownProps) {
+  const cartContainer = selectCartWithHours(state)
+  const { cart, restaurant, openingHoursSpecification } = cartContainer
 
 
-  const restaurant = ownProps.route.params?.restaurant
-  const cart = selectCart(state)?.cart
   return {
     cart,
+    cartContainer,
     restaurant,
+    openingHoursSpecification,
     edit: ownProps.route.params?.edit || false,
     isAuthenticated: selectIsAuthenticated(state),
     deliveryTotal: selectDeliveryTotal(state),
-    timeAsText: selectShippingTimeRangeLabel(restaurant, cart, {}),
+    timeAsText: selectShippingTimeRangeLabel(state),
     isLoading: state.checkout.isLoading,
     isValid: state.checkout.isValid,
     alertMessage: _.first(state.checkout.violations.map(v => v.message)),
-    fulfillmentMethod: selectCartFulfillmentMethod(restaurant, cart),
+    fulfillmentMethods: selectFulfillmentMethods(state),
+    fulfillmentMethod: selectCartFulfillmentMethod(state),
   }
 }
 
@@ -382,6 +430,10 @@ function mapDispatchToProps(dispatch) {
     hideAddressModal: () => dispatch(hideAddressModal()),
     updateCart: (cart, cb) => dispatch(updateCart(cart, cb)),
     setAddress: (address, cart) => dispatch(setAddress(address, cart)),
+    setDate: (date, cb) => dispatch(setDate(date, cb)),
+    setFulfillmentMethod: method => dispatch(setFulfillmentMethod(method)),
+    showTimingModal: show => dispatch(showTimingModal(show)),
+    setTip: (order, tipAmount) => dispatch(setTip(order, tipAmount)),
   }
 }
 

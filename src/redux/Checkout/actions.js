@@ -1,15 +1,15 @@
-import { createAction } from 'redux-actions'
-import { CommonActions, StackActions } from '@react-navigation/native'
+import {createAction} from 'redux-actions'
+import {CommonActions, StackActions} from '@react-navigation/native'
 import _ from 'lodash'
-import { createPaymentMethod, handleNextAction, initStripe } from '@stripe/stripe-react-native'
+import {createPaymentMethod, handleNextAction, initStripe} from '@stripe/stripe-react-native'
 
 import NavigationHolder from '../../NavigationHolder'
 import i18n from '../../i18n'
-import { selectBillingEmail, selectCart, selectCartFulfillmentMethod } from './selectors'
-import { selectIsAuthenticated } from '../App/selectors'
-import { loadAddressesSuccess, setNewOrder, updateOrderSuccess } from '../Account/actions'
-import { isFree } from '../../utils/order'
-import { setLoading, setModal } from '../App/actions';
+import {selectBillingEmail, selectCartWithHours, selectCartFulfillmentMethod} from './selectors'
+import {selectIsAuthenticated} from '../App/selectors'
+import {loadAddressesSuccess, setNewOrder, updateOrderSuccess} from '../Account/actions'
+import {isFree} from '../../utils/order'
+import {setLoading, setModal} from '../App/actions';
 import Share from 'react-native-share';
 import i18next from 'i18next';
 
@@ -85,6 +85,8 @@ export const LOAD_STRIPE_SAVED_PAYMENT_METHODS_FAILURE = '@checkout/LOAD_STRIPE_
 
 export const UPDATE_CUSTOMER_GUEST = '@checkout/UPDATE_CUSTOMER_GUEST'
 
+export const SHOW_TIMING_MODAL = '@checkout/SHOW_TIMING_MODAL'
+
 
 export const HIDE_MULTIPLE_SERVERS_IN_SAME_CITY_MODAL = '@checkout/HIDE_MULTIPLE_SERVERS_IN_SAME_CITY_MODAL'
 
@@ -157,6 +159,8 @@ export const clearSearchResults = createAction(CLEAR_SEARCH_RESULTS)
 export const loadStripeSavedPaymentMethodsRequest = createAction(LOAD_STRIPE_SAVED_PAYMENT_METHODS_REQUEST)
 export const loadStripeSavedPaymentMethodsSuccess = createAction(LOAD_STRIPE_SAVED_PAYMENT_METHODS_SUCCESS)
 export const loadStripeSavedPaymentMethodsFailure = createAction(LOAD_STRIPE_SAVED_PAYMENT_METHODS_FAILURE)
+
+export const showTimingModal = createAction(SHOW_TIMING_MODAL)
 
 export const hideMultipleServersInSameCityModal = createAction(HIDE_MULTIPLE_SERVERS_IN_SAME_CITY_MODAL)
 
@@ -1056,13 +1060,12 @@ export function updateCart(payload, cb) {
 }
 
 // FEAT: add a way to precise id
-export function setDate(shippingTimeRange, cart, cb) {
+export function setDate(shippingTimeRange, cb) {
 
   return (dispatch, getState) => {
 
+    const { cart } = selectCartWithHours(getState())
     const httpClient = createHttpClient(getState())
-
-    //const { cart } = getState().checkout
 
     dispatch(checkoutRequest())
 
@@ -1106,16 +1109,15 @@ export function setDateAsap(cart, cb) {
   }
 }
 
-export function setFulfillmentMethod(method, cart) {
+export function setFulfillmentMethod(method) {
 
   return (dispatch, getState) => {
 
-    const { address, carts } = getState().checkout
+    const { address } = getState().checkout
+    const { cart, token } = selectCartWithHours(getState())
 
     //dispatch(checkoutRequest())
-    console.log(method, cart)
-    console.log(carts[cart.restaurant].token)
-    dispatch(setToken(carts[cart.restaurant].token))
+    dispatch(setToken(token))
 
     const httpClient = createHttpClient(getState())
 
@@ -1160,8 +1162,7 @@ export function loadPaymentMethods(method) {
   return (dispatch, getState) => {
 
 
-    const { restaurant } = getState().checkout
-    const { cart, token } = getState().checkout.carts[restaurant]
+    const { cart } = selectCartWithHours(getState())
 
     const httpClient = createHttpClient(getState())
 
@@ -1178,9 +1179,7 @@ export function checkoutWithCash() {
 
   return (dispatch, getState) => {
 
-
-    const { restaurant } = getState().checkout
-    const { cart, token } = getState().checkout.carts[restaurant]
+    const { cart } = selectCartWithHours(getState())
     const httpClient = createHttpClient(getState())
 
     dispatch(checkoutRequest())
@@ -1196,8 +1195,7 @@ export function loadPaymentDetails() {
 
   return (dispatch, getState) => {
 
-    const { restaurant } = getState().checkout
-    const { cart, token } = getState().checkout.carts[restaurant]
+    const { cart } = selectCartWithHours(getState())
     const httpClient = createHttpClient(getState())
 
 
