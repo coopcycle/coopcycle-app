@@ -1,4 +1,5 @@
 import React, { Component, useEffect, useMemo, useState } from 'react';
+import { Platform } from 'react-native'
 import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
@@ -72,7 +73,7 @@ const TimingCartSelect = ({ cart: { cart, token }, httpClient, onValueChange, ca
   return <HStack justifyContent={'space-around'} alignItems={'center'} space={isSuccess ? 0 : 4}>
       <Skeleton flex={1} isLoaded={isSuccess} rounded={2}>
         <View flex={1}>
-        <Picker style={{ height: 50 }}
+        <Picker style={ Platform.select({ ios: {}, android: { height: 50 } }) }
               selectedValue={selectedDay}
               onValueChange={(v) => {
                 setSelectedRange(0)
@@ -83,7 +84,7 @@ const TimingCartSelect = ({ cart: { cart, token }, httpClient, onValueChange, ca
         </Picker></View></Skeleton>
       <Skeleton flex={1} isLoaded={isSuccess} rounded={2}>
       <View flex={1}>
-        <Picker style={{ height: 50 }}
+        <Picker style={ Platform.select({ ios: {}, android: { height: 50 } }) }
               selectedValue={selectedRange}
               onValueChange={setSelectedRange}
       >
