@@ -875,6 +875,23 @@ function configureStripe(state, paymentDetails = null) {
   initStripe(stripeProps)
 }
 
+function validateCart(cart) {
+
+  if (!cart) {
+    return false
+  }
+
+  if (!cart.customer) {
+    return false
+  }
+
+  return true
+
+  if (!cart) {
+    return false
+  }
+}
+
 /**
  * @see https://stripe.com/docs/payments/accept-a-payment?platform=react-native&ui=custom
  * @see https://stripe.com/docs/payments/accept-a-payment-synchronously?platform=react-native
@@ -892,6 +909,19 @@ export function checkout(cardholderName, savedPaymentMethodId = null, saveCard =
     const httpClient = createHttpClient(getState())
 
     dispatch(checkoutRequest())
+
+    if (!validateCart(cart)) {
+      NavigationHolder.dispatch(CommonActions.navigate({
+        name: 'Cart',
+      }))
+      dispatch(setModal({
+        show: true,
+        skippable: true,
+        content: 'An error occurred, please try again later',
+        type: 'error',
+      }))
+      return dispatch(checkoutFailure())
+    }
 
     if (isFree(cart)) {
       httpClient
@@ -990,6 +1020,18 @@ export function assignCustomer({ email, telephone }, cartContainer = null) {
       .then(res => {
         if (user.isGuest()) {
           dispatch(updateCustomerGuest({ email, telephone }))
+        }
+        if (!validateCart(res)) {
+          NavigationHolder.dispatch(CommonActions.navigate({
+            name: 'Cart',
+          }))
+          dispatch(setModal({
+            show: true,
+            skippable: true,
+            content: 'An error occurred, please try again later',
+            type: 'error',
+          }))
+          return dispatch(checkoutFailure())
         }
         dispatch(updateCartSuccess(res))
         dispatch(checkoutSuccess())
