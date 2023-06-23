@@ -886,10 +886,6 @@ function validateCart(cart) {
   }
 
   return true
-
-  if (!cart) {
-    return false
-  }
 }
 
 /**
