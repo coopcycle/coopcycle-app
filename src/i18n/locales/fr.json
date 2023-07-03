@@ -464,6 +464,7 @@
         "CHECKOUT_LOOPEAT_TOTAL_RETURNS": "Total retours",
         "CHECKOUT_LOOPEAT_DIFF": "Différence",
         "CHECKOUT_LOOPEAT_ADD_CREDITS": "Créditer ma cagnotte",
-        "RESTAURANT_LOOPEAT_DISCLAIMER": "Changez le nombre d'emballages utilisés pour emballer la commande"
+        "RESTAURANT_LOOPEAT_DISCLAIMER": "Changez le nombre d'emballages utilisés pour emballer la commande",
+        "ZERO_WASTE": "Zéro déchet"
     }
 }

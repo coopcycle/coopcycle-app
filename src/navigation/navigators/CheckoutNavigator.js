@@ -274,7 +274,7 @@ const DefaultNav = () => (
       name="CheckoutLoopeat"
       component={ screens.CheckoutLoopeat }
       options={{
-        title: i18n.t('LOOPEAT'),
+        title: i18n.t('ZERO_WASTE'),
       }}
     />
   </RootStack.Navigator>
