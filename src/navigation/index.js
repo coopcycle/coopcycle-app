@@ -52,6 +52,7 @@ import CheckoutMercadopago from './checkout/Mercadopago'
 import RestaurantsPage from './checkout/Search'
 import CheckoutRestaurant from './checkout/Restaurant'
 import SearchForm from './checkout/SearchForm'
+import CheckoutLoopeat from './checkout/Loopeat'
 
 import RestaurantList from './restaurant/List'
 import RestaurantDashboard from './restaurant/Dashboard'
@@ -97,6 +98,7 @@ export default {
   CourierSettingsTags,
   CheckoutPaymentMethodCard,
   CheckoutPaymentMethodCashOnDelivery,
+  CheckoutLoopeat,
   AccountHome,
   AccountLoginRegister,
   AccountAddressesPage,

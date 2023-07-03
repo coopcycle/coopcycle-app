@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Animated, Dimensions, FlatList, InteractionManager, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { Animated, Dimensions, FlatList, InteractionManager, StyleSheet, TouchableOpacity, View, Linking } from 'react-native'
 import { Center, HStack, Icon, Pressable, Text } from 'native-base';
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
@@ -23,6 +23,7 @@ import {
   showTimingModal,
   updateCart,
   validate,
+  refreshCart,
 } from '../../redux/Checkout/actions'
 import {
   selectCartFulfillmentMethod,
@@ -39,6 +40,7 @@ import { primaryColor } from '../../styles/common';
 import Tips from './components/Tips';
 import TimingModal from './components/TimingModal';
 import BottomModal from '../../components/BottomModal';
+import Loopeat from './components/Loopeat';
 
 const BottomLine = ({ label, value }) => (
   <View style={ styles.line }>
@@ -74,8 +76,12 @@ const ActionButton = withTranslation()(({ isLoading, onPress, iconName, children
     <TouchableOpacity style={ [ styles.btn, styles.btnGrey ] }
       // Disable interaction while loading
       onPress={ () => !isLoading && onPress() }>
-      <Icon as={ FontAwesome } name={ iconName } mr="2" size="sm" />
-      { children }
+      <HStack flex={ 1 }  justifyContent="space-between" alignItems="center">
+        <Icon as={ FontAwesome } name={ iconName } mr="2" size="sm" flexGrow={ 1 } />
+        <HStack flex={ 10 }>
+        { children }
+        </HStack>
+      </HStack>
     </TouchableOpacity>
   )
 })
@@ -97,6 +103,13 @@ class Summary extends Component {
     InteractionManager.runAfterInteractions(() => {
       this.props.validate(this.props.cart)
     })
+    this.linkingSubscription = Linking.addEventListener('url', ({ url }) => {
+      this.props.validate(this.props.cart)
+    })
+  }
+
+  componentWillUnmount() {
+    this.linkingSubscription.remove()
   }
 
   componentDidUpdate(prevProps) {
@@ -294,7 +307,7 @@ class Summary extends Component {
             onPress={ () => this.props.navigation.navigate('AccountAddresses', { action: 'cart', cart }) }
             iconName="map-marker">
             <Text numberOfLines={ 2 } ellipsizeMode="tail" style={{ flex: 2, fontSize: 14 }}>
-              { this.props.cart.shippingAddress.streetAddress }
+              { this.props.cart.shippingAddress.streetAddress }
             </Text>
             <Text note style={{ flex: 1, textAlign: 'right' }}>{ this.props.t('EDIT') }</Text>
           </ActionButton>
@@ -313,10 +326,20 @@ class Summary extends Component {
           { reusablePackagingAction && (
           <ActionButton
             onPress={ () => this.toggleReusablePackaging() }
-            iconName="cube">
-            <Text note style={{ flex: 1, textAlign: 'right' }}>{ reusablePackagingAction.description }</Text>
+            iconName={ cart.reusablePackagingEnabled ? 'toggle-on' : 'toggle-off' }>
+            <Text style={{ flex: 1, textAlign: 'right' }}>{ reusablePackagingAction.description }</Text>
           </ActionButton>
           )}
+          { (restaurant.loopeatEnabled && cart.reusablePackagingEnabled && !cart.loopeatContext.hasCredentials) && (
+            <ActionButton
+              onPress={ () => Linking.openURL(reusablePackagingAction.loopeatOAuthUrl) }
+              iconName="external-link">
+              <Text style={{ flex: 1, textAlign: 'right' }}>{ this.props.t('CHECKOUT_LOOPEAT_CONNECT_ACCOUNT') }</Text>
+            </ActionButton>
+          ) }
+          { (restaurant.loopeatEnabled && cart.reusablePackagingEnabled && cart.loopeatContext.hasCredentials) && (
+            <Loopeat { ...cart.loopeatContext } />
+          ) }
         </View>
 
         <View style={{ flex: 0, backgroundColor: primaryColor }}>
@@ -434,6 +457,7 @@ function mapDispatchToProps(dispatch) {
     setFulfillmentMethod: method => dispatch(setFulfillmentMethod(method)),
     showTimingModal: show => dispatch(showTimingModal(show)),
     setTip: (order, tipAmount) => dispatch(setTip(order, tipAmount)),
+    refreshCart: (cart) => dispatch(refreshCart(cart)),
   }
 }
 

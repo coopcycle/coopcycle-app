@@ -452,6 +452,18 @@
         "SEARCH_PRODUCT_ITEM_SUBTITLE": "Dans {{shop}}",
         "SEARCH_WITHOUT_RESULTS": "Aucun résultat. Essayez de chercher autre chose.",
         "APPLE_SIGN_IN_HIDE_MY_EMAIL_ERROR": "Désolé, nous ne pouvons pas vous authentifier si vous choisissez de masquer votre e-mail",
-        "SOCIAL_SIGN_IN_UNKNOWN_EMAIL": "Désolé, nous nʼavons pas trouvé de compte correspondant à l'e-mail associé à votre compte {{provider}}."
+        "SOCIAL_SIGN_IN_UNKNOWN_EMAIL": "Désolé, nous nʼavons pas trouvé de compte correspondant à l'e-mail associé à votre compte {{provider}}.",
+        "CHECKOUT_LOOPEAT_CONNECT_ACCOUNT": "Connecter mon compte IMPEC",
+        "CHECKOUT_LOOPEAT_OPTION_ENABLED": "Option zéro déchet activée",
+        "CHECKOUT_LOOPEAT_INSUFFICIENT_WALLET_AMOUNT": "Cagnotte insuffisante",
+        "CHECKOUT_LOOPEAT_VALIDATE": "Valider et retourner au panier",
+        "CHECKOUT_LOOPEAT_RETURN_CONTAINERS": "Rendre des boîtes",
+        "CHECKOUT_LOOPEAT_MANAGE": "Gérer",
+        "CHECKOUT_LOOPEAT_RETURN_CONTAINER": "Rendre la boîte",
+        "CHECKOUT_LOOPEAT_WALLET": "Cagnotte",
+        "CHECKOUT_LOOPEAT_TOTAL_RETURNS": "Total retours",
+        "CHECKOUT_LOOPEAT_DIFF": "Différence",
+        "CHECKOUT_LOOPEAT_ADD_CREDITS": "Créditer ma cagnotte",
+        "RESTAURANT_LOOPEAT_DISCLAIMER": "Changez le nombre d'emballages utilisés pour emballer la commande"
     }
 }
