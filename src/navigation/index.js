@@ -66,6 +66,7 @@ import RestaurantProducts from './restaurant/Products'
 import RestaurantOpeningHours from './restaurant/OpeningHours'
 import RestaurantMenus from './restaurant/Menus'
 import RestaurantPrinter from './restaurant/Printer'
+import RestaurantLoopeatFormats from './restaurant/LoopeatFormats'
 import Carts from './checkout/Carts';
 import AddressDetails from './account/AddressDetails';
 import OrderTrackingPage from './checkout/OrderTracking';
@@ -85,6 +86,7 @@ export default {
   RestaurantOpeningHours,
   RestaurantMenus,
   RestaurantPrinter,
+  RestaurantLoopeatFormats,
   CheckoutProductDetails,
   CheckoutLogin,
   CheckoutSummary,
