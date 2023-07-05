@@ -211,7 +211,10 @@ class TaskListItem extends Component {
               { task.address.contactName ? (<Text style={ textStyle }>{ task.address.contactName }</Text>) : null }
               { task.address.name ? (<Text style={ textStyle }>{ task.address.name }</Text>) : null }
               <Text numberOfLines={ 1 } style={ textStyle }>{ task.address.streetAddress }</Text>
-              <Text style={ textStyle }>{ moment(task.doneAfter).format('LT') } - { moment(task.doneBefore).format('LT') }</Text>
+              <HStack alignItems="center">
+                <Text pr="2" style={ textStyle }>{ moment(task.doneAfter).format('LT') } - { moment(task.doneBefore).format('LT') }</Text>
+                { task.comments && task.comments.length ? <Icon as={FontAwesome} name="comments" size="xs"/> : null }
+              </HStack>
             </VStack>
             <Icon as={ FontAwesome } name="arrow-right" size="sm" />
           </HStack>

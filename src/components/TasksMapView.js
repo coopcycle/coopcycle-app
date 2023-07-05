@@ -166,6 +166,16 @@ class TasksMapView extends Component {
     }
   }
 
+  _getWarnings(task) {
+    const warnings = []
+
+    if (task.comments && task.comments.length) {
+      warnings.push('comments')
+    }
+
+    return warnings
+  }
+
   renderMarker(task) {
 
     const { width } = Dimensions.get('window')
@@ -173,6 +183,8 @@ class TasksMapView extends Component {
     if (!this.markers.has(task['@id'])) {
       this.markers.set(task['@id'], React.createRef())
     }
+
+    const warnings = this._getWarnings(task)
 
     return (
       <Marker
@@ -182,10 +194,10 @@ class TasksMapView extends Component {
         flat={ true }
         ref={ this.markers.get(task['@id']) }
         tracksViewChanges={ false }>
-        <TaskMarker task={ task } type="status" />
+        <TaskMarker task={ task } type="status" hasWarnings={ warnings.length } />
         <Callout onPress={ () => this.onCalloutPress(task) }
           style={ [ styles.markerCallout, { width: Math.floor(width * 0.6666) }] }>
-          <TaskCallout task={ task } />
+          <TaskCallout task={ task } warnings={ warnings } />
         </Callout>
       </Marker>
     )

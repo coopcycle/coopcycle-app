@@ -1,6 +1,7 @@
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
-import { Text } from 'native-base'
+import { Icon, Text } from 'native-base'
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
 import TaskTitle from './TaskTitle'
 
@@ -33,7 +34,7 @@ const Tag = ({ tag }) => (
   <View style={ [ styles.tag, { backgroundColor: tag.color }] } />
 )
 
-export default ({ task }) => {
+export default ({ task, warnings }) => {
   return (
     <View>
       <View style={ styles.container }>
@@ -47,6 +48,9 @@ export default ({ task }) => {
           <Tag key={ index } tag={ tag } />
         ))
       }
+      </View>
+      <View style={ styles.warning }>
+        { warnings.map((warning, index) => <Icon key={index} as={FontAwesome} name={warning} size="xs"/>) }
       </View>
     </View>
   )
@@ -70,5 +74,10 @@ const styles = StyleSheet.create({
     width: 14,
     height: 14,
     margin: 2,
+  },
+  warning: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 })
