@@ -44,14 +44,6 @@ end
 
 platform :ios do
 
-  desc "Generate new localized screenshots"
-  lane :screenshots do
-    capture_screenshots(workspace: "CoopCycle.xcworkspace", scheme: "CoopCycleUITests")
-  end
-  lane :deploy do
-    build_app(workspace: "CoopCycle.xcworkspace", scheme: "CoopCycle")
-  end
-
   desc "Generate icons"
   lane :generate_icons do
     appicon(
@@ -215,7 +207,6 @@ platform :ios do
     deliver_config = FastlaneCore::Configuration.create(Deliver::Options.available_options, {})
     app_identifier = deliver_config[:app_identifier]
 
-    # profile_name = "Fastlane" # the name of the profile to use for the build
     profile_name = lane_context[SharedValues::SIGH_NAME]
     output_name = "example-iOS" # specify the name of the .ipa file to generate
     export_method = "app-store" # specify the export method
@@ -225,7 +216,7 @@ platform :ios do
     update_code_signing_settings(
       use_automatic_signing: false,
       targets: ["CoopCycle"], # specify which targets to update code signing settings for
-      code_sign_identity: "Apple Distribution", # replace with name of code signing identity if different
+      # code_sign_identity: "Apple Distribution", # replace with name of code signing identity if different
       bundle_identifier: app_identifier,
       profile_name: profile_name,
       build_configurations: ["Release"] # only toggle code signing settings for Release configurations
@@ -256,9 +247,6 @@ platform :ios do
       skip_profile_detection: true,
       export_options: {
         method: export_method,
-        # provisioningProfiles: {
-        #   app_identifier => profile_name
-        # },
         provisioningProfiles: lane_context[SharedValues::MATCH_PROVISIONING_PROFILE_MAPPING],
         compileBitcode: compile_bitcode
       }
@@ -279,12 +267,17 @@ platform :ios do
     )
   end
 
-  desc "Build and upload to TestFlight"
-  lane :build_upload_testflight do
+  desc "Build a new version for the AppStore"
+  lane :build do
     load_asc_api_key
     prepare_signing
     fetch_and_increment_build_number
     build_release
+  end
+
+  desc "Build and upload to TestFlight"
+  lane :deploy do
+    build
     upload_release
   end
 
