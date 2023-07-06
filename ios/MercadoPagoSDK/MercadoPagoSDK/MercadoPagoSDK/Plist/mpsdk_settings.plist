@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>flow_sdk_type_hybrid</key>
+	<false/>
+	<key>tracking_settings</key>
+	<dict>
+		<key>tracking_enabled</key>
+		<true/>
+		<key>persist_tracks</key>
+		<true/>
+		<key>max_batch_size</key>
+		<integer>10</integer>
+		<key>max_lifetime_days</key>
+		<integer>45</integer>
+		<key>max_ageing_seconds</key>
+		<integer>10</integer>
+	</dict>
+</dict>
+</plist>

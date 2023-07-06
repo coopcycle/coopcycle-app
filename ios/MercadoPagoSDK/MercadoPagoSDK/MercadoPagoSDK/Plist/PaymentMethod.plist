@@ -1,0 +1,501 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>mercadopagocard</key>
+	<dict>
+		<key>first_color</key>
+		<string>F7F7F7</string>
+		<key>image_name</key>
+		<string>icoTc_mercadopagocard</string>
+		<key>font_color</key>
+		<string>333333</string>
+		<key>editing_font_color</key>
+		<string>333333</string>
+		<key>label_mask</key>
+		<string>XXXX XXXX XXXX XXXX</string>
+		<key>editText_mask</key>
+		<string>XXXX XXXX XXXX XXXX</string>
+	</dict>
+	<key>debmaster</key>
+	<dict>
+		<key>first_color</key>
+		<string>405B72</string>
+		<key>image_name</key>
+		<string>icoTc_debmaster</string>
+		<key>font_color</key>
+		<string>FFFFFF</string>
+		<key>editing_font_color</key>
+		<string>FFFFFF</string>
+		<key>label_mask</key>
+		<string>XXXX XXXX XXXX XXXX</string>
+		<key>editText_mask</key>
+		<string>XXXX XXXX XXXX XXXX</string>
+	</dict>
+	<key>master</key>
+	<dict>
+		<key>editing_font_color</key>
+		<string>FFFFFF</string>
+		<key>font_color</key>
+		<string>FFFFFF</string>
+		<key>first_color</key>
+		<string>405B72</string>
+		<key>image_name</key>
+		<string>icoTc_master</string>
+		<key>label_mask</key>
+		<string>XXXX XXXX XXXX XXXX</string>
+		<key>editText_mask</key>
+		<string>XXXX XXXX XXXX XXXX</string>
+	</dict>
+	<key>debvisa</key>
+	<dict>
+		<key>editing_font_color</key>
+		<string>FFFFFF</string>
+		<key>font_color</key>
+		<string>FFFFFF</string>
+		<key>first_color</key>
+		<string>001D77</string>
+		<key>image_name</key>
+		<string>icoTc_debvisa</string>
+		<key>label_mask</key>
+		<string>XXXX XXXX XXXX XXXX</string>
+		<key>editText_mask</key>
+		<string>XXXX XXXX XXXX XXXX</string>
+	</dict>
+	<key>visa</key>
+	<dict>
+		<key>editing_font_color</key>
+		<string>FFFFFF</string>
+		<key>font_color</key>
+		<string>FFFFFF</string>
+		<key>first_color</key>
+		<string>001D77</string>
+		<key>image_name</key>
+		<string>icoTc_visa</string>
+		<key>label_mask</key>
+		<string>XXXX XXXX XXXX XXXX</string>
+		<key>editText_mask</key>
+		<string>XXXX XXXX XXXX XXXX</string>
+	</dict>
+	<key>amex</key>
+	<dict>
+		<key>editing_font_color</key>
+		<string>333333</string>
+		<key>font_color</key>
+		<string>333333</string>
+		<key>first_color</key>
+		<string>A1CCAA</string>
+		<key>image_name</key>
+		<string>icoTc_amex</string>
+		<key>label_mask</key>
+		<string>XXXX XXXXXX XXXXX</string>
+		<key>editText_mask</key>
+		<string>XXXX XXXXXX XXXXX</string>
+	</dict>
+	<key>naranja</key>
+	<dict>
+		<key>editing_font_color</key>
+		<string>FFFFFF</string>
+		<key>font_color</key>
+		<string>FFFFFF</string>
+		<key>first_color</key>
+		<string>FF723F</string>
+		<key>image_name</key>
+		<string>icoTc_naranja</string>
+		<key>label_mask</key>
+		<string>XXXX XXXX XXXX XXXX</string>
+		<key>editText_mask</key>
+		<string>XXXX XXXX XXXX XXXX</string>
+	</dict>
+	<key>nativa</key>
+	<dict>
+		<key>editing_font_color</key>
+		<string>FFFFFF</string>
+		<key>font_color</key>
+		<string>FFFFFF</string>
+		<key>first_color</key>
+		<string>013C76</string>
+		<key>image_name</key>
+		<string>icoTc_nativa</string>
+		<key>label_mask</key>
+		<string>XXXX XXXX XXXX XXXX</string>
+		<key>editText_mask</key>
+		<string>XXXX XXXX XXXX XXXX</string>
+	</dict>
+	<key>tarshop</key>
+	<dict>
+		<key>editing_font_color</key>
+		<string>FFFFFF</string>
+		<key>font_color</key>
+		<string>FFFFFF</string>
+		<key>first_color</key>
+		<string>3D4064</string>
+		<key>image_name</key>
+		<string>icoTc_tarshop</string>
+		<key>label_mask</key>
+		<string>XXXX XXXX XXXX XXXX</string>
+		<key>editText_mask</key>
+		<string>XXXX XXXX XXXX XXXX</string>
+	</dict>
+	<key>cencosud</key>
+	<dict>
+		<key>editing_font_color</key>
+		<string>333333</string>
+		<key>font_color</key>
+		<string>333333</string>
+		<key>first_color</key>
+		<string>F7F7F7</string>
+		<key>image_name</key>
+		<string>icoTc_cencosud</string>
+		<key>label_mask</key>
+		<string>XXXX XXXX XXXX XXXX</string>
+		<key>editText_mask</key>
+		<string>XXXX XXXX XXXX XXXX</string>
+	</dict>
+	<key>cabal</key>
+	<dict>
+		<key>editing_font_color</key>
+		<string>333333</string>
+		<key>font_color</key>
+		<string>333333</string>
+		<key>first_color</key>
+		<string>D4B44B</string>
+		<key>image_name</key>
+		<string>icoTc_cabal</string>
+		<key>label_mask</key>
+		<string>XXXX XXXX XXXX XXXX</string>
+		<key>editText_mask</key>
+		<string>XXXX XXXX XXXX XXXX</string>
+	</dict>
+	<key>diners</key>
+	<dict>
+		<key>editing_font_color</key>
+		<string>333333</string>
+		<key>font_color</key>
+		<string>333333</string>
+		<key>first_color</key>
+		<string>CECECE</string>
+		<key>image_name</key>
+		<string>icoTc_diners</string>
+		<key>label_mask</key>
+		<string>XXXX XXXXXX XXXX</string>
+		<key>editText_mask</key>
+		<string>XXXX XXXXXX XXXX</string>
+	</dict>
+	<key>argencard</key>
+	<dict>
+		<key>editing_font_color</key>
+		<string>FFFFFF</string>
+		<key>font_color</key>
+		<string>FFFFFF</string>
+		<key>first_color</key>
+		<string>405B72</string>
+		<key>image_name</key>
+		<string>icoTc_argencard</string>
+		<key>label_mask</key>
+		<string>XXXX XXXX XXXX XXXX</string>
+		<key>editText_mask</key>
+		<string>XXXX XXXX XXXX XXXX</string>
+	</dict>
+	<key>pagofacil</key>
+	<dict>
+		<key>editing_font_color</key>
+		<string>333333</string>
+		<key>font_color</key>
+		<string>333333</string>
+		<key>first_color</key>
+		<string></string>
+		<key>image_name</key>
+		<string>icoTc_pagofacil</string>
+		<key>label_mask</key>
+		<string>XXXX XXXX XXXX XXXX</string>
+		<key>editText_mask</key>
+		<string>XXXX XXXX XXXX XXXX</string>
+	</dict>
+	<key>rapipago</key>
+	<dict>
+		<key>editing_font_color</key>
+		<string>333333</string>
+		<key>font_color</key>
+		<string>333333</string>
+		<key>first_color</key>
+		<string></string>
+		<key>image_name</key>
+		<string>icoTc_rapipago</string>
+		<key>label_mask</key>
+		<string>XXXX XXXX XXXX XXXX</string>
+		<key>editText_mask</key>
+		<string>XXXX XXXX XXXX XXXX</string>
+	</dict>
+	<key>redlink</key>
+	<dict>
+		<key>editing_font_color</key>
+		<string>333333</string>
+		<key>font_color</key>
+		<string>333333</string>
+		<key>first_color</key>
+		<string></string>
+		<key>image_name</key>
+		<string>icoTc_redlink</string>
+		<key>label_mask</key>
+		<string>XXXX XXXX XXXX XXXX</string>
+		<key>editText_mask</key>
+		<string>XXXX XXXX XXXX XXXX</string>
+	</dict>
+	<key>bapropagos</key>
+	<dict>
+		<key>editing_font_color</key>
+		<string>333333</string>
+		<key>font_color</key>
+		<string>333333</string>
+		<key>first_color</key>
+		<string></string>
+		<key>image_name</key>
+		<string>icoTc_bapropagos</string>
+		<key>label_mask</key>
+		<string>XXXX XXXX XXXX XXXX</string>
+		<key>editText_mask</key>
+		<string>XXXX XXXX XXXX XXXX</string>
+	</dict>
+	<key>cargavirtual</key>
+	<dict>
+		<key>editing_font_color</key>
+		<string>333333</string>
+		<key>font_color</key>
+		<string>333333</string>
+		<key>first_color</key>
+		<string></string>
+		<key>image_name</key>
+		<string></string>
+		<key>label_mask</key>
+		<string>XXXX XXXX XXXX XXXX</string>
+		<key>editText_mask</key>
+		<string>XXXX XXXX XXXX XXXX</string>
+	</dict>
+	<key>cordobesa</key>
+	<dict>
+		<key>editing_font_color</key>
+		<string>333333</string>
+		<key>font_color</key>
+		<string>333333</string>
+		<key>first_color</key>
+		<string>5BAB97</string>
+		<key>image_name</key>
+		<string>icoTc_cordobesa</string>
+		<key>label_mask</key>
+		<string>XXXX XXXX XXXX XXXX</string>
+		<key>editText_mask</key>
+		<string>XXXX XXXX XXXX XXXX</string>
+	</dict>
+	<key>cordial</key>
+	<dict>
+		<key>editing_font_color</key>
+		<string>333333</string>
+		<key>font_color</key>
+		<string>333333</string>
+		<key>first_color</key>
+		<string>CBD8DF</string>
+		<key>image_name</key>
+		<string>icoTc_cordial</string>
+		<key>label_mask</key>
+		<string>XXXX XXXX XXXX XXXX</string>
+		<key>editText_mask</key>
+		<string>XXXX XXXX XXXX XXXX</string>
+	</dict>
+	<key>cmr</key>
+	<dict>
+		<key>editing_font_color</key>
+		<string>FFFFFF</string>
+		<key>font_color</key>
+		<string>FFFFFF</string>
+		<key>first_color</key>
+		<string>3D7D4E</string>
+		<key>image_name</key>
+		<string>icoTc_cmr</string>
+		<key>label_mask</key>
+		<string>XXXX XXXX XXXX XXXX</string>
+		<key>editText_mask</key>
+		<string>XXXX XXXX XXXX XXXX</string>
+	</dict>
+	<key>mercadopago_cc</key>
+	<dict>
+		<key>image_name</key>
+		<string>icoTc_mercadopago_cc</string>
+		<key>first_color</key>
+		<string>dcddd9</string>
+		<key>font_color</key>
+		<string>333333</string>
+		<key>editing_font_color</key>
+		<string>333333</string>
+		<key>label_mask</key>
+		<string>XXXX XXXX XXXX XXXX</string>
+		<key>editText_mask</key>
+		<string>XXXX XXXX XXXX XXXX</string>
+	</dict>
+	<key>hipercard</key>
+	<dict>
+		<key>image_name</key>
+		<string>icoTC_hipercard</string>
+		<key>first_color</key>
+		<string>941F16</string>
+		<key>font_color</key>
+		<string>FFFFFF</string>
+		<key>editing_font_color</key>
+		<string>FFFFFF</string>
+		<key>label_mask</key>
+		<string>XXXX XXXX XXXX XXXX</string>
+		<key>editText_mask</key>
+		<string>XXXX XXXX XXXX XXXX</string>
+	</dict>
+	<key>elo</key>
+	<dict>
+		<key>image_name</key>
+		<string>icoTC_mppa</string>
+		<key>first_color</key>
+		<string>666666</string>
+		<key>font_color</key>
+		<string>FFFFFF</string>
+		<key>editing_font_color</key>
+		<string>FFFFFF</string>
+		<key>label_mask</key>
+		<string>XXXX XXXX XXXX XXXX</string>
+		<key>editText_mask</key>
+		<string>XXXX XXXX XXXX XXXX</string>
+	</dict>
+	<key>maestro</key>
+	<dict>
+		<key>image_name</key>
+		<string>icoTc_maestro</string>
+		<key>first_color</key>
+		<string>405B72</string>
+		<key>font_color</key>
+		<string>FFFFFF</string>
+		<key>editing_font_color</key>
+		<string>FFFFFF</string>
+		<key>label_mask</key>
+		<string>XXXXXXXXX XXXXXXXXXX</string>
+		<key>editText_mask</key>
+		<string>XXXXXXXXX XXXXXXXXXX</string>
+	</dict>
+	<key>maestro_19</key>
+	<dict>
+		<key>image_name</key>
+		<string>icoTc_maestro</string>
+		<key>first_color</key>
+		<string>405B72</string>
+		<key>font_color</key>
+		<string>FFFFFF</string>
+		<key>editing_font_color</key>
+		<string>FFFFFF</string>
+		<key>label_mask</key>
+		<string>XXXXXXXXX XXXXXXXXXX</string>
+		<key>editText_mask</key>
+		<string>XXXXXXXXX XXXXXXXXXX</string>
+	</dict>
+	<key>maestro_18</key>
+	<dict>
+		<key>image_name</key>
+		<string>icoTc_maestro</string>
+		<key>first_color</key>
+		<string>405B72</string>
+		<key>font_color</key>
+		<string>FFFFFF</string>
+		<key>editing_font_color</key>
+		<string>FFFFFF</string>
+		<key>label_mask</key>
+		<string>XXXXXXXXXX XXXXX XXX</string>
+		<key>editText_mask</key>
+		<string>XXXXXXXXXX XXXXX XXX</string>
+	</dict>
+	<key>debcabal</key>
+	<dict>
+		<key>image_name</key>
+		<string>icoTc_debcabal</string>
+		<key>first_color</key>
+		<string>D4B44B</string>
+		<key>font_color</key>
+		<string>333333</string>
+		<key>editing_font_color</key>
+		<string>333333</string>
+		<key>label_mask</key>
+		<string>XXXX XXXX XXXX XXXX</string>
+		<key>editText_mask</key>
+		<string>XXXX XXXX XXXX XXXX</string>
+	</dict>
+	<key>oca</key>
+	<dict>
+		<key>image_name</key>
+		<string>icoTc_oca</string>
+		<key>first_color</key>
+		<string>297DC4</string>
+		<key>font_color</key>
+		<string>FFFFFF</string>
+		<key>editing_font_color</key>
+		<string>FFFFFF</string>
+		<key>label_mask</key>
+		<string>XXXX XXXX XXXX XXXX</string>
+		<key>editText_mask</key>
+		<string>XXXX XXXX XXXX XXXX</string>
+	</dict>
+	<key>lider</key>
+	<dict>
+		<key>image_name</key>
+		<string>icoTc_lider</string>
+		<key>first_color</key>
+		<string>375369</string>
+		<key>font_color</key>
+		<string>FFFFFF</string>
+		<key>editing_font_color</key>
+		<string>FFFFFF</string>
+		<key>label_mask</key>
+		<string>XXXX XXXX XXXX XXXX</string>
+		<key>editText_mask</key>
+		<string>XXXX XXXX XXXX XXXX</string>
+	</dict>
+	<key>codensa</key>
+	<dict>
+		<key>image_name</key>
+		<string>icoTc_codensa</string>
+		<key>first_color</key>
+		<string>D3B21D</string>
+		<key>font_color</key>
+		<string>FFFFFF</string>
+		<key>editing_font_color</key>
+		<string>FFFFFF</string>
+		<key>label_mask</key>
+		<string>XXXX XXXX XXXX XXXX</string>
+		<key>editText_mask</key>
+		<string>XXXX XXXX XXXX XXXX</string>
+	</dict>
+	<key>magna</key>
+	<dict>
+		<key>image_name</key>
+		<string>icoTc_magna</string>
+		<key>first_color</key>
+		<string>666666</string>
+		<key>font_color</key>
+		<string>FFFFFF</string>
+		<key>editing_font_color</key>
+		<string>FFFFFF</string>
+		<key>label_mask</key>
+		<string>XXXX XXXX XXXX XXXX</string>
+		<key>editText_mask</key>
+		<string>XXXX XXXX XXXX XXXX</string>
+	</dict>
+	<key>presto</key>
+	<dict>
+		<key>image_name</key>
+		<string>icoTc_presto</string>
+		<key>first_color</key>
+		<string>0071B2</string>
+		<key>font_color</key>
+		<string>FFFFFF</string>
+		<key>editing_font_color</key>
+		<string>FFFFFF</string>
+		<key>label_mask</key>
+		<string>XXXX XXXX XXXX XXXX</string>
+		<key>editText_mask</key>
+		<string>XXXX XXXX XXXX XXXX</string>
+	</dict>
+</dict>
+</plist>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SecurityCodeViewController" customModule="MercadoPagoSDKV4" customModuleProvider="target">
+            <connections>
+                <outlet property="cardCvvThumbnail" destination="UPL-NB-jmA" id="xHs-Im-60h"/>
+                <outlet property="keyboardHeightConstraint" destination="LgY-Gh-UiA" id="NOT-ih-v6D"/>
+                <outlet property="panelView" destination="yob-kR-dQh" id="kZV-OM-lKE"/>
+                <outlet property="securityCodeTextField" destination="CLV-K5-LXP" id="s6C-CM-zBJ"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yob-kR-dQh">
+                    <rect key="frame" x="0.0" y="372" width="375" height="115"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="CardCVVThumbnailBack" translatesAutoresizingMaskIntoConstraints="NO" id="UPL-NB-jmA">
+                            <rect key="frame" x="283" y="25" width="60" height="38"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="60" id="JEN-Iw-Zbt"/>
+                                <constraint firstAttribute="height" constant="38" id="cLl-Ec-3ML"/>
+                            </constraints>
+                        </imageView>
+                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Código de seguridad" minimumFontSize="18" translatesAutoresizingMaskIntoConstraints="NO" id="CLV-K5-LXP" customClass="HoshiTextField" customModule="MercadoPagoSDKV4" customModuleProvider="target">
+                            <rect key="frame" x="30" y="13" width="240" height="50"/>
+                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.63" colorSpace="custom" customColorSpace="sRGB"/>
+                            <accessibility key="accessibilityConfiguration" identifier="security_code"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="50" id="3l1-NG-CAP"/>
+                            </constraints>
+                            <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                            <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="numberPad" returnKeyType="done"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="color" keyPath="borderInactiveColor">
+                                    <color key="value" red="0.2470588235" green="0.62352941179999999" blue="0.85490196080000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="color" keyPath="placeholderColor">
+                                    <color key="value" red="0.0" green="0.0" blue="0.0" alpha="0.84999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="color" keyPath="borderActiveColor">
+                                    <color key="value" red="0.2470588235" green="0.62352941179999999" blue="0.85490196080000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="placeholderFontScale">
+                                    <real key="value" value="0.67000000000000004"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </textField>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="UPL-NB-jmA" firstAttribute="leading" secondItem="CLV-K5-LXP" secondAttribute="trailing" constant="13" id="0rf-VX-QdX"/>
+                        <constraint firstItem="UPL-NB-jmA" firstAttribute="bottom" secondItem="CLV-K5-LXP" secondAttribute="bottom" id="IYl-l1-vBC"/>
+                        <constraint firstAttribute="bottom" secondItem="CLV-K5-LXP" secondAttribute="bottom" constant="52" id="McQ-Zb-NZq"/>
+                        <constraint firstAttribute="trailing" secondItem="UPL-NB-jmA" secondAttribute="trailing" constant="32" id="UDK-7o-6ik"/>
+                        <constraint firstItem="CLV-K5-LXP" firstAttribute="leading" secondItem="yob-kR-dQh" secondAttribute="leading" constant="30" id="Ycr-IF-Fkd"/>
+                        <constraint firstAttribute="height" constant="115" id="lSK-DC-awx"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mHx-T2-ahO">
+                    <rect key="frame" x="0.0" y="487" width="375" height="180"/>
+                    <color key="backgroundColor" red="0.93333333330000001" green="0.93333333330000001" blue="0.93333333330000001" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="180" id="LgY-Gh-UiA"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="0.2470588235" green="0.62352941179999999" blue="0.85490196080000003" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstItem="mHx-T2-ahO" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="3ZZ-el-F1r"/>
+                <constraint firstAttribute="trailing" secondItem="yob-kR-dQh" secondAttribute="trailing" id="6CJ-Fj-uh5"/>
+                <constraint firstItem="mHx-T2-ahO" firstAttribute="top" secondItem="yob-kR-dQh" secondAttribute="bottom" id="8IM-fi-pjg"/>
+                <constraint firstAttribute="trailing" secondItem="mHx-T2-ahO" secondAttribute="trailing" id="E1d-cp-eyN"/>
+                <constraint firstItem="yob-kR-dQh" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="PBf-pu-Yqa"/>
+                <constraint firstAttribute="bottom" secondItem="mHx-T2-ahO" secondAttribute="bottom" id="Vn3-zN-3dW"/>
+                <constraint firstItem="mHx-T2-ahO" firstAttribute="top" secondItem="yob-kR-dQh" secondAttribute="bottom" id="fET-Jq-5lc"/>
+                <constraint firstItem="yob-kR-dQh" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="hco-Li-RFO"/>
+                <constraint firstAttribute="trailing" secondItem="yob-kR-dQh" secondAttribute="trailing" id="tk7-Mp-qiN"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <nil key="simulatedTopBarMetrics"/>
+            <nil key="simulatedBottomBarMetrics"/>
+            <point key="canvasLocation" x="-1348.5" y="-333.5"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="CardCVVThumbnailBack" width="60" height="38"/>
+    </resources>
+</document>

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CardFormViewController" customModule="MercadoPagoSDK" customModuleProvider="target">
+            <connections>
+                <outlet property="cardBackground" destination="HQg-yC-PDa" id="0O0-1b-hau"/>
+                <outlet property="keyboardHeightConstraint" destination="NiL-XW-k8t" id="KUW-hy-RbI"/>
+                <outlet property="textBox" destination="cn0-aq-63o" id="zao-Py-yva"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="546"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Olw-Lu-Sob">
+                    <rect key="frame" x="0.0" y="330" width="320" height="216"/>
+                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="216" id="NiL-XW-k8t"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UFe-jt-dCn">
+                    <rect key="frame" x="0.0" y="227" width="320" height="60"/>
+                    <subviews>
+                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="18" translatesAutoresizingMaskIntoConstraints="NO" id="cn0-aq-63o" customClass="HoshiTextField" customModule="MercadoPagoSDK" customModuleProvider="target">
+                            <rect key="frame" x="20" y="8" width="280" height="45"/>
+                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.63" colorSpace="custom" customColorSpace="sRGB"/>
+                            <accessibility key="accessibilityConfiguration" identifier="card_form_text_field"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="45" id="dKW-Vj-OY6"/>
+                            </constraints>
+                            <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                            <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters" returnKeyType="next"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="color" keyPath="borderInactiveColor">
+                                    <color key="value" red="0.24705882352941178" green="0.62352941176470589" blue="0.85490196078431369" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="color" keyPath="placeholderColor">
+                                    <color key="value" red="0.0" green="0.0" blue="0.0" alpha="0.84999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="color" keyPath="borderActiveColor">
+                                    <color key="value" red="0.2470588235" green="0.62352941179999999" blue="0.85490196080000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="placeholderFontScale">
+                                    <real key="value" value="0.67000000000000004"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <outlet property="delegate" destination="-1" id="OhD-u7-yNE"/>
+                            </connections>
+                        </textField>
+                    </subviews>
+                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="cn0-aq-63o" secondAttribute="trailing" constant="20" id="Iif-8b-pPZ"/>
+                        <constraint firstItem="cn0-aq-63o" firstAttribute="leading" secondItem="UFe-jt-dCn" secondAttribute="leading" constant="20" id="NYv-6u-tn0"/>
+                        <constraint firstItem="cn0-aq-63o" firstAttribute="centerY" secondItem="UFe-jt-dCn" secondAttribute="centerY" id="ZNO-jl-s2D"/>
+                        <constraint firstItem="cn0-aq-63o" firstAttribute="centerX" secondItem="UFe-jt-dCn" secondAttribute="centerX" id="eid-xz-UCn"/>
+                        <constraint firstAttribute="height" constant="60" id="g7p-2U-BGp"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ASx-GA-eOR">
+                    <rect key="frame" x="0.0" y="286" width="320" height="44"/>
+                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="aFP-zn-PR6"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HQg-yC-PDa">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="227"/>
+                    <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="0.3529411764705882" green="0.74509803921568629" blue="0.90588235294117647" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="Olw-Lu-Sob" secondAttribute="bottom" id="0iJ-Cj-WeG"/>
+                <constraint firstAttribute="trailing" secondItem="ASx-GA-eOR" secondAttribute="trailing" id="2CN-iN-DjR"/>
+                <constraint firstItem="HQg-yC-PDa" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="4J2-ua-9z6"/>
+                <constraint firstItem="Olw-Lu-Sob" firstAttribute="top" secondItem="ASx-GA-eOR" secondAttribute="bottom" id="GXL-e4-4jJ"/>
+                <constraint firstItem="UFe-jt-dCn" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Kps-70-0cP"/>
+                <constraint firstItem="ASx-GA-eOR" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="LRK-ro-loV"/>
+                <constraint firstItem="Olw-Lu-Sob" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="PII-wH-txj"/>
+                <constraint firstItem="ASx-GA-eOR" firstAttribute="top" secondItem="UFe-jt-dCn" secondAttribute="bottom" constant="-1" id="ab4-Ci-iLk"/>
+                <constraint firstAttribute="trailing" secondItem="Olw-Lu-Sob" secondAttribute="trailing" id="bEG-Lc-JB2"/>
+                <constraint firstItem="Olw-Lu-Sob" firstAttribute="top" secondItem="ASx-GA-eOR" secondAttribute="bottom" id="ia7-oU-3z8"/>
+                <constraint firstAttribute="trailing" secondItem="HQg-yC-PDa" secondAttribute="trailing" id="kOB-62-EI1"/>
+                <constraint firstItem="HQg-yC-PDa" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="oLi-pd-ETQ"/>
+                <constraint firstAttribute="trailing" secondItem="UFe-jt-dCn" secondAttribute="trailing" id="y0q-es-6YA"/>
+                <constraint firstItem="UFe-jt-dCn" firstAttribute="top" secondItem="HQg-yC-PDa" secondAttribute="bottom" id="z8S-3w-rtH"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="-184" y="-82"/>
+        </view>
+    </objects>
+</document>

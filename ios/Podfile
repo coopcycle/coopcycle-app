@@ -29,7 +29,7 @@ target 'CoopCycle' do
   # Flags change depending on the env values.
   flags = get_default_flags()
 
-  pod 'MercadoPagoSDK', :build_type => :dynamic_framework, :modular_headers => true
+  pod 'MercadoPagoSDK', :build_type => :dynamic_framework, :modular_headers => true, :path => "./MercadoPagoSDK"
 
   pod 'Firebase', :modular_headers => true
   pod 'FirebaseCore', :modular_headers => true
