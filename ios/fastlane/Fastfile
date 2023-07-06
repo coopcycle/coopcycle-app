@@ -17,6 +17,9 @@
 # - https://www.runway.team/blog/how-to-set-up-a-ci-cd-pipeline-for-your-ios-app-fastlane-github-actions
 # - https://litoarias.medium.com/continuous-delivery-for-ios-using-fastlane-and-github-actions-edf62ee68ecc
 
+require 'deliver'
+require 'deliver/setup'
+
 default_platform(:ios)
 
 def delete_temp_keychain(name)
@@ -111,8 +114,6 @@ platform :ios do
     # Modify UIBackgroundModes
     # Remove fetch & location
 
-    # Change PROVISIONING_PROFILE_SPECIFIER to "match AppStore $DELIVER_APP_IDENTIFIER"
-
     update_info_plist(
       plist_path: "CoopCycle/Info.plist",
       display_name: app_name
@@ -133,7 +134,10 @@ platform :ios do
 
   desc "Check certs and profiles"
   lane :prepare_signing do |options|
-    app_id = CredentialsManager::AppfileConfig.try_fetch_value(:app_identifier)
+
+    deliver_config = FastlaneCore::Configuration.create(Deliver::Options.available_options, {})
+    app_identifier = deliver_config[:app_identifier]
+
     api_key = lane_context[SharedValues::APP_STORE_CONNECT_API_KEY]
 
     # profile_name = "Fastlane" # replace with the name of your existing profile, or define a name for the profile that fastlane will create if it’s not found
@@ -169,7 +173,7 @@ platform :ios do
 
     match(
       type: 'appstore',
-      app_identifier: app_id,
+      app_identifier: app_identifier,
       git_basic_authorization: Base64.strict_encode64(ENV["GIT_AUTHORIZATION"]),
       readonly: false,
       keychain_name: keychain_name,
@@ -181,8 +185,10 @@ platform :ios do
 
   desc "Bump build number based on most recent TestFlight build number"
   lane :fetch_and_increment_build_number do
-    #fetch read your app identifier defined in your Appfile
-    app_identifier = CredentialsManager::AppfileConfig.try_fetch_value(:app_identifier)
+
+    deliver_config = FastlaneCore::Configuration.create(Deliver::Options.available_options, {})
+    app_identifier = deliver_config[:app_identifier]
+
     api_key = lane_context[SharedValues::APP_STORE_CONNECT_API_KEY]
 
     current_version = get_version_number(
@@ -205,7 +211,9 @@ platform :ios do
 
   desc "Build the iOS app for release"
   lane :build_release do |options|
-    app_identifier = CredentialsManager::AppfileConfig.try_fetch_value(:app_identifier)
+
+    deliver_config = FastlaneCore::Configuration.create(Deliver::Options.available_options, {})
+    app_identifier = deliver_config[:app_identifier]
 
     # profile_name = "Fastlane" # the name of the profile to use for the build
     profile_name = lane_context[SharedValues::SIGH_NAME]
