@@ -100,6 +100,7 @@ jobs:
           GOOGLE_SIGN_IN_CLIENT_ID: ${{ secrets.GOOGLE_SIGN_IN_CLIENT_ID }}
           DEFAULT_SERVER: ${{ inputs.instance_url }}
           PRIMARY_COLOR: ${{ inputs.primary_color }}
+          FACEBOOK_CLIENT_TOKEN: ${{ secrets.FACEBOOK_CLIENT_TOKEN }}
         run: |
           touch .env
           echo COUNTLY_SERVER_URL= >> .env
