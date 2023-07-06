@@ -1,13 +1,25 @@
 name: Build iOS
-on: [workflow_dispatch]
+on:
+  workflow_dispatch:
+    inputs:
+      build_official:
+        description: 'Build official app'
+        required: true
+        type: boolean
+      build_naofood:
+        description: 'Build Naofood app'
+        required: true
+        type: boolean
 jobs:
   default:
+    if: ${{ inputs.build_official }}
     name: Build default app
     uses: ./.github/workflows/fastlane_ios.yml
     with:
       google_service_info_plist_base64: GOOGLE_SERVICE_INFO_PLIST_BASE64
     secrets: inherit
   naofood:
+    if: ${{ inputs.build_naofood }}
     name: Build Naofood app
     uses: ./.github/workflows/fastlane_ios.yml
     with:
