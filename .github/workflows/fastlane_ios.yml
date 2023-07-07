@@ -123,6 +123,9 @@ jobs:
           DELIVER_APP_IDENTIFIER: ${{ inputs.app_id }}
           GIT_AUTHORIZATION: ${{ secrets.GIT_AUTHORIZATION }}
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+      - name: Show error log
+        if: failure()
+        run: cat /Users/runner/Library/Logs/gym/CoopCycle-CoopCycle.log
       - name: Upload IPA artifact
         uses: actions/upload-artifact@v3
         with:
