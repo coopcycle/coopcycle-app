@@ -484,6 +484,7 @@
         "CHECKOUT_LOOPEAT_DIFF": "Difference",
         "CHECKOUT_LOOPEAT_ADD_CREDITS": "Credit my wallet",
         "RESTAURANT_LOOPEAT_DISCLAIMER": "Change the number of containers used to pack the order",
-        "ZERO_WASTE": "Zero waste"
+        "ZERO_WASTE": "Zero waste",
+        "RESTAURANT_LOOPEAT_UPDATE_FORMATS": "Update packagings"
     }
 }

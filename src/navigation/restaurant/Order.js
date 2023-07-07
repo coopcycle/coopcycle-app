@@ -56,7 +56,9 @@ class OrderScreen extends Component {
         </View>
         { (order.reusablePackagingEnabled && order.restaurant.loopeatEnabled) && (
           <Box p="3">
-            <Button variant="subtle" onPress={ () => this.props.navigation.navigate('RestaurantLoopeatFormats', { order }) }>Modifier les emballages</Button>
+            <Button variant="subtle" onPress={ () => this.props.navigation.navigate('RestaurantLoopeatFormats', { order }) }>
+              { this.props.t('RESTAURANT_LOOPEAT_UPDATE_FORMATS') }
+            </Button>
           </Box>
         ) }
         { (canEdit && order.state === 'new') &&
