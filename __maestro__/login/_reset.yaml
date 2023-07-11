@@ -1,0 +1,9 @@
+appId: fr.coopcycle
+---
+- tapOn:
+    id: "loginUsername"
+- eraseText
+- tapOn:
+    id: "loginPassword"
+- eraseText
+

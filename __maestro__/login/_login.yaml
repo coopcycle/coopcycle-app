@@ -1,0 +1,7 @@
+appId: fr.coopcycle
+---
+- runFlow: "../_setup.yaml"
+- tapOn:
+    id: "menuBtn"
+- tapOn:
+    id: "drawerAccountBtn"

@@ -1,0 +1,18 @@
+appId: fr.coopcycle
+---
+- launchApp:
+    appId: "fr.coopcycle"
+    clearState: true
+- extendedWaitUntil:
+    visible:
+      id: "chooseCityBtn"
+    timeout: 40000
+- tapOn:
+    id: "chooseCityBtn"
+- tapOn:
+    id: "moreServerOptions"
+- tapOn:
+    id: "customServerURL"
+- inputText: "demo.coopcycle.org"
+- tapOn:
+    id: "submitCustomServer"
