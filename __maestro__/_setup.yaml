@@ -1,7 +1,6 @@
-appId: fr.coopcycle
+appId: ${APP_ID}
 ---
 - launchApp:
-    appId: "fr.coopcycle"
     clearState: true
 - extendedWaitUntil:
     visible:

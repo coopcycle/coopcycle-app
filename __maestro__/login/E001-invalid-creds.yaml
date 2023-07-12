@@ -1,0 +1,15 @@
+appId: ${APP_ID}
+tags:
+  - login
+---
+- runFlow: _login.yaml
+- tapOn:
+    id: "loginUsername"
+- inputText: "johndoe"
+- tapOn:
+    id: "loginPassword"
+- inputText: "123456"
+- tapOn:
+    id: "loginSubmit"
+- assertVisible: "Username and/or password incorrect"
+
