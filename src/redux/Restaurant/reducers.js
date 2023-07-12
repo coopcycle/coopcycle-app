@@ -56,6 +56,8 @@ import {
   SET_NEXT_PRODUCTS_PAGE,
   SUNMI_PRINTER_DETECTED,
   BLUETOOTH_STARTED,
+  SET_LOOPEAT_FORMATS,
+  UPDATE_LOOPEAT_FORMATS_SUCCESS,
 } from './actions'
 
 import {
@@ -89,6 +91,7 @@ const initialState = {
   productOptions: [],
   isSunmiPrinter: false,
   bluetoothStarted: false,
+  loopeatFormats: {},
 }
 
 const spliceOrders = (state, payload) => {
@@ -497,6 +500,24 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         bluetoothStarted: true,
+      }
+
+    case SET_LOOPEAT_FORMATS:
+
+      return {
+        ...state,
+        loopeatFormats: {
+          ...state.loopeatFormats,
+          [action.payload.order['@id']]: action.payload.loopeatFormats,
+        }
+      }
+
+    case UPDATE_LOOPEAT_FORMATS_SUCCESS:
+
+      return {
+        ...state,
+        isFetching: false,
+        orders: addOrReplace(state, action.payload),
       }
   }
 

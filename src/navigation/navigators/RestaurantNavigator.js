@@ -91,5 +91,12 @@ export default () => (
         title: i18n.t('SETTINGS'),
       }}
     />
+    <RootStack.Screen
+      name="RestaurantLoopeatFormats"
+      component={ screens.RestaurantLoopeatFormats }
+      options={{
+        title: i18n.t('LOOPEAT'),
+      }}
+    />
   </RootStack.Navigator>
 )

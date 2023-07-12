@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import {
-  Box, HStack,
+  Box, Button, HStack,
   Icon, Text,
 } from 'native-base';
 import { connect } from 'react-redux'
@@ -54,6 +54,13 @@ class OrderScreen extends Component {
           <OrderNotes order={ order } />
           <OrderItems order={ order } />
         </View>
+        { (order.reusablePackagingEnabled && order.restaurant.loopeatEnabled) && (
+          <Box p="3">
+            <Button variant="subtle" onPress={ () => this.props.navigation.navigate('RestaurantLoopeatFormats', { order }) }>
+              { this.props.t('RESTAURANT_LOOPEAT_UPDATE_FORMATS') }
+            </Button>
+          </Box>
+        ) }
         { (canEdit && order.state === 'new') &&
           <SwipeToAcceptOrRefuse
             onAccept={ () => this.props.acceptOrder(order, o => this.props.navigation.setParams({ order: o })) }

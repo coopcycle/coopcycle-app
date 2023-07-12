@@ -100,6 +100,9 @@ export const BLUETOOTH_STARTED = '@restaurant/BLUETOOTH_STARTED'
 
 export const SUNMI_PRINTER_DETECTED = '@restaurant/SUNMI_PRINTER_DETECTED'
 
+export const SET_LOOPEAT_FORMATS = '@restaurant/SET_LOOPEAT_FORMATS'
+export const UPDATE_LOOPEAT_FORMATS_SUCCESS = '@restaurant/UPDATE_LOOPEAT_FORMATS_SUCCESS'
+
 /*
  * Action Creators
  */
@@ -184,6 +187,10 @@ export const bluetoothStopScan = createAction(BLUETOOTH_STOP_SCAN)
 export const bluetoothStarted = createAction(BLUETOOTH_STARTED)
 
 export const sunmiPrinterDetected = createAction(SUNMI_PRINTER_DETECTED)
+
+export const setLoopeatFormats = createAction(SET_LOOPEAT_FORMATS, (order, loopeatFormats) => ({ order, loopeatFormats }))
+export const updateLoopeatFormatsSuccess = createAction(UPDATE_LOOPEAT_FORMATS_SUCCESS)
+
 
 /*
  * Thunk Creators
@@ -829,5 +836,36 @@ export function bluetoothStartScan() {
         dispatch(_bluetoothStartScan())
       })
     }
+  }
+}
+
+export function loadLoopeatFormats(order) {
+
+  return function (dispatch, getState) {
+
+    const { httpClient } = getState().app
+
+    httpClient.get(order['@id'] + '/loopeat_formats')
+      .then(res => {
+        dispatch(setLoopeatFormats(order, res.items))
+      })
+  }
+}
+
+export function updateLoopeatFormats(order, loopeatFormats, cb) {
+
+  return (dispatch, getState) => {
+
+    const { httpClient } = getState().app
+
+    httpClient.put(order['@id'] + '/loopeat_formats', {
+      items: loopeatFormats,
+    })
+      .then(res => {
+        dispatch(updateLoopeatFormatsSuccess(res))
+        if (cb && typeof cb === 'function') {
+          cb()
+        }
+      })
   }
 }

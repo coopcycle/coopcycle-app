@@ -471,6 +471,20 @@
         "SEARCH_TAB": "Search",
         "APPLE_SIGN_IN_HIDE_MY_EMAIL_ERROR": "Sorry, we canʼt authenticate your account if you choose to hide your email",
         "SOCIAL_SIGN_IN_UNKNOWN_EMAIL": "Sorry, we couldnʼt find an account matching the e-mail associated with your {{provider}} account.",
-        "COMPLETE_TASKS": "Complete tasks"
+        "COMPLETE_TASKS": "Complete tasks",
+        "CHECKOUT_LOOPEAT_CONNECT_ACCOUNT": "Connect my IMPEC account",
+        "CHECKOUT_LOOPEAT_OPTION_ENABLED": "Zero waste option enabled",
+        "CHECKOUT_LOOPEAT_INSUFFICIENT_WALLET_AMOUNT": "Insufficient wallet amount",
+        "CHECKOUT_LOOPEAT_VALIDATE": "Validate and go back to cart",
+        "CHECKOUT_LOOPEAT_RETURN_CONTAINERS": "Return containers",
+        "CHECKOUT_LOOPEAT_MANAGE": "Manage",
+        "CHECKOUT_LOOPEAT_RETURN_CONTAINER": "Return container",
+        "CHECKOUT_LOOPEAT_WALLET": "Wallet",
+        "CHECKOUT_LOOPEAT_TOTAL_RETURNS": "Total returns",
+        "CHECKOUT_LOOPEAT_DIFF": "Difference",
+        "CHECKOUT_LOOPEAT_ADD_CREDITS": "Credit my wallet",
+        "RESTAURANT_LOOPEAT_DISCLAIMER": "Change the number of containers used to pack the order",
+        "ZERO_WASTE": "Zero waste",
+        "RESTAURANT_LOOPEAT_UPDATE_FORMATS": "Update packagings"
     }
 }

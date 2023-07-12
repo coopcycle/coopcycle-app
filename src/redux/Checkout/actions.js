@@ -5,7 +5,7 @@ import {createPaymentMethod, handleNextAction, initStripe} from '@stripe/stripe-
 
 import NavigationHolder from '../../NavigationHolder'
 import i18n from '../../i18n'
-import {selectBillingEmail, selectCartWithHours, selectCartFulfillmentMethod} from './selectors'
+import {selectBillingEmail, selectCartWithHours, selectCartFulfillmentMethod, selectCart} from './selectors'
 import {selectIsAuthenticated} from '../App/selectors'
 import {loadAddressesSuccess, setNewOrder, updateOrderSuccess} from '../Account/actions'
 import {isFree} from '../../utils/order'
@@ -1344,5 +1344,25 @@ export function loadAndNavigateToRestaurante(id) {
         NavigationHolder.navigate('CheckoutRestaurant', { restaurant: restaurantWithTiming });
       })
       .catch(e => dispatch(getRestaurantFailure(e)))
+  }
+}
+
+export function updateLoopeatReturns(returns) {
+
+  return (dispatch, getState) => {
+
+    const httpClient = createHttpClient(getState())
+    const { cart } = selectCart(getState())
+
+    dispatch(checkoutRequest())
+
+    httpClient
+      .post(cart['@id'] + '/loopeat_returns', {
+        returns
+      })
+      .then(res => {
+        dispatch(updateCartSuccess(res))
+      })
+      .catch(e => dispatch(checkoutFailure(e)))
   }
 }
