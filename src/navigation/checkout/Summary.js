@@ -330,14 +330,14 @@ class Summary extends Component {
             <Text style={{ flex: 1, textAlign: 'right' }}>{ reusablePackagingAction.description }</Text>
           </ActionButton>
           )}
-          { (restaurant.loopeatEnabled && cart.reusablePackagingEnabled && !cart.loopeatContext.hasCredentials) && (
+          { (restaurant.loopeatEnabled && cart.reusablePackagingEnabled && !cart.loopeatContext?.hasCredentials) && (
             <ActionButton
               onPress={ () => Linking.openURL(reusablePackagingAction.loopeatOAuthUrl) }
               iconName="external-link">
               <Text style={{ flex: 1, textAlign: 'right' }}>{ this.props.t('CHECKOUT_LOOPEAT_CONNECT_ACCOUNT') }</Text>
             </ActionButton>
           ) }
-          { (restaurant.loopeatEnabled && cart.reusablePackagingEnabled && cart.loopeatContext.hasCredentials) && (
+          { (restaurant.loopeatEnabled && cart.reusablePackagingEnabled && cart.loopeatContext?.hasCredentials) && (
             <Loopeat { ...cart.loopeatContext } />
           ) }
         </View>
