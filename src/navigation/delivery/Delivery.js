@@ -7,6 +7,7 @@ import _ from 'lodash';
 
 class Delivery extends Component {
   render() {
+    console.log(this.props.defaultDeliveryFormUrl);
     return (
       <WebView
         source={{ uri: this.props.defaultDeliveryFormUrl }}
