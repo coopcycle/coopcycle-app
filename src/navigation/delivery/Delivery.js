@@ -16,12 +16,6 @@ class Delivery extends Component {
 }
 
 function mapStateToProps(state) {
-  const publicServers =
-    _.filter(state.app.servers, s => !!s.coopcycle_url)
-
-  const showAbout =
-    _.includes(publicServers.map(s => s.coopcycle_url), state.app.baseURL)
-
   return {
     defaultDeliveryFormUrl: state.app.settings.default_delivery_form_url,
   }
