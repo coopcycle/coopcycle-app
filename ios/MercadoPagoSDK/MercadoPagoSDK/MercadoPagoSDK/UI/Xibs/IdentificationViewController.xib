@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="IdentificationViewController" customModule="MercadoPagoSDK" customModuleProvider="target">
+            <connections>
+                <outlet property="keyboardHeightConstraint" destination="w87-lb-FjY" id="LrT-sf-QU0"/>
+                <outlet property="numberTextField" destination="7N3-XK-uvA" id="GjH-Tj-7ax"/>
+                <outlet property="textField" destination="Zck-A3-VIw" id="ofA-CJ-qob"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jwv-KW-920">
+                    <rect key="frame" x="0.0" y="159" width="320" height="321"/>
+                    <subviews>
+                        <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="h9Z-Aa-2AR">
+                            <rect key="frame" x="0.0" y="105" width="320" height="216"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="216" id="T28-ps-8Yw"/>
+                            </constraints>
+                        </pickerView>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9mg-1w-NKD">
+                            <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="45" id="7tA-mD-SjF"/>
+                                <constraint firstAttribute="width" constant="60" id="cP6-zk-LF7"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                            <state key="normal">
+                                <color key="titleColor" red="0.098039217293262482" green="0.098039217293262482" blue="0.098039217293262482" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </state>
+                            <connections>
+                                <action selector="setType:" destination="-1" eventType="touchUpInside" id="Rbd-f6-1Ra"/>
+                            </connections>
+                        </button>
+                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Número" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="7N3-XK-uvA" customClass="HoshiTextField" customModule="MercadoPagoSDK" customModuleProvider="target">
+                            <rect key="frame" x="100" y="10" width="183" height="45"/>
+                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.63" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="45" id="usY-ca-t2C"/>
+                            </constraints>
+                            <color key="textColor" red="0.42467236518859863" green="0.42467236518859863" blue="0.42467236518859863" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                            <textInputTraits key="textInputTraits" keyboardType="numberPad" returnKeyType="done"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="color" keyPath="borderInactiveColor">
+                                    <color key="value" red="0.2470588235" green="0.62352941179999999" blue="0.85490196080000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="color" keyPath="placeholderColor">
+                                    <color key="value" red="0.0" green="0.0" blue="0.0" alpha="0.84999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="color" keyPath="borderActiveColor">
+                                    <color key="value" red="0.2470588235" green="0.62352941179999999" blue="0.85490196080000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <outlet property="delegate" destination="-1" id="FCI-mg-7GZ"/>
+                            </connections>
+                        </textField>
+                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Tipo" minimumFontSize="15" translatesAutoresizingMaskIntoConstraints="NO" id="Zck-A3-VIw" customClass="HoshiTextField" customModule="MercadoPagoSDK" customModuleProvider="target">
+                            <rect key="frame" x="20" y="10" width="70" height="45"/>
+                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.63" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="45" id="aFW-3c-9iL"/>
+                            </constraints>
+                            <color key="textColor" red="0.42467236518859863" green="0.42467236518859863" blue="0.42467236518859863" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                            <textInputTraits key="textInputTraits" keyboardType="numberPad" returnKeyType="done"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="color" keyPath="borderInactiveColor">
+                                    <color key="value" red="0.2470588235" green="0.62352941179999999" blue="0.85490196080000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="color" keyPath="borderActiveColor">
+                                    <color key="value" red="0.2470588235" green="0.62352941179999999" blue="0.85490196080000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="color" keyPath="placeholderColor">
+                                    <color key="value" red="0.0" green="0.0" blue="0.0" alpha="0.84999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <outlet property="delegate" destination="-1" id="iTd-UM-D4s"/>
+                            </connections>
+                        </textField>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rr4-e5-zLS">
+                            <rect key="frame" x="0.0" y="61" width="320" height="44"/>
+                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="44" id="XgG-he-NIV"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstItem="7N3-XK-uvA" firstAttribute="leading" secondItem="Zck-A3-VIw" secondAttribute="trailing" constant="10" id="2fq-zW-YdH"/>
+                        <constraint firstItem="rr4-e5-zLS" firstAttribute="centerX" secondItem="jwv-KW-920" secondAttribute="centerX" id="3Uh-9f-wet"/>
+                        <constraint firstItem="7N3-XK-uvA" firstAttribute="leading" secondItem="Zck-A3-VIw" secondAttribute="trailing" constant="10" id="7dy-lX-pLz"/>
+                        <constraint firstAttribute="trailing" secondItem="rr4-e5-zLS" secondAttribute="trailing" id="9ys-5j-aFd"/>
+                        <constraint firstItem="Zck-A3-VIw" firstAttribute="leading" secondItem="jwv-KW-920" secondAttribute="leading" constant="20" id="KE0-8E-4vf"/>
+                        <constraint firstAttribute="trailing" secondItem="7N3-XK-uvA" secondAttribute="trailing" constant="37" id="PH2-Oz-dxk"/>
+                        <constraint firstItem="h9Z-Aa-2AR" firstAttribute="leading" secondItem="jwv-KW-920" secondAttribute="leading" id="XVV-xD-UQa"/>
+                        <constraint firstAttribute="trailing" secondItem="h9Z-Aa-2AR" secondAttribute="trailing" id="XfW-Ll-SH0"/>
+                        <constraint firstAttribute="bottom" secondItem="h9Z-Aa-2AR" secondAttribute="bottom" id="aFB-JP-knQ"/>
+                        <constraint firstItem="rr4-e5-zLS" firstAttribute="leading" secondItem="jwv-KW-920" secondAttribute="leading" id="cdy-h5-HM5"/>
+                        <constraint firstItem="Zck-A3-VIw" firstAttribute="top" secondItem="jwv-KW-920" secondAttribute="top" constant="10" id="dov-E0-M6x"/>
+                        <constraint firstItem="Zck-A3-VIw" firstAttribute="width" secondItem="7N3-XK-uvA" secondAttribute="height" multiplier="14:9" id="iP0-5F-tfV"/>
+                        <constraint firstItem="h9Z-Aa-2AR" firstAttribute="top" secondItem="rr4-e5-zLS" secondAttribute="bottom" id="l0H-tJ-xK5"/>
+                        <constraint firstItem="7N3-XK-uvA" firstAttribute="top" secondItem="jwv-KW-920" secondAttribute="top" constant="10" id="mCB-ij-zaz"/>
+                        <constraint firstAttribute="height" constant="321" id="w87-lb-FjY"/>
+                    </constraints>
+                    <variation key="default">
+                        <mask key="subviews">
+                            <exclude reference="9mg-1w-NKD"/>
+                        </mask>
+                    </variation>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qQ5-Gw-ZTl">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="18"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                </view>
+                <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QU9-jc-Fqj">
+                    <rect key="frame" x="0.0" y="119.5" width="320" height="19.5"/>
+                    <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Jlb-bH-PAK">
+                    <rect key="frame" x="117" y="97" width="240" height="128"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" red="0.94117647059999998" green="0.2666666667" blue="0.28627450980000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                </view>
+                <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Oax-FR-ID3">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="19.5"/>
+                    <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="0.35294117650000001" green="0.74509803919999995" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="Oax-FR-ID3" secondAttribute="trailing" id="2Kj-Yf-yZZ"/>
+                <constraint firstItem="QU9-jc-Fqj" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Cf4-uK-e6E"/>
+                <constraint firstAttribute="trailing" secondItem="QU9-jc-Fqj" secondAttribute="trailing" id="R4T-ZD-x4u"/>
+                <constraint firstItem="jwv-KW-920" firstAttribute="top" secondItem="QU9-jc-Fqj" secondAttribute="bottom" constant="4" id="VXb-PS-zAv"/>
+                <constraint firstAttribute="bottom" secondItem="jwv-KW-920" secondAttribute="bottom" id="Zzj-Lm-SZe"/>
+                <constraint firstItem="Oax-FR-ID3" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="fZb-2l-6iS"/>
+                <constraint firstItem="jwv-KW-920" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="nV1-AY-Hjn"/>
+                <constraint firstAttribute="trailing" secondItem="jwv-KW-920" secondAttribute="trailing" id="qfB-Mk-Z1h"/>
+                <constraint firstItem="Oax-FR-ID3" firstAttribute="height" secondItem="QU9-jc-Fqj" secondAttribute="height" id="wKl-K9-2RK"/>
+                <constraint firstItem="Oax-FR-ID3" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="zD1-cg-d4d"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <variation key="default">
+                <mask key="subviews">
+                    <exclude reference="qQ5-Gw-ZTl"/>
+                    <exclude reference="Jlb-bH-PAK"/>
+                </mask>
+            </variation>
+            <point key="canvasLocation" x="-998" y="-331"/>
+        </view>
+        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DO7-EH-EiF">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstAttribute="height" constant="44" id="W6l-EN-X4O"/>
+            </constraints>
+        </view>
+    </objects>
+</document>

@@ -1,7 +1,9 @@
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 import allSettled from 'promise.allsettled'
-import RNFetchBlob from 'rn-fetch-blob'
+import ReactNativeBlobUtil from 'react-native-blob-util'
+import * as FileSystem from 'expo-file-system'
+
 
 import { createClient } from '../API'
 
@@ -127,12 +129,12 @@ describe('HTTP client', () => {
       refresh_token: '123456',
     })
 
-    RNFetchBlob.fetch = jest.fn()
-    RNFetchBlob.fetch.mockResolvedValueOnce({
+    ReactNativeBlobUtil.fetch = jest.fn()
+    ReactNativeBlobUtil.fetch.mockResolvedValueOnce({
       info: () => ({ status: 401 }),
       json: () => ({}),
     })
-    RNFetchBlob.fetch.mockResolvedValueOnce({
+    ReactNativeBlobUtil.fetch.mockResolvedValueOnce({
       info: () => ({ status: 201 }),
       json: () => ({ '@id': '/api/task_images/1' }),
     })
@@ -148,12 +150,92 @@ describe('HTTP client', () => {
         .then(response => {
 
           expect(response).toEqual({ '@id': '/api/task_images/1' })
-          expect(RNFetchBlob.fetch).toHaveBeenCalledTimes(2)
+          expect(ReactNativeBlobUtil.fetch).toHaveBeenCalledTimes(2)
 
           resolve()
 
         })
     })
+  })
+
+
+  it('retries file upload async', async () => {
+
+    mock.onPost('http://demo.coopcycle.org/api/token/refresh').reply(200, {
+      token: validToken,
+      refresh_token: '123456',
+    })
+
+    FileSystem.createUploadTask.mockReturnValueOnce({
+      uploadAsync: jest.fn()
+      .mockResolvedValueOnce({ status: 401 })
+      .mockResolvedValueOnce({ status: 201 })
+    })
+
+    const client = createClient('http://demo.coopcycle.org', {
+      token: expiredToken,
+      refreshToken: '123456',
+    })
+
+
+      const task = client.uploadFileAsync('/api/images', '12345678')
+      await client.execUploadTask(task)
+      expect(task.uploadAsync).toHaveBeenCalledTimes(2)
+  })
+
+  it('retries multiple files upload async', async () => {
+
+    mock.onPost('http://demo.coopcycle.org/api/token/refresh').reply(200, {
+      token: validToken,
+      refresh_token: '123456',
+    })
+
+    FileSystem.createUploadTask.mockReturnValueOnce({
+      uploadAsync: jest.fn()
+      .mockResolvedValueOnce({ status: 401 })
+      .mockResolvedValueOnce({ status: 201 })
+    }).mockReturnValueOnce({
+      uploadAsync: jest.fn()
+      .mockResolvedValueOnce({ status: 201 })
+    })
+
+    const client = createClient('http://demo.coopcycle.org', {
+      token: expiredToken,
+      refreshToken: '123456',
+    })
+
+
+      const task1 = client.uploadFileAsync('/api/images', '12345678')
+      const task2 = client.uploadFileAsync('/api/images', '12345678')
+      await client.execUploadTask([task1, task2])
+      expect(task1.uploadAsync).toHaveBeenCalledTimes(2)
+      expect(task2.uploadAsync).toHaveBeenCalledTimes(1)
+  })
+
+  it('retries file upload async fail too many retries', async () => {
+
+    mock.onPost('http://demo.coopcycle.org/api/token/refresh').reply(200, {
+      token: validToken,
+      refresh_token: '123456',
+    })
+
+    FileSystem.createUploadTask.mockReturnValueOnce({
+      uploadAsync: jest.fn()
+      .mockResolvedValue({ status: 401 })
+    })
+
+    const client = createClient('http://demo.coopcycle.org', {
+      token: expiredToken,
+      refreshToken: '123456',
+    })
+
+
+      const task = client.uploadFileAsync('/api/images', '12345678')
+      const t = async () => {
+        await client.execUploadTask(task)
+      }
+      await expect(t()).rejects.toThrow(Error);
+      expect(task.uploadAsync).toHaveBeenCalledTimes(3)
   })
 
 })

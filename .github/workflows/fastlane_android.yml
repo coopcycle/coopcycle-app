@@ -62,6 +62,7 @@ jobs:
           DEFAULT_SERVER: ${{ inputs.instance_url }}
           PRIMARY_COLOR: ${{ inputs.primary_color }}
           SMARTLOOK_PROJECT_KEY: ${{ secrets.SMARTLOOK_PROJECT_KEY }}
+          FACEBOOK_CLIENT_TOKEN: ${{ secrets.FACEBOOK_CLIENT_TOKEN }}
         run: |
           touch .env
           echo COUNTLY_SERVER_URL= >> .env

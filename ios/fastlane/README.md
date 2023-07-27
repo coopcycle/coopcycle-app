@@ -15,22 +15,6 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 ## iOS
 
-### ios screenshots
-
-```sh
-[bundle exec] fastlane ios screenshots
-```
-
-Generate new localized screenshots
-
-### ios deploy
-
-```sh
-[bundle exec] fastlane ios deploy
-```
-
-
-
 ### ios generate_icons
 
 ```sh
@@ -87,10 +71,18 @@ Build the iOS app for release
 
 Upload to TestFlight / ASC
 
-### ios build_upload_testflight
+### ios build
 
 ```sh
-[bundle exec] fastlane ios build_upload_testflight
+[bundle exec] fastlane ios build
+```
+
+Build a new version for the AppStore
+
+### ios deploy
+
+```sh
+[bundle exec] fastlane ios deploy
 ```
 
 Build and upload to TestFlight

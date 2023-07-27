@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>px_accreditation_time_hour</key>
+    <dict>
+        <key>NSStringLocalizedFormatKey</key>
+        <string>%#@variable_0@</string>
+        <key>variable_0</key>
+        <dict>
+            <key>NSStringFormatSpecTypeKey</key>
+            <string>NSStringPluralRuleType</string>
+            <key>NSStringFormatValueTypeKey</key>
+            <string>d</string>
+            <key>one</key>
+            <string>Se acreditará en {0} hora</string>
+            <key>other</key>
+            <string>Se acreditará en {0} horas</string>
+        </dict>
+    </dict>
+    <key>px_accreditation_time_working_day</key>
+    <dict>
+        <key>NSStringLocalizedFormatKey</key>
+        <string>%#@variable_0@</string>
+        <key>variable_0</key>
+        <dict>
+            <key>NSStringFormatSpecTypeKey</key>
+            <string>NSStringPluralRuleType</string>
+            <key>NSStringFormatValueTypeKey</key>
+            <string>d</string>
+            <key>one</key>
+            <string>Se acreditará en {0} día hábil</string>
+            <key>other</key>
+            <string>Se acreditará en {0} días hábiles</string>
+        </dict>
+    </dict>
+    <key>discount</key>
+    <dict>
+        <key>NSStringLocalizedFormatKey</key>
+        <string>%#@variable_0@</string>
+        <key>variable_0</key>
+        <dict>
+            <key>NSStringFormatSpecTypeKey</key>
+            <string>NSStringPluralRuleType</string>
+            <key>NSStringFormatValueTypeKey</key>
+            <string>d</string>
+            <key>one</key>
+            <string>Descuento</string>
+            <key>other</key>
+            <string>Descuentos</string>
+        </dict>
+    </dict>
+</dict>
+</plist>

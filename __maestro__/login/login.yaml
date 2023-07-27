@@ -1,0 +1,16 @@
+appId: ${APP_ID}
+tags:
+  - login
+---
+- runFlow:
+    file: _error_test.yaml
+    env:
+      NAME: "[001] Email & password invalid"
+      USERNAME: user@example.com
+      PASSWORD: 123456
+- runFlow:
+    file: _error_test.yaml
+    env:
+      NAME: "[002] Username & password valid"
+      USERNAME: user_7
+      PASSWORD: user_7

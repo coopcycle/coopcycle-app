@@ -1,16 +1,17 @@
 import React, { Component } from 'react'
 import { Dimensions, Image, StyleSheet, View } from 'react-native'
 import {
-  Button, Icon, Text, VStack, IconButton,
+  Button, Icon, IconButton, Text, VStack,
 } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
-import { Camera, CameraType } from 'expo-camera'
+import { Camera } from 'expo-camera'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 
 import { addPicture } from '../../redux/Courier'
+import { ImageType } from 'expo-camera/build/Camera.types';
 
 class Photo extends Component {
 
@@ -58,14 +59,14 @@ class Photo extends Component {
     const tasks = this.props.route.params?.tasks
     const { image } = this.state
     if (image) {
-      this.props.addPicture(task, image.base64)
+      this.props.addPicture(task, image.uri)
       this.props.navigation.navigate({ name: 'TaskCompleteHome', params: { task, tasks }, merge: true })
     }
   }
 
   _takePicture() {
     if (this.camera.current) {
-      const options = { quality: 0.5, base64: true };
+      const options = { quality: 0.5, base64: false, imageType: ImageType.jpg };
       this.camera.current.takePictureAsync(options).then(data => {
         this.setState({ image: data })
       })
@@ -100,11 +101,11 @@ class Photo extends Component {
               flashMode={ this.state.flash ? 'on' : 'off' }>
               <IconButton onPress={ this.toggleFlash.bind(this) } variant="ghost" colorScheme="yellow" _icon={{
                 as: Ionicons,
-                name: this.state.flash ? "flash" : "flash-off"
+                name: this.state.flash ? 'flash' : 'flash-off',
               }} style={ styles.flash } />
               <IconButton onPress={ this._takePicture.bind(this) } size="lg" variant="solid" _icon={{
                 as: Ionicons,
-                name: "camera"
+                name: 'camera',
               }} />
               <View style={ [ styles.preview, { width: previewSize, height: previewSize }] }>
                 { !image && ( <Icon as={ AntDesign } name="picture" size="lg" /> ) }
@@ -154,7 +155,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 15,
     left: 15,
-  }
+  },
 })
 
 function mapStateToProps (state) {

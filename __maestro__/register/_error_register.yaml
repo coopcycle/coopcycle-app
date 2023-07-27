@@ -1,0 +1,37 @@
+appId: ${APP_ID}
+---
+- runFlow: "../login/_login.yaml"
+- tapOn:
+    id: "loginOrRegister"
+- assertVisible: "Read Terms and Conditions"
+- runFlow:
+    when:
+      true: ${LEGAL}
+    file: _legal.yaml
+- tapOn:
+    id: "registerForm.email"
+- inputText: ${EMAIL}
+- tapOn:
+    id: "registerForm.username"
+- inputText: ${USERNAME}
+- tapOn:
+    id: "registerForm.password"
+- inputText: ${PASSWORD}
+- tapOn:
+    id: "registerForm.passwordConfirmation"
+- inputText: ${PASSWORD_CONFIRMATION}
+- tapOn:
+    id: "registerForm.givenName"
+- inputText: ${GIVEN_NAME}
+- tapOn:
+    id: "registerForm.familyName"
+- inputText: ${FAMILY_NAME}
+- hideKeyboard
+- scrollUntilVisible:
+    element:
+      id: "submitRegister"
+- doubleTapOn:
+    id: "submitRegister"
+- scrollUntilVisible:
+    direction: UP
+    element: ${ASSERT}

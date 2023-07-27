@@ -1,12 +1,10 @@
 import React, { Component } from 'react'
 import { SwipeListView } from 'react-native-swipe-list-view'
 import PropTypes from 'prop-types'
-import { Fab, Icon } from 'native-base'
-import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
 import ItemSeparatorComponent from './ItemSeparator'
 import TaskListItem from './TaskListItem'
-import { greenColor, whiteColor } from '../styles/common'
+import ItemsBulkFabButton from './ItemsBulkFabButton'
 
 class TaskList extends Component {
 
@@ -17,21 +15,9 @@ class TaskList extends Component {
       selectedTasks: [],
     }
 
-    this.onFabButtonPressed = this.onFabButtonPressed.bind(this)
-  }
+    this.bulkFabButton = React.createRef()
 
-  _toggleTaskSelection(task, isSelected) {
-    if (this.props.allowMultipleSelection(task)) {
-      if (isSelected) {
-        this.setState({
-          selectedTasks: [ ...this.state.selectedTasks, task ],
-        },)
-      } else {
-        this.setState({
-          selectedTasks: this.state.selectedTasks.filter((t) => t.id !== task.id),
-        },)
-      }
-    }
+    this.onFabButtonPressed = this.onFabButtonPressed.bind(this)
   }
 
   _onTaskClick(task) {
@@ -46,6 +32,22 @@ class TaskList extends Component {
 
     return Object.prototype.hasOwnProperty.call(tasksWithColor, task['@id']) ?
       this.props.tasksWithColor[task['@id']] : '#ffffff'
+  }
+
+  _handleSwipeToLeft(task) {
+    this.bulkFabButton.current?.addItem(task)
+  }
+
+  _handleSwipeClosed(task) {
+    this.bulkFabButton.current?.removeItem(task)
+  }
+
+  componentDidUpdate() {
+    const { tasks } = this.props
+    const doneTasks = tasks.filter((t) => t.status !== 'DONE')
+
+    // Fab button shouldn't handle DONE tasks
+    this.bulkFabButton.current?.updateItems(doneTasks)
   }
 
   renderItem(task, index) {
@@ -74,18 +76,17 @@ class TaskList extends Component {
         onPressRight={ () => {
           this.props.onSwipeRight(task)
         }}
+        onSwipedToLeft={() => this._handleSwipeToLeft(task)}
+        onSwipeClosed={ () => this._handleSwipeClosed(task)}
         disableRightSwipe={ !hasOnSwipeLeft }
         disableLeftSwipe={ !hasOnSwipeRight }
         swipeOutLeftIconName={ this.props.swipeOutLeftIconName }
-        swipeOutRightIconName={ this.props.swipeOutRightIconName }
-        isSelected={ this.state.selectedTasks.findIndex(t => t.id === task.id) !== -1 }
-        toggleItemSelection={ this.props.allowMultipleSelection && this.props.allowMultipleSelection(task) ? (isSelected) => this._toggleTaskSelection(task, isSelected) : null } />
+        swipeOutRightIconName={ this.props.swipeOutRightIconName } />
     )
   }
 
-  onFabButtonPressed() {
-    this.props.onMultipleSelectionAction(this.state.selectedTasks)
-    this.setState({ selectedTasks: [] })
+  onFabButtonPressed(tasks) {
+    this.props.onMultipleSelectionAction(tasks)
   }
 
   render() {
@@ -101,12 +102,11 @@ class TaskList extends Component {
           refreshing={ refreshing }
           onRefresh={ onRefresh }
           ItemSeparatorComponent={ ItemSeparatorComponent } />
-        {
-          this.state.selectedTasks.length ?
-          <Fab renderInPortal={false} shadow={2} size="sm" backgroundColor={ greenColor }
-            icon={<Icon color={ whiteColor } as={FontAwesome} name={this.props.multipleSelectionIcon} size="sm"
-            onPress={ () => this.onFabButtonPressed() } />} /> : null
-        }
+        <ItemsBulkFabButton
+          iconName={ this.props.multipleSelectionIcon }
+          onPressed={ (items) => this.onFabButtonPressed(items) }
+          ref={ this.bulkFabButton }
+          />
       </>
     )
   }

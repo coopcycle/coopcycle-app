@@ -26,7 +26,7 @@ describe('Redux | Checkout | Selectors', () => {
         },
         carts: {
           '/api/restaurants/1': {
-            shippingTimeRange: null
+            cart: { shippingTimeRange: null },
           },
         },
       },
@@ -49,7 +49,7 @@ describe('Redux | Checkout | Selectors', () => {
         },
         carts: {
           '/api/restaurants/1': {
-            shippingTimeRange: null,
+            cart: { shippingTimeRange: null },
           }
         },
       },
@@ -71,7 +71,7 @@ describe('Redux | Checkout | Selectors', () => {
         },
         carts: {
           '/api/restaurants/1': {
-            shippingTimeRange: null,
+            cart: { shippingTimeRange: null },
           }
         },
       },
@@ -93,7 +93,7 @@ describe('Redux | Checkout | Selectors', () => {
         },
         carts: {
           '/api/restaurants/1': {
-            shippingTimeRange: null,
+            cart: { shippingTimeRange: null },
           }
         },
       },
@@ -118,10 +118,12 @@ describe('Redux | Checkout | Selectors', () => {
         },
         carts: {
           '/api/restaurants/1': {
-            shippingTimeRange: [
-              '2021-01-26T14:30:00+01:00',
-              '2021-01-26T14:40:00+01:00',
-            ],
+            cart: {
+              shippingTimeRange: [
+                '2021-01-26T14:30:00+01:00',
+                '2021-01-26T14:40:00+01:00',
+              ],
+            },
           }
         }
       },

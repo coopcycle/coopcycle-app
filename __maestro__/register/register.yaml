@@ -1,0 +1,30 @@
+appId: ${APP_ID}
+tags:
+  - register
+env:
+  EMAIL: johndoe@me.com
+  USERNAME: johndoe
+  PASSWORD: Password1234
+  PASSWORD_CONFIRMATION: Password1234
+  GIVEN_NAME: John
+  FAMILY_NAME: Doe
+  LEGAL: true
+---
+- runFlow:
+    file: _error_register.yaml
+    env:
+      NAME: "[001] Email invalid"
+      EMAIL: example.com
+      ASSERT: "Please enter a valid email"
+- runFlow:
+    file: _error_register.yaml
+    env:
+      NAME: "[002] CGU unchecked"
+      LEGAL: false
+      ASSERT: "You must accept the Terms and Conditions and Privacy Policy"
+- runFlow:
+    file: _error_register.yaml
+    env:
+      NAME: "[001] Username too short"
+      USERNAME: "j"
+      ASSERT: "Please enter a valid username"

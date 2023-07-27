@@ -1,0 +1,7 @@
+appId: ${APP_ID}
+---
+- runFlow: "../_setup.yaml"
+- tapOn:
+    id: "menuBtn"
+- tapOn:
+    id: "drawerAccountBtn"

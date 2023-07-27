@@ -34,7 +34,7 @@ const AttachmentItem = ({ base64, onPressDelete }) => {
 
   const imageSize = (width - 64) / 2
 
-  if (!base64.startsWith('data:image/jpeg;base64')) {
+  if (!base64.startsWith('file://') && !base64.startsWith('data:image/jpeg;base64')) {
     base64 = `data:image/jpeg;base64,${base64}`
   }
 
@@ -159,8 +159,10 @@ class CompleteTask extends Component {
     const task = this.props.route.params?.task
     const tasks = this.props.route.params?.tasks
 
-    if (tasks && tasks.length) {
+    if (tasks && tasks.length > 1) {
       return tasks.every(t => t.type === 'DROPOFF')
+    } else if (tasks && tasks.length === 1) {
+      return tasks[0].type === 'DROPOFF'
     }
     return task && task.type === 'DROPOFF'
   }

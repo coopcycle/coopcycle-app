@@ -17,6 +17,9 @@
 # - https://www.runway.team/blog/how-to-set-up-a-ci-cd-pipeline-for-your-ios-app-fastlane-github-actions
 # - https://litoarias.medium.com/continuous-delivery-for-ios-using-fastlane-and-github-actions-edf62ee68ecc
 
+require 'deliver'
+require 'deliver/setup'
+
 default_platform(:ios)
 
 def delete_temp_keychain(name)
@@ -40,14 +43,6 @@ def ensure_temp_keychain(name, password)
 end
 
 platform :ios do
-
-  desc "Generate new localized screenshots"
-  lane :screenshots do
-    capture_screenshots(workspace: "CoopCycle.xcworkspace", scheme: "CoopCycleUITests")
-  end
-  lane :deploy do
-    build_app(workspace: "CoopCycle.xcworkspace", scheme: "CoopCycle")
-  end
 
   desc "Generate icons"
   lane :generate_icons do
@@ -111,8 +106,6 @@ platform :ios do
     # Modify UIBackgroundModes
     # Remove fetch & location
 
-    # Change PROVISIONING_PROFILE_SPECIFIER to "match AppStore $DELIVER_APP_IDENTIFIER"
-
     update_info_plist(
       plist_path: "CoopCycle/Info.plist",
       display_name: app_name
@@ -133,7 +126,10 @@ platform :ios do
 
   desc "Check certs and profiles"
   lane :prepare_signing do |options|
-    app_id = CredentialsManager::AppfileConfig.try_fetch_value(:app_identifier)
+
+    deliver_config = FastlaneCore::Configuration.create(Deliver::Options.available_options, {})
+    app_identifier = deliver_config[:app_identifier]
+
     api_key = lane_context[SharedValues::APP_STORE_CONNECT_API_KEY]
 
     # profile_name = "Fastlane" # replace with the name of your existing profile, or define a name for the profile that fastlane will create if it’s not found
@@ -169,7 +165,7 @@ platform :ios do
 
     match(
       type: 'appstore',
-      app_identifier: app_id,
+      app_identifier: app_identifier,
       git_basic_authorization: Base64.strict_encode64(ENV["GIT_AUTHORIZATION"]),
       readonly: false,
       keychain_name: keychain_name,
@@ -181,8 +177,10 @@ platform :ios do
 
   desc "Bump build number based on most recent TestFlight build number"
   lane :fetch_and_increment_build_number do
-    #fetch read your app identifier defined in your Appfile
-    app_identifier = CredentialsManager::AppfileConfig.try_fetch_value(:app_identifier)
+
+    deliver_config = FastlaneCore::Configuration.create(Deliver::Options.available_options, {})
+    app_identifier = deliver_config[:app_identifier]
+
     api_key = lane_context[SharedValues::APP_STORE_CONNECT_API_KEY]
 
     current_version = get_version_number(
@@ -205,9 +203,10 @@ platform :ios do
 
   desc "Build the iOS app for release"
   lane :build_release do |options|
-    app_identifier = CredentialsManager::AppfileConfig.try_fetch_value(:app_identifier)
 
-    # profile_name = "Fastlane" # the name of the profile to use for the build
+    deliver_config = FastlaneCore::Configuration.create(Deliver::Options.available_options, {})
+    app_identifier = deliver_config[:app_identifier]
+
     profile_name = lane_context[SharedValues::SIGH_NAME]
     output_name = "example-iOS" # specify the name of the .ipa file to generate
     export_method = "app-store" # specify the export method
@@ -217,7 +216,7 @@ platform :ios do
     update_code_signing_settings(
       use_automatic_signing: false,
       targets: ["CoopCycle"], # specify which targets to update code signing settings for
-      code_sign_identity: "Apple Distribution", # replace with name of code signing identity if different
+      # code_sign_identity: "Apple Distribution", # replace with name of code signing identity if different
       bundle_identifier: app_identifier,
       profile_name: profile_name,
       build_configurations: ["Release"] # only toggle code signing settings for Release configurations
@@ -248,9 +247,6 @@ platform :ios do
       skip_profile_detection: true,
       export_options: {
         method: export_method,
-        # provisioningProfiles: {
-        #   app_identifier => profile_name
-        # },
         provisioningProfiles: lane_context[SharedValues::MATCH_PROVISIONING_PROFILE_MAPPING],
         compileBitcode: compile_bitcode
       }
@@ -271,12 +267,17 @@ platform :ios do
     )
   end
 
-  desc "Build and upload to TestFlight"
-  lane :build_upload_testflight do
+  desc "Build a new version for the AppStore"
+  lane :build do
     load_asc_api_key
     prepare_signing
     fetch_and_increment_build_number
     build_release
+  end
+
+  desc "Build and upload to TestFlight"
+  lane :deploy do
+    build
     upload_release
   end
 

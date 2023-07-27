@@ -103,6 +103,33 @@ function showAlert(e) {
   )
 }
 
+function showAlertAfterBulk(messages) {
+
+  let message = i18n.t('AN_ERROR_OCCURRED')
+
+  if (messages.length) {
+    messages.forEach((m, index) => {
+      if (index === 0) {
+        message = m
+      } else {
+        message += `\n\n${m}`
+      }
+    })
+  }
+
+  Alert.alert(
+    i18n.t('FAILED_TASK_COMPLETE'),
+    message,
+    [
+      {
+        text: 'OK',
+        onPress: () => {},
+      },
+    ],
+    { cancelable: false }
+  )
+}
+
 /**
  * Thunk Creators
  */
@@ -143,18 +170,17 @@ function uploadTaskImages(task, state) {
 
   const files = signatures.concat(pictures)
 
-  const promises = files.map(file => uploadTaskImage(state.app.httpClient, file))
+  if (!files.length) {
+    return Promise.resolve()
+  }
+
+  const promises = files.map(file => uploadTaskImage(state.app.httpClient, file, {
+    headers: {
+      'X-Attach-To': task['@id'],
+    },
+  }))
 
   return Promise.all(promises)
-    .then(values => {
-      if (values.length === 0) {
-        return task
-      }
-      // Associates images with task
-      return state.app.httpClient.put(task['@id'], {
-        images: values.map(image => image['@id']),
-      })
-    })
 }
 
 function uploadTasksImages(tasks, state) {
@@ -168,19 +194,13 @@ function uploadTasksImages(tasks, state) {
     return Promise.resolve()
   }
 
-  const promises = files.map(file => uploadTaskImage(state.app.httpClient, file))
+  const promises = files.map(file => uploadTaskImage(state.app.httpClient, file, {
+    headers: {
+      'X-Attach-To': tasks.map(task => task['@id']).join(';'),
+    },
+  }))
 
   return Promise.all(promises)
-    .then(values => {
-      if (values.length === 0) {
-        return tasks
-      }
-      // Associate images with task
-      return state.app.httpClient.put('/api/tasks/images', {
-        images: values.map(image => image['@id']),
-        tasks: tasks.map(task => task['@id']),
-      })
-    })
 }
 
 export function markTaskFailed(httpClient, task, notes = '', onSuccess, contactName = '') {
@@ -239,10 +259,11 @@ export function markTaskDone(httpClient, task, notes = '', onSuccess, contactNam
 
     // Make sure to return a promise for testing
     return uploadTaskImages(task, getState())
-      .then(() => {
+      .then(uploadTasks => {
         return httpClient
           .put(task['@id'] + '/done', payload)
           .then(savedTask => {
+            httpClient.execUploadTask(uploadTasks)
             dispatch(clearFiles())
             dispatch(markTaskDoneSuccess(savedTask))
             if (typeof onSuccess === 'function') {
@@ -276,13 +297,22 @@ export function markTasksDone(httpClient, tasks, notes = '', onSuccess, contactN
     }
 
     return uploadTasksImages(tasks, getState())
-      .then(() => {
+      .then(uploadTasks => {
         return httpClient.put('/api/tasks/done', payload)
           .then(res => {
-            dispatch(clearFiles())
-            dispatch(markTasksDoneSuccess(res['hydra:member']))
-            if (typeof onSuccess === 'function') {
-              setTimeout(() => onSuccess(), 100)
+            if (res['failed'] && Object.keys(res['failed']).length) {
+              showAlertAfterBulk(Object.values(res['failed']))
+              if (!res['success'] || !res['success'].length) {
+                dispatch(markTasksDoneFailure())
+              }
+            }
+            if (res['success'] && res['success'].length) {
+              httpClient.execUploadTask(uploadTasks)
+              dispatch(clearFiles())
+              dispatch(markTasksDoneSuccess(res['success']))
+              if (typeof onSuccess === 'function') {
+                setTimeout(() => onSuccess(), 100)
+              }
             }
           })
       })
@@ -313,9 +343,8 @@ export function startTask(task, cb) {
   }
 }
 
-function uploadTaskImage(httpClient, base64) {
-
-  return httpClient.uploadFile('/api/task_images', base64)
+function uploadTaskImage(httpClient, file, options) {
+  return httpClient.uploadFileAsync('/api/task_images', file, options)
 }
 
 export function setTasksChangedAlertSound(enabled) {

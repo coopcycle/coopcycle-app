@@ -6,8 +6,19 @@ jest.mock('react-native-localize', () => ({
   findBestAvailableLanguage: () => ({ languageTag: 'en' }),
 }));
 
-jest.mock('rn-fetch-blob', () => ({
-  fetch: () => {}
+jest.mock('react-native-blob-util', () => ({
+  fetch: () => {},
+  wrap: () => {}
+}));
+
+jest.mock('expo-file-system', () => ({
+  createUploadTask: jest.fn(),
+  FileSystemUploadType: {
+    MULTIPART: 1
+  },
+  FileSystemSessionType: {
+    BACKGROUND: 0
+  }
 }));
 
 jest.mock('@react-native-firebase/analytics', () => ({

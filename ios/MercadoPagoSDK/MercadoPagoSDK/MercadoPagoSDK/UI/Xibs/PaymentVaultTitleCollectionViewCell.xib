@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="PaymentVaultTitleCollectionViewCell" customModule="MercadoPagoSDK" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="82"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="375" height="82"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="A5U-ZE-jZC">
+                        <rect key="frame" x="0.0" y="26" width="375" height="56"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="56" id="B87-pX-m8R"/>
+                        </constraints>
+                    </view>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TKm-rg-StY">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="26"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2zH-1X-Amk" customClass="PXNavigationHeaderLabel" customModule="MercadoPagoSDK" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="26"/>
+                                <attributedString key="attributedText">
+                                    <fragment content="¿Cómo quieres pagar?">
+                                        <attributes>
+                                            <color key="NSColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <font key="NSFont" size="22" name=".AppleSystemUIFont"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                </attributedString>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="2zH-1X-Amk" firstAttribute="top" secondItem="TKm-rg-StY" secondAttribute="top" id="9uk-fu-nI5"/>
+                            <constraint firstAttribute="bottom" secondItem="2zH-1X-Amk" secondAttribute="bottom" id="GG8-dp-egg"/>
+                            <constraint firstItem="2zH-1X-Amk" firstAttribute="leading" secondItem="TKm-rg-StY" secondAttribute="leading" id="ZRY-5N-jjT"/>
+                            <constraint firstAttribute="trailing" secondItem="2zH-1X-Amk" secondAttribute="trailing" id="u2Q-Nc-0db"/>
+                        </constraints>
+                    </view>
+                </subviews>
+            </view>
+            <color key="backgroundColor" red="0.0" green="0.61960784310000006" blue="0.89019607840000003" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstItem="A5U-ZE-jZC" firstAttribute="top" secondItem="TKm-rg-StY" secondAttribute="bottom" id="42W-8J-q1l"/>
+                <constraint firstItem="TKm-rg-StY" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="8al-g7-uRa"/>
+                <constraint firstAttribute="trailing" secondItem="TKm-rg-StY" secondAttribute="trailing" id="E0s-R9-5Np"/>
+                <constraint firstItem="TKm-rg-StY" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="VKm-GL-6CF"/>
+                <constraint firstAttribute="bottom" secondItem="A5U-ZE-jZC" secondAttribute="bottom" id="Z8E-QF-RBY"/>
+                <constraint firstItem="A5U-ZE-jZC" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="hOa-pz-omM"/>
+                <constraint firstAttribute="trailing" secondItem="A5U-ZE-jZC" secondAttribute="trailing" id="sO1-ua-8K3"/>
+            </constraints>
+            <size key="customSize" width="375" height="124"/>
+            <connections>
+                <outlet property="title" destination="2zH-1X-Amk" id="eeT-m7-Ilg"/>
+            </connections>
+            <point key="canvasLocation" x="288.5" y="91"/>
+        </collectionViewCell>
+    </objects>
+</document>

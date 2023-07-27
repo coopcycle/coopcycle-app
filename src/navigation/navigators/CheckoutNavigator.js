@@ -270,6 +270,13 @@ const DefaultNav = () => (
         title: i18n.t('PAYMENT_METHOD.cash_on_delivery'),
       }}
     />
+    <RootStack.Screen
+      name="CheckoutLoopeat"
+      component={ screens.CheckoutLoopeat }
+      options={{
+        title: i18n.t('ZERO_WASTE'),
+      }}
+    />
   </RootStack.Navigator>
 )
 

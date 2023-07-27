@@ -1,15 +1,15 @@
-import { createAction } from 'redux-actions'
-import { CommonActions, StackActions } from '@react-navigation/native'
+import {createAction} from 'redux-actions'
+import {CommonActions, StackActions} from '@react-navigation/native'
 import _ from 'lodash'
-import { createPaymentMethod, handleNextAction, initStripe } from '@stripe/stripe-react-native'
+import {createPaymentMethod, handleNextAction, initStripe} from '@stripe/stripe-react-native'
 
 import NavigationHolder from '../../NavigationHolder'
 import i18n from '../../i18n'
-import { selectBillingEmail, selectCart, selectCartFulfillmentMethod } from './selectors'
-import { selectIsAuthenticated } from '../App/selectors'
-import { loadAddressesSuccess, setNewOrder, updateOrderSuccess } from '../Account/actions'
-import { isFree } from '../../utils/order'
-import { setLoading, setModal } from '../App/actions';
+import {selectBillingEmail, selectCartWithHours, selectCartFulfillmentMethod, selectCart} from './selectors'
+import {selectIsAuthenticated} from '../App/selectors'
+import {loadAddressesSuccess, setNewOrder, updateOrderSuccess} from '../Account/actions'
+import {isFree} from '../../utils/order'
+import {setLoading, setModal} from '../App/actions';
 import Share from 'react-native-share';
 import i18next from 'i18next';
 
@@ -85,6 +85,8 @@ export const LOAD_STRIPE_SAVED_PAYMENT_METHODS_FAILURE = '@checkout/LOAD_STRIPE_
 
 export const UPDATE_CUSTOMER_GUEST = '@checkout/UPDATE_CUSTOMER_GUEST'
 
+export const SHOW_TIMING_MODAL = '@checkout/SHOW_TIMING_MODAL'
+
 
 export const HIDE_MULTIPLE_SERVERS_IN_SAME_CITY_MODAL = '@checkout/HIDE_MULTIPLE_SERVERS_IN_SAME_CITY_MODAL'
 
@@ -157,6 +159,8 @@ export const clearSearchResults = createAction(CLEAR_SEARCH_RESULTS)
 export const loadStripeSavedPaymentMethodsRequest = createAction(LOAD_STRIPE_SAVED_PAYMENT_METHODS_REQUEST)
 export const loadStripeSavedPaymentMethodsSuccess = createAction(LOAD_STRIPE_SAVED_PAYMENT_METHODS_SUCCESS)
 export const loadStripeSavedPaymentMethodsFailure = createAction(LOAD_STRIPE_SAVED_PAYMENT_METHODS_FAILURE)
+
+export const showTimingModal = createAction(SHOW_TIMING_MODAL)
 
 export const hideMultipleServersInSameCityModal = createAction(HIDE_MULTIPLE_SERVERS_IN_SAME_CITY_MODAL)
 
@@ -871,6 +875,19 @@ function configureStripe(state, paymentDetails = null) {
   initStripe(stripeProps)
 }
 
+function validateCart(cart) {
+
+  if (!cart) {
+    return false
+  }
+
+  if (!cart.customer) {
+    return false
+  }
+
+  return true
+}
+
 /**
  * @see https://stripe.com/docs/payments/accept-a-payment?platform=react-native&ui=custom
  * @see https://stripe.com/docs/payments/accept-a-payment-synchronously?platform=react-native
@@ -888,6 +905,19 @@ export function checkout(cardholderName, savedPaymentMethodId = null, saveCard =
     const httpClient = createHttpClient(getState())
 
     dispatch(checkoutRequest())
+
+    if (!validateCart(cart)) {
+      NavigationHolder.dispatch(CommonActions.navigate({
+        name: 'Cart',
+      }))
+      dispatch(setModal({
+        show: true,
+        skippable: true,
+        content: 'An error occurred, please try again later',
+        type: 'error',
+      }))
+      return dispatch(checkoutFailure())
+    }
 
     if (isFree(cart)) {
       httpClient
@@ -987,6 +1017,18 @@ export function assignCustomer({ email, telephone }, cartContainer = null) {
         if (user.isGuest()) {
           dispatch(updateCustomerGuest({ email, telephone }))
         }
+        if (!validateCart(res)) {
+          NavigationHolder.dispatch(CommonActions.navigate({
+            name: 'Cart',
+          }))
+          dispatch(setModal({
+            show: true,
+            skippable: true,
+            content: 'An error occurred, please try again later',
+            type: 'error',
+          }))
+          return dispatch(checkoutFailure())
+        }
         dispatch(updateCartSuccess(res))
         dispatch(checkoutSuccess())
       })
@@ -1056,13 +1098,12 @@ export function updateCart(payload, cb) {
 }
 
 // FEAT: add a way to precise id
-export function setDate(shippingTimeRange, cart, cb) {
+export function setDate(shippingTimeRange, cb) {
 
   return (dispatch, getState) => {
 
+    const { cart } = selectCartWithHours(getState())
     const httpClient = createHttpClient(getState())
-
-    //const { cart } = getState().checkout
 
     dispatch(checkoutRequest())
 
@@ -1106,16 +1147,15 @@ export function setDateAsap(cart, cb) {
   }
 }
 
-export function setFulfillmentMethod(method, cart) {
+export function setFulfillmentMethod(method) {
 
   return (dispatch, getState) => {
 
-    const { address, carts } = getState().checkout
+    const { address } = getState().checkout
+    const { cart, token } = selectCartWithHours(getState())
 
     //dispatch(checkoutRequest())
-    console.log(method, cart)
-    console.log(carts[cart.restaurant].token)
-    dispatch(setToken(carts[cart.restaurant].token))
+    dispatch(setToken(token))
 
     const httpClient = createHttpClient(getState())
 
@@ -1160,8 +1200,7 @@ export function loadPaymentMethods(method) {
   return (dispatch, getState) => {
 
 
-    const { restaurant } = getState().checkout
-    const { cart, token } = getState().checkout.carts[restaurant]
+    const { cart } = selectCartWithHours(getState())
 
     const httpClient = createHttpClient(getState())
 
@@ -1178,9 +1217,7 @@ export function checkoutWithCash() {
 
   return (dispatch, getState) => {
 
-
-    const { restaurant } = getState().checkout
-    const { cart, token } = getState().checkout.carts[restaurant]
+    const { cart } = selectCartWithHours(getState())
     const httpClient = createHttpClient(getState())
 
     dispatch(checkoutRequest())
@@ -1196,8 +1233,7 @@ export function loadPaymentDetails() {
 
   return (dispatch, getState) => {
 
-    const { restaurant } = getState().checkout
-    const { cart, token } = getState().checkout.carts[restaurant]
+    const { cart } = selectCartWithHours(getState())
     const httpClient = createHttpClient(getState())
 
 
@@ -1308,5 +1344,25 @@ export function loadAndNavigateToRestaurante(id) {
         NavigationHolder.navigate('CheckoutRestaurant', { restaurant: restaurantWithTiming });
       })
       .catch(e => dispatch(getRestaurantFailure(e)))
+  }
+}
+
+export function updateLoopeatReturns(returns) {
+
+  return (dispatch, getState) => {
+
+    const httpClient = createHttpClient(getState())
+    const { cart } = selectCart(getState())
+
+    dispatch(checkoutRequest())
+
+    httpClient
+      .post(cart['@id'] + '/loopeat_returns', {
+        returns
+      })
+      .then(res => {
+        dispatch(updateCartSuccess(res))
+      })
+      .catch(e => dispatch(checkoutFailure(e)))
   }
 }

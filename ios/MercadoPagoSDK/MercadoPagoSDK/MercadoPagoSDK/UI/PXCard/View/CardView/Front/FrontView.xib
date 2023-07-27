@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="FrontView" customModule="MercadoPagoSDKV4" customModuleProvider="target">
+            <connections>
+                <outlet property="animation" destination="OEt-3Q-8ri" id="0bW-HL-KCE"/>
+                <outlet property="bank" destination="DT6-XG-kaD" id="18S-hZ-7H3"/>
+                <outlet property="expirationDate" destination="AMu-xJ-OI6" id="uGb-Mm-U1i"/>
+                <outlet property="gradient" destination="W2g-Ht-hY3" id="gsv-Yn-Xxg"/>
+                <outlet property="logo" destination="oQQ-DA-UJ9" id="kdc-rZ-a1f"/>
+                <outlet property="name" destination="ZMN-U6-Lcy" id="YHC-Uc-QhK"/>
+                <outlet property="number" destination="EUo-1b-VQe" id="db1-YE-CVB"/>
+                <outlet property="securityCode" destination="K3c-vy-wcQ" id="ghT-Qi-ZGO"/>
+                <outlet property="securityCodeCircle" destination="89T-PX-cWX" id="Edb-BS-E6z"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clipsSubviews="YES" contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="256" height="158"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OEt-3Q-8ri">
+                    <rect key="frame" x="0.0" y="0.0" width="256" height="158"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="W2g-Ht-hY3" userLabel="Gradient">
+                    <rect key="frame" x="0.0" y="0.0" width="256" height="158"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </view>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Overlay" translatesAutoresizingMaskIntoConstraints="NO" id="HLQ-m9-78F">
+                    <rect key="frame" x="0.0" y="0.0" width="256" height="158"/>
+                </imageView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eki-qS-IGB" userLabel="PaymentContainer">
+                    <rect key="frame" x="16" y="16" width="108" height="44"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="750" image="MLCheckoutMethodLogo_visa" translatesAutoresizingMaskIntoConstraints="NO" id="oQQ-DA-UJ9" userLabel="paymentOptionIcon">
+                            <rect key="frame" x="0.0" y="12.5" width="59" height="19"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="62" id="MbH-js-AOD"/>
+                                <constraint firstAttribute="height" constant="45" id="iEE-Rp-WlX"/>
+                            </constraints>
+                            <variation key="default">
+                                <mask key="constraints">
+                                    <exclude reference="MbH-js-AOD"/>
+                                    <exclude reference="iEE-Rp-WlX"/>
+                                </mask>
+                            </variation>
+                        </imageView>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="oQQ-DA-UJ9" firstAttribute="centerY" secondItem="eki-qS-IGB" secondAttribute="centerY" id="153-tP-xOQ"/>
+                        <constraint firstItem="oQQ-DA-UJ9" firstAttribute="leading" secondItem="eki-qS-IGB" secondAttribute="leading" id="eml-Dl-we2"/>
+                        <constraint firstAttribute="width" constant="108" id="n0A-sz-NzO"/>
+                        <constraint firstAttribute="height" constant="44" id="nXL-am-y6R"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fle-ET-bnW" userLabel="IssuerContainer">
+                    <rect key="frame" x="132" y="16" width="108" height="44"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="750" image="MLCheckoutMethodLogo_visa" translatesAutoresizingMaskIntoConstraints="NO" id="DT6-XG-kaD" userLabel="IssuerIcon">
+                            <rect key="frame" x="49" y="12.5" width="59" height="19"/>
+                        </imageView>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="DT6-XG-kaD" firstAttribute="centerY" secondItem="Fle-ET-bnW" secondAttribute="centerY" id="BT5-rW-LgL"/>
+                        <constraint firstAttribute="width" constant="108" id="Rc4-oG-oEO"/>
+                        <constraint firstAttribute="height" constant="44" id="tVL-Wf-KZV"/>
+                        <constraint firstAttribute="trailing" secondItem="DT6-XG-kaD" secondAttribute="trailing" id="uUY-jM-4mL"/>
+                    </constraints>
+                </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MM/AA" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AMu-xJ-OI6" customClass="CardLabel" customModule="MercadoPagoSDKV4" customModuleProvider="target">
+                    <rect key="frame" x="199" y="120" width="41" height="14.5"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="89T-PX-cWX" userLabel="circleFronSecurityCodeView" customClass="CircleView" customModule="MercadoPagoSDKV4" customModuleProvider="target">
+                    <rect key="frame" x="204" y="47" width="38" height="38"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="38" id="35R-WB-d8w"/>
+                        <constraint firstAttribute="width" constant="38" id="fQx-hB-TZV"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="color" keyPath="fillColor">
+                            <color key="value" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="color" keyPath="strokeColor">
+                            <color key="value" red="1" green="0.27816225080000001" blue="0.2427567534" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="lineWidth">
+                            <real key="value" value="3"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="750" text="***" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="K3c-vy-wcQ" userLabel="FrontSecurityCodeLabel" customClass="CardLabel" customModule="MercadoPagoSDKV4" customModuleProvider="target">
+                    <rect key="frame" x="223" y="59" width="17" height="14.5"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="NOMBRE Y APELLIDO" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZMN-U6-Lcy" customClass="CardLabel" customModule="MercadoPagoSDKV4" customModuleProvider="target">
+                    <rect key="frame" x="16" y="120" width="166" height="14"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="166" id="FBH-we-hcG"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="**** **** **** ****" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="13" translatesAutoresizingMaskIntoConstraints="NO" id="EUo-1b-VQe" customClass="CardLabel" customModule="MercadoPagoSDKV4" customModuleProvider="target">
+                    <rect key="frame" x="16" y="82" width="224" height="18"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="18" id="cXL-fC-pUa"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="OEt-3Q-8ri" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="0si-Gj-xOe"/>
+                <constraint firstItem="HLQ-m9-78F" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="1Vb-Vh-OMD"/>
+                <constraint firstAttribute="trailing" secondItem="W2g-Ht-hY3" secondAttribute="trailing" id="42g-gv-JyA"/>
+                <constraint firstItem="ZMN-U6-Lcy" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="16" id="47K-ZK-WHj"/>
+                <constraint firstItem="EUo-1b-VQe" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" constant="12" id="5aG-Iu-7JU"/>
+                <constraint firstAttribute="bottom" secondItem="HLQ-m9-78F" secondAttribute="bottom" id="8Hh-Yk-8Vu"/>
+                <constraint firstItem="Fle-ET-bnW" firstAttribute="top" secondItem="eki-qS-IGB" secondAttribute="bottom" constant="-44" id="9Ct-vW-n6C"/>
+                <constraint firstAttribute="bottom" secondItem="W2g-Ht-hY3" secondAttribute="bottom" id="DWY-GP-FQC"/>
+                <constraint firstAttribute="trailing" secondItem="89T-PX-cWX" secondAttribute="trailing" constant="14" id="Ddv-JH-EJf"/>
+                <constraint firstItem="eki-qS-IGB" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="16" id="IZx-jY-Fec"/>
+                <constraint firstAttribute="bottom" secondItem="ZMN-U6-Lcy" secondAttribute="bottom" constant="24" id="JBg-7G-omn"/>
+                <constraint firstItem="EUo-1b-VQe" firstAttribute="trailing" secondItem="AMu-xJ-OI6" secondAttribute="trailing" id="KUQ-8c-YKk"/>
+                <constraint firstItem="W2g-Ht-hY3" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="OqT-qa-XFw"/>
+                <constraint firstAttribute="trailing" secondItem="OEt-3Q-8ri" secondAttribute="trailing" id="Qc7-uP-wIt"/>
+                <constraint firstAttribute="trailing" secondItem="HLQ-m9-78F" secondAttribute="trailing" id="RP9-3G-Afk"/>
+                <constraint firstItem="HLQ-m9-78F" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="Roz-63-Y1h"/>
+                <constraint firstItem="K3c-vy-wcQ" firstAttribute="trailing" secondItem="AMu-xJ-OI6" secondAttribute="trailing" id="V0X-Zg-lw3"/>
+                <constraint firstItem="AMu-xJ-OI6" firstAttribute="centerY" secondItem="ZMN-U6-Lcy" secondAttribute="centerY" id="YcG-Cp-uXh"/>
+                <constraint firstItem="Fle-ET-bnW" firstAttribute="trailing" secondItem="AMu-xJ-OI6" secondAttribute="trailing" id="ZmV-6D-57z"/>
+                <constraint firstItem="OEt-3Q-8ri" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="eq2-Nh-tjE"/>
+                <constraint firstItem="EUo-1b-VQe" firstAttribute="leading" secondItem="ZMN-U6-Lcy" secondAttribute="leading" id="gPR-jP-sT0"/>
+                <constraint firstItem="K3c-vy-wcQ" firstAttribute="centerY" secondItem="89T-PX-cWX" secondAttribute="centerY" id="goL-C4-4Ge"/>
+                <constraint firstAttribute="trailing" secondItem="AMu-xJ-OI6" secondAttribute="trailing" constant="16" id="mQC-Xx-HlH"/>
+                <constraint firstItem="W2g-Ht-hY3" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="nHh-K1-jH2"/>
+                <constraint firstAttribute="bottom" secondItem="OEt-3Q-8ri" secondAttribute="bottom" id="qUC-5Y-BgY"/>
+                <constraint firstItem="eki-qS-IGB" firstAttribute="leading" secondItem="ZMN-U6-Lcy" secondAttribute="leading" id="qwy-YV-L6X"/>
+                <constraint firstItem="ZMN-U6-Lcy" firstAttribute="top" secondItem="EUo-1b-VQe" secondAttribute="bottom" constant="20" id="uAh-2S-u7H"/>
+                <constraint firstItem="EUo-1b-VQe" firstAttribute="top" secondItem="89T-PX-cWX" secondAttribute="bottom" constant="-3" id="weF-sf-C3X"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <nil key="simulatedTopBarMetrics"/>
+            <nil key="simulatedBottomBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="-1467.2" y="-1517.5412293853074"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="MLCheckoutMethodLogo_visa" width="59" height="19"/>
+        <image name="Overlay" width="256" height="158"/>
+    </resources>
+</document>

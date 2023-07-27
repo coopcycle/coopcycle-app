@@ -2,7 +2,9 @@ import i18n from './i18n'
 import axios from 'axios'
 import qs from 'qs'
 import _ from 'lodash'
-import RNFetchBlob from 'rn-fetch-blob'
+import ReactNativeBlobUtil from 'react-native-blob-util'
+import * as FileSystem from 'expo-file-system'
+
 
 let subscribers = []
 let errorSubscribers = []
@@ -340,10 +342,57 @@ Client.prototype.cloneWithToken = function(token) {
   return new Client(this.getBaseURL(), { token })
 }
 
-Client.prototype.uploadFile = function(uri, base64) {
+Client.prototype.execUploadTask = function(uploadTasks, retry = 0) {
+  if (_.isArray(uploadTasks)) {
+    return Promise.all(uploadTasks.map(uploadTask => this.execUploadTask(uploadTask)))
+  }
 
-  // Remove line breaks from Base64 string
-  const base64AsString = base64.replace(/(\r\n|\n|\r)/gm, '')
+  return new Promise(async (resolve, reject) => {
+    try {
+    const data = await uploadTasks.uploadAsync()
+    switch (data.status) {
+      case 401:
+        if (retry < 2) {    
+          const token = await this.refreshToken()
+          _.set(uploadTasks, 'options.headers.Authorization', `Bearer ${token}`)
+          resolve(await this.execUploadTask(uploadTasks, ++retry))
+        }
+        reject(new Error("Too many retries"))
+          break
+        case 201:
+          resolve(data)
+          break
+        default:
+          reject(new Error(`Unhandled status code: ${data.status}`))
+    }
+  } catch(e) {
+    reject(e)
+  }
+  })
+}
+
+Client.prototype.uploadFileAsync = function (uri, file, options = {}) {
+
+  options = {
+    headers: {},
+    parameters: {},
+    ...options,
+  }
+
+  return FileSystem.createUploadTask(`${this.getBaseURL()}${uri}`, file, {
+    fieldName: 'file',
+    httpMethod: 'POST',
+    headers: {
+      'Authorization' : `Bearer ${this.getToken()}`,
+      ...options.headers,
+    },
+    parameters: options.parameters,
+    uploadType: FileSystem.FileSystemUploadType.MULTIPART,
+    sessionType: FileSystem.FileSystemSessionType.BACKGROUND,
+  })
+}
+
+Client.prototype.uploadFile = function(uri, base64) {
 
   const headers = {
     'Authorization' : `Bearer ${this.getToken()}`,
@@ -353,15 +402,19 @@ Client.prototype.uploadFile = function(uri, base64) {
   const body = [{
     name : 'file',
     filename: 'filename.jpg', // This is needed to work
-    data: base64AsString,
+    data: base64.startsWith('file://') ?
+      ReactNativeBlobUtil.wrap(base64.replace('file://', ''))
+      :
+      // Remove line breaks from Base64 string
+      base64.replace(/(\r\n|\n|\r)/gm, ''),
   }]
 
   return new Promise((resolve, reject) => {
 
-    RNFetchBlob
+    ReactNativeBlobUtil
       .fetch('POST', `${this.getBaseURL()}${uri}`, headers, body)
       // Warning: this is not a standard fetch respone
-      // @see https://github.com/joltup/rn-fetch-blob/wiki/Classes#rnfetchblobresponse
+      // @see https://github.com/RonRadtke/react-native-blob-util/wiki/Classes#rnfetchblobresponse
       .then(fetchBlobResponse => {
 
         const fetchBlobResponseInfo = fetchBlobResponse.info()

@@ -1,0 +1,9 @@
+appId: ${APP_ID}
+---
+- tapOn:
+    id: "loginUsername"
+- eraseText
+- tapOn:
+    id: "loginPassword"
+- eraseText
+
