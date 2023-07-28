@@ -239,6 +239,11 @@ platform :ios do
       build_configuration: "Release"
     )
 
+    update_project_team(
+      path: "CoopCycle.xcodeproj",
+      teamid: "66HUGQ2V5L"
+    )
+
     # build the app
     gym(
       scheme: "CoopCycle", # replace with name of your project’s scheme
