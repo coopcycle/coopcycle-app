@@ -111,6 +111,7 @@ jobs:
       #     p12-file-base64: ${{ secrets.IOS_DIST_SIGNING_KEY }}
       #     p12-password: ${{ secrets.IOS_DIST_SIGNING_KEY_PASSWORD }}
       - name: Run Fastlane
+        if: false
         working-directory: ios/
         run: bundle exec fastlane deploy
         env:
@@ -127,6 +128,7 @@ jobs:
         if: failure()
         run: cat /Users/runner/Library/Logs/gym/CoopCycle-CoopCycle.log
       - name: Upload IPA artifact
+        if: false
         uses: actions/upload-artifact@v3
         with:
           name: example-iOS.ipa
