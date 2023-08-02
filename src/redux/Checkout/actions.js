@@ -9,7 +9,7 @@ import {selectBillingEmail, selectCartWithHours, selectCartFulfillmentMethod} fr
 import {selectIsAuthenticated} from '../App/selectors'
 import {loadAddressesSuccess, setNewOrder, updateOrderSuccess} from '../Account/actions'
 import {isFree} from '../../utils/order'
-import {setLoading, setModal} from '../App/actions';
+import { _logoutSuccess, logoutRequest, setLoading, setModal } from '../App/actions';
 import Share from 'react-native-share';
 import i18next from 'i18next';
 
@@ -1018,19 +1018,25 @@ export function assignCustomer({ email, telephone }, cartContainer = null) {
           dispatch(updateCustomerGuest({ email, telephone }))
         }
         if (!validateCart(res)) {
-          NavigationHolder.dispatch(CommonActions.navigate({
-            name: 'Cart',
-          }))
           dispatch(setModal({
             show: true,
             skippable: true,
-            content: 'An error occurred, please try again later',
+            content: i18next.t('SESSION_ERROR_TRY_AGAIN'),
             type: 'error',
           }))
-          return dispatch(checkoutFailure())
+          dispatch(logoutRequest())
+          user.logout()
+            .then(() => {
+              dispatch(_logoutSuccess())
+            })
+          NavigationHolder.dispatch(CommonActions.navigate({
+            name: 'CheckoutLogin',
+          }))
+          dispatch(checkoutFailure())
+        } else {
+          dispatch(updateCartSuccess(res))
+          dispatch(checkoutSuccess())
         }
-        dispatch(updateCartSuccess(res))
-        dispatch(checkoutSuccess())
       })
       .catch(e => dispatch(checkoutFailure(e)))
   }
