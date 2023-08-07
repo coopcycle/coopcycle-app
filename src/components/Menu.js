@@ -1,14 +1,12 @@
 import React, { Component } from 'react'
-import { ActivityIndicator, Animated, SectionList, StyleSheet, TouchableOpacity, View } from 'react-native'
-import { Box, Column, Flex, Heading, Icon, Image, Row, Text } from 'native-base';
+import { ActivityIndicator, Animated, SectionList, StyleSheet, TouchableOpacity } from 'react-native'
+import { Column, Flex, Heading, Image, Row, Text } from 'native-base';
 import _ from 'lodash'
-import { AllergenList, RestrictedDietList } from './MenuBadges'
 
 const AnimatedSectionList = Animated.createAnimatedComponent(SectionList);
 
 import { formatPrice } from '../utils/formatting'
 import ItemSeparator from './ItemSeparator'
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 const styles = StyleSheet.create({
   sectionHeader: {
@@ -22,14 +20,28 @@ const styles = StyleSheet.create({
   itemContainer: {
     paddingVertical: 15,
   },
-  disabledText: {
-    color: '#a7a7a7',
-  },
+  nameText: { fontSize: 16 },
   descriptionText: {
     fontSize: 14,
     color: '#777777',
   },
+  priceText: { paddingTop: 3 },
 });
+
+const stylesOverride = StyleSheet.create({
+  menuItemUnavailableBase : {
+    color: '#a7a7a7',
+  },
+  menuItemUnavailablePrice: {
+    textDecorationLine: 'line-through',
+  },
+})
+
+const menuItemUnavailableStyles = {
+  nameText: [ styles.nameText, stylesOverride.menuItemUnavailableBase ],
+  descriptionText: [ styles.descriptionText, stylesOverride.menuItemUnavailableBase ],
+  priceText: [ styles.priceText, stylesOverride.menuItemUnavailableBase, stylesOverride.menuItemUnavailablePrice ],
+}
 
 const SectionHeader = ({ section }) => {
 
@@ -59,18 +71,18 @@ class Menu extends Component {
     const enabled = item.hasOwnProperty('enabled') ? item.enabled : true
 
     let itemProps = {}
-    let itemNameStyle = [{ fontSize: 16 }]
-    let itemDescriptionStyle = [styles.descriptionText]
-    let itemPriceStyle = [{ paddingTop: 3 }]
+    let itemNameStyle = styles.nameText
+    let itemDescriptionStyle = styles.descriptionText
+    let itemPriceStyle = styles.priceText
 
     if (enabled) {
       itemProps = {
         onPress: () => this.props.onItemClick(item),
       }
     } else {
-      itemNameStyle.push(styles.disabledText)
-      itemPriceStyle.push(styles.disabledText)
-      itemDescriptionStyle.push(styles.disabledText)
+      itemNameStyle = menuItemUnavailableStyles.nameText
+      itemDescriptionStyle = menuItemUnavailableStyles.descriptionText
+      itemPriceStyle = menuItemUnavailableStyles.priceText
     }
 
     const isLoading = this.props.isItemLoading(item)
@@ -110,7 +122,7 @@ class Menu extends Component {
       _.forEach(menu.hasMenuSection, (menuSection, index) => {
         sections.push({
           title: menuSection.name,
-          data: _.filter(menuSection.hasMenuItem, it => it.enabled),
+          data: menuSection.hasMenuItem,
           index,
         })
       })
