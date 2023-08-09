@@ -56,7 +56,7 @@ class MoreInfos extends Component {
       }
     }
 
-    if (this.props.user.isGuest()) {
+    if (this._userIsGuest()) {
       return this.props.assignCustomer({ email: values.email, telephone })
         .then(() => {
           this._updateCart(payload)
@@ -82,7 +82,7 @@ class MoreInfos extends Component {
       }
     }
 
-    if (!this.props.isAuthenticated && this.props.user.isGuest()) {
+    if (!this.props.isAuthenticated && this._userIsGuest()) {
       if (validate.single(values.email, { presence: true, email: true })) {
         errors.email = this.props.t('INVALID_EMAIL')
       }
@@ -91,8 +91,12 @@ class MoreInfos extends Component {
     return errors
   }
 
+  _userIsGuest() {
+    return this.props.user && this.props.user.isGuest()
+  }
+
   componentDidMount() {
-    if (!this.props.user.isGuest()) {
+    if (!this._userIsGuest()) {
       InteractionManager.runAfterInteractions(() => {
         this.props.assignCustomer({})
       })
@@ -131,7 +135,7 @@ class MoreInfos extends Component {
             </HStack>
             <VStack p="2" style={{ flexShrink: 1 }}>
               <ScrollView>
-                {!this.props.isAuthenticated && this.props.user.isGuest() &&
+                {!this.props.isAuthenticated && this._userIsGuest() &&
                 <FormControl mb="2">
                     <FormControl.Label>Email</FormControl.Label>
                     <Input
