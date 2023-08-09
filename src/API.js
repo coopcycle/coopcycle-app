@@ -247,11 +247,11 @@ Client.prototype.checkToken = function() {
 
 Client.prototype.register = function (data) {
   return register(this.httpBaseURL, data)
-    .then((credentials) => {
-      const user = credentialsToUser(credentials)
-      this.onCredentialsUpdated(user)
-      return user
-    })
+  .then(credentialsToUser)
+  .then(user => {
+    this.onCredentialsUpdated(user)
+    return user
+  })
 }
 
 Client.prototype.confirmRegistration = function(token) {
@@ -271,10 +271,11 @@ Client.prototype.confirmRegistration = function(token) {
         }
       })
   })
-    .then(user => {
-      this.onCredentialsUpdated(user)
-      return user
-    })
+  .then(credentialsToUser)
+  .then(user => {
+    this.onCredentialsUpdated(user)
+    return user
+  })
 }
 
 Client.prototype.login = function(username, password) {
@@ -352,12 +353,12 @@ Client.prototype.execUploadTask = function(uploadTasks, retry = 0) {
     const data = await uploadTasks.uploadAsync()
     switch (data.status) {
       case 401:
-        if (retry < 2) {    
+        if (retry < 2) {
           const token = await this.refreshToken()
           _.set(uploadTasks, 'options.headers.Authorization', `Bearer ${token}`)
           resolve(await this.execUploadTask(uploadTasks, ++retry))
         }
-        reject(new Error("Too many retries"))
+        reject(new Error('Too many retries'))
           break
         case 201:
           resolve(data)
@@ -365,7 +366,7 @@ Client.prototype.execUploadTask = function(uploadTasks, retry = 0) {
         default:
           reject(new Error(`Unhandled status code: ${data.status}`))
     }
-  } catch(e) {
+  } catch (e) {
     reject(e)
   }
   })
