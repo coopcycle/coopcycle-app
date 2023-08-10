@@ -512,7 +512,6 @@ export function guestModeOn() {
     )
     dispatch(setUser(user))
     console.log('User is in guest mode')
-    NavigationHolder.navigate('CheckoutMoreInfos', {});
   }
 }
 
@@ -521,9 +520,6 @@ export function resumeCheckout() {
     dispatch(_resumeCheckoutAfterActivation(false))
     NavigationHolder.dispatch(CommonActions.navigate({
       name: 'CheckoutNav',
-      params: {
-        screen: 'CheckoutSummary',
-      },
     }))
   }
 }

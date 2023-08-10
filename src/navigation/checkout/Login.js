@@ -10,12 +10,6 @@ import { selectIsAuthenticated } from '../../redux/App/selectors'
 
 class Login extends Component {
 
-  componentDidUpdate(prevProps) {
-    if (this.props.isAuthenticated !== prevProps.isAuthenticated && this.props.isAuthenticated) {
-      this.props.navigation.navigate('CheckoutMoreInfos')
-    }
-  }
-
   renderMessage() {
     if (this.props.message) {
 
@@ -88,7 +82,7 @@ function mapDispatchToProps(dispatch) {
 
   return {
     login: (email, password, navigate) => dispatch(login(email, password, navigate)),
-    register: data => dispatch(register(data, 'CheckoutCheckEmail', 'CheckoutLogin', true)),
+    register: data => dispatch(register(data, 'CheckoutCheckEmail', 'CheckoutLoginRegister', true)),
     forgotPassword: () => dispatch(forgotPassword()),
     guestModeOn: () => dispatch(guestModeOn()),
   }

@@ -224,7 +224,7 @@ const styles = StyleSheet.create({
 function mapStateToProps(state, ownProps) {
 
   const fulfillmentMethod = selectCartFulfillmentMethod(state)
-  const cart = selectCart(state)?.cart || ownProps.route.params?.cart
+  const cart = selectCart(state)?.cart
 
   return {
     country: state.app.settings.country.toUpperCase(),

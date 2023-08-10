@@ -1,7 +1,7 @@
-import {createAction} from 'redux-actions'
-import {CommonActions, StackActions} from '@react-navigation/native'
+import { createAction } from 'redux-actions'
+import { CommonActions } from '@react-navigation/native'
 import _ from 'lodash'
-import {createPaymentMethod, handleNextAction, initStripe} from '@stripe/stripe-react-native'
+import { createPaymentMethod, handleNextAction, initStripe } from '@stripe/stripe-react-native'
 
 import NavigationHolder from '../../NavigationHolder'
 import i18n from '../../i18n'
@@ -766,7 +766,12 @@ function handleSuccessNav(dispatch, order) {
 
   dispatch(setNewOrder(order))
   // First, reset checkout stack
-  NavigationHolder.dispatch(StackActions.popToTop())
+  NavigationHolder.dispatch(CommonActions.navigate({
+    name: 'Main',
+    params: {
+      screen: 'CheckoutHome',
+    },
+  }))
 
   // Then, navigate to order screen
   NavigationHolder.dispatch(CommonActions.navigate({
@@ -1361,7 +1366,7 @@ export function updateLoopeatReturns(returns) {
 
     httpClient
       .post(cart['@id'] + '/loopeat_returns', {
-        returns
+        returns,
       })
       .then(res => {
         dispatch(updateCartSuccess(res))
