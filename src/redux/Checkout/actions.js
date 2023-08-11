@@ -5,10 +5,14 @@ import {createPaymentMethod, handleNextAction, initStripe} from '@stripe/stripe-
 
 import NavigationHolder from '../../NavigationHolder'
 import i18n from '../../i18n'
-import {selectBillingEmail, selectCartWithHours, selectCartFulfillmentMethod, selectCart} from './selectors'
-import {selectIsAuthenticated} from '../App/selectors'
-import {loadAddressesSuccess, setNewOrder, updateOrderSuccess} from '../Account/actions'
-import {isFree} from '../../utils/order'
+import { selectBillingEmail, selectCart, selectCartFulfillmentMethod, selectCartWithHours } from './selectors'
+import {
+  selectHttpClient,
+  selectIsAuthenticated,
+  selectUser,
+} from '../App/selectors'
+import { loadAddressesSuccess, setNewOrder, updateOrderSuccess } from '../Account/actions'
+import { isFree } from '../../utils/order'
 import { _logoutSuccess, logoutRequest, setLoading, setModal } from '../App/actions';
 import Share from 'react-native-share';
 import i18next from 'i18next';
@@ -181,11 +185,8 @@ function validateAddress(httpClient, cart, address) {
   })
 }
 
-function createHttpClient(state) {
-  const { httpClient } = state.app
-  if (httpClient.credentials.token && httpClient.credentials.refreshToken) {
-    return httpClient
-  }
+function createHttpClientWithSessionToken(state) {
+  const httpClient = selectHttpClient(state)
 
   const { token } = state.checkout
 
@@ -216,7 +217,7 @@ export function addItemV2(item, quantity = 1, restaurant, options) {
   return async (dispatch, getState) => {
 
     const { carts, address } = getState().checkout
-    let httpClient = createHttpClient(getState())
+    let httpClient = createHttpClientWithSessionToken(getState())
 
     const requestAddress = (closureAddress) => {
       if (_.has(closureAddress, '@id')) {
@@ -229,7 +230,7 @@ export function addItemV2(item, quantity = 1, restaurant, options) {
     if (!_.has(carts, restaurant['@id'])) {
       dispatch(initCartRequest(restaurant['@id']))
       dispatch(setToken(null))
-      httpClient = createHttpClient(getState())
+      httpClient = createHttpClientWithSessionToken(getState())
       try {
         const response = await httpClient.post('/api/carts/session', {
           restaurant: restaurant['@id'],
@@ -247,7 +248,7 @@ export function addItemV2(item, quantity = 1, restaurant, options) {
     const { cart, token } = getState().checkout.carts[restaurant['@id']]
     dispatch(setToken(token))
     // Reload httpclient with new token
-    httpClient = createHttpClient(getState())
+    httpClient = createHttpClientWithSessionToken(getState())
     const response = await httpClient
       .post(`${cart['@id']}/items`, {
         product: item.identifier,
@@ -345,7 +346,7 @@ function queueAddItem(item, quantity = 1, options = []) {
     callback: (next, dispatch, getState) => {
 
       const { cart } = getState().checkout
-      const httpClient = createHttpClient(getState())
+      const httpClient = createHttpClientWithSessionToken(getState())
 
       dispatch(setCheckoutLoading(true))
 
@@ -372,7 +373,7 @@ function queueAddItem(item, quantity = 1, options = []) {
 
 const fetchValidation = _.throttle((dispatch, getState, cart) => {
 
-  const httpClient = createHttpClient(getState())
+  const httpClient = createHttpClientWithSessionToken(getState())
 
   // No need to validate when cart is empty
   if (cart.items.length === 0) {
@@ -417,7 +418,7 @@ function syncItem(item) {
 
       const { cart, token } = getState().checkout.carts[item.vendor['@id']]
       dispatch(setToken(token))
-      const httpClient = createHttpClient(getState())
+      const httpClient = createHttpClientWithSessionToken(getState())
 
       // We make sure to get item from state,
       // because it may have been updated
@@ -481,7 +482,7 @@ function queueRemoveItem(item) {
 
       const { cart, token } = getState().checkout.carts[item.vendor['@id']]
       dispatch(setToken(token))
-      const httpClient = createHttpClient(getState())
+      const httpClient = createHttpClientWithSessionToken(getState())
 
       dispatch(setCheckoutLoading(true))
 
@@ -535,7 +536,7 @@ export function removeItem(item) {
 
 export function setTip(order, tipAmount) {
   return (dispatch, getState) => {
-    const httpClient = createHttpClient(getState())
+    const httpClient = createHttpClientWithSessionToken(getState())
 
     dispatch(checkoutRequest())
     httpClient.put(`${order['@id']}/tip`, { tipAmount })
@@ -575,7 +576,7 @@ function syncAddress(cart, address) {
 
       const { carts } = getState().checkout
       dispatch(setToken(carts[cart.restaurant].token))
-      const httpClient = createHttpClient(getState())
+      const httpClient = createHttpClientWithSessionToken(getState())
 
       httpClient.put(carts[cart.restaurant].cart['@id'], { shippingAddress: address })
         .then(res => {
@@ -748,7 +749,7 @@ export function mercadopagoCheckout(payment) {
       paymentMethodId: 'CARD',
     }
 
-    const httpClient = createHttpClient(getState())
+    const httpClient = createHttpClientWithSessionToken(getState())
 
     httpClient
       .put(cart['@id'] + '/pay', params)
@@ -902,7 +903,7 @@ export function checkout(cardholderName, savedPaymentMethodId = null, saveCard =
 
     const billingEmail = selectBillingEmail(getState())
 
-    const httpClient = createHttpClient(getState())
+    const httpClient = createHttpClientWithSessionToken(getState())
 
     dispatch(checkoutRequest())
 
@@ -985,26 +986,27 @@ export function assignCustomer({ email, telephone }, cartContainer = null) {
 
   return async (dispatch, getState) => {
 
-    const { restaurant } = getState().checkout
-    const { cart, token } = cartContainer || getState().checkout.carts[restaurant]
-    const { user } = getState().app
+    const { cart, token } = selectCart(getState())
+    const user = selectUser(getState())
 
     if (!user.isGuest() && cart.customer) {
       return
     }
 
-    const httpClient = createHttpClient(getState())
-
     dispatch(checkoutRequest())
 
+    let httpClient
     let body = {}
 
     if (user.isGuest()) {
+      httpClient = createHttpClientWithSessionToken(getState())
       body = {
         guest: true,
         email,
         telephone,
       };
+    } else {
+      httpClient = selectHttpClient(getState())
     }
 
     return httpClient
@@ -1069,9 +1071,7 @@ export function updateCart(payload, cb) {
     const { restaurant } = getState().checkout
     const { cart, token } = getState().checkout.carts[restaurant]
 
-    const httpClient = createHttpClient(getState())
-
-
+    const httpClient = createHttpClientWithSessionToken(getState())
 
     if (payload.shippingAddress) {
       const shippingAddress = {
@@ -1109,7 +1109,7 @@ export function setDate(shippingTimeRange, cb) {
   return (dispatch, getState) => {
 
     const { cart } = selectCartWithHours(getState())
-    const httpClient = createHttpClient(getState())
+    const httpClient = createHttpClientWithSessionToken(getState())
 
     dispatch(checkoutRequest())
 
@@ -1132,7 +1132,7 @@ export function setDateAsap(cart, cb) {
 
   return (dispatch, getState) => {
 
-    const httpClient = createHttpClient(getState())
+    const httpClient = createHttpClientWithSessionToken(getState())
 
     //const { cart } = getState().checkout
 
@@ -1163,7 +1163,7 @@ export function setFulfillmentMethod(method) {
     //dispatch(checkoutRequest())
     dispatch(setToken(token))
 
-    const httpClient = createHttpClient(getState())
+    const httpClient = createHttpClientWithSessionToken(getState())
 
     httpClient
       .put(cart['@id'], {
@@ -1208,7 +1208,7 @@ export function loadPaymentMethods(method) {
 
     const { cart } = selectCartWithHours(getState())
 
-    const httpClient = createHttpClient(getState())
+    const httpClient = createHttpClientWithSessionToken(getState())
 
     dispatch(loadPaymentMethodsRequest())
 
@@ -1224,7 +1224,7 @@ export function checkoutWithCash() {
   return (dispatch, getState) => {
 
     const { cart } = selectCartWithHours(getState())
-    const httpClient = createHttpClient(getState())
+    const httpClient = createHttpClientWithSessionToken(getState())
 
     dispatch(checkoutRequest())
 
@@ -1240,9 +1240,7 @@ export function loadPaymentDetails() {
   return (dispatch, getState) => {
 
     const { cart } = selectCartWithHours(getState())
-    const httpClient = createHttpClient(getState())
-
-
+    const httpClient = createHttpClientWithSessionToken(getState())
 
     dispatch(loadPaymentDetailsRequest())
 
@@ -1256,7 +1254,7 @@ export function loadPaymentDetails() {
 export function loadStripeSavedPaymentMethods() {
   return (dispatch, getState) => {
 
-    const httpClient = createHttpClient(getState())
+    const { httpClient } = getState().app
 
     dispatch(loadStripeSavedPaymentMethodsRequest())
 
@@ -1270,7 +1268,7 @@ export function loadStripeSavedPaymentMethods() {
 export function generateInvoice(order, address) {
 
   return (dispatch, getState) => {
-    const httpClient = createHttpClient(getState())
+    const { httpClient } = getState().app
     const { streetAddress: billingAddress } = address
 
     dispatch(setLoading(true))
@@ -1296,8 +1294,7 @@ export function generateInvoice(order, address) {
 export function shareInvoice(order) {
 
   return (dispatch, getState) => {
-    const httpClient = createHttpClient(getState())
-    const settings = getState().app.settings
+    const { settings, httpClient } = getState().app
     const { number } = order
 
     httpClient.get(`${order['@id']}/invoice`, {})
@@ -1315,7 +1312,7 @@ export function search(q) {
 
   return (dispatch, getState) => {
 
-    const httpClient = createHttpClient(getState())
+    const { httpClient } = getState().app
 
     dispatch(searchRequest())
 
@@ -1330,7 +1327,7 @@ export function loadAndNavigateToRestaurante(id) {
 
   return (dispatch, getState) => {
 
-    const httpClient = createHttpClient(getState())
+    const { httpClient } = getState().app
 
     dispatch(getRestaurantRequest())
 
@@ -1357,7 +1354,7 @@ export function updateLoopeatReturns(returns) {
 
   return (dispatch, getState) => {
 
-    const httpClient = createHttpClient(getState())
+    const httpClient = createHttpClientWithSessionToken(getState())
     const { cart } = selectCart(getState())
 
     dispatch(checkoutRequest())
