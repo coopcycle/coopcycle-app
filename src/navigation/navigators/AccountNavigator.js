@@ -4,8 +4,14 @@ import { createStackNavigator } from '@react-navigation/stack'
 import screens, { headerLeft } from '..'
 import { stackNavigatorScreenOptions } from '../styles'
 import i18n from '../../i18n'
+import AccountRegisterConfirm from '../account/RegisterConfirm'
+import AccountResetPasswordNewPassword
+  from '../account/ResetPasswordNewPassword'
 
 const Stack = createStackNavigator()
+
+export const AccountRegisterConfirmScreen = 'AccountRegisterConfirm'
+export const AccountResetPasswordNewPasswordScreen = 'AccountResetPasswordNewPassword'
 
 export default () => (
   <Stack.Navigator
@@ -40,6 +46,13 @@ export default () => (
       }}
     />
     <Stack.Screen
+      name={ AccountRegisterConfirmScreen }
+      component={ AccountRegisterConfirm }
+      options={{
+        title: i18n.t('REGISTER_CONFIRM'),
+      }}
+    />
+    <Stack.Screen
       name="AccountForgotPassword"
       component={ screens.AccountForgotPassword }
       options={{
@@ -51,6 +64,13 @@ export default () => (
       component={ screens.AccountResetPasswordCheckEmail }
       options={{
         title: i18n.t('RESET_PASSWORD_CHECK_EMAIL'),
+      }}
+    />
+    <Stack.Screen
+      name={ AccountResetPasswordNewPasswordScreen }
+      component={ AccountResetPasswordNewPassword }
+      options={{
+        title: i18n.t('RESET_PASSWORD_NEW_PASSWORD'),
       }}
     />
   </Stack.Navigator>
