@@ -47,20 +47,6 @@ const save = data => {
   })
 }
 
-function overrideCity(values) {
-
-  return values.map((value) => {
-    if (value.city.startsWith('Ciudad de México')) {
-      return {
-        ...value,
-        city: 'Ciudad de México',
-      }
-    }
-
-    return value
-  })
-}
-
 class Server {
 
   static loadAll() {
@@ -74,11 +60,11 @@ class Server {
 
           if (!remoteData) {
 
-            return resolve(overrideCity(localData))
+            return resolve(localData)
           }
 
           save(remoteData)
-            .then(() => resolve(overrideCity(remoteData)))
+            .then(() => resolve(remoteData))
 
         })
     })
