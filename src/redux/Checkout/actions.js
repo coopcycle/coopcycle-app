@@ -1302,7 +1302,7 @@ export function shareInvoice(order) {
     const { settings, httpClient } = getState().app
     const { number } = order
 
-    httpClient.get(`${order['@id']}/invoice`, {})
+    httpClient.get(`${order['@id']}/invoice`)
       .then(async (res) => {
         Share.open({
           title: [ 'Invoice', settings.brand_name, number ].join(' '),
