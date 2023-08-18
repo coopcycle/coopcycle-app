@@ -1,0 +1,12 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/ingydotnet/git-subrepo#readme
+;
+[subrepo]
+	remote = https://github.com/coopcycle/coopcycle-frontend-js.git
+	branch = master
+	commit = 821d9f1b50f7991d73519b1e4f6cf6b72a974977
+	parent = baf5891dd74fff52303e9da0e2dca17cef5a6b4c
+	method = merge
+	cmdver = 0.4.6
