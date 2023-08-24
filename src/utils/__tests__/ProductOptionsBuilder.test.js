@@ -67,6 +67,7 @@ describe('ProductOptionsBuilder', () => {
     const optionsBuilder = new ProductOptionsBuilder(productOptions)
 
     optionsBuilder.add({ 'identifier':'4363401d-e69e-4c75-9fed-f75e44540b5d' })
+
     expect(optionsBuilder.getPayload()).toEqual([
       {
         code: '4363401d-e69e-4c75-9fed-f75e44540b5d',
@@ -76,6 +77,7 @@ describe('ProductOptionsBuilder', () => {
     ])
 
     optionsBuilder.add({ 'identifier':'64b97ccc-0ff5-4577-a881-8a0a834fdf80' })
+    expect(optionsBuilder.isValid()).toBe(false)
     expect(optionsBuilder.getPayload()).toEqual([
       {
         code: '4363401d-e69e-4c75-9fed-f75e44540b5d',
@@ -83,6 +85,29 @@ describe('ProductOptionsBuilder', () => {
         price: 0,
       }, {
         code: '64b97ccc-0ff5-4577-a881-8a0a834fdf80',
+        quantity: 1,
+        price: 0,
+      },
+    ])
+  })
+
+  it('replaces option', () => {
+
+    const optionsBuilder = new ProductOptionsBuilder(productOptions)
+
+    optionsBuilder.add({ 'identifier':'b3b58c52-5159-3173-96c2-24b5608acf37' })
+    expect(optionsBuilder.getPayload()).toEqual([
+      {
+        code: 'b3b58c52-5159-3173-96c2-24b5608acf37',
+        quantity: 1,
+        price: 0,
+      },
+    ])
+
+    optionsBuilder.add({ 'identifier':'e2855e88-64c4-343f-b70d-5579402cf14e' })
+    expect(optionsBuilder.getPayload()).toEqual([
+      {
+        code: 'e2855e88-64c4-343f-b70d-5579402cf14e',
         quantity: 1,
         price: 0,
       },
@@ -110,94 +135,6 @@ describe('ProductOptionsBuilder', () => {
         price: 0,
       },
     ])
-  })
-
-  it('decrements options', () => {
-
-    const optionsBuilder = new ProductOptionsBuilder(productOptions)
-
-    optionsBuilder.add({ 'identifier':'4363401d-e69e-4c75-9fed-f75e44540b5d' })
-    optionsBuilder.add({ 'identifier':'4363401d-e69e-4c75-9fed-f75e44540b5d' })
-    expect(optionsBuilder.getPayload()).toEqual([
-      {
-        code: '4363401d-e69e-4c75-9fed-f75e44540b5d',
-        quantity: 2,
-        price: 0,
-      },
-    ])
-
-    optionsBuilder.decrement({ 'identifier':'4363401d-e69e-4c75-9fed-f75e44540b5d' })
-    expect(optionsBuilder.getPayload()).toEqual([
-      {
-        code: '4363401d-e69e-4c75-9fed-f75e44540b5d',
-        quantity: 1,
-        price: 0,
-      },
-    ])
-
-    optionsBuilder.decrement({ 'identifier':'4363401d-e69e-4c75-9fed-f75e44540b5d' })
-    expect(optionsBuilder.getPayload()).toEqual([])
-  })
-
-  it('replaces option', () => {
-
-    const optionsBuilder = new ProductOptionsBuilder(productOptions)
-
-    optionsBuilder.add({ 'identifier':'b3b58c52-5159-3173-96c2-24b5608acf37' })
-    expect(optionsBuilder.getPayload()).toEqual([
-      {
-        code: 'b3b58c52-5159-3173-96c2-24b5608acf37',
-        quantity: 1,
-        price: 0,
-      },
-    ])
-
-    optionsBuilder.add({ 'identifier':'e2855e88-64c4-343f-b70d-5579402cf14e' })
-    expect(optionsBuilder.getPayload()).toEqual([
-      {
-        code: 'e2855e88-64c4-343f-b70d-5579402cf14e',
-        quantity: 1,
-        price: 0,
-      },
-    ])
-  })
-
-  it('validates options', () => {
-
-    const optionsBuilder = new ProductOptionsBuilder(productOptions)
-
-    expect(optionsBuilder.isValid()).toBe(false)
-
-    optionsBuilder.add({ 'identifier':'4363401d-e69e-4c75-9fed-f75e44540b5d' })
-    expect(optionsBuilder.getPayload()).toEqual([
-      {
-        code: '4363401d-e69e-4c75-9fed-f75e44540b5d',
-        quantity: 1,
-        price: 0,
-      },
-    ])
-    expect(optionsBuilder.isValid()).toBe(false)
-
-    optionsBuilder.add({ 'identifier':'b3b58c52-5159-3173-96c2-24b5608acf37' })
-    expect(optionsBuilder.getPayload()).toEqual([
-      {
-        code: '4363401d-e69e-4c75-9fed-f75e44540b5d',
-        quantity: 1,
-        price: 0,
-      }, {
-        code: 'b3b58c52-5159-3173-96c2-24b5608acf37',
-        quantity: 1,
-        price: 0,
-      },
-    ])
-    expect(optionsBuilder.isValid()).toBe(true)
-
-    // ---
-
-    const notMandatoryProductOptionsBuilder = new ProductOptionsBuilder(notMandatoryProductOptions)
-
-    expect(notMandatoryProductOptionsBuilder.isValid()).toBe(true)
-
   })
 
   it('increments quantity when adding twice', () => {
@@ -298,6 +235,41 @@ describe('ProductOptionsBuilder', () => {
         price: 0,
       },
     ])
+  })
+
+  it('decrements options', () => {
+
+    const optionsBuilder = new ProductOptionsBuilder(productOptions)
+
+    optionsBuilder.add({ 'identifier':'4363401d-e69e-4c75-9fed-f75e44540b5d' })
+    optionsBuilder.add({ 'identifier':'4363401d-e69e-4c75-9fed-f75e44540b5d' })
+    expect(optionsBuilder.getPayload()).toEqual([
+      {
+        code: '4363401d-e69e-4c75-9fed-f75e44540b5d',
+        quantity: 2,
+        price: 0,
+      },
+    ])
+
+    optionsBuilder.decrement({ 'identifier':'4363401d-e69e-4c75-9fed-f75e44540b5d' })
+    expect(optionsBuilder.getPayload()).toEqual([
+      {
+        code: '4363401d-e69e-4c75-9fed-f75e44540b5d',
+        quantity: 1,
+        price: 0,
+      },
+    ])
+
+    optionsBuilder.decrement({ 'identifier':'4363401d-e69e-4c75-9fed-f75e44540b5d' })
+    expect(optionsBuilder.getPayload()).toEqual([])
+  })
+
+  describe('no mandatory options', () => {
+    it('isValid', () => {
+      const notMandatoryProductOptionsBuilder = new ProductOptionsBuilder(notMandatoryProductOptions)
+
+      expect(notMandatoryProductOptionsBuilder.isValid()).toBe(true)
+    })
   })
 
   it('parses values range', () => {
