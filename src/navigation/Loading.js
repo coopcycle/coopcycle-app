@@ -7,7 +7,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 
 import Server from '../Server'
 import AppUser from '../AppUser'
-import { bootstrap, closeModal, resetModal, resetServer, setServers } from '../redux/App/actions'
+import { bootstrap, closeModal, resetServer, setServers } from '../redux/App/actions'
 
 import HomeNavigator from './navigators/HomeNavigator'
 import DrawerNavigator from './navigators/DrawerNavigator'
@@ -147,7 +147,9 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(0, 0, 0, 0.1)',
     borderWidth: 1,
   },
-  defaultModal: {},
+  defaultModal: {
+    color: 'black',
+  },
   successModal: {
     color: '#0f5132',
     backgroundColor: '#d1e7dd',
