@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Animated, Dimensions, FlatList, InteractionManager, StyleSheet, TouchableOpacity, View, Linking } from 'react-native'
-import { Center, HStack, Icon, Pressable, Text } from 'native-base';
+import { Button, Center, HStack, Icon, Pressable, Text } from 'native-base'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 import _ from 'lodash'
@@ -64,6 +64,7 @@ const CollectionDisclaimerModal = withTranslation()(({ isVisible, onSwipeComplet
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', padding: 20 }}>
         <View style={{ backgroundColor: '#ffffff', paddingHorizontal: 20, paddingVertical: 30 }}>
           <Text style={{ fontSize: 14 }}>{ t('CART_COLLECTION_DISCLAIMER', { telephone: restaurant.telephone }) }</Text>
+          <Button style={{ marginTop: 20 }} onPress={onSwipeComplete}>{ t('CLOSE') }</Button>
         </View>
       </View>
     </Modal>
