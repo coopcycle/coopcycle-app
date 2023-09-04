@@ -10,7 +10,7 @@ import ProductOptions from './ProductOptions'
 import FooterButton from './components/FooterButton'
 import { addItemV2 } from '../../redux/Checkout/actions'
 import { formatPrice } from '../../utils/formatting'
-import { AllergenList, RestrictedDietList } from '../../components/MenuBadges'
+import { AllergenList, RestrictedDietList, ZeroWasteBadge } from '../../components/MenuBadges'
 
 class ProductDetails extends Component {
 
@@ -79,7 +79,7 @@ class ProductDetails extends Component {
 
     render() {
         const product = this.props.route.params?.product;
-        const hasBadges = !!product.suitableForDiet || !!product.allergens;
+        const hasBadges = !!product.suitableForDiet || !!product.allergens || !!product.reusablePackagingEnabled;
 
         const image16x9 = product.images && Array.isArray(product.images)
             && _.find(product.images, image => image.ratio === '16:9')
@@ -104,6 +104,7 @@ class ProductDetails extends Component {
                     <Box mt="2">
                         { product.suitableForDiet && (<RestrictedDietList items={ product.suitableForDiet } />) }
                         { product.allergens && (<AllergenList items={ product.allergens } />) }
+                        { product.reusablePackagingEnabled && <ZeroWasteBadge /> }
                     </Box>
                     ) }
                     <Text mt="2" bold fontSize="xl">{ `${formatPrice(product.offers.price)}` }</Text>

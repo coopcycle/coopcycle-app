@@ -1,10 +1,20 @@
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import { Box, Text } from 'native-base'
-import { withTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next'
 import _ from 'lodash'
 
-const RestrictedDiet = ({ items, t }) => {
+const Badge = ({ color, text }) => {
+  return (
+    <Box style={ [styles.item] } bg={ color }>
+      <Text style={ styles.itemText } color="black">{ text }</Text>
+    </Box>
+  )
+}
+
+const RestrictedDiet = ({ items }) => {
+
+  const { t } = useTranslation()
 
   if (!Array.isArray(items)) {
     items = _.values(items)
@@ -13,15 +23,17 @@ const RestrictedDiet = ({ items, t }) => {
   return (
     <View style={ styles.container }>
       { items.map(item => (
-        <Box key={ item } style={ [styles.item] } bg="lightBlue.200">
-          <Text style={ styles.itemText } color="black">{ t(`RESTRICTED_DIET.${item.replace('http://schema.org/', '')}`) }</Text>
-        </Box>
+        <Badge key={ item }
+          color="lightBlue.200"
+          text={ t(`RESTRICTED_DIET.${item.replace('http://schema.org/', '')}`) } />
       )) }
     </View>
   )
 }
 
-const Allergen = ({ items, t }) => {
+const Allergen = ({ items }) => {
+
+  const { t } = useTranslation()
 
   if (!Array.isArray(items)) {
     items = _.values(items)
@@ -30,9 +42,9 @@ const Allergen = ({ items, t }) => {
   return (
     <View style={ styles.container }>
       { items.map(item => (
-        <Box key={ item } style={ [styles.item] } bg="amber.200">
-          <Text style={ styles.itemText } color="black">{ t(`ALLERGEN.${item}`) }</Text>
-        </Box>
+        <Badge key={ item }
+          color="amber.200"
+          text={ t(`ALLERGEN.${item}`) } />
       )) }
     </View>
   )
@@ -58,5 +70,17 @@ const styles = StyleSheet.create({
   },
 })
 
-export const AllergenList = withTranslation()(Allergen)
-export const RestrictedDietList = withTranslation()(RestrictedDiet)
+export const AllergenList = Allergen
+export const RestrictedDietList = RestrictedDiet
+export const ZeroWasteBadge = () => {
+
+  const { t } = useTranslation()
+
+  return (
+    <View style={ styles.container }>
+      <Badge
+        color="green.400"
+        text={ t('ZERO_WASTE') } />
+    </View>
+  )
+}
