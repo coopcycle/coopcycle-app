@@ -1,7 +1,8 @@
 import React from 'react'
-import { Box, Text, Button, HStack, Pressable, Icon } from 'native-base'
+import { Box, Text, Button, HStack, Pressable, Icon, IconButton } from 'native-base'
 import { useNavigation } from '@react-navigation/native'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import { useTranslation } from 'react-i18next'
 
 function Loopeat({ requiredAmount, creditsCountCents, returnsTotalAmount }) {
@@ -28,9 +29,7 @@ function Loopeat({ requiredAmount, creditsCountCents, returnsTotalAmount }) {
     <HStack p="3" justifyContent="space-between" alignItems="center">
       <Icon as={ FontAwesome } name="check-circle" size="sm" />
       <Text>{ t('CHECKOUT_LOOPEAT_OPTION_ENABLED') }</Text>
-      <Button size="sm" onPress={ () => navigation.navigate('CheckoutLoopeat') }>
-        { t('CHECKOUT_LOOPEAT_MANAGE') }
-      </Button>
+      <IconButton _icon={{ as: FontAwesome5, name: 'exchange-alt', size: 'sm' }} onPress={ () => navigation.navigate('CheckoutLoopeat') } />
     </HStack>
   )
 }

@@ -477,7 +477,6 @@
         "CHECKOUT_LOOPEAT_INSUFFICIENT_WALLET_AMOUNT": "Insufficient wallet amount",
         "CHECKOUT_LOOPEAT_VALIDATE": "Validate and go back to cart",
         "CHECKOUT_LOOPEAT_RETURN_CONTAINERS": "Return containers",
-        "CHECKOUT_LOOPEAT_MANAGE": "Manage",
         "CHECKOUT_LOOPEAT_RETURN_CONTAINER": "Return container",
         "CHECKOUT_LOOPEAT_WALLET": "Wallet",
         "CHECKOUT_LOOPEAT_TOTAL_RETURNS": "Total returns",

@@ -458,7 +458,6 @@
         "CHECKOUT_LOOPEAT_INSUFFICIENT_WALLET_AMOUNT": "Cagnotte insuffisante",
         "CHECKOUT_LOOPEAT_VALIDATE": "Valider et retourner au panier",
         "CHECKOUT_LOOPEAT_RETURN_CONTAINERS": "Rendre des boîtes",
-        "CHECKOUT_LOOPEAT_MANAGE": "Gérer",
         "CHECKOUT_LOOPEAT_RETURN_CONTAINER": "Rendre la boîte",
         "CHECKOUT_LOOPEAT_WALLET": "Cagnotte",
         "CHECKOUT_LOOPEAT_TOTAL_RETURNS": "Total retours",
