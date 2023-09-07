@@ -1,11 +1,11 @@
 import React from 'react'
 import { Animated, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { Icon } from 'native-base'
-import { Calendar } from 'react-native-calendars'
 import moment from 'moment'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 
 import { calendarHeight, dateSelectHeaderHeight, headerFontSize, primaryColor, whiteColor } from '../styles/common'
+import { Calendar } from './Calendar'
 
 let styles = StyleSheet.create({
   container: {
@@ -48,11 +48,7 @@ class DateSelectHeader extends React.Component {
   constructor(props) {
     super(props)
 
-    this.initialCalendarTop = -1 * (dateSelectHeaderHeight + calendarHeight)
-
-    // FIXME
-    // We still need to add some more height
-    this.initialCalendarTop -= 30
+    this.initialCalendarTop = -1 * calendarHeight
 
     this.state = {
       height: dateSelectHeaderHeight,
@@ -161,19 +157,11 @@ class DateSelectHeader extends React.Component {
         </View>
         <Animated.View style={[ styles.calendarWidget, { top: this.state.slideCalendarAnim }]}>
           <Calendar
-            current={selectedDate.format('YYYY-MM-DD')}
-            // Handler which gets executed on day press. Default = undefined
-            onDayPress={({ dateString }) => {this.onDateSelect(moment(dateString))}}
-            theme={{
-              textSectionTitleColor: primaryColor,
-              selectedDayBackgroundColor: primaryColor,
-              selectedDayTextColor: whiteColor,
-              arrowColor: primaryColor,
-              monthTextColor: primaryColor,
-              textDayFontSize: 18,
-              textMonthFontSize: 18,
-              textDayHeaderFontSize: 18,
+            initialDate={ selectedDate.format('YYYY-MM-DD') }
+            markedDates={{
+              [selectedDate.format('YYYY-MM-DD')]: { selected: true },
             }}
+            onDateSelect={(momentDate) => {this.onDateSelect(momentDate)}}
           />
         </Animated.View>
       </View>

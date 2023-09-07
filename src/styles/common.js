@@ -13,7 +13,7 @@ let primaryColor = Config.PRIMARY_COLOR || '#e4022d',
     orangeColor = '#d35400',
     fontTitleName = 'Raleway-Regular',
     dateSelectHeaderHeight = 40,
-    calendarHeight = 300,
+    calendarHeight = 370, // an actual height is slightly different per platform; android is ~367, ios is ~357
     headerFontSize = 18
 
 export {
