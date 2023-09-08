@@ -63,6 +63,9 @@ import DropdownHolder from './DropdownHolder'
 
 import NavigationHolder from './NavigationHolder'
 import { QueryClient, QueryClientProvider } from 'react-query';
+import {
+  AccountRegisterConfirmScreen, AccountResetPasswordNewPasswordScreen,
+} from './navigation/navigators/AccountNavigator'
 
 LogBox.ignoreLogs([
   'Warning: isMounted(...) is deprecated in plain JavaScript React classes.',
@@ -102,10 +105,11 @@ NavigationHolder.setNavigationRef(navigationRef)
 
 const config = {
   screens: {
-    RegisterConfirmNav: 'register/confirm/:token',
-    ResetPasswordNav: 'resetting/reset/:token',
     AccountNav: {
       screens: {
+        [AccountRegisterConfirmScreen]: 'register/confirm/:token',
+        [AccountResetPasswordNewPasswordScreen]: 'resetting/reset/:token',
+        // todo: this path seems broken, I don't see `AccountOrders` in the `AccountNav` navigator
         AccountOrders: {
           screens: {
             AccountOrder: 'order/confirm/:hashid',

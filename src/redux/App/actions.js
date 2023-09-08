@@ -1,5 +1,5 @@
 import { createAction } from 'redux-actions'
-import { CommonActions } from '@react-navigation/native'
+import { CommonActions, StackActions } from '@react-navigation/native'
 import tracker from '../../analytics/Tracker'
 import analyticsEvent from '../../analytics/Event'
 import userProperty from '../../analytics/UserProperty'
@@ -472,11 +472,20 @@ export function confirmRegistration(token) {
     const { app } = getState()
     const { httpClient, resumeCheckoutAfterActivation } = app
 
+    dispatch(setLoading(true))
     dispatch(authenticationRequest())
 
     httpClient.confirmRegistration(token)
       .then(user => {
         dispatch(authenticationSuccess(user))
+
+        //remove RegisterConfirmScreen from stack
+        NavigationHolder.dispatch(CommonActions.reset({
+          index: 0,
+          routes: [
+            { name: 'AccountHome' },
+          ],
+        }))
 
         if (resumeCheckoutAfterActivation) {
           dispatch(resumeCheckout())
@@ -485,8 +494,8 @@ export function confirmRegistration(token) {
         }
       })
       .catch(err => {
+        dispatch(setLoading(false))
         if (err.hasOwnProperty('status') && err.status === 401) {
-          dispatch(setLoading(false))
           // TODO Say that the token is no valid
         }
       })
@@ -512,7 +521,6 @@ export function guestModeOn() {
     )
     dispatch(setUser(user))
     console.log('User is in guest mode')
-    NavigationHolder.navigate('CheckoutMoreInfos', {});
   }
 }
 
@@ -521,9 +529,6 @@ export function resumeCheckout() {
     dispatch(_resumeCheckoutAfterActivation(false))
     NavigationHolder.dispatch(CommonActions.navigate({
       name: 'CheckoutNav',
-      params: {
-        screen: 'CheckoutSummary',
-      },
     }))
   }
 }

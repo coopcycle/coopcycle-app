@@ -1,7 +1,7 @@
 import React from 'react'
 import { TouchableOpacity } from 'react-native'
 import { Icon, Text } from 'native-base'
-import { connect } from 'react-redux'
+import { connect, useSelector } from 'react-redux'
 import { TransitionPresets, createStackNavigator } from '@react-navigation/stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import AskAddress from '../home/AskAddress';
@@ -12,9 +12,11 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { primaryColor } from '../../styles/common';
 import store from '../../redux/store'
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
-import { selectIsAuthenticated } from '../../redux/App/selectors';
+import {
+  selectIsAuthenticated,
+  selectIsGuest,
+} from '../../redux/App/selectors'
 import CartsBadge from '../checkout/components/CartsBadge';
-import Config from 'react-native-config';
 import AccountNavigator from './AccountNavigator';
 
 function getNestedOptions(navigation, route) {
@@ -180,42 +182,50 @@ const MainNavigator = () => (
   </MainStack.Navigator>
 )
 
-const LoginRegisterStack = createStackNavigator()
 
-const LoginRegisterNavigator = () => (
-  <LoginRegisterStack.Navigator
-    screenOptions={ stackNavigatorScreenOptions }>
-    <LoginRegisterStack.Screen
-      name="CheckoutLoginRegister"
-      component={ screens.CheckoutLogin }
-      options={{
-        headerShown: false,
-      }}
-    />
-    <LoginRegisterStack.Screen
-      name="CheckoutCheckEmail"
-      component={ screens.AccountRegisterCheckEmail }
-      options={{
-        headerShown: false,
-      }}
-    />
-    <LoginRegisterStack.Screen
-      name="CheckoutForgotPassword"
-      component={ screens.AccountForgotPassword }
-      options={{
-        headerShown: false,
-      }}
-    />
-    <LoginRegisterStack.Screen
-      name="CheckoutResetPasswordCheckEmail"
-      component={ screens.AccountResetPasswordCheckEmail }
-      options={{
-        headerShown: false,
-      }}
-    />
-  </LoginRegisterStack.Navigator>
-)
+const SubmitOrderStack = createStackNavigator()
 
+const SubmitOrderNavigator = () => {
+  const isAuthenticatedUser = useSelector(selectIsAuthenticated)
+  const isGuest = useSelector(selectIsGuest)
+
+  return (
+    <SubmitOrderStack.Navigator
+      screenOptions={ stackNavigatorScreenOptions }>
+      {(isAuthenticatedUser || isGuest ) ? (
+        <SubmitOrderStack.Screen
+          name="CheckoutMoreInfos"
+          component={ screens.CheckoutMoreInfos }
+          options={{
+            title: i18n.t('CHECKOUT_MORE_INFOS'),
+          }}
+        />
+      ) : (
+        <SubmitOrderStack.Group
+          screenOptions={{
+            title: i18n.t('CHECKOUT_LOGIN_TITLE'),
+          }}>
+          <SubmitOrderStack.Screen
+            name="CheckoutLoginRegister"
+            component={ screens.CheckoutLogin }
+          />
+          <SubmitOrderStack.Screen
+            name="CheckoutCheckEmail"
+            component={ screens.AccountRegisterCheckEmail }
+          />
+          <SubmitOrderStack.Screen
+            name="CheckoutForgotPassword"
+            component={ screens.AccountForgotPassword }
+          />
+          <SubmitOrderStack.Screen
+            name="CheckoutResetPasswordCheckEmail"
+            component={ screens.AccountResetPasswordCheckEmail }
+          />
+        </SubmitOrderStack.Group>
+      )}
+    </SubmitOrderStack.Navigator>
+  )
+}
 const RootStack = createStackNavigator()
 
 const DefaultNav = () => (
@@ -243,17 +253,10 @@ const DefaultNav = () => (
       }}
     />
     <RootStack.Screen
-      name="CheckoutLogin"
-      component={ LoginRegisterNavigator }
+      name="CheckoutSubmitOrder"
+      component={ SubmitOrderNavigator }
       options={{
-        title: i18n.t('CHECKOUT_LOGIN_TITLE'),
-      }}
-    />
-    <RootStack.Screen
-      name="CheckoutMoreInfos"
-      component={ screens.CheckoutMoreInfos }
-      options={{
-        title: i18n.t('CHECKOUT_MORE_INFOS'),
+        headerShown: false,
       }}
     />
     <RootStack.Screen

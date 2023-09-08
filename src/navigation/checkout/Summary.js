@@ -1,6 +1,15 @@
 import React, { Component } from 'react';
-import { Animated, Dimensions, FlatList, InteractionManager, StyleSheet, TouchableOpacity, View, Linking } from 'react-native'
-import { Button, Center, HStack, Icon, Pressable, Text } from 'native-base'
+import {
+  Animated,
+  Dimensions,
+  FlatList,
+  InteractionManager,
+  Linking,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from 'react-native'
+import { Button, Center, HStack, Icon, Pressable, Text } from 'native-base';
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 import _ from 'lodash'
@@ -23,7 +32,6 @@ import {
   showTimingModal,
   updateCart,
   validate,
-  refreshCart,
 } from '../../redux/Checkout/actions'
 import {
   selectCartFulfillmentMethod,
@@ -105,6 +113,11 @@ class Summary extends Component {
       this.props.validate(this.props.cart)
     })
     this.linkingSubscription = Linking.addEventListener('url', ({ url }) => {
+      /**
+       * todo: it is also triggered on account activation deeplink before an account is activated,
+       * which leads to unnecessary requests
+       * Should it be triggered only on specific urls?
+       */
       this.props.validate(this.props.cart)
     })
   }
@@ -126,10 +139,10 @@ class Summary extends Component {
     }
   }
 
-  _navigate(routeName, cart = {}) {
+  _navigate(routeName) {
     // Set edit = false before navigating
     this.props.navigation.setParams({ 'edit': false })
-    this.props.navigation.navigate(routeName, cart)
+    this.props.navigation.navigate(routeName)
   }
 
   _renderItemAdjustments(item, index) {
@@ -156,16 +169,7 @@ class Summary extends Component {
   }
 
   onSubmit() {
-    //FEAT: Pass cart and/or restaurant to componant here
-    const { cart } = this.props
-
-    //FEAT: Set the cart into the Redux state
-
-    if (this.props.isAuthenticated) {
-      this._navigate('CheckoutMoreInfos', { cart })
-    } else {
-      this._navigate('CheckoutLogin')
-    }
+    this._navigate('CheckoutSubmitOrder')
   }
 
   onSubmitCoupon(code) {
@@ -458,7 +462,6 @@ function mapDispatchToProps(dispatch) {
     setFulfillmentMethod: method => dispatch(setFulfillmentMethod(method)),
     showTimingModal: show => dispatch(showTimingModal(show)),
     setTip: (order, tipAmount) => dispatch(setTip(order, tipAmount)),
-    refreshCart: (cart) => dispatch(refreshCart(cart)),
   }
 }
 

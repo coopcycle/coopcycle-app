@@ -19,43 +19,7 @@ import StoreNavigator from './StoreNavigator'
 import About from '../home/About'
 import Terms from '../home/Terms'
 import Privacy from '../home/Privacy'
-import AccountRegisterConfirm from '../account/RegisterConfirm'
-import AccountResetPasswordNewPassword from '../account/ResetPasswordNewPassword'
 import { HeaderBackButton } from '@react-navigation/elements'
-
-const RegisterConfirmStack = createStackNavigator()
-
-const RegisterConfirmNavigator = ({ route }) => (
-  <RegisterConfirmStack.Navigator
-    screenOptions={ stackNavigatorScreenOptions }>
-    <RegisterConfirmStack.Screen
-      name="RegisterConfirmHome"
-      component={ AccountRegisterConfirm }
-      options={({ navigation }) => ({
-        title: i18n.t('REGISTER_CONFIRM'),
-        headerLeft: headerLeft(navigation),
-      })}
-      initialParams={{ ...route.params }}
-    />
-  </RegisterConfirmStack.Navigator>
-)
-
-const ResetPasswordStack = createStackNavigator()
-
-const ResetPasswordNavigator = ({ route }) => (
-  <ResetPasswordStack.Navigator
-    screenOptions={ stackNavigatorScreenOptions }>
-    <ResetPasswordStack.Screen
-      name="ResetPasswordHome"
-      component={ AccountResetPasswordNewPassword }
-      options={({ navigation }) => ({
-        title: i18n.t('RESET_PASSWORD_NEW_PASSWORD'),
-        headerLeft: headerLeft(navigation),
-      })}
-      initialParams={{ ...route.params }}
-    />
-  </ResetPasswordStack.Navigator>
-)
 
 const AboutStack = createStackNavigator()
 
@@ -144,12 +108,6 @@ const DrawerNav = ({ initialRouteName, user, isAuthenticated, showRestaurantsDra
       <Drawer.Screen
         name="PrivacyNav"
         component={ PrivacyNavigator } />
-      <Drawer.Screen
-        name="RegisterConfirmNav"
-        component={ RegisterConfirmNavigator } />
-      <Drawer.Screen
-        name="ResetPasswordNav"
-        component={ ResetPasswordNavigator } />
 
       { (isAuthenticated && user.hasRole('ROLE_COURIER')) && (
         <Drawer.Screen

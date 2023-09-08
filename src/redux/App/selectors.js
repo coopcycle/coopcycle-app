@@ -12,6 +12,11 @@ export const selectIsAuthenticated = createSelector(
   (user) => !!(user && user.isAuthenticated())
 )
 
+export const selectIsGuest = createSelector(
+  selectUser,
+  (user) => !!(user && user.isGuest())
+)
+
 export const selectHttpClientHasCredentials = createSelector(
   selectHttpClient,
   (httpClient) => !!(httpClient && !!httpClient.getToken())
