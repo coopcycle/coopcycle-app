@@ -23,7 +23,6 @@ import {
   decrementItem,
   hideAddressModal,
   incrementItem,
-  refreshCart,
   removeItem,
   setAddress,
   setDate,
@@ -463,7 +462,6 @@ function mapDispatchToProps(dispatch) {
     setFulfillmentMethod: method => dispatch(setFulfillmentMethod(method)),
     showTimingModal: show => dispatch(showTimingModal(show)),
     setTip: (order, tipAmount) => dispatch(setTip(order, tipAmount)),
-    refreshCart: (cart) => dispatch(refreshCart(cart)),
   }
 }
 
