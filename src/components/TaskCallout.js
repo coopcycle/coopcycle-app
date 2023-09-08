@@ -19,6 +19,10 @@ const Address = ({ task }) => {
 
   const parts = [task.address.streetAddress]
 
+  if (task.address.description) {
+    parts.push(task.address.description)
+  }
+
   if (task.address.name) {
     parts.unshift(task.address.name)
   }

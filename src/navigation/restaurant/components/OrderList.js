@@ -4,6 +4,7 @@ import { HStack, Icon, Text } from 'native-base'
 import moment from 'moment'
 import { withTranslation } from 'react-i18next'
 import Ionicons from 'react-native-vector-icons/Ionicons'
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
 import { formatPrice } from '../../../utils/formatting'
 import OrderNumber from '../../../components/OrderNumber'
@@ -40,6 +41,7 @@ class OrderList extends Component {
           </View>
           <OrderFulfillmentMethodIcon order={ order } small />
           <PaymentMethodInfo fullDetail={false} paymentMethod={order.paymentMethod} />
+          { order.notes ? <Icon as={FontAwesome} name="comments" size="xs"/> : null }
         </HStack>
         <Text>{ `${formatPrice(order.itemsTotal)}` }</Text>
         <Text>{ moment.parseZone(order.pickupExpectedAt).format('LT') }</Text>

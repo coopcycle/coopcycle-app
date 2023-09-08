@@ -169,9 +169,10 @@ class TasksMapView extends Component {
   _getWarnings(task) {
     const warnings = []
 
-    if (task.comments && task.comments.length) {
-      warnings.push('comments')
-    }
+    // task.comments should not be a warning
+    // if (task.comments && task.comments.length) {
+    //   warnings.push('comments')
+    // }
 
     return warnings
   }
