@@ -60,6 +60,26 @@ const notMandatoryProductOptions = [
   },
 ]
 
+const addMandatoryNonAdditional = (builder) => {
+  builder.add({ 'identifier':'b3b58c52-5159-3173-96c2-24b5608acf37' })
+}
+
+const replaceMandatoryNonAdditional = (builder) => {
+  builder.add({ 'identifier':'e2855e88-64c4-343f-b70d-5579402cf14e' })
+}
+
+const incrementMandatoryAdditional = (builder) => {
+  builder.increment({ 'identifier':'4363401d-e69e-4c75-9fed-f75e44540b5d' })
+}
+
+const decrementMandatoryAdditional = (builder) => {
+  builder.decrement({ 'identifier':'4363401d-e69e-4c75-9fed-f75e44540b5d' })
+}
+
+const incrementNonMandatoryAdditional = (builder) => {
+  builder.increment({ 'identifier':'4363401d-e69e-4c75-9fed-f75e44540b5d' })
+}
+
 describe('ProductOptionsBuilder', () => {
 
   it('adds options', () => {
@@ -67,6 +87,7 @@ describe('ProductOptionsBuilder', () => {
     const optionsBuilder = new ProductOptionsBuilder(productOptions)
 
     optionsBuilder.add({ 'identifier':'4363401d-e69e-4c75-9fed-f75e44540b5d' })
+
     expect(optionsBuilder.getPayload()).toEqual([
       {
         code: '4363401d-e69e-4c75-9fed-f75e44540b5d',
@@ -76,6 +97,7 @@ describe('ProductOptionsBuilder', () => {
     ])
 
     optionsBuilder.add({ 'identifier':'64b97ccc-0ff5-4577-a881-8a0a834fdf80' })
+    expect(optionsBuilder.isValid()).toBe(false)
     expect(optionsBuilder.getPayload()).toEqual([
       {
         code: '4363401d-e69e-4c75-9fed-f75e44540b5d',
@@ -83,6 +105,29 @@ describe('ProductOptionsBuilder', () => {
         price: 0,
       }, {
         code: '64b97ccc-0ff5-4577-a881-8a0a834fdf80',
+        quantity: 1,
+        price: 0,
+      },
+    ])
+  })
+
+  it('replaces option', () => {
+
+    const optionsBuilder = new ProductOptionsBuilder(productOptions)
+
+    optionsBuilder.add({ 'identifier':'b3b58c52-5159-3173-96c2-24b5608acf37' })
+    expect(optionsBuilder.getPayload()).toEqual([
+      {
+        code: 'b3b58c52-5159-3173-96c2-24b5608acf37',
+        quantity: 1,
+        price: 0,
+      },
+    ])
+
+    optionsBuilder.add({ 'identifier':'e2855e88-64c4-343f-b70d-5579402cf14e' })
+    expect(optionsBuilder.getPayload()).toEqual([
+      {
+        code: 'e2855e88-64c4-343f-b70d-5579402cf14e',
         quantity: 1,
         price: 0,
       },
@@ -110,94 +155,6 @@ describe('ProductOptionsBuilder', () => {
         price: 0,
       },
     ])
-  })
-
-  it('decrements options', () => {
-
-    const optionsBuilder = new ProductOptionsBuilder(productOptions)
-
-    optionsBuilder.add({ 'identifier':'4363401d-e69e-4c75-9fed-f75e44540b5d' })
-    optionsBuilder.add({ 'identifier':'4363401d-e69e-4c75-9fed-f75e44540b5d' })
-    expect(optionsBuilder.getPayload()).toEqual([
-      {
-        code: '4363401d-e69e-4c75-9fed-f75e44540b5d',
-        quantity: 2,
-        price: 0,
-      },
-    ])
-
-    optionsBuilder.decrement({ 'identifier':'4363401d-e69e-4c75-9fed-f75e44540b5d' })
-    expect(optionsBuilder.getPayload()).toEqual([
-      {
-        code: '4363401d-e69e-4c75-9fed-f75e44540b5d',
-        quantity: 1,
-        price: 0,
-      },
-    ])
-
-    optionsBuilder.decrement({ 'identifier':'4363401d-e69e-4c75-9fed-f75e44540b5d' })
-    expect(optionsBuilder.getPayload()).toEqual([])
-  })
-
-  it('replaces option', () => {
-
-    const optionsBuilder = new ProductOptionsBuilder(productOptions)
-
-    optionsBuilder.add({ 'identifier':'b3b58c52-5159-3173-96c2-24b5608acf37' })
-    expect(optionsBuilder.getPayload()).toEqual([
-      {
-        code: 'b3b58c52-5159-3173-96c2-24b5608acf37',
-        quantity: 1,
-        price: 0,
-      },
-    ])
-
-    optionsBuilder.add({ 'identifier':'e2855e88-64c4-343f-b70d-5579402cf14e' })
-    expect(optionsBuilder.getPayload()).toEqual([
-      {
-        code: 'e2855e88-64c4-343f-b70d-5579402cf14e',
-        quantity: 1,
-        price: 0,
-      },
-    ])
-  })
-
-  it('validates options', () => {
-
-    const optionsBuilder = new ProductOptionsBuilder(productOptions)
-
-    expect(optionsBuilder.isValid()).toBe(false)
-
-    optionsBuilder.add({ 'identifier':'4363401d-e69e-4c75-9fed-f75e44540b5d' })
-    expect(optionsBuilder.getPayload()).toEqual([
-      {
-        code: '4363401d-e69e-4c75-9fed-f75e44540b5d',
-        quantity: 1,
-        price: 0,
-      },
-    ])
-    expect(optionsBuilder.isValid()).toBe(false)
-
-    optionsBuilder.add({ 'identifier':'b3b58c52-5159-3173-96c2-24b5608acf37' })
-    expect(optionsBuilder.getPayload()).toEqual([
-      {
-        code: '4363401d-e69e-4c75-9fed-f75e44540b5d',
-        quantity: 1,
-        price: 0,
-      }, {
-        code: 'b3b58c52-5159-3173-96c2-24b5608acf37',
-        quantity: 1,
-        price: 0,
-      },
-    ])
-    expect(optionsBuilder.isValid()).toBe(true)
-
-    // ---
-
-    const notMandatoryProductOptionsBuilder = new ProductOptionsBuilder(notMandatoryProductOptions)
-
-    expect(notMandatoryProductOptionsBuilder.isValid()).toBe(true)
-
   })
 
   it('increments quantity when adding twice', () => {
@@ -298,6 +255,125 @@ describe('ProductOptionsBuilder', () => {
         price: 0,
       },
     ])
+  })
+
+  it('decrements options', () => {
+
+    const optionsBuilder = new ProductOptionsBuilder(productOptions)
+
+    optionsBuilder.add({ 'identifier':'4363401d-e69e-4c75-9fed-f75e44540b5d' })
+    optionsBuilder.add({ 'identifier':'4363401d-e69e-4c75-9fed-f75e44540b5d' })
+    expect(optionsBuilder.getPayload()).toEqual([
+      {
+        code: '4363401d-e69e-4c75-9fed-f75e44540b5d',
+        quantity: 2,
+        price: 0,
+      },
+    ])
+
+    optionsBuilder.decrement({ 'identifier':'4363401d-e69e-4c75-9fed-f75e44540b5d' })
+    expect(optionsBuilder.getPayload()).toEqual([
+      {
+        code: '4363401d-e69e-4c75-9fed-f75e44540b5d',
+        quantity: 1,
+        price: 0,
+      },
+    ])
+
+    optionsBuilder.decrement({ 'identifier':'4363401d-e69e-4c75-9fed-f75e44540b5d' })
+    expect(optionsBuilder.getPayload()).toEqual([])
+  })
+
+  describe("options: 1 mandatory 'not additional'; 1 mandatory 'additional'; 1 not mandatory 'additional'", () => {
+    let optionsBuilder
+
+    beforeEach(() => {
+      optionsBuilder = new ProductOptionsBuilder(productOptions)
+    })
+
+    describe('nothing selected', () => {
+      it('is not valid (missing mandatory options)', () => {
+        expect(optionsBuilder.isValid()).toBe(false)
+      })
+    })
+
+    describe("adds: 1 mandatory 'not additional'", () => {
+      beforeEach(() => {
+        addMandatoryNonAdditional(optionsBuilder)
+      })
+
+      it("is not valid (missing 1 mandatory 'additional')", () => {
+        expect(optionsBuilder.isValid()).toBe(false)
+      })
+
+      describe("adds: 1 mandatory 'additional'", () => {
+        beforeEach(() => {
+          incrementMandatoryAdditional(optionsBuilder)
+        })
+
+        it('is valid', () => {
+          expect(optionsBuilder.isValid()).toBe(true)
+        })
+
+
+        describe("removes: 1 mandatory 'additional'", () => {
+          beforeEach(() => {
+            decrementMandatoryAdditional(optionsBuilder)
+          })
+
+          it("is not valid (missing 1 mandatory 'additional')", () => {
+            expect(optionsBuilder.isValid()).toBe(false)
+          })
+        })
+
+        describe("replaces: 1 mandatory 'not additional'", () => {
+          beforeEach(() => {
+            replaceMandatoryNonAdditional(optionsBuilder)
+          })
+          it('is valid', () => {
+            expect(optionsBuilder.isValid()).toBe(true)
+          })
+        })
+      })
+    })
+
+    describe("adds: 1 mandatory 'additional'", () => {
+      beforeEach(() => {
+        incrementMandatoryAdditional(optionsBuilder)
+      })
+
+      it("is not valid (missing 1 mandatory 'not additional')", () => {
+        expect(optionsBuilder.isValid()).toBe(false)
+      })
+
+      describe("adds: 1 mandatory 'additional'; 1 mandatory 'not additional'", () => {
+        beforeEach(() => {
+          addMandatoryNonAdditional(optionsBuilder)
+        })
+
+        it('is valid', () => {
+          expect(optionsBuilder.isValid()).toBe(true)
+        })
+      })
+    })
+
+    describe("adds: 1 not mandatory 'additional'", () => {
+      beforeEach(() => {
+        incrementNonMandatoryAdditional(optionsBuilder)
+      })
+
+      it('is not valid (missing mandatory options)', () => {
+        expect(optionsBuilder.isValid()).toBe(false)
+      })
+    })
+  })
+
+  describe('no mandatory options', () => {
+    it('isValid', () => {
+      const notMandatoryProductOptionsBuilder = new ProductOptionsBuilder(notMandatoryProductOptions)
+
+      expect(notMandatoryProductOptionsBuilder.isValid()).toBe(true)
+    })
   })
 
   it('parses values range', () => {

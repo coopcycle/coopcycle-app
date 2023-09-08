@@ -1,5 +1,52 @@
 import _ from 'lodash'
 
+function _parseRange(range) {
+  const matches = range.match(/^(\[|\()([0-9]{1,}),([0-9]*)(\]|\))$/)
+
+  return [
+    parseInt(matches[2], 10),
+    matches[3] === '' ? Infinity : parseInt(matches[3], 10),
+  ]
+}
+
+function getValuesRange(option) {
+  if (option.valuesRange) {
+    return _parseRange(option.valuesRange)
+  }
+
+  return [ 0, Infinity ]
+}
+
+function isValidOption(option, values) {
+  /**
+   * TODO: This implementation is based on the similar code in the coopcycle-web repository
+   * https://github.com/coopcycle/coopcycle-web/blob/8b42d087da427b7c1128859bdb81520ac8803324/js/app/cart/components/ProductOptionsModalContext.js#L23
+   * Ideally, it should try to extract ProductOptionsModalContext into a shared library: https://github.com/coopcycle/coopcycle-frontend-js
+   * and use it in both repositories.
+   */
+
+  const totalQuantity = values.reduce(
+    (quantity, val) => quantity + val.quantity,
+    0
+  )
+
+  if (!option.additional) {
+    return totalQuantity > 0
+  }
+
+  const [ min, max ] = getValuesRange(option)
+
+  if (totalQuantity < min) {
+    return false
+  }
+
+  if (totalQuantity > max) {
+    return false
+  }
+
+  return true
+}
+
 class ProductOptionsBuilder {
 
   constructor(options = []) {
@@ -40,31 +87,36 @@ class ProductOptionsBuilder {
     return _.sumBy(items, item => item.quantity)
   }
 
-  parseRange(range) {
-
-    const matches = range.match(/^(\[|\()([0-9]{1,}),([0-9]*)(\]|\))$/)
-
-    return [
-      parseInt(matches[2], 10),
-      matches[3] === '' ? Infinity : parseInt(matches[3], 10),
-    ]
-  }
-
   withoutValues(option) {
     const ids = option.hasMenuItem.map(item => item.identifier)
     this.payload = _.filter(this.payload, item => !ids.includes(item.code))
   }
 
+  parseRange(range) {
+    return _parseRange(range)
+  }
+
+  getInvalidOptions() {
+    return this.options.filter(option => !isValidOption(option, this.valuesForOption(option)))
+  }
+
   isValid() {
+    return this.getInvalidOptions().length === 0
+  }
 
-    for (let i = 0; i < this.options.length; i++) {
-      let option = this.options[i]
-      if (!option.additional && !this.containsValueForOption(option)) {
-        return false
-      }
-    }
+  getFirstInvalidOption() {
+    return this.getInvalidOptions().shift()
+  }
 
-    return true
+  contains(optionValue) {
+    const index = _.findIndex(this.payload, item => item.code === optionValue.identifier)
+
+    return index !== -1
+  }
+
+  valuesForOption(option) {
+    const codes = option.hasMenuItem.map(item => item.identifier)
+    return this.payload.filter(item => codes.includes(item.code))
   }
 
   add(optionValue) {
@@ -77,7 +129,7 @@ class ProductOptionsBuilder {
 
     if (option.additional) {
 
-      const range = option.valuesRange ? this.parseRange(option.valuesRange) : [ 0, Infinity ]
+      const range = getValuesRange(option)
       const max = range[1]
       const optionQuantity = this.getQuantityForOption(option)
 
@@ -137,30 +189,6 @@ class ProductOptionsBuilder {
           quantity: nextQuantity,
           price: optionValue.hasOwnProperty('offers') ? optionValue.offers.price : 0,
         })
-      }
-    }
-  }
-
-  contains(optionValue) {
-    const index = _.findIndex(this.payload, item => item.code === optionValue.identifier)
-
-    return index !== -1
-  }
-
-  containsValueForOption(option) {
-
-    const ids = option.hasMenuItem.map(item => item.identifier)
-    const payloadIds = this.payload.map(item => item.code)
-
-    return _.intersection(ids, payloadIds).length > 0
-  }
-
-  getFirstInvalidOption() {
-
-    for (let i = 0; i < this.options.length; i++) {
-      let option = this.options[i]
-      if (!option.additional && !this.containsValueForOption(option)) {
-        return option
       }
     }
   }
