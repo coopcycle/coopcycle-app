@@ -60,7 +60,9 @@ function Loopeat({ cart, updateLoopeatReturns }) {
 		          keyExtractor={ (item, index) => `loopeat_return_#${item.format_id}` }
 		          renderItem={ ({ item }) => {
 
-		          	const isSelected = !!_.find(returns, r => r.format_id === item.format_id)
+                const returnsForItem = _.find(returns, r => r.format_id === item.format_id)
+                const isSelected = !!returnsForItem
+                const value = returnsForItem ? returnsForItem.quantity : item.quantity
 
 		          	return (
 			          	<HStack justifyContent="space-between" alignItems="center" mb="2">
@@ -80,6 +82,7 @@ function Loopeat({ cart, updateLoopeatReturns }) {
                         minValue={ 1 }
                         maxValue={ item.quantity }
                         editable={ isSelected }
+                        value={ value }
                         onChange={ value => {
                           const idx = _.findIndex(returns, r => r.format_id === item.format_id)
                           if (idx !== -1) {
