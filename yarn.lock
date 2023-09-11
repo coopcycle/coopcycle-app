@@ -12659,10 +12659,10 @@ react-native-dropdownalert@^4.5.1:
   dependencies:
     prop-types "15.5.10"
 
-react-native-email-link@^1.14.5:
-  version "1.14.5"
-  resolved "https://registry.yarnpkg.com/react-native-email-link/-/react-native-email-link-1.14.5.tgz#05e13002bd850ebaf98477b4cfbfdfa972a57608"
-  integrity sha512-TNi9OeGcJlw6FXl1dWAKEBGJEgKPBfsiB3v8GaHqqCtzmWnKE+8y1Wfhaaloh37OJb2vqp1cwDpW5m6PiTXazA==
+react-native-email-link@^1.14.7:
+  version "1.14.7"
+  resolved "https://registry.yarnpkg.com/react-native-email-link/-/react-native-email-link-1.14.7.tgz#5f7cb10f6eb0e8e0f642306484542c5c8bc6d833"
+  integrity sha512-BHhakcPGkVgYeSXd/j/OICC9nGFHe0RFv7b3+PvNhstOyjXoUHBX+qftuUzNqFeeMcktfGMlzl2CacA6nKUvKQ==
 
 react-native-fbsdk-next@^11.1.0:
   version "11.1.0"
