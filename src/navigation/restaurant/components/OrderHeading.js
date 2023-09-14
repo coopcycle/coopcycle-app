@@ -9,6 +9,7 @@ import material from '../../../../native-base-theme/variables/material'
 import OrderButtons from './OrderButtons'
 import { resolveFulfillmentMethod } from '../../../utils/order'
 import OrderFulfillmentMethodIcon from '../../../components/OrderFulfillmentMethodIcon'
+import { PaymentMethodInfo } from '../../../components/PaymentMethodInfo'
 
 const fallbackFormat = 'dddd D MMM'
 
@@ -53,6 +54,7 @@ const OrderHeading = ({ order, isPrinterConnected, onPrinterClick, printOrder })
           <Text>{ t('RESTAURANT_ORDER_PICKUP_EXPECTED_AT',      { date: pickupExpectedAt.format('LT') }) }</Text>
         </View>
       </View>
+      <PaymentMethodInfo fullDetail={true} paymentMethod={order.paymentMethod} />
       <View style={{ marginBottom: 15 }}>
         <OrderButtons
           order={ order }

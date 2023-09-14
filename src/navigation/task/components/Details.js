@@ -7,7 +7,9 @@ import { phonecall } from 'react-native-communications'
 import moment from 'moment'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+import Foundation from 'react-native-vector-icons/Foundation'
 
+import { loadDescriptionTranslationKey, loadIconKey, isKnownPaymentMethod } from '../../../components/PaymentMethodInfo'
 import ItemSeparator from '../../../components/ItemSeparator'
 
 const Detail = ({ item }) => {
@@ -120,6 +122,14 @@ const Details = ({ task, t }) => {
       iconName: 'scale',
       iconType: MaterialCommunityIcons,
       text: `${(Number(task.weight) / 1000).toFixed(2)} kg`,
+    })
+  }
+
+  if (task.metadata && task.metadata.payment_method && isKnownPaymentMethod(task.metadata.payment_method)) {
+    items.push({
+      iconName: loadIconKey(task.metadata.payment_method),
+      iconType: Foundation,
+      text: t(loadDescriptionTranslationKey(task.metadata.payment_method)),
     })
   }
 

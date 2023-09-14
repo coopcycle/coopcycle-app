@@ -15,6 +15,7 @@ import {
   taskTypeIconName,
 } from '../navigation/task/styles/common'
 import TaskTitle from './TaskTitle'
+import { PaymentMethodInfo } from './PaymentMethodInfo'
 
 const styles = StyleSheet.create({
   itemIcon: {
@@ -213,7 +214,11 @@ class TaskListItem extends Component {
               <Text numberOfLines={ 1 } style={ textStyle }>{ task.address.streetAddress }</Text>
               <HStack alignItems="center">
                 <Text pr="2" style={ textStyle }>{ moment(task.doneAfter).format('LT') } - { moment(task.doneBefore).format('LT') }</Text>
-                { task.comments && task.comments.length ? <Icon as={FontAwesome} name="comments" size="xs"/> : null }
+                { task.comments && task.comments.length ? <Icon mr="2" as={FontAwesome} name="comments" size="xs"/> : null }
+                {
+                  task.metadata && task.metadata.payment_method &&
+                  <PaymentMethodInfo fullDetail={false} paymentMethod={task.metadata.payment_method} />
+                }
               </HStack>
             </VStack>
             <Icon as={ FontAwesome } name="arrow-right" size="sm" />

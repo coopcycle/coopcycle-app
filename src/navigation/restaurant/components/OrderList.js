@@ -9,6 +9,7 @@ import { formatPrice } from '../../../utils/formatting'
 import OrderNumber from '../../../components/OrderNumber'
 import ItemSeparatorComponent from '../../../components/ItemSeparator'
 import OrderFulfillmentMethodIcon from '../../../components/OrderFulfillmentMethodIcon'
+import { PaymentMethodInfo } from '../../../components/PaymentMethodInfo'
 
 const styles = StyleSheet.create({
   item: {
@@ -38,6 +39,7 @@ class OrderList extends Component {
             <OrderNumber order={ order } />
           </View>
           <OrderFulfillmentMethodIcon order={ order } small />
+          <PaymentMethodInfo fullDetail={false} paymentMethod={order.paymentMethod} />
         </HStack>
         <Text>{ `${formatPrice(order.itemsTotal)}` }</Text>
         <Text>{ moment.parseZone(order.pickupExpectedAt).format('LT') }</Text>
