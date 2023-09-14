@@ -217,9 +217,7 @@ class TaskListItem extends Component {
                 { task.comments && task.comments.length ? <Icon mr="2" as={FontAwesome} name="comments" size="xs"/> : null }
                 {
                   task.metadata && task.metadata.payment_method &&
-                  <View ml="2">
-                    <PaymentMethodInfo fullDetail={false} paymentMethod={task.metadata.payment_method} />
-                  </View>
+                  <PaymentMethodInfo fullDetail={false} paymentMethod={task.metadata.payment_method} />
                 }
               </HStack>
             </VStack>

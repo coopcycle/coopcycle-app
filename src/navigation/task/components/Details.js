@@ -9,7 +9,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import Foundation from 'react-native-vector-icons/Foundation'
 
-import { loadDescriptionTranslationKey, loadIconKey } from '../../../components/PaymentMethodInfo'
+import { loadDescriptionTranslationKey, loadIconKey, isKnownPaymentMethod } from '../../../components/PaymentMethodInfo'
 import ItemSeparator from '../../../components/ItemSeparator'
 
 const Detail = ({ item }) => {
@@ -125,7 +125,7 @@ const Details = ({ task, t }) => {
     })
   }
 
-  if (task.metadata && task.metadata.payment_method) {
+  if (task.metadata && task.metadata.payment_method && isKnownPaymentMethod(task.metadata.payment_method)) {
     items.push({
       iconName: loadIconKey(task.metadata.payment_method),
       iconType: Foundation,

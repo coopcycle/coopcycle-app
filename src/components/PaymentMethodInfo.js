@@ -15,24 +15,29 @@ const styles = StyleSheet.create({
   },
 });
 
-export const loadIconKey = (paymentMethod) => {
-  const icons = {
-    CARD: 'credit-card',
-    CASH_ON_DELIVERY: 'dollar-bill',
-  };
-  return icons[paymentMethod]
+const paymentMethods = {
+  CARD: {
+    icon: 'credit-card',
+    description: 'card'
+  },
+  CASH_ON_DELIVERY: {
+    icon: 'dollar-bill',
+    description: 'cash_on_delivery'
+  },
 }
 
-export const loadDescriptionTranslationKey = (paymentMethod) => {
-  const description = {
-    CARD: 'card',
-    CASH_ON_DELIVERY: 'cash_on_delivery',
-  }
-  return `PAYMENT_METHOD.${description[paymentMethod]}`
-}
+export const loadIconKey = (paymentMethod) => paymentMethods[paymentMethod]?.icon
+
+export const loadDescriptionTranslationKey = (paymentMethod) => `PAYMENT_METHOD.${paymentMethods[paymentMethod]?.description}`
+
+export const isKnownPaymentMethod = (paymentMethod) => Object.prototype.hasOwnProperty.call(paymentMethods, paymentMethod)
 
 export const PaymentMethodInfo = ({ fullDetail, paymentMethod }) => {
   const { t } = useTranslation()
+
+  if (!isKnownPaymentMethod(paymentMethod)) {
+    return null
+  }
 
   if (!fullDetail) {
     return <Icon as={Foundation} name={ loadIconKey(paymentMethod) } />
