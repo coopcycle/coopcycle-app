@@ -21,9 +21,11 @@ import Smartlook from 'react-native-smartlook-analytics'
 import Config from 'react-native-config'
 import * as Sentry from '@sentry/react-native'
 
-Sentry.init({
-  dsn: Config.SENTRY_DSN,
-})
+if (process.env.NODE_ENV === 'production') {
+  Sentry.init({
+    dsn: Config.SENTRY_DSN,
+  })
+}
 
 Smartlook.instance.preferences.setProjectKey(
   Config.SMARTLOOK_PROJECT_KEY
