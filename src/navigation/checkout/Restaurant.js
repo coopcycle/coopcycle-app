@@ -6,7 +6,6 @@ import { Box, Center, HStack, Heading, Icon, Skeleton, Text, VStack } from 'nati
 import _ from 'lodash'
 import moment from 'moment'
 import { useFocusEffect } from '@react-navigation/native'
-import Smartlook from 'react-native-smartlook-analytics'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 import CartFooter from './components/CartFooter'
@@ -51,15 +50,6 @@ function Restaurant(props) {
   const colorScheme = useColorScheme()
   const [ infoModal, setInfoModal ] = useState(false)
   const { showFooter, httpClient, restaurant, openingHoursSpecification } = props
-
-  useFocusEffect(
-    useCallback(() => {
-      // Start screen recording
-      if (!__DEV__) {
-        Smartlook.instance.start()
-      }
-    }, [])
-  );
 
   const { isLoading, isError, data } = useQuery([ 'menus', restaurant.hasMenu ], async () => {
     return await httpClient.get(restaurant.hasMenu, {}, { anonymous: true })

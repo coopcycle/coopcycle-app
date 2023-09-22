@@ -16,28 +16,12 @@ import VersionNumber from 'react-native-version-number'
 
 import KeyboardManager from 'react-native-keyboard-manager'
 
-import Smartlook from 'react-native-smartlook-analytics'
-
 import Config from 'react-native-config'
 import * as Sentry from '@sentry/react-native'
 
 Sentry.init({
   dsn: Config.SENTRY_DSN,
 })
-
-Smartlook.instance.preferences.setProjectKey(
-  Config.SMARTLOOK_PROJECT_KEY
-)
-
-function sessionUrlChangedCallback(sessionUrl) {
-  if (sessionUrl) {
-    Sentry.setTag('smartlook_session_url', sessionUrl)
-  }
-}
-
-Smartlook.instance.eventListeners.registerSessionChangedListener(
-  sessionUrlChangedCallback
-);
 
 if (Platform.OS === 'ios') {
     KeyboardManager.setEnable(false)
