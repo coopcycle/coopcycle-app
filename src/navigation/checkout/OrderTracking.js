@@ -13,42 +13,64 @@ import { phonecall } from 'react-native-communications';
 import Step from './components/Step';
 import { find } from 'lodash'
 
+export function orderToStep(order) {
 
-function stateToStep(events) {
   let index = 0
   let error = 0
 
-  const eventType = [
-    'order:created', 'order:accepted', 'order:refused', 'order:picked',
-    'order:cancelled', 'order:fulfilled',
-  ]
+  if (Object.prototype.hasOwnProperty.call(order, 'events')) {
 
-  // Normalize events
-  events = events.filter((event) => eventType.includes(event.type)).sort((a, b) => {
-    return eventType.indexOf(a.type) - eventType.indexOf(b.type)
-  })
+    const eventType = [
+      'order:created', 'order:accepted', 'order:refused', 'order:picked',
+      'order:cancelled', 'order:fulfilled',
+    ]
 
-  events.forEach(event => {
-    switch (event.type) {
-      case 'order:accepted':
-        index = 1
-        break
-      case 'order:picked':
-        index = 2
-        break
-      case 'order:fulfilled':
-        index = 3
-        break
-      case 'order:refused':
-        index = 1
-        error = 1
-        break;
-      case 'order:cancelled':
-        index = 2
-        error = 2
-        break;
-    }
-  })
+    // Normalize events
+    const events = order.events.filter((event) => eventType.includes(event.type)).sort((a, b) => {
+      return eventType.indexOf(a.type) - eventType.indexOf(b.type)
+    })
+
+    events.forEach(event => {
+      switch (event.type) {
+        case 'order:accepted':
+          index = 1
+          break
+        case 'order:picked':
+          index = 2
+          break
+        case 'order:fulfilled':
+          index = 3
+          break
+        case 'order:refused':
+          index = 1
+          error = 1
+          break;
+        case 'order:cancelled':
+          index = 2
+          error = 2
+          break;
+      }
+    })
+
+    return { index, error }
+  }
+
+  switch (order.state) {
+    case 'accepted':
+    case 'refused':
+      index = 1
+      break
+    case 'picked':
+    case 'cancelled':
+      index = 2
+      break
+    case 'fulfilled':
+      index = 3
+      break
+    default:
+      index = 0
+  }
+  error = [ 'refused', 'cancelled' ].indexOf(order.state) + 1
   return { index, error }
 }
 
@@ -106,7 +128,7 @@ class OrderTrackingPage extends Component {
       moment(order.shippingTimeRange[1]).format('HH:mm'),
   ]
 
-    const step = stateToStep(order.events)
+    const step = orderToStep(order)
     return <ScrollView
       refreshControl={
         <RefreshControl
