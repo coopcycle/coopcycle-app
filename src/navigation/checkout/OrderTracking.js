@@ -18,12 +18,15 @@ function stateToStep(events) {
   let index = 0
   let error = 0
 
+  const eventType = [
+    'order:created', 'order:accepted', 'order:refused', 'order:picked',
+    'order:cancelled', 'order:fulfilled',
+  ]
+
   // Normalize events
-  events = events.filter((event) => [ 'order:accepted', 'order:picked', 'order:fulfilled',
-      'order:refused', 'order:cancelled', 'order:created' ].includes(event.type))
-  if (events.length > 0 && events[0].type !== 'order:created') {
-    events.reverse()
-  }
+  events = events.filter((event) => eventType.includes(event.type)).sort((a, b) => {
+    return eventType.indexOf(a.type) - eventType.indexOf(b.type)
+  })
 
   events.forEach(event => {
     switch (event.type) {
@@ -104,7 +107,6 @@ class OrderTrackingPage extends Component {
   ]
 
     const step = stateToStep(order.events)
-    return <ScrollView
     return <ScrollView
       refreshControl={
         <RefreshControl
