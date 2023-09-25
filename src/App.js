@@ -19,9 +19,11 @@ import KeyboardManager from 'react-native-keyboard-manager'
 import Config from 'react-native-config'
 import * as Sentry from '@sentry/react-native'
 
-Sentry.init({
-  dsn: Config.SENTRY_DSN,
-})
+if (!__DEV__) {
+  Sentry.init({
+    dsn: Config.SENTRY_DSN,
+  })
+}
 
 if (Platform.OS === 'ios') {
     KeyboardManager.setEnable(false)
