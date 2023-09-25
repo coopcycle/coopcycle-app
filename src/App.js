@@ -21,7 +21,7 @@ import Smartlook from 'react-native-smartlook-analytics'
 import Config from 'react-native-config'
 import * as Sentry from '@sentry/react-native'
 
-if (process.env.NODE_ENV === 'production') {
+if (!__DEV__) {
   Sentry.init({
     dsn: Config.SENTRY_DSN,
   })
