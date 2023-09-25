@@ -13,27 +13,65 @@ import { phonecall } from 'react-native-communications';
 import Step from './components/Step';
 import { find } from 'lodash'
 
+export function orderToStep(order) {
 
-function stateToStep(state) {
-    let index, error
+  let index = 0
+  let error = 0
 
-    switch (state) {
-      case 'accepted':
-      case 'refused':
-        index = 1
-        break
-      case 'picked':
-      case 'cancelled':
-        index = 2
-        break
-      case 'fulfilled':
-        index = 3
-        break
-      default:
-        index = 0
-    }
-    error = [ 'refused', 'cancelled' ].indexOf(state) + 1
+  if (Object.prototype.hasOwnProperty.call(order, 'events')) {
+
+    const eventType = [
+      'order:created', 'order:accepted', 'order:refused', 'order:picked',
+      'order:cancelled', 'order:fulfilled',
+    ]
+
+    // Normalize events
+    const events = order.events.filter((event) => eventType.includes(event.type)).sort((a, b) => {
+      return eventType.indexOf(a.type) - eventType.indexOf(b.type)
+    })
+
+    events.forEach(event => {
+      switch (event.type) {
+        case 'order:accepted':
+          index = 1
+          break
+        case 'order:picked':
+          index = 2
+          break
+        case 'order:fulfilled':
+          index = 3
+          break
+        case 'order:refused':
+          index = 1
+          error = 1
+          break;
+        case 'order:cancelled':
+          index = 2
+          error = 2
+          break;
+      }
+    })
+
     return { index, error }
+  }
+
+  switch (order.state) {
+    case 'accepted':
+    case 'refused':
+      index = 1
+      break
+    case 'picked':
+    case 'cancelled':
+      index = 2
+      break
+    case 'fulfilled':
+      index = 3
+      break
+    default:
+      index = 0
+  }
+  error = [ 'refused', 'cancelled' ].indexOf(order.state) + 1
+  return { index, error }
 }
 
 const stateDescription = [
@@ -66,23 +104,12 @@ class OrderTrackingPage extends Component {
       this.props.subscribe(order, (event) => {
         switch (event.name) {
           case 'order:accepted':
-            this.props.updateOrder({ ...event.data.order, state: 'accepted' })
-            break;
           case 'order:picked':
-            this.props.updateOrder({ ...event.data.order, state: 'picked' })
-            break;
           case 'order:fulfilled':
-            this.props.updateOrder({ ...event.data.order, state: 'fulfilled' })
-            break;
           case 'order:cancelled':
-            this.props.updateOrder({ ...event.data.order, state: 'cancelled' })
-            break;
           case 'order:refused':
-            this.props.updateOrder({ ...event.data.order, state: 'refused' })
-            break;
           case 'order:delayed':
             this.props.updateOrder(event.data.order)
-            break;
         }
       })
       this.interval = setInterval(() => this._refresh(), 60000)
@@ -101,7 +128,7 @@ class OrderTrackingPage extends Component {
       moment(order.shippingTimeRange[1]).format('HH:mm'),
   ]
 
-    const step = stateToStep(order.state)
+    const step = orderToStep(order)
     return <ScrollView
       refreshControl={
         <RefreshControl
@@ -122,7 +149,7 @@ class OrderTrackingPage extends Component {
             loadingLabel={i18n.t('ORDER_TIMELINE_AFTER_CREATED_TITLE')}
             activeLabel={i18n.t('ORDER_TIMELINE_ACCEPTED_TITLE')}
             errorLabel={i18n.t('ORDER_TIMELINE_REFUSED_TITLE')}
-            loading={step.index === 0}
+            loading={step.index === 0 && step.error === 0}
             active={step.index >= 1}
             error={step.error === 1}
             hide={!!step.error && step.error < 1}
@@ -131,7 +158,7 @@ class OrderTrackingPage extends Component {
             loadingLabel={i18n.t('ORDER_TIMELINE_AFTER_ACCEPTED_TITLE')}
             activeLabel={i18n.t('ORDER_TIMELINE_PICKED_TITLE')}
             errorLabel={i18n.t('ORDER_TIMELINE_CANCELLED_TITLE')}
-            loading={step.index === 1}
+            loading={step.index === 1 && step.error === 0}
             active={step.index >= 2}
             error={step.error === 2}
             hide={!!step.error && step.error < 2}
@@ -139,7 +166,7 @@ class OrderTrackingPage extends Component {
           <Step
             loadingLabel={i18n.t('ORDER_TIMELINE_AFTER_PICKED_TITLE')}
             activeLabel={i18n.t('ORDER_TIMELINE_DROPPED_TITLE')}
-            loading={step.index === 2}
+            loading={step.index === 2 && step.error === 0}
             active={step.index >= 3}
             error={step.error === 3}
             hide={!!step.error && step.error < 3}
