@@ -23,7 +23,7 @@
     "@react-native-firebase/app": "^15.6.0",
     "@react-native-firebase/crashlytics": "^15.6.0",
     "@react-native-firebase/messaging": "^15.6.0",
-    "@react-native-google-signin/google-signin": "^7.0.4",
+    "@react-native-google-signin/google-signin": "7.0.4",
     "@react-native-masked-view/masked-view": "^0.2.9",
     "@react-native-picker/picker": "^2.1.0",
     "@react-navigation/bottom-tabs": "^6.5.9",
