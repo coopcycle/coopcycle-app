@@ -1,6 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="fr.coopcycle">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <queries>
         <!-- needed for react-native-map-link and Android 11/Android SDK 30 -->
