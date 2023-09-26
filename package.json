@@ -78,7 +78,7 @@
     "react-native-fbsdk-next": "^11.1.0",
     "react-native-gesture-handler": "^2.9.0",
     "react-native-get-random-values": "^1.8.0",
-    "react-native-keyboard-manager": "^6.5.4-4",
+    "react-native-keyboard-manager": "^6.5.11-2",
     "react-native-loading-spinner-overlay": "^3.0.1",
     "react-native-localize": "^2.2.4",
     "react-native-map-link": "^2.11.2",

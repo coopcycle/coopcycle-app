@@ -258,7 +258,7 @@ PODS:
     - GTMSessionFetcher/Core (< 3.0, >= 1.5)
   - GTMSessionFetcher/Core (1.7.2)
   - hermes-engine (0.70.6)
-  - IQKeyboardManagerSwift (6.5.4)
+  - IQKeyboardManagerSwift (6.5.11)
   - JRSwizzle (1.0)
   - libevent (2.1.12)
   - MercadoPagoSDK (4.32.4):
@@ -735,8 +735,8 @@ PODS:
     - React-jsi (= 0.70.6)
     - React-logger (= 0.70.6)
     - React-perflogger (= 0.70.6)
-  - ReactNativeKeyboardManager (6.5.4-4):
-    - IQKeyboardManagerSwift (= 6.5.4)
+  - ReactNativeKeyboardManager (6.5.11-2):
+    - IQKeyboardManagerSwift (= 6.5.11)
     - React-Core
     - React-RCTText
   - RNAppleAuthentication (2.2.2):
@@ -1235,7 +1235,7 @@ SPEC CHECKSUMS:
   GTMAppAuth: 0ff230db599948a9ad7470ca667337803b3fc4dd
   GTMSessionFetcher: 5595ec75acf5be50814f81e9189490412bad82ba
   hermes-engine: 2af7b7a59128f250adfd86f15aa1d5a2ecd39995
-  IQKeyboardManagerSwift: 2dde0fc70110e8eac7ccce2a46fdbec6a850b414
+  IQKeyboardManagerSwift: c7955c0bdbf7b2eb29bb7daaa44e3d90f55a9a85
   JRSwizzle: dd5ead5d913a0f29e7f558200165849f006bb1e3
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   MercadoPagoSDK: 634fc8a9fe7f99f4d73506659c68cdbb885407fc
@@ -1285,7 +1285,7 @@ SPEC CHECKSUMS:
   React-RCTVibration: c75ceef7aa60a33b2d5731ebe5800ddde40cefc4
   React-runtimeexecutor: 15437b576139df27635400de0599d9844f1ab817
   ReactCommon: 349be31adeecffc7986a0de875d7fb0dcf4e251c
-  ReactNativeKeyboardManager: f82a63e0982254fb0f6a17ba327fac575a46f1e9
+  ReactNativeKeyboardManager: 60292dbac467c49841a7d69588208ec4a4f7b2a2
   RNAppleAuthentication: 0571c08da8c327ae2afc0261b48b4a515b0286a6
   RNBackgroundFetch: aec9df762e78197009b89fe96f9ba3e2eb3268b3
   RNBackgroundGeolocation: 8f64068cbcd2b249ca6f57cde9557c50480a9b8b
