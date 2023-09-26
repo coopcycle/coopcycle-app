@@ -13,9 +13,6 @@
       android:roundIcon="@mipmap/ic_launcher_round"
       android:allowBackup="false"
       android:theme="@style/AppTheme">
-      <service android:name="com.transistorsoft.locationmanager.service.TrackingService" android:foregroundServiceType="location" android:enabled="false" />
-      <service android:name="com.transistorsoft.locationmanager.service.LocationRequestService" android:foregroundServiceType="location" android:enabled="false" />
       <meta-data android:name="com.transistorsoft.locationmanager.license" android:value="${transistorsoftLicenseKey}" tools:node="remove" />
-
     </application>
 </manifest>
