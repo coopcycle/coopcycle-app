@@ -66,6 +66,13 @@ const Details = ({ task, t }) => {
     },
   ]
 
+  if (task.address.complement) {
+    items.push({
+      iconName: 'information-circle',
+      text: task.address.complement,
+    })
+  }
+
   if (task.address.telephone) {
     items.push({
       iconName: 'call',
@@ -83,7 +90,7 @@ const Details = ({ task, t }) => {
 
   if (task.address.description) {
     items.push({
-      iconName: 'information-circle',
+      iconName: 'warning',
       text: task.address.description,
     })
   }

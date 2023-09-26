@@ -19,8 +19,8 @@ const Address = ({ task }) => {
 
   const parts = [task.address.streetAddress]
 
-  if (task.address.description) {
-    parts.push(task.address.description)
+  if (task.address.complement) {
+    parts.push(task.address.complement)
   }
 
   if (task.address.name) {
