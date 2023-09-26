@@ -115,6 +115,7 @@ class MoreInfos extends Component {
       initialValues = {
         ...initialValues,
         address: {
+          complement: '',
           description: '',
         },
       }
@@ -174,10 +175,23 @@ class MoreInfos extends Component {
                 </FormControl>
                 { Object.prototype.hasOwnProperty.call(values, 'address') && (
                 <FormControl mb="2">
+                  <FormControl.Label>{ this.props.t('CHECKOUT_ORDER_ADDRESS_COMPLEMENT') }</FormControl.Label>
+                  <TextArea
+                    autoCorrect={ false }
+                    totalLines={ 3 }
+                    placeholder={ this.props.t('CHECKOUT_ORDER_ADDRESS_COMPLEMENT_PLACEHOLDER') }
+                    onChangeText={ handleChange('address.complement') }
+                    onBlur={ handleBlur('address.complement') } />
+                  <FormControl.HelperText>{ this.props.t('CHECKOUT_ORDER_ADDRESS_COMPLEMENT_HELP') }</FormControl.HelperText>
+                </FormControl>
+                )}
+                { Object.prototype.hasOwnProperty.call(values, 'address') && (
+                <FormControl mb="2">
                   <FormControl.Label>{ this.props.t('CHECKOUT_ORDER_ADDRESS_DESCRIPTION') }</FormControl.Label>
                   <TextArea
                     autoCorrect={ false }
                     totalLines={ 3 }
+                    placeholder={ this.props.t('CHECKOUT_ORDER_ADDRESS_DESCRIPTION_PLACEHOLDER') }
                     onChangeText={ handleChange('address.description') }
                     onBlur={ handleBlur('address.description') } />
                   <FormControl.HelperText>{ this.props.t('CHECKOUT_ORDER_ADDRESS_DESCRIPTION_HELP') }</FormControl.HelperText>
