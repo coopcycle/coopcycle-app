@@ -13,13 +13,13 @@ buildscript {
             // Otherwise we default to the side-by-side NDK version from AGP.
             ndkVersion = "21.4.7075529"
         }
-        googlePlayServicesVersion = "18.1.0"
-        googlePlayServicesVisionVersion = "17.0.2"
+        playServicesVersion = "18.1.0"
         firebaseVersion = "17.2.1"
         timberVersion = "4.7.1"
         kotlinVersion = "1.6.10"
         androidXCore = "1.0.2"
-        googlePlayServicesLocationVersion = "21.0.1"
+        // https://github.com/react-native-maps/react-native-maps/issues/4842
+        googlePlayServicesLocationVersion = "20.0.0"
         appCompatVersion = "1.4.2"
         mercadoPagoPxVersion = "4.53.2"
         reactNativeVersion = "0.70.6" // https://github.com/expo/expo/issues/18129
