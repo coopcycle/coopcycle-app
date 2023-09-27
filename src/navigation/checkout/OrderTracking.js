@@ -16,8 +16,8 @@ import { find } from 'lodash'
 export function orderToStep(order) {
 
   const eventType = [
-    'order:created', 'order:accepted', 'order:refused', 'order:picked',
-    'order:cancelled', 'order:fulfilled',
+    'order:created', 'order:accepted', 'order:picked',
+    'order:refused', 'order:cancelled', 'order:fulfilled',
   ]
 
   let index = 0
