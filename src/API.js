@@ -3,6 +3,7 @@ import axios from 'axios'
 import qs from 'qs'
 import _ from 'lodash'
 import ReactNativeBlobUtil from 'react-native-blob-util'
+import VersionNumber from 'react-native-version-number'
 import * as FileSystem from 'expo-file-system'
 
 
@@ -41,6 +42,7 @@ function Client(httpBaseURL, options = {}) {
   })
 
   this.axios.defaults.timeout = 30000;
+  this.axios.defaults.headers.common['X-Application-Version'] = VersionNumber.bundleIdentifier + '@' + VersionNumber.appVersion + ' (' + VersionNumber.buildVersion + ')';
 
   if (options.onCredentialsUpdated) {
     this.onCredentialsUpdated = options.onCredentialsUpdated
