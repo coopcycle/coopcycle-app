@@ -117,10 +117,12 @@ class DrawerContent extends Component {
               <DrawerItem
                 label={this.props.t('SEARCH')}
                 onPress={() => this.props.navigation.navigate('CheckoutNav')}/>
+              { !!this.props.defaultDeliveryFormUrl && (
               <DrawerItem
                 label={this.props.t('DELIVERY')}
                 onPress={() => this.props.navigation.navigate('DeliveryNav')}
               />
+              )}
               {showRestaurantsDrawerItem && (
                 <RestaurantsDrawerItem restaurants={restaurants} navigate={this.props.navigation.navigate}/>
               )}
@@ -229,6 +231,7 @@ function mapStateToProps(state) {
     email: state.app.settings.administrator_email,
     showAbout,
     showRestaurantsDrawerItem: selectShowRestaurantsDrawerItem(state),
+    defaultDeliveryFormUrl: state.app.settings.default_delivery_form_url,
   }
 }
 
