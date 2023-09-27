@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "android": "react-native run-android --variant=officialDebug",
+    "android": "react-native run-android --mode=officialDebug",
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
@@ -46,8 +46,8 @@
     "currency-symbol-map": "^5.1.0",
     "diacritics": "^1.3.0",
     "esc-pos-encoder": "^1.3.0",
-    "expo": "^47.0.0",
-    "expo-camera": "~13.1.0",
+    "expo": "^48.0.0",
+    "expo-camera": "~13.2.1",
     "formik": "^2.4.5",
     "fuse.js": "^6.6.2",
     "google-libphonenumber": "^3.2.33",
@@ -147,7 +147,7 @@
     "mock-async-storage": "^2.2.0",
     "prettier": "^2.4.1",
     "promise.allsettled": "^1.0.6",
-    "react-dom": "17.0.2",
+    "react-dom": "18.2.0",
     "react-native-clean-project": "^3.6.7",
     "react-test-renderer": "18.2.0",
     "redux-mock-store": "^1.5.3",
@@ -210,5 +210,10 @@
         "type": "android.attached"
       }
     }
+  },
+  "resolutions": {
+    "@expo/config-plugins": "~6.0.0",
+    "@expo/prebuild-config": "~6.0.0",
+    "expo-modules-autolinking": "1.1.0"
   }
 }
