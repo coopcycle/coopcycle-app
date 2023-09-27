@@ -59,9 +59,6 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
         }
       });
 
-  private final ReactNativeHost mNewArchitectureNativeHost =
-      new MainApplicationReactNativeHost(this);
-
   @Override
   public ReactNativeHost getReactNativeHost() {
     return mReactNativeHost;
@@ -80,6 +77,12 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
     ApplicationLifecycleDispatcher.onApplicationCreate(this);
   }
 
+  @Override
+  public void onConfigurationChanged(Configuration newConfig) {
+    super.onConfigurationChanged(newConfig);
+    ApplicationLifecycleDispatcher.onConfigurationChanged(this, newConfig);
+  }
+
   private void upgradeSecurityProvider() {
     ProviderInstaller.installIfNeededAsync(this, new ProviderInstallListener() {
       @Override
@@ -90,11 +93,5 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
         GoogleApiAvailability.getInstance().showErrorNotification(MainApplication.this, errorCode);
       }
     });
-  }
-
-  @Override
-  public void onConfigurationChanged(Configuration newConfig) {
-    super.onConfigurationChanged(newConfig);
-    ApplicationLifecycleDispatcher.onConfigurationChanged(this, newConfig);
   }
 }
