@@ -90,3 +90,4 @@ ios/*.cer
 ios/*.certSigningRequest
 ios/*.p12
 ios/*.mobileprovision
+.vscode/settings.json

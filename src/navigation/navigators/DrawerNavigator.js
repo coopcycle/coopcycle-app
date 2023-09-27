@@ -13,6 +13,7 @@ import DrawerContent from '../components/DrawerContent'
 import AccountNavigator from './AccountNavigator'
 import CheckoutNavigator from './CheckoutNavigator'
 import CourierNavigator from './CourierNavigator'
+import DeliveryNavigator from './DeliveryNavigator';
 import DispatchNavigator from './DispatchNavigator'
 import RestaurantNavigator from './RestaurantNavigator'
 import StoreNavigator from './StoreNavigator'
@@ -96,6 +97,9 @@ const DrawerNav = ({ initialRouteName, user, isAuthenticated, showRestaurantsDra
       <Drawer.Screen
         name="CheckoutNav"
         component={ CheckoutNavigator } />
+      <Drawer.Screen
+        name="DeliveryNav"
+        component={ DeliveryNavigator } />
       <Drawer.Screen
         name="AccountNav"
         component={ AccountNavigator } />
