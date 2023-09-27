@@ -15,63 +15,51 @@ import { find } from 'lodash'
 
 export function orderToStep(order) {
 
+  const eventType = [
+    'order:created', 'order:accepted', 'order:refused', 'order:picked',
+    'order:cancelled', 'order:fulfilled',
+  ]
+
   let index = 0
   let error = 0
+  let legacy = false
+  let events = []
 
+  // TODO: Remove legacy if all servers are >= coopcycle/coopcycle-web#f4031d3
   if (Object.prototype.hasOwnProperty.call(order, 'events')) {
-
-    const eventType = [
-      'order:created', 'order:accepted', 'order:refused', 'order:picked',
-      'order:cancelled', 'order:fulfilled',
-    ]
-
-    // Normalize events
-    const events = order.events.filter((event) => eventType.includes(event.type)).sort((a, b) => {
+    events = order.events
+      .filter((event) => eventType.includes(event.type))
+      .sort((a, b) => {
       return eventType.indexOf(a.type) - eventType.indexOf(b.type)
-    })
-
-    events.forEach(event => {
-      switch (event.type) {
-        case 'order:accepted':
-          index = 1
-          break
-        case 'order:picked':
-          index = 2
-          break
-        case 'order:fulfilled':
-          index = 3
-          break
-        case 'order:refused':
-          index = 1
-          error = 1
-          break;
-        case 'order:cancelled':
-          index = 2
-          error = 2
-          break;
-      }
-    })
-
-    return { index, error }
+      })
+  } else {
+    events = [{ type: 'order:' + order.state }]
+    legacy = true
   }
 
-  switch (order.state) {
-    case 'accepted':
-    case 'refused':
-      index = 1
-      break
-    case 'picked':
-    case 'cancelled':
-      index = 2
-      break
-    case 'fulfilled':
-      index = 3
-      break
-    default:
-      index = 0
-  }
-  error = [ 'refused', 'cancelled' ].indexOf(order.state) + 1
-  return { index, error }
+  events.forEach(event => {
+    switch (event.type) {
+      case 'order:accepted':
+        index = 1
+        break
+      case 'order:picked':
+        index = 2
+        break
+      case 'order:fulfilled':
+        index = 3
+        break
+      case 'order:refused':
+        index = 1
+        error = 1
+        break;
+      case 'order:cancelled':
+        index = 2
+        error = 2
+        break;
+    }
+  })
+
+  return { index, error, legacy }
 }
 
 const stateDescription = [
@@ -85,7 +73,6 @@ class OrderTrackingPage extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      step: 0,
       refreshing: false,
     }
   }
@@ -161,7 +148,7 @@ class OrderTrackingPage extends Component {
             loading={step.index === 1 && step.error === 0}
             active={step.index >= 2}
             error={step.error === 2}
-            hide={!!step.error && step.error < 2}
+            hide={(!!step.error && step.error < 2) || (step.legacy && step.error !== 2)}
           />
           <Step
             loadingLabel={i18n.t('ORDER_TIMELINE_AFTER_PICKED_TITLE')}
