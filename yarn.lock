@@ -7054,9 +7054,9 @@ cosmiconfig@^5.0.5, cosmiconfig@^5.1.0:
     parse-json "^4.0.0"
 
 countly-sdk-react-native-bridge@^22.06.1:
-  version "22.6.1"
-  resolved "https://registry.yarnpkg.com/countly-sdk-react-native-bridge/-/countly-sdk-react-native-bridge-22.6.1.tgz#11de14db2bc6b27033505d136d0478e8ff002d7f"
-  integrity sha512-2v7/t5B37RYiKKqS8XyXQwF0EzHaZTfIIEsH82XdFC0RolFeqZVBvT5QSA/KKuEJhE579t1WvSZ0WHXWhveVIw==
+  version "22.6.5"
+  resolved "https://registry.yarnpkg.com/countly-sdk-react-native-bridge/-/countly-sdk-react-native-bridge-22.6.5.tgz#3a0699d3d02ce495eb9c0346c1f55d561dd3dcd0"
+  integrity sha512-b5in77a0fnL+D5OLEE0dhVmbrRNd7+rsXoHULIayiXrhBOQAzDAXeq3CM10QeY9LOQv1CIqupZNkdXRAXF+ItA==
 
 cross-fetch@^3.1.5:
   version "3.1.6"
