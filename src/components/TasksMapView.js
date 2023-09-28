@@ -169,7 +169,7 @@ class TasksMapView extends Component {
   _getWarnings(task) {
     const warnings = []
 
-    if (task.comments && task.comments.length) {
+    if (task.address && task.address.description) {
       warnings.push('comments')
     }
 
