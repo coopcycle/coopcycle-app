@@ -74,17 +74,17 @@ const Details = ({ task, t }) => {
     })
   }
 
-  if (task.comments) {
-    items.push({
-      iconName: 'chatbubbles',
-      text: task.comments,
-    })
-  }
-
   if (task.address.description) {
     items.push({
       iconName: 'information-circle',
       text: task.address.description,
+    })
+  }
+
+  if (task.comments) {
+    items.push({
+      iconName: 'chatbubbles',
+      text: task.comments,
     })
   }
 
