@@ -33,7 +33,7 @@ import ptBR from 'numbro/languages/pt-BR'
 import ptPT from 'numbro/languages/pt-PT'
 
 export const localeDetector = () => {
-  const lang = RNLocalize.findBestAvailableLanguage([ 'cs', 'de', 'en', 'es', 'fr', 'it', 'pl', 'pt-BR', 'pt-PT', 'eu' ])
+  const lang = RNLocalize.findBestLanguageTag([ 'cs', 'de', 'en', 'es', 'fr', 'it', 'pl', 'pt-BR', 'pt-PT', 'eu' ])
   if (!lang) {
 
     return 'en'
@@ -43,7 +43,7 @@ export const localeDetector = () => {
 }
 
 export const localeWithTagDetector = () => {
-  const lang = RNLocalize.findBestAvailableLanguage([ 'cs-CZ', 'de-DE', 'en-GB', 'en-US', 'es-ES', 'fr-FR', 'it-IT', 'pl-PL', 'pt-BR', 'pt-PT', 'eu-ES' ])
+  const lang = RNLocalize.findBestLanguageTag([ 'cs-CZ', 'de-DE', 'en-GB', 'en-US', 'es-ES', 'fr-FR', 'it-IT', 'pl-PL', 'pt-BR', 'pt-PT', 'eu-ES' ])
   if (!lang) {
 
     return 'en-US'

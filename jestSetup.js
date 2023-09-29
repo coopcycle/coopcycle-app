@@ -3,7 +3,7 @@
 import NavigationHolder from './src/NavigationHolder'
 
 jest.mock('react-native-localize', () => ({
-  findBestAvailableLanguage: () => ({ languageTag: 'en' }),
+  findBestLanguageTag: () => ({ languageTag: 'en' }),
 }));
 
 jest.mock('react-native-blob-util', () => ({
