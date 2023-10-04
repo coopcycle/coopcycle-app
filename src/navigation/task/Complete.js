@@ -100,6 +100,7 @@ const FailureReasonPicker = ({ task, httpClient, onValueChange }) => {
     <Picker selectedValue={selectedFailureReason}
             onValueChange={v => setFailureReason(v)}
     >
+      <Picker.Item value={null} label="" />
       {values}
     </Picker>
   </Skeleton>
