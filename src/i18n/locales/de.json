@@ -346,6 +346,7 @@
         "ORDER_NEW": "warten",
         "BACKGROUND_GEOLOCATION_NOTIFICATION_TITLE": "Lokalisierung im Hintergrund",
         "STORE_NEW_DELIVERY_ADDRESS_HELP": "Gebe die Adresse der Zustellung ein, um die Realisierbarkeit zu überprüfen",
-        "CARDHOLDER_NAME": "Name des Karteninhabers"
+        "CARDHOLDER_NAME": "Name des Karteninhabers",
+        "FAILURE_REASON": "Fehlergrund"
     }
 }

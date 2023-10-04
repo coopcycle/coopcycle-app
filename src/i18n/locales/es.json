@@ -429,6 +429,7 @@
         "COMPLETE_TASKS": "Completar tareas",
         "SESSION_ERROR_TRY_AGAIN": "Ocurrió un error con la sesión, por favor inicie sesión nuevamente y vuelva a intentarlo.",
         "DELIVERY": "Entrega",
-        "DELIVERIES": "Entregas"
+        "DELIVERIES": "Entregas",
+        "FAILURE_REASON": "Motivo del fallo"
     }
 }

@@ -383,6 +383,7 @@
             "cash_on_delivery": "In contanti",
             "card": "Carta di credito"
         },
-        "SELECT_PAYMENT_METHOD": "Seleziona un metodo di pagamento"
+        "SELECT_PAYMENT_METHOD": "Seleziona un metodo di pagamento",
+        "FAILURE_REASON": "Motivo del fallimento"
     }
 }

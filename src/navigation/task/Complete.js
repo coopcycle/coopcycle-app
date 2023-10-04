@@ -1,8 +1,28 @@
-import React, { Component } from 'react'
-import { Dimensions, Image, Keyboard, Platform, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
+import React, { Component, useEffect, useMemo, useState } from 'react'
 import {
-  Box, Button,
-  Divider, FormControl, HStack, Icon, Input, KeyboardAvoidingView, ScrollView, Text, TextArea, VStack,
+  Dimensions,
+  Image,
+  Keyboard,
+  Platform,
+  StyleSheet,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native'
+import {
+  Box,
+  Button,
+  Divider,
+  FormControl,
+  HStack,
+  Icon,
+  Input,
+  KeyboardAvoidingView,
+  ScrollView,
+  Skeleton,
+  Text,
+  TextArea,
+  VStack,
 } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
@@ -20,10 +40,13 @@ import {
   markTasksDone,
   selectIsTaskCompleteFailure,
   selectPictures,
-  selectSignatures } from '../../redux/Courier'
+  selectSignatures,
+} from '../../redux/Courier'
 import { greenColor, redColor } from '../../styles/common'
 import { doneIconName, failedIconName } from './styles/common'
 import ModalContent from '../../components/ModalContent'
+import { Picker } from '@react-native-picker/picker';
+import { useQuery } from 'react-query';
 
 const DELETE_ICON_SIZE = 32
 const CONTENT_PADDING = 20
@@ -53,6 +76,35 @@ const AttachmentItem = ({ base64, onPressDelete }) => {
   )
 }
 
+const FailureReasonPicker = ({ task, httpClient, onValueChange }) => {
+
+  const { data, isSuccess } = useQuery([ 'task', 'failure_reasons', task['@id'] ], async () => {
+    return await httpClient.get(`${task['@id']}/failure_reasons`)
+  })
+
+  const [ selectedFailureReason, setFailureReason ] = useState(null)
+
+  const values = useMemo(() => {
+    if (!isSuccess)
+      {return null}
+    return data['hydra:member'].map((value, index) => <Picker.Item key={index} value={value.code} label={value.description}  /> )
+  },
+    [ data, isSuccess ])
+
+  useEffect(() => {
+    if (!isSuccess) { return }
+    onValueChange(selectedFailureReason)
+  }, [ selectedFailureReason, onValueChange, isSuccess ]);
+
+  return <Skeleton isLoaded={isSuccess} rounded={2}>
+    <Picker selectedValue={selectedFailureReason}
+            onValueChange={v => setFailureReason(v)}
+    >
+      {values}
+    </Picker>
+  </Skeleton>
+}
+
 class CompleteTask extends Component {
 
   constructor(props) {
@@ -60,10 +112,15 @@ class CompleteTask extends Component {
 
     this.state = {
       notes: '',
+      failureReason: null,
       isContactNameModalVisible: false,
       contactName: '',
       isKeyboardVisible: false,
     }
+  }
+
+  shouldComponentUpdate(nextProps, nextState, nextContext) {
+    return this.state.failureReason !== nextState.failureReason;
   }
 
   markTaskDone() {
@@ -89,9 +146,9 @@ class CompleteTask extends Component {
   markTaskFailed() {
 
     const task = this.props.route.params?.task
-    const { notes } = this.state
+    const { notes, failureReason } = this.state
 
-    this.props.markTaskFailed(this.props.httpClient, task, notes, () => {
+    this.props.markTaskFailed(this.props.httpClient, task, failureReason, notes, () => {
       // Make sure to use merge = true, so that it doesn't break
       // when navigating to DispatchTaskList
       this.props.navigation.navigate({ name: this.props.route.params?.navigateAfter, merge: true })
@@ -217,6 +274,13 @@ class CompleteTask extends Component {
                     <Divider />
                   </React.Fragment>
                 ) }
+                {!success && <FormControl p="3">
+                  <FormControl.Label>{this.props.t('FAILURE_REASON')}</FormControl.Label>
+                  <FailureReasonPicker
+                    task={task}
+                    httpClient={this.props.httpClient}
+                    onValueChange={failureReason => this.setState({ failureReason })} />
+                </FormControl>}
                 <FormControl p="3">
                   <FormControl.Label>{ this.props.t('NOTES') }</FormControl.Label>
                   <TextArea
@@ -350,7 +414,7 @@ function mapStateToProps (state) {
 
 function mapDispatchToProps (dispatch) {
   return {
-    markTaskFailed: (client, task, notes, onSuccess, contactName) => dispatch(markTaskFailed(client, task, notes, onSuccess, contactName)),
+    markTaskFailed: (client, task, notes, reason, onSuccess, contactName) => dispatch(markTaskFailed(client, task, notes, reason, onSuccess, contactName)),
     markTaskDone: (client, task, notes, onSuccess, contactName) => dispatch(markTaskDone(client, task, notes, onSuccess, contactName)),
     markTasksDone: (client, tasks, notes, onSuccess, contactName) => dispatch(markTasksDone(client, tasks, notes, onSuccess, contactName)),
     deleteSignatureAt: index => dispatch(deleteSignatureAt(index)),

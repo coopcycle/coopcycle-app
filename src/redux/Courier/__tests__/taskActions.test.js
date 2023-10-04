@@ -3,16 +3,28 @@ import thunk from 'redux-thunk'
 import moment from 'moment'
 
 import {
-  LOAD_TASKS_FAILURE, LOAD_TASKS_REQUEST, LOAD_TASKS_SUCCESS,
-  MARK_TASK_DONE_FAILURE, MARK_TASK_DONE_REQUEST, MARK_TASK_DONE_SUCCESS,
-  MARK_TASK_FAILED_FAILURE, MARK_TASK_FAILED_REQUEST, MARK_TASK_FAILED_SUCCESS,
-
-  clearFiles, loadTasks, loadTasksFailure,
-  loadTasksRequest, loadTasksSuccess, markTaskDone,
-  markTaskDoneFailure, markTaskDoneRequest, markTaskDoneSuccess,
+  LOAD_TASKS_FAILURE,
+  LOAD_TASKS_REQUEST,
+  LOAD_TASKS_SUCCESS,
+  MARK_TASK_DONE_FAILURE,
+  MARK_TASK_DONE_REQUEST,
+  MARK_TASK_DONE_SUCCESS,
+  MARK_TASK_FAILED_FAILURE,
+  MARK_TASK_FAILED_REQUEST,
+  MARK_TASK_FAILED_SUCCESS,
+  clearFiles,
+  loadTasks,
+  loadTasksFailure,
+  loadTasksRequest,
+  loadTasksSuccess,
+  markTaskDone,
+  markTaskDoneFailure,
+  markTaskDoneRequest,
+  markTaskDoneSuccess,
   markTaskFailed,
-
-  markTaskFailedFailure, markTaskFailedRequest, markTaskFailedSuccess,
+  markTaskFailedFailure,
+  markTaskFailedRequest,
+  markTaskFailedSuccess,
 } from '../taskActions'
 
 // As we may be using setTimeout(), we need to mock timers
@@ -252,9 +264,9 @@ describe('Redux | Tasks | Actions', () => {
         expect(client.put).toHaveBeenCalledTimes(1)
         expect(client.uploadFileAsync).toHaveBeenCalledTimes(1)
         expect(client.uploadFileAsync).toHaveBeenCalledWith(
-          "/api/task_images",
-          "123456",
-          {"headers": {"X-Attach-To": "/api/tasks/1"}}
+          '/api/task_images',
+          '123456',
+          { 'headers': { 'X-Attach-To': '/api/tasks/1' } }
         )
         expect(client.put).toHaveBeenCalledWith(`${task['@id']}/done`, { notes })
       })
@@ -298,6 +310,7 @@ describe('Redux | Tasks | Actions', () => {
   test('markTaskFailed | Successful request', () => {
     const task = { '@id': '/api/tasks/1' }
     const notes = 'notes'
+    const reason = 'REASON'
     const resolveValue = { ...task }
 
     const client = {
@@ -318,7 +331,7 @@ describe('Redux | Tasks | Actions', () => {
     })
 
     // Make sure to return the promise
-    return store.dispatch(markTaskFailed(client, task, notes))
+    return store.dispatch(markTaskFailed(client, task, notes, reason))
       .then(() => {
         const actions = store.getActions()
 
@@ -328,13 +341,14 @@ describe('Redux | Tasks | Actions', () => {
 
         expect(client.put).toHaveBeenCalledTimes(1)
         expect(client.put).not.toHaveBeenCalledWith(task['@id'], { images: [] })
-        expect(client.put).toHaveBeenCalledWith(`${task['@id']}/failed`, { notes })
+        expect(client.put).toHaveBeenCalledWith(`${task['@id']}/failed`, { notes, reason })
       })
   })
 
   test('markTaskFailed | Failed request', () => {
     const task = { '@id': 1 }
     const notes = 'notes'
+    const reason = 'REASON'
     const rejectValue = new Error('test error')
 
     const client = {
@@ -353,7 +367,7 @@ describe('Redux | Tasks | Actions', () => {
     })
 
     // Make sure to return the promise
-    return store.dispatch(markTaskFailed(client, task, notes))
+    return store.dispatch(markTaskFailed(client, task, notes, reason))
       .then(() => {
         const actions = store.getActions()
 
@@ -362,7 +376,7 @@ describe('Redux | Tasks | Actions', () => {
 
         expect(client.put).toHaveBeenCalledTimes(1)
         expect(client.put).not.toHaveBeenCalledWith(task['@id'], { images: [] })
-        expect(client.put).toHaveBeenCalledWith(`${task['@id']}/failed`, { notes })
+        expect(client.put).toHaveBeenCalledWith(`${task['@id']}/failed`, { notes, reason })
       })
   })
 })
