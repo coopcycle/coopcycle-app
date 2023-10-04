@@ -20,13 +20,13 @@ const ColorSchemeAwareCardField = (props) => {
     <CardField
       postalCodeEnabled={ false }
       cardStyle={{
-        // borderWidth?: number;
+        borderWidth: colorScheme === 'dark' ? 1 : 0,
         backgroundColor: colorScheme === 'dark' ? '#000000' : '#ffffff',
-        // borderColor?: string;
-        // cornerRadius?: number;
+        borderColor: colorScheme === 'dark' ? '#666666' : '#ffffff',
+        borderRadius: 4,
         textColor: colorScheme === 'dark' ? '#ffffff' : '#333333',
         // fontSize?: number;
-        // placeholderColor?: string;
+        placeholderColor: colorScheme === 'dark' ? '#666666' : '#ffffff',
         // cursorColor?: string;
         // textErrorColor?: string;
       }}

@@ -34,7 +34,7 @@
     "@react-navigation/stack": "^6.3.18",
     "@reduxjs/toolkit": "^1.9.6",
     "@sentry/react-native": "^2.6.0",
-    "@stripe/stripe-react-native": "^0.14.0",
+    "@stripe/stripe-react-native": "^0.33.0",
     "@turf/turf": "^6.5.0",
     "abortcontroller-polyfill": "^1.7.5",
     "axios": "^1.4.0",

@@ -1831,7 +1831,7 @@
     node-forge "^1.2.1"
     nullthrows "^1.1.1"
 
-"@expo/config-plugins@6.0.2", "@expo/config-plugins@^4.1.4", "@expo/config-plugins@^5.0.1", "@expo/config-plugins@~6.0.0", "@expo/config-plugins@~7.0.0":
+"@expo/config-plugins@6.0.2", "@expo/config-plugins@^5.0.1", "@expo/config-plugins@~6.0.0", "@expo/config-plugins@~7.0.0":
   version "6.0.2"
   resolved "https://registry.yarnpkg.com/@expo/config-plugins/-/config-plugins-6.0.2.tgz#cf07319515022ba94d9aa9fa30e0cff43a14256f"
   integrity sha512-Cn01fXMHwjU042EgO9oO3Mna0o/UCrW91MQLMbJa4pXM41CYGjNgVy1EVXiuRRx/upegHhvltBw5D+JaUm8aZQ==
@@ -4144,12 +4144,10 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
-"@stripe/stripe-react-native@^0.14.0":
-  version "0.14.0"
-  resolved "https://registry.yarnpkg.com/@stripe/stripe-react-native/-/stripe-react-native-0.14.0.tgz#0ff0f7f5fdeeffd37965bc468da6f121ed8b64ca"
-  integrity sha512-6/QdRz39PG5RhuWWsSKgjDmi6/HqUjCnLequqKXtPN1hpxcyCIixYwYyJn7jshZnffV+o0WAR5KFB8SuI9r2hw==
-  dependencies:
-    "@expo/config-plugins" "^4.1.4"
+"@stripe/stripe-react-native@^0.33.0":
+  version "0.33.0"
+  resolved "https://registry.yarnpkg.com/@stripe/stripe-react-native/-/stripe-react-native-0.33.0.tgz#665cb096ef0262b801df357309ec5138f49eb665"
+  integrity sha512-UXoRzJ4joiE42HwyWPxaJF3w3lggtfTts9Wi2lthLEmbvS7RdmMrEGNxDRmtBYsF8A3UhAd868L8xDQKyvBfSg==
 
 "@styled-system/background@^5.1.2":
   version "5.1.2"
