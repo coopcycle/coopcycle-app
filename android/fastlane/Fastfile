@@ -69,15 +69,15 @@ platform :android do
         "android.injected.signing.key.password" => ENV["ANDROID_KEY_PASSWORD"],
       }
     )
-    bundletool(
-      ks_path: ENV["ANDROID_STORE_FILE"],
-      ks_password: ENV["ANDROID_STORE_PASSWORD"],
-      ks_key_alias: ENV["ANDROID_KEY_ALIAS"],
-      ks_key_alias_password: ENV["ANDROID_KEY_PASSWORD"],
-      aab_path: "app/build/outputs/bundle/#{artifact_filepath}.aab",
-      apk_output_path: "app/build/outputs/apk/#{artifact_filepath}.apk",
-      verbose: true
-    )
+    # bundletool(
+    #   ks_path: ENV["ANDROID_STORE_FILE"],
+    #   ks_password: ENV["ANDROID_STORE_PASSWORD"],
+    #   ks_key_alias: ENV["ANDROID_KEY_ALIAS"],
+    #   ks_key_alias_password: ENV["ANDROID_KEY_PASSWORD"],
+    #   aab_path: "app/build/outputs/bundle/#{artifact_filepath}.aab",
+    #   apk_output_path: "app/build/outputs/apk/#{artifact_filepath}.apk",
+    #   verbose: true
+    # )
   end
 
   desc "Deploy a new version to the Google Play"
