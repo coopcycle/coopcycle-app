@@ -44,7 +44,7 @@ jobs:
         uses: maxim-lobanov/setup-cocoapods@v1
         with:
           version: '1.12'
-          podfile-path: ios/Podfile.lock
+          # podfile-path: ios/Podfile.lock
       - name: Install RubyGems
         working-directory: ios/
         run: bundle install
