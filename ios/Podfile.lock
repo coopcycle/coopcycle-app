@@ -915,9 +915,9 @@ PODS:
   - RNScreens (3.25.0):
     - React-Core
     - React-RCTImage
-  - RNSentry (2.6.2):
+  - RNSentry (5.10.0):
     - React-Core
-    - Sentry (= 7.1.4)
+    - Sentry/HybridSDK (= 8.11.0)
   - RNShare (7.9.1):
     - React-Core
   - RNSound (0.11.2):
@@ -929,9 +929,9 @@ PODS:
     - React
   - RNVectorIcons (9.1.0):
     - React-Core
-  - Sentry (7.1.4):
-    - Sentry/Core (= 7.1.4)
-  - Sentry/Core (7.1.4)
+  - Sentry/HybridSDK (8.11.0):
+    - SentryPrivate (= 8.11.0)
+  - SentryPrivate (8.11.0)
   - SocketRocket (0.6.1)
   - Stripe (23.16.0):
     - StripeApplePay (= 23.16.0)
@@ -1135,6 +1135,7 @@ SPEC REPOS:
     - PromisesObjC
     - PureLayout
     - Sentry
+    - SentryPrivate
     - SocketRocket
     - Stripe
     - StripeApplePay
@@ -1442,12 +1443,13 @@ SPEC CHECKSUMS:
   RNLocalize: dbea38dcb344bf80ff18a1757b1becf11f70cae4
   RNReanimated: ab2e96c6d5591c3dfbb38a464f54c8d17fb34a87
   RNScreens: 85d3880b52d34db7b8eeebe2f1a0e807c05e69fa
-  RNSentry: 68644ef607b780551cc555f084869764f2566652
+  RNSentry: 11917f7bf3e28806aca4c2791c6ba7522d8f09fe
   RNShare: a5dc3b9c53ddc73e155b8cd9a94c70c91913c43c
   RNSound: 6c156f925295bdc83e8e422e7d8b38d33bc71852
   RNSVG: 551acb6562324b1d52a4e0758f7ca0ec234e278f
   RNVectorIcons: 7923e585eaeb139b9f4531d25a125a1500162a0b
-  Sentry: 1d3eb1a25f8c5333c88dd5603904a6d461cd9fcf
+  Sentry: 39d57e691e311bdb73bc1ab5bbebbd6bc890050d
+  SentryPrivate: 48712023cdfd523735c2edb6b06bedf26c4730a3
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   Stripe: fcab417424a45d995aa1e62a39bc942233b61ba3
   stripe-react-native: fb59ade94b226d967c0473346985ee04a976e078
