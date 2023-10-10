@@ -721,7 +721,7 @@ PODS:
     - React-Core
   - react-native-get-random-values (1.9.0):
     - React-Core
-  - react-native-maps (1.7.1):
+  - react-native-maps (1.8.0):
     - React-Core
   - react-native-netinfo (9.4.1):
     - React-Core
@@ -851,7 +851,7 @@ PODS:
     - React-Core
   - RNBackgroundFetch (4.2.1):
     - React-Core
-  - RNBackgroundGeolocation (4.13.3):
+  - RNBackgroundGeolocation (4.14.2):
     - CocoaLumberjack (~> 3.7.2)
     - React-Core
   - RNCAsyncStorage (1.19.3):
@@ -860,7 +860,7 @@ PODS:
     - React-Core
   - RNCPicker (2.2.1):
     - React-Core
-  - RNCPushNotificationIOS (1.10.1):
+  - RNCPushNotificationIOS (1.11.0):
     - React-Core
   - RNDateTimePicker (6.7.1):
     - React-Core
@@ -1403,7 +1403,7 @@ SPEC CHECKSUMS:
   react-native-config: 86038147314e2e6d10ea9972022aa171e6b1d4d8
   react-native-fbsdk-next: 776f49479d36a1e72a1a367baadcc8391cd24374
   react-native-get-random-values: dee677497c6a740b71e5612e8dbd83e7539ed5bb
-  react-native-maps: 667f9b975549c6fa9b1631bf859440f68ebd3b8f
+  react-native-maps: f699e0753c22c4d5c3a44d03895b193a4dbca6c2
   react-native-netinfo: fefd4e98d75cbdd6e85fc530f7111a8afdf2b0c5
   react-native-pager-view: da490aa1f902c9a5aeecf0909cc975ad0e92e53e
   react-native-safe-area-context: 7aa8e6d9d0f3100a820efb1a98af68aa747f9284
@@ -1429,11 +1429,11 @@ SPEC CHECKSUMS:
   ReactNativeKeyboardManager: 60292dbac467c49841a7d69588208ec4a4f7b2a2
   RNAppleAuthentication: 0571c08da8c327ae2afc0261b48b4a515b0286a6
   RNBackgroundFetch: 501c34ad6e880818ba17e7840b23f20a2d112923
-  RNBackgroundGeolocation: f2a2052e63d3bf255de1e2f84a24029f89d91601
+  RNBackgroundGeolocation: 122533a10f43bab76a8f0b1e7d95687de63abed7
   RNCAsyncStorage: c913ede1fa163a71cea118ed4670bbaaa4b511bb
   RNCMaskedView: 949696f25ec596bfc697fc88e6f95cf0c79669b6
   RNCPicker: cb57c823d5ce8d2d0b5dfb45ad97b737260dc59e
-  RNCPushNotificationIOS: 87b8d16d3ede4532745e05b03c42cff33a36cc45
+  RNCPushNotificationIOS: 64218f3c776c03d7408284a819b2abfda1834bc8
   RNDateTimePicker: 0530a73a6f3a1a85814cbde0802736993b9e675e
   RNFBAnalytics: 4e38343d06b7541807d52fe11727f71aa635ffbf
   RNFBApp: 3976c7928aa054c4fdcd0d029dececa0b3397ee5
