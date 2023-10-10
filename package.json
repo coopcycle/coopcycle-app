@@ -11,6 +11,7 @@
     "i18n-lint": "ajv validate -s i18n.schema.json -d \"src/i18n/locales/*.json\""
   },
   "dependencies": {
+    "@babel/helper-get-function-arity": "^7.16.7",
     "@blackbox-vision/react-native-mercadopago-px": "^0.7.2",
     "@heasy/react-native-sunmi-printer": "^1.5.3",
     "@invertase/react-native-apple-authentication": "^2.2.2",
