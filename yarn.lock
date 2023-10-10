@@ -4028,9 +4028,9 @@
     "@react-types/shared" "^3.9.0"
 
 "@reduxjs/toolkit@^1.9.6":
-  version "1.9.6"
-  resolved "https://registry.yarnpkg.com/@reduxjs/toolkit/-/toolkit-1.9.6.tgz#fc968b45fe5b17ff90932c4556960d9c1078365a"
-  integrity sha512-Gc4ikl90ORF4viIdAkY06JNUnODjKfGxZRwATM30EdHq8hLSVoSrwXne5dd739yenP5bJxAX7tLuOWK5RPGtrw==
+  version "1.9.7"
+  resolved "https://registry.yarnpkg.com/@reduxjs/toolkit/-/toolkit-1.9.7.tgz#7fc07c0b0ebec52043f8cb43510cf346405f78a6"
+  integrity sha512-t7v8ZPxhhKgOKtU+uyJT13lu4vL7az5aFi4IdoDs/eS548edn2M8Ik9h8fxgvMjGoAUVFSt6ZC1P5cWmQ014QQ==
   dependencies:
     immer "^9.0.21"
     redux "^4.2.1"
@@ -6124,9 +6124,9 @@ axios-mock-adapter@^1.21.4:
     is-buffer "^2.0.5"
 
 axios@^1.4.0:
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/axios/-/axios-1.5.0.tgz#f02e4af823e2e46a9768cfc74691fdd0517ea267"
-  integrity sha512-D4DdjDo5CY50Qms0qGQTTw6Q44jl7zRwY7bthds06pUGfChBCTcQs+N743eFWGEd6pRTMd6A+I87aWyFV5wiZQ==
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-1.5.1.tgz#11fbaa11fc35f431193a9564109c88c1f27b585f"
+  integrity sha512-Q28iYCWzNHjAm+yEAot5QaAMxhMghWLFVf7rRdwhUI+c2jix2DUXjAHXVi+s1ibs3mjPO/cCgbA++3BjD0vP/A==
   dependencies:
     follow-redirects "^1.15.0"
     form-data "^4.0.0"
@@ -10223,9 +10223,9 @@ levn@^0.4.1:
     type-check "~0.4.0"
 
 libphonenumber-js@^1.10.44:
-  version "1.10.44"
-  resolved "https://registry.yarnpkg.com/libphonenumber-js/-/libphonenumber-js-1.10.44.tgz#6709722461173e744190494aaaec9c1c690d8ca8"
-  integrity sha512-svlRdNBI5WgBjRC20GrCfbFiclbF0Cx+sCcQob/C1r57nsoq0xg8r65QbTyVyweQIlB33P+Uahyho6EMYgcOyQ==
+  version "1.10.47"
+  resolved "https://registry.yarnpkg.com/libphonenumber-js/-/libphonenumber-js-1.10.47.tgz#1efdf08306960a222703e575e78eb76458944012"
+  integrity sha512-b4t7VQDV29xx/ni+58yl9KWPGjnDLDXCeCTLrD4V8vDpObXZRZBrg7uX/HWZ7YXiJKqdBDGgc+barUUTNB6Slw==
 
 lie@3.1.1:
   version "3.1.1"
@@ -12263,9 +12263,9 @@ react-native-localize@^3:
   integrity sha512-/l/oE1LVNgIRRhLbhmfFMHiWV0xhUn0A0iz1ytLVRYywL7FTp8Rx2vkJS/q/RpExDvV7yLw2493XZBYIM1dnLQ==
 
 react-native-map-link@^2.11.2:
-  version "2.11.2"
-  resolved "https://registry.yarnpkg.com/react-native-map-link/-/react-native-map-link-2.11.2.tgz#702f58128eb90a21634a6eb0bc2cc044d4b0cc4f"
-  integrity sha512-Iw6ctKw6aGkFrYKnUFzkfzaIrXbRumVAdqGrspws6dp//xij1KFzQlONWcHjfzZeOa2Q7PR/TrlUfxPUdODrzw==
+  version "2.11.3"
+  resolved "https://registry.yarnpkg.com/react-native-map-link/-/react-native-map-link-2.11.3.tgz#01241e1bf8f5ba08d6eb02d02abc9bbe57d9a7c9"
+  integrity sha512-QVukvvSF2OKpC1NGGy5m2uZDX+ZUuYjUYt8NiZ0PZ7PiNDL5TfZ5QMuPwksRTvWlYIWex/Y/MkxcWIOc/6wHbg==
   dependencies:
     prop-types "^15.8.1"
     react-native-modal "^13.0.1"
