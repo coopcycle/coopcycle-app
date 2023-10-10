@@ -40,11 +40,11 @@ jobs:
         with:
           ruby-version: '3.2'
           bundler-cache: true
-      - name: Setup CocoaPods
-        uses: maxim-lobanov/setup-cocoapods@v1
-        with:
-          # version: '1.12'
-          podfile-path: ios/Podfile.lock
+      # - name: Setup CocoaPods
+      #   uses: maxim-lobanov/setup-cocoapods@v1
+      #   with:
+      #     # version: '1.12'
+      #     podfile-path: ios/Podfile.lock
       - name: Install dependencies
         run: yarn install
       - name: Cache Pods
@@ -55,7 +55,7 @@ jobs:
           key: pods-${{ hashFiles('**/Podfile.lock') }}
       - name: Install Pods
         working-directory: ios/
-        run: pod install
+        run: bundle exec pod install
       - name: Generate icons
         if: ${{ inputs.instance != '' }}
         working-directory: ios/
