@@ -46,12 +46,9 @@ jobs:
           # version: '1.12'
           podfile-path: ios/Podfile.lock
       - name: Install RubyGems
-        working-directory: ios/
         run: bundle install
       - name: Install dependencies
         run: yarn install
-      - name: Install CocoaPods plugins
-        run: gem install cocoapods-user-defined-build-types
       - name: Cache Pods
         uses: actions/cache@v2
         id: cache-pods
@@ -59,7 +56,8 @@ jobs:
           path: ios/Pods
           key: pods-${{ hashFiles('**/Podfile.lock') }}
       - name: Install Pods
-        run: npx pod-install
+        working-directory: ios/
+        run: pod install
       - name: Generate icons
         if: ${{ inputs.instance != '' }}
         working-directory: ios/
