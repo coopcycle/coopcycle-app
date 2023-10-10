@@ -45,8 +45,6 @@ jobs:
         with:
           # version: '1.12'
           podfile-path: ios/Podfile.lock
-      - name: Install RubyGems
-        run: bundle install
       - name: Install dependencies
         run: yarn install
       - name: Cache Pods
