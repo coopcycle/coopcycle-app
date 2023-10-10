@@ -59,8 +59,7 @@ jobs:
           path: ios/Pods
           key: pods-${{ hashFiles('**/Podfile.lock') }}
       - name: Install Pods
-        working-directory: ios/
-        run: pod install
+        run: npx pod-install
       - name: Generate icons
         if: ${{ inputs.instance != '' }}
         working-directory: ios/
