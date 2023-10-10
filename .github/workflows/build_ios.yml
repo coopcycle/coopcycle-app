@@ -10,6 +10,10 @@ on:
         description: 'Build Naofood app'
         required: true
         type: boolean
+      build_kooglof:
+        description: 'Build Kooglof app'
+        required: true
+        type: boolean
 jobs:
   default:
     if: ${{ inputs.build_official }}
@@ -29,4 +33,16 @@ jobs:
       app_id: org.coopcycle.Naofood
       primary_color: "#f8781f"
       google_service_info_plist_base64: GOOGLE_SERVICE_INFO_PLIST_BASE64_NAOFOOD
+    secrets: inherit
+  kooglof:
+    if: ${{ inputs.build_kooglof }}
+    name: Build Kooglof app
+    uses: ./.github/workflows/fastlane_ios.yml
+    with:
+      instance: kooglof
+      instance_url: https://kooglof.coopcycle.org
+      app_name: Kooglof
+      app_id: org.coopcycle.Kooglof
+      primary_color: "#b4434e"
+      google_service_info_plist_base64: GOOGLE_SERVICE_INFO_PLIST_BASE64_KOOGLOF
     secrets: inherit
