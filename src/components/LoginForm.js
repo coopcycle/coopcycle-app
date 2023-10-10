@@ -159,7 +159,11 @@ class LoginForm extends Component {
             }}
             disabled={ false } />
           ) : null }
-          { Platform.OS === 'ios' && (
+          { /*
+          Sign In with Apple is disabled until we find a solution
+          https://github.com/coopcycle/coopcycle-app/issues/1490
+          */ }
+          { (Platform.OS === 'ios' && false) && (
             <AppleButton
               buttonStyle={AppleButton.Style.WHITE}
               buttonType={AppleButton.Type.SIGN_IN}
@@ -206,8 +210,8 @@ class LoginForm extends Component {
                       }
                     })
                 })
-              }} />
-            )}
+            }} />
+          )}
         </Stack>
         )}
       </Formik>

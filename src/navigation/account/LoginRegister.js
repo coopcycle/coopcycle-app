@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View } from 'react-native'
+import { Platform, View } from 'react-native'
 import {
   Center, Text,
 } from 'native-base'
@@ -39,8 +39,8 @@ class LoginRegister extends Component {
             })
           }}
           registrationErrors={ this.props.registrationErrors }
-          withFacebook={ !this.props.customBuild }
-          withGoogle={ !this.props.customBuild } />
+          withFacebook={ Platform.OS !== 'ios' }
+          withGoogle={ Platform.OS !== 'ios' } />
       </Center>
     )
   }
