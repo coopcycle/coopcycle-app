@@ -12,7 +12,6 @@ import { bootstrap, closeModal, resetServer, setServers } from '../redux/App/act
 import HomeNavigator from './navigators/HomeNavigator'
 import DrawerNavigator from './navigators/DrawerNavigator'
 import Modal from 'react-native-modal';
-import CustomOnboarding, { hasCustomOnboarding } from './home/CustomOnboarding';
 import Config from 'react-native-config';
 
 class Loading extends Component {
@@ -99,10 +98,6 @@ class Loading extends Component {
 
     if (this.state.error) {
       return this.renderError()
-    }
-
-    if (this.props.customBuild && this.props.firstRun && hasCustomOnboarding()) {
-      return <CustomOnboarding/>
     }
 
     if (this.state.ready) {
