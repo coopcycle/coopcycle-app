@@ -17,7 +17,7 @@ buildscript {
         googlePlayServicesLocationVersion = "20.0.0"
         appCompatVersion = "1.4.1"
         mercadoPagoPxVersion = "4.53.2"
-        reactNativeVersion = "0.71.13" // https://github.com/expo/expo/issues/18129
+        reactNativeVersion = "0.72.5" // https://github.com/expo/expo/issues/18129
     }
     repositories {
         google()
