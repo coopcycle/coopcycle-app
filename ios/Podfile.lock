@@ -927,7 +927,7 @@ PODS:
     - React-Core
   - RNSVG (12.1.1):
     - React
-  - RNVectorIcons (9.1.0):
+  - RNVectorIcons (10.0.0):
     - React-Core
   - Sentry/HybridSDK (8.11.0):
     - SentryPrivate (= 8.11.0)
@@ -1447,7 +1447,7 @@ SPEC CHECKSUMS:
   RNShare: a5dc3b9c53ddc73e155b8cd9a94c70c91913c43c
   RNSound: 6c156f925295bdc83e8e422e7d8b38d33bc71852
   RNSVG: 551acb6562324b1d52a4e0758f7ca0ec234e278f
-  RNVectorIcons: 7923e585eaeb139b9f4531d25a125a1500162a0b
+  RNVectorIcons: 8b5bb0fa61d54cd2020af4f24a51841ce365c7e9
   Sentry: 39d57e691e311bdb73bc1ab5bbebbd6bc890050d
   SentryPrivate: 48712023cdfd523735c2edb6b06bedf26c4730a3
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
@@ -1465,4 +1465,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 3e31a38bca24dae90977b2ecdda691ae29e903c8
 
-COCOAPODS: 1.12.1
+COCOAPODS: 1.13.0
