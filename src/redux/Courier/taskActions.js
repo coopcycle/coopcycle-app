@@ -222,10 +222,11 @@ export function markTaskFailed(httpClient, task, notes = '', onSuccess, contactN
 
     // Make sure to return a promise for testing
     return uploadTaskImages(task, getState())
-      .then(() => {
+      .then(uploadTasks => {
         return httpClient
           .put(task['@id'] + '/failed', payload)
           .then(savedTask => {
+            httpClient.execUploadTask(uploadTasks)
             dispatch(clearFiles())
             dispatch(markTaskFailedSuccess(savedTask))
             if (typeof onSuccess === 'function') {
