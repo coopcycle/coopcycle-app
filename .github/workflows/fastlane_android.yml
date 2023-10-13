@@ -121,6 +121,7 @@ jobs:
           SUPPLY_TRACK: ${{ inputs.google_play_track }}
           COOPCYCLE_APP_NAME: ${{ inputs.app_name }}
       - name: Upload APK artifact
+        if: '!cancelled()'
         uses: actions/upload-artifact@v3
         with:
           name: release.apk
