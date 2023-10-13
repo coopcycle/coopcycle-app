@@ -18,6 +18,10 @@ on:
         description: 'Build Zampate app'
         required: true
         type: boolean
+      build_kooglof:
+        description: 'Build Kooglof app'
+        required: true
+        type: boolean
 jobs:
   default:
     if: ${{ inputs.build_official }}
@@ -64,6 +68,20 @@ jobs:
       app_name: Les Coursiers Stéphanois
       primary_color: "#85b544"
       package_name: fr.coopcycle.coursiers_stephanois
+      keystore_key_alias: instance
+      keystore_key_password_secret: SIGNING_KEY_PASSWORD_INSTANCE
+      google_play_track: beta
+    secrets: inherit
+  kooglof:
+    if: ${{ inputs.build_kooglof }}
+    name: Build Kooglof app
+    uses: ./.github/workflows/fastlane_android.yml
+    with:
+      instance: kooglof
+      instance_url: https://kooglof.coopcycle.org
+      app_name: Kooglof
+      primary_color: "#b4434e"
+      package_name: fr.coopcycle.kooglof
       keystore_key_alias: instance
       keystore_key_password_secret: SIGNING_KEY_PASSWORD_INSTANCE
       google_play_track: beta
