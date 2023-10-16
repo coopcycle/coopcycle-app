@@ -124,5 +124,5 @@ jobs:
         if: '!cancelled()'
         uses: actions/upload-artifact@v3
         with:
-          name: release.apk
-          path: android/app/build/outputs/apk/**/*.apk
+          name: release.aab
+          path: android/app/build/outputs/bundle/**/*.aab
