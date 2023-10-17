@@ -208,9 +208,8 @@ jobs:
             bash -c "echo 'hw.lcd.height=2560' >> /Users/runner/.android/avd/test.avd/config.ini"
             bash -c "echo 'hw.lcd.width=1440' >> /Users/runner/.android/avd/test.avd/config.ini"
             curl -Ls "https://get.maestro.mobile.dev" | bash
-            export PATH="$PATH":"$HOME/.maestro/bin"
             adb install -t release.apk
-            bash -c "maestro test -e APP_ID=${{ inputs.package_name }} --include-tags=screenshots ./__maestro__"
+            $HOME/.maestro/bin/maestro test -e APP_ID=${{ inputs.package_name }} --include-tags=screenshots ./__maestro__
       - uses: actions/upload-artifact@v3
         with:
           name: Screenshots
