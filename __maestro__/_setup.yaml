@@ -13,5 +13,6 @@ appId: ${APP_ID}
 - tapOn:
     id: "customServerURL"
 - inputText: "demo.coopcycle.org"
+- hideKeyboard
 - tapOn:
     id: "submitCustomServer"

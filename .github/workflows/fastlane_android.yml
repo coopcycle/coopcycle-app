@@ -120,9 +120,76 @@ jobs:
           SUPPLY_PACKAGE_NAME: ${{ inputs.package_name }}
           SUPPLY_TRACK: ${{ inputs.google_play_track }}
           COOPCYCLE_APP_NAME: ${{ inputs.app_name }}
-      - name: Upload APK artifact
+      - name: Upload aab artifact
         if: '!cancelled()'
         uses: actions/upload-artifact@v3
         with:
           name: release.aab
           path: android/app/build/outputs/bundle/**/*.aab
+  AAB_TO_APK:
+    name: Convert aab to apk
+    needs: FASTLANE
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download a single artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: release.aab
+      - name: Convert aab to apk
+        id: convert_aab
+        uses: mukeshsolanki/bundletool-action@v1.0.0
+        with:
+          aabFile: release.aab
+          base64Keystore: ${{ secrets.SIGNING_STORE_FILE_BASE64 }}
+          keystorePassword: ${{ secrets.SIGNING_STORE_PASSWORD }}
+          keystoreAlias: ${{ inputs.keystore_key_alias }}
+          keyPassword: ${{ secrets[inputs.keystore_key_password_secret] }}
+          bundletoolVersion: '1.9.0'
+      - uses: actions/upload-artifact@v3
+        with:
+          name: release.apk
+          path: ${{ steps.convert_aab.outputs.apkPath }}
+  SCREENSHOTS:
+    name: Capture screenshots
+    needs: FASTLANE
+    runs-on: macOS-latest
+    strategy:
+      matrix:
+        EMULATOR_API: [28]
+        EMULATOR_ARCH: [x86_64]
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.branch }}
+      - name: Download apk artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: release.apk
+      - uses: actions/setup-java@1
+        with:
+          java-version: 1.8
+      - run:
+          name: Install Maestro CLI
+          command: |
+            curl -Ls "https://get.maestro.mobile.dev" | bash
+            export PATH="$PATH":"$HOME/.maestro/bin"
+      - name: Execute emulator tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: ${{ matrix.EMULATOR_API }}
+          target: google_apis
+          arch: ${{ matrix.EMULATOR_ARCH }}
+          profile: Nexus 6
+          # https://github.com/wix/Detox/blob/master/docs/Introduction.AndroidEmulatorsBestPractices.md#booting-an-emulator-via-command-line
+          emulator-options: -verbose -no-window -no-snapshot -noaudio -no-boot-anim -gpu swiftshader_indirect -camera-back emulated -camera-front emulated
+          disable-animations: true
+          script: |
+            bash -c "echo 'hw.lcd.height=2560' >> /Users/runner/.android/avd/test.avd/config.ini"
+            bash -c "echo 'hw.lcd.width=1440' >> /Users/runner/.android/avd/test.avd/config.ini"
+            adb install -t release.apk
+            maestro test -e APP_ID=${{ inputs.package_name }} --include-tags=screenshots ./__maestro__
+      - uses: actions/upload-artifact@v3
+        with:
+          name: Screenshots
+          path: ./*.png
+

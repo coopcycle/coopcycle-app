@@ -1,0 +1,9 @@
+appId: ${APP_ID}
+tags:
+  - screenshots
+---
+- takeScreenshot: "0"
+- tapOn:
+    id: "restaurants:0"
+- waitForAnimationToEnd
+- takeScreenshot: "1"
