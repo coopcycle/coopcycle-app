@@ -54,7 +54,7 @@ jobs:
       - uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
-          java-version: '17'
+          java-version: '11'
           cache: 'gradle'
       - name: Create .env file
         env:
@@ -176,7 +176,7 @@ jobs:
       - uses: actions/setup-java@3
         with:
           distribution: 'temurin'
-          java-version: 17
+          java-version: '11'
       - name: Install Maestro CLI
         run: |
             curl -Ls "https://get.maestro.mobile.dev" | bash
