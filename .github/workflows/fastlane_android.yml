@@ -173,10 +173,6 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: release.apk
-      - uses: actions/setup-java@3
-        with:
-          distribution: 'temurin'
-          java-version: '11'
       - name: Install Maestro CLI
         run: |
             curl -Ls "https://get.maestro.mobile.dev" | bash
