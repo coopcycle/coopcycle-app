@@ -56,6 +56,23 @@ jobs:
           distribution: 'temurin'
           java-version: '11'
           cache: 'gradle'
+      - name: Find Metro cache
+        id: metro-cache-dir-path
+        uses: actions/github-script@v4
+        with:
+          result-encoding: string
+          script: |
+            const os = require('os');
+            const path = require('path');
+            return path.join(os.tmpdir(), 'metro-cache');
+      - name: Restore Metro cache
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.metro-cache-dir-path.outputs.result }}
+          key: ${{ runner.os }}-metro-cache-${{ github.ref }}
+          restore-keys: |
+            ${{ runner.os }}-metro-cache-${{ github.base_ref }}
+            ${{ runner.os }}-metro-cache-
       - name: Create .env file
         env:
           SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
