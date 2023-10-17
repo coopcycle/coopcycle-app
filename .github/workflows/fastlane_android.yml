@@ -128,6 +128,7 @@ jobs:
           path: android/app/build/outputs/bundle/**/*.aab
   AAB_TO_APK:
     name: Convert aab to apk
+    if: '!cancelled()'
     needs: FASTLANE
     runs-on: ubuntu-latest
     steps:
@@ -151,6 +152,7 @@ jobs:
           path: ${{ steps.convert_aab.outputs.apkPath }}
   SCREENSHOTS:
     name: Capture screenshots
+    if: '!cancelled()'
     needs: FASTLANE
     runs-on: macOS-latest
     strategy:
