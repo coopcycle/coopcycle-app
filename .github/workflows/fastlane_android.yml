@@ -210,7 +210,7 @@ jobs:
             curl -Ls "https://get.maestro.mobile.dev" | bash
             export PATH="$PATH":"$HOME/.maestro/bin"
             adb install -t release.apk
-            maestro test -e APP_ID=${{ inputs.package_name }} --include-tags=screenshots ./__maestro__
+            bash -c "maestro test -e APP_ID=${{ inputs.package_name }} --include-tags=screenshots ./__maestro__"
       - uses: actions/upload-artifact@v3
         with:
           name: Screenshots
