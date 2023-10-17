@@ -120,12 +120,14 @@ jobs:
           SUPPLY_PACKAGE_NAME: ${{ inputs.package_name }}
           SUPPLY_TRACK: ${{ inputs.google_play_track }}
           COOPCYCLE_APP_NAME: ${{ inputs.app_name }}
+      - name: Move build
+        run: mv android/app/build/outputs/bundle/**/*.aab release.aab
       - name: Upload aab artifact
         if: '!cancelled()'
         uses: actions/upload-artifact@v3
         with:
           name: release.aab
-          path: android/app/build/outputs/bundle/**/*.aab
+          path: release.aab
   AAB_TO_APK:
     name: Convert aab to apk
     if: '!cancelled()'
@@ -153,7 +155,7 @@ jobs:
   SCREENSHOTS:
     name: Capture screenshots
     if: '!cancelled()'
-    needs: FASTLANE
+    needs: AAB_TO_APK
     runs-on: macOS-latest
     strategy:
       matrix:
