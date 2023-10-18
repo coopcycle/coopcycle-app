@@ -224,5 +224,5 @@ jobs:
         if: 'failure()'
         with:
           name: maestro-error-rapport 
-          path: .maestro
+          path: ~/.maestro/tests/
 
