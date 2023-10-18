@@ -695,13 +695,13 @@ const createError = function(code) {
   }
 }
 
-const checkServer = function(server) {
+const checkServer = function(server, quick) {
   return new Promise((resolve, reject) => {
     resolveBaseURL(server)
       .then((baseURL) => {
-
-        console.log('Base URL is ' + baseURL)
-
+        if (quick == true) {
+          resolve(baseURL);
+        }
         axios
           .get(`${baseURL}/api`, {
             headers: {
@@ -731,6 +731,7 @@ const checkServer = function(server) {
           .catch(error => {
             if (error.response) {
               if (error.response.status === 503) {
+                console.log(baseURL + ' is under maintenace');
                 reject(createError(ERROR_MAINTENANCE_ON))
               } else {
                 reject(createError(ERROR_NOT_COMPATIBLE))

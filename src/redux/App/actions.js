@@ -287,13 +287,13 @@ function loadAll(getState) {
 }
 
 export function selectServer(server) {
-
+  console.log('selected server: ' + server);
   return function (dispatch, getState) {
 
     dispatch(setLoading(true))
     dispatch(_clearSelectServerError())
 
-    return API.checkServer(server)
+    return API.checkServer(server, false)
       .then(baseURL =>
         Settings.synchronize(baseURL)
           .then((settings) => {
