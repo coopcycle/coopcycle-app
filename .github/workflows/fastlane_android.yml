@@ -214,4 +214,9 @@ jobs:
         with:
           name: Screenshots
           path: ./*.png
+      - uses: actions/upload-artifact@v3
+        if: 'failure()'
+        with:
+          name: maestro-error-rapport 
+          path: .maestro
 
