@@ -216,10 +216,17 @@ jobs:
             adb shell am broadcast -a com.android.systemui.demo -e command notifications -e visible false
             adb shell am broadcast -a com.android.systemui.demo -e command battery -e plugged false -e level 100
             $HOME/.maestro/bin/maestro test -e APP_ID=${{ inputs.package_name }} --include-tags=screenshots ./__maestro__
-      - uses: actions/upload-artifact@v3
+      - name: Upload to Amazon S3
+        uses: Noelware/s3-action@v2 # this can be `master` or a tagged release
         with:
-          name: Screenshots
-          path: ./*.png
+          files: './*.png'
+          access-key-id: ${{ secrets.AWS_KEY_ID }}
+          path-format: '/$(tag)'
+          secret-key: ${{ secrets.AWS_SECRET_ACCESS_KEY}}
+          endpoint: https://s3.fr-par.scw.cloud
+          prefix: /screenshots/android-${{ matrix.EMULATOR_ARCH }}
+          region: fr-par
+          bucket: coopcycle-ci
       - uses: actions/upload-artifact@v3
         if: 'failure()'
         with:
