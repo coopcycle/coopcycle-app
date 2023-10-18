@@ -2,4 +2,21 @@ appId: ${APP_ID}
 tags:
   - screenshots
 ---
-- takeScreenshot: "0"
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible: "Where are you?"
+    timeout: 40000
+- takeScreenshot: "HomeScreen"
+- tapOn: "Enter your address"
+- inputText: "1 Parc de l'Etoile, 67100 Strasbourg, France"
+- hideKeyboard
+- tapOn: "1 Parc de l'Étoile, 67100 Strasbourg, France"
+- waitForAnimationToEnd
+- assertVisible: "Restaurants"
+- takeScreenshot: "MainScreen"
+- tapOn:
+    point: "66%,27%"
+- waitForAnimationToEnd
+- assertVisible: ""
+- takeScreenshot: "MenuScreen"
