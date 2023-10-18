@@ -180,7 +180,7 @@ jobs:
     runs-on: macOS-latest
     strategy:
       matrix:
-        EMULATOR_API: [28]
+        EMULATOR_API: [28, 33]
         EMULATOR_ARCH: [x86_64]
     steps:
       - uses: actions/checkout@v3
@@ -208,7 +208,13 @@ jobs:
             bash -c "echo 'hw.lcd.height=2560' >> /Users/runner/.android/avd/test.avd/config.ini"
             bash -c "echo 'hw.lcd.width=1440' >> /Users/runner/.android/avd/test.avd/config.ini"
             curl -Ls "https://get.maestro.mobile.dev" | bash
+            adb root
             adb install -t release.apk
+            adb shell settings put global sysui_demo_allowed 1
+            adb shell am broadcast -a com.android.systemui.demo -e command clock -e hhmm 1200
+            adb shell am broadcast -a com.android.systemui.demo -e command network -e mobile show -e level 4 -e datatype 4g -e wifi false
+            adb shell am broadcast -a com.android.systemui.demo -e command notifications -e visible false
+            adb shell am broadcast -a com.android.systemui.demo -e command battery -e plugged false -e level 100
             $HOME/.maestro/bin/maestro test -e APP_ID=${{ inputs.package_name }} --include-tags=screenshots ./__maestro__
       - uses: actions/upload-artifact@v3
         with:
