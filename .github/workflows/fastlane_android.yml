@@ -217,7 +217,7 @@ jobs:
             adb shell am broadcast -a com.android.systemui.demo -e command battery -e plugged false -e level 100
             $HOME/.maestro/bin/maestro test -e APP_ID=${{ inputs.package_name }} --include-tags=screenshots ./__maestro__
       - name: Upload to Amazon S3
-        uses: Noelware/s3-action@v2 # this can be `master` or a tagged release
+        uses: Noelware/s3-action@2.2.1
         with:
           files: './*.png'
           access-key-id: ${{ secrets.AWS_KEY_ID }}
