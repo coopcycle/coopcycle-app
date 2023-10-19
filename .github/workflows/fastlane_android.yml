@@ -219,7 +219,8 @@ jobs:
       - name: Upload to S3 bucket
         uses: Noelware/s3-action@2.2.1
         with:
-          files: '*.png'
+          directories: |
+              ./*.png
           access-key-id: ${{ secrets.AWS_KEY_ID }}
           path-format: '/$(tag)'
           secret-key: ${{ secrets.AWS_SECRET_ACCESS_KEY}}
