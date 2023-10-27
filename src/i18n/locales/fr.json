@@ -465,6 +465,7 @@
         "CHECKOUT_LOOPEAT_ADD_CREDITS": "Créditer ma cagnotte",
         "RESTAURANT_LOOPEAT_DISCLAIMER": "Changez le nombre d'emballages utilisés pour emballer la commande",
         "ZERO_WASTE": "Zéro déchet",
-        "RESTAURANT_LOOPEAT_UPDATE_FORMATS": "Modifier les emballages"
+        "RESTAURANT_LOOPEAT_UPDATE_FORMATS": "Modifier les emballages",
+        "FAILURE_REASON": "Raison de l'échec"
     }
 }

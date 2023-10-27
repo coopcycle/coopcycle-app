@@ -487,6 +487,7 @@
         "RESTAURANT_LOOPEAT_DISCLAIMER": "Change the number of containers used to pack the order",
         "ZERO_WASTE": "Zero waste",
         "RESTAURANT_LOOPEAT_UPDATE_FORMATS": "Update packagings",
-        "SESSION_ERROR_TRY_AGAIN": "An error occurred with the session, please login and try again."
+        "SESSION_ERROR_TRY_AGAIN": "An error occurred with the session, please login and try again.",
+        "FAILURE_REASON": "Failure Reason"
     }
 }

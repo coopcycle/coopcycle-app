@@ -203,7 +203,7 @@ function uploadTasksImages(tasks, state) {
   return Promise.all(promises)
 }
 
-export function markTaskFailed(httpClient, task, notes = '', onSuccess, contactName = '') {
+export function markTaskFailed(httpClient, task, notes = '', reason = null, onSuccess, contactName = '') {
 
   return function (dispatch, getState) {
 
@@ -211,6 +211,7 @@ export function markTaskFailed(httpClient, task, notes = '', onSuccess, contactN
 
     let payload = {
       notes,
+      reason,
     }
 
     if (!_.isEmpty(contactName)) {
@@ -301,16 +302,16 @@ export function markTasksDone(httpClient, tasks, notes = '', onSuccess, contactN
       .then(uploadTasks => {
         return httpClient.put('/api/tasks/done', payload)
           .then(res => {
-            if (res['failed'] && Object.keys(res['failed']).length) {
-              showAlertAfterBulk(Object.values(res['failed']))
-              if (!res['success'] || !res['success'].length) {
+            if (res.failed && Object.keys(res.failed).length) {
+              showAlertAfterBulk(Object.values(res.failed))
+              if (!res.success || !res.success.length) {
                 dispatch(markTasksDoneFailure())
               }
             }
-            if (res['success'] && res['success'].length) {
+            if (res.success && res.success.length) {
               httpClient.execUploadTask(uploadTasks)
               dispatch(clearFiles())
-              dispatch(markTasksDoneSuccess(res['success']))
+              dispatch(markTasksDoneSuccess(res.success))
               if (typeof onSuccess === 'function') {
                 setTimeout(() => onSuccess(), 100)
               }
