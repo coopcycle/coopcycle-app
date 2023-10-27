@@ -78,11 +78,11 @@ const AttachmentItem = ({ base64, onPressDelete }) => {
 
 const FailureReasonPicker = ({ task, httpClient, onValueChange }) => {
 
-  const { data, isSuccess } = useQuery([ 'task', 'failure_reasons', task['@id'] ], async () => {
+  const [ selectedFailureReason, setFailureReason ] = useState(null)
+
+  const { data, isSuccess, isError } = useQuery([ 'task', 'failure_reasons', task['@id'] ], async () => {
     return await httpClient.get(`${task['@id']}/failure_reasons`)
   })
-
-  const [ selectedFailureReason, setFailureReason ] = useState(null)
 
   const values = useMemo(() => {
     if (!isSuccess)
@@ -95,6 +95,10 @@ const FailureReasonPicker = ({ task, httpClient, onValueChange }) => {
     if (!isSuccess) { return }
     onValueChange(selectedFailureReason)
   }, [ selectedFailureReason, onValueChange, isSuccess ]);
+
+
+  if (isError)
+    {return <Text color="red.500">Failure reasons are not available</Text>}
 
   return <Skeleton isLoaded={isSuccess} rounded={2}>
     <Picker selectedValue={selectedFailureReason}
