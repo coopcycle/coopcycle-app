@@ -1,0 +1,3 @@
+Mejoras:
+
+- Permite especificar un motivo de fallo al finalizar una tarea como fallida.
