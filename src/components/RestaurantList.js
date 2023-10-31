@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { FlatList, Image, ImageBackground, StyleSheet, TouchableOpacity, View, useColorScheme } from 'react-native'
-import { Center, HStack, Icon, Text } from 'native-base'
+import { Center, HStack, Icon, Text, Badge } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import Ionicons from 'react-native-vector-icons/Ionicons'
@@ -98,6 +98,17 @@ class RestaurantList extends Component {
             { !showPreOrder && <Image style={{ flex: 1, height: undefined, width: undefined }} resizeMode="cover" source={{ uri: restaurant.image }} />}
           </View>
           <View style={{ flex: 1, width: '66.6666%', padding: 15, paddingBottom: 25 }}>
+            { restaurant.facets.category.length > 0 &&
+              <HStack mb="1">
+              { restaurant.facets.category.map((label, index) => {
+                return (
+                  <Badge key={ `restaurant-category-${index}` } variant="subtle" mr="1">
+                    { label }
+                  </Badge>
+                )
+              }) }
+              </HStack>
+            }
             <OneLineText style={ [styles.restaurantNameText] }>{ restaurant.name }</OneLineText>
             <OneLineText note numberOfLines={ 2 }>{ getRestaurantCaption(restaurant) }</OneLineText>
             <TimingBadge restaurant={ restaurant } />

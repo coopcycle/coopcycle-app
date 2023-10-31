@@ -110,7 +110,7 @@ function Restaurant(props) {
     <SafeAreaView style={{ flex: 1 }} edges={['bottom']}>
       <View style={{ flex: 1, paddingTop: 60 }}>
         <View style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: 60 }}>
-          <GroupImageHeader image={ restaurant.image } text={restaurant.name} onInfo={() => setInfoModal(true)} />
+          <GroupImageHeader image={ restaurant.image } text={restaurant.name} onInfo={() => setInfoModal(true)} category={ restaurant.facets.category } />
         </View>
         {renderNotAvailableWarning()}
         {renderClosedNowWarning()}
