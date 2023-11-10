@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { FlatList, Image, InteractionManager, TouchableOpacity, View } from 'react-native';
+import { Appearance, FlatList, Image, TouchableOpacity, View } from 'react-native';
 import { Box, Button, Divider, HStack, Heading, IconButton, Text, VStack } from 'native-base';
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 import { loadAddresses, newAddress } from '../../redux/Account/actions'
 import ItemSeparator from '../../components/ItemSeparator'
 import AddressAutocomplete from '../../components/AddressAutocomplete';
-import { blueColor, darkGreyColor, greyColor, lightGreyColor, primaryColor } from '../../styles/common';
+import { darkGreyColor, greyColor, whiteColor } from '../../styles/common';
 import { searchRestaurantsForAddress, setAddress } from '../../redux/Checkout/actions';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import address from '../../utils/Address';
@@ -45,6 +45,7 @@ class AccountAddressesPage extends Component {
 
     const { addresses } = this.props
     const textInputContainerHeight = 54
+    const colorScheme = Appearance.getColorScheme()
     return (
       <View style={{ flex: 1 }}>
         <AddressAutocomplete
@@ -59,6 +60,7 @@ class AccountAddressesPage extends Component {
           height: (textInputContainerHeight * 0.7),
           borderRadius: 3,
           flex: 1,
+          backgroundColor: colorScheme === 'dark' ? darkGreyColor : whiteColor,
         }}
         country={ this.props.country }
         placeholder={ i18n.t('ENTER_NEW_ADDRESS') }
