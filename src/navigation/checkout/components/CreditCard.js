@@ -26,7 +26,7 @@ const ColorSchemeAwareCardField = (props) => {
         borderRadius: 4,
         textColor: colorScheme === 'dark' ? '#ffffff' : '#333333',
         // fontSize?: number;
-        placeholderColor: colorScheme === 'dark' ? '#666666' : '#ffffff',
+        placeholderColor: '#666666',
         // cursorColor?: string;
         // textErrorColor?: string;
       }}
