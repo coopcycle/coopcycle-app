@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Platform, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { Appearance, Platform, StyleSheet, TouchableOpacity, View } from 'react-native'
 import { connect } from 'react-redux'
 import {
   Box, Button,
@@ -14,6 +14,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
 import { createTask } from '../../redux/Dispatch/actions'
 import AddressAutocomplete from '../../components/AddressAutocomplete'
+import { whiteColor } from '../../styles/common'
 
 class AddTask extends Component {
 
@@ -106,6 +107,8 @@ class AddTask extends Component {
       variant: type === 'DROPOFF' ?  'solid' : 'outline',
     }
 
+    const colorScheme = Appearance.getColorScheme()
+
     return (
       <Box p="3">
         <VStack>
@@ -131,7 +134,10 @@ class AddTask extends Component {
                 justifyContent: 'center',
                 borderWidth: 0,
               }}
-              style={{ borderRadius: 0 }}
+              style={{
+                borderRadius: 0,
+                backgroundColor: colorScheme === 'dark' ? 'black' : whiteColor,
+              }}
               onSelectAddress={ this._onSelectAddress.bind(this) }
               renderRight={ () => {
 

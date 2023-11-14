@@ -5,6 +5,7 @@
   "scripts": {
     "android": "react-native run-android --mode=officialDebug",
     "ios": "react-native run-ios",
+    "android-custom": "npx react-native run-android --mode=instanceDebug",
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint src/",
