@@ -17,6 +17,7 @@ import Modal from 'react-native-modal'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
+import DropdownHolder from '../../DropdownHolder'
 import DangerAlert from '../../components/DangerAlert'
 import { formatPrice } from '../../utils/formatting'
 import {
@@ -169,6 +170,20 @@ class Summary extends Component {
   }
 
   onSubmit() {
+
+    const { cart, restaurant } = this.props
+
+    if (restaurant.loopeatEnabled && cart.reusablePackagingEnabled && !cart.loopeatContext?.hasCredentials) {
+      DropdownHolder
+          .getDropdown()
+          .alertWithType(
+            'warn',
+            this.props.t('CHECKOUT_LOOPEAT_CONNECT_ACCOUNT', { name: cart.loopeatContext?.name }),
+            this.props.t('CHECKOUT_LOOPEAT_CONNECT_ACCOUNT_TEXT', { name: cart.loopeatContext?.name })
+          )
+      return
+    }
+
     this._navigate('CheckoutSubmitOrder')
   }
 
@@ -339,7 +354,7 @@ class Summary extends Component {
             <ActionButton
               onPress={ () => Linking.openURL(reusablePackagingAction.loopeatOAuthUrl) }
               iconName="external-link">
-              <Text style={{ flex: 1, textAlign: 'right' }}>{ this.props.t('CHECKOUT_LOOPEAT_CONNECT_ACCOUNT') }</Text>
+              <Text style={{ flex: 1, textAlign: 'right' }}>{ this.props.t('CHECKOUT_LOOPEAT_CONNECT_ACCOUNT', { name: cart.loopeatContext?.name }) }</Text>
             </ActionButton>
           ) }
           { (restaurant.loopeatEnabled && cart.reusablePackagingEnabled && cart.loopeatContext?.hasCredentials) && (

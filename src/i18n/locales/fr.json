@@ -453,7 +453,7 @@
         "SEARCH_WITHOUT_RESULTS": "Aucun résultat. Essayez de chercher autre chose.",
         "APPLE_SIGN_IN_HIDE_MY_EMAIL_ERROR": "Désolé, nous ne pouvons pas vous authentifier si vous choisissez de masquer votre e-mail",
         "SOCIAL_SIGN_IN_UNKNOWN_EMAIL": "Désolé, nous nʼavons pas trouvé de compte correspondant à l'e-mail associé à votre compte {{provider}}.",
-        "CHECKOUT_LOOPEAT_CONNECT_ACCOUNT": "Connecter mon compte IMPEC",
+        "CHECKOUT_LOOPEAT_CONNECT_ACCOUNT": "Connecter mon compte {{name}}",
         "CHECKOUT_LOOPEAT_OPTION_ENABLED": "Option zéro déchet activée",
         "CHECKOUT_LOOPEAT_INSUFFICIENT_WALLET_AMOUNT": "Cagnotte insuffisante",
         "CHECKOUT_LOOPEAT_VALIDATE": "Valider et retourner au panier",
@@ -466,6 +466,7 @@
         "RESTAURANT_LOOPEAT_DISCLAIMER": "Changez le nombre d'emballages utilisés pour emballer la commande",
         "ZERO_WASTE": "Zéro déchet",
         "RESTAURANT_LOOPEAT_UPDATE_FORMATS": "Modifier les emballages",
-        "FAILURE_REASON": "Raison de l'échec"
+        "FAILURE_REASON": "Raison de l'échec",
+        "CHECKOUT_LOOPEAT_CONNECT_ACCOUNT_TEXT": "Connectez votre compte {{name}} pour continuer, ou désactivez l'option zéro déchet"
     }
 }

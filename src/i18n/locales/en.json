@@ -474,7 +474,7 @@
         "APPLE_SIGN_IN_HIDE_MY_EMAIL_ERROR": "Sorry, we canʼt authenticate your account if you choose to hide your email",
         "SOCIAL_SIGN_IN_UNKNOWN_EMAIL": "Sorry, we couldnʼt find an account matching the e-mail associated with your {{provider}} account.",
         "COMPLETE_TASKS": "Complete tasks",
-        "CHECKOUT_LOOPEAT_CONNECT_ACCOUNT": "Connect my IMPEC account",
+        "CHECKOUT_LOOPEAT_CONNECT_ACCOUNT": "Connect my {{name}} account",
         "CHECKOUT_LOOPEAT_OPTION_ENABLED": "Zero waste option enabled",
         "CHECKOUT_LOOPEAT_INSUFFICIENT_WALLET_AMOUNT": "Insufficient wallet amount",
         "CHECKOUT_LOOPEAT_VALIDATE": "Validate and go back to cart",
@@ -488,6 +488,7 @@
         "ZERO_WASTE": "Zero waste",
         "RESTAURANT_LOOPEAT_UPDATE_FORMATS": "Update packagings",
         "SESSION_ERROR_TRY_AGAIN": "An error occurred with the session, please login and try again.",
-        "FAILURE_REASON": "Failure Reason"
+        "FAILURE_REASON": "Failure Reason",
+        "CHECKOUT_LOOPEAT_CONNECT_ACCOUNT_TEXT": "Connect your {{name}} account to continue, or disable the zero waste option"
     }
 }
