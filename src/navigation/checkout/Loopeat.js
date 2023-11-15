@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 import _ from 'lodash'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTranslation } from 'react-i18next'
-import NumericInput from 'react-native-numeric-input'
+import InputSpinner from 'react-native-input-spinner'
 
 import { selectCart } from '../../redux/Checkout/selectors'
 import { updateLoopeatReturns } from '../../redux/Checkout/actions'
@@ -77,13 +77,14 @@ function Loopeat({ cart, updateLoopeatReturns }) {
 				          			} } />
 			          			<Text ml="2">{ `${getNameFromId(item.format_id, formats)} (${formatPrice(getPriceFromId(item.format_id, formats))})` }</Text>
 			          		</HStack>
-                      <NumericInput
-                        totalWidth={ 70 }
-                        minValue={ 1 }
-                        maxValue={ item.quantity }
+                      <InputSpinner
+                        width={ 80 }
+                        height={ 40 }
+                        min={ 1 }
+                        max={ item.quantity }
                         editable={ isSelected }
                         value={ value }
-                        onChange={ value => {
+                        onChange={ (value) => {
                           const idx = _.findIndex(returns, r => r.format_id === item.format_id)
                           if (idx !== -1) {
                             const newReturns = returns.map(function(ret, retIndex) {
@@ -91,6 +92,11 @@ function Loopeat({ cart, updateLoopeatReturns }) {
                             });
                             setReturns(newReturns)
                           }
+                        }}
+                        skin="square"
+                        shadow={ false }
+                        buttonStyle={{
+                          width: '33.3333%',
                         }} />
                     </HStack>
                 )
