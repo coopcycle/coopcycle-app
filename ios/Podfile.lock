@@ -698,7 +698,7 @@ PODS:
     - glog
   - react-native-ble-manager (8.4.4):
     - React-Core
-  - react-native-blob-util (0.19.1):
+  - react-native-blob-util (0.19.2):
     - React-Core
   - react-native-config (1.5.1):
     - react-native-config/App (= 1.5.1)
@@ -851,10 +851,10 @@ PODS:
     - React-Core
   - RNBackgroundFetch (4.2.1):
     - React-Core
-  - RNBackgroundGeolocation (4.14.2):
+  - RNBackgroundGeolocation (4.14.4):
     - CocoaLumberjack (~> 3.7.2)
     - React-Core
-  - RNCAsyncStorage (1.19.3):
+  - RNCAsyncStorage (1.19.5):
     - React-Core
   - RNCMaskedView (0.3.0):
     - React-Core
@@ -882,7 +882,7 @@ PODS:
   - RNGoogleSignin (7.0.4):
     - GoogleSignIn (~> 6.0.0)
     - React-Core
-  - RNLocalize (3.0.2):
+  - RNLocalize (3.0.3):
     - React-Core
   - RNReanimated (3.5.4):
     - DoubleConversion
@@ -928,7 +928,8 @@ PODS:
     - React-Core
   - RNSVG (12.1.1):
     - React
-  - RNVectorIcons (10.0.0):
+  - RNVectorIcons (10.0.2):
+    - RCT-Folly (= 2021.07.22.00)
     - React-Core
   - Sentry/HybridSDK (8.11.0):
     - SentryPrivate (= 8.11.0)
@@ -1400,7 +1401,7 @@ SPEC CHECKSUMS:
   React-jsinspector: aef73cbd43b70675f572214d10fa438c89bf11ba
   React-logger: 2e4aee3e11b3ec4fa6cfd8004610bbb3b8d6cca4
   react-native-ble-manager: 5a36276ae7bdc382c6a0716c939024ffeb4e0a48
-  react-native-blob-util: af2dc91365bfde33f61389cbd0c692af9a4a97cb
+  react-native-blob-util: c74e4ce87c76d244761c68623df78bf0d1638271
   react-native-config: 86038147314e2e6d10ea9972022aa171e6b1d4d8
   react-native-fbsdk-next: 776f49479d36a1e72a1a367baadcc8391cd24374
   react-native-get-random-values: dee677497c6a740b71e5612e8dbd83e7539ed5bb
@@ -1430,8 +1431,8 @@ SPEC CHECKSUMS:
   ReactNativeKeyboardManager: 60292dbac467c49841a7d69588208ec4a4f7b2a2
   RNAppleAuthentication: 0571c08da8c327ae2afc0261b48b4a515b0286a6
   RNBackgroundFetch: 501c34ad6e880818ba17e7840b23f20a2d112923
-  RNBackgroundGeolocation: 122533a10f43bab76a8f0b1e7d95687de63abed7
-  RNCAsyncStorage: c913ede1fa163a71cea118ed4670bbaaa4b511bb
+  RNBackgroundGeolocation: cb77eac4ccbf3d478b2fa809dfc3d8c0180e1691
+  RNCAsyncStorage: f2974eca860c16a3e56eea5771fda8d12e2d2057
   RNCMaskedView: f7c74478c83c4fdfc5cf4df51f80c0dd5cf125c6
   RNCPicker: cb57c823d5ce8d2d0b5dfb45ad97b737260dc59e
   RNCPushNotificationIOS: 64218f3c776c03d7408284a819b2abfda1834bc8
@@ -1441,14 +1442,14 @@ SPEC CHECKSUMS:
   RNFBCrashlytics: 8b864f6efcaf5329acda78613f75da9e4fb19134
   RNGestureHandler: 6e46dde1f87e5f018a54fe5d40cd0e0b942b49ee
   RNGoogleSignin: c4381751eefd73c552b923ba347a9bfc6f18771c
-  RNLocalize: dbea38dcb344bf80ff18a1757b1becf11f70cae4
+  RNLocalize: 7ce27517894956a226aa6d614786802d253a0a0a
   RNReanimated: ab2e96c6d5591c3dfbb38a464f54c8d17fb34a87
   RNScreens: 3c2d122f5e08c192e254c510b212306da97d2581
   RNSentry: 11917f7bf3e28806aca4c2791c6ba7522d8f09fe
   RNShare: a5dc3b9c53ddc73e155b8cd9a94c70c91913c43c
   RNSound: 6c156f925295bdc83e8e422e7d8b38d33bc71852
   RNSVG: 551acb6562324b1d52a4e0758f7ca0ec234e278f
-  RNVectorIcons: 8b5bb0fa61d54cd2020af4f24a51841ce365c7e9
+  RNVectorIcons: 23b6e11af4aaf104d169b1b0afa7e5cf96c676ce
   Sentry: 39d57e691e311bdb73bc1ab5bbebbd6bc890050d
   SentryPrivate: 48712023cdfd523735c2edb6b06bedf26c4730a3
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
