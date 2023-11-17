@@ -48,36 +48,11 @@ const save = data => {
 
 
 async function overrideCity(values) {
-  console.log(values.length)
   const fail = Symbol()
-  /*
-  values =
-    (await Promise.all(
-      values.map(
-        async value => (
-          await
-            API.checkServer(value.url, true)
-          )
-        .then((response) => {
-          console.log(response)
-          return value}).catch((err) => {
-            console.log(fail)
-            return fail})
-      )
-    )).filter(i => i !== fail)
-   
-p.then(value => {
-  console.log(value);
-}).catch(err => {
-  console.log(err); // 👉️ "Something went wrong"
-});
-
-    */
 
     const promises = values.map(async(n) => ({
       value: n,
       include: await API.checkServer(n.url, true).then(value => {
-        console.log(value);
         return true;
       }).catch(err => {
         console.log(err); // 👉️ "Something went wrong"
@@ -85,11 +60,8 @@ p.then(value => {
       })
     }));
     const data_with_includes = await Promise.all(promises);
-    console.log(data_with_includes);
     const filtered_data_with_includes = data_with_includes.filter(v => v.include);
     const filtered_data = filtered_data_with_includes.map(data => data.value);
-    console.log(filtered_data.length);
-  console.log(values.length)
   values = filtered_data;
   return values.map((value) => {
 
