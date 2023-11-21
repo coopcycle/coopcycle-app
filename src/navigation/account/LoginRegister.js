@@ -1,18 +1,16 @@
-import React, { Component } from 'react'
-import { Platform, View } from 'react-native'
-import {
-  Center, Text,
-} from 'native-base'
-import { connect } from 'react-redux'
-import { withTranslation } from 'react-i18next'
+import React, { Component } from 'react';
+import { Platform, View } from 'react-native';
+import { Text } from 'native-base';
+import { connect } from 'react-redux';
+import { withTranslation } from 'react-i18next';
 
-import Server from './components/Server'
-import AuthenticateForm from '../../components/AuthenticateForm'
-import { forgotPassword, login, register } from '../../redux/App/actions'
-import { redColor } from '../../styles/common'
+import Server from './components/Server';
+import AuthenticateForm from '../../components/AuthenticateForm';
+import { forgotPassword, login, register } from '../../redux/App/actions';
+import { redColor } from '../../styles/common';
+import AuthenticateContainer from '../../components/AuthenticateContainer';
 
 class LoginRegister extends Component {
-
   renderMessage() {
     if (this.props.message) {
       return (
@@ -25,7 +23,7 @@ class LoginRegister extends Component {
 
   render() {
     return (
-      <Center flex={1} px="2">
+      <AuthenticateContainer>
         { this.props.customBuild ? null : <Server /> }
         { this.renderMessage() }
         <AuthenticateForm
@@ -41,8 +39,8 @@ class LoginRegister extends Component {
           registrationErrors={ this.props.registrationErrors }
           withFacebook={ Platform.OS !== 'ios' }
           withGoogle={ Platform.OS !== 'ios' } />
-      </Center>
-    )
+      </AuthenticateContainer>
+    );
   }
 }
 
