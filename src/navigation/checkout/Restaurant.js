@@ -74,8 +74,9 @@ function Restaurant(props) {
     borderColor: colorScheme === 'dark' ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.1)',
   }
 
-  function renderNotAvailableWarning() {
-    if (currentTimeSlot.state === OpeningHoursSpecification.STATE.Closed) {
+  function renderWarningBanner() {
+  if (currentTimeSlot.state === OpeningHoursSpecification.STATE.Closed) {
+    if (OpeningHoursSpecification.opensSoon(currentTimeSlot.timeSlot, 60)) {
       return (
         <DangerAlert
           text={`${i18n.t('RESTAURANT_CLOSED_AND_NOT_AVAILABLE', {
@@ -84,15 +85,8 @@ function Restaurant(props) {
             }),
           })}`}
         />
-      )
-    }
-  }
-
-  function renderClosedNowWarning() {
-    if (
-      currentTimeSlot.state === OpeningHoursSpecification.STATE.Closed &&
-      !OpeningHoursSpecification.opensSoon(currentTimeSlot.timeSlot, 60)
-    ) {
+      );
+    } else {
       return (
         <DangerAlert
           adjustsFontSizeToFit={true}
@@ -102,9 +96,11 @@ function Restaurant(props) {
             }),
           })}`}
         />
-      )
+      );
     }
   }
+}
+
 
   return (
     <SafeAreaView style={{ flex: 1 }} edges={['bottom']}>
@@ -112,8 +108,7 @@ function Restaurant(props) {
         <View style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: 60 }}>
           <GroupImageHeader image={ restaurant.image } text={restaurant.name} onInfo={() => setInfoModal(true)} category={ restaurant.facets.category } />
         </View>
-        {renderNotAvailableWarning()}
-        {renderClosedNowWarning()}
+        {renderWarningBanner()}
         { isLoading && <Center w="100%">
           <LoadingPhantom color={'cyan.200'} />
           <LoadingPhantom color={'gray.200'} />
