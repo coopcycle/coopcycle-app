@@ -4216,10 +4216,10 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
-"@stripe/stripe-react-native@^0.33.0":
-  version "0.33.0"
-  resolved "https://registry.yarnpkg.com/@stripe/stripe-react-native/-/stripe-react-native-0.33.0.tgz#665cb096ef0262b801df357309ec5138f49eb665"
-  integrity sha512-UXoRzJ4joiE42HwyWPxaJF3w3lggtfTts9Wi2lthLEmbvS7RdmMrEGNxDRmtBYsF8A3UhAd868L8xDQKyvBfSg==
+"@stripe/stripe-react-native@^0.35.0":
+  version "0.35.0"
+  resolved "https://registry.yarnpkg.com/@stripe/stripe-react-native/-/stripe-react-native-0.35.0.tgz#4cd159297d22ef5a18cfe7dcb75b36eb205d4681"
+  integrity sha512-bD36NIQVnkUSkjwE7mJoqkb5E4gMBSxnZegkO0gGbgekFqdyZSHghSL6qnRVXPBTr2tRthoNL+FtmVeeYPxVLQ==
 
 "@styled-system/background@^5.1.2":
   version "5.1.2"
