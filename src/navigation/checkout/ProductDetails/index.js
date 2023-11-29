@@ -17,7 +17,7 @@ import { isAdditionalOption } from '../../../utils/product'
 import { useDispatch } from 'react-redux'
 import { addItemV2 } from '../../../redux/Checkout/actions'
 
-const LIST_SECTION_UNITS = 'units'
+const LIST_SECTION_QUANTITY = 'quantity'
 const LIST_SECTION_OPTIONS_HEADER = 'options-header'
 const LIST_SECTION_OPTION = 'option'
 
@@ -53,11 +53,11 @@ export default props => {
 
   // render static elements as section items (not as section headers)
   // to avoid this issue: https://github.com/facebook/react-native/issues/38248
-  const data = [{ type: LIST_SECTION_UNITS, data: ['units'] }]
+  const data = [{ type: LIST_SECTION_QUANTITY, data: ['static-item'] }]
     .concat(
       shouldRenderOptions
         ? [
-            { type: LIST_SECTION_OPTIONS_HEADER, data: ['header'] },
+            { type: LIST_SECTION_OPTIONS_HEADER, data: ['static-item'] },
             ...menuSections,
           ]
         : [],
@@ -155,7 +155,7 @@ export default props => {
           }
         }}
         renderItem={({ item, section, index }) => {
-          if (section.type === LIST_SECTION_UNITS) {
+          if (section.type === LIST_SECTION_QUANTITY) {
             return (
               <>
                 <Divider my="2" />
