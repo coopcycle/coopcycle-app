@@ -1,18 +1,22 @@
-import React, { Component } from 'react'
-import { StyleSheet, View } from 'react-native'
-import { Button, Center, Text } from 'native-base'
-import { withTranslation } from 'react-i18next'
-import { connect } from 'react-redux'
+import React, { Component } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { Button, Text } from 'native-base';
+import { withTranslation } from 'react-i18next';
+import { connect } from 'react-redux';
 
-import AuthenticateForm from '../../components/AuthenticateForm'
-import { forgotPassword, guestModeOn, login, register } from '../../redux/App/actions'
-import { selectIsAuthenticated } from '../../redux/App/selectors'
+import AuthenticateForm from '../../components/AuthenticateForm';
+import {
+  forgotPassword,
+  guestModeOn,
+  login,
+  register,
+} from '../../redux/App/actions';
+import { selectIsAuthenticated } from '../../redux/App/selectors';
+import AuthenticateContainer from '../../components/AuthenticateContainer';
 
 class Login extends Component {
-
   renderMessage() {
     if (this.props.message) {
-
       return (
         <View style={ styles.message }>
           <Text style={{ textAlign: 'center' }}>{ this.props.message }</Text>
@@ -22,9 +26,8 @@ class Login extends Component {
   }
 
   render() {
-
     return (
-      <Center flex={ 1 }>
+      <AuthenticateContainer>
         {this.props.guestCheckoutEnabled &&
           <>
             <View style={{ paddingHorizontal: 40, width: '100%' }}>
@@ -56,7 +59,7 @@ class Login extends Component {
             })
           }}
           registrationErrors={ this.props.registrationErrors } />
-      </Center>
+      </AuthenticateContainer>
     )
   }
 }
@@ -69,7 +72,6 @@ const styles = StyleSheet.create({
 })
 
 function mapStateToProps(state) {
-
   return {
     message: state.app.lastAuthenticationError,
     isAuthenticated: selectIsAuthenticated(state),
@@ -79,7 +81,6 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-
   return {
     login: (email, password, navigate) => dispatch(login(email, password, navigate)),
     register: data => dispatch(register(data, 'CheckoutCheckEmail', 'CheckoutLoginRegister', true)),
