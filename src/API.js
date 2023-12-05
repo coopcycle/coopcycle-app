@@ -116,32 +116,17 @@ Client.prototype.getToken = function() {
   return this.credentials.token
 }
 
-Client.prototype.createRequest = function(method, url, data) {
 
-  const headers = {
-    'Content-Type': 'application/json',
-  }
-
-  let req = {
-    method,
-    url,
-    headers,
-  }
-
-  if (data && _.size(data) > 0 && [ 'POST', 'PUT' ].includes(method.toUpperCase())) {
-    req.data = data
-  }
-
-  return req
-}
-
-Client.prototype.createAuthorizedRequest = function(method, url, data, options = {}) {
+Client.prototype.createRequest = function(method, url, data, options = {}) {
 
   let headers = {
     'Content-Type': 'application/ld+json',
   }
 
-  if (this.credentials.token) {
+  const authorized = !(!this.credentials.token || options.anonymous)
+  console.log(`${method} ${url}${authorized ? '' : ' (anon.)'}`);
+
+  if (authorized && this.credentials.token) {
     headers.Authorization = `Bearer ${this.credentials.token}`
   }
 
@@ -174,12 +159,7 @@ Client.prototype.createAuthorizedRequest = function(method, url, data, options =
 }
 
 Client.prototype.request = function(method, uri, data, options = {}) {
-
-  const authorized = !(!this.credentials.token || options.anonymous)
-  const req = authorized ? this.createAuthorizedRequest(method, uri, data, options) : this.createRequest(method, uri, data, options)
-
-  console.log(`${method} ${uri}${authorized ? '' : ' (anon.)'}`);
-
+  const req = this.createRequest(method, uri, data, options)
   return this.axios.request(req);
 }
 
@@ -237,7 +217,7 @@ Client.prototype.refreshToken = function() {
 }
 
 Client.prototype.checkToken = function() {
-  const req = this.createAuthorizedRequest('GET', '/api/token/check')
+  const req = this.createRequest('GET', '/api/token/check')
 
   return new Promise((resolve, reject) => {
 
