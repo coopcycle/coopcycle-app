@@ -2,7 +2,9 @@ import {
   LOAD_ADDRESSES_SUCCESS,
   LOAD_ORDERS_SUCCESS,
   LOAD_ORDER_SUCCESS,
-  LOAD_PERSONAL_INFO_SUCCESS, UPDATE_ORDER_SUCCESS,
+  LOAD_PERSONAL_INFO_SUCCESS,
+  SET_ORDER_ACCESS_TOKEN,
+  UPDATE_ORDER_SUCCESS,
 } from './actions'
 
 import {
@@ -11,6 +13,7 @@ import {
 
 const initialState = {
   orders: [],
+  orderAccessTokens: { }, // used by guest users
   addresses: [],
   email: '',
   username: '',
@@ -63,6 +66,20 @@ export default (state = initialState, action = {}) => {
           return acc
         }, []),
       }
+     case SET_ORDER_ACCESS_TOKEN: {
+       const currentTokens = state.orderAccessTokens ?? {}
+
+       const { orderId, accessToken } = action.payload
+
+       return {
+         ...state,
+         orderAccessTokens: {
+           ...currentTokens,
+           [orderId]: accessToken
+         },
+       }
+     }
+
   }
 
   return state

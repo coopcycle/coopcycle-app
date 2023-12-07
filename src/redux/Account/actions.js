@@ -4,7 +4,8 @@ import parseUrl from 'url-parse'
 import _ from 'lodash'
 
 import { logout, setLoading } from '../App/actions'
-import { selectHttpClient, selectIsAuthenticated } from '../App/selectors';
+import { selectHttpClient, selectIsAuthenticated } from '../App/selectors'
+import { selectOrderAccessTokensById } from './selectors'
 
 /*
  * Action Types
@@ -19,18 +20,21 @@ export const LOAD_PERSONAL_INFO_SUCCESS = '@account/LOAD_PERSONAL_INFO_SUCCESS'
 export const CONNECTED = '@account/CENTRIFUGO_CONNECTED'
 export const DISCONNECTED = '@account/CENTRIFUGO_DISCONNECTED'
 
+export const SET_ORDER_ACCESS_TOKEN = '@account/SET_ORDER_ACCESS_TOKEN'
+
 /*
  * Action Creators
  */
 
 const loadOrdersSuccess = createAction(LOAD_ORDERS_SUCCESS)
-const loadOrderSuccess = createAction(LOAD_ORDER_SUCCESS)
 export const loadAddressesSuccess = createAction(LOAD_ADDRESSES_SUCCESS)
 const loadPersonalInfoSuccess = createAction(LOAD_PERSONAL_INFO_SUCCESS)
 export const updateOrderSuccess = createAction(UPDATE_ORDER_SUCCESS)
 
 const connected = createAction(CONNECTED)
 const disconnected = createAction(DISCONNECTED)
+
+const setOrderAccessToken = createAction(SET_ORDER_ACCESS_TOKEN)
 
 export function loadOrders(cb) {
 
@@ -51,7 +55,8 @@ export function loadOrders(cb) {
 
 export function loadOrder(order, cb) {
   return (dispatch, getState) => {
-    const httpClient = selectHttpClient(getState())
+    const orderAccessToken = selectOrderAccessTokensById(getState(), order['@id'])
+    const httpClient = selectHttpClient(getState(), orderAccessToken)
 
     httpClient.get(order['@id'])
       .then(res => {
@@ -64,13 +69,22 @@ export function loadOrder(order, cb) {
   }
 }
 
-export function setNewOrder(order) {
+export function setNewOrder(order, sessionToken) {
   return (dispatch, getState) => {
     const { orders } = getState().account
     dispatch(loadOrdersSuccess([
       order,
       ...orders,
     ]))
+
+    const isRegisteredUser = selectIsAuthenticated(getState())
+
+    // for a guest user: save sessionToken
+    // so that they can access the order
+    // for example, to track status
+    if (!isRegisteredUser) {
+      dispatch(setOrderAccessToken({ orderId: order['@id'], accessToken: sessionToken }))
+    }
   }
 }
 
@@ -155,7 +169,9 @@ export function subscribe(order, onMessage) {
   return function (dispatch, getState) {
 
     const baseURL = getState().app.baseURL
-    const httpClient = getState().app.httpClient
+
+    const orderAccessToken = selectOrderAccessTokensById(getState(), order['@id'])
+    const httpClient = selectHttpClient(getState(), orderAccessToken)
 
     httpClient.get(`${order['@id']}/centrifugo`)
       .then(res => {
