@@ -651,7 +651,7 @@ function wrapRestaurantsWithTiming(restaurants) {
 }
 
 function _maintenanceModeHandler(error, dispatch) {
-  if (error.response.status === 503) {
+  if (error.response?.status === 503) {
     const message = error.response?.data?.message
     if (message) {
       dispatch(setModal({
