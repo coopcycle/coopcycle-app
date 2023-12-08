@@ -124,7 +124,7 @@ Client.prototype.createRequest = function(method, url, data, options = {}) {
   }
 
   const authorized = !(!this.credentials.token || options.anonymous)
-  console.log(`${method} ${url}${authorized ? '' : ' (anon.)'}`);
+  console.log(`${method} ${url}${authorized ? '' : ' (anon.)'}`)
 
   if (authorized && this.credentials.token) {
     headers.Authorization = `Bearer ${this.credentials.token}`
@@ -143,16 +143,17 @@ Client.prototype.createRequest = function(method, url, data, options = {}) {
     headers,
   }
 
-  // Make sure the request body is not empty for POST/PUT
-  if ([ 'POST', 'PUT' ].includes(method.toUpperCase()) && !data) {
-    data = {}
-  }
-
-  if (data && typeof data === 'object') {
-    req.data = JSON.stringify(data)
-  }
-  if (data && typeof data === 'string') {
-    req.data = data
+  if ([ 'POST', 'PUT' ].includes(method.toUpperCase())) {
+    // Make sure the request body is not empty for POST/PUT
+    if (!data) {
+      req.data = {}
+    }
+    if (data && typeof data === 'object') {
+      req.data = JSON.stringify(data)
+    }
+    if (data && typeof data === 'string') {
+      req.data = data
+    }
   }
 
   return req
