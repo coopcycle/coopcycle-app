@@ -42,7 +42,7 @@ export function Calendar(props) {
   }
 
   return (
-    <View>
+    <View onLayout={props.onLayout}>
       <RNCalendar
         {...calendarProps}
       />
