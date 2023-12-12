@@ -49,7 +49,7 @@ export function Calendar(props) {
       <View style={styles.todayContainer}>
         <Text style={styles.todayButton} onPress={() => {
           props.onDateSelect(moment())
-        }}>{t('TODAY')}</Text>
+        }}>{t('GO_TO_TODAY')}</Text>
       </View>
     </View>
   )
