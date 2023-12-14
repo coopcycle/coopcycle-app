@@ -187,11 +187,8 @@ function validateAddress(httpClient, cart, address) {
 }
 
 function createHttpClientWithSessionToken(state) {
-  const httpClient = selectHttpClient(state)
-
   const { token } = state.checkout
-
-  return httpClient.cloneWithToken(token)
+  return selectHttpClient(state, token)
 }
 
 let listeners = []
@@ -654,7 +651,7 @@ function wrapRestaurantsWithTiming(restaurants) {
 }
 
 function _maintenanceModeHandler(error, dispatch) {
-  if (error.response.status === 503) {
+  if (error.response?.status === 503) {
     const message = error.response?.data?.message
     if (message) {
       dispatch(setModal({
@@ -755,7 +752,7 @@ export function mercadopagoCheckout(payment) {
     httpClient
       .put(cart['@id'] + '/pay', params)
       .then(order => {
-        handleSuccessNav(dispatch, order);
+        dispatch(handleSuccessNav(order));
       })
       .catch(orderUpdateError => {
         handleError(dispatch, orderUpdateError)
@@ -763,24 +760,29 @@ export function mercadopagoCheckout(payment) {
   }
 }
 
-function handleSuccessNav(dispatch, order) {
-  dispatch(setNewOrder(order))
-  // First, reset checkout stack
-  NavigationHolder.dispatch(CommonActions.navigate({
-    name: 'Main',
-    params: {
-      screen: 'CheckoutHome',
-    },
-  }))
+function handleSuccessNav(order) {
+  return (dispatch, getState) => {
+    const { token } = getState().checkout
 
-  // Then, navigate to order screen
-  NavigationHolder.dispatch(CommonActions.navigate({
-    name: 'OrderTracking',
-    params: { order: order.number },
-  }))
+    dispatch(setNewOrder(order, token))
 
-  dispatch(deleteCart(order.restaurant['@id']))
-  dispatch(checkoutSuccess(order))
+    // First, reset checkout stack
+    NavigationHolder.dispatch(CommonActions.navigate({
+      name: 'Main',
+      params: {
+        screen: 'CheckoutHome',
+      },
+    }))
+
+    // Then, navigate to order screen
+    NavigationHolder.dispatch(CommonActions.navigate({
+      name: 'OrderTracking',
+      params: { order: order.number },
+    }))
+
+    dispatch(deleteCart(order.restaurant['@id']))
+    dispatch(checkoutSuccess(order))
+  }
 }
 
 function validateCart(cart) {
@@ -833,7 +835,7 @@ export function checkout(cardholderName, savedPaymentMethodId = null, saveCard =
     if (isFree(cart)) {
       httpClient
         .put(cart['@id'] + '/pay', {})
-        .then(o => handleSuccessNav(dispatch, o))
+        .then(o => dispatch(handleSuccessNav(o)))
         .catch(e => dispatch(checkoutFailure(e)));
 
       return;
@@ -867,15 +869,13 @@ export function checkout(cardholderName, savedPaymentMethodId = null, saveCard =
               if (error) {
                 throw new Error('handleNextAction error:', { cause: error });
               } else {
-                handleSuccess(
-                  dispatch,
+                dispatch(handleSuccess(
                   httpClient,
                   cart,
                   paymentIntent.id,
                   saveCard,
                   cardholderName,
-                  getState(),
-                );
+                ))
               }
             })
             .catch(e => {
@@ -889,15 +889,13 @@ export function checkout(cardholderName, savedPaymentMethodId = null, saveCard =
               dispatch(checkoutFailure(err));
             });
         } else {
-          handleSuccess(
-            dispatch,
+          dispatch(handleSuccess(
             httpClient,
             cart,
             stripeResponse.paymentIntentId,
             saveCard,
             cardholderName,
-            getState(),
-          );
+          ))
         }
       })
       .catch(e => dispatch(checkoutFailure(e)));
@@ -945,17 +943,16 @@ function configureStripe(state, paymentDetails = null) {
 }
 
 function handleSuccess(
-  dispatch,
   httpClient,
   cart,
   paymentIntentId,
   saveCard = false,
   cardholderName,
-  state,
 ) {
-  const loggedOrderId = cart['@id'];
+  return (dispatch, getState) => {
+    const loggedOrderId = cart['@id'];
 
-  handleSaveOfPaymentMethod(saveCard, cardholderName, httpClient, state)
+    handleSaveOfPaymentMethod(saveCard, cardholderName, httpClient, getState())
     .catch(e => {
       // do not interrupt flow if there is an error with this
       const err = new Error(`order: ${loggedOrderId}; failed to save a payment method`, {
@@ -968,7 +965,7 @@ function handleSuccess(
       httpClient
         .put(cart['@id'] + '/pay', { paymentIntentId })
         .then(order => {
-          handleSuccessNav(dispatch, order);
+          dispatch(handleSuccessNav(order));
         })
         .catch(e => {
           const err = new Error(`order: ${loggedOrderId}; failed to mark order as paid`, {
@@ -980,6 +977,7 @@ function handleSuccess(
           return dispatch(checkoutFailure(err));
         });
     });
+  }
 }
 
 function handleSaveOfPaymentMethod(saveCard, cardholderName, httpClient, state) {
@@ -1277,7 +1275,7 @@ export function checkoutWithCash() {
 
     httpClient
       .put(cart['@id'] + '/pay', { cashOnDelivery: true })
-      .then(order => handleSuccessNav(dispatch, order))
+      .then(order => dispatch(handleSuccessNav(order)))
       .catch(e => dispatch(checkoutFailure(e)))
   }
 }
