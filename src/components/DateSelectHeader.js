@@ -4,7 +4,7 @@ import { Icon } from 'native-base'
 import moment from 'moment'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 
-import { calendarHeight, dateSelectHeaderHeight, headerFontSize, primaryColor, whiteColor } from '../styles/common'
+import { dateSelectHeaderHeight, headerFontSize, primaryColor, whiteColor } from '../styles/common'
 import { Calendar } from './Calendar'
 
 let styles = StyleSheet.create({
@@ -39,20 +39,21 @@ let styles = StyleSheet.create({
   calendarWidget: {
     position: 'relative',
     zIndex: -1,
-    height: calendarHeight, // workaround for https://github.com/wix/react-native-calendars/issues/338
+    height: 100, // not a real height, just a workaround for https://github.com/wix/react-native-calendars/issues/338
   },
 })
+
+const INITIAL_CALENDAR_HEIGHT = 500 // large enough number to make sure the calendar is hidden on the first render
 
 class DateSelectHeader extends React.Component {
 
   constructor(props) {
     super(props)
 
-    this.initialCalendarTop = -1 * calendarHeight
-
     this.state = {
       height: dateSelectHeaderHeight,
-      slideCalendarAnim: new Animated.Value(this.initialCalendarTop),
+      calendarHeight: INITIAL_CALENDAR_HEIGHT,
+      slideCalendarAnim: new Animated.Value(-1 * INITIAL_CALENDAR_HEIGHT),
       showCalendar: false,
     }
 
@@ -80,7 +81,7 @@ class DateSelectHeader extends React.Component {
     if (showCalendar) {
       newHeight = dateSelectHeaderHeight
     } else {
-      newHeight = dateSelectHeaderHeight + calendarHeight
+      newHeight = dateSelectHeaderHeight + this.state.calendarHeight
     }
 
     this.setState(Object.assign({}, this.state, {
@@ -104,7 +105,7 @@ class DateSelectHeader extends React.Component {
     Animated.timing(
       this.state.slideCalendarAnim,
       {
-        toValue: this.initialCalendarTop,
+        toValue: -1 * this.state.calendarHeight,
         duration: 350,
         useNativeDriver: false,
       }
@@ -155,13 +156,23 @@ class DateSelectHeader extends React.Component {
             { buttonsEnabled && this.renderButton('arrow-forward', this.onFuturePress, styles.icon) }
           </View>
         </View>
-        <Animated.View style={[ styles.calendarWidget, { top: this.state.slideCalendarAnim }]}>
+        <Animated.View style={[ styles.calendarWidget, { top: this.state.slideCalendarAnim }]} >
           <Calendar
             initialDate={ selectedDate.format('YYYY-MM-DD') }
             markedDates={{
               [selectedDate.format('YYYY-MM-DD')]: { selected: true },
             }}
             onDateSelect={(momentDate) => {this.onDateSelect(momentDate)}}
+            onLayout={(event) => {
+              // updating the calendarHeight with the actual height after the first render
+              if (this.state.calendarHeight === INITIAL_CALENDAR_HEIGHT) {
+                const { height } = event.nativeEvent.layout;
+                this.setState(Object.assign({}, this.state, {
+                  calendarHeight: height,
+                  slideCalendarAnim: new Animated.Value(-1 * height),
+                }))
+              }
+            }}
           />
         </Animated.View>
       </View>

@@ -42,14 +42,14 @@ export function Calendar(props) {
   }
 
   return (
-    <View>
+    <View onLayout={props.onLayout}>
       <RNCalendar
         {...calendarProps}
       />
       <View style={styles.todayContainer}>
         <Text style={styles.todayButton} onPress={() => {
           props.onDateSelect(moment())
-        }}>{t('TODAY')}</Text>
+        }}>{t('GO_TO_TODAY')}</Text>
       </View>
     </View>
   )

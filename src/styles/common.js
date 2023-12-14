@@ -1,7 +1,6 @@
 // Source file for common CSS
 
 import Config from 'react-native-config'
-import { Platform } from 'react-native'
 
 let primaryColor = Config.PRIMARY_COLOR || '#e4022d',
     whiteColor = '#fff',
@@ -14,10 +13,6 @@ let primaryColor = Config.PRIMARY_COLOR || '#e4022d',
     orangeColor = '#d35400',
     fontTitleName = 'Raleway-Regular',
     dateSelectHeaderHeight = 40,
-    calendarHeight = Platform.select({
-      ios: 357,
-      android: 367,
-    }), // an actual height is slightly different per platform; android is ~367, ios is ~357
     headerFontSize = 18
 
 export {
@@ -30,7 +25,6 @@ export {
   blueColor,
   headerFontSize,
   dateSelectHeaderHeight,
-  calendarHeight,
   greenColor,
   redColor,
   fontTitleName,
