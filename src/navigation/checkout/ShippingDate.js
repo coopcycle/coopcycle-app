@@ -64,6 +64,7 @@ const rangeAsTimeLabel = (range) => `${moment.parseZone(range[0]).format('LT')} 
 const rangeAsString = (range) => range.join('/')
 const stringAsRange = (text) => text.split('/')
 
+// TODO: could we get rid of this component? I don't see it being used anywhere
 class ShippingDate extends Component {
 
   constructor(props) {
