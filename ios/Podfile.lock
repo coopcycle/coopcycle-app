@@ -725,7 +725,8 @@ PODS:
     - React-Core
   - react-native-netinfo (9.4.1):
     - React-Core
-  - react-native-pager-view (6.2.2):
+  - react-native-pager-view (6.2.3):
+    - RCT-Folly (= 2021.07.22.00)
     - React-Core
   - react-native-safe-area-context (4.8.1):
     - React-Core
@@ -876,7 +877,7 @@ PODS:
     - FirebaseCoreExtension (= 10.0.0)
     - React-Core
     - RNFBApp
-  - RNGestureHandler (2.13.4):
+  - RNGestureHandler (2.14.0):
     - RCT-Folly (= 2021.07.22.00)
     - React-Core
   - RNGoogleSignin (7.0.4):
@@ -1382,7 +1383,7 @@ SPEC CHECKSUMS:
   react-native-get-random-values: dee677497c6a740b71e5612e8dbd83e7539ed5bb
   react-native-maps: f699e0753c22c4d5c3a44d03895b193a4dbca6c2
   react-native-netinfo: fefd4e98d75cbdd6e85fc530f7111a8afdf2b0c5
-  react-native-pager-view: 02a5c4962530f7efc10dd51ee9cdabeff5e6c631
+  react-native-pager-view: e26d35e382d86950c936f8917e3beb9188115ccc
   react-native-safe-area-context: cd1169d797a2ef722a00bfc5af10748d5b6c94f9
   react-native-version-number: b415bbec6a13f2df62bf978e85bc0d699462f37f
   react-native-webview: d33e2db8925d090871ffeb232dfa50cb3a727581
@@ -1415,7 +1416,7 @@ SPEC CHECKSUMS:
   RNFBAnalytics: 4e38343d06b7541807d52fe11727f71aa635ffbf
   RNFBApp: 3976c7928aa054c4fdcd0d029dececa0b3397ee5
   RNFBCrashlytics: 8b864f6efcaf5329acda78613f75da9e4fb19134
-  RNGestureHandler: 6e46dde1f87e5f018a54fe5d40cd0e0b942b49ee
+  RNGestureHandler: 32a01c29ecc9bb0b5bf7bc0a33547f61b4dc2741
   RNGoogleSignin: c4381751eefd73c552b923ba347a9bfc6f18771c
   RNLocalize: 7ce27517894956a226aa6d614786802d253a0a0a
   RNReanimated: fdbaa9c964bbab7fac50c90862b6cc5f041679b9
