@@ -1,11 +1,15 @@
 import React, { Component } from 'react'
-import { FlatList, Image, ImageBackground, StyleSheet, TouchableOpacity, View, useColorScheme } from 'react-native'
-import { Center, HStack, Icon, Text, Badge } from 'native-base'
+import { FlatList, Image, ImageBackground, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { Badge, Center, HStack, Icon, Text } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 
-import { getNextShippingTimeAsText, getRestaurantCaption, shouldShowPreOrder } from '../utils/checkout'
+import { getRestaurantCaption, shouldShowPreOrder } from '../utils/checkout'
+import {
+  CategoryBadge,
+  TimingBadge,
+} from '../navigation/checkout/components/RestaurantBadges'
 
 const styles = StyleSheet.create({
   item: {
@@ -20,17 +24,6 @@ const styles = StyleSheet.create({
   },
   restaurantNameText: {
     marginBottom: 5,
-  },
-  badge: {
-    alignItems: 'center',
-    position: 'absolute',
-    height: 30,
-    alignSelf: 'center',
-    bottom: -15,
-    borderRadius: 4,
-  },
-  badgeText: {
-    fontSize: 12,
   },
   overlay: {
     position: 'absolute',
@@ -55,18 +48,6 @@ const OneLineText = (props) => (
     { props.children }
   </Text>
 )
-
-const TimingBadge = ({ restaurant }) => {
-
-  const colorScheme = useColorScheme()
-
-  return (
-    <HStack style={ [styles.badge] } bg={ colorScheme === 'dark' ? 'gray.800' : 'gray.200' } px="2">
-      <Icon as={ FontAwesome } name="clock-o" size="xs" mr="1"  />
-      <Text style={ styles.badgeText }>{ getNextShippingTimeAsText(restaurant) }</Text>
-    </HStack>
-  )
-}
 
 class RestaurantList extends Component {
 
@@ -102,9 +83,7 @@ class RestaurantList extends Component {
               <HStack mb="1">
               { restaurant.facets.category.map((label, index) => {
                 return (
-                  <Badge key={ `restaurant-category-${index}` } variant="subtle" mr="1">
-                    { label }
-                  </Badge>
+                  <CategoryBadge key={ `restaurant-category-${index}` } label={label}/>
                 )
               }) }
               </HStack>
