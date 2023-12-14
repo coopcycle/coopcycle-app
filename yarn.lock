@@ -1779,10 +1779,10 @@
     mv "~2"
     safe-json-stringify "~1"
 
-"@expo/cli@0.10.13":
-  version "0.10.13"
-  resolved "https://registry.yarnpkg.com/@expo/cli/-/cli-0.10.13.tgz#6503e6c477a8407986cd645952b0ad6177e08fe7"
-  integrity sha512-8ciyz+yIDih6zCNMWK0IyEv411W7vej/TaWIFGarogPVbFokXrUKr0aKoQG1RU1SLlY4eUpHakbIzqog+rhJdQ==
+"@expo/cli@0.10.16":
+  version "0.10.16"
+  resolved "https://registry.yarnpkg.com/@expo/cli/-/cli-0.10.16.tgz#42f9aaf08884f70f3a671b7d6b4f138ad39192d7"
+  integrity sha512-EwgnRN5AMElg0JJjFLJTPk5hYkVXxnNMLIvZBiTfGoCq+rDw6u7Mg5l2Bbm/geSHOoplaHyPZ/Wr23FAuZWehA==
   dependencies:
     "@babel/runtime" "^7.20.0"
     "@expo/code-signing-certificates" "0.0.5"
@@ -3202,10 +3202,10 @@
     "@react-aria/ssr" "^3.0.1"
     "@react-aria/utils" "^3.3.0"
 
-"@react-native-async-storage/async-storage@^1.19.5":
-  version "1.19.5"
-  resolved "https://registry.yarnpkg.com/@react-native-async-storage/async-storage/-/async-storage-1.19.5.tgz#d59dd493b2b25346412085dd48896cabca011eed"
-  integrity sha512-zLT7oNPXpW8BxJyHyq8AJbXtlHE/eonFWuJt44y0WeCGnp4KOJ8mfqD8mtAIKLyrYHHE1uadFe/s4C+diYAi8g==
+"@react-native-async-storage/async-storage@^1.21.0":
+  version "1.21.0"
+  resolved "https://registry.yarnpkg.com/@react-native-async-storage/async-storage/-/async-storage-1.21.0.tgz#d7e370028e228ab84637016ceeb495878b7a44c8"
+  integrity sha512-JL0w36KuFHFCvnbOXRekqVAUplmOyT/OuCQkogo6X98MtpSaJOKEAeZnYO8JB0U/RIEixZaGI5px73YbRm/oag==
   dependencies:
     merge-options "^3.0.4"
 
@@ -8155,10 +8155,17 @@ expo-constants@~14.4.2:
     "@expo/config" "~8.1.0"
     uuid "^3.3.2"
 
-expo-file-system@~15.4.0, expo-file-system@~15.4.4:
+expo-file-system@~15.4.0:
   version "15.4.4"
   resolved "https://registry.yarnpkg.com/expo-file-system/-/expo-file-system-15.4.4.tgz#b29e0507b57ee0cc7173cf8844aaf992e411f518"
   integrity sha512-F0xS88D85F7qVQ61r0qBnzh6VW/s6iIl+VaQEEi2nAIOQHw1JIEj4yCXPLTtbyn5VmArbe2dSL3KYz1V+BLkKA==
+  dependencies:
+    uuid "^3.4.0"
+
+expo-file-system@~15.4.5:
+  version "15.4.5"
+  resolved "https://registry.yarnpkg.com/expo-file-system/-/expo-file-system-15.4.5.tgz#3ef68583027ff0e2fb9eca7a22b3caff6cfc550d"
+  integrity sha512-xy61KaTaDgXhT/dllwYDHm3ch026EyO8j4eC6wSVr/yE12MMMxAC09yGwy4f7kkOs6ztGVQF5j7ldRzNLN4l0Q==
   dependencies:
     uuid "^3.4.0"
 
@@ -8186,21 +8193,21 @@ expo-modules-autolinking@1.5.1:
     find-up "^5.0.0"
     fs-extra "^9.1.0"
 
-expo-modules-core@1.5.11:
-  version "1.5.11"
-  resolved "https://registry.yarnpkg.com/expo-modules-core/-/expo-modules-core-1.5.11.tgz#6ee33641cec5ef9c629393a267cef122110d2bf0"
-  integrity sha512-1Dj2t74nVjxq6xEQf2b9WFfAMhPzVnR0thY0PfRFgob4STyj3sq1U4PIHVWvKQBtDKIa227DrNRb+Hu+LqKWQg==
+expo-modules-core@1.5.12:
+  version "1.5.12"
+  resolved "https://registry.yarnpkg.com/expo-modules-core/-/expo-modules-core-1.5.12.tgz#07eb4de4bf25a3ec3e1924403e73d13c656613fd"
+  integrity sha512-mY4wTDU458dhwk7IVxLNkePlYXjs9BTgk4NQHBUXf0LapXsvr+i711qPZaFNO4egf5qq6fQV+Yfd/KUguHstnQ==
   dependencies:
     compare-versions "^3.4.0"
     invariant "^2.2.4"
 
-expo@^49.0.0:
-  version "49.0.13"
-  resolved "https://registry.yarnpkg.com/expo/-/expo-49.0.13.tgz#9ee185d4eb1ac2859e67895bd919db5a04d1b8ec"
-  integrity sha512-k2QFmT5XN490ksjKJgogfS5SFj6ZKCu1GwWz4VUV4S9gkPjzr8zQAZoVPKaWxUYRb6xDpTJXdhLt7gSnV3bJvw==
+expo@^49.0.21:
+  version "49.0.21"
+  resolved "https://registry.yarnpkg.com/expo/-/expo-49.0.21.tgz#32a66b32d0a233879ec3afdec35fb63d2cc8a4c3"
+  integrity sha512-JpHL6V0yt8/fzsmkAdPdtsah+lU6Si4ac7MDklLYvzEil7HAFEsN/pf06wQ21ax4C+BL27hI6JJoD34tzXUCJA==
   dependencies:
     "@babel/runtime" "^7.20.0"
-    "@expo/cli" "0.10.13"
+    "@expo/cli" "0.10.16"
     "@expo/config" "8.1.2"
     "@expo/config-plugins" "7.2.5"
     "@expo/vector-icons" "^13.0.0"
@@ -8208,11 +8215,11 @@ expo@^49.0.0:
     expo-application "~5.3.0"
     expo-asset "~8.10.1"
     expo-constants "~14.4.2"
-    expo-file-system "~15.4.4"
+    expo-file-system "~15.4.5"
     expo-font "~11.4.0"
     expo-keep-awake "~12.3.0"
     expo-modules-autolinking "1.5.1"
-    expo-modules-core "1.5.11"
+    expo-modules-core "1.5.12"
     fbemitter "^3.0.0"
     invariant "^2.2.4"
     md5-file "^3.2.3"
@@ -12194,10 +12201,10 @@ react-native-background-fetch@^4.1.6, react-native-background-fetch@~4.2.1:
   resolved "https://registry.yarnpkg.com/react-native-background-fetch/-/react-native-background-fetch-4.2.1.tgz#81351355973f676295cfbb7a7946d7d4902273b6"
   integrity sha512-UePBlP2Az6PWrIDCoGDYl0IlimvV+TFl/5XUmL4KIo7xPK7TSZru1nYHH7uskW2an5AW39ko3mbV2w/+1LxsnQ==
 
-react-native-background-geolocation@^4.14.4:
-  version "4.14.4"
-  resolved "https://registry.yarnpkg.com/react-native-background-geolocation/-/react-native-background-geolocation-4.14.4.tgz#e91b2f62e7511424589ba9f853738d01ae8a220c"
-  integrity sha512-BFd/tzPk0bfvWOqmE+kLZiJ/b/9Zc7FcxDRJr52Wc2BMHdQSo039g/yCu48DPS6sT2ZFapAQ1bok871dQry4+Q==
+react-native-background-geolocation@^4.14.5:
+  version "4.14.5"
+  resolved "https://registry.yarnpkg.com/react-native-background-geolocation/-/react-native-background-geolocation-4.14.5.tgz#2daf978e33d6dec517bb9387242fb79b5d3b3278"
+  integrity sha512-k1OI6JDfkR1VG3Lk20grifbA1aZBdafgH5n0sqEnGjg7Yl5IC7dfM2N+t4XW5Jo//rEHtQXTjTcox1t564N5rg==
   dependencies:
     react-native-background-fetch "~4.2.1"
 
@@ -12305,10 +12312,10 @@ react-native-loading-spinner-overlay@^3.0.1:
   resolved "https://registry.yarnpkg.com/react-native-loading-spinner-overlay/-/react-native-loading-spinner-overlay-3.0.1.tgz#092481b8cce157d3af5ef942f845ad981f96bd36"
   integrity sha512-4GdR54HQnKg2HPSSisVizfTLuyhSh4splY9eb8mKiYF1Ihjn/5EmdNo5bN3S7uKPFRC3WLzIZIouX6G6fXfnjw==
 
-react-native-localize@^3.0.3:
-  version "3.0.3"
-  resolved "https://registry.yarnpkg.com/react-native-localize/-/react-native-localize-3.0.3.tgz#31c880162bb9bb7e3768da2fd02dd55608dea60e"
-  integrity sha512-wlVIyg9lQac/Mg23aVKQAcnRkJgROjTUxZHFO4oqKpXkMa1XkvZ4DhhFc6TPnZX0O8YKvrTUsN3x8xMzVpAosg==
+react-native-localize@^3.0.4:
+  version "3.0.4"
+  resolved "https://registry.yarnpkg.com/react-native-localize/-/react-native-localize-3.0.4.tgz#70bb6212cee4dd9eaabb65a4a6227dca5b7faf5e"
+  integrity sha512-O6NnwsdorLiK5PCulfiKSnNjBW8B0m1HO24MQOgSC2iHiZZWMCA2to7Ln5EOagaGPsqq5UbgisR2bpycoMPYaw==
 
 react-native-map-link@^2.11.2:
   version "2.11.3"
@@ -12326,10 +12333,10 @@ react-native-maps-super-cluster@^1.6.0:
     "@mapbox/geo-viewport" "^0.4.0"
     supercluster "^6.0.2"
 
-react-native-maps@^1.7.1:
-  version "1.8.0"
-  resolved "https://registry.yarnpkg.com/react-native-maps/-/react-native-maps-1.8.0.tgz#1f2471dec6f406725d22f2545f326c6fb6d9abf9"
-  integrity sha512-KfVZ03L42+a22Fkcl2uDe5d+73BweTlcRUzm2G+aQUJ7fHrBxj7CuXWtKMSNpVDiO3YDCWcshiiyjSXxkd/qOw==
+react-native-maps@^1.8.3:
+  version "1.8.3"
+  resolved "https://registry.yarnpkg.com/react-native-maps/-/react-native-maps-1.8.3.tgz#6dbdae999704dd19faba49912282978b2405c581"
+  integrity sha512-ilkknT9Rvy0Cz6RTdtowGUB5XI/hFNU/QsUv1KRUE7m7vKxEIaKvhVpDxZ2yee7uyXACn/uoSYggakZ//8VSiQ==
   dependencies:
     "@types/geojson" "^7946.0.10"
 
