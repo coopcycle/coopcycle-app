@@ -52,6 +52,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import {
   AccountRegisterConfirmScreen, AccountResetPasswordNewPasswordScreen,
 } from './navigation/navigators/AccountNavigator'
+import { nativeBaseTheme } from './styles/theme'
 
 LogBox.ignoreLogs([
   'Warning: isMounted(...) is deprecated in plain JavaScript React classes.',
@@ -115,12 +116,6 @@ const App = () => {
 
   const colorScheme = useColorScheme()
 
-  const customTheme = extendTheme(v33xTheme, {
-    config: {
-      useSystemColorMode: true,
-    },
-  })
-
   const queryClient = new QueryClient()
 
   useEffect(() => {
@@ -137,7 +132,7 @@ const App = () => {
       <PersistGate loading={ null } persistor={ persistor }>
         <I18nextProvider i18n={ i18n }>
           <QueryClientProvider client={queryClient}>
-            <NativeBaseProvider theme={customTheme}>
+            <NativeBaseProvider theme={nativeBaseTheme}>
               <SafeAreaProvider>
                 <Spinner />
                 <NavigationContainer

@@ -1,7 +1,8 @@
 import { Animated, ImageBackground, StyleSheet, View } from 'react-native';
-import { HStack, IconButton, Text, Badge, VStack } from 'native-base';
+import { HStack, IconButton, Text, VStack } from 'native-base';
 import React from 'react';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import { CategoryBadge } from './RestaurantBadges'
 
 const styles = StyleSheet.create({
   overlay: {
@@ -34,13 +35,7 @@ export default (props) => {
         </HStack>
         { props.category.length > 0 &&
           <HStack mb="1">
-          { props.category.map((label, index) => {
-            return (
-              <Badge key={ `restaurant-category-${index}` } variant="subtle" mr="1">
-                { label }
-              </Badge>
-            )
-          }) }
+          { props.category.map((label, index) => <CategoryBadge key={ `restaurant-category-${index}` } label={ label }/>) }
           </HStack>
         }
       </VStack>
