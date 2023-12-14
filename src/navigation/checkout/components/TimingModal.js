@@ -5,13 +5,12 @@ import { withTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 import BottomModal from '../../../components/BottomModal';
 import { Button, Divider, HStack, Heading, Skeleton, Text, View } from 'native-base';
-import { Picker } from '@react-native-picker/picker';
+import { Picker } from '../../../components/Picker'
 import { useQuery } from 'react-query';
 import { selectHttpClient } from '../../../redux/App/selectors';
 import { groupBy, map, reduce } from 'lodash';
 import moment from 'moment';
 import { showTimingModal } from '../../../redux/Checkout/actions';
-
 
 const TimingCartSelect = ({ cart: { cart, token }, httpClient, onValueChange, cartFulfillmentMethod }) => {
 
