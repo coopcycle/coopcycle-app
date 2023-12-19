@@ -844,6 +844,8 @@ PODS:
     - React-jsi (= 0.72.5)
     - React-logger (= 0.72.5)
     - React-perflogger (= 0.72.5)
+  - ReactNativeAvoidSoftinput (4.0.2):
+    - React-Core
   - ReactNativeKeyboardManager (6.5.11-2):
     - IQKeyboardManagerSwift (= 6.5.11)
     - React-Core
@@ -1041,6 +1043,7 @@ DEPENDENCIES:
   - React-runtimescheduler (from `../node_modules/react-native/ReactCommon/react/renderer/runtimescheduler`)
   - React-utils (from `../node_modules/react-native/ReactCommon/react/utils`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
+  - ReactNativeAvoidSoftinput (from `../node_modules/react-native-avoid-softinput`)
   - ReactNativeKeyboardManager (from `../node_modules/react-native-keyboard-manager`)
   - "RNAppleAuthentication (from `../node_modules/@invertase/react-native-apple-authentication`)"
   - RNBackgroundFetch (from `../node_modules/react-native-background-fetch`)
@@ -1249,6 +1252,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/react/utils"
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
+  ReactNativeAvoidSoftinput:
+    :path: "../node_modules/react-native-avoid-softinput"
   ReactNativeKeyboardManager:
     :path: "../node_modules/react-native-keyboard-manager"
   RNAppleAuthentication:
@@ -1404,6 +1409,7 @@ SPEC CHECKSUMS:
   React-runtimescheduler: cc32add98c45c5df18436a6a52a7e1f6edec102c
   React-utils: 7a9918a1ffdd39aba67835d42386f592ea3f8e76
   ReactCommon: 91ece8350ebb3dd2be9cef662abd78b6948233c0
+  ReactNativeAvoidSoftinput: b4ec4c8084c397a91800d21170a9949a263d288a
   ReactNativeKeyboardManager: 60292dbac467c49841a7d69588208ec4a4f7b2a2
   RNAppleAuthentication: 0571c08da8c327ae2afc0261b48b4a515b0286a6
   RNBackgroundFetch: 501c34ad6e880818ba17e7840b23f20a2d112923
