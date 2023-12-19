@@ -12,6 +12,7 @@ const duration = 250
 export default function KeyboardAdjustResizeViewIOS({
   children,
   style,
+  onLayout: onLayoutProp,
   ...props
 }) {
   const [ frame, setFrame ] = useState(null)
@@ -30,12 +31,16 @@ export default function KeyboardAdjustResizeViewIOS({
     })
   })
 
-  const _onLayout = event => {
+  const onLayout = event => {
     const currentFrame = event.nativeEvent.layout
     setFrame(currentFrame)
     if (!initialFrameHeight) {
       // save the initial frame height, before the keyboard is visible
       setInitialFrameHeight(currentFrame.height)
+    }
+
+    if (onLayoutProp) {
+      onLayoutProp(event)
     }
   }
 
@@ -56,7 +61,7 @@ export default function KeyboardAdjustResizeViewIOS({
   return (
     <AvoidSoftInputView
       style={StyleSheet.compose(style, heightStyle)}
-      onLayout={_onLayout}
+      onLayout={onLayout}
       avoidOffset={avoidOffset}
       {...extraProps}>
       {children}

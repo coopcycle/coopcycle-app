@@ -1,20 +1,45 @@
-import React from 'react'
-import { KeyboardAvoidingView, Platform, View } from 'react-native'
+import React, { useState } from 'react'
+import {
+  KeyboardAvoidingView,
+  Platform,
+  View,
+  useWindowDimensions,
+} from 'react-native'
 import KeyboardAdjustResizeViewIOS from './KeyboardAdjustResizeViewIOS'
 
-export default function KeyboardAdjustView({ children, style, ...props }) {
+export default function KeyboardAdjustView({
+  children,
+  style,
+  hint,
+  ...props
+}) {
+  const [ viewHeight, setViewHeight ] = useState(0)
+
+  const windowDimensions = useWindowDimensions()
+
+  const onLayout = event => {
+    const currentFrame = event.nativeEvent.layout
+    if (!viewHeight) {
+      setViewHeight(currentFrame.height)
+    }
+  }
+
   if (Platform.OS === 'android') {
     // on Android we rely on the OS to adjust the view
     // and put focused text input above the keyboard
 
-    const topOffset = 80 // status bar (24) + toolbar (56)
+    const topOffset = windowDimensions.height - viewHeight // status bar (~24) + toolbar (~56)
+
+    // extra View is a workaround for this issue: https://github.com/facebook/react-native/issues/35599
     return (
-      <KeyboardAvoidingView
-        style={style}
-        keyboardVerticalOffset={topOffset}
-        behavior={'padding'}>
-        {children}
-      </KeyboardAvoidingView>
+      <View style={style} onLayout={onLayout}>
+        <KeyboardAvoidingView
+          style={style}
+          keyboardVerticalOffset={topOffset}
+          behavior={'padding'}>
+          {children}
+        </KeyboardAvoidingView>
+      </View>
     )
 
     // FIXME:
@@ -33,8 +58,22 @@ export default function KeyboardAdjustView({ children, style, ...props }) {
     // )
   } else if (Platform.OS === 'ios') {
     // on iOS we need to adjust the view manually
+
+    /**
+     * FIXME: iosAvoidOffset is a workaround for the first text input field
+     *  being pushed up too high on iOS (by AvoidSoftInputView) when the keyboard appears, making it invisible.
+     */
+    let iosAvoidOffset = 0
+    if (hint && hint.presentation === 'modal') {
+      iosAvoidOffset = -1 * (windowDimensions.height - viewHeight)
+    }
+
     return (
-      <KeyboardAdjustResizeViewIOS style={style} {...props}>
+      <KeyboardAdjustResizeViewIOS
+        style={style}
+        onLayout={onLayout}
+        iosAvoidOffset={iosAvoidOffset}
+        {...props}>
         {children}
       </KeyboardAdjustResizeViewIOS>
     )

@@ -131,12 +131,7 @@ class MoreInfos extends Component {
         validateOnBlur={ false }
         validateOnChange={ false }>
         {({ handleChange, handleBlur, handleSubmit, values, errors, touched, setFieldValue, setFieldTouched }) => (
-          /**
-           * FIXME: iosAvoidOffset is a workaround for the first text input (phone number)
-           * being pushed up too high on iOS (by AvoidSoftInputView) when the keyboard appears, making it invisible.
-           * It seems that it happens due to the nested view with style={{ flex: 1 }}
-           */
-          <KeyboardAdjustView style={{ flex: 1 }} iosAvoidOffset={-65}>
+          <KeyboardAdjustView style={{ flex: 1 }} hint={{ presentation: 'modal' }}>
             <HStack bgColor="info.200" justifyContent="center" p="4">
               <Text>{ this.props.t('CHECKOUT_MORE_INFOS_DISCLAIMER') }</Text>
             </HStack>
