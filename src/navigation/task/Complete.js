@@ -45,7 +45,7 @@ import {
 import { greenColor, redColor } from '../../styles/common'
 import { doneIconName, failedIconName } from './styles/common'
 import ModalContent from '../../components/ModalContent'
-import { Picker } from '@react-native-picker/picker';
+import { Picker } from '../../components/Picker'
 import { useQuery } from 'react-query';
 
 const DELETE_ICON_SIZE = 32
