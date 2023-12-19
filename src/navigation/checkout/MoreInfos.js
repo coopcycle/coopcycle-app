@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { InteractionManager, KeyboardAvoidingView, Platform, ScrollView, StyleSheet } from 'react-native'
+import { InteractionManager, ScrollView, StyleSheet } from 'react-native'
 import { FormControl, HStack, Input, Text, TextArea, VStack } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
@@ -13,6 +13,9 @@ import FooterButton from './components/FooterButton'
 import { isFree } from '../../utils/order'
 import { selectIsAuthenticated } from '../../redux/App/selectors'
 import validate from 'validate.js'
+import KeyboardAdjustView
+  from '../../components/KeyboardAdjustView'
+
 
 const hasErrors = (errors, touched, field) => {
   return errors[field] && touched[field]
@@ -121,7 +124,6 @@ class MoreInfos extends Component {
     }
 
     return (
-      <KeyboardAvoidingView style={{ flex: 1 }} keyboardVerticalOffset={Platform.select({ ios: 55, android: 85 })} enabled={true} behavior={Platform.OS === 'ios' ? 'position' : 'padding'}>
       <Formik
         initialValues={ initialValues }
         validate={ this._validate.bind(this) }
@@ -129,11 +131,16 @@ class MoreInfos extends Component {
         validateOnBlur={ false }
         validateOnChange={ false }>
         {({ handleChange, handleBlur, handleSubmit, values, errors, touched, setFieldValue, setFieldTouched }) => (
-          <VStack style={Platform.select({ ios: {}, android: { flex:1 } })}>
+          /**
+           * FIXME: iosAvoidOffset is a workaround for the first text input (phone number)
+           * being pushed up too high on iOS (by AvoidSoftInputView) when the keyboard appears, making it invisible.
+           * It seems that it happens due to the nested view with style={{ flex: 1 }}
+           */
+          <KeyboardAdjustView style={{ flex: 1 }} iosAvoidOffset={-65}>
             <HStack bgColor="info.200" justifyContent="center" p="4">
               <Text>{ this.props.t('CHECKOUT_MORE_INFOS_DISCLAIMER') }</Text>
             </HStack>
-            <VStack p="2" style={{ flexShrink: 1 }}>
+            <VStack p="2" style={{ flex: 1 }}>
               <ScrollView>
                 {!this.props.isAuthenticated && this._userIsGuest() &&
                 <FormControl mb="2">
@@ -199,10 +206,9 @@ class MoreInfos extends Component {
               testID="moreInfosSubmit"
               text={ this.props.t('SUBMIT') }
               onPress={ handleSubmit } />
-          </VStack>
+          </KeyboardAdjustView>
         )}
       </Formik>
-      </KeyboardAvoidingView>
     )
   }
 }
