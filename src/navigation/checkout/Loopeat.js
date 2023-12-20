@@ -103,14 +103,13 @@ function Loopeat({ cart, updateLoopeatReturns }) {
 		        	}} />
 		        </Box>
 				) }
-				{ missingAmount > 0 &&
 				<Box p="3">
+					<Heading size="sm" mb="4">{ t('CHECKOUT_LOOPEAT_WALLET_AMOUNT', { amount: formatPrice(creditsCountCents) }) }</Heading>
 					<Button variant="outline"
 						onPress={ () => Linking.openURL(reusablePackagingAction.loopeatOAuthUrl + '&required_credits_cents=' + requiredAmount) }>
             { t('CHECKOUT_LOOPEAT_ADD_CREDITS') }
           </Button>
 				</Box>
-				}
 				<Box p="3">
 					<VStack mb="3">
 						<HStack justifyContent="space-between">
@@ -125,11 +124,10 @@ function Loopeat({ cart, updateLoopeatReturns }) {
 							<Text>{ t('CHECKOUT_LOOPEAT_TOTAL_RETURNS') }</Text>
 							<Text>{ formatPrice(returnsTotalAmount) }</Text>
 						</HStack>
-						<HStack justifyContent="space-between">
-							<Text>{ t('CHECKOUT_LOOPEAT_DIFF') }</Text>
-							<Text>{ formatPrice(missingAmount * -1) }</Text>
-						</HStack>
 					</VStack>
+					{ missingAmount > 0 && (
+						<Text textAlign="center" mb="2" color="red.500">{ t('CHECKOUT_LOOPEAT_MISSING_AMOUNT', { amount: formatPrice(missingAmount) }) }</Text>
+					) }
 					<Button onPress={ () => {
 						updateLoopeatReturns(returns)
 						navigation.navigate('CheckoutSummary')
