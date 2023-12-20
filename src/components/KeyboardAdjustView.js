@@ -7,6 +7,11 @@ import {
 } from 'react-native'
 import { AvoidSoftInputView } from 'react-native-avoid-softinput'
 
+/**
+ *
+ * @param children; one of the child should be a ScrollView
+ * @param style
+ */
 export default function KeyboardAdjustView({
   children,
   style
