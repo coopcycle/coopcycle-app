@@ -14,7 +14,8 @@ import { AvoidSoftInputView } from 'react-native-avoid-softinput'
  */
 export default function KeyboardAdjustView({
   children,
-  style
+  style,
+  androidBehavior = 'padding', // FIXME: try to avoid using it; see the comment below
 }) {
   const [ viewHeight, setViewHeight ] = useState(0)
 
@@ -38,7 +39,7 @@ export default function KeyboardAdjustView({
         <KeyboardAvoidingView
           style={style}
           keyboardVerticalOffset={topOffset}
-          behavior={'padding'}>
+          behavior={androidBehavior}>
           {children}
         </KeyboardAvoidingView>
       </View>

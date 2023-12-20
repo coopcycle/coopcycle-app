@@ -5,6 +5,7 @@ import { withTranslation } from 'react-i18next';
 import { Dimensions, KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import { Button, Divider, FormControl, Heading, Input } from 'native-base';
+import KeyboardAdjustView from '../../components/KeyboardAdjustView'
 
 class AddressDetails extends Component {
 
@@ -24,7 +25,7 @@ class AddressDetails extends Component {
       this.props.navigation.goBack()
     }
 
-    return <KeyboardAvoidingView style={{ flex: 1 }} keyboardVerticalOffset={180} enabled={true} behavior={Platform.OS === 'ios' ? 'position' : ''}>
+    return <KeyboardAdjustView style={{ flex: 1 }} androidBehavior={''}>
       <MapView
       style={{
         height: width * 0.55,
@@ -40,7 +41,7 @@ class AddressDetails extends Component {
     >
       <Marker coordinate={{ latitude, longitude }} />
     </MapView>
-      <ScrollView contentInsetAdjustmentBehavior="automatic" style={{ padding: 15 }}>
+      <ScrollView style={{ padding: 15 }}>
 
         <Heading>{this.props.address.streetAddress}</Heading>
         <Divider style={{ margin: 10 }} />
@@ -64,7 +65,7 @@ class AddressDetails extends Component {
         </Button>
       </View>
 
-    </KeyboardAvoidingView>
+    </KeyboardAdjustView>
 
   }
 
