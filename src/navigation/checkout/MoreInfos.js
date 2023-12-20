@@ -131,7 +131,7 @@ class MoreInfos extends Component {
         validateOnBlur={ false }
         validateOnChange={ false }>
         {({ handleChange, handleBlur, handleSubmit, values, errors, touched, setFieldValue, setFieldTouched }) => (
-          <KeyboardAdjustView style={{ flex: 1 }} hint={{ presentation: 'modal' }}>
+          <KeyboardAdjustView style={{ flex: 1 }}>
             <HStack bgColor="info.200" justifyContent="center" p="4">
               <Text>{ this.props.t('CHECKOUT_MORE_INFOS_DISCLAIMER') }</Text>
             </HStack>
