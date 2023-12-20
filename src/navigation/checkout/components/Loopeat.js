@@ -18,9 +18,7 @@ function Loopeat({ requiredAmount, creditsCountCents, returnsTotalAmount }) {
       <HStack p="3" justifyContent="space-between" alignItems="center">
         <Icon as={ FontAwesome } name="exclamation-triangle" size="sm" />
         <Text>{ t('CHECKOUT_LOOPEAT_INSUFFICIENT_WALLET_AMOUNT') }</Text>
-        <Button size="sm" onPress={ () => navigation.navigate('CheckoutLoopeat') }>
-          { t('CHECKOUT_LOOPEAT_MANAGE') }
-        </Button>
+        <IconButton _icon={{ as: FontAwesome5, name: 'exchange-alt', size: 'sm' }} onPress={ () => navigation.navigate('CheckoutLoopeat') } />
       </HStack>
     )
   }
