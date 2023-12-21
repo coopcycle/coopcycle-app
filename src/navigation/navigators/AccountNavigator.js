@@ -24,9 +24,17 @@ export default () => (
         headerLeft: headerLeft(navigation),
       })}
     />
+    {/*FIXME: AccountAddresses and AddressDetails also exist in CheckoutNavigator, get rid from this duplication */}
     <Stack.Screen
       name="AccountAddresses"
       component={ screens.AccountAddressesPage }
+      options={{
+        title: i18n.t('MY_ADDRESSES'),
+      }}
+    />
+    <Stack.Screen
+      name="AddressDetails"
+      component={ screens.AddressDetails }
       options={{
         title: i18n.t('MY_ADDRESSES'),
       }}

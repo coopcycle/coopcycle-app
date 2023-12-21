@@ -141,6 +141,7 @@ const MainNavigator = () => (
         ...TransitionPresets.ModalTransition,
       }}
     />
+    {/*FIXME: AccountAddresses and AddressDetails also exist in AccountNavigator, get rid from this duplication */}
     <MainStack.Screen
       name="AccountAddresses"
       component={ screens.AccountAddressesPage }
