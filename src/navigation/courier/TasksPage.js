@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { InteractionManager, Platform, StyleSheet, View } from 'react-native'
-import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake'
+import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake'
 import RNPinScreen from 'react-native-pin-screen'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
@@ -35,7 +35,7 @@ class TasksPage extends Component {
 
   enableKeepAwake() {
     if (Platform.OS === 'ios') {
-      activateKeepAwake()
+      activateKeepAwakeAsync()
     } else {
       RNPinScreen.pin()
     }

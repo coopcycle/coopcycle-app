@@ -3,7 +3,7 @@ import { Alert, InteractionManager, NativeModules, View } from 'react-native';
 import { Center, VStack } from 'native-base';
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
-import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake'
+import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake'
 import moment from 'moment'
 
 import DangerAlert from '../../components/DangerAlert'
@@ -73,7 +73,7 @@ class DashboardPage extends Component {
 
   componentDidMount() {
 
-    activateKeepAwake()
+    activateKeepAwakeAsync()
 
     if (!this.props.isCentrifugoConnected) {
       this.props.connectCent()
