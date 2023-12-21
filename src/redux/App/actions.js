@@ -55,6 +55,7 @@ export const LOAD_MY_RESTAURANTS_FAILURE = '@restaurant/LOAD_MY_RESTAURANTS_FAIL
 export const SET_INTERNET_REACHABLE = '@app/SET_INTERNET_REACHABLE'
 
 export const REGISTRATION_ERRORS = '@app/REGISTRATION_ERRORS'
+export const LOGIN_BY_EMAIL_ERRORS = '@app/LOGIN_BY_EMAIL_ERRORS'
 
 export const SET_BACKGROUND_GEOLOCATION_ENABLED = '@app/SET_BACKGROUND_GEOLOCATION_ENABLED'
 export const BACKGROUND_PERMISSION_DISCLOSED = '@app/BACKGROUND_PERMISSION_DISCLOSED'
@@ -138,6 +139,7 @@ const loadPrivacyPolicySuccess = createAction(LOAD_PRIVACY_POLICY_SUCCESS)
 const loadPrivacyPolicyFailure = createAction(LOAD_PRIVACY_POLICY_FAILURE)
 
 const registrationErrors = createAction(REGISTRATION_ERRORS)
+const loginByEmailErrors = createAction(LOGIN_BY_EMAIL_ERRORS)
 
 function setBaseURL(baseURL) {
   return (dispatch, getState) => {
@@ -407,14 +409,14 @@ export function login(email, password, navigate = true) {
         }
       })
       .catch(err => {
-
-        let message = i18n.t('TRY_LATER')
         if (err.hasOwnProperty('code') && err.code === 401) {
-          message = i18n.t('INVALID_USER_PASS')
+          dispatch(loginByEmailErrors({
+            email: i18n.t('INVALID_USER_PASS'),
+            password: i18n.t('INVALID_USER_PASS')
+          }))
+        } else {
+          dispatch(authenticationFailure(i18n.t('TRY_LATER')))
         }
-
-        dispatch(authenticationFailure(message))
-
       })
   }
 }

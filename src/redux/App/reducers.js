@@ -19,6 +19,7 @@ import {
   LOAD_TERMS_AND_CONDITIONS_FAILURE,
   LOAD_TERMS_AND_CONDITIONS_REQUEST,
   LOAD_TERMS_AND_CONDITIONS_SUCCESS,
+  LOGIN_BY_EMAIL_ERRORS,
   LOGOUT_SUCCESS,
   ONBOARDED,
   PUSH_NOTIFICATION,
@@ -73,6 +74,7 @@ const initialState = {
   },
   isInternetReachable: true,
   registrationErrors: {},
+  loginByEmailErrors: {},
   isBackgroundGeolocationEnabled: false,
   hasDisclosedBackgroundPermission: false,
   isCentrifugoConnected: false,
@@ -148,6 +150,7 @@ export default (state = initialState, action = {}) => {
         lastAuthenticationError: null,
         loading: true,
         registrationErrors: initialState.registrationErrors,
+        loginByEmailErrors: initialState.loginByEmailErrors,
       }
 
     case AUTHENTICATION_SUCCESS:
@@ -269,6 +272,13 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         registrationErrors: action.payload,
+        loading: false,
+      }
+
+    case LOGIN_BY_EMAIL_ERRORS:
+      return {
+        ...state,
+        loginByEmailErrors: action.payload,
         loading: false,
       }
 

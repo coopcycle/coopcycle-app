@@ -22,8 +22,7 @@ class AuthenticateForm extends Component {
 
       return (
         <RegisterForm
-          onSubmit={ data => this.props.onRegister(data) }
-          errors={ this.props.registrationErrors } />
+          onSubmit={ data => this.props.onRegister(data) } />
       )
     }
 

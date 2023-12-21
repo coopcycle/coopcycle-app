@@ -36,7 +36,6 @@ class LoginRegister extends Component {
               resumeCheckoutAfterActivation: false,
             })
           }}
-          registrationErrors={ this.props.registrationErrors }
           withFacebook={ Platform.OS !== 'ios' }
           withGoogle={ Platform.OS !== 'ios' } />
       </AuthenticateContainer>
@@ -47,7 +46,6 @@ class LoginRegister extends Component {
 function mapStateToProps(state) {
   return {
     message: state.app.lastAuthenticationError,
-    registrationErrors: state.app.registrationErrors,
     customBuild: state.app.customBuild,
   }
 }

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Platform, View } from 'react-native'
 import { connect } from 'react-redux'
-import { Box, Button, FormControl, Input, Stack, Text } from 'native-base'
+import { Box, Button, FormControl, Input, Stack } from 'native-base'
 import { Formik } from 'formik'
 import _ from 'lodash'
 import { withTranslation } from 'react-i18next'
@@ -13,6 +13,7 @@ import jwtDecode from 'jwt-decode'
 
 import FacebookButton from './FacebookButton'
 import { googleSignIn, loginWithFacebook, signInWithApple, authenticationFailure } from '../redux/App/actions'
+import i18n from '../i18n'
 
 class LoginForm extends Component {
 
@@ -33,11 +34,11 @@ class LoginForm extends Component {
     let errors = {}
 
     if (_.isEmpty(values.email)) {
-      errors.email = true
+      errors.email = i18n.t('INVALID_EMAIL')
     }
 
     if (_.isEmpty(values.password)) {
-      errors.password = true
+      errors.password = i18n.t('INVALID_PASSWORD')
     }
 
     return errors
@@ -46,6 +47,14 @@ class LoginForm extends Component {
   _onSubmit(values) {
     const { email, password } = values
     this.props.onSubmit(email, password)
+  }
+
+  renderError(message) {
+    return (
+      <FormControl.ErrorMessage>
+        { message }
+      </FormControl.ErrorMessage>
+    )
   }
 
   render() {
@@ -78,9 +87,19 @@ class LoginForm extends Component {
         onSubmit={ this._onSubmit.bind(this) }
         validateOnBlur={ false }
         validateOnChange={ false }>
-        {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
+        {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) =>
+        {
+          const allErrors = {
+            ...errors,
+            ...this.props.errors,
+          }
+
+          const hasError = (field) => Boolean(allErrors[field])
+          const getError = (field) => allErrors[field]
+
+         return (
         <Stack>
-          <FormControl error={ (touched.email && errors.email) || this.props.hasErrors }>
+          <FormControl isInvalid={ hasError('email') }>
             <FormControl.Label>{this.props.t('USERNAME')}</FormControl.Label>
             <Input
               testID="loginUsername"
@@ -92,8 +111,9 @@ class LoginForm extends Component {
               onBlur={ handleBlur('email') }
               onSubmitEditing={ () => this._passwordInput.focus() }
             />
+            { hasError('email') && this.renderError(getError('email')) }
           </FormControl>
-          <FormControl error={ (touched.password && errors.password) || this.props.hasErrors }>
+          <FormControl isInvalid={ hasError('password') }>
             <FormControl.Label>{this.props.t('PASSWORD')}</FormControl.Label>
             <Input
               testID="loginPassword"
@@ -106,6 +126,7 @@ class LoginForm extends Component {
               onChangeText={ handleChange('password') }
               onBlur={ handleBlur('password') }
               onSubmitEditing={ handleSubmit }/>
+            { hasError('password') && this.renderError(getError('password')) }
           </FormControl>
           <Button size="sm" variant="link" onPress={ () => this.props.onForgotPassword() }>
             {this.props.t('FORGOT_PASSWORD')}
@@ -213,7 +234,7 @@ class LoginForm extends Component {
             }} />
           )}
         </Stack>
-        )}
+        )}}
       </Formik>
     )
   }
@@ -222,7 +243,7 @@ class LoginForm extends Component {
 function mapStateToProps(state) {
 
   return {
-    hasErrors: !!state.app.lastAuthenticationError,
+    errors: state.app.loginByEmailErrors,
   }
 }
 

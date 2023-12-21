@@ -420,6 +420,7 @@ class RegisterForm extends React.Component {
 
 function mapStateToProps(state) {
   return {
+    errors: state.app.registrationErrors,
     splitTermsAndConditionsAndPrivacyPolicy: state.app.settings.split_terms_and_conditions_and_privacy_policy,
     termsAndConditionsAccepted: state.app.termsAndConditionsAccepted,
     privacyPolicyAccepted: state.app.privacyPolicyAccepted,
