@@ -864,7 +864,7 @@ export function updateLoopeatFormats(order, loopeatFormats, cb) {
       .then(res => {
         dispatch(updateLoopeatFormatsSuccess(res))
         if (cb && typeof cb === 'function') {
-          cb()
+          cb(res)
         }
       })
   }
