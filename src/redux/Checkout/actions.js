@@ -95,6 +95,8 @@ export const SHOW_TIMING_MODAL = '@checkout/SHOW_TIMING_MODAL'
 
 export const HIDE_MULTIPLE_SERVERS_IN_SAME_CITY_MODAL = '@checkout/HIDE_MULTIPLE_SERVERS_IN_SAME_CITY_MODAL'
 
+export const STOP_ASKING_TO_ENABLE_REUSABLE_PACKAGING = '@checkout/STOP_ASKING_TO_ENABLE_REUSABLE_PACKAGING'
+
 /*
  * Action Creators
  */
@@ -168,6 +170,8 @@ export const loadStripeSavedPaymentMethodsFailure = createAction(LOAD_STRIPE_SAV
 export const showTimingModal = createAction(SHOW_TIMING_MODAL)
 
 export const hideMultipleServersInSameCityModal = createAction(HIDE_MULTIPLE_SERVERS_IN_SAME_CITY_MODAL)
+
+export const stopAskingToEnableReusablePackaging = createAction(STOP_ASKING_TO_ENABLE_REUSABLE_PACKAGING)
 
 function validateAddress(httpClient, cart, address) {
 

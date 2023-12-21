@@ -52,6 +52,7 @@ import {
   UPDATE_CART_SUCCESS,
   UPDATE_CUSTOMER_GUEST,
   UPDATE_ITEM_QUANTITY,
+  STOP_ASKING_TO_ENABLE_REUSABLE_PACKAGING,
 } from './actions'
 
 import i18n from '../../i18n'
@@ -95,6 +96,7 @@ const initialState = {
   searchResults: null,
   stripePaymentMethodsLoaded: false,
   stripePaymentMethods: [],
+  shouldAskToEnableReusablePackaging: true,
 }
 
 export default (state = initialState, action = {}) => {
@@ -504,6 +506,11 @@ export default (state = initialState, action = {}) => {
         isFetching: false,
         stripePaymentMethodsLoaded: true,
         stripePaymentMethods: action.payload.methods,
+      }
+    case STOP_ASKING_TO_ENABLE_REUSABLE_PACKAGING:
+      return {
+        ...state,
+        shouldAskToEnableReusablePackaging: false,
       }
   }
 

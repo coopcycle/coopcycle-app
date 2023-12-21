@@ -492,6 +492,8 @@
         "FAILURE_REASON": "Failure Reason",
         "CHECKOUT_LOOPEAT_CONNECT_ACCOUNT_TEXT": "Connect your {{name}} account to continue, or disable the zero waste option",
         "CHECKOUT_LOOPEAT_MISSING_AMOUNT": "{{amount}} missing to complete your order",
-        "CHECKOUT_LOOPEAT_WALLET_AMOUNT": "Wallet ({{amount}})"
+        "CHECKOUT_LOOPEAT_WALLET_AMOUNT": "Wallet ({{amount}})",
+        "CART_ZERO_WASTE_POPUP_TEXT": "Congratulations, your cart contains a dish eligible for zero-waste delivery with our partner « {{name}} ». Have it delivered in returnable boxes and return your boxes anywhere in the « {{name}} » network or to your courier with your next order. You can disable this option at any time.",
+        "CART_ZERO_WASTE_POPUP_BUTTON_TEXT": "I understand"
     }
 }

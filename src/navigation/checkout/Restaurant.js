@@ -10,6 +10,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 
 import CartFooter from './components/CartFooter'
 import ExpiredSessionModal from './components/ExpiredSessionModal'
+import LoopeatModal from './components/LoopeatModal'
 
 import Menu from '../../components/Menu'
 
@@ -156,6 +157,7 @@ function Restaurant(props) {
 
       <ExpiredSessionModal
         onModalHide={ () => navigate('CheckoutHome') } />
+      <LoopeatModal />
     </SafeAreaView>
   )
 }
