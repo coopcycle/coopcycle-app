@@ -53,7 +53,7 @@ function Loopeat({ cart, updateLoopeatReturns }) {
 		<SafeAreaView flex={ 1 } edges={[ 'bottom' ]}>
 			<VStack flex={ 1 } justifyContent="space-between">
 				{ containersCount > 0 && (
-					<Box p="3" mb="3" bg="light.200">
+					<Box p="3" mb="3">
 						<Heading size="sm" mb="4">{ t('CHECKOUT_LOOPEAT_RETURN_CONTAINERS') }</Heading>
 						<FlatList
 		          data={ containers }
