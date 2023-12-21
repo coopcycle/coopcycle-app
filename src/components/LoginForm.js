@@ -34,7 +34,7 @@ class LoginForm extends Component {
     let errors = {}
 
     if (_.isEmpty(values.email)) {
-      errors.email = i18n.t('INVALID_EMAIL')
+      errors.email = i18n.t('INVALID_USERNAME')
     }
 
     if (_.isEmpty(values.password)) {
@@ -94,7 +94,7 @@ class LoginForm extends Component {
             ...this.props.errors,
           }
 
-          const hasError = (field) => Boolean(allErrors[field])
+          const hasError = (field) => touched[field] && Boolean(allErrors[field])
           const getError = (field) => allErrors[field]
 
          return (
