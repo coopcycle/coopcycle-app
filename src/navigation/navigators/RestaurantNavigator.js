@@ -95,7 +95,7 @@ export default () => (
       name="RestaurantLoopeatFormats"
       component={ screens.RestaurantLoopeatFormats }
       options={{
-        title: i18n.t('LOOPEAT'),
+        title: i18n.t('RESTAURANT_LOOPEAT_UPDATE_FORMATS'),
       }}
     />
   </RootStack.Navigator>
