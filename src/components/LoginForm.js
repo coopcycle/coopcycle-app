@@ -128,7 +128,7 @@ class LoginForm extends Component {
               onSubmitEditing={ handleSubmit }/>
             { hasError('password') && this.renderError(getError('password')) }
           </FormControl>
-          <Button size="sm" variant="link" onPress={ () => this.props.onForgotPassword() }>
+          <Button size="sm" variant="link" onPress={ this.props.onForgotPassword }>
             {this.props.t('FORGOT_PASSWORD')}
           </Button>
           <View style={{ marginTop: 20 }}>
