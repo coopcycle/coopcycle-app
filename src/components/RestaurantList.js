@@ -6,12 +6,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 
 import { getRestaurantCaption, shouldShowPreOrder } from '../utils/checkout'
-import {
-  CategoryBadge,
-  TimingBadge,
-} from '../navigation/checkout/components/RestaurantBadges';
 import {RestaurantCard} from './RestaurantCard';
-import {RestaurantBadge} from './RestaurantBadge';
 
 const styles = StyleSheet.create({
   item: {
