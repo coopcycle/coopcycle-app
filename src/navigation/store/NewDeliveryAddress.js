@@ -65,8 +65,6 @@ class NewDelivery extends Component {
         <View style={ styles.container }>
           <View style={ styles.autocompleteContainer }>
             <AddressAutocomplete
-              location={ this.props.location }
-              country={ this.props.country }
               addresses={ this.props.addresses }
               onSelectAddress={ this._onSelectAddress.bind(this) }
               containerStyle={{
@@ -135,8 +133,6 @@ function mapStateToProps(state) {
     store: selectStore(state),
     error: state.store.assertDeliveryError,
     addresses: state.store.addresses,
-    country: state.app.settings.country,
-    location: state.app.settings.latlng,
   }
 }
 

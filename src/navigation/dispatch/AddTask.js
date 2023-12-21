@@ -126,8 +126,6 @@ class AddTask extends Component {
           <FormControl style={ [ styles.autocompleteContainer, { marginTop: 85 }] }>
             <AddressAutocomplete
               testID="taskFormTypeahead"
-              country={ this.props.country }
-              location={ this.props.location }
               address={ address }
               inputContainerStyle={{
                 flex: 1,
@@ -251,8 +249,6 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
   return {
-    country: state.app.settings.country,
-    location: state.app.settings.latlng,
   }
 }
 

@@ -62,9 +62,7 @@ class AccountAddressesPage extends Component {
           flex: 1,
           backgroundColor: colorScheme === 'dark' ? darkGreyColor : whiteColor,
         }}
-        country={ this.props.country }
         placeholder={ i18n.t('ENTER_NEW_ADDRESS') }
-        location={ this.props.location }
         onChangeText={ (text) => this.setState({ focused: text.length >= 3 }) }
         onSelectAddress={ (address) => {
           this.props.navigation.navigate('AddressDetails', { address })
@@ -116,8 +114,6 @@ function mapStateToProps(state, ownProps) {
   }
 
   return {
-    location: state.app.settings.latlng,
-    country: state.app.settings.country,
     addresses: selectAddresses(state),
     address: fnSelect(),
   }

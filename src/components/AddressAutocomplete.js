@@ -14,6 +14,7 @@ import { v4 as uuidv4 } from 'uuid'
 import Config from 'react-native-config'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import { AbortController } from 'abortcontroller-polyfill/dist/cjs-ponyfill'
+import { connect } from 'react-redux'
 
 import { localeDetector } from '../i18n'
 import AddressUtils from '../utils/Address'
@@ -415,15 +416,12 @@ AddressAutocomplete.defaultProps = {
   minChars: 3,
   addresses: [],
   renderRight: () => <View />,
-  location: '',
 }
 
 AddressAutocomplete.propTypes = {
   minChars: PropTypes.number,
   addresses: PropTypes.array,
-  country: PropTypes.string.isRequired,
   renderRight: PropTypes.func,
-  location: PropTypes.string,
 }
 
 const styles = StyleSheet.create({
@@ -444,4 +442,12 @@ const styles = StyleSheet.create({
   },
 })
 
-export default withTranslation()(AddressAutocomplete)
+function mapStateToProps(state) {
+
+  return {
+    location: state.app.settings.latlng,
+    country: state.app.settings.country,
+  }
+}
+
+export default connect(mapStateToProps)(withTranslation()(AddressAutocomplete))
