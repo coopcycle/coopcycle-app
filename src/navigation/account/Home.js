@@ -120,7 +120,6 @@ function mapStateToProps(state) {
 
   return {
     user: state.app.user,
-    message: state.app.lastAuthenticationError,
     isAuthenticated: selectIsAuthenticated(state),
     customBuild: state.app.customBuild,
   }

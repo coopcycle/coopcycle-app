@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 import { Button, Text } from 'native-base';
 import { withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
@@ -11,20 +11,9 @@ import {
   login,
   register,
 } from '../../redux/App/actions';
-import { selectIsAuthenticated } from '../../redux/App/selectors';
 import AuthenticateContainer from '../../components/AuthenticateContainer';
 
 class Login extends Component {
-  renderMessage() {
-    if (this.props.message) {
-      return (
-        <View style={ styles.message }>
-          <Text style={{ textAlign: 'center' }}>{ this.props.message }</Text>
-        </View>
-      )
-    }
-  }
-
   render() {
     return (
       <AuthenticateContainer>
@@ -39,13 +28,11 @@ class Login extends Component {
             <Text mt="4">{ this.props.t('OR') }</Text>
           </>
         }
-
         <View style={{ padding: 20 }}>
           <Text style={{ textAlign: 'center' }} note>
             { this.props.t('CHECKOUT_LOGIN_DISCLAIMER') }
           </Text>
         </View>
-        { this.renderMessage() }
         <AuthenticateForm
           onLogin={(email, password) =>
             this.props.login(email, password, false)
@@ -63,17 +50,8 @@ class Login extends Component {
   }
 }
 
-const styles = StyleSheet.create({
-  message: {
-    alignItems: 'center',
-    padding: 20,
-  },
-})
-
 function mapStateToProps(state) {
   return {
-    message: state.app.lastAuthenticationError,
-    isAuthenticated: selectIsAuthenticated(state),
     guestCheckoutEnabled: state.app.settings.guest_checkout_enabled,
   }
 }
