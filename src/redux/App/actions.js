@@ -34,6 +34,7 @@ export const CLEAR_NOTIFICATIONS = '@app/CLEAR_NOTIFICATIONS'
 export const AUTHENTICATION_REQUEST = '@app/AUTHENTICATION_REQUEST'
 export const AUTHENTICATION_SUCCESS = '@app/AUTHENTICATION_SUCCESS'
 export const AUTHENTICATION_FAILURE = '@app/AUTHENTICATION_FAILURE'
+export const CLEAR_AUTHENTICATION_ERRORS = '@app/CLEAR_AUTHENTICATION_ERRORS'
 export const RESET_PASSWORD_INIT = '@app/RESET_PASSWORD_INIT'
 export const RESET_PASSWORD_REQUEST = '@app/RESET_PASSWORD_REQUEST'
 export const RESET_PASSWORD_REQUEST_SUCCESS = '@app/RESET_PASSWORD_REQUEST_SUCCESS'
@@ -87,6 +88,8 @@ export const clearNotifications = createAction(CLEAR_NOTIFICATIONS)
 export const _authenticationRequest = createAction(AUTHENTICATION_REQUEST)
 export const _authenticationSuccess = createAction(AUTHENTICATION_SUCCESS)
 const _authenticationFailure = createAction(AUTHENTICATION_FAILURE)
+
+export const clearAuthenticationErrors = createAction(CLEAR_AUTHENTICATION_ERRORS)
 
 const resetPasswordInit = createAction(RESET_PASSWORD_INIT)
 const resetPasswordRequest = createAction(RESET_PASSWORD_REQUEST)
@@ -152,6 +155,7 @@ function setBaseURL(baseURL) {
 
 function authenticationRequest() {
   return (dispatch, getState) => {
+    dispatch(clearAuthenticationErrors())
     dispatch(_authenticationRequest())
     tracker.logEvent(
       analyticsEvent.user.login._category,

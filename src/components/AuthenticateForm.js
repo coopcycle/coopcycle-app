@@ -7,11 +7,16 @@ import LoginForm from './LoginForm'
 import RegisterForm from './RegisterForm'
 import { redColor } from '../styles/common'
 import { connect } from 'react-redux'
+import {
+  clearAuthenticationErrors,
+} from '../redux/App/actions'
 
 class AuthenticateForm extends Component {
 
   constructor(props) {
     super(props)
+
+    props.clearErrors()
 
     this.state = {
       formToDisplay: 'login',
@@ -87,4 +92,10 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps)(withTranslation()(AuthenticateForm))
+function mapDispatchToProps(dispatch) {
+  return {
+    clearErrors: () => dispatch(clearAuthenticationErrors()),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(AuthenticateForm))

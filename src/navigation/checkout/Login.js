@@ -19,7 +19,7 @@ class Login extends Component {
       <AuthenticateContainer>
         {this.props.guestCheckoutEnabled &&
           <>
-            <View style={{ paddingHorizontal: 40, width: '100%' }}>
+            <View style={{ paddingTop: 20, paddingHorizontal: 40, width: '100%' }}>
               <Button colorScheme="success" onPress={() => this.props.guestModeOn()}>
                 { this.props.t('CHECKOUT_AS_GUEST') }
               </Button>

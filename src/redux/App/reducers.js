@@ -9,6 +9,7 @@ import {
   AUTHENTICATION_REQUEST,
   AUTHENTICATION_SUCCESS,
   BACKGROUND_PERMISSION_DISCLOSED,
+  CLEAR_AUTHENTICATION_ERRORS,
   CLEAR_NOTIFICATIONS,
   CLEAR_SELECT_SERVER_ERROR,
   CLOSE_MODAL,
@@ -144,13 +145,18 @@ export default (state = initialState, action = {}) => {
         notifications: [],
       }
 
-    case AUTHENTICATION_REQUEST:
+    case CLEAR_AUTHENTICATION_ERRORS:
       return {
         ...state,
         lastAuthenticationError: null,
-        loading: true,
         registrationErrors: initialState.registrationErrors,
         loginByEmailErrors: initialState.loginByEmailErrors,
+      }
+
+    case AUTHENTICATION_REQUEST:
+      return {
+        ...state,
+        loading: true,
       }
 
     case AUTHENTICATION_SUCCESS:
