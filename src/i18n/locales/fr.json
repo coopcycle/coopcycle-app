@@ -454,8 +454,8 @@
         "APPLE_SIGN_IN_HIDE_MY_EMAIL_ERROR": "Désolé, nous ne pouvons pas vous authentifier si vous choisissez de masquer votre e-mail",
         "SOCIAL_SIGN_IN_UNKNOWN_EMAIL": "Désolé, nous nʼavons pas trouvé de compte correspondant à l'e-mail associé à votre compte {{provider}}.",
         "CHECKOUT_LOOPEAT_CONNECT_ACCOUNT": "Connecter mon compte {{name}}",
-        "CHECKOUT_LOOPEAT_OPTION_ENABLED": "Option zéro déchet activée",
-        "CHECKOUT_LOOPEAT_INSUFFICIENT_WALLET_AMOUNT": "Cagnotte insuffisante",
+        "CHECKOUT_LOOPEAT_OPTION_ENABLED": "Gérer ma consigne",
+        "CHECKOUT_LOOPEAT_INSUFFICIENT_WALLET_AMOUNT": "Cagnotte consigne insuffisante",
         "CHECKOUT_LOOPEAT_VALIDATE": "Valider et retourner au panier",
         "CHECKOUT_LOOPEAT_RETURN_CONTAINERS": "Rendre des boîtes",
         "CHECKOUT_LOOPEAT_RETURN_CONTAINER": "Rendre la boîte",
@@ -470,7 +470,7 @@
         "CHECKOUT_LOOPEAT_CONNECT_ACCOUNT_TEXT": "Connectez votre compte {{name}} pour continuer, ou désactivez l'option zéro déchet",
         "CHECKOUT_LOOPEAT_MISSING_AMOUNT": "Il manque {{amount}} pour finaliser votre commande",
         "CHECKOUT_LOOPEAT_WALLET_AMOUNT": "Ma cagnotte ({{amount}})",
-        "CART_ZERO_WASTE_POPUP_TEXT": "Bravo, votre panier contient un plat éligible à la livraison zéro-déchet avec notre partenaire « {{name}} ». Faites-vous livrer en boîtes consignées et retournez vos boîtes partout dans le réseau « {{name}} » ou à votre coursier à la prochaine commande. Vous pouvez désactiver cette option à tout moment.",
+        "CART_ZERO_WASTE_POPUP_TEXT": "Bravo ! Votre panier contient un plat éligible à la livraison zéro-déchet avec notre partenaire « {{name}} ». Faites-vous livrer en boîtes consignées et retournez vos boîtes partout dans le réseau « {{name}} » ou à votre coursier à la prochaine commande. Vous pouvez désactiver cette option à tout moment.",
         "CART_ZERO_WASTE_POPUP_BUTTON_TEXT": "Jʼai compris"
     }
 }

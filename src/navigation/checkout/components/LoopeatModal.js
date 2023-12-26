@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
+import { useColorScheme } from 'react-native'
 import { useTranslation } from 'react-i18next'
 import { Box, Button, Text } from 'native-base'
 import Modal from 'react-native-modal'
@@ -9,6 +10,7 @@ import { updateCart, stopAskingToEnableReusablePackaging } from '../../../redux/
 
 const LoopeatModal = ({ name, isVisible, onPress }) => {
 
+  const colorScheme = useColorScheme()
   const { t } = useTranslation()
   const [ isHidden, setHidden ] = useState(false)
 
@@ -19,7 +21,7 @@ const LoopeatModal = ({ name, isVisible, onPress }) => {
       onSwipeComplete={ () => setHidden(true) }
       onBackdropPress={ () => setHidden(true) }
     >
-      <Box bgColor="white" p="4">
+      <Box p="4" bg={ colorScheme === 'dark' ? 'dark.100' : 'white' }>
         <Text mb="3">{ t('CART_ZERO_WASTE_POPUP_TEXT', { name: name || '' }) }</Text>
         <Button onPress={ onPress }>
           { t('CART_ZERO_WASTE_POPUP_BUTTON_TEXT') }
