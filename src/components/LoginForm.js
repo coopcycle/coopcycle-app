@@ -19,7 +19,13 @@ import { GoogleSignin, GoogleSigninButton } from '@react-native-google-signin/go
 import jwtDecode from 'jwt-decode'
 
 import FacebookButton from './FacebookButton'
-import { authenticationFailure, googleSignIn, loginWithFacebook, signInWithApple } from '../redux/App/actions'
+import {
+  authenticationFailure,
+  clearAuthenticationErrors,
+  googleSignIn,
+  loginWithFacebook,
+  signInWithApple,
+} from '../redux/App/actions'
 import i18n from '../i18n'
 
 class LoginForm extends Component {
@@ -177,15 +183,16 @@ class LoginForm extends Component {
             size={ GoogleSigninButton.Size.Wide }
             color={ GoogleSigninButton.Color.Dark }
             onPress={ () => {
+              this.props.clearErrors()
               GoogleSignin.hasPlayServices()
-                .then(() => {
-                  GoogleSignin.signIn()
-                    .then((userInfo) => {
-                      this.props.googleSignIn(userInfo.idToken)
-                    })
-                    .catch(e => console.log(e))
+                .then(() => GoogleSignin.signIn())
+                .then((userInfo) => {
+                  this.props.googleSignIn(userInfo.idToken)
                 })
-                .catch(e => console.log(e))
+                .catch(e => {
+                  console.log(`Google Signin; error code: ${e.code};`, e)
+                  this.props.authenticationFailure(this.props.t('TRY_LATER'))
+                })
             }}
             disabled={ false } />
           ) : null }
@@ -258,6 +265,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
+    clearErrors: () => dispatch(clearAuthenticationErrors()),
     loginWithFacebook: (accessToken) => dispatch(loginWithFacebook(accessToken)),
     signInWithApple: (identityToken) => dispatch(signInWithApple(identityToken)),
     googleSignIn: (idToken) => dispatch(googleSignIn(idToken)),
