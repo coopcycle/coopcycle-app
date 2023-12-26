@@ -1,7 +1,14 @@
 import React, { Component } from 'react'
 import { Platform, View } from 'react-native'
 import { connect } from 'react-redux'
-import { Box, Button, FormControl, Input, Stack } from 'native-base'
+import {
+  Box,
+  Button,
+  Column,
+  FormControl,
+  Input,
+  ScrollView,
+} from 'native-base'
 import { Formik } from 'formik'
 import _ from 'lodash'
 import { withTranslation } from 'react-i18next'
@@ -12,7 +19,7 @@ import { GoogleSignin, GoogleSigninButton } from '@react-native-google-signin/go
 import jwtDecode from 'jwt-decode'
 
 import FacebookButton from './FacebookButton'
-import { googleSignIn, loginWithFacebook, signInWithApple, authenticationFailure } from '../redux/App/actions'
+import { authenticationFailure, googleSignIn, loginWithFacebook, signInWithApple } from '../redux/App/actions'
 import i18n from '../i18n'
 
 class LoginForm extends Component {
@@ -98,7 +105,8 @@ class LoginForm extends Component {
           const getError = (field) => allErrors[field]
 
          return (
-        <Stack>
+        <Column flex={1}>
+          <ScrollView>
           <FormControl isInvalid={ hasError('email') }>
             <FormControl.Label>{this.props.t('USERNAME')}</FormControl.Label>
             <Input
@@ -131,6 +139,7 @@ class LoginForm extends Component {
           <Button size="sm" variant="link" onPress={ this.props.onForgotPassword }>
             {this.props.t('FORGOT_PASSWORD')}
           </Button>
+          </ScrollView>
           <View style={{ marginTop: 20 }}>
             <Button block onPress={ handleSubmit } testID="loginSubmit">
               { this.props.t('SUBMIT') }
@@ -233,7 +242,7 @@ class LoginForm extends Component {
                 })
             }} />
           )}
-        </Stack>
+        </Column>
         )}}
       </Formik>
     )
