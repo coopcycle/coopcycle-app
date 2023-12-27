@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Appearance, FlatList, Image, TouchableOpacity, View } from 'react-native';
-import { Box, Button, Divider, HStack, Heading, IconButton, Text, VStack } from 'native-base';
+import { Divider, HStack, Heading, Text } from 'native-base';
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 import { loadAddresses, newAddress } from '../../redux/Account/actions'
@@ -8,12 +8,11 @@ import ItemSeparator from '../../components/ItemSeparator'
 import AddressAutocomplete from '../../components/AddressAutocomplete';
 import { darkGreyColor, greyColor, whiteColor } from '../../styles/common';
 import { searchRestaurantsForAddress, setAddress } from '../../redux/Checkout/actions';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import address from '../../utils/Address';
 import i18n from '../../i18n';
 import PropTypes from 'prop-types';
 import Address from '../../utils/Address'
 import { selectAddresses } from '../../redux/Checkout/selectors';
+import { useSecondaryTextColor } from '../../styles/theme'
 
 
 class AccountAddressesPage extends Component {
@@ -88,7 +87,7 @@ class AccountAddressesPage extends Component {
           }}>
             <Image style={{ maxWidth: '40%', maxHeight: '30%', marginVertical: '5%', margin: 'auto' }} source={require('../../assets/images/no_addresses.png')} resizeMode={'contain'} />
             <Heading>Hey oh !</Heading>
-            <Text color={darkGreyColor}>{i18n.t('EMPTY_HERE')}</Text>
+            <Text color={this.props.secondaryTextColor}>{i18n.t('EMPTY_HERE')}</Text>
           </View>}
           renderItem={ this._renderRow.bind(this) }
         />
@@ -139,4 +138,11 @@ function mapDispatchToProps(dispatch, ownProps) {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(AccountAddressesPage))
+function withHooks(ClassComponent) {
+  return function CompWithHook(props) {
+    const secondaryTextColor = useSecondaryTextColor()
+    return <ClassComponent {...props} secondaryTextColor={secondaryTextColor} />;
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(withHooks(AccountAddressesPage)))

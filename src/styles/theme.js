@@ -1,7 +1,7 @@
 import {
   extendTheme,
   useColorModeValue,
-  useTheme,
+  useToken,
   v33xTheme,
 } from 'native-base'
 
@@ -26,7 +26,21 @@ export const nativeBaseTheme = extendTheme(v33xTheme, {
   },
 })
 
+// resolve native-base token to a color value
+// to be able to use it in non native-base components
+const useColorModeToken = (lightModeToken, darkModeToken) => {
+  const [ lightModeColor, darkModeColor ] = useToken('colors', [
+    lightModeToken,
+    darkModeToken,
+  ])
+
+  return useColorModeValue(lightModeColor, darkModeColor)
+}
+
 export const useBaseTextColor = () => {
-  const { colors } = useTheme()
-  return useColorModeValue(colors.darkText, colors.lightText)
+  return useColorModeToken('text.900', 'text.50') // default text component style; https://github.com/GeekyAnts/NativeBase/blob/master/src/theme/components/text.ts
+}
+
+export const useSecondaryTextColor = () => {
+  return useColorModeToken('text.700', 'text.200')
 }
