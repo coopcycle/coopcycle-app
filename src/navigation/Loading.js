@@ -1,18 +1,19 @@
 import React, { Component } from 'react'
-import { ActivityIndicator, InteractionManager, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { ActivityIndicator, InteractionManager, StyleSheet, View } from 'react-native'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 import { Button, Icon, Text } from 'native-base'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 
-import Server from '../Server'
+import Servers from '../Server'
 import AppUser from '../AppUser'
-import { bootstrap, closeModal, resetServer, setServers } from '../redux/App/actions'
+import { bootstrap, closeModal, setServers } from '../redux/App/actions'
 
 import HomeNavigator from './navigators/HomeNavigator'
 import DrawerNavigator from './navigators/DrawerNavigator'
 import Modal from 'react-native-modal';
 import Config from 'react-native-config';
+import Server from './account/components/Server'
 
 class Loading extends Component {
 
@@ -41,7 +42,7 @@ class Loading extends Component {
   }
 
   async loadServers(user) {
-    const servers = await Server.loadAll()
+    const servers = await Servers.loadAll()
 
     this.props.setServers(servers)
 
@@ -73,9 +74,7 @@ class Loading extends Component {
           <Text>{ this.props.t('RETRY') }</Text>
         </Button>
         <View style={{ marginVertical: 20 }}>
-          <TouchableOpacity style={{ paddingVertical: 15 }} onPress={ () => this.props.resetServer() }>
-            <Text>{ this.props.t('CHANGE_SERVER') }</Text>
-          </TouchableOpacity>
+          { this.props.customBuild ? null : <Server /> }
         </View>
       </View>
     )
@@ -183,7 +182,6 @@ function mapDispatchToProps(dispatch) {
   return {
     bootstrap: (baseURL, user, loader = true) => dispatch(bootstrap(baseURL, user, loader)),
     setServers: servers => dispatch(setServers(servers)),
-    resetServer: () => dispatch(resetServer()),
     closeModal: () => dispatch(closeModal()),
   }
 }
