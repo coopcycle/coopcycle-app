@@ -103,7 +103,7 @@ export const RestaurantCard = ({restaurant}) => {
           <Image
             style={styles.banner}
             resizeMode="cover"
-            source={{uri: restaurant.bannerImage}}
+            source={{uri: restaurant.bannerImage || restaurant.image }}
           />
         </View>
         <View style={styles.logoWrapper}>
@@ -113,11 +113,13 @@ export const RestaurantCard = ({restaurant}) => {
             source={{uri: restaurant.image}}
           />
         </View>
+        { restaurant.badges &&
         <View style={styles.badgesWrapper}>
           {restaurant.badges.map((badge, i) => (
             <RestaurantBadge type={badge} key={i} />
           ))}
         </View>
+        }
       </View>
       <View style={styles.content}>
         <View>
@@ -127,7 +129,7 @@ export const RestaurantCard = ({restaurant}) => {
           <TimingBadge restaurant={restaurant} />
         </View>
         <View style={styles.details}>
-          {restaurant.tags.length > 0 ? (
+          { restaurant.tags?.length > 0 ? (
             restaurant.tags.map((tag, i) => (
               <RestaurantTag key={i} text={tag} />
             ))
