@@ -183,7 +183,7 @@ export default props => {
           }
         }}
       />
-      {totalPrice ? (
+      {totalPrice !== null ? (
         <FooterButton
           testID="addProduct"
           text={`${t('ADD_TO_CART')} ${formatPrice(totalPrice)}`}
