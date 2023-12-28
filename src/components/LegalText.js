@@ -2,9 +2,9 @@ import React, { Component } from 'react'
 import { Button, Center, Row, ScrollView, Spinner } from 'native-base'
 import { withTranslation } from 'react-i18next'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import Markdown from 'react-native-markdown-display'
 
 import NavigationHolder from '../NavigationHolder'
+import Markdown from './Markdown'
 
 class LegalText extends Component {
 
