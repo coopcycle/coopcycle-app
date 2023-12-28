@@ -491,7 +491,6 @@
         "SESSION_ERROR_TRY_AGAIN": "An error occurred with the session, please login and try again.",
         "FAILURE_REASON": "Failure Reason",
         "CHECKOUT_LOOPEAT_CONNECT_ACCOUNT_TEXT": "Connect your {{name}} account to continue, or disable the zero waste option",
-        "ZERO_WASTE": "Zero waste",
         "FEATURED": "Featured",
         "EXCLUSIVE": "Exclusive",
         "NEW": "New"
