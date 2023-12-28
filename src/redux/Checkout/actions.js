@@ -244,7 +244,10 @@ export function addItemV2(item, quantity = 1, restaurant, options) {
         }
         dispatch(initCartSuccess(data))
       } catch (e) {
-        dispatch(initCartFailure(e))
+        //FIXME: show an error message to the customer
+        console.log('failed to init cart', e)
+        dispatch(initCartFailure({ restaurant: restaurant['@id'], error: e }))
+        return
       }
     }
     const { cart, token } = getState().checkout.carts[restaurant['@id']]

@@ -1,18 +1,35 @@
 import React, { Component } from 'react'
-import { StyleSheet, View } from 'react-native'
-import { Button } from 'native-base'
+import { Platform, StyleSheet } from 'react-native'
+import { Button, Text, View } from 'native-base'
 import { withTranslation } from 'react-i18next'
 
 import LoginForm from './LoginForm'
 import RegisterForm from './RegisterForm'
+import { redColor } from '../styles/common'
+import { connect } from 'react-redux'
+import {
+  clearAuthenticationErrors,
+} from '../redux/App/actions'
 
 class AuthenticateForm extends Component {
 
   constructor(props) {
     super(props)
 
+    props.clearErrors()
+
     this.state = {
       formToDisplay: 'login',
+    }
+  }
+
+  renderMessage() {
+    if (this.props.message) {
+      return (
+        <View style={styles.messageContainer}>
+          <Text style={{ textAlign: 'center', color: redColor }}>{this.props.message}</Text>
+        </View>
+      )
     }
   }
 
@@ -22,17 +39,16 @@ class AuthenticateForm extends Component {
 
       return (
         <RegisterForm
-          onSubmit={ data => this.props.onRegister(data) }
-          errors={ this.props.registrationErrors } />
+          onSubmit={ data => this.props.onRegister(data) } />
       )
     }
 
     return (
       <LoginForm
         onSubmit={ (email, password) => this.props.onLogin(email, password) }
-        onForgotPassword={ () => this.props.onForgotPassword() }
-        withFacebook={ this.props.withFacebook }
-        withGoogle={ this.props.withGoogle } />
+        onForgotPassword={ this.props.onForgotPassword }
+        withFacebook={ Platform.OS !== 'ios' }
+        withGoogle={ Platform.OS !== 'ios' } />
     )
   }
 
@@ -45,6 +61,7 @@ class AuthenticateForm extends Component {
 
     return (
       <View flex={1} style={{ width: '80%' }} justifyContent="center">
+        { this.renderMessage() }
         { this.renderForm() }
         <View style={{ marginTop: 10 }}>
           <Button size="sm" variant="link" onPress={() => this.setState({ formToDisplay: alternateForm, message: '' })} testID="loginOrRegister">
@@ -59,10 +76,26 @@ class AuthenticateForm extends Component {
 }
 
 const styles = StyleSheet.create({
+  messageContainer: {
+    alignItems: 'center',
+    padding: 20,
+  },
   spacer: {
     alignItems: 'center',
     padding: 20,
   },
 })
 
-export default withTranslation()(AuthenticateForm)
+function mapStateToProps(state) {
+  return {
+    message: state.app.lastAuthenticationError,
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    clearErrors: () => dispatch(clearAuthenticationErrors()),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(AuthenticateForm))

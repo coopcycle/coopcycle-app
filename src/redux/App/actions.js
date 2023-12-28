@@ -34,6 +34,7 @@ export const CLEAR_NOTIFICATIONS = '@app/CLEAR_NOTIFICATIONS'
 export const AUTHENTICATION_REQUEST = '@app/AUTHENTICATION_REQUEST'
 export const AUTHENTICATION_SUCCESS = '@app/AUTHENTICATION_SUCCESS'
 export const AUTHENTICATION_FAILURE = '@app/AUTHENTICATION_FAILURE'
+export const CLEAR_AUTHENTICATION_ERRORS = '@app/CLEAR_AUTHENTICATION_ERRORS'
 export const RESET_PASSWORD_INIT = '@app/RESET_PASSWORD_INIT'
 export const RESET_PASSWORD_REQUEST = '@app/RESET_PASSWORD_REQUEST'
 export const RESET_PASSWORD_REQUEST_SUCCESS = '@app/RESET_PASSWORD_REQUEST_SUCCESS'
@@ -55,6 +56,7 @@ export const LOAD_MY_RESTAURANTS_FAILURE = '@restaurant/LOAD_MY_RESTAURANTS_FAIL
 export const SET_INTERNET_REACHABLE = '@app/SET_INTERNET_REACHABLE'
 
 export const REGISTRATION_ERRORS = '@app/REGISTRATION_ERRORS'
+export const LOGIN_BY_EMAIL_ERRORS = '@app/LOGIN_BY_EMAIL_ERRORS'
 
 export const SET_BACKGROUND_GEOLOCATION_ENABLED = '@app/SET_BACKGROUND_GEOLOCATION_ENABLED'
 export const BACKGROUND_PERMISSION_DISCLOSED = '@app/BACKGROUND_PERMISSION_DISCLOSED'
@@ -86,6 +88,8 @@ export const clearNotifications = createAction(CLEAR_NOTIFICATIONS)
 export const _authenticationRequest = createAction(AUTHENTICATION_REQUEST)
 export const _authenticationSuccess = createAction(AUTHENTICATION_SUCCESS)
 const _authenticationFailure = createAction(AUTHENTICATION_FAILURE)
+
+export const clearAuthenticationErrors = createAction(CLEAR_AUTHENTICATION_ERRORS)
 
 const resetPasswordInit = createAction(RESET_PASSWORD_INIT)
 const resetPasswordRequest = createAction(RESET_PASSWORD_REQUEST)
@@ -138,6 +142,7 @@ const loadPrivacyPolicySuccess = createAction(LOAD_PRIVACY_POLICY_SUCCESS)
 const loadPrivacyPolicyFailure = createAction(LOAD_PRIVACY_POLICY_FAILURE)
 
 const registrationErrors = createAction(REGISTRATION_ERRORS)
+const loginByEmailErrors = createAction(LOGIN_BY_EMAIL_ERRORS)
 
 function setBaseURL(baseURL) {
   return (dispatch, getState) => {
@@ -150,6 +155,7 @@ function setBaseURL(baseURL) {
 
 function authenticationRequest() {
   return (dispatch, getState) => {
+    dispatch(clearAuthenticationErrors())
     dispatch(_authenticationRequest())
     tracker.logEvent(
       analyticsEvent.user.login._category,
@@ -407,14 +413,14 @@ export function login(email, password, navigate = true) {
         }
       })
       .catch(err => {
-
-        let message = i18n.t('TRY_LATER')
         if (err.hasOwnProperty('code') && err.code === 401) {
-          message = i18n.t('INVALID_USER_PASS')
+          dispatch(loginByEmailErrors({
+            email: i18n.t('INVALID_USER_PASS'),
+            password: i18n.t('INVALID_USER_PASS')
+          }))
+        } else {
+          dispatch(authenticationFailure(i18n.t('TRY_LATER')))
         }
-
-        dispatch(authenticationFailure(message))
-
       })
   }
 }

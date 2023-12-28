@@ -53,6 +53,7 @@ import {
   UPDATE_CUSTOMER_GUEST,
   UPDATE_ITEM_QUANTITY,
   STOP_ASKING_TO_ENABLE_REUSABLE_PACKAGING,
+  INIT_CART_FAILURE,
 } from './actions'
 
 import i18n from '../../i18n'
@@ -213,6 +214,12 @@ export default (state = initialState, action = {}) => {
         },
       }
 
+    case INIT_CART_FAILURE:
+      return {
+        ...state,
+        loadingCarts: _.without(state.loadingCarts, action.payload.restaurant),
+      }
+
     case CLEAR:
       return {
         ...state,
@@ -323,7 +330,7 @@ export default (state = initialState, action = {}) => {
     case UPDATE_CART_SUCCESS:
       return {
         ...state,
-        loadingCarts: _.filter(state.loadingCarts, action.payload.restaurant),
+        loadingCarts: _.without(state.loadingCarts, action.payload.restaurant),
         carts: {
           ...state.carts,
           [action.payload.restaurant]:

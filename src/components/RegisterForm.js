@@ -1,6 +1,14 @@
 import React from 'react'
 import { View } from 'react-native'
-import { Button, Checkbox, FormControl, Input, ScrollView, Text } from 'native-base'
+import {
+  Button,
+  Checkbox,
+  Column,
+  FormControl,
+  Input,
+  ScrollView,
+  Text,
+} from 'native-base'
 import { withTranslation } from 'react-i18next'
 import validate from 'validate.js'
 import _ from 'lodash'
@@ -351,6 +359,7 @@ class RegisterForm extends React.Component {
           }
 
           return (
+            <Column flex={1}>
             <ScrollView showsVerticalScrollIndicator={true} persistentScrollbar={true}>
               { inputs.map((input, index) => {
                 if (input.notRender) {
@@ -404,13 +413,13 @@ class RegisterForm extends React.Component {
               }) }
 
               { this._renderLegalTexts(values, allErrors, setFieldValue, handleBlur) }
-
+            </ScrollView>
               <View style={{ marginTop: 20 }}>
                 <Button block onPress={ handleSubmit } testID="submitRegister">
                   {this.props.t('SUBMIT')}
                 </Button>
               </View>
-            </ScrollView>
+            </Column>
           )
         }}
       </Formik>
@@ -420,6 +429,7 @@ class RegisterForm extends React.Component {
 
 function mapStateToProps(state) {
   return {
+    errors: state.app.registrationErrors,
     splitTermsAndConditionsAndPrivacyPolicy: state.app.settings.split_terms_and_conditions_and_privacy_policy,
     termsAndConditionsAccepted: state.app.termsAndConditionsAccepted,
     privacyPolicyAccepted: state.app.privacyPolicyAccepted,

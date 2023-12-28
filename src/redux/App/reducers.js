@@ -9,6 +9,7 @@ import {
   AUTHENTICATION_REQUEST,
   AUTHENTICATION_SUCCESS,
   BACKGROUND_PERMISSION_DISCLOSED,
+  CLEAR_AUTHENTICATION_ERRORS,
   CLEAR_NOTIFICATIONS,
   CLEAR_SELECT_SERVER_ERROR,
   CLOSE_MODAL,
@@ -19,6 +20,7 @@ import {
   LOAD_TERMS_AND_CONDITIONS_FAILURE,
   LOAD_TERMS_AND_CONDITIONS_REQUEST,
   LOAD_TERMS_AND_CONDITIONS_SUCCESS,
+  LOGIN_BY_EMAIL_ERRORS,
   LOGOUT_SUCCESS,
   ONBOARDED,
   PUSH_NOTIFICATION,
@@ -73,6 +75,7 @@ const initialState = {
   },
   isInternetReachable: true,
   registrationErrors: {},
+  loginByEmailErrors: {},
   isBackgroundGeolocationEnabled: false,
   hasDisclosedBackgroundPermission: false,
   isCentrifugoConnected: false,
@@ -142,12 +145,18 @@ export default (state = initialState, action = {}) => {
         notifications: [],
       }
 
-    case AUTHENTICATION_REQUEST:
+    case CLEAR_AUTHENTICATION_ERRORS:
       return {
         ...state,
         lastAuthenticationError: null,
-        loading: true,
         registrationErrors: initialState.registrationErrors,
+        loginByEmailErrors: initialState.loginByEmailErrors,
+      }
+
+    case AUTHENTICATION_REQUEST:
+      return {
+        ...state,
+        loading: true,
       }
 
     case AUTHENTICATION_SUCCESS:
@@ -269,6 +278,13 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         registrationErrors: action.payload,
+        loading: false,
+      }
+
+    case LOGIN_BY_EMAIL_ERRORS:
+      return {
+        ...state,
+        loginByEmailErrors: action.payload,
         loading: false,
       }
 

@@ -1,7 +1,14 @@
 import React, { Component } from 'react'
 import { Platform, View } from 'react-native'
 import { connect } from 'react-redux'
-import { Box, Button, FormControl, Input, Stack, Text } from 'native-base'
+import {
+  Box,
+  Button,
+  Column,
+  FormControl,
+  Input,
+  ScrollView,
+} from 'native-base'
 import { Formik } from 'formik'
 import _ from 'lodash'
 import { withTranslation } from 'react-i18next'
@@ -12,7 +19,14 @@ import { GoogleSignin, GoogleSigninButton } from '@react-native-google-signin/go
 import jwtDecode from 'jwt-decode'
 
 import FacebookButton from './FacebookButton'
-import { googleSignIn, loginWithFacebook, signInWithApple, authenticationFailure } from '../redux/App/actions'
+import {
+  authenticationFailure,
+  clearAuthenticationErrors,
+  googleSignIn,
+  loginWithFacebook,
+  signInWithApple,
+} from '../redux/App/actions'
+import i18n from '../i18n'
 
 class LoginForm extends Component {
 
@@ -33,11 +47,11 @@ class LoginForm extends Component {
     let errors = {}
 
     if (_.isEmpty(values.email)) {
-      errors.email = true
+      errors.email = i18n.t('INVALID_USERNAME')
     }
 
     if (_.isEmpty(values.password)) {
-      errors.password = true
+      errors.password = i18n.t('INVALID_PASSWORD')
     }
 
     return errors
@@ -46,6 +60,14 @@ class LoginForm extends Component {
   _onSubmit(values) {
     const { email, password } = values
     this.props.onSubmit(email, password)
+  }
+
+  renderError(message) {
+    return (
+      <FormControl.ErrorMessage>
+        { message }
+      </FormControl.ErrorMessage>
+    )
   }
 
   render() {
@@ -78,9 +100,20 @@ class LoginForm extends Component {
         onSubmit={ this._onSubmit.bind(this) }
         validateOnBlur={ false }
         validateOnChange={ false }>
-        {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
-        <Stack>
-          <FormControl error={ (touched.email && errors.email) || this.props.hasErrors }>
+        {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) =>
+        {
+          const allErrors = {
+            ...errors,
+            ...this.props.errors,
+          }
+
+          const hasError = (field) => touched[field] && Boolean(allErrors[field])
+          const getError = (field) => allErrors[field]
+
+         return (
+        <Column flex={1}>
+          <ScrollView>
+          <FormControl isInvalid={ hasError('email') }>
             <FormControl.Label>{this.props.t('USERNAME')}</FormControl.Label>
             <Input
               testID="loginUsername"
@@ -92,8 +125,9 @@ class LoginForm extends Component {
               onBlur={ handleBlur('email') }
               onSubmitEditing={ () => this._passwordInput.focus() }
             />
+            { hasError('email') && this.renderError(getError('email')) }
           </FormControl>
-          <FormControl error={ (touched.password && errors.password) || this.props.hasErrors }>
+          <FormControl isInvalid={ hasError('password') }>
             <FormControl.Label>{this.props.t('PASSWORD')}</FormControl.Label>
             <Input
               testID="loginPassword"
@@ -106,10 +140,12 @@ class LoginForm extends Component {
               onChangeText={ handleChange('password') }
               onBlur={ handleBlur('password') }
               onSubmitEditing={ handleSubmit }/>
+            { hasError('password') && this.renderError(getError('password')) }
           </FormControl>
-          <Button size="sm" variant="link" onPress={ () => this.props.onForgotPassword() }>
+          <Button size="sm" variant="link" onPress={ this.props.onForgotPassword }>
             {this.props.t('FORGOT_PASSWORD')}
           </Button>
+          </ScrollView>
           <View style={{ marginTop: 20 }}>
             <Button block onPress={ handleSubmit } testID="loginSubmit">
               { this.props.t('SUBMIT') }
@@ -147,15 +183,16 @@ class LoginForm extends Component {
             size={ GoogleSigninButton.Size.Wide }
             color={ GoogleSigninButton.Color.Dark }
             onPress={ () => {
+              this.props.clearErrors()
               GoogleSignin.hasPlayServices()
-                .then(() => {
-                  GoogleSignin.signIn()
-                    .then((userInfo) => {
-                      this.props.googleSignIn(userInfo.idToken)
-                    })
-                    .catch(e => console.log(e))
+                .then(() => GoogleSignin.signIn())
+                .then((userInfo) => {
+                  this.props.googleSignIn(userInfo.idToken)
                 })
-                .catch(e => console.log(e))
+                .catch(e => {
+                  console.log(`Google Signin; error code: ${e.code};`, e)
+                  this.props.authenticationFailure(this.props.t('TRY_LATER'))
+                })
             }}
             disabled={ false } />
           ) : null }
@@ -212,8 +249,8 @@ class LoginForm extends Component {
                 })
             }} />
           )}
-        </Stack>
-        )}
+        </Column>
+        )}}
       </Formik>
     )
   }
@@ -222,12 +259,13 @@ class LoginForm extends Component {
 function mapStateToProps(state) {
 
   return {
-    hasErrors: !!state.app.lastAuthenticationError,
+    errors: state.app.loginByEmailErrors,
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
+    clearErrors: () => dispatch(clearAuthenticationErrors()),
     loginWithFacebook: (accessToken) => dispatch(loginWithFacebook(accessToken)),
     signInWithApple: (identityToken) => dispatch(signInWithApple(identityToken)),
     googleSignIn: (idToken) => dispatch(googleSignIn(idToken)),
