@@ -1,7 +1,6 @@
 import { darkGreyColor, lightGreyColor, primaryColor, whiteColor } from '../../styles/common';
-import { Box, Heading, Text } from 'native-base';
+import { Box, Heading, Text, View, useColorModeValue } from 'native-base'
 import AddressAutocomplete from '../../components/AddressAutocomplete';
-import { Appearance, View } from 'react-native';
 import React from 'react';
 import { searchRestaurantsForAddress } from '../../redux/Checkout/actions';
 import { newAddress } from '../../redux/Account/actions';
@@ -11,8 +10,8 @@ import { withTranslation } from 'react-i18next';
 const textInputContainerHeight = 54
 
 const AskAddress = (props) => {
+  const backgroundColor = useColorModeValue(whiteColor, darkGreyColor)
 
-  const colorScheme = Appearance.getColorScheme()
   return <View style={{ backgroundColor: primaryColor, flex: 1, padding: 20 }}>
     <Box style={{ flex: 1, justifyContent: 'flex-end', marginBottom: 20 }}>
       <Heading color={whiteColor}>{ props.t('WHERE_ARE_YOU') }</Heading>
@@ -29,7 +28,7 @@ const AskAddress = (props) => {
           height: (textInputContainerHeight * 0.7),
           borderRadius: 3,
           borderWidth: 0,
-          backgroundColor: colorScheme === 'dark' ? darkGreyColor : whiteColor,
+          backgroundColor: backgroundColor,
         }}
         onSelectAddress={ (address) => {
           props.newAddress(address)
