@@ -9,6 +9,7 @@ import _ from 'lodash';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { t } from 'i18next';
 import SearchItemSmallCard from './components/SearchItemSmallCard';
+import { selectAvailableRestaurants } from '../../redux/Checkout/selectors';
 
 const TITLES = {
   'shop': 'SEARCH_SHOPS',
@@ -35,8 +36,15 @@ class SearchForm extends Component {
     this.props.clearSearchResults()
   }
 
+  _shopId(item) {
+    return parseInt(item.result_type === 'product' ? item.shop_id : item.id)
+  }
+
   _parseResultsToSectionListData(results) {
     return results.reduce((groupedList, item) => {
+      if (!_.includes(this.props.availableRestaurants, this._shopId(item))) {
+        return groupedList
+      }
       const existingGroup = groupedList.find((dataItem) => dataItem.type === item.result_type)
       if (!existingGroup) {
         groupedList.push({
@@ -51,8 +59,7 @@ class SearchForm extends Component {
   }
 
   _onSearchItemPressed(item) {
-    const shopId = item.result_type === 'product' ? item.shop_id : item.id
-    return this.props.loadAndNavigateToRestaurante(shopId)
+    return this.props.loadAndNavigateToRestaurante(this._shopId(item))
   }
 
   render() {
@@ -98,6 +105,7 @@ function mapStateToProps(state) {
     isLoading: state.checkout.isLoading,
     searchResults: state.checkout.searchResults,
     searchResultsLoaded: state.checkout.searchResultsLoaded,
+    availableRestaurants: selectAvailableRestaurants(state),
   }
 }
 

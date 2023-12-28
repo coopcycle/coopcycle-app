@@ -241,3 +241,7 @@ export const selectAddresses = createSelector(
   (addresses) => _.uniqWith(addresses, (o, ov) => Address.geoDiff(o, ov))
 )
 
+export const selectAvailableRestaurants = createSelector(
+  state => state.checkout.restaurants,
+  (restaurants) => _.map(restaurants, r => r.id)
+)
