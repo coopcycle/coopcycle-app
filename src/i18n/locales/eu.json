@@ -386,10 +386,6 @@
         "SELECT_PAYMENT_METHOD": "Hautatu ordainketa metodo bat",
         "PRIVACY": "Pribatutasuna",
         "TERMS_OF_SERVICE": "Zerbitzu-baldintzak",
-        "CHECKOUT_UNITS": "Unitateak",
-        "ZERO_WASTE": "Zero waste",
-        "FEATURED": "Featured",
-        "EXCLUSIVE": "Exclusive",
-        "NEW": "New"
+        "CHECKOUT_UNITS": "Unitateak"
     }
 }
