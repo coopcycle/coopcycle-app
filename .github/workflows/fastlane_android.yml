@@ -175,7 +175,7 @@ jobs:
           path: ${{ steps.convert_aab.outputs.apkPath }}
   SCREENSHOTS:
     name: Capture screenshots
-    if: '!cancelled()'
+    if: false # '!cancelled()'
     needs: AAB_TO_APK
     runs-on: macOS-latest
     strategy:
@@ -217,7 +217,6 @@ jobs:
             adb shell am broadcast -a com.android.systemui.demo -e command battery -e plugged false -e level 100
             $HOME/.maestro/bin/maestro test -e APP_ID=${{ inputs.package_name }} --include-tags=screenshots ./__maestro__
       - name: Upload to S3 bucket
-        if: false
         uses: Noelware/s3-action@2.2.1
         with:
           directories: |
@@ -230,7 +229,6 @@ jobs:
           region: fr-par
           bucket: coopcycle-ci
       - uses: actions/upload-artifact@v3
-        if: false
         with:
           name: maestro-error-rapport 
           path: ~/.maestro/tests/
