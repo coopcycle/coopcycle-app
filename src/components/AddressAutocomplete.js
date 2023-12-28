@@ -14,6 +14,8 @@ import { v4 as uuidv4 } from 'uuid'
 import Config from 'react-native-config'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import { AbortController } from 'abortcontroller-polyfill/dist/cjs-ponyfill'
+import { connect } from 'react-redux'
+import { circle, transformRotate } from '@turf/turf'
 
 import { localeDetector } from '../i18n'
 import AddressUtils from '../utils/Address'
@@ -197,16 +199,12 @@ class AddressAutocomplete extends Component {
       key: Config.GOOGLE_MAPS_BROWSER_KEY,
       language: localeDetector(),
       types: 'geocode',
-      components: `country:${this.props.country.toUpperCase()}`,
+      // https://developers.google.com/maps/documentation/places/web-service/autocomplete?hl=fr#locationrestriction
+      // Rectangular: A string specifying two lat/lng pairs in decimal degrees, representing the south/west and north/east points of a rectangle.
+      // Use the following format:rectangle:south,west|north,east.
+      // Note that east/west values are wrapped to the range -180, 180, and north/south values are clamped to the range -90, 90.
+      locationrestriction: `rectangle:${this.props.southWest}|${this.props.northEast}`,
       sessiontoken: sessionToken,
-    }
-
-    if (this.props.location && this.props.location.length > 0) {
-      query = {
-        ...query,
-        location: this.props.location,
-        radius: 50000,
-      }
     }
 
     this._autocomplete(text, query)
@@ -415,15 +413,12 @@ AddressAutocomplete.defaultProps = {
   minChars: 3,
   addresses: [],
   renderRight: () => <View />,
-  location: '',
 }
 
 AddressAutocomplete.propTypes = {
   minChars: PropTypes.number,
   addresses: PropTypes.array,
-  country: PropTypes.string.isRequired,
   renderRight: PropTypes.func,
-  location: PropTypes.string,
 }
 
 const styles = StyleSheet.create({
@@ -444,4 +439,24 @@ const styles = StyleSheet.create({
   },
 })
 
-export default withTranslation()(AddressAutocomplete)
+function mapStateToProps(state) {
+
+  const [ lat, lng ] = state.app.settings.latlng.split(',')
+
+  // This will create a polygon with 4 sides (i.e a square)
+  const options = { steps: 4, units: 'kilometers' }
+  const polygon = circle([ lng, lat ], 50, options)
+  const bbox = transformRotate(polygon, 45)
+
+  const northEast = bbox.geometry.coordinates[0][0]
+  const southWest = bbox.geometry.coordinates[0][2]
+
+  return {
+    location: state.app.settings.latlng,
+    country: state.app.settings.country,
+    northEast: [ northEast[1], northEast[0] ].join(','),
+    southWest: [ southWest[1], southWest[0] ].join(','),
+  }
+}
+
+export default connect(mapStateToProps)(withTranslation()(AddressAutocomplete))

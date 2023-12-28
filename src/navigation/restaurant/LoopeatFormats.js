@@ -35,7 +35,7 @@ function LoopeatFormats({ route, order, loopeatFormats, loadLoopeatFormats, upda
         <Formik
           initialValues={ initialValues }
           onSubmit={ values => {
-            updateLoopeatFormats(order, values.loopeatFormats, () => navigation.navigate('RestaurantOrder', { order }))
+            updateLoopeatFormats(order, values.loopeatFormats, (updatedOrder) => navigation.navigate('RestaurantOrder', { order: updatedOrder }))
           }}
         >
           {({ handleChange, handleBlur, handleSubmit, values }) => (

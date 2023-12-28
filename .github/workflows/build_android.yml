@@ -84,5 +84,5 @@ jobs:
       package_name: fr.coopcycle.kooglof
       keystore_key_alias: instance
       keystore_key_password_secret: SIGNING_KEY_PASSWORD_INSTANCE
-      google_play_track: beta
+      google_play_track: production
     secrets: inherit

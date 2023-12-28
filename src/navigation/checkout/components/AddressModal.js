@@ -102,8 +102,6 @@ class AddressModal extends Component {
             <View style={{ width, height: height / 3 }}>
               <View style={ styles.autocompleteContainer }>
                 <AddressAutocomplete
-                  country={ this.props.country }
-                  location={ this.props.location }
                   testID="addressModalTypeahead"
                   onSelectAddress={this.props.onSelect}
                   value={ this.props.value?.streetAddress }
@@ -199,8 +197,6 @@ function mapStateToProps(state, ownProps) {
   }
 
   return {
-    location: state.app.settings.latlng,
-    country: state.app.settings.country,
     address: state.checkout.address,
     isAddressOK: state.checkout.isAddressOK,
     isModalVisible: state.checkout.isAddressModalVisible,

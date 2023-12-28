@@ -45,7 +45,7 @@ class OrderList extends Component {
         </HStack>
         <Text>{ `${formatPrice(order.itemsTotal)}` }</Text>
         <Text>{ moment.parseZone(order.pickupExpectedAt).format('LT') }</Text>
-        <Icon as={Ionicons} style={{ color: '#ccc' }} name="ios-arrow-forward" />
+        <Icon as={Ionicons} style={{ color: '#ccc' }} name="arrow-forward" />
       </TouchableOpacity>
     )
   }

@@ -31,8 +31,6 @@ const AskAddress = (props) => {
           borderWidth: 0,
           backgroundColor: colorScheme === 'dark' ? darkGreyColor : whiteColor,
         }}
-        country={ props.country }
-        location={ props.location }
         onSelectAddress={ (address) => {
           props.newAddress(address)
           props.searchRestaurantsForAddress(address)
@@ -46,8 +44,6 @@ const AskAddress = (props) => {
 function mapStateToProps(state) {
 
   return {
-    location: state.app.settings.latlng,
-    country: state.app.settings.country,
     address: state.checkout.address,
   }
 }

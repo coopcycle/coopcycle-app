@@ -5,8 +5,6 @@ import { withTranslation } from 'react-i18next'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 
-import AddressAutocomplete from './AddressAutocomplete'
-import AddressUtils from '../utils/Address'
 import { primaryColor, whiteColor } from '../styles/common';
 import { TouchableNativeFeedback } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
