@@ -183,13 +183,13 @@ export default props => {
           }
         }}
       />
-      {totalPrice && (
+      {totalPrice ? (
         <FooterButton
           testID="addProduct"
           text={`${t('ADD_TO_CART')} ${formatPrice(totalPrice)}`}
           onPress={() => _onPressAddToCart()}
         />
-      )}
+      ) : null}
     </SafeAreaView>
   )
 }
