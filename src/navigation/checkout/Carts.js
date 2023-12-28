@@ -4,7 +4,7 @@ import { Avatar, Box, Button, ChevronRightIcon, HStack, Heading, Icon, Skeleton,
 import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 import { Spacer } from 'native-base/src/components/primitives/Flex';
-import { darkGreyColor, greyColor, primaryColor } from '../../styles/common';
+import { greyColor, primaryColor } from '../../styles/common';
 import { RectButton, Swipeable, TouchableOpacity } from 'react-native-gesture-handler';
 import i18n from '../../i18n';
 import _ from 'lodash'
@@ -12,6 +12,7 @@ import { formatPrice } from '../../utils/formatting';
 import { deleteCart, setRestaurant } from '../../redux/Checkout/actions';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { selectCarts } from '../../redux/Checkout/selectors';
+import { useSecondaryTextColor } from '../../styles/theme'
 
 const AnimatedView = Animated.createAnimatedComponent(View);
 const { width } = Dimensions.get('window')
@@ -40,7 +41,7 @@ class Carts extends Component {
     }}>
       <Image style={{ maxWidth: '40%', maxHeight: '30%', marginVertical: '10%', margin: 'auto' }} source={require('../../assets/images/empty_cart.png')} resizeMode={'contain'} />
       <Heading>{this.props.t('EMPTY_CARTS_TITLE')}</Heading>
-      <Text color={darkGreyColor}>{this.props.t('EMPTY_CARTS_SUBTITLE')}</Text>
+      <Text style={{ textAlign: 'center' }} color={this.props.secondaryTextColor}>{this.props.t('EMPTY_CARTS_SUBTITLE')}</Text>
       <Button borderRadius={100} onPress={() => this.props.navigation.navigate('Home')} backgroundColor={primaryColor} margin={8}>{this.props.t('GO_TO_SHOPPING')}</Button>
     </View>
 
@@ -58,8 +59,8 @@ class Carts extends Component {
         <VStack>
           <Skeleton.Text noOfLines={3} lineHeight={4} isLoaded={!item?.softDelete}>
             <Text bold>{item.restaurant.name}</Text>
-            <Text color={darkGreyColor}>{i18n.t('ITEM', { count: item.cart.items.length })} • {formatPrice(item.cart.total)}</Text>
-            <Text noOfLines={1} maxWidth={width - 170} color={darkGreyColor}>{item.cart.shippingAddress?.streetAddress}</Text>
+            <Text color={this.props.secondaryTextColor}>{i18n.t('ITEM', { count: item.cart.items.length })} • {formatPrice(item.cart.total)}</Text>
+            <Text noOfLines={1} maxWidth={width - 170} color={this.props.secondaryTextColor}>{item.cart.shippingAddress?.streetAddress}</Text>
           </Skeleton.Text>
         </VStack>
         <Spacer/>
@@ -112,4 +113,11 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(Carts))
+function withHooks(ClassComponent) {
+  return function CompWithHook(props) {
+    const secondaryTextColor = useSecondaryTextColor()
+    return <ClassComponent {...props} secondaryTextColor={secondaryTextColor} />;
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(withHooks(Carts)))
