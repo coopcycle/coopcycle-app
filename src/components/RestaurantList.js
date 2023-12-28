@@ -6,10 +6,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 
 import { getRestaurantCaption, shouldShowPreOrder } from '../utils/checkout'
-import {
-  CategoryBadge,
-  TimingBadge,
-} from '../navigation/checkout/components/RestaurantBadges'
+import {RestaurantCard} from './RestaurantCard';
 
 const styles = StyleSheet.create({
   item: {
@@ -62,37 +59,9 @@ class RestaurantList extends Component {
 
     return (
       <TouchableOpacity
-        onPress={ () => this.props.onItemClick(restaurant) }
-        testID={ restaurant.testID }>
-        <View style={ styles.item }>
-          <View style={{ width: '33.3333%' }}>
-            { showPreOrder &&
-              <ImageBackground source={{ uri: restaurant.image }} style={{ width: '100%', height: '100%' }}>
-                <View style={ styles.overlay }>
-                  <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                    <Icon as={ FontAwesome } name="clock-o" size="4" color="white"/>
-                    <Text style={ styles.closedLabel } numberOfLines={ 1 }>{ this.props.t('RESTAURANT_PRE_ORDER') }</Text>
-                  </View>
-                </View>
-              </ImageBackground>
-            }
-            { !showPreOrder && <Image style={{ flex: 1, height: undefined, width: undefined }} resizeMode="cover" source={{ uri: restaurant.image }} />}
-          </View>
-          <View style={{ flex: 1, width: '66.6666%', padding: 15, paddingBottom: 25 }}>
-            { restaurant.facets.category.length > 0 &&
-              <HStack mb="1">
-              { restaurant.facets.category.map((label, index) => {
-                return (
-                  <CategoryBadge key={ `restaurant-category-${index}` } label={label}/>
-                )
-              }) }
-              </HStack>
-            }
-            <OneLineText style={ [styles.restaurantNameText] }>{ restaurant.name }</OneLineText>
-            <OneLineText note numberOfLines={ 2 }>{ getRestaurantCaption(restaurant) }</OneLineText>
-            <TimingBadge restaurant={ restaurant } />
-          </View>
-        </View>
+        onPress={() => this.props.onItemClick(restaurant)}
+        testID={restaurant.testID}>
+        <RestaurantCard restaurant={restaurant} />
       </TouchableOpacity>
     )
   }
@@ -156,4 +125,4 @@ class RestaurantList extends Component {
   }
 }
 
-export default withTranslation()(RestaurantList)
+export default withTranslation()(RestaurantList);
