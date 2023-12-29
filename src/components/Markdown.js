@@ -2,7 +2,7 @@ import React from 'react'
 import RNMarkdown from 'react-native-markdown-display'
 import { useBaseTextColor } from '../styles/theme'
 
-export default function Markdown({ children, style }) {
+export default function Markdown({ children, style, ...props }) {
   const baseTextColor = useBaseTextColor()
 
   const componentStyle = {
@@ -13,7 +13,7 @@ export default function Markdown({ children, style }) {
   }
 
   return (
-    <RNMarkdown style={componentStyle} mergeStyle={true}>
+    <RNMarkdown style={componentStyle} mergeStyle={true} { ...props }>
       {children}
     </RNMarkdown>
   )
