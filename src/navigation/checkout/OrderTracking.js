@@ -12,6 +12,7 @@ import i18n from '../../i18n';
 import { phonecall } from 'react-native-communications';
 import Step from './components/Step';
 import { find } from 'lodash'
+import Markdown from '../../components/Markdown';
 
 export function orderToStep(order) {
 
@@ -109,7 +110,7 @@ class OrderTrackingPage extends Component {
   }
 
   render() {
-    const { order } = this.props
+    const { order, orderConfirmMessage } = this.props
     const timeRange = [
       moment(order.shippingTimeRange[0]).format('HH:mm'),
       moment(order.shippingTimeRange[1]).format('HH:mm'),
@@ -180,8 +181,10 @@ class OrderTrackingPage extends Component {
         </HStack>
       </View>
 
-
-
+      { orderConfirmMessage ?
+        <View style={styles.tracker} p="2">
+          <Markdown>{ orderConfirmMessage }</Markdown>
+        </View> : null }
 
       <View style={{
         width: '100%',
@@ -227,6 +230,7 @@ function mapStateToProps(state, ownProps) {
     user: state.app.user,
     phoneNumber: state.app.settings.phone_number,
     loading: state.app.loading,
+    orderConfirmMessage: state.app.settings.order_confirm_message,
   }
 }
 
