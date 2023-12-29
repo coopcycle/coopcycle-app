@@ -54,6 +54,7 @@ import {
   UPDATE_ITEM_QUANTITY,
   STOP_ASKING_TO_ENABLE_REUSABLE_PACKAGING,
   INIT_CART_FAILURE,
+  CLEAR_ADDRESS,
 } from './actions'
 
 import i18n from '../../i18n'
@@ -518,6 +519,11 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         shouldAskToEnableReusablePackaging: false,
+      }
+    case CLEAR_ADDRESS:
+      return {
+        ...state,
+        address: null,
       }
   }
 

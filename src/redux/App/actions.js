@@ -11,7 +11,7 @@ import NavigationHolder from '../../NavigationHolder'
 import i18n from '../../i18n'
 import { setCurrencyCode } from '../../utils/formatting'
 import { selectInitialRouteName, selectIsAuthenticated } from './selectors'
-import { assignAllCarts, updateCarts } from '../Checkout/actions';
+import { assignAllCarts, updateCarts, clearAddress } from '../Checkout/actions';
 import { loadAddresses, loadAddressesSuccess } from '../Account/actions';
 
 /*
@@ -610,6 +610,7 @@ export function resetServer() {
         dispatch(logoutSuccess())
       }
 
+      dispatch(clearAddress())
       dispatch(setBaseURL(null))
   }
 }

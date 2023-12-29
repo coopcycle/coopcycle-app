@@ -33,6 +33,7 @@ export const CLEAR = '@checkout/CLEAR'
 export const RESET_RESTAURANT = '@checkout/RESET_RESTAURANT'
 export const SET_RESTAURANT = '@checkout/SET_RESTAURANT'
 export const SET_TOKEN = '@checkout/SET_TOKEN'
+export const CLEAR_ADDRESS = '@checkout/CLEAR_ADDRESS'
 
 export const INIT_REQUEST = '@checkout/INIT_REQUEST'
 export const INIT_SUCCESS = '@checkout/INIT_SUCCESS'
@@ -105,6 +106,7 @@ export const clear = createAction(CLEAR)
 export const setAddressOK = createAction(SET_ADDRESS_OK)
 export const setTiming = createAction(SET_TIMING)
 export const setCartValidation = createAction(SET_CART_VALIDATION, (isValid, violations = []) => ({ isValid, violations }))
+export const clearAddress = createAction(CLEAR_ADDRESS)
 
 export const initRequest = createAction(INIT_REQUEST)
 export const initSuccess = createAction(INIT_SUCCESS, (restaurant = null) => ({ restaurant }))
