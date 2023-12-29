@@ -1,7 +1,7 @@
 import React, { createRef, useEffect } from 'react'
 import { LogBox, Platform, useColorScheme } from 'react-native'
 
-import { NativeBaseProvider, extendTheme, v33xTheme } from 'native-base'
+import { NativeBaseProvider } from 'native-base'
 import tracker from './analytics/Tracker'
 
 import { DarkTheme, DefaultTheme, NavigationContainer } from '@react-navigation/native'
@@ -72,12 +72,20 @@ LogBox.ignoreLogs([
 const navigationRef = createRef()
 const routeNameRef = createRef()
 
+function getCurrentRouteName() {
+  return navigationRef.current.getCurrentRoute()?.name
+}
+
+function onReady() {
+  routeNameRef.current = getCurrentRouteName()
+}
+
 /**
  * @see https://reactnavigation.org/docs/screen-tracking
  */
 function onNavigationStateChange(prevState, currentState) {
   const previousRouteName = routeNameRef.current;
-  const currentRouteName = navigationRef.current.getCurrentRoute().name
+  const currentRouteName = getCurrentRouteName()
 
   if (previousRouteName !== currentRouteName) {
     store.dispatch(setCurrentRoute(currentRouteName))
@@ -138,7 +146,7 @@ const App = () => {
                 <NavigationContainer
                   ref={ navigationRef }
                   linking={ linking }
-                  onReady={ () => (routeNameRef.current = navigationRef.current.getCurrentRoute()?.name) }
+                  onReady={ onReady }
                   onStateChange={ onNavigationStateChange }
                   theme={ colorScheme === 'dark' ? DarkTheme : DefaultTheme }>
                   <Root />
