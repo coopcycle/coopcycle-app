@@ -4,7 +4,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native'
-import { Box, HStack, Icon, Pressable, Text, VStack } from 'native-base'
+import { Box, HStack, Icon, Pressable, Text, VStack, Heading } from 'native-base'
 import _ from 'lodash'
 import { connect } from 'react-redux'
 import { useTranslation, withTranslation } from 'react-i18next'
@@ -12,6 +12,7 @@ import {
   DrawerContentScrollView,
   DrawerItem,
 } from '@react-navigation/drawer'
+import { useNavigation } from '@react-navigation/native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import VersionNumber from 'react-native-version-number'
 import { PhoneNumberFormat, PhoneNumberUtil } from 'google-libphonenumber'
@@ -64,14 +65,19 @@ const StoresDrawerItem = ({ stores, navigate }) => {
   )
 }
 
-const About = ({ showAbout, navigateToAbout, brandName }) => {
+const About = ({ brandName, motto, navigate }) => {
 
-  const props = showAbout ? { onPress: navigateToAbout } : {}
+  const navigation = useNavigation()
+
+  const props = navigate ? { onPress: () => navigation.navigate('AboutNav') } : {}
 
   return (
     <Box mb="4">
       <TouchableOpacity { ...props }>
-        <Text style={{ fontWeight: '700' }}>{ brandName }</Text>
+        <VStack>
+          <Heading size="sm" textAlign="center" mb="2">{ brandName }</Heading>
+          { motto ? <Text textAlign="center" fontSize="xs">{ motto }</Text> : null }
+        </VStack>
       </TouchableOpacity>
     </Box>
   )
@@ -95,9 +101,6 @@ class DrawerContent extends Component {
 
     const navigateToAccount = () =>
       this.props.navigation.navigate('AccountNav')
-
-    const navigateToAbout = () =>
-      this.props.navigation.navigate('AboutNav')
 
     const navigateToTerms = () =>
       this.props.navigation.navigate('TermsNav', { screen: 'TermsHome', params: { showConfirmationButtons: false } })
@@ -157,9 +160,9 @@ class DrawerContent extends Component {
           </View>
           <VStack p="3" alignItems="center">
             <About
-              showAbout={ this.props.showAbout }
               brandName={ this.props.brandName }
-              navigateToAbout={ navigateToAbout }
+              motto={ this.props.motto }
+              navigate={ this.props.showAbout }
             />
             <HStack w="100%" alignItems="center" justifyContent="space-between" mb="4">
               {this.props.email && (
@@ -237,6 +240,7 @@ function mapStateToProps(state) {
     showAbout,
     showRestaurantsDrawerItem: selectShowRestaurantsDrawerItem(state),
     defaultDeliveryFormUrl: state.app.settings.default_delivery_form_url,
+    motto: state.app.settings.motto,
   }
 }
 
