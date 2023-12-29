@@ -4,7 +4,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native'
-import { HStack, Icon, Pressable, Text } from 'native-base'
+import { Box, HStack, Icon, Pressable, Text, VStack } from 'native-base'
 import _ from 'lodash'
 import { connect } from 'react-redux'
 import { useTranslation, withTranslation } from 'react-i18next'
@@ -17,6 +17,7 @@ import VersionNumber from 'react-native-version-number'
 import { PhoneNumberFormat, PhoneNumberUtil } from 'google-libphonenumber'
 import { phonecall } from 'react-native-communications'
 import Ionicons from 'react-native-vector-icons/Ionicons'
+import AntDesign from 'react-native-vector-icons/AntDesign'
 
 import Mailto from '../../components/Mailto'
 import { selectIsAuthenticated, selectShowRestaurantsDrawerItem } from '../../redux/App/selectors'
@@ -60,6 +61,19 @@ const StoresDrawerItem = ({ stores, navigate }) => {
     <DrawerItem
       label={t('STORES')}
       onPress={() => navigate('StoreNav')}/>
+  )
+}
+
+const About = ({ showAbout, navigateToAbout, brandName }) => {
+
+  const props = showAbout ? { onPress: navigateToAbout } : {}
+
+  return (
+    <Box mb="4">
+      <TouchableOpacity { ...props }>
+        <Text style={{ fontWeight: '700' }}>{ brandName }</Text>
+      </TouchableOpacity>
+    </Box>
   )
 }
 
@@ -141,41 +155,42 @@ class DrawerContent extends Component {
               )}
             </DrawerContentScrollView>
           </View>
-          <View style={styles.footer}>
-            {this.props.showAbout && (
-              <TouchableOpacity onPress={navigateToAbout} style={styles.footerItem}>
-                <Text style={{ fontWeight: '700' }}>{this.props.brandName}</Text>
-              </TouchableOpacity>
-            )}
-            {!this.props.showAbout && (
-              <View style={styles.footerItem}>
-                <Text style={{ fontWeight: '700' }}>{this.props.brandName}</Text>
-              </View>
-            )}
-            {this.props.email && (
-              <Mailto email={this.props.email} style={styles.footerItem}>
-                <Text style={{ fontSize: 14 }}>{this.props.email}</Text>
-              </Mailto>
-            )}
-            {this.props.phoneNumber && (
-              <TouchableOpacity onPress={() => phonecall(this.props.phoneNumber, true)} style={styles.footerItem}>
-                <Text style={{ fontSize: 14 }}>{phoneNumberText}</Text>
-              </TouchableOpacity>
-            )}
-            <View style={styles.footerItem}>
-              <Text note>{VersionNumber.appVersion}</Text>
-            </View>
-            <HStack w="100%" my="2" alignItems="center" justifyContent="space-between">
+          <VStack p="3" alignItems="center">
+            <About
+              showAbout={ this.props.showAbout }
+              brandName={ this.props.brandName }
+              navigateToAbout={ navigateToAbout }
+            />
+            <HStack w="100%" alignItems="center" justifyContent="space-between" mb="4">
+              {this.props.email && (
+                <Box w="50%" alignItems="center">
+                  <Mailto email={this.props.email}>
+                    <Icon as={AntDesign} name="mail" size="sm"/>
+                  </Mailto>
+                </Box>
+              )}
+              {this.props.phoneNumber && (
+                <Box w="50%" alignItems="center">
+                  <TouchableOpacity onPress={() => phonecall(this.props.phoneNumber, true)}>
+                    <Icon as={AntDesign} name="phone" size="sm"/>
+                  </TouchableOpacity>
+                </Box>
+              )}
+            </HStack>
+            <HStack w="100%" alignItems="center" justifyContent="space-between" mb="4">
               <Pressable w="50%"
                          onPress={navigateToTerms}>
-                <Text p="2" textAlign="center" fontSize="sm">{this.props.t('TERMS_OF_SERVICE')}</Text>
+                <Text textAlign="left" fontSize="sm">{this.props.t('TERMS_OF_SERVICE')}</Text>
               </Pressable>
               <Pressable w="50%"
                          onPress={navigateToPricacy}>
-                <Text p="2" textAlign="center" fontSize="sm">{this.props.t('PRIVACY')}</Text>
+                <Text textAlign="right" fontSize="sm">{this.props.t('PRIVACY')}</Text>
               </Pressable>
             </HStack>
-          </View>
+            <View>
+              <Text>{VersionNumber.appVersion}</Text>
+            </View>
+          </VStack>
         </View>
       </SafeAreaView>
     )
@@ -200,16 +215,6 @@ const styles = StyleSheet.create({
     flex: 1,
     borderBottomColor: '#e0e0e0',
     borderBottomWidth: StyleSheet.hairlineWidth,
-  },
-  footer: {
-    alignItems: 'center',
-    width: '100%',
-    marginBottom: 5,
-  },
-  footerItem: {
-    width: '100%',
-    paddingVertical: 10,
-    alignItems: 'center',
   },
 })
 
