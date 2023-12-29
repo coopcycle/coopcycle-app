@@ -476,6 +476,6 @@
         "CART_ZERO_WASTE_POPUP_TEXT": "Bravo ! Votre panier contient un plat éligible à la livraison zéro-déchet avec notre partenaire « {{name}} ». Faites-vous livrer en boîtes consignées et retournez vos boîtes partout dans le réseau « {{name}} » ou à votre coursier à la prochaine commande. Vous pouvez désactiver cette option à tout moment.",
         "CART_ZERO_WASTE_POPUP_BUTTON_TEXT": "Jʼai compris",
         "TERMS_OF_SERVICE": "Conditions générales",
-        "PRIVACY": "Confidentialité",
+        "PRIVACY": "Confidentialité"
     }
 }
