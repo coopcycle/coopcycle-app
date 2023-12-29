@@ -131,6 +131,9 @@ class AddressAutocomplete extends Component {
               })
             }
           })
+        .catch(error => {
+          console.log('AddressAutocomplete; _autocomplete', error)
+        })
 
       } else {
         this.setState({
@@ -169,6 +172,9 @@ class AddressAutocomplete extends Component {
           }
 
           this.setState({ results })
+        })
+        .catch(error => {
+          console.log('AddressAutocomplete; _autocomplete', error)
         })
 
     }
@@ -241,6 +247,9 @@ class AddressAutocomplete extends Component {
           this.setState({ query: item.description, results: [] })
           this.props.onSelectAddress(AddressUtils.createAddressFromGoogleDetails(response.data.result))
         })
+        .catch(error => {
+          console.log('AddressAutocomplete; _onItemPress', error)
+        })
     }
 
     if (item.type === 'postcode') {
@@ -256,6 +265,9 @@ class AddressAutocomplete extends Component {
               postcode: response.data.result,
             })
           }
+        })
+        .catch(error => {
+          console.log('AddressAutocomplete; _onItemPress', error)
         })
     }
 
