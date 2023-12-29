@@ -183,11 +183,11 @@ class DrawerContent extends Component {
             <HStack w="100%" alignItems="center" justifyContent="space-between" mb="4">
               <Pressable w="50%"
                          onPress={navigateToTerms}>
-                <Text textAlign="left" fontSize="sm">{this.props.t('TERMS_OF_SERVICE')}</Text>
+                <Text textAlign="left" fontSize="xs">{this.props.t('TERMS_OF_SERVICE')}</Text>
               </Pressable>
               <Pressable w="50%"
                          onPress={navigateToPricacy}>
-                <Text textAlign="right" fontSize="sm">{this.props.t('PRIVACY')}</Text>
+                <Text textAlign="right" fontSize="xs">{this.props.t('PRIVACY')}</Text>
               </Pressable>
             </HStack>
             <View>
