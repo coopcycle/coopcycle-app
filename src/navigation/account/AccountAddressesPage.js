@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { Appearance, FlatList, Image, TouchableOpacity, View } from 'react-native';
+import { FlatList, Image, TouchableOpacity, View } from 'react-native';
 import { Divider, HStack, Heading, Text } from 'native-base';
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 import { loadAddresses, newAddress } from '../../redux/Account/actions'
 import ItemSeparator from '../../components/ItemSeparator'
 import AddressAutocomplete from '../../components/AddressAutocomplete';
-import { darkGreyColor, greyColor, whiteColor } from '../../styles/common';
+import { greyColor } from '../../styles/common';
 import { searchRestaurantsForAddress, setAddress } from '../../redux/Checkout/actions';
 import i18n from '../../i18n';
 import PropTypes from 'prop-types';
@@ -44,22 +44,19 @@ class AccountAddressesPage extends Component {
 
     const { addresses } = this.props
     const textInputContainerHeight = 54
-    const colorScheme = Appearance.getColorScheme()
     return (
       <View style={{ flex: 1 }}>
+        <View style={{ flex: 1, paddingHorizontal: 15 }}>
         <AddressAutocomplete
         inputContainerStyle={{
           justifyContent: 'center',
           borderWidth: 0,
-          padding: 15,
           height: textInputContainerHeight,
           borderRadius: 5,
         }}
         style={{
           height: (textInputContainerHeight * 0.7),
           borderRadius: 3,
-          flex: 1,
-          backgroundColor: colorScheme === 'dark' ? darkGreyColor : whiteColor,
         }}
         placeholder={ i18n.t('ENTER_NEW_ADDRESS') }
         onChangeText={ (text) => this.setState({ focused: text.length >= 3 }) }
@@ -68,6 +65,7 @@ class AccountAddressesPage extends Component {
         }}
         onBlur={ () => this.setState({ focused: false }) }
       />
+        </View>
         {!this.state.focused && <View style={{ flex: 4 }}>
           <Divider/>
           <Heading margin={3}>{ i18n.t('MY_ADDRESSES') }</Heading>

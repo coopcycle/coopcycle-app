@@ -1,10 +1,10 @@
 // @see https://github.com/uuidjs/uuid#getrandomvalues-not-supported
 import 'react-native-get-random-values'
 import React, { Component } from 'react'
-import { Appearance, Image, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native'
+import { Image, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native'
 import PropTypes from 'prop-types'
 import _ from 'lodash'
-import { Icon, Text, useColorMode } from 'native-base'
+import { Icon, Text, useColorMode, useColorModeValue } from 'native-base'
 import qs from 'qs'
 import axios from 'axios'
 import { withTranslation } from 'react-i18next'
@@ -20,6 +20,11 @@ import { circle, transformRotate } from '@turf/turf'
 import { localeDetector } from '../i18n'
 import AddressUtils from '../utils/Address'
 import ItemSeparator from './ItemSeparator'
+import {
+  useBackgroundColor,
+  useBaseTextColor,
+} from '../styles/theme'
+import { darkGreyColor, whiteColor } from '../styles/common'
 
 const fuseOptions = {
   shouldSort: true,
@@ -38,9 +43,10 @@ const fuseOptions = {
 const PoweredByGoogle = () => {
 
   const { colorMode } = useColorMode()
+  const backgroundColor = useBackgroundColor()
 
   return (
-    <View style={ [ styles.poweredContainer, { backgroundColor: colorMode === 'dark' ? 'black' : 'white' }] }>
+    <View style={ [ styles.poweredContainer, { backgroundColor: backgroundColor }] }>
       { colorMode !== 'dark' && <Image
         resizeMode="contain"
         source={ require('../../assets/images/powered_by_google_on_white.png') } /> }
@@ -282,7 +288,6 @@ class AddressAutocomplete extends Component {
       }
       text = parts.join(' - ')
       itemStyle.push({
-        backgroundColor: '#fff3cd',
         flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
@@ -304,10 +309,10 @@ class AddressAutocomplete extends Component {
 
     return (
       <TouchableOpacity onPress={ () => this._onItemPress(item) } style={ itemStyle } { ...itemProps }>
-        <Text style={{ fontSize: 14, flex: 1, color: '#856404' }} numberOfLines={1} ellipsizeMode="tail">
+        <Text style={{ fontSize: 14, flex: 1, color: this.props.itemTextColor }} numberOfLines={1} ellipsizeMode="tail">
           { text }</Text>
         { item.type === 'fuse' && (
-          <Icon as={FontAwesome5} name="star" regular style={{ fontSize: 16, color: '#856404', paddingLeft: 5 }} />
+          <Icon as={FontAwesome5} name="star" regular style={{ fontSize: 16, color: this.props.itemTextColor, paddingLeft: 5 }} />
         ) }
       </TouchableOpacity>
     )
@@ -360,8 +365,6 @@ class AddressAutocomplete extends Component {
   }
 
   render() {
-
-    const colorScheme = Appearance.getColorScheme()
     const { style, flatListProps, onSelectAddress, renderTextInput, placeholder, ...otherProps } = this.props
 
     let finalPlaceholder = placeholder || this.props.t('ENTER_ADDRESS')
@@ -381,7 +384,10 @@ class AddressAutocomplete extends Component {
         placeholder={ finalPlaceholder }
         onChangeText={ this._onChangeText.bind(this) }
         flatListProps={{
-          style: { margin: 0 }, // reset default margins on Android
+          style: {
+            margin: 0, // reset default margins on Android
+            backgroundColor: this.props.controlBackgroundColor
+          },
           keyboardShouldPersistTaps: 'always',
           keyExtractor: (item, i) => `prediction-${i}`,
           renderItem: this.renderItem.bind(this),
@@ -390,11 +396,9 @@ class AddressAutocomplete extends Component {
           ...flatListProps,
         }}
         renderTextInput={ props => this.renderTextInput(props) }
-        listContainerStyle={{
-          backgroundColor: colorScheme === 'dark' ? 'black' : 'white',
-        }}
         style={{
-          color: colorScheme === 'dark' ? 'white' : '#333',
+          color: this.props.baseTextColor,
+          backgroundColor: this.props.controlBackgroundColor,
           borderColor: '#b9b9b9',
           borderRadius: 20,
           paddingVertical: 8,
@@ -457,4 +461,22 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps)(withTranslation()(AddressAutocomplete))
+function withHooks(ClassComponent) {
+  return function CompWithHook(props) {
+    const baseTextColor = useBaseTextColor()
+
+    const controlBackgroundColor = useColorModeValue(whiteColor, darkGreyColor)
+    const itemTextColor = useColorModeValue('#856404', baseTextColor)
+
+    return (
+      <ClassComponent
+        {...props}
+        baseTextColor={baseTextColor}
+        controlBackgroundColor={controlBackgroundColor}
+        itemTextColor={itemTextColor}
+      />
+    )
+  }
+}
+
+export default connect(mapStateToProps)(withTranslation()(withHooks(AddressAutocomplete)))

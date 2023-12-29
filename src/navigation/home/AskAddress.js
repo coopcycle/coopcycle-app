@@ -1,5 +1,5 @@
-import { darkGreyColor, lightGreyColor, primaryColor, whiteColor } from '../../styles/common';
-import { Box, Heading, Text, useColorModeValue } from 'native-base'
+import { lightGreyColor, primaryColor, whiteColor } from '../../styles/common';
+import { Box, Heading, Text } from 'native-base'
 import AddressAutocomplete from '../../components/AddressAutocomplete';
 import React, { useState } from 'react'
 import { searchRestaurantsForAddress } from '../../redux/Checkout/actions';
@@ -12,8 +12,6 @@ const textInputContainerHeight = 54
 const autocompleteListMarginBottom = 8
 
 const AskAddress = (props) => {
-  const backgroundColor = useColorModeValue(whiteColor, darkGreyColor)
-
   const [ autocompleteListHeight, setAutocompleteListHeight ] = useState(0)
 
   const onLayout = event => {
@@ -41,7 +39,6 @@ const AskAddress = (props) => {
           height: (textInputContainerHeight * 0.7),
           borderRadius: 3,
           borderWidth: 0,
-          backgroundColor: backgroundColor,
         }}
         flatListProps={{
           maxHeight: autocompleteListHeight
