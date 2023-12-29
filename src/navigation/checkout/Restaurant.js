@@ -31,6 +31,7 @@ import {
 import BottomModal from '../../components/BottomModal';
 import DangerAlert from '../../components/DangerAlert';
 import OpeningHoursSpecification from '../../utils/OpeningHoursSpecification';
+import Markdown from '../../components/Markdown'
 
 const LoadingPhantom = (props) =>
   <HStack w="95%" space={6} p="4">
@@ -137,7 +138,7 @@ function Restaurant(props) {
       >
           <Box style={styles.center}>
             <Heading>{restaurant.name}</Heading>
-            <Text>{restaurant.description}</Text>
+            <Markdown>{restaurant.description}</Markdown>
             <Text bold padding={3}>{i18n.t('RESTAURANT_OPENING_HOURS')}</Text>
             <OpeningHours openingHoursSpecification={props.openingHoursSpecification} />
           </Box>
