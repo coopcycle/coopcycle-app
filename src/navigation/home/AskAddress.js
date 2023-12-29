@@ -1,24 +1,34 @@
-import { darkGreyColor, lightGreyColor, primaryColor, whiteColor } from '../../styles/common';
-import { Box, Heading, Text } from 'native-base';
+import { lightGreyColor, primaryColor, whiteColor } from '../../styles/common';
+import { Box, Heading, Text } from 'native-base'
 import AddressAutocomplete from '../../components/AddressAutocomplete';
-import { Appearance, View } from 'react-native';
-import React from 'react';
+import React, { useState } from 'react'
 import { searchRestaurantsForAddress } from '../../redux/Checkout/actions';
 import { newAddress } from '../../redux/Account/actions';
 import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
+import KeyboardAdjustView from '../../components/KeyboardAdjustView'
 
 const textInputContainerHeight = 54
+const autocompleteListMarginBottom = 8
 
 const AskAddress = (props) => {
+  const [ autocompleteListHeight, setAutocompleteListHeight ] = useState(0)
 
-  const colorScheme = Appearance.getColorScheme()
-  return <View style={{ backgroundColor: primaryColor, flex: 1, padding: 20 }}>
+  const onLayout = event => {
+    const currentFrame = event.nativeEvent.layout
+    const listHeight = currentFrame.height - textInputContainerHeight - autocompleteListMarginBottom
+    
+    if (listHeight !== autocompleteListHeight) {
+      setAutocompleteListHeight(listHeight)
+    }
+  }
+
+  return <KeyboardAdjustView style={{ backgroundColor: primaryColor, flex: 1, padding: 20 }}>
     <Box style={{ flex: 1, justifyContent: 'flex-end', marginBottom: 20 }}>
       <Heading color={whiteColor}>{ props.t('WHERE_ARE_YOU') }</Heading>
       <Text color={lightGreyColor}>{ props.t('ASK_ADDRESS_DISCLAIMER') }</Text>
     </Box>
-    <Box style={{ flex:2 }}>
+    <Box style={{ flex:2 }} onLayout={onLayout}>
       <AddressAutocomplete
         inputContainerStyle={{
           justifyContent: 'center',
@@ -29,7 +39,9 @@ const AskAddress = (props) => {
           height: (textInputContainerHeight * 0.7),
           borderRadius: 3,
           borderWidth: 0,
-          backgroundColor: colorScheme === 'dark' ? darkGreyColor : whiteColor,
+        }}
+        flatListProps={{
+          maxHeight: autocompleteListHeight
         }}
         onSelectAddress={ (address) => {
           props.newAddress(address)
@@ -37,7 +49,7 @@ const AskAddress = (props) => {
         }}
       />
     </Box>
-  </View>
+  </KeyboardAdjustView>
 }
 
 
