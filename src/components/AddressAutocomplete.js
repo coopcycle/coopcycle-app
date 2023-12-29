@@ -362,7 +362,7 @@ class AddressAutocomplete extends Component {
   render() {
 
     const colorScheme = Appearance.getColorScheme()
-    const { onSelectAddress, renderTextInput, placeholder, ...otherProps } = this.props
+    const { style, flatListProps, onSelectAddress, renderTextInput, placeholder, ...otherProps } = this.props
 
     let finalPlaceholder = placeholder || this.props.t('ENTER_ADDRESS')
     if (this.props.country === 'gb' && !this.state.postcode) {
@@ -381,18 +381,16 @@ class AddressAutocomplete extends Component {
         placeholder={ finalPlaceholder }
         onChangeText={ this._onChangeText.bind(this) }
         flatListProps={{
+          style: { margin: 0 }, // reset default margins on Android
           keyboardShouldPersistTaps: 'always',
           keyExtractor: (item, i) => `prediction-${i}`,
           renderItem: this.renderItem.bind(this),
           ItemSeparatorComponent: ItemSeparator,
           ListFooterComponent: (this.props.country === 'gb' ? PoweredByIdealPostcodes : PoweredByGoogle),
+          ...flatListProps,
         }}
         renderTextInput={ props => this.renderTextInput(props) }
         listContainerStyle={{
-          backgroundColor: colorScheme === 'dark' ? 'black' : 'white',
-        }}
-        listStyle={{
-          margin: 0,
           backgroundColor: colorScheme === 'dark' ? 'black' : 'white',
         }}
         style={{
@@ -402,7 +400,7 @@ class AddressAutocomplete extends Component {
           paddingVertical: 8,
           paddingHorizontal: 15,
           borderWidth: 1,
-          ...this.props.style,
+          ...style,
         }}
         />
     )

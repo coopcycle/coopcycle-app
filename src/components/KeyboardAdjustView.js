@@ -37,7 +37,7 @@ export default function KeyboardAdjustView({
     return (
       <View style={style} onLayout={onLayout}>
         <KeyboardAvoidingView
-          style={style}
+          style={{ flex: 1 }}
           keyboardVerticalOffset={topOffset}
           behavior={androidBehavior}>
           {children}
@@ -84,10 +84,10 @@ export default function KeyboardAdjustView({
       // extra View is a workaround for this issue: https://github.com/facebook/react-native/issues/35599
       <View style={style} onLayout={onLayout}>
         <KeyboardAvoidingView
-          style={style}
+          style={{ flex: 1 }}
           keyboardVerticalOffset={topOffset}
           behavior={'height'}>
-          <AvoidSoftInputView style={style} avoidOffset={avoidOffset}>
+          <AvoidSoftInputView style={{ flex: 1 }} avoidOffset={avoidOffset}>
             {children}
           </AvoidSoftInputView>
         </KeyboardAvoidingView>
