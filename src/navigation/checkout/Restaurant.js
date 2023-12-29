@@ -121,14 +121,14 @@ function Restaurant(props) {
           onItemClick={ menuItem => navigate('CheckoutProductDetails', { product: menuItem, restaurant }) }
           isItemLoading={ menuItem => props.loadingItems.includes(menuItem.identifier) } /> }
       </View>
-      { showFooter && (
+      { showFooter ? (
         <CartFooter
           onSubmit={ () => navigate('CheckoutSummary', { restaurant }) }
           cart={props.cart}
           initLoading={props.cartLoading}
           testID="cartSubmit"
           disabled={ isLoading } />
-      ) }
+      ) : null }
 
 
       <BottomModal isVisible={infoModal}
