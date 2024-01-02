@@ -12343,10 +12343,10 @@ react-native-maps-super-cluster@^1.6.0:
     "@mapbox/geo-viewport" "^0.4.0"
     supercluster "^6.0.2"
 
-react-native-maps@^1.8.3:
-  version "1.8.3"
-  resolved "https://registry.yarnpkg.com/react-native-maps/-/react-native-maps-1.8.3.tgz#6dbdae999704dd19faba49912282978b2405c581"
-  integrity sha512-ilkknT9Rvy0Cz6RTdtowGUB5XI/hFNU/QsUv1KRUE7m7vKxEIaKvhVpDxZ2yee7uyXACn/uoSYggakZ//8VSiQ==
+react-native-maps@^1.8.4:
+  version "1.8.4"
+  resolved "https://registry.yarnpkg.com/react-native-maps/-/react-native-maps-1.8.4.tgz#41f91b597101ec58729c6cbb46dc347f52af68d5"
+  integrity sha512-PL7XX4dddTZB7PHDY0qslsJls5X2uRL2FSfUmiH4CFXIJ2l8QTaeWM6BLwnBswNUL6p4lQQeXuiATAhaRLHT6g==
   dependencies:
     "@types/geojson" "^7946.0.10"
 
@@ -12406,10 +12406,10 @@ react-native-reanimated@^3.6.1:
     convert-source-map "^2.0.0"
     invariant "^2.2.4"
 
-react-native-safe-area-context@^4.8.1:
-  version "4.8.1"
-  resolved "https://registry.yarnpkg.com/react-native-safe-area-context/-/react-native-safe-area-context-4.8.1.tgz#b1edac9fc45b4f13b1bb6a0ed4154e9e5bb0d15c"
-  integrity sha512-gYoZyxKuWHfxXHTFGpkFKgfRHDAqTs+I/NZsiXdllMmIfOme25MGPHVmuHrA0Jq4rg189x/JiscFCv2IvDCC6A==
+react-native-safe-area-context@^4.8.2:
+  version "4.8.2"
+  resolved "https://registry.yarnpkg.com/react-native-safe-area-context/-/react-native-safe-area-context-4.8.2.tgz#e6b3d8acf3c6afcb4b5db03a97f9c37df7668f65"
+  integrity sha512-ffUOv8BJQ6RqO3nLml5gxJ6ab3EestPiyWekxdzO/1MQ7NF8fW1Mzh1C5QE9yq573Xefnc7FuzGXjtesZGv7cQ==
 
 react-native-screens@^3.29.0:
   version "3.29.0"
