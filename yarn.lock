@@ -12424,10 +12424,10 @@ react-native-share@^7.9.1:
   resolved "https://registry.yarnpkg.com/react-native-share/-/react-native-share-7.9.1.tgz#36d1cb9786c58ba14ae31cc72f10b3179a045953"
   integrity sha512-v4b6lD4YsiCJB14kjXons+d5cvvxgLv8OdBF0aP58X8Qqbcj81QNv1icAxiNmhxFx5OFYsu/E6v+o8S0GSaneQ==
 
-react-native-signature-canvas@^4.4.1:
-  version "4.4.1"
-  resolved "https://registry.yarnpkg.com/react-native-signature-canvas/-/react-native-signature-canvas-4.4.1.tgz#cb320dcf14b128ba58c299d52c7fb8ea6ee10ba9"
-  integrity sha512-2FMo88796tnRnQ8uN+dLpBRYcpzr08kcOqkVOVxE3TVvBUAIeEoSbCPa3URHkApMXLLDADU8dpXJK3eTpCeBEA==
+react-native-signature-canvas@^4.6.1:
+  version "4.7.1"
+  resolved "https://registry.yarnpkg.com/react-native-signature-canvas/-/react-native-signature-canvas-4.7.1.tgz#76043753c962c944f47723e0d1f1f9c0324dcfc0"
+  integrity sha512-80+FwydjaVMZGE/QXNVQyObnM/rAWikpnYnunDJ01H0zCJ5GY860E121ztmT8vAWr+Z6RsXCID2ff6hsSeM0yw==
 
 react-native-sound@^0.11.2:
   version "0.11.2"
@@ -12472,10 +12472,10 @@ react-native-version-number@^0.3.6:
   resolved "https://registry.yarnpkg.com/react-native-version-number/-/react-native-version-number-0.3.6.tgz#dd8b1435fc217df0a166d7e4a61fdc993f3e7437"
   integrity sha512-TdyXiK90NiwmSbmAUlUBOV6WI1QGoqtvZZzI5zQY4fKl67B3ZrZn/h+Wy/OYIKKFMfePSiyfeIs8LtHGOZ/NgA==
 
-react-native-webview@^11.23.1:
-  version "11.23.1"
-  resolved "https://registry.yarnpkg.com/react-native-webview/-/react-native-webview-11.23.1.tgz#6a4bf2620e491dd4fecf4e6dc079005117fae12c"
-  integrity sha512-bmqsdg4RYOUYD37R9XTrQALm7eD62KbLNPRfgvpLGd1SjaurvAjjsLrLN4mt6yOtKOMKeZvlcAl3x6De6cCQsA==
+react-native-webview@^13.3.1:
+  version "13.6.3"
+  resolved "https://registry.yarnpkg.com/react-native-webview/-/react-native-webview-13.6.3.tgz#f3d26e942ef5cc5a07547f2e47903aa81a68e25e"
+  integrity sha512-IApO0JSj0uAWsBGKWagyfgDYoX29piiMYLmkHtRjKeL1rIVjLoR/bMe7KJ/0X47y86b//a6u3cYQtphyay+F2A==
   dependencies:
     escape-string-regexp "2.0.0"
     invariant "2.2.4"
