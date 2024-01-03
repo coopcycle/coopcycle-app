@@ -16,6 +16,8 @@ import Config from 'react-native-config';
 import Server from './account/components/Server'
 import { selectIsSpinnerDelayEnabled } from '../redux/App/selectors'
 
+import * as Sentry from '@sentry/react-native';
+
 class Loading extends Component {
 
   constructor(props) {
@@ -76,6 +78,8 @@ class Loading extends Component {
           this.setState({ modal: this.props.modal })
         }
       } else {
+        // added to track the number of the beta version users who have the delay disabled, could be removed later
+        Sentry.captureMessage('Spinner delay is not applied')
         this.setState({ modal: this.props.modal })
       }
     }
