@@ -22,6 +22,7 @@ class Loading extends Component {
     this.state = {
       ready: false,
       error: false,
+      modal: props.modal,
     }
   }
 
@@ -63,6 +64,18 @@ class Loading extends Component {
     })
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.modal !== this.props.modal) {
+      if (!prevProps.modal.show && this.props.modal.show) {
+        // add an extra delay to make sure that the modal is shown after the Spinner is hidden:
+        // https://github.com/coopcycle/coopcycle-app/blob/master/src/components/Spinner.js#L22
+        setTimeout(() => this.setState({ modal: this.props.modal }), 500)
+      } else {
+        this.setState({  modal: this.props.modal })
+      }
+    }
+  }
+
   renderError() {
     return (
       <View style={ styles.error }>
@@ -81,13 +94,13 @@ class Loading extends Component {
   }
 
   render() {
-    const close = () => this.props.modal.skippable && this.props.closeModal()
-    const swipeDirection = this.props.modal.skippable ? [ 'down', 'up', 'left', 'right' ] : []
+    const close = () => this.state.modal.skippable && this.props.closeModal()
+    const swipeDirection = this.state.modal.skippable ? [ 'down', 'up', 'left', 'right' ] : []
 
     return <>{this.bodyRender()}
-      <Modal isVisible={this.props.modal.show} onSwipeComplete={close} swipeDirection={swipeDirection} onBackdropPress={close}>
-        <View style={{ ...styles.content, ...styles[`${this.props.modal.type}Modal`] }}>
-          <Text style={styles[`${this.props.modal.type}Modal`]}>{this.props.modal.content}</Text>
+      <Modal isVisible={this.state.modal.show} onSwipeComplete={close} swipeDirection={swipeDirection} onBackdropPress={close}>
+        <View style={{ ...styles.content, ...styles[`${this.state.modal.type}Modal`] }}>
+          <Text style={styles[`${this.state.modal.type}Modal`]}>{this.state.modal.content}</Text>
         </View>
       </Modal>
     </>
