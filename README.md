@@ -79,9 +79,8 @@ Setup - iOS
 iOS development requires macOS and [CocoaPods](https://cocoapods.org/).
 
 ```
-$ sudo gem install -n /usr/local/bin cocoapods
-$ gem install cocoapods-user-defined-build-types
-$ cd ios && pod install
+$ bundle install
+$ cd ios && USE_FRAMEWORKS=static NO_FLIPPER=1 bundle exec pod install
 ```
 
 Running App
