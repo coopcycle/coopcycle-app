@@ -83,7 +83,17 @@ const About = ({ brandName, motto, navigate }) => {
   )
 }
 
+const TAPS_TO_SHOW_FEATURE_FLAGS = 3
+
 class DrawerContent extends Component {
+
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      pressedAppVersionCounter: 0,
+    }
+  }
 
   render() {
 
@@ -119,6 +129,16 @@ class DrawerContent extends Component {
           PhoneNumberFormat.NATIONAL,
         )
       } catch (e) {
+      }
+    }
+
+    const onAppVersionPress = () => {
+      this.setState({ pressedAppVersionCounter: this.state.pressedAppVersionCounter + 1 })
+      if (this.state.pressedAppVersionCounter >= TAPS_TO_SHOW_FEATURE_FLAGS) {
+        this.setState({ pressedAppVersionCounter: 0 })
+        this.props.navigation.navigate('FeatureFlagsNav', {
+          screen: 'FeatureFlagsHome',
+        })
       }
     }
 
@@ -190,9 +210,9 @@ class DrawerContent extends Component {
                 <Text textAlign="right" fontSize="xs">{this.props.t('PRIVACY')}</Text>
               </Pressable>
             </HStack>
-            <View>
+            <Pressable onPress={onAppVersionPress}>
               <Text>{VersionNumber.appVersion}</Text>
-            </View>
+            </Pressable>
           </VStack>
         </View>
       </SafeAreaView>
