@@ -14,6 +14,7 @@ import DrawerNavigator from './navigators/DrawerNavigator'
 import Modal from 'react-native-modal';
 import Config from 'react-native-config';
 import Server from './account/components/Server'
+import { selectIsSpinnerDelayEnabled } from '../redux/App/selectors'
 
 class Loading extends Component {
 
@@ -66,12 +67,16 @@ class Loading extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.modal !== this.props.modal) {
-      if (!prevProps.modal.show && this.props.modal.show) {
-        // add an extra delay to make sure that the modal is shown after the Spinner is hidden:
-        // https://github.com/coopcycle/coopcycle-app/blob/master/src/components/Spinner.js#L22
-        setTimeout(() => this.setState({ modal: this.props.modal }), 500)
+      if (this.props.isSpinnerDelayEnabled) {
+        if (!prevProps.modal.show && this.props.modal.show) {
+          // add an extra delay to make sure that the modal is shown after the Spinner is hidden:
+          // https://github.com/coopcycle/coopcycle-app/blob/master/src/components/Spinner.js#L22
+          setTimeout(() => this.setState({ modal: this.props.modal }), 500)
+        } else {
+          this.setState({ modal: this.props.modal })
+        }
       } else {
-        this.setState({  modal: this.props.modal })
+        this.setState({ modal: this.props.modal })
       }
     }
   }
@@ -187,6 +192,7 @@ function mapStateToProps(state) {
     modal: state.app.modal,
     customBuild: state.app.customBuild,
     firstRun: state.app.firstRun,
+    isSpinnerDelayEnabled: selectIsSpinnerDelayEnabled(state)
   }
 }
 
