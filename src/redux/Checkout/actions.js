@@ -689,8 +689,8 @@ export function searchRestaurantsForAddress(address, options = {}) {
         dispatch(wrapRestaurantsWithTiming(res['hydra:member']))
       })
       .catch(e => {
-        _maintenanceModeHandler(e, dispatch)
         dispatch(loadRestaurantsFailure(e))
+        _maintenanceModeHandler(e, dispatch)
       })
   }
 }
@@ -725,8 +725,8 @@ export function searchRestaurants(options = {}) {
         dispatch(wrapRestaurantsWithTiming(values[0]['hydra:member']))
       })
       .catch(e => {
-        _maintenanceModeHandler(e, dispatch)
         dispatch(loadRestaurantsFailure(e))
+        _maintenanceModeHandler(e, dispatch)
       })
   }
 }
