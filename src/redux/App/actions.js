@@ -77,6 +77,8 @@ export const LOAD_PRIVACY_POLICY_REQUEST = '@app/LOAD_PRIVACY_POLICY_REQUEST'
 export const LOAD_PRIVACY_POLICY_SUCCESS = '@app/LOAD_PRIVACY_POLICY_SUCCESS'
 export const LOAD_PRIVACY_POLICY_FAILURE = '@app/LOAD_PRIVACY_POLICY_FAILURE'
 
+export const SET_SPINNER_DELAY_ENABLED = '@app/SET_IS_SPINNER_DELAY_ENABLED'
+
 /*
  * Action Creators
  */
@@ -143,6 +145,8 @@ const loadPrivacyPolicyFailure = createAction(LOAD_PRIVACY_POLICY_FAILURE)
 
 const registrationErrors = createAction(REGISTRATION_ERRORS)
 const loginByEmailErrors = createAction(LOGIN_BY_EMAIL_ERRORS)
+
+export const setSpinnerDelayEnabled = createAction(SET_SPINNER_DELAY_ENABLED)
 
 function setBaseURL(baseURL) {
   return (dispatch, getState) => {

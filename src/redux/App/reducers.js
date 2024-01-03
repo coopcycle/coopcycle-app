@@ -4,7 +4,8 @@
  */
 import { CONNECTED, DISCONNECTED } from '../middlewares/CentrifugoMiddleware'
 import {
-  ACCEPT_PRIVACY_POLICY, ACCEPT_TERMS_AND_CONDITIONS,
+  ACCEPT_PRIVACY_POLICY,
+  ACCEPT_TERMS_AND_CONDITIONS,
   AUTHENTICATION_FAILURE,
   AUTHENTICATION_REQUEST,
   AUTHENTICATION_SUCCESS,
@@ -39,7 +40,12 @@ import {
   SET_HTTP_CLIENT,
   SET_INTERNET_REACHABLE,
   SET_LOADING,
-  SET_MODAL, SET_SELECT_SERVER_ERROR, SET_SERVERS, SET_SETTINGS, SET_USER,
+  SET_MODAL,
+  SET_SELECT_SERVER_ERROR,
+  SET_SERVERS,
+  SET_SETTINGS,
+  SET_SPINNER_DELAY_ENABLED,
+  SET_USER,
 } from './actions'
 import Config from 'react-native-config';
 
@@ -91,6 +97,7 @@ const initialState = {
   loadingPrivacyPolicy: false,
   termsAndConditionsText: '',
   privacyPolicyText: '',
+  isSpinnerDelayEnabled: true,
 }
 
 export default (state = initialState, action = {}) => {
@@ -379,6 +386,12 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         loadingTerms: false,
+      }
+
+    case SET_SPINNER_DELAY_ENABLED:
+      return {
+        ...state,
+        isSpinnerDelayEnabled: action.payload,
       }
   }
 
