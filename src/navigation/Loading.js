@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
-import { ActivityIndicator, InteractionManager, StyleSheet, View } from 'react-native'
+import { InteractionManager, StyleSheet, View } from 'react-native'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
-import { Button, Icon, Text } from 'native-base'
-import Ionicons from 'react-native-vector-icons/Ionicons'
+import { Text } from 'native-base'
 
 import Servers from '../Server'
 import AppUser from '../AppUser'
@@ -18,7 +17,9 @@ import { selectIsSpinnerDelayEnabled } from '../redux/App/selectors'
 
 import * as Sentry from '@sentry/react-native';
 
+import FullScreenLoadingIndicator from './FullScreenLoadingIndicator'
 import { selectCustomBuild } from '../redux/App/selectors'
+import LoadingError from './LoadingError'
 
 class Loading extends Component {
 
@@ -120,7 +121,7 @@ class Loading extends Component {
   bodyRender() {
 
     if (this.state.error) {
-      return this.renderError()
+      return <LoadingError />
     }
 
     if (this.state.ready) {
@@ -135,27 +136,12 @@ class Loading extends Component {
     }
 
     return (
-      <View style={ styles.loader }>
-        <ActivityIndicator size="large" color="#c7c7c7" />
-      </View>
+      <FullScreenLoadingIndicator debugHint="Connecting to the server ..." />
     )
   }
 }
 
 const styles = StyleSheet.create({
-  loader: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  error: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  errorText: {
-    marginBottom: 10,
-  },
   content: {
     backgroundColor: 'white',
     padding: 22,
