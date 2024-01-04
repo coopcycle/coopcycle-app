@@ -7,6 +7,8 @@ import { selectIsDispatchFetching } from '../Dispatch/selectors'
 export const selectUser = state => state.app.user
 const selectDefaultHttpClient = state => state.app.httpClient
 
+export const selectCustomBuild = state => state.app.customBuild
+
 export const selectIsAuthenticated = createSelector(
   selectUser,
   (user) => !!(user && user.isAuthenticated())

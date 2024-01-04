@@ -18,6 +18,8 @@ import { selectIsSpinnerDelayEnabled } from '../redux/App/selectors'
 
 import * as Sentry from '@sentry/react-native';
 
+import { selectCustomBuild } from '../redux/App/selectors'
+
 class Loading extends Component {
 
   constructor(props) {
@@ -194,7 +196,7 @@ function mapStateToProps(state) {
     baseURL: state.app.baseURL,
     httpClient: state.app.httpClient,
     modal: state.app.modal,
-    customBuild: state.app.customBuild,
+    customBuild: selectCustomBuild(state),
     firstRun: state.app.firstRun,
     isSpinnerDelayEnabled: selectIsSpinnerDelayEnabled(state)
   }
