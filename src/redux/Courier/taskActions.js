@@ -40,6 +40,7 @@ export const CLEAR_TASK_FILTER = 'CLEAR_TASK_FILTER'
 export const SET_TASK_FILTER = 'SET_TASK_FILTER'
 export const SET_TASKS_CHANGED_ALERT_SOUND = 'SET_TASKS_CHANGED_ALERT_SOUND'
 export const SET_KEEP_AWAKE = 'SET_KEEP_AWAKE'
+export const SET_POLYLINE_ON = 'SET_POLYLINE_ON'
 export const SET_SIGNATURE_SCREEN_FIRST = 'SET_SIGNATURE_SCREEN_FIRST'
 
 /*
@@ -73,6 +74,7 @@ export const setTasksFilter = createAction(SET_TASK_FILTER)
 const _setTasksChangedAlertSound = createAction(SET_TASKS_CHANGED_ALERT_SOUND)
 export const setSignatureScreenFirst = createAction(SET_SIGNATURE_SCREEN_FIRST)
 export const setKeepAwake = createAction(SET_KEEP_AWAKE)
+export const setPolylineOn = createAction(SET_POLYLINE_ON)
 
 /**
  * Side-effects

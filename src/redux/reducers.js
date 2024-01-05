@@ -56,7 +56,7 @@ const tasksUiPersistConfig = {
   key: 'ui.tasks',
   version: 0,
   storage: AsyncStorage,
-  whitelist: [ 'excludeFilters', 'tasksChangedAlertSound', 'keepAwake', 'signatureScreenFirst' ],
+  whitelist: [ 'excludeFilters', 'tasksChangedAlertSound', 'keepAwake', 'isPolylineOn', 'signatureScreenFirst' ],
   migrate: (state) => {
 
     if (!state) {

@@ -139,6 +139,7 @@
         "INVALID_PASSWORD_CONFIRMATION": "La confirmation du mot de passe ne correspond pas",
         "TASKS_FILTER": "Filtrer les tâches",
         "HIDE_DONE_TASKS": "Masquer les tâches effectuées",
+        "TASKS_SHOW_POLYLINE": "Montrer la ligne entre les tâches",
         "HIDE_FAILED_TASKS": "Masquer les tâches ayant échoué",
         "HIDE_TASKS_TAGGED_WITH": "Masquer les tâches marquées avec",
         "RESTAURANT_LIST_CLICK_BELOW": "Cliquez sur un restaurant dans la liste ci-dessous",
