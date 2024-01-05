@@ -42,7 +42,7 @@ import {
   selectPictures,
   selectSignatures,
 } from '../../redux/Courier'
-import { greenColor, redColor } from '../../styles/common'
+import { greenColor, yellowColor } from '../../styles/common'
 import { doneIconName, failedIconName } from './styles/common'
 import ModalContent from '../../components/ModalContent'
 import { Picker } from '../../components/Picker'
@@ -238,7 +238,7 @@ class CompleteTask extends Component {
 
 
     const buttonIconName = success ? doneIconName : failedIconName
-    const footerBgColor = success ? greenColor : redColor
+    const footerBgColor = success ? greenColor : yellowColor
     const footerText = success ? this.props.t('VALIDATE') : this.props.t('MARK_FAILED')
     const onPress = success ? this.markTaskDone.bind(this) : this.markTaskFailed.bind(this)
 
