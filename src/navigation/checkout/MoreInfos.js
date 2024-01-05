@@ -234,7 +234,7 @@ function mapStateToProps(state, ownProps) {
     // FIXME
     // For click & collect, we need to retrieve the customer phone number
     // This needs a change server side
-    telephone: fulfillmentMethod === 'delivery' ? (state.checkout.cart?.shippingAddress?.telephone || '') : '',
+    telephone: fulfillmentMethod === 'delivery' ? (cart?.shippingAddress?.telephone || '') : '',
     email: state.checkout.guest ? state.checkout.guest.email : '',
     user: state.app.user,
     isAuthenticated: selectIsAuthenticated(state),
