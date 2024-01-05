@@ -7,7 +7,7 @@ import moment from 'moment'
 import { withTranslation } from 'react-i18next'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
-import { greenColor, redColor } from '../styles/common'
+import { greenColor, redColor, yellowColor } from '../styles/common'
 import {
   doingIconName,
   doneIconName,
@@ -80,7 +80,7 @@ const TaskStatusIcon = ({ task }) => {
 const SwipeButtonContainer = props => {
 
   const { onPress, left, right, children, ...otherProps } = props
-  const backgroundColor = left ? greenColor : redColor
+  const backgroundColor = left ? greenColor : yellowColor
   const alignItems = left ? 'flex-start' : 'flex-end'
 
   return (
