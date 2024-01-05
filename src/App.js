@@ -18,6 +18,7 @@ import KeyboardManager from 'react-native-keyboard-manager'
 
 import Config from 'react-native-config'
 import * as Sentry from '@sentry/react-native'
+import { useFlipper } from '@react-navigation/devtools';
 
 if (!__DEV__) {
   Sentry.init({
@@ -121,6 +122,7 @@ const linking = {
 }
 
 const App = () => {
+  useFlipper(navigationRef);
 
   const colorScheme = useColorScheme()
 

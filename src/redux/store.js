@@ -18,6 +18,7 @@ import { ringOnTaskListUpdated } from './Courier/taskMiddlewares'
 import CentrifugoMiddleware from './middlewares/CentrifugoMiddleware'
 import { filterExpiredCarts } from './Checkout/middlewares';
 import Config from 'react-native-config';
+import createDebugger from 'redux-flipper'
 
 const middlewares = [
   thunk,
@@ -40,7 +41,8 @@ if (!Config.DEFAULT_SERVER) {
 }
 
 if (process.env.NODE_ENV === 'development') {
-  middlewares.push(createLogger({ collapsed: true }))
+  // middlewares.push(createLogger({ collapsed: true }));
+  middlewares.push(createDebugger());
 }
 
 const middlewaresProxy = (middlewaresList) => {
