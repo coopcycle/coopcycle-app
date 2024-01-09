@@ -61,7 +61,7 @@ const initialState = {
     nonInputError: null,
     requested: false,
   },
-  resumeCheckoutAfterActivation: false,
+  resumeCheckoutAfterActivation: null, // vendor id where checkout was initiated
   servers: [],
   selectServerError: null,
   settings: {

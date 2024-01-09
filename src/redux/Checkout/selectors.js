@@ -58,11 +58,14 @@ export const selectCartByVendor = createSelector(
 
 export const selectRestaurant = createSelector(
   state => state.checkout.restaurants,
+  state => state.checkout.carts,
   state => state.checkout.restaurant,
-  (restaurants, restaurant) => {
-    return _.find(restaurants, { '@id': restaurant }) ?? null
+  (restaurants, carts, restaurant) => {
+    const restaurantsWithCarts = Object.values(carts).map(c => c.restaurant)
+    return _.find(_.uniqBy(restaurants.concat(restaurantsWithCarts), '@id'), { '@id': restaurant }) ?? null
   }
 )
+
 export const selectRestaurantWithHours = createSelector(
   selectRestaurant,
   (selected_restaurant) => {

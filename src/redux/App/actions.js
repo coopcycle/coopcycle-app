@@ -1,5 +1,5 @@
 import { createAction } from 'redux-actions'
-import { CommonActions, StackActions } from '@react-navigation/native'
+import { CommonActions } from '@react-navigation/native'
 import tracker from '../../analytics/Tracker'
 import analyticsEvent from '../../analytics/Event'
 import userProperty from '../../analytics/UserProperty'
@@ -10,9 +10,19 @@ import Settings from '../../Settings'
 import NavigationHolder from '../../NavigationHolder'
 import i18n from '../../i18n'
 import { setCurrencyCode } from '../../utils/formatting'
-import { selectInitialRouteName, selectIsAuthenticated } from './selectors'
-import { assignAllCarts, updateCarts, clearAddress } from '../Checkout/actions';
+import {
+  selectHttpClient,
+  selectInitialRouteName,
+  selectIsAuthenticated, selectResumeCheckoutAfterActivation,
+} from './selectors'
+import {
+  assignAllCarts,
+  updateCarts,
+  clearAddress,
+  setRestaurant,
+} from '../Checkout/actions'
 import { loadAddresses, loadAddressesSuccess } from '../Account/actions';
+import { selectRestaurant } from '../Checkout/selectors'
 
 /*
  * Action Types
@@ -457,7 +467,11 @@ export function register(data, checkEmailRouteName, loginRouteName, resumeChecko
 
         } else {
           dispatch(setLoading(false))
-          dispatch(_resumeCheckoutAfterActivation(resumeCheckoutAfterActivation))
+
+          if (resumeCheckoutAfterActivation) {
+            const restaurant = selectRestaurant(getState())
+            dispatch(_resumeCheckoutAfterActivation(restaurant['@id']));
+          }
 
           // FIXME When using navigation, we can still go back to the filled form
           NavigationHolder.navigate(checkEmailRouteName, { email: user.email, loginRouteName })
@@ -475,8 +489,8 @@ export function register(data, checkEmailRouteName, loginRouteName, resumeChecko
 
 export function confirmRegistration(token) {
   return (dispatch, getState) => {
-    const { app } = getState()
-    const { httpClient, resumeCheckoutAfterActivation } = app
+    const httpClient = selectHttpClient(getState())
+    const checkoutToResumeAfterActivation = selectResumeCheckoutAfterActivation(getState())
 
     dispatch(setLoading(true))
     dispatch(authenticationRequest())
@@ -493,8 +507,8 @@ export function confirmRegistration(token) {
           ],
         }))
 
-        if (resumeCheckoutAfterActivation) {
-          dispatch(resumeCheckout())
+        if (checkoutToResumeAfterActivation) {
+          dispatch(resumeCheckout(checkoutToResumeAfterActivation))
         } else {
           navigateToHome(dispatch, getState)
         }
@@ -530,12 +544,47 @@ export function guestModeOn() {
   }
 }
 
-export function resumeCheckout() {
+function resumeCheckout(vendorId) {
   return (dispatch, getState) => {
-    dispatch(_resumeCheckoutAfterActivation(false))
-    NavigationHolder.dispatch(CommonActions.navigate({
-      name: 'CheckoutNav',
-    }))
+    dispatch(_resumeCheckoutAfterActivation(null))
+
+    dispatch(setRestaurant(vendorId))
+
+    NavigationHolder.dispatch(
+      CommonActions.reset({
+        routes: [
+          {
+            name: 'CheckoutNav',
+            state: {
+              routes: [
+                {
+                  name: 'Main',
+                  state: {
+                    routes: [
+                      { name: 'CheckoutHome' },
+                      {
+                        name: 'CheckoutRestaurant',
+                      },
+                      {
+                        name: 'CheckoutSummary',
+                      },
+                    ],
+                  }
+                },
+                {
+                  name: 'CheckoutSubmitOrder',
+                  state: {
+                    routes: [
+                      { name: 'CheckoutMoreInfos' },
+                    ]
+                  }
+                },
+              ],
+            }
+          },
+        ],
+      }),
+    )
   }
 }
 
@@ -550,7 +599,11 @@ export function resetPassword(username, checkEmailRouteName, resumeCheckoutAfter
       .resetPassword(username)
       .then(response => {
         dispatch(resetPasswordRequestSuccess());
-        dispatch(_resumeCheckoutAfterActivation(resumeCheckoutAfterActivation));
+
+        if (resumeCheckoutAfterActivation) {
+          const restaurant = selectRestaurant(getState())
+          dispatch(_resumeCheckoutAfterActivation(restaurant['@id']));
+        }
 
         NavigationHolder.navigate(checkEmailRouteName, { email: username });
       })
@@ -563,8 +616,8 @@ export function resetPassword(username, checkEmailRouteName, resumeCheckoutAfter
 
 export function setNewPassword(token, password) {
   return (dispatch, getState) => {
-    const { app } = getState();
-    const { httpClient, resumeCheckoutAfterActivation } = app;
+    const httpClient = selectHttpClient(getState())
+    const checkoutToResumeAfterActivation = selectResumeCheckoutAfterActivation(getState())
 
     dispatch(authenticationRequest());
 
@@ -573,8 +626,8 @@ export function setNewPassword(token, password) {
       .then(user => {
         dispatch(authenticationSuccess(user));
 
-        if (resumeCheckoutAfterActivation) {
-          dispatch(resumeCheckout());
+        if (checkoutToResumeAfterActivation) {
+          dispatch(resumeCheckout(checkoutToResumeAfterActivation));
         } else {
           navigateToHome(dispatch, getState);
         }
