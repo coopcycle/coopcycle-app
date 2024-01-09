@@ -136,7 +136,7 @@ Client.prototype.createRequest = function(method, url, data, options = {}) {
     }
   }
 
-  console.log(`REQUEST: ${method} ${url}${headers.Authorization ? '' : ' (anon.)'}`)
+  console.log(`→ ${method} ${url}${headers.Authorization ? '' : ' (anon.)'}`)
 
   let req = {
     method,
@@ -165,15 +165,15 @@ Client.prototype.request = function (method, uri, data, options = {}) {
   return this.axios
     .request(req)
     .then(response => {
-      console.log(`RESPONSE: ${method} ${uri}: ${response.status}`)
+      console.log(`⬅ ${method} ${uri} | ${response.status}`)
 
       return response
     })
     .catch(error => {
       if (error.response) {
-        console.warn(`RESPONSE: ${method} ${uri}: ${error.response.status}`)
+        console.warn(`⬅ ${method} ${uri} | ${error.response.status}`)
       } else {
-        console.warn(`RESPONSE: ${method} ${uri}: ${error.message}`)
+        console.warn(`⬅ ${method} ${uri} | ${error.message}`)
       }
 
       return Promise.reject(error)
