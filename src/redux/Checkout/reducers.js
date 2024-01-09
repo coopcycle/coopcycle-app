@@ -82,7 +82,8 @@ const initialState = {
   violations: [],
   isLoading: false,
   itemRequestStack: [],
-  token: null,
+  cart: null, // deprecated, use cart from carts ("cart container") instead
+  token: null, // deprecated, use token from carts ("cart container") instead
   isExpiredSessionModalVisible: false,
   isSessionExpired: false,
   paymentMethods: [],
