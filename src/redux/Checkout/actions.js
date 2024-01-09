@@ -11,6 +11,7 @@ import {
   selectCartByVendor,
   selectCartFulfillmentMethod,
   selectCartWithHours,
+  selectCheckoutAuthorizationHeaders
 } from './selectors'
 import {
   selectHttpClient,
@@ -217,16 +218,6 @@ function notifyListeners(address) {
   listeners = []
 }
 
-function cartRequestAuthorizationHeaders(cart, sessionToken) {
-  if (cart.customer) {
-    return {} // use the user's token from the httpClient
-  } else {
-    return {
-      'Authorization': `Bearer ${sessionToken}`,
-    }
-  }
-}
-
 export function addItemV2(item, quantity = 1, restaurant, options) {
 
   return async (dispatch, getState) => {
@@ -269,7 +260,7 @@ export function addItemV2(item, quantity = 1, restaurant, options) {
         product: item.identifier,
         quantity,
         options,
-      }, { headers: cartRequestAuthorizationHeaders(cart, token) })
+      }, { headers: selectCheckoutAuthorizationHeaders(getState(), cart, token)  })
       dispatch(addItemRequestFinished(item))
       dispatch(updateCartSuccess(response))
   }
@@ -370,7 +361,7 @@ function queueAddItem(item, quantity = 1, options = []) {
           product: item.identifier,
           quantity,
           options,
-        }, { headers: cartRequestAuthorizationHeaders(cart, token) })
+        }, { headers: selectCheckoutAuthorizationHeaders(getState(), cart, token)  })
         .then(res => {
           dispatch(setCheckoutLoading(false))
           dispatch(addItemRequestFinished(item))
@@ -398,7 +389,7 @@ const fetchValidation = _.throttle((dispatch, getState, cart) => {
 
   const doTiming = () => new Promise((resolve) => {
     httpClient
-      .get(`${cart['@id']}/timing`, { headers: cartRequestAuthorizationHeaders(cart, token) })
+      .get(`${cart['@id']}/timing`, { headers: selectCheckoutAuthorizationHeaders(getState(), cart, token)  })
       .then(timing => dispatch(setTiming(timing)))
       // .catch(error => dispatch(setCartValidation(false, error.violations)))
       .finally(resolve)
@@ -406,7 +397,7 @@ const fetchValidation = _.throttle((dispatch, getState, cart) => {
 
   const doValidate = () => new Promise((resolve) => {
     httpClient
-      .get(`${cart['@id']}/validate`, { headers: cartRequestAuthorizationHeaders(cart, token) })
+      .get(`${cart['@id']}/validate`, { headers: selectCheckoutAuthorizationHeaders(getState(), cart, token)  })
       .then(() => dispatch(setCartValidation(true)))
       .catch(error => {
         if (error.response && error.response.status === 400) {
@@ -450,7 +441,7 @@ function syncItem(item) {
         // FIXME We should have the "@id" property
         .put(`${cart['@id']}/items/${item.id}`, {
           quantity: itemFromState.quantity,
-        }, { headers: cartRequestAuthorizationHeaders(cart, token) })
+        }, { headers: selectCheckoutAuthorizationHeaders(getState(), cart, token)  })
         .then(res => {
           dispatch(updateCartSuccess(res))
           dispatch(setCheckoutLoading(false))
@@ -504,7 +495,7 @@ function queueRemoveItem(item) {
 
       httpClient
         // FIXME We should have the "@id" property
-        .delete(`${cart['@id']}/items/${item.id}`, { headers: cartRequestAuthorizationHeaders(cart, token) })
+        .delete(`${cart['@id']}/items/${item.id}`, { headers: selectCheckoutAuthorizationHeaders(getState(), cart, token)  })
         .then(res => {
           dispatch(updateCartSuccess(res))
           dispatch(setCheckoutLoading(false))
@@ -551,13 +542,13 @@ export function removeItem(item) {
   }
 }
 
-export function setTip(order, tipAmount) {
+export function setTip(cart, tipAmount) {
   return (dispatch, getState) => {
-    const { token } = selectCartByVendor(getState(), order.restaurant)
+    const { token } = selectCartByVendor(getState(), cart.restaurant)
     const httpClient = selectHttpClient(getState())
 
     dispatch(checkoutRequest())
-    httpClient.put(`${order['@id']}/tip`, { tipAmount }, { headers: cartRequestAuthorizationHeaders(order, token) })
+    httpClient.put(`${cart['@id']}/tip`, { tipAmount }, { headers: selectCheckoutAuthorizationHeaders(getState(), cart, token) })
       .then(res => {
         dispatch(updateCartSuccess(res))
         dispatch(checkoutSuccess())
@@ -592,12 +583,18 @@ function syncAddress(cart, address) {
     queue: 'UPDATE_CART',
     callback: (next, dispatch, getState) => {
 
+      if (!cart) {
+        console.error(new Error('syncAddress: cart is undefined'))
+        next()
+        return
+      }
+
       const { token } = selectCartByVendor(getState(), cart.restaurant)
       dispatch(setToken(token))
 
       const httpClient = selectHttpClient(getState())
 
-      httpClient.put(cart['@id'], { shippingAddress: address }, { headers: cartRequestAuthorizationHeaders(cart, token) })
+      httpClient.put(cart['@id'], { shippingAddress: address }, { headers: selectCheckoutAuthorizationHeaders(getState(), cart, token)  })
         .then(res => {
           dispatch(updateCartSuccess(res))
           dispatch(setCheckoutLoading(false))
@@ -771,7 +768,7 @@ export function mercadopagoCheckout(payment) {
     const httpClient = selectHttpClient(getState())
 
     httpClient
-      .put(cart['@id'] + '/pay', params, { headers: cartRequestAuthorizationHeaders(cart, token) })
+      .put(cart['@id'] + '/pay', params, { headers: selectCheckoutAuthorizationHeaders(getState(), cart, token)  })
       .then(order => {
         dispatch(handleSuccessNav(order));
       })
@@ -783,7 +780,7 @@ export function mercadopagoCheckout(payment) {
 
 function handleSuccessNav(order) {
   return (dispatch, getState) => {
-    const { token } = selectCartByVendor(getState(), order.restaurant)
+    const { token } = selectCartByVendor(getState(), order.restaurant['@id'])
 
     dispatch(setNewOrder(order, token))
 
@@ -855,7 +852,7 @@ export function checkout(cardholderName, savedPaymentMethodId = null, saveCard =
 
     if (isFree(cart)) {
       httpClient
-        .put(cart['@id'] + '/pay', {}, { headers: cartRequestAuthorizationHeaders(cart, token) })
+        .put(cart['@id'] + '/pay', {}, { headers: selectCheckoutAuthorizationHeaders(getState(), cart, token)  })
         .then(o => dispatch(handleSuccessNav(o)))
         .catch(e => dispatch(checkoutFailure(e)));
 
@@ -867,7 +864,7 @@ export function checkout(cardholderName, savedPaymentMethodId = null, saveCard =
         if (paymentDetails.stripeAccount) {
           // for connected account we have to clone the platform payment method
           return httpClient
-            .get(`${cart['@id']}/stripe/clone-payment-method/${paymentMethodId}`, { headers: cartRequestAuthorizationHeaders(cart, token) })
+            .get(`${cart['@id']}/stripe/clone-payment-method/${paymentMethodId}`, { headers: selectCheckoutAuthorizationHeaders(getState(), cart, token)  })
             .then(clonnedPaymentMethod => {
               return [paymentMethodId, clonnedPaymentMethod.id];
             });
@@ -880,7 +877,7 @@ export function checkout(cardholderName, savedPaymentMethodId = null, saveCard =
         httpClient.put(cart['@id'] + '/pay', {
           paymentMethodId: clonnedPaymentMethodId || platformAccountPaymentMethodId,
           saveCard,
-        }, { headers: cartRequestAuthorizationHeaders(cart, token) }),
+        }, { headers: selectCheckoutAuthorizationHeaders(getState(), cart, token)  }),
       )
       .then(stripeResponse => {
         if (stripeResponse.requiresAction) {
@@ -985,7 +982,7 @@ function handleSuccess(
     })
     .then(() => {
       httpClient
-        .put(cart['@id'] + '/pay', { paymentIntentId }, { headers: cartRequestAuthorizationHeaders(cart, token) })
+        .put(cart['@id'] + '/pay', { paymentIntentId }, { headers: selectCheckoutAuthorizationHeaders(getState(), cart, token)  })
         .then(order => {
           dispatch(handleSuccessNav(order));
         })
@@ -1031,7 +1028,7 @@ function handleSaveOfPaymentMethod(saveCard, cardholderName, getState) {
             httpClient
               .post(cart['@id'] + '/stripe/create-setup-intent-or-attach-pm', {
                 payment_method_to_save: paymentMethod.id,
-              }, { headers: cartRequestAuthorizationHeaders(cart, token) })
+              }, { headers: selectCheckoutAuthorizationHeaders(getState(), cart, token)  })
               .then(() => resolve());
           }
         });
@@ -1133,15 +1130,19 @@ export function resetSearch(options = {}) {
   }
 }
 
-const doUpdateCart = (dispatch, httpClient, cart, token, payload, cb) => {
-  httpClient
-    .put(cart['@id'], payload, { headers: cartRequestAuthorizationHeaders(cart, token) })
+const doUpdateCart = (cart, token, payload, cb) => {
+  return (dispatch, getState) => {
+    const httpClient = selectHttpClient(getState())
+
+    return httpClient
+    .put(cart['@id'], payload, { headers: selectCheckoutAuthorizationHeaders(getState(), cart, token)  })
     .then(res => {
       dispatch(updateCartSuccess(res))
       dispatch(checkoutSuccess())
       _.isFunction(cb) && cb(res)
     })
     .catch(e => dispatch(checkoutFailure(e)))
+  }
 }
 
 export function updateCart(payload, cb) {
@@ -1174,12 +1175,12 @@ export function updateCart(payload, cb) {
       const { telephone, ...payloadWithoutTelephone } = payload
 
       httpClient
-        .put(cart.customer, { telephone }, { headers: cartRequestAuthorizationHeaders(cart, token) })
-        .then(res => doUpdateCart(dispatch, httpClient, cart, token, payloadWithoutTelephone, cb))
+        .put(cart.customer, { telephone }, { headers: selectCheckoutAuthorizationHeaders(getState(), cart, token)  })
+        .then(res => dispatch(doUpdateCart(cart, token, payloadWithoutTelephone, cb)))
         .catch(e => dispatch(checkoutFailure(e)))
 
     } else {
-      doUpdateCart(dispatch, httpClient, cart, token, payload, cb)
+      dispatch(doUpdateCart(cart, token, payload, cb))
     }
   }
 }
@@ -1197,7 +1198,7 @@ export function setDate(shippingTimeRange, cb) {
     httpClient
       .put(cart['@id'], {
         shippingTimeRange,
-      }, { headers: cartRequestAuthorizationHeaders(cart, token) })
+      }, { headers: selectCheckoutAuthorizationHeaders(getState(), cart, token)  })
       .then(res => {
         dispatch(updateCartSuccess(res))
         setTimeout(() => {
@@ -1221,7 +1222,7 @@ export function setDateAsap(cart, cb) {
     httpClient
       .put(cart['@id'], {
         shippingTimeRange: null,
-      }, { headers: cartRequestAuthorizationHeaders(cart, token) })
+      }, { headers: selectCheckoutAuthorizationHeaders(getState(), cart, token)  })
       .then(res => {
         dispatch(updateCartSuccess(res))
         setTimeout(() => {
@@ -1248,10 +1249,10 @@ export function setFulfillmentMethod(method) {
     httpClient
       .put(cart['@id'], {
         fulfillmentMethod: method,
-      }, { headers: cartRequestAuthorizationHeaders(cart, token) })
+      }, { headers: selectCheckoutAuthorizationHeaders(getState(), cart, token)  })
       .then(res => {
         httpClient
-          .get(`${cart['@id']}/timing`, { headers: cartRequestAuthorizationHeaders(cart, token) })
+          .get(`${cart['@id']}/timing`, { headers: selectCheckoutAuthorizationHeaders(getState(), cart, token)  })
           .then(timing => {
             dispatch(setCheckoutLoading(false))
             dispatch(setTiming(timing))
@@ -1293,7 +1294,7 @@ export function loadPaymentMethods(method) {
     dispatch(loadPaymentMethodsRequest())
 
     httpClient
-      .get(`${cart['@id']}/payment_methods`, { headers: cartRequestAuthorizationHeaders(cart, token) })
+      .get(`${cart['@id']}/payment_methods`, { headers: selectCheckoutAuthorizationHeaders(getState(), cart, token)  })
       .then(res => dispatch(loadPaymentMethodsSuccess(res)))
       .catch(e => dispatch(loadPaymentMethodsFailure(e)))
   }
@@ -1309,7 +1310,7 @@ export function checkoutWithCash() {
     dispatch(checkoutRequest())
 
     httpClient
-      .put(cart['@id'] + '/pay', { cashOnDelivery: true }, { headers: cartRequestAuthorizationHeaders(cart, token) })
+      .put(cart['@id'] + '/pay', { cashOnDelivery: true }, { headers: selectCheckoutAuthorizationHeaders(getState(), cart, token)  })
       .then(order => dispatch(handleSuccessNav(order)))
       .catch(e => dispatch(checkoutFailure(e)))
   }
@@ -1325,7 +1326,7 @@ export function loadPaymentDetails() {
     dispatch(loadPaymentDetailsRequest())
 
     httpClient
-      .get(`${cart['@id']}/payment`, { headers: cartRequestAuthorizationHeaders(cart, token) })
+      .get(`${cart['@id']}/payment`, { headers: selectCheckoutAuthorizationHeaders(getState(), cart, token)  })
       .then(res => dispatch(loadPaymentDetailsSuccess(res)))
       .catch(e => dispatch(loadPaymentDetailsFailure(e)))
   }
@@ -1442,7 +1443,7 @@ export function updateLoopeatReturns(returns) {
     httpClient
       .post(cart['@id'] + '/loopeat_returns', {
         returns,
-      }, { headers: cartRequestAuthorizationHeaders(cart, token) })
+      }, { headers: selectCheckoutAuthorizationHeaders(getState(), cart, token)  })
       .then(res => {
         dispatch(updateCartSuccess(res))
       })

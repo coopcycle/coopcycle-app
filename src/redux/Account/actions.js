@@ -6,6 +6,7 @@ import _ from 'lodash'
 import { logout, setLoading } from '../App/actions'
 import { selectHttpClient, selectIsAuthenticated } from '../App/selectors'
 import { selectOrderAccessTokensById } from './selectors'
+import { selectCheckoutAuthorizationHeaders } from '../Checkout/selectors'
 
 /*
  * Action Types
@@ -36,16 +37,6 @@ const disconnected = createAction(DISCONNECTED)
 
 const setOrderAccessToken = createAction(SET_ORDER_ACCESS_TOKEN)
 
-function orderRequestAuthorizationHeaders(order, sessionToken) {
-  if (order.customer) {
-    return {} // use the user's token from the httpClient
-  } else {
-    return {
-      'Authorization': `Bearer ${sessionToken}`,
-    }
-  }
-}
-
 export function loadOrders(cb) {
 
   return function (dispatch, getState) {
@@ -68,7 +59,7 @@ export function loadOrder(order, cb) {
     const orderAccessToken = selectOrderAccessTokensById(getState(), order['@id'])
     const httpClient = selectHttpClient(getState())
 
-    httpClient.get(order['@id'], { headers: orderRequestAuthorizationHeaders(order, orderAccessToken) })
+    httpClient.get(order['@id'], { headers: selectCheckoutAuthorizationHeaders(getState(), order, orderAccessToken) })
       .then(res => {
         dispatch(updateOrderSuccess(res))
         if (cb) { cb() }
@@ -182,7 +173,7 @@ export function subscribe(order, onMessage) {
     const orderAccessToken = selectOrderAccessTokensById(getState(), order['@id'])
     const httpClient = selectHttpClient(getState())
 
-    httpClient.get(`${order['@id']}/centrifugo`, { headers: orderRequestAuthorizationHeaders(order, orderAccessToken) })
+    httpClient.get(`${order['@id']}/centrifugo`, { headers: selectCheckoutAuthorizationHeaders(getState(), order, orderAccessToken) })
       .then(res => {
 
         const url = parseUrl(baseURL)

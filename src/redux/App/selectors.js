@@ -9,6 +9,7 @@ export const selectHttpClient = state => state.app.httpClient
 
 export const selectResumeCheckoutAfterActivation = state => state.app.resumeCheckoutAfterActivation
 
+// a user with an account
 export const selectIsAuthenticated = createSelector(
   selectUser,
   (user) => !!(user && user.isAuthenticated())

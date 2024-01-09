@@ -1,6 +1,7 @@
 import moment from 'moment'
 
 import {
+  selectCheckoutAuthorizationHeaders,
   selectRestaurant,
   selectShippingTimeRangeLabel,
 } from '../selectors'
@@ -239,6 +240,124 @@ describe('Redux | Checkout | Selectors', () => {
             carts: {},
           },
         })).toEqual(null)
+      })
+    })
+  })
+
+  describe('selectCheckoutAuthorizationHeaders', () => {
+    describe('a user with an account', () => {
+      const user = {
+        isAuthenticated: () => true,
+      }
+
+      describe('cart is assigned to a user', () => {
+        it('should use default token', () => {
+          expect(
+            selectCheckoutAuthorizationHeaders(
+              {
+                app: {
+                  user: user,
+                },
+              },
+              {
+                customer: '/api/customers/1',
+              },
+              'session-token',
+            ),
+          ).toEqual({})
+        })
+      })
+
+      describe('cart is NOT assigned to a user', () => {
+        it('should use a session token', () => {
+          expect(
+            selectCheckoutAuthorizationHeaders(
+              {
+                app: {
+                  user: user,
+                },
+              },
+              {
+                customer: null,
+              },
+              'session-token',
+            ),
+          ).toEqual({
+            Authorization: 'Bearer session-token',
+          })
+        })
+      })
+    })
+
+    describe('a user in a guest mode', () => {
+      const user = {
+        isAuthenticated: () => false,
+        isGuest: () => true,
+      }
+
+      describe('cart is assigned to a user', () => {
+        it('should use a session token', () => {
+          expect(
+            selectCheckoutAuthorizationHeaders(
+              {
+                app: {
+                  user: user,
+                },
+              },
+              {
+                customer: '/api/customers/1',
+              },
+              'session-token',
+            ),
+          ).toEqual({
+            Authorization: 'Bearer session-token',
+          })
+        })
+      })
+
+      describe('cart is NOT assigned to a user', () => {
+        it('should use a session token', () => {
+          expect(
+            selectCheckoutAuthorizationHeaders(
+              {
+                app: {
+                  user: user,
+                },
+              },
+              {
+                customer: null,
+              },
+              'session-token',
+            ),
+          ).toEqual({
+            Authorization: 'Bearer session-token',
+          })
+        })
+      })
+    })
+
+    describe('unauthenticated user (!= guest mode)', () => {
+      const user = {
+        isAuthenticated: () => false,
+        isGuest: () => false,
+      }
+
+      it('should use a session token', () => {
+        expect(
+          selectCheckoutAuthorizationHeaders(
+            {
+              app: {
+                user: user,
+              },
+            },
+            {
+              customer: null,
+            },
+            'session-token',
+          ),
+        ).toEqual({
+          Authorization: 'Bearer session-token',
+        })
       })
     })
   })

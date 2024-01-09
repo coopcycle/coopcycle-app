@@ -3,7 +3,11 @@ import _ from 'lodash'
 import moment from 'moment'
 
 import i18n from '../../i18n'
-import { selectIsAuthenticated, selectUser } from '../App/selectors'
+import {
+  selectIsAuthenticated,
+  selectIsGuest,
+  selectUser,
+} from '../App/selectors'
 import OpeningHoursSpecification from '../../utils/OpeningHoursSpecification';
 import Address from '../../utils/Address';
 
@@ -264,4 +268,22 @@ export const selectAddresses = createSelector(
 export const selectAvailableRestaurants = createSelector(
   state => state.checkout.restaurants,
   (restaurants) => _.map(restaurants, r => r.id)
+)
+
+const _selectCartParam = (state, cart) => cart
+const _selectTokenParam = (state, cart, token) => token
+
+export const selectCheckoutAuthorizationHeaders = createSelector(
+  selectIsAuthenticated,
+  _selectCartParam,
+  _selectTokenParam,
+  (isAuthenticatedUser, cart, sessionToken) => {
+    if (isAuthenticatedUser && cart.customer) {
+      return {} // use the user's token from the httpClient
+    } else {
+      return {
+        'Authorization': `Bearer ${sessionToken}`,
+      }
+    }
+  }
 )
