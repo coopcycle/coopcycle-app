@@ -174,16 +174,16 @@ function authenticationRequest() {
 }
 
 function authenticationSuccess(user) {
-  return (dispatch, getState) => {
-    dispatch(setLoading(true))
-    dispatch(_authenticationSuccess())
-    dispatch(loadAddresses())
-    dispatch(assignAllCarts())
-    dispatch(setLoading(false))
+  return async (dispatch, getState) => {
+    await dispatch(loadAddresses())
+    await dispatch(assignAllCarts())
+
     setRolesProperty(user)
     tracker.logEvent(
       analyticsEvent.user.login._category,
       analyticsEvent.user.login.success)
+
+    dispatch(_authenticationSuccess())
   }
 }
 
@@ -414,8 +414,8 @@ export function login(email, password, navigate = true) {
     dispatch(authenticationRequest())
 
     httpClient.login(email, password)
-      .then(user => {
-        dispatch(authenticationSuccess(user));
+      .then(user => dispatch(authenticationSuccess(user)))
+      .then(() => {
         if (navigate) {
           // FIXME
           // Use setTimeout() to let room for loader to hide
@@ -492,13 +492,11 @@ export function confirmRegistration(token) {
     const httpClient = selectHttpClient(getState())
     const checkoutToResumeAfterActivation = selectResumeCheckoutAfterActivation(getState())
 
-    dispatch(setLoading(true))
     dispatch(authenticationRequest())
 
     httpClient.confirmRegistration(token)
-      .then(user => {
-        dispatch(authenticationSuccess(user))
-
+      .then(user => dispatch(authenticationSuccess(user)))
+      .then(() => {
         //remove RegisterConfirmScreen from stack
         NavigationHolder.dispatch(CommonActions.reset({
           index: 0,
@@ -623,9 +621,8 @@ export function setNewPassword(token, password) {
 
     httpClient
       .setNewPassword(token, password)
-      .then(user => {
-        dispatch(authenticationSuccess(user));
-
+      .then(user => dispatch(authenticationSuccess(user)))
+      .then(() => {
         if (checkoutToResumeAfterActivation) {
           dispatch(resumeCheckout(checkoutToResumeAfterActivation));
         } else {
@@ -678,10 +675,8 @@ export function loginWithFacebook(accessToken, navigate = true) {
     dispatch(authenticationRequest())
 
     httpClient.loginWithFacebook(accessToken)
-      .then(user => {
-
-        dispatch(authenticationSuccess(user));
-
+      .then(user => dispatch(authenticationSuccess(user)))
+      .then(() => {
         if (navigate) {
           // FIXME
           // Use setTimeout() to let room for loader to hide
@@ -711,10 +706,8 @@ export function signInWithApple(identityToken, navigate = true) {
     dispatch(authenticationRequest())
 
     httpClient.signInWithApple(identityToken)
-      .then(user => {
-
-        dispatch(authenticationSuccess(user));
-
+      .then(user => dispatch(authenticationSuccess(user)))
+      .then(() => {
         if (navigate) {
           // FIXME
           // Use setTimeout() to let room for loader to hide
@@ -744,10 +737,8 @@ export function googleSignIn(idToken, navigate = true) {
     dispatch(authenticationRequest())
 
     httpClient.googleSignIn(idToken)
-      .then(user => {
-
-        dispatch(authenticationSuccess(user));
-
+      .then(user => dispatch(authenticationSuccess(user)))
+      .then(() => {
         if (navigate) {
           // FIXME
           // Use setTimeout() to let room for loader to hide

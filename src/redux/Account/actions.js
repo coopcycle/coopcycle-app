@@ -109,8 +109,7 @@ export function loadAddresses() {
 
     const httpClient = getState().app.httpClient
 
-
-    httpClient.get('/api/me')
+    return httpClient.get('/api/me')
       .then(res => {
         dispatch(loadAddressesSuccess(res.addresses))
       })

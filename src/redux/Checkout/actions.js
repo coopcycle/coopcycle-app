@@ -1042,27 +1042,27 @@ function handleSaveOfPaymentMethod(saveCard, cardholderName, getState) {
 }
 
 export function assignAllCarts() {
-  return async (dispatch, getState) => {
-
+  return (dispatch, getState) => {
     const { carts } = getState().checkout
 
-    _.forEach(carts, cartContainer => {
-      const { cart, token } = cartContainer
-      return dispatch(_assignCustomer(cart, token, {}))
-    })
+    return Promise.all(
+      Object.values(carts).map(({ cart, token }) =>
+        dispatch(_assignCustomer(cart, token, {})),
+      ),
+    )
   }
 }
 
 export function assignCustomer({ email, telephone }) {
   return async (dispatch, getState) => {
     const { cart, token } = selectCart(getState())
-    return dispatch(_assignCustomer(cart, token, { email, telephone }))
+    await dispatch(_assignCustomer(cart, token, { email, telephone }))
   }
 }
 
 function _assignCustomer(cart, token, { email, telephone }) {
 
-  return async (dispatch, getState) => {
+  return (dispatch, getState) => {
 
     const user = selectUser(getState())
 
