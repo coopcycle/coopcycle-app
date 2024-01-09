@@ -124,7 +124,6 @@ Client.prototype.createRequest = function(method, url, data, options = {}) {
   }
 
   const authorized = !(!this.credentials.token || options.anonymous)
-  console.log(`${method} ${url}${authorized ? '' : ' (anon.)'}`)
 
   if (authorized && this.credentials.token) {
     headers.Authorization = `Bearer ${this.credentials.token}`
@@ -136,6 +135,8 @@ Client.prototype.createRequest = function(method, url, data, options = {}) {
       ...options.headers,
     }
   }
+
+  console.log(`REQUEST: ${method} ${url}${headers.Authorization ? '' : ' (anon.)'}`)
 
   let req = {
     method,
@@ -159,9 +160,24 @@ Client.prototype.createRequest = function(method, url, data, options = {}) {
   return req
 }
 
-Client.prototype.request = function(method, uri, data, options = {}) {
+Client.prototype.request = function (method, uri, data, options = {}) {
   const req = this.createRequest(method, uri, data, options)
-  return this.axios.request(req);
+  return this.axios
+    .request(req)
+    .then(response => {
+      console.log(`RESPONSE: ${method} ${uri}: ${response.status}`)
+
+      return response
+    })
+    .catch(error => {
+      if (error.response) {
+        console.warn(`RESPONSE: ${method} ${uri}: ${error.response.status}`)
+      } else {
+        console.warn(`RESPONSE: ${method} ${uri}: ${error.message}`)
+      }
+
+      return Promise.reject(error)
+    })
 }
 
 Client.prototype.get = function(uri, data, options = {}) {
