@@ -5,7 +5,7 @@ import { selectIsTasksLoading } from '../Courier/taskSelectors'
 import { selectIsDispatchFetching } from '../Dispatch/selectors'
 
 export const selectUser = state => state.app.user
-const selectDefaultHttpClient = state => state.app.httpClient
+export const selectHttpClient = state => state.app.httpClient
 
 export const selectIsAuthenticated = createSelector(
   selectUser,
@@ -15,25 +15,6 @@ export const selectIsAuthenticated = createSelector(
 export const selectIsGuest = createSelector(
   selectUser,
   (user) => !!(user && user.isGuest())
-)
-
-const selectFallbackToken = (state, fallbackToken) => fallbackToken
-
-export const selectHttpClient = createSelector(
-  selectDefaultHttpClient,
-  selectIsAuthenticated,
-  selectFallbackToken,
-  (defaultHttpClient, isAuthenticated, fallbackToken) => {
-    if (isAuthenticated) {
-      return defaultHttpClient
-    } else {
-      if (fallbackToken) {
-        return defaultHttpClient.cloneWithToken(fallbackToken)
-      } else {
-        return defaultHttpClient
-      }
-    }
-  },
 )
 
 export const selectHttpClientHasCredentials = createSelector(

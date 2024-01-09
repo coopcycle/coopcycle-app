@@ -36,6 +36,16 @@ const disconnected = createAction(DISCONNECTED)
 
 const setOrderAccessToken = createAction(SET_ORDER_ACCESS_TOKEN)
 
+function orderRequestAuthorizationHeaders(order, sessionToken) {
+  if (order.customer) {
+    return {} // use the user's token from the httpClient
+  } else {
+    return {
+      'Authorization': `Bearer ${sessionToken}`,
+    }
+  }
+}
+
 export function loadOrders(cb) {
 
   return function (dispatch, getState) {
@@ -56,9 +66,9 @@ export function loadOrders(cb) {
 export function loadOrder(order, cb) {
   return (dispatch, getState) => {
     const orderAccessToken = selectOrderAccessTokensById(getState(), order['@id'])
-    const httpClient = selectHttpClient(getState(), orderAccessToken)
+    const httpClient = selectHttpClient(getState())
 
-    httpClient.get(order['@id'])
+    httpClient.get(order['@id'], { headers: orderRequestAuthorizationHeaders(order, orderAccessToken) })
       .then(res => {
         dispatch(updateOrderSuccess(res))
         if (cb) { cb() }
@@ -171,9 +181,9 @@ export function subscribe(order, onMessage) {
     const baseURL = getState().app.baseURL
 
     const orderAccessToken = selectOrderAccessTokensById(getState(), order['@id'])
-    const httpClient = selectHttpClient(getState(), orderAccessToken)
+    const httpClient = selectHttpClient(getState())
 
-    httpClient.get(`${order['@id']}/centrifugo`)
+    httpClient.get(`${order['@id']}/centrifugo`, { headers: orderRequestAuthorizationHeaders(order, orderAccessToken) })
       .then(res => {
 
         const url = parseUrl(baseURL)

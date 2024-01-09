@@ -39,6 +39,23 @@ export const selectCartWithHours = createSelector(
   }
 )
 
+const selectVendorId = (state, vendorId) => vendorId
+
+export const selectCartByVendor = createSelector(
+  state => state.checkout.carts,
+  selectVendorId,
+  (carts, vendor) => {
+    if (carts.hasOwnProperty(vendor)) {
+      return carts[vendor]
+    }
+    return {
+      cart: null,
+      restaurant: null,
+      token: null,
+    }
+  }
+)
+
 export const selectRestaurant = createSelector(
   state => state.checkout.restaurants,
   state => state.checkout.restaurant,

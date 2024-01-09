@@ -180,14 +180,14 @@ Client.prototype.request = function (method, uri, data, options = {}) {
     })
 }
 
-Client.prototype.get = function(uri, data, options = {}) {
+Client.prototype.get = function(uri, options = {}) {
 
-  return enhanceRequest(this, 'GET', uri, data, options);
+  return enhanceRequest(this, 'GET', uri, {}, options)
 }
 
-Client.prototype.post = function(uri, data) {
+Client.prototype.post = function(uri, data, options = {}) {
 
-  return enhanceRequest(this, 'POST', uri, data);
+  return enhanceRequest(this, 'POST', uri, data, options);
 }
 
 Client.prototype.put = function(uri, data, options = {}) {
@@ -195,9 +195,9 @@ Client.prototype.put = function(uri, data, options = {}) {
   return enhanceRequest(this, 'PUT', uri, data, options);
 }
 
-Client.prototype.delete = function(uri) {
+Client.prototype.delete = function(uri, options = {}) {
 
-  return enhanceRequest(this, 'DELETE', uri);
+  return enhanceRequest(this, 'DELETE', uri, {}, options);
 }
 
 function enhanceRequest(client, method, uri, data, options = {}) {
