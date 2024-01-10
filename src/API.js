@@ -162,10 +162,12 @@ Client.prototype.createRequest = function(method, url, data, options = {}) {
 
 Client.prototype.request = function (method, uri, data, options = {}) {
   const req = this.createRequest(method, uri, data, options)
+  const start = Date.now()
   return this.axios
     .request(req)
     .then(response => {
-      console.log(`⬅ ${method} ${uri} | ${response.status}`)
+      const duration = Date.now() - start
+      console.log(`⬅ ${method} ${uri} | ${response.status} | ${duration}ms`)
 
       return response
     })
