@@ -22,7 +22,7 @@ import {
   markTaskFailedRequest,
   markTaskFailedSuccess,
   markTasksDone, markTasksDoneFailure,
-  markTasksDoneRequest, markTasksDoneSuccess, setKeepAwake,
+  markTasksDoneRequest, markTasksDoneSuccess, setKeepAwake, setPolylineOn,
   setSignatureScreenFirst, setTasksChangedAlertSound,
   startTask, startTaskSuccess,
 } from './taskActions'
@@ -45,6 +45,7 @@ import {
   selectTasks,
   selectTasksChangedAlertSound,
   selectTasksWithColor,
+  selectIsPolylineOn
 } from './taskSelectors'
 
 
@@ -85,6 +86,7 @@ export {
   clearTasksFilter,
   setTasksChangedAlertSound,
   setKeepAwake,
+  setPolylineOn,
   setSignatureScreenFirst,
   addSignature,
   addPicture,
@@ -109,4 +111,5 @@ export {
   selectPictures,
   selectSignatureScreenFirst,
   selectTasksWithColor,
+  selectIsPolylineOn
 }

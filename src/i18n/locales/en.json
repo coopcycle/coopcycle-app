@@ -140,6 +140,7 @@
         "INVALID_PASSWORD_CONFIRMATION": "Password confirmation does not match",
         "TASKS_FILTER": "Tasks",
         "HIDE_DONE_TASKS": "Hide done tasks",
+        "TASKS_SHOW_POLYLINE": "Show line linking tasks",
         "HIDE_FAILED_TASKS": "Hide failed tasks",
         "HIDE_TASKS_TAGGED_WITH": "Hide tasks tagged with",
         "TASKS_CHANGED_ALERT_SOUND": "Tasks changed alert sound",

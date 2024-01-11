@@ -15,8 +15,10 @@ import {
   selectAreFailedTasksHidden,
   selectKeepAwake,
   selectSignatureScreenFirst,
+  selectIsPolylineOn,
   selectTagNames,
   selectTasksChangedAlertSound,
+  setPolylineOn,
   setKeepAwake,
   setSignatureScreenFirst,
   setTasksChangedAlertSound,
@@ -58,10 +60,12 @@ const Settings = ({
   toggleDisplayDone,
   toggleDisplayFailed,
   toggleTasksChangedAlertSound,
+  togglePolylineOn,
   setKeepAwakeDisabled,
   setSignatureScreenFirst,
   tags,
   isKeepAwakeDisabled,
+  isPolylineOn,
   signatureScreenFirst,
   t,
 }) => {
@@ -92,6 +96,12 @@ const Settings = ({
           label: t('TASKS_CHANGED_ALERT_SOUND'),
           onToggle: toggleTasksChangedAlertSound,
           isChecked: tasksChangedAlertSound,
+        },
+        {
+          icon: 'map-signs',
+          label: t('TASKS_SHOW_POLYLINE'),
+          onToggle: togglePolylineOn,
+          isChecked: isPolylineOn,
         },
       ],
     },
@@ -133,6 +143,7 @@ function mapStateToProps(state) {
     areFailedTasksHidden: selectAreFailedTasksHidden(state),
     tasksChangedAlertSound: selectTasksChangedAlertSound(state),
     isKeepAwakeDisabled: !selectKeepAwake(state),
+    isPolylineOn: selectIsPolylineOn(state),
     signatureScreenFirst: selectSignatureScreenFirst(state),
   }
 }
@@ -142,6 +153,7 @@ function mapDispatchToProps(dispatch) {
     toggleDisplayDone: (hidden) => dispatch(hidden ? clearTasksFilter({ status: 'DONE' }) : filterTasks({ status: 'DONE' })),
     toggleDisplayFailed: (hidden) => dispatch(hidden ? clearTasksFilter({ status: 'FAILED' }) : filterTasks({ status: 'FAILED' })),
     toggleTasksChangedAlertSound: (enabled) => dispatch(setTasksChangedAlertSound(enabled)),
+    togglePolylineOn: (enabled) => dispatch(setPolylineOn(enabled)),
     setKeepAwakeDisabled: (disabled) => dispatch(setKeepAwake(!disabled)),
     setSignatureScreenFirst: (first) => dispatch(setSignatureScreenFirst(first)),
   }
