@@ -55,7 +55,7 @@ class RestaurantsPage extends Component {
     }
   }
 
-  shouldComponentUpdate(nextProps: Readonly<P>, nextState: Readonly<S>, nextContext: any): boolean {
+  shouldComponentUpdate(nextProps, nextState, nextContext) {
     return Address.geoDiff(this.props.address, nextProps.address)
   }
 
