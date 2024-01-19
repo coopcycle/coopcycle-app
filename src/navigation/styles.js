@@ -2,16 +2,16 @@ import { fontTitleName,  primaryColor, whiteColor } from '../styles/common'
 
 export const stackNavigatorScreenOptions = {
   headerStyle: {
-    backgroundColor: primaryColor,
+    // backgroundColor: primaryColor,
   },
   headerBackTitleStyle: {
-    color: whiteColor,
+    // color: whiteColor,
     fontWeight: 'normal',
     fontFamily: fontTitleName,
   },
-  headerTintColor: whiteColor,
+  // headerTintColor: whiteColor,
   headerTitleStyle: {
-    color: whiteColor,
+    // color: whiteColor,
     // fontWeight needs to be defined or it doesn't work
     // @see https://github.com/react-community/react-navigation/issues/542#issuecomment-345289122
     fontWeight: 'normal',
