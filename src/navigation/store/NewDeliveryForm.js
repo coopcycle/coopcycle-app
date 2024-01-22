@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import { InteractionManager, Platform, StyleSheet, TextInput, View } from 'react-native'
+import { InteractionManager, Platform, StyleSheet, View } from 'react-native'
 import {
-  Box, Button, HStack, Text, VStack,
+  Box, Button, HStack, Input, Text, VStack,
 } from 'native-base'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
@@ -208,15 +208,15 @@ class NewDelivery extends Component {
             <Box p="3">
               <View style={ [styles.formGroup] }>
                 <Text style={ styles.label }>{ this.props.t('STORE_NEW_DELIVERY_ADDRESS') }</Text>
-                <TextInput
-                  autoCorrect={ false }
+                <Input
+                  variant="filled"
                   style={ [styles.textInput] }
                   value={ address.streetAddress }
-                  editable={ false } />
+                  isReadOnly={ true }/>
               </View>
               <View style={ [styles.formGroup] }>
                 <Text style={ styles.label }>{ this.props.t('STORE_NEW_DELIVERY_PHONE_NUMBER') }</Text>
-                <TextInput
+                <Input
                   style={ [styles.textInput] }
                   autoCorrect={ false }
                   keyboardType="phone-pad"
@@ -230,7 +230,7 @@ class NewDelivery extends Component {
               </View>
               <View style={ [styles.formGroup] }>
                 <Text style={ styles.label }>{ this.props.t('STORE_NEW_DELIVERY_CONTACT_NAME') }</Text>
-                <TextInput
+                <Input
                   style={ [styles.textInput] }
                   autoCorrect={ false }
                   returnKeyType="done"
@@ -243,11 +243,10 @@ class NewDelivery extends Component {
               </View>
               <View style={ [styles.formGroup] }>
                 <Text style={ styles.label }>{ this.props.t('STORE_NEW_DELIVERY_COMMENTS') }</Text>
-                <TextInput
+                <Input
                   style={ [ styles.textInput, styles.textarea ] }
                   autoCorrect={ false }
                   multiline={ true }
-                  numberOfLines={ 3 }
                   onChangeText={ handleChange('address.description') }
                   onBlur={ handleBlur('address.description') }
                   value={ values.address.description } />
@@ -283,11 +282,10 @@ const styles = StyleSheet.create({
     borderColor: '#b9b9b9',
     borderRadius: 1,
     borderWidth: 1,
-    height: 40,
-    padding: 5,
+    minHeight: 40,
   },
   textarea: {
-    height: (25 * 3),
+    minHeight: (25 * 3),
   },
   errorText: {
     paddingVertical: 5,
