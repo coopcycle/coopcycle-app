@@ -45,6 +45,8 @@ import BottomModal from '../../components/BottomModal';
 import DangerAlert from '../../components/DangerAlert';
 import OpeningHoursSpecification from '../../utils/OpeningHoursSpecification';
 import Markdown from '../../components/Markdown';
+import RestaurantProfile from './components/RestaurantProfile';
+import RestaurantMenu from '../../components/RestaurantMenu';
 
 const LoadingPhantom = props => (
   <HStack w="95%" space={6} p="4">
@@ -130,20 +132,11 @@ function Restaurant(props) {
 
   return (
     <SafeAreaView style={{flex: 1}} edges={['bottom']}>
-      <View style={{flex: 1, paddingTop: 60}}>
-        <View
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: 60,
-          }}>
-          <GroupImageHeader
-            image={restaurant.image}
-            text={restaurant.name}
+      <View style={{flex: 1, paddingTop: 0}}>
+        <View>
+          <RestaurantProfile
             onInfo={() => setInfoModal(true)}
-            category={restaurant.facets.category}
+            restaurant={restaurant}
           />
         </View>
         {renderWarningBanner()}
@@ -155,7 +148,7 @@ function Restaurant(props) {
           </Center>
         )}
         {!isLoading && (
-          <Menu
+          <RestaurantMenu
             restaurant={restaurant}
             menu={data}
             onItemClick={menuItem =>
@@ -170,6 +163,7 @@ function Restaurant(props) {
           />
         )}
       </View>
+
       {showFooter ? (
         <CartFooter
           onSubmit={() => navigate('CheckoutSummary', {restaurant})}
