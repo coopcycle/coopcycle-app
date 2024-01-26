@@ -17,8 +17,7 @@ const OneLineText = props => (
 );
 
 export const RestaurantCard = ({restaurant}) => {
-  const backgroundColor = useColorModeValue('white', '#121212');
-  //   const backgroundColor = useColorModeValue('white', '#FFFFFF16');
+  const backgroundColor = useColorModeValue('white', '#161616');
 
   const styles = StyleSheet.create({
     item: {
@@ -84,11 +83,11 @@ export const RestaurantCard = ({restaurant}) => {
       width: '100%',
     },
     details: {
-      overflow: "hidden",
+      overflow: 'hidden',
       whiteSpace: 'nowrap',
       display: 'flex',
-      flexDirection: "row",
-      gap: 4
+      flexDirection: 'row',
+      gap: 4,
     },
     detailsText: {
       fontSize: 14,
@@ -103,7 +102,7 @@ export const RestaurantCard = ({restaurant}) => {
           <Image
             style={styles.banner}
             resizeMode="cover"
-            source={{uri: restaurant.bannerImage || restaurant.image }}
+            source={{uri: restaurant.bannerImage || restaurant.image}}
           />
         </View>
         <View style={styles.logoWrapper}>
@@ -113,13 +112,13 @@ export const RestaurantCard = ({restaurant}) => {
             source={{uri: restaurant.image}}
           />
         </View>
-        { restaurant.badges &&
-        <View style={styles.badgesWrapper}>
-          {restaurant.badges.map((badge, i) => (
-            <RestaurantBadge type={badge} key={i} />
-          ))}
-        </View>
-        }
+        {restaurant.badges && (
+          <View style={styles.badgesWrapper}>
+            {restaurant.badges.map((badge, i) => (
+              <RestaurantBadge type={badge} key={i} />
+            ))}
+          </View>
+        )}
       </View>
       <View style={styles.content}>
         <View>
@@ -129,7 +128,7 @@ export const RestaurantCard = ({restaurant}) => {
           <TimingBadge restaurant={restaurant} />
         </View>
         <View style={styles.details}>
-          { restaurant.tags?.length > 0 ? (
+          {restaurant.tags?.length > 0 ? (
             restaurant.tags.map((tag, i) => (
               <RestaurantTag key={i} text={tag} />
             ))
