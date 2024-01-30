@@ -1,10 +1,9 @@
-import React, {useCallback, useMemo, useState} from 'react';
-import {Pressable, StyleSheet, View, useColorScheme} from 'react-native';
-import {connect} from 'react-redux';
-import {withTranslation} from 'react-i18next';
+import _ from 'lodash';
+import moment from 'moment';
 import {
   Box,
   Center,
+  FlatList,
   HStack,
   Heading,
   Icon,
@@ -12,41 +11,40 @@ import {
   Text,
   VStack,
 } from 'native-base';
-import _ from 'lodash';
-import moment from 'moment';
-import {useFocusEffect} from '@react-navigation/native';
+import React, {useMemo, useState} from 'react';
+import {withTranslation} from 'react-i18next';
+import {Pressable, StyleSheet, useColorScheme} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import {connect} from 'react-redux';
 
 import CartFooter from './components/CartFooter';
 import ExpiredSessionModal from './components/ExpiredSessionModal';
 import LoopeatModal from './components/LoopeatModal';
 
-import Menu from '../../components/Menu';
-
+import {phonecall} from 'react-native-communications';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import {useQuery} from 'react-query';
+import BottomModal from '../../components/BottomModal';
+import DangerAlert from '../../components/DangerAlert';
+import Markdown from '../../components/Markdown';
+import RestaurantMenu from '../../components/RestaurantMenu';
+import RestaurantMenuHeader from '../../components/RestaurantMenuHeader';
+import i18n from '../../i18n';
 import {
   setDate,
   setFulfillmentMethod,
   showTimingModal,
 } from '../../redux/Checkout/actions';
-import {useQuery} from 'react-query';
-import i18n from '../../i18n';
-import GroupImageHeader from './components/GroupImageHeader';
-import OpeningHours from './components/OpeningHours';
-import {phonecall} from 'react-native-communications';
-import AddressUtils from '../../utils/Address';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import {
-  selectCartWithHours,
   selectCartFulfillmentMethod,
+  selectCartWithHours,
   selectFulfillmentMethods,
   selectRestaurantWithHours,
 } from '../../redux/Checkout/selectors';
-import BottomModal from '../../components/BottomModal';
-import DangerAlert from '../../components/DangerAlert';
+import AddressUtils from '../../utils/Address';
 import OpeningHoursSpecification from '../../utils/OpeningHoursSpecification';
-import Markdown from '../../components/Markdown';
+import OpeningHours from './components/OpeningHours';
 import RestaurantProfile from './components/RestaurantProfile';
-import RestaurantMenu from '../../components/RestaurantMenu';
 
 const LoadingPhantom = props => (
   <HStack w="95%" space={6} p="4">
@@ -130,40 +128,62 @@ function Restaurant(props) {
     }
   }
 
-  return (
-    <SafeAreaView style={{flex: 1}} edges={['bottom']}>
-      <View style={{flex: 1, paddingTop: 0}}>
-        <View>
-          <RestaurantProfile
-            onInfo={() => setInfoModal(true)}
-            restaurant={restaurant}
-          />
-        </View>
-        {renderWarningBanner()}
-        {isLoading && (
-          <Center w="100%">
-            <LoadingPhantom color={'cyan.200'} />
-            <LoadingPhantom color={'gray.200'} />
-            <LoadingPhantom color={'amber.200'} />
-          </Center>
-        )}
-        {!isLoading && (
-          <RestaurantMenu
-            restaurant={restaurant}
-            menu={data}
-            onItemClick={menuItem =>
-              navigate('CheckoutProductDetails', {
-                product: menuItem,
-                restaurant,
-              })
-            }
-            isItemLoading={menuItem =>
-              props.loadingItems.includes(menuItem.identifier)
-            }
-          />
-        )}
-      </View>
+  let sections = [];
+  if (data) {
+    _.forEach(data.hasMenuSection, (menuSection, index) => {
+      sections.push({
+        title: menuSection.name,
+        data: menuSection.hasMenuItem,
+        index,
+      });
+    });
+  }
 
+  const renderRestaurantProfile = () => (
+    <RestaurantProfile
+      onInfo={() => setInfoModal(true)}
+      restaurant={restaurant}
+    />
+  );
+
+  const renderRestaurantMenuHeader = () => (
+    <RestaurantMenuHeader sections={sections} />
+  );
+
+  const renderRestaurantMenu = () => (
+    <RestaurantMenu
+      sections={sections}
+      restaurant={restaurant}
+      menu={data}
+      onItemClick={menuItem =>
+        navigate('CheckoutProductDetails', {
+          product: menuItem,
+          restaurant,
+        })
+      }
+      isItemLoading={menuItem =>
+        props.loadingItems.includes(menuItem.identifier)
+      }
+    />
+  );
+
+  const listRenderItem = ({item, index}) => {
+    const renderFunctions = [
+      renderRestaurantProfile,
+      renderWarningBanner,
+      renderRestaurantMenuHeader,
+      renderRestaurantMenu,
+    ];
+    return renderFunctions[index] ? renderFunctions[index]() : null;
+  };
+
+  return (
+    <SafeAreaView>
+      <FlatList
+        stickyHeaderIndices={[2]}
+        data={[0, 1, 2, 3]}
+        renderItem={listRenderItem}
+      />
       {showFooter ? (
         <CartFooter
           onSubmit={() => navigate('CheckoutSummary', {restaurant})}
