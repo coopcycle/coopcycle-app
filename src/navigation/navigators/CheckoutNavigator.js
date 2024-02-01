@@ -125,9 +125,13 @@ const MainNavigator = () => (
     <MainStack.Screen
       name="CheckoutRestaurant"
       component={screens.CheckoutRestaurant}
-      options={{
-        title: i18n.t('RESTAURANT'),
-      }}
+      options={({
+        route: {
+          params: {restaurant},
+        },
+      }) => ({
+        title: restaurant.name,
+      })}
     />
     <MainStack.Screen
       name="CheckoutSummary"
