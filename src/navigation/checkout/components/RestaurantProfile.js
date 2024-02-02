@@ -1,19 +1,9 @@
-import {Animated, ImageBackground, StyleSheet, View} from 'react-native';
-import {
-  HStack,
-  IconButton,
-  Image,
-  Text,
-  VStack,
-  useColorModeValue,
-} from 'native-base';
+import {Image, Text, useColorModeValue} from 'native-base';
 import React from 'react';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import {CategoryBadge, TimingBadge} from './RestaurantBadges';
+import {StyleSheet, View} from 'react-native';
 import {RestaurantBadge} from '../../../components/RestaurantBadge';
-import Svg, {Path} from 'react-native-svg';
-import {transform} from '../../../../jest.config';
 import AddressIcon from './AddressIcon';
+import {TimingBadge} from './RestaurantBadges';
 
 const styles = StyleSheet.create({
   profile: {},
@@ -61,7 +51,8 @@ function RestaurantProfile({restaurant, onInfo}) {
       <Image
         style={styles.banner}
         resizeMode="cover"
-        source={{uri: restaurant.image}}
+        source={{uri: restaurant.bannerImage}}
+        alt="Banner"
       />
       <View style={styles.content}>
         <TimingBadge restaurant={restaurant} />

@@ -13,7 +13,8 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   sectionMenuItemText: {
-    padding: 24,
+    paddingHorizontal: 24,
+    paddingVertical: 16,
     color: 'gray',
   },
   sectionMenuItemTextActive: {
@@ -24,7 +25,11 @@ const styles = StyleSheet.create({
   },
 });
 
-const RestaurantMenuHeader = ({sections}) => {
+const RestaurantMenuHeader = ({sections, sectionRef}) => {
+  const scrollToSection = index => {
+    sectionRef.current.scrollToIndex({index: index + 3, viewOffset: 16});
+  };
+
   return (
     <FlatList
       horizontal
@@ -38,17 +43,19 @@ const RestaurantMenuHeader = ({sections}) => {
               ? [styles.sectionMenuItem, styles.sectionMenuItemActive]
               : styles.sectionMenuItem
           }>
-          <TouchableOpacity onPress={() => {}}>
-            <View
-              style={
-                index === 0
-                  ? [
-                      styles.sectionMenuItemText,
-                      styles.sectionMenuItemTextActive,
-                    ]
-                  : styles.sectionMenuItemText
-              }>
-              <Text>{item.title}</Text>
+          <TouchableOpacity onPress={() => scrollToSection(index)}>
+            <View>
+              <Text
+                style={
+                  index === 0
+                    ? [
+                        styles.sectionMenuItemText,
+                        styles.sectionMenuItemTextActive,
+                      ]
+                    : styles.sectionMenuItemText
+                }>
+                {item.title}
+              </Text>
             </View>
           </TouchableOpacity>
         </View>

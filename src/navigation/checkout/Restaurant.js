@@ -11,9 +11,9 @@ import {
   Text,
   VStack,
 } from 'native-base';
-import React, {useMemo, useState} from 'react';
+import React, {useMemo, useRef, useState} from 'react';
 import {withTranslation} from 'react-i18next';
-import {Pressable, StyleSheet, useColorScheme} from 'react-native';
+import {Pressable, StyleSheet, View, useColorScheme} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {connect} from 'react-redux';
 
@@ -29,6 +29,7 @@ import DangerAlert from '../../components/DangerAlert';
 import Markdown from '../../components/Markdown';
 import RestaurantMenu from '../../components/RestaurantMenu';
 import RestaurantMenuHeader from '../../components/RestaurantMenuHeader';
+import RestaurantMenuItem from '../../components/RestaurantMenuItem';
 import i18n from '../../i18n';
 import {
   setDate,
@@ -66,6 +67,7 @@ function Restaurant(props) {
   const colorScheme = useColorScheme();
   const [infoModal, setInfoModal] = useState(false);
   const {showFooter, httpClient, restaurant, openingHoursSpecification} = props;
+  const sectionListRef = useRef(null);
 
   const {isLoading, isError, data} = useQuery(
     ['menus', restaurant.hasMenu],
@@ -147,7 +149,7 @@ function Restaurant(props) {
   );
 
   const renderRestaurantMenuHeader = () => (
-    <RestaurantMenuHeader sections={sections} />
+    <RestaurantMenuHeader sectionRef={sectionListRef} sections={sections} />
   );
 
   const renderRestaurantMenu = () => (
@@ -167,22 +169,43 @@ function Restaurant(props) {
     />
   );
 
+  const renderSection = section => (
+    <View id={'section-' + section.index}>
+      <Text
+        style={{
+          fontSize: 18,
+          // fontWeight: 'bold',
+          marginHorizontal: 16,
+          marginTop: 48,
+          marginBottom: 8,
+        }}>
+        {section.title}
+      </Text>
+      {section.data.map((item, innerIndex) => (
+        <RestaurantMenuItem item={item} key={innerIndex} />
+      ))}
+    </View>
+  );
+
+  const renderFunctions = [
+    renderRestaurantProfile,
+    renderWarningBanner,
+    renderRestaurantMenuHeader,
+    ...sections.map(section => () => renderSection(section)),
+  ];
+
   const listRenderItem = ({item, index}) => {
-    const renderFunctions = [
-      renderRestaurantProfile,
-      renderWarningBanner,
-      renderRestaurantMenuHeader,
-      renderRestaurantMenu,
-    ];
     return renderFunctions[index] ? renderFunctions[index]() : null;
   };
 
   return (
-    <SafeAreaView>
+    <SafeAreaView
+      style={{display: 'flex', width: '100%', backgroundColor: '#fff'}}>
       <FlatList
         stickyHeaderIndices={[2]}
-        data={[0, 1, 2, 3]}
+        data={Array.from({length: renderFunctions.length}, (_, index) => index)}
         renderItem={listRenderItem}
+        ref={sectionListRef}
       />
       {showFooter ? (
         <CartFooter
