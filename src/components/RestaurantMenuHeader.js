@@ -1,5 +1,5 @@
 import {FlatList} from 'native-base';
-import React from 'react';
+import React, {useEffect, useRef} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 
 const styles = StyleSheet.create({
@@ -25,13 +25,20 @@ const styles = StyleSheet.create({
   },
 });
 
-const RestaurantMenuHeader = ({sections, sectionRef}) => {
+const RestaurantMenuHeader = ({sections, sectionRef, activeSection}) => {
+  const ref = useRef(null);
   const scrollToSection = index => {
     sectionRef.current.scrollToIndex({index: index + 3, viewOffset: 16});
   };
 
+  useEffect(() => {
+    if (activeSection < 3) return;
+    ref.current.scrollToIndex({index: activeSection - 3, viewOffset: 64});
+  }, [activeSection]);
+
   return (
     <FlatList
+      ref={ref}
       horizontal
       style={styles.sectionMenu}
       data={sections}
@@ -39,7 +46,7 @@ const RestaurantMenuHeader = ({sections, sectionRef}) => {
       renderItem={({item, index}) => (
         <View
           style={
-            index === 0
+            index === activeSection - 3 || (activeSection === 0 && index === 0)
               ? [styles.sectionMenuItem, styles.sectionMenuItemActive]
               : styles.sectionMenuItem
           }>
@@ -47,7 +54,8 @@ const RestaurantMenuHeader = ({sections, sectionRef}) => {
             <View>
               <Text
                 style={
-                  index === 0
+                  index === activeSection - 3 ||
+                  (activeSection === 0 && index === 0)
                     ? [
                         styles.sectionMenuItemText,
                         styles.sectionMenuItemTextActive,

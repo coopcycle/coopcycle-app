@@ -69,6 +69,14 @@ function Restaurant(props) {
   const {showFooter, httpClient, restaurant, openingHoursSpecification} = props;
   const sectionListRef = useRef(null);
 
+  const [activeSection, setActiveSection] = useState(null);
+  const viewabilityConfig = useRef({viewAreaCoveragePercentThreshold: 50});
+  const handleViewableItemsChanged = useRef(({viewableItems}) => {
+    if (viewableItems.length > 0) {
+      setActiveSection(viewableItems[0].index);
+    }
+  });
+
   const {isLoading, isError, data} = useQuery(
     ['menus', restaurant.hasMenu],
     async () => {
@@ -149,7 +157,11 @@ function Restaurant(props) {
   );
 
   const renderRestaurantMenuHeader = () => (
-    <RestaurantMenuHeader sectionRef={sectionListRef} sections={sections} />
+    <RestaurantMenuHeader
+      activeSection={activeSection}
+      sectionRef={sectionListRef}
+      sections={sections}
+    />
   );
 
   const renderRestaurantMenu = () => (
@@ -206,6 +218,8 @@ function Restaurant(props) {
         data={Array.from({length: renderFunctions.length}, (_, index) => index)}
         renderItem={listRenderItem}
         ref={sectionListRef}
+        viewabilityConfig={viewabilityConfig.current}
+        onViewableItemsChanged={handleViewableItemsChanged.current}
       />
       {showFooter ? (
         <CartFooter

@@ -1,5 +1,5 @@
 import {SectionList, Text} from 'native-base';
-import React from 'react';
+import React, {useRef} from 'react';
 import {StyleSheet} from 'react-native';
 import RestaurantMenuItem from './RestaurantMenuItem';
 
@@ -16,17 +16,31 @@ const styles = StyleSheet.create({
 });
 
 function RestaurantMenu({menu, onItemClick, isItemLoading, sections}) {
+  const viewabilityConfig = useRef({viewAreaCoveragePercentThreshold: 90});
+
+  console.log('viewableItems');
+
+  const handleViewableItemsChanged = useRef(({viewableItems}) => {
+    console.log('viewableItems2');
+    console.log(viewableItems);
+  });
+
   return (
-    <SectionList
-      sections={sections}
-      keyExtractor={(item, index) => item + index}
-      renderItem={({item}) => (
-        <RestaurantMenuItem item={item} onPress={onItemClick} />
-      )}
-      renderSectionHeader={({section: {title}}) => (
-        <Text style={styles.header}>{title}</Text>
-      )}
-    />
+    <>
+      true ? <Text>Test</Text> :{' '}
+      <SectionList
+        sections={sections}
+        keyExtractor={(item, index) => item + index}
+        renderItem={({item}) => (
+          <RestaurantMenuItem item={item} onPress={onItemClick} />
+        )}
+        renderSectionHeader={({section: {title}}) => (
+          <Text style={styles.header}>{title}</Text>
+        )}
+        onViewableItemsChanged={handleViewableItemsChanged.current}
+        viewabilityConfig={viewabilityConfig.current}
+      />
+    </>
   );
 }
 
