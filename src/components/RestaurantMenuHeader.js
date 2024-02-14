@@ -32,9 +32,38 @@ const RestaurantMenuHeader = ({sections, sectionRef, activeSection}) => {
   };
 
   useEffect(() => {
-    if (activeSection < 3) return;
-    ref.current.scrollToIndex({index: activeSection - 3, viewOffset: 64});
+    if (sections.length === 0) return;
+    if (activeSection < 3) {
+      return ref.current.scrollToIndex({index: 0, viewOffset: 0});
+    }
+    return ref.current.scrollToIndex({
+      index: activeSection - 3,
+      viewOffset: 64,
+    });
   }, [activeSection]);
+
+  const Item = ({item, index}) => (
+    <View
+      style={
+        index === activeSection - 3 || (activeSection === 0 && index === 0)
+          ? [styles.sectionMenuItem, styles.sectionMenuItemActive]
+          : styles.sectionMenuItem
+      }>
+      <TouchableOpacity onPress={() => scrollToSection(index)}>
+        <View>
+          <Text
+            style={
+              index === activeSection - 3 ||
+              (activeSection === 0 && index === 0)
+                ? [styles.sectionMenuItemText, styles.sectionMenuItemTextActive]
+                : styles.sectionMenuItemText
+            }>
+            {item.title}
+          </Text>
+        </View>
+      </TouchableOpacity>
+    </View>
+  );
 
   return (
     <FlatList
@@ -43,31 +72,8 @@ const RestaurantMenuHeader = ({sections, sectionRef, activeSection}) => {
       style={styles.sectionMenu}
       data={sections}
       keyExtractor={(item, index) => index.toString()}
-      renderItem={({item, index}) => (
-        <View
-          style={
-            index === activeSection - 3 || (activeSection === 0 && index === 0)
-              ? [styles.sectionMenuItem, styles.sectionMenuItemActive]
-              : styles.sectionMenuItem
-          }>
-          <TouchableOpacity onPress={() => scrollToSection(index)}>
-            <View>
-              <Text
-                style={
-                  index === activeSection - 3 ||
-                  (activeSection === 0 && index === 0)
-                    ? [
-                        styles.sectionMenuItemText,
-                        styles.sectionMenuItemTextActive,
-                      ]
-                    : styles.sectionMenuItemText
-                }>
-                {item.title}
-              </Text>
-            </View>
-          </TouchableOpacity>
-        </View>
-      )}
+      showsHorizontalScrollIndicator={false}
+      renderItem={Item}
     />
   );
 };

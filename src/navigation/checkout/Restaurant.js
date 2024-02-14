@@ -194,7 +194,13 @@ function Restaurant(props) {
         {section.title}
       </Text>
       {section.data.map((item, innerIndex) => (
-        <RestaurantMenuItem item={item} key={innerIndex} />
+        <RestaurantMenuItem
+          item={item}
+          key={innerIndex}
+          onPress={menuItem =>
+            navigate('CheckoutProductDetails', {product: menuItem, restaurant})
+          }
+        />
       ))}
     </View>
   );
@@ -211,8 +217,7 @@ function Restaurant(props) {
   };
 
   return (
-    <SafeAreaView
-      style={{display: 'flex', width: '100%', backgroundColor: '#fff'}}>
+    <SafeAreaView style={{display: 'flex', width: '100%'}}>
       <FlatList
         stickyHeaderIndices={[2]}
         data={Array.from({length: renderFunctions.length}, (_, index) => index)}
