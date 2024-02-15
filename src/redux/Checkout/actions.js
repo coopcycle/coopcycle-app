@@ -621,14 +621,14 @@ export function setAddress(address, cart = null) {
         .catch((reason) => {
           dispatch(setAddressOK(false))
           dispatch(setAddressModalMessage(reason))
-          dispatch(setModal({
-            show: true,
-            skippable: true,
-            content: reason,
-            type: 'error',
-          }))
           dispatch(setCheckoutLoading(false))
-        })
+          dispatch(setModal({
+              show: true,
+              skippable: true,
+              content: reason,
+              type: 'error',
+            }))
+          })
     } else {
       dispatch(_setAddress(address))
     }
@@ -689,8 +689,8 @@ export function searchRestaurantsForAddress(address, options = {}) {
         dispatch(wrapRestaurantsWithTiming(res['hydra:member']))
       })
       .catch(e => {
-        _maintenanceModeHandler(e, dispatch)
         dispatch(loadRestaurantsFailure(e))
+        _maintenanceModeHandler(e, dispatch)
       })
   }
 }
@@ -725,8 +725,8 @@ export function searchRestaurants(options = {}) {
         dispatch(wrapRestaurantsWithTiming(values[0]['hydra:member']))
       })
       .catch(e => {
-        _maintenanceModeHandler(e, dispatch)
         dispatch(loadRestaurantsFailure(e))
+        _maintenanceModeHandler(e, dispatch)
       })
   }
 }
@@ -825,6 +825,7 @@ export function checkout(cardholderName, savedPaymentMethodId = null, saveCard =
     const httpClient = createHttpClientWithSessionToken(getState());
 
     if (!validateCart(cart)) {
+      dispatch(checkoutFailure());
       NavigationHolder.dispatch(
         CommonActions.navigate({
           name: 'Cart',
@@ -838,7 +839,7 @@ export function checkout(cardholderName, savedPaymentMethodId = null, saveCard =
           type: 'error',
         }),
       );
-      return dispatch(checkoutFailure());
+      return;
     }
 
     if (isFree(cart)) {
@@ -1074,6 +1075,7 @@ export function assignCustomer({ email, telephone }, cartContainer = null) {
           dispatch(updateCustomerGuest({ email, telephone }))
         }
         if (!validateCart(res)) {
+          dispatch(checkoutFailure())
           dispatch(setModal({
             show: true,
             skippable: true,
@@ -1088,7 +1090,6 @@ export function assignCustomer({ email, telephone }, cartContainer = null) {
           NavigationHolder.dispatch(CommonActions.navigate({
             name: 'CheckoutLogin',
           }))
-          dispatch(checkoutFailure())
         } else {
           dispatch(updateCartSuccess(res))
           dispatch(checkoutSuccess())
@@ -1331,17 +1332,17 @@ export function generateInvoice(order, address) {
     })
       .then(res => {
         dispatch(updateOrderSuccess(res))
+        dispatch(setLoading(false))
       })
       .catch(e => {
+        dispatch(setLoading(false))
         dispatch(setModal({
           show: true,
           skippable: true,
           content: i18next.t('NET_FAILED'),
           type: 'error',
         }))
-      }).finally(() => {
-      dispatch(setLoading(false))
-    })
+      })
   }
 }
 

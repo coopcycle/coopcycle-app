@@ -396,6 +396,8 @@
         "CONNECT_WITH_FACEBOOK": "Sign in with Facebook",
         "TERMS_OF_SERVICE": "Terms of service",
         "PRIVACY": "Privacy",
+        "FEATURE_FLAGS": "Experiments",
+        "FEATURE_FLAG_SPINNER_DELAY": "Enable loading indicator delay (deprecated)",
         "RESTAURANT_PRODUCT_OPTIONS": "Product options",
         "RESTAURANT_PRE_ORDER": "Pre-order",
         "RESTAURANT_CLOSED_BUT_OPENS": "This restaurant is closed now but opens {{ datetime }}. You can still order for later on though!",
