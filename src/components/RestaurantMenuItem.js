@@ -78,7 +78,9 @@ const RestaurantMenuItem = ({item, onPress, isLoading}) => {
       </View>
 
       <View style={styles.menuItemContent}>
-        <Text style={styles.menuItemTitle}>{item.name}</Text>
+        <Text numberOfLines={1} style={styles.menuItemTitle}>
+          {item.name}
+        </Text>
         {item.description ? (
           <Text numberOfLines={3} style={styles.menuItemDescription}>
             {item.description}
