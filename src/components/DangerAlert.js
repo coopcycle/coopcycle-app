@@ -33,8 +33,9 @@ const DangerAlert = props => {
 
 const styles = StyleSheet.create({
   container: {
-    height: 60,
-    paddingHorizontal: 8,
+    // height: 60,
+    paddingVertical: 8,
+    paddingHorizontal: 16,
     backgroundColor: '#d9edf7',
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderBottomColor: '#bce8f1',
