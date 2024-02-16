@@ -1,7 +1,7 @@
 import i18next from 'i18next';
+import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import Svg, {Path} from 'react-native-svg';
-import React from 'react';
 
 export function RestaurantBadge({type}) {
   let backgroundColor = '#00F';
@@ -134,6 +134,7 @@ export function RestaurantBadge({type}) {
       shadowOffset: {width: 0, height: 0},
       shadowOpacity: 0.8,
       shadowRadius: 16,
+      elevation: 8,
       display: 'inline-flex',
       overflow: 'hidden',
       position: 'relative',
@@ -154,7 +155,7 @@ export function RestaurantBadge({type}) {
       paddingLeft: 8 - padding,
       display: 'inline-flex',
       flexDirection: 'row',
-      alignItems: "center"
+      alignItems: 'center',
     },
     text: {
       color: textColor,
