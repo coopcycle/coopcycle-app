@@ -60,13 +60,13 @@ function RestaurantProfile({restaurant, onInfo}) {
           <AddressIcon stroke={stroke} />
           <Text>{restaurant.address.streetAddress}</Text>
         </View>
-        {restaurant.badges >= 1 && (
+        {restaurant.badges.length >= 1 ? (
           <View style={styles.badgesWrapper}>
             {restaurant.badges.map((badge, i) => (
               <RestaurantBadge type={badge} key={i} />
             ))}
           </View>
-        )}
+        ) : null}
         {restaurant.description ? <Text>{restaurant.description}</Text> : null}
       </View>
     </View>

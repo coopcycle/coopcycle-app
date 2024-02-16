@@ -27,7 +27,6 @@ import {useQuery} from 'react-query';
 import BottomModal from '../../components/BottomModal';
 import DangerAlert from '../../components/DangerAlert';
 import Markdown from '../../components/Markdown';
-import RestaurantMenu from '../../components/RestaurantMenu';
 import RestaurantMenuHeader from '../../components/RestaurantMenuHeader';
 import RestaurantMenuItem from '../../components/RestaurantMenuItem';
 import i18n from '../../i18n';
@@ -161,23 +160,6 @@ function Restaurant(props) {
       activeSection={activeSection}
       sectionRef={sectionListRef}
       sections={sections}
-    />
-  );
-
-  const renderRestaurantMenu = () => (
-    <RestaurantMenu
-      sections={sections}
-      restaurant={restaurant}
-      menu={data}
-      onItemClick={menuItem =>
-        navigate('CheckoutProductDetails', {
-          product: menuItem,
-          restaurant,
-        })
-      }
-      isItemLoading={menuItem =>
-        props.loadingItems.includes(menuItem.identifier)
-      }
     />
   );
 

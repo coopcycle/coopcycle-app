@@ -33,14 +33,14 @@ const RestaurantMenuHeader = ({sections, sectionRef, activeSection}) => {
 
   useEffect(() => {
     if (sections.length === 0) return;
-    if (activeSection < 3) {
+    if (activeSection <= 3) {
       return ref.current.scrollToIndex({index: 0, viewOffset: 0});
     }
     return ref.current.scrollToIndex({
       index: activeSection - 3,
       viewOffset: 64,
     });
-  }, [activeSection]);
+  }, [activeSection, sections.length]);
 
   const Item = ({item, index}) => (
     <View
