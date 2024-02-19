@@ -34,6 +34,7 @@ const RestaurantMenuHeader = ({sections, sectionRef, activeSection}) => {
   };
 
   useEffect(() => {
+    if (sections.length === 0) return;
     let scrollTo = activeSection - 3;
     if (activeSection - 3 >= sections.length) {
       scrollTo = sections.length - 1;
