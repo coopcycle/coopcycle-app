@@ -2,6 +2,7 @@ import {Image, Text, useColorModeValue} from 'native-base';
 import React from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
 import {RestaurantBadge} from '../../../components/RestaurantBadge';
+import {RestaurantTag} from '../../../components/RestaurantTag';
 import AddressIcon from './AddressIcon';
 import {TimingBadge} from './RestaurantBadges';
 
@@ -19,8 +20,8 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   detailsWrapper: {
-    marginTop: -64,
-    marginBottom: -12,
+    marginTop: -70,
+    marginBottom: -8,
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'flex-end',
@@ -31,11 +32,17 @@ const styles = StyleSheet.create({
   },
   logoWrapper: {
     flexShrink: 0,
-    padding: 12,
+    padding: 8,
     backgroundColor: '#fff',
     width: 116,
     height: 116,
     borderRadius: 16,
+  },
+  tags: {
+    display: 'flex',
+    flexDirection: 'row',
+    gap: 8,
+    flexWrap: 'wrap',
   },
   logo: {
     borderRadius: 8,
@@ -56,7 +63,7 @@ const styles = StyleSheet.create({
     gap: 8,
     left: 0,
     marginTop: 4,
-    marginBottom: 12,
+    marginBottom: 8,
   },
   address: {
     display: 'flex',
@@ -94,7 +101,7 @@ function RestaurantProfile({restaurant, onInfo}) {
           <ScrollView
             style={styles.badgesScroll}
             horizontal={true}
-            showsHorizontalScrollIndicator={false}>
+            showsHorizontalScrollIndicator={true}>
             <View style={styles.badgesWrapper}>
               {restaurant.badges.map((badge, i) => (
                 <RestaurantBadge type={badge} key={i} />
@@ -109,6 +116,13 @@ function RestaurantProfile({restaurant, onInfo}) {
           <AddressIcon stroke={stroke} />
           <Text>{restaurant.address.streetAddress}</Text>
         </View>
+        {restaurant.tags?.length > 0 ? (
+          <View style={styles.tags}>
+            {restaurant.tags.map((tag, i) => (
+              <RestaurantTag key={i} text={tag} />
+            ))}
+          </View>
+        ) : null}
 
         {restaurant.description ? <Text>{restaurant.description}</Text> : null}
       </View>

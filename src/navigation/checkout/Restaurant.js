@@ -13,7 +13,13 @@ import {
 } from 'native-base';
 import React, {useMemo, useRef, useState} from 'react';
 import {withTranslation} from 'react-i18next';
-import {Pressable, StyleSheet, View, useColorScheme} from 'react-native';
+import {
+  Dimensions,
+  Pressable,
+  StyleSheet,
+  View,
+  useColorScheme,
+} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {connect} from 'react-redux';
 
@@ -75,6 +81,7 @@ function Restaurant(props) {
       setActiveSection(viewableItems[0].index);
     }
   });
+  const screenHeight = Dimensions.get('window').height;
 
   const {isLoading, isError, data} = useQuery(
     ['menus', restaurant.hasMenu],
@@ -116,9 +123,11 @@ function Restaurant(props) {
         return (
           <DangerAlert
             text={`${i18n.t('RESTAURANT_CLOSED_AND_NOT_AVAILABLE', {
-              datetime: moment(currentTimeSlot.timeSlot[0]).calendar(moment(), {
-                sameElse: 'llll',
-              }),
+              datetime: moment(currentTimeSlot.timeSlot[0])
+                .calendar(moment(), {
+                  sameElse: 'llll',
+                })
+                .replace(/\s/g, '\u00A0'),
             })}`}
           />
         );
@@ -127,9 +136,11 @@ function Restaurant(props) {
           <DangerAlert
             adjustsFontSizeToFit={true}
             text={`${i18n.t('RESTAURANT_CLOSED_BUT_OPENS', {
-              datetime: moment(currentTimeSlot.timeSlot[0]).calendar(moment(), {
-                sameElse: 'llll',
-              }),
+              datetime: moment(currentTimeSlot.timeSlot[0])
+                .calendar(moment(), {
+                  sameElse: 'llll',
+                })
+                .replace(/\s/g, '\u00A0'),
             })}`}
           />
         );
@@ -187,11 +198,16 @@ function Restaurant(props) {
     </View>
   );
 
+  const renderEmptyFooter = () => (
+    <View style={{height: screenHeight * 0.4}}></View>
+  );
+
   const renderFunctions = [
     renderRestaurantProfile,
     renderWarningBanner,
     renderRestaurantMenuHeader,
     ...sections.map(section => () => renderSection(section)),
+    renderEmptyFooter,
   ];
 
   const listRenderItem = ({item, index}) => {

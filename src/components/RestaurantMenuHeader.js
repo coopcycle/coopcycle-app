@@ -1,5 +1,5 @@
 import {FlatList} from 'native-base';
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 
 const styles = StyleSheet.create({
@@ -26,18 +26,24 @@ const styles = StyleSheet.create({
 });
 
 const RestaurantMenuHeader = ({sections, sectionRef, activeSection}) => {
+  const [active, setActive] = useState(0);
   const ref = useRef(null);
+
   const scrollToSection = index => {
     sectionRef.current.scrollToIndex({index: index + 3, viewOffset: 16});
   };
 
   useEffect(() => {
-    if (sections.length === 0) return;
-    if (activeSection <= 3) {
-      return ref.current.scrollToIndex({index: 0, viewOffset: 0});
+    let scrollTo = activeSection - 3;
+    if (activeSection - 3 >= sections.length) {
+      scrollTo = sections.length - 1;
     }
+    if (activeSection <= 3) {
+      scrollTo = 0;
+    }
+    setActive(scrollTo);
     return ref.current.scrollToIndex({
-      index: activeSection - 3,
+      index: scrollTo,
       viewOffset: 64,
     });
   }, [activeSection, sections.length]);
@@ -45,7 +51,7 @@ const RestaurantMenuHeader = ({sections, sectionRef, activeSection}) => {
   const Item = ({item, index}) => (
     <View
       style={
-        index === activeSection - 3 || (activeSection === 0 && index === 0)
+        index === active
           ? [styles.sectionMenuItem, styles.sectionMenuItemActive]
           : styles.sectionMenuItem
       }>
@@ -53,8 +59,7 @@ const RestaurantMenuHeader = ({sections, sectionRef, activeSection}) => {
         <View>
           <Text
             style={
-              index === activeSection - 3 ||
-              (activeSection === 0 && index === 0)
+              index === active
                 ? [styles.sectionMenuItemText, styles.sectionMenuItemTextActive]
                 : styles.sectionMenuItemText
             }>
