@@ -134,7 +134,7 @@ export function RestaurantBadge({type}) {
       shadowOffset: {width: 0, height: 0},
       shadowOpacity: 0.8,
       shadowRadius: 16,
-      elevation: 8,
+      elevation: 4,
       display: 'inline-flex',
       overflow: 'hidden',
       position: 'relative',

@@ -22,11 +22,10 @@ const styles = StyleSheet.create({
   },
   detailsWrapper: {
     marginTop: -70,
-    marginBottom: -8,
+    marginBottom: -12,
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'flex-end',
-    gap: 16,
     paddingLeft: 16,
     // backgroundColor: '#fff0004F',
     // width: '100%',
@@ -39,11 +38,20 @@ const styles = StyleSheet.create({
     height: 116,
     borderRadius: 16,
   },
+  logoWrapperShadow: {
+    elevation: 8,
+    shadowColor: '#00000044',
+    borderRadius: 8,
+  },
+  description: {
+    marginTop: 8,
+  },
   tags: {
     display: 'flex',
     flexDirection: 'row',
     gap: 8,
     flexWrap: 'wrap',
+    marginTop: 8,
   },
   logo: {
     borderRadius: 8,
@@ -56,6 +64,8 @@ const styles = StyleSheet.create({
   },
   badgesScroll: {
     width: '100%',
+    overflow: 'visible',
+    paddingLeft: 16,
   },
   badgesWrapper: {
     display: 'flex',
@@ -91,12 +101,14 @@ function RestaurantProfile({restaurant, onInfo}) {
       />
       <View style={styles.detailsWrapper}>
         <View style={styles.logoWrapper}>
-          <Image
-            style={styles.logo}
-            resizeMode="cover"
-            source={{uri: restaurant.image}}
-            alt="logo"
-          />
+          <View style={styles.logoWrapperShadow}>
+            <Image
+              style={styles.logo}
+              resizeMode="cover"
+              source={{uri: restaurant.image}}
+              alt="logo"
+            />
+          </View>
         </View>
         {restaurant.badges.length >= 1 ? (
           <ScrollView
@@ -122,6 +134,11 @@ function RestaurantProfile({restaurant, onInfo}) {
           <AddressIcon stroke={stroke} />
           <Text>{restaurant.address.streetAddress}</Text>
         </View>
+        {restaurant.description ? (
+          <View style={styles.description}>
+            <Text>{restaurant.description}</Text>
+          </View>
+        ) : null}
         {restaurant.tags?.length > 0 ? (
           <View style={styles.tags}>
             {restaurant.tags.map((tag, i) => (
@@ -129,8 +146,6 @@ function RestaurantProfile({restaurant, onInfo}) {
             ))}
           </View>
         ) : null}
-
-        {restaurant.description ? <Text>{restaurant.description}</Text> : null}
       </View>
     </View>
   );
