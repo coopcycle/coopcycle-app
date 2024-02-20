@@ -1,4 +1,5 @@
-import {Image, Text, useColorModeValue} from 'native-base';
+import i18next from 'i18next';
+import {Button, Image, Text, useColorModeValue} from 'native-base';
 import React from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
 import {RestaurantBadge} from '../../../components/RestaurantBadge';
@@ -111,7 +112,12 @@ function RestaurantProfile({restaurant, onInfo}) {
         ) : null}
       </View>
       <View style={styles.content}>
-        <TimingBadge restaurant={restaurant} />
+        <View style={{display: 'flex', flexDirection: 'row', gap: 4}}>
+          <TimingBadge restaurant={restaurant} />
+          <Button size="sm" variant="link" onPress={onInfo}>
+            {i18next.t('RESTAURANT_MORE_INFOS')}
+          </Button>
+        </View>
         <View style={styles.address}>
           <AddressIcon stroke={stroke} />
           <Text>{restaurant.address.streetAddress}</Text>
