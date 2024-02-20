@@ -2,6 +2,7 @@ import _ from 'lodash';
 import {Divider, SectionList} from 'native-base';
 import React, {useMemo, useRef, useState} from 'react';
 import {useTranslation} from 'react-i18next';
+import {StyleSheet, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useDispatch} from 'react-redux';
 import ItemSeparator from '../../../components/ItemSeparator';
@@ -20,6 +21,16 @@ import {ProductQuantity} from './ProductQuantity';
 const LIST_SECTION_QUANTITY = 'quantity';
 const LIST_SECTION_OPTIONS_HEADER = 'options-header';
 const LIST_SECTION_OPTION = 'option';
+
+const styles = StyleSheet.create({
+  ProductImage: {
+    width: '100%',
+    height: 150,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
 
 export default props => {
   const product = props.route.params?.product;
@@ -142,10 +153,12 @@ export default props => {
         ItemSeparatorComponent={ItemSeparator}
         stickySectionHeadersEnabled={true}
         ListHeaderComponent={() => (
-          <>
-            <ProductImage product={product} />
+          <View style={styles.ProductHeader}>
+            <View style={styles.ProductImage}>
+              <ProductImage product={product} />
+            </View>
             <ProductInfo product={product} />
-          </>
+          </View>
         )}
         renderSectionHeader={({section}) => {
           if (section.type === LIST_SECTION_OPTION) {

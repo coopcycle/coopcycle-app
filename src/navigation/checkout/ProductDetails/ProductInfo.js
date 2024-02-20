@@ -14,7 +14,7 @@ export const ProductInfo = ({product}) => {
     !!product.reusablePackagingEnabled;
 
   return (
-    <Box p="3">
+    <Box p="3" style={{backgroundColor: 'white'}}>
       <Heading size="lg">{product.name}</Heading>
       {product.description && product.description.length > 0 && (
         <Text mt="2">{product.description}</Text>
