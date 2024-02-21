@@ -30,7 +30,7 @@ const RestaurantMenuHeader = ({sections, sectionRef, activeSection}) => {
   const ref = useRef(null);
   const backgroundColor = useColorModeValue('#fff', '#201E1E');
   const inactiveBorderBottomColor = useColorModeValue(
-    '#fff',
+    'rgba(0,0,0,.25)',
     'rgba(255,255,255,.5)',
   );
   const activeBorderBottomColor = useColorModeValue('red', '#fff');
