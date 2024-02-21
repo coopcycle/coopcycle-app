@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import {Image, Text, View} from 'native-base';
+import {Image, Text, View, useColorModeValue} from 'native-base';
 import React from 'react';
 import {ActivityIndicator, StyleSheet, TouchableOpacity} from 'react-native';
 import {formatPrice} from '../utils/formatting';
@@ -54,6 +54,7 @@ const styles = StyleSheet.create({
 
 const RestaurantMenuItem = ({item, onPress, isLoading}) => {
   const enabled = item.hasOwnProperty('enabled') ? item.enabled : true;
+  const backgroundColor = useColorModeValue('#fff', '#201E1E');
 
   const image1x1 =
     item.images &&
@@ -62,7 +63,7 @@ const RestaurantMenuItem = ({item, onPress, isLoading}) => {
 
   return (
     <TouchableOpacity
-      style={styles.menuItem}
+      style={[styles.menuItem, {backgroundColor}]}
       onPress={enabled ? () => onPress(item) : null}
       testID={`menuItem:${item.sectionIndex}:${item.index}`}>
       <View style={styles.menuItemImageWrapper}>

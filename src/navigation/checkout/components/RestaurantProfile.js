@@ -14,12 +14,6 @@ const styles = StyleSheet.create({
     display: 'flex',
     gap: 8,
   },
-  restaurantName: {
-    color: '#ffffff',
-    fontFamily: 'Raleway-Regular',
-    fontWeight: 'bold',
-    fontSize: 18,
-  },
   detailsWrapper: {
     marginTop: -70,
     marginBottom: -12,
@@ -33,7 +27,6 @@ const styles = StyleSheet.create({
   logoWrapper: {
     flexShrink: 0,
     padding: 8,
-    backgroundColor: '#fff',
     width: 116,
     height: 116,
     borderRadius: 16,
@@ -88,7 +81,7 @@ const styles = StyleSheet.create({
 });
 
 function RestaurantProfile({restaurant, onInfo}) {
-  const backgroundColor = useColorModeValue('#fff', '#000');
+  const backgroundColor = useColorModeValue('#fff', '#201E1E');
   const stroke = useColorModeValue('#000', '#fff');
 
   return (
@@ -100,7 +93,7 @@ function RestaurantProfile({restaurant, onInfo}) {
         alt="Banner"
       />
       <View style={styles.detailsWrapper}>
-        <View style={styles.logoWrapper}>
+        <View style={[styles.logoWrapper, {backgroundColor}]}>
           <View style={styles.logoWrapperShadow}>
             <Image
               style={styles.logo}

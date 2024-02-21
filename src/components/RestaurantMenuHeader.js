@@ -1,4 +1,4 @@
-import {FlatList} from 'native-base';
+import {FlatList, useColorModeValue} from 'native-base';
 import React, {useEffect, useRef, useState} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 
@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
   sectionMenu: {
     display: 'flex',
     flexDirection: 'row',
-    backgroundColor: 'white',
+    backgroundColor: '#201E1E',
   },
   sectionMenuItem: {
     borderBottomColor: 'lightgray',
@@ -28,6 +28,12 @@ const styles = StyleSheet.create({
 const RestaurantMenuHeader = ({sections, sectionRef, activeSection}) => {
   const [active, setActive] = useState(0);
   const ref = useRef(null);
+  const backgroundColor = useColorModeValue('#fff', '#201E1E');
+  const inactiveBorderBottomColor = useColorModeValue(
+    '#fff',
+    'rgba(255,255,255,.5)',
+  );
+  const activeBorderBottomColor = useColorModeValue('red', '#fff');
 
   const scrollToSection = index => {
     sectionRef.current.scrollToIndex({index: index + 3, viewOffset: 16});
@@ -53,16 +59,30 @@ const RestaurantMenuHeader = ({sections, sectionRef, activeSection}) => {
     <View
       style={
         index === active
-          ? [styles.sectionMenuItem, styles.sectionMenuItemActive]
-          : styles.sectionMenuItem
+          ? [
+              styles.sectionMenuItem,
+              styles.sectionMenuItemActive,
+              {borderBottomColor: activeBorderBottomColor},
+            ]
+          : [
+              styles.sectionMenuItem,
+              {borderBottomColor: inactiveBorderBottomColor},
+            ]
       }>
       <TouchableOpacity onPress={() => scrollToSection(index)}>
         <View>
           <Text
             style={
               index === active
-                ? [styles.sectionMenuItemText, styles.sectionMenuItemTextActive]
-                : styles.sectionMenuItemText
+                ? [
+                    styles.sectionMenuItemText,
+                    styles.sectionMenuItemTextActive,
+                    {color: activeBorderBottomColor},
+                  ]
+                : [
+                    styles.sectionMenuItemText,
+                    {color: inactiveBorderBottomColor},
+                  ]
             }>
             {item.title}
           </Text>
@@ -75,7 +95,7 @@ const RestaurantMenuHeader = ({sections, sectionRef, activeSection}) => {
     <FlatList
       ref={ref}
       horizontal
-      style={styles.sectionMenu}
+      style={([styles.sectionMenu], {backgroundColor})}
       data={sections}
       keyExtractor={(item, index) => index.toString()}
       showsHorizontalScrollIndicator={false}
