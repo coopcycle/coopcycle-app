@@ -9,19 +9,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#201E1E',
   },
   sectionMenuItem: {
-    borderBottomColor: 'lightgray',
     borderBottomWidth: 1,
   },
   sectionMenuItemText: {
     paddingHorizontal: 24,
     paddingVertical: 16,
-    color: 'gray',
-  },
-  sectionMenuItemTextActive: {
-    color: 'red',
-  },
-  sectionMenuItemActive: {
-    borderBottomColor: 'red',
   },
 });
 
@@ -29,9 +21,10 @@ const RestaurantMenuHeader = ({sections, sectionRef, activeSection}) => {
   const [active, setActive] = useState(0);
   const ref = useRef(null);
   const backgroundColor = useColorModeValue('#fff', '#201E1E');
+  const inactiveText = useColorModeValue('gray', 'rgba(255,255,255,.5)');
   const inactiveBorderBottomColor = useColorModeValue(
-    'rgba(0,0,0,.25)',
-    'rgba(255,255,255,.5)',
+    'lightgray',
+    'rgba(255,255,255,.25)',
   );
   const activeBorderBottomColor = useColorModeValue('red', '#fff');
 
@@ -61,7 +54,6 @@ const RestaurantMenuHeader = ({sections, sectionRef, activeSection}) => {
         index === active
           ? [
               styles.sectionMenuItem,
-              styles.sectionMenuItemActive,
               {borderBottomColor: activeBorderBottomColor},
             ]
           : [
@@ -74,15 +66,8 @@ const RestaurantMenuHeader = ({sections, sectionRef, activeSection}) => {
           <Text
             style={
               index === active
-                ? [
-                    styles.sectionMenuItemText,
-                    styles.sectionMenuItemTextActive,
-                    {color: activeBorderBottomColor},
-                  ]
-                : [
-                    styles.sectionMenuItemText,
-                    {color: inactiveBorderBottomColor},
-                  ]
+                ? [styles.sectionMenuItemText, {color: activeBorderBottomColor}]
+                : [styles.sectionMenuItemText, {color: inactiveText}]
             }>
             {item.title}
           </Text>
