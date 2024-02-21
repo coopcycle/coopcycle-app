@@ -25,6 +25,7 @@ const styles = StyleSheet.create({
   menuItemTitle: {
     fontSize: 14,
     fontWeight: 'bold',
+    marginTop: 4,
   },
   menuItemDescription: {
     fontSize: 12,
@@ -66,8 +67,8 @@ const RestaurantMenuItem = ({item, onPress, isLoading}) => {
       style={[styles.menuItem, {backgroundColor}]}
       onPress={enabled ? () => onPress(item) : null}
       testID={`menuItem:${item.sectionIndex}:${item.index}`}>
-      <View style={styles.menuItemImageWrapper}>
-        {image1x1 && true && (
+      <View style={image1x1 ? styles.menuItemImageWrapper : {width: 0}}>
+        {image1x1 && (
           <Image
             size="lg"
             resizeMode="cover"
