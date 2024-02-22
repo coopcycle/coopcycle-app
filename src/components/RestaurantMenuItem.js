@@ -29,7 +29,6 @@ const styles = StyleSheet.create({
   },
   menuItemDescription: {
     fontSize: 12,
-    whiteSpace: 'wrap',
     lineHeight: 16,
   },
   menuItemPrice: {
