@@ -656,7 +656,7 @@ PODS:
     - React-Core
   - react-native-get-random-values (1.9.0):
     - React-Core
-  - react-native-maps (1.8.4):
+  - react-native-maps (1.10.3):
     - React-Core
   - react-native-netinfo (9.4.1):
     - React-Core
@@ -1277,7 +1277,7 @@ SPEC CHECKSUMS:
   react-native-config: 86038147314e2e6d10ea9972022aa171e6b1d4d8
   react-native-fbsdk-next: 776f49479d36a1e72a1a367baadcc8391cd24374
   react-native-get-random-values: dee677497c6a740b71e5612e8dbd83e7539ed5bb
-  react-native-maps: e2b78affd8e90c807a87bd042dc6b1af2decbcf1
+  react-native-maps: 72a8a903f8a1b53e2c777ba79102078ab502e0bf
   react-native-netinfo: fefd4e98d75cbdd6e85fc530f7111a8afdf2b0c5
   react-native-pager-view: cf96a223846458cc7e932017636b5c6d8cc2c549
   react-native-safe-area-context: b97eb6f9e3b7f437806c2ce5983f479f8eb5de4b

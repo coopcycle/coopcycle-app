@@ -86,7 +86,7 @@
     "react-native-loading-spinner-overlay": "^3.0.1",
     "react-native-localize": "^3.0.4",
     "react-native-map-link": "^2.11.2",
-    "react-native-maps": "^1.8.4",
+    "react-native-maps": "^1.10.3",
     "react-native-maps-super-cluster": "^1.6.0",
     "react-native-markdown-display": "^7.0.2",
     "react-native-modal": "^13.0.1",

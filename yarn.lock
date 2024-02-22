@@ -5454,10 +5454,10 @@
   resolved "https://registry.yarnpkg.com/@types/geojson/-/geojson-7946.0.8.tgz#30744afdb385e2945e22f3b033f897f76b1f12ca"
   integrity sha512-1rkryxURpr6aWP7R786/UQOkJ3PcpQiWkAXBmdWc7ryFWqN6a4xfK7BtjXvFBKO9LjQ+MWQSWxYeZX1OApnArA==
 
-"@types/geojson@^7946.0.10":
-  version "7946.0.11"
-  resolved "https://registry.yarnpkg.com/@types/geojson/-/geojson-7946.0.11.tgz#012c17cb2256ad8de78560da851ab914a7b9b40e"
-  integrity sha512-L7A0AINMXQpVwxHJ4jxD6/XjZ4NDufaRlUJHjNIFKYUFBH1SvOW+neaqb0VTRSLW5suSrSu19ObFEFnfNcr+qg==
+"@types/geojson@^7946.0.13":
+  version "7946.0.14"
+  resolved "https://registry.yarnpkg.com/@types/geojson/-/geojson-7946.0.14.tgz#319b63ad6df705ee2a65a73ef042c8271e696613"
+  integrity sha512-WCfD5Ht3ZesJUsONdhvm84dmzWOiOzOAqOncN0++w0lBw1o8OuDNJF2McvvCef/yBqb/HYRahp1BYtODFQ8bRg==
 
 "@types/graceful-fs@^4.1.3":
   version "4.1.5"
@@ -12300,12 +12300,12 @@ react-native-maps-super-cluster@^1.6.0:
     "@mapbox/geo-viewport" "^0.4.0"
     supercluster "^6.0.2"
 
-react-native-maps@^1.8.4:
-  version "1.8.4"
-  resolved "https://registry.yarnpkg.com/react-native-maps/-/react-native-maps-1.8.4.tgz#41f91b597101ec58729c6cbb46dc347f52af68d5"
-  integrity sha512-PL7XX4dddTZB7PHDY0qslsJls5X2uRL2FSfUmiH4CFXIJ2l8QTaeWM6BLwnBswNUL6p4lQQeXuiATAhaRLHT6g==
+react-native-maps@^1.10.3:
+  version "1.10.3"
+  resolved "https://registry.yarnpkg.com/react-native-maps/-/react-native-maps-1.10.3.tgz#a669ee3a8baa01d30c5c7af7bdc498428d0e8284"
+  integrity sha512-P8/Viq5vgW9FRhvfDFQHxq02cZUcDJu6VbBZar7c/voGDbD5nrTIA0qlpiUAmrs1ikd8+7S4QjXQlorppBBMvA==
   dependencies:
-    "@types/geojson" "^7946.0.10"
+    "@types/geojson" "^7946.0.13"
 
 react-native-markdown-display@^7.0.2:
   version "7.0.2"
