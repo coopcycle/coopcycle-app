@@ -128,7 +128,7 @@ const RestaurantMenuHeader = ({
             <Skeleton.Text flex={1} lines={1} />
             <Skeleton.Text flex={1} lines={1} />
           </HStack>
-          <HStack p="4" width="50%">
+          <HStack p="4" width="50%" style={{marginTop: 32}}>
             <Skeleton.Text flex={1} lines={1} />
           </HStack>
           {loadingSkeleton}
