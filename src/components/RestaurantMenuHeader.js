@@ -1,4 +1,10 @@
-import {FlatList, useColorModeValue} from 'native-base';
+import {
+  FlatList,
+  HStack,
+  Skeleton,
+  VStack,
+  useColorModeValue,
+} from 'native-base';
 import React, {useEffect, useRef, useState} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 
@@ -17,7 +23,12 @@ const styles = StyleSheet.create({
   },
 });
 
-const RestaurantMenuHeader = ({sections, sectionRef, activeSection}) => {
+const RestaurantMenuHeader = ({
+  sections,
+  sectionRef,
+  activeSection,
+  isLoading,
+}) => {
   const [active, setActive] = useState(0);
   const ref = useRef(null);
   const backgroundColor = useColorModeValue('#fff', '#201E1E');
@@ -76,16 +87,65 @@ const RestaurantMenuHeader = ({sections, sectionRef, activeSection}) => {
     </View>
   );
 
+  const backgroundColor2 = useColorModeValue('#fff', '#201E1E');
+  const loadingSkeleton = (
+    <HStack
+      style={[
+        {
+          flex: 1,
+          flexDirection: 'row',
+          justifyContent: 'left',
+          marginVertical: 8,
+          marginHorizontal: 16,
+          borderRadius: 16,
+          overflow: 'hidden',
+          backgroundColor: '#ffffff',
+        },
+        {backgroundColor: backgroundColor2},
+      ]}
+      space={6}
+      p="4">
+      <Skeleton flex="1" h="100%" w="100" rounded="md" />
+      <VStack flex="3" space="3">
+        <Skeleton.Text flex={1} lines={1} />
+        <Skeleton.Text flex={1} lines={3} />
+        <HStack flex={1} space="2" alignItems="center">
+          <Skeleton h="3" flex="2" rounded="full" />
+          <View style={{flex: 1.8}} />
+          <Skeleton h="3" flex="1" rounded="full" />
+        </HStack>
+      </VStack>
+    </HStack>
+  );
+
   return (
-    <FlatList
-      ref={ref}
-      horizontal
-      style={([styles.sectionMenu], {backgroundColor})}
-      data={sections}
-      keyExtractor={(item, index) => index.toString()}
-      showsHorizontalScrollIndicator={false}
-      renderItem={Item}
-    />
+    <>
+      {isLoading && (
+        <>
+          <HStack w="100%" space={6} p="4" style={{backgroundColor}}>
+            <Skeleton.Text flex={1} lines={1} />
+            <Skeleton.Text flex={1} lines={1} />
+            <Skeleton.Text flex={1} lines={1} />
+            <Skeleton.Text flex={1} lines={1} />
+          </HStack>
+          <HStack p="4" width="50%">
+            <Skeleton.Text flex={1} lines={1} />
+          </HStack>
+          {loadingSkeleton}
+          {loadingSkeleton}
+          {loadingSkeleton}
+        </>
+      )}
+      <FlatList
+        ref={ref}
+        horizontal
+        style={([styles.sectionMenu], {backgroundColor})}
+        data={sections}
+        keyExtractor={(item, index) => index.toString()}
+        showsHorizontalScrollIndicator={false}
+        renderItem={Item}
+      />
+    </>
   );
 };
 

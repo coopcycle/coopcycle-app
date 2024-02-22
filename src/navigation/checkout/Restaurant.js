@@ -171,31 +171,38 @@ function Restaurant(props) {
       activeSection={activeSection}
       sectionRef={sectionListRef}
       sections={sections}
+      isLoading={isLoading}
     />
   );
 
   const renderSection = section => (
-    <View id={'section-' + section.index}>
-      <Text
-        style={{
-          fontSize: 18,
-          // fontWeight: 'bold',
-          marginHorizontal: 16,
-          marginTop: 48,
-          marginBottom: 8,
-        }}>
-        {section.title}
-      </Text>
-      {section.data.map((item, innerIndex) => (
-        <RestaurantMenuItem
-          item={item}
-          key={innerIndex}
-          onPress={menuItem =>
-            navigate('CheckoutProductDetails', {product: menuItem, restaurant})
-          }
-        />
-      ))}
-    </View>
+    <>
+      <View id={'section-' + section.index}>
+        <Text
+          style={{
+            fontSize: 18,
+            // fontWeight: 'bold',
+            marginHorizontal: 16,
+            marginTop: 48,
+            marginBottom: 8,
+          }}>
+          {section.title}
+        </Text>
+        {section.data.map((item, innerIndex) => (
+          <RestaurantMenuItem
+            item={item}
+            isLoading={isLoading}
+            key={innerIndex}
+            onPress={menuItem =>
+              navigate('CheckoutProductDetails', {
+                product: menuItem,
+                restaurant,
+              })
+            }
+          />
+        ))}
+      </View>
+    </>
   );
 
   const renderEmptyFooter = () => (
