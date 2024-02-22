@@ -2,7 +2,7 @@ import {useColorModeValue} from 'native-base';
 import {fontTitleName} from '../styles/common';
 
 function stackNavigatorScreenOptions() {
-  const backgroundColor = useColorModeValue('white', 'black');
+  const backgroundColor = useColorModeValue('white', '#201E1E');
   const color = useColorModeValue('black', 'white');
 
   return {
