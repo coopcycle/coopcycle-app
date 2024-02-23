@@ -1,7 +1,7 @@
 import {useColorModeValue} from 'native-base';
 import {fontTitleName} from '../styles/common';
 
-function stackNavigatorScreenOptions() {
+function StackNavigatorScreenOptions() {
   const backgroundColor = useColorModeValue('white', '#201E1E');
   const color = useColorModeValue('black', 'white');
 
@@ -26,4 +26,4 @@ function stackNavigatorScreenOptions() {
     headerBackTitleVisible: false,
   };
 }
-export {stackNavigatorScreenOptions};
+export {StackNavigatorScreenOptions as stackNavigatorScreenOptions};
