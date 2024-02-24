@@ -12,9 +12,8 @@ buildscript {
         androidXCore = "1.0.2"
         // https://github.com/react-native-maps/react-native-maps/issues/4842
         googlePlayServicesLocationVersion = "21.0.1"
-        appCompatVersion = "1.4.1"
         mercadoPagoPxVersion = "4.53.2"
-        reactNativeVersion = "0.72.5" // https://github.com/expo/expo/issues/18129
+        reactNativeVersion = "0.73.4" // https://github.com/expo/expo/issues/18129
     }
     repositories {
         google()
