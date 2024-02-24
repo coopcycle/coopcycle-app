@@ -8,18 +8,19 @@ import android.content.Intent
 
 import com.facebook.react.PackageList
 import com.facebook.react.ReactApplication
+import com.facebook.react.ReactHost
 import com.facebook.react.ReactNativeHost
 import com.facebook.react.ReactPackage
-import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint
+import com.facebook.react.config.ReactFeatureFlags
+import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint.load
+import com.facebook.react.defaults.DefaultReactHost.getDefaultReactHost
 import com.facebook.react.defaults.DefaultReactNativeHost
+import com.facebook.react.flipper.ReactNativeFlipper
 import com.facebook.soloader.SoLoader
 
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.security.ProviderInstaller
 import com.google.android.gms.security.ProviderInstaller.ProviderInstallListener
-
-import java.util.List
-import java.util.Arrays
 
 import androidx.multidex.MultiDexApplication
 
@@ -53,16 +54,11 @@ class MainApplication : MultiDexApplication(), ReactApplication {
     super.onCreate()
     upgradeSecurityProvider()
     SoLoader.init(this, false)
-    if (!BuildConfig.REACT_NATIVE_UNSTABLE_USE_RUNTIME_SCHEDULER_ALWAYS) {
-      ReactFeatureFlags.unstable_useRuntimeSchedulerAlways = false
-    }
     if (BuildConfig.IS_NEW_ARCHITECTURE_ENABLED) {
       // If you opted-in for the New Architecture, we load the native entry point for this app.
       load()
     }
-    if (BuildConfig.DEBUG) {
-      ReactNativeFlipper.initializeFlipper(this, reactNativeHost.reactInstanceManager)
-    }
+    ReactNativeFlipper.initializeFlipper(this, reactNativeHost.reactInstanceManager)
     ApplicationLifecycleDispatcher.onApplicationCreate(this)
   }
 
@@ -72,11 +68,10 @@ class MainApplication : MultiDexApplication(), ReactApplication {
   }
 
   private fun upgradeSecurityProvider() {
-    ProviderInstaller.installIfNeededAsync(this, new ProviderInstallListener() {
-      public fun onProviderInstalled() {}
-
-      public fun onProviderInstallFailed(errorCode: int, recoveryIntent: Intent) {
-        GoogleApiAvailability.getInstance().showErrorNotification(MainApplication.this, errorCode);
+    ProviderInstaller.installIfNeededAsync(this, object : ProviderInstallListener {
+      override fun onProviderInstalled() {}
+      override fun onProviderInstallFailed(errorCode: Int, recoveryIntent: Intent?) {
+        GoogleApiAvailability.getInstance().showErrorNotification(this@MainApplication, errorCode);
       }
     });
   }

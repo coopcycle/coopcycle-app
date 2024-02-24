@@ -29,14 +29,14 @@ class MainActivity : ReactActivity() {
     // @see https://developer.android.com/training/notify-user/channels
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
-      NotificationChannel notificationChannel = new NotificationChannel(
+      val notificationChannel = NotificationChannel(
         "coopcycle_important",
         "Service Updates",
         NotificationManager.IMPORTANCE_HIGH
       )
-      notificationChannel.setDescription("CoopCycle Service Updates")
+      notificationChannel.description = "CoopCycle Service Updates"
 
-      NotificationManager notificationManager = (NotificationManager) getSystemService(NotificationManager.class)
+      val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
       notificationManager.createNotificationChannel(notificationChannel)
     }
   }
