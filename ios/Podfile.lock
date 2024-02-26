@@ -1093,7 +1093,9 @@ PODS:
     - React-Core
   - react-native-version-number (0.3.6):
     - React
-  - react-native-webview (13.6.3):
+  - react-native-webview (13.8.1):
+    - glog
+    - RCT-Folly (= 2022.05.16.00)
     - React-Core
   - React-nativeconfig (0.73.4)
   - React-NativeModulesApple (0.73.4):
@@ -1275,7 +1277,7 @@ PODS:
   - RNBackgroundGeolocation (4.14.6):
     - CocoaLumberjack (~> 3.7.2)
     - React-Core
-  - RNCAsyncStorage (1.21.0):
+  - RNCAsyncStorage (1.22.2):
     - React-Core
   - RNCMaskedView (0.3.1):
     - React-Core
@@ -1783,7 +1785,7 @@ SPEC CHECKSUMS:
   react-native-pager-view: 33c56e3b547d2f29d224255d82e796942e0918b8
   react-native-safe-area-context: b97eb6f9e3b7f437806c2ce5983f479f8eb5de4b
   react-native-version-number: b415bbec6a13f2df62bf978e85bc0d699462f37f
-  react-native-webview: 88293a0f23eca8465c0433c023ec632930e644d0
+  react-native-webview: dc191e100e5db2dbd3bc28793c789b95934904ca
   React-nativeconfig: ca8b90c736cf3be019cb332ca42d93dd95b32e05
   React-NativeModulesApple: 1fdffcce7772e274baeab33a1900f45feba86cbd
   React-perflogger: 8a1e1af5733004bdd91258dcefbde21e0d1faccd
@@ -1809,7 +1811,7 @@ SPEC CHECKSUMS:
   RNAppleAuthentication: 0571c08da8c327ae2afc0261b48b4a515b0286a6
   RNBackgroundFetch: 35c7183f6eeff69396d42c4b206e1ae2a21e9327
   RNBackgroundGeolocation: 7dde6957120db41209f0d11427c425f368416afa
-  RNCAsyncStorage: 618d03a5f52fbccb3d7010076bc54712844c18ef
+  RNCAsyncStorage: 014a78b2cc8cc107c9e92ee428dc0c1ac3223416
   RNCMaskedView: 090213d32d8b3bb83a4dcb7d12c18f0152591906
   RNCPicker: cb57c823d5ce8d2d0b5dfb45ad97b737260dc59e
   RNCPushNotificationIOS: 64218f3c776c03d7408284a819b2abfda1834bc8
