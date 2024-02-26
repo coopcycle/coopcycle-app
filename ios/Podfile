@@ -48,8 +48,6 @@ target 'CoopCycle' do
   end
   config = use_native_modules!
 
-  pod 'MercadoPagoSDK', :build_type => :dynamic_framework, :modular_headers => true, :path => "./MercadoPagoSDK"
-
   pod 'GoogleSignIn', '~> 6.0.2'
 
   use_frameworks! :linkage => :static

@@ -1,12 +1,4 @@
 PODS:
-  - AndesUI (3.127.0):
-    - AndesUI/Core (= 3.127.0)
-    - PureLayout (= 3.1.2)
-  - AndesUI/Core (3.127.0):
-    - AndesUI/LocalIcons
-    - PureLayout (= 3.1.2)
-  - AndesUI/LocalIcons (3.127.0):
-    - PureLayout (= 3.1.2)
   - AppAuth (1.6.2):
     - AppAuth/Core (= 1.6.2)
     - AppAuth/ExternalUserAgent (= 1.6.2)
@@ -128,7 +120,6 @@ PODS:
     - nanopb (< 2.30910.0, >= 2.30908.0)
     - PromisesSwift (~> 2.1)
   - fmt (6.2.1)
-  - FXBlurView (1.6.4)
   - glog (0.3.5)
   - GoogleAppMeasurement (10.19.0):
     - GoogleAppMeasurement/AdIdSupport (= 10.19.0)
@@ -185,141 +176,7 @@ PODS:
     - hermes-engine/Pre-built (= 0.73.4)
   - hermes-engine/Pre-built (0.73.4)
   - IQKeyboardManagerSwift (6.5.11)
-  - JRSwizzle (1.0)
   - libevent (2.1.12)
-  - MercadoPagoSDK (4.32.4):
-    - MercadoPagoSDK/Default (= 4.32.4)
-    - MLBusinessComponents (~> 1.0)
-    - MLCardForm (~> 0.1)
-  - MercadoPagoSDK/Default (4.32.4):
-    - MLBusinessComponents (~> 1.0)
-    - MLCardDrawer (~> 1.0)
-    - MLCardForm (~> 0.1)
-    - MLUI (~> 5.0)
-  - MLBusinessComponents (1.56.2):
-    - MLBusinessComponents/Default (= 1.56.2)
-    - MLUI (~> 5.0)
-  - MLBusinessComponents/Default (1.56.2):
-    - MLUI (~> 5.0)
-  - MLCardDrawer (1.11.7):
-    - MLCardDrawer/Default (= 1.11.7)
-  - MLCardDrawer/Default (1.11.7)
-  - MLCardForm (0.14.1):
-    - AndesUI (~> 3.0)
-    - MLCardDrawer (~> 1.0)
-    - MLCardForm/Default (= 0.14.1)
-    - MLUI (~> 5.0)
-  - MLCardForm/Default (0.14.1):
-    - AndesUI (~> 3.0)
-    - MLCardDrawer (~> 1.0)
-    - MLUI (~> 5.0)
-  - MLUI (5.28.1):
-    - MLUI/ActionButton (= 5.28.1)
-    - MLUI/Core (= 5.28.1)
-    - MLUI/Helpers (= 5.28.1)
-    - MLUI/MLButton (= 5.28.1)
-    - MLUI/MLCheckBox (= 5.28.1)
-    - MLUI/MLColorPalette (= 5.28.1)
-    - MLUI/MLContextualMenu (= 5.28.1)
-    - MLUI/MLFonts (= 5.28.1)
-    - MLUI/MLFullscreenModal (= 5.28.1)
-    - MLUI/MLGenericErrorView (= 5.28.1)
-    - MLUI/MLHeader (= 5.28.1)
-    - MLUI/MLHtml (= 5.28.1)
-    - MLUI/MLModal (= 5.28.1)
-    - MLUI/MLRadioButton (= 5.28.1)
-    - MLUI/MLSnackBar (= 5.28.1)
-    - MLUI/MLSpacing (= 5.28.1)
-    - MLUI/MLSpinner (= 5.28.1)
-    - MLUI/MLSwitch (= 5.28.1)
-    - MLUI/MLTextView (= 5.28.1)
-    - MLUI/MLTitledMultiLineTextField (= 5.28.1)
-    - MLUI/MLTitledSingleLineTextField (= 5.28.1)
-    - MLUI/PriceView (= 5.28.1)
-    - MLUI/SnackBarView (= 5.28.1)
-    - MLUI/StyleSheet (= 5.28.1)
-  - MLUI/ActionButton (5.28.1):
-    - MLUI/Core
-  - MLUI/Core (5.28.1):
-    - MLUI/MLFonts
-  - MLUI/Helpers (5.28.1)
-  - MLUI/MLButton (5.28.1):
-    - MLUI/Core
-    - MLUI/MLColorPalette
-    - MLUI/MLFonts
-    - MLUI/MLSpinner
-    - MLUI/StyleSheet
-  - MLUI/MLCheckBox (5.28.1):
-    - MLUI/MLColorPalette
-    - MLUI/StyleSheet
-  - MLUI/MLColorPalette (5.28.1)
-  - MLUI/MLContextualMenu (5.28.1):
-    - MLUI/MLColorPalette
-    - MLUI/MLFonts
-  - MLUI/MLFonts (5.28.1):
-    - JRSwizzle (= 1.0)
-    - MLUI/Helpers
-    - MLUI/StyleSheet
-  - MLUI/MLFullscreenModal (5.28.1):
-    - FXBlurView (= 1.6.4)
-    - MLUI/Core
-    - MLUI/MLButton
-    - MLUI/MLColorPalette
-    - MLUI/MLFonts
-    - MLUI/MLHeader
-    - MLUI/StyleSheet
-  - MLUI/MLGenericErrorView (5.28.1):
-    - MLUI/MLButton
-    - MLUI/MLColorPalette
-    - MLUI/MLSpacing
-  - MLUI/MLHeader (5.28.1):
-    - MLUI/MLColorPalette
-    - MLUI/StyleSheet
-  - MLUI/MLHtml (5.28.1):
-    - MLUI/MLFonts
-  - MLUI/MLModal (5.28.1):
-    - FXBlurView (= 1.6.4)
-    - MLUI/Core
-    - MLUI/MLButton
-    - MLUI/MLColorPalette
-    - MLUI/MLFonts
-    - MLUI/StyleSheet
-  - MLUI/MLRadioButton (5.28.1):
-    - MLUI/StyleSheet
-  - MLUI/MLSnackBar (5.28.1):
-    - MLUI/Helpers
-    - MLUI/MLButton
-    - MLUI/MLColorPalette
-    - MLUI/MLFonts
-  - MLUI/MLSpacing (5.28.1):
-    - JRSwizzle (= 1.0)
-    - MLUI/MLFonts
-  - MLUI/MLSpinner (5.28.1):
-    - MLUI/MLColorPalette
-    - MLUI/MLFonts
-    - MLUI/StyleSheet
-  - MLUI/MLSwitch (5.28.1):
-    - MLUI/Helpers
-    - MLUI/MLColorPalette
-  - MLUI/MLTextView (5.28.1):
-    - MLUI/MLColorPalette
-    - MLUI/MLFonts
-  - MLUI/MLTitledMultiLineTextField (5.28.1):
-    - MLUI/MLColorPalette
-    - MLUI/MLFonts
-    - MLUI/MLTitledSingleLineTextField
-    - MLUI/StyleSheet
-  - MLUI/MLTitledSingleLineTextField (5.28.1):
-    - MLUI/MLColorPalette
-    - MLUI/MLFonts
-    - MLUI/StyleSheet
-  - MLUI/PriceView (5.28.1):
-    - MLUI/Core
-    - MLUI/MLFonts
-  - MLUI/SnackBarView (5.28.1):
-    - MLUI/Helpers
-    - MLUI/MLFonts
-  - MLUI/StyleSheet (5.28.1)
   - nanopb (2.30909.1):
     - nanopb/decode (= 2.30909.1)
     - nanopb/encode (= 2.30909.1)
@@ -328,7 +185,6 @@ PODS:
   - PromisesObjC (2.4.0)
   - PromisesSwift (2.4.0):
     - PromisesObjC (= 2.4.0)
-  - PureLayout (3.1.2)
   - RCT-Folly (2022.05.16.00):
     - boost
     - DoubleConversion
@@ -1542,7 +1398,6 @@ DEPENDENCIES:
   - GoogleSignIn (~> 6.0.2)
   - hermes-engine (from `../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec`)
   - libevent (~> 2.1.12)
-  - MercadoPagoSDK (from `./MercadoPagoSDK`)
   - RCT-Folly (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
   - RCT-Folly/Fabric (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
   - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
@@ -1625,7 +1480,6 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
-    - AndesUI
     - AppAuth
     - CocoaLumberjack
     - FBAEMKit
@@ -1643,7 +1497,6 @@ SPEC REPOS:
     - FirebaseInstallations
     - FirebaseSessions
     - fmt
-    - FXBlurView
     - GoogleAppMeasurement
     - GoogleDataTransport
     - GoogleSignIn
@@ -1651,16 +1504,10 @@ SPEC REPOS:
     - GTMAppAuth
     - GTMSessionFetcher
     - IQKeyboardManagerSwift
-    - JRSwizzle
     - libevent
-    - MLBusinessComponents
-    - MLCardDrawer
-    - MLCardForm
-    - MLUI
     - nanopb
     - PromisesObjC
     - PromisesSwift
-    - PureLayout
     - Sentry
     - SentryPrivate
     - SocketRocket
@@ -1706,8 +1553,6 @@ EXTERNAL SOURCES:
   hermes-engine:
     :podspec: "../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec"
     :tag: hermes-2023-11-17-RNv0.73.0-21043a3fc062be445e56a2c10ecd8be028dd9cc5
-  MercadoPagoSDK:
-    :path: "./MercadoPagoSDK"
   RCT-Folly:
     :podspec: "../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec"
   RCTRequired:
@@ -1864,7 +1709,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
-  AndesUI: 84fcc177b7b420705e063c976d03e4e6d4e6c8e3
   AppAuth: 3bb1d1cd9340bd09f5ed189fb00b1cc28e1e8570
   boost: d3f49c53809116a5d38da093a8aa78bf551aed09
   CocoaLumberjack: 543c79c114dadc3b1aba95641d8738b06b05b646
@@ -1895,7 +1739,6 @@ SPEC CHECKSUMS:
   FirebaseInstallations: 390ea1d10a4d02b20c965cbfd527ee9b3b412acb
   FirebaseSessions: 80c2bbdd28166267b3d132debe5f7531efdb00bc
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
-  FXBlurView: db786c2561cb49a09ae98407f52460096ab8a44f
   glog: 035f1e36e53b355cf70f6434d161b36e7d21fecd
   GoogleAppMeasurement: 68afe759316673c6554dac35a0c7ae8f5d6cb4ed
   GoogleDataTransport: 57c22343ab29bc686febbf7cbb13bad167c2d8fe
@@ -1905,17 +1748,10 @@ SPEC CHECKSUMS:
   GTMSessionFetcher: 5595ec75acf5be50814f81e9189490412bad82ba
   hermes-engine: b2669ce35fc4ac14f523b307aff8896799829fe2
   IQKeyboardManagerSwift: c7955c0bdbf7b2eb29bb7daaa44e3d90f55a9a85
-  JRSwizzle: dd5ead5d913a0f29e7f558200165849f006bb1e3
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
-  MercadoPagoSDK: 634fc8a9fe7f99f4d73506659c68cdbb885407fc
-  MLBusinessComponents: 5c3de48bfdd600c0f01e76e81c5510936d649ed3
-  MLCardDrawer: 4b3ac46214f94a7f8d0e28b1dd9dfc55bd7d982b
-  MLCardForm: 58eba8e5dec1b9f6b6cb466cdc43d25ce8a096bc
-  MLUI: a1f5ac4190aabe7b5089413c7a598d715210f818
   nanopb: d4d75c12cd1316f4a64e3c6963f879ecd4b5e0d5
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
   PromisesSwift: 9d77319bbe72ebf6d872900551f7eeba9bce2851
-  PureLayout: 4634d0b61e3b5021166e8ec7c18e9e0ca0720c8b
   RCT-Folly: 7169b2b1c44399c76a47b5deaaba715eeeb476c0
   RCTRequired: ab7f915c15569f04a49669e573e6e319a53f9faa
   RCTTypeSafety: 63b97ced7b766865057e7154db0e81ce4ee6cf1e
@@ -2006,6 +1842,6 @@ SPEC CHECKSUMS:
   Yoga: 1b901a6d6eeba4e8a2e8f308f708691cdb5db312
   ZXingObjC: 8898711ab495761b2dbbdec76d90164a6d7e14c5
 
-PODFILE CHECKSUM: 6df31c28000afa6478fed271124692b2523d7693
+PODFILE CHECKSUM: d949c9fd9c4ce5f3ec67d52ca1f4a1ca13072560
 
 COCOAPODS: 1.14.3
