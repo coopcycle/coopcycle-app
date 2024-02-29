@@ -7,6 +7,8 @@ import { selectIsDispatchFetching } from '../Dispatch/selectors'
 export const selectUser = state => state.app.user
 export const selectHttpClient = state => state.app.httpClient
 
+export const selectCustomBuild = state => state.app.customBuild
+
 export const selectResumeCheckoutAfterActivation = state => state.app.resumeCheckoutAfterActivation
 
 // a user with an account
@@ -125,3 +127,5 @@ export const selectServersWithoutRepeats = createSelector(
     }, [])
   }
 )
+
+export const selectIsSpinnerDelayEnabled = state => state.app.isSpinnerDelayEnabled ?? true

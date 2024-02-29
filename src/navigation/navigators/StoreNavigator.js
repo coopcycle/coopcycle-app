@@ -13,7 +13,7 @@ const MainNavigator = () => (
   <MainStack.Navigator
     screenOptions={ stackNavigatorScreenOptions }>
     <MainStack.Screen
-      name="StoreHome"
+      name="StoreDashboard"
       component={ screens.StoreDashboard }
       options={ ({ navigation, route }) => {
         const store = route.params?.store

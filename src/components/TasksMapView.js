@@ -7,18 +7,22 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native'
-import { Callout, Marker } from 'react-native-maps'
+import { Callout, Marker, Polyline } from 'react-native-maps'
 import ClusteredMapView from 'react-native-maps-super-cluster'
 import Modal from 'react-native-modal'
 import { withTranslation } from 'react-i18next'
+import { connect } from 'react-redux'
+
 
 import {
   greyColor,
   whiteColor,
+  blueColor
 } from '../styles/common'
 import { uniq } from 'lodash'
 import TaskMarker from './TaskMarker'
 import TaskCallout from './TaskCallout'
+import {selectIsPolylineOn} from '../redux/Courier'
 
 const clusterContainerSize = 40
 
@@ -264,6 +268,14 @@ class TasksMapView extends Component {
             onClusterPress={ this.onClusterPress }
             { ...otherProps }>
             { this.props.children }
+            {
+              this.props.isPolylineOn ?
+              (<Polyline
+                coordinates={this.props.tasks.map(task => ( task.address.geo ))}
+                strokeWidth={3}
+                strokeColor={blueColor}
+             />) : null
+            }
           </ClusteredMapView>
         ) : null }
         { this.renderModal() }
@@ -273,4 +285,10 @@ class TasksMapView extends Component {
 
 }
 
-export default withTranslation()(TasksMapView)
+function mapStateToProps(state) {
+  return {
+    isPolylineOn: selectIsPolylineOn(state),
+  }
+}
+
+export default connect(mapStateToProps)(withTranslation()(TasksMapView))

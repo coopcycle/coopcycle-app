@@ -56,7 +56,7 @@ const tasksUiPersistConfig = {
   key: 'ui.tasks',
   version: 0,
   storage: AsyncStorage,
-  whitelist: [ 'excludeFilters', 'tasksChangedAlertSound', 'keepAwake', 'signatureScreenFirst' ],
+  whitelist: [ 'excludeFilters', 'tasksChangedAlertSound', 'keepAwake', 'isPolylineOn', 'signatureScreenFirst' ],
   migrate: (state) => {
 
     if (!state) {
@@ -113,7 +113,8 @@ const appPersistConfig = {
     'pushNotificationToken',
     'hasDisclosedBackgroundPermission',
     'firstRun',
-    'resumeCheckoutAfterActivation'
+    'resumeCheckoutAfterActivation',
+    'isSpinnerDelayEnabled'
   ],
   migrate: (state) => {
 

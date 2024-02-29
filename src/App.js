@@ -53,6 +53,8 @@ import {
   AccountRegisterConfirmScreen, AccountResetPasswordNewPasswordScreen,
 } from './navigation/navigators/AccountNavigator'
 import { nativeBaseTheme } from './styles/theme'
+import FullScreenLoadingIndicator from './navigation/FullScreenLoadingIndicator'
+import RootView from './navigation/RootView'
 
 LogBox.ignoreLogs([
   'Warning: isMounted(...) is deprecated in plain JavaScript React classes.',
@@ -136,11 +138,12 @@ const App = () => {
   }, [])
 
   return (
+    <NativeBaseProvider theme={nativeBaseTheme}>
+    <RootView>
     <Provider store={ store }>
-      <PersistGate loading={ null } persistor={ persistor }>
+      <PersistGate loading={ <FullScreenLoadingIndicator debugHint="Initialising the Redux state ..." /> } persistor={ persistor }>
         <I18nextProvider i18n={ i18n }>
           <QueryClientProvider client={queryClient}>
-            <NativeBaseProvider theme={nativeBaseTheme}>
               <SafeAreaProvider>
                 <Spinner />
                 <NavigationContainer
@@ -154,11 +157,12 @@ const App = () => {
                 <DropdownAlert ref={ ref => { DropdownHolder.setDropdown(ref) } } />
                 <NotificationHandler />
               </SafeAreaProvider>
-            </NativeBaseProvider>
           </QueryClientProvider>
         </I18nextProvider>
       </PersistGate>
     </Provider>
+    </RootView>
+    </NativeBaseProvider>
   )
 }
 

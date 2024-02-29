@@ -44,6 +44,7 @@ let styles = StyleSheet.create({
 })
 
 const INITIAL_CALENDAR_HEIGHT = 500 // large enough number to make sure the calendar is hidden on the first render
+const EXTRA_CALENDAR_HEIGHT = 100 // some months have more rows than others, add an extra space to make sure the calendar is hidden while switching months
 
 class DateSelectHeader extends React.Component {
 
@@ -51,7 +52,6 @@ class DateSelectHeader extends React.Component {
     super(props)
 
     this.state = {
-      height: dateSelectHeaderHeight,
       calendarHeight: INITIAL_CALENDAR_HEIGHT,
       slideCalendarAnim: new Animated.Value(-1 * INITIAL_CALENDAR_HEIGHT),
       showCalendar: false,
@@ -77,16 +77,8 @@ class DateSelectHeader extends React.Component {
   toggleCalendar() {
     const { showCalendar } = this.state
 
-    let newHeight
-    if (showCalendar) {
-      newHeight = dateSelectHeaderHeight
-    } else {
-      newHeight = dateSelectHeaderHeight + this.state.calendarHeight
-    }
-
     this.setState(Object.assign({}, this.state, {
       showCalendar: !showCalendar,
-      height: newHeight,
     }))
   }
 
@@ -105,7 +97,7 @@ class DateSelectHeader extends React.Component {
     Animated.timing(
       this.state.slideCalendarAnim,
       {
-        toValue: -1 * this.state.calendarHeight,
+        toValue: -1 * (this.state.calendarHeight + EXTRA_CALENDAR_HEIGHT),
         duration: 350,
         useNativeDriver: false,
       }
@@ -142,7 +134,7 @@ class DateSelectHeader extends React.Component {
     const { selectedDate, buttonsEnabled } = this.props
 
     return (
-      <View style={[ styles.container, { height: this.state.height }]}>
+      <View style={ styles.container }>
         <View style={ styles.dateHeader }>
           <View style={ [ styles.button, { width: '25%' }] }>
             { buttonsEnabled && this.renderButton('arrow-back', this.onPastPress, styles.icon) }
@@ -164,13 +156,14 @@ class DateSelectHeader extends React.Component {
             }}
             onDateSelect={(momentDate) => {this.onDateSelect(momentDate)}}
             onLayout={(event) => {
-              // updating the calendarHeight with the actual height after the first render
-              if (this.state.calendarHeight === INITIAL_CALENDAR_HEIGHT) {
-                const { height } = event.nativeEvent.layout;
-                this.setState(Object.assign({}, this.state, {
-                  calendarHeight: height,
-                  slideCalendarAnim: new Animated.Value(-1 * height),
-                }))
+              const { height: currentCalendarHeight } = event.nativeEvent.layout;
+
+              // updating the calendarHeight with the actual height
+              if (this.state.calendarHeight !== currentCalendarHeight) {
+                this.setState({
+                  ...this.state,
+                  calendarHeight: currentCalendarHeight,
+                })
               }
             }}
           />

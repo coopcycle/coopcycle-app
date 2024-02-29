@@ -656,14 +656,14 @@ PODS:
     - React-Core
   - react-native-get-random-values (1.9.0):
     - React-Core
-  - react-native-maps (1.8.4):
+  - react-native-maps (1.10.3):
     - React-Core
   - react-native-netinfo (9.4.1):
     - React-Core
   - react-native-pager-view (6.2.3):
     - RCT-Folly (= 2021.07.22.00)
     - React-Core
-  - react-native-safe-area-context (4.8.2):
+  - react-native-safe-area-context (4.9.0):
     - React-Core
   - react-native-version-number (0.3.6):
     - React
@@ -787,9 +787,9 @@ PODS:
     - React-RCTText
   - RNAppleAuthentication (2.2.2):
     - React-Core
-  - RNBackgroundFetch (4.2.1):
+  - RNBackgroundFetch (4.2.2):
     - React-Core
-  - RNBackgroundGeolocation (4.14.5):
+  - RNBackgroundGeolocation (4.14.6):
     - CocoaLumberjack (~> 3.7.2)
     - React-Core
   - RNCAsyncStorage (1.21.0):
@@ -814,7 +814,7 @@ PODS:
     - FirebaseCoreExtension (= 10.19.0)
     - React-Core
     - RNFBApp
-  - RNGestureHandler (2.14.0):
+  - RNGestureHandler (2.15.0):
     - RCT-Folly (= 2021.07.22.00)
     - React-Core
   - RNGoogleSignin (7.0.4):
@@ -822,7 +822,7 @@ PODS:
     - React-Core
   - RNLocalize (3.0.4):
     - React-Core
-  - RNReanimated (3.6.1):
+  - RNReanimated (3.7.1):
     - RCT-Folly (= 2021.07.22.00)
     - React-Core
     - ReactCommon/turbomodule/core
@@ -1277,10 +1277,10 @@ SPEC CHECKSUMS:
   react-native-config: 86038147314e2e6d10ea9972022aa171e6b1d4d8
   react-native-fbsdk-next: 776f49479d36a1e72a1a367baadcc8391cd24374
   react-native-get-random-values: dee677497c6a740b71e5612e8dbd83e7539ed5bb
-  react-native-maps: e2b78affd8e90c807a87bd042dc6b1af2decbcf1
+  react-native-maps: 72a8a903f8a1b53e2c777ba79102078ab502e0bf
   react-native-netinfo: fefd4e98d75cbdd6e85fc530f7111a8afdf2b0c5
   react-native-pager-view: cf96a223846458cc7e932017636b5c6d8cc2c549
-  react-native-safe-area-context: 0ee144a6170530ccc37a0fd9388e28d06f516a89
+  react-native-safe-area-context: b97eb6f9e3b7f437806c2ce5983f479f8eb5de4b
   react-native-version-number: b415bbec6a13f2df62bf978e85bc0d699462f37f
   react-native-webview: 88293a0f23eca8465c0433c023ec632930e644d0
   React-NativeModulesApple: 54adc761c7a6fa5f183ca62ad0cb94f4f1cdce4a
@@ -1303,8 +1303,8 @@ SPEC CHECKSUMS:
   ReactNativeAvoidSoftinput: b4ec4c8084c397a91800d21170a9949a263d288a
   ReactNativeKeyboardManager: 60292dbac467c49841a7d69588208ec4a4f7b2a2
   RNAppleAuthentication: 0571c08da8c327ae2afc0261b48b4a515b0286a6
-  RNBackgroundFetch: 501c34ad6e880818ba17e7840b23f20a2d112923
-  RNBackgroundGeolocation: bf3b45667c4d3c999501f5f8cb16dc35fc01e759
+  RNBackgroundFetch: 35c7183f6eeff69396d42c4b206e1ae2a21e9327
+  RNBackgroundGeolocation: 7dde6957120db41209f0d11427c425f368416afa
   RNCAsyncStorage: 618d03a5f52fbccb3d7010076bc54712844c18ef
   RNCMaskedView: 090213d32d8b3bb83a4dcb7d12c18f0152591906
   RNCPicker: cb57c823d5ce8d2d0b5dfb45ad97b737260dc59e
@@ -1313,10 +1313,10 @@ SPEC CHECKSUMS:
   RNFBAnalytics: fdecb8b774abd12f9ed79675794159d1a0fadc6c
   RNFBApp: 5ee688b07ed0fa692a3a8fd07df6d6ae41e4c3a0
   RNFBCrashlytics: 11f52604cc41fde69e8cc8fcc9c578fc8d5b8a15
-  RNGestureHandler: a5039da2ac028b073ae801289476060b34d559b1
+  RNGestureHandler: 6a0bca5c5b2fb62211e9a75d5f4ed877817c4412
   RNGoogleSignin: c4381751eefd73c552b923ba347a9bfc6f18771c
   RNLocalize: 1ce4263770515f53d3de442ce7657b3661b16a37
-  RNReanimated: 8a6a83984cb4d61ebf1065b6137150b6b31ce609
+  RNReanimated: 509f67d2bac330a8f7a58fffc88e766106343f74
   RNScreens: 1c2444658fbb696a094272d946708167b1f63409
   RNSentry: 11917f7bf3e28806aca4c2791c6ba7522d8f09fe
   RNShare: a5dc3b9c53ddc73e155b8cd9a94c70c91913c43c
@@ -1337,6 +1337,6 @@ SPEC CHECKSUMS:
   StripeUICore: 5099399e52853370736aca81b27fc0e86b1822c8
   Yoga: 86fed2e4d425ee4c6eab3813ba1791101ee153c6
 
-PODFILE CHECKSUM: bde38ede69c54332041bca0808b5e3ef3d6f8285
+PODFILE CHECKSUM: 053323c68a244f866b6eb13c40405f6d1a999f7c
 
 COCOAPODS: 1.13.0
