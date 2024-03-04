@@ -65,7 +65,7 @@
     "qs": "^6.11.2",
     "react": "18.2.0",
     "react-i18next": "^12",
-    "react-native": "0.73.4",
+    "react-native": "0.73.5",
     "react-native-autocomplete-input": "^5.4.0",
     "react-native-avoid-softinput": "^4.0.2",
     "react-native-background-fetch": "^4.2.2",
