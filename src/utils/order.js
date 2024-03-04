@@ -47,34 +47,31 @@ export function encodeForPrinter(order) {
     .initialize()
     .codepage(CODEPAGE)
     .align('center')
-    // Set double height text size
-    // @see https://github.com/mike42/escpos-php/blob/dcb569a123d75f9f6a4a927aae7625ca6b7fdcf3/src/Mike42/Escpos/Printer.php#L954-L960
-    // @see https://github.com/NielsLeenheer/EscPosEncoder/pull/21
-    .raw([ 0x1b, 0x21, 16 ])
-    .line(hr)
-    // Double width/height + emphasize
-    .raw([ 0x1b, 0x21, (16 + 32 + 8) ])
+    .height(2)
+
+  encoder
+    .rule()
+    .width(2)
+    .bold(true)
     .line(`#${order.number}`)
     .newline()
-    .raw([ 0x1b, 0x21, 16 ])
+    .width(1)
+    .bold(false)
     .line(i18n.t('RECEIPT_CUSTOMER_NAME', { customer: order.customer.fullName || order.customer.email }))
-    .line(hr)
+    .rule()
 
   encoder
-    .align('center')
     .line(pickupLineDate)
-
-  encoder.raw([ 0x1b, 0x21, (16 + 32 + 8) ])
-
-  encoder
-    .align('center')
-    .line(pickupLineTime)
-
-  encoder.raw([ 0x1b, 0x21, 16 ])
-
-  encoder
-    .line(hr)
     .newline()
+    .width(2)
+    .bold(true)
+    .line(pickupLineTime)
+    .rule()
+    .newline()
+
+  encoder
+    .width(1)
+    .bold(false)
 
   order.items.forEach((item) => {
 
