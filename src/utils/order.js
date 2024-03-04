@@ -22,7 +22,7 @@ function splitter(str, l){
   return strs;
 }
 
-const CODEPAGE = 'windows1252'
+const CODEPAGE = 'auto'
 
 export function encodeForPrinter(order) {
   const maxChars = 32
