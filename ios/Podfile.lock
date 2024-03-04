@@ -1308,7 +1308,7 @@ PODS:
     - React-Core
   - RNLocalize (3.0.6):
     - React-Core
-  - RNReanimated (3.7.1):
+  - RNReanimated (3.7.2):
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
@@ -1317,7 +1317,7 @@ PODS:
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
-  - RNSentry (5.19.0):
+  - RNSentry (5.19.1):
     - hermes-engine
     - React-Core
     - React-hermes
@@ -1822,9 +1822,9 @@ SPEC CHECKSUMS:
   RNGestureHandler: 7feb85c5a30ebbcd4d5c7a851ba9e7eafb9860cb
   RNGoogleSignin: c4381751eefd73c552b923ba347a9bfc6f18771c
   RNLocalize: 4222a3756cdbe2dc9a5bdf445765a4d2572107cb
-  RNReanimated: 06342ad46707263f3009e00b88beca6188c3675d
+  RNReanimated: 3897a18529a9c8d8a36258ec6ad95addd25ce969
   RNScreens: 2b73f5eb2ac5d94fbd61fa4be0bfebd345716825
-  RNSentry: 98df59e833edc1975d8628fb8c5345773c79974a
+  RNSentry: 6872121e0af7aa9f3f50643f557d69adc8f7ecdc
   RNShare: a5dc3b9c53ddc73e155b8cd9a94c70c91913c43c
   RNSound: 6c156f925295bdc83e8e422e7d8b38d33bc71852
   RNSVG: 551acb6562324b1d52a4e0758f7ca0ec234e278f
