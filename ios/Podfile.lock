@@ -19,7 +19,7 @@ PODS:
     - ExpoModulesCore
   - EXFont (11.10.3):
     - ExpoModulesCore
-  - Expo (50.0.7):
+  - Expo (50.0.8):
     - ExpoModulesCore
   - ExpoAdapterFBSDKNext (12.1.0):
     - ExpoModulesCore
@@ -29,7 +29,7 @@ PODS:
     - ExpoModulesCore
     - ZXingObjC/OneD
     - ZXingObjC/PDF417
-  - ExpoFileSystem (16.0.6):
+  - ExpoFileSystem (16.0.7):
     - ExpoModulesCore
   - ExpoKeepAwake (12.8.2):
     - ExpoModulesCore
@@ -1083,7 +1083,7 @@ PODS:
     - React-Core
   - react-native-maps (1.10.3):
     - React-Core
-  - react-native-netinfo (11.3.0):
+  - react-native-netinfo (11.3.1):
     - React-Core
   - react-native-pager-view (6.2.3):
     - glog
@@ -1274,10 +1274,10 @@ PODS:
     - React-Core
   - RNBackgroundFetch (4.2.2):
     - React-Core
-  - RNBackgroundGeolocation (4.14.6):
+  - RNBackgroundGeolocation (4.15.0):
     - CocoaLumberjack (~> 3.7.2)
     - React-Core
-  - RNCAsyncStorage (1.22.2):
+  - RNCAsyncStorage (1.22.3):
     - React-Core
   - RNCMaskedView (0.3.1):
     - React-Core
@@ -1718,10 +1718,10 @@ SPEC CHECKSUMS:
   DoubleConversion: fea03f2699887d960129cc54bba7e52542b6f953
   EXConstants: 988aa430ca0f76b43cd46b66e7fae3287f9cc2fc
   EXFont: f20669cb266ef48b004f1eb1f2b20db96cd1df9f
-  Expo: 1cf3922a9b26262b2556544d4defcecccd37d033
+  Expo: c2d3edc1b1e833e26d837b03aa46d9137ca63302
   ExpoAdapterFBSDKNext: 978d79ffcd9136ecf1eb75661cccc0b5da2ee2f2
   ExpoCamera: 9eb966748a7897e84986567e3eef71836c219823
-  ExpoFileSystem: a9273932e69a9a1e1a8d01b6ba895bb8294bbea2
+  ExpoFileSystem: c7488590959bf85ebc114909eb8186cbd62e3a25
   ExpoKeepAwake: 0f5cad99603a3268e50af9a6eb8b76d0d9ac956c
   ExpoModulesCore: e3935209adc73469033e62992a504077def5bd40
   FBAEMKit: af2972f39bb0f3f7c45998f435b007833c32ffb2
@@ -1781,7 +1781,7 @@ SPEC CHECKSUMS:
   react-native-fbsdk-next: 776f49479d36a1e72a1a367baadcc8391cd24374
   react-native-get-random-values: 384787fd76976f5aec9465aff6fa9e9129af1e74
   react-native-maps: 72a8a903f8a1b53e2c777ba79102078ab502e0bf
-  react-native-netinfo: 299dad906cdbf3b67bcc6f693c807f98bdd127cc
+  react-native-netinfo: bdb108d340cdb41875c9ced535977cac6d2ff321
   react-native-pager-view: 33c56e3b547d2f29d224255d82e796942e0918b8
   react-native-safe-area-context: b97eb6f9e3b7f437806c2ce5983f479f8eb5de4b
   react-native-version-number: b415bbec6a13f2df62bf978e85bc0d699462f37f
@@ -1810,8 +1810,8 @@ SPEC CHECKSUMS:
   ReactNativeKeyboardManager: 60292dbac467c49841a7d69588208ec4a4f7b2a2
   RNAppleAuthentication: 0571c08da8c327ae2afc0261b48b4a515b0286a6
   RNBackgroundFetch: 35c7183f6eeff69396d42c4b206e1ae2a21e9327
-  RNBackgroundGeolocation: 7dde6957120db41209f0d11427c425f368416afa
-  RNCAsyncStorage: 014a78b2cc8cc107c9e92ee428dc0c1ac3223416
+  RNBackgroundGeolocation: 860ff2919a61c73e572c3f31b3dc7d61e359832d
+  RNCAsyncStorage: 10591b9e0a91eaffee14e69b3721009759235125
   RNCMaskedView: 090213d32d8b3bb83a4dcb7d12c18f0152591906
   RNCPicker: cb57c823d5ce8d2d0b5dfb45ad97b737260dc59e
   RNCPushNotificationIOS: 64218f3c776c03d7408284a819b2abfda1834bc8
