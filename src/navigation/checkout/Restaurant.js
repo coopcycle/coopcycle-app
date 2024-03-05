@@ -54,7 +54,7 @@ function Restaurant(props) {
   const { showFooter, httpClient, restaurant, openingHoursSpecification } = props
 
   const { isLoading, isError, data } = useQuery([ 'menus', restaurant.hasMenu ], async () => {
-    return await httpClient.get(restaurant.hasMenu, {}, { anonymous: true })
+    return await httpClient.get(restaurant.hasMenu, { anonymous: true })
   })
 
   const currentTimeSlot = useMemo(

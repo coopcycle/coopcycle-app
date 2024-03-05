@@ -113,6 +113,7 @@ const appPersistConfig = {
     'pushNotificationToken',
     'hasDisclosedBackgroundPermission',
     'firstRun',
+    'resumeCheckoutAfterActivation',
     'isSpinnerDelayEnabled'
   ],
   migrate: (state) => {

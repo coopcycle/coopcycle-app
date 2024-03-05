@@ -6,6 +6,7 @@ import _ from 'lodash'
 import { logout, setLoading } from '../App/actions'
 import { selectHttpClient, selectIsAuthenticated } from '../App/selectors'
 import { selectOrderAccessTokensById } from './selectors'
+import { selectCheckoutAuthorizationHeaders } from '../Checkout/selectors'
 
 /*
  * Action Types
@@ -56,9 +57,9 @@ export function loadOrders(cb) {
 export function loadOrder(order, cb) {
   return (dispatch, getState) => {
     const orderAccessToken = selectOrderAccessTokensById(getState(), order['@id'])
-    const httpClient = selectHttpClient(getState(), orderAccessToken)
+    const httpClient = selectHttpClient(getState())
 
-    httpClient.get(order['@id'])
+    httpClient.get(order['@id'], { headers: selectCheckoutAuthorizationHeaders(getState(), order, orderAccessToken) })
       .then(res => {
         dispatch(updateOrderSuccess(res))
         if (cb) { cb() }
@@ -99,8 +100,7 @@ export function loadAddresses() {
 
     const httpClient = getState().app.httpClient
 
-
-    httpClient.get('/api/me')
+    return httpClient.get('/api/me')
       .then(res => {
         dispatch(loadAddressesSuccess(res.addresses))
       })
@@ -171,9 +171,9 @@ export function subscribe(order, onMessage) {
     const baseURL = getState().app.baseURL
 
     const orderAccessToken = selectOrderAccessTokensById(getState(), order['@id'])
-    const httpClient = selectHttpClient(getState(), orderAccessToken)
+    const httpClient = selectHttpClient(getState())
 
-    httpClient.get(`${order['@id']}/centrifugo`)
+    httpClient.get(`${order['@id']}/centrifugo`, { headers: selectCheckoutAuthorizationHeaders(getState(), order, orderAccessToken) })
       .then(res => {
 
         const url = parseUrl(baseURL)
