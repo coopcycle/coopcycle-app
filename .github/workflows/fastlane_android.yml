@@ -131,7 +131,7 @@ jobs:
       - run: yarn install
       - name: Run Fastlane
         working-directory: android/
-        run: bundle exec fastlane deploy
+        run: bundle exec fastlane build
         env:
           ANDROID_STORE_FILE: ${{ steps.android_keystore.outputs.filePath }}
           ANDROID_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
