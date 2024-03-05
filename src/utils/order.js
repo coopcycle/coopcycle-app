@@ -7,22 +7,7 @@ import i18n from '../i18n'
 
 import { formatPriceWithCode } from './formatting'
 
-function splitter(str, l){
-  var strs = [];
-  while (str.length > l){
-    var pos = str.substring(0, l).lastIndexOf(' ');
-    pos = pos <= 0 ? l : pos;
-    strs.push(str.substring(0, pos));
-    var i = str.indexOf(' ', pos) + 1;
-    if (i < pos || i > pos + l)
-        {i = pos;}
-    str = str.substring(i);
-  }
-  strs.push(str);
-  return strs;
-}
-
-const CODEPAGE = 'windows1251'
+const CODEPAGE = 'auto'
 
 export function encodeForPrinter(order) {
   const maxChars = 32
@@ -47,57 +32,47 @@ export function encodeForPrinter(order) {
     .initialize()
     .codepage(CODEPAGE)
     .align('center')
-    // Set double height text size
-    // @see https://github.com/mike42/escpos-php/blob/dcb569a123d75f9f6a4a927aae7625ca6b7fdcf3/src/Mike42/Escpos/Printer.php#L954-L960
-    // @see https://github.com/NielsLeenheer/EscPosEncoder/pull/21
-    .raw([ 0x1b, 0x21, 16 ])
-    .line(hr)
-    // Double width/height + emphasize
-    .raw([ 0x1b, 0x21, (16 + 32 + 8) ])
+    .height(2)
+
+  encoder
+    .rule()
+    .width(2)
+    .bold(true)
     .line(`#${order.number}`)
     .newline()
-    .raw([ 0x1b, 0x21, 16 ])
+    .width(1)
+    .bold(false)
     .line(i18n.t('RECEIPT_CUSTOMER_NAME', { customer: order.customer.fullName || order.customer.email }))
-    .line(hr)
+    .rule()
 
   encoder
-    .align('center')
     .line(pickupLineDate)
-
-  encoder.raw([ 0x1b, 0x21, (16 + 32 + 8) ])
-
-  encoder
-    .align('center')
-    .line(pickupLineTime)
-
-  encoder.raw([ 0x1b, 0x21, 16 ])
-
-  encoder
-    .line(hr)
     .newline()
+    .width(2)
+    .bold(true)
+    .line(pickupLineTime)
+    .rule()
+    .newline()
+
+  encoder
+    .width(1)
+    .bold(false)
 
   order.items.forEach((item) => {
 
-    let price = `  ${formatPriceWithCode(item.total)}`
-    let name = diacritics.remove(item.name)
+    const price = formatPriceWithCode(item.total)
 
-    name = `${item.quantity} x ${name}`
-
-    let padding = price.length
-    let maxLength = maxChars - padding
+    encoder.table(
+      [
+        { width: (maxChars - price.length - 2), align: 'left', marginRight: 2 },
+        { width: price.length,                  align: 'right' }
+      ],
+      [
+        [ `${item.quantity} x ${diacritics.remove(item.name)}`, price ],
+      ]
+    )
 
     encoder.align('left')
-
-    let lines = splitter(name, maxLength)
-
-    lines.forEach((line, index) => {
-      if (index === 0) {
-        line = line.padEnd(maxLength, ' ')
-        encoder.line(`${line}${price}`)
-      } else {
-        encoder.line(line)
-      }
-    })
 
     if (item.adjustments.hasOwnProperty('menu_item_modifier')) {
       item.adjustments.menu_item_modifier.forEach((adjustment) => {

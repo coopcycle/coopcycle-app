@@ -106,7 +106,7 @@ function Loopeat({ cart, updateLoopeatReturns }) {
 				<Box p="3">
 					<Heading size="sm" mb="4">{ t('CHECKOUT_LOOPEAT_WALLET_AMOUNT', { amount: formatPrice(creditsCountCents) }) }</Heading>
 					<Button variant="outline"
-						onPress={ () => Linking.openURL(reusablePackagingAction.loopeatOAuthUrl + '&required_credits_cents=' + requiredAmount) }>
+						onPress={ () => Linking.openURL(reusablePackagingAction.loopeatOAuthUrl + '&required_credits_cents=' + requiredAmount + '&show_deposit=true') }>
             { t('CHECKOUT_LOOPEAT_ADD_CREDITS') }
           </Button>
 				</Box>

@@ -2,7 +2,6 @@ import React, { useEffect } from 'react'
 import { withTranslation } from 'react-i18next'
 import { Image, StyleSheet, View } from 'react-native'
 import { connect } from 'react-redux'
-import MercadoPagoCheckout from '@blackbox-vision/react-native-mercadopago-px'
 import { checkoutFailure, checkoutRequest, mercadopagoCheckout } from '../../redux/Checkout/actions'
 
 function Mercadopago({ cart, initCheckout, failedCheckout, checkout, httpClient, restaurant, navigation }) {
@@ -17,15 +16,7 @@ function Mercadopago({ cart, initCheckout, failedCheckout, checkout, httpClient,
   }
 
   async function createPayment({ preferenceId, publicKey }) {
-    return await MercadoPagoCheckout.createPayment({
-      publicKey,
-      preferenceId,
-      language: 'es',
-      advancedOptions: {
-        amountRowEnabled: false,
-        bankDealsEnabled: false,
-      },
-    })
+    return Promise.reject(new Error('MercadoPago is not available'))
   }
 
   const loadMercadopago = async () => {
