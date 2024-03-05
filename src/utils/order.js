@@ -7,21 +7,6 @@ import i18n from '../i18n'
 
 import { formatPriceWithCode } from './formatting'
 
-function splitter(str, l){
-  var strs = [];
-  while (str.length > l){
-    var pos = str.substring(0, l).lastIndexOf(' ');
-    pos = pos <= 0 ? l : pos;
-    strs.push(str.substring(0, pos));
-    var i = str.indexOf(' ', pos) + 1;
-    if (i < pos || i > pos + l)
-        {i = pos;}
-    str = str.substring(i);
-  }
-  strs.push(str);
-  return strs;
-}
-
 const CODEPAGE = 'auto'
 
 export function encodeForPrinter(order) {
@@ -75,26 +60,19 @@ export function encodeForPrinter(order) {
 
   order.items.forEach((item) => {
 
-    let price = `  ${formatPriceWithCode(item.total)}`
-    let name = diacritics.remove(item.name)
+    const price = formatPriceWithCode(item.total)
 
-    name = `${item.quantity} x ${name}`
-
-    let padding = price.length
-    let maxLength = maxChars - padding
+    encoder.table(
+      [
+        { width: (maxChars - price.length - 2), align: 'left', marginRight: 2 },
+        { width: price.length,                  align: 'right' }
+      ],
+      [
+        [ `${item.quantity} x ${diacritics.remove(item.name)}`, price ],
+      ]
+    )
 
     encoder.align('left')
-
-    let lines = splitter(name, maxLength)
-
-    lines.forEach((line, index) => {
-      if (index === 0) {
-        line = line.padEnd(maxLength, ' ')
-        encoder.line(`${line}${price}`)
-      } else {
-        encoder.line(line)
-      }
-    })
 
     if (item.adjustments.hasOwnProperty('menu_item_modifier')) {
       item.adjustments.menu_item_modifier.forEach((adjustment) => {
