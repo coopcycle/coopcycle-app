@@ -12775,10 +12775,10 @@ react-native-autocomplete-input@^5.4.0:
   dependencies:
     deprecated-react-native-prop-types "^2.3.0"
 
-react-native-avoid-softinput@^4.0.2:
-  version "4.0.2"
-  resolved "https://registry.yarnpkg.com/react-native-avoid-softinput/-/react-native-avoid-softinput-4.0.2.tgz#30825e7666b530c5d3e555a7778bd50f1431d0c3"
-  integrity sha512-/i8xNWGjpu3hEPCVjW2WsWTsM/mC4zTBr3DabOrdPfgw9Ww0Na69YQY1TSXCjbTjJmWwfTToPK5OEVm+ZwHmiQ==
+react-native-avoid-softinput@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/react-native-avoid-softinput/-/react-native-avoid-softinput-5.0.0.tgz#651ff4d1d44685bc185ffa0ee49687488a91e3b8"
+  integrity sha512-hpyWhBLiWcMqKbnhH1uQ+xWjv8b9L4sxIUyWiRE4F2O7lk7KlOvMKcpdl7Xxb6cyBOUNQxxtqN0btOAC6hT6oQ==
 
 react-native-background-fetch@^4.2.2:
   version "4.2.2"

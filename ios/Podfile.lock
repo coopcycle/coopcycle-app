@@ -1273,7 +1273,9 @@ PODS:
     - React-jsi (= 0.73.5)
     - React-logger (= 0.73.5)
     - React-perflogger (= 0.73.5)
-  - ReactNativeAvoidSoftinput (4.0.2):
+  - ReactNativeAvoidSoftinput (5.0.0):
+    - glog
+    - RCT-Folly (= 2022.05.16.00)
     - React-Core
   - ReactNativeKeyboardManager (6.5.11-2):
     - IQKeyboardManagerSwift (= 6.5.11)
@@ -1815,7 +1817,7 @@ SPEC CHECKSUMS:
   React-runtimescheduler: ed71ec64a3e5cf509d74dfe9e25d72b04c84a3ad
   React-utils: 74fc896195fb41a1f7dcd5737d89be59c1fdccc4
   ReactCommon: ab6655d0224cf39c997ea634d257c609d345e23d
-  ReactNativeAvoidSoftinput: b4ec4c8084c397a91800d21170a9949a263d288a
+  ReactNativeAvoidSoftinput: a07f8c02db6865d6f91cae74d78936a116a0a9c1
   ReactNativeKeyboardManager: 60292dbac467c49841a7d69588208ec4a4f7b2a2
   RNAppleAuthentication: 0571c08da8c327ae2afc0261b48b4a515b0286a6
   RNBackgroundFetch: 35c7183f6eeff69396d42c4b206e1ae2a21e9327
