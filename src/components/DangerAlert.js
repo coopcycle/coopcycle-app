@@ -1,9 +1,9 @@
-import {Icon, Text} from 'native-base';
+import { Icon, Text } from 'native-base';
 import React from 'react';
-import {withTranslation} from 'react-i18next';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import { withTranslation } from 'react-i18next';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {blueColor} from '../styles/common';
+import { blueColor } from '../styles/common';
 
 const DangerAlert = props => {
   const rowStyle = [styles.row];
@@ -23,7 +23,7 @@ const DangerAlert = props => {
         </Text>
         {props.onClose && (
           <TouchableOpacity onPress={() => props.onClose()}>
-            <Icon as={Ionicons} name="close" style={{color: blueColor}} />
+            <Icon as={Ionicons} name="close" style={{ color: blueColor }} />
           </TouchableOpacity>
         )}
       </View>
