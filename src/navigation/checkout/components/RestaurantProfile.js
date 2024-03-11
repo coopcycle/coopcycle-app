@@ -92,7 +92,11 @@ function RestaurantProfile({ restaurant, onInfo }) {
       <Image
         style={styles.banner}
         resizeMode="cover"
-        source={{ uri: restaurant.bannerImage }}
+        source={{
+          uri: restaurant.bannerImage
+            ? restaurant.bannerImage
+            : restaurant.image,
+        }}
         alt="Banner"
       />
       <View style={styles.detailsWrapper}>
