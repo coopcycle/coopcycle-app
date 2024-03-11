@@ -20,7 +20,6 @@ import {
   View,
   useColorScheme,
 } from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
 import {connect} from 'react-redux';
 
 import CartFooter from './components/CartFooter';
@@ -222,7 +221,11 @@ function Restaurant(props) {
   };
 
   return (
-    <SafeAreaView style={{display: 'flex', width: '100%'}}>
+    <View
+      style={{
+        display: 'flex',
+        width: '100%',
+      }}>
       <FlatList
         stickyHeaderIndices={[2]}
         data={Array.from({length: renderFunctions.length}, (_, index) => index)}
@@ -279,7 +282,7 @@ function Restaurant(props) {
 
       <ExpiredSessionModal onModalHide={() => navigate('CheckoutHome')} />
       <LoopeatModal />
-    </SafeAreaView>
+    </View>
   );
 }
 

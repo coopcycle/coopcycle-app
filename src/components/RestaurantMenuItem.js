@@ -1,8 +1,8 @@
 import _ from 'lodash';
-import {Image, Text, View, useColorModeValue} from 'native-base';
+import { Image, Text, View, useColorModeValue } from 'native-base';
 import React from 'react';
-import {ActivityIndicator, StyleSheet, TouchableOpacity} from 'react-native';
-import {formatPrice} from '../utils/formatting';
+import { ActivityIndicator, StyleSheet, TouchableOpacity } from 'react-native';
+import { formatPrice } from '../utils/formatting';
 
 const styles = StyleSheet.create({
   menuItem: {
@@ -14,6 +14,13 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     overflow: 'hidden',
     backgroundColor: '#ffffff',
+  },
+  menuItemDisabled: {
+    opacity: 0.5,
+  },
+  menuItemTitleDisabled: {
+    textDecorationLine: 'line-through',
+    textDecorationStyle: 'solid',
   },
   menuItemContent: {
     flex: 2,
@@ -52,7 +59,9 @@ const styles = StyleSheet.create({
   },
 });
 
-const RestaurantMenuItem = ({item, onPress, isLoading}) => {
+const RestaurantMenuItem = ({ item, onPress, isLoading }) => {
+  console.log(item.name);
+  console.log('🚀 ~ item:', item);
   const enabled = item.hasOwnProperty('enabled') ? item.enabled : true;
   const backgroundColor = useColorModeValue('#fff', '#201E1E');
 
@@ -63,15 +72,19 @@ const RestaurantMenuItem = ({item, onPress, isLoading}) => {
 
   return (
     <TouchableOpacity
-      style={[styles.menuItem, {backgroundColor}]}
+      style={[
+        styles.menuItem,
+        backgroundColor,
+        item.enabled ? null : styles.menuItemDisabled,
+      ]}
       onPress={enabled ? () => onPress(item) : null}
       testID={`menuItem:${item.sectionIndex}:${item.index}`}>
-      <View style={image1x1 ? styles.menuItemImageWrapper : {width: 0}}>
+      <View style={image1x1 ? styles.menuItemImageWrapper : { width: 0 }}>
         {image1x1 && (
           <Image
             size="lg"
             resizeMode="cover"
-            source={{uri: image1x1.url}}
+            source={{ uri: image1x1.url }}
             alt="Product"
             style={styles.menuItemImage}
           />
@@ -79,7 +92,12 @@ const RestaurantMenuItem = ({item, onPress, isLoading}) => {
       </View>
 
       <View style={styles.menuItemContent}>
-        <Text numberOfLines={1} style={styles.menuItemTitle}>
+        <Text
+          numberOfLines={1}
+          style={[
+            styles.menuItemTitle,
+            item.enabled ? null : styles.menuItemTitleDisabled,
+          ]}>
           {item.name}
         </Text>
         {item.description ? (
