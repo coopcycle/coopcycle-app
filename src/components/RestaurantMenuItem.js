@@ -13,7 +13,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
     borderRadius: 16,
     overflow: 'hidden',
-    backgroundColor: '#ffffff',
   },
   menuItemDisabled: {
     opacity: 0.5,
@@ -74,7 +73,7 @@ const RestaurantMenuItem = ({ item, onPress, isLoading }) => {
     <TouchableOpacity
       style={[
         styles.menuItem,
-        backgroundColor,
+        { backgroundColor },
         item.enabled ? null : styles.menuItemDisabled,
       ]}
       onPress={enabled ? () => onPress(item) : null}
