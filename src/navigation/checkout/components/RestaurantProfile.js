@@ -106,7 +106,7 @@ function RestaurantProfile({ restaurant, onInfo }) {
             />
           </View>
         </View>
-        {restaurant.badges.length >= 1 ? (
+        {restaurant?.badges?.length >= 1 ? (
           <ScrollView
             style={styles.badgesScroll}
             horizontal={true}
