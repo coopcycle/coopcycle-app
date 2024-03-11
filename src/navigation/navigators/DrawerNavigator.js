@@ -21,6 +21,7 @@ import About from '../home/About'
 import Terms from '../home/Terms'
 import Privacy from '../home/Privacy'
 import { HeaderBackButton } from '@react-navigation/elements'
+import FeatureFlags from '../home/FeatureFlags'
 
 const AboutStack = createStackNavigator()
 
@@ -70,6 +71,22 @@ const PrivacyNavigator = () => (
   </PrivacyStack.Navigator>
 )
 
+const FeatureFlagsStack = createStackNavigator()
+
+const FeatureFlagsNavigator = () => (
+  <FeatureFlagsStack.Navigator
+    screenOptions={ stackNavigatorScreenOptions }>
+    <FeatureFlagsStack.Screen
+      name="FeatureFlagsHome"
+      component={ FeatureFlags }
+      options={({ navigation }) => ({
+        title: i18n.t('FEATURE_FLAGS'),
+        headerLeft: (props) => <HeaderBackButton { ...props } onPress={ () => navigation.goBack() } />,
+      })}
+    />
+  </FeatureFlagsStack.Navigator>
+)
+
 function mapStateToProps(state) {
 
   const user = state.app.user
@@ -112,6 +129,9 @@ const DrawerNav = ({ initialRouteName, user, isAuthenticated, showRestaurantsDra
       <Drawer.Screen
         name="PrivacyNav"
         component={ PrivacyNavigator } />
+      <Drawer.Screen
+        name="FeatureFlagsNav"
+        component={ FeatureFlagsNavigator } />
 
       { (isAuthenticated && user.hasRole('ROLE_COURIER')) && (
         <Drawer.Screen
@@ -128,7 +148,7 @@ const DrawerNav = ({ initialRouteName, user, isAuthenticated, showRestaurantsDra
           name="StoreNav"
           component={ StoreNavigator } />
       )}
-      { (isAuthenticated && user.hasRole('ROLE_ADMIN')) && (
+      { (isAuthenticated && user.hasRole('ROLE_DISPATCHER')) && (
         <Drawer.Screen
           name="DispatchNav"
           component={ DispatchNavigator } />

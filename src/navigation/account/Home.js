@@ -11,7 +11,10 @@ import Modal from 'react-native-modal'
 import Server from './components/Server'
 import { logout } from '../../redux/App/actions'
 import { deleteUser } from '../../redux/Account/actions'
-import { selectIsAuthenticated } from '../../redux/App/selectors'
+import {
+  selectCustomBuild,
+  selectIsAuthenticated,
+} from '../../redux/App/selectors'
 import ItemSeparator from '../../components/ItemSeparator'
 import LoginRegister from './LoginRegister'
 
@@ -121,7 +124,7 @@ function mapStateToProps(state) {
   return {
     user: state.app.user,
     isAuthenticated: selectIsAuthenticated(state),
-    customBuild: state.app.customBuild,
+    customBuild: selectCustomBuild(state),
   }
 }
 

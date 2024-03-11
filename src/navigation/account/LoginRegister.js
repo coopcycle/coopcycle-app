@@ -6,6 +6,7 @@ import Server from './components/Server';
 import AuthenticateForm from '../../components/AuthenticateForm';
 import { forgotPassword, login, register } from '../../redux/App/actions';
 import AuthenticateContainer from '../../components/AuthenticateContainer';
+import { selectCustomBuild } from '../../redux/App/selectors'
 
 class LoginRegister extends Component {
   render() {
@@ -29,7 +30,7 @@ class LoginRegister extends Component {
 
 function mapStateToProps(state) {
   return {
-    customBuild: state.app.customBuild,
+    customBuild: selectCustomBuild(state),
   }
 }
 

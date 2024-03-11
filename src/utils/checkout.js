@@ -58,6 +58,14 @@ export function getNextShippingTimeAsText(restaurant, now) {
   return i18n.t('NOT_AVAILABLE_ATM')
 }
 
+export function getRestaurantIsAvailable(restaurant) {
+  if (!restaurant.timing.delivery && !restaurant.timing.collection) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
 export function getRestaurantCaption(restaurant) {
   return restaurant.description || restaurant.address.streetAddress
 }
@@ -67,7 +75,7 @@ export function shouldShowPreOrder(restaurant) {
     if (restaurant.timing.delivery.range && Array.isArray(restaurant.timing.delivery.range)) {
       const duration = moment.duration(moment(restaurant.timing.delivery.range[0]).diff(moment()));
 
-      return duration.asHours() > 1;
+      return duration.asHours() > .75;
     }
   }
 

@@ -124,7 +124,6 @@ Client.prototype.createRequest = function(method, url, data, options = {}) {
   }
 
   const authorized = !(!this.credentials.token || options.anonymous)
-  console.log(`${method} ${url}${authorized ? '' : ' (anon.)'}`)
 
   if (authorized && this.credentials.token) {
     headers.Authorization = `Bearer ${this.credentials.token}`
@@ -136,6 +135,8 @@ Client.prototype.createRequest = function(method, url, data, options = {}) {
       ...options.headers,
     }
   }
+
+  console.log(`→ ${method} ${url}${headers.Authorization ? '' : ' (anon.)'}`)
 
   let req = {
     method,
@@ -159,19 +160,36 @@ Client.prototype.createRequest = function(method, url, data, options = {}) {
   return req
 }
 
-Client.prototype.request = function(method, uri, data, options = {}) {
+Client.prototype.request = function (method, uri, data, options = {}) {
   const req = this.createRequest(method, uri, data, options)
-  return this.axios.request(req);
+  const start = Date.now()
+  return this.axios
+    .request(req)
+    .then(response => {
+      const duration = Date.now() - start
+      console.log(`⬅ ${method} ${uri} | ${response.status} | ${duration}ms`)
+
+      return response
+    })
+    .catch(error => {
+      if (error.response) {
+        console.warn(`⬅ ${method} ${uri} | ${error.response.status}`)
+      } else {
+        console.warn(`⬅ ${method} ${uri} | ${error.message}`)
+      }
+
+      return Promise.reject(error)
+    })
 }
 
-Client.prototype.get = function(uri, data, options = {}) {
+Client.prototype.get = function(uri, options = {}) {
 
-  return enhanceRequest(this, 'GET', uri, data, options);
+  return enhanceRequest(this, 'GET', uri, {}, options)
 }
 
-Client.prototype.post = function(uri, data) {
+Client.prototype.post = function(uri, data, options = {}) {
 
-  return enhanceRequest(this, 'POST', uri, data);
+  return enhanceRequest(this, 'POST', uri, data, options);
 }
 
 Client.prototype.put = function(uri, data, options = {}) {
@@ -179,9 +197,9 @@ Client.prototype.put = function(uri, data, options = {}) {
   return enhanceRequest(this, 'PUT', uri, data, options);
 }
 
-Client.prototype.delete = function(uri) {
+Client.prototype.delete = function(uri, options = {}) {
 
-  return enhanceRequest(this, 'DELETE', uri);
+  return enhanceRequest(this, 'DELETE', uri, {}, options);
 }
 
 function enhanceRequest(client, method, uri, data, options = {}) {

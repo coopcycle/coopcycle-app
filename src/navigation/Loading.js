@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { ActivityIndicator, InteractionManager, StyleSheet, View } from 'react-native'
+import { InteractionManager, StyleSheet, View } from 'react-native'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 import { Button, Icon, Text } from 'native-base'
@@ -14,6 +14,13 @@ import DrawerNavigator from './navigators/DrawerNavigator'
 import Modal from 'react-native-modal';
 import Config from 'react-native-config';
 import Server from './account/components/Server'
+import { selectIsSpinnerDelayEnabled } from '../redux/App/selectors'
+
+import * as Sentry from '@sentry/react-native';
+
+import FullScreenLoadingIndicator from './FullScreenLoadingIndicator'
+import { selectCustomBuild } from '../redux/App/selectors'
+import LoadingError from './LoadingError'
 
 class Loading extends Component {
 
@@ -22,6 +29,7 @@ class Loading extends Component {
     this.state = {
       ready: false,
       error: false,
+      modal: props.modal,
     }
   }
 
@@ -63,6 +71,24 @@ class Loading extends Component {
     })
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.modal !== this.props.modal) {
+      if (this.props.isSpinnerDelayEnabled) {
+        if (!prevProps.modal.show && this.props.modal.show) {
+          // add an extra delay to make sure that the modal is shown after the Spinner is hidden:
+          // https://github.com/coopcycle/coopcycle-app/blob/master/src/components/Spinner.js#L22
+          setTimeout(() => this.setState({ modal: this.props.modal }), 500)
+        } else {
+          this.setState({ modal: this.props.modal })
+        }
+      } else {
+        // added to track the number of the beta version users who have the delay disabled, could be removed later
+        Sentry.captureMessage('Spinner delay is not applied')
+        this.setState({ modal: this.props.modal })
+      }
+    }
+  }
+
   renderError() {
     return (
       <View style={ styles.error }>
@@ -81,13 +107,13 @@ class Loading extends Component {
   }
 
   render() {
-    const close = () => this.props.modal.skippable && this.props.closeModal()
-    const swipeDirection = this.props.modal.skippable ? [ 'down', 'up', 'left', 'right' ] : []
+    const close = () => this.state.modal.skippable && this.props.closeModal()
+    const swipeDirection = this.state.modal.skippable ? [ 'down', 'up', 'left', 'right' ] : []
 
     return <>{this.bodyRender()}
-      <Modal isVisible={this.props.modal.show} onSwipeComplete={close} swipeDirection={swipeDirection} onBackdropPress={close}>
-        <View style={{ ...styles.content, ...styles[`${this.props.modal.type}Modal`] }}>
-          <Text style={styles[`${this.props.modal.type}Modal`]}>{this.props.modal.content}</Text>
+      <Modal isVisible={this.state.modal.show} onSwipeComplete={close} swipeDirection={swipeDirection} onBackdropPress={close}>
+        <View style={{ ...styles.content, ...styles[`${this.state.modal.type}Modal`] }}>
+          <Text style={styles[`${this.state.modal.type}Modal`]}>{this.state.modal.content}</Text>
         </View>
       </Modal>
     </>
@@ -96,7 +122,7 @@ class Loading extends Component {
   bodyRender() {
 
     if (this.state.error) {
-      return this.renderError()
+      return <LoadingError />
     }
 
     if (this.state.ready) {
@@ -111,27 +137,12 @@ class Loading extends Component {
     }
 
     return (
-      <View style={ styles.loader }>
-        <ActivityIndicator size="large" color="#c7c7c7" />
-      </View>
+      <FullScreenLoadingIndicator debugHint="Connecting to the server ..." />
     )
   }
 }
 
 const styles = StyleSheet.create({
-  loader: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  error: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  errorText: {
-    marginBottom: 10,
-  },
   content: {
     backgroundColor: 'white',
     padding: 22,
@@ -172,8 +183,9 @@ function mapStateToProps(state) {
     baseURL: state.app.baseURL,
     httpClient: state.app.httpClient,
     modal: state.app.modal,
-    customBuild: state.app.customBuild,
+    customBuild: selectCustomBuild(state),
     firstRun: state.app.firstRun,
+    isSpinnerDelayEnabled: selectIsSpinnerDelayEnabled(state)
   }
 }
 

@@ -15,7 +15,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: '16.x'
+          node-version: '20.x'
       - name: Configure Sentry
         run: |
           sed 's/%token%/${{ secrets.SENTRY_API_TOKEN }}/' ios/sentry.properties.dist > ios/sentry.properties
@@ -108,7 +108,7 @@ jobs:
           java-version: 1.8
       - uses: actions/setup-node@v3
         with:
-          node-version: '16.x'
+          node-version: '20.x'
       - run: yarn install
       - run: cp google-services.json.dist android/app/google-services.json
       - name: Enable clear text traffic in release builds

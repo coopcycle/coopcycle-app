@@ -3,7 +3,11 @@ import _ from 'lodash'
 import moment from 'moment'
 
 import i18n from '../../i18n'
-import { selectIsAuthenticated, selectUser } from '../App/selectors'
+import {
+  selectIsAuthenticated,
+  selectIsGuest,
+  selectUser,
+} from '../App/selectors'
 import OpeningHoursSpecification from '../../utils/OpeningHoursSpecification';
 import Address from '../../utils/Address';
 
@@ -39,13 +43,33 @@ export const selectCartWithHours = createSelector(
   }
 )
 
-export const selectRestaurant = createSelector(
-  state => state.checkout.restaurants,
-  state => state.checkout.restaurant,
-  (restaurants, restaurant) => {
-    return _.find(restaurants, { '@id': restaurant }) ?? null
+const selectVendorId = (state, vendorId) => vendorId
+
+export const selectCartByVendor = createSelector(
+  state => state.checkout.carts,
+  selectVendorId,
+  (carts, vendor) => {
+    if (carts.hasOwnProperty(vendor)) {
+      return carts[vendor]
+    }
+    return {
+      cart: null,
+      restaurant: null,
+      token: null,
+    }
   }
 )
+
+export const selectRestaurant = createSelector(
+  state => state.checkout.restaurants,
+  state => state.checkout.carts,
+  state => state.checkout.restaurant,
+  (restaurants, carts, restaurant) => {
+    const restaurantsWithCarts = Object.values(carts).map(c => c.restaurant)
+    return _.find(_.uniqBy(restaurants.concat(restaurantsWithCarts), '@id'), { '@id': restaurant }) ?? null
+  }
+)
+
 export const selectRestaurantWithHours = createSelector(
   selectRestaurant,
   (selected_restaurant) => {
@@ -244,4 +268,22 @@ export const selectAddresses = createSelector(
 export const selectAvailableRestaurants = createSelector(
   state => state.checkout.restaurants,
   (restaurants) => _.map(restaurants, r => r.id)
+)
+
+const _selectCartParam = (state, cart) => cart
+const _selectTokenParam = (state, cart, token) => token
+
+export const selectCheckoutAuthorizationHeaders = createSelector(
+  selectIsAuthenticated,
+  _selectCartParam,
+  _selectTokenParam,
+  (isAuthenticatedUser, cart, sessionToken) => {
+    if (isAuthenticatedUser && cart.customer) {
+      return {} // use the user's token from the httpClient
+    } else {
+      return {
+        'Authorization': `Bearer ${sessionToken}`,
+      }
+    }
+  }
 )

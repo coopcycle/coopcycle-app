@@ -83,7 +83,17 @@ const About = ({ brandName, motto, navigate }) => {
   )
 }
 
+const TAPS_TO_SHOW_FEATURE_FLAGS = 3
+
 class DrawerContent extends Component {
+
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      pressedAppVersionCounter: 0,
+    }
+  }
 
   render() {
 
@@ -122,6 +132,16 @@ class DrawerContent extends Component {
       }
     }
 
+    const onAppVersionPress = () => {
+      this.setState({ pressedAppVersionCounter: this.state.pressedAppVersionCounter + 1 })
+      if (this.state.pressedAppVersionCounter >= TAPS_TO_SHOW_FEATURE_FLAGS) {
+        this.setState({ pressedAppVersionCounter: 0 })
+        this.props.navigation.navigate('FeatureFlagsNav', {
+          screen: 'FeatureFlagsHome',
+        })
+      }
+    }
+
     return (
       <SafeAreaView style={styles.container} forceInset={{ top: 'always', horizontal: 'never' }}>
         <TouchableOpacity style={styles.header} onPress={navigateToAccount} testID="drawerAccountBtn">
@@ -151,7 +171,7 @@ class DrawerContent extends Component {
                   label={this.props.t('TASKS')}
                   onPress={() => this.props.navigation.navigate('CourierNav')}/>
               )}
-              {(isAuthenticated && user.hasRole('ROLE_ADMIN')) && (
+              {(isAuthenticated && user.hasRole('ROLE_DISPATCHER')) && (
                 <DrawerItem
                   label={this.props.t('DISPATCH')}
                   onPress={() => this.props.navigation.navigate('DispatchNav')}/>
@@ -190,9 +210,9 @@ class DrawerContent extends Component {
                 <Text textAlign="right" fontSize="xs">{this.props.t('PRIVACY')}</Text>
               </Pressable>
             </HStack>
-            <View>
+            <Pressable onPress={onAppVersionPress}>
               <Text>{VersionNumber.appVersion}</Text>
-            </View>
+            </Pressable>
           </VStack>
         </View>
       </SafeAreaView>

@@ -29,7 +29,8 @@ class CreditCard extends Component {
   _onPaymentMethodSelected(type) {
     const routesByCardGateway = {
       'stripe': 'CheckoutPaymentMethodCard',
-      'mercadopago': 'CheckoutMercadopago',
+      // https://github.com/coopcycle/coopcycle-app/issues/1697
+      // 'mercadopago': 'CheckoutMercadopago',
     };
     const routesByMethod = {
       'cash_on_delivery': 'CheckoutPaymentMethodCashOnDelivery',
