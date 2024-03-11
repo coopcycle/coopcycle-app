@@ -61,7 +61,6 @@ const styles = StyleSheet.create({
   badgesScroll: {
     width: '100%',
     overflow: 'hidden',
-    paddingLeft: 16,
   },
   badgesWrapper: {
     display: 'flex',
@@ -71,6 +70,7 @@ const styles = StyleSheet.create({
     left: 0,
     marginTop: 4,
     marginBottom: 8,
+    paddingHorizontal: 16,
   },
   address: {
     display: 'flex',
