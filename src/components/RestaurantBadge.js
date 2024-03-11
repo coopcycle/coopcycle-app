@@ -1,9 +1,9 @@
 import i18next from 'i18next';
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
-import Svg, {Path} from 'react-native-svg';
+import { StyleSheet, Text, View } from 'react-native';
+import Svg, { Path } from 'react-native-svg';
 
-export function RestaurantBadge({type}) {
+export function RestaurantBadge({ type }) {
   let backgroundColor = '#00F';
   let textColor = '#fff';
   let iconColor = '#fff';
@@ -131,7 +131,7 @@ export function RestaurantBadge({type}) {
       backgroundColor: backgroundColor,
       borderRadius: 16,
       shadowColor: 'rgba(0, 0, 0, 0.25)',
-      shadowOffset: {width: 0, height: 0},
+      shadowOffset: { width: 0, height: 0 },
       shadowOpacity: 0.8,
       shadowRadius: 16,
       elevation: 4,

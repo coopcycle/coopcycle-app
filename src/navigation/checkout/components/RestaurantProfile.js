@@ -1,11 +1,11 @@
 import i18next from 'i18next';
-import {Button, Image, Text, useColorModeValue} from 'native-base';
+import { Button, Image, Text, useColorModeValue } from 'native-base';
 import React from 'react';
-import {ScrollView, StyleSheet, View} from 'react-native';
-import {RestaurantBadge} from '../../../components/RestaurantBadge';
-import {RestaurantTag} from '../../../components/RestaurantTag';
+import { ScrollView, StyleSheet, View } from 'react-native';
+import { RestaurantBadge } from '../../../components/RestaurantBadge';
+import { RestaurantTag } from '../../../components/RestaurantTag';
 import AddressIcon from './AddressIcon';
-import {TimingBadge} from './RestaurantBadges';
+import { TimingBadge } from './RestaurantBadges';
 
 const styles = StyleSheet.create({
   profile: {},
@@ -35,6 +35,9 @@ const styles = StyleSheet.create({
     elevation: 8,
     shadowColor: '#00000044',
     borderRadius: 8,
+    shadowOpacity: 0.25,
+    shadowRadius: 16,
+    shadowOffset: { height: 8, width: 0 },
   },
   description: {
     marginTop: 8,
@@ -57,7 +60,7 @@ const styles = StyleSheet.create({
   },
   badgesScroll: {
     width: '100%',
-    overflow: 'visible',
+    overflow: 'hidden',
     paddingLeft: 16,
   },
   badgesWrapper: {
@@ -80,25 +83,25 @@ const styles = StyleSheet.create({
   },
 });
 
-function RestaurantProfile({restaurant, onInfo}) {
+function RestaurantProfile({ restaurant, onInfo }) {
   const backgroundColor = useColorModeValue('#fff', '#201E1E');
   const stroke = useColorModeValue('#000', '#fff');
 
   return (
-    <View style={([styles.profile], {backgroundColor})}>
+    <View style={([styles.profile], { backgroundColor })}>
       <Image
         style={styles.banner}
         resizeMode="cover"
-        source={{uri: restaurant.bannerImage}}
+        source={{ uri: restaurant.bannerImage }}
         alt="Banner"
       />
       <View style={styles.detailsWrapper}>
-        <View style={[styles.logoWrapper, {backgroundColor}]}>
+        <View style={[styles.logoWrapper, { backgroundColor }]}>
           <View style={styles.logoWrapperShadow}>
             <Image
               style={styles.logo}
               resizeMode="cover"
-              source={{uri: restaurant.image}}
+              source={{ uri: restaurant.image }}
               alt="logo"
             />
           </View>
@@ -117,7 +120,7 @@ function RestaurantProfile({restaurant, onInfo}) {
         ) : null}
       </View>
       <View style={styles.content}>
-        <View style={{display: 'flex', flexDirection: 'row', gap: 4}}>
+        <View style={{ display: 'flex', flexDirection: 'row', gap: 4 }}>
           <TimingBadge restaurant={restaurant} />
           <Button size="sm" variant="link" onPress={onInfo}>
             {i18next.t('RESTAURANT_MORE_INFOS')}
