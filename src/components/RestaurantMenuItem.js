@@ -3,6 +3,7 @@ import { Image, Text, View, useColorModeValue } from 'native-base';
 import React from 'react';
 import { ActivityIndicator, StyleSheet, TouchableOpacity } from 'react-native';
 import { formatPrice } from '../utils/formatting';
+import RestaurantProductBadge from './RestaurantProductBadge';
 
 const styles = StyleSheet.create({
   menuItem: {
@@ -37,14 +38,34 @@ const styles = StyleSheet.create({
     fontSize: 12,
     lineHeight: 16,
   },
+  menuItemDetails: {
+    gap: 8,
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+  },
+  menuItemBadgesWrapper: {
+    flex: 1,
+    flexDirection: 'row',
+  },
+  menuItemBadges: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 4,
+    flexShrink1: 1,
+    flex: 1,
+    overflow: 'hidden',
+  },
   menuItemPrice: {
     fontSize: 12,
     fontWeight: 'bold',
+    flexShrink: 0,
+    alignSelf: 'flex-end',
   },
   menuItemImageWrapper: {
     backgroundColor: 'rgba(0, 0, 0, 0.2)',
     flex: 1,
-    height: 130,
+    height: '100%',
     width: 130,
     display: 'flex',
     justifyContent: 'center',
@@ -59,10 +80,14 @@ const styles = StyleSheet.create({
 });
 
 const RestaurantMenuItem = ({ item, onPress, isLoading }) => {
-  console.log(item.name);
-  console.log('🚀 ~ item:', item);
   const enabled = item.hasOwnProperty('enabled') ? item.enabled : true;
   const backgroundColor = useColorModeValue('#fff', '#201E1E');
+
+  const diets = item.suitableForDiet
+    ? item.suitableForDiet.map(element =>
+        element.replace('http://schema.org/', ''),
+      )
+    : [];
 
   const image1x1 =
     item.images &&
@@ -104,9 +129,23 @@ const RestaurantMenuItem = ({ item, onPress, isLoading }) => {
             {item.description}
           </Text>
         ) : null}
-        <Text pr="2" fontSize="lg" style={styles.menuItemPrice}>{`${formatPrice(
-          item.offers.price,
-        )}`}</Text>
+        <View style={styles.menuItemDetails}>
+          {diets.length > 0 ? (
+            <View style={styles.menuItemBadgesWrapper}>
+              <View style={styles.menuItemBadges}>
+                {diets.map((badge, i) => (
+                  <RestaurantProductBadge type={badge} key={i} />
+                ))}
+              </View>
+            </View>
+          ) : null}
+          <Text
+            pr="2"
+            fontSize="lg"
+            style={styles.menuItemPrice}>{`${formatPrice(
+            item.offers.price,
+          )}`}</Text>
+        </View>
       </View>
       {isLoading && <ActivityIndicator color="#c7c7c7" size="small" />}
     </TouchableOpacity>
