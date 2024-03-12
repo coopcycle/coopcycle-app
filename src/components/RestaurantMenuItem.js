@@ -43,6 +43,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'flex-end',
+    flex: 1,
   },
   menuItemBadgesWrapper: {
     flex: 1,
@@ -66,6 +67,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.2)',
     flex: 1,
     height: '100%',
+    minHeight: 130,
     width: 130,
     display: 'flex',
     justifyContent: 'center',
