@@ -50,16 +50,16 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   priceWrapper: {
-    flex: 1,
+    flex: 0,
+    marginTop: 'auto',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'flex-end',
+    justifyContent: 'center',
   },
   price: {
     fontSize: 12,
     fontWeight: 'bold',
     flexShrink: 0,
-    alignSelf: 'flex-end',
     marginLeft: 'auto',
   },
   imageWrapper: {
@@ -125,6 +125,9 @@ const RestaurantMenuItem = ({ item, onPress, isLoading }) => {
           </Text>
         ) : null}
         <View style={styles.details}>
+          {/* {diets.map((badge, i) => (
+            <Text key={i}>{badge}</Text>
+          ))} */}
           {diets.length > 1 ? (
             <View style={styles.badges}>
               {diets.map((badge, i) => {
@@ -139,6 +142,10 @@ const RestaurantMenuItem = ({ item, onPress, isLoading }) => {
             {diets.length > 1 ? (
               <>
                 <RestaurantProductBadge type={diets[diets.length - 1]} />
+              </>
+            ) : diets.length > 0 ? (
+              <>
+                <RestaurantProductBadge type={diets[0]} />
               </>
             ) : null}
             <Text pr="2" fontSize="lg" style={styles.price}>{`${formatPrice(
