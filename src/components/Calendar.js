@@ -1,16 +1,17 @@
 import { Calendar as RNCalendar } from 'react-native-calendars'
 import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text } from 'react-native'
 import { primaryColor, whiteColor } from '../styles/common'
 import moment from 'moment/moment'
 import { useTranslation } from 'react-i18next'
+import { View } from 'native-base'
 
 const styles = StyleSheet.create({
   todayContainer: {
     backgroundColor: whiteColor,
     alignItems: 'center',
-    paddingTop: 5,
-    paddingBottom: 15,
+    marginTop: 8,
+    paddingVertical: 12,
   },
   todayButton: {
     color: primaryColor,
@@ -27,6 +28,9 @@ export function Calendar(props) {
     onDayPress: ({ dateString }) => {
       props.onDateSelect(moment(dateString))
     },
+    style: {
+      ...props.style,
+    },
     theme: {
       textSectionTitleColor: primaryColor, // days of the week
       selectedDayBackgroundColor: primaryColor, // for marked dates
@@ -42,7 +46,7 @@ export function Calendar(props) {
   }
 
   return (
-    <View onLayout={props.onLayout}>
+    <View>
       <RNCalendar
         {...calendarProps}
       />

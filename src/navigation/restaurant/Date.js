@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { Center } from 'native-base'
 
 import { withTranslation } from 'react-i18next'
 
@@ -17,15 +16,13 @@ class DateScreen extends Component {
   render() {
 
     return (
-      <Center flex={1}>
-        <Calendar
-          initialDate={this.props.date.format('YYYY-MM-DD')}
-          markedDates={{
-            [this.props.date.format('YYYY-MM-DD')]: { selected: true },
-          }}
-          onDateSelect={(momentDate) => {this.onDateChange(momentDate)}}
-        />
-      </Center>
+      <Calendar
+        initialDate={this.props.date.format('YYYY-MM-DD')}
+        markedDates={{
+          [this.props.date.format('YYYY-MM-DD')]: { selected: true },
+        }}
+        onDateSelect={(momentDate) => {this.onDateChange(momentDate)}}
+      />
     )
   }
 }
