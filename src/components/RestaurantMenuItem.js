@@ -15,41 +15,33 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     overflow: 'hidden',
   },
-  menuItemDisabled: {
+  disabled: {
     opacity: 0.5,
   },
-  menuItemTitleDisabled: {
+  titleDisabled: {
     textDecorationLine: 'line-through',
     textDecorationStyle: 'solid',
   },
-  menuItemContent: {
-    flex: 2,
+  content: {
+    flex: 5,
     paddingVertical: 8,
     paddingHorizontal: 16,
     gap: 8,
     display: 'flex',
   },
-  menuItemTitle: {
+  title: {
     fontSize: 14,
     fontWeight: 'bold',
     marginTop: 4,
   },
-  menuItemDescription: {
+  description: {
     fontSize: 12,
     lineHeight: 16,
   },
-  menuItemDetails: {
-    gap: 8,
-    alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
+  details: {
     flex: 1,
   },
-  menuItemBadgesWrapper: {
-    flex: 1,
-    flexDirection: 'row',
-  },
-  menuItemBadges: {
+  badges: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: 4,
@@ -57,26 +49,30 @@ const styles = StyleSheet.create({
     flex: 1,
     overflow: 'hidden',
   },
-  menuItemPrice: {
+  priceWrapper: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+  },
+  price: {
     fontSize: 12,
     fontWeight: 'bold',
     flexShrink: 0,
     alignSelf: 'flex-end',
+    marginLeft: 'auto',
   },
-  menuItemImageWrapper: {
+  imageWrapper: {
     backgroundColor: 'rgba(0, 0, 0, 0.2)',
-    flex: 1,
+    flex: 4,
     height: '100%',
-    minHeight: 130,
-    width: 130,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
   },
-  menuItemImage: {
-    // maxHeight: '100%',
-    // maxWidth: '100%',
+  image: {
     width: '100%',
+    aspectRatio: 1,
     height: '100%',
   },
 });
@@ -101,52 +97,54 @@ const RestaurantMenuItem = ({ item, onPress, isLoading }) => {
       style={[
         styles.menuItem,
         { backgroundColor },
-        item.enabled ? null : styles.menuItemDisabled,
+        item.enabled ? null : styles.disabled,
       ]}
       onPress={enabled ? () => onPress(item) : null}
       testID={`menuItem:${item.sectionIndex}:${item.index}`}>
-      <View style={image1x1 ? styles.menuItemImageWrapper : { width: 0 }}>
+      <View style={image1x1 ? styles.imageWrapper : { width: 0 }}>
         {image1x1 && (
           <Image
-            size="lg"
-            resizeMode="cover"
+            // size="lg"
+            // resizeMode="cover"
             source={{ uri: image1x1.url }}
             alt="Product"
-            style={styles.menuItemImage}
+            style={[styles.image, { aspectRatio: 1 }]}
           />
         )}
       </View>
 
-      <View style={styles.menuItemContent}>
+      <View style={styles.content}>
         <Text
           numberOfLines={1}
-          style={[
-            styles.menuItemTitle,
-            item.enabled ? null : styles.menuItemTitleDisabled,
-          ]}>
+          style={[styles.title, item.enabled ? null : styles.titleDisabled]}>
           {item.name}
         </Text>
         {item.description ? (
-          <Text numberOfLines={3} style={styles.menuItemDescription}>
+          <Text numberOfLines={3} style={styles.description}>
             {item.description}
           </Text>
         ) : null}
-        <View style={styles.menuItemDetails}>
-          {diets.length > 0 ? (
-            <View style={styles.menuItemBadgesWrapper}>
-              <View style={styles.menuItemBadges}>
-                {diets.map((badge, i) => (
-                  <RestaurantProductBadge type={badge} key={i} />
-                ))}
-              </View>
+        <View style={styles.details}>
+          {diets.length > 1 ? (
+            <View style={styles.badges}>
+              {diets.map((badge, i) => {
+                if (i !== diets.length - 1) {
+                  return <RestaurantProductBadge type={badge} key={i} />;
+                }
+              })}
             </View>
           ) : null}
-          <Text
-            pr="2"
-            fontSize="lg"
-            style={styles.menuItemPrice}>{`${formatPrice(
-            item.offers.price,
-          )}`}</Text>
+
+          <View style={styles.priceWrapper}>
+            {diets.length > 1 ? (
+              <>
+                <RestaurantProductBadge type={diets[diets.length - 1]} />
+              </>
+            ) : null}
+            <Text pr="2" fontSize="lg" style={styles.price}>{`${formatPrice(
+              item.offers.price,
+            )}`}</Text>
+          </View>
         </View>
       </View>
       {isLoading && <ActivityIndicator color="#c7c7c7" size="small" />}
