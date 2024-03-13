@@ -10,7 +10,8 @@ import {
   SET_SIGNATURE_SCREEN_FIRST,
   SET_TASKS_CHANGED_ALERT_SOUND, 
   SET_TASK_FILTER,
-  SET_POLYLINE_ON
+  SET_POLYLINE_ON,
+  CHANGE_DATE
 } from './taskActions'
 
 /*
@@ -82,6 +83,12 @@ export const tasksUiReducer = (state = tasksUiInitialState, action = {}) => {
       return {
         ...state,
         signatureScreenFirst: action.payload,
+      }
+
+    case CHANGE_DATE:
+      return {
+        ...state,
+        selectedDate: action.payload,
       }
   }
 
