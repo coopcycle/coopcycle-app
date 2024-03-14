@@ -312,8 +312,12 @@ export function assignTask(task, username) {
         username,
         tasks: linkedTasks.map(t => t['@id']),
       })
-        .then((responses) => dispatch(bulkAssignmentTasksSuccess(responses)))
-        .catch(e => dispatch(bulkAssignmentTasksFailure(e)))
+        .then((res) => {
+          dispatch(bulkAssignmentTasksSuccess(res['hydra:member']))
+        })
+        .catch(e => {
+          dispatch(bulkAssignmentTasksFailure(e))
+        })
     } else {
       dispatch(assignTaskRequest())
 
@@ -336,7 +340,7 @@ export function bulkAssignmentTasks(tasks, username) {
       username,
       tasks: tasks.map(t => t['@id']),
     })
-      .then((responses) => dispatch(bulkAssignmentTasksSuccess(responses)))
+      .then((res) => dispatch(bulkAssignmentTasksSuccess(res['hydra:member'])))
       .catch(e => dispatch(bulkAssignmentTasksFailure(e)))
   }
 }
