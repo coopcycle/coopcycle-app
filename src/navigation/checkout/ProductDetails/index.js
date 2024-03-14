@@ -1,21 +1,21 @@
 import _ from 'lodash';
-import {Divider, SectionList} from 'native-base';
-import React, {useMemo, useRef, useState} from 'react';
-import {useTranslation} from 'react-i18next';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {useDispatch} from 'react-redux';
+import { Divider, SectionList } from 'native-base';
+import React, { useMemo, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { useDispatch } from 'react-redux';
 import ItemSeparator from '../../../components/ItemSeparator';
-import {addItemV2} from '../../../redux/Checkout/actions';
-import {formatPrice} from '../../../utils/formatting';
-import {isAdditionalOption} from '../../../utils/product';
+import { addItemV2 } from '../../../redux/Checkout/actions';
+import { formatPrice } from '../../../utils/formatting';
+import { isAdditionalOption } from '../../../utils/product';
 import FooterButton from '../components/FooterButton';
-import {OptionHeader} from './OptionHeader';
-import {OptionValue} from './OptionValue';
-import {OptionsSectionHeader} from './OptionsSectionHeader';
-import {ProductImage} from './ProductImage';
-import {ProductInfo} from './ProductInfo';
+import { OptionHeader } from './OptionHeader';
+import { OptionValue } from './OptionValue';
+import { OptionsSectionHeader } from './OptionsSectionHeader';
+import { ProductImage } from './ProductImage';
+import { ProductInfo } from './ProductInfo';
 import useProductOptionsBuilder from './ProductOptionsBuilder';
-import {ProductQuantity} from './ProductQuantity';
+import { ProductQuantity } from './ProductQuantity';
 
 const LIST_SECTION_QUANTITY = 'quantity';
 const LIST_SECTION_OPTIONS_HEADER = 'options-header';
@@ -39,7 +39,7 @@ export default props => {
 
   const list = useRef();
 
-  const {t} = useTranslation();
+  const { t } = useTranslation();
 
   const dispatch = useDispatch();
 
@@ -53,11 +53,11 @@ export default props => {
 
   // render static elements as section items (not as section headers)
   // to avoid this issue: https://github.com/facebook/react-native/issues/38248
-  const data = [{type: LIST_SECTION_QUANTITY, data: ['static-item']}]
+  const data = [{ type: LIST_SECTION_QUANTITY, data: ['static-item'] }]
     .concat(
       shouldRenderOptions
         ? [
-            {type: LIST_SECTION_OPTIONS_HEADER, data: ['static-item']},
+            { type: LIST_SECTION_OPTIONS_HEADER, data: ['static-item'] },
             ...menuSections,
           ]
         : [],
@@ -129,13 +129,13 @@ export default props => {
     const restaurant = props.route.params?.restaurant;
 
     dispatch(addItemV2(product, quantity, restaurant, selectedOptions));
-    props.navigation.navigate('CheckoutRestaurant', {restaurant});
+    props.navigation.navigate('CheckoutRestaurant', { restaurant });
   };
 
   return (
-    <SafeAreaView style={{flex: 1}} edges={['bottom']}>
+    <SafeAreaView style={{ flex: 1 }} edges={['bottom']}>
       <SectionList
-        style={{flex: 1}}
+        style={{ flex: 1 }}
         ref={list}
         sections={data}
         keyExtractor={(item, index) => index}
@@ -147,14 +147,14 @@ export default props => {
             <ProductInfo product={product} />
           </>
         )}
-        renderSectionHeader={({section}) => {
+        renderSectionHeader={({ section }) => {
           if (section.type === LIST_SECTION_OPTION) {
             return <OptionHeader option={section} />;
           } else {
             return null;
           }
         }}
-        renderItem={({item, section, index}) => {
+        renderItem={({ item, section, index }) => {
           if (section.type === LIST_SECTION_QUANTITY) {
             return (
               <>
