@@ -9,7 +9,10 @@ import { formatPriceWithCode } from './formatting'
 
 const CODEPAGE = 'auto'
 
-export function encodeForPrinter(order) {
+// Hotfix x VS × encoding
+const fixMultiplySymbol = (text) => text.replace('×', 'x')
+
+export function encodeForPrinter(order, sunmi = false) {
   const maxChars = 32
 
   let pickupLineDate = '';
@@ -27,10 +30,30 @@ export function encodeForPrinter(order) {
 
   const hr = ''.padEnd(maxChars, '-')
 
-  let encoder = new EscPosEncoder()
+  let options = {}
+
+  if (sunmi) {
+    options = {
+      ...options,
+      codepageMapping: {
+        'cp437': 0x00,
+      }
+    }
+  }
+
+  let encoder = new EscPosEncoder(options)
+
   encoder
     .initialize()
     .codepage(CODEPAGE)
+
+  if (sunmi) {
+    encoder
+      .raw([ 0x1c, 0x2e ])
+      .raw([ 0x1b, 0x74, 0x00 ])
+  }
+
+  encoder
     .align('center')
     .height(2)
 
@@ -76,15 +99,13 @@ export function encodeForPrinter(order) {
 
     if (item.adjustments.hasOwnProperty('menu_item_modifier')) {
       item.adjustments.menu_item_modifier.forEach((adjustment) => {
-        encoder.line(`- ${adjustment.label}`)
+        encoder.line(`- ${fixMultiplySymbol(adjustment.label)}`)
       })
     }
 
     if (item.adjustments.hasOwnProperty('reusable_packaging')) {
       item.adjustments.reusable_packaging.forEach((adjustment) => {
-        // Hotfix x VS × encoding
-        const labelWithEncodingFix = adjustment.label.replace('×', 'x')
-        encoder.line(`- ${labelWithEncodingFix}`)
+        encoder.line(`- ${fixMultiplySymbol(adjustment.label)}`)
       })
     }
 
