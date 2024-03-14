@@ -1,15 +1,13 @@
-import React, { Component } from 'react'
-import { Platform, StyleSheet, TouchableOpacity, View } from 'react-native'
-import { Center, ChevronDownIcon, Heading, Icon, Text } from 'native-base'
-import { withTranslation } from 'react-i18next'
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+import {Center, ChevronDownIcon, Text} from 'native-base';
+import React from 'react';
+import {withTranslation} from 'react-i18next';
+import {Platform, StyleSheet, View} from 'react-native';
 
-import { primaryColor, whiteColor } from '../styles/common';
-import { TouchableNativeFeedback } from 'react-native-gesture-handler';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
+import {TouchableNativeFeedback} from 'react-native-gesture-handler';
+import {primaryColor, whiteColor} from '../styles/common';
 
-const textInputContainerHeight = 54
+const textInputContainerHeight = 54;
 
 const styles = StyleSheet.create({
   container: {
@@ -32,26 +30,31 @@ const styles = StyleSheet.create({
       },
     }),
   },
-})
+});
 
 function RestaurantSearch(props) {
-
-  const navigation = useNavigation()
+  const navigation = useNavigation();
 
   return (
-    <View style={ [ styles.container, { width: props.width } ] }>
-      <TouchableNativeFeedback onPress={() => {
-        navigation.navigate('AccountAddresses', { action: 'search' })
-      }}>
+    <View style={[styles.container, {width: props.width}]}>
+      <TouchableNativeFeedback
+        onPress={() => {
+          navigation.navigate('AccountAddresses', {action: 'search'});
+        }}>
         <Center px="2">
-          <Text fontSize={'md'} numberOfLines={ 1 } style={{
-            color: whiteColor,
-          }}>{ props.defaultValue?.streetAddress }</Text>
-          <ChevronDownIcon color={ whiteColor }/>
+          <Text
+            fontSize={'md'}
+            numberOfLines={1}
+            style={{
+              color: whiteColor,
+            }}>
+            {props.defaultValue?.streetAddress}
+          </Text>
+          <ChevronDownIcon color={whiteColor} />
         </Center>
       </TouchableNativeFeedback>
     </View>
-  )
+  );
 }
 
-export default withTranslation()(RestaurantSearch)
+export default withTranslation()(RestaurantSearch);
