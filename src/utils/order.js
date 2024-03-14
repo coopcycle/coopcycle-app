@@ -35,6 +35,8 @@ export function encodeForPrinter(order, sunmi = false) {
   if (sunmi) {
     options = {
       ...options,
+      // Avoid "[Error: CP437 encoding is not support]" error
+      // This is because the rule() & table() methods use a hardcoded codepage
       codepageMapping: {
         'cp437': 0x00,
       }
@@ -48,6 +50,26 @@ export function encodeForPrinter(order, sunmi = false) {
     .codepage(CODEPAGE)
 
   if (sunmi) {
+    // https://file.cdn.sunmi.com/SUNMIDOCS/SunmiPrinter-Developer-Docs-1-1.pdf
+    //
+    // The device settings can be adjusted in accordance to the needs of different countries or other requirements
+    // to enable the printers to identify the data stream of the content to be printed.
+    //
+    // To print CP437, please send:
+    // 0x1C 0x2E ——set it as the single-byte encoding type
+    // 0x1B 0x74 0x00 ——set it as the CP437 of the single-byte code page
+    //
+    // To print CP866, please send:
+    // 0x1C 0x2E ——set it as the single-byte encoding type
+    // 0x1B 0x74 0x11 ——set it as the CP866 of the single-byte code page
+    //
+    // To print traditional characters, please send:
+    // 0x1C 0x26 ——set it as the multiple-byte encoding type
+    // 0x1C 0x43 0x01—— set it as the BIG5 encoding of the multiple-byte code page
+    //
+    // To print UTF-8 encoding content (all Unicode character sets are supportedif usingUTF-8 encoding, and all content can be printed), please send:
+    // 0x1C 0x26 ——set it as the multiple-byte encoding type
+    // 0x1C 0x43 0xFF—— Set it as the UTF-8 encoding of the multiple-type codepage
     encoder
       .raw([ 0x1c, 0x2e ])
       .raw([ 0x1b, 0x74, 0x00 ])
