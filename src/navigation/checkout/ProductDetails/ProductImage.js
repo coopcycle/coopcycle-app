@@ -1,12 +1,12 @@
-import _ from 'lodash'
-import { Image } from 'native-base'
-import React from 'react'
+import _ from 'lodash';
+import { Image } from 'native-base';
+import React from 'react';
 
 export const ProductImage = ({ product }) => {
   const image16x9 =
     product.images &&
     Array.isArray(product.images) &&
-    _.find(product.images, image => image.ratio === '16:9')
+    _.find(product.images, image => image.ratio === '16:9');
 
   return image16x9 ? (
     <Image
@@ -16,5 +16,5 @@ export const ProductImage = ({ product }) => {
       source={{ uri: image16x9.url }}
       alt="Product"
     />
-  ) : null
-}
+  ) : null;
+};

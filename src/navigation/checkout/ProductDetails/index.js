@@ -21,6 +21,15 @@ const LIST_SECTION_QUANTITY = 'quantity';
 const LIST_SECTION_OPTIONS_HEADER = 'options-header';
 const LIST_SECTION_OPTION = 'option';
 
+function ListHeaderComponent({ product }) {
+  return (
+    <>
+      <ProductImage product={product} />
+      <ProductInfo product={product} />
+    </>
+  );
+}
+
 export default props => {
   const product = props.route.params?.product;
   const productOptions =
@@ -141,12 +150,7 @@ export default props => {
         keyExtractor={(item, index) => index}
         ItemSeparatorComponent={ItemSeparator}
         stickySectionHeadersEnabled={true}
-        ListHeaderComponent={() => (
-          <>
-            <ProductImage product={product} />
-            <ProductInfo product={product} />
-          </>
-        )}
+        ListHeaderComponent={<ListHeaderComponent product={product} />}
         renderSectionHeader={({ section }) => {
           if (section.type === LIST_SECTION_OPTION) {
             return <OptionHeader option={section} />;

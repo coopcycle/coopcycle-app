@@ -1,10 +1,10 @@
-import { useTranslation } from 'react-i18next'
-import { Flex, Heading, Icon, Pressable, Text } from 'native-base'
-import FontAwesome from 'react-native-vector-icons/FontAwesome'
-import React from 'react'
+import { Flex, Heading, Icon, Pressable, Text } from 'native-base';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 export const ProductQuantity = ({ quantity, setQuantity }) => {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   return (
     <Flex
@@ -19,7 +19,7 @@ export const ProductQuantity = ({ quantity, setQuantity }) => {
           disabled={quantity <= 1}
           p="2"
           onPress={() => {
-            setQuantity(quantity - 1)
+            setQuantity(quantity - 1);
           }}>
           <Icon
             as={FontAwesome}
@@ -34,7 +34,7 @@ export const ProductQuantity = ({ quantity, setQuantity }) => {
         <Pressable
           p="2"
           onPress={() => {
-            setQuantity(quantity + 1)
+            setQuantity(quantity + 1);
           }}>
           <Icon
             as={FontAwesome}
@@ -45,5 +45,5 @@ export const ProductQuantity = ({ quantity, setQuantity }) => {
         </Pressable>
       </Flex>
     </Flex>
-  )
-}
+  );
+};

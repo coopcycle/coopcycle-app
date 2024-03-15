@@ -1,17 +1,17 @@
-import { Box, Heading, Text } from 'native-base'
+import { Box, Heading, Text } from 'native-base';
+import React from 'react';
 import {
   AllergenList,
   RestrictedDietList,
   ZeroWasteBadge,
-} from '../../../components/MenuBadges'
-import { formatPrice } from '../../../utils/formatting'
-import React from 'react'
+} from '../../../components/MenuBadges';
+import { formatPrice } from '../../../utils/formatting';
 
 export const ProductInfo = ({ product }) => {
   const hasBadges =
     !!product.suitableForDiet ||
     !!product.allergens ||
-    !!product.reusablePackagingEnabled
+    !!product.reusablePackagingEnabled;
 
   return (
     <Box p="3">
@@ -32,5 +32,5 @@ export const ProductInfo = ({ product }) => {
         product.offers.price,
       )}`}</Text>
     </Box>
-  )
-}
+  );
+};
