@@ -45,7 +45,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: 4,
-    flexShrink1: 1,
     flex: 1,
     overflow: 'hidden',
   },

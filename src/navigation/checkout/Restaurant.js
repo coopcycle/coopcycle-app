@@ -11,8 +11,8 @@ import {
   Text,
   VStack,
 } from 'native-base';
-import React, {useMemo, useRef, useState} from 'react';
-import {withTranslation} from 'react-i18next';
+import React, { useMemo, useRef, useState } from 'react';
+import { withTranslation } from 'react-i18next';
 import {
   Dimensions,
   Pressable,
@@ -20,15 +20,15 @@ import {
   View,
   useColorScheme,
 } from 'react-native';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 
 import CartFooter from './components/CartFooter';
 import ExpiredSessionModal from './components/ExpiredSessionModal';
 import LoopeatModal from './components/LoopeatModal';
 
-import {phonecall} from 'react-native-communications';
+import { phonecall } from 'react-native-communications';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {useQuery} from 'react-query';
+import { useQuery } from 'react-query';
 import BottomModal from '../../components/BottomModal';
 import DangerAlert from '../../components/DangerAlert';
 import Markdown from '../../components/Markdown';
@@ -67,25 +67,26 @@ const LoadingPhantom = props => (
 );
 
 function Restaurant(props) {
-  const {navigate} = props.navigation;
+  const { navigate } = props.navigation;
   const colorScheme = useColorScheme();
   const [infoModal, setInfoModal] = useState(false);
-  const {showFooter, httpClient, restaurant, openingHoursSpecification} = props;
+  const { showFooter, httpClient, restaurant, openingHoursSpecification } =
+    props;
   const sectionListRef = useRef(null);
 
   const [activeSection, setActiveSection] = useState(null);
-  const viewabilityConfig = useRef({viewAreaCoveragePercentThreshold: 50});
-  const handleViewableItemsChanged = useRef(({viewableItems}) => {
+  const viewabilityConfig = useRef({ viewAreaCoveragePercentThreshold: 50 });
+  const handleViewableItemsChanged = useRef(({ viewableItems }) => {
     if (viewableItems.length > 0) {
       setActiveSection(viewableItems[0].index);
     }
   });
   const screenHeight = Dimensions.get('window').height;
 
-  const {isLoading, isError, data} = useQuery(
+  const { isLoading, isError, data } = useQuery(
     ['menus', restaurant.hasMenu],
     async () => {
-      return await httpClient.get(restaurant.hasMenu, {}, {anonymous: true});
+      return await httpClient.get(restaurant.hasMenu, {}, { anonymous: true });
     },
   );
 
@@ -180,7 +181,6 @@ function Restaurant(props) {
         <Text
           style={{
             fontSize: 18,
-            // fontWeight: 'bold',
             marginHorizontal: 16,
             marginTop: 48,
             marginBottom: 8,
@@ -205,7 +205,7 @@ function Restaurant(props) {
   );
 
   const renderEmptyFooter = () => (
-    <View style={{height: screenHeight * 0.4}}></View>
+    <View style={{ height: screenHeight * 0.4 }}></View>
   );
 
   const renderFunctions = [
@@ -216,7 +216,7 @@ function Restaurant(props) {
     renderEmptyFooter,
   ];
 
-  const listRenderItem = ({item, index}) => {
+  const listRenderItem = ({ item, index }) => {
     return renderFunctions[index] ? renderFunctions[index]() : null;
   };
 
@@ -228,7 +228,10 @@ function Restaurant(props) {
       }}>
       <FlatList
         stickyHeaderIndices={[2]}
-        data={Array.from({length: renderFunctions.length}, (_, index) => index)}
+        data={Array.from(
+          { length: renderFunctions.length },
+          (_, index) => index,
+        )}
         renderItem={listRenderItem}
         ref={sectionListRef}
         viewabilityConfig={viewabilityConfig.current}
@@ -236,7 +239,7 @@ function Restaurant(props) {
       />
       {showFooter ? (
         <CartFooter
-          onSubmit={() => navigate('CheckoutSummary', {restaurant})}
+          onSubmit={() => navigate('CheckoutSummary', { restaurant })}
           cart={props.cart}
           initLoading={props.cartLoading}
           testID="cartSubmit"
@@ -299,7 +302,7 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(state, ownProps) {
-  const {restaurant, openingHoursSpecification} =
+  const { restaurant, openingHoursSpecification } =
     selectRestaurantWithHours(state);
   const cartContainer = selectCartWithHours(state);
   const cart = cartContainer?.cart;
