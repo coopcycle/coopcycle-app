@@ -1,12 +1,12 @@
-import { Badge, Icon, Text, View } from 'native-base'
-import { StyleSheet, TouchableOpacity } from 'react-native'
-import { formatPrice } from '../../../utils/formatting'
-import FontAwesome from 'react-native-vector-icons/FontAwesome'
-import React from 'react'
+import { Badge, Icon, Text, View, useColorModeValue } from 'native-base';
+import React from 'react';
+import { StyleSheet, TouchableOpacity } from 'react-native';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { formatPrice } from '../../../utils/formatting';
 import {
   getPriceForOptionValue,
   isAdditionalOption,
-} from '../../../utils/product'
+} from '../../../utils/product';
 
 export const OptionValue = ({
   option,
@@ -18,10 +18,10 @@ export const OptionValue = ({
   increment,
   decrement,
 }) => {
-  const selected = contains(optionValue)
-  const quantity = getQuantity(optionValue)
+  const selected = contains(optionValue);
+  const quantity = getQuantity(optionValue);
 
-  const price = getPriceForOptionValue(optionValue)
+  const price = getPriceForOptionValue(optionValue);
 
   if (isAdditionalOption(option)) {
     return (
@@ -33,7 +33,7 @@ export const OptionValue = ({
         onPressDecrement={() => decrement(optionValue)}
         quantity={quantity}
       />
-    )
+    );
   } else {
     return (
       <SimpleOption
@@ -44,9 +44,9 @@ export const OptionValue = ({
         selected={selected}
         onPress={() => add(optionValue)}
       />
-    )
+    );
   }
-}
+};
 
 const RangeOption = ({
   name,
@@ -93,7 +93,7 @@ const RangeOption = ({
       </View>
     </View>
   </View>
-)
+);
 
 const SimpleOption = ({
   name,
@@ -103,40 +103,50 @@ const SimpleOption = ({
   index,
   sectionIndex,
 }) => {
+  const backgroundColor = useColorModeValue('white', '#1a1a1a');
   return (
     <TouchableOpacity
-      style={styles.item}
+      style={[styles.item, { backgroundColor }]}
       onPress={onPress}
       testID={`productOptions:${sectionIndex}:${index}`}>
-      <View
-        style={{
-          width: '66.6666%',
-          justifyContent: 'space-between',
-          padding: 15,
-        }}>
-        <Text>{name}</Text>
-        {price > 0 ? <Text note>{`${formatPrice(price)}`}</Text> : null}
-      </View>
-      <View style={{ width: '33.3333%' }}>
-        <View
-          style={{
-            flex: 1,
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'flex-end',
-            paddingRight: 15,
-          }}>
-          {selected && <Icon as={FontAwesome} name="check-square" />}
+      {
+        <View style={styles.radioButtonWrapper}>
+          <View
+            style={[
+              styles.radioButton,
+              { backgroundColor: selected ? 'black' : 'transparent' },
+            ]}
+          />
         </View>
-      </View>
+      }
+      <Text style={styles.itemText}>{name}</Text>
+      {price > 0 ? <Text note>+ {`${formatPrice(price)}`}</Text> : null}
     </TouchableOpacity>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   item: {
-    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
+    paddingHorizontal: 24,
+    paddingVertical: 8,
+    width: '100%',
+    gap: 8,
   },
-})
+  itemText: {
+    flex: 1,
+  },
+  radioButtonWrapper: {
+    height: 16,
+    aspectRatio: 1,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: 'black',
+    padding: 3,
+  },
+  radioButton: {
+    height: '100%',
+    borderRadius: 12,
+  },
+});
