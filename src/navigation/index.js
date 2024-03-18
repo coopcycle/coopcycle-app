@@ -40,6 +40,7 @@ import CourierTasksPage from './courier/TasksPage'
 import CourierTaskListPage from './courier/TaskListPage'
 import CourierSettings from './courier/Settings'
 import CourierSettingsTags from './courier/Tags'
+import CourierDate from './courier/Date'
 
 import CheckoutProductDetails from './checkout/ProductDetails'
 import CheckoutLogin from './checkout/Login'
@@ -100,6 +101,7 @@ export default {
   CourierTaskListPage,
   CourierSettings,
   CourierSettingsTags,
+  CourierDate,
   CheckoutPaymentMethodCard,
   CheckoutPaymentMethodCashOnDelivery,
   CheckoutLoopeat,

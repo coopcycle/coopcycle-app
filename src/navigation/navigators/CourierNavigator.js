@@ -99,6 +99,14 @@ const MainNavigator = () => (
         headerShown: false,
       }}
     />
+    <MainStack.Screen
+      name="CourierDate"
+      component={ screens.CourierDate }
+      options={{
+        title: i18n.t('DISPATCH_DATE'),
+        presentation: 'modal',
+      }}
+    />
   </MainStack.Navigator>
 )
 

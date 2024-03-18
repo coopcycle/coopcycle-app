@@ -43,6 +43,9 @@ export const SET_KEEP_AWAKE = 'SET_KEEP_AWAKE'
 export const SET_POLYLINE_ON = 'SET_POLYLINE_ON'
 export const SET_SIGNATURE_SCREEN_FIRST = 'SET_SIGNATURE_SCREEN_FIRST'
 
+export const CHANGE_DATE = 'CHANGE_DATE'
+
+
 /*
  * Action Creators
  */
@@ -75,6 +78,8 @@ const _setTasksChangedAlertSound = createAction(SET_TASKS_CHANGED_ALERT_SOUND)
 export const setSignatureScreenFirst = createAction(SET_SIGNATURE_SCREEN_FIRST)
 export const setKeepAwake = createAction(SET_KEEP_AWAKE)
 export const setPolylineOn = createAction(SET_POLYLINE_ON)
+
+export const changeDate = createAction(CHANGE_DATE)
 
 /**
  * Side-effects
