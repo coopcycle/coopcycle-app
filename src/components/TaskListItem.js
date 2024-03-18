@@ -12,6 +12,7 @@ import {
   doingIconName,
   doneIconName,
   failedIconName,
+  incidentIconName,
   taskTypeIconName,
 } from '../navigation/task/styles/common'
 import TaskTitle from './TaskTitle'
@@ -193,7 +194,7 @@ class TaskListItem extends Component {
               this.props.onPressRight()
             }}>
             <SwipeButton
-              iconName={ this.props.swipeOutRightIconName || failedIconName }
+              iconName={ this.props.swipeOutRightIconName || incidentIconName }
               width={ buttonWidth } />
           </SwipeButtonContainer>
         </View>
