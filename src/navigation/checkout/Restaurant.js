@@ -27,6 +27,7 @@ import ExpiredSessionModal from './components/ExpiredSessionModal';
 import LoopeatModal from './components/LoopeatModal';
 
 import { phonecall } from 'react-native-communications';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useQuery } from 'react-query';
 import BottomModal from '../../components/BottomModal';
@@ -223,8 +224,8 @@ function Restaurant(props) {
   return (
     <View
       style={{
-        display: 'flex',
         width: '100%',
+        maxHeight: '100%',
       }}>
       <FlatList
         stickyHeaderIndices={[2]}
@@ -238,13 +239,15 @@ function Restaurant(props) {
         onViewableItemsChanged={handleViewableItemsChanged.current}
       />
       {showFooter ? (
-        <CartFooter
-          onSubmit={() => navigate('CheckoutSummary', { restaurant })}
-          cart={props.cart}
-          initLoading={props.cartLoading}
-          testID="cartSubmit"
-          disabled={isLoading}
-        />
+        <SafeAreaView edges={['bottom']}>
+          <CartFooter
+            onSubmit={() => navigate('CheckoutSummary', { restaurant })}
+            cart={props.cart}
+            initLoading={props.cartLoading}
+            testID="cartSubmit"
+            disabled={isLoading}
+          />
+        </SafeAreaView>
       ) : null}
 
       <BottomModal
