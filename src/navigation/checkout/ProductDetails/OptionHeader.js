@@ -1,40 +1,58 @@
-import React from 'react'
-import { useColorScheme } from 'react-native'
-import { useTranslation } from 'react-i18next'
-import { Box, Flex, Heading, Text } from 'native-base'
+import { Heading, Text, View, useColorModeValue } from 'native-base';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { StyleSheet } from 'react-native';
 import {
   isMandatoryOption,
   parseOptionValuesRange,
-} from '../../../utils/product'
+} from '../../../utils/product';
+
+const styles = StyleSheet.create({
+  header: {
+    padding: 24,
+    paddingBottom: 6,
+  },
+  title: {
+    fontSize: 16,
+    flexDirection: 'row',
+  },
+  mandatory: {
+    fontWeight: 'normal',
+    fontSize: 10,
+  },
+  range: {
+    fontSize: 12,
+  },
+});
 
 export const OptionHeader = ({ option }) => {
-  const colorScheme = useColorScheme()
-  const { t } = useTranslation()
+  const backgroundColor = useColorModeValue('white', '#1a1a1a');
+  const { t } = useTranslation();
 
   return (
-    <Box p="3" bg={colorScheme === 'dark' ? 'black' : 'white'}>
-      <Flex direction="row" alignItems="center">
-        <Heading size="sm">{option.name}</Heading>
+    <View style={[styles.header, { backgroundColor }]}>
+      <Heading style={styles.title}>
+        {option.name}{' '}
         {isMandatoryOption(option) && (
-          <Text sub ml={1}>
+          <Text style={styles.mandatory} ml={1}>
             ({t('OPTION_REQUIRED')})
           </Text>
         )}
-      </Flex>
+      </Heading>
       {option.valuesRange ? (
         <ValuesRange valuesRange={option.valuesRange} />
       ) : null}
-    </Box>
-  )
-}
+    </View>
+  );
+};
 
 const ValuesRange = ({ valuesRange }) => {
-  const { t } = useTranslation()
-  const [ min, max ] = parseOptionValuesRange(valuesRange)
+  const { t } = useTranslation();
+  const [min, max] = parseOptionValuesRange(valuesRange);
 
   return (
-    <Text sub>
+    <Text style={styles.range}>
       {t('CHECKOUT_PRODUCT_OPTIONS_CHOICES_BETWEEN', { min, max })}
     </Text>
-  )
-}
+  );
+};
