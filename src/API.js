@@ -345,6 +345,10 @@ Client.prototype.cloneWithToken = function(token) {
 }
 
 Client.prototype.execUploadTask = function(uploadTasks, retry = 0) {
+  if (_.isUndefined(uploadTasks)) {
+    return Promise.resolve()
+  }
+
   if (_.isArray(uploadTasks)) {
     return Promise.all(uploadTasks.map(uploadTask => this.execUploadTask(uploadTask)))
   }
