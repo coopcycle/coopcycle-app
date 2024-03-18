@@ -57,7 +57,7 @@ export const selectInitialRouteName = createSelector(
         return 'CourierNav'
       }
 
-      if (user.hasRole('ROLE_DISPATCHER')) {
+      if (user.hasRole('ROLE_DISPATCHER') || user.hasRole('ROLE_ADMIN')) {
         return 'DispatchNav'
       }
 
