@@ -2452,10 +2452,9 @@
   dependencies:
     "@hapi/hoek" "^9.0.0"
 
-"@heasy/react-native-sunmi-printer@^1.8.1":
+"@heasy/react-native-sunmi-printer@git+https://git@github.com/alexsegura/react-native-sunmi-printer.git#fix-android-14":
   version "1.8.1"
-  resolved "https://registry.yarnpkg.com/@heasy/react-native-sunmi-printer/-/react-native-sunmi-printer-1.8.1.tgz#681a838906754322adc347ddd331423141958197"
-  integrity sha512-6sdA7tGsQxU1y0gPOG1Bvi3wdyYjUhoT6naspWg1cX7DS0hhSRO5oGCle1tId2TiEV9DdHTFTHE5R5Fbn7R6sQ==
+  resolved "git+https://git@github.com/alexsegura/react-native-sunmi-printer.git#408ce5e0cc767073e5cf9b2f9a0f257c03484e2a"
 
 "@humanwhocodes/config-array@^0.11.6":
   version "0.11.7"
