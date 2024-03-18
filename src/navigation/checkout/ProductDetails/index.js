@@ -1,10 +1,8 @@
 import _ from 'lodash';
-import { Divider, SectionList } from 'native-base';
+import { Divider, SectionList, View } from 'native-base';
 import React, { useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch } from 'react-redux';
-import ItemSeparator from '../../../components/ItemSeparator';
 import { addItemV2 } from '../../../redux/Checkout/actions';
 import { formatPrice } from '../../../utils/formatting';
 import { isAdditionalOption } from '../../../utils/product';
@@ -142,13 +140,12 @@ export default props => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1 }} edges={['bottom']}>
+    <View style={{ flex: 1 }} edges={['bottom']}>
       <SectionList
         style={{ flex: 1 }}
         ref={list}
         sections={data}
         keyExtractor={(item, index) => index}
-        ItemSeparatorComponent={ItemSeparator}
         stickySectionHeadersEnabled={true}
         ListHeaderComponent={<ListHeaderComponent product={product} />}
         renderSectionHeader={({ section }) => {
@@ -197,6 +194,6 @@ export default props => {
           onPress={() => _onPressAddToCart()}
         />
       ) : null}
-    </SafeAreaView>
+    </View>
   );
 };
