@@ -164,9 +164,7 @@ export const RestaurantCard = ({restaurant}) => {
               {i18n.t('NOT_AVAILABLE_ATM')}
             </Text>
           </View>
-        ) : (
-          ''
-        )}
+        ) : null }
         <View style={[styles.logoWrapper, {backgroundColor}]}>
           <Image
             style={styles.logo}
