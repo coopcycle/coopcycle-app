@@ -43,7 +43,7 @@ import {
   selectSignatures,
 } from '../../redux/Courier'
 import { greenColor, yellowColor } from '../../styles/common'
-import { doneIconName, failedIconName } from './styles/common'
+import { doneIconName, incidentIconName } from './styles/common'
 import ModalContent from '../../components/ModalContent'
 import { Picker } from '../../components/Picker'
 import { useQuery } from 'react-query';
@@ -237,7 +237,7 @@ class CompleteTask extends Component {
       this.props.route.params?.success : true
 
 
-    const buttonIconName = success ? doneIconName : failedIconName
+    const buttonIconName = success ? doneIconName : incidentIconName
     const footerBgColor = success ? greenColor : yellowColor
     const footerText = success ? this.props.t('VALIDATE') : this.props.t('MARK_FAILED')
     const onPress = success ? this.markTaskDone.bind(this) : this.markTaskFailed.bind(this)
