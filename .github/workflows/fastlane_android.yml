@@ -128,7 +128,9 @@ jobs:
       - name: Install RubyGems
         working-directory: android/
         run: bundle install
-      - run: yarn install
+      - run: |
+            yarn set version latest --yarn-path
+            yarn install
       - name: Run Fastlane
         working-directory: android/
         run: bundle exec fastlane deploy
@@ -230,6 +232,6 @@ jobs:
           bucket: coopcycle-ci
       - uses: actions/upload-artifact@v3
         with:
-          name: maestro-error-rapport 
+          name: maestro-error-rapport
           path: ~/.maestro/tests/
 
