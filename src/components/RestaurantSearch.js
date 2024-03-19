@@ -1,11 +1,11 @@
-import {Center, ChevronDownIcon, Text} from 'native-base';
+import {Center, ChevronDownIcon, Text, useColorModeValue} from 'native-base';
 import React from 'react';
 import {withTranslation} from 'react-i18next';
 import {Platform, StyleSheet, View} from 'react-native';
 
 import {useNavigation} from '@react-navigation/native';
 import {TouchableNativeFeedback} from 'react-native-gesture-handler';
-import {primaryColor, whiteColor} from '../styles/common';
+import {whiteColor} from '../styles/common';
 
 const textInputContainerHeight = 54;
 
@@ -13,7 +13,6 @@ const styles = StyleSheet.create({
   container: {
     position: 'absolute',
     //TODO: color
-    backgroundColor: primaryColor,
     ...Platform.select({
       android: {
         flex: 1,
@@ -34,9 +33,10 @@ const styles = StyleSheet.create({
 
 function RestaurantSearch(props) {
   const navigation = useNavigation();
+  const backgroundColor = useColorModeValue('#fff', '#201E1E');
 
   return (
-    <View style={[styles.container, {width: props.width}]}>
+    <View style={[styles.container, {width: props.width}, {backgroundColor}]}>
       <TouchableNativeFeedback
         onPress={() => {
           navigation.navigate('AccountAddresses', {action: 'search'});
