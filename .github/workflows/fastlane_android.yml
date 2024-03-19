@@ -129,7 +129,7 @@ jobs:
         working-directory: android/
         run: bundle install
       - run: yarn set version latest --yarn-path
-      - run: yarn install
+      - run: yarn install --no-progress --network-timeout 100000
       - name: Run Fastlane
         working-directory: android/
         run: bundle exec fastlane deploy
