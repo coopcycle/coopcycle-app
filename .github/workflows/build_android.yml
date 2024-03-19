@@ -22,6 +22,10 @@ on:
         description: 'Build Kooglof app'
         required: true
         type: boolean
+      build_robinfood:
+        description: 'Build RobinFood app'
+        required: true
+        type: boolean
 jobs:
   default:
     if: ${{ inputs.build_official }}
@@ -82,6 +86,20 @@ jobs:
       app_name: Kooglof
       primary_color: "#b4434e"
       package_name: fr.coopcycle.kooglof
+      keystore_key_alias: instance
+      keystore_key_password_secret: SIGNING_KEY_PASSWORD_INSTANCE
+      google_play_track: production
+    secrets: inherit
+  robinfood:
+    if: ${{ inputs.build_robinfood }}
+    name: Build RobinFood app
+    uses: ./.github/workflows/fastlane_android.yml
+    with:
+      instance: robinfood
+      instance_url: https://robinfood.coopcycle.org
+      app_name: Robin Food
+      primary_color: "#ff0000"
+      package_name: fr.coopcycle.robinfood
       keystore_key_alias: instance
       keystore_key_password_secret: SIGNING_KEY_PASSWORD_INSTANCE
       google_play_track: production
