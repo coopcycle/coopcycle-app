@@ -169,7 +169,7 @@ export default props => {
           };
           if (section.type === LIST_SECTION_QUANTITY) {
             return (
-              <View style={style}>
+              <View style={[style, { paddingBottom: 0 }]}>
                 <ProductQuantity
                   quantity={quantity}
                   setQuantity={setQuantity}

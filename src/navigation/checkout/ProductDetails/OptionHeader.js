@@ -16,6 +16,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     flexDirection: 'row',
     marginTop: 8,
+    lineHeight: 24,
   },
   mandatory: {
     fontWeight: 'normal',
