@@ -6,6 +6,7 @@ import {
   getPriceForOptionValue,
   isAdditionalOption,
 } from '../../../utils/product';
+import Range from './Range';
 
 const styles = StyleSheet.create({
   item: {
@@ -28,35 +29,11 @@ const styles = StyleSheet.create({
     height: '100%',
     borderRadius: 12,
   },
-  button: {
-    alignItems: 'center',
-    aspectRatio: 1,
-    width: 24,
-    borderRadius: 4,
-    justifyContent: 'center',
+  price: {
+    fontSize: 12,
   },
   rangeTextWrapper: {
     flex: 1,
-  },
-  rangeButtonWrapper: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: 2,
-  },
-  quantityWrapper: {
-    justifyContent: 'center',
-    fontSize: 12,
-    aspectRatio: 1,
-    // backgroundColor: 'lightgrey',
-    width: 24,
-  },
-  quantity: {
-    textAlign: 'center',
-    fontSize: 12,
-  },
-  price: {
-    fontSize: 12,
   },
 });
 
@@ -109,33 +86,19 @@ const RangeOption = ({
   quantity,
 }) => {
   const backgroundColor = useColorModeValue('white', '#1a1a1a');
-  const buttonBackgroundColor = useColorModeValue(
-    'rgba(0, 0, 0, .1)',
-    'rgba(255, 255,255, .1)',
-  );
+
   const priceColor = useColorModeValue(
     'rgba(0, 0, 0, .6)',
     'rgba(255, 255,255, .6)',
   );
   return (
     <View style={[styles.item, { gap: 16, backgroundColor }]}>
-      <View style={styles.rangeButtonWrapper}>
-        <TouchableOpacity
-          style={[styles.button, { backgroundColor: buttonBackgroundColor }]}
-          onPress={onPressDecrement}>
-          <Text style={quantity === 0 && { color: buttonBackgroundColor }}>
-            -
-          </Text>
-        </TouchableOpacity>
-        <View style={styles.quantityWrapper}>
-          <Text style={styles.quantity}>{quantity}</Text>
-        </View>
-        <TouchableOpacity
-          style={[styles.button, { backgroundColor: buttonBackgroundColor }]}
-          onPress={onPressIncrement}>
-          <Text>+</Text>
-        </TouchableOpacity>
-      </View>
+      <Range
+        onPress={onPress}
+        onPressIncrement={onPressIncrement}
+        onPressDecrement={onPressDecrement}
+        quantity={quantity}
+      />
       <TouchableOpacity style={styles.rangeTextWrapper} onPress={onPress}>
         <Text>{name}</Text>
         {price > 0 ? (
