@@ -27,7 +27,7 @@ function ListHeaderComponent({ product }) {
   return (
     <>
       <ProductImage product={product} />
-      <View style={{ padding: PADDING, backgroundColor }}>
+      <View style={{ padding: PADDING, paddingBottom: 0, backgroundColor }}>
         <ProductInfo product={product} />
       </View>
     </>
