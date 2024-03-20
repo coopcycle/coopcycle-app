@@ -9,12 +9,13 @@ import {
 
 const styles = StyleSheet.create({
   header: {
-    padding: 24,
-    paddingBottom: 6,
+    paddingHorizontal: 24,
+    paddingVertical: 6,
   },
   title: {
     fontSize: 16,
     flexDirection: 'row',
+    marginTop: 8,
   },
   mandatory: {
     fontWeight: 'normal',

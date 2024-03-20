@@ -1,8 +1,9 @@
 import _ from 'lodash';
-import { Divider, SectionList, View } from 'native-base';
+import { SectionList, View, useColorModeValue } from 'native-base';
 import React, { useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
+import ItemSeparator from '../../../components/ItemSeparator';
 import { addItemV2 } from '../../../redux/Checkout/actions';
 import { formatPrice } from '../../../utils/formatting';
 import { isAdditionalOption } from '../../../utils/product';
@@ -43,6 +44,7 @@ export default props => {
     increment,
     decrement,
   } = useProductOptionsBuilder(productOptions);
+  const backgroundColor = useColorModeValue('white', '#1a1a1a');
 
   const list = useRef();
 
@@ -147,6 +149,11 @@ export default props => {
         sections={data}
         keyExtractor={(item, index) => index}
         stickySectionHeadersEnabled={true}
+        renderSectionFooter={() => (
+          <View style={{ paddingTop: 24, backgroundColor }}>
+            <ItemSeparator />
+          </View>
+        )}
         ListHeaderComponent={<ListHeaderComponent product={product} />}
         renderSectionHeader={({ section }) => {
           if (section.type === LIST_SECTION_OPTION) {
@@ -156,31 +163,39 @@ export default props => {
           }
         }}
         renderItem={({ item, section, index }) => {
+          const style = {
+            padding: 24,
+            backgroundColor,
+          };
           if (section.type === LIST_SECTION_QUANTITY) {
             return (
-              <>
-                <Divider my="2" />
+              <View style={style}>
                 <ProductQuantity
                   quantity={quantity}
                   setQuantity={setQuantity}
                 />
-                <Divider my="2" />
-              </>
+              </View>
             );
           } else if (section.type === LIST_SECTION_OPTIONS_HEADER) {
-            return <OptionsSectionHeader options={productOptions} />;
+            return (
+              <View style={[style, { paddingBottom: 0 }]}>
+                <OptionsSectionHeader options={productOptions} />
+              </View>
+            );
           } else if (section.type === LIST_SECTION_OPTION) {
             return (
-              <OptionValue
-                option={section}
-                optionValue={item}
-                index={index}
-                contains={contains}
-                getQuantity={getQuantity}
-                add={addOptionValue}
-                increment={increment}
-                decrement={decrement}
-              />
+              <View style={[style, { paddingVertical: 8 }]}>
+                <OptionValue
+                  option={section}
+                  optionValue={item}
+                  index={index}
+                  contains={contains}
+                  getQuantity={getQuantity}
+                  add={addOptionValue}
+                  increment={increment}
+                  decrement={decrement}
+                />
+              </View>
             );
           } else {
             return null;
