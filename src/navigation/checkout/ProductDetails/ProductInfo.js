@@ -1,4 +1,4 @@
-import { Box, Heading, Text } from 'native-base';
+import { Box, Heading, Text, View } from 'native-base';
 import React from 'react';
 import {
   AllergenList,
@@ -14,7 +14,7 @@ export const ProductInfo = ({ product }) => {
     !!product.reusablePackagingEnabled;
 
   return (
-    <Box p="3">
+    <View>
       <Heading size="lg">{product.name}</Heading>
       {product.description && product.description.length > 0 && (
         <Text mt="2">{product.description}</Text>
@@ -31,6 +31,6 @@ export const ProductInfo = ({ product }) => {
       <Text mt="2" bold fontSize="xl">{`${formatPrice(
         product.offers.price,
       )}`}</Text>
-    </Box>
+    </View>
   );
 };

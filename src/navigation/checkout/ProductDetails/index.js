@@ -20,11 +20,16 @@ const LIST_SECTION_QUANTITY = 'quantity';
 const LIST_SECTION_OPTIONS_HEADER = 'options-header';
 const LIST_SECTION_OPTION = 'option';
 
+const PADDING = 24;
+
 function ListHeaderComponent({ product }) {
+  const backgroundColor = useColorModeValue('white', '#1a1a1a');
   return (
     <>
       <ProductImage product={product} />
-      <ProductInfo product={product} />
+      <View style={{ padding: PADDING, backgroundColor }}>
+        <ProductInfo product={product} />
+      </View>
     </>
   );
 }
@@ -150,7 +155,7 @@ export default props => {
         keyExtractor={(item, index) => index}
         stickySectionHeadersEnabled={true}
         renderSectionFooter={() => (
-          <View style={{ paddingTop: 24, backgroundColor }}>
+          <View style={{ paddingTop: PADDING, backgroundColor }}>
             <ItemSeparator />
           </View>
         )}
@@ -164,7 +169,7 @@ export default props => {
         }}
         renderItem={({ item, section, index }) => {
           const style = {
-            padding: 24,
+            padding: PADDING,
             backgroundColor,
           };
           if (section.type === LIST_SECTION_QUANTITY) {
