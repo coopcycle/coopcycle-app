@@ -147,8 +147,10 @@ jobs:
           SUPPLY_TRACK: ${{ inputs.google_play_track }}
           COOPCYCLE_APP_NAME: ${{ inputs.app_name }}
       - name: Move official build
+        if: '!cancelled() && ${{ inputs.build_official }}'
         run: mv android/app/build/outputs/bundle/**/*.aab release.aab
       - name: Move instance build
+        if: '!cancelled() && !${{ inputs.build_official }}'
         run:  mv android/app/build/outputs/bundle/instanceRelease/*.aab release.aab
       - name: Upload aab artifact
         if: '!cancelled()'
