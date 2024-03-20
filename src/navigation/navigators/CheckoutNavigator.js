@@ -242,8 +242,11 @@ const DefaultNav = () => (
     <RootStack.Screen
       name="CheckoutProductDetails"
       component={ screens.CheckoutProductDetails }
-      options={{
-        title: '',
+      options={({ _, route }) => {
+        const productName = route.params?.product.name || '';
+        return {
+          title: productName,
+        };
       }}
     />
     <RootStack.Screen
