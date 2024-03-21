@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@babel/helper-get-function-arity": "^7.16.7",
-    "@heasy/react-native-sunmi-printer": "git+https://git@github.com/alexsegura/react-native-sunmi-printer.git#fix-android-14",
+    "@heasy/react-native-sunmi-printer": "git+https://git@github.com/alexsegura/react-native-sunmi-printer.git#fix-context-compat",
     "@invertase/react-native-apple-authentication": "^2.2.2",
     "@mapbox/polyline": "^1.1.1",
     "@mitsuharu/react-native-sunmi-printer-library": "git+https://git@github.com/coopcycle/react-native-sunmi-printer-library.git#hotfix-rn-0.73",
