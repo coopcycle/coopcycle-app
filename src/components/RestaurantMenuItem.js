@@ -47,6 +47,8 @@ const styles = StyleSheet.create({
     gap: 4,
     flex: 1,
     overflow: 'hidden',
+    alignContent: 'flex-end',
+    alignItems: 'flex-end',
   },
   priceWrapper: {
     flex: 0,
