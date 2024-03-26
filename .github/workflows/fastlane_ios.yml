@@ -45,6 +45,8 @@ jobs:
       #   with:
       #     # version: '1.12'
       #     podfile-path: ios/Podfile.lock
+      - name: Install dependencies to compile node-canvas
+        run: brew install pkg-config cairo pango libpng jpeg giflib librsvg pixman
       - name: Install dependencies
         run: yarn install --no-progress --network-timeout 100000 --network-concurrency 1
       - name: Cache Pods
