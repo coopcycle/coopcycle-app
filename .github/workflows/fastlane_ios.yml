@@ -57,7 +57,7 @@ jobs:
           key: pods-${{ hashFiles('**/Podfile.lock') }}
       - name: Install Pods
         working-directory: ios/
-        run: bundle exec pod install
+        run: USE_FRAMEWORKS=static NO_FLIPPER=1 bundle exec pod install
       - name: Generate icons
         if: ${{ inputs.instance != '' }}
         working-directory: ios/
