@@ -81,11 +81,11 @@ jobs:
       - name: Sets env vars for build
         run: |
           echo "FASTLANE_CMD=build" >> $GITHUB_ENV
-        if: ${{ inputs.deploy_google_play == 'false' }}
+        if: ${{ ! inputs.deploy_google_play }}
       - name: Sets env vars for deploy
         run: |
           echo "FASTLANE_CMD=deploy" >> $GITHUB_ENV
-        if: ${{ inputs.deploy_google_play == 'true' }}
+        if: ${{ inputs.deploy_google_play }}
       - name: Create .env file
         env:
           SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
