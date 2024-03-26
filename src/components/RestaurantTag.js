@@ -1,13 +1,8 @@
-import {Image, StyleSheet, View} from 'react-native';
 import {Text, useColorModeValue} from 'native-base';
-import {TimingBadge} from '../navigation/checkout/components/RestaurantBadges';
-import {RestaurantBadge} from './RestaurantBadge';
+import {StyleSheet, View} from 'react-native';
 
 export const RestaurantTag = ({text}) => {
-  const backgroundColor = useColorModeValue(
-    'rgba(0,0,0,.05)',
-    'rgba(255,255,255,.05)',
-  );
+  const backgroundColor = useColorModeValue('rgba(0,0,0,.05)', '#353030');
 
   const styles = StyleSheet.create({
     tag: {

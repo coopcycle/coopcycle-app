@@ -3,6 +3,7 @@
 const doingIconName = 'play'
 const doneIconName = 'check'
 const failedIconName = 'remove'
+const incidentIconName = 'exclamation-triangle'
 
 const pickupIconName = 'cube'
 const dropOffIconName = 'arrow-down'
@@ -13,6 +14,7 @@ export {
   doingIconName,
   doneIconName,
   failedIconName,
+  incidentIconName,
   pickupIconName,
   dropOffIconName,
   taskTypeIconName,

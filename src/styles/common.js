@@ -11,6 +11,7 @@ let primaryColor = Config.PRIMARY_COLOR || '#e4022d',
     greenColor = '#2ECC71',
     redColor = '#E74C3C',
     orangeColor = '#d35400',
+    yellowColor = '#F1C40F',
     fontTitleName = 'Raleway-Regular',
     dateSelectHeaderHeight = 40,
     headerFontSize = 18
@@ -27,5 +28,6 @@ export {
   dateSelectHeaderHeight,
   greenColor,
   redColor,
+  yellowColor,
   fontTitleName,
 }

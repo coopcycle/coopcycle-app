@@ -7,11 +7,12 @@ import moment from 'moment'
 import { withTranslation } from 'react-i18next'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
-import { greenColor, redColor } from '../styles/common'
+import { greenColor, redColor, yellowColor } from '../styles/common'
 import {
   doingIconName,
   doneIconName,
   failedIconName,
+  incidentIconName,
   taskTypeIconName,
 } from '../navigation/task/styles/common'
 import TaskTitle from './TaskTitle'
@@ -80,7 +81,7 @@ const TaskStatusIcon = ({ task }) => {
 const SwipeButtonContainer = props => {
 
   const { onPress, left, right, children, ...otherProps } = props
-  const backgroundColor = left ? greenColor : redColor
+  const backgroundColor = left ? greenColor : yellowColor
   const alignItems = left ? 'flex-start' : 'flex-end'
 
   return (
@@ -193,7 +194,7 @@ class TaskListItem extends Component {
               this.props.onPressRight()
             }}>
             <SwipeButton
-              iconName={ this.props.swipeOutRightIconName || failedIconName }
+              iconName={ this.props.swipeOutRightIconName || incidentIconName }
               width={ buttonWidth } />
           </SwipeButtonContainer>
         </View>

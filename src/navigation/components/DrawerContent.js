@@ -171,7 +171,7 @@ class DrawerContent extends Component {
                   label={this.props.t('TASKS')}
                   onPress={() => this.props.navigation.navigate('CourierNav')}/>
               )}
-              {(isAuthenticated && user.hasRole('ROLE_DISPATCHER')) && (
+              {(isAuthenticated && (user.hasRole('ROLE_DISPATCHER') || user.hasRole('ROLE_ADMIN'))) && (
                 <DrawerItem
                   label={this.props.t('DISPATCH')}
                   onPress={() => this.props.navigation.navigate('DispatchNav')}/>

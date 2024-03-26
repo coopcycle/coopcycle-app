@@ -1,12 +1,12 @@
-import {Image, StyleSheet, View} from 'react-native';
 import {Text, useColorModeValue} from 'native-base';
+import React from 'react';
+import {Image, StyleSheet, View} from 'react-native';
+import Svg, {Path} from 'react-native-svg';
+import i18n from '../i18n';
 import {TimingBadge} from '../navigation/checkout/components/RestaurantBadges';
+import {getRestaurantIsAvailable} from '../utils/checkout';
 import {RestaurantBadge} from './RestaurantBadge';
 import {RestaurantTag} from './RestaurantTag';
-import React from 'react';
-import {getRestaurantIsAvailable} from '../utils/checkout';
-import i18n from '../i18n';
-import Svg, {Path} from 'react-native-svg';
 
 const logoSize = 64;
 
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
   closedIcon: {
     height: 32,
     width: 32,
-    stroke: "white"
+    stroke: 'white',
   },
   logoWrapper: {
     borderRadius: 16,
@@ -164,9 +164,7 @@ export const RestaurantCard = ({restaurant}) => {
               {i18n.t('NOT_AVAILABLE_ATM')}
             </Text>
           </View>
-        ) : (
-          ''
-        )}
+        ) : null }
         <View style={[styles.logoWrapper, {backgroundColor}]}>
           <Image
             style={styles.logo}

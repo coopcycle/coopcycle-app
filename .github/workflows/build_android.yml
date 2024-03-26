@@ -2,6 +2,11 @@ name: Build Android
 on:
   workflow_dispatch:
     inputs:
+      deploy_google_play:
+        description: 'Deploy to Google Play'
+        required: true
+        type: boolean
+        default: true
       build_official:
         description: 'Build official app'
         required: true
@@ -22,6 +27,10 @@ on:
         description: 'Build Kooglof app'
         required: true
         type: boolean
+      build_robinfood:
+        description: 'Build RobinFood app'
+        required: true
+        type: boolean
 jobs:
   default:
     if: ${{ inputs.build_official }}
@@ -30,6 +39,7 @@ jobs:
     secrets: inherit
     with:
       google_play_track: production
+      deploy_google_play: ${{ inputs.deploy_google_play }}
   naofood:
     if: ${{ inputs.build_naofood }}
     name: Build Naofood app
@@ -43,6 +53,7 @@ jobs:
       keystore_key_alias: naofood
       keystore_key_password_secret: SIGNING_KEY_PASSWORD_NAOFOOD
       google_play_track: production
+      deploy_google_play: ${{ inputs.deploy_google_play }}
     secrets: inherit
   zampate:
     if: ${{ inputs.build_zampate }}
@@ -57,6 +68,7 @@ jobs:
       keystore_key_alias: instance
       keystore_key_password_secret: SIGNING_KEY_PASSWORD_INSTANCE
       google_play_track: beta
+      deploy_google_play: ${{ inputs.deploy_google_play }}
     secrets: inherit
   coursiers_stephanois:
     if: ${{ inputs.build_coursiers_stephanois }}
@@ -71,6 +83,7 @@ jobs:
       keystore_key_alias: instance
       keystore_key_password_secret: SIGNING_KEY_PASSWORD_INSTANCE
       google_play_track: beta
+      deploy_google_play: ${{ inputs.deploy_google_play }}
     secrets: inherit
   kooglof:
     if: ${{ inputs.build_kooglof }}
@@ -85,4 +98,20 @@ jobs:
       keystore_key_alias: instance
       keystore_key_password_secret: SIGNING_KEY_PASSWORD_INSTANCE
       google_play_track: production
+      deploy_google_play: ${{ inputs.deploy_google_play }}
+    secrets: inherit
+  robinfood:
+    if: ${{ inputs.build_robinfood }}
+    name: Build RobinFood app
+    uses: ./.github/workflows/fastlane_android.yml
+    with:
+      instance: robinfood
+      instance_url: https://robinfood.coopcycle.org
+      app_name: Robin Food
+      primary_color: "#ff0000"
+      package_name: fr.coopcycle.robinfood
+      keystore_key_alias: instance
+      keystore_key_password_secret: SIGNING_KEY_PASSWORD_INSTANCE
+      google_play_track: production
+      deploy_google_play: ${{ inputs.deploy_google_play }}
     secrets: inherit

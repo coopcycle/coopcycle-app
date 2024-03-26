@@ -9,7 +9,10 @@ import { formatPriceWithCode } from './formatting'
 
 const CODEPAGE = 'auto'
 
-export function encodeForPrinter(order) {
+// Hotfix x VS × encoding
+const fixMultiplySymbol = (text) => text.replace('×', 'x')
+
+export function encodeForPrinter(order, sunmi = false) {
   const maxChars = 32
 
   let pickupLineDate = '';
@@ -27,10 +30,52 @@ export function encodeForPrinter(order) {
 
   const hr = ''.padEnd(maxChars, '-')
 
-  let encoder = new EscPosEncoder()
+  let options = {}
+
+  if (sunmi) {
+    options = {
+      ...options,
+      // Avoid "[Error: CP437 encoding is not support]" error
+      // This is because the rule() & table() methods use a hardcoded codepage
+      codepageMapping: {
+        'cp437': 0x00,
+      }
+    }
+  }
+
+  let encoder = new EscPosEncoder(options)
+
   encoder
     .initialize()
     .codepage(CODEPAGE)
+
+  if (sunmi) {
+    // https://file.cdn.sunmi.com/SUNMIDOCS/SunmiPrinter-Developer-Docs-1-1.pdf
+    //
+    // The device settings can be adjusted in accordance to the needs of different countries or other requirements
+    // to enable the printers to identify the data stream of the content to be printed.
+    //
+    // To print CP437, please send:
+    // 0x1C 0x2E ——set it as the single-byte encoding type
+    // 0x1B 0x74 0x00 ——set it as the CP437 of the single-byte code page
+    //
+    // To print CP866, please send:
+    // 0x1C 0x2E ——set it as the single-byte encoding type
+    // 0x1B 0x74 0x11 ——set it as the CP866 of the single-byte code page
+    //
+    // To print traditional characters, please send:
+    // 0x1C 0x26 ——set it as the multiple-byte encoding type
+    // 0x1C 0x43 0x01—— set it as the BIG5 encoding of the multiple-byte code page
+    //
+    // To print UTF-8 encoding content (all Unicode character sets are supportedif usingUTF-8 encoding, and all content can be printed), please send:
+    // 0x1C 0x26 ——set it as the multiple-byte encoding type
+    // 0x1C 0x43 0xFF—— Set it as the UTF-8 encoding of the multiple-type codepage
+    encoder
+      .raw([ 0x1c, 0x2e ])
+      .raw([ 0x1b, 0x74, 0x00 ])
+  }
+
+  encoder
     .align('center')
     .height(2)
 
@@ -76,15 +121,13 @@ export function encodeForPrinter(order) {
 
     if (item.adjustments.hasOwnProperty('menu_item_modifier')) {
       item.adjustments.menu_item_modifier.forEach((adjustment) => {
-        encoder.line(`- ${adjustment.label}`)
+        encoder.line(`- ${fixMultiplySymbol(adjustment.label)}`)
       })
     }
 
     if (item.adjustments.hasOwnProperty('reusable_packaging')) {
       item.adjustments.reusable_packaging.forEach((adjustment) => {
-        // Hotfix x VS × encoding
-        const labelWithEncodingFix = adjustment.label.replace('×', 'x')
-        encoder.line(`- ${labelWithEncodingFix}`)
+        encoder.line(`- ${fixMultiplySymbol(adjustment.label)}`)
       })
     }
 

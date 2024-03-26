@@ -5,7 +5,6 @@ import { connect } from 'react-redux'
 import TaskList from '../../components/TaskList'
 import TapToRefresh from '../../components/TapToRefresh'
 import DateSelectHeader from '../../components/DateSelectHeader'
-import { dateSelectHeaderHeight } from '../../styles/common'
 import { withTranslation } from 'react-i18next'
 import {
   loadTasks,
@@ -24,7 +23,6 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    paddingTop: dateSelectHeaderHeight,
   },
   wrapper: {
     paddingHorizontal: 15,
@@ -56,6 +54,8 @@ class TaskListPage extends Component {
 
     return (
       <View style={ containerStyle }>
+        <DateSelectHeader
+          navigate={this.props.navigation.navigate}/>
         {
           tasks.length > 0 &&
           <TaskList
@@ -77,10 +77,6 @@ class TaskListPage extends Component {
             <TapToRefresh
               onPress={ () => this.props.loadTasks(selectedDate) } />
         }
-        <DateSelectHeader
-          buttonsEnabled={true}
-          toDate={ date => this.props.loadTasks(date) }
-          selectedDate={selectedDate}/>
       </View>
     )
   }

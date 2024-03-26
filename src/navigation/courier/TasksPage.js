@@ -5,7 +5,6 @@ import RNPinScreen from 'react-native-pin-screen'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 
-import { dateSelectHeaderHeight } from '../../styles/common'
 import DateSelectHeader from '../../components/DateSelectHeader'
 import TasksMapView from '../../components/TasksMapView'
 import {
@@ -92,18 +91,16 @@ class TasksPage extends Component {
 
   render() {
 
-    const { tasks, selectedDate } = this.props
+    const { tasks } = this.props
 
     return (
       <View style={ styles.container }>
+        <DateSelectHeader
+          navigate={this.props.navigation.navigate}/>
         <TasksMapView
           mapCenter={ this.props.mapCenter }
           tasks={ tasks }
           onMarkerCalloutPress={ task => navigateToTask(this.props.navigation, this.props.route, task, tasks) } />
-        <DateSelectHeader
-          buttonsEnabled={true}
-          toDate={this.refreshTasks}
-          selectedDate={selectedDate}/>
       </View>
     )
   }
@@ -111,7 +108,6 @@ class TasksPage extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: dateSelectHeaderHeight,
     flex: 1,
   },
 })

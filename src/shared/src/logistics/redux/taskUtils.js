@@ -43,6 +43,24 @@ export function groupLinkedTasks(tasks) {
   })
 }
 
+export function withLinkedTasks(task, allTasks) {
+
+  const groups = groupLinkedTasks(allTasks)
+  const newTasks = []
+
+  if (Object.prototype.hasOwnProperty.call(groups, task['@id']) ) {
+    groups[task['@id']].forEach(taskId => {
+      const t = _.find(allTasks, t => t['@id'] === taskId)
+      newTasks.push(t)
+    })
+  } else {
+    // task with no linked tasks
+    newTasks.push(task)
+  }
+
+ return newTasks
+}
+
 export function mapToColor(tasks) {
   return mapValues(groupLinkedTasks(tasks), taskIds => colorHash.hex(taskIds.join(' ')))
 }

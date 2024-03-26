@@ -37,6 +37,10 @@ on:
         type: string
         required: false
         default: "master"
+      deploy_google_play:
+        type: boolean
+        required: false
+        default: true
 jobs:
   FASTLANE:
     name: Release Android app with Fastlane
@@ -45,9 +49,10 @@ jobs:
       - uses: actions/checkout@v3
         with:
           ref: ${{ inputs.branch }}
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
           node-version: '20.x'
+          cache: 'yarn'
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.1'
@@ -73,6 +78,14 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-metro-cache-${{ github.base_ref }}
             ${{ runner.os }}-metro-cache-
+      - name: Sets env vars for build
+        run: |
+          echo "FASTLANE_CMD=build" >> $GITHUB_ENV
+        if: ${{ ! inputs.deploy_google_play }}
+      - name: Sets env vars for deploy
+        run: |
+          echo "FASTLANE_CMD=deploy" >> $GITHUB_ENV
+        if: ${{ inputs.deploy_google_play }}
       - name: Create .env file
         env:
           SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
@@ -128,10 +141,13 @@ jobs:
       - name: Install RubyGems
         working-directory: android/
         run: bundle install
-      - run: yarn install
+      - name: Install latest yarn binary
+        run: yarn set version latest --yarn-path
+      - name: yarn install
+        run: yarn install --no-progress --network-timeout 100000 --network-concurrency 1
       - name: Run Fastlane
         working-directory: android/
-        run: bundle exec fastlane build
+        run: bundle exec fastlane ${{env.FASTLANE_CMD}}
         env:
           ANDROID_STORE_FILE: ${{ steps.android_keystore.outputs.filePath }}
           ANDROID_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
@@ -142,8 +158,12 @@ jobs:
           SUPPLY_PACKAGE_NAME: ${{ inputs.package_name }}
           SUPPLY_TRACK: ${{ inputs.google_play_track }}
           COOPCYCLE_APP_NAME: ${{ inputs.app_name }}
-      - name: Move build
+      - name: Move official build
+        if: '!cancelled()'
         run: mv android/app/build/outputs/bundle/**/*.aab release.aab
+      - name: Move instance build
+        if: '!cancelled()'
+        run:  mv android/app/build/outputs/bundle/instanceRelease/*.aab release.aab
       - name: Upload aab artifact
         if: '!cancelled()'
         uses: actions/upload-artifact@v3
@@ -230,6 +250,6 @@ jobs:
           bucket: coopcycle-ci
       - uses: actions/upload-artifact@v3
         with:
-          name: maestro-error-rapport 
+          name: maestro-error-rapport
           path: ~/.maestro/tests/
 

@@ -9,7 +9,7 @@ import NavigationHolder from '../../NavigationHolder'
 
 import { pushNotification } from '../App/actions'
 import { encodeForPrinter } from '../../utils/order'
-import SunmiPrinter from '@heasy/react-native-sunmi-printer'
+import * as SunmiPrinterLibrary from '@mitsuharu/react-native-sunmi-printer-library'
 
 import i18n from '../../i18n'
 
@@ -616,9 +616,9 @@ export function printOrder(order) {
     try {
 
       if (isSunmiPrinter) {
-        await SunmiPrinter.printerInit()
-        SunmiPrinter.sendRAWData(
-          Buffer.from(encodeForPrinter(order)).toString('base64')
+        await SunmiPrinterLibrary.prepare()
+        await SunmiPrinterLibrary.sendRAWData(
+          Buffer.from(encodeForPrinter(order, true)).toString('base64')
         )
         return
       }

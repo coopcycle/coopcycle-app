@@ -11,6 +11,8 @@ import {
   createTaskListRequest,
   createTaskListSuccess,
 
+  selectAllTasks,
+
   selectSelectedDate,
 } from '../../coopcycle-frontend-js/logistics/redux'
 
@@ -21,6 +23,7 @@ import {
 } from '../Courier';
 
 import { isSameDate } from './utils';
+import { withLinkedTasks } from '../../shared/src/logistics/redux/taskUtils'
 
 /*
  * Action Types
@@ -300,11 +303,28 @@ export function assignTask(task, username) {
 
     const httpClient = getState().app.httpClient
 
-    dispatch(assignTaskRequest())
+    const linkedTasks = withLinkedTasks(task, selectAllTasks(getState()))
 
-    return httpClient.put(`${task['@id']}/assign`, { username })
-      .then(res => dispatch(assignTaskSuccess(res)))
-      .catch(e => dispatch(assignTaskFailure(e)))
+    if (linkedTasks.length > 1) {
+      dispatch(bulkAssignmentTasksRequest())
+
+      return httpClient.put('/api/tasks/assign', {
+        username,
+        tasks: linkedTasks.map(t => t['@id']),
+      })
+        .then((res) => {
+          dispatch(bulkAssignmentTasksSuccess(res['hydra:member']))
+        })
+        .catch(e => {
+          dispatch(bulkAssignmentTasksFailure(e))
+        })
+    } else {
+      dispatch(assignTaskRequest())
+
+      return httpClient.put(`${task['@id']}/assign`, { username })
+        .then(res => dispatch(assignTaskSuccess(res)))
+        .catch(e => dispatch(assignTaskFailure(e)))
+    }
   }
 }
 
@@ -320,7 +340,7 @@ export function bulkAssignmentTasks(tasks, username) {
       username,
       tasks: tasks.map(t => t['@id']),
     })
-      .then((responses) => dispatch(bulkAssignmentTasksSuccess(responses)))
+      .then((res) => dispatch(bulkAssignmentTasksSuccess(res['hydra:member'])))
       .catch(e => dispatch(bulkAssignmentTasksFailure(e)))
   }
 }
