@@ -161,9 +161,6 @@ jobs:
       - name: Move official build
         if: '!cancelled()'
         run: mv android/app/build/outputs/bundle/**/*.aab release.aab
-      - name: Move instance build
-        if: '!cancelled()'
-        run:  mv android/app/build/outputs/bundle/instanceRelease/*.aab release.aab
       - name: Upload aab artifact
         if: '!cancelled()'
         uses: actions/upload-artifact@v3
