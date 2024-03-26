@@ -2452,9 +2452,9 @@
   dependencies:
     "@hapi/hoek" "^9.0.0"
 
-"@heasy/react-native-sunmi-printer@git+https://git@github.com/alexsegura/react-native-sunmi-printer.git#fix-context-compat":
+"@heasy/react-native-sunmi-printer@git+https://github.com/Surile/react-native-sunmi-printer.git#666f6f76ce737faf7a500b88a08ad10da68c5967":
   version "1.8.1"
-  resolved "git+https://git@github.com/alexsegura/react-native-sunmi-printer.git#05b4210a4e2020290c286c7f658b6d8db4d993a1"
+  resolved "git+https://github.com/Surile/react-native-sunmi-printer.git#666f6f76ce737faf7a500b88a08ad10da68c5967"
 
 "@humanwhocodes/config-array@^0.11.6":
   version "0.11.7"
