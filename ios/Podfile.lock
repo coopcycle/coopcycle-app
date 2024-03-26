@@ -1100,6 +1100,10 @@ PODS:
     - React-Core
   - react-native-safe-area-context (4.9.0):
     - React-Core
+  - react-native-sunmi-printer-library (1.0.1):
+    - glog
+    - RCT-Folly (= 2022.05.16.00)
+    - React-Core
   - react-native-version-number (0.3.6):
     - React
   - react-native-webview (13.8.1):
@@ -1443,6 +1447,7 @@ DEPENDENCIES:
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
   - react-native-pager-view (from `../node_modules/react-native-pager-view`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
+  - "react-native-sunmi-printer-library (from `../node_modules/@mitsuharu/react-native-sunmi-printer-library`)"
   - react-native-version-number (from `../node_modules/react-native-version-number`)
   - react-native-webview (from `../node_modules/react-native-webview`)
   - React-nativeconfig (from `../node_modules/react-native/ReactCommon`)
@@ -1626,6 +1631,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-pager-view"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
+  react-native-sunmi-printer-library:
+    :path: "../node_modules/@mitsuharu/react-native-sunmi-printer-library"
   react-native-version-number:
     :path: "../node_modules/react-native-version-number"
   react-native-webview:
@@ -1795,6 +1802,7 @@ SPEC CHECKSUMS:
   react-native-netinfo: bdb108d340cdb41875c9ced535977cac6d2ff321
   react-native-pager-view: 3796df305c59c352a26811ead0f6ea78acac1886
   react-native-safe-area-context: b97eb6f9e3b7f437806c2ce5983f479f8eb5de4b
+  react-native-sunmi-printer-library: 837b33bbceff05c8be9c86b8b6f3166ecf6d8b2a
   react-native-version-number: b415bbec6a13f2df62bf978e85bc0d699462f37f
   react-native-webview: 64c51a60460f8473be97b1959da347893fc9a1fd
   React-nativeconfig: 78e2b14c0ee479449845b67bbe103343257cbcc0
