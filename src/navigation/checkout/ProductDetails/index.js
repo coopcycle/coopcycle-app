@@ -1,36 +1,38 @@
 import _ from 'lodash';
-import {Divider, SectionList} from 'native-base';
-import React, {useMemo, useRef, useState} from 'react';
-import {useTranslation} from 'react-i18next';
-import {StyleSheet, View} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {useDispatch} from 'react-redux';
+import { SectionList, View, useColorModeValue } from 'native-base';
+import React, { useMemo, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useDispatch } from 'react-redux';
 import ItemSeparator from '../../../components/ItemSeparator';
-import {addItemV2} from '../../../redux/Checkout/actions';
-import {formatPrice} from '../../../utils/formatting';
-import {isAdditionalOption} from '../../../utils/product';
+import { addItemV2 } from '../../../redux/Checkout/actions';
+import { formatPrice } from '../../../utils/formatting';
+import { isAdditionalOption } from '../../../utils/product';
 import FooterButton from '../components/FooterButton';
-import {OptionHeader} from './OptionHeader';
-import {OptionValue} from './OptionValue';
-import {OptionsSectionHeader} from './OptionsSectionHeader';
-import {ProductImage} from './ProductImage';
-import {ProductInfo} from './ProductInfo';
+import { OptionHeader } from './OptionHeader';
+import { OptionValue } from './OptionValue';
+import { OptionsSectionHeader } from './OptionsSectionHeader';
+import { ProductImage } from './ProductImage';
+import { ProductInfo } from './ProductInfo';
 import useProductOptionsBuilder from './ProductOptionsBuilder';
-import {ProductQuantity} from './ProductQuantity';
+import { ProductQuantity } from './ProductQuantity';
 
 const LIST_SECTION_QUANTITY = 'quantity';
 const LIST_SECTION_OPTIONS_HEADER = 'options-header';
 const LIST_SECTION_OPTION = 'option';
 
-const styles = StyleSheet.create({
-  ProductImage: {
-    width: '100%',
-    height: 150,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});
+const PADDING = 24;
+
+function ListHeaderComponent({ product }) {
+  const backgroundColor = useColorModeValue('white', '#1a1a1a');
+  return (
+    <>
+      <ProductImage product={product} />
+      <View style={{ padding: PADDING, paddingBottom: 0, backgroundColor }}>
+        <ProductInfo product={product} />
+      </View>
+    </>
+  );
+}
 
 export default props => {
   const product = props.route.params?.product;
@@ -47,10 +49,11 @@ export default props => {
     increment,
     decrement,
   } = useProductOptionsBuilder(productOptions);
+  const backgroundColor = useColorModeValue('white', '#1a1a1a');
 
   const list = useRef();
 
-  const {t} = useTranslation();
+  const { t } = useTranslation();
 
   const dispatch = useDispatch();
 
@@ -64,11 +67,11 @@ export default props => {
 
   // render static elements as section items (not as section headers)
   // to avoid this issue: https://github.com/facebook/react-native/issues/38248
-  const data = [{type: LIST_SECTION_QUANTITY, data: ['static-item']}]
+  const data = [{ type: LIST_SECTION_QUANTITY, data: ['static-item'] }]
     .concat(
       shouldRenderOptions
         ? [
-            {type: LIST_SECTION_OPTIONS_HEADER, data: ['static-item']},
+            { type: LIST_SECTION_OPTIONS_HEADER, data: ['static-item'] },
             ...menuSections,
           ]
         : [],
@@ -140,59 +143,64 @@ export default props => {
     const restaurant = props.route.params?.restaurant;
 
     dispatch(addItemV2(product, quantity, restaurant, selectedOptions));
-    props.navigation.navigate('CheckoutRestaurant', {restaurant});
+    props.navigation.navigate('CheckoutRestaurant', { restaurant });
   };
 
   return (
-    <SafeAreaView style={{flex: 1}} edges={['bottom']}>
+    <View style={{ flex: 1 }} edges={['bottom']}>
       <SectionList
-        style={{flex: 1}}
+        style={{ flex: 1 }}
         ref={list}
         sections={data}
         keyExtractor={(item, index) => index}
-        ItemSeparatorComponent={ItemSeparator}
         stickySectionHeadersEnabled={true}
-        ListHeaderComponent={() => (
-          <View style={styles.ProductHeader}>
-            <View style={styles.ProductImage}>
-              <ProductImage product={product} />
-            </View>
-            <ProductInfo product={product} />
+        renderSectionFooter={() => (
+          <View style={{ paddingTop: PADDING, backgroundColor }}>
+            <ItemSeparator />
           </View>
         )}
-        renderSectionHeader={({section}) => {
+        ListHeaderComponent={<ListHeaderComponent product={product} />}
+        renderSectionHeader={({ section }) => {
           if (section.type === LIST_SECTION_OPTION) {
             return <OptionHeader option={section} />;
           } else {
             return null;
           }
         }}
-        renderItem={({item, section, index}) => {
+        renderItem={({ item, section, index }) => {
+          const style = {
+            padding: PADDING,
+            backgroundColor,
+          };
           if (section.type === LIST_SECTION_QUANTITY) {
             return (
-              <>
-                <Divider my="2" />
+              <View style={[style, { paddingBottom: 0 }]}>
                 <ProductQuantity
                   quantity={quantity}
                   setQuantity={setQuantity}
                 />
-                <Divider my="2" />
-              </>
+              </View>
             );
           } else if (section.type === LIST_SECTION_OPTIONS_HEADER) {
-            return <OptionsSectionHeader options={productOptions} />;
+            return (
+              <View style={[style, { paddingBottom: 0 }]}>
+                <OptionsSectionHeader options={productOptions} />
+              </View>
+            );
           } else if (section.type === LIST_SECTION_OPTION) {
             return (
-              <OptionValue
-                option={section}
-                optionValue={item}
-                index={index}
-                contains={contains}
-                getQuantity={getQuantity}
-                add={addOptionValue}
-                increment={increment}
-                decrement={decrement}
-              />
+              <View style={[style, { paddingVertical: 8 }]}>
+                <OptionValue
+                  option={section}
+                  optionValue={item}
+                  index={index}
+                  contains={contains}
+                  getQuantity={getQuantity}
+                  add={addOptionValue}
+                  increment={increment}
+                  decrement={decrement}
+                />
+              </View>
             );
           } else {
             return null;
@@ -206,6 +214,6 @@ export default props => {
           onPress={() => _onPressAddToCart()}
         />
       ) : null}
-    </SafeAreaView>
+    </View>
   );
 };
