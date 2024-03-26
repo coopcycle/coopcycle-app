@@ -156,6 +156,8 @@
 		<key>UIColorName</key>
 		<string>LaunchScreenBackgroundColor</string>
 	</dict>
+	<key>UILaunchStoryboardName</key>
+	<string>None</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>
