@@ -13,7 +13,11 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20.x'
-      - run: yarn install
+          cache: 'yarn'
+      - name: Install latest yarn binary
+        run: yarn set version latest --yarn-path
+      - name: yarn install
+        run: yarn install --no-progress --network-timeout 100000 --network-concurrency 1
       - run: yarn lint
       - run: yarn i18n-lint
       - run: yarn test
