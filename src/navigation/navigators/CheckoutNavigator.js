@@ -144,7 +144,7 @@ const MainNavigator = () => (
             onPress={() => {
               navigation.setParams({edit: !(route.params?.edit || false)});
             }}>
-            <Text style={{color: 'white'}}>
+            <Text>
               {route.params?.edit || false
                 ? i18n.t('FINISHED')
                 : i18n.t('EDIT')}
