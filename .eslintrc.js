@@ -14,11 +14,6 @@ module.exports = {
       },
     ],
 
-    // Disable Prettier, because it conflicts with ESLint's "object-curly-spacing"
-    // https://github.com/prettier/prettier/issues/1871
-    // https://itnext.io/how-to-replace-prettier-by-eslint-rules-21574359e041
-    'prettier/prettier': 'off',
-
     // Stylistic rules are deprecated in eslint v8.54.0
     // and should be added via prettier or https://eslint.style/
   },
