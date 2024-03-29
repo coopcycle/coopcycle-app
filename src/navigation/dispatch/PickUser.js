@@ -39,7 +39,7 @@ class PickUser extends Component {
           ItemSeparatorComponent={ ItemSeparatorComponent } />
         { this.props.selfAssign && (
           <TouchableOpacity style={ styles.button } onPress={ () => this.props.onPress(this.props.user) }>
-            <Text style={{ color: '#ffffff' }}>{ this.props.t('DISPATCH_ASSIGN_TO_ME') }</Text>
+            <Text>{ this.props.t('DISPATCH_ASSIGN_TO_ME') }</Text>
           </TouchableOpacity>
         )}
       </View>
