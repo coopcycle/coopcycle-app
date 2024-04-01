@@ -1,38 +1,38 @@
-import React from 'react'
-import { StyleSheet, TouchableOpacity, View } from 'react-native'
-import { Icon, Text } from 'native-base'
-import FontAwesome from 'react-native-vector-icons/FontAwesome'
-import material from '../../../../native-base-theme/variables/material'
+import React from 'react';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Icon, Text } from 'native-base';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import material from '../../../../native-base-theme/variables/material';
 
 export default ({ heading, text, onPress, danger }) => {
-
-  const btnStyles = [styles.btn]
-  const btnTextHeadingStyles = [styles.btnTextHeading]
-  const btnTextNoteStyles = []
+  const btnStyles = [styles.btn];
+  const btnTextHeadingStyles = [styles.btnTextHeading];
+  const btnTextNoteStyles = [];
 
   if (danger) {
-    btnStyles.push(styles.btnDanger)
-    btnTextHeadingStyles.push(styles.textDanger)
-    btnTextNoteStyles.push(styles.textDanger)
+    btnStyles.push(styles.btnDanger);
+    btnTextHeadingStyles.push(styles.textDanger);
+    btnTextNoteStyles.push(styles.textDanger);
   }
 
-  const iconColor = danger ? material.brandDanger : '#ccc'
+  const iconColor = danger ? material.brandDanger : '#ccc';
 
   return (
-    <TouchableOpacity style={ btnStyles } onPress={ onPress }>
+    <TouchableOpacity style={btnStyles} onPress={onPress}>
       <View>
-        <Text style={ btnTextHeadingStyles }>
-          { heading }
-        </Text>
-        <Text note style={ btnTextNoteStyles }>
-          { text }
+        <Text style={btnTextHeadingStyles}>{heading}</Text>
+        <Text note style={btnTextNoteStyles}>
+          {text}
         </Text>
       </View>
-      <Icon as={ FontAwesome } style={{ color: iconColor, alignSelf: 'center' }} name="arrow-right" />
+      <Icon
+        as={FontAwesome}
+        style={{ color: iconColor, alignSelf: 'center' }}
+        name="arrow-right"
+      />
     </TouchableOpacity>
-  )
-
-}
+  );
+};
 
 const styles = StyleSheet.create({
   btn: {
@@ -55,4 +55,4 @@ const styles = StyleSheet.create({
   textDanger: {
     color: material.brandDanger,
   },
-})
+});
