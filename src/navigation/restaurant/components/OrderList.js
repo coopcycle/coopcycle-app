@@ -1,8 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { SectionList, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { HStack, Icon, Text } from 'native-base';
 import moment from 'moment';
-import { withTranslation } from 'react-i18next';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
@@ -11,6 +10,15 @@ import OrderNumber from '../../../components/OrderNumber';
 import ItemSeparatorComponent from '../../../components/ItemSeparator';
 import OrderFulfillmentMethodIcon from '../../../components/OrderFulfillmentMethodIcon';
 import { PaymentMethodInfo } from '../../../components/PaymentMethodInfo';
+import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
+import {
+  selectAcceptedOrders,
+  selectCancelledOrders,
+  selectFulfilledOrders,
+  selectNewOrders,
+  selectPickedOrders,
+} from '../../../redux/Restaurant/selectors';
 
 const styles = StyleSheet.create({
   item: {
@@ -30,12 +38,18 @@ const styles = StyleSheet.create({
   },
 });
 
-class OrderList extends Component {
-  renderItem(order) {
+export default function OrderList({ onItemClick }) {
+  const newOrders = useSelector(selectNewOrders);
+  const acceptedOrders = useSelector(selectAcceptedOrders);
+  const pickedOrders = useSelector(selectPickedOrders);
+  const cancelledOrders = useSelector(selectCancelledOrders);
+  const fulfilledOrders = useSelector(selectFulfilledOrders);
+
+  const { t } = useTranslation();
+
+  const renderItem = order => {
     return (
-      <TouchableOpacity
-        style={styles.item}
-        onPress={() => this.props.onItemClick(order)}>
+      <TouchableOpacity style={styles.item} onPress={() => onItemClick(order)}>
         <HStack alignItems="center">
           <View style={styles.number}>
             <OrderNumber order={order} />
@@ -54,63 +68,50 @@ class OrderList extends Component {
         <Icon as={Ionicons} style={{ color: '#ccc' }} name="arrow-forward" />
       </TouchableOpacity>
     );
-  }
+  };
 
-  render() {
-    const allOrders = [
-      ...this.props.newOrders,
-      ...this.props.acceptedOrders,
-      ...this.props.pickedOrders,
-      ...this.props.cancelledOrders,
-      ...this.props.fulfilledOrders,
-    ];
-
-    return (
-      <SectionList
-        data={allOrders}
-        keyExtractor={(item, index) => item['@id']}
-        sections={[
-          {
-            title: this.props.t('RESTAURANT_ORDER_LIST_NEW_ORDERS', {
-              count: this.props.newOrders.length,
-            }),
-            data: this.props.newOrders,
-          },
-          {
-            title: this.props.t('RESTAURANT_ORDER_LIST_ACCEPTED_ORDERS', {
-              count: this.props.acceptedOrders.length,
-            }),
-            data: this.props.acceptedOrders,
-          },
-          {
-            title: this.props.t('RESTAURANT_ORDER_LIST_PICKED_ORDERS', {
-              count: this.props.pickedOrders.length,
-            }),
-            data: this.props.pickedOrders,
-          },
-          {
-            title: this.props.t('RESTAURANT_ORDER_LIST_CANCELLED_ORDERS', {
-              count: this.props.cancelledOrders.length,
-            }),
-            data: this.props.cancelledOrders,
-          },
-          {
-            title: this.props.t('RESTAURANT_ORDER_LIST_FULFILLED_ORDERS', {
-              count: this.props.fulfilledOrders.length,
-            }),
-            data: this.props.fulfilledOrders,
-          },
-        ]}
-        renderSectionHeader={({ section: { title } }) => (
-          <View style={styles.sectionHeader}>
-            <Text style={{ fontWeight: 'bold' }}>{title}</Text>
-          </View>
-        )}
-        renderItem={({ item }) => this.renderItem(item)}
-        ItemSeparatorComponent={ItemSeparatorComponent}
-      />
-    );
-  }
+  return (
+    <SectionList
+      keyExtractor={(item, index) => item['@id']}
+      sections={[
+        {
+          title: t('RESTAURANT_ORDER_LIST_NEW_ORDERS', {
+            count: newOrders.length,
+          }),
+          data: newOrders,
+        },
+        {
+          title: t('RESTAURANT_ORDER_LIST_ACCEPTED_ORDERS', {
+            count: acceptedOrders.length,
+          }),
+          data: acceptedOrders,
+        },
+        {
+          title: t('RESTAURANT_ORDER_LIST_PICKED_ORDERS', {
+            count: pickedOrders.length,
+          }),
+          data: pickedOrders,
+        },
+        {
+          title: t('RESTAURANT_ORDER_LIST_CANCELLED_ORDERS', {
+            count: cancelledOrders.length,
+          }),
+          data: cancelledOrders,
+        },
+        {
+          title: t('RESTAURANT_ORDER_LIST_FULFILLED_ORDERS', {
+            count: fulfilledOrders.length,
+          }),
+          data: fulfilledOrders,
+        },
+      ]}
+      renderSectionHeader={({ section: { title } }) => (
+        <View style={styles.sectionHeader}>
+          <Text style={{ fontWeight: 'bold' }}>{title}</Text>
+        </View>
+      )}
+      renderItem={({ item }) => renderItem(item)}
+      ItemSeparatorComponent={ItemSeparatorComponent}
+    />
+  );
 }
-
-export default withTranslation()(OrderList);

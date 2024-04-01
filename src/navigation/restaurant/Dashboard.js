@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import { Alert, InteractionManager, NativeModules, View } from 'react-native';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Alert, NativeModules } from 'react-native';
 import { Center, VStack } from 'native-base';
-import { connect } from 'react-redux';
-import { withTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake';
 import moment from 'moment';
 
@@ -21,14 +21,7 @@ import {
   loadOrders,
 } from '../../redux/Restaurant/actions';
 import { connect as connectCentrifugo } from '../../redux/middlewares/CentrifugoMiddleware/actions';
-import {
-  selectAcceptedOrders,
-  selectCancelledOrders,
-  selectFulfilledOrders,
-  selectNewOrders,
-  selectPickedOrders,
-  selectSpecialOpeningHoursSpecificationForToday,
-} from '../../redux/Restaurant/selectors';
+import { selectSpecialOpeningHoursSpecificationForToday } from '../../redux/Restaurant/selectors';
 import {
   selectIsCentrifugoConnected,
   selectIsLoading,
@@ -37,26 +30,93 @@ import PushNotification from '../../notifications';
 
 const RNSound = NativeModules.RNSound;
 
-class DashboardPage extends Component {
-  constructor(props) {
-    super(props);
+export default function DashboardPage({ navigation, route }) {
+  const restaurant = useSelector(state => state.restaurant.restaurant);
+  const date = useSelector(state => state.restaurant.date);
+  const specialOpeningHoursSpecification = useSelector(
+    selectSpecialOpeningHoursSpecificationForToday,
+  );
 
-    this.state = {
-      wasAlertShown: false,
+  const isInternetReachable = useSelector(
+    state => state.app.isInternetReachable,
+  );
+  const isLoading = useSelector(selectIsLoading);
+  const isCentrifugoConnected = useSelector(selectIsCentrifugoConnected);
+
+  const { navigate } = navigation;
+
+  const [wasAlertShown, setWasAlertShown] = useState(false);
+
+  const { t } = useTranslation();
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    activateKeepAwakeAsync();
+
+    return () => {
+      deactivateKeepAwake();
     };
-  }
+  }, []);
 
-  _checkSystemVolume() {
+  useEffect(() => {
+    if (!isCentrifugoConnected) {
+      dispatch(connectCentrifugo());
+    }
+  }, [dispatch, isCentrifugoConnected]);
+
+  useEffect(() => {
+    if (route.params?.loadOrders ?? true) {
+      dispatch(
+        loadOrders(restaurant, date.format('YYYY-MM-DD'), () => {
+          // If getInitialNotification returns something,
+          // it means the app was opened from a quit state.
+          //
+          // We handle this here, and *NOT* in NotificationHandler,
+          // because when the app opens from a quit state,
+          // NotificationHandler.componentDidMount is called too early.
+          //
+          // It tries to call loadOrderAndNavigate, and it fails
+          // because Redux is not completely ready.
+          //
+          // It's not a big issue to handle this here,
+          // because as the app was opened from a quit state,
+          // the home screen will be this one (for restaurants).
+          //
+          // @see https://rnfirebase.io/messaging/notifications#handling-interaction
+          PushNotification.getInitialNotification().then(remoteMessage => {
+            if (remoteMessage) {
+              const { event } = remoteMessage.data;
+              if (event && event.name === 'order:created') {
+                dispatch(loadOrderAndNavigate(event.data.order));
+              }
+            }
+          });
+        }),
+      );
+    }
+  }, [restaurant, date, dispatch, route.params?.loadOrders]);
+
+  // This is needed to display the title
+  useEffect(() => {
+    // WARNING Make sure to call navigation.setParams() only when needed to avoid infinite loop
+    const navRestaurant = route.params?.restaurant;
+    if (!navRestaurant || navRestaurant !== restaurant) {
+      navigation.setParams({ restaurant: restaurant });
+    }
+  }, [restaurant, navigation, route.params?.restaurant]);
+
+  const _checkSystemVolume = useCallback(() => {
     RNSound.getSystemVolume(volume => {
       if (volume < 0.4) {
         Alert.alert(
-          this.props.t('RESTAURANT_SOUND_ALERT_TITLE'),
-          this.props.t('RESTAURANT_SOUND_ALERT_MESSAGE'),
+          t('RESTAURANT_SOUND_ALERT_TITLE'),
+          t('RESTAURANT_SOUND_ALERT_MESSAGE'),
           [
             {
-              text: this.props.t('RESTAURANT_SOUND_ALERT_CONFIRM'),
+              text: t('RESTAURANT_SOUND_ALERT_CONFIRM'),
               onPress: () => {
-                this.setState({ wasAlertShown: true });
+                setWasAlertShown(true);
 
                 // If would be cool to open the device settings directly,
                 // but it is not (yet) possible to sent an Intent with extra flags
@@ -68,188 +128,61 @@ class DashboardPage extends Component {
               },
             },
             {
-              text: this.props.t('CANCEL'),
+              text: t('CANCEL'),
               style: 'cancel',
-              onPress: () => this.setState({ wasAlertShown: true }),
+              onPress: () => setWasAlertShown(true),
             },
           ],
         );
       }
     });
-  }
+  }, [t]);
 
-  componentDidMount() {
-    activateKeepAwakeAsync();
-
-    if (!this.props.isCentrifugoConnected) {
-      this.props.connectCent();
-    }
-
-    InteractionManager.runAfterInteractions(() => {
-      if (this.props.route.params?.loadOrders || true) {
-        this.props.loadOrders(
-          this.props.restaurant,
-          this.props.date.format('YYYY-MM-DD'),
-          () => {
-            // If getInitialNotification returns something,
-            // it means the app was opened from a quit state.
-            //
-            // We handle this here, and *NOT* in NotificationHandler,
-            // because when the app opens from a quit state,
-            // NotificationHandler.componentDidMount is called too early.
-            //
-            // It tries to call loadOrderAndNavigate, and it fails
-            // because Redux is not completely ready.
-            //
-            // It's not a big issue to handle this here,
-            // because as the app was opened from a quit state,
-            // the home screen will be this one (for restaurants).
-            //
-            // @see https://rnfirebase.io/messaging/notifications#handling-interaction
-            PushNotification.getInitialNotification().then(remoteMessage => {
-              if (remoteMessage) {
-                const { event } = remoteMessage.data;
-                if (event && event.name === 'order:created') {
-                  this.props.loadOrderAndNavigate(event.data.order);
-                }
-              }
-            });
-          },
-        );
-      }
-      // setTimeout(() => this._checkSystemVolume(), 1500)
-    });
-  }
-
-  componentWillUnmount() {
-    deactivateKeepAwake();
-  }
-
-  componentDidUpdate(prevProps) {
-    const hasRestaurantChanged =
-      this.props.restaurant !== prevProps.restaurant &&
-      this.props.restaurant['@id'] !== prevProps.restaurant['@id'];
-
-    const hasChanged =
-      this.props.date !== prevProps.date || hasRestaurantChanged;
-
-    if (hasChanged) {
-      this.props.loadOrders(
-        this.props.restaurant,
-        this.props.date.format('YYYY-MM-DD'),
-      );
-    }
-
-    // This is needed to display the title
-    // WARNING Make sure to call navigation.setParams() only when needed to avoid infinite loop
-    const navRestaurant = this.props.route.params?.restaurant;
-    if (!navRestaurant || navRestaurant !== this.props.restaurant) {
-      this.props.navigation.setParams({ restaurant: this.props.restaurant });
-    }
-
+  useEffect(() => {
     // Make sure to show Alert once loading has finished,
     // or it will be closed on iOS
     // https://github.com/facebook/react-native/issues/10471
-    if (
-      !this.state.wasAlertShown &&
-      !this.props.isLoading &&
-      prevProps.isLoading
-    ) {
-      this._checkSystemVolume();
+    if (!wasAlertShown && !isLoading) {
+      _checkSystemVolume();
+      // setTimeout(() => _checkSystemVolume(), 1500)
     }
-  }
+  }, [isLoading, wasAlertShown, _checkSystemVolume]);
 
-  renderDashboard() {
-    const { navigate } = this.props.navigation;
-    const { date, restaurant, specialOpeningHoursSpecification } = this.props;
-
-    return (
-      <VStack flex={1}>
-        {restaurant.state === 'rush' && (
-          <DangerAlert
-            text={this.props.t('RESTAURANT_ALERT_RUSH_MODE_ON')}
-            onClose={() =>
-              this.props.changeStatus(this.props.restaurant, 'normal')
-            }
-          />
-        )}
-        {specialOpeningHoursSpecification && (
-          <DangerAlert
-            text={this.props.t('RESTAURANT_ALERT_CLOSED')}
-            onClose={() =>
-              this.props.deleteOpeningHoursSpecification(
-                specialOpeningHoursSpecification,
-              )
-            }
-          />
-        )}
-        <WebSocketIndicator connected={this.props.isCentrifugoConnected} />
-        <DatePickerHeader
-          date={date}
-          onCalendarClick={() => navigate('RestaurantDate')}
-          onTodayClick={() => this.props.changeDate(moment())}
-        />
-        <OrderList
-          baseURL={this.props.baseURL}
-          newOrders={this.props.newOrders}
-          acceptedOrders={this.props.acceptedOrders}
-          pickedOrders={this.props.pickedOrders}
-          cancelledOrders={this.props.cancelledOrders}
-          fulfilledOrders={this.props.fulfilledOrders}
-          onItemClick={order => navigate('RestaurantOrder', { order })}
-        />
-      </VStack>
-    );
-  }
-
-  render() {
-    if (this.props.isInternetReachable) {
-      return this.renderDashboard();
-    }
-
+  if (!isInternetReachable) {
     return (
       <Center flex={1}>
         <Offline />
       </Center>
     );
   }
-}
 
-function mapStateToProps(state) {
-  return {
-    httpClient: state.app.httpClient,
-    baseURL: state.app.baseURL,
-    orders: state.restaurant.orders,
-    newOrders: selectNewOrders(state),
-    acceptedOrders: selectAcceptedOrders(state),
-    pickedOrders: selectPickedOrders(state),
-    cancelledOrders: selectCancelledOrders(state),
-    fulfilledOrders: selectFulfilledOrders(state),
-    date: state.restaurant.date,
-    restaurant: state.restaurant.restaurant,
-    specialOpeningHoursSpecification:
-      selectSpecialOpeningHoursSpecificationForToday(state),
-    isInternetReachable: state.app.isInternetReachable,
-    isLoading: selectIsLoading(state),
-    isCentrifugoConnected: selectIsCentrifugoConnected(state),
-  };
+  return (
+    <VStack flex={1}>
+      {restaurant.state === 'rush' && (
+        <DangerAlert
+          text={t('RESTAURANT_ALERT_RUSH_MODE_ON')}
+          onClose={() => dispatch(changeStatus(restaurant, 'normal'))}
+        />
+      )}
+      {specialOpeningHoursSpecification && (
+        <DangerAlert
+          text={t('RESTAURANT_ALERT_CLOSED')}
+          onClose={() =>
+            dispatch(
+              deleteOpeningHoursSpecification(specialOpeningHoursSpecification),
+            )
+          }
+        />
+      )}
+      <WebSocketIndicator connected={isCentrifugoConnected} />
+      <DatePickerHeader
+        date={date}
+        onCalendarClick={() => navigate('RestaurantDate')}
+        onTodayClick={() => dispatch(changeDate(moment()))}
+      />
+      <OrderList
+        onItemClick={order => navigate('RestaurantOrder', { order })}
+      />
+    </VStack>
+  );
 }
-
-function mapDispatchToProps(dispatch) {
-  return {
-    loadOrders: (restaurant, date, cb) =>
-      dispatch(loadOrders(restaurant, date, cb)),
-    loadOrderAndNavigate: order => dispatch(loadOrderAndNavigate(order)),
-    changeDate: date => dispatch(changeDate(date)),
-    changeStatus: (restaurant, state) =>
-      dispatch(changeStatus(restaurant, state)),
-    deleteOpeningHoursSpecification: openingHoursSpecification =>
-      dispatch(deleteOpeningHoursSpecification(openingHoursSpecification)),
-    connectCent: () => dispatch(connectCentrifugo()),
-  };
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(withTranslation()(DashboardPage));
