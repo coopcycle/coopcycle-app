@@ -21,7 +21,11 @@ import {
   loadOrders,
 } from '../../redux/Restaurant/actions';
 import { connect as connectCentrifugo } from '../../redux/middlewares/CentrifugoMiddleware/actions';
-import { selectSpecialOpeningHoursSpecificationForToday } from '../../redux/Restaurant/selectors';
+import {
+  selectDate,
+  selectRestaurant,
+  selectSpecialOpeningHoursSpecificationForToday,
+} from '../../redux/Restaurant/selectors';
 import {
   selectIsCentrifugoConnected,
   selectIsLoading,
@@ -31,8 +35,8 @@ import PushNotification from '../../notifications';
 const RNSound = NativeModules.RNSound;
 
 export default function DashboardPage({ navigation, route }) {
-  const restaurant = useSelector(state => state.restaurant.restaurant);
-  const date = useSelector(state => state.restaurant.date);
+  const restaurant = useSelector(selectRestaurant);
+  const date = useSelector(selectDate);
   const specialOpeningHoursSpecification = useSelector(
     selectSpecialOpeningHoursSpecificationForToday,
   );

@@ -18,6 +18,8 @@ import {
   selectFulfilledOrders,
   selectNewOrders,
   selectPickedOrders,
+  selectReadyOrders,
+  selectStartedOrders,
 } from '../../../redux/Restaurant/selectors';
 
 const styles = StyleSheet.create({
@@ -41,11 +43,58 @@ const styles = StyleSheet.create({
 export default function OrderList({ onItemClick }) {
   const newOrders = useSelector(selectNewOrders);
   const acceptedOrders = useSelector(selectAcceptedOrders);
+  const startedOrders = useSelector(selectStartedOrders);
+  const readyOrders = useSelector(selectReadyOrders);
   const pickedOrders = useSelector(selectPickedOrders);
   const cancelledOrders = useSelector(selectCancelledOrders);
   const fulfilledOrders = useSelector(selectFulfilledOrders);
 
   const { t } = useTranslation();
+
+  const sections = [
+    {
+      title: t('RESTAURANT_ORDER_LIST_NEW_ORDERS', {
+        count: newOrders.length,
+      }),
+      data: newOrders,
+    },
+    {
+      title: t('RESTAURANT_ORDER_LIST_ACCEPTED_ORDERS', {
+        count: acceptedOrders.length,
+      }),
+      data: acceptedOrders,
+    },
+    {
+      title: t('RESTAURANT_ORDER_LIST_STARTED_ORDERS', {
+        count: startedOrders.length,
+      }),
+      data: startedOrders,
+    },
+    {
+      title: t('RESTAURANT_ORDER_LIST_READY_ORDERS', {
+        count: readyOrders.length,
+      }),
+      data: readyOrders,
+    },
+    {
+      title: t('RESTAURANT_ORDER_LIST_PICKED_ORDERS', {
+        count: pickedOrders.length,
+      }),
+      data: pickedOrders,
+    },
+    {
+      title: t('RESTAURANT_ORDER_LIST_CANCELLED_ORDERS', {
+        count: cancelledOrders.length,
+      }),
+      data: cancelledOrders,
+    },
+    {
+      title: t('RESTAURANT_ORDER_LIST_FULFILLED_ORDERS', {
+        count: fulfilledOrders.length,
+      }),
+      data: fulfilledOrders,
+    },
+  ];
 
   const renderItem = order => {
     return (
@@ -73,38 +122,7 @@ export default function OrderList({ onItemClick }) {
   return (
     <SectionList
       keyExtractor={(item, index) => item['@id']}
-      sections={[
-        {
-          title: t('RESTAURANT_ORDER_LIST_NEW_ORDERS', {
-            count: newOrders.length,
-          }),
-          data: newOrders,
-        },
-        {
-          title: t('RESTAURANT_ORDER_LIST_ACCEPTED_ORDERS', {
-            count: acceptedOrders.length,
-          }),
-          data: acceptedOrders,
-        },
-        {
-          title: t('RESTAURANT_ORDER_LIST_PICKED_ORDERS', {
-            count: pickedOrders.length,
-          }),
-          data: pickedOrders,
-        },
-        {
-          title: t('RESTAURANT_ORDER_LIST_CANCELLED_ORDERS', {
-            count: cancelledOrders.length,
-          }),
-          data: cancelledOrders,
-        },
-        {
-          title: t('RESTAURANT_ORDER_LIST_FULFILLED_ORDERS', {
-            count: fulfilledOrders.length,
-          }),
-          data: fulfilledOrders,
-        },
-      ]}
+      sections={sections}
       renderSectionHeader={({ section: { title } }) => (
         <View style={styles.sectionHeader}>
           <Text style={{ fontWeight: 'bold' }}>{title}</Text>
