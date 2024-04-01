@@ -9,7 +9,7 @@ import { closeRestaurant } from '../../../redux/Restaurant/actions'
 import { selectSpecialOpeningHoursSpecificationForToday } from '../../../redux/Restaurant/selectors'
 
 const FontAwesomeHeaderButton = props => (
-  <HeaderButton { ...props } IconComponent={ FontAwesome } iconSize={ 23 } color="#ffffff" />
+  <HeaderButton { ...props } IconComponent={ FontAwesome } iconSize={ 23 } />
 )
 
 class HeaderRight extends Component {
