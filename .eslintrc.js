@@ -14,6 +14,8 @@ module.exports = {
       },
     ],
 
+    'prettier/prettier': 'off',
+
     // Stylistic rules are deprecated in eslint v8.54.0
     // and should be added via prettier or https://eslint.style/
   },
