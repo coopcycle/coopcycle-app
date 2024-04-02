@@ -19,6 +19,7 @@ import {
   selectNewOrders,
   selectPickedOrders,
   selectReadyOrders,
+  selectRestaurant,
   selectStartedOrders,
 } from '../../../redux/Restaurant/selectors';
 
@@ -41,6 +42,8 @@ const styles = StyleSheet.create({
 });
 
 export default function OrderList({ onItemClick }) {
+  const restaurant = useSelector(selectRestaurant);
+
   const newOrders = useSelector(selectNewOrders);
   const acceptedOrders = useSelector(selectAcceptedOrders);
   const startedOrders = useSelector(selectStartedOrders);
@@ -52,12 +55,16 @@ export default function OrderList({ onItemClick }) {
   const { t } = useTranslation();
 
   const sections = [
-    {
-      title: t('RESTAURANT_ORDER_LIST_NEW_ORDERS', {
-        count: newOrders.length,
-      }),
-      data: newOrders,
-    },
+    ...(restaurant.autoAcceptOrdersEnabled
+      ? []
+      : [
+          {
+            title: t('RESTAURANT_ORDER_LIST_NEW_ORDERS', {
+              count: newOrders.length,
+            }),
+            data: newOrders,
+          },
+        ]),
     {
       title: t('RESTAURANT_ORDER_LIST_ACCEPTED_ORDERS', {
         count: acceptedOrders.length,
