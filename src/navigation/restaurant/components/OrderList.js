@@ -1,6 +1,5 @@
 import React from 'react';
-import { SectionList, StyleSheet, View } from 'react-native';
-import { Text } from 'native-base';
+import { SectionList } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import {
@@ -13,15 +12,9 @@ import {
   selectRestaurant,
   selectStartedOrders,
 } from '../../../redux/Restaurant/selectors';
-import OrderItem from './OrderItem';
-
-const styles = StyleSheet.create({
-  sectionHeader: {
-    paddingTop: 32,
-    paddingBottom: 12,
-    paddingHorizontal: 24,
-  },
-});
+import OrderListItem from './OrderListItem';
+import OrderListSectionHeader from './OrderListSectionHeader';
+import { View } from 'native-base';
 
 export default function OrderList({ onItemClick }) {
   const restaurant = useSelector(selectRestaurant);
@@ -87,16 +80,15 @@ export default function OrderList({ onItemClick }) {
 
   return (
     <SectionList
-      keyExtractor={(item, index) => item['@id']}
+      keyExtractor={item => item['@id']}
       sections={sections}
       renderSectionHeader={({ section: { title } }) => (
-        <View style={styles.sectionHeader}>
-          <Text style={{ fontWeight: 'bold' }}>{title}</Text>
-        </View>
+        <OrderListSectionHeader title={title} />
       )}
       renderItem={({ item }) => (
-        <OrderItem order={item} onItemClick={onItemClick} />
+        <OrderListItem order={item} onItemClick={onItemClick} />
       )}
+      renderSectionFooter={() => <View style={{ height: 20 }} />}
     />
   );
 }

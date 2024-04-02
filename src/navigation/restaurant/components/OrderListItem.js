@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function OrderItem({ order, onItemClick }) {
+export default function OrderListItem({ order, onItemClick }) {
   const dispatch = useDispatch();
 
   const isActionable = [STATE.NEW, STATE.ACCEPTED, STATE.STARTED].includes(
