@@ -14,7 +14,7 @@ import {
   finishPreparing,
   startPreparing,
 } from '../../../redux/Restaurant/actions';
-import { STATE } from '../../../model/Order';
+import { STATE } from '../../../domain/Order';
 
 const styles = StyleSheet.create({
   item: {

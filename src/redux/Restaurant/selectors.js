@@ -3,7 +3,7 @@ import { find } from 'lodash';
 import moment from 'moment';
 import _ from 'lodash';
 import { matchesDate } from '../../utils/order';
-import { STATE } from '../../model/Order';
+import { STATE } from '../../domain/Order';
 
 export const selectRestaurant = state => state.restaurant.restaurant;
 export const selectDate = state => state.restaurant.date;
