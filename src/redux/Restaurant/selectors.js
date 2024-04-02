@@ -3,6 +3,7 @@ import { find } from 'lodash';
 import moment from 'moment';
 import _ from 'lodash';
 import { matchesDate } from '../../utils/order';
+import { STATE } from '../../model/Order';
 
 export const selectRestaurant = state => state.restaurant.restaurant;
 export const selectDate = state => state.restaurant.date;
@@ -45,7 +46,7 @@ export const selectNewOrders = createSelector(
   _selectOrders,
   (date, orders) =>
     _.sortBy(
-      _.filter(orders, o => matchesDate(o, date) && o.state === 'new'),
+      _.filter(orders, o => matchesDate(o, date) && o.state === STATE.NEW),
       [o => moment.parseZone(o.pickupExpectedAt)],
     ),
 );
@@ -55,7 +56,7 @@ export const selectAcceptedOrders = createSelector(
   _selectOrders,
   (date, orders) =>
     _.sortBy(
-      _.filter(orders, o => matchesDate(o, date) && o.state === 'accepted'),
+      _.filter(orders, o => matchesDate(o, date) && o.state === STATE.ACCEPTED),
       [o => moment.parseZone(o.pickupExpectedAt)],
     ),
 );
@@ -65,7 +66,7 @@ export const selectStartedOrders = createSelector(
   _selectOrders,
   (date, orders) =>
     _.sortBy(
-      _.filter(orders, o => matchesDate(o, date) && o.state === 'started'),
+      _.filter(orders, o => matchesDate(o, date) && o.state === STATE.STARTED),
       [o => moment.parseZone(o.pickupExpectedAt)],
     ),
 );
@@ -77,7 +78,7 @@ export const selectReadyOrders = createSelector(
     _.sortBy(
       _.filter(
         orders,
-        o => matchesDate(o, date) && o.state === 'ready' && !o.assignedTo,
+        o => matchesDate(o, date) && o.state === STATE.READY && !o.assignedTo,
       ),
       [o => moment.parseZone(o.pickupExpectedAt)],
     ),
@@ -90,7 +91,7 @@ export const selectPickedOrders = createSelector(
     _.sortBy(
       _.filter(
         orders,
-        o => matchesDate(o, date) && o.state === 'ready' && !!o.assignedTo,
+        o => matchesDate(o, date) && o.state === STATE.READY && !!o.assignedTo,
       ),
       [o => moment.parseZone(o.pickupExpectedAt)],
     ),
@@ -105,7 +106,7 @@ export const selectCancelledOrders = createSelector(
         orders,
         o =>
           matchesDate(o, date) &&
-          (o.state === 'refused' || o.state === 'cancelled'),
+          (o.state === STATE.REFUSED || o.state === STATE.CANCELLED),
       ),
       [o => moment.parseZone(o.pickupExpectedAt)],
     ),
@@ -115,5 +116,5 @@ export const selectFulfilledOrders = createSelector(
   selectDate,
   _selectOrders,
   (date, orders) =>
-    _.filter(orders, o => matchesDate(o, date) && o.state === 'fulfilled'),
+    _.filter(orders, o => matchesDate(o, date) && o.state === STATE.FULFILLED),
 );

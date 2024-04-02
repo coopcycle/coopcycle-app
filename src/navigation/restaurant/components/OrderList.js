@@ -1,7 +1,6 @@
 import React from 'react';
 import { SectionList, StyleSheet, View } from 'react-native';
 import { Text } from 'native-base';
-import ItemSeparatorComponent from '../../../components/ItemSeparator';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import {
@@ -18,8 +17,9 @@ import OrderItem from './OrderItem';
 
 const styles = StyleSheet.create({
   sectionHeader: {
-    paddingVertical: 10,
-    paddingHorizontal: 20,
+    paddingTop: 32,
+    paddingBottom: 12,
+    paddingHorizontal: 24,
   },
 });
 
@@ -97,7 +97,6 @@ export default function OrderList({ onItemClick }) {
       renderItem={({ item }) => (
         <OrderItem order={item} onItemClick={onItemClick} />
       )}
-      ItemSeparatorComponent={ItemSeparatorComponent}
     />
   );
 }
