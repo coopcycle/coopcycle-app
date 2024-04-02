@@ -441,8 +441,7 @@ export const startPreparing = createAsyncThunk(
 
     const httpClient = selectHttpClient(getState());
 
-    const response = await httpClient.put(order['@id'] + '/start_preparing');
-    return response.data;
+    return await httpClient.put(order['@id'] + '/start_preparing');
   },
 );
 
@@ -453,8 +452,7 @@ export const finishPreparing = createAsyncThunk(
 
     const httpClient = selectHttpClient(getState());
 
-    const response = await httpClient.put(order['@id'] + '/finish_preparing');
-    return response.data;
+    return await httpClient.put(order['@id'] + '/finish_preparing');
   },
 );
 
@@ -786,7 +784,7 @@ export function printOrder(order) {
 }
 
 export function connectPrinter(device, cb) {
-  return function (dispatch, getState) {
+  return function (dispatch) {
     BleManager.connect(device.id)
       .then(() => {
         dispatch(printerConnected(device));
@@ -812,9 +810,9 @@ export function connectPrinter(device, cb) {
 }
 
 export function disconnectPrinter(device, cb) {
-  return function (dispatch, getState) {
+  return function (dispatch) {
     BleManager.disconnect(device.id)
-      // We use Promose.finally because if the state
+      // We use Promise.finally because if the state
       // contains a saved printer which is not connected anymore,
       // BleManager.disconnect will return an error
       .catch(e => console.log(e))

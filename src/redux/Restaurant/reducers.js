@@ -4,6 +4,7 @@ import {
   ACCEPT_ORDER_SUCCESS,
   BLUETOOTH_DISABLED,
   BLUETOOTH_ENABLED,
+  BLUETOOTH_STARTED,
   BLUETOOTH_START_SCAN,
   BLUETOOTH_STOP_SCAN,
   CANCEL_ORDER_FAILURE,
@@ -53,30 +54,29 @@ import {
   REFUSE_ORDER_SUCCESS,
   SET_CURRENT_MENU,
   SET_HAS_MORE_PRODUCTS,
+  SET_LOOPEAT_FORMATS,
   SET_NEXT_PRODUCTS_PAGE,
   SUNMI_PRINTER_DETECTED,
-  BLUETOOTH_STARTED,
-  SET_LOOPEAT_FORMATS,
   UPDATE_LOOPEAT_FORMATS_SUCCESS,
-} from './actions'
+  finishPreparing,
+  startPreparing,
+} from './actions';
 
 import {
   LOAD_MY_RESTAURANTS_FAILURE,
   LOAD_MY_RESTAURANTS_REQUEST,
   LOAD_MY_RESTAURANTS_SUCCESS,
-} from '../App/actions'
+} from '../App/actions';
 
-import {
-  MESSAGE,
-} from '../middlewares/CentrifugoMiddleware/actions'
+import { MESSAGE } from '../middlewares/CentrifugoMiddleware/actions';
 
-import moment from 'moment'
-import _ from 'lodash'
+import moment from 'moment';
+import _ from 'lodash';
 
 const initialState = {
-  fetchError: null,  // Error object describing the error
+  fetchError: null, // Error object describing the error
   isFetching: false, // Flag indicating active HTTP request
-  orders: [],        // Array of orders
+  orders: [], // Array of orders
   myRestaurants: [], // Array of restaurants
   date: moment(),
   status: 'available',
@@ -92,73 +92,88 @@ const initialState = {
   isSunmiPrinter: false,
   bluetoothStarted: false,
   loopeatFormats: {},
-}
+};
 
 const spliceOrders = (state, payload) => {
-
-  const orderIndex = _.findIndex(state.orders, order => order['@id'] === payload['@id'])
+  const orderIndex = _.findIndex(
+    state.orders,
+    order => order['@id'] === payload['@id'],
+  );
 
   if (orderIndex !== -1) {
-    const newOrders = state.orders.slice(0)
-    newOrders.splice(orderIndex, 1, Object.assign({}, payload))
+    const newOrders = state.orders.slice(0);
+    newOrders.splice(orderIndex, 1, Object.assign({}, payload));
 
-    return newOrders
+    return newOrders;
   }
 
-  return state.orders
-}
+  return state.orders;
+};
 
 const addOrReplace = (state, payload) => {
+  const newOrders = state.orders.slice(0);
 
-  const newOrders = state.orders.slice(0)
-
-  const orderIndex = _.findIndex(state.orders, o => o['@id'] === payload['@id'])
+  const orderIndex = _.findIndex(
+    state.orders,
+    o => o['@id'] === payload['@id'],
+  );
   if (orderIndex !== -1) {
-    newOrders.splice(orderIndex, 1, { ...payload })
+    newOrders.splice(orderIndex, 1, { ...payload });
 
-    return newOrders
+    return newOrders;
   }
 
-  return newOrders.concat([payload])
-}
+  return newOrders.concat([payload]);
+};
 
 const spliceProducts = (state, payload) => {
-
-  const productIndex = _.findIndex(state.products, product => product['@id'] === payload['@id'])
+  const productIndex = _.findIndex(
+    state.products,
+    product => product['@id'] === payload['@id'],
+  );
 
   if (productIndex !== -1) {
-    const newProducts = state.products.slice(0)
-    newProducts.splice(productIndex, 1, Object.assign({}, payload))
+    const newProducts = state.products.slice(0);
+    newProducts.splice(productIndex, 1, Object.assign({}, payload));
 
-    return newProducts
+    return newProducts;
   }
 
-  return state.products
-}
+  return state.products;
+};
 
 const spliceProductOptions = (state, payload) => {
-
   const productOptionIndex = _.findIndex(state, productOption => {
-    return _.findIndex(productOption.values, productOptionValue => productOptionValue['@id'] === payload.productOptionValue['@id']) !== -1
-  })
+    return (
+      _.findIndex(
+        productOption.values,
+        productOptionValue =>
+          productOptionValue['@id'] === payload.productOptionValue['@id'],
+      ) !== -1
+    );
+  });
 
   if (productOptionIndex !== -1) {
+    const newProductOptions = state.slice();
 
-    const newProductOptions = state.slice()
+    const productOptionValueIndex = _.findIndex(
+      state[productOptionIndex].values,
+      productOptionValue =>
+        productOptionValue['@id'] === payload.productOptionValue['@id'],
+    );
 
-    const productOptionValueIndex =
-      _.findIndex(state[productOptionIndex].values, productOptionValue => productOptionValue['@id'] === payload.productOptionValue['@id'])
+    newProductOptions[productOptionIndex].values[
+      productOptionValueIndex
+    ].enabled = payload.enabled;
 
-    newProductOptions[productOptionIndex].values[productOptionValueIndex].enabled = payload.enabled
-
-    return newProductOptions
+    return newProductOptions;
   }
 
-  return state
-}
+  return state;
+};
 
 export default (state = initialState, action = {}) => {
-  let newState
+  let newState;
 
   switch (action.type) {
     case LOAD_ORDERS_REQUEST:
@@ -169,6 +184,8 @@ export default (state = initialState, action = {}) => {
     case DELAY_ORDER_REQUEST:
     case FULFILL_ORDER_REQUEST:
     case CANCEL_ORDER_REQUEST:
+    case startPreparing.pending.type:
+    case finishPreparing.pending.type:
     case CHANGE_STATUS_REQUEST:
     case LOAD_PRODUCTS_REQUEST:
     case CLOSE_RESTAURANT_REQUEST:
@@ -178,7 +195,7 @@ export default (state = initialState, action = {}) => {
         ...state,
         fetchError: false,
         isFetching: true,
-      }
+      };
 
     case LOAD_ORDERS_FAILURE:
     case LOAD_ORDER_FAILURE:
@@ -188,6 +205,8 @@ export default (state = initialState, action = {}) => {
     case DELAY_ORDER_FAILURE:
     case FULFILL_ORDER_FAILURE:
     case CANCEL_ORDER_FAILURE:
+    case startPreparing.rejected.type:
+    case finishPreparing.rejected.type:
     case CHANGE_STATUS_FAILURE:
     case LOAD_PRODUCTS_FAILURE:
     case CLOSE_RESTAURANT_FAILURE:
@@ -197,7 +216,7 @@ export default (state = initialState, action = {}) => {
         ...state,
         fetchError: action.payload || action.error,
         isFetching: false,
-      }
+      };
 
     case CHANGE_PRODUCT_ENABLED_REQUEST:
       return {
@@ -208,7 +227,7 @@ export default (state = initialState, action = {}) => {
           ...action.payload.product,
           enabled: action.payload.enabled,
         }),
-      }
+      };
 
     case CHANGE_PRODUCT_ENABLED_FAILURE:
       return {
@@ -219,7 +238,7 @@ export default (state = initialState, action = {}) => {
           ...action.payload.product,
           enabled: action.payload.enabled,
         }),
-      }
+      };
 
     case CHANGE_PRODUCT_OPTION_VALUE_ENABLED_REQUEST:
     case CHANGE_PRODUCT_OPTION_VALUE_ENABLED_SUCCESS:
@@ -227,16 +246,22 @@ export default (state = initialState, action = {}) => {
         ...state,
         fetchError: false,
         isFetching: action.type === CHANGE_PRODUCT_OPTION_VALUE_ENABLED_REQUEST,
-        productOptions: spliceProductOptions(state.productOptions, action.payload),
-      }
+        productOptions: spliceProductOptions(
+          state.productOptions,
+          action.payload,
+        ),
+      };
 
     case CHANGE_PRODUCT_OPTION_VALUE_ENABLED_FAILURE:
       return {
         ...state,
         fetchError: action.payload.error,
         isFetching: false,
-        productOptions: spliceProductOptions(state.productOptions, action.payload),
-      }
+        productOptions: spliceProductOptions(
+          state.productOptions,
+          action.payload,
+        ),
+      };
 
     case LOAD_ORDERS_SUCCESS:
       return {
@@ -244,7 +269,7 @@ export default (state = initialState, action = {}) => {
         fetchError: false,
         isFetching: false,
         orders: action.payload,
-      }
+      };
 
     case LOAD_ORDER_SUCCESS:
       return {
@@ -252,41 +277,42 @@ export default (state = initialState, action = {}) => {
         fetchError: false,
         isFetching: false,
         orders: addOrReplace(state, action.payload),
-      }
+      };
 
     case ACCEPT_ORDER_SUCCESS:
     case REFUSE_ORDER_SUCCESS:
     case DELAY_ORDER_SUCCESS:
     case FULFILL_ORDER_SUCCESS:
     case CANCEL_ORDER_SUCCESS:
+    case startPreparing.fulfilled.type:
+    case finishPreparing.fulfilled.type:
       return {
         ...state,
         orders: spliceOrders(state, action.payload),
         fetchError: false,
         isFetching: false,
-      }
+      };
 
     case LOAD_MY_RESTAURANTS_SUCCESS:
-
       newState = {
         ...state,
         fetchError: false,
         isFetching: false,
         myRestaurants: action.payload,
-      }
+      };
 
       if (action.payload.length > 0) {
-        const restaurant = _.first(action.payload)
+        const restaurant = _.first(action.payload);
 
         newState = {
           ...newState,
           // We select by default the first restaurant from the list
           // Most of the time, users will own only one restaurant
           restaurant,
-        }
+        };
       }
 
-      return newState
+      return newState;
 
     case LOAD_PRODUCTS_SUCCESS:
       return {
@@ -294,7 +320,7 @@ export default (state = initialState, action = {}) => {
         fetchError: false,
         isFetching: false,
         products: action.payload,
-      }
+      };
 
     case LOAD_PRODUCT_OPTIONS_SUCCESS:
       return {
@@ -302,7 +328,7 @@ export default (state = initialState, action = {}) => {
         fetchError: false,
         isFetching: false,
         productOptions: action.payload,
-      }
+      };
 
     case LOAD_MORE_PRODUCTS_SUCCESS:
       return {
@@ -310,7 +336,7 @@ export default (state = initialState, action = {}) => {
         fetchError: false,
         isFetching: false,
         products: state.products.concat(action.payload),
-      }
+      };
 
     case CHANGE_PRODUCT_ENABLED_SUCCESS:
       return {
@@ -318,20 +344,18 @@ export default (state = initialState, action = {}) => {
         fetchError: false,
         isFetching: false,
         products: spliceProducts(state, action.payload),
-      }
+      };
 
     case CLOSE_RESTAURANT_SUCCESS:
-
       return {
         ...state,
         fetchError: false,
         isFetching: false,
         restaurant: action.payload,
-      }
+      };
 
-    case DELETE_OPENING_HOURS_SPECIFICATION_SUCCESS:
-
-      const { specialOpeningHoursSpecification } = state
+    case DELETE_OPENING_HOURS_SPECIFICATION_SUCCESS: {
+      const { specialOpeningHoursSpecification } = state;
 
       return {
         ...state,
@@ -341,10 +365,12 @@ export default (state = initialState, action = {}) => {
           ...state.restaurant,
           specialOpeningHoursSpecification: _.filter(
             specialOpeningHoursSpecification,
-            openingHoursSpecification => openingHoursSpecification['@id'] !== action.payload['@id']
+            openingHoursSpecification =>
+              openingHoursSpecification['@id'] !== action.payload['@id'],
           ),
         },
-      }
+      };
+    }
 
     case CHANGE_STATUS_SUCCESS:
       return {
@@ -352,35 +378,33 @@ export default (state = initialState, action = {}) => {
         fetchError: false,
         isFetching: false,
         restaurant: action.payload,
-      }
+      };
 
     case CHANGE_RESTAURANT:
-
       return {
         ...state,
         restaurant: action.payload,
-      }
+      };
 
     case CHANGE_DATE:
       return {
         ...state,
         date: action.payload,
-      }
+      };
 
     case SET_NEXT_PRODUCTS_PAGE:
       return {
         ...state,
         nextProductsPage: action.payload,
-      }
+      };
 
     case SET_HAS_MORE_PRODUCTS:
       return {
         ...state,
         hasMoreProducts: action.payload,
-      }
+      };
 
     case LOAD_MENUS_SUCCESS:
-
       return {
         ...state,
         fetchError: false,
@@ -389,10 +413,9 @@ export default (state = initialState, action = {}) => {
           ...menu,
           active: menu['@id'] === state.restaurant.hasMenu,
         })),
-      }
+      };
 
     case SET_CURRENT_MENU:
-
       return {
         ...state,
         fetchError: false,
@@ -405,121 +428,109 @@ export default (state = initialState, action = {}) => {
           ...menu,
           active: menu['@id'] === action.payload.menu['@id'],
         })),
-      }
+      };
 
     case PRINTER_CONNECTED:
-
       return {
         ...state,
         printer: action.payload,
-      }
+      };
 
     case PRINTER_DISCONNECTED:
-
       return {
         ...state,
         printer: null,
-      }
+      };
 
     case BLUETOOTH_ENABLED:
-
       return {
         ...state,
         bluetoothEnabled: true,
-      }
+      };
 
     case BLUETOOTH_DISABLED:
-
       return {
         ...state,
         bluetoothEnabled: false,
-      }
+      };
 
     case BLUETOOTH_START_SCAN:
-
       return {
         ...state,
         isScanningBluetooth: true,
-      }
+      };
 
     case BLUETOOTH_STOP_SCAN:
-
       return {
         ...state,
         isScanningBluetooth: false,
-      }
+      };
 
     case SUNMI_PRINTER_DETECTED:
-
       return {
         ...state,
         isSunmiPrinter: true,
-      }
+      };
 
     case MESSAGE:
-
       if (action.payload.name && action.payload.data) {
-
-        const { name, data } = action.payload
+        const { name, data } = action.payload;
 
         switch (name) {
           case 'order:created':
           case 'order:accepted':
           case 'order:picked':
-          case 'order:cancelled':
-
+          case 'order:cancelled': {
             // FIXME
             // Fix this on API side
-            let newOrder = { ...data.order }
+            let newOrder = { ...data.order };
             if (name === 'order:cancelled' && newOrder.state !== 'cancelled') {
               newOrder = {
                 ...newOrder,
                 state: 'cancelled',
-              }
+              };
             }
             if (name === 'order:accepted' && newOrder.state !== 'accepted') {
               newOrder = {
                 ...newOrder,
                 state: 'accepted',
-              }
+              };
             }
 
             return {
               ...state,
               orders: addOrReplace(state, newOrder),
-            }
+            };
+          }
           default:
-            break
+            break;
         }
       }
 
-      return state
+      return state;
 
     case BLUETOOTH_STARTED:
-
       return {
         ...state,
         bluetoothStarted: true,
-      }
+      };
 
     case SET_LOOPEAT_FORMATS:
-
       return {
         ...state,
         loopeatFormats: {
           ...state.loopeatFormats,
           [action.payload.order['@id']]: action.payload.loopeatFormats,
-        }
-      }
+        },
+      };
 
     case UPDATE_LOOPEAT_FORMATS_SUCCESS:
-
       return {
         ...state,
         isFetching: false,
         orders: addOrReplace(state, action.payload),
-      }
+      };
   }
 
-  return state
-}
+  return state;
+};

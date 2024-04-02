@@ -11,8 +11,8 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import {
   acceptOrder,
-  startPreparing,
   finishPreparing,
+  startPreparing,
 } from '../../../redux/Restaurant/actions';
 import { STATE } from '../../../model/Order';
 
