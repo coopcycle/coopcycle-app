@@ -1300,7 +1300,7 @@ PODS:
     - React-Core
   - RNCPushNotificationIOS (1.11.0):
     - React-Core
-  - RNDateTimePicker (6.7.1):
+  - RNDateTimePicker (7.6.3):
     - React-Core
   - RNFBAnalytics (18.9.0):
     - Firebase/Analytics (= 10.20.0)
@@ -1759,7 +1759,7 @@ SPEC CHECKSUMS:
   FirebaseInstallations: 763814908793c0da14c18b3dcffdec71e29ed55e
   FirebaseSessions: cd97fb07674f3906619c871eefbd260a1546c9d3
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
-  glog: 035f1e36e53b355cf70f6434d161b36e7d21fecd
+  glog: c5d68082e772fa1c511173d6b30a9de2c05a69a2
   GoogleAppMeasurement: bb3c564c3efb933136af0e94899e0a46167466a8
   GoogleDataTransport: bed3a36c04c8552479fbb9b76326e0fc69bddcb2
   GoogleSignIn: fd381840dbe7c1137aa6dc30849a5c3e070c034a
@@ -1834,7 +1834,7 @@ SPEC CHECKSUMS:
   RNCMaskedView: 090213d32d8b3bb83a4dcb7d12c18f0152591906
   RNCPicker: cb57c823d5ce8d2d0b5dfb45ad97b737260dc59e
   RNCPushNotificationIOS: 64218f3c776c03d7408284a819b2abfda1834bc8
-  RNDateTimePicker: 0530a73a6f3a1a85814cbde0802736993b9e675e
+  RNDateTimePicker: 7b38b71bcd7c4cfa1cb95f2dff9a4f1faed2dced
   RNFBAnalytics: ec290267aac57446c10b491293373ac86357f575
   RNFBApp: 9b25191f7a5e72c185b7e43fffb0d906869c4659
   RNFBCrashlytics: 28f83084ae8a4b9e6ad128e3a644c28bb5e16007
