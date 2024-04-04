@@ -18,7 +18,10 @@ import { ringOnTaskListUpdated } from './Courier/taskMiddlewares'
 import CentrifugoMiddleware from './middlewares/CentrifugoMiddleware'
 import { filterExpiredCarts } from './Checkout/middlewares';
 import Config from 'react-native-config';
-import Reactotron from '../../ReactotronConfig'
+
+if (__DEV__) {
+  const Reactotron = require('../../ReactotronConfig')
+}
 
 const middlewares = [
   thunk,
@@ -40,12 +43,12 @@ if (!Config.DEFAULT_SERVER) {
   ])
 }
 
-if (process.env.NODE_ENV === 'development') {
+if (__DEV__) {
   middlewares.push(createLogger({ collapsed: true }))
 }
 
 const middlewaresProxy = (middlewaresList) => {
-  if (process.env.NODE_ENV === 'development') {
+  if (__DEV__) {
     return composeWithDevTools(applyMiddleware(...middlewaresList), Reactotron.createEnhancer())
   } else {
     return applyMiddleware(...middlewaresList)
