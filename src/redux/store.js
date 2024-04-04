@@ -19,10 +19,6 @@ import CentrifugoMiddleware from './middlewares/CentrifugoMiddleware'
 import { filterExpiredCarts } from './Checkout/middlewares';
 import Config from 'react-native-config';
 
-if (__DEV__) {
-  const Reactotron = require('../../ReactotronConfig')
-}
-
 const middlewares = [
   thunk,
   ReduxAsyncQueue,
@@ -49,7 +45,7 @@ if (__DEV__) {
 
 const middlewaresProxy = (middlewaresList) => {
   if (__DEV__) {
-    return composeWithDevTools(applyMiddleware(...middlewaresList), Reactotron.createEnhancer())
+    return composeWithDevTools(applyMiddleware(...middlewaresList), require('../../ReactotronConfig').default.createEnhancer())
   } else {
     return applyMiddleware(...middlewaresList)
   }
