@@ -1,3 +1,5 @@
+import _ from 'lodash'
+
 export function getNameFromId(formatId, formats) {
   const format = formats.find(f => f.id === formatId)
   return format.title
