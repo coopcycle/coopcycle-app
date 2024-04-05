@@ -6650,12 +6650,12 @@ axios-mock-adapter@^1.21.4:
     fast-deep-equal "^3.1.3"
     is-buffer "^2.0.5"
 
-axios@^1.6.7:
-  version "1.6.7"
-  resolved "https://registry.yarnpkg.com/axios/-/axios-1.6.7.tgz#7b48c2e27c96f9c68a2f8f31e2ab19f59b06b0a7"
-  integrity sha512-/hDJGff6/c7u0hDkvkGxR/oy6CbCs8ziCsC7SqmhjfozqiJGc8Z11wrv9z9lYfY4K8l+H9TpjcMDX0xOZmx+RA==
+axios@^1.6.8:
+  version "1.6.8"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-1.6.8.tgz#66d294951f5d988a00e87a0ffb955316a619ea66"
+  integrity sha512-v/ZHtJDU39mDpyBoFVkETcd/uNdxrWRrg3bKpOKzXFA6Bvqopts6ALSMU3y6ijYxbw2B+wPrIv46egTzJXCLGQ==
   dependencies:
-    follow-redirects "^1.15.4"
+    follow-redirects "^1.15.6"
     form-data "^4.0.0"
     proxy-from-env "^1.1.0"
 
@@ -9020,10 +9020,10 @@ flow-parser@^0.206.0:
   resolved "https://registry.yarnpkg.com/flow-parser/-/flow-parser-0.206.0.tgz#f4f794f8026535278393308e01ea72f31000bfef"
   integrity sha512-HVzoK3r6Vsg+lKvlIZzaWNBVai+FXTX1wdYhz/wVlH13tb/gOdLXmlTqy6odmTBhT5UoWUbq0k8263Qhr9d88w==
 
-follow-redirects@^1.15.4:
-  version "1.15.5"
-  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.15.5.tgz#54d4d6d062c0fa7d9d17feb008461550e3ba8020"
-  integrity sha512-vSFWUON1B+yAw1VN4xMfxgn5fTUiaOzAJCKBwIIgT/+7CuGy9+r+5gITvP62j3RmaD5Ph65UaERdOSRGUzZtgw==
+follow-redirects@^1.15.6:
+  version "1.15.6"
+  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.15.6.tgz#7f815c0cda4249c74ff09e95ef97c23b5fd0399b"
+  integrity sha512-wWN62YITEaOpSK584EZXJafH1AGpO8RVgElfkuXbTOrPX4fIfOyEpW/CsiNd8JdYrAoOvafRTOEnvsO++qCqFA==
 
 fontfaceobserver@^2.1.0:
   version "2.3.0"
@@ -10974,10 +10974,10 @@ levn@^0.4.1:
     prelude-ls "^1.2.1"
     type-check "~0.4.0"
 
-libphonenumber-js@^1.10.57:
-  version "1.10.57"
-  resolved "https://registry.yarnpkg.com/libphonenumber-js/-/libphonenumber-js-1.10.57.tgz#4a8174014c758b8ffd865e06a43c3885706f7a9c"
-  integrity sha512-OjsEd9y4LgcX+Ig09SbxWqcGESxliDDFNVepFhB9KEsQZTrnk3UdEU+cO0sW1APvLprHstQpS23OQpZ3bwxy6Q==
+libphonenumber-js@^1.10.60:
+  version "1.10.60"
+  resolved "https://registry.yarnpkg.com/libphonenumber-js/-/libphonenumber-js-1.10.60.tgz#1160ec5b390d46345032aa52be7ffa7a1950214b"
+  integrity sha512-Ctgq2lXUpEJo5j1762NOzl2xo7z7pqmVWYai0p07LvAkQ32tbPv3wb+tcUeHEiXhKU5buM4H9MXsXo6OlM6C2g==
 
 lie@3.1.1:
   version "3.1.1"
@@ -12079,10 +12079,10 @@ nullthrows@^1.1.1:
   resolved "https://registry.yarnpkg.com/nullthrows/-/nullthrows-1.1.1.tgz#7818258843856ae971eae4208ad7d7eb19a431b1"
   integrity sha512-2vPPEi+Z7WqML2jZYddDIfy5Dqb0r2fze2zTxNNknZaFpVHU3mFB3R+DWeJWGVx0ecvttSGlJTI+WG+8Z4cDWw==
 
-numbro@^2.3.6:
-  version "2.4.0"
-  resolved "https://registry.yarnpkg.com/numbro/-/numbro-2.4.0.tgz#3cecae307ab2c2d9fd3e1c08249f4abd504bd577"
-  integrity sha512-t6rVkO1CcKvffvOJJu/zMo70VIcQSR6w3AmIhfHGvmk4vHbNe6zHgomB0aWFAPZWM9JBVWBM0efJv9DBiRoSTA==
+numbro@^2.5.0:
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/numbro/-/numbro-2.5.0.tgz#a16c6e65a692b96c1629a392be9a50984b194e73"
+  integrity sha512-xDcctDimhzko/e+y+Q2/8i3qNC9Svw1QgOkSkQoO0kIPI473tR9QRbo2KP88Ty9p8WbPy+3OpTaAIzehtuHq+A==
   dependencies:
     bignumber.js "^8 || ^9"
 
@@ -12928,10 +12928,10 @@ react-native-dropdownalert@^4.5.1:
   dependencies:
     prop-types "15.5.10"
 
-react-native-email-link@^1.15.0:
-  version "1.15.0"
-  resolved "https://registry.yarnpkg.com/react-native-email-link/-/react-native-email-link-1.15.0.tgz#d0cbc37225b7a8f2d513f640383ae84d90453dfc"
-  integrity sha512-DrPoJwf4UphIqOpHxLQTavJ+olFvHNmWyaNHpVXLuYMbLCYUnjomSwFMjmoEUVzhj7zM2JGCpGzj4rZkXh9l8Q==
+react-native-email-link@^1.16.0:
+  version "1.16.0"
+  resolved "https://registry.yarnpkg.com/react-native-email-link/-/react-native-email-link-1.16.0.tgz#fb3cf8a30396ae6bac7e0dc73a28a87e0a5b59b6"
+  integrity sha512-Ic6G6bi5TyoyWWB37oFbbR/TDWLkfSQHwd9+u35u3DqcJeyKtJcU/joDTiGQ7IzNLzJdamTKsL/ak9z36LQS0A==
 
 react-native-fbsdk-next@^12.1.0:
   version "12.1.0"
@@ -13089,10 +13089,10 @@ react-native-share@^7.9.1:
   resolved "https://registry.yarnpkg.com/react-native-share/-/react-native-share-7.9.1.tgz#36d1cb9786c58ba14ae31cc72f10b3179a045953"
   integrity sha512-v4b6lD4YsiCJB14kjXons+d5cvvxgLv8OdBF0aP58X8Qqbcj81QNv1icAxiNmhxFx5OFYsu/E6v+o8S0GSaneQ==
 
-react-native-signature-canvas@^4.6.1:
-  version "4.7.1"
-  resolved "https://registry.yarnpkg.com/react-native-signature-canvas/-/react-native-signature-canvas-4.7.1.tgz#76043753c962c944f47723e0d1f1f9c0324dcfc0"
-  integrity sha512-80+FwydjaVMZGE/QXNVQyObnM/rAWikpnYnunDJ01H0zCJ5GY860E121ztmT8vAWr+Z6RsXCID2ff6hsSeM0yw==
+react-native-signature-canvas@^4.7.2:
+  version "4.7.2"
+  resolved "https://registry.yarnpkg.com/react-native-signature-canvas/-/react-native-signature-canvas-4.7.2.tgz#04e7143e6274533b24b5a59e9b000b01bfaa5592"
+  integrity sha512-n4TUmYEFTHIbosLSa7ovMhirA+9EWw6pYbUIk2uUuiCfYqyF5TESb9EzjRU7VllDESWce9Djwy20VmwPKvEJWA==
 
 react-native-sound@^0.11.2:
   version "0.11.2"
@@ -13251,10 +13251,10 @@ react@18.2.0:
   dependencies:
     loose-envify "^1.1.0"
 
-reactotron-core-client@2.9.2:
-  version "2.9.2"
-  resolved "https://registry.yarnpkg.com/reactotron-core-client/-/reactotron-core-client-2.9.2.tgz#6d7acd58c123477ff54860230c39a4db06e15aec"
-  integrity sha512-u+ZblK31TInlzILLuZOMn4S1OhXbKgVsKn5NdcpAvcHQmcMIvDB+uIQfAVAu9HKtIkT+07req5rp6yYVI3BaEg==
+reactotron-core-client@2.9.3:
+  version "2.9.3"
+  resolved "https://registry.yarnpkg.com/reactotron-core-client/-/reactotron-core-client-2.9.3.tgz#5694ad2be95e40cfcaf792a7f3fcab14f8247481"
+  integrity sha512-Z+PdYPi2ZsMyibH4251R2QpnIVrpgRoIFJYjeDF7LyomizkrOAugZDnTUNtUhVAqDb0eEWi4qaxUeEfnvZsn4w==
   dependencies:
     reactotron-core-contract "0.2.3"
 
@@ -13263,13 +13263,13 @@ reactotron-core-contract@0.2.3:
   resolved "https://registry.yarnpkg.com/reactotron-core-contract/-/reactotron-core-contract-0.2.3.tgz#4b72bbe2905fda2a7e69f2653fc32bbdaaebb052"
   integrity sha512-GMeulATwiTsAqRnTKLWgM4gG3pUxAuspW412SWutHIW0fZNEOiHg8bWTEQURhm1WZj+u4tmdbkPiIWBfH8fvvQ==
 
-reactotron-react-native@^5.1.3:
-  version "5.1.3"
-  resolved "https://registry.yarnpkg.com/reactotron-react-native/-/reactotron-react-native-5.1.3.tgz#9b787e870680926218f72b1c7d4c72da3338a711"
-  integrity sha512-yZH0YZhNY5WJLGYKOVvTvbiGcmL7tnGGFTAOkRfNUfzG7qkkftIpSt/M8WK9ZyWHjdoPgq7WKGiupG4sNeOGFg==
+reactotron-react-native@^5.1.6:
+  version "5.1.6"
+  resolved "https://registry.yarnpkg.com/reactotron-react-native/-/reactotron-react-native-5.1.6.tgz#5c5d2631d9a23c746144e3e28bea4cc567ebca62"
+  integrity sha512-1J+fRQ54mwBhrmJrz6HhBW8GdyUQ8JWXo1vcW3TA61CowYXLuhte7GPau3zt2FYNsTj/r8dd0Pf0wDuuwrzcGQ==
   dependencies:
     mitt "^3.0.1"
-    reactotron-core-client "2.9.2"
+    reactotron-core-client "2.9.3"
   optionalDependencies:
     react-native-flipper "^0.164.0"
 
