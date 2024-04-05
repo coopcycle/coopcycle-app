@@ -1094,7 +1094,7 @@ PODS:
     - React-Core
   - react-native-netinfo (11.3.1):
     - React-Core
-  - react-native-pager-view (6.2.3):
+  - react-native-pager-view (6.3.0):
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
@@ -1314,7 +1314,7 @@ PODS:
     - FirebaseCoreExtension (= 10.20.0)
     - React-Core
     - RNFBApp
-  - RNGestureHandler (2.15.0):
+  - RNGestureHandler (2.16.0):
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
@@ -1323,12 +1323,12 @@ PODS:
     - React-Core
   - RNLocalize (3.0.6):
     - React-Core
-  - RNReanimated (3.7.2):
+  - RNReanimated (3.8.1):
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
     - ReactCommon/turbomodule/core
-  - RNScreens (3.29.0):
+  - RNScreens (3.30.1):
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
@@ -1800,7 +1800,7 @@ SPEC CHECKSUMS:
   react-native-get-random-values: 21325b2244dfa6b58878f51f9aa42821e7ba3d06
   react-native-maps: 72a8a903f8a1b53e2c777ba79102078ab502e0bf
   react-native-netinfo: bdb108d340cdb41875c9ced535977cac6d2ff321
-  react-native-pager-view: 3796df305c59c352a26811ead0f6ea78acac1886
+  react-native-pager-view: 571ecf3212955c0f81314163d690af153d67f527
   react-native-safe-area-context: b97eb6f9e3b7f437806c2ce5983f479f8eb5de4b
   react-native-sunmi-printer-library: 837b33bbceff05c8be9c86b8b6f3166ecf6d8b2a
   react-native-version-number: b415bbec6a13f2df62bf978e85bc0d699462f37f
@@ -1838,11 +1838,11 @@ SPEC CHECKSUMS:
   RNFBAnalytics: ec290267aac57446c10b491293373ac86357f575
   RNFBApp: 9b25191f7a5e72c185b7e43fffb0d906869c4659
   RNFBCrashlytics: 28f83084ae8a4b9e6ad128e3a644c28bb5e16007
-  RNGestureHandler: 2e3251b41d462552997c61afd680220d019fea65
+  RNGestureHandler: 0c8b0283d2aff561162b2f55c604d2f1f8e2c4ea
   RNGoogleSignin: c4381751eefd73c552b923ba347a9bfc6f18771c
   RNLocalize: 4222a3756cdbe2dc9a5bdf445765a4d2572107cb
-  RNReanimated: 1c3482ea99f936468571c9c6428839772894f5b5
-  RNScreens: a4d9ce8f68f833f4e42410140eafd88e38bba163
+  RNReanimated: de95bb2cf26ccfa2b6fdf7e1a57158fb5c9d9515
+  RNScreens: 97a2a32820e632c5978d75250afa397ed9053910
   RNSentry: 6872121e0af7aa9f3f50643f557d69adc8f7ecdc
   RNShare: a5dc3b9c53ddc73e155b8cd9a94c70c91913c43c
   RNSound: 6c156f925295bdc83e8e422e7d8b38d33bc71852
