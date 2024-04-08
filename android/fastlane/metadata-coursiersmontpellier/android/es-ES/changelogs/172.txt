@@ -1,0 +1,4 @@
+Arreglos y mejoras:
+
+- Arregla un problema de desconection.
+- Mejora el rendimiento.

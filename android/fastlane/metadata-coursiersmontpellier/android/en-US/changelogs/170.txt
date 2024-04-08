@@ -1,0 +1,4 @@
+Bugfixes:
+
+- Improve performance.
+- Fix crash when user is disconnected.

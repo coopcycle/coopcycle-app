@@ -1,0 +1,5 @@
+Enhancements and fixes:
+
+- [Client] Fixed the issue of the order tracking screen getting stuck.
+- [Client] Corrected a button hidden by the keyboard.
+- [Delivery] Improved performance on the photo screen.

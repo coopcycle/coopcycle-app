@@ -1,0 +1,5 @@
+Improvements:
+
+- Allow saving credits cards.
+- Allow searching restaurants & products.
+- Allow completing multiple tasks at once.

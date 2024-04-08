@@ -1,0 +1,4 @@
+Bugfixes & improvements:
+
+- Improve performance.
+- Add button to toggle flash.
