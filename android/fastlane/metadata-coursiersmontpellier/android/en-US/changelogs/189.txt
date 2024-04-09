@@ -1,0 +1,3 @@
+Improvements:
+
+- Allow specifying a failure reason when completing a task as failed.

@@ -20,6 +20,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import DropdownHolder from '../../DropdownHolder'
 import DangerAlert from '../../components/DangerAlert'
 import { formatPrice } from '../../utils/formatting'
+import { getMissingAmount } from '../../utils/loopeat'
 import {
   decrementItem,
   hideAddressModal,
@@ -173,15 +174,30 @@ class Summary extends Component {
 
     const { cart, restaurant } = this.props
 
-    if (restaurant.loopeatEnabled && cart.reusablePackagingEnabled && !cart.loopeatContext?.hasCredentials) {
-      DropdownHolder
+    if (restaurant.loopeatEnabled && cart.reusablePackagingEnabled) {
+      if (!cart.loopeatContext?.hasCredentials) {
+        DropdownHolder
           .getDropdown()
           .alertWithType(
             'warn',
             this.props.t('CHECKOUT_LOOPEAT_CONNECT_ACCOUNT', { name: cart.loopeatContext?.name }),
             this.props.t('CHECKOUT_LOOPEAT_CONNECT_ACCOUNT_TEXT', { name: cart.loopeatContext?.name })
           )
-      return
+        return
+      }
+
+      const missingAmount = getMissingAmount(cart.loopeatContext)
+
+      if (missingAmount > 0) {
+        DropdownHolder
+          .getDropdown()
+          .alertWithType(
+            'warn',
+            this.props.t('CHECKOUT_LOOPEAT_CONNECT_ACCOUNT', { name: cart.loopeatContext?.name }),
+            this.props.t('CHECKOUT_LOOPEAT_MISSING_AMOUNT', { amount: formatPrice(missingAmount) })
+          )
+        return
+      }
     }
 
     this._navigate('CheckoutSubmitOrder')

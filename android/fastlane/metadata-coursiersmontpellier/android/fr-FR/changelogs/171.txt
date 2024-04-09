@@ -1,0 +1,3 @@
+Corrections de bugs :
+
+- Correction des problèmes avec les interrupteurs on/off.

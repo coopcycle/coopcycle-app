@@ -31,6 +31,10 @@ on:
         description: 'Build RobinFood app'
         required: true
         type: boolean
+      build_coursiers_montpellier:
+        description: 'Build Coursiers MTP app'
+        required: true
+        type: boolean
 jobs:
   default:
     if: ${{ inputs.build_official }}
@@ -110,6 +114,21 @@ jobs:
       app_name: Robin Food
       primary_color: "#ff0000"
       package_name: fr.coopcycle.robinfood
+      keystore_key_alias: instance
+      keystore_key_password_secret: SIGNING_KEY_PASSWORD_INSTANCE
+      google_play_track: production
+      deploy_google_play: ${{ inputs.deploy_google_play }}
+    secrets: inherit
+  coursiers_montpellier:
+    if: ${{ inputs.build_coursiers_montpellier }}
+    name: Build Coursiers MTP app
+    uses: ./.github/workflows/fastlane_android.yml
+    with:
+      instance: coursiersmontpellier
+      instance_url: https://coursiersmontpellier.coopcycle.org
+      app_name: Coursiers MTP
+      primary_color: "#004e9c"
+      package_name: fr.coopcycle.coursiers_mtp
       keystore_key_alias: instance
       keystore_key_password_secret: SIGNING_KEY_PASSWORD_INSTANCE
       google_play_track: production

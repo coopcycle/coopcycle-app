@@ -1,0 +1,3 @@
+Corrección de errores:
+
+- Corrección de problemas con los interruptores on/off.

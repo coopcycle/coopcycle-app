@@ -1,0 +1,6 @@
+Améliorations.
+
+- Demander l'adresse dès que possible
+- Introduire des paniers multiples.
+- Améliore la gestion des adresses.
+- Améliore les performances.

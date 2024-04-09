@@ -1,0 +1,4 @@
+Arreglos:
+
+- Mejora el rendimiento.
+- Arregla un crash cuando el usuario esta desconectado.

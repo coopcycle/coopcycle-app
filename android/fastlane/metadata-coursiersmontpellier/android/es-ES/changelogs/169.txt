@@ -1,0 +1,6 @@
+Mejoras y novedades.
+
+- Permite añadir propinas.
+- Hace que se acepten los textos legales.
+- Permite la descarga de facturas.
+- Mejora el seguimiento de los pedidos.
