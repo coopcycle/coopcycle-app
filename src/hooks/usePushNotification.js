@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import PushNotification from '../notifications/index.ios';
+import PushNotification from '../notifications';
 import tracker from '../analytics/Tracker';
 import analyticsEvent from '../analytics/Event';
 import { useDispatch, useSelector } from 'react-redux';
