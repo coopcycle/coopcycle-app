@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native'
-import { Button, Center, HStack, Icon, Pressable, Text } from 'native-base';
+import { Button, Center, HStack, Icon, Pressable, Text, Checkbox } from 'native-base';
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 import _ from 'lodash'
@@ -84,7 +84,7 @@ const CollectionDisclaimerModal = withTranslation()(({ isVisible, onSwipeComplet
 const ActionButton = withTranslation()(({ isLoading, onPress, iconName, children }) => {
 
   return (
-    <TouchableOpacity style={ [ styles.btn, styles.btnGrey ] }
+    <Pressable p="3" style={ [ styles.btn, styles.btnGrey ] }
       // Disable interaction while loading
       onPress={ () => !isLoading && onPress() }>
       <HStack flex={ 1 }  justifyContent="space-between" alignItems="center">
@@ -93,7 +93,7 @@ const ActionButton = withTranslation()(({ isLoading, onPress, iconName, children
         { children }
         </HStack>
       </HStack>
-    </TouchableOpacity>
+    </Pressable>
   )
 })
 
@@ -324,13 +324,13 @@ class Summary extends Component {
         </View>
         <View style={{ flex: 0 }}>
           { this.props.fulfillmentMethod === 'collection' && (
-          <TouchableOpacity style={ [styles.btn]  }
+          <Pressable p="2" style={ [styles.btn]  }
             // Disable interaction while loading
             onPress={ () => !this.props.isLoading && this.setState({ isCollectionDisclaimerModalVisible: true }) }>
             <Icon as={FontAwesome} name="info-circle" style={{ fontSize: 22, marginRight: 15, color: '#3498db' }} />
             <Text style={{ flex: 2, fontSize: 14, color: '#3498db' }}>{ this.props.t('FULFILLMENT_METHOD.collection') }</Text>
             <Text note style={{ flex: 1, textAlign: 'right' }}>{ this.props.t('LEARN_MORE') }</Text>
-          </TouchableOpacity>
+          </Pressable>
           )}
           <ActionButton
             onPress={ () => this.props.showTimingModal(true) }
@@ -360,11 +360,12 @@ class Summary extends Component {
             <Text note style={{ flex: 1, textAlign: 'right' }}>{ this.props.t('ADD_COUPON') }</Text>
           </ActionButton></View></HStack>
           { reusablePackagingAction && (
-          <ActionButton
-            onPress={ () => this.toggleReusablePackaging() }
-            iconName={ cart.reusablePackagingEnabled ? 'toggle-on' : 'toggle-off' }>
-            <Text style={{ flex: 1, textAlign: 'right' }}>{ reusablePackagingAction.description }</Text>
-          </ActionButton>
+          <HStack p="3" justifyContent="space-between" alignItems="center" style={ styles.btnGrey }>
+            <Checkbox
+              accessibilityLabel={ reusablePackagingAction.description }
+              defaultIsChecked={ cart.reusablePackagingEnabled } onChange={ () => this.toggleReusablePackaging() } />
+            <Text>{ reusablePackagingAction.description }</Text>
+          </HStack>
           )}
           { (restaurant.loopeatEnabled && cart.reusablePackagingEnabled && !cart.loopeatContext?.hasCredentials) && (
             <ActionButton
@@ -428,7 +429,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 10,
   },
   btnGrey: {
     borderTopColor: '#d7d7d7',
