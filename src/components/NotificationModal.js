@@ -11,6 +11,8 @@ import NavigationHolder from '../NavigationHolder';
 import { CommonActions } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
 import { loadTasks } from '../redux/Courier';
+import { EVENT as EVENT_ORDER } from '../domain/Order';
+import { EVENT as EVENT_TASK_COLLECTION } from '../domain/TaskCollection';
 
 const styles = StyleSheet.create({
   heading: {
@@ -46,9 +48,9 @@ export default function NotificationModal({ notifications, onDismiss }) {
 
   const _keyExtractor = (item, index) => {
     switch (item.event) {
-      case 'order:created':
+      case EVENT_ORDER.CREATED:
         return `order:created:${item.params.order.id}`;
-      case 'tasks:changed':
+      case EVENT_TASK_COLLECTION.CHANGED:
         return `tasks:changed:${moment()}`;
     }
   };
@@ -135,9 +137,9 @@ export default function NotificationModal({ notifications, onDismiss }) {
 
   const renderItem = notification => {
     switch (notification.event) {
-      case 'order:created':
+      case EVENT_ORDER.CREATED:
         return renderOrderCreated(notification.params.order);
-      case 'tasks:changed':
+      case EVENT_TASK_COLLECTION.CHANGED:
         return renderTasksChanged(
           notification.params.date,
           notification.params.added,

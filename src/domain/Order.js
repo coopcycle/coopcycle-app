@@ -7,3 +7,7 @@ export const STATE = {
   FULFILLED: 'fulfilled',
   CANCELLED: 'cancelled',
 };
+
+export const EVENT = {
+  CREATED: 'order:created',
+};
