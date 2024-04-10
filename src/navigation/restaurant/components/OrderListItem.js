@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     marginVertical: 6,
-    marginLeft: 24 + 16,
+    marginLeft: 24,
     marginRight: 24,
     borderColor: '#E3E3E3',
     borderWidth: 1,
