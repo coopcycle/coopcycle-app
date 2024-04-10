@@ -11,7 +11,7 @@ import {
 } from 'react-native'
 import { Button, Center, HStack, Icon, Pressable, Text, Checkbox } from 'native-base';
 import { connect } from 'react-redux'
-import { withTranslation } from 'react-i18next'
+import { withTranslation, useTranslation } from 'react-i18next'
 import _ from 'lodash'
 import Modal from 'react-native-modal'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
@@ -64,7 +64,9 @@ const mapAdjustments = (adjustments, type) => _.map(adjustments, (adjustment, in
     label={ adjustment.label } value={ adjustment.amount } />
 ))
 
-const CollectionDisclaimerModal = withTranslation()(({ isVisible, onSwipeComplete, t, restaurant }) => {
+const CollectionDisclaimerModal = ({ isVisible, onSwipeComplete, restaurant }) => {
+
+  const { t } = useTranslation()
 
   return (
     <Modal
@@ -73,29 +75,31 @@ const CollectionDisclaimerModal = withTranslation()(({ isVisible, onSwipeComplet
       swipeDirection={ [ 'up', 'down' ] }>
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', padding: 20 }}>
         <View style={{ backgroundColor: '#ffffff', paddingHorizontal: 20, paddingVertical: 30 }}>
-          <Text style={{ fontSize: 14 }}>{ t('CART_COLLECTION_DISCLAIMER', { telephone: restaurant.telephone }) }</Text>
+          <Text fontSize="sm">{ t('CART_COLLECTION_DISCLAIMER', { telephone: restaurant.telephone }) }</Text>
           <Button style={{ marginTop: 20 }} onPress={onSwipeComplete}>{ t('CLOSE') }</Button>
         </View>
       </View>
     </Modal>
   )
-})
+}
 
-const ActionButton = withTranslation()(({ isLoading, onPress, iconName, children }) => {
+const ActionButton = ({ isLoading, onPress, iconName, iconColor, children }) => {
+
+  const iconProps = iconColor ? { color: iconColor } : {}
 
   return (
-    <Pressable p="3" style={ [ styles.btn, styles.btnGrey ] }
+    <Pressable style={ styles.btnGrey }
       // Disable interaction while loading
       onPress={ () => !isLoading && onPress() }>
-      <HStack flex={ 1 }  justifyContent="space-between" alignItems="center">
-        <Icon as={ FontAwesome } name={ iconName } mr="2" size="sm" flexGrow={ 1 } />
+      <HStack p="3" justifyContent="space-between" alignItems="center">
+        <Icon as={ FontAwesome } name={ iconName } mr="2" size="sm" flexGrow={ 1 } { ...iconProps } />
         <HStack flex={ 10 }>
         { children }
         </HStack>
       </HStack>
     </Pressable>
   )
-})
+}
 
 class Summary extends Component {
 
@@ -162,7 +166,7 @@ class Summary extends Component {
           }
 
           return (
-            <Text color="#757575" note key={ `item:${index}:adjustments:${i}` }>{ label.join(' ') }</Text>
+            <Text color="#757575" key={ `item:${index}:adjustments:${i}` }>{ label.join(' ') }</Text>
           )
         })
       }) }
@@ -324,41 +328,46 @@ class Summary extends Component {
         </View>
         <View style={{ flex: 0 }}>
           { this.props.fulfillmentMethod === 'collection' && (
-          <Pressable p="2" style={ [styles.btn]  }
-            // Disable interaction while loading
-            onPress={ () => !this.props.isLoading && this.setState({ isCollectionDisclaimerModalVisible: true }) }>
-            <Icon as={FontAwesome} name="info-circle" style={{ fontSize: 22, marginRight: 15, color: '#3498db' }} />
-            <Text style={{ flex: 2, fontSize: 14, color: '#3498db' }}>{ this.props.t('FULFILLMENT_METHOD.collection') }</Text>
-            <Text note style={{ flex: 1, textAlign: 'right' }}>{ this.props.t('LEARN_MORE') }</Text>
-          </Pressable>
+          <ActionButton
+            onPress={ () => this.setState({ isCollectionDisclaimerModalVisible: true }) }
+            iconName="info-circle"
+            iconColor="primary.500">
+            <Text style={{ flex: 2 }} color="primary.500" fontSize="sm">{ this.props.t('FULFILLMENT_METHOD.collection') }</Text>
+            <Text style={{ flex: 1, textAlign: 'right' }}>{ this.props.t('LEARN_MORE') }</Text>
+          </ActionButton>
           )}
           <ActionButton
             onPress={ () => this.props.showTimingModal(true) }
             iconName="clock-o">
-            <Text style={{ flex: 2, fontSize: 14 }}>{ this.props.timeAsText }</Text>
-            <Text note style={{ flex: 1, textAlign: 'right' }}>{ this.props.t('EDIT') }</Text>
+            <Text style={{ flex: 2 }} fontSize="sm">{ this.props.timeAsText }</Text>
+            <Text style={{ flex: 1, textAlign: 'right' }}>{ this.props.t('EDIT') }</Text>
           </ActionButton>
           { (this.props.fulfillmentMethod === 'delivery' && this.props.cart.shippingAddress) && (
           <ActionButton
             onPress={ () => this.props.navigation.navigate('AccountAddresses', { action: 'cart', cart }) }
             iconName="map-marker">
-            <Text numberOfLines={ 2 } ellipsizeMode="tail" style={{ flex: 2, fontSize: 14 }}>
+            <Text numberOfLines={ 2 } ellipsizeMode="tail" style={{ flex: 2 }} fontSize="sm">
               { this.props.cart.shippingAddress.streetAddress }
             </Text>
-            <Text note style={{ flex: 1, textAlign: 'right' }}>{ this.props.t('EDIT') }</Text>
+            <Text style={{ flex: 1, textAlign: 'right' }}>{ this.props.t('EDIT') }</Text>
           </ActionButton>
           )}
-          <HStack><View flex={1} style={styles.rightBorder} >
-            <ActionButton
-            onPress={ () => this.setState({ showTipModal: true }) }
-            iconName="heart">
-            <Text style={{ flex: 2, fontSize: 14 }}>{this.props.t('TIP')}: {formatPrice(tipAmount , { mantissa:0 })}</Text>
-          </ActionButton></View>
-            <View flex={1}><ActionButton
-            onPress={ () => this.setState({ isCouponModalVisible: true }) }
-            iconName="tag">
-            <Text note style={{ flex: 1, textAlign: 'right' }}>{ this.props.t('ADD_COUPON') }</Text>
-          </ActionButton></View></HStack>
+          <HStack>
+            <View flex={1} style={styles.rightBorder} >
+              <ActionButton
+                onPress={ () => this.setState({ showTipModal: true }) }
+                iconName="heart">
+                <Text style={{ flex: 2 }} fontSize="sm">{this.props.t('TIP')}: {formatPrice(tipAmount , { mantissa:0 })}</Text>
+              </ActionButton>
+            </View>
+            <View flex={1}>
+              <ActionButton
+                onPress={ () => this.setState({ isCouponModalVisible: true }) }
+                iconName="tag">
+                <Text style={{ flex: 1, textAlign: 'right' }}>{ this.props.t('ADD_COUPON') }</Text>
+              </ActionButton>
+            </View>
+          </HStack>
           { reusablePackagingAction && (
           <HStack p="3" justifyContent="space-between" alignItems="center" style={ styles.btnGrey }>
             <Checkbox
@@ -425,11 +434,6 @@ class Summary extends Component {
 }
 
 const styles = StyleSheet.create({
-  btn: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
   btnGrey: {
     borderTopColor: '#d7d7d7',
     borderTopWidth: StyleSheet.hairlineWidth,
