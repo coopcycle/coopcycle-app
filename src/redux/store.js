@@ -13,7 +13,7 @@ import HttpMiddleware from './middlewares/HttpMiddleware'
 import NetInfoMiddleware from './middlewares/NetInfoMiddleware'
 import PushNotificationMiddleware from './middlewares/PushNotificationMiddleware'
 import SentryMiddleware from './middlewares/SentryMiddleware'
-import { ringOnNewOrderCreated } from './Restaurant/middlewares'
+import { notifyOnNewOrderCreated } from './Restaurant/middlewares'
 import { ringOnTaskListUpdated } from './Courier/taskMiddlewares'
 import CentrifugoMiddleware from './middlewares/CentrifugoMiddleware'
 import { filterExpiredCarts } from './Checkout/middlewares';
@@ -34,7 +34,7 @@ if (!Config.DEFAULT_SERVER) {
   middlewares.push(...[
     GeolocationMiddleware,
     BluetoothMiddleware,
-    ringOnNewOrderCreated,
+    notifyOnNewOrderCreated,
     ringOnTaskListUpdated,
   ])
 }

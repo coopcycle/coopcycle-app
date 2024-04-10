@@ -1,6 +1,6 @@
 import { applyMiddleware, combineReducers, createStore } from 'redux'
 import thunk from 'redux-thunk'
-import { ringOnNewOrderCreated } from '../middlewares'
+import { notifyOnNewOrderCreated } from '../middlewares'
 import { loadOrderSuccess, loadOrdersSuccess } from '../actions'
 import { message as wsMessage } from '../../middlewares/CentrifugoMiddleware/actions'
 import restaurantReducer from '../reducers'
@@ -31,7 +31,7 @@ describe('ringOnNewOrderCreated', () => {
       restaurant: restaurantReducer,
     })
 
-    const store = createStore(reducer, preloadedState, applyMiddleware(ringOnNewOrderCreated))
+    const store = createStore(reducer, preloadedState, applyMiddleware(notifyOnNewOrderCreated))
 
     store.dispatch(loadOrdersSuccess([
       { '@id': '/api/orders/1', state: 'new' },
@@ -66,7 +66,7 @@ describe('ringOnNewOrderCreated', () => {
       restaurant: restaurantReducer,
     })
 
-    const store = createStore(reducer, preloadedState, applyMiddleware(ringOnNewOrderCreated))
+    const store = createStore(reducer, preloadedState, applyMiddleware(notifyOnNewOrderCreated))
 
     store.dispatch(loadOrderSuccess(
       { '@id': '/api/orders/1', state: 'new' }
@@ -108,7 +108,7 @@ describe('ringOnNewOrderCreated', () => {
       restaurant: restaurantReducer,
     })
 
-    const store = createStore(reducer, preloadedState, applyMiddleware(thunk, ringOnNewOrderCreated))
+    const store = createStore(reducer, preloadedState, applyMiddleware(thunk, notifyOnNewOrderCreated))
 
     store.dispatch(wsMessage(
       {
@@ -154,7 +154,7 @@ describe('ringOnNewOrderCreated', () => {
       restaurant: restaurantReducer,
     })
 
-    const store = createStore(reducer, preloadedState, applyMiddleware(ringOnNewOrderCreated))
+    const store = createStore(reducer, preloadedState, applyMiddleware(notifyOnNewOrderCreated))
 
     store.dispatch(loadOrderSuccess(
       { '@id': '/api/orders/1', state: 'new' }

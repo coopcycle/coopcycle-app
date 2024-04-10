@@ -24,7 +24,7 @@ import {
   LOGIN_BY_EMAIL_ERRORS,
   LOGOUT_SUCCESS,
   ONBOARDED,
-  PUSH_NOTIFICATION,
+  ADD_NOTIFICATION,
   REGISTER_PUSH_NOTIFICATION_TOKEN,
   REGISTRATION_ERRORS,
   RESET_MODAL,
@@ -48,6 +48,8 @@ import {
   SET_USER,
 } from './actions'
 import Config from 'react-native-config';
+import { EVENT as EVENT_ORDER } from '../../domain/Order';
+import { EVENT as EVENT_TASK_COLLECTION } from '../../domain/TaskCollection';
 
 const initialState = {
   customBuild: !!Config.DEFAULT_SERVER,
@@ -140,11 +142,39 @@ export default (state = initialState, action = {}) => {
         isCentrifugoConnected: false,
       }
 
-    case PUSH_NOTIFICATION:
-      return {
-        ...state,
-        notifications: state.notifications.concat([action.payload]),
+    case ADD_NOTIFICATION: {
+      // can happen on android where we receive both notification+data and data only messages;
+      // plus centrifugo messages
+      const isAlreadyExist =
+        state.notifications.findIndex(notification => {
+          const isSameEvent = notification.event === action.payload.event;
+
+          if (isSameEvent) {
+            switch (notification.event) {
+              case EVENT_ORDER.CREATED:
+                return (
+                  notification.params.order.id ===
+                  action.payload.params.order.id
+                );
+              case EVENT_TASK_COLLECTION.CHANGED:
+                return false;
+              default:
+                return false;
+            }
+          } else {
+            return false;
+          }
+        }) !== -1;
+
+      if (isAlreadyExist) {
+        return state;
+      } else {
+        return {
+          ...state,
+          notifications: state.notifications.concat([action.payload]),
+        }
       }
+    }
 
     case CLEAR_NOTIFICATIONS:
       return {

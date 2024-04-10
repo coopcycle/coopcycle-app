@@ -4,24 +4,31 @@ import tracker from '../analytics/Tracker';
 import analyticsEvent from '../analytics/Event';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  pushNotification,
+  addNotification,
   registerPushNotificationToken,
 } from '../redux/App/actions';
 import { loadOrder, loadOrderAndNavigate } from '../redux/Restaurant/actions';
 import NavigationHolder from '../NavigationHolder';
 import moment from 'moment/moment';
 import { loadTasks } from '../redux/Courier';
-import { message as wsMessage } from '../redux/middlewares/CentrifugoMiddleware/actions';
 import { selectCurrentRoute } from '../redux/App/selectors';
+import { EVENT as EVENT_ORDER } from '../domain/Order';
+import { EVENT as EVENT_TASK_COLLECTION } from '../domain/TaskCollection';
 
 function useOnRegister() {
   const dispatch = useDispatch();
 
   return token => {
+    console.log('useOnRegister token:', token);
     dispatch(registerPushNotificationToken(token));
   };
 }
 
+/**
+ * called when a user taps on a notification in the notification center
+ * android: only called when the app is in the background
+ * ios: called when the app is in the foreground or background (?)
+ */
 function useOnNotification() {
   const currentRoute = useSelector(selectCurrentRoute);
   const dispatch = useDispatch();
@@ -35,9 +42,11 @@ function useOnNotification() {
   };
 
   return message => {
+    console.log('useOnNotification message:', message);
+
     const { event } = message.data;
 
-    if (event && event.name === 'order:created') {
+    if (event && event.name === EVENT_ORDER.CREATED) {
       tracker.logEvent(
         analyticsEvent.restaurant._category,
         analyticsEvent.restaurant.orderCreatedMessage,
@@ -51,7 +60,7 @@ function useOnNotification() {
       dispatch(loadOrderAndNavigate(order));
     }
 
-    if (event && event.name === 'tasks:changed') {
+    if (event && event.name === EVENT_TASK_COLLECTION.CHANGED) {
       tracker.logEvent(
         analyticsEvent.courier._category,
         analyticsEvent.courier.tasksChangedMessage,
@@ -60,7 +69,7 @@ function useOnNotification() {
 
       if (message.foreground) {
         dispatch(
-          pushNotification('tasks:changed', {
+          addNotification(event.name, {
             date: event.data.date,
           }),
         );
@@ -72,20 +81,25 @@ function useOnNotification() {
   };
 }
 
+/**
+ * called when a push notification is received while the app is in the foreground
+ * android only!
+ */
 function useOnBackgroundMessage() {
   const dispatch = useDispatch();
 
   return message => {
+    console.log('useOnBackgroundMessage message:', message.data);
+
     const { event } = message.data;
-    if (event && event.name === 'order:created') {
+
+    if (event && event.name === EVENT_ORDER.CREATED) {
       dispatch(
         loadOrder(event.data.order, order => {
           if (order) {
-            // Simulate a WebSocket message
             dispatch(
-              wsMessage({
-                name: 'order:created',
-                data: { order },
+              addNotification(event.name, {
+                order: order,
               }),
             );
           }

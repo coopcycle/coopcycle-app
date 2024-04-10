@@ -1,7 +1,7 @@
 import { AppState } from 'react-native'
 import _ from 'lodash'
 
-import { LOGOUT_SUCCESS, pushNotification } from '../App/actions'
+import { LOGOUT_SUCCESS, addNotification } from '../App/actions'
 import { LOAD_TASKS_SUCCESS } from './taskActions'
 import { selectTasks } from './taskSelectors'
 
@@ -47,7 +47,7 @@ export const ringOnTaskListUpdated = ({ getState, dispatch }) => {
           _.differenceWith(prevTasks, tasks, (a, b) => a['@id'] === b['@id'])
 
         if (addedTasks.length > 0 || removedTasks.length > 0) {
-          dispatch(pushNotification('tasks:changed', {
+          dispatch(addNotification('tasks:changed', {
             date: state.date,
             added: addedTasks,
             removed: removedTasks,

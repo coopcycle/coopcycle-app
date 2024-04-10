@@ -7,7 +7,6 @@ import { Buffer } from 'buffer';
 import DropdownHolder from '../../DropdownHolder';
 import NavigationHolder from '../../NavigationHolder';
 
-import { pushNotification } from '../App/actions';
 import { encodeForPrinter } from '../../utils/order';
 import * as SunmiPrinterLibrary from '@mitsuharu/react-native-sunmi-printer-library';
 
@@ -387,23 +386,6 @@ export function loadOrderAndNavigate(order, cb) {
           cb();
         }
       });
-  };
-}
-
-export function loadOrderAndPushNotification(order) {
-  return function (dispatch, getState) {
-    const { app } = getState();
-    const { httpClient } = app;
-
-    dispatch(loadOrderRequest());
-
-    return httpClient
-      .get(order)
-      .then(res => {
-        dispatch(loadOrderSuccess(res));
-        dispatch(pushNotification('order:created', { order: res }));
-      })
-      .catch(e => dispatch(loadOrderFailure(e)));
   };
 }
 
