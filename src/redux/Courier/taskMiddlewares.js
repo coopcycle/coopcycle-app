@@ -49,7 +49,7 @@ export const ringOnTaskListUpdated = ({ getState, dispatch }) => {
 
         if (addedTasks.length > 0 || removedTasks.length > 0) {
           dispatch(addNotification(EVENT_TASK_COLLECTION.CHANGED, {
-            date: state.date,
+            date: date,
             added: addedTasks,
             removed: removedTasks,
           }))
