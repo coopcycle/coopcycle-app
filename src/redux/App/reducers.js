@@ -157,7 +157,7 @@ export default (state = initialState, action = {}) => {
                   action.payload.params.order.id
                 );
               case EVENT_TASK_COLLECTION.CHANGED:
-                return false;
+                return (notification.params.date === action.payload.params.date)
               default:
                 return false;
             }

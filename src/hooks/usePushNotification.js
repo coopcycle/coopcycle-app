@@ -93,18 +93,31 @@ function useOnBackgroundMessage() {
 
     const { event } = message.data;
 
-    if (event && event.name === EVENT_ORDER.CREATED) {
-      dispatch(
-        loadOrder(event.data.order, order => {
-          if (order) {
-            dispatch(
-              addNotification(event.name, {
-                order: order,
-              }),
-            );
-          }
-        }),
-      );
+    if (event) {
+      switch (event.name) {
+        case EVENT_ORDER.CREATED:
+          dispatch(
+            loadOrder(event.data.order, order => {
+              if (order) {
+                dispatch(
+                  addNotification(event.name, {
+                    order: order,
+                  }),
+                );
+              }
+            }),
+          );
+          break;
+        case EVENT_TASK_COLLECTION.CHANGED:
+          dispatch(
+            addNotification(event.name, {
+              date: event.data.date,
+            }),
+          );
+          break;
+        default:
+          break;
+      }
     }
   };
 }
