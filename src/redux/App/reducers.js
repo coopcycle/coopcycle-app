@@ -321,12 +321,19 @@ export default (state = initialState, action = {}) => {
         isInternetReachable: action.payload,
       }
 
-    case REGISTER_PUSH_NOTIFICATION_TOKEN:
-      return {
-        ...state,
-        pushNotificationToken: action.payload,
-        pushNotificationTokenSaved: false,
+    case REGISTER_PUSH_NOTIFICATION_TOKEN: {
+      const existingToken = state.pushNotificationToken
+
+      if (existingToken === action.payload) {
+        return state
+      } else {
+        return {
+          ...state,
+          pushNotificationToken: action.payload,
+          pushNotificationTokenSaved: false,
+        }
       }
+    }
 
     case SAVE_PUSH_NOTIFICATION_TOKEN_SUCCESS:
       return {
