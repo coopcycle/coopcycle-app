@@ -2,10 +2,15 @@
 /*
  * App reducer, dealing with non-domain specific state
  */
-import { CONNECTED, DISCONNECTED } from '../middlewares/CentrifugoMiddleware'
+import {
+  CENTRIFUGO_MESSAGE,
+  CONNECTED,
+  DISCONNECTED,
+} from '../middlewares/CentrifugoMiddleware'
 import {
   ACCEPT_PRIVACY_POLICY,
   ACCEPT_TERMS_AND_CONDITIONS,
+  ADD_NOTIFICATION,
   AUTHENTICATION_FAILURE,
   AUTHENTICATION_REQUEST,
   AUTHENTICATION_SUCCESS,
@@ -15,6 +20,7 @@ import {
   CLEAR_SELECT_SERVER_ERROR,
   CLOSE_MODAL,
   DELETE_PUSH_NOTIFICATION_TOKEN_SUCCESS,
+  FOREGROUND_PUSH_NOTIFICATION,
   LOAD_PRIVACY_POLICY_FAILURE,
   LOAD_PRIVACY_POLICY_REQUEST,
   LOAD_PRIVACY_POLICY_SUCCESS,
@@ -24,7 +30,6 @@ import {
   LOGIN_BY_EMAIL_ERRORS,
   LOGOUT_SUCCESS,
   ONBOARDED,
-  ADD_NOTIFICATION,
   REGISTER_PUSH_NOTIFICATION_TOKEN,
   REGISTRATION_ERRORS,
   RESET_MODAL,
@@ -102,6 +107,39 @@ const initialState = {
   isSpinnerDelayEnabled: true,
 }
 
+function updateNotifications(state, event, params) {
+  // we use multiple channels to receive notifications (centrifugo; push notifications),
+  // so the notification might be already in the store
+  const isAlreadyExist =
+    state.notifications.findIndex(notification => {
+      const isSameEvent = notification.event === event;
+
+      if (isSameEvent) {
+        switch (notification.event) {
+          case EVENT_ORDER.CREATED:
+            return (
+              notification.params.order.id === params.order.id
+            );
+          case EVENT_TASK_COLLECTION.CHANGED:
+            return (notification.params.date === params.date)
+          default:
+            return false;
+        }
+      } else {
+        return false;
+      }
+    }) !== -1;
+
+  if (isAlreadyExist) {
+    return state;
+  } else {
+    return {
+      ...state,
+      notifications: state.notifications.concat([{ event, params }]),
+    }
+  }
+}
+
 export default (state = initialState, action = {}) => {
   switch (action.type) {
     case SET_BASE_URL:
@@ -142,38 +180,29 @@ export default (state = initialState, action = {}) => {
         isCentrifugoConnected: false,
       }
 
-    case ADD_NOTIFICATION: {
-      // can happen on android where we receive both notification+data and data only messages;
-      // plus centrifugo messages
-      const isAlreadyExist =
-        state.notifications.findIndex(notification => {
-          const isSameEvent = notification.event === action.payload.event;
+    case CENTRIFUGO_MESSAGE: {
+      const { name, data } = action.payload
 
-          if (isSameEvent) {
-            switch (notification.event) {
-              case EVENT_ORDER.CREATED:
-                return (
-                  notification.params.order.id ===
-                  action.payload.params.order.id
-                );
-              case EVENT_TASK_COLLECTION.CHANGED:
-                return (notification.params.date === action.payload.params.date)
-              default:
-                return false;
-            }
-          } else {
-            return false;
-          }
-        }) !== -1;
-
-      if (isAlreadyExist) {
-        return state;
-      } else {
-        return {
-          ...state,
-          notifications: state.notifications.concat([action.payload]),
-        }
+      switch (name) {
+        case EVENT_ORDER.CREATED:
+          return updateNotifications(state, name, data);
+        // case EVENT_TASK_COLLECTION.CHANGED:
+        // this event is currently handled by taskMiddlewares; maybe we should move it here
+        default:
+          return state
       }
+    }
+
+    case FOREGROUND_PUSH_NOTIFICATION: {
+      const { event, params } = action.payload
+
+      return updateNotifications(state, event, params);
+    }
+
+    case ADD_NOTIFICATION: {
+      const { event, params } = action.payload
+
+      return updateNotifications(state, event, params);
     }
 
     case CLEAR_NOTIFICATIONS:

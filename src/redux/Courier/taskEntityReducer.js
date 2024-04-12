@@ -17,7 +17,7 @@ import {
   LOGOUT_SUCCESS,
   SET_USER,
 } from '../App/actions'
-import { MESSAGE } from '../middlewares/CentrifugoMiddleware'
+import { CENTRIFUGO_MESSAGE } from '../middlewares/CentrifugoMiddleware'
 import _ from 'lodash'
 
 /*
@@ -189,7 +189,7 @@ export const tasksEntityReducer = (state = tasksEntityInitialState, action = {})
       }
       return state
 
-    case MESSAGE:
+    case CENTRIFUGO_MESSAGE:
       return processWsMsg(state, action)
 
     case ADD_SIGNATURE:

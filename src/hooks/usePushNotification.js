@@ -4,9 +4,9 @@ import tracker from '../analytics/Tracker';
 import analyticsEvent from '../analytics/Event';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  addNotification,
+  foregroundPushNotification,
   registerPushNotificationToken,
-} from '../redux/App/actions';
+} from '../redux/App/actions'
 import { loadOrder, loadOrderAndNavigate } from '../redux/Restaurant/actions';
 import NavigationHolder from '../NavigationHolder';
 import moment from 'moment/moment';
@@ -69,7 +69,7 @@ function useOnNotification() {
 
       if (message.foreground) {
         dispatch(
-          addNotification(event.name, {
+          foregroundPushNotification(event.name, {
             date: event.data.date,
           }),
         );
@@ -100,7 +100,7 @@ function useOnBackgroundMessage() {
             loadOrder(event.data.order, order => {
               if (order) {
                 dispatch(
-                  addNotification(event.name, {
+                  foregroundPushNotification(event.name, {
                     order: order,
                   }),
                 );
@@ -110,7 +110,7 @@ function useOnBackgroundMessage() {
           break;
         case EVENT_TASK_COLLECTION.CHANGED:
           dispatch(
-            addNotification(event.name, {
+            foregroundPushNotification(event.name, {
               date: event.data.date,
             }),
           );

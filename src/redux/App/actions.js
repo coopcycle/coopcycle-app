@@ -39,8 +39,12 @@ export const DELETE_PUSH_NOTIFICATION_TOKEN_SUCCESS = '@app/DELETE_PUSH_NOTIFICA
 
 export const LOGIN = '@app/LOGIN'
 export const SET_LOADING = '@app/SET_LOADING'
+
+export const FOREGROUND_PUSH_NOTIFICATION = '@app/FOREGROUND_PUSH_NOTIFICATION'
+
 export const ADD_NOTIFICATION = '@app/ADD_NOTIFICATION'
 export const CLEAR_NOTIFICATIONS = '@app/CLEAR_NOTIFICATIONS'
+
 export const AUTHENTICATION_REQUEST = '@app/AUTHENTICATION_REQUEST'
 export const AUTHENTICATION_SUCCESS = '@app/AUTHENTICATION_SUCCESS'
 export const AUTHENTICATION_FAILURE = '@app/AUTHENTICATION_FAILURE'
@@ -94,6 +98,8 @@ export const SET_SPINNER_DELAY_ENABLED = '@app/SET_IS_SPINNER_DELAY_ENABLED'
  */
 
 export const setLoading = createAction(SET_LOADING)
+
+export const foregroundPushNotification = createAction(FOREGROUND_PUSH_NOTIFICATION, (event, params = {}) => ({ event, params }))
 
 export const addNotification = createAction(ADD_NOTIFICATION, (event, params = {}) => ({ event, params }))
 export const clearNotifications = createAction(CLEAR_NOTIFICATIONS)

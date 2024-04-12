@@ -68,7 +68,7 @@ import {
   LOAD_MY_RESTAURANTS_SUCCESS,
 } from '../App/actions';
 
-import { MESSAGE } from '../middlewares/CentrifugoMiddleware/actions';
+import { CENTRIFUGO_MESSAGE } from '../middlewares/CentrifugoMiddleware/actions';
 
 import moment from 'moment';
 import _ from 'lodash';
@@ -472,7 +472,7 @@ export default (state = initialState, action = {}) => {
         isSunmiPrinter: true,
       };
 
-    case MESSAGE:
+    case CENTRIFUGO_MESSAGE:
       if (action.payload.name && action.payload.data) {
         const { name, data } = action.payload;
 

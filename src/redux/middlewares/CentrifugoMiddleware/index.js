@@ -2,10 +2,10 @@ import Centrifuge from 'centrifuge'
 import parseUrl from 'url-parse'
 
 import {
+  CENTRIFUGO_MESSAGE,
   CONNECT,
   CONNECTED,
   DISCONNECTED,
-  MESSAGE,
   connected,
   disconnected,
   message,
@@ -81,7 +81,7 @@ export default ({ getState, dispatch }) => {
 }
 
 export {
-  MESSAGE,
+  CENTRIFUGO_MESSAGE,
   CONNECTED,
   DISCONNECTED,
   connected,
