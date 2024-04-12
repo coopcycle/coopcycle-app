@@ -110,6 +110,7 @@
     "react-navigation-header-buttons": "^11.2.1",
     "react-query": "^3.39.3",
     "react-redux": "^7.2.8",
+    "recursive-diff": "^1.0.9",
     "reduce-reducers": "^1.0.4",
     "redux": "^4.2.1",
     "redux-actions": "^2.6.5",

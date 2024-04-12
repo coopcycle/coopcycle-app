@@ -1,10 +1,10 @@
 import { applyMiddleware, createStore } from 'redux'
 import thunk from 'redux-thunk'
 import ReduxAsyncQueue from 'redux-async-queue'
-import { composeWithDevTools } from 'redux-devtools-extension'
-import { createLogger } from 'redux-logger'
 
 import { persistStore } from 'redux-persist'
+
+import Config from 'react-native-config';
 
 import reducers from './reducers'
 import GeolocationMiddleware from './middlewares/GeolocationMiddleware'
@@ -16,7 +16,6 @@ import SentryMiddleware from './middlewares/SentryMiddleware'
 import { ringOnTaskListUpdated } from './Courier/taskMiddlewares'
 import CentrifugoMiddleware from './middlewares/CentrifugoMiddleware'
 import { filterExpiredCarts } from './Checkout/middlewares';
-import Config from 'react-native-config';
 
 const middlewares = [
   thunk,
@@ -37,13 +36,9 @@ if (!Config.DEFAULT_SERVER) {
   ])
 }
 
-if (__DEV__) {
-  middlewares.push(createLogger({ collapsed: true }))
-}
-
 const middlewaresProxy = (middlewaresList) => {
   if (__DEV__) {
-    return composeWithDevTools(applyMiddleware(...middlewaresList), require('../../ReactotronConfig').default.createEnhancer())
+    return require('./middlewares/devSetup').default(middlewaresList)
   } else {
     return applyMiddleware(...middlewaresList)
   }

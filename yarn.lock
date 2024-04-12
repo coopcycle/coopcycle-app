@@ -13228,6 +13228,11 @@ recast@^0.21.0:
     source-map "~0.6.1"
     tslib "^2.0.1"
 
+recursive-diff@^1.0.9:
+  version "1.0.9"
+  resolved "https://registry.yarnpkg.com/recursive-diff/-/recursive-diff-1.0.9.tgz#e617cbfcf125d4d73954c06997289c2d3321d5f7"
+  integrity sha512-5mqpskzvXDo5Vy29Vj8tH30a0+XBmY11aqWGoN/uB94UHRwndX2EuPvH+WtbqOYkrwAF718/lDo6U4CB1qSSqQ==
+
 recyclerlistview@^4.0.0:
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/recyclerlistview/-/recyclerlistview-4.2.0.tgz#a140149aaa470c9787a1426452651934240d69ef"
