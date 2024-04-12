@@ -113,6 +113,7 @@ export default function DashboardPage({ navigation, route }) {
   const _checkSystemVolume = useCallback(() => {
     RNSound.getSystemVolume(volume => {
       if (volume < 0.4) {
+        setWasAlertShown(true);
         Alert.alert(
           t('RESTAURANT_SOUND_ALERT_TITLE'),
           t('RESTAURANT_SOUND_ALERT_MESSAGE'),
@@ -120,8 +121,6 @@ export default function DashboardPage({ navigation, route }) {
             {
               text: t('RESTAURANT_SOUND_ALERT_CONFIRM'),
               onPress: () => {
-                setWasAlertShown(true);
-
                 // If would be cool to open the device settings directly,
                 // but it is not (yet) possible to sent an Intent with extra flags
                 // https://stackoverflow.com/questions/57514207/open-settings-using-linking-sendintent
@@ -134,7 +133,6 @@ export default function DashboardPage({ navigation, route }) {
             {
               text: t('CANCEL'),
               style: 'cancel',
-              onPress: () => setWasAlertShown(true),
             },
           ],
         );
