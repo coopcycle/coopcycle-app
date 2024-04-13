@@ -41,6 +41,11 @@ export const selectSpecialOpeningHoursSpecification = createSelector(
   },
 );
 
+export const selectAutoAcceptOrdersEnabled = createSelector(
+  selectRestaurant,
+  restaurant => restaurant?.autoAcceptOrdersEnabled ?? false,
+);
+
 export const selectNewOrders = createSelector(
   selectDate,
   _selectOrders,
@@ -117,4 +122,32 @@ export const selectFulfilledOrders = createSelector(
   _selectOrders,
   (date, orders) =>
     _.filter(orders, o => matchesDate(o, date) && o.state === STATE.FULFILLED),
+);
+
+export const selectPrinter = state => state.restaurant.printer;
+
+const selectIsSunmiPrinter = state => state.restaurant.isSunmiPrinter;
+
+export const selectIsPrinterConnected = createSelector(
+  selectPrinter,
+  selectIsSunmiPrinter,
+  (printer, isSunmiPrinter) => Boolean(printer) || isSunmiPrinter,
+);
+
+export const selectOrderIdsToPrint = state => state.restaurant.orderIdsToPrint;
+
+export const selectPrintingOrderId = state => state.restaurant.printingOrderId;
+
+const selectOrderId = (state, id) => id;
+
+export const selectOrderById = createSelector(
+  _selectOrders,
+  selectOrderId,
+  (orders, id) => {
+    if (id) {
+      return orders.find(order => order['@id'] === id);
+    } else {
+      return undefined;
+    }
+  },
 );

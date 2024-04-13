@@ -1,3 +1,6 @@
+import moment from 'moment';
+import _ from 'lodash';
+
 import {
   ACCEPT_ORDER_FAILURE,
   ACCEPT_ORDER_REQUEST,
@@ -59,6 +62,9 @@ import {
   SUNMI_PRINTER_DETECTED,
   UPDATE_LOOPEAT_FORMATS_SUCCESS,
   finishPreparing,
+  printFulfilled,
+  printPending,
+  printRejected,
   startPreparing,
 } from './actions';
 
@@ -70,8 +76,7 @@ import {
 
 import { CENTRIFUGO_MESSAGE } from '../middlewares/CentrifugoMiddleware/actions';
 
-import moment from 'moment';
-import _ from 'lodash';
+import { EVENT as EVENT_ORDER, STATE } from '../../domain/Order';
 
 const initialState = {
   fetchError: null, // Error object describing the error
@@ -92,6 +97,8 @@ const initialState = {
   isSunmiPrinter: false,
   bluetoothStarted: false,
   loopeatFormats: {},
+  orderIdsToPrint: [],
+  printingOrderId: null,
 };
 
 const spliceOrders = (state, payload) => {
@@ -171,6 +178,21 @@ const spliceProductOptions = (state, payload) => {
 
   return state;
 };
+
+function updateOrdersToPrint(state, orderId) {
+  if (state.restaurant.autoAcceptOrdersEnabled) {
+    if (state.orderIdsToPrint.includes(orderId)) {
+      return state;
+    } else {
+      return {
+        ...state,
+        orderIdsToPrint: state.orderIdsToPrint.concat(orderId),
+      };
+    }
+  } else {
+    return state;
+  }
+}
 
 export default (state = initialState, action = {}) => {
   let newState;
@@ -477,19 +499,52 @@ export default (state = initialState, action = {}) => {
         const { name, data } = action.payload;
 
         switch (name) {
-          case 'order:created':
+          case EVENT_ORDER.CREATED:
           case 'order:picked':
-          case 'order:state_changed':
             return {
               ...state,
               orders: addOrReplace(state, data.order),
             };
+          case EVENT_ORDER.STATE_CHANGED: {
+            const updatedOrdersState = {
+              ...state,
+              orders: addOrReplace(state, data.order),
+            };
+
+            if (data.order.state === STATE.ACCEPTED) {
+              return updateOrdersToPrint(updatedOrdersState, data.order['@id']);
+            } else {
+              return updatedOrdersState;
+            }
+          }
+
           default:
             break;
         }
       }
 
       return state;
+
+    case printPending.type:
+      return {
+        ...state,
+        printingOrderId: action.payload['@id'],
+      };
+
+    case printFulfilled.type:
+      return {
+        ...state,
+        orderIdsToPrint: state.orderIdsToPrint.filter(
+          orderId => orderId !== action.payload['@id'],
+        ),
+        printingOrderId: null,
+      };
+
+    case printRejected.type:
+      return {
+        ...state,
+        printingOrderId: null,
+      };
 
     case BLUETOOTH_STARTED:
       return {

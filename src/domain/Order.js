@@ -10,4 +10,6 @@ export const STATE = {
 
 export const EVENT = {
   CREATED: 'order:created',
+  ACCEPTED: 'order:accepted',
+  STATE_CHANGED: 'order:state_changed',
 };

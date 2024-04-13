@@ -4,12 +4,12 @@ import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import {
   selectAcceptedOrders,
+  selectAutoAcceptOrdersEnabled,
   selectCancelledOrders,
   selectFulfilledOrders,
   selectNewOrders,
   selectPickedOrders,
   selectReadyOrders,
-  selectRestaurant,
   selectStartedOrders,
 } from '../../../redux/Restaurant/selectors';
 import OrderListItem from './OrderListItem';
@@ -17,7 +17,7 @@ import OrderListSectionHeader from './OrderListSectionHeader';
 import { View } from 'native-base';
 
 export default function OrderList({ onItemClick }) {
-  const restaurant = useSelector(selectRestaurant);
+  const autoAcceptOrdersEnabled = useSelector(selectAutoAcceptOrdersEnabled);
 
   const newOrders = useSelector(selectNewOrders);
   const acceptedOrders = useSelector(selectAcceptedOrders);
@@ -30,7 +30,7 @@ export default function OrderList({ onItemClick }) {
   const { t } = useTranslation();
 
   const sections = [
-    ...(restaurant.autoAcceptOrdersEnabled
+    ...(autoAcceptOrdersEnabled
       ? []
       : [
           {

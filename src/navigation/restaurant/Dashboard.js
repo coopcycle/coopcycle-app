@@ -31,6 +31,7 @@ import {
   selectIsLoading,
 } from '../../redux/App/selectors';
 import PushNotification from '../../notifications';
+import OrdersToPrintQueue from './components/OrdersToPrintQueue';
 
 const RNSound = NativeModules.RNSound;
 
@@ -177,6 +178,7 @@ export default function DashboardPage({ navigation, route }) {
         />
       )}
       <WebSocketIndicator connected={isCentrifugoConnected} />
+      <OrdersToPrintQueue />
       <DatePickerHeader
         date={date}
         onCalendarClick={() => navigate('RestaurantDate')}

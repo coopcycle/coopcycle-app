@@ -9,7 +9,7 @@ import { selectNotifications } from '../redux/App/selectors';
 import { EVENT as EVENT_ORDER } from '../domain/Order';
 import { EVENT as EVENT_TASK_COLLECTION } from '../domain/TaskCollection';
 import { selectTasksChangedAlertSound } from '../redux/Courier';
-import { selectRestaurant } from '../redux/Restaurant/selectors';
+import { selectAutoAcceptOrdersEnabled } from '../redux/Restaurant/selectors';
 
 /**
  * This component is used
@@ -35,16 +35,12 @@ export default function NotificationHandler() {
     }
   });
 
-  const restaurant = useSelector(selectRestaurant);
+  const autoAcceptOrdersEnabled = useSelector(selectAutoAcceptOrdersEnabled);
 
   const notificationsToDisplay = allNotifications.filter(notification => {
     switch (notification.event) {
       case EVENT_ORDER.CREATED:
-        if (restaurant && restaurant.autoAcceptOrdersEnabled) {
-          return false;
-        } else {
-          return true;
-        }
+        return !autoAcceptOrdersEnabled;
       case EVENT_TASK_COLLECTION.CHANGED:
         return true;
       default:

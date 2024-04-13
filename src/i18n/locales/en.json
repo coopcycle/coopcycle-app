@@ -322,6 +322,7 @@
     "SCAN_FOR_PRINTERS": "Tap to scan",
     "SEARCH_WITH_ADDRESS": "Search « {{address}} »",
     "RESTAURANT_ORDER_CONNECT_PRINTER": "Connect a printer",
+    "RESTAURANT_ORDER_PRINTING": "Printing order {{number}} (#{{id}})",
     "SWIPE_TO_ACCEPT_REFUSE": "Slide to the right to accept, to the left to refuse",
     "ADD_COUPON": "Add a voucher code",
     "VOUCHER_CODE": "Voucher code",
