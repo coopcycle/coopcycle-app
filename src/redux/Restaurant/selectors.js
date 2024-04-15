@@ -3,7 +3,7 @@ import { find } from 'lodash';
 import moment from 'moment';
 import _ from 'lodash';
 import { matchesDate } from '../../utils/order';
-import { STATE } from '../../domain/Order';
+import { EVENT, STATE } from '../../domain/Order';
 
 export const selectRestaurant = state => state.restaurant.restaurant;
 export const selectDate = state => state.restaurant.date;
@@ -83,7 +83,10 @@ export const selectReadyOrders = createSelector(
     _.sortBy(
       _.filter(
         orders,
-        o => matchesDate(o, date) && o.state === STATE.READY && !o.assignedTo,
+        o =>
+          matchesDate(o, date) &&
+          o.state === STATE.READY &&
+          o.events.findIndex(ev => ev.type === EVENT.PICKED) === -1,
       ),
       [o => moment.parseZone(o.pickupExpectedAt)],
     ),
@@ -96,7 +99,9 @@ export const selectPickedOrders = createSelector(
     _.sortBy(
       _.filter(
         orders,
-        o => matchesDate(o, date) && o.state === STATE.READY && !!o.assignedTo,
+        o =>
+          matchesDate(o, date) &&
+          o.events.findIndex(ev => ev.type === EVENT.PICKED) !== -1,
       ),
       [o => moment.parseZone(o.pickupExpectedAt)],
     ),
