@@ -12,11 +12,13 @@ import {
 } from './actions'
 
 import {
+  selectBaseURL,
   selectHttpClient,
   selectHttpClientHasCredentials,
   selectIsAuthenticated,
   selectUser,
 } from '../../App/selectors'
+import { LOGOUT_SUCCESS } from '../../App/actions'
 
 const isCentrifugoAction = ({ type }) =>
   [
@@ -24,10 +26,20 @@ const isCentrifugoAction = ({ type }) =>
   ].some((x) => x === type)
 
 export default ({ getState, dispatch }) => {
+  let centrifuge = null
 
   return (next) => (action) => {
 
-    // TODO Run if connected
+    if (action.type === LOGOUT_SUCCESS) {
+      const result = next(action)
+
+      if (centrifuge && centrifuge.isConnected()) {
+        centrifuge.disconnect()
+        centrifuge = null
+      }
+
+      return result
+    }
 
     if (!isCentrifugoAction(action)) {
       return next(action)
@@ -40,7 +52,7 @@ export default ({ getState, dispatch }) => {
     }
 
     const httpClient = selectHttpClient(state)
-    const baseURL = state.app.baseURL
+    const baseURL = selectBaseURL(state)
     const user = selectUser(state)
 
     httpClient
@@ -50,7 +62,7 @@ export default ({ getState, dispatch }) => {
         const url = parseUrl(baseURL)
         const protocol = url.protocol === 'https:' ? 'wss' : 'ws'
 
-        const centrifuge = new Centrifuge(`${protocol}://${url.hostname}/centrifugo/connection/websocket`, {
+        centrifuge = new Centrifuge(`${protocol}://${url.hostname}/centrifugo/connection/websocket`, {
           debug: __DEV__,
           onRefresh: function(ctx, cb) {
             httpClient

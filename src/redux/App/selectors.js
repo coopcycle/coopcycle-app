@@ -102,9 +102,11 @@ export const selectServersWithURL = createSelector(
   },
 );
 
+export const selectBaseURL = state => state.app.baseURL;
+
 export const selectServersInSameCity = createSelector(
   selectServersWithURL,
-  state => state.app.baseURL,
+  selectBaseURL,
   (servers, baseURL) => {
     if (!baseURL) {
       return [];
