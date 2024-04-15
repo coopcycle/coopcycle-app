@@ -30,7 +30,7 @@ const MainNavigator = () => (
       name="RestaurantOrder"
       component={ screens.RestaurantOrder }
       options={ ({ route }) => ({
-        headerTitle: () => <OrderNumber order={ route.params?.order } color={ '#ffffff' } />,
+        headerTitle: () => <OrderNumber order={ route.params?.order } />,
       })}
     />
   </MainStack.Navigator>

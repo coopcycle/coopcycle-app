@@ -1,0 +1,4 @@
+Bugfixes:
+
+- Fix error when using 3D Secure.
+- Fix Bluetooth scan.

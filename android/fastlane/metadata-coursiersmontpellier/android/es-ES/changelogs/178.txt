@@ -1,0 +1,5 @@
+Mejoras:
+
+- Permite guardar las tarjetas de credito.
+- Permite buscar en las tiendas y los productos.
+- Permite completar varias tareas a la vez.

@@ -1,0 +1,1 @@
+Arregla un crash al usar la camara.

@@ -1,0 +1,1 @@
+Corrige un crash lors de la saisie d'adresse.

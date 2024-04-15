@@ -1,0 +1,4 @@
+Bugfixes & improvements:
+
+- Fix disconnect issue.
+- Improve performance.
