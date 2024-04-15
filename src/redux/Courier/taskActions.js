@@ -9,6 +9,7 @@ import i18n from '../../i18n'
 import { selectPictures, selectSignatures } from './taskSelectors'
 import tracker from '../../analytics/Tracker'
 import analyticsEvent from '../../analytics/Event'
+import { selectCurrentRoute } from '../App/selectors'
 
 /*
  * Action Types
@@ -140,6 +141,20 @@ function showAlertAfterBulk(messages) {
 /**
  * Thunk Creators
  */
+
+export function navigateAndLoadTasks(selectedDate) {
+
+  return function (dispatch, getState) {
+    const currentRoute = selectCurrentRoute(getState())
+    if (currentRoute !== 'CourierTaskList') {
+      NavigationHolder.navigate('CourierTaskList', {});
+    }
+
+    NavigationHolder.navigate('Tasks', { selectedDate })
+
+    return dispatch(loadTasks(selectedDate))
+  }
+}
 
 export function loadTasks(selectedDate, refresh = false) {
 

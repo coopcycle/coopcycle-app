@@ -1,131 +1,114 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import PushNotification from '../notifications';
 import tracker from '../analytics/Tracker';
 import analyticsEvent from '../analytics/Event';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import {
   foregroundPushNotification,
   registerPushNotificationToken,
-} from '../redux/App/actions'
+} from '../redux/App/actions';
 import { loadOrder, loadOrderAndNavigate } from '../redux/Restaurant/actions';
-import NavigationHolder from '../NavigationHolder';
 import moment from 'moment/moment';
-import { loadTasks } from '../redux/Courier';
-import { selectCurrentRoute } from '../redux/App/selectors';
 import { EVENT as EVENT_ORDER } from '../domain/Order';
 import { EVENT as EVENT_TASK_COLLECTION } from '../domain/TaskCollection';
+import { navigateAndLoadTasks } from '../redux/Courier/taskActions';
 
-function useOnRegister() {
+export default function usePushNotification() {
   const dispatch = useDispatch();
 
-  return token => {
-    console.log('useOnRegister token:', token);
-    dispatch(registerPushNotificationToken(token));
-  };
-}
+  const onRegister = useCallback(
+    token => {
+      console.log('onRegister token:', token);
+      dispatch(registerPushNotificationToken(token));
+    },
+    [dispatch],
+  );
 
-/**
- * called when a user taps on a notification in the notification center
- * android: only called when the app is in the background
- * ios: called when the app is in the foreground or background (?)
- */
-function useOnNotification() {
-  const currentRoute = useSelector(selectCurrentRoute);
-  const dispatch = useDispatch();
+  /**
+   * called when a user taps on a notification in the notification center
+   * android: notification is only shown when the app is in the background
+   * ios: notification is shown both in the foreground and background
+   */
+  const onNotification = useCallback(
+    message => {
+      console.log('onNotification message:', message);
 
-  const _onTasksChanged = date => {
-    if (currentRoute !== 'CourierTaskList') {
-      NavigationHolder.navigate('CourierTaskList', {});
-    }
+      const { event } = message.data;
 
-    dispatch(loadTasks(moment(date)));
-  };
-
-  return message => {
-    console.log('useOnNotification message:', message);
-
-    const { event } = message.data;
-
-    if (event && event.name === EVENT_ORDER.CREATED) {
-      tracker.logEvent(
-        analyticsEvent.restaurant._category,
-        analyticsEvent.restaurant.orderCreatedMessage,
-        message.foreground ? 'in_app' : 'notification_center',
-      );
-
-      const { order } = event.data;
-
-      // Here in any case, we navigate to the order that was tapped,
-      // it should have been loaded via WebSocket already.
-      dispatch(loadOrderAndNavigate(order));
-    }
-
-    if (event && event.name === EVENT_TASK_COLLECTION.CHANGED) {
-      tracker.logEvent(
-        analyticsEvent.courier._category,
-        analyticsEvent.courier.tasksChangedMessage,
-        message.foreground ? 'in_app' : 'notification_center',
-      );
-
-      if (message.foreground) {
-        dispatch(
-          foregroundPushNotification(event.name, {
-            date: event.data.date,
-          }),
+      if (event && event.name === EVENT_ORDER.CREATED) {
+        tracker.logEvent(
+          analyticsEvent.restaurant._category,
+          analyticsEvent.restaurant.orderCreatedMessage,
+          message.foreground ? 'in_app' : 'notification_center',
         );
-      } else {
-        // user clicked on a notification in the notification center
-        _onTasksChanged(event.data.date);
+
+        const { order } = event.data;
+
+        // Here in any case, we navigate to the order that was tapped,
+        // it should have been loaded via WebSocket already.
+        dispatch(loadOrderAndNavigate(order));
       }
-    }
-  };
-}
 
-/**
- * called when a push notification is received while the app is in the foreground
- * android only!
- */
-function useOnBackgroundMessage() {
-  const dispatch = useDispatch();
+      if (event && event.name === EVENT_TASK_COLLECTION.CHANGED) {
+        tracker.logEvent(
+          analyticsEvent.courier._category,
+          analyticsEvent.courier.tasksChangedMessage,
+          message.foreground ? 'in_app' : 'notification_center',
+        );
 
-  return message => {
-    console.log('useOnBackgroundMessage message:', message.data);
-
-    const { event } = message.data;
-
-    if (event) {
-      switch (event.name) {
-        case EVENT_ORDER.CREATED:
-          dispatch(
-            loadOrder(event.data.order, order => {
-              if (order) {
-                dispatch(
-                  foregroundPushNotification(event.name, {
-                    order: order,
-                  }),
-                );
-              }
-            }),
-          );
-          break;
-        case EVENT_TASK_COLLECTION.CHANGED:
+        if (message.foreground) {
           dispatch(
             foregroundPushNotification(event.name, {
               date: event.data.date,
             }),
           );
-          break;
-        default:
-          break;
+        } else {
+          dispatch(navigateAndLoadTasks(moment(event.data.date)));
+        }
       }
-    }
-  };
-}
+    },
+    [dispatch],
+  );
 
-export default function usePushNotification() {
-  const onRegister = useOnRegister();
-  const onNotification = useOnNotification();
-  const onBackgroundMessage = useOnBackgroundMessage();
+  /**
+   * called when a push notification is received while the app is in the foreground
+   * android only!
+   */
+  const onBackgroundMessage = useCallback(
+    message => {
+      console.log('onBackgroundMessage message:', message.data);
+
+      const { event } = message.data;
+
+      if (event) {
+        switch (event.name) {
+          case EVENT_ORDER.CREATED:
+            dispatch(
+              loadOrder(event.data.order, order => {
+                if (order) {
+                  dispatch(
+                    foregroundPushNotification(event.name, {
+                      order: order,
+                    }),
+                  );
+                }
+              }),
+            );
+            break;
+          case EVENT_TASK_COLLECTION.CHANGED:
+            dispatch(
+              foregroundPushNotification(event.name, {
+                date: event.data.date,
+              }),
+            );
+            break;
+          default:
+            break;
+        }
+      }
+    },
+    [dispatch],
+  );
 
   useEffect(() => {
     PushNotification.configure({
