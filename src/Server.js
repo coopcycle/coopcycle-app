@@ -1,89 +1,75 @@
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import axios from 'axios'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
 
 const load = () => {
-
   return new Promise((resolve, reject) => {
     try {
-      AsyncStorage.getItem('@CoopCycle.servers')
-        .then((data, e) => {
-          if (e || !data) {
+      AsyncStorage.getItem('@CoopCycle.servers').then((data, e) => {
+        if (e || !data) {
+          return resolve([]);
+        }
 
-            return resolve([])
-          }
-
-          resolve(JSON.parse(data))
-        })
+        resolve(JSON.parse(data));
+      });
     } catch (e) {
-      resolve([])
+      resolve([]);
     }
-  })
-}
+  });
+};
 
 const fetchRemote = () => {
-
   return new Promise((resolve, reject) => {
     try {
-      axios.get('https://coopcycle.org/coopcycle.json')
-        .then((response) => resolve(response.data))
-        .catch(() => resolve([]))
+      axios
+        .get('https://coopcycle.org/coopcycle.json')
+        .then(response => resolve(response.data))
+        .catch(() => resolve([]));
     } catch (e) {
-      resolve([])
+      resolve([]);
     }
-  })
-}
+  });
+};
 
 const save = data => {
-
   return new Promise((resolve, reject) => {
     try {
-      AsyncStorage
-        .setItem('@CoopCycle.servers', JSON.stringify(data))
+      AsyncStorage.setItem('@CoopCycle.servers', JSON.stringify(data))
         .then(e => resolve())
-        .catch(e => resolve())
+        .catch(e => resolve());
     } catch (e) {
-      resolve()
+      resolve();
     }
-  })
-}
+  });
+};
 
 function overrideCity(values) {
-
-  return values.map((value) => {
+  return values.map(value => {
     if (value.city.startsWith('Ciudad de México')) {
       return {
         ...value,
         city: 'Ciudad de México',
-      }
+      };
     }
 
-    return value
-  })
+    return value;
+  });
 }
 
 class Server {
-
   static loadAll() {
     return new Promise((resolve, reject) => {
-
       // TODO Handle cache expiration
-      Promise.all([ load(), fetchRemote() ])
-        .then(values => {
+      Promise.all([load(), fetchRemote()]).then(values => {
+        const [localData, remoteData] = values;
 
-          const [ localData, remoteData ] = values
+        if (!remoteData) {
+          return resolve(overrideCity(localData));
+        }
 
-          if (!remoteData) {
-
-            return resolve(overrideCity(localData))
-          }
-
-          save(remoteData)
-            .then(() => resolve(overrideCity(remoteData)))
-
-        })
-    })
+        save(remoteData).then(() => resolve(overrideCity(remoteData)));
+      });
+    });
   }
-
 }
 
-export default Server
+export default Server;

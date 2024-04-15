@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Center, Icon, Text } from 'native-base';
 import { withTranslation } from 'react-i18next';
-import FontAwesome from 'react-native-vector-icons/FontAwesome'
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 class ResetPasswordCheckEmail extends Component {
   _onPressClose() {
@@ -9,11 +9,11 @@ class ResetPasswordCheckEmail extends Component {
   }
 
   render() {
-    const email = this.props.route.params?.email || ''
+    const email = this.props.route.params?.email || '';
 
     return (
-      <Center flex={ 1 } testID="registerCheckEmail">
-        <Icon as={ FontAwesome } name="envelope-o" mb="3" />
+      <Center flex={1} testID="registerCheckEmail">
+        <Icon as={FontAwesome} name="envelope-o" mb="3" />
         <Text style={{ textAlign: 'center' }}>
           {this.props.t('RESET_PASSWORD_CHECK_EMAIL_DISCLAIMER', { email })}
         </Text>

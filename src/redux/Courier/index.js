@@ -6,26 +6,48 @@
  *
  * Currently just courier tasks
  */
-import { tasksEntityReducer } from './taskEntityReducer'
-import { tasksUiReducer } from './taskUiReducer'
+import { tasksEntityReducer } from './taskEntityReducer';
+import { tasksUiReducer } from './taskUiReducer';
 import {
-  LOAD_TASKS_FAILURE, LOAD_TASKS_REQUEST, LOAD_TASKS_SUCCESS,
+  LOAD_TASKS_FAILURE,
+  LOAD_TASKS_REQUEST,
+  LOAD_TASKS_SUCCESS,
   MARK_TASK_DONE_FAILURE,
-  MARK_TASK_DONE_REQUEST, MARK_TASK_DONE_SUCCESS, MARK_TASK_FAILED_FAILURE,
-  MARK_TASK_FAILED_REQUEST, MARK_TASK_FAILED_SUCCESS, START_TASK_SUCCESS,
-
-  addPicture, addSignature, clearTasksFilter, deletePictureAt,
-  deleteSignatureAt, filterTasks, loadTasks, loadTasksFailure,
-  loadTasksRequest, loadTasksSuccess, markTaskDone, markTaskDoneFailure,
-  markTaskDoneRequest, markTaskDoneSuccess,
-  markTaskFailed, markTaskFailedFailure,
+  MARK_TASK_DONE_REQUEST,
+  MARK_TASK_DONE_SUCCESS,
+  MARK_TASK_FAILED_FAILURE,
+  MARK_TASK_FAILED_REQUEST,
+  MARK_TASK_FAILED_SUCCESS,
+  START_TASK_SUCCESS,
+  addPicture,
+  addSignature,
+  clearTasksFilter,
+  deletePictureAt,
+  deleteSignatureAt,
+  filterTasks,
+  loadTasks,
+  loadTasksFailure,
+  loadTasksRequest,
+  loadTasksSuccess,
+  markTaskDone,
+  markTaskDoneFailure,
+  markTaskDoneRequest,
+  markTaskDoneSuccess,
+  markTaskFailed,
+  markTaskFailedFailure,
   markTaskFailedRequest,
   markTaskFailedSuccess,
-  markTasksDone, markTasksDoneFailure,
-  markTasksDoneRequest, markTasksDoneSuccess, setKeepAwake, setPolylineOn,
-  setSignatureScreenFirst, setTasksChangedAlertSound,
-  startTask, startTaskSuccess,
-} from './taskActions'
+  markTasksDone,
+  markTasksDoneFailure,
+  markTasksDoneRequest,
+  markTasksDoneSuccess,
+  setKeepAwake,
+  setPolylineOn,
+  setSignatureScreenFirst,
+  setTasksChangedAlertSound,
+  startTask,
+  startTaskSuccess,
+} from './taskActions';
 import {
   selectAreDoneTasksHidden,
   selectAreFailedTasksHidden,
@@ -45,14 +67,12 @@ import {
   selectTasks,
   selectTasksChangedAlertSound,
   selectTasksWithColor,
-  selectIsPolylineOn
-} from './taskSelectors'
-
+  selectIsPolylineOn,
+} from './taskSelectors';
 
 export {
   tasksEntityReducer,
   tasksUiReducer,
-
   LOAD_TASKS_REQUEST,
   LOAD_TASKS_FAILURE,
   LOAD_TASKS_SUCCESS,
@@ -63,7 +83,6 @@ export {
   MARK_TASK_FAILED_REQUEST,
   MARK_TASK_FAILED_FAILURE,
   MARK_TASK_FAILED_SUCCESS,
-
   loadTasks,
   loadTasksRequest,
   loadTasksSuccess,
@@ -92,7 +111,6 @@ export {
   addPicture,
   deleteSignatureAt,
   deletePictureAt,
-
   selectIsTasksLoading,
   selectIsTasksRefreshing,
   selectIsTasksLoadingFailure,
@@ -111,5 +129,5 @@ export {
   selectPictures,
   selectSignatureScreenFirst,
   selectTasksWithColor,
-  selectIsPolylineOn
-}
+  selectIsPolylineOn,
+};

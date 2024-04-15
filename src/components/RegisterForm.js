@@ -1,5 +1,5 @@
-import React from 'react'
-import { View } from 'react-native'
+import React from 'react';
+import { View } from 'react-native';
 import {
   Button,
   Checkbox,
@@ -8,24 +8,25 @@ import {
   Input,
   ScrollView,
   Text,
-} from 'native-base'
-import { withTranslation } from 'react-i18next'
-import validate from 'validate.js'
-import _ from 'lodash'
-import { Formik } from 'formik'
-import { connect } from 'react-redux'
+} from 'native-base';
+import { withTranslation } from 'react-i18next';
+import validate from 'validate.js';
+import _ from 'lodash';
+import { Formik } from 'formik';
+import { connect } from 'react-redux';
 
-import NavigationHolder from '../NavigationHolder'
-import i18n from '../i18n'
-import { acceptPrivacyPolicy, acceptTermsAndConditions } from '../redux/App/actions'
+import NavigationHolder from '../NavigationHolder';
+import i18n from '../i18n';
+import {
+  acceptPrivacyPolicy,
+  acceptTermsAndConditions,
+} from '../redux/App/actions';
 
 // Custom validator for matches
 // Checks whether the given value matches another value in the object under validation
 // Used for password confirmation checks
 validate.validators.matches = (value, options, key, attributes) =>
-  value === attributes[options.key]
-    ? null
-    : options.message
+  value === attributes[options.key] ? null : options.message;
 
 const inputs = [
   {
@@ -111,64 +112,61 @@ const inputs = [
     },
     isLast: true,
   },
-]
+];
 
 let CONSTRAINTS = _.reduce(
   inputs,
   (acc, { name, constraints }) => ({ ...acc, [name]: constraints }),
-  {}
-)
+  {},
+);
 
 class RegisterForm extends React.Component {
-
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
       openTermsAndConditions: false,
       openPrivacyPolicy: false,
-    }
+    };
 
-    this._inputComponents = new Map()
+    this._inputComponents = new Map();
 
-    this._setTermsAndConditionsValue = null
-    this._setPrivacyPolicyValue = null
+    this._setTermsAndConditionsValue = null;
+    this._setPrivacyPolicyValue = null;
   }
-
 
   componentDidUpdate() {
     if (this.state.openTermsAndConditions) {
-      this._setTermsAndConditionsValue(this.props.termsAndConditionsAccepted)
+      this._setTermsAndConditionsValue(this.props.termsAndConditionsAccepted);
     }
     if (this.state.openPrivacyPolicy) {
-      this._setPrivacyPolicyValue(this.props.privacyPolicyAccepted)
+      this._setPrivacyPolicyValue(this.props.privacyPolicyAccepted);
     }
   }
 
   renderError(message) {
-
-    return (
-      <FormControl.ErrorMessage>
-        { message }
-      </FormControl.ErrorMessage>
-    )
+    return <FormControl.ErrorMessage>{message}</FormControl.ErrorMessage>;
   }
 
   _validate(values) {
-
     return _.mapValues(
       validate(values, CONSTRAINTS, { fullMessages: false }),
-      messages => _.first(messages)
-    )
+      messages => _.first(messages),
+    );
   }
 
   _onSubmit(values) {
-    this.props.onSubmit(values)
+    this.props.onSubmit(values);
   }
 
   _renderLegalTexts(values, allErrors, setFieldValue, handleBlur) {
     if (this.props.splitTermsAndConditionsAndPrivacyPolicy) {
-      return this._renderTermsAndPrivacyPolicyTexts(values, allErrors, setFieldValue, handleBlur)
+      return this._renderTermsAndPrivacyPolicyTexts(
+        values,
+        allErrors,
+        setFieldValue,
+        handleBlur,
+      );
     }
     return this._renderLegalField(
       'legal',
@@ -177,33 +175,40 @@ class RegisterForm extends React.Component {
       values,
       allErrors,
       setFieldValue,
-      handleBlur
-    )
+      handleBlur,
+    );
   }
 
-  _onTermsAndConditionsChanged = (checked) => {
+  _onTermsAndConditionsChanged = checked => {
     if (checked) {
-      this.setState({ openTermsAndConditions: true })
-      return NavigationHolder.navigate('TermsNav',
-        { screen: 'TermsHome', params: { showConfirmationButtons: true } }
-      )
+      this.setState({ openTermsAndConditions: true });
+      return NavigationHolder.navigate('TermsNav', {
+        screen: 'TermsHome',
+        params: { showConfirmationButtons: true },
+      });
     } else {
-      this.props.acceptTermsAndConditions(false)
+      this.props.acceptTermsAndConditions(false);
     }
-  }
+  };
 
-  _onPrivacyPolicyChanged = (checked) => {
+  _onPrivacyPolicyChanged = checked => {
     if (checked) {
-      this.setState({ openPrivacyPolicy: true })
-      return NavigationHolder.navigate('PrivacyNav',
-        { screen: 'PrivacyHome', params: { showConfirmationButtons: true } }
-      )
+      this.setState({ openPrivacyPolicy: true });
+      return NavigationHolder.navigate('PrivacyNav', {
+        screen: 'PrivacyHome',
+        params: { showConfirmationButtons: true },
+      });
     } else {
-      this.props.acceptPrivacyPolicy(false)
+      this.props.acceptPrivacyPolicy(false);
     }
-  }
+  };
 
-  _renderTermsAndPrivacyPolicyTexts(values, allErrors, setFieldValue, handleBlur) {
+  _renderTermsAndPrivacyPolicyTexts(
+    values,
+    allErrors,
+    setFieldValue,
+    handleBlur,
+  ) {
     const termsAndConditionsField = this._renderLegalField(
       'termsAndConditions',
       this.props.t('TERMS_AND_CONDITIONS_LABEL'),
@@ -213,8 +218,8 @@ class RegisterForm extends React.Component {
       setFieldValue,
       handleBlur,
       this.props.t('TERMS_AND_CONDITIONS_BUTTON_LABEL'),
-      this._onTermsAndConditionsChanged
-    )
+      this._onTermsAndConditionsChanged,
+    );
 
     const privacyPolicyField = this._renderLegalField(
       'privacyPolicy',
@@ -225,113 +230,133 @@ class RegisterForm extends React.Component {
       setFieldValue,
       handleBlur,
       this.props.t('PRIVACY_POLICY_BUTTON_LABEL'),
-      this._onPrivacyPolicyChanged
-    )
+      this._onPrivacyPolicyChanged,
+    );
 
-    this._setTermsAndConditionsValue = (value) => {
-      setFieldValue('termsAndConditions', value)
-    }
+    this._setTermsAndConditionsValue = value => {
+      setFieldValue('termsAndConditions', value);
+    };
 
-    this._setPrivacyPolicyValue = (value) => {
-      setFieldValue('privacyPolicy', value)
-    }
+    this._setPrivacyPolicyValue = value => {
+      setFieldValue('privacyPolicy', value);
+    };
 
     return (
       <>
-        { termsAndConditionsField }
-        { privacyPolicyField }
+        {termsAndConditionsField}
+        {privacyPolicyField}
       </>
-    )
+    );
   }
 
-  _renderLegalField(fieldName, label, errorMessage, values, allErrors,
-    setFieldValue, handleBlur, buttonLabel, _onChangeCB) {
+  _renderLegalField(
+    fieldName,
+    label,
+    errorMessage,
+    values,
+    allErrors,
+    setFieldValue,
+    handleBlur,
+    buttonLabel,
+    _onChangeCB,
+  ) {
     const constraints = {
       presence: { message: errorMessage },
       inclusion: {
         within: [true],
         message: errorMessage,
       },
-    }
+    };
 
     inputs.push({
       name: fieldName,
       constraints,
       notRender: true,
-    })
+    });
 
     CONSTRAINTS = {
       ...CONSTRAINTS,
       [fieldName]: constraints,
-    }
+    };
 
-    const hasError = allErrors.hasOwnProperty(fieldName)
+    const hasError = allErrors.hasOwnProperty(fieldName);
 
-    const _handleChange = (checked) => {
-      setFieldValue(fieldName, checked)
+    const _handleChange = checked => {
+      setFieldValue(fieldName, checked);
 
       if (this.props.splitTermsAndConditionsAndPrivacyPolicy) {
-        _onChangeCB(checked)
+        _onChangeCB(checked);
       }
-    }
+    };
 
-    const _handleNavPress = (buttonNav) => {
-      return NavigationHolder.navigate(`${buttonNav}Nav`,
-        { screen: `${buttonNav}Home`, params: { showConfirmationButtons: false } }
-      )
-    }
+    const _handleNavPress = buttonNav => {
+      return NavigationHolder.navigate(`${buttonNav}Nav`, {
+        screen: `${buttonNav}Home`,
+        params: { showConfirmationButtons: false },
+      });
+    };
 
     const _isChecked = () => {
       if (this.props.splitTermsAndConditionsAndPrivacyPolicy) {
         if (fieldName === 'termsAndConditions') {
-          return this.props.termsAndConditionsAccepted
+          return this.props.termsAndConditionsAccepted;
         } else if (fieldName === 'privacyPolicy') {
-          return this.props.privacyPolicyAccepted
+          return this.props.privacyPolicyAccepted;
         }
       }
-      return values[fieldName]
-    }
+      return values[fieldName];
+    };
 
     return (
       <FormControl my="2" isInvalid={hasError}>
-        <Checkbox size="sm" mr="4"
+        <Checkbox
+          size="sm"
+          mr="4"
           name={fieldName}
-          isChecked={ _isChecked() }
-          onChange={ (checked) => _handleChange(checked) }
-          onBlur={ handleBlur(fieldName) }
-          testID={ `registerForm.${fieldName}` }
-          ref={ component => this._inputComponents.set(fieldName, component) }
-          defaultValue={ values[fieldName] }>
-          <Text px={2} fontSize="sm">{ label }</Text>
+          isChecked={_isChecked()}
+          onChange={checked => _handleChange(checked)}
+          onBlur={handleBlur(fieldName)}
+          testID={`registerForm.${fieldName}`}
+          ref={component => this._inputComponents.set(fieldName, component)}
+          defaultValue={values[fieldName]}>
+          <Text px={2} fontSize="sm">
+            {label}
+          </Text>
         </Checkbox>
-        { hasError && this.renderError(errorMessage) }
-        {
-          this.props.splitTermsAndConditionsAndPrivacyPolicy
-          ?
-            <FormControl.HelperText>
-              <Button size="sm" variant="link" testID={`${fieldName}Link`}
-                onPress={ () => _handleChange(true) }>
-                { buttonLabel }
-              </Button>
-            </FormControl.HelperText>
-          :
-            <FormControl.HelperText>
-              <Button size="sm" variant="link" testID="termsAndConditionsLink"
-                onPress={ () => _handleNavPress('Terms') }>
-                { this.props.t('TERMS_AND_CONDITIONS_BUTTON_LABEL') }
-              </Button>
-              <Button size="sm" variant="link" testID="privacyPolicyLink"
-                onPress={ () => _handleNavPress('Privacy') }>
-                { this.props.t('PRIVACY_POLICY_BUTTON_LABEL') }
-              </Button>
-            </FormControl.HelperText>
-        }
+        {hasError && this.renderError(errorMessage)}
+        {this.props.splitTermsAndConditionsAndPrivacyPolicy ? (
+          <FormControl.HelperText>
+            <Button
+              size="sm"
+              variant="link"
+              testID={`${fieldName}Link`}
+              onPress={() => _handleChange(true)}>
+              {buttonLabel}
+            </Button>
+          </FormControl.HelperText>
+        ) : (
+          <FormControl.HelperText>
+            <Button
+              size="sm"
+              variant="link"
+              testID="termsAndConditionsLink"
+              onPress={() => _handleNavPress('Terms')}>
+              {this.props.t('TERMS_AND_CONDITIONS_BUTTON_LABEL')}
+            </Button>
+            <Button
+              size="sm"
+              variant="link"
+              testID="privacyPolicyLink"
+              onPress={() => _handleNavPress('Privacy')}>
+              {this.props.t('PRIVACY_POLICY_BUTTON_LABEL')}
+            </Button>
+          </FormControl.HelperText>
+        )}
       </FormControl>
-    )
+    );
   }
 
   render() {
-
     const initialValues = {
       email: this.props.prefill === true ? 'john.doe@coopcycle.org' : '',
       username: this.props.prefill === true ? 'johndoe' : '',
@@ -342,105 +367,132 @@ class RegisterForm extends React.Component {
       legal: false,
       termsAndConditions: this.props.termsAndConditionsAccepted,
       privacyPolicy: this.props.privacyPolicyAccepted,
-    }
+    };
 
     return (
       <Formik
-        initialValues={ initialValues }
-        validate={ this._validate.bind(this) }
-        onSubmit={ this._onSubmit.bind(this) }
-        validateOnBlur={ false }
-        validateOnChange={ false }>
-        {({ handleChange, handleBlur, handleSubmit, values, errors, setFieldValue }) => {
-
+        initialValues={initialValues}
+        validate={this._validate.bind(this)}
+        onSubmit={this._onSubmit.bind(this)}
+        validateOnBlur={false}
+        validateOnChange={false}>
+        {({
+          handleChange,
+          handleBlur,
+          handleSubmit,
+          values,
+          errors,
+          setFieldValue,
+        }) => {
           const allErrors = {
             ...errors,
             ...this.props.errors,
-          }
+          };
 
           return (
             <Column flex={1}>
-            <ScrollView showsVerticalScrollIndicator={true} persistentScrollbar={true}>
-              { inputs.map((input, index) => {
-                if (input.notRender) {
-                  return
-                }
-
-                const hasError = allErrors.hasOwnProperty(input.name)
-                const itemProps = hasError ? { error: true } : {}
-
-                let inputProps = {
-                  ...input.props,
-                  onChangeText: handleChange(input.name),
-                  onBlur: handleBlur(input.name),
-                }
-
-                if (input.isLast) {
-                  inputProps = {
-                    ...inputProps,
-                    returnKeyType: 'done',
-                    onSubmitEditing: handleSubmit,
+              <ScrollView
+                showsVerticalScrollIndicator={true}
+                persistentScrollbar={true}>
+                {inputs.map((input, index) => {
+                  if (input.notRender) {
+                    return;
                   }
-                } else {
-                  inputProps = {
-                    ...inputProps,
-                    returnKeyType: 'next',
-                    onSubmitEditing: event => {
-                      const idx = inputs.findIndex((el) => el.name === input.name)
-                      const nextInputName = inputs[idx + 1].name
-                      const nextInput = this._inputComponents.get(nextInputName)
-                      if (nextInput) {
-                        nextInput.focus()
-                      }
-                    },
+
+                  const hasError = allErrors.hasOwnProperty(input.name);
+                  const itemProps = hasError ? { error: true } : {};
+
+                  let inputProps = {
+                    ...input.props,
+                    onChangeText: handleChange(input.name),
+                    onBlur: handleBlur(input.name),
+                  };
+
+                  if (input.isLast) {
+                    inputProps = {
+                      ...inputProps,
+                      returnKeyType: 'done',
+                      onSubmitEditing: handleSubmit,
+                    };
+                  } else {
+                    inputProps = {
+                      ...inputProps,
+                      returnKeyType: 'next',
+                      onSubmitEditing: event => {
+                        const idx = inputs.findIndex(
+                          el => el.name === input.name,
+                        );
+                        const nextInputName = inputs[idx + 1].name;
+                        const nextInput =
+                          this._inputComponents.get(nextInputName);
+                        if (nextInput) {
+                          nextInput.focus();
+                        }
+                      },
+                    };
                   }
-                }
 
-                return (
-                  <FormControl { ...itemProps } key={ input.name } isInvalid={ hasError }>
-                    <FormControl.Label>{ input.label }</FormControl.Label>
-                    <Input
-                      testID={ `registerForm.${input.name}` }
-                      ref={ component => this._inputComponents.set(input.name, component) }
-                      defaultValue={ values[input.name] }
-                      autoCorrect={ false }
-                      autoCapitalize="none"
-                      style={{ height: 40 }}
-                      { ...inputProps } />
-                    { hasError && this.renderError(allErrors[input.name]) }
-                  </FormControl>
-                )
-              }) }
+                  return (
+                    <FormControl
+                      {...itemProps}
+                      key={input.name}
+                      isInvalid={hasError}>
+                      <FormControl.Label>{input.label}</FormControl.Label>
+                      <Input
+                        testID={`registerForm.${input.name}`}
+                        ref={component =>
+                          this._inputComponents.set(input.name, component)
+                        }
+                        defaultValue={values[input.name]}
+                        autoCorrect={false}
+                        autoCapitalize="none"
+                        style={{ height: 40 }}
+                        {...inputProps}
+                      />
+                      {hasError && this.renderError(allErrors[input.name])}
+                    </FormControl>
+                  );
+                })}
 
-              { this._renderLegalTexts(values, allErrors, setFieldValue, handleBlur) }
-            </ScrollView>
+                {this._renderLegalTexts(
+                  values,
+                  allErrors,
+                  setFieldValue,
+                  handleBlur,
+                )}
+              </ScrollView>
               <View style={{ marginTop: 20 }}>
-                <Button block onPress={ handleSubmit } testID="submitRegister">
+                <Button block onPress={handleSubmit} testID="submitRegister">
                   {this.props.t('SUBMIT')}
                 </Button>
               </View>
             </Column>
-          )
+          );
         }}
       </Formik>
-    )
+    );
   }
 }
 
 function mapStateToProps(state) {
   return {
     errors: state.app.registrationErrors,
-    splitTermsAndConditionsAndPrivacyPolicy: state.app.settings.split_terms_and_conditions_and_privacy_policy,
+    splitTermsAndConditionsAndPrivacyPolicy:
+      state.app.settings.split_terms_and_conditions_and_privacy_policy,
     termsAndConditionsAccepted: state.app.termsAndConditionsAccepted,
     privacyPolicyAccepted: state.app.privacyPolicyAccepted,
-  }
+  };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    acceptTermsAndConditions: (accepted) => dispatch(acceptTermsAndConditions(accepted)),
-    acceptPrivacyPolicy: (accepted) => dispatch(acceptPrivacyPolicy(accepted)),
-  }
+    acceptTermsAndConditions: accepted =>
+      dispatch(acceptTermsAndConditions(accepted)),
+    acceptPrivacyPolicy: accepted => dispatch(acceptPrivacyPolicy(accepted)),
+  };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(RegisterForm))
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(withTranslation()(RegisterForm));

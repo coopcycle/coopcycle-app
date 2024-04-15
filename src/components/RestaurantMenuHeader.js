@@ -5,8 +5,8 @@ import {
   VStack,
   useColorModeValue,
 } from 'native-base';
-import React, {useEffect, useRef, useState} from 'react';
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 const styles = StyleSheet.create({
   sectionMenu: {
@@ -40,7 +40,7 @@ const RestaurantMenuHeader = ({
   const activeBorderBottomColor = useColorModeValue('red', '#fff');
 
   const scrollToSection = index => {
-    sectionRef.current.scrollToIndex({index: index + 3, viewOffset: 16});
+    sectionRef.current.scrollToIndex({ index: index + 3, viewOffset: 16 });
   };
 
   useEffect(() => {
@@ -59,17 +59,17 @@ const RestaurantMenuHeader = ({
     });
   }, [activeSection, sections.length]);
 
-  const Item = ({item, index}) => (
+  const Item = ({ item, index }) => (
     <View
       style={
         index === active
           ? [
               styles.sectionMenuItem,
-              {borderBottomColor: activeBorderBottomColor},
+              { borderBottomColor: activeBorderBottomColor },
             ]
           : [
               styles.sectionMenuItem,
-              {borderBottomColor: inactiveBorderBottomColor},
+              { borderBottomColor: inactiveBorderBottomColor },
             ]
       }>
       <TouchableOpacity onPress={() => scrollToSection(index)}>
@@ -77,8 +77,11 @@ const RestaurantMenuHeader = ({
           <Text
             style={
               index === active
-                ? [styles.sectionMenuItemText, {color: activeBorderBottomColor}]
-                : [styles.sectionMenuItemText, {color: inactiveText}]
+                ? [
+                    styles.sectionMenuItemText,
+                    { color: activeBorderBottomColor },
+                  ]
+                : [styles.sectionMenuItemText, { color: inactiveText }]
             }>
             {item.title}
           </Text>
@@ -101,7 +104,7 @@ const RestaurantMenuHeader = ({
           overflow: 'hidden',
           backgroundColor: '#ffffff',
         },
-        {backgroundColor: backgroundColor2},
+        { backgroundColor: backgroundColor2 },
       ]}
       space={6}
       p="4">
@@ -111,7 +114,7 @@ const RestaurantMenuHeader = ({
         <Skeleton.Text flex={1} lines={3} />
         <HStack flex={1} space="2" alignItems="center">
           <Skeleton h="3" flex="2" rounded="full" />
-          <View style={{flex: 1.8}} />
+          <View style={{ flex: 1.8 }} />
           <Skeleton h="3" flex="1" rounded="full" />
         </HStack>
       </VStack>
@@ -122,13 +125,13 @@ const RestaurantMenuHeader = ({
     <>
       {isLoading && (
         <>
-          <HStack w="100%" space={6} p="4" style={{backgroundColor}}>
+          <HStack w="100%" space={6} p="4" style={{ backgroundColor }}>
             <Skeleton.Text flex={1} lines={1} />
             <Skeleton.Text flex={1} lines={1} />
             <Skeleton.Text flex={1} lines={1} />
             <Skeleton.Text flex={1} lines={1} />
           </HStack>
-          <HStack p="4" width="50%" style={{marginTop: 32}}>
+          <HStack p="4" width="50%" style={{ marginTop: 32 }}>
             <Skeleton.Text flex={1} lines={1} />
           </HStack>
           {loadingSkeleton}
@@ -139,7 +142,7 @@ const RestaurantMenuHeader = ({
       <FlatList
         ref={ref}
         horizontal
-        style={([styles.sectionMenu], {backgroundColor})}
+        style={([styles.sectionMenu], { backgroundColor })}
         data={sections}
         keyExtractor={(item, index) => index.toString()}
         showsHorizontalScrollIndicator={false}

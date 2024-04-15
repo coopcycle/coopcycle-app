@@ -15,28 +15,28 @@
  *
  * Initial state-shapes are provided in each individual reducer file.
  */
-import { combineReducers } from 'redux'
-import { persistReducer } from 'redux-persist'
-import AsyncStorage from '@react-native-async-storage/async-storage'
+import { combineReducers } from 'redux';
+import { persistReducer } from 'redux-persist';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { tasksEntityReducer, tasksUiReducer } from './Courier'
-import { appReducer } from './App'
-import accountReducer from './Account/reducers'
-import restaurantReducer from './Restaurant/reducers'
-import checkoutReducer from './Checkout/reducers'
+import { tasksEntityReducer, tasksUiReducer } from './Courier';
+import { appReducer } from './App';
+import accountReducer from './Account/reducers';
+import restaurantReducer from './Restaurant/reducers';
+import checkoutReducer from './Checkout/reducers';
 import {
   dateReducer as coreDateReducer,
   taskEntityReducers as coreTaskEntityReducers,
   taskListEntityReducers as coreTaskListEntityReducers,
   uiReducers as coreUiReducers,
-} from '../coopcycle-frontend-js/logistics/redux'
-import appDispatchReducer from './Dispatch/reducers'
-import appDateReducer from './logistics/dateReducer'
-import appTaskEntityReducers from './logistics/taskEntityReducers'
-import appTaskListEntityReducers from './logistics/taskListEntityReducers'
-import appLastmileUiReducers from './logistics/uiReducers'
-import storeReducer from './Store/reducers'
-import { createTaskItemsTransform } from './util'
+} from '../coopcycle-frontend-js/logistics/redux';
+import appDispatchReducer from './Dispatch/reducers';
+import appDateReducer from './logistics/dateReducer';
+import appTaskEntityReducers from './logistics/taskEntityReducers';
+import appTaskListEntityReducers from './logistics/taskListEntityReducers';
+import appLastmileUiReducers from './logistics/uiReducers';
+import storeReducer from './Store/reducers';
+import { createTaskItemsTransform } from './util';
 import reduceReducers from 'reduce-reducers';
 
 const taskEntitiesPersistConfig = {
@@ -44,64 +44,70 @@ const taskEntitiesPersistConfig = {
   storage: AsyncStorage,
   whitelist: ['items'],
   transforms: [createTaskItemsTransform()],
-}
+};
 
 const restaurantPersistConfig = {
   key: 'restaurant',
   storage: AsyncStorage,
-  whitelist: [ 'myRestaurants', 'restaurant', 'printer' ],
-}
+  whitelist: ['myRestaurants', 'restaurant', 'printer'],
+};
 
 const tasksUiPersistConfig = {
   key: 'ui.tasks',
   version: 0,
   storage: AsyncStorage,
-  whitelist: [ 'excludeFilters', 'tasksChangedAlertSound', 'keepAwake', 'isPolylineOn', 'signatureScreenFirst' ],
-  migrate: (state) => {
-
+  whitelist: [
+    'excludeFilters',
+    'tasksChangedAlertSound',
+    'keepAwake',
+    'isPolylineOn',
+    'signatureScreenFirst',
+  ],
+  migrate: state => {
     if (!state) {
-
       return new Promise((resolve, reject) => {
         try {
-
           AsyncStorage.multiGet([
             '@Settings.keepAwake',
             '@Preferences.signatureScreenFirst',
             '@Preferences.tasksFilters',
           ]).then(values => {
+            let [keepAwake, signatureScreenFirst, tasksFilters] = values;
 
-            let [ keepAwake, signatureScreenFirst, tasksFilters ] = values
+            let keepAwakeValue = keepAwake[1]
+              ? JSON.parse(keepAwake[1])
+              : false;
+            let signatureScreenFirstValue = signatureScreenFirst[1]
+              ? JSON.parse(signatureScreenFirst[1])
+              : false;
+            let tasksFiltersValue = tasksFilters[1]
+              ? JSON.parse(tasksFilters[1])
+              : [];
 
-            let keepAwakeValue = keepAwake[1] ? JSON.parse(keepAwake[1]) : false
-            let signatureScreenFirstValue = signatureScreenFirst[1] ? JSON.parse(signatureScreenFirst[1]) : false
-            let tasksFiltersValue = tasksFilters[1] ? JSON.parse(tasksFilters[1]) : []
-
-            AsyncStorage.removeItem('@Settings.keepAwake')
-            AsyncStorage.removeItem('@Preferences.signatureScreenFirst')
-            AsyncStorage.removeItem('@Preferences.tasksFilters')
+            AsyncStorage.removeItem('@Settings.keepAwake');
+            AsyncStorage.removeItem('@Preferences.signatureScreenFirst');
+            AsyncStorage.removeItem('@Preferences.tasksFilters');
 
             resolve({
               keepAwake: keepAwakeValue,
               signatureScreenFirst: signatureScreenFirstValue,
               excludeFilters: tasksFiltersValue,
-            })
-
-          })
-
+            });
+          });
         } catch (e) {
           resolve({
             keepAwake: false,
             signatureScreenFirst: false,
             excludeFilters: [],
             tasksChangedAlertSound: true,
-          })
+          });
         }
-      })
+      });
     }
 
-    return Promise.resolve(state)
+    return Promise.resolve(state);
   },
-}
+};
 
 const appPersistConfig = {
   key: 'app',
@@ -114,46 +120,45 @@ const appPersistConfig = {
     'hasDisclosedBackgroundPermission',
     'firstRun',
     'resumeCheckoutAfterActivation',
-    'isSpinnerDelayEnabled'
+    'isSpinnerDelayEnabled',
   ],
-  migrate: (state) => {
-
+  migrate: state => {
     if (!state) {
-
       return new Promise((resolve, reject) => {
         try {
+          AsyncStorage.getItem('@Server').then((data, error) => {
+            if (error) {
+              return resolve(null);
+            }
 
-          AsyncStorage.getItem('@Server')
-            .then((data, error) => {
-              if (error) {
-                return resolve(null)
-              }
+            AsyncStorage.removeItem('@Server');
 
-              AsyncStorage.removeItem('@Server')
-
-              return resolve({
-                baseURL: data,
-              })
-            })
-
+            return resolve({
+              baseURL: data,
+            });
+          });
         } catch (e) {
           resolve({
             baseURL: null,
-          })
+          });
         }
-      })
-
+      });
     }
 
-    return Promise.resolve(state)
+    return Promise.resolve(state);
   },
-}
+};
 
 const checkoutPersistConfig = {
   key: 'checkout',
   storage: AsyncStorage,
-  whitelist: [ 'showMultipleServersInSameCityModal', 'carts', 'address', 'stripePaymentMethods' ],
-}
+  whitelist: [
+    'showMultipleServersInSameCityModal',
+    'carts',
+    'address',
+    'stripePaymentMethods',
+  ],
+};
 
 export default combineReducers({
   entities: combineReducers({
@@ -173,8 +178,11 @@ export default combineReducers({
     date: reduceReducers(coreDateReducer, appDateReducer),
     entities: combineReducers({
       tasks: reduceReducers(coreTaskEntityReducers, appTaskEntityReducers),
-      taskLists: reduceReducers(coreTaskListEntityReducers, appTaskListEntityReducers),
+      taskLists: reduceReducers(
+        coreTaskListEntityReducers,
+        appTaskListEntityReducers,
+      ),
     }),
     ui: reduceReducers(coreUiReducers, appLastmileUiReducers),
   }),
-})
+});

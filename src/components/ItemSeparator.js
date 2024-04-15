@@ -1,5 +1,5 @@
-import React from 'react'
-import { StyleSheet, View } from 'react-native'
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
 
 const styles = StyleSheet.create({
   itemSeparator: {
@@ -7,8 +7,6 @@ const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: '#CCCCCC',
   },
-})
+});
 
-export default () => (
-  <View style={ styles.itemSeparator } />
-)
+export default () => <View style={styles.itemSeparator} />;

@@ -1,15 +1,15 @@
-import React from 'react'
-import { Button, Icon, Text, View } from 'native-base'
-import Ionicons from 'react-native-vector-icons/Ionicons'
-import Server from './account/components/Server'
-import { useTranslation } from 'react-i18next'
-import { useSelector } from 'react-redux'
-import { selectCustomBuild } from '../redux/App/selectors'
+import React from 'react';
+import { Button, Icon, Text, View } from 'native-base';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import Server from './account/components/Server';
+import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
+import { selectCustomBuild } from '../redux/App/selectors';
 
 export default function LoadingError() {
-  const customBuild = useSelector(selectCustomBuild)
+  const customBuild = useSelector(selectCustomBuild);
 
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   return (
     <View
@@ -32,5 +32,5 @@ export default function LoadingError() {
         {customBuild ? null : <Server />}
       </View>
     </View>
-  )
+  );
 }

@@ -1,60 +1,63 @@
-import React from 'react'
-import { StyleSheet, View } from 'react-native'
-import { Icon, Text } from 'native-base'
-import FontAwesome from 'react-native-vector-icons/FontAwesome'
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
+import { Icon, Text } from 'native-base';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
-import TaskTitle from './TaskTitle'
+import TaskTitle from './TaskTitle';
 
 const Recipient = ({ task }) => {
   if (task.address.contactName) {
     return (
-      <Text color="black" style={ styles.text }>{ task.address.contactName }</Text>
-    )
+      <Text color="black" style={styles.text}>
+        {task.address.contactName}
+      </Text>
+    );
   }
 
-  return null
-}
+  return null;
+};
 
 const Address = ({ task }) => {
-
-  const parts = [task.address.streetAddress]
+  const parts = [task.address.streetAddress];
 
   if (task.address.name) {
-    parts.unshift(task.address.name)
+    parts.unshift(task.address.name);
   }
 
   return (
-    <Text color="black" style={ styles.text } numberOfLines={ 3 }>
-      { parts.join(' - ') }
+    <Text color="black" style={styles.text} numberOfLines={3}>
+      {parts.join(' - ')}
     </Text>
-  )
-}
+  );
+};
 
 const Tag = ({ tag }) => (
-  <View style={ [ styles.tag, { backgroundColor: tag.color }] } />
-)
+  <View style={[styles.tag, { backgroundColor: tag.color }]} />
+);
 
 export default ({ task, warnings }) => {
   return (
     <View>
-      <View style={ styles.container }>
-        <Text color="black"><TaskTitle task={ task } /></Text>
-        <Recipient task={ task } />
-        <Address task={ task } />
+      <View style={styles.container}>
+        <Text color="black">
+          <TaskTitle task={task} />
+        </Text>
+        <Recipient task={task} />
+        <Address task={task} />
       </View>
-      <View style={ styles.tags }>
-      {
-        task.tags.map((tag, index) => (
-          <Tag key={ index } tag={ tag } />
-        ))
-      }
+      <View style={styles.tags}>
+        {task.tags.map((tag, index) => (
+          <Tag key={index} tag={tag} />
+        ))}
       </View>
-      <View style={ styles.warning }>
-        { warnings.map((warning, index) => <Icon key={index} as={FontAwesome} name={warning} size="xs"/>) }
+      <View style={styles.warning}>
+        {warnings.map((warning, index) => (
+          <Icon key={index} as={FontAwesome} name={warning} size="xs" />
+        ))}
       </View>
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -80,4 +83,4 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-})
+});

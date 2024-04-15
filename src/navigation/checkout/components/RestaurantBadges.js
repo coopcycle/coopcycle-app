@@ -1,5 +1,5 @@
-import {StyleSheet} from 'react-native';
-import {Badge, HStack, Icon, Text, useColorModeValue} from 'native-base';
+import { StyleSheet } from 'react-native';
+import { Badge, HStack, Icon, Text, useColorModeValue } from 'native-base';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {
   getNextShippingTimeAsText,
@@ -7,7 +7,7 @@ import {
   shouldShowPreOrder,
 } from '../../../utils/checkout';
 import React from 'react';
-import Svg, {Path} from 'react-native-svg';
+import Svg, { Path } from 'react-native-svg';
 
 const styles = StyleSheet.create({
   badge: {
@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export const CategoryBadge = ({label}) => {
+export const CategoryBadge = ({ label }) => {
   // styled via theme
   return (
     <Badge variant="subtle" mr="1">
@@ -34,7 +34,7 @@ export const CategoryBadge = ({label}) => {
   );
 };
 
-export const TimingBadge = ({restaurant}) => {
+export const TimingBadge = ({ restaurant }) => {
   const color = useColorModeValue('#000', '#fff');
 
   const isClosed = getRestaurantIsAvailable(restaurant);
@@ -87,7 +87,10 @@ export const TimingBadge = ({restaurant}) => {
         </Svg>
       )}
 
-      <Text style={showPreOrder || isClosed ? styles.badgeTextPreOrder : styles.badgeText}>
+      <Text
+        style={
+          showPreOrder || isClosed ? styles.badgeTextPreOrder : styles.badgeText
+        }>
         {shippingTime}
       </Text>
     </HStack>

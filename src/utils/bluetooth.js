@@ -1,19 +1,18 @@
-import { PermissionsAndroid, Platform } from 'react-native'
+import { PermissionsAndroid, Platform } from 'react-native';
 
 export function getMissingAndroidPermissions() {
-
   return new Promise((resolve, reject) => {
-
     if (Platform.OS === 'android' && Platform.Version < 23) {
-      resolve([])
-      return
+      resolve([]);
+      return;
     }
 
     let wantedPermissions = [
       // Make sure we have "ACCESS_COARSE_LOCATION " or "ACCESS_FINE_LOCATION" permission or scan won't work
-      Platform.Version >= 29 ?
-          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION : PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION
-    ]
+      Platform.Version >= 29
+        ? PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
+        : PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,
+    ];
 
     if (Platform.Version >= 31) {
       wantedPermissions.push(
@@ -23,46 +22,45 @@ export function getMissingAndroidPermissions() {
     }
 
     Promise.all(
-      wantedPermissions.map(wantedPermission => PermissionsAndroid.check(wantedPermission))
+      wantedPermissions.map(wantedPermission =>
+        PermissionsAndroid.check(wantedPermission),
+      ),
     ).then(grantedPermissions => {
-
       const missingPermissions = wantedPermissions.reduce(
         (accumulator, permission) => {
-          const isGranted = grantedPermissions[wantedPermissions.indexOf(permission)]
+          const isGranted =
+            grantedPermissions[wantedPermissions.indexOf(permission)];
           if (!isGranted) {
-            accumulator.push(permission)
+            accumulator.push(permission);
           }
 
-          return accumulator
+          return accumulator;
         },
-        []
-      )
+        [],
+      );
 
-      resolve(missingPermissions)
-    })
-  })
+      resolve(missingPermissions);
+    });
+  });
 }
 
 export function canStartBluetooth() {
-
   return new Promise((resolve, reject) => {
-
     if (Platform.OS === 'ios') {
-      resolve(true)
-      return
+      resolve(true);
+      return;
     }
 
     // https://reactnative.dev/docs/permissionsandroid
     // On devices before SDK version 23, the permissions are automatically granted if they appear in the manifest,
     // so check should always result to true and request should always resolve to PermissionsAndroid.RESULTS.GRANTED.
     if (Platform.OS === 'android' && Platform.Version < 23) {
-      resolve(true)
-      return
+      resolve(true);
+      return;
     }
 
     getMissingAndroidPermissions().then(missingPermissions => {
-      resolve(missingPermissions.length === 0)
-    })
-
-  })
+      resolve(missingPermissions.length === 0);
+    });
+  });
 }

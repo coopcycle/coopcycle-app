@@ -1,60 +1,66 @@
-import React, { createRef, useEffect } from 'react'
-import { LogBox, Platform, useColorScheme } from 'react-native'
+import React, { createRef, useEffect } from 'react';
+import { LogBox, Platform, useColorScheme } from 'react-native';
 
-import { NativeBaseProvider } from 'native-base'
-import tracker from './analytics/Tracker'
+import { NativeBaseProvider } from 'native-base';
+import tracker from './analytics/Tracker';
 
-import { DarkTheme, DefaultTheme, NavigationContainer } from '@react-navigation/native'
-import { SafeAreaProvider } from 'react-native-safe-area-context'
+import {
+  DarkTheme,
+  DefaultTheme,
+  NavigationContainer,
+} from '@react-navigation/native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
-import { Provider } from 'react-redux'
-import { I18nextProvider } from 'react-i18next'
-import { PersistGate } from 'redux-persist/integration/react'
+import { Provider } from 'react-redux';
+import { I18nextProvider } from 'react-i18next';
+import { PersistGate } from 'redux-persist/integration/react';
 
-import axios from 'axios'
-import VersionNumber from 'react-native-version-number'
+import axios from 'axios';
+import VersionNumber from 'react-native-version-number';
 
-import KeyboardManager from 'react-native-keyboard-manager'
+import KeyboardManager from 'react-native-keyboard-manager';
 
-import Config from 'react-native-config'
-import * as Sentry from '@sentry/react-native'
+import Config from 'react-native-config';
+import * as Sentry from '@sentry/react-native';
 
 if (!__DEV__) {
   Sentry.init({
     dsn: Config.SENTRY_DSN,
-  })
+  });
 }
 
 if (Platform.OS === 'ios') {
-    KeyboardManager.setEnable(false)
-    KeyboardManager.setEnableAutoToolbar(false)
-    KeyboardManager.setToolbarPreviousNextButtonEnable(false)
+  KeyboardManager.setEnable(false);
+  KeyboardManager.setEnableAutoToolbar(false);
+  KeyboardManager.setToolbarPreviousNextButtonEnable(false);
 }
 
-axios.defaults.headers.common['X-CoopCycle-App-Version'] = VersionNumber.appVersion
+axios.defaults.headers.common['X-CoopCycle-App-Version'] =
+  VersionNumber.appVersion;
 
 // Import i18n first
-import i18n from './i18n'
+import i18n from './i18n';
 
-import Root from './navigation/Loading'
-import { linkingPrefixes } from './navigation/constants'
+import Root from './navigation/Loading';
+import { linkingPrefixes } from './navigation/constants';
 
-import store, { persistor } from './redux/store'
-import { setCurrentRoute } from './redux/App/actions'
-import NotificationHandler from './components/NotificationHandler'
-import Spinner from './components/Spinner'
+import store, { persistor } from './redux/store';
+import { setCurrentRoute } from './redux/App/actions';
+import NotificationHandler from './components/NotificationHandler';
+import Spinner from './components/Spinner';
 
-import DropdownAlert from 'react-native-dropdownalert'
-import DropdownHolder from './DropdownHolder'
+import DropdownAlert from 'react-native-dropdownalert';
+import DropdownHolder from './DropdownHolder';
 
-import NavigationHolder from './NavigationHolder'
+import NavigationHolder from './NavigationHolder';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import {
-  AccountRegisterConfirmScreen, AccountResetPasswordNewPasswordScreen,
-} from './navigation/navigators/AccountNavigator'
-import { nativeBaseTheme } from './styles/theme'
-import FullScreenLoadingIndicator from './navigation/FullScreenLoadingIndicator'
-import RootView from './navigation/RootView'
+  AccountRegisterConfirmScreen,
+  AccountResetPasswordNewPasswordScreen,
+} from './navigation/navigators/AccountNavigator';
+import { nativeBaseTheme } from './styles/theme';
+import FullScreenLoadingIndicator from './navigation/FullScreenLoadingIndicator';
+import RootView from './navigation/RootView';
 
 LogBox.ignoreLogs([
   'Warning: isMounted(...) is deprecated in plain JavaScript React classes.',
@@ -68,18 +74,18 @@ LogBox.ignoreLogs([
   'Warning: componentWillUpdate has been renamed',
   'Accessing view manager configs directly off UIManager',
   'VirtualizedLists should never be nested',
-  'When server rendering, you must wrap your application in an <SSRProvider> to ensure consistent ids are generated between the client and server.'
-])
+  'When server rendering, you must wrap your application in an <SSRProvider> to ensure consistent ids are generated between the client and server.',
+]);
 
-const navigationRef = createRef()
-const routeNameRef = createRef()
+const navigationRef = createRef();
+const routeNameRef = createRef();
 
 function getCurrentRouteName() {
-  return navigationRef.current.getCurrentRoute()?.name
+  return navigationRef.current.getCurrentRoute()?.name;
 }
 
 function onReady() {
-  routeNameRef.current = getCurrentRouteName()
+  routeNameRef.current = getCurrentRouteName();
 }
 
 /**
@@ -87,16 +93,16 @@ function onReady() {
  */
 function onNavigationStateChange(prevState, currentState) {
   const previousRouteName = routeNameRef.current;
-  const currentRouteName = getCurrentRouteName()
+  const currentRouteName = getCurrentRouteName();
 
   if (previousRouteName !== currentRouteName) {
-    store.dispatch(setCurrentRoute(currentRouteName))
+    store.dispatch(setCurrentRoute(currentRouteName));
   }
 
   routeNameRef.current = currentRouteName;
 }
 
-NavigationHolder.setNavigationRef(navigationRef)
+NavigationHolder.setNavigationRef(navigationRef);
 
 // https://reactnavigation.org/docs/5.x/configuring-links/
 
@@ -115,18 +121,17 @@ const config = {
       },
     },
   },
-}
+};
 
 const linking = {
   prefixes: linkingPrefixes,
   config,
-}
+};
 
 const App = () => {
+  const colorScheme = useColorScheme();
 
-  const colorScheme = useColorScheme()
-
-  const queryClient = new QueryClient()
+  const queryClient = new QueryClient();
 
   useEffect(() => {
     // https://support.count.ly/hc/en-us/articles/360037813231-React-Native-Bridge-#implementation
@@ -134,36 +139,44 @@ const App = () => {
     // You may also like to specify other parameters at this step (i.e. whether logging will be used).
     // These methods should only be called once during the app's lifecycle and should be done as early as possible.
     // Your main App component's componentDidMountmethod may be a good place.
-    tracker.init()
-  }, [])
+    tracker.init();
+  }, []);
 
   return (
     <NativeBaseProvider theme={nativeBaseTheme}>
-    <RootView>
-    <Provider store={ store }>
-      <PersistGate loading={ <FullScreenLoadingIndicator debugHint="Initialising the Redux state ..." /> } persistor={ persistor }>
-        <I18nextProvider i18n={ i18n }>
-          <QueryClientProvider client={queryClient}>
-              <SafeAreaProvider>
-                <Spinner />
-                <NavigationContainer
-                  ref={ navigationRef }
-                  linking={ linking }
-                  onReady={ onReady }
-                  onStateChange={ onNavigationStateChange }
-                  theme={ colorScheme === 'dark' ? DarkTheme : DefaultTheme }>
-                  <Root />
-                </NavigationContainer>
-                <DropdownAlert ref={ ref => { DropdownHolder.setDropdown(ref) } } />
-                <NotificationHandler />
-              </SafeAreaProvider>
-          </QueryClientProvider>
-        </I18nextProvider>
-      </PersistGate>
-    </Provider>
-    </RootView>
+      <RootView>
+        <Provider store={store}>
+          <PersistGate
+            loading={
+              <FullScreenLoadingIndicator debugHint="Initialising the Redux state ..." />
+            }
+            persistor={persistor}>
+            <I18nextProvider i18n={i18n}>
+              <QueryClientProvider client={queryClient}>
+                <SafeAreaProvider>
+                  <Spinner />
+                  <NavigationContainer
+                    ref={navigationRef}
+                    linking={linking}
+                    onReady={onReady}
+                    onStateChange={onNavigationStateChange}
+                    theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+                    <Root />
+                  </NavigationContainer>
+                  <DropdownAlert
+                    ref={ref => {
+                      DropdownHolder.setDropdown(ref);
+                    }}
+                  />
+                  <NotificationHandler />
+                </SafeAreaProvider>
+              </QueryClientProvider>
+            </I18nextProvider>
+          </PersistGate>
+        </Provider>
+      </RootView>
     </NativeBaseProvider>
-  )
-}
+  );
+};
 
-export default App
+export default App;

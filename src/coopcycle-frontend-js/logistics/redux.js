@@ -1,1 +1,1 @@
-export * from '../../shared/logistics/redux'
+export * from '../../shared/logistics/redux';

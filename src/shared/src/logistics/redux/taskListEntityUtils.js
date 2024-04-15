@@ -1,46 +1,45 @@
 import _ from 'lodash';
-import { createTempTaskList, replaceTasksWithIds } from './taskListUtils'
+import { createTempTaskList, replaceTasksWithIds } from './taskListUtils';
 
 function addTaskIdIfMissing(taskIds, taskId) {
-
-  const taskIdIndex = _.findIndex(taskIds, t => t === taskId)
+  const taskIdIndex = _.findIndex(taskIds, t => t === taskId);
 
   if (-1 !== taskIdIndex) {
-    return taskIds
+    return taskIds;
   } else {
-    return taskIds.concat([ taskId ])
+    return taskIds.concat([taskId]);
   }
 }
 
 function removeTaskId(taskIds, taskId) {
-  return _.filter(taskIds, t => t !== taskId)
+  return _.filter(taskIds, t => t !== taskId);
 }
 
 export function findTaskListByUsername(taskListsById, username) {
-  return _.find(Object.values(taskListsById), t => t.username == username)
+  return _.find(Object.values(taskListsById), t => t.username == username);
 }
 
 export function findTaskListByTask(taskListsById, task) {
   return _.find(Object.values(taskListsById), taskList => {
-    return _.includes(taskList.itemIds, task['@id'])
-  })
+    return _.includes(taskList.itemIds, task['@id']);
+  });
 }
 
 export function addAssignedTask(taskListsById, task) {
-  const taskListsToUpdate = []
+  const taskListsToUpdate = [];
 
-  let currentTaskList = findTaskListByTask(taskListsById, task)
-  let targetTaskList = findTaskListByUsername(taskListsById, task.assignedTo)
+  let currentTaskList = findTaskListByTask(taskListsById, task);
+  let targetTaskList = findTaskListByUsername(taskListsById, task.assignedTo);
 
   if (currentTaskList) {
     if (targetTaskList.username !== currentTaskList.username) {
       //unassign
       taskListsToUpdate.push({
         ...currentTaskList,
-        itemIds: removeTaskId(currentTaskList.itemIds, task['@id'])
-      })
+        itemIds: removeTaskId(currentTaskList.itemIds, task['@id']),
+      });
     } else {
-      return []
+      return [];
     }
   }
 
@@ -48,30 +47,30 @@ export function addAssignedTask(taskListsById, task) {
   if (targetTaskList) {
     taskListsToUpdate.push({
       ...targetTaskList,
-      itemIds: addTaskIdIfMissing(targetTaskList.itemIds, task['@id'])
-    })
+      itemIds: addTaskIdIfMissing(targetTaskList.itemIds, task['@id']),
+    });
   } else {
-    let newTaskList = createTempTaskList(task.assignedTo, [task])
-    newTaskList = replaceTasksWithIds(newTaskList)
+    let newTaskList = createTempTaskList(task.assignedTo, [task]);
+    newTaskList = replaceTasksWithIds(newTaskList);
 
-    taskListsToUpdate.push(newTaskList)
+    taskListsToUpdate.push(newTaskList);
   }
 
-  return taskListsToUpdate
+  return taskListsToUpdate;
 }
 
 export function removeUnassignedTask(taskListsById, task) {
-  const taskListsToUpdate = []
+  const taskListsToUpdate = [];
 
-  let taskList = findTaskListByTask(taskListsById, task)
+  let taskList = findTaskListByTask(taskListsById, task);
 
   if (taskList) {
     //unassign
     taskListsToUpdate.push({
       ...taskList,
-      itemIds: removeTaskId(taskList.itemIds, task['@id'])
-    })
+      itemIds: removeTaskId(taskList.itemIds, task['@id']),
+    });
   }
 
-  return taskListsToUpdate
+  return taskListsToUpdate;
 }

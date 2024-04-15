@@ -1,30 +1,27 @@
-import moment, { Moment } from 'moment'
+import moment, { Moment } from 'moment';
 import { isString, reduce } from 'lodash';
 
 const WEEKDAYS = {
-  'Monday': 0,
-  'Tuesday': 1,
-  'Wednesday': 2,
-  'Thursday': 3,
-  'Friday': 4,
-  'Saturday': 5,
-  'Sunday': 6,
-}
-
+  Monday: 0,
+  Tuesday: 1,
+  Wednesday: 2,
+  Thursday: 3,
+  Friday: 4,
+  Saturday: 5,
+  Sunday: 6,
+};
 
 export default class OpeningHoursSpecification {
-
   static STATE = {
-    'Opened': 1,
-    'Closed': 0,
-  }
+    Opened: 1,
+    Closed: 0,
+  };
 
-
-  #state: Array = []
+  #state: Array = [];
 
   constructor() {
-    const momentInstance = moment().startOf('isoWeek')
-    const now = moment()
+    const momentInstance = moment().startOf('isoWeek');
+    const now = moment();
 
     for (let i = 0; i <= 6; i++) {
       this.state.push({
@@ -33,16 +30,18 @@ export default class OpeningHoursSpecification {
         label: moment.weekdaysShort(momentInstance.day()),
         closed: null,
         ranges: [],
-      })
-      momentInstance.add(1,'d')
+      });
+      momentInstance.add(1, 'd');
     }
   }
 
   static rangesToString(ranges: Array) {
-    return ranges.reduce((acc, range) => {
-      acc.push(range.join(' - '))
-      return acc
-    }, []).join(' | ')
+    return ranges
+      .reduce((acc, range) => {
+        acc.push(range.join(' - '));
+        return acc;
+      }, [])
+      .join(' | ');
   }
 
   /**
@@ -52,7 +51,9 @@ export default class OpeningHoursSpecification {
   set specialOpeningHoursSpecification(specialHours: Array) {
     /* specialHours
     .filter(spec => Moment.isBetween(moment(spec.validFrom), moment(spec.validThrough))) */
-    throw new Error('specialOpeningHoursSpecification is not implemented yet !')
+    throw new Error(
+      'specialOpeningHoursSpecification is not implemented yet !',
+    );
   }
 
   /**
@@ -62,12 +63,14 @@ export default class OpeningHoursSpecification {
   set openingHours(hours: Array) {
     for (let spec of hours) {
       for (let day of spec.dayOfWeek) {
-        this.state[WEEKDAYS[day]].ranges.push([ spec.opens, spec.closes ])
+        this.state[WEEKDAYS[day]].ranges.push([spec.opens, spec.closes]);
       }
     }
     for (let day of this.state) {
-      day.ranges.sort((prev, next) => parseInt(prev[0], 10) - parseInt(next[0], 10))
-      day.closed = day.ranges.length === 0
+      day.ranges.sort(
+        (prev, next) => parseInt(prev[0], 10) - parseInt(next[0], 10),
+      );
+      day.closed = day.ranges.length === 0;
     }
   }
 
@@ -76,7 +79,7 @@ export default class OpeningHoursSpecification {
    * @returns {Array}
    */
   get state() {
-    return this.#state
+    return this.#state;
   }
 
   /**
@@ -84,34 +87,40 @@ export default class OpeningHoursSpecification {
    * @returns {{timeSlot: null, state: number}|{timeSlot: moment.Moment[], state: number}}
    */
   get currentTimeSlot() {
-    const today = this.state.filter(day => day.today)[0]
+    const today = this.state.filter(day => day.today)[0];
 
     for (let slot of today.ranges) {
-      const { opens, closes } = OpeningHoursSpecification.parseRange(slot, today.moment)
+      const { opens, closes } = OpeningHoursSpecification.parseRange(
+        slot,
+        today.moment,
+      );
 
       if (moment().isBetween(opens, closes, 'minute')) {
         return {
           state: OpeningHoursSpecification.STATE.Opened,
-          timeSlot: [ opens, closes ],
-        }
+          timeSlot: [opens, closes],
+        };
       }
     }
-      return {
-        state: OpeningHoursSpecification.STATE.Closed,
-        timeSlot: this.nextOpeningHours(),
-      }
+    return {
+      state: OpeningHoursSpecification.STATE.Closed,
+      timeSlot: this.nextOpeningHours(),
+    };
   }
 
   nextOpeningHours(at: Moment = moment()) {
     for (let day of this.forNext(7, at)) {
       for (let slot of day.ranges) {
-        const { opens, closes } = OpeningHoursSpecification.parseRange(slot, day.moment)
+        const { opens, closes } = OpeningHoursSpecification.parseRange(
+          slot,
+          day.moment,
+        );
         if (opens.isAfter(at)) {
-          return [ opens, closes ]
+          return [opens, closes];
         }
       }
     }
-    return null
+    return null;
   }
 
   /**
@@ -121,17 +130,19 @@ export default class OpeningHoursSpecification {
    * @returns {{opens: moment.Moment, closes: moment.Moment}}
    */
   static parseRange(slot: Array, day: Moment = moment()) {
-    const [ hourOpens, minuteOpens ] = slot[0].split(':');
-    const [ hourCloses, minuteCloses ] = slot[1].split(':');
-    const opens = day.clone()
+    const [hourOpens, minuteOpens] = slot[0].split(':');
+    const [hourCloses, minuteCloses] = slot[1].split(':');
+    const opens = day
+      .clone()
       .startOf('d')
-      .set({ hour: hourOpens, minute: minuteOpens })
-    const closes = day.clone()
+      .set({ hour: hourOpens, minute: minuteOpens });
+    const closes = day
+      .clone()
       .startOf('d')
-      .set({ hour: hourCloses, minute: minuteCloses })
+      .set({ hour: hourCloses, minute: minuteCloses });
 
     if (closes.isBefore(opens)) {
-      closes.add(1, 'd')
+      closes.add(1, 'd');
     }
 
     return { opens, closes };
@@ -144,19 +155,19 @@ export default class OpeningHoursSpecification {
    */
   forDay(day: Moment = moment()): Object {
     if (day === null) {
-      throw new Error('A day must be provided')
+      throw new Error('A day must be provided');
     }
-    const today = moment()
-    const shift = (_day) => {
-      const ret = _day.day() - 1
-      return ret >= 0 ? ret : 6
-    }
-    const state = this.state[shift(day)]
+    const today = moment();
+    const shift = _day => {
+      const ret = _day.day() - 1;
+      return ret >= 0 ? ret : 6;
+    };
+    const state = this.state[shift(day)];
     return {
       ...state,
       moment: day.clone(),
       today: today.isSame(day, 'd'),
-    }
+    };
   }
 
   /**
@@ -167,13 +178,13 @@ export default class OpeningHoursSpecification {
    */
   forNext(next: Number = 7, from: Moment = moment()): Array {
     if (from === null) {
-      throw new Error('A day must be provided')
+      throw new Error('A day must be provided');
     }
-    from = from.clone()
-    const arr = []
+    from = from.clone();
+    const arr = [];
     for (let i = 0; i < next; i++) {
-      arr.push(this.forDay(from))
-      from.add(1, 'd')
+      arr.push(this.forDay(from));
+      from.add(1, 'd');
     }
 
     return arr;
@@ -187,27 +198,43 @@ export default class OpeningHoursSpecification {
    * @param from
    * @returns {*[]}
    */
-  forNextWithOpeningHours(next: Number = 7, diff: Number = 30, skipClosed = true, from: Moment = moment()) {
-    return reduce(this.forNext(next, from), (acc, day, index) => {
-      if (skipClosed && day.closed) {
-        return acc
-      }
-      const value = reduce(day.ranges, (_acc, range, _index) => {
-        const { opens, closes } = OpeningHoursSpecification.parseRange(range, day.moment)
-        while (opens.isBefore(closes, 'minute')) {
-          let _opens = opens.clone()
-          opens.add(diff, 'minute')
-          _acc.push({
-            index: _acc.length,
-            label: _opens.format('HH:mm') + ' - ' + opens.format('HH:mm'),
-            value: [ _opens.format(), opens.format() ],
-          })
+  forNextWithOpeningHours(
+    next: Number = 7,
+    diff: Number = 30,
+    skipClosed = true,
+    from: Moment = moment(),
+  ) {
+    return reduce(
+      this.forNext(next, from),
+      (acc, day, index) => {
+        if (skipClosed && day.closed) {
+          return acc;
         }
-        return _acc
-      }, [])
-      acc.push({ index, day, value })
-      return acc
-    }, [])
+        const value = reduce(
+          day.ranges,
+          (_acc, range, _index) => {
+            const { opens, closes } = OpeningHoursSpecification.parseRange(
+              range,
+              day.moment,
+            );
+            while (opens.isBefore(closes, 'minute')) {
+              let _opens = opens.clone();
+              opens.add(diff, 'minute');
+              _acc.push({
+                index: _acc.length,
+                label: _opens.format('HH:mm') + ' - ' + opens.format('HH:mm'),
+                value: [_opens.format(), opens.format()],
+              });
+            }
+            return _acc;
+          },
+          [],
+        );
+        acc.push({ index, day, value });
+        return acc;
+      },
+      [],
+    );
   }
 
   /**
@@ -215,31 +242,36 @@ export default class OpeningHoursSpecification {
    * @param date
    * @returns {null|{allOpens: boolean, days}|boolean}
    */
-  isOpen(date: Moment[]|Moment|string|string[]|null): boolean[]|boolean|null {
+  isOpen(
+    date: Moment[] | Moment | string | string[] | null,
+  ): boolean[] | boolean | null {
     if (date === null) {
-      return null
+      return null;
     }
     if (Array.isArray(date)) {
-      const days = date.map((d) => this.isOpen(d))
+      const days = date.map(d => this.isOpen(d));
       return {
-        allOpens: days.filter((d) => !d).length === 0,
+        allOpens: days.filter(d => !d).length === 0,
         days,
-      }
+      };
     }
 
     if (isString(date)) {
-      date = moment(date)
+      date = moment(date);
     }
 
-    const day = this.forDay(date)
+    const day = this.forDay(date);
     for (let slot of day.ranges) {
-      const { opens, closes } = OpeningHoursSpecification.parseRange(slot, day.moment)
+      const { opens, closes } = OpeningHoursSpecification.parseRange(
+        slot,
+        day.moment,
+      );
 
       if (date.isBetween(opens, closes, 'minute')) {
-        return true
+        return true;
       }
     }
-    return false
+    return false;
   }
 
   /**
@@ -249,17 +281,22 @@ export default class OpeningHoursSpecification {
    * @param compareWith
    * @returns {null|boolean}
    */
-  static closesSoon(timeSlot: Moment[] = null, minutes = 15, compareWith = moment()): boolean
-  {
+  static closesSoon(
+    timeSlot: Moment[] = null,
+    minutes = 15,
+    compareWith = moment(),
+  ): boolean {
     if (timeSlot === null) {
-      return null
+      return null;
     }
     if (timeSlot.length !== 2) {
-      throw new Error('A timeSlot array must contains only two instance of Moment')
+      throw new Error(
+        'A timeSlot array must contains only two instance of Moment',
+      );
     }
 
-    const ret = timeSlot[1].diff(compareWith, 'minute')
-    return ret > 0 && ret <= minutes
+    const ret = timeSlot[1].diff(compareWith, 'minute');
+    return ret > 0 && ret <= minutes;
   }
 
   /**
@@ -269,17 +306,21 @@ export default class OpeningHoursSpecification {
    * @param compareWith
    * @returns {null|boolean}
    */
-  static opensSoon(timeSlot: Moment[] = null, minutes = 30, compareWith = moment()): boolean
-  {
+  static opensSoon(
+    timeSlot: Moment[] = null,
+    minutes = 30,
+    compareWith = moment(),
+  ): boolean {
     if (timeSlot === null) {
-      return null
+      return null;
     }
     if (timeSlot.length !== 2) {
-      throw new Error('A timeSlot array must contains only two instance of Moment')
+      throw new Error(
+        'A timeSlot array must contains only two instance of Moment',
+      );
     }
 
-    const ret = timeSlot[0].diff(compareWith, 'minute')
-    return ret > 0 && ret <= minutes
+    const ret = timeSlot[0].diff(compareWith, 'minute');
+    return ret > 0 && ret <= minutes;
   }
-
 }

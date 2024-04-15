@@ -1,12 +1,10 @@
-import React from 'react'
-import { SectionList, TouchableOpacity } from 'react-native'
-import {
-  Box, HStack, Heading, Icon, Switch, Text,
-} from 'native-base'
-import { connect } from 'react-redux'
-import { withTranslation } from 'react-i18next'
-import FontAwesome from 'react-native-vector-icons/FontAwesome'
-import ItemSeparator from '../../components/ItemSeparator'
+import React from 'react';
+import { SectionList, TouchableOpacity } from 'react-native';
+import { Box, HStack, Heading, Icon, Switch, Text } from 'native-base';
+import { connect } from 'react-redux';
+import { withTranslation } from 'react-i18next';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import ItemSeparator from '../../components/ItemSeparator';
 
 import {
   clearTasksFilter,
@@ -22,35 +20,33 @@ import {
   setKeepAwake,
   setSignatureScreenFirst,
   setTasksChangedAlertSound,
-} from '../../redux/Courier'
-import { doneIconName, failedIconName } from '../task/styles/common'
+} from '../../redux/Courier';
+import { doneIconName, failedIconName } from '../task/styles/common';
 
 const SettingsItemInner = ({ item }) => (
   <HStack alignItems="center" justifyContent="space-between" py="3">
     <HStack alignItems="center">
-      <Icon size="sm" mr="1" as={ FontAwesome } name={ item.icon } />
-      <Text>{ item.label }</Text>
+      <Icon size="sm" mr="1" as={FontAwesome} name={item.icon} />
+      <Text>{item.label}</Text>
     </HStack>
-    { !item.onPress && <Switch onToggle={ item.onToggle } isChecked={ item.isChecked } /> }
-    { item.onPress && <Icon size="sm" as={ FontAwesome } name="arrow-right" /> }
+    {!item.onPress && (
+      <Switch onToggle={item.onToggle} isChecked={item.isChecked} />
+    )}
+    {item.onPress && <Icon size="sm" as={FontAwesome} name="arrow-right" />}
   </HStack>
-)
+);
 
 const SettingsItem = ({ item }) => {
-
   if (item.onPress) {
-
     return (
-      <TouchableOpacity onPress={ item.onPress }>
-        <SettingsItemInner item={ item } />
+      <TouchableOpacity onPress={item.onPress}>
+        <SettingsItemInner item={item} />
       </TouchableOpacity>
-    )
+    );
   }
 
-  return (
-    <SettingsItemInner item={ item } />
-  )
-}
+  return <SettingsItemInner item={item} />;
+};
 
 const Settings = ({
   navigation,
@@ -69,7 +65,6 @@ const Settings = ({
   signatureScreenFirst,
   t,
 }) => {
-
   const sections = [
     {
       title: t('TASKS_FILTER'),
@@ -122,19 +117,22 @@ const Settings = ({
         },
       ],
     },
-  ]
+  ];
 
   return (
     <Box p="2">
       <SectionList
-        sections={ sections }
-        keyExtractor={ (item, index) => `setting-${index}` }
-        renderItem={ ({ item }) => <SettingsItem item={ item } /> }
-        ItemSeparatorComponent={ ItemSeparator }
-        renderSectionHeader={ ({ section: { title } }) => <Heading size="md">{ title }</Heading> } />
+        sections={sections}
+        keyExtractor={(item, index) => `setting-${index}`}
+        renderItem={({ item }) => <SettingsItem item={item} />}
+        ItemSeparatorComponent={ItemSeparator}
+        renderSectionHeader={({ section: { title } }) => (
+          <Heading size="md">{title}</Heading>
+        )}
+      />
     </Box>
-  )
-}
+  );
+};
 
 function mapStateToProps(state) {
   return {
@@ -145,18 +143,32 @@ function mapStateToProps(state) {
     isKeepAwakeDisabled: !selectKeepAwake(state),
     isPolylineOn: selectIsPolylineOn(state),
     signatureScreenFirst: selectSignatureScreenFirst(state),
-  }
+  };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    toggleDisplayDone: (hidden) => dispatch(hidden ? clearTasksFilter({ status: 'DONE' }) : filterTasks({ status: 'DONE' })),
-    toggleDisplayFailed: (hidden) => dispatch(hidden ? clearTasksFilter({ status: 'FAILED' }) : filterTasks({ status: 'FAILED' })),
-    toggleTasksChangedAlertSound: (enabled) => dispatch(setTasksChangedAlertSound(enabled)),
-    togglePolylineOn: (enabled) => dispatch(setPolylineOn(enabled)),
-    setKeepAwakeDisabled: (disabled) => dispatch(setKeepAwake(!disabled)),
-    setSignatureScreenFirst: (first) => dispatch(setSignatureScreenFirst(first)),
-  }
+    toggleDisplayDone: hidden =>
+      dispatch(
+        hidden
+          ? clearTasksFilter({ status: 'DONE' })
+          : filterTasks({ status: 'DONE' }),
+      ),
+    toggleDisplayFailed: hidden =>
+      dispatch(
+        hidden
+          ? clearTasksFilter({ status: 'FAILED' })
+          : filterTasks({ status: 'FAILED' }),
+      ),
+    toggleTasksChangedAlertSound: enabled =>
+      dispatch(setTasksChangedAlertSound(enabled)),
+    togglePolylineOn: enabled => dispatch(setPolylineOn(enabled)),
+    setKeepAwakeDisabled: disabled => dispatch(setKeepAwake(!disabled)),
+    setSignatureScreenFirst: first => dispatch(setSignatureScreenFirst(first)),
+  };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(Settings))
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(withTranslation()(Settings));

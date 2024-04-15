@@ -2,12 +2,16 @@ import _ from 'lodash';
 import { createSelector } from 'reselect';
 import { mapToColor } from './taskUtils';
 import { assignedTasks } from './taskListUtils';
-import { taskAdapter, taskListAdapter } from './adapters'
+import { taskAdapter, taskListAdapter } from './adapters';
 
-const taskSelectors = taskAdapter.getSelectors((state) => state.logistics.entities.tasks)
-const taskListSelectors = taskListAdapter.getSelectors((state) => state.logistics.entities.taskLists)
+const taskSelectors = taskAdapter.getSelectors(
+  state => state.logistics.entities.tasks,
+);
+const taskListSelectors = taskListAdapter.getSelectors(
+  state => state.logistics.entities.taskLists,
+);
 
-export const selectSelectedDate = state => state.logistics.date
+export const selectSelectedDate = state => state.logistics.date;
 
 // FIXME
 // This is not optimized
@@ -20,55 +24,59 @@ export const selectTaskLists = createSelector(
   taskSelectors.selectEntities,
   (taskListsById, tasksById) =>
     Object.values(taskListsById).map(taskList => {
-      let newTaskList = {...taskList}
-      delete newTaskList.itemIds
+      let newTaskList = { ...taskList };
+      delete newTaskList.itemIds;
 
       newTaskList.items = taskList.itemIds
-        .filter(taskId => Object.prototype.hasOwnProperty.call(tasksById, taskId)) // a task with this id may be not loaded yet
-        .map(taskId => tasksById[taskId])
+        .filter(taskId =>
+          Object.prototype.hasOwnProperty.call(tasksById, taskId),
+        ) // a task with this id may be not loaded yet
+        .map(taskId => tasksById[taskId]);
 
-      return newTaskList
-    })
-)
+      return newTaskList;
+    }),
+);
 
-export const selectAllTasks = taskSelectors.selectAll
+export const selectAllTasks = taskSelectors.selectAll;
 
-export const selectAssignedTasks = createSelector(
-  selectTaskLists,
-  taskLists => assignedTasks(taskLists)
-)
+export const selectAssignedTasks = createSelector(selectTaskLists, taskLists =>
+  assignedTasks(taskLists),
+);
 
 export const selectUnassignedTasks = createSelector(
   selectAllTasks,
   selectAssignedTasks,
   (allTasks, assignedTasks) =>
-    _.filter(allTasks, task => assignedTasks.findIndex(assignedTask => task['@id'] == assignedTask['@id']) == -1)
-)
+    _.filter(
+      allTasks,
+      task =>
+        assignedTasks.findIndex(
+          assignedTask => task['@id'] == assignedTask['@id'],
+        ) == -1,
+    ),
+);
 
-export const selectTasksWithColor = createSelector(
-  selectAllTasks,
-  allTasks => mapToColor(allTasks)
-)
+export const selectTasksWithColor = createSelector(selectAllTasks, allTasks =>
+  mapToColor(allTasks),
+);
 
 const selectTaskListByUsername = (state, props) =>
-  taskListSelectors.selectById(state, props.username)
+  taskListSelectors.selectById(state, props.username);
 
 // https://github.com/reduxjs/reselect#connecting-a-selector-to-the-redux-store
 // https://redux.js.org/recipes/computing-derived-data
 export const makeSelectTaskListItemsByUsername = () => {
-
   return createSelector(
     taskSelectors.selectEntities, // FIXME This is recalculated all the time
     selectTaskListByUsername,
     (tasks, taskList) => {
-
       if (!taskList) {
-        return []
+        return [];
       }
 
       return taskList.itemIds
         .filter(id => Object.prototype.hasOwnProperty.call(tasks, id)) // a task with this id may be not loaded yet
-        .map(id => tasks[id])
-    }
-  )
-}
+        .map(id => tasks[id]);
+    },
+  );
+};

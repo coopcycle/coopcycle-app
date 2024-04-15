@@ -1,27 +1,27 @@
-import React, { Component } from 'react'
-import { StyleSheet, View } from 'react-native'
-import { connect } from 'react-redux'
-import { withTranslation } from 'react-i18next'
-import { Button, Text } from 'native-base'
-import PropTypes from 'prop-types'
-import Modal from 'react-native-modal'
+import React, { Component } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { connect } from 'react-redux';
+import { withTranslation } from 'react-i18next';
+import { Button, Text } from 'native-base';
+import PropTypes from 'prop-types';
+import Modal from 'react-native-modal';
 
-import { hideExpiredSessionModal } from '../../../redux/Checkout/actions'
+import { hideExpiredSessionModal } from '../../../redux/Checkout/actions';
 
 class ExpiredSessionModal extends Component {
-
   render() {
-
     return (
       <Modal
-        isVisible={ this.props.isVisible }
-        onModalHide={ this.props.onModalHide }>
-        <View style={ styles.modalContent }>
-          <View style={ styles.modalText }>
-            <Text style={{ color: '#a94442', textAlign: 'center' }}>{ this.props.t('SESSION_EXPIRED') }</Text>
+        isVisible={this.props.isVisible}
+        onModalHide={this.props.onModalHide}>
+        <View style={styles.modalContent}>
+          <View style={styles.modalText}>
+            <Text style={{ color: '#a94442', textAlign: 'center' }}>
+              {this.props.t('SESSION_EXPIRED')}
+            </Text>
           </View>
-          <Button block onPress={ this.props.hideExpiredSessionModal }>
-            <Text>{ this.props.t('GO_BACK_TO_RESTAURANTS') }</Text>
+          <Button block onPress={this.props.hideExpiredSessionModal}>
+            <Text>{this.props.t('GO_BACK_TO_RESTAURANTS')}</Text>
           </Button>
         </View>
       </Modal>
@@ -31,7 +31,7 @@ class ExpiredSessionModal extends Component {
 
 ExpiredSessionModal.propTypes = {
   onModalHide: PropTypes.func.isRequired,
-}
+};
 
 const styles = StyleSheet.create({
   modalText: {
@@ -45,24 +45,26 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
     padding: 15,
   },
-})
+});
 
 function mapStateToProps(state) {
-
-  const isVisible = state.checkout.isAddressModalHidden
-    && state.checkout.isSessionExpired
-    && state.checkout.isExpiredSessionModalVisible
+  const isVisible =
+    state.checkout.isAddressModalHidden &&
+    state.checkout.isSessionExpired &&
+    state.checkout.isExpiredSessionModalVisible;
 
   return {
     isVisible,
-  }
+  };
 }
 
 function mapDispatchToProps(dispatch) {
-
   return {
     hideExpiredSessionModal: () => dispatch(hideExpiredSessionModal()),
-  }
+  };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(ExpiredSessionModal))
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(withTranslation()(ExpiredSessionModal));

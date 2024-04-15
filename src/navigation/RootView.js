@@ -1,9 +1,9 @@
-import React from 'react'
-import { View } from 'native-base'
-import { useBackgroundColor } from '../styles/theme'
+import React from 'react';
+import { View } from 'native-base';
+import { useBackgroundColor } from '../styles/theme';
 
 export default function RootView({ children }) {
-  const backgroundColor = useBackgroundColor()
+  const backgroundColor = useBackgroundColor();
 
   return (
     <View
@@ -13,5 +13,5 @@ export default function RootView({ children }) {
       }}>
       {children}
     </View>
-  )
+  );
 }

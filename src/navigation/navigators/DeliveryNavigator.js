@@ -7,8 +7,7 @@ import { stackNavigatorScreenOptions } from '../styles';
 const MainStack = createStackNavigator();
 
 const MainNavigator = () => (
-  <MainStack.Navigator
-    screenOptions={stackNavigatorScreenOptions}>
+  <MainStack.Navigator screenOptions={stackNavigatorScreenOptions}>
     <MainStack.Screen
       name="DeliveryFormHome"
       component={screens.Delivery}
@@ -18,6 +17,6 @@ const MainNavigator = () => (
       })}
     />
   </MainStack.Navigator>
-)
+);
 
-export default MainNavigator
+export default MainNavigator;

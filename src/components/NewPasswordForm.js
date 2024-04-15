@@ -120,16 +120,20 @@ class NewPasswordForm extends React.Component {
                     autoCorrect={false}
                     autoCapitalize="none"
                     style={{ height: 40 }}
-                    onChangeText={value => this.setState({ [input.name]: value })}
+                    onChangeText={value =>
+                      this.setState({ [input.name]: value })
+                    }
                     {...input.props}
                     returnKeyType="next"
                     onSubmitEditing={event => {
-                      let index = inputs.findIndex(el => el.name === input.name);
-                      if (inputs.length >= (index + 2)) {
+                      let index = inputs.findIndex(
+                        el => el.name === input.name,
+                      );
+                      if (inputs.length >= index + 2) {
                         let nextInputName = inputs[index + 1].name;
                         this._inputComponents.get(nextInputName).focus();
                       } else {
-                        this._onSubmit()
+                        this._onSubmit();
                       }
                     }}
                   />
