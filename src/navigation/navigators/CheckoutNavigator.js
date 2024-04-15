@@ -1,19 +1,25 @@
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {getFocusedRouteNameFromRoute} from '@react-navigation/native';
-import {TransitionPresets, createStackNavigator} from '@react-navigation/stack';
-import {Icon, Text} from 'native-base';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
+import {
+  TransitionPresets,
+  createStackNavigator,
+} from '@react-navigation/stack';
+import { Icon, Text } from 'native-base';
 import React from 'react';
-import {TouchableOpacity} from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import {connect, useSelector} from 'react-redux';
-import screens, {headerLeft} from '..';
+import { connect, useSelector } from 'react-redux';
+import screens, { headerLeft } from '..';
 import i18n from '../../i18n';
-import {selectIsAuthenticated, selectIsGuest} from '../../redux/App/selectors';
+import {
+  selectIsAuthenticated,
+  selectIsGuest,
+} from '../../redux/App/selectors';
 import store from '../../redux/store';
-import {primaryColor} from '../../styles/common';
+import { primaryColor } from '../../styles/common';
 import CartsBadge from '../checkout/components/CartsBadge';
 import AskAddress from '../home/AskAddress';
-import {stackNavigatorScreenOptions} from '../styles';
+import { stackNavigatorScreenOptions } from '../styles';
 import AccountNavigator from './AccountNavigator';
 
 function getNestedOptions(navigation, route) {
@@ -31,11 +37,11 @@ function getNestedOptions(navigation, route) {
           if (selectIsAuthenticated(store.getState())) {
             return (
               <TouchableOpacity
-                style={{paddingHorizontal: 10}}
+                style={{ paddingHorizontal: 10 }}
                 onPress={() => {
                   navigation.navigate('AccountOrders');
                 }}>
-                <Text style={{color: 'white'}}>{i18n.t('MY_ORDERS')}</Text>
+                <Text style={{ color: 'white' }}>{i18n.t('MY_ORDERS')}</Text>
               </TouchableOpacity>
             );
           }
@@ -52,7 +58,7 @@ function getNestedOptions(navigation, route) {
 
 const Tab = createBottomTabNavigator();
 
-function Tabs({rootNavigation: navigation}) {
+function Tabs({ rootNavigation: navigation }) {
   return (
     <Tab.Navigator
       screenOptions={{
@@ -63,7 +69,7 @@ function Tabs({rootNavigation: navigation}) {
       <Tab.Screen
         name="Home"
         options={{
-          tabBarIcon: ({color, size}) => (
+          tabBarIcon: ({ color, size }) => (
             <Icon as={FontAwesome5} name="home" size={size} color={color} />
           ),
         }}
@@ -72,7 +78,7 @@ function Tabs({rootNavigation: navigation}) {
       <Tab.Screen
         name="Search"
         options={{
-          tabBarIcon: ({color, size}) => (
+          tabBarIcon: ({ color, size }) => (
             <Icon as={FontAwesome5} name="search" size={size} color={color} />
           ),
           title: i18n.t('SEARCH_TAB'),
@@ -83,7 +89,7 @@ function Tabs({rootNavigation: navigation}) {
         name="Cart"
         options={{
           tabBarBadge: <CartsBadge />,
-          tabBarIcon: ({color, size}) => (
+          tabBarIcon: ({ color, size }) => (
             <Icon
               as={FontAwesome5}
               name="shopping-cart"
@@ -98,7 +104,7 @@ function Tabs({rootNavigation: navigation}) {
       <Tab.Screen
         name="Account"
         options={{
-          tabBarIcon: ({color, size}) => (
+          tabBarIcon: ({ color, size }) => (
             <Icon as={FontAwesome5} name="user-alt" size={size} color={color} />
           ),
           title: i18n.t('MY_ACCOUNT'),
@@ -116,7 +122,7 @@ const MainNavigator = () => (
     <MainStack.Screen
       name="CheckoutHome"
       component={Tabs}
-      options={({navigation, route}) => ({
+      options={({ navigation, route }) => ({
         title: i18n.t('RESTAURANTS'),
         headerLeft: headerLeft(navigation),
         ...getNestedOptions(navigation, route),
@@ -127,7 +133,7 @@ const MainNavigator = () => (
       component={screens.CheckoutRestaurant}
       options={({
         route: {
-          params: {restaurant},
+          params: { restaurant },
         },
       }) => ({
         title: restaurant.name,
@@ -136,13 +142,13 @@ const MainNavigator = () => (
     <MainStack.Screen
       name="CheckoutSummary"
       component={screens.CheckoutSummary}
-      options={({navigation, route}) => ({
+      options={({ navigation, route }) => ({
         title: i18n.t('CART'),
         headerRight: () => (
           <TouchableOpacity
-            style={{paddingHorizontal: 10}}
+            style={{ paddingHorizontal: 10 }}
             onPress={() => {
-              navigation.setParams({edit: !(route.params?.edit || false)});
+              navigation.setParams({ edit: !(route.params?.edit || false) });
             }}>
             <Text>
               {route.params?.edit || false
@@ -201,9 +207,9 @@ const MainNavigator = () => (
     <MainStack.Screen
       name="AccountOrder"
       component={screens.AccountOrderPage}
-      options={({route}) => ({
+      options={({ route }) => ({
         title: route.params.order
-          ? i18n.t('ORDER_NUMBER', {number: route.params.order.number})
+          ? i18n.t('ORDER_NUMBER', { number: route.params.order.number })
           : i18n.t('MY_ORDER'),
         ...TransitionPresets.ModalTransition,
       })}
@@ -212,9 +218,9 @@ const MainNavigator = () => (
     <MainStack.Screen
       name="OrderTracking"
       component={screens.OrderTrackingPage}
-      options={({route}) => ({
+      options={({ route }) => ({
         title: route.params.order
-          ? i18n.t('ORDER_NUMBER', {number: route.params.order.number})
+          ? i18n.t('ORDER_NUMBER', { number: route.params.order.number })
           : i18n.t('MY_ORDER'),
       })}
     />
@@ -267,7 +273,7 @@ const RootStack = createStackNavigator();
 
 const DefaultNav = () => (
   <RootStack.Navigator
-    screenOptions={{...stackNavigatorScreenOptions, presentation: 'modal'}}>
+    screenOptions={{ ...stackNavigatorScreenOptions, presentation: 'modal' }}>
     <RootStack.Screen
       name="Main"
       component={MainNavigator}
@@ -278,8 +284,11 @@ const DefaultNav = () => (
     <RootStack.Screen
       name="CheckoutProductDetails"
       component={screens.CheckoutProductDetails}
-      options={{
-        title: '',
+      options={({ _, route }) => {
+        const productName = route.params?.product.name || '';
+        return {
+          title: productName,
+        };
       }}
     />
     <RootStack.Screen
@@ -320,16 +329,19 @@ const DefaultNav = () => (
   </RootStack.Navigator>
 );
 
-const CheckoutNav = ({address}) => {
+const CheckoutNav = ({ address }) => {
   if (!address) {
     return (
       <RootStack.Navigator
-        screenOptions={{...stackNavigatorScreenOptions, presentation: 'modal'}}
+        screenOptions={{
+          ...stackNavigatorScreenOptions,
+          presentation: 'modal',
+        }}
         initialRouteName="CheckoutAskAddress">
         <RootStack.Screen
           name="CheckoutAskAddress"
           component={AskAddress}
-          options={({navigation}) => ({
+          options={({ navigation }) => ({
             title: i18n.t('WHERE_ARE_YOU'),
             headerLeft: headerLeft(navigation),
           })}
