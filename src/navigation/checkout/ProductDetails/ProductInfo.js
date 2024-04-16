@@ -1,36 +1,42 @@
-import { Box, Heading, Text } from 'native-base'
+import { Text, View } from 'native-base';
+import React from 'react';
+import { StyleSheet } from 'react-native';
 import {
   AllergenList,
   RestrictedDietList,
   ZeroWasteBadge,
-} from '../../../components/MenuBadges'
-import { formatPrice } from '../../../utils/formatting'
-import React from 'react'
+} from '../../../components/MenuBadges';
+import { formatPrice } from '../../../utils/formatting';
+
+const styles = StyleSheet.create({
+  wrapper: {
+    flexDirection: 'column',
+    gap: 8,
+  },
+});
 
 export const ProductInfo = ({ product }) => {
   const hasBadges =
     !!product.suitableForDiet ||
     !!product.allergens ||
-    !!product.reusablePackagingEnabled
+    !!product.reusablePackagingEnabled;
 
   return (
-    <Box p="3">
-      <Heading size="lg">{product.name}</Heading>
+    <View style={styles.wrapper}>
+      <Text>{product.name}</Text>
+      <Text bold>{`${formatPrice(product.offers.price)}`}</Text>
       {product.description && product.description.length > 0 && (
-        <Text mt="2">{product.description}</Text>
+        <Text>{product.description}</Text>
       )}
       {hasBadges && (
-        <Box mt="2">
+        <View>
           {product.suitableForDiet && (
             <RestrictedDietList items={product.suitableForDiet} />
           )}
           {product.allergens && <AllergenList items={product.allergens} />}
           {product.reusablePackagingEnabled && <ZeroWasteBadge />}
-        </Box>
+        </View>
       )}
-      <Text mt="2" bold fontSize="xl">{`${formatPrice(
-        product.offers.price,
-      )}`}</Text>
-    </Box>
-  )
-}
+    </View>
+  );
+};

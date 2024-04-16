@@ -1,13 +1,10 @@
+import { HStack, Text } from 'native-base';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { StyleSheet, TouchableOpacity } from 'react-native';
-import { useTranslation } from 'react-i18next'
-import {
-  HStack,
-  Text,
-} from 'native-base';
 
-import { resolveFulfillmentMethod } from '../../../utils/order'
-import material from '../../../../native-base-theme/variables/material'
+import material from '../../../../native-base-theme/variables/material';
+import { resolveFulfillmentMethod } from '../../../utils/order';
 
 const styles = StyleSheet.create({
   footerBtn: {
@@ -41,39 +38,43 @@ const styles = StyleSheet.create({
   },
 });
 
-const OrderAcceptedFooter = ({ order, onPressCancel, onPressDelay, onPressFulfill }) => {
+const OrderAcceptedFooter = ({
+  order,
+  onPressCancel,
+  onPressDelay,
+  onPressFulfill,
+}) => {
+  const { t } = useTranslation();
 
-  const { t } = useTranslation()
-
-  const fulfillmentMethod = resolveFulfillmentMethod(order)
+  const fulfillmentMethod = resolveFulfillmentMethod(order);
 
   return (
     <HStack>
       <TouchableOpacity
-        style={ [ styles.footerBtn, styles.refuseBtn ] }
-        onPress={ onPressCancel }>
-        <Text style={ styles.refuseBtnText }>
-          { t('RESTAURANT_ORDER_BUTTON_CANCEL') }
+        style={[styles.footerBtn, styles.refuseBtn]}
+        onPress={onPressCancel}>
+        <Text style={styles.refuseBtnText}>
+          {t('RESTAURANT_ORDER_BUTTON_CANCEL')}
         </Text>
       </TouchableOpacity>
       <TouchableOpacity
-        style={ [ styles.footerBtn, styles.delayBtn ] }
-        onPress={ onPressDelay }>
-        <Text style={ styles.delayBtnText }>
-          { t('RESTAURANT_ORDER_BUTTON_DELAY') }
+        style={[styles.footerBtn, styles.delayBtn]}
+        onPress={onPressDelay}>
+        <Text style={styles.delayBtnText}>
+          {t('RESTAURANT_ORDER_BUTTON_DELAY')}
         </Text>
       </TouchableOpacity>
-      { fulfillmentMethod === 'collection' && (
-      <TouchableOpacity
-        style={ [ styles.footerBtn, styles.fulfillBtn ] }
-        onPress={ onPressFulfill }>
-        <Text style={ styles.fulfillBtnText }>
-          { t('RESTAURANT_ORDER_BUTTON_FULFILL') }
-        </Text>
-      </TouchableOpacity>
+      {fulfillmentMethod === 'collection' && (
+        <TouchableOpacity
+          style={[styles.footerBtn, styles.fulfillBtn]}
+          onPress={onPressFulfill}>
+          <Text style={styles.fulfillBtnText}>
+            {t('RESTAURANT_ORDER_BUTTON_FULFILL')}
+          </Text>
+        </TouchableOpacity>
       )}
     </HStack>
-  )
-}
+  );
+};
 
-export default OrderAcceptedFooter
+export default OrderAcceptedFooter;

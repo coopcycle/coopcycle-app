@@ -1,24 +1,23 @@
-import { applyMiddleware, createStore } from 'redux'
-import thunk from 'redux-thunk'
-import ReduxAsyncQueue from 'redux-async-queue'
-import { composeWithDevTools } from 'redux-devtools-extension'
-import { createLogger } from 'redux-logger'
+import { applyMiddleware, createStore } from 'redux';
+import ReduxAsyncQueue from 'redux-async-queue';
+import { composeWithDevTools } from 'redux-devtools-extension';
+import { createLogger } from 'redux-logger';
+import thunk from 'redux-thunk';
 
-import { persistStore } from 'redux-persist'
+import { persistStore } from 'redux-persist';
 
-import reducers from './reducers'
-import GeolocationMiddleware from './middlewares/GeolocationMiddleware'
-import BluetoothMiddleware from './middlewares/BluetoothMiddleware'
-import HttpMiddleware from './middlewares/HttpMiddleware'
-import NetInfoMiddleware from './middlewares/NetInfoMiddleware'
-import PushNotificationMiddleware from './middlewares/PushNotificationMiddleware'
-import SentryMiddleware from './middlewares/SentryMiddleware'
-import { ringOnNewOrderCreated } from './Restaurant/middlewares'
-import { ringOnTaskListUpdated } from './Courier/taskMiddlewares'
-import CentrifugoMiddleware from './middlewares/CentrifugoMiddleware'
-import { filterExpiredCarts } from './Checkout/middlewares';
 import Config from 'react-native-config';
-import Reactotron from '../../ReactotronConfig'
+import { filterExpiredCarts } from './Checkout/middlewares';
+import { ringOnTaskListUpdated } from './Courier/taskMiddlewares';
+import { ringOnNewOrderCreated } from './Restaurant/middlewares';
+import BluetoothMiddleware from './middlewares/BluetoothMiddleware';
+import CentrifugoMiddleware from './middlewares/CentrifugoMiddleware';
+import GeolocationMiddleware from './middlewares/GeolocationMiddleware';
+import HttpMiddleware from './middlewares/HttpMiddleware';
+import NetInfoMiddleware from './middlewares/NetInfoMiddleware';
+import PushNotificationMiddleware from './middlewares/PushNotificationMiddleware';
+import SentryMiddleware from './middlewares/SentryMiddleware';
+import reducers from './reducers';
 
 const middlewares = [
   thunk,
@@ -29,34 +28,36 @@ const middlewares = [
   CentrifugoMiddleware,
   SentryMiddleware,
   filterExpiredCarts,
-]
+];
 
 if (!Config.DEFAULT_SERVER) {
-  middlewares.push(...[
-    GeolocationMiddleware,
-    BluetoothMiddleware,
-    ringOnNewOrderCreated,
-    ringOnTaskListUpdated,
-  ])
+  middlewares.push(
+    ...[
+      GeolocationMiddleware,
+      BluetoothMiddleware,
+      ringOnNewOrderCreated,
+      ringOnTaskListUpdated,
+    ],
+  );
 }
 
-if (process.env.NODE_ENV === 'development') {
-  middlewares.push(createLogger({ collapsed: true }))
+if (__DEV__) {
+  middlewares.push(createLogger({ collapsed: true }));
 }
 
-const middlewaresProxy = (middlewaresList) => {
-  if (process.env.NODE_ENV === 'development') {
-    return composeWithDevTools(applyMiddleware(...middlewaresList), Reactotron.createEnhancer())
+const middlewaresProxy = middlewaresList => {
+  if (__DEV__) {
+    return composeWithDevTools(
+      applyMiddleware(...middlewaresList),
+      require('../../ReactotronConfig').default.createEnhancer(),
+    );
   } else {
-    return applyMiddleware(...middlewaresList)
+    return applyMiddleware(...middlewaresList);
   }
-}
+};
 
-const store = createStore(
-  reducers,
-  middlewaresProxy(middlewares)
-)
+const store = createStore(reducers, middlewaresProxy(middlewares));
 
-export default store
+export default store;
 
-export const persistor = persistStore(store)
+export const persistor = persistStore(store);

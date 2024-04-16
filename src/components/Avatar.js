@@ -1,11 +1,8 @@
-import React from 'react'
-import { Avatar } from 'native-base'
+import { Avatar } from 'native-base';
+import React from 'react';
 
 export default ({ baseURL, username }) => {
+  const uri = `${baseURL}/images/avatars/${username}.png`;
 
-  const uri = `${baseURL}/images/avatars/${username}.png`
-
-  return (
-    <Avatar size="sm" source={{ uri }} />
-  )
-}
+  return <Avatar size="sm" source={{ uri }} />;
+};

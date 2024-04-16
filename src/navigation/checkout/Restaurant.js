@@ -1,39 +1,58 @@
-import React, { useCallback, useMemo, useState } from 'react'
-import { Pressable, StyleSheet, View, useColorScheme } from 'react-native'
-import { connect } from 'react-redux'
-import { withTranslation } from 'react-i18next'
-import { Box, Center, HStack, Heading, Icon, Skeleton, Text, VStack } from 'native-base';
-import _ from 'lodash'
-import moment from 'moment'
-import { useFocusEffect } from '@react-navigation/native'
-import { SafeAreaView } from 'react-native-safe-area-context'
-
-import CartFooter from './components/CartFooter'
-import ExpiredSessionModal from './components/ExpiredSessionModal'
-import LoopeatModal from './components/LoopeatModal'
-
-import Menu from '../../components/Menu'
-
-import { setDate, setFulfillmentMethod, showTimingModal } from '../../redux/Checkout/actions'
-import { useQuery } from 'react-query';
-import i18n from '../../i18n';
-import GroupImageHeader from './components/GroupImageHeader';
-import OpeningHours from './components/OpeningHours';
-import { phonecall } from 'react-native-communications';
-import AddressUtils from '../../utils/Address';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import _ from 'lodash';
+import moment from 'moment';
 import {
-  selectCartWithHours,
+  Box,
+  Center,
+  FlatList,
+  HStack,
+  Heading,
+  Icon,
+  Skeleton,
+  Text,
+  VStack,
+} from 'native-base';
+import React, { useMemo, useRef, useState } from 'react';
+import { withTranslation } from 'react-i18next';
+import {
+  Dimensions,
+  Pressable,
+  StyleSheet,
+  View,
+  useColorScheme,
+} from 'react-native';
+import { connect } from 'react-redux';
+
+import CartFooter from './components/CartFooter';
+import ExpiredSessionModal from './components/ExpiredSessionModal';
+import LoopeatModal from './components/LoopeatModal';
+
+import { phonecall } from 'react-native-communications';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import { useQuery } from 'react-query';
+import BottomModal from '../../components/BottomModal';
+import DangerAlert from '../../components/DangerAlert';
+import Markdown from '../../components/Markdown';
+import RestaurantMenuHeader from '../../components/RestaurantMenuHeader';
+import RestaurantMenuItem from '../../components/RestaurantMenuItem';
+import i18n from '../../i18n';
+import {
+  setDate,
+  setFulfillmentMethod,
+  showTimingModal,
+} from '../../redux/Checkout/actions';
+import {
   selectCartFulfillmentMethod,
+  selectCartWithHours,
   selectFulfillmentMethods,
   selectRestaurantWithHours,
 } from '../../redux/Checkout/selectors';
-import BottomModal from '../../components/BottomModal';
-import DangerAlert from '../../components/DangerAlert';
+import AddressUtils from '../../utils/Address';
 import OpeningHoursSpecification from '../../utils/OpeningHoursSpecification';
-import Markdown from '../../components/Markdown'
+import OpeningHours from './components/OpeningHours';
+import RestaurantProfile from './components/RestaurantProfile';
 
-const LoadingPhantom = (props) =>
+const LoadingPhantom = props => (
   <HStack w="95%" space={6} p="4">
     <VStack flex="3" space="3">
       <Skeleton flex={1} />
@@ -46,121 +65,231 @@ const LoadingPhantom = (props) =>
     </VStack>
     <Skeleton flex="1" h="100" w="100" rounded="md" />
   </HStack>
+);
 
 function Restaurant(props) {
-  const { navigate } = props.navigation
-  const colorScheme = useColorScheme()
-  const [ infoModal, setInfoModal ] = useState(false)
-  const { showFooter, httpClient, restaurant, openingHoursSpecification } = props
+  const { navigate } = props.navigation;
+  const colorScheme = useColorScheme();
+  const [infoModal, setInfoModal] = useState(false);
+  const { showFooter, httpClient, restaurant, openingHoursSpecification } =
+    props;
+  const sectionListRef = useRef(null);
 
-  const { isLoading, isError, data } = useQuery([ 'menus', restaurant.hasMenu ], async () => {
-    return await httpClient.get(restaurant.hasMenu, { anonymous: true })
-  })
+  const [activeSection, setActiveSection] = useState(null);
+  const viewabilityConfig = useRef({ viewAreaCoveragePercentThreshold: 50 });
+  const handleViewableItemsChanged = useRef(({ viewableItems }) => {
+    if (viewableItems.length > 0) {
+      setActiveSection(viewableItems[0].index);
+    }
+  });
+  const screenHeight = Dimensions.get('window').height;
+
+  const { isLoading, isError, data } = useQuery(
+    ['menus', restaurant.hasMenu],
+    async () => {
+      return await httpClient.get(restaurant.hasMenu, {}, { anonymous: true });
+    },
+  );
 
   const currentTimeSlot = useMemo(
     () => openingHoursSpecification.currentTimeSlot,
-    [openingHoursSpecification]
-  )
+    [openingHoursSpecification],
+  );
 
   //TODO: improve failed view
   if (isError) {
-    return <Center w="95%">
-      <Heading>{i18n.t('AN_ERROR_OCCURRED')} </Heading>
-      <Text>{i18n.t('TRY_LATER')}</Text>
-    </Center>
+    return (
+      <Center w="95%">
+        <Heading>{i18n.t('AN_ERROR_OCCURRED')} </Heading>
+        <Text>{i18n.t('TRY_LATER')}</Text>
+      </Center>
+    );
   }
 
   const cardStyle = {
     ...styles.card,
-    backgroundColor: colorScheme === 'dark' ? 'rgba(255, 255, 255, 0.04)' : 'rgba(0, 0, 0, 0.02)',
-    borderColor: colorScheme === 'dark' ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.1)',
-  }
+    backgroundColor:
+      colorScheme === 'dark'
+        ? 'rgba(255, 255, 255, 0.04)'
+        : 'rgba(0, 0, 0, 0.02)',
+    borderColor:
+      colorScheme === 'dark'
+        ? 'rgba(255, 255, 255, 0.2)'
+        : 'rgba(0, 0, 0, 0.1)',
+  };
 
   function renderWarningBanner() {
-  if (currentTimeSlot.state === OpeningHoursSpecification.STATE.Closed) {
-    if (OpeningHoursSpecification.opensSoon(currentTimeSlot.timeSlot, 60)) {
-      return (
-        <DangerAlert
-          text={`${i18n.t('RESTAURANT_CLOSED_AND_NOT_AVAILABLE', {
-            datetime: moment(currentTimeSlot.timeSlot[0]).calendar(moment(), {
-              sameElse: 'llll',
-            }),
-          })}`}
-        />
-      );
-    } else {
-      return (
-        <DangerAlert
-          adjustsFontSizeToFit={true}
-          text={`${i18n.t('RESTAURANT_CLOSED_BUT_OPENS', {
-            datetime: moment(currentTimeSlot.timeSlot[0]).calendar(moment(), {
-              sameElse: 'llll',
-            }),
-          })}`}
-        />
-      );
+    if (currentTimeSlot.state === OpeningHoursSpecification.STATE.Closed) {
+      if (OpeningHoursSpecification.opensSoon(currentTimeSlot.timeSlot, 60)) {
+        return (
+          <DangerAlert
+            text={`${i18n.t('RESTAURANT_CLOSED_AND_NOT_AVAILABLE', {
+              datetime: moment(currentTimeSlot.timeSlot[0])
+                .calendar(moment(), {
+                  sameElse: 'llll',
+                })
+                .replace(/\s/g, '\u00A0'),
+            })}`}
+          />
+        );
+      } else {
+        return (
+          <DangerAlert
+            adjustsFontSizeToFit={true}
+            text={`${i18n.t('RESTAURANT_CLOSED_BUT_OPENS', {
+              datetime: moment(currentTimeSlot.timeSlot[0])
+                .calendar(moment(), {
+                  sameElse: 'llll',
+                })
+                .replace(/\s/g, '\u00A0'),
+            })}`}
+          />
+        );
+      }
     }
   }
-}
 
+  let sections = [];
+  if (data) {
+    _.forEach(data.hasMenuSection, (menuSection, index) => {
+      sections.push({
+        title: menuSection.name,
+        data: menuSection.hasMenuItem,
+        index,
+      });
+    });
+  }
+
+  const renderRestaurantProfile = () => (
+    <RestaurantProfile
+      onInfo={() => setInfoModal(true)}
+      restaurant={restaurant}
+    />
+  );
+
+  const renderRestaurantMenuHeader = () => (
+    <RestaurantMenuHeader
+      activeSection={activeSection}
+      sectionRef={sectionListRef}
+      sections={sections}
+      isLoading={isLoading}
+    />
+  );
+
+  const renderSection = section => (
+    <>
+      <View id={'section-' + section.index}>
+        <Text
+          style={{
+            fontSize: 18,
+            marginHorizontal: 16,
+            marginTop: 48,
+            marginBottom: 8,
+          }}>
+          {section.title}
+        </Text>
+        {section.data.map((item, innerIndex) => (
+          <RestaurantMenuItem
+            item={item}
+            isLoading={isLoading}
+            key={innerIndex}
+            onPress={menuItem =>
+              navigate('CheckoutProductDetails', {
+                product: menuItem,
+                restaurant,
+              })
+            }
+          />
+        ))}
+      </View>
+    </>
+  );
+
+  const renderEmptyFooter = () => (
+    <View style={{ height: screenHeight * 0.4 }}></View>
+  );
+
+  const renderFunctions = [
+    renderRestaurantProfile,
+    renderWarningBanner,
+    renderRestaurantMenuHeader,
+    ...sections.map(section => () => renderSection(section)),
+    renderEmptyFooter,
+  ];
+
+  const listRenderItem = ({ item, index }) => {
+    return renderFunctions[index] ? renderFunctions[index]() : null;
+  };
 
   return (
-    <SafeAreaView style={{ flex: 1 }} edges={['bottom']}>
-      <View style={{ flex: 1, paddingTop: 60 }}>
-        <View style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: 60 }}>
-          <GroupImageHeader image={ restaurant.image } text={restaurant.name} onInfo={() => setInfoModal(true)} category={ restaurant.facets.category } />
-        </View>
-        {renderWarningBanner()}
-        { isLoading && <Center w="100%">
-          <LoadingPhantom color={'cyan.200'} />
-          <LoadingPhantom color={'gray.200'} />
-          <LoadingPhantom color={'amber.200'} />
-        </Center> }
-        { !isLoading && <Menu
-          restaurant={ restaurant }
-          menu={ data }
-          onItemClick={ menuItem => navigate('CheckoutProductDetails', { product: menuItem, restaurant }) }
-          isItemLoading={ menuItem => props.loadingItems.includes(menuItem.identifier) } /> }
-      </View>
-      { showFooter ? (
-        <CartFooter
-          onSubmit={ () => navigate('CheckoutSummary', { restaurant }) }
-          cart={props.cart}
-          initLoading={props.cartLoading}
-          testID="cartSubmit"
-          disabled={ isLoading } />
-      ) : null }
+    <View
+      style={{
+        width: '100%',
+        maxHeight: '100%',
+      }}>
+      <FlatList
+        stickyHeaderIndices={[2]}
+        data={Array.from(
+          { length: renderFunctions.length },
+          (_, index) => index,
+        )}
+        renderItem={listRenderItem}
+        ref={sectionListRef}
+        viewabilityConfig={viewabilityConfig.current}
+        onViewableItemsChanged={handleViewableItemsChanged.current}
+      />
+      {showFooter ? (
+        <SafeAreaView edges={['bottom']}>
+          <CartFooter
+            onSubmit={() => navigate('CheckoutSummary', { restaurant })}
+            cart={props.cart}
+            initLoading={props.cartLoading}
+            testID="cartSubmit"
+            disabled={isLoading}
+          />
+        </SafeAreaView>
+      ) : null}
 
-
-      <BottomModal isVisible={infoModal}
-                   onBackdropPress={() => setInfoModal(false)}
-                   onBackButtonPress={() => setInfoModal(false)}
-      >
-          <Box style={styles.center}>
-            <Heading>{restaurant.name}</Heading>
-            <Markdown>{restaurant.description}</Markdown>
-            <Text bold padding={3}>{i18n.t('RESTAURANT_OPENING_HOURS')}</Text>
-            <OpeningHours openingHoursSpecification={props.openingHoursSpecification} />
-          </Box>
-          <Pressable onPress={() => { AddressUtils.openMap(restaurant.address, restaurant.name) }} >
-            <HStack space={3} style={cardStyle}>
-              <Icon as={Ionicons} name="map" size={5} color={'blueGray.600'} />
-              <Text>{restaurant.address.streetAddress}</Text>
-            </HStack>
-          </Pressable>
-          <Pressable onPress={ () => { phonecall(restaurant.telephone, true) } }>
-            <HStack space={3} style={cardStyle}>
-              <Icon as={Ionicons} name="call" size={5} color={'blueGray.600'} />
-              <Text>{i18n.t('CALL')} {restaurant.name}</Text>
-            </HStack>
-          </Pressable>
+      <BottomModal
+        isVisible={infoModal}
+        onBackdropPress={() => setInfoModal(false)}
+        onBackButtonPress={() => setInfoModal(false)}>
+        <Box style={styles.center}>
+          <Heading>{restaurant.name}</Heading>
+          <Markdown>{restaurant.description}</Markdown>
+          <Text bold padding={3}>
+            {i18n.t('RESTAURANT_OPENING_HOURS')}
+          </Text>
+          <OpeningHours
+            openingHoursSpecification={props.openingHoursSpecification}
+          />
+        </Box>
+        <Pressable
+          onPress={() => {
+            AddressUtils.openMap(restaurant.address, restaurant.name);
+          }}>
+          <HStack space={3} style={cardStyle}>
+            <Icon as={Ionicons} name="map" size={5} color={'blueGray.600'} />
+            <Text>{restaurant.address.streetAddress}</Text>
+          </HStack>
+        </Pressable>
+        <Pressable
+          onPress={() => {
+            phonecall(restaurant.telephone, true);
+          }}>
+          <HStack space={3} style={cardStyle}>
+            <Icon as={Ionicons} name="call" size={5} color={'blueGray.600'} />
+            <Text>
+              {i18n.t('CALL')} {restaurant.name}
+            </Text>
+          </HStack>
+        </Pressable>
       </BottomModal>
 
-      <ExpiredSessionModal
-        onModalHide={ () => navigate('CheckoutHome') } />
+      <ExpiredSessionModal onModalHide={() => navigate('CheckoutHome')} />
       <LoopeatModal />
-    </SafeAreaView>
-  )
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -176,12 +305,17 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(state, ownProps) {
-
-  const { restaurant, openingHoursSpecification } = selectRestaurantWithHours(state)
-  const cartContainer = selectCartWithHours(state)
-  const cart = cartContainer?.cart
-  const cartLoading = _.includes(state.checkout.loadingCarts, restaurant['@id'])
-  const isCartEmpty = !selectCartWithHours(state).cart ? true : cart.items.length === 0
+  const { restaurant, openingHoursSpecification } =
+    selectRestaurantWithHours(state);
+  const cartContainer = selectCartWithHours(state);
+  const cart = cartContainer?.cart;
+  const cartLoading = _.includes(
+    state.checkout.loadingCarts,
+    restaurant['@id'],
+  );
+  const isCartEmpty = !selectCartWithHours(state).cart
+    ? true
+    : cart.items.length === 0;
 
   return {
     showFooter: !isCartEmpty || cartLoading,
@@ -196,7 +330,7 @@ function mapStateToProps(state, ownProps) {
     httpClient: state.app.httpClient,
     fulfillmentMethods: selectFulfillmentMethods(state),
     fulfillmentMethod: selectCartFulfillmentMethod(state),
-  }
+  };
 }
 
 function mapDispatchToProps(dispatch) {
@@ -204,7 +338,10 @@ function mapDispatchToProps(dispatch) {
     setDate: (date, cb) => dispatch(setDate(date, cb)),
     setFulfillmentMethod: method => dispatch(setFulfillmentMethod(method)),
     showTimingModal: show => dispatch(showTimingModal(show)),
-  }
+  };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(Restaurant))
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(withTranslation()(Restaurant));

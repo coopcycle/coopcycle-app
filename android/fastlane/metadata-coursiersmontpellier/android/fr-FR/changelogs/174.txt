@@ -1,0 +1,4 @@
+Corrections :
+
+- Corrige une erreur avec 3D Secure.
+- Corrige le scan Bluetooth.

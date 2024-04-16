@@ -1,16 +1,16 @@
-import React from 'react'
-import { Checkbox, Column } from 'native-base'
-import { selectIsSpinnerDelayEnabled } from '../../redux/App/selectors'
-import { useDispatch, useSelector } from 'react-redux'
-import { useTranslation } from 'react-i18next'
-import { setSpinnerDelayEnabled } from '../../redux/App/actions'
+import { Checkbox, Column } from 'native-base';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
+import { setSpinnerDelayEnabled } from '../../redux/App/actions';
+import { selectIsSpinnerDelayEnabled } from '../../redux/App/selectors';
 
 export default function FeatureFlags() {
-  const isSpinnerDelayEnabled = useSelector(selectIsSpinnerDelayEnabled)
+  const isSpinnerDelayEnabled = useSelector(selectIsSpinnerDelayEnabled);
 
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   return (
     <Column m={4}>
@@ -22,5 +22,5 @@ export default function FeatureFlags() {
         {t('FEATURE_FLAG_SPINNER_DELAY')}
       </Checkbox>
     </Column>
-  )
+  );
 }

@@ -1,122 +1,120 @@
-import React, { Component } from 'react'
-import { InteractionManager, Platform, StyleSheet, View } from 'react-native'
-import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake'
-import RNPinScreen from 'react-native-pin-screen'
-import { connect } from 'react-redux'
-import { withTranslation } from 'react-i18next'
+import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake';
+import React, { Component } from 'react';
+import { withTranslation } from 'react-i18next';
+import { InteractionManager, Platform, StyleSheet, View } from 'react-native';
+import RNPinScreen from 'react-native-pin-screen';
+import { connect } from 'react-redux';
 
-import { dateSelectHeaderHeight } from '../../styles/common'
-import DateSelectHeader from '../../components/DateSelectHeader'
-import TasksMapView from '../../components/TasksMapView'
+import DateSelectHeader from '../../components/DateSelectHeader';
+import TasksMapView from '../../components/TasksMapView';
+import { navigateToTask } from '../../navigation/utils';
 import {
   loadTasks,
   selectFilteredTasks,
   selectKeepAwake,
   selectTaskSelectedDate,
-} from '../../redux/Courier'
-import { navigateToTask } from '../../navigation/utils'
+} from '../../redux/Courier';
 
-import { selectIsCentrifugoConnected } from '../../redux/App/selectors'
-import { connect as connectCentrifugo } from '../../redux/middlewares/CentrifugoMiddleware/actions'
+import { selectIsCentrifugoConnected } from '../../redux/App/selectors';
+import { connect as connectCentrifugo } from '../../redux/middlewares/CentrifugoMiddleware/actions';
 
 class TasksPage extends Component {
-
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
       task: null,
       polyline: [],
       isFocused: false,
-    }
+    };
 
-    this.refreshTasks = this.refreshTasks.bind(this)
+    this.refreshTasks = this.refreshTasks.bind(this);
   }
 
   enableKeepAwake() {
     if (Platform.OS === 'ios') {
-      activateKeepAwakeAsync()
+      activateKeepAwakeAsync();
     } else {
-      RNPinScreen.pin()
+      RNPinScreen.pin();
     }
   }
 
   disableKeepAwake() {
     if (Platform.OS === 'ios') {
-      deactivateKeepAwake()
+      deactivateKeepAwake();
     } else {
-      RNPinScreen.unpin()
+      RNPinScreen.unpin();
     }
   }
 
   componentDidMount() {
-
-    this._bootstrap()
+    this._bootstrap();
 
     if (this.props.keepAwake && this.props.isFocused) {
-      this.enableKeepAwake()
+      this.enableKeepAwake();
     }
 
     this.unsubscribeFromFocusListener = this.props.navigation.addListener(
       'focus',
-      () => this.setState({ isFocused: true })
-    )
+      () => this.setState({ isFocused: true }),
+    );
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevState.isFocused !== this.state.isFocused || prevProps.keepAwake !== this.props.keepAwake) {
+    if (
+      prevState.isFocused !== this.state.isFocused ||
+      prevProps.keepAwake !== this.props.keepAwake
+    ) {
       if (this.props.keepAwake && this.state.isFocused) {
-        this.enableKeepAwake()
+        this.enableKeepAwake();
       } else {
-        this.disableKeepAwake()
+        this.disableKeepAwake();
       }
     }
   }
 
   componentWillUnmount() {
-    this.unsubscribeFromFocusListener()
+    this.unsubscribeFromFocusListener();
   }
 
   _bootstrap() {
     InteractionManager.runAfterInteractions(() => {
-      this.refreshTasks(this.props.selectedDate)
+      this.refreshTasks(this.props.selectedDate);
       if (!this.props.selectIsCentrifugoConnected) {
-        this.props.connectCent()
+        this.props.connectCent();
       }
-    })
+    });
   }
 
-  refreshTasks (selectedDate) {
-    this.props.loadTasks(selectedDate)
+  refreshTasks(selectedDate) {
+    this.props.loadTasks(selectedDate);
   }
 
   render() {
-
-    const { tasks, selectedDate } = this.props
+    const { tasks } = this.props;
 
     return (
-      <View style={ styles.container }>
+      <View style={styles.container}>
+        <DateSelectHeader navigate={this.props.navigation.navigate} />
         <TasksMapView
-          mapCenter={ this.props.mapCenter }
-          tasks={ tasks }
-          onMarkerCalloutPress={ task => navigateToTask(this.props.navigation, this.props.route, task, tasks) } />
-        <DateSelectHeader
-          buttonsEnabled={true}
-          toDate={this.refreshTasks}
-          selectedDate={selectedDate}/>
+          mapCenter={this.props.mapCenter}
+          tasks={tasks}
+          onMarkerCalloutPress={task =>
+            navigateToTask(this.props.navigation, this.props.route, task, tasks)
+          }
+        />
       </View>
-    )
+    );
   }
 }
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: dateSelectHeaderHeight,
     flex: 1,
   },
-})
+});
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     tasks: selectFilteredTasks(state),
     selectedDate: selectTaskSelectedDate(state),
@@ -124,14 +122,17 @@ function mapStateToProps (state) {
     isCentrifugoConnected: selectIsCentrifugoConnected(state),
     httpClient: state.app.httpClient,
     mapCenter: state.app.settings.latlng.split(',').map(parseFloat),
-  }
+  };
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
-    loadTasks: (selectedDate) => dispatch(loadTasks(selectedDate)),
+    loadTasks: selectedDate => dispatch(loadTasks(selectedDate)),
     connectCent: () => dispatch(connectCentrifugo()),
-  }
+  };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(TasksPage))
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(withTranslation()(TasksPage));

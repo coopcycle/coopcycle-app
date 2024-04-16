@@ -1,0 +1,3 @@
+Arreglos:
+
+- Arregla un crash en Android 12.

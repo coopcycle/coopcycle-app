@@ -1,30 +1,33 @@
 // @see https://github.com/uuidjs/uuid#getrandomvalues-not-supported
-import 'react-native-get-random-values'
-import React, { Component } from 'react'
-import { Image, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native'
-import PropTypes from 'prop-types'
-import _ from 'lodash'
-import { Icon, Text, useColorMode, useColorModeValue } from 'native-base'
-import qs from 'qs'
-import axios from 'axios'
-import { withTranslation } from 'react-i18next'
-import Autocomplete from 'react-native-autocomplete-input'
-import Fuse from 'fuse.js'
-import { v4 as uuidv4 } from 'uuid'
-import Config from 'react-native-config'
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
-import { AbortController } from 'abortcontroller-polyfill/dist/cjs-ponyfill'
-import { connect } from 'react-redux'
-import { circle, transformRotate } from '@turf/turf'
-
-import { localeDetector } from '../i18n'
-import AddressUtils from '../utils/Address'
-import ItemSeparator from './ItemSeparator'
+import { circle, transformRotate } from '@turf/turf';
+import { AbortController } from 'abortcontroller-polyfill/dist/cjs-ponyfill';
+import axios from 'axios';
+import Fuse from 'fuse.js';
+import _ from 'lodash';
+import { Icon, Text, useColorMode, useColorModeValue } from 'native-base';
+import PropTypes from 'prop-types';
+import qs from 'qs';
+import React, { Component } from 'react';
+import { withTranslation } from 'react-i18next';
 import {
-  useBackgroundColor,
-  useBaseTextColor,
-} from '../styles/theme'
-import { darkGreyColor, whiteColor } from '../styles/common'
+  Image,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import Autocomplete from 'react-native-autocomplete-input';
+import Config from 'react-native-config';
+import 'react-native-get-random-values';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import { connect } from 'react-redux';
+import { v4 as uuidv4 } from 'uuid';
+
+import { localeDetector } from '../i18n';
+import { darkGreyColor, whiteColor } from '../styles/common';
+import { useBackgroundColor, useBaseTextColor } from '../styles/theme';
+import AddressUtils from '../utils/Address';
+import ItemSeparator from './ItemSeparator';
 
 const fuseOptions = {
   shouldSort: true,
@@ -34,177 +37,204 @@ const fuseOptions = {
   distance: 100,
   maxPatternLength: 32,
   minMatchCharLength: 1,
-  keys: [
-    'contactName',
-    'streetAddress',
-  ],
-}
+  keys: ['contactName', 'streetAddress'],
+};
 
 const PoweredByGoogle = () => {
-
-  const { colorMode } = useColorMode()
-  const backgroundColor = useBackgroundColor()
+  const { colorMode } = useColorMode();
+  const backgroundColor = useBackgroundColor();
 
   return (
-    <View style={ [ styles.poweredContainer, { backgroundColor: backgroundColor }] }>
-      { colorMode !== 'dark' && <Image
-        resizeMode="contain"
-        source={ require('../../assets/images/powered_by_google_on_white.png') } /> }
-      { colorMode === 'dark' && <Image
-        resizeMode="contain"
-        source={ require('../../assets/images/powered_by_google_on_non_white.png') } /> }
+    <View
+      style={[styles.poweredContainer, { backgroundColor: backgroundColor }]}>
+      {colorMode !== 'dark' && (
+        <Image
+          resizeMode="contain"
+          source={require('../../assets/images/powered_by_google_on_white.png')}
+        />
+      )}
+      {colorMode === 'dark' && (
+        <Image
+          resizeMode="contain"
+          source={require('../../assets/images/powered_by_google_on_non_white.png')}
+        />
+      )}
     </View>
-  )
-}
+  );
+};
 
 const PoweredByIdealPostcodes = () => (
-  <View style={ styles.poweredContainer }>
+  <View style={styles.poweredContainer}>
     <Image
       resizeMode="contain"
-      source={ require('../../assets/images/ideal_postcodes.png') } />
+      source={require('../../assets/images/ideal_postcodes.png')}
+    />
   </View>
-)
+);
 
 const PostCodeButton = ({ postcode, onPress }) => {
   return (
-    <TouchableOpacity style={{
-      flexDirection: 'row', alignItems: 'center',
-      paddingLeft: 10,
-      paddingRight: 10,
-      paddingVertical: 5,
-      position: 'absolute',
-      right: 0,
-      top: 0,
-      bottom: 0,
-      backgroundColor: '#0984e3', borderTopRightRadius: 20, borderBottomRightRadius: 20 }}
-      onPress={ onPress }>
-      <Text style={{
-        marginRight: 10,
-        fontWeight: '700',
-        fontSize: 16,
-        color: 'white',
-        fontFamily: 'RobotoMono-Regular',
-      }}>{ postcode }</Text>
-      <Icon as={FontAwesome5} name="times" style={{ fontSize: 18, color: 'white' }} />
+    <TouchableOpacity
+      style={{
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingLeft: 10,
+        paddingRight: 10,
+        paddingVertical: 5,
+        position: 'absolute',
+        right: 0,
+        top: 0,
+        bottom: 0,
+        backgroundColor: '#0984e3',
+        borderTopRightRadius: 20,
+        borderBottomRightRadius: 20,
+      }}
+      onPress={onPress}>
+      <Text
+        style={{
+          marginRight: 10,
+          fontWeight: '700',
+          fontSize: 16,
+          color: 'white',
+          fontFamily: 'RobotoMono-Regular',
+        }}>
+        {postcode}
+      </Text>
+      <Icon
+        as={FontAwesome5}
+        name="times"
+        style={{ fontSize: 18, color: 'white' }}
+      />
     </TouchableOpacity>
-  )
-}
+  );
+};
 
 class AddressAutocomplete extends Component {
-
   constructor(props) {
-
-    super(props)
+    super(props);
 
     this.state = {
-      query: _.isObject(props.value) ? (props.value.streetAddress || '') : (props.value || ''),
+      query: _.isObject(props.value)
+        ? props.value.streetAddress || ''
+        : props.value || '',
       results: [],
-      postcode: _.isObject(props.value) ? { postcode: props.value.postalCode } : null,
+      postcode: _.isObject(props.value)
+        ? { postcode: props.value.postalCode }
+        : null,
       sessionToken: null,
       controller: null,
-    }
-    this.fuse = new Fuse(this.props.addresses, fuseOptions)
+    };
+    this.fuse = new Fuse(this.props.addresses, fuseOptions);
   }
 
   _autocomplete = _.debounce((text, query) => {
-
-    this.setState({ controller: new AbortController() })
+    this.setState({ controller: new AbortController() });
     const fuseResults = this.fuse.search(text, {
       limit: 2,
-    })
+    });
 
     if (this.props.country === 'gb') {
-
       if (!this.state.postcode) {
-
-        axios.get(`https://api.postcodes.io/postcodes/${text.replace(/\s/g, '')}/autocomplete`, {
-          signal: this.state.controller.signal,
-        })
+        axios
+          .get(
+            `https://api.postcodes.io/postcodes/${text.replace(
+              /\s/g,
+              '',
+            )}/autocomplete`,
+            {
+              signal: this.state.controller.signal,
+            },
+          )
           .then(response => {
-            if (response.data.status === 200 && Array.isArray(response.data.result)) {
-              const normalizedPostcodes = response.data.result.map(postcode => ({
-                postcode: postcode,
-                type: 'postcode',
-              }))
+            if (
+              response.data.status === 200 &&
+              Array.isArray(response.data.result)
+            ) {
+              const normalizedPostcodes = response.data.result.map(
+                postcode => ({
+                  postcode: postcode,
+                  type: 'postcode',
+                }),
+              );
               this.setState({
                 results: normalizedPostcodes,
-              })
+              });
             }
           })
-        .catch(error => {
-          console.log('AddressAutocomplete; _autocomplete', error)
-        })
-
+          .catch(error => {
+            console.log('AddressAutocomplete; _autocomplete', error);
+          });
       } else {
         this.setState({
-          results: [{
-            type: 'manual_address',
-            description: text,
-          }],
-        })
+          results: [
+            {
+              type: 'manual_address',
+              description: text,
+            },
+          ],
+        });
       }
-
     } else {
-
       // @see https://developers.google.com/places/web-service/autocomplete
       axios
-        .get(`https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${encodeURIComponent(text)}&${qs.stringify(query)}`, {
-          signal: this.state.controller.signal,
-        })
+        .get(
+          `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${encodeURIComponent(
+            text,
+          )}&${qs.stringify(query)}`,
+          {
+            signal: this.state.controller.signal,
+          },
+        )
         .then(response => {
+          const normalizedResults = fuseResults.map(fuseResult => ({
+            ...fuseResult.item,
+            type: 'fuse',
+          }));
 
-          const normalizedResults =
-            fuseResults.map(fuseResult => ({
-              ...fuseResult.item,
-              type: 'fuse',
-            }))
-
-          const normalizedPredictions =
-            response.data.predictions.map(prediction => ({
+          const normalizedPredictions = response.data.predictions.map(
+            prediction => ({
               ...prediction,
               type: 'prediction',
-            }))
+            }),
+          );
 
-          const results = normalizedResults.concat(normalizedPredictions)
+          const results = normalizedResults.concat(normalizedPredictions);
 
           if (normalizedResults.length > 0 && results.length > 5) {
-            results.splice(5)
+            results.splice(5);
           }
 
-          this.setState({ results })
+          this.setState({ results });
         })
         .catch(error => {
-          console.log('AddressAutocomplete; _autocomplete', error)
-        })
-
+          console.log('AddressAutocomplete; _autocomplete', error);
+        });
     }
-
-  }, 300)
+  }, 300);
 
   _onChangeText(text) {
+    let newState = { query: text };
 
-    let newState = { query: text }
-
-    this.state.controller?.abort()
+    this.state.controller?.abort();
 
     // @see https://developers.google.com/places/web-service/autocomplete#session_tokens
-    let sessionToken = ''
+    let sessionToken = '';
     if (!this.state.sessionToken) {
-      sessionToken = uuidv4()
-      newState = { ...newState, sessionToken }
+      sessionToken = uuidv4();
+      newState = { ...newState, sessionToken };
     } else {
-      sessionToken = this.state.sessionToken
+      sessionToken = this.state.sessionToken;
     }
 
-    this.setState(newState)
+    this.setState(newState);
 
     if (this.props.onChangeText) {
-      this.props.onChangeText(text)
+      this.props.onChangeText(text);
     }
 
     if (text.length < this.props.minChars) {
-      this.setState({ results: [] })
-      return
+      this.setState({ results: [] });
+      return;
     }
 
     let query = {
@@ -217,39 +247,43 @@ class AddressAutocomplete extends Component {
       // Note that east/west values are wrapped to the range -180, 180, and north/south values are clamped to the range -90, 90.
       locationrestriction: `rectangle:${this.props.southWest}|${this.props.northEast}`,
       sessiontoken: sessionToken,
-    }
+    };
 
-    this._autocomplete(text, query)
+    this._autocomplete(text, query);
   }
 
   _onItemPress(item) {
-
     if (item.type === 'prediction') {
-
-      const { sessionToken } = this.state
+      const { sessionToken } = this.state;
 
       const query = {
         key: Config.GOOGLE_MAPS_BROWSER_KEY,
         language: localeDetector(),
         placeid: item.place_id,
         sessiontoken: sessionToken,
-      }
+      };
 
       // https://developers.google.com/places/web-service/session-tokens
       // The session begins when the user starts typing a query,
       // and concludes when they select a place and a call to Place Details is made.
-      this.setState({ sessionToken: null })
+      this.setState({ sessionToken: null });
 
       // @see https://developers.google.com/places/web-service/details
       axios
-        .get(`https://maps.googleapis.com/maps/api/place/details/json?${qs.stringify(query)}`)
+        .get(
+          `https://maps.googleapis.com/maps/api/place/details/json?${qs.stringify(
+            query,
+          )}`,
+        )
         .then(response => {
-          this.setState({ query: item.description, results: [] })
-          this.props.onSelectAddress(AddressUtils.createAddressFromGoogleDetails(response.data.result))
+          this.setState({ query: item.description, results: [] });
+          this.props.onSelectAddress(
+            AddressUtils.createAddressFromGoogleDetails(response.data.result),
+          );
         })
         .catch(error => {
-          console.log('AddressAutocomplete; _onItemPress', error)
-        })
+          console.log('AddressAutocomplete; _onItemPress', error);
+        });
     }
 
     if (item.type === 'postcode') {
@@ -263,71 +297,87 @@ class AddressAutocomplete extends Component {
               query: '',
               results: [],
               postcode: response.data.result,
-            })
+            });
           }
         })
         .catch(error => {
-          console.log('AddressAutocomplete; _onItemPress', error)
-        })
+          console.log('AddressAutocomplete; _onItemPress', error);
+        });
     }
 
     if (item.type === 'fuse') {
-      this.props.onSelectAddress(item)
+      this.props.onSelectAddress(item);
     }
 
     if (item.type === 'manual_address') {
-
       this.setState({
         results: [],
-      })
+      });
       this.props.onSelectAddress(
-        AddressUtils.createAddressFromPostcode(this.state.postcode, item.description)
-      )
+        AddressUtils.createAddressFromPostcode(
+          this.state.postcode,
+          item.description,
+        ),
+      );
     }
   }
 
   renderItem({ item, i }) {
+    const itemStyle = [styles.item];
 
-    const itemStyle = [styles.item]
-
-    let text = item.description
+    let text = item.description;
 
     if (item.type === 'fuse') {
-
-      const parts = [item.streetAddress]
+      const parts = [item.streetAddress];
       if (item.contactName && item.contactName.length > 0) {
-        parts.unshift(item.contactName)
+        parts.unshift(item.contactName);
       }
-      text = parts.join(' - ')
+      text = parts.join(' - ');
       itemStyle.push({
         flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-      })
+      });
     }
 
     if (item.type === 'postcode') {
-      text = item.postcode
+      text = item.postcode;
     }
 
-    let itemProps = {}
+    let itemProps = {};
     if (item.type === 'prediction') {
       itemProps = {
         ...itemProps,
-        testID:  `placeId:${item.place_id}`,
-      }
+        testID: `placeId:${item.place_id}`,
+      };
     }
 
     return (
-      <TouchableOpacity onPress={ () => this._onItemPress(item) } style={ itemStyle } { ...itemProps }>
-        <Text style={{ fontSize: 14, flex: 1, color: this.props.itemTextColor }} numberOfLines={1} ellipsizeMode="tail">
-          { text }</Text>
-        { item.type === 'fuse' && (
-          <Icon as={FontAwesome5} name="star" regular style={{ fontSize: 16, color: this.props.itemTextColor, paddingLeft: 5 }} />
-        ) }
+      <TouchableOpacity
+        onPress={() => this._onItemPress(item)}
+        style={itemStyle}
+        {...itemProps}>
+        <Text
+          style={{ fontSize: 14, flex: 1, color: this.props.itemTextColor }}
+          numberOfLines={1}
+          ellipsizeMode="tail">
+          {text}
+        </Text>
+        {item.type === 'fuse' && (
+          <Icon
+            as={FontAwesome5}
+            name="star"
+            regular
+            style={{
+              fontSize: 16,
+              color: this.props.itemTextColor,
+              paddingLeft: 5,
+            }}
+          />
+        )}
       </TouchableOpacity>
-    )
+    );
   }
 
   onTextInputFocus(e) {
@@ -337,77 +387,92 @@ class AddressAutocomplete extends Component {
           ...address,
           type: 'fuse',
         })),
-      })
+      });
     }
     if (this.props.onFocus && typeof this.props.onFocus === 'function') {
-      this.props.onFocus(e)
+      this.props.onFocus(e);
     }
   }
 
   onTextInputBlur(e) {
     this.setState({
       results: [],
-    })
+    });
     if (this.props.onBlur && typeof this.props.onBlur === 'function') {
-      this.props.onBlur(e)
+      this.props.onBlur(e);
     }
   }
 
   renderTextInput(props) {
-
     return (
-      <View style={ styles.textInput }>
-        <View style={ styles.textInput }>
-          <TextInput { ...props } style={ [ props.style, { flex: 1 }] }
-            onFocus={ this.onTextInputFocus.bind(this) }
-            onBlur={ this.onTextInputBlur.bind(this) } />
-          { (this.props.country === 'gb' && this.state.postcode) && (
-            <PostCodeButton postcode={ this.state.postcode.postcode } onPress={ () => {
-              this.setState({
-                query: '',
-                results: [],
-                postcode: null,
-              })
-            }} />
-          ) }
+      <View style={styles.textInput}>
+        <View style={styles.textInput}>
+          <TextInput
+            {...props}
+            style={[props.style, { flex: 1 }]}
+            onFocus={this.onTextInputFocus.bind(this)}
+            onBlur={this.onTextInputBlur.bind(this)}
+          />
+          {this.props.country === 'gb' && this.state.postcode && (
+            <PostCodeButton
+              postcode={this.state.postcode.postcode}
+              onPress={() => {
+                this.setState({
+                  query: '',
+                  results: [],
+                  postcode: null,
+                });
+              }}
+            />
+          )}
         </View>
-        { this.props.renderRight() }
+        {this.props.renderRight()}
       </View>
-    )
+    );
   }
 
   render() {
-    const { style, flatListProps, onSelectAddress, renderTextInput, placeholder, ...otherProps } = this.props
+    const {
+      style,
+      flatListProps,
+      onSelectAddress,
+      renderTextInput,
+      placeholder,
+      ...otherProps
+    } = this.props;
 
-    let finalPlaceholder = placeholder || this.props.t('ENTER_ADDRESS')
+    let finalPlaceholder = placeholder || this.props.t('ENTER_ADDRESS');
     if (this.props.country === 'gb' && !this.state.postcode) {
-      finalPlaceholder = this.props.t('ENTER_POSTCODE')
+      finalPlaceholder = this.props.t('ENTER_POSTCODE');
     }
 
     return (
       <Autocomplete
         autoCompleteType="off"
         autoCapitalize="none"
-        autoCorrect={ false }
+        autoCorrect={false}
         clearButtonMode="while-editing"
-        { ...otherProps }
-        data={ this.state.results }
-        value={ this.state.query }
-        placeholder={ finalPlaceholder }
-        onChangeText={ this._onChangeText.bind(this) }
+        {...otherProps}
+        data={this.state.results}
+        value={this.state.query}
+        placeholder={finalPlaceholder}
+        onChangeText={this._onChangeText.bind(this)}
         flatListProps={{
           style: {
             margin: 0, // reset default margins on Android
-            backgroundColor: this.props.controlBackgroundColor
+            backgroundColor: this.props.controlBackgroundColor,
           },
           keyboardShouldPersistTaps: 'always',
           keyExtractor: (item, i) => `prediction-${i}`,
           renderItem: this.renderItem.bind(this),
           ItemSeparatorComponent: ItemSeparator,
-          ListFooterComponent: (this.props.country === 'gb' ? PoweredByIdealPostcodes : PoweredByGoogle),
+          ListFooterComponent:
+            this.props.country === 'gb'
+              ? PoweredByIdealPostcodes
+              : PoweredByGoogle,
           ...flatListProps,
         }}
-        renderTextInput={ props => this.renderTextInput(props) }
+        renderTextInput={props => this.renderTextInput(props)}
         style={{
           color: this.props.baseTextColor,
           backgroundColor: this.props.controlBackgroundColor,
@@ -418,8 +483,8 @@ class AddressAutocomplete extends Component {
           borderWidth: 1,
           ...style,
         }}
-        />
-    )
+      />
+    );
   }
 }
 
@@ -427,13 +492,13 @@ AddressAutocomplete.defaultProps = {
   minChars: 3,
   addresses: [],
   renderRight: () => <View />,
-}
+};
 
 AddressAutocomplete.propTypes = {
   minChars: PropTypes.number,
   addresses: PropTypes.array,
   renderRight: PropTypes.func,
-}
+};
 
 const styles = StyleSheet.create({
   poweredContainer: {
@@ -451,34 +516,33 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
-})
+});
 
 function mapStateToProps(state) {
-
-  const [ lat, lng ] = state.app.settings.latlng.split(',')
+  const [lat, lng] = state.app.settings.latlng.split(',');
 
   // This will create a polygon with 4 sides (i.e a square)
-  const options = { steps: 4, units: 'kilometers' }
-  const polygon = circle([ lng, lat ], 50, options)
-  const bbox = transformRotate(polygon, 45)
+  const options = { steps: 4, units: 'kilometers' };
+  const polygon = circle([lng, lat], 50, options);
+  const bbox = transformRotate(polygon, 45);
 
-  const northEast = bbox.geometry.coordinates[0][0]
-  const southWest = bbox.geometry.coordinates[0][2]
+  const northEast = bbox.geometry.coordinates[0][0];
+  const southWest = bbox.geometry.coordinates[0][2];
 
   return {
     location: state.app.settings.latlng,
     country: state.app.settings.country,
-    northEast: [ northEast[1], northEast[0] ].join(','),
-    southWest: [ southWest[1], southWest[0] ].join(','),
-  }
+    northEast: [northEast[1], northEast[0]].join(','),
+    southWest: [southWest[1], southWest[0]].join(','),
+  };
 }
 
 function withHooks(ClassComponent) {
   return function CompWithHook(props) {
-    const baseTextColor = useBaseTextColor()
+    const baseTextColor = useBaseTextColor();
 
-    const controlBackgroundColor = useColorModeValue(whiteColor, darkGreyColor)
-    const itemTextColor = useColorModeValue('#856404', baseTextColor)
+    const controlBackgroundColor = useColorModeValue(whiteColor, darkGreyColor);
+    const itemTextColor = useColorModeValue('#856404', baseTextColor);
 
     return (
       <ClassComponent
@@ -487,8 +551,10 @@ function withHooks(ClassComponent) {
         controlBackgroundColor={controlBackgroundColor}
         itemTextColor={itemTextColor}
       />
-    )
-  }
+    );
+  };
 }
 
-export default connect(mapStateToProps)(withTranslation()(withHooks(AddressAutocomplete)))
+export default connect(mapStateToProps)(
+  withTranslation()(withHooks(AddressAutocomplete)),
+);

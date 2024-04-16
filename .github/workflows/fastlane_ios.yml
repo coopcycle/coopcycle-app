@@ -26,13 +26,10 @@ on:
 jobs:
   FASTLANE_IOS:
     name: Build for iOS
-    runs-on: macOS-latest
+    runs-on: macOS-14
     steps:
       - uses: actions/checkout@v3
-      # - uses: maxim-lobanov/setup-xcode@v1
-      #   with:
-      #     xcode-version: '12.5.1'
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
           node-version: '20.x'
           cache: 'yarn'
@@ -40,13 +37,10 @@ jobs:
         with:
           ruby-version: '3.2'
           bundler-cache: true
-      # - name: Setup CocoaPods
-      #   uses: maxim-lobanov/setup-cocoapods@v1
-      #   with:
-      #     # version: '1.12'
-      #     podfile-path: ios/Podfile.lock
+      - name: Install dependencies to compile node-canvas
+        run: brew install pkg-config cairo pango libpng jpeg giflib librsvg pixman imagemagick
       - name: Install dependencies
-        run: yarn install
+        run: yarn install --no-progress --network-timeout 100000 --network-concurrency 1
       - name: Cache Pods
         uses: actions/cache@v2
         id: cache-pods
@@ -55,7 +49,7 @@ jobs:
           key: pods-${{ hashFiles('**/Podfile.lock') }}
       - name: Install Pods
         working-directory: ios/
-        run: bundle exec pod install
+        run: USE_FRAMEWORKS=static NO_FLIPPER=1 bundle exec pod install
       - name: Generate icons
         if: ${{ inputs.instance != '' }}
         working-directory: ios/

@@ -1,17 +1,17 @@
 {
-    "common": {
-        "MY_ADDRESSES": "මාගේ ලිපින",
-        "MY_DETAILS": "මාගේ විස්තර",
-        "TASK": "කාර්යය",
-        "TASKS": "කාර්යයන්",
-        "TASK_LIST": "කාර්ය ලැයිස්තුව",
-        "RESTAURANT": "ආපන ශාලාව",
-        "RESTAURANTS": "ආපන ශාලා",
-        "BACK": "ආපසු",
-        "CART": "කරත්තය",
-        "CART_EMPTY_WARNING": "ඔබගේ කරත්තය හිස් ය",
-        "DELIVERY_ADDR": "බාර දෙන ලිපිනය",
-        "PAYMENT": "ගෙවීම",
-        "PAY_AMOUNT": "{{amount}} ගෙවන්න"
-    }
+  "common": {
+    "MY_ADDRESSES": "මාගේ ලිපින",
+    "MY_DETAILS": "මාගේ විස්තර",
+    "TASK": "කාර්යය",
+    "TASKS": "කාර්යයන්",
+    "TASK_LIST": "කාර්ය ලැයිස්තුව",
+    "RESTAURANT": "ආපන ශාලාව",
+    "RESTAURANTS": "ආපන ශාලා",
+    "BACK": "ආපසු",
+    "CART": "කරත්තය",
+    "CART_EMPTY_WARNING": "ඔබගේ කරත්තය හිස් ය",
+    "DELIVERY_ADDR": "බාර දෙන ලිපිනය",
+    "PAYMENT": "ගෙවීම",
+    "PAY_AMOUNT": "{{amount}} ගෙවන්න"
+  }
 }

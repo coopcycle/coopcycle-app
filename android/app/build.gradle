@@ -90,8 +90,8 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         multiDexEnabled true
-        versionCode 197
-        versionName "2.15.2"
+        versionCode 203
+        versionName "2.16.4"
 
         manifestPlaceholders = [
             tipsiStripeRedirectScheme: "coopcycle",
