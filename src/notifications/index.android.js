@@ -60,16 +60,17 @@ class PushNotification {
     // On Android API level 32 and below, you do not need to request user permission.
     // This method can still be called on Android devices; however, and will always resolve successfully. For API level 33+ you will need to request the permission manually
     if (Platform.Version >= 33) {
-      PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS)
-        .then((results) => {
-          if (PermissionsAndroid.RESULTS.GRANTED === results) {
-            messaging()
-              .getToken()
-              .then(fcmToken => {
-                options.onRegister(fcmToken)
-              })
-          }
-        })
+      PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
+      ).then(results => {
+        if (PermissionsAndroid.RESULTS.GRANTED === results) {
+          messaging()
+            .getToken()
+            .then(fcmToken => {
+              options.onRegister(fcmToken);
+            });
+        }
+      });
     } else {
       messaging()
         .getToken()

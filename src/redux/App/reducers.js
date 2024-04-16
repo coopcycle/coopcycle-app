@@ -9,7 +9,7 @@ import {
   CENTRIFUGO_MESSAGE,
   CONNECTED,
   DISCONNECTED,
-} from '../middlewares/CentrifugoMiddleware'
+} from '../middlewares/CentrifugoMiddleware';
 
 import {
   ACCEPT_PRIVACY_POLICY,
@@ -55,7 +55,7 @@ import {
   SET_SETTINGS,
   SET_SPINNER_DELAY_ENABLED,
   SET_USER,
-} from './actions'
+} from './actions';
 
 import { EVENT as EVENT_ORDER } from '../../domain/Order';
 import { EVENT as EVENT_TASK_COLLECTION } from '../../domain/TaskCollection';
@@ -121,11 +121,9 @@ function updateNotifications(state, event, params) {
       if (isSameEvent) {
         switch (notification.event) {
           case EVENT_ORDER.CREATED:
-            return (
-              notification.params.order.id === params.order.id
-            );
+            return notification.params.order.id === params.order.id;
           case EVENT_TASK_COLLECTION.CHANGED:
-            return (notification.params.date === params.date)
+            return notification.params.date === params.date;
           default:
             return false;
         }
@@ -140,7 +138,7 @@ function updateNotifications(state, event, params) {
     return {
       ...state,
       notifications: state.notifications.concat([{ event, params }]),
-    }
+    };
   }
 }
 
@@ -185,7 +183,7 @@ export default (state = initialState, action = {}) => {
       };
 
     case CENTRIFUGO_MESSAGE: {
-      const { name, data } = action.payload
+      const { name, data } = action.payload;
 
       switch (name) {
         case EVENT_ORDER.CREATED:
@@ -193,18 +191,18 @@ export default (state = initialState, action = {}) => {
         // case EVENT_TASK_COLLECTION.CHANGED:
         // this event is currently handled by taskMiddlewares; maybe we should move it here
         default:
-          return state
+          return state;
       }
     }
 
     case FOREGROUND_PUSH_NOTIFICATION: {
-      const { event, params } = action.payload
+      const { event, params } = action.payload;
 
       return updateNotifications(state, event, params);
     }
 
     case ADD_NOTIFICATION: {
-      const { event, params } = action.payload
+      const { event, params } = action.payload;
 
       return updateNotifications(state, event, params);
     }
@@ -326,16 +324,16 @@ export default (state = initialState, action = {}) => {
       };
 
     case REGISTER_PUSH_NOTIFICATION_TOKEN: {
-      const existingToken = state.pushNotificationToken
+      const existingToken = state.pushNotificationToken;
 
       if (existingToken === action.payload) {
-        return state
+        return state;
       } else {
         return {
           ...state,
           pushNotificationToken: action.payload,
           pushNotificationTokenSaved: false,
-        }
+        };
       }
     }
 

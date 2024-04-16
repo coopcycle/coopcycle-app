@@ -46,8 +46,8 @@ export const SET_LOADING = '@app/SET_LOADING';
 
 export const FOREGROUND_PUSH_NOTIFICATION = '@app/FOREGROUND_PUSH_NOTIFICATION';
 
-export const ADD_NOTIFICATION = '@app/ADD_NOTIFICATION'
-export const CLEAR_NOTIFICATIONS = '@app/CLEAR_NOTIFICATIONS'
+export const ADD_NOTIFICATION = '@app/ADD_NOTIFICATION';
+export const CLEAR_NOTIFICATIONS = '@app/CLEAR_NOTIFICATIONS';
 
 export const AUTHENTICATION_REQUEST = '@app/AUTHENTICATION_REQUEST';
 export const AUTHENTICATION_SUCCESS = '@app/AUTHENTICATION_SUCCESS';
@@ -112,12 +112,18 @@ export const SET_SPINNER_DELAY_ENABLED = '@app/SET_IS_SPINNER_DELAY_ENABLED';
  * Action Creators
  */
 
-export const setLoading = createAction(SET_LOADING)
+export const setLoading = createAction(SET_LOADING);
 
-export const foregroundPushNotification = createAction(FOREGROUND_PUSH_NOTIFICATION, (event, params = {}) => ({ event, params }))
+export const foregroundPushNotification = createAction(
+  FOREGROUND_PUSH_NOTIFICATION,
+  (event, params = {}) => ({ event, params }),
+);
 
-export const addNotification = createAction(ADD_NOTIFICATION, (event, params = {}) => ({ event, params }))
-export const clearNotifications = createAction(CLEAR_NOTIFICATIONS)
+export const addNotification = createAction(
+  ADD_NOTIFICATION,
+  (event, params = {}) => ({ event, params }),
+);
+export const clearNotifications = createAction(CLEAR_NOTIFICATIONS);
 
 export const _authenticationRequest = createAction(AUTHENTICATION_REQUEST);
 export const _authenticationSuccess = createAction(AUTHENTICATION_SUCCESS);

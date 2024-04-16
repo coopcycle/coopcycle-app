@@ -214,7 +214,7 @@ export const tasksEntityReducer = (
       return state;
 
     case CENTRIFUGO_MESSAGE:
-      return processWsMsg(state, action)
+      return processWsMsg(state, action);
 
     case ADD_SIGNATURE:
       return {

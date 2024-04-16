@@ -19,7 +19,7 @@ import { isMultiVendor } from '../../utils/order';
 import {
   selectIsPrinterConnected,
   selectPrinter,
-} from '../../redux/Restaurant/selectors'
+} from '../../redux/Restaurant/selectors';
 
 const OrderNotes = ({ order }) => {
   if (order.notes) {

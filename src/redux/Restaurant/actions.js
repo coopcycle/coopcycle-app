@@ -20,7 +20,7 @@ import {
 } from '../App/actions';
 
 import { selectHttpClient } from '../App/selectors';
-import { selectOrderById } from './selectors'
+import { selectOrderById } from './selectors';
 
 /*
  * Action Types
@@ -117,22 +117,25 @@ export const UPDATE_LOOPEAT_FORMATS_SUCCESS =
  * Action Creators
  */
 
-const loadMyRestaurantsRequest = createAction(LOAD_MY_RESTAURANTS_REQUEST)
-const loadMyRestaurantsSuccess = createAction(LOAD_MY_RESTAURANTS_SUCCESS)
-const loadMyRestaurantsFailure = createAction(LOAD_MY_RESTAURANTS_FAILURE)
+const loadMyRestaurantsRequest = createAction(LOAD_MY_RESTAURANTS_REQUEST);
+const loadMyRestaurantsSuccess = createAction(LOAD_MY_RESTAURANTS_SUCCESS);
+const loadMyRestaurantsFailure = createAction(LOAD_MY_RESTAURANTS_FAILURE);
 
-export const loadOrdersRequest = createAction(LOAD_ORDERS_REQUEST)
-export const loadOrdersSuccess = createAction(LOAD_ORDERS_SUCCESS)
-export const loadOrdersFailure = createAction(LOAD_ORDERS_FAILURE)
+export const loadOrdersRequest = createAction(LOAD_ORDERS_REQUEST);
+export const loadOrdersSuccess = createAction(LOAD_ORDERS_SUCCESS);
+export const loadOrdersFailure = createAction(LOAD_ORDERS_FAILURE);
 
-export const loadOrderRequest = createAction(LOAD_ORDER_REQUEST)
-export const loadOrderSuccess = createAction(LOAD_ORDER_SUCCESS)
-export const loadOrderFailure = createAction(LOAD_ORDER_FAILURE)
+export const loadOrderRequest = createAction(LOAD_ORDER_REQUEST);
+export const loadOrderSuccess = createAction(LOAD_ORDER_SUCCESS);
+export const loadOrderFailure = createAction(LOAD_ORDER_FAILURE);
 
-export const loadMenusRequest = createAction(LOAD_MENUS_REQUEST)
-export const loadMenusSuccess = createAction(LOAD_MENUS_SUCCESS)
-export const loadMenusFailure = createAction(LOAD_MENUS_FAILURE)
-export const setCurrentMenu = createAction(SET_CURRENT_MENU, (restaurant, menu) => ({ restaurant, menu }))
+export const loadMenusRequest = createAction(LOAD_MENUS_REQUEST);
+export const loadMenusSuccess = createAction(LOAD_MENUS_SUCCESS);
+export const loadMenusFailure = createAction(LOAD_MENUS_FAILURE);
+export const setCurrentMenu = createAction(
+  SET_CURRENT_MENU,
+  (restaurant, menu) => ({ restaurant, menu }),
+);
 
 export const acceptOrderRequest = createFsAction(ACCEPT_ORDER_REQUEST);
 export const acceptOrderSuccess = createFsAction(ACCEPT_ORDER_SUCCESS);
@@ -657,7 +660,7 @@ export function printOrderById(orderId) {
       return;
     }
 
-    await dispatch(printOrder(order))
+    await dispatch(printOrder(order));
   };
 }
 

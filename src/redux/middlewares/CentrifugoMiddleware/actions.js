@@ -2,17 +2,17 @@ import { createAction } from 'redux-actions';
 
 import { updateTask } from '../../Dispatch/actions';
 
-export const CONNECT = '@centrifugo/CONNECT'
-export const CENTRIFUGO_MESSAGE = '@centrifugo/MESSAGE'
-export const CONNECTED = '@centrifugo/CONNECTED'
-export const DISCONNECTED = '@centrifugo/DISCONNECTED'
+export const CONNECT = '@centrifugo/CONNECT';
+export const CENTRIFUGO_MESSAGE = '@centrifugo/MESSAGE';
+export const CONNECTED = '@centrifugo/CONNECTED';
+export const DISCONNECTED = '@centrifugo/DISCONNECTED';
 
 export const connect = createAction(CONNECT);
 
 export const connected = createAction(CONNECTED);
 export const disconnected = createAction(DISCONNECTED);
 
-export const _message = createAction(CENTRIFUGO_MESSAGE)
+export const _message = createAction(CENTRIFUGO_MESSAGE);
 
 export function message(payload) {
   return function (dispatch, getState) {
