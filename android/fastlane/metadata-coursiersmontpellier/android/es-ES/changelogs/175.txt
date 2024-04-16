@@ -1,0 +1,4 @@
+Mejoras y arreglos:
+
+- Mejora el rendimiento.
+- Añade un boton para activar el flash.

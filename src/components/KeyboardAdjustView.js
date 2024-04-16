@@ -1,11 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import {
   KeyboardAvoidingView,
   Platform,
   View,
   useWindowDimensions,
-} from 'react-native'
-import { AvoidSoftInputView } from 'react-native-avoid-softinput'
+} from 'react-native';
+import { AvoidSoftInputView } from 'react-native-avoid-softinput';
 
 /**
  *
@@ -17,21 +17,21 @@ export default function KeyboardAdjustView({
   style,
   androidBehavior = 'padding', // FIXME: try to avoid using this prop; see the comment below
 }) {
-  const [ viewHeight, setViewHeight ] = useState(0)
+  const [viewHeight, setViewHeight] = useState(0);
 
-  const windowDimensions = useWindowDimensions()
+  const windowDimensions = useWindowDimensions();
 
   const onLayout = event => {
-    const currentFrame = event.nativeEvent.layout
+    const currentFrame = event.nativeEvent.layout;
     if (!viewHeight) {
-      setViewHeight(currentFrame.height)
+      setViewHeight(currentFrame.height);
     }
-  }
+  };
 
   if (Platform.OS === 'android') {
     // on Android we rely on the OS to put focused text input above the keyboard
 
-    const topOffset = windowDimensions.height - viewHeight // status bar (~24) + toolbar (~56)
+    const topOffset = windowDimensions.height - viewHeight; // status bar (~24) + toolbar (~56)
 
     // extra View is a workaround for this issue: https://github.com/facebook/react-native/issues/35599
     return (
@@ -43,7 +43,7 @@ export default function KeyboardAdjustView({
           {children}
         </KeyboardAvoidingView>
       </View>
-    )
+    );
 
     // FIXME:
     //  we current have both android:windowSoftInputMode="adjustPan" and KeyboardAvoidingView,
@@ -63,7 +63,7 @@ export default function KeyboardAdjustView({
   } else if (Platform.OS === 'ios') {
     // on iOS we need to adjust the view and put the focused text input above the keyboard manually
 
-    const topOffset = windowDimensions.height - viewHeight
+    const topOffset = windowDimensions.height - viewHeight;
 
     /**
      * FIXME: iosAvoidOffset is a workaround for some text input fields
@@ -78,7 +78,7 @@ export default function KeyboardAdjustView({
      *  If iosAvoidOffset is larger than the offset calculated by AvoidSoftInputView,
      *  then no offset is applied (this is what we want here).
      */
-    const avoidOffset = -1 * windowDimensions.height
+    const avoidOffset = -1 * windowDimensions.height;
 
     return (
       // extra View is a workaround for this issue: https://github.com/facebook/react-native/issues/35599
@@ -92,8 +92,8 @@ export default function KeyboardAdjustView({
           </AvoidSoftInputView>
         </KeyboardAvoidingView>
       </View>
-    )
+    );
   } else {
-    return <View style={style}>{children}</View>
+    return <View style={style}>{children}</View>;
   }
 }

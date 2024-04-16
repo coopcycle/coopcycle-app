@@ -1,5 +1,5 @@
-import moment from 'moment'
+import moment from 'moment';
 
 export function isSameDate(task, date) {
-  return moment(task.doneBefore).isSame(date, 'day')
+  return moment(task.doneBefore).isSame(date, 'day');
 }

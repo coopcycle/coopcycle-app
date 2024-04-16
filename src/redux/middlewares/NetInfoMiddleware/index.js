@@ -1,20 +1,18 @@
-import NetInfo from '@react-native-community/netinfo'
+import NetInfo from '@react-native-community/netinfo';
 
-import { setInternetReachable } from '../../App/actions'
+import { setInternetReachable } from '../../App/actions';
 
-let initialized = false
+let initialized = false;
 
 export default ({ getState, dispatch }) => {
-
-  return (next) => (action) => {
-
+  return next => action => {
     if (!initialized) {
       NetInfo.addEventListener(state => {
-        dispatch(setInternetReachable(state.isInternetReachable))
-      })
-      initialized = true
+        dispatch(setInternetReachable(state.isInternetReachable));
+      });
+      initialized = true;
     }
 
-    return next(action)
-  }
-}
+    return next(action);
+  };
+};

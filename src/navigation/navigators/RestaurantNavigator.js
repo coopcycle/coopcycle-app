@@ -1,12 +1,12 @@
-import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
+import React from 'react';
 
-import i18n from '../../i18n';
 import screens, { headerLeft } from '..';
-import { stackNavigatorScreenOptions } from '../styles';
-import HeaderRight from '../restaurant/components/HeaderRight';
-import SettingsNavigator from '../restaurant/SettingsNavigator';
 import OrderNumber from '../../components/OrderNumber';
+import i18n from '../../i18n';
+import SettingsNavigator from '../restaurant/SettingsNavigator';
+import HeaderRight from '../restaurant/components/HeaderRight';
+import { stackNavigatorScreenOptions } from '../styles';
 
 const MainStack = createStackNavigator();
 

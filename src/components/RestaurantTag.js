@@ -1,7 +1,7 @@
-import {Text, useColorModeValue} from 'native-base';
-import {StyleSheet, View} from 'react-native';
+import { Text, useColorModeValue } from 'native-base';
+import { StyleSheet, View } from 'react-native';
 
-export const RestaurantTag = ({text}) => {
+export const RestaurantTag = ({ text }) => {
   const backgroundColor = useColorModeValue('rgba(0,0,0,.05)', '#353030');
 
   const styles = StyleSheet.create({

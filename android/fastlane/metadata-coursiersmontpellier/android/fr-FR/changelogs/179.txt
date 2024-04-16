@@ -1,0 +1,5 @@
+Améliorations et corrections :
+
+- [Client] Résolution du problème d'affichage figé de l'écran de suivi de commande.
+- [Client] Correction d'un bouton qui était masqué par le clavier.
+- [Livreur] Amélioration des performances de l'écran des photos.

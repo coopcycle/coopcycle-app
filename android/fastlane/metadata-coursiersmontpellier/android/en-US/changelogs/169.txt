@@ -1,0 +1,6 @@
+Improvements & new features.
+
+- Allow adding tips.
+- Enforce acceptance of legal texts.
+- Allow downloading invoices.
+- Improve order tracking.

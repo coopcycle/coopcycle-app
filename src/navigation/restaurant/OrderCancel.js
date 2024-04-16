@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
-import { View } from 'react-native';
 import { Center, Text } from 'native-base';
+import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
+import { View } from 'react-native';
 import { connect } from 'react-redux';
 
-import BigButton from './components/BigButton';
 import { cancelOrder } from '../../redux/Restaurant/actions';
 import { resolveFulfillmentMethod } from '../../utils/order';
+import BigButton from './components/BigButton';
 
 class OrderCancelScreen extends Component {
   _cancelOrder(reason) {

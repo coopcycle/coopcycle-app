@@ -1,10 +1,10 @@
-import React from 'react';
-import { StyleSheet, TouchableOpacity } from 'react-native';
-import { useTranslation } from 'react-i18next';
 import { HStack, Text } from 'native-base';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 
-import { resolveFulfillmentMethod } from '../../../utils/order';
 import material from '../../../../native-base-theme/variables/material';
+import { resolveFulfillmentMethod } from '../../../utils/order';
 
 const styles = StyleSheet.create({
   footerBtn: {

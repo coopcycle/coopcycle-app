@@ -1,12 +1,11 @@
-import React, { Component } from 'react'
-import { FlatList, Image, ImageBackground, StyleSheet, TouchableOpacity, View } from 'react-native'
-import { Badge, Center, HStack, Icon, Text } from 'native-base'
-import { withTranslation } from 'react-i18next'
-import FontAwesome from 'react-native-vector-icons/FontAwesome'
-import Ionicons from 'react-native-vector-icons/Ionicons'
+import { Center, Icon, Text } from 'native-base';
+import React, { Component } from 'react';
+import { withTranslation } from 'react-i18next';
+import { FlatList, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import { getRestaurantCaption, shouldShowPreOrder } from '../utils/checkout'
-import {RestaurantCard} from './RestaurantCard';
+import { shouldShowPreOrder } from '../utils/checkout';
+import { RestaurantCard } from './RestaurantCard';
 
 const styles = StyleSheet.create({
   item: {
@@ -26,7 +25,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: '100%',
     height: '100%',
-    backgroundColor:'rgba(0,0,0,0.5)',
+    backgroundColor: 'rgba(0,0,0,0.5)',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -38,24 +37,25 @@ const styles = StyleSheet.create({
   closedLabel: {
     color: '#ffffff',
   },
-})
+});
 
-const OneLineText = (props) => (
-  <Text numberOfLines={ props.numberOfLines || 1 } ellipsizeMode="tail" { ...props }>
-    { props.children }
+const OneLineText = props => (
+  <Text
+    numberOfLines={props.numberOfLines || 1}
+    ellipsizeMode="tail"
+    {...props}>
+    {props.children}
   </Text>
-)
+);
 
 class RestaurantList extends Component {
-
   constructor(props) {
-    super(props)
-    this._renderEmptyState = this._renderEmptyState.bind(this)
+    super(props);
+    this._renderEmptyState = this._renderEmptyState.bind(this);
   }
 
   renderItem(restaurant, index) {
-
-    const showPreOrder = shouldShowPreOrder(restaurant)
+    const showPreOrder = shouldShowPreOrder(restaurant);
 
     return (
       <TouchableOpacity
@@ -63,11 +63,11 @@ class RestaurantList extends Component {
         testID={restaurant.testID}>
         <RestaurantCard restaurant={restaurant} />
       </TouchableOpacity>
-    )
+    );
   }
 
   _renderEmptyState() {
-    const { addressAsText, isFetching } = this.props
+    const { addressAsText, isFetching } = this.props;
 
     if (isFetching) {
       return null;
@@ -75,53 +75,68 @@ class RestaurantList extends Component {
 
     if (addressAsText) {
       return (
-        <Center flex={ 1 } justifyContent="center" alignItems="center" px="2">
-          <Image style={{ maxWidth: '40%', maxHeight: '30%', marginVertical: '5%', margin: 'auto' }} source={require('../assets/images/no_addresses.png')} resizeMode={'contain'} />
+        <Center flex={1} justifyContent="center" alignItems="center" px="2">
+          <Image
+            style={{
+              maxWidth: '40%',
+              maxHeight: '30%',
+              marginVertical: '5%',
+              margin: 'auto',
+            }}
+            source={require('../assets/images/no_addresses.png')}
+            resizeMode={'contain'}
+          />
           <Text note style={{ textAlign: 'center' }}>
             {this.props.t('NO_RESTAURANTS')}
           </Text>
         </Center>
-      )
+      );
     }
 
     //FIXME: This code is maybe unreachable
     return (
-      <Center flex={ 1 } justifyContent="center" alignItems="center" testID="checkoutSearchContent">
+      <Center
+        flex={1}
+        justifyContent="center"
+        alignItems="center"
+        testID="checkoutSearchContent">
         <Icon as={Ionicons} name="search" style={{ color: '#cccccc' }} />
-        <Text note>{ this.props.t('ENTER_ADDRESS') }</Text>
+        <Text note>{this.props.t('ENTER_ADDRESS')}</Text>
       </Center>
-    )
+    );
   }
 
   render() {
+    let matchingCounter = 0;
+    const restaurantsWithTestIDs = this.props.restaurants.map(
+      (restaurant, index) => {
+        let testID = `restaurants:${index}`;
+        if (
+          restaurant.address.streetAddress.match(/75020/g) ||
+          restaurant.address.streetAddress.match(/75010/g) ||
+          restaurant.address.streetAddress.match(/75019/g)
+        ) {
+          testID = `restaurantMatches:${matchingCounter}`;
+          matchingCounter += 1;
+        }
 
-    let matchingCounter = 0
-    const restaurantsWithTestIDs = this.props.restaurants.map((restaurant, index) => {
-
-      let testID = `restaurants:${index}`
-      if (restaurant.address.streetAddress.match(/75020/g)
-      ||  restaurant.address.streetAddress.match(/75010/g)
-      ||  restaurant.address.streetAddress.match(/75019/g)) {
-        testID = `restaurantMatches:${matchingCounter}`
-        matchingCounter += 1
-      }
-
-      return {
-        ...restaurant,
-        testID,
-      }
-
-    })
+        return {
+          ...restaurant,
+          testID,
+        };
+      },
+    );
 
     return (
-        <FlatList
-          contentContainerStyle={{ flexGrow: 1 }}
-          testID="restaurantList"
-          data={ restaurantsWithTestIDs }
-          keyExtractor={ (item, index) => item['@id'] }
-          renderItem={ ({ item, index }) => this.renderItem(item, index) }
-          ListEmptyComponent={this._renderEmptyState} />
-    )
+      <FlatList
+        contentContainerStyle={{ flexGrow: 1 }}
+        testID="restaurantList"
+        data={restaurantsWithTestIDs}
+        keyExtractor={(item, index) => item['@id']}
+        renderItem={({ item, index }) => this.renderItem(item, index)}
+        ListEmptyComponent={this._renderEmptyState}
+      />
+    );
   }
 }
 

@@ -1,0 +1,4 @@
+Corrections et améliorations :
+
+- Corrige un problème de déconnexion.
+- Améliore les performances.

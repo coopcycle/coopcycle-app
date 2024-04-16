@@ -1,10 +1,10 @@
-import moment from '../../moment'
+import moment from '../../moment';
 
-const initialState = moment()
+const initialState = moment();
 
 export default (state = initialState, action) => {
   switch (action.type) {
     default:
-      return state
+      return state;
   }
-}
+};

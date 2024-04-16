@@ -1,28 +1,54 @@
 import { Box, HStack, Text, VStack, View } from 'native-base';
-import { ActivityIndicator, StyleSheet } from 'react-native';
-import React, { Component } from 'react';
-import { greenColor, greyColor, redColor } from '../../../styles/common';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import { ActivityIndicator, StyleSheet } from 'react-native';
+import { greenColor, greyColor, redColor } from '../../../styles/common';
 
-class  Step extends Component {
-
+class Step extends Component {
   render() {
-    const { active, loading, error, hide, start, errorLabel, activeLabel, loadingLabel } = this.props
-    const label = error ? errorLabel : active ? activeLabel : loadingLabel
-    if (hide){
-      return <View />
+    const {
+      active,
+      loading,
+      error,
+      hide,
+      start,
+      errorLabel,
+      activeLabel,
+      loadingLabel,
+    } = this.props;
+    const label = error ? errorLabel : active ? activeLabel : loadingLabel;
+    if (hide) {
+      return <View />;
     }
 
-    return <HStack>
-      <VStack>
-        {!start && <Box style={{ ...styles.line, ...(active ? styles.active : {}), ...(loading ? styles.loading : {}) }}/>}
-        <Box style={{ ...styles.dot, ...(active ? styles.active : {}), ...(error ? styles.error : {}) }} />
-      </VStack>
-      <View style={{ ...styles.labelContainer }}>
-        <Text style={{ ...styles.label }}>{label}</Text>
-        {loading && <ActivityIndicator size={'small'} style={{ height: 16 }} />}
-      </View>
-    </HStack>
+    return (
+      <HStack>
+        <VStack>
+          {!start && (
+            <Box
+              style={{
+                ...styles.line,
+                ...(active ? styles.active : {}),
+                ...(loading ? styles.loading : {}),
+              }}
+            />
+          )}
+          <Box
+            style={{
+              ...styles.dot,
+              ...(active ? styles.active : {}),
+              ...(error ? styles.error : {}),
+            }}
+          />
+        </VStack>
+        <View style={{ ...styles.labelContainer }}>
+          <Text style={{ ...styles.label }}>{label}</Text>
+          {loading && (
+            <ActivityIndicator size={'small'} style={{ height: 16 }} />
+          )}
+        </View>
+      </HStack>
+    );
   }
 }
 
@@ -35,7 +61,7 @@ Step.defaultProps = {
   activeLabel: '',
   loadingLabel: '',
   errorLabel: '',
-}
+};
 
 Step.propTypes = {
   start: PropTypes.bool,
@@ -46,7 +72,7 @@ Step.propTypes = {
   activeLabel: PropTypes.string,
   loadingLabel: PropTypes.string,
   errorLabel: PropTypes.string,
-}
+};
 const styles = StyleSheet.create({
   dot: {
     width: 16,
@@ -79,10 +105,10 @@ const styles = StyleSheet.create({
     lineHeight: 16,
   },
   labelContainer: {
-    flex:1,
+    flex: 1,
     alignItems: 'flex-end',
     flexDirection: 'row',
   },
-})
+});
 
-export default Step
+export default Step;

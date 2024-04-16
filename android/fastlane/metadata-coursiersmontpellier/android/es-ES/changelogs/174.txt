@@ -1,0 +1,4 @@
+Arreglos:
+
+- Arregla un error con 3D Secure.
+- Arregla un problema de scan Bluetooth.

@@ -1,14 +1,14 @@
-import React, { Component } from 'react';
-import { View } from 'react-native';
 import { Box, Button, HStack, Icon, Text } from 'native-base';
-import { connect } from 'react-redux';
+import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
+import { View } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { connect } from 'react-redux';
 
 import OrderItems from '../../components/OrderItems';
-import SwipeToAcceptOrRefuse from './components/SwipeToAcceptOrRefuse';
-import OrderHeading from './components/OrderHeading';
 import OrderAcceptedFooter from './components/OrderAcceptedFooter';
+import OrderHeading from './components/OrderHeading';
+import SwipeToAcceptOrRefuse from './components/SwipeToAcceptOrRefuse';
 
 import {
   acceptOrder,

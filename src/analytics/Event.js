@@ -2,7 +2,7 @@ const event = {
   system: {
     backgroundGeolocation: {
       _category: 'background_geoloc',
-      httpAuthorization : 'http_authorization',
+      httpAuthorization: 'http_authorization',
       configure: 'configure',
     },
   },
@@ -14,7 +14,7 @@ const event = {
       failure: 'failure',
     },
   },
-  courier : {
+  courier: {
     _category: 'courier',
     tasksChangedAlertSound: 'tasks_changed_alert_sound',
     tasksChangedMessage: 'tasks_changed_message',
@@ -23,6 +23,6 @@ const event = {
     _category: 'restaurant',
     orderCreatedMessage: 'order_created_message',
   },
-}
+};
 
 export default event;

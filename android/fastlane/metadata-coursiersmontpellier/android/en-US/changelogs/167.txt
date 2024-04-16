@@ -1,0 +1,7 @@
+Improvements.
+
+- Ask for address as soon as possible
+- Introduce multiple carts.
+- Improve address management.
+- Improve performance.
+

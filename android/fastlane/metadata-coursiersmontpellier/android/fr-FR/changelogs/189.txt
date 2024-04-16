@@ -1,0 +1,3 @@
+Améliorations :
+
+- Possibilité de spécifier un motif d'échec lorsqu'une tâche est considérée comme échouée.

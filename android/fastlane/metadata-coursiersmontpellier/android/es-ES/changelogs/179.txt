@@ -1,0 +1,5 @@
+Mejoras y correcciones:
+
+- [Cliente] Solucionado el problema de la pantalla de seguimiento de pedido que quedaba bloqueada.
+- [Cliente] Corregido un botón oculto por el teclado.
+- [Repartidor] Mejora de rendimiento en la pantalla de fotos.

@@ -1,42 +1,38 @@
-import BaseTracker from './BaseTracker'
-import { Platform } from 'react-native'
 import Countly from 'countly-sdk-react-native-bridge';
+import { Platform } from 'react-native';
+import BaseTracker from './BaseTracker';
 
-import Config from 'react-native-config'
+import Config from 'react-native-config';
 
 function CountlyTracker() {
-  this.userProperties = {}
+  this.userProperties = {};
 }
 
 CountlyTracker.prototype = Object.create(BaseTracker.prototype);
 CountlyTracker.prototype.constructor = CountlyTracker;
 
-CountlyTracker.prototype.setCurrentScreen = function(screenName) {
-
+CountlyTracker.prototype.setCurrentScreen = function (screenName) {
   if (Platform.OS === 'ios') {
-    return
+    return;
   }
 
-  Countly.isInitialized().then((initialized) => {
-
+  Countly.isInitialized().then(initialized => {
     if (!initialized) {
-      return
+      return;
     }
 
     Countly.recordView(screenName);
-  })
-}
+  });
+};
 
-CountlyTracker.prototype.logEvent = function(category, action, text, number) {
-
+CountlyTracker.prototype.logEvent = function (category, action, text, number) {
   if (Platform.OS === 'ios') {
-    return
+    return;
   }
 
-  Countly.isInitialized().then((initialized) => {
-
+  Countly.isInitialized().then(initialized => {
     if (!initialized) {
-      return
+      return;
     }
 
     let eventName;
@@ -47,38 +43,36 @@ CountlyTracker.prototype.logEvent = function(category, action, text, number) {
       eventName = `${category}_${action}`;
     }
 
-    let event = { 'eventName': eventName };
+    let event = { eventName: eventName };
 
     if (number != null) {
-      event.eventCount = number
+      event.eventCount = number;
     }
 
-    event.segments = this.userProperties
+    event.segments = this.userProperties;
 
     Countly.sendEvent(event);
-  })
-}
+  });
+};
 
-CountlyTracker.prototype.setUserProperty = function(name, value) {
-
+CountlyTracker.prototype.setUserProperty = function (name, value) {
   if (Platform.OS === 'ios') {
-    return
+    return;
   }
 
   // there is no plugin on a backend to handle it
   // Countly.userData.setProperty(name, value);
-  this.userProperties[name] = value
-}
+  this.userProperties[name] = value;
+};
 
-CountlyTracker.prototype.init = function() {
+CountlyTracker.prototype.init = function () {
   let deviceId = ''; // or use some string that identifies current app user
 
   if (Platform.OS === 'ios') {
-    return
+    return;
   }
 
   try {
-
     // configure Countly parameters if needed
     Countly.enableParameterTamperingProtection(Config.COUNTLY_SALT);
 
@@ -89,11 +83,9 @@ CountlyTracker.prototype.init = function() {
         Countly.start();
       })
       .catch(e => console.log(e));
-
   } catch (e) {
-    console.log(e)
+    console.log(e);
   }
+};
 
-}
-
-export default CountlyTracker
+export default CountlyTracker;

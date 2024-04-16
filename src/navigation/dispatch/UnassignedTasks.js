@@ -1,74 +1,96 @@
-import React, { Component } from 'react';
-import { InteractionManager, View } from 'react-native';
-import { connect } from 'react-redux'
-import { withTranslation } from 'react-i18next'
 import { Text } from 'native-base';
+import React, { Component } from 'react';
+import { withTranslation } from 'react-i18next';
+import { InteractionManager, View } from 'react-native';
+import { connect } from 'react-redux';
 
-import TaskList from '../../components/TaskList'
-import TapToRefresh from '../../components/TapToRefresh'
-import AddButton from './components/AddButton'
-import { assignTask, bulkAssignmentTasks, initialize, loadUnassignedTasks } from '../../redux/Dispatch/actions'
-import { selectUnassignedTasksNotCancelled } from '../../redux/Dispatch/selectors'
-import { selectSelectedDate, selectTasksWithColor } from '../../coopcycle-frontend-js/logistics/redux'
+import TapToRefresh from '../../components/TapToRefresh';
+import TaskList from '../../components/TaskList';
+import {
+  selectSelectedDate,
+  selectTasksWithColor,
+} from '../../coopcycle-frontend-js/logistics/redux';
+import {
+  assignTask,
+  bulkAssignmentTasks,
+  initialize,
+  loadUnassignedTasks,
+} from '../../redux/Dispatch/actions';
+import { selectUnassignedTasksNotCancelled } from '../../redux/Dispatch/selectors';
+import AddButton from './components/AddButton';
 
-import { navigateToTask } from '../../navigation/utils'
+import { navigateToTask } from '../../navigation/utils';
 
 class UnassignedTasks extends Component {
-
   componentDidMount() {
     InteractionManager.runAfterInteractions(() => {
-      this.props.initialize()
-    })
+      this.props.initialize();
+    });
   }
 
   _assignTask(task, user) {
-    this.props.navigation.navigate('DispatchUnassignedTasks')
-    this.props.assignTask(task, user.username)
+    this.props.navigation.navigate('DispatchUnassignedTasks');
+    this.props.assignTask(task, user.username);
   }
 
   assignSelectedTasks(selectedTasks) {
-    this.props.navigation.navigate('DispatchPickUser',
-      { onItemPress: user => this._bulkAssign(user, selectedTasks) })
+    this.props.navigation.navigate('DispatchPickUser', {
+      onItemPress: user => this._bulkAssign(user, selectedTasks),
+    });
   }
 
   _bulkAssign(user, tasks) {
-    this.props.navigation.navigate('DispatchUnassignedTasks')
-    this.props.bulkAssignmentTasks(tasks, user.username)
+    this.props.navigation.navigate('DispatchUnassignedTasks');
+    this.props.bulkAssignmentTasks(tasks, user.username);
   }
 
   allowToSelect(task) {
-    return task.status !== 'DONE'
+    return task.status !== 'DONE';
   }
 
   render() {
-
-    const { navigate } = this.props.navigation
-    const isEmpty = this.props.unassignedTasks.length === 0
+    const { navigate } = this.props.navigation;
+    const isEmpty = this.props.unassignedTasks.length === 0;
 
     return (
       <View style={{ flex: 1 }}>
         <View>
-          <AddButton testID="addTask"
-            onPress={ () => this.props.navigation.navigate('DispatchAddTask') }>
-            <Text style={{ fontWeight: '700' }}>{ this.props.date.format('ll') }</Text>
+          <AddButton
+            testID="addTask"
+            onPress={() => this.props.navigation.navigate('DispatchAddTask')}>
+            <Text style={{ fontWeight: '700' }}>
+              {this.props.date.format('ll')}
+            </Text>
           </AddButton>
         </View>
         <View style={{ flex: 1 }}>
-          { isEmpty && (
-            <TapToRefresh onPress={ this.props.loadUnassignedTasks } />
-          ) }
-          { !isEmpty && (
+          {isEmpty && <TapToRefresh onPress={this.props.loadUnassignedTasks} />}
+          {!isEmpty && (
             <TaskList
-              tasks={ this.props.unassignedTasks }
-              tasksWithColor={ this.props.tasksWithColor }
-              swipeOutLeftEnabled={ task => !task.isAssigned }
-              onSwipeLeft={ task => navigate('DispatchPickUser', { onItemPress: user => this._assignTask(task, user) }) }
+              tasks={this.props.unassignedTasks}
+              tasksWithColor={this.props.tasksWithColor}
+              swipeOutLeftEnabled={task => !task.isAssigned}
+              onSwipeLeft={task =>
+                navigate('DispatchPickUser', {
+                  onItemPress: user => this._assignTask(task, user),
+                })
+              }
               swipeOutLeftIconName="user"
-              onTaskClick={ task => navigateToTask(this.props.navigation, this.props.route, task, this.props.unassignedTasks) }
-              allowMultipleSelection={ task => this.allowToSelect(task) }
+              onTaskClick={task =>
+                navigateToTask(
+                  this.props.navigation,
+                  this.props.route,
+                  task,
+                  this.props.unassignedTasks,
+                )
+              }
+              allowMultipleSelection={task => this.allowToSelect(task)}
               multipleSelectionIcon="user"
-              onMultipleSelectionAction={ (selectedTasks) => this.assignSelectedTasks(selectedTasks) } />
-          ) }
+              onMultipleSelectionAction={selectedTasks =>
+                this.assignSelectedTasks(selectedTasks)
+              }
+            />
+          )}
         </View>
       </View>
     );
@@ -76,13 +98,12 @@ class UnassignedTasks extends Component {
 }
 
 function mapStateToProps(state) {
-
   return {
     unassignedTasks: selectUnassignedTasksNotCancelled(state),
     tasksWithColor: selectTasksWithColor(state),
     date: selectSelectedDate(state),
     user: state.app.user,
-  }
+  };
 }
 
 function mapDispatchToProps(dispatch) {
@@ -90,8 +111,12 @@ function mapDispatchToProps(dispatch) {
     assignTask: (task, username) => dispatch(assignTask(task, username)),
     initialize: () => dispatch(initialize()),
     loadUnassignedTasks: () => dispatch(loadUnassignedTasks()),
-    bulkAssignmentTasks: (tasks, username) => dispatch(bulkAssignmentTasks(tasks, username)),
-  }
+    bulkAssignmentTasks: (tasks, username) =>
+      dispatch(bulkAssignmentTasks(tasks, username)),
+  };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(UnassignedTasks))
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(withTranslation()(UnassignedTasks));

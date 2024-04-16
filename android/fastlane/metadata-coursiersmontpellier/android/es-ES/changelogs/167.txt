@@ -1,0 +1,6 @@
+Mejoras.
+
+- Pide la dirección lo antes posible
+- Introduce carritos múltiples.
+- Mejora la gestión de las direcciones.
+- Mejora el rendimiento.

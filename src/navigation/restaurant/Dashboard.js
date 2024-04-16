@@ -1,18 +1,23 @@
-import React, { Component } from 'react';
-import { Alert, InteractionManager, NativeModules, View } from 'react-native';
-import { Center, VStack } from 'native-base';
-import { connect } from 'react-redux';
-import { withTranslation } from 'react-i18next';
 import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake';
 import moment from 'moment';
+import { Center, VStack } from 'native-base';
+import React, { Component } from 'react';
+import { withTranslation } from 'react-i18next';
+import { Alert, InteractionManager, NativeModules } from 'react-native';
+import { connect } from 'react-redux';
 
 import DangerAlert from '../../components/DangerAlert';
 import Offline from '../../components/Offline';
 
-import OrderList from './components/OrderList';
 import DatePickerHeader from './components/DatePickerHeader';
+import OrderList from './components/OrderList';
 import WebSocketIndicator from './components/WebSocketIndicator';
 
+import PushNotification from '../../notifications';
+import {
+  selectIsCentrifugoConnected,
+  selectIsLoading,
+} from '../../redux/App/selectors';
 import {
   changeDate,
   changeStatus,
@@ -20,7 +25,6 @@ import {
   loadOrderAndNavigate,
   loadOrders,
 } from '../../redux/Restaurant/actions';
-import { connect as connectCentrifugo } from '../../redux/middlewares/CentrifugoMiddleware/actions';
 import {
   selectAcceptedOrders,
   selectCancelledOrders,
@@ -29,11 +33,7 @@ import {
   selectPickedOrders,
   selectSpecialOpeningHoursSpecificationForToday,
 } from '../../redux/Restaurant/selectors';
-import {
-  selectIsCentrifugoConnected,
-  selectIsLoading,
-} from '../../redux/App/selectors';
-import PushNotification from '../../notifications';
+import { connect as connectCentrifugo } from '../../redux/middlewares/CentrifugoMiddleware/actions';
 
 const RNSound = NativeModules.RNSound;
 
