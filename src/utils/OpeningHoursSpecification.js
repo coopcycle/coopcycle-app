@@ -1,5 +1,5 @@
 import { isString, reduce } from 'lodash';
-import moment, { Moment } from 'moment';
+import moment from 'moment';
 
 const WEEKDAYS = {
   Monday: 0,
@@ -17,7 +17,7 @@ export default class OpeningHoursSpecification {
     Closed: 0,
   };
 
-  #state: Array = [];
+  #state = [];
 
   constructor() {
     const momentInstance = moment().startOf('isoWeek');
@@ -35,7 +35,7 @@ export default class OpeningHoursSpecification {
     }
   }
 
-  static rangesToString(ranges: Array) {
+  static rangesToString(ranges) {
     return ranges
       .reduce((acc, range) => {
         acc.push(range.join(' - '));
@@ -48,7 +48,7 @@ export default class OpeningHoursSpecification {
    * @deprecated
    * @param specialHours
    */
-  set specialOpeningHoursSpecification(specialHours: Array) {
+  set specialOpeningHoursSpecification(specialHours) {
     /* specialHours
     .filter(spec => Moment.isBetween(moment(spec.validFrom), moment(spec.validThrough))) */
     throw new Error(
@@ -60,7 +60,7 @@ export default class OpeningHoursSpecification {
    * Defines openingHoursSpecification
    * @param hours
    */
-  set openingHours(hours: Array) {
+  set openingHours(hours) {
     for (let spec of hours) {
       for (let day of spec.dayOfWeek) {
         this.state[WEEKDAYS[day]].ranges.push([spec.opens, spec.closes]);
@@ -108,7 +108,7 @@ export default class OpeningHoursSpecification {
     };
   }
 
-  nextOpeningHours(at: Moment = moment()) {
+  nextOpeningHours(at = moment()) {
     for (let day of this.forNext(7, at)) {
       for (let slot of day.ranges) {
         const { opens, closes } = OpeningHoursSpecification.parseRange(
@@ -129,7 +129,7 @@ export default class OpeningHoursSpecification {
    * @param day
    * @returns {{opens: moment.Moment, closes: moment.Moment}}
    */
-  static parseRange(slot: Array, day: Moment = moment()) {
+  static parseRange(slot, day = moment()) {
     const [hourOpens, minuteOpens] = slot[0].split(':');
     const [hourCloses, minuteCloses] = slot[1].split(':');
     const opens = day
@@ -153,7 +153,7 @@ export default class OpeningHoursSpecification {
    * @param day
    * @returns {{[p: string]: *}}
    */
-  forDay(day: Moment = moment()): Object {
+  forDay(day = moment()) {
     if (day === null) {
       throw new Error('A day must be provided');
     }
@@ -176,7 +176,7 @@ export default class OpeningHoursSpecification {
    * @param from
    * @returns {[]}
    */
-  forNext(next: Number = 7, from: Moment = moment()): Array {
+  forNext(next = 7, from = moment()) {
     if (from === null) {
       throw new Error('A day must be provided');
     }
@@ -199,10 +199,10 @@ export default class OpeningHoursSpecification {
    * @returns {*[]}
    */
   forNextWithOpeningHours(
-    next: Number = 7,
-    diff: Number = 30,
+    next = 7,
+    diff = 30,
     skipClosed = true,
-    from: Moment = moment(),
+    from = moment(),
   ) {
     return reduce(
       this.forNext(next, from),
@@ -242,9 +242,7 @@ export default class OpeningHoursSpecification {
    * @param date
    * @returns {null|{allOpens: boolean, days}|boolean}
    */
-  isOpen(
-    date: Moment[] | Moment | string | string[] | null,
-  ): boolean[] | boolean | null {
+  isOpen(date) {
     if (date === null) {
       return null;
     }
@@ -281,11 +279,7 @@ export default class OpeningHoursSpecification {
    * @param compareWith
    * @returns {null|boolean}
    */
-  static closesSoon(
-    timeSlot: Moment[] = null,
-    minutes = 15,
-    compareWith = moment(),
-  ): boolean {
+  static closesSoon(timeSlot = null, minutes = 15, compareWith = moment()) {
     if (timeSlot === null) {
       return null;
     }
@@ -306,11 +300,7 @@ export default class OpeningHoursSpecification {
    * @param compareWith
    * @returns {null|boolean}
    */
-  static opensSoon(
-    timeSlot: Moment[] = null,
-    minutes = 30,
-    compareWith = moment(),
-  ): boolean {
+  static opensSoon(timeSlot = null, minutes = 30, compareWith = moment()) {
     if (timeSlot === null) {
       return null;
     }

@@ -88,7 +88,7 @@ class AddressUtils {
   static geoDiff(
     { geo: { latitude, longitude } },
     { geo: { latitude: latitude2, longitude: longitude2 } },
-  ): boolean {
+  ) {
     return latitude === latitude2 && longitude === longitude2;
   }
 
