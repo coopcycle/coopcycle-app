@@ -1,7 +1,7 @@
-import { Dimensions, StyleSheet, View, useColorScheme } from 'react-native';
 import { ScrollView, VStack } from 'native-base';
-import Modal from 'react-native-modal';
 import React from 'react';
+import { Dimensions, StyleSheet, View, useColorScheme } from 'react-native';
+import Modal from 'react-native-modal';
 
 const { height, width } = Dimensions.get('window');
 

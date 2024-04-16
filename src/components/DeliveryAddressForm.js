@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import { FormControl, Input, VStack } from 'native-base';
 import _ from 'lodash';
+import { FormControl, Input, VStack } from 'native-base';
+import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
 
 const inputProps = {

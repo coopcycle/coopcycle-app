@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import { FlatList, SectionList, StyleSheet, View } from 'react-native';
-import PropTypes from 'prop-types';
-import { Box, HStack, Text } from 'native-base';
-import { withTranslation } from 'react-i18next';
-import { formatPrice } from '../utils/formatting';
 import _ from 'lodash';
+import { Box, HStack, Text } from 'native-base';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import { withTranslation } from 'react-i18next';
+import { FlatList, SectionList, StyleSheet, View } from 'react-native';
+import { formatPrice } from '../utils/formatting';
 
 import ItemSeparator from './ItemSeparator';
 

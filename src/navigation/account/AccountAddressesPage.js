@@ -1,21 +1,21 @@
-import React, { Component } from 'react';
-import { FlatList, Image, TouchableOpacity, View } from 'react-native';
 import { Divider, HStack, Heading, Text } from 'native-base';
-import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
-import { loadAddresses, newAddress } from '../../redux/Account/actions';
-import ItemSeparator from '../../components/ItemSeparator';
+import { FlatList, Image, TouchableOpacity, View } from 'react-native';
+import { connect } from 'react-redux';
 import AddressAutocomplete from '../../components/AddressAutocomplete';
-import { greyColor } from '../../styles/common';
+import ItemSeparator from '../../components/ItemSeparator';
+import i18n from '../../i18n';
+import { loadAddresses, newAddress } from '../../redux/Account/actions';
 import {
   searchRestaurantsForAddress,
   setAddress,
 } from '../../redux/Checkout/actions';
-import i18n from '../../i18n';
-import PropTypes from 'prop-types';
-import Address from '../../utils/Address';
 import { selectAddresses } from '../../redux/Checkout/selectors';
+import { greyColor } from '../../styles/common';
 import { useSecondaryTextColor } from '../../styles/theme';
+import Address from '../../utils/Address';
 
 class AccountAddressesPage extends Component {
   constructor(props) {

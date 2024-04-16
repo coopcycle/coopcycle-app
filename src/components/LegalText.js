@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
 import { Button, Center, Row, ScrollView, Spinner } from 'native-base';
+import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 

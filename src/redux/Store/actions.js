@@ -1,5 +1,5 @@
-import { createAction } from 'redux-actions';
 import _ from 'lodash';
+import { createAction } from 'redux-actions';
 
 import { setLoading } from '../App/actions';
 import { selectStore, selectTimeSlots } from './selectors';

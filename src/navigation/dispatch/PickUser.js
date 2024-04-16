@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
-import { connect } from 'react-redux';
-import { Icon, Text } from 'native-base';
-import { withTranslation } from 'react-i18next';
 import _ from 'lodash';
+import { Icon, Text } from 'native-base';
+import React, { Component } from 'react';
+import { withTranslation } from 'react-i18next';
+import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { connect } from 'react-redux';
 
 import Avatar from '../../components/Avatar';
 import ItemSeparatorComponent from '../../components/ItemSeparator';

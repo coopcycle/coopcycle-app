@@ -1,7 +1,7 @@
-import React from 'react';
-import { Pressable, StyleSheet, TouchableOpacity, View } from 'react-native';
-import { useTranslation } from 'react-i18next';
 import { Icon, Text, useColorMode } from 'native-base';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { Pressable, StyleSheet, View } from 'react-native';
 import Foundation from 'react-native-vector-icons/Foundation';
 
 const styles = StyleSheet.create({

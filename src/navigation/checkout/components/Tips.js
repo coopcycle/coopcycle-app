@@ -1,9 +1,9 @@
 import { Avatar, Button, HStack, Heading, View } from 'native-base';
-import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import React, { useState } from 'react';
 import { withTranslation } from 'react-i18next';
-import { formatPrice } from '../../../utils/formatting';
 import { Pressable } from 'react-native';
+import { formatPrice } from '../../../utils/formatting';
 
 const tipColor = 'blueGray.200';
 const pressedTipColor = 'blueGray.600';

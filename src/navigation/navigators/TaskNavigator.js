@@ -1,10 +1,10 @@
-import React from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
 import { HeaderBackButton } from '@react-navigation/elements';
+import { createStackNavigator } from '@react-navigation/stack';
+import React from 'react';
 
 import screens from '..';
-import { stackNavigatorScreenOptions } from '../styles';
 import i18n from '../../i18n';
+import { stackNavigatorScreenOptions } from '../styles';
 
 import ProofOfDeliveryTabs from './TaskAttachmentsNavigator';
 

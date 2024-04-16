@@ -1,9 +1,5 @@
-import React, { Component, useEffect, useMemo, useState } from 'react';
-import { Platform } from 'react-native';
-import { connect } from 'react-redux';
-import { withTranslation } from 'react-i18next';
-import PropTypes from 'prop-types';
-import BottomModal from '../../../components/BottomModal';
+import { groupBy, map, reduce } from 'lodash';
+import moment from 'moment';
 import {
   Button,
   Divider,
@@ -13,11 +9,15 @@ import {
   Text,
   View,
 } from 'native-base';
-import { Picker } from '../../../components/Picker';
+import PropTypes from 'prop-types';
+import React, { Component, useEffect, useMemo, useState } from 'react';
+import { withTranslation } from 'react-i18next';
+import { Platform } from 'react-native';
 import { useQuery } from 'react-query';
+import { connect } from 'react-redux';
+import BottomModal from '../../../components/BottomModal';
+import { Picker } from '../../../components/Picker';
 import { selectHttpClient } from '../../../redux/App/selectors';
-import { groupBy, map, reduce } from 'lodash';
-import moment from 'moment';
 import { showTimingModal } from '../../../redux/Checkout/actions';
 
 const TimingCartSelect = ({

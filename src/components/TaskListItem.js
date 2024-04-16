@@ -1,4 +1,8 @@
+import moment from 'moment';
+import { HStack, Icon, Text, VStack, useTheme } from 'native-base';
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { withTranslation } from 'react-i18next';
 import {
   Dimensions,
   StyleSheet,
@@ -7,14 +11,9 @@ import {
   View,
   useColorScheme,
 } from 'react-native';
-import { HStack, Icon, Text, VStack, useTheme } from 'native-base';
 import { SwipeRow } from 'react-native-swipe-list-view';
-import PropTypes from 'prop-types';
-import moment from 'moment';
-import { withTranslation } from 'react-i18next';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
-import { greenColor, redColor, yellowColor } from '../styles/common';
 import {
   doingIconName,
   doneIconName,
@@ -22,8 +21,9 @@ import {
   incidentIconName,
   taskTypeIconName,
 } from '../navigation/task/styles/common';
-import TaskTitle from './TaskTitle';
+import { greenColor, redColor, yellowColor } from '../styles/common';
 import { PaymentMethodInfo } from './PaymentMethodInfo';
+import TaskTitle from './TaskTitle';
 
 const styles = StyleSheet.create({
   itemIcon: {

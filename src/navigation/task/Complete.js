@@ -1,14 +1,5 @@
-import React, { Component, useEffect, useMemo, useState } from 'react';
-import {
-  Dimensions,
-  Image,
-  Keyboard,
-  Platform,
-  StyleSheet,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-  View,
-} from 'react-native';
+import { Formik } from 'formik';
+import _ from 'lodash';
 import {
   Box,
   Button,
@@ -24,14 +15,26 @@ import {
   TextArea,
   VStack,
 } from 'native-base';
+import React, { Component, useEffect, useMemo, useState } from 'react';
 import { withTranslation } from 'react-i18next';
-import { connect } from 'react-redux';
-import _ from 'lodash';
+import {
+  Dimensions,
+  Image,
+  Keyboard,
+  Platform,
+  StyleSheet,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native';
 import Modal from 'react-native-modal';
-import { Formik } from 'formik';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import { connect } from 'react-redux';
 
+import { useQuery } from 'react-query';
+import ModalContent from '../../components/ModalContent';
+import { Picker } from '../../components/Picker';
 import {
   deletePictureAt,
   deleteSignatureAt,
@@ -44,9 +47,6 @@ import {
 } from '../../redux/Courier';
 import { greenColor, yellowColor } from '../../styles/common';
 import { doneIconName, incidentIconName } from './styles/common';
-import ModalContent from '../../components/ModalContent';
-import { Picker } from '../../components/Picker';
-import { useQuery } from 'react-query';
 
 const DELETE_ICON_SIZE = 32;
 const CONTENT_PADDING = 20;

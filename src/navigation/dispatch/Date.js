@@ -3,9 +3,9 @@ import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
 
 import { connect } from 'react-redux';
-import { changeDate } from '../../redux/Dispatch/actions';
-import { selectSelectedDate } from '../../coopcycle-frontend-js/logistics/redux';
 import { Calendar } from '../../components/Calendar';
+import { selectSelectedDate } from '../../coopcycle-frontend-js/logistics/redux';
+import { changeDate } from '../../redux/Dispatch/actions';
 
 class DateScreen extends Component {
   onDateChange(date) {

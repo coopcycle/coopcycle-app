@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { withTranslation } from 'react-i18next';
 import { HStack, Text, View } from 'native-base';
+import { withTranslation } from 'react-i18next';
 import { useColorScheme } from 'react-native';
 
 const OpeningHours = props => {

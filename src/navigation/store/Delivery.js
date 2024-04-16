@@ -1,18 +1,18 @@
-import React, { Component } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { HStack, Heading, Icon, Text, VStack } from 'native-base';
-import { connect } from 'react-redux';
-import { withTranslation } from 'react-i18next';
-import MapView, { Marker } from 'react-native-maps';
 import { parsePhoneNumberFromString } from 'libphonenumber-js';
 import _ from 'lodash';
+import { HStack, Heading, Icon, Text, VStack } from 'native-base';
+import React, { Component } from 'react';
+import { withTranslation } from 'react-i18next';
+import { StyleSheet, View } from 'react-native';
+import { Marker } from 'react-native-maps';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import { connect } from 'react-redux';
 
+import NavigationAwareMap from '../../components/NavigationAwareMap';
 import { loadTasks } from '../../redux/Store/actions';
 import { selectDeliveries } from '../../redux/Store/selectors';
-import { humanizeTaskTime } from '../../utils/time-slots';
-import NavigationAwareMap from '../../components/NavigationAwareMap';
 import { stateColor } from '../../utils/delivery';
+import { humanizeTaskTime } from '../../utils/time-slots';
 
 class NewDelivery extends Component {
   componentDidMount() {

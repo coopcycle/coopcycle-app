@@ -1,10 +1,10 @@
 import {
-  selectSelectedDate,
-  selectTaskLists,
   selectAllTasks,
   selectAssignedTasks,
-  selectUnassignedTasks,
+  selectSelectedDate,
+  selectTaskLists,
   selectTasksWithColor,
+  selectUnassignedTasks,
 } from '../selectors';
 
 import moment from '../../../moment';

@@ -1,15 +1,11 @@
-import { createSelector } from 'reselect';
 import _ from 'lodash';
 import moment from 'moment';
+import { createSelector } from 'reselect';
 
 import i18n from '../../i18n';
-import {
-  selectIsAuthenticated,
-  selectIsGuest,
-  selectUser,
-} from '../App/selectors';
-import OpeningHoursSpecification from '../../utils/OpeningHoursSpecification';
 import Address from '../../utils/Address';
+import OpeningHoursSpecification from '../../utils/OpeningHoursSpecification';
+import { selectIsAuthenticated, selectUser } from '../App/selectors';
 
 export const selectCart = createSelector(
   state => state.checkout.carts,

@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { withTranslation } from 'react-i18next';
-import { Box, Button, FormControl, Input, Text, VStack } from 'native-base';
 import { Formik } from 'formik';
+import { Box, Button, FormControl, Input, Text, VStack } from 'native-base';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import { withTranslation } from 'react-i18next';
 import Modal from 'react-native-modal';
+import { connect } from 'react-redux';
 
 import ModalContent from '../../../components/ModalContent';
 

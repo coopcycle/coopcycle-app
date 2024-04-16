@@ -1,11 +1,11 @@
-import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
+import React from 'react';
 
 import screens, { headerLeft } from '..';
-import { stackNavigatorScreenOptions } from '../styles';
 import i18n from '../../i18n';
 import AccountRegisterConfirm from '../account/RegisterConfirm';
 import AccountResetPasswordNewPassword from '../account/ResetPasswordNewPassword';
+import { stackNavigatorScreenOptions } from '../styles';
 
 const Stack = createStackNavigator();
 

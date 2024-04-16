@@ -1,10 +1,10 @@
+import { Formik } from 'formik';
+import _ from 'lodash';
+import { Button, FormControl, Input, Text } from 'native-base';
 import React, { Component } from 'react';
+import { withTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
-import { Formik } from 'formik';
-import { withTranslation } from 'react-i18next';
-import { Button, FormControl, Input, Text } from 'native-base';
-import _ from 'lodash';
 
 import material from '../../native-base-theme/variables/material';
 import i18n from '../i18n';

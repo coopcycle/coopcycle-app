@@ -1,12 +1,15 @@
+import { Text } from 'native-base';
 import React, { Component } from 'react';
+import { withTranslation } from 'react-i18next';
 import { InteractionManager, View } from 'react-native';
 import { connect } from 'react-redux';
-import { withTranslation } from 'react-i18next';
-import { Text } from 'native-base';
 
-import TaskList from '../../components/TaskList';
 import TapToRefresh from '../../components/TapToRefresh';
-import AddButton from './components/AddButton';
+import TaskList from '../../components/TaskList';
+import {
+  selectSelectedDate,
+  selectTasksWithColor,
+} from '../../coopcycle-frontend-js/logistics/redux';
 import {
   assignTask,
   bulkAssignmentTasks,
@@ -14,10 +17,7 @@ import {
   loadUnassignedTasks,
 } from '../../redux/Dispatch/actions';
 import { selectUnassignedTasksNotCancelled } from '../../redux/Dispatch/selectors';
-import {
-  selectSelectedDate,
-  selectTasksWithColor,
-} from '../../coopcycle-frontend-js/logistics/redux';
+import AddButton from './components/AddButton';
 
 import { navigateToTask } from '../../navigation/utils';
 

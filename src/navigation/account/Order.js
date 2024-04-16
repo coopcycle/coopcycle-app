@@ -1,21 +1,21 @@
-import React, { Component } from 'react';
-import { StyleSheet, View } from 'react-native';
 import { Button, Center, Icon, Text, VStack } from 'native-base';
-import { connect } from 'react-redux';
+import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
+import { StyleSheet, View } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { connect } from 'react-redux';
 
-import OrderItems from '../../components/OrderItems';
+import { find } from 'lodash';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import OrderItems from '../../components/OrderItems';
 import i18n from '../../i18n';
-import AddressModal from '../checkout/components/AddressModal';
 import {
   generateInvoice,
   hideAddressModal,
   shareInvoice,
   showAddressModal,
 } from '../../redux/Checkout/actions';
-import { find } from 'lodash';
+import AddressModal from '../checkout/components/AddressModal';
 
 class OrderPage extends Component {
   renderDetail(order) {

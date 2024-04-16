@@ -1,16 +1,16 @@
+import _ from 'lodash';
+import { HStack, Heading, Switch, Text } from 'native-base';
 import React, { Component } from 'react';
 import { SectionList, View } from 'react-native';
-import { HStack, Heading, Switch, Text } from 'native-base';
-import _ from 'lodash';
 
 import { withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 
+import ItemSeparator from '../../components/ItemSeparator';
 import {
   changeProductOptionValueEnabled,
   loadProductOptions,
 } from '../../redux/Restaurant/actions';
-import ItemSeparator from '../../components/ItemSeparator';
 
 const SectionHeader = ({ section }) => <Heading p="3">{section.title}</Heading>;
 

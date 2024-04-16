@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
-import { FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import { Box, HStack, Icon, Text } from 'native-base';
-import { connect } from 'react-redux';
+import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
+import { FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { connect } from 'react-redux';
 
-import { changeRestaurant } from '../../redux/Restaurant/actions';
 import ItemSeparator from '../../components/ItemSeparator';
+import { changeRestaurant } from '../../redux/Restaurant/actions';
 
 class ListScreen extends Component {
   constructor(props) {

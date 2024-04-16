@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import { InteractionManager } from 'react-native';
 import { Center, FormControl, Input } from 'native-base';
-import { connect } from 'react-redux';
+import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
+import { InteractionManager } from 'react-native';
+import { connect } from 'react-redux';
 
 import { loadPersonalInfo } from '../../redux/Account/actions';
 

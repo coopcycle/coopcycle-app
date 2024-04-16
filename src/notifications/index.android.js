@@ -1,6 +1,6 @@
-import { PermissionsAndroid, Platform } from 'react-native';
 import messaging from '@react-native-firebase/messaging';
 import _ from 'lodash';
+import { PermissionsAndroid, Platform } from 'react-native';
 
 /**
  * App behavior when receiving messages that include both notification and data payloads

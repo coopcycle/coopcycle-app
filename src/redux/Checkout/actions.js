@@ -1,14 +1,34 @@
-import { createAction } from 'redux-actions';
 import { CommonActions } from '@react-navigation/native';
-import _ from 'lodash';
 import {
   createPaymentMethod,
   handleNextAction,
   initStripe,
 } from '@stripe/stripe-react-native';
+import _ from 'lodash';
+import { createAction } from 'redux-actions';
 
+import * as Sentry from '@sentry/react-native';
+import i18next from 'i18next';
+import Share from 'react-native-share';
 import NavigationHolder from '../../NavigationHolder';
 import i18n from '../../i18n';
+import { isFree } from '../../utils/order';
+import {
+  loadAddressesSuccess,
+  setNewOrder,
+  updateOrderSuccess,
+} from '../Account/actions';
+import {
+  _logoutSuccess,
+  logoutRequest,
+  setLoading,
+  setModal,
+} from '../App/actions';
+import {
+  selectHttpClient,
+  selectIsAuthenticated,
+  selectUser,
+} from '../App/selectors';
 import {
   selectBillingEmail,
   selectCart,
@@ -17,26 +37,6 @@ import {
   selectCartWithHours,
   selectCheckoutAuthorizationHeaders,
 } from './selectors';
-import {
-  selectHttpClient,
-  selectIsAuthenticated,
-  selectUser,
-} from '../App/selectors';
-import {
-  loadAddressesSuccess,
-  setNewOrder,
-  updateOrderSuccess,
-} from '../Account/actions';
-import { isFree } from '../../utils/order';
-import {
-  _logoutSuccess,
-  logoutRequest,
-  setLoading,
-  setModal,
-} from '../App/actions';
-import Share from 'react-native-share';
-import i18next from 'i18next';
-import * as Sentry from '@sentry/react-native';
 
 /*
  * Action Types

@@ -1,5 +1,5 @@
-import reducer from '../reducers';
 import { initCartFailure, updateCartSuccess } from '../actions';
+import reducer from '../reducers';
 
 // As we may be using setTimeout(), we need to mock timers
 // @see https://jestjs.io/docs/en/timer-mocks.html

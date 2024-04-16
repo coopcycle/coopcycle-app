@@ -5,9 +5,9 @@
  * Here we use `reselect`, which allows us to memoize computed property values,
  * benefitting performance.
  */
+import { isEqual, reject, uniqWith } from 'lodash';
 import moment from 'moment';
 import { createSelector } from 'reselect';
-import { isEqual, reject, uniqWith } from 'lodash';
 import { taskUtils } from '../../coopcycle-frontend-js/logistics/redux';
 
 /* Simple Selectors */

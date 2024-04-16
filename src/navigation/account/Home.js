@@ -1,20 +1,20 @@
-import React, { Component } from 'react';
-import { TouchableOpacity, View } from 'react-native';
 import { Box, Button, FlatList, HStack, Icon, Text } from 'native-base';
-import { connect } from 'react-redux';
+import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import { TouchableOpacity, View } from 'react-native';
 import Modal from 'react-native-modal';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import { connect } from 'react-redux';
 
-import Server from './components/Server';
-import { logout } from '../../redux/App/actions';
+import ItemSeparator from '../../components/ItemSeparator';
 import { deleteUser } from '../../redux/Account/actions';
+import { logout } from '../../redux/App/actions';
 import {
   selectCustomBuild,
   selectIsAuthenticated,
 } from '../../redux/App/selectors';
-import ItemSeparator from '../../components/ItemSeparator';
 import LoginRegister from './LoginRegister';
+import Server from './components/Server';
 
 class AccountHome extends Component {
   constructor(props) {

@@ -1,12 +1,12 @@
-import { lightGreyColor, primaryColor, whiteColor } from '../../styles/common';
 import { Box, Heading, Text } from 'native-base';
-import AddressAutocomplete from '../../components/AddressAutocomplete';
 import React, { useState } from 'react';
-import { searchRestaurantsForAddress } from '../../redux/Checkout/actions';
-import { newAddress } from '../../redux/Account/actions';
-import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
+import { connect } from 'react-redux';
+import AddressAutocomplete from '../../components/AddressAutocomplete';
 import KeyboardAdjustView from '../../components/KeyboardAdjustView';
+import { newAddress } from '../../redux/Account/actions';
+import { searchRestaurantsForAddress } from '../../redux/Checkout/actions';
+import { lightGreyColor, primaryColor, whiteColor } from '../../styles/common';
 
 const textInputContainerHeight = 54;
 const autocompleteListMarginBottom = 8;

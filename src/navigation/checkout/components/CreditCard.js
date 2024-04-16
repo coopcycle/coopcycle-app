@@ -1,4 +1,9 @@
+import { CardField, StripeProvider } from '@stripe/stripe-react-native';
+import { Formik } from 'formik';
+import _ from 'lodash';
+import { Button, Center, Checkbox, Input, Radio, Text } from 'native-base';
 import React, { Component } from 'react';
+import { withTranslation } from 'react-i18next';
 import {
   Animated,
   Keyboard,
@@ -8,18 +13,13 @@ import {
   View,
 } from 'react-native';
 import { connect } from 'react-redux';
-import { Button, Center, Checkbox, Input, Radio, Text } from 'native-base';
-import _ from 'lodash';
-import { withTranslation } from 'react-i18next';
-import { Formik } from 'formik';
-import { CardField, StripeProvider } from '@stripe/stripe-react-native';
 
-import { formatPrice } from '../../../utils/formatting';
-import FooterButton from './FooterButton';
 import {
   loadPaymentDetails,
   loadStripeSavedPaymentMethods,
 } from '../../../redux/Checkout/actions';
+import { formatPrice } from '../../../utils/formatting';
+import FooterButton from './FooterButton';
 import SavedCreditCard from './SavedCreditCard';
 
 const ColorSchemeAwareCardField = props => {

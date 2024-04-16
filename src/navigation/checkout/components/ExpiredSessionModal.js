@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { connect } from 'react-redux';
-import { withTranslation } from 'react-i18next';
 import { Button, Text } from 'native-base';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import { withTranslation } from 'react-i18next';
+import { StyleSheet, View } from 'react-native';
 import Modal from 'react-native-modal';
+import { connect } from 'react-redux';
 
 import { hideExpiredSessionModal } from '../../../redux/Checkout/actions';
 

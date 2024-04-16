@@ -1,13 +1,12 @@
+import { Badge, HStack, Text, useColorModeValue } from 'native-base';
+import React from 'react';
 import { StyleSheet } from 'react-native';
-import { Badge, HStack, Icon, Text, useColorModeValue } from 'native-base';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Svg, { Path } from 'react-native-svg';
 import {
   getNextShippingTimeAsText,
   getRestaurantIsAvailable,
   shouldShowPreOrder,
 } from '../../../utils/checkout';
-import React from 'react';
-import Svg, { Path } from 'react-native-svg';
 
 const styles = StyleSheet.create({
   badge: {

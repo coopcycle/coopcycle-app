@@ -1,19 +1,19 @@
-import React, { Component } from 'react';
-import { InteractionManager, Platform, StyleSheet, View } from 'react-native';
 import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake';
+import React, { Component } from 'react';
+import { withTranslation } from 'react-i18next';
+import { InteractionManager, Platform, StyleSheet, View } from 'react-native';
 import RNPinScreen from 'react-native-pin-screen';
 import { connect } from 'react-redux';
-import { withTranslation } from 'react-i18next';
 
 import DateSelectHeader from '../../components/DateSelectHeader';
 import TasksMapView from '../../components/TasksMapView';
+import { navigateToTask } from '../../navigation/utils';
 import {
   loadTasks,
   selectFilteredTasks,
   selectKeepAwake,
   selectTaskSelectedDate,
 } from '../../redux/Courier';
-import { navigateToTask } from '../../navigation/utils';
 
 import { selectIsCentrifugoConnected } from '../../redux/App/selectors';
 import { connect as connectCentrifugo } from '../../redux/middlewares/CentrifugoMiddleware/actions';

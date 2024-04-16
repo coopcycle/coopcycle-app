@@ -1,6 +1,6 @@
+import moment from 'moment';
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import moment from 'moment';
 
 import {
   LOAD_TASKS_FAILURE,

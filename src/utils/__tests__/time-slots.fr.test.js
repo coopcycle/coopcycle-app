@@ -1,5 +1,5 @@
-import { getChoicesWithDates } from '../time-slots';
 import moment from 'moment';
+import { getChoicesWithDates } from '../time-slots';
 
 moment.locale('fr');
 

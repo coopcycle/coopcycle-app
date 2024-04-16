@@ -1,7 +1,7 @@
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import { withTranslation } from 'react-i18next';
 import { Icon, Text } from 'native-base';
+import React from 'react';
+import { withTranslation } from 'react-i18next';
+import { StyleSheet, View } from 'react-native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 const styles = StyleSheet.create({

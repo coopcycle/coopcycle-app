@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
-import { Alert } from 'react-native';
 import { withTranslation } from 'react-i18next';
-import { connect } from 'react-redux';
+import { Alert } from 'react-native';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {
   HeaderButton,
   HeaderButtons,
   Item,
 } from 'react-navigation-header-buttons';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { connect } from 'react-redux';
 
 import { closeRestaurant } from '../../../redux/Restaurant/actions';
 import { selectSpecialOpeningHoursSpecificationForToday } from '../../../redux/Restaurant/selectors';

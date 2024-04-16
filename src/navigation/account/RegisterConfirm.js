@@ -1,13 +1,13 @@
+import { Button, Center, Text } from 'native-base';
 import React, { useCallback, useEffect } from 'react';
 import { View } from 'react-native';
-import { Button, Center, Text } from 'native-base';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { confirmRegistration } from '../../redux/App/actions';
 import { CommonActions, useIsFocused } from '@react-navigation/native';
-import { selectIsLoading } from '../../redux/App/selectors';
 import { useTranslation } from 'react-i18next';
 import NavigationHolder from '../../NavigationHolder';
+import { confirmRegistration } from '../../redux/App/actions';
+import { selectIsLoading } from '../../redux/App/selectors';
 
 const RegisterConfirm = ({ route }) => {
   const { token } = route.params;

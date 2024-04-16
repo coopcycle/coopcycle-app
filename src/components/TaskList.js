@@ -1,10 +1,10 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { SwipeListView } from 'react-native-swipe-list-view';
-import PropTypes from 'prop-types';
 
 import ItemSeparatorComponent from './ItemSeparator';
-import TaskListItem from './TaskListItem';
 import ItemsBulkFabButton from './ItemsBulkFabButton';
+import TaskListItem from './TaskListItem';
 
 class TaskList extends Component {
   constructor(props) {

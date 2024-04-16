@@ -1,15 +1,15 @@
-import React, { Component } from 'react';
-import { InteractionManager, Platform, StyleSheet, View } from 'react-native';
-import { Box, Button, HStack, Input, Text, VStack } from 'native-base';
-import { connect } from 'react-redux';
-import { withTranslation } from 'react-i18next';
-import moment from 'moment';
-import ModalSelector from 'react-native-modal-selector';
-import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { Formik } from 'formik';
-import _ from 'lodash';
 import { AsYouType, parsePhoneNumberFromString } from 'libphonenumber-js';
+import _ from 'lodash';
+import moment from 'moment';
+import { Box, Button, HStack, Input, Text, VStack } from 'native-base';
+import React, { Component } from 'react';
+import { withTranslation } from 'react-i18next';
+import { InteractionManager, Platform, StyleSheet, View } from 'react-native';
 import KeyboardManager from 'react-native-keyboard-manager';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import ModalSelector from 'react-native-modal-selector';
+import { connect } from 'react-redux';
 
 import { createDelivery, loadTimeSlot } from '../../redux/Store/actions';
 import { selectStore, selectTimeSlot } from '../../redux/Store/selectors';

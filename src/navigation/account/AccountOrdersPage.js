@@ -1,4 +1,8 @@
+import _ from 'lodash';
+import moment from 'moment';
+import { Box, HStack, Heading, Text, VStack } from 'native-base';
 import React, { Component } from 'react';
+import { withTranslation } from 'react-i18next';
 import {
   InteractionManager,
   RefreshControl,
@@ -6,17 +10,13 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
-import { Box, HStack, Heading, Text, VStack } from 'native-base';
-import _ from 'lodash';
-import moment from 'moment';
-import { connect } from 'react-redux';
-import { withTranslation } from 'react-i18next';
-import { formatPrice } from '../../utils/formatting';
-import { loadOrders } from '../../redux/Account/actions';
-import ItemSeparator from '../../components/ItemSeparator';
 import { TouchableNativeFeedback } from 'react-native-gesture-handler';
-import { blueColor, greenColor, redColor } from '../../styles/common';
+import { connect } from 'react-redux';
+import ItemSeparator from '../../components/ItemSeparator';
 import i18n from '../../i18n';
+import { loadOrders } from '../../redux/Account/actions';
+import { blueColor, greenColor, redColor } from '../../styles/common';
+import { formatPrice } from '../../utils/formatting';
 
 class AccountOrdersPage extends Component {
   constructor(props) {

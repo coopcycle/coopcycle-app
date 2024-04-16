@@ -1,3 +1,5 @@
+import _ from 'lodash';
+import { Column, Flex, Heading, Image, Row, Text } from 'native-base';
 import React, { Component } from 'react';
 import {
   ActivityIndicator,
@@ -6,8 +8,6 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
-import { Column, Flex, Heading, Image, Row, Text } from 'native-base';
-import _ from 'lodash';
 
 const AnimatedSectionList = Animated.createAnimatedComponent(SectionList);
 

@@ -1,9 +1,14 @@
-import React, { Component } from 'react';
-import { RefreshControl, StyleSheet } from 'react-native';
-import { Button, HStack, Icon, ScrollView, Text, View } from 'native-base';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import { find } from 'lodash';
 import moment from 'moment';
-import { primaryColor } from '../../styles/common';
+import { Button, HStack, Icon, ScrollView, Text, View } from 'native-base';
+import React, { Component } from 'react';
+import { withTranslation } from 'react-i18next';
+import { RefreshControl, StyleSheet } from 'react-native';
+import { phonecall } from 'react-native-communications';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import { connect } from 'react-redux';
+import Markdown from '../../components/Markdown';
+import i18n from '../../i18n';
 import {
   loadOrder,
   subscribe,
@@ -11,13 +16,8 @@ import {
   updateOrderSuccess,
 } from '../../redux/Account/actions';
 import { deleteCart } from '../../redux/Checkout/actions';
-import { connect } from 'react-redux';
-import { withTranslation } from 'react-i18next';
-import i18n from '../../i18n';
-import { phonecall } from 'react-native-communications';
+import { primaryColor } from '../../styles/common';
 import Step from './components/Step';
-import { find } from 'lodash';
-import Markdown from '../../components/Markdown';
 
 export function orderToStep(order) {
   const eventType = [

@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
 import { Button, HStack } from 'native-base';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 
 class FooterButton extends Component {
   render() {

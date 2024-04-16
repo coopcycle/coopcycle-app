@@ -1,4 +1,8 @@
+import axios from 'axios';
+import _ from 'lodash';
+import { Text } from 'native-base';
 import React, { Component } from 'react';
+import { withTranslation } from 'react-i18next';
 import {
   ActivityIndicator,
   Image,
@@ -6,12 +10,8 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
-import { connect } from 'react-redux';
-import { Text } from 'native-base';
-import { withTranslation } from 'react-i18next';
-import _ from 'lodash';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import axios from 'axios';
+import { connect } from 'react-redux';
 
 import { localeDetector } from '../../i18n';
 

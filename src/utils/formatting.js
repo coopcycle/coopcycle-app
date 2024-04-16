@@ -1,5 +1,5 @@
-import numbro from 'numbro';
 import getSymbolFromCurrency from 'currency-symbol-map';
+import numbro from 'numbro';
 
 let CURRENCY_SYMBOL = '€';
 let CURRENCY_CODE = 'eur';

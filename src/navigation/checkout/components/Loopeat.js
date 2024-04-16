@@ -1,18 +1,10 @@
-import React from 'react';
-import {
-  Box,
-  Text,
-  Button,
-  HStack,
-  Pressable,
-  Icon,
-  IconButton,
-} from 'native-base';
 import { useNavigation } from '@react-navigation/native';
+import { HStack, Icon, IconButton, Text } from 'native-base';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { useTranslation } from 'react-i18next';
 
 function Loopeat({ requiredAmount, creditsCountCents, returnsTotalAmount }) {
   const navigation = useNavigation();

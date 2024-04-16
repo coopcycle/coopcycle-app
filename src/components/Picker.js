@@ -1,6 +1,6 @@
-import React from 'react';
 import { Picker as RNPicker } from '@react-native-picker/picker';
 import _ from 'lodash';
+import React from 'react';
 import { useBaseTextColor } from '../styles/theme';
 
 // wrapper for Picker component with some defaults to support the dark mode

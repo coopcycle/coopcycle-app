@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
 
-import TaskList from '../../components/TaskList';
-import TapToRefresh from '../../components/TapToRefresh';
-import DateSelectHeader from '../../components/DateSelectHeader';
 import { withTranslation } from 'react-i18next';
+import DateSelectHeader from '../../components/DateSelectHeader';
+import TapToRefresh from '../../components/TapToRefresh';
+import TaskList from '../../components/TaskList';
+import { navigateToCompleteTask, navigateToTask } from '../../navigation/utils';
 import {
   loadTasks,
   selectFilteredTasks,
@@ -13,7 +14,6 @@ import {
   selectTaskSelectedDate,
   selectTasksWithColor,
 } from '../../redux/Courier';
-import { navigateToCompleteTask, navigateToTask } from '../../navigation/utils';
 import { doneIconName } from '../task/styles/common';
 
 const styles = StyleSheet.create({

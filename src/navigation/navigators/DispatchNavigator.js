@@ -1,14 +1,14 @@
-import React from 'react';
-import { Icon } from 'native-base';
-import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
+import { Icon } from 'native-base';
+import React from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
+import screens, { headerLeft } from '..';
 import i18n from '../../i18n';
 import HeaderRightButton from '../dispatch/HeaderRightButton';
-import TaskNavigator from './TaskNavigator';
-import screens, { headerLeft } from '..';
 import { stackNavigatorScreenOptions } from '../styles';
+import TaskNavigator from './TaskNavigator';
 
 const Tab = createBottomTabNavigator();
 

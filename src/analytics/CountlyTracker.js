@@ -1,6 +1,6 @@
-import BaseTracker from './BaseTracker';
-import { Platform } from 'react-native';
 import Countly from 'countly-sdk-react-native-bridge';
+import { Platform } from 'react-native';
+import BaseTracker from './BaseTracker';
 
 import Config from 'react-native-config';
 

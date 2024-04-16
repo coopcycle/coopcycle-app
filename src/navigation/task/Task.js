@@ -1,17 +1,17 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { Alert, StyleSheet, View } from 'react-native';
-import { Text } from 'native-base';
-import { withTranslation } from 'react-i18next';
 import _ from 'lodash';
+import { Text } from 'native-base';
+import React, { Component } from 'react';
+import { withTranslation } from 'react-i18next';
+import { Alert, StyleSheet, View } from 'react-native';
+import { connect } from 'react-redux';
 
-import { selectTasks, startTask } from '../../redux/Courier';
 import { selectAllTasks as selectAllDispatchTasks } from '../../coopcycle-frontend-js/logistics/redux';
+import { selectTasks, startTask } from '../../redux/Courier';
 
+import TaskCompleteButton from './components/CompleteButton';
 import TaskDetails from './components/Details';
 import TaskMiniMap from './components/MiniMap';
 import TaskNav from './components/Nav';
-import TaskCompleteButton from './components/CompleteButton';
 
 const OfflineNotice = ({ message }) => (
   <View>

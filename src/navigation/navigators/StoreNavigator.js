@@ -1,11 +1,11 @@
-import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
+import React from 'react';
 
-import i18n from '../../i18n';
 import screens, { headerLeft } from '..';
-import { stackNavigatorScreenOptions } from '../styles';
 import HeaderButton from '../../components/HeaderButton';
+import i18n from '../../i18n';
 import HeaderBackButton from '../store/components/HeaderBackButton';
+import { stackNavigatorScreenOptions } from '../styles';
 
 const MainStack = createStackNavigator();
 

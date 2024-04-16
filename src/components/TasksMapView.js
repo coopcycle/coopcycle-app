@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { withTranslation } from 'react-i18next';
 import {
   Dimensions,
   FlatList,
@@ -10,14 +11,13 @@ import {
 import { Callout, Marker, Polyline } from 'react-native-maps';
 import ClusteredMapView from 'react-native-maps-super-cluster';
 import Modal from 'react-native-modal';
-import { withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 
-import { greyColor, whiteColor, blueColor } from '../styles/common';
 import { uniq } from 'lodash';
-import TaskMarker from './TaskMarker';
-import TaskCallout from './TaskCallout';
 import { selectIsPolylineOn } from '../redux/Courier';
+import { blueColor, greyColor, whiteColor } from '../styles/common';
+import TaskCallout from './TaskCallout';
+import TaskMarker from './TaskMarker';
 
 const clusterContainerSize = 40;
 

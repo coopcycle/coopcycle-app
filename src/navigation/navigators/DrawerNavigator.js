@@ -1,19 +1,24 @@
-import React from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createStackNavigator } from '@react-navigation/stack';
+import React from 'react';
 import { connect } from 'react-redux';
 
+import { headerLeft } from '..';
 import i18n from '../../i18n';
 import {
   selectInitialRouteName,
   selectIsAuthenticated,
   selectShowRestaurantsDrawerItem,
 } from '../../redux/App/selectors';
-import { headerLeft } from '..';
 import { stackNavigatorScreenOptions } from '../styles';
 
 import DrawerContent from '../components/DrawerContent';
 
+import { HeaderBackButton } from '@react-navigation/elements';
+import About from '../home/About';
+import FeatureFlags from '../home/FeatureFlags';
+import Privacy from '../home/Privacy';
+import Terms from '../home/Terms';
 import AccountNavigator from './AccountNavigator';
 import CheckoutNavigator from './CheckoutNavigator';
 import CourierNavigator from './CourierNavigator';
@@ -21,11 +26,6 @@ import DeliveryNavigator from './DeliveryNavigator';
 import DispatchNavigator from './DispatchNavigator';
 import RestaurantNavigator from './RestaurantNavigator';
 import StoreNavigator from './StoreNavigator';
-import About from '../home/About';
-import Terms from '../home/Terms';
-import Privacy from '../home/Privacy';
-import { HeaderBackButton } from '@react-navigation/elements';
-import FeatureFlags from '../home/FeatureFlags';
 
 const AboutStack = createStackNavigator();
 

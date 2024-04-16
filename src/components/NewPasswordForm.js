@@ -1,13 +1,13 @@
-import React from 'react';
-import { View } from 'react-native';
-import { Button, FormControl, Input, Text, VStack } from 'native-base';
-import material from '../../native-base-theme/variables/material';
-import { withTranslation } from 'react-i18next';
-import validate from 'validate.js';
 import _ from 'lodash';
+import { Button, FormControl, Input, Text, VStack } from 'native-base';
+import React from 'react';
+import { withTranslation } from 'react-i18next';
+import { View } from 'react-native';
+import validate from 'validate.js';
+import material from '../../native-base-theme/variables/material';
 
-import i18n from '../i18n';
 import { connect } from 'react-redux';
+import i18n from '../i18n';
 
 // Custom validator for matches
 // Checks whether the given value matches another value in the object under validation

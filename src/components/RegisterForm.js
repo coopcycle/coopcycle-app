@@ -1,5 +1,5 @@
-import React from 'react';
-import { View } from 'react-native';
+import { Formik } from 'formik';
+import _ from 'lodash';
 import {
   Button,
   Checkbox,
@@ -9,11 +9,11 @@ import {
   ScrollView,
   Text,
 } from 'native-base';
+import React from 'react';
 import { withTranslation } from 'react-i18next';
-import validate from 'validate.js';
-import _ from 'lodash';
-import { Formik } from 'formik';
+import { View } from 'react-native';
 import { connect } from 'react-redux';
+import validate from 'validate.js';
 
 import NavigationHolder from '../NavigationHolder';
 import i18n from '../i18n';

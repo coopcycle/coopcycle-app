@@ -1,12 +1,12 @@
+import { Text } from 'native-base';
 import React, { Component } from 'react';
+import { withTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
-import { withTranslation } from 'react-i18next';
-import { Text } from 'native-base';
 
 import TaskList from '../../components/TaskList';
-import { assignTask } from '../../redux/Dispatch/actions';
 import { selectTasksWithColor } from '../../coopcycle-frontend-js/logistics/redux';
+import { assignTask } from '../../redux/Dispatch/actions';
 import { selectUnassignedTasksNotCancelled } from '../../redux/Dispatch/selectors';
 
 class AssignTask extends Component {

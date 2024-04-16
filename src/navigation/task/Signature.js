@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { Button, Text, VStack } from 'native-base';
-import { withTranslation } from 'react-i18next';
-import { connect } from 'react-redux';
-import SignatureScreen from 'react-native-signature-canvas';
 import * as FileSystem from 'expo-file-system';
+import { Button, Text, VStack } from 'native-base';
+import React, { Component } from 'react';
+import { withTranslation } from 'react-i18next';
+import { StyleSheet, View } from 'react-native';
+import SignatureScreen from 'react-native-signature-canvas';
+import { connect } from 'react-redux';
 import { v4 } from 'uuid';
 
 import { addSignature } from '../../redux/Courier';

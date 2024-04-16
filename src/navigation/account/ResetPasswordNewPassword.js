@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
 import { Center } from 'native-base';
-import { connect } from 'react-redux';
+import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
+import { connect } from 'react-redux';
 import { setNewPassword } from '../../redux/App/actions';
 import { selectIsAuthenticated } from '../../redux/App/selectors';
 

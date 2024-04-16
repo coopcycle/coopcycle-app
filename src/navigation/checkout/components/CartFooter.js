@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
-import { View } from 'react-native';
 import { HStack, Skeleton } from 'native-base';
-import { connect } from 'react-redux';
-import { withTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import { withTranslation } from 'react-i18next';
+import { View } from 'react-native';
+import { connect } from 'react-redux';
 
 import CartFooterButton from './CartFooterButton';
 

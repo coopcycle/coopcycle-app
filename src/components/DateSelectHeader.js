@@ -1,7 +1,7 @@
+import moment from 'moment';
+import { Icon } from 'native-base';
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { Icon } from 'native-base';
-import moment from 'moment';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -12,9 +12,9 @@ import {
   whiteColor,
 } from '../styles/common';
 
+import { useTranslation } from 'react-i18next';
 import { loadTasks, selectTaskSelectedDate } from '../redux/Courier';
 import { changeDate } from '../redux/Courier/taskActions';
-import { useTranslation } from 'react-i18next';
 
 let styles = StyleSheet.create({
   container: {

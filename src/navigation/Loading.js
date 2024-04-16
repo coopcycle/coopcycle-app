@@ -1,25 +1,25 @@
-import React, { Component } from 'react';
-import { InteractionManager, StyleSheet, View } from 'react-native';
-import { connect } from 'react-redux';
-import { withTranslation } from 'react-i18next';
 import { Button, Icon, Text } from 'native-base';
+import React, { Component } from 'react';
+import { withTranslation } from 'react-i18next';
+import { InteractionManager, StyleSheet, View } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { connect } from 'react-redux';
 
-import Servers from '../Server';
 import AppUser from '../AppUser';
+import Servers from '../Server';
 import { bootstrap, closeModal, setServers } from '../redux/App/actions';
 
-import HomeNavigator from './navigators/HomeNavigator';
-import DrawerNavigator from './navigators/DrawerNavigator';
-import Modal from 'react-native-modal';
 import Config from 'react-native-config';
-import Server from './account/components/Server';
+import Modal from 'react-native-modal';
 import { selectIsSpinnerDelayEnabled } from '../redux/App/selectors';
+import Server from './account/components/Server';
+import DrawerNavigator from './navigators/DrawerNavigator';
+import HomeNavigator from './navigators/HomeNavigator';
 
 import * as Sentry from '@sentry/react-native';
 
-import FullScreenLoadingIndicator from './FullScreenLoadingIndicator';
 import { selectCustomBuild } from '../redux/App/selectors';
+import FullScreenLoadingIndicator from './FullScreenLoadingIndicator';
 import LoadingError from './LoadingError';
 
 class Loading extends Component {

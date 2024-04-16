@@ -1,7 +1,7 @@
-import React from 'react';
-import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { Text } from 'native-base';
+import React from 'react';
 import { withTranslation } from 'react-i18next';
+import { ActivityIndicator, StyleSheet, View } from 'react-native';
 
 const WebSocketIndicator = ({ connected, t }) => (
   <View

@@ -3,8 +3,8 @@ import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
 
 import { connect } from 'react-redux';
-import { changeDate } from '../../redux/Restaurant/actions';
 import { Calendar } from '../../components/Calendar';
+import { changeDate } from '../../redux/Restaurant/actions';
 
 class DateScreen extends Component {
   onDateChange(date) {

@@ -1,12 +1,12 @@
-import { createAction } from 'redux-actions';
 import Centrifuge from 'centrifuge';
-import parseUrl from 'url-parse';
 import _ from 'lodash';
+import { createAction } from 'redux-actions';
+import parseUrl from 'url-parse';
 
 import { logout, setLoading } from '../App/actions';
 import { selectHttpClient, selectIsAuthenticated } from '../App/selectors';
-import { selectOrderAccessTokensById } from './selectors';
 import { selectCheckoutAuthorizationHeaders } from '../Checkout/selectors';
+import { selectOrderAccessTokensById } from './selectors';
 
 /*
  * Action Types

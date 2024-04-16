@@ -1,4 +1,15 @@
+import _ from 'lodash';
+import {
+  Button,
+  Center,
+  Checkbox,
+  HStack,
+  Icon,
+  Pressable,
+  Text,
+} from 'native-base';
 import React, { Component } from 'react';
+import { useTranslation, withTranslation } from 'react-i18next';
 import {
   Animated,
   Dimensions,
@@ -9,26 +20,15 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {
-  Button,
-  Center,
-  HStack,
-  Icon,
-  Pressable,
-  Text,
-  Checkbox,
-} from 'native-base';
-import { connect } from 'react-redux';
-import { withTranslation, useTranslation } from 'react-i18next';
-import _ from 'lodash';
 import Modal from 'react-native-modal';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { connect } from 'react-redux';
 
 import DropdownHolder from '../../DropdownHolder';
+import BottomModal from '../../components/BottomModal';
 import DangerAlert from '../../components/DangerAlert';
-import { formatPrice } from '../../utils/formatting';
-import { getMissingAmount } from '../../utils/loopeat';
+import { selectIsAuthenticated } from '../../redux/App/selectors';
 import {
   decrementItem,
   hideAddressModal,
@@ -50,15 +50,15 @@ import {
   selectFulfillmentMethods,
   selectShippingTimeRangeLabel,
 } from '../../redux/Checkout/selectors';
-import { selectIsAuthenticated } from '../../redux/App/selectors';
-import CartFooter from './components/CartFooter';
-import ExpiredSessionModal from './components/ExpiredSessionModal';
-import CouponModal from './components/CouponModal';
 import { primaryColor } from '../../styles/common';
-import Tips from './components/Tips';
-import TimingModal from './components/TimingModal';
-import BottomModal from '../../components/BottomModal';
+import { formatPrice } from '../../utils/formatting';
+import { getMissingAmount } from '../../utils/loopeat';
+import CartFooter from './components/CartFooter';
+import CouponModal from './components/CouponModal';
+import ExpiredSessionModal from './components/ExpiredSessionModal';
 import Loopeat from './components/Loopeat';
+import TimingModal from './components/TimingModal';
+import Tips from './components/Tips';
 
 const BottomLine = ({ label, value }) => (
   <View style={styles.line}>

@@ -1,22 +1,22 @@
+export * from './adapters';
 export { default as dateReducer } from './dateReducer';
 export { default as taskEntityReducers } from './taskEntityReducers';
 export { default as taskListEntityReducers } from './taskListEntityReducers';
 export { default as uiReducers } from './uiReducers';
-export * from './adapters';
 
 export {
+  makeSelectTaskListItemsByUsername,
+  selectAllTasks,
+  selectAssignedTasks,
   selectSelectedDate,
   selectTaskLists,
-  selectAssignedTasks,
-  selectUnassignedTasks,
-  selectAllTasks,
   selectTasksWithColor,
-  makeSelectTaskListItemsByUsername,
+  selectUnassignedTasks,
 } from './selectors';
 
 export * from './actions';
 
-import { mapToColor, tasksToIds, groupLinkedTasks } from './taskUtils';
+import { groupLinkedTasks, mapToColor, tasksToIds } from './taskUtils';
 
 export const taskUtils = {
   mapToColor,
@@ -24,7 +24,7 @@ export const taskUtils = {
   groupLinkedTasks,
 };
 
-import { replaceTasksWithIds, assignedTasks } from './taskListUtils';
+import { assignedTasks, replaceTasksWithIds } from './taskListUtils';
 
 export const taskListUtils = {
   replaceTasksWithIds,
@@ -32,9 +32,9 @@ export const taskListUtils = {
 };
 
 import {
+  addAssignedTask,
   findTaskListByTask,
   findTaskListByUsername,
-  addAssignedTask,
   removeUnassignedTask,
 } from './taskListEntityUtils';
 

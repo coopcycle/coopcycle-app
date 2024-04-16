@@ -1,10 +1,10 @@
 import messaging from '@react-native-firebase/messaging';
-import store from '../redux/store';
+import analyticsEvent from '../analytics/Event';
+import tracker from '../analytics/Tracker';
 import { loadOrder } from '../redux/Restaurant/actions';
 import { message as wsMessage } from '../redux/middlewares/CentrifugoMiddleware/actions';
+import store from '../redux/store';
 import { parseNotification } from './index.android';
-import tracker from '../analytics/Tracker';
-import analyticsEvent from '../analytics/Event';
 
 // data message was received in the background (works only on android)
 const handler = async remoteMessage => {

@@ -1,16 +1,16 @@
-import React, { Component } from 'react';
-import { SectionList, StyleSheet, TouchableOpacity, View } from 'react-native';
-import { HStack, Icon, Text } from 'native-base';
 import moment from 'moment';
+import { HStack, Icon, Text } from 'native-base';
+import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import { SectionList, StyleSheet, TouchableOpacity, View } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import { formatPrice } from '../../../utils/formatting';
-import OrderNumber from '../../../components/OrderNumber';
 import ItemSeparatorComponent from '../../../components/ItemSeparator';
 import OrderFulfillmentMethodIcon from '../../../components/OrderFulfillmentMethodIcon';
+import OrderNumber from '../../../components/OrderNumber';
 import { PaymentMethodInfo } from '../../../components/PaymentMethodInfo';
+import { formatPrice } from '../../../utils/formatting';
 
 const styles = StyleSheet.create({
   item: {

@@ -1,9 +1,9 @@
-import React from 'react';
-import { SectionList, TouchableOpacity } from 'react-native';
 import { Box, HStack, Heading, Icon, Switch, Text } from 'native-base';
-import { connect } from 'react-redux';
+import React from 'react';
 import { withTranslation } from 'react-i18next';
+import { SectionList, TouchableOpacity } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { connect } from 'react-redux';
 import ItemSeparator from '../../components/ItemSeparator';
 
 import {
@@ -11,13 +11,13 @@ import {
   filterTasks,
   selectAreDoneTasksHidden,
   selectAreFailedTasksHidden,
+  selectIsPolylineOn,
   selectKeepAwake,
   selectSignatureScreenFirst,
-  selectIsPolylineOn,
   selectTagNames,
   selectTasksChangedAlertSound,
-  setPolylineOn,
   setKeepAwake,
+  setPolylineOn,
   setSignatureScreenFirst,
   setTasksChangedAlertSound,
 } from '../../redux/Courier';

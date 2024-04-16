@@ -1,5 +1,5 @@
-import moment, { Moment } from 'moment';
 import { isString, reduce } from 'lodash';
+import moment, { Moment } from 'moment';
 
 const WEEKDAYS = {
   Monday: 0,

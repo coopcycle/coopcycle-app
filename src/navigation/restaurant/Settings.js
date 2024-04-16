@@ -1,5 +1,3 @@
-import React, { Component } from 'react';
-import { View } from 'react-native';
 import {
   Box,
   FlatList,
@@ -9,12 +7,14 @@ import {
   Switch,
   Text,
 } from 'native-base';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
+import { View } from 'react-native';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 
-import { changeStatus } from '../../redux/Restaurant/actions';
 import ItemSeparator from '../../components/ItemSeparator';
+import { changeStatus } from '../../redux/Restaurant/actions';
 
 class SettingsScreen extends Component {
   constructor(props) {

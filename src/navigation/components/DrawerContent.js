@@ -1,25 +1,25 @@
-import React, { Component } from 'react';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
+import { useNavigation } from '@react-navigation/native';
+import { PhoneNumberFormat, PhoneNumberUtil } from 'google-libphonenumber';
+import _ from 'lodash';
 import {
   Box,
   HStack,
+  Heading,
   Icon,
   Pressable,
   Text,
   VStack,
-  Heading,
 } from 'native-base';
-import _ from 'lodash';
-import { connect } from 'react-redux';
+import React, { Component } from 'react';
 import { useTranslation, withTranslation } from 'react-i18next';
-import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
-import { useNavigation } from '@react-navigation/native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import VersionNumber from 'react-native-version-number';
-import { PhoneNumberFormat, PhoneNumberUtil } from 'google-libphonenumber';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { phonecall } from 'react-native-communications';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import VersionNumber from 'react-native-version-number';
+import { connect } from 'react-redux';
 
 import Mailto from '../../components/Mailto';
 import {

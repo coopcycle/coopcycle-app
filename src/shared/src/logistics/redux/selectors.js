@@ -1,8 +1,8 @@
 import _ from 'lodash';
 import { createSelector } from 'reselect';
-import { mapToColor } from './taskUtils';
-import { assignedTasks } from './taskListUtils';
 import { taskAdapter, taskListAdapter } from './adapters';
+import { assignedTasks } from './taskListUtils';
+import { mapToColor } from './taskUtils';
 
 const taskSelectors = taskAdapter.getSelectors(
   state => state.logistics.entities.tasks,

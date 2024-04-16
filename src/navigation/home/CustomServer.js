@@ -1,8 +1,8 @@
+import { Button, Center, FormControl, Input, Stack } from 'native-base';
 import React, { Component } from 'react';
+import { withTranslation } from 'react-i18next';
 import { InteractionManager, View } from 'react-native';
 import { connect } from 'react-redux';
-import { Button, Center, FormControl, Input, Stack } from 'native-base';
-import { withTranslation } from 'react-i18next';
 
 import { selectServer } from '../../redux/App/actions';
 

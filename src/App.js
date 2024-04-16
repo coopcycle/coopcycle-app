@@ -11,8 +11,8 @@ import {
 } from '@react-navigation/native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
-import { Provider } from 'react-redux';
 import { I18nextProvider } from 'react-i18next';
+import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 
 import axios from 'axios';
@@ -20,8 +20,8 @@ import VersionNumber from 'react-native-version-number';
 
 import KeyboardManager from 'react-native-keyboard-manager';
 
-import Config from 'react-native-config';
 import * as Sentry from '@sentry/react-native';
+import Config from 'react-native-config';
 
 if (!__DEV__) {
   Sentry.init({
@@ -38,29 +38,29 @@ if (Platform.OS === 'ios') {
 axios.defaults.headers.common['X-CoopCycle-App-Version'] =
   VersionNumber.appVersion;
 
-// Import i18n first
+// import i18n first
 import i18n from './i18n';
 
 import Root from './navigation/Loading';
 import { linkingPrefixes } from './navigation/constants';
 
-import store, { persistor } from './redux/store';
-import { setCurrentRoute } from './redux/App/actions';
 import NotificationHandler from './components/NotificationHandler';
 import Spinner from './components/Spinner';
+import { setCurrentRoute } from './redux/App/actions';
+import store, { persistor } from './redux/store';
 
 import DropdownAlert from 'react-native-dropdownalert';
 import DropdownHolder from './DropdownHolder';
 
-import NavigationHolder from './NavigationHolder';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import NavigationHolder from './NavigationHolder';
+import FullScreenLoadingIndicator from './navigation/FullScreenLoadingIndicator';
+import RootView from './navigation/RootView';
 import {
   AccountRegisterConfirmScreen,
   AccountResetPasswordNewPasswordScreen,
 } from './navigation/navigators/AccountNavigator';
 import { nativeBaseTheme } from './styles/theme';
-import FullScreenLoadingIndicator from './navigation/FullScreenLoadingIndicator';
-import RootView from './navigation/RootView';
 
 LogBox.ignoreLogs([
   'Warning: isMounted(...) is deprecated in plain JavaScript React classes.',

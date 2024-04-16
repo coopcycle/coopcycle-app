@@ -1,7 +1,7 @@
-import React from 'react';
-import { connect } from 'react-redux';
 import { Icon } from 'native-base';
+import React from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { connect } from 'react-redux';
 
 function mapStateToProps(state) {
   return {

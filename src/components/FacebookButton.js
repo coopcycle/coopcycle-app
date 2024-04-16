@@ -1,5 +1,5 @@
-import React from 'react';
 import { Button, Icon } from 'native-base';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 

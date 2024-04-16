@@ -1,6 +1,6 @@
-import moment from 'moment';
 import { omit } from 'lodash';
-import { tasksEntityReducer } from '../taskEntityReducer';
+import moment from 'moment';
+import { _message } from '../../middlewares/CentrifugoMiddleware/actions';
 import {
   loadTasksFailure,
   loadTasksRequest,
@@ -12,13 +12,13 @@ import {
   markTaskFailedRequest,
   markTaskFailedSuccess,
 } from '../taskActions';
+import { tasksEntityReducer } from '../taskEntityReducer';
 import {
   selectIsTaskCompleteFailure,
   selectIsTasksLoading,
   selectIsTasksLoadingFailure,
   selectTasks,
 } from '../taskSelectors';
-import { _message } from '../../middlewares/CentrifugoMiddleware/actions';
 
 // As we may be using setTimeout(), we need to mock timers
 // @see https://jestjs.io/docs/en/timer-mocks.html

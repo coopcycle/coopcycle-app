@@ -1,4 +1,3 @@
-import { Dimensions, TouchableOpacity, View } from 'react-native';
 import {
   Box,
   ChevronRightIcon,
@@ -7,10 +6,11 @@ import {
   Text,
   VStack,
 } from 'native-base';
-import { getNextShippingTimeAsText } from '../../../utils/checkout';
-import { greyColor } from '../../../styles/common';
 import React from 'react';
 import { withTranslation } from 'react-i18next';
+import { Dimensions, TouchableOpacity, View } from 'react-native';
+import { greyColor } from '../../../styles/common';
+import { getNextShippingTimeAsText } from '../../../utils/checkout';
 
 const { width } = Dimensions.get('window');
 

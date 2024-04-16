@@ -1,5 +1,4 @@
-import React, { Component } from 'react';
-import { Animated, Dimensions, FlatList, Image } from 'react-native';
+import _ from 'lodash';
 import {
   Avatar,
   Box,
@@ -13,22 +12,23 @@ import {
   VStack,
   View,
 } from 'native-base';
-import { withTranslation } from 'react-i18next';
-import { connect } from 'react-redux';
 import { Spacer } from 'native-base/src/components/primitives/Flex';
-import { greyColor, primaryColor } from '../../styles/common';
+import React, { Component } from 'react';
+import { withTranslation } from 'react-i18next';
+import { Animated, Dimensions, FlatList, Image } from 'react-native';
 import {
   RectButton,
   Swipeable,
   TouchableOpacity,
 } from 'react-native-gesture-handler';
-import i18n from '../../i18n';
-import _ from 'lodash';
-import { formatPrice } from '../../utils/formatting';
-import { deleteCart, setRestaurant } from '../../redux/Checkout/actions';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { connect } from 'react-redux';
+import i18n from '../../i18n';
+import { deleteCart, setRestaurant } from '../../redux/Checkout/actions';
 import { selectCarts } from '../../redux/Checkout/selectors';
+import { greyColor, primaryColor } from '../../styles/common';
 import { useSecondaryTextColor } from '../../styles/theme';
+import { formatPrice } from '../../utils/formatting';
 
 const AnimatedView = Animated.createAnimatedComponent(View);
 const { width } = Dimensions.get('window');

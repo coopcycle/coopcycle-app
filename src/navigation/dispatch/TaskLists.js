@@ -1,19 +1,19 @@
-import React, { Component } from 'react';
-import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
-import { connect } from 'react-redux';
-import { withTranslation } from 'react-i18next';
 import { Icon, Text } from 'native-base';
+import React, { Component } from 'react';
+import { withTranslation } from 'react-i18next';
+import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { connect } from 'react-redux';
 
-import ItemSeparatorComponent from '../../components/ItemSeparator';
 import Avatar from '../../components/Avatar';
-import AddButton from './components/AddButton';
-import { createTaskList } from '../../redux/Dispatch/actions';
-import { selectTasksNotCancelled } from '../../redux/Dispatch/selectors';
+import ItemSeparatorComponent from '../../components/ItemSeparator';
 import {
   selectSelectedDate,
   selectTaskLists,
 } from '../../coopcycle-frontend-js/logistics/redux';
+import { createTaskList } from '../../redux/Dispatch/actions';
+import { selectTasksNotCancelled } from '../../redux/Dispatch/selectors';
+import AddButton from './components/AddButton';
 
 class TaskLists extends Component {
   _createTaskList(user) {

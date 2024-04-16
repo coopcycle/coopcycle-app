@@ -1,6 +1,6 @@
+import _ from 'lodash';
 import Moment from 'moment';
 import { extendMoment } from 'moment-range';
-import _ from 'lodash';
 import { createTransform } from 'redux-persist';
 
 const moment = extendMoment(Moment);

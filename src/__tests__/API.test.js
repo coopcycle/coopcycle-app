@@ -1,8 +1,8 @@
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
+import * as FileSystem from 'expo-file-system';
 import allSettled from 'promise.allsettled';
 import ReactNativeBlobUtil from 'react-native-blob-util';
-import * as FileSystem from 'expo-file-system';
 
 import { createClient } from '../API';
 

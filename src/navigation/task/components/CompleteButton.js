@@ -1,8 +1,8 @@
+import { HStack, Icon, Text, useTheme } from 'native-base';
 import React from 'react';
-import { Dimensions, StyleSheet, TouchableOpacity, View } from 'react-native';
-import { Icon, Text, HStack, useTheme } from 'native-base';
-import { SwipeRow } from 'react-native-swipe-list-view';
 import { withTranslation } from 'react-i18next';
+import { Dimensions, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { SwipeRow } from 'react-native-swipe-list-view';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import { greenColor, redColor } from '../../../styles/common';

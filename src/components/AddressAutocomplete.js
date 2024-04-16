@@ -1,6 +1,14 @@
 // @see https://github.com/uuidjs/uuid#getrandomvalues-not-supported
-import 'react-native-get-random-values';
+import { circle, transformRotate } from '@turf/turf';
+import { AbortController } from 'abortcontroller-polyfill/dist/cjs-ponyfill';
+import axios from 'axios';
+import Fuse from 'fuse.js';
+import _ from 'lodash';
+import { Icon, Text, useColorMode, useColorModeValue } from 'native-base';
+import PropTypes from 'prop-types';
+import qs from 'qs';
 import React, { Component } from 'react';
+import { withTranslation } from 'react-i18next';
 import {
   Image,
   StyleSheet,
@@ -8,26 +16,18 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import PropTypes from 'prop-types';
-import _ from 'lodash';
-import { Icon, Text, useColorMode, useColorModeValue } from 'native-base';
-import qs from 'qs';
-import axios from 'axios';
-import { withTranslation } from 'react-i18next';
 import Autocomplete from 'react-native-autocomplete-input';
-import Fuse from 'fuse.js';
-import { v4 as uuidv4 } from 'uuid';
 import Config from 'react-native-config';
+import 'react-native-get-random-values';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import { AbortController } from 'abortcontroller-polyfill/dist/cjs-ponyfill';
 import { connect } from 'react-redux';
-import { circle, transformRotate } from '@turf/turf';
+import { v4 as uuidv4 } from 'uuid';
 
 import { localeDetector } from '../i18n';
+import { darkGreyColor, whiteColor } from '../styles/common';
+import { useBackgroundColor, useBaseTextColor } from '../styles/theme';
 import AddressUtils from '../utils/Address';
 import ItemSeparator from './ItemSeparator';
-import { useBackgroundColor, useBaseTextColor } from '../styles/theme';
-import { darkGreyColor, whiteColor } from '../styles/common';
 
 const fuseOptions = {
   shouldSort: true,

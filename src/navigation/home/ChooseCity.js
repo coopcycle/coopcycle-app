@@ -1,4 +1,6 @@
+import { Box, Button, Icon, Text } from 'native-base';
 import React, { Component } from 'react';
+import { withTranslation } from 'react-i18next';
 import {
   FlatList,
   Linking,
@@ -7,19 +9,16 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { connect } from 'react-redux';
-import { Box, Button, Icon, Text } from 'native-base';
-import { withTranslation } from 'react-i18next';
-import _ from 'lodash';
+import { openComposer } from 'react-native-email-link';
 import Modal from 'react-native-modal';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { openComposer } from 'react-native-email-link';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import { connect } from 'react-redux';
 
-import { selectServer } from '../../redux/App/actions';
-import { selectServersWithoutRepeats } from '../../redux/App/selectors';
 import ItemSeparator from '../../components/ItemSeparator';
 import ModalContent from '../../components/ModalContent';
+import { selectServer } from '../../redux/App/actions';
+import { selectServersWithoutRepeats } from '../../redux/App/selectors';
 
 const CONTACT_EMAIL = 'contact@coopcycle.org';
 

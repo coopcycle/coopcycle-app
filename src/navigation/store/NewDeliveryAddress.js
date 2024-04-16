@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
-import { KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native';
-import { Text } from 'native-base';
-import { connect } from 'react-redux';
-import { withTranslation } from 'react-i18next';
 import _ from 'lodash';
+import { Text } from 'native-base';
+import React, { Component } from 'react';
+import { withTranslation } from 'react-i18next';
+import { KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native';
+import { connect } from 'react-redux';
 
 import AddressAutocomplete from '../../components/AddressAutocomplete';
 

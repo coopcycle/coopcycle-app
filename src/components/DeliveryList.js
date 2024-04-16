@@ -1,4 +1,9 @@
+import _ from 'lodash';
+import moment from 'moment';
+import { Icon, Text } from 'native-base';
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { withTranslation } from 'react-i18next';
 import {
   ActivityIndicator,
   Platform,
@@ -7,11 +12,6 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { Icon, Text } from 'native-base';
-import PropTypes from 'prop-types';
-import moment from 'moment';
-import _ from 'lodash';
-import { withTranslation } from 'react-i18next';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 import { stateColor } from '../utils/delivery';

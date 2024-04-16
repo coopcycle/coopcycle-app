@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 
-import WebView from 'react-native-webview';
 import { withTranslation } from 'react-i18next';
+import WebView from 'react-native-webview';
 import { connect } from 'react-redux';
-import _ from 'lodash';
 
 class Delivery extends Component {
   render() {

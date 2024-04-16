@@ -15,29 +15,29 @@
  *
  * Initial state-shapes are provided in each individual reducer file.
  */
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { combineReducers } from 'redux';
 import { persistReducer } from 'redux-persist';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { tasksEntityReducer, tasksUiReducer } from './Courier';
-import { appReducer } from './App';
-import accountReducer from './Account/reducers';
-import restaurantReducer from './Restaurant/reducers';
-import checkoutReducer from './Checkout/reducers';
+import reduceReducers from 'reduce-reducers';
 import {
   dateReducer as coreDateReducer,
   taskEntityReducers as coreTaskEntityReducers,
   taskListEntityReducers as coreTaskListEntityReducers,
   uiReducers as coreUiReducers,
 } from '../coopcycle-frontend-js/logistics/redux';
+import accountReducer from './Account/reducers';
+import { appReducer } from './App';
+import checkoutReducer from './Checkout/reducers';
+import { tasksEntityReducer, tasksUiReducer } from './Courier';
 import appDispatchReducer from './Dispatch/reducers';
+import restaurantReducer from './Restaurant/reducers';
+import storeReducer from './Store/reducers';
 import appDateReducer from './logistics/dateReducer';
 import appTaskEntityReducers from './logistics/taskEntityReducers';
 import appTaskListEntityReducers from './logistics/taskListEntityReducers';
 import appLastmileUiReducers from './logistics/uiReducers';
-import storeReducer from './Store/reducers';
 import { createTaskItemsTransform } from './util';
-import reduceReducers from 'reduce-reducers';
 
 const taskEntitiesPersistConfig = {
   key: 'entities.items',

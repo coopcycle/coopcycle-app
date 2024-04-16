@@ -1,9 +1,10 @@
-import React, { Component } from 'react';
-import { View } from 'react-native';
 import { Button, Text } from 'native-base';
+import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
+import { View } from 'react-native';
 import { connect } from 'react-redux';
 
+import AuthenticateContainer from '../../components/AuthenticateContainer';
 import AuthenticateForm from '../../components/AuthenticateForm';
 import {
   forgotPassword,
@@ -11,7 +12,6 @@ import {
   login,
   register,
 } from '../../redux/App/actions';
-import AuthenticateContainer from '../../components/AuthenticateContainer';
 
 class Login extends Component {
   render() {

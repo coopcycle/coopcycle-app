@@ -1,17 +1,11 @@
-import React, { Component } from 'react';
-import { loadAddresses, newAddress } from '../../redux/Account/actions';
-import { connect } from 'react-redux';
-import { withTranslation } from 'react-i18next';
-import {
-  Dimensions,
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-  View,
-} from 'react-native';
-import MapView, { Marker } from 'react-native-maps';
 import { Button, Divider, FormControl, Heading, Input } from 'native-base';
+import React, { Component } from 'react';
+import { withTranslation } from 'react-i18next';
+import { Dimensions, ScrollView, View } from 'react-native';
+import MapView, { Marker } from 'react-native-maps';
+import { connect } from 'react-redux';
 import KeyboardAdjustView from '../../components/KeyboardAdjustView';
+import { loadAddresses, newAddress } from '../../redux/Account/actions';
 
 class AddressDetails extends Component {
   constructor(props) {

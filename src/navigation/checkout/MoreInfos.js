@@ -1,5 +1,6 @@
-import React, { Component } from 'react';
-import { InteractionManager, ScrollView, StyleSheet } from 'react-native';
+import { Formik } from 'formik';
+import { AsYouType, parsePhoneNumberFromString } from 'libphonenumber-js';
+import _ from 'lodash';
 import {
   FormControl,
   HStack,
@@ -8,12 +9,14 @@ import {
   TextArea,
   VStack,
 } from 'native-base';
+import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
+import { InteractionManager, ScrollView, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
-import { Formik } from 'formik';
-import _ from 'lodash';
-import { AsYouType, parsePhoneNumberFromString } from 'libphonenumber-js';
 
+import validate from 'validate.js';
+import KeyboardAdjustView from '../../components/KeyboardAdjustView';
+import { selectIsAuthenticated } from '../../redux/App/selectors';
 import {
   assignCustomer,
   checkout,
@@ -23,11 +26,8 @@ import {
   selectCart,
   selectCartFulfillmentMethod,
 } from '../../redux/Checkout/selectors';
-import FooterButton from './components/FooterButton';
 import { isFree } from '../../utils/order';
-import { selectIsAuthenticated } from '../../redux/App/selectors';
-import validate from 'validate.js';
-import KeyboardAdjustView from '../../components/KeyboardAdjustView';
+import FooterButton from './components/FooterButton';
 
 const hasErrors = (errors, touched, field) => {
   return errors[field] && touched[field];

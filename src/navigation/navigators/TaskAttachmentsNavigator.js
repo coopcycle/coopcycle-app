@@ -1,11 +1,11 @@
-import React from 'react';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import React from 'react';
 import { connect } from 'react-redux';
 
-import i18n from '../../i18n';
 import screens from '..';
-import { stackNavigatorScreenOptions } from '../styles';
+import i18n from '../../i18n';
 import { selectSignatureScreenFirst } from '../../redux/Courier';
+import { stackNavigatorScreenOptions } from '../styles';
 
 const Tab = createMaterialTopTabNavigator();
 

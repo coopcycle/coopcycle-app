@@ -1,10 +1,10 @@
+import { CommonActions } from '@react-navigation/native';
 import { Alert } from 'react-native';
 import { createAction } from 'redux-actions';
-import { CommonActions } from '@react-navigation/native';
 
-import { connect } from '../middlewares/CentrifugoMiddleware/actions';
-import i18n from '../../i18n';
 import NavigationHolder from '../../NavigationHolder';
+import i18n from '../../i18n';
+import { connect } from '../middlewares/CentrifugoMiddleware/actions';
 
 import {
   createTaskListFailure,
@@ -20,8 +20,8 @@ import {
   startTaskSuccess,
 } from '../Courier';
 
-import { isSameDate } from './utils';
 import { withLinkedTasks } from '../../shared/src/logistics/redux/taskUtils';
+import { isSameDate } from './utils';
 
 /*
  * Action Types

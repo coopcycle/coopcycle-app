@@ -80,4 +80,4 @@ export default ({ getState, dispatch }) => {
   };
 };
 
-export { MESSAGE, CONNECTED, DISCONNECTED, connected, disconnected };
+export { CONNECTED, DISCONNECTED, MESSAGE, connected, disconnected };

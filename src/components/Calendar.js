@@ -1,10 +1,10 @@
-import { Calendar as RNCalendar } from 'react-native-calendars';
-import React from 'react';
-import { StyleSheet, Text } from 'react-native';
-import { primaryColor, whiteColor } from '../styles/common';
 import moment from 'moment/moment';
-import { useTranslation } from 'react-i18next';
 import { View } from 'native-base';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { StyleSheet, Text } from 'react-native';
+import { Calendar as RNCalendar } from 'react-native-calendars';
+import { primaryColor, whiteColor } from '../styles/common';
 
 const styles = StyleSheet.create({
   todayContainer: {

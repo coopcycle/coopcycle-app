@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import { ActivityIndicator, Animated, View } from 'react-native';
 import { Button, HStack, Text } from 'native-base';
-import { withTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import { withTranslation } from 'react-i18next';
+import { Animated, View } from 'react-native';
 
 import { formatPrice } from '../../../utils/formatting';
 

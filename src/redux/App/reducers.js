@@ -2,6 +2,7 @@
 /*
  * App reducer, dealing with non-domain specific state
  */
+import Config from 'react-native-config';
 import { CONNECTED, DISCONNECTED } from '../middlewares/CentrifugoMiddleware';
 import {
   ACCEPT_PRIVACY_POLICY,
@@ -47,7 +48,6 @@ import {
   SET_SPINNER_DELAY_ENABLED,
   SET_USER,
 } from './actions';
-import Config from 'react-native-config';
 
 const initialState = {
   customBuild: !!Config.DEFAULT_SERVER,

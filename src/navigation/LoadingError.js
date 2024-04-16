@@ -1,10 +1,10 @@
-import React from 'react';
 import { Button, Icon, Text, View } from 'native-base';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import Server from './account/components/Server';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useSelector } from 'react-redux';
 import { selectCustomBuild } from '../redux/App/selectors';
+import Server from './account/components/Server';
 
 export default function LoadingError() {
   const customBuild = useSelector(selectCustomBuild);

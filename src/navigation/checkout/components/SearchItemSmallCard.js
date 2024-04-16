@@ -1,11 +1,4 @@
-import {
-  ChevronRightIcon,
-  Flex,
-  HStack,
-  Image,
-  Text,
-  VStack,
-} from 'native-base';
+import { ChevronRightIcon, HStack, Image, Text, VStack } from 'native-base';
 import React from 'react';
 import { useTranslation, withTranslation } from 'react-i18next';
 import { TouchableOpacity, View } from 'react-native';

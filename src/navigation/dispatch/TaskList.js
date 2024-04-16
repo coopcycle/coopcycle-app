@@ -1,18 +1,18 @@
+import _ from 'lodash';
+import { Text } from 'native-base';
 import React, { Component } from 'react';
+import { withTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
-import { withTranslation } from 'react-i18next';
-import { Text } from 'native-base';
-import _ from 'lodash';
 
 import TaskList from '../../components/TaskList';
-import AddButton from './components/AddButton';
-import { unassignTask } from '../../redux/Dispatch/actions';
-import { selectTasksNotCancelled } from '../../redux/Dispatch/selectors';
 import {
   selectTaskLists,
   selectTasksWithColor,
 } from '../../coopcycle-frontend-js/logistics/redux';
+import { unassignTask } from '../../redux/Dispatch/actions';
+import { selectTasksNotCancelled } from '../../redux/Dispatch/selectors';
+import AddButton from './components/AddButton';
 
 import { navigateToTask } from '../../navigation/utils';
 

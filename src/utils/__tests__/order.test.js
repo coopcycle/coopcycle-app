@@ -1,5 +1,5 @@
-import moment from 'moment';
 import { Buffer } from 'buffer';
+import moment from 'moment';
 import {
   encodeForPrinter,
   isFree,

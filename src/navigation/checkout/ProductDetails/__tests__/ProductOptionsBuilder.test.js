@@ -1,5 +1,5 @@
-import useProductOptionsBuilder from '../ProductOptionsBuilder';
 import { act, renderHook } from '@testing-library/react-native';
+import useProductOptionsBuilder from '../ProductOptionsBuilder';
 
 const productOptions = [
   {

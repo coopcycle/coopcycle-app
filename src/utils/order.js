@@ -1,7 +1,7 @@
-import moment from 'moment';
-import EscPosEncoder from 'esc-pos-encoder';
 import diacritics from 'diacritics';
+import EscPosEncoder from 'esc-pos-encoder';
 import _ from 'lodash';
+import moment from 'moment';
 
 import i18n from '../i18n';
 

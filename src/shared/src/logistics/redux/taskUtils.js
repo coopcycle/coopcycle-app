@@ -1,5 +1,5 @@
-import _, { mapValues } from 'lodash';
 import ColorHash from 'color-hash';
+import _, { mapValues } from 'lodash';
 
 const colorHash = new ColorHash();
 

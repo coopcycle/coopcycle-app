@@ -1,6 +1,6 @@
-import { Animated, ImageBackground, StyleSheet, View } from 'react-native';
 import { HStack, IconButton, Text, VStack } from 'native-base';
 import React from 'react';
+import { Animated, ImageBackground, StyleSheet, View } from 'react-native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { CategoryBadge } from './RestaurantBadges';
 

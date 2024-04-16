@@ -1,4 +1,12 @@
+import _ from 'lodash';
 import moment from 'moment';
+import { LOGOUT_SUCCESS, SET_USER } from '../App/actions';
+import {
+  ASSIGN_TASK_SUCCESS,
+  BULK_ASSIGNMENT_TASKS_SUCCESS,
+  UNASSIGN_TASK_SUCCESS,
+} from '../Dispatch/actions';
+import { MESSAGE } from '../middlewares/CentrifugoMiddleware';
 import {
   ADD_PICTURE,
   ADD_SIGNATURE,
@@ -21,14 +29,6 @@ import {
   START_TASK_REQUEST,
   START_TASK_SUCCESS,
 } from './taskActions';
-import {
-  ASSIGN_TASK_SUCCESS,
-  BULK_ASSIGNMENT_TASKS_SUCCESS,
-  UNASSIGN_TASK_SUCCESS,
-} from '../Dispatch/actions';
-import { LOGOUT_SUCCESS, SET_USER } from '../App/actions';
-import { MESSAGE } from '../middlewares/CentrifugoMiddleware';
-import _ from 'lodash';
 
 /*
  * Intital state shape for the task entity reducer

@@ -1,9 +1,9 @@
-import React from 'react';
 import { Checkbox, Column } from 'native-base';
-import { selectIsSpinnerDelayEnabled } from '../../redux/App/selectors';
-import { useDispatch, useSelector } from 'react-redux';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
 import { setSpinnerDelayEnabled } from '../../redux/App/actions';
+import { selectIsSpinnerDelayEnabled } from '../../redux/App/selectors';
 
 export default function FeatureFlags() {
   const isSpinnerDelayEnabled = useSelector(selectIsSpinnerDelayEnabled);

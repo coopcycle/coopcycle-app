@@ -1,6 +1,6 @@
+import _ from 'lodash';
 import Moment from 'moment-business-days';
 import { extendMoment } from 'moment-range';
-import _ from 'lodash';
 import i18n from '../i18n';
 import OpeningHoursSpecification from './OpeningHoursSpecification';
 

@@ -1,18 +1,18 @@
-import React, { useState } from 'react';
-import { connect } from 'react-redux';
-import { useColorScheme } from 'react-native';
-import { useTranslation } from 'react-i18next';
 import { Box, Button, Text } from 'native-base';
+import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useColorScheme } from 'react-native';
 import Modal from 'react-native-modal';
+import { connect } from 'react-redux';
 
+import {
+  stopAskingToEnableReusablePackaging,
+  updateCart,
+} from '../../../redux/Checkout/actions';
 import {
   selectCart,
   selectRestaurant,
 } from '../../../redux/Checkout/selectors';
-import {
-  updateCart,
-  stopAskingToEnableReusablePackaging,
-} from '../../../redux/Checkout/actions';
 
 const LoopeatModal = ({ name, isVisible, onPress }) => {
   const colorScheme = useColorScheme();

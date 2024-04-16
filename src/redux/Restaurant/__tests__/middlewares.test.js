@@ -1,11 +1,11 @@
 import { applyMiddleware, combineReducers, createStore } from 'redux';
 import thunk from 'redux-thunk';
-import { ringOnNewOrderCreated } from '../middlewares';
-import { loadOrderSuccess, loadOrdersSuccess } from '../actions';
-import { message as wsMessage } from '../../middlewares/CentrifugoMiddleware/actions';
-import restaurantReducer from '../reducers';
-import appReducer from '../../App/reducers';
 import AppUser from '../../../AppUser';
+import appReducer from '../../App/reducers';
+import { message as wsMessage } from '../../middlewares/CentrifugoMiddleware/actions';
+import { loadOrderSuccess, loadOrdersSuccess } from '../actions';
+import { ringOnNewOrderCreated } from '../middlewares';
+import restaurantReducer from '../reducers';
 
 describe('ringOnNewOrderCreated', () => {
   beforeEach(() => {

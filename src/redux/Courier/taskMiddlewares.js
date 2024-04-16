@@ -1,5 +1,5 @@
-import { AppState } from 'react-native';
 import _ from 'lodash';
+import { AppState } from 'react-native';
 
 import { LOGOUT_SUCCESS, pushNotification } from '../App/actions';
 import { LOAD_TASKS_SUCCESS } from './taskActions';

@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import { Dimensions, Image, StyleSheet, View } from 'react-native';
 import { Button, Text } from 'native-base';
+import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
+import { Dimensions, Image, StyleSheet, View } from 'react-native';
 
 class ConfigureServer extends Component {
   render() {

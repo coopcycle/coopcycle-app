@@ -1,5 +1,5 @@
-import { getChoicesWithDates, humanizeTaskTime } from '../time-slots';
 import moment from 'moment';
+import { getChoicesWithDates, humanizeTaskTime } from '../time-slots';
 
 moment.locale('en');
 

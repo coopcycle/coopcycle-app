@@ -1,17 +1,17 @@
+import { Center } from 'native-base';
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
-import { Center } from 'native-base';
 
-import CreditCardComp from './components/CreditCard';
-import CashComp from './components/CashOnDelivery';
-import PaymentMethodPicker from './components/PaymentMethodPicker';
 import {
   checkout,
   checkoutWithCash,
   loadPaymentMethods,
 } from '../../redux/Checkout/actions';
 import { selectCart } from '../../redux/Checkout/selectors';
+import CashComp from './components/CashOnDelivery';
+import CreditCardComp from './components/CreditCard';
+import PaymentMethodPicker from './components/PaymentMethodPicker';
 
 class CreditCard extends Component {
   _onSubmitCard(values) {

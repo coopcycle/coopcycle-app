@@ -1,12 +1,12 @@
+import { Icon, Text } from 'native-base';
 import React from 'react';
+import { View } from 'react-native';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {
   doneIconName,
   failedIconName,
   taskTypeIconName,
 } from '../navigation/task/styles/common';
-import { View } from 'react-native';
-import { Icon, Text } from 'native-base';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { darkGreyColor, redColor, whiteColor } from '../styles/common';
 
 const container = {

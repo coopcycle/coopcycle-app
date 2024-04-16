@@ -1,4 +1,9 @@
 import {
+  MARK_TASK_DONE_SUCCESS,
+  MARK_TASK_FAILED_SUCCESS,
+  START_TASK_SUCCESS,
+} from '../Courier';
+import {
   ASSIGN_TASK_SUCCESS,
   CANCEL_TASK_SUCCESS,
   CHANGE_DATE,
@@ -7,11 +12,6 @@ import {
   LOAD_UNASSIGNED_TASKS_SUCCESS,
   UNASSIGN_TASK_SUCCESS,
 } from '../Dispatch/actions';
-import {
-  MARK_TASK_DONE_SUCCESS,
-  MARK_TASK_FAILED_SUCCESS,
-  START_TASK_SUCCESS,
-} from '../Courier';
 
 import {
   taskAdapter,

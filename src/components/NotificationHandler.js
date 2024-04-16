@@ -1,18 +1,20 @@
-import React, { Component } from 'react';
-import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
-import { Icon, Text } from 'native-base';
-import { connect } from 'react-redux';
-import { withTranslation } from 'react-i18next';
-import Sound from 'react-native-sound';
-import moment from 'moment';
-import Modal from 'react-native-modal';
 import { CommonActions } from '@react-navigation/native';
+import moment from 'moment';
+import { Icon, Text } from 'native-base';
+import React, { Component } from 'react';
+import { withTranslation } from 'react-i18next';
+import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
+import Modal from 'react-native-modal';
+import Sound from 'react-native-sound';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { connect } from 'react-redux';
 
-import PushNotification from '../notifications';
 import NavigationHolder from '../NavigationHolder';
+import PushNotification from '../notifications';
 
+import analyticsEvent from '../analytics/Event';
+import tracker from '../analytics/Tracker';
 import {
   clearNotifications,
   pushNotification,
@@ -25,8 +27,6 @@ import {
   loadOrderAndPushNotification,
 } from '../redux/Restaurant/actions';
 import { message as wsMessage } from '../redux/middlewares/CentrifugoMiddleware/actions';
-import tracker from '../analytics/Tracker';
-import analyticsEvent from '../analytics/Event';
 
 import ModalContent from './ModalContent';
 

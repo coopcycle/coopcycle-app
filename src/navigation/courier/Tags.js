@@ -1,17 +1,17 @@
-import React from 'react';
-import { FlatList, TouchableOpacity } from 'react-native';
 import { HStack, Icon, Text } from 'native-base';
-import { connect } from 'react-redux';
+import React from 'react';
 import { withTranslation } from 'react-i18next';
+import { FlatList, TouchableOpacity } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { connect } from 'react-redux';
 
+import ItemSeparator from '../../components/ItemSeparator';
 import {
   clearTasksFilter,
   filterTasks,
   selectIsTagHidden,
   selectTagNames,
 } from '../../redux/Courier';
-import ItemSeparator from '../../components/ItemSeparator';
 
 const Tags = ({ toggleDisplayTag, isTagHidden, tags, t }) => (
   <FlatList

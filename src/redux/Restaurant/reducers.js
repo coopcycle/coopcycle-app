@@ -4,6 +4,7 @@ import {
   ACCEPT_ORDER_SUCCESS,
   BLUETOOTH_DISABLED,
   BLUETOOTH_ENABLED,
+  BLUETOOTH_STARTED,
   BLUETOOTH_START_SCAN,
   BLUETOOTH_STOP_SCAN,
   CANCEL_ORDER_FAILURE,
@@ -53,10 +54,9 @@ import {
   REFUSE_ORDER_SUCCESS,
   SET_CURRENT_MENU,
   SET_HAS_MORE_PRODUCTS,
+  SET_LOOPEAT_FORMATS,
   SET_NEXT_PRODUCTS_PAGE,
   SUNMI_PRINTER_DETECTED,
-  BLUETOOTH_STARTED,
-  SET_LOOPEAT_FORMATS,
   UPDATE_LOOPEAT_FORMATS_SUCCESS,
 } from './actions';
 
@@ -68,8 +68,8 @@ import {
 
 import { MESSAGE } from '../middlewares/CentrifugoMiddleware/actions';
 
-import moment from 'moment';
 import _ from 'lodash';
+import moment from 'moment';
 
 const initialState = {
   fetchError: null, // Error object describing the error

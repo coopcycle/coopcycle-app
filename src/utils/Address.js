@@ -1,9 +1,9 @@
-import _ from 'lodash';
-import BackgroundGeolocation from 'react-native-background-geolocation';
-import Config from 'react-native-config';
 import axios from 'axios';
+import _ from 'lodash';
 import qs from 'qs';
 import { Linking, Platform } from 'react-native';
+import BackgroundGeolocation from 'react-native-background-geolocation';
+import Config from 'react-native-config';
 
 class AddressUtils {
   static createAddressFromGoogleDetails(details) {

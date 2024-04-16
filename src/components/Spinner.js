@@ -1,6 +1,6 @@
-import React, { Component, PureComponent } from 'react';
-import { connect } from 'react-redux';
+import React, { PureComponent } from 'react';
 import Spinner from 'react-native-loading-spinner-overlay';
+import { connect } from 'react-redux';
 
 import {
   selectIsLoading,

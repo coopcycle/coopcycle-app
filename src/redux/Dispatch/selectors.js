@@ -1,5 +1,5 @@
-import { createSelector } from 'reselect';
 import _ from 'lodash';
+import { createSelector } from 'reselect';
 import { selectUnassignedTasks } from '../../coopcycle-frontend-js/logistics/redux';
 
 export const selectUnassignedTasksNotCancelled = createSelector(

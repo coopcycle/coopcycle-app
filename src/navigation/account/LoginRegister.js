@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
+import { connect } from 'react-redux';
 
-import Server from './components/Server';
+import AuthenticateContainer from '../../components/AuthenticateContainer';
 import AuthenticateForm from '../../components/AuthenticateForm';
 import { forgotPassword, login, register } from '../../redux/App/actions';
-import AuthenticateContainer from '../../components/AuthenticateContainer';
 import { selectCustomBuild } from '../../redux/App/selectors';
+import Server from './components/Server';
 
 class LoginRegister extends Component {
   render() {

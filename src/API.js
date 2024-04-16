@@ -1,10 +1,10 @@
-import i18n from './i18n';
 import axios from 'axios';
-import qs from 'qs';
+import * as FileSystem from 'expo-file-system';
 import _ from 'lodash';
+import qs from 'qs';
 import ReactNativeBlobUtil from 'react-native-blob-util';
 import VersionNumber from 'react-native-version-number';
-import * as FileSystem from 'expo-file-system';
+import i18n from './i18n';
 
 let subscribers = [];
 let errorSubscribers = [];

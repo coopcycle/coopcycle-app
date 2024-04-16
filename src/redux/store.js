@@ -1,23 +1,23 @@
 import { applyMiddleware, createStore } from 'redux';
-import thunk from 'redux-thunk';
 import ReduxAsyncQueue from 'redux-async-queue';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { createLogger } from 'redux-logger';
+import thunk from 'redux-thunk';
 
 import { persistStore } from 'redux-persist';
 
-import reducers from './reducers';
-import GeolocationMiddleware from './middlewares/GeolocationMiddleware';
+import Config from 'react-native-config';
+import { filterExpiredCarts } from './Checkout/middlewares';
+import { ringOnTaskListUpdated } from './Courier/taskMiddlewares';
+import { ringOnNewOrderCreated } from './Restaurant/middlewares';
 import BluetoothMiddleware from './middlewares/BluetoothMiddleware';
+import CentrifugoMiddleware from './middlewares/CentrifugoMiddleware';
+import GeolocationMiddleware from './middlewares/GeolocationMiddleware';
 import HttpMiddleware from './middlewares/HttpMiddleware';
 import NetInfoMiddleware from './middlewares/NetInfoMiddleware';
 import PushNotificationMiddleware from './middlewares/PushNotificationMiddleware';
 import SentryMiddleware from './middlewares/SentryMiddleware';
-import { ringOnNewOrderCreated } from './Restaurant/middlewares';
-import { ringOnTaskListUpdated } from './Courier/taskMiddlewares';
-import CentrifugoMiddleware from './middlewares/CentrifugoMiddleware';
-import { filterExpiredCarts } from './Checkout/middlewares';
-import Config from 'react-native-config';
+import reducers from './reducers';
 
 const middlewares = [
   thunk,

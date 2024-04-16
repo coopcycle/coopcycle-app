@@ -1,19 +1,3 @@
-import React, { Component } from 'react';
-import { Platform, View } from 'react-native';
-import { connect } from 'react-redux';
-import {
-  Box,
-  Button,
-  Column,
-  FormControl,
-  Input,
-  ScrollView,
-} from 'native-base';
-import { Formik } from 'formik';
-import _ from 'lodash';
-import { withTranslation } from 'react-i18next';
-import { AccessToken, LoginManager, Settings } from 'react-native-fbsdk-next';
-import Config from 'react-native-config';
 import {
   AppleButton,
   appleAuth,
@@ -22,9 +6,25 @@ import {
   GoogleSignin,
   GoogleSigninButton,
 } from '@react-native-google-signin/google-signin';
+import { Formik } from 'formik';
 import jwtDecode from 'jwt-decode';
+import _ from 'lodash';
+import {
+  Box,
+  Button,
+  Column,
+  FormControl,
+  Input,
+  ScrollView,
+} from 'native-base';
+import React, { Component } from 'react';
+import { withTranslation } from 'react-i18next';
+import { Platform, View } from 'react-native';
+import Config from 'react-native-config';
+import { AccessToken, LoginManager, Settings } from 'react-native-fbsdk-next';
+import { connect } from 'react-redux';
 
-import FacebookButton from './FacebookButton';
+import i18n from '../i18n';
 import {
   authenticationFailure,
   clearAuthenticationErrors,
@@ -32,7 +32,7 @@ import {
   loginWithFacebook,
   signInWithApple,
 } from '../redux/App/actions';
-import i18n from '../i18n';
+import FacebookButton from './FacebookButton';
 
 class LoginForm extends Component {
   constructor(props) {

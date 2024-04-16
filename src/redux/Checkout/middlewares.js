@@ -1,4 +1,3 @@
-import { LOAD_RESTAURANTS_SUCCESS } from './actions';
 import jwtDecode from 'jwt-decode';
 import _ from 'lodash';
 

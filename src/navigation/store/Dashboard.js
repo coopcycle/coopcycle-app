@@ -1,8 +1,8 @@
+import _ from 'lodash';
 import React, { Component } from 'react';
+import { withTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
-import { withTranslation } from 'react-i18next';
-import _ from 'lodash';
 
 import DeliveryList from '../../components/DeliveryList';
 

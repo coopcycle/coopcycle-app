@@ -1,5 +1,5 @@
-import { AppState } from 'react-native';
 import _ from 'lodash';
+import { AppState } from 'react-native';
 
 import { pushNotification } from '../App/actions';
 import { selectUser } from '../App/selectors';

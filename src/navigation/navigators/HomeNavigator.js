@@ -1,9 +1,9 @@
-import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
+import React from 'react';
 
+import HeaderButton from '../../components/HeaderButton';
 import i18n from '../../i18n';
 import { stackNavigatorScreenOptions } from '../styles';
-import HeaderButton from '../../components/HeaderButton';
 
 import ConfigureServer from '../ConfigureServer';
 import ChooseCity from '../home/ChooseCity';

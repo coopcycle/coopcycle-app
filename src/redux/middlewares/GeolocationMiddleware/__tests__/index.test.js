@@ -1,12 +1,12 @@
+import BackgroundGeolocation from 'react-native-background-geolocation';
 import { applyMiddleware, combineReducers, createStore } from 'redux';
 import { createAction } from 'redux-actions';
-import BackgroundGeolocation from 'react-native-background-geolocation';
 import thunk from 'redux-thunk';
 
-import middleware from '../index';
 import AppUser from '../../../../AppUser';
 import { SET_USER } from '../../../../redux/App/actions';
 import appReducer from '../../../../redux/App/reducers';
+import middleware from '../index';
 
 const setUser = createAction(SET_USER);
 

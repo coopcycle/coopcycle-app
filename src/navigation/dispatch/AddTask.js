@@ -1,6 +1,5 @@
-import React, { Component } from 'react';
-import { Platform, StyleSheet, TouchableOpacity, View } from 'react-native';
-import { connect } from 'react-redux';
+import _ from 'lodash';
+import moment from 'moment';
 import {
   Box,
   Button,
@@ -11,14 +10,15 @@ import {
   TextArea,
   VStack,
 } from 'native-base';
-import DateTimePicker from 'react-native-modal-datetime-picker';
+import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
-import _ from 'lodash';
-import moment from 'moment';
+import { Platform, StyleSheet, TouchableOpacity, View } from 'react-native';
+import DateTimePicker from 'react-native-modal-datetime-picker';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { connect } from 'react-redux';
 
-import { createTask } from '../../redux/Dispatch/actions';
 import AddressAutocomplete from '../../components/AddressAutocomplete';
+import { createTask } from '../../redux/Dispatch/actions';
 
 class AddTask extends Component {
   constructor(props) {

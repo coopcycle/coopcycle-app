@@ -1,8 +1,8 @@
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import { Box, Text } from 'native-base';
-import { useTranslation } from 'react-i18next';
 import _ from 'lodash';
+import { Box, Text } from 'native-base';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { StyleSheet, View } from 'react-native';
 
 const Badge = ({ color, text }) => {
   return (

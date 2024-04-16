@@ -1,10 +1,10 @@
+import { DarkTheme, DefaultTheme } from '@react-navigation/native';
 import {
   extendTheme,
   useColorModeValue,
   useToken,
   v33xTheme,
 } from 'native-base';
-import { DarkTheme, DefaultTheme } from '@react-navigation/native';
 
 // ideally we should get rid of the v33xTheme theme
 // as it's not always correctly overrides the default theme

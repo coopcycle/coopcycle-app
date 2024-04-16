@@ -1,7 +1,6 @@
-import { createSelector } from 'reselect';
-import { find } from 'lodash';
+import _, { find } from 'lodash';
 import moment from 'moment';
-import _ from 'lodash';
+import { createSelector } from 'reselect';
 import { matchesDate } from '../../utils/order';
 
 const _selectDate = state => state.restaurant.date;

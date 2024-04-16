@@ -1,29 +1,29 @@
-import { createAction } from 'redux-actions';
 import { CommonActions } from '@react-navigation/native';
-import tracker from '../../analytics/Tracker';
+import { createAction } from 'redux-actions';
 import analyticsEvent from '../../analytics/Event';
+import tracker from '../../analytics/Tracker';
 import userProperty from '../../analytics/UserProperty';
 
 import API from '../../API';
 import AppUser from '../../AppUser';
-import Settings from '../../Settings';
 import NavigationHolder from '../../NavigationHolder';
+import Settings from '../../Settings';
 import i18n from '../../i18n';
 import { setCurrencyCode } from '../../utils/formatting';
+import { loadAddresses, loadAddressesSuccess } from '../Account/actions';
+import {
+  assignAllCarts,
+  clearAddress,
+  setRestaurant,
+  updateCarts,
+} from '../Checkout/actions';
+import { selectRestaurant } from '../Checkout/selectors';
 import {
   selectHttpClient,
   selectInitialRouteName,
   selectIsAuthenticated,
   selectResumeCheckoutAfterActivation,
 } from './selectors';
-import {
-  assignAllCarts,
-  updateCarts,
-  clearAddress,
-  setRestaurant,
-} from '../Checkout/actions';
-import { loadAddresses, loadAddressesSuccess } from '../Account/actions';
-import { selectRestaurant } from '../Checkout/selectors';
 
 /*
  * Action Types

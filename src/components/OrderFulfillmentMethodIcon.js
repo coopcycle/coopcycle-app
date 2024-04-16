@@ -1,6 +1,6 @@
+import { Icon } from 'native-base';
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import { Icon } from 'native-base';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import { resolveFulfillmentMethod } from '../utils/order';

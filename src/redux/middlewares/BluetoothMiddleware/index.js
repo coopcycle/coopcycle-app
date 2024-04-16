@@ -1,15 +1,15 @@
-import BleManager from 'react-native-ble-manager';
-import { NativeEventEmitter, NativeModules, Platform } from 'react-native';
 import SunmiPrinter from '@heasy/react-native-sunmi-printer';
+import { NativeEventEmitter, NativeModules, Platform } from 'react-native';
+import BleManager from 'react-native-ble-manager';
+import { canStartBluetooth } from '../../../utils/bluetooth';
 import {
   bluetoothDisabled,
   bluetoothEnabled,
+  bluetoothStarted,
   bluetoothStopScan,
   printerConnected,
   sunmiPrinterDetected,
-  bluetoothStarted,
 } from '../../Restaurant/actions';
-import { canStartBluetooth } from '../../../utils/bluetooth';
 
 const BleManagerModule = NativeModules.BleManager;
 const bleManagerEmitter = new NativeEventEmitter(BleManagerModule);

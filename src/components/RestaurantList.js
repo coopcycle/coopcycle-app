@@ -1,18 +1,10 @@
+import { Center, Icon, Text } from 'native-base';
 import React, { Component } from 'react';
-import {
-  FlatList,
-  Image,
-  ImageBackground,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import { Badge, Center, HStack, Icon, Text } from 'native-base';
 import { withTranslation } from 'react-i18next';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { FlatList, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import { getRestaurantCaption, shouldShowPreOrder } from '../utils/checkout';
+import { shouldShowPreOrder } from '../utils/checkout';
 import { RestaurantCard } from './RestaurantCard';
 
 const styles = StyleSheet.create({

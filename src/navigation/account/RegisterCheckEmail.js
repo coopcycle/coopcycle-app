@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import { View } from 'react-native';
 import { CommonActions } from '@react-navigation/native';
 import { Button, Center, Icon, Text } from 'native-base';
+import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
+import { View } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 class RegisterCheckEmail extends Component {

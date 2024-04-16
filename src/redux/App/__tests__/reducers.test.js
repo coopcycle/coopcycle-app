@@ -1,9 +1,9 @@
-import reducer from '../reducers';
 import { omit } from 'lodash';
 import {
   connected,
   disconnected,
 } from '../../middlewares/CentrifugoMiddleware';
+import reducer from '../reducers';
 
 describe('Redux | App | Reducers', () => {
   test(`${connected}`, () => {

@@ -1,15 +1,14 @@
-import React, { Component } from 'react';
-import { Dimensions, Image, StyleSheet, View } from 'react-native';
-import { Button, Icon, IconButton, Text, VStack } from 'native-base';
-import { withTranslation } from 'react-i18next';
-import { connect } from 'react-redux';
 import { Camera } from 'expo-camera';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import { Button, Icon, IconButton, Text, VStack } from 'native-base';
+import React, { Component } from 'react';
+import { withTranslation } from 'react-i18next';
+import { Dimensions, Image, StyleSheet, View } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import { connect } from 'react-redux';
 
-import { addPicture } from '../../redux/Courier';
 import { ImageType } from 'expo-camera/build/Camera.types';
+import { addPicture } from '../../redux/Courier';
 
 class Photo extends Component {
   constructor(props) {

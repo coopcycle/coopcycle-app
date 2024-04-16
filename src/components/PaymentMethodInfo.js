@@ -1,8 +1,8 @@
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
 import { Icon, Text } from 'native-base';
-import Foundation from 'react-native-vector-icons/Foundation';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { StyleSheet, View } from 'react-native';
+import Foundation from 'react-native-vector-icons/Foundation';
 import material from '../../native-base-theme/variables/material';
 
 const styles = StyleSheet.create({

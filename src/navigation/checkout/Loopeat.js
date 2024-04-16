@@ -1,25 +1,23 @@
-import React, { useState } from 'react';
-import { Linking, FlatList } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import _ from 'lodash';
 import {
   Box,
-  Text,
   Button,
-  VStack,
-  Pressable,
   HStack,
   Heading,
   Switch,
-  Input,
+  Text,
+  VStack,
 } from 'native-base';
-import { useNavigation } from '@react-navigation/native';
-import { connect } from 'react-redux';
-import _ from 'lodash';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { FlatList, Linking } from 'react-native';
 import InputSpinner from 'react-native-input-spinner';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { connect } from 'react-redux';
 
-import { selectCart } from '../../redux/Checkout/selectors';
 import { updateLoopeatReturns } from '../../redux/Checkout/actions';
+import { selectCart } from '../../redux/Checkout/selectors';
 import { formatPrice } from '../../utils/formatting';
 
 function getNameFromId(formatId, formats) {

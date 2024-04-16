@@ -1,5 +1,5 @@
-import BaseTracker from './BaseTracker';
 import analytics from '@react-native-firebase/analytics';
+import BaseTracker from './BaseTracker';
 
 function FirebaseTracker() {}
 FirebaseTracker.prototype = Object.create(BaseTracker.prototype);

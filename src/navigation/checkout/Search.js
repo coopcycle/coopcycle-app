@@ -1,12 +1,15 @@
+import { Text } from 'native-base';
 import React, { Component } from 'react';
+import { withTranslation } from 'react-i18next';
 import { Dimensions, InteractionManager, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Text } from 'native-base';
 import { connect } from 'react-redux';
-import { withTranslation } from 'react-i18next';
 
-import RestaurantSearch from '../../components/RestaurantSearch';
+import { SceneMap, TabBar, TabView } from 'react-native-tab-view';
 import RestaurantList from '../../components/RestaurantList';
+import RestaurantSearch from '../../components/RestaurantSearch';
+import { selectServer } from '../../redux/App/actions';
+import { selectServersInSameCity } from '../../redux/App/selectors';
 import {
   loadRestaurantsSuccess,
   resetSearch,
@@ -14,12 +17,9 @@ import {
   searchRestaurantsForAddress,
   setRestaurant,
 } from '../../redux/Checkout/actions';
-import { selectServer } from '../../redux/App/actions';
 import { selectRestaurants } from '../../redux/Checkout/selectors';
-import { selectServersInSameCity } from '../../redux/App/selectors';
-import { SceneMap, TabBar, TabView } from 'react-native-tab-view';
-import MultipleServersInSameCityModal from './components/MultipleServersInSameCityModal';
 import Address from '../../utils/Address';
+import MultipleServersInSameCityModal from './components/MultipleServersInSameCityModal';
 
 class RestaurantsPage extends Component {
   constructor(props) {

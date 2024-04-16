@@ -1,6 +1,6 @@
+import { Button, Checkbox, Text, VStack } from 'native-base';
 import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
-import { Button, Checkbox, Text, VStack } from 'native-base';
 import Modal from 'react-native-modal';
 import { connect } from 'react-redux';
 import ModalContent from '../../../components/ModalContent';

@@ -1,6 +1,6 @@
+import { Icon, Text } from 'native-base';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Icon, Text } from 'native-base';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import TaskTitle from './TaskTitle';

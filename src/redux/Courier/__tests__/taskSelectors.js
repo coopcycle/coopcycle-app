@@ -1,5 +1,5 @@
-import moment from 'moment';
 import { cloneDeep, merge } from 'lodash';
+import moment from 'moment';
 import {
   selectAreDoneTasksHidden,
   selectAreFailedTasksHidden,

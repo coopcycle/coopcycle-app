@@ -1,19 +1,19 @@
-import React, { Component } from 'react';
+import { t } from 'i18next';
+import _ from 'lodash';
 import { FormControl, IconButton, Input, Text } from 'native-base';
+import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
+import { SectionList } from 'react-native';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import { connect } from 'react-redux';
 import i18n from '../../i18n';
 import {
   clearSearchResults,
   loadAndNavigateToRestaurante,
   search,
 } from '../../redux/Checkout/actions';
-import { connect } from 'react-redux';
-import { SectionList } from 'react-native';
-import _ from 'lodash';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import { t } from 'i18next';
-import SearchItemSmallCard from './components/SearchItemSmallCard';
 import { selectAvailableRestaurants } from '../../redux/Checkout/selectors';
+import SearchItemSmallCard from './components/SearchItemSmallCard';
 
 const TITLES = {
   shop: 'SEARCH_SHOPS',

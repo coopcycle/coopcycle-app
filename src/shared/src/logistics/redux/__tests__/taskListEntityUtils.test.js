@@ -1,9 +1,8 @@
 import {
-  findTaskListByUsername,
-  findTaskListByTask,
   addAssignedTask,
+  findTaskListByTask,
+  findTaskListByUsername,
   removeUnassignedTask,
-  addOrReplaceTaskList,
 } from '../taskListEntityUtils.js';
 
 describe('taskListEntityUtils', () => {

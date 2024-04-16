@@ -1,20 +1,20 @@
-import React from 'react';
-import { FlatList, TouchableOpacity, View } from 'react-native';
-import { withTranslation } from 'react-i18next';
-import { Box, Button, HStack, Icon, Text } from 'native-base';
-import { showLocation } from 'react-native-map-link';
-import { phonecall } from 'react-native-communications';
 import moment from 'moment';
+import { Box, Button, HStack, Icon, Text } from 'native-base';
+import React from 'react';
+import { withTranslation } from 'react-i18next';
+import { FlatList, TouchableOpacity, View } from 'react-native';
+import { phonecall } from 'react-native-communications';
+import { showLocation } from 'react-native-map-link';
+import Foundation from 'react-native-vector-icons/Foundation';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import Foundation from 'react-native-vector-icons/Foundation';
 
+import ItemSeparator from '../../../components/ItemSeparator';
 import {
+  isKnownPaymentMethod,
   loadDescriptionTranslationKey,
   loadIconKey,
-  isKnownPaymentMethod,
 } from '../../../components/PaymentMethodInfo';
-import ItemSeparator from '../../../components/ItemSeparator';
 
 const Detail = ({ item }) => {
   const { iconType, iconName, text, component, onPress } = item;

@@ -1,6 +1,6 @@
+import { Text } from 'native-base';
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import { Text } from 'native-base';
 
 const styles = StyleSheet.create({
   orderNumber: {

@@ -1,13 +1,13 @@
-import React, { Component } from 'react';
-import { Platform, StyleSheet } from 'react-native';
 import { Button, Text, View } from 'native-base';
+import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
+import { Platform, StyleSheet } from 'react-native';
 
-import LoginForm from './LoginForm';
-import RegisterForm from './RegisterForm';
-import { redColor } from '../styles/common';
 import { connect } from 'react-redux';
 import { clearAuthenticationErrors } from '../redux/App/actions';
+import { redColor } from '../styles/common';
+import LoginForm from './LoginForm';
+import RegisterForm from './RegisterForm';
 
 class AuthenticateForm extends Component {
   constructor(props) {

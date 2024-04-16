@@ -1,14 +1,14 @@
-import { Alert } from 'react-native';
-import { createAction } from 'redux-actions';
+import axios from 'axios';
 import _ from 'lodash';
 import moment from 'moment';
-import axios from 'axios';
+import { Alert } from 'react-native';
+import { createAction } from 'redux-actions';
 
 import NavigationHolder from '../../NavigationHolder';
+import analyticsEvent from '../../analytics/Event';
+import tracker from '../../analytics/Tracker';
 import i18n from '../../i18n';
 import { selectPictures, selectSignatures } from './taskSelectors';
-import tracker from '../../analytics/Tracker';
-import analyticsEvent from '../../analytics/Event';
 
 /*
  * Action Types

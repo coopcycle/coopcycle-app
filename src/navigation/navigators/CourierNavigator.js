@@ -1,14 +1,14 @@
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
+import { Icon } from 'native-base';
 import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import { Icon } from 'native-base';
-import { createStackNavigator } from '@react-navigation/stack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import i18n from '../../i18n';
-import TrackingIcon from '../../components/TrackingIcon';
 import screens, { headerLeft } from '..';
+import TrackingIcon from '../../components/TrackingIcon';
+import i18n from '../../i18n';
 import { stackNavigatorScreenOptions } from '../styles';
 import TaskNavigator from './TaskNavigator';
 

@@ -1,7 +1,7 @@
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
 import { Center, Icon, Text } from 'native-base';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { StyleSheet, View } from 'react-native';
 import Foundation from 'react-native-vector-icons/Foundation';
 
 import FooterButton from './FooterButton';

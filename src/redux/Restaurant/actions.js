@@ -1,15 +1,15 @@
-import { createAction } from 'redux-actions';
 import { CommonActions } from '@react-navigation/native';
-import BleManager from 'react-native-ble-manager';
-import _ from 'lodash';
 import { Buffer } from 'buffer';
+import _ from 'lodash';
+import BleManager from 'react-native-ble-manager';
+import { createAction } from 'redux-actions';
 
 import DropdownHolder from '../../DropdownHolder';
 import NavigationHolder from '../../NavigationHolder';
 
-import { pushNotification } from '../App/actions';
-import { encodeForPrinter } from '../../utils/order';
 import * as SunmiPrinterLibrary from '@mitsuharu/react-native-sunmi-printer-library';
+import { encodeForPrinter } from '../../utils/order';
+import { pushNotification } from '../App/actions';
 
 import i18n from '../../i18n';
 

@@ -6,20 +6,20 @@
  * See https://react.i18next.com/components/i18next-instance.html
  */
 import i18next from 'i18next';
+import moment from 'moment';
 import { initReactI18next } from 'react-i18next';
+import { LocaleConfig } from 'react-native-calendars';
 import * as RNLocalize from 'react-native-localize';
 import cs from './locales/cs.json';
 import de from './locales/de.json';
 import en from './locales/en.json';
 import es from './locales/es.json';
+import eu from './locales/eu.json';
 import fr from './locales/fr.json';
 import it from './locales/it.json';
 import pl from './locales/pl.json';
 import pt_BR from './locales/pt_BR.json';
 import pt_PT from './locales/pt_PT.json';
-import eu from './locales/eu.json';
-import moment from 'moment';
-import { LocaleConfig } from 'react-native-calendars';
 
 import numbro from 'numbro';
 import csCZ from 'numbro/languages/cs-CZ';
@@ -84,8 +84,8 @@ import 'moment/locale/eu';
 import 'moment/locale/fr';
 import 'moment/locale/it';
 import 'moment/locale/pl';
-import 'moment/locale/pt-br';
 import 'moment/locale/pt';
+import 'moment/locale/pt-br';
 
 // Load Numbro locales
 numbro.registerLanguage(csCZ);

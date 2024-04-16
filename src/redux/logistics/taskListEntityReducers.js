@@ -1,15 +1,15 @@
 import {
+  taskListAdapter,
+  taskListEntityUtils,
+  taskListUtils,
+} from '../../coopcycle-frontend-js/logistics/redux';
+import {
   ASSIGN_TASK_SUCCESS,
   CHANGE_DATE,
   CREATE_TASK_SUCCESS,
   LOAD_TASK_LISTS_SUCCESS,
   UNASSIGN_TASK_SUCCESS,
 } from '../Dispatch/actions';
-import {
-  taskListAdapter,
-  taskListEntityUtils,
-  taskListUtils,
-} from '../../coopcycle-frontend-js/logistics/redux';
 
 const initialState = taskListAdapter.getInitialState();
 const selectors = taskListAdapter.getSelectors(state => state);

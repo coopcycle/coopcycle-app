@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
 import { Box, Button, Text } from 'native-base';
-import { connect } from 'react-redux';
+import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
+import { connect } from 'react-redux';
 
 import { resetServer } from '../../../redux/App/actions';
 
