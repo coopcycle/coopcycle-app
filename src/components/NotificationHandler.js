@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { clearNotifications } from '../redux/App/actions';
 import NotificationModal from './NotificationModal';
-import usePushNotification from '../hooks/usePushNotification';
 import usePlayNotificationSound from '../hooks/usePlayNotificationSound';
 import { selectNotifications } from '../redux/App/selectors';
 import { EVENT as EVENT_ORDER } from '../domain/Order';
@@ -13,13 +12,10 @@ import { selectAutoAcceptOrdersEnabled } from '../redux/Restaurant/selectors';
 
 /**
  * This component is used
- * 1/ To configure push notifications (see usePushNotification)
- * 2/ To show notifications when the app is in foreground (see NotificationModal)
- * 3/ To play a sound when a notification is received (see usePlayNotificationSound)
+ * 1/ To show notifications when the app is in foreground (see NotificationModal)
+ * 2/ To play a sound when a notification is received (see usePlayNotificationSound)
  */
 export default function NotificationHandler() {
-  usePushNotification();
-
   const allNotifications = useSelector(selectNotifications);
 
   const tasksChangedAlertSound = useSelector(selectTasksChangedAlertSound);
