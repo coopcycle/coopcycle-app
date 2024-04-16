@@ -1,21 +1,21 @@
-import { useTranslation } from 'react-i18next'
-import { Box, Heading, Text } from 'native-base'
-import React from 'react'
-import { isMandatoryOption } from '../../../utils/product'
+import { Heading, Text, View } from 'native-base';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { isMandatoryOption } from '../../../utils/product';
 
 export const OptionsSectionHeader = ({ options }) => {
   const someOptionsAreMandatory = options.some(option =>
     isMandatoryOption(option),
-  )
+  );
 
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   return (
-    <Box p="3">
+    <View>
       <Heading size="md">{t('CHECKOUT_PRODUCT_OPTIONS_TITLE')}</Heading>
       {someOptionsAreMandatory && (
         <Text sub>{t('SOME_OPTION_IS_REQUIRED_SELECT_ONE_VALUE')}</Text>
       )}
-    </Box>
-  )
-}
+    </View>
+  );
+};

@@ -1,6 +1,6 @@
-import { PermissionsAndroid, Platform } from 'react-native'
-import messaging from '@react-native-firebase/messaging'
-import _ from 'lodash'
+import messaging from '@react-native-firebase/messaging';
+import _ from 'lodash';
+import { PermissionsAndroid, Platform } from 'react-native';
 
 /**
  * App behavior when receiving messages that include both notification and data payloads
@@ -19,49 +19,42 @@ import _ from 'lodash'
  */
 
 export const parseNotification = (remoteMessage, isForeground) => {
-
-  let data = remoteMessage.data
+  let data = remoteMessage.data;
 
   if (data.event && _.isString(data.event)) {
-    data.event = JSON.parse(data.event)
+    data.event = JSON.parse(data.event);
   }
 
   return {
     foreground: isForeground,
     data,
-  }
-}
+  };
+};
 
-let notificationOpenedAppListener = () => {}
-let notificationListener = () => {}
-let dataListener = () => {}
-let tokenRefreshListener = () => {}
+let notificationOpenedAppListener = () => {};
+let notificationListener = () => {};
+let dataListener = () => {};
+let tokenRefreshListener = () => {};
 
 class PushNotification {
-
   static configure(options) {
-
     // Notification was received in the background (and opened by a user)
-    notificationOpenedAppListener = messaging()
-      .onNotificationOpenedApp(remoteMessage => {
-        options.onNotification(
-          parseNotification(remoteMessage, false)
-        )
-      })
+    notificationOpenedAppListener = messaging().onNotificationOpenedApp(
+      remoteMessage => {
+        options.onNotification(parseNotification(remoteMessage, false));
+      },
+    );
 
     // Notification was received in the foreground
     // in the current implementation, server sends both
     // "notification + data" and "data-only" messages (with the same data),
     // handle only "notification + data" messages when the app is in the foreground
-    notificationListener = messaging()
-      .onMessage(remoteMessage => {
-        // @see https://rnfirebase.io/messaging/usage#foreground-state-messages
-        if (remoteMessage.data) {
-          options.onBackgroundMessage(
-            parseNotification(remoteMessage, true)
-          )
-        }
-      })
+    notificationListener = messaging().onMessage(remoteMessage => {
+      // @see https://rnfirebase.io/messaging/usage#foreground-state-messages
+      if (remoteMessage.data) {
+        options.onBackgroundMessage(parseNotification(remoteMessage, true));
+      }
+    });
 
     // @see https://rnfirebase.io/messaging/usage
     // On Android API level 32 and below, you do not need to request user permission.
@@ -80,32 +73,34 @@ class PushNotification {
     } else {
       messaging()
         .getToken()
-        .then(fcmToken => options.onRegister(fcmToken))
+        .then(fcmToken => options.onRegister(fcmToken));
     }
 
-    tokenRefreshListener = messaging()
-      .onTokenRefresh(fcmToken => options.onRegister(fcmToken))
+    tokenRefreshListener = messaging().onTokenRefresh(fcmToken =>
+      options.onRegister(fcmToken),
+    );
   }
 
   static getInitialNotification() {
     return new Promise((resolve, reject) => {
-      messaging().getInitialNotification().then(remoteMessage => {
-        if (remoteMessage) {
-          resolve(parseNotification(remoteMessage, false))
-        } else {
-          resolve(null)
-        }
-      })
-    })
+      messaging()
+        .getInitialNotification()
+        .then(remoteMessage => {
+          if (remoteMessage) {
+            resolve(parseNotification(remoteMessage, false));
+          } else {
+            resolve(null);
+          }
+        });
+    });
   }
 
   static removeListeners() {
-    notificationOpenedAppListener()
-    notificationListener()
-    dataListener()
-    tokenRefreshListener()
+    notificationOpenedAppListener();
+    notificationListener();
+    dataListener();
+    tokenRefreshListener();
   }
-
 }
 
-export default PushNotification
+export default PushNotification;

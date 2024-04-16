@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import { Dimensions } from 'react-native';
 import { HStack, Icon, Pressable, Text } from 'native-base';
+import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
+import { Dimensions } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 class DatePickerHeader extends Component {

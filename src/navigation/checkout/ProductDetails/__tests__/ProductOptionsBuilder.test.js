@@ -1,5 +1,5 @@
-import useProductOptionsBuilder from '../ProductOptionsBuilder'
-import { act, renderHook } from '@testing-library/react-native'
+import { act, renderHook } from '@testing-library/react-native';
+import useProductOptionsBuilder from '../ProductOptionsBuilder';
 
 const productOptions = [
   {
@@ -109,7 +109,7 @@ const productOptions = [
       },
     ],
   },
-]
+];
 
 const notMandatoryProductOptions = [
   {
@@ -146,53 +146,55 @@ const notMandatoryProductOptions = [
       },
     ],
   },
-]
+];
 
 const addMandatoryNonAdditional = hook => {
   act(() => {
-    hook.current.add({ identifier: 'b3b58c52-5159-3173-96c2-24b5608acf37' })
-  })
-}
+    hook.current.add({ identifier: 'b3b58c52-5159-3173-96c2-24b5608acf37' });
+  });
+};
 
 const replaceMandatoryNonAdditional = hook => {
   act(() => {
-    hook.current.add({ identifier: 'e2855e88-64c4-343f-b70d-5579402cf14e' })
-  })
-}
+    hook.current.add({ identifier: 'e2855e88-64c4-343f-b70d-5579402cf14e' });
+  });
+};
 
 const incrementMandatoryAdditional = hook => {
   act(() => {
     hook.current.increment({
       identifier: '4363401d-e69e-4c75-9fed-f75e44540b5d',
-    })
-  })
-}
+    });
+  });
+};
 
 const decrementMandatoryAdditional = hook => {
   act(() => {
     hook.current.decrement({
       identifier: '4363401d-e69e-4c75-9fed-f75e44540b5d',
-    })
-  })
-}
+    });
+  });
+};
 
 const incrementNonMandatoryAdditional = hook => {
   act(() => {
     hook.current.increment({
       identifier: '4363401d-e69e-4c75-9fed-f75e44540b5d',
-    })
-  })
-}
+    });
+  });
+};
 
 describe('ProductOptionsBuilder', () => {
   it('adds options', () => {
     const { result } = renderHook(() =>
       useProductOptionsBuilder(productOptions),
-    )
+    );
 
     act(() => {
-      result.current.add({ identifier: '4363401d-e69e-4c75-9fed-f75e44540b5d' })
-    })
+      result.current.add({
+        identifier: '4363401d-e69e-4c75-9fed-f75e44540b5d',
+      });
+    });
 
     expect(result.current.selected).toEqual([
       {
@@ -200,13 +202,15 @@ describe('ProductOptionsBuilder', () => {
         quantity: 1,
         price: 0,
       },
-    ])
+    ]);
 
     act(() => {
-      result.current.add({ identifier: '64b97ccc-0ff5-4577-a881-8a0a834fdf80' })
-    })
+      result.current.add({
+        identifier: '64b97ccc-0ff5-4577-a881-8a0a834fdf80',
+      });
+    });
 
-    expect(result.current.isValid).toBe(false)
+    expect(result.current.isValid).toBe(false);
     expect(result.current.selected).toEqual([
       {
         code: '4363401d-e69e-4c75-9fed-f75e44540b5d',
@@ -218,17 +222,19 @@ describe('ProductOptionsBuilder', () => {
         quantity: 1,
         price: 0,
       },
-    ])
-  })
+    ]);
+  });
 
   it('replaces option', () => {
     const { result } = renderHook(() =>
       useProductOptionsBuilder(productOptions),
-    )
+    );
 
     act(() => {
-      result.current.add({ identifier: 'b3b58c52-5159-3173-96c2-24b5608acf37' })
-    })
+      result.current.add({
+        identifier: 'b3b58c52-5159-3173-96c2-24b5608acf37',
+      });
+    });
 
     expect(result.current.selected).toEqual([
       {
@@ -236,11 +242,13 @@ describe('ProductOptionsBuilder', () => {
         quantity: 1,
         price: 0,
       },
-    ])
+    ]);
 
     act(() => {
-      result.current.add({ identifier: 'e2855e88-64c4-343f-b70d-5579402cf14e' })
-    })
+      result.current.add({
+        identifier: 'e2855e88-64c4-343f-b70d-5579402cf14e',
+      });
+    });
 
     expect(result.current.selected).toEqual([
       {
@@ -248,17 +256,19 @@ describe('ProductOptionsBuilder', () => {
         quantity: 1,
         price: 0,
       },
-    ])
-  })
+    ]);
+  });
 
   it('increments options', () => {
     const { result } = renderHook(() =>
       useProductOptionsBuilder(productOptions),
-    )
+    );
 
     act(() => {
-      result.current.add({ identifier: '4363401d-e69e-4c75-9fed-f75e44540b5d' })
-    })
+      result.current.add({
+        identifier: '4363401d-e69e-4c75-9fed-f75e44540b5d',
+      });
+    });
 
     expect(result.current.selected).toEqual([
       {
@@ -266,13 +276,13 @@ describe('ProductOptionsBuilder', () => {
         quantity: 1,
         price: 0,
       },
-    ])
+    ]);
 
     act(() => {
       result.current.increment({
         identifier: '4363401d-e69e-4c75-9fed-f75e44540b5d',
-      })
-    })
+      });
+    });
 
     expect(result.current.selected).toEqual([
       {
@@ -280,17 +290,19 @@ describe('ProductOptionsBuilder', () => {
         quantity: 2,
         price: 0,
       },
-    ])
-  })
+    ]);
+  });
 
   it('increments quantity when adding twice', () => {
     const { result } = renderHook(() =>
       useProductOptionsBuilder(productOptions),
-    )
+    );
 
     act(() => {
-      result.current.add({ identifier: '4363401d-e69e-4c75-9fed-f75e44540b5d' })
-    })
+      result.current.add({
+        identifier: '4363401d-e69e-4c75-9fed-f75e44540b5d',
+      });
+    });
 
     expect(result.current.selected).toEqual([
       {
@@ -298,11 +310,13 @@ describe('ProductOptionsBuilder', () => {
         quantity: 1,
         price: 0,
       },
-    ])
+    ]);
 
     act(() => {
-      result.current.add({ identifier: '4363401d-e69e-4c75-9fed-f75e44540b5d' })
-    })
+      result.current.add({
+        identifier: '4363401d-e69e-4c75-9fed-f75e44540b5d',
+      });
+    });
 
     expect(result.current.selected).toEqual([
       {
@@ -310,13 +324,13 @@ describe('ProductOptionsBuilder', () => {
         quantity: 2,
         price: 0,
       },
-    ])
-  })
+    ]);
+  });
 
   it('adding twice or increment should not affect price', () => {
     const { result } = renderHook(() =>
       useProductOptionsBuilder(productOptions),
-    )
+    );
 
     act(() => {
       result.current.add({
@@ -324,8 +338,8 @@ describe('ProductOptionsBuilder', () => {
         name: 'Bar',
         identifier: '4363401d-e69e-4c75-9fed-f75e44540b5d',
         offers: { '@type': 'Offer', price: 30 },
-      })
-    })
+      });
+    });
 
     expect(result.current.selected).toEqual([
       {
@@ -333,7 +347,7 @@ describe('ProductOptionsBuilder', () => {
         quantity: 1,
         price: 30,
       },
-    ])
+    ]);
 
     act(() => {
       result.current.add({
@@ -341,8 +355,8 @@ describe('ProductOptionsBuilder', () => {
         name: 'Bar',
         identifier: '4363401d-e69e-4c75-9fed-f75e44540b5d',
         offers: { '@type': 'Offer', price: 30 },
-      })
-    })
+      });
+    });
 
     expect(result.current.selected).toEqual([
       {
@@ -350,7 +364,7 @@ describe('ProductOptionsBuilder', () => {
         quantity: 2,
         price: 30,
       },
-    ])
+    ]);
 
     act(() => {
       result.current.increment({
@@ -358,8 +372,8 @@ describe('ProductOptionsBuilder', () => {
         name: 'Bar',
         identifier: '4363401d-e69e-4c75-9fed-f75e44540b5d',
         offers: { '@type': 'Offer', price: 30 },
-      })
-    })
+      });
+    });
 
     expect(result.current.selected).toEqual([
       {
@@ -367,21 +381,25 @@ describe('ProductOptionsBuilder', () => {
         quantity: 3,
         price: 30,
       },
-    ])
-  })
+    ]);
+  });
 
   it('stops incrementing quantity when threshold is reached', () => {
     const { result } = renderHook(() =>
       useProductOptionsBuilder(productOptions),
-    )
+    );
 
     act(() => {
-      result.current.add({ identifier: '4363401d-e69e-4c75-9fed-f75e44540b5d' })
-    })
+      result.current.add({
+        identifier: '4363401d-e69e-4c75-9fed-f75e44540b5d',
+      });
+    });
 
     act(() => {
-      result.current.add({ identifier: '4363401d-e69e-4c75-9fed-f75e44540b5d' })
-    })
+      result.current.add({
+        identifier: '4363401d-e69e-4c75-9fed-f75e44540b5d',
+      });
+    });
 
     expect(result.current.selected).toEqual([
       {
@@ -389,32 +407,19 @@ describe('ProductOptionsBuilder', () => {
         quantity: 2,
         price: 0,
       },
-    ])
+    ]);
 
     act(() => {
-      result.current.add({ identifier: '64b97ccc-0ff5-4577-a881-8a0a834fdf80' })
-    })
+      result.current.add({
+        identifier: '64b97ccc-0ff5-4577-a881-8a0a834fdf80',
+      });
+    });
 
     act(() => {
-      result.current.add({ identifier: '64b97ccc-0ff5-4577-a881-8a0a834fdf80' })
-    })
-
-    expect(result.current.selected).toEqual([
-      {
-        code: '4363401d-e69e-4c75-9fed-f75e44540b5d',
-        quantity: 2,
-        price: 0,
-      },
-      {
-        code: '64b97ccc-0ff5-4577-a881-8a0a834fdf80',
-        quantity: 2,
-        price: 0,
-      },
-    ])
-
-    act(() => {
-      result.current.add({ identifier: '2b1f2e13-c957-4786-8c48-d0a2b94806fd' })
-    })
+      result.current.add({
+        identifier: '64b97ccc-0ff5-4577-a881-8a0a834fdf80',
+      });
+    });
 
     expect(result.current.selected).toEqual([
       {
@@ -427,20 +432,43 @@ describe('ProductOptionsBuilder', () => {
         quantity: 2,
         price: 0,
       },
-    ])
-  })
+    ]);
+
+    act(() => {
+      result.current.add({
+        identifier: '2b1f2e13-c957-4786-8c48-d0a2b94806fd',
+      });
+    });
+
+    expect(result.current.selected).toEqual([
+      {
+        code: '4363401d-e69e-4c75-9fed-f75e44540b5d',
+        quantity: 2,
+        price: 0,
+      },
+      {
+        code: '64b97ccc-0ff5-4577-a881-8a0a834fdf80',
+        quantity: 2,
+        price: 0,
+      },
+    ]);
+  });
 
   it('decrements options', () => {
     const { result } = renderHook(() =>
       useProductOptionsBuilder(productOptions),
-    )
+    );
 
     act(() => {
-      result.current.add({ identifier: '4363401d-e69e-4c75-9fed-f75e44540b5d' })
-    })
+      result.current.add({
+        identifier: '4363401d-e69e-4c75-9fed-f75e44540b5d',
+      });
+    });
     act(() => {
-      result.current.add({ identifier: '4363401d-e69e-4c75-9fed-f75e44540b5d' })
-    })
+      result.current.add({
+        identifier: '4363401d-e69e-4c75-9fed-f75e44540b5d',
+      });
+    });
 
     expect(result.current.selected).toEqual([
       {
@@ -448,13 +476,13 @@ describe('ProductOptionsBuilder', () => {
         quantity: 2,
         price: 0,
       },
-    ])
+    ]);
 
     act(() => {
       result.current.decrement({
         identifier: '4363401d-e69e-4c75-9fed-f75e44540b5d',
-      })
-    })
+      });
+    });
 
     expect(result.current.selected).toEqual([
       {
@@ -462,110 +490,110 @@ describe('ProductOptionsBuilder', () => {
         quantity: 1,
         price: 0,
       },
-    ])
+    ]);
 
     act(() => {
       result.current.decrement({
         identifier: '4363401d-e69e-4c75-9fed-f75e44540b5d',
-      })
-    })
+      });
+    });
 
-    expect(result.current.selected).toEqual([])
-  })
+    expect(result.current.selected).toEqual([]);
+  });
 
   describe("options: 1 mandatory 'not additional'; 1 mandatory 'additional'; 1 not mandatory 'additional'", () => {
-    let hook
+    let hook;
 
     beforeEach(() => {
       const { result } = renderHook(() =>
         useProductOptionsBuilder(productOptions),
-      )
-      hook = result
-    })
+      );
+      hook = result;
+    });
 
     describe('nothing selected', () => {
       it('is not valid (missing mandatory options)', () => {
-        expect(hook.current.isValid).toBe(false)
-      })
-    })
+        expect(hook.current.isValid).toBe(false);
+      });
+    });
 
     describe("adds: 1 mandatory 'not additional'", () => {
       beforeEach(() => {
-        addMandatoryNonAdditional(hook)
-      })
+        addMandatoryNonAdditional(hook);
+      });
 
       it("is not valid (missing 1 mandatory 'additional')", () => {
-        expect(hook.current.isValid).toBe(false)
-      })
+        expect(hook.current.isValid).toBe(false);
+      });
 
       describe("adds: 1 mandatory 'additional'", () => {
         beforeEach(() => {
-          incrementMandatoryAdditional(hook)
-        })
+          incrementMandatoryAdditional(hook);
+        });
 
         it('is valid', () => {
-          expect(hook.current.isValid).toBe(true)
-        })
+          expect(hook.current.isValid).toBe(true);
+        });
 
         describe("removes: 1 mandatory 'additional'", () => {
           beforeEach(() => {
-            decrementMandatoryAdditional(hook)
-          })
+            decrementMandatoryAdditional(hook);
+          });
 
           it("is not valid (missing 1 mandatory 'additional')", () => {
-            expect(hook.current.isValid).toBe(false)
-          })
-        })
+            expect(hook.current.isValid).toBe(false);
+          });
+        });
 
         describe("replaces: 1 mandatory 'not additional'", () => {
           beforeEach(() => {
-            replaceMandatoryNonAdditional(hook)
-          })
+            replaceMandatoryNonAdditional(hook);
+          });
           it('is valid', () => {
-            expect(hook.current.isValid).toBe(true)
-          })
-        })
-      })
-    })
+            expect(hook.current.isValid).toBe(true);
+          });
+        });
+      });
+    });
 
     describe("adds: 1 mandatory 'additional'", () => {
       beforeEach(() => {
-        incrementMandatoryAdditional(hook)
-      })
+        incrementMandatoryAdditional(hook);
+      });
 
       it("is not valid (missing 1 mandatory 'not additional')", () => {
-        expect(hook.current.isValid).toBe(false)
-      })
+        expect(hook.current.isValid).toBe(false);
+      });
 
       describe("adds: 1 mandatory 'additional'; 1 mandatory 'not additional'", () => {
         beforeEach(() => {
-          addMandatoryNonAdditional(hook)
-        })
+          addMandatoryNonAdditional(hook);
+        });
 
         it('is valid', () => {
-          expect(hook.current.isValid).toBe(true)
-        })
-      })
-    })
+          expect(hook.current.isValid).toBe(true);
+        });
+      });
+    });
 
     describe("adds: 1 not mandatory 'additional'", () => {
       beforeEach(() => {
-        incrementNonMandatoryAdditional(hook)
-      })
+        incrementNonMandatoryAdditional(hook);
+      });
 
       it('is not valid (missing mandatory options)', () => {
-        expect(hook.current.isValid).toBe(false)
-      })
-    })
-  })
+        expect(hook.current.isValid).toBe(false);
+      });
+    });
+  });
 
   describe('no mandatory options', () => {
     it('isValid', () => {
       const { result } = renderHook(() =>
         useProductOptionsBuilder(notMandatoryProductOptions),
-      )
+      );
 
-      expect(result.current.isValid).toBe(true)
-    })
-  })
-})
+      expect(result.current.isValid).toBe(true);
+    });
+  });
+});

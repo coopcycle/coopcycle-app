@@ -1,28 +1,25 @@
-import PushNotificationIOS from '@react-native-community/push-notification-ios'
+import PushNotificationIOS from '@react-native-community/push-notification-ios';
 
-let registerListener = deviceToken => {}
-let notificationListener = notification => {}
+let registerListener = deviceToken => {};
+let notificationListener = notification => {};
 
 const parseNotification = (notification, isForeground = null) => {
   return {
     foreground: isForeground,
     data: notification.getData(),
-  }
-}
+  };
+};
 
-let isConfigured = false
+let isConfigured = false;
 
 class PushNotification {
-
   static configure(options) {
-
     if (!isConfigured) {
-
       // WARNING
       // We need to call addEventListener BEFORE calling requestPermissions, or the whole thing does not work
       // @see https://github.com/facebook/react-native/issues/9105#issuecomment-246180895
-      registerListener = deviceToken => options.onRegister(deviceToken)
-      PushNotificationIOS.addEventListener('register', registerListener)
+      registerListener = deviceToken => options.onRegister(deviceToken);
+      PushNotificationIOS.addEventListener('register', registerListener);
 
       // @see https://developer.apple.com/documentation/usernotifications/setting_up_a_remote_notification_server/pushing_background_updates_to_your_app
       //
@@ -39,39 +36,40 @@ class PushNotification {
 
       // This listener is called when a notification is *TAPPED*,
       // wether the app is in the foreground or the background
-      PushNotificationIOS.addEventListener('localNotification', notification => {
-        // We *MUST* call this or the rest doesn't work
-        notification.finish(PushNotificationIOS.FetchResult.NoData)
-        options.onNotification(parseNotification(notification, false))
-      })
+      PushNotificationIOS.addEventListener(
+        'localNotification',
+        notification => {
+          // We *MUST* call this or the rest doesn't work
+          notification.finish(PushNotificationIOS.FetchResult.NoData);
+          options.onNotification(parseNotification(notification, false));
+        },
+      );
 
-      PushNotificationIOS
-        .requestPermissions()
-        .catch(e => console.log(e))
+      PushNotificationIOS.requestPermissions().catch(e => console.log(e));
 
-      isConfigured = true
+      isConfigured = true;
     }
-
   }
 
   static getInitialNotification() {
     return new Promise((resolve, reject) => {
-      PushNotificationIOS.getInitialNotification()
-        .then(notification => {
-          if (notification) {
-            resolve(parseNotification(notification, false))
-          } else {
-            resolve(null)
-          }
-        })
-    })
+      PushNotificationIOS.getInitialNotification().then(notification => {
+        if (notification) {
+          resolve(parseNotification(notification, false));
+        } else {
+          resolve(null);
+        }
+      });
+    });
   }
 
   static removeListeners() {
-    PushNotificationIOS.removeEventListener('register', registerListener)
-    PushNotificationIOS.removeEventListener('notification', notificationListener)
+    PushNotificationIOS.removeEventListener('register', registerListener);
+    PushNotificationIOS.removeEventListener(
+      'notification',
+      notificationListener,
+    );
   }
-
 }
 
-export default PushNotification
+export default PushNotification;

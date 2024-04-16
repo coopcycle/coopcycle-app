@@ -20,12 +20,12 @@ import {
   UNASSIGN_TASK_FAILURE,
   UNASSIGN_TASK_REQUEST,
   UNASSIGN_TASK_SUCCESS,
-} from '../Dispatch/actions'
+} from '../Dispatch/actions';
 
 const initialState = {
   taskListsLoading: false,
   isFetching: false,
-}
+};
 
 export default (state = initialState, action) => {
   switch (action.type) {
@@ -39,7 +39,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         isFetching: true,
-      }
+      };
 
     case LOAD_USERS_FAILURE:
     case LOAD_UNASSIGNED_TASKS_FAILURE:
@@ -51,7 +51,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         isFetching: false,
-      }
+      };
 
     case LOAD_USERS_SUCCESS:
     case LOAD_UNASSIGNED_TASKS_SUCCESS:
@@ -63,8 +63,8 @@ export default (state = initialState, action) => {
       return {
         ...state,
         isFetching: false,
-      }
+      };
     default:
-      return state
+      return state;
   }
-}
+};

@@ -1,9 +1,9 @@
+import { Icon, Text, useColorModeValue } from 'native-base';
 import React from 'react';
-import {StyleSheet, TouchableOpacity} from 'react-native';
-import {Icon, Text, useColorModeValue} from 'native-base';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const asProp = name => {
   switch (name) {
@@ -23,7 +23,7 @@ const HeaderButton = props => {
     containerStyles.push(styles.withText);
   }
 
-  let iconStyle = [{color: color}];
+  let iconStyle = [{ color: color }];
 
   if (props.iconStyle) {
     iconStyle.push(props.iconStyle);
@@ -43,7 +43,9 @@ const HeaderButton = props => {
       style={containerStyles}
       {...otherProps}>
       {props.textLeft && (
-        <Text style={[styles.textLeft, {color: color}]}>{props.textLeft}</Text>
+        <Text style={[styles.textLeft, { color: color }]}>
+          {props.textLeft}
+        </Text>
       )}
       <Icon
         as={asProp(props.iconType)}

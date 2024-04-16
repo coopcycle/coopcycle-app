@@ -1,16 +1,16 @@
-import React, { Component } from 'react';
-import { FlatList } from 'react-native';
-import { Box, HStack, Heading, Icon, Pressable, Text } from 'native-base';
 import _ from 'lodash';
 import moment from 'moment';
+import { Box, HStack, Heading, Icon, Pressable, Text } from 'native-base';
+import React, { Component } from 'react';
+import { FlatList } from 'react-native';
 
 import { withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 
-import { deleteOpeningHoursSpecification } from '../../redux/Restaurant/actions';
-import { selectSpecialOpeningHoursSpecification } from '../../redux/Restaurant/selectors';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import ItemSeparator from '../../components/ItemSeparator';
+import { deleteOpeningHoursSpecification } from '../../redux/Restaurant/actions';
+import { selectSpecialOpeningHoursSpecification } from '../../redux/Restaurant/selectors';
 
 class OpeningHoursScreen extends Component {
   constructor(props) {

@@ -2,7 +2,7 @@ import { applyMiddleware, createStore } from 'redux'
 import thunk from 'redux-thunk'
 import ReduxAsyncQueue from 'redux-async-queue'
 
-import { persistStore } from 'redux-persist'
+import { persistStore } from 'redux-persist';
 
 import Config from 'react-native-config';
 
@@ -26,7 +26,7 @@ const middlewares = [
   CentrifugoMiddleware,
   SentryMiddleware,
   filterExpiredCarts,
-]
+];
 
 if (!Config.DEFAULT_SERVER) {
   middlewares.push(...[
@@ -40,15 +40,12 @@ const middlewaresProxy = (middlewaresList) => {
   if (__DEV__) {
     return require('./middlewares/devSetup').default(middlewaresList)
   } else {
-    return applyMiddleware(...middlewaresList)
+    return applyMiddleware(...middlewaresList);
   }
-}
+};
 
-const store = createStore(
-  reducers,
-  middlewaresProxy(middlewares)
-)
+const store = createStore(reducers, middlewaresProxy(middlewares));
 
-export default store
+export default store;
 
-export const persistor = persistStore(store)
+export const persistor = persistStore(store);

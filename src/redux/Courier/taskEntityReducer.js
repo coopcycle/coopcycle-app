@@ -1,36 +1,47 @@
-import moment from 'moment'
-import {
-  ADD_PICTURE, ADD_SIGNATURE, CLEAR_FILES,
-  DELETE_PICTURE, DELETE_SIGNATURE, LOAD_TASKS_FAILURE,
-  LOAD_TASKS_REQUEST, LOAD_TASKS_SUCCESS, MARK_TASKS_DONE_FAILURE,
-  MARK_TASKS_DONE_REQUEST, MARK_TASKS_DONE_SUCCESS, MARK_TASK_DONE_FAILURE,
-  MARK_TASK_DONE_REQUEST, MARK_TASK_DONE_SUCCESS,
-  MARK_TASK_FAILED_FAILURE, MARK_TASK_FAILED_REQUEST, MARK_TASK_FAILED_SUCCESS,
-  START_TASK_FAILURE, START_TASK_REQUEST, START_TASK_SUCCESS,
-} from './taskActions'
+import _ from 'lodash';
+import moment from 'moment';
+import { LOGOUT_SUCCESS, SET_USER } from '../App/actions';
 import {
   ASSIGN_TASK_SUCCESS,
   BULK_ASSIGNMENT_TASKS_SUCCESS,
   UNASSIGN_TASK_SUCCESS,
-} from '../Dispatch/actions'
+} from '../Dispatch/actions';
+import { CENTRIFUGO_MESSAGE } from '../middlewares/CentrifugoMiddleware';
 import {
-  LOGOUT_SUCCESS,
-  SET_USER,
-} from '../App/actions'
-import { CENTRIFUGO_MESSAGE } from '../middlewares/CentrifugoMiddleware'
-import _ from 'lodash'
+  ADD_PICTURE,
+  ADD_SIGNATURE,
+  CLEAR_FILES,
+  DELETE_PICTURE,
+  DELETE_SIGNATURE,
+  LOAD_TASKS_FAILURE,
+  LOAD_TASKS_REQUEST,
+  LOAD_TASKS_SUCCESS,
+  MARK_TASKS_DONE_FAILURE,
+  MARK_TASKS_DONE_REQUEST,
+  MARK_TASKS_DONE_SUCCESS,
+  MARK_TASK_DONE_FAILURE,
+  MARK_TASK_DONE_REQUEST,
+  MARK_TASK_DONE_SUCCESS,
+  MARK_TASK_FAILED_FAILURE,
+  MARK_TASK_FAILED_REQUEST,
+  MARK_TASK_FAILED_SUCCESS,
+  START_TASK_FAILURE,
+  START_TASK_REQUEST,
+  START_TASK_SUCCESS,
+} from './taskActions';
 
 /*
  * Intital state shape for the task entity reducer
  */
 const tasksEntityInitialState = {
-  loadTasksFetchError: false,          // Error object describing the error
-  completeTaskFetchError: false,       // Error object describing the error
-  isFetching: false,                   // Flag indicating active HTTP request
+  loadTasksFetchError: false, // Error object describing the error
+  completeTaskFetchError: false, // Error object describing the error
+  isFetching: false, // Flag indicating active HTTP request
   isRefreshing: false,
   date: moment().format('YYYY-MM-DD'), // YYYY-MM-DD
   updatedAt: moment().toString(),
-  items: {                             // Array of tasks, indexed by date
+  items: {
+    // Array of tasks, indexed by date
     // 'YYYY-MM-DD': [
     //   {
     //     '@id': '',
@@ -55,33 +66,35 @@ const tasksEntityInitialState = {
   username: null,
   pictures: [], // Array of base64 encoded pictures
   signatures: [], // Array of base64 encoded signatures
-}
+};
 
 function replaceItem(state, payload) {
-
-  const index = _.findIndex(state, item => item['@id'] === payload['@id'])
+  const index = _.findIndex(state, item => item['@id'] === payload['@id']);
 
   if (index !== -1) {
-    const newState = state.slice(0)
-    newState.splice(index, 1, payload)
+    const newState = state.slice(0);
+    newState.splice(index, 1, payload);
 
-    return newState
+    return newState;
   }
 
-  return state
+  return state;
 }
 
 function replaceItems(prevItems, items) {
-  return prevItems.map((prevItem) => {
-    const toReplace = items.find( i => i['@id'] === prevItem['@id'])
+  return prevItems.map(prevItem => {
+    const toReplace = items.find(i => i['@id'] === prevItem['@id']);
     if (toReplace) {
-      return toReplace
+      return toReplace;
     }
-    return prevItem
-  })
+    return prevItem;
+  });
 }
 
-export const tasksEntityReducer = (state = tasksEntityInitialState, action = {}) => {
+export const tasksEntityReducer = (
+  state = tasksEntityInitialState,
+  action = {},
+) => {
   switch (action.type) {
     case START_TASK_REQUEST:
     case MARK_TASK_DONE_REQUEST:
@@ -92,7 +105,7 @@ export const tasksEntityReducer = (state = tasksEntityInitialState, action = {})
         loadTasksFetchError: false,
         completeTaskFetchError: false,
         isFetching: true,
-      }
+      };
 
     case LOAD_TASKS_REQUEST:
       return {
@@ -100,11 +113,12 @@ export const tasksEntityReducer = (state = tasksEntityInitialState, action = {})
         loadTasksFetchError: false,
         completeTaskFetchError: false,
         // This is the date that is selected in the UI
-        date: action.payload.date ?
-          action.payload.date.format('YYYY-MM-DD') : moment().format('YYYY-MM-DD'),
+        date: action.payload.date
+          ? action.payload.date.format('YYYY-MM-DD')
+          : moment().format('YYYY-MM-DD'),
         isFetching: !action.payload.refresh,
         isRefreshing: action.payload.refresh,
-      }
+      };
 
     case LOAD_TASKS_FAILURE:
       return {
@@ -112,7 +126,7 @@ export const tasksEntityReducer = (state = tasksEntityInitialState, action = {})
         loadTasksFetchError: action.payload || action.error,
         isFetching: false,
         isRefreshing: false,
-      }
+      };
 
     case START_TASK_FAILURE:
     case MARK_TASK_DONE_FAILURE:
@@ -121,13 +135,13 @@ export const tasksEntityReducer = (state = tasksEntityInitialState, action = {})
         ...state,
         completeTaskFetchError: action.payload || action.error,
         isFetching: false,
-      }
+      };
 
     case MARK_TASKS_DONE_FAILURE:
       return {
         ...state,
         isFetching: false,
-      }
+      };
 
     case LOAD_TASKS_SUCCESS:
       return {
@@ -138,9 +152,9 @@ export const tasksEntityReducer = (state = tasksEntityInitialState, action = {})
         updatedAt: action.payload.updatedAt.toString(),
         items: {
           ...state.items,
-          [ action.payload.date ]: action.payload.items,
+          [action.payload.date]: action.payload.items,
         },
-      }
+      };
 
     case START_TASK_SUCCESS:
     case MARK_TASK_DONE_SUCCESS:
@@ -148,132 +162,133 @@ export const tasksEntityReducer = (state = tasksEntityInitialState, action = {})
       return {
         ...state,
         isFetching: false,
-        items: _.mapValues(state.items, tasks => replaceItem(tasks, action.payload)),
-      }
+        items: _.mapValues(state.items, tasks =>
+          replaceItem(tasks, action.payload),
+        ),
+      };
 
     case MARK_TASKS_DONE_SUCCESS:
       return {
         ...state,
         isFetching: false,
-        items: _.mapValues(state.items, tasks => replaceItems(tasks, action.payload)),
-      }
+        items: _.mapValues(state.items, tasks =>
+          replaceItems(tasks, action.payload),
+        ),
+      };
 
     case ASSIGN_TASK_SUCCESS:
       if (action.payload.assignedTo === state.username) {
-
         return {
           ...state,
-          items: _.mapValues(state.items, tasks => replaceItem(tasks, action.payload)),
-        }
+          items: _.mapValues(state.items, tasks =>
+            replaceItem(tasks, action.payload),
+          ),
+        };
       }
-      return state
+      return state;
 
     case BULK_ASSIGNMENT_TASKS_SUCCESS:
-        if (action.payload[0].assignedTo === state.username) {
-
-          return {
-            ...state,
-            items: _.mapValues(state.items, tasks => replaceItems(tasks, action.payload)),
-          }
-        }
-        return state
-
-    case UNASSIGN_TASK_SUCCESS:
-      let task = _.find(state.items, item => item['@id'] === action.payload['@id'])
-      if (task) {
-
+      if (action.payload[0].assignedTo === state.username) {
         return {
           ...state,
-          items: _.mapValues(state.items, tasks => _.pickBy(tasks, item => item['@id'] !== action.payload['@id'])),
-        }
+          items: _.mapValues(state.items, tasks =>
+            replaceItems(tasks, action.payload),
+          ),
+        };
       }
-      return state
+      return state;
+
+    case UNASSIGN_TASK_SUCCESS:
+      let task = _.find(
+        state.items,
+        item => item['@id'] === action.payload['@id'],
+      );
+      if (task) {
+        return {
+          ...state,
+          items: _.mapValues(state.items, tasks =>
+            _.pickBy(tasks, item => item['@id'] !== action.payload['@id']),
+          ),
+        };
+      }
+      return state;
 
     case CENTRIFUGO_MESSAGE:
       return processWsMsg(state, action)
 
     case ADD_SIGNATURE:
-
       return {
         ...state,
         signatures: state.signatures.slice(0).concat([action.payload.base64]),
-      }
+      };
 
     case ADD_PICTURE:
-
       return {
         ...state,
         pictures: state.pictures.slice(0).concat([action.payload.base64]),
-      }
+      };
 
     case DELETE_SIGNATURE:
-      const newSignatures = state.signatures.slice(0)
+      const newSignatures = state.signatures.slice(0);
       newSignatures.splice(action.payload, 1);
 
       return {
         ...state,
         signatures: newSignatures,
-      }
+      };
 
     case DELETE_PICTURE:
-      const newPictures = state.pictures.slice(0)
+      const newPictures = state.pictures.slice(0);
       newPictures.splice(action.payload, 1);
 
       return {
         ...state,
         pictures: newPictures,
-      }
+      };
 
     case CLEAR_FILES:
-
       return {
         ...state,
         signatures: [],
         pictures: [],
-      }
+      };
 
     case SET_USER:
-
       return {
         ...state,
         username: action.payload ? action.payload.username : null,
-      }
+      };
 
     // The "items" key is persisted by redux-persists,
     // When the user logs out, we reset it
     // This is useful when multiple messengers use the same device
     case LOGOUT_SUCCESS:
-
       return {
         ...state,
         items: {},
-      }
+      };
   }
 
-  return state
-}
+  return state;
+};
 
 const processWsMsg = (state, action) => {
-
   if (action.payload.name && action.payload.data) {
-
-    const { name, data } = action.payload
+    const { name, data } = action.payload;
 
     switch (name) {
-
       case 'task_list:updated':
-
-        const taskList = data.task_list
+        const taskList = data.task_list;
 
         return {
           ...state,
           items: {
             ...state.items,
-            [ taskList.date ]: taskList.items,
+            [taskList.date]: taskList.items,
           },
-        }
+        };
     }
   }
 
-  return state
-}
+  return state;
+};

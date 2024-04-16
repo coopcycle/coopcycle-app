@@ -1,54 +1,54 @@
-import React from 'react'
-import { StyleSheet, View } from 'react-native'
-import { Box, Text } from 'native-base'
-import { useTranslation } from 'react-i18next'
-import _ from 'lodash'
+import _ from 'lodash';
+import { Box, Text } from 'native-base';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { StyleSheet, View } from 'react-native';
 
 const Badge = ({ color, text }) => {
   return (
-    <Box style={ [styles.item] } bg={ color }>
-      <Text style={ styles.itemText } color="black">{ text }</Text>
+    <Box style={[styles.item]} bg={color}>
+      <Text style={styles.itemText} color="black">
+        {text}
+      </Text>
     </Box>
-  )
-}
+  );
+};
 
 const RestrictedDiet = ({ items }) => {
-
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   if (!Array.isArray(items)) {
-    items = _.values(items)
+    items = _.values(items);
   }
 
   return (
-    <View style={ styles.container }>
-      { items.map(item => (
-        <Badge key={ item }
+    <View style={styles.container}>
+      {items.map(item => (
+        <Badge
+          key={item}
           color="lightBlue.200"
-          text={ t(`RESTRICTED_DIET.${item.replace('http://schema.org/', '')}`) } />
-      )) }
+          text={t(`RESTRICTED_DIET.${item.replace('http://schema.org/', '')}`)}
+        />
+      ))}
     </View>
-  )
-}
+  );
+};
 
 const Allergen = ({ items }) => {
-
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   if (!Array.isArray(items)) {
-    items = _.values(items)
+    items = _.values(items);
   }
 
   return (
-    <View style={ styles.container }>
-      { items.map(item => (
-        <Badge key={ item }
-          color="amber.200"
-          text={ t(`ALLERGEN.${item}`) } />
-      )) }
+    <View style={styles.container}>
+      {items.map(item => (
+        <Badge key={item} color="amber.200" text={t(`ALLERGEN.${item}`)} />
+      ))}
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -68,19 +68,16 @@ const styles = StyleSheet.create({
   itemText: {
     fontSize: 10,
   },
-})
+});
 
-export const AllergenList = Allergen
-export const RestrictedDietList = RestrictedDiet
+export const AllergenList = Allergen;
+export const RestrictedDietList = RestrictedDiet;
 export const ZeroWasteBadge = () => {
-
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   return (
-    <View style={ styles.container }>
-      <Badge
-        color="green.400"
-        text={ t('ZERO_WASTE') } />
+    <View style={styles.container}>
+      <Badge color="green.400" text={t('ZERO_WASTE')} />
     </View>
-  )
-}
+  );
+};

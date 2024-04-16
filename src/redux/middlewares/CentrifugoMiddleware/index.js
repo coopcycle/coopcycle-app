@@ -1,5 +1,5 @@
-import Centrifuge from 'centrifuge'
-import parseUrl from 'url-parse'
+import Centrifuge from 'centrifuge';
+import parseUrl from 'url-parse';
 
 import {
   CENTRIFUGO_MESSAGE,
@@ -9,7 +9,7 @@ import {
   connected,
   disconnected,
   message,
-} from './actions'
+} from './actions';
 
 import {
   selectBaseURL,
@@ -20,10 +20,7 @@ import {
 } from '../../App/selectors'
 import { LOGOUT_SUCCESS } from '../../App/actions'
 
-const isCentrifugoAction = ({ type }) =>
-  [
-    CONNECT,
-  ].some((x) => x === type)
+const isCentrifugoAction = ({ type }) => [CONNECT].some(x => x === type);
 
 export default ({ getState, dispatch }) => {
   let centrifuge = null
@@ -42,29 +39,29 @@ export default ({ getState, dispatch }) => {
     }
 
     if (!isCentrifugoAction(action)) {
-      return next(action)
+      return next(action);
     }
 
-    const state = getState()
+    const state = getState();
 
-    if (!selectIsAuthenticated(state) || !selectHttpClientHasCredentials(state)) {
-      return next(action)
+    if (
+      !selectIsAuthenticated(state) ||
+      !selectHttpClientHasCredentials(state)
+    ) {
+      return next(action);
     }
 
     const httpClient = selectHttpClient(state)
     const baseURL = selectBaseURL(state)
     const user = selectUser(state)
 
-    httpClient
-      .get('/api/centrifugo/token')
-      .then(tokenResponse => {
-
-        const url = parseUrl(baseURL)
-        const protocol = url.protocol === 'https:' ? 'wss' : 'ws'
+    httpClient.get('/api/centrifugo/token').then(tokenResponse => {
+      const url = parseUrl(baseURL);
+      const protocol = url.protocol === 'https:' ? 'wss' : 'ws';
 
         centrifuge = new Centrifuge(`${protocol}://${url.hostname}/centrifugo/connection/websocket`, {
           debug: __DEV__,
-          onRefresh: function(ctx, cb) {
+          onRefresh: function (ctx, cb) {
             httpClient
               .post('/api/centrifugo/token/refresh')
               .then(refreshResponse => {
@@ -73,24 +70,27 @@ export default ({ getState, dispatch }) => {
                 // type definitions in dist folder. Note that setting status to 200 is
                 // required at moment. Any other status will result in refresh process
                 // failure so client will eventually be disconnected by server.
-                cb({ status: 200, data: { token: refreshResponse.token } })
-              })
+                cb({ status: 200, data: { token: refreshResponse.token } });
+              });
           },
-        })
-        centrifuge.setToken(tokenResponse.token)
+        },
+      );
+      centrifuge.setToken(tokenResponse.token);
 
-        centrifuge.on('connect', context => dispatch(connected(context)))
-        centrifuge.on('disconnect', context => dispatch(disconnected(context)))
+      centrifuge.on('connect', context => dispatch(connected(context)));
+      centrifuge.on('disconnect', context => dispatch(disconnected(context)));
 
-        centrifuge.subscribe(`${tokenResponse.namespace}_events#${user.username}`, msg => dispatch(message(msg.data.event)))
+      centrifuge.subscribe(
+        `${tokenResponse.namespace}_events#${user.username}`,
+        msg => dispatch(message(msg.data.event)),
+      );
 
-        centrifuge.connect()
+      centrifuge.connect();
+    });
 
-      })
-
-    return next(action)
-  }
-}
+    return next(action);
+  };
+};
 
 export {
   CENTRIFUGO_MESSAGE,

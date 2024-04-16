@@ -1,11 +1,11 @@
+import { Button, HStack, Icon, Pressable, Text } from 'native-base';
 import React, { Component } from 'react';
 import { FlatList, InteractionManager, StyleSheet, View } from 'react-native';
-import { Button, HStack, Icon, Pressable, Text } from 'native-base';
 import Modal from 'react-native-modal';
 
 import { withTranslation } from 'react-i18next';
-import { connect } from 'react-redux';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { connect } from 'react-redux';
 
 import { activateMenu, loadMenus } from '../../redux/Restaurant/actions';
 

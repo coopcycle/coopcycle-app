@@ -1,15 +1,20 @@
-import React from 'react'
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import { Icon } from 'native-base'
-import moment from 'moment'
-import Ionicons from 'react-native-vector-icons/Ionicons'
-import { useDispatch, useSelector } from 'react-redux'
+import moment from 'moment';
+import { Icon } from 'native-base';
+import React from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { dateSelectHeaderHeight, headerFontSize, primaryColor, whiteColor } from '../styles/common'
+import {
+  dateSelectHeaderHeight,
+  headerFontSize,
+  primaryColor,
+  whiteColor,
+} from '../styles/common';
 
-import { loadTasks, selectTaskSelectedDate } from '../redux/Courier'
-import { changeDate } from '../redux/Courier/taskActions'
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next';
+import { loadTasks, selectTaskSelectedDate } from '../redux/Courier';
+import { changeDate } from '../redux/Courier/taskActions';
 
 let styles = StyleSheet.create({
   container: {
@@ -49,65 +54,71 @@ let styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '300',
   },
-})
+});
 
 function Button({ iconName, onPress }) {
   return (
-    <TouchableOpacity block transparent onPress={ onPress }>
-      <Icon as={ Ionicons } name={ iconName } style={styles.icon} />
+    <TouchableOpacity block transparent onPress={onPress}>
+      <Icon as={Ionicons} name={iconName} style={styles.icon} />
     </TouchableOpacity>
-  )
+  );
 }
 
 export default function DateSelectHeader({ navigate }) {
-  const _selectedDate = useSelector(selectTaskSelectedDate)
-  const selectedDate = moment(_selectedDate)
+  const _selectedDate = useSelector(selectTaskSelectedDate);
+  const selectedDate = moment(_selectedDate);
 
-  const isTodaySelected = selectedDate.isSame(moment(), 'day')
+  const isTodaySelected = selectedDate.isSame(moment(), 'day');
 
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const openCalendar = () => {
-    navigate('CourierDate')
-  }
+    navigate('CourierDate');
+  };
 
-  const onChangeDate = (date) => {
-    dispatch(changeDate(date))
-    dispatch(loadTasks(date))
-  }
+  const onChangeDate = date => {
+    dispatch(changeDate(date));
+    dispatch(loadTasks(date));
+  };
 
   const onFuturePress = () => {
-    onChangeDate(selectedDate.clone().add(1, 'days'))
-  }
+    onChangeDate(selectedDate.clone().add(1, 'days'));
+  };
 
   const onPastPress = () => {
-    onChangeDate(selectedDate.clone().subtract(1, 'days'))
-  }
+    onChangeDate(selectedDate.clone().subtract(1, 'days'));
+  };
 
   return (
-    <View style={ styles.container }>
-      <View style={ styles.dateHeader }>
-        <View style={ [ styles.button, { width: '25%' }] }>
-          <Button iconName="arrow-back" onPress={ onPastPress } />
+    <View style={styles.container}>
+      <View style={styles.dateHeader}>
+        <View style={[styles.button, { width: '25%' }]}>
+          <Button iconName="arrow-back" onPress={onPastPress} />
         </View>
-        <TouchableOpacity style={ [ styles.body, { width: '50%' }] } onPress={ openCalendar }>
-          <Text numberOfLines={ 1 } style={styles.dateHeaderText}>
-            { selectedDate.format('dddd Do MMM') }
+        <TouchableOpacity
+          style={[styles.body, { width: '50%' }]}
+          onPress={openCalendar}>
+          <Text numberOfLines={1} style={styles.dateHeaderText}>
+            {selectedDate.format('dddd Do MMM')}
           </Text>
         </TouchableOpacity>
-        <View style={ [ styles.button, { width: '25%' }] }>
-          <Button iconName="arrow-forward" onPress={ onFuturePress } />
+        <View style={[styles.button, { width: '25%' }]}>
+          <Button iconName="arrow-forward" onPress={onFuturePress} />
         </View>
       </View>
-      { isTodaySelected ? null : (
-          <View style={styles.todayContainer}>
-            <Text style={styles.todayButton} onPress={() => {onChangeDate(moment())}}>
-              {t('GO_TO_TODAY')}
-            </Text>
-          </View>
-      ) }
+      {isTodaySelected ? null : (
+        <View style={styles.todayContainer}>
+          <Text
+            style={styles.todayButton}
+            onPress={() => {
+              onChangeDate(moment());
+            }}>
+            {t('GO_TO_TODAY')}
+          </Text>
+        </View>
+      )}
     </View>
-  )
+  );
 }

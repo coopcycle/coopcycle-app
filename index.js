@@ -1,5 +1,5 @@
 if (__DEV__) {
-  require("./ReactotronConfig")
+  require('./ReactotronConfig');
 }
 
 import 'react-native-gesture-handler';

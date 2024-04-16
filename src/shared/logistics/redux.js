@@ -1,1 +1,1 @@
-export * from '../src/logistics/redux'
+export * from '../src/logistics/redux';

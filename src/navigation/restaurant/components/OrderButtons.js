@@ -1,8 +1,8 @@
-import React from 'react';
-import { View } from 'react-native';
-import { useTranslation } from 'react-i18next';
 import { PhoneNumberFormat, PhoneNumberUtil } from 'google-libphonenumber';
 import { Button, Icon } from 'native-base';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { View } from 'react-native';
 import { phonecall } from 'react-native-communications';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 

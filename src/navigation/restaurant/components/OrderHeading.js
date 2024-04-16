@@ -1,15 +1,15 @@
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import { useTranslation } from 'react-i18next';
 import moment from 'moment';
 import { HStack, Icon, Text } from 'native-base';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { StyleSheet, View } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import material from '../../../../native-base-theme/variables/material';
-import OrderButtons from './OrderButtons';
-import { resolveFulfillmentMethod } from '../../../utils/order';
 import OrderFulfillmentMethodIcon from '../../../components/OrderFulfillmentMethodIcon';
 import { PaymentMethodInfo } from '../../../components/PaymentMethodInfo';
+import { resolveFulfillmentMethod } from '../../../utils/order';
+import OrderButtons from './OrderButtons';
 
 const fallbackFormat = 'dddd D MMM';
 

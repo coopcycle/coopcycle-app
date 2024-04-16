@@ -9,10 +9,14 @@ import moment from 'moment';
 import DangerAlert from '../../components/DangerAlert';
 import Offline from '../../components/Offline';
 
-import OrderList from './components/OrderList';
 import DatePickerHeader from './components/DatePickerHeader';
+import OrderList from './components/OrderList';
 import WebSocketIndicator from './components/WebSocketIndicator';
 
+import {
+  selectIsCentrifugoConnected,
+  selectIsLoading,
+} from '../../redux/App/selectors';
 import {
   changeDate,
   changeStatus,
@@ -20,18 +24,14 @@ import {
   loadOrderAndNavigate,
   loadOrders,
 } from '../../redux/Restaurant/actions';
-import { connect as connectCentrifugo } from '../../redux/middlewares/CentrifugoMiddleware/actions';
 import {
   selectDate,
   selectRestaurant,
   selectSpecialOpeningHoursSpecificationForToday,
 } from '../../redux/Restaurant/selectors';
-import {
-  selectIsCentrifugoConnected,
-  selectIsLoading,
-} from '../../redux/App/selectors';
 import PushNotification from '../../notifications';
 import OrdersToPrintQueue from './components/OrdersToPrintQueue';
+import { connect as connectCentrifugo } from '../../redux/middlewares/CentrifugoMiddleware/actions';
 
 const RNSound = NativeModules.RNSound;
 

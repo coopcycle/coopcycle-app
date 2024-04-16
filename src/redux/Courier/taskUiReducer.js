@@ -1,18 +1,18 @@
 /*
  * Task related reducers
  */
-import moment from 'moment'
+import moment from 'moment';
 import {
   ADD_TASK_FILTER,
+  CHANGE_DATE,
   CLEAR_TASK_FILTER,
   LOAD_TASKS_REQUEST,
   SET_KEEP_AWAKE,
-  SET_SIGNATURE_SCREEN_FIRST,
-  SET_TASKS_CHANGED_ALERT_SOUND, 
-  SET_TASK_FILTER,
   SET_POLYLINE_ON,
-  CHANGE_DATE
-} from './taskActions'
+  SET_SIGNATURE_SCREEN_FIRST,
+  SET_TASKS_CHANGED_ALERT_SOUND,
+  SET_TASK_FILTER,
+} from './taskActions';
 
 /*
  * Intital state shape for the task UI reducer
@@ -21,13 +21,12 @@ import {
  */
 const tasksUiInitialState = {
   selectedDate: moment(), // Date selected by the user
-  excludeFilters: [],     // Key-value pairs of active filters (e.g. status: 'done')
+  excludeFilters: [], // Key-value pairs of active filters (e.g. status: 'done')
   tasksChangedAlertSound: true,
   keepAwake: false,
   isPolylineOn: true,
   signatureScreenFirst: false,
-}
-
+};
 
 export const tasksUiReducer = (state = tasksUiInitialState, action = {}) => {
   switch (action.type) {
@@ -35,32 +34,32 @@ export const tasksUiReducer = (state = tasksUiInitialState, action = {}) => {
       return {
         ...state,
         selectedDate: action.payload.date || moment(),
-      }
+      };
 
     case ADD_TASK_FILTER:
     case SET_TASK_FILTER:
       return {
         ...state,
         excludeFilters: state.excludeFilters.concat(action.payload),
-      }
+      };
 
     case SET_TASKS_CHANGED_ALERT_SOUND:
       return {
         ...state,
         tasksChangedAlertSound: action.payload,
-      }
+      };
 
     case SET_KEEP_AWAKE:
       return {
         ...state,
         keepAwake: action.payload,
-      }
+      };
 
     case SET_POLYLINE_ON:
       return {
         ...state,
         isPolylineOn: action.payload,
-      }
+      };
 
     case CLEAR_TASK_FILTER:
       // Empty payload clears all exclusion rules
@@ -68,29 +67,31 @@ export const tasksUiReducer = (state = tasksUiInitialState, action = {}) => {
         return {
           ...state,
           excludeFilters: [],
-        }
+        };
       }
 
       // Filters with any matches to exclusion rules are removed from the payload
       return {
         ...state,
         excludeFilters: state.excludeFilters.filter(filter =>
-          Object.keys(action.payload).some(k => action.payload[k] !== filter[k])),
-      }
+          Object.keys(action.payload).some(
+            k => action.payload[k] !== filter[k],
+          ),
+        ),
+      };
 
     case SET_SIGNATURE_SCREEN_FIRST:
-
       return {
         ...state,
         signatureScreenFirst: action.payload,
-      }
+      };
 
     case CHANGE_DATE:
       return {
         ...state,
         selectedDate: action.payload,
-      }
+      };
   }
 
-  return state
-}
+  return state;
+};

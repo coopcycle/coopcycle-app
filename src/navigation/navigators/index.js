@@ -1,8 +1,8 @@
-import HomeNavigator from './HomeNavigator'
-import CheckoutNavigator from './CheckoutNavigator'
-import RestaurantNavigator from './RestaurantNavigator'
-import CourierNavigator from './CourierNavigator'
-import DrawerNavigator from './DrawerNavigator'
+import CheckoutNavigator from './CheckoutNavigator';
+import CourierNavigator from './CourierNavigator';
+import DrawerNavigator from './DrawerNavigator';
+import HomeNavigator from './HomeNavigator';
+import RestaurantNavigator from './RestaurantNavigator';
 
 export default {
   HomeNavigator,
@@ -10,4 +10,4 @@ export default {
   RestaurantNavigator,
   CourierNavigator,
   DrawerNavigator,
-}
+};

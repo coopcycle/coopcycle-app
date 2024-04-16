@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
-import { View } from 'react-native';
 import { Center, Text } from 'native-base';
+import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
+import { View } from 'react-native';
 import { connect } from 'react-redux';
 
-import BigButton from './components/BigButton';
 import { delayOrder } from '../../redux/Restaurant/actions';
+import BigButton from './components/BigButton';
 
 class OrderDelayScreen extends Component {
   _delayOrder(delay) {

@@ -1,7 +1,7 @@
-import React from 'react'
-import { StyleSheet, TouchableOpacity } from 'react-native'
-import { Icon } from 'native-base'
-import FontAwesome from 'react-native-vector-icons/FontAwesome'
+import { Icon } from 'native-base';
+import React from 'react';
+import { StyleSheet, TouchableOpacity } from 'react-native';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 const styles = StyleSheet.create({
   container: {
@@ -11,16 +11,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 15,
   },
-})
+});
 
 export default ({ children, ...props }) => {
-
   return (
-    <TouchableOpacity iconLeft full { ...props } style={ styles.container }>
-      { children }
-      <Icon as={ FontAwesome } name="plus" size="sm" />
+    <TouchableOpacity iconLeft full {...props} style={styles.container}>
+      {children}
+      <Icon as={FontAwesome} name="plus" size="sm" />
     </TouchableOpacity>
-  )
-}
-
-
+  );
+};

@@ -1,8 +1,8 @@
-import React from 'react'
-import { StyleSheet, TouchableOpacity } from 'react-native'
-import { useTranslation } from 'react-i18next'
-import { Icon, Text } from 'native-base'
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
+import { Icon, Text } from 'native-base';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { StyleSheet, TouchableOpacity } from 'react-native';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 const styles = StyleSheet.create({
   container: {
@@ -18,19 +18,22 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: 'center',
   },
-})
+});
 
 export default ({ onPress }) => {
-
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   return (
-    <TouchableOpacity
-      style={ styles.container }
-      onPress={ onPress }>
-      <Icon as={ FontAwesome5 } name="check-circle" solid style={ styles.icon } size="lg" />
-      <Text style={ styles.text }>{ t('NO_TASKS') }</Text>
-      <Text note>{ t('TOUCH_TO_RELOAD') }</Text>
+    <TouchableOpacity style={styles.container} onPress={onPress}>
+      <Icon
+        as={FontAwesome5}
+        name="check-circle"
+        solid
+        style={styles.icon}
+        size="lg"
+      />
+      <Text style={styles.text}>{t('NO_TASKS')}</Text>
+      <Text note>{t('TOUCH_TO_RELOAD')}</Text>
     </TouchableOpacity>
-  )
-}
+  );
+};

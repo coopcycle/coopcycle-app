@@ -1,16 +1,16 @@
+import { HStack, Switch, Text } from 'native-base';
 import React, { Component } from 'react';
 import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
-import { HStack, Switch, Text } from 'native-base';
 
 import { withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 
+import ItemSeparator from '../../components/ItemSeparator';
 import {
   changeProductEnabled,
   loadMoreProducts,
   loadProducts,
 } from '../../redux/Restaurant/actions';
-import ItemSeparator from '../../components/ItemSeparator';
 
 class ProductsScreen extends Component {
   componentDidMount() {

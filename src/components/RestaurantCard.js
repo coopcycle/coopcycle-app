@@ -1,12 +1,12 @@
-import {Text, useColorModeValue} from 'native-base';
+import { Text, useColorModeValue } from 'native-base';
 import React from 'react';
-import {Image, StyleSheet, View} from 'react-native';
-import Svg, {Path} from 'react-native-svg';
+import { Image, StyleSheet, View } from 'react-native';
+import Svg, { Path } from 'react-native-svg';
 import i18n from '../i18n';
-import {TimingBadge} from '../navigation/checkout/components/RestaurantBadges';
-import {getRestaurantIsAvailable} from '../utils/checkout';
-import {RestaurantBadge} from './RestaurantBadge';
-import {RestaurantTag} from './RestaurantTag';
+import { TimingBadge } from '../navigation/checkout/components/RestaurantBadges';
+import { getRestaurantIsAvailable } from '../utils/checkout';
+import { RestaurantBadge } from './RestaurantBadge';
+import { RestaurantTag } from './RestaurantTag';
 
 const logoSize = 64;
 
@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export const RestaurantCard = ({restaurant}) => {
+export const RestaurantCard = ({ restaurant }) => {
   // const backgroundColor = useColorModeValue('white', '#121212');
   // const backgroundColor = useColorModeValue('white', '#222222');
   const backgroundColor = useColorModeValue('white', '#1a1a1a');
@@ -124,13 +124,13 @@ export const RestaurantCard = ({restaurant}) => {
   //   const backgroundColor = useColorModeValue('white', '#FFFFFF16');
 
   return (
-    <View style={[styles.item, {backgroundColor}]}>
+    <View style={[styles.item, { backgroundColor }]}>
       <View style={styles.images}>
         <View styles={styles.bannerWrapper}>
           <Image
             style={styles.banner}
             resizeMode="cover"
-            source={{uri: restaurant.bannerImage || restaurant.image}}
+            source={{ uri: restaurant.bannerImage || restaurant.image }}
           />
         </View>
         {restaurant.badges && (
@@ -142,7 +142,10 @@ export const RestaurantCard = ({restaurant}) => {
         )}
         {isClosed ? (
           <View
-            style={[styles.overlay, {backgroundColor: overlayBackgroundColor}]}>
+            style={[
+              styles.overlay,
+              { backgroundColor: overlayBackgroundColor },
+            ]}>
             <Svg
               style={[styles.closedIcon]}
               xmlns="http://www.w3.org/2000/svg"
@@ -164,12 +167,12 @@ export const RestaurantCard = ({restaurant}) => {
               {i18n.t('NOT_AVAILABLE_ATM')}
             </Text>
           </View>
-        ) : null }
-        <View style={[styles.logoWrapper, {backgroundColor}]}>
+        ) : null}
+        <View style={[styles.logoWrapper, { backgroundColor }]}>
           <Image
             style={styles.logo}
             resizeMode="cover"
-            source={{uri: restaurant.image}}
+            source={{ uri: restaurant.image }}
           />
         </View>
       </View>
