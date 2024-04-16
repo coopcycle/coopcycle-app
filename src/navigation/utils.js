@@ -1,30 +1,34 @@
-let navigateAfter = null
+let navigateAfter = null;
 
 export const navigateToTask = (navigation, route, task, tasks = []) => {
-
   if (route.name !== 'TaskHome') {
-    navigateAfter = route.name
+    navigateAfter = route.name;
   }
 
   const params = {
     task,
     tasks,
     navigateAfter,
-  }
+  };
 
   navigation.navigate('Task', {
     screen: 'TaskHome',
     params,
-  })
-}
+  });
+};
 
-export const navigateToCompleteTask = (navigation, route, task, tasks = [], success = true) => {
-
+export const navigateToCompleteTask = (
+  navigation,
+  route,
+  task,
+  tasks = [],
+  success = true,
+) => {
   const params = {
     task,
     tasks,
     navigateAfter: route.name,
-  }
+  };
 
   navigation.navigate('Task', {
     screen: 'TaskComplete',
@@ -32,5 +36,5 @@ export const navigateToCompleteTask = (navigation, route, task, tasks = [], succ
       screen: 'TaskCompleteHome',
       params: { ...params, success },
     },
-  })
-}
+  });
+};

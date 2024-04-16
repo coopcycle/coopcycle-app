@@ -1,27 +1,25 @@
-import React, { Component } from 'react'
-import { KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native'
-import { Text } from 'native-base'
-import { connect } from 'react-redux'
-import { withTranslation } from 'react-i18next'
-import _ from 'lodash'
+import _ from 'lodash';
+import { Text } from 'native-base';
+import React, { Component } from 'react';
+import { withTranslation } from 'react-i18next';
+import { KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native';
+import { connect } from 'react-redux';
 
-import AddressAutocomplete from '../../components/AddressAutocomplete'
+import AddressAutocomplete from '../../components/AddressAutocomplete';
 
-import { assertDelivery } from '../../redux/Store/actions'
-import { selectStore } from '../../redux/Store/selectors'
+import { assertDelivery } from '../../redux/Store/actions';
+import { selectStore } from '../../redux/Store/selectors';
 
 class NewDelivery extends Component {
-
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
       extraScrollHeight: 0,
-    }
+    };
   }
 
   _onSelectAddress(address) {
-
     const delivery = {
       store: this.props.store['@id'],
       dropoff: {
@@ -29,21 +27,20 @@ class NewDelivery extends Component {
         // FIXME It shouldn't be necessary to send this
         before: 'tomorrow 12:00',
       },
-    }
+    };
 
     this.props.assertDelivery(delivery, () => {
-      this.props.navigation.navigate('StoreNewDeliveryForm', { address })
-    })
+      this.props.navigation.navigate('StoreNewDeliveryForm', { address });
+    });
   }
 
   render() {
-
     let autocompleteProps = {
       inputContainerStyle: {
         flex: 1,
         borderWidth: 0,
       },
-    }
+    };
     if (!_.isEmpty(this.props.error)) {
       autocompleteProps = {
         ...autocompleteProps,
@@ -51,35 +48,33 @@ class NewDelivery extends Component {
           ...autocompleteProps.inputContainerStyle,
           ...styles.errorInput,
         },
-      }
+      };
     }
 
     return (
-      <KeyboardAvoidingView
-        style={ styles.content }
-        behavior="position"
-        >
-        <Text style={ styles.label }>
-          { this.props.t('STORE_NEW_DELIVERY_ADDRESS') }
+      <KeyboardAvoidingView style={styles.content} behavior="position">
+        <Text style={styles.label}>
+          {this.props.t('STORE_NEW_DELIVERY_ADDRESS')}
         </Text>
-        <View style={ styles.container }>
-          <View style={ styles.autocompleteContainer }>
+        <View style={styles.container}>
+          <View style={styles.autocompleteContainer}>
             <AddressAutocomplete
-              addresses={ this.props.addresses }
-              onSelectAddress={ this._onSelectAddress.bind(this) }
+              addresses={this.props.addresses}
+              onSelectAddress={this._onSelectAddress.bind(this)}
               containerStyle={{
                 flex: 1,
                 justifyContent: 'center',
               }}
               style={{ borderRadius: 0 }}
-              { ...autocompleteProps } />
+              {...autocompleteProps}
+            />
           </View>
-          <Text style={ styles.help } note>
-            { this.props.t('STORE_NEW_DELIVERY_ADDRESS_HELP') }
+          <Text style={styles.help} note>
+            {this.props.t('STORE_NEW_DELIVERY_ADDRESS_HELP')}
           </Text>
         </View>
       </KeyboardAvoidingView>
-    )
+    );
   }
 }
 
@@ -125,22 +120,24 @@ const styles = StyleSheet.create({
   errorInput: {
     borderColor: '#FF4136',
   },
-})
+});
 
 function mapStateToProps(state) {
-
   return {
     store: selectStore(state),
     error: state.store.assertDeliveryError,
     addresses: state.store.addresses,
-  }
+  };
 }
 
 function mapDispatchToProps(dispatch) {
-
   return {
-    assertDelivery: (delivery, onSuccess) => dispatch(assertDelivery(delivery, onSuccess)),
-  }
+    assertDelivery: (delivery, onSuccess) =>
+      dispatch(assertDelivery(delivery, onSuccess)),
+  };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(NewDelivery))
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(withTranslation()(NewDelivery));

@@ -1,5 +1,4 @@
-function BaseTracker() {
-}
+function BaseTracker() {}
 
 /**
  * Sets the current screen name, which specifies the current visual context in your app.
@@ -8,8 +7,7 @@ function BaseTracker() {
  * for example on Android it will always show as 'MainActivity' if not specified.
  * screenName: string | null
  */
-BaseTracker.prototype.setCurrentScreen = function(screenName) {
-}
+BaseTracker.prototype.setCurrentScreen = function (screenName) {};
 
 /**
  * Log a custom event with optional params.
@@ -18,21 +16,18 @@ BaseTracker.prototype.setCurrentScreen = function(screenName) {
  * text?: string (optional parameter)
  * number?: double (optional parameter)
  */
-BaseTracker.prototype.logEvent = function(category, action, text, number) {
-}
+BaseTracker.prototype.logEvent = function (category, action, text, number) {};
 
 /**
  * Sets a key/value pair of data on the current user.
  * name: string,
  * value: string | null
  */
-BaseTracker.prototype.setUserProperty = function(name, value) {
-}
+BaseTracker.prototype.setUserProperty = function (name, value) {};
 
 /**
  * Initialize the tracker
  */
-BaseTracker.prototype.init = function() {
-}
+BaseTracker.prototype.init = function () {};
 
-export default BaseTracker
+export default BaseTracker;

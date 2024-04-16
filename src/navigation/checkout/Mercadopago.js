@@ -1,22 +1,35 @@
-import React, { useEffect } from 'react'
-import { withTranslation } from 'react-i18next'
-import { Image, StyleSheet, View } from 'react-native'
-import { connect } from 'react-redux'
-import { checkoutFailure, checkoutRequest, mercadopagoCheckout } from '../../redux/Checkout/actions'
+import React, { useEffect } from 'react';
+import { withTranslation } from 'react-i18next';
+import { Image, StyleSheet, View } from 'react-native';
+import { connect } from 'react-redux';
+import {
+  checkoutFailure,
+  checkoutRequest,
+  mercadopagoCheckout,
+} from '../../redux/Checkout/actions';
 
-function Mercadopago({ cart, initCheckout, failedCheckout, checkout, httpClient, restaurant, navigation }) {
-
+function Mercadopago({
+  cart,
+  initCheckout,
+  failedCheckout,
+  checkout,
+  httpClient,
+  restaurant,
+  navigation,
+}) {
   async function fetchPreferenceId() {
-    const { ['@id']: namespace } = cart
-    return await httpClient.get(`${namespace}/mercadopago-preference`)
+    const { ['@id']: namespace } = cart;
+    return await httpClient.get(`${namespace}/mercadopago-preference`);
   }
 
   async function fetchMercadopagoAccount() {
-    return await httpClient.get(`/restaurant/${restaurant.id}/mercadopago-account`)
+    return await httpClient.get(
+      `/restaurant/${restaurant.id}/mercadopago-account`,
+    );
   }
 
   async function createPayment({ preferenceId, publicKey }) {
-    return Promise.reject(new Error('MercadoPago is not available'))
+    return Promise.reject(new Error('MercadoPago is not available'));
   }
 
   const loadMercadopago = async () => {
@@ -36,7 +49,7 @@ function Mercadopago({ cart, initCheckout, failedCheckout, checkout, httpClient,
         failedCheckout(err);
       }
     }
-  }
+  };
 
   useEffect(() => {
     initCheckout();
@@ -45,9 +58,11 @@ function Mercadopago({ cart, initCheckout, failedCheckout, checkout, httpClient,
 
   return (
     <View style={styles.container}>
-      <Image source={require('../../../assets/images/powered_by_mercadopago.png')} />
+      <Image
+        source={require('../../../assets/images/powered_by_mercadopago.png')}
+      />
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -64,17 +79,17 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#ed2f2f',
   },
-})
+});
 
 function createHttpClient(state) {
-  const { httpClient } = state.app
+  const { httpClient } = state.app;
   if (httpClient.credentials.token && httpClient.credentials.refreshToken) {
-    return httpClient
+    return httpClient;
   }
 
-  const { token } = state.checkout
+  const { token } = state.checkout;
 
-  return httpClient.cloneWithToken(token)
+  return httpClient.cloneWithToken(token);
 }
 
 function mapStateToProps(state) {
@@ -84,15 +99,18 @@ function mapStateToProps(state) {
     token: state.checkout.token,
     httpClient: createHttpClient(state),
     user: state.app.user,
-  }
+  };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     initCheckout: () => dispatch(checkoutRequest()),
-    failedCheckout: (err) => dispatch(checkoutFailure(err)),
-    checkout: (payment) => dispatch(mercadopagoCheckout(payment)),
-  }
+    failedCheckout: err => dispatch(checkoutFailure(err)),
+    checkout: payment => dispatch(mercadopagoCheckout(payment)),
+  };
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(withTranslation()(Mercadopago))
+module.exports = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(withTranslation()(Mercadopago));

@@ -2,7 +2,8 @@
 /*
  * App reducer, dealing with non-domain specific state
  */
-import { CONNECTED, DISCONNECTED } from '../middlewares/CentrifugoMiddleware'
+import Config from 'react-native-config';
+import { CONNECTED, DISCONNECTED } from '../middlewares/CentrifugoMiddleware';
 import {
   ACCEPT_PRIVACY_POLICY,
   ACCEPT_TERMS_AND_CONDITIONS,
@@ -46,8 +47,7 @@ import {
   SET_SETTINGS,
   SET_SPINNER_DELAY_ENABLED,
   SET_USER,
-} from './actions'
-import Config from 'react-native-config';
+} from './actions';
 
 const initialState = {
   customBuild: !!Config.DEFAULT_SERVER,
@@ -98,7 +98,7 @@ const initialState = {
   termsAndConditionsText: '',
   privacyPolicyText: '',
   isSpinnerDelayEnabled: true,
-}
+};
 
 export default (state = initialState, action = {}) => {
   switch (action.type) {
@@ -106,51 +106,51 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         baseURL: action.payload,
-      }
+      };
     case SET_HTTP_CLIENT:
       return {
         ...state,
         httpClient: action.payload,
-      }
+      };
     case SET_USER:
       return {
         ...state,
         user: action.payload,
-      }
+      };
     case SET_CURRENT_ROUTE:
       return {
         ...state,
         currentRoute: action.payload,
-      }
+      };
     case SET_LOADING:
       return {
         ...state,
         loading: action.payload,
-      }
+      };
 
     case CONNECTED:
       return {
         ...state,
         isCentrifugoConnected: true,
-      }
+      };
 
     case DISCONNECTED:
       return {
         ...state,
         isCentrifugoConnected: false,
-      }
+      };
 
     case PUSH_NOTIFICATION:
       return {
         ...state,
         notifications: state.notifications.concat([action.payload]),
-      }
+      };
 
     case CLEAR_NOTIFICATIONS:
       return {
         ...state,
         notifications: [],
-      }
+      };
 
     case CLEAR_AUTHENTICATION_ERRORS:
       return {
@@ -158,26 +158,26 @@ export default (state = initialState, action = {}) => {
         lastAuthenticationError: null,
         registrationErrors: initialState.registrationErrors,
         loginByEmailErrors: initialState.loginByEmailErrors,
-      }
+      };
 
     case AUTHENTICATION_REQUEST:
       return {
         ...state,
         loading: true,
-      }
+      };
 
     case AUTHENTICATION_SUCCESS:
       return {
         ...state,
         loading: false,
-      }
+      };
 
     case AUTHENTICATION_FAILURE:
       return {
         ...state,
         loading: false,
         lastAuthenticationError: action.payload,
-      }
+      };
 
     case RESET_PASSWORD_INIT:
       return {
@@ -187,7 +187,7 @@ export default (state = initialState, action = {}) => {
           nonInputError: null,
           requested: false,
         },
-      }
+      };
 
     case RESET_PASSWORD_REQUEST:
       return {
@@ -198,7 +198,7 @@ export default (state = initialState, action = {}) => {
           inputError: null,
           nonInputError: null,
         },
-      }
+      };
 
     case RESET_PASSWORD_REQUEST_SUCCESS:
       return {
@@ -208,7 +208,7 @@ export default (state = initialState, action = {}) => {
           ...state.forgotPassword,
           requested: true,
         },
-      }
+      };
 
     case RESET_PASSWORD_REQUEST_FAILURE:
       return {
@@ -218,94 +218,94 @@ export default (state = initialState, action = {}) => {
           ...state.forgotPassword,
           nonInputError: action.payload,
         },
-      }
+      };
 
     case LOGOUT_SUCCESS:
       return {
         ...state,
         user: null,
-      }
+      };
 
     case RESUME_CHECKOUT_AFTER_ACTIVATION:
       return {
         ...state,
         resumeCheckoutAfterActivation: action.payload,
-      }
+      };
 
     case SET_SERVERS:
       return {
         ...state,
         servers: action.payload,
-      }
+      };
 
     case CLEAR_SELECT_SERVER_ERROR:
       return {
         ...state,
         selectServerError: null,
-      }
+      };
 
     case SET_SELECT_SERVER_ERROR:
       return {
         ...state,
         selectServerError: action.payload,
-      }
+      };
 
     case SET_SETTINGS:
       return {
         ...state,
         settings: action.payload,
-      }
+      };
 
     case SET_INTERNET_REACHABLE:
       return {
         ...state,
         isInternetReachable: action.payload,
-      }
+      };
 
     case REGISTER_PUSH_NOTIFICATION_TOKEN:
       return {
         ...state,
         pushNotificationToken: action.payload,
         pushNotificationTokenSaved: false,
-      }
+      };
 
     case SAVE_PUSH_NOTIFICATION_TOKEN_SUCCESS:
       return {
         ...state,
         pushNotificationTokenSaved: true,
-      }
+      };
 
     case DELETE_PUSH_NOTIFICATION_TOKEN_SUCCESS:
       return {
         ...state,
         pushNotificationTokenSaved: false,
-      }
+      };
 
     case REGISTRATION_ERRORS:
       return {
         ...state,
         registrationErrors: action.payload,
         loading: false,
-      }
+      };
 
     case LOGIN_BY_EMAIL_ERRORS:
       return {
         ...state,
         loginByEmailErrors: action.payload,
         loading: false,
-      }
+      };
 
     case SET_BACKGROUND_GEOLOCATION_ENABLED:
       return {
         ...state,
         isBackgroundGeolocationEnabled: action.payload,
-      }
+      };
 
     case BACKGROUND_PERMISSION_DISCLOSED:
       return {
         ...state,
         hasDisclosedBackgroundPermission: true,
-      }
+      };
 
     case SET_MODAL:
       return {
@@ -315,13 +315,13 @@ export default (state = initialState, action = {}) => {
           show: true,
           ...action.payload,
         },
-      }
+      };
 
     case RESET_MODAL:
       return {
         ...state,
         modal: initialState.modal,
-      }
+      };
 
     case CLOSE_MODAL:
       return {
@@ -330,70 +330,70 @@ export default (state = initialState, action = {}) => {
           ...state.modal,
           show: false,
         },
-    }
+      };
 
     case ONBOARDED:
       return {
         ...state,
         firstRun: false,
-      }
+      };
 
     case ACCEPT_TERMS_AND_CONDITIONS:
       return {
         ...state,
         termsAndConditionsAccepted: action.payload,
-      }
+      };
 
     case ACCEPT_PRIVACY_POLICY:
       return {
         ...state,
         privacyPolicyAccepted: action.payload,
-      }
+      };
 
     case LOAD_PRIVACY_POLICY_REQUEST:
       return {
         ...state,
         loadingPrivacyPolicy: true,
-      }
+      };
 
     case LOAD_PRIVACY_POLICY_SUCCESS:
       return {
         ...state,
         privacyPolicyText: action.payload,
         loadingPrivacyPolicy: false,
-      }
+      };
 
     case LOAD_PRIVACY_POLICY_FAILURE:
       return {
         ...state,
         loadingPrivacyPolicy: false,
-      }
+      };
 
     case LOAD_TERMS_AND_CONDITIONS_REQUEST:
       return {
         ...state,
         loadingTerms: true,
-      }
+      };
 
     case LOAD_TERMS_AND_CONDITIONS_SUCCESS:
       return {
         ...state,
         termsAndConditionsText: action.payload,
         loadingTerms: false,
-      }
+      };
 
     case LOAD_TERMS_AND_CONDITIONS_FAILURE:
       return {
         ...state,
         loadingTerms: false,
-      }
+      };
 
     case SET_SPINNER_DELAY_ENABLED:
       return {
         ...state,
         isSpinnerDelayEnabled: action.payload,
-      }
+      };
   }
 
-  return state
-}
+  return state;
+};

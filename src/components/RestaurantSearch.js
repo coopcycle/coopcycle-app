@@ -1,11 +1,11 @@
-import {Text, useColorModeValue} from 'native-base';
+import { Text, useColorModeValue } from 'native-base';
 import React from 'react';
-import {withTranslation} from 'react-i18next';
-import {Platform, StyleSheet, View} from 'react-native';
+import { withTranslation } from 'react-i18next';
+import { Platform, StyleSheet, View } from 'react-native';
 
-import {useNavigation} from '@react-navigation/native';
-import {TouchableNativeFeedback} from 'react-native-gesture-handler';
-import Svg, {Path} from 'react-native-svg';
+import { useNavigation } from '@react-navigation/native';
+import { TouchableNativeFeedback } from 'react-native-gesture-handler';
+import Svg, { Path } from 'react-native-svg';
 
 const textInputContainerHeight = 54;
 
@@ -52,12 +52,13 @@ function RestaurantSearch(props) {
   );
 
   return (
-    <View style={[styles.container, {width: props.width}, {backgroundColor}]}>
+    <View
+      style={[styles.container, { width: props.width }, { backgroundColor }]}>
       <TouchableNativeFeedback
         onPress={() => {
-          navigation.navigate('AccountAddresses', {action: 'search'});
+          navigation.navigate('AccountAddresses', { action: 'search' });
         }}>
-        <View style={[styles.input, {borderColor}]}>
+        <View style={[styles.input, { borderColor }]}>
           <Svg
             width="13"
             height="17"

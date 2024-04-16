@@ -1,10 +1,10 @@
-import { Calendar as RNCalendar } from 'react-native-calendars'
-import React from 'react'
-import { StyleSheet, Text } from 'react-native'
-import { primaryColor, whiteColor } from '../styles/common'
-import moment from 'moment/moment'
-import { useTranslation } from 'react-i18next'
-import { View } from 'native-base'
+import moment from 'moment/moment';
+import { View } from 'native-base';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { StyleSheet, Text } from 'react-native';
+import { Calendar as RNCalendar } from 'react-native-calendars';
+import { primaryColor, whiteColor } from '../styles/common';
 
 const styles = StyleSheet.create({
   todayContainer: {
@@ -18,15 +18,15 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '300',
   },
-})
+});
 
 export function Calendar(props) {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   const calendarProps = {
     ...props,
     onDayPress: ({ dateString }) => {
-      props.onDateSelect(moment(dateString))
+      props.onDateSelect(moment(dateString));
     },
     style: {
       ...props.style,
@@ -43,18 +43,20 @@ export function Calendar(props) {
       textDayHeaderFontSize: 18,
       ...props.theme,
     },
-  }
+  };
 
   return (
     <View>
-      <RNCalendar
-        {...calendarProps}
-      />
+      <RNCalendar {...calendarProps} />
       <View style={styles.todayContainer}>
-        <Text style={styles.todayButton} onPress={() => {
-          props.onDateSelect(moment())
-        }}>{t('GO_TO_TODAY')}</Text>
+        <Text
+          style={styles.todayButton}
+          onPress={() => {
+            props.onDateSelect(moment());
+          }}>
+          {t('GO_TO_TODAY')}
+        </Text>
       </View>
     </View>
-  )
+  );
 }

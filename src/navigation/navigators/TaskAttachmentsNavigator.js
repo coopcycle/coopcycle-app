@@ -1,13 +1,13 @@
-import React from 'react'
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
-import { connect } from 'react-redux'
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import React from 'react';
+import { connect } from 'react-redux';
 
-import i18n from '../../i18n'
-import screens from '..'
-import { stackNavigatorScreenOptions } from '../styles'
-import { selectSignatureScreenFirst } from '../../redux/Courier'
+import screens from '..';
+import i18n from '../../i18n';
+import { selectSignatureScreenFirst } from '../../redux/Courier';
+import { stackNavigatorScreenOptions } from '../styles';
 
-const Tab = createMaterialTopTabNavigator()
+const Tab = createMaterialTopTabNavigator();
 
 const TabNavigator = ({ initialRouteName, initialParams }) => (
   <Tab.Navigator
@@ -17,36 +17,37 @@ const TabNavigator = ({ initialRouteName, initialParams }) => (
       swipeEnabled: false,
     }}
     backBehavior="history"
-    initialRouteName={ initialRouteName }>
+    initialRouteName={initialRouteName}>
     <Tab.Screen
       name="TaskPhoto"
-      component={ screens.TaskPhoto }
+      component={screens.TaskPhoto}
       options={{
         title: i18n.t('PHOTO'),
       }}
-      initialParams={ initialParams }
+      initialParams={initialParams}
     />
     <Tab.Screen
       name="TaskSignature"
-      component={ screens.TaskSignature }
+      component={screens.TaskSignature}
       options={{
         title: i18n.t('SIGNATURE'),
       }}
-      initialParams={ initialParams }
+      initialParams={initialParams}
     />
   </Tab.Navigator>
-)
+);
 
 // The params are *NOT* passed to the child tab navigator
 // https://stackoverflow.com/a/68651234/333739
 const PreferencesAwareNavigator = ({ signatureScreenFirst, route }) => (
   <TabNavigator
-    initialRouteName={ signatureScreenFirst ? 'TaskSignature' : 'TaskPhoto' }
-    initialParams={ route.params } />
-)
+    initialRouteName={signatureScreenFirst ? 'TaskSignature' : 'TaskPhoto'}
+    initialParams={route.params}
+  />
+);
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   signatureScreenFirst: selectSignatureScreenFirst(state),
-})
+});
 
-export default connect(mapStateToProps)(PreferencesAwareNavigator)
+export default connect(mapStateToProps)(PreferencesAwareNavigator);

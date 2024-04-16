@@ -1,9 +1,9 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { changeDate } from '../../redux/Dispatch/actions';
-import { loadTasks, selectTaskSelectedDate } from '../../redux/Courier'
 import { Calendar } from '../../components/Calendar';
+import { loadTasks, selectTaskSelectedDate } from '../../redux/Courier';
+import { changeDate } from '../../redux/Dispatch/actions';
 
 export default function DateScreen({ navigation }) {
   const selectedDate = useSelector(selectTaskSelectedDate);
@@ -11,7 +11,7 @@ export default function DateScreen({ navigation }) {
 
   const onDateChange = date => {
     dispatch(changeDate(date));
-    dispatch(loadTasks(date))
+    dispatch(loadTasks(date));
 
     navigation.goBack();
   };

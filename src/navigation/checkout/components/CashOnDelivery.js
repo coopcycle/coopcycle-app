@@ -1,10 +1,10 @@
-import React from 'react'
-import { StyleSheet, View } from 'react-native'
-import { Center, Icon, Text } from 'native-base'
-import { useTranslation } from 'react-i18next'
-import Foundation from 'react-native-vector-icons/Foundation'
+import { Center, Icon, Text } from 'native-base';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { StyleSheet, View } from 'react-native';
+import Foundation from 'react-native-vector-icons/Foundation';
 
-import FooterButton from './FooterButton'
+import FooterButton from './FooterButton';
 
 const styles = StyleSheet.create({
   alert: {
@@ -18,24 +18,24 @@ const styles = StyleSheet.create({
     fontSize: 36,
     textAlign: 'center',
   },
-})
+});
 
 const CashOnDelivery = ({ onSubmit, disabled }) => {
-
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   return (
-    <Center flex={ 1 }>
-      <View style={ styles.alert }>
-        <Icon as={ Foundation } name="dollar-bill" style={ styles.icon } />
-        <Text>{ t('CASH_ON_DELIVERY_DISCLAIMER') }</Text>
+    <Center flex={1}>
+      <View style={styles.alert}>
+        <Icon as={Foundation} name="dollar-bill" style={styles.icon} />
+        <Text>{t('CASH_ON_DELIVERY_DISCLAIMER')}</Text>
       </View>
       <FooterButton
         isDisabled={disabled}
-        text={ t('SUBMIT') }
-        onPress={ onSubmit } />
+        text={t('SUBMIT')}
+        onPress={onSubmit}
+      />
     </Center>
-  )
-}
+  );
+};
 
-export default CashOnDelivery
+export default CashOnDelivery;
