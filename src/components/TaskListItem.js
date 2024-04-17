@@ -48,6 +48,19 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
+  tagsWrapper: {
+    flexWrap: 'wrap',
+    gap: 2,
+  },
+  tag: {
+    paddingVertical: 0,
+    paddingHorizontal: 4,
+    color: '#ffffff',
+    borderRadius: 4,
+    overflow: 'hidden',
+    textTransform: 'capitalize',
+    marginTop: 4,
+  },
 });
 
 const iconStyle = task => {
@@ -157,6 +170,7 @@ class TaskListItem extends Component {
 
   render() {
     const { color, task, index } = this.props;
+    console.log('🚀 ~ task:', task.tags);
 
     const itemStyle = [];
     const textStyle = [styles.text];
@@ -259,6 +273,23 @@ class TaskListItem extends Component {
                   />
                 )}
               </HStack>
+              {task.tags && task.tags.length ? (
+                <HStack style={styles.tagsWrapper}>
+                  {task.tags.map(tag => (
+                    <Text
+                      key={tag}
+                      style={[
+                        textStyle,
+                        styles.tag,
+                        {
+                          backgroundColor: tag.color,
+                        },
+                      ]}>
+                      {tag.name}
+                    </Text>
+                  ))}
+                </HStack>
+              ) : null}
             </VStack>
             <Icon as={FontAwesome} name="arrow-right" size="sm" />
           </HStack>
