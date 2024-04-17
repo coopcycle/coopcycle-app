@@ -170,7 +170,6 @@ class TaskListItem extends Component {
 
   render() {
     const { color, task, index } = this.props;
-    console.log('🚀 ~ task:', task.tags);
 
     const itemStyle = [];
     const textStyle = [styles.text];
