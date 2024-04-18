@@ -1,4 +1,5 @@
 import { Platform } from 'react-native';
+import moment from 'moment';
 import {
   LOGOUT_REQUEST,
   deletePushNotificationTokenSuccess,
@@ -18,9 +19,6 @@ import analyticsEvent from '../../../analytics/Event';
 import { loadOrder, loadOrderAndNavigate } from '../../Restaurant/actions';
 import { EVENT as EVENT_TASK_COLLECTION } from '../../../domain/TaskCollection';
 import { navigateAndLoadTasks } from '../../Courier/taskActions';
-import moment from 'moment';
-
-let isFetching = false;
 
 // As remote push notifications are configured very early,
 // most of the time the user won't be authenticated
@@ -118,6 +116,8 @@ export default ({ getState, dispatch }) => {
     onBackgroundMessage: message => onBackgroundMessage(message),
   });
 
+  let isFetching = false;
+
   return next => action => {
     const result = next(action);
     const state = getState();
@@ -161,7 +161,6 @@ export default ({ getState, dispatch }) => {
           isFetching = false;
         });
     }
-
     return result;
   };
 };
