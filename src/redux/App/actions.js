@@ -1,5 +1,6 @@
+import { createAction } from '@reduxjs/toolkit';
+import { createAction as createFsAction } from 'redux-actions';
 import { CommonActions } from '@react-navigation/native';
-import { createAction } from 'redux-actions';
 import analyticsEvent from '../../analytics/Event';
 import tracker from '../../analytics/Tracker';
 import userProperty from '../../analytics/UserProperty';
@@ -112,105 +113,105 @@ export const SET_SPINNER_DELAY_ENABLED = '@app/SET_IS_SPINNER_DELAY_ENABLED';
  * Action Creators
  */
 
-export const setLoading = createAction(SET_LOADING);
+export const setLoading = createFsAction(SET_LOADING);
 
-export const foregroundPushNotification = createAction(
+export const foregroundPushNotification = createFsAction(
   FOREGROUND_PUSH_NOTIFICATION,
   (event, params = {}) => ({ event, params }),
 );
 
-export const addNotification = createAction(
+export const addNotification = createFsAction(
   ADD_NOTIFICATION,
   (event, params = {}) => ({ event, params }),
 );
-export const clearNotifications = createAction(CLEAR_NOTIFICATIONS);
+export const clearNotifications = createFsAction(CLEAR_NOTIFICATIONS);
 
-export const _authenticationRequest = createAction(AUTHENTICATION_REQUEST);
-export const _authenticationSuccess = createAction(AUTHENTICATION_SUCCESS);
-const _authenticationFailure = createAction(AUTHENTICATION_FAILURE);
+export const _authenticationRequest = createFsAction(AUTHENTICATION_REQUEST);
+export const _authenticationSuccess = createFsAction(AUTHENTICATION_SUCCESS);
+const _authenticationFailure = createFsAction(AUTHENTICATION_FAILURE);
 
-export const clearAuthenticationErrors = createAction(
+export const clearAuthenticationErrors = createFsAction(
   CLEAR_AUTHENTICATION_ERRORS,
 );
 
-const resetPasswordInit = createAction(RESET_PASSWORD_INIT);
-const resetPasswordRequest = createAction(RESET_PASSWORD_REQUEST);
-const resetPasswordRequestSuccess = createAction(
+const resetPasswordInit = createFsAction(RESET_PASSWORD_INIT);
+const resetPasswordRequest = createFsAction(RESET_PASSWORD_REQUEST);
+const resetPasswordRequestSuccess = createFsAction(
   RESET_PASSWORD_REQUEST_SUCCESS,
 );
-const resetPasswordRequestFailure = createAction(
+const resetPasswordRequestFailure = createFsAction(
   RESET_PASSWORD_REQUEST_FAILURE,
 );
 
-export const logoutRequest = createAction(LOGOUT_REQUEST);
-export const _logoutSuccess = createAction(LOGOUT_SUCCESS);
-export const setServers = createAction(SET_SERVERS);
+export const logoutRequest = createFsAction(LOGOUT_REQUEST);
+export const _logoutSuccess = createFsAction(LOGOUT_SUCCESS);
+export const setServers = createFsAction(SET_SERVERS);
 
-const setUser = createAction(SET_USER);
-const _setBaseURL = createAction(SET_BASE_URL);
-const _setCurrentRoute = createAction(SET_CURRENT_ROUTE);
-const _setSelectServerError = createAction(SET_SELECT_SERVER_ERROR);
-const _clearSelectServerError = createAction(CLEAR_SELECT_SERVER_ERROR);
+const setUser = createFsAction(SET_USER);
+const _setBaseURL = createFsAction(SET_BASE_URL);
+const _setCurrentRoute = createFsAction(SET_CURRENT_ROUTE);
+const _setSelectServerError = createFsAction(SET_SELECT_SERVER_ERROR);
+const _clearSelectServerError = createFsAction(CLEAR_SELECT_SERVER_ERROR);
 
-const _resumeCheckoutAfterActivation = createAction(
+const _resumeCheckoutAfterActivation = createFsAction(
   RESUME_CHECKOUT_AFTER_ACTIVATION,
 );
 
-export const registerPushNotificationToken = createAction(
+export const registerPushNotificationToken = createFsAction(
   REGISTER_PUSH_NOTIFICATION_TOKEN,
 );
-export const savePushNotificationTokenSuccess = createAction(
+export const savePushNotificationTokenSuccess = createFsAction(
   SAVE_PUSH_NOTIFICATION_TOKEN_SUCCESS,
 );
-export const deletePushNotificationTokenSuccess = createAction(
+export const deletePushNotificationTokenSuccess = createFsAction(
   DELETE_PUSH_NOTIFICATION_TOKEN_SUCCESS,
 );
 
-const _loadMyStoresSuccess = createAction(LOAD_MY_STORES_SUCCESS);
+const _loadMyStoresSuccess = createFsAction(LOAD_MY_STORES_SUCCESS);
 
-const loadMyRestaurantsRequest = createAction(LOAD_MY_RESTAURANTS_REQUEST);
-const loadMyRestaurantsSuccess = createAction(LOAD_MY_RESTAURANTS_SUCCESS);
-const loadMyRestaurantsFailure = createAction(LOAD_MY_RESTAURANTS_FAILURE);
+const loadMyRestaurantsRequest = createFsAction(LOAD_MY_RESTAURANTS_REQUEST);
+const loadMyRestaurantsSuccess = createFsAction(LOAD_MY_RESTAURANTS_SUCCESS);
+const loadMyRestaurantsFailure = createFsAction(LOAD_MY_RESTAURANTS_FAILURE);
 
-const setSettings = createAction(SET_SETTINGS);
+const setSettings = createFsAction(SET_SETTINGS);
 
-export const setInternetReachable = createAction(SET_INTERNET_REACHABLE);
+export const setInternetReachable = createFsAction(SET_INTERNET_REACHABLE);
 
-export const setBackgroundGeolocationEnabled = createAction(
+export const setBackgroundGeolocationEnabled = createFsAction(
   SET_BACKGROUND_GEOLOCATION_ENABLED,
 );
-export const backgroundPermissionDisclosed = createAction(
+export const backgroundPermissionDisclosed = createFsAction(
   BACKGROUND_PERMISSION_DISCLOSED,
 );
 
-export const setModal = createAction(SET_MODAL);
-export const resetModal = createAction(RESET_MODAL);
-export const closeModal = createAction(CLOSE_MODAL);
-export const onboarded = createAction(ONBOARDED);
+export const setModal = createFsAction(SET_MODAL);
+export const resetModal = createFsAction(RESET_MODAL);
+export const closeModal = createFsAction(CLOSE_MODAL);
+export const onboarded = createFsAction(ONBOARDED);
 
-export const acceptTermsAndConditions = createAction(
+export const acceptTermsAndConditions = createFsAction(
   ACCEPT_TERMS_AND_CONDITIONS,
 );
-export const acceptPrivacyPolicy = createAction(ACCEPT_PRIVACY_POLICY);
+export const acceptPrivacyPolicy = createFsAction(ACCEPT_PRIVACY_POLICY);
 
-const loadTermsAndConditionsRequest = createAction(
+const loadTermsAndConditionsRequest = createFsAction(
   LOAD_TERMS_AND_CONDITIONS_REQUEST,
 );
-const loadTermsAndConditionsSuccess = createAction(
+const loadTermsAndConditionsSuccess = createFsAction(
   LOAD_TERMS_AND_CONDITIONS_SUCCESS,
 );
-const loadTermsAndConditionsFailure = createAction(
+const loadTermsAndConditionsFailure = createFsAction(
   LOAD_TERMS_AND_CONDITIONS_FAILURE,
 );
 
-const loadPrivacyPolicyRequest = createAction(LOAD_PRIVACY_POLICY_REQUEST);
-const loadPrivacyPolicySuccess = createAction(LOAD_PRIVACY_POLICY_SUCCESS);
-const loadPrivacyPolicyFailure = createAction(LOAD_PRIVACY_POLICY_FAILURE);
+const loadPrivacyPolicyRequest = createFsAction(LOAD_PRIVACY_POLICY_REQUEST);
+const loadPrivacyPolicySuccess = createFsAction(LOAD_PRIVACY_POLICY_SUCCESS);
+const loadPrivacyPolicyFailure = createFsAction(LOAD_PRIVACY_POLICY_FAILURE);
 
-const registrationErrors = createAction(REGISTRATION_ERRORS);
-const loginByEmailErrors = createAction(LOGIN_BY_EMAIL_ERRORS);
+const registrationErrors = createFsAction(REGISTRATION_ERRORS);
+const loginByEmailErrors = createFsAction(LOGIN_BY_EMAIL_ERRORS);
 
-export const setSpinnerDelayEnabled = createAction(SET_SPINNER_DELAY_ENABLED);
+export const setSpinnerDelayEnabled = createFsAction(SET_SPINNER_DELAY_ENABLED);
 
 function setBaseURL(baseURL) {
   return (dispatch, getState) => {
