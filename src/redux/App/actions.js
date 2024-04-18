@@ -213,6 +213,9 @@ const loginByEmailErrors = createFsAction(LOGIN_BY_EMAIL_ERRORS);
 
 export const setSpinnerDelayEnabled = createFsAction(SET_SPINNER_DELAY_ENABLED);
 
+export const startSound = createAction('START_SOUND');
+export const stopSound = createAction('STOP_SOUND');
+
 function setBaseURL(baseURL) {
   return (dispatch, getState) => {
     dispatch(_setBaseURL(baseURL));

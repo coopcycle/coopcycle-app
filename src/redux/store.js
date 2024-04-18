@@ -16,6 +16,7 @@ import SentryMiddleware from './middlewares/SentryMiddleware';
 import { ringOnTaskListUpdated } from './Courier/taskMiddlewares';
 import CentrifugoMiddleware from './middlewares/CentrifugoMiddleware';
 import { filterExpiredCarts } from './Checkout/middlewares';
+import SoundMiddleware from './middlewares/SoundMiddleware';
 
 const middlewares = [
   thunk,
@@ -26,6 +27,7 @@ const middlewares = [
   CentrifugoMiddleware,
   SentryMiddleware,
   filterExpiredCarts,
+  SoundMiddleware,
 ];
 
 if (!Config.DEFAULT_SERVER) {

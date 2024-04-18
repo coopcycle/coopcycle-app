@@ -1,74 +1,63 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { clearNotifications } from '../redux/App/actions';
+import {
+  clearNotifications,
+  startSound,
+  stopSound,
+} from '../redux/App/actions';
 import NotificationModal from './NotificationModal';
-import usePlayNotificationSound from '../hooks/usePlayNotificationSound';
-import { selectNotifications } from '../redux/App/selectors';
-import { EVENT as EVENT_ORDER } from '../domain/Order';
-import { EVENT as EVENT_TASK_COLLECTION } from '../domain/TaskCollection';
-import { selectTasksChangedAlertSound } from '../redux/Courier';
-import { selectAutoAcceptOrdersEnabled } from '../redux/Restaurant/selectors';
+import {
+  selectNotificationsToDisplay,
+  selectNotificationsWithSound,
+} from '../redux/App/selectors';
+import { AppState } from 'react-native';
+
+const NOTIFICATION_DURATION_MS = 10000;
 
 /**
  * This component is used
- * 1/ To show notifications when the app is in foreground (see NotificationModal)
- * 2/ To play a sound when a notification is received (see usePlayNotificationSound)
+ * 1/ To show notifications when the app is in the foreground (using NotificationModal)
+ * 2/ To play a sound when a notification is received (via SoundMiddleware)
+ *
+ * Push notifications are configured and received in PushNotificationMiddleware
  */
 export default function NotificationHandler() {
-  const allNotifications = useSelector(selectNotifications);
-
-  const tasksChangedAlertSound = useSelector(selectTasksChangedAlertSound);
-
-  const notificationsWithSound = allNotifications.filter(notification => {
-    switch (notification.event) {
-      case EVENT_ORDER.CREATED:
-        return true;
-      case EVENT_TASK_COLLECTION.CHANGED:
-        return tasksChangedAlertSound;
-      default:
-        return false;
-    }
-  });
-
-  const autoAcceptOrdersEnabled = useSelector(selectAutoAcceptOrdersEnabled);
-
-  const notificationsToDisplay = allNotifications.filter(notification => {
-    switch (notification.event) {
-      case EVENT_ORDER.CREATED:
-        return !autoAcceptOrdersEnabled;
-      case EVENT_TASK_COLLECTION.CHANGED:
-        return true;
-      default:
-        return true;
-    }
-  });
-
-  const { isSoundPlaying, stopSound } = usePlayNotificationSound(
-    notificationsWithSound,
-  );
+  const notificationsToDisplay = useSelector(selectNotificationsToDisplay);
+  const notificationsWithSound = useSelector(selectNotificationsWithSound);
 
   const dispatch = useDispatch();
 
-  const clear = useCallback(() => {
-    stopSound();
-    dispatch(clearNotifications());
-  }, [stopSound, dispatch]);
+  useEffect(() => {
+    if (
+      notificationsToDisplay.length > 0 ||
+      notificationsWithSound.length > 0
+    ) {
+      setTimeout(() => {
+        dispatch(clearNotifications());
+      }, NOTIFICATION_DURATION_MS);
+    }
+  }, [notificationsToDisplay, notificationsWithSound, dispatch]);
 
   useEffect(() => {
-    if (isSoundPlaying) {
-      // Clear notifications after 10 seconds
-      setTimeout(() => {
-        clear();
-      }, 10000);
+    // on Android, when notification is received, OS let us execute some code
+    // but it's very limited, e.g. handlers set via setTimeout are not executed
+    // so we do not play sound in that case, because we will not be able to stop it
+    if (
+      notificationsWithSound.length > 0 &&
+      AppState.currentState === 'active'
+    ) {
+      dispatch(startSound());
+    } else {
+      dispatch(stopSound());
     }
-  }, [isSoundPlaying, clear]);
+  }, [notificationsWithSound, dispatch]);
 
   return (
     <NotificationModal
       notifications={notificationsToDisplay}
       onDismiss={() => {
-        clear();
+        dispatch(clearNotifications());
       }}
     />
   );

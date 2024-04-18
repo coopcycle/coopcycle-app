@@ -1,8 +1,14 @@
 import _ from 'lodash';
 import { createSelector } from 'reselect';
 
-import { selectIsTasksLoading } from '../Courier/taskSelectors';
+import {
+  selectIsTasksLoading,
+  selectTasksChangedAlertSound,
+} from '../Courier/taskSelectors';
 import { selectIsDispatchFetching } from '../Dispatch/selectors';
+import { EVENT as EVENT_ORDER } from '../../domain/Order';
+import { EVENT as EVENT_TASK_COLLECTION } from '../../domain/TaskCollection';
+import { selectAutoAcceptOrdersEnabled } from '../Restaurant/selectors';
 
 export const selectUser = state => state.app.user;
 export const selectHttpClient = state => state.app.httpClient;
@@ -151,3 +157,35 @@ export const selectIsSpinnerDelayEnabled = state =>
 export const selectCurrentRoute = state => state.app.currentRoute;
 
 export const selectNotifications = state => state.app.notifications;
+
+export const selectNotificationsWithSound = createSelector(
+  selectNotifications,
+  selectTasksChangedAlertSound,
+  (notifications, tasksChangedAlertSound) =>
+    notifications.filter(notification => {
+      switch (notification.event) {
+        case EVENT_ORDER.CREATED:
+          return true;
+        case EVENT_TASK_COLLECTION.CHANGED:
+          return tasksChangedAlertSound;
+        default:
+          return false;
+      }
+    }),
+);
+
+export const selectNotificationsToDisplay = createSelector(
+  selectNotifications,
+  selectAutoAcceptOrdersEnabled,
+  (notifications, autoAcceptOrdersEnabled) =>
+    notifications.filter(notification => {
+      switch (notification.event) {
+        case EVENT_ORDER.CREATED:
+          return !autoAcceptOrdersEnabled;
+        case EVENT_TASK_COLLECTION.CHANGED:
+          return true;
+        default:
+          return true;
+      }
+    }),
+);
