@@ -4739,6 +4739,18 @@
     "@styled-system/core" "^5.1.2"
     "@styled-system/css" "^5.1.5"
 
+"@tabler/icons-react-native@^3.2.0":
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/@tabler/icons-react-native/-/icons-react-native-3.2.0.tgz#55760e8bd713fe81a1b39c1425b36162250e79d0"
+  integrity sha512-uJRjdW7xJU40hlt6ua6I4keb30Zddiftw1wldOEI2LjjVr33irxpScTxZ3jiyRGgDCqdDLruF5k4Gb9iArlSyg==
+  dependencies:
+    "@tabler/icons" "3.2.0"
+
+"@tabler/icons@3.2.0":
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/@tabler/icons/-/icons-3.2.0.tgz#4adcde021943d50f2c228dab6145fd9c9b639f85"
+  integrity sha512-h8GQ2rtxgiSjltrVz4vcopAxTPSpUSUi5nBfJ09H3Bk4fJk6wZ/dVUjzhv/BHfDwGTkAxZBiYe/Q/T95cPeg5Q==
+
 "@testing-library/react-native@^12.4.3":
   version "12.4.3"
   resolved "https://registry.yarnpkg.com/@testing-library/react-native/-/react-native-12.4.3.tgz#57cd6a88b289f19144558b5e97336b57101af3ec"

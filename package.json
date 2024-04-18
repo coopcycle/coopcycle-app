@@ -37,6 +37,7 @@
     "@reduxjs/toolkit": "^1.9.6",
     "@sentry/react-native": "^5.19.1",
     "@stripe/stripe-react-native": "^0.37.0",
+    "@tabler/icons-react-native": "^3.2.0",
     "@turf/turf": "^6.5.0",
     "abortcontroller-polyfill": "^1.7.5",
     "axios": "^1.6.8",
