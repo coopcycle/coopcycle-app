@@ -57,7 +57,10 @@ export function getNextShippingTimeAsText(restaurant, now) {
 }
 
 export function getRestaurantIsAvailable(restaurant) {
-  if (!restaurant.timing.delivery && !restaurant.timing.collection) {
+  if (
+    (!restaurant.timing.delivery && !restaurant.timing.collection) ||
+    restaurant.timing.delivery.range[0] === restaurant.timing.delivery.range[1]
+  ) {
     return true;
   } else {
     return false;
