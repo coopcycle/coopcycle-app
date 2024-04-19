@@ -182,19 +182,6 @@ export default (state = initialState, action = {}) => {
         isCentrifugoConnected: false,
       };
 
-    case CENTRIFUGO_MESSAGE: {
-      const { name, data } = action.payload;
-
-      switch (name) {
-        case EVENT_ORDER.CREATED:
-          return updateNotifications(state, name, data);
-        // case EVENT_TASK_COLLECTION.CHANGED:
-        // this event is currently handled by taskMiddlewares; maybe we should move it here
-        default:
-          return state;
-      }
-    }
-
     case FOREGROUND_PUSH_NOTIFICATION: {
       const { event, params } = action.payload;
 

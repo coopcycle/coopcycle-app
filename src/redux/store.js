@@ -17,6 +17,7 @@ import { ringOnTaskListUpdated } from './Courier/taskMiddlewares';
 import CentrifugoMiddleware from './middlewares/CentrifugoMiddleware';
 import { filterExpiredCarts } from './Checkout/middlewares';
 import SoundMiddleware from './middlewares/SoundMiddleware';
+import { notifyOnNewOrderCreated } from './Restaurant/middlewares';
 
 const middlewares = [
   thunk,
@@ -32,7 +33,12 @@ const middlewares = [
 
 if (!Config.DEFAULT_SERVER) {
   middlewares.push(
-    ...[GeolocationMiddleware, BluetoothMiddleware, ringOnTaskListUpdated],
+    ...[
+      GeolocationMiddleware,
+      BluetoothMiddleware,
+      notifyOnNewOrderCreated,
+      ringOnTaskListUpdated,
+    ],
   );
 }
 
