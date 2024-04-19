@@ -1,7 +1,7 @@
+import { IconPlugX } from '@tabler/icons-react-native';
 import { Text, useColorModeValue } from 'native-base';
 import React from 'react';
 import { Image, StyleSheet, View } from 'react-native';
-import Svg, { Path } from 'react-native-svg';
 import i18n from '../i18n';
 import { TimingBadge } from '../navigation/checkout/components/RestaurantBadges';
 import { getRestaurantIsAvailable } from '../utils/checkout';
@@ -49,11 +49,6 @@ const styles = StyleSheet.create({
     fontWeight: 500,
     fontSize: 16,
     color: 'white',
-  },
-  closedIcon: {
-    height: 32,
-    width: 32,
-    stroke: 'white',
   },
   logoWrapper: {
     borderRadius: 16,
@@ -146,23 +141,7 @@ export const RestaurantCard = ({ restaurant }) => {
               styles.overlay,
               { backgroundColor: overlayBackgroundColor },
             ]}>
-            <Svg
-              style={[styles.closedIcon]}
-              xmlns="http://www.w3.org/2000/svg"
-              // width={22}
-              // height={22}
-              viewBox="0 0 24 24"
-              strokeWidth="1.5"
-              fill="none"
-              strokeLinecap="round"
-              strokeLinejoin="round">
-              <Path d="M13.55 17.733a5.806 5.806 0 0 1 -7.356 -4.052a5.81 5.81 0 0 1 1.537 -5.627l2.054 -2.054l7.165 7.165" />
-              <Path d="M4 20l3.5 -3.5" />
-              <Path d="M15 4l-3.5 3.5" />
-              <Path d="M20 9l-3.5 3.5" />
-              <Path d="M16 16l4 4" />
-              <Path d="M20 16l-4 4" />
-            </Svg>
+            <IconPlugX size={32} color={'white'} strokeWidth={1.5} />
             <Text style={styles.closedLabel} numberOfLines={1}>
               {i18n.t('NOT_AVAILABLE_ATM')}
             </Text>
