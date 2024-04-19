@@ -24,57 +24,64 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlignVertical: 'center',
     verticalAlign: 'middle',
+    fontSize: 10,
   },
 });
 
-function RestaurantProductBadge({ name, color, backgroundColor, icon }) {
+const iconSize = 14;
+const dietColor = 'hsl(136, 85%, 25%)';
+const dietIcon = <IconLeaf stroke={dietColor} size={iconSize} />;
+const allergenColor = 'hsl(60, 92%, 25%)';
+const allergenIcon = (
+  <IconExclamationCircle stroke={allergenColor} size={iconSize} />
+);
+const zeroWasteColor = 'hsl(158, 62%, 25%)';
+const zeroWasteIcon = <IconRecycle stroke={zeroWasteColor} size={iconSize} />;
+
+function RestaurantProductBadge({ name, color, icon }) {
   const value = i18next.t(name);
   return (
-    <View style={[styles.badge, { backgroundColor }]}>
+    <View
+      style={[
+        styles.badge,
+        {
+          backgroundColor: color
+            .replace(/hsl/, 'hsla')
+            .replace(/\)$/, ', 0.1)'),
+        },
+      ]}>
       {icon}
-      <Text style={[styles.badgeText, { color, fontSize: 10 }]}>{value}</Text>
+      <Text style={[styles.badgeText, { color }]}>{value}</Text>
     </View>
   );
 }
 
 export function DietBadge({ name }) {
-  const color = 'hsl(136, 85%, 25%)';
-  const backgroundColor = 'hsla(136, 85%, 35%, 0.1)';
-  const icon = <IconLeaf stroke={color} size={14} />;
   return (
     <RestaurantProductBadge
       name={`RESTRICTED_DIET.${name}`}
-      color={color}
-      backgroundColor={backgroundColor}
-      icon={icon}
+      color={dietColor}
+      icon={dietIcon}
     />
   );
 }
 
 export function AllergenBadge({ name }) {
-  const color = 'hsl(60, 92%, 25%)';
-  const backgroundColor = 'hsla(60, 82%, 35%, 0.1)';
-  const icon = <IconExclamationCircle stroke={color} size={14} />;
   return (
     <RestaurantProductBadge
       name={`ALLERGEN.${name}`}
-      color={color}
-      backgroundColor={backgroundColor}
-      icon={icon}
+      color={allergenColor}
+      icon={allergenIcon}
     />
   );
 }
 
 export function ZeroWasteBadge() {
-  const color = 'hsl(158, 62%, 25%)';
-  const backgroundColor = 'hsla(158, 62%, 35%, 0.1)';
-  const icon = <IconRecycle stroke={color} size={14} />;
   return (
     <RestaurantProductBadge
       name={'ZERO_WASTE'}
-      color={color}
-      backgroundColor={backgroundColor}
-      icon={icon}
+      color={zeroWasteColor}
+      icon={zeroWasteIcon}
     />
   );
 }
