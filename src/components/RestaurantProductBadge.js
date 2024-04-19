@@ -45,20 +45,16 @@ function RestaurantProductBadge({ name, color, icon }) {
     color,
     color
       .replace(/25%\)/, '66%)')
-      .replace(/,\s(\d+)%,\s/, (_, p) => ', ' + Math.floor(p) * 1 + '%, '),
+      .replace(/,\s(\d+)%,\s/, (_, p) => ', ' + Math.floor(p) * 0.5 + '%, '),
+  );
+  const backgroundColor = useColorModeValue(
+    color.replace(/hsl/, 'hsla').replace(/\)$/, ', 0.1)'),
+    color.replace(/hsl/, 'hsla').replace(/\)$/, ', 0.15)'),
   );
 
   const value = i18next.t(name);
   return (
-    <View
-      style={[
-        styles.badge,
-        {
-          backgroundColor: color
-            .replace(/hsl/, 'hsla')
-            .replace(/\)$/, ', 0.1)'),
-        },
-      ]}>
+    <View style={[styles.badge, { backgroundColor }]}>
       {icon(color)}
       <Text style={[styles.badgeText, { color }]}>{value}</Text>
     </View>
