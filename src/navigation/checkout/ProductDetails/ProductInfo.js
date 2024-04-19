@@ -56,19 +56,14 @@ export const ProductInfo = ({ product }) => {
               <DietBadge key={i} name={item} />
             ))}
           </View>
-          {/* {product.suitableForDiet && (
-            <RestrictedDietList items={product.suitableForDiet} />
-          )} */}
           <View style={styles.badgesWrapper}>
             {allergens.map((item, i) => (
               <AllergenBadge key={i} name={item} />
             ))}
           </View>
-          {/* {product.allergens && <AllergenList items={product.allergens} />} */}
           <View style={styles.badgesWrapper}>
             {product.reusablePackagingEnabled ? <ZeroWasteBadge /> : null}
           </View>
-          {/* {product.reusablePackagingEnabled && <ZeroWasteBadge />} */}
         </View>
       )}
     </View>

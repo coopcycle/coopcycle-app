@@ -4,7 +4,7 @@ import {
   IconRecycle,
 } from '@tabler/icons-react-native';
 import i18next from 'i18next';
-import { Text, View } from 'native-base';
+import { Text, View, useColorModeValue } from 'native-base';
 import React from 'react';
 import { StyleSheet } from 'react-native';
 
@@ -29,16 +29,25 @@ const styles = StyleSheet.create({
 });
 
 const iconSize = 14;
+
 const dietColor = 'hsl(136, 85%, 25%)';
-const dietIcon = <IconLeaf stroke={dietColor} size={iconSize} />;
 const allergenColor = 'hsl(60, 92%, 25%)';
-const allergenIcon = (
-  <IconExclamationCircle stroke={allergenColor} size={iconSize} />
-);
 const zeroWasteColor = 'hsl(158, 62%, 25%)';
-const zeroWasteIcon = <IconRecycle stroke={zeroWasteColor} size={iconSize} />;
+
+const dietIcon = color => <IconLeaf stroke={color} size={iconSize} />;
+const allergenIcon = color => (
+  <IconExclamationCircle stroke={color} size={iconSize} />
+);
+const zeroWasteIcon = color => <IconRecycle stroke={color} size={iconSize} />;
 
 function RestaurantProductBadge({ name, color, icon }) {
+  color = useColorModeValue(
+    color,
+    color
+      .replace(/25%\)/, '66%)')
+      .replace(/,\s(\d+)%,\s/, (_, p) => ', ' + Math.floor(p) * 1 + '%, '),
+  );
+
   const value = i18next.t(name);
   return (
     <View
@@ -50,7 +59,7 @@ function RestaurantProductBadge({ name, color, icon }) {
             .replace(/\)$/, ', 0.1)'),
         },
       ]}>
-      {icon}
+      {icon(color)}
       <Text style={[styles.badgeText, { color }]}>{value}</Text>
     </View>
   );
