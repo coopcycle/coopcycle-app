@@ -17,6 +17,7 @@ class ConfigureServer extends Component {
             left: 0,
             width: width,
             height: width / 3.58,
+            zIndex:-1,
           }}
           source={require('../assets/images/home-bg.png')}
         />
