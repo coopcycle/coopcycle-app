@@ -178,8 +178,8 @@ class CompleteTask extends Component {
     this.props.markTaskFailed(
       this.props.httpClient,
       task,
-      failureReason,
       notes,
+      failureReason,
       () => {
         // Make sure to use merge = true, so that it doesn't break
         // when navigating to DispatchTaskList

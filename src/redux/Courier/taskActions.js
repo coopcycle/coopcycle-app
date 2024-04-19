@@ -190,7 +190,7 @@ export function loadTasks(selectedDate, refresh = false) {
   };
 }
 
-function uploadTaskImages(task, state) {
+function uploadTaskImages(task, url, state) {
   const signatures = selectSignatures(state);
   const pictures = selectPictures(state);
 
@@ -201,17 +201,17 @@ function uploadTaskImages(task, state) {
   }
 
   const promises = files.map(file =>
-    uploadTaskImage(state.app.httpClient, file, {
+    uploadTaskImage(state.app.httpClient, url, file, {
       headers: {
         'X-Attach-To': task['@id'],
       },
-    }),
+    }, url),
   );
 
   return Promise.all(promises);
 }
 
-function uploadTasksImages(tasks, state) {
+function uploadTasksImages(tasks, url, state) {
   const signatures = selectSignatures(state);
   const pictures = selectPictures(state);
 
@@ -222,7 +222,7 @@ function uploadTasksImages(tasks, state) {
   }
 
   const promises = files.map(file =>
-    uploadTaskImage(state.app.httpClient, file, {
+    uploadTaskImage(state.app.httpClient, url, file, {
       headers: {
         'X-Attach-To': tasks.map(task => task['@id']).join(';'),
       },
@@ -235,40 +235,32 @@ function uploadTasksImages(tasks, state) {
 export function markTaskFailed(
   httpClient,
   task,
-  notes = '',
-  reason = null,
+  description = null,
+  failureReasonCode = null,
   onSuccess,
-  contactName = '',
 ) {
   return function (dispatch, getState) {
     dispatch(markTaskFailedRequest(task));
 
     let payload = {
-      notes,
-      reason,
+      description,
+      failureReasonCode,
+      task: task['@id']
     };
 
-    if (!_.isEmpty(contactName)) {
-      payload = {
-        ...payload,
-        contactName,
-      };
-    }
 
     // Make sure to return a promise for testing
-    return uploadTaskImages(task, getState())
-      .then(uploadTasks => {
         return httpClient
-          .put(task['@id'] + '/failed', payload)
-          .then(savedTask => {
-            httpClient.execUploadTask(uploadTasks);
+          .post('/api/incidents', payload)
+          .then(incident => {
+            uploadTaskImages(incident, '/api/incident_images', getState())
+            .then(uploadTasks => httpClient.execUploadTask(uploadTasks));
             dispatch(clearFiles());
-            dispatch(markTaskFailedSuccess(savedTask));
+            dispatch(markTaskFailedSuccess(incident));
             if (typeof onSuccess === 'function') {
               setTimeout(() => onSuccess(), 100);
             }
-          });
-      })
+          })
       .catch(e => {
         dispatch(markTaskFailedFailure(e));
         setTimeout(() => showAlert(e), 100);
@@ -298,7 +290,7 @@ export function markTaskDone(
     }
 
     // Make sure to return a promise for testing
-    return uploadTaskImages(task, getState())
+    return uploadTaskImages(task, '/api/task_images', getState())
       .then(uploadTasks => {
         return httpClient
           .put(task['@id'] + '/done', payload)
@@ -384,8 +376,8 @@ export function startTask(task, cb) {
   };
 }
 
-function uploadTaskImage(httpClient, file, options) {
-  return httpClient.uploadFileAsync('/api/task_images', file, options);
+function uploadTaskImage(httpClient, url, file, options) {
+  return httpClient.uploadFileAsync(url, file, options);
 }
 
 export function setTasksChangedAlertSound(enabled) {
