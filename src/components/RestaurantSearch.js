@@ -42,6 +42,20 @@ const styles = StyleSheet.create({
   },
 });
 
+const IconPin = ({ color }) => (
+  <Svg
+    width="13"
+    height="17"
+    viewBox="0 0 13 17"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg">
+    <Path
+      d="M6.15877 16.3022C1.6182 9.71972 0.775391 9.04416 0.775391 6.625C0.775391 3.31128 3.46167 0.625 6.77539 0.625C10.0891 0.625 12.7754 3.31128 12.7754 6.625C12.7754 9.04416 11.9326 9.71972 7.39202 16.3022C7.09405 16.7326 6.4567 16.7326 6.15877 16.3022ZM6.77539 9.125C8.15611 9.125 9.27539 8.00572 9.27539 6.625C9.27539 5.24428 8.15611 4.125 6.77539 4.125C5.39467 4.125 4.27539 5.24428 4.27539 6.625C4.27539 8.00572 5.39467 9.125 6.77539 9.125Z"
+      fill={color}
+    />
+  </Svg>
+);
+
 function RestaurantSearch(props) {
   const navigation = useNavigation();
   const backgroundColor = useColorModeValue('#fff', '#201E1E');
@@ -59,17 +73,7 @@ function RestaurantSearch(props) {
           navigation.navigate('AccountAddresses', { action: 'search' });
         }}>
         <View style={[styles.input, { borderColor }]}>
-          <Svg
-            width="13"
-            height="17"
-            viewBox="0 0 13 17"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg">
-            <Path
-              d="M6.15877 16.3022C1.6182 9.71972 0.775391 9.04416 0.775391 6.625C0.775391 3.31128 3.46167 0.625 6.77539 0.625C10.0891 0.625 12.7754 3.31128 12.7754 6.625C12.7754 9.04416 11.9326 9.71972 7.39202 16.3022C7.09405 16.7326 6.4567 16.7326 6.15877 16.3022ZM6.77539 9.125C8.15611 9.125 9.27539 8.00572 9.27539 6.625C9.27539 5.24428 8.15611 4.125 6.77539 4.125C5.39467 4.125 4.27539 5.24428 4.27539 6.625C4.27539 8.00572 5.39467 9.125 6.77539 9.125Z"
-              fill={fill}
-            />
-          </Svg>
+          <IconPin color={fill} />
           <Text fontSize={'md'} numberOfLines={1}>
             {props.defaultValue?.streetAddress}
           </Text>
