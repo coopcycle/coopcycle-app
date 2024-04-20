@@ -37,6 +37,9 @@ const styles = StyleSheet.create({
   textDanger: {
     color: redColor,
   },
+  hasIncident: {
+    borderColor: yellowColor,
+  },
   icon: {
     fontSize: 18,
   },
@@ -290,6 +293,7 @@ class TaskListItem extends Component {
                 </HStack>
               ) : null}
             </VStack>
+            {task.hasIncidents && <Icon as={FontAwesome} name="exclamation-triangle" size="md" style={{ backgroundColor: yellowColor, color: redColor, marginRight: 12, borderRadius: 5 }} />}
             <Icon as={FontAwesome} name="arrow-right" size="sm" />
           </HStack>
         </ItemTouchable>

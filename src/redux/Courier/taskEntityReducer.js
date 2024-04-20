@@ -84,6 +84,17 @@ function replaceItem(state, payload) {
   return state;
 }
 
+
+function updateItem(state, id, payload) {
+  const index = state.findIndex(item => item['@id'] === id);
+
+  if (index !== -1) {
+    return state.map((item, i) => (i === index ? { ...item, ...payload } : item));
+  }
+
+  return state;
+}
+
 function replaceItems(prevItems, items) {
   return prevItems.map(prevItem => {
     const toReplace = items.find(i => i['@id'] === prevItem['@id']);
@@ -143,11 +154,20 @@ export const tasksEntityReducer = (
 
     case MARK_TASKS_DONE_FAILURE:
     case REPORT_INCIDENT_FAILURE:
-    case REPORT_INCIDENT_SUCCESS: //TODO: Move to its own reducer
       return {
         ...state,
         isFetching: false,
       };
+
+    case REPORT_INCIDENT_SUCCESS:
+      return {
+        ...state,
+        isFetching: false,
+        items: _.mapValues(state.items, tasks =>
+          updateItem(tasks, action.payload.task, { hasIncidents: true }),
+        ),
+      }
+
 
     case LOAD_TASKS_SUCCESS:
       return {
