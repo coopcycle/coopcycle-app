@@ -47,6 +47,7 @@ import {
 } from '../../redux/Courier';
 import { greenColor, yellowColor } from '../../styles/common';
 import { doneIconName, incidentIconName } from './styles/common';
+import { reportIncident } from '../../redux/Courier/taskActions';
 
 const DELETE_ICON_SIZE = 32;
 const CONTENT_PADDING = 20;
@@ -192,6 +193,27 @@ class CompleteTask extends Component {
     );
   }
 
+
+  reportIncident() {
+    const task = this.props.route.params?.task;
+    const { notes, failureReason } = this.state;
+
+    this.props.reportIncident(
+      this.props.httpClient,
+      task,
+      notes,
+      failureReason,
+      () => {
+        // Make sure to use merge = true, so that it doesn't break
+        // when navigating to DispatchTaskList
+        this.props.navigation.navigate({
+          name: this.props.route.params?.navigateAfter,
+          merge: true,
+        });
+      }
+    );
+  }
+
   onSwipeComplete() {
     this.setState({ isContactNameModalVisible: false });
   }
@@ -276,10 +298,10 @@ class CompleteTask extends Component {
     const footerBgColor = success ? greenColor : yellowColor;
     const footerText = success
       ? this.props.t('VALIDATE')
-      : this.props.t('MARK_FAILED');
+      : this.props.t('REPORT_INCIDENT');
     const onPress = success
       ? this.markTaskDone.bind(this)
-      : this.markTaskFailed.bind(this);
+      : this.reportIncident.bind(this);
 
     const contactName = this.resolveContactName();
 
@@ -517,6 +539,8 @@ function mapDispatchToProps(dispatch) {
       dispatch(markTaskDone(client, task, notes, onSuccess, contactName)),
     markTasksDone: (client, tasks, notes, onSuccess, contactName) =>
       dispatch(markTasksDone(client, tasks, notes, onSuccess, contactName)),
+    reportIncident: (client, task, notes, failureReasonCode ,onSuccess) =>
+      dispatch(reportIncident(client, task, notes, failureReasonCode, onSuccess)),
     deleteSignatureAt: index => dispatch(deleteSignatureAt(index)),
     deletePictureAt: index => dispatch(deletePictureAt(index)),
   };

@@ -28,6 +28,9 @@ import {
   START_TASK_FAILURE,
   START_TASK_REQUEST,
   START_TASK_SUCCESS,
+  REPORT_INCIDENT_REQUEST,
+  REPORT_INCIDENT_SUCCESS,
+  REPORT_INCIDENT_FAILURE,
 } from './taskActions';
 
 /*
@@ -100,6 +103,7 @@ export const tasksEntityReducer = (
     case MARK_TASK_DONE_REQUEST:
     case MARK_TASK_FAILED_REQUEST:
     case MARK_TASKS_DONE_REQUEST:
+    case REPORT_INCIDENT_REQUEST:
       return {
         ...state,
         loadTasksFetchError: false,
@@ -138,6 +142,8 @@ export const tasksEntityReducer = (
       };
 
     case MARK_TASKS_DONE_FAILURE:
+    case REPORT_INCIDENT_FAILURE:
+    case REPORT_INCIDENT_SUCCESS: //TODO: Move to its own reducer
       return {
         ...state,
         isFetching: false,

@@ -28,6 +28,9 @@ export const MARK_TASK_FAILED_FAILURE = 'MARK_TASK_FAILED_FAILURE';
 export const START_TASK_REQUEST = 'START_TASK_REQUEST';
 export const START_TASK_SUCCESS = 'START_TASK_SUCCESS';
 export const START_TASK_FAILURE = 'START_TASK_FAILURE';
+export const REPORT_INCIDENT_REQUEST = 'REPORT_INCIDENT_REQUEST';
+export const REPORT_INCIDENT_SUCCESS = 'REPORT_INCIDENT_SUCCESS';
+export const REPORT_INCIDENT_FAILURE = 'REPORT_INCIDENT_FAILURE';
 
 export const ADD_PICTURE = 'ADD_PICTURE';
 export const ADD_SIGNATURE = 'ADD_SIGNATURE';
@@ -69,6 +72,9 @@ export const markTaskFailedFailure = createAction(MARK_TASK_FAILED_FAILURE);
 export const startTaskRequest = createAction(START_TASK_REQUEST);
 export const startTaskSuccess = createAction(START_TASK_SUCCESS);
 export const startTaskFailure = createAction(START_TASK_FAILURE);
+export const reportIncidentRequest = createAction(REPORT_INCIDENT_REQUEST);
+export const reportIncidentSuccess = createAction(REPORT_INCIDENT_SUCCESS);
+export const reportIncidentFailure = createAction(REPORT_INCIDENT_FAILURE);
 
 export const addPicture = createAction(ADD_PICTURE, (task, base64) => ({
   task,
@@ -232,7 +238,8 @@ function uploadEntitiesImages(entities, url, state) {
   return Promise.all(promises);
 }
 
-export function markTaskFailed(
+
+export function reportIncident(
   httpClient,
   task,
   description = null,
@@ -240,7 +247,7 @@ export function markTaskFailed(
   onSuccess,
 ) {
   return function (dispatch, getState) {
-    dispatch(markTaskFailedRequest(task));
+    dispatch(reportIncidentRequest(task));
 
     let payload = {
       description,
@@ -256,10 +263,55 @@ export function markTaskFailed(
         uploadEntityImages(incident, '/api/incident_images', getState())
           .then(uploadTasks => httpClient.execUploadTask(uploadTasks));
         dispatch(clearFiles());
-        dispatch(markTaskFailedSuccess(incident));
+        dispatch(reportIncidentSuccess(incident));
         if (typeof onSuccess === 'function') {
           setTimeout(() => onSuccess(), 100);
         }
+      })
+      .catch(e => {
+        dispatch(reportIncidentFailure(e));
+        setTimeout(() => showAlert(e), 100);
+      });
+  };
+}
+
+
+export function markTaskFailed(
+  httpClient,
+  task,
+  notes = '',
+  reason = null,
+  onSuccess,
+  contactName = '',
+) {
+  return function (dispatch, getState) {
+    dispatch(markTaskFailedRequest(task));
+
+    let payload = {
+      notes,
+      reason,
+    };
+
+    if (!_.isEmpty(contactName)) {
+      payload = {
+        ...payload,
+        contactName,
+      };
+    }
+
+    // Make sure to return a promise for testing
+    return uploadEntityImages(task, '/api/task_images', getState())
+      .then(uploadTasks => {
+        return httpClient
+          .put(task['@id'] + '/failed', payload)
+          .then(savedTask => {
+            httpClient.execUploadTask(uploadTasks);
+            dispatch(clearFiles());
+            dispatch(markTaskFailedSuccess(savedTask));
+            if (typeof onSuccess === 'function') {
+              setTimeout(() => onSuccess(), 100);
+            }
+          });
       })
       .catch(e => {
         dispatch(markTaskFailedFailure(e));
@@ -267,6 +319,7 @@ export function markTaskFailed(
       });
   };
 }
+
 
 export function markTaskDone(
   httpClient,
