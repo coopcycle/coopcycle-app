@@ -4,7 +4,7 @@ import React from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 import i18n from '../i18n';
 import { TimingBadge } from '../navigation/checkout/components/RestaurantBadges';
-import { getRestaurantIsAvailable } from '../utils/checkout';
+import { isRestaurantClosed } from '../utils/checkout';
 import { RestaurantBadge } from './RestaurantBadge';
 import { RestaurantTag } from './RestaurantTag';
 
@@ -111,7 +111,7 @@ export const RestaurantCard = ({ restaurant }) => {
   // const backgroundColor = useColorModeValue('white', '#121212');
   // const backgroundColor = useColorModeValue('white', '#222222');
   const backgroundColor = useColorModeValue('white', '#1a1a1a');
-  const isClosed = getRestaurantIsAvailable(restaurant);
+  const isClosed = isRestaurantClosed(restaurant);
   const overlayBackgroundColor = useColorModeValue(
     'rgba(0,0,0,0.5)',
     'rgba(0,0,0,0.75)',

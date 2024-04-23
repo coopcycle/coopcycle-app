@@ -56,10 +56,12 @@ export function getNextShippingTimeAsText(restaurant, now) {
   return i18n.t('NOT_AVAILABLE_ATM');
 }
 
-export function getRestaurantIsAvailable(restaurant) {
+export function isRestaurantClosed(restaurant) {
   if (
     (!restaurant.timing.delivery && !restaurant.timing.collection) ||
-    restaurant.timing.delivery.range[0] === restaurant.timing.delivery.range[1]
+    (restaurant.timing.delivery &&
+      restaurant.timing.delivery.range[0] ===
+        restaurant.timing.delivery.range[1])
   ) {
     return true;
   } else {

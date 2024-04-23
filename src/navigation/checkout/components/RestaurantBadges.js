@@ -5,7 +5,7 @@ import { StyleSheet } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 import {
   getNextShippingTimeAsText,
-  getRestaurantIsAvailable,
+  isRestaurantClosed,
   shouldShowPreOrder,
 } from '../../../utils/checkout';
 
@@ -48,7 +48,7 @@ export const CategoryBadge = ({ label }) => {
 export const TimingBadge = ({ restaurant }) => {
   const color = useColorModeValue('#000', '#fff');
 
-  const isClosed = getRestaurantIsAvailable(restaurant);
+  const isClosed = isRestaurantClosed(restaurant);
   const shippingTime = getNextShippingTimeAsText(restaurant);
   const showPreOrder = shouldShowPreOrder(restaurant);
 
