@@ -4,7 +4,7 @@ import {
   TransitionPresets,
   createStackNavigator,
 } from '@react-navigation/stack';
-import { Icon, Text } from 'native-base';
+import { Icon, Text, useColorModeValue } from 'native-base';
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
@@ -22,6 +22,18 @@ import AskAddress from '../home/AskAddress';
 import { stackNavigatorScreenOptions } from '../styles';
 import AccountNavigator from './AccountNavigator';
 
+const MyOrderButton = ({ navigation }) => {
+  const color = useColorModeValue('black', 'white');
+
+  return (
+    <TouchableOpacity
+      style={{ paddingHorizontal: 10 }}
+      onPress={() => navigation()}>
+      <Text style={{ color }}>{i18n.t('MY_ORDERS')}</Text>
+    </TouchableOpacity>
+  );
+};
+
 function getNestedOptions(navigation, route) {
   const routeName = getFocusedRouteNameFromRoute(route) ?? 'Feed';
 
@@ -36,13 +48,13 @@ function getNestedOptions(navigation, route) {
         headerRight: () => {
           if (selectIsAuthenticated(store.getState())) {
             return (
-              <TouchableOpacity
-                style={{ paddingHorizontal: 10 }}
-                onPress={() => {
-                  navigation.navigate('AccountOrders');
-                }}>
-                <Text style={{ color: 'white' }}>{i18n.t('MY_ORDERS')}</Text>
-              </TouchableOpacity>
+              <>
+                <MyOrderButton
+                  nav={() => {
+                    navigation.navigate('AccountOrders');
+                  }}
+                />
+              </>
             );
           }
         },
