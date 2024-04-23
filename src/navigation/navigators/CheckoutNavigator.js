@@ -50,7 +50,7 @@ function getNestedOptions(navigation, route) {
             return (
               <>
                 <MyOrderButton
-                  nav={() => {
+                  navigation={() => {
                     navigation.navigate('AccountOrders');
                   }}
                 />
