@@ -36,9 +36,13 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     paddingVertical: 8,
     paddingHorizontal: 12,
+    paddingRight: 4,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
+  },
+  text: {
+    flex: 1,
   },
 });
 
@@ -70,7 +74,11 @@ function RestaurantSearch(props) {
               fill={fill}
             />
           </Svg>
-          <Text fontSize={'md'} numberOfLines={1}>
+          <Text
+            style={styles.text}
+            fontSize={'md'}
+            numberOfLines={1}
+            ellipsizeMode="trail">
             {props.defaultValue?.streetAddress}
           </Text>
         </View>
