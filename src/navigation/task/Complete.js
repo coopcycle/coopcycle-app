@@ -129,11 +129,24 @@ class CompleteTask extends Component {
       isContactNameModalVisible: false,
       contactName: '',
       isKeyboardVisible: false,
+      validateTaskAfterReport: false,
     };
   }
 
-  shouldComponentUpdate(nextProps, nextState, nextContext) {
-    return this.state.failureReason !== nextState.failureReason;
+  shouldComponentUpdate(nextProps, nextState) {
+    if (this.state.failureReason !== nextState.failureReason) return true;
+
+    if (
+      this.state.validateTaskAfterReport !== nextState.validateTaskAfterReport
+    )
+      return true;
+
+    if (this.props.signatures.length !== nextProps.signatures.length)
+      return true;
+
+    if (this.props.pictures.length !== nextProps.pictures.length) return true;
+
+    return false;
   }
 
   markTaskDone() {
@@ -193,7 +206,6 @@ class CompleteTask extends Component {
     );
   }
 
-
   reportIncident() {
     const task = this.props.route.params?.task;
     const { notes, failureReason } = this.state;
@@ -204,13 +216,15 @@ class CompleteTask extends Component {
       notes,
       failureReason,
       () => {
-        // Make sure to use merge = true, so that it doesn't break
-        // when navigating to DispatchTaskList
-        this.props.navigation.navigate({
-          name: this.props.route.params?.navigateAfter,
-          merge: true,
-        });
-      }
+        if (this.state.validateTaskAfterReport) {
+          this.markTaskDone();
+        } else {
+          this.props.navigation.navigate({
+            name: this.props.route.params?.navigateAfter,
+            merge: true,
+          });
+        }
+      },
     );
   }
 
@@ -267,9 +281,12 @@ class CompleteTask extends Component {
   }
 
   multipleTasksLabel(tasks) {
-    return tasks.reduce((label, task, idx) => {
-      return `${label}${idx !== 0 ? ',' : ''} #${task.id}`;
-    }, `${this.props.t('COMPLETE_TASKS')}: `);
+    return tasks.reduce(
+      (label, task, idx) => {
+        return `${label}${idx !== 0 ? ',' : ''} #${task.id}`;
+      },
+      `${this.props.t('COMPLETE_TASKS')}: `,
+    );
   }
 
   isDropoff() {
@@ -377,6 +394,34 @@ class CompleteTask extends Component {
                     totalLines={2}
                     onChangeText={text => this.setState({ notes: text })}
                   />
+                  {!success && (
+                    <FormControl p="3">
+                      <Button
+                        bg={
+                          this.state.validateTaskAfterReport
+                            ? greenColor
+                            : undefined
+                        }
+                        onPress={() =>
+                          this.setState({
+                            validateTaskAfterReport:
+                              !this.state.validateTaskAfterReport,
+                          })
+                        }
+                        variant={
+                          this.state.validateTaskAfterReport
+                            ? 'solid'
+                            : 'outline'
+                        }
+                        endIcon={
+                          this.state.validateTaskAfterReport ? (
+                            <Icon as={FontAwesome} name="check" size="sm" />
+                          ) : undefined
+                        }>
+                        Validate the task after reporting
+                      </Button>
+                    </FormControl>
+                  )}
                 </FormControl>
                 <View>
                   <ScrollView style={{ height: '50%' }}>
@@ -539,8 +584,10 @@ function mapDispatchToProps(dispatch) {
       dispatch(markTaskDone(client, task, notes, onSuccess, contactName)),
     markTasksDone: (client, tasks, notes, onSuccess, contactName) =>
       dispatch(markTasksDone(client, tasks, notes, onSuccess, contactName)),
-    reportIncident: (client, task, notes, failureReasonCode ,onSuccess) =>
-      dispatch(reportIncident(client, task, notes, failureReasonCode, onSuccess)),
+    reportIncident: (client, task, notes, failureReasonCode, onSuccess) =>
+      dispatch(
+        reportIncident(client, task, notes, failureReasonCode, onSuccess),
+      ),
     deleteSignatureAt: index => dispatch(deleteSignatureAt(index)),
     deletePictureAt: index => dispatch(deletePictureAt(index)),
   };
