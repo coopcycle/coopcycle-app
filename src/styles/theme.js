@@ -50,5 +50,13 @@ export const useBaseTextColor = () => {
 };
 
 export const useSecondaryTextColor = () => {
-  return useColorModeToken('text.700', 'text.200');
+  return useColorModeToken('text.600', 'text.400');
+};
+
+export const useBackgroundContainerColor = () => {
+  return useColorModeToken('#FFFFFF', '#201E1E');
+};
+
+export const useBackgroundHighlightColor = () => {
+  return useColorModeToken('#f2f2f2', '#353030');
 };
