@@ -1,7 +1,8 @@
-import { Badge, HStack, Text, useColorModeValue } from 'native-base';
+import { Badge, HStack, Text } from 'native-base';
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
+import { useBaseTextColor } from '../../../styles/theme';
 import {
   getNextShippingTimeAsText,
   getRestaurantIsAvailable,
@@ -34,7 +35,7 @@ export const CategoryBadge = ({ label }) => {
 };
 
 export const TimingBadge = ({ restaurant }) => {
-  const color = useColorModeValue('#000', '#fff');
+  const color = useBaseTextColor();
 
   const isClosed = getRestaurantIsAvailable(restaurant);
   const shippingTime = getNextShippingTimeAsText(restaurant);

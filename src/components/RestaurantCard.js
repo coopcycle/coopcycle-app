@@ -4,6 +4,7 @@ import { Image, StyleSheet, View } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 import i18n from '../i18n';
 import { TimingBadge } from '../navigation/checkout/components/RestaurantBadges';
+import { useBackgroundContainerColor } from '../styles/theme';
 import { getRestaurantIsAvailable } from '../utils/checkout';
 import { RestaurantBadge } from './RestaurantBadge';
 import { RestaurantTag } from './RestaurantTag';
@@ -113,15 +114,12 @@ const styles = StyleSheet.create({
 });
 
 export const RestaurantCard = ({ restaurant }) => {
-  // const backgroundColor = useColorModeValue('white', '#121212');
-  // const backgroundColor = useColorModeValue('white', '#222222');
-  const backgroundColor = useColorModeValue('white', '#1a1a1a');
+  const backgroundColor = useBackgroundContainerColor();
   const isClosed = getRestaurantIsAvailable(restaurant);
   const overlayBackgroundColor = useColorModeValue(
     'rgba(0,0,0,0.5)',
     'rgba(0,0,0,0.75)',
   );
-  //   const backgroundColor = useColorModeValue('white', '#FFFFFF16');
 
   return (
     <View style={[styles.item, { backgroundColor }]}>

@@ -7,12 +7,12 @@ import {
 } from 'native-base';
 import React, { useEffect, useRef, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useBackgroundContainerColor } from '../styles/theme';
 
 const styles = StyleSheet.create({
   sectionMenu: {
     display: 'flex',
     flexDirection: 'row',
-    backgroundColor: '#201E1E',
   },
   sectionMenuItem: {
     borderBottomWidth: 1,
@@ -31,7 +31,7 @@ const RestaurantMenuHeader = ({
 }) => {
   const [active, setActive] = useState(0);
   const ref = useRef(null);
-  const backgroundColor = useColorModeValue('#fff', '#201E1E');
+  const backgroundColor = useBackgroundContainerColor();
   const inactiveText = useColorModeValue('gray', 'rgba(255,255,255,.5)');
   const inactiveBorderBottomColor = useColorModeValue(
     'lightgray',
@@ -90,7 +90,6 @@ const RestaurantMenuHeader = ({
     </View>
   );
 
-  const backgroundColor2 = useColorModeValue('#fff', '#201E1E');
   const loadingSkeleton = (
     <HStack
       style={[
@@ -104,7 +103,7 @@ const RestaurantMenuHeader = ({
           overflow: 'hidden',
           backgroundColor: '#ffffff',
         },
-        { backgroundColor: backgroundColor2 },
+        { backgroundColor: backgroundColor },
       ]}
       space={6}
       p="4">

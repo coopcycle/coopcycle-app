@@ -1,8 +1,9 @@
 import { useColorModeValue } from 'native-base';
 import { fontTitleName } from '../styles/common';
+import { useBackgroundContainerColor } from '../styles/theme';
 
 function StackNavigatorScreenOptions() {
-  const backgroundColor = useColorModeValue('white', '#201E1E');
+  const backgroundColor = useBackgroundContainerColor();
   const color = useColorModeValue('black', 'white');
 
   return {

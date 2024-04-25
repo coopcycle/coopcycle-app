@@ -6,6 +6,7 @@ import { Platform, StyleSheet, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { TouchableNativeFeedback } from 'react-native-gesture-handler';
 import Svg, { Path } from 'react-native-svg';
+import { useBackgroundContainerColor, useBaseTextColor } from '../styles/theme';
 
 const textInputContainerHeight = 54;
 
@@ -48,8 +49,8 @@ const styles = StyleSheet.create({
 
 function RestaurantSearch(props) {
   const navigation = useNavigation();
-  const backgroundColor = useColorModeValue('#fff', '#201E1E');
-  const fill = useColorModeValue('#201E1E', '#fff');
+  const backgroundColor = useBackgroundContainerColor();
+  const fill = useBaseTextColor();
   const borderColor = useColorModeValue(
     'rgba(0,0,0,.25)',
     'rgba(255,255,255,.25)',
