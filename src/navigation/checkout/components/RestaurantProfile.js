@@ -1,3 +1,4 @@
+import { IconMapPin } from '@tabler/icons-react-native';
 import i18next from 'i18next';
 import { Button, Image, Text } from 'native-base';
 import React from 'react';
@@ -9,7 +10,6 @@ import {
   useBaseTextColor,
   useSecondaryTextColor,
 } from '../../../styles/theme';
-import AddressIcon from './AddressIcon';
 import { TimingBadge } from './RestaurantBadges';
 
 const styles = StyleSheet.create({
@@ -135,7 +135,7 @@ function RestaurantProfile({ restaurant, onInfo }) {
           </Button>
         </View>
         <View style={styles.address}>
-          <AddressIcon stroke={stroke} />
+          <IconMapPin size={20} stroke={stroke} strokeWidth={1.5} />
           <Text>{restaurant.address.streetAddress}</Text>
         </View>
         {restaurant.description ? (
