@@ -56,8 +56,16 @@ export function getNextShippingTimeAsText(restaurant, now) {
   return i18n.t('NOT_AVAILABLE_ATM');
 }
 
-export function getRestaurantIsAvailable(restaurant) {
-  if (!restaurant.timing.delivery && !restaurant.timing.collection) {
+export function isRestaurantClosed(restaurant) {
+  // FIXME
+  // This hotfixes a bug on the API
+  // https://github.com/coopcycle/coopcycle-web/issues/2213
+  if (
+    (!restaurant.timing.delivery && !restaurant.timing.collection) ||
+    (restaurant.timing.delivery &&
+      restaurant.timing.delivery.range[0] ===
+        restaurant.timing.delivery.range[1])
+  ) {
     return true;
   } else {
     return false;

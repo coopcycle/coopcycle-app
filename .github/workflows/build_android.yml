@@ -35,6 +35,10 @@ on:
         description: 'Build Coursiers MTP app'
         required: true
         type: boolean
+      build_coursiers_rennais:
+        description: 'Build Coursiers Rennais app'
+        required: true
+        type: boolean
 jobs:
   default:
     if: ${{ inputs.build_official }}
@@ -129,6 +133,21 @@ jobs:
       app_name: Coursiers MTP
       primary_color: "#004e9c"
       package_name: fr.coopcycle.coursiers_mtp
+      keystore_key_alias: instance
+      keystore_key_password_secret: SIGNING_KEY_PASSWORD_INSTANCE
+      google_play_track: production
+      deploy_google_play: ${{ inputs.deploy_google_play }}
+    secrets: inherit
+  coursiers_rennais:
+    if: ${{ inputs.build_coursiers_rennais }}
+    name: Build LCR app
+    uses: ./.github/workflows/fastlane_android.yml
+    with:
+      instance: lcr
+      instance_url: https://lcr.coopcycle.org
+      app_name: Les Coursiers Rennais
+      primary_color: "#0A090A"
+      package_name: fr.coopcycle.lcr
       keystore_key_alias: instance
       keystore_key_password_secret: SIGNING_KEY_PASSWORD_INSTANCE
       google_play_track: production
