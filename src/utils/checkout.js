@@ -57,6 +57,9 @@ export function getNextShippingTimeAsText(restaurant, now) {
 }
 
 export function isRestaurantClosed(restaurant) {
+  // FIXME
+  // This hotfixes a bug on the API
+  // https://github.com/coopcycle/coopcycle-web/issues/2213
   if (
     (!restaurant.timing.delivery && !restaurant.timing.collection) ||
     (restaurant.timing.delivery &&
