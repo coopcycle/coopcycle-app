@@ -1,6 +1,6 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
-import { Icon } from 'native-base';
+import { Icon, useColorModeValue } from 'native-base';
 import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -58,14 +58,27 @@ const styles = StyleSheet.create({
 });
 
 const ButtonWithIcon = ({ name, onPress }) => {
+  const color = useColorModeValue('black', 'white');
   return (
     <TouchableOpacity onPress={onPress} style={styles.button}>
-      <Icon as={Ionicons} name={name} style={{ color: 'white' }} />
+      <Icon as={Ionicons} name={name} style={{ color }} />
     </TouchableOpacity>
   );
 };
 
 const MainStack = createStackNavigator();
+
+const headerButtons = nav => (
+  <View style={styles.buttonBar}>
+    <ButtonWithIcon
+      name="settings"
+      onPress={() => nav.navigate('CourierSettings')}
+    />
+    <TouchableOpacity style={styles.button}>
+      <TrackingIcon />
+    </TouchableOpacity>
+  </View>
+);
 
 const MainNavigator = () => (
   <MainStack.Navigator screenOptions={stackNavigatorScreenOptions}>
@@ -75,17 +88,7 @@ const MainNavigator = () => (
       options={({ navigation }) => ({
         title: i18n.t('COURIER'),
         headerLeft: headerLeft(navigation, 'menuBtnCourier'),
-        headerRight: () => (
-          <View style={styles.buttonBar}>
-            <ButtonWithIcon
-              name="settings"
-              onPress={() => navigation.navigate('CourierSettings')}
-            />
-            <TouchableOpacity style={styles.button}>
-              <TrackingIcon />
-            </TouchableOpacity>
-          </View>
-        ),
+        headerRight: () => headerButtons(navigation),
       })}
     />
     <MainStack.Screen
