@@ -1,6 +1,6 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
-import { Icon, useColorModeValue } from 'native-base';
+import { Icon } from 'native-base';
 import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -9,6 +9,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import screens, { headerLeft } from '..';
 import TrackingIcon from '../../components/TrackingIcon';
 import i18n from '../../i18n';
+import { useBaseTextColor } from '../../styles/theme';
 import { stackNavigatorScreenOptions } from '../styles';
 import TaskNavigator from './TaskNavigator';
 
@@ -58,7 +59,8 @@ const styles = StyleSheet.create({
 });
 
 const ButtonWithIcon = ({ name, onPress }) => {
-  const color = useColorModeValue('black', 'white');
+  const color = useBaseTextColor();
+
   return (
     <TouchableOpacity onPress={onPress} style={styles.button}>
       <Icon as={Ionicons} name={name} style={{ color }} />

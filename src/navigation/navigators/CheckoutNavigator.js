@@ -4,7 +4,7 @@ import {
   TransitionPresets,
   createStackNavigator,
 } from '@react-navigation/stack';
-import { Icon, Text, useColorModeValue } from 'native-base';
+import { Icon, Text } from 'native-base';
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
@@ -17,14 +17,17 @@ import {
 } from '../../redux/App/selectors';
 import store from '../../redux/store';
 import { primaryColor } from '../../styles/common';
-import { useBackgroundContainerColor } from '../../styles/theme';
+import {
+  useBackgroundContainerColor,
+  useBaseTextColor,
+} from '../../styles/theme';
 import CartsBadge from '../checkout/components/CartsBadge';
 import AskAddress from '../home/AskAddress';
 import { stackNavigatorScreenOptions } from '../styles';
 import AccountNavigator from './AccountNavigator';
 
 const MyOrderButton = ({ navigation }) => {
-  const color = useColorModeValue('black', 'white');
+  const color = useBaseTextColor();
 
   return (
     <TouchableOpacity
