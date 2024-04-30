@@ -7,6 +7,11 @@ on:
         required: true
         type: boolean
         default: true
+      google_play_track:
+        description: 'Google Play track'
+        required: true
+        type: string
+        default: 'production'
       build_official:
         description: 'Build official app'
         required: true
@@ -46,7 +51,7 @@ jobs:
     uses: ./.github/workflows/fastlane_android.yml
     secrets: inherit
     with:
-      google_play_track: production
+      google_play_track: ${{ inputs.google_play_track }}
       deploy_google_play: ${{ inputs.deploy_google_play }}
   naofood:
     if: ${{ inputs.build_naofood }}
@@ -60,7 +65,7 @@ jobs:
       package_name: fr.naofood.client
       keystore_key_alias: naofood
       keystore_key_password_secret: SIGNING_KEY_PASSWORD_NAOFOOD
-      google_play_track: production
+      google_play_track: ${{ inputs.google_play_track }}
       deploy_google_play: ${{ inputs.deploy_google_play }}
     secrets: inherit
   zampate:
@@ -75,7 +80,7 @@ jobs:
       package_name: fr.coopcycle.zampate
       keystore_key_alias: instance
       keystore_key_password_secret: SIGNING_KEY_PASSWORD_INSTANCE
-      google_play_track: beta
+      google_play_track: ${{ inputs.google_play_track }}
       deploy_google_play: ${{ inputs.deploy_google_play }}
     secrets: inherit
   coursiers_stephanois:
@@ -90,7 +95,7 @@ jobs:
       package_name: fr.coopcycle.coursiers_stephanois
       keystore_key_alias: instance
       keystore_key_password_secret: SIGNING_KEY_PASSWORD_INSTANCE
-      google_play_track: beta
+      google_play_track: ${{ inputs.google_play_track }}
       deploy_google_play: ${{ inputs.deploy_google_play }}
     secrets: inherit
   kooglof:
@@ -105,7 +110,7 @@ jobs:
       package_name: fr.coopcycle.kooglof
       keystore_key_alias: instance
       keystore_key_password_secret: SIGNING_KEY_PASSWORD_INSTANCE
-      google_play_track: production
+      google_play_track: ${{ inputs.google_play_track }}
       deploy_google_play: ${{ inputs.deploy_google_play }}
     secrets: inherit
   robinfood:
@@ -120,7 +125,7 @@ jobs:
       package_name: fr.coopcycle.robinfood
       keystore_key_alias: instance
       keystore_key_password_secret: SIGNING_KEY_PASSWORD_INSTANCE
-      google_play_track: production
+      google_play_track: ${{ inputs.google_play_track }}
       deploy_google_play: ${{ inputs.deploy_google_play }}
     secrets: inherit
   coursiers_montpellier:
@@ -135,7 +140,7 @@ jobs:
       package_name: fr.coopcycle.coursiers_mtp
       keystore_key_alias: instance
       keystore_key_password_secret: SIGNING_KEY_PASSWORD_INSTANCE
-      google_play_track: production
+      google_play_track: ${{ inputs.google_play_track }}
       deploy_google_play: ${{ inputs.deploy_google_play }}
     secrets: inherit
   coursiers_rennais:
@@ -150,6 +155,6 @@ jobs:
       package_name: fr.coopcycle.lcr
       keystore_key_alias: instance
       keystore_key_password_secret: SIGNING_KEY_PASSWORD_INSTANCE
-      google_play_track: production
+      google_play_track: ${{ inputs.google_play_track }}
       deploy_google_play: ${{ inputs.deploy_google_play }}
     secrets: inherit
