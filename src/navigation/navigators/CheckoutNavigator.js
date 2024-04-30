@@ -16,10 +16,10 @@ import {
   selectIsGuest,
 } from '../../redux/App/selectors';
 import store from '../../redux/store';
-import { primaryColor } from '../../styles/common';
 import {
   useBackgroundContainerColor,
   useBaseTextColor,
+  usePrimaryColor,
 } from '../../styles/theme';
 import CartsBadge from '../checkout/components/CartsBadge';
 import AskAddress from '../home/AskAddress';
@@ -75,6 +75,8 @@ function getNestedOptions(navigation, route) {
 const Tab = createBottomTabNavigator();
 
 function Tabs({ rootNavigation: navigation }) {
+  const primaryColor = usePrimaryColor();
+
   return (
     <Tab.Navigator
       screenOptions={{

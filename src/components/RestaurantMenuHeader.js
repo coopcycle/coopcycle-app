@@ -7,7 +7,7 @@ import {
 } from 'native-base';
 import React, { useEffect, useRef, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { useBackgroundContainerColor } from '../styles/theme';
+import { useBackgroundContainerColor, usePrimaryColor } from '../styles/theme';
 
 const styles = StyleSheet.create({
   sectionMenu: {
@@ -37,7 +37,7 @@ const RestaurantMenuHeader = ({
     'lightgray',
     'rgba(255,255,255,.25)',
   );
-  const activeBorderBottomColor = useColorModeValue('red', '#fff');
+  const activeBorderBottomColor = usePrimaryColor();
 
   const scrollToSection = index => {
     sectionRef.current.scrollToIndex({ index: index + 3, viewOffset: 16 });
