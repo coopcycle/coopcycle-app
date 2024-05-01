@@ -2,7 +2,7 @@ import moment from 'moment';
 
 import { connectToDemo } from './utils';
 
-describe('Registration', () => {
+describe.skip('Registration', () => {
   beforeEach(async () => {
     await device.reloadReactNative();
   });

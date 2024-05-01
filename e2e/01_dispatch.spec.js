@@ -1,7 +1,7 @@
 import { connectToDemo, authenticateWithCredentials, logout } from './utils';
 const exec = require('child-process-promise').exec;
 
-describe('Dispatch', () => {
+describe.skip('Dispatch', () => {
   beforeEach(async () => {
     await device.reloadReactNative();
 

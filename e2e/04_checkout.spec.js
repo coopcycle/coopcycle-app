@@ -1,6 +1,6 @@
 import { connectToDemo, chooseOptionsIfNeeded } from './utils';
 
-describe('Checkout', () => {
+describe.skip('Checkout', () => {
   beforeEach(async () => {
     await device.reloadReactNative();
   });

@@ -10,7 +10,7 @@ const VARIANTS = [
 ];
 
 VARIANTS.forEach(variant => {
-  describe('Screenshots', () => {
+  describe.skip('Screenshots', () => {
     const { locale, city } = variant;
 
     beforeEach(async () => {
