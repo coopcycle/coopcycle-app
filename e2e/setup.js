@@ -3,6 +3,6 @@ beforeAll(async () => {
     permissions: {
       notifications: 'YES',
       location: 'always',
-    }
-  })
+    },
+  });
 });

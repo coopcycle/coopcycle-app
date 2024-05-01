@@ -1,39 +1,45 @@
-import { connectToDemo, authenticateWithCredentials, logout } from './utils'
-const exec = require('child-process-promise').exec
+import { connectToDemo, authenticateWithCredentials, logout } from './utils';
+const exec = require('child-process-promise').exec;
 
 describe('Dispatch', () => {
-
   beforeEach(async () => {
-    await device.reloadReactNative()
+    await device.reloadReactNative();
 
     // https://github.com/wix/Detox/issues/1371
     if (device.getPlatform() === 'ios') {
-      await exec('applesimutils --setLocation "[48.856613, 2.352222]"')
+      await exec('applesimutils --setLocation "[48.856613, 2.352222]"');
     } else {
       await device.setLocation(48.856613, 2.352222);
     }
-  })
+  });
 
   it('should be able to create task', async () => {
+    await connectToDemo();
+    await authenticateWithCredentials('admin', 'admin');
 
-    await connectToDemo()
-    await authenticateWithCredentials('admin', 'admin')
+    await expect(element(by.id('menuBtnCourier'))).toBeVisible();
+    await element(by.id('menuBtnCourier')).tap();
+    await element(by.label('Dispatch')).tap();
 
-    await expect(element(by.id('menuBtnCourier'))).toBeVisible()
-    await element(by.id('menuBtnCourier')).tap()
-    await element(by.label('Dispatch')).tap()
+    await expect(element(by.id('addTask'))).toBeVisible();
+    await element(by.id('addTask')).tap();
 
-    await expect(element(by.id('addTask'))).toBeVisible()
-    await element(by.id('addTask')).tap()
+    await waitFor(element(by.id('taskFormTypeahead')))
+      .toExist()
+      .withTimeout(5000);
+    await element(by.id('taskFormTypeahead')).typeText(
+      '23 av claude vellefaux',
+    );
+    await waitFor(element(by.id('placeId:ChIJPSRadeBt5kcR4B2HzbBfZQE')))
+      .toBeVisible()
+      .withTimeout(10000);
+    await element(by.id('placeId:ChIJPSRadeBt5kcR4B2HzbBfZQE')).tap();
+    await element(by.id('submitTaskForm')).tap();
 
-    await waitFor(element(by.id('taskFormTypeahead'))).toExist().withTimeout(5000)
-    await element(by.id('taskFormTypeahead')).typeText('23 av claude vellefaux')
-    await waitFor(element(by.id('placeId:ChIJPSRadeBt5kcR4B2HzbBfZQE'))).toBeVisible().withTimeout(10000)
-    await element(by.id('placeId:ChIJPSRadeBt5kcR4B2HzbBfZQE')).tap()
-    await element(by.id('submitTaskForm')).tap()
-
-    await waitFor(element(by.id('task:0'))).toExist().withTimeout(5000)
-    await element(by.id('task:0')).swipe('right', 'fast', 0.5)
+    await waitFor(element(by.id('task:0')))
+      .toExist()
+      .withTimeout(5000);
+    await element(by.id('task:0')).swipe('right', 'fast', 0.5);
 
     /*
     await element(by.id('task:0:assign')).tap()
@@ -67,7 +73,5 @@ describe('Dispatch', () => {
     // We can't watch for the button to be visible, because it's behind
     await element(by.id('task:completeSuccessButton')).tap()
     */
-
-  })
-
-})
+  });
+});
