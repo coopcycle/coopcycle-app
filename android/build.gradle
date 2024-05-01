@@ -59,6 +59,16 @@ allprojects {
             url "$rootDir/../node_modules/expo-camera/android/maven"
         }
     }
+
+    afterEvaluate {
+      if (it.hasProperty('android')){
+        android {
+          defaultConfig {
+            minSdkVersion rootProject.ext.minSdkVersion
+          }
+        }
+      }
+    }
 }
 
 subprojects {
