@@ -46,7 +46,7 @@ module.exports = {
     },
     iosMinSupportedSimulator: {
       type: 'ios.simulator',
-      device: { type: 'iPhone 11', os: 'iOS 15' }, // the minimum supported version is iOS 13.4, but xcode does not have a simulator for that
+      device: { type: 'iPhone 11', os: 'iOS 15.0' }, // the minimum supported version is iOS 13.4, but xcode does not have a simulator for that
     },
     androidLatestEmulator: {
       type: 'android.emulator',
