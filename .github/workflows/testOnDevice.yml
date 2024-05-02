@@ -2,13 +2,12 @@
 # https://help.github.com/en/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions
 # https://dev.to/edvinasbartkus/running-react-native-detox-tests-for-ios-and-android-on-github-actions-2ekn
 # https://github.com/wix/Detox/issues/2617
-name: Build
+name: Test
 on: [push, pull_request]
 jobs:
   IOS_SIMULATOR_TESTS:
     # https://github.community/t/how-to-stop-github-actions-workflow-to-trigger-when-the-pull-request-is-from-dependabot-preview/116486
-    # if: github.actor != 'dependabot[bot]'
-    if: false
+    if: github.actor != 'dependabot[bot]'
     name: iOS Simulator Tests
     runs-on: macOS-latest
     steps:
@@ -72,27 +71,27 @@ jobs:
           path: ios/build
           key: xcode-derived-data-${{ hashFiles('**/Podfile.lock') }}
       - name: Build app for Detox
-        run: node node_modules/.bin/detox build -c ios.sim.release
+        run: node node_modules/.bin/detox build -c ios-latest.sim.release
       - name: Run Detox tests
-        run: node node_modules/.bin/detox test -c ios.sim.release --loglevel="trace" --device-name="iPhone 11" --debug-synchronization 500
+        run: node node_modules/.bin/detox test -c ios-latest.sim.release --loglevel="trace"
       # Run 'applesimutils --list' to list your supported devices.
       # It is advised only to specify a device type, e.g., "iPhone Xʀ" and avoid explicit search by OS version.
       - name: List supported devices
         run: applesimutils --list
       # See screenshot specifications
       # https://help.apple.com/app-store-connect/#/devd274dd925
-      - name: Take screenshots
-        if: github.ref == 'refs/heads/master'
-        run: |
-          node node_modules/.bin/detox test -c ios.sim.release -o e2e/screenshots.config.json --take-screenshots manual --cleanup --device-name="iPhone 11" --artifacts-location ./artifacts/6.5-inch
-          node node_modules/.bin/detox test -c ios.sim.release -o e2e/screenshots.config.json --take-screenshots manual --cleanup --device-name="iPhone 8 Plus" --artifacts-location ./artifacts/5.5-inch
-          node node_modules/.bin/detox test -c ios.sim.release -o e2e/screenshots.config.json --take-screenshots manual --cleanup --device-name="iPad Pro (12.9-inch) (4th generation)" --artifacts-location ./artifacts/12.9-inch
-      - name: Upload screenshots artifacts
-        if: github.ref == 'refs/heads/master'
-        uses: actions/upload-artifact@v1
-        with:
-          name: detox-screenshots-ios
-          path: artifacts
+#      - name: Take screenshots
+#        if: github.ref == 'refs/heads/master'
+#        run: |
+#          node node_modules/.bin/detox test -c ios.sim.release -o e2e/screenshots.config.json --take-screenshots manual --cleanup --device-name="iPhone 11" --artifacts-location ./artifacts/6.5-inch
+#          node node_modules/.bin/detox test -c ios.sim.release -o e2e/screenshots.config.json --take-screenshots manual --cleanup --device-name="iPhone 8 Plus" --artifacts-location ./artifacts/5.5-inch
+#          node node_modules/.bin/detox test -c ios.sim.release -o e2e/screenshots.config.json --take-screenshots manual --cleanup --device-name="iPad Pro (12.9-inch) (4th generation)" --artifacts-location ./artifacts/12.9-inch
+#      - name: Upload screenshots artifacts
+#        if: github.ref == 'refs/heads/master'
+#        uses: actions/upload-artifact@v1
+#        with:
+#          name: detox-screenshots-ios
+#          path: artifacts
   ANDROID_EMULATOR_TESTS:
     if: false
     name: Android Emulator Tests
