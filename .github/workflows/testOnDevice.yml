@@ -19,20 +19,9 @@ jobs:
       - name: Configure Sentry
         run: |
           sed 's/%token%/${{ secrets.SENTRY_API_TOKEN }}/' ios/sentry.properties.dist > ios/sentry.properties
-      # https://github.com/actions/cache/blob/main/examples.md#node---yarn
-      - name: Get yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
-
-      - uses: actions/cache@v3
-        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
-        with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
+      - name: Install dependencies to compile node-canvas
+        run: brew install pkg-config cairo pango libpng jpeg giflib librsvg pixman imagemagick
       - name: Install dependencies
-        if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: yarn install --no-progress --network-timeout 100000 --network-concurrency 1
       - name: Install applesimutils
         run: |
