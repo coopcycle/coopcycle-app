@@ -113,8 +113,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        EMULATOR_API: [34]
-        EMULATOR_ARCH: [x86_64]
+        EMULATOR_API_LEVEL: [34]
     steps:
       - uses: actions/checkout@v3
 
@@ -168,20 +167,58 @@ jobs:
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
 
+      - name: Gradle cache
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: AVD cache
+        uses: actions/cache@v4
+        id: avd-cache
+        with:
+          path: |
+            ~/.android/avd/*
+            ~/.android/adb*
+          key: avd-${{ matrix.EMULATOR_API_LEVEL }}
+
+      - name: create AVD and generate snapshot for caching
+        if: steps.avd-cache.outputs.cache-hit != 'true'
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: ${{ matrix.EMULATOR_API_LEVEL }}
+          target: playstore
+          arch: x86_64
+          profile: pixel_8
+          force-avd-creation: false
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          disable-animations: false
+          script: echo "Generated AVD snapshot for caching."
+
       - name: Run Detox tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: ${{ matrix.EMULATOR_API }}
-          target: google_apis
-          arch: ${{ matrix.EMULATOR_ARCH }}
-          profile: Pixel 8
-          # https://github.com/wix/Detox/blob/master/docs/Introduction.AndroidEmulatorsBestPractices.md#booting-an-emulator-via-command-line
-          emulator-options: -verbose -no-window -no-snapshot -noaudio -no-boot-anim -gpu swiftshader_indirect -camera-back emulated -camera-front emulated
+          api-level: ${{ matrix.EMULATOR_API_LEVEL }}
+          target: playstore
+          arch: x86_64
+          profile: pixel_8
+          force-avd-creation: false
+          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
           script: |
-            bash -c "echo 'hw.lcd.height=2560' >> /Users/runner/.android/avd/test.avd/config.ini"
-            bash -c "echo 'hw.lcd.width=1440' >> /Users/runner/.android/avd/test.avd/config.ini"
             node node_modules/.bin/detox test -c android-latest.emu.release --device-name="emulator-5554" --loglevel trace
+
+#      - name: Run Detox tests
+#        uses: reactivecircus/android-emulator-runner@v2
+#        with:
+#          api-level: ${{ matrix.EMULATOR_API_LEVEL }}
+#          target: playstore
+#          arch: x86_64
+#          profile: pixel_8
+#          # https://github.com/wix/Detox/blob/master/docs/Introduction.AndroidEmulatorsBestPractices.md#booting-an-emulator-via-command-line
+#          emulator-options: -verbose -no-window -no-snapshot -noaudio -no-boot-anim -gpu swiftshader_indirect -camera-back emulated -camera-front emulated
+#          disable-animations: true
+#          script: |
+#            bash -c "echo 'hw.lcd.height=2560' >> /Users/runner/.android/avd/test.avd/config.ini"
+#            bash -c "echo 'hw.lcd.width=1440' >> /Users/runner/.android/avd/test.avd/config.ini"
+#            node node_modules/.bin/detox test -c android-latest.emu.release --device-name="emulator-5554" --loglevel trace
 #            node node_modules/.bin/detox test -c android.att.release --device-name="emulator-5554" --take-screenshots all --loglevel trace
 #            node node_modules/.bin/detox test -c android.att.release --device-name="emulator-5554" --take-screenshots manual -o e2e/screenshots.config.json --loglevel trace
 
