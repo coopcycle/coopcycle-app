@@ -179,7 +179,7 @@ class RestaurantsPage extends Component {
       );
     } else {
       return (
-        <View edges={['right', 'bottom', 'left']} style={{ flexGrow: 1 }}>
+        <View style={{ flexGrow: 1 }}>
           <RestaurantList
             restaurants={restaurants}
             addressAsText={addressAsText}

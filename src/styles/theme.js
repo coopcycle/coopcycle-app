@@ -65,9 +65,10 @@ function checkContrast(c, background, theme) {
   return color.toString({ format: 'hex' });
 }
 
+const primaryLight = checkContrast(primaryColor, '#FFFFFF', 'light');
+const primaryDark = checkContrast(primaryColor, '#201E1E', 'dark');
+
 export const usePrimaryColor = () => {
-  const primaryLight = checkContrast(primaryColor, '#FFFFFF', 'light');
-  const primaryDark = checkContrast(primaryColor, '#201E1E', 'dark');
   return useColorModeToken(primaryLight, primaryDark);
 };
 
