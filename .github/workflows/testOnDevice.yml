@@ -3,7 +3,7 @@
 # https://dev.to/edvinasbartkus/running-react-native-detox-tests-for-ios-and-android-on-github-actions-2ekn
 # https://github.com/wix/Detox/issues/2617
 name: Test
-on: [push, pull_request]
+on: [push]
 jobs:
   IOS_SIMULATOR_TESTS:
     # https://github.community/t/how-to-stop-github-actions-workflow-to-trigger-when-the-pull-request-is-from-dependabot-preview/116486
