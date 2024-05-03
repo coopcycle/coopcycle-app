@@ -9,12 +9,13 @@ jobs:
     # https://github.community/t/how-to-stop-github-actions-workflow-to-trigger-when-the-pull-request-is-from-dependabot-preview/116486
     if: github.actor != 'dependabot[bot]'
     name: iOS Simulator Tests
-    runs-on: macOS-latest
+    runs-on: macOS-14
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
           node-version: '20.x'
+          cache: 'yarn'
       - name: Configure Sentry
         run: |
           sed 's/%token%/${{ secrets.SENTRY_API_TOKEN }}/' ios/sentry.properties.dist > ios/sentry.properties
@@ -31,7 +32,8 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-yarn-
       - name: Install dependencies
-        run: yarn install
+        if: steps.yarn-cache.outputs.cache-hit != 'true'
+        run: yarn install --no-progress --network-timeout 100000 --network-concurrency 1
       - name: Install applesimutils
         run: |
           brew tap wix/brew
@@ -56,7 +58,9 @@ jobs:
         with:
           path: ios/Pods
           key: pods-${{ hashFiles('**/Podfile.lock') }}
-      - run: cd ios/ && pod install --repo-update && cd ..
+      - name: Install Pods
+        working-directory: ios/
+        run: USE_FRAMEWORKS=static NO_FLIPPER=1 bundle exec pod install
       - run: |
           cp .env.dist .env
           sed -i '' -e 's/GOOGLE_MAPS_BROWSER_KEY=/GOOGLE_MAPS_BROWSER_KEY=${{ secrets.GOOGLE_MAPS_BROWSER_KEY }}/' .env
