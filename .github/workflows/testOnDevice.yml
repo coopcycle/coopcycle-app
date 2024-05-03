@@ -157,6 +157,7 @@ jobs:
       - run: cp .env.dist .env
 
       - name: Build app for Detox
+        if: false #FIXME
         run: node node_modules/.bin/detox build -c android-latest.emu.release
         env:
           googleMapsApiKey: ${{ secrets.googleMapsApiKey }}
@@ -178,6 +179,9 @@ jobs:
             ~/.android/avd/*
             ~/.android/adb*
           key: avd-${{ matrix.EMULATOR_API_LEVEL }}
+
+      - name: List supported devices
+        run: avdmanager list device
 
       - name: create AVD and generate snapshot for caching
         if: steps.avd-cache.outputs.cache-hit != 'true'
