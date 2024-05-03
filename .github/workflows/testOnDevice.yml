@@ -132,7 +132,12 @@ jobs:
       - name: Install dependencies (yarn)
         run: yarn install --no-progress --network-timeout 100000 --network-concurrency 1
 
-      - run: cp google-services.json.dist android/app/google-services.json
+      - name: Decode google-services.json file
+        uses: timheuer/base64-to-file@v1.2
+        with:
+          fileDir: "./android/app/"
+          fileName: "google-services.json"
+          encodedString: ${{ secrets.GOOGLE_SERVICES_JSON_BASE64 }}
 
       - name: Enable clear text traffic in release builds
         run: |
