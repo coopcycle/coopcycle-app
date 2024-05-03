@@ -180,12 +180,10 @@ jobs:
             ~/.android/adb*
           key: avd-${{ matrix.EMULATOR_API_LEVEL }}
 
-      - name: List supported devices
-        run: avdmanager list device
-
       - name: create AVD and generate snapshot for caching
         if: steps.avd-cache.outputs.cache-hit != 'true'
         uses: reactivecircus/android-emulator-runner@v2
+        continue-on-error: true #FIXME; debug only
         with:
           api-level: ${{ matrix.EMULATOR_API_LEVEL }}
           target: playstore
@@ -195,6 +193,9 @@ jobs:
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: false
           script: echo "Generated AVD snapshot for caching."
+
+      - name: List supported devices
+        run: avdmanager list device
 
       - name: Run Detox tests
         uses: reactivecircus/android-emulator-runner@v2
