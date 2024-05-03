@@ -129,6 +129,13 @@ jobs:
           java-version: '17'
           cache: 'gradle'
 
+      - name: Decode sentry.properties file
+        uses: timheuer/base64-to-file@v1.2
+        with:
+          fileDir: "./android/"
+          fileName: "sentry.properties"
+          encodedString: ${{ secrets.SENTRY_PROPERTIES_BASE64 }}
+
       - name: Install dependencies (yarn)
         run: yarn install --no-progress --network-timeout 100000 --network-concurrency 1
 
