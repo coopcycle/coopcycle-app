@@ -69,11 +69,11 @@ module.exports = {
       app: 'ios.debug',
     },
     'ios-latest.sim.release': {
-      device: 'iosMinSupportedSimulator',
+      device: 'iosLatestSimulator',
       app: 'ios.release',
     },
     'ios-min.sim.release': {
-      device: 'iosLatestSimulator',
+      device: 'iosMinSupportedSimulator',
       app: 'ios.release',
     },
     'android-latest.emu.debug': {
