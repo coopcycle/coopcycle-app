@@ -211,7 +211,7 @@ jobs:
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
           script: |
-            node node_modules/.bin/detox test -c android-latest.emu.release --loglevel trace
+            node node_modules/.bin/detox test -c android-latest.emu.release --device-name="emulator-5554" --loglevel trace
 
 #      - name: Run Detox tests
 #        uses: reactivecircus/android-emulator-runner@v2
