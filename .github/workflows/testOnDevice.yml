@@ -197,6 +197,9 @@ jobs:
       - name: List supported devices
         run: avdmanager list device
 
+      - name: List emulators
+        run: avdmanager list avd
+
       - name: Run Detox tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
