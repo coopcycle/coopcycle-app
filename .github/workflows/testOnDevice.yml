@@ -157,7 +157,6 @@ jobs:
       - run: cp .env.dist .env
 
       - name: Build app for Detox
-        if: false #FIXME
         run: node node_modules/.bin/detox build -c android-latest.emu.release
         env:
           googleMapsApiKey: ${{ secrets.googleMapsApiKey }}
@@ -183,7 +182,6 @@ jobs:
       - name: create AVD and generate snapshot for caching
         if: steps.avd-cache.outputs.cache-hit != 'true'
         uses: reactivecircus/android-emulator-runner@v2
-        continue-on-error: true #FIXME; debug only
         with:
           api-level: ${{ matrix.EMULATOR_API_LEVEL }}
           target: playstore
