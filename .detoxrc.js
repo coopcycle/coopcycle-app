@@ -50,11 +50,11 @@ module.exports = {
     },
     androidLatestEmulator: {
       type: 'android.emulator',
-      device: { avdName: 'Pixel_6_API_34' },
+      device: { avdName: 'Pixel_8_API_34' },
     },
     androidMinSupportedEmulator: {
       type: 'android.emulator',
-      device: { avdName: 'Pixel_6_API_21' },
+      device: { avdName: 'Nexus_6_API_21' },
     },
     attached: {
       type: 'android.attached',
