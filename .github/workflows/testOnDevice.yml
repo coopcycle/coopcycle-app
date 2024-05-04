@@ -211,7 +211,7 @@ jobs:
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
           script: |
-            node node_modules/.bin/detox test -c android-latest.emu.release --device-name="pixel_6" --loglevel trace
+            node node_modules/.bin/detox test -c android-latest.emu.release --device-name="test" --loglevel trace
 
 #      - name: Run Detox tests
 #        uses: reactivecircus/android-emulator-runner@v2
@@ -226,9 +226,9 @@ jobs:
 #          script: |
 #            bash -c "echo 'hw.lcd.height=2560' >> /Users/runner/.android/avd/test.avd/config.ini"
 #            bash -c "echo 'hw.lcd.width=1440' >> /Users/runner/.android/avd/test.avd/config.ini"
-#            node node_modules/.bin/detox test -c android-latest.emu.release --device-name="pixel_6" --loglevel trace
-#            node node_modules/.bin/detox test -c android.att.release --device-name="pixel_6" --take-screenshots all --loglevel trace
-#            node node_modules/.bin/detox test -c android.att.release --device-name="pixel_6" --take-screenshots manual -o e2e/screenshots.config.json --loglevel trace
+#            node node_modules/.bin/detox test -c android-latest.emu.release --device-name="test" --loglevel trace
+#            node node_modules/.bin/detox test -c android.att.release --device-name="test" --take-screenshots all --loglevel trace
+#            node node_modules/.bin/detox test -c android.att.release --device-name="test" --take-screenshots manual -o e2e/screenshots.config.json --loglevel trace
 
 #      - name: Upload screenshots artifacts
 #        if: github.ref == 'refs/heads/master'
