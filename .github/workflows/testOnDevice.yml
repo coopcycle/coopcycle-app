@@ -188,7 +188,7 @@ jobs:
           api-level: ${{ matrix.EMULATOR_API_LEVEL }}
           target: playstore
           arch: x86_64
-          profile: pixel_8
+          profile: pixel_6
           force-avd-creation: false
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: false
@@ -203,7 +203,7 @@ jobs:
           api-level: ${{ matrix.EMULATOR_API_LEVEL }}
           target: playstore
           arch: x86_64
-          profile: pixel_8
+          profile: pixel_6
           force-avd-creation: false
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
@@ -216,7 +216,7 @@ jobs:
 #          api-level: ${{ matrix.EMULATOR_API_LEVEL }}
 #          target: playstore
 #          arch: x86_64
-#          profile: pixel_8
+#          profile: pixel_6
 #          # https://github.com/wix/Detox/blob/master/docs/Introduction.AndroidEmulatorsBestPractices.md#booting-an-emulator-via-command-line
 #          emulator-options: -verbose -no-window -no-snapshot -noaudio -no-boot-anim -gpu swiftshader_indirect -camera-back emulated -camera-front emulated
 #          disable-animations: true
