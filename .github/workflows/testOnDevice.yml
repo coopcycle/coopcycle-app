@@ -113,7 +113,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        EMULATOR_API_LEVEL: [21]
+        EMULATOR_API_LEVEL: [28]
     steps:
       - uses: actions/checkout@v3
 
@@ -209,7 +209,7 @@ jobs:
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
           script: |
-            node node_modules/.bin/detox test -c android-min.emu.release --device-name="test" --loglevel trace
+            node node_modules/.bin/detox test -c android-latest.emu.release --device-name="test" --loglevel trace
 
 #      - name: Run Detox tests
 #        uses: reactivecircus/android-emulator-runner@v2
