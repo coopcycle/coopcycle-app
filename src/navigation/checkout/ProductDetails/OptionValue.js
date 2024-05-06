@@ -1,6 +1,11 @@
-import { Text, View, useColorModeValue } from 'native-base';
+import { Text, View } from 'native-base';
 import React from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
+import {
+  useBackgroundContainerColor,
+  useBaseTextColor,
+  useSecondaryTextColor,
+} from '../../../styles/theme';
 import { formatPrice } from '../../../utils/formatting';
 import {
   getPriceForOptionValue,
@@ -85,12 +90,9 @@ const RangeOption = ({
   onPressDecrement,
   quantity,
 }) => {
-  const backgroundColor = useColorModeValue('white', '#1a1a1a');
+  const backgroundColor = useBackgroundContainerColor();
+  const priceColor = useSecondaryTextColor();
 
-  const priceColor = useColorModeValue(
-    'rgba(0, 0, 0, .6)',
-    'rgba(255, 255,255, .6)',
-  );
   return (
     <View style={[styles.item, { gap: 16, backgroundColor }]}>
       <Range
@@ -119,8 +121,9 @@ const SimpleOption = ({
   index,
   sectionIndex,
 }) => {
-  const backgroundColor = useColorModeValue('white', '#1a1a1a');
-  const radioButtonColor = useColorModeValue('black', 'white');
+  const backgroundColor = useBackgroundContainerColor();
+  const radioButtonColor = useBaseTextColor();
+
   return (
     <TouchableOpacity
       style={[styles.item, { backgroundColor }]}

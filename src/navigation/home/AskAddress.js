@@ -6,13 +6,20 @@ import AddressAutocomplete from '../../components/AddressAutocomplete';
 import KeyboardAdjustView from '../../components/KeyboardAdjustView';
 import { newAddress } from '../../redux/Account/actions';
 import { searchRestaurantsForAddress } from '../../redux/Checkout/actions';
-import { lightGreyColor, primaryColor, whiteColor } from '../../styles/common';
+import {
+  useBackgroundColor,
+  useBaseTextColor,
+  useSecondaryTextColor,
+} from '../../styles/theme';
 
 const textInputContainerHeight = 54;
 const autocompleteListMarginBottom = 8;
 
 const AskAddress = props => {
   const [autocompleteListHeight, setAutocompleteListHeight] = useState(0);
+  const backgroundColor = useBackgroundColor();
+  const textColor = useBaseTextColor();
+  const secondaryTextColor = useSecondaryTextColor();
 
   const onLayout = event => {
     const currentFrame = event.nativeEvent.layout;
@@ -27,11 +34,12 @@ const AskAddress = props => {
   };
 
   return (
-    <KeyboardAdjustView
-      style={{ backgroundColor: primaryColor, flex: 1, padding: 20 }}>
+    <KeyboardAdjustView style={{ backgroundColor, flex: 1, padding: 20 }}>
       <Box style={{ flex: 1, justifyContent: 'flex-end', marginBottom: 20 }}>
-        <Heading color={whiteColor}>{props.t('WHERE_ARE_YOU')}</Heading>
-        <Text color={lightGreyColor}>{props.t('ASK_ADDRESS_DISCLAIMER')}</Text>
+        <Heading color={textColor}>{props.t('WHERE_ARE_YOU')}</Heading>
+        <Text color={secondaryTextColor}>
+          {props.t('ASK_ADDRESS_DISCLAIMER')}
+        </Text>
       </Box>
       <Box style={{ flex: 2 }} onLayout={onLayout}>
         <AddressAutocomplete
@@ -43,7 +51,7 @@ const AskAddress = props => {
           style={{
             height: textInputContainerHeight * 0.7,
             borderRadius: 3,
-            borderWidth: 0,
+            borderWidth: 1,
           }}
           flatListProps={{
             maxHeight: autocompleteListHeight,
