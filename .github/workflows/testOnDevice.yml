@@ -210,21 +210,6 @@ jobs:
           disable-animations: true
           script: |
             node node_modules/.bin/detox test -c android.emu.release --device-name="test" --loglevel trace
-
-#      - name: Run Detox tests
-#        uses: reactivecircus/android-emulator-runner@v2
-#        with:
-#          api-level: ${{ matrix.EMULATOR_API_LEVEL }}
-#          target: playstore
-#          arch: x86_64
-#          profile: pixel_6
-#          # https://github.com/wix/Detox/blob/master/docs/Introduction.AndroidEmulatorsBestPractices.md#booting-an-emulator-via-command-line
-#          emulator-options: -verbose -no-window -no-snapshot -noaudio -no-boot-anim -gpu swiftshader_indirect -camera-back emulated -camera-front emulated
-#          disable-animations: true
-#          script: |
-#            bash -c "echo 'hw.lcd.height=2560' >> /Users/runner/.android/avd/test.avd/config.ini"
-#            bash -c "echo 'hw.lcd.width=1440' >> /Users/runner/.android/avd/test.avd/config.ini"
-#            node node_modules/.bin/detox test -c android.emu.release --device-name="test" --loglevel trace
 #            node node_modules/.bin/detox test -c android.att.release --device-name="test" --take-screenshots all --loglevel trace
 #            node node_modules/.bin/detox test -c android.att.release --device-name="test" --take-screenshots manual -o e2e/screenshots.config.json --loglevel trace
 
