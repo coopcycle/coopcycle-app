@@ -40,21 +40,13 @@ module.exports = {
     },
   },
   devices: {
-    iosLatestSimulator: {
+    iosSimulator: {
       type: 'ios.simulator',
       device: { type: 'iPhone 15', os: 'iOS 17.4' },
     },
-    iosMinSupportedSimulator: {
-      type: 'ios.simulator',
-      device: { type: 'iPhone 11', os: 'iOS 15.0' }, // the minimum supported version is iOS 13.4, but xcode does not have a simulator for that
-    },
-    androidLatestEmulator: {
+    androidEmulator: {
       type: 'android.emulator',
       device: { avdName: 'Pixel_8_API_34' },
-    },
-    androidMinSupportedEmulator: {
-      type: 'android.emulator',
-      device: { avdName: 'Nexus_6_API_21' },
     },
     attached: {
       type: 'android.attached',
@@ -64,28 +56,20 @@ module.exports = {
     },
   },
   configurations: {
-    'ios-latest.sim.debug': {
-      device: 'iosLatestSimulator',
+    'ios.sim.debug': {
+      device: 'iosSimulator',
       app: 'ios.debug',
     },
-    'ios-latest.sim.release': {
-      device: 'iosLatestSimulator',
+    'ios.sim.release': {
+      device: 'iosSimulator',
       app: 'ios.release',
     },
-    'ios-min.sim.release': {
-      device: 'iosMinSupportedSimulator',
-      app: 'ios.release',
-    },
-    'android-latest.emu.debug': {
-      device: 'androidLatestEmulator',
+    'android.emu.debug': {
+      device: 'androidEmulator',
       app: 'android.debug',
     },
-    'android-latest.emu.release': {
-      device: 'androidLatestEmulator',
-      app: 'android.release',
-    },
-    'android-min.emu.release': {
-      device: 'androidMinSupportedEmulator',
+    'android.emu.release': {
+      device: 'androidEmulator',
       app: 'android.release',
     },
     'android.att.release': {

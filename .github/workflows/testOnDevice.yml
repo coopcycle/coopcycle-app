@@ -81,10 +81,10 @@ jobs:
           key: xcode-derived-data-${{ hashFiles('**/Podfile.lock') }}
 
       - name: Build app for Detox
-        run: node node_modules/.bin/detox build -c ios-latest.sim.release
+        run: node node_modules/.bin/detox build -c ios.sim.release
 
       - name: Run Detox tests
-        run: node node_modules/.bin/detox test -c ios-latest.sim.release --loglevel="trace"
+        run: node node_modules/.bin/detox test -c ios.sim.release --loglevel="trace"
 
       # Run 'applesimutils --list' to list your supported devices.
       # It is advised only to specify a device type, e.g., "iPhone Xʀ" and avoid explicit search by OS version.
@@ -157,7 +157,7 @@ jobs:
       - run: cp .env.dist .env
 
       - name: Build app for Detox
-        run: node node_modules/.bin/detox build -c android-latest.emu.release
+        run: node node_modules/.bin/detox build -c android.emu.release
         env:
           googleMapsApiKey: ${{ secrets.googleMapsApiKey }}
 
@@ -209,7 +209,7 @@ jobs:
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
           script: |
-            node node_modules/.bin/detox test -c android-latest.emu.release --device-name="test" --loglevel trace
+            node node_modules/.bin/detox test -c android.emu.release --device-name="test" --loglevel trace
 
 #      - name: Run Detox tests
 #        uses: reactivecircus/android-emulator-runner@v2
@@ -224,7 +224,7 @@ jobs:
 #          script: |
 #            bash -c "echo 'hw.lcd.height=2560' >> /Users/runner/.android/avd/test.avd/config.ini"
 #            bash -c "echo 'hw.lcd.width=1440' >> /Users/runner/.android/avd/test.avd/config.ini"
-#            node node_modules/.bin/detox test -c android-latest.emu.release --device-name="test" --loglevel trace
+#            node node_modules/.bin/detox test -c android.emu.release --device-name="test" --loglevel trace
 #            node node_modules/.bin/detox test -c android.att.release --device-name="test" --take-screenshots all --loglevel trace
 #            node node_modules/.bin/detox test -c android.att.release --device-name="test" --take-screenshots manual -o e2e/screenshots.config.json --loglevel trace
 
