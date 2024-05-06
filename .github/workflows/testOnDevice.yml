@@ -2,7 +2,7 @@
 # https://help.github.com/en/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions
 # https://dev.to/edvinasbartkus/running-react-native-detox-tests-for-ios-and-android-on-github-actions-2ekn
 # https://github.com/wix/Detox/issues/2617
-name: Test
+name: Test on Devices
 on: [push]
 jobs:
   IOS_SIMULATOR_TESTS:
@@ -69,10 +69,10 @@ jobs:
           cp .env.dist .env
           sed -i '' -e 's/GOOGLE_MAPS_BROWSER_KEY=/GOOGLE_MAPS_BROWSER_KEY=${{ secrets.GOOGLE_MAPS_BROWSER_KEY }}/' .env
           sed -i '' -e 's/GOOGLE_MAPS_ANDROID_KEY=/GOOGLE_MAPS_ANDROID_KEY=${{ secrets.GOOGLE_MAPS_ANDROID_KEY }}/' .env
+
       # https://vojtastavik.com/2018/09/02/what-is-inside-derived-data-xcode/
       # https://discuss.circleci.com/t/sharing-xcode-derived-data-folder-across-jobs-workflows/31363/5
       # https://medium.com/@bitrise/60-faster-builds-force-xcode-to-use-caching-on-bitrise-af8979ca39a6
-
       - name: Cache XCode derived data
         uses: actions/cache@v2
         id: cache-xcode-derived-data
@@ -154,7 +154,10 @@ jobs:
           sudo apt install xmlstarlet
           xmlstarlet ed --inplace --ps --insert "/manifest/application" --type attr -n "android:usesCleartextTraffic" -v "true" android/app/src/main/AndroidManifest.xml
 
-      - run: cp .env.dist .env
+      - run: |
+          cp .env.dist .env
+          sed -i '' -e 's/FACEBOOK_APP_ID=/FACEBOOK_APP_ID=${{ secrets.FACEBOOK_APP_ID }}/' .env
+          sed -i '' -e 's/FACEBOOK_CLIENT_TOKEN=/FACEBOOK_CLIENT_TOKEN=${{ secrets.FACEBOOK_CLIENT_TOKEN }}/' .env
 
       - name: Build app for Detox
         run: node node_modules/.bin/detox build -c android.emu.release
