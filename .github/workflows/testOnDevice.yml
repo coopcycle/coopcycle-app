@@ -202,7 +202,7 @@ jobs:
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: ${{ matrix.EMULATOR_API_LEVEL }}
-          target: playstore
+          target: google_apis
           arch: x86_64
           profile: pixel_6
           force-avd-creation: false
