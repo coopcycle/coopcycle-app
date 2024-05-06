@@ -1,10 +1,15 @@
 import { IconMapPin } from '@tabler/icons-react-native';
 import i18next from 'i18next';
-import { Button, Image, Text, useColorModeValue } from 'native-base';
+import { Button, Image, Text } from 'native-base';
 import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { RestaurantBadge } from '../../../components/RestaurantBadge';
 import { RestaurantTag } from '../../../components/RestaurantTag';
+import {
+  useBackgroundContainerColor,
+  useBaseTextColor,
+  useSecondaryTextColor,
+} from '../../../styles/theme';
 import { TimingBadge } from './RestaurantBadges';
 
 const styles = StyleSheet.create({
@@ -21,8 +26,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'flex-end',
     paddingLeft: 16,
-    // backgroundColor: '#fff0004F',
-    // width: '100%',
   },
   logoWrapper: {
     flexShrink: 0,
@@ -84,8 +87,9 @@ const styles = StyleSheet.create({
 });
 
 function RestaurantProfile({ restaurant, onInfo }) {
-  const backgroundColor = useColorModeValue('#fff', '#201E1E');
-  const stroke = useColorModeValue('#000', '#fff');
+  const backgroundColor = useBackgroundContainerColor();
+  const stroke = useBaseTextColor();
+  const textSecondary = useSecondaryTextColor();
 
   return (
     <View style={([styles.profile], { backgroundColor })}>
@@ -136,7 +140,9 @@ function RestaurantProfile({ restaurant, onInfo }) {
         </View>
         {restaurant.description ? (
           <View style={styles.description}>
-            <Text>{restaurant.description}</Text>
+            <Text style={{ color: textSecondary }}>
+              {restaurant.description}
+            </Text>
           </View>
         ) : null}
         {restaurant.tags?.length > 0 ? (
