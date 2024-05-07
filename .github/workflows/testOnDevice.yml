@@ -172,34 +172,33 @@ jobs:
       - name: Gradle cache
         uses: gradle/actions/setup-gradle@v3
 
-# TODO AVD caching disabled to simplify debugging see also https://github.com/ReactiveCircus/android-emulator-runner/issues/278
-#      - name: AVD cache
-#        uses: actions/cache@v4
-#        id: avd-cache
-#        with:
-#          path: |
-#            ~/.android/avd/*
-#            ~/.android/adb*
-#          key: avd-${{ matrix.EMULATOR_API_LEVEL }}
-#
-#      - name: create AVD and generate snapshot for caching
-#        if: steps.avd-cache.outputs.cache-hit != 'true'
-#        uses: reactivecircus/android-emulator-runner@v2
-#        with:
-#          api-level: ${{ matrix.EMULATOR_API_LEVEL }}
-#          target: google_apis
-#          arch: x86_64
-#          profile: pixel_6
-#          force-avd-creation: false
-#          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-#          disable-animations: false
-#          script: echo "Generated AVD snapshot for caching."
-#
-#      - name: List supported devices
-#        run: avdmanager list device
-#
-#      - name: List emulators
-#        run: avdmanager list avd
+      - name: AVD cache
+        uses: actions/cache@v4
+        id: avd-cache
+        with:
+          path: |
+            ~/.android/avd/*
+            ~/.android/adb*
+          key: avd-${{ matrix.EMULATOR_API_LEVEL }}
+
+      - name: create AVD and generate snapshot for caching
+        if: steps.avd-cache.outputs.cache-hit != 'true'
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: ${{ matrix.EMULATOR_API_LEVEL }}
+          target: google_apis
+          arch: x86_64
+          profile: pixel_6
+          force-avd-creation: false
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          disable-animations: false
+          script: echo "Generated AVD snapshot for caching."
+
+      - name: List supported devices
+        run: avdmanager list device
+
+      - name: List emulators
+        run: avdmanager list avd
 
       - name: Build app for Detox
         run: node node_modules/.bin/detox build -c android.emu.release
