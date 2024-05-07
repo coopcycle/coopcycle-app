@@ -161,11 +161,6 @@ jobs:
           sed -i -e 's/FACEBOOK_APP_ID=/FACEBOOK_APP_ID=${{ secrets.FACEBOOK_APP_ID }}/' .env
           sed -i -e 's/FACEBOOK_CLIENT_TOKEN=/FACEBOOK_CLIENT_TOKEN=${{ secrets.FACEBOOK_CLIENT_TOKEN }}/' .env
 
-      - name: Build app for Detox
-        run: node node_modules/.bin/detox build -c android.emu.release
-        env:
-          googleMapsApiKey: ${{ secrets.googleMapsApiKey }}
-
       - name: Enable KVM (reactivecircus)
         run: |
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
@@ -204,6 +199,11 @@ jobs:
 
       - name: List emulators
         run: avdmanager list avd
+
+      - name: Build app for Detox
+        run: node node_modules/.bin/detox build -c android.emu.release
+        env:
+          googleMapsApiKey: ${{ secrets.googleMapsApiKey }}
 
       - name: Run Detox tests
         uses: reactivecircus/android-emulator-runner@v2
