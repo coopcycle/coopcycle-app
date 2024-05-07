@@ -108,6 +108,28 @@ Testing
 yarn test
 ```
 
+##### Detox (end-to-end testing):
+
+Setup: https://wix.github.io/Detox/docs/introduction/environment-setup
+
+Make sure that you have emulators set up as specified in `.detoxrc.js` > `devices`.
+
+Build the app and run tests:
+
+Android:
+
+```
+detox build -c android.emu.debug
+detox test -c android.emu.debug
+```
+
+iOS:
+
+```
+detox build -c ios.sim.debug
+detox test -c ios.sim.debug
+```
+
 Troubleshooting
 ---------------
 
