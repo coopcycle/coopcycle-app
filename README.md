@@ -112,8 +112,6 @@ yarn test
 
 Setup: https://wix.github.io/Detox/docs/introduction/environment-setup
 
-Make sure that you have emulators set up as specified in `.detoxrc.js` > `devices`.
-
 Build the app and run tests:
 
 Android:
@@ -129,6 +127,8 @@ iOS:
 detox build -c ios.sim.debug
 detox test -c ios.sim.debug
 ```
+
+Make sure that you have emulators set up as specified in `.detoxrc.js` > `devices` or use `--device-name` parameter while running tests. For example: `detox test -c android.emu.debug --device-name="Pixel_8_API_34"`
 
 Troubleshooting
 ---------------

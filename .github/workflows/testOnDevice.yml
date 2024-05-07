@@ -81,31 +81,33 @@ jobs:
           path: ios/build
           key: xcode-derived-data-${{ hashFiles('**/Podfile.lock') }}
 
+      # Run 'applesimutils --list' to list your supported devices.
+      # It is advised only to specify a device type, e.g., "iPhone Xʀ" and avoid explicit search by OS version.
+#      - name: List supported devices
+#        run: applesimutils --list
+
       - name: Build app for Detox
         run: node node_modules/.bin/detox build -c ios.sim.release
 
       - name: Run Detox tests
         run: node node_modules/.bin/detox test -c ios.sim.release -l debug
 
-      # Run 'applesimutils --list' to list your supported devices.
-      # It is advised only to specify a device type, e.g., "iPhone Xʀ" and avoid explicit search by OS version.
-#      - name: List supported devices
-#        run: applesimutils --list
-
       # See screenshot specifications
       # https://help.apple.com/app-store-connect/#/devd274dd925
-#      - name: Take screenshots
+#      - name: Take App Store screenshots
 #        if: github.ref == 'refs/heads/master'
 #        run: |
 #          node node_modules/.bin/detox test -c ios.sim.release -o e2e/screenshots.config.json --take-screenshots manual --cleanup --device-name="iPhone 11" --artifacts-location ./artifacts/6.5-inch
 #          node node_modules/.bin/detox test -c ios.sim.release -o e2e/screenshots.config.json --take-screenshots manual --cleanup --device-name="iPhone 8 Plus" --artifacts-location ./artifacts/5.5-inch
 #          node node_modules/.bin/detox test -c ios.sim.release -o e2e/screenshots.config.json --take-screenshots manual --cleanup --device-name="iPad Pro (12.9-inch) (4th generation)" --artifacts-location ./artifacts/12.9-inch
-#      - name: Upload screenshots artifacts
+
+      - name: Upload screenshots artifacts
 #        if: github.ref == 'refs/heads/master'
-#        uses: actions/upload-artifact@v1
-#        with:
-#          name: detox-screenshots-ios
-#          path: artifacts
+        uses: actions/upload-artifact@v1
+        with:
+          name: detox-screenshots-ios
+          path: artifacts
+
 
   ANDROID_EMULATOR_TESTS:
     # https://github.community/t/how-to-stop-github-actions-workflow-to-trigger-when-the-pull-request-is-from-dependabot-preview/116486
@@ -222,12 +224,12 @@ jobs:
           disable-animations: true
           script: |
             node node_modules/.bin/detox test -c android.emu.release --device-name="test" -l debug
-#            node node_modules/.bin/detox test -c android.att.release --device-name="test" --take-screenshots all --loglevel trace
-#            node node_modules/.bin/detox test -c android.att.release --device-name="test" --take-screenshots manual -o e2e/screenshots.config.json --loglevel trace
+#            node node_modules/.bin/detox test -c android.att.release --device-name="test" --take-screenshots all
+#            node node_modules/.bin/detox test -c android.att.release --device-name="test" --take-screenshots manual -o e2e/screenshots.config.json
 
-#      - name: Upload screenshots artifacts
+      - name: Upload screenshots artifacts
 #        if: github.ref == 'refs/heads/master'
-#        uses: actions/upload-artifact@v1
-#        with:
-#          name: detox-screenshots-android
-#          path: artifacts
+        uses: actions/upload-artifact@v1
+        with:
+          name: detox-screenshots-android
+          path: artifacts

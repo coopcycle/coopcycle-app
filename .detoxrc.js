@@ -6,6 +6,13 @@ module.exports = {
       _: ['e2e'],
     },
   },
+  artifacts: {
+    plugins: {
+      screenshot: {
+        shouldTakeAutomaticSnapshots: true,
+      },
+    },
+  },
   apps: {
     'ios.debug': {
       type: 'ios.app',

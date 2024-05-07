@@ -8,6 +8,8 @@ describe('Foodtech: first launch', () => {
   it(`should show AskAddress screen`, async () => {
     await connectToDemo();
 
+    await device.takeScreenshot('AskAddress screen');
+
     await expect(element(by.id('checkoutAskAddress'))).toBeVisible();
   });
 });
