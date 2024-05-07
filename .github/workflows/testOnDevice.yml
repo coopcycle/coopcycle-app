@@ -81,16 +81,17 @@ jobs:
           path: ios/build
           key: xcode-derived-data-${{ hashFiles('**/Podfile.lock') }}
 
-      # Run 'applesimutils --list' to list your supported devices.
-      # It is advised only to specify a device type, e.g., "iPhone Xʀ" and avoid explicit search by OS version.
-#      - name: List supported devices
-#        run: applesimutils --list
-
       - name: Build app for Detox
         run: node node_modules/.bin/detox build -c ios.sim.release
 
       - name: Run Detox tests
         run: node node_modules/.bin/detox test -c ios.sim.release -l debug
+
+      # Run 'applesimutils --list' to list your supported devices.
+      # It is advised only to specify a device type, e.g., "iPhone Xʀ" and avoid explicit search by OS version.
+      - name: List supported devices
+        if: false # useful only for debugging
+        run: applesimutils --list
 
       # See screenshot specifications
       # https://help.apple.com/app-store-connect/#/devd274dd925
@@ -201,12 +202,6 @@ jobs:
           disable-animations: false
           script: echo "Generated AVD snapshot for caching."
 
-      - name: List supported devices
-        run: avdmanager list device
-
-      - name: List emulators
-        run: avdmanager list avd
-
       - name: Build app for Detox
         run: node node_modules/.bin/detox build -c android.emu.release
         env:
@@ -226,6 +221,14 @@ jobs:
             node node_modules/.bin/detox test -c android.emu.release --device-name="test" -l debug
 #            node node_modules/.bin/detox test -c android.att.release --device-name="test" --take-screenshots all
 #            node node_modules/.bin/detox test -c android.att.release --device-name="test" --take-screenshots manual -o e2e/screenshots.config.json
+
+      - name: List supported devices
+        if: false # useful only for debugging
+        run: avdmanager list device
+
+      - name: List emulators
+        if: false # useful only for debugging
+        run: avdmanager list avd
 
       - name: Upload screenshots artifacts
 #        if: github.ref == 'refs/heads/master'
