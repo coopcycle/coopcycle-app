@@ -26,7 +26,7 @@ module.exports = {
       binaryPath:
         'android/app/build/outputs/apk/official/debug/app-official-debug.apk',
       build:
-        'cd android && ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug --warning-mode all --stacktrace && cd ..',
+        'cd android && ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug --warning-mode all && cd ..',
       launchArgs: {},
     },
     'android.release': {
@@ -34,7 +34,7 @@ module.exports = {
       binaryPath:
         'android/app/build/outputs/apk/official/release/app-official-release.apk',
       build:
-        'cd android && ./gradlew assembleRelease assembleAndroidTest -DtestBuildType=release -DuseDebugCertificate=yes -DminifyEnabled=no -DuploadCrashlyticsMappingFile=no --warning-mode all --stacktrace && cd ..',
+        'cd android && ./gradlew assembleRelease assembleAndroidTest -DtestBuildType=release -DuseDebugCertificate=yes -DminifyEnabled=no -DuploadCrashlyticsMappingFile=no --warning-mode all && cd ..',
       launchArgs: {},
     },
   },
