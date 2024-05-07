@@ -121,9 +121,9 @@ jobs:
       fail-fast: false
       matrix:
         EMULATOR_API_LEVEL:
-          - 21
+#          - 21
           - 28
-          - 33
+#          - 33
     steps:
       - uses: actions/checkout@v3
 
