@@ -3,7 +3,7 @@ module.exports = {
   testRunner: {
     args: {
       config: 'e2e/jest.config.js',
-      maxWorkers: process.env.CI ? 2 : undefined,
+      // maxWorkers: process.env.CI ? 2 : undefined,
       _: ['e2e'],
     },
   },
