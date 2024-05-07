@@ -172,6 +172,8 @@ jobs:
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
 
+      - run: sudo apt-get install libpulse0
+
       - name: Gradle cache
         uses: gradle/actions/setup-gradle@v3
 
