@@ -113,8 +113,13 @@ jobs:
     name: Android Emulator Tests
     runs-on: ubuntu-latest
     strategy:
+      # Allow tests to continue on other devices if they fail on one device.
+      fail-fast: false
       matrix:
-        EMULATOR_API_LEVEL: [28]
+        EMULATOR_API_LEVEL:
+          - 21
+          - 28
+          - 33
     steps:
       - uses: actions/checkout@v3
 
