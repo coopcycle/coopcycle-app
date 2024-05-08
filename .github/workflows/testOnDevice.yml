@@ -208,6 +208,9 @@ jobs:
         env:
           googleMapsApiKey: ${{ secrets.googleMapsApiKey }}
 
+      - name: Disk usage
+        run: df -h
+
       - name: Run Detox tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
