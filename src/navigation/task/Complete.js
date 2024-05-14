@@ -157,7 +157,6 @@ class CompleteTask extends Component {
 
     if (tasks && tasks.length) {
       this.props.markTasksDone(
-        this.props.httpClient,
         tasks,
         notes,
         () => {
@@ -170,7 +169,6 @@ class CompleteTask extends Component {
       );
     } else {
       this.props.markTaskDone(
-        this.props.httpClient,
         task,
         notes,
         () => {
@@ -191,7 +189,6 @@ class CompleteTask extends Component {
     const { notes, failureReason } = this.state;
 
     this.props.markTaskFailed(
-      this.props.httpClient,
       task,
       notes,
       failureReason,
@@ -212,7 +209,6 @@ class CompleteTask extends Component {
     const { notes, failureReason } = this.state;
 
     this.props.reportIncident(
-      this.props.httpClient,
       task,
       notes,
       failureReason,
@@ -580,17 +576,17 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    markTaskFailed: (client, task, notes, reason, onSuccess, contactName) =>
+    markTaskFailed: (task, notes, reason, onSuccess, contactName) =>
       dispatch(
-        markTaskFailed(client, task, notes, reason, onSuccess, contactName),
+        markTaskFailed(task, notes, reason, onSuccess, contactName),
       ),
-    markTaskDone: (client, task, notes, onSuccess, contactName) =>
-      dispatch(markTaskDone(client, task, notes, onSuccess, contactName)),
-    markTasksDone: (client, tasks, notes, onSuccess, contactName) =>
-      dispatch(markTasksDone(client, tasks, notes, onSuccess, contactName)),
-    reportIncident: (client, task, notes, failureReasonCode, onSuccess) =>
+    markTaskDone: (task, notes, onSuccess, contactName) =>
+      dispatch(markTaskDone(task, notes, onSuccess, contactName)),
+    markTasksDone: (tasks, notes, onSuccess, contactName) =>
+      dispatch(markTasksDone(tasks, notes, onSuccess, contactName)),
+    reportIncident: (task, notes, failureReasonCode, onSuccess) =>
       dispatch(
-        reportIncident(client, task, notes, failureReasonCode, onSuccess),
+        reportIncident(task, notes, failureReasonCode, onSuccess),
       ),
     deleteSignatureAt: index => dispatch(deleteSignatureAt(index)),
     deletePictureAt: index => dispatch(deletePictureAt(index)),

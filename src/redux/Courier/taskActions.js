@@ -9,6 +9,7 @@ import analyticsEvent from '../../analytics/Event';
 import tracker from '../../analytics/Tracker';
 import i18n from '../../i18n';
 import { selectPictures, selectSignatures } from './taskSelectors';
+import { selectHttpClient } from '../App/selectors';
 
 /*
  * Action Types
@@ -199,6 +200,7 @@ export function loadTasks(selectedDate, refresh = false) {
 function uploadEntityImages(entity, url, state) {
   const signatures = selectSignatures(state);
   const pictures = selectPictures(state);
+  const httpClient = selectHttpClient(state);
 
   const files = signatures.concat(pictures);
 
@@ -207,7 +209,7 @@ function uploadEntityImages(entity, url, state) {
   }
 
   const promises = files.map(file =>
-    state.app.httpClient.uploadFileAsync(url, file, {
+    httpClient.uploadFileAsync(url, file, {
       headers: {
         'X-Attach-To': entity['@id'],
       },
@@ -220,6 +222,7 @@ function uploadEntityImages(entity, url, state) {
 function uploadEntitiesImages(entities, url, state) {
   const signatures = selectSignatures(state);
   const pictures = selectPictures(state);
+  const httpClient = selectHttpClient(state);
 
   const files = signatures.concat(pictures);
 
@@ -228,7 +231,7 @@ function uploadEntitiesImages(entities, url, state) {
   }
 
   const promises = files.map(file =>
-    state.app.httpClient.uploadFileAsync(url, file, {
+    httpClient.uploadFileAsync(url, file, {
       headers: {
         'X-Attach-To': entities.map(entity => entity['@id']).join(';'),
       },
@@ -240,7 +243,6 @@ function uploadEntitiesImages(entities, url, state) {
 
 
 export function reportIncident(
-  httpClient,
   task,
   description = null,
   failureReasonCode = null,
@@ -248,6 +250,7 @@ export function reportIncident(
 ) {
   return function (dispatch, getState) {
     dispatch(reportIncidentRequest(task));
+    const httpClient = selectHttpClient(getState());
 
     let payload = {
       description,
@@ -277,7 +280,6 @@ export function reportIncident(
 
 
 export function markTaskFailed(
-  httpClient,
   task,
   notes = '',
   reason = null,
@@ -286,6 +288,7 @@ export function markTaskFailed(
 ) {
   return function (dispatch, getState) {
     dispatch(markTaskFailedRequest(task));
+    const httpClient = selectHttpClient(getState());
 
     let payload = {
       notes,
@@ -322,7 +325,6 @@ export function markTaskFailed(
 
 
 export function markTaskDone(
-  httpClient,
   task,
   notes = '',
   onSuccess,
@@ -330,6 +332,7 @@ export function markTaskDone(
 ) {
   return function (dispatch, getState) {
     dispatch(markTaskDoneRequest(task));
+    const httpClient = selectHttpClient(getState());
 
     let payload = {
       notes,
@@ -364,7 +367,6 @@ export function markTaskDone(
 }
 
 export function markTasksDone(
-  httpClient,
   tasks,
   notes = '',
   onSuccess,
@@ -372,6 +374,7 @@ export function markTasksDone(
 ) {
   return function (dispatch, getState) {
     dispatch(markTasksDoneRequest());
+    const httpClient = selectHttpClient(getState());
 
     let payload = {
       tasks: tasks.map(t => t['@id']),
@@ -385,7 +388,7 @@ export function markTasksDone(
       };
     }
 
-    return uploadEntitiesImages(tasks, getState())
+    return uploadEntitiesImages(tasks, '/api/task_images', getState())
       .then(uploadTasks => {
         return httpClient.put('/api/tasks/done', payload).then(res => {
           if (res.failed && Object.keys(res.failed).length) {
