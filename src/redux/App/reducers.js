@@ -46,6 +46,7 @@ import {
   SET_SERVERS,
   SET_SETTINGS,
   SET_SPINNER_DELAY_ENABLED,
+  SET_INCIDENT_ENABLED,
   SET_USER,
 } from './actions';
 
@@ -98,6 +99,7 @@ const initialState = {
   termsAndConditionsText: '',
   privacyPolicyText: '',
   isSpinnerDelayEnabled: true,
+  isIncidentEnabled: false,
 };
 
 export default (state = initialState, action = {}) => {
@@ -392,6 +394,12 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         isSpinnerDelayEnabled: action.payload,
+      };
+
+    case SET_INCIDENT_ENABLED:
+      return {
+        ...state,
+        isIncidentEnabled: action.payload,
       };
   }
 
