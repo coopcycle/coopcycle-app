@@ -85,14 +85,14 @@ function replaceItem(state, payload) {
 }
 
 
-function updateItem(state, id, payload) {
-  const index = state.findIndex(item => item['@id'] === id);
+function updateItem(prevItems, id, payload) {
+  const index = prevItems.findIndex(item => item['@id'] === id);
 
   if (index !== -1) {
-    return state.map((item, i) => (i === index ? { ...item, ...payload } : item));
+    return prevItems.map((item, i) => (i === index ? { ...item, ...payload } : item));
   }
 
-  return state;
+  return prevItems;
 }
 
 function replaceItems(prevItems, items) {
