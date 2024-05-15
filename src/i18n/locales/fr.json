@@ -106,6 +106,7 @@
     "FAILED": "Échec",
     "VALIDATE": "Valider",
     "MARK_FAILED": "Signaler un problème",
+    "REPORT_INCIDENT": "Signaler un incident",
     "COMPLETE_TASK": "Terminer",
     "SWIPE_TO_END": "Glissez vers la droite pour terminer, ou vers la gauche en cas de problème",
     "WAITING_FOR_POS": "En attente de la position",
