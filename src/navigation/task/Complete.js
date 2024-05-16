@@ -147,6 +147,11 @@ class CompleteTask extends Component {
 
     if (this.props.pictures.length !== nextProps.pictures.length) return true;
 
+    if (this.state.isContactNameModalVisible !== nextState.isContactNameModalVisible)
+      return true;
+
+    if (this.state.isKeyboardVisible !== nextState.isKeyboardVisible) return true;
+
     return false;
   }
 
