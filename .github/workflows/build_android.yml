@@ -61,6 +61,8 @@ jobs:
       instance: beta
       app_name: CoopCycle (Beta)
       package_name: fr.coopcycle.beta
+      keystore_key_alias: instance
+      keystore_key_password_secret: SIGNING_KEY_PASSWORD_INSTANCE
       google_play_track: ${{ inputs.google_play_track }}
       deploy_google_play: ${{ inputs.deploy_google_play }}
     secrets: inherit
