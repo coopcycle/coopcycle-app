@@ -58,6 +58,7 @@ jobs:
     name: Build default beta app
     uses: ./.github/workflows/fastlane_android.yml
     with:
+      instance: beta
       app_name: CoopCycle (Beta)
       package_name: fr.coopcycle.beta
       google_play_track: ${{ inputs.google_play_track }}
