@@ -40,10 +40,6 @@ on:
         description: 'Build RobinFood app'
         required: true
         type: boolean
-      build_coursiers_montpellier:
-        description: 'Build Coursiers MTP app'
-        required: true
-        type: boolean
       build_coursiers_rennais:
         description: 'Build Coursiers Rennais app'
         required: true
