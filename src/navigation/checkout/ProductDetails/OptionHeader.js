@@ -1,7 +1,8 @@
-import { Heading, Text, View, useColorModeValue } from 'native-base';
+import { Heading, Text, View } from 'native-base';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet } from 'react-native';
+import { useBackgroundContainerColor } from '../../../styles/theme';
 import {
   isMandatoryOption,
   parseOptionValuesRange,
@@ -28,7 +29,7 @@ const styles = StyleSheet.create({
 });
 
 export const OptionHeader = ({ option }) => {
-  const backgroundColor = useColorModeValue('white', '#1a1a1a');
+  const backgroundColor = useBackgroundContainerColor();
   const { t } = useTranslation();
 
   return (

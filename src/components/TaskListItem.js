@@ -37,6 +37,9 @@ const styles = StyleSheet.create({
   textDanger: {
     color: redColor,
   },
+  hasIncident: {
+    borderColor: yellowColor,
+  },
   icon: {
     fontSize: 18,
   },
@@ -47,6 +50,19 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
+  },
+  tagsWrapper: {
+    flexWrap: 'wrap',
+    gap: 2,
+  },
+  tag: {
+    paddingVertical: 0,
+    paddingHorizontal: 4,
+    color: '#ffffff',
+    borderRadius: 4,
+    overflow: 'hidden',
+    textTransform: 'capitalize',
+    marginTop: 4,
   },
 });
 
@@ -259,7 +275,25 @@ class TaskListItem extends Component {
                   />
                 )}
               </HStack>
+              {task.tags && task.tags.length ? (
+                <HStack style={styles.tagsWrapper}>
+                  {task.tags.map(tag => (
+                    <Text
+                      key={tag}
+                      style={[
+                        textStyle,
+                        styles.tag,
+                        {
+                          backgroundColor: tag.color,
+                        },
+                      ]}>
+                      {tag.name}
+                    </Text>
+                  ))}
+                </HStack>
+              ) : null}
             </VStack>
+            {task.hasIncidents && <Icon as={FontAwesome} name="exclamation-triangle" size="md" style={{ backgroundColor: yellowColor, color: redColor, marginRight: 12, borderRadius: 5 }} />}
             <Icon as={FontAwesome} name="arrow-right" size="sm" />
           </HStack>
         </ItemTouchable>

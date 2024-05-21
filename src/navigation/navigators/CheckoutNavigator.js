@@ -16,11 +16,27 @@ import {
   selectIsGuest,
 } from '../../redux/App/selectors';
 import store from '../../redux/store';
-import { primaryColor } from '../../styles/common';
+import {
+  useBackgroundContainerColor,
+  useBaseTextColor,
+  usePrimaryColor,
+} from '../../styles/theme';
 import CartsBadge from '../checkout/components/CartsBadge';
 import AskAddress from '../home/AskAddress';
 import { stackNavigatorScreenOptions } from '../styles';
 import AccountNavigator from './AccountNavigator';
+
+const MyOrderButton = ({ navigation }) => {
+  const color = useBaseTextColor();
+
+  return (
+    <TouchableOpacity
+      style={{ paddingHorizontal: 10 }}
+      onPress={() => navigation()}>
+      <Text style={{ color }}>{i18n.t('MY_ORDERS')}</Text>
+    </TouchableOpacity>
+  );
+};
 
 function getNestedOptions(navigation, route) {
   const routeName = getFocusedRouteNameFromRoute(route) ?? 'Feed';
@@ -36,13 +52,13 @@ function getNestedOptions(navigation, route) {
         headerRight: () => {
           if (selectIsAuthenticated(store.getState())) {
             return (
-              <TouchableOpacity
-                style={{ paddingHorizontal: 10 }}
-                onPress={() => {
-                  navigation.navigate('AccountOrders');
-                }}>
-                <Text style={{ color: 'white' }}>{i18n.t('MY_ORDERS')}</Text>
-              </TouchableOpacity>
+              <>
+                <MyOrderButton
+                  navigation={() => {
+                    navigation.navigate('AccountOrders');
+                  }}
+                />
+              </>
             );
           }
         },
@@ -59,6 +75,8 @@ function getNestedOptions(navigation, route) {
 const Tab = createBottomTabNavigator();
 
 function Tabs({ rootNavigation: navigation }) {
+  const primaryColor = usePrimaryColor();
+
   return (
     <Tab.Navigator
       screenOptions={{
@@ -271,63 +289,69 @@ const SubmitOrderNavigator = () => {
 };
 const RootStack = createStackNavigator();
 
-const DefaultNav = () => (
-  <RootStack.Navigator
-    screenOptions={{ ...stackNavigatorScreenOptions, presentation: 'modal' }}>
-    <RootStack.Screen
-      name="Main"
-      component={MainNavigator}
-      options={{
-        headerShown: false,
-      }}
-    />
-    <RootStack.Screen
-      name="CheckoutProductDetails"
-      component={screens.CheckoutProductDetails}
-      options={({ _, route }) => {
-        const productName = route.params?.product.name || '';
-        return {
-          title: productName,
-        };
-      }}
-    />
-    <RootStack.Screen
-      name="CheckoutShippingDate"
-      component={screens.CheckoutShippingDate}
-      options={{
-        title: i18n.t('CHECKOUT_SHIPPING_DATE'),
-      }}
-    />
-    <RootStack.Screen
-      name="CheckoutSubmitOrder"
-      component={SubmitOrderNavigator}
-      options={{
-        headerShown: false,
-      }}
-    />
-    <RootStack.Screen
-      name="CheckoutPaymentMethodCard"
-      component={screens.CheckoutPaymentMethodCard}
-      options={{
-        title: i18n.t('PAYMENT_METHOD.card'),
-      }}
-    />
-    <RootStack.Screen
-      name="CheckoutPaymentMethodCashOnDelivery"
-      component={screens.CheckoutPaymentMethodCashOnDelivery}
-      options={{
-        title: i18n.t('PAYMENT_METHOD.cash_on_delivery'),
-      }}
-    />
-    <RootStack.Screen
-      name="CheckoutLoopeat"
-      component={screens.CheckoutLoopeat}
-      options={{
-        title: i18n.t('ZERO_WASTE'),
-      }}
-    />
-  </RootStack.Navigator>
-);
+const DefaultNav = () => {
+  const backgroundColor = useBackgroundContainerColor();
+  return (
+    <RootStack.Navigator
+      screenOptions={{ ...stackNavigatorScreenOptions, presentation: 'modal' }}>
+      <RootStack.Screen
+        name="Main"
+        component={MainNavigator}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <RootStack.Screen
+        name="CheckoutProductDetails"
+        component={screens.CheckoutProductDetails}
+        options={({ _, route }) => {
+          const productName = route.params?.product.name || '';
+          return {
+            title: productName,
+            headerStyle: {
+              backgroundColor,
+            },
+          };
+        }}
+      />
+      <RootStack.Screen
+        name="CheckoutShippingDate"
+        component={screens.CheckoutShippingDate}
+        options={{
+          title: i18n.t('CHECKOUT_SHIPPING_DATE'),
+        }}
+      />
+      <RootStack.Screen
+        name="CheckoutSubmitOrder"
+        component={SubmitOrderNavigator}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <RootStack.Screen
+        name="CheckoutPaymentMethodCard"
+        component={screens.CheckoutPaymentMethodCard}
+        options={{
+          title: i18n.t('PAYMENT_METHOD.card'),
+        }}
+      />
+      <RootStack.Screen
+        name="CheckoutPaymentMethodCashOnDelivery"
+        component={screens.CheckoutPaymentMethodCashOnDelivery}
+        options={{
+          title: i18n.t('PAYMENT_METHOD.cash_on_delivery'),
+        }}
+      />
+      <RootStack.Screen
+        name="CheckoutLoopeat"
+        component={screens.CheckoutLoopeat}
+        options={{
+          title: i18n.t('ZERO_WASTE'),
+        }}
+      />
+    </RootStack.Navigator>
+  );
+};
 
 const CheckoutNav = ({ address }) => {
   if (!address) {

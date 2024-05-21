@@ -45,8 +45,10 @@ import {
   selectPictures,
   selectSignatures,
 } from '../../redux/Courier';
+import { selectIsIncidentEnabled } from '../../redux/App/selectors';
 import { greenColor, yellowColor } from '../../styles/common';
 import { doneIconName, incidentIconName } from './styles/common';
+import { reportIncident } from '../../redux/Courier/taskActions';
 
 const DELETE_ICON_SIZE = 32;
 const CONTENT_PADDING = 20;
@@ -128,11 +130,29 @@ class CompleteTask extends Component {
       isContactNameModalVisible: false,
       contactName: '',
       isKeyboardVisible: false,
+      validateTaskAfterReport: false,
     };
   }
 
-  shouldComponentUpdate(nextProps, nextState, nextContext) {
-    return this.state.failureReason !== nextState.failureReason;
+  shouldComponentUpdate(nextProps, nextState) {
+    if (this.state.failureReason !== nextState.failureReason) return true;
+
+    if (
+      this.state.validateTaskAfterReport !== nextState.validateTaskAfterReport
+    )
+      return true;
+
+    if (this.props.signatures.length !== nextProps.signatures.length)
+      return true;
+
+    if (this.props.pictures.length !== nextProps.pictures.length) return true;
+
+    if (this.state.isContactNameModalVisible !== nextState.isContactNameModalVisible)
+      return true;
+
+    if (this.state.isKeyboardVisible !== nextState.isKeyboardVisible) return true;
+
+    return false;
   }
 
   markTaskDone() {
@@ -142,7 +162,6 @@ class CompleteTask extends Component {
 
     if (tasks && tasks.length) {
       this.props.markTasksDone(
-        this.props.httpClient,
         tasks,
         notes,
         () => {
@@ -155,7 +174,6 @@ class CompleteTask extends Component {
       );
     } else {
       this.props.markTaskDone(
-        this.props.httpClient,
         task,
         notes,
         () => {
@@ -176,10 +194,9 @@ class CompleteTask extends Component {
     const { notes, failureReason } = this.state;
 
     this.props.markTaskFailed(
-      this.props.httpClient,
       task,
-      failureReason,
       notes,
+      failureReason,
       () => {
         // Make sure to use merge = true, so that it doesn't break
         // when navigating to DispatchTaskList
@@ -189,6 +206,27 @@ class CompleteTask extends Component {
         });
       },
       this.state.contactName,
+    );
+  }
+
+  reportIncident() {
+    const task = this.props.route.params?.task;
+    const { notes, failureReason } = this.state;
+
+    this.props.reportIncident(
+      task,
+      notes,
+      failureReason,
+      () => {
+        if (this.state.validateTaskAfterReport) {
+          this.markTaskDone();
+        } else {
+          this.props.navigation.navigate({
+            name: this.props.route.params?.navigateAfter,
+            merge: true,
+          });
+        }
+      },
     );
   }
 
@@ -245,9 +283,12 @@ class CompleteTask extends Component {
   }
 
   multipleTasksLabel(tasks) {
-    return tasks.reduce((label, task, idx) => {
-      return `${label}${idx !== 0 ? ',' : ''} #${task.id}`;
-    }, `${this.props.t('COMPLETE_TASKS')}: `);
+    return tasks.reduce(
+      (label, task, idx) => {
+        return `${label}${idx !== 0 ? ',' : ''} #${task.id}`;
+      },
+      `${this.props.t('COMPLETE_TASKS')}: `,
+    );
   }
 
   isDropoff() {
@@ -276,10 +317,12 @@ class CompleteTask extends Component {
     const footerBgColor = success ? greenColor : yellowColor;
     const footerText = success
       ? this.props.t('VALIDATE')
-      : this.props.t('MARK_FAILED');
+      : this.props.t('REPORT_INCIDENT');
     const onPress = success
       ? this.markTaskDone.bind(this)
-      : this.markTaskFailed.bind(this);
+      : this.props.isIncidentEnabled
+        ? this.reportIncident.bind(this)
+        : this.markTaskFailed.bind(this);
 
     const contactName = this.resolveContactName();
 
@@ -355,6 +398,34 @@ class CompleteTask extends Component {
                     totalLines={2}
                     onChangeText={text => this.setState({ notes: text })}
                   />
+                  {!success && this.props.isIncidentEnabled && (
+                    <FormControl p="3">
+                      <Button
+                        bg={
+                          this.state.validateTaskAfterReport
+                            ? greenColor
+                            : undefined
+                        }
+                        onPress={() =>
+                          this.setState({
+                            validateTaskAfterReport:
+                              !this.state.validateTaskAfterReport,
+                          })
+                        }
+                        variant={
+                          this.state.validateTaskAfterReport
+                            ? 'solid'
+                            : 'outline'
+                        }
+                        endIcon={
+                          this.state.validateTaskAfterReport ? (
+                            <Icon as={FontAwesome} name="check" size="sm" />
+                          ) : undefined
+                        }>
+                        Validate the task after reporting
+                      </Button>
+                    </FormControl>
+                  )}
                 </FormControl>
                 <View>
                   <ScrollView style={{ height: '50%' }}>
@@ -504,19 +575,24 @@ function mapStateToProps(state) {
     taskCompleteError: selectIsTaskCompleteFailure(state),
     signatures: selectSignatures(state),
     pictures: selectPictures(state),
+    isIncidentEnabled: selectIsIncidentEnabled(state),
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    markTaskFailed: (client, task, notes, reason, onSuccess, contactName) =>
+    markTaskFailed: (task, notes, reason, onSuccess, contactName) =>
       dispatch(
-        markTaskFailed(client, task, notes, reason, onSuccess, contactName),
+        markTaskFailed(task, notes, reason, onSuccess, contactName),
       ),
-    markTaskDone: (client, task, notes, onSuccess, contactName) =>
-      dispatch(markTaskDone(client, task, notes, onSuccess, contactName)),
-    markTasksDone: (client, tasks, notes, onSuccess, contactName) =>
-      dispatch(markTasksDone(client, tasks, notes, onSuccess, contactName)),
+    markTaskDone: (task, notes, onSuccess, contactName) =>
+      dispatch(markTaskDone(task, notes, onSuccess, contactName)),
+    markTasksDone: (tasks, notes, onSuccess, contactName) =>
+      dispatch(markTasksDone(tasks, notes, onSuccess, contactName)),
+    reportIncident: (task, notes, failureReasonCode, onSuccess) =>
+      dispatch(
+        reportIncident(task, notes, failureReasonCode, onSuccess),
+      ),
     deleteSignatureAt: index => dispatch(deleteSignatureAt(index)),
     deletePictureAt: index => dispatch(deletePictureAt(index)),
   };

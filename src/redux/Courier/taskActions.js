@@ -9,7 +9,7 @@ import analyticsEvent from '../../analytics/Event';
 import tracker from '../../analytics/Tracker';
 import i18n from '../../i18n';
 import { selectPictures, selectSignatures } from './taskSelectors';
-import { selectCurrentRoute } from '../App/selectors';
+import { selectCurrentRoute, selectHttpClient } from '../App/selectors';
 
 /*
  * Action Types
@@ -29,6 +29,9 @@ export const MARK_TASK_FAILED_FAILURE = 'MARK_TASK_FAILED_FAILURE';
 export const START_TASK_REQUEST = 'START_TASK_REQUEST';
 export const START_TASK_SUCCESS = 'START_TASK_SUCCESS';
 export const START_TASK_FAILURE = 'START_TASK_FAILURE';
+export const REPORT_INCIDENT_REQUEST = 'REPORT_INCIDENT_REQUEST';
+export const REPORT_INCIDENT_SUCCESS = 'REPORT_INCIDENT_SUCCESS';
+export const REPORT_INCIDENT_FAILURE = 'REPORT_INCIDENT_FAILURE';
 
 export const ADD_PICTURE = 'ADD_PICTURE';
 export const ADD_SIGNATURE = 'ADD_SIGNATURE';
@@ -70,6 +73,9 @@ export const markTaskFailedFailure = createAction(MARK_TASK_FAILED_FAILURE);
 export const startTaskRequest = createAction(START_TASK_REQUEST);
 export const startTaskSuccess = createAction(START_TASK_SUCCESS);
 export const startTaskFailure = createAction(START_TASK_FAILURE);
+export const reportIncidentRequest = createAction(REPORT_INCIDENT_REQUEST);
+export const reportIncidentSuccess = createAction(REPORT_INCIDENT_SUCCESS);
+export const reportIncidentFailure = createAction(REPORT_INCIDENT_FAILURE);
 
 export const addPicture = createAction(ADD_PICTURE, (task, base64) => ({
   task,
@@ -204,9 +210,10 @@ export function loadTasks(selectedDate, refresh = false) {
   };
 }
 
-function uploadTaskImages(task, state) {
+function uploadEntityImages(entity, url, state) {
   const signatures = selectSignatures(state);
   const pictures = selectPictures(state);
+  const httpClient = selectHttpClient(state);
 
   const files = signatures.concat(pictures);
 
@@ -215,9 +222,9 @@ function uploadTaskImages(task, state) {
   }
 
   const promises = files.map(file =>
-    uploadTaskImage(state.app.httpClient, file, {
+    httpClient.uploadFileAsync(url, file, {
       headers: {
-        'X-Attach-To': task['@id'],
+        'X-Attach-To': entity['@id'],
       },
     }),
   );
@@ -225,9 +232,10 @@ function uploadTaskImages(task, state) {
   return Promise.all(promises);
 }
 
-function uploadTasksImages(tasks, state) {
+function uploadEntitiesImages(entities, url, state) {
   const signatures = selectSignatures(state);
   const pictures = selectPictures(state);
+  const httpClient = selectHttpClient(state);
 
   const files = signatures.concat(pictures);
 
@@ -236,18 +244,55 @@ function uploadTasksImages(tasks, state) {
   }
 
   const promises = files.map(file =>
-    uploadTaskImage(state.app.httpClient, file, {
+    httpClient.uploadFileAsync(url, file, {
       headers: {
-        'X-Attach-To': tasks.map(task => task['@id']).join(';'),
+        'X-Attach-To': entities.map(entity => entity['@id']).join(';'),
       },
     }),
   );
 
   return Promise.all(promises);
 }
+
+
+export function reportIncident(
+  task,
+  description = null,
+  failureReasonCode = null,
+  onSuccess,
+) {
+  return function (dispatch, getState) {
+    dispatch(reportIncidentRequest(task));
+    const httpClient = selectHttpClient(getState());
+
+    let payload = {
+      description,
+      failureReasonCode,
+      task: task['@id']
+    };
+
+
+    // Make sure to return a promise for testing
+    return httpClient
+      .post('/api/incidents', payload)
+      .then(incident => {
+        uploadEntityImages(incident, '/api/incident_images', getState())
+          .then(uploadTasks => httpClient.execUploadTask(uploadTasks));
+        dispatch(clearFiles());
+        dispatch(reportIncidentSuccess(incident));
+        if (typeof onSuccess === 'function') {
+          setTimeout(() => onSuccess(), 100);
+        }
+      })
+      .catch(e => {
+        dispatch(reportIncidentFailure(e));
+        setTimeout(() => showAlert(e), 100);
+      });
+  };
+}
+
 
 export function markTaskFailed(
-  httpClient,
   task,
   notes = '',
   reason = null,
@@ -256,6 +301,7 @@ export function markTaskFailed(
 ) {
   return function (dispatch, getState) {
     dispatch(markTaskFailedRequest(task));
+    const httpClient = selectHttpClient(getState());
 
     let payload = {
       notes,
@@ -270,7 +316,7 @@ export function markTaskFailed(
     }
 
     // Make sure to return a promise for testing
-    return uploadTaskImages(task, getState())
+    return uploadEntityImages(task, '/api/task_images', getState())
       .then(uploadTasks => {
         return httpClient
           .put(task['@id'] + '/failed', payload)
@@ -290,8 +336,8 @@ export function markTaskFailed(
   };
 }
 
+
 export function markTaskDone(
-  httpClient,
   task,
   notes = '',
   onSuccess,
@@ -299,6 +345,7 @@ export function markTaskDone(
 ) {
   return function (dispatch, getState) {
     dispatch(markTaskDoneRequest(task));
+    const httpClient = selectHttpClient(getState());
 
     let payload = {
       notes,
@@ -312,7 +359,7 @@ export function markTaskDone(
     }
 
     // Make sure to return a promise for testing
-    return uploadTaskImages(task, getState())
+    return uploadEntityImages(task, '/api/task_images', getState())
       .then(uploadTasks => {
         return httpClient
           .put(task['@id'] + '/done', payload)
@@ -333,7 +380,6 @@ export function markTaskDone(
 }
 
 export function markTasksDone(
-  httpClient,
   tasks,
   notes = '',
   onSuccess,
@@ -341,6 +387,7 @@ export function markTasksDone(
 ) {
   return function (dispatch, getState) {
     dispatch(markTasksDoneRequest());
+    const httpClient = selectHttpClient(getState());
 
     let payload = {
       tasks: tasks.map(t => t['@id']),
@@ -354,7 +401,7 @@ export function markTasksDone(
       };
     }
 
-    return uploadTasksImages(tasks, getState())
+    return uploadEntitiesImages(tasks, '/api/task_images', getState())
       .then(uploadTasks => {
         return httpClient.put('/api/tasks/done', payload).then(res => {
           if (res.failed && Object.keys(res.failed).length) {
@@ -396,10 +443,6 @@ export function startTask(task, cb) {
       })
       .catch(e => dispatch(startTaskFailure(e)));
   };
-}
-
-function uploadTaskImage(httpClient, file, options) {
-  return httpClient.uploadFileAsync('/api/task_images', file, options);
 }
 
 export function setTasksChangedAlertSound(enabled) {

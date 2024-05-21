@@ -121,6 +121,7 @@ const appPersistConfig = {
     'firstRun',
     'resumeCheckoutAfterActivation',
     'isSpinnerDelayEnabled',
+    'isIncidentEnabled',
   ],
   migrate: state => {
     if (!state) {

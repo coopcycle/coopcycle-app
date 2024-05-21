@@ -1,9 +1,10 @@
 import _ from 'lodash';
-import { Image, Text, View, useColorModeValue } from 'native-base';
+import { Image, Text, View } from 'native-base';
 import React from 'react';
 import { ActivityIndicator, StyleSheet, TouchableOpacity } from 'react-native';
+import { useBackgroundContainerColor } from '../styles/theme';
 import { formatPrice } from '../utils/formatting';
-import RestaurantProductBadge from './RestaurantProductBadge';
+import { DietBadge } from './RestaurantProductBadge';
 
 const styles = StyleSheet.create({
   menuItem: {
@@ -80,7 +81,7 @@ const styles = StyleSheet.create({
 
 const RestaurantMenuItem = ({ item, onPress, isLoading }) => {
   const enabled = item.hasOwnProperty('enabled') ? item.enabled : true;
-  const backgroundColor = useColorModeValue('#fff', '#201E1E');
+  const backgroundColor = useBackgroundContainerColor();
 
   const diets = item.suitableForDiet
     ? item.suitableForDiet.map(element =>
@@ -133,7 +134,7 @@ const RestaurantMenuItem = ({ item, onPress, isLoading }) => {
             <View style={styles.badges}>
               {diets.map((badge, i) => {
                 if (i !== diets.length - 1) {
-                  return <RestaurantProductBadge type={badge} key={i} />;
+                  return <DietBadge key={i} name={badge} />;
                 }
               })}
             </View>
@@ -142,11 +143,11 @@ const RestaurantMenuItem = ({ item, onPress, isLoading }) => {
           <View style={styles.priceWrapper}>
             {diets.length > 1 ? (
               <>
-                <RestaurantProductBadge type={diets[diets.length - 1]} />
+                <DietBadge name={diets[diets.length - 1]} />
               </>
             ) : diets.length > 0 ? (
               <>
-                <RestaurantProductBadge type={diets[0]} />
+                <DietBadge name={diets[0]} />
               </>
             ) : null}
             <Text pr="2" fontSize="lg" style={styles.price}>{`${formatPrice(

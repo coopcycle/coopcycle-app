@@ -2,7 +2,6 @@ import { Text } from 'native-base';
 import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
 import { Dimensions, InteractionManager, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
 
 import { SceneMap, TabBar, TabView } from 'react-native-tab-view';
@@ -180,9 +179,7 @@ class RestaurantsPage extends Component {
       );
     } else {
       return (
-        <SafeAreaView
-          edges={['right', 'bottom', 'left']}
-          style={{ flexGrow: 1 }}>
+        <View style={{ flexGrow: 1 }}>
           <RestaurantList
             restaurants={restaurants}
             addressAsText={addressAsText}
@@ -194,7 +191,7 @@ class RestaurantsPage extends Component {
               });
             }}
           />
-        </SafeAreaView>
+        </View>
       );
     }
   }
