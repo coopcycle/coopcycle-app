@@ -2,6 +2,10 @@ name: Fastlane Android
 on:
   workflow_call:
     inputs:
+      tag:
+        type: string
+        description: Deploy a specific git tag
+        required: true
       instance:
         type: string
         required: false
@@ -33,10 +37,6 @@ on:
         type: string
         required: false
         default: "production"
-      branch:
-        type: string
-        required: false
-        default: "master"
       deploy_google_play:
         type: boolean
         required: false
@@ -48,7 +48,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          ref: ${{ inputs.branch }}
+          ref: ${{ inputs.tag }}
       - uses: actions/setup-node@v4
         with:
           node-version: '20.x'
@@ -202,7 +202,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          ref: ${{ inputs.branch }}
+          ref: ${{ inputs.tag }}
       - name: Download apk artifact
         uses: actions/download-artifact@v3
         with:

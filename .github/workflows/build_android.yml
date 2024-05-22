@@ -2,6 +2,10 @@ name: Build Android
 on:
   workflow_dispatch:
     inputs:
+      tag:
+        type: string
+        description: Deploy a specific git tag
+        required: true
       deploy_google_play:
         description: 'Deploy to Google Play'
         required: true
@@ -51,6 +55,7 @@ jobs:
     uses: ./.github/workflows/fastlane_android.yml
     secrets: inherit
     with:
+      tag: ${{ inputs.tag }}
       google_play_track: ${{ inputs.google_play_track }}
       deploy_google_play: ${{ inputs.deploy_google_play }}
   default_beta:
@@ -58,6 +63,7 @@ jobs:
     name: Build default beta app
     uses: ./.github/workflows/fastlane_android.yml
     with:
+      tag: ${{ inputs.tag }}
       instance: beta
       app_name: CoopCycle (Beta)
       package_name: fr.coopcycle.beta
@@ -71,6 +77,7 @@ jobs:
     name: Build Naofood app
     uses: ./.github/workflows/fastlane_android.yml
     with:
+      tag: ${{ inputs.tag }}
       instance: naofood
       instance_url: https://naofood.coopcycle.org
       app_name: Naofood
@@ -86,6 +93,7 @@ jobs:
     name: Build Zampate app
     uses: ./.github/workflows/fastlane_android.yml
     with:
+      tag: ${{ inputs.tag }}
       instance: zampate
       instance_url: https://zampate.coopcycle.org
       app_name: Zampate
@@ -101,6 +109,7 @@ jobs:
     name: Build Les Coursiers Stéphanois app
     uses: ./.github/workflows/fastlane_android.yml
     with:
+      tag: ${{ inputs.tag }}
       instance: coursiers_stephanois
       instance_url: https://coursiers-stephanois.coopcycle.org
       app_name: Les Coursiers Stéphanois
@@ -116,6 +125,7 @@ jobs:
     name: Build Kooglof app
     uses: ./.github/workflows/fastlane_android.yml
     with:
+      tag: ${{ inputs.tag }}
       instance: kooglof
       instance_url: https://kooglof.coopcycle.org
       app_name: Kooglof
@@ -131,6 +141,7 @@ jobs:
     name: Build RobinFood app
     uses: ./.github/workflows/fastlane_android.yml
     with:
+      tag: ${{ inputs.tag }}
       instance: robinfood
       instance_url: https://robinfood.coopcycle.org
       app_name: Robin Food
@@ -146,6 +157,7 @@ jobs:
     name: Build Coursiers MTP app
     uses: ./.github/workflows/fastlane_android.yml
     with:
+      tag: ${{ inputs.tag }}
       instance: coursiersmontpellier
       instance_url: https://coursiersmontpellier.coopcycle.org
       app_name: Coursiers MTP
@@ -161,6 +173,7 @@ jobs:
     name: Build LCR app
     uses: ./.github/workflows/fastlane_android.yml
     with:
+      tag: ${{ inputs.tag }}
       instance: lcr
       instance_url: https://lcr.coopcycle.org
       app_name: Les Coursiers Rennais
