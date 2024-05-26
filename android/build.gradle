@@ -9,6 +9,7 @@ buildscript {
 
         playServicesVersion = "18.2.0"
         timberVersion = "4.7.1"
+        appCompatVersion = "1.6.1"
         androidXCore = "1.0.2"
         // https://github.com/react-native-maps/react-native-maps/issues/4842
         googlePlayServicesLocationVersion = "21.0.1"
@@ -41,15 +42,17 @@ allprojects {
         maven {
             url "$rootDir/../node_modules/detox/Detox-android"
         }
+
         maven {
             // react-native-background-fetch
             url("${project(':react-native-background-fetch').projectDir}/libs")
         }
         if (findProject(':react-native-background-geolocation') != null) {
+          // Required for react-native-background-geolocation
           maven {
-              // Required for react-native-background-geolocation
               url("${project(':react-native-background-geolocation').projectDir}/libs")
           }
+          maven { url 'https://developer.huawei.com/repo/' }
         }
         maven {
           url 'https://artifacts.mercadolibre.com/repository/android-releases/'
