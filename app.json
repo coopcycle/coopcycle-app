@@ -1,4 +1,10 @@
 {
-  "name": "CoopCycle",
-  "displayName": "CoopCycle"
+  "expo": {
+    "name": "CoopCycle",
+    "slug": "coopcycle",
+    "plugins": [
+      "react-native-background-geolocation",
+      "react-native-background-fetch"
+    ]
+  }
 }

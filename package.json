@@ -3,10 +3,9 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "android": "react-native run-android --mode=officialDebug",
-    "ios": "react-native run-ios",
-    "android-custom": "npx react-native run-android --mode=instanceDebug",
-    "start": "react-native start",
+    "android": "npx expo run:android --variant officialDebug",
+    "ios": "npx expo run:ios",
+    "android-custom": "npx expo run:android --variant instanceDebug",
     "test": "jest",
     "lint": "eslint src/",
     "i18n-lint": "ajv validate -s i18n.schema.json -d \"src/i18n/locales/*.json\""
