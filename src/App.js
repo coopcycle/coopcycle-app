@@ -1,3 +1,13 @@
+if (__DEV__) {
+  require('../ReactotronConfig');
+}
+
+import bgMessaging from './notifications/bgMessaging';
+
+bgMessaging();
+
+import 'react-native-gesture-handler';
+
 import React, { createRef, useEffect } from 'react';
 import { LogBox, Platform, useColorScheme } from 'react-native';
 
@@ -7,7 +17,7 @@ import tracker from './analytics/Tracker';
 import {
   DarkTheme,
   DefaultTheme,
-  NavigationContainer,
+  ThemeProvider,
 } from '@react-navigation/native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
@@ -155,14 +165,19 @@ const App = () => {
               <QueryClientProvider client={queryClient}>
                 <SafeAreaProvider>
                   <Spinner />
-                  <NavigationContainer
-                    ref={navigationRef}
-                    linking={linking}
-                    onReady={onReady}
-                    onStateChange={onNavigationStateChange}
-                    theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+                  <ThemeProvider
+                    value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
                     <Root />
-                  </NavigationContainer>
+                  </ThemeProvider>
+                  {/*FIXME; migrate props*/}
+                  {/*<NavigationContainer*/}
+                  {/*  ref={navigationRef}*/}
+                  {/*  linking={linking}*/}
+                  {/*  onReady={onReady}*/}
+                  {/*  onStateChange={onNavigationStateChange}*/}
+                  {/*  theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>*/}
+                  {/*  <Root />*/}
+                  {/*</NavigationContainer>*/}
                   <DropdownAlert
                     ref={ref => {
                       DropdownHolder.setDropdown(ref);

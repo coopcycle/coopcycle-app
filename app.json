@@ -2,9 +2,11 @@
   "expo": {
     "name": "CoopCycle",
     "slug": "coopcycle",
+    "scheme": "coopcycle",
     "plugins": [
       "react-native-background-geolocation",
-      "react-native-background-fetch"
+      "react-native-background-fetch",
+      "expo-router"
     ]
   }
 }
