@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { Text } from 'native-base';
-import React, { Component } from 'react';
+import React from 'react';
 import { withTranslation } from 'react-i18next';
 import { KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
@@ -10,18 +10,12 @@ import AddressAutocomplete from '../../components/AddressAutocomplete';
 import { assertDelivery } from '../../redux/Store/actions';
 import { selectStore } from '../../redux/Store/selectors';
 
-class NewDelivery extends Component {
-  constructor(props) {
-    super(props);
+function NewDelivery(props) {
+  // const [extraScrollHeight, setExtraScrollHeight] = useState(0);
 
-    this.state = {
-      extraScrollHeight: 0,
-    };
-  }
-
-  _onSelectAddress(address) {
+  function onSelectAddress(address) {
     const delivery = {
-      store: this.props.store['@id'],
+      store: props.store['@id'],
       dropoff: {
         address,
         // FIXME It shouldn't be necessary to send this
@@ -29,53 +23,50 @@ class NewDelivery extends Component {
       },
     };
 
-    this.props.assertDelivery(delivery, () => {
-      this.props.navigation.navigate('StoreNewDeliveryForm', { address });
+    props.assertDelivery(delivery, () => {
+      props.navigation.navigate('StoreNewDeliveryForm', { address });
     });
   }
 
-  render() {
-    let autocompleteProps = {
+  let autocompleteProps = {
+    inputContainerStyle: {
+      flex: 1,
+      borderWidth: 0,
+    },
+  };
+
+  if (!_.isEmpty(props.error)) {
+    autocompleteProps = {
+      ...autocompleteProps,
       inputContainerStyle: {
-        flex: 1,
-        borderWidth: 0,
+        ...autocompleteProps.inputContainerStyle,
+        ...styles.errorInput,
       },
     };
-    if (!_.isEmpty(this.props.error)) {
-      autocompleteProps = {
-        ...autocompleteProps,
-        inputContainerStyle: {
-          ...autocompleteProps.inputContainerStyle,
-          ...styles.errorInput,
-        },
-      };
-    }
-
-    return (
-      <KeyboardAvoidingView style={styles.content} behavior="position">
-        <Text style={styles.label}>
-          {this.props.t('STORE_NEW_DELIVERY_ADDRESS')}
-        </Text>
-        <View style={styles.container}>
-          <View style={styles.autocompleteContainer}>
-            <AddressAutocomplete
-              addresses={this.props.addresses}
-              onSelectAddress={this._onSelectAddress.bind(this)}
-              containerStyle={{
-                flex: 1,
-                justifyContent: 'center',
-              }}
-              style={{ borderRadius: 0 }}
-              {...autocompleteProps}
-            />
-          </View>
-          <Text style={styles.help} note>
-            {this.props.t('STORE_NEW_DELIVERY_ADDRESS_HELP')}
-          </Text>
-        </View>
-      </KeyboardAvoidingView>
-    );
   }
+
+  return (
+    <KeyboardAvoidingView style={styles.content} behavior="position">
+      <Text style={styles.label}>{props.t('STORE_NEW_DELIVERY_ADDRESS')}</Text>
+      <View style={styles.container}>
+        <View style={styles.autocompleteContainer}>
+          <AddressAutocomplete
+            addresses={props.addresses}
+            onSelectAddress={onSelectAddress}
+            containerStyle={{
+              flex: 1,
+              justifyContent: 'center',
+            }}
+            style={{ borderRadius: 0 }}
+            {...autocompleteProps}
+          />
+        </View>
+        <Text style={styles.help} note>
+          {props.t('STORE_NEW_DELIVERY_ADDRESS_HELP')}
+        </Text>
+      </View>
+    </KeyboardAvoidingView>
+  );
 }
 
 const styles = StyleSheet.create({
