@@ -138,7 +138,7 @@ const linking = {
   config,
 };
 
-const App = () => {
+const RootPage = () => {
   const colorScheme = useColorScheme();
 
   const queryClient = new QueryClient();
@@ -194,4 +194,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default RootPage;

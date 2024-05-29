@@ -1,7 +1,7 @@
 import React from 'react';
 
-import App from '@/src/App';
+import Page from '@/src/RootPage';
 
 export default function RootPage() {
-  return <App />;
+  return <Page />;
 }
