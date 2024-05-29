@@ -7,6 +7,9 @@
       "react-native-background-geolocation",
       "react-native-background-fetch",
       "expo-router"
-    ]
+    ],
+    "web": {
+      "bundler": "metro"
+    }
   }
 }
