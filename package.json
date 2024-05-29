@@ -2,7 +2,7 @@
   "name": "CoopCycle",
   "version": "0.0.1",
   "private": true,
-  "main": "expo-router/entry",
+  "main": "index.js",
   "scripts": {
     "android": "npx expo run:android --variant officialDebug",
     "ios": "npx expo run:ios",
