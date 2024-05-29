@@ -24,6 +24,8 @@ import {
   selectIsAuthenticated,
   selectResumeCheckoutAfterActivation,
 } from './selectors';
+import { SET_LOADING, setLoading } from '@/src/redux/App/action/setLoading';
+export { SET_LOADING, setLoading };
 
 /*
  * Action Types
@@ -42,7 +44,6 @@ export const DELETE_PUSH_NOTIFICATION_TOKEN_SUCCESS =
   '@app/DELETE_PUSH_NOTIFICATION_TOKEN_SUCCESS';
 
 export const LOGIN = '@app/LOGIN';
-export const SET_LOADING = '@app/SET_LOADING';
 export const PUSH_NOTIFICATION = '@app/PUSH_NOTIFICATION';
 export const CLEAR_NOTIFICATIONS = '@app/CLEAR_NOTIFICATIONS';
 export const AUTHENTICATION_REQUEST = '@app/AUTHENTICATION_REQUEST';
@@ -109,7 +110,6 @@ export const SET_INCIDENT_ENABLED = '@app/SET_IS_INCIDENT_ENABLED';
  * Action Creators
  */
 
-export const setLoading = createAction(SET_LOADING);
 export const pushNotification = createAction(
   PUSH_NOTIFICATION,
   (event, params = {}) => ({ event, params }),

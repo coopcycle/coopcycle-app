@@ -1,8 +1,8 @@
 import _ from 'lodash';
 import { createAction } from 'redux-actions';
 
-import { setLoading } from '../App/actions';
 import { selectStore, selectTimeSlots } from './selectors';
+import { setLoading } from '@/src/redux/App/action/setLoading';
 
 export const LOAD_DELIVERIES_SUCCESS = '@store/LOAD_DELIVERIES_SUCCESS';
 export const CREATE_DELIVERY_SUCCESS = '@store/CREATE_DELIVERY_SUCCESS';
