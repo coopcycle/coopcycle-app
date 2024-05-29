@@ -4,6 +4,7 @@
   "private": true,
   "main": "index.js",
   "scripts": {
+    "start": "expo start --dev-client",
     "android": "expo run:android --variant officialDebug",
     "ios": "expo run:ios",
     "android-custom": "expo run:android --variant instanceDebug",
