@@ -25,6 +25,8 @@ import {
   selectResumeCheckoutAfterActivation,
 } from './selectors';
 import { SET_LOADING, setLoading } from '@/src/redux/App/action/setLoading';
+import { loadMyStoresSuccess } from '../Store/actions';
+
 export { SET_LOADING, setLoading };
 
 /*
@@ -64,8 +66,6 @@ export const SET_SERVERS = '@app/SET_SERVERS';
 export const SET_SETTINGS = '@app/SET_SETTINGS';
 export const SET_SELECT_SERVER_ERROR = '@app/SET_SELECT_SERVER_ERROR';
 export const CLEAR_SELECT_SERVER_ERROR = '@app/CLEAR_SELECT_SERVER_ERROR';
-
-export const LOAD_MY_STORES_SUCCESS = '@store/LOAD_MY_STORES_SUCCESS';
 
 export const LOAD_MY_RESTAURANTS_REQUEST =
   '@restaurant/LOAD_MY_RESTAURANTS_REQUEST';
@@ -156,8 +156,6 @@ export const savePushNotificationTokenSuccess = createAction(
 export const deletePushNotificationTokenSuccess = createAction(
   DELETE_PUSH_NOTIFICATION_TOKEN_SUCCESS,
 );
-
-const _loadMyStoresSuccess = createAction(LOAD_MY_STORES_SUCCESS);
 
 const loadMyRestaurantsRequest = createAction(LOAD_MY_RESTAURANTS_REQUEST);
 const loadMyRestaurantsSuccess = createAction(LOAD_MY_RESTAURANTS_SUCCESS);
@@ -281,7 +279,7 @@ function navigateToHome(dispatch, getState) {
 
     dispatch(loadMyRestaurantsSuccess(restaurants));
     if (stores) {
-      dispatch(_loadMyStoresSuccess(stores));
+      dispatch(loadMyStoresSuccess(stores));
     }
 
     NavigationHolder.navigate(selectInitialRouteName(getState()));
@@ -415,7 +413,7 @@ export function bootstrap(baseURL, user, loader = true) {
 
       dispatch(loadMyRestaurantsSuccess(restaurants));
       if (stores) {
-        dispatch(_loadMyStoresSuccess(stores));
+        dispatch(loadMyStoresSuccess(stores));
       }
     } catch (e) {
       // Make sure it's actually a HTTP 401 error,

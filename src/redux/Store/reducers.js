@@ -4,13 +4,12 @@ import {
   INIT_SUCCESS,
   LOAD_ADDRESSES_SUCCESS,
   LOAD_DELIVERIES_SUCCESS,
+  LOAD_MY_STORES_SUCCESS,
   LOAD_TASKS_SUCCESS,
   LOAD_TIME_SLOT_SUCCESS,
   SET_LOADING_MORE,
   SET_REFRESHING,
 } from './actions';
-
-import { LOAD_MY_STORES_SUCCESS } from '../App/actions';
 
 import { composeWithState } from '../../utils/delivery';
 

@@ -4,6 +4,8 @@ import { createAction } from 'redux-actions';
 import { selectStore, selectTimeSlots } from './selectors';
 import { setLoading } from '@/src/redux/App/action/setLoading';
 
+export const LOAD_MY_STORES_SUCCESS = '@store/LOAD_MY_STORES_SUCCESS';
+
 export const LOAD_DELIVERIES_SUCCESS = '@store/LOAD_DELIVERIES_SUCCESS';
 export const CREATE_DELIVERY_SUCCESS = '@store/CREATE_DELIVERY_SUCCESS';
 export const LOAD_TIME_SLOT_SUCCESS = '@store/LOAD_TIME_SLOT_SUCCESS';
@@ -13,6 +15,8 @@ export const SET_LOADING_MORE = '@store/SET_LOADING_MORE';
 export const SET_REFRESHING = '@store/SET_REFRESHING';
 export const LOAD_ADDRESSES_SUCCESS = '@store/LOAD_ADDRESSES_SUCCESS';
 export const INIT_SUCCESS = '@store/INIT_SUCCESS';
+
+export const loadMyStoresSuccess = createAction(LOAD_MY_STORES_SUCCESS);
 
 export const createDeliverySuccess = createAction(CREATE_DELIVERY_SUCCESS);
 export const loadDeliveriesSuccess = createAction(
