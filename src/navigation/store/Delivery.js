@@ -4,7 +4,6 @@ import { HStack, Heading, Icon, Text, VStack } from 'native-base';
 import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
-import { Marker } from 'react-native-maps';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { connect } from 'react-redux';
 
@@ -13,6 +12,7 @@ import { loadTasks } from '../../redux/Store/actions';
 import { selectDeliveries } from '../../redux/Store/selectors';
 import { stateColor } from '../../utils/delivery';
 import { humanizeTaskTime } from '../../utils/time-slots';
+import { Marker } from '../../components/Marker';
 
 class NewDelivery extends Component {
   componentDidMount() {

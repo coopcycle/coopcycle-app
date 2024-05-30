@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
-import { View } from 'react-native';
+import { Platform, View } from 'react-native';
 import { connect } from 'react-redux';
 
 import DeliveryList from '../../components/DeliveryList';
@@ -36,7 +36,16 @@ class StoreDashboard extends Component {
           data={this.props.deliveries}
           loading={this.props.loadingMore}
           onEndReached={this.props.loadMoreDeliveries}
-          onItemPress={item => navigate('StoreDelivery', { delivery: item })}
+          onItemPress={item => {
+            if (Platform.OS === 'web') {
+              // expo router impl (currently for web)
+              const router = this.props.router;
+              router.push('/delivery/' + item.id);
+            } else {
+              // React Navigation impl (currently on mobile)
+              navigate('StoreDelivery', { delivery: item });
+            }
+          }}
           onRefresh={() => this.props.loadDeliveries(this.props.store, true)}
           refreshing={this.props.refreshing}
           itemCaptionLines={delivery => {
