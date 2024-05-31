@@ -101,6 +101,7 @@ export const selectPickedOrders = createSelector(
         orders,
         o =>
           matchesDate(o, date) &&
+          o.state === STATE.READY &&
           o.events.findIndex(ev => ev.type === EVENT.PICKED) !== -1,
       ),
       [o => moment.parseZone(o.pickupExpectedAt)],
