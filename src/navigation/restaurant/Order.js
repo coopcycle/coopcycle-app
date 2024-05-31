@@ -87,7 +87,7 @@ class OrderScreen extends Component {
             }
           />
         )}
-        {canEdit && order.state === 'accepted' && (
+        {canEdit && (order.state === 'accepted' || order.state === 'started' || order.state === 'ready') && (
           <OrderAcceptedFooter
             order={order}
             onPressCancel={() =>
