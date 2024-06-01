@@ -97,8 +97,20 @@ const initialState = {
   isSunmiPrinter: false,
   bluetoothStarted: false,
   loopeatFormats: {},
-  orderIdsToPrint: [],
+  /**
+   * {
+   *   [orderId]: {
+   *     copiesToPrint: number,
+   *     failedAttempts: number,
+   *   }
+   * }
+   */
+  ordersToPrint: {},
   printingOrderId: null,
+  preferences: {
+    printOrdersNumberOfCopies: 1,
+    printOrdersMaxFailedAttempts: 3,
+  },
 };
 
 const spliceOrders = (state, payload) => {
@@ -181,14 +193,21 @@ const spliceProductOptions = (state, payload) => {
 
 function updateOrdersToPrint(state, orderId) {
   if (state.restaurant.autoAcceptOrdersEnabled) {
-    if (state.orderIdsToPrint.includes(orderId)) {
+    if (state.ordersToPrint[orderId]) {
       return state;
-    } else {
-      return {
-        ...state,
-        orderIdsToPrint: state.orderIdsToPrint.concat(orderId),
-      };
     }
+
+    return {
+      ...state,
+      ordersToPrint: {
+        ...state.ordersToPrint,
+        [orderId]: {
+          copiesToPrint: state.preferences.printOrdersNumberOfCopies,
+          failedAttempts: 0,
+        },
+      },
+    };
+
   } else {
     return state;
   }
@@ -531,20 +550,62 @@ export default (state = initialState, action = {}) => {
         printingOrderId: action.payload['@id'],
       };
 
-    case printFulfilled.type:
-      return {
-        ...state,
-        orderIdsToPrint: state.orderIdsToPrint.filter(
-          orderId => orderId !== action.payload['@id'],
-        ),
-        printingOrderId: null,
-      };
+    case printFulfilled.type: {
+      const orderId = action.payload['@id'];
+      const printTask = state.ordersToPrint[orderId];
 
-    case printRejected.type:
+      if (!printTask) {
+        return state;
+      }
+
+      if (printTask.copiesToPrint > 1) {
+        // We have more copies to print
+        return {
+          ...state,
+          printingOrderId: null,
+          ordersToPrint: {
+            ...state.ordersToPrint,
+            [orderId]: {
+              ...printTask,
+              copiesToPrint: printTask.copiesToPrint - 1,
+              failedAttempts: 0,
+            },
+          },
+        };
+      } else {
+        // We have printed all needed copies
+
+        const ordersToPrint = { ...state.ordersToPrint };
+        delete ordersToPrint[orderId];
+
+        return {
+          ...state,
+          printingOrderId: null,
+          ordersToPrint: ordersToPrint,
+        };
+      }
+    }
+
+    case printRejected.type: {
+      const orderId = action.payload['@id'];
+      const printTask = state.ordersToPrint[orderId];
+
+      if (!printTask) {
+        return state;
+      }
+
       return {
         ...state,
         printingOrderId: null,
+        ordersToPrint: {
+          ...state.ordersToPrint,
+          [orderId]: {
+            ...printTask,
+            failedAttempts: printTask.failedAttempts + 1,
+          },
+        },
       };
+    }
 
     case BLUETOOTH_STARTED:
       return {

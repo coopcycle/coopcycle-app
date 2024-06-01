@@ -140,7 +140,44 @@ export const selectIsPrinterConnected = createSelector(
   (printer, isSunmiPrinter) => Boolean(printer) || isSunmiPrinter,
 );
 
-export const selectOrderIdsToPrint = state => state.restaurant.orderIdsToPrint;
+const selectOrdersToPrint = state => state.restaurant.ordersToPrint;
+
+const selectPrintOrdersMaxFailedAttempts = state =>
+  state.restaurant.preferences.printOrdersMaxFailedAttempts;
+
+export const selectOrderIdsToPrint = createSelector(
+  selectOrdersToPrint,
+  selectPrintOrdersMaxFailedAttempts,
+  (ordersToPrint, printOrdersMaxFailedAttempts) => {
+    const orderIdsToPrint = [];
+
+    Object.keys(ordersToPrint).forEach(orderId => {
+      const printTask = ordersToPrint[orderId];
+      if (printTask.failedAttempts <= printOrdersMaxFailedAttempts) {
+        orderIdsToPrint.push(orderId);
+      }
+    });
+
+    return orderIdsToPrint;
+  },
+);
+
+export const selectOrderIdsFailedToPrint = createSelector(
+  selectOrdersToPrint,
+  selectPrintOrdersMaxFailedAttempts,
+  (ordersToPrint, printOrdersMaxFailedAttempts) => {
+    const orderIdsFailedToPrint = [];
+
+    Object.keys(ordersToPrint).forEach(orderId => {
+      const printTask = ordersToPrint[orderId];
+      if (printTask.failedAttempts > printOrdersMaxFailedAttempts) {
+        orderIdsFailedToPrint.push(orderId);
+      }
+    });
+
+    return orderIdsFailedToPrint;
+  },
+);
 
 export const selectPrintingOrderId = state => state.restaurant.printingOrderId;
 
