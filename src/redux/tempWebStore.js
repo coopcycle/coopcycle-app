@@ -1,3 +1,4 @@
+import API from '@/src/API';
 import { applyMiddleware, createStore } from 'redux';
 import ReduxAsyncQueue from 'redux-async-queue';
 import { composeWithDevTools } from 'redux-devtools-extension';
@@ -56,53 +57,87 @@ const middlewaresProxy = middlewaresList => {
   }
 };
 
-const webClient = new window._auth.httpClient();
+let httpClient;
+if (window._auth) {
+  const webClient = new window._auth.httpClient();
+  // compatibility layer for the existing mobile app and web app clients
+  httpClient = {
+    getBaseURL: function () {
+      //todo
+    },
+    getToken: function () {
+      //todo
+    },
 
-/**
- * to test separately hard-code token in the webClient
- */
+    createRequest: function (method, url, data, options = {}) {
+      //todo
+    },
 
-// compatibility layer for the existing mobile app and web app clients
-const httpClient = {
-  getBaseURL: function () {
-    //todo
-  },
-  getToken: function () {
-    //todo
-  },
+    request: function (method, uri, data, options = {}) {
+      //todo
+    },
 
-  createRequest: function (method, url, data, options = {}) {
-    //todo
-  },
+    get: async function (uri, options = {}) {
+      //todo; map options
+      const { response } = await webClient.get(uri);
+      return response;
+    },
 
-  request: function (method, uri, data, options = {}) {
-    //todo
-  },
+    post: async function (uri, data, options = {}) {
+      //todo; map options
+      const { response } = await webClient.post(uri, data);
+      return response;
+    },
 
-  get: async function (uri, options = {}) {
-    //todo; map options
-    const { response } = await webClient.get(uri);
-    return response;
-  },
+    put: async function (uri, data, options = {}) {
+      //todo; map options
+      const { response } = await webClient.put(uri, data);
+      return response;
+    },
 
-  post: async function (uri, data, options = {}) {
-    //todo; map options
-    const { response } = await webClient.post(uri, data);
-    return response;
-  },
-
-  put: async function (uri, data, options = {}) {
-    //todo; map options
-    const { response } = await webClient.put(uri, data);
-    return response;
-  },
-
-  delete: async function (uri, options = {}) {
-    //todo; map options
-    const { response } = await webClient.delete(uri);
-    return response;
-  },
-};
+    delete: async function (uri, options = {}) {
+      //todo; map options
+      const { response } = await webClient.delete(uri);
+      return response;
+    },
+  };
+} else {
+  //TODO; POC ONLY
+  httpClient = API.createClient('http://localhost', {
+    token: 'TODO: PUT YOUR TOKEN',
+    refreshToken: 'TODO: PUT YOUR REFRESH TOKEN',
+    // onCredentialsUpdated: credentials => {
+    //   const user = new AppUser(
+    //     credentials.username,
+    //     credentials.email,
+    //     credentials.token,
+    //     credentials.roles,
+    //     credentials.refreshToken,
+    //     credentials.enabled,
+    //   );
+    //
+    //   dispatch(setUser(user));
+    //
+    //   user.save().then(() => console.log('Credentials saved!'));
+    // },
+    // onTokenRefreshed: (token, refreshToken) => {
+    //   const { username, email, roles, enabled } = state.app.user;
+    //
+    //   const user = new AppUser(
+    //     username,
+    //     email,
+    //     token,
+    //     roles,
+    //     refreshToken,
+    //     enabled,
+    //   );
+    //
+    //   dispatch(setUser(user));
+    //
+    //   user.save().then(() => console.log('Credentials saved!'));
+    // },
+  });
+}
 
 const preloadedState = {
   app: {
