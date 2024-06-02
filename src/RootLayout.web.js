@@ -40,7 +40,11 @@ export default function RootLayout() {
             {/*<Spinner />*/}
             <ThemeProvider
               value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-              <Stack />
+              <Stack
+                screenOptions={{
+                  headerShown: false,
+                }}
+              />
             </ThemeProvider>
             {/*<NavigationContainer*/}
             {/*  ref={navigationRef}*/}
