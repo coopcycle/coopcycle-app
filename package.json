@@ -11,7 +11,8 @@
     "web": "expo start --web --dev-client",
     "test": "jest",
     "lint": "eslint src/",
-    "i18n-lint": "ajv validate -s i18n.schema.json -d \"src/i18n/locales/*.json\""
+    "i18n-lint": "ajv validate -s i18n.schema.json -d \"src/i18n/locales/*.json\"",
+    "web-prod-build": "expo export -p web"
   },
   "dependencies": {
     "@babel/helper-get-function-arity": "^7.16.7",
