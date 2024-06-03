@@ -90,7 +90,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         multiDexEnabled true
-        versionCode 204
+        versionCode 210
         versionName "2.18.0"
 
         manifestPlaceholders = [
