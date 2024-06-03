@@ -4,7 +4,7 @@ on:
     inputs:
       tag:
         type: string
-        description: Deploy a specific git tag
+        description: Build a specific git tag
         required: true
       instance:
         type: string
