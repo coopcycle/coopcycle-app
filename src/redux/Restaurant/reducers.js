@@ -92,6 +92,9 @@ const initialState = {
   menus: [],
   bluetoothEnabled: false,
   isScanningBluetooth: false,
+  /**
+   * Peripheral (react-native-ble-manager)
+   */
   printer: null,
   productOptions: [],
   isSunmiPrinter: false,
@@ -207,7 +210,6 @@ function updateOrdersToPrint(state, orderId) {
         },
       },
     };
-
   } else {
     return state;
   }
