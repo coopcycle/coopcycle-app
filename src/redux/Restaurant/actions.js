@@ -244,6 +244,10 @@ export const printPending = createAction('PRINT_PENDING');
 export const printFulfilled = createAction('PRINT_FULFILLED');
 export const printRejected = createAction('PRINT_REJECTED');
 
+export const setPrintNumberOfCopies = createAction(
+  'SET_PRINT_NUMBER_OF_COPIES',
+);
+
 /*
  * Thunk Creators
  */

@@ -65,6 +65,7 @@ import {
   printFulfilled,
   printPending,
   printRejected,
+  setPrintNumberOfCopies,
   startPreparing,
 } from './actions';
 
@@ -111,8 +112,10 @@ const initialState = {
   ordersToPrint: {},
   printingOrderId: null,
   preferences: {
-    printOrdersNumberOfCopies: 1,
-    printOrdersMaxFailedAttempts: 3,
+    autoAcceptOrders: {
+      printNumberOfCopies: 1,
+      printMaxFailedAttempts: 3,
+    },
   },
 };
 
@@ -200,12 +203,19 @@ function updateOrdersToPrint(state, orderId) {
       return state;
     }
 
+    const numberOfCopies =
+      state.preferences.autoAcceptOrders.printNumberOfCopies;
+
+    if (numberOfCopies === 0) {
+      return state;
+    }
+
     return {
       ...state,
       ordersToPrint: {
         ...state.ordersToPrint,
         [orderId]: {
-          copiesToPrint: state.preferences.printOrdersNumberOfCopies,
+          copiesToPrint: numberOfCopies,
           failedAttempts: 0,
         },
       },
@@ -604,6 +614,20 @@ export default (state = initialState, action = {}) => {
           [orderId]: {
             ...printTask,
             failedAttempts: printTask.failedAttempts + 1,
+          },
+        },
+      };
+    }
+
+    case setPrintNumberOfCopies.type: {
+      const numberOfCopies = action.payload;
+      return {
+        ...state,
+        preferences: {
+          ...state.preferences,
+          autoAcceptOrders: {
+            ...state.preferences.autoAcceptOrders,
+            printNumberOfCopies: numberOfCopies,
           },
         },
       };

@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { Center, Icon, Text } from 'native-base';
+import { Center, Icon, Text, View } from 'native-base';
 import React, { Component } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation, withTranslation } from 'react-i18next';
@@ -22,9 +22,16 @@ import {
   bluetoothStartScan,
   connectPrinter,
   disconnectPrinter,
+  setPrintNumberOfCopies,
 } from '../../redux/Restaurant/actions';
-import { selectPrinter } from '../../redux/Restaurant/selectors';
+import {
+  selectAutoAcceptOrdersEnabled,
+  selectAutoAcceptOrdersPrintNumberOfCopies,
+  selectPrinter,
+} from '../../redux/Restaurant/selectors';
+import { useBackgroundContainerColor } from '../../styles/theme';
 import { getMissingAndroidPermissions } from '../../utils/bluetooth';
+import Range from '../checkout/ProductDetails/Range';
 
 const BleManagerModule = NativeModules.BleManager;
 const bleManagerEmitter = new NativeEventEmitter(BleManagerModule);
@@ -66,8 +73,16 @@ function Item({ item }) {
 
 function PrinterComponent({ devices, isScanning, _onPressScan }) {
   const printer = useSelector(selectPrinter);
+  const autoAcceptOrdersEnabled = useSelector(selectAutoAcceptOrdersEnabled);
+  const printNumberOfCopies = useSelector(
+    selectAutoAcceptOrdersPrintNumberOfCopies,
+  );
+
+  const backgroundColor = useBackgroundContainerColor();
 
   const { t } = useTranslation();
+
+  const dispatch = useDispatch();
 
   let items = [];
   if (printer) {
@@ -99,12 +114,29 @@ function PrinterComponent({ devices, isScanning, _onPressScan }) {
   }
 
   return (
-    <FlatList
-      data={items}
-      keyExtractor={item => item.id}
-      renderItem={({ item }) => <Item key={item.id} item={item} />}
-      ItemSeparatorComponent={ItemSeparator}
-    />
+    <View>
+      <FlatList
+        data={items}
+        keyExtractor={item => item.id}
+        renderItem={({ item }) => <Item key={item.id} item={item} />}
+        ItemSeparatorComponent={ItemSeparator}
+      />
+      {autoAcceptOrdersEnabled ? (
+        <View style={[styles.quantityWrapper, { backgroundColor }]}>
+          <Text>{t('AUTO_ACCEPT_ORDERS_PRINT_NUMBER_OF_COPIES')}:</Text>
+          <Range
+            minimum={0}
+            onPressDecrement={() =>
+              dispatch(setPrintNumberOfCopies(printNumberOfCopies - 1))
+            }
+            quantity={printNumberOfCopies}
+            onPressIncrement={() =>
+              dispatch(setPrintNumberOfCopies(printNumberOfCopies + 1))
+            }
+          />
+        </View>
+      ) : null}
+    </View>
   );
 }
 
@@ -181,6 +213,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+  },
+  quantityWrapper: {
+    margin: 20,
+    paddingHorizontal: 4,
+    paddingVertical: 20,
+    flexDirection: 'row',
+    gap: 16,
   },
 });
 

@@ -172,18 +172,21 @@ export const selectIsPrinterConnected = createSelector(
 
 const selectOrdersToPrint = state => state.restaurant.ordersToPrint;
 
-const selectPrintOrdersMaxFailedAttempts = state =>
-  state.restaurant.preferences.printOrdersMaxFailedAttempts;
+export const selectAutoAcceptOrdersPrintNumberOfCopies = state =>
+  state.restaurant.preferences.autoAcceptOrders.printNumberOfCopies;
+
+const selectAutoAcceptOrdersPrintMaxFailedAttempts = state =>
+  state.restaurant.preferences.autoAcceptOrders.printMaxFailedAttempts;
 
 export const selectOrderIdsToPrint = createSelector(
   selectOrdersToPrint,
-  selectPrintOrdersMaxFailedAttempts,
-  (ordersToPrint, printOrdersMaxFailedAttempts) => {
+  selectAutoAcceptOrdersPrintMaxFailedAttempts,
+  (ordersToPrint, printMaxFailedAttempts) => {
     const orderIdsToPrint = [];
 
     Object.keys(ordersToPrint).forEach(orderId => {
       const printTask = ordersToPrint[orderId];
-      if (printTask.failedAttempts <= printOrdersMaxFailedAttempts) {
+      if (printTask.failedAttempts <= printMaxFailedAttempts) {
         orderIdsToPrint.push(orderId);
       }
     });
@@ -194,13 +197,13 @@ export const selectOrderIdsToPrint = createSelector(
 
 export const selectOrderIdsFailedToPrint = createSelector(
   selectOrdersToPrint,
-  selectPrintOrdersMaxFailedAttempts,
-  (ordersToPrint, printOrdersMaxFailedAttempts) => {
+  selectAutoAcceptOrdersPrintMaxFailedAttempts,
+  (ordersToPrint, printMaxFailedAttempts) => {
     const orderIdsFailedToPrint = [];
 
     Object.keys(ordersToPrint).forEach(orderId => {
       const printTask = ordersToPrint[orderId];
-      if (printTask.failedAttempts > printOrdersMaxFailedAttempts) {
+      if (printTask.failedAttempts > printMaxFailedAttempts) {
         orderIdsFailedToPrint.push(orderId);
       }
     });
