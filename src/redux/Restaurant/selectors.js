@@ -56,12 +56,22 @@ export const selectNewOrders = createSelector(
     ),
 );
 
+function isOrderPicked(order) {
+  return order.events.findIndex(ev => ev.type === EVENT.PICKED) !== -1;
+}
+
 export const selectAcceptedOrders = createSelector(
   selectDate,
   _selectOrders,
   (date, orders) =>
     _.sortBy(
-      _.filter(orders, o => matchesDate(o, date) && o.state === STATE.ACCEPTED),
+      _.filter(
+        orders,
+        o =>
+          matchesDate(o, date) &&
+          o.state === STATE.ACCEPTED &&
+          !isOrderPicked(o),
+      ),
       [o => moment.parseZone(o.pickupExpectedAt)],
     ),
 );
@@ -71,7 +81,13 @@ export const selectStartedOrders = createSelector(
   _selectOrders,
   (date, orders) =>
     _.sortBy(
-      _.filter(orders, o => matchesDate(o, date) && o.state === STATE.STARTED),
+      _.filter(
+        orders,
+        o =>
+          matchesDate(o, date) &&
+          o.state === STATE.STARTED &&
+          !isOrderPicked(o),
+      ),
       [o => moment.parseZone(o.pickupExpectedAt)],
     ),
 );
@@ -84,9 +100,7 @@ export const selectReadyOrders = createSelector(
       _.filter(
         orders,
         o =>
-          matchesDate(o, date) &&
-          o.state === STATE.READY &&
-          o.events.findIndex(ev => ev.type === EVENT.PICKED) === -1,
+          matchesDate(o, date) && o.state === STATE.READY && !isOrderPicked(o),
       ),
       [o => moment.parseZone(o.pickupExpectedAt)],
     ),
@@ -101,8 +115,10 @@ export const selectPickedOrders = createSelector(
         orders,
         o =>
           matchesDate(o, date) &&
-          o.state === STATE.READY &&
-          o.events.findIndex(ev => ev.type === EVENT.PICKED) !== -1,
+          (o.state === STATE.ACCEPTED ||
+            o.state === STATE.STARTED ||
+            o.state === STATE.READY) &&
+          isOrderPicked(o),
       ),
       [o => moment.parseZone(o.pickupExpectedAt)],
     ),
