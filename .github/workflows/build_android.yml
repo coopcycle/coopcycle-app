@@ -7,7 +7,7 @@ on:
         description: Deploy a specific git tag
         required: true
       deploy_google_play:
-        description: 'Deploy to Google Play'
+        description: 'Upload to Google Play'
         required: true
         type: boolean
         default: true
@@ -15,7 +15,7 @@ on:
         description: 'Google Play track'
         required: true
         type: string
-        default: 'production'
+        default: 'internal'
       build_official:
         description: 'Build official app'
         required: true

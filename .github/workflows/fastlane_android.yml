@@ -36,7 +36,7 @@ on:
       google_play_track:
         type: string
         required: false
-        default: "production"
+        default: "internal"
       deploy_google_play:
         type: boolean
         required: false
