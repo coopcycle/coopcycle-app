@@ -46,6 +46,20 @@ export const selectAutoAcceptOrdersEnabled = createSelector(
   restaurant => restaurant?.autoAcceptOrdersEnabled ?? false,
 );
 
+// Temporarily display new sections only for restaurants with auto accept orders enabled
+// Later on: decide when to display these sections to other restaurants
+export const selectHasStartedState = createSelector(
+  selectAutoAcceptOrdersEnabled,
+  autoAcceptOrdersEnabled => autoAcceptOrdersEnabled,
+);
+
+// Temporarily display new sections only for restaurants with auto accept orders enabled
+// Later on: decide when to display these sections to other restaurants
+export const selectHasReadyState = createSelector(
+  selectAutoAcceptOrdersEnabled,
+  autoAcceptOrdersEnabled => autoAcceptOrdersEnabled,
+);
+
 export const selectNewOrders = createSelector(
   selectDate,
   _selectOrders,
@@ -208,5 +222,22 @@ export const selectOrderById = createSelector(
     } else {
       return undefined;
     }
+  },
+);
+
+const selectOrder = (state, order) => order;
+
+export const selectIsActionable = createSelector(
+  selectHasStartedState,
+  selectHasReadyState,
+  selectOrder,
+  (hasStartedState, hasReadyState, order) => {
+    return (
+      [
+        STATE.NEW,
+        ...(hasStartedState ? [STATE.ACCEPTED] : []),
+        ...(hasReadyState ? [STATE.STARTED] : []),
+      ].includes(order.state) && !isOrderPicked(order)
+    );
   },
 );

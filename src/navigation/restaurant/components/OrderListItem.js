@@ -16,6 +16,7 @@ import OrderFulfillmentMethodIcon from '../../../components/OrderFulfillmentMeth
 import { PaymentMethodInfo } from '../../../components/PaymentMethodInfo';
 import {
   selectAutoAcceptOrdersEnabled,
+  selectIsActionable,
   selectOrderIdsFailedToPrint,
   selectPrintingOrderId,
 } from '../../../redux/Restaurant/selectors';
@@ -113,12 +114,9 @@ function OrderPrintStatus({ order }) {
 
 export default function OrderListItem({ order, onItemClick }) {
   const autoAcceptOrdersEnabled = useSelector(selectAutoAcceptOrdersEnabled);
+  const isActionable = useSelector(state => selectIsActionable(state, order));
 
   const dispatch = useDispatch();
-
-  const isActionable = [STATE.NEW, STATE.ACCEPTED, STATE.STARTED].includes(
-    order.state,
-  );
 
   return (
     <View style={styles.item}>

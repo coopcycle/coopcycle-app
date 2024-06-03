@@ -7,6 +7,8 @@ import {
   selectAutoAcceptOrdersEnabled,
   selectCancelledOrders,
   selectFulfilledOrders,
+  selectHasReadyState,
+  selectHasStartedState,
   selectNewOrders,
   selectPickedOrders,
   selectReadyOrders,
@@ -18,6 +20,8 @@ import { View } from 'native-base';
 
 export default function OrderList({ onItemClick }) {
   const autoAcceptOrdersEnabled = useSelector(selectAutoAcceptOrdersEnabled);
+  const hasStartedState = useSelector(selectHasStartedState);
+  const hasReadyState = useSelector(selectHasReadyState);
 
   const newOrders = useSelector(selectNewOrders);
   const acceptedOrders = useSelector(selectAcceptedOrders);
@@ -46,18 +50,26 @@ export default function OrderList({ onItemClick }) {
       }),
       data: acceptedOrders,
     },
-    {
-      title: t('RESTAURANT_ORDER_LIST_STARTED_ORDERS', {
-        count: startedOrders.length,
-      }),
-      data: startedOrders,
-    },
-    {
-      title: t('RESTAURANT_ORDER_LIST_READY_ORDERS', {
-        count: readyOrders.length,
-      }),
-      data: readyOrders,
-    },
+    ...(hasStartedState
+      ? [
+          {
+            title: t('RESTAURANT_ORDER_LIST_STARTED_ORDERS', {
+              count: startedOrders.length,
+            }),
+            data: startedOrders,
+          },
+        ]
+      : []),
+    ...(hasReadyState
+      ? [
+          {
+            title: t('RESTAURANT_ORDER_LIST_READY_ORDERS', {
+              count: readyOrders.length,
+            }),
+            data: readyOrders,
+          },
+        ]
+      : []),
     {
       title: t('RESTAURANT_ORDER_LIST_PICKED_ORDERS', {
         count: pickedOrders.length,
