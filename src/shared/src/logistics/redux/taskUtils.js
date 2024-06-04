@@ -1,5 +1,21 @@
 import ColorHash from 'color-hash';
 import _, { mapValues } from 'lodash';
+import moment from 'moment';
+
+
+/**
+ * Utility function to sort a list of tasks
+ * @param {Object} a - Task
+ * @param {Object} b - Task
+ */
+export function tasksSort(a, b) {
+  if (moment(a.before).isSame(b.before) && a.type === 'PICKUP') {
+    return -1
+  } else {
+    // put on top of the list the tasks that have an end of delivery window that finishes sooner
+    return moment(a.before).isBefore(b.before) ? -1 : 1
+  }
+}
 
 const colorHash = new ColorHash();
 
@@ -36,8 +52,7 @@ export function groupLinkedTasks(tasks) {
   }
 
   return mapValues(groups, value => {
-    value.sort();
-
+    value.sort(tasksSort)
     return value;
   });
 }
@@ -45,6 +60,8 @@ export function groupLinkedTasks(tasks) {
 export function withLinkedTasks(task, allTasks) {
   const groups = groupLinkedTasks(allTasks);
   const newTasks = [];
+
+  console.debug(groups)
 
   if (Object.prototype.hasOwnProperty.call(groups, task['@id'])) {
     groups[task['@id']].forEach(taskId => {
@@ -55,6 +72,8 @@ export function withLinkedTasks(task, allTasks) {
     // task with no linked tasks
     newTasks.push(task);
   }
+
+  console.debug(newTasks)
 
   return newTasks;
 }
