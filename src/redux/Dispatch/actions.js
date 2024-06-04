@@ -21,7 +21,7 @@ import {
   startTaskSuccess,
 } from '../Courier';
 
-import { withLinkedTasks } from '../../shared/src/logistics/redux/taskUtils';
+import { withUnassignedLinkedTasks } from '../../shared/src/logistics/redux/taskUtils';
 import { isSameDate } from './utils';
 
 /*
@@ -299,7 +299,7 @@ export function assignTask(task, username) {
   return function (dispatch, getState) {
     const httpClient = getState().app.httpClient;
 
-    const linkedTasks = withLinkedTasks(task, selectAllTasks(getState()));
+    const linkedTasks = withUnassignedLinkedTasks(task, selectAllTasks(getState()));
 
     if (linkedTasks.length > 1) {
       dispatch(bulkAssignmentTasksRequest());
@@ -341,7 +341,7 @@ export function bulkAssignmentTasks(tasks, username) {
     let tasksToAssign = [];
 
     tasks.forEach((task) => {
-      tasksToAssign.push(...withLinkedTasks(task, selectAllTasks(getState())))
+      tasksToAssign.push(...withUnassignedLinkedTasks(task, selectAllTasks(getState())))
     });
 
     const payload = _.uniq(tasksToAssign.map(t => t['@id']));

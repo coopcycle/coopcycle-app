@@ -57,11 +57,9 @@ export function groupLinkedTasks(tasks) {
   });
 }
 
-export function withLinkedTasks(task, allTasks) {
+function withLinkedTasks(task, allTasks) {
   const groups = groupLinkedTasks(allTasks);
   const newTasks = [];
-
-  console.debug(groups)
 
   if (Object.prototype.hasOwnProperty.call(groups, task['@id'])) {
     groups[task['@id']].forEach(taskId => {
@@ -72,10 +70,11 @@ export function withLinkedTasks(task, allTasks) {
     // task with no linked tasks
     newTasks.push(task);
   }
-
-  console.debug(newTasks)
-
   return newTasks;
+}
+
+export function withUnassignedLinkedTasks(task, allTasks) {
+  return withLinkedTasks(task, allTasks).filter(t => !t.assignedTo)
 }
 
 export function mapToColor(tasks) {
