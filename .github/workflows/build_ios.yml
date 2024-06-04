@@ -7,7 +7,7 @@ on:
         description: Build a specific git tag
         required: true
       build_official:
-        description: 'Build official app'
+        description: 'Build CoopCycle production app'
         required: true
         type: boolean
       build_naofood:
@@ -23,9 +23,9 @@ on:
         required: true
         type: boolean
 jobs:
-  default:
+  coopcycle:
     if: ${{ inputs.build_official }}
-    name: Build default app
+    name: Build CoopCycle production app
     uses: ./.github/workflows/fastlane_ios.yml
     with:
       tag: ${{ inputs.tag }}
