@@ -2,6 +2,10 @@ name: Build iOS
 on:
   workflow_dispatch:
     inputs:
+      tag:
+        type: string
+        description: Build a specific git tag
+        required: true
       build_official:
         description: 'Build official app'
         required: true
@@ -24,6 +28,7 @@ jobs:
     name: Build default app
     uses: ./.github/workflows/fastlane_ios.yml
     with:
+      tag: ${{ inputs.tag }}
       google_service_info_plist_base64: GOOGLE_SERVICE_INFO_PLIST_BASE64
     secrets: inherit
   naofood:
@@ -31,6 +36,7 @@ jobs:
     name: Build Naofood app
     uses: ./.github/workflows/fastlane_ios.yml
     with:
+      tag: ${{ inputs.tag }}
       instance: naofood
       instance_url: https://naofood.coopcycle.org
       app_name: Naofood
@@ -43,6 +49,7 @@ jobs:
     name: Build Kooglof app
     uses: ./.github/workflows/fastlane_ios.yml
     with:
+      tag: ${{ inputs.tag }}
       instance: kooglof
       instance_url: https://kooglof.coopcycle.org
       app_name: Kooglof
@@ -55,6 +62,7 @@ jobs:
     name: Build RobinFood app
     uses: ./.github/workflows/fastlane_ios.yml
     with:
+      tag: ${{ inputs.tag }}
       instance: robinfood
       instance_url: https://robinfood.coopcycle.org
       app_name: Robin Food
