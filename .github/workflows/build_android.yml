@@ -10,7 +10,7 @@ on:
         description: 'Upload to Google Play'
         required: true
         type: boolean
-        default: true
+        default: false
       google_play_track:
         description: 'Google Play track'
         required: true
