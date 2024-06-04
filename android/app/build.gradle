@@ -91,7 +91,7 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         multiDexEnabled true
         versionCode 210
-        versionName "2.18.0"
+        versionName "2.19.0"
 
         manifestPlaceholders = [
             tipsiStripeRedirectScheme: "coopcycle",
