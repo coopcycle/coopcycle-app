@@ -344,7 +344,7 @@ export function bulkAssignmentTasks(tasks, username) {
       tasksToAssign.push(...withLinkedTasks(task, selectAllTasks(getState())))
     });
 
-    const payload = _.unique(tasksToAssign.map(t => t['@id']));
+    const payload = _.uniq(tasksToAssign.map(t => t['@id']));
 
     return httpClient
       .put('/api/tasks/assign', {
