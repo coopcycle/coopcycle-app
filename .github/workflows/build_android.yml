@@ -17,7 +17,7 @@ on:
         type: string
         default: 'internal'
       build_official:
-        description: 'Build official app'
+        description: 'Build official production app'
         required: true
         type: boolean
       build_official_beta:
