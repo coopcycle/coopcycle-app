@@ -17,11 +17,11 @@ on:
         type: string
         default: 'internal'
       build_official:
-        description: 'Build official production app'
+        description: 'Build CoopCycle production app'
         required: true
         type: boolean
       build_official_beta:
-        description: 'Build official beta app'
+        description: 'Build CoopCycle beta app'
         required: true
         type: boolean
       build_coursiers_stephanois:
@@ -49,18 +49,18 @@ on:
         required: true
         type: boolean
 jobs:
-  default:
+  coopcycle:
     if: ${{ inputs.build_official }}
-    name: Build default app
+    name: Build CoopCycle production app
     uses: ./.github/workflows/fastlane_android.yml
     secrets: inherit
     with:
       tag: ${{ inputs.tag }}
       google_play_track: ${{ inputs.google_play_track }}
       deploy_google_play: ${{ inputs.deploy_google_play }}
-  default_beta:
+  coopcycle_beta:
     if: ${{ inputs.build_official_beta }}
-    name: Build default beta app
+    name: Build CoopCycle beta app
     uses: ./.github/workflows/fastlane_android.yml
     with:
       tag: ${{ inputs.tag }}
