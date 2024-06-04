@@ -10,6 +10,10 @@ on:
         description: 'Build CoopCycle production app'
         required: true
         type: boolean
+      build_official_beta:
+        description: 'Build CoopCycle beta app (TODO: finish setup)'
+        required: true
+        type: boolean
       build_naofood:
         description: 'Build Naofood app'
         required: true
@@ -30,6 +34,17 @@ jobs:
     with:
       tag: ${{ inputs.tag }}
       google_service_info_plist_base64: GOOGLE_SERVICE_INFO_PLIST_BASE64
+    secrets: inherit
+  coopcycle_beta:
+    if: ${{ inputs.build_official_beta }}
+    name: Build CoopCycle beta app
+    uses: ./.github/workflows/fastlane_ios.yml
+    with:
+      tag: ${{ inputs.tag }}
+      instance: beta
+      app_name: CoopCycle (Beta)
+      app_id: org.coopcycle.CoopCycleBeta
+      google_service_info_plist_base64: GOOGLE_SERVICE_INFO_PLIST_BASE64_BETA
     secrets: inherit
   naofood:
     if: ${{ inputs.build_naofood }}
