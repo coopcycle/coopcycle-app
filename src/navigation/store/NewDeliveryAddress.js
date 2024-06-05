@@ -29,12 +29,15 @@ class NewDelivery extends Component {
       },
     };
 
+    //TODO: This is a hack to get the store id; find a better way to get it
+    const id = this.props.store['@id'].split('/').pop();
+
     this.props.assertDelivery(delivery, () => {
       if (Platform.OS === 'web') {
         // expo router impl (currently for web)
         const router = this.props.router;
         router.push({
-          pathname: `/delivery/new/details`,
+          pathname: `/dashboard/stores/${id}/deliveries/details`,
           params: { address: address['@id'] },
         });
       } else {

@@ -77,7 +77,7 @@ class NewDelivery extends Component {
       if (Platform.OS === 'web') {
         // expo router impl (currently for web)
         const router = this.props.router;
-        router.push('/dashboard');
+        router.navigate('/dashboard');
       } else {
         // React Navigation impl (currently on mobile)
         this.props.navigation.navigate('StoreHome');

@@ -26,6 +26,9 @@ class StoreDashboard extends Component {
   render() {
     const { navigate } = this.props.navigation;
 
+    //TODO: This is a hack to get the store id; find a better way to get it
+    const id = this.props.store['@id'].split('/').pop();
+
     return (
       <View
         style={{
@@ -38,7 +41,7 @@ class StoreDashboard extends Component {
             style={{ alignSelf: 'flex-end' }}
             onPress={() => {
               const router = this.props.router;
-              router.push('/delivery/new/address');
+              router.push(`/dashboard/stores/${id}/deliveries/new`);
             }}>
             {'NEW DELIVERY'}
           </Button>
