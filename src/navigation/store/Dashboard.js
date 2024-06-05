@@ -34,11 +34,12 @@ class StoreDashboard extends Component {
           marginBottom: variables.isIphoneX ? 88 : 0,
         }}>
         <Button
+          style={{ alignSelf: 'flex-end' }}
           onPress={() => {
             const router = this.props.router;
             router.push('/delivery/new/address');
           }}>
-          {'TODO; NEW DELIVERY'}
+          {'NEW DELIVERY'}
         </Button>
         <DeliveryList
           data={this.props.deliveries}
