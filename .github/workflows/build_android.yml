@@ -1,16 +1,15 @@
 name: Build Android
 run-name: >
-  Build Android apps:
-  ${{ github.event.inputs.build_official && 'CoopCycle PROD, ' }}
-  ${{ github.event.inputs.build_official_beta && 'CoopCycle BETA, ' }}
-  ${{ github.event.inputs.build_coursiers_stephanois && 'Les Coursiers Stéphanois, ' }}
-  ${{ github.event.inputs.build_naofood && 'Naofood, ' }}
-  ${{ github.event.inputs.build_zampate && 'Zampate, ' }}
-  ${{ github.event.inputs.build_kooglof && 'Kooglof, ' }}
-  ${{ github.event.inputs.build_robinfood && 'RobinFood, ' }}
-  ${{ github.event.inputs.build_coursiers_rennais && 'Les Coursiers Rennais, ' }}
-  ${{ github.event.inputs.build_coursiers_montpellier && 'Coursiers MTP,' }}
-  at tag: ${{ github.event.inputs.tag }}
+  Build Android apps ${{ inputs.tag }} ${{ inputs.deploy_google_play && format('(and release to {0} track)', inputs.google_play_track) }}:
+  ${{ inputs.build_official && 'CoopCycle PROD, ' }}
+  ${{ inputs.build_official_beta && 'CoopCycle BETA, ' }}
+  ${{ inputs.build_coursiers_stephanois && 'Les Coursiers Stéphanois, ' }}
+  ${{ inputs.build_naofood && 'Naofood, ' }}
+  ${{ inputs.build_zampate && 'Zampate, ' }}
+  ${{ inputs.build_kooglof && 'Kooglof, ' }}
+  ${{ inputs.build_robinfood && 'RobinFood, ' }}
+  ${{ inputs.build_coursiers_rennais && 'Les Coursiers Rennais, ' }}
+  ${{ inputs.build_coursiers_montpellier && 'Coursiers MTP,' }}
 on:
   workflow_dispatch:
     inputs:
