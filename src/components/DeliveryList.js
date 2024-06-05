@@ -113,7 +113,7 @@ class DeliveryList extends Component {
             {this.renderItemCaption(item)}
           </View>
           {/* @see https://stackoverflow.com/questions/43143258/flex-vs-flexgrow-vs-flexshrink-vs-flexbasis-in-react-native */}
-          <View style={{ flex: 0, flexShrink: 1 }}>
+          <View>
             <Text style={styles.textSmall} numberOfLines={1}>
               {moment(item.dropoff.doneBefore).format('LT')}
             </Text>
