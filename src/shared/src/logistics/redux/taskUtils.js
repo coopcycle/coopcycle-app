@@ -52,8 +52,7 @@ export function groupLinkedTasks(tasks) {
   }
 
   return mapValues(groups, value => {
-    value.sort(tasksSort)
-    return value;
+    return value.sort(); // sort by task id useless if the dropoff was created before the pickup
   });
 }
 
@@ -70,7 +69,7 @@ function withLinkedTasks(task, allTasks) {
     // task with no linked tasks
     newTasks.push(task);
   }
-  return newTasks;
+  return newTasks.sort(tasksSort);
 }
 
 export function withUnassignedLinkedTasks(task, allTasks) {
