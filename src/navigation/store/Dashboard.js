@@ -33,14 +33,16 @@ class StoreDashboard extends Component {
           flexDirection: 'column',
           marginBottom: variables.isIphoneX ? 88 : 0,
         }}>
-        <Button
-          style={{ alignSelf: 'flex-end' }}
-          onPress={() => {
-            const router = this.props.router;
-            router.push('/delivery/new/address');
-          }}>
-          {'NEW DELIVERY'}
-        </Button>
+        {Platform.OS === 'web' ? (
+          <Button
+            style={{ alignSelf: 'flex-end' }}
+            onPress={() => {
+              const router = this.props.router;
+              router.push('/delivery/new/address');
+            }}>
+            {'NEW DELIVERY'}
+          </Button>
+        ) : null}
         <DeliveryList
           data={this.props.deliveries}
           loading={this.props.loadingMore}
