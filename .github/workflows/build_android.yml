@@ -1,16 +1,16 @@
 name: Build Android
 run-name: >
-  Build Android apps ${{ inputs.tag }}
+  Build ${{ inputs.tag }}
   ${{ inputs.deploy_google_play && format('(and release to {0} track)', inputs.google_play_track) || '' }}
-  ${{ inputs.build_official && ', CoopCycle PROD' || '' }}
-  ${{ inputs.build_official_beta && ', CoopCycle BETA' || '' }}
-  ${{ inputs.build_coursiers_stephanois && ', Les Coursiers Stéphanois' || '' }}
-  ${{ inputs.build_naofood && ', Naofood' || '' }}
-  ${{ inputs.build_zampate && ', Zampate' || '' }}
-  ${{ inputs.build_kooglof && ', Kooglof' || '' }}
-  ${{ inputs.build_robinfood && ', RobinFood' || '' }}
-  ${{ inputs.build_coursiers_rennais && ', Les Coursiers Rennais' || '' }}
-  ${{ inputs.build_coursiers_montpellier && ', Coursiers MTP' || '' }}
+  ${{ inputs.build_official && '; CoopCycle PROD' || '' }}
+  ${{ inputs.build_official_beta && '; CoopCycle BETA' || '' }}
+  ${{ inputs.build_coursiers_stephanois && '; Les Coursiers Stéphanois' || '' }}
+  ${{ inputs.build_naofood && '; Naofood' || '' }}
+  ${{ inputs.build_zampate && '; Zampate' || '' }}
+  ${{ inputs.build_kooglof && '; Kooglof' || '' }}
+  ${{ inputs.build_robinfood && '; RobinFood' || '' }}
+  ${{ inputs.build_coursiers_rennais && '; Les Coursiers Rennais' || '' }}
+  ${{ inputs.build_coursiers_montpellier && '; Coursiers MTP' || '' }}
 on:
   workflow_dispatch:
     inputs:
