@@ -1,7 +1,7 @@
 name: Build Android
 run-name: >
-  Build ${{ inputs.tag }}
-  ${{ inputs.deploy_google_play && format('(and release to {0} track)', inputs.google_play_track) || '' }}
+  ${{ inputs.deploy_google_play && format('Release to {0} track', inputs.google_play_track) || 'Build' }}
+  ${{ inputs.tag }}
   ${{ inputs.build_official && '; CoopCycle PROD' || '' }}
   ${{ inputs.build_official_beta && '; CoopCycle BETA' || '' }}
   ${{ inputs.build_coursiers_stephanois && '; Les Coursiers Stéphanois' || '' }}
