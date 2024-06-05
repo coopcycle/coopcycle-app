@@ -50,7 +50,7 @@ import Config from 'react-native-config';
 //   SET_USER,
 // } from './actions';
 
-const initialState = {
+export const initialState = {
   customBuild: !!Config.DEFAULT_SERVER,
   firstRun: true,
   isWsOpen: false,

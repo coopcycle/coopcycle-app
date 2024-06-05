@@ -30,7 +30,17 @@ class NewDelivery extends Component {
     };
 
     this.props.assertDelivery(delivery, () => {
-      this.props.navigation.navigate('StoreNewDeliveryForm', { address });
+      if (Platform.OS === 'web') {
+        // expo router impl (currently for web)
+        const router = this.props.router;
+        router.push({
+          pathname: `/delivery/new/details`,
+          params: { address: address['@id'] },
+        });
+      } else {
+        // React Navigation impl (currently on mobile)
+        this.props.navigation.navigate('StoreNewDeliveryForm', { address });
+      }
     });
   }
 
@@ -103,6 +113,13 @@ const styles = StyleSheet.create({
         right: 0,
         left: 0,
         zIndex: 10,
+        overflow: 'visible',
+      },
+      web: {
+        // top: 0,
+        // right: 0,
+        // left: 0,
+        zIndex: 1,
         overflow: 'visible',
       },
     }),

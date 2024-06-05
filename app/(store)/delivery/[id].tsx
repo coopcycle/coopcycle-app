@@ -3,7 +3,6 @@ import StoreDelivery from '@/src/navigation/store/Delivery';
 import React from 'react';
 import { useLocalSearchParams } from 'expo-router';
 import { selectDeliveries } from '@/src/redux/Store/selectors';
-import _ from 'lodash';
 import { useSelector } from 'react-redux';
 
 export default function Delivery() {
@@ -11,7 +10,7 @@ export default function Delivery() {
   const { id } = useLocalSearchParams();
 
   const deliveries = useSelector(selectDeliveries);
-  const match = _.find(deliveries, d => d.id === Number(id));
+  const match = deliveries.find(d => d.id === Number(id));
 
   const route = {
     params: {

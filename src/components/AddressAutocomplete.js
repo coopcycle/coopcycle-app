@@ -395,9 +395,11 @@ class AddressAutocomplete extends Component {
   }
 
   onTextInputBlur(e) {
-    this.setState({
-      results: [],
-    });
+    //TODO: web: Prevent the autocomplete from closing before _onItemPress is called
+
+    // this.setState({
+    //   results: [],
+    // });
     if (this.props.onBlur && typeof this.props.onBlur === 'function') {
       this.props.onBlur(e);
     }

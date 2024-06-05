@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
 import { Platform, View } from 'react-native';
 import { connect } from 'react-redux';
+import { Button } from 'native-base';
 
 import DeliveryList from '../../components/DeliveryList';
 
@@ -32,6 +33,13 @@ class StoreDashboard extends Component {
           flexDirection: 'column',
           marginBottom: variables.isIphoneX ? 88 : 0,
         }}>
+        <Button
+          onPress={() => {
+            const router = this.props.router;
+            router.push('/delivery/new/address');
+          }}>
+          {'TODO; NEW DELIVERY'}
+        </Button>
         <DeliveryList
           data={this.props.deliveries}
           loading={this.props.loadingMore}

@@ -73,9 +73,16 @@ class NewDelivery extends Component {
       },
     };
 
-    this.props.createDelivery(delivery, () =>
-      this.props.navigation.navigate('StoreHome'),
-    );
+    this.props.createDelivery(delivery, () => {
+      if (Platform.OS === 'web') {
+        // expo router impl (currently for web)
+        const router = this.props.router;
+        router.push('/dashboard');
+      } else {
+        // React Navigation impl (currently on mobile)
+        this.props.navigation.navigate('StoreHome');
+      }
+    });
   }
 
   _validate(values) {

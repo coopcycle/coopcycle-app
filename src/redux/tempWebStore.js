@@ -1,4 +1,5 @@
 import API from '@/src/API';
+import { initialState } from '@/src/redux/App/tempWebReducers';
 import { applyMiddleware, createStore } from 'redux';
 import ReduxAsyncQueue from 'redux-async-queue';
 import { composeWithDevTools } from 'redux-devtools-extension';
@@ -139,8 +140,11 @@ if (window._auth) {
   });
 }
 
+const appInitialState = initialState;
+
 const preloadedState = {
   app: {
+    ...appInitialState,
     httpClient: httpClient,
   },
   store: {
