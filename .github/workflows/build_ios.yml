@@ -1,4 +1,11 @@
 name: Build iOS
+run-name: >
+  Upload to App Store ${{ inputs.tag }}
+  ${{ inputs.build_official && '; CoopCycle' || '' }}
+  ${{ inputs.build_official_beta && '; CoopCycle (Beta)' || '' }}
+  ${{ inputs.build_naofood && '; Naofood' || '' }}
+  ${{ inputs.build_kooglof && '; Kooglof' || '' }}
+  ${{ inputs.build_robinfood && '; RobinFood' || '' }}
 on:
   workflow_dispatch:
     inputs:
