@@ -3,6 +3,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Platform, StyleSheet } from 'react-native';
 import ModalSelector from 'react-native-modal-selector';
+import { usePrimaryColor } from '../../../styles/theme';
 
 const styles = StyleSheet.create({
   label: {
@@ -29,21 +30,41 @@ export default function TimeSlotSelector({
   updateSelectedTimeSlot,
   timeSlots,
   choices,
+  selectedTimeSlot,
 }) {
   const { t } = useTranslation();
+  const primaryColor = usePrimaryColor();
 
   return (
     <View style={[styles.formGroup]}>
       <Text style={styles.label}>{t('STORE_NEW_DELIVERY_TIME_SLOT')}</Text>
       <View style={styles.buttonWrapper}>
-        {timeSlots.map((timeSlot, index) => (
-          <Button
-            onPress={() => updateSelectedTimeSlot(timeSlot)}
-            style={{ color: 'black' }}
-            key={index}>
-            {timeSlot.name}
-          </Button>
-        ))}
+        {timeSlots.map((timeSlot, index) => {
+          return (
+            <Button
+              onPress={() => updateSelectedTimeSlot(timeSlot)}
+              style={{
+                backgroundColor:
+                  selectedTimeSlot === timeSlot.name
+                    ? primaryColor
+                    : 'transparent',
+                borderColor:
+                  selectedTimeSlot === timeSlot.name
+                    ? 'transparent'
+                    : primaryColor,
+                borderWidth: 1,
+              }}
+              key={index}>
+              <Text
+                style={{
+                  color:
+                    selectedTimeSlot === timeSlot.name ? 'white' : primaryColor,
+                }}>
+                {timeSlot.name}
+              </Text>
+            </Button>
+          );
+        })}
       </View>
       <ModalSelector
         data={choices}
