@@ -2,6 +2,7 @@ import { CommonActions } from '@react-navigation/native';
 import { Alert } from 'react-native';
 import { createAction } from 'redux-actions';
 
+import _ from 'lodash';
 import NavigationHolder from '../../NavigationHolder';
 import i18n from '../../i18n';
 import { connect } from '../middlewares/CentrifugoMiddleware/actions';
@@ -20,7 +21,7 @@ import {
   startTaskSuccess,
 } from '../Courier';
 
-import { withLinkedTasks } from '../../shared/src/logistics/redux/taskUtils';
+import { withUnassignedLinkedTasks } from '../../shared/src/logistics/redux/taskUtils';
 import { isSameDate } from './utils';
 
 /*
@@ -298,7 +299,7 @@ export function assignTask(task, username) {
   return function (dispatch, getState) {
     const httpClient = getState().app.httpClient;
 
-    const linkedTasks = withLinkedTasks(task, selectAllTasks(getState()));
+    const linkedTasks = withUnassignedLinkedTasks(task, selectAllTasks(getState()));
 
     if (linkedTasks.length > 1) {
       dispatch(bulkAssignmentTasksRequest());
@@ -325,16 +326,30 @@ export function assignTask(task, username) {
   };
 }
 
+/**
+ * Assign several tasks at once (and add the linked tasks)
+ * @param {Array.Objects} tasks - Tasks to be assigned
+ * @param {string} username - Username of the rider to which we assign
+ *
+ */
 export function bulkAssignmentTasks(tasks, username) {
   return function (dispatch, getState) {
     const httpClient = getState().app.httpClient;
 
     dispatch(bulkAssignmentTasksRequest());
 
+    let tasksToAssign = [];
+
+    tasks.forEach((task) => {
+      tasksToAssign.push(...withUnassignedLinkedTasks(task, selectAllTasks(getState())))
+    });
+
+    const payload = _.uniq(tasksToAssign.map(t => t['@id']));
+
     return httpClient
       .put('/api/tasks/assign', {
         username,
-        tasks: tasks.map(t => t['@id']),
+        tasks: payload,
       })
       .then(res => dispatch(bulkAssignmentTasksSuccess(res['hydra:member'])))
       .catch(e => dispatch(bulkAssignmentTasksFailure(e)));
@@ -357,7 +372,8 @@ export function unassignTask(task, username) {
 export function updateTask(action, task) {
   return function (dispatch, getState) {
     let date = selectSelectedDate(getState());
-
+    console.log(action)
+    console.log(task)
     if (isSameDate(task, date)) {
       switch (action) {
         case 'task:created':

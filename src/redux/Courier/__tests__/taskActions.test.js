@@ -231,7 +231,7 @@ describe('Redux | Tasks | Actions', () => {
     });
 
     // Make sure to return the promise
-    return store.dispatch(markTaskDone(client, task, notes)).then(() => {
+    return store.dispatch(markTaskDone(task, notes)).then(() => {
       const actions = store.getActions();
 
       expect(actions).toContainEqual(markTaskDoneRequest(task));
@@ -272,7 +272,7 @@ describe('Redux | Tasks | Actions', () => {
     });
 
     // Make sure to return the promise
-    return store.dispatch(markTaskDone(client, task, notes)).then(() => {
+    return store.dispatch(markTaskDone(task, notes)).then(() => {
       const actions = store.getActions();
 
       expect(actions).toContainEqual(markTaskDoneRequest(task));
@@ -312,7 +312,7 @@ describe('Redux | Tasks | Actions', () => {
     });
 
     // Make sure to return the promise
-    return store.dispatch(markTaskDone(client, task, notes)).then(() => {
+    return store.dispatch(markTaskDone(task, notes)).then(() => {
       const actions = store.getActions();
 
       expect(actions).toContainEqual(markTaskDoneRequest(task));
@@ -349,7 +349,7 @@ describe('Redux | Tasks | Actions', () => {
 
     // Make sure to return the promise
     return store
-      .dispatch(markTaskFailed(client, task, notes, reason))
+      .dispatch(markTaskFailed(task, notes, reason))
       .then(() => {
         const actions = store.getActions();
 
@@ -391,7 +391,7 @@ describe('Redux | Tasks | Actions', () => {
 
     // Make sure to return the promise
     return store
-      .dispatch(markTaskFailed(client, task, notes, reason))
+      .dispatch(markTaskFailed(task, notes, reason))
       .then(() => {
         const actions = store.getActions();
 

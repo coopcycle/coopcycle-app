@@ -145,3 +145,6 @@ export const selectServersWithoutRepeats = createSelector(
 
 export const selectIsSpinnerDelayEnabled = state =>
   state.app.isSpinnerDelayEnabled ?? true;
+
+export const selectIsIncidentEnabled = state =>
+  state.app.isIncidentEnabled ?? false;

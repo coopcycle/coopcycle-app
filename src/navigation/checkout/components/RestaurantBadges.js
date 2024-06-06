@@ -1,8 +1,9 @@
 import { IconClock, IconPlugX } from '@tabler/icons-react-native';
-import { Badge, HStack, Text, useColorModeValue } from 'native-base';
+import { Badge, HStack, Text } from 'native-base';
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
+import { useBaseTextColor } from '../../../styles/theme';
 import {
   getNextShippingTimeAsText,
   isRestaurantClosed,
@@ -46,7 +47,7 @@ export const CategoryBadge = ({ label }) => {
 };
 
 export const TimingBadge = ({ restaurant }) => {
-  const color = useColorModeValue('#000', '#fff');
+  const color = useBaseTextColor();
 
   const isClosed = isRestaurantClosed(restaurant);
   const shippingTime = getNextShippingTimeAsText(restaurant);

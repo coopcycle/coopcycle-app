@@ -1,8 +1,9 @@
-import { Text, useColorModeValue } from 'native-base';
+import { Text } from 'native-base';
 import { StyleSheet, View } from 'react-native';
+import { useBackgroundHighlightColor } from '../styles/theme';
 
 export const RestaurantTag = ({ text }) => {
-  const backgroundColor = useColorModeValue('rgba(0,0,0,.05)', '#353030');
+  const backgroundColor = useBackgroundHighlightColor();
 
   const styles = StyleSheet.create({
     tag: {

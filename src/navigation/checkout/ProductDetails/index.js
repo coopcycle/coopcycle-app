@@ -1,10 +1,11 @@
 import _ from 'lodash';
-import { SectionList, View, useColorModeValue } from 'native-base';
+import { SectionList, View } from 'native-base';
 import React, { useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import ItemSeparator from '../../../components/ItemSeparator';
 import { addItemV2 } from '../../../redux/Checkout/actions';
+import { useBackgroundContainerColor } from '../../../styles/theme';
 import { formatPrice } from '../../../utils/formatting';
 import { isAdditionalOption } from '../../../utils/product';
 import FooterButton from '../components/FooterButton';
@@ -23,7 +24,8 @@ const LIST_SECTION_OPTION = 'option';
 const PADDING = 24;
 
 function ListHeaderComponent({ product }) {
-  const backgroundColor = useColorModeValue('white', '#1a1a1a');
+  const backgroundColor = useBackgroundContainerColor();
+
   return (
     <>
       <ProductImage product={product} />
@@ -49,7 +51,7 @@ export default props => {
     increment,
     decrement,
   } = useProductOptionsBuilder(productOptions);
-  const backgroundColor = useColorModeValue('white', '#1a1a1a');
+  const backgroundColor = useBackgroundContainerColor();
 
   const list = useRef();
 

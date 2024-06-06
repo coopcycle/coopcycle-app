@@ -28,6 +28,9 @@ import {
   START_TASK_FAILURE,
   START_TASK_REQUEST,
   START_TASK_SUCCESS,
+  REPORT_INCIDENT_REQUEST,
+  REPORT_INCIDENT_SUCCESS,
+  REPORT_INCIDENT_FAILURE,
 } from './taskActions';
 
 /*
@@ -81,6 +84,17 @@ function replaceItem(state, payload) {
   return state;
 }
 
+
+function updateItem(prevItems, id, payload) {
+  const index = prevItems.findIndex(item => item['@id'] === id);
+
+  if (index !== -1) {
+    return prevItems.map((item, i) => (i === index ? { ...item, ...payload } : item));
+  }
+
+  return prevItems;
+}
+
 function replaceItems(prevItems, items) {
   return prevItems.map(prevItem => {
     const toReplace = items.find(i => i['@id'] === prevItem['@id']);
@@ -100,6 +114,7 @@ export const tasksEntityReducer = (
     case MARK_TASK_DONE_REQUEST:
     case MARK_TASK_FAILED_REQUEST:
     case MARK_TASKS_DONE_REQUEST:
+    case REPORT_INCIDENT_REQUEST:
       return {
         ...state,
         loadTasksFetchError: false,
@@ -138,10 +153,21 @@ export const tasksEntityReducer = (
       };
 
     case MARK_TASKS_DONE_FAILURE:
+    case REPORT_INCIDENT_FAILURE:
       return {
         ...state,
         isFetching: false,
       };
+
+    case REPORT_INCIDENT_SUCCESS:
+      return {
+        ...state,
+        isFetching: false,
+        items: _.mapValues(state.items, tasks =>
+          updateItem(tasks, action.payload.task, { hasIncidents: true }),
+        ),
+      }
+
 
     case LOAD_TASKS_SUCCESS:
       return {

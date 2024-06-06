@@ -108,6 +108,7 @@
     "COMPLETE_TASK": "Complete",
     "VALIDATE": "Validate",
     "MARK_FAILED": "Mark task as failed",
+    "REPORT_INCIDENT": "Report incident",
     "SWIPE_TO_END": "Swipe right to end task, or to the left if there is a problem",
     "WAITING_FOR_POS": "Waiting for location",
     "PROBLEM_CONNECTING": "Problem connecting",

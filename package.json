@@ -44,6 +44,7 @@
     "buffer": "^6.0.3",
     "centrifuge": "^2.8.4",
     "color-hash": "^2.0.2",
+    "colorjs.io": "^0.5.0",
     "coopcycle-frontend-js": "git+https://git@github.com/coopcycle/coopcycle-frontend-js.git#3.0.0-beta.2",
     "countly-sdk-react-native-bridge": "^22.06.1",
     "currency-symbol-map": "^5.1.0",
@@ -204,5 +205,6 @@
         "type": "android.attached"
       }
     }
-  }
+  },
+  "packageManager": "yarn@1.22.22+sha1.ac34549e6aa8e7ead463a7407e1c7390f61a6610"
 }

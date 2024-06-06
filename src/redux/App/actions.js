@@ -103,6 +103,7 @@ export const LOAD_PRIVACY_POLICY_SUCCESS = '@app/LOAD_PRIVACY_POLICY_SUCCESS';
 export const LOAD_PRIVACY_POLICY_FAILURE = '@app/LOAD_PRIVACY_POLICY_FAILURE';
 
 export const SET_SPINNER_DELAY_ENABLED = '@app/SET_IS_SPINNER_DELAY_ENABLED';
+export const SET_INCIDENT_ENABLED = '@app/SET_IS_INCIDENT_ENABLED';
 
 /*
  * Action Creators
@@ -201,6 +202,7 @@ const registrationErrors = createAction(REGISTRATION_ERRORS);
 const loginByEmailErrors = createAction(LOGIN_BY_EMAIL_ERRORS);
 
 export const setSpinnerDelayEnabled = createAction(SET_SPINNER_DELAY_ENABLED);
+export const setIncidentEnabled = createAction(SET_INCIDENT_ENABLED);
 
 function setBaseURL(baseURL) {
   return (dispatch, getState) => {

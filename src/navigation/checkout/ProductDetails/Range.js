@@ -1,7 +1,8 @@
-import { Text, View, useColorModeValue } from 'native-base';
+import { Text, View } from 'native-base';
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { useBackgroundHighlightColor } from '../../../styles/theme';
 
 const styles = StyleSheet.create({
   button: {
@@ -30,10 +31,8 @@ const styles = StyleSheet.create({
 });
 
 function Range({ onPressDecrement, quantity, onPressIncrement, minimum = 0 }) {
-  const buttonBackgroundColor = useColorModeValue(
-    'rgba(0, 0, 0, .1)',
-    'rgba(255, 255,255, .1)',
-  );
+  const buttonBackgroundColor = useBackgroundHighlightColor();
+
   return (
     <View style={styles.rangeButtonWrapper}>
       <TouchableOpacity
