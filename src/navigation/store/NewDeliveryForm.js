@@ -25,7 +25,7 @@ import TimeSlotSelector from './components/TimeSlotSelector';
 
 function NewDelivery(props) {
   const [isDateTimePickerVisible, setIsDateTimePickerVisible] = useState(false);
-  const [selectedTimeSlot, setSelectedTimeSlot] = useState(false);
+  const [selectedTimeSlot, setSelectedTimeSlot] = useState('');
 
   useEffect(() => {
     InteractionManager.runAfterInteractions(() => {
@@ -47,13 +47,21 @@ function NewDelivery(props) {
   }, []);
 
   useEffect(() => {
+    if (props.timeSlots.length > 0) {
+      setSelectedTimeSlot(props.timeSlots[0].name);
+    }
+  }, [props.timeSlots.length]);
+
+  useEffect(() => {
     if (selectedTimeSlot) {
-      props.loadTimeSlotChoices(selectedTimeSlot);
+      props.loadTimeSlotChoices(
+        props.timeSlots.find(ts => ts.name === selectedTimeSlot),
+      );
     }
   }, [selectedTimeSlot]);
 
   function updateSelectedTimeSlot(timeSlot) {
-    setSelectedTimeSlot(timeSlot);
+    setSelectedTimeSlot(timeSlot.name);
   }
 
   function showDateTimePicker() {
@@ -296,6 +304,7 @@ function NewDelivery(props) {
                 updateSelectedTimeSlot={updateSelectedTimeSlot}
                 timeSlots={props.timeSlots}
                 choices={props.choices}
+                selectedTimeSlot={selectedTimeSlot}
               />
             )}
             {!props.hasTimeSlot &&
