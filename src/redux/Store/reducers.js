@@ -5,7 +5,8 @@ import {
   LOAD_ADDRESSES_SUCCESS,
   LOAD_DELIVERIES_SUCCESS,
   LOAD_TASKS_SUCCESS,
-  LOAD_TIME_SLOT_SUCCESS,
+  LOAD_TIME_SLOTS_SUCCESS,
+  LOAD_TIME_SLOT_CHOICES_SUCCESS,
   SET_LOADING_MORE,
   SET_REFRESHING,
 } from './actions';
@@ -29,6 +30,7 @@ const initialState = {
   loadingMore: false,
   refreshing: false,
   timeSlots: [],
+  choices: [],
   assertDeliveryError: null,
 };
 
@@ -114,13 +116,16 @@ export default (state = initialState, action = {}) => {
 
       return newState;
 
-    case LOAD_TIME_SLOT_SUCCESS:
-      const timeSlots = state.timeSlots.slice();
-      timeSlots.push(action.payload);
-
+    case LOAD_TIME_SLOT_CHOICES_SUCCESS:
       return {
         ...state,
-        timeSlots,
+        choices: action.payload,
+      };
+
+    case LOAD_TIME_SLOTS_SUCCESS:
+      return {
+        ...state,
+        timeSlots: action.payload,
       };
 
     case LOAD_TASKS_SUCCESS:

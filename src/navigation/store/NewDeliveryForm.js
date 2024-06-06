@@ -8,19 +8,29 @@ import { withTranslation } from 'react-i18next';
 import { InteractionManager, Platform, StyleSheet, View } from 'react-native';
 import KeyboardManager from 'react-native-keyboard-manager';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import ModalSelector from 'react-native-modal-selector';
 import { connect } from 'react-redux';
 
-import { createDelivery, loadTimeSlot } from '../../redux/Store/actions';
-import { selectStore, selectTimeSlot } from '../../redux/Store/selectors';
-import { getChoicesWithDates } from '../../utils/time-slots';
+import {
+  createDelivery,
+  loadTimeSlot,
+  loadTimeSlotChoices,
+  loadTimeSlots,
+} from '../../redux/Store/actions';
+import {
+  selectStore,
+  selectTimeSlot,
+  selectTimeSlots,
+} from '../../redux/Store/selectors';
+import TimeSlotSelector from './components/TimeSlotSelector';
 
 function NewDelivery(props) {
   const [isDateTimePickerVisible, setIsDateTimePickerVisible] = useState(false);
+  const [selectedTimeSlot, setSelectedTimeSlot] = useState(false);
 
   useEffect(() => {
     InteractionManager.runAfterInteractions(() => {
       props.loadTimeSlot(props.store);
+      props.loadTimeSlots(props.store);
     });
     // This will add a "OK" button above keyboard, to dismiss keyboard
     if (Platform.OS === 'ios') {
@@ -34,7 +44,17 @@ function NewDelivery(props) {
         KeyboardManager.setEnableAutoToolbar(false);
       }
     };
-  }, [props]);
+  }, []);
+
+  useEffect(() => {
+    if (selectedTimeSlot) {
+      props.loadTimeSlotChoices(selectedTimeSlot);
+    }
+  }, [selectedTimeSlot]);
+
+  function updateSelectedTimeSlot(timeSlot) {
+    setSelectedTimeSlot(timeSlot);
+  }
 
   function showDateTimePicker() {
     setIsDateTimePickerVisible(true);
@@ -110,39 +130,6 @@ function NewDelivery(props) {
     }
 
     return errors;
-  }
-
-  function renderTimeSlotSelector(
-    errors,
-    touched,
-    setFieldValue,
-    setFieldTouched,
-  ) {
-    return (
-      <View style={[styles.formGroup]}>
-        <Text style={styles.label}>
-          {props.t('STORE_NEW_DELIVERY_TIME_SLOT')}
-        </Text>
-        <ModalSelector
-          data={props.timeSlotChoices}
-          cancelText={props.t('CANCEL')}
-          initValue={props.t('STORE_NEW_DELIVERY_SELECT_TIME_SLOT')}
-          accessible={true}
-          // Bug on Android
-          // The component thinks it's a long press while it's a short press
-          enableLongPress={Platform.OS === 'android'}
-          onChange={value => {
-            setFieldValue('timeSlot', value.key);
-            setFieldTouched('timeSlot');
-          }}
-        />
-        {errors.timeSlot && touched.timeSlot && (
-          <Text note style={styles.errorText}>
-            {errors.timeSlot}
-          </Text>
-        )}
-      </View>
-    );
   }
 
   function renderDateTimePicker(
@@ -300,13 +287,17 @@ function NewDelivery(props) {
                 value={values.address.description}
               />
             </View>
-            {props.hasTimeSlot &&
-              renderTimeSlotSelector(
-                errors,
-                touched,
-                setFieldValue,
-                setFieldTouched,
-              )}
+            {props.hasTimeSlot && (
+              <TimeSlotSelector
+                errors={errors}
+                touched={touched}
+                setFieldValue={setFieldValue}
+                setFieldTouched={setFieldTouched}
+                updateSelectedTimeSlot={updateSelectedTimeSlot}
+                timeSlots={props.timeSlots}
+                choices={props.choices}
+              />
+            )}
             {!props.hasTimeSlot &&
               renderDateTimePicker(
                 initialValues,
@@ -354,17 +345,23 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
   const timeSlot = selectTimeSlot(state);
-  const hasTimeSlot =
-    timeSlot &&
-    (timeSlot.choices.length > 0 ||
-      timeSlot.openingHoursSpecification.length > 0);
-  const timeSlotChoices = hasTimeSlot ? getChoicesWithDates(timeSlot) : [];
+  // const hasTimeSlot =
+  //   timeSlot &&
+  //   (timeSlot.choices.length > 0 ||
+  //     timeSlot.openingHoursSpecification.length > 0);
+  // const timeSlotChoices = hasTimeSlot ? getChoicesWithDates(timeSlot) : [];
+  const timeSlotChoices = [];
+  const timeSlots = selectTimeSlots(state);
+  const choices = state.store.choices;
+  const hasTimeSlot = timeSlot && choices.length > 0;
 
   return {
     country: state.app.settings.country.toUpperCase(),
     store: selectStore(state),
     timeSlotChoices,
-    hasTimeSlot: hasTimeSlot && timeSlotChoices.length > 0,
+    hasTimeSlot,
+    timeSlots,
+    choices,
   };
 }
 
@@ -373,6 +370,8 @@ function mapDispatchToProps(dispatch) {
     createDelivery: (delivery, onSuccess) =>
       dispatch(createDelivery(delivery, onSuccess)),
     loadTimeSlot: store => dispatch(loadTimeSlot(store)),
+    loadTimeSlots: store => dispatch(loadTimeSlots(store)),
+    loadTimeSlotChoices: timeSlot => dispatch(loadTimeSlotChoices(timeSlot)),
   };
 }
 
