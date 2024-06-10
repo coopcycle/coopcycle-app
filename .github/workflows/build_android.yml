@@ -16,6 +16,10 @@ on:
         description: 'Build official app'
         required: true
         type: boolean
+      build_official_beta:
+        description: 'Build official beta app'
+        required: true
+        type: boolean
       build_coursiers_stephanois:
         description: 'Build Coursiers Stéphanois app'
         required: true
@@ -36,10 +40,6 @@ on:
         description: 'Build RobinFood app'
         required: true
         type: boolean
-      build_coursiers_montpellier:
-        description: 'Build Coursiers MTP app'
-        required: true
-        type: boolean
       build_coursiers_rennais:
         description: 'Build Coursiers Rennais app'
         required: true
@@ -53,6 +53,19 @@ jobs:
     with:
       google_play_track: ${{ inputs.google_play_track }}
       deploy_google_play: ${{ inputs.deploy_google_play }}
+  default_beta:
+    if: ${{ inputs.build_official_beta }}
+    name: Build default beta app
+    uses: ./.github/workflows/fastlane_android.yml
+    with:
+      instance: beta
+      app_name: CoopCycle (Beta)
+      package_name: fr.coopcycle.beta
+      keystore_key_alias: instance
+      keystore_key_password_secret: SIGNING_KEY_PASSWORD_INSTANCE
+      google_play_track: ${{ inputs.google_play_track }}
+      deploy_google_play: ${{ inputs.deploy_google_play }}
+    secrets: inherit
   naofood:
     if: ${{ inputs.build_naofood }}
     name: Build Naofood app
