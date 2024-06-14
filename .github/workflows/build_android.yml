@@ -179,7 +179,7 @@ jobs:
       instance: eraman
       instance_url: https://eramangasteiz.coopcycle.org
       app_name: Eraman
-      primary_color: "#000000"
+      primary_color: "#317764"
       package_name: fr.coopcycle.eraman
       keystore_key_alias: instance
       keystore_key_password_secret: SIGNING_KEY_PASSWORD_INSTANCE
