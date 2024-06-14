@@ -176,7 +176,7 @@ jobs:
     name: Build Eraman app
     uses: ./.github/workflows/fastlane_android.yml
     with:
-      instance: ermaman
+      instance: eraman
       instance_url: https://eramangasteiz.coopcycle.org
       app_name: Eraman
       primary_color: "#000000"
