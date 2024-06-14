@@ -28,10 +28,6 @@ on:
         description: 'Build Naofood app'
         required: true
         type: boolean
-      build_zampate:
-        description: 'Build Zampate app'
-        required: true
-        type: boolean
       build_kooglof:
         description: 'Build Kooglof app'
         required: true
