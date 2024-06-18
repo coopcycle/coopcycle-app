@@ -16,11 +16,7 @@ import {
   loadTimeSlotChoices,
   loadTimeSlots,
 } from '../../redux/Store/actions';
-import {
-  selectStore,
-  selectTimeSlot,
-  selectTimeSlots,
-} from '../../redux/Store/selectors';
+import { selectStore, selectTimeSlots } from '../../redux/Store/selectors';
 import TimeSlotSelector from './components/TimeSlotSelector';
 
 function NewDelivery(props) {
@@ -44,13 +40,13 @@ function NewDelivery(props) {
         KeyboardManager.setEnableAutoToolbar(false);
       }
     };
-  }, []);
+  }, [props.loadTimeSlot, props.loadTimeSlots, props.store]);
 
   useEffect(() => {
     if (props.timeSlots.length > 0) {
       setSelectedTimeSlot(props.timeSlots[0].name);
     }
-  }, [props.timeSlots.length]);
+  }, [props.timeSlots]);
 
   useEffect(() => {
     if (selectedTimeSlot) {
@@ -58,7 +54,7 @@ function NewDelivery(props) {
         props.timeSlots.find(ts => ts.name === selectedTimeSlot),
       );
     }
-  }, [selectedTimeSlot]);
+  }, [selectedTimeSlot, props.loadTimeSlotChoices, props.timeSlots]);
 
   function updateSelectedTimeSlot(timeSlot) {
     setSelectedTimeSlot(timeSlot.name);
@@ -224,7 +220,10 @@ function NewDelivery(props) {
         setFieldValue,
         setFieldTouched,
       }) => (
-        <VStack flex={1} justifyContent="space-between">
+        <VStack
+          flex={1}
+          justifyContent="space-between"
+          style={{ backgroundColor: 'red' }}>
           <Box p="3">
             <View style={[styles.formGroup]}>
               <Text style={styles.label}>
@@ -332,16 +331,17 @@ const styles = StyleSheet.create({
   },
   label: {
     marginBottom: 5,
-    fontWeight: '600',
+    fontWeight: '500',
   },
   formGroup: {
     marginBottom: 10,
   },
   textInput: {
-    borderColor: '#b9b9b9',
-    borderRadius: 1,
+    borderColor: '#E3E3E3',
+    borderRadius: 4,
     borderWidth: 1,
     minHeight: 40,
+    backgroundColor: '#FAFAFA',
   },
   textarea: {
     minHeight: 25 * 3,
@@ -353,7 +353,7 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(state) {
-  const timeSlot = selectTimeSlot(state);
+  // const timeSlot = selectTimeSlot(state);
   // const hasTimeSlot =
   //   timeSlot &&
   //   (timeSlot.choices.length > 0 ||
@@ -362,7 +362,7 @@ function mapStateToProps(state) {
   const timeSlotChoices = [];
   const timeSlots = selectTimeSlots(state);
   const choices = state.store.choices;
-  const hasTimeSlot = timeSlot && choices.length > 0;
+  const hasTimeSlot = timeSlots.length > 0;
 
   return {
     country: state.app.settings.country.toUpperCase(),
