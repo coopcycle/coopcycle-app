@@ -1,9 +1,9 @@
 import { Button, Text, View } from 'native-base';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Platform, StyleSheet } from 'react-native';
-import ModalSelector from 'react-native-modal-selector';
+import { StyleSheet } from 'react-native';
 import { usePrimaryColor } from '../../../styles/theme';
+import RNPickerSelect from 'react-native-picker-select';
 
 const styles = StyleSheet.create({
   label: {
@@ -51,14 +51,14 @@ export default function TimeSlotSelector({
                 borderColor:
                   selectedTimeSlot === timeSlot.name
                     ? 'transparent'
-                    : primaryColor,
+                    : '#878787',
                 borderWidth: 1,
               }}
               key={index}>
               <Text
                 style={{
                   color:
-                    selectedTimeSlot === timeSlot.name ? 'white' : primaryColor,
+                    selectedTimeSlot === timeSlot.name ? 'white' : '#878787',
                 }}>
                 {timeSlot.name}
               </Text>
@@ -66,17 +66,19 @@ export default function TimeSlotSelector({
           );
         })}
       </View>
-      <ModalSelector
-        data={choices}
-        cancelText={t('CANCEL')}
-        initValue={t('STORE_NEW_DELIVERY_SELECT_TIME_SLOT')}
-        accessible={true}
-        // Bug on Android
-        // The component thinks it's a long press while it's a short press
-        enableLongPress={Platform.OS === 'android'}
-        onChange={value => {
+      <RNPickerSelect
+        style={pickerSelectStyles}
+        onValueChange={value => {
+          if (!value) return;
           setFieldValue('timeSlot', value.key);
           setFieldTouched('timeSlot');
+        }}
+        items={choices.map(
+          choice => (choice = { value: choice.value, label: choice.label }),
+        )}
+        placeholder={{
+          label: t('STORE_NEW_DELIVERY_SELECT_TIME_SLOT'),
+          value: null,
         }}
       />
       {errors.timeSlot && touched.timeSlot && (
@@ -87,3 +89,24 @@ export default function TimeSlotSelector({
     </View>
   );
 }
+
+const selectStyles = {
+  backgroundColor: '#FAFAFA',
+  borderColor: '#E3E3E3',
+  borderWidth: 1,
+  borderRadius: 4,
+  color: '#6B6B6B',
+  paddingRight: 30,
+  paddingVertical: 12,
+  paddingHorizontal: 10,
+  fontSize: 16,
+};
+
+const pickerSelectStyles = StyleSheet.create({
+  inputIOS: {
+    ...selectStyles,
+  },
+  inputAndroid: {
+    ...selectStyles,
+  },
+});
