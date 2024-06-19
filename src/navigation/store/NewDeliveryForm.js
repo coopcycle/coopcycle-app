@@ -30,6 +30,7 @@ function NewDelivery(props) {
   const backgroundContainerColor = useBackgroundContainerColor();
   const backgroundColor = useBackgroundColor();
   const backgroundHighlightColor = useBackgroundHighlightColor();
+  const [selectValue, setSelectValue] = React.useState(null);
 
   const inputStyles = {
     backgroundColor: backgroundContainerColor,
@@ -66,6 +67,8 @@ function NewDelivery(props) {
       props.loadTimeSlotChoices(
         props.timeSlots.find(ts => ts.name === selectedTimeSlot),
       );
+    } else {
+      setSelectValue(null);
     }
   }, [selectedTimeSlot, props.loadTimeSlotChoices, props.timeSlots]);
 
@@ -309,6 +312,8 @@ function NewDelivery(props) {
             </View>
             {props.hasTimeSlot && (
               <TimeSlotSelector
+                selectValue={selectValue}
+                setSelectValue={setSelectValue}
                 errors={errors}
                 touched={touched}
                 setFieldValue={setFieldValue}
