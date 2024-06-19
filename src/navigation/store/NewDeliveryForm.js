@@ -18,10 +18,23 @@ import {
 } from '../../redux/Store/actions';
 import { selectStore, selectTimeSlots } from '../../redux/Store/selectors';
 import TimeSlotSelector from './components/TimeSlotSelector';
+import {
+  useBackgroundColor,
+  useBackgroundContainerColor,
+  useBackgroundHighlightColor,
+} from '../../styles/theme';
 
 function NewDelivery(props) {
   const [isDateTimePickerVisible, setIsDateTimePickerVisible] = useState(false);
   const [selectedTimeSlot, setSelectedTimeSlot] = useState('');
+  const backgroundContainerColor = useBackgroundContainerColor();
+  const backgroundColor = useBackgroundColor();
+  const backgroundHighlightColor = useBackgroundHighlightColor();
+
+  const inputStyles = {
+    backgroundColor: backgroundContainerColor,
+    borderColor: backgroundHighlightColor,
+  };
 
   useEffect(() => {
     InteractionManager.runAfterInteractions(() => {
@@ -223,7 +236,7 @@ function NewDelivery(props) {
         <VStack
           flex={1}
           justifyContent="space-between"
-          style={{ backgroundColor: 'red' }}>
+          style={{ backgroundColor }}>
           <Box p="3">
             <View style={[styles.formGroup]}>
               <Text style={styles.label}>
@@ -231,7 +244,7 @@ function NewDelivery(props) {
               </Text>
               <Input
                 variant="filled"
-                style={[styles.textInput]}
+                style={[styles.textInput, inputStyles]}
                 value={address.streetAddress}
                 isReadOnly={true}
               />
@@ -241,7 +254,7 @@ function NewDelivery(props) {
                 {props.t('STORE_NEW_DELIVERY_PHONE_NUMBER')}
               </Text>
               <Input
-                style={[styles.textInput]}
+                style={[styles.textInput, inputStyles]}
                 autoCorrect={false}
                 keyboardType="phone-pad"
                 returnKeyType="done"
@@ -265,7 +278,7 @@ function NewDelivery(props) {
                 {props.t('STORE_NEW_DELIVERY_CONTACT_NAME')}
               </Text>
               <Input
-                style={[styles.textInput]}
+                style={[styles.textInput, inputStyles]}
                 autoCorrect={false}
                 returnKeyType="done"
                 onChangeText={handleChange('address.contactName')}
@@ -286,7 +299,7 @@ function NewDelivery(props) {
                 {props.t('STORE_NEW_DELIVERY_COMMENTS')}
               </Text>
               <Input
-                style={[styles.textInput, styles.textarea]}
+                style={[styles.textInput, styles.textarea, inputStyles]}
                 autoCorrect={false}
                 multiline={true}
                 onChangeText={handleChange('address.description')}
