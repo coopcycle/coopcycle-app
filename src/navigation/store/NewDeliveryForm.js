@@ -63,12 +63,11 @@ function NewDelivery(props) {
   }, [props.timeSlots]);
 
   useEffect(() => {
+    setSelectValue(null);
     if (selectedTimeSlot) {
       props.loadTimeSlotChoices(
         props.timeSlots.find(ts => ts.name === selectedTimeSlot),
       );
-    } else {
-      setSelectValue(null);
     }
   }, [selectedTimeSlot, props.loadTimeSlotChoices, props.timeSlots]);
 
