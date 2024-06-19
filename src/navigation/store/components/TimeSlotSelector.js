@@ -63,6 +63,8 @@ export default function TimeSlotSelector({
   timeSlots,
   choices,
   selectedTimeSlot,
+  selectValue,
+  setSelectValue,
 }) {
   const { t } = useTranslation();
   const primaryColor = usePrimaryColor();
@@ -132,6 +134,7 @@ export default function TimeSlotSelector({
           if (!value) return;
           setFieldValue('timeSlot', value.key);
           setFieldTouched('timeSlot');
+          setSelectValue(value);
         }}
         items={choices.map(
           choice => (choice = { value: choice.value, label: choice.label }),
@@ -140,6 +143,7 @@ export default function TimeSlotSelector({
           label: t('STORE_NEW_DELIVERY_SELECT_TIME_SLOT'),
           value: null,
         }}
+        value={selectValue}
       />
       {errors.timeSlot && touched.timeSlot && (
         <Text note style={styles.errorText}>
