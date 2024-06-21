@@ -18,7 +18,7 @@ import tracker from '../../../analytics/Tracker';
 import analyticsEvent from '../../../analytics/Event';
 import { loadOrder, loadOrderAndNavigate } from '../../Restaurant/actions';
 import { EVENT as EVENT_TASK_COLLECTION } from '../../../domain/TaskCollection';
-import { navigateAndLoadTasks } from '../../Courier/taskActions';
+import { loadTasks, navigateAndLoadTasks } from '../../Courier/taskActions';
 
 // As remote push notifications are configured very early,
 // most of the time the user won't be authenticated
@@ -97,13 +97,20 @@ export default ({ getState, dispatch }) => {
             }),
           );
           break;
-        case EVENT_TASK_COLLECTION.CHANGED:
+        case EVENT_TASK_COLLECTION.CHANGED: {
+          const dateStr = event.data.date;
+
           dispatch(
-            foregroundPushNotification(event.name, {
-              date: event.data.date,
+            loadTasks(moment(dateStr), true, () => {
+              dispatch(
+                foregroundPushNotification(event.name, {
+                  date: dateStr,
+                }),
+              );
             }),
           );
           break;
+        }
         default:
           break;
       }

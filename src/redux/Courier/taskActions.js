@@ -175,7 +175,7 @@ export function navigateAndLoadTasks(selectedDate) {
   };
 }
 
-export function loadTasks(selectedDate, refresh = false) {
+export function loadTasks(selectedDate, refresh = false, cb) {
   return function (dispatch, getState) {
     const { httpClient } = getState().app;
 
@@ -205,8 +205,17 @@ export function loadTasks(selectedDate, refresh = false) {
             ),
           );
         }
+
+        if (cb && typeof cb === 'function') {
+          setTimeout(() => cb(), 0);
+        }
       })
-      .catch(e => dispatch(loadTasksFailure(e)));
+      .catch(e => {
+        dispatch(loadTasksFailure(e));
+        if (cb && typeof cb === 'function') {
+          setTimeout(() => cb(), 0);
+        }
+      });
   };
 }
 
