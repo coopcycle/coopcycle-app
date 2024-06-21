@@ -20,6 +20,8 @@ import { selectUnassignedTasksNotCancelled } from '../../redux/Dispatch/selector
 import AddButton from './components/AddButton';
 
 import { navigateToTask } from '../../navigation/utils';
+import moment from 'moment';
+import { tasksSort } from '../../shared/src/logistics/redux/taskUtils';
 
 class UnassignedTasks extends Component {
   componentDidMount() {
@@ -52,6 +54,8 @@ class UnassignedTasks extends Component {
     const { navigate } = this.props.navigation;
     const isEmpty = this.props.unassignedTasks.length === 0;
 
+    const unassignedTasks = this.props.unassignedTasks.sort(tasksSort)
+
     return (
       <View style={{ flex: 1 }}>
         <View>
@@ -67,7 +71,7 @@ class UnassignedTasks extends Component {
           {isEmpty && <TapToRefresh onPress={this.props.loadUnassignedTasks} />}
           {!isEmpty && (
             <TaskList
-              tasks={this.props.unassignedTasks}
+              tasks={unassignedTasks}
               tasksWithColor={this.props.tasksWithColor}
               swipeOutLeftEnabled={task => !task.isAssigned}
               onSwipeLeft={task =>

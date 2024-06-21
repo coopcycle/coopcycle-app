@@ -33,6 +33,10 @@ on:
         description: 'Build RobinFood app'
         required: true
         type: boolean
+      build_lcr:
+        description: 'Build les coursiers Rennais app'
+        required: true
+        type: boolean
 jobs:
   coopcycle:
     if: ${{ inputs.build_official }}
@@ -91,4 +95,16 @@ jobs:
       app_id: org.coopcycle.RobinFood
       primary_color: "#ff0000"
       google_service_info_plist_base64: GOOGLE_SERVICE_INFO_PLIST_BASE64_ROBINFOOD
+    secrets: inherit
+  lcr:
+    if: ${{ inputs.build_lcr }}
+    name: Build les coursiers Rennais app
+    uses: ./.github/workflows/fastlane_ios.yml
+    with:
+      instance: lcr
+      instance_url: https://lcr.coopcycle.org
+      app_name: Les Coursiers Rennais
+      app_id: org.coopcycle.LCR
+      primary_color: "#0A090A"
+      google_service_info_plist_base64: GOOGLE_SERVICE_INFO_PLIST_BASE64_LCR
     secrets: inherit
