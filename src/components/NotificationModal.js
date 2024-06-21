@@ -10,7 +10,6 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import NavigationHolder from '../NavigationHolder';
 import { CommonActions } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
-import { loadTasks } from '../redux/Courier';
 import { EVENT as EVENT_ORDER } from '../domain/Order';
 import { EVENT as EVENT_TASK_COLLECTION } from '../domain/TaskCollection';
 
@@ -77,7 +76,7 @@ export default function NotificationModal({ notifications, onDismiss }) {
     );
   };
 
-  const _navigateToTasks = date => {
+  const _navigateToTasks = () => {
     onDismiss();
 
     NavigationHolder.dispatch(
@@ -91,8 +90,6 @@ export default function NotificationModal({ notifications, onDismiss }) {
         },
       }),
     );
-
-    dispatch(loadTasks(moment(date)));
   };
 
   const renderOrderCreated = order => {
