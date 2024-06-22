@@ -61,12 +61,11 @@ const NewDeliveryNavigator = () => (
     />
   </NewDeliveryStack.Navigator>
 );
-
 const RootStack = createStackNavigator();
 
 export default () => (
   <RootStack.Navigator
-    screenOptions={{ ...stackNavigatorScreenOptions, presentation: 'modal' }}>
+    screenOptions={{ ...stackNavigatorScreenOptions(), presentation: 'modal' }}>
     <RootStack.Screen
       name="StoreHome"
       component={MainNavigator}
