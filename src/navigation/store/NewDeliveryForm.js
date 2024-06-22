@@ -27,13 +27,12 @@ import {
 function NewDelivery(props) {
   const [isDateTimePickerVisible, setIsDateTimePickerVisible] = useState(false);
   const [selectedTimeSlot, setSelectedTimeSlot] = useState('');
-  const backgroundContainerColor = useBackgroundContainerColor();
-  const backgroundColor = useBackgroundColor();
+  const backgroundColor = useBackgroundContainerColor();
   const backgroundHighlightColor = useBackgroundHighlightColor();
   const [selectValue, setSelectValue] = React.useState(null);
 
   const inputStyles = {
-    backgroundColor: backgroundContainerColor,
+    backgroundColor,
     borderColor: backgroundHighlightColor,
   };
 
