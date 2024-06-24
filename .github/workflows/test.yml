@@ -1,5 +1,5 @@
 name: Test
-on: [push, pull_request]
+on: [push]
 jobs:
   LINT_AND_TEST:
     env:

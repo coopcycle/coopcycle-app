@@ -34,7 +34,9 @@ const AskAddress = props => {
   };
 
   return (
-    <KeyboardAdjustView style={{ backgroundColor, flex: 1, padding: 20 }}>
+    <KeyboardAdjustView
+      testID="checkoutAskAddress"
+      style={{ backgroundColor, flex: 1, padding: 20 }}>
       <Box style={{ flex: 1, justifyContent: 'flex-end', marginBottom: 20 }}>
         <Heading color={textColor}>{props.t('WHERE_ARE_YOU')}</Heading>
         <Text color={secondaryTextColor}>
