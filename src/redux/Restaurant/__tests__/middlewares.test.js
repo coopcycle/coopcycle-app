@@ -4,10 +4,10 @@ import AppUser from '../../../AppUser';
 import appReducer from '../../App/reducers';
 import { message as wsMessage } from '../../middlewares/CentrifugoMiddleware/actions';
 import { loadOrderSuccess, loadOrdersSuccess } from '../actions';
-import { ringOnNewOrderCreated } from '../middlewares';
+import { notifyOnNewOrderCreated } from '../middlewares';
 import restaurantReducer from '../reducers';
 
-describe('ringOnNewOrderCreated', () => {
+describe('notifyOnNewOrderCreated', () => {
   beforeEach(() => {
     jest.mock('react-native/Libraries/AppState/AppState', () => ({
       currentState: 'active',
@@ -32,7 +32,7 @@ describe('ringOnNewOrderCreated', () => {
     const store = createStore(
       reducer,
       preloadedState,
-      applyMiddleware(ringOnNewOrderCreated),
+      applyMiddleware(notifyOnNewOrderCreated),
     );
 
     store.dispatch(
@@ -76,7 +76,7 @@ describe('ringOnNewOrderCreated', () => {
     const store = createStore(
       reducer,
       preloadedState,
-      applyMiddleware(ringOnNewOrderCreated),
+      applyMiddleware(notifyOnNewOrderCreated),
     );
 
     store.dispatch(loadOrderSuccess({ '@id': '/api/orders/1', state: 'new' }));
@@ -125,7 +125,7 @@ describe('ringOnNewOrderCreated', () => {
     const store = createStore(
       reducer,
       preloadedState,
-      applyMiddleware(thunk, ringOnNewOrderCreated),
+      applyMiddleware(thunk, notifyOnNewOrderCreated),
     );
 
     store.dispatch(
@@ -172,7 +172,7 @@ describe('ringOnNewOrderCreated', () => {
     const store = createStore(
       reducer,
       preloadedState,
-      applyMiddleware(ringOnNewOrderCreated),
+      applyMiddleware(notifyOnNewOrderCreated),
     );
 
     store.dispatch(loadOrderSuccess({ '@id': '/api/orders/1', state: 'new' }));

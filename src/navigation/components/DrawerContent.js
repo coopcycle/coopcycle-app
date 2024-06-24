@@ -252,7 +252,7 @@ class DrawerContent extends Component {
               </Pressable>
             </HStack>
             <Pressable onPress={onAppVersionPress}>
-              <Text>{VersionNumber.appVersion}</Text>
+              <Text>{`${VersionNumber.appVersion} (${VersionNumber.buildVersion})`}</Text>
             </Pressable>
           </VStack>
         </View>

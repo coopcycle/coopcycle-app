@@ -1,3 +1,6 @@
+import moment from 'moment';
+import _ from 'lodash';
+
 import {
   ACCEPT_ORDER_FAILURE,
   ACCEPT_ORDER_REQUEST,
@@ -58,6 +61,12 @@ import {
   SET_NEXT_PRODUCTS_PAGE,
   SUNMI_PRINTER_DETECTED,
   UPDATE_LOOPEAT_FORMATS_SUCCESS,
+  finishPreparing,
+  printFulfilled,
+  printPending,
+  printRejected,
+  setPrintNumberOfCopies,
+  startPreparing,
 } from './actions';
 
 import {
@@ -66,10 +75,9 @@ import {
   LOAD_MY_RESTAURANTS_SUCCESS,
 } from '../App/actions';
 
-import { MESSAGE } from '../middlewares/CentrifugoMiddleware/actions';
+import { CENTRIFUGO_MESSAGE } from '../middlewares/CentrifugoMiddleware/actions';
 
-import _ from 'lodash';
-import moment from 'moment';
+import { EVENT as EVENT_ORDER, STATE } from '../../domain/Order';
 
 const initialState = {
   fetchError: null, // Error object describing the error
@@ -85,11 +93,30 @@ const initialState = {
   menus: [],
   bluetoothEnabled: false,
   isScanningBluetooth: false,
+  /**
+   * Peripheral (react-native-ble-manager)
+   */
   printer: null,
   productOptions: [],
   isSunmiPrinter: false,
   bluetoothStarted: false,
   loopeatFormats: {},
+  /**
+   * {
+   *   [orderId]: {
+   *     copiesToPrint: number,
+   *     failedAttempts: number,
+   *   }
+   * }
+   */
+  ordersToPrint: {},
+  printingOrderId: null,
+  preferences: {
+    autoAcceptOrders: {
+      printNumberOfCopies: 1,
+      printMaxFailedAttempts: 3,
+    },
+  },
 };
 
 const spliceOrders = (state, payload) => {
@@ -170,6 +197,34 @@ const spliceProductOptions = (state, payload) => {
   return state;
 };
 
+function updateOrdersToPrint(state, orderId) {
+  if (state.restaurant.autoAcceptOrdersEnabled) {
+    if (state.ordersToPrint[orderId]) {
+      return state;
+    }
+
+    const numberOfCopies =
+      state.preferences.autoAcceptOrders.printNumberOfCopies;
+
+    if (numberOfCopies === 0) {
+      return state;
+    }
+
+    return {
+      ...state,
+      ordersToPrint: {
+        ...state.ordersToPrint,
+        [orderId]: {
+          copiesToPrint: numberOfCopies,
+          failedAttempts: 0,
+        },
+      },
+    };
+  } else {
+    return state;
+  }
+}
+
 export default (state = initialState, action = {}) => {
   let newState;
 
@@ -182,6 +237,8 @@ export default (state = initialState, action = {}) => {
     case DELAY_ORDER_REQUEST:
     case FULFILL_ORDER_REQUEST:
     case CANCEL_ORDER_REQUEST:
+    case startPreparing.pending.type:
+    case finishPreparing.pending.type:
     case CHANGE_STATUS_REQUEST:
     case LOAD_PRODUCTS_REQUEST:
     case CLOSE_RESTAURANT_REQUEST:
@@ -201,6 +258,8 @@ export default (state = initialState, action = {}) => {
     case DELAY_ORDER_FAILURE:
     case FULFILL_ORDER_FAILURE:
     case CANCEL_ORDER_FAILURE:
+    case startPreparing.rejected.type:
+    case finishPreparing.rejected.type:
     case CHANGE_STATUS_FAILURE:
     case LOAD_PRODUCTS_FAILURE:
     case CLOSE_RESTAURANT_FAILURE:
@@ -278,6 +337,8 @@ export default (state = initialState, action = {}) => {
     case DELAY_ORDER_SUCCESS:
     case FULFILL_ORDER_SUCCESS:
     case CANCEL_ORDER_SUCCESS:
+    case startPreparing.fulfilled.type:
+    case finishPreparing.fulfilled.type:
       return {
         ...state,
         orders: spliceOrders(state, action.payload),
@@ -346,7 +407,7 @@ export default (state = initialState, action = {}) => {
         restaurant: action.payload,
       };
 
-    case DELETE_OPENING_HOURS_SPECIFICATION_SUCCESS:
+    case DELETE_OPENING_HOURS_SPECIFICATION_SUCCESS: {
       const { specialOpeningHoursSpecification } = state;
 
       return {
@@ -362,6 +423,7 @@ export default (state = initialState, action = {}) => {
           ),
         },
       };
+    }
 
     case CHANGE_STATUS_SUCCESS:
       return {
@@ -463,41 +525,113 @@ export default (state = initialState, action = {}) => {
         isSunmiPrinter: true,
       };
 
-    case MESSAGE:
+    case CENTRIFUGO_MESSAGE:
       if (action.payload.name && action.payload.data) {
         const { name, data } = action.payload;
 
         switch (name) {
-          case 'order:created':
-          case 'order:accepted':
+          case EVENT_ORDER.CREATED:
           case 'order:picked':
-          case 'order:cancelled':
-            // FIXME
-            // Fix this on API side
-            let newOrder = { ...data.order };
-            if (name === 'order:cancelled' && newOrder.state !== 'cancelled') {
-              newOrder = {
-                ...newOrder,
-                state: 'cancelled',
-              };
-            }
-            if (name === 'order:accepted' && newOrder.state !== 'accepted') {
-              newOrder = {
-                ...newOrder,
-                state: 'accepted',
-              };
-            }
-
             return {
               ...state,
-              orders: addOrReplace(state, newOrder),
+              orders: addOrReplace(state, data.order),
             };
+          case EVENT_ORDER.STATE_CHANGED: {
+            const updatedOrdersState = {
+              ...state,
+              orders: addOrReplace(state, data.order),
+            };
+
+            if (data.order.state === STATE.ACCEPTED) {
+              return updateOrdersToPrint(updatedOrdersState, data.order['@id']);
+            } else {
+              return updatedOrdersState;
+            }
+          }
+
           default:
             break;
         }
       }
 
       return state;
+
+    case printPending.type:
+      return {
+        ...state,
+        printingOrderId: action.payload['@id'],
+      };
+
+    case printFulfilled.type: {
+      const orderId = action.payload['@id'];
+      const printTask = state.ordersToPrint[orderId];
+
+      if (!printTask) {
+        return state;
+      }
+
+      if (printTask.copiesToPrint > 1) {
+        // We have more copies to print
+        return {
+          ...state,
+          printingOrderId: null,
+          ordersToPrint: {
+            ...state.ordersToPrint,
+            [orderId]: {
+              ...printTask,
+              copiesToPrint: printTask.copiesToPrint - 1,
+              failedAttempts: 0,
+            },
+          },
+        };
+      } else {
+        // We have printed all needed copies
+
+        const ordersToPrint = { ...state.ordersToPrint };
+        delete ordersToPrint[orderId];
+
+        return {
+          ...state,
+          printingOrderId: null,
+          ordersToPrint: ordersToPrint,
+        };
+      }
+    }
+
+    case printRejected.type: {
+      const orderId = action.payload['@id'];
+      const printTask = state.ordersToPrint[orderId];
+
+      if (!printTask) {
+        return state;
+      }
+
+      return {
+        ...state,
+        printingOrderId: null,
+        ordersToPrint: {
+          ...state.ordersToPrint,
+          [orderId]: {
+            ...printTask,
+            failedAttempts: printTask.failedAttempts + 1,
+          },
+        },
+      };
+    }
+
+    case setPrintNumberOfCopies.type: {
+      const numberOfCopies = action.payload;
+      return {
+        ...state,
+        preferences: {
+          ...state.preferences,
+          autoAcceptOrders: {
+            ...state.preferences.autoAcceptOrders,
+            printNumberOfCopies: numberOfCopies,
+          },
+        },
+      };
+    }
 
     case BLUETOOTH_STARTED:
       return {

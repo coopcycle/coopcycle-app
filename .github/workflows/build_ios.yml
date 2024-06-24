@@ -1,9 +1,24 @@
 name: Build iOS
+run-name: >
+  Upload to App Store ${{ inputs.tag }}
+  ${{ inputs.build_official && '; CoopCycle' || '' }}
+  ${{ inputs.build_official_beta && '; CoopCycle (Beta)' || '' }}
+  ${{ inputs.build_naofood && '; Naofood' || '' }}
+  ${{ inputs.build_kooglof && '; Kooglof' || '' }}
+  ${{ inputs.build_robinfood && '; RobinFood' || '' }}
 on:
   workflow_dispatch:
     inputs:
+      tag:
+        type: string
+        description: Build a specific git tag
+        required: true
       build_official:
-        description: 'Build official app'
+        description: 'Build CoopCycle production app'
+        required: true
+        type: boolean
+      build_official_beta:
+        description: 'Build CoopCycle beta app (TODO: finish setup)'
         required: true
         type: boolean
       build_naofood:
@@ -23,18 +38,31 @@ on:
         required: true
         type: boolean
 jobs:
-  default:
+  coopcycle:
     if: ${{ inputs.build_official }}
-    name: Build default app
+    name: Build CoopCycle production app
     uses: ./.github/workflows/fastlane_ios.yml
     with:
+      tag: ${{ inputs.tag }}
       google_service_info_plist_base64: GOOGLE_SERVICE_INFO_PLIST_BASE64
+    secrets: inherit
+  coopcycle_beta:
+    if: ${{ inputs.build_official_beta }}
+    name: Build CoopCycle beta app
+    uses: ./.github/workflows/fastlane_ios.yml
+    with:
+      tag: ${{ inputs.tag }}
+      instance: beta
+      app_name: CoopCycle (Beta)
+      app_id: org.coopcycle.CoopCycleBeta
+      google_service_info_plist_base64: GOOGLE_SERVICE_INFO_PLIST_BASE64_BETA
     secrets: inherit
   naofood:
     if: ${{ inputs.build_naofood }}
     name: Build Naofood app
     uses: ./.github/workflows/fastlane_ios.yml
     with:
+      tag: ${{ inputs.tag }}
       instance: naofood
       instance_url: https://naofood.coopcycle.org
       app_name: Naofood
@@ -47,6 +75,7 @@ jobs:
     name: Build Kooglof app
     uses: ./.github/workflows/fastlane_ios.yml
     with:
+      tag: ${{ inputs.tag }}
       instance: kooglof
       instance_url: https://kooglof.coopcycle.org
       app_name: Kooglof
@@ -59,6 +88,7 @@ jobs:
     name: Build RobinFood app
     uses: ./.github/workflows/fastlane_ios.yml
     with:
+      tag: ${{ inputs.tag }}
       instance: robinfood
       instance_url: https://robinfood.coopcycle.org
       app_name: Robin Food

@@ -67,7 +67,6 @@ class PushNotification {
           messaging()
             .getToken()
             .then(fcmToken => {
-              console.log(fcmToken);
               options.onRegister(fcmToken);
             });
         }

@@ -2,11 +2,19 @@
 /*
  * App reducer, dealing with non-domain specific state
  */
+
 import Config from 'react-native-config';
-import { CONNECTED, DISCONNECTED } from '../middlewares/CentrifugoMiddleware';
+
+import {
+  CENTRIFUGO_MESSAGE,
+  CONNECTED,
+  DISCONNECTED,
+} from '../middlewares/CentrifugoMiddleware';
+
 import {
   ACCEPT_PRIVACY_POLICY,
   ACCEPT_TERMS_AND_CONDITIONS,
+  ADD_NOTIFICATION,
   AUTHENTICATION_FAILURE,
   AUTHENTICATION_REQUEST,
   AUTHENTICATION_SUCCESS,
@@ -16,6 +24,7 @@ import {
   CLEAR_SELECT_SERVER_ERROR,
   CLOSE_MODAL,
   DELETE_PUSH_NOTIFICATION_TOKEN_SUCCESS,
+  FOREGROUND_PUSH_NOTIFICATION,
   LOAD_PRIVACY_POLICY_FAILURE,
   LOAD_PRIVACY_POLICY_REQUEST,
   LOAD_PRIVACY_POLICY_SUCCESS,
@@ -25,7 +34,6 @@ import {
   LOGIN_BY_EMAIL_ERRORS,
   LOGOUT_SUCCESS,
   ONBOARDED,
-  PUSH_NOTIFICATION,
   REGISTER_PUSH_NOTIFICATION_TOKEN,
   REGISTRATION_ERRORS,
   RESET_MODAL,
@@ -49,6 +57,9 @@ import {
   SET_INCIDENT_ENABLED,
   SET_USER,
 } from './actions';
+
+import { EVENT as EVENT_ORDER } from '../../domain/Order';
+import { EVENT as EVENT_TASK_COLLECTION } from '../../domain/TaskCollection';
 
 const initialState = {
   customBuild: !!Config.DEFAULT_SERVER,
@@ -102,6 +113,37 @@ const initialState = {
   isIncidentEnabled: false,
 };
 
+function updateNotifications(state, event, params) {
+  // we use multiple channels to receive notifications (centrifugo; push notifications),
+  // so the notification might be already in the store
+  const isAlreadyExist =
+    state.notifications.findIndex(notification => {
+      const isSameEvent = notification.event === event;
+
+      if (isSameEvent) {
+        switch (notification.event) {
+          case EVENT_ORDER.CREATED:
+            return notification.params.order.id === params.order.id;
+          case EVENT_TASK_COLLECTION.CHANGED:
+            return notification.params.date === params.date;
+          default:
+            return false;
+        }
+      } else {
+        return false;
+      }
+    }) !== -1;
+
+  if (isAlreadyExist) {
+    return state;
+  } else {
+    return {
+      ...state,
+      notifications: state.notifications.concat([{ event, params }]),
+    };
+  }
+}
+
 export default (state = initialState, action = {}) => {
   switch (action.type) {
     case SET_BASE_URL:
@@ -142,11 +184,17 @@ export default (state = initialState, action = {}) => {
         isCentrifugoConnected: false,
       };
 
-    case PUSH_NOTIFICATION:
-      return {
-        ...state,
-        notifications: state.notifications.concat([action.payload]),
-      };
+    case FOREGROUND_PUSH_NOTIFICATION: {
+      const { event, params } = action.payload;
+
+      return updateNotifications(state, event, params);
+    }
+
+    case ADD_NOTIFICATION: {
+      const { event, params } = action.payload;
+
+      return updateNotifications(state, event, params);
+    }
 
     case CLEAR_NOTIFICATIONS:
       return {
@@ -264,12 +312,19 @@ export default (state = initialState, action = {}) => {
         isInternetReachable: action.payload,
       };
 
-    case REGISTER_PUSH_NOTIFICATION_TOKEN:
-      return {
-        ...state,
-        pushNotificationToken: action.payload,
-        pushNotificationTokenSaved: false,
-      };
+    case REGISTER_PUSH_NOTIFICATION_TOKEN: {
+      const existingToken = state.pushNotificationToken;
+
+      if (existingToken === action.payload) {
+        return state;
+      } else {
+        return {
+          ...state,
+          pushNotificationToken: action.payload,
+          pushNotificationTokenSaved: false,
+        };
+      }
+    }
 
     case SAVE_PUSH_NOTIFICATION_TOKEN_SUCCESS:
       return {

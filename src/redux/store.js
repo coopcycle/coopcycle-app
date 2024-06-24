@@ -1,23 +1,23 @@
 import { applyMiddleware, createStore } from 'redux';
-import ReduxAsyncQueue from 'redux-async-queue';
-import { composeWithDevTools } from 'redux-devtools-extension';
-import { createLogger } from 'redux-logger';
 import thunk from 'redux-thunk';
+import ReduxAsyncQueue from 'redux-async-queue';
 
 import { persistStore } from 'redux-persist';
 
 import Config from 'react-native-config';
-import { filterExpiredCarts } from './Checkout/middlewares';
-import { ringOnTaskListUpdated } from './Courier/taskMiddlewares';
-import { ringOnNewOrderCreated } from './Restaurant/middlewares';
-import BluetoothMiddleware from './middlewares/BluetoothMiddleware';
-import CentrifugoMiddleware from './middlewares/CentrifugoMiddleware';
+
+import reducers from './reducers';
 import GeolocationMiddleware from './middlewares/GeolocationMiddleware';
+import BluetoothMiddleware from './middlewares/BluetoothMiddleware';
 import HttpMiddleware from './middlewares/HttpMiddleware';
 import NetInfoMiddleware from './middlewares/NetInfoMiddleware';
 import PushNotificationMiddleware from './middlewares/PushNotificationMiddleware';
 import SentryMiddleware from './middlewares/SentryMiddleware';
-import reducers from './reducers';
+import { ringOnTaskListUpdated } from './Courier/taskMiddlewares';
+import CentrifugoMiddleware from './middlewares/CentrifugoMiddleware';
+import { filterExpiredCarts } from './Checkout/middlewares';
+import SoundMiddleware from './middlewares/SoundMiddleware';
+import { notifyOnNewOrderCreated } from './Restaurant/middlewares';
 
 const middlewares = [
   thunk,
@@ -28,6 +28,7 @@ const middlewares = [
   CentrifugoMiddleware,
   SentryMiddleware,
   filterExpiredCarts,
+  SoundMiddleware,
 ];
 
 if (!Config.DEFAULT_SERVER) {
@@ -35,22 +36,15 @@ if (!Config.DEFAULT_SERVER) {
     ...[
       GeolocationMiddleware,
       BluetoothMiddleware,
-      ringOnNewOrderCreated,
+      notifyOnNewOrderCreated,
       ringOnTaskListUpdated,
     ],
   );
 }
 
-if (__DEV__) {
-  middlewares.push(createLogger({ collapsed: true }));
-}
-
 const middlewaresProxy = middlewaresList => {
   if (__DEV__) {
-    return composeWithDevTools(
-      applyMiddleware(...middlewaresList),
-      require('../../ReactotronConfig').default.createEnhancer(),
-    );
+    return require('./middlewares/devSetup').default(middlewaresList);
   } else {
     return applyMiddleware(...middlewaresList);
   }

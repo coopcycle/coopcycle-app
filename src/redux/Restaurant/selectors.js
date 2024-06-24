@@ -1,14 +1,18 @@
-import _, { find } from 'lodash';
-import moment from 'moment';
 import { createSelector } from 'reselect';
+import { find } from 'lodash';
+import moment from 'moment';
+import _ from 'lodash';
 import { matchesDate } from '../../utils/order';
+import { EVENT, STATE } from '../../domain/Order';
 
-const _selectDate = state => state.restaurant.date;
+export const selectRestaurant = state => state.restaurant.restaurant;
+export const selectDate = state => state.restaurant.date;
+
 const _selectOrders = state => state.restaurant.orders;
 
 export const selectSpecialOpeningHoursSpecificationForToday = createSelector(
-  state => state.restaurant.restaurant,
-  _selectDate,
+  selectRestaurant,
+  selectDate,
   (restaurant, date) => {
     if (!Array.isArray(restaurant?.specialOpeningHoursSpecification)) {
       return null;
@@ -27,7 +31,7 @@ export const selectSpecialOpeningHoursSpecificationForToday = createSelector(
 );
 
 export const selectSpecialOpeningHoursSpecification = createSelector(
-  state => state.restaurant.restaurant,
+  selectRestaurant,
   restaurant => {
     if (restaurant) {
       return restaurant.specialOpeningHoursSpecification;
@@ -37,44 +41,41 @@ export const selectSpecialOpeningHoursSpecification = createSelector(
   },
 );
 
+export const selectAutoAcceptOrdersEnabled = createSelector(
+  selectRestaurant,
+  restaurant => restaurant?.autoAcceptOrdersEnabled ?? false,
+);
+
+// Temporarily display new sections only for restaurants with auto accept orders enabled
+// Later on: decide when to display these sections to other restaurants
+export const selectHasStartedState = createSelector(
+  selectAutoAcceptOrdersEnabled,
+  autoAcceptOrdersEnabled => autoAcceptOrdersEnabled,
+);
+
+// Temporarily display new sections only for restaurants with auto accept orders enabled
+// Later on: decide when to display these sections to other restaurants
+export const selectHasReadyState = createSelector(
+  selectAutoAcceptOrdersEnabled,
+  autoAcceptOrdersEnabled => autoAcceptOrdersEnabled,
+);
+
 export const selectNewOrders = createSelector(
-  _selectDate,
+  selectDate,
   _selectOrders,
   (date, orders) =>
     _.sortBy(
-      _.filter(orders, o => matchesDate(o, date) && o.state === 'new'),
+      _.filter(orders, o => matchesDate(o, date) && o.state === STATE.NEW),
       [o => moment.parseZone(o.pickupExpectedAt)],
     ),
 );
+
+function isOrderPicked(order) {
+  return order.events.findIndex(ev => ev.type === EVENT.PICKED) !== -1;
+}
 
 export const selectAcceptedOrders = createSelector(
-  _selectDate,
-  _selectOrders,
-  (date, orders) =>
-    _.sortBy(
-      _.filter(
-        orders,
-        o => matchesDate(o, date) && o.state === 'accepted' && !o.assignedTo,
-      ),
-      [o => moment.parseZone(o.pickupExpectedAt)],
-    ),
-);
-
-export const selectPickedOrders = createSelector(
-  _selectDate,
-  _selectOrders,
-  (date, orders) =>
-    _.sortBy(
-      _.filter(
-        orders,
-        o => matchesDate(o, date) && o.state === 'accepted' && !!o.assignedTo,
-      ),
-      [o => moment.parseZone(o.pickupExpectedAt)],
-    ),
-);
-
-export const selectCancelledOrders = createSelector(
-  _selectDate,
+  selectDate,
   _selectOrders,
   (date, orders) =>
     _.sortBy(
@@ -82,15 +83,164 @@ export const selectCancelledOrders = createSelector(
         orders,
         o =>
           matchesDate(o, date) &&
-          (o.state === 'refused' || o.state === 'cancelled'),
+          o.state === STATE.ACCEPTED &&
+          !isOrderPicked(o),
+      ),
+      [o => moment.parseZone(o.pickupExpectedAt)],
+    ),
+);
+
+export const selectStartedOrders = createSelector(
+  selectDate,
+  _selectOrders,
+  (date, orders) =>
+    _.sortBy(
+      _.filter(
+        orders,
+        o =>
+          matchesDate(o, date) &&
+          o.state === STATE.STARTED &&
+          !isOrderPicked(o),
+      ),
+      [o => moment.parseZone(o.pickupExpectedAt)],
+    ),
+);
+
+export const selectReadyOrders = createSelector(
+  selectDate,
+  _selectOrders,
+  (date, orders) =>
+    _.sortBy(
+      _.filter(
+        orders,
+        o =>
+          matchesDate(o, date) && o.state === STATE.READY && !isOrderPicked(o),
+      ),
+      [o => moment.parseZone(o.pickupExpectedAt)],
+    ),
+);
+
+export const selectPickedOrders = createSelector(
+  selectDate,
+  _selectOrders,
+  (date, orders) =>
+    _.sortBy(
+      _.filter(
+        orders,
+        o =>
+          matchesDate(o, date) &&
+          (o.state === STATE.ACCEPTED ||
+            o.state === STATE.STARTED ||
+            o.state === STATE.READY) &&
+          isOrderPicked(o),
+      ),
+      [o => moment.parseZone(o.pickupExpectedAt)],
+    ),
+);
+
+export const selectCancelledOrders = createSelector(
+  selectDate,
+  _selectOrders,
+  (date, orders) =>
+    _.sortBy(
+      _.filter(
+        orders,
+        o =>
+          matchesDate(o, date) &&
+          (o.state === STATE.REFUSED || o.state === STATE.CANCELLED),
       ),
       [o => moment.parseZone(o.pickupExpectedAt)],
     ),
 );
 
 export const selectFulfilledOrders = createSelector(
-  _selectDate,
+  selectDate,
   _selectOrders,
   (date, orders) =>
-    _.filter(orders, o => matchesDate(o, date) && o.state === 'fulfilled'),
+    _.filter(orders, o => matchesDate(o, date) && o.state === STATE.FULFILLED),
+);
+
+export const selectPrinter = state => state.restaurant.printer;
+
+const selectIsSunmiPrinter = state => state.restaurant.isSunmiPrinter;
+
+export const selectIsPrinterConnected = createSelector(
+  selectPrinter,
+  selectIsSunmiPrinter,
+  (printer, isSunmiPrinter) => Boolean(printer) || isSunmiPrinter,
+);
+
+const selectOrdersToPrint = state => state.restaurant.ordersToPrint;
+
+export const selectAutoAcceptOrdersPrintNumberOfCopies = state =>
+  state.restaurant.preferences.autoAcceptOrders.printNumberOfCopies;
+
+const selectAutoAcceptOrdersPrintMaxFailedAttempts = state =>
+  state.restaurant.preferences.autoAcceptOrders.printMaxFailedAttempts;
+
+export const selectOrderIdsToPrint = createSelector(
+  selectOrdersToPrint,
+  selectAutoAcceptOrdersPrintMaxFailedAttempts,
+  (ordersToPrint, printMaxFailedAttempts) => {
+    const orderIdsToPrint = [];
+
+    Object.keys(ordersToPrint).forEach(orderId => {
+      const printTask = ordersToPrint[orderId];
+      if (printTask.failedAttempts <= printMaxFailedAttempts) {
+        orderIdsToPrint.push(orderId);
+      }
+    });
+
+    return orderIdsToPrint;
+  },
+);
+
+export const selectOrderIdsFailedToPrint = createSelector(
+  selectOrdersToPrint,
+  selectAutoAcceptOrdersPrintMaxFailedAttempts,
+  (ordersToPrint, printMaxFailedAttempts) => {
+    const orderIdsFailedToPrint = [];
+
+    Object.keys(ordersToPrint).forEach(orderId => {
+      const printTask = ordersToPrint[orderId];
+      if (printTask.failedAttempts > printMaxFailedAttempts) {
+        orderIdsFailedToPrint.push(orderId);
+      }
+    });
+
+    return orderIdsFailedToPrint;
+  },
+);
+
+export const selectPrintingOrderId = state => state.restaurant.printingOrderId;
+
+const selectOrderId = (state, id) => id;
+
+export const selectOrderById = createSelector(
+  _selectOrders,
+  selectOrderId,
+  (orders, id) => {
+    if (id) {
+      return orders.find(order => order['@id'] === id);
+    } else {
+      return undefined;
+    }
+  },
+);
+
+const selectOrder = (state, order) => order;
+
+export const selectIsActionable = createSelector(
+  selectHasStartedState,
+  selectHasReadyState,
+  selectOrder,
+  (hasStartedState, hasReadyState, order) => {
+    return (
+      [
+        STATE.NEW,
+        ...(hasStartedState ? [STATE.ACCEPTED] : []),
+        ...(hasReadyState ? [STATE.STARTED] : []),
+      ].includes(order.state) && !isOrderPicked(order)
+    );
+  },
 );
