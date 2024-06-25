@@ -1098,7 +1098,7 @@ PODS:
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
-  - react-native-safe-area-context (4.9.0):
+  - react-native-safe-area-context (4.10.5):
     - React-Core
   - react-native-sunmi-printer-library (1.0.1):
     - glog
@@ -1292,7 +1292,7 @@ PODS:
   - RNBackgroundGeolocation (4.15.0):
     - CocoaLumberjack (~> 3.7.2)
     - React-Core
-  - RNCAsyncStorage (1.22.3):
+  - RNCAsyncStorage (1.23.1):
     - React-Core
   - RNCMaskedView (0.3.1):
     - React-Core
@@ -1314,7 +1314,7 @@ PODS:
     - FirebaseCoreExtension (= 10.20.0)
     - React-Core
     - RNFBApp
-  - RNGestureHandler (2.16.0):
+  - RNGestureHandler (2.17.1):
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
@@ -1323,15 +1323,16 @@ PODS:
     - React-Core
   - RNLocalize (3.0.6):
     - React-Core
-  - RNReanimated (3.8.1):
+  - RNReanimated (3.12.1):
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
     - ReactCommon/turbomodule/core
-  - RNScreens (3.30.1):
+  - RNScreens (3.32.0):
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
+    - React-RCTImage
   - RNSentry (5.19.1):
     - hermes-engine
     - React-Core
@@ -1801,7 +1802,7 @@ SPEC CHECKSUMS:
   react-native-maps: 72a8a903f8a1b53e2c777ba79102078ab502e0bf
   react-native-netinfo: 076df4f9b07f6670acf4ce9a75aac8d34c2e2ccc
   react-native-pager-view: ce73434826e4dca60108c3b3a30d83792ff28b0c
-  react-native-safe-area-context: b97eb6f9e3b7f437806c2ce5983f479f8eb5de4b
+  react-native-safe-area-context: a240ad4b683349e48b1d51fed1611138d1bdad97
   react-native-sunmi-printer-library: 837b33bbceff05c8be9c86b8b6f3166ecf6d8b2a
   react-native-version-number: b415bbec6a13f2df62bf978e85bc0d699462f37f
   react-native-webview: 64c51a60460f8473be97b1959da347893fc9a1fd
@@ -1830,7 +1831,7 @@ SPEC CHECKSUMS:
   RNAppleAuthentication: 0571c08da8c327ae2afc0261b48b4a515b0286a6
   RNBackgroundFetch: 2f800a04434620db15ede2e8f21886608a2d1743
   RNBackgroundGeolocation: 860ff2919a61c73e572c3f31b3dc7d61e359832d
-  RNCAsyncStorage: 10591b9e0a91eaffee14e69b3721009759235125
+  RNCAsyncStorage: 826b603ae9c0f88b5ac4e956801f755109fa4d5c
   RNCMaskedView: 090213d32d8b3bb83a4dcb7d12c18f0152591906
   RNCPicker: cb57c823d5ce8d2d0b5dfb45ad97b737260dc59e
   RNCPushNotificationIOS: 64218f3c776c03d7408284a819b2abfda1834bc8
@@ -1838,11 +1839,11 @@ SPEC CHECKSUMS:
   RNFBAnalytics: ec290267aac57446c10b491293373ac86357f575
   RNFBApp: 9b25191f7a5e72c185b7e43fffb0d906869c4659
   RNFBCrashlytics: 28f83084ae8a4b9e6ad128e3a644c28bb5e16007
-  RNGestureHandler: 0c8b0283d2aff561162b2f55c604d2f1f8e2c4ea
+  RNGestureHandler: 8ff45d9b814f3ceceb1e9f92e5c73c92ab98e4a2
   RNGoogleSignin: c4381751eefd73c552b923ba347a9bfc6f18771c
   RNLocalize: 4222a3756cdbe2dc9a5bdf445765a4d2572107cb
-  RNReanimated: de95bb2cf26ccfa2b6fdf7e1a57158fb5c9d9515
-  RNScreens: 97a2a32820e632c5978d75250afa397ed9053910
+  RNReanimated: fc28cd7439c7ce5c91c760dbdc5735ee35aeae36
+  RNScreens: 136d868cc4a78b41042a1a5f1cb42b99a47033f5
   RNSentry: 6872121e0af7aa9f3f50643f557d69adc8f7ecdc
   RNShare: a5dc3b9c53ddc73e155b8cd9a94c70c91913c43c
   RNSound: 6c156f925295bdc83e8e422e7d8b38d33bc71852
