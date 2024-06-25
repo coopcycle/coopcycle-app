@@ -76,6 +76,10 @@ export function withUnassignedLinkedTasks(task, allTasks) {
   return withLinkedTasks(task, allTasks).filter(t => !t.assignedTo)
 }
 
+export function withAssignedLinkedTasks(task, allTasks) {
+  return withLinkedTasks(task, allTasks).filter(t => t.assignedTo)
+}
+
 export function mapToColor(tasks) {
   return mapValues(groupLinkedTasks(tasks), taskIds =>
     colorHash.hex(taskIds.join(' ')),

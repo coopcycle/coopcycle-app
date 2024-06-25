@@ -21,7 +21,7 @@ import {
   startTaskSuccess,
 } from '../Courier';
 
-import { withUnassignedLinkedTasks } from '../../shared/src/logistics/redux/taskUtils';
+import { withAssignedLinkedTasks, withUnassignedLinkedTasks } from '../../shared/src/logistics/redux/taskUtils';
 import { isSameDate } from './utils';
 
 /*
@@ -362,10 +362,14 @@ export function unassignTask(task, username) {
 
     dispatch(unassignTaskRequest());
 
-    return httpClient
-      .put(`${task['@id']}/unassign`, { username })
+    const tasks = withAssignedLinkedTasks(task, selectAllTasks(getState()))
+
+    tasks.forEach(t => {
+      return httpClient
+      .put(`${t['@id']}/unassign`, { username })
       .then(res => dispatch(unassignTaskSuccess(res)))
-      .catch(e => dispatch(unassignTaskFailure(e)));
+      .catch(e => dispatch(unassignTaskFailure(e)))
+    })
   };
 }
 
