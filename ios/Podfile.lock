@@ -184,7 +184,7 @@ PODS:
   - hermes-engine (0.73.5):
     - hermes-engine/Pre-built (= 0.73.5)
   - hermes-engine/Pre-built (0.73.5)
-  - IQKeyboardManagerSwift (6.5.11)
+  - IQKeyboardManagerSwift (6.5.16)
   - libevent (2.1.12)
   - nanopb (2.30909.1):
     - nanopb/decode (= 2.30909.1)
@@ -1069,9 +1069,9 @@ PODS:
     - React-Core
   - react-native-blob-util (0.19.8):
     - React-Core
-  - react-native-config (1.5.1):
-    - react-native-config/App (= 1.5.1)
-  - react-native-config/App (1.5.1):
+  - react-native-config (1.5.2):
+    - react-native-config/App (= 1.5.2)
+  - react-native-config/App (1.5.2):
     - React-Core
   - react-native-fbsdk-next (12.1.0):
     - React-Core
@@ -1092,9 +1092,9 @@ PODS:
     - React-Core
   - react-native-maps (1.10.3):
     - React-Core
-  - react-native-netinfo (11.3.1):
+  - react-native-netinfo (11.3.2):
     - React-Core
-  - react-native-pager-view (6.3.0):
+  - react-native-pager-view (6.3.3):
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
@@ -1281,13 +1281,13 @@ PODS:
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
-  - ReactNativeKeyboardManager (6.5.11-2):
-    - IQKeyboardManagerSwift (= 6.5.11)
+  - ReactNativeKeyboardManager (6.5.16-0):
+    - IQKeyboardManagerSwift (= 6.5.16)
     - React-Core
     - React-RCTText
   - RNAppleAuthentication (2.2.2):
     - React-Core
-  - RNBackgroundFetch (4.2.2):
+  - RNBackgroundFetch (4.2.5):
     - React-Core
   - RNBackgroundGeolocation (4.15.0):
     - CocoaLumberjack (~> 3.7.2)
@@ -1767,7 +1767,7 @@ SPEC CHECKSUMS:
   GTMAppAuth: 0ff230db599948a9ad7470ca667337803b3fc4dd
   GTMSessionFetcher: 5595ec75acf5be50814f81e9189490412bad82ba
   hermes-engine: 1d1835b2cc54c381909d94d1b3c8e0a2f1a94a0e
-  IQKeyboardManagerSwift: c7955c0bdbf7b2eb29bb7daaa44e3d90f55a9a85
+  IQKeyboardManagerSwift: 12d89768845bb77b55cc092ecc2b1f9370f06b76
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   nanopb: d4d75c12cd1316f4a64e3c6963f879ecd4b5e0d5
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
@@ -1795,12 +1795,12 @@ SPEC CHECKSUMS:
   React-Mapbuffer: 30d796a057e4e077d44b4c2ba17869fb8c1064eb
   react-native-ble-manager: 5a36276ae7bdc382c6a0716c939024ffeb4e0a48
   react-native-blob-util: 26f1fb0c91f2b437380d4f3875769a7c3e06080e
-  react-native-config: 86038147314e2e6d10ea9972022aa171e6b1d4d8
+  react-native-config: d7d8a0c65f7fa523197879f6b777997abbfc987e
   react-native-fbsdk-next: 776f49479d36a1e72a1a367baadcc8391cd24374
   react-native-get-random-values: 21325b2244dfa6b58878f51f9aa42821e7ba3d06
   react-native-maps: 72a8a903f8a1b53e2c777ba79102078ab502e0bf
-  react-native-netinfo: bdb108d340cdb41875c9ced535977cac6d2ff321
-  react-native-pager-view: 571ecf3212955c0f81314163d690af153d67f527
+  react-native-netinfo: 076df4f9b07f6670acf4ce9a75aac8d34c2e2ccc
+  react-native-pager-view: ce73434826e4dca60108c3b3a30d83792ff28b0c
   react-native-safe-area-context: b97eb6f9e3b7f437806c2ce5983f479f8eb5de4b
   react-native-sunmi-printer-library: 837b33bbceff05c8be9c86b8b6f3166ecf6d8b2a
   react-native-version-number: b415bbec6a13f2df62bf978e85bc0d699462f37f
@@ -1826,9 +1826,9 @@ SPEC CHECKSUMS:
   React-utils: 74fc896195fb41a1f7dcd5737d89be59c1fdccc4
   ReactCommon: ab6655d0224cf39c997ea634d257c609d345e23d
   ReactNativeAvoidSoftinput: a07f8c02db6865d6f91cae74d78936a116a0a9c1
-  ReactNativeKeyboardManager: 60292dbac467c49841a7d69588208ec4a4f7b2a2
+  ReactNativeKeyboardManager: 704d89bde3cb1e0f432bc273a44eec96eab9d90f
   RNAppleAuthentication: 0571c08da8c327ae2afc0261b48b4a515b0286a6
-  RNBackgroundFetch: 35c7183f6eeff69396d42c4b206e1ae2a21e9327
+  RNBackgroundFetch: 2f800a04434620db15ede2e8f21886608a2d1743
   RNBackgroundGeolocation: 860ff2919a61c73e572c3f31b3dc7d61e359832d
   RNCAsyncStorage: 10591b9e0a91eaffee14e69b3721009759235125
   RNCMaskedView: 090213d32d8b3bb83a4dcb7d12c18f0152591906
@@ -1860,7 +1860,7 @@ SPEC CHECKSUMS:
   StripePaymentSheet: a25d920bb3bb5e2580696476482dc7df9cb5e4e2
   StripePaymentsUI: 66088abec88754bbdd522ef227dfdbb2265a653e
   StripeUICore: b193c7d35e9cd1b04bc9ed4a6fb8c548fcee83fa
-  Yoga: 9e6a04eacbd94f97d94577017e9f23b3ab41cf6c
+  Yoga: a716eea57d0d3430219c0a5a233e1e93ee931eb7
   ZXingObjC: 8898711ab495761b2dbbdec76d90164a6d7e14c5
 
 PODFILE CHECKSUM: d949c9fd9c4ce5f3ec67d52ca1f4a1ca13072560
