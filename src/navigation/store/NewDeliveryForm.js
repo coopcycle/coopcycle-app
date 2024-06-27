@@ -19,7 +19,6 @@ import {
 import { selectStore, selectTimeSlots } from '../../redux/Store/selectors';
 import TimeSlotSelector from './components/TimeSlotSelector';
 import {
-  useBackgroundColor,
   useBackgroundContainerColor,
   useBackgroundHighlightColor,
 } from '../../styles/theme';
@@ -80,14 +79,6 @@ function NewDelivery(props) {
 
   function hideDateTimePicker() {
     setIsDateTimePickerVisible(false);
-  }
-
-  function handleChangeTelephone(value, setFieldValue, setFieldTouched) {
-    setFieldValue(
-      'address.telephone',
-      new AsYouType(props.country).input(value),
-    );
-    setFieldTouched('address.telephone');
   }
 
   function submit(values) {
@@ -250,51 +241,7 @@ function NewDelivery(props) {
                 isReadOnly={true}
               />
             </View>
-            <View style={[styles.formGroup]}>
-              <Text style={styles.label}>
-                {props.t('STORE_NEW_DELIVERY_PHONE_NUMBER')}
-              </Text>
-              <Input
-                style={[styles.textInput, inputStyles]}
-                autoCorrect={false}
-                keyboardType="phone-pad"
-                returnKeyType="done"
-                onChangeText={value =>
-                  handleChangeTelephone(value, setFieldValue, setFieldTouched)
-                }
-                onBlur={handleBlur('address.telephone')}
-                value={values.address.telephone}
-              />
-              {errors.address &&
-                touched.address &&
-                errors.address.telephone &&
-                touched.address.telephone && (
-                  <Text note style={styles.errorText}>
-                    {errors.address.telephone}
-                  </Text>
-                )}
-            </View>
-            <View style={[styles.formGroup]}>
-              <Text style={styles.label}>
-                {props.t('STORE_NEW_DELIVERY_CONTACT_NAME')}
-              </Text>
-              <Input
-                style={[styles.textInput, inputStyles]}
-                autoCorrect={false}
-                returnKeyType="done"
-                onChangeText={handleChange('address.contactName')}
-                onBlur={handleBlur('address.contactName')}
-                value={values.address.contactName}
-              />
-              {errors.address &&
-                touched.address &&
-                errors.address.contactName &&
-                touched.address.contactName && (
-                  <Text note style={styles.errorText}>
-                    {errors.address.contactName}
-                  </Text>
-                )}
-            </View>
+
             <View style={[styles.formGroup]}>
               <Text style={styles.label}>
                 {props.t('STORE_NEW_DELIVERY_COMMENTS')}
