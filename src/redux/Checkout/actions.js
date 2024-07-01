@@ -1095,7 +1095,7 @@ export function canProceedWithPayment(cart) {
 export function checkout(
   cardholderName,
   savedPaymentMethodId = null,
-  saveCard = false,
+  saveCard = false
 ) {
   return async (dispatch, getState) => {
     dispatch(checkoutRequest());
@@ -1842,6 +1842,59 @@ export function updateLoopeatReturns(returns) {
       )
       .then(res => {
         dispatch(updateCartSuccess(res));
+      })
+      .catch(e => dispatch(checkoutFailure(e)));
+  };
+}
+
+export function updateEdenredCredentials(accessToken, refreshToken) {
+
+  return (dispatch, getState) => {
+    const { cart, token } = selectCart(getState());
+    const httpClient = selectHttpClient(getState());
+
+    dispatch(checkoutRequest());
+
+    httpClient
+      .put(
+        cart['@id'] + '/edenred_credentials',
+        {
+          accessToken,
+          refreshToken
+        },
+        {
+          headers: selectCheckoutAuthorizationHeaders(getState(), cart, token),
+        },
+      )
+      .then(res => {
+        dispatch(updateCartSuccess(res));
+        dispatch(loadPaymentDetails('EDENRED+CARD'))
+      })
+      .catch(e => dispatch(checkoutFailure(e)));
+  };
+}
+
+export function setPaymentMethod(paymentMethod, cb) {
+
+  return (dispatch, getState) => {
+    const { cart, token } = selectCart(getState());
+    const httpClient = selectHttpClient(getState());
+
+    dispatch(checkoutRequest());
+
+    httpClient
+      .put(
+        cart['@id'] + '/payment',
+        {
+          paymentMethod
+        },
+        {
+          headers: selectCheckoutAuthorizationHeaders(getState(), cart, token),
+        },
+      )
+      .then(res => {
+        dispatch(updateCartSuccess(res));
+        cb()
       })
       .catch(e => dispatch(checkoutFailure(e)));
   };

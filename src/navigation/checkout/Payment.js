@@ -3,11 +3,15 @@ import { Center } from 'native-base';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
 
-import { loadPaymentMethods } from '../../redux/Checkout/actions';
+import {
+  loadPaymentMethods,
+  setPaymentMethod
+} from '../../redux/Checkout/actions';
 import {
   selectCart,
   selectPaymentGateway,
 } from '../../redux/Checkout/selectors';
+
 import CashComp from './components/CashOnDelivery';
 import CreditCardComp from './components/CreditCard';
 import PaymentMethodPicker from './components/PaymentMethodPicker';
@@ -20,6 +24,7 @@ class CreditCard extends Component {
   }
 
   _onPaymentMethodSelected(type) {
+
     const routesByCardGateway = {
       stripe: 'CheckoutPaymentMethodCard',
       // https://github.com/coopcycle/coopcycle-app/issues/1697
@@ -28,8 +33,13 @@ class CreditCard extends Component {
     const routesByMethod = {
       cash_on_delivery: 'CheckoutPaymentMethodCashOnDelivery',
       card: routesByCardGateway[this.props.paymentGateway],
+      edenred: 'CheckoutPaymentMethodEdenred',
+      'edenred+card': 'CheckoutPaymentMethodEdenred',
     };
-    this.props.navigation.navigate(routesByMethod[type]);
+
+    this.props.setPaymentMethod(type, () => {
+      this.props.navigation.navigate(routesByMethod[type]);
+    })
   }
 
   render() {
@@ -84,6 +94,7 @@ function mapStateToProps(state, ownProps) {
 function mapDispatchToProps(dispatch) {
   return {
     loadPaymentMethods: () => dispatch(loadPaymentMethods()),
+    setPaymentMethod: (paymentMethod, cb) => dispatch(setPaymentMethod(paymentMethod, cb)),
   };
 }
 
