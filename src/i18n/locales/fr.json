@@ -505,6 +505,8 @@
     "CART_TIME_RANGE_CHANGED_MODAL_CHOOSE_RESTAURANT_ACTION": "Choisir un autre restaurant",
     "ORDER__SHIPPED_AT__NOT_AVAILABLE": "L'horaire de livraison n'est plus disponible",
     "ORDER__SHIPPED_AT__EXPIRED": "L'horaire de livraison est dépassé",
-    "ORDER__SHIPPING_TIME_RANGE__NOT_AVAILABLE": "Indisponible pour l'instant"
+    "ORDER__SHIPPING_TIME_RANGE__NOT_AVAILABLE": "Indisponible pour l'instant",
+    "EDENRED_ELIGIBLE_AMOUNT": "Montant éligible Ticket Restaurant®",
+    "EDENRED_COMPLEMENT": "Complément"
   }
 }

@@ -97,7 +97,8 @@ android {
         manifestPlaceholders = [
             tipsiStripeRedirectScheme: "coopcycle",
             googleMapsApiKey: project.env.get("GOOGLE_MAPS_ANDROID_KEY"),
-            transistorsoftLicenseKey: project.env.get("TRANSISTORSOFT_LICENSE_KEY")
+            transistorsoftLicenseKey: project.env.get("TRANSISTORSOFT_LICENSE_KEY"),
+            appAuthRedirectScheme: project.env.get("APP_AUTH_REDIRECT_SCHEME")
         ]
 
         testBuildType System.getProperty('testBuildType', 'debug')  // This will later be used to control the test apk build type

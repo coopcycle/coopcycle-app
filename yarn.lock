@@ -12909,6 +12909,14 @@ react-native-animatable@1.3.3:
   dependencies:
     prop-types "^15.7.2"
 
+react-native-app-auth@^7.2.0:
+  version "7.2.0"
+  resolved "https://registry.yarnpkg.com/react-native-app-auth/-/react-native-app-auth-7.2.0.tgz#db42468018d1db42ead3a5ef8f00bb6c3e494fa7"
+  integrity sha512-Vw7td8oXklM0nXcerz/6E8Y6Ww+yDRMSohREllYceUe1570kNI7EIwGhzF3+yKjI4QADi8m/LGb7GdwkDxM4XQ==
+  dependencies:
+    invariant "2.2.4"
+    react-native-base64 "0.0.2"
+
 react-native-autocomplete-input@^5.4.0:
   version "5.4.0"
   resolved "https://registry.yarnpkg.com/react-native-autocomplete-input/-/react-native-autocomplete-input-5.4.0.tgz#2838dc56d4e084dd988bb836f69305ef1a5dcf1f"
@@ -12937,6 +12945,11 @@ react-native-background-geolocation@^4.15.0:
   integrity sha512-VV7fkll98C1n2JGLpPOKasd0f9YjfVUqMKzU+WMqV4QSiDedN4lHZLQ3ANzvcRt/qMvPKHDIFd8Qn3QUQRXZPg==
   dependencies:
     react-native-background-fetch "~4.2.1"
+
+react-native-base64@0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/react-native-base64/-/react-native-base64-0.0.2.tgz#c28463c2c6779ac3ec5fdd12979ebc8c5f9b410a"
+  integrity sha512-Fu/J1a2y0X22EJDWqJR2oEa1fpP4gTFjYxk8ElJdt1Yak3HOXmFJ7EohLVHU2DaQkgmKfw8qb7u/48gpzveRbg==
 
 react-native-ble-manager@^8.4.4:
   version "8.4.4"

@@ -411,7 +411,9 @@
     "SELECT_PAYMENT_METHOD": "Select a payment method",
     "PAYMENT_METHOD": {
       "card": "Credit card",
-      "cash_on_delivery": "Cash on delivery"
+      "cash_on_delivery": "Cash on delivery",
+      "edenred": "Edenred",
+      "edenred+card": "Edenred"
     },
     "CASH_ON_DELIVERY_DISCLAIMER": "You are going to pay by cash on delivery. Please prepare the exact amount and make sure to be reachable.",
     "STORES": "Stores",
@@ -531,6 +533,8 @@
     "ORDER__SHIPPED_AT__NOT_AVAILABLE": "The delivery date is no longer available",
     "ORDER__SHIPPED_AT__EXPIRED": "The delivery date is expired",
     "ORDER__SHIPPING_TIME_RANGE__NOT_AVAILABLE": "Not available at the moment",
-    "LOOPEAT_HAS_RETURNS": "This task has zero waste returns"
+    "LOOPEAT_HAS_RETURNS": "This task has zero waste returns",
+    "EDENRED_ELIGIBLE_AMOUNT": "Ticket Restaurant® eligible amount",
+    "EDENRED_COMPLEMENT": "Complement"
   }
 }
