@@ -394,7 +394,9 @@
     "SELECT_PAYMENT_METHOD": "Select a payment method",
     "PAYMENT_METHOD": {
       "card": "Credit card",
-      "cash_on_delivery": "Cash on delivery"
+      "cash_on_delivery": "Cash on delivery",
+      "edenred": "Edenred",
+      "edenred+card": "Edenred"
     },
     "CASH_ON_DELIVERY_DISCLAIMER": "You are going to pay by cash on delivery. Please prepare the exact amount and make sure to be reachable.",
     "STORES": "Stores",
@@ -505,6 +507,8 @@
     "FEATURED": "Featured",
     "EXCLUSIVE": "Exclusive",
     "NEW": "New",
-    "RESTAURANT_MORE_INFOS": "More information"
+    "RESTAURANT_MORE_INFOS": "More information",
+    "EDENRED_ELIGIBLE_AMOUNT": "Ticket Restaurant® eligible amount",
+    "EDENRED_COMPLEMENT": "Complement"
   }
 }

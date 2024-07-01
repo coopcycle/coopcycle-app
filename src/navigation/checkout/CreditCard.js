@@ -7,6 +7,7 @@ import {
   checkout,
   checkoutWithCash,
   loadPaymentMethods,
+  setPaymentMethod,
 } from '../../redux/Checkout/actions';
 import { selectCart } from '../../redux/Checkout/selectors';
 import CashComp from './components/CashOnDelivery';
@@ -30,6 +31,7 @@ class CreditCard extends Component {
   }
 
   _onPaymentMethodSelected(type) {
+
     const routesByCardGateway = {
       stripe: 'CheckoutPaymentMethodCard',
       // https://github.com/coopcycle/coopcycle-app/issues/1697
@@ -38,8 +40,13 @@ class CreditCard extends Component {
     const routesByMethod = {
       cash_on_delivery: 'CheckoutPaymentMethodCashOnDelivery',
       card: routesByCardGateway[this.props.paymentGateway],
+      edenred: 'CheckoutPaymentMethodEdenred',
+      'edenred+card': 'CheckoutPaymentMethodEdenred',
     };
-    this.props.navigation.navigate(routesByMethod[type]);
+
+    this.props.setPaymentMethod(type, () => {
+      this.props.navigation.navigate(routesByMethod[type]);
+    })
   }
 
   render() {
@@ -100,6 +107,7 @@ function mapDispatchToProps(dispatch) {
       dispatch(checkout(cardholderName, savedCardSelected, saveCard)),
     loadPaymentMethods: () => dispatch(loadPaymentMethods()),
     checkoutWithCash: () => dispatch(checkoutWithCash()),
+    setPaymentMethod: (paymentMethod, cb) => dispatch(setPaymentMethod(paymentMethod, cb)),
   };
 }
 
