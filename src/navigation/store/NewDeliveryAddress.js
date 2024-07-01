@@ -1,8 +1,14 @@
 import _ from 'lodash';
-import { Box, Button, Input, Text } from 'native-base';
+import { Box, Button, Input, Text, VStack } from 'native-base';
 import React, { useState } from 'react';
 import { withTranslation } from 'react-i18next';
-import { KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native';
+import {
+  KeyboardAvoidingView,
+  Platform,
+  SafeAreaView,
+  StyleSheet,
+  View,
+} from 'react-native';
 import { connect } from 'react-redux';
 import { AsYouType, parsePhoneNumberFromString } from 'libphonenumber-js';
 
@@ -142,76 +148,89 @@ function NewDelivery(props) {
         setFieldValue,
         setFieldTouched,
       }) => (
-        <Box p={3}>
-          <View style={[styles.formGroup, { zIndex: 1 }]}>
-            <Text style={styles.label}>
-              {props.t('STORE_NEW_DELIVERY_ADDRESS')}
-              {validAddresses && ' ✓'}
-            </Text>
-            <Text style={styles.help} note>
-              {props.t('STORE_NEW_DELIVERY_ADDRESS_HELP')}
-            </Text>
-            <View style={styles.autocompleteContainer}>
-              <AddressAutocomplete
-                addresses={props.addresses}
-                onSelectAddress={onSelectAddress}
-                containerStyle={[
-                  {
-                    flex: 1,
-                    justifyContent: 'center',
-                  },
-                  inputStyles,
-                ]}
-                style={{ borderRadius: 0 }}
-                {...autocompleteProps}
-              />
-            </View>
-          </View>
-          <View style={[styles.formGroup]}>
-            <Text style={styles.label}>
-              {props.t('STORE_NEW_DELIVERY_CONTACT_NAME')}
-            </Text>
-            <Input
-              style={[styles.textInput, inputStyles]}
-              autoCorrect={false}
-              returnKeyType="done"
-              onChangeText={handleChange('address.contactName')}
-              onBlur={handleBlur('address.contactName')}
-              value={values.address.contactName}
-            />
-            {errors.address &&
-              touched.address &&
-              errors.address.contactName && (
-                <Text note style={styles.errorText}>
-                  {errors.address.contactName}
+        <SafeAreaView
+          style={{
+            flex: 1,
+            backgroundColor: backgroundColor,
+          }}>
+          <VStack
+            flex={1}
+            justifyContent="space-between"
+            style={{ backgroundColor }}>
+            <Box p={3}>
+              <View style={[styles.formGroup, { zIndex: 1 }]}>
+                <Text style={styles.label}>
+                  {props.t('STORE_NEW_DELIVERY_ADDRESS')}
+                  {validAddresses && ' ✓'}
                 </Text>
-              )}
-          </View>
-          <View style={[styles.formGroup]}>
-            <Text style={styles.label}>
-              {props.t('STORE_NEW_DELIVERY_PHONE_NUMBER')}
-            </Text>
-            <Input
-              style={[styles.textInput, inputStyles]}
-              autoCorrect={false}
-              keyboardType="phone-pad"
-              returnKeyType="done"
-              onChangeText={value =>
-                handleChangeTelephone(value, setFieldValue, setFieldTouched)
-              }
-              onBlur={handleBlur('address.telephone')}
-              value={values.address.telephone}
-            />
-            {errors.address && touched.address && errors.address.telephone && (
-              <Text note style={styles.errorText}>
-                {errors.address.telephone}
-              </Text>
-            )}
-          </View>
-          <Button onPress={handleSubmit}>
-            <Text>Submit</Text>
-          </Button>
-        </Box>
+                <Text style={styles.help} note>
+                  {props.t('STORE_NEW_DELIVERY_ADDRESS_HELP')}
+                </Text>
+                <View style={styles.autocompleteContainer}>
+                  <AddressAutocomplete
+                    addresses={props.addresses}
+                    onSelectAddress={onSelectAddress}
+                    containerStyle={[
+                      {
+                        flex: 1,
+                        justifyContent: 'center',
+                      },
+                      inputStyles,
+                    ]}
+                    style={{ borderRadius: 0 }}
+                    {...autocompleteProps}
+                  />
+                </View>
+              </View>
+              <View style={[styles.formGroup]}>
+                <Text style={styles.label}>
+                  {props.t('STORE_NEW_DELIVERY_CONTACT_NAME')}
+                </Text>
+                <Input
+                  style={[styles.textInput, inputStyles]}
+                  autoCorrect={false}
+                  returnKeyType="done"
+                  onChangeText={handleChange('address.contactName')}
+                  onBlur={handleBlur('address.contactName')}
+                  value={values.address.contactName}
+                />
+                {errors.address &&
+                  touched.address &&
+                  errors.address.contactName && (
+                    <Text note style={styles.errorText}>
+                      {errors.address.contactName}
+                    </Text>
+                  )}
+              </View>
+              <View style={[styles.formGroup]}>
+                <Text style={styles.label}>
+                  {props.t('STORE_NEW_DELIVERY_PHONE_NUMBER')}
+                </Text>
+                <Input
+                  style={[styles.textInput, inputStyles]}
+                  autoCorrect={false}
+                  keyboardType="phone-pad"
+                  returnKeyType="done"
+                  onChangeText={value =>
+                    handleChangeTelephone(value, setFieldValue, setFieldTouched)
+                  }
+                  onBlur={handleBlur('address.telephone')}
+                  value={values.address.telephone}
+                />
+                {errors.address &&
+                  touched.address &&
+                  errors.address.telephone && (
+                    <Text note style={styles.errorText}>
+                      {errors.address.telephone}
+                    </Text>
+                  )}
+              </View>
+            </Box>
+            <Box p={3}>
+              <Button onPress={handleSubmit}>{props.t('SUBMIT')}</Button>
+            </Box>
+          </VStack>
+        </SafeAreaView>
       )}
     </Formik>
   );
