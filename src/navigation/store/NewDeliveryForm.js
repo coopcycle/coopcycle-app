@@ -28,6 +28,7 @@ import {
   useBackgroundContainerColor,
   useBackgroundHighlightColor,
 } from '../../styles/theme';
+import ModalFormWrapper from './ModalFormWrapper';
 
 function NewDelivery(props) {
   const [isDateTimePickerVisible, setIsDateTimePickerVisible] = useState(false);
@@ -245,69 +246,55 @@ function NewDelivery(props) {
         setFieldValue,
         setFieldTouched,
       }) => (
-        <SafeAreaView
-          style={{
-            flex: 1,
-            backgroundColor: backgroundColor,
-          }}>
-          <VStack
-            flex={1}
-            justifyContent="space-between"
-            style={{ backgroundColor }}>
-            <Box p="3">
-              <View style={[styles.formGroup]}>
-                <Text style={styles.label}>
-                  {props.t('STORE_NEW_DELIVERY_ADDRESS')}
-                </Text>
-                <Input
-                  variant="filled"
-                  style={[styles.textInput, inputStyles]}
-                  value={delivery?.address.streetAddress}
-                  isReadOnly={true}
-                />
-              </View>
+        <ModalFormWrapper handleSubmit={handleSubmit} t={props.t}>
+          <View style={[styles.formGroup]}>
+            <Text style={styles.label}>
+              {props.t('STORE_NEW_DELIVERY_ADDRESS')}
+            </Text>
+            <Input
+              variant="filled"
+              style={[styles.textInput, inputStyles]}
+              value={delivery?.address.streetAddress}
+              isReadOnly={true}
+            />
+          </View>
 
-              <View style={[styles.formGroup]}>
-                <Text style={styles.label}>
-                  {props.t('STORE_NEW_DELIVERY_COMMENTS')}
-                </Text>
-                <Input
-                  style={[styles.textInput, styles.textarea, inputStyles]}
-                  autoCorrect={false}
-                  multiline={true}
-                  onChangeText={handleChange('delivery.address.description')}
-                  onBlur={handleBlur('delivery.address.description')}
-                  value={values.delivery.address.description}
-                />
-              </View>
-              {props.hasTimeSlot && (
-                <TimeSlotSelector
-                  selectValue={selectValue}
-                  setSelectValue={setSelectValue}
-                  errors={errors}
-                  touched={touched}
-                  setFieldValue={setFieldValue}
-                  setFieldTouched={setFieldTouched}
-                  updateSelectedTimeSlot={updateSelectedTimeSlot}
-                  timeSlots={props.timeSlots}
-                  choices={props.choices}
-                  selectedTimeSlot={selectedTimeSlot}
-                />
-              )}
-              {!props.hasTimeSlot &&
-                renderDateTimePicker(
-                  initialValues,
-                  values,
-                  errors,
-                  setFieldValue,
-                  setFieldTouched,
-                )}
-            </Box>
-            <Box p="3">
-              <Button onPress={handleSubmit}>{props.t('SUBMIT')}</Button>
-            </Box>
-          </VStack>
-        </SafeAreaView>
+          <View style={[styles.formGroup]}>
+            <Text style={styles.label}>
+              {props.t('STORE_NEW_DELIVERY_COMMENTS')}
+            </Text>
+            <Input
+              style={[styles.textInput, styles.textarea, inputStyles]}
+              autoCorrect={false}
+              multiline={true}
+              onChangeText={handleChange('delivery.address.description')}
+              onBlur={handleBlur('delivery.address.description')}
+              value={values.delivery.address.description}
+            />
+          </View>
+          {props.hasTimeSlot && (
+            <TimeSlotSelector
+              selectValue={selectValue}
+              setSelectValue={setSelectValue}
+              errors={errors}
+              touched={touched}
+              setFieldValue={setFieldValue}
+              setFieldTouched={setFieldTouched}
+              updateSelectedTimeSlot={updateSelectedTimeSlot}
+              timeSlots={props.timeSlots}
+              choices={props.choices}
+              selectedTimeSlot={selectedTimeSlot}
+            />
+          )}
+          {!props.hasTimeSlot &&
+            renderDateTimePicker(
+              initialValues,
+              values,
+              errors,
+              setFieldValue,
+              setFieldTouched,
+            )}
+        </ModalFormWrapper>
       )}
     </Formik>
   );
