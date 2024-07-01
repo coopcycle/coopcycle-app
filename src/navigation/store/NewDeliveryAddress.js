@@ -1,22 +1,14 @@
+import { AsYouType, parsePhoneNumberFromString } from 'libphonenumber-js';
 import _ from 'lodash';
-import { Box, Button, Input, Text, VStack } from 'native-base';
+import { Input, Text } from 'native-base';
 import React, { useState } from 'react';
 import { withTranslation } from 'react-i18next';
-import {
-  KeyboardAvoidingView,
-  Platform,
-  SafeAreaView,
-  StyleSheet,
-  View,
-} from 'react-native';
+import { Platform, StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
-import { AsYouType, parsePhoneNumberFromString } from 'libphonenumber-js';
-
 import AddressAutocomplete from '../../components/AddressAutocomplete';
-
+import { Formik } from 'formik';
 import { assertDelivery } from '../../redux/Store/actions';
 import { selectStore } from '../../redux/Store/selectors';
-import { Formik } from 'formik';
 import {
   useBackgroundContainerColor,
   useBackgroundHighlightColor,
@@ -91,10 +83,7 @@ function NewDelivery(props) {
     }
 
     if (!validAddresses) {
-      errors.address = {
-        ...errors.address,
-        address: 'test',
-      };
+      errors.address.address = props.t('STORE_NEW_DELIVERY_ADDRESS_HELP');
     }
 
     if (_.isEmpty(errors.address)) {
@@ -155,9 +144,6 @@ function NewDelivery(props) {
               {props.t('STORE_NEW_DELIVERY_ADDRESS')}
               {validAddresses && ' ✓'}
             </Text>
-            <Text style={styles.help} note>
-              {props.t('STORE_NEW_DELIVERY_ADDRESS_HELP')}
-            </Text>
             <View style={styles.autocompleteContainer}>
               <AddressAutocomplete
                 addresses={props.addresses}
@@ -173,6 +159,11 @@ function NewDelivery(props) {
                 {...autocompleteProps}
               />
             </View>
+            {errors.address && touched.address && errors.address.address && (
+              <Text note style={styles.errorText}>
+                {errors.address.address}
+              </Text>
+            )}
           </View>
           <View style={[styles.formGroup]}>
             <Text style={styles.label}>
