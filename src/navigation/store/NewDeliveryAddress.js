@@ -21,6 +21,7 @@ import {
   useBackgroundContainerColor,
   useBackgroundHighlightColor,
 } from '../../styles/theme';
+import ModalFormWrapper from './ModalFormWrapper';
 
 function NewDelivery(props) {
   const [validAddresses, setValidAddresses] = useState(false);
@@ -148,89 +149,73 @@ function NewDelivery(props) {
         setFieldValue,
         setFieldTouched,
       }) => (
-        <SafeAreaView
-          style={{
-            flex: 1,
-            backgroundColor: backgroundColor,
-          }}>
-          <VStack
-            flex={1}
-            justifyContent="space-between"
-            style={{ backgroundColor }}>
-            <Box p={3}>
-              <View style={[styles.formGroup, { zIndex: 1 }]}>
-                <Text style={styles.label}>
-                  {props.t('STORE_NEW_DELIVERY_ADDRESS')}
-                  {validAddresses && ' ✓'}
+        <ModalFormWrapper handleSubmit={handleSubmit} t={props.t}>
+          <View style={[styles.formGroup, { zIndex: 1 }]}>
+            <Text style={styles.label}>
+              {props.t('STORE_NEW_DELIVERY_ADDRESS')}
+              {validAddresses && ' ✓'}
+            </Text>
+            <Text style={styles.help} note>
+              {props.t('STORE_NEW_DELIVERY_ADDRESS_HELP')}
+            </Text>
+            <View style={styles.autocompleteContainer}>
+              <AddressAutocomplete
+                addresses={props.addresses}
+                onSelectAddress={onSelectAddress}
+                containerStyle={[
+                  {
+                    flex: 1,
+                    justifyContent: 'center',
+                  },
+                  inputStyles,
+                ]}
+                style={{ borderRadius: 0 }}
+                {...autocompleteProps}
+              />
+            </View>
+          </View>
+          <View style={[styles.formGroup]}>
+            <Text style={styles.label}>
+              {props.t('STORE_NEW_DELIVERY_CONTACT_NAME')}
+            </Text>
+            <Input
+              style={[styles.textInput, inputStyles]}
+              autoCorrect={false}
+              returnKeyType="done"
+              onChangeText={handleChange('address.contactName')}
+              onBlur={handleBlur('address.contactName')}
+              value={values.address.contactName}
+            />
+            {errors.address &&
+              touched.address &&
+              errors.address.contactName && (
+                <Text note style={styles.errorText}>
+                  {errors.address.contactName}
                 </Text>
-                <Text style={styles.help} note>
-                  {props.t('STORE_NEW_DELIVERY_ADDRESS_HELP')}
-                </Text>
-                <View style={styles.autocompleteContainer}>
-                  <AddressAutocomplete
-                    addresses={props.addresses}
-                    onSelectAddress={onSelectAddress}
-                    containerStyle={[
-                      {
-                        flex: 1,
-                        justifyContent: 'center',
-                      },
-                      inputStyles,
-                    ]}
-                    style={{ borderRadius: 0 }}
-                    {...autocompleteProps}
-                  />
-                </View>
-              </View>
-              <View style={[styles.formGroup]}>
-                <Text style={styles.label}>
-                  {props.t('STORE_NEW_DELIVERY_CONTACT_NAME')}
-                </Text>
-                <Input
-                  style={[styles.textInput, inputStyles]}
-                  autoCorrect={false}
-                  returnKeyType="done"
-                  onChangeText={handleChange('address.contactName')}
-                  onBlur={handleBlur('address.contactName')}
-                  value={values.address.contactName}
-                />
-                {errors.address &&
-                  touched.address &&
-                  errors.address.contactName && (
-                    <Text note style={styles.errorText}>
-                      {errors.address.contactName}
-                    </Text>
-                  )}
-              </View>
-              <View style={[styles.formGroup]}>
-                <Text style={styles.label}>
-                  {props.t('STORE_NEW_DELIVERY_PHONE_NUMBER')}
-                </Text>
-                <Input
-                  style={[styles.textInput, inputStyles]}
-                  autoCorrect={false}
-                  keyboardType="phone-pad"
-                  returnKeyType="done"
-                  onChangeText={value =>
-                    handleChangeTelephone(value, setFieldValue, setFieldTouched)
-                  }
-                  onBlur={handleBlur('address.telephone')}
-                  value={values.address.telephone}
-                />
-                {errors.address &&
-                  touched.address &&
-                  errors.address.telephone && (
-                    <Text note style={styles.errorText}>
-                      {errors.address.telephone}
-                    </Text>
-                  )}
-              </View>
-            </Box>
-            <Box p={3}>
-              <Button onPress={handleSubmit}>{props.t('SUBMIT')}</Button>
-            </Box>
-          </VStack>
-        </SafeAreaView>
+              )}
+          </View>
+          <View style={[styles.formGroup]}>
+            <Text style={styles.label}>
+              {props.t('STORE_NEW_DELIVERY_PHONE_NUMBER')}
+            </Text>
+            <Input
+              style={[styles.textInput, inputStyles]}
+              autoCorrect={false}
+              keyboardType="phone-pad"
+              returnKeyType="done"
+              onChangeText={value =>
+                handleChangeTelephone(value, setFieldValue, setFieldTouched)
+              }
+              onBlur={handleBlur('address.telephone')}
+              value={values.address.telephone}
+            />
+            {errors.address && touched.address && errors.address.telephone && (
+              <Text note style={styles.errorText}>
+                {errors.address.telephone}
+              </Text>
+            )}
+          </View>
+        </ModalFormWrapper>
       )}
     </Formik>
   );
