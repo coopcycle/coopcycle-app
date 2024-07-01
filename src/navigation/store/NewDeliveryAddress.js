@@ -63,8 +63,6 @@ function NewDelivery(props) {
   function validate(values) {
     let errors = { address: {} };
 
-    console.log('values', values);
-
     if (_.isEmpty(values.address.telephone)) {
       errors.address.telephone = props.t(
         'STORE_NEW_DELIVERY_ERROR.EMPTY_PHONE_NUMBER',
@@ -83,6 +81,13 @@ function NewDelivery(props) {
       errors.address.contactName = props.t(
         'STORE_NEW_DELIVERY_ERROR.EMPTY_CONTACT_NAME',
       );
+    }
+
+    if (!validAddresses) {
+      errors.address = {
+        ...errors.address,
+        address: 'test',
+      };
     }
 
     if (_.isEmpty(errors.address)) {
@@ -105,6 +110,19 @@ function NewDelivery(props) {
       new AsYouType(props.country).input(value),
     );
     setFieldTouched('address.telephone', true);
+  }
+
+  function submit(values) {
+    const delivery = {
+      ...values.address,
+      telephone: parsePhoneNumberFromString(
+        values.address.telephone,
+        props.country,
+      ).format('E.164'),
+      address,
+    };
+
+    props.navigation.navigate('StoreNewDeliveryForm', { delivery });
   }
 
   return (

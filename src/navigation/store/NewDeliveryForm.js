@@ -85,11 +85,11 @@ function NewDelivery(props) {
     const delivery = {
       store: props.store['@id'],
       dropoff: {
-        ...values,
+        ...values.delivery,
         address: {
-          ...values.address,
+          ...values.delivery.address,
           telephone: parsePhoneNumberFromString(
-            values.address.telephone,
+            values.delivery.address.telephone,
             props.country,
           ).format('E.164'),
         },
@@ -113,28 +113,37 @@ function NewDelivery(props) {
       };
     }
 
-    if (_.isEmpty(values.address.telephone)) {
-      errors.address = {
-        ...errors.address,
-        telephone: props.t('STORE_NEW_DELIVERY_ERROR.EMPTY_PHONE_NUMBER'),
+    if (_.isEmpty(values.delivery.address.telephone)) {
+      errors.delivery = {
+        ...errors.delivery,
+        address: {
+          ...errors.delivery?.address,
+          telephone: props.t('STORE_NEW_DELIVERY_ERROR.EMPTY_PHONE_NUMBER'),
+        },
       };
     } else {
       const phoneNumber = parsePhoneNumberFromString(
-        _.trim(values.address.telephone),
+        _.trim(values.delivery.address.telephone),
         props.country,
       );
       if (!phoneNumber || !phoneNumber.isValid()) {
-        errors.address = {
-          ...errors.address,
-          telephone: props.t('INVALID_PHONE_NUMBER'),
+        errors.delivery = {
+          ...errors.delivery,
+          address: {
+            ...errors.delivery?.address,
+            telephone: props.t('INVALID_PHONE_NUMBER'),
+          },
         };
       }
     }
 
-    if (_.isEmpty(values.address.contactName)) {
-      errors.address = {
-        ...errors.address,
-        contactName: props.t('STORE_NEW_DELIVERY_ERROR.EMPTY_CONTACT_NAME'),
+    if (_.isEmpty(values.delivery.address.contactName)) {
+      errors.delivery = {
+        ...errors.delivery,
+        address: {
+          ...errors.delivery?.address,
+          contactName: props.t('STORE_NEW_DELIVERY_ERROR.EMPTY_CONTACT_NAME'),
+        },
       };
     }
 
@@ -174,12 +183,12 @@ function NewDelivery(props) {
     );
   }
 
-  const address = props.route.params?.address;
+  const delivery = props.route.params?.delivery;
 
   let telephone = '';
-  if (address['@id'] && address.telephone) {
+  if (delivery?.address['@id'] && delivery.address.telephone) {
     const phoneNumber = parsePhoneNumberFromString(
-      address.telephone,
+      delivery.address.telephone,
       props.country,
     );
     if (phoneNumber && phoneNumber.isValid()) {
@@ -188,11 +197,16 @@ function NewDelivery(props) {
   }
 
   let initialValues = {
-    address: {
-      ...address,
-      description: (address['@id'] && address.description) || '',
-      contactName: (address['@id'] && address.contactName) || '',
-      telephone,
+    delivery: {
+      ...delivery,
+      address: {
+        ...delivery.address,
+        description:
+          (delivery.address['@id'] && delivery.address.description) || '',
+        contactName:
+          (delivery.address['@id'] && delivery.address.contactName) || '',
+        telephone,
+      },
     },
   };
 
@@ -237,7 +251,7 @@ function NewDelivery(props) {
               <Input
                 variant="filled"
                 style={[styles.textInput, inputStyles]}
-                value={address.streetAddress}
+                value={delivery?.address.streetAddress}
                 isReadOnly={true}
               />
             </View>
@@ -250,9 +264,9 @@ function NewDelivery(props) {
                 style={[styles.textInput, styles.textarea, inputStyles]}
                 autoCorrect={false}
                 multiline={true}
-                onChangeText={handleChange('address.description')}
-                onBlur={handleBlur('address.description')}
-                value={values.address.description}
+                onChangeText={handleChange('delivery.address.description')}
+                onBlur={handleBlur('delivery.address.description')}
+                value={values.delivery.address.description}
               />
             </View>
             {props.hasTimeSlot && (
@@ -316,12 +330,6 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(state) {
-  // const timeSlot = selectTimeSlot(state);
-  // const hasTimeSlot =
-  //   timeSlot &&
-  //   (timeSlot.choices.length > 0 ||
-  //     timeSlot.openingHoursSpecification.length > 0);
-  // const timeSlotChoices = hasTimeSlot ? getChoicesWithDates(timeSlot) : [];
   const timeSlotChoices = [];
   const timeSlots = selectTimeSlots(state);
   const choices = state.store.choices;
