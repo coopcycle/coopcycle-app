@@ -424,7 +424,7 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         isFetching: false,
-        paymentMethods: action.payload.methods,
+        paymentMethods: action.payload.methods.concat([{ type: 'edenred' }]),
       };
 
     case LOAD_PAYMENT_DETAILS_SUCCESS:
