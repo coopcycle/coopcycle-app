@@ -5,7 +5,13 @@ import moment from 'moment';
 import { Box, Button, HStack, Input, Text, VStack } from 'native-base';
 import React, { useEffect, useState } from 'react';
 import { withTranslation } from 'react-i18next';
-import { InteractionManager, Platform, StyleSheet, View } from 'react-native';
+import {
+  InteractionManager,
+  Platform,
+  SafeAreaView,
+  StyleSheet,
+  View,
+} from 'react-native';
 import KeyboardManager from 'react-native-keyboard-manager';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { connect } from 'react-redux';
@@ -239,63 +245,69 @@ function NewDelivery(props) {
         setFieldValue,
         setFieldTouched,
       }) => (
-        <VStack
-          flex={1}
-          justifyContent="space-between"
-          style={{ backgroundColor }}>
-          <Box p="3">
-            <View style={[styles.formGroup]}>
-              <Text style={styles.label}>
-                {props.t('STORE_NEW_DELIVERY_ADDRESS')}
-              </Text>
-              <Input
-                variant="filled"
-                style={[styles.textInput, inputStyles]}
-                value={delivery?.address.streetAddress}
-                isReadOnly={true}
-              />
-            </View>
+        <SafeAreaView
+          style={{
+            flex: 1,
+            backgroundColor: backgroundColor,
+          }}>
+          <VStack
+            flex={1}
+            justifyContent="space-between"
+            style={{ backgroundColor }}>
+            <Box p="3">
+              <View style={[styles.formGroup]}>
+                <Text style={styles.label}>
+                  {props.t('STORE_NEW_DELIVERY_ADDRESS')}
+                </Text>
+                <Input
+                  variant="filled"
+                  style={[styles.textInput, inputStyles]}
+                  value={delivery?.address.streetAddress}
+                  isReadOnly={true}
+                />
+              </View>
 
-            <View style={[styles.formGroup]}>
-              <Text style={styles.label}>
-                {props.t('STORE_NEW_DELIVERY_COMMENTS')}
-              </Text>
-              <Input
-                style={[styles.textInput, styles.textarea, inputStyles]}
-                autoCorrect={false}
-                multiline={true}
-                onChangeText={handleChange('delivery.address.description')}
-                onBlur={handleBlur('delivery.address.description')}
-                value={values.delivery.address.description}
-              />
-            </View>
-            {props.hasTimeSlot && (
-              <TimeSlotSelector
-                selectValue={selectValue}
-                setSelectValue={setSelectValue}
-                errors={errors}
-                touched={touched}
-                setFieldValue={setFieldValue}
-                setFieldTouched={setFieldTouched}
-                updateSelectedTimeSlot={updateSelectedTimeSlot}
-                timeSlots={props.timeSlots}
-                choices={props.choices}
-                selectedTimeSlot={selectedTimeSlot}
-              />
-            )}
-            {!props.hasTimeSlot &&
-              renderDateTimePicker(
-                initialValues,
-                values,
-                errors,
-                setFieldValue,
-                setFieldTouched,
+              <View style={[styles.formGroup]}>
+                <Text style={styles.label}>
+                  {props.t('STORE_NEW_DELIVERY_COMMENTS')}
+                </Text>
+                <Input
+                  style={[styles.textInput, styles.textarea, inputStyles]}
+                  autoCorrect={false}
+                  multiline={true}
+                  onChangeText={handleChange('delivery.address.description')}
+                  onBlur={handleBlur('delivery.address.description')}
+                  value={values.delivery.address.description}
+                />
+              </View>
+              {props.hasTimeSlot && (
+                <TimeSlotSelector
+                  selectValue={selectValue}
+                  setSelectValue={setSelectValue}
+                  errors={errors}
+                  touched={touched}
+                  setFieldValue={setFieldValue}
+                  setFieldTouched={setFieldTouched}
+                  updateSelectedTimeSlot={updateSelectedTimeSlot}
+                  timeSlots={props.timeSlots}
+                  choices={props.choices}
+                  selectedTimeSlot={selectedTimeSlot}
+                />
               )}
-          </Box>
-          <Box p="3">
-            <Button onPress={handleSubmit}>{props.t('SUBMIT')}</Button>
-          </Box>
-        </VStack>
+              {!props.hasTimeSlot &&
+                renderDateTimePicker(
+                  initialValues,
+                  values,
+                  errors,
+                  setFieldValue,
+                  setFieldTouched,
+                )}
+            </Box>
+            <Box p="3">
+              <Button onPress={handleSubmit}>{props.t('SUBMIT')}</Button>
+            </Box>
+          </VStack>
+        </SafeAreaView>
       )}
     </Formik>
   );
