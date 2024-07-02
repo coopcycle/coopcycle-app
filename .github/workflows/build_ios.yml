@@ -6,6 +6,7 @@ run-name: >
   ${{ inputs.build_naofood && '; Naofood' || '' }}
   ${{ inputs.build_kooglof && '; Kooglof' || '' }}
   ${{ inputs.build_robinfood && '; RobinFood' || '' }}
+  ${{ inputs.build_lcr && '; les coursiers Rennais' || '' }}
 on:
   workflow_dispatch:
     inputs:
@@ -101,6 +102,7 @@ jobs:
     name: Build les coursiers Rennais app
     uses: ./.github/workflows/fastlane_ios.yml
     with:
+      tag: ${{ inputs.tag }}
       instance: lcr
       instance_url: https://lcr.coopcycle.org
       app_name: Les Coursiers Rennais
