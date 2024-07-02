@@ -36,7 +36,7 @@ Setup - All Platforms
 
 Install dependencies with Yarn.
 
-```
+```sh
 $ yarn install
 ```
 
@@ -86,10 +86,22 @@ $ cd ios && USE_FRAMEWORKS=static NO_FLIPPER=1 bundle exec pod install
 Running App
 -------
 
-##### With React Native CLI
+### Start the bundler
 
+```sh
+yarn start
 ```
-    yarn android
+
+### Run the Android app
+
+```sh
+yarn android
+```
+
+### Run the iOS app
+
+```sh
+yarn ios
 ```
 
 ##### With Npx
