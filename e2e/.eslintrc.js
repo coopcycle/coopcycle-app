@@ -9,5 +9,5 @@ module.exports = {
     jasmine: true,
     jest: true,
     waitFor: true,
-  }
+  },
 };

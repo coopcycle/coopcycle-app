@@ -16,6 +16,7 @@ export default function KeyboardAdjustView({
   children,
   style,
   androidBehavior = 'padding', // FIXME: try to avoid using this prop; see the comment below
+  testID,
 }) {
   const [viewHeight, setViewHeight] = useState(0);
 
@@ -35,7 +36,7 @@ export default function KeyboardAdjustView({
 
     // extra View is a workaround for this issue: https://github.com/facebook/react-native/issues/35599
     return (
-      <View style={style} onLayout={onLayout}>
+      <View style={style} onLayout={onLayout} testID={testID}>
         <KeyboardAvoidingView
           style={{ flex: 1 }}
           keyboardVerticalOffset={topOffset}
@@ -82,7 +83,7 @@ export default function KeyboardAdjustView({
 
     return (
       // extra View is a workaround for this issue: https://github.com/facebook/react-native/issues/35599
-      <View style={style} onLayout={onLayout}>
+      <View style={style} onLayout={onLayout} testID={testID}>
         <KeyboardAvoidingView
           style={{ flex: 1 }}
           keyboardVerticalOffset={topOffset}
@@ -94,6 +95,10 @@ export default function KeyboardAdjustView({
       </View>
     );
   } else {
-    return <View style={style}>{children}</View>;
+    return (
+      <View style={style} testID={testID}>
+        {children}
+      </View>
+    );
   }
 }

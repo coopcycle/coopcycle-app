@@ -4,13 +4,11 @@ run-name: >
   ${{ inputs.tag }}
   ${{ inputs.build_official && '; CoopCycle' || '' }}
   ${{ inputs.build_official_beta && '; CoopCycle (Beta)' || '' }}
-  ${{ inputs.build_coursiers_stephanois && '; Les Coursiers Stéphanois' || '' }}
   ${{ inputs.build_naofood && '; Naofood' || '' }}
-  ${{ inputs.build_zampate && '; Zampate' || '' }}
   ${{ inputs.build_kooglof && '; Kooglof' || '' }}
   ${{ inputs.build_robinfood && '; RobinFood' || '' }}
   ${{ inputs.build_coursiers_rennais && '; Les Coursiers Rennais' || '' }}
-  ${{ inputs.build_coursiers_montpellier && '; Coursiers MTP' || '' }}
+  ${{ inputs.build_eraman && '; Eraman' || '' }}
 on:
   workflow_dispatch:
     inputs:
@@ -34,10 +32,6 @@ on:
         type: boolean
       build_official_beta:
         description: 'Build CoopCycle beta app'
-        required: true
-        type: boolean
-      build_coursiers_stephanois:
-        description: 'Build Coursiers Stéphanois app'
         required: true
         type: boolean
       build_naofood:
@@ -111,22 +105,6 @@ jobs:
       app_name: Zampate
       primary_color: "#d02e26"
       package_name: fr.coopcycle.zampate
-      keystore_key_alias: instance
-      keystore_key_password_secret: SIGNING_KEY_PASSWORD_INSTANCE
-      google_play_track: ${{ inputs.google_play_track }}
-      deploy_google_play: ${{ inputs.deploy_google_play }}
-    secrets: inherit
-  coursiers_stephanois:
-    if: ${{ inputs.build_coursiers_stephanois }}
-    name: Build Les Coursiers Stéphanois app
-    uses: ./.github/workflows/fastlane_android.yml
-    with:
-      tag: ${{ inputs.tag }}
-      instance: coursiers_stephanois
-      instance_url: https://coursiers-stephanois.coopcycle.org
-      app_name: Les Coursiers Stéphanois
-      primary_color: "#85b544"
-      package_name: fr.coopcycle.coursiers_stephanois
       keystore_key_alias: instance
       keystore_key_password_secret: SIGNING_KEY_PASSWORD_INSTANCE
       google_play_track: ${{ inputs.google_play_track }}

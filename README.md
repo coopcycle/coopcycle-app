@@ -36,7 +36,7 @@ Setup - All Platforms
 
 Install dependencies with Yarn.
 
-```
+```sh
 $ yarn install
 ```
 
@@ -86,10 +86,22 @@ $ cd ios && USE_FRAMEWORKS=static NO_FLIPPER=1 bundle exec pod install
 Running App
 -------
 
-##### With React Native CLI
+### Start the bundler
 
+```sh
+yarn start
 ```
-    yarn android
+
+### Run the Android app
+
+```sh
+yarn android
+```
+
+### Run the iOS app
+
+```sh
+yarn ios
 ```
 
 ##### With Npx
@@ -107,6 +119,28 @@ Testing
 ```
 yarn test
 ```
+
+##### Detox (end-to-end testing):
+
+Setup: https://wix.github.io/Detox/docs/introduction/environment-setup
+
+Build the app and run tests:
+
+Android:
+
+```
+detox build -c android.emu.debug
+detox test -c android.emu.debug
+```
+
+iOS:
+
+```
+detox build -c ios.sim.debug
+detox test -c ios.sim.debug
+```
+
+Make sure that you have emulators set up as specified in `.detoxrc.js` > `devices` or use `--device-name` parameter while running tests. For example: `detox test -c android.emu.debug --device-name="Pixel_8_API_34"`
 
 Troubleshooting
 ---------------
