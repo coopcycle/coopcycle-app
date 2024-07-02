@@ -206,6 +206,19 @@ function NewDelivery(props) {
               </Text>
             )}
           </View>
+          <View style={[styles.formGroup]}>
+            <Text style={styles.label}>
+              {props.t('STORE_NEW_DELIVERY_COMMENTS')}
+            </Text>
+            <Input
+              style={[styles.textInput, styles.textarea, inputStyles]}
+              autoCorrect={false}
+              multiline={true}
+              onChangeText={handleChange('address.description')}
+              onBlur={handleBlur('address.description')}
+              value={values.address.description}
+            />
+          </View>
         </ModalFormWrapper>
       )}
     </Formik>
@@ -253,6 +266,9 @@ const styles = StyleSheet.create({
   errorText: {
     color: '#FF4136',
     marginTop: 5,
+  },
+  textarea: {
+    minHeight: 25 * 3,
   },
 });
 
