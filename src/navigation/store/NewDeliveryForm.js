@@ -95,10 +95,7 @@ function NewDelivery(props) {
         ...values.delivery,
         address: {
           ...values.delivery.address,
-          telephone: parsePhoneNumberFromString(
-            values.delivery.address.telephone,
-            props.country,
-          ).format('E.164'),
+          weight: values.delivery.address.weight * 1000,
         },
       },
     };
@@ -113,44 +110,10 @@ function NewDelivery(props) {
   function validate(values) {
     let errors = {};
 
-    if (props.hasTimeSlot && _.isEmpty(values.timeSlot)) {
+    if (props.hasTimeSlot && !selectValue) {
       errors = {
         ...errors,
         timeSlot: props.t('STORE_NEW_DELIVERY_ERROR.EMPTY_TIME_SLOT'),
-      };
-    }
-
-    if (_.isEmpty(values.delivery.address.telephone)) {
-      errors.delivery = {
-        ...errors.delivery,
-        address: {
-          ...errors.delivery?.address,
-          telephone: props.t('STORE_NEW_DELIVERY_ERROR.EMPTY_PHONE_NUMBER'),
-        },
-      };
-    } else {
-      const phoneNumber = parsePhoneNumberFromString(
-        _.trim(values.delivery.address.telephone),
-        props.country,
-      );
-      if (!phoneNumber || !phoneNumber.isValid()) {
-        errors.delivery = {
-          ...errors.delivery,
-          address: {
-            ...errors.delivery?.address,
-            telephone: props.t('INVALID_PHONE_NUMBER'),
-          },
-        };
-      }
-    }
-
-    if (_.isEmpty(values.delivery.address.contactName)) {
-      errors.delivery = {
-        ...errors.delivery,
-        address: {
-          ...errors.delivery?.address,
-          contactName: props.t('STORE_NEW_DELIVERY_ERROR.EMPTY_CONTACT_NAME'),
-        },
       };
     }
 
@@ -203,6 +166,29 @@ function NewDelivery(props) {
     }
   }
 
+  function handleChangeWeight(value, setFieldValue, setFieldTouched) {
+    value = value.replace(',', '.').replace(/[^0-9.]/g, '');
+
+    const firstDecimalIndex = value.indexOf('.');
+    if (firstDecimalIndex === 0) {
+      value = '0' + value;
+    } else if (firstDecimalIndex !== -1) {
+      value =
+        value.substring(0, firstDecimalIndex + 1) +
+        value.substring(firstDecimalIndex + 1).replace(/\./g, '');
+    }
+
+    if (value.includes('.')) {
+      const decimalIndex = value.indexOf('.');
+      value =
+        value.substring(0, decimalIndex + 1) +
+        value.substring(decimalIndex + 1, decimalIndex + 4);
+    }
+
+    setFieldValue('delivery.address.weight', value);
+    setFieldTouched('delivery.address.weight', true);
+  }
+
   let initialValues = {
     delivery: {
       ...delivery,
@@ -213,6 +199,7 @@ function NewDelivery(props) {
         contactName:
           (delivery.address['@id'] && delivery.address.contactName) || '',
         telephone,
+        weight: (delivery.address['@id'] && delivery.address.weight) || '',
       },
     },
   };
@@ -259,19 +246,6 @@ function NewDelivery(props) {
             />
           </View>
 
-          <View style={[styles.formGroup]}>
-            <Text style={styles.label}>
-              {props.t('STORE_NEW_DELIVERY_COMMENTS')}
-            </Text>
-            <Input
-              style={[styles.textInput, styles.textarea, inputStyles]}
-              autoCorrect={false}
-              multiline={true}
-              onChangeText={handleChange('delivery.address.description')}
-              onBlur={handleBlur('delivery.address.description')}
-              value={values.delivery.address.description}
-            />
-          </View>
           {props.hasTimeSlot && (
             <TimeSlotSelector
               selectValue={selectValue}
@@ -294,6 +268,27 @@ function NewDelivery(props) {
               setFieldValue,
               setFieldTouched,
             )}
+
+          <View style={[styles.formGroup]}>
+            <Text style={styles.label}>Custom Weight</Text>
+            <Input
+              keyboardType="numeric"
+              rightElement={<Text style={styles.weightUnit}>kg</Text>}
+              style={[styles.textInput, inputStyles]}
+              autoCorrect={false}
+              returnKeyType="done"
+              onChangeText={value =>
+                handleChangeWeight(value, setFieldValue, setFieldTouched)
+              }
+              onBlur={handleBlur('delivery.address.weight')}
+              value={values.delivery.address.weight}
+            />
+            {errors.address && touched.address && errors.address.weight && (
+              <Text note style={styles.errorText}>
+                {errors.address.weight}
+              </Text>
+            )}
+          </View>
         </ModalFormWrapper>
       )}
     </Formik>
@@ -301,10 +296,6 @@ function NewDelivery(props) {
 }
 
 const styles = StyleSheet.create({
-  message: {
-    alignItems: 'center',
-    padding: 20,
-  },
   label: {
     marginBottom: 5,
     fontWeight: '500',
@@ -319,12 +310,12 @@ const styles = StyleSheet.create({
     minHeight: 40,
     backgroundColor: '#FAFAFA',
   },
-  textarea: {
-    minHeight: 25 * 3,
-  },
   errorText: {
     paddingVertical: 5,
     color: '#FF4136',
+  },
+  weightUnit: {
+    paddingHorizontal: 10,
   },
 });
 
