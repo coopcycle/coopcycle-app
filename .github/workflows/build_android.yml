@@ -1,23 +1,37 @@
 name: Build Android
+run-name: >
+  ${{ inputs.deploy_google_play && format('Release to {0} track', inputs.google_play_track) || 'Build' }}
+  ${{ inputs.tag }}
+  ${{ inputs.build_official && '; CoopCycle' || '' }}
+  ${{ inputs.build_official_beta && '; CoopCycle (Beta)' || '' }}
+  ${{ inputs.build_naofood && '; Naofood' || '' }}
+  ${{ inputs.build_kooglof && '; Kooglof' || '' }}
+  ${{ inputs.build_robinfood && '; RobinFood' || '' }}
+  ${{ inputs.build_coursiers_rennais && '; Les Coursiers Rennais' || '' }}
+  ${{ inputs.build_eraman && '; Eraman' || '' }}
 on:
   workflow_dispatch:
     inputs:
+      tag:
+        type: string
+        description: Build a specific git tag
+        required: true
       deploy_google_play:
-        description: 'Deploy to Google Play'
+        description: 'Upload to Google Play'
         required: true
         type: boolean
-        default: true
+        default: false
       google_play_track:
         description: 'Google Play track'
         required: true
         type: string
-        default: 'production'
+        default: 'internal'
       build_official:
-        description: 'Build official app'
+        description: 'Build CoopCycle production app'
         required: true
         type: boolean
       build_official_beta:
-        description: 'Build official beta app'
+        description: 'Build CoopCycle beta app'
         required: true
         type: boolean
       build_naofood:
@@ -41,19 +55,21 @@ on:
         required: true
         type: boolean
 jobs:
-  default:
+  coopcycle:
     if: ${{ inputs.build_official }}
-    name: Build default app
+    name: Build CoopCycle production app
     uses: ./.github/workflows/fastlane_android.yml
     secrets: inherit
     with:
+      tag: ${{ inputs.tag }}
       google_play_track: ${{ inputs.google_play_track }}
       deploy_google_play: ${{ inputs.deploy_google_play }}
-  default_beta:
+  coopcycle_beta:
     if: ${{ inputs.build_official_beta }}
-    name: Build default beta app
+    name: Build CoopCycle beta app
     uses: ./.github/workflows/fastlane_android.yml
     with:
+      tag: ${{ inputs.tag }}
       instance: beta
       app_name: CoopCycle (Beta)
       package_name: fr.coopcycle.beta
@@ -67,6 +83,7 @@ jobs:
     name: Build Naofood app
     uses: ./.github/workflows/fastlane_android.yml
     with:
+      tag: ${{ inputs.tag }}
       instance: naofood
       instance_url: https://naofood.coopcycle.org
       app_name: Naofood
@@ -82,6 +99,7 @@ jobs:
     name: Build Zampate app
     uses: ./.github/workflows/fastlane_android.yml
     with:
+      tag: ${{ inputs.tag }}
       instance: zampate
       instance_url: https://zampate.coopcycle.org
       app_name: Zampate
@@ -97,6 +115,7 @@ jobs:
     name: Build Kooglof app
     uses: ./.github/workflows/fastlane_android.yml
     with:
+      tag: ${{ inputs.tag }}
       instance: kooglof
       instance_url: https://kooglof.coopcycle.org
       app_name: Kooglof
@@ -112,6 +131,7 @@ jobs:
     name: Build RobinFood app
     uses: ./.github/workflows/fastlane_android.yml
     with:
+      tag: ${{ inputs.tag }}
       instance: robinfood
       instance_url: https://robinfood.coopcycle.org
       app_name: Robin Food
@@ -127,6 +147,7 @@ jobs:
     name: Build Coursiers MTP app
     uses: ./.github/workflows/fastlane_android.yml
     with:
+      tag: ${{ inputs.tag }}
       instance: coursiersmontpellier
       instance_url: https://coursiersmontpellier.coopcycle.org
       app_name: Coursiers MTP
@@ -142,6 +163,7 @@ jobs:
     name: Build LCR app
     uses: ./.github/workflows/fastlane_android.yml
     with:
+      tag: ${{ inputs.tag }}
       instance: lcr
       instance_url: https://lcr.coopcycle.org
       app_name: Les Coursiers Rennais

@@ -1,11 +1,12 @@
 import _ from 'lodash';
 import { AppState } from 'react-native';
 
-import { pushNotification } from '../App/actions';
+import { addNotification } from '../App/actions';
 import { selectUser } from '../App/selectors';
 import { LOAD_ORDERS_SUCCESS } from './actions';
+import { EVENT as EVENT_ORDER, STATE } from '../../domain/Order';
 
-export const ringOnNewOrderCreated = ({ getState, dispatch }) => {
+export const notifyOnNewOrderCreated = ({ getState, dispatch }) => {
   return next => action => {
     if (AppState.currentState !== 'active') {
       return next(action);
@@ -40,8 +41,8 @@ export const ringOnNewOrderCreated = ({ getState, dispatch }) => {
           (a, b) => a['@id'] + ':' + a.state === b['@id'] + ':' + b.state,
         );
         orders.forEach(o => {
-          if (o.state === 'new') {
-            dispatch(pushNotification('order:created', { order: o }));
+          if (o.state === STATE.NEW) {
+            dispatch(addNotification(EVENT_ORDER.CREATED, { order: o }));
           }
         });
       }

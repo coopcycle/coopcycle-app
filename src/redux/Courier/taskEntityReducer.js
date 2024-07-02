@@ -6,7 +6,7 @@ import {
   BULK_ASSIGNMENT_TASKS_SUCCESS,
   UNASSIGN_TASK_SUCCESS,
 } from '../Dispatch/actions';
-import { MESSAGE } from '../middlewares/CentrifugoMiddleware';
+import { CENTRIFUGO_MESSAGE } from '../middlewares/CentrifugoMiddleware';
 import {
   ADD_PICTURE,
   ADD_SIGNATURE,
@@ -239,7 +239,7 @@ export const tasksEntityReducer = (
       }
       return state;
 
-    case MESSAGE:
+    case CENTRIFUGO_MESSAGE:
       return processWsMsg(state, action);
 
     case ADD_SIGNATURE:

@@ -16,6 +16,10 @@ import {
   printOrder,
 } from '../../redux/Restaurant/actions';
 import { isMultiVendor } from '../../utils/order';
+import {
+  selectIsPrinterConnected,
+  selectPrinter,
+} from '../../redux/Restaurant/selectors';
 
 const OrderNotes = ({ order }) => {
   if (order.notes) {
@@ -83,7 +87,7 @@ class OrderScreen extends Component {
             }
           />
         )}
-        {canEdit && order.state === 'accepted' && (
+        {canEdit && (order.state === 'accepted' || order.state === 'started' || order.state === 'ready') && (
           <OrderAcceptedFooter
             order={order}
             onPressCancel={() =>
@@ -103,9 +107,8 @@ class OrderScreen extends Component {
 function mapStateToProps(state, ownProps) {
   return {
     order: ownProps.route.params?.order,
-    isPrinterConnected:
-      !!state.restaurant.printer || state.restaurant.isSunmiPrinter,
-    printer: state.restaurant.printer,
+    isPrinterConnected: selectIsPrinterConnected(state),
+    printer: selectPrinter(state),
   };
 }
 

@@ -2,14 +2,14 @@ import { CommonActions } from '@react-navigation/native';
 import { Buffer } from 'buffer';
 import _ from 'lodash';
 import BleManager from 'react-native-ble-manager';
-import { createAction } from 'redux-actions';
+import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
+import { createAction as createFsAction } from 'redux-actions';
 
 import DropdownHolder from '../../DropdownHolder';
 import NavigationHolder from '../../NavigationHolder';
 
 import * as SunmiPrinterLibrary from '@mitsuharu/react-native-sunmi-printer-library';
 import { encodeForPrinter } from '../../utils/order';
-import { pushNotification } from '../App/actions';
 
 import i18n from '../../i18n';
 
@@ -18,6 +18,9 @@ import {
   LOAD_MY_RESTAURANTS_REQUEST,
   LOAD_MY_RESTAURANTS_SUCCESS,
 } from '../App/actions';
+
+import { selectHttpClient } from '../App/selectors';
+import { selectOrderById } from './selectors';
 
 /*
  * Action Types
@@ -114,86 +117,88 @@ export const UPDATE_LOOPEAT_FORMATS_SUCCESS =
  * Action Creators
  */
 
-const loadMyRestaurantsRequest = createAction(LOAD_MY_RESTAURANTS_REQUEST);
-const loadMyRestaurantsSuccess = createAction(LOAD_MY_RESTAURANTS_SUCCESS);
-const loadMyRestaurantsFailure = createAction(LOAD_MY_RESTAURANTS_FAILURE);
+const loadMyRestaurantsRequest = createFsAction(LOAD_MY_RESTAURANTS_REQUEST);
+const loadMyRestaurantsSuccess = createFsAction(LOAD_MY_RESTAURANTS_SUCCESS);
+const loadMyRestaurantsFailure = createFsAction(LOAD_MY_RESTAURANTS_FAILURE);
 
-export const loadOrdersRequest = createAction(LOAD_ORDERS_REQUEST);
-export const loadOrdersSuccess = createAction(LOAD_ORDERS_SUCCESS);
-export const loadOrdersFailure = createAction(LOAD_ORDERS_FAILURE);
+export const loadOrdersRequest = createFsAction(LOAD_ORDERS_REQUEST);
+export const loadOrdersSuccess = createFsAction(LOAD_ORDERS_SUCCESS);
+export const loadOrdersFailure = createFsAction(LOAD_ORDERS_FAILURE);
 
-export const loadOrderRequest = createAction(LOAD_ORDER_REQUEST);
-export const loadOrderSuccess = createAction(LOAD_ORDER_SUCCESS);
-export const loadOrderFailure = createAction(LOAD_ORDER_FAILURE);
+export const loadOrderRequest = createFsAction(LOAD_ORDER_REQUEST);
+export const loadOrderSuccess = createFsAction(LOAD_ORDER_SUCCESS);
+export const loadOrderFailure = createFsAction(LOAD_ORDER_FAILURE);
 
-export const loadMenusRequest = createAction(LOAD_MENUS_REQUEST);
-export const loadMenusSuccess = createAction(LOAD_MENUS_SUCCESS);
-export const loadMenusFailure = createAction(LOAD_MENUS_FAILURE);
-export const setCurrentMenu = createAction(
+export const loadMenusRequest = createFsAction(LOAD_MENUS_REQUEST);
+export const loadMenusSuccess = createFsAction(LOAD_MENUS_SUCCESS);
+export const loadMenusFailure = createFsAction(LOAD_MENUS_FAILURE);
+export const setCurrentMenu = createFsAction(
   SET_CURRENT_MENU,
   (restaurant, menu) => ({ restaurant, menu }),
 );
 
-export const acceptOrderRequest = createAction(ACCEPT_ORDER_REQUEST);
-export const acceptOrderSuccess = createAction(ACCEPT_ORDER_SUCCESS);
-export const acceptOrderFailure = createAction(ACCEPT_ORDER_FAILURE);
+export const acceptOrderRequest = createFsAction(ACCEPT_ORDER_REQUEST);
+export const acceptOrderSuccess = createFsAction(ACCEPT_ORDER_SUCCESS);
+export const acceptOrderFailure = createFsAction(ACCEPT_ORDER_FAILURE);
 
-export const refuseOrderRequest = createAction(REFUSE_ORDER_REQUEST);
-export const refuseOrderSuccess = createAction(REFUSE_ORDER_SUCCESS);
-export const refuseOrderFailure = createAction(REFUSE_ORDER_FAILURE);
+export const refuseOrderRequest = createFsAction(REFUSE_ORDER_REQUEST);
+export const refuseOrderSuccess = createFsAction(REFUSE_ORDER_SUCCESS);
+export const refuseOrderFailure = createFsAction(REFUSE_ORDER_FAILURE);
 
-export const delayOrderRequest = createAction(DELAY_ORDER_REQUEST);
-export const delayOrderSuccess = createAction(DELAY_ORDER_SUCCESS);
-export const delayOrderFailure = createAction(DELAY_ORDER_FAILURE);
+export const delayOrderRequest = createFsAction(DELAY_ORDER_REQUEST);
+export const delayOrderSuccess = createFsAction(DELAY_ORDER_SUCCESS);
+export const delayOrderFailure = createFsAction(DELAY_ORDER_FAILURE);
 
-export const fulfillOrderRequest = createAction(FULFILL_ORDER_REQUEST);
-export const fulfillOrderSuccess = createAction(FULFILL_ORDER_SUCCESS);
-export const fulfillOrderFailure = createAction(FULFILL_ORDER_FAILURE);
+export const fulfillOrderRequest = createFsAction(FULFILL_ORDER_REQUEST);
+export const fulfillOrderSuccess = createFsAction(FULFILL_ORDER_SUCCESS);
+export const fulfillOrderFailure = createFsAction(FULFILL_ORDER_FAILURE);
 
-export const cancelOrderRequest = createAction(CANCEL_ORDER_REQUEST);
-export const cancelOrderSuccess = createAction(CANCEL_ORDER_SUCCESS);
-export const cancelOrderFailure = createAction(CANCEL_ORDER_FAILURE);
+export const cancelOrderRequest = createFsAction(CANCEL_ORDER_REQUEST);
+export const cancelOrderSuccess = createFsAction(CANCEL_ORDER_SUCCESS);
+export const cancelOrderFailure = createFsAction(CANCEL_ORDER_FAILURE);
 
-export const changeStatusRequest = createAction(CHANGE_STATUS_REQUEST);
-export const changeStatusSuccess = createAction(CHANGE_STATUS_SUCCESS);
-export const changeStatusFailure = createAction(CHANGE_STATUS_FAILURE);
+export const changeStatusRequest = createFsAction(CHANGE_STATUS_REQUEST);
+export const changeStatusSuccess = createFsAction(CHANGE_STATUS_SUCCESS);
+export const changeStatusFailure = createFsAction(CHANGE_STATUS_FAILURE);
 
-export const changeRestaurant = createAction(CHANGE_RESTAURANT);
-export const changeDate = createAction(CHANGE_DATE);
+export const changeRestaurant = createFsAction(CHANGE_RESTAURANT);
+export const changeDate = createFsAction(CHANGE_DATE);
 
-export const loadProductsRequest = createAction(LOAD_PRODUCTS_REQUEST);
-export const loadProductsSuccess = createAction(LOAD_PRODUCTS_SUCCESS);
-export const loadProductsFailure = createAction(LOAD_PRODUCTS_FAILURE);
+export const loadProductsRequest = createFsAction(LOAD_PRODUCTS_REQUEST);
+export const loadProductsSuccess = createFsAction(LOAD_PRODUCTS_SUCCESS);
+export const loadProductsFailure = createFsAction(LOAD_PRODUCTS_FAILURE);
 
-export const loadProductOptionsSuccess = createAction(
+export const loadProductOptionsSuccess = createFsAction(
   LOAD_PRODUCT_OPTIONS_SUCCESS,
 );
 
-export const setNextProductsPage = createAction(SET_NEXT_PRODUCTS_PAGE);
-export const loadMoreProductsSuccess = createAction(LOAD_MORE_PRODUCTS_SUCCESS);
-export const setHasMoreProducts = createAction(SET_HAS_MORE_PRODUCTS);
+export const setNextProductsPage = createFsAction(SET_NEXT_PRODUCTS_PAGE);
+export const loadMoreProductsSuccess = createFsAction(
+  LOAD_MORE_PRODUCTS_SUCCESS,
+);
+export const setHasMoreProducts = createFsAction(SET_HAS_MORE_PRODUCTS);
 
-export const changeProductEnabledRequest = createAction(
+export const changeProductEnabledRequest = createFsAction(
   CHANGE_PRODUCT_ENABLED_REQUEST,
   (product, enabled) => ({ product, enabled }),
 );
-export const changeProductEnabledSuccess = createAction(
+export const changeProductEnabledSuccess = createFsAction(
   CHANGE_PRODUCT_ENABLED_SUCCESS,
 );
-export const changeProductEnabledFailure = createAction(
+export const changeProductEnabledFailure = createFsAction(
   CHANGE_PRODUCT_ENABLED_FAILURE,
   (error, product, enabled) => ({ error, product, enabled }),
 );
 
-export const changeProductOptionValueEnabledRequest = createAction(
+export const changeProductOptionValueEnabledRequest = createFsAction(
   CHANGE_PRODUCT_OPTION_VALUE_ENABLED_REQUEST,
   (productOptionValue, enabled) => ({ productOptionValue, enabled }),
 );
-export const changeProductOptionValueEnabledSuccess = createAction(
+export const changeProductOptionValueEnabledSuccess = createFsAction(
   CHANGE_PRODUCT_OPTION_VALUE_ENABLED_SUCCESS,
   (productOptionValue, enabled) => ({ productOptionValue, enabled }),
 );
-export const changeProductOptionValueEnabledFailure = createAction(
+export const changeProductOptionValueEnabledFailure = createFsAction(
   CHANGE_PRODUCT_OPTION_VALUE_ENABLED_FAILURE,
   (error, productOptionValue, enabled) => ({
     error,
@@ -202,37 +207,45 @@ export const changeProductOptionValueEnabledFailure = createAction(
   }),
 );
 
-export const closeRestaurantRequest = createAction(CLOSE_RESTAURANT_REQUEST);
-export const closeRestaurantSuccess = createAction(CLOSE_RESTAURANT_SUCCESS);
-export const closeRestaurantFailure = createAction(CLOSE_RESTAURANT_FAILURE);
+export const closeRestaurantRequest = createFsAction(CLOSE_RESTAURANT_REQUEST);
+export const closeRestaurantSuccess = createFsAction(CLOSE_RESTAURANT_SUCCESS);
+export const closeRestaurantFailure = createFsAction(CLOSE_RESTAURANT_FAILURE);
 
-export const deleteOpeningHoursSpecificationRequest = createAction(
+export const deleteOpeningHoursSpecificationRequest = createFsAction(
   DELETE_OPENING_HOURS_SPECIFICATION_REQUEST,
 );
-export const deleteOpeningHoursSpecificationSuccess = createAction(
+export const deleteOpeningHoursSpecificationSuccess = createFsAction(
   DELETE_OPENING_HOURS_SPECIFICATION_SUCCESS,
 );
-export const deleteOpeningHoursSpecificationFailure = createAction(
+export const deleteOpeningHoursSpecificationFailure = createFsAction(
   DELETE_OPENING_HOURS_SPECIFICATION_FAILURE,
 );
 
-export const printerConnected = createAction(PRINTER_CONNECTED);
-export const printerDisconnected = createAction(PRINTER_DISCONNECTED);
+export const printerConnected = createFsAction(PRINTER_CONNECTED);
+export const printerDisconnected = createFsAction(PRINTER_DISCONNECTED);
 
-export const bluetoothEnabled = createAction(BLUETOOTH_ENABLED);
-export const bluetoothDisabled = createAction(BLUETOOTH_DISABLED);
-const _bluetoothStartScan = createAction(BLUETOOTH_START_SCAN);
-export const bluetoothStopScan = createAction(BLUETOOTH_STOP_SCAN);
-export const bluetoothStarted = createAction(BLUETOOTH_STARTED);
+export const bluetoothEnabled = createFsAction(BLUETOOTH_ENABLED);
+export const bluetoothDisabled = createFsAction(BLUETOOTH_DISABLED);
+const _bluetoothStartScan = createFsAction(BLUETOOTH_START_SCAN);
+export const bluetoothStopScan = createFsAction(BLUETOOTH_STOP_SCAN);
+export const bluetoothStarted = createFsAction(BLUETOOTH_STARTED);
 
-export const sunmiPrinterDetected = createAction(SUNMI_PRINTER_DETECTED);
+export const sunmiPrinterDetected = createFsAction(SUNMI_PRINTER_DETECTED);
 
-export const setLoopeatFormats = createAction(
+export const setLoopeatFormats = createFsAction(
   SET_LOOPEAT_FORMATS,
   (order, loopeatFormats) => ({ order, loopeatFormats }),
 );
-export const updateLoopeatFormatsSuccess = createAction(
+export const updateLoopeatFormatsSuccess = createFsAction(
   UPDATE_LOOPEAT_FORMATS_SUCCESS,
+);
+
+export const printPending = createAction('PRINT_PENDING');
+export const printFulfilled = createAction('PRINT_FULFILLED');
+export const printRejected = createAction('PRINT_REJECTED');
+
+export const setPrintNumberOfCopies = createAction(
+  'SET_PRINT_NUMBER_OF_COPIES',
 );
 
 /*
@@ -388,23 +401,6 @@ export function loadOrderAndNavigate(order, cb) {
   };
 }
 
-export function loadOrderAndPushNotification(order) {
-  return function (dispatch, getState) {
-    const { app } = getState();
-    const { httpClient } = app;
-
-    dispatch(loadOrderRequest());
-
-    return httpClient
-      .get(order)
-      .then(res => {
-        dispatch(loadOrderSuccess(res));
-        dispatch(pushNotification('order:created', { order: res }));
-      })
-      .catch(e => dispatch(loadOrderFailure(e)));
-  };
-}
-
 export function acceptOrder(order, cb) {
   return function (dispatch, getState) {
     const { app } = getState();
@@ -431,6 +427,28 @@ export function acceptOrder(order, cb) {
       .catch(e => dispatch(acceptOrderFailure(e)));
   };
 }
+
+export const startPreparing = createAsyncThunk(
+  'order/startPreparing',
+  async (order, thunkAPI) => {
+    const { getState } = thunkAPI;
+
+    const httpClient = selectHttpClient(getState());
+
+    return await httpClient.put(order['@id'] + '/start_preparing');
+  },
+);
+
+export const finishPreparing = createAsyncThunk(
+  'order/finishPreparing',
+  async (order, thunkAPI) => {
+    const { getState } = thunkAPI;
+
+    const httpClient = selectHttpClient(getState());
+
+    return await httpClient.put(order['@id'] + '/finish_preparing');
+  },
+);
 
 export function refuseOrder(order, reason, cb) {
   return function (dispatch, getState) {
@@ -637,8 +655,23 @@ function bluetoothErrorToString(e) {
     : e;
 }
 
+export function printOrderById(orderId) {
+  return async (dispatch, getState) => {
+    const order = selectOrderById(getState(), orderId);
+
+    if (!order) {
+      console.warn('Order not found', orderId);
+      return;
+    }
+
+    await dispatch(printOrder(order));
+  };
+}
+
 export function printOrder(order) {
   return async (dispatch, getState) => {
+    dispatch(printPending(order));
+
     const { printer, isSunmiPrinter } = getState().restaurant;
 
     try {
@@ -647,13 +680,16 @@ export function printOrder(order) {
         await SunmiPrinterLibrary.sendRAWData(
           Buffer.from(encodeForPrinter(order, true)).toString('base64'),
         );
+        dispatch(printFulfilled(order));
         return;
       }
     } catch (e) {
-      console.log(e);
+      console.warn('printOrder with SunmiPrinter failed', e);
     }
 
     if (!printer) {
+      console.warn('No printer selected');
+      dispatch(printRejected(order));
       return;
     }
 
@@ -669,6 +705,7 @@ export function printOrder(order) {
           await BleManager.connect(printer.id);
         } catch (e) {
           dispatch(printerDisconnected());
+          dispatch(printRejected(order));
           DropdownHolder.getDropdown().alertWithType(
             'error',
             i18n.t('RESTAURANT_PRINTER_CONNECT_ERROR_TITLE'),
@@ -742,14 +779,16 @@ export function printOrder(order) {
               writableCharacteristic.characteristic,
               Array.from(encoded),
             );
-
-            break;
+            dispatch(printFulfilled(order));
           } catch (e) {
-            console.log('Write failed', e);
+            console.warn('printOrder | Write failed', e);
+            dispatch(printRejected(order));
           }
         }
       }
     } catch (e) {
+      console.warn('printOrder | Error', e);
+      dispatch(printRejected(order));
       DropdownHolder.getDropdown().alertWithType(
         'error',
         i18n.t('RESTAURANT_PRINTER_CONNECT_ERROR_TITLE'),
@@ -760,7 +799,7 @@ export function printOrder(order) {
 }
 
 export function connectPrinter(device, cb) {
-  return function (dispatch, getState) {
+  return function (dispatch) {
     BleManager.connect(device.id)
       .then(() => {
         dispatch(printerConnected(device));
@@ -786,12 +825,12 @@ export function connectPrinter(device, cb) {
 }
 
 export function disconnectPrinter(device, cb) {
-  return function (dispatch, getState) {
+  return function (dispatch) {
     BleManager.disconnect(device.id)
-      // We use Promose.finally because if the state
+      // We use Promise.finally because if the state
       // contains a saved printer which is not connected anymore,
       // BleManager.disconnect will return an error
-      .catch(e => console.log(e))
+      .catch(e => console.warn('disconnectPrinter', e))
       .finally(() => {
         dispatch(printerDisconnected());
 

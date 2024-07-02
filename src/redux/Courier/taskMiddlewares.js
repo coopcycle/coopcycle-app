@@ -1,9 +1,10 @@
 import _ from 'lodash';
 import { AppState } from 'react-native';
 
-import { LOGOUT_SUCCESS, pushNotification } from '../App/actions';
+import { LOGOUT_SUCCESS, addNotification } from '../App/actions';
 import { LOAD_TASKS_SUCCESS } from './taskActions';
 import { selectTasks } from './taskSelectors';
+import { EVENT as EVENT_TASK_COLLECTION } from '../../domain/TaskCollection';
 
 export const ringOnTaskListUpdated = ({ getState, dispatch }) => {
   return next => action => {
@@ -54,8 +55,8 @@ export const ringOnTaskListUpdated = ({ getState, dispatch }) => {
 
       if (addedTasks.length > 0 || removedTasks.length > 0) {
         dispatch(
-          pushNotification('tasks:changed', {
-            date: state.date,
+          addNotification(EVENT_TASK_COLLECTION.CHANGED, {
+            date: date,
             added: addedTasks,
             removed: removedTasks,
           }),

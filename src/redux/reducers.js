@@ -49,7 +49,7 @@ const taskEntitiesPersistConfig = {
 const restaurantPersistConfig = {
   key: 'restaurant',
   storage: AsyncStorage,
-  whitelist: ['myRestaurants', 'restaurant', 'printer'],
+  whitelist: ['myRestaurants', 'restaurant', 'printer', 'preferences'],
 };
 
 const tasksUiPersistConfig = {
