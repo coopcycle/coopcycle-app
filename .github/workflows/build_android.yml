@@ -17,7 +17,7 @@ on:
         description: Build a specific git tag
         required: true
       deploy_google_play:
-        description: 'Upload to Google Play'
+        description: 'Release to Google Play track (see below)'
         required: true
         type: boolean
         default: false
@@ -27,31 +27,31 @@ on:
         type: string
         default: 'internal'
       build_official:
-        description: 'Build CoopCycle production app'
+        description: 'CoopCycle production app'
         required: true
         type: boolean
       build_official_beta:
-        description: 'Build CoopCycle beta app'
+        description: 'CoopCycle beta app'
         required: true
         type: boolean
       build_naofood:
-        description: 'Build Naofood app'
+        description: 'Naofood app'
         required: true
         type: boolean
       build_kooglof:
-        description: 'Build Kooglof app'
+        description: 'Kooglof app'
         required: true
         type: boolean
       build_robinfood:
-        description: 'Build RobinFood app'
+        description: 'RobinFood app'
         required: true
         type: boolean
       build_coursiers_rennais:
-        description: 'Build Coursiers Rennais app'
+        description: 'Coursiers Rennais app'
         required: true
         type: boolean
       build_eraman:
-        description: 'Build Eraman app'
+        description: 'Eraman app'
         required: true
         type: boolean
 jobs:
