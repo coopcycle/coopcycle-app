@@ -83,7 +83,7 @@ function RestaurantSearch(props) {
             style={styles.text}
             fontSize={'md'}
             numberOfLines={1}
-            ellipsizeMode="trail">
+            ellipsizeMode="tail">
             {props.defaultValue?.streetAddress}
           </Text>
         </View>
