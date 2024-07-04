@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { checkout } from '../../redux/Checkout/actions';
 import { selectCart } from '../../redux/Checkout/selectors';
 import CreditCard from './components/CreditCard';
+import HeaderHeightAwareKeyboardAvoidingView from '../../components/HeaderHeightAwareKeyboardAvoidingView'
 
 class PaymentMethodCard extends Component {
   _onSubmit(values) {
@@ -16,11 +17,13 @@ class PaymentMethodCard extends Component {
     const { cart, errors } = this.props;
 
     return (
-      <CreditCard
-        cart={cart}
-        errors={errors}
-        onSubmit={this._onSubmit.bind(this)}
-      />
+      <HeaderHeightAwareKeyboardAvoidingView>
+        <CreditCard
+          cart={cart}
+          errors={errors}
+          onSubmit={this._onSubmit.bind(this)}
+        />
+      </HeaderHeightAwareKeyboardAvoidingView>
     );
   }
 }

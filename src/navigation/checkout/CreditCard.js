@@ -12,6 +12,7 @@ import { selectCart } from '../../redux/Checkout/selectors';
 import CashComp from './components/CashOnDelivery';
 import CreditCardComp from './components/CreditCard';
 import PaymentMethodPicker from './components/PaymentMethodPicker';
+import HeaderHeightAwareKeyboardAvoidingView from '../../components/HeaderHeightAwareKeyboardAvoidingView';
 
 class CreditCard extends Component {
   _onSubmitCard(values) {
@@ -55,11 +56,13 @@ class CreditCard extends Component {
       }
 
       return (
-        <CreditCardComp
-          cart={cart}
-          errors={errors}
-          onSubmit={this._onSubmitCard.bind(this)}
-        />
+        <HeaderHeightAwareKeyboardAvoidingView>
+          <CreditCardComp
+            cart={cart}
+            errors={errors}
+            onSubmit={this._onSubmitCard.bind(this)}
+          />
+        </HeaderHeightAwareKeyboardAvoidingView>
       );
     }
 

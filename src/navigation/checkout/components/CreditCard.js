@@ -5,8 +5,6 @@ import { Button, Center, Checkbox, Input, Radio, Text } from 'native-base';
 import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
 import {
-  Animated,
-  Keyboard,
   Platform,
   StyleSheet,
   useColorScheme,
@@ -52,8 +50,6 @@ class CreditCard extends Component {
   constructor(props) {
     super(props);
 
-    this.keyboardHeight = new Animated.Value(0);
-
     this.state = {
       valid: false,
       form: {},
@@ -62,54 +58,12 @@ class CreditCard extends Component {
   }
 
   componentDidMount() {
-    // https://reactnative.dev/docs/keyboard
-    // keyboardWillShow as well as keyboardWillHide are generally not available on Android
-    // since there is no native corresponding event.
-
-    const showEventName =
-      Platform.OS === 'android' ? 'keyboardDidShow' : 'keyboardWillShow';
-    const hideEventName =
-      Platform.OS === 'android' ? 'keyboardDidHide' : 'keyboardWillHide';
-
-    this.keyboardWillShowSub = Keyboard.addListener(
-      showEventName,
-      this.keyboardWillShow.bind(this),
-    );
-    this.keyboardWillHideSub = Keyboard.addListener(
-      hideEventName,
-      this.keyboardWillHide.bind(this),
-    );
 
     this.props.loadPaymentDetails();
 
     if (!this.props.user.isGuest()) {
       this.props.loadStripeSavedPaymentMethods();
     }
-  }
-
-  componentWillUnmount() {
-    this.keyboardWillShowSub.remove();
-    this.keyboardWillHideSub.remove();
-  }
-
-  keyboardWillShow(event) {
-    Animated.parallel([
-      Animated.timing(this.keyboardHeight, {
-        duration: event.duration,
-        toValue: event.endCoordinates.height,
-        useNativeDriver: false,
-      }),
-    ]).start();
-  }
-
-  keyboardWillHide(event) {
-    Animated.parallel([
-      Animated.timing(this.keyboardHeight, {
-        duration: event.duration,
-        toValue: 0,
-        useNativeDriver: false,
-      }),
-    ]).start();
   }
 
   _validate(values) {
@@ -200,8 +154,7 @@ class CreditCard extends Component {
             setFieldValue,
             setFieldTouched,
           }) => (
-            <Animated.View
-              style={{ flex: 1, paddingBottom: this.keyboardHeight }}>
+            <>
               {this.shouldRenderStripePaymentMethods() &&
               !this.state.addNewCard ? (
                 <Center flex={1}>
@@ -321,7 +274,7 @@ class CreditCard extends Component {
                   trailing: false,
                 })}
               />
-            </Animated.View>
+            </>
           )}
         </Formik>
       </StripeProvider>
