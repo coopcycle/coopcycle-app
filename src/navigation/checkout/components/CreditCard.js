@@ -111,6 +111,7 @@ class CreditCard extends Component {
       stripePaymentMethodsLoaded,
       stripePaymentMethods,
       user,
+      total,
     } = this.props;
 
     if (
@@ -269,7 +270,7 @@ class CreditCard extends Component {
                 isDisabled={disabled}
                 testID="creditCardSubmit"
                 text={this.props.t('PAY_AMOUNT', {
-                  amount: formatPrice(cart.total),
+                  amount: formatPrice(total || cart.total),
                 })}
                 onPress={_.debounce(handleSubmit, 1000, {
                   leading: true,
