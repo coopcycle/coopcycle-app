@@ -59,7 +59,9 @@ class CreditCard extends Component {
 
   componentDidMount() {
 
-    this.props.loadPaymentDetails();
+    if (this.props.shouldLoadPaymentDetails) {
+      this.props.loadPaymentDetails();
+    }
 
     if (!this.props.user.isGuest()) {
       this.props.loadStripeSavedPaymentMethods();
@@ -303,13 +305,14 @@ const styles = StyleSheet.create({
   },
 });
 
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
   return {
     stripePublishableKey: state.app.settings.stripe_publishable_key,
     paymentDetailsLoaded: state.checkout.paymentDetailsLoaded,
     stripePaymentMethods: state.checkout.stripePaymentMethods || [],
     stripePaymentMethodsLoaded: state.checkout.stripePaymentMethodsLoaded,
     user: state.app.user,
+    shouldLoadPaymentDetails: ownProps.hasOwnProperty('shouldLoadPaymentDetails') ? ownProps.shouldLoadPaymentDetails : true,
   };
 }
 
