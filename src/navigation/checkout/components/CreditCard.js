@@ -311,7 +311,7 @@ class CreditCard extends Component {
                 </Center>
               ) : null}
               <FooterButton
-                idDisabled={disabled}
+                isDisabled={disabled}
                 testID="creditCardSubmit"
                 text={this.props.t('PAY_AMOUNT', {
                   amount: formatPrice(cart.total),
