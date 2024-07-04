@@ -4,7 +4,13 @@ import { AbortController } from 'abortcontroller-polyfill/dist/cjs-ponyfill';
 import axios from 'axios';
 import Fuse from 'fuse.js';
 import _ from 'lodash';
-import { Icon, Text, useColorMode, useColorModeValue } from 'native-base';
+import {
+  Icon,
+  Input,
+  Text,
+  useColorMode,
+  useColorModeValue,
+} from 'native-base';
 import PropTypes from 'prop-types';
 import qs from 'qs';
 import React, { Component } from 'react';
@@ -407,7 +413,7 @@ class AddressAutocomplete extends Component {
     return (
       <View style={styles.textInput}>
         <View style={styles.textInput}>
-          <TextInput
+          <Input
             {...props}
             style={[props.style, { flex: 1 }]}
             onFocus={this.onTextInputFocus.bind(this)}

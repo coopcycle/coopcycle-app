@@ -29,6 +29,7 @@ import {
   useBackgroundHighlightColor,
 } from '../../styles/theme';
 import ModalFormWrapper from './ModalFormWrapper';
+import FormInput from './components/FormInput';
 
 function NewDelivery(props) {
   const [isDateTimePickerVisible, setIsDateTimePickerVisible] = useState(false);
@@ -238,9 +239,8 @@ function NewDelivery(props) {
             <Text style={styles.label}>
               {props.t('STORE_NEW_DELIVERY_ADDRESS')}
             </Text>
-            <Input
+            <FormInput
               variant="filled"
-              style={[styles.textInput, inputStyles]}
               value={delivery?.address.streetAddress}
               isReadOnly={true}
             />
@@ -271,10 +271,9 @@ function NewDelivery(props) {
 
           <View style={[styles.formGroup]}>
             <Text style={styles.label}>Custom Weight</Text>
-            <Input
+            <FormInput
               keyboardType="numeric"
               rightElement={<Text style={styles.weightUnit}>kg</Text>}
-              style={[styles.textInput, inputStyles]}
               autoCorrect={false}
               returnKeyType="done"
               onChangeText={value =>
@@ -302,13 +301,6 @@ const styles = StyleSheet.create({
   },
   formGroup: {
     marginBottom: 10,
-  },
-  textInput: {
-    borderColor: '#E3E3E3',
-    borderRadius: 4,
-    borderWidth: 1,
-    minHeight: 40,
-    backgroundColor: '#FAFAFA',
   },
   errorText: {
     paddingVertical: 5,
