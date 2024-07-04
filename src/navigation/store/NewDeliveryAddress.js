@@ -12,14 +12,17 @@ import { selectStore } from '../../redux/Store/selectors';
 import {
   useBackgroundContainerColor,
   useBackgroundHighlightColor,
+  usePrimaryColor,
 } from '../../styles/theme';
 import ModalFormWrapper from './ModalFormWrapper';
+import FormInput from './components/FormInput';
 
 function NewDelivery(props) {
   const [validAddresses, setValidAddresses] = useState(false);
   const [address, setAddress] = useState(null);
   const backgroundColor = useBackgroundContainerColor();
   const backgroundHighlightColor = useBackgroundHighlightColor();
+  const primaryColor = usePrimaryColor();
 
   const inputStyles = {
     backgroundColor,
@@ -46,6 +49,9 @@ function NewDelivery(props) {
     inputContainerStyle: {
       flex: 1,
       borderWidth: 0,
+    },
+    textInputStyle: {
+      padding: 10,
     },
   };
 
@@ -153,10 +159,17 @@ function NewDelivery(props) {
                     flex: 1,
                     justifyContent: 'center',
                   },
-                  inputStyles,
                 ]}
-                style={{ borderRadius: 0 }}
+                style={{
+                  borderRadius: 0,
+                  padding: 10,
+                  borderWidth: 0,
+                  paddingLeft: 10,
+                  ...inputStyles,
+                }}
                 {...autocompleteProps}
+                placeholder={props.t('ENTER_ADDRESS')}
+                _focus={{ borderColor: primaryColor }}
               />
             </View>
             {errors.address && touched.address && errors.address.address && (
@@ -169,8 +182,7 @@ function NewDelivery(props) {
             <Text style={styles.label}>
               {props.t('STORE_NEW_DELIVERY_CONTACT_NAME')}
             </Text>
-            <Input
-              style={[styles.textInput, inputStyles]}
+            <FormInput
               autoCorrect={false}
               returnKeyType="done"
               onChangeText={handleChange('address.contactName')}
@@ -189,8 +201,7 @@ function NewDelivery(props) {
             <Text style={styles.label}>
               {props.t('STORE_NEW_DELIVERY_PHONE_NUMBER')}
             </Text>
-            <Input
-              style={[styles.textInput, inputStyles]}
+            <FormInput
               autoCorrect={false}
               keyboardType="phone-pad"
               returnKeyType="done"
@@ -210,8 +221,7 @@ function NewDelivery(props) {
             <Text style={styles.label}>
               {props.t('STORE_NEW_DELIVERY_COMMENTS')}
             </Text>
-            <Input
-              style={[styles.textInput, styles.textarea, inputStyles]}
+            <FormInput
               autoCorrect={false}
               multiline={true}
               onChangeText={handleChange('address.description')}

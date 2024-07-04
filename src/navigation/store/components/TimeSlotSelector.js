@@ -1,5 +1,5 @@
 import { Button, Text, View } from 'native-base';
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet } from 'react-native';
 import {
@@ -73,6 +73,8 @@ export default function TimeSlotSelector({
   const backgroundHighlightColor = useBackgroundHighlightColor();
   const textColor = useBaseTextColor();
 
+  const [isFocused, setIsFocused] = useState(false);
+
   return (
     <View style={[styles.formGroup]}>
       <Text style={styles.label}>{t('STORE_NEW_DELIVERY_TIME_SLOT')}</Text>
@@ -90,7 +92,7 @@ export default function TimeSlotSelector({
                   borderColor:
                     selectedTimeSlot === timeSlot.name
                       ? 'transparent'
-                      : '#878787',
+                      : backgroundHighlightColor,
                 },
                 styles.button,
               ]}
@@ -113,13 +115,13 @@ export default function TimeSlotSelector({
           inputIOS: {
             ...pickerSelectStyles.inputIOS,
             backgroundColor: backgroundContainerColor,
-            borderColor: backgroundHighlightColor,
+            borderColor: isFocused ? primaryColor : backgroundHighlightColor,
             color: textColor,
           },
           inputAndroid: {
             ...pickerSelectStyles.inputAndroid,
             backgroundColor: backgroundContainerColor,
-            borderColor: backgroundHighlightColor,
+            borderColor: isFocused ? primaryColor : backgroundHighlightColor,
             color: textColor,
           },
           iconContainer: {
@@ -136,6 +138,8 @@ export default function TimeSlotSelector({
           setFieldTouched('timeSlot');
           setSelectValue(value);
         }}
+        onOpen={() => setIsFocused(true)}
+        onClose={() => setIsFocused(false)}
         items={choices.map(
           choice => (choice = { value: choice.value, label: choice.label }),
         )}
