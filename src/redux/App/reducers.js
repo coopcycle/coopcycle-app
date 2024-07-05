@@ -110,7 +110,7 @@ const initialState = {
   termsAndConditionsText: '',
   privacyPolicyText: '',
   isSpinnerDelayEnabled: true,
-  isIncidentEnabled: false,
+  isIncidentEnabled: true,
 };
 
 function updateNotifications(state, event, params) {
