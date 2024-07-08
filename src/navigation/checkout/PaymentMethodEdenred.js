@@ -49,7 +49,7 @@ const Edenred = ({ clientId, baseURL, cart, paymentDetailsLoaded, loadPaymentDet
         navigation.navigate('CheckoutCreditCard');
       });
     }
-  }, [ baseURL, cart.hasEdenredCredentials, clientId, loadPaymentDetails, navigation, updateEdenredCredentials ]);
+  }, [ baseURL, cart.hasEdenredCredentials, clientId, loadPaymentDetails, navigation, updateEdenredCredentials, authorizationEndpoint ]);
 
   if (paymentDetailsLoaded && paymentDetails.breakdown) {
     return (
