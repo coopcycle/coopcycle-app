@@ -37,7 +37,7 @@ export const selectTasks = createSelector(
   (date, tasks) => {
     const key = moment(date).format('YYYY-MM-DD');
 
-    return tasks[key] || [];
+    return tasks[key] ? tasks[key].filter(t => t.status !== 'CANCELLED') : [];
   },
 );
 
