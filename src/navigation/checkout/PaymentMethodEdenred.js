@@ -32,7 +32,7 @@ const Edenred = ({ clientId, baseURL, cart, paymentDetailsLoaded, loadPaymentDet
         clientId: clientId,
         redirectUrl: `${Config.APP_AUTH_REDIRECT_SCHEME}://edenred`,
         serviceConfiguration: {
-          authorizationEndpoint,
+          authorizationEndpoint: `${authorizationEndpoint}/connect/authorize`,
           tokenEndpoint: `${baseURL}/edenred/connect/token`,
         },
         additionalParameters: {
