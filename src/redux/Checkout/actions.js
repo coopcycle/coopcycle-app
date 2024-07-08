@@ -1868,7 +1868,7 @@ export function updateEdenredCredentials(accessToken, refreshToken) {
       )
       .then(res => {
         dispatch(updateCartSuccess(res));
-        dispatch(loadPaymentDetails('EDENRED+CARD'))
+        dispatch(loadPaymentDetails())
       })
       .catch(e => dispatch(checkoutFailure(e)));
   };
