@@ -41,6 +41,7 @@ import CourierSettings from './courier/Settings';
 import CourierSettingsTags from './courier/Tags';
 import CourierTaskListPage from './courier/TaskListPage';
 import CourierTasksPage from './courier/TasksPage';
+import CourierBarcodePage from './courier/Barcode';
 
 import CheckoutPayment from './checkout/Payment';
 import CheckoutLogin from './checkout/Login';
@@ -98,6 +99,7 @@ export default {
   CheckoutMercadopago,
   CheckoutMoreInfos,
   CourierTasksPage,
+  CourierBarcodePage,
   CourierTaskListPage,
   CourierSettings,
   CourierSettingsTags,

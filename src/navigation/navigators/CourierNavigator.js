@@ -73,7 +73,11 @@ const MainStack = createStackNavigator();
 const headerButtons = nav => (
   <View style={styles.buttonBar}>
     <ButtonWithIcon
-      name="settings"
+      name="barcode-sharp"
+      onPress={() => nav.navigate('CourierBarcode')}
+    />
+    <ButtonWithIcon
+      name="settings-sharp"
       onPress={() => nav.navigate('CourierSettings')}
     />
     <TouchableOpacity style={styles.button}>
@@ -110,6 +114,21 @@ const MainNavigator = () => (
     />
   </MainStack.Navigator>
 );
+
+
+const BarcodeStack = createStackNavigator();
+const BarcodeNavigator = () => (
+  <BarcodeStack.Navigator screenOptions={stackNavigatorScreenOptions}>
+    <BarcodeStack.Screen
+      name="CourierBarcode"
+      component={screens.CourierBarcodePage}
+      options={{
+        title: i18n.t('COURIER_BARCODE'),
+      }}
+    />
+  </BarcodeStack.Navigator>
+);
+
 
 const SettingsStack = createStackNavigator();
 
@@ -151,5 +170,12 @@ export default () => (
         headerShown: false,
       }}
     />
+    <RootStack.Screen
+      name="CourierBarcode"
+      component={BarcodeNavigator}
+      options={{
+        headerShown: false,
+      }}
+      />
   </RootStack.Navigator>
 );
