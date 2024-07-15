@@ -8,7 +8,7 @@ import {
   checkoutWithCash,
   loadPaymentMethods,
 } from '../../redux/Checkout/actions';
-import { selectCart } from '../../redux/Checkout/selectors';
+import { selectCart, selectPaymentGateway } from '../../redux/Checkout/selectors';
 import CashComp from './components/CashOnDelivery';
 import CreditCardComp from './components/CreditCard';
 import PaymentMethodPicker from './components/PaymentMethodPicker';
@@ -90,7 +90,7 @@ function mapStateToProps(state, ownProps) {
     cart,
     errors: state.checkout.errors,
     paymentMethods: state.checkout.paymentMethods,
-    paymentGateway: state.app.settings.payment_gateway,
+    paymentGateway: selectPaymentGateway(state),
   };
 }
 

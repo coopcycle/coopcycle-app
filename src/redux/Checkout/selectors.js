@@ -292,3 +292,11 @@ export const selectCheckoutAuthorizationHeaders = createSelector(
     }
   },
 );
+
+// This will return the payment gateway to be used for the current cart,
+// or the global payment gateway (legacy)
+export const selectPaymentGateway = createSelector(
+  selectCart,
+  state => state.app.settings,
+  ({ cart }, settings) => cart.paymentGateway || settings.payment_gateway
+);
