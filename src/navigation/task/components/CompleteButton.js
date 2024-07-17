@@ -5,7 +5,7 @@ import { Dimensions, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { SwipeRow } from 'react-native-swipe-list-view';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
-import { greenColor, redColor } from '../../../styles/common';
+import { greenColor, redColor, yellowColor } from '../../../styles/common';
 import { doneIconName, failedIconName } from '../styles/common';
 
 const LeftButton = ({ width }) => (
@@ -91,7 +91,7 @@ const CompleteButton = React.forwardRef((props, ref) => {
               flex: 1,
               alignItems: 'flex-end',
               justifyContent: 'center',
-              backgroundColor: redColor,
+              backgroundColor: yellowColor,
               width: buttonWidth,
             }}
             onPress={onPressFailure}>
