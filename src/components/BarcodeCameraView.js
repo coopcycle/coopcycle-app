@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Dimensions } from 'react-native';
+import { Dimensions, Text } from 'react-native';
 import { View, Vibration } from 'react-native';
 import { CameraView, useCameraPermissions } from 'expo-camera/next';
 import _ from 'lodash';
@@ -40,7 +40,11 @@ export default function BarcodeCameraView(props) {
   const [flash, setFlash] = useState(false);
 
   if (!hasPermission) {
-    return <View />;
+    return (
+      <View>
+        <Text>No camera permission</Text>
+      </View>
+    );
   }
 
   if (!hasPermission.granted) {
@@ -66,7 +70,7 @@ export default function BarcodeCameraView(props) {
       setBarcode(data);
       props.onScanned(data);
     }
-  }, 100);
+  }, 200);
 
   return (
     <CameraView
