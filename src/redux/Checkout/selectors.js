@@ -298,5 +298,5 @@ export const selectCheckoutAuthorizationHeaders = createSelector(
 export const selectPaymentGateway = createSelector(
   selectCart,
   state => state.app.settings,
-  ({ cart }, settings) => cart.paymentGateway || settings.payment_gateway
+  ({ cart }, settings) => cart?.paymentGateway || settings.payment_gateway
 );

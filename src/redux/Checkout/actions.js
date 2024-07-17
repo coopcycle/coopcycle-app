@@ -1543,6 +1543,10 @@ export function loadPaymentDetails() {
     const { cart, token } = selectCartWithHours(getState());
     const httpClient = selectHttpClient(getState());
 
+    if (!cart) {
+      return
+    }
+
     dispatch(loadPaymentDetailsRequest());
 
     httpClient
