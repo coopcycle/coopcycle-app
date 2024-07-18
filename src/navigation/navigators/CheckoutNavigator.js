@@ -178,8 +178,8 @@ const MainNavigator = () => (
       })}
     />
     <MainStack.Screen
-      name="CheckoutCreditCard"
-      component={screens.CheckoutCreditCard}
+      name="CheckoutPayment"
+      component={screens.CheckoutPayment}
       options={{
         title: i18n.t('PAYMENT'),
       }}

@@ -42,7 +42,7 @@ import CourierSettingsTags from './courier/Tags';
 import CourierTaskListPage from './courier/TaskListPage';
 import CourierTasksPage from './courier/TasksPage';
 
-import CheckoutCreditCard from './checkout/CreditCard';
+import CheckoutPayment from './checkout/Payment';
 import CheckoutLogin from './checkout/Login';
 import CheckoutMercadopago from './checkout/Mercadopago';
 import CheckoutMoreInfos from './checkout/MoreInfos';
@@ -94,7 +94,7 @@ export default {
   CheckoutLogin,
   CheckoutSummary,
   CheckoutShippingDate,
-  CheckoutCreditCard,
+  CheckoutPayment,
   CheckoutMercadopago,
   CheckoutMoreInfos,
   CourierTasksPage,

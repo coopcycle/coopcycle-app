@@ -44,7 +44,7 @@ class MoreInfos extends Component {
       if (isFree(order)) {
         this.props.checkout();
       } else {
-        this.props.navigation.navigate('CheckoutCreditCard');
+        this.props.navigation.navigate('CheckoutPayment');
       }
     });
   }
