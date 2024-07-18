@@ -8,9 +8,9 @@ import HeaderHeightAwareKeyboardAvoidingView from '../../components/HeaderHeight
 
 class PaymentMethodCard extends Component {
   _onSubmit(values) {
-    const { cardholderName, savedCardSelected, saveCard } = values;
+    const { cardholderName, savedCardSelected, saveCard, paygreenPaymentOrderId } = values;
 
-    this.props.checkout(cardholderName, savedCardSelected, saveCard);
+    this.props.checkout(cardholderName, savedCardSelected, saveCard, paygreenPaymentOrderId);
   }
 
   render() {
@@ -38,8 +38,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    checkout: (cardholderName, savedCardSelected, saveCard) =>
-      dispatch(checkout(cardholderName, savedCardSelected, saveCard)),
+    checkout: (cardholderName, savedCardSelected, saveCard, paygreenPaymentOrderId) =>
+      dispatch(checkout(cardholderName, savedCardSelected, saveCard, paygreenPaymentOrderId)),
   };
 }
 

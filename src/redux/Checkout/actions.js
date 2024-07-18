@@ -935,6 +935,7 @@ export function checkout(
   cardholderName,
   savedPaymentMethodId = null,
   saveCard = false,
+  paygreenPaymentOrderID = null
 ) {
   return (dispatch, getState) => {
     dispatch(checkoutRequest());
@@ -962,6 +963,27 @@ export function checkout(
           type: 'error',
         }),
       );
+      return;
+    }
+
+    if (paygreenPaymentOrderID) {
+      httpClient
+        .put(
+          cart['@id'] + '/pay',
+          {
+            paymentOrderId: paygreenPaymentOrderID
+          },
+          {
+            headers: selectCheckoutAuthorizationHeaders(
+              getState(),
+              cart,
+              token,
+            ),
+          },
+        )
+        .then(o => dispatch(handleSuccessNav(o)))
+        .catch(e => dispatch(checkoutFailure(e)));
+
       return;
     }
 
