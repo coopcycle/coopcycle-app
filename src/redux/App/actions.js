@@ -277,13 +277,15 @@ function setRolesProperty(user) {
   } else {
     roles = [];
   }
-
-  let DEFAULT_ROLE = 'ROLE_USER';
-
-  if (roles.length > 0) {
-    tracker.setUserProperty(userProperty.roles, roles.toString());
+  
+  if (user) {
+    if (roles.length > 0) {
+      tracker.setUserProperty(userProperty.roles, roles.toString());
+    } else {
+      tracker.setUserProperty(userProperty.roles, 'ROLE_USER');
+    }
   } else {
-    tracker.setUserProperty(userProperty.roles, DEFAULT_ROLE);
+    tracker.setUserProperty(userProperty.roles, 'ROLE_AD_HOC_CUSTOMER');
   }
 }
 
