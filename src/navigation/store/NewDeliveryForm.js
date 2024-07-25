@@ -1,17 +1,10 @@
 import { Formik } from 'formik';
-import { AsYouType, parsePhoneNumberFromString } from 'libphonenumber-js';
-import _ from 'lodash';
+import { parsePhoneNumberFromString } from 'libphonenumber-js';
 import moment from 'moment';
-import { Box, Button, HStack, Input, Text, VStack } from 'native-base';
+import { Box, Button, HStack, Text, VStack } from 'native-base';
 import React, { useEffect, useState } from 'react';
 import { withTranslation } from 'react-i18next';
-import {
-  InteractionManager,
-  Platform,
-  SafeAreaView,
-  StyleSheet,
-  View,
-} from 'react-native';
+import { InteractionManager, Platform, StyleSheet, View } from 'react-native';
 import KeyboardManager from 'react-native-keyboard-manager';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { connect } from 'react-redux';
@@ -23,13 +16,13 @@ import {
   loadTimeSlots,
 } from '../../redux/Store/actions';
 import { selectStore, selectTimeSlots } from '../../redux/Store/selectors';
-import TimeSlotSelector from './components/TimeSlotSelector';
 import {
   useBackgroundContainerColor,
   useBackgroundHighlightColor,
 } from '../../styles/theme';
 import ModalFormWrapper from './ModalFormWrapper';
 import FormInput from './components/FormInput';
+import TimeSlotSelector from './components/TimeSlotSelector';
 
 function NewDelivery(props) {
   const [isDateTimePickerVisible, setIsDateTimePickerVisible] = useState(false);
@@ -93,11 +86,8 @@ function NewDelivery(props) {
     const delivery = {
       store: props.store['@id'],
       dropoff: {
-        ...values.delivery,
-        address: {
-          ...values.delivery.address,
-          weight: values.delivery.address.weight * 1000,
-        },
+        ...values,
+        weight: values.weight * 1000,
       },
     };
 
@@ -154,19 +144,6 @@ function NewDelivery(props) {
     );
   }
 
-  const delivery = props.route.params?.delivery;
-
-  let telephone = '';
-  if (delivery?.address['@id'] && delivery.address.telephone) {
-    const phoneNumber = parsePhoneNumberFromString(
-      delivery.address.telephone,
-      props.country,
-    );
-    if (phoneNumber && phoneNumber.isValid()) {
-      telephone = phoneNumber.formatNational();
-    }
-  }
-
   function handleChangeWeight(value, setFieldValue, setFieldTouched) {
     value = value.replace(',', '.').replace(/[^0-9.]/g, '');
 
@@ -186,23 +163,29 @@ function NewDelivery(props) {
         value.substring(decimalIndex + 1, decimalIndex + 4);
     }
 
-    setFieldValue('delivery.address.weight', value);
-    setFieldTouched('delivery.address.weight', true);
+    setFieldValue('weight', value);
+    setFieldTouched('weight', true);
+  }
+
+  const delivery = props.route.params?.delivery;
+
+  let telephone = '';
+  if (delivery.telephone) {
+    const phoneNumber = parsePhoneNumberFromString(
+      delivery.telephone,
+      props.country,
+    );
+    if (phoneNumber && phoneNumber.isValid()) {
+      telephone = phoneNumber.formatNational();
+    }
   }
 
   let initialValues = {
-    delivery: {
-      ...delivery,
-      address: {
-        ...delivery.address,
-        description:
-          (delivery.address['@id'] && delivery.address.description) || '',
-        contactName:
-          (delivery.address['@id'] && delivery.address.contactName) || '',
-        telephone,
-        weight: (delivery.address['@id'] && delivery.address.weight) || '',
-      },
-    },
+    address: delivery.address,
+    description: delivery.description || '',
+    contactName: delivery.contactName || '',
+    weight: '',
+    telephone,
   };
 
   if (props.hasTimeSlot) {
@@ -279,8 +262,8 @@ function NewDelivery(props) {
               onChangeText={value =>
                 handleChangeWeight(value, setFieldValue, setFieldTouched)
               }
-              onBlur={handleBlur('delivery.address.weight')}
-              value={values.delivery.address.weight}
+              onBlur={handleBlur('weight')}
+              value={values.weight}
             />
             {errors.address && touched.address && errors.address.weight && (
               <Text note style={styles.errorText}>

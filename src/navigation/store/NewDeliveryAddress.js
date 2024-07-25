@@ -1,12 +1,12 @@
+import { Formik } from 'formik';
 import { AsYouType, parsePhoneNumberFromString } from 'libphonenumber-js';
 import _ from 'lodash';
-import { Input, Text } from 'native-base';
+import { Text } from 'native-base';
 import React, { useState } from 'react';
 import { withTranslation } from 'react-i18next';
 import { Platform, StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
 import AddressAutocomplete from '../../components/AddressAutocomplete';
-import { Formik } from 'formik';
 import { assertDelivery } from '../../redux/Store/actions';
 import { selectStore } from '../../redux/Store/selectors';
 import {
@@ -66,30 +66,28 @@ function NewDelivery(props) {
   }
 
   function validate(values) {
-    let errors = { address: {} };
+    let errors = {};
 
-    if (_.isEmpty(values.address.telephone)) {
-      errors.address.telephone = props.t(
-        'STORE_NEW_DELIVERY_ERROR.EMPTY_PHONE_NUMBER',
-      );
+    if (_.isEmpty(values.telephone)) {
+      errors.telephone = props.t('STORE_NEW_DELIVERY_ERROR.EMPTY_PHONE_NUMBER');
     } else {
       const phoneNumber = parsePhoneNumberFromString(
-        _.trim(values.address.telephone),
+        _.trim(values.telephone),
         props.country,
       );
       if (!phoneNumber || !phoneNumber.isValid()) {
-        errors.address.telephone = props.t('INVALID_PHONE_NUMBER');
+        errors.telephone = props.t('INVALID_PHONE_NUMBER');
       }
     }
 
-    if (_.isEmpty(values.address.contactName)) {
-      errors.address.contactName = props.t(
+    if (_.isEmpty(values.contactName)) {
+      errors.contactName = props.t(
         'STORE_NEW_DELIVERY_ERROR.EMPTY_CONTACT_NAME',
       );
     }
 
     if (!validAddresses) {
-      errors.address.address = props.t('STORE_NEW_DELIVERY_ADDRESS_HELP');
+      errors.address = props.t('STORE_NEW_DELIVERY_ADDRESS_HELP');
     }
 
     if (_.isEmpty(errors.address)) {
@@ -100,27 +98,24 @@ function NewDelivery(props) {
   }
 
   let initialValues = {
-    address: {
-      telephone: '',
-      contactName: '',
-    },
+    telephone: '',
+    contactName: '',
+    description: '',
   };
 
   function handleChangeTelephone(value, setFieldValue, setFieldTouched) {
-    setFieldValue(
-      'address.telephone',
-      new AsYouType(props.country).input(value),
-    );
-    setFieldTouched('address.telephone', true);
+    setFieldValue('telephone', new AsYouType(props.country).input(value));
+    setFieldTouched('telephone', true);
   }
 
   function submit(values) {
     const delivery = {
-      ...values.address,
       telephone: parsePhoneNumberFromString(
-        values.address.telephone,
+        values.telephone,
         props.country,
       ).format('E.164'),
+      contactName: values.contactName,
+      description: values.description,
       address,
     };
 
@@ -172,9 +167,9 @@ function NewDelivery(props) {
                 _focus={{ borderColor: primaryColor }}
               />
             </View>
-            {errors.address && touched.address && errors.address.address && (
+            {errors.address && touched.address && (
               <Text note style={styles.errorText}>
-                {errors.address.address}
+                {errors.address}
               </Text>
             )}
           </View>
@@ -185,17 +180,15 @@ function NewDelivery(props) {
             <FormInput
               autoCorrect={false}
               returnKeyType="done"
-              onChangeText={handleChange('address.contactName')}
-              onBlur={handleBlur('address.contactName')}
-              value={values.address.contactName}
+              onChangeText={handleChange('contactName')}
+              onBlur={handleBlur('contactName')}
+              value={values.contactName}
             />
-            {errors.address &&
-              touched.address &&
-              errors.address.contactName && (
-                <Text note style={styles.errorText}>
-                  {errors.address.contactName}
-                </Text>
-              )}
+            {errors.contactName && touched.contactName && (
+              <Text note style={styles.errorText}>
+                {errors.contactName}
+              </Text>
+            )}
           </View>
           <View style={[styles.formGroup]}>
             <Text style={styles.label}>
@@ -208,12 +201,12 @@ function NewDelivery(props) {
               onChangeText={value =>
                 handleChangeTelephone(value, setFieldValue, setFieldTouched)
               }
-              onBlur={handleBlur('address.telephone')}
-              value={values.address.telephone}
+              onBlur={handleBlur('telephone')}
+              value={values.telephone}
             />
-            {errors.address && touched.address && errors.address.telephone && (
+            {errors.telephone && touched.telephone && (
               <Text note style={styles.errorText}>
-                {errors.address.telephone}
+                {errors.telephone}
               </Text>
             )}
           </View>
@@ -224,9 +217,9 @@ function NewDelivery(props) {
             <FormInput
               autoCorrect={false}
               multiline={true}
-              onChangeText={handleChange('address.description')}
-              onBlur={handleBlur('address.description')}
-              value={values.address.description}
+              onChangeText={handleChange('description')}
+              onBlur={handleBlur('description')}
+              value={values.description}
             />
           </View>
         </ModalFormWrapper>
