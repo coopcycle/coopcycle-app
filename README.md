@@ -78,9 +78,20 @@ Setup - iOS
 
 iOS development requires macOS and [CocoaPods](https://cocoapods.org/).
 
+```sh
+bundle install
 ```
-$ bundle install
-$ cd ios && USE_FRAMEWORKS=static NO_FLIPPER=1 bundle exec pod install
+
+Install the dependencies:
+
+```sh
+cd ios && USE_FRAMEWORKS=static NO_FLIPPER=1 bundle exec pod install
+```
+
+Or using [pod-install](https://www.npmjs.com/package/pod-install):
+
+```sh
+cd ios && USE_FRAMEWORKS=static NO_FLIPPER=1 npx pod-install
 ```
 
 Running App
@@ -104,14 +115,6 @@ yarn android
 yarn ios
 ```
 
-##### With Npx
-
-```
-    npx react-native start
-    npx react-native android
-```
-
-For iOS replace `android` with `ios`.
 
 Testing
 -------
