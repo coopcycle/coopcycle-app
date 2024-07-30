@@ -184,6 +184,7 @@ function NewDelivery(props) {
     address: delivery.address,
     description: delivery.description || '',
     contactName: delivery.contactName || '',
+    businessName: delivery.businessName || '',
     weight: '',
     telephone,
   };

@@ -100,6 +100,7 @@ function NewDelivery(props) {
   let initialValues = {
     telephone: '',
     contactName: '',
+    businessName: '',
     description: '',
   };
 
@@ -116,11 +117,14 @@ function NewDelivery(props) {
       ).format('E.164'),
       contactName: values.contactName,
       description: values.description,
+      businessName: values.businessName,
       address,
     };
 
     props.navigation.navigate('StoreNewDeliveryForm', { delivery });
   }
+
+  console.log(props.addresses);
 
   return (
     <Formik
@@ -170,6 +174,21 @@ function NewDelivery(props) {
             {errors.address && touched.address && (
               <Text note style={styles.errorText}>
                 {errors.address}
+              </Text>
+            )}
+          </View>
+          <View style={[styles.formGroup]}>
+            <Text style={styles.label}>{'Business Name'}</Text>
+            <FormInput
+              autoCorrect={false}
+              returnKeyType="done"
+              onChangeText={handleChange('businessName')}
+              onBlur={handleBlur('businessName')}
+              value={values.businessName}
+            />
+            {errors.businessName && touched.businessName && (
+              <Text note style={styles.errorText}>
+                {errors.businessName}
               </Text>
             )}
           </View>
