@@ -180,7 +180,7 @@ export function loadAddresses(store) {
     const { httpClient } = app;
 
     return httpClient
-      .get(`${store['@id']}/addresses?type=dropoff`)
+      .get(`${store['@id']}/addresses`)
       .then(res => {
         dispatch(loadAddressesSuccess(store, res['hydra:member']));
         dispatch(setLoading(false));
