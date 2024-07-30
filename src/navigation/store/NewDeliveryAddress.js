@@ -234,6 +234,9 @@ function NewDelivery(props) {
               {props.t('STORE_NEW_DELIVERY_COMMENTS')}
             </Text>
             <FormInput
+              style={{
+                height: 80,
+              }}
               autoCorrect={false}
               multiline={true}
               onChangeText={handleChange('description')}
@@ -268,7 +271,7 @@ const styles = StyleSheet.create({
     }),
   },
   label: {
-    marginBottom: 5,
+    marginBottom: 8,
     fontWeight: '600',
   },
   help: {

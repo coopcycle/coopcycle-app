@@ -9,6 +9,7 @@ import KeyboardManager from 'react-native-keyboard-manager';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { connect } from 'react-redux';
 
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import {
   createDelivery,
   loadTimeSlot,
@@ -20,9 +21,17 @@ import {
   useBackgroundContainerColor,
   useBackgroundHighlightColor,
 } from '../../styles/theme';
+import Range from '../checkout/ProductDetails/Range';
 import ModalFormWrapper from './ModalFormWrapper';
 import FormInput from './components/FormInput';
 import TimeSlotSelector from './components/TimeSlotSelector';
+
+const tempPackages = [
+  'Lorem ipsum',
+  'Dolor',
+  'Sit amet',
+  'Consectetur adipiscing',
+];
 
 function NewDelivery(props) {
   const [isDateTimePickerVisible, setIsDateTimePickerVisible] = useState(false);
@@ -30,6 +39,7 @@ function NewDelivery(props) {
   const backgroundColor = useBackgroundContainerColor();
   const backgroundHighlightColor = useBackgroundHighlightColor();
   const [selectValue, setSelectValue] = React.useState(null);
+  const [packages, setPackages] = useState([]);
 
   const inputStyles = {
     backgroundColor,
@@ -56,6 +66,17 @@ function NewDelivery(props) {
   }, [props.loadTimeSlot, props.loadTimeSlots, props.store]);
 
   useEffect(() => {
+    setPackages(
+      tempPackages.map(item => {
+        return {
+          type: item,
+          quantity: 0,
+        };
+      }),
+    );
+  }, [tempPackages]);
+
+  useEffect(() => {
     if (props.timeSlots.length > 0) {
       setSelectedTimeSlot(props.timeSlots[0].name);
     }
@@ -69,6 +90,28 @@ function NewDelivery(props) {
       );
     }
   }, [selectedTimeSlot, props.loadTimeSlotChoices, props.timeSlots]);
+
+  function incrementQuantity(packageType) {
+    setPackages(prev => {
+      return prev.map(item => {
+        if (item.type === packageType) {
+          item.quantity += 1;
+        }
+        return item;
+      });
+    });
+  }
+
+  function decrementQuantity(packageType) {
+    setPackages(prev => {
+      return prev.map(item => {
+        if (item.type === packageType) {
+          item.quantity -= 1;
+        }
+        return item;
+      });
+    });
+  }
 
   function updateSelectedTimeSlot(timeSlot) {
     setSelectedTimeSlot(timeSlot.name);
@@ -272,6 +315,45 @@ function NewDelivery(props) {
               </Text>
             )}
           </View>
+
+          <View style={[styles.formGroup]}>
+            <Text style={styles.label}>Packages</Text>
+            <View
+              style={{
+                gap: 16,
+                marginTop: 4,
+              }}>
+              {packages.map((item, index) => {
+                return (
+                  <View
+                    style={[
+                      {
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        width: '100%',
+                        gap: 16,
+                        backgroundColor,
+                      },
+                    ]}
+                    key={index}>
+                    <Range
+                      onPress={() => {}}
+                      onPressIncrement={() => incrementQuantity(item.type)}
+                      onPressDecrement={() => decrementQuantity(item.type)}
+                      quantity={item.quantity}
+                    />
+                    <TouchableOpacity
+                      style={{
+                        flex: 1,
+                      }}
+                      onPress={() => incrementQuantity(item.type)}>
+                      <Text>{item.type}</Text>
+                    </TouchableOpacity>
+                  </View>
+                );
+              })}
+            </View>
+          </View>
         </ModalFormWrapper>
       )}
     </Formik>
@@ -280,7 +362,7 @@ function NewDelivery(props) {
 
 const styles = StyleSheet.create({
   label: {
-    marginBottom: 5,
+    marginBottom: 8,
     fontWeight: '500',
   },
   formGroup: {
