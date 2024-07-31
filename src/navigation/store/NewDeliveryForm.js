@@ -131,6 +131,7 @@ function NewDelivery(props) {
       dropoff: {
         ...values,
         weight: values.weight * 1000,
+        packages: packages.filter(item => item.quantity > 0),
       },
     };
 
@@ -261,7 +262,7 @@ function NewDelivery(props) {
         setFieldValue,
         setFieldTouched,
       }) => (
-        <ModalFormWrapper handleSubmit={handleSubmit} t={props.t}>
+        <ModalFormWrapper handleSubmit={handleSubmit} t={props.t} isSubmit>
           <View style={[styles.formGroup]}>
             <Text style={styles.label}>
               {props.t('STORE_NEW_DELIVERY_ADDRESS')}
