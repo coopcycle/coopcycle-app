@@ -13,8 +13,6 @@ import { taskUtils } from '../../coopcycle-frontend-js/logistics/redux';
 /* Simple Selectors */
 export const selectTaskSelectedDate = state => state.ui.tasks.selectedDate;
 export const selectIsTasksLoading = state => state.entities.tasks.isFetching;
-export const selectIsTasksRefreshing = state =>
-  state.entities.tasks.isRefreshing;
 export const selectIsTasksLoadingFailure = state =>
   state.entities.tasks.loadTasksFetchError;
 export const selectIsTaskCompleteFailure = state =>
