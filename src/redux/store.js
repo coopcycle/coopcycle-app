@@ -18,12 +18,14 @@ import CentrifugoMiddleware from './middlewares/CentrifugoMiddleware';
 import { filterExpiredCarts } from './Checkout/middlewares';
 import SoundMiddleware from './middlewares/SoundMiddleware';
 import { notifyOnNewOrderCreated } from './Restaurant/middlewares';
+import { apiSlice } from './api/slice';
 
 const middlewares = [
   thunk,
   ReduxAsyncQueue,
   NetInfoMiddleware,
   HttpMiddleware,
+  apiSlice.middleware,
   PushNotificationMiddleware,
   CentrifugoMiddleware,
   SentryMiddleware,

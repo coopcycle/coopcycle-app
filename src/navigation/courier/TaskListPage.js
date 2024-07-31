@@ -1,19 +1,18 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import DateSelectHeader from '../../components/DateSelectHeader';
 import TapToRefresh from '../../components/TapToRefresh';
 import TaskList from '../../components/TaskList';
 import { navigateToCompleteTask, navigateToTask } from '../../navigation/utils';
 import {
-  loadTasks,
   selectFilteredTasks,
-  selectIsTasksRefreshing,
   selectTaskSelectedDate,
   selectTasksWithColor,
 } from '../../redux/Courier';
 import { doneIconName } from '../task/styles/common';
+import { useGetMyTasksQuery } from '../../redux/api/slice'
 
 const styles = StyleSheet.create({
   containerEmpty: {
@@ -33,17 +32,16 @@ const allowToSelect = task => {
 };
 
 export default function TaskListPage({ navigation, route }) {
+  const selectedDate = useSelector(selectTaskSelectedDate);
   const tasks = useSelector(selectFilteredTasks);
   const tasksWithColor = useSelector(selectTasksWithColor);
-  const selectedDate = useSelector(selectTaskSelectedDate);
-  const isRefreshing = useSelector(selectIsTasksRefreshing);
 
   const containerStyle = [styles.container];
   if (tasks.length === 0) {
     containerStyle.push(styles.containerEmpty);
   }
 
-  const dispatch = useDispatch();
+  const { data, isLoading, isFetching, refetch } = useGetMyTasksQuery(selectedDate)
 
   const completeSelectedTasks = selectedTasks => {
     if (selectedTasks.length > 1) {
@@ -69,8 +67,8 @@ export default function TaskListPage({ navigation, route }) {
           swipeOutLeftEnabled={task => task.status !== 'DONE'}
           swipeOutRightEnabled={task => task.status !== 'DONE'}
           onTaskClick={task => navigateToTask(navigation, route, task, tasks)}
-          refreshing={isRefreshing}
-          onRefresh={() => dispatch(loadTasks(selectedDate, true))}
+          refreshing={isFetching}
+          onRefresh={() => refetch()}
           allowMultipleSelection={task => allowToSelect(task)}
           multipleSelectionIcon={doneIconName}
           onMultipleSelectionAction={selectedTasks =>
@@ -79,7 +77,7 @@ export default function TaskListPage({ navigation, route }) {
         />
       )}
       {tasks.length === 0 && (
-        <TapToRefresh onPress={() => dispatch(loadTasks(selectedDate))} />
+        <TapToRefresh onPress={() => refetch()} />
       )}
     </View>
   );
