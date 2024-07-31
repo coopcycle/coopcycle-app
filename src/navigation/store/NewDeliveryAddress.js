@@ -29,8 +29,24 @@ function NewDelivery(props) {
     borderColor: backgroundHighlightColor,
   };
 
-  function onSelectAddress(address) {
-    setAddress(address);
+  function onSelectAddress(address, setFieldValue) {
+    if (address['@id']) {
+      const contactName = address.contactName || '';
+      const telephone = address.telephone || '';
+      const businessName = address.businessName || '';
+      const comment = address.comment || '';
+
+      setFieldValue('contactName', contactName);
+      setFieldValue('telephone', telephone);
+      setFieldValue('businessName', businessName);
+      setFieldValue('description', comment);
+      setAddress({
+        streetAddress: address.streetAddress,
+        geo: address.geo,
+      });
+    } else {
+      setAddress(address);
+    }
 
     const delivery = {
       store: props.store['@id'],
@@ -124,8 +140,6 @@ function NewDelivery(props) {
     props.navigation.navigate('StoreNewDeliveryForm', { delivery });
   }
 
-  console.log(props.addresses);
-
   return (
     <Formik
       initialValues={initialValues}
@@ -151,8 +165,10 @@ function NewDelivery(props) {
             </Text>
             <View style={styles.autocompleteContainer}>
               <AddressAutocomplete
+                key={address}
                 addresses={props.addresses}
-                onSelectAddress={onSelectAddress}
+                value={address}
+                onSelectAddress={e => onSelectAddress(e, setFieldValue)}
                 containerStyle={[
                   {
                     flex: 1,
