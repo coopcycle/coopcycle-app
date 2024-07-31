@@ -2,7 +2,12 @@ import { Box, Button, VStack } from 'native-base';
 import { SafeAreaView } from 'react-native';
 import { useBackgroundContainerColor } from '../../styles/theme';
 
-export default function ModalFormWrapper({ children, handleSubmit, t }) {
+export default function ModalFormWrapper({
+  children,
+  handleSubmit,
+  t,
+  isSubmit = false,
+}) {
   const backgroundColor = useBackgroundContainerColor();
 
   return (
@@ -21,7 +26,9 @@ export default function ModalFormWrapper({ children, handleSubmit, t }) {
           {children}
         </Box>
         <Box p="5">
-          <Button onPress={handleSubmit}>{t('SUBMIT')}</Button>
+          <Button onPress={handleSubmit}>
+            {isSubmit ? t('SUBMIT') : t('NEXT')}
+          </Button>
         </Box>
       </VStack>
     </SafeAreaView>
