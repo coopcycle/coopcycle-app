@@ -12,7 +12,7 @@ import {
   selectTasksWithColor,
 } from '../../redux/Courier';
 import { doneIconName } from '../task/styles/common';
-import { useGetMyTasksQuery } from '../../redux/api/slice'
+import { useGetMyTasksQuery } from '../../redux/api/slice';
 
 const styles = StyleSheet.create({
   containerEmpty: {
@@ -41,7 +41,9 @@ export default function TaskListPage({ navigation, route }) {
     containerStyle.push(styles.containerEmpty);
   }
 
-  const { data, isLoading, isFetching, refetch } = useGetMyTasksQuery(selectedDate)
+  const { isFetching, refetch } = useGetMyTasksQuery(selectedDate, {
+    refetchOnFocus: true,
+  });
 
   const completeSelectedTasks = selectedTasks => {
     if (selectedTasks.length > 1) {
@@ -76,9 +78,7 @@ export default function TaskListPage({ navigation, route }) {
           }
         />
       )}
-      {tasks.length === 0 && (
-        <TapToRefresh onPress={() => refetch()} />
-      )}
+      {tasks.length === 0 && <TapToRefresh onPress={() => refetch()} />}
     </View>
   );
 }
