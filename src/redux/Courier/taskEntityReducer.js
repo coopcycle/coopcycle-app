@@ -282,7 +282,7 @@ export const tasksEntityReducer = (
         completeTaskFetchError: false,
         // This is the date that is selected in the UI
         date: action.meta.arg.originalArgs.format('YYYY-MM-DD'),
-        isFetching: true,
+        // isFetching: true,  # don't set isFetching flag to prevent global loading spinner for rtk query requests
       };
 
     //using axios
