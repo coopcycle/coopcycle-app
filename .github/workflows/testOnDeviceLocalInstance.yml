@@ -116,6 +116,9 @@ jobs:
     if: github.actor != 'dependabot[bot]'
     name: Android Emulator Tests
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: coopcycle-app
     env:
       GEOCODE_EARTH_API_KEY: ${{ secrets.GEOCODE_EARTH_API_KEY }}
       STRIPE_PUBLISHABLE_KEY: ${{ secrets.STRIPE_PUBLISHABLE_KEY }}
@@ -175,15 +178,17 @@ jobs:
         working-directory: coopcycle-web
 
       - uses: actions/checkout@v3
+        with:
+          repository: coopcycle/coopcycle-app
+          path: coopcycle-app
 
       - name: Free Disk Space (Ubuntu)
         uses: jlumbroso/free-disk-space@main
         with:
           # all of these default to true, but feel free to set to
           # "false" if necessary for your workflow
+          # https://github.com/jlumbroso/free-disk-space?tab=readme-ov-file#example
           android: false
-          # large-packages: true
-          # swap-storage: true
 
       - uses: actions/setup-node@v4
         with:
