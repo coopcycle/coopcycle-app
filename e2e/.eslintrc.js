@@ -3,6 +3,7 @@ module.exports = {
     afterAll: true,
     beforeAll: true,
     beforeEach: true,
+    expect: true,
     by: true,
     device: true,
     element: true,
