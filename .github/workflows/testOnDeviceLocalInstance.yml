@@ -116,6 +116,9 @@ jobs:
     if: github.actor != 'dependabot[bot]'
     name: Android Emulator Tests
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: coopcycle-app
     env:
       GEOCODE_EARTH_API_KEY: ${{ secrets.GEOCODE_EARTH_API_KEY }}
       STRIPE_PUBLISHABLE_KEY: ${{ secrets.STRIPE_PUBLISHABLE_KEY }}
@@ -190,7 +193,7 @@ jobs:
         with:
           node-version: '20.x'
           cache: 'yarn'
-        working-directory: coopcycle-app
+          cache-dependency-path: "coopcycle-app"
 
       - uses: actions/setup-java@v3
         with:
@@ -201,7 +204,7 @@ jobs:
       - name: Decode sentry.properties file
         uses: timheuer/base64-to-file@v1.2
         with:
-          fileDir: "./android/"
+          fileDir: "coopcycle-app/android/"
           fileName: "sentry.properties"
           encodedString: ${{ secrets.SENTRY_PROPERTIES_BASE64 }}
 
@@ -277,7 +280,7 @@ jobs:
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
           script: |
-            node node_modules/.bin/detox test -c android.emu.release --device-name="test" -l debug
+            node coopcycle-app/node_modules/.bin/detox test -c android.emu.release --device-name="test" -l debug
 #            node node_modules/.bin/detox test -c android.att.release --device-name="test" --take-screenshots all
 #            node node_modules/.bin/detox test -c android.att.release --device-name="test" --take-screenshots manual -o e2e/screenshots.config.json
 
@@ -295,4 +298,4 @@ jobs:
         uses: actions/upload-artifact@v1
         with:
           name: detox-screenshots-android
-          path: artifacts
+          path: coopcycle-app/artifacts
