@@ -7,59 +7,10 @@ on: [push]
 jobs:
   IOS_SIMULATOR_TESTS:
     # https://github.community/t/how-to-stop-github-actions-workflow-to-trigger-when-the-pull-request-is-from-dependabot-preview/116486
-    if: github.actor != 'dependabot[bot]'
+    if: github.actor != 'dependabot[bot]' && false #re-enable when local instance is setup
     name: iOS Simulator Tests
     runs-on: macOS-14
-    env:
-      GEOCODE_EARTH_API_KEY: ${{ secrets.GEOCODE_EARTH_API_KEY }}
-      STRIPE_PUBLISHABLE_KEY: ${{ secrets.STRIPE_PUBLISHABLE_KEY }}
-      STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
-      STRIPE_CONNECT_CLIENT_ID: ${{ secrets.STRIPE_CONNECT_CLIENT_ID }}
-      AWS_ENDPOINT: ${{ secrets.AWS_ENDPOINT }}
-      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
     steps:
-      # setup local coopcycle-web instance:
-      - uses: actions/checkout@v3
-        with:
-          repository: coopcycle/coopcycle-web
-          path: coopcycle-web
-      - name: Create .env file
-        run: cp .env.dist .env
-        working-directory: coopcycle-web
-      - name: Pull Docker images
-        run: docker-compose pull --ignore-pull-failures
-        working-directory: coopcycle-web
-      - name: Prepare OSRM data
-        run: |
-          docker-compose run -T --rm osrm wget --no-check-certificate https://coopcycle-assets.sfo2.digitaloceanspaces.com/osm/paris-france.osm.pbf -O /data/data.osm.pbf
-          docker-compose run -T --rm osrm osrm-extract -p /opt/bicycle.lua /data/data.osm.pbf
-          docker-compose run -T --rm osrm osrm-partition /data/data.osrm
-          docker-compose run -T --rm osrm osrm-customize /data/data.osrm
-        working-directory: coopcycle-web
-      # Cypress GitHub Action uses npm ci, and it causes a "permission denied" error,
-      # because it tries to remove the node_modules/ folder, which is mounted with root:root
-      # We create the node_modules/ folder *BEFORE* starting the containers,
-      # so that it can be removed without problems.
-      - name: Create node_modules directory
-        run: mkdir node_modules
-        working-directory: coopcycle-web
-      - name: Start Docker containers
-        run: docker-compose up -d
-        working-directory: coopcycle-web
-      - name: Wait for PHP-FPM
-        run: until docker inspect --format='{{ .State.Health.Status }}' $(docker-compose ps -q php) | grep -wq healthy; do sleep 5; done
-        working-directory: coopcycle-web
-      - name: Create database
-        run: docker-compose exec -T php bin/console doctrine:schema:create --env=test
-        working-directory: coopcycle-web
-      - name: Create typesense collections
-        run: docker-compose exec -T php bin/console typesense:create --env=test
-        working-directory: coopcycle-web
-      - name: Setup CoopCycle
-        run: docker-compose exec -T php bin/console coopcycle:setup --env=test
-        working-directory: coopcycle-web
-
       - uses: actions/checkout@v3
 
       - uses: actions/setup-node@v4
@@ -162,9 +113,17 @@ jobs:
 
   ANDROID_EMULATOR_TESTS:
     # https://github.community/t/how-to-stop-github-actions-workflow-to-trigger-when-the-pull-request-is-from-dependabot-preview/116486
-    if: github.actor != 'dependabot[bot]' && false #re-enable when local instance is setup
+    if: github.actor != 'dependabot[bot]'
     name: Android Emulator Tests
     runs-on: ubuntu-latest
+    env:
+      GEOCODE_EARTH_API_KEY: ${{ secrets.GEOCODE_EARTH_API_KEY }}
+      STRIPE_PUBLISHABLE_KEY: ${{ secrets.STRIPE_PUBLISHABLE_KEY }}
+      STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
+      STRIPE_CONNECT_CLIENT_ID: ${{ secrets.STRIPE_CONNECT_CLIENT_ID }}
+      AWS_ENDPOINT: ${{ secrets.AWS_ENDPOINT }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
     strategy:
       # Allow tests to continue on other devices if they fail on one device.
       fail-fast: false
@@ -174,6 +133,47 @@ jobs:
           - 28
 #          - 33
     steps:
+      # setup local coopcycle-web instance:
+      - uses: actions/checkout@v3
+        with:
+          repository: coopcycle/coopcycle-web
+          path: coopcycle-web
+      - name: Create .env file
+        run: cp .env.dist .env
+        working-directory: coopcycle-web
+      - name: Pull Docker images
+        run: docker-compose pull --ignore-pull-failures
+        working-directory: coopcycle-web
+      - name: Prepare OSRM data
+        run: |
+          docker-compose run -T --rm osrm wget --no-check-certificate https://coopcycle-assets.sfo2.digitaloceanspaces.com/osm/paris-france.osm.pbf -O /data/data.osm.pbf
+          docker-compose run -T --rm osrm osrm-extract -p /opt/bicycle.lua /data/data.osm.pbf
+          docker-compose run -T --rm osrm osrm-partition /data/data.osrm
+          docker-compose run -T --rm osrm osrm-customize /data/data.osrm
+        working-directory: coopcycle-web
+      # Cypress GitHub Action uses npm ci, and it causes a "permission denied" error,
+      # because it tries to remove the node_modules/ folder, which is mounted with root:root
+      # We create the node_modules/ folder *BEFORE* starting the containers,
+      # so that it can be removed without problems.
+      - name: Create node_modules directory
+        run: mkdir node_modules
+        working-directory: coopcycle-web
+      - name: Start Docker containers
+        run: docker-compose up -d
+        working-directory: coopcycle-web
+      - name: Wait for PHP-FPM
+        run: until docker inspect --format='{{ .State.Health.Status }}' $(docker-compose ps -q php) | grep -wq healthy; do sleep 5; done
+        working-directory: coopcycle-web
+      - name: Create database
+        run: docker-compose exec -T php bin/console doctrine:schema:create --env=test
+        working-directory: coopcycle-web
+      - name: Create typesense collections
+        run: docker-compose exec -T php bin/console typesense:create --env=test
+        working-directory: coopcycle-web
+      - name: Setup CoopCycle
+        run: docker-compose exec -T php bin/console coopcycle:setup --env=test
+        working-directory: coopcycle-web
+
       - uses: actions/checkout@v3
 
       - name: Free Disk Space (Ubuntu)
