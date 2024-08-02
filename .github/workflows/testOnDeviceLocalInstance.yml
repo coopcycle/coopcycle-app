@@ -162,7 +162,7 @@ jobs:
 
   ANDROID_EMULATOR_TESTS:
     # https://github.community/t/how-to-stop-github-actions-workflow-to-trigger-when-the-pull-request-is-from-dependabot-preview/116486
-    if: github.actor != 'dependabot[bot]'
+    if: github.actor != 'dependabot[bot]' && false #re-enable when local instance is setup
     name: Android Emulator Tests
     runs-on: ubuntu-latest
     strategy:
