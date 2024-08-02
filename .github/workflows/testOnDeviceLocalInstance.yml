@@ -118,7 +118,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: coopcycle-app
+        working-directory: ./coopcycle-app
     env:
       GEOCODE_EARTH_API_KEY: ${{ secrets.GEOCODE_EARTH_API_KEY }}
       STRIPE_PUBLISHABLE_KEY: ${{ secrets.STRIPE_PUBLISHABLE_KEY }}
