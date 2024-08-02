@@ -116,9 +116,6 @@ jobs:
     if: github.actor != 'dependabot[bot]'
     name: Android Emulator Tests
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./coopcycle-app
     env:
       GEOCODE_EARTH_API_KEY: ${{ secrets.GEOCODE_EARTH_API_KEY }}
       STRIPE_PUBLISHABLE_KEY: ${{ secrets.STRIPE_PUBLISHABLE_KEY }}
@@ -179,7 +176,6 @@ jobs:
 
       - uses: actions/checkout@v3
         with:
-          repository: coopcycle/coopcycle-app
           path: coopcycle-app
 
       - name: Free Disk Space (Ubuntu)
@@ -194,6 +190,7 @@ jobs:
         with:
           node-version: '20.x'
           cache: 'yarn'
+        working-directory: coopcycle-app
 
       - uses: actions/setup-java@v3
         with:
