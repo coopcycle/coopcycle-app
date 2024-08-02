@@ -48,7 +48,7 @@ module.exports = {
   devices: {
     iosSimulator: {
       type: 'ios.simulator',
-      device: { type: 'iPhone 15', os: 'iOS 17.4' },
+      device: { type: 'iPhone 15', os: 'iOS 17.5' },
     },
     androidEmulator: {
       type: 'android.emulator',
