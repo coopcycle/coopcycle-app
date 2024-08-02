@@ -35,7 +35,7 @@ const buildBaseQuery = (baseUrl, anonymous = false) => {
         if (user) {
           headers.set('Authorization', `Bearer ${user.token}`);
         } else if (guestCheckoutEndpoints.includes(endpoint)) {
-          //todo
+          //TODO; to be implemented in https://github.com/coopcycle/coopcycle-app/issues/1756
           // const orderAccessToken = selectOrderAccessToken(getState())
           //
           // if (orderAccessToken) {
