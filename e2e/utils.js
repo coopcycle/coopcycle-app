@@ -59,7 +59,15 @@ export const connectToTestInstance = async () => {
 export const authenticateWithCredentials = async (username, password) => {
   await expect(element(by.id('menuBtn'))).toBeVisible();
   await element(by.id('menuBtn')).tap();
+
   await element(by.id('drawerAccountBtn')).tap();
+  //FIXME: for some reason drawer menu does not close after the first tap on Android
+  if (device.getPlatform() === 'android') {
+    const attrs = await element(by.id('drawerAccountBtn')).getAttributes()
+    if (attrs.visible) {
+      await element(by.id('drawerAccountBtn')).tap();
+    }
+  }
 
   await element(by.id('loginUsername')).typeText(`${username}\n`);
   await element(by.id('loginPassword')).typeText(`${password}\n`);
