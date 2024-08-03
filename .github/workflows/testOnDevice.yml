@@ -205,7 +205,7 @@ jobs:
       - name: Decode sentry.properties file
         uses: timheuer/base64-to-file@v1.2
         with:
-          fileDir: "coopcycle-app/android/"
+          fileDir: "./android/"
           fileName: "sentry.properties"
           encodedString: ${{ secrets.SENTRY_PROPERTIES_BASE64 }}
 
@@ -281,7 +281,7 @@ jobs:
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
           script: |
-            node coopcycle-app/node_modules/.bin/detox test -c android.emu.release --device-name="test" -l debug
+            node node_modules/.bin/detox test -c android.emu.release --device-name="test" -l debug
       #            node node_modules/.bin/detox test -c android.att.release --device-name="test" --take-screenshots all
       #            node node_modules/.bin/detox test -c android.att.release --device-name="test" --take-screenshots manual -o e2e/screenshots.config.json
 
@@ -299,4 +299,4 @@ jobs:
         uses: actions/upload-artifact@v1
         with:
           name: detox-screenshots-android
-          path: coopcycle-app/artifacts
+          path: artifacts
