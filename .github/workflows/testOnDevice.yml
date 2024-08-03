@@ -205,7 +205,7 @@ jobs:
       - name: Decode sentry.properties file
         uses: timheuer/base64-to-file@v1.2
         with:
-          fileDir: "./android/"
+          fileDir: "./coopcycle-app/android/"
           fileName: "sentry.properties"
           encodedString: ${{ secrets.SENTRY_PROPERTIES_BASE64 }}
 
