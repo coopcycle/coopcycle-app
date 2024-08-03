@@ -29,6 +29,11 @@ describe('Courier', () => {
   it(`should be able to login and see tasks`, async () => {
     await authenticateWithCredentials('jane', '12345678');
 
+    if (device.getPlatform() === 'android') {
+      // dismiss BACKGROUND_PERMISSION_DISCLOSURE alert
+      await element(by.text('CLOSE')).tap();
+    }
+
     await expect(element(by.id('messengerTabMap'))).toBeVisible();
     await expect(element(by.id('messengerTabList'))).toBeVisible();
 
