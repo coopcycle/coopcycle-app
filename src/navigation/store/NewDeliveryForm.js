@@ -226,7 +226,7 @@ function NewDelivery(props) {
 
   let initialValues = {
     address: delivery.address,
-    description: delivery.description || '',
+    comments: delivery.comments || '',
     contactName: delivery.contactName || '',
     businessName: delivery.businessName || '',
     weight: '',
@@ -263,7 +263,7 @@ function NewDelivery(props) {
         setFieldTouched,
       }) => (
         <ModalFormWrapper handleSubmit={handleSubmit} t={props.t} isSubmit>
-          <View style={[styles.formGroup]}>
+          {/* <View style={[styles.formGroup]}>
             <Text style={styles.label}>
               {props.t('STORE_NEW_DELIVERY_ADDRESS')}
             </Text>
@@ -272,8 +272,7 @@ function NewDelivery(props) {
               value={delivery?.address.streetAddress}
               isReadOnly={true}
             />
-          </View>
-
+          </View> */}
           {props.hasTimeSlot && (
             <TimeSlotSelector
               selectValue={selectValue}
