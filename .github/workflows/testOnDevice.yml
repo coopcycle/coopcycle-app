@@ -181,26 +181,29 @@ jobs:
         with:
           path: coopcycle-app
 
-      - name: Free Disk Space (Ubuntu)
-        uses: jlumbroso/free-disk-space@main
-        with:
-          # all of these default to true, but feel free to set to
-          # "false" if necessary for your workflow
-          # https://github.com/jlumbroso/free-disk-space?tab=readme-ov-file#example
-          android: false
+      #FIXME; disabled to debug sentry.properties file
+#      - name: Free Disk Space (Ubuntu)
+#        uses: jlumbroso/free-disk-space@main
+#        with:
+#          # all of these default to true, but feel free to set to
+#          # "false" if necessary for your workflow
+#          # https://github.com/jlumbroso/free-disk-space?tab=readme-ov-file#example
+#          android: false
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '20.x'
-      # Temporary disable yarn caching
-      #          cache: 'yarn'
-      #          cache-dependency-path: "coopcycle-app"
+      #FIXME; disabled to debug sentry.properties file
+#      - uses: actions/setup-node@v4
+#        with:
+#          node-version: '20.x'
+#      # Temporary disable yarn caching
+#      #          cache: 'yarn'
+#      #          cache-dependency-path: "coopcycle-app"
 
-      - uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-          cache: 'gradle'
+      #FIXME; disabled to debug sentry.properties file
+#      - uses: actions/setup-java@v3
+#        with:
+#          distribution: 'temurin'
+#          java-version: '17'
+#          cache: 'gradle'
 
       - name: Decode sentry.properties file
         uses: timheuer/base64-to-file@v1.2
@@ -208,6 +211,10 @@ jobs:
           fileDir: "./coopcycle-app/android/"
           fileName: "sentry.properties"
           encodedString: ${{ secrets.SENTRY_PROPERTIES_BASE64 }}
+
+      #TODO; print sentry.properties file to debug
+      - name: Print sentry.properties file
+        run: cat android/sentry.properties
 
       - name: Install dependencies (yarn)
         run: yarn install --no-progress --network-timeout 100000 --network-concurrency 1
