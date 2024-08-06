@@ -1,7 +1,13 @@
 import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake';
 import React, { Component, useMemo } from 'react';
 import { withTranslation } from 'react-i18next';
-import { InteractionManager, Platform, StyleSheet, View } from 'react-native';
+import {
+  ActivityIndicator,
+  InteractionManager,
+  Platform,
+  StyleSheet,
+  View,
+} from 'react-native';
 import RNPinScreen from 'react-native-pin-screen';
 import { connect, useSelector } from 'react-redux';
 
@@ -25,6 +31,19 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  activityContainer: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    display: 'flex',
+    alignItems: 'center',
+    margin: 8,
+  },
+  activityIndicator: {
+    padding: 8,
+    backgroundColor: 'white',
+    borderRadius: 8,
+  },
 });
 
 function TaskMapPage({ navigation, route }) {
@@ -35,20 +54,31 @@ function TaskMapPage({ navigation, route }) {
     return latlng.split(',').map(parseFloat);
   }, [latlng]);
 
-  useGetMyTasksQuery(selectedDate, {
+  const { isFetching } = useGetMyTasksQuery(selectedDate, {
     refetchOnFocus: true,
   });
 
   return (
     <View style={styles.container}>
       <DateSelectHeader navigate={navigation.navigate} />
-      <TasksMapView
-        mapCenter={mapCenter}
-        tasks={tasks}
-        onMarkerCalloutPress={task =>
-          navigateToTask(navigation, route, task, tasks)
-        }
-      />
+      <View style={{ flex: 1 }}>
+        <TasksMapView
+          mapCenter={mapCenter}
+          tasks={tasks}
+          onMarkerCalloutPress={task =>
+            navigateToTask(navigation, route, task, tasks)
+          }
+        />
+        {isFetching ? (
+          <View style={styles.activityContainer}>
+            <ActivityIndicator
+              style={styles.activityIndicator}
+              animating={true}
+              size="large"
+            />
+          </View>
+        ) : null}
+      </View>
     </View>
   );
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import DateSelectHeader from '../../components/DateSelectHeader';
@@ -78,7 +78,16 @@ export default function TaskListPage({ navigation, route }) {
           }
         />
       )}
-      {tasks.length === 0 && <TapToRefresh onPress={() => refetch()} />}
+      {tasks.length === 0 && (
+        <>
+          <ActivityIndicator
+            style={{ paddingVertical: 8 }}
+            animating={isFetching}
+            size="large"
+          />
+          <TapToRefresh onPress={() => refetch()} />
+        </>
+      )}
     </View>
   );
 }
