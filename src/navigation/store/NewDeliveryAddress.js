@@ -14,6 +14,7 @@ import {
   useBackgroundHighlightColor,
   usePrimaryColor,
 } from '../../styles/theme';
+import ClientListInput from './ClientListInput';
 import ModalFormWrapper from './ModalFormWrapper';
 import FormInput from './components/FormInput';
 
@@ -29,21 +30,25 @@ function NewDelivery(props) {
     borderColor: backgroundHighlightColor,
   };
 
+  function setAddressData(data, setFieldValue) {
+    const contactName = data.contactName || '';
+    const telephone = data.telephone || '';
+    const businessName = data.businessName || '';
+    const comment = data.comment || '';
+
+    setFieldValue('contactName', contactName);
+    setFieldValue('telephone', telephone);
+    setFieldValue('businessName', businessName);
+    setFieldValue('comments', comment);
+    setAddress({
+      streetAddress: data.streetAddress,
+      geo: data.geo,
+    });
+  }
+
   function onSelectAddress(address, setFieldValue) {
     if (address['@id']) {
-      const contactName = address.contactName || '';
-      const telephone = address.telephone || '';
-      const businessName = address.businessName || '';
-      const comment = address.comment || '';
-
-      setFieldValue('contactName', contactName);
-      setFieldValue('telephone', telephone);
-      setFieldValue('businessName', businessName);
-      setFieldValue('description', comment);
-      setAddress({
-        streetAddress: address.streetAddress,
-        geo: address.geo,
-      });
+      setAddressData(address, setFieldValue);
     } else {
       setAddress(address);
     }
@@ -117,7 +122,7 @@ function NewDelivery(props) {
     telephone: '',
     contactName: '',
     businessName: '',
-    description: '',
+    comments: '',
   };
 
   function handleChangeTelephone(value, setFieldValue, setFieldTouched) {
@@ -132,7 +137,7 @@ function NewDelivery(props) {
         props.country,
       ).format('E.164'),
       contactName: values.contactName,
-      description: values.description,
+      comments: values.comments,
       businessName: values.businessName,
       address,
     };
@@ -145,8 +150,8 @@ function NewDelivery(props) {
       initialValues={initialValues}
       validate={validate}
       onSubmit={values => submit(values)}
-      validateOnBlur={false}
-      validateOnChange={false}>
+      validateOnBlur={true}
+      validateOnChange={true}>
       {({
         handleChange,
         handleBlur,
@@ -158,6 +163,20 @@ function NewDelivery(props) {
         setFieldTouched,
       }) => (
         <ModalFormWrapper handleSubmit={handleSubmit} t={props.t}>
+          <View style={[styles.formGroup, { zIndex: 2 }]}>
+            <Text style={styles.label}>
+              {props.t('STORE_NEW_DELIVERY_SEARCH_CLIENT')}{' '}
+              <Text style={styles.optional}>({props.t('OPTIONAL')})</Text>
+            </Text>
+            <ClientListInput
+              onSelectAddress={a => {
+                setAddressData(a, setFieldValue);
+                setValidAddresses(true);
+              }}
+              addresses={props.addresses}
+              placeholder={props.t('STORE_NEW_DELIVERY_ENTER_SEARCH_CLIENT')}
+            />
+          </View>
           <View style={[styles.formGroup, { zIndex: 1 }]}>
             <Text style={styles.label}>
               {props.t('STORE_NEW_DELIVERY_ADDRESS')}
@@ -165,8 +184,13 @@ function NewDelivery(props) {
             </Text>
             <View style={styles.autocompleteContainer}>
               <AddressAutocomplete
-                key={address}
+                key={address?.streetAddress ?? ''}
                 addresses={props.addresses}
+                onChangeText={() => {
+                  if (validAddresses) setValidAddresses(false);
+                  handleChange('address');
+                }}
+                onBlur={handleBlur('address')}
                 value={address}
                 onSelectAddress={e => onSelectAddress(e, setFieldValue)}
                 containerStyle={[
@@ -187,20 +211,24 @@ function NewDelivery(props) {
                 _focus={{ borderColor: primaryColor }}
               />
             </View>
-            {errors.address && touched.address && (
+            {errors.address && (
               <Text note style={styles.errorText}>
                 {errors.address}
               </Text>
             )}
           </View>
           <View style={[styles.formGroup]}>
-            <Text style={styles.label}>{'Business Name'}</Text>
+            <Text style={styles.label}>
+              {props.t('STORE_NEW_DELIVERY_BUSINESS_NAME')}{' '}
+              <Text style={styles.optional}>({props.t('OPTIONAL')})</Text>
+            </Text>
             <FormInput
               autoCorrect={false}
               returnKeyType="done"
               onChangeText={handleChange('businessName')}
               onBlur={handleBlur('businessName')}
               value={values.businessName}
+              placeholder={props.t('STORE_NEW_DELIVERY_ENTER_BUSINESS_NAME')}
             />
             {errors.businessName && touched.businessName && (
               <Text note style={styles.errorText}>
@@ -218,6 +246,7 @@ function NewDelivery(props) {
               onChangeText={handleChange('contactName')}
               onBlur={handleBlur('contactName')}
               value={values.contactName}
+              placeholder={props.t('STORE_NEW_DELIVERY_ENTER_CONTACT_NAME')}
             />
             {errors.contactName && touched.contactName && (
               <Text note style={styles.errorText}>
@@ -238,6 +267,7 @@ function NewDelivery(props) {
               }
               onBlur={handleBlur('telephone')}
               value={values.telephone}
+              placeholder={props.t('STORE_NEW_DELIVERY_ENTER_PHONE_NUMBER')}
             />
             {errors.telephone && touched.telephone && (
               <Text note style={styles.errorText}>
@@ -247,7 +277,8 @@ function NewDelivery(props) {
           </View>
           <View style={[styles.formGroup]}>
             <Text style={styles.label}>
-              {props.t('STORE_NEW_DELIVERY_COMMENTS')}
+              {props.t('STORE_NEW_DELIVERY_COMMENTS')}{' '}
+              <Text style={styles.optional}>({props.t('OPTIONAL')})</Text>
             </Text>
             <FormInput
               style={{
@@ -255,9 +286,10 @@ function NewDelivery(props) {
               }}
               autoCorrect={false}
               multiline={true}
-              onChangeText={handleChange('description')}
-              onBlur={handleBlur('description')}
-              value={values.description}
+              onChangeText={handleChange('comments')}
+              onBlur={handleBlur('comments')}
+              value={values.comments}
+              placeholder={props.t('STORE_NEW_DELIVERY_ENTER_COMMENTS')}
             />
           </View>
         </ModalFormWrapper>
@@ -289,6 +321,11 @@ const styles = StyleSheet.create({
   label: {
     marginBottom: 8,
     fontWeight: '600',
+  },
+  optional: {
+    fontWeight: '400',
+    opacity: 0.7,
+    fontSize: 12,
   },
   help: {
     marginBottom: 5,
