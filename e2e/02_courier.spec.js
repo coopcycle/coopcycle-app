@@ -6,7 +6,8 @@ import {
 
 const execSync = require('child_process').execSync;
 
-describe('Courier', () => {
+//FIXME; this test requires a local coopcycle-web instance, which is problematic to setup on CI (see testOnDevice.yml)
+describe.skip('Courier', () => {
   beforeEach(async () => {
     symfonyConsole('coopcycle:fixtures:load -f cypress/fixtures/courier.yml');
 
