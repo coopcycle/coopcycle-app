@@ -261,7 +261,7 @@ export const tasksEntityReducer = (
   }
 
   switch (true) {
-    //using axios
+    //using axios; FIXME: migrate to rtk query
     case action.type === LOAD_TASKS_REQUEST: {
       return {
         ...state,
@@ -285,7 +285,7 @@ export const tasksEntityReducer = (
         // isFetching: true,  # don't set isFetching flag to prevent global loading spinner for rtk query requests
       };
 
-    //using axios
+    //using axios; FIXME: migrate to rtk query
     case action.type === LOAD_TASKS_SUCCESS: {
       return {
         ...state,
@@ -311,7 +311,7 @@ export const tasksEntityReducer = (
         },
       };
 
-    //using axios
+    //using axios; FIXME: migrate to rtk query
     case action.type === LOAD_TASKS_FAILURE: {
       return {
         ...state,
