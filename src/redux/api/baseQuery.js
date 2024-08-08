@@ -72,9 +72,8 @@ export const baseQueryWithReauth = async (args, api, extraOptions) => {
 
     const refreshToken = user.refreshToken;
 
-    // checking whether the mutex is locked
     if (mutex.isLocked()) {
-      // wait until the mutex is available without locking it
+      // wait for the mutex release, i.e. wait that another request that needed a fresh token gets the new token for us and update the state accordingly
       await mutex.waitForUnlock();
       result = await baseQuery(args, api, extraOptions);
     } else {
