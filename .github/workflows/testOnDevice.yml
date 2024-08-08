@@ -263,6 +263,7 @@ jobs:
         run: node node_modules/.bin/detox build -c android.emu.release
         env:
           googleMapsApiKey: ${{ secrets.googleMapsApiKey }}
+          SENTRY_DISABLE_AUTO_UPLOAD: true
 
       - name: Disk usage (filesystem)
         run: df -h
