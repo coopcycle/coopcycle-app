@@ -119,7 +119,7 @@ yarn ios
 Testing
 -------
 
-```
+```sh
 yarn test
 ```
 
@@ -131,15 +131,21 @@ Build the app and run tests:
 
 Android:
 
-```
+```sh
 detox build -c android.emu.debug
+```
+
+```sh
 detox test -c android.emu.debug
 ```
 
 iOS:
 
-```
+```sh
 detox build -c ios.sim.debug
+```
+
+```sh
 detox test -c ios.sim.debug
 ```
 

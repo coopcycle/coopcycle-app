@@ -18,12 +18,16 @@ import CentrifugoMiddleware from './middlewares/CentrifugoMiddleware';
 import { filterExpiredCarts } from './Checkout/middlewares';
 import SoundMiddleware from './middlewares/SoundMiddleware';
 import { notifyOnNewOrderCreated } from './Restaurant/middlewares';
+import { apiSlice } from './api/slice';
+import { setupListeners } from '@reduxjs/toolkit/query';
+import { setupListenersReactNative } from './setupListenersReactNative';
 
 const middlewares = [
   thunk,
   ReduxAsyncQueue,
   NetInfoMiddleware,
   HttpMiddleware,
+  apiSlice.middleware,
   PushNotificationMiddleware,
   CentrifugoMiddleware,
   SentryMiddleware,
@@ -51,6 +55,11 @@ const middlewaresProxy = middlewaresList => {
 };
 
 const store = createStore(reducers, middlewaresProxy(middlewares));
+
+// enable refetchOnFocus and refetchOnReconnect behaviors
+// https://redux-toolkit.js.org/rtk-query/api/setupListeners
+setupListeners(store.dispatch);
+setupListenersReactNative(store.dispatch, apiSlice.internalActions);
 
 export default store;
 

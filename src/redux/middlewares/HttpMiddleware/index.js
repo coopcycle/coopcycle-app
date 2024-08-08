@@ -7,7 +7,7 @@ import { SET_HTTP_CLIENT, SET_USER } from '../../App/actions';
 import { selectIsAuthenticated } from '../../App/selectors';
 
 const setHttpClient = createAction(SET_HTTP_CLIENT);
-const setUser = createAction(SET_USER);
+export const setUser = createAction(SET_USER);
 
 export default ({ getState, dispatch }) => {
   return next => action => {

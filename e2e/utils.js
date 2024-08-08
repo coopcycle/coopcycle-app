@@ -1,3 +1,17 @@
+const execSync = require('child_process').execSync;
+const os = require('os');
+
+export const COMMAND_PREFIX = "cd ../coopcycle-web && docker compose exec -T php"
+
+export const symfonyConsole = (command) => {
+  const prefix = COMMAND_PREFIX
+  let cmd = `bin/console ${ command } --env="test"`
+  if (prefix) {
+    cmd = `${ prefix } ${ cmd }`
+  }
+  execSync(cmd)
+}
+
 export const connectToDemo = async () => {
   await expect(element(by.id('chooseCityBtn'))).toBeVisible();
   await element(by.id('chooseCityBtn')).tap();
@@ -14,10 +28,46 @@ export const connectToDemo = async () => {
   } catch (e) {}
 };
 
+const getLocalIpAddress = () => {
+  const interfaces = os.networkInterfaces();
+  for (const name of Object.keys(interfaces)) {
+    for (const iface of interfaces[name]) {
+      if (iface.family === 'IPv4' && !iface.internal) {
+        return iface.address;
+      }
+    }
+  }
+  return null;
+};
+
+export const connectToTestInstance = async () => {
+  await expect(element(by.id('chooseCityBtn'))).toBeVisible();
+  await element(by.id('chooseCityBtn')).tap();
+
+  await expect(element(by.id('moreServerOptions'))).toBeVisible();
+  await element(by.id('moreServerOptions')).tap();
+
+  await element(by.id('customServerURL')).typeText(`${getLocalIpAddress()}:9080\n`);
+
+  try {
+    // We deliberately add "\n" to hide the keyboard
+    // The tap below shouldn't be necessary
+    await element(by.id('submitCustomServer')).tap();
+  } catch (e) {}
+};
+
 export const authenticateWithCredentials = async (username, password) => {
   await expect(element(by.id('menuBtn'))).toBeVisible();
   await element(by.id('menuBtn')).tap();
+
   await element(by.id('drawerAccountBtn')).tap();
+  //FIXME: for some reason drawer menu does not close after the first tap on Android
+  if (device.getPlatform() === 'android') {
+    const attrs = await element(by.id('drawerAccountBtn')).getAttributes()
+    if (attrs.visible) {
+      await element(by.id('drawerAccountBtn')).tap();
+    }
+  }
 
   await element(by.id('loginUsername')).typeText(`${username}\n`);
   await element(by.id('loginPassword')).typeText(`${password}\n`);

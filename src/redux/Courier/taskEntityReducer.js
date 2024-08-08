@@ -32,6 +32,7 @@ import {
   REPORT_INCIDENT_SUCCESS,
   REPORT_INCIDENT_FAILURE,
 } from './taskActions';
+import { apiSlice } from '../api/slice'
 
 /*
  * Intital state shape for the task entity reducer
@@ -40,7 +41,6 @@ const tasksEntityInitialState = {
   loadTasksFetchError: false, // Error object describing the error
   completeTaskFetchError: false, // Error object describing the error
   isFetching: false, // Flag indicating active HTTP request
-  isRefreshing: false,
   date: moment().format('YYYY-MM-DD'), // YYYY-MM-DD
   updatedAt: moment().toString(),
   items: {
@@ -122,27 +122,6 @@ export const tasksEntityReducer = (
         isFetching: true,
       };
 
-    case LOAD_TASKS_REQUEST:
-      return {
-        ...state,
-        loadTasksFetchError: false,
-        completeTaskFetchError: false,
-        // This is the date that is selected in the UI
-        date: action.payload.date
-          ? action.payload.date.format('YYYY-MM-DD')
-          : moment().format('YYYY-MM-DD'),
-        isFetching: !action.payload.refresh,
-        isRefreshing: action.payload.refresh,
-      };
-
-    case LOAD_TASKS_FAILURE:
-      return {
-        ...state,
-        loadTasksFetchError: action.payload || action.error,
-        isFetching: false,
-        isRefreshing: false,
-      };
-
     case START_TASK_FAILURE:
     case MARK_TASK_DONE_FAILURE:
     case MARK_TASK_FAILED_FAILURE:
@@ -167,20 +146,6 @@ export const tasksEntityReducer = (
           updateItem(tasks, action.payload.task, { hasIncidents: true }),
         ),
       }
-
-
-    case LOAD_TASKS_SUCCESS:
-      return {
-        ...state,
-        loadTasksFetchError: false,
-        isFetching: false,
-        isRefreshing: false,
-        updatedAt: action.payload.updatedAt.toString(),
-        items: {
-          ...state.items,
-          [action.payload.date]: action.payload.items,
-        },
-      };
 
     case START_TASK_SUCCESS:
     case MARK_TASK_DONE_SUCCESS:
@@ -292,6 +257,74 @@ export const tasksEntityReducer = (
       return {
         ...state,
         items: {},
+      };
+  }
+
+  switch (true) {
+    //using axios; FIXME: migrate to rtk query
+    case action.type === LOAD_TASKS_REQUEST: {
+      return {
+        ...state,
+        loadTasksFetchError: false,
+        completeTaskFetchError: false,
+        // This is the date that is selected in the UI
+        date: action.payload.date
+          ? action.payload.date.format('YYYY-MM-DD')
+          : moment().format('YYYY-MM-DD'),
+        isFetching: true,
+      };
+    }
+    //using rtk query
+    case apiSlice.endpoints.getMyTasks.matchPending(action):
+      return {
+        ...state,
+        loadTasksFetchError: false,
+        completeTaskFetchError: false,
+        // This is the date that is selected in the UI
+        date: action.meta.arg.originalArgs.format('YYYY-MM-DD'),
+        // isFetching: true,  # don't set isFetching flag to prevent global loading spinner for rtk query requests
+      };
+
+    //using axios; FIXME: migrate to rtk query
+    case action.type === LOAD_TASKS_SUCCESS: {
+      return {
+        ...state,
+        loadTasksFetchError: false,
+        isFetching: false,
+        updatedAt: action.payload.updatedAt.toString(),
+        items: {
+          ...state.items,
+          [action.payload.date]: action.payload.items,
+        },
+      };
+    }
+    //using rtk query
+    case apiSlice.endpoints.getMyTasks.matchFulfilled(action):
+      return {
+        ...state,
+        loadTasksFetchError: false,
+        isFetching: false,
+        updatedAt: action.payload.updatedAt.toString(),
+        items: {
+          ...state.items,
+          [action.payload.date]: action.payload.items,
+        },
+      };
+
+    //using axios; FIXME: migrate to rtk query
+    case action.type === LOAD_TASKS_FAILURE: {
+      return {
+        ...state,
+        loadTasksFetchError: action.payload || action.error,
+        isFetching: false,
+      };
+    }
+    //using rtk query
+    case apiSlice.endpoints.getMyTasks.matchRejected(action):
+      return {
+        ...state,
+        loadTasksFetchError: action.payload || action.error,
+        isFetching: false,
       };
   }
 

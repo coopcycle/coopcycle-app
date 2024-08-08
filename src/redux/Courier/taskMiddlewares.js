@@ -5,6 +5,7 @@ import { LOGOUT_SUCCESS, addNotification } from '../App/actions';
 import { LOAD_TASKS_SUCCESS } from './taskActions';
 import { selectTasks } from './taskSelectors';
 import { EVENT as EVENT_TASK_COLLECTION } from '../../domain/TaskCollection';
+import { apiSlice } from '../api/slice'
 
 export const ringOnTaskListUpdated = ({ getState, dispatch }) => {
   return next => action => {
@@ -15,6 +16,7 @@ export const ringOnTaskListUpdated = ({ getState, dispatch }) => {
     // Avoid ringing on first load
     if (
       action.type === LOAD_TASKS_SUCCESS ||
+      apiSlice.endpoints.getMyTasks.matchFulfilled(action) ||
       action.type === 'persist/REHYDRATE'
     ) {
       return next(action);

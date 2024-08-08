@@ -192,3 +192,5 @@ export const selectNotificationsToDisplay = createSelector(
       }
     }),
 );
+
+export const selectSettingsLatLng = state => state.app.settings.latlng;

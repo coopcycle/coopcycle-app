@@ -116,6 +116,17 @@ jobs:
     if: github.actor != 'dependabot[bot]'
     name: Android Emulator Tests
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: coopcycle-app
+    env:
+      GEOCODE_EARTH_API_KEY: ${{ secrets.GEOCODE_EARTH_API_KEY }}
+      STRIPE_PUBLISHABLE_KEY: ${{ secrets.STRIPE_PUBLISHABLE_KEY }}
+      STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
+      STRIPE_CONNECT_CLIENT_ID: ${{ secrets.STRIPE_CONNECT_CLIENT_ID }}
+      AWS_ENDPOINT: ${{ secrets.AWS_ENDPOINT }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
     strategy:
       # Allow tests to continue on other devices if they fail on one device.
       fail-fast: false
@@ -125,21 +136,65 @@ jobs:
           - 28
 #          - 33
     steps:
+      # setup local coopcycle-web instance; FIXME: disabled for now as it's not enough space to run both; android build fails with 'No space left on device.'
+#      - uses: actions/checkout@v3
+#        with:
+#          repository: coopcycle/coopcycle-web
+#          path: coopcycle-web
+#      - name: Create .env file
+#        run: cp .env.dist .env
+#        working-directory: coopcycle-web
+#      - name: Pull Docker images
+#        run: docker compose pull --ignore-pull-failures
+#        working-directory: coopcycle-web
+#      - name: Prepare OSRM data
+#        run: |
+#          docker compose run -T --rm osrm wget --no-check-certificate https://coopcycle-assets.sfo2.digitaloceanspaces.com/osm/paris-france.osm.pbf -O /data/data.osm.pbf
+#          docker compose run -T --rm osrm osrm-extract -p /opt/bicycle.lua /data/data.osm.pbf
+#          docker compose run -T --rm osrm osrm-partition /data/data.osrm
+#          docker compose run -T --rm osrm osrm-customize /data/data.osrm
+#        working-directory: coopcycle-web
+#      # Cypress GitHub Action uses npm ci, and it causes a "permission denied" error,
+#      # because it tries to remove the node_modules/ folder, which is mounted with root:root
+#      # We create the node_modules/ folder *BEFORE* starting the containers,
+#      # so that it can be removed without problems.
+#      - name: Create node_modules directory
+#        run: mkdir node_modules
+#        working-directory: coopcycle-web
+#      - name: Start Docker containers
+#        run: docker compose up -d
+#        working-directory: coopcycle-web
+#      - name: Wait for PHP-FPM
+#        run: until docker inspect --format='{{ .State.Health.Status }}' $(docker compose ps -q php) | grep -wq healthy; do sleep 5; done
+#        working-directory: coopcycle-web
+#      - name: Create database
+#        run: docker compose exec -T php bin/console doctrine:schema:create --env=test
+#        working-directory: coopcycle-web
+#      - name: Create typesense collections
+#        run: docker compose exec -T php bin/console typesense:create --env=test
+#        working-directory: coopcycle-web
+#      - name: Setup CoopCycle
+#        run: docker compose exec -T php bin/console coopcycle:setup --env=test
+#        working-directory: coopcycle-web
+
       - uses: actions/checkout@v3
+        with:
+          path: coopcycle-app
 
       - name: Free Disk Space (Ubuntu)
         uses: jlumbroso/free-disk-space@main
         with:
           # all of these default to true, but feel free to set to
           # "false" if necessary for your workflow
+          # https://github.com/jlumbroso/free-disk-space?tab=readme-ov-file#example
           android: false
-          # large-packages: true
-          # swap-storage: true
 
       - uses: actions/setup-node@v4
         with:
           node-version: '20.x'
-          cache: 'yarn'
+      # Temporary disable yarn caching
+      #          cache: 'yarn'
+      #          cache-dependency-path: "coopcycle-app"
 
       - uses: actions/setup-java@v3
         with:
@@ -150,7 +205,7 @@ jobs:
       - name: Decode sentry.properties file
         uses: timheuer/base64-to-file@v1.2
         with:
-          fileDir: "./android/"
+          fileDir: "./coopcycle-app/android/"
           fileName: "sentry.properties"
           encodedString: ${{ secrets.SENTRY_PROPERTIES_BASE64 }}
 
@@ -208,6 +263,7 @@ jobs:
         run: node node_modules/.bin/detox build -c android.emu.release
         env:
           googleMapsApiKey: ${{ secrets.googleMapsApiKey }}
+          SENTRY_DISABLE_AUTO_UPLOAD: true
 
       - name: Disk usage (filesystem)
         run: df -h
@@ -227,8 +283,8 @@ jobs:
           disable-animations: true
           script: |
             node node_modules/.bin/detox test -c android.emu.release --device-name="test" -l debug
-#            node node_modules/.bin/detox test -c android.att.release --device-name="test" --take-screenshots all
-#            node node_modules/.bin/detox test -c android.att.release --device-name="test" --take-screenshots manual -o e2e/screenshots.config.json
+      #            node node_modules/.bin/detox test -c android.att.release --device-name="test" --take-screenshots all
+      #            node node_modules/.bin/detox test -c android.att.release --device-name="test" --take-screenshots manual -o e2e/screenshots.config.json
 
       - name: List supported devices
         if: false # useful only for debugging

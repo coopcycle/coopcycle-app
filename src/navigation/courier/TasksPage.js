@@ -1,34 +1,95 @@
 import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake';
-import React, { Component } from 'react';
+import React, { Component, useMemo } from 'react';
 import { withTranslation } from 'react-i18next';
-import { InteractionManager, Platform, StyleSheet, View } from 'react-native';
+import {
+  ActivityIndicator,
+  InteractionManager,
+  Platform,
+  StyleSheet,
+  View,
+} from 'react-native';
 import RNPinScreen from 'react-native-pin-screen';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 
 import DateSelectHeader from '../../components/DateSelectHeader';
 import TasksMapView from '../../components/TasksMapView';
 import { navigateToTask } from '../../navigation/utils';
 import {
-  loadTasks,
   selectFilteredTasks,
   selectKeepAwake,
   selectTaskSelectedDate,
 } from '../../redux/Courier';
 
-import { selectIsCentrifugoConnected } from '../../redux/App/selectors';
+import {
+  selectIsCentrifugoConnected,
+  selectSettingsLatLng,
+} from '../../redux/App/selectors';
 import { connect as connectCentrifugo } from '../../redux/middlewares/CentrifugoMiddleware/actions';
+import { useGetMyTasksQuery } from '../../redux/api/slice';
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  activityContainer: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    display: 'flex',
+    alignItems: 'center',
+    margin: 8,
+  },
+  activityIndicator: {
+    padding: 8,
+    backgroundColor: 'white',
+    borderRadius: 8,
+  },
+});
+
+function TaskMapPage({ navigation, route }) {
+  const selectedDate = useSelector(selectTaskSelectedDate);
+  const tasks = useSelector(selectFilteredTasks);
+  const latlng = useSelector(selectSettingsLatLng);
+  const mapCenter = useMemo(() => {
+    return latlng.split(',').map(parseFloat);
+  }, [latlng]);
+
+  const { isFetching } = useGetMyTasksQuery(selectedDate, {
+    refetchOnFocus: true,
+  });
+
+  return (
+    <View style={styles.container}>
+      <DateSelectHeader navigate={navigation.navigate} />
+      <View style={{ flex: 1 }}>
+        <TasksMapView
+          mapCenter={mapCenter}
+          tasks={tasks}
+          onMarkerCalloutPress={task =>
+            navigateToTask(navigation, route, task, tasks)
+          }
+        />
+        {isFetching ? (
+          <View style={styles.activityContainer}>
+            <ActivityIndicator
+              style={styles.activityIndicator}
+              animating={true}
+              size="large"
+            />
+          </View>
+        ) : null}
+      </View>
+    </View>
+  );
+}
 
 class TasksPage extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      task: null,
-      polyline: [],
       isFocused: false,
     };
-
-    this.refreshTasks = this.refreshTasks.bind(this);
   }
 
   enableKeepAwake() {
@@ -79,55 +140,31 @@ class TasksPage extends Component {
 
   _bootstrap() {
     InteractionManager.runAfterInteractions(() => {
-      this.refreshTasks(this.props.selectedDate);
-      if (!this.props.selectIsCentrifugoConnected) {
+      if (!this.props.isCentrifugoConnected) {
         this.props.connectCent();
       }
     });
   }
 
-  refreshTasks(selectedDate) {
-    this.props.loadTasks(selectedDate);
-  }
-
   render() {
-    const { tasks } = this.props;
-
     return (
-      <View style={styles.container}>
-        <DateSelectHeader navigate={this.props.navigation.navigate} />
-        <TasksMapView
-          mapCenter={this.props.mapCenter}
-          tasks={tasks}
-          onMarkerCalloutPress={task =>
-            navigateToTask(this.props.navigation, this.props.route, task, tasks)
-          }
-        />
-      </View>
+      <TaskMapPage
+        navigation={this.props.navigation}
+        route={this.props.route}
+      />
     );
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
-
 function mapStateToProps(state) {
   return {
-    tasks: selectFilteredTasks(state),
-    selectedDate: selectTaskSelectedDate(state),
     keepAwake: selectKeepAwake(state),
     isCentrifugoConnected: selectIsCentrifugoConnected(state),
-    httpClient: state.app.httpClient,
-    mapCenter: state.app.settings.latlng.split(',').map(parseFloat),
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    loadTasks: selectedDate => dispatch(loadTasks(selectedDate)),
     connectCent: () => dispatch(connectCentrifugo()),
   };
 }
