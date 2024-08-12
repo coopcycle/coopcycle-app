@@ -1917,6 +1917,16 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
+"@datadog/mobile-react-native@^2.4.3":
+  version "2.4.3"
+  resolved "https://registry.yarnpkg.com/@datadog/mobile-react-native/-/mobile-react-native-2.4.3.tgz#4e0e1d046b8e98d790a91de289264c5b9039d305"
+  integrity sha512-po+R7JKiFkTS65vWKwfIWAn+aQuWdxeU61C5wc1YYtXVVBpNDCPs3qbDXxQmxJMDxMcjyDnYC0F0tO2EXS62yQ==
+
+"@datadog/mobile-react-navigation@^2.4.3":
+  version "2.4.3"
+  resolved "https://registry.yarnpkg.com/@datadog/mobile-react-navigation/-/mobile-react-navigation-2.4.3.tgz#0008d5ae70ad892c2e587382baaa51d05e0eefc0"
+  integrity sha512-DcT8GQ2Ne1F5ryR7oM7jaKYn8pJ8r5r1BwbbqnKVkvxNAA2W4HDXn54u2C8ShuYhKs3STIjOo1zCDNxvSRsrgg==
+
 "@egjs/hammerjs@^2.0.17":
   version "2.0.17"
   resolved "https://registry.yarnpkg.com/@egjs/hammerjs/-/hammerjs-2.0.17.tgz#5dc02af75a6a06e4c2db0202cae38c9263895124"
