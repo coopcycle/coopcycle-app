@@ -56,7 +56,9 @@ const middlewaresProxy = middlewaresList => {
 
 const store = createStore(reducers, middlewaresProxy(middlewares));
 
-// enable refetchOnFocus and refetchOnReconnect behaviors
+// enable support for refetchOnFocus and refetchOnReconnect behaviors
+// they are disabled by default and need to be enabled explicitly for each hook/action
+// https://redux-toolkit.js.org/rtk-query/api/createApi#refetchonfocus
 // https://redux-toolkit.js.org/rtk-query/api/setupListeners
 setupListeners(store.dispatch);
 setupListenersReactNative(store.dispatch, apiSlice.internalActions);
