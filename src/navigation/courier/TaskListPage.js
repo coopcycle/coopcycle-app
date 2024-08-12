@@ -1,20 +1,18 @@
-import React, { Component } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { connect } from 'react-redux';
+import React from 'react';
+import { ActivityIndicator, StyleSheet, View } from 'react-native';
+import { useSelector } from 'react-redux';
 
-import { withTranslation } from 'react-i18next';
 import DateSelectHeader from '../../components/DateSelectHeader';
 import TapToRefresh from '../../components/TapToRefresh';
 import TaskList from '../../components/TaskList';
 import { navigateToCompleteTask, navigateToTask } from '../../navigation/utils';
 import {
-  loadTasks,
   selectFilteredTasks,
-  selectIsTasksRefreshing,
   selectTaskSelectedDate,
   selectTasksWithColor,
 } from '../../redux/Courier';
 import { doneIconName } from '../task/styles/common';
+import { useGetMyTasksQuery } from '../../redux/api/slice';
 
 const styles = StyleSheet.create({
   containerEmpty: {
@@ -29,108 +27,67 @@ const styles = StyleSheet.create({
   },
 });
 
-class TaskListPage extends Component {
-  completeSelectedTasks(selectedTasks) {
+const allowToSelect = task => {
+  return task.status !== 'DONE';
+};
+
+export default function TaskListPage({ navigation, route }) {
+  const selectedDate = useSelector(selectTaskSelectedDate);
+  const tasks = useSelector(selectFilteredTasks);
+  const tasksWithColor = useSelector(selectTasksWithColor);
+
+  const containerStyle = [styles.container];
+  if (tasks.length === 0) {
+    containerStyle.push(styles.containerEmpty);
+  }
+
+  const { isFetching, refetch } = useGetMyTasksQuery(selectedDate, {
+    refetchOnFocus: true,
+  });
+
+  const completeSelectedTasks = selectedTasks => {
     if (selectedTasks.length > 1) {
-      navigateToCompleteTask(
-        this.props.navigation,
-        this.props.route,
-        null,
-        selectedTasks,
-        true,
-      );
+      navigateToCompleteTask(navigation, route, null, selectedTasks, true);
     } else if (selectedTasks.length === 1) {
-      navigateToCompleteTask(
-        this.props.navigation,
-        this.props.route,
-        selectedTasks[0],
-        [],
-        true,
-      );
+      navigateToCompleteTask(navigation, route, selectedTasks[0], [], true);
     }
-  }
+  };
 
-  allowToSelect(task) {
-    return task.status !== 'DONE';
-  }
-
-  render() {
-    const { tasks, tasksWithColor, selectedDate } = this.props;
-
-    const containerStyle = [styles.container];
-    if (tasks.length === 0) {
-      containerStyle.push(styles.containerEmpty);
-    }
-
-    return (
-      <View style={containerStyle}>
-        <DateSelectHeader navigate={this.props.navigation.navigate} />
-        {tasks.length > 0 && (
-          <TaskList
-            tasks={tasks}
-            tasksWithColor={tasksWithColor}
-            onSwipeLeft={task =>
-              navigateToCompleteTask(
-                this.props.navigation,
-                this.props.route,
-                task,
-                [],
-                true,
-              )
-            }
-            onSwipeRight={task =>
-              navigateToCompleteTask(
-                this.props.navigation,
-                this.props.route,
-                task,
-                [],
-                false,
-              )
-            }
-            swipeOutLeftEnabled={task => task.status !== 'DONE'}
-            swipeOutRightEnabled={task => task.status !== 'DONE'}
-            onTaskClick={task =>
-              navigateToTask(
-                this.props.navigation,
-                this.props.route,
-                task,
-                tasks,
-              )
-            }
-            refreshing={this.props.isRefreshing}
-            onRefresh={() => this.props.refreshTasks(selectedDate)}
-            allowMultipleSelection={task => this.allowToSelect(task)}
-            multipleSelectionIcon={doneIconName}
-            onMultipleSelectionAction={selectedTasks =>
-              this.completeSelectedTasks(selectedTasks)
-            }
+  return (
+    <View style={containerStyle}>
+      <DateSelectHeader navigate={navigation.navigate} />
+      {tasks.length > 0 && (
+        <TaskList
+          tasks={tasks}
+          tasksWithColor={tasksWithColor}
+          onSwipeLeft={task =>
+            navigateToCompleteTask(navigation, route, task, [], true)
+          }
+          onSwipeRight={task =>
+            navigateToCompleteTask(navigation, route, task, [], false)
+          }
+          swipeOutLeftEnabled={task => task.status !== 'DONE'}
+          swipeOutRightEnabled={task => task.status !== 'DONE'}
+          onTaskClick={task => navigateToTask(navigation, route, task, tasks)}
+          refreshing={isFetching}
+          onRefresh={() => refetch()}
+          allowMultipleSelection={task => allowToSelect(task)}
+          multipleSelectionIcon={doneIconName}
+          onMultipleSelectionAction={selectedTasks =>
+            completeSelectedTasks(selectedTasks)
+          }
+        />
+      )}
+      {tasks.length === 0 && (
+        <>
+          <ActivityIndicator
+            style={{ paddingVertical: 8 }}
+            animating={isFetching}
+            size="large"
           />
-        )}
-        {tasks.length === 0 && (
-          <TapToRefresh onPress={() => this.props.loadTasks(selectedDate)} />
-        )}
-      </View>
-    );
-  }
+          <TapToRefresh onPress={() => refetch()} />
+        </>
+      )}
+    </View>
+  );
 }
-
-function mapStateToProps(state) {
-  return {
-    tasks: selectFilteredTasks(state),
-    tasksWithColor: selectTasksWithColor(state),
-    selectedDate: selectTaskSelectedDate(state),
-    isRefreshing: selectIsTasksRefreshing(state),
-  };
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    loadTasks: selectedDate => dispatch(loadTasks(selectedDate)),
-    refreshTasks: selectedDate => dispatch(loadTasks(selectedDate, true)),
-  };
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(withTranslation()(TaskListPage));
