@@ -11,8 +11,7 @@ import {
 import Config from 'react-native-config';
 import { DdRumReactNavigationTracking } from '@datadog/mobile-react-navigation';
 
-// Enable Datadog only in production, change to true to test locally
-const enabled = !__DEV__
+const enabled = Config.DATADOG_ENABLED === '1';
 
 const clientToken = Config.DATADOG_CLIENT_TOKEN;
 if (enabled && !clientToken) {
