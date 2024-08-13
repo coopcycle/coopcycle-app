@@ -90,7 +90,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         multiDexEnabled true
-        versionCode 213
+        versionCode 215 // No need to increment this value, it will be automatically incremented by the fastlane
         versionName "2.22.0"
 
         manifestPlaceholders = [
