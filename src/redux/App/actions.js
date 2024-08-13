@@ -25,6 +25,7 @@ import {
   selectIsAuthenticated,
   selectResumeCheckoutAfterActivation,
 } from './selectors';
+import { DatadogSdk } from '../../Datadog'
 
 /*
  * Action Types
@@ -221,6 +222,9 @@ export const stopSound = createAction('STOP_SOUND');
 function setBaseURL(baseURL) {
   return (dispatch, getState) => {
     dispatch(_setBaseURL(baseURL));
+    DatadogSdk.setAttributes({
+      'instance_url': baseURL,
+    })
     tracker.setUserProperty(userProperty.server, baseURL);
   };
 }
@@ -241,7 +245,7 @@ function authenticationSuccess(user) {
     await dispatch(loadAddresses());
     await dispatch(assignAllCarts());
 
-    setRolesProperty(user);
+    updateUserProperties(user);
     tracker.logEvent(
       analyticsEvent.user.login._category,
       analyticsEvent.user.login.success,
@@ -265,28 +269,27 @@ function logoutSuccess() {
   return (dispatch, getState) => {
     dispatch(_logoutSuccess());
     dispatch(updateCarts({}));
-    setRolesProperty(null);
+    updateUserProperties(null);
   };
 }
 
-function setRolesProperty(user) {
+function updateUserProperties(user) {
   let roles;
-  if (user !== null && user.roles !== null) {
-    roles = user.roles.slice();
-    roles.sort();
-  } else {
-    roles = [];
-  }
-  
-  if (user) {
-    if (roles.length > 0) {
-      tracker.setUserProperty(userProperty.roles, roles.toString());
+  if (user !== null && user.username !== null) {
+    if (user.roles !== null) {
+      roles = user.roles.slice();
+      roles.sort();
     } else {
-      tracker.setUserProperty(userProperty.roles, 'ROLE_USER');
+      roles = ['ROLE_USER'];
     }
   } else {
-    tracker.setUserProperty(userProperty.roles, 'ROLE_AD_HOC_CUSTOMER');
+    roles = ['ROLE_AD_HOC_CUSTOMER'];
   }
+
+  DatadogSdk.setUser({
+    roles: roles.toString(),
+  })
+  tracker.setUserProperty(userProperty.roles, roles.toString());
 }
 
 function navigateToHome(dispatch, getState) {
@@ -409,7 +412,7 @@ export function bootstrap(baseURL, user, loader = true) {
 
     dispatch(setUser(user));
     dispatch(setBaseURL(baseURL));
-    setRolesProperty(user);
+    updateUserProperties(user);
 
     const httpClient = getState().app.httpClient;
 

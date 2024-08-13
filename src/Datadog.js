@@ -2,12 +2,14 @@ import React from 'react';
 import {
   BatchSize,
   DatadogProvider,
-  DatadogProviderConfiguration, DdLogs,
+  DatadogProviderConfiguration,
+  DdLogs,
+  DdSdkReactNative,
   SdkVerbosity,
   UploadFrequency,
-} from '@datadog/mobile-react-native'
+} from '@datadog/mobile-react-native';
 import Config from 'react-native-config';
-import { DdRumReactNavigationTracking } from '@datadog/mobile-react-navigation'
+import { DdRumReactNavigationTracking } from '@datadog/mobile-react-navigation';
 
 // Enable Datadog only in production, change to true to test locally
 const enabled = !__DEV__
@@ -65,16 +67,39 @@ export function DatadogWrapper({ children }) {
 
 const viewNamePredicate = function customViewNamePredicate(route, trackedName) {
   // return custom view name or null to use the previous RUM view
-  return trackedName
-}
+  return trackedName;
+};
 
 export function navigationContainerOnReady(navigationRef) {
   if (!enabled) {
     return;
   }
 
-  DdRumReactNavigationTracking.startTrackingViews(navigationRef.current, viewNamePredicate)
+  DdRumReactNavigationTracking.startTrackingViews(
+    navigationRef.current,
+    viewNamePredicate,
+  );
 }
+
+export const DatadogSdk = {
+  setAttributes(attributes) {
+    if (!enabled) {
+      console.debug('(disabled) DatadogSdk.setAttributes', attributes);
+      return;
+    }
+
+    DdSdkReactNative.setAttributes(attributes);
+  },
+
+  setUser(user) {
+    if (!enabled) {
+      console.debug('(disabled) DatadogSdk.setUser', user);
+      return;
+    }
+
+    DdSdkReactNative.setUser(user);
+  },
+};
 
 export const DatadogLogger = {
   /**
@@ -88,7 +113,7 @@ export const DatadogLogger = {
       return;
     }
 
-    DdLogs.debug(message, context)
+    DdLogs.debug(message, context);
   },
 
   /**
@@ -102,7 +127,7 @@ export const DatadogLogger = {
       return;
     }
 
-    DdLogs.info(message, context)
+    DdLogs.info(message, context);
   },
 
   /**
@@ -116,7 +141,7 @@ export const DatadogLogger = {
       return;
     }
 
-    DdLogs.warn(message, context)
+    DdLogs.warn(message, context);
   },
 
   /**
@@ -130,6 +155,6 @@ export const DatadogLogger = {
       return;
     }
 
-    DdLogs.error(message, context)
-  }
+    DdLogs.error(message, context);
+  },
 };
