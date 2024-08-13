@@ -91,7 +91,7 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         multiDexEnabled true
         versionCode 215 // No need to increment this value, it will be automatically incremented by the fastlane
-        versionName "2.22.0"
+        versionName "2.24.0"
 
         manifestPlaceholders = [
             tipsiStripeRedirectScheme: "coopcycle",
