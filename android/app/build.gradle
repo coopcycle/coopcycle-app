@@ -90,7 +90,8 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         multiDexEnabled true
-        versionCode 215 // No need to increment this value, it will be automatically incremented by the fastlane
+        // No need to increment the versionCode, it will be automatically incremented by the fastlane
+        versionCode 215
         versionName "2.24.0"
 
         manifestPlaceholders = [
