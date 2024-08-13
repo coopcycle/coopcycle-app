@@ -162,7 +162,7 @@ export const selectFulfilledOrders = createSelector(
 
 export const selectPrinter = state => state.restaurant.printer;
 
-const selectIsSunmiPrinter = state => state.restaurant.isSunmiPrinter;
+export const selectIsSunmiPrinter = state => state.restaurant.isSunmiPrinter;
 
 export const selectIsPrinterConnected = createSelector(
   selectPrinter,

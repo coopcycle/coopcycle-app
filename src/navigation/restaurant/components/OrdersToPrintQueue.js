@@ -11,6 +11,7 @@ import {
 } from '../../../redux/Restaurant/selectors';
 import { printOrderById } from '../../../redux/Restaurant/actions';
 import { useNavigation } from '@react-navigation/native';
+import { DatadogLogger } from '../../../Datadog';
 
 function usePrinter() {
   const connected = useSelector(selectIsPrinterConnected);
@@ -35,6 +36,10 @@ function usePrinter() {
     }
 
     const orderId = orderIdsToPrint[0];
+    DatadogLogger.info('printing ticket', {
+      trigger: 'auto',
+      orderId,
+    });
     dispatch(printOrderById(orderId));
   }, [printingOrderId, orderIdsToPrint, connected, dispatch]);
 
