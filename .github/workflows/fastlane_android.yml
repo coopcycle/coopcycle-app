@@ -89,6 +89,8 @@ jobs:
       - name: Create .env file
         env:
           SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+          DATADOG_CLIENT_TOKEN: ${{ secrets.DATADOG_CLIENT_TOKEN }}
+          DATADOG_APPLICATION_ID: ${{ secrets.DATADOG_APPLICATION_ID }}
           GOOGLE_MAPS_BROWSER_KEY: ${{ secrets.GOOGLE_MAPS_BROWSER_KEY }}
           GOOGLE_MAPS_ANDROID_KEY: ${{ secrets.GOOGLE_MAPS_ANDROID_KEY }}
           TRANSISTORSOFT_LICENSE_KEY: ${{ secrets.TRANSISTORSOFT_LICENSE_KEY }}
@@ -104,6 +106,8 @@ jobs:
           echo COUNTLY_APP_KEY= >> .env
           echo COUNTLY_SALT= >> .env
           echo SENTRY_DSN="$SENTRY_DSN" >> .env
+          echo DATADOG_CLIENT_TOKEN="$DATADOG_CLIENT_TOKEN" >> .env
+          echo DATADOG_APPLICATION_ID="$DATADOG_APPLICATION_ID" >> .env
           echo GOOGLE_MAPS_BROWSER_KEY="$GOOGLE_MAPS_BROWSER_KEY" >> .env
           echo GOOGLE_MAPS_ANDROID_KEY="$GOOGLE_MAPS_ANDROID_KEY" >> .env
           echo TRANSISTORSOFT_LICENSE_KEY="$TRANSISTORSOFT_LICENSE_KEY" >> .env
