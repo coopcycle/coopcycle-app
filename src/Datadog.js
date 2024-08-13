@@ -37,10 +37,10 @@ datadogConfig.longTaskThresholdMs = 100;
 // Optional: enable or disable native crash reports
 datadogConfig.nativeCrashReportEnabled = true;
 // Optional: Sample RUM sessions (% of session are sent to Datadog. Default is 100%).
-datadogConfig.sessionSamplingRate = __DEV__ ? 100 : 50;
+datadogConfig.sessionSamplingRate = __DEV__ ? 100 : 20;
 // Optional: Sample tracing integrations for network calls between your app and your backend (% of calls to your instrumented backend are linked from the RUM view to the APM view. Default is 20%)
 // You need to specify the hosts of your backends to enable tracing with these backends
-datadogConfig.resourceTracingSamplingRate = __DEV__ ? 100 : 50;
+datadogConfig.resourceTracingSamplingRate = __DEV__ ? 100 : 20;
 datadogConfig.telemetrySampleRate = 0;
 datadogConfig.firstPartyHosts = ['coopcycle.org']; // matches 'example.com' and subdomains like 'api.example.com'
 // Optional: let the SDK print internal logs above or equal to the provided level. Default is undefined (meaning no logs)
