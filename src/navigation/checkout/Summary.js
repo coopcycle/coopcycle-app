@@ -23,7 +23,7 @@ import {
 import Modal from 'react-native-modal';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 
 import DropdownHolder from '../../DropdownHolder';
 import BottomModal from '../../components/BottomModal';
@@ -60,27 +60,175 @@ import Loopeat from './components/Loopeat';
 import TimingModal from './components/TimingModal';
 import Tips from './components/Tips';
 
-const BottomLine = ({ label, value }) => (
-  <View style={styles.line}>
-    <Text style={styles.bottomLineLabel}>{label}</Text>
-    <Text style={styles.bottomLineAmount}>{`${formatPrice(value)}`}</Text>
-  </View>
-);
+function EmptyState() {
+  const { t } = useTranslation();
 
-const mapAdjustments = (adjustments, type) =>
-  _.map(adjustments, (adjustment, index) => (
-    <BottomLine
-      key={`${type}_${index}`}
-      label={adjustment.label}
-      value={adjustment.amount}
+  return (
+    <Center flex={1}>
+      <Text>{t('CART_EMPTY_WARNING')}</Text>
+    </Center>
+  );
+}
+
+function ItemAdjustments({ item, index }) {
+  const adjustmentsWithoutTax = _.pickBy(
+    item.adjustments,
+    (value, key) => key !== 'tax',
+  );
+
+  return (
+    <View style={{ paddingLeft: 5 }}>
+      {_.map(adjustmentsWithoutTax, (adjustments, type) => {
+        return _.map(adjustments, (adj, i) => {
+          const label = [adj.label];
+          if (adj.amount > 0) {
+            label.push(formatPrice(adj.amount));
+          }
+
+          return (
+            <Text color="#757575" key={`item:${index}:adjustments:${i}`}>
+              {label.join(' ')}
+            </Text>
+          );
+        });
+      })}
+    </View>
+  );
+}
+
+function Item({ item, index, translateXValue }) {
+  const dispatch = useDispatch();
+
+  return (
+    <View
+      style={{
+        flex: 1,
+        flexDirection: 'row',
+        borderBottomColor: '#d9d9d9',
+        borderBottomWidth: StyleSheet.hairlineWidth,
+      }}
+      key={item.key}>
+      <View
+        style={{
+          flex: 3,
+          justifyContent: 'center',
+          paddingHorizontal: 15,
+          paddingVertical: 15,
+        }}>
+        <Text>{`${item.quantity} x ${item.name}`}</Text>
+        {_.size(item.adjustments) > 0 && (
+          <ItemAdjustments item={item} index={index} />
+        )}
+        <Text note>{`${formatPrice(item.total)}`}</Text>
+      </View>
+      <Animated.View
+        style={{
+          flex: 1,
+          flexDirection: 'row',
+          transform: [{ translateX: translateXValue }],
+        }}>
+        <View style={{ flex: 1, flexDirection: 'column' }}>
+          <Pressable
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            onPress={() => dispatch(incrementItem(item))}>
+            <Icon as={FontAwesome} name="plus-circle" size="sm" />
+          </Pressable>
+          <Pressable
+            disabled={item.quantity <= 1}
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            onPress={() => dispatch(decrementItem(item))}>
+            <Icon
+              as={FontAwesome}
+              name="minus-circle"
+              size="sm"
+              style={{ opacity: item.quantity <= 1 ? 0.5 : 1 }}
+            />
+          </Pressable>
+        </View>
+        <TouchableOpacity
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+          onPress={() => dispatch(removeItem(item))}>
+          <Icon as={FontAwesome} name="trash-o" size="sm" />
+        </TouchableOpacity>
+      </Animated.View>
+    </View>
+  );
+}
+
+function ActionButton({ isLoading, onPress, iconName, iconColor, children }) {
+  const iconProps = iconColor ? { color: iconColor } : {};
+
+  return (
+    <Pressable
+      style={styles.btnGrey}
+      // Disable interaction while loading
+      onPress={() => !isLoading && onPress()}>
+      <HStack p="3" justifyContent="space-between" alignItems="center">
+        <Icon
+          as={FontAwesome}
+          name={iconName}
+          mr="2"
+          size="sm"
+          flexGrow={1}
+          {...iconProps}
+        />
+        <HStack flex={10}>{children}</HStack>
+      </HStack>
+    </Pressable>
+  );
+}
+
+function BottomLine({ label, value }) {
+  return (
+    <View style={styles.line}>
+      <Text style={styles.bottomLineLabel}>{label}</Text>
+      <Text style={styles.bottomLineAmount}>{`${formatPrice(value)}`}</Text>
+    </View>
+  );
+}
+
+function Adjustments({ adjustments, type }) {
+  return (
+    <>
+      {_.map(adjustments, (adjustment, index) => (
+        <BottomLine
+          key={`${type}_${index}`}
+          label={adjustment.label}
+          value={adjustment.amount}
+        />
+      ))}
+    </>
+  );
+}
+
+function Footer({ cart, isValid, isLoading, onSubmit }) {
+  if (!cart || cart.items.length === 0) {
+    return <View />;
+  }
+
+  return (
+    <CartFooter
+      onSubmit={onSubmit}
+      cart={cart}
+      testID="cartSummarySubmit"
+      disabled={isValid !== true || isLoading}
     />
-  ));
+  );
+}
 
-const CollectionDisclaimerModal = ({
-  isVisible,
-  onSwipeComplete,
-  restaurant,
-}) => {
+function CollectionDisclaimerModal({ isVisible, onSwipeComplete, restaurant }) {
   const { t } = useTranslation();
 
   return (
@@ -113,36 +261,7 @@ const CollectionDisclaimerModal = ({
       </View>
     </Modal>
   );
-};
-
-const ActionButton = ({
-  isLoading,
-  onPress,
-  iconName,
-  iconColor,
-  children,
-}) => {
-  const iconProps = iconColor ? { color: iconColor } : {};
-
-  return (
-    <Pressable
-      style={styles.btnGrey}
-      // Disable interaction while loading
-      onPress={() => !isLoading && onPress()}>
-      <HStack p="3" justifyContent="space-between" alignItems="center">
-        <Icon
-          as={FontAwesome}
-          name={iconName}
-          mr="2"
-          size="sm"
-          flexGrow={1}
-          {...iconProps}
-        />
-        <HStack flex={10}>{children}</HStack>
-      </HStack>
-    </Pressable>
-  );
-};
+}
 
 class Summary extends Component {
   constructor(props) {
@@ -151,7 +270,6 @@ class Summary extends Component {
       translateXValue: new Animated.Value(500),
       isCouponModalVisible: false,
       isCollectionDisclaimerModalVisible: false,
-      disabled: false,
       showTipModal: false,
     };
   }
@@ -188,32 +306,6 @@ class Summary extends Component {
     // Set edit = false before navigating
     this.props.navigation.setParams({ edit: false });
     this.props.navigation.navigate(routeName);
-  }
-
-  _renderItemAdjustments(item, index) {
-    const adjustmentsWithoutTax = _.pickBy(
-      item.adjustments,
-      (value, key) => key !== 'tax',
-    );
-
-    return (
-      <View style={{ paddingLeft: 5 }}>
-        {_.map(adjustmentsWithoutTax, (adjustments, type) => {
-          return _.map(adjustments, (adj, i) => {
-            const label = [adj.label];
-            if (adj.amount > 0) {
-              label.push(formatPrice(adj.amount));
-            }
-
-            return (
-              <Text color="#757575" key={`item:${index}:adjustments:${i}`}>
-                {label.join(' ')}
-              </Text>
-            );
-          });
-        })}
-      </View>
-    );
   }
 
   onSubmit() {
@@ -263,114 +355,11 @@ class Summary extends Component {
     });
   }
 
-  renderItems() {
-    return (
-      <FlatList
-        data={this.props.cart.items}
-        keyExtractor={(item, index) => `item:${index}`}
-        renderItem={({ item, index }) => this.renderItem(item, index)}
-        extraData={{ edit: this.props.edit }}
-      />
-    );
-  }
-
-  renderItem(item, index) {
-    return (
-      <View
-        style={{
-          flex: 1,
-          flexDirection: 'row',
-          borderBottomColor: '#d9d9d9',
-          borderBottomWidth: StyleSheet.hairlineWidth,
-        }}
-        key={item.key}>
-        <View
-          style={{
-            flex: 3,
-            justifyContent: 'center',
-            paddingHorizontal: 15,
-            paddingVertical: 15,
-          }}>
-          <Text>{`${item.quantity} x ${item.name}`}</Text>
-          {_.size(item.adjustments) > 0 &&
-            this._renderItemAdjustments(item, index)}
-          <Text note>{`${formatPrice(item.total)}`}</Text>
-        </View>
-        <Animated.View
-          style={{
-            flex: 1,
-            flexDirection: 'row',
-            transform: [{ translateX: this.state.translateXValue }],
-          }}>
-          <View style={{ flex: 1, flexDirection: 'column' }}>
-            <Pressable
-              style={{
-                flex: 1,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-              onPress={() => this.props.incrementItem(item)}>
-              <Icon as={FontAwesome} name="plus-circle" size="sm" />
-            </Pressable>
-            <Pressable
-              disabled={item.quantity <= 1}
-              style={{
-                flex: 1,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-              onPress={() => this.props.decrementItem(item)}>
-              <Icon
-                as={FontAwesome}
-                name="minus-circle"
-                size="sm"
-                style={{ opacity: item.quantity <= 1 ? 0.5 : 1 }}
-              />
-            </Pressable>
-          </View>
-          <TouchableOpacity
-            style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
-            onPress={() => this.props.removeItem(item)}>
-            <Icon as={FontAwesome} name="trash-o" size="sm" />
-          </TouchableOpacity>
-        </Animated.View>
-      </View>
-    );
-  }
-
-  renderFooter() {
-    const { cart } = this.props;
-    const { disabled } = this.state;
-
-    if (!cart || cart.items.length === 0) {
-      return <View />;
-    }
-
-    return (
-      <CartFooter
-        onSubmit={this.onSubmit.bind(this)}
-        cart={cart}
-        testID="cartSummarySubmit"
-        disabled={
-          disabled || this.props.isValid !== true || this.props.isLoading
-        }
-      />
-    );
-  }
-
-  renderEmpty() {
-    return (
-      <Center flex={1}>
-        <Text>{this.props.t('CART_EMPTY_WARNING')}</Text>
-      </Center>
-    );
-  }
-
   render() {
     const { cart, restaurant } = this.props;
 
     if (!cart || cart.items.length === 0) {
-      return this.renderEmpty();
+      return <EmptyState />;
     }
 
     const tipAmount = cart.adjustments.tip[0]?.amount || 0;
@@ -400,7 +389,22 @@ class Summary extends Component {
         {this.props.isValid === false && (
           <DangerAlert text={this.props.alertMessage} />
         )}
-        <View style={{ flex: 1, paddingTop: 30 }}>{this.renderItems()}</View>
+
+        <View style={{ flex: 1, paddingTop: 30 }}>
+          <FlatList
+            data={this.props.cart.items}
+            keyExtractor={(item, index) => `item:${index}`}
+            renderItem={({ item, index }) => (
+              <Item
+                item={item}
+                index={index}
+                translateXValue={this.state.translateXValue}
+              />
+            )}
+            extraData={{ edit: this.props.edit }}
+          />
+        </View>
+
         <View style={{ flex: 0 }}>
           {this.props.fulfillmentMethod === 'collection' && (
             <ActionButton
@@ -517,12 +521,23 @@ class Summary extends Component {
               value={this.props.deliveryTotal}
             />
           )}
-          {mapAdjustments(tip, 'tip')}
-          {mapAdjustments(deliveryPromotions, 'delivery_promotion')}
-          {mapAdjustments(orderPromotions, 'order_promotion')}
-          {mapAdjustments(reusablePackagings, 'reusable_packaging')}
+          <Adjustments adjustments={tip} type="tip" />
+          <Adjustments
+            adjustments={deliveryPromotions}
+            type="delivery_promotion"
+          />
+          <Adjustments adjustments={orderPromotions} type="order_promotion" />
+          <Adjustments
+            adjustments={reusablePackagings}
+            type="reusable_packaging"
+          />
         </View>
-        {this.renderFooter()}
+        <Footer
+          cart={this.props.cart}
+          isValid={this.props.isValid}
+          isLoading={this.props.isLoading}
+          onSubmit={this.onSubmit.bind(this)}
+        />
         <ExpiredSessionModal
           onModalHide={() => this.props.navigation.navigate('CheckoutHome')}
         />
@@ -620,9 +635,6 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    incrementItem: item => dispatch(incrementItem(item)),
-    decrementItem: item => dispatch(decrementItem(item)),
-    removeItem: item => dispatch(removeItem(item)),
     validate: cart => dispatch(validate(cart)),
     showAddressModal: () => dispatch(showAddressModal()),
     hideAddressModal: () => dispatch(hideAddressModal()),
