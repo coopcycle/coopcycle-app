@@ -437,7 +437,7 @@ function queueAddItem(item, quantity = 1, options = []) {
   };
 }
 
-const fetchValidation = _.throttle((dispatch, getState, cart) => {
+const fetchValidation = _.throttle((dispatch, getState, cart, cb) => {
   const { token } = selectCartByVendor(getState(), cart.restaurant);
   const httpClient = selectHttpClient(getState());
 
@@ -452,9 +452,12 @@ const fetchValidation = _.throttle((dispatch, getState, cart) => {
         .get(`${cart['@id']}/timing`, {
           headers: selectCheckoutAuthorizationHeaders(getState(), cart, token),
         })
-        .then(timing => dispatch(setTiming(timing)))
+        .then(timing => {
+          dispatch(setTiming(timing));
+          resolve(timing);
+        })
         // .catch(error => dispatch(setCartValidation(false, error.violations)))
-        .finally(resolve);
+        .catch(() => resolve(null));
     });
 
   const doValidate = () =>
@@ -463,7 +466,10 @@ const fetchValidation = _.throttle((dispatch, getState, cart) => {
         .get(`${cart['@id']}/validate`, {
           headers: selectCheckoutAuthorizationHeaders(getState(), cart, token),
         })
-        .then(() => dispatch(setCartValidation(true)))
+        .then(() => {
+          dispatch(setCartValidation(true));
+          resolve(true);
+        })
         .catch(error => {
           if (error.response && error.response.status === 400) {
             dispatch(setCartValidation(false, error.response.data.violations));
@@ -472,15 +478,19 @@ const fetchValidation = _.throttle((dispatch, getState, cart) => {
               setCartValidation(false, [{ message: i18n.t('TRY_LATER') }]),
             );
           }
-        })
-        .finally(resolve);
+          resolve(false);
+        });
     });
 
   dispatch(setCheckoutLoading(true));
 
-  Promise.all([doTiming(), doValidate()]).then(() =>
-    dispatch(setCheckoutLoading(false)),
-  );
+  Promise.all([doTiming(), doValidate()]).then(([_, isValid]) => {
+    dispatch(setCheckoutLoading(false));
+
+    if (cb) {
+      cb(isValid);
+    }
+  });
 }, 500);
 
 const updateItemQuantity = createAction(
@@ -656,16 +666,23 @@ export function setTip(cart, tipAmount) {
   };
 }
 
-export function validate(cart) {
+export function syncAddressAndValidate(cart) {
   return (dispatch, getState) => {
     const { shippingAddress } = cart;
     const { address } = getState().checkout;
 
-    replaceListeners(() => {
+    // called after syncAddress
+    replaceListeners(abc => {
       fetchValidation(dispatch, getState, cart);
     });
 
     dispatch(syncAddress(cart, shippingAddress ?? address));
+  };
+}
+
+export function validate(cart, cb) {
+  return (dispatch, getState) => {
+    fetchValidation(dispatch, getState, cart, cb);
   };
 }
 
@@ -1544,7 +1561,7 @@ export function loadPaymentDetails() {
     const httpClient = selectHttpClient(getState());
 
     if (!cart) {
-      return
+      return;
     }
 
     dispatch(loadPaymentDetailsRequest());

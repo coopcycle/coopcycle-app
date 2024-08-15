@@ -41,6 +41,7 @@ import {
   showAddressModal,
   showTimingModal,
   updateCart,
+  syncAddressAndValidate,
   validate,
 } from '../../redux/Checkout/actions';
 import {
@@ -276,7 +277,7 @@ class Summary extends Component {
 
   componentDidMount() {
     InteractionManager.runAfterInteractions(() => {
-      this.props.validate(this.props.cart);
+      this.props.syncAddressAndValidate(this.props.cart);
     });
     this.linkingSubscription = Linking.addEventListener('url', ({ url }) => {
       /**
@@ -284,7 +285,7 @@ class Summary extends Component {
        * which leads to unnecessary requests
        * Should it be triggered only on specific urls?
        */
-      this.props.validate(this.props.cart);
+      this.props.syncAddressAndValidate(this.props.cart);
     });
   }
 
@@ -341,7 +342,12 @@ class Summary extends Component {
       }
     }
 
-    this._navigate('CheckoutSubmitOrder');
+    this.props.validate(cart, isValid => {
+      // validation errors will be return by a selector
+      if (isValid) {
+        this._navigate('CheckoutSubmitOrder');
+      }
+    });
   }
 
   onSubmitCoupon(code) {
@@ -635,7 +641,8 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    validate: cart => dispatch(validate(cart)),
+    syncAddressAndValidate: cart => dispatch(syncAddressAndValidate(cart)),
+    validate: (cart, cb) => dispatch(validate(cart, cb)),
     showAddressModal: () => dispatch(showAddressModal()),
     hideAddressModal: () => dispatch(hideAddressModal()),
     updateCart: (cart, cb) => dispatch(updateCart(cart, cb)),
