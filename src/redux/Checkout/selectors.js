@@ -300,3 +300,6 @@ export const selectPaymentGateway = createSelector(
   state => state.app.settings,
   ({ cart }, settings) => cart?.paymentGateway || settings.payment_gateway
 );
+
+export const selectIsValid = (state) => state.checkout.isValid
+export const selectViolations = (state) => state.checkout.violations

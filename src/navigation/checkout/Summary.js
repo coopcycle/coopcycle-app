@@ -40,8 +40,8 @@ import {
   setTip,
   showAddressModal,
   showTimingModal,
-  updateCart,
   syncAddressAndValidate,
+  updateCart,
   validate,
 } from '../../redux/Checkout/actions';
 import {
@@ -49,6 +49,7 @@ import {
   selectCartWithHours,
   selectDeliveryTotal,
   selectFulfillmentMethods,
+  selectIsValid,
   selectShippingTimeRangeLabel,
 } from '../../redux/Checkout/selectors';
 import { primaryColor } from '../../styles/common';
@@ -60,6 +61,7 @@ import ExpiredSessionModal from './components/ExpiredSessionModal';
 import Loopeat from './components/Loopeat';
 import TimingModal from './components/TimingModal';
 import Tips from './components/Tips';
+import OrderAlerts from './components/OrderAlerts';
 
 function EmptyState() {
   const { t } = useTranslation();
@@ -343,7 +345,7 @@ class Summary extends Component {
     }
 
     this.props.validate(cart, isValid => {
-      // validation errors will be return by a selector
+      // validation errors will be displayed by the OrderAlerts component
       if (isValid) {
         this._navigate('CheckoutSubmitOrder');
       }
@@ -392,9 +394,7 @@ class Summary extends Component {
             translateXValue: new Animated.Value(width),
           });
         }}>
-        {this.props.isValid === false && (
-          <DangerAlert text={this.props.alertMessage} />
-        )}
+        {this.props.isValid === false ? <OrderAlerts /> : null}
 
         <View style={{ flex: 1, paddingTop: 30 }}>
           <FlatList
@@ -632,8 +632,7 @@ function mapStateToProps(state, ownProps) {
     deliveryTotal: selectDeliveryTotal(state),
     timeAsText: selectShippingTimeRangeLabel(state),
     isLoading: state.checkout.isLoading,
-    isValid: state.checkout.isValid,
-    alertMessage: _.first(state.checkout.violations.map(v => v.message)),
+    isValid: selectIsValid(state),
     fulfillmentMethods: selectFulfillmentMethods(state),
     fulfillmentMethod: selectCartFulfillmentMethod(state),
   };

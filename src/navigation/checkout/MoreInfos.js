@@ -21,13 +21,16 @@ import {
   assignCustomer,
   checkout,
   updateCart,
+  validate as validateOrder,
 } from '../../redux/Checkout/actions';
 import {
   selectCart,
   selectCartFulfillmentMethod,
+  selectIsValid,
 } from '../../redux/Checkout/selectors';
 import { isFree } from '../../utils/order';
 import FooterButton from './components/FooterButton';
+import OrderAlerts from './components/OrderAlerts';
 
 const hasErrors = (errors, touched, field) => {
   return errors[field] && touched[field];
@@ -41,11 +44,16 @@ class MoreInfos extends Component {
 
   _updateCart(payload) {
     this.props.updateCart(payload, order => {
-      if (isFree(order)) {
-        this.props.checkout();
-      } else {
-        this.props.navigation.navigate('CheckoutPayment');
-      }
+      this.props.validateOrder(this.props.cart, isValid => {
+        // validation errors will be displayed by the OrderAlerts component
+        if (isValid) {
+          if (isFree(order)) {
+            this.props.checkout();
+          } else {
+            this.props.navigation.navigate('CheckoutPayment');
+          }
+        }
+      });
     });
   }
 
@@ -160,6 +168,13 @@ class MoreInfos extends Component {
             <HStack bgColor="info.200" justifyContent="center" p="4">
               <Text>{this.props.t('CHECKOUT_MORE_INFOS_DISCLAIMER')}</Text>
             </HStack>
+
+            {this.props.isValid === false ? (
+              <VStack py="2">
+                <OrderAlerts />
+              </VStack>
+            ) : null}
+
             <VStack p="2" style={{ flex: 1 }}>
               <ScrollView>
                 {!this.props.isAuthenticated && this._userIsGuest() && (
@@ -294,12 +309,14 @@ function mapStateToProps(state, ownProps) {
     email: state.checkout.guest ? state.checkout.guest.email : '',
     user: state.app.user,
     isAuthenticated: selectIsAuthenticated(state),
+    isValid: selectIsValid(state),
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     updateCart: (cart, cb) => dispatch(updateCart(cart, cb)),
+    validateOrder: (cart, cb) => dispatch(validateOrder(cart, cb)),
     checkout: () => dispatch(checkout()),
     assignCustomer: payload => dispatch(assignCustomer(payload)),
   };
