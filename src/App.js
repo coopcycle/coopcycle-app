@@ -61,6 +61,7 @@ import {
   AccountResetPasswordNewPasswordScreen,
 } from './navigation/navigators/AccountNavigator';
 import { nativeBaseTheme } from './styles/theme';
+import { DatadogWrapper, navigationContainerOnReady } from './Datadog';
 
 LogBox.ignoreLogs([
   'Warning: isMounted(...) is deprecated in plain JavaScript React classes.',
@@ -86,6 +87,7 @@ function getCurrentRouteName() {
 
 function onReady() {
   routeNameRef.current = getCurrentRouteName();
+  navigationContainerOnReady(navigationRef);
 }
 
 /**
@@ -143,39 +145,41 @@ const App = () => {
   }, []);
 
   return (
-    <NativeBaseProvider theme={nativeBaseTheme}>
-      <RootView>
-        <Provider store={store}>
-          <PersistGate
-            loading={
-              <FullScreenLoadingIndicator debugHint="Initialising the Redux state ..." />
-            }
-            persistor={persistor}>
-            <I18nextProvider i18n={i18n}>
-              <QueryClientProvider client={queryClient}>
-                <SafeAreaProvider>
-                  <Spinner />
-                  <NavigationContainer
-                    ref={navigationRef}
-                    linking={linking}
-                    onReady={onReady}
-                    onStateChange={onNavigationStateChange}
-                    theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-                    <Root />
-                  </NavigationContainer>
-                  <DropdownAlert
-                    ref={ref => {
-                      DropdownHolder.setDropdown(ref);
-                    }}
-                  />
-                  <NotificationHandler />
-                </SafeAreaProvider>
-              </QueryClientProvider>
-            </I18nextProvider>
-          </PersistGate>
-        </Provider>
-      </RootView>
-    </NativeBaseProvider>
+    <DatadogWrapper>
+      <NativeBaseProvider theme={nativeBaseTheme}>
+        <RootView>
+          <Provider store={store}>
+            <PersistGate
+              loading={
+                <FullScreenLoadingIndicator debugHint="Initialising the Redux state ..." />
+              }
+              persistor={persistor}>
+              <I18nextProvider i18n={i18n}>
+                <QueryClientProvider client={queryClient}>
+                  <SafeAreaProvider>
+                    <Spinner />
+                    <NavigationContainer
+                      ref={navigationRef}
+                      linking={linking}
+                      onReady={onReady}
+                      onStateChange={onNavigationStateChange}
+                      theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+                      <Root />
+                    </NavigationContainer>
+                    <DropdownAlert
+                      ref={ref => {
+                        DropdownHolder.setDropdown(ref);
+                      }}
+                    />
+                    <NotificationHandler />
+                  </SafeAreaProvider>
+                </QueryClientProvider>
+              </I18nextProvider>
+            </PersistGate>
+          </Provider>
+        </RootView>
+      </NativeBaseProvider>
+    </DatadogWrapper>
   );
 };
 
