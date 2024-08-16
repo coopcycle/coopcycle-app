@@ -458,10 +458,6 @@ const _getValidate = async (dispatch, getState, cart, token) => {
     return false;
   }
 
-  if (!cart.customer) {
-    return false;
-  }
-
   const httpClient = selectHttpClient(getState());
 
   try {
@@ -974,16 +970,12 @@ export function showValidationErrors() {
   };
 }
 
-function validateCart(cart) {
-  if (!cart) {
-    return false;
-  }
-
+async function isValidToProceedWithPayment(dispatch, getState, cart, token) {
   if (!cart.customer) {
     return false;
   }
 
-  return true;
+  return await _getValidate(dispatch, getState, cart, token);
 }
 
 /**
@@ -1007,7 +999,12 @@ export function checkout(
 
     const httpClient = selectHttpClient(getState());
 
-    const isValid = await _getValidate(dispatch, getState, cart, token);
+    const isValid = await isValidToProceedWithPayment(
+      dispatch,
+      getState,
+      cart,
+      token,
+    );
     if (!isValid) {
       dispatch(handlePaymentFailed(VALIDATION_FAILED));
       return;
@@ -1331,7 +1328,13 @@ function _assignCustomer(cart, token, { email, telephone }) {
         if (user.isGuest()) {
           dispatch(updateCustomerGuest({ email, telephone }));
         }
-        if (!validateCart(res)) {
+
+        const updatedCart = res;
+
+        if (updatedCart && updatedCart.customer) {
+          dispatch(updateCartSuccess(res));
+          dispatch(checkoutSuccess());
+        } else {
           dispatch(checkoutFailure());
           dispatch(
             setModal({
@@ -1341,6 +1344,8 @@ function _assignCustomer(cart, token, { email, telephone }) {
               type: 'error',
             }),
           );
+
+          //FIXME; why do we log out the user here?
           dispatch(logoutRequest());
           user.logout().then(() => {
             dispatch(_logoutSuccess());
@@ -1350,9 +1355,6 @@ function _assignCustomer(cart, token, { email, telephone }) {
               name: 'CheckoutLogin',
             }),
           );
-        } else {
-          dispatch(updateCartSuccess(res));
-          dispatch(checkoutSuccess());
         }
       })
       .catch(e => dispatch(checkoutFailure(e)));
@@ -1572,7 +1574,12 @@ export function checkoutWithCash() {
 
     const { cart, token } = selectCart(getState());
 
-    const isValid = await _getValidate(dispatch, getState, cart, token);
+    const isValid = await isValidToProceedWithPayment(
+      dispatch,
+      getState,
+      cart,
+      token,
+    );
     if (!isValid) {
       dispatch(handlePaymentFailed(VALIDATION_FAILED));
       return;
