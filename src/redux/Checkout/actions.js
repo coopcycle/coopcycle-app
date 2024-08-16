@@ -36,6 +36,8 @@ import {
   selectCartFulfillmentMethod,
   selectCartWithHours,
   selectCheckoutAuthorizationHeaders,
+  selectPaymentDetails,
+  selectViolations,
 } from './selectors';
 
 /*
@@ -437,49 +439,68 @@ function queueAddItem(item, quantity = 1, options = []) {
   };
 }
 
-const fetchValidation = _.throttle((dispatch, getState, cart, cb) => {
-  const { token } = selectCartByVendor(getState(), cart.restaurant);
+const _getTiming = (dispatch, getState, cart, token) => {
   const httpClient = selectHttpClient(getState());
 
+  return httpClient
+    .get(`${cart['@id']}/timing`, {
+      headers: selectCheckoutAuthorizationHeaders(getState(), cart, token),
+    })
+    .then(timing => {
+      dispatch(setTiming(timing));
+      return timing;
+    });
+  // .catch(error => dispatch(setCartValidation(false, error.violations)))
+};
+
+const _getValidate = async (dispatch, getState, cart, token) => {
+  if (!cart) {
+    return false;
+  }
+
+  if (!cart.customer) {
+    return false;
+  }
+
+  const httpClient = selectHttpClient(getState());
+
+  try {
+    await httpClient.get(`${cart['@id']}/validate`, {
+      headers: selectCheckoutAuthorizationHeaders(getState(), cart, token),
+    });
+
+    dispatch(setCartValidation(true));
+    return true;
+  } catch (error) {
+    if (error.response && error.response.status === 400) {
+      dispatch(setCartValidation(false, error.response.data.violations));
+    } else {
+      dispatch(setCartValidation(false, [{ message: i18n.t('TRY_LATER') }]));
+    }
+    return false;
+  }
+};
+
+const fetchValidation = _.throttle((dispatch, getState, cart, cb) => {
   // No need to validate when cart is empty
   if (cart.items.length === 0) {
     return;
   }
 
+  const { token } = selectCartByVendor(getState(), cart.restaurant);
+
   const doTiming = () =>
     new Promise(resolve => {
-      httpClient
-        .get(`${cart['@id']}/timing`, {
-          headers: selectCheckoutAuthorizationHeaders(getState(), cart, token),
-        })
-        .then(timing => {
-          dispatch(setTiming(timing));
-          resolve(timing);
-        })
-        // .catch(error => dispatch(setCartValidation(false, error.violations)))
+      _getTiming(dispatch, getState, cart, token)
+        .then(timing => resolve(timing))
         .catch(() => resolve(null));
     });
 
   const doValidate = () =>
     new Promise(resolve => {
-      httpClient
-        .get(`${cart['@id']}/validate`, {
-          headers: selectCheckoutAuthorizationHeaders(getState(), cart, token),
-        })
-        .then(() => {
-          dispatch(setCartValidation(true));
-          resolve(true);
-        })
-        .catch(error => {
-          if (error.response && error.response.status === 400) {
-            dispatch(setCartValidation(false, error.response.data.violations));
-          } else {
-            dispatch(
-              setCartValidation(false, [{ message: i18n.t('TRY_LATER') }]),
-            );
-          }
-          resolve(false);
-        });
+      _getValidate(dispatch, getState, cart, token).then(isValid =>
+        resolve(isValid),
+      );
     });
 
   dispatch(setCheckoutLoading(true));
@@ -680,9 +701,10 @@ export function syncAddressAndValidate(cart) {
   };
 }
 
-export function validate(cart, cb) {
+export function validate(cart) {
   return (dispatch, getState) => {
-    fetchValidation(dispatch, getState, cart, cb);
+    const { token } = selectCartByVendor(getState(), cart.restaurant);
+    return _getValidate(dispatch, getState, cart, token);
   };
 }
 
@@ -863,22 +885,15 @@ export function searchRestaurants(options = {}) {
 }
 
 export function mercadopagoCheckout(payment) {
-  /**
-   * Helper function to handle errors
-   */
-  function handleError(dispatch, error) {
-    dispatch(checkoutFailure(error));
-    // We navigate back to the MoreInfos screen. Should we navigate to another screen?
-    NavigationHolder.navigate('CheckoutMoreInfos', {});
-  }
-
   return (dispatch, getState) => {
     const { cart, token } = getState().checkout;
+
+    //FIXME; add order validation before mercadopago checkout begins (in the React component?)
 
     const { id, status, statusDetail } = payment;
 
     if (status !== 'approved') {
-      handleError(dispatch, { status, statusDetail });
+      dispatch(handlePaymentFailed({ status, statusDetail }));
       return;
     }
 
@@ -894,15 +909,15 @@ export function mercadopagoCheckout(payment) {
         headers: selectCheckoutAuthorizationHeaders(getState(), cart, token),
       })
       .then(order => {
-        dispatch(handleSuccessNav(order));
+        dispatch(handlePaymentSuccess(order));
       })
       .catch(orderUpdateError => {
-        handleError(dispatch, orderUpdateError);
+        dispatch(handlePaymentFailed(orderUpdateError));
       });
   };
 }
 
-function handleSuccessNav(order) {
+function handlePaymentSuccess(order) {
   return (dispatch, getState) => {
     const { token } = selectCartByVendor(getState(), order.restaurant['@id']);
 
@@ -931,6 +946,34 @@ function handleSuccessNav(order) {
   };
 }
 
+const VALIDATION_FAILED = 'VALIDATION_FAILED';
+
+function handlePaymentFailed(err) {
+  return (dispatch, getState) => {
+    dispatch(checkoutFailure(err));
+
+    if (err === VALIDATION_FAILED) {
+      dispatch(showValidationErrors());
+    }
+  };
+}
+
+export function showValidationErrors() {
+  return (dispatch, getState) => {
+    const violations = selectViolations(getState());
+    const alertMessage = _.first(violations.map(v => v.message));
+
+    dispatch(
+      setModal({
+        show: true,
+        skippable: true,
+        content: alertMessage ?? 'An error occurred, please try again later',
+        type: 'error',
+      }),
+    );
+  };
+}
+
 function validateCart(cart) {
   if (!cart) {
     return false;
@@ -953,32 +996,20 @@ export function checkout(
   savedPaymentMethodId = null,
   saveCard = false,
 ) {
-  return (dispatch, getState) => {
+  return async (dispatch, getState) => {
     dispatch(checkoutRequest());
 
-    const { restaurant, paymentDetails } = getState().checkout;
-    const { cart, token } = selectCartByVendor(getState(), restaurant);
+    const paymentDetails = selectPaymentDetails(getState());
+    const { cart, token } = selectCart(getState());
     const billingEmail = selectBillingEmail(getState());
 
     const loggedOrderId = cart['@id'];
 
     const httpClient = selectHttpClient(getState());
 
-    if (!validateCart(cart)) {
-      dispatch(checkoutFailure());
-      NavigationHolder.dispatch(
-        CommonActions.navigate({
-          name: 'Cart',
-        }),
-      );
-      dispatch(
-        setModal({
-          show: true,
-          skippable: true,
-          content: 'An error occurred, please try again later',
-          type: 'error',
-        }),
-      );
+    const isValid = await _getValidate(dispatch, getState, cart, token);
+    if (!isValid) {
+      dispatch(handlePaymentFailed(VALIDATION_FAILED));
       return;
     }
 
@@ -995,8 +1026,8 @@ export function checkout(
             ),
           },
         )
-        .then(o => dispatch(handleSuccessNav(o)))
-        .catch(e => dispatch(checkoutFailure(e)));
+        .then(o => dispatch(handlePaymentSuccess(o)))
+        .catch(e => dispatch(handlePaymentFailed(e)));
 
       return;
     }
@@ -1052,7 +1083,7 @@ export function checkout(
                 throw new Error('handleNextAction error:', { cause: error });
               } else {
                 dispatch(
-                  handleSuccess(
+                  handleStripeResponse(
                     cart,
                     token,
                     paymentIntent.id,
@@ -1070,11 +1101,11 @@ export function checkout(
                 },
               );
               console.log('stripeResponse.requiresAction', err);
-              dispatch(checkoutFailure(err));
+              dispatch(handlePaymentFailed(err));
             });
         } else {
           dispatch(
-            handleSuccess(
+            handleStripeResponse(
               cart,
               token,
               stripeResponse.paymentIntentId,
@@ -1084,7 +1115,7 @@ export function checkout(
           );
         }
       })
-      .catch(e => dispatch(checkoutFailure(e)));
+      .catch(e => dispatch(handlePaymentFailed(e)));
   };
 }
 
@@ -1136,7 +1167,7 @@ function configureStripe(state, paymentDetails = null) {
   return initStripe(stripeProps);
 }
 
-function handleSuccess(
+function handleStripeResponse(
   cart,
   token,
   paymentIntentId,
@@ -1173,7 +1204,7 @@ function handleSuccess(
             },
           )
           .then(order => {
-            dispatch(handleSuccessNav(order));
+            dispatch(handlePaymentSuccess(order));
           })
           .catch(e => {
             const err = new Error(
@@ -1185,7 +1216,7 @@ function handleSuccess(
             console.log('PUT; /pay', err);
             Sentry.captureException(err);
 
-            return dispatch(checkoutFailure(err));
+            return dispatch(handlePaymentFailed(err));
           });
       });
   };
@@ -1520,7 +1551,7 @@ export function setFulfillmentMethod(method) {
 
 export function loadPaymentMethods(method) {
   return (dispatch, getState) => {
-    const { cart, token } = selectCartWithHours(getState());
+    const { cart, token } = selectCart(getState());
 
     const httpClient = selectHttpClient(getState());
 
@@ -1536,11 +1567,18 @@ export function loadPaymentMethods(method) {
 }
 
 export function checkoutWithCash() {
-  return (dispatch, getState) => {
-    const { cart, token } = selectCartWithHours(getState());
-    const httpClient = selectHttpClient(getState());
-
+  return async (dispatch, getState) => {
     dispatch(checkoutRequest());
+
+    const { cart, token } = selectCart(getState());
+
+    const isValid = await _getValidate(dispatch, getState, cart, token);
+    if (!isValid) {
+      dispatch(handlePaymentFailed(VALIDATION_FAILED));
+      return;
+    }
+
+    const httpClient = selectHttpClient(getState());
 
     httpClient
       .put(
@@ -1550,14 +1588,14 @@ export function checkoutWithCash() {
           headers: selectCheckoutAuthorizationHeaders(getState(), cart, token),
         },
       )
-      .then(order => dispatch(handleSuccessNav(order)))
-      .catch(e => dispatch(checkoutFailure(e)));
+      .then(order => dispatch(handlePaymentSuccess(order)))
+      .catch(e => dispatch(handlePaymentFailed(e)));
   };
 }
 
 export function loadPaymentDetails() {
   return (dispatch, getState) => {
-    const { cart, token } = selectCartWithHours(getState());
+    const { cart, token } = selectCart(getState());
     const httpClient = selectHttpClient(getState());
 
     if (!cart) {

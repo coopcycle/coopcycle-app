@@ -20,6 +20,7 @@ import { selectIsAuthenticated } from '../../redux/App/selectors';
 import {
   assignCustomer,
   checkout,
+  showValidationErrors,
   updateCart,
   validate as validateOrder,
 } from '../../redux/Checkout/actions';
@@ -30,7 +31,6 @@ import {
 } from '../../redux/Checkout/selectors';
 import { isFree } from '../../utils/order';
 import FooterButton from './components/FooterButton';
-import OrderAlerts from './components/OrderAlerts';
 
 const hasErrors = (errors, touched, field) => {
   return errors[field] && touched[field];
@@ -44,14 +44,15 @@ class MoreInfos extends Component {
 
   _updateCart(payload) {
     this.props.updateCart(payload, order => {
-      this.props.validateOrder(this.props.cart, isValid => {
-        // validation errors will be displayed by the OrderAlerts component
+      this.props.validateOrder(this.props.cart).then(isValid => {
         if (isValid) {
           if (isFree(order)) {
             this.props.checkout();
           } else {
             this.props.navigation.navigate('CheckoutPayment');
           }
+        } else {
+          this.props.showValidationErrors();
         }
       });
     });
@@ -168,12 +169,6 @@ class MoreInfos extends Component {
             <HStack bgColor="info.200" justifyContent="center" p="4">
               <Text>{this.props.t('CHECKOUT_MORE_INFOS_DISCLAIMER')}</Text>
             </HStack>
-
-            {this.props.isValid === false ? (
-              <VStack py="2">
-                <OrderAlerts />
-              </VStack>
-            ) : null}
 
             <VStack p="2" style={{ flex: 1 }}>
               <ScrollView>
@@ -316,7 +311,8 @@ function mapStateToProps(state, ownProps) {
 function mapDispatchToProps(dispatch) {
   return {
     updateCart: (cart, cb) => dispatch(updateCart(cart, cb)),
-    validateOrder: (cart, cb) => dispatch(validateOrder(cart, cb)),
+    validateOrder: cart => dispatch(validateOrder(cart)),
+    showValidationErrors: () => dispatch(showValidationErrors()),
     checkout: () => dispatch(checkout()),
     assignCustomer: payload => dispatch(assignCustomer(payload)),
   };

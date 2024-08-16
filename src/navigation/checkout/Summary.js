@@ -40,6 +40,7 @@ import {
   setTip,
   showAddressModal,
   showTimingModal,
+  showValidationErrors,
   syncAddressAndValidate,
   updateCart,
   validate,
@@ -51,6 +52,7 @@ import {
   selectFulfillmentMethods,
   selectIsValid,
   selectShippingTimeRangeLabel,
+  selectViolations,
 } from '../../redux/Checkout/selectors';
 import { primaryColor } from '../../styles/common';
 import { formatPrice } from '../../utils/formatting';
@@ -61,7 +63,6 @@ import ExpiredSessionModal from './components/ExpiredSessionModal';
 import Loopeat from './components/Loopeat';
 import TimingModal from './components/TimingModal';
 import Tips from './components/Tips';
-import OrderAlerts from './components/OrderAlerts';
 
 function EmptyState() {
   const { t } = useTranslation();
@@ -344,10 +345,11 @@ class Summary extends Component {
       }
     }
 
-    this.props.validate(cart, isValid => {
-      // validation errors will be displayed by the OrderAlerts component
+    this.props.validate(cart).then(isValid => {
       if (isValid) {
         this._navigate('CheckoutSubmitOrder');
+      } else {
+        this.props.showValidationErrors();
       }
     });
   }
@@ -394,7 +396,9 @@ class Summary extends Component {
             translateXValue: new Animated.Value(width),
           });
         }}>
-        {this.props.isValid === false ? <OrderAlerts /> : null}
+        {this.props.isValid === false && (
+          <DangerAlert text={this.props.alertMessage} />
+        )}
 
         <View style={{ flex: 1, paddingTop: 30 }}>
           <FlatList
@@ -622,6 +626,8 @@ function mapStateToProps(state, ownProps) {
   const cartContainer = selectCartWithHours(state);
   const { cart, restaurant, openingHoursSpecification } = cartContainer;
 
+  const violations = selectViolations(state);
+
   return {
     cart,
     cartContainer,
@@ -633,6 +639,7 @@ function mapStateToProps(state, ownProps) {
     timeAsText: selectShippingTimeRangeLabel(state),
     isLoading: state.checkout.isLoading,
     isValid: selectIsValid(state),
+    alertMessage: _.first(violations.map(v => v.message)),
     fulfillmentMethods: selectFulfillmentMethods(state),
     fulfillmentMethod: selectCartFulfillmentMethod(state),
   };
@@ -641,7 +648,8 @@ function mapStateToProps(state, ownProps) {
 function mapDispatchToProps(dispatch) {
   return {
     syncAddressAndValidate: cart => dispatch(syncAddressAndValidate(cart)),
-    validate: (cart, cb) => dispatch(validate(cart, cb)),
+    validate: cart => dispatch(validate(cart)),
+    showValidationErrors: () => dispatch(showValidationErrors()),
     showAddressModal: () => dispatch(showAddressModal()),
     hideAddressModal: () => dispatch(hideAddressModal()),
     updateCart: (cart, cb) => dispatch(updateCart(cart, cb)),

@@ -7,8 +7,10 @@ import Address from '../../utils/Address';
 import OpeningHoursSpecification from '../../utils/OpeningHoursSpecification';
 import { selectIsAuthenticated, selectUser } from '../App/selectors';
 
+const _selectCarts = state => state.checkout.carts;
+
 export const selectCart = createSelector(
-  state => state.checkout.carts,
+  _selectCarts,
   state => state.checkout.restaurant,
   (carts, restaurant) => {
     if (carts.hasOwnProperty(restaurant)) {
@@ -40,7 +42,7 @@ export const selectCartWithHours = createSelector(selectCart, cartContainer => {
 const selectVendorId = (state, vendorId) => vendorId;
 
 export const selectCartByVendor = createSelector(
-  state => state.checkout.carts,
+  _selectCarts,
   selectVendorId,
   (carts, vendor) => {
     if (carts.hasOwnProperty(vendor)) {
@@ -54,9 +56,23 @@ export const selectCartByVendor = createSelector(
   },
 );
 
+export const selectCarts = createSelector(
+  _selectCarts,
+  carts =>
+    _.map(carts, (value, key) => {
+      const openingHoursSpecification = new OpeningHoursSpecification();
+      openingHoursSpecification.openingHours =
+        value.restaurant.openingHoursSpecification;
+      return {
+        ...value,
+        openingHoursSpecification,
+      };
+    }),
+);
+
 export const selectRestaurant = createSelector(
   state => state.checkout.restaurants,
-  state => state.checkout.carts,
+  _selectCarts,
   state => state.checkout.restaurant,
   (restaurants, carts, restaurant) => {
     const restaurantsWithCarts = Object.values(carts).map(c => c.restaurant);
@@ -238,20 +254,6 @@ export const cartItemsCountBadge = createSelector(
   items => items.length,
 );
 
-export const selectCarts = createSelector(
-  state => state.checkout.carts,
-  carts =>
-    _.map(carts, (value, key) => {
-      const openingHoursSpecification = new OpeningHoursSpecification();
-      openingHoursSpecification.openingHours =
-        value.restaurant.openingHoursSpecification;
-      return {
-        ...value,
-        openingHoursSpecification,
-      };
-    }),
-);
-
 export const selectBillingEmail = createSelector(
   selectIsAuthenticated,
   selectUser,
@@ -303,3 +305,5 @@ export const selectPaymentGateway = createSelector(
 
 export const selectIsValid = (state) => state.checkout.isValid
 export const selectViolations = (state) => state.checkout.violations
+
+export const selectPaymentDetails = (state) => state.checkout.paymentDetails
