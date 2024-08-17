@@ -190,6 +190,7 @@ function Restaurant(props) {
         </Text>
         {section.data.map((item, innerIndex) => (
           <RestaurantMenuItem
+            testID={`menuItem:${section.index}:${innerIndex}`}
             item={item}
             isLoading={isLoading}
             key={innerIndex}
@@ -228,6 +229,7 @@ function Restaurant(props) {
         maxHeight: '100%',
       }}>
       <FlatList
+        testID="restaurantData"
         stickyHeaderIndices={[2]}
         data={Array.from(
           { length: renderFunctions.length },

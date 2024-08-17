@@ -149,7 +149,7 @@ export default props => {
   };
 
   return (
-    <View style={{ flex: 1 }} edges={['bottom']}>
+    <View testID="productDetails" style={{ flex: 1 }} edges={['bottom']}>
       <SectionList
         style={{ flex: 1 }}
         ref={list}

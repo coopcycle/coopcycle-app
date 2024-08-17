@@ -94,13 +94,27 @@ export const logout = async (username, password) => {
   await element(by.id('logout')).tap();
 };
 
-export const chooseOptionsIfNeeded = async () => {
+export const addProduct = async (id) => {
   try {
-    // This means the product options modal is visible
-    await waitFor(element(by.text('Choose options')))
+    await expect(element(by.id(id))).toBeVisible()
+  } catch (e) {
+    //FIXME: make scroll more flexible or use
+    // await element(by.id('restaurantData')).scrollToIndex(0);
+    // instead
+    await waitFor(element(by.id(id)))
       .toBeVisible()
-      .withTimeout(1000);
+      .whileElement(by.id('restaurantData'))
+      .scroll(180, 'down');
+  }
 
+  await element(by.id(id)).tap();
+
+  // Product details page
+  await waitFor(element(by.id('productDetails')))
+    .toBeVisible()
+    .withTimeout(1000);
+
+  try {
     // As there is no way to know the number of sections,
     // we try with 100 sections
     for (let section = 0; section < 100; section++) {
@@ -117,4 +131,6 @@ export const chooseOptionsIfNeeded = async () => {
   } catch (e) {
     // next step in case the element is not displayed
   }
+
+  await element(by.id('addProduct')).tap();
 };

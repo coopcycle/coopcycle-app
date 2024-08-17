@@ -491,6 +491,7 @@ class Summary extends Component {
               alignItems="center"
               style={styles.btnGrey}>
               <Checkbox
+                testID="reusablePackagingCheckbox"
                 accessibilityLabel={reusablePackagingAction.description}
                 defaultIsChecked={cart.reusablePackagingEnabled}
                 onChange={() => this.toggleReusablePackaging()}
