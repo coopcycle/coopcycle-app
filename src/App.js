@@ -63,6 +63,10 @@ import {
 import { nativeBaseTheme } from './styles/theme';
 import { DatadogWrapper, navigationContainerOnReady } from './Datadog';
 
+if (Config.APP_ENV === 'test') {
+  LogBox.ignoreAllLogs(true);
+}
+
 LogBox.ignoreLogs([
   'Warning: isMounted(...) is deprecated in plain JavaScript React classes.',
   'Module RCTImageLoader requires main queue setup',
