@@ -1,7 +1,9 @@
+import { IconChevronDown } from '@tabler/icons-react-native';
 import { Button, Text, View } from 'native-base';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet } from 'react-native';
+import RNPickerSelect from 'react-native-picker-select';
 import {
   useBackgroundColor,
   useBackgroundContainerColor,
@@ -9,8 +11,6 @@ import {
   useBaseTextColor,
   usePrimaryColor,
 } from '../../../styles/theme';
-import RNPickerSelect from 'react-native-picker-select';
-import { IconChevronDown } from '@tabler/icons-react-native';
 
 const styles = StyleSheet.create({
   label: {
@@ -85,16 +85,15 @@ export default function TimeSlotSelector({
               onPress={() => updateSelectedTimeSlot(timeSlot)}
               style={[
                 {
-                  backgroundColor:
-                    selectedTimeSlot === timeSlot.name
-                      ? primaryColor
-                      : 'transparent',
                   borderColor:
                     selectedTimeSlot === timeSlot.name
                       ? 'transparent'
                       : backgroundHighlightColor,
                 },
                 styles.button,
+                !(selectedTimeSlot === timeSlot.name) && {
+                  backgroundColor: 'transparent',
+                },
               ]}
               key={index}>
               <Text

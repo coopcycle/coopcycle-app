@@ -129,9 +129,18 @@ function NewDelivery(props) {
     const delivery = {
       store: props.store['@id'],
       dropoff: {
-        ...values,
+        address: {
+          ...values.address,
+          telephone: values.telephone,
+          contactName: values.contactName,
+          name: values.businessName.trim() || null,
+        },
+        comments: values.comments,
         weight: values.weight * 1000,
         packages: packages.filter(item => item.quantity > 0),
+        ...(selectValue
+          ? { timeSlot: selectValue }
+          : { before: values.before }),
       },
     };
 
@@ -229,7 +238,7 @@ function NewDelivery(props) {
     comments: delivery.comments || '',
     contactName: delivery.contactName || '',
     businessName: delivery.businessName || '',
-    weight: '',
+    weight: null,
     telephone,
   };
 
@@ -273,7 +282,7 @@ function NewDelivery(props) {
               isReadOnly={true}
             />
           </View> */}
-          {props.hasTimeSlot && (
+          {props.hasTimeSlot ? (
             <TimeSlotSelector
               selectValue={selectValue}
               setSelectValue={setSelectValue}
@@ -286,18 +295,21 @@ function NewDelivery(props) {
               choices={props.choices}
               selectedTimeSlot={selectedTimeSlot}
             />
-          )}
-          {!props.hasTimeSlot &&
+          ) : (
             renderDateTimePicker(
               initialValues,
               values,
               errors,
               setFieldValue,
               setFieldTouched,
-            )}
+            )
+          )}
 
           <View style={[styles.formGroup]}>
-            <Text style={styles.label}>Custom Weight</Text>
+            <Text style={styles.label}>
+              {props.t('STORE_NEW_DELIVERY_WEIGHT')}{' '}
+              <Text style={styles.optional}>({props.t('OPTIONAL')})</Text>
+            </Text>
             <FormInput
               keyboardType="numeric"
               rightElement={<Text style={styles.weightUnit}>kg</Text>}
@@ -308,6 +320,7 @@ function NewDelivery(props) {
               }
               onBlur={handleBlur('weight')}
               value={values.weight}
+              placeholder={props.t('STORE_NEW_DELIVERY_ENTER_WEIGHT')}
             />
             {errors.address && touched.address && errors.address.weight && (
               <Text note style={styles.errorText}>
@@ -374,6 +387,11 @@ const styles = StyleSheet.create({
   },
   weightUnit: {
     paddingHorizontal: 10,
+  },
+  optional: {
+    fontWeight: '400',
+    opacity: 0.7,
+    fontSize: 12,
   },
 });
 
