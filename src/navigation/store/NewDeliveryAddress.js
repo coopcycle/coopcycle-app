@@ -14,9 +14,9 @@ import {
   useBackgroundHighlightColor,
   usePrimaryColor,
 } from '../../styles/theme';
-import ClientListInput from './ClientListInput';
-import ModalFormWrapper from './ModalFormWrapper';
+import ClientListInput from './components/ClientListInput';
 import FormInput from './components/FormInput';
+import ModalFormWrapper from './ModalFormWrapper';
 
 function NewDelivery(props) {
   const [validAddresses, setValidAddresses] = useState(false);
@@ -111,10 +111,6 @@ function NewDelivery(props) {
       errors.address = props.t('STORE_NEW_DELIVERY_ADDRESS_HELP');
     }
 
-    if (_.isEmpty(errors.address)) {
-      delete errors.address;
-    }
-
     return errors;
   }
 
@@ -123,6 +119,7 @@ function NewDelivery(props) {
     contactName: '',
     businessName: '',
     comments: '',
+    address: '',
   };
 
   function handleChangeTelephone(value, setFieldValue, setFieldTouched) {
@@ -211,7 +208,7 @@ function NewDelivery(props) {
                 _focus={{ borderColor: primaryColor }}
               />
             </View>
-            {errors.address && (
+            {errors.address && touched.address && (
               <Text note style={styles.errorText}>
                 {errors.address}
               </Text>

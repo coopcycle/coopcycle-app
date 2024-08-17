@@ -2,14 +2,14 @@ import { Text } from 'native-base';
 import { useState } from 'react';
 import AutocompleteInput from 'react-native-autocomplete-input';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import ItemSeparator from '../../components/ItemSeparator';
+import ItemSeparator from '../../../components/ItemSeparator';
 import {
   useBackgroundColor,
   useBackgroundContainerColor,
   useBackgroundHighlightColor,
   usePrimaryColor,
-} from '../../styles/theme';
-import FormInput from './components/FormInput';
+} from '../../../styles/theme';
+import FormInput from './FormInput';
 
 // const shadowStyle = {
 //   shadowColor: '#000',
@@ -92,10 +92,13 @@ export default function ClientListInput({
         }}
         flatListProps={{
           style: {
+            top: -2,
             borderWidth: 1,
-            borderTopWidth: 1,
+            borderTopWidth: 0,
             borderColor: primaryColor,
             borderRadius: 4,
+            borderTopLeftRadius: 0,
+            borderTopRightRadius: 0,
             marginTop: -1,
             backgroundColor: backgroundContainerColor,
             // overflow: 'visible',
