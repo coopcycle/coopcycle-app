@@ -25,6 +25,16 @@ function NewDelivery(props) {
   const backgroundHighlightColor = useBackgroundHighlightColor();
   const primaryColor = usePrimaryColor();
 
+  const {
+    store,
+    deliveryError,
+    addresses,
+    assertDelivery,
+    t,
+    navigation,
+    country,
+  } = props;
+
   const inputStyles = {
     backgroundColor,
     borderColor: backgroundHighlightColor,
@@ -54,14 +64,14 @@ function NewDelivery(props) {
     }
 
     const delivery = {
-      store: props.store['@id'],
+      store: store['@id'],
       dropoff: {
         address,
         before: 'tomorrow 12:00',
       },
     };
 
-    props.assertDelivery(delivery, () => {
+    assertDelivery(delivery, () => {
       setValidAddresses(true);
     });
   }
@@ -76,7 +86,7 @@ function NewDelivery(props) {
     },
   };
 
-  if (!_.isEmpty(props.deliveryError)) {
+  if (!_.isEmpty(deliveryError)) {
     autocompleteProps = {
       ...autocompleteProps,
       inputContainerStyle: {
@@ -90,25 +100,23 @@ function NewDelivery(props) {
     let errors = {};
 
     if (_.isEmpty(values.telephone)) {
-      errors.telephone = props.t('STORE_NEW_DELIVERY_ERROR.EMPTY_PHONE_NUMBER');
+      errors.telephone = t('STORE_NEW_DELIVERY_ERROR.EMPTY_PHONE_NUMBER');
     } else {
       const phoneNumber = parsePhoneNumberFromString(
         _.trim(values.telephone),
-        props.country,
+        country,
       );
       if (!phoneNumber || !phoneNumber.isValid()) {
-        errors.telephone = props.t('INVALID_PHONE_NUMBER');
+        errors.telephone = t('INVALID_PHONE_NUMBER');
       }
     }
 
     if (_.isEmpty(values.contactName)) {
-      errors.contactName = props.t(
-        'STORE_NEW_DELIVERY_ERROR.EMPTY_CONTACT_NAME',
-      );
+      errors.contactName = t('STORE_NEW_DELIVERY_ERROR.EMPTY_CONTACT_NAME');
     }
 
     if (!validAddresses) {
-      errors.address = props.t('STORE_NEW_DELIVERY_ADDRESS_HELP');
+      errors.address = t('STORE_NEW_DELIVERY_ADDRESS_HELP');
     }
 
     return errors;
@@ -123,23 +131,22 @@ function NewDelivery(props) {
   };
 
   function handleChangeTelephone(value, setFieldValue, setFieldTouched) {
-    setFieldValue('telephone', new AsYouType(props.country).input(value));
+    setFieldValue('telephone', new AsYouType(country).input(value));
     setFieldTouched('telephone', true);
   }
 
   function submit(values) {
     const delivery = {
-      telephone: parsePhoneNumberFromString(
-        values.telephone,
-        props.country,
-      ).format('E.164'),
+      telephone: parsePhoneNumberFromString(values.telephone, country).format(
+        'E.164',
+      ),
       contactName: values.contactName,
       comments: values.comments,
       businessName: values.businessName,
       address,
     };
 
-    props.navigation.navigate('StoreNewDeliveryForm', { delivery });
+    navigation.navigate('StoreNewDeliveryForm', { delivery });
   }
 
   return (
@@ -159,30 +166,30 @@ function NewDelivery(props) {
         setFieldValue,
         setFieldTouched,
       }) => (
-        <ModalFormWrapper handleSubmit={handleSubmit} t={props.t}>
+        <ModalFormWrapper handleSubmit={handleSubmit} t={t}>
           <View style={[styles.formGroup, { zIndex: 2 }]}>
             <Text style={styles.label}>
-              {props.t('STORE_NEW_DELIVERY_SEARCH_CLIENT')}{' '}
-              <Text style={styles.optional}>({props.t('OPTIONAL')})</Text>
+              {t('STORE_NEW_DELIVERY_SEARCH_CLIENT')}{' '}
+              <Text style={styles.optional}>({t('OPTIONAL')})</Text>
             </Text>
             <ClientListInput
               onSelectAddress={a => {
                 setAddressData(a, setFieldValue);
                 setValidAddresses(true);
               }}
-              addresses={props.addresses}
-              placeholder={props.t('STORE_NEW_DELIVERY_ENTER_SEARCH_CLIENT')}
+              addresses={addresses}
+              placeholder={t('STORE_NEW_DELIVERY_ENTER_SEARCH_CLIENT')}
             />
           </View>
           <View style={[styles.formGroup, { zIndex: 1 }]}>
             <Text style={styles.label}>
-              {props.t('STORE_NEW_DELIVERY_ADDRESS')}
+              {t('STORE_NEW_DELIVERY_ADDRESS')}
               {validAddresses && ' ✓'}
             </Text>
             <View style={styles.autocompleteContainer}>
               <AddressAutocomplete
                 key={address?.streetAddress ?? ''}
-                addresses={props.addresses}
+                addresses={addresses}
                 onChangeText={() => {
                   if (validAddresses) setValidAddresses(false);
                   handleChange('address');
@@ -204,7 +211,7 @@ function NewDelivery(props) {
                   ...inputStyles,
                 }}
                 {...autocompleteProps}
-                placeholder={props.t('ENTER_ADDRESS')}
+                placeholder={t('ENTER_ADDRESS')}
                 _focus={{ borderColor: primaryColor }}
               />
             </View>
@@ -216,8 +223,8 @@ function NewDelivery(props) {
           </View>
           <View style={[styles.formGroup]}>
             <Text style={styles.label}>
-              {props.t('STORE_NEW_DELIVERY_BUSINESS_NAME')}{' '}
-              <Text style={styles.optional}>({props.t('OPTIONAL')})</Text>
+              {t('STORE_NEW_DELIVERY_BUSINESS_NAME')}{' '}
+              <Text style={styles.optional}>({t('OPTIONAL')})</Text>
             </Text>
             <FormInput
               autoCorrect={false}
@@ -225,7 +232,7 @@ function NewDelivery(props) {
               onChangeText={handleChange('businessName')}
               onBlur={handleBlur('businessName')}
               value={values.businessName}
-              placeholder={props.t('STORE_NEW_DELIVERY_ENTER_BUSINESS_NAME')}
+              placeholder={t('STORE_NEW_DELIVERY_ENTER_BUSINESS_NAME')}
             />
             {errors.businessName && touched.businessName && (
               <Text note style={styles.errorText}>
@@ -235,7 +242,7 @@ function NewDelivery(props) {
           </View>
           <View style={[styles.formGroup]}>
             <Text style={styles.label}>
-              {props.t('STORE_NEW_DELIVERY_CONTACT_NAME')}
+              {t('STORE_NEW_DELIVERY_CONTACT_NAME')}
             </Text>
             <FormInput
               autoCorrect={false}
@@ -243,7 +250,7 @@ function NewDelivery(props) {
               onChangeText={handleChange('contactName')}
               onBlur={handleBlur('contactName')}
               value={values.contactName}
-              placeholder={props.t('STORE_NEW_DELIVERY_ENTER_CONTACT_NAME')}
+              placeholder={t('STORE_NEW_DELIVERY_ENTER_CONTACT_NAME')}
             />
             {errors.contactName && touched.contactName && (
               <Text note style={styles.errorText}>
@@ -253,7 +260,7 @@ function NewDelivery(props) {
           </View>
           <View style={[styles.formGroup]}>
             <Text style={styles.label}>
-              {props.t('STORE_NEW_DELIVERY_PHONE_NUMBER')}
+              {t('STORE_NEW_DELIVERY_PHONE_NUMBER')}
             </Text>
             <FormInput
               autoCorrect={false}
@@ -264,7 +271,7 @@ function NewDelivery(props) {
               }
               onBlur={handleBlur('telephone')}
               value={values.telephone}
-              placeholder={props.t('STORE_NEW_DELIVERY_ENTER_PHONE_NUMBER')}
+              placeholder={t('STORE_NEW_DELIVERY_ENTER_PHONE_NUMBER')}
             />
             {errors.telephone && touched.telephone && (
               <Text note style={styles.errorText}>
@@ -274,8 +281,8 @@ function NewDelivery(props) {
           </View>
           <View style={[styles.formGroup]}>
             <Text style={styles.label}>
-              {props.t('STORE_NEW_DELIVERY_COMMENTS')}{' '}
-              <Text style={styles.optional}>({props.t('OPTIONAL')})</Text>
+              {t('STORE_NEW_DELIVERY_COMMENTS')}{' '}
+              <Text style={styles.optional}>({t('OPTIONAL')})</Text>
             </Text>
             <FormInput
               style={{
@@ -286,7 +293,7 @@ function NewDelivery(props) {
               onChangeText={handleChange('comments')}
               onBlur={handleBlur('comments')}
               value={values.comments}
-              placeholder={props.t('STORE_NEW_DELIVERY_ENTER_COMMENTS')}
+              placeholder={t('STORE_NEW_DELIVERY_ENTER_COMMENTS')}
             />
           </View>
         </ModalFormWrapper>

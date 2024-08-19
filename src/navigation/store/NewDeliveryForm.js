@@ -41,6 +41,19 @@ function NewDelivery(props) {
   const [selectValue, setSelectValue] = React.useState(null);
   const [packages, setPackages] = useState([]);
 
+  const {
+    t,
+    loadTimeSlot,
+    store,
+    timeSlots,
+    createDelivery,
+    navigation,
+    hasTimeSlot,
+    route,
+    country,
+    choices,
+  } = props;
+
   const inputStyles = {
     backgroundColor,
     borderColor: backgroundHighlightColor,
@@ -48,8 +61,8 @@ function NewDelivery(props) {
 
   useEffect(() => {
     InteractionManager.runAfterInteractions(() => {
-      props.loadTimeSlot(props.store);
-      props.loadTimeSlots(props.store);
+      loadTimeSlot(store);
+      loadTimeSlots(store);
     });
     // This will add a "OK" button above keyboard, to dismiss keyboard
     if (Platform.OS === 'ios') {
@@ -63,7 +76,7 @@ function NewDelivery(props) {
         KeyboardManager.setEnableAutoToolbar(false);
       }
     };
-  }, [props.loadTimeSlot, props.loadTimeSlots, props.store]);
+  }, [loadTimeSlot, loadTimeSlots, store]);
 
   useEffect(() => {
     setPackages(
@@ -77,19 +90,17 @@ function NewDelivery(props) {
   }, [tempPackages]);
 
   useEffect(() => {
-    if (props.timeSlots.length > 0) {
-      setSelectedTimeSlot(props.timeSlots[0].name);
+    if (timeSlots.length > 0) {
+      setSelectedTimeSlot(timeSlots[0].name);
     }
-  }, [props.timeSlots]);
+  }, [timeSlots]);
 
   useEffect(() => {
     setSelectValue(null);
     if (selectedTimeSlot) {
-      props.loadTimeSlotChoices(
-        props.timeSlots.find(ts => ts.name === selectedTimeSlot),
-      );
+      loadTimeSlotChoices(timeSlots.find(ts => ts.name === selectedTimeSlot));
     }
-  }, [selectedTimeSlot, props.loadTimeSlotChoices, props.timeSlots]);
+  }, [selectedTimeSlot, loadTimeSlotChoices, timeSlots]);
 
   function incrementQuantity(packageType) {
     setPackages(prev => {
@@ -127,7 +138,7 @@ function NewDelivery(props) {
 
   function submit(values) {
     const delivery = {
-      store: props.store['@id'],
+      store: store['@id'],
       dropoff: {
         address: {
           ...values.address,
@@ -146,18 +157,18 @@ function NewDelivery(props) {
 
     console.log(delivery);
 
-    // props.createDelivery(delivery, () =>
-    //   props.navigation.navigate('StoreHome'),
+    // createDelivery(delivery, () =>
+    //   navigation.navigate('StoreHome'),
     // );
   }
 
   function validate(values) {
     let errors = {};
 
-    if (props.hasTimeSlot && !selectValue) {
+    if (hasTimeSlot && !selectValue) {
       errors = {
         ...errors,
-        timeSlot: props.t('STORE_NEW_DELIVERY_ERROR.EMPTY_TIME_SLOT'),
+        timeSlot: t('STORE_NEW_DELIVERY_ERROR.EMPTY_TIME_SLOT'),
       };
     }
 
@@ -176,11 +187,11 @@ function NewDelivery(props) {
         <HStack justifyContent="space-between">
           <VStack>
             <Text style={styles.label}>
-              {props.t('STORE_NEW_DELIVERY_DROPOFF_BEFORE')}
+              {t('STORE_NEW_DELIVERY_DROPOFF_BEFORE')}
             </Text>
             <Text>{moment(values.before).format('LLL')}</Text>
           </VStack>
-          <Button onPress={showDateTimePicker}>{props.t('EDIT')}</Button>
+          <Button onPress={showDateTimePicker}>{t('EDIT')}</Button>
         </HStack>
         <DateTimePickerModal
           isVisible={isDateTimePickerVisible}
@@ -220,14 +231,11 @@ function NewDelivery(props) {
     setFieldTouched('weight', true);
   }
 
-  const delivery = props.route.params?.delivery;
+  const delivery = route.params?.delivery;
 
   let telephone = '';
   if (delivery.telephone) {
-    const phoneNumber = parsePhoneNumberFromString(
-      delivery.telephone,
-      props.country,
-    );
+    const phoneNumber = parsePhoneNumberFromString(delivery.telephone, country);
     if (phoneNumber && phoneNumber.isValid()) {
       telephone = phoneNumber.formatNational();
     }
@@ -242,7 +250,7 @@ function NewDelivery(props) {
     telephone,
   };
 
-  if (props.hasTimeSlot) {
+  if (hasTimeSlot) {
     initialValues = {
       ...initialValues,
       timeSlot: null,
@@ -271,10 +279,10 @@ function NewDelivery(props) {
         setFieldValue,
         setFieldTouched,
       }) => (
-        <ModalFormWrapper handleSubmit={handleSubmit} t={props.t} isSubmit>
+        <ModalFormWrapper handleSubmit={handleSubmit} t={t} isSubmit>
           {/* <View style={[styles.formGroup]}>
             <Text style={styles.label}>
-              {props.t('STORE_NEW_DELIVERY_ADDRESS')}
+              {t('STORE_NEW_DELIVERY_ADDRESS')}
             </Text>
             <FormInput
               variant="filled"
@@ -282,7 +290,7 @@ function NewDelivery(props) {
               isReadOnly={true}
             />
           </View> */}
-          {props.hasTimeSlot ? (
+          {hasTimeSlot ? (
             <TimeSlotSelector
               selectValue={selectValue}
               setSelectValue={setSelectValue}
@@ -291,8 +299,8 @@ function NewDelivery(props) {
               setFieldValue={setFieldValue}
               setFieldTouched={setFieldTouched}
               updateSelectedTimeSlot={updateSelectedTimeSlot}
-              timeSlots={props.timeSlots}
-              choices={props.choices}
+              timeSlots={timeSlots}
+              choices={choices}
               selectedTimeSlot={selectedTimeSlot}
             />
           ) : (
@@ -307,8 +315,8 @@ function NewDelivery(props) {
 
           <View style={[styles.formGroup]}>
             <Text style={styles.label}>
-              {props.t('STORE_NEW_DELIVERY_WEIGHT')}{' '}
-              <Text style={styles.optional}>({props.t('OPTIONAL')})</Text>
+              {t('STORE_NEW_DELIVERY_WEIGHT')}{' '}
+              <Text style={styles.optional}>({t('OPTIONAL')})</Text>
             </Text>
             <FormInput
               keyboardType="numeric"
@@ -320,7 +328,7 @@ function NewDelivery(props) {
               }
               onBlur={handleBlur('weight')}
               value={values.weight}
-              placeholder={props.t('STORE_NEW_DELIVERY_ENTER_WEIGHT')}
+              placeholder={t('STORE_NEW_DELIVERY_ENTER_WEIGHT')}
             />
             {errors.address && touched.address && errors.address.weight && (
               <Text note style={styles.errorText}>
