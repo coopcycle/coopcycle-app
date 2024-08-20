@@ -25,14 +25,14 @@ describe('Checkout; customer in role: user; existing account; not logged in yet'
 
     // Choose a restaurant
     try {
-      await expect(element(by.id('restaurantMatches:0'))).toBeVisible();
+      await expect(element(by.label('La cabane du sud'))).toBeVisible();
     } catch (e) {
-      await waitFor(element(by.id('restaurantMatches:0')))
+      await waitFor(element(by.label('La cabane du sud')))
         .toBeVisible()
         .whileElement(by.id('restaurantList'))
         .scroll(120, 'down');
     }
-    await element(by.id('restaurantMatches:0')).tap();
+    await element(by.label('La cabane du sud')).tap();
 
     // Restaurant page
     await waitFor(element(by.id('restaurantData')))
