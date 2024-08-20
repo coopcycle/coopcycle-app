@@ -236,6 +236,29 @@ jobs:
       - name: Gradle cache
         uses: gradle/actions/setup-gradle@v3
 
+#FIXME: added for debugging only
+
+      - name: Run emulator
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: ${{ matrix.EMULATOR_API_LEVEL }}
+          target: default
+          arch: x86_64
+          profile: pixel_6
+          force-avd-creation: false
+          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          disable-animations: true
+          script: echo "Emulator started."
+
+      - name: List supported devices
+        if: true # useful only for debugging
+        run: avdmanager list device
+
+      - name: List emulators
+        if: true # useful only for debugging
+        run: avdmanager list avd
+
+
 # disable AVD caching for now; trying to solve 'No space left on device.' issue
 #      - name: AVD cache
 #        uses: actions/cache@v4
@@ -285,14 +308,6 @@ jobs:
             node node_modules/.bin/detox test -c android.emu.release --headless --device-name="test" --loglevel info
       #            node node_modules/.bin/detox test -c android.att.release --device-name="test" --take-screenshots all
       #            node node_modules/.bin/detox test -c android.att.release --device-name="test" --take-screenshots manual -o e2e/screenshots.config.json
-
-      - name: List supported devices
-        if: false # useful only for debugging
-        run: avdmanager list device
-
-      - name: List emulators
-        if: false # useful only for debugging
-        run: avdmanager list avd
 
       - name: Upload screenshots artifacts
 #        if: github.ref == 'refs/heads/master'
