@@ -1,28 +1,17 @@
 import {
   authenticateWithCredentials,
   connectToTestInstance,
+  disablePasswordAutofill,
   symfonyConsole,
 } from './utils';
-
-const execSync = require('child_process').execSync;
 
 //FIXME; this test requires a local coopcycle-web instance, which is problematic to setup on CI (see testOnDevice.yml)
 describe.skip('Courier', () => {
   beforeEach(async () => {
     symfonyConsole('coopcycle:fixtures:load -f cypress/fixtures/courier.yml');
 
-    if (device.getPlatform() === 'ios') {
-      // disable password autofill: https://github.com/wix/Detox/issues/3761
-      execSync(
-        `plutil -replace restrictedBool.allowPasswordAutoFill.value -bool NO ~/Library/Developer/CoreSimulator/Devices/${device.id}/data/Containers/Shared/SystemGroup/systemgroup.com.apple.configurationprofiles/Library/ConfigurationProfiles/UserSettings.plist`,
-      );
-      execSync(
-        `plutil -replace restrictedBool.allowPasswordAutoFill.value -bool NO ~/Library/Developer/CoreSimulator/Devices/${device.id}/data/Library/UserConfigurationProfiles/EffectiveUserSettings.plist`,
-      );
-      execSync(
-        `plutil -replace restrictedBool.allowPasswordAutoFill.value -bool NO ~/Library/Developer/CoreSimulator/Devices/${device.id}/data/Library/UserConfigurationProfiles/PublicInfo/PublicEffectiveUserSettings.plist`,
-      );
-    }
+    disablePasswordAutofill();
+
     await device.reloadReactNative();
     await connectToTestInstance();
   });

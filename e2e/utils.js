@@ -12,6 +12,21 @@ export const symfonyConsole = (command) => {
   execSync(cmd)
 }
 
+export const disablePasswordAutofill = () => {
+  if (device.getPlatform() === 'ios') {
+    // disable password autofill: https://github.com/wix/Detox/issues/3761
+    execSync(
+      `plutil -replace restrictedBool.allowPasswordAutoFill.value -bool NO ~/Library/Developer/CoreSimulator/Devices/${device.id}/data/Containers/Shared/SystemGroup/systemgroup.com.apple.configurationprofiles/Library/ConfigurationProfiles/UserSettings.plist`,
+    );
+    execSync(
+      `plutil -replace restrictedBool.allowPasswordAutoFill.value -bool NO ~/Library/Developer/CoreSimulator/Devices/${device.id}/data/Library/UserConfigurationProfiles/EffectiveUserSettings.plist`,
+    );
+    execSync(
+      `plutil -replace restrictedBool.allowPasswordAutoFill.value -bool NO ~/Library/Developer/CoreSimulator/Devices/${device.id}/data/Library/UserConfigurationProfiles/PublicInfo/PublicEffectiveUserSettings.plist`,
+    );
+  }
+}
+
 export const connectToDemo = async () => {
   await expect(element(by.id('chooseCityBtn'))).toBeVisible();
   await element(by.id('chooseCityBtn')).tap();
