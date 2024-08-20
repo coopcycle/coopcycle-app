@@ -85,7 +85,7 @@ jobs:
         run: node node_modules/.bin/detox build -c ios.sim.release
 
       - name: Run Detox tests
-        run: node node_modules/.bin/detox test -c ios.sim.release --headless --loglevel trace
+        run: node node_modules/.bin/detox test -c ios.sim.release --headless --loglevel info
 
       # Run 'applesimutils --list' to list your supported devices.
       # It is advised only to specify a device type, e.g., "iPhone Xʀ" and avoid explicit search by OS version.
