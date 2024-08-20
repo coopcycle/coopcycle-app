@@ -278,11 +278,12 @@ jobs:
           target: google_apis
           arch: x86_64
           profile: pixel_6
+          disk-size: 2G
           force-avd-creation: false
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
           script: |
-            node node_modules/.bin/detox test -c android.emu.release --headless --device-name="test" -l debug
+            node node_modules/.bin/detox test -c android.emu.release --headless --device-name="test" --loglevel trace
       #            node node_modules/.bin/detox test -c android.att.release --device-name="test" --take-screenshots all
       #            node node_modules/.bin/detox test -c android.att.release --device-name="test" --take-screenshots manual -o e2e/screenshots.config.json
 
