@@ -51,6 +51,8 @@ describe('Checkout; customer in role: user; existing account; not logged in yet'
     // Add item
     await addProduct('menuItem:0:0');
 
+    // Reusable packaging modal
+    await expect(element(by.id('reusablePackagingOk'))).toBeVisible();
     // Dismiss reusable packaging modal
     await element(by.id('reusablePackagingOk')).tap();
 
@@ -77,7 +79,10 @@ describe('Checkout; customer in role: user; existing account; not logged in yet'
 
     await element(by.id('cartSummarySubmit')).tap();
 
-    await expect(element(by.id('loginUsername'))).toBeVisible();
+    // Authentication page
+    await waitFor(element(by.id('loginUsername')))
+      .toBeVisible()
+      .withTimeout(5000);
     await expect(element(by.id('loginPassword'))).toBeVisible();
 
     await element(by.id('loginUsername')).typeText('user_15\n');
