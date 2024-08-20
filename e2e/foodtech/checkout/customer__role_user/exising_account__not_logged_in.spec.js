@@ -79,6 +79,8 @@ describe('Checkout; customer in role: user; existing account; not logged in yet'
 
     await element(by.id('cartSummarySubmit')).tap();
 
+    await device.takeScreenshot('debug_checkout_user_existing_account_not_logged_in');
+
     // Authentication page
     await waitFor(element(by.id('loginUsername')))
       .toBeVisible()
