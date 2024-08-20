@@ -12,6 +12,14 @@ module.exports = {
       screenshot: {
         shouldTakeAutomaticSnapshots: true,
       },
+      video: {
+        android: {
+          "bitRate": 4000000
+        },
+        simulator: {
+          "codec": "hevc"
+        }
+      }
     },
   },
   apps: {
