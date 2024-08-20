@@ -9,9 +9,8 @@ module.exports = {
   },
   artifacts: {
     plugins: {
-      screenshot: {
-        shouldTakeAutomaticSnapshots: true,
-      },
+      log: 'failing',
+      screenshot: 'failing',
       video: {
         android: {
           "bitRate": 4000000
