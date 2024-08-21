@@ -1,8 +1,7 @@
 import { addProduct, connectToDemo } from '../../../utils';
 import { describe } from 'jest-circus';
 
-//FIXME; the test is working locally; re-enable when CI builds are more stable
-describe.skip('Checkout; guest user', () => {
+describe('Checkout; guest user', () => {
   beforeEach(async () => {
     await device.reloadReactNative();
     await connectToDemo();

@@ -5,8 +5,7 @@ import {
 } from '../../../utils'
 import { describe } from 'jest-circus';
 
-//FIXME; the test is working locally; re-enable when CI builds are more stable
-describe.skip('Checkout; customer in role: user; existing account; logged in', () => {
+describe('Checkout; customer in role: user; existing account; logged in', () => {
   beforeEach(async () => {
     disablePasswordAutofill();
 
