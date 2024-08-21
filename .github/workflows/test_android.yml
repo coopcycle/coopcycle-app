@@ -117,8 +117,8 @@ jobs:
       - name: Configure .env variables
         run: |
           cp .env.dist .env
-          sed -i '' -e 's/GOOGLE_MAPS_BROWSER_KEY=/GOOGLE_MAPS_BROWSER_KEY=${{ secrets.GOOGLE_MAPS_BROWSER_KEY }}/' .env
-          sed -i '' -e 's/GOOGLE_MAPS_ANDROID_KEY=/GOOGLE_MAPS_ANDROID_KEY=${{ secrets.GOOGLE_MAPS_ANDROID_KEY }}/' .env
+          sed -i -e 's/GOOGLE_MAPS_BROWSER_KEY=/GOOGLE_MAPS_BROWSER_KEY=${{ secrets.GOOGLE_MAPS_BROWSER_KEY }}/' .env
+          sed -i -e 's/GOOGLE_MAPS_ANDROID_KEY=/GOOGLE_MAPS_ANDROID_KEY=${{ secrets.GOOGLE_MAPS_ANDROID_KEY }}/' .env
           sed -i -e 's/FACEBOOK_APP_ID=/FACEBOOK_APP_ID=${{ secrets.FACEBOOK_APP_ID }}/' .env
           sed -i -e 's/FACEBOOK_CLIENT_TOKEN=/FACEBOOK_CLIENT_TOKEN=${{ secrets.FACEBOOK_CLIENT_TOKEN }}/' .env
 
