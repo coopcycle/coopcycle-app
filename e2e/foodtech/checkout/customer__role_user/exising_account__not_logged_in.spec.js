@@ -62,13 +62,9 @@ describe('Checkout; customer in role: user; existing account; not logged in yet'
       .withTimeout(5000);
     await expect(element(by.id('cartFooter'))).toBeVisible();
 
-    await device.takeScreenshot('screenshot_restaurant_product1');
-
     // Add 2 more items
     await addProduct('menuItem:0:1');
     await addProduct('menuItem:0:2');
-
-    await device.takeScreenshot('screenshot_restaurant_more_products');
 
     await waitFor(element(by.id('cartSubmit')))
       .toBeVisible()
@@ -78,10 +74,16 @@ describe('Checkout; customer in role: user; existing account; not logged in yet'
     // Cart summary page
     await expect(element(by.id('cartSummarySubmit'))).toBeVisible();
 
-    await device.takeScreenshot('screenshot_cart_summary');
+    await device.takeScreenshot('screenshot_cart_summary_1');
 
     // Disable reusable packaging (requires a separate account)
     await element(by.id('reusablePackagingCheckbox')).tap();
+
+    await waitFor(element(by.id('cartSummarySubmit')))
+      .toBeVisible()
+      .withTimeout(5000);
+
+    await device.takeScreenshot('screenshot_cart_summary_2');
 
     await element(by.id('cartSummarySubmit')).tap();
 
