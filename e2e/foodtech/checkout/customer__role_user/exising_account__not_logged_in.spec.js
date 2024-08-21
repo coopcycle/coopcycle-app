@@ -74,16 +74,10 @@ describe('Checkout; customer in role: user; existing account; not logged in yet'
     // Cart summary page
     await expect(element(by.id('cartSummarySubmit'))).toBeVisible();
 
-    await device.takeScreenshot('screenshot_cart_summary_1');
-
     // Disable reusable packaging (requires a separate account)
     await element(by.id('reusablePackagingCheckbox')).tap();
 
-    await device.takeScreenshot('screenshot_cart_summary_2');
-
     await element(by.id('cartSummarySubmit')).tap();
-
-    await device.takeScreenshot('screenshot_authentication');
 
     // Authentication page
     await expect(element(by.id('loginUsername'))).toBeVisible();
