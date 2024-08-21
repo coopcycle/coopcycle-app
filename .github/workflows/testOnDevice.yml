@@ -315,7 +315,7 @@ jobs:
       - name: Upload screenshots artifacts
 #        if: github.ref == 'refs/heads/master'
         if: ${{ !cancelled() }}
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v4
         with:
           name: detox-screenshots-android
-          path: artifacts
+          path: coopcycle-app-repo/artifacts
