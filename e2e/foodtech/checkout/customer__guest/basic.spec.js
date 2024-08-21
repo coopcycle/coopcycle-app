@@ -52,6 +52,8 @@ describe.skip('Checkout; guest user', () => {
     // Add item
     await addProduct('menuItem:0:0');
 
+    // Reusable packaging modal
+    await expect(element(by.id('reusablePackagingOk'))).toBeVisible();
     // Dismiss reusable packaging modal
     await element(by.id('reusablePackagingOk')).tap();
 
@@ -78,8 +80,8 @@ describe.skip('Checkout; guest user', () => {
 
     await element(by.id('cartSummarySubmit')).tap();
 
+    // Authentication page
     await expect(element(by.id('loginUsername'))).toBeVisible();
-    await expect(element(by.id('loginPassword'))).toBeVisible();
 
     try {
       await element(by.id('guestCheckoutButton')).tap();

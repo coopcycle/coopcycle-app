@@ -79,10 +79,6 @@ describe('Checkout; customer in role: user; existing account; not logged in yet'
     // Disable reusable packaging (requires a separate account)
     await element(by.id('reusablePackagingCheckbox')).tap();
 
-    await waitFor(element(by.id('cartSummarySubmit')))
-      .toBeVisible()
-      .withTimeout(5000);
-
     await device.takeScreenshot('screenshot_cart_summary_2');
 
     await element(by.id('cartSummarySubmit')).tap();
@@ -90,10 +86,7 @@ describe('Checkout; customer in role: user; existing account; not logged in yet'
     await device.takeScreenshot('screenshot_authentication');
 
     // Authentication page
-    await waitFor(element(by.id('loginUsername')))
-      .toBeVisible()
-      .withTimeout(5000);
-    await expect(element(by.id('loginPassword'))).toBeVisible();
+    await expect(element(by.id('loginUsername'))).toBeVisible();
 
     await element(by.id('loginUsername')).typeText('user_15\n');
     await element(by.id('loginPassword')).typeText('user_15\n');
