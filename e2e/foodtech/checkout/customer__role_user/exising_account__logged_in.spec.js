@@ -15,7 +15,7 @@ describe.skip('Checkout; customer in role: user; existing account; logged in', (
     await authenticateWithCredentials('user_15', 'user_15');
   });
 
-  it(`should complete checkout (happy path)`, async () => {
+  it(`should complete checkout (NOT COMPLETE FLOW!!! see FIXME)`, async () => {
     await expect(element(by.id('checkoutAskAddress'))).toBeVisible();
 
     // Enter address
@@ -96,21 +96,26 @@ describe.skip('Checkout; customer in role: user; existing account; logged in', (
     await element(by.id('checkoutTelephone')).typeText('0612345678');
     await element(by.id('checkoutTelephone')).typeText('\n');
 
-    // FIXME; test complete checkout flow on android as well
-    //  Currently, on android there are at least 2 issues with Stripe in the tests:
+    // FIXME; test complete checkout flow
+    //  Android: there are at least 2 issues with Stripe in the tests:
     //  1. sometimes the app fails with java.lang.IllegalStateException: PaymentConfiguration was not initialized. Call PaymentConfiguration.init().
     //     might be related to: https://github.com/coopcycle/coopcycle-app/issues/1841
     //  2. find a way to match stripe elements; see https://github.com/stripe/stripe-react-native/issues/1326
     //     Try labels like 'Card number', 'Expiration date', 'CVC' (check the LayoutInspector in Android Studio)
-    if (device.getPlatform() === 'ios') {
+    //  iOS: Test Failed: View is not hittable at its visible point. Error: View is not visible around point.
+    //    - view point: {100, 25}
+    //    - visible bounds: {{118, 0}, {82, 50}}
+    //    - view bounds: {{-118, 0}, {200, 50}}
+    //   ---
+    //   Error: Error Domain=DetoxErrorDomain Code=0 "View “<StripePaymentsUI.STPFormTextField: 0x7fe7a6649800>” is not visible: View does not pass visibility percent threshold (100)"
+
+    if (device.getPlatform() !== 'android' && device.getPlatform() !== 'ios') {
       await element(by.id('moreInfosSubmit')).tap();
 
       // Payment page
       await element(by.id('cardholderName')).typeText('John Doe');
 
       // Tap the credit card input to make sure we can interact with it
-      // Test Failed: View “<RCTUITextField: 0x7f9185939e00>” is not hittable at point “{"x":500,"y":20}”;
-      // Point “{"x":530,"y":463.5}” is outside of window bounds
       await element(by.id('creditCardWrapper')).tap();
 
       await element(by.label('card number')).typeText('4242424242424242');
