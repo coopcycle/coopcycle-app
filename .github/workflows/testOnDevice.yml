@@ -238,8 +238,7 @@ jobs:
       - name: Gradle cache
         uses: gradle/actions/setup-gradle@v3
 
-#FIXME: added for debugging only
-
+#while this step seems useless, without it the emulator fails with "Not enough space to create userdata partition" error
       - name: Run emulator
         uses: reactivecircus/android-emulator-runner@v2
         with:
@@ -252,12 +251,8 @@ jobs:
           disable-animations: true
           script: echo "Emulator started."
 
-      - name: List supported devices
-        if: true # useful only for debugging
-        run: avdmanager list device
-
       - name: List emulators
-        if: true # useful only for debugging
+        if: false # useful only for debugging
         run: avdmanager list avd
 
 
