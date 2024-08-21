@@ -118,7 +118,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: coopcycle-app
+        working-directory: coopcycle-app-repo
     env:
       GEOCODE_EARTH_API_KEY: ${{ secrets.GEOCODE_EARTH_API_KEY }}
       STRIPE_PUBLISHABLE_KEY: ${{ secrets.STRIPE_PUBLISHABLE_KEY }}
@@ -179,7 +179,7 @@ jobs:
 
       - uses: actions/checkout@v3
         with:
-          path: coopcycle-app
+          path: coopcycle-app-repo
 
       - name: Free Disk Space (Ubuntu)
         uses: jlumbroso/free-disk-space@main
@@ -205,7 +205,7 @@ jobs:
       - name: Decode sentry.properties file
         uses: timheuer/base64-to-file@v1.2
         with:
-          fileDir: "./coopcycle-app/android/"
+          fileDir: "./coopcycle-app-repo/android/"
           fileName: "sentry.properties"
           encodedString: ${{ secrets.SENTRY_PROPERTIES_BASE64 }}
 
@@ -305,7 +305,7 @@ jobs:
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
           script: |
-            node node_modules/.bin/detox test -c android.emu.release --headless --device-name="test" --loglevel info
+            node coopcycle-app-repo/node_modules/.bin/detox test -c android.emu.release --headless --device-name="test" --loglevel info
       #            node node_modules/.bin/detox test -c android.att.release --device-name="test" --take-screenshots all
       #            node node_modules/.bin/detox test -c android.att.release --device-name="test" --take-screenshots manual -o e2e/screenshots.config.json
 
