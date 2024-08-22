@@ -39,7 +39,6 @@ import i18n from '../../i18n';
 import {
   setDate,
   setFulfillmentMethod,
-  showTimingModal,
 } from '../../redux/Checkout/actions';
 import {
   selectCartFulfillmentMethod,
@@ -339,7 +338,6 @@ function mapDispatchToProps(dispatch) {
   return {
     setDate: (date, cb) => dispatch(setDate(date, cb)),
     setFulfillmentMethod: method => dispatch(setFulfillmentMethod(method)),
-    showTimingModal: show => dispatch(showTimingModal(show)),
   };
 }
 
