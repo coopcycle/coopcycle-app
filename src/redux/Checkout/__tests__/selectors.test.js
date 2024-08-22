@@ -52,12 +52,12 @@ describe('Redux | Checkout | Selectors', () => {
               restaurant: {
                 '@id': '/api/restaurants/1',
               },
-            },
-            timing: {
-              today: true,
-              fast: true,
-              diff: '35 - 45',
-              range: ['2021-01-29T12:20:00+01:00', '2021-01-29T12:30:00+01:00'],
+              timing: {
+                today: true,
+                fast: true,
+                diff: '35 - 45',
+                range: ['2021-01-29T12:20:00+01:00', '2021-01-29T12:30:00+01:00'],
+              },
             },
           },
         },
@@ -78,11 +78,11 @@ describe('Redux | Checkout | Selectors', () => {
               restaurant: {
                 '@id': '/api/restaurants/1',
               },
-            },
-            timing: {
-              today: false,
-              fast: false,
-              range: ['2021-01-29T12:20:00+01:00', '2021-01-29T12:30:00+01:00'],
+              timing: {
+                today: false,
+                fast: false,
+                range: ['2021-01-29T12:20:00+01:00', '2021-01-29T12:30:00+01:00'],
+              },
             },
           },
         },
