@@ -727,9 +727,17 @@ export function syncAddressAndValidate(cart) {
 }
 
 export function validate(cart) {
-  return (dispatch, getState) => {
+  return async (dispatch, getState) => {
+    dispatch(setCheckoutLoading(true));
+
     const { token } = selectCartByVendor(getState(), cart.restaurant);
-    return _getValidate(dispatch, getState, cart, token);
+    const result = await _getValidate(dispatch, getState, cart, token);
+
+    dispatch(setCheckoutLoading(false));
+
+    return result;
+  };
+}
   };
 }
 
