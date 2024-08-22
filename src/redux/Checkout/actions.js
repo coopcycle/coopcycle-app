@@ -138,7 +138,7 @@ export const STOP_ASKING_TO_ENABLE_REUSABLE_PACKAGING =
 
 export const clear = createAction(CLEAR);
 export const setAddressOK = createAction(SET_ADDRESS_OK);
-export const setTiming = createAction(SET_TIMING);
+export const _setTiming = createAction(SET_TIMING);
 export const setCartValidation = createAction(
   SET_CART_VALIDATION,
   (isValid, violations = []) => ({ isValid, violations }),
@@ -271,6 +271,18 @@ function notifyListeners(address) {
     }
   });
   listeners = [];
+}
+
+function setTiming(cart, timing) {
+  return dispatch => {
+    dispatch(
+      _setTiming({
+        cartNodeId: cart['@id'],
+        restaurantNodeId: cart.restaurant,
+        timing,
+      }),
+    );
+  };
 }
 
 export function addItemV2(item, quantity = 1, restaurant, options) {
@@ -447,7 +459,7 @@ const _getTiming = (dispatch, getState, cart, token) => {
       headers: selectCheckoutAuthorizationHeaders(getState(), cart, token),
     })
     .then(timing => {
-      dispatch(setTiming(timing));
+      dispatch(setTiming(cart, timing));
       return timing;
     });
   // .catch(error => dispatch(setCartValidation(false, error.violations)))
@@ -1520,7 +1532,7 @@ export function setFulfillmentMethod(method) {
           })
           .then(timing => {
             dispatch(setCheckoutLoading(false));
-            dispatch(setTiming(timing));
+            dispatch(setTiming(cart, timing));
             dispatch(updateCartSuccess(res));
 
             if (method === 'delivery') {

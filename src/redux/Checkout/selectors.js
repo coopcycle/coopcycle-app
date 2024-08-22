@@ -20,6 +20,7 @@ export const selectCart = createSelector(
       cart: null,
       restaurant: null,
       token: null,
+      timing: null,
     };
   },
 );
@@ -52,22 +53,21 @@ export const selectCartByVendor = createSelector(
       cart: null,
       restaurant: null,
       token: null,
+      timing: null,
     };
   },
 );
 
-export const selectCarts = createSelector(
-  _selectCarts,
-  carts =>
-    _.map(carts, (value, key) => {
-      const openingHoursSpecification = new OpeningHoursSpecification();
-      openingHoursSpecification.openingHours =
-        value.restaurant.openingHoursSpecification;
-      return {
-        ...value,
-        openingHoursSpecification,
-      };
-    }),
+export const selectCarts = createSelector(_selectCarts, carts =>
+  _.map(carts, (value, key) => {
+    const openingHoursSpecification = new OpeningHoursSpecification();
+    openingHoursSpecification.openingHours =
+      value.restaurant.openingHoursSpecification;
+    return {
+      ...value,
+      openingHoursSpecification,
+    };
+  }),
 );
 
 export const selectRestaurant = createSelector(
@@ -174,9 +174,8 @@ export const selectCartFulfillmentMethod = createSelector(
 
 export const selectShippingTimeRangeLabel = createSelector(
   selectCartFulfillmentMethod,
-  state => state.checkout.timing,
   selectCart,
-  (fulfillmentMethod, timing, { cart }) => {
+  (fulfillmentMethod, { cart, timing }) => {
     if (_.size(timing) === 0 || !cart) {
       return i18n.t('LOADING');
     }
@@ -300,10 +299,10 @@ export const selectCheckoutAuthorizationHeaders = createSelector(
 export const selectPaymentGateway = createSelector(
   selectCart,
   state => state.app.settings,
-  ({ cart }, settings) => cart?.paymentGateway || settings.payment_gateway
+  ({ cart }, settings) => cart?.paymentGateway || settings.payment_gateway,
 );
 
-export const selectIsValid = (state) => state.checkout.isValid
-export const selectViolations = (state) => state.checkout.violations
+export const selectIsValid = state => state.checkout.isValid;
+export const selectViolations = state => state.checkout.violations;
 
-export const selectPaymentDetails = (state) => state.checkout.paymentDetails
+export const selectPaymentDetails = state => state.checkout.paymentDetails;

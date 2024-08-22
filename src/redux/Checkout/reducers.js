@@ -77,7 +77,6 @@ const initialState = {
   // before showing expired session modal
   // @see https://github.com/react-native-community/react-native-modal#i-cant-show-multiple-modals-one-after-another
   isAddressModalHidden: true,
-  timing: {},
   isValid: null,
   violations: [],
   isLoading: false,
@@ -317,11 +316,20 @@ export default (state = initialState, action = {}) => {
         addressModalMessage: action.payload,
       };
 
-    case SET_TIMING:
+    case SET_TIMING: {
+      const { restaurantNodeId, timing } = action.payload;
+
       return {
         ...state,
-        timing: action.payload,
+        carts: {
+          ...state.carts,
+          [restaurantNodeId]: {
+            ...state.carts[restaurantNodeId],
+            timing: timing,
+          },
+        },
       };
+    }
 
     case SET_CART_VALIDATION:
       return {
