@@ -738,8 +738,6 @@ export function validate(cart) {
     return result;
   };
 }
-  };
-}
 
 const _setAddress = createFsAction(SET_ADDRESS);
 
