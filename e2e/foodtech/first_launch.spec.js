@@ -1,4 +1,4 @@
-import { connectToDemo } from '../utils'
+import { connectToDemo } from '../utils';
 
 describe('Foodtech: first launch', () => {
   beforeEach(async () => {
