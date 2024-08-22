@@ -54,6 +54,8 @@ export const ASSIGN_TASK_REQUEST = 'ASSIGN_TASK_REQUEST';
 export const ASSIGN_TASK_SUCCESS = 'ASSIGN_TASK_SUCCESS';
 export const ASSIGN_TASK_FAILURE = 'ASSIGN_TASK_FAILURE';
 
+export const UPDATE_TASK_SUCCESS = 'UPDATE_TASK_SUCCESS';
+
 export const BULK_ASSIGNMENT_TASKS_REQUEST = 'BULK_ASSIGNMENT_TASKS_REQUEST';
 export const BULK_ASSIGNMENT_TASKS_SUCCESS = 'BULK_ASSIGNMENT_TASKS_SUCCESS';
 export const BULK_ASSIGNMENT_TASKS_FAILURE = 'BULK_ASSIGNMENT_TASKS_FAILURE';
@@ -97,6 +99,8 @@ export const cancelTaskFailure = createAction(CANCEL_TASK_FAILURE);
 export const assignTaskRequest = createAction(ASSIGN_TASK_REQUEST);
 export const assignTaskSuccess = createAction(ASSIGN_TASK_SUCCESS);
 export const assignTaskFailure = createAction(ASSIGN_TASK_FAILURE);
+
+export const updateTaskSuccess = createAction(UPDATE_TASK_SUCCESS);
 
 export const bulkAssignmentTasksRequest = createAction(
   BULK_ASSIGNMENT_TASKS_REQUEST,
@@ -397,6 +401,9 @@ export function updateTask(action, task) {
           break;
         case 'task:done':
           dispatch(markTaskDoneSuccess(task));
+          break;
+        case 'task:updated':
+          dispatch(updateTaskSuccess(task));
           break;
         case 'task:failed':
           dispatch(markTaskFailedSuccess(task));

@@ -27,6 +27,7 @@ export function message(payload) {
         case 'task:started':
         case 'task:done':
         case 'task:failed':
+        case 'task:updated':
           dispatch(updateTask(name, data.task));
           break;
         default:
