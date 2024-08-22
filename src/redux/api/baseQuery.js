@@ -5,7 +5,8 @@ import { Mutex } from 'async-mutex';
 import qs from 'qs';
 import AppUser from '../../AppUser';
 import { logout } from '../App/actions';
-import { setUser } from '../middlewares/HttpMiddleware'
+import { setUser } from '../middlewares/HttpMiddleware';
+import { selectCart } from '../Checkout/selectors';
 
 const guestCheckoutEndpoints = [
   'getOrderValidate',
@@ -32,15 +33,19 @@ const buildBaseQuery = (baseUrl, anonymous = false) => {
 
       if (!anonymous) {
         const user = selectUser(getState());
-        if (user) {
-          headers.set('Authorization', `Bearer ${user.token}`);
-        } else if (guestCheckoutEndpoints.includes(endpoint)) {
-          //TODO; to be implemented in https://github.com/coopcycle/coopcycle-app/issues/1756
-          // const orderAccessToken = selectOrderAccessToken(getState())
-          //
-          // if (orderAccessToken) {
-          //   headers.set('Authorization', `Bearer ${orderAccessToken}`)
-          // }
+
+        if (guestCheckoutEndpoints.includes(endpoint)) {
+          const { cart, token: orderAccessToken } = selectCart(getState());
+
+          if (user && cart.customer) {
+            headers.set('Authorization', `Bearer ${user.token}`);
+          } else {
+            headers.set('Authorization', `Bearer ${orderAccessToken}`);
+          }
+        } else {
+          if (user) {
+            headers.set('Authorization', `Bearer ${user.token}`);
+          }
         }
       }
 
@@ -111,7 +116,7 @@ export const baseQueryWithReauth = async (args, api, extraOptions) => {
           // store the new token
           api.dispatch(setUser(updUser));
           await user.save();
-          console.log('Credentials saved!')
+          console.log('Credentials saved!');
 
           // retry the initial query
           result = await baseQuery(args, api, extraOptions);
