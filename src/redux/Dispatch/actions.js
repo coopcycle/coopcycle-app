@@ -380,8 +380,7 @@ export function unassignTask(task, username) {
 export function updateTask(action, task) {
   return function (dispatch, getState) {
     let date = selectSelectedDate(getState());
-    console.log(action)
-    console.log(task)
+
     if (isSameDate(task, date)) {
       switch (action) {
         case 'task:created':
