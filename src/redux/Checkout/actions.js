@@ -5,7 +5,8 @@ import {
   initStripe,
 } from '@stripe/stripe-react-native';
 import _ from 'lodash';
-import { createAction } from 'redux-actions';
+import { createAction } from '@reduxjs/toolkit';
+import { createAction as createFsAction } from 'redux-actions';
 
 import * as Sentry from '@sentry/react-native';
 import i18next from 'i18next';
@@ -39,6 +40,7 @@ import {
   selectPaymentDetails,
   selectViolations,
 } from './selectors';
+import moment from 'moment';
 
 /*
  * Action Types
@@ -136,104 +138,119 @@ export const STOP_ASKING_TO_ENABLE_REUSABLE_PACKAGING =
  * Action Creators
  */
 
-export const clear = createAction(CLEAR);
-export const setAddressOK = createAction(SET_ADDRESS_OK);
-export const _setTiming = createAction(SET_TIMING);
-export const setCartValidation = createAction(
+export const clear = createFsAction(CLEAR);
+export const setAddressOK = createFsAction(SET_ADDRESS_OK);
+export const _setTiming = createFsAction(SET_TIMING);
+export const setCartValidation = createFsAction(
   SET_CART_VALIDATION,
   (isValid, violations = []) => ({ isValid, violations }),
 );
-export const clearAddress = createAction(CLEAR_ADDRESS);
+export const clearAddress = createFsAction(CLEAR_ADDRESS);
 
-export const initRequest = createAction(INIT_REQUEST);
-export const initSuccess = createAction(INIT_SUCCESS, (restaurant = null) => ({
-  restaurant,
-}));
-export const initFailure = createAction(INIT_FAILURE);
-export const initCartRequest = createAction(INIT_CART_REQUEST);
-export const initCartSuccess = createAction(INIT_CART_SUCCESS);
-export const initCartFailure = createAction(INIT_CART_FAILURE);
-export const updateCarts = createAction(UPDATE_CARTS);
-export const deleteCartRequest = createAction(DELETE_CART_REQUEST);
-export const resetRestaurant = createAction(RESET_RESTAURANT);
-export const setRestaurant = createAction(SET_RESTAURANT);
-export const setToken = createAction(SET_TOKEN);
+export const initRequest = createFsAction(INIT_REQUEST);
+export const initSuccess = createFsAction(
+  INIT_SUCCESS,
+  (restaurant = null) => ({
+    restaurant,
+  }),
+);
+export const initFailure = createFsAction(INIT_FAILURE);
+export const initCartRequest = createFsAction(INIT_CART_REQUEST);
+export const initCartSuccess = createFsAction(INIT_CART_SUCCESS);
+export const initCartFailure = createFsAction(INIT_CART_FAILURE);
+export const updateCarts = createFsAction(UPDATE_CARTS);
+export const deleteCartRequest = createFsAction(DELETE_CART_REQUEST);
+export const resetRestaurant = createFsAction(RESET_RESTAURANT);
+export const setRestaurant = createFsAction(SET_RESTAURANT);
+export const setToken = createFsAction(SET_TOKEN);
 
-export const loadRestaurantsRequest = createAction(LOAD_RESTAURANTS_REQUEST);
-export const loadRestaurantsSuccess = createAction(LOAD_RESTAURANTS_SUCCESS);
-export const loadRestaurantsFailure = createAction(LOAD_RESTAURANTS_FAILURE);
+export const loadRestaurantsRequest = createFsAction(LOAD_RESTAURANTS_REQUEST);
+export const loadRestaurantsSuccess = createFsAction(LOAD_RESTAURANTS_SUCCESS);
+export const loadRestaurantsFailure = createFsAction(LOAD_RESTAURANTS_FAILURE);
 
-export const checkoutRequest = createAction(CHECKOUT_REQUEST);
-export const checkoutSuccess = createAction(CHECKOUT_SUCCESS);
-export const checkoutFailure = createAction(CHECKOUT_FAILURE);
+export const checkoutRequest = createFsAction(CHECKOUT_REQUEST);
+export const checkoutSuccess = createFsAction(CHECKOUT_SUCCESS);
+export const checkoutFailure = createFsAction(CHECKOUT_FAILURE);
 
-export const showAddressModal = createAction(SHOW_ADDRESS_MODAL);
-export const hideAddressModal = createAction(HIDE_ADDRESS_MODAL);
+export const showAddressModal = createFsAction(SHOW_ADDRESS_MODAL);
+export const hideAddressModal = createFsAction(HIDE_ADDRESS_MODAL);
 
-export const updateCartSuccess = createAction(UPDATE_CART_SUCCESS);
-export const updateCustomerGuest = createAction(UPDATE_CUSTOMER_GUEST);
+export const updateCartSuccess = createFsAction(UPDATE_CART_SUCCESS);
+export const updateCustomerGuest = createFsAction(UPDATE_CUSTOMER_GUEST);
 
-export const setCheckoutLoading = createAction(SET_CHECKOUT_LOADING);
+export const setCheckoutLoading = createFsAction(SET_CHECKOUT_LOADING);
 
-export const addItemRequest = createAction(ADD_ITEM_REQUEST);
-export const addItemRequestFinished = createAction(ADD_ITEM_REQUEST_FINISHED);
+export const addItemRequest = createFsAction(ADD_ITEM_REQUEST);
+export const addItemRequestFinished = createFsAction(ADD_ITEM_REQUEST_FINISHED);
 
-export const removeItemRequest = createAction(REMOVE_ITEM);
+export const removeItemRequest = createFsAction(REMOVE_ITEM);
 
-export const showExpiredSessionModal = createAction(SHOW_EXPIRED_SESSION_MODAL);
-export const hideExpiredSessionModal = createAction(HIDE_EXPIRED_SESSION_MODAL);
+export const showExpiredSessionModal = createFsAction(
+  SHOW_EXPIRED_SESSION_MODAL,
+);
+export const hideExpiredSessionModal = createFsAction(
+  HIDE_EXPIRED_SESSION_MODAL,
+);
 
-export const sessionExpired = createAction(SESSION_EXPIRED);
-export const setAddressModalHidden = createAction(SET_ADDRESS_MODAL_HIDDEN);
-export const setAddressModalMessage = createAction(SET_ADDRESS_MODAL_MESSAGE);
+export const sessionExpired = createFsAction(SESSION_EXPIRED);
+export const setAddressModalHidden = createFsAction(SET_ADDRESS_MODAL_HIDDEN);
+export const setAddressModalMessage = createFsAction(SET_ADDRESS_MODAL_MESSAGE);
 
-export const loadPaymentMethodsRequest = createAction(
+export const loadPaymentMethodsRequest = createFsAction(
   LOAD_PAYMENT_METHODS_REQUEST,
 );
-export const loadPaymentMethodsSuccess = createAction(
+export const loadPaymentMethodsSuccess = createFsAction(
   LOAD_PAYMENT_METHODS_SUCCESS,
 );
-export const loadPaymentMethodsFailure = createAction(
+export const loadPaymentMethodsFailure = createFsAction(
   LOAD_PAYMENT_METHODS_FAILURE,
 );
 
-export const loadPaymentDetailsRequest = createAction(
+export const loadPaymentDetailsRequest = createFsAction(
   LOAD_PAYMENT_DETAILS_REQUEST,
 );
-export const loadPaymentDetailsSuccess = createAction(
+export const loadPaymentDetailsSuccess = createFsAction(
   LOAD_PAYMENT_DETAILS_SUCCESS,
 );
-export const loadPaymentDetailsFailure = createAction(
+export const loadPaymentDetailsFailure = createFsAction(
   LOAD_PAYMENT_DETAILS_FAILURE,
 );
 
-export const searchRequest = createAction(SEARCH_REQUEST);
-export const searchSuccess = createAction(SEARCH_SUCCESS);
-export const searchFailure = createAction(SEARCH_FAILURE);
-export const getRestaurantFailure = createAction(GET_RESTAURANT_FAILURE);
+export const searchRequest = createFsAction(SEARCH_REQUEST);
+export const searchSuccess = createFsAction(SEARCH_SUCCESS);
+export const searchFailure = createFsAction(SEARCH_FAILURE);
+export const getRestaurantFailure = createFsAction(GET_RESTAURANT_FAILURE);
 
-export const getRestaurantRequest = createAction(GET_RESTAURANT_REQUEST);
-export const getRestaurantSuccess = createAction(GET_RESTAURANT_SUCCESS);
-export const clearSearchResults = createAction(CLEAR_SEARCH_RESULTS);
+export const getRestaurantRequest = createFsAction(GET_RESTAURANT_REQUEST);
+export const getRestaurantSuccess = createFsAction(GET_RESTAURANT_SUCCESS);
+export const clearSearchResults = createFsAction(CLEAR_SEARCH_RESULTS);
 
-export const loadStripeSavedPaymentMethodsRequest = createAction(
+export const loadStripeSavedPaymentMethodsRequest = createFsAction(
   LOAD_STRIPE_SAVED_PAYMENT_METHODS_REQUEST,
 );
-export const loadStripeSavedPaymentMethodsSuccess = createAction(
+export const loadStripeSavedPaymentMethodsSuccess = createFsAction(
   LOAD_STRIPE_SAVED_PAYMENT_METHODS_SUCCESS,
 );
-export const loadStripeSavedPaymentMethodsFailure = createAction(
+export const loadStripeSavedPaymentMethodsFailure = createFsAction(
   LOAD_STRIPE_SAVED_PAYMENT_METHODS_FAILURE,
 );
 
-export const showTimingModal = createAction(SHOW_TIMING_MODAL);
+export const showTimingModal = createFsAction(SHOW_TIMING_MODAL);
 
-export const hideMultipleServersInSameCityModal = createAction(
+export const hideMultipleServersInSameCityModal = createFsAction(
   HIDE_MULTIPLE_SERVERS_IN_SAME_CITY_MODAL,
 );
 
-export const stopAskingToEnableReusablePackaging = createAction(
+export const stopAskingToEnableReusablePackaging = createFsAction(
   STOP_ASKING_TO_ENABLE_REUSABLE_PACKAGING,
+);
+
+export const setPersistedTimeRange = createAction('SET_PERSISTED_TIME_RANGE');
+export const openTimeRangeChangedModal = createAction(
+  'OPEN_TIME_RANGE_CHANGED_MODAL',
+);
+export const closeTimeRangeChangedModal = createAction(
+  'CLOSE_TIME_RANGE_CHANGED_MODAL',
 );
 
 function validateAddress(httpClient, cart, address) {
@@ -522,7 +539,7 @@ const fetchValidation = _.throttle((dispatch, getState, cart, cb) => {
   });
 }, 500);
 
-const updateItemQuantity = createAction(
+const updateItemQuantity = createFsAction(
   UPDATE_ITEM_QUANTITY,
   (item, quantity) => ({ item, quantity }),
 );
@@ -716,7 +733,7 @@ export function validate(cart) {
   };
 }
 
-const _setAddress = createAction(SET_ADDRESS);
+const _setAddress = createFsAction(SET_ADDRESS);
 
 function syncAddress(cart, address) {
   return {
