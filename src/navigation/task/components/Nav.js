@@ -7,6 +7,7 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import { navigateToTask } from '../../../navigation/utils';
+import TaskTitle from '../../../components/TaskTitle';
 
 const NavButton = ({ disabled, left, right, onPress, t, task }) => {
   const buttonStyle = [styles.button];
@@ -31,7 +32,7 @@ const NavButton = ({ disabled, left, right, onPress, t, task }) => {
     <TouchableOpacity style={buttonStyle} {...buttonProps}>
       {!disabled && task && right && (
         <Text style={{ marginRight: 10, fontSize: 14 }}>
-          {t('TASK_WITH_ID', { id: task.id })}
+          <TaskTitle task={task} />
         </Text>
       )}
       <Icon
@@ -41,7 +42,7 @@ const NavButton = ({ disabled, left, right, onPress, t, task }) => {
       />
       {!disabled && task && left && (
         <Text style={{ marginLeft: 10, fontSize: 14 }}>
-          {t('TASK_WITH_ID', { id: task.id })}
+          <TaskTitle task={task} />
         </Text>
       )}
     </TouchableOpacity>
