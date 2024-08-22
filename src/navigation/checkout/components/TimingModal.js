@@ -1,137 +1,11 @@
-import { groupBy, map, reduce } from 'lodash';
-import moment from 'moment';
-import {
-  Button,
-  Divider,
-  HStack,
-  Heading,
-  Skeleton,
-  Text,
-  View,
-} from 'native-base';
+import { Button, Divider, Heading, Text, View } from 'native-base';
 import PropTypes from 'prop-types';
-import React, { Component, useEffect, useMemo, useState } from 'react';
+import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
-import { Platform } from 'react-native';
-import { useQuery } from 'react-query';
 import { connect } from 'react-redux';
 import BottomModal from '../../../components/BottomModal';
-import { Picker } from '../../../components/Picker';
-import { selectHttpClient } from '../../../redux/App/selectors';
 import { showTimingModal } from '../../../redux/Checkout/actions';
-
-const TimingCartSelect = ({
-  cart: { cart, token },
-  httpClient,
-  onValueChange,
-  cartFulfillmentMethod,
-}) => {
-  httpClient = httpClient.cloneWithToken(token);
-  const { data, isSuccess } = useQuery(
-    ['cart', 'timing', cartFulfillmentMethod, cart['@id']],
-    async () => {
-      return await httpClient.get(`${cart['@id']}/timing`);
-    },
-  );
-
-  const [selectedDay, setSelectedDay] = useState(0);
-  const [selectedRange, setSelectedRange] = useState(0);
-
-  useEffect(() => {
-    setSelectedRange(0);
-    setSelectedDay(0);
-  }, [cartFulfillmentMethod]);
-
-  const values = useMemo(() => {
-    if (!isSuccess) {
-      return null;
-    }
-    return reduce(
-      groupBy(data.ranges, d => moment(d[0]).startOf('day').format()),
-      (acc, day, index) => {
-        acc.push({
-          day: moment(index),
-          values: map(day, range => ({
-            value: range,
-            label: `${moment(range[0]).format('LT')} - ${moment(
-              range[1],
-            ).format('LT')}`,
-          })),
-        });
-        return acc;
-      },
-      [],
-    );
-  }, [data, isSuccess]);
-
-  useEffect(() => {
-    if (!isSuccess) {
-      return;
-    }
-    if (values.length < selectedDay) {
-      return;
-    }
-
-    onValueChange(values[selectedDay].values[selectedRange].value);
-  }, [selectedDay, selectedRange, values, isSuccess, onValueChange]);
-
-  const dayItems = useMemo(() => {
-    return (
-      isSuccess &&
-      values.map((day, index) => (
-        <Picker.Item
-          value={index}
-          label={day.day.format('ddd DD MMMM')}
-          key={index}
-        />
-      ))
-    );
-  }, [isSuccess, values]);
-
-  const slotItems = useMemo(() => {
-    if (!isSuccess) {
-      return null;
-    }
-    if (values.length < selectedDay) {
-      return null;
-    }
-
-    return values[selectedDay].values.map((range, index) => (
-      <Picker.Item value={index} label={range.label} key={index} />
-    ));
-  }, [isSuccess, selectedDay, values]);
-
-  return (
-    <HStack
-      justifyContent={'space-around'}
-      alignItems={'center'}
-      space={isSuccess ? 0 : 4}>
-      <Skeleton flex={1} isLoaded={isSuccess} rounded={2}>
-        <View flex={1}>
-          <Picker
-            style={Platform.select({ ios: {}, android: { height: 50 } })}
-            selectedValue={selectedDay}
-            onValueChange={v => {
-              setSelectedRange(0);
-              setSelectedDay(v);
-            }}>
-            {dayItems}
-          </Picker>
-        </View>
-      </Skeleton>
-      <Skeleton flex={1} isLoaded={isSuccess} rounded={2}>
-        <View flex={1}>
-          <Picker
-            style={Platform.select({ ios: {}, android: { height: 50 } })}
-            selectedValue={selectedRange}
-            onValueChange={setSelectedRange}>
-            {slotItems}
-          </Picker>
-        </View>
-      </Skeleton>
-    </HStack>
-  );
-};
+import TimingCartSelect from './TimingCartSelect';
 
 class TimingModal extends Component {
   constructor(props) {
@@ -206,9 +80,7 @@ class TimingModal extends Component {
             )}
             {!this.props.message && <View marginBottom={30} />}
             <TimingCartSelect
-              cart={this.props.cart}
-              cartFulfillmentMethod={this.props.cartFulfillmentMethod}
-              httpClient={this.props.httpClient}
+              orderNodeId={this.props.orderNodeId}
               onValueChange={this.setValue}
             />
             <Button
@@ -239,8 +111,8 @@ class TimingModal extends Component {
 TimingModal.defaultProps = {
   modalEnabled: true,
   fulfillmentMethods: [],
+  orderNodeId: null,
   cartFulfillmentMethod: null,
-  cart: null,
   onFulfillmentMethodChange: () => {},
   onSchedule: () => {},
   onSkip: () => {},
@@ -249,9 +121,9 @@ TimingModal.defaultProps = {
 TimingModal.propTypes = {
   openingHoursSpecification: PropTypes.object.isRequired,
   fulfillmentMethods: PropTypes.arrayOf(PropTypes.string),
+  orderNodeId: PropTypes.string,
   cartFulfillmentMethod: PropTypes.string,
   onFulfillmentMethodChange: PropTypes.func,
-  cart: PropTypes.object,
   modalEnabled: PropTypes.bool,
   onSchedule: PropTypes.func,
   onSkip: PropTypes.func,
@@ -260,7 +132,6 @@ TimingModal.propTypes = {
 function mapStateToProps(state) {
   const { displayed, message } = state.checkout.timingModal;
   return {
-    httpClient: selectHttpClient(state),
     timingModal: displayed,
     message,
   };

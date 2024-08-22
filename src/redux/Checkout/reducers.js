@@ -55,6 +55,9 @@ import {
   UPDATE_CART_SUCCESS,
   UPDATE_CUSTOMER_GUEST,
   UPDATE_ITEM_QUANTITY,
+  openTimeRangeChangedModal,
+  closeTimeRangeChangedModal,
+  setPersistedTimeRange,
 } from './actions';
 
 import _ from 'lodash';
@@ -99,6 +102,7 @@ const initialState = {
   stripePaymentMethodsLoaded: false,
   stripePaymentMethods: [],
   shouldAskToEnableReusablePackaging: true,
+  isTimeRangeChangedModalVisible: false,
 };
 
 export default (state = initialState, action = {}) => {
@@ -331,6 +335,21 @@ export default (state = initialState, action = {}) => {
       };
     }
 
+    case setPersistedTimeRange.type: {
+      const { restaurantNodeId, lastShownTimeRange } = action.payload;
+
+      return {
+        ...state,
+        carts: {
+          ...state.carts,
+          [restaurantNodeId]: {
+            ...state.carts[restaurantNodeId],
+            lastShownTimeRange: lastShownTimeRange,
+          },
+        },
+      };
+    }
+
     case SET_CART_VALIDATION:
       return {
         ...state,
@@ -531,6 +550,16 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         address: null,
+      };
+    case openTimeRangeChangedModal.type:
+      return {
+        ...state,
+        isTimeRangeChangedModalVisible: true,
+      };
+    case closeTimeRangeChangedModal.type:
+      return {
+        ...state,
+        isTimeRangeChangedModalVisible: false,
       };
   }
 

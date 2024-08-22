@@ -306,3 +306,6 @@ export const selectIsValid = state => state.checkout.isValid;
 export const selectViolations = state => state.checkout.violations;
 
 export const selectPaymentDetails = state => state.checkout.paymentDetails;
+
+export const selectIsTimeRangeChangedModalVisible = state =>
+  state.checkout.isTimeRangeChangedModalVisible;

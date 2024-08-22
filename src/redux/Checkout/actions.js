@@ -739,6 +739,85 @@ export function validate(cart) {
   };
 }
 
+function isTimeRangeSignificantlyDifferent(origRange, latestRange) {
+  const displayedUpperBound = moment(origRange[1]);
+  const latestLowerBound = moment(latestRange[0]);
+
+  return latestLowerBound.diff(displayedUpperBound, 'hours') > 2;
+}
+
+async function _checkTimeRange(
+  restaurantNodeId,
+  lastTimeRange,
+  getState,
+  dispatch,
+) {
+  const { cart, token } = selectCartByVendor(getState(), restaurantNodeId);
+
+  const shippingTimeRange = cart.shippingTimeRange;
+  // if the customer has already selected the time range, it will be checked on the server side
+  if (shippingTimeRange) {
+    return;
+  }
+
+  if (!lastTimeRange) {
+    // continue without the timing check
+    return;
+  }
+
+  let latestTiming = null;
+
+  try {
+    latestTiming = await _getTiming(dispatch, getState, cart, token);
+  } catch (error) {
+    // ignore the request error and continue without the timing check
+    return;
+  }
+
+  if (!latestTiming) {
+    // continue without the timing check
+    return;
+  }
+
+  dispatch(setTiming(cart, latestTiming));
+
+  if (!latestTiming.range) {
+    // no time ranges available; restaurant is closed for the coming days
+    dispatch(openTimeRangeChangedModal());
+    throw new Error('Time range is not available');
+  }
+
+  if (isTimeRangeSignificantlyDifferent(lastTimeRange, latestTiming.range)) {
+    dispatch(openTimeRangeChangedModal());
+    throw new Error('Time range is not available');
+  }
+
+  dispatch(
+    setPersistedTimeRange({
+      cartNodeId: cart['@id'],
+      restaurantNodeId: restaurantNodeId,
+      lastShownTimeRange: latestTiming.range,
+    }),
+  );
+}
+
+export function checkTimeRange(restaurantNodeId, lastTimeRange) {
+  return async (dispatch, getState) => {
+    dispatch(setCheckoutLoading(true));
+
+    try {
+      await _checkTimeRange(
+        restaurantNodeId,
+        lastTimeRange,
+        getState,
+        dispatch,
+      );
+    } finally {
+      dispatch(setCheckoutLoading(false));
+    }
+  };
+}
+
 const _setAddress = createFsAction(SET_ADDRESS);
 
 function syncAddress(cart, address) {
@@ -1469,14 +1548,14 @@ export function updateCart(payload, cb) {
 
 // FEAT: add a way to precise id
 export function setDate(shippingTimeRange, cb) {
-  return (dispatch, getState) => {
+  return async (dispatch, getState) => {
     const { cart, token } = selectCartWithHours(getState());
     const httpClient = selectHttpClient(getState());
 
     dispatch(checkoutRequest());
 
-    httpClient
-      .put(
+    try {
+      const res = await httpClient.put(
         cart['@id'],
         {
           shippingTimeRange,
@@ -1484,15 +1563,17 @@ export function setDate(shippingTimeRange, cb) {
         {
           headers: selectCheckoutAuthorizationHeaders(getState(), cart, token),
         },
-      )
-      .then(res => {
-        dispatch(updateCartSuccess(res));
-        setTimeout(() => {
-          dispatch(checkoutSuccess());
-          _.isFunction(cb) && cb();
-        }, 250);
-      })
-      .catch(e => dispatch(checkoutFailure(e)));
+      );
+      dispatch(updateCartSuccess(res));
+    } catch (e) {
+      dispatch(checkoutFailure(e));
+      return;
+    }
+
+    setTimeout(() => {
+      dispatch(checkoutSuccess());
+      _.isFunction(cb) && cb();
+    }, 250);
   };
 }
 

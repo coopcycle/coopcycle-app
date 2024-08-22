@@ -28,8 +28,8 @@ import { connect, useDispatch } from 'react-redux';
 import DropdownHolder from '../../DropdownHolder';
 import BottomModal from '../../components/BottomModal';
 import DangerAlert from '../../components/DangerAlert';
-import { selectIsAuthenticated } from '../../redux/App/selectors';
 import {
+  checkTimeRange,
   decrementItem,
   hideAddressModal,
   incrementItem,
@@ -63,6 +63,7 @@ import ExpiredSessionModal from './components/ExpiredSessionModal';
 import Loopeat from './components/Loopeat';
 import TimingModal from './components/TimingModal';
 import Tips from './components/Tips';
+import TimeRangeChangedModal from './components/TimeRangeChangedModal';
 
 function EmptyState() {
   const { t } = useTranslation();
@@ -312,7 +313,7 @@ class Summary extends Component {
     this.props.navigation.navigate(routeName);
   }
 
-  onSubmit() {
+  async onSubmit() {
     const { cart, restaurant } = this.props;
 
     if (restaurant.loopeatEnabled && cart.reusablePackagingEnabled) {
@@ -345,13 +346,22 @@ class Summary extends Component {
       }
     }
 
-    this.props.validate(cart).then(isValid => {
-      if (isValid) {
-        this._navigate('CheckoutSubmitOrder');
-      } else {
-        this.props.showValidationErrors();
-      }
-    });
+    const displayedTiming = this.props.cartContainer.timing?.range;
+    try {
+      await this.props.checkTimeRange(cart.restaurant, displayedTiming);
+    } catch (error) {
+      // checkTimeRange will trigger a TimeRangeChangedModal
+      return;
+    }
+
+    const isValid = await this.props.validate(cart);
+
+    if (!isValid) {
+      this.props.showValidationErrors();
+      return;
+    }
+
+    this._navigate('CheckoutSubmitOrder');
   }
 
   onSubmitCoupon(code) {
@@ -567,10 +577,10 @@ class Summary extends Component {
         <TimingModal
           openingHoursSpecification={this.props.openingHoursSpecification}
           fulfillmentMethods={this.props.fulfillmentMethods}
+          orderNodeId={this.props.cart['@id']}
           cartFulfillmentMethod={this.props.fulfillmentMethod}
           onFulfillmentMethodChange={this.props.setFulfillmentMethod}
           onSkip={() => this.setState({ modalSkipped: true })}
-          cart={this.props.cartContainer}
           onSchedule={({ value, showModal }) =>
             this.props.setDate(value, () => {
               this.props.validate(cart);
@@ -578,6 +588,7 @@ class Summary extends Component {
             })
           }
         />
+        <TimeRangeChangedModal />
         <BottomModal
           isVisible={this.state.showTipModal}
           onBackdropPress={() => this.setState({ showTipModal: false })}
@@ -635,7 +646,6 @@ function mapStateToProps(state, ownProps) {
     restaurant,
     openingHoursSpecification,
     edit: ownProps.route.params?.edit || false,
-    isAuthenticated: selectIsAuthenticated(state),
     deliveryTotal: selectDeliveryTotal(state),
     timeAsText: selectShippingTimeRangeLabel(state),
     isLoading: state.checkout.isLoading,
@@ -651,6 +661,8 @@ function mapDispatchToProps(dispatch) {
     syncAddressAndValidate: cart => dispatch(syncAddressAndValidate(cart)),
     validate: cart => dispatch(validate(cart)),
     showValidationErrors: () => dispatch(showValidationErrors()),
+    checkTimeRange: (restaurantNodeId, lastTimeRange) =>
+      dispatch(checkTimeRange(restaurantNodeId, lastTimeRange)),
     showAddressModal: () => dispatch(showAddressModal()),
     hideAddressModal: () => dispatch(hideAddressModal()),
     updateCart: (cart, cb) => dispatch(updateCart(cart, cb)),
