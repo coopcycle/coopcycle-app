@@ -10,13 +10,12 @@ import { EVENT as EVENT_ORDER } from '../../domain/Order';
 import { EVENT as EVENT_TASK_COLLECTION } from '../../domain/TaskCollection';
 import { selectAutoAcceptOrdersEnabled } from '../Restaurant/selectors';
 
-export const selectUser = state => state.app.user;
 export const selectHttpClient = state => state.app.httpClient;
 
 export const selectCustomBuild = state => state.app.customBuild;
 
-export const selectResumeCheckoutAfterActivation = state =>
-  state.app.resumeCheckoutAfterActivation;
+// AppUser, for logged in user use selectLoggedInUser
+export const selectUser = state => state.app.user;
 
 // a user with an account
 export const selectIsAuthenticated = createSelector(
@@ -24,11 +23,25 @@ export const selectIsAuthenticated = createSelector(
   user => !!(user && user.isAuthenticated()),
 );
 
+export const selectLoggedInUser = createSelector(
+  selectUser,
+  selectIsAuthenticated,
+  (user, isAuthenticated) => {
+    if (isAuthenticated) {
+      return user;
+    }
+
+    return null;
+  },
+);
+
 export const selectIsGuest = createSelector(
   selectUser,
   user => !!(user && user.isGuest()),
 );
 
+export const selectResumeCheckoutAfterActivation = state =>
+  state.app.resumeCheckoutAfterActivation;
 export const selectHttpClientHasCredentials = createSelector(
   selectHttpClient,
   httpClient => !!(httpClient && !!httpClient.getToken()),

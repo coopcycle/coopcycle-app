@@ -1,6 +1,6 @@
 import VersionNumber from 'react-native-version-number';
 import { fetchBaseQuery } from '@reduxjs/toolkit/dist/query/react';
-import { selectBaseURL, selectUser } from '../App/selectors';
+import { selectBaseURL, selectLoggedInUser } from '../App/selectors';
 import { Mutex } from 'async-mutex';
 import qs from 'qs';
 import AppUser from '../../AppUser';
@@ -32,21 +32,23 @@ const buildBaseQuery = (baseUrl, anonymous = false) => {
       headers.set('X-Application-Version', appVersion);
 
       if (!anonymous) {
-        const user = selectUser(getState());
+        const loggedInUser = selectLoggedInUser(getState());
 
         if (guestCheckoutEndpoints.includes(endpoint)) {
           const { cart, token: orderAccessToken } = selectCart(getState());
 
-          if (user && cart.customer) {
-            headers.set('Authorization', `Bearer ${user.token}`);
+          if (loggedInUser && cart.customer) {
+            headers.set('Authorization', `Bearer ${loggedInUser.token}`);
           } else if (orderAccessToken) {
             headers.set('Authorization', `Bearer ${orderAccessToken}`);
           } else {
-            console.warn(`No token found for endpoint ${endpoint} (guestCheckoutEndpoints)`);
+            console.warn(
+              `No token found for endpoint ${endpoint} (guestCheckoutEndpoints)`,
+            );
           }
         } else {
-          if (user) {
-            headers.set('Authorization', `Bearer ${user.token}`);
+          if (loggedInUser) {
+            headers.set('Authorization', `Bearer ${loggedInUser.token}`);
           } else {
             console.warn(`No token found for endpoint ${endpoint}`);
           }
@@ -73,13 +75,13 @@ export const baseQueryWithReauth = async (args, api, extraOptions) => {
   let result = await baseQuery(args, api, extraOptions);
 
   if (result.error && result.error.status === 401) {
-    const user = selectUser(getState());
+    const loggedInUser = selectLoggedInUser(getState());
 
-    if (!user) {
+    if (!loggedInUser) {
       return result;
     }
 
-    const refreshToken = user.refreshToken;
+    const refreshToken = loggedInUser.refreshToken;
 
     if (mutex.isLocked()) {
       // wait for the mutex release, i.e. wait that another request that needed a fresh token gets the new token for us and update the state accordingly
@@ -106,7 +108,7 @@ export const baseQueryWithReauth = async (args, api, extraOptions) => {
         if (refreshResult.data) {
           const { token, refresh_token } = refreshResult.data;
 
-          const { username, email, roles, enabled } = user;
+          const { username, email, roles, enabled } = loggedInUser;
 
           const updUser = new AppUser(
             username,
@@ -119,7 +121,7 @@ export const baseQueryWithReauth = async (args, api, extraOptions) => {
 
           // store the new token
           api.dispatch(setUser(updUser));
-          await user.save();
+          await updUser.save();
           console.log('Credentials saved!');
 
           // retry the initial query
