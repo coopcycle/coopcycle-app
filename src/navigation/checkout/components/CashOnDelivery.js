@@ -5,6 +5,8 @@ import { StyleSheet, View } from 'react-native';
 import Foundation from 'react-native-vector-icons/Foundation';
 
 import FooterButton from './FooterButton';
+import { useDispatch } from 'react-redux';
+import { checkoutWithCash } from '../../../redux/Checkout/actions';
 
 const styles = StyleSheet.create({
   alert: {
@@ -20,8 +22,10 @@ const styles = StyleSheet.create({
   },
 });
 
-const CashOnDelivery = ({ onSubmit, disabled }) => {
+const CashOnDelivery = ({ disabled }) => {
   const { t } = useTranslation();
+
+  const dispatch = useDispatch();
 
   return (
     <Center flex={1}>
@@ -32,7 +36,7 @@ const CashOnDelivery = ({ onSubmit, disabled }) => {
       <FooterButton
         isDisabled={disabled}
         text={t('SUBMIT')}
-        onPress={onSubmit}
+        onPress={() => dispatch(checkoutWithCash())}
       />
     </Center>
   );

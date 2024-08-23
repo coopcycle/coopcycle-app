@@ -3,28 +3,17 @@ import React, { Component } from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
 
+import { loadPaymentMethods } from '../../redux/Checkout/actions';
 import {
-  checkout,
-  checkoutWithCash,
-  loadPaymentMethods,
-} from '../../redux/Checkout/actions';
-import { selectCart, selectPaymentGateway } from '../../redux/Checkout/selectors';
+  selectCart,
+  selectPaymentGateway,
+} from '../../redux/Checkout/selectors';
 import CashComp from './components/CashOnDelivery';
 import CreditCardComp from './components/CreditCard';
 import PaymentMethodPicker from './components/PaymentMethodPicker';
 import HeaderHeightAwareKeyboardAvoidingView from '../../components/HeaderHeightAwareKeyboardAvoidingView';
 
 class CreditCard extends Component {
-  _onSubmitCard(values) {
-    const { cardholderName, savedCardSelected, saveCard } = values;
-
-    this.props.checkout(cardholderName, savedCardSelected, saveCard);
-  }
-
-  _onSubmitCash() {
-    this.props.checkoutWithCash();
-  }
-
   componentDidMount() {
     this.props.loadPaymentMethods();
   }
@@ -57,11 +46,7 @@ class CreditCard extends Component {
 
       return (
         <HeaderHeightAwareKeyboardAvoidingView>
-          <CreditCardComp
-            cart={cart}
-            errors={errors}
-            onSubmit={this._onSubmitCard.bind(this)}
-          />
+          <CreditCardComp cart={cart} errors={errors} />
         </HeaderHeightAwareKeyboardAvoidingView>
       );
     }
@@ -70,7 +55,7 @@ class CreditCard extends Component {
       paymentMethods.length === 1 &&
       paymentMethods[0].type === 'cash_on_delivery'
     ) {
-      return <CashComp onSubmit={this._onSubmitCash.bind(this)} />;
+      return <CashComp />;
     }
 
     return (
@@ -96,10 +81,7 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    checkout: (cardholderName, savedCardSelected, saveCard) =>
-      dispatch(checkout(cardholderName, savedCardSelected, saveCard)),
     loadPaymentMethods: () => dispatch(loadPaymentMethods()),
-    checkoutWithCash: () => dispatch(checkoutWithCash()),
   };
 }
 

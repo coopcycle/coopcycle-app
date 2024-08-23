@@ -4,15 +4,11 @@ import _ from 'lodash';
 import { Button, Center, Checkbox, Input, Radio, Text } from 'native-base';
 import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
-import {
-  Platform,
-  StyleSheet,
-  useColorScheme,
-  View,
-} from 'react-native';
+import { StyleSheet, View, useColorScheme } from 'react-native';
 import { connect } from 'react-redux';
 
 import {
+  checkout,
   loadPaymentDetails,
   loadStripeSavedPaymentMethods,
 } from '../../../redux/Checkout/actions';
@@ -58,12 +54,17 @@ class CreditCard extends Component {
   }
 
   componentDidMount() {
-
     this.props.loadPaymentDetails();
 
     if (!this.props.user.isGuest()) {
       this.props.loadStripeSavedPaymentMethods();
     }
+  }
+
+  _onSubmit(values) {
+    const { cardholderName, savedCardSelected, saveCard } = values;
+
+    this.props.checkout(cardholderName, savedCardSelected, saveCard);
   }
 
   _validate(values) {
@@ -141,7 +142,7 @@ class CreditCard extends Component {
         <Formik
           initialValues={initialValues}
           validate={this._validate.bind(this)}
-          onSubmit={this.props.onSubmit}
+          onSubmit={this._onSubmit.bind(this)}
           validateOnBlur={false}
           validateOnChange={false}>
           {({
@@ -318,6 +319,8 @@ function mapDispatchToProps(dispatch) {
     loadPaymentDetails: () => dispatch(loadPaymentDetails()),
     loadStripeSavedPaymentMethods: () =>
       dispatch(loadStripeSavedPaymentMethods()),
+    checkout: (cardholderName, savedCardSelected, saveCard) =>
+      dispatch(checkout(cardholderName, savedCardSelected, saveCard)),
   };
 }
 
