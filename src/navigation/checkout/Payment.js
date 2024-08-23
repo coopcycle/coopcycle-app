@@ -1,5 +1,5 @@
-import { Center } from 'native-base';
 import React, { Component } from 'react';
+import { Center } from 'native-base';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
 
@@ -12,6 +12,7 @@ import CashComp from './components/CashOnDelivery';
 import CreditCardComp from './components/CreditCard';
 import PaymentMethodPicker from './components/PaymentMethodPicker';
 import HeaderHeightAwareKeyboardAvoidingView from '../../components/HeaderHeightAwareKeyboardAvoidingView';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 class CreditCard extends Component {
   componentDidMount() {
@@ -45,9 +46,11 @@ class CreditCard extends Component {
       }
 
       return (
-        <HeaderHeightAwareKeyboardAvoidingView>
-          <CreditCardComp cart={cart} errors={errors} />
-        </HeaderHeightAwareKeyboardAvoidingView>
+        <SafeAreaView style={{ flex: 1 }} edges={['bottom']}>
+          <HeaderHeightAwareKeyboardAvoidingView>
+            <CreditCardComp cart={cart} errors={errors} />
+          </HeaderHeightAwareKeyboardAvoidingView>
+        </SafeAreaView>
       );
     }
 
