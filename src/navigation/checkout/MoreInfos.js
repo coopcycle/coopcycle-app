@@ -19,6 +19,7 @@ import KeyboardAdjustView from '../../components/KeyboardAdjustView';
 import { selectIsAuthenticated } from '../../redux/App/selectors';
 import {
   assignCustomer,
+  checkTimeRange,
   checkout,
   showValidationErrors,
   updateCart,
@@ -31,38 +32,44 @@ import {
 } from '../../redux/Checkout/selectors';
 import { isFree } from '../../utils/order';
 import FooterButton from './components/FooterButton';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import TimeRangeChangedModal from './components/TimeRangeChangedModal';
 
 const hasErrors = (errors, touched, field) => {
   return errors[field] && touched[field];
 };
 
 class MoreInfos extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isLoading: false,
+    };
+  }
+
   _handleChangeTelephone(value, setFieldValue, setFieldTouched) {
     setFieldValue('telephone', new AsYouType(this.props.country).input(value));
     setFieldTouched('telephone');
   }
 
-  _updateCart(payload) {
-    this.props.updateCart(payload, order => {
-      this.props.validateOrder(this.props.cart).then(isValid => {
-        if (isValid) {
-          if (isFree(order)) {
-            this.props.checkout();
-          } else {
-            this.props.navigation.navigate('CheckoutPayment');
-          }
-        } else {
-          this.props.showValidationErrors();
-        }
-      });
-    });
-  }
+  async _submit(values) {
+    this.setState({ isLoading: true });
 
-  _submit(values) {
     const telephone = parsePhoneNumberFromString(
       values.telephone,
       this.props.country,
     ).format('E.164');
+
+    if (this._userIsGuest()) {
+      try {
+        await this.props.assignCustomer({ email: values.email, telephone });
+      } catch (e) {
+        console.error(e);
+        this.setState({ isLoading: false });
+        //todo; display error
+        return;
+      }
+    }
 
     let payload = {
       notes: values.notes,
@@ -79,18 +86,42 @@ class MoreInfos extends Component {
         telephone,
       };
     }
+    const { data: cart, error: updateCartFailed } = await this.props.updateCart(
+      payload,
+    );
+    if (updateCartFailed) {
+      console.log('MoreInfos; updateCartFailed', updateCartFailed);
+      this.setState({ isLoading: false });
+      //todo; display error
+      return;
+    }
 
-    if (this._userIsGuest()) {
-      return this.props
-        .assignCustomer({ email: values.email, telephone })
-        .then(() => {
-          this._updateCart(payload);
-        })
-        .catch(err => {
-          console.error(err);
-        });
+    const { error: timeRangeCheckFailed } = await this.props.checkTimeRange(
+      cart.restaurant,
+      this.props.lastShownTimeRange,
+    );
+
+    if (timeRangeCheckFailed) {
+      this.setState({ isLoading: false });
+      // checkTimeRange will trigger a TimeRangeChangedModal
+      return;
+    }
+
+    const { error: validationFailed } = await this.props.validateOrder(cart);
+
+    if (validationFailed) {
+      console.log('MoreInfos; validationFailed', validationFailed);
+      this.setState({ isLoading: false });
+      this.props.showValidationErrors();
+      return;
+    }
+
+    this.setState({ isLoading: false });
+
+    if (isFree(cart)) {
+      this.props.checkout();
     } else {
-      this._updateCart(payload);
+      this.props.navigation.navigate('CheckoutPayment');
     }
   }
 
@@ -149,125 +180,131 @@ class MoreInfos extends Component {
     }
 
     return (
-      <Formik
-        initialValues={initialValues}
-        validate={this._validate.bind(this)}
-        onSubmit={this._submit.bind(this)}
-        validateOnBlur={false}
-        validateOnChange={false}>
-        {({
-          handleChange,
-          handleBlur,
-          handleSubmit,
-          values,
-          errors,
-          touched,
-          setFieldValue,
-          setFieldTouched,
-        }) => (
-          <KeyboardAdjustView style={{ flex: 1 }}>
-            <HStack bgColor="info.200" justifyContent="center" p="4">
-              <Text>{this.props.t('CHECKOUT_MORE_INFOS_DISCLAIMER')}</Text>
-            </HStack>
+      <SafeAreaView style={{ flex: 1 }} edges={['bottom']}>
+        <Formik
+          initialValues={initialValues}
+          validate={this._validate.bind(this)}
+          onSubmit={this._submit.bind(this)}
+          validateOnBlur={false}
+          validateOnChange={false}>
+          {({
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            values,
+            errors,
+            touched,
+            setFieldValue,
+            setFieldTouched,
+          }) => (
+            <KeyboardAdjustView style={{ flex: 1 }}>
+              <HStack bgColor="info.200" justifyContent="center" p="4">
+                <Text>{this.props.t('CHECKOUT_MORE_INFOS_DISCLAIMER')}</Text>
+              </HStack>
 
-            <VStack p="2" style={{ flex: 1 }}>
-              <ScrollView>
-                {!this.props.isAuthenticated && this._userIsGuest() && (
+              <VStack p="2" style={{ flex: 1 }}>
+                <ScrollView>
+                  {!this.props.isAuthenticated && this._userIsGuest() && (
+                    <FormControl mb="2">
+                      <FormControl.Label>Email</FormControl.Label>
+                      <Input
+                        testID="guestCheckoutEmail"
+                        autoCorrect={false}
+                        keyboardType="email-address"
+                        returnKeyType="done"
+                        onChangeText={handleChange('email')}
+                        onBlur={handleBlur('email')}
+                        value={values.email}
+                        autoCapitalize="none"
+                      />
+                      {hasErrors(errors, touched, 'email') && (
+                        <Text note style={styles.errorText}>
+                          {errors.email}
+                        </Text>
+                      )}
+                      {!hasErrors(errors, touched, 'email') && (
+                        <FormControl.HelperText>
+                          {this.props.t('GUEST_CHECKOUT_ORDER_EMAIL_HELP')}
+                        </FormControl.HelperText>
+                      )}
+                    </FormControl>
+                  )}
                   <FormControl mb="2">
-                    <FormControl.Label>Email</FormControl.Label>
+                    <FormControl.Label>
+                      {this.props.t('STORE_NEW_DELIVERY_PHONE_NUMBER')}
+                    </FormControl.Label>
                     <Input
-                      testID="guestCheckoutEmail"
+                      testID="checkoutTelephone"
                       autoCorrect={false}
-                      keyboardType="email-address"
+                      keyboardType="phone-pad"
                       returnKeyType="done"
-                      onChangeText={handleChange('email')}
-                      onBlur={handleBlur('email')}
-                      value={values.email}
-                      autoCapitalize="none"
+                      onChangeText={value =>
+                        this._handleChangeTelephone(
+                          value,
+                          setFieldValue,
+                          setFieldTouched,
+                        )
+                      }
+                      onBlur={handleBlur('telephone')}
+                      value={values.telephone}
                     />
-                    {hasErrors(errors, touched, 'email') && (
+                    {hasErrors(errors, touched, 'telephone') && (
                       <Text note style={styles.errorText}>
-                        {errors.email}
+                        {errors.telephone}
                       </Text>
                     )}
-                    {!hasErrors(errors, touched, 'email') && (
+                    {!hasErrors(errors, touched, 'telephone') && (
                       <FormControl.HelperText>
-                        {this.props.t('GUEST_CHECKOUT_ORDER_EMAIL_HELP')}
+                        {this.props.t('CHECKOUT_ORDER_PHONE_NUMBER_HELP')}
                       </FormControl.HelperText>
                     )}
                   </FormControl>
-                )}
-                <FormControl mb="2">
-                  <FormControl.Label>
-                    {this.props.t('STORE_NEW_DELIVERY_PHONE_NUMBER')}
-                  </FormControl.Label>
-                  <Input
-                    testID="checkoutTelephone"
-                    autoCorrect={false}
-                    keyboardType="phone-pad"
-                    returnKeyType="done"
-                    onChangeText={value =>
-                      this._handleChangeTelephone(
-                        value,
-                        setFieldValue,
-                        setFieldTouched,
-                      )
-                    }
-                    onBlur={handleBlur('telephone')}
-                    value={values.telephone}
-                  />
-                  {hasErrors(errors, touched, 'telephone') && (
-                    <Text note style={styles.errorText}>
-                      {errors.telephone}
-                    </Text>
+                  {Object.prototype.hasOwnProperty.call(values, 'address') && (
+                    <FormControl mb="2">
+                      <FormControl.Label>
+                        {this.props.t('CHECKOUT_ORDER_ADDRESS_DESCRIPTION')}
+                      </FormControl.Label>
+                      <TextArea
+                        autoCorrect={false}
+                        totalLines={3}
+                        onChangeText={handleChange('address.description')}
+                        onBlur={handleBlur('address.description')}
+                      />
+                      <FormControl.HelperText>
+                        {this.props.t(
+                          'CHECKOUT_ORDER_ADDRESS_DESCRIPTION_HELP',
+                        )}
+                      </FormControl.HelperText>
+                    </FormControl>
                   )}
-                  {!hasErrors(errors, touched, 'telephone') && (
-                    <FormControl.HelperText>
-                      {this.props.t('CHECKOUT_ORDER_PHONE_NUMBER_HELP')}
-                    </FormControl.HelperText>
-                  )}
-                </FormControl>
-                {Object.prototype.hasOwnProperty.call(values, 'address') && (
                   <FormControl mb="2">
                     <FormControl.Label>
-                      {this.props.t('CHECKOUT_ORDER_ADDRESS_DESCRIPTION')}
+                      {this.props.t('CHECKOUT_ORDER_NOTES')}
                     </FormControl.Label>
                     <TextArea
                       autoCorrect={false}
                       totalLines={3}
-                      onChangeText={handleChange('address.description')}
-                      onBlur={handleBlur('address.description')}
+                      onChangeText={handleChange('notes')}
+                      onBlur={handleBlur('notes')}
                     />
                     <FormControl.HelperText>
-                      {this.props.t('CHECKOUT_ORDER_ADDRESS_DESCRIPTION_HELP')}
+                      {this.props.t('CHECKOUT_ORDER_NOTES_HELP')}
                     </FormControl.HelperText>
                   </FormControl>
-                )}
-                <FormControl mb="2">
-                  <FormControl.Label>
-                    {this.props.t('CHECKOUT_ORDER_NOTES')}
-                  </FormControl.Label>
-                  <TextArea
-                    autoCorrect={false}
-                    totalLines={3}
-                    onChangeText={handleChange('notes')}
-                    onBlur={handleBlur('notes')}
-                  />
-                  <FormControl.HelperText>
-                    {this.props.t('CHECKOUT_ORDER_NOTES_HELP')}
-                  </FormControl.HelperText>
-                </FormControl>
-              </ScrollView>
-            </VStack>
-            <FooterButton
-              style={{ flex: 1 }}
-              testID="moreInfosSubmit"
-              text={this.props.t('SUBMIT')}
-              onPress={handleSubmit}
-            />
-          </KeyboardAdjustView>
-        )}
-      </Formik>
+                </ScrollView>
+              </VStack>
+              <FooterButton
+                style={{ flex: 1 }}
+                testID="moreInfosSubmit"
+                text={this.props.t('SUBMIT')}
+                isLoading={this.state.isLoading}
+                onPress={handleSubmit}
+              />
+            </KeyboardAdjustView>
+          )}
+        </Formik>
+        <TimeRangeChangedModal />
+      </SafeAreaView>
     );
   }
 }
@@ -288,12 +325,13 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state, ownProps) {
   const fulfillmentMethod = selectCartFulfillmentMethod(state);
-  const cart = selectCart(state)?.cart;
+  const { cart, lastShownTimeRange } = selectCart(state);
 
   return {
     country: state.app.settings.country.toUpperCase(),
     cart,
     fulfillmentMethod,
+    lastShownTimeRange,
     // FIXME
     // For click & collect, we need to retrieve the customer phone number
     // This needs a change server side
@@ -310,9 +348,11 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    updateCart: (cart, cb) => dispatch(updateCart(cart, cb)),
+    updateCart: cart => dispatch(updateCart(cart)),
     validateOrder: cart => dispatch(validateOrder(cart)),
     showValidationErrors: () => dispatch(showValidationErrors()),
+    checkTimeRange: (restaurantNodeId, lastTimeRange) =>
+      dispatch(checkTimeRange(restaurantNodeId, lastTimeRange)),
     checkout: () => dispatch(checkout()),
     assignCustomer: payload => dispatch(assignCustomer(payload)),
   };

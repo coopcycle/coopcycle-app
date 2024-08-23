@@ -471,39 +471,47 @@ function queueAddItem(item, quantity = 1, options = []) {
 const _getTiming = (dispatch, getState, cart, token) => {
   const httpClient = selectHttpClient(getState());
 
+  dispatch(checkoutRequest());
   return httpClient
     .get(`${cart['@id']}/timing`, {
       headers: selectCheckoutAuthorizationHeaders(getState(), cart, token),
     })
     .then(timing => {
       dispatch(setTiming(cart, timing));
+      dispatch(checkoutSuccess());
       return timing;
+    })
+    .catch(error => {
+      dispatch(checkoutFailure(error));
+      // dispatch(setCartValidation(false, error.violations));
     });
-  // .catch(error => dispatch(setCartValidation(false, error.violations)))
 };
 
 const _getValidate = async (dispatch, getState, cart, token) => {
   if (!cart) {
-    return false;
+    return { error: 'Missing Cart' };
   }
 
   const httpClient = selectHttpClient(getState());
 
+  dispatch(checkoutRequest());
   try {
     await httpClient.get(`${cart['@id']}/validate`, {
       headers: selectCheckoutAuthorizationHeaders(getState(), cart, token),
     });
-
-    dispatch(setCartValidation(true));
-    return true;
   } catch (error) {
     if (error.response && error.response.status === 400) {
       dispatch(setCartValidation(false, error.response.data.violations));
     } else {
       dispatch(setCartValidation(false, [{ message: i18n.t('TRY_LATER') }]));
     }
-    return false;
+    dispatch(checkoutFailure(error));
+    return { error: error };
   }
+
+  dispatch(setCartValidation(true));
+  dispatch(checkoutSuccess());
+  return { data: 'ok' };
 };
 
 const fetchValidation = _.throttle((dispatch, getState, cart, cb) => {
@@ -521,19 +529,15 @@ const fetchValidation = _.throttle((dispatch, getState, cart, cb) => {
         .catch(() => resolve(null));
     });
 
-  const doValidate = () =>
-    new Promise(resolve => {
-      _getValidate(dispatch, getState, cart, token).then(isValid =>
-        resolve(isValid),
-      );
-    });
+  const doValidate = () => _getValidate(dispatch, getState, cart, token);
 
   dispatch(setCheckoutLoading(true));
 
-  Promise.all([doTiming(), doValidate()]).then(([_, isValid]) => {
+  Promise.all([doTiming(), doValidate()]).then(([_, { data }]) => {
     dispatch(setCheckoutLoading(false));
 
     if (cb) {
+      const isValid = Boolean(data);
       cb(isValid);
     }
   });
@@ -728,13 +732,8 @@ export function syncAddressAndValidate(cart) {
 
 export function validateOrder(cart) {
   return async (dispatch, getState) => {
-    dispatch(setCheckoutLoading(true));
-
     const { token } = selectCartByVendor(getState(), cart.restaurant);
     const result = await _getValidate(dispatch, getState, cart, token);
-
-    dispatch(setCheckoutLoading(false));
-
     return result;
   };
 }
@@ -746,75 +745,60 @@ function isTimeRangeSignificantlyDifferent(origRange, latestRange) {
   return latestLowerBound.diff(displayedUpperBound, 'hours') > 2;
 }
 
-async function _checkTimeRange(
-  restaurantNodeId,
-  lastTimeRange,
-  getState,
-  dispatch,
-) {
-  const { cart, token } = selectCartByVendor(getState(), restaurantNodeId);
-
-  const shippingTimeRange = cart.shippingTimeRange;
-  // if the customer has already selected the time range, it will be checked on the server side
-  if (shippingTimeRange) {
-    return;
-  }
-
-  if (!lastTimeRange) {
-    // continue without the timing check
-    return;
-  }
-
-  let latestTiming = null;
-
-  try {
-    latestTiming = await _getTiming(dispatch, getState, cart, token);
-  } catch (error) {
-    // ignore the request error and continue without the timing check
-    return;
-  }
-
-  if (!latestTiming) {
-    // continue without the timing check
-    return;
-  }
-
-  dispatch(setTiming(cart, latestTiming));
-
-  if (!latestTiming.range) {
-    // no time ranges available; restaurant is closed for the coming days
-    dispatch(openTimeRangeChangedModal());
-    throw new Error('Time range is not available');
-  }
-
-  if (isTimeRangeSignificantlyDifferent(lastTimeRange, latestTiming.range)) {
-    dispatch(openTimeRangeChangedModal());
-    throw new Error('Time range is not available');
-  }
-
-  dispatch(
-    setPersistedTimeRange({
-      cartNodeId: cart['@id'],
-      restaurantNodeId: restaurantNodeId,
-      lastShownTimeRange: latestTiming.range,
-    }),
-  );
-}
-
 export function checkTimeRange(restaurantNodeId, lastTimeRange) {
   return async (dispatch, getState) => {
-    dispatch(setCheckoutLoading(true));
+    const resultCheckSkipped = { data: 'skipped' };
+
+    const { cart, token } = selectCartByVendor(getState(), restaurantNodeId);
+
+    const shippingTimeRange = cart.shippingTimeRange;
+    // if the customer has already selected the time range, it will be checked on the server side
+    if (shippingTimeRange) {
+      return resultCheckSkipped;
+    }
+
+    if (!lastTimeRange) {
+      // continue without the timing check
+      return resultCheckSkipped;
+    }
+
+    let latestTiming = null;
 
     try {
-      await _checkTimeRange(
-        restaurantNodeId,
-        lastTimeRange,
-        getState,
-        dispatch,
-      );
-    } finally {
-      dispatch(setCheckoutLoading(false));
+      latestTiming = await _getTiming(dispatch, getState, cart, token);
+    } catch (error) {
+      // ignore the request error and continue without the timing check
+      return resultCheckSkipped;
     }
+
+    if (!latestTiming) {
+      // continue without the timing check
+      return resultCheckSkipped;
+    }
+
+    dispatch(setTiming(cart, latestTiming));
+
+    if (!latestTiming.range) {
+      // no time ranges available; restaurant is closed for the coming days
+      dispatch(openTimeRangeChangedModal());
+
+      return { error: 'Time range is not available' };
+    }
+
+    if (isTimeRangeSignificantlyDifferent(lastTimeRange, latestTiming.range)) {
+      dispatch(openTimeRangeChangedModal());
+      return { error: 'Time range is not available' };
+    }
+
+    dispatch(
+      setPersistedTimeRange({
+        cartNodeId: cart['@id'],
+        restaurantNodeId: restaurantNodeId,
+        lastShownTimeRange: latestTiming.range,
+      }),
+    );
+
+    return { data: 'ok' };
   };
 }
 
@@ -1086,7 +1070,7 @@ export function showValidationErrors() {
 
 async function isValidToProceedWithPayment(dispatch, getState, cart, token) {
   if (!cart.customer) {
-    return false;
+    return { error: 'Missing Customer' };
   }
 
   return await _getValidate(dispatch, getState, cart, token);
@@ -1113,13 +1097,14 @@ export function checkout(
 
     const httpClient = selectHttpClient(getState());
 
-    const isValid = await isValidToProceedWithPayment(
+    const { error } = await isValidToProceedWithPayment(
       dispatch,
       getState,
       cart,
       token,
     );
-    if (!isValid) {
+    if (error) {
+      console.log('isValidToProceedWithPayment error:', error);
       dispatch(handlePaymentFailed(VALIDATION_FAILED));
       return;
     }
@@ -1483,24 +1468,28 @@ export function resetSearch(options = {}) {
 }
 
 const doUpdateCart = (cart, token, payload, cb) => {
-  return (dispatch, getState) => {
+  return async (dispatch, getState) => {
     const httpClient = selectHttpClient(getState());
 
-    return httpClient
-      .put(cart['@id'], payload, {
+    try {
+      const res = await httpClient.put(cart['@id'], payload, {
         headers: selectCheckoutAuthorizationHeaders(getState(), cart, token),
-      })
-      .then(res => {
-        dispatch(updateCartSuccess(res));
-        dispatch(checkoutSuccess());
-        _.isFunction(cb) && cb(res);
-      })
-      .catch(e => dispatch(checkoutFailure(e)));
+      });
+
+      dispatch(updateCartSuccess(res));
+      dispatch(checkoutSuccess());
+      _.isFunction(cb) && cb(res);
+
+      return { data: res };
+    } catch (e) {
+      dispatch(checkoutFailure(e));
+      return { error: e };
+    }
   };
 };
 
 export function updateCart(payload, cb) {
-  return (dispatch, getState) => {
+  return async (dispatch, getState) => {
     const { restaurant } = getState().checkout;
     const { cart, token } = selectCartByVendor(getState(), restaurant);
 
@@ -1524,8 +1513,8 @@ export function updateCart(payload, cb) {
     if (payload.telephone) {
       const { telephone, ...payloadWithoutTelephone } = payload;
 
-      httpClient
-        .put(
+      try {
+        await httpClient.put(
           cart.customer,
           { telephone },
           {
@@ -1535,13 +1524,17 @@ export function updateCart(payload, cb) {
               token,
             ),
           },
-        )
-        .then(res =>
-          dispatch(doUpdateCart(cart, token, payloadWithoutTelephone, cb)),
-        )
-        .catch(e => dispatch(checkoutFailure(e)));
+        );
+      } catch (e) {
+        dispatch(checkoutFailure(e));
+        return { error: e };
+      }
+
+      return await dispatch(
+        doUpdateCart(cart, token, payloadWithoutTelephone, cb),
+      );
     } else {
-      dispatch(doUpdateCart(cart, token, payload, cb));
+      return await dispatch(doUpdateCart(cart, token, payload, cb));
     }
   };
 }
@@ -1690,13 +1683,14 @@ export function checkoutWithCash() {
 
     const { cart, token } = selectCart(getState());
 
-    const isValid = await isValidToProceedWithPayment(
+    const { error } = await isValidToProceedWithPayment(
       dispatch,
       getState,
       cart,
       token,
     );
-    if (!isValid) {
+    if (error) {
+      console.log('isValidToProceedWithPayment error:', error);
       dispatch(handlePaymentFailed(VALIDATION_FAILED));
       return;
     }

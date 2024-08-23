@@ -276,6 +276,7 @@ class Summary extends Component {
       isCouponModalVisible: false,
       isCollectionDisclaimerModalVisible: false,
       showTipModal: false,
+      isLoading: false,
     };
   }
 
@@ -346,21 +347,30 @@ class Summary extends Component {
       }
     }
 
+    this.setState({ isLoading: true });
+
     const displayedTiming = this.props.cartContainer.timing?.range;
-    try {
-      await this.props.checkTimeRange(cart.restaurant, displayedTiming);
-    } catch (error) {
+
+    const { error: timeRangeCheckFailed } = await this.props.checkTimeRange(
+      cart.restaurant,
+      displayedTiming,
+    );
+    if (timeRangeCheckFailed) {
+      this.setState({ isLoading: false });
       // checkTimeRange will trigger a TimeRangeChangedModal
       return;
     }
 
-    const isValid = await this.props.validateOrder(cart);
+    const { error: validationFailed } = await this.props.validateOrder(cart);
 
-    if (!isValid) {
+    if (validationFailed) {
+      console.log('Summary; validationFailed', validationFailed);
+      this.setState({ isLoading: false });
       this.props.showValidationErrors();
       return;
     }
 
+    this.setState({ isLoading: false });
     this._navigate('CheckoutSubmitOrder');
   }
 
@@ -556,7 +566,7 @@ class Summary extends Component {
         <Footer
           cart={this.props.cart}
           isValid={this.props.isValid}
-          isLoading={this.props.isLoading}
+          isLoading={this.props.isLoading || this.state.isLoading}
           onSubmit={this.onSubmit.bind(this)}
         />
         <ExpiredSessionModal

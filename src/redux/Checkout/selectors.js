@@ -21,6 +21,7 @@ export const selectCart = createSelector(
       restaurant: null,
       token: null,
       timing: null,
+      lastShownTimeRange: null,
     };
   },
 );
@@ -54,6 +55,7 @@ export const selectCartByVendor = createSelector(
       restaurant: null,
       token: null,
       timing: null,
+      lastShownTimeRange: null,
     };
   },
 );
