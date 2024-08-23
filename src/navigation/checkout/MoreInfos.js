@@ -22,7 +22,7 @@ import {
   checkout,
   showValidationErrors,
   updateCart,
-  validate as validateOrder,
+  validateOrder,
 } from '../../redux/Checkout/actions';
 import {
   selectCart,

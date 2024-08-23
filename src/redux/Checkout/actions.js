@@ -726,7 +726,7 @@ export function syncAddressAndValidate(cart) {
   };
 }
 
-export function validate(cart) {
+export function validateOrder(cart) {
   return async (dispatch, getState) => {
     dispatch(setCheckoutLoading(true));
 

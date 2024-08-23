@@ -43,7 +43,7 @@ import {
   showValidationErrors,
   syncAddressAndValidate,
   updateCart,
-  validate,
+  validateOrder,
 } from '../../redux/Checkout/actions';
 import {
   selectCartFulfillmentMethod,
@@ -354,7 +354,7 @@ class Summary extends Component {
       return;
     }
 
-    const isValid = await this.props.validate(cart);
+    const isValid = await this.props.validateOrder(cart);
 
     if (!isValid) {
       this.props.showValidationErrors();
@@ -659,7 +659,7 @@ function mapStateToProps(state, ownProps) {
 function mapDispatchToProps(dispatch) {
   return {
     syncAddressAndValidate: cart => dispatch(syncAddressAndValidate(cart)),
-    validate: cart => dispatch(validate(cart)),
+    validateOrder: cart => dispatch(validateOrder(cart)),
     showValidationErrors: () => dispatch(showValidationErrors()),
     checkTimeRange: (restaurantNodeId, lastTimeRange) =>
       dispatch(checkTimeRange(restaurantNodeId, lastTimeRange)),
