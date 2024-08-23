@@ -44,9 +44,7 @@ function ChooseTimeRangeContent({ orderNodeId, restaurantNodeId }) {
   const chooseRestaurant = useChooseRestaurant();
 
   const onSchedule = async () => {
-    console.log('onSchedule1');
     await dispatch(setDate(value));
-    console.log('onSchedule2');
     dispatch(
       setPersistedTimeRange({
         cartNodeId: orderNodeId,
@@ -54,9 +52,7 @@ function ChooseTimeRangeContent({ orderNodeId, restaurantNodeId }) {
         lastShownTimeRange: null,
       }),
     );
-    console.log('onSchedule3');
     dispatch(closeTimeRangeChangedModal());
-    console.log('onSchedule4');
   };
 
   return (
@@ -104,7 +100,7 @@ function Content({ isModalOpen }) {
   }
 
   if (isFetchingTiming) {
-    return <TimingCartSelect />;
+    return <TimingCartSelect orderNodeId={orderNodeId} />;
   }
 
   const hasTimingOptions = timing && timing.ranges.length > 0;
