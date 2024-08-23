@@ -39,12 +39,16 @@ const buildBaseQuery = (baseUrl, anonymous = false) => {
 
           if (user && cart.customer) {
             headers.set('Authorization', `Bearer ${user.token}`);
-          } else {
+          } else if (orderAccessToken) {
             headers.set('Authorization', `Bearer ${orderAccessToken}`);
+          } else {
+            console.warn(`No token found for endpoint ${endpoint} (guestCheckoutEndpoints)`);
           }
         } else {
           if (user) {
             headers.set('Authorization', `Bearer ${user.token}`);
+          } else {
+            console.warn(`No token found for endpoint ${endpoint}`);
           }
         }
       }
