@@ -8,6 +8,7 @@ import { StyleSheet, View, useColorScheme } from 'react-native';
 import { connect } from 'react-redux';
 
 import {
+  canProceedWithPayment,
   checkout,
   loadPaymentDetails,
   loadStripeSavedPaymentMethods,
@@ -15,6 +16,8 @@ import {
 import { formatPrice } from '../../../utils/formatting';
 import FooterButton from './FooterButton';
 import SavedCreditCard from './SavedCreditCard';
+import TimeRangeChangedModal from './TimeRangeChangedModal';
+import { selectCart } from '../../../redux/Checkout/selectors';
 
 const ColorSchemeAwareCardField = props => {
   const colorScheme = useColorScheme();
@@ -61,9 +64,16 @@ class CreditCard extends Component {
     }
   }
 
-  _onSubmit(values) {
-    const { cardholderName, savedCardSelected, saveCard } = values;
+  async _onSubmit(values) {
+    this.setState({ isLoading: true });
 
+    if ((await this.props.canProceedWithPayment(this.props.cart)) === false) {
+      this.setState({ isLoading: false });
+      // canProceedWithPayment will display error messages
+      return;
+    }
+
+    const { cardholderName, savedCardSelected, saveCard } = values;
     this.props.checkout(cardholderName, savedCardSelected, saveCard);
   }
 
@@ -266,6 +276,7 @@ class CreditCard extends Component {
               ) : null}
               <FooterButton
                 isDisabled={disabled}
+                isLoading={this.state.isLoading}
                 testID="creditCardSubmit"
                 text={this.props.t('PAY_AMOUNT', {
                   amount: formatPrice(cart.total),
@@ -278,6 +289,7 @@ class CreditCard extends Component {
             </>
           )}
         </Formik>
+        <TimeRangeChangedModal />
       </StripeProvider>
     );
   }
@@ -305,7 +317,11 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(state) {
+  const { cart, lastShownTimeRange } = selectCart(state);
+
   return {
+    cart,
+    lastShownTimeRange,
     stripePublishableKey: state.app.settings.stripe_publishable_key,
     paymentDetailsLoaded: state.checkout.paymentDetailsLoaded,
     stripePaymentMethods: state.checkout.stripePaymentMethods || [],
@@ -319,6 +335,7 @@ function mapDispatchToProps(dispatch) {
     loadPaymentDetails: () => dispatch(loadPaymentDetails()),
     loadStripeSavedPaymentMethods: () =>
       dispatch(loadStripeSavedPaymentMethods()),
+    canProceedWithPayment: cart => dispatch(canProceedWithPayment(cart)),
     checkout: (cardholderName, savedCardSelected, saveCard) =>
       dispatch(checkout(cardholderName, savedCardSelected, saveCard)),
   };

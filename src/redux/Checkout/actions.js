@@ -733,8 +733,7 @@ export function syncAddressAndValidate(cart) {
 export function validateOrder(cart) {
   return async (dispatch, getState) => {
     const { token } = selectCartByVendor(getState(), cart.restaurant);
-    const result = await _getValidate(dispatch, getState, cart, token);
-    return result;
+    return await _getValidate(dispatch, getState, cart, token);
   };
 }
 
@@ -744,6 +743,8 @@ function isTimeRangeSignificantlyDifferent(origRange, latestRange) {
 
   return latestLowerBound.diff(displayedUpperBound, 'hours') > 2;
 }
+
+const TIME_RANGE_IS_NOT_AVAILABLE = 'Time range is not available';
 
 export function checkTimeRange(restaurantNodeId, lastTimeRange) {
   return async (dispatch, getState) => {
@@ -781,13 +782,12 @@ export function checkTimeRange(restaurantNodeId, lastTimeRange) {
     if (!latestTiming.range) {
       // no time ranges available; restaurant is closed for the coming days
       dispatch(openTimeRangeChangedModal());
-
-      return { error: 'Time range is not available' };
+      return { error: TIME_RANGE_IS_NOT_AVAILABLE };
     }
 
     if (isTimeRangeSignificantlyDifferent(lastTimeRange, latestTiming.range)) {
       dispatch(openTimeRangeChangedModal());
-      return { error: 'Time range is not available' };
+      return { error: TIME_RANGE_IS_NOT_AVAILABLE };
     }
 
     dispatch(
@@ -1040,15 +1040,9 @@ function handlePaymentSuccess(order) {
   };
 }
 
-const VALIDATION_FAILED = 'VALIDATION_FAILED';
-
 function handlePaymentFailed(err) {
   return (dispatch, getState) => {
     dispatch(checkoutFailure(err));
-
-    if (err === VALIDATION_FAILED) {
-      dispatch(showValidationErrors());
-    }
   };
 }
 
@@ -1068,12 +1062,41 @@ export function showValidationErrors() {
   };
 }
 
-async function isValidToProceedWithPayment(dispatch, getState, cart, token) {
-  if (!cart.customer) {
-    return { error: 'Missing Customer' };
-  }
+export function canProceedWithPayment(cart) {
+  return async (dispatch, getState) => {
+    const { token, lastShownTimeRange } = selectCartByVendor(
+      getState(),
+      cart.restaurant,
+    );
 
-  return await _getValidate(dispatch, getState, cart, token);
+    if (!cart.customer) {
+      console.log(
+        'isValidToProceedWithPayment error: cart is not assigned to a customer',
+      );
+      return false;
+    }
+
+    const { error: timeRangeCheckError } = await dispatch(
+      checkTimeRange(cart.restaurant, lastShownTimeRange),
+    );
+    if (timeRangeCheckError) {
+      // checkTimeRange will trigger a TimeRangeChangedModal
+      return false;
+    }
+
+    const { error: validationError } = await _getValidate(
+      dispatch,
+      getState,
+      cart,
+      token,
+    );
+    if (validationError) {
+      dispatch(showValidationErrors());
+      return false;
+    }
+
+    return true;
+  };
 }
 
 /**
@@ -1096,18 +1119,6 @@ export function checkout(
     const loggedOrderId = cart['@id'];
 
     const httpClient = selectHttpClient(getState());
-
-    const { error } = await isValidToProceedWithPayment(
-      dispatch,
-      getState,
-      cart,
-      token,
-    );
-    if (error) {
-      console.log('isValidToProceedWithPayment error:', error);
-      dispatch(handlePaymentFailed(VALIDATION_FAILED));
-      return;
-    }
 
     if (isFree(cart)) {
       httpClient
@@ -1682,18 +1693,6 @@ export function checkoutWithCash() {
     dispatch(checkoutRequest());
 
     const { cart, token } = selectCart(getState());
-
-    const { error } = await isValidToProceedWithPayment(
-      dispatch,
-      getState,
-      cart,
-      token,
-    );
-    if (error) {
-      console.log('isValidToProceedWithPayment error:', error);
-      dispatch(handlePaymentFailed(VALIDATION_FAILED));
-      return;
-    }
 
     const httpClient = selectHttpClient(getState());
 

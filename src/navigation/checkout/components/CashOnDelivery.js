@@ -1,12 +1,17 @@
 import { Center, Icon, Text } from 'native-base';
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
 import Foundation from 'react-native-vector-icons/Foundation';
 
 import FooterButton from './FooterButton';
-import { useDispatch } from 'react-redux';
-import { checkoutWithCash } from '../../../redux/Checkout/actions';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  canProceedWithPayment,
+  checkoutWithCash,
+} from '../../../redux/Checkout/actions';
+import TimeRangeChangedModal from './TimeRangeChangedModal';
+import { selectCart } from '../../../redux/Checkout/selectors';
 
 const styles = StyleSheet.create({
   alert: {
@@ -23,9 +28,25 @@ const styles = StyleSheet.create({
 });
 
 const CashOnDelivery = ({ disabled }) => {
+  const { cart } = useSelector(selectCart);
+
+  const [isLoading, setIsLoading] = useState(false);
+
   const { t } = useTranslation();
 
   const dispatch = useDispatch();
+
+  const onSubmit = async () => {
+    setIsLoading(true);
+
+    if ((await dispatch(canProceedWithPayment(cart))) === false) {
+      setIsLoading(false);
+      // canProceedWithPayment will display error messages
+      return;
+    }
+
+    dispatch(checkoutWithCash());
+  };
 
   return (
     <Center flex={1}>
@@ -35,9 +56,11 @@ const CashOnDelivery = ({ disabled }) => {
       </View>
       <FooterButton
         isDisabled={disabled}
+        isLoading={isLoading}
         text={t('SUBMIT')}
-        onPress={() => dispatch(checkoutWithCash())}
+        onPress={onSubmit}
       />
+      <TimeRangeChangedModal />
     </Center>
   );
 };

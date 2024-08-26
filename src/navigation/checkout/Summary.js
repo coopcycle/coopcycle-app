@@ -228,7 +228,8 @@ function Footer({ cart, isValid, isLoading, onSubmit }) {
       onSubmit={onSubmit}
       cart={cart}
       testID="cartSummarySubmit"
-      disabled={isValid !== true || isLoading}
+      isLoading={isLoading}
+      disabled={isValid !== true}
     />
   );
 }
@@ -362,9 +363,7 @@ class Summary extends Component {
     }
 
     const { error: validationFailed } = await this.props.validateOrder(cart);
-
     if (validationFailed) {
-      console.log('Summary; validationFailed', validationFailed);
       this.setState({ isLoading: false });
       this.props.showValidationErrors();
       return;

@@ -108,9 +108,7 @@ class MoreInfos extends Component {
     }
 
     const { error: validationFailed } = await this.props.validateOrder(cart);
-
     if (validationFailed) {
-      console.log('MoreInfos; validationFailed', validationFailed);
       this.setState({ isLoading: false });
       this.props.showValidationErrors();
       return;
