@@ -58,14 +58,16 @@ function ChooseTimeRangeContent({ orderNodeId, restaurantNodeId }) {
 
   return (
     <>
-      <Text>{t('CART_TIME_RANGE_CHANGED_MODAL_CHOOSE_TIME_RANGE_TEXT')}</Text>
+      <Text mt="8">
+        {t('CART_TIME_RANGE_CHANGED_MODAL_CHOOSE_TIME_RANGE_TEXT')}
+      </Text>
       <TimingCartSelect orderNodeId={orderNodeId} onValueChange={setValue} />
-      <Button onPress={onSchedule}>
+      <Button mt="8" onPress={onSchedule}>
         <Text>
           {t('CART_TIME_RANGE_CHANGED_MODAL_SELECT_TIME_RANGE_ACTION')}
         </Text>
       </Button>
-      <Button variant="link" onPress={chooseRestaurant}>
+      <Button mt="2" variant="link" onPress={chooseRestaurant}>
         <Text>
           {t('CART_TIME_RANGE_CHANGED_MODAL_CHOOSE_RESTAURANT_ACTION')}
         </Text>
