@@ -19,6 +19,7 @@ import { useBackgroundColor } from '../../../styles/theme';
 import { useGetOrderTimingQuery } from '../../../redux/api/slice';
 import { useNavigation } from '@react-navigation/native';
 import { useIsModalVisible } from '../../../hooks/useIsModalVisible';
+import tracker from '../../../analytics/Tracker';
 
 const styles = StyleSheet.create({
   modalContent: {
@@ -135,7 +136,12 @@ export default function TimeRangeChangedModal() {
   };
 
   return (
-    <Modal isVisible={isModalVisible} onModalHide={onModalHide}>
+    <Modal
+      isVisible={isModalVisible}
+      onModalHide={onModalHide}
+      onModalShow={() => {
+        tracker.logEvent('Checkout', 'openModal', 'timeRangeChanged');
+      }}>
       <View style={[styles.modalContent, { backgroundColor }]}>
         <Heading size="sm" mb="4">
           {t('CART_TIME_RANGE_CHANGED_MODAL_TITLE')}
