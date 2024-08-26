@@ -227,7 +227,6 @@
     "NOTIFICATION_ORDER_CREATED_DESC": "Une nouvelle commande pour le {{date}} a été créée",
     "NOTIFICATION_CLOSES_SOON": "Hop hop hop ! On se dépêche, il reste {{diff}} avant la fermeture !",
     "UNASSIGNED_TASKS": "Non assignées",
-    "DISPATCH": "Dispatch",
     "DISPATCH_UNASSIGNED_TASKS": "Non assignées",
     "DISPATCH_TASK_LISTS": "Assignées",
     "DISPATCH_TASK_LIST": "Assigné à {{username}}",
@@ -436,7 +435,6 @@
     "TERMS_AND_CONDITIONS_ERROR_MESSAGE": "Vous devez accepter les conditions générales",
     "PRIVACY_POLICY_LABEL": "J'accepte la politique de confidentialité",
     "PRIVACY_POLICY_ERROR_MESSAGE": "Vous devez accepter la politique de confidentialité",
-    "PRIVACY_POLICY_ERROR_MESSAGE": "Vous devez accepter la politique de confidentialité",
     "AGREE": "J'accepte",
     "DELETE_ACCOUNT": "Supprimer mon compte",
     "DELETE_ACCOUNT_DISCLAIMER": "En cliquant sur le bouton ci-dessous, vous allez supprimer votre compte. Vous êtes sûr·e ?",
@@ -480,6 +478,11 @@
     "CART_ZERO_WASTE_POPUP_BUTTON_TEXT": "Jʼai compris",
     "TERMS_OF_SERVICE": "Conditions générales",
     "PRIVACY": "Confidentialité",
-    "RESTAURANT_MORE_INFOS": "En savoir plus"
+    "RESTAURANT_MORE_INFOS": "En savoir plus",
+    "CART_TIME_RANGE_CHANGED_MODAL_TITLE": "Le créneau horaire sélectionné nʼest plus disponible pour aujourdʼhui",
+    "CART_TIME_RANGE_CHANGED_MODAL_MESSAGE": "Les horaires dʼouverture ne permettent pas de commander pour aujourdʼhui",
+    "CART_TIME_RANGE_CHANGED_MODAL_CHOOSE_TIME_RANGE_TEXT": "Sélectionnez un autre créneau horaire",
+    "CART_TIME_RANGE_CHANGED_MODAL_SELECT_TIME_RANGE_ACTION": "Modifier le créneau horaire",
+    "CART_TIME_RANGE_CHANGED_MODAL_CHOOSE_RESTAURANT_ACTION": "Choisir un autre restaurant"
   }
 }

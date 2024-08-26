@@ -347,6 +347,11 @@
     "BACKGROUND_GEOLOCATION_NOTIFICATION_TITLE": "Lokalisierung im Hintergrund",
     "STORE_NEW_DELIVERY_ADDRESS_HELP": "Gebe die Adresse der Zustellung ein, um die Realisierbarkeit zu überprüfen",
     "CARDHOLDER_NAME": "Name des Karteninhabers",
-    "FAILURE_REASON": "Fehlergrund"
+    "FAILURE_REASON": "Fehlergrund",
+    "CART_TIME_RANGE_CHANGED_MODAL_TITLE": "Der ausgewählte Zeitraum ist heute nicht mehr verfügbar",
+    "CART_TIME_RANGE_CHANGED_MODAL_MESSAGE": "Die Öffnungszeiten erlauben es nicht, die Bestellung heute aufzugeben",
+    "CART_TIME_RANGE_CHANGED_MODAL_CHOOSE_TIME_RANGE_TEXT": "Bitte wählen Sie einen anderen Zeitraum",
+    "CART_TIME_RANGE_CHANGED_MODAL_SELECT_TIME_RANGE_ACTION": "Lieferzeit ändern",
+    "CART_TIME_RANGE_CHANGED_MODAL_CHOOSE_RESTAURANT_ACTION": "Wählen Sie ein anderes Restaurant"
   }
 }
