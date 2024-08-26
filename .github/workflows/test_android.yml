@@ -5,10 +5,84 @@
 name: Test on Android
 on: [push]
 jobs:
-  ANDROID_EMULATOR_TESTS:
+  build:
     # https://github.community/t/how-to-stop-github-actions-workflow-to-trigger-when-the-pull-request-is-from-dependabot-preview/116486
     if: github.actor != 'dependabot[bot]'
-    name: Android Emulator Tests
+    name: build APK
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: coopcycle-app-repo
+    strategy:
+      # Allow tests to continue on other devices if they fail on one device.
+      fail-fast: false
+      matrix:
+        EMULATOR_API_LEVEL:
+          #          - 21
+          - 28
+    #          - 33
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          path: coopcycle-app-repo
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+      # Temporary disable yarn caching
+      #          cache: 'yarn'
+      #          cache-dependency-path: "coopcycle-app"
+
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: 'gradle'
+
+      - name: Decode sentry.properties file
+        uses: timheuer/base64-to-file@v1.2
+        with:
+          fileDir: "./coopcycle-app-repo/android/"
+          fileName: "sentry.properties"
+          encodedString: ${{ secrets.SENTRY_PROPERTIES_BASE64 }}
+
+      - name: Install dependencies (yarn)
+        run: yarn install --no-progress --network-timeout 100000 --network-concurrency 1
+
+      - run: cp google-services.json.dist android/app/google-services.json
+
+      - name: Enable clear text traffic in release builds
+        run: |
+          sudo apt install xmlstarlet
+          xmlstarlet ed --inplace --ps --insert "/manifest/application" --type attr -n "android:usesCleartextTraffic" -v "true" android/app/src/main/AndroidManifest.xml
+
+      - name: Configure .env variables
+        run: |
+          cp .env.dist .env
+          sed -i -e 's/GOOGLE_MAPS_BROWSER_KEY=/GOOGLE_MAPS_BROWSER_KEY=${{ secrets.GOOGLE_MAPS_BROWSER_KEY }}/' .env
+          sed -i -e 's/GOOGLE_MAPS_ANDROID_KEY=/GOOGLE_MAPS_ANDROID_KEY=${{ secrets.GOOGLE_MAPS_ANDROID_KEY }}/' .env
+          sed -i -e 's/FACEBOOK_APP_ID=/FACEBOOK_APP_ID=${{ secrets.FACEBOOK_APP_ID }}/' .env
+          sed -i -e 's/FACEBOOK_CLIENT_TOKEN=/FACEBOOK_CLIENT_TOKEN=${{ secrets.FACEBOOK_CLIENT_TOKEN }}/' .env
+
+      - name: Gradle cache
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: Build app for Detox
+        run: node node_modules/.bin/detox build -c android.emu.release
+        env:
+          googleMapsApiKey: ${{ secrets.googleMapsApiKey }}
+          SENTRY_DISABLE_AUTO_UPLOAD: true
+      - name: Upload build
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: coopcycle-android-apk
+          path: coopcycle-app-repo/android/app/build/outputs/apk/official/release/app-official-release.apk
+
+
+  test:
+    # https://github.community/t/how-to-stop-github-actions-workflow-to-trigger-when-the-pull-request-is-from-dependabot-preview/116486
+    if: github.actor != 'dependabot[bot]'
+    name: Run Android Emulator Tests
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -76,6 +150,11 @@ jobs:
         with:
           path: coopcycle-app-repo
 
+      - uses: actions/download-artifact@v4
+        with:
+          name: coopcycle-android-apk
+          path: coopcycle-app-repo/android/app/build/outputs/apk/official/release/app-official-release.apk
+
       - name: Free Disk Space (Ubuntu)
         uses: jlumbroso/free-disk-space@main
         with:
@@ -97,30 +176,13 @@ jobs:
           java-version: '17'
           cache: 'gradle'
 
-      - name: Decode sentry.properties file
-        uses: timheuer/base64-to-file@v1.2
-        with:
-          fileDir: "./coopcycle-app-repo/android/"
-          fileName: "sentry.properties"
-          encodedString: ${{ secrets.SENTRY_PROPERTIES_BASE64 }}
-
       - name: Install dependencies (yarn)
         run: yarn install --no-progress --network-timeout 100000 --network-concurrency 1
-
-      - run: cp google-services.json.dist android/app/google-services.json
 
       - name: Enable clear text traffic in release builds
         run: |
           sudo apt install xmlstarlet
           xmlstarlet ed --inplace --ps --insert "/manifest/application" --type attr -n "android:usesCleartextTraffic" -v "true" android/app/src/main/AndroidManifest.xml
-
-      - name: Configure .env variables
-        run: |
-          cp .env.dist .env
-          sed -i -e 's/GOOGLE_MAPS_BROWSER_KEY=/GOOGLE_MAPS_BROWSER_KEY=${{ secrets.GOOGLE_MAPS_BROWSER_KEY }}/' .env
-          sed -i -e 's/GOOGLE_MAPS_ANDROID_KEY=/GOOGLE_MAPS_ANDROID_KEY=${{ secrets.GOOGLE_MAPS_ANDROID_KEY }}/' .env
-          sed -i -e 's/FACEBOOK_APP_ID=/FACEBOOK_APP_ID=${{ secrets.FACEBOOK_APP_ID }}/' .env
-          sed -i -e 's/FACEBOOK_CLIENT_TOKEN=/FACEBOOK_CLIENT_TOKEN=${{ secrets.FACEBOOK_CLIENT_TOKEN }}/' .env
 
       - name: Enable KVM (reactivecircus)
         run: |
@@ -134,21 +196,21 @@ jobs:
         uses: gradle/actions/setup-gradle@v3
 
 #while this step seems useless, without it the emulator fails with "Not enough space to create userdata partition" error
-      - name: Run emulator
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: ${{ matrix.EMULATOR_API_LEVEL }}
-          target: default
-          arch: x86_64
-          profile: pixel_6
-          force-avd-creation: false
-          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-          disable-animations: true
-          script: echo "Emulator started."
+#      - name: Run emulator
+#        uses: reactivecircus/android-emulator-runner@v2
+#        with:
+#          api-level: ${{ matrix.EMULATOR_API_LEVEL }}
+#          target: default
+#          arch: x86_64
+#          profile: pixel_6
+#          force-avd-creation: false
+#          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+#          disable-animations: true
+#          script: echo "Emulator started."
 
-      - name: List emulators
-        if: false # useful only for debugging
-        run: avdmanager list avd
+#      - name: List emulators
+#        if: false # useful only for debugging
+#        run: avdmanager list avd
 
 
 # disable AVD caching for now; trying to solve 'No space left on device.' issue
@@ -173,12 +235,6 @@ jobs:
 #          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
 #          disable-animations: false
 #          script: echo "Generated AVD snapshot for caching."
-
-      - name: Build app for Detox
-        run: node node_modules/.bin/detox build -c android.emu.release
-        env:
-          googleMapsApiKey: ${{ secrets.googleMapsApiKey }}
-          SENTRY_DISABLE_AUTO_UPLOAD: true
 
       - name: Disk usage (filesystem)
         run: df -h
