@@ -592,7 +592,7 @@ class Summary extends Component {
           onSkip={() => this.setState({ modalSkipped: true })}
           onSchedule={({ value, showModal }) =>
             this.props.setDate(value, () => {
-              this.props.validate(cart);
+              this.props.validateOrder(cart);
               showModal(false);
             })
           }
