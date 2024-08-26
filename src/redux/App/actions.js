@@ -25,7 +25,7 @@ import {
   selectIsAuthenticated,
   selectResumeCheckoutAfterActivation,
 } from './selectors';
-import { DatadogSdk } from '../../Datadog'
+import { DatadogSdk } from '../../Datadog';
 
 /*
  * Action Types
@@ -108,7 +108,6 @@ export const LOAD_PRIVACY_POLICY_REQUEST = '@app/LOAD_PRIVACY_POLICY_REQUEST';
 export const LOAD_PRIVACY_POLICY_SUCCESS = '@app/LOAD_PRIVACY_POLICY_SUCCESS';
 export const LOAD_PRIVACY_POLICY_FAILURE = '@app/LOAD_PRIVACY_POLICY_FAILURE';
 
-export const SET_SPINNER_DELAY_ENABLED = '@app/SET_IS_SPINNER_DELAY_ENABLED';
 export const SET_INCIDENT_ENABLED = '@app/SET_IS_INCIDENT_ENABLED';
 
 /*
@@ -213,7 +212,6 @@ const loadPrivacyPolicyFailure = createFsAction(LOAD_PRIVACY_POLICY_FAILURE);
 const registrationErrors = createFsAction(REGISTRATION_ERRORS);
 const loginByEmailErrors = createFsAction(LOGIN_BY_EMAIL_ERRORS);
 
-export const setSpinnerDelayEnabled = createFsAction(SET_SPINNER_DELAY_ENABLED);
 export const setIncidentEnabled = createFsAction(SET_INCIDENT_ENABLED);
 
 export const startSound = createAction('START_SOUND');
@@ -223,8 +221,8 @@ function setBaseURL(baseURL) {
   return (dispatch, getState) => {
     dispatch(_setBaseURL(baseURL));
     DatadogSdk.setAttributes({
-      'instance_url': baseURL,
-    })
+      instance_url: baseURL,
+    });
     tracker.setUserProperty(userProperty.server, baseURL);
   };
 }
@@ -288,7 +286,7 @@ function updateUserProperties(user) {
 
   DatadogSdk.setUser({
     roles: roles.toString(),
-  })
+  });
   tracker.setUserProperty(userProperty.roles, roles.toString());
 }
 

@@ -11,7 +11,6 @@ import { bootstrap, closeModal, setServers } from '../redux/App/actions';
 
 import Config from 'react-native-config';
 import Modal from 'react-native-modal';
-import { selectIsSpinnerDelayEnabled } from '../redux/App/selectors';
 import Server from './account/components/Server';
 import DrawerNavigator from './navigators/DrawerNavigator';
 import HomeNavigator from './navigators/HomeNavigator';
@@ -69,17 +68,12 @@ class Loading extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.modal !== this.props.modal) {
-      if (this.props.isSpinnerDelayEnabled) {
-        if (!prevProps.modal.show && this.props.modal.show) {
-          // add an extra delay to make sure that the modal is shown after the Spinner is hidden:
-          // https://github.com/coopcycle/coopcycle-app/blob/master/src/components/Spinner.js#L22
-          setTimeout(() => this.setState({ modal: this.props.modal }), 500);
-        } else {
-          this.setState({ modal: this.props.modal });
-        }
+      if (!prevProps.modal.show && this.props.modal.show) {
+        // FIXME; use `useIsModalVisible` when possible
+        // add an extra delay to make sure that the modal is shown after the Spinner is hidden:
+        // // https://github.com/ladjs/react-native-loading-spinner-overlay?tab=readme-ov-file#recommended-implementation
+        setTimeout(() => this.setState({ modal: this.props.modal }), 100);
       } else {
-        // added to track the number of the beta version users who have the delay disabled, could be removed later
-        Sentry.captureMessage('Spinner delay is not applied');
         this.setState({ modal: this.props.modal });
       }
     }
@@ -192,7 +186,6 @@ function mapStateToProps(state) {
     modal: state.app.modal,
     customBuild: selectCustomBuild(state),
     firstRun: state.app.firstRun,
-    isSpinnerDelayEnabled: selectIsSpinnerDelayEnabled(state),
   };
 }
 
