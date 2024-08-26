@@ -13,14 +13,6 @@ jobs:
     defaults:
       run:
         working-directory: coopcycle-app-repo
-    strategy:
-      # Allow tests to continue on other devices if they fail on one device.
-      fail-fast: false
-      matrix:
-        EMULATOR_API_LEVEL:
-          #          - 21
-          - 28
-    #          - 33
     steps:
       - uses: actions/checkout@v3
         with:
@@ -31,6 +23,14 @@ jobs:
       # Temporary disable yarn caching
       #          cache: 'yarn'
       #          cache-dependency-path: "coopcycle-app"
+
+      - name: Free Disk Space (Ubuntu)
+        uses: jlumbroso/free-disk-space@main
+        with:
+          # all of these default to true, but feel free to set to
+          # "false" if necessary for your workflow
+          # https://github.com/jlumbroso/free-disk-space?tab=readme-ov-file#example
+          android: false
 
       - uses: actions/setup-java@v3
         with:
