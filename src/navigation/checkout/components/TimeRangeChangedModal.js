@@ -18,6 +18,7 @@ import DangerAlert from '../../../components/DangerAlert';
 import { useBackgroundColor } from '../../../styles/theme';
 import { useGetOrderTimingQuery } from '../../../redux/api/slice';
 import { useNavigation } from '@react-navigation/native';
+import { useIsModalVisible } from '../../../hooks/useIsModalVisible';
 
 const styles = StyleSheet.create({
   modalContent: {
@@ -118,8 +119,9 @@ function Content({ isModalOpen }) {
 }
 
 export default function TimeRangeChangedModal() {
-  const isModalVisible = useSelector(selectIsTimeRangeChangedModalVisible);
-
+  const isModalVisible = useIsModalVisible(
+    selectIsTimeRangeChangedModalVisible,
+  );
   const backgroundColor = useBackgroundColor();
 
   const { t } = useTranslation();
