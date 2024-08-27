@@ -3,6 +3,10 @@ name: Run CoopCycle Web
 runs:
   using: "composite"
   steps:
+  - uses: actions/checkout@v3
+    with:
+      repository: coopcycle/coopcycle-web
+      path: coopcycle-web-repo
   - name: Create .env file
     shell: bash
     run: cp .env.dist .env

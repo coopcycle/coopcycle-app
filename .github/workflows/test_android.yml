@@ -116,17 +116,12 @@ jobs:
           # https://github.com/jlumbroso/free-disk-space?tab=readme-ov-file#example
           android: false
 
-      # local coopcycle-web instance
-      - uses: actions/checkout@v3
-        with:
-          repository: coopcycle/coopcycle-web
-          path: coopcycle-web-repo
-      - name: Run CoopCycle Web
-        uses: ./.github/actions/run-coopcycle-web
-
       - uses: actions/checkout@v3
         with:
           path: coopcycle-app-repo
+
+      - name: Run CoopCycle Web
+        uses: ./.github/actions/run-coopcycle-web
 
       - name: Download App APK
         uses: actions/download-artifact@v4
