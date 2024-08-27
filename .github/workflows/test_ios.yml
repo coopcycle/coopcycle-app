@@ -113,7 +113,7 @@ jobs:
           path: coopcycle-app-repo
 
       - name: Setup Docker on macOS
-        uses: douglascamata/setup-docker-macos-action@v1-alpha
+        uses: douglascamata/setup-docker-macos-action@v1-alpha.13
 
       - name: Run CoopCycle Web
         uses: ./coopcycle-app-repo/.github/actions/run-coopcycle-web
