@@ -75,7 +75,7 @@ jobs:
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v4
         with:
-          name: coopcycle-android-apk
+          name: app-official-release.apk
           path: coopcycle-app-repo/android/app/build/outputs/apk/official/release/app-official-release.apk
 
 
@@ -153,8 +153,8 @@ jobs:
 
       - uses: actions/download-artifact@v4
         with:
-          name: coopcycle-android-apk
-          path: coopcycle-app-repo/android/app/build/outputs/apk/official/release/app-official-release.apk
+          name: app-official-release.apk
+          path: coopcycle-app-repo/android/app/build/outputs/apk/official/release
 
       - name: Free Disk Space (Ubuntu)
         uses: jlumbroso/free-disk-space@main
