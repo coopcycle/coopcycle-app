@@ -1,7 +1,8 @@
 const execSync = require('child_process').execSync;
 const os = require('os');
 
-export const COMMAND_PREFIX = "cd ../coopcycle-web && docker compose exec -T php"
+//Make sure to have the correct path to the coopcycle-web repository while running locally
+export const COMMAND_PREFIX = "cd ../coopcycle-web-repo && docker compose exec -T php"
 
 export const itif = (condition) => condition ? it : it.skip;
 
