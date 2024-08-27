@@ -3,6 +3,8 @@ const os = require('os');
 
 export const COMMAND_PREFIX = "cd ../coopcycle-web && docker compose exec -T php"
 
+export const itif = (condition) => condition ? it : it.skip;
+
 export const symfonyConsole = (command) => {
   const prefix = COMMAND_PREFIX
   let cmd = `bin/console ${ command } --env="test"`
