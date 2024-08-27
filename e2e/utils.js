@@ -4,6 +4,7 @@ const os = require('os');
 //Make sure to have the correct path to the coopcycle-web repository while running locally
 export const COMMAND_PREFIX = "cd ../coopcycle-web-repo && docker compose exec -T php"
 
+export const describeif = (condition) => condition ? describe : describe.skip;
 export const itif = (condition) => condition ? it : it.skip;
 
 export const symfonyConsole = (command) => {
