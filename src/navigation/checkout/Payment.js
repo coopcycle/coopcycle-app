@@ -33,7 +33,7 @@ class CreditCard extends Component {
   }
 
   render() {
-    const { cart, errors, paymentMethods, paymentGateway } = this.props;
+    const { cart, paymentMethods, paymentGateway } = this.props;
 
     if (!cart || paymentMethods.length === 0) {
       return <View />;
@@ -48,7 +48,7 @@ class CreditCard extends Component {
       return (
         <SafeAreaView style={{ flex: 1 }} edges={['bottom']}>
           <HeaderHeightAwareKeyboardAvoidingView>
-            <CreditCardComp cart={cart} errors={errors} />
+            <CreditCardComp cart={cart} />
           </HeaderHeightAwareKeyboardAvoidingView>
         </SafeAreaView>
       );
@@ -76,7 +76,6 @@ function mapStateToProps(state, ownProps) {
   const cart = selectCart(state)?.cart;
   return {
     cart,
-    errors: state.checkout.errors,
     paymentMethods: state.checkout.paymentMethods,
     paymentGateway: selectPaymentGateway(state),
   };

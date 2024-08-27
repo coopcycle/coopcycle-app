@@ -8,12 +8,12 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 class PaymentMethodCard extends Component {
   render() {
-    const { cart, errors } = this.props;
+    const { cart } = this.props;
 
     return (
       <SafeAreaView style={{ flex: 1 }} edges={['bottom']}>
         <HeaderHeightAwareKeyboardAvoidingView>
-          <CreditCard cart={cart} errors={errors} />
+          <CreditCard cart={cart} />
         </HeaderHeightAwareKeyboardAvoidingView>
       </SafeAreaView>
     );
@@ -24,7 +24,6 @@ function mapStateToProps(state) {
   const cart = selectCart(state)?.cart;
   return {
     cart,
-    errors: state.checkout.errors,
   };
 }
 

@@ -17,7 +17,10 @@ import { formatPrice } from '../../../utils/formatting';
 import FooterButton from './FooterButton';
 import SavedCreditCard from './SavedCreditCard';
 import TimeRangeChangedModal from './TimeRangeChangedModal';
-import { selectCart } from '../../../redux/Checkout/selectors';
+import {
+  selectCart,
+  selectCheckoutError,
+} from '../../../redux/Checkout/selectors';
 
 const ColorSchemeAwareCardField = props => {
   const colorScheme = useColorScheme();
@@ -116,7 +119,6 @@ class CreditCard extends Component {
     const {
       cart,
       paymentDetailsLoaded,
-      disabled,
       stripePaymentMethodsLoaded,
       stripePaymentMethods,
       user,
@@ -275,8 +277,9 @@ class CreditCard extends Component {
                 </Center>
               ) : null}
               <FooterButton
-                isDisabled={disabled}
-                isLoading={this.state.isLoading}
+                isLoading={
+                  this.state.isLoading && this.props.errors.length === 0
+                }
                 testID="creditCardSubmit"
                 text={this.props.t('PAY_AMOUNT', {
                   amount: formatPrice(cart.total),
@@ -326,6 +329,7 @@ function mapStateToProps(state) {
     paymentDetailsLoaded: state.checkout.paymentDetailsLoaded,
     stripePaymentMethods: state.checkout.stripePaymentMethods || [],
     stripePaymentMethodsLoaded: state.checkout.stripePaymentMethodsLoaded,
+    errors: selectCheckoutError(state),
     user: state.app.user,
   };
 }

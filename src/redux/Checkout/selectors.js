@@ -311,3 +311,5 @@ export const selectPaymentDetails = state => state.checkout.paymentDetails;
 
 export const selectIsTimeRangeChangedModalVisible = state =>
   state.checkout.isTimeRangeChangedModalVisible;
+
+export const selectCheckoutError = state => state.checkout.errors;

@@ -10,9 +10,7 @@ class PaymentMethodCashOnDelivery extends Component {
 }
 
 function mapStateToProps(state) {
-  return {
-    errors: state.checkout.errors,
-  };
+  return {};
 }
 
 function mapDispatchToProps(dispatch) {

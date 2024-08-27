@@ -11,7 +11,10 @@ import {
   checkoutWithCash,
 } from '../../../redux/Checkout/actions';
 import TimeRangeChangedModal from './TimeRangeChangedModal';
-import { selectCart } from '../../../redux/Checkout/selectors';
+import {
+  selectCart,
+  selectCheckoutError,
+} from '../../../redux/Checkout/selectors';
 
 const styles = StyleSheet.create({
   alert: {
@@ -25,10 +28,19 @@ const styles = StyleSheet.create({
     fontSize: 36,
     textAlign: 'center',
   },
+  errorsContainer: {
+    alignItems: 'center',
+    paddingVertical: 15,
+  },
+  errorText: {
+    textAlign: 'center',
+    color: '#ed2f2f',
+  },
 });
 
-const CashOnDelivery = ({ disabled }) => {
+const CashOnDelivery = () => {
   const { cart } = useSelector(selectCart);
+  const errors = useSelector(selectCheckoutError);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -54,9 +66,17 @@ const CashOnDelivery = ({ disabled }) => {
         <Icon as={Foundation} name="dollar-bill" style={styles.icon} />
         <Text>{t('CASH_ON_DELIVERY_DISCLAIMER')}</Text>
       </View>
+      {errors.length > 0 ? (
+        <View style={styles.errorsContainer}>
+          {errors.map((error, key) => (
+            <Text key={key} style={styles.errorText}>
+              {error}
+            </Text>
+          ))}
+        </View>
+      ) : null}
       <FooterButton
-        isDisabled={disabled}
-        isLoading={isLoading}
+        isLoading={isLoading && errors.length === 0}
         text={t('SUBMIT')}
         onPress={onSubmit}
       />
