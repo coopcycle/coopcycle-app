@@ -2,7 +2,7 @@
 # https://help.github.com/en/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions
 # https://dev.to/edvinasbartkus/running-react-native-detox-tests-for-ios-and-android-on-github-actions-2ekn
 # https://github.com/wix/Detox/issues/2617
-name: Test on Android
+name: Android
 on: [push]
 jobs:
   build:
