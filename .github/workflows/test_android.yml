@@ -83,7 +83,7 @@ jobs:
   test:
     # https://github.community/t/how-to-stop-github-actions-workflow-to-trigger-when-the-pull-request-is-from-dependabot-preview/116486
     if: github.actor != 'dependabot[bot]'
-    name: Run Android Emulator Tests
+    name: Run Tests on Android Emulator
     needs: build
     runs-on: ubuntu-latest
     defaults:
