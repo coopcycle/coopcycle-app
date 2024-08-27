@@ -121,7 +121,7 @@ jobs:
           path: coopcycle-app-repo
 
       - name: Run CoopCycle Web
-        uses: ./.github/actions/run-coopcycle-web
+        uses: ./coopcycle-app-repo/.github/actions/run-coopcycle-web
 
       - name: Download App APK
         uses: actions/download-artifact@v4
