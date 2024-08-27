@@ -7,10 +7,14 @@ runs:
     with:
       repository: coopcycle/coopcycle-web
       path: coopcycle-web-repo
-  - name: Create .env file
+
+  - name: Configure .env variables
     shell: bash
-    run: cp .env.dist .env
+    run: |
+      cp .env.dist .env
+      sed -i -e 's/CASH_ON_DELIVERY_OPTIN_ENABLED=0/CASH_ON_DELIVERY_OPTIN_ENABLED=1/' .env
     working-directory: coopcycle-web-repo
+
   - name: Pull Docker images
     shell: bash
     run: docker compose pull --ignore-pull-failures
