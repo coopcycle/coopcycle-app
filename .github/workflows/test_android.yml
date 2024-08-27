@@ -129,6 +129,7 @@ jobs:
           name: app-official-release.apk
           path: coopcycle-app-repo/android/app/build/outputs/apk/official/release
           #FIXME: SKIP BUILD TO SPEED UP DEBUGGING
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           run-id: 10582851948
 
       - name: Download Test APK
