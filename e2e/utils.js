@@ -2,19 +2,20 @@ const execSync = require('child_process').execSync;
 const os = require('os');
 
 //Make sure to have the correct path to the coopcycle-web repository while running locally
-export const COMMAND_PREFIX = "cd ../coopcycle-web-repo && docker compose exec -T php"
+export const COMMAND_PREFIX =
+  'cd ../coopcycle-web-repo && docker compose exec -T php';
 
-export const describeif = (condition) => condition ? describe : describe.skip;
-export const itif = (condition) => condition ? it : it.skip;
+export const describeif = condition => (condition ? describe : describe.skip);
+export const itif = condition => (condition ? it : it.skip);
 
-export const symfonyConsole = (command) => {
-  const prefix = COMMAND_PREFIX
-  let cmd = `bin/console ${ command } --env="test"`
+export const symfonyConsole = command => {
+  const prefix = COMMAND_PREFIX;
+  let cmd = `bin/console ${command} --env="test"`;
   if (prefix) {
-    cmd = `${ prefix } ${ cmd }`
+    cmd = `${prefix} ${cmd}`;
   }
-  execSync(cmd)
-}
+  execSync(cmd);
+};
 
 export const disablePasswordAutofill = () => {
   if (device.getPlatform() === 'ios') {
@@ -29,7 +30,7 @@ export const disablePasswordAutofill = () => {
       `plutil -replace restrictedBool.allowPasswordAutoFill.value -bool NO ~/Library/Developer/CoreSimulator/Devices/${device.id}/data/Library/UserConfigurationProfiles/PublicInfo/PublicEffectiveUserSettings.plist`,
     );
   }
-}
+};
 
 export const connectToDemo = async () => {
   await expect(element(by.id('chooseCityBtn'))).toBeVisible();
@@ -66,7 +67,9 @@ export const connectToTestInstance = async () => {
   await expect(element(by.id('moreServerOptions'))).toBeVisible();
   await element(by.id('moreServerOptions')).tap();
 
-  await element(by.id('customServerURL')).typeText(`${getLocalIpAddress()}:9080\n`);
+  await element(by.id('customServerURL')).typeText(
+    `${getLocalIpAddress()}:9080\n`,
+  );
 
   try {
     // We deliberately add "\n" to hide the keyboard
@@ -82,7 +85,7 @@ export const authenticateWithCredentials = async (username, password) => {
   await element(by.id('drawerAccountBtn')).tap();
   //FIXME: for some reason drawer menu does not close after the first tap on Android
   if (device.getPlatform() === 'android') {
-    const attrs = await element(by.id('drawerAccountBtn')).getAttributes()
+    const attrs = await element(by.id('drawerAccountBtn')).getAttributes();
     if (attrs.visible) {
       await element(by.id('drawerAccountBtn')).tap();
     }
@@ -113,9 +116,9 @@ export const logout = async (username, password) => {
   await element(by.id('logout')).tap();
 };
 
-export const addProduct = async (id) => {
+export const addProduct = async id => {
   try {
-    await expect(element(by.id(id))).toBeVisible()
+    await expect(element(by.id(id))).toBeVisible();
   } catch (e) {
     //FIXME: make scroll more flexible or use
     // await element(by.id('restaurantData')).scrollToIndex(0);
@@ -133,22 +136,15 @@ export const addProduct = async (id) => {
     .toBeVisible()
     .withTimeout(1000);
 
-  try {
-    // As there is no way to know the number of sections,
-    // we try with 100 sections
-    for (let section = 0; section < 100; section++) {
-      try {
-        await waitFor(element(by.id('addProductWithOptions')))
-          .toBeVisible()
-          .withTimeout(1000);
-        await element(by.id('addProductWithOptions')).tap();
-        break;
-      } catch (e) {
-        await element(by.id(`productOptions:${section}:0`)).tap();
-      }
+  // FIXME: with a local coopcycle-web instance, we'll have more control over the test data
+  // As there is no way to know the number of sections,
+  // we try with 10 sections
+  for (let section = 0; section < 10; section++) {
+    try {
+      await element(by.id(`productOptions:${section}:0`)).tap();
+    } catch (e) {
+      // ignore errors if a section does not have any option
     }
-  } catch (e) {
-    // next step in case the element is not displayed
   }
 
   await element(by.id('addProduct')).tap();
