@@ -92,6 +92,7 @@ jobs:
     # https://github.community/t/how-to-stop-github-actions-workflow-to-trigger-when-the-pull-request-is-from-dependabot-preview/116486
     if: github.actor != 'dependabot[bot]'
     name: Run Tests on iOS Simulator
+    needs: build
     runs-on: macOS-14
     steps:
       - uses: actions/checkout@v3
