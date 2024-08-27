@@ -92,8 +92,7 @@ jobs:
     # https://github.community/t/how-to-stop-github-actions-workflow-to-trigger-when-the-pull-request-is-from-dependabot-preview/116486
     if: github.actor != 'dependabot[bot]'
     name: Run Tests on iOS Simulator
-#FIXME; RE-ENABLE; disabled to speed-up debugging
-#    needs: build
+    needs: build
     runs-on: macOS-13
     defaults:
       run:
