@@ -41,7 +41,10 @@ import CourierSettings from './courier/Settings';
 import CourierSettingsTags from './courier/Tags';
 import CourierTaskListPage from './courier/TaskListPage';
 import CourierTasksPage from './courier/TasksPage';
-import CourierBarcodePage from './courier/Barcode';
+import CourierBarcodePage from './courier/barcode/Barcode';
+import CourierBarcodeReportPage from './courier/barcode/BarcodeReport';
+import CourierUpdateParcelPage from './courier/UpdateParcel';
+import CourierSelectRangePage from './courier/SelectRange.js'
 
 import CheckoutPayment from './checkout/Payment';
 import CheckoutLogin from './checkout/Login';
@@ -100,6 +103,9 @@ export default {
   CheckoutMoreInfos,
   CourierTasksPage,
   CourierBarcodePage,
+  CourierBarcodeReportPage,
+  CourierUpdateParcelPage,
+  CourierSelectRangePage,
   CourierTaskListPage,
   CourierSettings,
   CourierSettingsTags,

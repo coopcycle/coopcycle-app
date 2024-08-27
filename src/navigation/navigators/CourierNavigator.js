@@ -126,6 +126,21 @@ const BarcodeNavigator = () => (
         title: i18n.t('COURIER_BARCODE'),
       }}
     />
+    <BarcodeStack.Group screenOptions={{ presentation: 'modal' }}>
+      <BarcodeStack.Screen
+        name="CourierBarcodeReport"
+        component={screens.CourierBarcodeReportPage}
+        options={{title:false}}
+      />
+      <BarcodeStack.Screen
+        name="CourierUpdateParcel"
+        component={screens.CourierUpdateParcelPage}
+      />
+      <BarcodeStack.Screen
+        name="CourierSelectRange"
+        component={screens.CourierSelectRangePage}
+      />
+    </BarcodeStack.Group>
   </BarcodeStack.Navigator>
 );
 

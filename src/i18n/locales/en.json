@@ -505,6 +505,8 @@
     "FEATURED": "Featured",
     "EXCLUSIVE": "Exclusive",
     "NEW": "New",
-    "RESTAURANT_MORE_INFOS": "More information"
+    "RESTAURANT_MORE_INFOS": "More information",
+    "UPDATE_PARCEL_DETAILS": "Update parcel details",
+    "REPORT_AN_INCIDENT": "Report an incident",
   }
 }

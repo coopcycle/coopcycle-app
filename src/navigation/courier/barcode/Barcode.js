@@ -4,7 +4,10 @@ import { connect } from 'react-redux';
 import { ScrollView, StyleSheet, Text, View, Vibration } from 'react-native';
 import { Button, IconButton } from 'native-base';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import BarcodeCameraView from '../../components/BarcodeCameraView';
+import BarcodeCameraView from '../../../components/BarcodeCameraView';
+
+import { CommonActions } from '@react-navigation/native';
+import NavigationHolder from '../../../NavigationHolder';
 
 async function _fetchBarcode(httpClient, barcode) {
   if (barcode) {
@@ -31,18 +34,20 @@ function BarcodePage({ httpClient }) {
 
   return (
     <View style={{ flex: 1 }}>
-      <BarcodeCameraView onScanned={async (code) => {
-        const { entity } = await _fetchBarcode(httpClient, code);
-        setBarcode(code);
-        setEntity(entity);
-      }} />
+      <BarcodeCameraView
+        onScanned={async code => {
+          const { entity } = await _fetchBarcode(httpClient, code);
+          setBarcode(code);
+          setEntity(entity);
+        }}
+      />
       <ScrollView style={{ paddingHorizontal: 20, marginVertical: 20 }}>
         <TextSection title="Address" value={entity?.address?.streetAddress} />
-        <TextSection title="Recipient" value={entity?.address?.name} />
+        <TextSection title="Recipient" value={entity?.address?.contactName} />
         <TextSection title="Weight / Volume" value={entity?.weight} />
         <TextSection title="Phone" value={entity?.address?.telephone} />
         <TextSection title="Code" value={barcode} />
-        <TextSection title="Comment" value={entity?.comments} variant='note' />
+        <TextSection title="Comment" value={entity?.comments} variant="note" />
         <Button variant="link">Add note</Button>
       </ScrollView>
       <View
@@ -53,11 +58,16 @@ function BarcodePage({ httpClient }) {
         }}>
         <IconButton
           _icon={{ as: Ionicons, name: 'call', color: 'green.500' }}
+          disabled={entity === null}
         />
         <Button width="70%" colorScheme={'dark'}>
           Finished
         </Button>
         <IconButton
+          onPress={() => NavigationHolder.dispatch(
+            CommonActions.navigate("CourierBarcodeReport", { entity } ),
+          )}
+          disabled={entity === null}
           _icon={{
             as: Ionicons,
             name: 'warning',
@@ -77,7 +87,7 @@ const styles = StyleSheet.create({
   },
   note: {
     color: 'black',
-    fontSize: 14
+    fontSize: 14,
   },
   section: { paddingVertical: 8 },
   title: { fontSize: 16, paddingBottom: 3 },
