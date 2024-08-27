@@ -77,6 +77,7 @@ const CashOnDelivery = () => {
       ) : null}
       <FooterButton
         isLoading={isLoading && errors.length === 0}
+        testID="cashOnDeliverySubmit"
         text={t('SUBMIT')}
         onPress={onSubmit}
       />

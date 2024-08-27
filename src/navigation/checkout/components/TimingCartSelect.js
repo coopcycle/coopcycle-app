@@ -92,6 +92,7 @@ export default function TimingCartSelect({ orderNodeId, onValueChange }) {
       <Skeleton flex={1} isLoaded={isSuccess} rounded={2}>
         <View flex={1}>
           <Picker
+            testID="dayPicker"
             style={Platform.select({ ios: {}, android: { height: 50 } })}
             selectedValue={selectedDay}
             onValueChange={v => {

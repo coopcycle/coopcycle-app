@@ -172,11 +172,19 @@ function Item({ item, index, translateXValue }) {
   );
 }
 
-function ActionButton({ isLoading, onPress, iconName, iconColor, children }) {
+function ActionButton({
+  testID,
+  isLoading,
+  onPress,
+  iconName,
+  iconColor,
+  children,
+}) {
   const iconProps = iconColor ? { color: iconColor } : {};
 
   return (
     <Pressable
+      testID={testID}
       style={styles.btnGrey}
       // Disable interaction while loading
       onPress={() => !isLoading && onPress()}>
@@ -451,6 +459,7 @@ class Summary extends Component {
             </ActionButton>
           )}
           <ActionButton
+            testID="shippingTimeRangeButton"
             onPress={() => this.props.showTimingModal(true)}
             iconName="clock-o">
             <Text style={{ flex: 2 }} fontSize="sm">

@@ -84,6 +84,7 @@ class TimingModal extends Component {
               onValueChange={this.setValue}
             />
             <Button
+              testID="setShippingTimeRange"
               flex={4}
               onPress={() =>
                 this.props.onSchedule({
