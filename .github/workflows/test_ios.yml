@@ -93,20 +93,41 @@ jobs:
     if: github.actor != 'dependabot[bot]'
     name: Run Tests on iOS Simulator
     needs: build
-    runs-on: macOS-14
+    runs-on: macOS-13
+    defaults:
+      run:
+        working-directory: coopcycle-app-repo
+    # local coopcycle-web instance
+    env:
+      GEOCODE_EARTH_API_KEY: ${{ secrets.GEOCODE_EARTH_API_KEY }}
+      STRIPE_PUBLISHABLE_KEY: ${{ secrets.STRIPE_PUBLISHABLE_KEY }}
+      STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
+      STRIPE_CONNECT_CLIENT_ID: ${{ secrets.STRIPE_CONNECT_CLIENT_ID }}
+      AWS_ENDPOINT: ${{ secrets.AWS_ENDPOINT }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
     steps:
       - uses: actions/checkout@v3
+        with:
+          path: coopcycle-app-repo
+
+      - name: Setup Docker on macOS
+        uses: douglascamata/setup-docker-macos-action@v1-alpha
+
+      - name: Run CoopCycle Web
+        uses: ./coopcycle-app-repo/.github/actions/run-coopcycle-web
 
       - name: Download App bundle
         uses: actions/download-artifact@v4
         with:
           name: CoopCycle.app
-          path: ios/build/Build/Products/Release-iphonesimulator
+          path: coopcycle-app-repo/ios/build/Build/Products/Release-iphonesimulator
 
       - uses: actions/setup-node@v4
         with:
           node-version: '20.x'
           cache: 'yarn'
+          cache-dependency-path: "coopcycle-app-repo"
 
       - uses: ruby/setup-ruby@v1
         with:
@@ -131,11 +152,11 @@ jobs:
         uses: actions/cache@v2
         id: cache-pods
         with:
-          path: ios/Pods
+          path: coopcycle-app-repo/ios/Pods
           key: pods-${{ hashFiles('**/Podfile.lock') }}
 
       - name: Install Pods
-        working-directory: ios/
+        working-directory: coopcycle-app-repo/ios/
         run: USE_FRAMEWORKS=static NO_FLIPPER=1 bundle exec pod install
 
       # https://vojtastavik.com/2018/09/02/what-is-inside-derived-data-xcode/
@@ -145,7 +166,7 @@ jobs:
         uses: actions/cache@v2
         id: cache-xcode-derived-data
         with:
-          path: ios/build
+          path: coopcycle-app-repo/ios/build
           key: xcode-derived-data-${{ hashFiles('**/Podfile.lock') }}
 
       - name: Run Detox tests
@@ -172,4 +193,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: detox-screenshots-ios
-          path: artifacts
+          path: coopcycle-app-repo/artifacts
