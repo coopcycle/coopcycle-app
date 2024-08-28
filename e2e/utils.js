@@ -48,6 +48,24 @@ export const connectToDemo = async () => {
   } catch (e) {}
 };
 
+export const connectToSandbox = async () => {
+  await expect(element(by.id('chooseCityBtn'))).toBeVisible();
+  await element(by.id('chooseCityBtn')).tap();
+
+  await expect(element(by.id('moreServerOptions'))).toBeVisible();
+  await element(by.id('moreServerOptions')).tap();
+
+  await element(by.id('customServerURL')).typeText(
+    'sandbox-fr.coopcycle.org\n',
+  );
+
+  try {
+    // We deliberately add "\n" to hide the keyboard
+    // The tap below shouldn't be necessary
+    await element(by.id('submitCustomServer')).tap();
+  } catch (e) {}
+};
+
 const getLocalIpAddress = () => {
   const interfaces = os.networkInterfaces();
   for (const name of Object.keys(interfaces)) {

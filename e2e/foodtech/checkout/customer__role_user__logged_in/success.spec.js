@@ -1,20 +1,33 @@
 import {
-  addProduct, authenticateWithCredentials,
-  connectToDemo,
+  addProduct,
+  authenticateWithCredentials,
+  connectToLocalInstance,
+  connectToSandbox,
   disablePasswordAutofill,
-} from '../../../utils'
+  symfonyConsole,
+} from '../../../utils';
 import { describe } from 'jest-circus';
 
-describe('Checkout; customer in role: user; existing account; logged in', () => {
+describe('Successful Checkout; customer in role: user; existing account; logged in', () => {
   beforeEach(async () => {
     disablePasswordAutofill();
 
     await device.reloadReactNative();
-    await connectToDemo();
-    await authenticateWithCredentials('user_15', 'user_15');
+
+    //FIXME: run against local instance on iOS too (requires a local coopcycle-web instance setup)
+    if (device.getPlatform() === 'android') {
+      symfonyConsole(
+        'coopcycle:fixtures:load -f cypress/fixtures/checkout.yml',
+      );
+      await connectToLocalInstance();
+    } else {
+      await connectToSandbox();
+    }
+
+    await authenticateWithCredentials('bob', '12345678');
   });
 
-  it(`should complete checkout (NOT COMPLETE FLOW!!! see FIXME)`, async () => {
+  it(`should complete checkout`, async () => {
     await expect(element(by.id('checkoutAskAddress'))).toBeVisible();
 
     // Enter address
@@ -22,9 +35,9 @@ describe('Checkout; customer in role: user; existing account; logged in', () => 
       .toExist()
       .withTimeout(5000);
     await element(by.id('askAddressAutocomplete')).typeText(
-      '23 av claude vellefaux',
+      '91 rue de rivoli paris',
     );
-    await element(by.id('placeId:ChIJPSRadeBt5kcR4B2HzbBfZQE')).tap();
+    await element(by.id('placeId:ChIJQ4sJbyFu5kcRbp6Sp6NLnog')).tap();
 
     // List of restaurants
     await expect(element(by.id('checkoutSearch'))).toBeVisible();
@@ -32,14 +45,16 @@ describe('Checkout; customer in role: user; existing account; logged in', () => 
 
     // Choose a restaurant
     try {
-      await expect(element(by.label('La cabane du sud'))).toBeVisible();
+      await expect(
+        element(by.label('Restaurant with cash on delivery')),
+      ).toBeVisible();
     } catch (e) {
-      await waitFor(element(by.label('La cabane du sud')))
+      await waitFor(element(by.label('Restaurant with cash on delivery')))
         .toBeVisible()
         .whileElement(by.id('restaurantList'))
         .scroll(120, 'down');
     }
-    await element(by.label('La cabane du sud')).tap();
+    await element(by.label('Restaurant with cash on delivery')).tap();
 
     // Restaurant page
     await waitFor(element(by.id('restaurantData')))
@@ -48,20 +63,9 @@ describe('Checkout; customer in role: user; existing account; logged in', () => 
     await waitFor(element(by.id('menuItem:0:0')))
       .toExist()
       .withTimeout(5000);
-    await waitFor(element(by.id('menuItem:0:1')))
-      .toExist()
-      .withTimeout(5000);
-    await waitFor(element(by.id('menuItem:0:2')))
-      .toExist()
-      .withTimeout(5000);
 
     // Add item
     await addProduct('menuItem:0:0');
-
-    // Reusable packaging modal
-    await expect(element(by.id('reusablePackagingOk'))).toBeVisible();
-    // Dismiss reusable packaging modal
-    await element(by.id('reusablePackagingOk')).tap();
 
     // Check if footer is present
     await waitFor(element(by.id('cartFooter')))
@@ -71,7 +75,7 @@ describe('Checkout; customer in role: user; existing account; logged in', () => 
 
     // Add 2 more items
     await addProduct('menuItem:0:1');
-    await addProduct('menuItem:0:2');
+    await addProduct('menuItem:1:0');
 
     await waitFor(element(by.id('cartSubmit')))
       .toBeVisible()
@@ -80,9 +84,6 @@ describe('Checkout; customer in role: user; existing account; logged in', () => 
 
     // Cart summary page
     await expect(element(by.id('cartSummarySubmit'))).toBeVisible();
-
-    // Disable reusable packaging (requires a separate account)
-    await element(by.id('reusablePackagingCheckbox')).tap();
 
     await element(by.id('cartSummarySubmit')).tap();
 
@@ -95,7 +96,9 @@ describe('Checkout; customer in role: user; existing account; logged in', () => 
     await element(by.id('checkoutTelephone')).typeText('0612345678');
     await element(by.id('checkoutTelephone')).typeText('\n');
 
-    // FIXME; test complete checkout flow
+    await element(by.id('moreInfosSubmit')).tap();
+
+    // FIXME; test payment via Stripe as well
     //  Android: there are at least 2 issues with Stripe in the tests:
     //  1. sometimes the app fails with java.lang.IllegalStateException: PaymentConfiguration was not initialized. Call PaymentConfiguration.init().
     //     might be related to: https://github.com/coopcycle/coopcycle-app/issues/1841
@@ -108,29 +111,37 @@ describe('Checkout; customer in role: user; existing account; logged in', () => 
     //   ---
     //   Error: Error Domain=DetoxErrorDomain Code=0 "View “<StripePaymentsUI.STPFormTextField: 0x7fe7a6649800>” is not visible: View does not pass visibility percent threshold (100)"
 
-    if (device.getPlatform() !== 'android' && device.getPlatform() !== 'ios') {
-      await element(by.id('moreInfosSubmit')).tap();
+    // if (device.getPlatform() !== 'android' && device.getPlatform() !== 'ios') {
+    //   // Payment page
+    //   await element(by.id('cardholderName')).typeText('John Doe');
+    //
+    //   // Tap the credit card input to make sure we can interact with it
+    //   await element(by.id('creditCardWrapper')).tap();
+    //
+    //   await element(by.label('card number')).typeText('4242424242424242');
+    //
+    //   await element(by.label('expiration date')).typeText('1228');
+    //   // Add "\n" to make sure keyboard is hidden
+    //   await element(by.label('CVC').and(by.type('UITextField'))).typeText(
+    //     '123\n',
+    //   );
+    //
+    //   await element(by.id('creditCardSubmit')).tap();
+    // }
 
-      // Payment page
-      await element(by.id('cardholderName')).typeText('John Doe');
+    // Payment picker page
+    await expect(
+      element(by.id('paymentMethod-cash_on_delivery')),
+    ).toBeVisible();
+    await element(by.id('paymentMethod-cash_on_delivery')).tap();
 
-      // Tap the credit card input to make sure we can interact with it
-      await element(by.id('creditCardWrapper')).tap();
+    // Cash on delivery page
+    await expect(element(by.id('cashOnDeliverySubmit'))).toBeVisible();
+    await element(by.id('cashOnDeliverySubmit')).tap();
 
-      await element(by.label('card number')).typeText('4242424242424242');
-
-      await element(by.label('expiration date')).typeText('1228');
-      // Add "\n" to make sure keyboard is hidden
-      await element(by.label('CVC').and(by.type('UITextField'))).typeText(
-        '123\n',
-      );
-
-      await element(by.id('creditCardSubmit')).tap();
-
-      // Confirmation page
-      await waitFor(element(by.id('orderTimeline')))
-        .toBeVisible()
-        .withTimeout(15000);
-    }
+    // Confirmation page
+    await waitFor(element(by.id('orderTimeline')))
+      .toBeVisible()
+      .withTimeout(15000);
   });
 });
