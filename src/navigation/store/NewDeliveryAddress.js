@@ -6,7 +6,7 @@ import React, { useState } from 'react';
 import { withTranslation } from 'react-i18next';
 import { Platform, StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
-import AddressAutocomplete from '../../components/AddressAutocomplete';
+import AddressAutocomplete from '../../components/AddressAutocomplete/index';
 import { assertDelivery } from '../../redux/Store/actions';
 import { selectStore } from '../../redux/Store/selectors';
 import {
