@@ -1,6 +1,6 @@
 import {
   authenticateWithCredentials,
-  connectToTestInstance,
+  connectToLocalInstance,
   describeif,
   disablePasswordAutofill,
   symfonyConsole,
@@ -14,7 +14,7 @@ describeif(device.getPlatform() === 'android')('Courier', () => {
     disablePasswordAutofill();
 
     await device.reloadReactNative();
-    await connectToTestInstance();
+    await connectToLocalInstance();
   });
 
   it(`should be able to login and see tasks`, async () => {

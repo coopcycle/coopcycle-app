@@ -60,7 +60,7 @@ const getLocalIpAddress = () => {
   return null;
 };
 
-export const connectToTestInstance = async () => {
+export const connectToLocalInstance = async () => {
   await expect(element(by.id('chooseCityBtn'))).toBeVisible();
   await element(by.id('chooseCityBtn')).tap();
 
