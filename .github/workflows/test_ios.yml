@@ -97,7 +97,7 @@ jobs:
     runs-on: macOS-14
     defaults:
       run:
-        working-directory: coopcycle-app-repo
+        working-directory: ./coopcycle-app-repo
     #FIXME; setup  local coopcycle-web instance
 #    env:
 #      GEOCODE_EARTH_API_KEY: ${{ secrets.GEOCODE_EARTH_API_KEY }}
@@ -131,12 +131,13 @@ jobs:
         with:
           node-version: '20.x'
           cache: 'yarn'
-          cache-dependency-path: "coopcycle-app-repo/yarn.lock"
+          cache-dependency-path: coopcycle-app-repo/yarn.lock
 
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.2'
           bundler-cache: true
+          working-directory: ./coopcycle-app-repo
 
       - name: Install dependencies to compile node-canvas
         run: brew install pkg-config cairo pango libpng jpeg giflib librsvg pixman imagemagick
@@ -160,7 +161,7 @@ jobs:
           key: pods-${{ hashFiles('**/Podfile.lock') }}
 
       - name: Install Pods
-        working-directory: coopcycle-app-repo/ios/
+        working-directory: ./coopcycle-app-repo/ios/
         run: USE_FRAMEWORKS=static NO_FLIPPER=1 bundle exec pod install
 
       # https://vojtastavik.com/2018/09/02/what-is-inside-derived-data-xcode/

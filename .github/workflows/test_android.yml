@@ -87,7 +87,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: coopcycle-app-repo
+        working-directory: ./coopcycle-app-repo
     # local coopcycle-web instance
     env:
       GEOCODE_EARTH_API_KEY: ${{ secrets.GEOCODE_EARTH_API_KEY }}
