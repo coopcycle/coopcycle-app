@@ -82,8 +82,7 @@ jobs:
     # https://github.community/t/how-to-stop-github-actions-workflow-to-trigger-when-the-pull-request-is-from-dependabot-preview/116486
     if: github.actor != 'dependabot[bot]'
     name: Run Tests on Android Emulator
-    #FIXME: SKIP BUILD TO SPEED UP DEBUGGING
-#    needs: build
+    needs: build
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -126,18 +125,12 @@ jobs:
         with:
           name: app-official-release.apk
           path: coopcycle-app-repo/android/app/build/outputs/apk/official/release
-          #FIXME: SKIP BUILD TO SPEED UP DEBUGGING
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          run-id: 10588066749
 
       - name: Download Test APK
         uses: actions/download-artifact@v4
         with:
           name: app-official-release-androidTest.apk
           path: coopcycle-app-repo/android/app/build/outputs/apk/androidTest/official/release
-          #FIXME: SKIP BUILD TO SPEED UP DEBUGGING
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          run-id: 10588066749
 
       - uses: actions/setup-node@v4
         with:
