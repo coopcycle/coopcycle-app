@@ -7,13 +7,16 @@ import {
 } from '../../../utils';
 import { describe } from 'jest-circus';
 
-describe('checkout for customer with existing account (role: user); not logged in yet; payment: cash on delivery', () => {
+describe('checkout for guest user; payment: cash on delivery', () => {
   beforeEach(async () => {
     await device.reloadReactNative();
 
     if (device.getPlatform() === 'android') {
       symfonyConsole(
         'coopcycle:fixtures:load -f cypress/fixtures/checkout.yml',
+      );
+      symfonyConsole(
+        'craue:setting:create --section="general" --name="guest_checkout_enabled" --value="1" --force',
       );
       await connectToLocalInstance();
     } else {
@@ -75,16 +78,18 @@ describe('checkout for customer with existing account (role: user); not logged i
     // Authentication page
     await expect(element(by.id('loginUsername'))).toBeVisible();
 
-    await element(by.id('loginUsername')).typeText('bob\n');
-    await element(by.id('loginPassword')).typeText('12345678\n');
-
     try {
-      await element(by.id('loginSubmit')).tap();
+      await element(by.id('guestCheckoutButton')).tap();
     } catch (e) {}
 
     // More infos page
+    await expect(element(by.id('guestCheckoutEmail'))).toBeVisible();
     await expect(element(by.id('checkoutTelephone'))).toBeVisible();
     await expect(element(by.id('moreInfosSubmit'))).toBeVisible();
+
+    await element(by.id('guestCheckoutEmail')).typeText(
+      'e2e-mobile@demo.coopcycle.org',
+    );
 
     // Append "\n" to make sure virtual keybord is hidden after entry
     // https://github.com/wix/detox/issues/209

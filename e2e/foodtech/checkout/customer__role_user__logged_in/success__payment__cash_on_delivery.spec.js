@@ -1,6 +1,7 @@
 import {
   addProduct,
   authenticateWithCredentials,
+  chooseRestaurant,
   connectToLocalInstance,
   connectToSandbox,
   disablePasswordAutofill,
@@ -8,19 +9,19 @@ import {
 } from '../../../utils';
 import { describe } from 'jest-circus';
 
-describe('Successful Checkout; customer in role: user; existing account; logged in', () => {
+describe('checkout for customer with existing account (role: user); logged in; payment: cash on delivery', () => {
   beforeEach(async () => {
     disablePasswordAutofill();
 
     await device.reloadReactNative();
 
-    //FIXME: run against local instance on iOS too (requires a local coopcycle-web instance setup)
     if (device.getPlatform() === 'android') {
       symfonyConsole(
         'coopcycle:fixtures:load -f cypress/fixtures/checkout.yml',
       );
       await connectToLocalInstance();
     } else {
+      //FIXME: run against local instance on iOS too (see https://github.com/coopcycle/coopcycle-ops/issues/97)
       await connectToSandbox();
     }
 
@@ -44,17 +45,7 @@ describe('Successful Checkout; customer in role: user; existing account; logged 
     await expect(element(by.id('restaurantList'))).toBeVisible();
 
     // Choose a restaurant
-    try {
-      await expect(
-        element(by.label('Restaurant with cash on delivery')),
-      ).toBeVisible();
-    } catch (e) {
-      await waitFor(element(by.label('Restaurant with cash on delivery')))
-        .toBeVisible()
-        .whileElement(by.id('restaurantList'))
-        .scroll(120, 'down');
-    }
-    await element(by.label('Restaurant with cash on delivery')).tap();
+    await chooseRestaurant('Restaurant with cash on delivery');
 
     // Restaurant page
     await waitFor(element(by.id('restaurantData')))
@@ -97,37 +88,6 @@ describe('Successful Checkout; customer in role: user; existing account; logged 
     await element(by.id('checkoutTelephone')).typeText('\n');
 
     await element(by.id('moreInfosSubmit')).tap();
-
-    // FIXME; test payment via Stripe as well
-    //  Android: there are at least 2 issues with Stripe in the tests:
-    //  1. sometimes the app fails with java.lang.IllegalStateException: PaymentConfiguration was not initialized. Call PaymentConfiguration.init().
-    //     might be related to: https://github.com/coopcycle/coopcycle-app/issues/1841
-    //  2. find a way to match stripe elements; see https://github.com/stripe/stripe-react-native/issues/1326
-    //     Try labels like 'Card number', 'Expiration date', 'CVC' (check the LayoutInspector in Android Studio)
-    //  iOS: Test Failed: View is not hittable at its visible point. Error: View is not visible around point.
-    //    - view point: {100, 25}
-    //    - visible bounds: {{118, 0}, {82, 50}}
-    //    - view bounds: {{-118, 0}, {200, 50}}
-    //   ---
-    //   Error: Error Domain=DetoxErrorDomain Code=0 "View “<StripePaymentsUI.STPFormTextField: 0x7fe7a6649800>” is not visible: View does not pass visibility percent threshold (100)"
-
-    // if (device.getPlatform() !== 'android' && device.getPlatform() !== 'ios') {
-    //   // Payment page
-    //   await element(by.id('cardholderName')).typeText('John Doe');
-    //
-    //   // Tap the credit card input to make sure we can interact with it
-    //   await element(by.id('creditCardWrapper')).tap();
-    //
-    //   await element(by.label('card number')).typeText('4242424242424242');
-    //
-    //   await element(by.label('expiration date')).typeText('1228');
-    //   // Add "\n" to make sure keyboard is hidden
-    //   await element(by.label('CVC').and(by.type('UITextField'))).typeText(
-    //     '123\n',
-    //   );
-    //
-    //   await element(by.id('creditCardSubmit')).tap();
-    // }
 
     // Payment picker page
     await expect(

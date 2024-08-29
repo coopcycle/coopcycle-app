@@ -1,13 +1,31 @@
-import { addProduct, connectToDemo } from '../../../utils';
+import {
+  addProduct,
+  chooseRestaurant,
+  connectToLocalInstance,
+  connectToSandbox,
+  symfonyConsole,
+} from '../../../utils';
 import { describe } from 'jest-circus';
 
-describe('Checkout; guest user', () => {
+describe.skip('checkout for guest user; payment: stripe', () => {
   beforeEach(async () => {
     await device.reloadReactNative();
-    await connectToDemo();
+
+    if (device.getPlatform() === 'android') {
+      symfonyConsole(
+        'coopcycle:fixtures:load -f cypress/fixtures/checkout.yml',
+      );
+      symfonyConsole(
+        'craue:setting:create --section="general" --name="guest_checkout_enabled" --value="1" --force',
+      );
+      await connectToLocalInstance();
+    } else {
+      //FIXME: run against local instance on iOS too (see https://github.com/coopcycle/coopcycle-ops/issues/97)
+      await connectToSandbox();
+    }
   });
 
-  it(`should complete checkout (NOT COMPLETE FLOW!!! see FIXME)`, async () => {
+  it(`should complete checkout`, async () => {
     await expect(element(by.id('checkoutAskAddress'))).toBeVisible();
 
     // Enter address
@@ -15,24 +33,16 @@ describe('Checkout; guest user', () => {
       .toExist()
       .withTimeout(5000);
     await element(by.id('askAddressAutocomplete')).typeText(
-      '23 av claude vellefaux',
+      '91 rue de rivoli paris',
     );
-    await element(by.id('placeId:ChIJPSRadeBt5kcR4B2HzbBfZQE')).tap();
+    await element(by.id('placeId:ChIJQ4sJbyFu5kcRbp6Sp6NLnog')).tap();
 
     // List of restaurants
     await expect(element(by.id('checkoutSearch'))).toBeVisible();
     await expect(element(by.id('restaurantList'))).toBeVisible();
 
     // Choose a restaurant
-    try {
-      await expect(element(by.label('La cabane du sud'))).toBeVisible();
-    } catch (e) {
-      await waitFor(element(by.label('La cabane du sud')))
-        .toBeVisible()
-        .whileElement(by.id('restaurantList'))
-        .scroll(120, 'down');
-    }
-    await element(by.label('La cabane du sud')).tap();
+    await chooseRestaurant('Restaurant with cash on delivery');
 
     // Restaurant page
     await waitFor(element(by.id('restaurantData')))
@@ -41,20 +51,9 @@ describe('Checkout; guest user', () => {
     await waitFor(element(by.id('menuItem:0:0')))
       .toExist()
       .withTimeout(5000);
-    await waitFor(element(by.id('menuItem:0:1')))
-      .toExist()
-      .withTimeout(5000);
-    await waitFor(element(by.id('menuItem:0:2')))
-      .toExist()
-      .withTimeout(5000);
 
     // Add item
     await addProduct('menuItem:0:0');
-
-    // Reusable packaging modal
-    await expect(element(by.id('reusablePackagingOk'))).toBeVisible();
-    // Dismiss reusable packaging modal
-    await element(by.id('reusablePackagingOk')).tap();
 
     // Check if footer is present
     await waitFor(element(by.id('cartFooter')))
@@ -64,7 +63,7 @@ describe('Checkout; guest user', () => {
 
     // Add 2 more items
     await addProduct('menuItem:0:1');
-    await addProduct('menuItem:0:2');
+    await addProduct('menuItem:1:0');
 
     await waitFor(element(by.id('cartSubmit')))
       .toBeVisible()
@@ -73,9 +72,6 @@ describe('Checkout; guest user', () => {
 
     // Cart summary page
     await expect(element(by.id('cartSummarySubmit'))).toBeVisible();
-
-    // Disable reusable packaging (requires a separate account)
-    await element(by.id('reusablePackagingCheckbox')).tap();
 
     await element(by.id('cartSummarySubmit')).tap();
 
@@ -100,7 +96,9 @@ describe('Checkout; guest user', () => {
     await element(by.id('checkoutTelephone')).typeText('0612345678');
     await element(by.id('checkoutTelephone')).typeText('\n');
 
-    // FIXME; test complete checkout flow
+    await element(by.id('moreInfosSubmit')).tap();
+
+    // FIXME; test payment via Stripe as well
     //  Android: there are at least 2 issues with Stripe in the tests:
     //  1. sometimes the app fails with java.lang.IllegalStateException: PaymentConfiguration was not initialized. Call PaymentConfiguration.init().
     //     might be related to: https://github.com/coopcycle/coopcycle-app/issues/1841
@@ -112,10 +110,7 @@ describe('Checkout; guest user', () => {
     //    - view bounds: {{-118, 0}, {200, 50}}
     //   ---
     //   Error: Error Domain=DetoxErrorDomain Code=0 "View “<StripePaymentsUI.STPFormTextField: 0x7fe7a6649800>” is not visible: View does not pass visibility percent threshold (100)"
-
     if (device.getPlatform() !== 'android' && device.getPlatform() !== 'ios') {
-      await element(by.id('moreInfosSubmit')).tap();
-
       // Payment page
       await element(by.id('cardholderName')).typeText('John Doe');
 
@@ -131,11 +126,11 @@ describe('Checkout; guest user', () => {
       );
 
       await element(by.id('creditCardSubmit')).tap();
-
-      // Confirmation page
-      await waitFor(element(by.id('orderTimeline')))
-        .toBeVisible()
-        .withTimeout(15000);
     }
+
+    // Confirmation page
+    await waitFor(element(by.id('orderTimeline')))
+      .toBeVisible()
+      .withTimeout(15000);
   });
 });

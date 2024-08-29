@@ -1,4 +1,8 @@
-import { connectToDemo } from '../utils';
+import {
+  connectToLocalInstance,
+  connectToSandbox,
+  symfonyConsole,
+} from '../utils';
 
 describe('Foodtech: first launch', () => {
   beforeEach(async () => {
@@ -6,7 +10,15 @@ describe('Foodtech: first launch', () => {
   });
 
   it(`should show AskAddress screen`, async () => {
-    await connectToDemo();
+    if (device.getPlatform() === 'android') {
+      symfonyConsole(
+        'coopcycle:fixtures:load -f cypress/fixtures/checkout.yml',
+      );
+      await connectToLocalInstance();
+    } else {
+      //FIXME: run against local instance on iOS too (see https://github.com/coopcycle/coopcycle-ops/issues/97)
+      await connectToSandbox();
+    }
 
     await device.takeScreenshot('AskAddress screen');
 

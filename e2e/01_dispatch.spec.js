@@ -1,4 +1,11 @@
-import { connectToDemo, authenticateWithCredentials, logout } from './utils';
+import {
+  authenticateWithCredentials,
+  logout,
+  symfonyConsole,
+  connectToLocalInstance,
+  connectToSandbox,
+} from './utils';
+
 const exec = require('child-process-promise').exec;
 
 describe.skip('Dispatch', () => {
@@ -11,10 +18,19 @@ describe.skip('Dispatch', () => {
     } else {
       await device.setLocation(48.856613, 2.352222);
     }
+
+    if (device.getPlatform() === 'android') {
+      // symfonyConsole(
+      //   'coopcycle:fixtures:load -f cypress/fixtures/checkout.yml',
+      // );
+      await connectToLocalInstance();
+    } else {
+      //FIXME: run against local instance on iOS too (see https://github.com/coopcycle/coopcycle-ops/issues/97)
+      await connectToSandbox();
+    }
   });
 
   it('should be able to create task', async () => {
-    await connectToDemo();
     await authenticateWithCredentials('admin', 'admin');
 
     await expect(element(by.id('menuBtnCourier'))).toBeVisible();

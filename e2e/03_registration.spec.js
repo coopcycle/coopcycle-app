@@ -1,6 +1,10 @@
 import moment from 'moment';
 
-import { connectToDemo } from './utils';
+import {
+  connectToLocalInstance,
+  connectToSandbox,
+  symfonyConsole,
+} from './utils';
 
 describe.skip('Registration', () => {
   beforeEach(async () => {
@@ -8,7 +12,15 @@ describe.skip('Registration', () => {
   });
 
   it('should be able to register', async () => {
-    await connectToDemo();
+    if (device.getPlatform() === 'android') {
+      // symfonyConsole(
+      //   'coopcycle:fixtures:load -f cypress/fixtures/checkout.yml',
+      // );
+      await connectToLocalInstance();
+    } else {
+      //FIXME: run against local instance on iOS too (see https://github.com/coopcycle/coopcycle-ops/issues/97)
+      await connectToSandbox();
+    }
 
     await expect(element(by.id('menuBtn'))).toBeVisible();
     await element(by.id('menuBtn')).tap();

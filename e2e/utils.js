@@ -32,22 +32,6 @@ export const disablePasswordAutofill = () => {
   }
 };
 
-export const connectToDemo = async () => {
-  await expect(element(by.id('chooseCityBtn'))).toBeVisible();
-  await element(by.id('chooseCityBtn')).tap();
-
-  await expect(element(by.id('moreServerOptions'))).toBeVisible();
-  await element(by.id('moreServerOptions')).tap();
-
-  await element(by.id('customServerURL')).typeText('demo.coopcycle.org\n');
-
-  try {
-    // We deliberately add "\n" to hide the keyboard
-    // The tap below shouldn't be necessary
-    await element(by.id('submitCustomServer')).tap();
-  } catch (e) {}
-};
-
 export const connectToSandbox = async () => {
   await expect(element(by.id('chooseCityBtn'))).toBeVisible();
   await element(by.id('chooseCityBtn')).tap();
@@ -132,6 +116,18 @@ export const logout = async (username, password) => {
   await element(by.id('drawerAccountBtn')).tap();
 
   await element(by.id('logout')).tap();
+};
+
+export const chooseRestaurant = async restaurantName => {
+  try {
+    await expect(element(by.label(restaurantName))).toBeVisible();
+  } catch (e) {
+    await waitFor(element(by.label(restaurantName)))
+      .toBeVisible()
+      .whileElement(by.id('restaurantList'))
+      .scroll(120, 'down');
+  }
+  await element(by.label(restaurantName)).tap();
 };
 
 export const addProduct = async id => {
