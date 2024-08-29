@@ -27,6 +27,7 @@ class CreditCard extends Component {
 
     const routesByCardGateway = {
       stripe: 'CheckoutPaymentMethodCard',
+      paygreen: 'CheckoutPaymentMethodCard',
       // https://github.com/coopcycle/coopcycle-app/issues/1697
       // 'mercadopago': 'CheckoutMercadopago',
     };
