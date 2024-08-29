@@ -129,7 +129,7 @@ jobs:
 
       #debug only
       - name: List artifacts
-        run: ls -l coopcycle-app-repo/ios/build/Build/Products/Release-iphonesimulator
+        run: ls -l ios/build/Build/Products/Release-iphonesimulator
 
       - uses: actions/setup-node@v4
         with:
@@ -170,7 +170,7 @@ jobs:
 
       #debug only
       - name: List artifacts
-        run: ls -l coopcycle-app-repo/ios/build/Build/Products/Release-iphonesimulator
+        run: ls -l ios/build/Build/Products/Release-iphonesimulator
 
       - name: Run Detox tests
         run: node node_modules/.bin/detox test -c ios.sim.release --headless --loglevel info
