@@ -127,10 +127,6 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           run-id: 10588066751
 
-      #debug only
-      - name: List artifacts
-        run: ls -l ios/build/Build/Products/Release-iphonesimulator
-
       - uses: actions/setup-node@v4
         with:
           node-version: '20.x'
@@ -167,10 +163,6 @@ jobs:
       - name: Install Pods
         working-directory: ./coopcycle-app-repo/ios/
         run: USE_FRAMEWORKS=static NO_FLIPPER=1 bundle exec pod install
-
-      #debug only
-      - name: List artifacts
-        run: ls -l ios/build/Build/Products/Release-iphonesimulator
 
       - name: Run Detox tests
         run: node node_modules/.bin/detox test -c ios.sim.release --headless --loglevel info
