@@ -7,7 +7,7 @@ import {
 } from '../../../utils';
 import { describe } from 'jest-circus';
 
-describe('checkout for guest user; payment: cash on delivery', () => {
+describe('checkout for guest user; payment - cash on delivery', () => {
   beforeEach(async () => {
     await device.reloadReactNative();
 

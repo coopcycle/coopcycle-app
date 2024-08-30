@@ -4,7 +4,7 @@ import {
   symfonyConsole,
 } from '../utils';
 
-describe('Foodtech: first launch', () => {
+describe('Foodtech - first launch', () => {
   beforeEach(async () => {
     await device.reloadReactNative();
   });

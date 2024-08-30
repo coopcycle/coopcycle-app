@@ -9,7 +9,7 @@ import {
 } from '../../../utils';
 import { describe } from 'jest-circus';
 
-describe('checkout for customer with existing account (role: user); logged in; payment: cash on delivery', () => {
+describe('checkout for customer with existing account (role - user); logged in; payment - cash on delivery', () => {
   beforeEach(async () => {
     disablePasswordAutofill();
 
