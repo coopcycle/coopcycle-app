@@ -89,30 +89,35 @@ export default function TimingCartSelect({ orderNodeId, onValueChange }) {
       justifyContent={'space-around'}
       alignItems={'center'}
       space={isSuccess ? 0 : 4}>
-      <Skeleton flex={1} isLoaded={isSuccess} rounded={2}>
-        <View flex={1}>
-          <Picker
-            testID="dayPicker"
-            style={Platform.select({ ios: {}, android: { height: 50 } })}
-            selectedValue={selectedDay}
-            onValueChange={v => {
-              setSelectedRange(0);
-              setSelectedDay(v);
-            }}>
-            {dayItems}
-          </Picker>
-        </View>
-      </Skeleton>
-      <Skeleton flex={1} isLoaded={isSuccess} rounded={2}>
-        <View flex={1}>
-          <Picker
-            style={Platform.select({ ios: {}, android: { height: 50 } })}
-            selectedValue={selectedRange}
-            onValueChange={setSelectedRange}>
-            {slotItems}
-          </Picker>
-        </View>
-      </Skeleton>
+      {isSuccess ? (
+        <>
+          <View flex={1}>
+            <Picker
+              testID="dayPicker"
+              style={Platform.select({ ios: {}, android: { height: 50 } })}
+              selectedValue={selectedDay}
+              onValueChange={v => {
+                setSelectedRange(0);
+                setSelectedDay(v);
+              }}>
+              {dayItems}
+            </Picker>
+          </View>
+          <View flex={1}>
+            <Picker
+              style={Platform.select({ ios: {}, android: { height: 50 } })}
+              selectedValue={selectedRange}
+              onValueChange={setSelectedRange}>
+              {slotItems}
+            </Picker>
+          </View>
+        </>
+      ) : (
+        <>
+          <Skeleton flex={1} rounded={2} />
+          <Skeleton flex={1} rounded={2} />
+        </>
+      )}
     </HStack>
   );
 }
