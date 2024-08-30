@@ -3,6 +3,7 @@ import {
   chooseRestaurant,
   connectToLocalInstance,
   connectToSandbox,
+  itif,
   symfonyConsole,
 } from '../../../utils';
 import { describe } from 'jest-circus';
@@ -23,7 +24,7 @@ describe('checkout for guest user; payment - cash on delivery', () => {
   });
 
   //FIXME: run these tests for iOS too (see https://github.com/coopcycle/coopcycle-ops/issues/97)
-  it.if(device.getPlatform() === 'android')(
+  itif(device.getPlatform() === 'android')(
     `should fail to complete checkout`,
     async () => {
       await expect(element(by.id('checkoutAskAddress'))).toBeVisible();
