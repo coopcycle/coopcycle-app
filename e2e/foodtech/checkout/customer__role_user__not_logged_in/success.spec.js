@@ -5,7 +5,6 @@ import {
   connectToSandbox,
   symfonyConsole,
 } from '../../../utils';
-import { describe } from 'jest-circus';
 
 describe('checkout for customer with existing account (role - user); not logged in yet; payment - cash on delivery', () => {
   beforeEach(async () => {

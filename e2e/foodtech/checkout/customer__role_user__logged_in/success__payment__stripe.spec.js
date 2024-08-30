@@ -7,7 +7,6 @@ import {
   disablePasswordAutofill,
   symfonyConsole,
 } from '../../../utils';
-import { describe } from 'jest-circus';
 
 describe.skip('checkout for customer with existing account (role - user); logged in; payment - stripe', () => {
   beforeEach(async () => {

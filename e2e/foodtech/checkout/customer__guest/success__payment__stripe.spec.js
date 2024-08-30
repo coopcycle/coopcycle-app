@@ -5,7 +5,6 @@ import {
   connectToSandbox,
   symfonyConsole,
 } from '../../../utils';
-import { describe } from 'jest-circus';
 
 describe.skip('checkout for guest user; payment - stripe', () => {
   beforeEach(async () => {
