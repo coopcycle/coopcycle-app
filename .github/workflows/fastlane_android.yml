@@ -179,7 +179,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Download a single artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4.1.7
         with:
           name: release.aab
       - name: Convert aab to apk
@@ -209,7 +209,7 @@ jobs:
         with:
           ref: ${{ inputs.tag }}
       - name: Download apk artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4.1.7
         with:
           name: release.apk
       - name: Install Maestro CLI
