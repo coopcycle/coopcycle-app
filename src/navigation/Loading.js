@@ -109,6 +109,7 @@ class Loading extends Component {
           swipeDirection={swipeDirection}
           onBackdropPress={close}>
           <View
+            testID="globalModal"
             style={{
               ...styles.content,
               ...styles[`${this.state.modal.type}Modal`],

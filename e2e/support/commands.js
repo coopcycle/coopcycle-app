@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 const execSync = require('child_process').execSync;
 const os = require('os');
 
@@ -161,4 +163,54 @@ export const addProduct = async id => {
   }
 
   await element(by.id('addProduct')).tap();
+};
+
+export const closeRestaurantForToday = async (username, password) => {
+  try {
+    // Get API token
+    const loginResponse = await axios.post(
+      `${getLocalInstanceUrl()}/api/login_check`,
+      {
+        _username: username,
+        _password: password,
+      },
+      {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      },
+    );
+
+    const token = loginResponse.data.token;
+
+    // Get list of restaurants
+    const myRestaurantsResponse = await axios.get(
+      `${getLocalInstanceUrl()}/api/me/restaurants`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+
+    const restaurants = myRestaurantsResponse.data['hydra:member'];
+
+    // Close each restaurant
+    for (const restaurant of restaurants) {
+      await axios.put(
+        `${getLocalInstanceUrl()}/api/restaurants/${restaurant.id}/close`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+
+      console.log(`Restaurant ${restaurant.id}; ${restaurant.name} is closed`);
+    }
+  } catch (error) {
+    console.error('Error closing restaurants:', error);
+  }
 };
