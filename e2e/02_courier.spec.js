@@ -1,7 +1,6 @@
 import {
   authenticateWithCredentials,
   connectToLocalInstance,
-  disablePasswordAutofill,
   symfonyConsole,
 } from './support/commands';
 import { describeif } from './utils'
@@ -10,8 +9,6 @@ import { describeif } from './utils'
 describeif(device.getPlatform() === 'android')('Courier', () => {
   beforeEach(async () => {
     symfonyConsole('coopcycle:fixtures:load -f cypress/fixtures/courier.yml');
-
-    disablePasswordAutofill();
 
     await device.reloadReactNative();
     await connectToLocalInstance();

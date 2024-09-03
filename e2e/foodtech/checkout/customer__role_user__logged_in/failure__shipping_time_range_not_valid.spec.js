@@ -5,19 +5,17 @@ import {
   closeRestaurantForToday,
   connectToLocalInstance,
   connectToSandbox,
-  disablePasswordAutofill,
+  launchApp,
   symfonyConsole,
 } from '../../../support/commands';
 import { describeif } from '../../../utils';
 
 //FIXME: run against local instance on iOS too (see https://github.com/coopcycle/coopcycle-ops/issues/97)
 describeif(device.getPlatform() === 'android')(
-  'checkout for customer with existing account (role - user); logged in; shippedAt time range became not valid',
+  'checkout for customer with existing account (role - user); logged in; with validation failures',
   () => {
     beforeEach(async () => {
-      disablePasswordAutofill();
-
-      await device.reloadReactNative();
+      await launchApp();
 
       if (device.getPlatform() === 'android') {
         symfonyConsole(

@@ -16,6 +16,16 @@ export const symfonyConsole = command => {
   execSync(cmd);
 };
 
+export const launchApp = async () => {
+  await device.launchApp({
+    delete: true,
+    permissions: {
+      notifications: 'YES',
+      location: 'always',
+    },
+  });
+};
+
 export const disablePasswordAutofill = () => {
   if (device.getPlatform() === 'ios') {
     // disable password autofill: https://github.com/wix/Detox/issues/3761

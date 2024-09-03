@@ -4,14 +4,11 @@ import {
   chooseRestaurant,
   connectToLocalInstance,
   connectToSandbox,
-  disablePasswordAutofill,
   symfonyConsole,
 } from '../../../support/commands';
 
 describe('checkout for customer with existing account (role - user); logged in; payment - cash on delivery', () => {
   beforeEach(async () => {
-    disablePasswordAutofill();
-
     await device.reloadReactNative();
 
     if (device.getPlatform() === 'android') {
