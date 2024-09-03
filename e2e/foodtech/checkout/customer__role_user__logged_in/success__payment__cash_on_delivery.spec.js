@@ -6,7 +6,7 @@ import {
   connectToSandbox,
   disablePasswordAutofill,
   symfonyConsole,
-} from '../../../utils';
+} from '../../../support/commands';
 
 describe('checkout for customer with existing account (role - user); logged in; payment - cash on delivery', () => {
   beforeEach(async () => {

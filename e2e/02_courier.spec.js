@@ -1,10 +1,10 @@
 import {
   authenticateWithCredentials,
   connectToLocalInstance,
-  describeif,
   disablePasswordAutofill,
   symfonyConsole,
-} from './utils';
+} from './support/commands';
+import { describeif } from './utils'
 
 //FIXME: run these tests for iOS too (requires a local coopcycle-web instance)
 describeif(device.getPlatform() === 'android')('Courier', () => {

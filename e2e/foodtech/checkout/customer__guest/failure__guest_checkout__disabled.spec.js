@@ -3,9 +3,9 @@ import {
   chooseRestaurant,
   connectToLocalInstance,
   connectToSandbox,
-  itif,
   symfonyConsole,
-} from '../../../utils';
+} from '../../../support/commands';
+import { itif } from '../../../utils'
 
 describe('checkout for guest user; payment - cash on delivery', () => {
   beforeEach(async () => {

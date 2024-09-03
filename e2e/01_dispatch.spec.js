@@ -4,7 +4,7 @@ import {
   symfonyConsole,
   connectToLocalInstance,
   connectToSandbox,
-} from './utils';
+} from './support/commands';
 
 const exec = require('child-process-promise').exec;
 

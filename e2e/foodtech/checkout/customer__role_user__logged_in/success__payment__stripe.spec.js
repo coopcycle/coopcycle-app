@@ -6,7 +6,7 @@ import {
   connectToSandbox,
   disablePasswordAutofill,
   symfonyConsole,
-} from '../../../utils';
+} from '../../../support/commands';
 
 describe.skip('checkout for customer with existing account (role - user); logged in; payment - stripe', () => {
   beforeEach(async () => {

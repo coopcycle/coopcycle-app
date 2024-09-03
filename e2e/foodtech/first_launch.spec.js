@@ -2,7 +2,7 @@ import {
   connectToLocalInstance,
   connectToSandbox,
   symfonyConsole,
-} from '../utils';
+} from '../support/commands';
 
 describe('Foodtech - first launch', () => {
   beforeEach(async () => {

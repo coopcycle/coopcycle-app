@@ -4,7 +4,7 @@ import {
   connectToLocalInstance,
   connectToSandbox,
   symfonyConsole,
-} from '../../../utils';
+} from '../../../support/commands';
 
 describe('checkout for customer with existing account (role - user); not logged in yet; payment - cash on delivery', () => {
   beforeEach(async () => {

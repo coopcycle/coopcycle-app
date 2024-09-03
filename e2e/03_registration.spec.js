@@ -4,7 +4,7 @@ import {
   connectToLocalInstance,
   connectToSandbox,
   symfonyConsole,
-} from './utils';
+} from './support/commands';
 
 describe.skip('Registration', () => {
   beforeEach(async () => {
