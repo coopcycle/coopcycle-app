@@ -63,7 +63,7 @@ function ChooseTimeRangeContent({ orderNodeId, restaurantNodeId }) {
         {t('CART_TIME_RANGE_CHANGED_MODAL_CHOOSE_TIME_RANGE_TEXT')}
       </Text>
       <TimingCartSelect orderNodeId={orderNodeId} onValueChange={setValue} />
-      <Button mt="8" onPress={onSchedule}>
+      <Button testID="setShippingTimeRange" mt="8" onPress={onSchedule}>
         <Text>
           {t('CART_TIME_RANGE_CHANGED_MODAL_SELECT_TIME_RANGE_ACTION')}
         </Text>
@@ -142,7 +142,9 @@ export default function TimeRangeChangedModal() {
       onModalShow={() => {
         tracker.logEvent('Checkout', 'openModal', 'timeRangeChanged');
       }}>
-      <View style={[styles.modalContent, { backgroundColor }]}>
+      <View
+        testID="timeRangeChangedModal"
+        style={[styles.modalContent, { backgroundColor }]}>
         <Heading size="sm" mb="4">
           {t('CART_TIME_RANGE_CHANGED_MODAL_TITLE')}
         </Heading>
