@@ -276,7 +276,7 @@
             "unknown": "Ismeretlen",
             "new": "Új",
             "picked": "Kikválasztva",
-            "fulfilled": ""
+            "fulfilled": "Teljesült"
         },
         "DELIVERY_DETAILS_TIME_SLOT": "Időintervallum",
         "DELIVERY_DETAILS_RECIPIENT": "Átvevő",
