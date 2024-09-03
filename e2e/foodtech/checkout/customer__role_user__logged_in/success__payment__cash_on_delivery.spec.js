@@ -89,7 +89,7 @@ describe('checkout for customer with existing account (role - user); logged in; 
     await element(by.id('moreInfosSubmit')).tap();
 
     // Payment picker page
-    //FIXME: temporary skip for Android, to debug test failures on CI
+    //FIXME: temporary skip for Android until Stripe is configured
     if (device.getPlatform() === 'ios') {
       await expect(
         element(by.id('paymentMethod-cash_on_delivery')),
