@@ -509,6 +509,9 @@
     "CART_TIME_RANGE_CHANGED_MODAL_MESSAGE": "The opening hours do not allow the order to be placed today",
     "CART_TIME_RANGE_CHANGED_MODAL_CHOOSE_TIME_RANGE_TEXT": "Please choose another time range",
     "CART_TIME_RANGE_CHANGED_MODAL_SELECT_TIME_RANGE_ACTION": "Change delivery time",
-    "CART_TIME_RANGE_CHANGED_MODAL_CHOOSE_RESTAURANT_ACTION": "Choose another restaurant"
+    "CART_TIME_RANGE_CHANGED_MODAL_CHOOSE_RESTAURANT_ACTION": "Choose another restaurant",
+    "ORDER__SHIPPED_AT__NOT_AVAILABLE": "The delivery date is no longer available",
+    "ORDER__SHIPPED_AT__EXPIRED": "The delivery date is expired",
+    "ORDER__SHIPPING_TIME_RANGE__NOT_AVAILABLE": "Not available at the moment"
   }
 }

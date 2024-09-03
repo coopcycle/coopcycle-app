@@ -305,7 +305,34 @@ export const selectPaymentGateway = createSelector(
 );
 
 export const selectIsValid = state => state.checkout.isValid;
-export const selectViolations = state => state.checkout.violations;
+
+const _selectViolations = state => state.checkout.violations;
+export const selectViolations = createSelector(_selectViolations, violations =>
+  violations.map(v => {
+    switch (v.code) {
+      case 'Order::SHIPPED_AT_NOT_AVAILABLE':
+        return {
+          code: v.code,
+          message: i18n.t('ORDER__SHIPPED_AT__NOT_AVAILABLE'),
+        };
+      case 'Order::SHIPPED_AT_EXPIRED':
+        return {
+          code: v.code,
+          message: i18n.t('ORDER__SHIPPED_AT__EXPIRED'),
+        };
+      case 'Order::SHIPPING_TIME_RANGE_NOT_AVAILABLE':
+        return {
+          code: v.code,
+          message: i18n.t('ORDER__SHIPPING_TIME_RANGE__NOT_AVAILABLE'),
+        };
+      default:
+        return {
+          code: v.code,
+          message: v.message,
+        };
+    }
+  }),
+);
 
 export const selectPaymentDetails = state => state.checkout.paymentDetails;
 

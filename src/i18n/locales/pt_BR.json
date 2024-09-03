@@ -350,6 +350,8 @@
     "FULFILLMENT_METHOD": {
       "collection": "Coleta no local",
       "delivery": "Entrega"
-    }
+    },
+    "ORDER__SHIPPED_AT__NOT_AVAILABLE": "A data de entrega não está mais disponível",
+    "ORDER__SHIPPED_AT__EXPIRED": "A data de entrega está expirada"
   }
 }
