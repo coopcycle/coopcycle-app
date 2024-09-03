@@ -15,6 +15,7 @@ import {
 } from '../../redux/App/selectors';
 import LoginRegister from './LoginRegister';
 import Server from './components/Server';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 class AccountHome extends Component {
   constructor(props) {
@@ -58,7 +59,7 @@ class AccountHome extends Component {
     ];
 
     return (
-      <View style={{ flex: 1 }}>
+      <SafeAreaView style={{ flex: 1 }} edges={['bottom']}>
         {this.props.customBuild ? null : <Server />}
         <View
           style={{
@@ -115,7 +116,7 @@ class AccountHome extends Component {
             </Box>
           </View>
         </Modal>
-      </View>
+      </SafeAreaView>
     );
   }
 }
