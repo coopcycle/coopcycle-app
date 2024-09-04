@@ -6,6 +6,7 @@ import _ from 'lodash';
 import { Icon } from 'native-base';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import FocusHandler from './FocusHandler';
 
 function getBoxBoundaries(points) {
   const xs = points.map(point => point.x);
@@ -38,6 +39,11 @@ export default function BarcodeCameraView(props) {
 
   const [barcode, setBarcode] = useState(null);
   const [flash, setFlash] = useState(false);
+
+  //The hide behavior is a hack to force the camera to re-render
+  //if another camera is opened on modal. If we don't do this, the
+  //camera will not render.
+  const [hide, setHide] = useState(false);
 
   if (!hasPermission) {
     return (
@@ -73,41 +79,53 @@ export default function BarcodeCameraView(props) {
   }, 200);
 
   return (
-    <CameraView
-      enableTorch={flash}
-      style={{
-        height: CameraHeight,
-        width: CameraWidth,
-        position: 'relative',
-      }}
-      onBarcodeScanned={onScanned}
-      barcodeScannerSettings={{
-        barcodeTypes: ['code128'],
-      }}>
-      <View
-        style={{
-          position: 'absolute',
-          borderColor: 'rgba(255, 0, 0, 0.6)',
-          borderBottomWidth: 1,
-          top: CameraHeight / 2,
-          left: PaddingHorizontal,
-          right: PaddingHorizontal,
+    <>
+      <FocusHandler
+        onFocus={() => {
+          setHide(false);
+        }}
+        onBlur={() => {
+          setHide(true);
         }}
       />
-      <View
-        style={{
-          position: 'absolute',
-          top: 10,
-          right: 10,
-        }}>
-        <TouchableOpacity onPress={() => setFlash(!flash)}>
-          <Icon
-            as={Ionicons}
-            name={flash ? 'flash-sharp' : 'flash-off-sharp'}
-            style={{ color: 'rgba(255, 255, 255, 0.6)' }}
+      {!hide && (
+        <CameraView
+          enableTorch={flash}
+          style={{
+            height: CameraHeight,
+            width: CameraWidth,
+            position: 'relative',
+          }}
+          onBarcodeScanned={onScanned}
+          barcodeScannerSettings={{
+            barcodeTypes: ['code128'],
+          }}>
+          <View
+            style={{
+              position: 'absolute',
+              borderColor: 'rgba(255, 0, 0, 0.6)',
+              borderBottomWidth: 1,
+              top: CameraHeight / 2,
+              left: PaddingHorizontal,
+              right: PaddingHorizontal,
+            }}
           />
-        </TouchableOpacity>
-      </View>
-    </CameraView>
+          <View
+            style={{
+              position: 'absolute',
+              top: 10,
+              right: 10,
+            }}>
+            <TouchableOpacity onPress={() => setFlash(!flash)}>
+              <Icon
+                as={Ionicons}
+                name={flash ? 'flash-sharp' : 'flash-off-sharp'}
+                style={{ color: 'rgba(255, 255, 255, 0.6)' }}
+              />
+            </TouchableOpacity>
+          </View>
+        </CameraView>
+      )}
+    </>
   );
 }

@@ -1,6 +1,7 @@
 import React from 'react';
 import { withTranslation } from 'react-i18next';
 import { Button, VStack, Text } from 'native-base';
+import { Alert } from 'react-native';
 
 function BarcodeReport({ route, t, navigation }) {
   const { entity } = route.params;
@@ -12,10 +13,18 @@ function BarcodeReport({ route, t, navigation }) {
       <Button
         colorScheme="dark"
         size="lg"
-        onPress={() => navigation.navigate('CourierUpdateParcel', { entity })}>
+        onPress={
+          // () => navigation.navigate('CourierUpdateParcel', { entity })
+          () => Alert.alert(null, 'Not yet supported, coming soon!')
+        }>
         {t('UPDATE_PARCEL_DETAILS')}
       </Button>
-      <Button colorScheme="yellow" size="lg">
+      <Button
+        colorScheme="yellow"
+        size="lg"
+        onPress={() =>
+          navigation.navigate('CourierReportIncident', { entity })
+        }>
         {t('REPORT_AN_INCIDENT')}
       </Button>
     </VStack>

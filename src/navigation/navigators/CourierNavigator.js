@@ -133,6 +133,10 @@ const BarcodeNavigator = () => (
         options={{title:false}}
       />
       <BarcodeStack.Screen
+        name="CourierReportIncident"
+        component={screens.CourierBarcodeIncidentPage}
+      />
+      <BarcodeStack.Screen
         name="CourierUpdateParcel"
         component={screens.CourierUpdateParcelPage}
       />

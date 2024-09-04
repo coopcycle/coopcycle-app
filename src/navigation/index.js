@@ -43,6 +43,7 @@ import CourierTaskListPage from './courier/TaskListPage';
 import CourierTasksPage from './courier/TasksPage';
 import CourierBarcodePage from './courier/barcode/Barcode';
 import CourierBarcodeReportPage from './courier/barcode/BarcodeReport';
+import CourierBarcodeIncidentPage from './courier/barcode/BarcodeIncident';
 import CourierUpdateParcelPage from './courier/UpdateParcel';
 import CourierSelectRangePage from './courier/SelectRange.js'
 
@@ -104,6 +105,7 @@ export default {
   CourierTasksPage,
   CourierBarcodePage,
   CourierBarcodeReportPage,
+  CourierBarcodeIncidentPage,
   CourierUpdateParcelPage,
   CourierSelectRangePage,
   CourierTaskListPage,
