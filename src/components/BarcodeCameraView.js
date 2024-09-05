@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, forwardRef } from 'react';
 import { Dimensions, Text } from 'react-native';
 import { View, Vibration } from 'react-native';
 import { CameraView, useCameraPermissions } from 'expo-camera/next';
@@ -30,7 +30,7 @@ function horizontalLineIntersectsBox(lineY, lineStartX, lineEndX, points) {
   return lineEndX >= minX && lineStartX <= maxX;
 }
 
-export default function BarcodeCameraView(props) {
+function BarcodeCameraView({ disabled, ...props }, ref) {
   const [hasPermission, requestPermission] = useCameraPermissions();
 
   const { width: CameraWidth } = Dimensions.get('window');
@@ -43,7 +43,7 @@ export default function BarcodeCameraView(props) {
   //The hide behavior is a hack to force the camera to re-render
   //if another camera is opened on modal. If we don't do this, the
   //camera will not render.
-  const [hide, setHide] = useState(false);
+  const [hide, setHide] = useState(disabled ?? false);
 
   if (!hasPermission) {
     return (
@@ -82,7 +82,9 @@ export default function BarcodeCameraView(props) {
     <>
       <FocusHandler
         onFocus={() => {
-          setHide(false);
+          if (!disabled) {
+            setHide(false);
+          }
         }}
         onBlur={() => {
           setHide(true);
@@ -90,6 +92,7 @@ export default function BarcodeCameraView(props) {
       />
       {!hide && (
         <CameraView
+          ref={ref}
           enableTorch={flash}
           style={{
             height: CameraHeight,
@@ -126,6 +129,16 @@ export default function BarcodeCameraView(props) {
           </View>
         </CameraView>
       )}
+      {hide && (
+        <View
+          style={{
+            height: CameraHeight,
+            width: CameraWidth,
+            backgroundColor: 'black',
+          }}></View>
+      )}
     </>
   );
 }
+
+export default forwardRef(BarcodeCameraView);

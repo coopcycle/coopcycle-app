@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import {
@@ -9,7 +9,7 @@ import {
   Vibration,
   Alert,
 } from 'react-native';
-import { Button, IconButton, TextArea } from 'native-base';
+import { Button, IconButton, TextArea, FormControl, Icon } from 'native-base';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import BarcodeCameraView from '../../../components/BarcodeCameraView';
 
@@ -17,7 +17,8 @@ import { CommonActions } from '@react-navigation/native';
 import NavigationHolder from '../../../NavigationHolder';
 import { assignTask } from '../../../redux/Dispatch/actions';
 import { unassignTask } from '../../../redux/Dispatch/actions';
-import Modal from "react-native-modal"
+import { phonecall } from 'react-native-communications';
+import BottomModal from '../../../components/BottomModal';
 
 async function _fetchBarcode(httpClient, barcode) {
   if (barcode) {
@@ -29,6 +30,14 @@ async function _fetchBarcode(httpClient, barcode) {
   };
 }
 
+async function _putNote(httpClient, task_id, note) {
+  if (note && task_id) {
+    return await httpClient.put(`/api/tasks/${task_id}/note`, {
+      note,
+    });
+  }
+}
+
 function TextSection({ title, value, variant = 'data' }) {
   return (
     <View style={styles.section}>
@@ -38,11 +47,15 @@ function TextSection({ title, value, variant = 'data' }) {
   );
 }
 
-function BarcodePage({ httpClient, user, assignTask, unassignTask }) {
+function BarcodePage({ t, httpClient, user, assignTask, unassignTask }) {
   const [barcode, setBarcode] = useState(null);
   const [entity, setEntity] = useState(null);
   const [clientAction, setClientAction] = useState(null);
   const [showNoteModal, setShowNoteModal] = useState(false);
+  const [noteLoading, setNoteLoading] = useState(false);
+  const [disableScan, setDisableScan] = useState(false);
+
+  const note = useRef(null);
 
   const askUnassign = () => {
     Alert.alert(
@@ -88,6 +101,22 @@ function BarcodePage({ httpClient, user, assignTask, unassignTask }) {
     );
   };
 
+  const checkMultiplePackages = packages => {
+    if (!packages) return;
+    const count = packages.reduce((acc, p) => acc + p.barcodes.length, 0);
+    if (count > 1) {
+      const details = packages
+        .map(p => `${p.barcodes.length}x ${p.name}`)
+        .join('\n');
+      setDisableScan(true);
+      Alert.alert(
+        t('TASK_MULTIPLE_PACKAGES'),
+        `${t('X_PACKAGES', { count })}:\n\n${details}\n\n${t('NO_NEED_TO_SCAN_OTHERS')}`,
+        [{ text: t('OK'), onPress: () => setDisableScan(false) }],
+      );
+    }
+  };
+
   useEffect(() => {
     return;
     if (!clientAction) return;
@@ -105,81 +134,105 @@ function BarcodePage({ httpClient, user, assignTask, unassignTask }) {
 
   useEffect(() => {
     if (!entity) return;
-    if (!entity?.barcodes?.packages) return;
-    const packages = entity?.barcodes?.packages.reduce(
-      (acc, p) => acc + p.barcodes.length,
-      0,
-    );
-    if (packages > 1) {
-      const details = entity?.barcodes?.packages
-        .map(p => `${p.barcodes.length}x ${p.name}`)
-        .join('\n');
-      Alert.alert(
-        'Multiple packages',
-        `${packages} packages:\n\n${details}\n\nNo need to scan the other packages`,
-        [{ text: 'Ok' }],
-      );
-    }
+    checkMultiplePackages(entity?.barcodes?.packages);
   }, [entity]);
 
-  return <>
-      <Modal isVisible={showNoteModal} onDismiss={() => setShowNoteModal(false)}>
-      <View style={{ flex: 1, backgroundColor: 'white', padding: 20, borderRadius: 5 }}>
-          <TextArea />
-          <Button onPress={() => setShowNoteModal(false)}>Save</Button>
-          </View>
-      </Modal>
-    <View style={{ flex: 1 }}>
-      <BarcodeCameraView
-        onScanned={async code => {
-          if (clientAction) return;
-          const { entity, client_action } = await _fetchBarcode(
-            httpClient,
-            code,
-          );
-          setBarcode(code);
-          setEntity(entity);
-          setClientAction(client_action);
-        }}
-      />
-      <ScrollView style={{ paddingHorizontal: 20, marginVertical: 20 }}>
-        <TextSection title="Address" value={entity?.address?.streetAddress} />
-        <TextSection title="Recipient" value={entity?.address?.contactName} />
-        <TextSection title="Weight / Volume" value={entity?.weight} />
-        <TextSection title="Phone" value={entity?.address?.telephone} />
-        <TextSection title="Code" value={barcode} />
-        <TextSection title="Comment" value={entity?.comments} variant="note" />
-        <Button onPress={() => setShowNoteModal(true)}>Add note</Button>
-      </ScrollView>
-      <View
-        style={{
-          padding: 15,
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-        }}>
-        <IconButton
-          _icon={{ as: Ionicons, name: 'call', color: 'green.500' }}
-          disabled={entity === null}
-        />
-        <Button width="70%" colorScheme={'dark'}>
-          Finished
+  return (
+    <>
+      <BottomModal
+        isVisible={showNoteModal}
+        onDismiss={() => setShowNoteModal(false)}
+        onBackdropPress={() => setShowNoteModal(false)}>
+        <FormControl>
+          <FormControl.Label>{t('NOTES')}</FormControl.Label>
+          <TextArea
+            autoFocus
+            onChange={e => (note.current = e.nativeEvent.text)}
+          />
+        </FormControl>
+        <Button
+          isLoading={noteLoading}
+          onPress={async () => {
+            setNoteLoading(true);
+            await _putNote(httpClient, entity?.id, note.current);
+            setShowNoteModal(false);
+            note.current = null;
+            setNoteLoading(false);
+          }}>
+          {t('OK')}
         </Button>
-        <IconButton
-          onPress={() =>
-            NavigationHolder.dispatch(
-              CommonActions.navigate('CourierBarcodeReport', { entity }),
-            )
-          }
-          disabled={entity === null}
-          _icon={{
-            as: Ionicons,
-            name: 'warning',
-            color: 'red.500',
+      </BottomModal>
+      <View style={{ flex: 1 }}>
+        <BarcodeCameraView
+          disabled={disableScan || showNoteModal}
+          onScanned={async code => {
+            if (clientAction) return;
+            const { entity, client_action } = await _fetchBarcode(
+              httpClient,
+              code,
+            );
+            setBarcode(code);
+            setEntity(entity);
+            setClientAction(client_action);
           }}
         />
+        <ScrollView style={{ paddingHorizontal: 20, marginVertical: 20 }}>
+          <TextSection
+            title={t('ADDRESS')}
+            value={entity?.address?.streetAddress}
+          />
+          <TextSection
+            title={t('DELIVERY_DETAILS_RECIPIENT')}
+            value={entity?.address?.contactName}
+          />
+          <TextSection title="Weight / Volume" value={entity?.weight} />
+          <TextSection
+            title={t('PHONE_NUMBER')}
+            value={entity?.address?.telephone}
+          />
+          <TextSection title="Code" value={barcode} />
+          <TextSection
+            title={t('TASK_FORM_COMMENTS_LABEL')}
+            value={entity?.comments}
+            variant="note"
+          />
+        </ScrollView>
+        <View
+          style={{
+            padding: 15,
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+          }}>
+          <IconButton
+            _icon={{ as: Ionicons, name: 'call', color: 'green.500' }}
+            disabled={entity?.address?.telephone == null}
+            onPress={() => phonecall(entity?.address?.telephone, true)}
+          />
+          <Button
+            width="70%"
+            colorScheme={'dark'}
+            disabled={entity == null}
+            leftIcon={<Icon as={Ionicons} name="document" color="white" />}
+            onPress={() => setShowNoteModal(true)}>
+            Add Note
+          </Button>
+          <IconButton
+            onPress={() =>
+              NavigationHolder.dispatch(
+                CommonActions.navigate('CourierBarcodeReport', { entity }),
+              )
+            }
+            disabled={entity == null}
+            _icon={{
+              as: Ionicons,
+              name: 'warning',
+              color: 'red.500',
+            }}
+          />
+        </View>
       </View>
-    </View>
-  </>;
+    </>
+  );
 }
 
 const styles = StyleSheet.create({

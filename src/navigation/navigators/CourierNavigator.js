@@ -135,10 +135,12 @@ const BarcodeNavigator = () => (
       <BarcodeStack.Screen
         name="CourierReportIncident"
         component={screens.CourierBarcodeIncidentPage}
+        options={{title: i18n.t('REPORT_AN_INCIDENT')}}
       />
       <BarcodeStack.Screen
         name="CourierUpdateParcel"
         component={screens.CourierUpdateParcelPage}
+        options={{title: i18n.t('UPDATE_PARCEL_DETAILS')}}
       />
       <BarcodeStack.Screen
         name="CourierSelectRange"

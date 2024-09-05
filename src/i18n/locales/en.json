@@ -508,5 +508,10 @@
     "RESTAURANT_MORE_INFOS": "More information",
     "UPDATE_PARCEL_DETAILS": "Update parcel details",
     "REPORT_AN_INCIDENT": "Report an incident",
+    "PICTURES": "Pictures",
+    "COURIER_BARCODE": "Scan barcode",
+    "TASK_MULTIPLE_PACKAGES": "Multiple packages",
+    "X_PACKAGES": "{{count}} packages",
+    "NO_NEED_TO_SCAN_OTHERS": "No need to scan the others",
   }
 }

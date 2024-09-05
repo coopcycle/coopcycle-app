@@ -108,35 +108,38 @@ function BarcodeIncident({
   // DETAILS MODE
   if (selectedFailureReason) {
     return (
-      <ScrollView p="4">
-        <Stack space={2}>
-          <FormControl>
-            <FormControl.Label>{t('FAILURE_REASON')}</FormControl.Label>
-            <Button
-              variant="outline"
-              colorScheme="dark"
-              onPress={() => {
-                setFailureReason(null);
-                setNotes(null);
-              }}>
-              {
-                data['hydra:member'].find(r => r.code === selectedFailureReason)
-                  .description
-              }
-            </Button>
-          </FormControl>
-          <FormControl>
-            <FormControl.Label>{t('NOTES')}</FormControl.Label>
-            <TextArea value={notes} onChangeText={setNotes} />
-          </FormControl>
-          <FormControl>
-            <FormControl.Label>{t('PICTURES')}</FormControl.Label>
-            <Button
-              onPress={() => setEnableCamera(true)}
-              colorScheme="dark"
-              leftIcon={<Icon as={Ionicons} name="camera" />}>
-              {t('PHOTO_DISCLAIMER')}
-            </Button>
+      <>
+        <ScrollView>
+          <Stack p="4" space={2}>
+            <FormControl>
+              <FormControl.Label>{t('FAILURE_REASON')}</FormControl.Label>
+              <Button
+                variant="outline"
+                colorScheme="dark"
+                onPress={() => {
+                  setFailureReason(null);
+                  setNotes(null);
+                }}>
+                {
+                  data['hydra:member'].find(
+                    r => r.code === selectedFailureReason,
+                  ).description
+                }
+              </Button>
+            </FormControl>
+            <FormControl>
+              <FormControl.Label>{t('NOTES')}</FormControl.Label>
+              <TextArea value={notes} onChangeText={setNotes} />
+            </FormControl>
+            <FormControl>
+              <FormControl.Label>{t('PICTURES')}</FormControl.Label>
+              <Button
+                onPress={() => setEnableCamera(true)}
+                colorScheme="dark"
+                leftIcon={<Icon as={Ionicons} name="camera" />}>
+                {t('PHOTO_DISCLAIMER')}
+              </Button>
+            </FormControl>
             <Flex direction="row" flexWrap="wrap" justifyContent="space-around">
               {pictures.map((picture, index) => (
                 <View
@@ -158,7 +161,9 @@ function BarcodeIncident({
                 </View>
               ))}
             </Flex>
-          </FormControl>
+          </Stack>
+        </ScrollView>
+        <View p="4">
           <Button
             onPress={() => {
               pictures.forEach(picture => addPicture(picture));
@@ -166,19 +171,21 @@ function BarcodeIncident({
                 navigation.popToTop(),
               );
             }}>
-            <Text>{t('SUBMIT')}</Text>
+            {t('SUBMIT')}
           </Button>
-        </Stack>
-      </ScrollView>
+        </View>
+      </>
     );
   }
   // END
 
   // PICKER MODE
   return (
-    <ScrollView p="4">
-      <Skeleton isLoaded={isSuccess}>
-        <VStack space={2}>{values}</VStack>
+    <ScrollView>
+      <Skeleton p="4" isLoaded={isSuccess}>
+        <VStack p="4" space={2}>
+          {values}
+        </VStack>
       </Skeleton>
     </ScrollView>
   );
