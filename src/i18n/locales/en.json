@@ -505,6 +505,7 @@
     "EXCLUSIVE": "Exclusive",
     "NEW": "New",
     "RESTAURANT_MORE_INFOS": "More information",
+    "HIDE_INCIDENTS_TASKS": "Hide incidents",
     "CART_TIME_RANGE_CHANGED_MODAL_TITLE": "Selected time range is no longer available for today anymore",
     "CART_TIME_RANGE_CHANGED_MODAL_MESSAGE": "The opening hours do not allow the order to be placed today",
     "CART_TIME_RANGE_CHANGED_MODAL_CHOOSE_TIME_RANGE_TEXT": "Please choose another time range",

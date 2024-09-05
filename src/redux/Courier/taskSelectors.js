@@ -68,6 +68,11 @@ export const selectAreFailedTasksHidden = createSelector(
   filters => filters.some(f => f.status === 'FAILED'),
 );
 
+export const selectAreIncidentsHidden = createSelector(
+  selectTaskFilters,
+  filters => filters.some(f => f.hasIncidents),
+)
+
 /**
  * @param   {State} state Redux state
  * @returns {Tag[]}       List of unique tag objects
