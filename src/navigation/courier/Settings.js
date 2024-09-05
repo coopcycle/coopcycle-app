@@ -21,7 +21,12 @@ import {
   setSignatureScreenFirst,
   setTasksChangedAlertSound,
 } from '../../redux/Courier';
-import { doneIconName, failedIconName } from '../task/styles/common';
+import {
+  doneIconName,
+  failedIconName,
+  incidentIconName,
+} from '../task/styles/common';
+import { selectAreIncidentsHidden } from '../../redux/Courier/taskSelectors';
 
 const SettingsItemInner = ({ item }) => (
   <HStack alignItems="center" justifyContent="space-between" py="3">
@@ -55,6 +60,8 @@ const Settings = ({
   tasksChangedAlertSound,
   toggleDisplayDone,
   toggleDisplayFailed,
+  toggleDisplayIncidens,
+  areIncidentsHidden,
   toggleTasksChangedAlertSound,
   togglePolylineOn,
   setKeepAwakeDisabled,
@@ -76,10 +83,10 @@ const Settings = ({
           isChecked: areDoneTasksHidden,
         },
         {
-          icon: failedIconName,
-          label: t('HIDE_FAILED_TASKS'),
-          onToggle: () => toggleDisplayFailed(areFailedTasksHidden),
-          isChecked: areFailedTasksHidden,
+          icon: incidentIconName,
+          label: t('HIDE_INCIDENTS_TASKS'),
+          onToggle: () => toggleDisplayIncidens(areIncidentsHidden),
+          isChecked: areIncidentsHidden,
         },
         {
           icon: 'tag',
@@ -139,6 +146,7 @@ function mapStateToProps(state) {
     tags: selectTagNames(state),
     areDoneTasksHidden: selectAreDoneTasksHidden(state),
     areFailedTasksHidden: selectAreFailedTasksHidden(state),
+    areIncidentsHidden: selectAreIncidentsHidden(state),
     tasksChangedAlertSound: selectTasksChangedAlertSound(state),
     isKeepAwakeDisabled: !selectKeepAwake(state),
     isPolylineOn: selectIsPolylineOn(state),
@@ -159,6 +167,12 @@ function mapDispatchToProps(dispatch) {
         hidden
           ? clearTasksFilter({ status: 'FAILED' })
           : filterTasks({ status: 'FAILED' }),
+      ),
+    toggleDisplayIncidens: hidden =>
+      dispatch(
+        hidden
+          ? clearTasksFilter({ hasIncidents: true })
+          : filterTasks({ hasIncidents: true }),
       ),
     toggleTasksChangedAlertSound: enabled =>
       dispatch(setTasksChangedAlertSound(enabled)),

@@ -505,6 +505,7 @@
     "FEATURED": "Featured",
     "EXCLUSIVE": "Exclusive",
     "NEW": "New",
-    "RESTAURANT_MORE_INFOS": "More information"
+    "RESTAURANT_MORE_INFOS": "More information",
+    "HIDE_INCIDENTS_TASKS": "Hide incidents"
   }
 }
