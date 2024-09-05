@@ -77,12 +77,10 @@ export const reportIncidentRequest = createAction(REPORT_INCIDENT_REQUEST);
 export const reportIncidentSuccess = createAction(REPORT_INCIDENT_SUCCESS);
 export const reportIncidentFailure = createAction(REPORT_INCIDENT_FAILURE);
 
-export const addPicture = createAction(ADD_PICTURE, (task, base64) => ({
-  task,
+export const addPicture = createAction(ADD_PICTURE, (_task, base64) => ({
   base64,
 }));
-export const addSignature = createAction(ADD_SIGNATURE, (task, base64) => ({
-  task,
+export const addSignature = createAction(ADD_SIGNATURE, (_task, base64) => ({
   base64,
 }));
 export const clearFiles = createAction(CLEAR_FILES);
