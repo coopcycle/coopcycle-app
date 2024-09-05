@@ -126,13 +126,10 @@ describeif(device.getPlatform() === 'android')(
         await element(by.id('moreInfosSubmit')).tap();
 
         // Payment picker page
-        //FIXME: temporary skip for Android until Stripe is configured
-        if (device.getPlatform() === 'ios') {
-          await expect(
-            element(by.id('paymentMethod-cash_on_delivery')),
-          ).toBeVisible();
-          await element(by.id('paymentMethod-cash_on_delivery')).tap();
-        }
+        await expect(
+          element(by.id('paymentMethod-cash_on_delivery')),
+        ).toBeVisible();
+        await element(by.id('paymentMethod-cash_on_delivery')).tap();
 
         // Cash on delivery page
         await expect(element(by.id('cashOnDeliverySubmit'))).toBeVisible();
@@ -156,13 +153,10 @@ describeif(device.getPlatform() === 'android')(
         await element(by.id('moreInfosSubmit')).tap();
 
         // Payment picker page
-        //FIXME: temporary skip for Android until Stripe is configured
-        if (device.getPlatform() === 'ios') {
-          await expect(
-            element(by.id('paymentMethod-cash_on_delivery')),
-          ).toBeVisible();
-          await element(by.id('paymentMethod-cash_on_delivery')).tap();
-        }
+        await expect(
+          element(by.id('paymentMethod-cash_on_delivery')),
+        ).toBeVisible();
+        await element(by.id('paymentMethod-cash_on_delivery')).tap();
 
         // Cash on delivery page
         await expect(element(by.id('cashOnDeliverySubmit'))).toBeVisible();
