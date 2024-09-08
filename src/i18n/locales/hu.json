@@ -357,7 +357,7 @@
             "card": "Bankkártya",
             "cash_on_delivery": "Készpénzes fizetés a futárnak"
         },
-        "CASH_ON_DELIVERY_DISCLAIMER": "A készpénzes fizetést választottad. Kérjük készítsd elő a pontos összeget és győződj meg arról, hogy elérhető vagy.",
+        "CASH_ON_DELIVERY_DISCLAIMER": "A készpénzes fizetést válaszottad. Kérjük készülj elő a pontos összeggel és győződj meg arról, hogy elérhető vagy.",
         "FILTER_BY_TAGS": "Címkék szűrése",
         "CONNECT_WITH_FACEBOOK": "Bejelentkezés Facebookkal",
         "RESTAURANT_PRODUCT_OPTIONS": "Termék opciók",
