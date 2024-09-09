@@ -20,6 +20,7 @@ import {
   selectIsPrinterConnected,
   selectPrinter,
 } from '../../redux/Restaurant/selectors';
+import { DatadogLogger } from '../../Datadog';
 
 const OrderNotes = ({ order }) => {
   if (order.notes) {
@@ -57,7 +58,14 @@ class OrderScreen extends Component {
                 screen: 'RestaurantPrinter',
               })
             }
-            printOrder={() => this.props.printOrder(this.props.order)}
+            printOrder={() => {
+              const order = this.props.order;
+              DatadogLogger.info('printing ticket', {
+                trigger: 'manual',
+                orderId: order.id,
+              });
+              this.props.printOrder(order);
+            }}
           />
           <OrderNotes order={order} />
           <OrderItems order={order} />
@@ -87,18 +95,25 @@ class OrderScreen extends Component {
             }
           />
         )}
-        {canEdit && (order.state === 'accepted' || order.state === 'started' || order.state === 'ready') && (
-          <OrderAcceptedFooter
-            order={order}
-            onPressCancel={() =>
-              this.props.navigation.navigate('RestaurantOrderCancel', { order })
-            }
-            onPressDelay={() =>
-              this.props.navigation.navigate('RestaurantOrderDelay', { order })
-            }
-            onPressFulfill={() => this.fulfillOrder(order)}
-          />
-        )}
+        {canEdit &&
+          (order.state === 'accepted' ||
+            order.state === 'started' ||
+            order.state === 'ready') && (
+            <OrderAcceptedFooter
+              order={order}
+              onPressCancel={() =>
+                this.props.navigation.navigate('RestaurantOrderCancel', {
+                  order,
+                })
+              }
+              onPressDelay={() =>
+                this.props.navigation.navigate('RestaurantOrderDelay', {
+                  order,
+                })
+              }
+              onPressFulfill={() => this.fulfillOrder(order)}
+            />
+          )}
       </Box>
     );
   }
