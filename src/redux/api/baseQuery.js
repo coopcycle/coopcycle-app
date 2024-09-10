@@ -4,7 +4,7 @@ import { selectBaseURL, selectLoggedInUser } from '../App/selectors';
 import { Mutex } from 'async-mutex';
 import qs from 'qs';
 import AppUser from '../../AppUser';
-import { logout } from '../App/actions';
+import { logout, setModal } from '../App/actions';
 import { setUser } from '../middlewares/HttpMiddleware';
 import { selectCart } from '../Checkout/selectors';
 
@@ -74,64 +74,77 @@ export const baseQueryWithReauth = async (args, api, extraOptions) => {
 
   let result = await baseQuery(args, api, extraOptions);
 
-  if (result.error && result.error.status === 401) {
-    const loggedInUser = selectLoggedInUser(getState());
+  if (result.error) {
+    if (result.error.status === 401) {
+      const loggedInUser = selectLoggedInUser(getState());
 
-    if (!loggedInUser) {
-      return result;
-    }
+      if (!loggedInUser) {
+        return result;
+      }
 
-    const refreshToken = loggedInUser.refreshToken;
+      const refreshToken = loggedInUser.refreshToken;
 
-    if (mutex.isLocked()) {
-      // wait for the mutex release, i.e. wait that another request that needed a fresh token gets the new token for us and update the state accordingly
-      await mutex.waitForUnlock();
-      result = await baseQuery(args, api, extraOptions);
-    } else {
-      const release = await mutex.acquire();
-      try {
-        // try to get a new token
-        const refreshResult = await buildBaseQuery(baseUrl, true)(
-          {
-            url: '/api/token/refresh',
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/x-www-form-urlencoded',
+      if (mutex.isLocked()) {
+        // wait for the mutex release, i.e. wait that another request that needed a fresh token gets the new token for us and update the state accordingly
+        await mutex.waitForUnlock();
+        result = await baseQuery(args, api, extraOptions);
+      } else {
+        const release = await mutex.acquire();
+        try {
+          // try to get a new token
+          const refreshResult = await buildBaseQuery(baseUrl, true)(
+            {
+              url: '/api/token/refresh',
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+              },
+              body: qs.stringify({
+                refresh_token: refreshToken,
+              }),
             },
-            body: qs.stringify({
-              refresh_token: refreshToken,
-            }),
-          },
-          api,
-          extraOptions,
-        );
-        if (refreshResult.data) {
-          const { token, refresh_token } = refreshResult.data;
-
-          const { username, email, roles, enabled } = loggedInUser;
-
-          const updUser = new AppUser(
-            username,
-            email,
-            token,
-            roles,
-            refresh_token,
-            enabled,
+            api,
+            extraOptions,
           );
+          if (refreshResult.data) {
+            const { token, refresh_token } = refreshResult.data;
 
-          // store the new token
-          api.dispatch(setUser(updUser));
-          await updUser.save();
-          console.log('Credentials saved!');
+            const { username, email, roles, enabled } = loggedInUser;
 
-          // retry the initial query
-          result = await baseQuery(args, api, extraOptions);
-        } else {
-          api.dispatch(logout());
+            const updUser = new AppUser(
+              username,
+              email,
+              token,
+              roles,
+              refresh_token,
+              enabled,
+            );
+
+            // store the new token
+            api.dispatch(setUser(updUser));
+            await updUser.save();
+            console.log('Credentials saved!');
+
+            // retry the initial query
+            result = await baseQuery(args, api, extraOptions);
+          } else {
+            api.dispatch(logout());
+          }
+        } finally {
+          // release must be called once the mutex should be released again.
+          release();
         }
-      } finally {
-        // release must be called once the mutex should be released again.
-        release();
+      }
+    } else if (result.error.status === 503) {
+      const message = result.error.data.message;
+      if (message) {
+        api.dispatch(
+          setModal({
+            show: true,
+            skippable: false,
+            content: message,
+          }),
+        );
       }
     }
   }

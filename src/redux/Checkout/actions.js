@@ -903,21 +903,6 @@ function wrapRestaurantsWithTiming(restaurants) {
   };
 }
 
-function _maintenanceModeHandler(error, dispatch) {
-  if (error.response?.status === 503) {
-    const message = error.response?.data?.message;
-    if (message) {
-      dispatch(
-        setModal({
-          show: true,
-          skippable: false,
-          content: message,
-        }),
-      );
-    }
-  }
-}
-
 export function searchRestaurantsForAddress(address, options = {}) {
   return (dispatch, getState) => {
     const { httpClient } = getState().app;
@@ -938,7 +923,6 @@ export function searchRestaurantsForAddress(address, options = {}) {
       })
       .catch(e => {
         dispatch(loadRestaurantsFailure(e));
-        _maintenanceModeHandler(e, dispatch);
       });
   };
 }
@@ -973,7 +957,6 @@ export function searchRestaurants(options = {}) {
       })
       .catch(e => {
         dispatch(loadRestaurantsFailure(e));
-        _maintenanceModeHandler(e, dispatch);
       });
   };
 }
