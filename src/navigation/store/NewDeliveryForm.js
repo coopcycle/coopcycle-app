@@ -72,7 +72,7 @@ function NewDelivery(props) {
     dispatch(
       loadTimeSlotChoices(timeSlots.find(ts => ts['@id'] === selectedTimeSlot)),
     );
-  }, [selectedTimeSlot, loadTimeSlotChoices, timeSlots, dispatch]);
+  }, [selectedTimeSlot, timeSlots, dispatch]);
 
   useEffect(() => {
     if (choices.length) setSelectedChoice(choices[0].value);
