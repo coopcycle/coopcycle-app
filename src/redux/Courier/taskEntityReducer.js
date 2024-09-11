@@ -5,6 +5,7 @@ import {
   ASSIGN_TASK_SUCCESS,
   BULK_ASSIGNMENT_TASKS_SUCCESS,
   UNASSIGN_TASK_SUCCESS,
+  UPDATE_TASK_SUCCESS,
 } from '../Dispatch/actions';
 import { CENTRIFUGO_MESSAGE } from '../middlewares/CentrifugoMiddleware';
 import {
@@ -150,6 +151,7 @@ export const tasksEntityReducer = (
     case START_TASK_SUCCESS:
     case MARK_TASK_DONE_SUCCESS:
     case MARK_TASK_FAILED_SUCCESS:
+    case UPDATE_TASK_SUCCESS:
       return {
         ...state,
         isFetching: false,
