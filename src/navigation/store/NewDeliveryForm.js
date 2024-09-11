@@ -65,14 +65,14 @@ function NewDelivery(props) {
     } else if (timeSlots.length > 0) {
       setSelectedTimeSlot(timeSlots[0]['@id']);
     }
-  }, [store.timeSlot, timeSlots]);
+  }, [store.timeSlot, timeSlots, selectedTimeSlot]);
 
   useEffect(() => {
     if (!selectedTimeSlot || !timeSlots.length) return;
     dispatch(
       loadTimeSlotChoices(timeSlots.find(ts => ts['@id'] === selectedTimeSlot)),
     );
-  }, [selectedTimeSlot, loadTimeSlotChoices, timeSlots]);
+  }, [selectedTimeSlot, loadTimeSlotChoices, timeSlots, dispatch]);
 
   useEffect(() => {
     if (choices.length) setSelectedChoice(choices[0].value);
@@ -95,7 +95,7 @@ function NewDelivery(props) {
         KeyboardManager.setEnableAutoToolbar(false);
       }
     };
-  }, [store]);
+  }, [store, dispatch]);
 
   useEffect(() => {
     setPackages(
@@ -106,7 +106,7 @@ function NewDelivery(props) {
         };
       }),
     );
-  }, [tempPackages]);
+  }, []);
 
   function incrementQuantity(packageType, setFieldTouched) {
     setFieldTouched('packages');
