@@ -86,12 +86,12 @@ export default function TimeSlotSelector({
               style={[
                 {
                   borderColor:
-                    selectedTimeSlot === timeSlot.name
+                    selectedTimeSlot === timeSlot['@id']
                       ? 'transparent'
                       : backgroundHighlightColor,
                 },
                 styles.button,
-                !(selectedTimeSlot === timeSlot.name) && {
+                !(selectedTimeSlot === timeSlot['@id']) && {
                   backgroundColor: 'transparent',
                 },
               ]}
@@ -100,7 +100,7 @@ export default function TimeSlotSelector({
                 numberOfLines={1}
                 style={{
                   color:
-                    selectedTimeSlot === timeSlot.name ? 'white' : '#878787',
+                    selectedTimeSlot === timeSlot['@id'] ? 'white' : '#878787',
                 }}>
                 {timeSlot.name}
               </Text>

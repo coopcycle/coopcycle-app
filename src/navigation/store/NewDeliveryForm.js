@@ -7,7 +7,7 @@ import { withTranslation } from 'react-i18next';
 import { InteractionManager, Platform, StyleSheet, View } from 'react-native';
 import KeyboardManager from 'react-native-keyboard-manager';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import {
@@ -38,15 +38,14 @@ function NewDelivery(props) {
   const [selectedTimeSlot, setSelectedTimeSlot] = useState('');
   const backgroundColor = useBackgroundContainerColor();
   const backgroundHighlightColor = useBackgroundHighlightColor();
-  const [selectValue, setSelectValue] = React.useState(null);
+  const [selectedChoice, setSelectedChoice] = React.useState(null);
   const [packages, setPackages] = useState([]);
+  const dispatch = useDispatch();
 
   const {
     t,
-    loadTimeSlot,
     store,
     timeSlots,
-    createDelivery,
     navigation,
     hasTimeSlot,
     route,
@@ -60,9 +59,29 @@ function NewDelivery(props) {
   };
 
   useEffect(() => {
+    if (selectedTimeSlot) return;
+    if (store.timeSlot && store.timeSlot.trim() !== '') {
+      setSelectedTimeSlot(store.timeSlot);
+    } else if (timeSlots.length > 0) {
+      setSelectedTimeSlot(timeSlots[0]['@id']);
+    }
+  }, [store.timeSlot, timeSlots]);
+
+  useEffect(() => {
+    if (!selectedTimeSlot || !timeSlots.length) return;
+    dispatch(
+      loadTimeSlotChoices(timeSlots.find(ts => ts['@id'] === selectedTimeSlot)),
+    );
+  }, [selectedTimeSlot, loadTimeSlotChoices, timeSlots]);
+
+  useEffect(() => {
+    if (choices.length) setSelectedChoice(choices[0].value);
+  }, [choices]);
+
+  useEffect(() => {
     InteractionManager.runAfterInteractions(() => {
-      loadTimeSlot(store);
-      loadTimeSlots(store);
+      dispatch(loadTimeSlots(store));
+      dispatch(loadTimeSlot(store));
     });
     // This will add a "OK" button above keyboard, to dismiss keyboard
     if (Platform.OS === 'ios') {
@@ -76,7 +95,7 @@ function NewDelivery(props) {
         KeyboardManager.setEnableAutoToolbar(false);
       }
     };
-  }, [loadTimeSlot, loadTimeSlots, store]);
+  }, [store]);
 
   useEffect(() => {
     setPackages(
@@ -89,20 +108,8 @@ function NewDelivery(props) {
     );
   }, [tempPackages]);
 
-  useEffect(() => {
-    if (timeSlots.length > 0) {
-      setSelectedTimeSlot(timeSlots[0].name);
-    }
-  }, [timeSlots]);
-
-  useEffect(() => {
-    setSelectValue(null);
-    if (selectedTimeSlot) {
-      loadTimeSlotChoices(timeSlots.find(ts => ts.name === selectedTimeSlot));
-    }
-  }, [selectedTimeSlot, loadTimeSlotChoices, timeSlots]);
-
-  function incrementQuantity(packageType) {
+  function incrementQuantity(packageType, setFieldTouched) {
+    setFieldTouched('packages');
     setPackages(prev => {
       return prev.map(item => {
         if (item.type === packageType) {
@@ -113,7 +120,8 @@ function NewDelivery(props) {
     });
   }
 
-  function decrementQuantity(packageType) {
+  function decrementQuantity(packageType, setFieldTouched) {
+    setFieldTouched('packages');
     setPackages(prev => {
       return prev.map(item => {
         if (item.type === packageType) {
@@ -125,7 +133,7 @@ function NewDelivery(props) {
   }
 
   function updateSelectedTimeSlot(timeSlot) {
-    setSelectedTimeSlot(timeSlot.name);
+    setSelectedTimeSlot(timeSlot['@id']);
   }
 
   function showDateTimePicker() {
@@ -149,29 +157,31 @@ function NewDelivery(props) {
         comments: values.comments,
         weight: values.weight * 1000,
         packages: packages.filter(item => item.quantity > 0),
-        ...(selectValue
-          ? { timeSlot: selectValue }
+        ...(selectedChoice
+          ? { timeSlot: selectedChoice }
           : { before: values.before }),
       },
     };
 
     console.log(delivery);
 
-    // createDelivery(delivery, () =>
-    //   navigation.navigate('StoreHome'),
-    // );
+    dispatch(createDelivery(delivery, () => navigation.navigate('StoreHome')));
   }
 
   function validate(values) {
     let errors = {};
 
-    if (hasTimeSlot && !selectValue) {
-      errors = {
-        ...errors,
-        timeSlot: t('STORE_NEW_DELIVERY_ERROR.EMPTY_TIME_SLOT'),
-      };
+    if (hasTimeSlot && !selectedChoice) {
+      errors.timeSlot = t('STORE_NEW_DELIVERY_ERROR.EMPTY_TIME_SLOT');
     }
 
+    if (!values.weight && store.weightRequired) {
+      errors.weight = t('STORE_NEW_DELIVERY_ERROR.EMPTY_WEIGHT');
+    }
+
+    if (!packages.some(item => item.quantity) && store.packagesRequired) {
+      errors.packages = t('STORE_NEW_DELIVERY_ERROR.EMPTY_PACKAGES');
+    }
     return errors;
   }
 
@@ -228,7 +238,7 @@ function NewDelivery(props) {
     }
 
     setFieldValue('weight', value);
-    setFieldTouched('weight', true);
+    setFieldTouched('weight');
   }
 
   const delivery = route.params?.delivery;
@@ -292,8 +302,8 @@ function NewDelivery(props) {
           </View> */}
           {hasTimeSlot ? (
             <TimeSlotSelector
-              selectValue={selectValue}
-              setSelectValue={setSelectValue}
+              selectValue={selectedChoice}
+              setSelectValue={setSelectedChoice}
               errors={errors}
               touched={touched}
               setFieldValue={setFieldValue}
@@ -316,7 +326,9 @@ function NewDelivery(props) {
           <View style={[styles.formGroup]}>
             <Text style={styles.label}>
               {t('STORE_NEW_DELIVERY_WEIGHT')}{' '}
-              <Text style={styles.optional}>({t('OPTIONAL')})</Text>
+              {!store.weightRequired ? (
+                <Text style={styles.optional}>({t('OPTIONAL')})</Text>
+              ) : null}
             </Text>
             <FormInput
               keyboardType="numeric"
@@ -330,15 +342,20 @@ function NewDelivery(props) {
               value={values.weight}
               placeholder={t('STORE_NEW_DELIVERY_ENTER_WEIGHT')}
             />
-            {errors.address && touched.address && errors.address.weight && (
+            {errors.weight && touched.weight && (
               <Text note style={styles.errorText}>
-                {errors.address.weight}
+                {errors.weight}
               </Text>
             )}
           </View>
 
           <View style={[styles.formGroup]}>
-            <Text style={styles.label}>Packages</Text>
+            <Text style={styles.label}>
+              {t('STORE_NEW_DELIVERY_PACKAGES')}{' '}
+              {!store.packagesRequired ? (
+                <Text style={styles.optional}>({t('OPTIONAL')})</Text>
+              ) : null}
+            </Text>
             <View
               style={{
                 gap: 16,
@@ -359,21 +376,32 @@ function NewDelivery(props) {
                     key={index}>
                     <Range
                       onPress={() => {}}
-                      onPressIncrement={() => incrementQuantity(item.type)}
-                      onPressDecrement={() => decrementQuantity(item.type)}
+                      onPressIncrement={() =>
+                        incrementQuantity(item.type, setFieldTouched)
+                      }
+                      onPressDecrement={() =>
+                        decrementQuantity(item.type, setFieldTouched)
+                      }
                       quantity={item.quantity}
                     />
                     <TouchableOpacity
                       style={{
                         flex: 1,
                       }}
-                      onPress={() => incrementQuantity(item.type)}>
+                      onPress={() =>
+                        incrementQuantity(item.type, setFieldTouched)
+                      }>
                       <Text>{item.type}</Text>
                     </TouchableOpacity>
                   </View>
                 );
               })}
             </View>
+            {errors.packages && (
+              <Text note style={styles.errorText}>
+                {errors.packages}
+              </Text>
+            )}
           </View>
         </ModalFormWrapper>
       )}
@@ -421,11 +449,11 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    createDelivery: (delivery, onSuccess) =>
-      dispatch(createDelivery(delivery, onSuccess)),
-    loadTimeSlot: store => dispatch(loadTimeSlot(store)),
-    loadTimeSlots: store => dispatch(loadTimeSlots(store)),
-    loadTimeSlotChoices: timeSlot => dispatch(loadTimeSlotChoices(timeSlot)),
+    // createDelivery: (delivery, onSuccess) =>
+    //   dispatch(createDelivery(delivery, onSuccess)),
+    // loadTimeSlot: store => dispatch(loadTimeSlot(store)),
+    // loadTimeSlots: store => dispatch(loadTimeSlots(store)),
+    // loadTimeSlotChoices: timeSlot => dispatch(loadTimeSlotChoices(timeSlot)),
   };
 }
 

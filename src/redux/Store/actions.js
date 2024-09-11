@@ -30,7 +30,7 @@ export function loadTimeSlots(store) {
       .then(res => {
         dispatch(loadTimeSlotsSuccess(res['hydra:member']));
         dispatch(setLoading(false));
-        dispatch(loadTimeSlotChoices(res['hydra:member'][0]));
+        // dispatch(loadTimeSlotChoices(res['hydra:member'][0]));
       })
       .catch(e => {
         dispatch(setLoading(false));
