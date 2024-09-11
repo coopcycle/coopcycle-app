@@ -1,11 +1,13 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { DatadogLogger } from '../Datadog';
 
 const TaskTitle = ({ task }) => {
   const { t } = useTranslation();
 
   // fallback when task is not defined, not sure if it can happen
   if (!task) {
+    DatadogLogger.warning('Task props in TaskTitle is not defined')
     return <>{t('TASK')}</>
   }
 
