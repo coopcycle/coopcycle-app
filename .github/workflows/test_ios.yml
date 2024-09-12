@@ -103,6 +103,10 @@ jobs:
 #      STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
 #      STRIPE_CONNECT_CLIENT_ID: ${{ secrets.STRIPE_CONNECT_CLIENT_ID }}
     steps:
+      - name: Set timezone
+        uses: szenius/set-timezone@v2.0
+        with:
+          timezoneMacos: "Europe/Paris"
       - uses: actions/checkout@v3
         with:
           path: coopcycle-app-repo
