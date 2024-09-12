@@ -283,9 +283,11 @@ class CompleteTask extends Component {
   }
 
   multipleTasksLabel(tasks) {
+
     return tasks.reduce(
       (label, task, idx) => {
-        return `${label}${idx !== 0 ? ',' : ''} #${task.id}`;
+        const taskIdentifier = task?.metadata?.order_number ? `${task.metadata.order_number}-${task?.metadata?.delivery_position}` : task.id
+        return `${label}${idx !== 0 ? ',' : ''} #${taskIdentifier}`;
       },
       `${this.props.t('COMPLETE_TASKS')}: `,
     );
