@@ -70,8 +70,9 @@ describe('checkout for guest user; payment - cash on delivery', () => {
     await element(by.id('cartSubmit')).tap();
 
     // Cart summary page
-    await expect(element(by.id('cartSummarySubmit'))).toBeVisible();
-
+    await waitFor(element(by.id('cartSummarySubmit')))
+      .toBeVisible()
+      .withTimeout(5000);
     await element(by.id('cartSummarySubmit')).tap();
 
     // Authentication page

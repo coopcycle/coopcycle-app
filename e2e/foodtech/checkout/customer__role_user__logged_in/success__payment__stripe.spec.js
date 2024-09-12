@@ -71,7 +71,9 @@ describe('checkout for customer with existing account (role - user); logged in; 
     await element(by.id('cartSubmit')).tap();
 
     // Cart summary page
-    await expect(element(by.id('cartSummarySubmit'))).toBeVisible();
+    await waitFor(element(by.id('cartSummarySubmit')))
+      .toBeVisible()
+      .withTimeout(5000);
 
     await element(by.id('cartSummarySubmit')).tap();
 

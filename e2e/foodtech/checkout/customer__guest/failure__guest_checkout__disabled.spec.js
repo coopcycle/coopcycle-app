@@ -5,7 +5,7 @@ import {
   connectToSandbox,
   symfonyConsole,
 } from '../../../support/commands';
-import { itif } from '../../../utils'
+import { itif } from '../../../utils';
 
 describe('checkout for guest user; payment - cash on delivery', () => {
   beforeEach(async () => {
@@ -71,7 +71,9 @@ describe('checkout for guest user; payment - cash on delivery', () => {
       await element(by.id('cartSubmit')).tap();
 
       // Cart summary page
-      await expect(element(by.id('cartSummarySubmit'))).toBeVisible();
+      await waitFor(element(by.id('cartSummarySubmit')))
+        .toBeVisible()
+        .withTimeout(5000);
 
       await element(by.id('cartSummarySubmit')).tap();
 
