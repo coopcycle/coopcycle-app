@@ -1,11 +1,11 @@
+import React, { Component } from 'react';
 import { CardField, StripeProvider } from '@stripe/stripe-react-native';
 import { Formik } from 'formik';
 import _ from 'lodash';
 import { Button, Center, Checkbox, Input, Radio, Text } from 'native-base';
-import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
 import { StyleSheet, View, useColorScheme } from 'react-native';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 
 import {
   canProceedWithPayment,
@@ -21,6 +21,7 @@ import {
   selectCart,
   selectCheckoutError,
 } from '../../../redux/Checkout/selectors';
+import { selectStripePublishableKey } from '../../../redux/App/selectors';
 
 const ColorSchemeAwareCardField = props => {
   const colorScheme = useColorScheme();
@@ -48,7 +49,7 @@ const ColorSchemeAwareCardField = props => {
   );
 };
 
-class CreditCard extends Component {
+class CreditCardClassComponent extends Component {
   constructor(props) {
     super(props);
 
@@ -145,12 +146,8 @@ class CreditCard extends Component {
     // @see https://medium.com/@devmrin/debouncing-touch-events-in-react-native-prevent-navigating-twice-or-more-times-when-button-is-90687e4a8113
     // @see https://snack.expo.io/@patwoz/withpreventdoubleclick
 
-    const stripeProviderProps = {
-      publishableKey: this.props.stripePublishableKey,
-    };
-
     return (
-      <StripeProvider {...stripeProviderProps}>
+      <>
         <Formik
           initialValues={initialValues}
           validate={this._validate.bind(this)}
@@ -293,7 +290,7 @@ class CreditCard extends Component {
           )}
         </Formik>
         <TimeRangeChangedModal />
-      </StripeProvider>
+      </>
     );
   }
 }
@@ -325,7 +322,6 @@ function mapStateToProps(state) {
   return {
     cart,
     lastShownTimeRange,
-    stripePublishableKey: state.app.settings.stripe_publishable_key,
     paymentDetailsLoaded: state.checkout.paymentDetailsLoaded,
     stripePaymentMethods: state.checkout.stripePaymentMethods || [],
     stripePaymentMethodsLoaded: state.checkout.stripePaymentMethodsLoaded,
@@ -345,7 +341,18 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(
+const CreditCardConnected = connect(
   mapStateToProps,
   mapDispatchToProps,
-)(withTranslation()(CreditCard));
+)(withTranslation()(CreditCardClassComponent));
+
+export default function CreditCard(props) {
+  const stripePublishableKey = useSelector(selectStripePublishableKey);
+
+  //FIXME; if https://github.com/coopcycle/coopcycle-app/issues/1841 still happens, try using 'initStripe' instead of 'StripeProvider'
+  return (
+    <StripeProvider publishableKey={stripePublishableKey}>
+      <CreditCardConnected {...props} />
+    </StripeProvider>
+  );
+}

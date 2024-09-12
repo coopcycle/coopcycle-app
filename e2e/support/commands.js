@@ -175,6 +175,33 @@ export const addProduct = async id => {
   await element(by.id('addProduct')).tap();
 };
 
+const stripeUiElement = (androidLabel, iOSLabel) => {
+  if (device.getPlatform() === 'android') {
+    return element(
+      by.type('android.widget.EditText').withAncestor(by.label(androidLabel)),
+    );
+  } else if (device.getPlatform() === 'ios') {
+    return element(by.label(iOSLabel).and(by.type('UITextField')));
+  } else {
+    throw new Error('Unsupported platform');
+  }
+};
+
+const cardNumberElement = () => stripeUiElement('Card number', 'card number');
+const expirationDateElement = () =>
+  stripeUiElement('Expiration date', 'expiration date');
+const cvvElement = () => stripeUiElement('CVC', 'CVC');
+
+/**
+ * see https://docs.stripe.com/testing for more test card numbers
+ */
+export const enterValidCreditCard = async () => {
+  await cardNumberElement().typeText('4242424242424242');
+  await expirationDateElement().typeText('1228');
+  // Add "\n" to make sure keyboard is hidden
+  await cvvElement().typeText('123\n');
+};
+
 export const closeRestaurantForToday = async (username, password) => {
   try {
     // Get API token

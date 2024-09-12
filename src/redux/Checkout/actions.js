@@ -1242,6 +1242,7 @@ function getPaymentMethod(
   });
 }
 
+//FIXME; maybe we should get rid of this method and rely on Stripe init in CreditCard.js
 function configureStripe(state, paymentDetails = null) {
   let stripeProps = {
     publishableKey: state.app.settings.stripe_publishable_key,
