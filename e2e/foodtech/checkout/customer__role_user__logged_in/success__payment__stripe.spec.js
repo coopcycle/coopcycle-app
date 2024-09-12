@@ -7,112 +7,98 @@ import {
   enterValidCreditCard,
   symfonyConsole,
 } from '../../../support/commands';
-import { describeif } from '../../../utils';
 
-//FIXME: run on iOS too; see Stripe-related issues below
-describeif(device.getPlatform() === 'android')(
-  'checkout for customer with existing account (role - user); logged in; payment - stripe',
-  () => {
-    beforeEach(async () => {
-      await device.reloadReactNative();
+describe('checkout for customer with existing account (role - user); logged in; payment - stripe', () => {
+  beforeEach(async () => {
+    await device.reloadReactNative();
 
-      if (device.getPlatform() === 'android') {
-        symfonyConsole(
-          'coopcycle:fixtures:load -f cypress/fixtures/checkout.yml',
-        );
-        await connectToLocalInstance();
-      } else {
-        //FIXME: run against local instance on iOS too (see https://github.com/coopcycle/coopcycle-ops/issues/97)
-        await connectToSandbox();
-      }
-
-      await authenticateWithCredentials('bob', '12345678');
-    });
-
-    it(`should complete checkout`, async () => {
-      await expect(element(by.id('checkoutAskAddress'))).toBeVisible();
-
-      // Enter address
-      await waitFor(element(by.id('askAddressAutocomplete')))
-        .toExist()
-        .withTimeout(5000);
-      await element(by.id('askAddressAutocomplete')).typeText(
-        '91 rue de rivoli paris',
+    if (device.getPlatform() === 'android') {
+      symfonyConsole(
+        'coopcycle:fixtures:load -f cypress/fixtures/checkout.yml',
       );
-      await element(by.id('placeId:ChIJQ4sJbyFu5kcRbp6Sp6NLnog')).tap();
+      await connectToLocalInstance();
+    } else {
+      //FIXME: run against local instance on iOS too (see https://github.com/coopcycle/coopcycle-ops/issues/97)
+      await connectToSandbox();
+    }
 
-      // List of restaurants
-      await expect(element(by.id('checkoutSearch'))).toBeVisible();
-      await expect(element(by.id('restaurantList'))).toBeVisible();
+    await authenticateWithCredentials('bob', '12345678');
+  });
 
-      // Choose a restaurant
-      await chooseRestaurant('Crazy Hamburger');
+  it(`should complete checkout`, async () => {
+    await expect(element(by.id('checkoutAskAddress'))).toBeVisible();
 
-      // Restaurant page
-      await waitFor(element(by.id('restaurantData')))
-        .toExist()
-        .withTimeout(5000);
-      await waitFor(element(by.id('menuItem:0:0')))
-        .toExist()
-        .withTimeout(5000);
+    // Enter address
+    await waitFor(element(by.id('askAddressAutocomplete')))
+      .toExist()
+      .withTimeout(5000);
+    await element(by.id('askAddressAutocomplete')).typeText(
+      '91 rue de rivoli paris',
+    );
+    await element(by.id('placeId:ChIJQ4sJbyFu5kcRbp6Sp6NLnog')).tap();
 
-      // Add item
-      await addProduct('menuItem:0:0');
+    // List of restaurants
+    await expect(element(by.id('checkoutSearch'))).toBeVisible();
+    await expect(element(by.id('restaurantList'))).toBeVisible();
 
-      // Check if footer is present
-      await waitFor(element(by.id('cartFooter')))
-        .toExist()
-        .withTimeout(5000);
-      await expect(element(by.id('cartFooter'))).toBeVisible();
+    // Choose a restaurant
+    await chooseRestaurant('Crazy Hamburger');
 
-      // Add 2 more items
-      await addProduct('menuItem:0:1');
-      await addProduct('menuItem:1:0');
+    // Restaurant page
+    await waitFor(element(by.id('restaurantData')))
+      .toExist()
+      .withTimeout(5000);
+    await waitFor(element(by.id('menuItem:0:0')))
+      .toExist()
+      .withTimeout(5000);
 
-      await waitFor(element(by.id('cartSubmit')))
-        .toBeVisible()
-        .withTimeout(5000);
-      await element(by.id('cartSubmit')).tap();
+    // Add item
+    await addProduct('menuItem:0:0');
 
-      // Cart summary page
-      await expect(element(by.id('cartSummarySubmit'))).toBeVisible();
+    // Check if footer is present
+    await waitFor(element(by.id('cartFooter')))
+      .toExist()
+      .withTimeout(5000);
+    await expect(element(by.id('cartFooter'))).toBeVisible();
 
-      await element(by.id('cartSummarySubmit')).tap();
+    // Add 2 more items
+    await addProduct('menuItem:0:1');
+    await addProduct('menuItem:1:0');
 
-      // More infos page
-      await expect(element(by.id('checkoutTelephone'))).toBeVisible();
-      await expect(element(by.id('moreInfosSubmit'))).toBeVisible();
+    await waitFor(element(by.id('cartSubmit')))
+      .toBeVisible()
+      .withTimeout(5000);
+    await element(by.id('cartSubmit')).tap();
 
-      // Append "\n" to make sure virtual keybord is hidden after entry
-      // https://github.com/wix/detox/issues/209
-      await element(by.id('checkoutTelephone')).typeText('0612345678');
-      await element(by.id('checkoutTelephone')).typeText('\n');
+    // Cart summary page
+    await expect(element(by.id('cartSummarySubmit'))).toBeVisible();
 
-      await element(by.id('moreInfosSubmit')).tap();
+    await element(by.id('cartSummarySubmit')).tap();
 
-      // FIXME; test payment via Stripe as well
-      //  iOS: Test Failed: View is not hittable at its visible point. Error: View is not visible around point.
-      //    - view point: {100, 25}
-      //    - visible bounds: {{118, 0}, {82, 50}}
-      //    - view bounds: {{-118, 0}, {200, 50}}
-      //   ---
-      //   Error: Error Domain=DetoxErrorDomain Code=0 "View “<StripePaymentsUI.STPFormTextField: 0x7fe7a6649800>” is not visible: View does not pass visibility percent threshold (100)"
-      if (device.getPlatform() !== 'ios') {
-        // Payment page
-        await element(by.id('cardholderName')).typeText('John Doe');
+    // More infos page
+    await expect(element(by.id('checkoutTelephone'))).toBeVisible();
+    await expect(element(by.id('moreInfosSubmit'))).toBeVisible();
 
-        // Tap the credit card input to make sure we can interact with it
-        await element(by.id('creditCardWrapper')).tap();
+    // Append "\n" to make sure virtual keybord is hidden after entry
+    // https://github.com/wix/detox/issues/209
+    await element(by.id('checkoutTelephone')).typeText('0612345678');
+    await element(by.id('checkoutTelephone')).typeText('\n');
 
-        await enterValidCreditCard();
+    await element(by.id('moreInfosSubmit')).tap();
 
-        await element(by.id('creditCardSubmit')).tap();
-      }
+    // Payment page
+    await element(by.id('cardholderName')).typeText('John Doe');
 
-      // Confirmation page
-      await waitFor(element(by.id('orderTimeline')))
-        .toBeVisible()
-        .withTimeout(15000);
-    });
-  },
-);
+    // Tap the credit card input to make sure we can interact with it
+    await element(by.id('creditCardWrapper')).tap();
+
+    await enterValidCreditCard();
+
+    await element(by.id('creditCardSubmit')).tap();
+
+    // Confirmation page
+    await waitFor(element(by.id('orderTimeline')))
+      .toBeVisible()
+      .withTimeout(15000);
+  });
+});
