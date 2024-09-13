@@ -196,6 +196,9 @@ const cvvElement = () => stripeUiElement('CVC', 'CVC');
  * see https://docs.stripe.com/testing for more test card numbers
  */
 export const enterValidCreditCard = async () => {
+  // Tap the credit card input to make sure we can interact with it
+  await cardNumberElement().tap();
+
   await cardNumberElement().typeText('4242424242424242');
   await expirationDateElement().typeText('1228');
   // Add "\n" to make sure keyboard is hidden

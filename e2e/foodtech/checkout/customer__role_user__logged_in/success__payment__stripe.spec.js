@@ -91,9 +91,6 @@ describe('checkout for customer with existing account (role - user); logged in; 
     // Payment page
     await element(by.id('cardholderName')).typeText('John Doe');
 
-    // Tap the credit card input to make sure we can interact with it
-    await element(by.id('creditCardWrapper')).tap();
-
     await enterValidCreditCard();
 
     await element(by.id('creditCardSubmit')).tap();

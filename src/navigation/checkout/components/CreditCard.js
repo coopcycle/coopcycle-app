@@ -227,8 +227,7 @@ class CreditCardClassComponent extends Component {
                       style={[
                         styles.formInputContainer,
                         { paddingHorizontal: 20, marginBottom: 15 },
-                      ]}
-                      testID="creditCardWrapper">
+                      ]}>
                       <ColorSchemeAwareCardField
                         onCardChange={cardDetails => {
                           this.setState({
