@@ -45,6 +45,7 @@ const AskAddress = props => {
       </Box>
       <Box style={{ flex: 2 }} onLayout={onLayout}>
         <AddressAutocomplete
+          testID="askAddressAutocomplete"
           inputContainerStyle={{
             justifyContent: 'center',
             borderWidth: 0,

@@ -47,7 +47,6 @@ import CheckoutLogin from './checkout/Login';
 import CheckoutMercadopago from './checkout/Mercadopago';
 import CheckoutMoreInfos from './checkout/MoreInfos';
 import CheckoutProductDetails from './checkout/ProductDetails';
-import CheckoutShippingDate from './checkout/ShippingDate';
 import CheckoutSummary from './checkout/Summary';
 
 import CheckoutLoopeat from './checkout/Loopeat';
@@ -93,7 +92,6 @@ export default {
   CheckoutProductDetails,
   CheckoutLogin,
   CheckoutSummary,
-  CheckoutShippingDate,
   CheckoutPayment,
   CheckoutMercadopago,
   CheckoutMoreInfos,

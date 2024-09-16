@@ -399,6 +399,9 @@
         "total_packages": "Totala: pakete {{count}}",
         "total_packages_plural": "Totala: {{count}} pakete",
         "RESTAURANT_CLOSED_AND_NOT_AVAILABLE": "Jatetxe hau itxita dago eta ez dago eskuragarri {{ datetime }} arte.",
-        "MULTIPLE_SERVERS_IN_SAME_CITY_MODAL_TEXT": "Kooperatiba bat baino gehiago dago zure hirian, haien artean nabigatu dezakezu erlaitzak erabiliz edo ezker-eskuinera lerratuz."
+        "MULTIPLE_SERVERS_IN_SAME_CITY_MODAL_TEXT": "Kooperatiba bat baino gehiago dago zure hirian, haien artean nabigatu dezakezu erlaitzak erabiliz edo ezker-eskuinera lerratuz.",
+        "ORDER__SHIPPED_AT__NOT_AVAILABLE": "Banaketa-data ez dago eskuragarri dagoeneko",
+        "ORDER__SHIPPED_AT__EXPIRED": "Banaketa-data iraungita dago",
+        "ORDER__SHIPPING_TIME_RANGE__NOT_AVAILABLE": "Ez dago eskuragarri momentuz"
     }
 }

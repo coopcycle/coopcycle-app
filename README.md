@@ -127,16 +127,12 @@ yarn test
 
 Setup: https://wix.github.io/Detox/docs/introduction/environment-setup
 
-Build the app and run tests:
+Build the app:
 
 Android:
 
 ```sh
 detox build -c android.emu.debug
-```
-
-```sh
-detox test -c android.emu.debug
 ```
 
 iOS:
@@ -145,11 +141,40 @@ iOS:
 detox build -c ios.sim.debug
 ```
 
+Run tests:
+
+Android:
+
+```sh
+detox test -c android.emu.debug
+```
+
+iOS:
+
 ```sh
 detox test -c ios.sim.debug
 ```
 
-Make sure that you have emulators set up as specified in `.detoxrc.js` > `devices` or use `--device-name` parameter while running tests. For example: `detox test -c android.emu.debug --device-name="Pixel_8_API_34"`
+Mics
+
+Run a single test:
+
+```sh
+detox test -c ios.sim.debug e2e/foodtech/first_launch.spec.js
+```
+
+Run a single test in debug mode:
+
+```sh
+detox test -c ios.sim.debug --inspect-brk e2e/foodtech/first_launch.spec.js
+```
+
+Make sure that you have emulators set up as specified in `.detoxrc.js` > `devices`
+or use `--device-name` parameter while running tests. For example:
+
+```sh
+detox test -c android.emu.debug --device-name="Pixel_8_API_34" e2e/foodtech/first_launch.spec.js
+```
 
 Troubleshooting
 ---------------

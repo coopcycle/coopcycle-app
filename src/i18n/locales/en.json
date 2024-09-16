@@ -481,7 +481,6 @@
     "DELIVERIES": "Deliveries",
     "APPLE_SIGN_IN_HIDE_MY_EMAIL_ERROR": "Sorry, we canʼt authenticate your account if you choose to hide your email",
     "SOCIAL_SIGN_IN_UNKNOWN_EMAIL": "Sorry, we couldnʼt find an account matching the e-mail associated with your {{provider}} account.",
-    "COMPLETE_TASKS": "Complete tasks",
     "CHECKOUT_LOOPEAT_CONNECT_ACCOUNT": "Connect my {{name}} account",
     "CHECKOUT_LOOPEAT_OPTION_ENABLED": "Zero waste option enabled",
     "CHECKOUT_LOOPEAT_INSUFFICIENT_WALLET_AMOUNT": "Insufficient wallet amount",
@@ -506,6 +505,14 @@
     "EXCLUSIVE": "Exclusive",
     "NEW": "New",
     "RESTAURANT_MORE_INFOS": "More information",
-    "HIDE_INCIDENTS_TASKS": "Hide incidents"
+    "HIDE_INCIDENTS_TASKS": "Hide incidents",
+    "CART_TIME_RANGE_CHANGED_MODAL_TITLE": "Selected time range is no longer available for today anymore",
+    "CART_TIME_RANGE_CHANGED_MODAL_MESSAGE": "The opening hours do not allow the order to be placed today",
+    "CART_TIME_RANGE_CHANGED_MODAL_CHOOSE_TIME_RANGE_TEXT": "Please choose another time range",
+    "CART_TIME_RANGE_CHANGED_MODAL_SELECT_TIME_RANGE_ACTION": "Change delivery time",
+    "CART_TIME_RANGE_CHANGED_MODAL_CHOOSE_RESTAURANT_ACTION": "Choose another restaurant",
+    "ORDER__SHIPPED_AT__NOT_AVAILABLE": "The delivery date is no longer available",
+    "ORDER__SHIPPED_AT__EXPIRED": "The delivery date is expired",
+    "ORDER__SHIPPING_TIME_RANGE__NOT_AVAILABLE": "Not available at the moment"
   }
 }

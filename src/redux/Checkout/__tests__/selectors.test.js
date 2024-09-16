@@ -21,7 +21,6 @@ describe('Redux | Checkout | Selectors', () => {
     expect(
       selectShippingTimeRangeLabel({
         checkout: {
-          timing: {},
           restaurants: [],
           cart: {
             shippingTimeRange: null,
@@ -32,6 +31,7 @@ describe('Redux | Checkout | Selectors', () => {
               restaurant: {
                 '@id': '/api/restaurants/1',
               },
+              timing: {},
             },
           },
         },
@@ -43,12 +43,6 @@ describe('Redux | Checkout | Selectors', () => {
         checkout: {
           restaurants: [],
           restaurant: '/api/restaurants/1',
-          timing: {
-            today: true,
-            fast: true,
-            diff: '35 - 45',
-            range: ['2021-01-29T12:20:00+01:00', '2021-01-29T12:30:00+01:00'],
-          },
           cart: {
             shippingTimeRange: null,
           },
@@ -57,6 +51,12 @@ describe('Redux | Checkout | Selectors', () => {
               cart: { shippingTimeRange: null },
               restaurant: {
                 '@id': '/api/restaurants/1',
+              },
+              timing: {
+                today: true,
+                fast: true,
+                diff: '35 - 45',
+                range: ['2021-01-29T12:20:00+01:00', '2021-01-29T12:30:00+01:00'],
               },
             },
           },
@@ -69,11 +69,6 @@ describe('Redux | Checkout | Selectors', () => {
         checkout: {
           restaurants: [],
           restaurant: '/api/restaurants/1',
-          timing: {
-            today: false,
-            fast: false,
-            range: ['2021-01-29T12:20:00+01:00', '2021-01-29T12:30:00+01:00'],
-          },
           cart: {
             shippingTimeRange: null,
           },
@@ -82,6 +77,11 @@ describe('Redux | Checkout | Selectors', () => {
               cart: { shippingTimeRange: null },
               restaurant: {
                 '@id': '/api/restaurants/1',
+              },
+              timing: {
+                today: false,
+                fast: false,
+                range: ['2021-01-29T12:20:00+01:00', '2021-01-29T12:30:00+01:00'],
               },
             },
           },
@@ -94,11 +94,6 @@ describe('Redux | Checkout | Selectors', () => {
         checkout: {
           restaurants: [],
           restaurant: '/api/restaurants/1',
-          timing: {
-            today: true,
-            fast: false,
-            range: ['2021-01-26T13:30:00+01:00', '2021-01-26T13:40:00+01:00'],
-          },
           cart: {
             shippingTimeRange: null,
           },
@@ -107,6 +102,11 @@ describe('Redux | Checkout | Selectors', () => {
               cart: { shippingTimeRange: null },
               restaurant: {
                 '@id': '/api/restaurants/1',
+              },
+              timing: {
+                today: true,
+                fast: false,
+                range: ['2021-01-26T13:30:00+01:00', '2021-01-26T13:40:00+01:00'],
               },
             },
           },
@@ -119,11 +119,6 @@ describe('Redux | Checkout | Selectors', () => {
         checkout: {
           restaurants: [],
           restaurant: '/api/restaurants/1',
-          timing: {
-            today: true,
-            fast: false,
-            range: ['2021-01-26T13:30:00+01:00', '2021-01-26T13:40:00+01:00'],
-          },
           cart: {
             shippingTimeRange: [
               '2021-01-26T14:30:00+01:00',
@@ -140,6 +135,11 @@ describe('Redux | Checkout | Selectors', () => {
               },
               restaurant: {
                 '@id': '/api/restaurants/1',
+              },
+              timing: {
+                today: true,
+                fast: false,
+                range: ['2021-01-26T13:30:00+01:00', '2021-01-26T13:40:00+01:00'],
               },
             },
           },

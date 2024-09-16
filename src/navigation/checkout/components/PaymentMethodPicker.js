@@ -38,6 +38,7 @@ const PaymentMethodPicker = ({ methods, onSelect, disabled }) => {
           <Pressable
             disabled={disabled}
             key={method.type}
+            testID={`paymentMethod-${method.type}`}
             style={[
               styles.button,
               { backgroundColor: colorMode === 'dark' ? '#3f3f3f' : '#f7f7f7' },

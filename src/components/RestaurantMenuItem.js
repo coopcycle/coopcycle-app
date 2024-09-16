@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const RestaurantMenuItem = ({ item, onPress, isLoading }) => {
+const RestaurantMenuItem = ({ testID, item, onPress, isLoading }) => {
   const enabled = item.hasOwnProperty('enabled') ? item.enabled : true;
   const backgroundColor = useBackgroundContainerColor();
 
@@ -102,7 +102,7 @@ const RestaurantMenuItem = ({ item, onPress, isLoading }) => {
         item.enabled ? null : styles.disabled,
       ]}
       onPress={enabled ? () => onPress(item) : null}
-      testID={`menuItem:${item.sectionIndex}:${item.index}`}>
+      testID={testID}>
       <View style={image1x1 ? styles.imageWrapper : { width: 0 }}>
         {image1x1 && (
           <Image

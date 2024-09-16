@@ -339,6 +339,8 @@
     "TASK_COMPLETE_ALERT_NEGATIVE": "▶ Rozpocznij",
     "TASK_COMPLETE_ALERT_POSITIVE": "✓ Zakończ",
     "TASK_COMPLETE_ALERT_MESSAGE": "Chcesz rozpocząć czy zakończyć zlecenie?",
-    "TASK_COMPLETE_ALERT_TITLE": "Początek czy koniec?"
+    "TASK_COMPLETE_ALERT_TITLE": "Początek czy koniec?",
+    "ORDER__SHIPPED_AT__NOT_AVAILABLE": "Data dostawy nie jest już dostępna",
+    "ORDER__SHIPPED_AT__EXPIRED": "Termin dostawy wygasł"
   }
 }

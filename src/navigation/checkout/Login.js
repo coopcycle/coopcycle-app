@@ -22,6 +22,7 @@ class Login extends Component {
             <View
               style={{ paddingTop: 20, paddingHorizontal: 40, width: '100%' }}>
               <Button
+                testID="guestCheckoutButton"
                 colorScheme="success"
                 onPress={() => this.props.guestModeOn()}>
                 {this.props.t('CHECKOUT_AS_GUEST')}

@@ -1,0 +1,221 @@
+# https://github.com/natario1/CameraView/blob/master/.github/workflows/build.yml
+# https://help.github.com/en/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions
+# https://dev.to/edvinasbartkus/running-react-native-detox-tests-for-ios-and-android-on-github-actions-2ekn
+# https://github.com/wix/Detox/issues/2617
+name: E2E tests, Android
+on: [push]
+jobs:
+  build:
+    # https://github.community/t/how-to-stop-github-actions-workflow-to-trigger-when-the-pull-request-is-from-dependabot-preview/116486
+    if: github.actor != 'dependabot[bot]'
+    name: Build APKs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'yarn'
+
+      - name: Free Disk Space (Ubuntu)
+        uses: jlumbroso/free-disk-space@main
+        with:
+          # all of these default to true, but feel free to set to
+          # "false" if necessary for your workflow
+          # https://github.com/jlumbroso/free-disk-space?tab=readme-ov-file#example
+          android: false
+
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: 'gradle'
+
+      - name: Decode sentry.properties file
+        uses: timheuer/base64-to-file@v1.2
+        with:
+          fileDir: "./android/"
+          fileName: "sentry.properties"
+          encodedString: ${{ secrets.SENTRY_PROPERTIES_BASE64 }}
+
+      - name: Install dependencies (yarn)
+        run: yarn install --no-progress --network-timeout 100000 --network-concurrency 1
+
+      - run: cp google-services.json.dist android/app/google-services.json
+
+      - name: Enable clear text traffic in release builds
+        run: |
+          sudo apt install xmlstarlet
+          xmlstarlet ed --inplace --ps --insert "/manifest/application" --type attr -n "android:usesCleartextTraffic" -v "true" android/app/src/main/AndroidManifest.xml
+
+      - name: Configure .env variables
+        run: |
+          cp .env.dist .env
+          sed -i -e 's/GOOGLE_MAPS_BROWSER_KEY=/GOOGLE_MAPS_BROWSER_KEY=${{ secrets.GOOGLE_MAPS_BROWSER_KEY }}/' .env
+          sed -i -e 's/GOOGLE_MAPS_ANDROID_KEY=/GOOGLE_MAPS_ANDROID_KEY=${{ secrets.GOOGLE_MAPS_ANDROID_KEY }}/' .env
+          sed -i -e 's/FACEBOOK_APP_ID=/FACEBOOK_APP_ID=${{ secrets.FACEBOOK_APP_ID }}/' .env
+          sed -i -e 's/FACEBOOK_CLIENT_TOKEN=/FACEBOOK_CLIENT_TOKEN=${{ secrets.FACEBOOK_CLIENT_TOKEN }}/' .env
+
+      - name: Gradle cache
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: Build app for Detox
+        run: node node_modules/.bin/detox build -c android.emu.release
+        env:
+          googleMapsApiKey: ${{ secrets.googleMapsApiKey }}
+          SENTRY_DISABLE_AUTO_UPLOAD: true
+      - name: Upload App APK
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-official-release.apk
+          path: android/app/build/outputs/apk/official/release/app-official-release.apk
+      - name: Upload Test APK
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-official-release-androidTest.apk
+          path: android/app/build/outputs/apk/androidTest/official/release/app-official-release-androidTest.apk
+
+  test:
+    # https://github.community/t/how-to-stop-github-actions-workflow-to-trigger-when-the-pull-request-is-from-dependabot-preview/116486
+    if: github.actor != 'dependabot[bot]'
+    name: Run Tests on Android Emulator
+    needs: build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./coopcycle-app-repo
+    # local coopcycle-web instance
+    env:
+      STRIPE_PUBLISHABLE_KEY: ${{ secrets.STRIPE_PUBLISHABLE_KEY }}
+      STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
+      STRIPE_CONNECT_CLIENT_ID: ${{ secrets.STRIPE_CONNECT_CLIENT_ID }}
+    strategy:
+      # Allow tests to continue on other devices if they fail on one device.
+      fail-fast: false
+      matrix:
+        EMULATOR_API_LEVEL:
+#          - 21
+          - 28
+#          - 33
+    steps:
+      - name: Set timezone
+        uses: szenius/set-timezone@v2.0
+        with:
+          timezoneLinux: "Europe/Paris"
+      - name: Free Disk Space (Ubuntu)
+        uses: jlumbroso/free-disk-space@main
+        with:
+          # all of these default to true, but feel free to set to
+          # "false" if necessary for your workflow
+          # https://github.com/jlumbroso/free-disk-space?tab=readme-ov-file#example
+          android: false
+
+      - uses: actions/checkout@v3
+        with:
+          path: coopcycle-app-repo
+
+      - name: Run CoopCycle Web
+        uses: ./coopcycle-app-repo/.github/actions/run-coopcycle-web
+
+      - name: Download App APK
+        uses: actions/download-artifact@v4
+        with:
+          name: app-official-release.apk
+          path: coopcycle-app-repo/android/app/build/outputs/apk/official/release
+
+      - name: Download Test APK
+        uses: actions/download-artifact@v4
+        with:
+          name: app-official-release-androidTest.apk
+          path: coopcycle-app-repo/android/app/build/outputs/apk/androidTest/official/release
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'yarn'
+          cache-dependency-path: "coopcycle-app-repo/yarn.lock"
+
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: 'gradle'
+
+      - name: Install dependencies (yarn)
+        run: yarn install --no-progress --network-timeout 100000 --network-concurrency 1
+
+      - name: Enable clear text traffic in release builds
+        run: |
+          sudo apt install xmlstarlet
+          xmlstarlet ed --inplace --ps --insert "/manifest/application" --type attr -n "android:usesCleartextTraffic" -v "true" android/app/src/main/AndroidManifest.xml
+
+      - name: Enable KVM (reactivecircus)
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - run: sudo apt-get install libpulse0
+
+      - name: Gradle cache
+        uses: gradle/actions/setup-gradle@v3
+
+# disable AVD caching for now; trying to solve 'No space left on device.' issue
+#      - name: AVD cache
+#        uses: actions/cache@v4
+#        id: avd-cache
+#        with:
+#          path: |
+#            ~/.android/avd/*
+#            ~/.android/adb*
+#          key: avd-${{ matrix.EMULATOR_API_LEVEL }}
+#
+#      - name: create AVD and generate snapshot for caching
+#        if: steps.avd-cache.outputs.cache-hit != 'true'
+#        uses: reactivecircus/android-emulator-runner@v2
+#        with:
+#          api-level: ${{ matrix.EMULATOR_API_LEVEL }}
+#          target: google_apis
+#          arch: x86_64
+#          profile: pixel_6
+#          force-avd-creation: false
+#          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+#          disable-animations: false
+#          script: echo "Generated AVD snapshot for caching."
+
+      - name: Disk usage (filesystem)
+        run: df -h
+
+      - name: Disk usage
+        run: du -h -a --max-depth=1 | sort -rh
+
+      - name: Run Detox tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: ${{ matrix.EMULATOR_API_LEVEL }}
+          target: default
+          arch: x86_64
+          profile: pixel_6
+          force-avd-creation: false
+          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          disable-animations: true
+          working-directory: coopcycle-app-repo
+          script: |
+            node node_modules/.bin/detox test -c android.emu.release --headless --device-name="test" --loglevel info
+#            node node_modules/.bin/detox test -c android.att.release --device-name="test" --take-screenshots all
+#            node node_modules/.bin/detox test -c android.att.release --device-name="test" --take-screenshots manual -o e2e/screenshots.config.json
+
+#      - name: List emulators
+#        if: false # useful only for debugging
+#        run: avdmanager list avd
+
+      - name: Upload screenshots artifacts
+#        if: github.ref == 'refs/heads/master'
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: detox-screenshots-android
+          path: coopcycle-app-repo/artifacts

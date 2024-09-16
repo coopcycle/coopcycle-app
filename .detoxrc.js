@@ -5,12 +5,21 @@ module.exports = {
       config: 'e2e/jest.config.js',
       _: ['e2e'],
     },
+    retries: 2,
   },
   artifacts: {
     plugins: {
-      screenshot: {
-        shouldTakeAutomaticSnapshots: true,
-      },
+      log: 'failing',
+      screenshot: 'failing',
+      //FIXME: video recording doesn't seem to work
+      video: {
+        android: {
+          "bitRate": 4000000
+        },
+        simulator: {
+          "codec": "hevc"
+        }
+      }
     },
   },
   apps: {

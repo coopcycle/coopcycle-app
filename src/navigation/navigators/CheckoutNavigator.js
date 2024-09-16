@@ -315,13 +315,6 @@ const DefaultNav = () => {
         }}
       />
       <RootStack.Screen
-        name="CheckoutShippingDate"
-        component={screens.CheckoutShippingDate}
-        options={{
-          title: i18n.t('CHECKOUT_SHIPPING_DATE'),
-        }}
-      />
-      <RootStack.Screen
         name="CheckoutSubmitOrder"
         component={SubmitOrderNavigator}
         options={{

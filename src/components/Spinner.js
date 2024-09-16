@@ -1,49 +1,11 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import Spinner from 'react-native-loading-spinner-overlay';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 
-import {
-  selectIsLoading,
-  selectIsSpinnerDelayEnabled,
-} from '../redux/App/selectors';
+import { selectIsLoading } from '../redux/App/selectors';
 
-class SpinnerWrapper extends PureComponent {
-  constructor(props) {
-    super(props);
+export default function SpinnerWrapper() {
+  const isLoading = useSelector(selectIsLoading);
 
-    this.state = {
-      isLoading: props.loading,
-    };
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    if (prevProps.loading !== this.props.loading) {
-      if (this.props.isSpinnerDelayEnabled) {
-        if (prevProps.loading && !this.props.loading) {
-          // https://github.com/joinspontaneous/react-native-loading-spinner-overlay/issues/30
-          setTimeout(
-            () => this.setState({ isLoading: this.props.loading }),
-            250,
-          );
-        } else {
-          this.setState({ isLoading: this.props.loading });
-        }
-      } else {
-        this.setState({ isLoading: this.props.loading });
-      }
-    }
-  }
-
-  render() {
-    return <Spinner visible={this.state.isLoading} />;
-  }
+  return <Spinner visible={isLoading} />;
 }
-
-function mapStateToProps(state) {
-  return {
-    loading: selectIsLoading(state),
-    isSpinnerDelayEnabled: selectIsSpinnerDelayEnabled(state),
-  };
-}
-
-export default connect(mapStateToProps)(SpinnerWrapper);

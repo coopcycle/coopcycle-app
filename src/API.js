@@ -61,6 +61,12 @@ function Client(httpBaseURL, options = {}) {
     this.onTokenRefreshed = () => {};
   }
 
+  if (options.onMaintenance) {
+    this.onMaintenance = options.onMaintenance;
+  } else {
+    this.onMaintenance = () => {};
+  }
+
   // @see https://gist.github.com/Godofbrowser/bf118322301af3fc334437c683887c5f
   // @see https://www.techynovice.com/setting-up-JWT-token-refresh-mechanism-with-axios/
   this.axios.interceptors.response.use(
@@ -171,6 +177,11 @@ Client.prototype.request = function (method, uri, data, options = {}) {
     .catch(error => {
       if (error.response) {
         console.warn(`⬅ ${method} ${uri} | ${error.response.status}`);
+
+        if (error.response?.status === 503) {
+          const message = error.response?.data?.message;
+          this.onMaintenance(message);
+        }
       } else {
         console.warn(`⬅ ${method} ${uri} | ${error.message}`);
       }

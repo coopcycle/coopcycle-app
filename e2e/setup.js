@@ -1,8 +1,6 @@
+import { disablePasswordAutofill, launchApp } from './support/commands';
+
 beforeAll(async () => {
-  await device.launchApp({
-    permissions: {
-      notifications: 'YES',
-      location: 'always',
-    },
-  });
+  await launchApp();
+  disablePasswordAutofill();
 });

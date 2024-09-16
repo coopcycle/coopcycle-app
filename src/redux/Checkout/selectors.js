@@ -7,8 +7,10 @@ import Address from '../../utils/Address';
 import OpeningHoursSpecification from '../../utils/OpeningHoursSpecification';
 import { selectIsAuthenticated, selectUser } from '../App/selectors';
 
+const _selectCarts = state => state.checkout.carts;
+
 export const selectCart = createSelector(
-  state => state.checkout.carts,
+  _selectCarts,
   state => state.checkout.restaurant,
   (carts, restaurant) => {
     if (carts.hasOwnProperty(restaurant)) {
@@ -18,6 +20,8 @@ export const selectCart = createSelector(
       cart: null,
       restaurant: null,
       token: null,
+      timing: null,
+      lastShownTimeRange: null,
     };
   },
 );
@@ -40,7 +44,7 @@ export const selectCartWithHours = createSelector(selectCart, cartContainer => {
 const selectVendorId = (state, vendorId) => vendorId;
 
 export const selectCartByVendor = createSelector(
-  state => state.checkout.carts,
+  _selectCarts,
   selectVendorId,
   (carts, vendor) => {
     if (carts.hasOwnProperty(vendor)) {
@@ -50,13 +54,27 @@ export const selectCartByVendor = createSelector(
       cart: null,
       restaurant: null,
       token: null,
+      timing: null,
+      lastShownTimeRange: null,
     };
   },
 );
 
+export const selectCarts = createSelector(_selectCarts, carts =>
+  _.map(carts, (value, key) => {
+    const openingHoursSpecification = new OpeningHoursSpecification();
+    openingHoursSpecification.openingHours =
+      value.restaurant.openingHoursSpecification;
+    return {
+      ...value,
+      openingHoursSpecification,
+    };
+  }),
+);
+
 export const selectRestaurant = createSelector(
   state => state.checkout.restaurants,
-  state => state.checkout.carts,
+  _selectCarts,
   state => state.checkout.restaurant,
   (restaurants, carts, restaurant) => {
     const restaurantsWithCarts = Object.values(carts).map(c => c.restaurant);
@@ -158,9 +176,8 @@ export const selectCartFulfillmentMethod = createSelector(
 
 export const selectShippingTimeRangeLabel = createSelector(
   selectCartFulfillmentMethod,
-  state => state.checkout.timing,
   selectCart,
-  (fulfillmentMethod, timing, { cart }) => {
+  (fulfillmentMethod, { cart, timing }) => {
     if (_.size(timing) === 0 || !cart) {
       return i18n.t('LOADING');
     }
@@ -238,20 +255,6 @@ export const cartItemsCountBadge = createSelector(
   items => items.length,
 );
 
-export const selectCarts = createSelector(
-  state => state.checkout.carts,
-  carts =>
-    _.map(carts, (value, key) => {
-      const openingHoursSpecification = new OpeningHoursSpecification();
-      openingHoursSpecification.openingHours =
-        value.restaurant.openingHoursSpecification;
-      return {
-        ...value,
-        openingHoursSpecification,
-      };
-    }),
-);
-
 export const selectBillingEmail = createSelector(
   selectIsAuthenticated,
   selectUser,
@@ -298,5 +301,42 @@ export const selectCheckoutAuthorizationHeaders = createSelector(
 export const selectPaymentGateway = createSelector(
   selectCart,
   state => state.app.settings,
-  ({ cart }, settings) => cart?.paymentGateway || settings.payment_gateway
+  ({ cart }, settings) => cart?.paymentGateway || settings.payment_gateway,
 );
+
+export const selectIsValid = state => state.checkout.isValid;
+
+const _selectViolations = state => state.checkout.violations;
+export const selectViolations = createSelector(_selectViolations, violations =>
+  violations.map(v => {
+    switch (v.code) {
+      case 'Order::SHIPPED_AT_NOT_AVAILABLE':
+        return {
+          code: v.code,
+          message: i18n.t('ORDER__SHIPPED_AT__NOT_AVAILABLE'),
+        };
+      case 'Order::SHIPPED_AT_EXPIRED':
+        return {
+          code: v.code,
+          message: i18n.t('ORDER__SHIPPED_AT__EXPIRED'),
+        };
+      case 'Order::SHIPPING_TIME_RANGE_NOT_AVAILABLE':
+        return {
+          code: v.code,
+          message: i18n.t('ORDER__SHIPPING_TIME_RANGE__NOT_AVAILABLE'),
+        };
+      default:
+        return {
+          code: v.code,
+          message: v.message,
+        };
+    }
+  }),
+);
+
+export const selectPaymentDetails = state => state.checkout.paymentDetails;
+
+export const selectIsTimeRangeChangedModalVisible = state =>
+  state.checkout.isTimeRangeChangedModalVisible;
+
+export const selectCheckoutError = state => state.checkout.errors;
