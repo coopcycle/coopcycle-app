@@ -4,7 +4,7 @@ import React from 'react';
 import { ActivityIndicator, StyleSheet, TouchableOpacity } from 'react-native';
 import { useBackgroundContainerColor } from '../styles/theme';
 import { formatPrice } from '../utils/formatting';
-import { DietBadge } from './RestaurantProductBadge';
+import { DietBadge, ZeroWasteBadge } from './RestaurantProductBadge';
 
 const styles = StyleSheet.create({
   menuItem: {
@@ -148,6 +148,11 @@ const RestaurantMenuItem = ({ testID, item, onPress, isLoading }) => {
             ) : diets.length > 0 ? (
               <>
                 <DietBadge name={diets[0]} />
+              </>
+            ) : null}
+            {item.reusablePackagingEnabled ? (
+              <>
+                <ZeroWasteBadge />
               </>
             ) : null}
             <Text pr="2" fontSize="lg" style={styles.price}>{`${formatPrice(
