@@ -41,6 +41,7 @@ import {
   selectViolations,
 } from './selectors';
 import moment from 'moment';
+import { DatadogLogger } from '../../Datadog';
 
 /*
  * Action Types
@@ -997,6 +998,10 @@ export function mercadopagoCheckout(payment) {
 function handlePaymentSuccess(order) {
   return (dispatch, getState) => {
     const { token } = selectCartByVendor(getState(), order.restaurant['@id']);
+
+    DatadogLogger.info(`Order placed`, {
+      order: order.number,
+    });
 
     dispatch(setNewOrder(order, token));
 
