@@ -140,7 +140,7 @@ export default function TimeRangeChangedModal() {
       isVisible={isModalVisible}
       onModalHide={onModalHide}
       onModalShow={() => {
-        tracker.logEvent('Checkout', 'openModal', 'timeRangeChanged');
+        tracker.logEvent('Checkout', 'openTimeRangeChangedModal');
       }}>
       <View
         testID="timeRangeChangedModal"
