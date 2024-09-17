@@ -326,6 +326,7 @@ const DefaultNav = () => {
         component={screens.CheckoutPaymentMethodCard}
         options={{
           title: i18n.t('PAYMENT_METHOD.card'),
+          headerBackTitleVisible: false,
         }}
       />
       <RootStack.Screen
@@ -333,6 +334,7 @@ const DefaultNav = () => {
         component={screens.CheckoutPaymentMethodCashOnDelivery}
         options={{
           title: i18n.t('PAYMENT_METHOD.cash_on_delivery'),
+          headerBackTitleVisible: false,
         }}
       />
       <RootStack.Screen
