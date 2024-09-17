@@ -7,6 +7,7 @@ import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 import { useNavigation } from '@react-navigation/native';
 import Config from 'react-native-config';
+import _ from 'lodash';
 import {
   updateEdenredCredentials,
   loadPaymentDetails,
@@ -42,16 +43,22 @@ const Edenred = ({ clientId, baseURL, cart, paymentDetailsLoaded, loadPaymentDet
         },
         scopes: ['openid', 'edg-xp-mealdelivery-api', 'offline_access'],
         dangerouslyAllowInsecureHttpRequests: __DEV__,
+        useNonce: false,
         usePKCE: false,
       }).then(result => {
         updateEdenredCredentials(result.accessToken, result.refreshToken);
       }).catch(error => {
-        navigation.navigate('CheckoutCreditCard');
+        console.log(error)
+        navigation.navigate('CheckoutPaymentMethodCard');
       });
     }
   }, [ baseURL, cart.hasEdenredCredentials, clientId, loadPaymentDetails, navigation, updateEdenredCredentials, authorizationEndpoint ]);
 
-  if (paymentDetailsLoaded && paymentDetails.breakdown) {
+  if (paymentDetailsLoaded && paymentDetails.payments.length === 2) {
+
+    const cardPayment    = _.find(paymentDetails.payments, p => p.method.code === 'CARD');
+    const edenredPayment = _.find(paymentDetails.payments, p => p.method.code === 'EDENRED')
+
     return (
       <HeaderHeightAwareKeyboardAvoidingView>
         <VStack p="2" flex={1} justifyContent="space-between">
@@ -62,18 +69,18 @@ const Edenred = ({ clientId, baseURL, cart, paymentDetailsLoaded, loadPaymentDet
             </HStack>
             <HStack justifyContent="space-between">
               <Text fontSize="md" fontWeight="bold">{ t('EDENRED_ELIGIBLE_AMOUNT') }</Text>
-              <Text fontSize="md" fontWeight="bold">{ formatPrice(paymentDetails.breakdown.edenred) }</Text>
+              <Text fontSize="md" fontWeight="bold">{ formatPrice(edenredPayment.amount) }</Text>
             </HStack>
             <HStack justifyContent="space-between">
               <Text fontSize="md">{ t('EDENRED_COMPLEMENT') }</Text>
-              <Text fontSize="md">{ formatPrice(paymentDetails.breakdown.card) }</Text>
+              <Text fontSize="md">{ formatPrice(cardPayment.amount) }</Text>
             </HStack>
           </VStack>
           <CreditCard
             cart={ cart }
             errors={ errors }
             shouldLoadPaymentDetails={ false }
-            total={ paymentDetails.breakdown.card }
+            total={ cardPayment.amount }
             onSubmit={ (values) => {
               const { cardholderName, savedCardSelected, saveCard } = values;
               checkout(cardholderName, savedCardSelected, saveCard);
