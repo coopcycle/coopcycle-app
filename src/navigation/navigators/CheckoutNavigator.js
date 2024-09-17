@@ -342,6 +342,7 @@ const DefaultNav = () => {
         component={screens.CheckoutPaymentMethodEdenred}
         options={{
           title: i18n.t('PAYMENT_METHOD.edenred'),
+          headerBackTitleVisible: false,
         }}
       />
       <RootStack.Screen
