@@ -13,14 +13,18 @@ import {
   register,
 } from '../../redux/App/actions';
 
-class Login extends Component {
+class LoginRegister extends Component {
   render() {
     return (
       <AuthenticateContainer>
         {this.props.guestCheckoutEnabled && (
           <>
             <View
-              style={{ paddingTop: 20, paddingHorizontal: 40, width: '100%' }}>
+              style={{
+                paddingTop: 20,
+                paddingHorizontal: 40,
+                width: '100%',
+              }}>
               <Button
                 testID="guestCheckoutButton"
                 colorScheme="success"
@@ -64,7 +68,15 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     login: (email, password, navigate) =>
-      dispatch(login(email, password, navigate)),
+      dispatch(
+        login(
+          email,
+          password,
+          'CheckoutCheckEmail',
+          'CheckoutLoginRegister',
+          navigate,
+        ),
+      ),
     register: data =>
       dispatch(
         register(data, 'CheckoutCheckEmail', 'CheckoutLoginRegister', true),
@@ -77,4 +89,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(withTranslation()(Login));
+)(withTranslation()(LoginRegister));

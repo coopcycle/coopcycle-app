@@ -1451,7 +1451,7 @@ function _assignCustomer(cart, token, { email, telephone }) {
           });
           NavigationHolder.dispatch(
             CommonActions.navigate({
-              name: 'CheckoutLogin',
+              name: 'CheckoutLoginRegister',
             }),
           );
         }

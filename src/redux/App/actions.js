@@ -452,35 +452,57 @@ export function setCurrentRoute(routeName) {
   };
 }
 
-export function login(email, password, navigate = true) {
-  return (dispatch, getState) => {
+function navigateToCheckEmail(email, checkEmailRouteName, loginRouteName) {
+  NavigationHolder.navigate(checkEmailRouteName, {
+    email: email,
+    loginRouteName,
+  });
+}
+
+export function login(
+  email,
+  password,
+  checkEmailRouteName,
+  loginRouteName,
+  navigateOnSuccess,
+) {
+  return async (dispatch, getState) => {
     const { app } = getState();
     const { httpClient } = app;
 
     dispatch(authenticationRequest());
 
-    httpClient
-      .login(email, password)
-      .then(user => dispatch(authenticationSuccess(user)))
-      .then(() => {
-        if (navigate) {
-          // FIXME
-          // Use setTimeout() to let room for loader to hide
-          setTimeout(() => navigateToHome(dispatch, getState), 250);
-        }
-      })
-      .catch(err => {
-        if (err.hasOwnProperty('code') && err.code === 401) {
-          dispatch(
-            loginByEmailErrors({
-              email: i18n.t('INVALID_USER_PASS'),
-              password: i18n.t('INVALID_USER_PASS'),
-            }),
-          );
-        } else {
-          dispatch(authenticationFailure(i18n.t('TRY_LATER')));
-        }
-      });
+    let user = null;
+    try {
+      user = await httpClient.login(email, password);
+    } catch (err) {
+      if (err.hasOwnProperty('code') && err.code === 401) {
+        dispatch(
+          loginByEmailErrors({
+            email: i18n.t('INVALID_USER_PASS'),
+            password: i18n.t('INVALID_USER_PASS'),
+          }),
+        );
+      } else {
+        dispatch(authenticationFailure(i18n.t('TRY_LATER')));
+      }
+      return;
+    }
+
+    if (!user.enabled) {
+      // dispatched only to hide the loader
+      dispatch(authenticationFailure(i18n.t('TRY_LATER')));
+      navigateToCheckEmail(user.email, checkEmailRouteName, loginRouteName);
+      return;
+    }
+
+    dispatch(authenticationSuccess(user));
+
+    if (navigateOnSuccess) {
+      // FIXME
+      // Use setTimeout() to let room for loader to hide
+      setTimeout(() => navigateToHome(dispatch, getState), 250);
+    }
   };
 }
 
@@ -523,10 +545,7 @@ export function register(
           }
 
           // FIXME When using navigation, we can still go back to the filled form
-          NavigationHolder.navigate(checkEmailRouteName, {
-            email: user.email,
-            loginRouteName,
-          });
+          navigateToCheckEmail(user.email, checkEmailRouteName, loginRouteName);
         }
       })
       .catch(err => {
