@@ -1090,7 +1090,7 @@ PODS:
   - React-Mapbuffer (0.73.5):
     - glog
     - React-debug
-  - react-native-app-auth (7.2.0):
+  - react-native-app-auth (8.0.0):
     - AppAuth (>= 1.7.3)
     - React-Core
   - react-native-ble-manager (8.4.4):
@@ -1846,7 +1846,7 @@ SPEC CHECKSUMS:
   React-jsinspector: 32db5e364bcae8fca8cdf8891830636275add0c5
   React-logger: 0331362115f0f5b392bd7ed14636d1a3ea612479
   React-Mapbuffer: 30d796a057e4e077d44b4c2ba17869fb8c1064eb
-  react-native-app-auth: 63fa4e58c5bd29aeb974d3a06a23c5858322d533
+  react-native-app-auth: c4a3b4edc11100070d8d7bc48d55fb66668cead9
   react-native-ble-manager: 5a36276ae7bdc382c6a0716c939024ffeb4e0a48
   react-native-blob-util: 26f1fb0c91f2b437380d4f3875769a7c3e06080e
   react-native-config: d7d8a0c65f7fa523197879f6b777997abbfc987e
