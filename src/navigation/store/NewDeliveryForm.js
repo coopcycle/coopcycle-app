@@ -4,14 +4,20 @@ import moment from 'moment';
 import { Box, Button, HStack, Text, VStack } from 'native-base';
 import React, { useEffect, useState } from 'react';
 import { withTranslation } from 'react-i18next';
-import { InteractionManager, Platform, StyleSheet, View } from 'react-native';
+import {
+  InteractionManager,
+  Platform,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import KeyboardManager from 'react-native-keyboard-manager';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { connect, useDispatch } from 'react-redux';
 
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import {
   createDelivery,
+  loadPackages,
   loadTimeSlot,
   loadTimeSlotChoices,
   loadTimeSlots,
@@ -39,7 +45,7 @@ function NewDelivery(props) {
   const backgroundColor = useBackgroundContainerColor();
   const backgroundHighlightColor = useBackgroundHighlightColor();
   const [selectedChoice, setSelectedChoice] = React.useState(null);
-  const [packages, setPackages] = useState([]);
+  const [packagesCount, setPackagesCount] = useState([]);
   const dispatch = useDispatch();
 
   const {
@@ -51,6 +57,7 @@ function NewDelivery(props) {
     route,
     country,
     choices,
+    packages,
   } = props;
 
   const inputStyles = {
@@ -82,6 +89,7 @@ function NewDelivery(props) {
     InteractionManager.runAfterInteractions(() => {
       dispatch(loadTimeSlots(store));
       dispatch(loadTimeSlot(store));
+      dispatch(loadPackages(store));
     });
     // This will add a "OK" button above keyboard, to dismiss keyboard
     if (Platform.OS === 'ios') {
@@ -98,21 +106,22 @@ function NewDelivery(props) {
   }, [store, dispatch]);
 
   useEffect(() => {
-    setPackages(
-      tempPackages.map(item => {
+    if (!packages) return;
+    setPackagesCount(
+      packages.map(item => {
         return {
-          type: item,
+          name: item.name,
           quantity: 0,
         };
       }),
     );
-  }, []);
+  }, [packages]);
 
   function incrementQuantity(packageType, setFieldTouched) {
     setFieldTouched('packages');
-    setPackages(prev => {
+    setPackagesCount(prev => {
       return prev.map(item => {
-        if (item.type === packageType) {
+        if (item.name === packageType) {
           item.quantity += 1;
         }
         return item;
@@ -122,9 +131,9 @@ function NewDelivery(props) {
 
   function decrementQuantity(packageType, setFieldTouched) {
     setFieldTouched('packages');
-    setPackages(prev => {
+    setPackagesCount(prev => {
       return prev.map(item => {
-        if (item.type === packageType) {
+        if (item.name === packageType) {
           item.quantity -= 1;
         }
         return item;
@@ -156,14 +165,12 @@ function NewDelivery(props) {
         },
         comments: values.comments,
         weight: values.weight * 1000,
-        packages: packages.filter(item => item.quantity > 0),
+        packages: packagesCount.filter(item => item.quantity > 0),
         ...(selectedChoice
           ? { timeSlot: selectedChoice }
           : { before: values.before }),
       },
     };
-
-    console.log(delivery);
 
     dispatch(createDelivery(delivery, () => navigation.navigate('StoreHome')));
   }
@@ -179,7 +186,7 @@ function NewDelivery(props) {
       errors.weight = t('STORE_NEW_DELIVERY_ERROR.EMPTY_WEIGHT');
     }
 
-    if (!packages.some(item => item.quantity) && store.packagesRequired) {
+    if (!packagesCount.some(item => item.quantity) && store.packagesRequired) {
       errors.packages = t('STORE_NEW_DELIVERY_ERROR.EMPTY_PACKAGES');
     }
     return errors;
@@ -361,41 +368,45 @@ function NewDelivery(props) {
                 gap: 16,
                 marginTop: 4,
               }}>
-              {packages.map((item, index) => {
-                return (
-                  <View
-                    style={[
-                      {
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        width: '100%',
-                        gap: 16,
-                        backgroundColor,
-                      },
-                    ]}
-                    key={index}>
-                    <Range
-                      onPress={() => {}}
-                      onPressIncrement={() =>
-                        incrementQuantity(item.type, setFieldTouched)
-                      }
-                      onPressDecrement={() =>
-                        decrementQuantity(item.type, setFieldTouched)
-                      }
-                      quantity={item.quantity}
-                    />
-                    <TouchableOpacity
-                      style={{
-                        flex: 1,
-                      }}
-                      onPress={() =>
-                        incrementQuantity(item.type, setFieldTouched)
-                      }>
-                      <Text>{item.type}</Text>
-                    </TouchableOpacity>
-                  </View>
-                );
-              })}
+              {packages && packages.length ? (
+                packagesCount.map((item, index) => {
+                  return (
+                    <View
+                      style={[
+                        {
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          width: '100%',
+                          gap: 16,
+                          backgroundColor,
+                        },
+                      ]}
+                      key={index}>
+                      <Range
+                        onPress={() => {}}
+                        onPressIncrement={() =>
+                          incrementQuantity(item.name, setFieldTouched)
+                        }
+                        onPressDecrement={() =>
+                          decrementQuantity(item.name, setFieldTouched)
+                        }
+                        quantity={item.quantity}
+                      />
+                      <TouchableOpacity
+                        style={{
+                          flex: 1,
+                        }}
+                        onPress={() =>
+                          incrementQuantity(item.name, setFieldTouched)
+                        }>
+                        <Text>{item.name}</Text>
+                      </TouchableOpacity>
+                    </View>
+                  );
+                })
+              ) : (
+                <Text>{t('STORE_NEW_DELIVERY_NO_PACKAGES')}</Text>
+              )}
             </View>
             {errors.packages && (
               <Text note style={styles.errorText}>
@@ -436,6 +447,7 @@ function mapStateToProps(state) {
   const timeSlots = selectTimeSlots(state);
   const choices = state.store.choices;
   const hasTimeSlot = timeSlots.length > 0;
+  const packages = state.store.packages;
 
   return {
     country: state.app.settings.country.toUpperCase(),
@@ -444,6 +456,7 @@ function mapStateToProps(state) {
     hasTimeSlot,
     timeSlots,
     choices,
+    packages,
   };
 }
 
