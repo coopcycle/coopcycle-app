@@ -837,6 +837,9 @@ export function printOrder(order) {
               Array.from(encoded),
             );
             dispatch(handlePrintFulfilled(order));
+
+            // We consider the print successful if we managed to write to one writable characteristic
+            break;
           } catch (e) {
             dispatch(
               handlePrintRejected(order, `Write failed: ${errorToString(e)}`),
