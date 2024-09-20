@@ -16,7 +16,27 @@ export const INIT_SUCCESS = '@store/INIT_SUCCESS';
 export const LOAD_TIME_SLOTS_SUCCESS = '@store/LOAD_TIME_SLOTS_SUCCESS';
 export const LOAD_TIME_SLOT_CHOICES_SUCCESS =
   '@store/LOAD_TIME_SLOT_CHOICES_SUCCESS';
+export const LOAD_PACKAGES_SUCCESS = '@store/LOAD_PACKAGES_SUCCESS';
 
+export const loadPackagesSuccess = createAction(LOAD_PACKAGES_SUCCESS);
+export function loadPackages(store) {
+  return (dispatch, getState) => {
+    const { app } = getState();
+    const { httpClient } = app;
+
+    dispatch(setLoading(true));
+
+    return httpClient
+      .get(`${store['@id']}/packages`)
+      .then(res => {
+        dispatch(loadPackagesSuccess(res['hydra:member']));
+        dispatch(setLoading(false));
+      })
+      .catch(e => {
+        dispatch(setLoading(false));
+      });
+  };
+}
 export const loadTimeSlotsSuccess = createAction(LOAD_TIME_SLOTS_SUCCESS);
 export function loadTimeSlots(store) {
   return (dispatch, getState) => {

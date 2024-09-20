@@ -4,6 +4,7 @@ import {
   INIT_SUCCESS,
   LOAD_ADDRESSES_SUCCESS,
   LOAD_DELIVERIES_SUCCESS,
+  LOAD_PACKAGES_SUCCESS,
   LOAD_TASKS_SUCCESS,
   LOAD_TIME_SLOTS_SUCCESS,
   LOAD_TIME_SLOT_CHOICES_SUCCESS,
@@ -126,6 +127,12 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         timeSlots: action.payload,
+      };
+
+    case LOAD_PACKAGES_SUCCESS:
+      return {
+        ...state,
+        packages: action.payload,
       };
 
     case LOAD_TASKS_SUCCESS:
