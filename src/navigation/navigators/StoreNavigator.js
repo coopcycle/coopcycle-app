@@ -78,7 +78,12 @@ export default () => (
       component={NewDeliveryNavigator}
       options={{
         title: i18n.t('STORE_NEW_DELIVERY'),
-        headerLeft: props => <HeaderBackButton {...props} />,
+        headerLeft: props => (
+          <HeaderBackButton
+            {...props}
+            onPress={() => NavigationHolder.goBack()}
+          />
+        ),
       }}
     />
   </RootStack.Navigator>
