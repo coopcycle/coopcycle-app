@@ -110,7 +110,7 @@ function NewDelivery(props) {
     setPackagesCount(
       packages.map(item => {
         return {
-          name: item.name,
+          type: item.name,
           quantity: 0,
         };
       }),
@@ -121,7 +121,7 @@ function NewDelivery(props) {
     setFieldTouched('packages');
     setPackagesCount(prev => {
       return prev.map(item => {
-        if (item.name === packageType) {
+        if (item.type === packageType) {
           item.quantity += 1;
         }
         return item;
@@ -133,7 +133,7 @@ function NewDelivery(props) {
     setFieldTouched('packages');
     setPackagesCount(prev => {
       return prev.map(item => {
-        if (item.name === packageType) {
+        if (item.type === packageType) {
           item.quantity -= 1;
         }
         return item;
@@ -385,10 +385,10 @@ function NewDelivery(props) {
                       <Range
                         onPress={() => {}}
                         onPressIncrement={() =>
-                          incrementQuantity(item.name, setFieldTouched)
+                          incrementQuantity(item.type, setFieldTouched)
                         }
                         onPressDecrement={() =>
-                          decrementQuantity(item.name, setFieldTouched)
+                          decrementQuantity(item.type, setFieldTouched)
                         }
                         quantity={item.quantity}
                       />
@@ -397,9 +397,9 @@ function NewDelivery(props) {
                           flex: 1,
                         }}
                         onPress={() =>
-                          incrementQuantity(item.name, setFieldTouched)
+                          incrementQuantity(item.type, setFieldTouched)
                         }>
-                        <Text>{item.name}</Text>
+                        <Text>{item.type}</Text>
                       </TouchableOpacity>
                     </View>
                   );
