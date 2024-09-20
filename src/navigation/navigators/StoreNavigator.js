@@ -4,6 +4,7 @@ import React from 'react';
 import screens, { headerLeft } from '..';
 import HeaderButton from '../../components/HeaderButton';
 import i18n from '../../i18n';
+import NavigationHolder from '../../NavigationHolder';
 import HeaderBackButton from '../store/components/HeaderBackButton';
 import { stackNavigatorScreenOptions } from '../styles';
 
