@@ -111,10 +111,23 @@ yarn android
 
 ### Run the iOS app
 
+On any simulator:
+
 ```sh
 yarn ios
 ```
 
+With a picker to choose a specific simulator:
+
+```sh
+yarn ios --list-devices
+```
+
+On a connected physical device:
+
+```sh
+yarn ios --device
+```
 
 Testing
 -------
