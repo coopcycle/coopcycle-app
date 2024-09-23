@@ -102,6 +102,11 @@
 				<key>NSExceptionAllowsInsecureHTTPLoads</key>
 				<true/>
 			</dict>
+			<key>192.168.*.*</key>
+			<dict>
+			  <key>NSExceptionAllowsInsecureHTTPLoads</key>
+			  <true/>
+			</dict>
 		</dict>
 	</dict>
 	<key>NSBluetoothAlwaysUsageDescription</key>
