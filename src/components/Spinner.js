@@ -6,7 +6,6 @@ import {
   selectIsLoading,
   selectIsSpinnerDelayEnabled,
 } from '../redux/App/selectors';
-import { DdLogs } from '@datadog/mobile-react-native';
 
 class SpinnerWrapper extends PureComponent {
   constructor(props) {
@@ -22,7 +21,6 @@ class SpinnerWrapper extends PureComponent {
       if (this.props.isSpinnerDelayEnabled) {
         // VISIBLE -> HIDDEN
         if (prevProps.loading && !this.props.loading) {
-          DdLogs.warn('Spinner delay is applied');
           // FIXME; why do we need to apply a delay to a spinner itself on top of the delay on a modal/alert to be shown after the spinner?
           // https://github.com/ladjs/react-native-loading-spinner-overlay?tab=readme-ov-file#recommended-implementation
           // https://github.com/joinspontaneous/react-native-loading-spinner-overlay/issues/30
