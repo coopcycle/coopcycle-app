@@ -47,14 +47,15 @@ import {
   SET_BASE_URL,
   SET_CURRENT_ROUTE,
   SET_HTTP_CLIENT,
+  SET_INCIDENT_ENABLED,
   SET_INTERNET_REACHABLE,
   SET_LOADING,
   SET_MODAL,
   SET_SELECT_SERVER_ERROR,
   SET_SERVERS,
   SET_SETTINGS,
-  SET_INCIDENT_ENABLED,
   SET_USER,
+  setSpinnerDelayEnabled,
 } from './actions';
 
 import { EVENT as EVENT_ORDER } from '../../domain/Order';
@@ -108,6 +109,7 @@ const initialState = {
   loadingPrivacyPolicy: false,
   termsAndConditionsText: '',
   privacyPolicyText: '',
+  isSpinnerDelayEnabled: false,
   isIncidentEnabled: true,
 };
 
@@ -441,6 +443,12 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         loadingTerms: false,
+      };
+
+    case setSpinnerDelayEnabled.type:
+      return {
+        ...state,
+        isSpinnerDelayEnabled: action.payload,
       };
 
     case SET_INCIDENT_ENABLED:

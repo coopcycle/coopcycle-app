@@ -11,11 +11,10 @@ import { bootstrap, closeModal, setServers } from '../redux/App/actions';
 
 import Config from 'react-native-config';
 import Modal from 'react-native-modal';
+import { selectIsSpinnerDelayEnabled } from '../redux/App/selectors';
 import Server from './account/components/Server';
 import DrawerNavigator from './navigators/DrawerNavigator';
 import HomeNavigator from './navigators/HomeNavigator';
-
-import * as Sentry from '@sentry/react-native';
 
 import { selectCustomBuild } from '../redux/App/selectors';
 import FullScreenLoadingIndicator from './FullScreenLoadingIndicator';
@@ -68,11 +67,13 @@ class Loading extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.modal !== this.props.modal) {
+      // HIDDEN -> VISIBLE
       if (!prevProps.modal.show && this.props.modal.show) {
         // FIXME; use `useIsModalVisible` when possible
-        // add an extra delay to make sure that the modal is shown after the Spinner is hidden:
-        // // https://github.com/ladjs/react-native-loading-spinner-overlay?tab=readme-ov-file#recommended-implementation
-        setTimeout(() => this.setState({ modal: this.props.modal }), 100);
+        // 100ms see https://github.com/ladjs/react-native-loading-spinner-overlay?tab=readme-ov-file#recommended-implementation
+        // plus add an extra delay to compensate for a delay added in the Spinner.js:
+        const delay = this.props.isSpinnerDelayEnabled ? 500 : 100;
+        setTimeout(() => this.setState({ modal: this.props.modal }), delay);
       } else {
         this.setState({ modal: this.props.modal });
       }
@@ -187,6 +188,7 @@ function mapStateToProps(state) {
     modal: state.app.modal,
     customBuild: selectCustomBuild(state),
     firstRun: state.app.firstRun,
+    isSpinnerDelayEnabled: selectIsSpinnerDelayEnabled(state),
   };
 }
 

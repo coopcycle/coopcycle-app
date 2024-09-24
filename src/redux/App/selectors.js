@@ -74,6 +74,11 @@ export const selectIsLoading = createSelector(
 export const selectIsCentrifugoConnected = state =>
   state.app.isCentrifugoConnected;
 
+export const selectIsCourier = createSelector(
+  selectUser,
+  user => user && user.hasRole('ROLE_COURIER'),
+);
+
 export const selectInitialRouteName = createSelector(
   selectUser,
   state => state.restaurant.myRestaurants,
@@ -161,6 +166,24 @@ export const selectServersWithoutRepeats = createSelector(
       }
       return withoutRepeatsAcc;
     }, []);
+  },
+);
+
+const _selectIsSpinnerDelayEnabled = state =>
+  state.app.isSpinnerDelayEnabled ?? false;
+
+/**
+ * FIXME: the aim is to get rid of the spinner delay: https://github.com/coopcycle/coopcycle-app/issues/1670
+ * However currently the app got stuck sometimes after the task is completed (only on iOS?):
+ * https://github.com/coopcycle/coopcycle-app/issues/1877
+ * https://github.com/facebook/react-native/issues/32329
+ * So temporary put the delay back for the courier role only
+ */
+export const selectIsSpinnerDelayEnabled = createSelector(
+  _selectIsSpinnerDelayEnabled,
+  selectIsCourier,
+  (isSpinnerDelayEnabled, isCourier) => {
+    return isSpinnerDelayEnabled && isCourier;
   },
 );
 
