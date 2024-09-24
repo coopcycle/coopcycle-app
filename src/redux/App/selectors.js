@@ -9,6 +9,7 @@ import { selectIsDispatchFetching } from '../Dispatch/selectors';
 import { EVENT as EVENT_ORDER } from '../../domain/Order';
 import { EVENT as EVENT_TASK_COLLECTION } from '../../domain/TaskCollection';
 import { selectAutoAcceptOrdersEnabled } from '../Restaurant/selectors';
+import { Platform } from 'react-native';
 
 export const selectHttpClient = state => state.app.httpClient;
 
@@ -169,8 +170,8 @@ export const selectServersWithoutRepeats = createSelector(
   },
 );
 
-const _selectIsSpinnerDelayEnabled = state =>
-  state.app.isSpinnerDelayEnabled ?? false;
+const _selectIsSpinnerDelayFeatureFlagEnabled = state =>
+  state.app.isSpinnerDelayEnabled ?? true;
 
 /**
  * FIXME: the aim is to get rid of the spinner delay: https://github.com/coopcycle/coopcycle-app/issues/1670
@@ -180,10 +181,12 @@ const _selectIsSpinnerDelayEnabled = state =>
  * So temporary put the delay back for the courier role only
  */
 export const selectIsSpinnerDelayEnabled = createSelector(
-  _selectIsSpinnerDelayEnabled,
+  _selectIsSpinnerDelayFeatureFlagEnabled,
   selectIsCourier,
-  (isSpinnerDelayEnabled, isCourier) => {
-    return isSpinnerDelayEnabled && isCourier;
+  (isSpinnerDelayFeatureFlagEnabled, isCourier) => {
+    return (
+      isSpinnerDelayFeatureFlagEnabled && isCourier && Platform.OS === 'ios'
+    );
   },
 );
 
@@ -227,4 +230,5 @@ export const selectNotificationsToDisplay = createSelector(
 );
 
 export const selectSettingsLatLng = state => state.app.settings.latlng;
-export const selectStripePublishableKey = state => state.app.settings.stripe_publishable_key;
+export const selectStripePublishableKey = state =>
+  state.app.settings.stripe_publishable_key;

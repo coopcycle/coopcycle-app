@@ -109,7 +109,7 @@ const initialState = {
   loadingPrivacyPolicy: false,
   termsAndConditionsText: '',
   privacyPolicyText: '',
-  isSpinnerDelayEnabled: false,
+  isSpinnerDelayEnabled: true,
   isIncidentEnabled: true,
 };
 
