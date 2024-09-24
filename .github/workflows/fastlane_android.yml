@@ -182,6 +182,8 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: ${{ inputs.app_name }}-release.aab
+      - name: Debug > Display structure of downloaded files
+        run: ls -R
       - name: Convert aab to apk
         id: convert_aab
         uses: mukeshsolanki/bundletool-action@v1.0.0
