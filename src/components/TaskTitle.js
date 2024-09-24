@@ -7,7 +7,7 @@ const TaskTitle = ({ task }) => {
 
   // fallback when task is not defined, not sure if it can happen
   if (!task) {
-    DatadogLogger.warning('Task props in TaskTitle is not defined')
+    DatadogLogger.warn('Task props in TaskTitle is not defined')
     return <>{t('TASK')}</>
   }
 
