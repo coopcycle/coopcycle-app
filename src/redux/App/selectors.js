@@ -9,6 +9,7 @@ import { selectIsDispatchFetching } from '../Dispatch/selectors';
 import { EVENT as EVENT_ORDER } from '../../domain/Order';
 import { EVENT as EVENT_TASK_COLLECTION } from '../../domain/TaskCollection';
 import { selectAutoAcceptOrdersEnabled } from '../Restaurant/selectors';
+import { Platform } from 'react-native';
 
 export const selectHttpClient = state => state.app.httpClient;
 
@@ -73,6 +74,11 @@ export const selectIsLoading = createSelector(
 
 export const selectIsCentrifugoConnected = state =>
   state.app.isCentrifugoConnected;
+
+export const selectIsCourier = createSelector(
+  selectUser,
+  user => user && user.hasRole('ROLE_COURIER'),
+);
 
 export const selectInitialRouteName = createSelector(
   selectUser,
@@ -164,6 +170,26 @@ export const selectServersWithoutRepeats = createSelector(
   },
 );
 
+const _selectIsSpinnerDelayFeatureFlagEnabled = state =>
+  state.app.isSpinnerDelayEnabled ?? true;
+
+/**
+ * FIXME: the aim is to get rid of the spinner delay: https://github.com/coopcycle/coopcycle-app/issues/1670
+ * However currently the app got stuck sometimes after the task is completed (only on iOS?):
+ * https://github.com/coopcycle/coopcycle-app/issues/1877
+ * https://github.com/facebook/react-native/issues/32329
+ * So temporary put the delay back for the courier role only
+ */
+export const selectIsSpinnerDelayEnabled = createSelector(
+  _selectIsSpinnerDelayFeatureFlagEnabled,
+  selectIsCourier,
+  (isSpinnerDelayFeatureFlagEnabled, isCourier) => {
+    return (
+      isSpinnerDelayFeatureFlagEnabled && isCourier && Platform.OS === 'ios'
+    );
+  },
+);
+
 export const selectIsIncidentEnabled = state =>
   state.app.isIncidentEnabled ?? false;
 
@@ -204,4 +230,5 @@ export const selectNotificationsToDisplay = createSelector(
 );
 
 export const selectSettingsLatLng = state => state.app.settings.latlng;
-export const selectStripePublishableKey = state => state.app.settings.stripe_publishable_key;
+export const selectStripePublishableKey = state =>
+  state.app.settings.stripe_publishable_key;
