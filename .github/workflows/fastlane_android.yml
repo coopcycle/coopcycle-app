@@ -182,13 +182,11 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: ${{ inputs.app_name }}_release.aab
-      - name: Debug > Display structure of downloaded files
-        run: ls -R
       - name: Convert aab to apk
         id: convert_aab
         uses: mukeshsolanki/bundletool-action@v1.0.0
         with:
-          aabFile: ${{ inputs.app_name }}_release.aab
+          aabFile: release.aab
           base64Keystore: ${{ secrets.SIGNING_STORE_FILE_BASE64 }}
           keystorePassword: ${{ secrets.SIGNING_STORE_PASSWORD }}
           keystoreAlias: ${{ inputs.keystore_key_alias }}
