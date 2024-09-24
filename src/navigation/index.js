@@ -29,7 +29,6 @@ import AccountDetailsPage from './account/AccountDetailsPage';
 import AccountOrdersPage from './account/AccountOrdersPage';
 import AccountForgotPassword from './account/ForgotPassword';
 import AccountHome from './account/Home';
-import AccountLoginRegister from './account/LoginRegister';
 import AccountOrderPage from './account/Order';
 import AccountRegisterCheckEmail from './account/RegisterCheckEmail';
 import AccountRegisterConfirm from './account/RegisterConfirm';
@@ -43,7 +42,7 @@ import CourierTaskListPage from './courier/TaskListPage';
 import CourierTasksPage from './courier/TasksPage';
 
 import CheckoutPayment from './checkout/Payment';
-import CheckoutLogin from './checkout/Login';
+import CheckoutLoginRegister from './checkout/CheckoutLoginRegister';
 import CheckoutMercadopago from './checkout/Mercadopago';
 import CheckoutMoreInfos from './checkout/MoreInfos';
 import CheckoutProductDetails from './checkout/ProductDetails';
@@ -90,7 +89,7 @@ export default {
   RestaurantPrinter,
   RestaurantLoopeatFormats,
   CheckoutProductDetails,
-  CheckoutLogin,
+  CheckoutLoginRegister,
   CheckoutSummary,
   CheckoutPayment,
   CheckoutMercadopago,
@@ -104,7 +103,6 @@ export default {
   CheckoutPaymentMethodCashOnDelivery,
   CheckoutLoopeat,
   AccountHome,
-  AccountLoginRegister,
   AccountAddressesPage,
   AccountOrdersPage,
   AccountOrderPage,

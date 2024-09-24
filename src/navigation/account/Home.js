@@ -13,7 +13,7 @@ import {
   selectCustomBuild,
   selectIsAuthenticated,
 } from '../../redux/App/selectors';
-import LoginRegister from './LoginRegister';
+import LoginRegister from './AccountLoginRegister';
 import Server from './components/Server';
 import { SafeAreaView } from 'react-native-safe-area-context';
 

@@ -268,7 +268,7 @@ const SubmitOrderNavigator = () => {
           }}>
           <SubmitOrderStack.Screen
             name="CheckoutLoginRegister"
-            component={screens.CheckoutLogin}
+            component={screens.CheckoutLoginRegister}
           />
           <SubmitOrderStack.Screen
             name="CheckoutCheckEmail"
