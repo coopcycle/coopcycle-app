@@ -33,7 +33,7 @@ export const useIsModalVisible = visibilitySelector => {
       // modal is about to be hidden
       setIsModalVisible(false);
     }
-  }, [isVisible, isGlobalLoadingIndicatorVisible, isModalVisible]);
+  }, [isVisible, isGlobalLoadingIndicatorVisible, isSpinnerDelayEnabled, isModalVisible]);
 
   return isModalVisible;
 };
