@@ -1,6 +1,7 @@
 import {
   ASSERT_DELIVERY_ERROR,
   CREATE_DELIVERY_SUCCESS,
+  GET_PRICE_SUCCESS,
   INIT_SUCCESS,
   LOAD_ADDRESSES_SUCCESS,
   LOAD_DELIVERIES_SUCCESS,
@@ -17,6 +18,7 @@ import { LOAD_MY_STORES_SUCCESS } from '../App/actions';
 import { composeWithState } from '../../utils/delivery';
 
 import _ from 'lodash';
+import { formatPrice } from '../../utils/formatting';
 
 const initialState = {
   fetchError: null, // Error object describing the error
@@ -33,6 +35,8 @@ const initialState = {
   timeSlots: [],
   choices: [],
   assertDeliveryError: null,
+  price: null,
+  priceExcludingTax: null,
 };
 
 const replace = (deliveries, delivery, pickup, dropoff) => {
@@ -72,6 +76,14 @@ export default (state = initialState, action = {}) => {
       }
 
       break;
+    case GET_PRICE_SUCCESS:
+      const { amount, tax } = action.payload;
+
+      return {
+        ...state,
+        price: formatPrice(amount),
+        priceExcludingTax: formatPrice(amount - tax.amount),
+      };
     case LOAD_DELIVERIES_SUCCESS:
       const { store, deliveries, pagination } = action.payload;
 

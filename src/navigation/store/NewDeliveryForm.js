@@ -16,7 +16,6 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { connect, useDispatch } from 'react-redux';
 
 import {
-  createDelivery,
   loadPackages,
   loadTimeSlot,
   loadTimeSlotChoices,
@@ -172,7 +171,7 @@ function NewDelivery(props) {
       },
     };
 
-    dispatch(createDelivery(delivery, () => navigation.navigate('StoreHome')));
+    navigation.navigate('StoreNewDeliveryPrice', { delivery });
   }
 
   function validate(values) {
@@ -296,7 +295,7 @@ function NewDelivery(props) {
         setFieldValue,
         setFieldTouched,
       }) => (
-        <ModalFormWrapper handleSubmit={handleSubmit} t={t} isSubmit>
+        <ModalFormWrapper handleSubmit={handleSubmit} t={t}>
           {/* <View style={[styles.formGroup]}>
             <Text style={styles.label}>
               {t('STORE_NEW_DELIVERY_ADDRESS')}
