@@ -313,7 +313,7 @@ export function init(store) {
 
     Promise.all([
       httpClient.get(`${store['@id']}/deliveries?order[dropoff.before]=desc`),
-      httpClient.get(`${store['@id']}/addresses?type=dropoff`),
+      httpClient.get(`${store['@id']}/addresses`),
     ])
       .then(values => {
         const [deliveries, addresses] = values;
