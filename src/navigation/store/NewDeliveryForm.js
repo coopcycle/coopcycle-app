@@ -32,13 +32,6 @@ import ModalFormWrapper from './ModalFormWrapper';
 import FormInput from './components/FormInput';
 import TimeSlotSelector from './components/TimeSlotSelector';
 
-const tempPackages = [
-  'Lorem ipsum',
-  'Dolor',
-  'Sit amet',
-  'Consectetur adipiscing',
-];
-
 function NewDelivery(props) {
   const [isDateTimePickerVisible, setIsDateTimePickerVisible] = useState(false);
   const [selectedTimeSlot, setSelectedTimeSlot] = useState('');
@@ -59,11 +52,6 @@ function NewDelivery(props) {
     choices,
     packages,
   } = props;
-
-  const inputStyles = {
-    backgroundColor,
-    borderColor: backgroundHighlightColor,
-  };
 
   useEffect(() => {
     if (selectedTimeSlot) return;
@@ -297,16 +285,6 @@ function NewDelivery(props) {
         setFieldTouched,
       }) => (
         <ModalFormWrapper handleSubmit={handleSubmit} t={t} isSubmit>
-          {/* <View style={[styles.formGroup]}>
-            <Text style={styles.label}>
-              {t('STORE_NEW_DELIVERY_ADDRESS')}
-            </Text>
-            <FormInput
-              variant="filled"
-              value={delivery?.address.streetAddress}
-              isReadOnly={true}
-            />
-          </View> */}
           {hasTimeSlot ? (
             <TimeSlotSelector
               selectValue={selectedChoice}

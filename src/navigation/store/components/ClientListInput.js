@@ -4,24 +4,10 @@ import AutocompleteInput from 'react-native-autocomplete-input';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import ItemSeparator from '../../../components/ItemSeparator';
 import {
-  useBackgroundColor,
   useBackgroundContainerColor,
-  useBackgroundHighlightColor,
   usePrimaryColor,
 } from '../../../styles/theme';
 import FormInput from './FormInput';
-
-// const shadowStyle = {
-//   shadowColor: '#000',
-//   shadowOffset: {
-//     width: 0,
-//     height: 6,
-//   },
-//   shadowOpacity: 10.39,
-//   shadowRadius: 8.3,
-
-//   elevation: 13,
-// };
 
 export default function ClientListInput({
   addresses,
@@ -31,9 +17,6 @@ export default function ClientListInput({
   const [hideSuggestions, setHideSuggestions] = useState(true);
   const [value, setValue] = useState('');
   const backgroundContainerColor = useBackgroundContainerColor();
-  const backgroundHighlightColor = useBackgroundHighlightColor();
-  const backgroundColor = useBackgroundColor();
-  // const shadowColor = useColorModeValue('rgba(0,0,0,.39)', 'rgba(0,0,0,1)');
   const primaryColor = usePrimaryColor();
 
   function handleFocus() {
@@ -77,7 +60,7 @@ export default function ClientListInput({
           value
             ? addresses.filter(({ name, contactName, streetAddress }) =>
                 [name, contactName, streetAddress].some(field =>
-                  field.toLowerCase().includes(value.toLowerCase()),
+                  field?.toLowerCase().includes(value.toLowerCase()),
                 ),
               )
             : addresses
@@ -101,9 +84,6 @@ export default function ClientListInput({
             borderTopRightRadius: 0,
             marginTop: -1,
             backgroundColor: backgroundContainerColor,
-            // overflow: 'visible',
-
-            // ...{ ...shadowStyle, shadowColor },
           },
           keyboardShouldPersistTaps: 'always',
           keyExtractor: (item, i) => `prediction-${i}`,
@@ -123,7 +103,7 @@ export default function ClientListInput({
                 }}
                 numberOfLines={1}
                 ellipsizeMode="tail">
-                {`${item.item.name} - ${item.item.contactName}`}
+                {`${item.item.name ?? ''} - ${item.item.contactName ?? ''}`}
               </Text>
               <Text
                 style={{
