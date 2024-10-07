@@ -31,6 +31,7 @@ import Modal from 'react-native-modal';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { connect } from 'react-redux';
+import qs from 'qs'
 
 import { useQuery } from 'react-query';
 import ModalContent from '../../components/ModalContent';
@@ -101,7 +102,9 @@ const FailureReasonPicker = ({ task, httpClient, onValueChange }) => {
     if (!isSuccess) {
       return;
     }
-    onValueChange(selectedFailureReason);
+
+    const failureReasonObj = _.find(data['hydra:member'], r => r.code === selectedFailureReason)
+    onValueChange(selectedFailureReason, failureReasonObj);
   }, [selectedFailureReason, onValueChange, isSuccess]);
 
   if (isError) {
@@ -120,6 +123,44 @@ const FailureReasonPicker = ({ task, httpClient, onValueChange }) => {
   );
 };
 
+const FailureReasonForm = ({ data }) => {
+
+  const asQueryString = data.map(v => `${v.name}=${v.value}`).join('&')
+  const initialValues = qs.parse(asQueryString);
+
+  return (
+    <Formik
+      initialValues={ initialValues }
+      validate={ values => console.log('VALIDATE', values) }
+      // onSubmit={ () => console.log('SUBMIT') }
+      validateOnBlur={ true }
+      validateOnChange={ true }>
+      {({
+        handleChange,
+        handleBlur,
+        values,
+        errors,
+        setFieldValue,
+      }) => data.map((item) => {
+
+        if (item.type === 'hidden') {
+          return null
+        }
+
+        return (
+          <FormControl p="3" key={ item.name }>
+            <FormControl.Label>{ item.label }</FormControl.Label>
+            <Input
+              defaultValue={ item.value.toString() }
+              keyboardType={ item.type === 'number' ? 'number-pad' : 'default' }
+              onChangeText={ handleChange(item.name) }
+              onBlur={ handleBlur(item.name) } />
+          </FormControl>
+        )
+      })}</Formik>
+  )
+}
+
 class CompleteTask extends Component {
   constructor(props) {
     super(props);
@@ -131,6 +172,7 @@ class CompleteTask extends Component {
       contactName: '',
       isKeyboardVisible: false,
       validateTaskAfterReport: false,
+      failureReasonFormData: [],
     };
   }
 
@@ -387,10 +429,17 @@ class CompleteTask extends Component {
                     <FailureReasonPicker
                       task={task}
                       httpClient={this.props.httpClient}
-                      onValueChange={failureReason =>
-                        this.setState({ failureReason })
-                      }
+                      onValueChange={(code, obj) => {
+                        if (obj && obj.form_data) {
+                          this.setState({ failureReasonFormData: obj.form_data })
+                        } else {
+                          this.setState({ failureReasonFormData: [] })
+                        }
+                        this.setState({ failureReason: code })
+                      }}
                     />
+                    { (Array.isArray(this.state.failureReasonFormData) && this.state.failureReasonFormData.length > 0) ?
+                      <FailureReasonForm data={ this.state.failureReasonFormData } /> : null }
                   </FormControl>
                 )}
                 <FormControl p="3">
