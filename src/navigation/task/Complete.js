@@ -91,7 +91,7 @@ const FailureReasonPicker = ({ task, httpClient, onValueChange }) => {
     if (!isSuccess) {
       return null;
     }
-    return data['hydra:member'].map((value, index) => (
+    return _.sortBy(data['hydra:member'], ['description']).map((value, index) => (
       <Picker.Item key={index} value={value.code} label={value.description} />
     ));
   }, [data, isSuccess]);
