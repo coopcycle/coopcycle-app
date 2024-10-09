@@ -19,6 +19,7 @@ import React, { Component, useEffect, useMemo, useState } from 'react';
 import { withTranslation } from 'react-i18next';
 import {
   Dimensions,
+  FlatList,
   Image,
   Keyboard,
   Platform,
@@ -136,7 +137,9 @@ const FailureReasonForm = ({ data, onChange }) => {
     <Formik
       initialValues={ initialValues }
       // We use validate as a change handler
-      validate={ values => onChange(values) }
+      validate={ values => {
+        onChange(values)
+      }}
       validateOnBlur={ true }
       validateOnChange={ true }>
       {({
@@ -145,23 +148,26 @@ const FailureReasonForm = ({ data, onChange }) => {
         values,
         errors,
         setFieldValue,
-      }) => data.map((item) => {
+      }) =>
+        <FlatList
+          data={ _.filter(data, item => item.type !== 'hidden') }
+          keyExtractor={ item => item.name }
+          renderItem={({ item }) => {
 
-        if (item.type === 'hidden') {
-          return null
-        }
-
-        return (
-          <FormControl p="3" key={ item.name }>
-            <FormControl.Label>{ item.label }</FormControl.Label>
-            <Input
-              defaultValue={ item.value.toString() }
-              keyboardType={ item.type === 'number' ? 'number-pad' : 'default' }
-              onChangeText={ handleChange(item.name) }
-              onBlur={ handleBlur(item.name) } />
-          </FormControl>
-        )
-      })}</Formik>
+            return (
+              <FormControl mb="2" key={ item.name }>
+                <FormControl.Label>{ item.label }</FormControl.Label>
+                <Input
+                  defaultValue={ item.value.toString() }
+                  keyboardType={ item.type === 'number' ? 'number-pad' : 'default' }
+                  onChangeText={ handleChange(item.name) }
+                  onBlur={ handleBlur(item.name) } />
+              </FormControl>
+            )
+          }}
+        />
+      }
+    </Formik>
   )
 }
 
@@ -453,7 +459,9 @@ class CompleteTask extends Component {
                     { (Array.isArray(this.state.failureReasonMetadata) && this.state.failureReasonMetadata.length > 0) ?
                     <FailureReasonForm
                       data={ this.state.failureReasonMetadata }
-                      onChange={ metadata => console.log('METADATA changed', metadata) } /> : null }
+                      onChange={ metadata => {
+                        this.setState({ failureReasonMetadataToSend: metadata })
+                      }} /> : null }
                   </FormControl>
                 )}
                 <FormControl p="3">
@@ -654,9 +662,9 @@ function mapDispatchToProps(dispatch) {
       dispatch(markTaskDone(task, notes, onSuccess, contactName)),
     markTasksDone: (tasks, notes, onSuccess, contactName) =>
       dispatch(markTasksDone(tasks, notes, onSuccess, contactName)),
-    reportIncident: (task, notes, failureReasonCode, failureReasonMetadata, onSuccess) =>
+    reportIncident: (task, notes, failureReasonCode, metadata, onSuccess) =>
       dispatch(
-        reportIncident(task, notes, failureReasonCode, failureReasonMetadata, onSuccess),
+        reportIncident(task, notes, failureReasonCode, metadata, onSuccess),
       ),
     deleteSignatureAt: index => dispatch(deleteSignatureAt(index)),
     deletePictureAt: index => dispatch(deletePictureAt(index)),
