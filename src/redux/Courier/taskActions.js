@@ -268,6 +268,7 @@ export function reportIncident(
   task,
   description = null,
   failureReasonCode = null,
+  failureReasonMetadata = [],
   onSuccess,
 ) {
   return function (dispatch, getState) {
@@ -277,6 +278,7 @@ export function reportIncident(
     let payload = {
       description,
       failureReasonCode,
+      metadata: failureReasonMetadata,
       task: task['@id']
     };
 

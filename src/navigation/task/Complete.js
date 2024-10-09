@@ -123,16 +123,20 @@ const FailureReasonPicker = ({ task, httpClient, onValueChange }) => {
   );
 };
 
-const FailureReasonForm = ({ data }) => {
+const FailureReasonForm = ({ data, onChange }) => {
 
   const asQueryString = data.map(v => `${v.name}=${v.value}`).join('&')
   const initialValues = qs.parse(asQueryString);
 
+  useEffect(() => {
+    onChange(initialValues)
+  }, [data])
+
   return (
     <Formik
       initialValues={ initialValues }
-      validate={ values => console.log('VALIDATE', values) }
-      // onSubmit={ () => console.log('SUBMIT') }
+      // We use validate as a change handler
+      validate={ values => onChange(values) }
       validateOnBlur={ true }
       validateOnChange={ true }>
       {({
@@ -172,7 +176,8 @@ class CompleteTask extends Component {
       contactName: '',
       isKeyboardVisible: false,
       validateTaskAfterReport: false,
-      failureReasonFormData: [],
+      failureReasonMetadata: [],
+      failureReasonMetadataToSend: [],
     };
   }
 
@@ -253,12 +258,13 @@ class CompleteTask extends Component {
 
   reportIncident() {
     const task = this.props.route.params?.task;
-    const { notes, failureReason } = this.state;
+    const { notes, failureReason, failureReasonMetadataToSend } = this.state;
 
     this.props.reportIncident(
       task,
       notes,
       failureReason,
+      failureReasonMetadataToSend,
       () => {
         if (this.state.validateTaskAfterReport) {
           this.markTaskDone();
@@ -430,16 +436,24 @@ class CompleteTask extends Component {
                       task={task}
                       httpClient={this.props.httpClient}
                       onValueChange={(code, obj) => {
-                        if (obj && obj.form_data) {
-                          this.setState({ failureReasonFormData: obj.form_data })
+                        if (obj && obj.metadata) {
+                          this.setState({
+                            failureReasonMetadata: obj.metadata,
+                            failureReasonMetadataToSend: []
+                          })
                         } else {
-                          this.setState({ failureReasonFormData: [] })
+                          this.setState({
+                            failureReasonMetadata: [],
+                            failureReasonMetadataToSend: []
+                          })
                         }
                         this.setState({ failureReason: code })
                       }}
                     />
-                    { (Array.isArray(this.state.failureReasonFormData) && this.state.failureReasonFormData.length > 0) ?
-                      <FailureReasonForm data={ this.state.failureReasonFormData } /> : null }
+                    { (Array.isArray(this.state.failureReasonMetadata) && this.state.failureReasonMetadata.length > 0) ?
+                    <FailureReasonForm
+                      data={ this.state.failureReasonMetadata }
+                      onChange={ metadata => console.log('METADATA changed', metadata) } /> : null }
                   </FormControl>
                 )}
                 <FormControl p="3">
@@ -640,9 +654,9 @@ function mapDispatchToProps(dispatch) {
       dispatch(markTaskDone(task, notes, onSuccess, contactName)),
     markTasksDone: (tasks, notes, onSuccess, contactName) =>
       dispatch(markTasksDone(tasks, notes, onSuccess, contactName)),
-    reportIncident: (task, notes, failureReasonCode, onSuccess) =>
+    reportIncident: (task, notes, failureReasonCode, failureReasonMetadata, onSuccess) =>
       dispatch(
-        reportIncident(task, notes, failureReasonCode, onSuccess),
+        reportIncident(task, notes, failureReasonCode, failureReasonMetadata, onSuccess),
       ),
     deleteSignatureAt: index => dispatch(deleteSignatureAt(index)),
     deletePictureAt: index => dispatch(deletePictureAt(index)),
