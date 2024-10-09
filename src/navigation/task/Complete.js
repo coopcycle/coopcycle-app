@@ -322,9 +322,7 @@ class CompleteTask extends Component {
       : this.props.t('REPORT_INCIDENT');
     const onPress = success
       ? this.markTaskDone.bind(this)
-      : this.props.isIncidentEnabled
-        ? this.reportIncident.bind(this)
-        : this.markTaskFailed.bind(this);
+      : this.reportIncident.bind(this);
 
     const contactName = this.resolveContactName();
 
@@ -400,7 +398,7 @@ class CompleteTask extends Component {
                     totalLines={2}
                     onChangeText={text => this.setState({ notes: text })}
                   />
-                  {!success && this.props.isIncidentEnabled && (
+                  {!success && (
                     <FormControl p="3">
                       <Button
                         bg={
@@ -577,7 +575,6 @@ function mapStateToProps(state) {
     taskCompleteError: selectIsTaskCompleteFailure(state),
     signatures: selectSignatures(state),
     pictures: selectPictures(state),
-    isIncidentEnabled: selectIsIncidentEnabled(state),
   };
 }
 
