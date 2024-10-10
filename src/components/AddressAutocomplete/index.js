@@ -4,12 +4,12 @@ import { AbortController } from 'abortcontroller-polyfill/dist/cjs-ponyfill';
 import axios from 'axios';
 import Fuse from 'fuse.js';
 import _ from 'lodash';
-import { Icon, Input, Text, useColorModeValue } from 'native-base';
+import { Icon, Input, Text, useColorModeValue, View } from 'native-base';
 import PropTypes from 'prop-types';
 import qs from 'qs';
 import React, { useCallback, useState } from 'react';
 import { withTranslation } from 'react-i18next';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 import Autocomplete from 'react-native-autocomplete-input';
 import Config from 'react-native-config';
 import 'react-native-get-random-values';
@@ -341,43 +341,45 @@ function AddressAutocomplete(props) {
   }
 
   return (
-    <Autocomplete
-      autoCompleteType="off"
-      autoCapitalize="none"
-      autoCorrect={false}
-      clearButtonMode="while-editing"
-      {...otherProps}
-      data={results}
-      value={query}
-      placeholder={finalPlaceholder}
-      onChangeText={onChangeText}
-      flatListProps={{
-        style: {
-          margin: 0, // reset default margins on Android
+    <View style={styles.autocompleteContainer}>
+      <Autocomplete
+        autoCompleteType="off"
+        autoCapitalize="none"
+        autoCorrect={false}
+        clearButtonMode="while-editing"
+        {...otherProps}
+        data={results}
+        value={query}
+        placeholder={finalPlaceholder}
+        onChangeText={onChangeText}
+        flatListProps={{
+          style: {
+            margin: 0, // reset default margins on Android
+            backgroundColor: props.controlBackgroundColor,
+          },
+          keyboardShouldPersistTaps: 'always',
+          keyExtractor: (item, i) => `prediction-${i}`,
+          renderItem: renderItem, // Use the renderItem method (either passed as a prop or defined in your hook)
+          ItemSeparatorComponent: ItemSeparator,
+          ListFooterComponent:
+            props.country === 'gb'
+              ? PoweredByIdealPostcodes(styles.poweredContainer)
+              : PoweredByGoogle(styles.poweredContainer),
+          ...flatListProps,
+        }}
+        renderTextInput={inputProps => renderTextInput(inputProps)}
+        style={{
+          color: props.baseTextColor,
           backgroundColor: props.controlBackgroundColor,
-        },
-        keyboardShouldPersistTaps: 'always',
-        keyExtractor: (item, i) => `prediction-${i}`,
-        renderItem: renderItem, // Use the renderItem method (either passed as a prop or defined in your hook)
-        ItemSeparatorComponent: ItemSeparator,
-        ListFooterComponent:
-          props.country === 'gb'
-            ? PoweredByIdealPostcodes(styles.poweredContainer)
-            : PoweredByGoogle(styles.poweredContainer),
-        ...flatListProps,
-      }}
-      renderTextInput={inputProps => renderTextInput(inputProps)}
-      style={{
-        color: props.baseTextColor,
-        backgroundColor: props.controlBackgroundColor,
-        borderColor: '#b9b9b9',
-        borderRadius: 20,
-        paddingVertical: 8,
-        paddingHorizontal: 15,
-        borderWidth: 1,
-        ...style,
-      }}
-    />
+          borderColor: '#b9b9b9',
+          borderRadius: 20,
+          paddingVertical: 8,
+          paddingHorizontal: 15,
+          borderWidth: 1,
+          ...style,
+        }}
+      />
+    </View>
   );
 }
 
@@ -409,6 +411,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
+  autocompleteContainer: {
+    flex: 1,
+    left: 0,
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    zIndex: 1
+  }
 });
 
 function mapStateToProps(state) {
