@@ -213,6 +213,19 @@ const ContactNameModal = ({ isVisible, onSwipeComplete, initialValues, onSubmit 
   )
 }
 
+function resolveContactName(contactName, task, tasks) {
+
+  if (!_.isEmpty(contactName)) {
+    return contactName;
+  }
+
+  if (!task && tasks && tasks.length > 0) {
+    task = tasks[0];
+  }
+
+  return !_.isEmpty(task.address.contactName) ? task.address.contactName : '';
+}
+
 class CompleteTask extends Component {
   constructor(props) {
     super(props);
@@ -334,21 +347,6 @@ class CompleteTask extends Component {
     });
   }
 
-  resolveContactName() {
-    let task = this.props.route.params?.task;
-    const tasks = this.props.route.params?.tasks;
-
-    if (!task && tasks && tasks.length) {
-      task = tasks[0];
-    }
-
-    if (!_.isEmpty(this.state.contactName)) {
-      return this.state.contactName;
-    }
-
-    return !_.isEmpty(task.address.contactName) ? task.address.contactName : '';
-  }
-
   componentDidMount() {
     this.showSubscription = Keyboard.addListener('keyboardDidShow', () => {
       this.setState({ isKeyboardVisible: true });
@@ -384,7 +382,7 @@ class CompleteTask extends Component {
         ? this.reportIncident.bind(this)
         : this.markTaskFailed.bind(this);
 
-    const contactName = this.resolveContactName();
+    const contactName = resolveContactName(this.state.contactName, task, tasks);
 
     const initialValues = {
       contactName,
