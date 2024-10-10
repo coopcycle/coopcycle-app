@@ -72,7 +72,6 @@ function NewDelivery(props) {
     };
 
     assertDelivery(delivery, () => {
-      console.log('here')
       setValidAddress(true);
     });
   }
@@ -216,7 +215,7 @@ function NewDelivery(props) {
                 _focus={{ borderColor: primaryColor }}
               />
             </View>
-            {errors.address && touched.address && (
+            {errors.address && !validAddress && touched.address && (
               <Text note style={styles.errorText}>
                 {errors.address}
               </Text>
@@ -365,8 +364,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    assertDelivery: (delivery, onSuccess) =>
-      dispatch(assertDelivery(delivery, onSuccess)),
+    assertDelivery: (delivery, onSuccess) => dispatch(assertDelivery(delivery, onSuccess)),
   };
 }
 
