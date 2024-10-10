@@ -1,6 +1,6 @@
-import { Text } from 'native-base';
+import { Text, View } from 'native-base';
 import { useState } from 'react';
-import AutocompleteInput from 'react-native-autocomplete-input';
+import Autocomplete from 'react-native-autocomplete-input';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import ItemSeparator from '../../../components/ItemSeparator';
 import {
@@ -8,6 +8,7 @@ import {
   usePrimaryColor,
 } from '../../../styles/theme';
 import FormInput from './FormInput';
+import { StyleSheet } from 'react-native';
 
 export default function ClientListInput({
   addresses,
@@ -52,9 +53,20 @@ export default function ClientListInput({
     setValue('');
   }
 
+  const styles = StyleSheet.create({
+    autocompleteContainer: {
+      flex: 1,
+      left: 0,
+      position: 'absolute',
+      right: 0,
+      top: 0,
+      zIndex: 1
+    }
+  });
+
   return (
-    <>
-      <AutocompleteInput
+    <View style={styles.autocompleteContainer}>
+      <Autocomplete
         hideResults={hideSuggestions}
         data={
           value
@@ -123,6 +135,6 @@ export default function ClientListInput({
         }}
         style={{}}
       />
-    </>
+    </View>
   );
 }
