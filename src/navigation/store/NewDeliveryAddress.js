@@ -19,7 +19,7 @@ import FormInput from './components/FormInput';
 import ModalFormWrapper from './ModalFormWrapper';
 
 function NewDelivery(props) {
-  const [validAddresses, setValidAddresses] = useState(false);
+  const [validAddress, setValidAddress] = useState(false);
   const [address, setAddress] = useState(null);
   const backgroundColor = useBackgroundContainerColor();
   const backgroundHighlightColor = useBackgroundHighlightColor();
@@ -72,7 +72,8 @@ function NewDelivery(props) {
     };
 
     assertDelivery(delivery, () => {
-      setValidAddresses(true);
+      console.log('here')
+      setValidAddress(true);
     });
   }
 
@@ -115,7 +116,7 @@ function NewDelivery(props) {
       errors.contactName = t('STORE_NEW_DELIVERY_ERROR.EMPTY_CONTACT_NAME');
     }
 
-    if (!validAddresses) {
+    if (!validAddress) {
       errors.address = t('STORE_NEW_DELIVERY_ADDRESS_HELP');
     }
 
@@ -175,7 +176,7 @@ function NewDelivery(props) {
             <ClientListInput
               onSelectAddress={a => {
                 setAddressData(a, setFieldValue);
-                setValidAddresses(true);
+                setValidAddress(true);
               }}
               addresses={addresses}
               placeholder={t('STORE_NEW_DELIVERY_ENTER_SEARCH_CLIENT')}
@@ -184,14 +185,14 @@ function NewDelivery(props) {
           <View style={[styles.formGroup, { zIndex: 1 }]}>
             <Text style={styles.label}>
               {t('STORE_NEW_DELIVERY_ADDRESS')}
-              {validAddresses && ' ✓'}
+              {validAddress && ' ✓'}
             </Text>
             <View style={styles.autocompleteContainer}>
               <AddressAutocomplete
                 key={address?.streetAddress ?? ''}
                 addresses={addresses}
                 onChangeText={() => {
-                  if (validAddresses) setValidAddresses(false);
+                  if (validAddress) setValidAddress(false);
                   handleChange('address');
                 }}
                 onBlur={handleBlur('address')}
