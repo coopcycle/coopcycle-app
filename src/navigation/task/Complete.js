@@ -39,7 +39,6 @@ import {
   deletePictureAt,
   deleteSignatureAt,
   markTaskDone,
-  markTaskFailed,
   markTasksDone,
   selectIsTaskCompleteFailure,
   selectPictures,
@@ -187,26 +186,6 @@ class CompleteTask extends Component {
         this.state.contactName,
       );
     }
-  }
-
-  markTaskFailed() {
-    const task = this.props.route.params?.task;
-    const { notes, failureReason } = this.state;
-
-    this.props.markTaskFailed(
-      task,
-      notes,
-      failureReason,
-      () => {
-        // Make sure to use merge = true, so that it doesn't break
-        // when navigating to DispatchTaskList
-        this.props.navigation.navigate({
-          name: this.props.route.params?.navigateAfter,
-          merge: true,
-        });
-      },
-      this.state.contactName,
-    );
   }
 
   reportIncident() {
@@ -580,10 +559,6 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    markTaskFailed: (task, notes, reason, onSuccess, contactName) =>
-      dispatch(
-        markTaskFailed(task, notes, reason, onSuccess, contactName),
-      ),
     markTaskDone: (task, notes, onSuccess, contactName) =>
       dispatch(markTaskDone(task, notes, onSuccess, contactName)),
     markTasksDone: (tasks, notes, onSuccess, contactName) =>
