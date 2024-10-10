@@ -15,8 +15,8 @@ import {
   TextArea,
   VStack,
 } from 'native-base';
-import React, { Component, useEffect, useMemo, useState } from 'react';
-import { withTranslation, useTranslation } from 'react-i18next';
+import React, { useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Dimensions,
   Image,
@@ -31,6 +31,7 @@ import Modal from 'react-native-modal';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { connect } from 'react-redux';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
 import { useQuery } from 'react-query';
 import ModalContent from '../../components/ModalContent';
@@ -226,327 +227,302 @@ function resolveContactName(contactName, task, tasks) {
   return !_.isEmpty(task.address.contactName) ? task.address.contactName : '';
 }
 
-class CompleteTask extends Component {
-  constructor(props) {
-    super(props);
+function doMarkTaskDone(task, tasks, notes, contactName, markTaskDone, markTasksDone, navigation, route) {
 
-    this.state = {
-      notes: '',
-      failureReason: null,
-      isContactNameModalVisible: false,
-      contactName: '',
-      isKeyboardVisible: false,
-      validateTaskAfterReport: false,
-    };
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    if (this.state.failureReason !== nextState.failureReason) return true;
-
-    if (
-      this.state.validateTaskAfterReport !== nextState.validateTaskAfterReport
-    )
-      return true;
-
-    if (this.props.signatures.length !== nextProps.signatures.length)
-      return true;
-
-    if (this.props.pictures.length !== nextProps.pictures.length) return true;
-
-    if (this.state.isContactNameModalVisible !== nextState.isContactNameModalVisible)
-      return true;
-
-    if (this.state.isKeyboardVisible !== nextState.isKeyboardVisible) return true;
-
-    return false;
-  }
-
-  markTaskDone() {
-    const task = this.props.route.params?.task;
-    const tasks = this.props.route.params?.tasks;
-    const { notes } = this.state;
-
+  return () => {
     if (tasks && tasks.length) {
-      this.props.markTasksDone(
+      markTasksDone(
         tasks,
         notes,
         () => {
-          this.props.navigation.navigate({
-            name: this.props.route.params?.navigateAfter,
+          navigation.navigate({
+            name: route.params?.navigateAfter,
             merge: true,
           });
         },
-        this.state.contactName,
+        contactName,
       );
     } else {
-      this.props.markTaskDone(
+      markTaskDone(
         task,
         notes,
         () => {
           // Make sure to use merge = true, so that it doesn't break
           // when navigating to DispatchTaskList
-          this.props.navigation.navigate({
-            name: this.props.route.params?.navigateAfter,
+          navigation.navigate({
+            name: route.params?.navigateAfter,
             merge: true,
           });
         },
-        this.state.contactName,
+        contactName,
       );
     }
   }
+}
 
-  markTaskFailed() {
-    const task = this.props.route.params?.task;
-    const { notes, failureReason } = this.state;
+function doMarkTaskFailed(task, notes, failureReason, contactName, markTaskFailed, navigation, route) {
 
-    this.props.markTaskFailed(
+  return () => {
+
+    markTaskFailed(
       task,
       notes,
       failureReason,
       () => {
         // Make sure to use merge = true, so that it doesn't break
         // when navigating to DispatchTaskList
-        this.props.navigation.navigate({
-          name: this.props.route.params?.navigateAfter,
+        navigation.navigate({
+          name: route.params?.navigateAfter,
           merge: true,
         });
       },
-      this.state.contactName,
+      contactName,
     );
   }
+}
 
-  reportIncident() {
-    const task = this.props.route.params?.task;
-    const { notes, failureReason } = this.state;
+function doReportIncident(task, notes, failureReason, validateTaskAfterReport, markTaskDone, navigation, route) {
 
-    this.props.reportIncident(
+  return () => {
+    reportIncident(
       task,
       notes,
       failureReason,
       () => {
-        if (this.state.validateTaskAfterReport) {
-          this.markTaskDone();
+        if (validateTaskAfterReport) {
+          markTaskDone();
         } else {
-          this.props.navigation.navigate({
-            name: this.props.route.params?.navigateAfter,
+          navigation.navigate({
+            name: route.params?.navigateAfter,
             merge: true,
           });
         }
       },
     );
   }
+}
 
-  onSwipeComplete() {
-    this.setState({ isContactNameModalVisible: false });
-  }
+const CompleteTask = ({
+  httpClient,
+  taskCompleteError,
+  signatures,
+  pictures,
+  isIncidentEnabled,
+  markTaskFailed,
+  markTaskDone,
+  markTasksDone,
+  reportIncident,
+  deleteSignatureAt,
+  deletePictureAt,
+}) => {
 
-  _onSubmit(values) {
-    this.setState({
-      contactName: values.contactName,
-      isContactNameModalVisible: false,
+  const { t } = useTranslation();
+  const route = useRoute();
+  const navigation = useNavigation();
+
+  const [notes, setNotes] = useState('');
+  const [failureReason, setFailureReason] = useState(null);
+  const [isContactNameModalVisible, setIsContactNameModalVisible] = useState(false);
+  const [contactName, setContactName] = useState('');
+  const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
+  const [validateTaskAfterReport, setValidateTaskAfterReport] = useState(false);
+
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
+      setIsKeyboardVisible(true);
     });
-  }
-
-  componentDidMount() {
-    this.showSubscription = Keyboard.addListener('keyboardDidShow', () => {
-      this.setState({ isKeyboardVisible: true });
+    const hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
+      setIsKeyboardVisible(false);
     });
-    this.hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
-      this.setState({ isKeyboardVisible: false });
-    });
-  }
 
-  componentWillUnmount() {
-    this.showSubscription.remove();
-    this.hideSubscription.remove();
-  }
-
-  render() {
-    const task = this.props.route.params?.task;
-    const tasks = this.props.route.params?.tasks;
-    const success = Object.prototype.hasOwnProperty.call(
-      this.props.route.params || {},
-      'success',
-    )
-      ? this.props.route.params?.success
-      : true;
-
-    const buttonIconName = success ? doneIconName : incidentIconName;
-    const footerBgColor = success ? greenColor : yellowColor;
-    const footerText = success
-      ? this.props.t('VALIDATE')
-      : this.props.t('REPORT_INCIDENT');
-    const onPress = success
-      ? this.markTaskDone.bind(this)
-      : this.props.isIncidentEnabled
-        ? this.reportIncident.bind(this)
-        : this.markTaskFailed.bind(this);
-
-    const contactName = resolveContactName(this.state.contactName, task, tasks);
-
-    const initialValues = {
-      contactName,
+    return () => {
+      showSubscription.remove();
+      hideSubscription.remove();
     };
+  }, []);
 
-    return (
-      <React.Fragment>
-        <KeyboardAvoidingView
-          flex={1}
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-          <VStack flex={1}>
-            <MultipleTasksLabel tasks={ tasks } />
-            <TouchableWithoutFeedback
-              // We need to disable TouchableWithoutFeedback when keyboard is not visible,
-              // otherwise the ScrollView for proofs of delivery is not scrollable
-              disabled={!this.state.isKeyboardVisible}
-              // This allows hiding the keyboard when touching anything on the screen
-              onPress={Keyboard.dismiss}>
-              <VStack>
-                {isDropoff(task, tasks) && (
-                  <React.Fragment>
-                    <HStack
-                      justifyContent="space-between"
-                      alignItems="center"
-                      p="3">
-                      <View
-                        style={{
-                          flexDirection: 'row',
-                          alignItems: 'center',
-                          justifyContent: 'space-between',
-                        }}>
-                        <Icon
-                          as={FontAwesome}
-                          name="user"
-                          style={{ marginRight: 10 }}
-                        />
-                        <Text numberOfLines={1}>{contactName}</Text>
-                      </View>
-                      <TouchableOpacity
-                        onPress={() =>
-                          this.setState({ isContactNameModalVisible: true })
-                        }>
-                        <Text>{this.props.t('EDIT')}</Text>
-                      </TouchableOpacity>
-                    </HStack>
-                    <Divider />
-                  </React.Fragment>
-                )}
-                {!success && (
+  const task = route.params?.task;
+  const tasks = route.params?.tasks;
+  const success = Object.prototype.hasOwnProperty.call(
+    route.params || {},
+    'success',
+  )
+    ? route.params?.success
+    : true;
+
+  const buttonIconName = success ? doneIconName : incidentIconName;
+  const footerBgColor = success ? greenColor : yellowColor;
+  const footerText = success
+    ? t('VALIDATE')
+    : t('REPORT_INCIDENT');
+  const onPress = success
+    ? doMarkTaskDone(task, tasks, notes, contactName, markTaskDone, markTasksDone, navigation, route)
+    : isIncidentEnabled
+      ? doReportIncident(task, notes, failureReason, validateTaskAfterReport, markTaskDone, navigation, route)
+      : doMarkTaskFailed(task, notes, failureReason, contactName, markTaskFailed, navigation, route);
+
+  const initialValues = {
+    contactName: resolveContactName(contactName, task, tasks),
+  };
+
+  return (
+    <React.Fragment>
+      <KeyboardAvoidingView
+        flex={1}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+        <VStack flex={1}>
+          <MultipleTasksLabel tasks={ tasks } />
+          <TouchableWithoutFeedback
+            // We need to disable TouchableWithoutFeedback when keyboard is not visible,
+            // otherwise the ScrollView for proofs of delivery is not scrollable
+            disabled={!isKeyboardVisible}
+            // This allows hiding the keyboard when touching anything on the screen
+            onPress={Keyboard.dismiss}>
+            <VStack>
+              {isDropoff(task, tasks) && (
+                <React.Fragment>
+                  <HStack
+                    justifyContent="space-between"
+                    alignItems="center"
+                    p="3">
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                      }}>
+                      <Icon
+                        as={FontAwesome}
+                        name="user"
+                        style={{ marginRight: 10 }}
+                      />
+                      <Text numberOfLines={1}>{resolveContactName(contactName, task, tasks)}</Text>
+                    </View>
+                    <TouchableOpacity
+                      onPress={() =>
+                        setIsContactNameModalVisible(true)
+                      }>
+                      <Text>{t('EDIT')}</Text>
+                    </TouchableOpacity>
+                  </HStack>
+                  <Divider />
+                </React.Fragment>
+              )}
+              {!success && (
+                <FormControl p="3">
+                  <FormControl.Label>
+                    {t('FAILURE_REASON')}
+                  </FormControl.Label>
+                  <FailureReasonPicker
+                    task={task}
+                    httpClient={httpClient}
+                    onValueChange={failureReason =>
+                      setFailureReason(failureReason)
+                    }
+                  />
+                </FormControl>
+              )}
+              <FormControl p="3">
+                <FormControl.Label>{t('NOTES')}</FormControl.Label>
+                <TextArea
+                  autoCorrect={false}
+                  totalLines={2}
+                  onChangeText={text => setNotes(text)}
+                />
+                {!success && isIncidentEnabled && (
                   <FormControl p="3">
-                    <FormControl.Label>
-                      {this.props.t('FAILURE_REASON')}
-                    </FormControl.Label>
-                    <FailureReasonPicker
-                      task={task}
-                      httpClient={this.props.httpClient}
-                      onValueChange={failureReason =>
-                        this.setState({ failureReason })
+                    <Button
+                      bg={
+                        validateTaskAfterReport
+                          ? greenColor
+                          : undefined
                       }
-                    />
+                      onPress={() =>
+                        setValidateTaskAfterReport(!validateTaskAfterReport)
+                      }
+                      variant={
+                        validateTaskAfterReport
+                          ? 'solid'
+                          : 'outline'
+                      }
+                      endIcon={
+                        validateTaskAfterReport ? (
+                          <Icon as={FontAwesome} name="check" size="sm" />
+                        ) : undefined
+                      }>
+                      Validate the task after reporting
+                    </Button>
                   </FormControl>
                 )}
-                <FormControl p="3">
-                  <FormControl.Label>{this.props.t('NOTES')}</FormControl.Label>
-                  <TextArea
-                    autoCorrect={false}
-                    totalLines={2}
-                    onChangeText={text => this.setState({ notes: text })}
-                  />
-                  {!success && this.props.isIncidentEnabled && (
-                    <FormControl p="3">
-                      <Button
-                        bg={
-                          this.state.validateTaskAfterReport
-                            ? greenColor
-                            : undefined
-                        }
-                        onPress={() =>
-                          this.setState({
-                            validateTaskAfterReport:
-                              !this.state.validateTaskAfterReport,
-                          })
-                        }
-                        variant={
-                          this.state.validateTaskAfterReport
-                            ? 'solid'
-                            : 'outline'
-                        }
-                        endIcon={
-                          this.state.validateTaskAfterReport ? (
-                            <Icon as={FontAwesome} name="check" size="sm" />
-                          ) : undefined
-                        }>
-                        Validate the task after reporting
-                      </Button>
-                    </FormControl>
-                  )}
-                </FormControl>
-                <View>
-                  <ScrollView style={{ height: '50%' }}>
-                    <View style={styles.content}>
-                      <View style={styles.imagesContainer}>
-                        {this.props.signatures.map((base64, key) => (
-                          <AttachmentItem
-                            key={`signatures:${key}`}
-                            base64={base64}
-                            onPressDelete={() =>
-                              this.props.deleteSignatureAt(key)
-                            }
-                          />
-                        ))}
-                        {this.props.pictures.map((base64, key) => (
-                          <AttachmentItem
-                            key={`pictures:${key}`}
-                            base64={base64}
-                            onPressDelete={() =>
-                              this.props.deletePictureAt(key)
-                            }
-                          />
-                        ))}
-                      </View>
+              </FormControl>
+              <View>
+                <ScrollView style={{ height: '50%' }}>
+                  <View style={styles.content}>
+                    <View style={styles.imagesContainer}>
+                      {signatures.map((base64, key) => (
+                        <AttachmentItem
+                          key={`signatures:${key}`}
+                          base64={base64}
+                          onPressDelete={() =>
+                            deleteSignatureAt(key)
+                          }
+                        />
+                      ))}
+                      {pictures.map((base64, key) => (
+                        <AttachmentItem
+                          key={`pictures:${key}`}
+                          base64={base64}
+                          onPressDelete={() =>
+                            deletePictureAt(key)
+                          }
+                        />
+                      ))}
                     </View>
-                  </ScrollView>
-                </View>
-              </VStack>
-            </TouchableWithoutFeedback>
-          </VStack>
-          <Divider />
-          <VStack>
-            <TouchableOpacity
-              onPress={() =>
-                this.props.navigation.navigate('TaskCompleteProofOfDelivery', {
-                  task,
-                  tasks,
-                })
-              }>
-              <HStack alignItems="center" justifyContent="space-between" p="3">
-                <Icon as={FontAwesome5} name="signature" />
-                <Text>{this.props.t('TASK_ADD_PROOF_OF_DELIVERY')}</Text>
-                <Icon as={FontAwesome5} name="camera" />
-              </HStack>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={onPress}
-              style={{ alignItems: 'center', backgroundColor: footerBgColor }}>
-              <HStack py="3" alignItems="center">
-                <Icon
-                  as={FontAwesome}
-                  name={buttonIconName}
-                  style={{ color: '#fff', marginRight: 10 }}
-                />
-                <Text>{footerText}</Text>
-              </HStack>
-            </TouchableOpacity>
-          </VStack>
-        </KeyboardAvoidingView>
-        <ContactNameModal
-          isVisible={this.state.isContactNameModalVisible}
-          onSwipeComplete={this.onSwipeComplete.bind(this)}
-          initialValues={ initialValues }
-          onSubmit={this._onSubmit.bind(this)} />
-      </React.Fragment>
-    );
-  }
+                  </View>
+                </ScrollView>
+              </View>
+            </VStack>
+          </TouchableWithoutFeedback>
+        </VStack>
+        <Divider />
+        <VStack>
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate('TaskCompleteProofOfDelivery', {
+                task,
+                tasks,
+              })
+            }>
+            <HStack alignItems="center" justifyContent="space-between" p="3">
+              <Icon as={FontAwesome5} name="signature" />
+              <Text>{t('TASK_ADD_PROOF_OF_DELIVERY')}</Text>
+              <Icon as={FontAwesome5} name="camera" />
+            </HStack>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={onPress}
+            style={{ alignItems: 'center', backgroundColor: footerBgColor }}>
+            <HStack py="3" alignItems="center">
+              <Icon
+                as={FontAwesome}
+                name={buttonIconName}
+                style={{ color: '#fff', marginRight: 10 }}
+              />
+              <Text>{footerText}</Text>
+            </HStack>
+          </TouchableOpacity>
+        </VStack>
+      </KeyboardAvoidingView>
+      <ContactNameModal
+        isVisible={isContactNameModalVisible}
+        onSwipeComplete={() => setIsContactNameModalVisible(false)}
+        initialValues={ initialValues }
+        onSubmit={(values) => {
+          setContactName(values.contactName);
+          setIsContactNameModalVisible(false);
+        }} />
+    </React.Fragment>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -613,4 +589,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(withTranslation()(CompleteTask));
+)(CompleteTask);
