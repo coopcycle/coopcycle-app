@@ -8,7 +8,6 @@ import {
   HStack,
   Icon,
   Input,
-  KeyboardAvoidingView,
   ScrollView,
   Skeleton,
   Text,
@@ -21,7 +20,6 @@ import {
   Dimensions,
   Image,
   Keyboard,
-  Platform,
   StyleSheet,
   TouchableOpacity,
   TouchableWithoutFeedback,
@@ -31,7 +29,10 @@ import Modal from 'react-native-modal';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { connect } from 'react-redux';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { AvoidSoftInput, useSoftInputHeightChanged } from 'react-native-avoid-softinput';
+import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
 import { useQuery } from 'react-query';
 import ModalContent from '../../components/ModalContent';
@@ -365,154 +366,197 @@ const CompleteTask = ({
     contactName: resolveContactName(contactName, task, tasks),
   };
 
+  /* https://mateusz1913.github.io/react-native-avoid-softinput/docs/recipes/recipes-sticky-footer */
+
+  const buttonContainerPaddingValue = useSharedValue(0);
+
+  const buttonContainerAnimatedStyle = useAnimatedStyle(() => {
+    return {
+      paddingBottom: buttonContainerPaddingValue.value,
+    };
+  });
+
+  const onFocusEffect = React.useCallback(() => {
+    AvoidSoftInput.setShouldMimicIOSBehavior(true);
+
+    return () => {
+      AvoidSoftInput.setShouldMimicIOSBehavior(false);
+    };
+  }, []);
+
+  useFocusEffect(onFocusEffect);
+
+  /**
+   * You can also use `useSoftInputShown` & `useSoftInputHidden`
+   *
+   * useSoftInputShown(({ softInputHeight }) => {
+   *   buttonContainerPaddingValue.value = withTiming(softInputHeight);
+   * });
+   *
+   * useSoftInputHidden(() => {
+   *   buttonContainerPaddingValue.value = withTiming(0);
+   * });
+   */
+  useSoftInputHeightChanged(({ softInputHeight }) => {
+    buttonContainerPaddingValue.value = withTiming(softInputHeight);
+  });
+
   return (
     <React.Fragment>
-      <KeyboardAvoidingView
-        flex={1}
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-        <VStack flex={1}>
-          <MultipleTasksLabel tasks={ tasks } />
-          <TouchableWithoutFeedback
-            // We need to disable TouchableWithoutFeedback when keyboard is not visible,
-            // otherwise the ScrollView for proofs of delivery is not scrollable
-            disabled={!isKeyboardVisible}
-            // This allows hiding the keyboard when touching anything on the screen
-            onPress={Keyboard.dismiss}>
-            <VStack>
-              {isDropoff(task, tasks) && (
-                <React.Fragment>
-                  <HStack
-                    justifyContent="space-between"
-                    alignItems="center"
-                    p="3">
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                      }}>
-                      <Icon
-                        as={FontAwesome}
-                        name="user"
-                        style={{ marginRight: 10 }}
+      <SafeAreaView edges={[ 'left', 'right', 'bottom' ]} style={styles.screenContainer}>
+        <View style={styles.scrollWrapper}>
+          <ScrollView
+            contentContainerStyle={styles.scrollContainer}
+            contentInsetAdjustmentBehavior="always"
+          >
+            <VStack flex={1} w="100%">
+              <MultipleTasksLabel tasks={ tasks } />
+              <TouchableWithoutFeedback
+                // We need to disable TouchableWithoutFeedback when keyboard is not visible,
+                // otherwise the ScrollView for proofs of delivery is not scrollable
+                disabled={!isKeyboardVisible}
+                // This allows hiding the keyboard when touching anything on the screen
+                onPress={Keyboard.dismiss}>
+                <VStack>
+                  {isDropoff(task, tasks) && (
+                    <React.Fragment>
+                      <HStack
+                        justifyContent="space-between"
+                        alignItems="center"
+                        p="3">
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                          }}>
+                          <Icon
+                            as={FontAwesome}
+                            name="user"
+                            style={{ marginRight: 10 }}
+                          />
+                          <Text numberOfLines={1}>{resolveContactName(contactName, task, tasks)}</Text>
+                        </View>
+                        <TouchableOpacity
+                          onPress={() =>
+                            setIsContactNameModalVisible(true)
+                          }>
+                          <Text>{t('EDIT')}</Text>
+                        </TouchableOpacity>
+                      </HStack>
+                      <Divider />
+                    </React.Fragment>
+                  )}
+                  {!success && (
+                    <FormControl p="3">
+                      <FormControl.Label>
+                        {t('FAILURE_REASON')}
+                      </FormControl.Label>
+                      <FailureReasonPicker
+                        task={task}
+                        httpClient={httpClient}
+                        onValueChange={failureReason =>
+                          setFailureReason(failureReason)
+                        }
                       />
-                      <Text numberOfLines={1}>{resolveContactName(contactName, task, tasks)}</Text>
-                    </View>
-                    <TouchableOpacity
-                      onPress={() =>
-                        setIsContactNameModalVisible(true)
-                      }>
-                      <Text>{t('EDIT')}</Text>
-                    </TouchableOpacity>
-                  </HStack>
-                  <Divider />
-                </React.Fragment>
-              )}
-              {!success && (
-                <FormControl p="3">
-                  <FormControl.Label>
-                    {t('FAILURE_REASON')}
-                  </FormControl.Label>
-                  <FailureReasonPicker
-                    task={task}
-                    httpClient={httpClient}
-                    onValueChange={failureReason =>
-                      setFailureReason(failureReason)
-                    }
-                  />
-                </FormControl>
-              )}
-              <FormControl p="3">
-                <FormControl.Label>{t('NOTES')}</FormControl.Label>
-                <TextArea
-                  autoCorrect={false}
-                  totalLines={2}
-                  onChangeText={text => setNotes(text)}
-                />
-                {!success && isIncidentEnabled && (
+                    </FormControl>
+                  )}
                   <FormControl p="3">
-                    <Button
-                      bg={
-                        validateTaskAfterReport
-                          ? greenColor
-                          : undefined
-                      }
-                      onPress={() =>
-                        setValidateTaskAfterReport(!validateTaskAfterReport)
-                      }
-                      variant={
-                        validateTaskAfterReport
-                          ? 'solid'
-                          : 'outline'
-                      }
-                      endIcon={
-                        validateTaskAfterReport ? (
-                          <Icon as={FontAwesome} name="check" size="sm" />
-                        ) : undefined
-                      }>
-                      Validate the task after reporting
-                    </Button>
+                    <FormControl.Label>{t('NOTES')}</FormControl.Label>
+                    <TextArea
+                      autoCorrect={false}
+                      totalLines={2}
+                      onChangeText={text => setNotes(text)}
+                    />
+                    {!success && isIncidentEnabled && (
+                      <FormControl p="3">
+                        <Button
+                          bg={
+                            validateTaskAfterReport
+                              ? greenColor
+                              : undefined
+                          }
+                          onPress={() =>
+                            setValidateTaskAfterReport(!validateTaskAfterReport)
+                          }
+                          variant={
+                            validateTaskAfterReport
+                              ? 'solid'
+                              : 'outline'
+                          }
+                          endIcon={
+                            validateTaskAfterReport ? (
+                              <Icon as={FontAwesome} name="check" size="sm" />
+                            ) : undefined
+                          }>
+                          Validate the task after reporting
+                        </Button>
+                      </FormControl>
+                    )}
                   </FormControl>
-                )}
-              </FormControl>
-              <View>
-                <ScrollView style={{ height: '50%' }}>
-                  <View style={styles.content}>
-                    <View style={styles.imagesContainer}>
-                      {signatures.map((base64, key) => (
-                        <AttachmentItem
-                          key={`signatures:${key}`}
-                          base64={base64}
-                          onPressDelete={() =>
-                            deleteSignatureAt(key)
-                          }
-                        />
-                      ))}
-                      {pictures.map((base64, key) => (
-                        <AttachmentItem
-                          key={`pictures:${key}`}
-                          base64={base64}
-                          onPressDelete={() =>
-                            deletePictureAt(key)
-                          }
-                        />
-                      ))}
-                    </View>
+                  <View>
+                    <ScrollView style={{ height: '50%' }}>
+                      <View style={styles.content}>
+                        <View style={styles.imagesContainer}>
+                          {signatures.map((base64, key) => (
+                            <AttachmentItem
+                              key={`signatures:${key}`}
+                              base64={base64}
+                              onPressDelete={() =>
+                                deleteSignatureAt(key)
+                              }
+                            />
+                          ))}
+                          {pictures.map((base64, key) => (
+                            <AttachmentItem
+                              key={`pictures:${key}`}
+                              base64={base64}
+                              onPressDelete={() =>
+                                deletePictureAt(key)
+                              }
+                            />
+                          ))}
+                        </View>
+                      </View>
+                    </ScrollView>
                   </View>
-                </ScrollView>
-              </View>
+                </VStack>
+              </TouchableWithoutFeedback>
             </VStack>
-          </TouchableWithoutFeedback>
-        </VStack>
-        <Divider />
-        <VStack>
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate('TaskCompleteProofOfDelivery', {
-                task,
-                tasks,
-              })
-            }>
-            <HStack alignItems="center" justifyContent="space-between" p="3">
-              <Icon as={FontAwesome5} name="signature" />
-              <Text>{t('TASK_ADD_PROOF_OF_DELIVERY')}</Text>
-              <Icon as={FontAwesome5} name="camera" />
-            </HStack>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={onPress}
-            style={{ alignItems: 'center', backgroundColor: footerBgColor }}>
-            <HStack py="3" alignItems="center">
-              <Icon
-                as={FontAwesome}
-                name={buttonIconName}
-                style={{ color: '#fff', marginRight: 10 }}
-              />
-              <Text>{footerText}</Text>
-            </HStack>
-          </TouchableOpacity>
-        </VStack>
-      </KeyboardAvoidingView>
+          </ScrollView>
+        </View>
+        <Animated.View style={[ buttonContainerAnimatedStyle, styles.ctaButtonWrapper ]}>
+          <View style={styles.ctaButtonContainer}>
+            <VStack w="100%">
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate('TaskCompleteProofOfDelivery', {
+                    task,
+                    tasks,
+                  })
+                }>
+                <HStack alignItems="center" justifyContent="space-between" p="3">
+                  <Icon as={FontAwesome5} name="signature" />
+                  <Text>{t('TASK_ADD_PROOF_OF_DELIVERY')}</Text>
+                  <Icon as={FontAwesome5} name="camera" />
+                </HStack>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={onPress}
+                style={{ alignItems: 'center', backgroundColor: footerBgColor }}>
+                <HStack py="3" alignItems="center">
+                  <Icon
+                    as={FontAwesome}
+                    name={buttonIconName}
+                    style={{ color: '#fff', marginRight: 10 }}
+                  />
+                  <Text>{footerText}</Text>
+                </HStack>
+              </TouchableOpacity>
+            </VStack>
+          </View>
+        </Animated.View>
+      </SafeAreaView>
       <ContactNameModal
         isVisible={isContactNameModalVisible}
         onSwipeComplete={() => setIsContactNameModalVisible(false)}
@@ -554,6 +598,29 @@ const styles = StyleSheet.create({
     borderColor: '#ffffff',
     top: -16,
     right: -16,
+  },
+  screenContainer: {
+    alignItems: 'center',
+    alignSelf: 'stretch',
+    flex: 1,
+    justifyContent: 'center',
+  },
+  ctaButtonContainer: {
+    alignItems: 'center',
+    alignSelf: 'stretch',
+  },
+  ctaButtonWrapper: {
+    alignSelf: 'stretch',
+  },
+  scrollContainer: {
+    alignItems: 'center',
+    alignSelf: 'stretch',
+    flexGrow: 1,
+    justifyContent: 'center',
+  },
+  scrollWrapper: {
+    alignSelf: 'stretch',
+    flex: 1,
   },
 });
 
