@@ -150,6 +150,69 @@ const MultipleTasksLabel = ({ tasks }) => {
   )
 }
 
+const ContactNameModal = ({ isVisible, onSwipeComplete, initialValues, onSubmit }) => {
+
+  const { t } = useTranslation();
+
+  return (
+    <Modal
+      isVisible={isVisible}
+      onSwipeComplete={onSwipeComplete}
+      swipeDirection={['up', 'down']}>
+      <ModalContent>
+        <Box p="3">
+          <Formik
+            initialValues={initialValues}
+            validate={(values) => {
+              if (_.isEmpty(values.contactName)) {
+                return {
+                  contactName: t('STORE_NEW_DELIVERY_ERROR.EMPTY_CONTACT_NAME'),
+                };
+              }
+
+              return {};
+            }}
+            onSubmit={onSubmit}
+            validateOnBlur={false}
+            validateOnChange={false}>
+            {({
+              handleChange,
+              handleBlur,
+              handleSubmit,
+              values,
+              errors,
+              touched,
+            }) => (
+              <View>
+                <FormControl
+                  error={touched.contactName && errors.contactName}
+                  style={{ marginBottom: 15 }}>
+                  <FormControl.Label>
+                    {t('DELIVERY_DETAILS_RECIPIENT')}
+                  </FormControl.Label>
+                  <Input
+                    autoCorrect={false}
+                    autoCapitalize="none"
+                    autoCompleteType="off"
+                    style={{ height: 40 }}
+                    returnKeyType="done"
+                    onChangeText={handleChange('contactName')}
+                    onBlur={handleBlur('contactName')}
+                    defaultValue={values.contactName}
+                  />
+                </FormControl>
+                <Button block onPress={handleSubmit}>
+                  {t('SUBMIT')}
+                </Button>
+              </View>
+            )}
+          </Formik>
+        </Box>
+      </ModalContent>
+    </Modal>
+  )
+}
+
 class CompleteTask extends Component {
   constructor(props) {
     super(props);
@@ -262,18 +325,6 @@ class CompleteTask extends Component {
 
   onSwipeComplete() {
     this.setState({ isContactNameModalVisible: false });
-  }
-
-  _validate(values) {
-    if (_.isEmpty(values.contactName)) {
-      return {
-        contactName: this.props.t(
-          'STORE_NEW_DELIVERY_ERROR.EMPTY_CONTACT_NAME',
-        ),
-      };
-    }
-
-    return {};
   }
 
   _onSubmit(values) {
@@ -490,53 +541,11 @@ class CompleteTask extends Component {
             </TouchableOpacity>
           </VStack>
         </KeyboardAvoidingView>
-        <Modal
+        <ContactNameModal
           isVisible={this.state.isContactNameModalVisible}
           onSwipeComplete={this.onSwipeComplete.bind(this)}
-          swipeDirection={['up', 'down']}>
-          <ModalContent>
-            <Box p="3">
-              <Formik
-                initialValues={initialValues}
-                validate={this._validate.bind(this)}
-                onSubmit={this._onSubmit.bind(this)}
-                validateOnBlur={false}
-                validateOnChange={false}>
-                {({
-                  handleChange,
-                  handleBlur,
-                  handleSubmit,
-                  values,
-                  errors,
-                  touched,
-                }) => (
-                  <View>
-                    <FormControl
-                      error={touched.contactName && errors.contactName}
-                      style={{ marginBottom: 15 }}>
-                      <FormControl.Label>
-                        {this.props.t('DELIVERY_DETAILS_RECIPIENT')}
-                      </FormControl.Label>
-                      <Input
-                        autoCorrect={false}
-                        autoCapitalize="none"
-                        autoCompleteType="off"
-                        style={{ height: 40 }}
-                        returnKeyType="done"
-                        onChangeText={handleChange('contactName')}
-                        onBlur={handleBlur('contactName')}
-                        defaultValue={values.contactName}
-                      />
-                    </FormControl>
-                    <Button block onPress={handleSubmit}>
-                      {this.props.t('SUBMIT')}
-                    </Button>
-                  </View>
-                )}
-              </Formik>
-            </Box>
-          </ModalContent>
-        </Modal>
+          initialValues={ initialValues }
+          onSubmit={this._onSubmit.bind(this)} />
       </React.Fragment>
     );
   }
