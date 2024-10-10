@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 import { SwipeRow } from 'react-native-swipe-list-view';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 import {
   doingIconName,
@@ -273,6 +274,9 @@ class TaskListItem extends Component {
                     fullDetail={false}
                     paymentMethod={task.metadata.payment_method}
                   />
+                )}
+                {task.metadata && task.metadata.zero_waste && (
+                  <Icon as={FontAwesome5} name="recycle" size="sm" />
                 )}
               </HStack>
               {task.tags && task.tags.length ? (
