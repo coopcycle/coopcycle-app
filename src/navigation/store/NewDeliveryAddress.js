@@ -172,21 +172,23 @@ function NewDelivery(props) {
               {t('STORE_NEW_DELIVERY_SEARCH_CLIENT')}{' '}
               <Text style={styles.optional}>({t('OPTIONAL')})</Text>
             </Text>
-            <ClientListInput
-              onSelectAddress={a => {
-                setAddressData(a, setFieldValue);
-                setValidAddress(true);
-              }}
-              addresses={addresses}
-              placeholder={t('STORE_NEW_DELIVERY_ENTER_SEARCH_CLIENT')}
-            />
+            <View style={styles.autocompleteWrapper}>
+              <ClientListInput
+                onSelectAddress={a => {
+                  setAddressData(a, setFieldValue);
+                  setValidAddress(true);
+                }}
+                addresses={addresses}
+                placeholder={t('STORE_NEW_DELIVERY_ENTER_SEARCH_CLIENT')}
+              />
+            </View>
           </View>
           <View style={[styles.formGroup, { zIndex: 1 }]}>
             <Text style={styles.label}>
               {t('STORE_NEW_DELIVERY_ADDRESS')}
               {validAddress && ' ✓'}
             </Text>
-            <View style={styles.autocompleteContainer}>
+            <View style={styles.autocompleteWrapper}>
               <AddressAutocomplete
                 key={address?.streetAddress ?? ''}
                 addresses={addresses}
@@ -303,7 +305,7 @@ function NewDelivery(props) {
 }
 
 const styles = StyleSheet.create({
-  autocompleteContainer: {
+  autocompleteWrapper: {
     height: 40,
     ...Platform.select({
       android: {
