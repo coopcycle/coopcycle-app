@@ -19,6 +19,7 @@ import React, { Component, useEffect, useMemo, useState } from 'react';
 import { withTranslation } from 'react-i18next';
 import {
   Dimensions,
+  FlatList,
   Image,
   Keyboard,
   Platform,
@@ -31,6 +32,7 @@ import Modal from 'react-native-modal';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { connect } from 'react-redux';
+import qs from 'qs'
 
 import { useQuery } from 'react-query';
 import ModalContent from '../../components/ModalContent';
@@ -92,7 +94,7 @@ const FailureReasonPicker = ({ task, httpClient, onValueChange }) => {
     if (!isSuccess) {
       return null;
     }
-    return data['hydra:member'].map((value, index) => (
+    return _.sortBy(data['hydra:member'], ['description']).map((value, index) => (
       <Picker.Item key={index} value={value.code} label={value.description} />
     ));
   }, [data, isSuccess]);
@@ -101,7 +103,9 @@ const FailureReasonPicker = ({ task, httpClient, onValueChange }) => {
     if (!isSuccess) {
       return;
     }
-    onValueChange(selectedFailureReason);
+
+    const failureReasonObj = _.find(data['hydra:member'], r => r.code === selectedFailureReason)
+    onValueChange(selectedFailureReason, failureReasonObj);
   }, [selectedFailureReason, onValueChange, isSuccess]);
 
   if (isError) {
@@ -120,6 +124,53 @@ const FailureReasonPicker = ({ task, httpClient, onValueChange }) => {
   );
 };
 
+const FailureReasonForm = ({ data, onChange }) => {
+
+  const asQueryString = data.map(v => `${v.name}=${v.value}`).join('&')
+  const initialValues = qs.parse(asQueryString);
+
+  useEffect(() => {
+    onChange(initialValues)
+  }, [data])
+
+  return (
+    <Formik
+      initialValues={ initialValues }
+      // We use validate as a change handler
+      validate={ values => {
+        onChange(values)
+      }}
+      validateOnBlur={ true }
+      validateOnChange={ true }>
+      {({
+        handleChange,
+        handleBlur,
+        values,
+        errors,
+        setFieldValue,
+      }) =>
+        <FlatList
+          data={ _.filter(data, item => item.type !== 'hidden') }
+          keyExtractor={ item => item.name }
+          renderItem={({ item }) => {
+
+            return (
+              <FormControl mb="2" key={ item.name }>
+                <FormControl.Label>{ item.label }</FormControl.Label>
+                <Input
+                  defaultValue={ item.value.toString() }
+                  keyboardType={ item.type === 'number' ? 'number-pad' : 'default' }
+                  onChangeText={ handleChange(item.name) }
+                  onBlur={ handleBlur(item.name) } />
+              </FormControl>
+            )
+          }}
+        />
+      }
+    </Formik>
+  )
+}
+
 class CompleteTask extends Component {
   constructor(props) {
     super(props);
@@ -131,6 +182,8 @@ class CompleteTask extends Component {
       contactName: '',
       isKeyboardVisible: false,
       validateTaskAfterReport: false,
+      failureReasonMetadata: [],
+      failureReasonMetadataToSend: [],
     };
   }
 
@@ -211,12 +264,13 @@ class CompleteTask extends Component {
 
   reportIncident() {
     const task = this.props.route.params?.task;
-    const { notes, failureReason } = this.state;
+    const { notes, failureReason, failureReasonMetadataToSend } = this.state;
 
     this.props.reportIncident(
       task,
       notes,
       failureReason,
+      failureReasonMetadataToSend,
       () => {
         if (this.state.validateTaskAfterReport) {
           this.markTaskDone();
@@ -387,10 +441,27 @@ class CompleteTask extends Component {
                     <FailureReasonPicker
                       task={task}
                       httpClient={this.props.httpClient}
-                      onValueChange={failureReason =>
-                        this.setState({ failureReason })
-                      }
+                      onValueChange={(code, obj) => {
+                        if (obj && obj.metadata) {
+                          this.setState({
+                            failureReasonMetadata: obj.metadata,
+                            failureReasonMetadataToSend: []
+                          })
+                        } else {
+                          this.setState({
+                            failureReasonMetadata: [],
+                            failureReasonMetadataToSend: []
+                          })
+                        }
+                        this.setState({ failureReason: code })
+                      }}
                     />
+                    { (Array.isArray(this.state.failureReasonMetadata) && this.state.failureReasonMetadata.length > 0) ?
+                    <FailureReasonForm
+                      data={ this.state.failureReasonMetadata }
+                      onChange={ metadata => {
+                        this.setState({ failureReasonMetadataToSend: metadata })
+                      }} /> : null }
                   </FormControl>
                 )}
                 <FormControl p="3">
@@ -591,9 +662,9 @@ function mapDispatchToProps(dispatch) {
       dispatch(markTaskDone(task, notes, onSuccess, contactName)),
     markTasksDone: (tasks, notes, onSuccess, contactName) =>
       dispatch(markTasksDone(tasks, notes, onSuccess, contactName)),
-    reportIncident: (task, notes, failureReasonCode, onSuccess) =>
+    reportIncident: (task, notes, failureReasonCode, metadata, onSuccess) =>
       dispatch(
-        reportIncident(task, notes, failureReasonCode, onSuccess),
+        reportIncident(task, notes, failureReasonCode, metadata, onSuccess),
       ),
     deleteSignatureAt: index => dispatch(deleteSignatureAt(index)),
     deletePictureAt: index => dispatch(deletePictureAt(index)),
