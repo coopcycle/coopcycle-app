@@ -190,9 +190,6 @@ export const selectIsSpinnerDelayEnabled = createSelector(
   },
 );
 
-export const selectIsIncidentEnabled = state =>
-  state.app.isIncidentEnabled ?? false;
-
 export const selectCurrentRoute = state => state.app.currentRoute;
 
 export const selectNotifications = state => state.app.notifications;

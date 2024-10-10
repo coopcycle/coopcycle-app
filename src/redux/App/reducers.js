@@ -47,7 +47,6 @@ import {
   SET_BASE_URL,
   SET_CURRENT_ROUTE,
   SET_HTTP_CLIENT,
-  SET_INCIDENT_ENABLED,
   SET_INTERNET_REACHABLE,
   SET_LOADING,
   SET_MODAL,
@@ -110,7 +109,6 @@ const initialState = {
   termsAndConditionsText: '',
   privacyPolicyText: '',
   isSpinnerDelayEnabled: true,
-  isIncidentEnabled: true,
 };
 
 function updateNotifications(state, event, params) {
@@ -451,11 +449,6 @@ export default (state = initialState, action = {}) => {
         isSpinnerDelayEnabled: action.payload,
       };
 
-    case SET_INCIDENT_ENABLED:
-      return {
-        ...state,
-        isIncidentEnabled: action.payload,
-      };
   }
 
   return state;
