@@ -16,7 +16,7 @@ import {
   VStack,
 } from 'native-base';
 import React, { Component, useEffect, useMemo, useState } from 'react';
-import { withTranslation } from 'react-i18next';
+import { withTranslation, useTranslation } from 'react-i18next';
 import {
   Dimensions,
   Image,
@@ -119,6 +119,36 @@ const FailureReasonPicker = ({ task, httpClient, onValueChange }) => {
     </Skeleton>
   );
 };
+
+function isDropoff(task, tasks) {
+  if (tasks && tasks.length > 1) {
+    return tasks.every(t => t.type === 'DROPOFF');
+  } else if (tasks && tasks.length === 1) {
+    return tasks[0].type === 'DROPOFF';
+  }
+  return task && task.type === 'DROPOFF';
+}
+
+const MultipleTasksLabel = ({ tasks }) => {
+
+  const { t } = useTranslation();
+
+  if (!tasks || tasks.length === 0) {
+    return null;
+  }
+
+  return (
+    <Text mt={2} ml={3}>
+      {tasks.reduce(
+        (label, task, idx) => {
+          const taskIdentifier = task?.metadata?.order_number ? `${task.metadata.order_number}-${task?.metadata?.delivery_position}` : task.id
+          return `${label}${idx !== 0 ? ',' : ''} #${taskIdentifier}`;
+        },
+        `${t('COMPLETE_TASKS')}: `,
+      )}
+    </Text>
+  )
+}
 
 class CompleteTask extends Component {
   constructor(props) {
@@ -282,29 +312,6 @@ class CompleteTask extends Component {
     this.hideSubscription.remove();
   }
 
-  multipleTasksLabel(tasks) {
-
-    return tasks.reduce(
-      (label, task, idx) => {
-        const taskIdentifier = task?.metadata?.order_number ? `${task.metadata.order_number}-${task?.metadata?.delivery_position}` : task.id
-        return `${label}${idx !== 0 ? ',' : ''} #${taskIdentifier}`;
-      },
-      `${this.props.t('COMPLETE_TASKS')}: `,
-    );
-  }
-
-  isDropoff() {
-    const task = this.props.route.params?.task;
-    const tasks = this.props.route.params?.tasks;
-
-    if (tasks && tasks.length > 1) {
-      return tasks.every(t => t.type === 'DROPOFF');
-    } else if (tasks && tasks.length === 1) {
-      return tasks[0].type === 'DROPOFF';
-    }
-    return task && task.type === 'DROPOFF';
-  }
-
   render() {
     const task = this.props.route.params?.task;
     const tasks = this.props.route.params?.tasks;
@@ -338,11 +345,7 @@ class CompleteTask extends Component {
           flex={1}
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
           <VStack flex={1}>
-            {tasks && tasks.length ? (
-              <Text mt={2} ml={3}>
-                {this.multipleTasksLabel(tasks)}
-              </Text>
-            ) : null}
+            <MultipleTasksLabel tasks={ tasks } />
             <TouchableWithoutFeedback
               // We need to disable TouchableWithoutFeedback when keyboard is not visible,
               // otherwise the ScrollView for proofs of delivery is not scrollable
@@ -350,7 +353,7 @@ class CompleteTask extends Component {
               // This allows hiding the keyboard when touching anything on the screen
               onPress={Keyboard.dismiss}>
               <VStack>
-                {this.isDropoff() && (
+                {isDropoff(task, tasks) && (
                   <React.Fragment>
                     <HStack
                       justifyContent="space-between"
