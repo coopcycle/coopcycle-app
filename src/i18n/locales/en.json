@@ -513,6 +513,7 @@
     "CART_TIME_RANGE_CHANGED_MODAL_CHOOSE_RESTAURANT_ACTION": "Choose another restaurant",
     "ORDER__SHIPPED_AT__NOT_AVAILABLE": "The delivery date is no longer available",
     "ORDER__SHIPPED_AT__EXPIRED": "The delivery date is expired",
-    "ORDER__SHIPPING_TIME_RANGE__NOT_AVAILABLE": "Not available at the moment"
+    "ORDER__SHIPPING_TIME_RANGE__NOT_AVAILABLE": "Not available at the moment",
+    "LOOPEAT_HAS_RETURNS": "This task has zero waste returns"
   }
 }
