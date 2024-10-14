@@ -272,7 +272,7 @@
     "STORE_NEW_DELIVERY_ADDRESS_HELP": "Inserisci l'indirizzo di consegna per verificare la fattibilità",
     "STORE_NEW_DELIVERY_PHONE_NUMBER": "Numero di telefono",
     "STORE_NEW_DELIVERY_CONTACT_NAME": "Nome del contatto",
-    "STORE_NEW_DELIVERY_COMMENTS": "Informazioni di accesso",
+    "STORE_NEW_DELIVERY_ADDRESS_DESCRIPTION": "Informazioni di accesso",
     "STORE_NEW_DELIVERY_DROPOFF_BEFORE": "Consegna prima delle",
     "STORE_NEW_DELIVERY_TIME_SLOT": "Fascia oraria",
     "STORE_NEW_DELIVERY_SELECT_TIME_SLOT": "Seleziona una fascia oraria",
