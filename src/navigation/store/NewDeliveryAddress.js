@@ -191,7 +191,7 @@ function NewDelivery(props) {
             <View style={styles.autocompleteWrapper}>
               <AddressAutocomplete
                 key={address?.streetAddress ?? ''}
-                addresses={addresses}
+                addresses={[]}
                 onChangeText={() => {
                   if (validAddress) setValidAddress(false);
                   handleChange('address');
