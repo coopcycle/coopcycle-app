@@ -1,6 +1,6 @@
 import { Image, View } from 'react-native';
 
-function PoweredByIdealPostcodes({ styles }) {
+export function PoweredByIdealPostcodes({ styles }) {
   return (
     <View style={styles}>
       <Image
