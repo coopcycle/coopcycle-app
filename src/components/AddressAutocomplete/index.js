@@ -62,8 +62,7 @@ function AddressAutocomplete(props) {
 
   const fuse = new Fuse(addresses, fuseOptions);
 
-  const autocomplete = useCallback(
-    _.debounce((text, query) => {
+  const autocomplete = _.debounce((text, query) => {
       const newController = new AbortController();
       setController(newController);
       const fuseResults = fuse.search(text, { limit: 2 });
@@ -136,9 +135,7 @@ function AddressAutocomplete(props) {
             console.log('AddressAutocomplete; _autocomplete', error);
           });
       }
-    }, 300),
-    [country, postcode, fuse],
-  );
+    }, 300);
 
   function onChangeText(text) {
     if (controller) {
