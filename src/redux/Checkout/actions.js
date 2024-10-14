@@ -7,6 +7,10 @@ import {
 import _ from 'lodash';
 import { createAction } from '@reduxjs/toolkit';
 import { createAction as createFsAction } from 'redux-actions';
+import { authorize } from 'react-native-app-auth';
+import Config from 'react-native-config';
+import 'react-native-get-random-values';
+import { v4 as uuidv4 } from 'uuid';
 
 import * as Sentry from '@sentry/react-native';
 import i18next from 'i18next';
@@ -1897,5 +1901,43 @@ export function setPaymentMethod(paymentMethod, cb) {
         cb()
       })
       .catch(e => dispatch(checkoutFailure(e)));
+  };
+}
+
+export function loadPaymentDetailsOrAuthorizeEdenred() {
+
+  return (dispatch, getState) => {
+
+    const cart = selectCart(getState())?.cart;
+    const { baseURL, settings } = getState().app;
+
+    const clientId = settings.edenred_client_id;
+    const authorizationEndpoint = settings.edenred_authorization_endpoint;
+
+    if (cart.hasEdenredCredentials) {
+      dispatch(loadPaymentDetails());
+    } else {
+      authorize({
+        clientId: clientId,
+        redirectUrl: `${Config.APP_AUTH_REDIRECT_SCHEME}://edenred`,
+        serviceConfiguration: {
+          authorizationEndpoint: `${authorizationEndpoint}/connect/authorize`,
+          tokenEndpoint: `${baseURL}/edenred/connect/token`,
+        },
+        additionalParameters: {
+          acr_values: 'tenant:fr-ctrtku',
+          nonce: uuidv4(),
+          ui_locales: 'fr-FR',
+        },
+        scopes: ['openid', 'edg-xp-mealdelivery-api', 'offline_access'],
+        dangerouslyAllowInsecureHttpRequests: __DEV__,
+        useNonce: false,
+        usePKCE: false,
+      }).then(result => {
+        dispatch(updateEdenredCredentials(result.accessToken, result.refreshToken));
+      }).catch(error => {
+        NavigationHolder.navigate('CheckoutPaymentMethodCard');
+      });
+    }
   };
 }
