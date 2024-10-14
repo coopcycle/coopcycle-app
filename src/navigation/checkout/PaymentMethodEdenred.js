@@ -2,16 +2,11 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Button, Text, VStack, HStack, Box, Skeleton } from 'native-base';
 import { useTranslation } from 'react-i18next';
-import { authorize } from 'react-native-app-auth';
-import 'react-native-get-random-values';
-import { v4 as uuidv4 } from 'uuid';
 import { useNavigation } from '@react-navigation/native';
-import Config from 'react-native-config';
 import _ from 'lodash';
 import {
-  updateEdenredCredentials,
-  loadPaymentDetails,
   checkout,
+  loadPaymentDetailsOrAuthorizeEdenred,
 } from '../../redux/Checkout/actions';
 import {
   selectCart,
@@ -20,39 +15,14 @@ import CreditCard from './components/CreditCard';
 import { formatPrice } from '../../utils/formatting'
 import HeaderHeightAwareKeyboardAvoidingView from '../../components/HeaderHeightAwareKeyboardAvoidingView';
 
-const Edenred = ({ clientId, baseURL, cart, paymentDetailsLoaded, loadPaymentDetails, paymentDetails, errors, checkout, updateEdenredCredentials, authorizationEndpoint }) => {
+const Edenred = ({ cart, paymentDetailsLoaded, paymentDetails, errors, checkout, loadPaymentDetailsOrAuthorizeEdenred }) => {
 
   const navigation = useNavigation();
   const { t } = useTranslation();
 
   useEffect(() => {
-    if (cart.hasEdenredCredentials) {
-      loadPaymentDetails()
-    } else {
-      authorize({
-        clientId: clientId,
-        redirectUrl: `${Config.APP_AUTH_REDIRECT_SCHEME}://edenred`,
-        serviceConfiguration: {
-          authorizationEndpoint: `${authorizationEndpoint}/connect/authorize`,
-          tokenEndpoint: `${baseURL}/edenred/connect/token`,
-        },
-        additionalParameters: {
-          acr_values: 'tenant:fr-ctrtku',
-          nonce: uuidv4(),
-          ui_locales: 'fr-FR',
-        },
-        scopes: ['openid', 'edg-xp-mealdelivery-api', 'offline_access'],
-        dangerouslyAllowInsecureHttpRequests: __DEV__,
-        useNonce: false,
-        usePKCE: false,
-      }).then(result => {
-        updateEdenredCredentials(result.accessToken, result.refreshToken);
-      }).catch(error => {
-        console.log(error)
-        navigation.navigate('CheckoutPaymentMethodCard');
-      });
-    }
-  }, [ baseURL, cart.hasEdenredCredentials, clientId, loadPaymentDetails, navigation, updateEdenredCredentials, authorizationEndpoint ]);
+    loadPaymentDetailsOrAuthorizeEdenred();
+  }, [ cart.hasEdenredCredentials, loadPaymentDetailsOrAuthorizeEdenred ]);
 
   if (paymentDetailsLoaded && paymentDetails.payments.length === 2) {
 
@@ -104,20 +74,16 @@ const Edenred = ({ clientId, baseURL, cart, paymentDetailsLoaded, loadPaymentDet
 function mapStateToProps(state) {
   return {
     cart: selectCart(state)?.cart,
-    clientId: state.app.settings.edenred_client_id,
-    baseURL: state.app.baseURL,
     paymentDetailsLoaded: state.checkout.paymentDetailsLoaded,
     paymentDetails: state.checkout.paymentDetails,
     errors: state.checkout.errors,
-    authorizationEndpoint: state.app.settings.edenred_authorization_endpoint,
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    loadPaymentDetails: () => dispatch(loadPaymentDetails()),
-    updateEdenredCredentials: (accessToken, refreshToken) => dispatch(updateEdenredCredentials(accessToken, refreshToken)),
     checkout: (cardholderName, savedCardSelected, saveCard) => dispatch(checkout(cardholderName, savedCardSelected, saveCard, true)),
+    loadPaymentDetailsOrAuthorizeEdenred: () => dispatch(loadPaymentDetailsOrAuthorizeEdenred()),
   };
 }
 
