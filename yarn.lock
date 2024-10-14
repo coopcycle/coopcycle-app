@@ -2425,9 +2425,10 @@
   dependencies:
     "@hapi/hoek" "^9.0.0"
 
-"@heasy/react-native-sunmi-printer@git+https://github.com/Surile/react-native-sunmi-printer.git#666f6f76ce737faf7a500b88a08ad10da68c5967":
-  version "1.8.1"
-  resolved "git+https://github.com/Surile/react-native-sunmi-printer.git#666f6f76ce737faf7a500b88a08ad10da68c5967"
+"@heasy/react-native-sunmi-printer@^1.8.4":
+  version "1.8.4"
+  resolved "https://registry.yarnpkg.com/@heasy/react-native-sunmi-printer/-/react-native-sunmi-printer-1.8.4.tgz#e5b0f57502cb269664fcc6eccb2e8647399bf2a5"
+  integrity sha512-cRg2aWQEerAXrV3vMnbL0CmHz8PjJQDOXfMUeUiStvpg8/XQpWME8/c9GqBCsQQ5bK6qXiSI2lnpTYQs0R8n5A==
 
 "@humanwhocodes/config-array@^0.11.6":
   version "0.11.7"
@@ -2974,9 +2975,10 @@
   resolved "https://registry.yarnpkg.com/@mapbox/sphericalmercator/-/sphericalmercator-1.1.0.tgz#f3b1af042620716a1289fc41e1e97f610823aefe"
   integrity sha512-pEsfZyG4OMThlfFQbCte4gegvHUjxXCjz0KZ4Xk8NdOYTQBLflj6U8PL05RPAiuRAMAQNUUKJuL6qYZ5Y4kAWA==
 
-"@mitsuharu/react-native-sunmi-printer-library@git+https://git@github.com/coopcycle/react-native-sunmi-printer-library.git#hotfix-rn-0.73":
-  version "1.0.1"
-  resolved "git+https://git@github.com/coopcycle/react-native-sunmi-printer-library.git#f2dcd73c2d470218ebecb7977bf57b92c6e5fe89"
+"@mitsuharu/react-native-sunmi-printer-library@^2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@mitsuharu/react-native-sunmi-printer-library/-/react-native-sunmi-printer-library-2.2.0.tgz#4f020f13c31f2ebc5f67fdaf3fffabdb34fc9931"
+  integrity sha512-0mBWPLp/+mMBxe6Z7V19RVTXE0Eqnli5tS5Pujc8/414EaLDazmy3xDZJdzENtbnD70zA/9ZJmw2PF4Zjqst4g==
 
 "@nicolo-ribaudo/eslint-scope-5-internals@5.1.1-v1":
   version "5.1.1-v1"
