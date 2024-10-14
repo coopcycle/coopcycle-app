@@ -18,7 +18,7 @@ import ClientListInput from './components/ClientListInput';
 import FormInput from './components/FormInput';
 import ModalFormWrapper from './ModalFormWrapper';
 
-function NewDelivery(props) {
+function NewDeliveryAddress(props) {
   const [validAddress, setValidAddress] = useState(false);
   const [address, setAddress] = useState(null);
   const backgroundColor = useBackgroundContainerColor();
@@ -358,6 +358,7 @@ const styles = StyleSheet.create({
 
 function mapDispatchToProps(state) {
   return {
+    country: state.app.settings.country.toUpperCase(),
     store: selectStore(state),
     deliveryError: state.store.assertDeliveryError,
     addresses: state.store.addresses,
@@ -373,4 +374,4 @@ function mapStateToProps(dispatch) {
 export default connect(
   mapDispatchToProps,
   mapStateToProps
-)(withTranslation()(NewDelivery));
+)(withTranslation()(NewDeliveryAddress));

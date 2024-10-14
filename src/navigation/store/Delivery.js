@@ -14,7 +14,7 @@ import { selectDeliveries } from '../../redux/Store/selectors';
 import { stateColor } from '../../utils/delivery';
 import { humanizeTaskTime } from '../../utils/time-slots';
 
-class NewDelivery extends Component {
+class DeliveryDetail extends Component {
   componentDidMount() {
     this.props.loadTasks(this.props.route.params?.delivery);
   }
@@ -153,4 +153,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(withTranslation()(NewDelivery));
+)(withTranslation()(DeliveryDetail));
