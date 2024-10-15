@@ -28,7 +28,7 @@ import {
 import Modal from 'react-native-modal';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { AvoidSoftInput, useSoftInputHeightChanged } from 'react-native-avoid-softinput';
@@ -228,79 +228,95 @@ function resolveContactName(contactName, task, tasks) {
   return !_.isEmpty(task.address.contactName) ? task.address.contactName : '';
 }
 
-function doMarkTaskDone(task, tasks, notes, contactName, markTaskDone, markTasksDone, navigation, route) {
+function isSuccessRoute(route) {
 
-  return () => {
-    if (tasks && tasks.length) {
-      markTasksDone(
-        tasks,
-        notes,
-        () => {
-          navigation.navigate({
-            name: route.params?.navigateAfter,
-            merge: true,
-          });
-        },
-        contactName,
-      );
+  return Object.prototype.hasOwnProperty.call(
+    route.params || {},
+    'success',
+  )
+    ? route.params?.success
+    : true;
+}
+
+const SubmitButton = ({ task, tasks, notes, contactName, failureReason, validateTaskAfterReport, isIncidentEnabled }) => {
+
+  const { t } = useTranslation();
+  const navigation = useNavigation();
+  const route = useRoute();
+  const dispatch = useDispatch();
+
+  const success = isSuccessRoute(route);
+
+  const buttonIconName = success ? doneIconName : incidentIconName;
+  const footerBgColor = success ? greenColor : yellowColor;
+
+  const onPress = () => {
+
+    const navigateOnSuccess = () => {
+      // Make sure to use merge = true, so that it doesn't break
+      // when navigating to DispatchTaskList
+      navigation.navigate({
+        name: route.params?.navigateAfter,
+        merge: true,
+      });
+    }
+
+    if (success) {
+      if (tasks && tasks.length) {
+        dispatch(markTasksDone(
+          tasks,
+          notes,
+          navigateOnSuccess,
+          contactName,
+        ));
+      } else {
+        dispatch(markTaskDone(
+          task,
+          notes,
+          navigateOnSuccess,
+          contactName,
+        ));
+      }
     } else {
-      markTaskDone(
-        task,
-        notes,
-        () => {
-          // Make sure to use merge = true, so that it doesn't break
-          // when navigating to DispatchTaskList
-          navigation.navigate({
-            name: route.params?.navigateAfter,
-            merge: true,
-          });
-        },
-        contactName,
-      );
+      if (isIncidentEnabled) {
+        dispatch(reportIncident(
+          task,
+          notes,
+          failureReason,
+          () => {
+            if (validateTaskAfterReport) {
+              markTaskDone();
+            } else {
+              navigateOnSuccess();
+            }
+          },
+        ));
+      } else {
+        dispatch(markTaskFailed(
+          task,
+          notes,
+          failureReason,
+          navigateOnSuccess,
+          contactName,
+        ));
+      }
     }
   }
-}
 
-function doMarkTaskFailed(task, notes, failureReason, contactName, markTaskFailed, navigation, route) {
-
-  return () => {
-
-    markTaskFailed(
-      task,
-      notes,
-      failureReason,
-      () => {
-        // Make sure to use merge = true, so that it doesn't break
-        // when navigating to DispatchTaskList
-        navigation.navigate({
-          name: route.params?.navigateAfter,
-          merge: true,
-        });
-      },
-      contactName,
-    );
-  }
-}
-
-function doReportIncident(task, notes, failureReason, validateTaskAfterReport, markTaskDone, reportIncident, navigation, route) {
-
-  return () => {
-    reportIncident(
-      task,
-      notes,
-      failureReason,
-      () => {
-        if (validateTaskAfterReport) {
-          markTaskDone();
-        } else {
-          navigation.navigate({
-            name: route.params?.navigateAfter,
-            merge: true,
-          });
-        }
-      },
-    );
-  }
+  return (
+    <TouchableOpacity
+      onPress={onPress}
+      style={{ alignItems: 'center', backgroundColor: footerBgColor }}>
+      <HStack py="3" alignItems="center">
+        <Icon
+          as={FontAwesome}
+          name={buttonIconName}
+          style={{ color: '#fff', marginRight: 10 }}
+        />
+        <Text>{success ? t('VALIDATE') : t('REPORT_INCIDENT')}</Text>
+      </HStack>
+    </TouchableOpacity>
+  )
 }
 
 const CompleteTask = ({
@@ -309,10 +325,6 @@ const CompleteTask = ({
   signatures,
   pictures,
   isIncidentEnabled,
-  markTaskFailed,
-  markTaskDone,
-  markTasksDone,
-  reportIncident,
   deleteSignatureAt,
   deletePictureAt,
 }) => {
@@ -344,23 +356,7 @@ const CompleteTask = ({
 
   const task = route.params?.task;
   const tasks = route.params?.tasks;
-  const success = Object.prototype.hasOwnProperty.call(
-    route.params || {},
-    'success',
-  )
-    ? route.params?.success
-    : true;
-
-  const buttonIconName = success ? doneIconName : incidentIconName;
-  const footerBgColor = success ? greenColor : yellowColor;
-  const footerText = success
-    ? t('VALIDATE')
-    : t('REPORT_INCIDENT');
-  const onPress = success
-    ? doMarkTaskDone(task, tasks, notes, contactName, markTaskDone, markTasksDone, navigation, route)
-    : isIncidentEnabled
-      ? doReportIncident(task, notes, failureReason, validateTaskAfterReport, markTaskDone, reportIncident, navigation, route)
-      : doMarkTaskFailed(task, notes, failureReason, contactName, markTaskFailed, navigation, route);
+  const success = isSuccessRoute(route);
 
   const initialValues = {
     contactName: resolveContactName(contactName, task, tasks),
@@ -541,18 +537,14 @@ const CompleteTask = ({
                   <Icon as={FontAwesome5} name="camera" />
                 </HStack>
               </TouchableOpacity>
-              <TouchableOpacity
-                onPress={onPress}
-                style={{ alignItems: 'center', backgroundColor: footerBgColor }}>
-                <HStack py="3" alignItems="center">
-                  <Icon
-                    as={FontAwesome}
-                    name={buttonIconName}
-                    style={{ color: '#fff', marginRight: 10 }}
-                  />
-                  <Text>{footerText}</Text>
-                </HStack>
-              </TouchableOpacity>
+              <SubmitButton
+                task={task}
+                tasks={tasks}
+                notes={notes}
+                contactName={contactName}
+                failureReason={failureReason}
+                validateTaskAfterReport={validateTaskAfterReport}
+                isIncidentEnabled={isIncidentEnabled} />
             </VStack>
           </View>
         </Animated.View>
@@ -636,18 +628,6 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    markTaskFailed: (task, notes, reason, onSuccess, contactName) =>
-      dispatch(
-        markTaskFailed(task, notes, reason, onSuccess, contactName),
-      ),
-    markTaskDone: (task, notes, onSuccess, contactName) =>
-      dispatch(markTaskDone(task, notes, onSuccess, contactName)),
-    markTasksDone: (tasks, notes, onSuccess, contactName) =>
-      dispatch(markTasksDone(tasks, notes, onSuccess, contactName)),
-    reportIncident: (task, notes, failureReasonCode, onSuccess) =>
-      dispatch(
-        reportIncident(task, notes, failureReasonCode, onSuccess),
-      ),
     deleteSignatureAt: index => dispatch(deleteSignatureAt(index)),
     deletePictureAt: index => dispatch(deletePictureAt(index)),
   };
