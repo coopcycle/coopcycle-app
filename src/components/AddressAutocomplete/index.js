@@ -4,7 +4,7 @@ import { AbortController } from 'abortcontroller-polyfill/dist/cjs-ponyfill';
 import axios from 'axios';
 import Fuse from 'fuse.js';
 import _ from 'lodash';
-import { Icon, Input, Text, useColorModeValue, View } from 'native-base';
+import { Icon, Input, Text, useColorModeValue, View, Pressable } from 'native-base';
 import PropTypes from 'prop-types';
 import qs from 'qs';
 import React, { useCallback, useState } from 'react';
@@ -25,6 +25,7 @@ import ItemSeparator from '../ItemSeparator';
 import PostCodeButton from './components/PostCodeButton';
 import PoweredByGoogle from './powered/PoweredByGoogle';
 import { PoweredByIdealPostcodes } from './powered/PoweredByIdealPostcodes';
+
 
 const fuseOptions = {
   shouldSort: true,
@@ -350,21 +351,18 @@ function AddressAutocomplete(props) {
         value={query}
         placeholder={finalPlaceholder}
         onChangeText={onChangeText}
-        flatListProps={{
-          style: {
-            margin: 0, // reset default margins on Android
-            backgroundColor: props.controlBackgroundColor,
-          },
-          keyboardShouldPersistTaps: 'always',
-          keyExtractor: (item, i) => `prediction-${i}`,
-          renderItem: renderItem, // Use the renderItem method (either passed as a prop or defined in your hook)
-          ItemSeparatorComponent: ItemSeparator,
-          ListFooterComponent:
-            props.country === 'gb'
-              ? PoweredByIdealPostcodes(styles.poweredContainer)
-              : PoweredByGoogle(styles.poweredContainer),
-          ...flatListProps,
-        }}
+        // do not use default FlatList - see https://github.com/byteburgers/react-native-autocomplete-input/pull/230
+        renderResultList={({ data, style }) => (
+          <View style={style}>
+            {data.map((item, index) => (
+              <View key={index}>
+                <Pressable>{renderItem({ item })}</Pressable>
+                <ItemSeparator />
+              </View>
+            ))}
+            { props.country === 'gb' ? PoweredByIdealPostcodes(styles.poweredContainer) : PoweredByGoogle(styles.poweredContainer)}
+          </View>
+        )}
         renderTextInput={inputProps => renderTextInput(inputProps)}
         style={{
           color: props.baseTextColor,

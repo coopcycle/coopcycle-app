@@ -22,7 +22,7 @@ export default function ModalFormWrapper({
         style={{
           backgroundColor,
         }}>
-        <ScrollView>
+        <ScrollView keyboardShouldPersistTaps="handled">
           <Box p="5" gap="3">
             {children}
           </Box>
