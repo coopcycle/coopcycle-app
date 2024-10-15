@@ -282,7 +282,7 @@ function doMarkTaskFailed(task, notes, failureReason, contactName, markTaskFaile
   }
 }
 
-function doReportIncident(task, notes, failureReason, validateTaskAfterReport, markTaskDone, navigation, route) {
+function doReportIncident(task, notes, failureReason, validateTaskAfterReport, markTaskDone, reportIncident, navigation, route) {
 
   return () => {
     reportIncident(
@@ -359,7 +359,7 @@ const CompleteTask = ({
   const onPress = success
     ? doMarkTaskDone(task, tasks, notes, contactName, markTaskDone, markTasksDone, navigation, route)
     : isIncidentEnabled
-      ? doReportIncident(task, notes, failureReason, validateTaskAfterReport, markTaskDone, navigation, route)
+      ? doReportIncident(task, notes, failureReason, validateTaskAfterReport, markTaskDone, reportIncident, navigation, route)
       : doMarkTaskFailed(task, notes, failureReason, contactName, markTaskFailed, navigation, route);
 
   const initialValues = {
