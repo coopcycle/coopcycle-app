@@ -285,7 +285,12 @@ const SubmitButton = ({ task, tasks, notes, contactName, failureReason, validate
           failureReason,
           () => {
             if (validateTaskAfterReport) {
-              markTaskDone();
+              dispatch(markTaskDone(
+                task,
+                notes,
+                navigateOnSuccess,
+                contactName,
+              ));
             } else {
               navigateOnSuccess();
             }
