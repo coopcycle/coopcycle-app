@@ -43,7 +43,6 @@ import {
   markTaskDone,
   markTaskFailed,
   markTasksDone,
-  selectIsTaskCompleteFailure,
   selectPictures,
   selectSignatures,
 } from '../../redux/Courier';
@@ -326,7 +325,6 @@ const SubmitButton = ({ task, tasks, notes, contactName, failureReason, validate
 
 const CompleteTask = ({
   httpClient,
-  taskCompleteError,
   signatures,
   pictures,
   isIncidentEnabled,
@@ -624,7 +622,6 @@ const styles = StyleSheet.create({
 function mapStateToProps(state) {
   return {
     httpClient: state.app.httpClient,
-    taskCompleteError: selectIsTaskCompleteFailure(state),
     signatures: selectSignatures(state),
     pictures: selectPictures(state),
     isIncidentEnabled: selectIsIncidentEnabled(state),
