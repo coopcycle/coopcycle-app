@@ -316,18 +316,16 @@ const SubmitButton = ({ task, tasks, notes, contactName, failureReason, validate
   )
 }
 
-const FailureReasonForm = ({ data, onChange }) => {
-
+const parseInitialData = (data) => {
   const asQueryString = data.map(v => `${v.name}=${v.value}`).join('&')
-  const initialValues = qs.parse(asQueryString);
+  return qs.parse(asQueryString);
+}
 
-  useEffect(() => {
-    onChange(initialValues)
-  }, [data])
+const FailureReasonForm = ({ data, onChange }) => {
 
   return (
     <Formik
-      initialValues={ initialValues }
+      initialValues={ parseInitialData(data) }
       // We use validate as a change handler
       validate={ values => {
         onChange(values)
@@ -500,7 +498,7 @@ const CompleteTask = ({
                         onValueChange={(code, obj) => {
                           if (obj && obj.metadata) {
                             setFailureReasonMetadata(obj.metadata);
-                            setFailureReasonMetadataToSend([]);
+                            setFailureReasonMetadataToSend(parseInitialData(obj.metadata));
                           } else {
                             setFailureReasonMetadata([]);
                             setFailureReasonMetadataToSend([]);
