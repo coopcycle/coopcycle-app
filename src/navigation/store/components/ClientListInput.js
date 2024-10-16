@@ -3,10 +3,6 @@ import { useState } from 'react';
 import Autocomplete from 'react-native-autocomplete-input';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import ItemSeparator from '../../../components/ItemSeparator';
-import {
-  useBackgroundContainerColor,
-  usePrimaryColor,
-} from '../../../styles/theme';
 import FormInput from './FormInput';
 import { StyleSheet } from 'react-native';
 
@@ -17,8 +13,6 @@ export default function ClientListInput({
 }) {
   const [hideSuggestions, setHideSuggestions] = useState(true);
   const [value, setValue] = useState('');
-  const backgroundContainerColor = useBackgroundContainerColor();
-  const primaryColor = usePrimaryColor();
 
   function handleFocus() {
     setHideSuggestions(false);
