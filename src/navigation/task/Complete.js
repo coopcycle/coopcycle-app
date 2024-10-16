@@ -8,20 +8,18 @@ import {
   HStack,
   Icon,
   Input,
-  KeyboardAvoidingView,
   ScrollView,
   Skeleton,
   Text,
   TextArea,
   VStack,
 } from 'native-base';
-import React, { Component, useEffect, useMemo, useState } from 'react';
-import { withTranslation } from 'react-i18next';
+import React, { useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Dimensions,
   Image,
   Keyboard,
-  Platform,
   StyleSheet,
   TouchableOpacity,
   TouchableWithoutFeedback,
@@ -30,7 +28,11 @@ import {
 import Modal from 'react-native-modal';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
+import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { AvoidSoftInput, useSoftInputHeightChanged } from 'react-native-avoid-softinput';
+import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
 import { useQuery } from 'react-query';
 import ModalContent from '../../components/ModalContent';
@@ -40,11 +42,9 @@ import {
   deleteSignatureAt,
   markTaskDone,
   markTasksDone,
-  selectIsTaskCompleteFailure,
   selectPictures,
   selectSignatures,
 } from '../../redux/Courier';
-import { selectIsIncidentEnabled } from '../../redux/App/selectors';
 import { greenColor, yellowColor } from '../../styles/common';
 import { doneIconName, incidentIconName } from './styles/common';
 import { reportIncident } from '../../redux/Courier/taskActions';
@@ -119,401 +119,436 @@ const FailureReasonPicker = ({ task, httpClient, onValueChange }) => {
   );
 };
 
-class CompleteTask extends Component {
-  constructor(props) {
-    super(props);
+function isDropoff(task, tasks) {
+  if (tasks && tasks.length > 1) {
+    return tasks.every(t => t.type === 'DROPOFF');
+  } else if (tasks && tasks.length === 1) {
+    return tasks[0].type === 'DROPOFF';
+  }
+  return task && task.type === 'DROPOFF';
+}
 
-    this.state = {
-      notes: '',
-      failureReason: null,
-      isContactNameModalVisible: false,
-      contactName: '',
-      isKeyboardVisible: false,
-      validateTaskAfterReport: false,
-    };
+const MultipleTasksLabel = ({ tasks }) => {
+
+  const { t } = useTranslation();
+
+  if (!tasks || tasks.length === 0) {
+    return null;
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    if (this.state.failureReason !== nextState.failureReason) return true;
-
-    if (
-      this.state.validateTaskAfterReport !== nextState.validateTaskAfterReport
-    )
-      return true;
-
-    if (this.props.signatures.length !== nextProps.signatures.length)
-      return true;
-
-    if (this.props.pictures.length !== nextProps.pictures.length) return true;
-
-    if (this.state.isContactNameModalVisible !== nextState.isContactNameModalVisible)
-      return true;
-
-    if (this.state.isKeyboardVisible !== nextState.isKeyboardVisible) return true;
-
-    return false;
-  }
-
-  markTaskDone() {
-    const task = this.props.route.params?.task;
-    const tasks = this.props.route.params?.tasks;
-    const { notes } = this.state;
-
-    if (tasks && tasks.length) {
-      this.props.markTasksDone(
-        tasks,
-        notes,
-        () => {
-          this.props.navigation.navigate({
-            name: this.props.route.params?.navigateAfter,
-            merge: true,
-          });
+  return (
+    <Text mt={2} ml={3}>
+      {tasks.reduce(
+        (label, task, idx) => {
+          const taskIdentifier = task?.metadata?.order_number ? `${task.metadata.order_number}-${task?.metadata?.delivery_position}` : task.id
+          return `${label}${idx !== 0 ? ',' : ''} #${taskIdentifier}`;
         },
-        this.state.contactName,
-      );
+        `${t('COMPLETE_TASKS')}: `,
+      )}
+    </Text>
+  )
+}
+
+const ContactNameModal = ({ isVisible, onSwipeComplete, initialValues, onSubmit }) => {
+
+  const { t } = useTranslation();
+
+  return (
+    <Modal
+      isVisible={isVisible}
+      onSwipeComplete={onSwipeComplete}
+      swipeDirection={['up', 'down']}>
+      <ModalContent>
+        <Box p="3">
+          <Formik
+            initialValues={initialValues}
+            validate={(values) => {
+              if (_.isEmpty(values.contactName)) {
+                return {
+                  contactName: t('STORE_NEW_DELIVERY_ERROR.EMPTY_CONTACT_NAME'),
+                };
+              }
+
+              return {};
+            }}
+            onSubmit={onSubmit}
+            validateOnBlur={false}
+            validateOnChange={false}>
+            {({
+              handleChange,
+              handleBlur,
+              handleSubmit,
+              values,
+              errors,
+              touched,
+            }) => (
+              <View>
+                <FormControl
+                  error={touched.contactName && errors.contactName}
+                  style={{ marginBottom: 15 }}>
+                  <FormControl.Label>
+                    {t('DELIVERY_DETAILS_RECIPIENT')}
+                  </FormControl.Label>
+                  <Input
+                    autoCorrect={false}
+                    autoCapitalize="none"
+                    autoCompleteType="off"
+                    style={{ height: 40 }}
+                    returnKeyType="done"
+                    onChangeText={handleChange('contactName')}
+                    onBlur={handleBlur('contactName')}
+                    defaultValue={values.contactName}
+                  />
+                </FormControl>
+                <Button block onPress={handleSubmit}>
+                  {t('SUBMIT')}
+                </Button>
+              </View>
+            )}
+          </Formik>
+        </Box>
+      </ModalContent>
+    </Modal>
+  )
+}
+
+function resolveContactName(contactName, task, tasks) {
+
+  if (!_.isEmpty(contactName)) {
+    return contactName;
+  }
+
+  if (!task && tasks && tasks.length > 0) {
+    task = tasks[0];
+  }
+
+  return !_.isEmpty(task.address.contactName) ? task.address.contactName : '';
+}
+
+function isSuccessRoute(route) {
+
+  return Object.prototype.hasOwnProperty.call(
+    route.params || {},
+    'success',
+  )
+    ? route.params?.success
+    : true;
+}
+
+const SubmitButton = ({ task, tasks, notes, contactName, failureReason, validateTaskAfterReport }) => {
+
+  const { t } = useTranslation();
+  const navigation = useNavigation();
+  const route = useRoute();
+  const dispatch = useDispatch();
+
+  const success = isSuccessRoute(route);
+
+  const buttonIconName = success ? doneIconName : incidentIconName;
+  const footerBgColor = success ? greenColor : yellowColor;
+
+  const onPress = () => {
+
+    const navigateOnSuccess = () => {
+      // Make sure to use merge = true, so that it doesn't break
+      // when navigating to DispatchTaskList
+      navigation.navigate({
+        name: route.params?.navigateAfter,
+        merge: true,
+      });
+    }
+
+    if (success) {
+      if (tasks && tasks.length) {
+        dispatch(markTasksDone(
+          tasks,
+          notes,
+          navigateOnSuccess,
+          contactName,
+        ));
+      } else {
+        dispatch(markTaskDone(
+          task,
+          notes,
+          navigateOnSuccess,
+          contactName,
+        ));
+      }
     } else {
-      this.props.markTaskDone(
+      dispatch(reportIncident(
         task,
         notes,
+        failureReason,
         () => {
-          // Make sure to use merge = true, so that it doesn't break
-          // when navigating to DispatchTaskList
-          this.props.navigation.navigate({
-            name: this.props.route.params?.navigateAfter,
-            merge: true,
-          });
+          if (validateTaskAfterReport) {
+            dispatch(markTaskDone(
+              task,
+              notes,
+              navigateOnSuccess,
+              contactName,
+            ));
+          } else {
+            navigateOnSuccess();
+          }
         },
-        this.state.contactName,
-      );
+      ));
     }
   }
 
-  reportIncident() {
-    const task = this.props.route.params?.task;
-    const { notes, failureReason } = this.state;
+  return (
+    <TouchableOpacity
+      onPress={onPress}
+      style={{ alignItems: 'center', backgroundColor: footerBgColor }}>
+      <HStack py="3" alignItems="center">
+        <Icon
+          as={FontAwesome}
+          name={buttonIconName}
+          style={{ color: '#fff', marginRight: 10 }}
+        />
+        <Text>{success ? t('VALIDATE') : t('REPORT_INCIDENT')}</Text>
+      </HStack>
+    </TouchableOpacity>
+  )
+}
 
-    this.props.reportIncident(
-      task,
-      notes,
-      failureReason,
-      () => {
-        if (this.state.validateTaskAfterReport) {
-          this.markTaskDone();
-        } else {
-          this.props.navigation.navigate({
-            name: this.props.route.params?.navigateAfter,
-            merge: true,
-          });
-        }
-      },
-    );
-  }
+const CompleteTask = ({
+  httpClient,
+  signatures,
+  pictures,
+  deleteSignatureAt,
+  deletePictureAt,
+}) => {
 
-  onSwipeComplete() {
-    this.setState({ isContactNameModalVisible: false });
-  }
+  const { t } = useTranslation();
+  const route = useRoute();
+  const navigation = useNavigation();
 
-  _validate(values) {
-    if (_.isEmpty(values.contactName)) {
-      return {
-        contactName: this.props.t(
-          'STORE_NEW_DELIVERY_ERROR.EMPTY_CONTACT_NAME',
-        ),
-      };
-    }
+  const [notes, setNotes] = useState('');
+  const [failureReason, setFailureReason] = useState(null);
+  const [isContactNameModalVisible, setIsContactNameModalVisible] = useState(false);
+  const [contactName, setContactName] = useState('');
+  const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
+  const [validateTaskAfterReport, setValidateTaskAfterReport] = useState(false);
 
-    return {};
-  }
-
-  _onSubmit(values) {
-    this.setState({
-      contactName: values.contactName,
-      isContactNameModalVisible: false,
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
+      setIsKeyboardVisible(true);
     });
-  }
-
-  resolveContactName() {
-    let task = this.props.route.params?.task;
-    const tasks = this.props.route.params?.tasks;
-
-    if (!task && tasks && tasks.length) {
-      task = tasks[0];
-    }
-
-    if (!_.isEmpty(this.state.contactName)) {
-      return this.state.contactName;
-    }
-
-    return !_.isEmpty(task.address.contactName) ? task.address.contactName : '';
-  }
-
-  componentDidMount() {
-    this.showSubscription = Keyboard.addListener('keyboardDidShow', () => {
-      this.setState({ isKeyboardVisible: true });
+    const hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
+      setIsKeyboardVisible(false);
     });
-    this.hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
-      this.setState({ isKeyboardVisible: false });
-    });
-  }
 
-  componentWillUnmount() {
-    this.showSubscription.remove();
-    this.hideSubscription.remove();
-  }
-
-  multipleTasksLabel(tasks) {
-
-    return tasks.reduce(
-      (label, task, idx) => {
-        const taskIdentifier = task?.metadata?.order_number ? `${task.metadata.order_number}-${task?.metadata?.delivery_position}` : task.id
-        return `${label}${idx !== 0 ? ',' : ''} #${taskIdentifier}`;
-      },
-      `${this.props.t('COMPLETE_TASKS')}: `,
-    );
-  }
-
-  isDropoff() {
-    const task = this.props.route.params?.task;
-    const tasks = this.props.route.params?.tasks;
-
-    if (tasks && tasks.length > 1) {
-      return tasks.every(t => t.type === 'DROPOFF');
-    } else if (tasks && tasks.length === 1) {
-      return tasks[0].type === 'DROPOFF';
-    }
-    return task && task.type === 'DROPOFF';
-  }
-
-  render() {
-    const task = this.props.route.params?.task;
-    const tasks = this.props.route.params?.tasks;
-    const success = Object.prototype.hasOwnProperty.call(
-      this.props.route.params || {},
-      'success',
-    )
-      ? this.props.route.params?.success
-      : true;
-
-    const buttonIconName = success ? doneIconName : incidentIconName;
-    const footerBgColor = success ? greenColor : yellowColor;
-    const footerText = success
-      ? this.props.t('VALIDATE')
-      : this.props.t('REPORT_INCIDENT');
-    const onPress = success
-      ? this.markTaskDone.bind(this)
-      : this.reportIncident.bind(this);
-
-    const contactName = this.resolveContactName();
-
-    const initialValues = {
-      contactName,
+    return () => {
+      showSubscription.remove();
+      hideSubscription.remove();
     };
+  }, []);
 
-    return (
-      <React.Fragment>
-        <KeyboardAvoidingView
-          flex={1}
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-          <VStack flex={1}>
-            {tasks && tasks.length ? (
-              <Text mt={2} ml={3}>
-                {this.multipleTasksLabel(tasks)}
-              </Text>
-            ) : null}
-            <TouchableWithoutFeedback
-              // We need to disable TouchableWithoutFeedback when keyboard is not visible,
-              // otherwise the ScrollView for proofs of delivery is not scrollable
-              disabled={!this.state.isKeyboardVisible}
-              // This allows hiding the keyboard when touching anything on the screen
-              onPress={Keyboard.dismiss}>
-              <VStack>
-                {this.isDropoff() && (
-                  <React.Fragment>
-                    <HStack
-                      justifyContent="space-between"
-                      alignItems="center"
-                      p="3">
-                      <View
-                        style={{
-                          flexDirection: 'row',
-                          alignItems: 'center',
-                          justifyContent: 'space-between',
-                        }}>
-                        <Icon
-                          as={FontAwesome}
-                          name="user"
-                          style={{ marginRight: 10 }}
-                        />
-                        <Text numberOfLines={1}>{contactName}</Text>
-                      </View>
-                      <TouchableOpacity
-                        onPress={() =>
-                          this.setState({ isContactNameModalVisible: true })
-                        }>
-                        <Text>{this.props.t('EDIT')}</Text>
-                      </TouchableOpacity>
-                    </HStack>
-                    <Divider />
-                  </React.Fragment>
-                )}
-                {!success && (
-                  <FormControl p="3">
-                    <FormControl.Label>
-                      {this.props.t('FAILURE_REASON')}
-                    </FormControl.Label>
-                    <FailureReasonPicker
-                      task={task}
-                      httpClient={this.props.httpClient}
-                      onValueChange={failureReason =>
-                        this.setState({ failureReason })
-                      }
-                    />
-                  </FormControl>
-                )}
-                <FormControl p="3">
-                  <FormControl.Label>{this.props.t('NOTES')}</FormControl.Label>
-                  <TextArea
-                    autoCorrect={false}
-                    totalLines={2}
-                    onChangeText={text => this.setState({ notes: text })}
-                  />
+  const task = route.params?.task;
+  const tasks = route.params?.tasks;
+  const success = isSuccessRoute(route);
+
+  const initialValues = {
+    contactName: resolveContactName(contactName, task, tasks),
+  };
+
+  /* https://mateusz1913.github.io/react-native-avoid-softinput/docs/recipes/recipes-sticky-footer */
+
+  const buttonContainerPaddingValue = useSharedValue(0);
+
+  const buttonContainerAnimatedStyle = useAnimatedStyle(() => {
+    return {
+      paddingBottom: buttonContainerPaddingValue.value,
+    };
+  });
+
+  const onFocusEffect = React.useCallback(() => {
+    AvoidSoftInput.setShouldMimicIOSBehavior(true);
+
+    return () => {
+      AvoidSoftInput.setShouldMimicIOSBehavior(false);
+    };
+  }, []);
+
+  useFocusEffect(onFocusEffect);
+
+  /**
+   * You can also use `useSoftInputShown` & `useSoftInputHidden`
+   *
+   * useSoftInputShown(({ softInputHeight }) => {
+   *   buttonContainerPaddingValue.value = withTiming(softInputHeight);
+   * });
+   *
+   * useSoftInputHidden(() => {
+   *   buttonContainerPaddingValue.value = withTiming(0);
+   * });
+   */
+  useSoftInputHeightChanged(({ softInputHeight }) => {
+    buttonContainerPaddingValue.value = withTiming(softInputHeight);
+  });
+
+  return (
+    <React.Fragment>
+      <SafeAreaView edges={[ 'left', 'right', 'bottom' ]} style={styles.screenContainer}>
+        <View style={styles.scrollWrapper}>
+          <ScrollView
+            contentContainerStyle={styles.scrollContainer}
+            contentInsetAdjustmentBehavior="always"
+          >
+            <VStack flex={1} w="100%">
+              <MultipleTasksLabel tasks={ tasks } />
+              <TouchableWithoutFeedback
+                // We need to disable TouchableWithoutFeedback when keyboard is not visible,
+                // otherwise the ScrollView for proofs of delivery is not scrollable
+                disabled={!isKeyboardVisible}
+                // This allows hiding the keyboard when touching anything on the screen
+                onPress={Keyboard.dismiss}>
+                <VStack>
+                  {isDropoff(task, tasks) && (
+                    <React.Fragment>
+                      <HStack
+                        justifyContent="space-between"
+                        alignItems="center"
+                        p="3">
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                          }}>
+                          <Icon
+                            as={FontAwesome}
+                            name="user"
+                            style={{ marginRight: 10 }}
+                          />
+                          <Text numberOfLines={1}>{resolveContactName(contactName, task, tasks)}</Text>
+                        </View>
+                        <TouchableOpacity
+                          onPress={() =>
+                            setIsContactNameModalVisible(true)
+                          }>
+                          <Text>{t('EDIT')}</Text>
+                        </TouchableOpacity>
+                      </HStack>
+                      <Divider />
+                    </React.Fragment>
+                  )}
                   {!success && (
                     <FormControl p="3">
-                      <Button
-                        bg={
-                          this.state.validateTaskAfterReport
-                            ? greenColor
-                            : undefined
-                        }
-                        onPress={() =>
-                          this.setState({
-                            validateTaskAfterReport:
-                              !this.state.validateTaskAfterReport,
-                          })
-                        }
-                        variant={
-                          this.state.validateTaskAfterReport
-                            ? 'solid'
-                            : 'outline'
-                        }
-                        endIcon={
-                          this.state.validateTaskAfterReport ? (
-                            <Icon as={FontAwesome} name="check" size="sm" />
-                          ) : undefined
-                        }>
-                        Validate the task after reporting
-                      </Button>
-                    </FormControl>
-                  )}
-                </FormControl>
-                <View>
-                  <ScrollView style={{ height: '50%' }}>
-                    <View style={styles.content}>
-                      <View style={styles.imagesContainer}>
-                        {this.props.signatures.map((base64, key) => (
-                          <AttachmentItem
-                            key={`signatures:${key}`}
-                            base64={base64}
-                            onPressDelete={() =>
-                              this.props.deleteSignatureAt(key)
-                            }
-                          />
-                        ))}
-                        {this.props.pictures.map((base64, key) => (
-                          <AttachmentItem
-                            key={`pictures:${key}`}
-                            base64={base64}
-                            onPressDelete={() =>
-                              this.props.deletePictureAt(key)
-                            }
-                          />
-                        ))}
-                      </View>
-                    </View>
-                  </ScrollView>
-                </View>
-              </VStack>
-            </TouchableWithoutFeedback>
-          </VStack>
-          <Divider />
-          <VStack>
-            <TouchableOpacity
-              onPress={() =>
-                this.props.navigation.navigate('TaskCompleteProofOfDelivery', {
-                  task,
-                  tasks,
-                })
-              }>
-              <HStack alignItems="center" justifyContent="space-between" p="3">
-                <Icon as={FontAwesome5} name="signature" />
-                <Text>{this.props.t('TASK_ADD_PROOF_OF_DELIVERY')}</Text>
-                <Icon as={FontAwesome5} name="camera" />
-              </HStack>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={onPress}
-              style={{ alignItems: 'center', backgroundColor: footerBgColor }}>
-              <HStack py="3" alignItems="center">
-                <Icon
-                  as={FontAwesome}
-                  name={buttonIconName}
-                  style={{ color: '#fff', marginRight: 10 }}
-                />
-                <Text>{footerText}</Text>
-              </HStack>
-            </TouchableOpacity>
-          </VStack>
-        </KeyboardAvoidingView>
-        <Modal
-          isVisible={this.state.isContactNameModalVisible}
-          onSwipeComplete={this.onSwipeComplete.bind(this)}
-          swipeDirection={['up', 'down']}>
-          <ModalContent>
-            <Box p="3">
-              <Formik
-                initialValues={initialValues}
-                validate={this._validate.bind(this)}
-                onSubmit={this._onSubmit.bind(this)}
-                validateOnBlur={false}
-                validateOnChange={false}>
-                {({
-                  handleChange,
-                  handleBlur,
-                  handleSubmit,
-                  values,
-                  errors,
-                  touched,
-                }) => (
-                  <View>
-                    <FormControl
-                      error={touched.contactName && errors.contactName}
-                      style={{ marginBottom: 15 }}>
                       <FormControl.Label>
-                        {this.props.t('DELIVERY_DETAILS_RECIPIENT')}
+                        {t('FAILURE_REASON')}
                       </FormControl.Label>
-                      <Input
-                        autoCorrect={false}
-                        autoCapitalize="none"
-                        autoCompleteType="off"
-                        style={{ height: 40 }}
-                        returnKeyType="done"
-                        onChangeText={handleChange('contactName')}
-                        onBlur={handleBlur('contactName')}
-                        defaultValue={values.contactName}
+                      <FailureReasonPicker
+                        task={task}
+                        httpClient={httpClient}
+                        onValueChange={failureReason =>
+                          setFailureReason(failureReason)
+                        }
                       />
                     </FormControl>
-                    <Button block onPress={handleSubmit}>
-                      {this.props.t('SUBMIT')}
-                    </Button>
+                  )}
+                  <FormControl p="3">
+                    <FormControl.Label>{t('NOTES')}</FormControl.Label>
+                    <TextArea
+                      autoCorrect={false}
+                      totalLines={2}
+                      onChangeText={text => setNotes(text)}
+                    />
+                    {!success && (
+                      <FormControl p="3">
+                        <Button
+                          bg={
+                            validateTaskAfterReport
+                              ? greenColor
+                              : undefined
+                          }
+                          onPress={() =>
+                            setValidateTaskAfterReport(!validateTaskAfterReport)
+                          }
+                          variant={
+                            validateTaskAfterReport
+                              ? 'solid'
+                              : 'outline'
+                          }
+                          endIcon={
+                            validateTaskAfterReport ? (
+                              <Icon as={FontAwesome} name="check" size="sm" />
+                            ) : undefined
+                          }>
+                          Validate the task after reporting
+                        </Button>
+                      </FormControl>
+                    )}
+                  </FormControl>
+                  <View>
+                    <ScrollView style={{ height: '50%' }}>
+                      <View style={styles.content}>
+                        <View style={styles.imagesContainer}>
+                          {signatures.map((base64, key) => (
+                            <AttachmentItem
+                              key={`signatures:${key}`}
+                              base64={base64}
+                              onPressDelete={() =>
+                                deleteSignatureAt(key)
+                              }
+                            />
+                          ))}
+                          {pictures.map((base64, key) => (
+                            <AttachmentItem
+                              key={`pictures:${key}`}
+                              base64={base64}
+                              onPressDelete={() =>
+                                deletePictureAt(key)
+                              }
+                            />
+                          ))}
+                        </View>
+                      </View>
+                    </ScrollView>
                   </View>
-                )}
-              </Formik>
-            </Box>
-          </ModalContent>
-        </Modal>
-      </React.Fragment>
-    );
-  }
+                </VStack>
+              </TouchableWithoutFeedback>
+            </VStack>
+          </ScrollView>
+        </View>
+        <Animated.View style={[ buttonContainerAnimatedStyle, styles.ctaButtonWrapper ]}>
+          <View style={styles.ctaButtonContainer}>
+            <VStack w="100%">
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate('TaskCompleteProofOfDelivery', {
+                    task,
+                    tasks,
+                  })
+                }>
+                <HStack alignItems="center" justifyContent="space-between" p="3">
+                  <Icon as={FontAwesome5} name="signature" />
+                  <Text>{t('TASK_ADD_PROOF_OF_DELIVERY')}</Text>
+                  <Icon as={FontAwesome5} name="camera" />
+                </HStack>
+              </TouchableOpacity>
+              <SubmitButton
+                task={task}
+                tasks={tasks}
+                notes={notes}
+                contactName={contactName}
+                failureReason={failureReason}
+                validateTaskAfterReport={validateTaskAfterReport}
+              />
+            </VStack>
+          </View>
+        </Animated.View>
+      </SafeAreaView>
+      <ContactNameModal
+        isVisible={isContactNameModalVisible}
+        onSwipeComplete={() => setIsContactNameModalVisible(false)}
+        initialValues={ initialValues }
+        onSubmit={(values) => {
+          setContactName(values.contactName);
+          setIsContactNameModalVisible(false);
+        }} />
+    </React.Fragment>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -546,12 +581,34 @@ const styles = StyleSheet.create({
     top: -16,
     right: -16,
   },
+  screenContainer: {
+    alignItems: 'center',
+    alignSelf: 'stretch',
+    flex: 1,
+    justifyContent: 'center',
+  },
+  ctaButtonContainer: {
+    alignItems: 'center',
+    alignSelf: 'stretch',
+  },
+  ctaButtonWrapper: {
+    alignSelf: 'stretch',
+  },
+  scrollContainer: {
+    alignItems: 'center',
+    alignSelf: 'stretch',
+    flexGrow: 1,
+    justifyContent: 'center',
+  },
+  scrollWrapper: {
+    alignSelf: 'stretch',
+    flex: 1,
+  },
 });
 
 function mapStateToProps(state) {
   return {
     httpClient: state.app.httpClient,
-    taskCompleteError: selectIsTaskCompleteFailure(state),
     signatures: selectSignatures(state),
     pictures: selectPictures(state),
   };
@@ -559,14 +616,6 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    markTaskDone: (task, notes, onSuccess, contactName) =>
-      dispatch(markTaskDone(task, notes, onSuccess, contactName)),
-    markTasksDone: (tasks, notes, onSuccess, contactName) =>
-      dispatch(markTasksDone(tasks, notes, onSuccess, contactName)),
-    reportIncident: (task, notes, failureReasonCode, onSuccess) =>
-      dispatch(
-        reportIncident(task, notes, failureReasonCode, onSuccess),
-      ),
     deleteSignatureAt: index => dispatch(deleteSignatureAt(index)),
     deletePictureAt: index => dispatch(deletePictureAt(index)),
   };
@@ -575,4 +624,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(withTranslation()(CompleteTask));
+)(CompleteTask);
