@@ -41,12 +41,10 @@ import {
   deletePictureAt,
   deleteSignatureAt,
   markTaskDone,
-  markTaskFailed,
   markTasksDone,
   selectPictures,
   selectSignatures,
 } from '../../redux/Courier';
-import { selectIsIncidentEnabled } from '../../redux/App/selectors';
 import { greenColor, yellowColor } from '../../styles/common';
 import { doneIconName, incidentIconName } from './styles/common';
 import { reportIncident } from '../../redux/Courier/taskActions';
@@ -237,7 +235,7 @@ function isSuccessRoute(route) {
     : true;
 }
 
-const SubmitButton = ({ task, tasks, notes, contactName, failureReason, validateTaskAfterReport, isIncidentEnabled }) => {
+const SubmitButton = ({ task, tasks, notes, contactName, failureReason, validateTaskAfterReport }) => {
 
   const { t } = useTranslation();
   const navigation = useNavigation();
@@ -277,33 +275,23 @@ const SubmitButton = ({ task, tasks, notes, contactName, failureReason, validate
         ));
       }
     } else {
-      if (isIncidentEnabled) {
-        dispatch(reportIncident(
-          task,
-          notes,
-          failureReason,
-          () => {
-            if (validateTaskAfterReport) {
-              dispatch(markTaskDone(
-                task,
-                notes,
-                navigateOnSuccess,
-                contactName,
-              ));
-            } else {
-              navigateOnSuccess();
-            }
-          },
-        ));
-      } else {
-        dispatch(markTaskFailed(
-          task,
-          notes,
-          failureReason,
-          navigateOnSuccess,
-          contactName,
-        ));
-      }
+      dispatch(reportIncident(
+        task,
+        notes,
+        failureReason,
+        () => {
+          if (validateTaskAfterReport) {
+            dispatch(markTaskDone(
+              task,
+              notes,
+              navigateOnSuccess,
+              contactName,
+            ));
+          } else {
+            navigateOnSuccess();
+          }
+        },
+      ));
     }
   }
 
@@ -327,7 +315,6 @@ const CompleteTask = ({
   httpClient,
   signatures,
   pictures,
-  isIncidentEnabled,
   deleteSignatureAt,
   deletePictureAt,
 }) => {
@@ -467,7 +454,7 @@ const CompleteTask = ({
                       totalLines={2}
                       onChangeText={text => setNotes(text)}
                     />
-                    {!success && isIncidentEnabled && (
+                    {!success && (
                       <FormControl p="3">
                         <Button
                           bg={
@@ -547,7 +534,7 @@ const CompleteTask = ({
                 contactName={contactName}
                 failureReason={failureReason}
                 validateTaskAfterReport={validateTaskAfterReport}
-                isIncidentEnabled={isIncidentEnabled} />
+              />
             </VStack>
           </View>
         </Animated.View>
@@ -624,7 +611,6 @@ function mapStateToProps(state) {
     httpClient: state.app.httpClient,
     signatures: selectSignatures(state),
     pictures: selectPictures(state),
-    isIncidentEnabled: selectIsIncidentEnabled(state),
   };
 }
 
