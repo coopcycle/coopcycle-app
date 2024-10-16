@@ -98,13 +98,14 @@ const FailureReasonPicker = ({ task, httpClient, onValueChange }) => {
     ));
   }, [data, isSuccess]);
 
-  useEffect(() => {
+  const onChange = (selectedFailureReason) => {
     if (!isSuccess) {
       return;
     }
     const failureReasonObj = _.find(data['hydra:member'], r => r.code === selectedFailureReason)
     onValueChange(selectedFailureReason, failureReasonObj);
-  }, [selectedFailureReason, onValueChange, isSuccess, data]);
+    setFailureReason(selectedFailureReason)
+  } 
 
   if (isError) {
     return <Text color="red.500">Failure reasons are not available</Text>;
@@ -114,7 +115,7 @@ const FailureReasonPicker = ({ task, httpClient, onValueChange }) => {
     <Skeleton isLoaded={isSuccess} rounded={2}>
       <Picker
         selectedValue={selectedFailureReason}
-        onValueChange={v => setFailureReason(v)}>
+        onValueChange={v => onChange(v)}>
         <Picker.Item value={null} label="" />
         {values}
       </Picker>
