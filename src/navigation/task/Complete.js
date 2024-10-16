@@ -18,6 +18,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   Dimensions,
+  FlatList,
   Image,
   Keyboard,
   StyleSheet,
@@ -33,6 +34,7 @@ import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/nativ
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { AvoidSoftInput, useSoftInputHeightChanged } from 'react-native-avoid-softinput';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+import qs from 'qs';
 
 import { useQuery } from 'react-query';
 import ModalContent from '../../components/ModalContent';
@@ -96,12 +98,14 @@ const FailureReasonPicker = ({ task, httpClient, onValueChange }) => {
     ));
   }, [data, isSuccess]);
 
-  useEffect(() => {
+  const onChange = (selectedFailureReason) => {
     if (!isSuccess) {
       return;
     }
-    onValueChange(selectedFailureReason);
-  }, [selectedFailureReason, onValueChange, isSuccess]);
+    const failureReasonObj = _.find(data['hydra:member'], r => r.code === selectedFailureReason)
+    onValueChange(selectedFailureReason, failureReasonObj);
+    setFailureReason(selectedFailureReason)
+  } 
 
   if (isError) {
     return <Text color="red.500">Failure reasons are not available</Text>;
@@ -111,7 +115,7 @@ const FailureReasonPicker = ({ task, httpClient, onValueChange }) => {
     <Skeleton isLoaded={isSuccess} rounded={2}>
       <Picker
         selectedValue={selectedFailureReason}
-        onValueChange={v => setFailureReason(v)}>
+        onValueChange={v => onChange(v)}>
         <Picker.Item value={null} label="" />
         {values}
       </Picker>
@@ -235,7 +239,7 @@ function isSuccessRoute(route) {
     : true;
 }
 
-const SubmitButton = ({ task, tasks, notes, contactName, failureReason, validateTaskAfterReport }) => {
+const SubmitButton = ({ task, tasks, notes, contactName, failureReason, validateTaskAfterReport, failureReasonMetadataToSend }) => {
 
   const { t } = useTranslation();
   const navigation = useNavigation();
@@ -279,6 +283,7 @@ const SubmitButton = ({ task, tasks, notes, contactName, failureReason, validate
         task,
         notes,
         failureReason,
+        failureReasonMetadataToSend,
         () => {
           if (validateTaskAfterReport) {
             dispatch(markTaskDone(
@@ -311,6 +316,52 @@ const SubmitButton = ({ task, tasks, notes, contactName, failureReason, validate
   )
 }
 
+const parseInitialData = (data) => {
+  const asQueryString = data.map(v => `${v.name}=${v.value}`).join('&')
+  return qs.parse(asQueryString);
+}
+
+const FailureReasonForm = ({ data, onChange }) => {
+
+  return (
+    <Formik
+      initialValues={ parseInitialData(data) }
+      // We use validate as a change handler
+      validate={ values => {
+        onChange(values)
+      }}
+      validateOnBlur={ true }
+      validateOnChange={ true }>
+      {({
+        handleChange,
+        handleBlur,
+        values,
+        errors,
+        setFieldValue,
+      }) =>
+        <FlatList
+          data={ _.filter(data, item => item.type !== 'hidden') }
+          keyExtractor={ item => item.name }
+          scrollEnabled={false}
+          renderItem={({ item }) => {
+
+            return (
+              <FormControl mb="2" key={ item.name }>
+                <FormControl.Label>{ item.label }</FormControl.Label>
+                <Input
+                  defaultValue={ item.value.toString() }
+                  keyboardType={ item.type === 'number' ? 'number-pad' : 'default' }
+                  onChangeText={ handleChange(item.name) }
+                  onBlur={ handleBlur(item.name) } />
+              </FormControl>
+            )
+          }}
+        />
+      }
+    </Formik>
+  )
+}
+
 const CompleteTask = ({
   httpClient,
   signatures,
@@ -329,6 +380,9 @@ const CompleteTask = ({
   const [contactName, setContactName] = useState('');
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
   const [validateTaskAfterReport, setValidateTaskAfterReport] = useState(false);
+
+  const [failureReasonMetadata, setFailureReasonMetadata] = useState([]);
+  const [failureReasonMetadataToSend, setFailureReasonMetadataToSend] = useState([]);
 
   useEffect(() => {
     const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
@@ -441,10 +495,23 @@ const CompleteTask = ({
                       <FailureReasonPicker
                         task={task}
                         httpClient={httpClient}
-                        onValueChange={failureReason =>
-                          setFailureReason(failureReason)
-                        }
+                        onValueChange={(code, obj) => {
+                          if (obj && obj.metadata) {
+                            setFailureReasonMetadata(obj.metadata);
+                            setFailureReasonMetadataToSend(parseInitialData(obj.metadata));
+                          } else {
+                            setFailureReasonMetadata([]);
+                            setFailureReasonMetadataToSend([]);
+                          }
+                          setFailureReason(code);
+                        }}
                       />
+                      { (Array.isArray(failureReasonMetadata) && failureReasonMetadata.length > 0) ?
+                      <FailureReasonForm
+                        data={ failureReasonMetadata }
+                        onChange={ metadata => {
+                          setFailureReasonMetadataToSend(metadata);
+                        }} /> : null }
                     </FormControl>
                   )}
                   <FormControl p="3">
@@ -534,6 +601,7 @@ const CompleteTask = ({
                 contactName={contactName}
                 failureReason={failureReason}
                 validateTaskAfterReport={validateTaskAfterReport}
+                failureReasonMetadataToSend={failureReasonMetadataToSend}
               />
             </VStack>
           </View>
