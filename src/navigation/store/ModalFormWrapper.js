@@ -24,7 +24,9 @@ export default function ModalFormWrapper({
           backgroundColor,
         }}>
         <KeyboardAdjustView style={{flex: 1}}>
-          <ScrollView keyboardShouldPersistTaps="handled">
+          <ScrollView
+            keyboardShouldPersistTaps="handled" // tap is handled by the children in the forms
+          >
             <Box p="5" gap="3">
               {children}
             </Box>

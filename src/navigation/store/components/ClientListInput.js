@@ -1,4 +1,4 @@
-import { Text, View } from 'native-base';
+import { Pressable, Text, View } from 'native-base';
 import { useState } from 'react';
 import Autocomplete from 'react-native-autocomplete-input';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -64,6 +64,39 @@ export default function ClientListInput({
     }
   });
 
+  const renderItem = ({item}) => (
+    <TouchableOpacity
+      onPress={() => selectAddress(item)}
+      style={{
+        padding: 12,
+      }}>
+      <Text
+        style={{
+          fontSize: 14,
+          flex: 1,
+          margin: 0,
+          padding: 0,
+          borderWidth: 0,
+        }}
+        numberOfLines={1}
+        ellipsizeMode="tail">
+        {`${item.name ?? ''} - ${item.contactName ?? ''}`}
+      </Text>
+      <Text
+        style={{
+          fontSize: 14,
+          flex: 1,
+          margin: 0,
+          padding: 0,
+          borderWidth: 0,
+        }}
+        numberOfLines={1}
+        ellipsizeMode="tail">
+        {`${item.streetAddress}`}
+      </Text>
+    </TouchableOpacity>
+  )
+
   return (
     <View style={styles.autocompleteContainer}>
       <Autocomplete
@@ -85,54 +118,17 @@ export default function ClientListInput({
           borderWidth: 0,
           borderRadius: 4,
         }}
-        flatListProps={{
-          style: {
-            top: -2,
-            borderWidth: 1,
-            borderTopWidth: 0,
-            borderColor: primaryColor,
-            borderRadius: 4,
-            borderTopLeftRadius: 0,
-            borderTopRightRadius: 0,
-            marginTop: -1,
-            backgroundColor: backgroundContainerColor,
-          },
-          keyboardShouldPersistTaps: 'always',
-          keyExtractor: (item, i) => `prediction-${i}`,
-          renderItem: item => (
-            <TouchableOpacity
-              onPress={() => selectAddress(item.item)}
-              style={{
-                padding: 12,
-              }}>
-              <Text
-                style={{
-                  fontSize: 14,
-                  flex: 1,
-                  margin: 0,
-                  padding: 0,
-                  borderWidth: 0,
-                }}
-                numberOfLines={1}
-                ellipsizeMode="tail">
-                {`${item.item.name ?? ''} - ${item.item.contactName ?? ''}`}
-              </Text>
-              <Text
-                style={{
-                  fontSize: 14,
-                  flex: 1,
-                  margin: 0,
-                  padding: 0,
-                  borderWidth: 0,
-                }}
-                numberOfLines={1}
-                ellipsizeMode="tail">
-                {`${item.item.streetAddress}`}
-              </Text>
-            </TouchableOpacity>
-          ),
-          ItemSeparatorComponent: ItemSeparator,
-        }}
+        // do not use default FlatList - see https://github.com/byteburgers/react-native-autocomplete-input/pull/230
+        renderResultList={({ data, style }) => (
+          <View style={style}>
+            {data.map((item, index) => (
+              <View key={index}>
+                <Pressable>{renderItem({ item })}</Pressable>
+                <ItemSeparator />
+              </View>
+            ))}
+          </View>
+        )}
         style={{}}
       />
     </View>
