@@ -344,6 +344,7 @@ const FailureReasonForm = ({ data, onChange }) => {
         <FlatList
           data={ _.filter(data, item => item.type !== 'hidden') }
           keyExtractor={ item => item.name }
+          scrollEnabled={false}
           renderItem={({ item }) => {
 
             return (
