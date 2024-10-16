@@ -323,7 +323,7 @@ const FailureReasonForm = ({ data, onChange }) => {
 
   useEffect(() => {
     onChange(initialValues)
-  }, [data, initialValues, onChange])
+  }, [data])
 
   return (
     <Formik
