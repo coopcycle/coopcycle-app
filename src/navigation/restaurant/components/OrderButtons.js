@@ -5,6 +5,8 @@ import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import { phonecall } from 'react-native-communications';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { useSelector } from 'react-redux';
+import { selectIsPrinting } from '../../../redux/Restaurant/selectors';
 
 const phoneNumberUtil = PhoneNumberUtil.getInstance();
 
@@ -13,6 +15,8 @@ const Comp = ({ order, isPrinterConnected, onPrinterClick, printOrder }) => {
 
   let phoneNumber;
   let isPhoneValid = false;
+
+  const isPrinting = useSelector(selectIsPrinting)
 
   try {
     phoneNumber = phoneNumberUtil.parse(order.customer.telephone);
@@ -25,7 +29,9 @@ const Comp = ({ order, isPrinterConnected, onPrinterClick, printOrder }) => {
         {isPrinterConnected && (
           <Button
             endIcon={<Icon as={FontAwesome} name="print" size="sm" />}
-            onPress={printOrder}>
+            onPress={printOrder}
+            disabled={!isPrinting}
+          >
             {t('RESTAURANT_ORDER_PRINT')}
           </Button>
         )}

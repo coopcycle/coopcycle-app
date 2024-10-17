@@ -99,6 +99,7 @@ const initialState = {
   printer: null,
   productOptions: [],
   isSunmiPrinter: false,
+  isPrinting: false,
   bluetoothStarted: false,
   loopeatFormats: {},
   /**
@@ -525,6 +526,18 @@ export default (state = initialState, action = {}) => {
         isSunmiPrinter: true,
       };
 
+    case printPending.type:
+      return {
+        ...state,
+        isPrinting: true,
+      }
+
+    case printFulfilled.type:
+    case printRejected.type:
+      return {
+        ...state,
+        isPrinting: false,
+      }
     case CENTRIFUGO_MESSAGE:
       if (action.payload.name && action.payload.data) {
         const { name, data } = action.payload;
