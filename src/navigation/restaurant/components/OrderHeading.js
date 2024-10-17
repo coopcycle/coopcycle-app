@@ -10,6 +10,7 @@ import OrderFulfillmentMethodIcon from '../../../components/OrderFulfillmentMeth
 import { PaymentMethodInfo } from '../../../components/PaymentMethodInfo';
 import { resolveFulfillmentMethod } from '../../../utils/order';
 import OrderButtons from './OrderButtons';
+import { selectIsPrinting } from '../../../redux/Restaurant/selectors';
 
 const fallbackFormat = 'dddd D MMM';
 
