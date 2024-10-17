@@ -26,7 +26,7 @@ const Comp = ({ order, isPrinterConnected, onPrinterClick, printOrder, disablePr
           <Button
             endIcon={<Icon as={FontAwesome} name="print" size="sm" />}
             onPress={printOrder}
-            isDisabled={false}>
+            isDisabled={disablePrintButton}>
             {t('RESTAURANT_ORDER_PRINT')}
           </Button>
         )}
