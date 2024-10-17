@@ -27,6 +27,7 @@ import {
 import {
   selectAutoAcceptOrdersEnabled,
   selectAutoAcceptOrdersPrintNumberOfCopies,
+  selectIsSunmiPrinter,
   selectPrinter,
 } from '../../redux/Restaurant/selectors';
 import { useBackgroundContainerColor } from '../../styles/theme';
@@ -77,6 +78,7 @@ function PrinterComponent({ devices, isScanning, _onPressScan }) {
   const printNumberOfCopies = useSelector(
     selectAutoAcceptOrdersPrintNumberOfCopies,
   );
+  const isSumniPrinter = useSelector(selectIsSunmiPrinter)
 
   const backgroundColor = useBackgroundContainerColor();
 
@@ -85,6 +87,7 @@ function PrinterComponent({ devices, isScanning, _onPressScan }) {
   const dispatch = useDispatch();
 
   let items = [];
+
   if (printer) {
     items.push({ ...printer, isConnected: true });
   } else {
@@ -92,6 +95,12 @@ function PrinterComponent({ devices, isScanning, _onPressScan }) {
   }
 
   const hasItems = !isScanning && items.length > 0;
+
+  if (isSumniPrinter) {
+    return(<View style={styles.item}>
+        <Text>The device has an internal Sunmi Printer, no need to connect it</Text>
+      </View>)
+  }
 
   if (!hasItems) {
     return (
