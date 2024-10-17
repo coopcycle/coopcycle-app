@@ -244,3 +244,8 @@ export const selectIsActionable = createSelector(
     );
   },
 );
+
+export const selectIsPrinting = createSelector(
+  state => state.restaurant.printingOrderId,
+  (printingOrderId) => printingOrderId !== null
+);

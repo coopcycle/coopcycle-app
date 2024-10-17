@@ -31,6 +31,7 @@ const OrderHeading = ({
   isPrinterConnected,
   onPrinterClick,
   printOrder,
+  disablePrintButton,
 }) => {
   const { t } = useTranslation();
 
@@ -89,6 +90,7 @@ const OrderHeading = ({
           isPrinterConnected={isPrinterConnected}
           onPrinterClick={onPrinterClick}
           printOrder={printOrder}
+          disablePrintButton={disablePrintButton}
         />
       </View>
     </View>
