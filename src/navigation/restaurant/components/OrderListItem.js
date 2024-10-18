@@ -13,7 +13,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useDispatch, useSelector } from 'react-redux';
 import OrderNumber from '../../../components/OrderNumber';
 import OrderFulfillmentMethodIcon from '../../../components/OrderFulfillmentMethodIcon';
-import { PaymentMethodInfo } from '../../../components/PaymentMethodInfo';
+import { PaymentMethodInList } from '../../../components/PaymentMethodInfo';
 import {
   selectAutoAcceptOrdersEnabled,
   selectIsActionable,
@@ -127,10 +127,7 @@ export default function OrderListItem({ order, onItemClick }) {
               <OrderNumber order={order} />
             </View>
             <OrderFulfillmentMethodIcon order={order} small />
-            <PaymentMethodInfo
-              fullDetail={false}
-              paymentMethod={order.paymentMethod}
-            />
+            <PaymentMethodInList paymentMethod={order.paymentMethod} />
             {order.notes ? (
               <Icon as={FontAwesome} name="comments" size="xs" />
             ) : null}
