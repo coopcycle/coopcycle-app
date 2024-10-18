@@ -16,6 +16,7 @@ import {
   loadDescriptionTranslationKey,
   loadIconKey,
 } from '../../../components/PaymentMethodInfo';
+import { formatPrice } from '../../../utils/formatting';
 
 const Detail = ({ item }) => {
   const { iconType, iconName, text, component, onPress } = item;
@@ -114,7 +115,11 @@ const Details = ({ task, t }) => {
     items.push({
       iconName: loadIconKey(task.metadata.payment_method),
       iconType: Foundation,
-      text: t(loadDescriptionTranslationKey(task.metadata.payment_method)),
+      text:
+        t(loadDescriptionTranslationKey(task.metadata.payment_method)) +
+        (task.metadata.order_total
+          ? `: ${formatPrice(task.metadata.order_total)}`
+          : ''),
     });
   }
 
