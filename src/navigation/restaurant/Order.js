@@ -19,6 +19,7 @@ import { isMultiVendor } from '../../utils/order';
 import {
   selectIsPrinterConnected,
   selectPrinter,
+  selectIsPrinting,
 } from '../../redux/Restaurant/selectors';
 import { DatadogLogger } from '../../Datadog';
 
@@ -66,6 +67,7 @@ class OrderScreen extends Component {
               });
               this.props.printOrder(order);
             }}
+            disablePrintButton={ this.props.isPrinting }
           />
           <OrderNotes order={order} />
           <OrderItems order={order} />
@@ -124,6 +126,7 @@ function mapStateToProps(state, ownProps) {
     order: ownProps.route.params?.order,
     isPrinterConnected: selectIsPrinterConnected(state),
     printer: selectPrinter(state),
+    isPrinting: selectIsPrinting(state),
   };
 }
 

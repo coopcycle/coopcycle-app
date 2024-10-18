@@ -8,7 +8,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 const phoneNumberUtil = PhoneNumberUtil.getInstance();
 
-const Comp = ({ order, isPrinterConnected, onPrinterClick, printOrder }) => {
+const Comp = ({ order, isPrinterConnected, onPrinterClick, printOrder, disablePrintButton }) => {
   const { t } = useTranslation();
 
   let phoneNumber;
@@ -25,7 +25,8 @@ const Comp = ({ order, isPrinterConnected, onPrinterClick, printOrder }) => {
         {isPrinterConnected && (
           <Button
             endIcon={<Icon as={FontAwesome} name="print" size="sm" />}
-            onPress={printOrder}>
+            onPress={printOrder}
+            isDisabled={disablePrintButton}>
             {t('RESTAURANT_ORDER_PRINT')}
           </Button>
         )}
