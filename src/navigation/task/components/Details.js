@@ -12,7 +12,7 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 import ItemSeparator from '../../../components/ItemSeparator';
 import {
-  isKnownPaymentMethod,
+  isDisplayPaymentMethodInList,
   loadDescriptionTranslationKey,
   loadIconKey,
 } from '../../../components/PaymentMethodInfo';
@@ -91,10 +91,7 @@ const Details = ({ task, t }) => {
     });
   }
 
-  if (
-    task.metadata &&
-    task.metadata.has_loopeat_returns
-  ) {
+  if (task.metadata && task.metadata.has_loopeat_returns) {
     items.push({
       iconName: 'recycle',
       iconType: FontAwesome5,
@@ -106,6 +103,18 @@ const Details = ({ task, t }) => {
     items.push({
       iconName: 'information-circle',
       text: task.address.description,
+    });
+  }
+
+  if (
+    task.metadata &&
+    task.metadata.payment_method &&
+    isDisplayPaymentMethodInList(task.metadata.payment_method)
+  ) {
+    items.push({
+      iconName: loadIconKey(task.metadata.payment_method),
+      iconType: Foundation,
+      text: t(loadDescriptionTranslationKey(task.metadata.payment_method)),
     });
   }
 
@@ -161,18 +170,6 @@ const Details = ({ task, t }) => {
       iconName: 'scale',
       iconType: MaterialCommunityIcons,
       text: `${(Number(task.weight) / 1000).toFixed(2)} kg`,
-    });
-  }
-
-  if (
-    task.metadata &&
-    task.metadata.payment_method &&
-    isKnownPaymentMethod(task.metadata.payment_method)
-  ) {
-    items.push({
-      iconName: loadIconKey(task.metadata.payment_method),
-      iconType: Foundation,
-      text: t(loadDescriptionTranslationKey(task.metadata.payment_method)),
     });
   }
 
