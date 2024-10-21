@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   logoWrapper: {
-    marginTop: -40, // (logoSize + 16) / 2
+    marginTop: -52, // (logoSize + 16) * 64%
     borderRadius: 16,
     display: 'inline-flex',
     marginLeft: 16,

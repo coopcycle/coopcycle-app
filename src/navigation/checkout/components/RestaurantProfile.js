@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   detailsWrapper: {
-    marginTop: -58, // logoWrapper height / 2
+    marginTop: -74, // logoWrapper height * 64%
     marginBottom: -12,
     display: 'flex',
     flexDirection: 'row',
