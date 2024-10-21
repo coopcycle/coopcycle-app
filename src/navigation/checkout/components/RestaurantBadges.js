@@ -63,10 +63,7 @@ export const TimingBadge = ({ restaurant }) => {
         <IconPlugX size={22} color={color} strokeWidth={1.5} />
       )}
 
-      <Text
-        style={
-          showPreOrder || isClosed ? styles.badgeTextPreOrder : styles.badgeText
-        }>
+      <Text style={isClosed ? styles.badgeTextPreOrder : styles.badgeText}>
         {shippingTime}
       </Text>
     </HStack>

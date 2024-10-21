@@ -1,5 +1,6 @@
 import moment from 'moment';
 import i18n from '../i18n';
+import OpeningHoursSpecification from './OpeningHoursSpecification';
 
 // Do not use named capturing groups as it's not supported by Hermes
 // https://github.com/facebook/hermes/issues/46
@@ -56,20 +57,17 @@ export function getNextShippingTimeAsText(restaurant, now) {
   return i18n.t('NOT_AVAILABLE_ATM');
 }
 
+/**
+ * If restaurant is closed it's still might be possible to place a pre-order
+ * if `shouldShowPreOrder` returns true
+ */
 export function isRestaurantClosed(restaurant) {
-  // FIXME
-  // This hotfixes a bug on the API
-  // https://github.com/coopcycle/coopcycle-web/issues/2213
-  if (
-    (!restaurant.timing.delivery && !restaurant.timing.collection) ||
-    (restaurant.timing.delivery &&
-      restaurant.timing.delivery.range[0] ===
-        restaurant.timing.delivery.range[1])
-  ) {
-    return true;
-  } else {
-    return false;
-  }
+  const openingHoursSpecification = new OpeningHoursSpecification();
+  openingHoursSpecification.openingHours = restaurant.openingHoursSpecification;
+
+  const currentTimeSlot = openingHoursSpecification.currentTimeSlot;
+
+  return currentTimeSlot.state === OpeningHoursSpecification.STATE.Closed;
 }
 
 export function getRestaurantCaption(restaurant) {
