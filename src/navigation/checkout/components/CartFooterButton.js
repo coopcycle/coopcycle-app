@@ -1,10 +1,15 @@
-import { Button, HStack, Text } from 'native-base';
-import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { Button, HStack, Icon, Text } from 'native-base';
+import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
 import { Animated, View } from 'react-native';
 
 import { formatPrice } from '../../../utils/formatting';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import {
+  isRestaurantClosed,
+  shouldShowPreOrder,
+} from '../../../utils/checkout';
 
 class CartFooterButton extends Component {
   constructor(props) {
@@ -36,11 +41,7 @@ class CartFooterButton extends Component {
   }
 
   renderLeft() {
-    return (
-      <Text style={{ fontWeight: 'bold', fontFamily: 'OpenSans-Regular' }}>
-        {`[${this.props.cart.items.length}]`}
-      </Text>
-    );
+    return <Icon as={FontAwesome} size="xs" name={'shopping-cart'} />;
   }
 
   renderRight() {
@@ -54,11 +55,18 @@ class CartFooterButton extends Component {
   }
 
   render() {
-    const { cart } = this.props;
+    const { cart, restaurant } = this.props;
 
-    if (!cart || cart.items.length === 0) {
+    const isClosed = isRestaurantClosed(restaurant);
+    const showPreOrder = shouldShowPreOrder(restaurant);
+
+    if (!cart || cart.items.length === 0 || (isClosed && !showPreOrder)) {
       return <View />;
     }
+
+    const label = restaurant.isOpen
+      ? this.props.t('ORDER')
+      : this.props.t('SCHEDULE_ORDER');
 
     return (
       <Button
@@ -69,7 +77,7 @@ class CartFooterButton extends Component {
         _stack={{ w: '100%', justifyContent: 'center' }}>
         <HStack alignItems="center" justifyContent="space-between">
           {this.renderLeft()}
-          <Text mx="8">{this.props.t('ORDER')}</Text>
+          <Text mx="2">{label}</Text>
           {this.renderRight()}
         </HStack>
       </Button>

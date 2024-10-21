@@ -94,6 +94,7 @@
         "EMAIL": "Correo electrónico",
         "CHECKOUT_FROM": "Desde el {{date}}",
         "ORDER": "Realizar el pedido",
+        "SCHEDULE_ORDER": "Programar pedido",
         "INVALID_USER_PASS": "Usuario y/o constraseña inexistente",
         "NO_TASKS": "No hay tareas planeadas hoy",
         "NOTES": "Notas",

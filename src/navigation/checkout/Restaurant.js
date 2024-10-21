@@ -201,6 +201,7 @@ function Restaurant(props) {
         <SafeAreaView edges={['bottom']}>
           <CartFooter
             onSubmit={() => navigate('CheckoutSummary', { restaurant })}
+            restaurant={restaurant}
             cart={props.cart}
             initLoading={props.cartLoading}
             testID="cartSubmit"
