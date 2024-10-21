@@ -187,7 +187,7 @@ function Restaurant(props) {
       }}>
       <FlatList
         testID="restaurantData"
-        stickyHeaderIndices={[2]}
+        stickyHeaderIndices={[1]}
         data={Array.from(
           { length: renderFunctions.length },
           (_, index) => index,
