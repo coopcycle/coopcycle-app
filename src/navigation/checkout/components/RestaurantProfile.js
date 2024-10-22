@@ -11,12 +11,12 @@ import {
   useSecondaryTextColor,
 } from '../../../styles/theme';
 import { TimingBadge } from './RestaurantBadges';
-import OpeningHoursSpecification from '../../../utils/OpeningHoursSpecification';
 import DangerAlert from '../../../components/DangerAlert';
 import i18n from '../../../i18n';
 import moment from 'moment/moment';
 import {
-  isRestaurantClosed,
+  isRestaurantAvailable,
+  isRestaurantOpeningSoon,
   shouldShowPreOrder,
 } from '../../../utils/checkout';
 import { RestaurantBanner } from '../../../components/RestaurantBanner';
@@ -95,18 +95,12 @@ const styles = StyleSheet.create({
   },
 });
 
-function OpeningHoursWarning({ currentTimeSlot, isClosed, showPreOrder }) {
-  const isOpeningSoon = useMemo(() => {
-    return (
-      isClosed &&
-      OpeningHoursSpecification.opensSoon(currentTimeSlot.timeSlot, 60)
-    );
-  }, [currentTimeSlot, isClosed]);
-
-  if (!isClosed) {
-    return null;
-  }
-
+function OpeningHoursWarning({
+  currentTimeSlot,
+  isAvailable,
+  isOpeningSoon,
+  showPreOrder,
+}) {
   if (showPreOrder) {
     return (
       <DangerAlert
@@ -122,7 +116,7 @@ function OpeningHoursWarning({ currentTimeSlot, isClosed, showPreOrder }) {
     );
   }
 
-  if (isOpeningSoon) {
+  if (!isAvailable && isOpeningSoon) {
     return (
       <DangerAlert
         text={`${i18n.t('RESTAURANT_CLOSED_AND_NOT_AVAILABLE', {
@@ -136,17 +130,21 @@ function OpeningHoursWarning({ currentTimeSlot, isClosed, showPreOrder }) {
     );
   }
 
-  // when restaurant is not available any time soon
+  // when restaurant is not available
   // it will be shown on the banner and in the 'timing' section
   return null;
 }
 
-function BannerOverlay({ showPreOrder }) {
-  if (showPreOrder) {
-    return <PreOrderBannerOverlay />;
-  } else {
+function BannerOverlay({ isAvailable, showPreOrder }) {
+  if (!isAvailable) {
     return <RestaurantNotAvailableBannerOverlay />;
   }
+
+  if (showPreOrder) {
+    return <PreOrderBannerOverlay />;
+  }
+
+  return null;
 }
 
 function RestaurantProfile({ restaurant, openingHoursSpecification, onInfo }) {
@@ -159,7 +157,14 @@ function RestaurantProfile({ restaurant, openingHoursSpecification, onInfo }) {
     [openingHoursSpecification],
   );
 
-  const isClosed = useMemo(() => isRestaurantClosed(restaurant), [restaurant]);
+  const isAvailable = useMemo(
+    () => isRestaurantAvailable(restaurant),
+    [restaurant],
+  );
+  const isOpeningSoon = useMemo(
+    () => isRestaurantOpeningSoon(restaurant),
+    [restaurant],
+  );
   const showPreOrder = useMemo(
     () => shouldShowPreOrder(restaurant),
     [restaurant],
@@ -168,7 +173,7 @@ function RestaurantProfile({ restaurant, openingHoursSpecification, onInfo }) {
   return (
     <View style={([styles.profile], { backgroundColor })}>
       <RestaurantBanner src={restaurant.bannerImage ?? restaurant.image} />
-      {isClosed ? <BannerOverlay showPreOrder={showPreOrder} /> : null}
+      <BannerOverlay isAvailable={isAvailable} showPreOrder={showPreOrder} />
       <View style={styles.detailsWrapper}>
         <View style={[styles.logoWrapper, { backgroundColor }]}>
           <View style={styles.logoWrapperShadow}>
@@ -196,7 +201,8 @@ function RestaurantProfile({ restaurant, openingHoursSpecification, onInfo }) {
       <View style={styles.content}>
         <OpeningHoursWarning
           currentTimeSlot={currentTimeSlot}
-          isClosed={isClosed}
+          isAvailable={isAvailable}
+          isOpeningSoon={isOpeningSoon}
           showPreOrder={showPreOrder}
         />
         <View style={{ display: 'flex', flexDirection: 'row', gap: 4 }}>

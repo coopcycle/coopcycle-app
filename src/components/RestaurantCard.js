@@ -3,7 +3,7 @@ import { Text } from 'native-base';
 import { Image, StyleSheet, View } from 'react-native';
 import { TimingBadge } from '../navigation/checkout/components/RestaurantBadges';
 import { useBackgroundContainerColor } from '../styles/theme';
-import { isRestaurantClosed, shouldShowPreOrder } from '../utils/checkout';
+import { isRestaurantAvailable } from '../utils/checkout';
 import { RestaurantBadge } from './RestaurantBadge';
 import { RestaurantTag } from './RestaurantTag';
 import { RestaurantBanner } from './RestaurantBanner';
@@ -92,8 +92,7 @@ const styles = StyleSheet.create({
 
 export const RestaurantCard = ({ restaurant }) => {
   const backgroundColor = useBackgroundContainerColor();
-  const isClosed = isRestaurantClosed(restaurant);
-  const showPreOrder = shouldShowPreOrder(restaurant);
+  const isAvailable = isRestaurantAvailable(restaurant);
 
   return (
     <View style={[styles.item, { backgroundColor }]}>
@@ -106,9 +105,7 @@ export const RestaurantCard = ({ restaurant }) => {
             ))}
           </View>
         )}
-        {isClosed && !showPreOrder ? (
-          <RestaurantNotAvailableBannerOverlay />
-        ) : null}
+        {!isAvailable ? <RestaurantNotAvailableBannerOverlay /> : null}
         <View style={[styles.logoWrapper, { backgroundColor }]}>
           <Image
             style={styles.logo}

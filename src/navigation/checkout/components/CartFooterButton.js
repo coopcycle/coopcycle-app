@@ -7,7 +7,7 @@ import { Animated, View } from 'react-native';
 import { formatPrice } from '../../../utils/formatting';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {
-  isRestaurantClosed,
+  isRestaurantAvailable,
   shouldShowPreOrder,
 } from '../../../utils/checkout';
 
@@ -57,16 +57,16 @@ class CartFooterButton extends Component {
   render() {
     const { cart, restaurant } = this.props;
 
-    const isClosed = isRestaurantClosed(restaurant);
+    const isAvailable = isRestaurantAvailable(restaurant);
     const showPreOrder = shouldShowPreOrder(restaurant);
 
-    if (!cart || cart.items.length === 0 || (isClosed && !showPreOrder)) {
+    if (!cart || cart.items.length === 0 || !isAvailable) {
       return <View />;
     }
 
-    const label = restaurant.isOpen
-      ? this.props.t('ORDER')
-      : this.props.t('SCHEDULE_ORDER');
+    const label = showPreOrder
+      ? this.props.t('SCHEDULE_ORDER')
+      : this.props.t('ORDER');
 
     return (
       <Button
