@@ -1,13 +1,10 @@
 import { useColorMode } from 'native-base';
 import { Image, View } from 'react-native';
-import { useBackgroundColor } from '../../../styles/theme';
 
-export default function PoweredByGoogle({ styles }) {
+export default function PoweredByGoogle({ style }) {
   const { colorMode } = useColorMode();
-  const backgroundColor = useBackgroundColor();
-
   return (
-    <View style={[styles, { backgroundColor: backgroundColor }]}>
+    <View style={style}>
       {colorMode !== 'dark' && (
         <Image
           resizeMode="contain"

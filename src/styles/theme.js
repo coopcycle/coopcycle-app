@@ -31,7 +31,7 @@ export const nativeBaseTheme = extendTheme(v33xTheme, {
 
 // resolve native-base token to a color value
 // to be able to use it in non native-base components
-const useColorModeToken = (lightModeToken, darkModeToken) => {
+export const useColorModeToken = (lightModeToken, darkModeToken) => {
   const [lightModeColor, darkModeColor] = useToken('colors', [
     lightModeToken,
     darkModeToken,

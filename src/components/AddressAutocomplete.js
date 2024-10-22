@@ -4,10 +4,17 @@ import { AbortController } from 'abortcontroller-polyfill/dist/cjs-ponyfill';
 import axios from 'axios';
 import Fuse from 'fuse.js';
 import _ from 'lodash';
-import { Icon, Input, Text, useColorModeValue, View, Pressable } from 'native-base';
+import {
+  Icon,
+  Input,
+  Pressable,
+  Text,
+  View,
+  useColorModeValue,
+} from 'native-base';
 import PropTypes from 'prop-types';
 import qs from 'qs';
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import { withTranslation } from 'react-i18next';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import Autocomplete from 'react-native-autocomplete-input';
@@ -19,14 +26,13 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { localeDetector } from '../i18n';
 import { darkGreyColor, whiteColor } from '../styles/common';
-import { useBaseTextColor } from '../styles/theme';
+import { useBaseTextColor, useColorModeToken } from '../styles/theme';
 import ItemSeparator from './ItemSeparator';
 import AddressUtils from '../utils/Address';
 import PostCodeButton from './AddressAutocomplete/components/PostCodeButton';
 import PoweredByGoogle from './AddressAutocomplete/powered/PoweredByGoogle';
 import { PoweredByIdealPostcodes } from './AddressAutocomplete/powered/PoweredByIdealPostcodes';
 
-AddressUtils
 const fuseOptions = {
   shouldSort: true,
   includeScore: true,
@@ -44,6 +50,9 @@ function AddressAutocomplete(props) {
     t,
     value,
     addresses,
+    containerStyle,
+    inputContainerStyle,
+    listContainerStyle,
     style,
     flatListProps,
     onSelectAddress,
@@ -315,7 +324,14 @@ function AddressAutocomplete(props) {
       <View style={styles.textInput}>
         <Input
           {...inputProps}
-          style={[inputProps.style, { flex: 1 }]}
+          style={[
+            inputProps.style,
+            {
+              backgroundColor: props.controlBackgroundColor,
+            },
+          ]}
+          placeholderTextColor={props.placeholderTextColor}
+          variant="outline"
           onFocus={onTextInputFocus}
           onBlur={onTextInputBlur}
         />
@@ -352,26 +368,37 @@ function AddressAutocomplete(props) {
         placeholder={finalPlaceholder}
         onChangeText={onChangeText}
         // do not use default FlatList - see https://github.com/byteburgers/react-native-autocomplete-input/pull/230
-        renderResultList={({ data, style }) => (
-          <View style={style}>
+        renderResultList={({ data, listContainerStyle }) => (
+          <View style={listContainerStyle}>
             {data.map((item, index) => (
               <View key={index}>
                 <Pressable>{renderItem({ item })}</Pressable>
                 <ItemSeparator />
               </View>
             ))}
-            { props.country === 'gb' ? PoweredByIdealPostcodes(styles.poweredContainer) : PoweredByGoogle(styles.poweredContainer)}
+            {props.country === 'gb' ? (
+              <PoweredByIdealPostcodes style={styles.poweredContainer} />
+            ) : (
+              <PoweredByGoogle style={styles.poweredContainer} />
+            )}
           </View>
         )}
         renderTextInput={inputProps => renderTextInput(inputProps)}
-        style={{
-          color: props.baseTextColor,
-          backgroundColor: props.controlBackgroundColor,
-          borderColor: '#b9b9b9',
-          borderRadius: 20,
+        containerStyle={{
+          ...containerStyle,
+        }}
+        inputContainerStyle={{
+          borderWidth: 0,
           paddingVertical: 8,
-          paddingHorizontal: 15,
-          borderWidth: 1,
+          ...inputContainerStyle,
+        }}
+        listContainerStyle={{
+          backgroundColor: props.controlBackgroundColor,
+          ...listContainerStyle,
+        }}
+        //FIXME: avoid using generic `style` prop; use `containerStyle`/`inputContainerStyle`/`listContainerStyle/ etc.
+        // see all available props at https://github.com/byteburgers/react-native-autocomplete-input?tab=readme-ov-file#props
+        style={{
           ...style,
         }}
       />
@@ -393,9 +420,9 @@ AddressAutocomplete.propTypes = {
 
 const styles = StyleSheet.create({
   poweredContainer: {
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-    paddingVertical: 5,
+    alignItems: 'flex-end',
+    paddingVertical: 10,
+    paddingHorizontal: 10,
   },
   item: {
     paddingVertical: 10,
@@ -439,6 +466,7 @@ function mapStateToProps(state) {
 function withHooks(ClassComponent) {
   return function CompWithHook(props) {
     const baseTextColor = useBaseTextColor();
+    const placeholderTextColor = useColorModeToken('text.400', 'text.400');
 
     const controlBackgroundColor = useColorModeValue(whiteColor, darkGreyColor);
     const itemTextColor = useColorModeValue('#856404', baseTextColor);
@@ -447,6 +475,7 @@ function withHooks(ClassComponent) {
       <ClassComponent
         {...props}
         baseTextColor={baseTextColor}
+        placeholderTextColor={placeholderTextColor}
         controlBackgroundColor={controlBackgroundColor}
         itemTextColor={itemTextColor}
       />
