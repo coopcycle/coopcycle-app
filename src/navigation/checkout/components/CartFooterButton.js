@@ -10,6 +10,7 @@ import {
   isRestaurantAvailable,
   shouldShowPreOrder,
 } from '../../../utils/checkout';
+import { useSolidButtonTextColor } from '../../../styles/theme';
 
 class CartFooterButton extends Component {
   constructor(props) {
@@ -41,13 +42,20 @@ class CartFooterButton extends Component {
   }
 
   renderLeft() {
-    return <Icon as={FontAwesome} size="xs" name={'shopping-cart'} />;
+    return (
+      <Icon
+        as={FontAwesome}
+        size="xs"
+        name={'shopping-cart'}
+        color={this.props.solidButtonTextColor}
+      />
+    );
   }
 
   renderRight() {
     return (
       <Animated.View style={{ opacity: this.state.opacityAnim }}>
-        <Text style={{ fontWeight: 'bold', fontFamily: 'OpenSans-Regular' }}>
+        <Text color={this.props.solidButtonTextColor} fontWeight="600">
           {`${formatPrice(this.props.cart.total)}`}
         </Text>
       </Animated.View>
@@ -77,7 +85,9 @@ class CartFooterButton extends Component {
         _stack={{ w: '100%', justifyContent: 'center' }}>
         <HStack alignItems="center" justifyContent="space-between">
           {this.renderLeft()}
-          <Text mx="2">{label}</Text>
+          <Text mx="2" color={this.props.solidButtonTextColor} fontWeight="600">
+            {label}
+          </Text>
           {this.renderRight()}
         </HStack>
       </Button>
@@ -96,4 +106,13 @@ CartFooterButton.propTypes = {
   disabled: PropTypes.bool,
 };
 
-export default withTranslation()(CartFooterButton);
+function withHooks(ClassComponent) {
+  return function CompWithHook(props) {
+    const solidButtonTextColor = useSolidButtonTextColor();
+    return (
+      <ClassComponent {...props} solidButtonTextColor={solidButtonTextColor} />
+    );
+  };
+}
+
+export default withTranslation()(withHooks(CartFooterButton));
