@@ -567,7 +567,10 @@ export default (state = initialState, action = {}) => {
       const printTask = state.ordersToPrint[orderId];
 
       if (!printTask) {
-        return state;
+        return {
+          ...state,
+          printingOrderId: null,
+        };
       }
 
       if (printTask.copiesToPrint > 1) {
@@ -603,7 +606,10 @@ export default (state = initialState, action = {}) => {
       const printTask = state.ordersToPrint[orderId];
 
       if (!printTask) {
-        return state;
+        return {
+          ...state,
+          printingOrderId: null,
+        };
       }
 
       return {
