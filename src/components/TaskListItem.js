@@ -23,7 +23,7 @@ import {
   taskTypeIconName,
 } from '../navigation/task/styles/common';
 import { greenColor, redColor, yellowColor } from '../styles/common';
-import { PaymentMethodInfo } from './PaymentMethodInfo';
+import { PaymentMethodInList } from './PaymentMethodInfo';
 import TaskTitle from './TaskTitle';
 
 const styles = StyleSheet.create({
@@ -270,8 +270,7 @@ class TaskListItem extends Component {
                   <Icon mr="2" as={FontAwesome} name="comments" size="xs" />
                 ) : null}
                 {task.metadata && task.metadata.payment_method && (
-                  <PaymentMethodInfo
-                    fullDetail={false}
+                  <PaymentMethodInList
                     paymentMethod={task.metadata.payment_method}
                   />
                 )}

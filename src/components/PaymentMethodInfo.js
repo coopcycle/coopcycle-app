@@ -34,15 +34,27 @@ export const loadDescriptionTranslationKey = paymentMethod =>
 export const isKnownPaymentMethod = paymentMethod =>
   Object.prototype.hasOwnProperty.call(paymentMethods, paymentMethod);
 
-export const PaymentMethodInfo = ({ fullDetail, paymentMethod }) => {
+export const isDisplayPaymentMethodInList = paymentMethod => {
+  if (!isKnownPaymentMethod(paymentMethod)) {
+    return false;
+  }
+
+  return paymentMethod === 'CASH_ON_DELIVERY';
+};
+
+export const PaymentMethodInList = ({ paymentMethod }) => {
+  if (!isDisplayPaymentMethodInList(paymentMethod)) {
+    return null;
+  }
+
+  return <Icon as={Foundation} name={loadIconKey(paymentMethod)} />;
+}
+
+export const PaymentMethodInOrderDetails = ({ paymentMethod }) => {
   const { t } = useTranslation();
 
   if (!isKnownPaymentMethod(paymentMethod)) {
     return null;
-  }
-
-  if (!fullDetail) {
-    return <Icon as={Foundation} name={loadIconKey(paymentMethod)} />;
   }
 
   return (

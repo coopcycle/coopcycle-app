@@ -7,7 +7,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import material from '../../../../native-base-theme/variables/material';
 import OrderFulfillmentMethodIcon from '../../../components/OrderFulfillmentMethodIcon';
-import { PaymentMethodInfo } from '../../../components/PaymentMethodInfo';
+import { PaymentMethodInOrderDetails } from '../../../components/PaymentMethodInfo';
 import { resolveFulfillmentMethod } from '../../../utils/order';
 import OrderButtons from './OrderButtons';
 
@@ -80,10 +80,7 @@ const OrderHeading = ({
           </Text>
         </View>
       </View>
-      <PaymentMethodInfo
-        fullDetail={true}
-        paymentMethod={order.paymentMethod}
-      />
+      <PaymentMethodInOrderDetails paymentMethod={order.paymentMethod} />
       <View style={{ marginBottom: 15 }}>
         <OrderButtons
           order={order}
