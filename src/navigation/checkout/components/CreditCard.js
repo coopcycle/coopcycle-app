@@ -61,7 +61,9 @@ class CreditCardClassComponent extends Component {
   }
 
   componentDidMount() {
-    this.props.loadPaymentDetails();
+    if (this.props.shouldLoadPaymentDetails) {
+      this.props.loadPaymentDetails();
+    }
 
     if (!this.props.user.isGuest()) {
       this.props.loadStripeSavedPaymentMethods();
@@ -123,6 +125,7 @@ class CreditCardClassComponent extends Component {
       stripePaymentMethodsLoaded,
       stripePaymentMethods,
       user,
+      total,
     } = this.props;
 
     if (
@@ -278,7 +281,7 @@ class CreditCardClassComponent extends Component {
                 }
                 testID="creditCardSubmit"
                 text={this.props.t('PAY_AMOUNT', {
-                  amount: formatPrice(cart.total),
+                  amount: formatPrice(total || cart.total),
                 })}
                 onPress={_.debounce(handleSubmit, 1000, {
                   leading: true,
@@ -315,7 +318,7 @@ const styles = StyleSheet.create({
   },
 });
 
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
   const { cart, lastShownTimeRange } = selectCart(state);
 
   return {
@@ -326,6 +329,7 @@ function mapStateToProps(state) {
     stripePaymentMethodsLoaded: state.checkout.stripePaymentMethodsLoaded,
     errors: selectCheckoutError(state),
     user: state.app.user,
+    shouldLoadPaymentDetails: ownProps.hasOwnProperty('shouldLoadPaymentDetails') ? ownProps.shouldLoadPaymentDetails : true,
   };
 }
 
