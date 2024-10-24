@@ -64,6 +64,7 @@ class OrderScreen extends Component {
               DatadogLogger.info('printing ticket', {
                 trigger: 'manual',
                 orderId: order.id,
+                restaurantId: order.restaurant.id
               });
               this.props.printOrder(order);
             }}
