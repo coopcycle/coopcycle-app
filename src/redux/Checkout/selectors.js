@@ -182,23 +182,13 @@ export const selectShippingTimeRangeLabel = createSelector(
       return i18n.t('LOADING');
     }
 
-    if (cart?.shippedAt === null) {
-      return i18n.t('DELIVERY_ASAP');
-    }
-
     if (!timing.range || !Array.isArray(timing.range)) {
       return i18n.t('NOT_AVAILABLE_ATM');
     }
 
-    if (!cart.shippingTimeRange) {
-      if (timing.today && timing.fast) {
-        return i18n.t(`CART_${fulfillmentMethod.toUpperCase()}_TIME_DIFF`, {
-          diff: timing.diff,
-        });
-      }
-
+    if (cart.shippingTimeRange) {
       let fromNow = moment
-        .parseZone(timing.range[0])
+        .parseZone(cart.shippingTimeRange[0])
         .calendar(null, { sameElse: 'LLLL' })
         .toLowerCase();
 
@@ -207,12 +197,20 @@ export const selectShippingTimeRangeLabel = createSelector(
       });
     }
 
+    if (timing.today && timing.fast) {
+      return i18n.t(`CART_${fulfillmentMethod.toUpperCase()}_TIME_DIFF`, {
+        diff: timing.diff,
+      });
+    }
+
     let fromNow = moment
-      .parseZone(cart.shippingTimeRange[0])
+      .parseZone(timing.range[0])
       .calendar(null, { sameElse: 'LLLL' })
       .toLowerCase();
 
-    return i18n.t(`CART_${fulfillmentMethod.toUpperCase()}_TIME`, { fromNow });
+    return i18n.t(`CART_${fulfillmentMethod.toUpperCase()}_TIME`, {
+      fromNow,
+    });
   },
 );
 

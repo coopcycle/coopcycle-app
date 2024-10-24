@@ -226,7 +226,7 @@ function Adjustments({ adjustments, type }) {
   );
 }
 
-function Footer({ cart, isValid, isLoading, onSubmit }) {
+function Footer({ cart, restaurant, isValid, isLoading, onSubmit }) {
   if (!cart || cart.items.length === 0) {
     return <View />;
   }
@@ -235,6 +235,7 @@ function Footer({ cart, isValid, isLoading, onSubmit }) {
     <CartFooter
       onSubmit={onSubmit}
       cart={cart}
+      restaurant={restaurant}
       testID="cartSummarySubmit"
       isLoading={isLoading}
       disabled={isValid !== true}
@@ -572,7 +573,8 @@ class Summary extends Component {
           />
         </View>
         <Footer
-          cart={this.props.cart}
+          cart={cart}
+          restaurant={restaurant}
           isValid={this.props.isValid}
           isLoading={this.props.isLoading || this.state.isLoading}
           onSubmit={this.onSubmit.bind(this)}

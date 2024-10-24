@@ -101,6 +101,7 @@
     "EMAIL": "E-mail",
     "CHECKOUT_FROM": "From {{date}}",
     "ORDER": "Order",
+    "SCHEDULE_ORDER": "Schedule order",
     "INVALID_USER_PASS": "Username and/or password incorrect",
     "NO_TASKS": "No tasks planned today",
     "NOTES": "Notes",

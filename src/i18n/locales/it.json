@@ -96,6 +96,7 @@
         "EMAIL": "E-mail",
         "CHECKOUT_FROM": "Dal {{date}}",
         "ORDER": "Ordina",
+        "SCHEDULE_ORDER": "Preordinare",
         "INVALID_USER_PASS": "Username e/o password incorretti",
         "NO_TASKS": "Nessun incarico pianificato per oggi",
         "NOTES": "Note",

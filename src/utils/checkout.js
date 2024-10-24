@@ -1,5 +1,6 @@
 import moment from 'moment';
 import i18n from '../i18n';
+import OpeningHoursSpecification from './OpeningHoursSpecification';
 
 // Do not use named capturing groups as it's not supported by Hermes
 // https://github.com/facebook/hermes/issues/46
@@ -56,39 +57,61 @@ export function getNextShippingTimeAsText(restaurant, now) {
   return i18n.t('NOT_AVAILABLE_ATM');
 }
 
-export function isRestaurantClosed(restaurant) {
-  // FIXME
-  // This hotfixes a bug on the API
-  // https://github.com/coopcycle/coopcycle-web/issues/2213
-  if (
-    (!restaurant.timing.delivery && !restaurant.timing.collection) ||
-    (restaurant.timing.delivery &&
-      restaurant.timing.delivery.range[0] ===
-        restaurant.timing.delivery.range[1])
-  ) {
-    return true;
-  } else {
-    return false;
-  }
-}
-
 export function getRestaurantCaption(restaurant) {
   return restaurant.description || restaurant.address.streetAddress;
 }
 
-export function shouldShowPreOrder(restaurant) {
-  if (restaurant.timing.delivery) {
-    if (
-      restaurant.timing.delivery.range &&
-      Array.isArray(restaurant.timing.delivery.range)
-    ) {
-      const duration = moment.duration(
-        moment(restaurant.timing.delivery.range[0]).diff(moment()),
-      );
-
-      return duration.asHours() > 0.75;
-    }
+/**
+ * While the restaurant might be available (for ordering)
+ * it might be either opened or closed at the moment
+ */
+export function isRestaurantAvailable(restaurant) {
+  if (!restaurant.timing.delivery && !restaurant.timing.collection) {
+    return false;
   }
 
-  return false;
+  // FIXME
+  // This hotfixes a bug on the API
+  // https://github.com/coopcycle/coopcycle-web/issues/2213
+  if (
+    restaurant.timing.delivery &&
+    Array.isArray(restaurant.timing.delivery.range) &&
+    restaurant.timing.delivery.range[0] === restaurant.timing.delivery.range[1]
+  ) {
+    return false;
+  }
+
+  return true;
+}
+
+/**
+ * When restaurant is closed
+ * it might be either available for pre-ordering or not
+ */
+export function isRestaurantOpeningSoon(restaurant) {
+  const openingHoursSpecification = new OpeningHoursSpecification();
+  openingHoursSpecification.openingHours = restaurant.openingHoursSpecification;
+
+  const currentTimeSlot = openingHoursSpecification.currentTimeSlot;
+
+  return (
+    currentTimeSlot.state === OpeningHoursSpecification.STATE.Closed &&
+    OpeningHoursSpecification.opensSoon(currentTimeSlot.timeSlot, 60)
+  );
+}
+
+/**
+ * Show a pre-order button to highlight the fact that the restaurant is closed
+ * If the pre-order is soon, we show a regular order button
+ */
+export function shouldShowPreOrder(restaurant) {
+  if (!isRestaurantAvailable(restaurant)) {
+    return false;
+  }
+
+  const duration = moment.duration(
+    moment(restaurant.timing.delivery.range[0]).diff(moment()),
+  );
+
+  return duration.asHours() > 0.75;
 }
