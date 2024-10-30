@@ -132,7 +132,7 @@ jobs:
         if: failure()
         run: cat /Users/runner/Library/Logs/gym/CoopCycle-CoopCycle.log
       - name: Upload IPA artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: example-iOS.ipa
           path: ios/example-iOS.ipa

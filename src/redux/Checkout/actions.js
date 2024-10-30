@@ -5,7 +5,8 @@ import {
   initStripe,
 } from '@stripe/stripe-react-native';
 import _ from 'lodash';
-import { createAction } from 'redux-actions';
+import { createAction } from '@reduxjs/toolkit';
+import { createAction as createFsAction } from 'redux-actions';
 
 import * as Sentry from '@sentry/react-native';
 import i18next from 'i18next';
@@ -36,7 +37,11 @@ import {
   selectCartFulfillmentMethod,
   selectCartWithHours,
   selectCheckoutAuthorizationHeaders,
+  selectPaymentDetails,
+  selectViolations,
 } from './selectors';
+import moment from 'moment';
+import { DatadogLogger } from '../../Datadog';
 
 /*
  * Action Types
@@ -134,104 +139,119 @@ export const STOP_ASKING_TO_ENABLE_REUSABLE_PACKAGING =
  * Action Creators
  */
 
-export const clear = createAction(CLEAR);
-export const setAddressOK = createAction(SET_ADDRESS_OK);
-export const setTiming = createAction(SET_TIMING);
-export const setCartValidation = createAction(
+export const clear = createFsAction(CLEAR);
+export const setAddressOK = createFsAction(SET_ADDRESS_OK);
+export const _setTiming = createFsAction(SET_TIMING);
+export const setCartValidation = createFsAction(
   SET_CART_VALIDATION,
   (isValid, violations = []) => ({ isValid, violations }),
 );
-export const clearAddress = createAction(CLEAR_ADDRESS);
+export const clearAddress = createFsAction(CLEAR_ADDRESS);
 
-export const initRequest = createAction(INIT_REQUEST);
-export const initSuccess = createAction(INIT_SUCCESS, (restaurant = null) => ({
-  restaurant,
-}));
-export const initFailure = createAction(INIT_FAILURE);
-export const initCartRequest = createAction(INIT_CART_REQUEST);
-export const initCartSuccess = createAction(INIT_CART_SUCCESS);
-export const initCartFailure = createAction(INIT_CART_FAILURE);
-export const updateCarts = createAction(UPDATE_CARTS);
-export const deleteCartRequest = createAction(DELETE_CART_REQUEST);
-export const resetRestaurant = createAction(RESET_RESTAURANT);
-export const setRestaurant = createAction(SET_RESTAURANT);
-export const setToken = createAction(SET_TOKEN);
+export const initRequest = createFsAction(INIT_REQUEST);
+export const initSuccess = createFsAction(
+  INIT_SUCCESS,
+  (restaurant = null) => ({
+    restaurant,
+  }),
+);
+export const initFailure = createFsAction(INIT_FAILURE);
+export const initCartRequest = createFsAction(INIT_CART_REQUEST);
+export const initCartSuccess = createFsAction(INIT_CART_SUCCESS);
+export const initCartFailure = createFsAction(INIT_CART_FAILURE);
+export const updateCarts = createFsAction(UPDATE_CARTS);
+export const deleteCartRequest = createFsAction(DELETE_CART_REQUEST);
+export const resetRestaurant = createFsAction(RESET_RESTAURANT);
+export const setRestaurant = createFsAction(SET_RESTAURANT);
+export const setToken = createFsAction(SET_TOKEN);
 
-export const loadRestaurantsRequest = createAction(LOAD_RESTAURANTS_REQUEST);
-export const loadRestaurantsSuccess = createAction(LOAD_RESTAURANTS_SUCCESS);
-export const loadRestaurantsFailure = createAction(LOAD_RESTAURANTS_FAILURE);
+export const loadRestaurantsRequest = createFsAction(LOAD_RESTAURANTS_REQUEST);
+export const loadRestaurantsSuccess = createFsAction(LOAD_RESTAURANTS_SUCCESS);
+export const loadRestaurantsFailure = createFsAction(LOAD_RESTAURANTS_FAILURE);
 
-export const checkoutRequest = createAction(CHECKOUT_REQUEST);
-export const checkoutSuccess = createAction(CHECKOUT_SUCCESS);
-export const checkoutFailure = createAction(CHECKOUT_FAILURE);
+export const checkoutRequest = createFsAction(CHECKOUT_REQUEST);
+export const checkoutSuccess = createFsAction(CHECKOUT_SUCCESS);
+export const checkoutFailure = createFsAction(CHECKOUT_FAILURE);
 
-export const showAddressModal = createAction(SHOW_ADDRESS_MODAL);
-export const hideAddressModal = createAction(HIDE_ADDRESS_MODAL);
+export const showAddressModal = createFsAction(SHOW_ADDRESS_MODAL);
+export const hideAddressModal = createFsAction(HIDE_ADDRESS_MODAL);
 
-export const updateCartSuccess = createAction(UPDATE_CART_SUCCESS);
-export const updateCustomerGuest = createAction(UPDATE_CUSTOMER_GUEST);
+export const updateCartSuccess = createFsAction(UPDATE_CART_SUCCESS);
+export const updateCustomerGuest = createFsAction(UPDATE_CUSTOMER_GUEST);
 
-export const setCheckoutLoading = createAction(SET_CHECKOUT_LOADING);
+export const setCheckoutLoading = createFsAction(SET_CHECKOUT_LOADING);
 
-export const addItemRequest = createAction(ADD_ITEM_REQUEST);
-export const addItemRequestFinished = createAction(ADD_ITEM_REQUEST_FINISHED);
+export const addItemRequest = createFsAction(ADD_ITEM_REQUEST);
+export const addItemRequestFinished = createFsAction(ADD_ITEM_REQUEST_FINISHED);
 
-export const removeItemRequest = createAction(REMOVE_ITEM);
+export const removeItemRequest = createFsAction(REMOVE_ITEM);
 
-export const showExpiredSessionModal = createAction(SHOW_EXPIRED_SESSION_MODAL);
-export const hideExpiredSessionModal = createAction(HIDE_EXPIRED_SESSION_MODAL);
+export const showExpiredSessionModal = createFsAction(
+  SHOW_EXPIRED_SESSION_MODAL,
+);
+export const hideExpiredSessionModal = createFsAction(
+  HIDE_EXPIRED_SESSION_MODAL,
+);
 
-export const sessionExpired = createAction(SESSION_EXPIRED);
-export const setAddressModalHidden = createAction(SET_ADDRESS_MODAL_HIDDEN);
-export const setAddressModalMessage = createAction(SET_ADDRESS_MODAL_MESSAGE);
+export const sessionExpired = createFsAction(SESSION_EXPIRED);
+export const setAddressModalHidden = createFsAction(SET_ADDRESS_MODAL_HIDDEN);
+export const setAddressModalMessage = createFsAction(SET_ADDRESS_MODAL_MESSAGE);
 
-export const loadPaymentMethodsRequest = createAction(
+export const loadPaymentMethodsRequest = createFsAction(
   LOAD_PAYMENT_METHODS_REQUEST,
 );
-export const loadPaymentMethodsSuccess = createAction(
+export const loadPaymentMethodsSuccess = createFsAction(
   LOAD_PAYMENT_METHODS_SUCCESS,
 );
-export const loadPaymentMethodsFailure = createAction(
+export const loadPaymentMethodsFailure = createFsAction(
   LOAD_PAYMENT_METHODS_FAILURE,
 );
 
-export const loadPaymentDetailsRequest = createAction(
+export const loadPaymentDetailsRequest = createFsAction(
   LOAD_PAYMENT_DETAILS_REQUEST,
 );
-export const loadPaymentDetailsSuccess = createAction(
+export const loadPaymentDetailsSuccess = createFsAction(
   LOAD_PAYMENT_DETAILS_SUCCESS,
 );
-export const loadPaymentDetailsFailure = createAction(
+export const loadPaymentDetailsFailure = createFsAction(
   LOAD_PAYMENT_DETAILS_FAILURE,
 );
 
-export const searchRequest = createAction(SEARCH_REQUEST);
-export const searchSuccess = createAction(SEARCH_SUCCESS);
-export const searchFailure = createAction(SEARCH_FAILURE);
-export const getRestaurantFailure = createAction(GET_RESTAURANT_FAILURE);
+export const searchRequest = createFsAction(SEARCH_REQUEST);
+export const searchSuccess = createFsAction(SEARCH_SUCCESS);
+export const searchFailure = createFsAction(SEARCH_FAILURE);
+export const getRestaurantFailure = createFsAction(GET_RESTAURANT_FAILURE);
 
-export const getRestaurantRequest = createAction(GET_RESTAURANT_REQUEST);
-export const getRestaurantSuccess = createAction(GET_RESTAURANT_SUCCESS);
-export const clearSearchResults = createAction(CLEAR_SEARCH_RESULTS);
+export const getRestaurantRequest = createFsAction(GET_RESTAURANT_REQUEST);
+export const getRestaurantSuccess = createFsAction(GET_RESTAURANT_SUCCESS);
+export const clearSearchResults = createFsAction(CLEAR_SEARCH_RESULTS);
 
-export const loadStripeSavedPaymentMethodsRequest = createAction(
+export const loadStripeSavedPaymentMethodsRequest = createFsAction(
   LOAD_STRIPE_SAVED_PAYMENT_METHODS_REQUEST,
 );
-export const loadStripeSavedPaymentMethodsSuccess = createAction(
+export const loadStripeSavedPaymentMethodsSuccess = createFsAction(
   LOAD_STRIPE_SAVED_PAYMENT_METHODS_SUCCESS,
 );
-export const loadStripeSavedPaymentMethodsFailure = createAction(
+export const loadStripeSavedPaymentMethodsFailure = createFsAction(
   LOAD_STRIPE_SAVED_PAYMENT_METHODS_FAILURE,
 );
 
-export const showTimingModal = createAction(SHOW_TIMING_MODAL);
+export const showTimingModal = createFsAction(SHOW_TIMING_MODAL);
 
-export const hideMultipleServersInSameCityModal = createAction(
+export const hideMultipleServersInSameCityModal = createFsAction(
   HIDE_MULTIPLE_SERVERS_IN_SAME_CITY_MODAL,
 );
 
-export const stopAskingToEnableReusablePackaging = createAction(
+export const stopAskingToEnableReusablePackaging = createFsAction(
   STOP_ASKING_TO_ENABLE_REUSABLE_PACKAGING,
+);
+
+export const setPersistedTimeRange = createAction('SET_PERSISTED_TIME_RANGE');
+export const openTimeRangeChangedModal = createAction(
+  'OPEN_TIME_RANGE_CHANGED_MODAL',
+);
+export const closeTimeRangeChangedModal = createAction(
+  'CLOSE_TIME_RANGE_CHANGED_MODAL',
 );
 
 function validateAddress(httpClient, cart, address) {
@@ -269,6 +289,18 @@ function notifyListeners(address) {
     }
   });
   listeners = [];
+}
+
+function setTiming(cart, timing) {
+  return dispatch => {
+    dispatch(
+      _setTiming({
+        cartNodeId: cart['@id'],
+        restaurantNodeId: cart.restaurant,
+        timing,
+      }),
+    );
+  };
 }
 
 export function addItemV2(item, quantity = 1, restaurant, options) {
@@ -437,53 +469,82 @@ function queueAddItem(item, quantity = 1, options = []) {
   };
 }
 
-const fetchValidation = _.throttle((dispatch, getState, cart) => {
-  const { token } = selectCartByVendor(getState(), cart.restaurant);
+const _getTiming = (dispatch, getState, cart, token) => {
   const httpClient = selectHttpClient(getState());
 
+  dispatch(checkoutRequest());
+  return httpClient
+    .get(`${cart['@id']}/timing`, {
+      headers: selectCheckoutAuthorizationHeaders(getState(), cart, token),
+    })
+    .then(timing => {
+      dispatch(setTiming(cart, timing));
+      dispatch(checkoutSuccess());
+      return timing;
+    })
+    .catch(error => {
+      dispatch(checkoutFailure(error));
+      // dispatch(setCartValidation(false, error.violations));
+    });
+};
+
+const _getValidate = async (dispatch, getState, cart, token) => {
+  if (!cart) {
+    return { error: 'Missing Cart' };
+  }
+
+  const httpClient = selectHttpClient(getState());
+
+  dispatch(checkoutRequest());
+  try {
+    await httpClient.get(`${cart['@id']}/validate`, {
+      headers: selectCheckoutAuthorizationHeaders(getState(), cart, token),
+    });
+  } catch (error) {
+    if (error.response && error.response.status === 400) {
+      dispatch(setCartValidation(false, error.response.data.violations));
+    } else {
+      dispatch(setCartValidation(false, [{ message: i18n.t('TRY_LATER') }]));
+    }
+    dispatch(checkoutFailure(error));
+    return { error: error };
+  }
+
+  dispatch(setCartValidation(true));
+  dispatch(checkoutSuccess());
+  return { data: 'ok' };
+};
+
+const fetchValidation = _.throttle((dispatch, getState, cart, cb) => {
   // No need to validate when cart is empty
   if (cart.items.length === 0) {
     return;
   }
 
+  const { token } = selectCartByVendor(getState(), cart.restaurant);
+
   const doTiming = () =>
     new Promise(resolve => {
-      httpClient
-        .get(`${cart['@id']}/timing`, {
-          headers: selectCheckoutAuthorizationHeaders(getState(), cart, token),
-        })
-        .then(timing => dispatch(setTiming(timing)))
-        // .catch(error => dispatch(setCartValidation(false, error.violations)))
-        .finally(resolve);
+      _getTiming(dispatch, getState, cart, token)
+        .then(timing => resolve(timing))
+        .catch(() => resolve(null));
     });
 
-  const doValidate = () =>
-    new Promise(resolve => {
-      httpClient
-        .get(`${cart['@id']}/validate`, {
-          headers: selectCheckoutAuthorizationHeaders(getState(), cart, token),
-        })
-        .then(() => dispatch(setCartValidation(true)))
-        .catch(error => {
-          if (error.response && error.response.status === 400) {
-            dispatch(setCartValidation(false, error.response.data.violations));
-          } else {
-            dispatch(
-              setCartValidation(false, [{ message: i18n.t('TRY_LATER') }]),
-            );
-          }
-        })
-        .finally(resolve);
-    });
+  const doValidate = () => _getValidate(dispatch, getState, cart, token);
 
   dispatch(setCheckoutLoading(true));
 
-  Promise.all([doTiming(), doValidate()]).then(() =>
-    dispatch(setCheckoutLoading(false)),
-  );
+  Promise.all([doTiming(), doValidate()]).then(([_, { data }]) => {
+    dispatch(setCheckoutLoading(false));
+
+    if (cb) {
+      const isValid = Boolean(data);
+      cb(isValid);
+    }
+  });
 }, 500);
 
-const updateItemQuantity = createAction(
+const updateItemQuantity = createFsAction(
   UPDATE_ITEM_QUANTITY,
   (item, quantity) => ({ item, quantity }),
 );
@@ -656,12 +717,13 @@ export function setTip(cart, tipAmount) {
   };
 }
 
-export function validate(cart) {
+export function syncAddressAndValidate(cart) {
   return (dispatch, getState) => {
     const { shippingAddress } = cart;
     const { address } = getState().checkout;
 
-    replaceListeners(() => {
+    // called after syncAddress
+    replaceListeners(abc => {
       fetchValidation(dispatch, getState, cart);
     });
 
@@ -669,7 +731,79 @@ export function validate(cart) {
   };
 }
 
-const _setAddress = createAction(SET_ADDRESS);
+export function validateOrder(cart) {
+  return async (dispatch, getState) => {
+    const { token } = selectCartByVendor(getState(), cart.restaurant);
+    return await _getValidate(dispatch, getState, cart, token);
+  };
+}
+
+function isTimeRangeSignificantlyDifferent(origRange, latestRange) {
+  const displayedUpperBound = moment(origRange[1]);
+  const latestLowerBound = moment(latestRange[0]);
+
+  return latestLowerBound.diff(displayedUpperBound, 'hours') > 2;
+}
+
+const TIME_RANGE_IS_NOT_AVAILABLE = 'Time range is not available';
+
+export function checkTimeRange(restaurantNodeId, lastTimeRange) {
+  return async (dispatch, getState) => {
+    const resultCheckSkipped = { data: 'skipped' };
+
+    const { cart, token } = selectCartByVendor(getState(), restaurantNodeId);
+
+    const shippingTimeRange = cart.shippingTimeRange;
+    // if the customer has already selected the time range, it will be checked on the server side
+    if (shippingTimeRange) {
+      return resultCheckSkipped;
+    }
+
+    if (!lastTimeRange) {
+      // continue without the timing check
+      return resultCheckSkipped;
+    }
+
+    let latestTiming = null;
+
+    try {
+      latestTiming = await _getTiming(dispatch, getState, cart, token);
+    } catch (error) {
+      // ignore the request error and continue without the timing check
+      return resultCheckSkipped;
+    }
+
+    if (!latestTiming) {
+      // continue without the timing check
+      return resultCheckSkipped;
+    }
+
+    dispatch(setTiming(cart, latestTiming));
+
+    if (!latestTiming.range) {
+      // no time ranges available; restaurant is closed for the coming days
+      dispatch(openTimeRangeChangedModal());
+      return { error: TIME_RANGE_IS_NOT_AVAILABLE };
+    }
+
+    if (isTimeRangeSignificantlyDifferent(lastTimeRange, latestTiming.range)) {
+      dispatch(openTimeRangeChangedModal());
+      return { error: TIME_RANGE_IS_NOT_AVAILABLE };
+    }
+
+    dispatch(
+      setPersistedTimeRange({
+        cartNodeId: cart['@id'],
+        restaurantNodeId: restaurantNodeId,
+        lastShownTimeRange: latestTiming.range,
+      }),
+    );
+
+    return { data: 'ok' };
+  };
+}
+
+const _setAddress = createFsAction(SET_ADDRESS);
 
 function syncAddress(cart, address) {
   return {
@@ -770,21 +904,6 @@ function wrapRestaurantsWithTiming(restaurants) {
   };
 }
 
-function _maintenanceModeHandler(error, dispatch) {
-  if (error.response?.status === 503) {
-    const message = error.response?.data?.message;
-    if (message) {
-      dispatch(
-        setModal({
-          show: true,
-          skippable: false,
-          content: message,
-        }),
-      );
-    }
-  }
-}
-
 export function searchRestaurantsForAddress(address, options = {}) {
   return (dispatch, getState) => {
     const { httpClient } = getState().app;
@@ -805,7 +924,6 @@ export function searchRestaurantsForAddress(address, options = {}) {
       })
       .catch(e => {
         dispatch(loadRestaurantsFailure(e));
-        _maintenanceModeHandler(e, dispatch);
       });
   };
 }
@@ -840,28 +958,20 @@ export function searchRestaurants(options = {}) {
       })
       .catch(e => {
         dispatch(loadRestaurantsFailure(e));
-        _maintenanceModeHandler(e, dispatch);
       });
   };
 }
 
 export function mercadopagoCheckout(payment) {
-  /**
-   * Helper function to handle errors
-   */
-  function handleError(dispatch, error) {
-    dispatch(checkoutFailure(error));
-    // We navigate back to the MoreInfos screen. Should we navigate to another screen?
-    NavigationHolder.navigate('CheckoutMoreInfos', {});
-  }
-
   return (dispatch, getState) => {
     const { cart, token } = getState().checkout;
+
+    //FIXME; add order validation before mercadopago checkout begins (in the React component?)
 
     const { id, status, statusDetail } = payment;
 
     if (status !== 'approved') {
-      handleError(dispatch, { status, statusDetail });
+      dispatch(handlePaymentFailed({ status, statusDetail }));
       return;
     }
 
@@ -877,17 +987,21 @@ export function mercadopagoCheckout(payment) {
         headers: selectCheckoutAuthorizationHeaders(getState(), cart, token),
       })
       .then(order => {
-        dispatch(handleSuccessNav(order));
+        dispatch(handlePaymentSuccess(order));
       })
       .catch(orderUpdateError => {
-        handleError(dispatch, orderUpdateError);
+        dispatch(handlePaymentFailed(orderUpdateError));
       });
   };
 }
 
-function handleSuccessNav(order) {
+function handlePaymentSuccess(order) {
   return (dispatch, getState) => {
     const { token } = selectCartByVendor(getState(), order.restaurant['@id']);
+
+    DatadogLogger.info(`Order placed`, {
+      order: order.number,
+    });
 
     dispatch(setNewOrder(order, token));
 
@@ -914,16 +1028,63 @@ function handleSuccessNav(order) {
   };
 }
 
-function validateCart(cart) {
-  if (!cart) {
-    return false;
-  }
+function handlePaymentFailed(err) {
+  return (dispatch, getState) => {
+    dispatch(checkoutFailure(err));
+  };
+}
 
-  if (!cart.customer) {
-    return false;
-  }
+export function showValidationErrors() {
+  return (dispatch, getState) => {
+    const violations = selectViolations(getState());
+    const alertMessage = _.first(violations.map(v => v.message));
 
-  return true;
+    dispatch(
+      setModal({
+        show: true,
+        skippable: true,
+        content: alertMessage ?? 'An error occurred, please try again later',
+        type: 'error',
+      }),
+    );
+  };
+}
+
+export function canProceedWithPayment(cart) {
+  return async (dispatch, getState) => {
+    const { token, lastShownTimeRange } = selectCartByVendor(
+      getState(),
+      cart.restaurant,
+    );
+
+    if (!cart.customer) {
+      console.log(
+        'isValidToProceedWithPayment error: cart is not assigned to a customer',
+      );
+      return false;
+    }
+
+    const { error: timeRangeCheckError } = await dispatch(
+      checkTimeRange(cart.restaurant, lastShownTimeRange),
+    );
+    if (timeRangeCheckError) {
+      // checkTimeRange will trigger a TimeRangeChangedModal
+      return false;
+    }
+
+    const { error: validationError } = await _getValidate(
+      dispatch,
+      getState,
+      cart,
+      token,
+    );
+    if (validationError) {
+      dispatch(showValidationErrors());
+      return false;
+    }
+
+    return true;
+  };
 }
 
 /**
@@ -936,34 +1097,16 @@ export function checkout(
   savedPaymentMethodId = null,
   saveCard = false,
 ) {
-  return (dispatch, getState) => {
+  return async (dispatch, getState) => {
     dispatch(checkoutRequest());
 
-    const { restaurant, paymentDetails } = getState().checkout;
-    const { cart, token } = selectCartByVendor(getState(), restaurant);
+    const paymentDetails = selectPaymentDetails(getState());
+    const { cart, token } = selectCart(getState());
     const billingEmail = selectBillingEmail(getState());
 
     const loggedOrderId = cart['@id'];
 
     const httpClient = selectHttpClient(getState());
-
-    if (!validateCart(cart)) {
-      dispatch(checkoutFailure());
-      NavigationHolder.dispatch(
-        CommonActions.navigate({
-          name: 'Cart',
-        }),
-      );
-      dispatch(
-        setModal({
-          show: true,
-          skippable: true,
-          content: 'An error occurred, please try again later',
-          type: 'error',
-        }),
-      );
-      return;
-    }
 
     if (isFree(cart)) {
       httpClient
@@ -978,8 +1121,8 @@ export function checkout(
             ),
           },
         )
-        .then(o => dispatch(handleSuccessNav(o)))
-        .catch(e => dispatch(checkoutFailure(e)));
+        .then(o => dispatch(handlePaymentSuccess(o)))
+        .catch(e => dispatch(handlePaymentFailed(e)));
 
       return;
     }
@@ -1035,7 +1178,7 @@ export function checkout(
                 throw new Error('handleNextAction error:', { cause: error });
               } else {
                 dispatch(
-                  handleSuccess(
+                  handleStripeResponse(
                     cart,
                     token,
                     paymentIntent.id,
@@ -1053,11 +1196,11 @@ export function checkout(
                 },
               );
               console.log('stripeResponse.requiresAction', err);
-              dispatch(checkoutFailure(err));
+              dispatch(handlePaymentFailed(err));
             });
         } else {
           dispatch(
-            handleSuccess(
+            handleStripeResponse(
               cart,
               token,
               stripeResponse.paymentIntentId,
@@ -1067,7 +1210,7 @@ export function checkout(
           );
         }
       })
-      .catch(e => dispatch(checkoutFailure(e)));
+      .catch(e => dispatch(handlePaymentFailed(e)));
   };
 }
 
@@ -1104,6 +1247,7 @@ function getPaymentMethod(
   });
 }
 
+//FIXME; maybe we should get rid of this method and rely on Stripe init in CreditCard.js
 function configureStripe(state, paymentDetails = null) {
   let stripeProps = {
     publishableKey: state.app.settings.stripe_publishable_key,
@@ -1119,7 +1263,7 @@ function configureStripe(state, paymentDetails = null) {
   return initStripe(stripeProps);
 }
 
-function handleSuccess(
+function handleStripeResponse(
   cart,
   token,
   paymentIntentId,
@@ -1156,7 +1300,7 @@ function handleSuccess(
             },
           )
           .then(order => {
-            dispatch(handleSuccessNav(order));
+            dispatch(handlePaymentSuccess(order));
           })
           .catch(e => {
             const err = new Error(
@@ -1168,7 +1312,7 @@ function handleSuccess(
             console.log('PUT; /pay', err);
             Sentry.captureException(err);
 
-            return dispatch(checkoutFailure(err));
+            return dispatch(handlePaymentFailed(err));
           });
       });
   };
@@ -1283,7 +1427,13 @@ function _assignCustomer(cart, token, { email, telephone }) {
         if (user.isGuest()) {
           dispatch(updateCustomerGuest({ email, telephone }));
         }
-        if (!validateCart(res)) {
+
+        const updatedCart = res;
+
+        if (updatedCart && updatedCart.customer) {
+          dispatch(updateCartSuccess(res));
+          dispatch(checkoutSuccess());
+        } else {
           dispatch(checkoutFailure());
           dispatch(
             setModal({
@@ -1293,18 +1443,17 @@ function _assignCustomer(cart, token, { email, telephone }) {
               type: 'error',
             }),
           );
+
+          //FIXME; why do we log out the user here?
           dispatch(logoutRequest());
           user.logout().then(() => {
             dispatch(_logoutSuccess());
           });
           NavigationHolder.dispatch(
             CommonActions.navigate({
-              name: 'CheckoutLogin',
+              name: 'CheckoutLoginRegister',
             }),
           );
-        } else {
-          dispatch(updateCartSuccess(res));
-          dispatch(checkoutSuccess());
         }
       })
       .catch(e => dispatch(checkoutFailure(e)));
@@ -1319,24 +1468,28 @@ export function resetSearch(options = {}) {
 }
 
 const doUpdateCart = (cart, token, payload, cb) => {
-  return (dispatch, getState) => {
+  return async (dispatch, getState) => {
     const httpClient = selectHttpClient(getState());
 
-    return httpClient
-      .put(cart['@id'], payload, {
+    try {
+      const res = await httpClient.put(cart['@id'], payload, {
         headers: selectCheckoutAuthorizationHeaders(getState(), cart, token),
-      })
-      .then(res => {
-        dispatch(updateCartSuccess(res));
-        dispatch(checkoutSuccess());
-        _.isFunction(cb) && cb(res);
-      })
-      .catch(e => dispatch(checkoutFailure(e)));
+      });
+
+      dispatch(updateCartSuccess(res));
+      dispatch(checkoutSuccess());
+      _.isFunction(cb) && cb(res);
+
+      return { data: res };
+    } catch (e) {
+      dispatch(checkoutFailure(e));
+      return { error: e };
+    }
   };
 };
 
 export function updateCart(payload, cb) {
-  return (dispatch, getState) => {
+  return async (dispatch, getState) => {
     const { restaurant } = getState().checkout;
     const { cart, token } = selectCartByVendor(getState(), restaurant);
 
@@ -1360,8 +1513,8 @@ export function updateCart(payload, cb) {
     if (payload.telephone) {
       const { telephone, ...payloadWithoutTelephone } = payload;
 
-      httpClient
-        .put(
+      try {
+        await httpClient.put(
           cart.customer,
           { telephone },
           {
@@ -1371,27 +1524,31 @@ export function updateCart(payload, cb) {
               token,
             ),
           },
-        )
-        .then(res =>
-          dispatch(doUpdateCart(cart, token, payloadWithoutTelephone, cb)),
-        )
-        .catch(e => dispatch(checkoutFailure(e)));
+        );
+      } catch (e) {
+        dispatch(checkoutFailure(e));
+        return { error: e };
+      }
+
+      return await dispatch(
+        doUpdateCart(cart, token, payloadWithoutTelephone, cb),
+      );
     } else {
-      dispatch(doUpdateCart(cart, token, payload, cb));
+      return await dispatch(doUpdateCart(cart, token, payload, cb));
     }
   };
 }
 
 // FEAT: add a way to precise id
 export function setDate(shippingTimeRange, cb) {
-  return (dispatch, getState) => {
+  return async (dispatch, getState) => {
     const { cart, token } = selectCartWithHours(getState());
     const httpClient = selectHttpClient(getState());
 
     dispatch(checkoutRequest());
 
-    httpClient
-      .put(
+    try {
+      const res = await httpClient.put(
         cart['@id'],
         {
           shippingTimeRange,
@@ -1399,15 +1556,17 @@ export function setDate(shippingTimeRange, cb) {
         {
           headers: selectCheckoutAuthorizationHeaders(getState(), cart, token),
         },
-      )
-      .then(res => {
-        dispatch(updateCartSuccess(res));
-        setTimeout(() => {
-          dispatch(checkoutSuccess());
-          _.isFunction(cb) && cb();
-        }, 250);
-      })
-      .catch(e => dispatch(checkoutFailure(e)));
+      );
+      dispatch(updateCartSuccess(res));
+    } catch (e) {
+      dispatch(checkoutFailure(e));
+      return;
+    }
+
+    setTimeout(() => {
+      dispatch(checkoutSuccess());
+      _.isFunction(cb) && cb();
+    }, 250);
   };
 }
 
@@ -1470,7 +1629,7 @@ export function setFulfillmentMethod(method) {
           })
           .then(timing => {
             dispatch(setCheckoutLoading(false));
-            dispatch(setTiming(timing));
+            dispatch(setTiming(cart, timing));
             dispatch(updateCartSuccess(res));
 
             if (method === 'delivery') {
@@ -1503,7 +1662,7 @@ export function setFulfillmentMethod(method) {
 
 export function loadPaymentMethods(method) {
   return (dispatch, getState) => {
-    const { cart, token } = selectCartWithHours(getState());
+    const { cart, token } = selectCart(getState());
 
     const httpClient = selectHttpClient(getState());
 
@@ -1519,11 +1678,12 @@ export function loadPaymentMethods(method) {
 }
 
 export function checkoutWithCash() {
-  return (dispatch, getState) => {
-    const { cart, token } = selectCartWithHours(getState());
-    const httpClient = selectHttpClient(getState());
-
+  return async (dispatch, getState) => {
     dispatch(checkoutRequest());
+
+    const { cart, token } = selectCart(getState());
+
+    const httpClient = selectHttpClient(getState());
 
     httpClient
       .put(
@@ -1533,18 +1693,18 @@ export function checkoutWithCash() {
           headers: selectCheckoutAuthorizationHeaders(getState(), cart, token),
         },
       )
-      .then(order => dispatch(handleSuccessNav(order)))
-      .catch(e => dispatch(checkoutFailure(e)));
+      .then(order => dispatch(handlePaymentSuccess(order)))
+      .catch(e => dispatch(handlePaymentFailed(e)));
   };
 }
 
 export function loadPaymentDetails() {
   return (dispatch, getState) => {
-    const { cart, token } = selectCartWithHours(getState());
+    const { cart, token } = selectCart(getState());
     const httpClient = selectHttpClient(getState());
 
     if (!cart) {
-      return
+      return;
     }
 
     dispatch(loadPaymentDetailsRequest());

@@ -39,7 +39,6 @@ import i18n from '../../i18n';
 import {
   setDate,
   setFulfillmentMethod,
-  showTimingModal,
 } from '../../redux/Checkout/actions';
 import {
   selectCartFulfillmentMethod,
@@ -190,6 +189,7 @@ function Restaurant(props) {
         </Text>
         {section.data.map((item, innerIndex) => (
           <RestaurantMenuItem
+            testID={`menuItem:${section.index}:${innerIndex}`}
             item={item}
             isLoading={isLoading}
             key={innerIndex}
@@ -228,6 +228,7 @@ function Restaurant(props) {
         maxHeight: '100%',
       }}>
       <FlatList
+        testID="restaurantData"
         stickyHeaderIndices={[2]}
         data={Array.from(
           { length: renderFunctions.length },
@@ -337,7 +338,6 @@ function mapDispatchToProps(dispatch) {
   return {
     setDate: (date, cb) => dispatch(setDate(date, cb)),
     setFulfillmentMethod: method => dispatch(setFulfillmentMethod(method)),
-    showTimingModal: show => dispatch(showTimingModal(show)),
   };
 }
 

@@ -1,24 +1,27 @@
+import React, { Component } from 'react';
 import { CardField, StripeProvider } from '@stripe/stripe-react-native';
 import { Formik } from 'formik';
 import _ from 'lodash';
 import { Button, Center, Checkbox, Input, Radio, Text } from 'native-base';
-import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
-import {
-  Platform,
-  StyleSheet,
-  useColorScheme,
-  View,
-} from 'react-native';
-import { connect } from 'react-redux';
+import { StyleSheet, View, useColorScheme } from 'react-native';
+import { connect, useSelector } from 'react-redux';
 
 import {
+  canProceedWithPayment,
+  checkout,
   loadPaymentDetails,
   loadStripeSavedPaymentMethods,
 } from '../../../redux/Checkout/actions';
 import { formatPrice } from '../../../utils/formatting';
 import FooterButton from './FooterButton';
 import SavedCreditCard from './SavedCreditCard';
+import TimeRangeChangedModal from './TimeRangeChangedModal';
+import {
+  selectCart,
+  selectCheckoutError,
+} from '../../../redux/Checkout/selectors';
+import { selectStripePublishableKey } from '../../../redux/App/selectors';
 
 const ColorSchemeAwareCardField = props => {
   const colorScheme = useColorScheme();
@@ -46,7 +49,7 @@ const ColorSchemeAwareCardField = props => {
   );
 };
 
-class CreditCard extends Component {
+class CreditCardClassComponent extends Component {
   constructor(props) {
     super(props);
 
@@ -58,12 +61,24 @@ class CreditCard extends Component {
   }
 
   componentDidMount() {
-
     this.props.loadPaymentDetails();
 
     if (!this.props.user.isGuest()) {
       this.props.loadStripeSavedPaymentMethods();
     }
+  }
+
+  async _onSubmit(values) {
+    this.setState({ isLoading: true });
+
+    if ((await this.props.canProceedWithPayment(this.props.cart)) === false) {
+      this.setState({ isLoading: false });
+      // canProceedWithPayment will display error messages
+      return;
+    }
+
+    const { cardholderName, savedCardSelected, saveCard } = values;
+    this.props.checkout(cardholderName, savedCardSelected, saveCard);
   }
 
   _validate(values) {
@@ -105,7 +120,6 @@ class CreditCard extends Component {
     const {
       cart,
       paymentDetailsLoaded,
-      disabled,
       stripePaymentMethodsLoaded,
       stripePaymentMethods,
       user,
@@ -132,16 +146,12 @@ class CreditCard extends Component {
     // @see https://medium.com/@devmrin/debouncing-touch-events-in-react-native-prevent-navigating-twice-or-more-times-when-button-is-90687e4a8113
     // @see https://snack.expo.io/@patwoz/withpreventdoubleclick
 
-    const stripeProviderProps = {
-      publishableKey: this.props.stripePublishableKey,
-    };
-
     return (
-      <StripeProvider {...stripeProviderProps}>
+      <>
         <Formik
           initialValues={initialValues}
           validate={this._validate.bind(this)}
-          onSubmit={this.props.onSubmit}
+          onSubmit={this._onSubmit.bind(this)}
           validateOnBlur={false}
           validateOnChange={false}>
           {({
@@ -217,8 +227,7 @@ class CreditCard extends Component {
                       style={[
                         styles.formInputContainer,
                         { paddingHorizontal: 20, marginBottom: 15 },
-                      ]}
-                      testID="creditCardWrapper">
+                      ]}>
                       <ColorSchemeAwareCardField
                         onCardChange={cardDetails => {
                           this.setState({
@@ -264,7 +273,9 @@ class CreditCard extends Component {
                 </Center>
               ) : null}
               <FooterButton
-                isDisabled={disabled}
+                isLoading={
+                  this.state.isLoading && this.props.errors.length === 0
+                }
                 testID="creditCardSubmit"
                 text={this.props.t('PAY_AMOUNT', {
                   amount: formatPrice(cart.total),
@@ -277,7 +288,8 @@ class CreditCard extends Component {
             </>
           )}
         </Formik>
-      </StripeProvider>
+        <TimeRangeChangedModal />
+      </>
     );
   }
 }
@@ -304,11 +316,15 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(state) {
+  const { cart, lastShownTimeRange } = selectCart(state);
+
   return {
-    stripePublishableKey: state.app.settings.stripe_publishable_key,
+    cart,
+    lastShownTimeRange,
     paymentDetailsLoaded: state.checkout.paymentDetailsLoaded,
     stripePaymentMethods: state.checkout.stripePaymentMethods || [],
     stripePaymentMethodsLoaded: state.checkout.stripePaymentMethodsLoaded,
+    errors: selectCheckoutError(state),
     user: state.app.user,
   };
 }
@@ -318,10 +334,24 @@ function mapDispatchToProps(dispatch) {
     loadPaymentDetails: () => dispatch(loadPaymentDetails()),
     loadStripeSavedPaymentMethods: () =>
       dispatch(loadStripeSavedPaymentMethods()),
+    canProceedWithPayment: cart => dispatch(canProceedWithPayment(cart)),
+    checkout: (cardholderName, savedCardSelected, saveCard) =>
+      dispatch(checkout(cardholderName, savedCardSelected, saveCard)),
   };
 }
 
-export default connect(
+const CreditCardConnected = connect(
   mapStateToProps,
   mapDispatchToProps,
-)(withTranslation()(CreditCard));
+)(withTranslation()(CreditCardClassComponent));
+
+export default function CreditCard(props) {
+  const stripePublishableKey = useSelector(selectStripePublishableKey);
+
+  //FIXME; if https://github.com/coopcycle/coopcycle-app/issues/1841 still happens, try using 'initStripe' instead of 'StripeProvider'
+  return (
+    <StripeProvider publishableKey={stripePublishableKey}>
+      <CreditCardConnected {...props} />
+    </StripeProvider>
+  );
+}

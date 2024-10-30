@@ -4,6 +4,7 @@ import React from 'react';
 import screens, { headerLeft } from '..';
 import HeaderButton from '../../components/HeaderButton';
 import i18n from '../../i18n';
+import NavigationHolder from '../../NavigationHolder';
 import HeaderBackButton from '../store/components/HeaderBackButton';
 import { stackNavigatorScreenOptions } from '../styles';
 
@@ -34,9 +35,15 @@ const MainNavigator = () => (
     <MainStack.Screen
       name="StoreDelivery"
       component={screens.StoreDelivery}
-      options={({ route }) => ({
-        title: i18n.t('STORE_DELIVERY', { id: route.params?.delivery.id }),
-      })}
+      options={({ route }) => {
+        let id
+        if (route.params.delivery) {
+          id = route.params.delivery.orderNumber ? route.params.delivery.orderNumber : route.params.delivery.id
+        }
+        return {
+          title: i18n.t('STORE_DELIVERY', { id: id })
+        }}
+      }
     />
   </MainStack.Navigator>
 );
@@ -61,12 +68,11 @@ const NewDeliveryNavigator = () => (
     />
   </NewDeliveryStack.Navigator>
 );
-
 const RootStack = createStackNavigator();
 
 export default () => (
   <RootStack.Navigator
-    screenOptions={{ ...stackNavigatorScreenOptions, presentation: 'modal' }}>
+    screenOptions={{ ...stackNavigatorScreenOptions(), presentation: 'modal' }}>
     <RootStack.Screen
       name="StoreHome"
       component={MainNavigator}
@@ -79,7 +85,12 @@ export default () => (
       component={NewDeliveryNavigator}
       options={{
         title: i18n.t('STORE_NEW_DELIVERY'),
-        headerLeft: props => <HeaderBackButton {...props} />,
+        headerLeft: props => (
+          <HeaderBackButton
+            {...props}
+            onPress={() => NavigationHolder.goBack()}
+          />
+        ),
       }}
     />
   </RootStack.Navigator>

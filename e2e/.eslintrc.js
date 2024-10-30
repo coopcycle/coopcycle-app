@@ -1,5 +1,6 @@
 module.exports = {
   globals: {
+    describe: true,
     afterAll: true,
     beforeAll: true,
     beforeEach: true,

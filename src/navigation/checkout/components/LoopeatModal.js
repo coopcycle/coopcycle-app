@@ -29,7 +29,7 @@ const LoopeatModal = ({ name, isVisible, onPress }) => {
         <Text mb="3">
           {t('CART_ZERO_WASTE_POPUP_TEXT', { name: name || '' })}
         </Text>
-        <Button onPress={onPress}>
+        <Button testID="reusablePackagingOk" onPress={onPress}>
           {t('CART_ZERO_WASTE_POPUP_BUTTON_TEXT')}
         </Button>
       </Box>

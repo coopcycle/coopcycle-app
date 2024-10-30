@@ -37,7 +37,16 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    login: (email, password) => dispatch(login(email, password, true)),
+    login: (email, password) =>
+      dispatch(
+        login(
+          email,
+          password,
+          'AccountRegisterCheckEmail',
+          'AccountHome',
+          true,
+        ),
+      ),
     register: data =>
       dispatch(register(data, 'AccountRegisterCheckEmail', 'AccountHome')),
     forgotPassword: () => dispatch(forgotPassword()),

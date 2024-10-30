@@ -16,8 +16,6 @@ import Server from './account/components/Server';
 import DrawerNavigator from './navigators/DrawerNavigator';
 import HomeNavigator from './navigators/HomeNavigator';
 
-import * as Sentry from '@sentry/react-native';
-
 import { selectCustomBuild } from '../redux/App/selectors';
 import FullScreenLoadingIndicator from './FullScreenLoadingIndicator';
 import LoadingError from './LoadingError';
@@ -69,17 +67,14 @@ class Loading extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.modal !== this.props.modal) {
-      if (this.props.isSpinnerDelayEnabled) {
-        if (!prevProps.modal.show && this.props.modal.show) {
-          // add an extra delay to make sure that the modal is shown after the Spinner is hidden:
-          // https://github.com/coopcycle/coopcycle-app/blob/master/src/components/Spinner.js#L22
-          setTimeout(() => this.setState({ modal: this.props.modal }), 500);
-        } else {
-          this.setState({ modal: this.props.modal });
-        }
+      // HIDDEN -> VISIBLE
+      if (!prevProps.modal.show && this.props.modal.show) {
+        // FIXME; use `useIsModalVisible` when possible
+        // 100ms see https://github.com/ladjs/react-native-loading-spinner-overlay?tab=readme-ov-file#recommended-implementation
+        // plus add an extra delay to compensate for a delay added in the Spinner.js:
+        const delay = this.props.isSpinnerDelayEnabled ? 500 : 100;
+        setTimeout(() => this.setState({ modal: this.props.modal }), delay);
       } else {
-        // added to track the number of the beta version users who have the delay disabled, could be removed later
-        Sentry.captureMessage('Spinner delay is not applied');
         this.setState({ modal: this.props.modal });
       }
     }
@@ -115,6 +110,7 @@ class Loading extends Component {
           swipeDirection={swipeDirection}
           onBackdropPress={close}>
           <View
+            testID="globalModal"
             style={{
               ...styles.content,
               ...styles[`${this.state.modal.type}Modal`],

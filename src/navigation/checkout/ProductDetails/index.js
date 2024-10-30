@@ -16,6 +16,7 @@ import { ProductImage } from './ProductImage';
 import { ProductInfo } from './ProductInfo';
 import useProductOptionsBuilder from './ProductOptionsBuilder';
 import { ProductQuantity } from './ProductQuantity';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const LIST_SECTION_QUANTITY = 'quantity';
 const LIST_SECTION_OPTIONS_HEADER = 'options-header';
@@ -149,7 +150,10 @@ export default props => {
   };
 
   return (
-    <View style={{ flex: 1 }} edges={['bottom']}>
+    <SafeAreaView
+      testID="productDetails"
+      style={{ flex: 1 }}
+      edges={['bottom']}>
       <SectionList
         style={{ flex: 1 }}
         ref={list}
@@ -216,6 +220,6 @@ export default props => {
           onPress={() => _onPressAddToCart()}
         />
       ) : null}
-    </View>
+    </SafeAreaView>
   );
 };

@@ -268,7 +268,7 @@ const SubmitOrderNavigator = () => {
           }}>
           <SubmitOrderStack.Screen
             name="CheckoutLoginRegister"
-            component={screens.CheckoutLogin}
+            component={screens.CheckoutLoginRegister}
           />
           <SubmitOrderStack.Screen
             name="CheckoutCheckEmail"
@@ -315,13 +315,6 @@ const DefaultNav = () => {
         }}
       />
       <RootStack.Screen
-        name="CheckoutShippingDate"
-        component={screens.CheckoutShippingDate}
-        options={{
-          title: i18n.t('CHECKOUT_SHIPPING_DATE'),
-        }}
-      />
-      <RootStack.Screen
         name="CheckoutSubmitOrder"
         component={SubmitOrderNavigator}
         options={{
@@ -333,6 +326,7 @@ const DefaultNav = () => {
         component={screens.CheckoutPaymentMethodCard}
         options={{
           title: i18n.t('PAYMENT_METHOD.card'),
+          headerBackTitleVisible: false,
         }}
       />
       <RootStack.Screen
@@ -340,6 +334,7 @@ const DefaultNav = () => {
         component={screens.CheckoutPaymentMethodCashOnDelivery}
         options={{
           title: i18n.t('PAYMENT_METHOD.cash_on_delivery'),
+          headerBackTitleVisible: false,
         }}
       />
       <RootStack.Screen

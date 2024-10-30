@@ -61,7 +61,15 @@ import {
   AccountResetPasswordNewPasswordScreen,
 } from './navigation/navigators/AccountNavigator';
 import { nativeBaseTheme } from './styles/theme';
-import { DatadogWrapper, navigationContainerOnReady } from './Datadog';
+import {
+  DatadogLogger,
+  DatadogWrapper,
+  navigationContainerOnReady,
+} from './Datadog';
+
+if (Config.APP_ENV === 'test') {
+  LogBox.ignoreAllLogs(true);
+}
 
 LogBox.ignoreLogs([
   'Warning: isMounted(...) is deprecated in plain JavaScript React classes.',
@@ -81,12 +89,12 @@ LogBox.ignoreLogs([
 const navigationRef = createRef();
 const routeNameRef = createRef();
 
-function getCurrentRouteName() {
-  return navigationRef.current.getCurrentRoute()?.name;
+function getCurrentRoute() {
+  return navigationRef.current.getCurrentRoute();
 }
 
 function onReady() {
-  routeNameRef.current = getCurrentRouteName();
+  routeNameRef.current = getCurrentRoute()?.name;
   navigationContainerOnReady(navigationRef);
 }
 
@@ -95,10 +103,15 @@ function onReady() {
  */
 function onNavigationStateChange(prevState, currentState) {
   const previousRouteName = routeNameRef.current;
-  const currentRouteName = getCurrentRouteName();
+  const currentRoute = getCurrentRoute();
+  const currentRouteKey = currentRoute?.key;
+  const currentRouteName = currentRoute?.name;
 
   if (previousRouteName !== currentRouteName) {
     store.dispatch(setCurrentRoute(currentRouteName));
+    DatadogLogger.info(
+      `Starting View “${currentRouteName}” #${currentRouteKey}`,
+    );
   }
 
   routeNameRef.current = currentRouteName;

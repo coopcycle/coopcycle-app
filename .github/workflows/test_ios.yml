@@ -1,0 +1,187 @@
+# https://github.com/natario1/CameraView/blob/master/.github/workflows/build.yml
+# https://help.github.com/en/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions
+# https://dev.to/edvinasbartkus/running-react-native-detox-tests-for-ios-and-android-on-github-actions-2ekn
+# https://github.com/wix/Detox/issues/2617
+name: E2E tests, iOS
+on: [push]
+jobs:
+  build:
+    # https://github.community/t/how-to-stop-github-actions-workflow-to-trigger-when-the-pull-request-is-from-dependabot-preview/116486
+    if: github.actor != 'dependabot[bot]'
+    name: Build App bundle
+    runs-on: macOS-14
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'yarn'
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2'
+          bundler-cache: true
+
+      - name: Configure Sentry
+        run: |
+          sed 's/%token%/${{ secrets.SENTRY_API_TOKEN }}/' ios/sentry.properties.dist > ios/sentry.properties
+
+      - name: Install dependencies to compile node-canvas
+        run: brew install pkg-config cairo pango libpng jpeg giflib librsvg pixman imagemagick
+
+      - name: Install dependencies (yarn)
+        run: yarn install --no-progress --network-timeout 200000 --network-concurrency 1
+
+      - name: Configure Firebase
+        run: |
+          brew install xmlstarlet
+          cp GoogleService-Info.plist.dist ios/GoogleService-Info.plist
+          xmlstarlet ed --inplace --ps --update '//key[text()="CLIENT_ID"]/following-sibling::string[1]'          -v '${{ secrets.FIREBASE_CLIENT_ID }}'          ios/GoogleService-Info.plist
+          xmlstarlet ed --inplace --ps --update '//key[text()="REVERSED_CLIENT_ID"]/following-sibling::string[1]' -v '${{ secrets.FIREBASE_REVERSED_CLIENT_ID }}' ios/GoogleService-Info.plist
+          xmlstarlet ed --inplace --ps --update '//key[text()="API_KEY"]/following-sibling::string[1]'            -v '${{ secrets.FIREBASE_API_KEY }}'            ios/GoogleService-Info.plist
+          xmlstarlet ed --inplace --ps --update '//key[text()="GCM_SENDER_ID"]/following-sibling::string[1]'      -v '${{ secrets.FIREBASE_GCM_SENDER_ID }}'      ios/GoogleService-Info.plist
+          xmlstarlet ed --inplace --ps --update '//key[text()="PROJECT_ID"]/following-sibling::string[1]'         -v '${{ secrets.FIREBASE_PROJECT_ID }}'         ios/GoogleService-Info.plist
+          xmlstarlet ed --inplace --ps --update '//key[text()="STORAGE_BUCKET"]/following-sibling::string[1]'     -v '${{ secrets.FIREBASE_STORAGE_BUCKET }}'     ios/GoogleService-Info.plist
+          xmlstarlet ed --inplace --ps --update '//key[text()="GOOGLE_APP_ID"]/following-sibling::string[1]'      -v '${{ secrets.FIREBASE_GOOGLE_APP_ID }}'      ios/GoogleService-Info.plist
+          xmlstarlet ed --inplace --ps --update '//key[text()="DATABASE_URL"]/following-sibling::string[1]'       -v '${{ secrets.FIREBASE_DATABASE_URL }}'       ios/GoogleService-Info.plist
+
+      - name: Install CocoaPods plugins
+        run: gem install cocoapods-user-defined-build-types
+
+      - name: Cache Pods
+        uses: actions/cache@v2
+        id: cache-pods
+        with:
+          path: ios/Pods
+          key: pods-${{ hashFiles('**/Podfile.lock') }}
+
+      - name: Install Pods
+        working-directory: ios/
+        run: USE_FRAMEWORKS=static NO_FLIPPER=1 bundle exec pod install
+
+      - name: Configure .env variables
+        run: |
+          cp .env.dist .env
+          sed -i '' -e 's/GOOGLE_MAPS_BROWSER_KEY=/GOOGLE_MAPS_BROWSER_KEY=${{ secrets.GOOGLE_MAPS_BROWSER_KEY }}/' .env
+          sed -i '' -e 's/GOOGLE_MAPS_ANDROID_KEY=/GOOGLE_MAPS_ANDROID_KEY=${{ secrets.GOOGLE_MAPS_ANDROID_KEY }}/' .env
+          sed -i -e 's/FACEBOOK_APP_ID=/FACEBOOK_APP_ID=${{ secrets.FACEBOOK_APP_ID }}/' .env
+          sed -i -e 's/FACEBOOK_CLIENT_TOKEN=/FACEBOOK_CLIENT_TOKEN=${{ secrets.FACEBOOK_CLIENT_TOKEN }}/' .env
+
+      # https://vojtastavik.com/2018/09/02/what-is-inside-derived-data-xcode/
+      # https://discuss.circleci.com/t/sharing-xcode-derived-data-folder-across-jobs-workflows/31363/5
+      # https://medium.com/@bitrise/60-faster-builds-force-xcode-to-use-caching-on-bitrise-af8979ca39a6
+      - name: Cache XCode derived data
+        uses: actions/cache@v2
+        id: cache-xcode-derived-data
+        with:
+          path: ios/build
+          key: xcode-derived-data-${{ hashFiles('**/Podfile.lock') }}
+
+      - name: Build app for Detox
+        run: node node_modules/.bin/detox build -c ios.sim.release
+
+      - name: Upload App bundle
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: CoopCycle.app
+          path: ios/build/Build/Products/Release-iphonesimulator/CoopCycle.app
+
+  test:
+    # https://github.community/t/how-to-stop-github-actions-workflow-to-trigger-when-the-pull-request-is-from-dependabot-preview/116486
+    if: github.actor != 'dependabot[bot]'
+    name: Run Tests on iOS Simulator
+    needs: build
+    runs-on: macOS-14
+    defaults:
+      run:
+        working-directory: ./coopcycle-app-repo
+    #FIXME; setup  local coopcycle-web instance
+#    env:
+#      STRIPE_PUBLISHABLE_KEY: ${{ secrets.STRIPE_PUBLISHABLE_KEY }}
+#      STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
+#      STRIPE_CONNECT_CLIENT_ID: ${{ secrets.STRIPE_CONNECT_CLIENT_ID }}
+    steps:
+      - name: Set timezone
+        uses: szenius/set-timezone@v2.0
+        with:
+          timezoneMacos: "Europe/Paris"
+      - uses: actions/checkout@v3
+        with:
+          path: coopcycle-app-repo
+      #FIXME; setup local coopcycle-web instance
+#      - name: Setup Docker on macOS
+#        uses: douglascamata/setup-docker-macos-action@v1-alpha.13
+#
+#      - name: Run CoopCycle Web
+#        uses: ./coopcycle-app-repo/.github/actions/run-coopcycle-web
+
+      - name: Download App bundle
+        uses: actions/download-artifact@v4
+        with:
+          name: CoopCycle.app
+          path: coopcycle-app-repo/ios/build/Build/Products/Release-iphonesimulator/CoopCycle.app
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'yarn'
+          cache-dependency-path: coopcycle-app-repo/yarn.lock
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2'
+          bundler-cache: true
+          working-directory: ./coopcycle-app-repo
+
+      - name: Install dependencies to compile node-canvas
+        run: brew install pkg-config cairo pango libpng jpeg giflib librsvg pixman imagemagick
+
+      - name: Install dependencies (yarn)
+        run: yarn install --no-progress --network-timeout 100000 --network-concurrency 1
+
+      - name: Install applesimutils
+        run: |
+          brew tap wix/brew
+          brew install applesimutils
+
+      - name: Install CocoaPods plugins
+        run: gem install cocoapods-user-defined-build-types
+
+      - name: Cache Pods
+        uses: actions/cache@v2
+        id: cache-pods
+        with:
+          path: coopcycle-app-repo/ios/Pods
+          key: pods-${{ hashFiles('**/Podfile.lock') }}
+
+      - name: Install Pods
+        working-directory: ./coopcycle-app-repo/ios/
+        run: USE_FRAMEWORKS=static NO_FLIPPER=1 bundle exec pod install
+
+      - name: Run Detox tests
+        run: node node_modules/.bin/detox test -c ios.sim.release --headless --loglevel info
+
+      # Run 'applesimutils --list' to list your supported devices.
+      # It is advised only to specify a device type, e.g., "iPhone Xʀ" and avoid explicit search by OS version.
+      - name: List supported devices
+        if: false # useful only for debugging
+        run: applesimutils --list
+
+      # See screenshot specifications
+      # https://help.apple.com/app-store-connect/#/devd274dd925
+#      - name: Take App Store screenshots
+#        if: github.ref == 'refs/heads/master'
+#        run: |
+#          node node_modules/.bin/detox test -c ios.sim.release -o e2e/screenshots.config.json --take-screenshots manual --cleanup --device-name="iPhone 11" --artifacts-location ./artifacts/6.5-inch
+#          node node_modules/.bin/detox test -c ios.sim.release -o e2e/screenshots.config.json --take-screenshots manual --cleanup --device-name="iPhone 8 Plus" --artifacts-location ./artifacts/5.5-inch
+#          node node_modules/.bin/detox test -c ios.sim.release -o e2e/screenshots.config.json --take-screenshots manual --cleanup --device-name="iPad Pro (12.9-inch) (4th generation)" --artifacts-location ./artifacts/12.9-inch
+
+      - name: Upload screenshots artifacts
+#        if: github.ref == 'refs/heads/master'
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: detox-screenshots-ios
+          path: coopcycle-app-repo/artifacts

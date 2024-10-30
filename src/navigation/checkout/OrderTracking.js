@@ -134,7 +134,7 @@ class OrderTrackingPage extends Component {
             onRefresh={() => this._refresh()}
           />
         }>
-        <View style={styles.tracker}>
+        <View testID="orderTimeline" style={styles.tracker}>
           <Text style={styles.trackerLabel}>
             {i18n.t('ORDER_ETA', { start: timeRange[0], end: timeRange[1] })}
           </Text>

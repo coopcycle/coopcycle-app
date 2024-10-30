@@ -20,7 +20,12 @@ import {
 } from '../App/actions';
 
 import { selectHttpClient } from '../App/selectors';
-import { selectOrderById } from './selectors';
+import {
+  selectIsSunmiPrinter,
+  selectOrderById,
+  selectPrinter,
+} from './selectors';
+import { DatadogLogger } from '../../Datadog';
 
 /*
  * Action Types
@@ -243,6 +248,38 @@ export const updateLoopeatFormatsSuccess = createFsAction(
 export const printPending = createAction('PRINT_PENDING');
 export const printFulfilled = createAction('PRINT_FULFILLED');
 export const printRejected = createAction('PRINT_REJECTED');
+
+export function handlePrintFulfilled(order) {
+  return function (dispatch) {
+    DatadogLogger.info(`handlePrintFulfilled | success`, {
+      orderId: order.id,
+    });
+
+    dispatch(printFulfilled(order));
+  };
+}
+
+export function handlePrintRejected(
+  order,
+  internalErrorMessage = '',
+  messageForUser = '',
+) {
+  return function (dispatch) {
+    DatadogLogger.warn(
+      `handlePrintRejected | failed to print ticket | ${internalErrorMessage}`,
+      {
+        orderId: order.id,
+      },
+    );
+
+    dispatch(printRejected(order));
+    DropdownHolder.getDropdown().alertWithType(
+      'error',
+      i18n.t('RESTAURANT_PRINTER_CONNECT_ERROR_TITLE'),
+      messageForUser,
+    );
+  };
+}
 
 export const setPrintNumberOfCopies = createAction(
   'SET_PRINT_NUMBER_OF_COPIES',
@@ -643,7 +680,7 @@ export function deleteOpeningHoursSpecification(openingHoursSpecification) {
   };
 }
 
-function bluetoothErrorToString(e) {
+function errorToString(e) {
   if (typeof e === 'string') {
     return e;
   }
@@ -660,7 +697,9 @@ export function printOrderById(orderId) {
     const order = selectOrderById(getState(), orderId);
 
     if (!order) {
-      console.warn('Order not found', orderId);
+      DatadogLogger.warn('printOrderById | Order not found', {
+        orderId,
+      });
       return;
     }
 
@@ -672,7 +711,8 @@ export function printOrder(order) {
   return async (dispatch, getState) => {
     dispatch(printPending(order));
 
-    const { printer, isSunmiPrinter } = getState().restaurant;
+    const printer = selectPrinter(getState());
+    const isSunmiPrinter = selectIsSunmiPrinter(getState());
 
     try {
       if (isSunmiPrinter) {
@@ -680,16 +720,26 @@ export function printOrder(order) {
         await SunmiPrinterLibrary.sendRAWData(
           Buffer.from(encodeForPrinter(order, true)).toString('base64'),
         );
-        dispatch(printFulfilled(order));
+        dispatch(handlePrintFulfilled(order));
         return;
       }
     } catch (e) {
-      console.warn('printOrder with SunmiPrinter failed', e);
+      DatadogLogger.warn(
+        `printOrder with SunmiPrinter failed: ${errorToString(e)}`,
+        {
+          orderId: order.id,
+        },
+      );
     }
 
     if (!printer) {
-      console.warn('No printer selected');
-      dispatch(printRejected(order));
+      dispatch(
+        handlePrintRejected(
+          order,
+          'No printer selected',
+          'No printer selected',
+        ),
+      );
       return;
     }
 
@@ -705,11 +755,11 @@ export function printOrder(order) {
           await BleManager.connect(printer.id);
         } catch (e) {
           dispatch(printerDisconnected());
-          dispatch(printRejected(order));
-          DropdownHolder.getDropdown().alertWithType(
-            'error',
-            i18n.t('RESTAURANT_PRINTER_CONNECT_ERROR_TITLE'),
-            bluetoothErrorToString(e),
+          dispatch(
+            handlePrintRejected(
+              order,
+              `Printer disconnected: ${errorToString(e)}`,
+            ),
           );
           return;
         }
@@ -740,6 +790,13 @@ export function printOrder(order) {
       );
 
       if (writableCharacteristics.length > 0) {
+        DatadogLogger.info(
+          `printOrder | ${writableCharacteristics.length} writableCharacteristics found`,
+          {
+            orderId: order.id,
+          },
+        );
+
         const encoded = encodeForPrinter(order);
 
         writableCharacteristics.sort((a, b) => {
@@ -779,21 +836,21 @@ export function printOrder(order) {
               writableCharacteristic.characteristic,
               Array.from(encoded),
             );
-            dispatch(printFulfilled(order));
+            dispatch(handlePrintFulfilled(order));
+
+            // We consider the print successful if we managed to write to one writable characteristic
+            break;
           } catch (e) {
-            console.warn('printOrder | Write failed', e);
-            dispatch(printRejected(order));
+            dispatch(
+              handlePrintRejected(order, `Write failed: ${errorToString(e)}`),
+            );
           }
         }
+      } else {
+        dispatch(handlePrintRejected(order, `No writable characteristics`));
       }
     } catch (e) {
-      console.warn('printOrder | Error', e);
-      dispatch(printRejected(order));
-      DropdownHolder.getDropdown().alertWithType(
-        'error',
-        i18n.t('RESTAURANT_PRINTER_CONNECT_ERROR_TITLE'),
-        bluetoothErrorToString(e),
-      );
+      dispatch(handlePrintRejected(order, `Misc error: ${errorToString(e)}`));
     }
   };
 }
@@ -818,7 +875,7 @@ export function connectPrinter(device, cb) {
         DropdownHolder.getDropdown().alertWithType(
           'error',
           i18n.t('RESTAURANT_PRINTER_CONNECT_ERROR_TITLE'),
-          bluetoothErrorToString(e),
+          errorToString(e),
         );
       });
   };

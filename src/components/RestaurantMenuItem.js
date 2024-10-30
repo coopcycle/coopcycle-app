@@ -4,7 +4,7 @@ import React from 'react';
 import { ActivityIndicator, StyleSheet, TouchableOpacity } from 'react-native';
 import { useBackgroundContainerColor } from '../styles/theme';
 import { formatPrice } from '../utils/formatting';
-import { DietBadge } from './RestaurantProductBadge';
+import { DietBadge, ZeroWasteBadge } from './RestaurantProductBadge';
 
 const styles = StyleSheet.create({
   menuItem: {
@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const RestaurantMenuItem = ({ item, onPress, isLoading }) => {
+const RestaurantMenuItem = ({ testID, item, onPress, isLoading }) => {
   const enabled = item.hasOwnProperty('enabled') ? item.enabled : true;
   const backgroundColor = useBackgroundContainerColor();
 
@@ -102,7 +102,7 @@ const RestaurantMenuItem = ({ item, onPress, isLoading }) => {
         item.enabled ? null : styles.disabled,
       ]}
       onPress={enabled ? () => onPress(item) : null}
-      testID={`menuItem:${item.sectionIndex}:${item.index}`}>
+      testID={testID}>
       <View style={image1x1 ? styles.imageWrapper : { width: 0 }}>
         {image1x1 && (
           <Image
@@ -148,6 +148,11 @@ const RestaurantMenuItem = ({ item, onPress, isLoading }) => {
             ) : diets.length > 0 ? (
               <>
                 <DietBadge name={diets[0]} />
+              </>
+            ) : null}
+            {item.reusablePackagingEnabled ? (
+              <>
+                <ZeroWasteBadge />
               </>
             ) : null}
             <Text pr="2" fontSize="lg" style={styles.price}>{`${formatPrice(

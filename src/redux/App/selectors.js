@@ -9,14 +9,14 @@ import { selectIsDispatchFetching } from '../Dispatch/selectors';
 import { EVENT as EVENT_ORDER } from '../../domain/Order';
 import { EVENT as EVENT_TASK_COLLECTION } from '../../domain/TaskCollection';
 import { selectAutoAcceptOrdersEnabled } from '../Restaurant/selectors';
+import { Platform } from 'react-native';
 
-export const selectUser = state => state.app.user;
 export const selectHttpClient = state => state.app.httpClient;
 
 export const selectCustomBuild = state => state.app.customBuild;
 
-export const selectResumeCheckoutAfterActivation = state =>
-  state.app.resumeCheckoutAfterActivation;
+// AppUser, for logged in user use selectLoggedInUser
+export const selectUser = state => state.app.user;
 
 // a user with an account
 export const selectIsAuthenticated = createSelector(
@@ -24,11 +24,25 @@ export const selectIsAuthenticated = createSelector(
   user => !!(user && user.isAuthenticated()),
 );
 
+export const selectLoggedInUser = createSelector(
+  selectUser,
+  selectIsAuthenticated,
+  (user, isAuthenticated) => {
+    if (isAuthenticated) {
+      return user;
+    }
+
+    return null;
+  },
+);
+
 export const selectIsGuest = createSelector(
   selectUser,
   user => !!(user && user.isGuest()),
 );
 
+export const selectResumeCheckoutAfterActivation = state =>
+  state.app.resumeCheckoutAfterActivation;
 export const selectHttpClientHasCredentials = createSelector(
   selectHttpClient,
   httpClient => !!(httpClient && !!httpClient.getToken()),
@@ -60,6 +74,11 @@ export const selectIsLoading = createSelector(
 
 export const selectIsCentrifugoConnected = state =>
   state.app.isCentrifugoConnected;
+
+export const selectIsCourier = createSelector(
+  selectUser,
+  user => user && user.hasRole('ROLE_COURIER'),
+);
 
 export const selectInitialRouteName = createSelector(
   selectUser,
@@ -151,11 +170,25 @@ export const selectServersWithoutRepeats = createSelector(
   },
 );
 
-export const selectIsSpinnerDelayEnabled = state =>
+const _selectIsSpinnerDelayFeatureFlagEnabled = state =>
   state.app.isSpinnerDelayEnabled ?? true;
 
-export const selectIsIncidentEnabled = state =>
-  state.app.isIncidentEnabled ?? false;
+/**
+ * FIXME: the aim is to get rid of the spinner delay: https://github.com/coopcycle/coopcycle-app/issues/1670
+ * However currently the app got stuck sometimes after the task is completed (only on iOS?):
+ * https://github.com/coopcycle/coopcycle-app/issues/1877
+ * https://github.com/facebook/react-native/issues/32329
+ * So temporary put the delay back for the courier role only
+ */
+export const selectIsSpinnerDelayEnabled = createSelector(
+  _selectIsSpinnerDelayFeatureFlagEnabled,
+  selectIsCourier,
+  (isSpinnerDelayFeatureFlagEnabled, isCourier) => {
+    return (
+      isSpinnerDelayFeatureFlagEnabled && isCourier && Platform.OS === 'ios'
+    );
+  },
+);
 
 export const selectCurrentRoute = state => state.app.currentRoute;
 
@@ -194,3 +227,5 @@ export const selectNotificationsToDisplay = createSelector(
 );
 
 export const selectSettingsLatLng = state => state.app.settings.latlng;
+export const selectStripePublishableKey = state =>
+  state.app.settings.stripe_publishable_key;

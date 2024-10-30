@@ -17,7 +17,7 @@ on:
         description: Build a specific git tag
         required: true
       deploy_google_play:
-        description: 'Upload to Google Play (Internal testing track)'
+        description: 'Upload to Google Play'
         required: true
         type: boolean
         default: false

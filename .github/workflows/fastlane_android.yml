@@ -168,9 +168,9 @@ jobs:
         run: mv android/app/build/outputs/bundle/**/*.aab release.aab
       - name: Upload aab artifact
         if: '!cancelled()'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: release.aab
+          name: ${{ inputs.app_name }}_release.aab
           path: release.aab
   AAB_TO_APK:
     name: Convert aab to apk
@@ -179,9 +179,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Download a single artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
-          name: release.aab
+          name: ${{ inputs.app_name }}_release.aab
       - name: Convert aab to apk
         id: convert_aab
         uses: mukeshsolanki/bundletool-action@v1.0.0
@@ -191,9 +191,9 @@ jobs:
           keystorePassword: ${{ secrets.SIGNING_STORE_PASSWORD }}
           keystoreAlias: ${{ inputs.keystore_key_alias }}
           keyPassword: ${{ secrets[inputs.keystore_key_password_secret] }}
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
-          name: release.apk
+          name: ${{ inputs.app_name }}-release.apk
           path: ${{ steps.convert_aab.outputs.apkPath }}
   SCREENSHOTS:
     name: Capture screenshots
@@ -209,7 +209,7 @@ jobs:
         with:
           ref: ${{ inputs.tag }}
       - name: Download apk artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: release.apk
       - name: Install Maestro CLI
@@ -250,7 +250,7 @@ jobs:
           prefix: /screenshots/${{ inputs.app_name }}/android-${{ matrix.EMULATOR_ARCH }}
           region: fr-par
           bucket: coopcycle-ci
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: maestro-error-rapport
           path: ~/.maestro/tests/
