@@ -1,5 +1,4 @@
 import { Formik } from 'formik';
-import { t } from 'i18next';
 import { Text, View } from 'native-base';
 import { withTranslation } from 'react-i18next';
 import { StyleSheet } from 'react-native';
@@ -11,6 +10,8 @@ import ModalFormWrapper from './ModalFormWrapper';
 function NewDeliveryPrice(props) {
   const dispatch = useDispatch();
   const delivery = props.route.params?.delivery;
+  const { t } = props;
+
   if (!delivery) return;
   dispatch(getPrice(delivery));
 
@@ -31,11 +32,11 @@ function NewDeliveryPrice(props) {
       {({ handleSubmit }) => (
         <ModalFormWrapper handleSubmit={handleSubmit} t={t} isSubmit>
           <View style={styles.formGroup}>
-            <Text style={styles.label}>Price excluding tax</Text>
+            <Text style={styles.label}>{t('PRICE_EXCLUDING_TAX')}</Text>
             <FormInput value={props.priceExcludingTax} editable={false} />
           </View>
           <View style={styles.formGroup}>
-            <Text style={styles.label}>Total</Text>
+            <Text style={styles.label}>{t('PRICE_TOTAL')}</Text>
             <FormInput value={props.price} editable={false} />
           </View>
         </ModalFormWrapper>

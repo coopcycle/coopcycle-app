@@ -21,7 +21,6 @@ export const GET_PRICE_SUCCESS = '@store/GET_PRICE_SUCCESS';
 
 export const getPriceSuccess = createAction(GET_PRICE_SUCCESS);
 export function getPrice(delivery) {
-  console.log('🚀 ~ delivery:', delivery);
   return (dispatch, getState) => {
     const { app } = getState();
     const { httpClient } = app;
@@ -31,7 +30,6 @@ export function getPrice(delivery) {
     return httpClient
       .post(`/api/retail_prices/calculate`, delivery)
       .then(res => {
-        console.log('🚀 ~ res:', res);
         dispatch(getPriceSuccess(res));
         dispatch(setLoading(false));
       })

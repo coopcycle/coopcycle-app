@@ -520,6 +520,8 @@
     "FEATURED": "Featured",
     "EXCLUSIVE": "Exclusive",
     "NEW": "New",
-    "RESTAURANT_MORE_INFOS": "More information"
+    "RESTAURANT_MORE_INFOS": "More information",
+    "PRICE_EXCLUDING_TAX": "Price excluding tax",
+    "PRICE_TOTAL": "Total price"
   }
 }
