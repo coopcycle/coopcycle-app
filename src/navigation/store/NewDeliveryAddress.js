@@ -6,7 +6,7 @@ import React, { useState } from 'react';
 import { withTranslation } from 'react-i18next';
 import { Platform, StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
-import AddressAutocomplete from '../../components/AddressAutocomplete/index';
+import AddressAutocomplete from '../../components/AddressAutocomplete';
 import { assertDelivery } from '../../redux/Store/actions';
 import { selectStore } from '../../redux/Store/selectors';
 import {
@@ -18,8 +18,8 @@ import ClientListInput from './components/ClientListInput';
 import FormInput from './components/FormInput';
 import ModalFormWrapper from './ModalFormWrapper';
 
-function NewDelivery(props) {
-  const [validAddresses, setValidAddresses] = useState(false);
+function NewDeliveryAddress(props) {
+  const [validAddress, setValidAddress] = useState(false);
   const [address, setAddress] = useState(null);
   const backgroundColor = useBackgroundContainerColor();
   const backgroundHighlightColor = useBackgroundHighlightColor();
@@ -44,12 +44,12 @@ function NewDelivery(props) {
     const contactName = data.contactName || '';
     const telephone = data.telephone || '';
     const businessName = data.businessName || '';
-    const comment = data.comment || '';
+    const description = data.description || '';
 
     setFieldValue('contactName', contactName);
     setFieldValue('telephone', telephone);
     setFieldValue('businessName', businessName);
-    setFieldValue('comments', comment);
+    setFieldValue('description', description);
     setAddress({
       streetAddress: data.streetAddress,
       geo: data.geo,
@@ -72,7 +72,7 @@ function NewDelivery(props) {
     };
 
     assertDelivery(delivery, () => {
-      setValidAddresses(true);
+      setValidAddress(true);
     });
   }
 
@@ -115,7 +115,7 @@ function NewDelivery(props) {
       errors.contactName = t('STORE_NEW_DELIVERY_ERROR.EMPTY_CONTACT_NAME');
     }
 
-    if (!validAddresses) {
+    if (!validAddress) {
       errors.address = t('STORE_NEW_DELIVERY_ADDRESS_HELP');
     }
 
@@ -126,7 +126,7 @@ function NewDelivery(props) {
     telephone: '',
     contactName: '',
     businessName: '',
-    comments: '',
+    description: '',
     address: '',
   };
 
@@ -141,7 +141,7 @@ function NewDelivery(props) {
         'E.164',
       ),
       contactName: values.contactName,
-      comments: values.comments,
+      description: values.description,
       businessName: values.businessName,
       address,
     };
@@ -172,26 +172,28 @@ function NewDelivery(props) {
               {t('STORE_NEW_DELIVERY_SEARCH_CLIENT')}{' '}
               <Text style={styles.optional}>({t('OPTIONAL')})</Text>
             </Text>
-            <ClientListInput
-              onSelectAddress={a => {
-                setAddressData(a, setFieldValue);
-                setValidAddresses(true);
-              }}
-              addresses={addresses}
-              placeholder={t('STORE_NEW_DELIVERY_ENTER_SEARCH_CLIENT')}
-            />
+            <View style={styles.autocompleteWrapper}>
+              <ClientListInput
+                onSelectAddress={a => {
+                  setAddressData(a, setFieldValue);
+                  setValidAddress(true);
+                }}
+                addresses={addresses}
+                placeholder={t('STORE_NEW_DELIVERY_ENTER_SEARCH_CLIENT')}
+              />
+            </View>
           </View>
           <View style={[styles.formGroup, { zIndex: 1 }]}>
             <Text style={styles.label}>
               {t('STORE_NEW_DELIVERY_ADDRESS')}
-              {validAddresses && ' ✓'}
+              {validAddress && ' ✓'}
             </Text>
-            <View style={styles.autocompleteContainer}>
+            <View style={styles.autocompleteWrapper}>
               <AddressAutocomplete
                 key={address?.streetAddress ?? ''}
-                addresses={addresses}
+                addresses={[]}
                 onChangeText={() => {
-                  if (validAddresses) setValidAddresses(false);
+                  if (validAddress) setValidAddress(false);
                   handleChange('address');
                 }}
                 onBlur={handleBlur('address')}
@@ -215,7 +217,7 @@ function NewDelivery(props) {
                 _focus={{ borderColor: primaryColor }}
               />
             </View>
-            {errors.address && touched.address && (
+            {errors.address && !validAddress && touched.address && (
               <Text note style={styles.errorText}>
                 {errors.address}
               </Text>
@@ -281,7 +283,7 @@ function NewDelivery(props) {
           </View>
           <View style={[styles.formGroup]}>
             <Text style={styles.label}>
-              {t('STORE_NEW_DELIVERY_COMMENTS')}{' '}
+              {t('STORE_NEW_DELIVERY_ADDRESS_DESCRIPTION')}{' '}
               <Text style={styles.optional}>({t('OPTIONAL')})</Text>
             </Text>
             <FormInput
@@ -290,10 +292,10 @@ function NewDelivery(props) {
               }}
               autoCorrect={false}
               multiline={true}
-              onChangeText={handleChange('comments')}
-              onBlur={handleBlur('comments')}
-              value={values.comments}
-              placeholder={t('STORE_NEW_DELIVERY_ENTER_COMMENTS')}
+              onChangeText={handleChange('description')}
+              onBlur={handleBlur('description')}
+              value={values.description}
+              placeholder={t('STORE_NEW_DELIVERY_ENTER_ADDRESS_DESCRIPTION')}
             />
           </View>
         </ModalFormWrapper>
@@ -303,7 +305,7 @@ function NewDelivery(props) {
 }
 
 const styles = StyleSheet.create({
-  autocompleteContainer: {
+  autocompleteWrapper: {
     height: 40,
     ...Platform.select({
       android: {
@@ -354,15 +356,16 @@ const styles = StyleSheet.create({
   },
 });
 
-function mapStateToProps(state) {
+function mapDispatchToProps(state) {
   return {
+    country: state.app.settings.country.toUpperCase(),
     store: selectStore(state),
     deliveryError: state.store.assertDeliveryError,
     addresses: state.store.addresses,
   };
 }
 
-function mapDispatchToProps(dispatch) {
+function mapStateToProps(dispatch) {
   return {
     assertDelivery: (delivery, onSuccess) =>
       dispatch(assertDelivery(delivery, onSuccess)),
@@ -370,6 +373,6 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(
-  mapStateToProps,
   mapDispatchToProps,
-)(withTranslation()(NewDelivery));
+  mapStateToProps,
+)(withTranslation()(NewDeliveryAddress));

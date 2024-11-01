@@ -14,6 +14,29 @@ PODS:
     - React
   - CountlyReactNative/NotificationService (22.06.1):
     - React
+  - DatadogCore (2.14.2):
+    - DatadogInternal (= 2.14.2)
+  - DatadogCrashReporting (2.14.2):
+    - DatadogInternal (= 2.14.2)
+    - PLCrashReporter (~> 1.11.2)
+  - DatadogInternal (2.14.2)
+  - DatadogLogs (2.14.2):
+    - DatadogInternal (= 2.14.2)
+  - DatadogRUM (2.14.2):
+    - DatadogInternal (= 2.14.2)
+  - DatadogSDKReactNative (2.4.3):
+    - DatadogCore (~> 2.14.1)
+    - DatadogCrashReporting (~> 2.14.1)
+    - DatadogLogs (~> 2.14.1)
+    - DatadogRUM (~> 2.14.1)
+    - DatadogTrace (~> 2.14.1)
+    - DatadogWebViewTracking (~> 2.14.1)
+    - React-Core
+  - DatadogTrace (2.14.2):
+    - DatadogInternal (= 2.14.2)
+    - OpenTelemetrySwiftApi (= 1.6.0)
+  - DatadogWebViewTracking (2.14.2):
+    - DatadogInternal (= 2.14.2)
   - DoubleConversion (1.1.6)
   - EXConstants (15.4.5):
     - ExpoModulesCore
@@ -191,6 +214,8 @@ PODS:
     - nanopb/encode (= 2.30909.1)
   - nanopb/decode (2.30909.1)
   - nanopb/encode (2.30909.1)
+  - OpenTelemetrySwiftApi (1.6.0)
+  - PLCrashReporter (1.11.2)
   - PromisesObjC (2.4.0)
   - PromisesSwift (2.4.0):
     - PromisesObjC (= 2.4.0)
@@ -1333,11 +1358,13 @@ PODS:
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
     - React-RCTImage
-  - RNSentry (5.19.1):
+  - RNSentry (5.31.1):
+    - glog
     - hermes-engine
+    - RCT-Folly (= 2022.05.16.00)
     - React-Core
     - React-hermes
-    - Sentry/HybridSDK (= 8.17.1)
+    - Sentry/HybridSDK (= 8.36.0)
   - RNShare (7.9.1):
     - React-Core
   - RNSound (0.11.2):
@@ -1351,9 +1378,7 @@ PODS:
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
-  - Sentry/HybridSDK (8.17.1):
-    - SentryPrivate (= 8.17.1)
-  - SentryPrivate (8.17.1)
+  - Sentry/HybridSDK (8.36.0)
   - SocketRocket (0.6.1)
   - Stripe (23.22.1):
     - StripeApplePay (= 23.22.1)
@@ -1401,6 +1426,7 @@ PODS:
 DEPENDENCIES:
   - boost (from `../node_modules/react-native/third-party-podspecs/boost.podspec`)
   - CountlyReactNative (from `../node_modules/countly-sdk-react-native-bridge`)
+  - "DatadogSDKReactNative (from `../node_modules/@datadog/mobile-react-native`)"
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - EXConstants (from `../node_modules/expo-constants/ios`)
   - EXFont (from `../node_modules/expo-font/ios`)
@@ -1501,6 +1527,13 @@ SPEC REPOS:
   trunk:
     - AppAuth
     - CocoaLumberjack
+    - DatadogCore
+    - DatadogCrashReporting
+    - DatadogInternal
+    - DatadogLogs
+    - DatadogRUM
+    - DatadogTrace
+    - DatadogWebViewTracking
     - FBAEMKit
     - FBSDKCoreKit
     - FBSDKCoreKit_Basics
@@ -1525,10 +1558,11 @@ SPEC REPOS:
     - IQKeyboardManagerSwift
     - libevent
     - nanopb
+    - OpenTelemetrySwiftApi
+    - PLCrashReporter
     - PromisesObjC
     - PromisesSwift
     - Sentry
-    - SentryPrivate
     - SocketRocket
     - Stripe
     - StripeApplePay
@@ -1545,6 +1579,8 @@ EXTERNAL SOURCES:
     :podspec: "../node_modules/react-native/third-party-podspecs/boost.podspec"
   CountlyReactNative:
     :path: "../node_modules/countly-sdk-react-native-bridge"
+  DatadogSDKReactNative:
+    :path: "../node_modules/@datadog/mobile-react-native"
   DoubleConversion:
     :podspec: "../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
   EXConstants:
@@ -1734,6 +1770,14 @@ SPEC CHECKSUMS:
   boost: d3f49c53809116a5d38da093a8aa78bf551aed09
   CocoaLumberjack: 543c79c114dadc3b1aba95641d8738b06b05b646
   CountlyReactNative: f544f34347bc635e2951e2797d4750e66f886a09
+  DatadogCore: a3429f62b7da0e715e179833b3daa0203ba2a5ad
+  DatadogCrashReporting: 3b5e496c1f61971a93b9a1bff3312297be03f031
+  DatadogInternal: 11798eea970f195ad720168f9a51712e71affe33
+  DatadogLogs: 4192cc1979467ce0c2521d73ba92b6197e0c7f06
+  DatadogRUM: f732009eba7a848d6e2df9ef12944e30f0e94ba2
+  DatadogSDKReactNative: f418f95923dc78ad7b4dcd1710804f1672d8abfa
+  DatadogTrace: 5687191622d91152f10616e206500fe5acd8a342
+  DatadogWebViewTracking: cb818ee5943de63940b4f536320361c17af0f7b1
   DoubleConversion: fea03f2699887d960129cc54bba7e52542b6f953
   EXConstants: 988aa430ca0f76b43cd46b66e7fae3287f9cc2fc
   EXFont: f20669cb266ef48b004f1eb1f2b20db96cd1df9f
@@ -1771,6 +1815,8 @@ SPEC CHECKSUMS:
   IQKeyboardManagerSwift: 12d89768845bb77b55cc092ecc2b1f9370f06b76
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   nanopb: d4d75c12cd1316f4a64e3c6963f879ecd4b5e0d5
+  OpenTelemetrySwiftApi: 657da8071c2908caecce11548e006f779924ff9c
+  PLCrashReporter: 499c53b0104f95c302d94fd723ebb03c56d9bac8
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
   PromisesSwift: 9d77319bbe72ebf6d872900551f7eeba9bce2851
   RCT-Folly: 7169b2b1c44399c76a47b5deaaba715eeeb476c0
@@ -1844,13 +1890,12 @@ SPEC CHECKSUMS:
   RNLocalize: 4222a3756cdbe2dc9a5bdf445765a4d2572107cb
   RNReanimated: fc28cd7439c7ce5c91c760dbdc5735ee35aeae36
   RNScreens: 136d868cc4a78b41042a1a5f1cb42b99a47033f5
-  RNSentry: 6872121e0af7aa9f3f50643f557d69adc8f7ecdc
+  RNSentry: bb9261522b37ee673579ee1d106b107d63cc6243
   RNShare: a5dc3b9c53ddc73e155b8cd9a94c70c91913c43c
   RNSound: 6c156f925295bdc83e8e422e7d8b38d33bc71852
   RNSVG: 551acb6562324b1d52a4e0758f7ca0ec234e278f
   RNVectorIcons: 81e919c3a9e56e4916f9e74cfe9cd2e489146f08
-  Sentry: d9f99f9cc13777c5d938650c1e1c85047bb4f0d1
-  SentryPrivate: 839b1e58addf58624087a80b2628e543193fa8ef
+  Sentry: f8374b5415bc38dfb5645941b3ae31230fbeae57
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   Stripe: b65e9f748f8f51b51e015b0d72f5474dc0708788
   stripe-react-native: 3988dbb404888f4224bdb9dd27ddfdaac6d309a8

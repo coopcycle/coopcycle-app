@@ -5,12 +5,21 @@ module.exports = {
       config: 'e2e/jest.config.js',
       _: ['e2e'],
     },
+    retries: 2,
   },
   artifacts: {
     plugins: {
-      screenshot: {
-        shouldTakeAutomaticSnapshots: true,
-      },
+      log: 'failing',
+      screenshot: 'failing',
+      //FIXME: video recording doesn't seem to work
+      video: {
+        android: {
+          "bitRate": 4000000
+        },
+        simulator: {
+          "codec": "hevc"
+        }
+      }
     },
   },
   apps: {
@@ -41,18 +50,18 @@ module.exports = {
       binaryPath:
         'android/app/build/outputs/apk/official/release/app-official-release.apk',
       build:
-        'cd android && ./gradlew assembleRelease assembleAndroidTest -DtestBuildType=release -DuseDebugCertificate=yes -DminifyEnabled=no -DuploadCrashlyticsMappingFile=no --warning-mode all && cd ..',
+        'cd android && ./gradlew assembleRelease assembleAndroidTest -DtestBuildType=release -DuseDebugCertificate=yes -DminifyEnabled=no -DuploadCrashlyticsMappingFile=no --no-daemon --warning-mode all && cd ..',
       launchArgs: {},
     },
   },
   devices: {
     iosSimulator: {
       type: 'ios.simulator',
-      device: { type: 'iPhone 15', os: 'iOS 17.4' },
+      device: { type: 'iPhone 15', os: 'iOS 17.5' },
     },
     androidEmulator: {
       type: 'android.emulator',
-      device: { avdName: 'Pixel_8_API_34' },
+      device: { avdName: 'Pixel_6_API_28' },
     },
     attached: {
       type: 'android.attached',

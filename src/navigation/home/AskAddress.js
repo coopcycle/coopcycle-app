@@ -45,15 +45,12 @@ const AskAddress = props => {
       </Box>
       <Box style={{ flex: 2 }} onLayout={onLayout}>
         <AddressAutocomplete
+          testID="askAddressAutocomplete"
           inputContainerStyle={{
-            justifyContent: 'center',
-            borderWidth: 0,
             height: textInputContainerHeight,
           }}
           style={{
             height: textInputContainerHeight * 0.7,
-            borderRadius: 3,
-            borderWidth: 1,
           }}
           flatListProps={{
             maxHeight: autocompleteListHeight,

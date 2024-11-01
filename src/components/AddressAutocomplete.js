@@ -7,21 +7,16 @@ import _ from 'lodash';
 import {
   Icon,
   Input,
+  Pressable,
   Text,
-  useColorMode,
+  View,
   useColorModeValue,
 } from 'native-base';
 import PropTypes from 'prop-types';
 import qs from 'qs';
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { withTranslation } from 'react-i18next';
-import {
-  Image,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 import Autocomplete from 'react-native-autocomplete-input';
 import Config from 'react-native-config';
 import 'react-native-get-random-values';
@@ -31,8 +26,11 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { localeDetector } from '../i18n';
 import { darkGreyColor, whiteColor } from '../styles/common';
-import { useBackgroundColor, useBaseTextColor } from '../styles/theme';
+import { useBaseTextColor, useColorModeToken } from '../styles/theme';
 import AddressUtils from '../utils/Address';
+import PostCodeButton from './AddressAutocomplete/components/PostCodeButton';
+import PoweredByGoogle from './AddressAutocomplete/powered/PoweredByGoogle';
+import { PoweredByIdealPostcodes } from './AddressAutocomplete/powered/PoweredByIdealPostcodes';
 import ItemSeparator from './ItemSeparator';
 
 const fuseOptions = {
@@ -46,110 +44,48 @@ const fuseOptions = {
   keys: ['contactName', 'streetAddress'],
 };
 
-const PoweredByGoogle = () => {
-  const { colorMode } = useColorMode();
-  const backgroundColor = useBackgroundColor();
+function AddressAutocomplete(props) {
+  const {
+    country,
+    t,
+    value,
+    addresses,
+    containerStyle,
+    inputContainerStyle,
+    listContainerStyle,
+    style,
+    flatListProps,
+    onSelectAddress,
+    placeholder,
+    ...otherProps
+  } = props;
 
-  return (
-    <View
-      style={[styles.poweredContainer, { backgroundColor: backgroundColor }]}>
-      {colorMode !== 'dark' && (
-        <Image
-          resizeMode="contain"
-          source={require('../../assets/images/powered_by_google_on_white.png')}
-        />
-      )}
-      {colorMode === 'dark' && (
-        <Image
-          resizeMode="contain"
-          source={require('../../assets/images/powered_by_google_on_non_white.png')}
-        />
-      )}
-    </View>
+  const [query, setQuery] = useState(
+    _.isObject(value) ? value.streetAddress || '' : value || '',
   );
-};
-
-const PoweredByIdealPostcodes = () => (
-  <View style={styles.poweredContainer}>
-    <Image
-      resizeMode="contain"
-      source={require('../../assets/images/ideal_postcodes.png')}
-    />
-  </View>
-);
-
-const PostCodeButton = ({ postcode, onPress }) => {
-  return (
-    <TouchableOpacity
-      style={{
-        flexDirection: 'row',
-        alignItems: 'center',
-        paddingLeft: 10,
-        paddingRight: 10,
-        paddingVertical: 5,
-        position: 'absolute',
-        right: 0,
-        top: 0,
-        bottom: 0,
-        backgroundColor: '#0984e3',
-        borderTopRightRadius: 20,
-        borderBottomRightRadius: 20,
-      }}
-      onPress={onPress}>
-      <Text
-        style={{
-          marginRight: 10,
-          fontWeight: '700',
-          fontSize: 16,
-          color: 'white',
-          fontFamily: 'RobotoMono-Regular',
-        }}>
-        {postcode}
-      </Text>
-      <Icon
-        as={FontAwesome5}
-        name="times"
-        style={{ fontSize: 18, color: 'white' }}
-      />
-    </TouchableOpacity>
+  const [results, setResults] = useState([]);
+  const [postcode, setPostcode] = useState(
+    _.isObject(value) ? { postcode: value.postalCode } : null,
   );
-};
+  const [sessionToken, setSessionToken] = useState(null);
+  const [controller, setController] = useState(null);
 
-class AddressAutocomplete extends Component {
-  constructor(props) {
-    super(props);
+  const fuse = new Fuse(addresses, fuseOptions);
 
-    this.state = {
-      query: _.isObject(props.value)
-        ? props.value.streetAddress || ''
-        : props.value || '',
-      results: [],
-      postcode: _.isObject(props.value)
-        ? { postcode: props.value.postalCode }
-        : null,
-      sessionToken: null,
-      controller: null,
-    };
-    this.fuse = new Fuse(this.props.addresses, fuseOptions);
-  }
+  const autocomplete = _.debounce((text, query) => {
+    const newController = new AbortController();
+    setController(newController);
+    const fuseResults = fuse.search(text, { limit: 2 });
 
-  _autocomplete = _.debounce((text, query) => {
-    this.setState({ controller: new AbortController() });
-    const fuseResults = this.fuse.search(text, {
-      limit: 2,
-    });
-
-    if (this.props.country === 'gb') {
-      if (!this.state.postcode) {
+    if (country === 'gb') {
+      if (!postcode) {
         axios
           .get(
             `https://api.postcodes.io/postcodes/${text.replace(
               /\s/g,
               '',
             )}/autocomplete`,
-            {
-              signal: this.state.controller.signal,
-            },
+            { signal: newController.signal },
           )
           .then(response => {
             if (
@@ -162,34 +98,27 @@ class AddressAutocomplete extends Component {
                   type: 'postcode',
                 }),
               );
-              this.setState({
-                results: normalizedPostcodes,
-              });
+              setResults(normalizedPostcodes);
             }
           })
           .catch(error => {
             console.log('AddressAutocomplete; _autocomplete', error);
           });
       } else {
-        this.setState({
-          results: [
-            {
-              type: 'manual_address',
-              description: text,
-            },
-          ],
-        });
+        setResults([
+          {
+            type: 'manual_address',
+            description: text,
+          },
+        ]);
       }
     } else {
-      // @see https://developers.google.com/places/web-service/autocomplete
       axios
         .get(
           `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${encodeURIComponent(
             text,
           )}&${qs.stringify(query)}`,
-          {
-            signal: this.state.controller.signal,
-          },
+          { signal: newController.signal },
         )
         .then(response => {
           const normalizedResults = fuseResults.map(fuseResult => ({
@@ -204,13 +133,13 @@ class AddressAutocomplete extends Component {
             }),
           );
 
-          const results = normalizedResults.concat(normalizedPredictions);
+          let results = normalizedResults.concat(normalizedPredictions);
 
           if (normalizedResults.length > 0 && results.length > 5) {
-            results.splice(5);
+            results = results.slice(0, 5);
           }
 
-          this.setState({ results });
+          setResults(results);
         })
         .catch(error => {
           console.log('AddressAutocomplete; _autocomplete', error);
@@ -218,72 +147,64 @@ class AddressAutocomplete extends Component {
     }
   }, 300);
 
-  _onChangeText(text) {
-    let newState = { query: text };
-
-    this.state.controller?.abort();
-
-    // @see https://developers.google.com/places/web-service/autocomplete#session_tokens
-    let sessionToken = '';
-    if (!this.state.sessionToken) {
-      sessionToken = uuidv4();
-      newState = { ...newState, sessionToken };
-    } else {
-      sessionToken = this.state.sessionToken;
+  function onChangeText(text) {
+    if (controller) {
+      controller.abort();
     }
 
-    this.setState(newState);
-
-    if (this.props.onChangeText) {
-      this.props.onChangeText(text);
+    let newSessionToken = sessionToken;
+    if (!sessionToken) {
+      newSessionToken = uuidv4();
+      setSessionToken(newSessionToken);
     }
 
-    if (text.length < this.props.minChars) {
-      this.setState({ results: [] });
+    setQuery(text);
+
+    if (props.onChangeText) {
+      props.onChangeText(text);
+    }
+
+    if (text.length < props.minChars) {
+      setResults([]);
       return;
     }
 
-    let query = {
+    // Construire la requête pour l'autocomplete
+    const queryParams = {
       key: Config.GOOGLE_MAPS_BROWSER_KEY,
       language: localeDetector(),
       types: 'geocode',
-      // https://developers.google.com/maps/documentation/places/web-service/autocomplete?hl=fr#locationrestriction
-      // Rectangular: A string specifying two lat/lng pairs in decimal degrees, representing the south/west and north/east points of a rectangle.
-      // Use the following format:rectangle:south,west|north,east.
-      // Note that east/west values are wrapped to the range -180, 180, and north/south values are clamped to the range -90, 90.
-      locationrestriction: `rectangle:${this.props.southWest}|${this.props.northEast}`,
-      sessiontoken: sessionToken,
+      locationrestriction: `rectangle:${props.southWest}|${props.northEast}`,
+      sessiontoken: newSessionToken,
     };
 
-    this._autocomplete(text, query);
+    // Exécuter l'autocomplete
+    autocomplete(text, queryParams);
   }
 
-  _onItemPress(item) {
+  function onItemPress(item) {
     if (item.type === 'prediction') {
-      const { sessionToken } = this.state;
-
-      const query = {
+      const queryParams = {
         key: Config.GOOGLE_MAPS_BROWSER_KEY,
         language: localeDetector(),
         placeid: item.place_id,
         sessiontoken: sessionToken,
       };
 
-      // https://developers.google.com/places/web-service/session-tokens
-      // The session begins when the user starts typing a query,
-      // and concludes when they select a place and a call to Place Details is made.
-      this.setState({ sessionToken: null });
+      // Réinitialiser le sessionToken après la sélection
+      setSessionToken(null);
 
-      // @see https://developers.google.com/places/web-service/details
+      // Appel à l'API Google Place Details
       axios
         .get(
           `https://maps.googleapis.com/maps/api/place/details/json?${qs.stringify(
-            query,
+            queryParams,
           )}`,
         )
         .then(response => {
-          this.setState({ query: item.description, results: [] });
-          this.props.onSelectAddress(
+          setQuery(item.description);
+          setResults([]);
+          props.onSelectAddress(
             AddressUtils.createAddressFromGoogleDetails(response.data.result),
           );
         })
@@ -293,17 +214,13 @@ class AddressAutocomplete extends Component {
     }
 
     if (item.type === 'postcode') {
-      axios({
-        method: 'get',
-        url: `https://api.postcodes.io/postcodes/${item.postcode}`,
-      })
+      axios
+        .get(`https://api.postcodes.io/postcodes/${item.postcode}`)
         .then(response => {
           if (response.data.status === 200 && response.data.result) {
-            this.setState({
-              query: '',
-              results: [],
-              postcode: response.data.result,
-            });
+            setQuery('');
+            setResults([]);
+            setPostcode(response.data.result);
           }
         })
         .catch(error => {
@@ -312,23 +229,18 @@ class AddressAutocomplete extends Component {
     }
 
     if (item.type === 'fuse') {
-      this.props.onSelectAddress(item);
+      props.onSelectAddress(item);
     }
 
     if (item.type === 'manual_address') {
-      this.setState({
-        results: [],
-      });
-      this.props.onSelectAddress(
-        AddressUtils.createAddressFromPostcode(
-          this.state.postcode,
-          item.description,
-        ),
+      setResults([]);
+      props.onSelectAddress(
+        AddressUtils.createAddressFromPostcode(postcode, item.description),
       );
     }
   }
 
-  renderItem({ item, i }) {
+  function renderItem({ item }) {
     const itemStyle = [styles.item];
 
     let text = item.description;
@@ -361,11 +273,11 @@ class AddressAutocomplete extends Component {
 
     return (
       <TouchableOpacity
-        onPress={() => this._onItemPress(item)}
+        onPress={() => onItemPress(item)}
         style={itemStyle}
         {...itemProps}>
         <Text
-          style={{ fontSize: 14, flex: 1, color: this.props.itemTextColor }}
+          style={{ fontSize: 14, flex: 1, color: props.itemTextColor }}
           numberOfLines={1}
           ellipsizeMode="tail">
           {text}
@@ -377,7 +289,7 @@ class AddressAutocomplete extends Component {
             regular
             style={{
               fontSize: 16,
-              color: this.props.itemTextColor,
+              color: props.itemTextColor,
               paddingLeft: 5,
             }}
           />
@@ -386,112 +298,112 @@ class AddressAutocomplete extends Component {
     );
   }
 
-  onTextInputFocus(e) {
-    if (this.props.addresses.length > 0) {
-      this.setState({
-        results: this.props.addresses.map(address => ({
+  function onTextInputFocus(e) {
+    if (addresses.length > 0) {
+      setResults(
+        addresses.map(address => ({
           ...address,
           type: 'fuse',
         })),
-      });
+      );
     }
-    if (this.props.onFocus && typeof this.props.onFocus === 'function') {
-      this.props.onFocus(e);
-    }
-  }
-
-  onTextInputBlur(e) {
-    this.setState({
-      results: [],
-    });
-    if (this.props.onBlur && typeof this.props.onBlur === 'function') {
-      this.props.onBlur(e);
+    if (props.onFocus && typeof props.onFocus === 'function') {
+      props.onFocus(e);
     }
   }
 
-  renderTextInput(props) {
-    return (
+  function onTextInputBlur(e) {
+    setResults([]);
+    if (props.onBlur && typeof props.onBlur === 'function') {
+      props.onBlur(e);
+    }
+  }
+
+  const renderTextInput = inputProps => (
+    <View style={styles.textInput}>
       <View style={styles.textInput}>
-        <View style={styles.textInput}>
-          <Input
-            {...props}
-            style={[props.style, { flex: 1 }]}
-            onFocus={this.onTextInputFocus.bind(this)}
-            onBlur={this.onTextInputBlur.bind(this)}
+        <Input
+          {...inputProps}
+          style={[
+            inputProps.style,
+            {
+              backgroundColor: props.controlBackgroundColor,
+            },
+          ]}
+          placeholderTextColor={props.placeholderTextColor}
+          variant="outline"
+          onFocus={onTextInputFocus}
+          onBlur={onTextInputBlur}
+        />
+        {props.country === 'gb' && postcode && (
+          <PostCodeButton
+            postcode={postcode.postcode}
+            onPress={() => {
+              setQuery('');
+              setResults([]);
+              setPostcode(null);
+            }}
           />
-          {this.props.country === 'gb' && this.state.postcode && (
-            <PostCodeButton
-              postcode={this.state.postcode.postcode}
-              onPress={() => {
-                this.setState({
-                  query: '',
-                  results: [],
-                  postcode: null,
-                });
-              }}
-            />
-          )}
-        </View>
-        {this.props.renderRight()}
+        )}
       </View>
-    );
+      {props.renderRight && props.renderRight()}
+    </View>
+  );
+
+  let finalPlaceholder = placeholder || props.t('ENTER_ADDRESS');
+  if (props.country === 'gb' && !postcode) {
+    finalPlaceholder = props.t('ENTER_POSTCODE');
   }
 
-  render() {
-    const {
-      style,
-      flatListProps,
-      onSelectAddress,
-      renderTextInput,
-      placeholder,
-      ...otherProps
-    } = this.props;
-
-    let finalPlaceholder = placeholder || this.props.t('ENTER_ADDRESS');
-    if (this.props.country === 'gb' && !this.state.postcode) {
-      finalPlaceholder = this.props.t('ENTER_POSTCODE');
-    }
-
-    return (
+  return (
+    <View style={styles.autocompleteContainer}>
       <Autocomplete
         autoCompleteType="off"
         autoCapitalize="none"
         autoCorrect={false}
         clearButtonMode="while-editing"
         {...otherProps}
-        data={this.state.results}
-        value={this.state.query}
+        data={results}
+        value={query}
         placeholder={finalPlaceholder}
-        onChangeText={this._onChangeText.bind(this)}
-        flatListProps={{
-          style: {
-            margin: 0, // reset default margins on Android
-            backgroundColor: this.props.controlBackgroundColor,
-          },
-          keyboardShouldPersistTaps: 'always',
-          keyExtractor: (item, i) => `prediction-${i}`,
-          renderItem: this.renderItem.bind(this),
-          ItemSeparatorComponent: ItemSeparator,
-          ListFooterComponent:
-            this.props.country === 'gb'
-              ? PoweredByIdealPostcodes
-              : PoweredByGoogle,
-          ...flatListProps,
+        onChangeText={onChangeText}
+        // do not use default FlatList - see https://github.com/byteburgers/react-native-autocomplete-input/pull/230
+        renderResultList={({ data, listContainerStyle }) => (
+          <View style={listContainerStyle}>
+            {data.map((item, index) => (
+              <View key={index}>
+                <Pressable>{renderItem({ item })}</Pressable>
+                <ItemSeparator />
+              </View>
+            ))}
+            {props.country === 'gb' ? (
+              <PoweredByIdealPostcodes style={styles.poweredContainer} />
+            ) : (
+              <PoweredByGoogle style={styles.poweredContainer} />
+            )}
+          </View>
+        )}
+        renderTextInput={inputProps => renderTextInput(inputProps)}
+        containerStyle={{
+          ...containerStyle,
         }}
-        renderTextInput={props => this.renderTextInput(props)}
-        style={{
-          color: this.props.baseTextColor,
-          backgroundColor: this.props.controlBackgroundColor,
-          borderColor: '#b9b9b9',
-          borderRadius: 20,
+        inputContainerStyle={{
+          borderWidth: 0,
           paddingVertical: 8,
-          paddingHorizontal: 15,
-          borderWidth: 1,
+          ...inputContainerStyle,
+        }}
+        listContainerStyle={{
+          backgroundColor: props.controlBackgroundColor,
+          ...listContainerStyle,
+        }}
+        //FIXME: avoid using generic `style` prop; use `containerStyle`/`inputContainerStyle`/`listContainerStyle/ etc.
+        // see all available props at https://github.com/byteburgers/react-native-autocomplete-input?tab=readme-ov-file#props
+        style={{
           ...style,
         }}
       />
-    );
-  }
+    </View>
+  );
 }
 
 AddressAutocomplete.defaultProps = {
@@ -508,9 +420,9 @@ AddressAutocomplete.propTypes = {
 
 const styles = StyleSheet.create({
   poweredContainer: {
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-    paddingVertical: 5,
+    alignItems: 'flex-end',
+    paddingVertical: 10,
+    paddingHorizontal: 10,
   },
   item: {
     paddingVertical: 10,
@@ -521,6 +433,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+  },
+  autocompleteContainer: {
+    flex: 1,
+    left: 0,
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    zIndex: 1,
   },
 });
 
@@ -546,6 +466,7 @@ function mapStateToProps(state) {
 function withHooks(ClassComponent) {
   return function CompWithHook(props) {
     const baseTextColor = useBaseTextColor();
+    const placeholderTextColor = useColorModeToken('text.400', 'text.400');
 
     const controlBackgroundColor = useColorModeValue(whiteColor, darkGreyColor);
     const itemTextColor = useColorModeValue('#856404', baseTextColor);
@@ -554,6 +475,7 @@ function withHooks(ClassComponent) {
       <ClassComponent
         {...props}
         baseTextColor={baseTextColor}
+        placeholderTextColor={placeholderTextColor}
         controlBackgroundColor={controlBackgroundColor}
         itemTextColor={itemTextColor}
       />

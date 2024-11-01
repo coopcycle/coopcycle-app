@@ -1,8 +1,8 @@
 import { Image, View } from 'react-native';
 
-function PoweredByIdealPostcodes({ styles }) {
+export function PoweredByIdealPostcodes({ style }) {
   return (
-    <View style={styles}>
+    <View style={style}>
       <Image
         resizeMode="contain"
         source={require('../../../../assets/images/ideal_postcodes.png')}

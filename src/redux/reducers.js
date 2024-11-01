@@ -38,6 +38,7 @@ import appTaskEntityReducers from './logistics/taskEntityReducers';
 import appTaskListEntityReducers from './logistics/taskListEntityReducers';
 import appLastmileUiReducers from './logistics/uiReducers';
 import { createTaskItemsTransform } from './util';
+import { apiSlice } from './api/slice'
 
 const taskEntitiesPersistConfig = {
   key: 'entities.items',
@@ -121,7 +122,6 @@ const appPersistConfig = {
     'firstRun',
     'resumeCheckoutAfterActivation',
     'isSpinnerDelayEnabled',
-    'isIncidentEnabled',
   ],
   migrate: state => {
     if (!state) {
@@ -166,6 +166,7 @@ export default combineReducers({
     tasks: persistReducer(taskEntitiesPersistConfig, tasksEntityReducer),
   }),
   app: persistReducer(appPersistConfig, appReducer),
+  [apiSlice.reducerPath]: apiSlice.reducer,
   account: accountReducer,
   restaurant: persistReducer(restaurantPersistConfig, restaurantReducer),
   store: storeReducer,

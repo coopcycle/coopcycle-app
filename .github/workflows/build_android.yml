@@ -1,6 +1,6 @@
 name: Build Android
 run-name: >
-  ${{ inputs.deploy_google_play && format('Release to {0} track', inputs.google_play_track) || 'Build' }}
+  ${{ inputs.deploy_google_play && 'Upload to Google Play' || 'Build' }}
   ${{ inputs.tag }}
   ${{ inputs.build_official && '; CoopCycle' || '' }}
   ${{ inputs.build_official_beta && '; CoopCycle (Beta)' || '' }}
@@ -17,15 +17,10 @@ on:
         description: Build a specific git tag
         required: true
       deploy_google_play:
-        description: 'Release to Google Play track (see below)'
+        description: 'Upload to Google Play'
         required: true
         type: boolean
         default: false
-      google_play_track:
-        description: 'Google Play track'
-        required: true
-        type: string
-        default: 'internal'
       build_official:
         description: 'CoopCycle production app'
         required: true
@@ -62,7 +57,6 @@ jobs:
     secrets: inherit
     with:
       tag: ${{ inputs.tag }}
-      google_play_track: ${{ inputs.google_play_track }}
       deploy_google_play: ${{ inputs.deploy_google_play }}
   coopcycle_beta:
     if: ${{ inputs.build_official_beta }}
@@ -75,7 +69,6 @@ jobs:
       package_name: fr.coopcycle.beta
       keystore_key_alias: instance
       keystore_key_password_secret: SIGNING_KEY_PASSWORD_INSTANCE
-      google_play_track: ${{ inputs.google_play_track }}
       deploy_google_play: ${{ inputs.deploy_google_play }}
     secrets: inherit
   naofood:
@@ -91,7 +84,6 @@ jobs:
       package_name: fr.naofood.client
       keystore_key_alias: naofood
       keystore_key_password_secret: SIGNING_KEY_PASSWORD_NAOFOOD
-      google_play_track: ${{ inputs.google_play_track }}
       deploy_google_play: ${{ inputs.deploy_google_play }}
     secrets: inherit
   zampate:
@@ -107,7 +99,6 @@ jobs:
       package_name: fr.coopcycle.zampate
       keystore_key_alias: instance
       keystore_key_password_secret: SIGNING_KEY_PASSWORD_INSTANCE
-      google_play_track: ${{ inputs.google_play_track }}
       deploy_google_play: ${{ inputs.deploy_google_play }}
     secrets: inherit
   kooglof:
@@ -123,7 +114,6 @@ jobs:
       package_name: fr.coopcycle.kooglof
       keystore_key_alias: instance
       keystore_key_password_secret: SIGNING_KEY_PASSWORD_INSTANCE
-      google_play_track: ${{ inputs.google_play_track }}
       deploy_google_play: ${{ inputs.deploy_google_play }}
     secrets: inherit
   robinfood:
@@ -139,7 +129,6 @@ jobs:
       package_name: fr.coopcycle.robinfood
       keystore_key_alias: instance
       keystore_key_password_secret: SIGNING_KEY_PASSWORD_INSTANCE
-      google_play_track: ${{ inputs.google_play_track }}
       deploy_google_play: ${{ inputs.deploy_google_play }}
     secrets: inherit
   coursiers_montpellier:
@@ -155,7 +144,6 @@ jobs:
       package_name: fr.coopcycle.coursiers_mtp
       keystore_key_alias: instance
       keystore_key_password_secret: SIGNING_KEY_PASSWORD_INSTANCE
-      google_play_track: ${{ inputs.google_play_track }}
       deploy_google_play: ${{ inputs.deploy_google_play }}
     secrets: inherit
   coursiers_rennais:
@@ -171,7 +159,6 @@ jobs:
       package_name: fr.coopcycle.lcr
       keystore_key_alias: instance
       keystore_key_password_secret: SIGNING_KEY_PASSWORD_INSTANCE
-      google_play_track: ${{ inputs.google_play_track }}
       deploy_google_play: ${{ inputs.deploy_google_play }}
     secrets: inherit
   eraman:
@@ -187,6 +174,5 @@ jobs:
       package_name: fr.coopcycle.eraman
       keystore_key_alias: instance
       keystore_key_password_secret: SIGNING_KEY_PASSWORD_INSTANCE
-      google_play_track: ${{ inputs.google_play_track }}
       deploy_google_play: ${{ inputs.deploy_google_play }}
     secrets: inherit

@@ -55,6 +55,9 @@ import {
   UPDATE_CART_SUCCESS,
   UPDATE_CUSTOMER_GUEST,
   UPDATE_ITEM_QUANTITY,
+  openTimeRangeChangedModal,
+  closeTimeRangeChangedModal,
+  setPersistedTimeRange,
 } from './actions';
 
 import _ from 'lodash';
@@ -77,7 +80,6 @@ const initialState = {
   // before showing expired session modal
   // @see https://github.com/react-native-community/react-native-modal#i-cant-show-multiple-modals-one-after-another
   isAddressModalHidden: true,
-  timing: {},
   isValid: null,
   violations: [],
   isLoading: false,
@@ -100,6 +102,7 @@ const initialState = {
   stripePaymentMethodsLoaded: false,
   stripePaymentMethods: [],
   shouldAskToEnableReusablePackaging: true,
+  isTimeRangeChangedModalVisible: false,
 };
 
 export default (state = initialState, action = {}) => {
@@ -295,6 +298,9 @@ export default (state = initialState, action = {}) => {
         ...state,
         isFetching: false,
         errors: [],
+        // After a successful checkout, we may ask again to enable zero waste
+        // https://github.com/coopcycle/coopcycle-app/issues/1824
+        shouldAskToEnableReusablePackaging: true,
       };
 
     case SHOW_ADDRESS_MODAL:
@@ -317,11 +323,35 @@ export default (state = initialState, action = {}) => {
         addressModalMessage: action.payload,
       };
 
-    case SET_TIMING:
+    case SET_TIMING: {
+      const { restaurantNodeId, timing } = action.payload;
+
       return {
         ...state,
-        timing: action.payload,
+        carts: {
+          ...state.carts,
+          [restaurantNodeId]: {
+            ...state.carts[restaurantNodeId],
+            timing: timing,
+          },
+        },
       };
+    }
+
+    case setPersistedTimeRange.type: {
+      const { restaurantNodeId, lastShownTimeRange } = action.payload;
+
+      return {
+        ...state,
+        carts: {
+          ...state.carts,
+          [restaurantNodeId]: {
+            ...state.carts[restaurantNodeId],
+            lastShownTimeRange: lastShownTimeRange,
+          },
+        },
+      };
+    }
 
     case SET_CART_VALIDATION:
       return {
@@ -523,6 +553,16 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         address: null,
+      };
+    case openTimeRangeChangedModal.type:
+      return {
+        ...state,
+        isTimeRangeChangedModalVisible: true,
+      };
+    case closeTimeRangeChangedModal.type:
+      return {
+        ...state,
+        isTimeRangeChangedModalVisible: false,
       };
   }
 

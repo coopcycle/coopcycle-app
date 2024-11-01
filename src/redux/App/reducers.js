@@ -53,9 +53,8 @@ import {
   SET_SELECT_SERVER_ERROR,
   SET_SERVERS,
   SET_SETTINGS,
-  SET_SPINNER_DELAY_ENABLED,
-  SET_INCIDENT_ENABLED,
   SET_USER,
+  setSpinnerDelayEnabled,
 } from './actions';
 
 import { EVENT as EVENT_ORDER } from '../../domain/Order';
@@ -110,7 +109,6 @@ const initialState = {
   termsAndConditionsText: '',
   privacyPolicyText: '',
   isSpinnerDelayEnabled: true,
-  isIncidentEnabled: true,
 };
 
 function updateNotifications(state, event, params) {
@@ -445,17 +443,12 @@ export default (state = initialState, action = {}) => {
         loadingTerms: false,
       };
 
-    case SET_SPINNER_DELAY_ENABLED:
+    case setSpinnerDelayEnabled.type:
       return {
         ...state,
         isSpinnerDelayEnabled: action.payload,
       };
 
-    case SET_INCIDENT_ENABLED:
-      return {
-        ...state,
-        isIncidentEnabled: action.payload,
-      };
   }
 
   return state;

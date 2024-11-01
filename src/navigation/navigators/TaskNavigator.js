@@ -7,13 +7,14 @@ import i18n from '../../i18n';
 import { stackNavigatorScreenOptions } from '../styles';
 
 import ProofOfDeliveryTabs from './TaskAttachmentsNavigator';
+import TaskTitle from '../../components/TaskTitle';
 
 const CompleteStack = createStackNavigator();
 
 const completeTitle = routeParams => {
   if (routeParams) {
     if (routeParams.task) {
-      return `${i18n.t('TASK')} #${routeParams.task.id}`;
+      return <TaskTitle task={routeParams.task} />
     }
     if (routeParams.tasks) {
       return i18n.t('COMPLETE_TASKS');
@@ -52,7 +53,7 @@ export default () => (
       name="TaskHome"
       component={screens.TaskHome}
       options={({ route }) => ({
-        title: `${i18n.t('TASK')} #${route.params?.task.id}`,
+        title: <TaskTitle task={route.params?.task} />
       })}
     />
     <RootStack.Screen

@@ -78,9 +78,20 @@ Setup - iOS
 
 iOS development requires macOS and [CocoaPods](https://cocoapods.org/).
 
+```sh
+bundle install
 ```
-$ bundle install
-$ cd ios && USE_FRAMEWORKS=static NO_FLIPPER=1 bundle exec pod install
+
+Install the dependencies:
+
+```sh
+cd ios && USE_FRAMEWORKS=static NO_FLIPPER=1 bundle exec pod install
+```
+
+Or using [pod-install](https://www.npmjs.com/package/pod-install):
+
+```sh
+cd ios && USE_FRAMEWORKS=static NO_FLIPPER=1 npx pod-install
 ```
 
 Running App
@@ -100,23 +111,28 @@ yarn android
 
 ### Run the iOS app
 
+On any simulator:
+
 ```sh
 yarn ios
 ```
 
-##### With Npx
+With a picker to choose a specific simulator:
 
-```
-    npx react-native start
-    npx react-native android
+```sh
+yarn ios --list-devices
 ```
 
-For iOS replace `android` with `ios`.
+On a connected physical device:
+
+```sh
+yarn ios --device
+```
 
 Testing
 -------
 
-```
+```sh
 yarn test
 ```
 
@@ -124,23 +140,54 @@ yarn test
 
 Setup: https://wix.github.io/Detox/docs/introduction/environment-setup
 
-Build the app and run tests:
+Build the app:
 
 Android:
 
-```
+```sh
 detox build -c android.emu.debug
+```
+
+iOS:
+
+```sh
+detox build -c ios.sim.debug
+```
+
+Run tests:
+
+Android:
+
+```sh
 detox test -c android.emu.debug
 ```
 
 iOS:
 
-```
-detox build -c ios.sim.debug
+```sh
 detox test -c ios.sim.debug
 ```
 
-Make sure that you have emulators set up as specified in `.detoxrc.js` > `devices` or use `--device-name` parameter while running tests. For example: `detox test -c android.emu.debug --device-name="Pixel_8_API_34"`
+Mics
+
+Run a single test:
+
+```sh
+detox test -c ios.sim.debug e2e/foodtech/first_launch.spec.js
+```
+
+Run a single test in debug mode:
+
+```sh
+detox test -c ios.sim.debug --inspect-brk e2e/foodtech/first_launch.spec.js
+```
+
+Make sure that you have emulators set up as specified in `.detoxrc.js` > `devices`
+or use `--device-name` parameter while running tests. For example:
+
+```sh
+detox test -c android.emu.debug --device-name="Pixel_8_API_34" e2e/foodtech/first_launch.spec.js
+```
 
 Troubleshooting
 ---------------

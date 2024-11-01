@@ -44,6 +44,7 @@ CartFooter.defaultProps = {
 
 CartFooter.propTypes = {
   testID: PropTypes.string.isRequired,
+  isLoading: PropTypes.bool,
   disabled: PropTypes.bool,
 };
 

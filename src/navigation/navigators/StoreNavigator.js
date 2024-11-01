@@ -35,9 +35,15 @@ const MainNavigator = () => (
     <MainStack.Screen
       name="StoreDelivery"
       component={screens.StoreDelivery}
-      options={({ route }) => ({
-        title: i18n.t('STORE_DELIVERY', { id: route.params?.delivery.id }),
-      })}
+      options={({ route }) => {
+        let id
+        if (route.params.delivery) {
+          id = route.params.delivery.orderNumber ? route.params.delivery.orderNumber : route.params.delivery.id
+        }
+        return {
+          title: i18n.t('STORE_DELIVERY', { id: id })
+        }}
+      }
     />
   </MainStack.Navigator>
 );

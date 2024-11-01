@@ -3,11 +3,11 @@ import { createAction } from 'redux-actions';
 import API from '../../../API';
 import AppUser from '../../../AppUser';
 
-import { SET_HTTP_CLIENT, SET_USER } from '../../App/actions';
+import { SET_HTTP_CLIENT, SET_USER, setModal } from '../../App/actions';
 import { selectIsAuthenticated } from '../../App/selectors';
 
 const setHttpClient = createAction(SET_HTTP_CLIENT);
-const setUser = createAction(SET_USER);
+export const setUser = createAction(SET_USER);
 
 export default ({ getState, dispatch }) => {
   return next => action => {
@@ -54,6 +54,17 @@ export default ({ getState, dispatch }) => {
             dispatch(setUser(user));
 
             user.save().then(() => console.log('Credentials saved!'));
+          },
+          onMaintenance: message => {
+            if (message) {
+              dispatch(
+                setModal({
+                  show: true,
+                  skippable: false,
+                  content: message,
+                }),
+              );
+            }
           },
         });
 

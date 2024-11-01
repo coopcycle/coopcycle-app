@@ -22,27 +22,16 @@ import {
   loadTimeSlots,
 } from '../../redux/Store/actions';
 import { selectStore, selectTimeSlots } from '../../redux/Store/selectors';
-import {
-  useBackgroundContainerColor,
-  useBackgroundHighlightColor,
-} from '../../styles/theme';
+import { useBackgroundContainerColor } from '../../styles/theme';
 import Range from '../checkout/ProductDetails/Range';
 import ModalFormWrapper from './ModalFormWrapper';
 import FormInput from './components/FormInput';
 import TimeSlotSelector from './components/TimeSlotSelector';
 
-const tempPackages = [
-  'Lorem ipsum',
-  'Dolor',
-  'Sit amet',
-  'Consectetur adipiscing',
-];
-
-function NewDelivery(props) {
+function DeliveryForm(props) {
   const [isDateTimePickerVisible, setIsDateTimePickerVisible] = useState(false);
   const [selectedTimeSlot, setSelectedTimeSlot] = useState('');
   const backgroundColor = useBackgroundContainerColor();
-  const backgroundHighlightColor = useBackgroundHighlightColor();
   const [selectedChoice, setSelectedChoice] = React.useState(null);
   const [packagesCount, setPackagesCount] = useState([]);
   const dispatch = useDispatch();
@@ -58,11 +47,6 @@ function NewDelivery(props) {
     choices,
     packages,
   } = props;
-
-  const inputStyles = {
-    backgroundColor,
-    borderColor: backgroundHighlightColor,
-  };
 
   useEffect(() => {
     if (selectedTimeSlot) return;
@@ -161,6 +145,7 @@ function NewDelivery(props) {
           telephone: values.telephone,
           contactName: values.contactName,
           name: values.businessName.trim() || null,
+          description: values.description.trim() || null,
         },
         comments: values.comments,
         weight: values.weight * 1000,
@@ -259,11 +244,14 @@ function NewDelivery(props) {
 
   let initialValues = {
     address: delivery.address,
-    comments: delivery.comments || '',
+    // set from the first step newDeliveryAddress
+    description: delivery.description || '',
     contactName: delivery.contactName || '',
     businessName: delivery.businessName || '',
-    weight: null,
     telephone,
+    // ----------------
+    weight: null,
+    comments: delivery.comments || '',
   };
 
   if (hasTimeSlot) {
@@ -296,16 +284,6 @@ function NewDelivery(props) {
         setFieldTouched,
       }) => (
         <ModalFormWrapper handleSubmit={handleSubmit} t={t}>
-          {/* <View style={[styles.formGroup]}>
-            <Text style={styles.label}>
-              {t('STORE_NEW_DELIVERY_ADDRESS')}
-            </Text>
-            <FormInput
-              variant="filled"
-              value={delivery?.address.streetAddress}
-              isReadOnly={true}
-            />
-          </View> */}
           {hasTimeSlot ? (
             <TimeSlotSelector
               selectValue={selectedChoice}
@@ -413,6 +391,22 @@ function NewDelivery(props) {
               </Text>
             )}
           </View>
+          <View style={[styles.formGroup]}>
+            <Text style={styles.label}>
+              {t('STORE_NEW_DELIVERY_COMMENTS')}{' '}
+              <Text style={styles.optional}>({t('OPTIONAL')})</Text>
+            </Text>
+            <FormInput
+              style={{
+                height: 80,
+              }}
+              autoCorrect={false}
+              multiline={true}
+              onChangeText={handleChange('comments')}
+              onBlur={handleBlur('comments')}
+              placeholder={t('STORE_NEW_DELIVERY_ENTER_COMMENTS')}
+            />
+          </View>
         </ModalFormWrapper>
       )}
     </Formik>
@@ -441,7 +435,7 @@ const styles = StyleSheet.create({
   },
 });
 
-function mapStateToProps(state) {
+function mapDispatchToProps(state) {
   const timeSlotChoices = [];
   const timeSlots = selectTimeSlots(state);
   const choices = state.store.choices;
@@ -459,17 +453,4 @@ function mapStateToProps(state) {
   };
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    // createDelivery: (delivery, onSuccess) =>
-    //   dispatch(createDelivery(delivery, onSuccess)),
-    // loadTimeSlot: store => dispatch(loadTimeSlot(store)),
-    // loadTimeSlots: store => dispatch(loadTimeSlots(store)),
-    // loadTimeSlotChoices: timeSlot => dispatch(loadTimeSlotChoices(timeSlot)),
-  };
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(withTranslation()(NewDelivery));
+export default connect(mapDispatchToProps)(withTranslation()(DeliveryForm));

@@ -78,11 +78,13 @@ class CartFooterButton extends Component {
 }
 
 CartFooterButton.defaultProps = {
+  isLoading: false,
   disabled: false,
 };
 
 CartFooterButton.propTypes = {
   testID: PropTypes.string.isRequired,
+  isLoading: PropTypes.bool,
   disabled: PropTypes.bool,
 };
 

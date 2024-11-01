@@ -1,5 +1,6 @@
 import { Box, Button, ScrollView, VStack } from 'native-base';
 import { SafeAreaView } from 'react-native';
+import KeyboardAdjustView from '../../components/KeyboardAdjustView';
 import { useBackgroundContainerColor } from '../../styles/theme';
 
 export default function ModalFormWrapper({
@@ -22,16 +23,20 @@ export default function ModalFormWrapper({
         style={{
           backgroundColor,
         }}>
-        <ScrollView>
-          <Box p="5" gap="3">
-            {children}
+        <KeyboardAdjustView style={{ flex: 1 }}>
+          <ScrollView
+            keyboardShouldPersistTaps="handled" // tap is handled by the children in the forms
+          >
+            <Box p="5" gap="3">
+              {children}
+            </Box>
+          </ScrollView>
+          <Box p="5">
+            <Button onPress={handleSubmit}>
+              {isSubmit ? t('SUBMIT') : t('NEXT')}
+            </Button>
           </Box>
-        </ScrollView>
-        <Box p="5">
-          <Button onPress={handleSubmit}>
-            {isSubmit ? t('SUBMIT') : t('NEXT')}
-          </Button>
-        </Box>
+        </KeyboardAdjustView>
       </VStack>
     </SafeAreaView>
   );

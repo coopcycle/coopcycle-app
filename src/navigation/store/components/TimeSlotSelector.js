@@ -128,6 +128,7 @@ export default function TimeSlotSelector({
             right: 12,
           },
         }}
+        useNativeAndroidPickerStyle={false}
         Icon={() => {
           return <IconChevronDown color={'gray'} />;
         }}

@@ -146,6 +146,19 @@
     "STORE_NEW_DELIVERY": "Neue Lieferung",
     "STORE_NEW_DELIVERY_ADDRESS": "Adresse",
     "STORE_NEW_DELIVERY_PHONE_NUMBER": "Telefonnummer",
+    "NEXT": "Weiter",
+    "OPTIONAL": "Optional",
+    "STORE_NEW_DELIVERY_ENTER_SEARCH_CLIENT": "Geben Sie einen Kundennamen ein",
+    "STORE_NEW_DELIVERY_ENTER_PHONE_NUMBER": "Geben Sie eine gültige Telefonnummer ein",
+    "STORE_NEW_DELIVERY_BUSINESS_NAME": "Firmenname",
+    "STORE_NEW_DELIVERY_ENTER_BUSINESS_NAME": "Geben Sie einen Firmennamen ein",
+    "STORE_NEW_DELIVERY_ENTER_CONTACT_NAME": "Geben Sie einen Kontaktname ein",
+    "STORE_NEW_DELIVERY_COMMENTS": "Kommentare",
+    "STORE_NEW_DELIVERY_ENTER_COMMENTS": "Geben Sie nützliche Details für die Lieferung an (zerbrechlich, ...)",
+    "STORE_NEW_DELIVERY_WEIGHT": "Individuelles Gewicht",
+    "STORE_NEW_DELIVERY_ENTER_WEIGHT": "Geben Sie ein individuelles Gewicht ein",
+    "STORE_NEW_DELIVERY_PACKAGES": "Pakete",
+    "STORE_NEW_DELIVERY_NO_PACKAGES": "Keine Pakete",
     "DELIVERY_STATE": {
       "undefined": "Unbekannt",
       "unknown": "Unbekannt",
@@ -331,12 +344,14 @@
     "STORE_NEW_DELIVERY_ERROR": {
       "EMPTY_PHONE_NUMBER": "bitte gib eine Telephonnummer an",
       "EMPTY_CONTACT_NAME": "bitte gib den Namen des Empfängers/der Empfängerin an",
-      "EMPTY_TIME_SLOT": "bitte wähle ein Zeitfenster aus"
+      "EMPTY_TIME_SLOT": "bitte wähle ein Zeitfenster aus",
+      "EMPTY_WEIGHT": "Bitte geben Sie ein Gewicht an",
+      "EMPTY_PACKAGES": "Bitte wählen Sie die Pakete aus"
     },
     "STORE_NEW_DELIVERY_SELECT_TIME_SLOT": "wähle ein Zeitfenster aus",
     "STORE_NEW_DELIVERY_TIME_SLOT": "Zeitfenster",
     "STORE_NEW_DELIVERY_DROPOFF_BEFORE": "zuzustellen vor",
-    "STORE_NEW_DELIVERY_COMMENTS": "Informationen abrufen",
+    "STORE_NEW_DELIVERY_ADDRESS_DESCRIPTION": "Informationen abrufen",
     "STORE_NEW_DELIVERY_CONTACT_NAME": "Name der Kontaktperson",
     "TIME_DIFF_SHORT": "{{min}} - {{max}} Minuten",
     "AN_ERROR_OCCURRED": "ein Fehler ist aufgetreten",
@@ -347,6 +362,11 @@
     "BACKGROUND_GEOLOCATION_NOTIFICATION_TITLE": "Lokalisierung im Hintergrund",
     "STORE_NEW_DELIVERY_ADDRESS_HELP": "Gebe die Adresse der Zustellung ein, um die Realisierbarkeit zu überprüfen",
     "CARDHOLDER_NAME": "Name des Karteninhabers",
-    "FAILURE_REASON": "Fehlergrund"
+    "FAILURE_REASON": "Fehlergrund",
+    "CART_TIME_RANGE_CHANGED_MODAL_TITLE": "Der ausgewählte Zeitraum ist heute nicht mehr verfügbar",
+    "CART_TIME_RANGE_CHANGED_MODAL_MESSAGE": "Die Öffnungszeiten erlauben es nicht, die Bestellung heute aufzugeben",
+    "CART_TIME_RANGE_CHANGED_MODAL_CHOOSE_TIME_RANGE_TEXT": "Bitte wählen Sie einen anderen Zeitraum",
+    "CART_TIME_RANGE_CHANGED_MODAL_SELECT_TIME_RANGE_ACTION": "Lieferzeit ändern",
+    "CART_TIME_RANGE_CHANGED_MODAL_CHOOSE_RESTAURANT_ACTION": "Wählen Sie ein anderes Restaurant"
   }
 }

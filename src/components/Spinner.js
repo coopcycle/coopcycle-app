@@ -19,7 +19,10 @@ class SpinnerWrapper extends PureComponent {
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.loading !== this.props.loading) {
       if (this.props.isSpinnerDelayEnabled) {
+        // VISIBLE -> HIDDEN
         if (prevProps.loading && !this.props.loading) {
+          // FIXME; why do we need to apply a delay to a spinner itself on top of the delay on a modal/alert to be shown after the spinner?
+          // https://github.com/ladjs/react-native-loading-spinner-overlay?tab=readme-ov-file#recommended-implementation
           // https://github.com/joinspontaneous/react-native-loading-spinner-overlay/issues/30
           setTimeout(
             () => this.setState({ isLoading: this.props.loading }),

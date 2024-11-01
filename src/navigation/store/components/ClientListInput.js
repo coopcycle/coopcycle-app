@@ -1,27 +1,10 @@
-import { Text } from 'native-base';
+import { Pressable, Text, View } from 'native-base';
 import { useState } from 'react';
-import AutocompleteInput from 'react-native-autocomplete-input';
+import { StyleSheet } from 'react-native';
+import Autocomplete from 'react-native-autocomplete-input';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import ItemSeparator from '../../../components/ItemSeparator';
-import {
-  useBackgroundColor,
-  useBackgroundContainerColor,
-  useBackgroundHighlightColor,
-  usePrimaryColor,
-} from '../../../styles/theme';
 import FormInput from './FormInput';
-
-// const shadowStyle = {
-//   shadowColor: '#000',
-//   shadowOffset: {
-//     width: 0,
-//     height: 6,
-//   },
-//   shadowOpacity: 10.39,
-//   shadowRadius: 8.3,
-
-//   elevation: 13,
-// };
 
 export default function ClientListInput({
   addresses,
@@ -30,11 +13,6 @@ export default function ClientListInput({
 }) {
   const [hideSuggestions, setHideSuggestions] = useState(true);
   const [value, setValue] = useState('');
-  const backgroundContainerColor = useBackgroundContainerColor();
-  const backgroundHighlightColor = useBackgroundHighlightColor();
-  const backgroundColor = useBackgroundColor();
-  // const shadowColor = useColorModeValue('rgba(0,0,0,.39)', 'rgba(0,0,0,1)');
-  const primaryColor = usePrimaryColor();
 
   function handleFocus() {
     setHideSuggestions(false);
@@ -69,15 +47,59 @@ export default function ClientListInput({
     setValue('');
   }
 
+  const styles = StyleSheet.create({
+    autocompleteContainer: {
+      flex: 1,
+      left: 0,
+      position: 'absolute',
+      right: 0,
+      top: 0,
+      zIndex: 1,
+    },
+  });
+
+  const renderItem = ({ item }) => (
+    <TouchableOpacity
+      onPress={() => selectAddress(item)}
+      style={{
+        padding: 12,
+      }}>
+      <Text
+        style={{
+          fontSize: 14,
+          flex: 1,
+          margin: 0,
+          padding: 0,
+          borderWidth: 0,
+        }}
+        numberOfLines={1}
+        ellipsizeMode="tail">
+        {`${item.name ?? ''} - ${item.contactName ?? ''}`}
+      </Text>
+      <Text
+        style={{
+          fontSize: 14,
+          flex: 1,
+          margin: 0,
+          padding: 0,
+          borderWidth: 0,
+        }}
+        numberOfLines={1}
+        ellipsizeMode="tail">
+        {`${item.streetAddress}`}
+      </Text>
+    </TouchableOpacity>
+  );
+
   return (
-    <>
-      <AutocompleteInput
+    <View style={styles.autocompleteContainer}>
+      <Autocomplete
         hideResults={hideSuggestions}
         data={
           value
             ? addresses.filter(({ name, contactName, streetAddress }) =>
                 [name, contactName, streetAddress].some(field =>
-                  field.toLowerCase().includes(value.toLowerCase()),
+                  field?.toLowerCase().includes(value.toLowerCase()),
                 ),
               )
             : addresses
@@ -90,59 +112,19 @@ export default function ClientListInput({
           borderWidth: 0,
           borderRadius: 4,
         }}
-        flatListProps={{
-          style: {
-            top: -2,
-            borderWidth: 1,
-            borderTopWidth: 0,
-            borderColor: primaryColor,
-            borderRadius: 4,
-            borderTopLeftRadius: 0,
-            borderTopRightRadius: 0,
-            marginTop: -1,
-            backgroundColor: backgroundContainerColor,
-            // overflow: 'visible',
-
-            // ...{ ...shadowStyle, shadowColor },
-          },
-          keyboardShouldPersistTaps: 'always',
-          keyExtractor: (item, i) => `prediction-${i}`,
-          renderItem: item => (
-            <TouchableOpacity
-              onPress={() => selectAddress(item.item)}
-              style={{
-                padding: 12,
-              }}>
-              <Text
-                style={{
-                  fontSize: 14,
-                  flex: 1,
-                  margin: 0,
-                  padding: 0,
-                  borderWidth: 0,
-                }}
-                numberOfLines={1}
-                ellipsizeMode="tail">
-                {`${item.item.name} - ${item.item.contactName}`}
-              </Text>
-              <Text
-                style={{
-                  fontSize: 14,
-                  flex: 1,
-                  margin: 0,
-                  padding: 0,
-                  borderWidth: 0,
-                }}
-                numberOfLines={1}
-                ellipsizeMode="tail">
-                {`${item.item.streetAddress}`}
-              </Text>
-            </TouchableOpacity>
-          ),
-          ItemSeparatorComponent: ItemSeparator,
-        }}
+        // do not use default FlatList - see https://github.com/byteburgers/react-native-autocomplete-input/pull/230
+        renderResultList={({ data, style }) => (
+          <View style={style}>
+            {data.map((item, index) => (
+              <View key={index}>
+                <Pressable>{renderItem({ item })}</Pressable>
+                <ItemSeparator />
+              </View>
+            ))}
+          </View>
+        )}
         style={{}}
       />
-    </>
+    </View>
   );
 }

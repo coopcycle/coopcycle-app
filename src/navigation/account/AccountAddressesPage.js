@@ -58,17 +58,16 @@ class AccountAddressesPage extends Component {
     const textInputContainerHeight = 54;
     return (
       <View style={{ flex: 1 }}>
-        <View style={{ flex: 1, paddingHorizontal: 15 }}>
+        <View style={{ flex: 1 }}>
           <AddressAutocomplete
+            containerStyle={{
+              paddingHorizontal: 15,
+            }}
             inputContainerStyle={{
-              justifyContent: 'center',
-              borderWidth: 0,
               height: textInputContainerHeight,
-              borderRadius: 5,
             }}
             style={{
               height: textInputContainerHeight * 0.7,
-              borderRadius: 3,
             }}
             placeholder={i18n.t('ENTER_NEW_ADDRESS')}
             onChangeText={text => this.setState({ focused: text.length >= 3 })}

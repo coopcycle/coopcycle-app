@@ -8,6 +8,7 @@ import { showLocation } from 'react-native-map-link';
 import Foundation from 'react-native-vector-icons/Foundation';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 import ItemSeparator from '../../../components/ItemSeparator';
 import {
@@ -87,6 +88,17 @@ const Details = ({ task, t }) => {
       iconName: 'call',
       text: task.address.telephone,
       onPress: () => phonecall(task.address.telephone, true),
+    });
+  }
+
+  if (
+    task.metadata &&
+    task.metadata.has_loopeat_returns
+  ) {
+    items.push({
+      iconName: 'recycle',
+      iconType: FontAwesome5,
+      text: t('LOOPEAT_HAS_RETURNS'),
     });
   }
 

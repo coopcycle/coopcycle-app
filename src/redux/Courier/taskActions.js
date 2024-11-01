@@ -268,6 +268,7 @@ export function reportIncident(
   task,
   description = null,
   failureReasonCode = null,
+  failureReasonMetadata = [],
   onSuccess,
 ) {
   return function (dispatch, getState) {
@@ -277,6 +278,7 @@ export function reportIncident(
     let payload = {
       description,
       failureReasonCode,
+      metadata: failureReasonMetadata,
       task: task['@id']
     };
 
@@ -300,7 +302,9 @@ export function reportIncident(
   };
 }
 
-
+/*
+ * @deprecated use reportIncident instead
+ */
 export function markTaskFailed(
   task,
   notes = '',
@@ -309,6 +313,7 @@ export function markTaskFailed(
   contactName = '',
 ) {
   return function (dispatch, getState) {
+    console.warn('markTaskFailed is deprecated, use reportIncident instead');
     dispatch(markTaskFailedRequest(task));
     const httpClient = selectHttpClient(getState());
 

@@ -25,6 +25,7 @@ import {
   selectIsAuthenticated,
   selectResumeCheckoutAfterActivation,
 } from './selectors';
+import { DatadogSdk } from '../../Datadog';
 
 /*
  * Action Types
@@ -106,9 +107,6 @@ export const LOAD_TERMS_AND_CONDITIONS_FAILURE =
 export const LOAD_PRIVACY_POLICY_REQUEST = '@app/LOAD_PRIVACY_POLICY_REQUEST';
 export const LOAD_PRIVACY_POLICY_SUCCESS = '@app/LOAD_PRIVACY_POLICY_SUCCESS';
 export const LOAD_PRIVACY_POLICY_FAILURE = '@app/LOAD_PRIVACY_POLICY_FAILURE';
-
-export const SET_SPINNER_DELAY_ENABLED = '@app/SET_IS_SPINNER_DELAY_ENABLED';
-export const SET_INCIDENT_ENABLED = '@app/SET_IS_INCIDENT_ENABLED';
 
 /*
  * Action Creators
@@ -212,8 +210,9 @@ const loadPrivacyPolicyFailure = createFsAction(LOAD_PRIVACY_POLICY_FAILURE);
 const registrationErrors = createFsAction(REGISTRATION_ERRORS);
 const loginByEmailErrors = createFsAction(LOGIN_BY_EMAIL_ERRORS);
 
-export const setSpinnerDelayEnabled = createFsAction(SET_SPINNER_DELAY_ENABLED);
-export const setIncidentEnabled = createFsAction(SET_INCIDENT_ENABLED);
+export const setSpinnerDelayEnabled = createAction(
+  '@app/SET_IS_SPINNER_DELAY_ENABLED',
+);
 
 export const startSound = createAction('START_SOUND');
 export const stopSound = createAction('STOP_SOUND');
@@ -221,6 +220,9 @@ export const stopSound = createAction('STOP_SOUND');
 function setBaseURL(baseURL) {
   return (dispatch, getState) => {
     dispatch(_setBaseURL(baseURL));
+    DatadogSdk.setAttributes({
+      instance_url: baseURL,
+    });
     tracker.setUserProperty(userProperty.server, baseURL);
   };
 }
@@ -241,7 +243,7 @@ function authenticationSuccess(user) {
     await dispatch(loadAddresses());
     await dispatch(assignAllCarts());
 
-    setRolesProperty(user);
+    updateUserProperties(user);
     tracker.logEvent(
       analyticsEvent.user.login._category,
       analyticsEvent.user.login.success,
@@ -265,28 +267,27 @@ function logoutSuccess() {
   return (dispatch, getState) => {
     dispatch(_logoutSuccess());
     dispatch(updateCarts({}));
-    setRolesProperty(null);
+    updateUserProperties(null);
   };
 }
 
-function setRolesProperty(user) {
+function updateUserProperties(user) {
   let roles;
-  if (user !== null && user.roles !== null) {
-    roles = user.roles.slice();
-    roles.sort();
-  } else {
-    roles = [];
-  }
-  
-  if (user) {
-    if (roles.length > 0) {
-      tracker.setUserProperty(userProperty.roles, roles.toString());
+  if (user !== null && user.username !== null) {
+    if (user.roles !== null) {
+      roles = user.roles.slice();
+      roles.sort();
     } else {
-      tracker.setUserProperty(userProperty.roles, 'ROLE_USER');
+      roles = ['ROLE_USER'];
     }
   } else {
-    tracker.setUserProperty(userProperty.roles, 'ROLE_AD_HOC_CUSTOMER');
+    roles = ['ROLE_AD_HOC_CUSTOMER'];
   }
+
+  DatadogSdk.setUser({
+    roles: roles.toString(),
+  });
+  tracker.setUserProperty(userProperty.roles, roles.toString());
 }
 
 function navigateToHome(dispatch, getState) {
@@ -409,7 +410,7 @@ export function bootstrap(baseURL, user, loader = true) {
 
     dispatch(setUser(user));
     dispatch(setBaseURL(baseURL));
-    setRolesProperty(user);
+    updateUserProperties(user);
 
     const httpClient = getState().app.httpClient;
 
@@ -451,35 +452,57 @@ export function setCurrentRoute(routeName) {
   };
 }
 
-export function login(email, password, navigate = true) {
-  return (dispatch, getState) => {
+function navigateToCheckEmail(email, checkEmailRouteName, loginRouteName) {
+  NavigationHolder.navigate(checkEmailRouteName, {
+    email: email,
+    loginRouteName,
+  });
+}
+
+export function login(
+  email,
+  password,
+  checkEmailRouteName,
+  loginRouteName,
+  navigateOnSuccess,
+) {
+  return async (dispatch, getState) => {
     const { app } = getState();
     const { httpClient } = app;
 
     dispatch(authenticationRequest());
 
-    httpClient
-      .login(email, password)
-      .then(user => dispatch(authenticationSuccess(user)))
-      .then(() => {
-        if (navigate) {
-          // FIXME
-          // Use setTimeout() to let room for loader to hide
-          setTimeout(() => navigateToHome(dispatch, getState), 250);
-        }
-      })
-      .catch(err => {
-        if (err.hasOwnProperty('code') && err.code === 401) {
-          dispatch(
-            loginByEmailErrors({
-              email: i18n.t('INVALID_USER_PASS'),
-              password: i18n.t('INVALID_USER_PASS'),
-            }),
-          );
-        } else {
-          dispatch(authenticationFailure(i18n.t('TRY_LATER')));
-        }
-      });
+    let user = null;
+    try {
+      user = await httpClient.login(email, password);
+    } catch (err) {
+      if (err.hasOwnProperty('code') && err.code === 401) {
+        dispatch(
+          loginByEmailErrors({
+            email: i18n.t('INVALID_USER_PASS'),
+            password: i18n.t('INVALID_USER_PASS'),
+          }),
+        );
+      } else {
+        dispatch(authenticationFailure(i18n.t('TRY_LATER')));
+      }
+      return;
+    }
+
+    if (!user.enabled) {
+      // dispatched only to hide the loader
+      dispatch(authenticationFailure(i18n.t('TRY_LATER')));
+      navigateToCheckEmail(user.email, checkEmailRouteName, loginRouteName);
+      return;
+    }
+
+    dispatch(authenticationSuccess(user));
+
+    if (navigateOnSuccess) {
+      // FIXME
+      // Use setTimeout() to let room for loader to hide
+      setTimeout(() => navigateToHome(dispatch, getState), 250);
+    }
   };
 }
 
@@ -522,10 +545,7 @@ export function register(
           }
 
           // FIXME When using navigation, we can still go back to the filled form
-          NavigationHolder.navigate(checkEmailRouteName, {
-            email: user.email,
-            loginRouteName,
-          });
+          navigateToCheckEmail(user.email, checkEmailRouteName, loginRouteName);
         }
       })
       .catch(err => {
