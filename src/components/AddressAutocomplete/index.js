@@ -24,6 +24,7 @@ import AddressUtils from '../../utils/Address';
 import ItemSeparator from '../ItemSeparator';
 import PostCodeButton from './components/PostCodeButton';
 import PoweredByGoogle from './powered/PoweredByGoogle';
+import PoweredByIdealPostcodes from './powered/PoweredByIdealPostcodes';
 
 const fuseOptions = {
   shouldSort: true,
