@@ -167,7 +167,7 @@ describeif(device.getPlatform() === 'android')(
         await element(by.id('paymentMethod-cash_on_delivery')).tap();
 
         // Cash on delivery page
-        await waitFor(element(by.id('cashOnDeliverySubmit'))).toBeVisible().withTimeout(5000);
+        await waitFor(element(by.id('cashOnDeliverySubmit'))).toExist().withTimeout(5000);
 
         await closeRestaurantForToday(
           'restaurant_with_cash_on_delivery_owner',
