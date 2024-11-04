@@ -46,7 +46,7 @@ describeif(device.getPlatform() === 'android')(
       await element(by.id('paymentMethod-cash_on_delivery')).tap();
 
       // Cash on delivery page
-      await expect(element(by.id('cashOnDeliverySubmit'))).toBeVisible();
+      await waitFor(element(by.id('cashOnDeliverySubmit'))).toBeVisible().withTimeout(5000);
     });
   },
 );
