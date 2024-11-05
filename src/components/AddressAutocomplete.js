@@ -27,11 +27,11 @@ import { v4 as uuidv4 } from 'uuid';
 import { localeDetector } from '../i18n';
 import { darkGreyColor, whiteColor } from '../styles/common';
 import { useBaseTextColor, useColorModeToken } from '../styles/theme';
+import ItemSeparator from './ItemSeparator';
 import AddressUtils from '../utils/Address';
 import PostCodeButton from './AddressAutocomplete/components/PostCodeButton';
 import PoweredByGoogle from './AddressAutocomplete/powered/PoweredByGoogle';
 import { PoweredByIdealPostcodes } from './AddressAutocomplete/powered/PoweredByIdealPostcodes';
-import ItemSeparator from './ItemSeparator';
 
 const fuseOptions = {
   shouldSort: true,
@@ -73,79 +73,79 @@ function AddressAutocomplete(props) {
   const fuse = new Fuse(addresses, fuseOptions);
 
   const autocomplete = _.debounce((text, query) => {
-    const newController = new AbortController();
-    setController(newController);
-    const fuseResults = fuse.search(text, { limit: 2 });
+      const newController = new AbortController();
+      setController(newController);
+      const fuseResults = fuse.search(text, { limit: 2 });
 
-    if (country === 'gb') {
-      if (!postcode) {
+      if (country === 'gb') {
+        if (!postcode) {
+          axios
+            .get(
+              `https://api.postcodes.io/postcodes/${text.replace(
+                /\s/g,
+                '',
+              )}/autocomplete`,
+              { signal: newController.signal },
+            )
+            .then(response => {
+              if (
+                response.data.status === 200 &&
+                Array.isArray(response.data.result)
+              ) {
+                const normalizedPostcodes = response.data.result.map(
+                  postcode => ({
+                    postcode: postcode,
+                    type: 'postcode',
+                  }),
+                );
+                setResults(normalizedPostcodes);
+              }
+            })
+            .catch(error => {
+              console.log('AddressAutocomplete; _autocomplete', error);
+            });
+        } else {
+          setResults([
+            {
+              type: 'manual_address',
+              description: text,
+            },
+          ]);
+        }
+      } else {
         axios
           .get(
-            `https://api.postcodes.io/postcodes/${text.replace(
-              /\s/g,
-              '',
-            )}/autocomplete`,
+            `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${encodeURIComponent(
+              text,
+            )}&${qs.stringify(query)}`,
             { signal: newController.signal },
           )
           .then(response => {
-            if (
-              response.data.status === 200 &&
-              Array.isArray(response.data.result)
-            ) {
-              const normalizedPostcodes = response.data.result.map(
-                postcode => ({
-                  postcode: postcode,
-                  type: 'postcode',
-                }),
-              );
-              setResults(normalizedPostcodes);
+            const normalizedResults = fuseResults.map(fuseResult => ({
+              ...fuseResult.item,
+              type: 'fuse',
+            }));
+
+            const normalizedPredictions = response.data.predictions.map(
+              prediction => ({
+                ...prediction,
+                type: 'prediction',
+              }),
+            );
+
+            let results = normalizedResults.concat(normalizedPredictions);
+
+            if (normalizedResults.length > 0 && results.length > 5) {
+              results = results.slice(0, 5);
             }
+
+            setResults(results);
           })
           .catch(error => {
             console.log('AddressAutocomplete; _autocomplete', error);
           });
-      } else {
-        setResults([
-          {
-            type: 'manual_address',
-            description: text,
-          },
-        ]);
       }
-    } else {
-      axios
-        .get(
-          `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${encodeURIComponent(
-            text,
-          )}&${qs.stringify(query)}`,
-          { signal: newController.signal },
-        )
-        .then(response => {
-          const normalizedResults = fuseResults.map(fuseResult => ({
-            ...fuseResult.item,
-            type: 'fuse',
-          }));
-
-          const normalizedPredictions = response.data.predictions.map(
-            prediction => ({
-              ...prediction,
-              type: 'prediction',
-            }),
-          );
-
-          let results = normalizedResults.concat(normalizedPredictions);
-
-          if (normalizedResults.length > 0 && results.length > 5) {
-            results = results.slice(0, 5);
-          }
-
-          setResults(results);
-        })
-        .catch(error => {
-          console.log('AddressAutocomplete; _autocomplete', error);
-        });
-    }
-  }, 300);
+    }, 300);
 
   function onChangeText(text) {
     if (controller) {
@@ -440,8 +440,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 0,
     top: 0,
-    zIndex: 1,
-  },
+    zIndex: 1
+  }
 });
 
 function mapStateToProps(state) {
