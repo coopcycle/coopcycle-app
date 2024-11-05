@@ -66,6 +66,13 @@ const NewDeliveryNavigator = () => (
         headerShown: false,
       }}
     />
+    <NewDeliveryStack.Screen
+      name="StoreNewDeliveryPrice"
+      component={screens.StoreNewDeliveryPrice}
+      options={{
+        headerShown: false,
+      }}
+    />
   </NewDeliveryStack.Navigator>
 );
 const RootStack = createStackNavigator();

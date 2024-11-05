@@ -20,6 +20,7 @@ import StoreDashboard from './store/Dashboard';
 import StoreDelivery from './store/Delivery';
 import StoreNewDeliveryAddress from './store/NewDeliveryAddress';
 import StoreNewDeliveryForm from './store/NewDeliveryForm';
+import StoreNewDeliveryPrice from './store/NewDeliveryPrice';
 
 import CheckoutPaymentMethodCard from './checkout/PaymentMethodCard';
 import CheckoutPaymentMethodCashOnDelivery from './checkout/PaymentMethodCashOnDelivery';
@@ -42,10 +43,10 @@ import CourierSettingsTags from './courier/Tags';
 import CourierTaskListPage from './courier/TaskListPage';
 import CourierTasksPage from './courier/TasksPage';
 
-import CheckoutPayment from './checkout/Payment';
 import CheckoutLoginRegister from './checkout/CheckoutLoginRegister';
 import CheckoutMercadopago from './checkout/Mercadopago';
 import CheckoutMoreInfos from './checkout/MoreInfos';
+import CheckoutPayment from './checkout/Payment';
 import CheckoutProductDetails from './checkout/ProductDetails';
 import CheckoutSummary from './checkout/Summary';
 
@@ -130,6 +131,7 @@ export default {
   StoreDelivery,
   StoreNewDeliveryAddress,
   StoreNewDeliveryForm,
+  StoreNewDeliveryPrice,
   SearchForm,
   Carts,
   AddressDetails,

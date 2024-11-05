@@ -367,11 +367,12 @@ function mapDispatchToProps(state) {
 
 function mapStateToProps(dispatch) {
   return {
-    assertDelivery: (delivery, onSuccess) => dispatch(assertDelivery(delivery, onSuccess)),
+    assertDelivery: (delivery, onSuccess) =>
+      dispatch(assertDelivery(delivery, onSuccess)),
   };
 }
 
 export default connect(
   mapDispatchToProps,
-  mapStateToProps
+  mapStateToProps,
 )(withTranslation()(NewDeliveryAddress));

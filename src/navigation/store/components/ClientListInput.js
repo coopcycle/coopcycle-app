@@ -1,10 +1,10 @@
 import { Pressable, Text, View } from 'native-base';
 import { useState } from 'react';
+import { StyleSheet } from 'react-native';
 import Autocomplete from 'react-native-autocomplete-input';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import ItemSeparator from '../../../components/ItemSeparator';
 import FormInput from './FormInput';
-import { StyleSheet } from 'react-native';
 
 export default function ClientListInput({
   addresses,
@@ -54,11 +54,11 @@ export default function ClientListInput({
       position: 'absolute',
       right: 0,
       top: 0,
-      zIndex: 1
-    }
+      zIndex: 1,
+    },
   });
 
-  const renderItem = ({item}) => (
+  const renderItem = ({ item }) => (
     <TouchableOpacity
       onPress={() => selectAddress(item)}
       style={{
@@ -89,7 +89,7 @@ export default function ClientListInput({
         {`${item.streetAddress}`}
       </Text>
     </TouchableOpacity>
-  )
+  );
 
   return (
     <View style={styles.autocompleteContainer}>
