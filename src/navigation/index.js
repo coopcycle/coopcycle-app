@@ -23,6 +23,7 @@ import StoreNewDeliveryForm from './store/NewDeliveryForm';
 
 import CheckoutPaymentMethodCard from './checkout/PaymentMethodCard';
 import CheckoutPaymentMethodCashOnDelivery from './checkout/PaymentMethodCashOnDelivery';
+import CheckoutPaymentMethodEdenred from './checkout/PaymentMethodEdenred';
 
 import AccountAddressesPage from './account/AccountAddressesPage';
 import AccountDetailsPage from './account/AccountDetailsPage';
@@ -101,6 +102,7 @@ export default {
   CourierDate,
   CheckoutPaymentMethodCard,
   CheckoutPaymentMethodCashOnDelivery,
+  CheckoutPaymentMethodEdenred,
   CheckoutLoopeat,
   AccountHome,
   AccountAddressesPage,

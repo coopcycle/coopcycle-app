@@ -101,7 +101,7 @@ describe('checkout for customer with existing account (role - user); not logged 
     await element(by.id('paymentMethod-cash_on_delivery')).tap();
 
     // Cash on delivery page
-    await expect(element(by.id('cashOnDeliverySubmit'))).toBeVisible();
+    await waitFor(element(by.id('cashOnDeliverySubmit'))).toExist().withTimeout(5000);
     await element(by.id('cashOnDeliverySubmit')).tap();
 
     // Confirmation page

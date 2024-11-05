@@ -84,6 +84,8 @@ LogBox.ignoreLogs([
   'Accessing view manager configs directly off UIManager',
   'VirtualizedLists should never be nested',
   'When server rendering, you must wrap your application in an <SSRProvider> to ensure consistent ids are generated between the client and server.',
+  // https://docs.swmansion.com/react-native-reanimated/docs/guides/troubleshooting/#reduced-motion-setting-is-enabled-on-this-device
+  '[Reanimated] Reduced motion setting is enabled on this device.',
 ]);
 
 const navigationRef = createRef();

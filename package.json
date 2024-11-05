@@ -72,6 +72,7 @@
     "react": "18.2.0",
     "react-i18next": "^12",
     "react-native": "0.73.5",
+    "react-native-app-auth": "^8.0.0",
     "react-native-autocomplete-input": "^5.4.0",
     "react-native-avoid-softinput": "^5.0.0",
     "react-native-background-fetch": "^4.2.5",
