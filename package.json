@@ -85,7 +85,7 @@
     "react-native-dropdownalert": "^4.5.1",
     "react-native-email-link": "^1.16.1",
     "react-native-fbsdk-next": "^12.1.0",
-    "react-native-gesture-handler": "^2.17.1",
+    "react-native-gesture-handler": "^2.20.2",
     "react-native-get-random-values": "^1.11.0",
     "react-native-input-spinner": "^1.8.1",
     "react-native-keyboard-manager": "^6.5.16-0",
