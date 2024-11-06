@@ -18,6 +18,8 @@ import { selectIsPolylineOn } from '../redux/Courier';
 import { blueColor, greyColor, whiteColor } from '../styles/common';
 import TaskCallout from './TaskCallout';
 import TaskMarker from './TaskMarker';
+import { isDisplayPaymentMethodInList, loadIconKey } from './PaymentMethodInfo';
+import Foundation from 'react-native-vector-icons/Foundation';
 
 const clusterContainerSize = 40;
 
@@ -172,7 +174,25 @@ class TasksMapView extends Component {
     const warnings = [];
 
     if (task.address && task.address.description) {
-      warnings.push('comments');
+      warnings.push({
+        icon: {
+          name: 'comments',
+          size: 'xs',
+        },
+      });
+    }
+
+    if (
+      task.metadata &&
+      task.metadata.payment_method &&
+      isDisplayPaymentMethodInList(task.metadata?.payment_method)
+    ) {
+      warnings.push({
+        icon: {
+          name: loadIconKey(task.metadata.payment_method),
+          type: Foundation,
+        },
+      });
     }
 
     return warnings;
