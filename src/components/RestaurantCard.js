@@ -1,13 +1,13 @@
-import { IconPlugX } from '@tabler/icons-react-native';
-import { Text, useColorModeValue } from 'native-base';
 import React from 'react';
+import { Text } from 'native-base';
 import { Image, StyleSheet, View } from 'react-native';
-import i18n from '../i18n';
 import { TimingBadge } from '../navigation/checkout/components/RestaurantBadges';
 import { useBackgroundContainerColor } from '../styles/theme';
-import { isRestaurantClosed } from '../utils/checkout';
+import { isRestaurantAvailable } from '../utils/checkout';
 import { RestaurantBadge } from './RestaurantBadge';
 import { RestaurantTag } from './RestaurantTag';
+import { RestaurantBanner } from './RestaurantBanner';
+import { RestaurantNotAvailableBannerOverlay } from './RestaurantBannerOverlay';
 
 const logoSize = 64;
 
@@ -32,26 +32,8 @@ const styles = StyleSheet.create({
   images: {
     width: '100%',
   },
-  banner: {
-    aspectRatio: '16/9',
-    width: '100%',
-    marginBottom: -50,
-  },
-  overlay: {
-    position: 'absolute',
-    width: '100%',
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    justifyContent: 'center',
-    alignItems: 'center',
-    aspectRatio: '16/9',
-    color: 'white',
-  },
-  closedLabel: {
-    fontWeight: 500,
-    fontSize: 16,
-    color: 'white',
-  },
   logoWrapper: {
+    marginTop: -52, // (logoSize + 16) * 64%
     borderRadius: 16,
     display: 'inline-flex',
     marginLeft: 16,
@@ -110,22 +92,12 @@ const styles = StyleSheet.create({
 
 export const RestaurantCard = ({ restaurant }) => {
   const backgroundColor = useBackgroundContainerColor();
-  const isClosed = isRestaurantClosed(restaurant);
-  const overlayBackgroundColor = useColorModeValue(
-    'rgba(0,0,0,0.5)',
-    'rgba(0,0,0,0.75)',
-  );
+  const isAvailable = isRestaurantAvailable(restaurant);
 
   return (
     <View style={[styles.item, { backgroundColor }]}>
       <View style={styles.images}>
-        <View styles={styles.bannerWrapper}>
-          <Image
-            style={styles.banner}
-            resizeMode="cover"
-            source={{ uri: restaurant.bannerImage || restaurant.image }}
-          />
-        </View>
+        <RestaurantBanner src={restaurant.bannerImage ?? restaurant.image} />
         {restaurant.badges && (
           <View style={styles.badgesWrapper}>
             {restaurant.badges.map((badge, i) => (
@@ -133,18 +105,7 @@ export const RestaurantCard = ({ restaurant }) => {
             ))}
           </View>
         )}
-        {isClosed ? (
-          <View
-            style={[
-              styles.overlay,
-              { backgroundColor: overlayBackgroundColor },
-            ]}>
-            <IconPlugX size={32} color={'white'} strokeWidth={1.5} />
-            <Text style={styles.closedLabel} numberOfLines={1}>
-              {i18n.t('NOT_AVAILABLE_ATM')}
-            </Text>
-          </View>
-        ) : null}
+        {!isAvailable ? <RestaurantNotAvailableBannerOverlay /> : null}
         <View style={[styles.logoWrapper, { backgroundColor }]}>
           <Image
             style={styles.logo}

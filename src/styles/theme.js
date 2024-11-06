@@ -46,6 +46,7 @@ export const useBackgroundColor = () => {
     DarkTheme.colors.background,
   );
 };
+
 function checkContrast(c, background, theme) {
   let color = new Color(c);
   let contrast = color.contrast(background, 'WCAG21');
@@ -73,7 +74,8 @@ export const usePrimaryColor = () => {
 };
 
 export const useBaseTextColor = () => {
-  return useColorModeToken('text.900', 'text.50'); // default text component style; https://github.com/GeekyAnts/NativeBase/blob/master/src/theme/components/text.ts
+  // default style: https://github.com/GeekyAnts/NativeBase/blob/master/src/theme/components/text.ts
+  return useColorModeToken('text.900', 'text.50');
 };
 
 export const useSecondaryTextColor = () => {
@@ -86,4 +88,9 @@ export const useBackgroundContainerColor = () => {
 
 export const useBackgroundHighlightColor = () => {
   return useColorModeToken('#f2f2f2', '#353030');
+};
+
+export const useSolidButtonTextColor = () => {
+  // default style: https://github.com/GeekyAnts/NativeBase/blob/master/src/theme/components/button.ts#L131
+  return useColorModeToken('text.50', 'text.50');
 };

@@ -91,6 +91,7 @@
         "PASSWORD": "Jelszó",
         "CHECKOUT_FROM": "{{date}}-tól/-től",
         "ORDER": "Rendelés",
+        "SCHEDULE_ORDER": "Rendelés ütemezése",
         "INVALID_USER_PASS": "Felhasználónév és/vagy jelszó helytelen",
         "NO_TASKS": "Nincs a mai napra feladat",
         "NOTES": "Jegyzetek",
