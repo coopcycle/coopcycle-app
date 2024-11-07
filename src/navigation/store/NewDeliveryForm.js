@@ -16,17 +16,13 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { connect, useDispatch } from 'react-redux';
 
 import {
-  createDelivery,
   loadPackages,
   loadTimeSlot,
   loadTimeSlotChoices,
   loadTimeSlots,
 } from '../../redux/Store/actions';
 import { selectStore, selectTimeSlots } from '../../redux/Store/selectors';
-import {
-  useBackgroundContainerColor,
-  useBackgroundHighlightColor,
-} from '../../styles/theme';
+import { useBackgroundContainerColor } from '../../styles/theme';
 import Range from '../checkout/ProductDetails/Range';
 import ModalFormWrapper from './ModalFormWrapper';
 import FormInput from './components/FormInput';
@@ -160,7 +156,7 @@ function DeliveryForm(props) {
       },
     };
 
-    dispatch(createDelivery(delivery, () => navigation.navigate('StoreHome')));
+    navigation.navigate('StoreNewDeliveryPrice', { delivery });
   }
 
   function validate(values) {
@@ -287,7 +283,7 @@ function DeliveryForm(props) {
         setFieldValue,
         setFieldTouched,
       }) => (
-        <ModalFormWrapper handleSubmit={handleSubmit} t={t} isSubmit>
+        <ModalFormWrapper handleSubmit={handleSubmit} t={t}>
           {hasTimeSlot ? (
             <TimeSlotSelector
               selectValue={selectedChoice}
@@ -457,6 +453,4 @@ function mapDispatchToProps(state) {
   };
 }
 
-export default connect(
-  mapDispatchToProps,
-)(withTranslation()(DeliveryForm));
+export default connect(mapDispatchToProps)(withTranslation()(DeliveryForm));

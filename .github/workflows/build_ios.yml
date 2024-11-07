@@ -35,7 +35,7 @@ on:
         required: true
         type: boolean
       build_lcr:
-        description: 'Build les coursiers Rennais app'
+        description: 'Build LCR app'
         required: true
         type: boolean
 jobs:

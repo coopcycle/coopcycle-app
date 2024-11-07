@@ -101,6 +101,7 @@
     "EMAIL": "E-mail",
     "CHECKOUT_FROM": "From {{date}}",
     "ORDER": "Order",
+    "SCHEDULE_ORDER": "Schedule order",
     "INVALID_USER_PASS": "Username and/or password incorrect",
     "NO_TASKS": "No tasks planned today",
     "NOTES": "Notes",
@@ -411,7 +412,9 @@
     "SELECT_PAYMENT_METHOD": "Select a payment method",
     "PAYMENT_METHOD": {
       "card": "Credit card",
-      "cash_on_delivery": "Cash on delivery"
+      "cash_on_delivery": "Cash on delivery",
+      "edenred": "Edenred",
+      "edenred+card": "Edenred"
     },
     "CASH_ON_DELIVERY_DISCLAIMER": "You are going to pay by cash on delivery. Please prepare the exact amount and make sure to be reachable.",
     "STORES": "Stores",
@@ -522,13 +525,8 @@
     "EXCLUSIVE": "Exclusive",
     "NEW": "New",
     "RESTAURANT_MORE_INFOS": "More information",
-    "UPDATE_PARCEL_DETAILS": "Update parcel details",
-    "REPORT_AN_INCIDENT": "Report an incident",
-    "PICTURES": "Pictures",
-    "COURIER_BARCODE": "Scan barcode",
-    "TASK_MULTIPLE_PACKAGES": "Multiple packages",
-    "X_PACKAGES": "{{count}} packages",
-    "NO_NEED_TO_SCAN_OTHERS": "No need to scan the others",
+    "PRICE_EXCLUDING_TAX": "Price excluding tax",
+    "PRICE_TOTAL": "Total price",
     "HIDE_INCIDENTS_TASKS": "Hide incidents",
     "CART_TIME_RANGE_CHANGED_MODAL_TITLE": "Selected time range is no longer available for today anymore",
     "CART_TIME_RANGE_CHANGED_MODAL_MESSAGE": "The opening hours do not allow the order to be placed today",
@@ -538,6 +536,8 @@
     "ORDER__SHIPPED_AT__NOT_AVAILABLE": "The delivery date is no longer available",
     "ORDER__SHIPPED_AT__EXPIRED": "The delivery date is expired",
     "ORDER__SHIPPING_TIME_RANGE__NOT_AVAILABLE": "Not available at the moment",
-    "LOOPEAT_HAS_RETURNS": "This task has zero waste returns"
+    "LOOPEAT_HAS_RETURNS": "This task has zero waste returns",
+    "EDENRED_ELIGIBLE_AMOUNT": "Ticket Restaurant® eligible amount",
+    "EDENRED_COMPLEMENT": "Complement"
   }
 }

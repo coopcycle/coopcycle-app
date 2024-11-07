@@ -96,6 +96,7 @@
     "EMAIL": "E-mail",
     "CHECKOUT_FROM": "Od {{date}}",
     "ORDER": "Objednávka",
+    "SCHEDULE_ORDER": "Pořadí objednávky",
     "INVALID_USER_PASS": "Nesprávné uživatelské jméno a / nebo heslo",
     "NO_TASKS": "Dnes nejsou plánovány žádné úkoly",
     "NOTES": "Poznámky",

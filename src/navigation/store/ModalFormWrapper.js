@@ -1,7 +1,7 @@
 import { Box, Button, ScrollView, VStack } from 'native-base';
 import { SafeAreaView } from 'react-native';
-import { useBackgroundContainerColor } from '../../styles/theme';
 import KeyboardAdjustView from '../../components/KeyboardAdjustView';
+import { useBackgroundContainerColor } from '../../styles/theme';
 
 export default function ModalFormWrapper({
   children,
@@ -23,7 +23,7 @@ export default function ModalFormWrapper({
         style={{
           backgroundColor,
         }}>
-        <KeyboardAdjustView style={{flex: 1}}>
+        <KeyboardAdjustView style={{ flex: 1 }}>
           <ScrollView
             keyboardShouldPersistTaps="handled" // tap is handled by the children in the forms
           >

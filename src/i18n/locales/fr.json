@@ -100,6 +100,7 @@
     "EMAIL": "E-mail",
     "CHECKOUT_FROM": "À partir de {{date}}",
     "ORDER": "Commander",
+    "SCHEDULE_ORDER": "Pré-commander",
     "INVALID_USER_PASS": "Utilisateur et/ou mot de passe inexistant",
     "NO_TASKS": "Pas de tâches prévues aujourd'hui",
     "NOTES": "Notes",
@@ -497,10 +498,8 @@
     "TERMS_OF_SERVICE": "Conditions générales",
     "PRIVACY": "Confidentialité",
     "RESTAURANT_MORE_INFOS": "En savoir plus",
-    "UPDATE_PARCEL_DETAILS": "Mettre à jour les données de la livraison",
-    "REPORT_AN_INCIDENT": "Signaler un incident",
-    "PICTURES": "Photos",
-    "COURIER_BARCODE": "Scannez un code-barres",
+    "PRICE_EXCLUDING_TAX": "Prix hors taxes",
+    "PRICE_TOTAL": "Prix total",
     "HIDE_INCIDENTS_TASKS": "Cacher les incidents",
     "CART_TIME_RANGE_CHANGED_MODAL_TITLE": "Le créneau horaire sélectionné nʼest plus disponible pour aujourdʼhui",
     "CART_TIME_RANGE_CHANGED_MODAL_MESSAGE": "Les horaires dʼouverture ne permettent pas de commander pour aujourdʼhui",
@@ -509,6 +508,8 @@
     "CART_TIME_RANGE_CHANGED_MODAL_CHOOSE_RESTAURANT_ACTION": "Choisir un autre restaurant",
     "ORDER__SHIPPED_AT__NOT_AVAILABLE": "L'horaire de livraison n'est plus disponible",
     "ORDER__SHIPPED_AT__EXPIRED": "L'horaire de livraison est dépassé",
-    "ORDER__SHIPPING_TIME_RANGE__NOT_AVAILABLE": "Indisponible pour l'instant"
+    "ORDER__SHIPPING_TIME_RANGE__NOT_AVAILABLE": "Indisponible pour l'instant",
+    "EDENRED_ELIGIBLE_AMOUNT": "Montant éligible Ticket Restaurant®",
+    "EDENRED_COMPLEMENT": "Complément"
   }
 }

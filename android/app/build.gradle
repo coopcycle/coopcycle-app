@@ -91,13 +91,14 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         multiDexEnabled true
         // No need to increment the versionCode, it will be automatically incremented by the fastlane
-        versionCode 216
-        versionName "2.26.2"
+        versionCode 218
+        versionName "2.27.2"
 
         manifestPlaceholders = [
             tipsiStripeRedirectScheme: "coopcycle",
             googleMapsApiKey: project.env.get("GOOGLE_MAPS_ANDROID_KEY"),
-            transistorsoftLicenseKey: project.env.get("TRANSISTORSOFT_LICENSE_KEY")
+            transistorsoftLicenseKey: project.env.get("TRANSISTORSOFT_LICENSE_KEY"),
+            appAuthRedirectScheme: project.env.get("APP_AUTH_REDIRECT_SCHEME")
         ]
 
         testBuildType System.getProperty('testBuildType', 'debug')  // This will later be used to control the test apk build type

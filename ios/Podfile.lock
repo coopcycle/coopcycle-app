@@ -1,9 +1,9 @@
 PODS:
-  - AppAuth (1.6.2):
-    - AppAuth/Core (= 1.6.2)
-    - AppAuth/ExternalUserAgent (= 1.6.2)
-  - AppAuth/Core (1.6.2)
-  - AppAuth/ExternalUserAgent (1.6.2):
+  - AppAuth (1.7.5):
+    - AppAuth/Core (= 1.7.5)
+    - AppAuth/ExternalUserAgent (= 1.7.5)
+  - AppAuth/Core (1.7.5)
+  - AppAuth/ExternalUserAgent (1.7.5):
     - AppAuth/Core
   - boost (1.83.0)
   - CocoaLumberjack (3.7.4):
@@ -1090,13 +1090,16 @@ PODS:
   - React-Mapbuffer (0.73.5):
     - glog
     - React-debug
+  - react-native-app-auth (8.0.0):
+    - AppAuth (>= 1.7.3)
+    - React-Core
   - react-native-ble-manager (8.4.4):
     - React-Core
   - react-native-blob-util (0.19.8):
     - React-Core
-  - react-native-config (1.5.2):
-    - react-native-config/App (= 1.5.2)
-  - react-native-config/App (1.5.2):
+  - react-native-config (1.5.3):
+    - react-native-config/App (= 1.5.3)
+  - react-native-config/App (1.5.3):
     - React-Core
   - react-native-fbsdk-next (12.1.0):
     - React-Core
@@ -1117,15 +1120,15 @@ PODS:
     - React-Core
   - react-native-maps (1.10.3):
     - React-Core
-  - react-native-netinfo (11.3.2):
+  - react-native-netinfo (11.4.1):
     - React-Core
-  - react-native-pager-view (6.3.3):
+  - react-native-pager-view (6.5.0):
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
-  - react-native-safe-area-context (4.10.7):
+  - react-native-safe-area-context (4.14.0):
     - React-Core
-  - react-native-sunmi-printer-library (1.0.1):
+  - react-native-sunmi-printer-library (2.2.0):
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
@@ -1317,9 +1320,11 @@ PODS:
   - RNBackgroundGeolocation (4.15.0):
     - CocoaLumberjack (~> 3.7.2)
     - React-Core
-  - RNCAsyncStorage (1.23.1):
+  - RNCAsyncStorage (1.24.0):
     - React-Core
-  - RNCMaskedView (0.3.1):
+  - RNCMaskedView (0.3.2):
+    - glog
+    - RCT-Folly (= 2022.05.16.00)
     - React-Core
   - RNCPicker (2.2.1):
     - React-Core
@@ -1339,7 +1344,7 @@ PODS:
     - FirebaseCoreExtension (= 10.20.0)
     - React-Core
     - RNFBApp
-  - RNGestureHandler (2.17.1):
+  - RNGestureHandler (2.20.2):
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
@@ -1348,12 +1353,30 @@ PODS:
     - React-Core
   - RNLocalize (3.0.6):
     - React-Core
-  - RNReanimated (3.12.1):
+  - RNReanimated (3.16.1):
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
     - ReactCommon/turbomodule/core
-  - RNScreens (3.32.0):
+    - RNReanimated/reanimated (= 3.16.1)
+    - RNReanimated/worklets (= 3.16.1)
+  - RNReanimated/reanimated (3.16.1):
+    - glog
+    - RCT-Folly (= 2022.05.16.00)
+    - React-Core
+    - ReactCommon/turbomodule/core
+    - RNReanimated/reanimated/apple (= 3.16.1)
+  - RNReanimated/reanimated/apple (3.16.1):
+    - glog
+    - RCT-Folly (= 2022.05.16.00)
+    - React-Core
+    - ReactCommon/turbomodule/core
+  - RNReanimated/worklets (3.16.1):
+    - glog
+    - RCT-Folly (= 2022.05.16.00)
+    - React-Core
+    - ReactCommon/turbomodule/core
+  - RNScreens (3.35.0):
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
@@ -1465,6 +1488,7 @@ DEPENDENCIES:
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector-modern`)
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
   - React-Mapbuffer (from `../node_modules/react-native/ReactCommon`)
+  - react-native-app-auth (from `../node_modules/react-native-app-auth`)
   - react-native-ble-manager (from `../node_modules/react-native-ble-manager`)
   - react-native-blob-util (from `../node_modules/react-native-blob-util`)
   - react-native-config (from `../node_modules/react-native-config`)
@@ -1650,6 +1674,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/logger"
   React-Mapbuffer:
     :path: "../node_modules/react-native/ReactCommon"
+  react-native-app-auth:
+    :path: "../node_modules/react-native-app-auth"
   react-native-ble-manager:
     :path: "../node_modules/react-native-ble-manager"
   react-native-blob-util:
@@ -1766,7 +1792,7 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
-  AppAuth: 3bb1d1cd9340bd09f5ed189fb00b1cc28e1e8570
+  AppAuth: 501c04eda8a8d11f179dbe8637b7a91bb7e5d2fa
   boost: d3f49c53809116a5d38da093a8aa78bf551aed09
   CocoaLumberjack: 543c79c114dadc3b1aba95641d8738b06b05b646
   CountlyReactNative: f544f34347bc635e2951e2797d4750e66f886a09
@@ -1840,16 +1866,17 @@ SPEC CHECKSUMS:
   React-jsinspector: 32db5e364bcae8fca8cdf8891830636275add0c5
   React-logger: 0331362115f0f5b392bd7ed14636d1a3ea612479
   React-Mapbuffer: 30d796a057e4e077d44b4c2ba17869fb8c1064eb
+  react-native-app-auth: c4a3b4edc11100070d8d7bc48d55fb66668cead9
   react-native-ble-manager: 5a36276ae7bdc382c6a0716c939024ffeb4e0a48
   react-native-blob-util: 26f1fb0c91f2b437380d4f3875769a7c3e06080e
-  react-native-config: d7d8a0c65f7fa523197879f6b777997abbfc987e
+  react-native-config: 8f7283449bbb048902f4e764affbbf24504454af
   react-native-fbsdk-next: 776f49479d36a1e72a1a367baadcc8391cd24374
   react-native-get-random-values: 21325b2244dfa6b58878f51f9aa42821e7ba3d06
   react-native-maps: 72a8a903f8a1b53e2c777ba79102078ab502e0bf
-  react-native-netinfo: 076df4f9b07f6670acf4ce9a75aac8d34c2e2ccc
-  react-native-pager-view: ce73434826e4dca60108c3b3a30d83792ff28b0c
-  react-native-safe-area-context: 422017db8bcabbada9ad607d010996c56713234c
-  react-native-sunmi-printer-library: 837b33bbceff05c8be9c86b8b6f3166ecf6d8b2a
+  react-native-netinfo: f0a9899081c185db1de5bb2fdc1c88c202a059ac
+  react-native-pager-view: 143125e10032fb309c04b8eb141904b6bd58cdb1
+  react-native-safe-area-context: 4532f1a0c5d34a46b9324ccaaedcb5582a302b7d
+  react-native-sunmi-printer-library: ee588f3f9e1e6f4382cd810c0f681b50b88a66ca
   react-native-version-number: b415bbec6a13f2df62bf978e85bc0d699462f37f
   react-native-webview: ae503c7787c3bd5bdbda622209c45b961241b2fd
   React-nativeconfig: 78e2b14c0ee479449845b67bbe103343257cbcc0
@@ -1877,19 +1904,19 @@ SPEC CHECKSUMS:
   RNAppleAuthentication: 0571c08da8c327ae2afc0261b48b4a515b0286a6
   RNBackgroundFetch: 2f800a04434620db15ede2e8f21886608a2d1743
   RNBackgroundGeolocation: 860ff2919a61c73e572c3f31b3dc7d61e359832d
-  RNCAsyncStorage: 826b603ae9c0f88b5ac4e956801f755109fa4d5c
-  RNCMaskedView: 090213d32d8b3bb83a4dcb7d12c18f0152591906
+  RNCAsyncStorage: ec53e44dc3e75b44aa2a9f37618a49c3bc080a7a
+  RNCMaskedView: f0c0b3a90690c13919120ef10d2dc02aae474ae7
   RNCPicker: cb57c823d5ce8d2d0b5dfb45ad97b737260dc59e
   RNCPushNotificationIOS: 64218f3c776c03d7408284a819b2abfda1834bc8
   RNDateTimePicker: 7b38b71bcd7c4cfa1cb95f2dff9a4f1faed2dced
   RNFBAnalytics: ec290267aac57446c10b491293373ac86357f575
   RNFBApp: 9b25191f7a5e72c185b7e43fffb0d906869c4659
   RNFBCrashlytics: 28f83084ae8a4b9e6ad128e3a644c28bb5e16007
-  RNGestureHandler: 8ff45d9b814f3ceceb1e9f92e5c73c92ab98e4a2
+  RNGestureHandler: c8b958a057c2d6c3ae3c56aad2ba6b2b407a8ba7
   RNGoogleSignin: c4381751eefd73c552b923ba347a9bfc6f18771c
   RNLocalize: 4222a3756cdbe2dc9a5bdf445765a4d2572107cb
-  RNReanimated: fc28cd7439c7ce5c91c760dbdc5735ee35aeae36
-  RNScreens: 136d868cc4a78b41042a1a5f1cb42b99a47033f5
+  RNReanimated: 7203f932c68e763b00af46d2e8a2983d10dc94b9
+  RNScreens: e5093efe5103f3fd5f4479a0f0281ee5e6d81e11
   RNSentry: bb9261522b37ee673579ee1d106b107d63cc6243
   RNShare: a5dc3b9c53ddc73e155b8cd9a94c70c91913c43c
   RNSound: 6c156f925295bdc83e8e422e7d8b38d33bc71852
