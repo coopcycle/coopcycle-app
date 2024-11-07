@@ -42,7 +42,7 @@ on:
         required: true
         type: boolean
       build_coursiers_rennais:
-        description: 'Coursiers Rennais app'
+        description: 'LCR app'
         required: true
         type: boolean
       build_eraman:
