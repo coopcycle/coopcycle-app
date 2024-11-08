@@ -17,7 +17,7 @@ import { CommonActions } from '@react-navigation/native';
 import NavigationHolder from '../../../NavigationHolder';
 import { phonecall } from 'react-native-communications';
 import BottomModal from '../../../components/BottomModal';
-import { navigateToCompleteTask } from '../../utils';
+import { navigateToTask } from '../../utils';
 import { selectTasks } from '../../../redux/Courier';
 
 async function _fetchBarcode(httpClient, barcode) {
@@ -59,13 +59,7 @@ function TextSection({ title, value, variant = 'data' }) {
   );
 }
 
-function BarcodePage({
-  t,
-  httpClient,
-  navigation,
-  route,
-  taskLists,
-}) {
+function BarcodePage({ t, httpClient, navigation, route, taskLists }) {
   const [barcode, setBarcode] = useState(null);
   const [entity, setEntity] = useState(null);
   const [clientAction, setClientAction] = useState(null);
@@ -146,9 +140,9 @@ function BarcodePage({
           await askToAssign();
           break;
         case 'ask_to_complete':
-          navigateToCompleteTask(
+          navigateToTask(
             navigation,
-            route,
+            null,
             taskLists.find(t => t['@id'] === `/api/tasks/${entity.id}`),
           );
           break;
@@ -202,7 +196,11 @@ function BarcodePage({
             setClientAction(client_action);
           }}
         />
-        <ScrollView style={{ paddingHorizontal: 20, marginVertical: 20 }}>
+        <ScrollView
+          style={{ paddingHorizontal: 20, marginVertical: 20 }}
+          // onTouchStart={() => console.log(">>>>>>>>>> enter")}
+          // onTouchEnd={() => console.log(">>>>>>>>>> leave")}
+        >
           <TextSection
             title={t('ADDRESS')}
             value={entity?.address?.streetAddress}
