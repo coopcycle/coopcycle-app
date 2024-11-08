@@ -15,10 +15,10 @@ import BarcodeCameraView from '../../../components/BarcodeCameraView';
 
 import { CommonActions } from '@react-navigation/native';
 import NavigationHolder from '../../../NavigationHolder';
-import { assignTask } from '../../../redux/Dispatch/actions';
-import { unassignTask } from '../../../redux/Dispatch/actions';
 import { phonecall } from 'react-native-communications';
 import BottomModal from '../../../components/BottomModal';
+import { navigateToCompleteTask } from '../../utils';
+import { selectTasks } from '../../../redux/Courier';
 
 async function _fetchBarcode(httpClient, barcode) {
   if (barcode) {
@@ -59,7 +59,13 @@ function TextSection({ title, value, variant = 'data' }) {
   );
 }
 
-function BarcodePage({ t, httpClient, user, assignTask, unassignTask }) {
+function BarcodePage({
+  t,
+  httpClient,
+  navigation,
+  route,
+  taskLists,
+}) {
   const [barcode, setBarcode] = useState(null);
   const [entity, setEntity] = useState(null);
   const [clientAction, setClientAction] = useState(null);
@@ -131,13 +137,20 @@ function BarcodePage({ t, httpClient, user, assignTask, unassignTask }) {
 
   useEffect(() => {
     async function checkClientAction() {
-      if (!clientAction) return;
+      if (!clientAction || !entity) return;
       switch (clientAction) {
         case 'ask_to_unassign':
           await askToUnassign();
           break;
         case 'ask_to_assign':
           await askToAssign();
+          break;
+        case 'ask_to_complete':
+          navigateToCompleteTask(
+            navigation,
+            route,
+            taskLists.find(t => t['@id'] === `/api/tasks/${entity.id}`),
+          );
           break;
       }
       setClientAction(null);
@@ -177,7 +190,7 @@ function BarcodePage({ t, httpClient, user, assignTask, unassignTask }) {
       </BottomModal>
       <View style={{ flex: 1 }}>
         <BarcodeCameraView
-          disabled={disableScan || showNoteModal}
+          disabled={disableScan || showNoteModal || clientAction !== null}
           onScanned={async code => {
             if (clientAction) return;
             const { entity, client_action } = await _fetchBarcode(
@@ -266,6 +279,7 @@ function mapStateToProps(state) {
   return {
     httpClient: state.app.httpClient,
     user: state.app.user,
+    taskLists: selectTasks(state),
   };
 }
 
