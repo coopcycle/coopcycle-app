@@ -11,13 +11,6 @@ function round5(x) {
 }
 
 function timingAsText(timing, now) {
-  // FIXME
-  // This hotfixes a bug on the API
-  // https://github.com/coopcycle/coopcycle-web/issues/2213
-  if (timing.range[0] === timing.range[1]) {
-    return i18n.t('NOT_AVAILABLE_ATM');
-  }
-
   const lower = moment.parseZone(timing.range[0]);
 
   if (timing.fast) {
@@ -43,18 +36,38 @@ function timingAsText(timing, now) {
   return lower.calendar(now);
 }
 
+export function getNextShippingTime(restaurant) {
+
+  const timing = restaurant.timing.delivery || restaurant.timing.collection;
+
+  if (!timing) {
+    return null;
+  }
+
+  // FIXME
+  // This hotfixes a bug on the API
+  // https://github.com/coopcycle/coopcycle-web/issues/2213
+  if (!Array.isArray(timing.range)) {
+    return null;
+  }
+  if (timing.range[0] === timing.range[1]) {
+    return null;
+  }
+
+  return timing;
+}
+
+
 export function getNextShippingTimeAsText(restaurant, now) {
   now = now || moment();
 
-  if (restaurant.timing.delivery) {
-    return timingAsText(restaurant.timing.delivery, now);
+  const timing = getNextShippingTime(restaurant);
+
+  if (!timing) {
+    return i18n.t('NOT_AVAILABLE_ATM');
   }
 
-  if (restaurant.timing.collection) {
-    return timingAsText(restaurant.timing.collection, now);
-  }
-
-  return i18n.t('NOT_AVAILABLE_ATM');
+  return timingAsText(timing, now);
 }
 
 export function getRestaurantCaption(restaurant) {
@@ -65,23 +78,9 @@ export function getRestaurantCaption(restaurant) {
  * While the restaurant might be available (for ordering)
  * it might be either opened or closed at the moment
  */
-export function isRestaurantAvailable(restaurant) {
-  if (!restaurant.timing.delivery && !restaurant.timing.collection) {
-    return false;
-  }
-
-  // FIXME
-  // This hotfixes a bug on the API
-  // https://github.com/coopcycle/coopcycle-web/issues/2213
-  if (
-    restaurant.timing.delivery &&
-    Array.isArray(restaurant.timing.delivery.range) &&
-    restaurant.timing.delivery.range[0] === restaurant.timing.delivery.range[1]
-  ) {
-    return false;
-  }
-
-  return true;
+export function isRestaurantOrderingAvailable(restaurant) {
+  const timing = getNextShippingTime(restaurant);
+  return Boolean(timing);
 }
 
 /**
@@ -105,7 +104,7 @@ export function isRestaurantOpeningSoon(restaurant) {
  * If the pre-order is soon, we show a regular order button
  */
 export function shouldShowPreOrder(restaurant) {
-  if (!isRestaurantAvailable(restaurant)) {
+  if (!isRestaurantOrderingAvailable(restaurant)) {
     return false;
   }
 

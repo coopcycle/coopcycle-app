@@ -221,7 +221,7 @@ function Restaurant(props) {
             {i18n.t('RESTAURANT_OPENING_HOURS')}
           </Text>
           <OpeningHours
-            openingHoursSpecification={props.openingHoursSpecification}
+            openingHoursSpecification={openingHoursSpecification}
           />
         </Box>
         <Pressable
