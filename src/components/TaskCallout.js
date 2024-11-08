@@ -52,7 +52,12 @@ export default ({ task, warnings }) => {
       </View>
       <View style={styles.warning}>
         {warnings.map((warning, index) => (
-          <Icon key={index} as={FontAwesome} name={warning} size="xs" />
+          <Icon
+            key={index}
+            as={warning.icon.type ?? FontAwesome}
+            name={warning.icon.name}
+            size={warning.icon.size ?? undefined}
+          />
         ))}
       </View>
     </View>
