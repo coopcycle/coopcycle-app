@@ -138,7 +138,7 @@ function DeliveryForm(props) {
   function submit(values) {
     const delivery = {
       store: store['@id'],
-      pickup: route.params?.pickup,
+      pickup: route.params?.pickup || undefined,
       dropoff: {
         address: {
           ...values.address,
@@ -240,7 +240,7 @@ function DeliveryForm(props) {
     description: dropoff.description || '',
     contactName: dropoff.contactName || '',
     businessName: dropoff.businessName || '',
-    telephone,
+    telephone: dropoff.telephone || '',
     // ----------------
     weight: null,
     comments: dropoff.comments || '',

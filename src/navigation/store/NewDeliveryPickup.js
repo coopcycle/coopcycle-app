@@ -2,7 +2,7 @@ import { IconCircleArrowUpFilled } from '@tabler/icons-react-native';
 import { Formik } from 'formik';
 import { AsYouType, parsePhoneNumberFromString } from 'libphonenumber-js';
 import _ from 'lodash';
-import { Text } from 'native-base';
+import { Checkbox, Text } from 'native-base';
 import React, { useState } from 'react';
 import { withTranslation } from 'react-i18next';
 import { Platform, StyleSheet, View } from 'react-native';
@@ -25,6 +25,7 @@ function NewDeliveryPickup(props) {
   const backgroundColor = useBackgroundContainerColor();
   const backgroundHighlightColor = useBackgroundHighlightColor();
   const primaryColor = usePrimaryColor();
+  const [pickupAddress, setPickupAddress] = useState(true);
 
   const {
     store,
@@ -137,16 +138,18 @@ function NewDeliveryPickup(props) {
   }
 
   function submit(values) {
-    const pickup = {
-      telephone: parsePhoneNumberFromString(values.telephone, country).format(
-        'E.164',
-      ),
-      contactName: values.contactName,
-      description: values.description,
-      businessName: values.businessName,
-      address,
-    };
-    console.log('🚀 ~ pickup to send:', pickup);
+    const pickup = pickupAddress
+      ? {
+          telephone: parsePhoneNumberFromString(
+            values.telephone,
+            country,
+          ).format('E.164'),
+          contactName: values.contactName,
+          description: values.description,
+          businessName: values.businessName,
+          address,
+        }
+      : undefined;
 
     navigation.navigate('StoreNewDeliveryAddress', { pickup });
   }
@@ -185,135 +188,144 @@ function NewDeliveryPickup(props) {
             </Text>
           </View>
           <View style={[styles.formGroup, { zIndex: 2 }]}>
-            <Text style={styles.label}>
-              {t('STORE_NEW_DELIVERY_SEARCH_CLIENT')}{' '}
-              <Text style={styles.optional}>({t('OPTIONAL')})</Text>
-            </Text>
-            <View style={styles.autocompleteWrapper}>
-              <ClientListInput
-                onSelectAddress={a => {
-                  setAddressData(a, setFieldValue);
-                  setValidAddress(true);
-                }}
-                addresses={addresses}
-                placeholder={t('STORE_NEW_DELIVERY_ENTER_SEARCH_CLIENT')}
-              />
-            </View>
+            <Checkbox
+              value={pickupAddress}
+              onChange={() => setPickupAddress(!pickupAddress)}>
+              <Text>Use custom pickup address</Text>
+            </Checkbox>
           </View>
-          <View style={[styles.formGroup, { zIndex: 1 }]}>
-            <Text style={styles.label}>
-              {t('STORE_NEW_DELIVERY_ADDRESS')}
-              {validAddress && ' ✓'}
-            </Text>
-            <View style={styles.autocompleteWrapper}>
-              <AddressAutocomplete
-                key={address?.streetAddress ?? ''}
-                addresses={[]}
-                onChangeText={() => {
-                  if (validAddress) setValidAddress(false);
-                  handleChange('address');
-                }}
-                onBlur={handleBlur('address')}
-                value={address}
-                onSelectAddress={e => onSelectAddress(e, setFieldValue)}
-                containerStyle={[
-                  {
-                    flex: 1,
-                    justifyContent: 'center',
-                  },
-                ]}
+          <View style={pickupAddress ? styles.disabled : {}}>
+            <View style={[styles.formGroup, { zIndex: 2 }]}>
+              <Text style={styles.label}>
+                {t('STORE_NEW_DELIVERY_SEARCH_CLIENT')}{' '}
+                <Text style={styles.optional}>({t('OPTIONAL')})</Text>
+              </Text>
+              <View style={styles.autocompleteWrapper}>
+                <ClientListInput
+                  onSelectAddress={a => {
+                    setAddressData(a, setFieldValue);
+                    setValidAddress(true);
+                  }}
+                  addresses={addresses}
+                  placeholder={t('STORE_NEW_DELIVERY_ENTER_SEARCH_CLIENT')}
+                />
+              </View>
+            </View>
+            <View style={[styles.formGroup, { zIndex: 1 }]}>
+              <Text style={styles.label}>
+                {t('STORE_NEW_DELIVERY_ADDRESS')}
+                {validAddress && ' ✓'}
+              </Text>
+              <View style={styles.autocompleteWrapper}>
+                <AddressAutocomplete
+                  key={address?.streetAddress ?? ''}
+                  addresses={[]}
+                  onChangeText={() => {
+                    if (validAddress) setValidAddress(false);
+                    handleChange('address');
+                  }}
+                  onBlur={handleBlur('address')}
+                  value={address}
+                  onSelectAddress={e => onSelectAddress(e, setFieldValue)}
+                  containerStyle={[
+                    {
+                      flex: 1,
+                      justifyContent: 'center',
+                    },
+                  ]}
+                  style={{
+                    borderRadius: 0,
+                    padding: 10,
+                    borderWidth: 0,
+                    paddingLeft: 10,
+                    ...inputStyles,
+                  }}
+                  {...autocompleteProps}
+                  placeholder={t('ENTER_ADDRESS')}
+                  _focus={{ borderColor: primaryColor }}
+                />
+              </View>
+              {errors.address && !validAddress && touched.address && (
+                <Text note style={styles.errorText}>
+                  {errors.address}
+                </Text>
+              )}
+            </View>
+            <View style={[styles.formGroup]}>
+              <Text style={styles.label}>
+                {t('STORE_NEW_DELIVERY_BUSINESS_NAME')}{' '}
+                <Text style={styles.optional}>({t('OPTIONAL')})</Text>
+              </Text>
+              <FormInput
+                autoCorrect={false}
+                returnKeyType="done"
+                onChangeText={handleChange('businessName')}
+                onBlur={handleBlur('businessName')}
+                value={values.businessName}
+                placeholder={t('STORE_NEW_DELIVERY_ENTER_BUSINESS_NAME')}
+              />
+              {errors.businessName && touched.businessName && (
+                <Text note style={styles.errorText}>
+                  {errors.businessName}
+                </Text>
+              )}
+            </View>
+            <View style={[styles.formGroup]}>
+              <Text style={styles.label}>
+                {t('STORE_NEW_DELIVERY_CONTACT_NAME')}
+              </Text>
+              <FormInput
+                autoCorrect={false}
+                returnKeyType="done"
+                onChangeText={handleChange('contactName')}
+                onBlur={handleBlur('contactName')}
+                value={values.contactName}
+                placeholder={t('STORE_NEW_DELIVERY_ENTER_CONTACT_NAME')}
+              />
+              {errors.contactName && touched.contactName && (
+                <Text note style={styles.errorText}>
+                  {errors.contactName}
+                </Text>
+              )}
+            </View>
+            <View style={[styles.formGroup]}>
+              <Text style={styles.label}>
+                {t('STORE_NEW_DELIVERY_PHONE_NUMBER')}
+              </Text>
+              <FormInput
+                autoCorrect={false}
+                keyboardType="phone-pad"
+                returnKeyType="done"
+                onChangeText={value =>
+                  handleChangeTelephone(value, setFieldValue, setFieldTouched)
+                }
+                onBlur={handleBlur('telephone')}
+                value={values.telephone}
+                placeholder={t('STORE_NEW_DELIVERY_ENTER_PHONE_NUMBER')}
+              />
+              {errors.telephone && touched.telephone && (
+                <Text note style={styles.errorText}>
+                  {errors.telephone}
+                </Text>
+              )}
+            </View>
+            <View style={[styles.formGroup]}>
+              <Text style={styles.label}>
+                {t('STORE_NEW_DELIVERY_ADDRESS_DESCRIPTION')}{' '}
+                <Text style={styles.optional}>({t('OPTIONAL')})</Text>
+              </Text>
+              <FormInput
                 style={{
-                  borderRadius: 0,
-                  padding: 10,
-                  borderWidth: 0,
-                  paddingLeft: 10,
-                  ...inputStyles,
+                  height: 80,
                 }}
-                {...autocompleteProps}
-                placeholder={t('ENTER_ADDRESS')}
-                _focus={{ borderColor: primaryColor }}
+                autoCorrect={false}
+                multiline={true}
+                onChangeText={handleChange('description')}
+                onBlur={handleBlur('description')}
+                value={values.description}
+                placeholder={t('STORE_NEW_DELIVERY_ENTER_ADDRESS_DESCRIPTION')}
               />
             </View>
-            {errors.address && !validAddress && touched.address && (
-              <Text note style={styles.errorText}>
-                {errors.address}
-              </Text>
-            )}
-          </View>
-          <View style={[styles.formGroup]}>
-            <Text style={styles.label}>
-              {t('STORE_NEW_DELIVERY_BUSINESS_NAME')}{' '}
-              <Text style={styles.optional}>({t('OPTIONAL')})</Text>
-            </Text>
-            <FormInput
-              autoCorrect={false}
-              returnKeyType="done"
-              onChangeText={handleChange('businessName')}
-              onBlur={handleBlur('businessName')}
-              value={values.businessName}
-              placeholder={t('STORE_NEW_DELIVERY_ENTER_BUSINESS_NAME')}
-            />
-            {errors.businessName && touched.businessName && (
-              <Text note style={styles.errorText}>
-                {errors.businessName}
-              </Text>
-            )}
-          </View>
-          <View style={[styles.formGroup]}>
-            <Text style={styles.label}>
-              {t('STORE_NEW_DELIVERY_CONTACT_NAME')}
-            </Text>
-            <FormInput
-              autoCorrect={false}
-              returnKeyType="done"
-              onChangeText={handleChange('contactName')}
-              onBlur={handleBlur('contactName')}
-              value={values.contactName}
-              placeholder={t('STORE_NEW_DELIVERY_ENTER_CONTACT_NAME')}
-            />
-            {errors.contactName && touched.contactName && (
-              <Text note style={styles.errorText}>
-                {errors.contactName}
-              </Text>
-            )}
-          </View>
-          <View style={[styles.formGroup]}>
-            <Text style={styles.label}>
-              {t('STORE_NEW_DELIVERY_PHONE_NUMBER')}
-            </Text>
-            <FormInput
-              autoCorrect={false}
-              keyboardType="phone-pad"
-              returnKeyType="done"
-              onChangeText={value =>
-                handleChangeTelephone(value, setFieldValue, setFieldTouched)
-              }
-              onBlur={handleBlur('telephone')}
-              value={values.telephone}
-              placeholder={t('STORE_NEW_DELIVERY_ENTER_PHONE_NUMBER')}
-            />
-            {errors.telephone && touched.telephone && (
-              <Text note style={styles.errorText}>
-                {errors.telephone}
-              </Text>
-            )}
-          </View>
-          <View style={[styles.formGroup]}>
-            <Text style={styles.label}>
-              {t('STORE_NEW_DELIVERY_ADDRESS_DESCRIPTION')}{' '}
-              <Text style={styles.optional}>({t('OPTIONAL')})</Text>
-            </Text>
-            <FormInput
-              style={{
-                height: 80,
-              }}
-              autoCorrect={false}
-              multiline={true}
-              onChangeText={handleChange('description')}
-              onBlur={handleBlur('description')}
-              value={values.description}
-              placeholder={t('STORE_NEW_DELIVERY_ENTER_ADDRESS_DESCRIPTION')}
-            />
           </View>
         </ModalFormWrapper>
       )}
@@ -322,6 +334,9 @@ function NewDeliveryPickup(props) {
 }
 
 const styles = StyleSheet.create({
+  disabled: {
+    display: 'none',
+  },
   autocompleteWrapper: {
     height: 40,
     ...Platform.select({

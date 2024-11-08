@@ -4,8 +4,8 @@ import { withTranslation } from 'react-i18next';
 import { StyleSheet } from 'react-native';
 import { connect, useDispatch } from 'react-redux';
 import { createDelivery, getPrice } from '../../redux/Store/actions';
-import FormInput from './components/FormInput';
 import ModalFormWrapper from './ModalFormWrapper';
+import FormInput from './components/FormInput';
 
 function NewDeliveryPrice(props) {
   const dispatch = useDispatch();
