@@ -32,9 +32,21 @@ async function _fetchBarcode(httpClient, barcode) {
 
 async function _putNote(httpClient, task_id, note) {
   if (note && task_id) {
-    return await httpClient.put(`/api/tasks/${task_id}/note`, {
+    return await httpClient.put(`/api/tasks/${task_id}/append_to_comment`, {
       note,
     });
+  }
+}
+
+async function _assignTask(httpClient, task_id) {
+  if (task_id) {
+    return await httpClient.put(`/api/tasks/${task_id}/assign`);
+  }
+}
+
+async function _unassignTask(httpClient, task_id) {
+  if (task_id) {
+    return await httpClient.put(`/api/tasks/${task_id}/unassign`);
   }
 }
 
@@ -57,49 +69,49 @@ function BarcodePage({ t, httpClient, user, assignTask, unassignTask }) {
 
   const note = useRef(null);
 
-  const askUnassign = () => {
-    Alert.alert(
-      'Task already assigned',
-      'This task is already assigned to you',
-      [
-        {
-          text: 'Unassign',
-          onPress: () => {
-            unassignTask(entity.id, user.username);
-            setClientAction(null);
+  const askToUnassign = () =>
+    new Promise((resolve, reject) => {
+      Alert.alert(
+        'Task already assigned',
+        'This task is already assigned to you',
+        [
+          {
+            text: 'Unassign',
+            onPress: () => {
+              _unassignTask(httpClient, entity.id).then(resolve).catch(reject);
+            },
           },
-        },
-        {
-          text: 'Ok',
-          onPress: () => {
-            setClientAction(null);
+          {
+            text: 'Ok',
+            onPress: () => {
+              resolve();
+            },
           },
-        },
-      ],
-    );
-  };
+        ],
+      );
+    });
 
-  const askAssign = () => {
-    Alert.alert(
-      'Task already assigned',
-      'This task is already assigned to another courier',
-      [
-        {
-          text: 'Assign to me',
-          onPress: () => {
-            assignTask(entity.id, user.username);
-            setClientAction(null);
+  const askToAssign = () =>
+    new Promise((resolve, reject) => {
+      Alert.alert(
+        'Task already assigned',
+        'This task is already assigned to another courier',
+        [
+          {
+            text: 'Assign to me',
+            onPress: () => {
+              _assignTask(httpClient, entity.id).then(resolve).catch(reject);
+            },
           },
-        },
-        {
-          text: 'Ok',
-          onPress: () => {
-            setClientAction(null);
+          {
+            text: 'Ok',
+            onPress: () => {
+              resolve();
+            },
           },
-        },
-      ],
-    );
-  };
+        ],
+      );
+    });
 
   const checkMultiplePackages = packages => {
     if (!packages) return;
@@ -118,18 +130,19 @@ function BarcodePage({ t, httpClient, user, assignTask, unassignTask }) {
   };
 
   useEffect(() => {
-    return;
-    if (!clientAction) return;
-    switch (clientAction) {
-      case 'ask_unassign':
-        askUnassign();
-        break;
-      case 'ask_assign':
-        askAssign();
-        break;
-      default:
-        setClientAction(null);
+    async function checkClientAction() {
+      if (!clientAction) return;
+      switch (clientAction) {
+        case 'ask_to_unassign':
+          await askToUnassign();
+          break;
+        case 'ask_to_assign':
+          await askToAssign();
+          break;
+      }
+      setClientAction(null);
     }
+    checkClientAction();
   }, [clientAction]);
 
   useEffect(() => {
@@ -256,13 +269,8 @@ function mapStateToProps(state) {
   };
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    assignTask: (task_id, username) =>
-      dispatch(assignTask({ '@id': task_id }, username)),
-    unassignTask: (task_id, username) =>
-      dispatch(unassignTask({ '@id': task_id }, username)),
-  };
+function mapDispatchToProps(_dispatch) {
+  return {};
 }
 
 export default connect(
