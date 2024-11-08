@@ -2,9 +2,9 @@ import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
 
 import screens, { headerLeft } from '..';
+import NavigationHolder from '../../NavigationHolder';
 import HeaderButton from '../../components/HeaderButton';
 import i18n from '../../i18n';
-import NavigationHolder from '../../NavigationHolder';
 import HeaderBackButton from '../store/components/HeaderBackButton';
 import { stackNavigatorScreenOptions } from '../styles';
 
@@ -36,14 +36,16 @@ const MainNavigator = () => (
       name="StoreDelivery"
       component={screens.StoreDelivery}
       options={({ route }) => {
-        let id
+        let id;
         if (route.params.delivery) {
-          id = route.params.delivery.orderNumber ? route.params.delivery.orderNumber : route.params.delivery.id
+          id = route.params.delivery.orderNumber
+            ? route.params.delivery.orderNumber
+            : route.params.delivery.id;
         }
         return {
-          title: i18n.t('STORE_DELIVERY', { id: id })
-        }}
-      }
+          title: i18n.t('STORE_DELIVERY', { id: id }),
+        };
+      }}
     />
   </MainStack.Navigator>
 );
@@ -52,6 +54,13 @@ const NewDeliveryStack = createStackNavigator();
 
 const NewDeliveryNavigator = () => (
   <NewDeliveryStack.Navigator screenOptions={stackNavigatorScreenOptions}>
+    <NewDeliveryStack.Screen
+      name="StoreNewDeliveryPickup"
+      component={screens.StoreNewDeliveryPickup}
+      options={{
+        headerShown: false,
+      }}
+    />
     <NewDeliveryStack.Screen
       name="StoreNewDeliveryAddress"
       component={screens.StoreNewDeliveryAddress}

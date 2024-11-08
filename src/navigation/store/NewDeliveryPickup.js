@@ -1,4 +1,4 @@
-import { IconCircleArrowDownFilled } from '@tabler/icons-react-native';
+import { IconCircleArrowUpFilled } from '@tabler/icons-react-native';
 import { Formik } from 'formik';
 import { AsYouType, parsePhoneNumberFromString } from 'libphonenumber-js';
 import _ from 'lodash';
@@ -19,7 +19,7 @@ import ModalFormWrapper from './ModalFormWrapper';
 import ClientListInput from './components/ClientListInput';
 import FormInput from './components/FormInput';
 
-function NewDeliveryAddress(props) {
+function NewDeliveryPickup(props) {
   const [validAddress, setValidAddress] = useState(false);
   const [address, setAddress] = useState(null);
   const backgroundColor = useBackgroundContainerColor();
@@ -32,7 +32,6 @@ function NewDeliveryAddress(props) {
     addresses,
     assertDelivery,
     t,
-    route,
     navigation,
     country,
   } = props;
@@ -138,7 +137,7 @@ function NewDeliveryAddress(props) {
   }
 
   function submit(values) {
-    const dropoff = {
+    const pickup = {
       telephone: parsePhoneNumberFromString(values.telephone, country).format(
         'E.164',
       ),
@@ -147,11 +146,9 @@ function NewDeliveryAddress(props) {
       businessName: values.businessName,
       address,
     };
+    console.log('🚀 ~ pickup to send:', pickup);
 
-    navigation.navigate('StoreNewDeliveryForm', {
-      pickup: route.params?.pickup || undefined,
-      dropoff: dropoff,
-    });
+    navigation.navigate('StoreNewDeliveryAddress', { pickup });
   }
 
   return (
@@ -174,16 +171,17 @@ function NewDeliveryAddress(props) {
         <ModalFormWrapper handleSubmit={handleSubmit} t={t}>
           <View style={[styles.formGroup, { zIndex: 2 }]}>
             <View style={styles.header}>
-              <IconCircleArrowDownFilled
+              <IconCircleArrowUpFilled
                 size={24}
                 fill={primaryColor}
                 color={backgroundColor}
                 stroke={10}
               />
-              <Text style={styles.label}>Drop off informations</Text>
+              <Text style={styles.label}>Pick up informations</Text>
             </View>
             <Text style={styles.optional}>
-              Fill in the information about the drop off location and contact
+              Fill in the information about the pick up location or keep the
+              default values.
             </Text>
           </View>
           <View style={[styles.formGroup, { zIndex: 2 }]}>
@@ -400,4 +398,4 @@ function mapStateToProps(dispatch) {
 export default connect(
   mapDispatchToProps,
   mapStateToProps,
-)(withTranslation()(NewDeliveryAddress));
+)(withTranslation()(NewDeliveryPickup));

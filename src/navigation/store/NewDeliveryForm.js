@@ -1,5 +1,4 @@
 import { Formik } from 'formik';
-import { parsePhoneNumberFromString } from 'libphonenumber-js';
 import moment from 'moment';
 import { Box, Button, HStack, Text, VStack } from 'native-base';
 import React, { useEffect, useState } from 'react';
@@ -139,6 +138,7 @@ function DeliveryForm(props) {
   function submit(values) {
     const delivery = {
       store: store['@id'],
+      pickup: route.params?.pickup,
       dropoff: {
         address: {
           ...values.address,
@@ -160,7 +160,7 @@ function DeliveryForm(props) {
   }
 
   function validate(values) {
-    let errors = {};
+    const errors = {};
 
     if (hasTimeSlot && !selectedChoice) {
       errors.timeSlot = t('STORE_NEW_DELIVERY_ERROR.EMPTY_TIME_SLOT');
@@ -232,26 +232,18 @@ function DeliveryForm(props) {
     setFieldTouched('weight');
   }
 
-  const delivery = route.params?.delivery;
-
-  let telephone = '';
-  if (delivery.telephone) {
-    const phoneNumber = parsePhoneNumberFromString(delivery.telephone, country);
-    if (phoneNumber && phoneNumber.isValid()) {
-      telephone = phoneNumber.formatNational();
-    }
-  }
+  const dropoff = route.params?.dropoff;
 
   let initialValues = {
-    address: delivery.address,
+    address: dropoff.address,
     // set from the first step newDeliveryAddress
-    description: delivery.description || '',
-    contactName: delivery.contactName || '',
-    businessName: delivery.businessName || '',
+    description: dropoff.description || '',
+    contactName: dropoff.contactName || '',
+    businessName: dropoff.businessName || '',
     telephone,
     // ----------------
     weight: null,
-    comments: delivery.comments || '',
+    comments: dropoff.comments || '',
   };
 
   if (hasTimeSlot) {
