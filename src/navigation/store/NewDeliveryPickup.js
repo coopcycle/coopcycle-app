@@ -25,7 +25,7 @@ function NewDeliveryPickup(props) {
   const backgroundColor = useBackgroundContainerColor();
   const backgroundHighlightColor = useBackgroundHighlightColor();
   const primaryColor = usePrimaryColor();
-  const [pickupAddress, setPickupAddress] = useState(true);
+  const [customAddress, setCustomAddress] = useState(false);
 
   const {
     store,
@@ -99,6 +99,9 @@ function NewDeliveryPickup(props) {
   }
 
   function validate(values) {
+    console.log(customAddress);
+
+    if (!customAddress) return {};
     const errors = {};
 
     if (_.isEmpty(values.telephone)) {
@@ -138,7 +141,7 @@ function NewDeliveryPickup(props) {
   }
 
   function submit(values) {
-    const pickup = pickupAddress
+    const pickup = customAddress
       ? {
           telephone: parsePhoneNumberFromString(
             values.telephone,
@@ -188,13 +191,19 @@ function NewDeliveryPickup(props) {
             </Text>
           </View>
           <View style={[styles.formGroup, { zIndex: 2 }]}>
+            <Text style={styles.label}>Default pick up address</Text>
+            <Text style={styles.optional}>{store.address.name}</Text>
+            <Text>{store.address.streetAddress}</Text>
+            <Text>{store.address.telephone}</Text>
+          </View>
+          <View style={[styles.formGroup, { zIndex: 2 }]}>
             <Checkbox
-              value={pickupAddress}
-              onChange={() => setPickupAddress(!pickupAddress)}>
+              value={customAddress}
+              onChange={() => setCustomAddress(!customAddress)}>
               <Text>Use custom pickup address</Text>
             </Checkbox>
           </View>
-          <View style={pickupAddress ? styles.disabled : {}}>
+          <View style={customAddress ? {} : styles.disabled}>
             <View style={[styles.formGroup, { zIndex: 2 }]}>
               <Text style={styles.label}>
                 {t('STORE_NEW_DELIVERY_SEARCH_CLIENT')}{' '}
