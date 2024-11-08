@@ -210,25 +210,25 @@ function DeliveryForm(props) {
   }
 
   function handleChangeWeight(value, setFieldValue, setFieldTouched) {
-    value = value.replace(',', '.').replace(/[^0-9.]/g, '');
+    let newValue = value.replace(',', '.').replace(/[^0-9.]/g, '');
 
-    const firstDecimalIndex = value.indexOf('.');
+    const firstDecimalIndex = newValue.indexOf('.');
     if (firstDecimalIndex === 0) {
-      value = '0' + value;
+      newValue = `0${newValue}`;
     } else if (firstDecimalIndex !== -1) {
-      value =
-        value.substring(0, firstDecimalIndex + 1) +
-        value.substring(firstDecimalIndex + 1).replace(/\./g, '');
+      newValue =
+        newValue.substring(0, firstDecimalIndex + 1) +
+        newValue.substring(firstDecimalIndex + 1).replace(/\./g, '');
     }
 
-    if (value.includes('.')) {
-      const decimalIndex = value.indexOf('.');
-      value =
-        value.substring(0, decimalIndex + 1) +
-        value.substring(decimalIndex + 1, decimalIndex + 4);
+    if (newValue.includes('.')) {
+      const decimalIndex = newValue.indexOf('.');
+      newValue =
+        newValue.substring(0, decimalIndex + 1) +
+        newValue.substring(decimalIndex + 1, decimalIndex + 4);
     }
 
-    setFieldValue('weight', value);
+    setFieldValue('weight', newValue);
     setFieldTouched('weight');
   }
 
@@ -337,8 +337,8 @@ function DeliveryForm(props) {
                 gap: 16,
                 marginTop: 4,
               }}>
-              {packages && packages.length ? (
-                packagesCount.map((item, index) => {
+              {packages?.length ? (
+                packagesCount.map(item => {
                   return (
                     <View
                       style={[
@@ -350,7 +350,7 @@ function DeliveryForm(props) {
                           backgroundColor,
                         },
                       ]}
-                      key={index}>
+                      key={item.type}>
                       <Range
                         onPress={() => {}}
                         onPressIncrement={() =>
