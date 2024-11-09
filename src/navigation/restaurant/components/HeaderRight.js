@@ -13,19 +13,16 @@ const FontAwesomeHeaderButton = props => (
 );
 
 class HeaderRight extends Component {
-
   render() {
     const { navigate } = this.props.navigation;
 
     return (
       <HeaderButtons HeaderButtonComponent={FontAwesomeHeaderButton}>
-        {/*{!specialOpeningHoursSpecification && (*/}
-        {/*  <Item*/}
-        {/*    title="close"*/}
-        {/*    iconName="power-off"*/}
-        {/*    onPress={() => this.onPressClose()}*/}
-        {/*  />*/}
-        {/*)}*/}
+        <Item
+          title="search"
+          iconName="search"
+          onPress={() => navigate('RestaurantSearch')}
+        />
         <Item
           title="openSettings"
           iconName="cog"
@@ -43,8 +40,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return {
-  };
+  return {};
 }
 
 export default connect(

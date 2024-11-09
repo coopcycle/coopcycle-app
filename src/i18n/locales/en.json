@@ -344,6 +344,8 @@
     "RESTAURANT_ORDER_CONNECT_PRINTER": "Connect a printer",
     "RESTAURANT_ORDER_PRINTING": "Printing order",
     "RESTAURANT_ORDER_FAILED_TO_PRINT": "Failed to print",
+    "SEARCH_ORDERS": "Find order...",
+    "SEARCH_ORDERS_INPUT_PLACEHOLDER": "Order number...",
     "SWIPE_TO_ACCEPT_REFUSE": "Slide to the right to accept, to the left to refuse",
     "ADD_COUPON": "Add a voucher code",
     "VOUCHER_CODE": "Voucher code",
