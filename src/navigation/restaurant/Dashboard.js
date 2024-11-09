@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Alert, NativeModules } from 'react-native';
-import { Center, VStack } from 'native-base';
+import { Center } from 'native-base';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake';
@@ -32,6 +32,7 @@ import {
 import PushNotification from '../../notifications';
 import OrdersToPrintQueue from './components/OrdersToPrintQueue';
 import { connect as connectCentrifugo } from '../../redux/middlewares/CentrifugoMiddleware/actions';
+import BasicSafeAreaView from '../../components/BasicSafeAreaView'
 
 const RNSound = NativeModules.RNSound;
 
@@ -160,7 +161,7 @@ export default function DashboardPage({ navigation, route }) {
   }
 
   return (
-    <VStack flex={1}>
+    <BasicSafeAreaView>
       {restaurant.state === 'rush' && (
         <DangerAlert
           text={t('RESTAURANT_ALERT_RUSH_MODE_ON')}
@@ -187,6 +188,6 @@ export default function DashboardPage({ navigation, route }) {
       <OrderList
         onItemClick={order => navigate('RestaurantOrder', { order })}
       />
-    </VStack>
+    </BasicSafeAreaView>
   );
 }
