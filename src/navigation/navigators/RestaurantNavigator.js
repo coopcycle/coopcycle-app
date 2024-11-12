@@ -101,7 +101,7 @@ export default () => (
       name="RestaurantSearch"
       component={screens.RestaurantSearch}
       options={{
-        title: i18n.t('SEARCH_ORDERS'),
+        title: i18n.t('RESTAURANT_SEARCH_ORDERS'),
       }}
     />
   </RootStack.Navigator>

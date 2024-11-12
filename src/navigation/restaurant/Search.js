@@ -52,7 +52,7 @@ export default function Search() {
             />
           }
           onChangeText={ _.debounce(setQuery, 350) }
-          placeholder={ t('SEARCH_ORDERS_INPUT_PLACEHOLDER') }
+          placeholder={ t('RESTAURANT_SEARCH_ORDERS_INPUT_PLACEHOLDER') }
         />
       </FormControl>
       <FlatList
