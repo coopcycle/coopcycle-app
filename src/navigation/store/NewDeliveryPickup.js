@@ -183,15 +183,18 @@ function NewDeliveryPickup(props) {
                 color={backgroundColor}
                 stroke={10}
               />
-              <Text style={styles.label}>Pick up informations</Text>
+              <Text style={styles.label}>
+                {t('STORE_NEW_DELIVERY_PICKUP_TITLE')}
+              </Text>
             </View>
             <Text style={styles.optional}>
-              Fill in the information about the pick up location or keep the
-              default values.
+              {t('STORE_NEW_DELIVERY_PICKUP_DESCRIPTION')}
             </Text>
           </View>
           <View style={[styles.formGroup, { zIndex: 2 }]}>
-            <Text style={styles.label}>Default pick up address</Text>
+            <Text style={styles.label}>
+              {t('STORE_NEW_DELIVERY_PICKUP_DEFAULT_ADDRESS')}
+            </Text>
             <Text style={styles.optional}>{store.address.name}</Text>
             <Text>{store.address.streetAddress}</Text>
             <Text>{store.address.telephone}</Text>
@@ -200,7 +203,7 @@ function NewDeliveryPickup(props) {
             <Checkbox
               value={customAddress}
               onChange={() => setCustomAddress(!customAddress)}>
-              <Text>Use custom pickup address</Text>
+              <Text>{t('STORE_NEW_DELIVERY_PICKUP_USE_CUSTOM_ADDRESS')}</Text>
             </Checkbox>
           </View>
           <View style={customAddress ? {} : styles.disabled}>

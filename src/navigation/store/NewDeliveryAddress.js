@@ -180,10 +180,12 @@ function NewDeliveryAddress(props) {
                 color={backgroundColor}
                 stroke={10}
               />
-              <Text style={styles.label}>Drop off informations</Text>
+              <Text style={styles.label}>
+                {t('STORE_NEW_DELIVERY_DROPOFF_TITLE')}
+              </Text>
             </View>
             <Text style={styles.optional}>
-              Fill in the information about the drop off location and contact
+              {t('STORE_NEW_DELIVERY_DROPOFF_DESCRIPTION')}
             </Text>
           </View>
           <View style={[styles.formGroup, { zIndex: 2 }]}>
