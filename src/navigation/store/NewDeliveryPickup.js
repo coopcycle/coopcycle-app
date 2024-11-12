@@ -180,16 +180,14 @@ function NewDeliveryPickup(props) {
       }) => (
         <ModalFormWrapper handleSubmit={handleSubmit} t={t}>
           <View style={[styles.formGroup, { zIndex: 2 }]}>
-            <View style={styles.header}>
+            <View style={[styles.header, styles.label]}>
               <IconCircleArrowUpFilled
                 size={24}
                 fill={primaryColor}
                 color={backgroundColor}
                 stroke={10}
               />
-              <Text style={styles.label}>
-                {t('STORE_NEW_DELIVERY_PICKUP_TITLE')}
-              </Text>
+              <Text>{t('STORE_NEW_DELIVERY_PICKUP_TITLE')}</Text>
             </View>
             <Text style={styles.optional}>
               {t('STORE_NEW_DELIVERY_PICKUP_DESCRIPTION')}
@@ -389,7 +387,7 @@ const styles = StyleSheet.create({
   header: {
     display: 'flex',
     flexDirection: 'row',
-    alignContent: 'center',
+    alignItems: 'center',
     gap: 5,
   },
   formGroup: {

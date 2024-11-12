@@ -14,6 +14,7 @@ import KeyboardManager from 'react-native-keyboard-manager';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { connect, useDispatch } from 'react-redux';
 
+import { IconPackage } from '@tabler/icons-react-native';
 import {
   loadPackages,
   loadTimeSlot,
@@ -21,7 +22,10 @@ import {
   loadTimeSlots,
 } from '../../redux/Store/actions';
 import { selectStore, selectTimeSlots } from '../../redux/Store/selectors';
-import { useBackgroundContainerColor } from '../../styles/theme';
+import {
+  useBackgroundContainerColor,
+  usePrimaryColor,
+} from '../../styles/theme';
 import Range from '../checkout/ProductDetails/Range';
 import ModalFormWrapper from './ModalFormWrapper';
 import FormInput from './components/FormInput';
@@ -31,6 +35,7 @@ function DeliveryForm(props) {
   const [isDateTimePickerVisible, setIsDateTimePickerVisible] = useState(false);
   const [selectedTimeSlot, setSelectedTimeSlot] = useState('');
   const backgroundColor = useBackgroundContainerColor();
+  const primaryColor = usePrimaryColor();
   const [selectedChoice, setSelectedChoice] = React.useState(null);
   const [packagesCount, setPackagesCount] = useState([]);
   const dispatch = useDispatch();
@@ -276,6 +281,19 @@ function DeliveryForm(props) {
         setFieldTouched,
       }) => (
         <ModalFormWrapper handleSubmit={handleSubmit} t={t}>
+          <View style={[styles.formGroup, { zIndex: 2 }]}>
+            <View style={[styles.header, styles.label]}>
+              <IconPackage
+                size={24}
+                stroke={primaryColor}
+                color={backgroundColor}
+              />
+              <Text>{t('STORE_NEW_DELIVERY_PACKAGES_TITLE')}</Text>
+            </View>
+            <Text style={styles.optional}>
+              {t('STORE_NEW_DELIVERY_PACKAGES_DESCRIPTION')}
+            </Text>
+          </View>
           {hasTimeSlot ? (
             <TimeSlotSelector
               selectValue={selectedChoice}
@@ -406,6 +424,12 @@ function DeliveryForm(props) {
 }
 
 const styles = StyleSheet.create({
+  header: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 5,
+  },
   label: {
     marginBottom: 8,
     fontWeight: '500',
