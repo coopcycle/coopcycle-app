@@ -220,12 +220,10 @@ function NewDeliveryAddress(props) {
                 onBlur={handleBlur('address')}
                 value={address}
                 onSelectAddress={e => onSelectAddress(e, setFieldValue)}
-                containerStyle={[
-                  {
-                    flex: 1,
-                    justifyContent: 'center',
-                  },
-                ]}
+                containerStyle={{
+                  flex: 1,
+                  justifyContent: 'center',
+                }}
                 style={{
                   borderRadius: 0,
                   padding: 10,

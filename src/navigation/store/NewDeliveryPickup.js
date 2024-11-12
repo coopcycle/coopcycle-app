@@ -143,16 +143,20 @@ function NewDeliveryPickup(props) {
   function submit(values) {
     const pickup = customAddress
       ? {
-          telephone: parsePhoneNumberFromString(
-            values.telephone,
-            country,
-          ).format('E.164'),
-          contactName: values.contactName,
-          description: values.description,
-          businessName: values.businessName,
-          address,
+          address: {
+            ...address,
+            contactName: values.contactName,
+            description: values.description,
+            name: values.businessName,
+            telephone: parsePhoneNumberFromString(
+              values.telephone,
+              country,
+            ).format('E.164'),
+          },
         }
       : undefined;
+
+    console.log(pickup);
 
     navigation.navigate('StoreNewDeliveryAddress', { pickup });
   }
@@ -239,12 +243,10 @@ function NewDeliveryPickup(props) {
                   onBlur={handleBlur('address')}
                   value={address}
                   onSelectAddress={e => onSelectAddress(e, setFieldValue)}
-                  containerStyle={[
-                    {
-                      flex: 1,
-                      justifyContent: 'center',
-                    },
-                  ]}
+                  containerStyle={{
+                    flex: 1,
+                    justifyContent: 'center',
+                  }}
                   style={{
                     borderRadius: 0,
                     padding: 10,
