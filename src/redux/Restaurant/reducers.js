@@ -408,7 +408,7 @@ export default (state = initialState, action = {}) => {
       };
 
     case DELETE_OPENING_HOURS_SPECIFICATION_SUCCESS: {
-      const { specialOpeningHoursSpecification } = state;
+      const { specialOpeningHoursSpecification } = state.restaurant;
 
       return {
         ...state,

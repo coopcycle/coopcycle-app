@@ -68,7 +68,7 @@ class OpeningHoursScreen extends Component {
   }
 
   renderSpecialOpeningHours() {
-    const { specialOpeningHoursSpecification, httpClient } = this.props;
+    const { specialOpeningHoursSpecification } = this.props;
 
     return (
       <Box>
@@ -81,9 +81,7 @@ class OpeningHoursScreen extends Component {
           keyExtractor={(item, index) => `sohs-${index}`}
           renderItem={({ item, index }) => (
             <Pressable
-              onPress={() =>
-                this.props.deleteOpeningHoursSpecification(httpClient, item)
-              }>
+              onPress={() => this.props.deleteOpeningHoursSpecification(item)}>
               <HStack p="3" justifyContent="space-between" alignItems="center">
                 <Text>
                   {this.props.t('RESTAURANT_OPENING_HOURS_VALID_FROM_THROUGH', {
@@ -129,10 +127,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    deleteOpeningHoursSpecification: (httpClient, openingHoursSpecification) =>
-      dispatch(
-        deleteOpeningHoursSpecification(httpClient, openingHoursSpecification),
-      ),
+    deleteOpeningHoursSpecification: openingHoursSpecification =>
+      dispatch(deleteOpeningHoursSpecification(openingHoursSpecification)),
   };
 }
 

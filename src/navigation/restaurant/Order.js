@@ -18,10 +18,11 @@ import {
 import { isMultiVendor } from '../../utils/order';
 import {
   selectIsPrinterConnected,
-  selectPrinter,
   selectIsPrinting,
+  selectPrinter,
 } from '../../redux/Restaurant/selectors';
 import { DatadogLogger } from '../../Datadog';
+import BasicSafeAreaView from '../../components/BasicSafeAreaView'
 
 const OrderNotes = ({ order }) => {
   if (order.notes) {
@@ -49,7 +50,7 @@ class OrderScreen extends Component {
     const canEdit = !isMultiVendor(order);
 
     return (
-      <Box flex={1}>
+      <BasicSafeAreaView>
         <View style={{ flex: 1 }}>
           <OrderHeading
             order={order}
@@ -60,15 +61,14 @@ class OrderScreen extends Component {
               })
             }
             printOrder={() => {
-              const order = this.props.order;
               DatadogLogger.info('printing ticket', {
                 trigger: 'manual',
                 orderId: order.id,
-                restaurantId: order.restaurant.id
+                restaurantId: order.restaurant.id,
               });
               this.props.printOrder(order);
             }}
-            disablePrintButton={ this.props.isPrinting }
+            disablePrintButton={this.props.isPrinting}
           />
           <OrderNotes order={order} />
           <OrderItems order={order} />
@@ -117,7 +117,7 @@ class OrderScreen extends Component {
               onPressFulfill={() => this.fulfillOrder(order)}
             />
           )}
-      </Box>
+      </BasicSafeAreaView>
     );
   }
 }

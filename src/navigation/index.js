@@ -70,6 +70,7 @@ import RestaurantOrderDelay from './restaurant/OrderDelay';
 import RestaurantOrderRefuse from './restaurant/OrderRefuse';
 import RestaurantPrinter from './restaurant/Printer';
 import RestaurantProducts from './restaurant/Products';
+import RestaurantSearch from './restaurant/Search';
 import RestaurantSettings from './restaurant/Settings';
 
 import Delivery from './delivery/Delivery';
@@ -84,6 +85,7 @@ export default {
   RestaurantOrderDelay,
   RestaurantOrderCancel,
   RestaurantDate,
+  RestaurantSearch,
   RestaurantSettings,
   RestaurantProducts,
   RestaurantOpeningHours,

@@ -179,6 +179,8 @@
         "RESTAURANT_SETTINGS_MENU_ACTIVATE": "Activar el menú {{- name}}",
         "RESTAURANT_ALERT_RUSH_MODE_ON": "El modo rush esta activado",
         "RESTAURANT_ALERT_CLOSED": "El restaurante esta cerrado",
+        "RESTAURANT_SEARCH_ORDERS": "Buscar pedido...",
+        "RESTAURANT_SEARCH_ORDERS_INPUT_PLACEHOLDER": "Número de pedido...",
         "CHECKOUT_PRODUCT_OPTIONS_TITLE": "Elección de opciones",
         "CHECKOUT_LOGIN_TITLE": "Autenticación",
         "CHECKOUT_LOGIN_DISCLAIMER": "Por favor inicie sesión para continuar",

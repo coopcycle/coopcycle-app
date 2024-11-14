@@ -60,6 +60,16 @@ export const selectHasReadyState = createSelector(
   autoAcceptOrdersEnabled => autoAcceptOrdersEnabled,
 );
 
+export const selectOrders = createSelector(
+  selectDate,
+  _selectOrders,
+  (date, orders) =>
+    _.sortBy(
+      _.filter(orders, o => matchesDate(o, date)),
+      [o => moment.parseZone(o.pickupExpectedAt)],
+    ),
+);
+
 export const selectNewOrders = createSelector(
   selectDate,
   _selectOrders,
