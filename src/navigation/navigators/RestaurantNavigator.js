@@ -97,5 +97,12 @@ export default () => (
         title: i18n.t('RESTAURANT_LOOPEAT_UPDATE_FORMATS'),
       }}
     />
+    <RootStack.Screen
+      name="RestaurantSearch"
+      component={screens.RestaurantSearch}
+      options={{
+        title: i18n.t('RESTAURANT_SEARCH_ORDERS'),
+      }}
+    />
   </RootStack.Navigator>
 );

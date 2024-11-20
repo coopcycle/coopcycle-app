@@ -9,12 +9,13 @@ import {
 } from 'native-base';
 import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
-import { View } from 'react-native';
+import { Alert, View } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 
 import ItemSeparator from '../../components/ItemSeparator';
-import { changeStatus } from '../../redux/Restaurant/actions';
+import { changeStatus, closeRestaurant } from '../../redux/Restaurant/actions';
+import { selectSpecialOpeningHoursSpecificationForToday } from '../../redux/Restaurant/selectors';
 
 class SettingsScreen extends Component {
   constructor(props) {
@@ -62,6 +63,31 @@ class SettingsScreen extends Component {
         label: this.props.t('RESTAURANT_SETTINGS_MANAGE_PRODUCT_OPTIONS'),
         onPress: () => navigate('RestaurantProductOptions'),
       },
+      ...(!this.props.specialOpeningHoursSpecificationForToday
+        ? [
+            {
+              icon: 'power-off',
+              label: this.props.t('RESTAURANT_CLOSE_ALERT_TITLE'),
+              onPress: () => {
+                Alert.alert(
+                  this.props.t('RESTAURANT_CLOSE_ALERT_TITLE'),
+                  this.props.t('RESTAURANT_CLOSE_ALERT_MESSAGE'),
+                  [
+                    {
+                      text: this.props.t('RESTAURANT_CLOSE_ALERT_CONFIRM'),
+                      onPress: () =>
+                        this.props.closeRestaurant(this.props.restaurant),
+                    },
+                    {
+                      text: this.props.t('CANCEL'),
+                      style: 'cancel',
+                    },
+                  ],
+                );
+              },
+            },
+          ]
+        : []),
       {
         icon: 'calendar',
         label: this.props.t('RESTAURANT_SETTINGS_OPENING_HOURS'),
@@ -133,6 +159,8 @@ function mapStateToProps(state) {
     httpClient: state.app.httpClient,
     restaurant: state.restaurant.restaurant,
     restaurants: state.restaurant.myRestaurants,
+    specialOpeningHoursSpecificationForToday:
+      selectSpecialOpeningHoursSpecificationForToday(state),
   };
 }
 
@@ -140,6 +168,7 @@ function mapDispatchToProps(dispatch) {
   return {
     changeStatus: (restaurant, state) =>
       dispatch(changeStatus(restaurant, state)),
+    closeRestaurant: restaurant => dispatch(closeRestaurant(restaurant)),
   };
 }
 
