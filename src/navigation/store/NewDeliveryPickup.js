@@ -4,9 +4,9 @@ import { AsYouType, parsePhoneNumberFromString } from 'libphonenumber-js';
 import _ from 'lodash';
 import { Checkbox, Text } from 'native-base';
 import React, { useState } from 'react';
-import { withTranslation } from 'react-i18next';
+import { useTranslation, withTranslation } from 'react-i18next';
 import { Platform, StyleSheet, View } from 'react-native';
-import { connect } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import AddressAutocomplete from '../../components/AddressAutocomplete';
 import { assertDelivery } from '../../redux/Store/actions';
 import { selectStore } from '../../redux/Store/selectors';
@@ -19,23 +19,24 @@ import ModalFormWrapper from './ModalFormWrapper';
 import ClientListInput from './components/ClientListInput';
 import FormInput from './components/FormInput';
 
-function NewDeliveryPickup(props) {
+function NewDeliveryPickup({ navigation }) {
   const [validAddress, setValidAddress] = useState(false);
   const [address, setAddress] = useState(null);
+  const [customAddress, setCustomAddress] = useState(false);
+
   const backgroundColor = useBackgroundContainerColor();
   const backgroundHighlightColor = useBackgroundHighlightColor();
   const primaryColor = usePrimaryColor();
-  const [customAddress, setCustomAddress] = useState(false);
 
-  const {
-    store,
-    deliveryError,
-    addresses,
-    assertDelivery,
-    t,
-    navigation,
-    country,
-  } = props;
+  const { t } = useTranslation();
+  const dispatch = useDispatch();
+
+  const country = useSelector(state =>
+    state.app.settings.country.toUpperCase(),
+  );
+  const store = useSelector(selectStore);
+  const deliveryError = useSelector(state => state.store.assertDeliveryError);
+  const addresses = useSelector(state => state.store.addresses);
 
   const inputStyles = {
     backgroundColor,
@@ -43,15 +44,10 @@ function NewDeliveryPickup(props) {
   };
 
   function setAddressData(data, setFieldValue) {
-    const contactName = data.contactName || '';
-    const telephone = data.telephone || '';
-    const businessName = data.businessName || '';
-    const description = data.description || '';
-
-    setFieldValue('contactName', contactName);
-    setFieldValue('telephone', telephone);
-    setFieldValue('businessName', businessName);
-    setFieldValue('description', description);
+    setFieldValue('contactName', data.contactName || '');
+    setFieldValue('telephone', data.telephone || '');
+    setFieldValue('businessName', data.businessName || '');
+    setFieldValue('description', data.description || '');
     setAddress({
       streetAddress: data.streetAddress,
       geo: data.geo,
@@ -73,9 +69,7 @@ function NewDeliveryPickup(props) {
       },
     };
 
-    assertDelivery(delivery, () => {
-      setValidAddress(true);
-    });
+    dispatch(assertDelivery(delivery, () => setValidAddress(true)));
   }
 
   let autocompleteProps = {
@@ -99,29 +93,28 @@ function NewDeliveryPickup(props) {
   }
 
   function validate(values) {
-    console.log(customAddress);
-
-    if (!customAddress) return {};
     const errors = {};
 
-    if (_.isEmpty(values.telephone)) {
-      errors.telephone = t('STORE_NEW_DELIVERY_ERROR.EMPTY_PHONE_NUMBER');
-    } else {
-      const phoneNumber = parsePhoneNumberFromString(
-        _.trim(values.telephone),
-        country,
-      );
-      if (!phoneNumber || !phoneNumber.isValid()) {
-        errors.telephone = t('INVALID_PHONE_NUMBER');
+    if (customAddress) {
+      if (_.isEmpty(values.telephone)) {
+        errors.telephone = t('STORE_NEW_DELIVERY_ERROR.EMPTY_PHONE_NUMBER');
+      } else {
+        const phoneNumber = parsePhoneNumberFromString(
+          _.trim(values.telephone),
+          country,
+        );
+        if (!phoneNumber || !phoneNumber.isValid()) {
+          errors.telephone = t('INVALID_PHONE_NUMBER');
+        }
       }
-    }
 
-    if (_.isEmpty(values.contactName)) {
-      errors.contactName = t('STORE_NEW_DELIVERY_ERROR.EMPTY_CONTACT_NAME');
-    }
+      if (_.isEmpty(values.contactName)) {
+        errors.contactName = t('STORE_NEW_DELIVERY_ERROR.EMPTY_CONTACT_NAME');
+      }
 
-    if (!validAddress) {
-      errors.address = t('STORE_NEW_DELIVERY_ADDRESS_HELP');
+      if (!validAddress) {
+        errors.address = t('STORE_NEW_DELIVERY_ADDRESS_HELP');
+      }
     }
 
     return errors;
@@ -155,8 +148,6 @@ function NewDeliveryPickup(props) {
           },
         }
       : undefined;
-
-    console.log(pickup);
 
     navigation.navigate('StoreNewDeliveryAddress', { pickup });
   }
