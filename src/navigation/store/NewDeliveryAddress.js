@@ -45,7 +45,7 @@ function NewDeliveryAddress(props) {
   function setAddressData(data, setFieldValue) {
     const contactName = data.contactName || '';
     const telephone = data.telephone || '';
-    const businessName = data.businessName || '';
+    const businessName = data.name || '';
     const description = data.description || '';
 
     setFieldValue('contactName', contactName);

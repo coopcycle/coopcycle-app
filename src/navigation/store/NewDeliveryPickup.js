@@ -46,7 +46,7 @@ function NewDeliveryPickup({ navigation }) {
   function setAddressData(data, setFieldValue) {
     setFieldValue('contactName', data.contactName || '');
     setFieldValue('telephone', data.telephone || '');
-    setFieldValue('businessName', data.businessName || '');
+    setFieldValue('businessName', data.name || '');
     setFieldValue('description', data.description || '');
     setAddress({
       streetAddress: data.streetAddress,
