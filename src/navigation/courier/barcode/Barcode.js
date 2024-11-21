@@ -141,16 +141,16 @@ function BarcodePage({ t, httpClient, navigation, _route, taskLists }) {
     }
   }
 
-  async function checkClientAction({ action, ...params }) {
+  function checkClientAction({ action, ...params }) {
     if (!entity) return;
 
     switch (action) {
       case 'ask_to_unassign':
-        return await askToUnassign();
+        return askToUnassign();
       case 'ask_to_assign':
-        return await askToAssign();
+        return askToAssign();
       case 'ask_to_complete':
-        return await new Promise((resolve, _reject) => {
+        return new Promise((resolve, _reject) => {
           navigateToTask(
             navigation,
             null,
@@ -159,7 +159,7 @@ function BarcodePage({ t, httpClient, navigation, _route, taskLists }) {
           resolve();
         });
       case 'warn_multiple_packages':
-        return await params.fn();
+        return params.fn();
       default:
         return;
     }
