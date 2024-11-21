@@ -31,8 +31,7 @@ import {
 } from '../../redux/Restaurant/selectors';
 import PushNotification from '../../notifications';
 import OrdersToPrintQueue from './components/OrdersToPrintQueue';
-import { connect as connectCentrifugo } from '../../redux/middlewares/CentrifugoMiddleware/actions';
-import BasicSafeAreaView from '../../components/BasicSafeAreaView'
+import BasicSafeAreaView from '../../components/BasicSafeAreaView';
 
 const RNSound = NativeModules.RNSound;
 
@@ -64,12 +63,6 @@ export default function DashboardPage({ navigation, route }) {
       deactivateKeepAwake();
     };
   }, []);
-
-  useEffect(() => {
-    if (!isCentrifugoConnected) {
-      dispatch(connectCentrifugo());
-    }
-  }, [dispatch, isCentrifugoConnected]);
 
   useEffect(() => {
     if (route.params?.loadOrders ?? true) {

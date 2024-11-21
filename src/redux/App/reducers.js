@@ -5,11 +5,7 @@
 import { AppState } from 'react-native';
 import Config from 'react-native-config';
 
-import {
-  CENTRIFUGO_MESSAGE,
-  CONNECTED,
-  DISCONNECTED,
-} from '../middlewares/CentrifugoMiddleware';
+import { connected, disconnected } from '../middlewares/CentrifugoMiddleware';
 
 import {
   ACCEPT_PRIVACY_POLICY,
@@ -172,13 +168,13 @@ export default (state = initialState, action = {}) => {
         loading: action.payload,
       };
 
-    case CONNECTED:
+    case connected.type:
       return {
         ...state,
         isCentrifugoConnected: true,
       };
 
-    case DISCONNECTED:
+    case disconnected.type:
       return {
         ...state,
         isCentrifugoConnected: false,
