@@ -46,7 +46,6 @@ export default function DashboardPage({ navigation, route }) {
     state => state.app.isInternetReachable,
   );
   const isLoading = useSelector(selectIsLoading);
-  const isCentrifugoConnected = useSelector(selectIsCentrifugoConnected);
 
   const { navigate } = navigation;
 
@@ -171,7 +170,7 @@ export default function DashboardPage({ navigation, route }) {
           }
         />
       )}
-      <WebSocketIndicator connected={isCentrifugoConnected} />
+      <WebSocketIndicator />
       <OrdersToPrintQueue />
       <DatePickerHeader
         date={date}

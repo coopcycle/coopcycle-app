@@ -56,6 +56,7 @@ import {
 
 import { EVENT as EVENT_ORDER } from '../../domain/Order';
 import { EVENT as EVENT_TASK_COLLECTION } from '../../domain/TaskCollection';
+import { connect } from '../middlewares/CentrifugoMiddleware/actions';
 
 const initialState = {
   customBuild: !!Config.DEFAULT_SERVER,
@@ -93,6 +94,7 @@ const initialState = {
   loginByEmailErrors: {},
   isBackgroundGeolocationEnabled: false,
   hasDisclosedBackgroundPermission: false,
+  isCentrifugoConnecting: false,
   isCentrifugoConnected: false,
   modal: {
     show: false,
@@ -168,15 +170,28 @@ export default (state = initialState, action = {}) => {
         loading: action.payload,
       };
 
+    case connect.type: {
+      if (state.isCentrifugoConnected) {
+        return state;
+      }
+
+      return {
+        ...state,
+        isCentrifugoConnecting: true,
+      };
+    }
+
     case connected.type:
       return {
         ...state,
+        isCentrifugoConnecting: false,
         isCentrifugoConnected: true,
       };
 
     case disconnected.type:
       return {
         ...state,
+        isCentrifugoConnecting: false,
         isCentrifugoConnected: false,
       };
 

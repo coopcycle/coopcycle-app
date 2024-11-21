@@ -67,6 +67,7 @@
     "CALCULATING_YOUR_POS": "Calcul de votre position",
     "TRACKING_YOUR_POS": "Suivi de votre position",
     "CONN_LOST": "Connexion perdue, reconnexion",
+    "CONN_LOST_IDLE": "Connexion perdue",
     "AUTHENTICATING": "Authentification…",
     "REFUSE": "Refuser",
     "ACCEPT": "Accepter",
