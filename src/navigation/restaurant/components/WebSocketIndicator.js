@@ -7,7 +7,7 @@ import {
   selectIsCentrifugoConnected,
   selectIsCentrifugoConnecting,
 } from '../../../redux/App/selectors';
-import { connect } from '../../../redux/middlewares/CentrifugoMiddleware/actions';
+import { connectCentrifugo } from '../../../redux/middlewares/CentrifugoMiddleware/actions';
 
 const WebSocketIndicator = () => {
   const connecting = useSelector(selectIsCentrifugoConnecting);
@@ -37,7 +37,7 @@ const WebSocketIndicator = () => {
         <Button
           variant="link"
           onPress={() => {
-            dispatch(connect());
+            dispatch(connectCentrifugo());
           }}>
           <Text style={styles.text}>{t('RETRY')}</Text>
         </Button>

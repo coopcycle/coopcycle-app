@@ -3,11 +3,11 @@ import { updateTask } from '../../Dispatch/actions';
 
 export const CENTRIFUGO_MESSAGE = '@centrifugo/MESSAGE';
 
-export const connect = createAction('@centrifugo/CONNECT');
-export const disconnect = createAction('@centrifugo/DISCONNECT');
+export const connectCentrifugo = createAction('@centrifugo/CONNECT');
+export const disconnectCentrifugo = createAction('@centrifugo/DISCONNECT');
 
-export const connected = createAction('@centrifugo/CONNECTED');
-export const disconnected = createAction('@centrifugo/DISCONNECTED');
+export const centrifugoConnected = createAction('@centrifugo/CONNECTED');
+export const centrifugoDisconnected = createAction('@centrifugo/DISCONNECTED');
 
 export const _message = createAction(CENTRIFUGO_MESSAGE);
 

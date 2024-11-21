@@ -5,7 +5,7 @@
 import { AppState } from 'react-native';
 import Config from 'react-native-config';
 
-import { connected, disconnected } from '../middlewares/CentrifugoMiddleware';
+import { centrifugoConnected, centrifugoDisconnected } from '../middlewares/CentrifugoMiddleware';
 
 import {
   ACCEPT_PRIVACY_POLICY,
@@ -56,7 +56,7 @@ import {
 
 import { EVENT as EVENT_ORDER } from '../../domain/Order';
 import { EVENT as EVENT_TASK_COLLECTION } from '../../domain/TaskCollection';
-import { connect } from '../middlewares/CentrifugoMiddleware/actions';
+import { connectCentrifugo } from '../middlewares/CentrifugoMiddleware/actions';
 
 const initialState = {
   customBuild: !!Config.DEFAULT_SERVER,
@@ -170,7 +170,7 @@ export default (state = initialState, action = {}) => {
         loading: action.payload,
       };
 
-    case connect.type: {
+    case connectCentrifugo.type: {
       if (state.isCentrifugoConnected) {
         return state;
       }
@@ -181,14 +181,14 @@ export default (state = initialState, action = {}) => {
       };
     }
 
-    case connected.type:
+    case centrifugoConnected.type:
       return {
         ...state,
         isCentrifugoConnecting: false,
         isCentrifugoConnected: true,
       };
 
-    case disconnected.type:
+    case centrifugoDisconnected.type:
       return {
         ...state,
         isCentrifugoConnecting: false,

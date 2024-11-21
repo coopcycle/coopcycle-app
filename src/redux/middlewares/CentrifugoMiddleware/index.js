@@ -3,10 +3,10 @@ import parseUrl from 'url-parse';
 
 import {
   CENTRIFUGO_MESSAGE,
-  connect,
-  connected,
-  disconnect,
-  disconnected,
+  connectCentrifugo,
+  centrifugoConnected,
+  disconnectCentrifugo,
+  centrifugoDisconnected,
   message,
 } from './actions';
 
@@ -63,12 +63,12 @@ let subscription = null;
 export default ({ getState, dispatch }) => {
   return next => action => {
     if (action.type === LOGOUT_SUCCESS) {
-      dispatch(disconnect());
+      dispatch(disconnectCentrifugo());
       return next(action);
     }
 
     if (
-      action.type === connect.type ||
+      action.type === connectCentrifugo.type ||
       shouldConnectBasedOnAppState(getState, action)
     ) {
       const state = getState();
@@ -113,8 +113,8 @@ export default ({ getState, dispatch }) => {
 
         centrifuge.setToken(tokenResponse.token);
 
-        centrifuge.on('connect', context => dispatch(connected(context)));
-        centrifuge.on('disconnect', context => dispatch(disconnected(context)));
+        centrifuge.on('connect', context => dispatch(centrifugoConnected(context)));
+        centrifuge.on('disconnect', context => dispatch(centrifugoDisconnected(context)));
 
         subscription = centrifuge.subscribe(
           `${tokenResponse.namespace}_events#${user.username}`,
@@ -128,7 +128,7 @@ export default ({ getState, dispatch }) => {
     }
 
     if (
-      action.type === disconnect.type ||
+      action.type === disconnectCentrifugo.type ||
       shouldDisconnectBasedOnAppState(getState, action)
     ) {
       if (subscription) {
@@ -148,4 +148,4 @@ export default ({ getState, dispatch }) => {
   };
 };
 
-export { CENTRIFUGO_MESSAGE, connected, disconnected };
+export { CENTRIFUGO_MESSAGE, centrifugoConnected, centrifugoDisconnected };
