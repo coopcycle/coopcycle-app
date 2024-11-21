@@ -174,6 +174,8 @@ const loadMyRestaurantsFailure = createFsAction(LOAD_MY_RESTAURANTS_FAILURE);
 
 const setSettings = createFsAction(SET_SETTINGS);
 
+export const appStateChanged = createAction('@app/APP_STATE_CHANGED');
+
 export const setInternetReachable = createFsAction(SET_INTERNET_REACHABLE);
 
 export const setBackgroundGeolocationEnabled = createFsAction(

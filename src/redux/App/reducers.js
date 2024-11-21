@@ -2,7 +2,7 @@
 /*
  * App reducer, dealing with non-domain specific state
  */
-
+import { AppState } from 'react-native';
 import Config from 'react-native-config';
 
 import {
@@ -54,6 +54,7 @@ import {
   SET_SERVERS,
   SET_SETTINGS,
   SET_USER,
+  appStateChanged,
   setSpinnerDelayEnabled,
 } from './actions';
 
@@ -68,6 +69,7 @@ const initialState = {
   httpClient: null,
   user: null,
   currentRoute: null,
+  appState: AppState.currentState,
   pushNotificationToken: null,
   pushNotificationTokenSaved: null,
   loading: false,
@@ -449,6 +451,11 @@ export default (state = initialState, action = {}) => {
         isSpinnerDelayEnabled: action.payload,
       };
 
+    case appStateChanged.type:
+      return {
+        ...state,
+        appState: action.payload,
+      };
   }
 
   return state;
