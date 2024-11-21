@@ -6,7 +6,6 @@ import {
   StyleSheet,
   Text,
   View,
-  Vibration,
   Alert,
 } from 'react-native';
 import { Button, IconButton, TextArea, FormControl, Icon } from 'native-base';
@@ -59,13 +58,12 @@ function TextSection({ title, value, variant = 'data' }) {
   );
 }
 
-function BarcodePage({ t, httpClient, navigation, route, taskLists }) {
+function BarcodePage({ t, httpClient, navigation, _route, taskLists }) {
   const [barcode, setBarcode] = useState(null);
   const [entity, setEntity] = useState(null);
-  const [clientAction, setClientAction] = useState(null);
+  const [clientActionsQueue, setClientActionsQueue] = useState([]);
   const [showNoteModal, setShowNoteModal] = useState(false);
   const [noteLoading, setNoteLoading] = useState(false);
-  const [disableScan, setDisableScan] = useState(false);
 
   const note = useRef(null);
 
@@ -78,14 +76,14 @@ function BarcodePage({ t, httpClient, navigation, route, taskLists }) {
           {
             text: 'Unassign',
             onPress: () => {
-              _unassignTask(httpClient, entity.id).then(resolve).catch(reject);
+              _unassignTask(httpClient, entity.id)
+                .then(resolve)
+                .catch(reject);
             },
           },
           {
             text: 'Ok',
-            onPress: () => {
-              resolve();
-            },
+            onPress: resolve,
           },
         ],
       );
@@ -100,16 +98,25 @@ function BarcodePage({ t, httpClient, navigation, route, taskLists }) {
           {
             text: 'Assign to me',
             onPress: () => {
-              _assignTask(httpClient, entity.id).then(resolve).catch(reject);
+              _assignTask(httpClient, entity.id)
+                .then(resolve)
+                .catch(reject);
             },
           },
           {
             text: 'Ok',
-            onPress: () => {
-              resolve();
-            },
+            onPress: resolve,
           },
         ],
+      );
+    });
+
+  const warningMultiplePackages = ({ count, details }) =>
+    new Promise((resolve, _reject) => {
+      Alert.alert(
+        t('TASK_MULTIPLE_PACKAGES'),
+        `${t('X_PACKAGES', { count })}:\n\n${details}\n\n${t('NO_NEED_TO_SCAN_OTHERS')}`,
+        [{ text: t('OK'), onPress: resolve }],
       );
     });
 
@@ -120,42 +127,63 @@ function BarcodePage({ t, httpClient, navigation, route, taskLists }) {
       const details = packages
         .map(p => `${p.barcodes.length}x ${p.name}`)
         .join('\n');
-      setDisableScan(true);
-      Alert.alert(
-        t('TASK_MULTIPLE_PACKAGES'),
-        `${t('X_PACKAGES', { count })}:\n\n${details}\n\n${t('NO_NEED_TO_SCAN_OTHERS')}`,
-        [{ text: t('OK'), onPress: () => setDisableScan(false) }],
-      );
+      return {
+        action: 'warn_multiple_packages',
+        fn: () => warningMultiplePackages({ count, details }),
+      };
     }
+    return;
   };
 
-  useEffect(() => {
-    async function checkClientAction() {
-      if (!clientAction || !entity) return;
-      switch (clientAction) {
-        case 'ask_to_unassign':
-          await askToUnassign();
-          break;
-        case 'ask_to_assign':
-          await askToAssign();
-          break;
-        case 'ask_to_complete':
+  async function* actionGenerator(actions) {
+    for (const action of actions) {
+      yield action;
+    }
+  }
+
+  async function checkClientAction({ action, ...params }) {
+    if (!entity) return;
+
+    switch (action) {
+      case 'ask_to_unassign':
+        return await askToUnassign();
+      case 'ask_to_assign':
+        return await askToAssign();
+      case 'ask_to_complete':
+        return await new Promise((resolve, _reject) => {
           navigateToTask(
             navigation,
             null,
             taskLists.find(t => t['@id'] === `/api/tasks/${entity.id}`),
           );
-          break;
-      }
-      setClientAction(null);
+          resolve();
+        });
+      case 'warn_multiple_packages':
+        return await params.fn();
+      default:
+        return;
     }
-    checkClientAction();
-  }, [clientAction]);
+  }
 
   useEffect(() => {
-    if (!entity) return;
-    checkMultiplePackages(entity?.barcodes?.packages);
-  }, [entity]);
+    async function processActions() {
+      if (clientActionsQueue.length === 0) return;
+
+      const generator = actionGenerator(clientActionsQueue);
+
+      try {
+        for await (const action of generator) {
+          await checkClientAction(action);
+        }
+      } catch (error) {
+        console.error('Error processing actions:', error);
+      } finally {
+        setClientActionsQueue([]);
+      }
+    }
+
+    processActions();
+  }, [clientActionsQueue]);
 
   return (
     <>
@@ -184,16 +212,22 @@ function BarcodePage({ t, httpClient, navigation, route, taskLists }) {
       </BottomModal>
       <View style={{ flex: 1 }}>
         <BarcodeCameraView
-          disabled={disableScan || showNoteModal || clientAction !== null}
+          disabled={showNoteModal || clientActionsQueue.length > 0}
           onScanned={async code => {
-            if (clientAction) return;
+            if (clientActionsQueue.length > 0) return;
             const { entity, client_action } = await _fetchBarcode(
               httpClient,
               code,
             );
             setBarcode(code);
             setEntity(entity);
-            setClientAction(client_action);
+
+            const action = checkMultiplePackages(entity?.barcodes?.packages);
+            setClientActionsQueue([
+              ...clientActionsQueue,
+              { action: client_action },
+              action,
+            ]);
           }}
         />
         <ScrollView
