@@ -7,7 +7,7 @@ import {
   selectIsCentrifugoConnected,
   selectIsCentrifugoConnecting,
 } from '../../../redux/App/selectors';
-import { connectCentrifugo } from '../../../redux/middlewares/CentrifugoMiddleware/actions';
+import { connectCentrifugo } from '../../../redux/middlewares/CentrifugoMiddleware';
 
 const WebSocketIndicator = () => {
   const connecting = useSelector(selectIsCentrifugoConnecting);

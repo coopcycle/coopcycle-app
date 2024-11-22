@@ -3,10 +3,10 @@ import parseUrl from 'url-parse';
 
 import {
   CENTRIFUGO_MESSAGE,
-  connectCentrifugo,
   centrifugoConnected,
-  disconnectCentrifugo,
   centrifugoDisconnected,
+  connectCentrifugo,
+  disconnectCentrifugo,
   message,
 } from './actions';
 
@@ -113,8 +113,12 @@ export default ({ getState, dispatch }) => {
 
         centrifuge.setToken(tokenResponse.token);
 
-        centrifuge.on('connect', context => dispatch(centrifugoConnected(context)));
-        centrifuge.on('disconnect', context => dispatch(centrifugoDisconnected(context)));
+        centrifuge.on('connect', context =>
+          dispatch(centrifugoConnected(context)),
+        );
+        centrifuge.on('disconnect', context =>
+          dispatch(centrifugoDisconnected(context)),
+        );
 
         subscription = centrifuge.subscribe(
           `${tokenResponse.namespace}_events#${user.username}`,
@@ -148,4 +152,10 @@ export default ({ getState, dispatch }) => {
   };
 };
 
-export { CENTRIFUGO_MESSAGE, centrifugoConnected, centrifugoDisconnected };
+export {
+  CENTRIFUGO_MESSAGE,
+  centrifugoConnected,
+  centrifugoDisconnected,
+  connectCentrifugo,
+  disconnectCentrifugo,
+};

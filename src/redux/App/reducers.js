@@ -5,7 +5,11 @@
 import { AppState } from 'react-native';
 import Config from 'react-native-config';
 
-import { centrifugoConnected, centrifugoDisconnected } from '../middlewares/CentrifugoMiddleware';
+import {
+  centrifugoConnected,
+  centrifugoDisconnected,
+  connectCentrifugo,
+} from '../middlewares/CentrifugoMiddleware';
 
 import {
   ACCEPT_PRIVACY_POLICY,
@@ -56,7 +60,6 @@ import {
 
 import { EVENT as EVENT_ORDER } from '../../domain/Order';
 import { EVENT as EVENT_TASK_COLLECTION } from '../../domain/TaskCollection';
-import { connectCentrifugo } from '../middlewares/CentrifugoMiddleware/actions';
 
 const initialState = {
   customBuild: !!Config.DEFAULT_SERVER,
