@@ -1,6 +1,7 @@
 import {
   ASSERT_DELIVERY_ERROR,
   CREATE_DELIVERY_SUCCESS,
+  GET_PRICE_ERROR,
   GET_PRICE_SUCCESS,
   INIT_SUCCESS,
   LOAD_ADDRESSES_SUCCESS,
@@ -84,6 +85,14 @@ export default (state = initialState, action = {}) => {
         price: formatPrice(amount),
         priceExcludingTax: formatPrice(amount - tax.amount),
       };
+
+    case GET_PRICE_ERROR:
+      return {
+        ...state,
+        price: null,
+        priceExcludingTax: null,
+      };
+
     case LOAD_DELIVERIES_SUCCESS:
       const { store, deliveries, pagination } = action.payload;
 
