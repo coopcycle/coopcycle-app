@@ -538,6 +538,15 @@
     "ORDER__SHIPPING_TIME_RANGE__NOT_AVAILABLE": "Not available at the moment",
     "LOOPEAT_HAS_RETURNS": "This task has zero waste returns",
     "EDENRED_ELIGIBLE_AMOUNT": "Ticket Restaurant® eligible amount",
-    "EDENRED_COMPLEMENT": "Complement"
+    "EDENRED_COMPLEMENT": "Complement",
+    "BARCODE_TASK_ALREADY_ASSIGNED_TITLE": "Task already assigned",
+    "BARCODE_TASK_ALREADY_ASSIGNED_ANOTHER_MESSAGE": "This task has already been assigned to another user",
+    "BARCODE_TASK_ALREADY_ASSIGNED_SELF_MESSAGE": "This task has already been assigned to you",
+    "BARCODE_TASK_ALREADY_ASSIGNED_UNASSIGN": "Unassign",
+    "BARCODE_TASK_ALREADY_ASSIGNED_ASSIGN_TO_ME": "Assign to me",
+    "TASK_MULTIPLE_PACKAGES": "Multiple packages",
+    "X_PACKAGES": "{{count}} packages",
+    "NO_NEED_TO_SCAN_OTHERS": "No need to scan the others packages.",
+    "ADD_NOTE": "Add Note"
   }
 }

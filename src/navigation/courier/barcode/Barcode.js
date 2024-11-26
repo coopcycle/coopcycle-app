@@ -1,13 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
-import {
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-  Alert,
-} from 'react-native';
+import { ScrollView, StyleSheet, Text, View, Alert } from 'react-native';
 import { Button, IconButton, TextArea, FormControl, Icon } from 'native-base';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import BarcodeCameraView from '../../../components/BarcodeCameraView';
@@ -70,19 +64,17 @@ function BarcodePage({ t, httpClient, navigation, _route, taskLists }) {
   const askToUnassign = () =>
     new Promise((resolve, reject) => {
       Alert.alert(
-        'Task already assigned',
-        'This task is already assigned to you',
+        t('BARCODE_TASK_ALREADY_ASSIGNED_TITLE'),
+        t('BARCODE_TASK_ALREADY_ASSIGNED_SELF_MESSAGE'),
         [
           {
-            text: 'Unassign',
+            text: t('BARCODE_TASK_ALREADY_ASSIGNED_UNASSIGN'),
             onPress: () => {
-              _unassignTask(httpClient, entity.id)
-                .then(resolve)
-                .catch(reject);
+              _unassignTask(httpClient, entity.id).then(resolve).catch(reject);
             },
           },
           {
-            text: 'Ok',
+            text: t('OK'),
             onPress: resolve,
           },
         ],
@@ -92,19 +84,17 @@ function BarcodePage({ t, httpClient, navigation, _route, taskLists }) {
   const askToAssign = () =>
     new Promise((resolve, reject) => {
       Alert.alert(
-        'Task already assigned',
-        'This task is already assigned to another courier',
+        t('BARCODE_TASK_ALREADY_ASSIGNED_TITLE'),
+        t('BARCODE_TASK_ALREADY_ASSIGNED_ANOTHER_MESSAGE'),
         [
           {
-            text: 'Assign to me',
+            text: t('BARCODE_TASK_ALREADY_ASSIGNED_ASSIGN'),
             onPress: () => {
-              _assignTask(httpClient, entity.id)
-                .then(resolve)
-                .catch(reject);
+              _assignTask(httpClient, entity.id).then(resolve).catch(reject);
             },
           },
           {
-            text: 'Ok',
+            text: t('OK'),
             onPress: resolve,
           },
         ],
@@ -132,7 +122,7 @@ function BarcodePage({ t, httpClient, navigation, _route, taskLists }) {
         fn: () => warningMultiplePackages({ count, details }),
       };
     }
-    return;
+    return null;
   };
 
   async function* actionGenerator(actions) {
@@ -223,11 +213,11 @@ function BarcodePage({ t, httpClient, navigation, _route, taskLists }) {
             setEntity(entity);
 
             const action = checkMultiplePackages(entity?.barcodes?.packages);
-            setClientActionsQueue([
-              ...clientActionsQueue,
-              { action: client_action },
-              action,
-            ]);
+            setClientActionsQueue(
+              [...clientActionsQueue, { action: client_action }, action].filter(
+                e => e,
+              ),
+            );
           }}
         />
         <ScrollView
@@ -272,7 +262,7 @@ function BarcodePage({ t, httpClient, navigation, _route, taskLists }) {
             disabled={entity == null}
             leftIcon={<Icon as={Ionicons} name="document" color="white" />}
             onPress={() => setShowNoteModal(true)}>
-            Add Note
+            {t('ADD_NOTE')}
           </Button>
           <IconButton
             onPress={() =>

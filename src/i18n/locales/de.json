@@ -367,6 +367,15 @@
     "CART_TIME_RANGE_CHANGED_MODAL_MESSAGE": "Die Öffnungszeiten erlauben es nicht, die Bestellung heute aufzugeben",
     "CART_TIME_RANGE_CHANGED_MODAL_CHOOSE_TIME_RANGE_TEXT": "Bitte wählen Sie einen anderen Zeitraum",
     "CART_TIME_RANGE_CHANGED_MODAL_SELECT_TIME_RANGE_ACTION": "Lieferzeit ändern",
-    "CART_TIME_RANGE_CHANGED_MODAL_CHOOSE_RESTAURANT_ACTION": "Wählen Sie ein anderes Restaurant"
+    "CART_TIME_RANGE_CHANGED_MODAL_CHOOSE_RESTAURANT_ACTION": "Wählen Sie ein anderes Restaurant",
+        "BARCODE_TASK_ALREADY_ASSIGNED_TITLE": "Aufgabe bereits zugewiesen",
+    "BARCODE_TASK_ALREADY_ASSIGNED_ANOTHER_MESSAGE": "Diese Aufgabe wurde bereits einem anderen Benutzer zugewiesen",
+    "BARCODE_TASK_ALREADY_ASSIGNED_SELF_MESSAGE": "Diese Aufgabe wurde dir bereits zugewiesen",
+    "BARCODE_TASK_ALREADY_ASSIGNED_UNASSIGN": "Zuweisung aufheben",
+    "BARCODE_TASK_ALREADY_ASSIGNED_ASSIGN_TO_ME": "Mir zuweisen",
+    "TASK_MULTIPLE_PACKAGES": "Mehrere Pakete",
+    "X_PACKAGES": "{{count}} Pakete",
+    "NO_NEED_TO_SCAN_OTHERS": "Es ist nicht nötig, die anderen Pakete zu scannen.",
+    "ADD_NOTE": "Notiz hinzufügen"
   }
 }

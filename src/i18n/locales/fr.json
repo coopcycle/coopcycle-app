@@ -510,6 +510,15 @@
     "ORDER__SHIPPED_AT__EXPIRED": "L'horaire de livraison est dépassé",
     "ORDER__SHIPPING_TIME_RANGE__NOT_AVAILABLE": "Indisponible pour l'instant",
     "EDENRED_ELIGIBLE_AMOUNT": "Montant éligible Ticket Restaurant®",
-    "EDENRED_COMPLEMENT": "Complément"
+    "EDENRED_COMPLEMENT": "Complément",
+        "BARCODE_TASK_ALREADY_ASSIGNED_TITLE": "Tâche déjà assignée",
+    "BARCODE_TASK_ALREADY_ASSIGNED_ANOTHER_MESSAGE": "Cette tâche a déjà été assignée à un autre utilisateur",
+    "BARCODE_TASK_ALREADY_ASSIGNED_SELF_MESSAGE": "Cette tâche vous a déjà été assignée",
+    "BARCODE_TASK_ALREADY_ASSIGNED_UNASSIGN": "Désassigner",
+    "BARCODE_TASK_ALREADY_ASSIGNED_ASSIGN_TO_ME": "M'assigner",
+    "TASK_MULTIPLE_PACKAGES": "Plusieurs colis",
+    "X_PACKAGES": "{{count}} colis",
+    "NO_NEED_TO_SCAN_OTHERS": "Pas besoin de scanner les autres colis.",
+    "ADD_NOTE": "Ajouter une note"
   }
 }
