@@ -427,6 +427,7 @@
     "RESTAURANT_PRODUCT_OPTIONS": "Product options",
     "RESTAURANT_PRE_ORDER": "Pre-order",
     "RESTAURANT_CLOSED_BUT_OPENS": "This restaurant is closed now but opens {{ datetime }}. You can still order for later on though!",
+    "RESTAURANT_CLOSED_PRE_ORDER": "This restaurant is closed now. You can still order for {{ datetime }} though!",
     "RESTAURANT_CLOSED_AND_NOT_AVAILABLE": "This restaurant is closed and not available until {{ datetime }}.",
     "CHECKOUT_AS_GUEST": "Checkout as guest",
     "GUEST_CHECKOUT_ORDER_EMAIL_HELP": "To send you updates about your order",
