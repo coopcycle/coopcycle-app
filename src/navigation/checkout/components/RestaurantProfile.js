@@ -15,8 +15,8 @@ import DangerAlert from '../../../components/DangerAlert';
 import i18n from '../../../i18n';
 import moment from 'moment/moment';
 import {
-  isRestaurantAvailable,
-  isRestaurantOpeningSoon,
+  getNextShippingTime,
+  isRestaurantOrderingAvailable,
   shouldShowPreOrder,
 } from '../../../utils/checkout';
 import { RestaurantBanner } from '../../../components/RestaurantBanner';
@@ -96,17 +96,41 @@ const styles = StyleSheet.create({
 });
 
 function OpeningHoursWarning({
-  currentTimeSlot,
-  isAvailable,
-  isOpeningSoon,
+  openingHoursSpecification,
+  isOrderingAvailable,
   showPreOrder,
+  nextShippingTime,
 }) {
+  if (!isOrderingAvailable) {
+    //FIXME: this is based on the regular opening hours
+    // and does not take closing rules ("Holidays") into account
+    const nextOpeningHours = openingHoursSpecification.currentTimeSlot.timeSlot;
+
+    if (!nextOpeningHours) {
+      // when restaurant is disabled it will be shown on the banner
+      // and in the 'timing' section
+      return null;
+    }
+
+    return (
+      <DangerAlert
+        text={`${i18n.t('RESTAURANT_CLOSED_AND_NOT_AVAILABLE', {
+          datetime: moment(nextOpeningHours[0])
+            .calendar(moment(), {
+              sameElse: 'llll',
+            })
+            .replace(/\s/g, '\u00A0'),
+        })}`}
+      />
+    );
+  }
+
   if (showPreOrder) {
     return (
       <DangerAlert
         adjustsFontSizeToFit={true}
-        text={`${i18n.t('RESTAURANT_CLOSED_BUT_OPENS', {
-          datetime: moment(currentTimeSlot.timeSlot[0])
+        text={`${i18n.t('RESTAURANT_CLOSED_PRE_ORDER', {
+          datetime: moment(nextShippingTime.range[0])
             .calendar(moment(), {
               sameElse: 'llll',
             })
@@ -116,27 +140,12 @@ function OpeningHoursWarning({
     );
   }
 
-  if (!isAvailable && isOpeningSoon) {
-    return (
-      <DangerAlert
-        text={`${i18n.t('RESTAURANT_CLOSED_AND_NOT_AVAILABLE', {
-          datetime: moment(currentTimeSlot.timeSlot[0])
-            .calendar(moment(), {
-              sameElse: 'llll',
-            })
-            .replace(/\s/g, '\u00A0'),
-        })}`}
-      />
-    );
-  }
-
-  // when restaurant is not available
-  // it will be shown on the banner and in the 'timing' section
+  // no warnings
   return null;
 }
 
-function BannerOverlay({ isAvailable, showPreOrder }) {
-  if (!isAvailable) {
+function BannerOverlay({ isOrderingAvailable, showPreOrder }) {
+  if (!isOrderingAvailable) {
     return <RestaurantNotAvailableBannerOverlay />;
   }
 
@@ -152,28 +161,26 @@ function RestaurantProfile({ restaurant, openingHoursSpecification, onInfo }) {
   const stroke = useBaseTextColor();
   const textSecondary = useSecondaryTextColor();
 
-  const currentTimeSlot = useMemo(
-    () => openingHoursSpecification.currentTimeSlot,
-    [openingHoursSpecification],
-  );
-
-  const isAvailable = useMemo(
-    () => isRestaurantAvailable(restaurant),
-    [restaurant],
-  );
-  const isOpeningSoon = useMemo(
-    () => isRestaurantOpeningSoon(restaurant),
+  const isOrderingAvailable = useMemo(
+    () => isRestaurantOrderingAvailable(restaurant),
     [restaurant],
   );
   const showPreOrder = useMemo(
     () => shouldShowPreOrder(restaurant),
     [restaurant],
   );
+  const nextShippingTime = useMemo(
+    () => getNextShippingTime(restaurant),
+    [restaurant],
+  );
 
   return (
     <View style={([styles.profile], { backgroundColor })}>
       <RestaurantBanner src={restaurant.bannerImage ?? restaurant.image} />
-      <BannerOverlay isAvailable={isAvailable} showPreOrder={showPreOrder} />
+      <BannerOverlay
+        isOrderingAvailable={isOrderingAvailable}
+        showPreOrder={showPreOrder}
+      />
       <View style={styles.detailsWrapper}>
         <View style={[styles.logoWrapper, { backgroundColor }]}>
           <View style={styles.logoWrapperShadow}>
@@ -200,10 +207,10 @@ function RestaurantProfile({ restaurant, openingHoursSpecification, onInfo }) {
       </View>
       <View style={styles.content}>
         <OpeningHoursWarning
-          currentTimeSlot={currentTimeSlot}
-          isAvailable={isAvailable}
-          isOpeningSoon={isOpeningSoon}
+          openingHoursSpecification={openingHoursSpecification}
+          isOrderingAvailable={isOrderingAvailable}
           showPreOrder={showPreOrder}
+          nextShippingTime={nextShippingTime}
         />
         <View style={{ display: 'flex', flexDirection: 'row', gap: 4 }}>
           <TimingBadge restaurant={restaurant} />
