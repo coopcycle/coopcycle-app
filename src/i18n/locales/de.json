@@ -376,6 +376,9 @@
     "TASK_MULTIPLE_PACKAGES": "Mehrere Pakete",
     "X_PACKAGES": "{{count}} Pakete",
     "NO_NEED_TO_SCAN_OTHERS": "Es ist nicht nötig, die anderen Pakete zu scannen.",
-    "ADD_NOTE": "Notiz hinzufügen"
+    "ADD_NOTE": "Notiz hinzufügen",
+    "REPORT_AN_INCIDENT": "Einen Vorfall melden",
+    "UPDATE_PARCEL_DETAILS": "Paketdetails aktualisieren",
+    "PICTURES": "Fotos"
   }
 }

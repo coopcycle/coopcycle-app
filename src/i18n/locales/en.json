@@ -547,6 +547,9 @@
     "TASK_MULTIPLE_PACKAGES": "Multiple packages",
     "X_PACKAGES": "{{count}} packages",
     "NO_NEED_TO_SCAN_OTHERS": "No need to scan the others packages.",
-    "ADD_NOTE": "Add Note"
+    "ADD_NOTE": "Add Note",
+    "REPORT_AN_INCIDENT": "Report an incident",
+    "UPDATE_PARCEL_DETAILS": "Update parcel details",
+    "PICTURES": "Photos"
   }
 }

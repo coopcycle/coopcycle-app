@@ -432,6 +432,9 @@
         "TASK_MULTIPLE_PACKAGES": "Varios paquetes",
         "X_PACKAGES": "{{count}} paquetes",
         "NO_NEED_TO_SCAN_OTHERS": "No es necesario escanear los demás paquetes.",
-        "ADD_NOTE": "Agregar nota"
+        "ADD_NOTE": "Agregar nota",
+        "REPORT_AN_INCIDENT": "Reportar un incidente",
+        "UPDATE_PARCEL_DETAILS": "Actualizar detalles del paquete",
+        "PICTURES": "Fotos"
     }
 }

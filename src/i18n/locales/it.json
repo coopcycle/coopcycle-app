@@ -424,6 +424,9 @@
     "TASK_MULTIPLE_PACKAGES": "Più pacchi",
     "X_PACKAGES": "{{count}} pacchi",
     "NO_NEED_TO_SCAN_OTHERS": "Non è necessario scansionare gli altri pacchi.",
-    "ADD_NOTE": "Aggiungi nota"
+    "ADD_NOTE": "Aggiungi nota",
+    "REPORT_AN_INCIDENT": "Segnala un incidente",
+    "UPDATE_PARCEL_DETAILS": "Aggiorna i dettagli del pacco",
+    "PICTURES": "Foto"
     }
 }
