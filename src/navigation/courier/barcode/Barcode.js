@@ -6,7 +6,7 @@ import { Button, IconButton, TextArea, FormControl, Icon } from 'native-base';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import BarcodeCameraView from '../../../components/BarcodeCameraView';
 
-import { CommonActions } from '@react-navigation/native';
+import { CommonActions, StackActions } from '@react-navigation/native';
 import NavigationHolder from '../../../NavigationHolder';
 import { phonecall } from 'react-native-communications';
 import BottomModal from '../../../components/BottomModal';
@@ -32,7 +32,6 @@ async function _putNote(httpClient, task_id, note) {
 }
 
 async function _assignTask(httpClient, task_id, token) {
-  console.log(token);
   if (task_id) {
     return await httpClient.put(
       `/api/tasks/${task_id}/assign`,
@@ -47,7 +46,6 @@ async function _assignTask(httpClient, task_id, token) {
 }
 
 async function _unassignTask(httpClient, task_id, token) {
-  console.log(token);
   if (task_id) {
     return await httpClient.put(
       `/api/tasks/${task_id}/unassign`,
@@ -70,7 +68,7 @@ function TextSection({ title, value, variant = 'data' }) {
   );
 }
 
-function BarcodePage({ t, httpClient, navigation, _route, taskLists }) {
+function BarcodePage({ t, httpClient, navigation, taskLists }) {
   const [barcode, setBarcode] = useState(null);
   const [entity, setEntity] = useState(null);
   const [clientActionsQueue, setClientActionsQueue] = useState([]);
@@ -165,6 +163,7 @@ function BarcodePage({ t, httpClient, navigation, _route, taskLists }) {
         return askToAssign(params);
       case 'ask_to_complete':
         return new Promise((resolve, _reject) => {
+          navigation.dispatch(StackActions.pop(1));
           navigateToTask(
             navigation,
             null,
@@ -248,6 +247,8 @@ function BarcodePage({ t, httpClient, navigation, _route, taskLists }) {
         />
         <ScrollView
           style={{ paddingHorizontal: 20, marginVertical: 20 }}
+          // If the auto-scan trigger is anoying maybe add later
+          // the possibility to scan when touching the screen
           // onTouchStart={() => console.log(">>>>>>>>>> enter")}
           // onTouchEnd={() => console.log(">>>>>>>>>> leave")}
         >

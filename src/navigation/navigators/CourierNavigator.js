@@ -122,7 +122,8 @@ const BarcodeNavigator = () => (
       name="CourierBarcode"
       component={screens.CourierBarcodePage}
       options={{
-        title: i18n.t('COURIER_BARCODE'),
+        title: false,
+        headerShown: false,
       }}
     />
     <BarcodeStack.Group screenOptions={{ presentation: 'modal' }}>
