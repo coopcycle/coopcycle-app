@@ -73,7 +73,11 @@ const MainStack = createStackNavigator();
 const headerButtons = nav => (
   <View style={styles.buttonBar}>
     <ButtonWithIcon
-      name="settings"
+      name="barcode-sharp"
+      onPress={() => nav.navigate('CourierBarcode')}
+    />
+    <ButtonWithIcon
+      name="settings-sharp"
       onPress={() => nav.navigate('CourierSettings')}
     />
     <TouchableOpacity style={styles.button}>
@@ -109,6 +113,41 @@ const MainNavigator = () => (
       }}
     />
   </MainStack.Navigator>
+);
+
+const BarcodeStack = createStackNavigator();
+const BarcodeNavigator = () => (
+  <BarcodeStack.Navigator screenOptions={stackNavigatorScreenOptions}>
+    <BarcodeStack.Screen
+      name="CourierBarcode"
+      component={screens.CourierBarcodePage}
+      options={{
+        title: false,
+        headerShown: false,
+      }}
+    />
+    <BarcodeStack.Group screenOptions={{ presentation: 'modal' }}>
+      <BarcodeStack.Screen
+        name="CourierBarcodeReport"
+        component={screens.CourierBarcodeReportPage}
+        options={{ title: false }}
+      />
+      <BarcodeStack.Screen
+        name="CourierReportIncident"
+        component={screens.CourierBarcodeIncidentPage}
+        options={{ title: i18n.t('REPORT_AN_INCIDENT') }}
+      />
+      <BarcodeStack.Screen
+        name="CourierUpdateParcel"
+        component={screens.CourierUpdateParcelPage}
+        options={{ title: i18n.t('UPDATE_PARCEL_DETAILS') }}
+      />
+      <BarcodeStack.Screen
+        name="CourierSelectRange"
+        component={screens.CourierSelectRangePage}
+      />
+    </BarcodeStack.Group>
+  </BarcodeStack.Navigator>
 );
 
 const SettingsStack = createStackNavigator();
@@ -147,6 +186,13 @@ export default () => (
     <RootStack.Screen
       name="CourierSettings"
       component={SettingsNavigator}
+      options={{
+        headerShown: false,
+      }}
+    />
+    <RootStack.Screen
+      name="CourierBarcode"
+      component={BarcodeNavigator}
       options={{
         headerShown: false,
       }}

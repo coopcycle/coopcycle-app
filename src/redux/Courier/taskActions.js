@@ -77,12 +77,10 @@ export const reportIncidentRequest = createAction(REPORT_INCIDENT_REQUEST);
 export const reportIncidentSuccess = createAction(REPORT_INCIDENT_SUCCESS);
 export const reportIncidentFailure = createAction(REPORT_INCIDENT_FAILURE);
 
-export const addPicture = createAction(ADD_PICTURE, (task, base64) => ({
-  task,
+export const addPicture = createAction(ADD_PICTURE, (_task, base64) => ({
   base64,
 }));
-export const addSignature = createAction(ADD_SIGNATURE, (task, base64) => ({
-  task,
+export const addSignature = createAction(ADD_SIGNATURE, (_task, base64) => ({
   base64,
 }));
 export const clearFiles = createAction(CLEAR_FILES);
@@ -263,7 +261,6 @@ function uploadEntitiesImages(entities, url, state) {
   return Promise.all(promises);
 }
 
-
 export function reportIncident(
   task,
   description = null,
@@ -279,20 +276,21 @@ export function reportIncident(
       description,
       failureReasonCode,
       metadata: failureReasonMetadata,
-      task: task['@id']
+      task: task['@id'],
     };
-
 
     // Make sure to return a promise for testing
     return httpClient
       .post('/api/incidents', payload)
       .then(incident => {
-        uploadEntityImages(incident, '/api/incident_images', getState())
-          .then(uploadTasks => httpClient.execUploadTask(uploadTasks));
+        uploadEntityImages(incident, '/api/incident_images', getState()).then(
+          uploadTasks => httpClient.execUploadTask(uploadTasks),
+        );
         dispatch(clearFiles());
         dispatch(reportIncidentSuccess(incident));
+        console.log(onSuccess);
         if (typeof onSuccess === 'function') {
-          setTimeout(() => onSuccess(), 100);
+          setTimeout(onSuccess, 100);
         }
       })
       .catch(e => {
@@ -350,13 +348,7 @@ export function markTaskFailed(
   };
 }
 
-
-export function markTaskDone(
-  task,
-  notes = '',
-  onSuccess,
-  contactName = '',
-) {
+export function markTaskDone(task, notes = '', onSuccess, contactName = '') {
   return function (dispatch, getState) {
     dispatch(markTaskDoneRequest(task));
     const httpClient = selectHttpClient(getState());
@@ -393,12 +385,7 @@ export function markTaskDone(
   };
 }
 
-export function markTasksDone(
-  tasks,
-  notes = '',
-  onSuccess,
-  contactName = '',
-) {
+export function markTasksDone(tasks, notes = '', onSuccess, contactName = '') {
   return function (dispatch, getState) {
     dispatch(markTasksDoneRequest());
     const httpClient = selectHttpClient(getState());

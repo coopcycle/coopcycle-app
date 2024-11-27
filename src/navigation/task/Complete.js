@@ -105,7 +105,7 @@ const FailureReasonPicker = ({ task, httpClient, onValueChange }) => {
     const failureReasonObj = _.find(data['hydra:member'], r => r.code === selectedFailureReason)
     onValueChange(selectedFailureReason, failureReasonObj);
     setFailureReason(selectedFailureReason)
-  } 
+  }
 
   if (isError) {
     return <Text color="red.500">Failure reasons are not available</Text>;
@@ -256,10 +256,16 @@ const SubmitButton = ({ task, tasks, notes, contactName, failureReason, validate
     const navigateOnSuccess = () => {
       // Make sure to use merge = true, so that it doesn't break
       // when navigating to DispatchTaskList
-      navigation.navigate({
-        name: route.params?.navigateAfter,
-        merge: true,
-      });
+
+      if (route.params?.navigateAfter !== null) {
+        navigation.navigate({
+          name: route.params?.navigateAfter,
+          merge: true,
+        });
+      } else {
+        navigation.goBack();
+      }
+
     }
 
     if (success) {
