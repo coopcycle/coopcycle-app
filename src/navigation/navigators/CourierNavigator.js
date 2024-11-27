@@ -115,7 +115,6 @@ const MainNavigator = () => (
   </MainStack.Navigator>
 );
 
-
 const BarcodeStack = createStackNavigator();
 const BarcodeNavigator = () => (
   <BarcodeStack.Navigator screenOptions={stackNavigatorScreenOptions}>
@@ -130,17 +129,17 @@ const BarcodeNavigator = () => (
       <BarcodeStack.Screen
         name="CourierBarcodeReport"
         component={screens.CourierBarcodeReportPage}
-        options={{title:false}}
+        options={{ title: false }}
       />
       <BarcodeStack.Screen
         name="CourierReportIncident"
         component={screens.CourierBarcodeIncidentPage}
-        options={{title: i18n.t('REPORT_AN_INCIDENT')}}
+        options={{ title: i18n.t('REPORT_AN_INCIDENT') }}
       />
       <BarcodeStack.Screen
         name="CourierUpdateParcel"
         component={screens.CourierUpdateParcelPage}
-        options={{title: i18n.t('UPDATE_PARCEL_DETAILS')}}
+        options={{ title: i18n.t('UPDATE_PARCEL_DETAILS') }}
       />
       <BarcodeStack.Screen
         name="CourierSelectRange"
@@ -149,7 +148,6 @@ const BarcodeNavigator = () => (
     </BarcodeStack.Group>
   </BarcodeStack.Navigator>
 );
-
 
 const SettingsStack = createStackNavigator();
 
@@ -197,6 +195,6 @@ export default () => (
       options={{
         headerShown: false,
       }}
-      />
+    />
   </RootStack.Navigator>
 );

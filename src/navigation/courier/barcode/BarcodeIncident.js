@@ -207,6 +207,7 @@ function mapDispatchToProps(dispatch) {
           { '@id': `/api/tasks/${task_id}` },
           notes ?? '',
           failureReasonCode,
+          [],
           onSuccess,
         ),
       ),
