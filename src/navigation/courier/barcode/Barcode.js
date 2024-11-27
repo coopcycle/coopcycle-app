@@ -31,15 +31,33 @@ async function _putNote(httpClient, task_id, note) {
   }
 }
 
-async function _assignTask(httpClient, task_id) {
+async function _assignTask(httpClient, task_id, token) {
+  console.log(token);
   if (task_id) {
-    return await httpClient.put(`/api/tasks/${task_id}/assign`);
+    return await httpClient.put(
+      `/api/tasks/${task_id}/assign`,
+      {},
+      {
+        headers: {
+          'X-Token-Action': token,
+        },
+      },
+    );
   }
 }
 
-async function _unassignTask(httpClient, task_id) {
+async function _unassignTask(httpClient, task_id, token) {
+  console.log(token);
   if (task_id) {
-    return await httpClient.put(`/api/tasks/${task_id}/unassign`);
+    return await httpClient.put(
+      `/api/tasks/${task_id}/unassign`,
+      {},
+      {
+        headers: {
+          'X-Token-Action': token,
+        },
+      },
+    );
   }
 }
 
@@ -61,7 +79,7 @@ function BarcodePage({ t, httpClient, navigation, _route, taskLists }) {
 
   const note = useRef(null);
 
-  const askToUnassign = () =>
+  const askToUnassign = ({ token }) =>
     new Promise((resolve, reject) => {
       Alert.alert(
         t('BARCODE_TASK_ALREADY_ASSIGNED_TITLE'),
@@ -70,7 +88,9 @@ function BarcodePage({ t, httpClient, navigation, _route, taskLists }) {
           {
             text: t('BARCODE_TASK_ALREADY_ASSIGNED_UNASSIGN'),
             onPress: () => {
-              _unassignTask(httpClient, entity.id).then(resolve).catch(reject);
+              _unassignTask(httpClient, entity.id, token)
+                .then(resolve)
+                .catch(reject);
             },
           },
           {
@@ -81,16 +101,18 @@ function BarcodePage({ t, httpClient, navigation, _route, taskLists }) {
       );
     });
 
-  const askToAssign = () =>
+  const askToAssign = ({ token }) =>
     new Promise((resolve, reject) => {
       Alert.alert(
         t('BARCODE_TASK_ALREADY_ASSIGNED_TITLE'),
         t('BARCODE_TASK_ALREADY_ASSIGNED_ANOTHER_MESSAGE'),
         [
           {
-            text: t('BARCODE_TASK_ALREADY_ASSIGNED_ASSIGN'),
+            text: t('BARCODE_TASK_ALREADY_ASSIGNED_ASSIGN_TO_ME'),
             onPress: () => {
-              _assignTask(httpClient, entity.id).then(resolve).catch(reject);
+              _assignTask(httpClient, entity.id, token)
+                .then(resolve)
+                .catch(reject);
             },
           },
           {
@@ -105,7 +127,9 @@ function BarcodePage({ t, httpClient, navigation, _route, taskLists }) {
     new Promise((resolve, _reject) => {
       Alert.alert(
         t('TASK_MULTIPLE_PACKAGES'),
-        `${t('X_PACKAGES', { count })}:\n\n${details}\n\n${t('NO_NEED_TO_SCAN_OTHERS')}`,
+        `${t('X_PACKAGES', { count })}:\n\n${details}\n\n${t(
+          'NO_NEED_TO_SCAN_OTHERS',
+        )}`,
         [{ text: t('OK'), onPress: resolve }],
       );
     });
@@ -136,15 +160,15 @@ function BarcodePage({ t, httpClient, navigation, _route, taskLists }) {
 
     switch (action) {
       case 'ask_to_unassign':
-        return askToUnassign();
+        return askToUnassign(params);
       case 'ask_to_assign':
-        return askToAssign();
+        return askToAssign(params);
       case 'ask_to_complete':
         return new Promise((resolve, _reject) => {
           navigateToTask(
             navigation,
             null,
-            taskLists.find(t => t['@id'] === `/api/tasks/${entity.id}`),
+            taskLists.find(task => task['@id'] === `/api/tasks/${entity.id}`),
           );
           resolve();
         });
@@ -205,7 +229,7 @@ function BarcodePage({ t, httpClient, navigation, _route, taskLists }) {
           disabled={showNoteModal || clientActionsQueue.length > 0}
           onScanned={async code => {
             if (clientActionsQueue.length > 0) return;
-            const { entity, client_action } = await _fetchBarcode(
+            const { entity, client_action, token_action } = await _fetchBarcode(
               httpClient,
               code,
             );
@@ -214,9 +238,11 @@ function BarcodePage({ t, httpClient, navigation, _route, taskLists }) {
 
             const action = checkMultiplePackages(entity?.barcodes?.packages);
             setClientActionsQueue(
-              [...clientActionsQueue, { action: client_action }, action].filter(
-                e => e,
-              ),
+              [
+                ...clientActionsQueue,
+                { action: client_action, token: token_action },
+                action,
+              ].filter(e => e),
             );
           }}
         />
