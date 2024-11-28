@@ -1,16 +1,13 @@
-import { createAction } from 'redux-actions';
-
+import { createAction } from '@reduxjs/toolkit';
 import { updateTask } from '../../Dispatch/actions';
 
-export const CONNECT = '@centrifugo/CONNECT';
 export const CENTRIFUGO_MESSAGE = '@centrifugo/MESSAGE';
-export const CONNECTED = '@centrifugo/CONNECTED';
-export const DISCONNECTED = '@centrifugo/DISCONNECTED';
 
-export const connect = createAction(CONNECT);
+export const connectCentrifugo = createAction('@centrifugo/CONNECT');
+export const disconnectCentrifugo = createAction('@centrifugo/DISCONNECT');
 
-export const connected = createAction(CONNECTED);
-export const disconnected = createAction(DISCONNECTED);
+export const centrifugoConnected = createAction('@centrifugo/CONNECTED');
+export const centrifugoDisconnected = createAction('@centrifugo/DISCONNECTED');
 
 export const _message = createAction(CENTRIFUGO_MESSAGE);
 

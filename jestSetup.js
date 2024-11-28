@@ -1,6 +1,10 @@
 /* global jest */
 
-import NavigationHolder from './src/NavigationHolder'
+import NavigationHolder from './src/NavigationHolder';
+
+jest.mock('react-native/Libraries/AppState/AppState', () => ({
+  currentState: 'active',
+}));
 
 jest.mock('react-native-localize', () => ({
   findBestLanguageTag: () => ({ languageTag: 'en' }),
@@ -8,26 +12,25 @@ jest.mock('react-native-localize', () => ({
 
 jest.mock('react-native-blob-util', () => ({
   fetch: () => {},
-  wrap: () => {}
+  wrap: () => {},
 }));
 
 jest.mock('expo-file-system', () => ({
   createUploadTask: jest.fn(),
   FileSystemUploadType: {
-    MULTIPART: 1
+    MULTIPART: 1,
   },
   FileSystemSessionType: {
-    BACKGROUND: 0
-  }
+    BACKGROUND: 0,
+  },
 }));
 
 jest.mock('@react-native-firebase/analytics', () => ({
   logEvent: jest.fn(),
   setUserProperty: jest.fn(),
-}))
+}));
 
-jest.mock('@react-native-firebase/messaging', () => ({
-}))
+jest.mock('@react-native-firebase/messaging', () => ({}));
 
 jest.mock('countly-sdk-react-native-bridge', () => ({
   enableParameterTamperingProtection: () => {},
@@ -46,22 +49,20 @@ jest.mock('react-native-background-geolocation', () => ({
   stop: jest.fn(),
   removeListeners: jest.fn(),
   changePace: jest.fn(),
-}))
+}));
 
-jest.mock('@stripe/stripe-react-native', () => ({
-}))
+jest.mock('@stripe/stripe-react-native', () => ({}));
 
-jest.mock('react-native-share', () => ({
-}))
+jest.mock('react-native-share', () => ({}));
 
 jest.mock('uuid', () => ({
   v4: jest.fn(),
-}))
+}));
 
 const fakeNavigator = {
   current: {
-    dispatch: (action) => {}
-  }
-}
+    dispatch: action => {},
+  },
+};
 
-NavigationHolder.setNavigationRef(fakeNavigator)
+NavigationHolder.setNavigationRef(fakeNavigator);

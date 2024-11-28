@@ -5,7 +5,7 @@ import { createAction } from 'redux-actions';
 import _ from 'lodash';
 import NavigationHolder from '../../NavigationHolder';
 import i18n from '../../i18n';
-import { connect } from '../middlewares/CentrifugoMiddleware/actions';
+import { connectCentrifugo } from '../middlewares/CentrifugoMiddleware/actions';
 
 import {
   createTaskListFailure,
@@ -191,7 +191,7 @@ export function initialize() {
         dispatch(loadUsersSuccess(users['hydra:member']));
         dispatch(loadUnassignedTasksSuccess(unassignedTasks['hydra:member']));
         dispatch(loadTaskListsSuccess(taskLists['hydra:member']));
-        dispatch(connect());
+        dispatch(connectCentrifugo());
         dispatch(_initialize());
       })
       .catch(e => dispatch(loadUnassignedTasksFailure(e)));

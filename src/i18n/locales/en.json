@@ -70,6 +70,7 @@
     "CALCULATING_YOUR_POS": "Determining your position",
     "TRACKING_YOUR_POS": "Tracking your position",
     "CONN_LOST": "Connection lost! Reconnecting",
+    "CONN_LOST_IDLE": "Connection lost!",
     "AUTHENTICATING": "Authenticating",
     "REFUSE": "Refuse",
     "ACCEPT": "Accept",
