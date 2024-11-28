@@ -20,6 +20,7 @@ import { useGetOrderTimingQuery } from '../../../redux/api/slice';
 import { useNavigation } from '@react-navigation/native';
 import { useIsModalVisible } from '../../../hooks/useIsModalVisible';
 import tracker from '../../../analytics/Tracker';
+import { DatadogLogger } from '../../../Datadog'
 
 const styles = StyleSheet.create({
   modalContent: {
@@ -140,6 +141,7 @@ export default function TimeRangeChangedModal() {
       isVisible={isModalVisible}
       onModalHide={onModalHide}
       onModalShow={() => {
+        DatadogLogger.info('TimeRangeChangedModal opened');
         tracker.logEvent('Checkout', 'openTimeRangeChangedModal');
       }}>
       <View
