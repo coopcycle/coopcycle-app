@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
-import { ScrollView, StyleSheet, Text, View, Alert } from 'react-native';
+import { ScrollView, StyleSheet, Text, View, Alert, useColorScheme } from 'react-native';
 import { Button, IconButton, TextArea, FormControl, Icon } from 'native-base';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import BarcodeCameraView from '../../../components/BarcodeCameraView';
@@ -60,10 +60,11 @@ async function _unassignTask(httpClient, task_id, token) {
 }
 
 function TextSection({ title, value, variant = 'data' }) {
+  const colorScheme = useColorScheme()
   return (
     <View style={styles.section}>
       <Text style={styles.title}>{title}</Text>
-      <Text style={styles[variant]}>{value ?? '-'}</Text>
+      <Text style={[styles[variant], styles[colorScheme]]}>{value ?? '-'}</Text>
     </View>
   );
 }
@@ -313,13 +314,13 @@ function BarcodePage({ t, httpClient, navigation, taskLists }) {
 const styles = StyleSheet.create({
   data: {
     fontWeight: '600',
-    color: 'black',
     fontSize: 16,
   },
   note: {
-    color: 'black',
     fontSize: 14,
   },
+  light: { color: 'black' },
+  dark: { color: 'white' },
   section: { paddingVertical: 8 },
   title: { fontSize: 16, paddingBottom: 3 },
 });
