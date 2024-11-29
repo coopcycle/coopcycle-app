@@ -134,5 +134,5 @@ jobs:
       - name: Upload IPA artifact
         uses: actions/upload-artifact@v4
         with:
-          name: example-iOS.ipa
-          path: ios/example-iOS.ipa
+          name: ${{ inputs.app_name }}_release_iOS.ipa
+          path: ios/release-iOS.ipa
