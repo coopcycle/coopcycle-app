@@ -135,4 +135,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ${{ inputs.app_name }}_release_iOS.ipa
-          path: ios/release-iOS.ipa
+          path: ios/example-iOS.ipa

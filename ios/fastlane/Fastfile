@@ -208,7 +208,7 @@ platform :ios do
     app_identifier = deliver_config[:app_identifier]
 
     profile_name = lane_context[SharedValues::SIGH_NAME]
-    output_name = "release-iOS" # specify the name of the .ipa file to generate
+    output_name = "example-iOS" # specify the name of the .ipa file to generate
     export_method = "app-store" # specify the export method
     compile_bitcode = true # specify whether to enable bitcode
 
