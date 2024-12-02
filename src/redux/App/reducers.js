@@ -43,6 +43,7 @@ import {
   RESET_PASSWORD_REQUEST_SUCCESS,
   RESUME_CHECKOUT_AFTER_ACTIVATION,
   SAVE_PUSH_NOTIFICATION_TOKEN_SUCCESS,
+  SHOULD_NOTIFICATION_BE_DISPLAYED,
   SET_BACKGROUND_GEOLOCATION_ENABLED,
   SET_BASE_URL,
   SET_CURRENT_ROUTE,
@@ -70,6 +71,7 @@ const initialState = {
   currentRoute: null,
   pushNotificationToken: null,
   pushNotificationTokenSaved: null,
+  shouldNotificationBeDisplayed: true,
   loading: false,
   notifications: [],
   lastAuthenticationError: null,
@@ -192,6 +194,13 @@ export default (state = initialState, action = {}) => {
       const { event, params } = action.payload;
 
       return updateNotifications(state, event, params);
+    }
+
+    case SHOULD_NOTIFICATION_BE_DISPLAYED: {
+      return {
+        ...state,
+        shouldNotificationBeDisplayed: action.payload,
+      }
     }
 
     case CLEAR_NOTIFICATIONS:

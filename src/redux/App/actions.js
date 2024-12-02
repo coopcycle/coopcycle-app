@@ -42,6 +42,7 @@ export const SAVE_PUSH_NOTIFICATION_TOKEN_SUCCESS =
   '@app/SAVE_PUSH_NOTIFICATION_TOKEN_SUCCESS';
 export const DELETE_PUSH_NOTIFICATION_TOKEN_SUCCESS =
   '@app/DELETE_PUSH_NOTIFICATION_TOKEN_SUCCESS';
+export const SHOULD_NOTIFICATION_BE_DISPLAYED = '@app/SHOULD_NOTIFICATION_BE_DISPLAYED';
 
 export const LOGIN = '@app/LOGIN';
 export const SET_LOADING = '@app/SET_LOADING';
@@ -165,6 +166,9 @@ export const savePushNotificationTokenSuccess = createFsAction(
 export const deletePushNotificationTokenSuccess = createFsAction(
   DELETE_PUSH_NOTIFICATION_TOKEN_SUCCESS,
 );
+export const shouldNotificationBeDisplayed = createFsAction(
+  SHOULD_NOTIFICATION_BE_DISPLAYED,
+)
 
 const _loadMyStoresSuccess = createFsAction(LOAD_MY_STORES_SUCCESS);
 

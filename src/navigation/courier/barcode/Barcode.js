@@ -19,6 +19,7 @@ import { phonecall } from 'react-native-communications';
 import BottomModal from '../../../components/BottomModal';
 import { navigateToTask } from '../../utils';
 import { selectTasks } from '../../../redux/Courier';
+import { shouldNotificationBeDisplayed } from '../../../redux/App/actions';
 
 async function _fetchBarcode(httpClient, barcode) {
   if (barcode) {
@@ -76,7 +77,13 @@ function TextSection({ title, value, variant = 'data' }) {
   );
 }
 
-function BarcodePage({ t, httpClient, navigation, taskLists }) {
+function BarcodePage({
+  t,
+  httpClient,
+  navigation,
+  taskLists,
+  shouldNotificationBeDisplayed,
+}) {
   const [barcode, setBarcode] = useState(null);
   const [entity, setEntity] = useState(null);
   const [clientActionsQueue, setClientActionsQueue] = useState([]);
@@ -185,6 +192,13 @@ function BarcodePage({ t, httpClient, navigation, taskLists }) {
         return;
     }
   }
+
+  useEffect(() => {
+    shouldNotificationBeDisplayed(false);
+    return () => {
+      shouldNotificationBeDisplayed(true);
+    };
+  }, []);
 
   useEffect(() => {
     async function processActions() {
@@ -341,8 +355,11 @@ function mapStateToProps(state) {
   };
 }
 
-function mapDispatchToProps(_dispatch) {
-  return {};
+function mapDispatchToProps(dispatch) {
+  return {
+    shouldNotificationBeDisplayed: should =>
+      dispatch(shouldNotificationBeDisplayed(should)),
+  };
 }
 
 export default connect(
