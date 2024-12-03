@@ -4,8 +4,8 @@ import { useTranslation } from 'react-i18next';
 import { StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { createDelivery, getPrice } from '../../redux/Store/actions';
-import FormInput from './components/FormInput';
 import ModalFormWrapper from './ModalFormWrapper';
+import FormInput from './components/FormInput';
 
 function NewDeliveryPrice({ route, navigation }) {
   const dispatch = useDispatch();
@@ -49,6 +49,9 @@ function NewDeliveryPrice({ route, navigation }) {
             <Text style={styles.label}>{t('PRICE_TOTAL')}</Text>
             <FormInput value={price} editable={false} />
           </View>
+          {price === null || priceExcludingTax === null ? (
+            <Text>{t('PRICE_CALCULATION_FAILED_DISCLAIMER')}</Text>
+          ) : null}
         </ModalFormWrapper>
       )}
     </Formik>
