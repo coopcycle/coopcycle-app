@@ -31,6 +31,7 @@ import {
   useBackgroundHighlightColor,
   useBaseTextColor,
   useColorModeToken,
+  usePrimaryColor,
 } from '../styles/theme';
 import AddressUtils from '../utils/Address';
 import PostCodeButton from './AddressAutocomplete/components/PostCodeButton';
@@ -375,17 +376,24 @@ function AddressAutocomplete(props) {
         // do not use default FlatList - see https://github.com/byteburgers/react-native-autocomplete-input/pull/230
         renderResultList={({ data, listContainerStyle }) => (
           <View style={listContainerStyle}>
-            {data.map((item, index) => (
-              <View key={index}>
-                <Pressable>{renderItem({ item })}</Pressable>
-                <ItemSeparator />
-              </View>
-            ))}
-            {props.country === 'gb' ? (
-              <PoweredByIdealPostcodes style={styles.poweredContainer} />
-            ) : (
-              <PoweredByGoogle style={styles.poweredContainer} />
-            )}
+            <View
+              style={{
+                borderTopWidth: 0,
+                borderWidth: 1,
+                borderColor: props.primaryColor,
+              }}>
+              {data.map((item, index) => (
+                <View key={index}>
+                  <Pressable>{renderItem({ item })}</Pressable>
+                  <ItemSeparator />
+                </View>
+              ))}
+              {props.country === 'gb' ? (
+                <PoweredByIdealPostcodes style={styles.poweredContainer} />
+              ) : (
+                <PoweredByGoogle style={styles.poweredContainer} />
+              )}
+            </View>
           </View>
         )}
         renderTextInput={inputProps => renderTextInput(inputProps)}
@@ -398,7 +406,7 @@ function AddressAutocomplete(props) {
           ...inputContainerStyle,
         }}
         listContainerStyle={{
-          backgroundColor: props.containerColor,
+          backgroundColor: props.backgroundColor,
           ...listContainerStyle,
         }}
         //FIXME: avoid using generic `style` prop; use `containerStyle`/`inputContainerStyle`/`listContainerStyle/ etc.
@@ -478,6 +486,7 @@ function withHooks(ClassComponent) {
 
     const backgroundColor = useBackgroundContainerColor();
     const containerColor = useBackgroundHighlightColor();
+    const primaryColor = usePrimaryColor();
 
     return (
       <ClassComponent
@@ -488,6 +497,7 @@ function withHooks(ClassComponent) {
         backgroundColor={backgroundColor}
         containerColor={containerColor}
         itemTextColor={itemTextColor}
+        primaryColor={primaryColor}
       />
     );
   };
