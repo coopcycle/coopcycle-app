@@ -192,7 +192,7 @@ function BarcodePage({
       default:
         return;
     }
-  }, [entity, navigation, taskLists]);
+  }, [entity, navigation, taskLists, askToAssign, askToUnassign]);
 
   useEffect(() => {
     shouldNotificationBeDisplayed(false);
