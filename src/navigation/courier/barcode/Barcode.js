@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import {
@@ -169,7 +169,7 @@ function BarcodePage({
     }
   }
 
-  function checkClientAction({ action, ...params }) {
+  const checkClientAction = useCallback(({ action, ...params }) => {
     if (!entity) return;
 
     switch (action) {
@@ -192,7 +192,7 @@ function BarcodePage({
       default:
         return;
     }
-  }
+  }, [entity, navigation, taskLists]);
 
   useEffect(() => {
     shouldNotificationBeDisplayed(false);
