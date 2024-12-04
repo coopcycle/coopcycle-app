@@ -199,7 +199,7 @@ function BarcodePage({
     return () => {
       shouldNotificationBeDisplayed(true);
     };
-  }, []);
+  }, [shouldNotificationBeDisplayed]);
 
   useEffect(() => {
     async function processActions() {
@@ -219,7 +219,7 @@ function BarcodePage({
     }
 
     processActions();
-  }, [clientActionsQueue]);
+  }, [clientActionsQueue, checkClientAction]);
 
   return (
     <>

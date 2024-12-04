@@ -43,7 +43,7 @@ function BarcodeIncident({
 
   useEffect(() => {
     navigation.setOptions({ headerShown: !enableCamera });
-  }, [enableCamera]);
+  }, [enableCamera, navigation]);
 
   const { data, isSuccess, isError } = useQuery(
     ['task', 'failure_reasons', entity.id],
