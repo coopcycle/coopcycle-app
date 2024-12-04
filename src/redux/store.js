@@ -21,11 +21,13 @@ import { notifyOnNewOrderCreated } from './Restaurant/middlewares';
 import { apiSlice } from './api/slice';
 import { setupListeners } from '@reduxjs/toolkit/query';
 import { setupListenersReactNative } from './setupListenersReactNative';
+import AppStateMiddleware from './middlewares/AppStateMiddleware';
 
 const middlewares = [
   thunk,
   ReduxAsyncQueue,
   NetInfoMiddleware,
+  AppStateMiddleware,
   HttpMiddleware,
   apiSlice.middleware,
   PushNotificationMiddleware,

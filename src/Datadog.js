@@ -29,14 +29,16 @@ const datadogConfig = new DatadogProviderConfiguration(
   applicationId,
   true, // track User interactions (e.g.: Tap on buttons. You can use 'accessibilityLabel' element property to give tap action the name, otherwise element type will be reported)
   true, // track XHR Resources
-  true, // track Errors
+  //FIXME: re-enable after migrating to react-native 0.76: https://github.com/facebook/hermes/issues/1496
+  false, // track Errors
 );
 // Optional: Select your Datadog website (one of "US1", "EU1", "US3", "US5", "AP1" or "GOV")
 datadogConfig.site = 'US1';
 // Optional: Enable JavaScript long task collection
 datadogConfig.longTaskThresholdMs = 100;
 // Optional: enable or disable native crash reports
-datadogConfig.nativeCrashReportEnabled = true;
+//FIXME: re-enable after migrating to react-native 0.76: https://github.com/facebook/hermes/issues/1496
+datadogConfig.nativeCrashReportEnabled = false;
 // Optional: Sample RUM sessions (% of session are sent to Datadog. Default is 100%).
 datadogConfig.sessionSamplingRate = __DEV__ ? 100 : 20;
 // Optional: Sample tracing integrations for network calls between your app and your backend (% of calls to your instrumented backend are linked from the RUM view to the APM view. Default is 20%)

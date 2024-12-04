@@ -1,20 +1,50 @@
-import { Text } from 'native-base';
+import { Button, Text } from 'native-base';
 import React from 'react';
-import { withTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  selectIsCentrifugoConnected,
+  selectIsCentrifugoConnecting,
+} from '../../../redux/App/selectors';
+import { connectCentrifugo } from '../../../redux/middlewares/CentrifugoMiddleware';
 
-const WebSocketIndicator = ({ connected, t }) => (
-  <View
-    style={[
-      styles.container,
-      connected ? styles.connected : styles.disconnected,
-    ]}>
-    <Text style={styles.text}>
-      {connected ? t('WAITING_FOR_ORDER') : t('CONN_LOST')}
-    </Text>
-    <ActivityIndicator size="small" color="white" animating={connected} />
-  </View>
-);
+const WebSocketIndicator = () => {
+  const connecting = useSelector(selectIsCentrifugoConnecting);
+  const connected = useSelector(selectIsCentrifugoConnected);
+
+  const dispatch = useDispatch();
+
+  const { t } = useTranslation();
+
+  return (
+    <View
+      style={[
+        styles.container,
+        connected ? styles.connected : styles.disconnected,
+      ]}>
+      <Text style={styles.text}>
+        {connected
+          ? t('WAITING_FOR_ORDER')
+          : connecting
+          ? t('CONN_LOST')
+          : t('CONN_LOST_IDLE')}
+      </Text>
+      {connected ? (
+        <ActivityIndicator size="small" color="white" animating={true} />
+      ) : null}
+      {!connected && !connecting ? (
+        <Button
+          variant="link"
+          onPress={() => {
+            dispatch(connectCentrifugo());
+          }}>
+          <Text style={styles.text}>{t('RETRY')}</Text>
+        </Button>
+      ) : null}
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -41,4 +71,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default withTranslation()(WebSocketIndicator);
+export default WebSocketIndicator;
