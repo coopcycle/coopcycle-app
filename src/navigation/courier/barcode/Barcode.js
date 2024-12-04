@@ -20,7 +20,7 @@ import BottomModal from '../../../components/BottomModal';
 import { navigateToTask } from '../../utils';
 import { selectTasks } from '../../../redux/Courier';
 import { shouldNotificationBeDisplayed } from '../../../redux/App/actions';
-import { Badge } from 'native-base'
+import { Badge } from 'native-base';
 
 async function _fetchBarcode(httpClient, barcode) {
   if (barcode) {
@@ -93,49 +93,55 @@ function BarcodePage({
 
   const note = useRef(null);
 
-  const askToUnassign = ({ token }) =>
-    new Promise((resolve, reject) => {
-      Alert.alert(
-        t('BARCODE_TASK_ALREADY_ASSIGNED_TITLE'),
-        t('BARCODE_TASK_ALREADY_ASSIGNED_SELF_MESSAGE'),
-        [
-          {
-            text: t('BARCODE_TASK_ALREADY_ASSIGNED_UNASSIGN'),
-            onPress: () => {
-              _unassignTask(httpClient, entity.id, token)
-                .then(resolve)
-                .catch(reject);
+  const askToUnassign = useCallback(
+    ({ token }) =>
+      new Promise((resolve, reject) => {
+        Alert.alert(
+          t('BARCODE_TASK_ALREADY_ASSIGNED_TITLE'),
+          t('BARCODE_TASK_ALREADY_ASSIGNED_SELF_MESSAGE'),
+          [
+            {
+              text: t('BARCODE_TASK_ALREADY_ASSIGNED_UNASSIGN'),
+              onPress: () => {
+                _unassignTask(httpClient, entity.id, token)
+                  .then(resolve)
+                  .catch(reject);
+              },
             },
-          },
-          {
-            text: t('OK'),
-            onPress: resolve,
-          },
-        ],
-      );
-    });
+            {
+              text: t('OK'),
+              onPress: resolve,
+            },
+          ],
+        );
+      }),
+    [t, httpClient, entity],
+  );
 
-  const askToAssign = ({ token }) =>
-    new Promise((resolve, reject) => {
-      Alert.alert(
-        t('BARCODE_TASK_ALREADY_ASSIGNED_TITLE'),
-        t('BARCODE_TASK_ALREADY_ASSIGNED_ANOTHER_MESSAGE'),
-        [
-          {
-            text: t('BARCODE_TASK_ALREADY_ASSIGNED_ASSIGN_TO_ME'),
-            onPress: () => {
-              _assignTask(httpClient, entity.id, token)
-                .then(resolve)
-                .catch(reject);
+  const askToAssign = useCallback(
+    ({ token }) =>
+      new Promise((resolve, reject) => {
+        Alert.alert(
+          t('BARCODE_TASK_ALREADY_ASSIGNED_TITLE'),
+          t('BARCODE_TASK_ALREADY_ASSIGNED_ANOTHER_MESSAGE'),
+          [
+            {
+              text: t('BARCODE_TASK_ALREADY_ASSIGNED_ASSIGN_TO_ME'),
+              onPress: () => {
+                _assignTask(httpClient, entity.id, token)
+                  .then(resolve)
+                  .catch(reject);
+              },
             },
-          },
-          {
-            text: t('OK'),
-            onPress: resolve,
-          },
-        ],
-      );
-    });
+            {
+              text: t('OK'),
+              onPress: resolve,
+            },
+          ],
+        );
+      }),
+    [t, httpClient, entity],
+  );
 
   const warningMultiplePackages = ({ count, details }) =>
     new Promise((resolve, _reject) => {
@@ -169,30 +175,33 @@ function BarcodePage({
     }
   }
 
-  const checkClientAction = useCallback(({ action, ...params }) => {
-    if (!entity) return;
+  const checkClientAction = useCallback(
+    ({ action, ...params }) => {
+      if (!entity) return;
 
-    switch (action) {
-      case 'ask_to_unassign':
-        return askToUnassign(params);
-      case 'ask_to_assign':
-        return askToAssign(params);
-      case 'ask_to_complete':
-        return new Promise((resolve, _reject) => {
-          navigation.dispatch(StackActions.pop(1));
-          navigateToTask(
-            navigation,
-            null,
-            taskLists.find(task => task['@id'] === `/api/tasks/${entity.id}`),
-          );
-          resolve();
-        });
-      case 'warn_multiple_packages':
-        return params.fn();
-      default:
-        return;
-    }
-  }, [entity, navigation, taskLists, askToAssign, askToUnassign]);
+      switch (action) {
+        case 'ask_to_unassign':
+          return askToUnassign(params);
+        case 'ask_to_assign':
+          return askToAssign(params);
+        case 'ask_to_complete':
+          return new Promise((resolve, _reject) => {
+            navigation.dispatch(StackActions.pop(1));
+            navigateToTask(
+              navigation,
+              null,
+              taskLists.find(task => task['@id'] === `/api/tasks/${entity.id}`),
+            );
+            resolve();
+          });
+        case 'warn_multiple_packages':
+          return params.fn();
+        default:
+          return;
+      }
+    },
+    [entity, navigation, taskLists, askToAssign, askToUnassign],
+  );
 
   useEffect(() => {
     shouldNotificationBeDisplayed(false);
@@ -276,7 +285,7 @@ function BarcodePage({
           // onTouchEnd={() => console.log(">>>>>>>>>> leave")}
         >
           <View style={styles.section}>
-            <Badge>{ entity?.status ? t(`TASK_${entity.status}`) : '-' }</Badge>
+            <Badge>{entity?.status ? t(`TASK_${entity.status}`) : '-'}</Badge>
           </View>
           <TextSection
             title={t('ADDRESS')}
