@@ -525,6 +525,11 @@
     "ADD_NOTE": "Ajouter une note",
     "REPORT_AN_INCIDENT": "Signaler un incident",
     "UPDATE_PARCEL_DETAILS": "Mettre à jour les détails du colis",
-    "PICTURES": "Photos"
+    "PICTURES": "Photos",
+    "TASK_TODO": "A faire",
+    "TASK_DOING": "En cours",
+    "TASK_FAILED": "Echouée",
+    "TASK_DONE": "Fait",
+    "TASK_CANCELLED": "Annulée"
   }
 }

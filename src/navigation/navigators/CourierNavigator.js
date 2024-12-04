@@ -119,7 +119,7 @@ const BarcodeStack = createStackNavigator();
 const BarcodeNavigator = () => (
   <BarcodeStack.Navigator screenOptions={stackNavigatorScreenOptions}>
     <BarcodeStack.Screen
-      name="CourierBarcode"
+      name="CourierBarcodeScanner"
       component={screens.CourierBarcodePage}
       options={{
         title: false,

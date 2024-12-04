@@ -20,6 +20,7 @@ import BottomModal from '../../../components/BottomModal';
 import { navigateToTask } from '../../utils';
 import { selectTasks } from '../../../redux/Courier';
 import { shouldNotificationBeDisplayed } from '../../../redux/App/actions';
+import { Badge } from 'native-base'
 
 async function _fetchBarcode(httpClient, barcode) {
   if (barcode) {
@@ -274,7 +275,9 @@ function BarcodePage({
           // onTouchStart={() => console.log(">>>>>>>>>> enter")}
           // onTouchEnd={() => console.log(">>>>>>>>>> leave")}
         >
-          <TextSection title={t('STATUS')} value={entity?.status} />
+          <View style={styles.section}>
+            <Badge>{ entity?.status ? t(`TASK_${entity.status}`) : '-' }</Badge>
+          </View>
           <TextSection
             title={t('ADDRESS')}
             value={entity?.address?.streetAddress}

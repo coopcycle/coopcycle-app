@@ -381,6 +381,11 @@
     "ADD_NOTE": "Notiz hinzufügen",
     "REPORT_AN_INCIDENT": "Einen Vorfall melden",
     "UPDATE_PARCEL_DETAILS": "Paketdetails aktualisieren",
-    "PICTURES": "Fotos"
+    "PICTURES": "Fotos",
+    "TASK_TODO": "Zu erledigen",
+    "TASK_DOING": "In Bearbeitung",
+    "TASK_FAILED": "Fehlgeschlagen",
+    "TASK_DONE": "Erledigt",
+    "TASK_CANCELLED": "Abgebrochen"
   }
 }

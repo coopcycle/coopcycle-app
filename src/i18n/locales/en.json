@@ -553,6 +553,11 @@
     "ADD_NOTE": "Add Note",
     "REPORT_AN_INCIDENT": "Report an incident",
     "UPDATE_PARCEL_DETAILS": "Update parcel details",
-    "PICTURES": "Photos"
+    "PICTURES": "Photos",
+    "TASK_TODO": "To do",
+    "TASK_DOING": "In progress",
+    "TASK_FAILED": "Failed",
+    "TASK_DONE": "Done",
+    "TASK_CANCELLED": "Cancelled"
   }
 }
