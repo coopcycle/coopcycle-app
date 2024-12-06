@@ -40,6 +40,12 @@ async function _putNote(httpClient, task_id, note) {
   }
 }
 
+async function _startTask(httpClient, task_id) {
+  if (task_id) {
+    return await httpClient.put(`/api/tasks/${task_id}/start`);
+  }
+}
+
 async function _assignTask(httpClient, task_id, token) {
   if (task_id) {
     return await httpClient.put(
@@ -107,6 +113,11 @@ function BarcodePage({
                   .then(resolve)
                   .catch(reject);
               },
+            },
+            {
+              text: t('TASK_COMPLETE_ALERT_NEGATIVE'),
+              onPress: () =>
+                _startTask(httpClient, entity.id).then(resolve).catch(reject),
             },
             {
               text: t('OK'),
