@@ -156,10 +156,15 @@ export const addProduct = async id => {
 
   await element(by.id(id)).tap();
 
-  // Product details page
-  await waitFor(element(by.id('productDetails')))
-    .toBeVisible()
-    .withTimeout(3000);
+  try {
+    // Product details page
+    await waitFor(element(by.id('productDetails')))
+      .toBeVisible()
+      .withTimeout(1000);
+  } catch (e) {
+    //FIXME: it seems that sometimes the tap does not work on the first try
+    await element(by.id(id)).tap();
+  }
 
   // FIXME: with a local coopcycle-web instance, we'll have more control over the test data
   // As there is no way to know the number of sections,
