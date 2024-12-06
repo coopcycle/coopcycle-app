@@ -320,7 +320,6 @@ function BarcodePage({
           />
           <Button
             width="70%"
-            colorScheme={'dark'}
             disabled={entity == null}
             leftIcon={<Icon as={Ionicons} name="document" color="white" />}
             onPress={() => setShowNoteModal(true)}>
