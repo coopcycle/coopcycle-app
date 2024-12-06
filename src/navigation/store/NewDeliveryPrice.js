@@ -1,24 +1,29 @@
 import { Formik } from 'formik';
 import { Text, View } from 'native-base';
-import { withTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import { StyleSheet } from 'react-native';
-import { connect, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { createDelivery, getPrice } from '../../redux/Store/actions';
-import FormInput from './components/FormInput';
 import ModalFormWrapper from './ModalFormWrapper';
+import FormInput from './components/FormInput';
 
-function NewDeliveryPrice(props) {
+function NewDeliveryPrice({ route, navigation }) {
   const dispatch = useDispatch();
-  const delivery = props.route.params?.delivery;
-  const { t } = props;
+  const { t } = useTranslation();
+  const delivery = route.params?.delivery;
 
-  if (!delivery) return;
+  const price = useSelector(state => state.store.price);
+  const priceExcludingTax = useSelector(state => state.store.priceExcludingTax);
+
+  if (!delivery) return null;
+
   dispatch(getPrice(delivery));
 
   function submit(values) {
+    if (price === null || priceExcludingTax === null) return;
     dispatch(
       createDelivery(values, () => {
-        props.navigation.navigate('StoreHome');
+        navigation.navigate('StoreHome');
       }),
     );
   }
@@ -30,15 +35,23 @@ function NewDeliveryPrice(props) {
       validateOnBlur={false}
       validateOnChange={false}>
       {({ handleSubmit }) => (
-        <ModalFormWrapper handleSubmit={handleSubmit} t={t} isSubmit>
+        <ModalFormWrapper
+          handleSubmit={handleSubmit}
+          t={t}
+          isSubmit
+          disabled={price === null || priceExcludingTax === null}
+          disabledMessage={t('PRICE_CALCULATION_FAILED')}>
           <View style={styles.formGroup}>
             <Text style={styles.label}>{t('PRICE_EXCLUDING_TAX')}</Text>
-            <FormInput value={props.priceExcludingTax} editable={false} />
+            <FormInput value={priceExcludingTax} editable={false} />
           </View>
           <View style={styles.formGroup}>
             <Text style={styles.label}>{t('PRICE_TOTAL')}</Text>
-            <FormInput value={props.price} editable={false} />
+            <FormInput value={price} editable={false} />
           </View>
+          {price === null || priceExcludingTax === null ? (
+            <Text>{t('PRICE_CALCULATION_FAILED_DISCLAIMER')}</Text>
+          ) : null}
         </ModalFormWrapper>
       )}
     </Formik>
@@ -55,12 +68,4 @@ const styles = StyleSheet.create({
   },
 });
 
-function mapStateToProps(state) {
-  const price = state.store.price;
-  const priceExcludingTax = state.store.priceExcludingTax;
-  return {
-    price,
-    priceExcludingTax,
-  };
-}
-export default connect(mapStateToProps)(withTranslation()(NewDeliveryPrice));
+export default NewDeliveryPrice;
