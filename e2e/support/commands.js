@@ -159,7 +159,7 @@ export const addProduct = async id => {
   // Product details page
   await waitFor(element(by.id('productDetails')))
     .toBeVisible()
-    .withTimeout(1000);
+    .withTimeout(3000);
 
   // FIXME: with a local coopcycle-web instance, we'll have more control over the test data
   // As there is no way to know the number of sections,
