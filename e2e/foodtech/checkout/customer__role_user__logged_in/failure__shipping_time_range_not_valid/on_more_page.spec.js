@@ -1,17 +1,18 @@
 import {
   addProduct,
+  authenticateWithCredentials,
   chooseRestaurant,
   closeRestaurantForToday,
   connectToLocalInstance,
   connectToSandbox,
   launchApp,
   symfonyConsole,
-} from '../../../support/commands';
-import { describeif } from '../../../utils';
+} from '../../../../support/commands';
+import { describeif } from '../../../../utils';
 
 //FIXME: run against local instance on iOS too (see https://github.com/coopcycle/coopcycle-ops/issues/97)
 describeif(device.getPlatform() === 'android')(
-  'checkout for guest user; with validation failures',
+  'checkout for customer with existing account (role - user); logged in; with validation failures',
   () => {
     beforeEach(async () => {
       await launchApp();
@@ -20,14 +21,13 @@ describeif(device.getPlatform() === 'android')(
         symfonyConsole(
           'coopcycle:fixtures:load -f cypress/fixtures/checkout.yml',
         );
-        symfonyConsole(
-          'craue:setting:create --section="general" --name="guest_checkout_enabled" --value="1" --force',
-        );
         await connectToLocalInstance();
       } else {
         //FIXME: run against local instance on iOS too (see https://github.com/coopcycle/coopcycle-ops/issues/97)
         await connectToSandbox();
       }
+
+      await authenticateWithCredentials('bob', '12345678');
 
       // Enter address
       await waitFor(element(by.id('askAddressAutocomplete')))
@@ -78,41 +78,13 @@ describeif(device.getPlatform() === 'android')(
       await element(by.id('setShippingTimeRange')).tap();
     });
 
-    describe('shippedAt time range became not valid while the customer had been on the Summary page', () => {
-      it(`show an error message (Summary page)`, async () => {
-        await closeRestaurantForToday(
-          'restaurant_with_cash_on_delivery_owner',
-          '12345678',
-        );
-
-        await element(by.id('cartSummarySubmit')).tap();
-
-        // Error message
-        await waitFor(element(by.id('globalModal')))
-          .toBeVisible()
-          .withTimeout(5000);
-      });
-    });
-
     describe('shippedAt time range became not valid while the customer had been on the More page', () => {
       it(`show an error message (More page)`, async () => {
         await element(by.id('cartSummarySubmit')).tap();
 
-        // Authentication page
-        await expect(element(by.id('loginUsername'))).toBeVisible();
-
-        try {
-          await element(by.id('guestCheckoutButton')).tap();
-        } catch (e) {}
-
         // More infos page
-        await expect(element(by.id('guestCheckoutEmail'))).toBeVisible();
         await expect(element(by.id('checkoutTelephone'))).toBeVisible();
         await expect(element(by.id('moreInfosSubmit'))).toBeVisible();
-
-        await element(by.id('guestCheckoutEmail')).typeText(
-          'e2e-mobile@demo.coopcycle.org',
-        );
 
         // Append "\n" to make sure virtual keybord is hidden after entry
         // https://github.com/wix/detox/issues/209
@@ -125,56 +97,6 @@ describeif(device.getPlatform() === 'android')(
         );
 
         await element(by.id('moreInfosSubmit')).tap();
-
-        // Error message
-        await waitFor(element(by.id('globalModal')))
-          .toBeVisible()
-          .withTimeout(5000);
-      });
-    });
-
-    describe('shippedAt time range became not valid while the customer had been on the Payment page', () => {
-      it(`show an error message (Payment page)`, async () => {
-        await element(by.id('cartSummarySubmit')).tap();
-
-        // Authentication page
-        await expect(element(by.id('loginUsername'))).toBeVisible();
-
-        try {
-          await element(by.id('guestCheckoutButton')).tap();
-        } catch (e) {}
-
-        // More infos page
-        await expect(element(by.id('guestCheckoutEmail'))).toBeVisible();
-        await expect(element(by.id('checkoutTelephone'))).toBeVisible();
-        await expect(element(by.id('moreInfosSubmit'))).toBeVisible();
-
-        await element(by.id('guestCheckoutEmail')).typeText(
-          'e2e-mobile@demo.coopcycle.org',
-        );
-
-        // Append "\n" to make sure virtual keybord is hidden after entry
-        // https://github.com/wix/detox/issues/209
-        await element(by.id('checkoutTelephone')).typeText('0612345678');
-        await element(by.id('checkoutTelephone')).typeText('\n');
-
-        await element(by.id('moreInfosSubmit')).tap();
-
-        // Payment picker page
-        await expect(
-          element(by.id('paymentMethod-cash_on_delivery')),
-        ).toBeVisible();
-        await element(by.id('paymentMethod-cash_on_delivery')).tap();
-
-        // Cash on delivery page
-        await waitFor(element(by.id('cashOnDeliverySubmit'))).toExist().withTimeout(5000);
-
-        await closeRestaurantForToday(
-          'restaurant_with_cash_on_delivery_owner',
-          '12345678',
-        );
-
-        await element(by.id('cashOnDeliverySubmit')).tap();
 
         // Error message
         await waitFor(element(by.id('globalModal')))
