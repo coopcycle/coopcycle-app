@@ -18,8 +18,10 @@ export const LOAD_TIME_SLOT_CHOICES_SUCCESS =
   '@store/LOAD_TIME_SLOT_CHOICES_SUCCESS';
 export const LOAD_PACKAGES_SUCCESS = '@store/LOAD_PACKAGES_SUCCESS';
 export const GET_PRICE_SUCCESS = '@store/GET_PRICE_SUCCESS';
+export const GET_PRICE_ERROR = '@store/GET_PRICE_ERROR';
 
 export const getPriceSuccess = createAction(GET_PRICE_SUCCESS);
+export const getPriceError = createAction(GET_PRICE_ERROR);
 export function getPrice(delivery) {
   return (dispatch, getState) => {
     const { app } = getState();
@@ -34,6 +36,7 @@ export function getPrice(delivery) {
         dispatch(setLoading(false));
       })
       .catch(e => {
+        dispatch(getPriceError(e));
         dispatch(setLoading(false));
       });
   };

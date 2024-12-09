@@ -8,8 +8,16 @@ export default function ModalFormWrapper({
   handleSubmit,
   t,
   isSubmit = false,
+  disabled = false,
+  disabledMessage,
 }) {
   const backgroundColor = useBackgroundContainerColor();
+
+  const buttonLabel = disabled
+    ? disabledMessage
+    : isSubmit
+    ? t('SUBMIT')
+    : t('NEXT');
 
   return (
     <SafeAreaView
@@ -32,8 +40,11 @@ export default function ModalFormWrapper({
             </Box>
           </ScrollView>
           <Box p="5">
-            <Button onPress={handleSubmit}>
-              {isSubmit ? t('SUBMIT') : t('NEXT')}
+            <Button
+              onPress={handleSubmit}
+              disabled={disabled}
+              style={disabled ? { opacity: 0.5 } : {}}>
+              {buttonLabel}
             </Button>
           </Box>
         </KeyboardAdjustView>
