@@ -13,6 +13,8 @@ import {
   Text,
   TextArea,
   VStack,
+  Center,
+  AlertDialog
 } from 'native-base';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -49,7 +51,8 @@ import {
 } from '../../redux/Courier';
 import { greenColor, yellowColor } from '../../styles/common';
 import { doneIconName, incidentIconName } from './styles/common';
-import { reportIncident } from '../../redux/Courier/taskActions';
+import { reportIncident, resolveTaskConfirmation } from '../../redux/Courier/taskActions';
+import { selectTaskConfirmation } from '../../redux/Courier/taskSelectors';
 
 const DELETE_ICON_SIZE = 32;
 const CONTENT_PADDING = 20;
@@ -368,12 +371,50 @@ const FailureReasonForm = ({ data, onChange }) => {
   )
 }
 
+const TaskConfirmationModal = ({taskConfirmation, resolveTaskConfirmation}) => {
+  const [isOpen, setIsOpen] = React.useState(true);
+
+  if (!taskConfirmation) return null
+  const onClose = () => {
+    taskConfirmation.onResolve(false)
+    resolveTaskConfirmation(false)
+  }
+
+  const onConfirm = () => {
+    taskConfirmation.onResolve(true)
+    resolveTaskConfirmation(true)
+  }
+
+  return <Center>
+      <AlertDialog isOpen={isOpen} onClose={onClose}>
+        <AlertDialog.Content>
+          <AlertDialog.CloseButton />
+          <AlertDialog.Header>Task Confirmation</AlertDialog.Header>
+          <AlertDialog.Body>{taskConfirmation.description}
+          </AlertDialog.Body>
+          <AlertDialog.Footer>
+            <Button.Group space={2}>
+              <Button variant="unstyled" colorScheme="coolGray" onPress={onClose}>
+                Cancel
+              </Button>
+              <Button colorScheme="danger" onPress={onConfirm}>
+                Complete previous task
+              </Button>
+            </Button.Group>
+          </AlertDialog.Footer>
+        </AlertDialog.Content>
+      </AlertDialog>
+    </Center>;
+};
+
 const CompleteTask = ({
   httpClient,
   signatures,
   pictures,
   deleteSignatureAt,
   deletePictureAt,
+  taskConfirmation,
+  resolveTaskConfirmation
 }) => {
 
   const { t } = useTranslation();
@@ -457,6 +498,7 @@ const CompleteTask = ({
           >
             <VStack flex={1} w="100%">
               <MultipleTasksLabel tasks={ tasks } />
+              {taskConfirmation && <TaskConfirmationModal taskConfirmation={taskConfirmation} resolveTaskConfirmation={resolveTaskConfirmation}/>}
               <TouchableWithoutFeedback
                 // We need to disable TouchableWithoutFeedback when keyboard is not visible,
                 // otherwise the ScrollView for proofs of delivery is not scrollable
@@ -685,6 +727,7 @@ function mapStateToProps(state) {
     httpClient: state.app.httpClient,
     signatures: selectSignatures(state),
     pictures: selectPictures(state),
+    taskConfirmation: selectTaskConfirmation(state)
   };
 }
 
@@ -692,6 +735,7 @@ function mapDispatchToProps(dispatch) {
   return {
     deleteSignatureAt: index => dispatch(deleteSignatureAt(index)),
     deletePictureAt: index => dispatch(deletePictureAt(index)),
+    resolveTaskConfirmation: confirmed => dispatch(resolveTaskConfirmation(confirmed)),
   };
 }
 

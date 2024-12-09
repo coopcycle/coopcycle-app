@@ -49,6 +49,10 @@ export const SET_SIGNATURE_SCREEN_FIRST = 'SET_SIGNATURE_SCREEN_FIRST';
 
 export const CHANGE_DATE = 'CHANGE_DATE';
 
+export const TASK_CONFIRMATION_REQUIRED = 'TASK_CONFIRMATION_REQUIRED';
+export const TASK_CONFIRMATION_RESOLVED = 'TASK_CONFIRMATION_RESOLVED';
+
+
 /*
  * Action Creators
  */
@@ -348,45 +352,152 @@ export function markTaskFailed(
   };
 }
 
-export function markTaskDone(task, notes = '', onSuccess, contactName = '') {
-  return function (dispatch, getState) {
-    dispatch(markTaskDoneRequest(task));
-    const httpClient = selectHttpClient(getState());
+/**
+ * Creates a task queue processor with the given context
+ * @returns {Function} - Configured task queue processor
+ */
+function createTaskProcessor(context) {
+  const { dispatch, httpClient, onRequireConfirmation } = context;
 
-    let payload = {
-      notes,
-    };
-
-    if (!_.isEmpty(contactName)) {
-      payload = {
-        ...payload,
-        contactName,
-      };
+  async function processTaskQueue(queue = [], { onSuccess } = {}) {
+    if (queue.length === 0) {
+      if (typeof onSuccess === 'function') {
+        setTimeout(() => onSuccess(), 100);
+      }
+      return Promise.resolve();
     }
 
-    // Make sure to return a promise for testing
-    return uploadEntityImages(task, '/api/task_images', getState())
-      .then(uploadTasks => {
-        return httpClient
-          .put(task['@id'] + '/done', payload)
-          .then(savedTask => {
-            httpClient.execUploadTask(uploadTasks);
-            dispatch(clearFiles());
-            dispatch(markTaskDoneSuccess(savedTask));
-            if (typeof onSuccess === 'function') {
-              setTimeout(() => onSuccess(), 100);
-            }
+    const [current, ...remainingTasks] = queue;
+    const { task, data = {}, uploadTasks = [] } = current;
+
+    try {
+      // Instead of using validateStatus option, we'll catch and handle the error directly
+      const response = await httpClient.put(task['@id'] + '/done', data)
+        .catch(error => {
+          // Return the error response instead of throwing
+          if (error.response) {
+            return error.response;
+          }
+          throw error;
+        });
+
+      // Check if it's a 409 response
+      if (response.status === 409) {
+        const { data: responseData } = response;
+
+        //TODO: Transform this into translator
+        if (responseData?.required_action === 'validate_previous_task') {
+          const shouldValidate = await onRequireConfirmation({
+            type: 'validate_previous_task',
+            taskId: responseData.previous_task,
+            title: 'Previous Task Incomplete',
+            message: 'A prerequisite task needs to be completed',
+            description: `Task #${responseData.previous_task} must be completed first. Would you like to complete it now?`,
+            confirmLabel: 'Complete Previous Task'
           });
-      })
-      .catch(e => {
-        dispatch(markTaskDoneFailure(e));
-        setTimeout(() => showAlert(e), 100);
+
+          if (!shouldValidate) {
+            throw new Error(responseData.error);
+          }
+
+          return processTaskQueue([
+            {
+              task: { '@id': `/api/tasks/${responseData.previous_task}` },
+              data: {}
+            },
+            {
+              task,
+              data,
+              uploadTasks
+            },
+            ...remainingTasks
+          ], { onSuccess });
+        }
+
+        throw new Error(responseData.error || 'Conflict error occurred');
+      }
+
+      // Handle other error status codes
+      if (response.status >= 400) {
+        throw new Error(response.data?.error || `Request failed with status ${response.status}`);
+      }
+
+      //TODO: Check if the pictures are well uploaded
+
+      // Execute upload tasks after successful task completion
+      if (uploadTasks.length > 0) {
+        await httpClient.execUploadTask(uploadTasks);
+      }
+
+      return processTaskQueue(remainingTasks, { onSuccess });
+
+    } catch (error) {
+      dispatch(markTaskDoneFailure(error));
+      setTimeout(() => showAlert(error.message), 100);
+      return Promise.reject(error);
+    }
+  }
+
+  return processTaskQueue;
+}
+
+// actions.js
+export function markTaskDone(task, notes = '', onSuccess, contactName = '') {
+  return async function(dispatch, getState) {
+    dispatch(markTaskDoneRequest(task));
+
+    const httpClient = selectHttpClient(getState());
+    const data = _.isEmpty(contactName) ? { notes } : { notes, contactName };
+
+    try {
+      // First handle image uploads
+      const uploadTasks = await uploadEntityImages(task, '/api/task_images', getState());
+
+      console.log(uploadTasks)
+      const processTaskQueue = createTaskProcessor({
+        dispatch,
+        httpClient,
+        onRequireConfirmation: async (confirmationData) => {
+          return new Promise((resolve) => {
+            dispatch({
+              type: TASK_CONFIRMATION_REQUIRED,
+              payload: {
+                ...confirmationData,
+                onResolve: resolve
+              }
+            });
+          });
+        }
       });
+
+      await processTaskQueue([
+        {
+          task,
+          data,
+          uploadTasks
+        }
+      ], { onSuccess });
+
+      dispatch(clearFiles());
+      dispatch(markTaskDoneSuccess(task));
+
+    } catch (error) {
+      console.log(error)
+      dispatch(markTaskDoneFailure(error));
+      setTimeout(() => showAlert(error.message), 100);
+    }
+  };
+}
+
+export function resolveTaskConfirmation(confirmed) {
+  return {
+    type: TASK_CONFIRMATION_RESOLVED,
+    payload: confirmed
   };
 }
 
 export function markTasksDone(tasks, notes = '', onSuccess, contactName = '') {
-  return function (dispatch, getState) {
+  return async function (dispatch, getState) {
     dispatch(markTasksDoneRequest());
     const httpClient = selectHttpClient(getState());
 

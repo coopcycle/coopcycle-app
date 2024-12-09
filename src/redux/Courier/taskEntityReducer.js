@@ -32,6 +32,8 @@ import {
   REPORT_INCIDENT_REQUEST,
   REPORT_INCIDENT_SUCCESS,
   REPORT_INCIDENT_FAILURE,
+  TASK_CONFIRMATION_REQUIRED,
+  TASK_CONFIRMATION_RESOLVED
 } from './taskActions';
 import { apiSlice } from '../api/slice'
 
@@ -70,6 +72,7 @@ const tasksEntityInitialState = {
   username: null,
   pictures: [], // Array of base64 encoded pictures
   signatures: [], // Array of base64 encoded signatures
+  taskConfirmation: null,
 };
 
 function replaceItem(state, payload) {
@@ -259,6 +262,17 @@ export const tasksEntityReducer = (
       return {
         ...state,
         items: {},
+      };
+
+    case TASK_CONFIRMATION_REQUIRED:
+      return {
+        ...state,
+        taskConfirmation: action.payload
+      };
+    case TASK_CONFIRMATION_RESOLVED:
+      return {
+        ...state,
+        taskConfirmation: null
       };
   }
 
