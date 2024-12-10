@@ -51,7 +51,7 @@ on:
         required: true
         type: boolean
       build_sicklo:
-        description: 'Siclo app'
+        description: 'Sicklo app'
         required: true
         type: boolean
 jobs:
@@ -189,7 +189,7 @@ jobs:
       tag: ${{ inputs.tag }}
       instance: sicklo
       instance_url: https://sicklo.coopcycle.org
-      app_name: Siclo
+      app_name: Sicklo
       primary_color: "#1f2632"
       package_name: fr.coopcycle.sicklo
       keystore_key_alias: instance
