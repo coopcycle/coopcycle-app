@@ -65,6 +65,7 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
           cache: 'gradle'
+      - uses: mfinelli/setup-imagemagick@v5
       - name: Find Metro cache
         id: metro-cache-dir-path
         uses: actions/github-script@v4
