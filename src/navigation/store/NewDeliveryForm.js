@@ -1,5 +1,4 @@
 import { Formik } from 'formik';
-import { parsePhoneNumberFromString } from 'libphonenumber-js';
 import moment from 'moment';
 import { Box, Button, HStack, Text, VStack } from 'native-base';
 import React, { useEffect, useState } from 'react';
@@ -15,6 +14,7 @@ import KeyboardManager from 'react-native-keyboard-manager';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { connect, useDispatch } from 'react-redux';
 
+import { IconPackage } from '@tabler/icons-react-native';
 import {
   loadPackages,
   loadTimeSlot,
@@ -22,7 +22,10 @@ import {
   loadTimeSlots,
 } from '../../redux/Store/actions';
 import { selectStore, selectTimeSlots } from '../../redux/Store/selectors';
-import { useBackgroundContainerColor } from '../../styles/theme';
+import {
+  useBackgroundContainerColor,
+  usePrimaryColor,
+} from '../../styles/theme';
 import Range from '../checkout/ProductDetails/Range';
 import ModalFormWrapper from './ModalFormWrapper';
 import FormInput from './components/FormInput';
@@ -32,6 +35,7 @@ function DeliveryForm(props) {
   const [isDateTimePickerVisible, setIsDateTimePickerVisible] = useState(false);
   const [selectedTimeSlot, setSelectedTimeSlot] = useState('');
   const backgroundColor = useBackgroundContainerColor();
+  const primaryColor = usePrimaryColor();
   const [selectedChoice, setSelectedChoice] = React.useState(null);
   const [packagesCount, setPackagesCount] = useState([]);
   const dispatch = useDispatch();
@@ -139,6 +143,7 @@ function DeliveryForm(props) {
   function submit(values) {
     const delivery = {
       store: store['@id'],
+      pickup: route.params?.pickup || undefined,
       dropoff: {
         address: {
           ...values.address,
@@ -160,7 +165,7 @@ function DeliveryForm(props) {
   }
 
   function validate(values) {
-    let errors = {};
+    const errors = {};
 
     if (hasTimeSlot && !selectedChoice) {
       errors.timeSlot = t('STORE_NEW_DELIVERY_ERROR.EMPTY_TIME_SLOT');
@@ -210,48 +215,40 @@ function DeliveryForm(props) {
   }
 
   function handleChangeWeight(value, setFieldValue, setFieldTouched) {
-    value = value.replace(',', '.').replace(/[^0-9.]/g, '');
+    let newValue = value.replace(',', '.').replace(/[^0-9.]/g, '');
 
-    const firstDecimalIndex = value.indexOf('.');
+    const firstDecimalIndex = newValue.indexOf('.');
     if (firstDecimalIndex === 0) {
-      value = '0' + value;
+      newValue = `0${newValue}`;
     } else if (firstDecimalIndex !== -1) {
-      value =
-        value.substring(0, firstDecimalIndex + 1) +
-        value.substring(firstDecimalIndex + 1).replace(/\./g, '');
+      newValue =
+        newValue.substring(0, firstDecimalIndex + 1) +
+        newValue.substring(firstDecimalIndex + 1).replace(/\./g, '');
     }
 
-    if (value.includes('.')) {
-      const decimalIndex = value.indexOf('.');
-      value =
-        value.substring(0, decimalIndex + 1) +
-        value.substring(decimalIndex + 1, decimalIndex + 4);
+    if (newValue.includes('.')) {
+      const decimalIndex = newValue.indexOf('.');
+      newValue =
+        newValue.substring(0, decimalIndex + 1) +
+        newValue.substring(decimalIndex + 1, decimalIndex + 4);
     }
 
-    setFieldValue('weight', value);
+    setFieldValue('weight', newValue);
     setFieldTouched('weight');
   }
 
-  const delivery = route.params?.delivery;
-
-  let telephone = '';
-  if (delivery.telephone) {
-    const phoneNumber = parsePhoneNumberFromString(delivery.telephone, country);
-    if (phoneNumber && phoneNumber.isValid()) {
-      telephone = phoneNumber.formatNational();
-    }
-  }
+  const dropoff = route.params?.dropoff;
 
   let initialValues = {
-    address: delivery.address,
+    address: dropoff.address,
     // set from the first step newDeliveryAddress
-    description: delivery.description || '',
-    contactName: delivery.contactName || '',
-    businessName: delivery.businessName || '',
-    telephone,
+    description: dropoff.description || '',
+    contactName: dropoff.contactName || '',
+    businessName: dropoff.businessName || '',
+    telephone: dropoff.telephone || '',
     // ----------------
     weight: null,
-    comments: delivery.comments || '',
+    comments: dropoff.comments || '',
   };
 
   if (hasTimeSlot) {
@@ -284,6 +281,19 @@ function DeliveryForm(props) {
         setFieldTouched,
       }) => (
         <ModalFormWrapper handleSubmit={handleSubmit} t={t}>
+          <View style={[styles.formGroup, { zIndex: 2 }]}>
+            <View style={[styles.header, styles.label]}>
+              <IconPackage
+                size={24}
+                stroke={primaryColor}
+                color={backgroundColor}
+              />
+              <Text>{t('STORE_NEW_DELIVERY_PACKAGES_TITLE')}</Text>
+            </View>
+            <Text style={styles.optional}>
+              {t('STORE_NEW_DELIVERY_PACKAGES_DESCRIPTION')}
+            </Text>
+          </View>
           {hasTimeSlot ? (
             <TimeSlotSelector
               selectValue={selectedChoice}
@@ -345,8 +355,8 @@ function DeliveryForm(props) {
                 gap: 16,
                 marginTop: 4,
               }}>
-              {packages && packages.length ? (
-                packagesCount.map((item, index) => {
+              {packages?.length ? (
+                packagesCount.map(item => {
                   return (
                     <View
                       style={[
@@ -358,7 +368,7 @@ function DeliveryForm(props) {
                           backgroundColor,
                         },
                       ]}
-                      key={index}>
+                      key={item.type}>
                       <Range
                         onPress={() => {}}
                         onPressIncrement={() =>
@@ -414,6 +424,12 @@ function DeliveryForm(props) {
 }
 
 const styles = StyleSheet.create({
+  header: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 5,
+  },
   label: {
     marginBottom: 8,
     fontWeight: '500',
