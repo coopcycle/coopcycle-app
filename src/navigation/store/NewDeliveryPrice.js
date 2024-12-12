@@ -4,8 +4,8 @@ import { useTranslation } from 'react-i18next';
 import { StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { createDelivery, getPrice } from '../../redux/Store/actions';
-import FormInput from './components/FormInput';
 import ModalFormWrapper from './ModalFormWrapper';
+import FormInput from './components/FormInput';
 
 function NewDeliveryPrice({ route, navigation }) {
   const dispatch = useDispatch();
@@ -20,6 +20,7 @@ function NewDeliveryPrice({ route, navigation }) {
   dispatch(getPrice(delivery));
 
   function submit(values) {
+    if (price === null || priceExcludingTax === null) return;
     dispatch(
       createDelivery(values, () => {
         navigation.navigate('StoreHome');
@@ -34,7 +35,12 @@ function NewDeliveryPrice({ route, navigation }) {
       validateOnBlur={false}
       validateOnChange={false}>
       {({ handleSubmit }) => (
-        <ModalFormWrapper handleSubmit={handleSubmit} t={t} isSubmit>
+        <ModalFormWrapper
+          handleSubmit={handleSubmit}
+          t={t}
+          isSubmit
+          disabled={price === null || priceExcludingTax === null}
+          disabledMessage={t('PRICE_CALCULATION_FAILED')}>
           <View style={styles.formGroup}>
             <Text style={styles.label}>{t('PRICE_EXCLUDING_TAX')}</Text>
             <FormInput value={priceExcludingTax} editable={false} />
@@ -43,6 +49,9 @@ function NewDeliveryPrice({ route, navigation }) {
             <Text style={styles.label}>{t('PRICE_TOTAL')}</Text>
             <FormInput value={price} editable={false} />
           </View>
+          {price === null || priceExcludingTax === null ? (
+            <Text>{t('PRICE_CALCULATION_FAILED_DISCLAIMER')}</Text>
+          ) : null}
         </ModalFormWrapper>
       )}
     </Formik>
