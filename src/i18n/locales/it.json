@@ -432,6 +432,8 @@
     "TASK_DOING": "In corso",
     "TASK_FAILED": "Fallito",
     "TASK_DONE": "Fatto",
-    "TASK_CANCELLED": "Annullato"
+    "TASK_CANCELLED": "Annullato",
+    "ASK_TO_START_PICKUP_TITLE": "Attività di ritiro",
+    "ASK_TO_START_PICKUP_MESSAGE": "L'attività di ritiro non è ancora iniziata.",
     }
 }

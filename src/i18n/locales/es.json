@@ -443,6 +443,8 @@
         "TASK_DOING": "En progreso",
         "TASK_FAILED": "Fallido",
         "TASK_DONE": "Hecho",
-        "TASK_CANCELLED": "Cancelado"
+        "TASK_CANCELLED": "Cancelado",
+        "ASK_TO_START_PICKUP_TITLE": "Tarea de recogida",
+        "ASK_TO_START_PICKUP_MESSAGE": "La tarea de recogida aún no ha comenzado.",
     }
 }

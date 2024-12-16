@@ -154,6 +154,31 @@ function BarcodePage({
     [t, httpClient, entity],
   );
 
+  const askToStartPickup = useCallback(
+    ({ payload: { task_id } }) => {
+      return new Promise((resolve, reject) => {
+        Alert.alert(
+          t('ASK_TO_START_PICKUP_TITLE'),
+          t('ASK_TO_START_PICKUP_MESSAGE'),
+          [
+            {
+              text: t('TASK_COMPLETE_ALERT_NEGATIVE'),
+              onPress: () => {
+                _startTask(httpClient, task_id)
+                  .then(resolve)
+                  .catch(reject);
+              },
+            },
+            {
+              text: t('OK'),
+              onPress: resolve,
+            },
+          ],
+        );
+      });
+    }
+  )
+
   const warningMultiplePackages = ({ count, details }) =>
     new Promise((resolve, _reject) => {
       Alert.alert(
@@ -195,13 +220,17 @@ function BarcodePage({
           return askToUnassign(params);
         case 'ask_to_assign':
           return askToAssign(params);
+        case 'ask_to_start_pickup':
+          return askToStartPickup(params);
+        case 'ask_to_complete_pickup':
         case 'ask_to_complete':
           return new Promise((resolve, _reject) => {
+            const id = params?.payload?.task_id ?? entity.id;
             navigation.dispatch(StackActions.pop(1));
             navigateToTask(
               navigation,
               null,
-              taskLists.find(task => task['@id'] === `/api/tasks/${entity.id}`),
+              taskLists.find(task => task['@id'] === `/api/tasks/${id}`),
             );
             resolve();
           });
@@ -271,29 +300,29 @@ function BarcodePage({
           disabled={showNoteModal || clientActionsQueue.length > 0}
           onScanned={async code => {
             if (clientActionsQueue.length > 0) return;
-            const { entity, client_action, token_action } = await _fetchBarcode(
+            const { entity, client_action: { action = null, payload = null } = {}, token_action } = await _fetchBarcode(
               httpClient,
               code,
             );
             setBarcode(code);
             setEntity(entity);
 
-            const action = checkMultiplePackages(entity?.barcodes?.packages);
+            const multi_package_action = checkMultiplePackages(entity?.barcodes?.packages);
             setClientActionsQueue(
               [
                 ...clientActionsQueue,
-                { action: client_action, token: token_action },
-                action,
-              ].filter(e => e),
+                { action, payload, token: token_action },
+                multi_package_action,
+              ].filter(e => e.action),
             );
           }}
         />
         <ScrollView
           style={{ paddingHorizontal: 20, marginVertical: 20 }}
-          // If the auto-scan trigger is anoying maybe add later
-          // the possibility to scan when touching the screen
-          // onTouchStart={() => console.log(">>>>>>>>>> enter")}
-          // onTouchEnd={() => console.log(">>>>>>>>>> leave")}
+        // If the auto-scan trigger is anoying maybe add later
+        // the possibility to scan when touching the screen
+        // onTouchStart={() => console.log(">>>>>>>>>> enter")}
+        // onTouchEnd={() => console.log(">>>>>>>>>> leave")}
         >
           <View style={styles.section}>
             <Badge>{entity?.status ? t(`TASK_${entity.status}`) : '-'}</Badge>

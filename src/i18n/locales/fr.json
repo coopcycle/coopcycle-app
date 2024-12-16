@@ -530,6 +530,8 @@
     "TASK_DOING": "En cours",
     "TASK_FAILED": "Echouée",
     "TASK_DONE": "Fait",
-    "TASK_CANCELLED": "Annulée"
+    "TASK_CANCELLED": "Annulée",
+    "ASK_TO_START_PICKUP_TITLE": "Tâche de ramassage",
+    "ASK_TO_START_PICKUP_MESSAGE": "La tâche de ramassage n'est pas encore commencée.",
   }
 }

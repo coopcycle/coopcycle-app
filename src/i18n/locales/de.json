@@ -386,6 +386,8 @@
     "TASK_DOING": "In Bearbeitung",
     "TASK_FAILED": "Fehlgeschlagen",
     "TASK_DONE": "Erledigt",
-    "TASK_CANCELLED": "Abgebrochen"
+    "TASK_CANCELLED": "Abgebrochen",
+    "ASK_TO_START_PICKUP_TITLE": "Abholaufgabe",
+    "ASK_TO_START_PICKUP_MESSAGE": "Die Abholaufgabe wurde noch nicht gestartet.",
   }
 }

@@ -558,6 +558,8 @@
     "TASK_DOING": "In progress",
     "TASK_FAILED": "Failed",
     "TASK_DONE": "Done",
-    "TASK_CANCELLED": "Cancelled"
+    "TASK_CANCELLED": "Cancelled",
+    "ASK_TO_START_PICKUP_TITLE": "Pickup task",
+    "ASK_TO_START_PICKUP_MESSAGE": "The pickup task is not yet started.",
   }
 }
