@@ -481,11 +481,9 @@ function withHooks(ClassComponent) {
     const baseTextColor = useBaseTextColor();
     const placeholderTextColor = useColorModeToken('text.400', 'text.400');
 
-    const controlBackgroundColor = useColorModeValue(whiteColor, darkGreyColor);
     const itemTextColor = useColorModeValue('#856404', baseTextColor);
 
     const backgroundColor = useBackgroundContainerColor();
-    const containerColor = useBackgroundHighlightColor();
     const primaryColor = usePrimaryColor();
 
     return (
@@ -493,9 +491,7 @@ function withHooks(ClassComponent) {
         {...props}
         baseTextColor={baseTextColor}
         placeholderTextColor={placeholderTextColor}
-        controlBackgroundColor={controlBackgroundColor}
         backgroundColor={backgroundColor}
-        containerColor={containerColor}
         itemTextColor={itemTextColor}
         primaryColor={primaryColor}
       />
