@@ -137,6 +137,11 @@ const config = {
         },
       },
     },
+    CheckoutNav: {
+      screens: {
+        CheckoutPaygreenReturn: 'paygreen/return',
+      },
+    },
   },
 };
 

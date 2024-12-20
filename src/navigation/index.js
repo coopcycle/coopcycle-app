@@ -50,6 +50,7 @@ import CheckoutMoreInfos from './checkout/MoreInfos';
 import CheckoutPayment from './checkout/Payment';
 import CheckoutProductDetails from './checkout/ProductDetails';
 import CheckoutSummary from './checkout/Summary';
+import CheckoutPaygreenReturn from './checkout/PaygreenReturn';
 
 import CheckoutLoopeat from './checkout/Loopeat';
 import CheckoutRestaurant from './checkout/Restaurant';
@@ -108,6 +109,7 @@ export default {
   CheckoutPaymentMethodCashOnDelivery,
   CheckoutPaymentMethodEdenred,
   CheckoutLoopeat,
+  CheckoutPaygreenReturn,
   AccountHome,
   AccountAddressesPage,
   AccountOrdersPage,
