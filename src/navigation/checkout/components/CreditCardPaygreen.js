@@ -29,6 +29,8 @@ const CreditCardPaygreen = ({ baseURL, paymentDetails, loadPaymentDetails, cart,
     loadPaymentDetails()
   }, []);
 
+  console.log('paymentDetails', paymentDetails)
+
   if (!paymentDetails?.paygreenWebviewUrl) {
     return <Text>LOADING</Text>
   }
