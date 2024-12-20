@@ -1113,24 +1113,6 @@ export function checkout(
 
     const httpClient = selectHttpClient(getState());
 
-    if (!validateCart(cart)) {
-      dispatch(checkoutFailure());
-      NavigationHolder.dispatch(
-        CommonActions.navigate({
-          name: 'Cart',
-        }),
-      );
-      dispatch(
-        setModal({
-          show: true,
-          skippable: true,
-          content: 'An error occurred, please try again later',
-          type: 'error',
-        }),
-      );
-      return;
-    }
-
     if (paygreenPaymentOrderID) {
       httpClient
         .put(
@@ -1146,8 +1128,8 @@ export function checkout(
             ),
           },
         )
-        .then(o => dispatch(handleSuccessNav(o)))
-        .catch(e => dispatch(checkoutFailure(e)));
+        .then(o => dispatch(handlePaymentSuccess(o)))
+        .catch(e => dispatch(handlePaymentFailed(e)));
 
       return;
     }
