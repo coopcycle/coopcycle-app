@@ -72,6 +72,9 @@ export const selectIsLoading = createSelector(
   },
 );
 
+export const selectIsCentrifugoConnecting = state =>
+  state.app.isCentrifugoConnecting;
+
 export const selectIsCentrifugoConnected = state =>
   state.app.isCentrifugoConnected;
 

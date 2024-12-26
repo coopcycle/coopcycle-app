@@ -8,12 +8,6 @@ import { notifyOnNewOrderCreated } from '../middlewares';
 import restaurantReducer from '../reducers';
 
 describe('notifyOnNewOrderCreated', () => {
-  beforeEach(() => {
-    jest.mock('react-native/Libraries/AppState/AppState', () => ({
-      currentState: 'active',
-    }));
-  });
-
   it('does nothing with action type "LOAD_ORDERS_SUCCESS"', () => {
     const preloadedState = {
       app: {

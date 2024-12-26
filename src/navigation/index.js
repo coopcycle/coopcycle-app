@@ -20,6 +20,7 @@ import StoreDashboard from './store/Dashboard';
 import StoreDelivery from './store/Delivery';
 import StoreNewDeliveryAddress from './store/NewDeliveryAddress';
 import StoreNewDeliveryForm from './store/NewDeliveryForm';
+import StoreNewDeliveryPickup from './store/NewDeliveryPickup';
 import StoreNewDeliveryPrice from './store/NewDeliveryPrice';
 
 import CheckoutPaymentMethodCard from './checkout/PaymentMethodCard';
@@ -137,6 +138,7 @@ export default {
   TaskSignature,
   StoreDashboard,
   StoreDelivery,
+  StoreNewDeliveryPickup,
   StoreNewDeliveryAddress,
   StoreNewDeliveryForm,
   StoreNewDeliveryPrice,

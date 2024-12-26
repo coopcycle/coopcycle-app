@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import {
@@ -29,33 +29,42 @@ export default function NotificationHandler() {
   const notificationsWithSound = useSelector(selectNotificationsWithSound);
   const shouldNotificationBeDisplayed = useSelector(selectShouldNotificationBeDisplayed);
 
+  const hasNotifications = useMemo(
+    () =>
+      notificationsToDisplay.length > 0 || notificationsWithSound.length > 0,
+    [notificationsToDisplay, notificationsWithSound],
+  );
+
+  const hasNotificationsWithSound = useMemo(
+    () => notificationsWithSound.length > 0,
+    [notificationsWithSound],
+  );
+
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (
-      notificationsToDisplay.length > 0 ||
-      notificationsWithSound.length > 0
-    ) {
+    // use memoized value to avoid re-setting timeout when more notifications arrive
+    if (hasNotifications) {
       setTimeout(() => {
         dispatch(clearNotifications());
       }, NOTIFICATION_DURATION_MS);
     }
-  }, [notificationsToDisplay, notificationsWithSound, dispatch]);
+  }, [hasNotifications, dispatch]);
 
   useEffect(() => {
     // on Android, when notification is received, OS let us execute some code
     // but it's very limited, e.g. handlers set via setTimeout are not executed
     // so we do not play sound in that case, because we will not be able to stop it
+    // use memoized value to avoid re-starting the sound when more notifications arrive
     if (
-      shouldNotificationBeDisplayed &&
-      notificationsWithSound.length > 0 &&
-      AppState.currentState === 'active'
-    ) {
+    shouldNotificationBeDisplayed &&
+    hasNotificationsWithSound &&
+    AppState.currentState === 'active') {
       dispatch(startSound());
     } else {
       dispatch(stopSound());
     }
-  }, [notificationsWithSound, shouldNotificationBeDisplayed, dispatch]);
+  }, [hasNotificationsWithSound, dispatch]);
 
   if (!shouldNotificationBeDisplayed) {
     return null;

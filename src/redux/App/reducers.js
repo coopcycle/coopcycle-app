@@ -2,13 +2,13 @@
 /*
  * App reducer, dealing with non-domain specific state
  */
-
+import { AppState } from 'react-native';
 import Config from 'react-native-config';
 
 import {
-  CENTRIFUGO_MESSAGE,
-  CONNECTED,
-  DISCONNECTED,
+  centrifugoConnected,
+  centrifugoDisconnected,
+  connectCentrifugo,
 } from '../middlewares/CentrifugoMiddleware';
 
 import {
@@ -55,6 +55,7 @@ import {
   SET_SERVERS,
   SET_SETTINGS,
   SET_USER,
+  appStateChanged,
   setSpinnerDelayEnabled,
 } from './actions';
 
@@ -69,6 +70,7 @@ const initialState = {
   httpClient: null,
   user: null,
   currentRoute: null,
+  appState: AppState.currentState,
   pushNotificationToken: null,
   pushNotificationTokenSaved: null,
   shouldNotificationBeDisplayed: true,
@@ -97,6 +99,7 @@ const initialState = {
   loginByEmailErrors: {},
   isBackgroundGeolocationEnabled: false,
   hasDisclosedBackgroundPermission: false,
+  isCentrifugoConnecting: false,
   isCentrifugoConnected: false,
   modal: {
     show: false,
@@ -172,15 +175,28 @@ export default (state = initialState, action = {}) => {
         loading: action.payload,
       };
 
-    case CONNECTED:
+    case connectCentrifugo.type: {
+      if (state.isCentrifugoConnected) {
+        return state;
+      }
+
       return {
         ...state,
+        isCentrifugoConnecting: true,
+      };
+    }
+
+    case centrifugoConnected.type:
+      return {
+        ...state,
+        isCentrifugoConnecting: false,
         isCentrifugoConnected: true,
       };
 
-    case DISCONNECTED:
+    case centrifugoDisconnected.type:
       return {
         ...state,
+        isCentrifugoConnecting: false,
         isCentrifugoConnected: false,
       };
 
@@ -458,6 +474,11 @@ export default (state = initialState, action = {}) => {
         isSpinnerDelayEnabled: action.payload,
       };
 
+    case appStateChanged.type:
+      return {
+        ...state,
+        appState: action.payload,
+      };
   }
 
   return state;

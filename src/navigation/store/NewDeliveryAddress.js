@@ -1,3 +1,4 @@
+import { IconCircleArrowDownFilled } from '@tabler/icons-react-native';
 import { Formik } from 'formik';
 import { AsYouType, parsePhoneNumberFromString } from 'libphonenumber-js';
 import _ from 'lodash';
@@ -14,9 +15,9 @@ import {
   useBackgroundHighlightColor,
   usePrimaryColor,
 } from '../../styles/theme';
+import ModalFormWrapper from './ModalFormWrapper';
 import ClientListInput from './components/ClientListInput';
 import FormInput from './components/FormInput';
-import ModalFormWrapper from './ModalFormWrapper';
 
 function NewDeliveryAddress(props) {
   const [validAddress, setValidAddress] = useState(false);
@@ -31,6 +32,7 @@ function NewDeliveryAddress(props) {
     addresses,
     assertDelivery,
     t,
+    route,
     navigation,
     country,
   } = props;
@@ -43,7 +45,7 @@ function NewDeliveryAddress(props) {
   function setAddressData(data, setFieldValue) {
     const contactName = data.contactName || '';
     const telephone = data.telephone || '';
-    const businessName = data.businessName || '';
+    const businessName = data.name || '';
     const description = data.description || '';
 
     setFieldValue('contactName', contactName);
@@ -97,7 +99,7 @@ function NewDeliveryAddress(props) {
   }
 
   function validate(values) {
-    let errors = {};
+    const errors = {};
 
     if (_.isEmpty(values.telephone)) {
       errors.telephone = t('STORE_NEW_DELIVERY_ERROR.EMPTY_PHONE_NUMBER');
@@ -122,7 +124,7 @@ function NewDeliveryAddress(props) {
     return errors;
   }
 
-  let initialValues = {
+  const initialValues = {
     telephone: '',
     contactName: '',
     businessName: '',
@@ -136,7 +138,7 @@ function NewDeliveryAddress(props) {
   }
 
   function submit(values) {
-    const delivery = {
+    const dropoff = {
       telephone: parsePhoneNumberFromString(values.telephone, country).format(
         'E.164',
       ),
@@ -146,7 +148,10 @@ function NewDeliveryAddress(props) {
       address,
     };
 
-    navigation.navigate('StoreNewDeliveryForm', { delivery });
+    navigation.navigate('StoreNewDeliveryForm', {
+      pickup: route.params?.pickup || undefined,
+      dropoff: dropoff,
+    });
   }
 
   return (
@@ -167,6 +172,20 @@ function NewDeliveryAddress(props) {
         setFieldTouched,
       }) => (
         <ModalFormWrapper handleSubmit={handleSubmit} t={t}>
+          <View style={[styles.formGroup, { zIndex: 2 }]}>
+            <View style={[styles.header, styles.label]}>
+              <IconCircleArrowDownFilled
+                size={24}
+                fill={primaryColor}
+                color={backgroundColor}
+                stroke={10}
+              />
+              <Text>{t('STORE_NEW_DELIVERY_DROPOFF_TITLE')}</Text>
+            </View>
+            <Text style={styles.optional}>
+              {t('STORE_NEW_DELIVERY_DROPOFF_DESCRIPTION')}
+            </Text>
+          </View>
           <View style={[styles.formGroup, { zIndex: 2 }]}>
             <Text style={styles.label}>
               {t('STORE_NEW_DELIVERY_SEARCH_CLIENT')}{' '}
@@ -199,12 +218,10 @@ function NewDeliveryAddress(props) {
                 onBlur={handleBlur('address')}
                 value={address}
                 onSelectAddress={e => onSelectAddress(e, setFieldValue)}
-                containerStyle={[
-                  {
-                    flex: 1,
-                    justifyContent: 'center',
-                  },
-                ]}
+                containerStyle={{
+                  flex: 1,
+                  justifyContent: 'center',
+                }}
                 style={{
                   borderRadius: 0,
                   padding: 10,
@@ -339,6 +356,12 @@ const styles = StyleSheet.create({
   },
   errorInput: {
     borderColor: '#FF4136',
+  },
+  header: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 5,
   },
   formGroup: {
     marginBottom: 10,

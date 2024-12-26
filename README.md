@@ -140,6 +140,11 @@ yarn test
 
 Setup: https://wix.github.io/Detox/docs/introduction/environment-setup
 
+To run end-to-end tests locally make sure that
+
+* `APP_ENV` is set to `test` in `.env` file (don't forget to return it back to `dev` after testing).
+* `COMMAND_PREFIX` in `commands.js` contains correct path to `coopcycle-web` project (required to run android tests against local CoopCycle instance).
+
 Build the app:
 
 Android:
@@ -159,13 +164,13 @@ Run tests:
 Android:
 
 ```sh
-detox test -c android.emu.debug
+detox test -c android.emu.debug --retries 0
 ```
 
 iOS:
 
 ```sh
-detox test -c ios.sim.debug
+detox test -c ios.sim.debug --retries 0
 ```
 
 Mics
@@ -173,7 +178,11 @@ Mics
 Run a single test:
 
 ```sh
-detox test -c ios.sim.debug e2e/foodtech/first_launch.spec.js
+detox test -c android.emu.debug --retries 0 e2e/foodtech/first_launch.spec.js
+```
+
+```sh
+detox test -c ios.sim.debug --retries 0 e2e/foodtech/first_launch.spec.js
 ```
 
 Run a single test in debug mode:

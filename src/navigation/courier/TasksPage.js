@@ -24,7 +24,7 @@ import {
   selectIsCentrifugoConnected,
   selectSettingsLatLng,
 } from '../../redux/App/selectors';
-import { connect as connectCentrifugo } from '../../redux/middlewares/CentrifugoMiddleware/actions';
+import { connectCentrifugo } from '../../redux/middlewares/CentrifugoMiddleware/actions';
 import { useGetMyTasksQuery } from '../../redux/api/slice';
 
 const styles = StyleSheet.create({

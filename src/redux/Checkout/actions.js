@@ -1897,7 +1897,11 @@ export function setPaymentMethod(paymentMethod, cb) {
         },
       )
       .then(res => {
-        dispatch(updateCartSuccess(res));
+        // We update the state with the same cart
+        // We can't use response, because it's not a cart
+        // TODO Use the payments returned
+        // https://github.com/coopcycle/coopcycle-app/issues/1925
+        dispatch(updateCartSuccess(cart));
         cb()
       })
       .catch(e => dispatch(checkoutFailure(e)));

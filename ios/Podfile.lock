@@ -42,21 +42,21 @@ PODS:
     - ExpoModulesCore
   - EXFont (11.10.3):
     - ExpoModulesCore
-  - Expo (50.0.14):
+  - Expo (50.0.21):
     - ExpoModulesCore
   - ExpoAdapterFBSDKNext (12.1.0):
     - ExpoModulesCore
     - FBSDKCoreKit
     - React-Core
-  - ExpoCamera (14.1.1):
+  - ExpoCamera (14.1.3):
     - ExpoModulesCore
     - ZXingObjC/OneD
     - ZXingObjC/PDF417
-  - ExpoFileSystem (16.0.8):
+  - ExpoFileSystem (16.0.9):
     - ExpoModulesCore
   - ExpoKeepAwake (12.8.2):
     - ExpoModulesCore
-  - ExpoModulesCore (1.11.12):
+  - ExpoModulesCore (1.11.14):
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
@@ -1122,7 +1122,7 @@ PODS:
     - React-Core
   - react-native-netinfo (11.4.1):
     - React-Core
-  - react-native-pager-view (6.5.0):
+  - react-native-pager-view (6.6.1):
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
@@ -1344,7 +1344,7 @@ PODS:
     - FirebaseCoreExtension (= 10.20.0)
     - React-Core
     - RNFBApp
-  - RNGestureHandler (2.20.2):
+  - RNGestureHandler (2.21.2):
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
@@ -1353,25 +1353,19 @@ PODS:
     - React-Core
   - RNLocalize (3.0.6):
     - React-Core
-  - RNReanimated (3.16.1):
+  - RNReanimated (3.15.5):
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
     - ReactCommon/turbomodule/core
-    - RNReanimated/reanimated (= 3.16.1)
-    - RNReanimated/worklets (= 3.16.1)
-  - RNReanimated/reanimated (3.16.1):
+    - RNReanimated/reanimated (= 3.15.5)
+    - RNReanimated/worklets (= 3.15.5)
+  - RNReanimated/reanimated (3.15.5):
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
     - ReactCommon/turbomodule/core
-    - RNReanimated/reanimated/apple (= 3.16.1)
-  - RNReanimated/reanimated/apple (3.16.1):
-    - glog
-    - RCT-Folly (= 2022.05.16.00)
-    - React-Core
-    - ReactCommon/turbomodule/core
-  - RNReanimated/worklets (3.16.1):
+  - RNReanimated/worklets (3.15.5):
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
@@ -1807,12 +1801,12 @@ SPEC CHECKSUMS:
   DoubleConversion: fea03f2699887d960129cc54bba7e52542b6f953
   EXConstants: 988aa430ca0f76b43cd46b66e7fae3287f9cc2fc
   EXFont: f20669cb266ef48b004f1eb1f2b20db96cd1df9f
-  Expo: e01a77c6fa4bc80a6d1bb949cda1d12d21044abd
+  Expo: 7b9976a9b2be116a701b233d6655b229a3c9316e
   ExpoAdapterFBSDKNext: 978d79ffcd9136ecf1eb75661cccc0b5da2ee2f2
-  ExpoCamera: 53f5ef81bab088b2edcf94d05e4da3bc84f46383
-  ExpoFileSystem: eecaf6796aed0f4dd20042dc2ca2cac6c4bc1185
+  ExpoCamera: f3f157db67e5a491e1104a2c0018c240242936e7
+  ExpoFileSystem: 74cc0fae916f9f044248433971dcfc8c3befd057
   ExpoKeepAwake: 0f5cad99603a3268e50af9a6eb8b76d0d9ac956c
-  ExpoModulesCore: 9e2287ef69fb71b578d4b1e4e8e7a3c8abb04fe4
+  ExpoModulesCore: 0f9e3c49657f681cd06219d97c77c3108a67ca00
   FBAEMKit: af2972f39bb0f3f7c45998f435b007833c32ffb2
   FBLazyVector: 56e0e498dbb513b96c40bac6284729ba4e62672d
   FBReactNativeSpec: 146c741a3f40361f6bc13a4ba284678cbedb5881
@@ -1874,7 +1868,7 @@ SPEC CHECKSUMS:
   react-native-get-random-values: 21325b2244dfa6b58878f51f9aa42821e7ba3d06
   react-native-maps: 72a8a903f8a1b53e2c777ba79102078ab502e0bf
   react-native-netinfo: f0a9899081c185db1de5bb2fdc1c88c202a059ac
-  react-native-pager-view: 143125e10032fb309c04b8eb141904b6bd58cdb1
+  react-native-pager-view: 272062651735c8b0f4d3a1abfa7b94a2f92a6dba
   react-native-safe-area-context: 4532f1a0c5d34a46b9324ccaaedcb5582a302b7d
   react-native-sunmi-printer-library: ee588f3f9e1e6f4382cd810c0f681b50b88a66ca
   react-native-version-number: b415bbec6a13f2df62bf978e85bc0d699462f37f
@@ -1912,10 +1906,10 @@ SPEC CHECKSUMS:
   RNFBAnalytics: ec290267aac57446c10b491293373ac86357f575
   RNFBApp: 9b25191f7a5e72c185b7e43fffb0d906869c4659
   RNFBCrashlytics: 28f83084ae8a4b9e6ad128e3a644c28bb5e16007
-  RNGestureHandler: c8b958a057c2d6c3ae3c56aad2ba6b2b407a8ba7
+  RNGestureHandler: 703ad8ac7a8c0999cfb58d5d54809fd4a8ee1c5a
   RNGoogleSignin: c4381751eefd73c552b923ba347a9bfc6f18771c
   RNLocalize: 4222a3756cdbe2dc9a5bdf445765a4d2572107cb
-  RNReanimated: 7203f932c68e763b00af46d2e8a2983d10dc94b9
+  RNReanimated: 39e51016ec96da586de4747db982dd032a47ba81
   RNScreens: e5093efe5103f3fd5f4479a0f0281ee5e6d81e11
   RNSentry: bb9261522b37ee673579ee1d106b107d63cc6243
   RNShare: a5dc3b9c53ddc73e155b8cd9a94c70c91913c43c

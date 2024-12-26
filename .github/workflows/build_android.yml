@@ -9,6 +9,7 @@ run-name: >
   ${{ inputs.build_robinfood && '; RobinFood' || '' }}
   ${{ inputs.build_coursiers_rennais && '; Les Coursiers Rennais' || '' }}
   ${{ inputs.build_eraman && '; Eraman' || '' }}
+  ${{ inputs.build_sicklo && '; Sicklo' || '' }}
 on:
   workflow_dispatch:
     inputs:
@@ -47,6 +48,10 @@ on:
         type: boolean
       build_eraman:
         description: 'Eraman app'
+        required: true
+        type: boolean
+      build_sicklo:
+        description: 'Sicklo app'
         required: true
         type: boolean
 jobs:
@@ -172,6 +177,21 @@ jobs:
       app_name: Eraman
       primary_color: "#317764"
       package_name: fr.coopcycle.eraman
+      keystore_key_alias: instance
+      keystore_key_password_secret: SIGNING_KEY_PASSWORD_INSTANCE
+      deploy_google_play: ${{ inputs.deploy_google_play }}
+    secrets: inherit
+  sicklo:
+    if: ${{ inputs.build_sicklo }}
+    name: Build Sicklo app
+    uses: ./.github/workflows/fastlane_android.yml
+    with:
+      tag: ${{ inputs.tag }}
+      instance: sicklo
+      instance_url: https://sicklo.coopcycle.org
+      app_name: Sicklo
+      primary_color: "#1f2632"
+      package_name: fr.coopcycle.sicklo
       keystore_key_alias: instance
       keystore_key_password_secret: SIGNING_KEY_PASSWORD_INSTANCE
       deploy_google_play: ${{ inputs.deploy_google_play }}

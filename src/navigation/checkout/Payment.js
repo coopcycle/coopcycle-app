@@ -30,9 +30,13 @@ class CreditCard extends Component {
       // https://github.com/coopcycle/coopcycle-app/issues/1697
       // 'mercadopago': 'CheckoutMercadopago',
     };
+
+    const cardRoute = Object.prototype.hasOwnProperty.call(routesByCardGateway, this.props.paymentGateway) ?
+      routesByCardGateway[this.props.paymentGateway] : 'CheckoutPaymentMethodCard';
+
     const routesByMethod = {
       cash_on_delivery: 'CheckoutPaymentMethodCashOnDelivery',
-      card: routesByCardGateway[this.props.paymentGateway],
+      card: cardRoute,
       edenred: 'CheckoutPaymentMethodEdenred',
       'edenred+card': 'CheckoutPaymentMethodEdenred',
     };
