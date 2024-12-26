@@ -176,7 +176,8 @@ function BarcodePage({
           ],
         );
       });
-    }
+    },
+    [t, httpClient],
   )
 
   const warningMultiplePackages = ({ count, details }) =>
@@ -240,7 +241,7 @@ function BarcodePage({
           return;
       }
     },
-    [entity, navigation, taskLists, askToAssign, askToUnassign],
+    [entity, navigation, taskLists, askToAssign, askToUnassign, askToStartPickup],
   );
 
   useEffect(() => {

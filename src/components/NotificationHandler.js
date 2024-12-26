@@ -57,14 +57,14 @@ export default function NotificationHandler() {
     // so we do not play sound in that case, because we will not be able to stop it
     // use memoized value to avoid re-starting the sound when more notifications arrive
     if (
-    shouldNotificationBeDisplayed &&
-    hasNotificationsWithSound &&
-    AppState.currentState === 'active') {
+      shouldNotificationBeDisplayed &&
+      hasNotificationsWithSound &&
+      AppState.currentState === 'active') {
       dispatch(startSound());
     } else {
       dispatch(stopSound());
     }
-  }, [hasNotificationsWithSound, dispatch]);
+  }, [shouldNotificationBeDisplayed, hasNotificationsWithSound, dispatch]);
 
   if (!shouldNotificationBeDisplayed) {
     return null;
