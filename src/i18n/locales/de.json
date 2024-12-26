@@ -370,7 +370,7 @@
     "CART_TIME_RANGE_CHANGED_MODAL_CHOOSE_TIME_RANGE_TEXT": "Bitte wählen Sie einen anderen Zeitraum",
     "CART_TIME_RANGE_CHANGED_MODAL_SELECT_TIME_RANGE_ACTION": "Lieferzeit ändern",
     "CART_TIME_RANGE_CHANGED_MODAL_CHOOSE_RESTAURANT_ACTION": "Wählen Sie ein anderes Restaurant",
-        "BARCODE_TASK_ALREADY_ASSIGNED_TITLE": "Aufgabe bereits zugewiesen",
+    "BARCODE_TASK_ALREADY_ASSIGNED_TITLE": "Aufgabe bereits zugewiesen",
     "BARCODE_TASK_ALREADY_ASSIGNED_ANOTHER_MESSAGE": "Diese Aufgabe wurde bereits einem anderen Benutzer zugewiesen",
     "BARCODE_TASK_ALREADY_ASSIGNED_SELF_MESSAGE": "Diese Aufgabe wurde dir bereits zugewiesen",
     "BARCODE_TASK_ALREADY_ASSIGNED_UNASSIGN": "Zuweisung aufheben",
@@ -388,6 +388,6 @@
     "TASK_DONE": "Erledigt",
     "TASK_CANCELLED": "Abgebrochen",
     "ASK_TO_START_PICKUP_TITLE": "Abholaufgabe",
-    "ASK_TO_START_PICKUP_MESSAGE": "Die Abholaufgabe wurde noch nicht gestartet.",
+    "ASK_TO_START_PICKUP_MESSAGE": "Die Abholaufgabe wurde noch nicht gestartet."
   }
 }
