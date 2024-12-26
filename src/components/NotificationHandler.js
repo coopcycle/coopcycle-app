@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import {
   clearNotifications,
+  shouldNotificationBeDisplayed,
   startSound,
   stopSound,
 } from '../redux/App/actions';
@@ -10,6 +11,7 @@ import NotificationModal from './NotificationModal';
 import {
   selectNotificationsToDisplay,
   selectNotificationsWithSound,
+  selectShouldNotificationBeDisplayed
 } from '../redux/App/selectors';
 import { AppState } from 'react-native';
 
@@ -25,6 +27,7 @@ const NOTIFICATION_DURATION_MS = 10000;
 export default function NotificationHandler() {
   const notificationsToDisplay = useSelector(selectNotificationsToDisplay);
   const notificationsWithSound = useSelector(selectNotificationsWithSound);
+  const shouldNotificationBeDisplayed = useSelector(selectShouldNotificationBeDisplayed);
 
   const hasNotifications = useMemo(
     () =>
@@ -53,12 +56,19 @@ export default function NotificationHandler() {
     // but it's very limited, e.g. handlers set via setTimeout are not executed
     // so we do not play sound in that case, because we will not be able to stop it
     // use memoized value to avoid re-starting the sound when more notifications arrive
-    if (hasNotificationsWithSound && AppState.currentState === 'active') {
+    if (
+      shouldNotificationBeDisplayed &&
+      hasNotificationsWithSound &&
+      AppState.currentState === 'active') {
       dispatch(startSound());
     } else {
       dispatch(stopSound());
     }
-  }, [hasNotificationsWithSound, dispatch]);
+  }, [shouldNotificationBeDisplayed, hasNotificationsWithSound, dispatch]);
+
+  if (!shouldNotificationBeDisplayed) {
+    return null;
+  }
 
   return (
     <NotificationModal

@@ -427,6 +427,25 @@
         "CART_TIME_RANGE_CHANGED_MODAL_CHOOSE_RESTAURANT_ACTION": "Elige otro restaurante",
         "ORDER__SHIPPED_AT__NOT_AVAILABLE": "El horario de entrega ya no está disponible",
         "ORDER__SHIPPED_AT__EXPIRED": "El horario de entrega ya ha pasado",
-        "ORDER__SHIPPING_TIME_RANGE__NOT_AVAILABLE": "No esta disponible en estos momentos"
+        "ORDER__SHIPPING_TIME_RANGE__NOT_AVAILABLE": "No esta disponible en estos momentos",
+        "BARCODE_TASK_ALREADY_ASSIGNED_TITLE": "Tarea ya asignada",
+        "BARCODE_TASK_ALREADY_ASSIGNED_ANOTHER_MESSAGE": "Esta tarea ya ha sido asignada a otro usuario",
+        "BARCODE_TASK_ALREADY_ASSIGNED_SELF_MESSAGE": "Esta tarea ya te ha sido asignada",
+        "BARCODE_TASK_ALREADY_ASSIGNED_UNASSIGN": "Desasignar",
+        "BARCODE_TASK_ALREADY_ASSIGNED_ASSIGN_TO_ME": "Asignármela",
+        "TASK_MULTIPLE_PACKAGES": "Varios paquetes",
+        "X_PACKAGES": "{{count}} paquetes",
+        "NO_NEED_TO_SCAN_OTHERS": "No es necesario escanear los demás paquetes.",
+        "ADD_NOTE": "Agregar nota",
+        "REPORT_AN_INCIDENT": "Reportar un incidente",
+        "UPDATE_PARCEL_DETAILS": "Actualizar detalles del paquete",
+        "PICTURES": "Fotos",
+        "TASK_TODO": "Por hacer",
+        "TASK_DOING": "En progreso",
+        "TASK_FAILED": "Fallido",
+        "TASK_DONE": "Hecho",
+        "TASK_CANCELLED": "Cancelado",
+        "ASK_TO_START_PICKUP_TITLE": "Tarea de recogida",
+        "ASK_TO_START_PICKUP_MESSAGE": "La tarea de recogida aún no ha comenzado."
     }
 }

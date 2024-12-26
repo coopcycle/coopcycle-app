@@ -415,6 +415,25 @@
         "MULTIPLE_SERVERS_IN_SAME_CITY_MODAL_TEXT": "C'è più di una cooperativa nella tua città, puoi navigare tra esse usando i tab o facendo swipe a sinistra o destra.",
         "DO_NOT_SHOW_IT_AGAIN": "Non mostrare più",
         "total_packages": "Totale: {{count}} pacchetto",
-        "total_packages_plural": "Totale: {{count}} pacchetti"
+        "total_packages_plural": "Totale: {{count}} pacchetti",
+       "BARCODE_TASK_ALREADY_ASSIGNED_TITLE": "Attività già assegnata",
+    "BARCODE_TASK_ALREADY_ASSIGNED_ANOTHER_MESSAGE": "Questa attività è già stata assegnata a un altro utente",
+    "BARCODE_TASK_ALREADY_ASSIGNED_SELF_MESSAGE": "Questa attività è già stata assegnata a te",
+    "BARCODE_TASK_ALREADY_ASSIGNED_UNASSIGN": "Rimuovi assegnazione",
+    "BARCODE_TASK_ALREADY_ASSIGNED_ASSIGN_TO_ME": "Assegna a me",
+    "TASK_MULTIPLE_PACKAGES": "Più pacchi",
+    "X_PACKAGES": "{{count}} pacchi",
+    "NO_NEED_TO_SCAN_OTHERS": "Non è necessario scansionare gli altri pacchi.",
+    "ADD_NOTE": "Aggiungi nota",
+    "REPORT_AN_INCIDENT": "Segnala un incidente",
+    "UPDATE_PARCEL_DETAILS": "Aggiorna i dettagli del pacco",
+    "PICTURES": "Foto",
+    "TASK_TODO": "Da fare",
+    "TASK_DOING": "In corso",
+    "TASK_FAILED": "Fallito",
+    "TASK_DONE": "Fatto",
+    "TASK_CANCELLED": "Annullato",
+    "ASK_TO_START_PICKUP_TITLE": "Attività di ritiro",
+    "ASK_TO_START_PICKUP_MESSAGE": "L'attività di ritiro non è ancora iniziata."
     }
 }
