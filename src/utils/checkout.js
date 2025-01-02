@@ -108,8 +108,9 @@ export function shouldShowPreOrder(restaurant) {
     return false;
   }
 
+  const timing = getNextShippingTime(restaurant);
   const duration = moment.duration(
-    moment(restaurant.timing.delivery.range[0]).diff(moment()),
+    moment(timing.range[0]).diff(moment()),
   );
 
   return duration.asHours() > 0.75;
