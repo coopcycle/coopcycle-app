@@ -41,13 +41,6 @@ function Client(httpBaseURL, options = {}) {
   });
 
   this.axios.defaults.timeout = 30000;
-  this.axios.defaults.headers.common['X-Application-Version'] =
-    VersionNumber.bundleIdentifier +
-    '@' +
-    VersionNumber.appVersion +
-    ' (' +
-    VersionNumber.buildVersion +
-    ')';
 
   if (options.onCredentialsUpdated) {
     this.onCredentialsUpdated = options.onCredentialsUpdated;
