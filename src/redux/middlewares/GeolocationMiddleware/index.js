@@ -7,6 +7,7 @@ import {
   setBackgroundGeolocationEnabled,
 } from '../../App/actions';
 import { selectIsAuthenticated } from '../../App/selectors';
+import { defaultHeaders } from '../../../utils/headers'
 
 // https://github.com/transistorsoft/rn-background-geolocation-demo/blob/1e63c8b5162c123c4961710d339bf9f9507a6893/src/home/HomeView.tsx#L156-L182
 const willDiscloseBackgroundPermission = hasDisclosedBackgroundPermission => {
@@ -75,6 +76,7 @@ export default ({ getState, dispatch }) => {
               refresh_token: '{refreshToken}',
             },
           },
+          headers: defaultHeaders(),
           batchSync: true,
           locationTemplate:
             '{"latitude":<%= latitude %>,"longitude":<%= longitude %>,"time":"<%= timestamp %>"}', // --> {"location":[[48.87586622822684,2.370307076470255,{}]]}
