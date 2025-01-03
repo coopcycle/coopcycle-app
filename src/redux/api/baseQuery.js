@@ -1,4 +1,3 @@
-import VersionNumber from 'react-native-version-number';
 import { fetchBaseQuery } from '@reduxjs/toolkit/dist/query/react';
 import { selectBaseURL, selectLoggedInUser } from '../App/selectors';
 import { Mutex } from 'async-mutex';
@@ -7,20 +6,13 @@ import AppUser from '../../AppUser';
 import { logout, setModal } from '../App/actions';
 import { setUser } from '../middlewares/HttpMiddleware';
 import { selectCart } from '../Checkout/selectors';
+import { defaultHeaders } from '../../utils/headers';
 
 const guestCheckoutEndpoints = [
   'getOrderValidate',
   'getOrderTiming',
   'updateOrder',
 ];
-
-const appVersion =
-  VersionNumber.bundleIdentifier +
-  '@' +
-  VersionNumber.appVersion +
-  ' (' +
-  VersionNumber.buildVersion +
-  ')';
 
 // create a new mutex
 const mutex = new Mutex();
@@ -29,7 +21,9 @@ const buildBaseQuery = (baseUrl, anonymous = false) => {
   return fetchBaseQuery({
     baseUrl,
     prepareHeaders: (headers, { getState, endpoint }) => {
-      headers.set('X-Application-Version', appVersion);
+      for (const [key, value] of Object.entries(defaultHeaders())) {
+        headers.set(key, value);
+      }
 
       if (!anonymous) {
         const loggedInUser = selectLoggedInUser(getState());
