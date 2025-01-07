@@ -1919,8 +1919,6 @@ export function setPaymentMethod(paymentMethod, cb) {
         },
       )
       .then(res => {
-        console.log('setPaymentMethod', JSON.stringify(res))
-        console.log('redirectUrl', res.redirectUrl)
         // We update the state with the same cart
         // We can't use response, because it's not a cart
         // TODO Use the payments returned
