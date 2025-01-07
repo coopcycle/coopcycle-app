@@ -1099,7 +1099,8 @@ export function canProceedWithPayment(cart) {
 export function checkout(
   cardholderName,
   savedPaymentMethodId = null,
-  saveCard = false
+  saveCard = false,
+  paygreenPaymentOrderID = null
 ) {
   return async (dispatch, getState) => {
     dispatch(checkoutRequest());
@@ -1111,6 +1112,45 @@ export function checkout(
     const loggedOrderId = cart['@id'];
 
     const httpClient = selectHttpClient(getState());
+
+    if (!validateCart(cart)) {
+      dispatch(checkoutFailure());
+      NavigationHolder.dispatch(
+        CommonActions.navigate({
+          name: 'Cart',
+        }),
+      );
+      dispatch(
+        setModal({
+          show: true,
+          skippable: true,
+          content: 'An error occurred, please try again later',
+          type: 'error',
+        }),
+      );
+      return;
+    }
+
+    if (paygreenPaymentOrderID) {
+      httpClient
+        .put(
+          cart['@id'] + '/pay',
+          {
+            paymentOrderId: paygreenPaymentOrderID
+          },
+          {
+            headers: selectCheckoutAuthorizationHeaders(
+              getState(),
+              cart,
+              token,
+            ),
+          },
+        )
+        .then(o => dispatch(handleSuccessNav(o)))
+        .catch(e => dispatch(checkoutFailure(e)));
+
+      return;
+    }
 
     if (isFree(cart)) {
       httpClient
