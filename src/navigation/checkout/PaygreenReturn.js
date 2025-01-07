@@ -14,7 +14,7 @@ export default () => {
 
   useEffect(() => {
     dispatch(checkout('', null, false, route.params.po_id));
-  }, []);
+  }, [ dispatch, route.params.po_id ]);
 
   // TODO Add a waiting text
   return (
