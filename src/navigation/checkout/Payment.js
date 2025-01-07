@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Center } from 'native-base';
-import { View } from 'react-native';
+import { Linking, View } from 'react-native';
 import { connect } from 'react-redux';
 
 import {
@@ -41,8 +41,12 @@ class CreditCard extends Component {
       'edenred+card': 'CheckoutPaymentMethodEdenred',
     };
 
-    this.props.setPaymentMethod(type, () => {
-      this.props.navigation.navigate(routesByMethod[type]);
+    this.props.setPaymentMethod(type, (result) => {
+      if (result.redirectUrl) {
+        Linking.openURL(result.redirectUrl);
+      } else {
+        this.props.navigation.navigate(routesByMethod[type]);
+      }
     })
   }
 
