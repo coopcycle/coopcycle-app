@@ -44,7 +44,7 @@ export default function ClientListInput({
   function selectAddress(address) {
     onSelectAddress(address);
     setHideSuggestions(true);
-    setValue('');
+    setValue(address.contactName);
   }
 
   const styles = StyleSheet.create({
@@ -106,6 +106,7 @@ export default function ClientListInput({
         }
         renderTextInput={RenderedInput}
         onChangeText={handleChangeText}
+        clearButtonMode="while-editing"
         inputContainerStyle={{
           margin: 0,
           padding: 0,
